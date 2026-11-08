@@ -360,7 +360,88 @@
   "egg_listening_dish": [["...a signal... faint..."], ["That tone. That's the Cradle's beacon. Somebody out here kept listening the whole time."], ["'They said they'd call.' We did. Late, but we did."]],
   "egg_older_pod": [["...another pod... older..."], ["SK-0. A seed-keeper before you. I didn't know there were any. The Cradle never told me."], ["'Start by the water.' Good advice, from someone who knew."]],
   "egg_heirloom_tin": [["...soil... from home..."], ["A bit of the first garden, already spilled on new ground. That's how it starts."], ["Verdance soil on another world. The Makers would have liked that."]],
-  "cradle_mode": [["...the vault... other worlds..."], ["The Cradle's seed vault has a lot more in it than one planet's worth. There are other worlds out here, Lumi. Ruined ones. Waiting."], ["Heirlooms, Starseeds, a whole map of worlds. Verdance stays green; we just take what we learned somewhere new."]],
+  "cradle_mode": [["...the vault... other worlds..."], ["The Cradle's seed vault has a lot more in it than one planet's worth. There are other worlds out here, Lumi. Ruined ones. Waiting."], ["Heirlooms, a whole map of worlds. Verdance stays green; we just take what we learned somewhere new."]],
   "new_world": [["...new ground... new junk..."], ["New world, new sky. Same job. You're better at it than you were the first time."], ["Look at that. Ruined, dusty, nobody's planted anything in centuries. You know what to do."]],
-  "garden_place": [["...pretty..."], ["You're decorating. I approve. The cats are going to approve more."], ["A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."]]
+  "garden_place": [["...pretty..."], ["You're decorating. I approve. The cats are going to approve more."], ["A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."]],
+  "home_arrive": [["...new sky... two suns..."], ["New planet, same two suns. The Ledger's been here too. You can smell the paperwork."], ["Another world the Ledger left for dead. It doesn't know about you yet. It's about to."]],
+  "home_half": [["...signal... old one..."], ["Picked up something old on the band. Ledger traffic. Want to read it?"], ["Half-way here. Every time this place gets greener, its ghosts start talking. I've got another one for you."]],
+  "home_restored": [["...green... all of it..."], ["That's the whole planet breathing again. The Cradle will have seen that from orbit."], ["Another world alive. I logged it for the Cradle: 'Planet restored. Robot insufferably pleased with itself.' Accurate?"]],
+  "home_system_done": [["...five... five..."], ["Five worlds. All of them green. Lumi, I think the charter's met. Let's go home."], ["Every world around both suns, alive. Back to Verdance. Build the big one. It's time."]],
+  "home_rocket": [["...big... very big..."], ["That is the biggest rocket I've ever seen, and I've seen the inside of a cargo pod at re-entry."], ["The Homeward rocket. Made from all five worlds. Plant the last seed, Lumi, and then we fly."]],
+  "home_last_seed": [["...last one..."], ["Last seed. Yellow fence and everything. Class 4B would approve."], ["There. The last seed, in the ground where the Cradle left from. Now it's our turn to leave, and come back properly."]],
+  "world_ice_moon_arrival": [
+    ["An ice moon. The Ledger ran its cold storage out here. Cold keeps things, {name}. Including evidence.", "Everything froze where they dropped it. Even the junk looks like it's waiting for a refund."]
+  ],
+  "world_ice_moon_memory_1": [
+    ["Ledger ice-haul manifests, still in the silo's memory. They melted this moon's lakes for coolant and shipped the water off-world. The trash, they left right here."]
+  ],
+  "world_ice_moon_halfway": [
+    ["Halfway. The lakes under the ice are filling again. The Ledger never budgeted for things coming back."]
+  ],
+  "world_ice_moon_memory_2": [
+    ["That silo was a seed vault before the Ledger made it a depot. Someone kept seeds hidden in the bottom tier anyway. I'd have liked to meet them."]
+  ],
+  "world_ice_moon_restored": [
+    ["Green under a ringed sky. The Ledger wrote this moon off as a loss. It was wrong about that too."]
+  ],
+  "world_desert_world_arrival": [
+    ["A desert world. It wasn't always one. The Ledger pumped its aquifers dry and sold the water by the litre.", "Sun, sand and one very small robot. I like our odds. Mostly."]
+  ],
+  "world_desert_world_memory_1": [
+    ["Ledger survey file, partial: 'Remaining yield negligible. Recommend abandonment in place.' In place. That's their phrase for leaving the mess."]
+  ],
+  "world_desert_world_halfway": [
+    ["Halfway green, on a planet they filed as 'negligible'. I'm keeping a list of their mistakes. It's getting long."]
+  ],
+  "world_desert_world_memory_2": [
+    ["That solar tower powered the pumps. When the water ran out they stopped paying for the mirrors, and they fell over one by one. You're standing them back up."]
+  ],
+  "world_desert_world_restored": [
+    ["Shade, water, flowers in the sand. 'Negligible', they said. I'm framing that word."]
+  ],
+  "world_ocean_world_arrival": [
+    ["An ocean world. The Ledger dredged its sea floor for metals and dumped the tailings along every coast. Mind the edges.", "Salt in the air, salt on the junk. Don't lick anything, {name}."]
+  ],
+  "world_ocean_world_memory_1": [
+    ["I found the dumping schedule. Every tide for forty years. They called it 'coastal storage'. The sea called it something else."]
+  ],
+  "world_ocean_world_halfway": [
+    ["Halfway. The water's clearing. The fish are cautiously reconsidering."]
+  ],
+  "world_ocean_world_memory_2": [
+    ["Those surge gates kept the Ledger's dredging yards dry. When they left, nobody closed them, and the sea took the yards back. Fair."]
+  ],
+  "world_ocean_world_restored": [
+    ["Green to the waterline, clear water past it. 'Coastal storage' is just coast again."]
+  ],
+  "world_fungal_world_arrival": [
+    ["A marsh world. The Ledger's chemical works drained into these valleys for a century. Everything grows here, mostly the wrong things first.", "Mist on everything. If you get lost, follow the squelching. That'll be you."]
+  ],
+  "world_fungal_world_memory_1": [
+    ["Ledger compliance report: 'Runoff within acceptable limits.' Acceptable to whom, I'd like to ask. The frogs weren't consulted."]
+  ],
+  "world_fungal_world_halfway": [
+    ["Halfway. The mist smells less like a laboratory every morning. Progress has a smell. It's mud."]
+  ],
+  "world_fungal_world_memory_2": [
+    ["That cooling tower ran the chemical works. The fungi moved in after the Ledger moved out. They've been cleaning up longer than we have. Respect."]
+  ],
+  "world_fungal_world_restored": [
+    ["Clear air over the marsh. Reeds, frogs, real flowers. The runoff is just rain now."]
+  ],
+  "world_rust_world_arrival": [
+    ["A rust world. This is where the Ledger broke its own ships. Pole to pole, and nothing switched off properly.", "The air tastes like old pennies. I don't have a tongue. I can still tell."]
+  ],
+  "world_rust_world_memory_1": [
+    ["The Ledger's ledgers, literally: the tonnage stripped from every planet in the system, filed here. They kept perfect books on how they ruined everything."]
+  ],
+  "world_rust_world_halfway": [
+    ["Halfway. Less rust in the wind. I don't have lungs, but I have standards."]
+  ],
+  "world_rust_world_memory_2": [
+    ["That gantry scrapped the Ledger's fleet when the money ran out. The ark was on the list. Someone took it off. I think about that a lot."]
+  ],
+  "world_rust_world_restored": [
+    ["A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."]
+  ]
 }

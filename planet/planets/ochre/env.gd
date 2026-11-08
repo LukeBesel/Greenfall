@@ -41,6 +41,7 @@ var _paint: Array = []
 var _wheels: Array = []
 var _future_bits: Array[Node3D] = []
 var _plants: Array = []       # [MultiMesh, PackedFloat32Array of sorted levels]
+var _junk: Array = []         # [MultiMesh, PackedFloat32Array of -levels, ascending]
 var _sail_mats: Array[ShaderMaterial] = []
 var _devils: Array[CPUParticles3D] = []
 var _fall_mat: ShaderMaterial
@@ -67,8 +68,46 @@ static func prepare(k: Dictionary) -> void:
 		Economy.biome_sets[biome] = d
 
 
+## PlanetEnvs contract (planet/planets/planet_envs.gd): the dev hook's district, a wild hub that is
+## not a frontier, preferring the entry's prefer_biome (a dust hub).
+static func dev_hub(planet: PlanetData) -> int:
+	var want: String = str(PlanetEnvs.entry("ochre").get("prefer_biome", "dust_dunes"))
+	var skip: Array = planet.frontier_hubs.values()
+	var pick: int = 0
+	for i: int in planet.hubs.size():
+		var c: int = planet.hubs[i]
+		if i == 0 or i in skip or planet.city[c] >= 0 or planet.state[c] == PlanetData.State.WATER:
+			continue
+		if pick == 0:
+			pick = i
+		if PlanetData.BIOMES[planet.biome[c]] == want:
+			return i
+	return pick
+
+
+## Before HexField.generate: Ochre's junk models and biome set; marks the field as a planet env's
+## (FutureLayer then skips its city spires).
+static func prepare_field(f: HexField) -> void:
+	var k: Dictionary = PlanetEnvs.entry("ochre")
+	prepare(k)
+	f.biome = str(k.get("junk_biome", "ochre_pit"))
+	f.biome_set = Economy.biome_set(f.biome)
+	f.set_meta("planet_env", "ochre")
+
+
+## Before FieldView.setup: desert ground layers (red laterite, ochre sand, red gravel, cracked
+## crust), light wind ripples; the env builds the horizon itself.
+static func dress_view(view: FieldView) -> void:
+	view.layer_swap = {"4": "red_laterite_soil_stones", "5": "sand_01", "6": "terrain_red_01", "7": "mud_cracked_dry_03"}
+	view.ground_fx = Vector4(0.25, 0.0, 0.0, 0.0)
+	view.skip_horizon = true
+
+
 static func apply(p_world: Node, p_field: HexField, k: Dictionary) -> void:
 	prepare(k)
+	var old: Node = p_world.get_node_or_null("OchreEnv")
+	if old:
+		old.free()
 	var e := OchreEnv.new()
 	e.name = "OchreEnv"
 	e.world = p_world
@@ -140,40 +179,11 @@ func _dev_camera(spec: String) -> void:
 	cam.make_current()
 
 
-## The binary star as seen from Ochre: SolarSystem.suns_for("ochre") when it exists (home's
-## systems/solar_system.gd), else data/planets.json, else the canon defaults scaled for the
-## closest orbit. {a: {color, size, energy}, b: {...}, sep_deg}.
+## The binary star as seen from Ochre (closest planet: both suns large and bright), from
+## SolarSystem.suns_for("ochre") (data/solar_system.json). {a: {color, size, energy}, b: {...}}.
 func suns() -> Dictionary:
-	var sky: Dictionary = kind.get("sky", {})
-	var sun: Dictionary = kind.get("sun", {})
-	var out: Dictionary = {
-		"a": {"color": _col(sun.get("color", []), Color(1.0, 0.95, 0.85)), "size": float(sky.get("sun_a_size", 2.0)) / SUN_DEG, "energy": float(sun.get("energy", 3.4)) / 3.4},
-		"b": {"color": _col(sun.get("b_color", []), Color(1.0, 0.62, 0.38)), "size": float(sky.get("sun_b_size", 1.15)) / SUN_DEG, "energy": float(sun.get("b_energy", 0.9)) / 3.4},
-		"sep_deg": float(sky.get("sun_separation_deg", 24.0)),
-	}
-	var path: String = "res://systems/solar_system.gd"
-	if ResourceLoader.exists(path):
-		var s: Script = load(path)
-		var has_fn: bool = false
-		for m: Dictionary in s.get_script_method_list():
-			if str(m.get("name", "")) == "suns_for":
-				has_fn = true
-		if has_fn:
-			var r: Variant = s.call("suns_for", "ochre")
-			if r is Dictionary:
-				for key: String in ["a", "b"]:
-					var src: Dictionary = (r as Dictionary).get(key, {})
-					var dst: Dictionary = out[key]
-					if src.get("color") is Color:
-						dst["color"] = src["color"]
-					for f: String in ["size", "energy"]:
-						if src.has(f):
-							dst[f] = float(src[f])
-					if src.get("dir") is Vector3:
-						dst["dir"] = src["dir"]
-				if (r as Dictionary).has("separation"):
-					out["sep_deg"] = float(r["separation"])
-	return out
+	var r: Dictionary = SolarSystem.suns_for("ochre", _sun_a_dir())
+	return {"a": r["a"], "b": r["b"]}
 
 
 static func _col(a: Variant, fallback: Color) -> Color:
@@ -243,22 +253,10 @@ func _sun_a_dir() -> Vector3:
 	return sun.global_transform.basis.z.normalized()
 
 
-## The companion sits sep_deg from the primary, mostly across their shared arc.
+## The companion: SolarSystem turns the primary by Ochre's separation, so the pair rise and set
+## together.
 func _sun_b_dir(a: Vector3) -> Vector3:
-	var b: Dictionary = _suns["b"]
-	if b.get("dir") is Vector3:
-		return (b["dir"] as Vector3).normalized()
-	var sd: Node = world.get("sky_director")
-	var tod: float = float(sd.get("time_of_day")) if sd else 0.4
-	var a1: Vector3 = _path_dir(tod)
-	var a2: Vector3 = _path_dir(tod + 0.004)
-	var n: Vector3 = a1.cross(a2)
-	var tg: Vector3 = a2 - a1
-	if n.length() < 0.0001 or tg.length() < 0.0001:
-		return a
-	# Offset mostly across the path, a little ahead: the pair rise and set within minutes.
-	var axis: Vector3 = (-n.normalized() * 0.55 - tg.normalized() * 0.85).normalized()
-	return a.rotated(axis, deg_to_rad(float(_suns.get("sep_deg", 24.0)))).normalized()
+	return (SolarSystem.suns_for("ochre", a)["b"]["dir"] as Vector3).normalized()
 
 
 ## SkyDirector's sun path (planet/sky_director.gd _apply) as a direction toward the sun.
@@ -294,17 +292,17 @@ func _grade(_delta: float) -> void:
 		_sky_mat.set_shader_parameter("horizon", _v3(hz))
 		_sky_mat.set_shader_parameter("zenith", _v3(zn))
 		_sky_mat.set_shader_parameter("dust", dust)
-		_sky_mat.set_shader_parameter("sun_a_energy", float(_suns["a"]["energy"]) * (1.0 - dust * 0.25))
-		_sky_mat.set_shader_parameter("sun_b_energy", float(_suns["b"]["energy"]) * 2.2 * (1.0 - dust * 0.25))
+		_sky_mat.set_shader_parameter("sun_a_energy", 1.0 - dust * 0.2)
+		_sky_mat.set_shader_parameter("sun_b_energy", 0.6 * (1.0 - dust * 0.2))
 		_sky_mat.set_shader_parameter("energy", float(sky.get("energy", 0.8)) * lerpf(0.9, 1.0, up_a))
 	# Light: the primary keeps SkyDirector's dawn-to-noon colour, tinted hot gold; the companion
 	# adds a warm orange-red fill from a little behind it.
 	var sa: Dictionary = _suns["a"]
 	sun.light_color = sun.light_color * Color(sa["color"]) * Color(1.0, 0.97, 0.9)
-	sun.light_energy *= float(kind.get("sun", {}).get("energy", 3.4)) / 3.0 * float(sa["energy"]) * (1.0 - dust * 0.18)
+	sun.light_energy *= float(kind.get("sun", {}).get("energy", 3.4)) / 3.0 * (1.0 - dust * 0.1)
 	if _sun_b:
 		_sun_b.look_at_from_position(Vector3.ZERO, -bdir, Vector3.UP if absf(bdir.y) < 0.98 else Vector3.FORWARD)
-		_sun_b.light_energy = 3.4 * float(_suns["b"]["energy"]) * up_b * (1.0 - dust * 0.3)
+		_sun_b.light_energy = float(kind.get("sun", {}).get("b_energy", 0.9)) * clampf(float(_suns["b"]["energy"]) / 0.45, 0.5, 1.5) * up_b
 		_sun_b.visible = _sun_b.light_energy > 0.01
 	# Fog: thick warm dust while ruined, a clean pale heat haze when restored; dust pools low
 	# in the pit.
@@ -318,10 +316,10 @@ func _grade(_delta: float) -> void:
 		env.fog_height = float(hf[0])
 		env.fog_height_density = float(hf[1]) * (0.3 + 0.7 * dust)
 	env.volumetric_fog_albedo = env.volumetric_fog_albedo.lerp(fc, 0.7)
-	env.volumetric_fog_density = lerpf(0.0024, 0.0008, clear)
-	env.adjustment_saturation = lerpf(1.08, 1.22, clear)
-	env.adjustment_contrast = 1.12
-	env.tonemap_exposure *= 0.88
+	env.volumetric_fog_density = lerpf(0.0007, 0.0003, clear)
+	env.adjustment_saturation = lerpf(1.3, 1.36, clear)
+	env.adjustment_contrast = 1.2
+	env.tonemap_exposure *= float(kind.get("exposure", 0.82))
 	var amb: Dictionary = kind.get("ambient", {})
 	env.ambient_light_energy *= float(amb.get("energy", 1.15))
 	# Shader clocks and night.
@@ -353,14 +351,15 @@ func _setup_ground() -> void:
 	if gm == null:
 		return
 	# Desert layers for the bare ground: red laterite, ochre sand, red gravel, cracked crust.
-	var layers: Array[String] = FieldView.GROUND_LAYERS.duplicate()
-	layers[4] = "red_laterite_soil_stones"
-	layers[5] = "sand_01"
-	layers[6] = "terrain_red_01"
-	layers[7] = "mud_cracked_dry_03"
-	gm.set_shader_parameter("albedo_arr", FieldView._tex_array(layers, "diff"))
-	gm.set_shader_parameter("normal_arr", FieldView._tex_array(layers, "nor_gl"))
-	gm.set_shader_parameter("arm_arr", FieldView._tex_array(layers, "arm"))
+	if (view.get("layer_swap") as Dictionary).is_empty():  # dress_view() wasn't called: swap them now
+		var layers: Array[String] = FieldView.GROUND_LAYERS.duplicate()
+		layers[4] = "red_laterite_soil_stones"
+		layers[5] = "sand_01"
+		layers[6] = "terrain_red_01"
+		layers[7] = "mud_cracked_dry_03"
+		gm.set_shader_parameter("albedo_arr", FieldView._tex_array(layers, "diff"))
+		gm.set_shader_parameter("normal_arr", FieldView._tex_array(layers, "nor_gl"))
+		gm.set_shader_parameter("arm_arr", FieldView._tex_array(layers, "arm"))
 	var gt: Array = kind.get("ground_tint", [0.78, 0.52, 0.3, 0.5])
 	gm.set_shader_parameter("biome_tint", Vector4(float(gt[0]), float(gt[1]), float(gt[2]), float(gt[3])))
 	gm.set_shader_parameter("frontier_fx", Vector4(0.25, 0.0, 0.0, 0.0))
@@ -851,42 +850,75 @@ func _flush_st(st: SurfaceTool, mat: Material, parent: Node3D) -> void:
 	parent.add_child(mi)
 
 
-# --- Junk beyond the field (ruined only) --------------------------------------------------------------
+# --- Junk beyond the field ------------------------------------------------------------------------------
 
+## The whole pit is trashed: tailings heaps, crate dumps, drill scrap and tyres over the field bench,
+## the floor, the haul roads and every bench up to the rim. It clears level by level as the
+## terraces are restored (from the floor up, like the greening), so the plants take its place.
+## Placement works per site (centre + radius in pit space), so it can be repeated per hub.
 func _build_ruin_junk() -> void:
 	var meshes: Dictionary = OchreProps.junk_meshes()
-	var ids: Array[String] = ["ochre_tailings", "ochre_tailings_b", "ochre_crate", "ochre_drill_rod", "ochre_crate_open", "ochre_drill_bit"]
-	var xfs: Dictionary = {}
-	for id: String in ids:
-		xfs[id] = []
-	for i: int in 420:
+	var ids: Array[String] = ["ochre_tailings", "ochre_tailings_b", "ochre_crate", "ochre_drill_rod", "ochre_crate_open", "ochre_drill_bit", "ochre_ore_sack", "ochre_bucket_tooth"]
+	var lists: Dictionary = {}
+	var lv_div: float = float(OchrePit.LEVELS - 1)
+	var scale_q: float = [0.55, 0.8, 1.0, 1.0][clampi(Settings.quality, 0, 3)]
+	var n_try: int = int(26000 * scale_q)
+	for i: int in n_try:
 		var th: float = _rng.randf() * TAU - PI
-		var rho: float = _rng.randf_range(OchrePit.FLOOR_R - 8.0, OchrePit.RIM_RHO - 6.0)
+		# Denser near the field and on the floor; thinner up the walls.
+		var rho: float = lerpf(OchrePit.FLOOR_R * 0.2, OchrePit.RIM_RHO + 30.0, pow(_rng.randf(), 1.6))
 		var s: Array = pit.sample(th, rho)
-		if float(s[2]) < 0.5:
+		if float(s[2]) < 0.5 and rho < OchrePit.RIM_RHO:
+			continue
+		if rho < OchrePit.POND_R - 2.0:
 			continue
 		var w: Vector2 = pit.world_at(th, rho)
-		if w.length() < r_clip + 2.0:
+		if w.length() < r_clip + 0.5:
 			continue
-		var id: String = ids[_rng.randi() % ids.size()] if _rng.randf() < 0.55 else ids[_rng.randi() % 2]
-		var big: float = _rng.randf_range(1.2, 2.6) if id.begins_with("ochre_tailings") else _rng.randf_range(0.9, 1.3)
+		var heap: bool = _rng.randf() < 0.07
+		var id: String
+		if heap:
+			id = ids[_rng.randi() % 2]
+		else:
+			var r: float = _rng.randf()
+			id = ids[0] if r < 0.3 else (ids[1] if r < 0.45 else ids[2 + _rng.randi() % (ids.size() - 2)])
+		var big: float = (_rng.randf_range(5.0, 14.0) if heap else (_rng.randf_range(1.0, 2.8) if id.begins_with("ochre_tailings") else _rng.randf_range(1.0, 1.6)))
 		var lie: Basis = Basis(Vector3.FORWARD, PI * 0.5) if id == "ochre_drill_rod" else Basis()
-		var xf := Transform3D(Basis(Vector3.UP, _rng.randf() * TAU) * lie * Basis.from_scale(Vector3.ONE * big), Vector3(w.x, float(s[0]) - 0.05 + (0.1 if id == "ochre_drill_rod" else 0.0), w.y))
-		(xfs[id] as Array).append(xf)
-	for id: String in ids:
-		var list: Array = xfs[id]
-		if list.is_empty():
-			continue
+		var xf := Transform3D(Basis(Vector3.UP, _rng.randf() * TAU) * lie * Basis.from_scale(Vector3(big, big * (0.55 if heap else 1.0), big)), Vector3(w.x, float(s[0]) - (0.3 if heap else 0.05) + (0.1 if id == "ochre_drill_rod" else 0.0), w.y))
+		var key: String = id + ("|heap" if heap else "")
+		if not lists.has(key):
+			lists[key] = []
+		(lists[key] as Array).append([float(s[1]) / lv_div + _rng.randf() * 0.03, xf])
+	for key: String in lists:
+		var list: Array = lists[key]
+		# Highest benches first: restoration removes from the end (the floor clears first).
+		list.sort_custom(func(a: Array, b: Array) -> bool: return float(a[0]) > float(b[0]))
 		var mm := MultiMesh.new()
 		mm.transform_format = MultiMesh.TRANSFORM_3D
-		mm.mesh = meshes[id]
+		mm.mesh = meshes[key.get_slice("|", 0)]
 		mm.instance_count = list.size()
+		var lv := PackedFloat32Array()
 		for i: int in list.size():
-			mm.set_instance_transform(i, list[i])
+			mm.set_instance_transform(i, list[i][1])
+			lv.append(-float(list[i][0]))
 		var mmi := MultiMeshInstance3D.new()
+		mmi.name = "Junk_%s" % key.replace("|", "_")
 		mmi.multimesh = mm
-		mmi.visibility_range_end = 260.0
-		(_groups["ruin"] as Node3D).add_child(mmi)
+		mmi.visibility_range_end = 900.0 if key.ends_with("heap") else 420.0
+		mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON if key.ends_with("heap") else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		(_groups["always"] as Node3D).add_child(mmi)
+		_junk.append([mm, lv])
+
+
+## Junk stays where the terraces are not yet restored (instances sorted from the rim down).
+func _update_junk() -> void:
+	var reach: float = restore_shown * 1.15 - 0.04 if restore_shown > 0.01 else -1.0
+	for p: Array in _junk:
+		var mm: MultiMesh = p[0]
+		var lv: PackedFloat32Array = p[1]  # -level, ascending
+		var n: int = lv.bsearch(-reach) if reach >= 0.0 else lv.size()
+		if mm.visible_instance_count != n:
+			mm.visible_instance_count = n
 
 
 ## Futuristic: water spills from the terrace channels down the walls below at a few spots.
@@ -1196,6 +1228,7 @@ func _process(delta: float) -> void:
 	if _water_mat:
 		_water_mat.set_shader_parameter("clean", clampf(restore_shown * 3.0, 0.0, 1.0) if level >= 2 else minf(restore_shown * 2.0, 0.3))
 	_update_plants()
+	_update_junk()
 	_grade(delta)
 	for w: Node3D in _wheels:
 		if level >= 4 and is_instance_valid(w):

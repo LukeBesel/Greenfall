@@ -150,8 +150,10 @@ func _ready() -> void:
 
 
 func _dev_hooks() -> void:
-	if DevHooks.has("tokens"):
-		GameState.add_currency(Contracts.CURRENCY, BigNum.from_float(DevHooks.get_f("tokens", 50.0)))
+	if DevHooks.has("requests-done"):  # [money] (was --tokens): N finished requests on the reward track
+		var c: Contracts = world.get("contracts") as Contracts if world else null
+		if c:
+			c.count_done(int(DevHooks.get_f("requests-done", 10.0)))
 	if DevHooks.has("streak"):
 		streak.add_scoop(DevHooks.get_f("streak", 90.0))
 		streak.grace_s = 1.0e9  # held for screenshots
@@ -474,19 +476,15 @@ func _pay(rw: Dictionary, at: Vector3, source: String) -> String:
 		var c: float = progress_cubes(float(rw["income_s"]))
 		GameState.add_currency("cubes", BigNum.from_float(c))
 		bits.append(tr("+%s cubes") % Settings.fmt(BigNum.from_float(c)))
-	if rw.has("bolts"):
-		var b: int = _range_i(rw["bolts"])
-		GameState.add_currency("bolts", BigNum.from_float(b))
-		bits.append(tr("+%d bolts") % b)
+	if rw.has("parts"):  # [money] bolts/materials are Parts now
+		var b: int = _range_i(rw["parts"])
+		GameState.add_currency("parts", BigNum.from_float(b))
+		bits.append(L10nFmt.reward("parts", b))
 	if rw.has("seeds") and GameState.flags.get("seeds_unlocked", false):
 		var s: int = _range_i(rw["seeds"])
 		GameState.add_currency("seeds", BigNum.from_float(s))
 		bits.append(tr("+%d seeds") % s)
-	if rw.has("data"):
-		var dv: int = _range_i(rw["data"])
-		GameState.add_currency(Research.CURRENCY, BigNum.from_float(dv))
-		bits.append(tr("+%d data") % dv)
-	var n_parts: int = int(rw.get("parts", 0))
+	var n_parts: int = int(rw.get("part_items", 0))  # robot part items (the Builder / recipes)
 	if rw.has("part_rarity"):
 		n_parts = maxi(n_parts, 1)
 	for k: int in n_parts:
@@ -498,12 +496,6 @@ func _pay(rw: Dictionary, at: Vector3, source: String) -> String:
 		GameState.parts.append({"type": t, "rarity": r})
 		EventBus.part_found.emit(t, r)
 		bits.append("+" + L10nFmt.part_name(r, t))  # [i18n2]
-	var tok: int = int(rw.get("tokens", 0))
-	if rng.randf() < float(rw.get("tokens_chance", 0.0)):
-		tok += 1
-	if tok > 0:
-		GameState.add_currency(Contracts.CURRENCY, BigNum.from_float(tok))
-		bits.append(tr_n("+%d token", "+%d tokens", tok) % tok)
 	if rng.randf() < float(rw.get("trinket_chance", 0.0)):
 		var tid: String = Collection.roll(source, rng.randf())
 		if tid != "" and Collection.grant(tid):

@@ -1146,6 +1146,14 @@ func _paint_arrow(at: Vector2, dir: Vector2, length: float, col: Color, line: Ca
 
 func _build_puddles() -> void:
 	var spots: Array = [Vector3(-1.9, 0, 0.9), Vector3(3.2, 0, -6.6), Vector3(-6.2, 0, 6.6), Vector3(2.6, 0, 6.9), Vector3(-2.6, 0, -4.4)]
+	var pm_: float = _puddle_mult()  # [worlds2] Heavy Rain: more; Desert World: none
+	if pm_ <= 0.01:
+		return
+	if pm_ < 1.0:
+		spots = spots.slice(0, maxi(1, int(round(spots.size() * pm_))))
+	elif pm_ > 1.0:
+		for k: int in int(round(spots.size() * (pm_ - 1.0))):
+			spots.append(Vector3(_rng.randf_range(-7.0, 7.0), 0, _rng.randf_range(-7.0, 7.0)))
 	for p: Vector3 in spots:
 		var s: float = _rng.randf_range(1.1, 1.9)
 		_puddles.append(Transform3D(Basis(Vector3.UP, _rng.randf() * TAU).scaled(Vector3(s, 1.0, s * _rng.randf_range(0.6, 0.9))), p + Vector3(0, 0.022, 0)))
@@ -1153,11 +1161,11 @@ func _build_puddles() -> void:
 		return
 	# Along the gutters of the roads around the hub.
 	var e: float = CityLayout.PITCH * 0.5 - CityLayout.ROAD_W * 0.5
-	for k: int in 6:
+	for k: int in int(round(6 * minf(pm_, 2.5))):
 		var t: float = _rng.randf_range(-10.0, 10.0)
 		var side: float = 1.0 if _rng.randf() < 0.5 else -1.0
 		var pos: Vector3 = Vector3(t, 0.012, side * (e + 1.2)) if k % 2 == 0 else Vector3(side * (e + 1.2), 0.012, t)
-		var s2: float = _rng.randf_range(1.8, 3.2)
+		var s2: float = _rng.randf_range(1.8, 3.2) * (1.0 if pm_ <= 1.0 else 1.2)
 		_puddles.append(Transform3D(Basis(Vector3.UP, _rng.randf() * TAU).scaled(Vector3(s2, 1.0, s2 * 0.6)), pos))
 
 
@@ -1638,6 +1646,7 @@ func _pick_style() -> void:
 		"rustlands":
 			_drift = 0.35
 			_drift_col = Color(0.56, 0.36, 0.22)
+	_world_style()  # [worlds2]
 	if start_base:
 		return
 	_pennant.assign(_shuffled(PENNANT).slice(0, _style.randi_range(3, 5)))
@@ -1659,6 +1668,37 @@ func _pick_style() -> void:
 		Color(0.85, 0.6, 0.2), Color(0.45, 0.42, 0.6)][_style.randi() % 6]
 	_warm = _style.randf_range(0.35, 0.95)
 	_sign_x = [-4.2, -3.4, 3.4, 4.2][_style.randi() % 4]
+	_bleach_cols()  # [worlds2]
+
+
+## [worlds2] A Cradle Mode world's yard (systems/world_look.gd "dress"): its drifts (frost, sand,
+## silt, rust dust) on the slab and along the fence, sun-bleached cloth, more or fewer puddles.
+var _world_dress: Dictionary = {}
+
+
+func _world_style() -> void:
+	_world_dress = WorldLook.current().get("dress", {})
+	if _world_dress.is_empty():
+		return
+	if biome == "":
+		_drift = float(_world_dress.get("drift", _drift))
+		_drift_col = WorldLook.col(_world_dress.get("drift_col", []), _drift_col)
+	_bleach_cols()
+
+
+func _bleach_cols() -> void:
+	var b: float = float(_world_dress.get("bleach", 0.0))
+	if b <= 0.0:
+		return
+	var sun := Color(0.93, 0.9, 0.82)
+	for arr: Array[Color] in [_awning_cols, _tarp_cols, _pennant]:
+		for i: int in arr.size():
+			arr[i] = arr[i].lerp(sun, b * 0.6)
+
+
+## Puddle count factor for this world (Heavy Rain doubles it; a desert has none).
+func _puddle_mult() -> float:
+	return float(_world_dress.get("puddles", 1.0))
 
 
 func _prop(id: String, xf: Transform3D) -> void:

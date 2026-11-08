@@ -181,7 +181,7 @@ func _draw() -> void:
 			sub = tr("Queued  ·  %s") % Research.time_text(Research.duration(node_id))
 			sub_col = UITheme.CREAM
 		_:
-			sub = tr("%s data  ·  %s") % [Settings.fmt(Research.cost(node_id)), Research.time_text(Research.duration(node_id))]
+			sub = tr("%s  ·  %s") % [L10nFmt.amount("cubes", Research.cost(node_id).to_float()), Research.time_text(Research.duration(node_id))]
 			sub_col = UITheme.GOLD if state == "available" and _affordable else UITheme.MUTED
 	draw_string(f, Vector2(tx, sub_y), sub, HORIZONTAL_ALIGNMENT_LEFT, size.x - tx - 8.0, 12, sub_col)
 	if _flash > 0.0:

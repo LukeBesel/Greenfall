@@ -31,11 +31,13 @@ var _piece_slot := PackedInt32Array()  # pid -> instance index
 var _mms: Array[MultiMesh] = []
 ## [deck] Junk MultiMeshes whose pieces are all gone are hidden (no empty draw calls late game).
 var _mmis: Array[MultiMeshInstance3D] = []
-var _mm_live := PackedInt32Array()
+## [vqa2] Junk near/far LOD; owns the junk MultiMesh buffers (_mms / _mmis are its NEAR ones).
+var lod: JunkLod
 var _piece_shown := PackedByteArray()
 var _dirty_tex: bool = false
 var _life_img: Image
 var _life_tex: ImageTexture
+var _life_dirty: bool = false  # [green] one texture upload per frame, however many hexes changed
 var _mounds: Array = []  # hex id -> Array[MeshInstance3D]
 
 
@@ -58,6 +60,12 @@ func _process(delta: float) -> void:
 		_ground_mat.set_shader_parameter("time_now", clock)
 	if _dirty_tex:
 		_flush()
+	var cam: Camera3D = get_viewport().get_camera_3d() if lod else null  # [vqa2] junk LOD
+	if cam:
+		lod.update(delta, cam.global_position)
+	if _life_dirty:  # [green]
+		_life_dirty = false
+		_life_tex.update(_life_img)
 
 
 # --- Ground -----------------------------------------------------------------------
@@ -111,7 +119,7 @@ func _build_ground() -> void:
 	_ground_mat.set_shader_parameter("arm_arr", _tex_array(layers, "arm"))
 	_ground_mat.set_shader_parameter("frontier_fx", ground_fx)
 	_ground_mat.set_shader_parameter("state_tex", _state_tex)
-	_life_img = Image.create(size, size, false, Image.FORMAT_RF)
+	_life_img = Image.create(size, size, false, Image.FORMAT_RGBA8)  # [green] R life, G level / 5, B row angle (8-bit: always filterable)
 	_life_tex = ImageTexture.create_from_image(_life_img)
 	_ground_mat.set_shader_parameter("life_tex", _life_tex)
 	_ground_mat.set_shader_parameter("grid_radius", field.radius)
@@ -184,41 +192,31 @@ func _build_junk() -> void:
 	_piece_mm.resize(field.piece_count())
 	_piece_slot.resize(field.piece_count())
 	_piece_shown.resize(field.piece_count())
+	lod = JunkLod.new(field, Settings.quality)  # [vqa2] near/far junk LOD (planet/junk_lod.gd)
 	for key: String in groups:
 		var pids: PackedInt32Array = groups[key]
 		var model: String = key.split("|")[1]
-		var mm := MultiMesh.new()
-		mm.transform_format = MultiMesh.TRANSFORM_3D
-		mm.mesh = AssetLib.model_mesh_lite(model, [320, 500, 700, 700][clampi(Settings.quality, 0, 3)])  # [deck] lighter junk on Low/Medium
-		mm.instance_count = pids.size()
-		var idx: int = _mms.size()
+		# Small litter doesn't cast sun shadows (SSAO grounds it); bigger items do.
+		var vol: float = field.piece_vol[pids[0]]
+		var near_mesh: Mesh = AssetLib.model_mesh_lite(model, [320, 500, 700, 700][clampi(Settings.quality, 0, 3)])  # [deck] lighter junk on Low/Medium
+		var idx: int = lod.add_group(self, "Junk_" + key.replace("|", "_").replace(",", "_"), model, near_mesh, pids, vol >= 1.2, Settings.quality)
+		_mms.append(lod.near_mm[idx])
+		_mmis.append(lod.near_mmi[idx])
 		for i: int in pids.size():
 			var pid: int = pids[i]
 			_piece_mm[pid] = idx
 			_piece_slot[pid] = i
-			mm.set_instance_transform(i, piece_transform(pid) if field.piece_alive[pid] == 1 else _hidden())
 			_piece_shown[pid] = 1 if field.piece_alive[pid] == 1 else 0
-		_mms.append(mm)
-		var mmi := MultiMeshInstance3D.new()
-		mmi.name = "Junk_" + key.replace("|", "_").replace(",", "_")
-		mmi.multimesh = mm
-		mmi.visibility_range_end = 110.0
-		# Small litter doesn't cast sun shadows (SSAO grounds it); bigger items do.
-		var vol: float = field.piece_vol[pids[0]]
-		mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON if vol >= 1.2 else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		add_child(mmi)
-		_mmis.append(mmi)
-		var live: int = 0
-		for pid: int in pids:
-			live += _piece_shown[pid]
-		_mm_live.append(live)
-		mmi.visible = live > 0
+			if field.piece_alive[pid] == 1:
+				lod.show_piece(pid, piece_transform(pid))
 
 
 ## [biomes2] Frontiers: a weathering overlay (art/shaders/junk_coat.gdshader) on every junk piece.
 func set_junk_overlay(m: Material) -> void:
-	for mmi: MultiMeshInstance3D in _mmis:
-		mmi.material_overlay = m
+	lod.set_overlay(m)  # [vqa2] near + far junk
+	for list: Variant in _mounds:  # [vqa2] the debris mounds too (dark rubble crescents in the dunes)
+		for mi: MeshInstance3D in list:
+			mi.material_overlay = m
 
 
 static func _mound_mesh() -> ArrayMesh:
@@ -285,7 +283,7 @@ func _update_mounds(id: int) -> void:
 func _resettle(id: int) -> void:
 	for pid: int in field.hex_pieces[id]:
 		if field.piece_alive[pid] == 1:
-			_mms[_piece_mm[pid]].set_instance_transform(_piece_slot[pid], piece_transform(pid))
+			lod.show_piece(pid, piece_transform(pid))  # [vqa2]
 
 
 func _hidden() -> Transform3D:
@@ -293,23 +291,20 @@ func _hidden() -> Transform3D:
 
 
 func hide_piece(pid: int) -> void:
-	_mms[_piece_mm[pid]].set_instance_transform(_piece_slot[pid], _hidden())
+	lod.hide_piece(pid)  # [vqa2]
 	_set_shown(pid, false)
 
 
 func move_piece(pid: int, pos: Vector3) -> void:
 	field.piece_pos[pid] = pos
-	_mms[_piece_mm[pid]].set_instance_transform(_piece_slot[pid], piece_transform(pid))
+	lod.show_piece(pid, piece_transform(pid))  # [vqa2]
 	_set_shown(pid, true)
 
 
 func _set_shown(pid: int, on: bool) -> void:
 	if pid >= _piece_shown.size() or (_piece_shown[pid] == 1) == on:
 		return
-	_piece_shown[pid] = 1 if on else 0
-	var k: int = _piece_mm[pid]
-	_mm_live[k] += 1 if on else -1
-	_mmis[k].visible = _mm_live[k] > 0
+	_piece_shown[pid] = 1 if on else 0  # [vqa2] JunkLod hides empty near/far buffers itself
 
 
 # --- Hex state --------------------------------------------------------------------
@@ -341,9 +336,30 @@ func state_texture() -> ImageTexture:
 
 
 func set_life(id: int, life: float) -> void:
+	_set_life_ch(id, 0, life)  # [green] keeps the level / row channels
+
+
+## [green] Hex level (0..5) and planting-row angle (0..1 = 0..PI) for the meadow and the tilled
+## soil (plants/meadow.gd, ground_pbr.gdshader).
+func set_level(id: int, level: int) -> void:
+	_set_life_ch(id, 1, float(level) / 5.0)
+
+
+func set_rows(id: int, angle01: float) -> void:
+	_set_life_ch(id, 2, angle01)
+
+
+func life_texture() -> ImageTexture:
+	return _life_tex
+
+
+func _set_life_ch(id: int, ch: int, v: float) -> void:
 	var a: Vector2i = field.hex_axial[id]
-	_life_img.set_pixel(a.x + field.radius, a.y + field.radius, Color(life, 0, 0))
-	_life_tex.update(_life_img)
+	var c: Color = _life_img.get_pixel(a.x + field.radius, a.y + field.radius)
+	c[ch] = clampf(v, 0.0, 1.0)
+	c.a = 1.0
+	_life_img.set_pixel(a.x + field.radius, a.y + field.radius, c)
+	_life_dirty = true
 
 
 func set_focus_hex(id: int) -> void:

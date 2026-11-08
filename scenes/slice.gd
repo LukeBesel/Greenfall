@@ -32,6 +32,7 @@ var wildlife: Wildlife
 var water: WaterView
 var doc_view: DocumentView
 var interactables: Interactables
+var scope_from_memory: bool = false  # [scope]
 var eggs: EasterEggs
 var ledger: LedgerArc
 var outposts: Outposts  # [outposts] ruined frontier depots (automation/outposts.gd)
@@ -41,6 +42,7 @@ var contracts: Contracts  # [events] contracts board + token shop (systems/contr
 var photo: PhotoMode  # [photo] photo mode (ui/photo_mode.gd)
 var fauna: Fauna  # [wild] ambient animals (fauna/fauna.gd)
 var frontier: FrontierDistrict  # [biomes] late-game frontier districts (planet/frontier_district.gd)
+var planet_env: Dictionary = {}  # [planet-rime] dev: --planet-env=<id> dresses a district with a planet env (data/planets.json)
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var view: FieldView
 var depot: Depot
@@ -80,6 +82,7 @@ func _ready() -> void:
 	var base_seed: int = int(DevHooks.get_f("seed", float(CradleMode.world_seed())))  # [late] Cradle Mode worlds (Verdance = slice_field seed)
 	var loaded: bool = false
 	var from_memory: bool = GameState.reload_in_memory
+	scope_from_memory = from_memory  # [scope] remote progress pays on world arrival (automation/telescope.gd)
 	if GameState.reload_in_memory:
 		GameState.reload_in_memory = false
 		loaded = true
@@ -98,7 +101,12 @@ func _ready() -> void:
 		GameState.switch_hub(int(planet.frontier_hubs.get(DevHooks.get_s("frontier", "dust_flats"), 0)))
 		if DevHooks.has("hub-level"):
 			GameState.world["hub_level"] = clampi(int(DevHooks.get_f("hub-level", 1.0)), 1, 5)
-	var penv: Dictionary = PlanetEnvs.dev_prepare(planet, loaded)  # [planet-ochre] --planet-env=<id> (planet/planets/planet_envs.gd)
+	if DevHooks.has("planet-env"):  # [planet-rime] env contract: dev_hub / prepare_field / dress_view / apply
+		planet_env = PlanetEnvs.entry(DevHooks.get_s("planet-env", ""))
+		if not planet_env.is_empty() and not loaded:
+			GameState.switch_hub(PlanetEnvs.dev_hub(planet_env, planet))
+			if DevHooks.has("hub-level"):
+				GameState.world["hub_level"] = clampi(int(DevHooks.get_f("hub-level", 1.0)), 1, 5)
 	hub_index = clampi(GameState.current_hub, 0, planet.hubs.size() - 1)
 	anchor_cell = planet.hubs[hub_index]
 	# Each hub's district has its own deterministic seed; city hubs get streets, others are wild.
@@ -118,6 +126,7 @@ func _ready() -> void:
 	if not fk.is_empty():  # [biomes]
 		field.biome = str(fk["biome"])
 		field.biome_set = Economy.biome_set(field.biome)
+	PlanetEnvs.call_env(planet_env, "prepare_field", [field])  # [planet-rime]
 	var ppx: Array = (cfg.get("pieces_per_hex", [6, 12]) as Array).duplicate()
 	if not fk.is_empty():  # [biomes] more junk per hex
 		ppx = [int(float(ppx[0]) * float(fk.get("pieces_mult", 1.0))), int(float(ppx[1]) * float(fk.get("pieces_mult", 1.0)))]
@@ -134,11 +143,10 @@ func _ready() -> void:
 	if not fk.is_empty():  # [biomes] the frontier's own harbour / flood replaces planet lakes
 		field.water_ids = Frontiers.water_ids_for(fk, f_radius, float(cfg.get("hex_size", 3.2)))
 		field.float_mult = float(fk.get("float_mult", 1.0))
-	if penv.has("junk_biome"):  # [planet-ochre] the planet env's junk, no planet lakes
-		field.biome = str(penv["junk_biome"])
-		field.biome_set = Economy.biome_set(field.biome)
+	if bool(planet_env.get("no_lakes", false)):  # [planet-ochre] a dry planet: no planet lakes in the field
 		field.water_ids = {}
-		field.set_meta("planet_env", str(penv.get("id", "")))
+	if planet_env.has("pieces_mult"):  # [planet-ochre] a trashed planet: more junk per hex
+		ppx = [int(float(ppx[0]) * float(planet_env["pieces_mult"])), int(float(ppx[1]) * float(planet_env["pieces_mult"]))]
 	# Older saves were generated with straight hex borders; keep their piece layout identical.
 	if loaded and GameState.world.has("field"):
 		field.natural_borders = bool((GameState.world["field"] as Dictionary).get("natural_borders", false))
@@ -167,8 +175,7 @@ func _ready() -> void:
 		view.skip_horizon = true  # [biomes2] FrontierView builds the terrain and skyline
 	elif CradleMode.current_index() > 0:  # [late] another world's ground (snow on an ice moon, sand on a desert world)
 		CradleMode.dress_view(view)
-	if not penv.is_empty():  # [planet-ochre] the planet env builds the landscape
-		view.skip_horizon = true
+	PlanetEnvs.call_env(planet_env, "dress_view", [view])  # [planet-rime]
 	view.setup(field)
 	water = WaterView.new()
 	water.name = "Water"
@@ -422,6 +429,10 @@ func _ready() -> void:
 		if frontier:  # [biomes] thaw the ice / run the pumps first so the preview covers every hex
 			frontier.dev_pre_preview()
 		FutureLayer.apply_preview(self, int(DevHooks.get_f("future", 5.0)))
+	if DevHooks.has("restore"):  # [green] --restore=N[,level]: honest green-district previews
+		GardenDev.apply_restore(self)
+	if DevHooks.has("green-cam"):  # [green]
+		GardenDev.apply_cam.call_deferred(self)
 	var future := FutureLayer.new()
 	future.name = "FutureLayer"
 	add_child(future)
@@ -502,6 +513,7 @@ func _ready() -> void:
 	# [beat] (Bloom connects EventBus.cradle_district_complete itself: a lambda here outlived the scene)
 	if frontier:  # [biomes] frontier mechanics and visuals, once the scene is built
 		frontier.setup()
+	PlanetEnvs.call_env(planet_env, "apply", [self, field, planet_env])  # [planet-rime]
 	core_charge = CoreCharge.new()  # Lumi's Bloom Core charge + its story beats (story/core_charge.gd)
 	core_charge.name = "CoreCharge"
 	core_charge.world = self
@@ -524,8 +536,11 @@ func _ready() -> void:
 		if not loaded:
 			wake.call()
 	LateDirector.attach(self)  # [late] Garden Mode, Ark Bridge, Cradle Mode worlds (systems/late_director.gd)
-	if not penv.is_empty():  # [planet-ochre]
-		PlanetEnvs.apply(self, penv)
+	var scope := Telescope.new()  # [scope] the Telescope + remote progress (automation/telescope.gd)
+	scope.name = "Telescope"
+	scope.world = self
+	add_child(scope)
+	ExtrasDirector.attach(self)  # [extras] radio, nursery, album, welcome back, Seed of the Week (systems/extras/)
 	if not bot and DisplayServer.get_name() != "headless":
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
@@ -696,6 +711,15 @@ func _build_board() -> void:
 	sl.mesh = AssetLib.model_mesh("street_lamp_01")
 	sl.position = Vector3(4.2, 0, -3.0)
 	add_child(sl)
+	var pole := StaticBody3D.new()  # [vqa2] the camera arm (and Lumi, robots) stop at the pole
+	var pcs := CollisionShape3D.new()
+	var pcy := CylinderShape3D.new()
+	pcy.radius = 0.16
+	pcy.height = 3.6
+	pcs.shape = pcy
+	pcs.position = Vector3(0, 1.8, 0)
+	pole.add_child(pcs)
+	sl.add_child(pole)
 	var light := SpotLight3D.new()
 	light.light_color = Color(1.0, 0.82, 0.6)
 	light.light_energy = 3.0
@@ -919,7 +943,7 @@ func travel_to(to_hub: int) -> void:
 	GameState.reload_in_memory = true
 	SaveManager.save_game(false)
 	get_tree().paused = false
-	get_tree().reload_current_scene()
+	Loader.reload()  # [intro2] loading screen
 
 
 ## Salvaged building materials from scooped junk (data/hub.json "materials").
@@ -1014,7 +1038,7 @@ func _setup_research_codex() -> void:
 	codex.closed.connect(_on_modal_closed)
 	pause_menu.codex_requested.connect(_open_codex)
 	if DevHooks.has("give-data"):
-		GameState.add_currency(Research.CURRENCY, BigNum.from_float(DevHooks.get_f("give-data", 500.0)))
+		GameState.add_currency("cubes", BigNum.from_float(DevHooks.get_f("give-data", 500.0) * Research.note_cubes()))  # [money] research costs cubes
 	if DevHooks.has("research"):
 		# --research=scoop_beam+wide_beam (researched) ; --research-start=bigger_hopper+conveyor
 		for id: String in DevHooks.get_s("research", "").split("+"):
@@ -1158,13 +1182,9 @@ func _restore_world(from_memory: bool = false) -> void:
 			if not field.is_clean(h):
 				junk_left += field.hex_left[h]
 		# [beat] Junk already "baled offline" stays on the field (geometry isn't advanced), so it must not
-		# pay again on the next reopen: count it against what is left.
-		junk_left = maxf(0.0, junk_left - float(GameState.world.get("offline_units", 0.0)))
-		var res: Dictionary = Offline.compute(GameState.world.get("robots", []), hub.scrubbers if hub else 0, float(sd.get("filter_per_s", 1.0)), away, junk_left)
-		GameState.world["offline_units"] = float(GameState.world.get("offline_units", 0.0)) + float(res["units"])
-		Offline.apply(res)
-		if float(res["units"]) > 0.0 or float(res["air"]) > 0.0:
-			get_tree().create_timer(2.0).timeout.connect(func() -> void: EventBus.toast.emit(Offline.summary_text(res), "story"))
+		# pay again on the next reopen: Offline.simulate counts it against what is left. [extras]
+		var res: Dictionary = Offline.simulate(GameState.world, away, junk_left, hub.scrubbers if hub else 0, float(sd.get("filter_per_s", 1.0)))
+		WelcomeBack.offer(res, away)  # [extras] garden growth + payout card once the garden is built (systems/extras/welcome_back.gd)
 	EventBus.toast.emit(tr("Welcome back. The junk waited for you."), "info")
 
 

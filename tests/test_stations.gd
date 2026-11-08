@@ -32,7 +32,7 @@ func after_each() -> void:
 
 
 func _rich() -> void:
-	for k: String in ["cubes", "sheet_metal", "plastic_stock", "glass_cullet"]:
+	for k: String in Currencies.IDS:  # [money]
 		GameState.add_currency(k, BigNum.from_float(1.0e6))
 
 
@@ -48,11 +48,11 @@ func _bale(fill: float = 0.9, dominant: String = "metal") -> JunkCube:
 	return c
 
 
-func test_conveyor_costs_materials() -> void:
+func test_conveyor_costs_parts() -> void:
 	var s := _stations()
 	GameState.add_currency("cubes", BigNum.from_float(10000))
-	assert_false(s.build("conveyor"), "needs sheet metal")
-	GameState.add_currency("sheet_metal", BigNum.from_float(100))
+	assert_false(s.build("conveyor"), "needs parts")
+	GameState.add_currency("parts", BigNum.from_float(100))
 	assert_true(s.build("conveyor"))
 	assert_true(s.built("conveyor"))
 	assert_true(GameState.world["stations"]["conveyor"])
@@ -93,24 +93,23 @@ func test_auto_route_every_nth() -> void:
 	assert_eq(s.route_n, 0, "wraps back to off")
 
 
-func test_recycler_destroys_bale_and_pays_bolts() -> void:
+func test_recycler_destroys_bale_and_pays_parts() -> void:
 	var s := _stations()
 	_rich()
 	GameState.world["hub_level"] = 2
 	s.build("recycler")
-	var metal0: float = GameState.get_currency("sheet_metal").to_float()
+	var parts0: float = GameState.get_currency("parts").to_float()
 	var c := _bale(1.0, "metal")
 	var kg: float = c.mass
 	var got: Dictionary = s.recycler.recycle(c)
-	assert_gt(float(got["bolts"]), 0.0)
-	assert_almost_eq(GameState.get_currency("bolts").to_float(), float(got["bolts"]), 0.001)
-	assert_gt(GameState.get_currency("sheet_metal").to_float(), metal0)
+	assert_gt(float(got["parts"]), 0.0)
+	assert_almost_eq(GameState.get_currency("parts").to_float() - parts0, float(got["parts"]), 0.001)
 	assert_eq(float(GameState.stats.get("bales_recycled", 0.0)), float(_stats.get("bales_recycled", 0.0)) + 1.0)
 	assert_almost_eq(float(GameState.stats.get("junk_destroyed_kg", 0.0)) - float(_stats.get("junk_destroyed_kg", 0.0)), kg, 0.01)
 	assert_true(c.is_queued_for_deletion(), "gone for good")
 	# Recycling beats the scoop salvage rate for the same junk by a wide margin.
-	var scoop_rate: float = 12.0 * 0.5 * 0.12
-	assert_gt(float(got["materials"]["sheet_metal"]), scoop_rate * 2.0)
+	var scoop_rate: float = 12.0 * 0.5 * 0.3
+	assert_gt(float(got["parts"]), scoop_rate * 2.0)
 
 
 func test_recycler_yield_upgrade() -> void:
@@ -121,8 +120,7 @@ func test_recycler_yield_upgrade() -> void:
 	var base: Dictionary = s.recycler.recycle(_bale(1.0, "plastic"))
 	GameState.upgrades["recycler_yield"] = 4
 	var up: Dictionary = s.recycler.recycle(_bale(1.0, "plastic"))
-	assert_gt(float(up["materials"]["plastic_stock"]), float(base["materials"]["plastic_stock"]))
-	assert_gte(float(up["bolts"]), float(base["bolts"]))
+	assert_gt(float(up["parts"]), float(base["parts"]))
 
 
 func test_upgrade_multipliers() -> void:

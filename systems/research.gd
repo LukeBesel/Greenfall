@@ -8,7 +8,7 @@ extends Node
 ## research while playing.
 
 const PATH: String = "res://data/research.json"
-const CURRENCY: String = "data"
+const CURRENCY: String = "cubes"  # [money] research costs cubes (was Data) plus real time
 
 static var _cfg: Dictionary = {}
 static var _defs: Dictionary = {}
@@ -191,7 +191,7 @@ static func reason(id: String) -> String:
 	if not active().is_empty() and queue().size() >= max_queue():
 		return TranslationServer.translate("Queue is full")
 	if not GameState.can_afford(CURRENCY, cost(id)):
-		return TranslationServer.translate("Not enough data")
+		return TranslationServer.translate("Not enough cubes")
 	return ""
 
 
@@ -380,7 +380,7 @@ static func _num(v: float) -> String:
 const STAT_NAMES: Dictionary = {
 	"scoop_reach": "scoop reach", "scoop_width": "scoop width", "capacity": "compartment size",
 	"cube_value_mult": "bale value", "magnet_radius": "magnet radius", "scoop_rate": "scoop speed",
-	"data_gain": "data gained", "research_speed": "research speed", "lake_clarity": "lake clarity",
+	"data_gain": "field-note cubes", "research_speed": "research speed", "lake_clarity": "lake clarity",
 	"speed": "speed", "work_rate": "work rate", "tank": "tank", "range": "range",
 	"efficiency": "bale quality", "carry": "carry",
 	"plant_growth": "plant growth", "seed_yield": "seeds per bloom",
@@ -441,18 +441,25 @@ static func apply_garden(garden: Node) -> void:
 		sp["weight"] = float(sp["_base_weight"]) if plant_unlocked(sp) else 0.0
 
 
-# --- Data currency ------------------------------------------------------------------
+# --- Field notes ----------------------------------------------------------------------
 
-## Adds Data (after research bonuses) and tracks the lifetime total.
+## [money] Cubes per field note (data/research.json note_cubes; the old Data's worth).
+static func note_cubes() -> float:
+	_ensure()
+	return float(_cfg.get("note_cubes", 10.0))
+
+
+## Logs field notes (after research bonuses): they pay cubes (note_cubes each), so the old Data
+## income is still there and research, which costs cubes now, paces as before. Returns the notes
+## logged; stats.data_earned counts notes (achievements), stats.notes_cubes the cubes paid.
 static func award_data(base: float) -> float:
 	if base <= 0.0:
 		return 0.0
 	var amt: float = stat_mod("data_gain", 1.0) * base
-	GameState.add_currency(CURRENCY, BigNum.from_float(amt))
+	var c: float = amt * note_cubes()
+	GameState.add_currency("cubes", BigNum.from_float(c))
 	GameState.inc_stat("data_earned", amt)
-	if not GameState.flags.get("hint_data", false):
-		GameState.flags["hint_data"] = true
-		EventBus.toast.emit(TranslationServer.translate("Field data logged. Spend Data on Research at the workbench (Research tab)."), "hint")
+	GameState.inc_stat("notes_cubes", c)
 	return amt
 
 

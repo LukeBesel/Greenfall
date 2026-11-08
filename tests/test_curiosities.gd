@@ -141,4 +141,4 @@ func test_wild_egg_found_counts_for_achievement() -> void:
 	eggs.found("cairn")
 	assert_eq(GameState.flags.get("eggs_wild", []), ["cairn"])
 	assert_almost_eq(Achievements.value_of({"type": "list", "key": "eggs_wild"}), 1.0, 0.001)
-	assert_almost_eq(GameState.get_currency("trinkets").to_float(), 1.0, 0.001)
+	assert_gt(GameState.get_currency("cubes").to_float(), 0.0, "[money] trinket rewards pay cubes now")

@@ -115,7 +115,7 @@ void fragment() {
 	vec3 rock = two_scale(tex_wall, wpos.zy, 0.07) * tw.x + two_scale(tex_wall, wpos.xy, 0.07) * tw.z + two_scale(tex_wall, p, 0.07) * tw.y;
 	float rl = dot(rock, vec3(0.33));
 	vec3 st = strata(wpos);
-	vec3 wall_c = st * (0.5 + rl * 0.6);
+	vec3 wall_c = st * (0.55 + rl * 0.55);
 	// Benches: red gravel and haul dust, ochre sand drifting against the toe.
 	vec3 grav = two_scale(tex_bench, p, 0.22);
 	vec3 bench_c = mix(grav * vec3(1.05, 0.78, 0.62), c_terra * (0.8 + 0.5 * dot(grav, vec3(0.33))), 0.55 + 0.3 * n2);
@@ -123,6 +123,9 @@ void fragment() {
 	bench_c = mix(bench_c, sand, smoothstep(0.6, 0.95, across) * 0.35 * pit + (1.0 - pit) * (0.78 + 0.12 * n1));
 	float wallness = smoothstep(0.35, 0.6, slope + (n2 - 0.5) * 0.15);
 	vec3 alb = mix(bench_c, wall_c, wallness);
+	// Cheap occlusion: wall feet and the inner corner of each bench sit in shade.
+	float occ = pit > 0.5 ? (flat_b > 0.5 ? mix(1.0, 0.68, smoothstep(0.78, 1.0, across)) : mix(0.62, 1.0, smoothstep(0.0, 0.7, across))) : 1.0;
+	alb *= occ;
 	float rough = mix(0.93, 0.88, wallness);
 	// Plateau salt pans (flat ground beyond the rim) and the dried floor of the pit.
 	float flatness = 1.0 - smoothstep(0.05, 0.14, slope);

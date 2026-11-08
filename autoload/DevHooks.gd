@@ -38,12 +38,12 @@ extends Node
 ##   --event-look[=M]   with --event: put Patch M m from the event, facing it (screenshots)
 ##   --event-every=S    next random event in S seconds (ignores the min-hexes gate)
 ##   --streak=N         start with N cleaning-streak points (30 per tier)
-##   --tokens=N         start with N contract tokens; --trinkets=N grants N collectibles; --livery=ID equips one
+##   --requests-done=N  N finished requests on the Requests reward track [money]; --trinkets=N grants N collectibles; --livery=ID equips one
 ##   [skins] --design=ID wear a design (unlocks it); --designs-all; --design-unlock=ID plays its unlock card
 ##           after --design-unlock-at=S s (systems/designs.gd)
 ##   --pad-audit        [deck] open every screen pad-only and check focus reachability + B to close
 ##   --scene-stats[=S]  [deck] print a geometry census (tools/scene_stats.gd) after S s (headless ok)
-##   --tab=contracts    with --open=upgrades: the contracts board and token shop (--contracts-sample fills it)
+##   --tab=contracts    with --open=upgrades: the Requests board and its reward track [money] (--contracts-sample fills it)
 ##   [hud] --lumi-level=N start at Lumi Level N; --lumi-xp=N grant N XP; --lumi-levelup=S level up S s after start
 ##         (holds the level-up moment for screenshots); --tool=plant|water; --hud-pad (pad glyphs);
 ##         --hud-mode=full|minimal|hidden; --hud-goals=expanded
@@ -52,11 +52,14 @@ extends Node
 ##   --builder-sample   [drones] stocked builder parts bin; --builder-demo showcase builds on the robots;
 ##                      --builder-shot fixed camera (--bshot-cam=x,y,z --bshot-at=x,y,z --bshot-fov --bshot-nohud --bshot-lumi);
 ##                      --tab=builder [--builder-robot=N --builder-slot=ID --builder-opt=N] focuses a part
+##   [vqa2] --no-junk-lod keeps all junk on its near mesh (A/B perf); --lod-debug prints junk LOD flips
 ##   --frontier=ID      [biomes] start in a frontier district (dust_flats, frozen_port, sunken_city, cradle_returns);
 ##                      --frontiers-open lets the rocket fly there without the unlocks; --storm[=S] sandstorm after S s
 ##                      (--storm-hold keeps it blowing); --thaw-all; --frontier-heaters=N; --frontier-greenhouses=N;
 ##                      --drain=N runs the Sunken City pumps N times; --frontier-done[=S] fires the Cradle hook;
 ##                      --frontier-cam=dist,pitch,yaw and --frontier-nohud for landscape screenshots
+##   --planet-env=ID    [planet-rime] a wild district dressed by a campaign planet env (data/planets.json, e.g. rime);
+##                      Rime: --rime-cam=dist,pitch,yaw[,fov] --rime-nohud --rime-restore=0..1 (holds restoration)
 ##   --demo             [steam] run as the Steam demo build (Demo.is_demo()); --no-steam skips Steam init
 ##   --no-hud           [steam] hide HUD, toasts, subtitles and event banners (store screenshots, trailer)
 ##   --demo-end[=S]     [steam] show the end-of-demo screen after S seconds
@@ -72,6 +75,7 @@ var _frames: int = 0
 var _perf_frames: int = 0
 var _perf_wall: float = 0.0
 var _stats_done: bool = false  # [deck]
+var _garden_done: bool = false  # [green]
 
 
 func _ready() -> void:
@@ -142,6 +146,10 @@ func _process(delta: float) -> void:
 	if has("scene-stats") and _elapsed >= get_f("scene-stats", 4.0) and not _stats_done:  # [deck] geometry census
 		_stats_done = true
 		SceneStats.print_census(get_tree().current_scene)
+	if has("garden-report") and _elapsed >= get_f("garden-report", 4.0) and not _garden_done:  # [green]
+		_garden_done = true
+		if get_tree().current_scene and get_tree().current_scene.get("garden") != null:
+			GardenDev.report(get_tree().current_scene)
 	if has("quit-after") and _elapsed >= get_f("quit-after", 5.0):
 		print("[DevHooks] quitting after %.1fs" % _elapsed)
 		if has("report"):

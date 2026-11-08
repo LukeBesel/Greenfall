@@ -130,16 +130,16 @@ func _sample_all() -> void:
 ## "cubes_per_min", summed over hexes and capped like the other bonuses). It keeps a district whose
 ## junk is all gone moving toward the next base level instead of stalling.
 func _pay_stipend(dt: float) -> void:
-	# [beat] Thriving hexes also log wildlife notes: a trickle of research Data, so research never
-	# stalls for good in a district whose junk is gone.
-	var data_min: float = bonus("data_per_min")
+	# [beat] Thriving hexes also log wildlife notes, so research never stalls for good in a district
+	# whose junk is gone. [money] They pay a small cube trickle (research costs cubes now).
+	var data_min: float = bonus("wildlife_cubes_per_min")
 	if data_min > 0.0:
 		_data_acc += data_min * dt / 60.0
 		if _data_acc >= 1.0:
 			var wd: float = floorf(_data_acc)
 			_data_acc -= wd
-			GameState.add_currency("data", BigNum.from_float(wd))
-			GameState.inc_stat("wildlife_data", wd)
+			GameState.add_currency("cubes", BigNum.from_float(wd))
+			GameState.inc_stat("wildlife_cubes", wd)
 	var per_min: float = bonus("cubes_per_min")
 	if per_min <= 0.0:
 		return
@@ -238,7 +238,7 @@ func _level_up(hid: int, from: int, to: int) -> void:
 
 static func reward_text(reward: Dictionary) -> String:
 	var parts: Array[String] = []
-	for k: String in ["cubes", "seeds", "data"]:
+	for k: String in Currencies.IDS:  # [money]
 		if float(reward.get(k, 0.0)) > 0.0:
 			parts.append(L10nFmt.amount(k, float(reward[k]), true))  # [i18n2]
 	return "  ".join(parts)

@@ -28,7 +28,7 @@ run() {
 	fi
 }
 
-run roundtrip res://tools/save_roundtrip.tscn -- --fresh
+run roundtrip res://tools/save_roundtrip.tscn -- --fresh --save-dir=check_exit_$$  # own save folder: parallel runs cannot clobber it
 if [ "$1" = "--quick" ]; then
 	run quit15 -- --fresh --quit-after=15
 fi

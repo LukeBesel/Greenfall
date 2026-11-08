@@ -53,7 +53,7 @@ static func blocker() -> String:
 	if rq != "" and not Research.has(rq):
 		return TranslationServer.translate("Needs the Rocket Cargo research")
 	if not Hub.can_pay(nd.get("cost", {})):
-		return TranslationServer.translate("Not enough materials")
+		return TranslationServer.translate("Not enough cubes or parts")  # [money]
 	return ""
 
 

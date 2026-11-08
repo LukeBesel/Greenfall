@@ -184,7 +184,7 @@ func _quiet() -> bool:
 	var fs: Variant = world.get("first_seed")
 	if fs is FirstSeed and bool((fs as FirstSeed).get("_active")):
 		return false
-	return not BloomFinale.playing
+	return not BloomFinale.playing and not CradleAnswers.playing and not Homecoming.playing  # [home]
 
 
 func _play(beat: int) -> void:

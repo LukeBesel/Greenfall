@@ -104,10 +104,4 @@ static func _join(a: PackedVector2Array, b: PackedVector2Array) -> PackedVector2
 
 ## Icon kind for a currency id.
 static func currency_kind(id: String) -> String:
-	match id:
-		"cubes": return "cube"
-		"seeds": return "seed"
-		"compost": return "compost"
-		"data": return "data"
-		"tokens": return "token"
-	return "part"
+	return Currencies.icon(id)  # [money] three currencies, one source of truth (data/currencies.json)

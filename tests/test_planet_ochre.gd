@@ -4,12 +4,12 @@ extends GutTest
 
 
 func test_registry_entry() -> void:
-	var k: Dictionary = PlanetEnvs.kind("ochre")
+	var k: Dictionary = PlanetEnvs.entry("ochre")
 	assert_false(k.is_empty(), "data/planets.json has ochre")
-	for key: String in ["id", "name", "world_type", "env_script", "sky", "fog", "sun", "ambient", "palette", "junk_tint", "music_mood"]:
+	for key: String in ["id", "name", "world_type", "env", "sky", "fog", "sun", "ambient", "palette", "junk_tint", "music_mood"]:
 		assert_true(k.has(key), "ochre has %s" % key)
-	assert_true(ResourceLoader.exists(str(k["env_script"])), "env script exists")
-	assert_not_null(PlanetEnvs.script_for(k), "env script loads")
+	assert_true(ResourceLoader.exists(str(k["env"])), "env script exists")
+	assert_false(PlanetEnvs.entry("rime").is_empty(), "rime shares the registry")
 
 
 func test_pit_shape() -> void:
@@ -38,8 +38,10 @@ func test_pit_shape() -> void:
 
 
 func test_prepare_registers_junk() -> void:
-	var k: Dictionary = PlanetEnvs.kind("ochre")
-	PlanetEnvs.prepare(k)
+	var k: Dictionary = PlanetEnvs.entry("ochre")
+	var f := HexField.new(3, 3.2, 5)
+	PlanetEnvs.call_env(k, "prepare_field", [f])
+	assert_eq(f.biome, str(k["junk_biome"]), "prepare_field sets the junk biome")
 	var set: Dictionary = Economy.biome_set(str(k["junk_biome"]))
 	assert_false(set.is_empty(), "junk biome set registered")
 	for type_id: String in (set["models"] as Dictionary):
@@ -56,7 +58,7 @@ func test_apply_headless_and_stages() -> void:
 	var world := Node3D.new()
 	add_child_autofree(world)
 	var field := HexField.new(4, 3.2, 11)
-	OchreEnv.apply(world, field, PlanetEnvs.kind("ochre"))
+	OchreEnv.apply(world, field, PlanetEnvs.entry("ochre"))
 	var env: OchreEnv = world.get_node_or_null("OchreEnv")
 	assert_not_null(env, "env node added")
 	assert_gt(env.find_children("Pit*", "MeshInstance3D", true, false).size(), 8, "pit terrain sectors")
@@ -83,3 +85,16 @@ func test_apply_headless_and_stages() -> void:
 	assert_eq(shown0, 0, "no plants while ruined")
 	assert_eq(shown1, total, "every plant once restored")
 	assert_gt(total, 500, "plenty of plants")
+	# Junk covers the pit while ruined and clears as it is restored.
+	env.restore_shown = 0.0
+	env._update_junk()
+	var junk0: int = 0
+	for p: Array in env._junk:
+		junk0 += (p[0] as MultiMesh).visible_instance_count
+	env.restore_shown = 1.0
+	env._update_junk()
+	var junk1: int = 0
+	for p: Array in env._junk:
+		junk1 += (p[0] as MultiMesh).visible_instance_count
+	assert_gt(junk0, 3000, "the pit is trashed")
+	assert_eq(junk1, 0, "restored pit is clean")

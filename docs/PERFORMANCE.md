@@ -134,3 +134,61 @@ The start view at High is already dominated by unique shadow-casting geometry ne
 (the hub yard, shack, Lumi, junk heaps); the next candidates are outposts (~120 meshes) and
 easter-egg props (~70). Frame rates in the container are meaningless (software Vulkan); check
 the targets above on a Deck and an integrated-GPU laptop.
+
+## Junk distance LOD (Nov 2026, [vqa2])
+
+Frontier junk was the biggest frontier cost: 15-18k bulky pieces drawn with one mesh at every
+distance, and a few models never got lighter at all (the 18k-triangle plastic crate's importer
+LODs stall at 10,270 triangles, so the "lighter junk on Low/Medium" setting did nothing for it,
+and it is ~10% of the pieces).
+
+`planet/junk_lod.gd` (JunkLod) now owns FieldView's junk buffers. Each junk group (chunk x model)
+has two MultiMeshes:
+
+- NEAR: the mesh the game always drew (`model_mesh_lite` at 320/500/700 triangles by preset):
+  the close-up look is unchanged.
+- FAR: `JunkLod.far_mesh`: vertices welded by position (UV/normal seams no longer block the
+  simplifier), then the importer's LOD generator, then vertex clustering if that still stalls:
+  80/120/180/240 triangles by preset (the crate: 18,320 -> 124). Materials and the frontier
+  weathering overlay are kept.
+- A hex's pieces sit in NEAR while its centre is within 26/32/40/52 m of the camera (Low..Ultra,
+  6 m hysteresis), else in FAR. Models whose near mesh stays heavy (> 3,000 triangles: the crate,
+  the generator) switch closer, at 14/16/20/26 m, to a far mesh with 4x the budget.
+- Instances are packed at the front of each buffer and drawn with `visible_instance_count`, so
+  far, scooped or carried pieces cost nothing in the other buffer (a zero-scale instance is
+  still vertex-shaded and counted). Transforms are kept on the CPU (no MultiMesh read-back).
+- One distance per hex every 0.2 s; only hexes that cross a radius move their pieces. Overhead
+  views go all-FAR on their own (the camera is far from every hex).
+
+A/B and debugging: `--no-junk-lod` keeps everything on the near mesh (the old cost),
+`--lod-debug` prints the flips, `--scene-stats` prints the near/far split. Tests:
+`tests/test_junk_lod.gd`.
+
+### Results
+
+Rendered, 960x540 Medium, default spawn view, settled frames (`[perf]`, all passes), same build
+with `--no-junk-lod` as "before":
+
+| View | Primitives before | after | change | Draw calls before | after |
+|---|---|---|---|---|---|
+| Sunken City start | 97.6 M | 18.9 M | -81% | 2,028 | 2,217 |
+| Frozen Port start | 131.1 M | 25.4 M | -81% | 1,674 | 2,149 |
+
+Software-rendered frames per second in the container went from 0.12 to 0.75 in the Sunken City; on
+real hardware use the targets above.
+
+Headless census of junk triangles (`--scene-stats`, whole district, not frustum-culled):
+
+| District | Preset | before | after |
+|---|---|---|---|
+| Sunken City | High | 23.4 M | 6.2 M (-73%) |
+| Sunken City | Medium | 20.7 M | 3.6 M (-82%) |
+| Frozen Port | High | 27.3 M | 6.8 M (-75%) |
+| Frozen Port | Medium | 25.0 M | 4.1 M (-84%) |
+| Old Town start | Low | 5.3 M | 1.2 M (-77%) |
+
+Cost: the far buffers add draw calls (about +12% estimated draws in Old Town at Low, +250 to
++650 measured in the frontiers) because every visible group now draws in two pieces. Next
+candidates: merge the far meshes' surfaces (wine bottles have 16, the stove 20) into one
+vertex-coloured surface, and drop far-group shadows on Low where the shadow distance (35 m)
+barely reaches past the near ring.

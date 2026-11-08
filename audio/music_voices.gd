@@ -12,11 +12,7 @@ var _started: PackedFloat64Array = PackedFloat64Array()
 
 
 func setup(samples: Dictionary, bus: String, count: int = 48) -> void:
-	for n: String in samples:
-		var e: Dictionary = samples[n]
-		_streams[n] = e["stream"]
-		_loops[n] = bool(e["loop"])
-		_lengths[n] = float((e["pcm"] as PackedFloat32Array).size()) / 22050.0
+	add_samples(samples)
 	for i: int in count:
 		var p := AudioStreamPlayer.new()
 		p.bus = bus
@@ -25,6 +21,15 @@ func setup(samples: Dictionary, bus: String, count: int = 48) -> void:
 	_gen.resize(count)
 	_busy_until.resize(count)
 	_started.resize(count)
+
+
+## [sound] Registers more samples (planet instruments are built lazily).
+func add_samples(samples: Dictionary) -> void:
+	for n: String in samples:
+		var e: Dictionary = samples[n]
+		_streams[n] = e["stream"]
+		_loops[n] = bool(e["loop"])
+		_lengths[n] = float((e["pcm"] as PackedFloat32Array).size()) / 22050.0
 
 
 func _now() -> float:

@@ -299,6 +299,8 @@ func play_finale(force: bool = false) -> void:
 		_finale_pending = true
 		return
 	_finale_pending = false
+	if Homeward.redirect_finale(world, force):  # [home] before the home launch: "The Cradle Answers"
+		return
 	# [beat] bloom_finale_seen is set when the cinematic ends (BloomFinale), so quitting halfway
 	# replays it on the next load instead of losing the ending.
 	var f := BloomFinale.new()

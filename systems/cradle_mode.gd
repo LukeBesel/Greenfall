@@ -79,7 +79,11 @@ static func save_profile() -> bool:
 	if not persist:
 		return false
 	DirAccess.make_dir_recursive_absolute(profile_path().get_base_dir())
-	return SaveManager.write_dict(profile_path(), to_dict())
+	_p()["saved_unix"] = Time.get_unix_time_from_system()  # [worlds2] Steam Cloud: newest profile wins
+	var ok: bool = SaveManager.write_dict(profile_path(), to_dict())
+	if ok:
+		SteamService.on_saved(profile_path())  # [worlds2] the profile syncs with the world slots
+	return ok
 
 
 static func to_dict() -> Dictionary:
@@ -94,6 +98,9 @@ static func from_dict(d: Dictionary) -> Dictionary:
 	for k: String in ["starseeds", "starseeds_total"]:
 		p[k] = float(d.get(k, 0.0))
 	p["unlocked"] = bool(d.get("unlocked", false))
+	p["saved_unix"] = float(d.get("saved_unix", 0.0))  # [worlds2]
+	if d.has("name"):  # [worlds2] the save profile's name (systems/profile_slots.gd)
+		p["name"] = str(d["name"])
 	p["current"] = int(d.get("current", 0))
 	var hl: Dictionary = {}
 	for k: Variant in (d.get("heirlooms", {}) as Dictionary):
@@ -111,6 +118,7 @@ static func from_dict(d: Dictionary) -> Dictionary:
 		ws = p["worlds"]
 	p["worlds"] = ws
 	p["current"] = clampi(int(p["current"]), 0, ws.size() - 1)
+	p["homeward"] = Homeward.sanitize(d.get("homeward", {}))  # [home] the system campaign (systems/homeward.gd)
 	return p
 
 
@@ -135,10 +143,12 @@ static func current_world() -> Dictionary:
 ## The world record with its generated mix (towns etc. are recomputed, not stored).
 static func current_full() -> Dictionary:
 	var w: Dictionary = current_world()
-	return WorldGen.make(int(w.get("index", 0)), int(w.get("seed", WorldGen.VERDANCE_SEED)))
+	return WorldGen.make(int(w.get("index", 0)), int(w.get("seed", WorldGen.VERDANCE_SEED)), str(w.get("type", "")) if w.has("planet") else "")  # [home] fixed planets keep their type
 
 
 static func world_seed() -> int:
+	if WeeklyChallenge.active:  # [extras] Seed of the Week
+		return WeeklyChallenge.current_seed()
 	return int(current_world().get("seed", WorldGen.VERDANCE_SEED))
 
 
@@ -147,10 +157,14 @@ static func world_name() -> String:
 
 
 static func planet_mix() -> Dictionary:
+	if WeeklyChallenge.active:  # [extras]
+		return WeeklyChallenge.planet_mix()
 	return current_full().get("mix", {})
 
 
 static func modifiers() -> Array:
+	if WeeklyChallenge.active:  # [extras] the week's twist
+		return WeeklyChallenge.twist_modifiers()
 	return current_world().get("modifiers", [])
 
 
@@ -219,6 +233,8 @@ static func world_summary() -> Dictionary:
 
 ## Banks the current world's new Starseeds into the profile and archives its stats. Returns the gain.
 static func bank() -> int:
+	if WeeklyChallenge.active:  # [extras] the challenge never banks into the profile
+		return 0
 	var w: Dictionary = current_world()
 	var s: Dictionary = world_summary()
 	var gain: int = claimable(s, int(w.get("claimed", 0)))
@@ -228,8 +244,13 @@ static func bank() -> int:
 	if bool(GameState.flags.get("bloom_finale_seen", false)):
 		w["finale"] = true
 		_p()["unlocked"] = true
-	_p()["starseeds"] = starseeds() + gain
-	_p()["starseeds_total"] = float(_p().get("starseeds_total", 0.0)) + gain
+	# [home] During the system campaign Heirlooms come from planet picks; the score track runs only
+	# after Homecoming or beyond the system (post-game), so the two never double up.
+	if Homeward.current_planet() < 0 or Homeward.done():
+		_p()["starseeds_total"] = float(_p().get("starseeds_total", 0.0)) + gain
+	# [money] No Starseed currency: the banked score unlocks Heirloom levels (systems/heirloom_track.gd).
+	for id: String in HeirloomTrack.apply(_p(), heirloom_defs()):
+		EventBus.toast.emit(TranslationServer.translate("Heirloom unlocked: %s, level %d. It travels with Lumi to every world.") % [TranslationServer.translate(str(heirloom_def(id).get("name", id))), heirloom_level(id)], "story")
 	mirror_stats()
 	save_profile()
 	return gain
@@ -280,17 +301,21 @@ static func buy_block_reason(id: String) -> String:
 	var lv: int = heirloom_level(id)
 	if lv >= int(d.get("max", 5)):
 		return TranslationServer.translate("Fully grown")
-	if starseeds() + 0.0001 < heirloom_cost(d, lv):
-		return TranslationServer.translate("Needs %d Starseeds") % heirloom_cost(d, lv)
-	return ""
+	if Homeward.picks() > 0:  # [home] a restored planet's Heirloom pick (the campaign's way to grow them)
+		return ""
+	# [money] Beyond the system (post-game), Heirlooms also unlock along the restoration-score track.
+	var nxt: Dictionary = HeirloomTrack.next_step(float(_p().get("starseeds_total", 0.0)), heirloom_defs())
+	if nxt.is_empty():
+		return TranslationServer.translate("Fully grown")
+	return TranslationServer.translate("Restore a planet for a pick, or unlocks with Ark milestones (next: %s, at %d restoration)") % [TranslationServer.translate(str(heirloom_def(str(nxt["id"])).get("name", ""))), int(nxt["at"])]
 
 
 static func buy(id: String) -> bool:
-	if buy_block_reason(id) != "":
+	# [home] Taking an Heirloom level spends a planet pick (no currency; HeirloomTrack adds the rest).
+	if buy_block_reason(id) != "" or not Homeward.use_pick():
 		return false
 	var d: Dictionary = heirloom_def(id)
 	var lv: int = heirloom_level(id)
-	_p()["starseeds"] = starseeds() - heirloom_cost(d, lv)
 	(_p()["heirlooms"] as Dictionary)[id] = lv + 1
 	GameState.inc_stat("heirlooms_bought")
 	mirror_stats()
@@ -319,8 +344,8 @@ static func mod_mult(stat_id: String, mods: Array) -> float:
 ## Economy.stat hook: Heirlooms x this world's modifiers x this district's decor charm.
 static func stat_mod(stat_id: String, value: float) -> float:
 	if profile.is_empty():
-		return value * Decor.stat_mult(stat_id)
-	return value * heirloom_mult(stat_id, _p().get("heirlooms", {})) * mod_mult(stat_id, modifiers()) * Decor.stat_mult(stat_id)
+		return value * Decor.stat_mult(stat_id) * Nursery.stat_mult(stat_id)  # [extras] nursery caretakers
+	return value * heirloom_mult(stat_id, _p().get("heirlooms", {})) * mod_mult(stat_id, modifiers()) * Decor.stat_mult(stat_id) * Nursery.stat_mult(stat_id)  # [extras]
 
 
 ## World event weight multiplier (systems/events.gd).
@@ -368,7 +393,7 @@ static func _next_slot() -> int:
 	for w: Dictionary in worlds():
 		used.append(int(w.get("slot", 0)))
 	var s: int = 0
-	while s in used or s == 7 or s == 8:  # 7/8: the save round trip's scratch slots
+	while s in used or s == 7 or s == 8 or s == WeeklyChallenge.slot():  # 7/8: the save round trip's scratch slots; [extras] the weekly slot
 		s += 1
 	return s
 
@@ -398,7 +423,7 @@ static func prepare_new_world_state(carry: Dictionary) -> void:
 	if float(kit["cubes"]) > 0.0:
 		GameState.add_currency("cubes", BigNum.from_float(float(kit["cubes"])))
 	if float(kit["data"]) > 0.0:
-		GameState.add_currency(Research.CURRENCY, BigNum.from_float(float(kit["data"])))
+		GameState.add_currency("cubes", BigNum.from_float(float(kit["data"]) * Research.note_cubes()))  # [money] old Data kit, paid in cubes
 	if bool(kit["seeds_unlocked"]):
 		GameState.flags["seeds_unlocked"] = true
 	if float(kit["seeds"]) > 0.0:
@@ -471,13 +496,47 @@ static func _change_scene(tree: SceneTree) -> void:
 		tree.current_scene.process_mode = Node.PROCESS_MODE_DISABLED
 	# Deferred: callers can be deep inside the old scene's physics step (the autoplay bot is),
 	# and the old scene leaves the tree as soon as the change runs.
-	tree.change_scene_to_file.call_deferred("res://scenes/slice.tscn")
+	(tree.root.get_node("/root/Loader") as LoadingScreen).goto.call_deferred("res://scenes/slice.tscn")  # [intro2] loading screen
+
+
+## [worlds2] Title screen world picker: make world `i` the current one without changing scenes, so
+## Continue loads it. A world with no save yet is prepared fresh (with the carried-over meta flags
+## read from the save of the world that was current). Returns false for a bad index.
+static func select_world(i: int) -> bool:
+	if i < 0 or i >= worlds().size():
+		return false
+	var carry: Dictionary = {}
+	if SaveManager.has_save():
+		var fl: Dictionary = SaveManager.read_dict(SaveManager.slot_path()).get("flags", {})
+		for k: Variant in WorldGen.cfg().get("carry_flags", []):
+			if fl.has(str(k)):
+				carry[str(k)] = fl[str(k)]
+	_p()["current"] = i
+	apply_current()
+	save_profile()
+	if not SaveManager.has_save() and i > 0:
+		prepare_new_world_state(carry)
+		GameState.reload_in_memory = true  # the slice starts from this prepared state
+	return true
+
+
+## [worlds2] After SaveManager.set_profile: read that save profile's Cradle profile and point the
+## save slot at its current world.
+static func reload_for_profile() -> void:
+	if persist:
+		load_profile()
+	else:
+		profile = default_profile()
+	apply_current()
 
 
 ## Title screen New Game: every world is erased and the profile starts over.
 static func reset_all() -> void:
 	for w: Dictionary in worlds():
 		SaveManager.delete_save(int(w.get("slot", 0)))
+	var keep_name: Variant = _p().get("name")  # [worlds2] the save profile keeps its name
 	profile = default_profile()
+	if keep_name != null:
+		profile["name"] = keep_name
 	save_profile()
 	apply_current()

@@ -23,6 +23,10 @@ var night_tint := Color(0, 0, 0, 0)
 var grade: Dictionary = {}
 var grade_amt: float = 1.0
 var storm: float = 0.0
+## [worlds2] Long Nights (systems/world_look.gd): how much darker nights are, 0..1.
+var night_dark: float = 0.0
+## [worlds2] The binary star (planet/binary_sun.gd): the companion's disc and warm fill light.
+var binary: BinarySun
 
 
 func setup(p_env: Environment, p_sun: DirectionalLight3D) -> void:
@@ -35,20 +39,70 @@ func setup(p_env: Environment, p_sun: DirectionalLight3D) -> void:
 	moon.shadow_enabled = true
 	moon.directional_shadow_max_distance = 50.0
 	add_child(moon)
-	sky_mat.night_sky = _star_texture()
+	_stars_img = _star_image()  # [vqa2] stars fade with the sun (see _apply_stars)
+	_stars_tex = ImageTexture.create_from_image(_stars_img)
+	sky_mat.night_sky = _stars_tex
+	binary = BinarySun.new()  # [worlds2] every planet sees both suns
+	binary.name = "BinarySun"
+	add_child(binary)
+	binary.setup(current_planet_id(), sky_mat)
 	time_of_day = float(GameState.flags.get("time_of_day", 0.32))
 
 
-static func _star_texture() -> ImageTexture:
+## [worlds2] The planet this sky belongs to (data/solar_system.json ids): Verdance, or the current
+## world's planet / world type.
+static func current_planet_id() -> String:
+	if CradleMode.profile.is_empty() or CradleMode.current_index() <= 0:
+		return "verdance"
+	var pid: String = WorldLook.planet_id()
+	return pid if pid != "" else str(CradleMode.current_world().get("type", "verdance"))
+
+
+## [vqa2] Night sky: sparse stars on a near-black sky. PhysicalSkyMaterial adds `night_sky`
+## under the sun too (multiplied by the reddish extinction), so the stars showed in the day sky
+## as faint orange/tan dots. The texture is scaled by how dark it is, in a few steps (only the
+## 2600 star pixels are rewritten when the step changes).
+const STAR_STEPS: int = 6
+const SKY_BASE := Color(0.004, 0.006, 0.012)
+var _stars_img: Image
+var _stars_tex: ImageTexture
+var _stars_step: int = -1
+var _star_px := PackedInt32Array()  # x, y pairs
+var _star_col := PackedColorArray()
+
+
+static func star_level(sun_up: float) -> float:
+	return 1.0 - smoothstep(0.0, 0.35, sun_up)
+
+
+func _star_image() -> Image:
 	var img := Image.create(1024, 512, false, Image.FORMAT_RGB8)
-	img.fill(Color(0.004, 0.006, 0.012))
+	img.fill(SKY_BASE)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 7
 	for i: int in 2600:
 		var b: float = pow(rng.randf(), 4.0)
 		var c := Color(0.6 + b * 0.4, 0.65 + b * 0.35, 0.8 + b * 0.2) * (0.25 + b * 0.9)
-		img.set_pixel(rng.randi() % 1024, rng.randi() % 512, c)
-	return ImageTexture.create_from_image(img)
+		var x: int = rng.randi() % 1024
+		var y: int = rng.randi() % 512
+		_star_px.append(x)
+		_star_px.append(y)
+		_star_col.append(c)
+		img.set_pixel(x, y, c)
+	return img
+
+
+func _apply_stars(level: float) -> void:
+	if _stars_tex == null:
+		return
+	var step: int = clampi(roundi(level * STAR_STEPS), 0, STAR_STEPS)
+	if step == _stars_step:
+		return
+	_stars_step = step
+	var k: float = float(step) / STAR_STEPS
+	for i: int in _star_col.size():
+		_stars_img.set_pixel(_star_px[i * 2], _star_px[i * 2 + 1], SKY_BASE.lerp(_star_col[i], k) if k > 0.0 else SKY_BASE)
+	_stars_tex.update(_stars_img)
 
 
 func _process(delta: float) -> void:
@@ -78,6 +132,7 @@ func _apply() -> void:
 	moon.rotation_degrees = Vector3(-maxf(m_elev, -10.0), 150.0 - night_t * 60.0, 0.0)
 	moon.light_energy = 0.55 * smoothstep(0.0, 10.0, m_elev) * (1.0 - sun_up)
 	moon.visible = moon.light_energy > 0.01
+	_apply_stars(star_level(sun_up))  # [vqa2]
 	# Haze drives sky scattering, fog and saturation.
 	sky_mat.turbidity = lerpf(3.0, 6.0, haze)
 	sky_mat.mie_coefficient = lerpf(0.003, 0.006, haze)
@@ -96,6 +151,14 @@ func _apply() -> void:
 	env.tonemap_exposure = lerpf(1.6, 1.3, sun_up)
 	if not grade.is_empty() or storm > 0.0:
 		_apply_grade(sun_up)
+	if night_dark > 0.0:  # [worlds2] Long Nights: a dimmer moon, less ambient, a darker sky
+		var nd: float = clampf(night_dark, 0.0, 1.0) * (1.0 - sun_up)
+		moon.light_energy *= 1.0 - 0.45 * nd
+		env.ambient_light_energy *= 1.0 - 0.4 * nd
+		env.tonemap_exposure *= 1.0 - 0.22 * nd
+		sky_mat.energy_multiplier = 1.0 - 0.5 * nd
+	if binary:  # [worlds2] the companion sun follows the primary; orbit-scaled energies
+		binary.update(sun, sun_up)
 
 
 ## [biomes] Blend the frontier grade over the computed sky and fog; then the storm on top.
