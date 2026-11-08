@@ -886,3 +886,22 @@ rebuilt on the sphere. What carries over, and how to place it on a globe:
   - The Cradle launch onto a globe.
   - The other 5 Lumi designs and planet music themes.
 - **Owner:** a Mac perf run, `--orbit --quality=1 --perf`, then the same with `--orbit-planet=anvil`.
+
+## Status 2026-11-08 evening: round Verdance v1 pass (owner playtest notes)
+- **Done and merged:**
+  - Round world is the only mode.
+  - New loading screen, settings and music rules.
+  - Trash ×3 density and the flat city on Verdance.
+  - Shorelines, and the far and intro trash look.
+  - Start yard: trash to the pad edge, a clean pad, the bin bay 5.5 m from the bench, no sled or Glim at the start, and a fitted pod collider.
+  - Workbench: tiers gate tabs, fixed order, click for details.
+  - One goal timeline, with a beam, ring and trail on every step.
+  - WREN's "why" line, the bin toss FX, the bale how-to, and a faster start (tower ~3 min, Bot Bay ~30 min in bot time).
+- **Open:**
+  - Intro voice-over: samples are made (Kokoro), but the owner hasn't listened yet.
+  - The beam/ring and the intro-fall planet haven't been seen in a render.
+  - Bale clipping hasn't been reproduced.
+  - The globe light is harsher than flat Verdance.
+  - The new texts aren't translated.
+  - The pad can look pale at noon.
+  - Robot timing after the Bot Bay hasn't been checked.
