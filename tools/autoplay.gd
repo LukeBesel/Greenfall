@@ -47,6 +47,7 @@ var _report: Dictionary = {}
 var _log: Array = []
 var _timeline: Array = []
 var _log_timer: float = 0.0
+var _pct_quit: bool = false  # [orbC] --quit-at-pct fired
 var _ignore_piece: Dictionary = {}
 var _skip_hex: Dictionary = {}
 var _target_piece: int = -1
@@ -1021,15 +1022,28 @@ func _shop(want: Dictionary) -> void:
 			if gd:
 				gd.refresh()
 			_event("glim_" + gid, {"tier": Glim.tier(gid)})
+	# 2d) [orbC] The Bot Fabricator (3rd planet on): built as soon as it is paid for; until then
+	# ordinary robot builds wait (it builds them cheaper), and the upgrade loop saves for it.
+	var fab_wait: bool = false
+	if HubBuilds.listed(world, "bot_fabricator") and not BotFabricator.built(world):
+		if str(HubBuilds.entry(world, "bot_fabricator")["reason"]) == "" and HubBuilds.build(world, "bot_fabricator"):
+			_event("build", {"id": "bot_fabricator"})
+			_mark("fabricator_s")
+			_progress()
+		else:
+			fab_wait = true
+	_fabricator_mix(world)
 	# 3) Robots ([ui2] Parts + cubes; keep the next base level's Parts unless the robot can't wait).
 	var robot: String = str(want.get("robot", "")) if fleet != null else ""  # [orbB] no Fleet on the globe yet (orbC)
 	if robot != "":
 		var hub_save: float = float(want.get("hub_save", 0.0))
 		var spare: float = GameState.get_currency("cubes").to_float() - float(want.get("robot_cost", 0.0))
 		var must: bool = _robot_goal(robot) or _essential(robot)
+		if fab_wait and not must:
+			robot = ""  # [orbC] saving for the Fabricator
 		var ok: bool = hub_save <= 0.0 or spare >= hub_save or must
 		ok = ok and (must or hub_save <= 0.0 or _mats_spare({"parts": fleet.build_parts(robot).to_float()}, false))
-		if ok and fleet.can_build(robot):
+		if ok and robot != "" and fleet.can_build(robot):
 			var at: Vector3 = world.upgrades.build_at.call() if world.upgrades.build_at.is_valid() else BENCH_STAND
 			fleet.build(robot, at)
 	for t: String in (Economy.robot_order if fleet != null else []):  # [orbB]
@@ -1101,18 +1115,28 @@ func _shop(want: Dictionary) -> void:
 	if HubBuilds.listed(world, "composter") and str(HubBuilds.entry(world, "composter")["reason"]) == "":
 		if HubBuilds.build(world, "composter"):
 			_event("build", {"id": "composter"})
-	# 10) [orbC] The Bot Fabricator once it is offered (3rd planet on) and paid for (the upgrade
-	# loop above saves for it); it then runs on its default mix.
-	if HubBuilds.listed(world, "bot_fabricator") and str(HubBuilds.entry(world, "bot_fabricator")["reason"]) == "":
-		if GameState.get_currency("cubes").to_float() >= float(BotFabricator.cost().get("cubes", 0)) and HubBuilds.build(world, "bot_fabricator"):
-			_event("build", {"id": "bot_fabricator"})
-			print("[autoplay] Bot Fabricator built at %.1f min" % (DevHooks._elapsed * Engine.time_scale / 60.0))
 	var cp: Composter = world.get("composter")
 	if cp and cp.active() and cp.level < cp.max_level() and GameState.get_currency("seeds").to_float() < 10.0:
 		if cp.upgrade_cost().to_float() <= GameState.get_currency("cubes").to_float() * 0.25:
 			cp.interact()
 			_progress()
 			_event("composter", {"level": cp.level})
+
+
+## [orbC] The Fabricator's mix: cleaners and haulers, plus planters and waterers once researched
+## (Thriving hexes are half of a planet's restoration).
+func _fabricator_mix(world: Node) -> void:
+	var fab: BotFabricator = BotFabricator.of(world)
+	if fab == null:
+		return
+	var want: Dictionary = {"scoopie": 3, "haulbug": 1}
+	var ok: Array[String] = BotFabricator.types()
+	if ok.has("seedling"):
+		want["seedling"] = 1
+	if ok.has("drip"):
+		want["drip"] = 2
+	if fab.mix() != want:
+		fab.set_mix(want)
 
 
 ## Materials the next base level still needs (cubes ignored).
@@ -1548,7 +1572,23 @@ func _snapshot() -> void:
 		"seeds": snappedf(GameState.get_currency("seeds").to_float(), 0.1), "parts": snappedf(GameState.get_currency("parts").to_float(), 1.0),
 		"hexes": world.field.cleaned_count, "hex_levels": lv, "robots": types, "hub": int(world.hub.level),
 		"task": _task, "research": Research.active_id(), "upgrades": int(GameState.stats.get("upgrades_bought", 0)),
-		"bots": _robot_health(), "goals": ngoals, "stats": _stat_pick(["research_done", "plants_bloomed", "garden_stipend", "air_filtered", "robots_built", "robot_bales", "bales_recycled", "plants_planted"])})
+		"bots": _robot_health(), "goals": ngoals, "stats": _stat_pick(["research_done", "plants_bloomed", "garden_stipend", "air_filtered", "robots_built", "robot_bales", "bales_recycled", "plants_planted"]),
+		"planet": str(Homeward.planet_def(Homeward.current_planet()).get("id", "")), "pct": snappedf(Homeward.measure_current(), 0.001)})  # [orbC] planet restoration
+	var pk: int = Homeward.current_planet()  # [orbC] pacing marks: 25% / 50% of each planet
+	if pk >= 0:
+		var pid: String = str(Homeward.planet_def(pk).get("id", ""))
+		var pct: float = Homeward.measure_current()
+		for th: int in [25, 50, 75]:
+			if pct * 100.0 >= th:
+				AutoplayCampaign.mark("pct%d_%s_s" % [th, pid], _now())
+		# Staged pacing runs: --quit-at-pct=50 saves and stops once this planet is that restored.
+		if DevHooks.has("quit-at-pct") and pct * 100.0 >= DevHooks.get_f("quit-at-pct", 50.0) and not _pct_quit:
+			_pct_quit = true
+			print("[autoplay] %s at %.0f%% after %.1f game min (campaign %.1f min): saving and quitting" % [pid, pct * 100.0, _now() / 60.0,
+				float(GameState.stats.get("time_played", 0.0)) / 60.0])
+			write_report()
+			SaveManager.save_game()
+			world.get_tree().quit()
 	print("[Autoplay] %5.1f min cubes=%d rate=%.2f/s partscur=%.0f seeds=%.0f parts=%d hexes=%d lv=%s robots=%s hub=%d task=%s goals=%d research=%s pos=%s esc=%d" % [_now() / 60.0,  # [money]
 		int(GameState.get_currency("cubes").to_float()), GameState.income_rate(), GameState.get_currency("parts").to_float(),
 		GameState.get_currency("seeds").to_float(), GameState.parts.size(),
@@ -1621,6 +1661,8 @@ func write_report() -> void:
 	_report["campaign_min"] = AutoplayCampaign.timeline_min()  # [beat] milestones across stages
 	_report["district"] = str(world.get("district_name"))
 	var path: String = ProjectSettings.globalize_path("res://screenshots/autoplay_report.json")
+	if DevHooks.get_s("save-dir", "") != "":  # [orbC] parallel staged runs keep their own report
+		path = path.replace(".json", "_%s.json" % DevHooks.get_s("save-dir", "").validate_filename())
 	var f := FileAccess.open(path, FileAccess.WRITE)
 	if f:
 		f.store_string(JSON.stringify(_report, "  "))
