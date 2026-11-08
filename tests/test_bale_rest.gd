@@ -153,5 +153,6 @@ func test_bale_faces_point_outward() -> void:
 	# [world2] An inside-out bale renders see-through (the "transparent" bale): its back faces show.
 	assert_gt(_front_ratio(JunkCube.bale_mesh()), 0.99, "bale block winds outward")
 	assert_gt(_front_ratio(ProcMesh.box(Vector3.ONE)), 0.99, "reference: ProcMesh.box")
+	assert_gt(_front_ratio(FieldView._mound_mesh()), 0.9, "junk heaps wind outward")
 	# The bale used ProcMesh.rounded_box, which was inside-out: the owner's "transparent" bale.
 	assert_gt(_front_ratio(ProcMesh.rounded_box(Vector3.ONE, 0.05, 3)), 0.99, "rounded_box winds outward")

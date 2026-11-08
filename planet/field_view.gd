@@ -243,7 +243,7 @@ static func _mound_mesh() -> ArrayMesh:
 			var b: Vector3 = pts[r][k + 1]
 			var c: Vector3 = pts[r + 1][k + 1]
 			var d: Vector3 = pts[r + 1][k]
-			for v: Vector3 in [a, c, b, a, d, c]:
+			for v: Vector3 in [a, b, c, a, c, d]:  # [world2] clockwise from outside (was inside-out)
 				st.add_vertex(v)
 	st.generate_normals()
 	return st.commit()
