@@ -396,14 +396,14 @@ func _build_stars() -> void:
 	for ch: String in "WREN":
 		for s: Array in LETTERS[ch]:
 			pts.append(Vector2(x0 + float(s[0]) * 2.4, float(s[1]) * 2.4 - 4.0))
-		x0 += 6.5
+		x0 += 7.0
 	# Big bird stars a bit brighter.
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_3D
 	mm.mesh = q
 	mm.instance_count = pts.size()
 	for i: int in pts.size():
-		var sc: float = 1.6 if i < STAR_PATTERN.size() else 0.75
+		var sc: float = 1.1 if i < STAR_PATTERN.size() else 0.34  # [eggs2] small enough that the letters read through the eyepiece
 		mm.set_instance_transform(i, Transform3D(Basis().scaled(Vector3.ONE * sc), Vector3(pts[i].x, pts[i].y, 0)))
 	var mmi := MultiMeshInstance3D.new()
 	mmi.multimesh = mm
@@ -422,8 +422,8 @@ static func _star_tex() -> GradientTexture2D:
 	var g := Gradient.new()
 	g.set_color(0, Color(1, 1, 1, 1))
 	g.set_color(1, Color(1, 1, 1, 0))
-	g.add_point(0.18, Color(1, 1, 1, 0.9))
-	g.add_point(0.45, Color(0.8, 0.9, 1.0, 0.18))
+	g.add_point(0.12, Color(1, 1, 1, 0.85))
+	g.add_point(0.3, Color(0.8, 0.9, 1.0, 0.12))
 	var t := GradientTexture2D.new()
 	t.gradient = g
 	t.fill = GradientTexture2D.FILL_RADIAL
