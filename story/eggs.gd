@@ -661,6 +661,9 @@ func _use(e: Dictionary) -> void:
 		found(id)
 		world.doc_view.show_doc(doc2)
 		return
+	if kind == "telescope":  # [eggs2] counts once Lumi has looked (StarPeek.finished)
+		_effect(e)
+		return
 	if kind == "tv":  # [eggs2] rewatchable; the egg counts once the broadcast has played
 		_effect(e)
 		return
@@ -942,19 +945,29 @@ func _tune_tv(e: Dictionary) -> void:
 	b.start()
 
 
+## [eggs2] The middle of the constellation (bird and letters), in world space.
+func star_center() -> Vector3:
+	return _stars.to_global(Vector3(6.0, 9.7, 0.0)) if _stars else STAR_POS
+
+
 ## [eggs2] Tilts the tube onto the Wren, then looks through the eyepiece.
 func _peek_stars(e: Dictionary) -> void:
 	if is_instance_valid(_peek):
 		return
 	var n: Node3D = e["node"]
 	var head: Node3D = n.get_node_or_null("Anim")
-	var to: Vector3 = STAR_POS - n.global_position
+	var aim: Vector3 = star_center()
+	var to: Vector3 = aim - n.global_position
 	var elev: float = atan2(to.y, Vector2(to.x, to.z).length())
 	var peek := StarPeek.new()
 	peek.world = world
 	peek.scope = n
-	peek.target = STAR_POS
+	peek.target = aim
 	_peek = peek
+	var id: String = e["id"]
+	peek.finished.connect(func() -> void:
+		if _night_amount() >= 0.5 or DevHooks.has("egg-poke"):
+			found(id))
 	Audio.play("servo", 0.8, -8.0)
 	if head:
 		var tw := head.create_tween()

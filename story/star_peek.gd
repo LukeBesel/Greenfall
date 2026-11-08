@@ -54,6 +54,8 @@ func start() -> void:
 	cam.global_position = eye
 	cam.look_at(target, Vector3.UP)
 	_show_head(false)  # we are at the eyepiece: the tube itself must not fill the view
+	if world and world.get("hud") != null and world.hud:
+		world.hud.visible = false  # an uncluttered eyepiece
 	_layer = CanvasLayer.new()
 	_layer.layer = 4  # under the HUD (toasts stay readable)
 	add_child(_layer)
@@ -132,6 +134,8 @@ func _show_head(on: bool) -> void:
 func _lock(on: bool) -> void:
 	if world == null:
 		return
+	if not on and world.get("hud") != null and world.hud:
+		world.hud.visible = true
 	if world.get("patch") != null and world.patch and world.patch.input is PlayerInput:
 		(world.patch.input as PlayerInput).enabled = not on
 	if world.get("cam") != null and world.cam:
