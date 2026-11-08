@@ -15,6 +15,7 @@ const FRAME_S: float = 3.6
 const STATIC_S: float = 0.35
 
 ## Captions are English data (tr() at display time). "kind" picks the drawing.
+# l10n:begin
 const FRAMES: Array[Dictionary] = [
 	{"kind": "green", "caption": "OLD TOWN IN BLOOM: SEED SWAP THIS SATURDAY"},
 	{"kind": "rigs", "caption": "LEDGER SECURES EXTRACTION RIGHTS"},
@@ -23,6 +24,7 @@ const FRAMES: Array[Dictionary] = [
 	{"kind": "empty", "caption": "OLD TOWN, TONIGHT. A SIGN ON THE TOWN HALL"},
 	{"kind": "static", "caption": "SIGNAL LOST"},
 ]
+# l10n:end
 
 var world: Node
 var screen: MeshInstance3D  # the TV's screen quad (shows the same picture)

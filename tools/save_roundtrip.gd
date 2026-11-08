@@ -78,20 +78,15 @@ func _snapshot(s: Node) -> Dictionary:
 		# [scope] the Telescope at this base, its sightings and use stats.
 		"telescope": "%s %s uses=%d" % [str(Telescope.of(s).built() if Telescope.of(s) else "none"), str(Codex.is_unlocked("sightings:first_light")), int(GameState.stats.get("telescope_uses", 0))],
 		"extras": JSON.stringify(ExtrasRoundtrip.snap(s)),  # [extras] radio, album, nursery
-		"egg_collect": _egg_collect(s),  # [eggs2] collected gnomes and their base display
+		"egg_collect": _egg_collect(s),  # [eggs2] collected gnomes and the Museum
 	}
 
 
-## [eggs2] Collected gnome parts and how many stand on the base display.
-func _egg_collect(s: Node) -> String:
-	var shown: int = -1
-	if s.get("eggs") != null and s.eggs and (s.eggs as EasterEggs).displays.has("gnomes"):
-		var d: EggDisplay = s.eggs.displays["gnomes"]
-		d.refresh()
-		shown = d.figures.filter(func(f: Node3D) -> bool: return f.visible).size()
+## [eggs2] Collected gnome parts, the Museum build flag and how many of its exhibits are full.
+func _egg_collect(_s: Node) -> String:
 	var parts: Array = EggCollect.parts("gnomes").duplicate()
 	parts.sort()
-	return "%s shown=%d" % [str(parts), shown]
+	return "%s museum=%s full=%d" % [str(parts), str(Museum.built()), Museum.filled()]
 
 
 ## [wild] Persisted animal state, plus whether the adopted cat is back in the live district.
@@ -328,6 +323,7 @@ func _ready() -> void:
 	GameState.flags["livery"] = "livery_halo"
 	EggCollect.add("gnomes", 3)  # [eggs2] two gnomes brought home
 	EggCollect.add("gnomes", 0)
+	GameState.flags["museum_built"] = true
 	WorldEvents.persist_state()["recent"] = ["supply_drop", "rain_shower"]
 	# [hud] Some Lumi XP across a couple of levels.
 	if s1.get("lumi_level") != null:

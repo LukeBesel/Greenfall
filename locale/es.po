@@ -1251,7 +1251,7 @@ msgstr "Tu base ha crecido hasta donde llega la demo."
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "En el juego completo, Lumi sube la base hasta el nivel 5, planta distritos enteros hasta que prosperan, los convierte en una brillante ciudad del futuro y vuela en cohete a decenas de bases por todo el planeta. Tu progreso de la demo se conserva."
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:667
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:740
 msgid "Hexes cleaned"
 msgstr "Hexágonos limpiados"
 
@@ -1259,11 +1259,11 @@ msgstr "Hexágonos limpiados"
 msgid "Bales made"
 msgstr "Pacas hechas"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:682
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:755
 msgid "Robots built"
 msgstr "Robots construidos"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:690
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:763
 msgid "Time played"
 msgstr "Tiempo jugado"
 
@@ -1283,7 +1283,7 @@ msgstr "Pantalla de título"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "Seguir jugando: el primer distrito sigue abierto, con la base a nivel %d."
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:759 ui/main_menu.gd:446
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:832 ui/main_menu.gd:446
 msgid "%dh %02dm"
 msgstr "%dh %02dm"
 
@@ -1501,91 +1501,87 @@ msgstr ""
 "VUELVO EN\n"
 "5 MINUTOS"
 
-#: story/eggs.gd:335
+#: story/eggs.gd:333
 msgid "Something metal surfaced in the cleared ground."
 msgstr "Algo metálico ha salido a la superficie en el suelo despejado."
 
-#: story/eggs.gd:534 story/eggs.gd:617
+#: story/eggs.gd:516 story/eggs.gd:578
 msgid "Gnome %d / %d"
 msgstr "Gnomo %d / %d"
 
-#: story/eggs.gd:542
+#: story/eggs.gd:524
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr "El último cartel señala un sitio muy cerca. Algo naranja está hecho un ovillo por ahí."
 
-#: story/eggs.gd:583
-msgid "E   salute the patrol"
+#: story/eggs.gd:579
+msgid "%s   ·   added to Lumi's collection"
 msgstr ""
 
-#: story/eggs.gd:583
-msgid "E   look"
-msgstr ""
-
-#: story/eggs.gd:641
+#: story/eggs.gd:595
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr "La radio sisea bajito. Ahí arriba aún no hay nada despierto. Vuelve cuando oscurezca."
 
-#: story/eggs.gd:642
+#: story/eggs.gd:596
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr "Por el telescopio: solo un cielo claro y polvoriento. Vuelve cuando oscurezca."
 
-#: story/eggs.gd:668
+#: story/eggs.gd:625
 msgid "SOLD OUT"
 msgstr "AGOTADO"
 
-#: story/eggs.gd:685
+#: story/eggs.gd:642
 msgid "QUACK!"
 msgstr "¡CUAC!"
 
-#: story/eggs.gd:703
+#: story/eggs.gd:660
 msgid "NEW CHALLENGER!"
 msgstr "¡NUEVO RIVAL!"
 
-#: story/eggs.gd:706
+#: story/eggs.gd:663
 msgid "GAME OVER  ·  SCORE 12"
 msgstr "GAME OVER  ·  PUNTOS 12"
 
-#: story/eggs.gd:734
+#: story/eggs.gd:691
 msgid "hi, Gus"
 msgstr "hola, Gus"
 
-#: story/eggs.gd:779
+#: story/eggs.gd:736
 msgid "CONFETTI"
 msgstr "CONFETI"
 
-#: story/eggs.gd:779
+#: story/eggs.gd:736
 msgid "LIGHT JAZZ"
 msgstr "JAZZ SUAVE"
 
-#: story/eggs.gd:779
+#: story/eggs.gd:736
 msgid "99% DUCKS"
 msgstr "PATOS: 99%"
 
-#: story/eggs.gd:779
+#: story/eggs.gd:736
 msgid "SUNNY (INDOORS)"
 msgstr "SOLEADO (DENTRO)"
 
-#: story/eggs.gd:779
+#: story/eggs.gd:736
 msgid "FOG OF NOODLES"
 msgstr "NIEBLA DE FIDEOS"
 
-#: story/eggs.gd:784
+#: story/eggs.gd:741
 msgid "1ST PLACE"
 msgstr "1.ER PUESTO"
 
-#: story/eggs.gd:842
+#: story/eggs.gd:799
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr "El pato chilla un secreto: «%s» desbloquea el diseño %s."
 
-#: story/eggs.gd:843
+#: story/eggs.gd:800
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "El pato te ha enseñado todo lo que sabe. Cuac."
 
-#: story/eggs.gd:1066
+#: story/eggs.gd:1033
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "Curiosidad encontrada: %s  (%d / %d)   %s"
 
-#: story/eggs.gd:1077
+#: story/eggs.gd:1044
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "Todas las curiosidades de la lista, encontradas. El compartimento de colección de Lumi está llenísimo de recuerdos."
 
@@ -1938,31 +1934,51 @@ msgstr "Limpia este hexágono por completo"
 msgid "Lumi is back on the job"
 msgstr "Lumi vuelve al trabajo"
 
-#: story/tv_broadcast.gd:101
-msgid "CH 4  ·  OLD TOWN NEWS  ·  LAST BROADCAST"
+#: story/tv_broadcast.gd:20
+msgid "OLD TOWN IN BLOOM: SEED SWAP THIS SATURDAY"
 msgstr ""
 
-#: story/tv_broadcast.gd:115
-msgid "{interact}  [k]/ Esc  [/k]turn it off"
+#: story/tv_broadcast.gd:21
+msgid "LEDGER SECURES EXTRACTION RIGHTS"
 msgstr ""
 
-#: story/tv_broadcast.gd:195
+#: story/tv_broadcast.gd:22
+msgid "THE SYSTEM IS STRIP-MINED. THE WASTE STAYS HERE"
+msgstr ""
+
+#: story/tv_broadcast.gd:23
+msgid "EVACUATION: ALL RESIDENTS TO THE CRADLE"
+msgstr ""
+
+#: story/tv_broadcast.gd:24
+msgid "OLD TOWN, TONIGHT. A SIGN ON THE TOWN HALL"
+msgstr ""
+
+#: story/tv_broadcast.gd:25 story/tv_broadcast.gd:197
 msgid "SIGNAL LOST"
 msgstr ""
 
-#: story/tv_broadcast.gd:204
+#: story/tv_broadcast.gd:103
+msgid "CH 4  ·  OLD TOWN NEWS  ·  LAST BROADCAST"
+msgstr ""
+
+#: story/tv_broadcast.gd:117
+msgid "{interact}  [k]/ Esc  [/k]turn it off"
+msgstr ""
+
+#: story/tv_broadcast.gd:206
 msgid "LIVE"
 msgstr ""
 
-#: story/tv_broadcast.gd:324
+#: story/tv_broadcast.gd:326
 msgid "BREAKING"
 msgstr ""
 
-#: story/tv_broadcast.gd:352
+#: story/tv_broadcast.gd:354
 msgid "CRADLE"
 msgstr ""
 
-#: story/tv_broadcast.gd:373
+#: story/tv_broadcast.gd:375
 msgid "WE'LL BE BACK"
 msgstr ""
 
@@ -2330,7 +2346,7 @@ msgstr "Aún no hay carta: restaura %s al %d%%"
 msgid "The Homeward rocket is built"
 msgstr "El cohete del Regreso está construido"
 
-#: systems/homeward.gd:335
+#: systems/homeward.gd:335 systems/museum.gd:117
 msgid "The Cradle has to answer first (Cradle Returns)"
 msgstr "El Cradle tiene que responder primero (Regreso del Cradle)"
 
@@ -2452,6 +2468,46 @@ msgstr "El Puente del Arca se abre cuando el Cradle haya vuelto a casa."
 msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode (H) is open too."
 msgstr ""
 
+#: systems/museum.gd:119
+msgid "Not enough cubes, parts or seeds"
+msgstr ""
+
+#: systems/museum.gd:184
+msgid "FUTURE MUSEUM"
+msgstr ""
+
+#: systems/museum.gd:185
+msgid "for whoever comes next"
+msgstr ""
+
+#: systems/museum.gd:197
+msgid "E   build the Museum   %s"
+msgstr ""
+
+#: systems/museum.gd:197
+msgid "Museum   %s   (%s)"
+msgstr ""
+
+#: systems/museum.gd:216
+msgid "The Museum is built. Everything Lumi found has a place now, for whoever comes next."
+msgstr ""
+
+#: systems/museum.gd:240
+msgid "THE MUSEUM OF COMING BACK"
+msgstr ""
+
+#: systems/museum.gd:241
+msgid "everything Lumi found, kept for whoever comes next"
+msgstr ""
+
+#: systems/museum.gd:268
+msgid "E   salute the Gnome Patrol"
+msgstr ""
+
+#: systems/museum.gd:428
+msgid "Every plinth is full. The Museum is complete: everything Lumi found, kept for whoever comes next."
+msgstr ""
+
 #: systems/profile_slots.gd:48 ui/world_picker.gd:138
 msgid "Profile %d"
 msgstr ""
@@ -2524,7 +2580,7 @@ msgstr "Requiere base de nivel %d"
 msgid "Queue is full"
 msgstr "La cola está llena"
 
-#: systems/research.gd:324 ui/codex_screen.gd:763
+#: systems/research.gd:324 ui/codex_screen.gd:836
 msgid "%ds"
 msgstr "%d s"
 
@@ -2866,7 +2922,7 @@ msgstr "embaló unas %d balas"
 msgid "kept the base tidy"
 msgstr "mantuvo la base ordenada"
 
-#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:674
+#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:747
 msgid "Cubes earned"
 msgstr "Cubos ganados"
 
@@ -3233,7 +3289,7 @@ msgstr "SIGUIENTE PASO"
 msgid "RESTART CHECKLIST  ·  DONE"
 msgstr "LISTA DE REINICIO  ·  COMPLETA"
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:696
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:769
 msgid "Achievements"
 msgstr "Logros"
 
@@ -3265,7 +3321,8 @@ msgstr "   {ui_tab_prev}{ui_tab_next}  cambiar de pestaña"
 msgid "%d / %d entries   ·   %d / %d curiosities   ·   %d / %d collectibles   ·   %d / %d achievements"
 msgstr "%d / %d entradas   ·   %d / %d curiosidades   ·   %d / %d coleccionables   ·   %d / %d logros"
 
-#: ui/codex_screen.gd:315 ui/codex_screen.gd:435 ui/codex_screen.gd:543
+#: ui/codex_screen.gd:315 ui/codex_screen.gd:435 ui/codex_screen.gd:601
+#: ui/codex_screen.gd:616
 msgid "Not found yet"
 msgstr "Aún no encontrado"
 
@@ -3303,155 +3360,187 @@ msgstr "Recompensa: una pequeña sorpresa"
 msgid "COLLECTION"
 msgstr "COLECCIÓN"
 
-#: ui/codex_screen.gd:546
+#: ui/codex_screen.gd:549
+msgid "LUMI'S COLLECTION"
+msgstr ""
+
+#: ui/codex_screen.gd:550
+msgid "%d / %d complete"
+msgstr ""
+
+#: ui/codex_screen.gd:588
+msgid "TRINKETS AND CURIOS"
+msgstr ""
+
+#: ui/codex_screen.gd:600
+msgid "EVERY PLANET"
+msgstr ""
+
+#: ui/codex_screen.gd:603
+msgid "In Lumi's collection. It has a plinth in the Museum."
+msgstr ""
+
+#: ui/codex_screen.gd:605
+msgid "Hint: %s"
+msgstr ""
+
+#: ui/codex_screen.gd:607
+msgid "The Museum: built"
+msgstr ""
+
+#: ui/codex_screen.gd:607
+msgid "The Museum is built at Cradle Returns, near the end of the journey."
+msgstr ""
+
+#: ui/codex_screen.gd:619
 msgid "In your collection"
 msgstr "En tu colección"
 
-#: ui/codex_screen.gd:551
+#: ui/codex_screen.gd:624
 msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
 msgstr "Pista: un visitante tímido acude a los hexágonos sostenidos y prósperos. Lleva una cámara."
 
-#: ui/codex_screen.gd:552
+#: ui/codex_screen.gd:625
 msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
 msgstr "Pista: los animales vuelven cuando el suelo sana. Fotografíalos en el modo foto (P)."
 
-#: ui/codex_screen.gd:553
+#: ui/codex_screen.gd:626
 msgid "Hint: finish %d requests (Requests tab at the workbench)."
 msgstr ""
 
-#: ui/codex_screen.gd:554
+#: ui/codex_screen.gd:627
 msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
 msgstr ""
 
-#: ui/codex_screen.gd:555
+#: ui/codex_screen.gd:628
 msgid "Hint: keep scooping without stopping until the streak meter is full."
 msgstr "Pista: sigue recogiendo sin parar hasta llenar el medidor de racha."
 
-#: ui/codex_screen.gd:556
+#: ui/codex_screen.gd:629
 msgid "Hint: turns up during %s."
 msgstr "Pista: aparece durante: %s."
 
-#: ui/codex_screen.gd:625
+#: ui/codex_screen.gd:698
 msgid "Unlocked  ·  %s"
 msgstr "Desbloqueado  ·  %s"
 
-#: ui/codex_screen.gd:664
+#: ui/codex_screen.gd:737
 msgid "Total"
 msgstr "Total"
 
-#: ui/codex_screen.gd:665
+#: ui/codex_screen.gd:738
 msgid "Junk removed"
 msgstr "Chatarra retirada"
 
-#: ui/codex_screen.gd:665
+#: ui/codex_screen.gd:738
 msgid "by type"
 msgstr "por tipo"
 
-#: ui/codex_screen.gd:666 data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:739 data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "Limpieza"
 
-#: ui/codex_screen.gd:668
+#: ui/codex_screen.gd:741
 msgid "Hexes restored"
 msgstr "Hexágonos restaurados"
 
-#: ui/codex_screen.gd:669
+#: ui/codex_screen.gd:742
 msgid "Bales pressed"
 msgstr "Pacas prensadas"
 
-#: ui/codex_screen.gd:670
+#: ui/codex_screen.gd:743
 msgid "Pure bales"
 msgstr "Pacas puras"
 
-#: ui/codex_screen.gd:671
+#: ui/codex_screen.gd:744
 msgid "Perfect bales"
 msgstr "Pacas perfectas"
 
-#: ui/codex_screen.gd:672
+#: ui/codex_screen.gd:745
 msgid "Lumpy bales"
 msgstr "Pacas grumosas"
 
-#: ui/codex_screen.gd:673
+#: ui/codex_screen.gd:746
 msgid "Bales cashed in"
 msgstr "Pacas cobradas"
 
-#: ui/codex_screen.gd:676 ui/globe_view.gd:138 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:749 ui/globe_view.gd:138 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "Cultivo"
 
-#: ui/codex_screen.gd:677
+#: ui/codex_screen.gd:750
 msgid "Seeds planted"
 msgstr "Semillas plantadas"
 
-#: ui/codex_screen.gd:678
+#: ui/codex_screen.gd:751
 msgid "Plants bloomed"
 msgstr "Plantas florecidas"
 
-#: ui/codex_screen.gd:679
+#: ui/codex_screen.gd:752
 msgid "Air filtered"
 msgstr "Aire filtrado"
 
-#: ui/codex_screen.gd:681 data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:754 data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "Robots"
 
-#: ui/codex_screen.gd:683
+#: ui/codex_screen.gd:756
 msgid "Bales by robots"
 msgstr "Pacas de robots"
 
-#: ui/codex_screen.gd:684
+#: ui/codex_screen.gd:757
 msgid "Parts dug up"
 msgstr "Piezas desenterradas"
 
-#: ui/codex_screen.gd:686
+#: ui/codex_screen.gd:759
 msgid "Exploring"
 msgstr "Exploración"
 
-#: ui/codex_screen.gd:687
+#: ui/codex_screen.gd:760
 msgid "Distance rolled"
 msgstr "Distancia recorrida"
 
-#: ui/codex_screen.gd:688
+#: ui/codex_screen.gd:761
 msgid "Memory shards read"
 msgstr "Fragmentos de memoria leídos"
 
-#: ui/codex_screen.gd:689
+#: ui/codex_screen.gd:762
 msgid "Codex entries"
 msgstr "Entradas del Códice"
 
-#: ui/codex_screen.gd:692
+#: ui/codex_screen.gd:765
 msgid "Progress"
 msgstr "Progreso"
 
-#: ui/codex_screen.gd:693
+#: ui/codex_screen.gd:766
 msgid "Upgrades bought"
 msgstr "Mejoras compradas"
 
-#: ui/codex_screen.gd:694
+#: ui/codex_screen.gd:767
 msgid "Field notes logged"
 msgstr ""
 
-#: ui/codex_screen.gd:695
+#: ui/codex_screen.gd:768
 msgid "Research done"
 msgstr "Investigaciones hechas"
 
-#: ui/codex_screen.gd:697
+#: ui/codex_screen.gd:770
 msgid "Best hub level"
 msgstr "Mejor nivel de base"
 
-#: ui/codex_screen.gd:747
+#: ui/codex_screen.gd:820
 msgid "%s kg"
 msgstr "%s kg"
 
-#: ui/codex_screen.gd:748
+#: ui/codex_screen.gd:821
 msgid "%.1f kg"
 msgstr "%.1f kg"
 
-#: ui/codex_screen.gd:752
+#: ui/codex_screen.gd:825
 msgid "%.2f km"
 msgstr "%.2f km"
 
-#: ui/codex_screen.gd:762
+#: ui/codex_screen.gd:835
 msgid "%dm %02ds"
 msgstr "%dm %02ds"
 
@@ -6160,13 +6249,21 @@ msgstr "Cotilla"
 msgid "Find 5 curiosities."
 msgstr "Encuentra 5 curiosidades."
 
-#: data/achievements.json:achievements[curio_15].name data/achievements.json:achievements[late_eggs_40].name
+#: data/achievements.json:achievements[curio_15].name data/achievements.json:achievements[late_eggs_40].name data/museum.json:exhibits[curiosities].name
 msgid "Cabinet of Curiosities"
 msgstr "Gabinete de curiosidades"
 
 #: data/achievements.json:achievements[curio_15].desc
 msgid "Find 15 curiosities."
 msgstr "Encuentra 15 curiosidades."
+
+#: data/achievements.json:achievements[museum_complete].name
+msgid "For Whoever Comes Next"
+msgstr ""
+
+#: data/achievements.json:achievements[museum_complete].desc
+msgid "Fill every plinth in the Museum."
+msgstr ""
 
 #: data/achievements.json:achievements[curio_all].name
 msgid "Every Last Secret"
@@ -6596,7 +6693,7 @@ msgstr "Chatarra"
 msgid "Plants"
 msgstr "Plantas"
 
-#: data/codex.json:categories[shards].name
+#: data/codex.json:categories[shards].name data/museum.json:exhibits[shards].name
 msgid "Memory Shards"
 msgstr "Fragmentos de memoria"
 
@@ -8053,7 +8150,7 @@ msgstr "puestos avanzados"
 msgid "Mk"
 msgstr "Mk"
 
-#: data/eggs.json:eggs[duck].name
+#: data/eggs.json:eggs[duck].name data/museum.json:exhibits[duck].name
 msgid "Duck on Duty"
 msgstr "Pato de guardia"
 
@@ -8109,7 +8206,7 @@ msgstr "Un mural del antiguo equipo de limpieza. «VOLVEMOS DESPUÉS DE COMER».
 msgid "A painted wall in Old Town. Just walk up to it."
 msgstr "Una pared pintada en el Casco Antiguo. Solo acércate."
 
-#: data/eggs.json:eggs[gnomes].name
+#: data/eggs.json:eggs[gnomes].name data/museum.json:exhibits[gnomes].name
 msgid "Gnome Patrol"
 msgstr "Patrulla de gnomos"
 
@@ -8126,7 +8223,7 @@ msgid "All five gnomes found. They turn, very slowly, and salute."
 msgstr "Los cinco gnomos, encontrados. Se giran, muy despacio, y saludan."
 
 #: data/eggs.json:eggs[gnomes].hint
-msgid "Five small guards, each watching a different street. Bring them home."
+msgid "Five small guards, each watching a different street. Pick them up."
 msgstr ""
 
 #: data/eggs.json:eggs[time_capsule].name
@@ -8269,7 +8366,7 @@ msgstr "CA-CHUNK. La máquina suelta su última lata de FIZZ. Se enciende AGOTAD
 msgid "A drinks machine that is holding on to something."
 msgstr "Una máquina de bebidas que se aferra a algo."
 
-#: data/eggs.json:eggs[stars].name
+#: data/eggs.json:eggs[stars].name data/museum.json:exhibits[wren].name
 msgid "WREN's Constellation"
 msgstr "La constelación de WREN"
 
@@ -10509,7 +10606,7 @@ msgstr "Rime"
 msgid "Anvil"
 msgstr "Anvil"
 
-#: data/homeward.json:relics.ochre_glass.name
+#: data/homeward.json:relics.ochre_glass.name data/museum.json:exhibits[ochre_glass].name
 msgid "Ochre Sun-Glass"
 msgstr "Vidrio solar de Ochre"
 
@@ -10517,7 +10614,7 @@ msgstr "Vidrio solar de Ochre"
 msgid "Slag fused clear by the dune winds. It holds a little of Ochre's light."
 msgstr "Escoria fundida hasta volverse transparente por los vientos de las dunas. Guarda un poco de la luz de Ochre."
 
-#: data/homeward.json:relics.tidewell_pearl.name
+#: data/homeward.json:relics.tidewell_pearl.name data/museum.json:exhibits[tidewell_pearl].name
 msgid "Tidewell Pearl"
 msgstr "Perla de Tidewell"
 
@@ -10525,7 +10622,7 @@ msgstr "Perla de Tidewell"
 msgid "The first pearl grown in Tidewell's sea in two hundred years."
 msgstr "La primera perla crecida en el mar de Tidewell en doscientos años."
 
-#: data/homeward.json:relics.rime_core.name
+#: data/homeward.json:relics.rime_core.name data/museum.json:exhibits[rime_core].name
 msgid "Rime Heart-Ice"
 msgstr "Hielo corazón de Rime"
 
@@ -10533,7 +10630,7 @@ msgstr "Hielo corazón de Rime"
 msgid "A core sample from the thawed lakes, still faintly warm."
 msgstr "Una muestra del núcleo de los lagos deshelados, todavía algo tibia."
 
-#: data/homeward.json:relics.anvil_ingot.name
+#: data/homeward.json:relics.anvil_ingot.name data/museum.json:exhibits[anvil_ingot].name
 msgid "Anvil Ingot"
 msgstr "Lingote de Anvil"
 
@@ -11108,6 +11205,62 @@ msgstr ""
 "Firmado: EL LEDGER (a regañadientes, luego menos a regañadientes)\n"
 "Testigo: WREN, cuidadora del Cradle\n"
 "Testigo: LM-1 (dejó una manchita de aceite)"
+
+#: data/museum.json:exhibits[gnomes].hint
+msgid "Five garden gnomes guard Old Town's streets. Pick them up."
+msgstr ""
+
+#: data/museum.json:exhibits[biscuit].name
+msgid "Biscuit's Shell"
+msgstr ""
+
+#: data/museum.json:exhibits[time_capsule].name
+msgid "Time Capsule"
+msgstr ""
+
+#: data/museum.json:exhibits[broadcast].name
+msgid "The Last Broadcast"
+msgstr ""
+
+#: data/museum.json:exhibits[broadcast].hint
+msgid "A TV on a lawn chair is still on. Adjust the antenna."
+msgstr ""
+
+#: data/museum.json:exhibits[gold_cube].name
+msgid "The Golden Cube"
+msgstr ""
+
+#: data/museum.json:exhibits[curiosities].hint
+msgid "Every curiosity on every planet (Codex > Curiosities has the hints)."
+msgstr ""
+
+#: data/museum.json:exhibits[shards].hint
+msgid "Letters, notes and drawings surface as the ground is cleaned."
+msgstr ""
+
+#: data/museum.json:exhibits[trinkets].name
+msgid "Trinkets and Curios"
+msgstr ""
+
+#: data/museum.json:exhibits[trinkets].hint
+msgid "World events, requests, streaks and Curio Capsules."
+msgstr ""
+
+#: data/museum.json:exhibits[ochre_glass].hint
+msgid "Restore Ochre."
+msgstr ""
+
+#: data/museum.json:exhibits[tidewell_pearl].hint
+msgid "Restore Tidewell."
+msgstr ""
+
+#: data/museum.json:exhibits[rime_core].hint
+msgid "Restore Rime."
+msgstr ""
+
+#: data/museum.json:exhibits[anvil_ingot].hint
+msgid "Restore Anvil."
+msgstr ""
 
 #: data/outposts.json:levels[0].name
 msgid "Weigh Station"
@@ -13142,6 +13295,22 @@ msgstr "La música de espera de la compañía telefónica sobrevivió a la compa
 #: data/wren_lines.json:egg_payphone
 msgid "If anyone ever does pick up on the other end, I'd like to hear what they say."
 msgstr "Si alguna vez alguien contesta al otro lado, me gustaría oír lo que dice."
+
+#: data/wren_lines.json:museum_complete
+msgid "...all of it... kept..."
+msgstr ""
+
+#: data/wren_lines.json:museum_complete
+msgid "Every plinth full. Whoever comes next will know exactly who was here, and what they loved."
+msgstr ""
+
+#: data/wren_lines.json:museum_complete
+msgid "The Museum is complete. I've logged it as a landmark. Not a strategic one. A sentimental one."
+msgstr ""
+
+#: data/wren_lines.json:museum_complete
+msgid "Every last gnome, shard and ring, on its plinth. You didn't just clean the world, {name}. You remembered it."
+msgstr ""
 
 #: data/wren_lines.json:egg_tv
 msgid "...broadcast... we'll be... back..."

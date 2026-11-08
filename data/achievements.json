@@ -609,6 +609,17 @@
    }
   },
   {
+   "id": "museum_complete",
+   "name": "For Whoever Comes Next",
+   "desc": "Fill every plinth in the Museum.",
+   "icon": "star",
+   "cond": {
+    "type": "flag",
+    "target": 1,
+    "key": "museum_complete"
+   }
+  },
+  {
    "id": "curio_all",
    "name": "Every Last Secret",
    "desc": "Find all 29 curiosities on Verdance.",

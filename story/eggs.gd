@@ -23,7 +23,6 @@ var _scoop_cd: Dictionary = {}
 const SPAWN_Z: float = 3.0
 ## [eggs2] Where WREN's constellation hangs in the sky (the telescope aims here).
 const STAR_POS := Vector3(110, 170, -190)
-var displays: Dictionary = {}  # [eggs2] egg id -> EggDisplay
 var _peek: Node  # [eggs2] StarPeek while looking through the telescope
 var _tv: Node  # [eggs2] TvBroadcast while it plays
 const JUKEBOX_LEAVE_M: float = 12.0  # [eggs2]
@@ -55,14 +54,13 @@ func setup() -> void:
 	if _jukebox_node:
 		StorySfx.prewarm_music_box()
 	_build_stars()
-	_build_displays()  # [eggs2]
+	_migrate_collected()  # [eggs2]
+	Museum.attach.call_deferred(world)  # [eggs2] the late Museum build (Cradle Returns, after the Cradle answers)
 	EventBus.junk_scooped.connect(_on_scooped)
 	EventBus.hex_cleaned.connect(func(_h: int, _p: Vector3, _b: BigNum) -> void: _refresh_visibility())
 	_refresh_visibility()
 	if DevHooks.has("spawn-egg"):
 		_dev_spawn.call_deferred(DevHooks.get_s("spawn-egg", "duck"))
-	if DevHooks.has("spawn-display"):  # [eggs2] dev: --spawn-display=ID puts Lumi in front of an egg's base display
-		_dev_display.call_deferred(DevHooks.get_s("spawn-display", "gnomes"))
 
 
 # --- Placement (pure, deterministic) -------------------------------------------------
@@ -357,22 +355,6 @@ func _dev_spawn(id: String) -> void:
 	print("[eggs] egg '%s' is not placed in this district (placed: %s)" % [id, str(placed.map(func(e: Dictionary) -> String: return e["id"]))])
 
 
-func _dev_display(id: String) -> void:  # [eggs2]
-	var disp: EggDisplay = displays.get(id)
-	if disp == null or world == null or world.patch == null:
-		print("[eggs] no display for '%s'" % id)
-		return
-	var fwd: Vector3 = disp.global_transform.basis.z
-	var p: Vector3 = disp.global_position + fwd * DevHooks.get_f("egg-dist", 2.4)
-	world.patch.global_position = Vector3(p.x, disp.global_position.y + 0.2, p.z)
-	world.patch.rotation.y = atan2(fwd.x, fwd.z)
-	world.cam.yaw = world.patch.rotation.y + DevHooks.get_f("egg-yaw", 0.4)
-	world.cam.snap()
-	if DevHooks.has("egg-poke"):
-		get_tree().create_timer(DevHooks.get_f("egg-poke", 0.5), false).timeout.connect(func() -> void: _display_used(id))
-	print("[eggs] in front of the %s display at %s" % [id, str(disp.global_position)])
-
-
 # --- Stars (the WREN constellation) -----------------------------------------------------
 
 const STAR_PATTERN: Array = [
@@ -559,39 +541,18 @@ func _chain_complete(e: Dictionary) -> void:
 
 # --- Collectibles [eggs2] (story/egg_collect.gd, story/egg_display.gd) -----------------
 
-func _build_displays() -> void:
+## Eggs found before parts were tracked: every part counts as collected.
+func _migrate_collected() -> void:
 	for id: String in order:
 		var d: Dictionary = defs[id]
-		if not bool(d.get("collect", false)) or not d.has("display"):
-			continue
 		var total: int = int(d.get("parts", 1))
-		if is_found(id) and EggCollect.count(id) < total:  # found before parts were tracked
+		if bool(d.get("collect", false)) and is_found(id) and EggCollect.count(id) < total:
 			for i: int in total:
 				EggCollect.add(id, i)
-		var kind: String = str(d.get("kind", ""))
-		var disp: EggDisplay = EggDisplay.make(id, total, tr(str(d.get("display_title", d.get("name", id)))),
-			func(i: int) -> Node3D: return EggProps.build(kind, i))
-		add_child(disp)
-		var at: Array = d["display"]
-		var pos := Vector3(float(at[0]), 0.0, float(at[1]))
-		if world and world.field and world.field.layout:
-			pos.y = clampf(world.field.layout.height_at(pos.x, pos.z), 0.0, 0.3)
-		disp.global_position = pos
-		disp.rotation.y = atan2(-pos.x, -pos.z + SPAWN_Z)  # faces the yard
-		displays[id] = disp
-		if world and world.get("interactables") != null:
-			world.interactables.register(disp, 1.8, tr("E   salute the patrol") if kind == "gnome" else tr("E   look"),
-				func() -> void: _display_used(id), func() -> bool: return EggCollect.count(id) >= total)
 
 
-func _display_used(id: String) -> void:
-	var disp: EggDisplay = displays.get(id)
-	if disp:
-		disp.salute(world.patch.global_position if world and world.patch else disp.global_position + Vector3(0, 0, 2))
-
-
-## E on a collectible part: the tractor beam lifts it into Lumi's compartment; it then turns
-## up on the base display. The last one completes the egg (reward, toast, the salute).
+## E on a collectible part: the tractor beam lifts it into Lumi's compartment and it joins her
+## collection (Codex > Collection; shown in the Museum at the end). The last one completes the egg.
 func _collect(e: Dictionary) -> void:
 	var id: String = e["id"]
 	var part: int = int(e["part"])
@@ -615,19 +576,12 @@ func _collected(e: Dictionary) -> void:
 	Audio.play("pop", 1.1, -2.0)
 	Audio.play_scale("blip", count * 2, -6.0)
 	var label: String = tr("Gnome %d / %d") % [count, total] if str(e["kind"]) == "gnome" else "%d / %d" % [count, total]
-	EventBus.toast.emit(label, "info")
+	EventBus.toast.emit(tr("%s   ·   added to Lumi's collection") % label, "info")
 	if world and world.patch:
 		Vfx.float_text(world.patch.global_position + Vector3(0, 2.0, 0), label, Color(1.0, 0.9, 0.6), 1.1, 1.0)
 		Vfx.burst("sparkle", world.patch.global_position + Vector3(0, 1.1, 0), Color(1.0, 0.9, 0.6), 0.5)
-	var disp: EggDisplay = displays.get(id)
-	if disp:
-		disp.pop_in(int(e["part"]))
 	if count >= total and not is_found(id):
 		found(id)
-		if disp:
-			get_tree().create_timer(0.8, false).timeout.connect(func() -> void:
-				if is_instance_valid(disp):
-					disp.salute(world.patch.global_position if world and world.patch else disp.global_position))
 
 
 ## Patch pressed E next to an egg.

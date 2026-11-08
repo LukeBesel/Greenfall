@@ -44,7 +44,6 @@ func test_gnomes_are_collectible_pickups() -> void:
 	assert_true(bool(g.get("collect", false)))
 	assert_eq(str(g.get("prompt", "")), "E   pick up gnome")
 	assert_eq(int(g.get("parts", 0)), 5)
-	assert_eq((g.get("display", []) as Array).size(), 2, "the base display has a yard spot")
 
 
 func test_collect_counts_once_per_part() -> void:
@@ -65,7 +64,7 @@ func test_old_save_seen_gnomes_count_as_collected() -> void:
 	assert_eq(EggCollect.add("gnomes", 1), 2, "a loaded part is not added twice")
 
 
-func test_display_shows_collected_and_salutes() -> void:
+func test_gnome_bed_shows_collected_and_salutes() -> void:
 	GameState.flags["egg_gnomes_parts"] = [0, 4]
 	var d: EggDisplay = EggDisplay.make("gnomes", 5, "GNOME PATROL", func(i: int) -> Node3D: return EggProps.build("gnome", i))
 	add_child_autofree(d)
@@ -80,19 +79,68 @@ func test_display_shows_collected_and_salutes() -> void:
 	assert_true(true, "salute runs without errors")
 
 
-func test_display_spot_is_in_the_yard_and_clear_of_interactables() -> void:
-	var at: Array = _defs()["gnomes"]["display"]
-	var p := Vector2(float(at[0]), float(at[1]))
-	assert_lt(absf(p.x), CityLayout.YARD_HALF)
-	assert_lt(absf(p.y), CityLayout.YARD_HALF)
-	assert_gt(absf(p.x), 2.0 if absf(p.y) < 6.0 else -1.0, "at the yard edge")
-	# The yard's fixed interactables / builds (depot, board, radio, observatory, demo baler, composter,
-	# nursery, landing pod, lamp, hopper, recycler, camp radio, spawn).
-	var others: Array[Vector2] = [Vector2(0, -1.8), Vector2(-3.6, 2.2), Vector2(-4.75, 3.45), Vector2(-5.6, -2.8),
-		Vector2(-5.8, -2.2), Vector2(-5.8, 6.4), Vector2(-1.3, 6.0), Vector2(6.0, 9.5), Vector2(4.2, -3.0),
-		Vector2(7.0, -0.8), Vector2(7.0, -4.8), Vector2(6.6, 3.4), Vector2(0, 3.0), Vector2(-7.0, -5.0)]
-	for o: Vector2 in others:
-		assert_gt(p.distance_to(o), 3.0, "display clear of %s" % str(o))
+func test_no_base_display_for_collectibles() -> void:
+	assert_false(_defs()["gnomes"].has("display"), "collectibles go to Lumi's collection and the Museum, not the yard")
+
+
+func test_museum_lists_every_collectible_kind() -> void:
+	var kinds: Array = []
+	var ids: Array = []
+	for x: Dictionary in Museum.exhibits():
+		kinds.append(str(x["kind"]))
+		ids.append(str(x["id"]))
+		assert_true(str(x.get("name", "")) != "", "%s has a name" % x["id"])
+		assert_true(Museum.hint(x) != "", "%s has a hint" % x["id"])
+		if str(x["kind"]) in ["egg", "egg_parts"]:
+			assert_true(_defs().has(str(x["ref"])), "%s refers to a real egg" % x["id"])
+		if str(x["kind"]) == "relic":
+			assert_false(Homeward.relic_def(str(x["ref"])).is_empty(), "%s is a real relic" % x["id"])
+	for k: String in ["egg_parts", "egg", "eggs", "shards", "trinkets", "relic"]:
+		assert_has(kinds, k)
+	for id: String in ["gnomes", "biscuit", "time_capsule", "broadcast", "shards"]:
+		assert_has(ids, id)
+	var cost: Dictionary = Museum.cost()
+	for c: String in cost:
+		assert_has(["cubes", "parts", "seeds"], c, "museum cost uses the three currencies")
+
+
+func test_museum_progress_and_completion() -> void:
+	var g: Dictionary = Museum.exhibit("gnomes")
+	assert_eq(Museum.progress(g), Vector2i(0, 5))
+	EggCollect.add("gnomes", 0)
+	EggCollect.add("gnomes", 3)
+	assert_eq(Museum.progress(g), Vector2i(2, 5))
+	assert_false(Museum.is_full(g))
+	GameState.flags["egg_tv"] = true
+	assert_true(Museum.is_full(Museum.exhibit("broadcast")))
+	GameState.flags["museum_built"] = true
+	assert_false(Museum.complete())
+	assert_false(Museum.check_complete(), "not every plinth is full")
+	assert_false(bool(GameState.flags.get("museum_complete", false)))
+
+
+func test_museum_unlocks_at_the_end() -> void:
+	var hw: Dictionary = Homeward.state().duplicate(true)
+	Homeward.state()["answered"] = false
+	assert_false(Museum.unlocked(), "locked until the Cradle answers")
+	assert_ne(Museum.blocker(), "")
+	Homeward.state()["answered"] = true
+	assert_true(Museum.unlocked())
+	for k: String in hw:
+		Homeward.state()[k] = hw[k]
+
+
+func test_museum_builds_with_ghosts_for_missing() -> void:
+	GameState.flags["museum_built"] = true
+	GameState.flags["egg_tv"] = true
+	EggCollect.add("gnomes", 1)
+	var m := Museum.new()
+	add_child_autofree(m)
+	m._build_hall(false)
+	assert_eq(m.plinths.size(), Museum.exhibits().size())
+	assert_not_null(m.gnome_bed)
+	assert_true(m.gnome_bed.figures[1].visible)
+	assert_false(m.gnome_bed.figures[0].visible, "a ghost stands in the empty slot")
 
 
 func test_jukebox_hushes_music_until_lumi_walks_away() -> void:
