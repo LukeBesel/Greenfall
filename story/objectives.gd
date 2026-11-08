@@ -277,6 +277,11 @@ func progress() -> Array:
 	var wf: String = str(def.get("wait_flag", ""))
 	if wf != "" and not GameState.flags.get(wf, false):
 		return [-1.0, ""]
+	if str(def.get("type", "")) == "bench" and BenchTiers.tier() < int(def.get("target", 2)):  # [v1guide] saving up: cubes toward the tier
+		var need: float = float(BenchTiers.next_cost().get("cubes", 0.0))
+		if need > 0.0:
+			var have: float = minf(GameState.get_currency("cubes").to_float(), need)
+			return [have / need, "%s / %s" % [Settings.fmt(BigNum.from_float(have)), Settings.fmt(BigNum.from_float(need))]]
 	var tgt: float = target_of(def)
 	var v: float = minf(value_of(def), tgt)
 	if str(def.get("type", "")) == "core":
@@ -497,7 +502,7 @@ func step_target(def: Dictionary) -> Dictionary:
 				out["row"] = ["build", "signal_tower"] if SignalTower.tier() == 0 else ["patch", "hb_signal_tower"]
 				var aff2: bool = GameState.can_afford_all(SignalTower.next_cost())
 				out["to"] = "bench" if aff2 else ("depot" if p and not p.carried.is_empty() else "hex")
-			"hex", "zone":
+			"hex", "hex3", "zone":
 				out["to"] = "hex"
 			"bench2":
 				out = {"to": "bench" if BenchTiers.block_reason(world) == "" else "hex", "row": ["patch", "bench_tier"]}

@@ -1099,8 +1099,10 @@ func _shop(want: Dictionary) -> void:
 		if tk != "":
 			_progress()
 			_event("builder", {"what": tk})
-	# 4) Base level (logged by _manage on the next tick).
-	world.hub.upgrade()
+	# 4) Base level (logged by _manage on the next tick). [v1guide] Not while the card asks for the
+	# workbench's next tier: a player saves for what the step says.
+	if not (obj and str(obj.current().get("type", "")) == "bench" and BenchTiers.block_reason(world) == ""):
+		world.hub.upgrade()
 	# 5) Stations once researched.
 	var st: Stations = Stations.of(world)
 	if st:
@@ -1322,6 +1324,11 @@ func _stat_goal(key: String) -> bool:
 
 
 func _robot_goal(type_id: String) -> bool:
+	var ob: Objectives = world.get("objectives") as Objectives  # [v1guide] the timeline's current step
+	if ob:
+		var od: Dictionary = ob.current()
+		if str(od.get("type", "")) == "robot" and str(od.get("key", "")) in [type_id, "any"]:
+			return true
 	var gl: Goals = world.get("goals")
 	if gl == null:
 		return false

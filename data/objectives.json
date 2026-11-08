@@ -14,6 +14,7 @@
     {"id": "power", "text": "Power the base: sell 3 bales", "desc": "Full chest? Press {cube} for a bale, carry it to the scale.", "type": "stat", "key": "cubes_cashed", "target": 3},
     {"id": "tower", "text": "Build the signal tower", "desc": "WREN went silent. Build it in the workbench's Build tab.", "type": "tower", "target": 1},
     {"id": "hex", "text": "Clean a hex", "desc": "Clean ground is where green can grow again.", "type": "stat", "key": "hexes_cleaned", "target": 1, "hex": true},
+    {"id": "hex3", "text": "Clean 3 hexes", "desc": "Three clean hexes earn the workbench its Bot Bay.", "type": "stat", "key": "hexes_cleaned", "target": 3},
     {"id": "bench2", "text": "Upgrade the workbench: Bot Bay", "desc": "A bot bay lets you build helpers. Upgrades tab, Base.", "type": "bench", "target": 2},
     {"id": "robot", "text": "Build your first robot", "desc": "A helper keeps cleaning while you work.", "type": "robot", "key": "any", "target": 1,
       "lines": ["The base has power! Enough to build you a helper. Try the Bots tab at the workbench."]},
