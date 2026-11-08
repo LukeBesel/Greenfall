@@ -71,6 +71,10 @@ func _ready() -> void:
 	var t1: int = Time.get_ticks_msec()
 	grid = SphereGrid.for_hex_size(7, 10.0)
 	terrain = SphereTerrain.new(grid, seed_v)
+	# The survey's elevation lifts the macro terrain: lakes sit low, hills read from Command view.
+	var sorted_e: PackedFloat32Array = planet.elevation.duplicate()
+	sorted_e.sort()
+	terrain.set_cell_elevation(planet.elevation, 14.0, sorted_e[int(sorted_e.size() * 0.25)])
 	cells = SphereCells.from_planet(planet)
 	stats["grid_ms"] = Time.get_ticks_msec() - t1
 	pieces_per_cell = int(DevHooks.get_f("orbit-pieces", 120.0))
