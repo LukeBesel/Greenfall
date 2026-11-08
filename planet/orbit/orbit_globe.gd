@@ -41,9 +41,25 @@ func _init(p_planet: PlanetData, p_hex_size: float = 10.0) -> void:
 
 # --- Geometry -------------------------------------------------------------------------
 
+## Flattened site patches: {dir, flat_m, blend_m, h}. A hub prefab sits on a level pad that
+## blends back into the sphere terrain (what planet env site prefabs would get).
+var sites: Array[Dictionary] = []
+
+
+func add_site(dir: Vector3, flat_m: float, blend_m: float, h: float = 0.0) -> void:
+	sites.append({"dir": dir.normalized(), "flat": flat_m, "blend": blend_m, "h": h})
+
+
 ## Terrain height (m) above the base radius for a unit direction.
 func height(dir: Vector3) -> float:
-	return noise.get_noise_3dv(dir * R) * height_amp
+	var t: float = noise.get_noise_3dv(dir * R) * height_amp
+	for s: Dictionary in sites:
+		var d: float = (s["dir"] as Vector3).angle_to(dir) * R
+		var fl: float = float(s["flat"])
+		if d < fl + float(s["blend"]):
+			var k: float = smoothstep(fl, fl + float(s["blend"]), d)
+			t = lerpf(float(s["h"]), t, k)
+	return t
 
 
 ## Ground point for a unit direction.

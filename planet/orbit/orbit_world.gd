@@ -77,6 +77,8 @@ func _ready() -> void:
 		nz.frequency = 1.0 / 26.0
 	_pick_hubs(int(DevHooks.get_f("orbit-hubs", 10.0)))
 	start_hub = hubs[0]
+	for h: int in hubs:  # every hub site stands on a level pad (prefab footprint ~70 m)
+		globe.add_site(globe.grid.centers[h], 140.0 if h == start_hub else 45.0, 40.0)
 	for h: int in hubs:
 		for c: int in globe.cells_around(h, 2):
 			if planet.state[c] != PlanetData.State.WATER:
