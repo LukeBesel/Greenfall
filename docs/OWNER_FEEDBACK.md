@@ -216,3 +216,12 @@ Direction: the flat world's vibe is better, so build it into the round world: bu
 26. The start is too slow ("I already want to quit"): too much walking between trash and the bin. Speed it up.
 27. Upgrade types stay in a fixed row/order in the workbench, not moving around by price or affordability.
 28. Workbench tabs (Bots, Research, etc.) unlock by upgrading the workbench itself (workbench tiers), not on their own.
+
+## 2026-11-08 playtest 2
+29. Lumi's eyes still looked like two sets: fixed on main (one solid glowing eye per side) and needs checking. In the intro, when the pod lands, his eyes are almost closed and look weird.
+30. No human voice-over. Use robot beeps under the lines: done on main.
+31. No "New sighting" popups during the intro animation: done on main.
+32. Birds chirp far too much again.
+33. The purple indicator points at nothing. In the screenshot, the ring was on a road cell while the step was "Empty your chest into the trash bin". Also, two cards showed at once ("OBJECTIVE: Save up for the Baler" plus "NEXT STEP: Empty your chest..."): there must be only one.
+34. After the signal tower restores the connection, WREN only says hello. WREN should narrate the goals and what we're trying to do to get back home.
+35. The starting hexes can't hold large items, because then you can't fully clear a hex.
