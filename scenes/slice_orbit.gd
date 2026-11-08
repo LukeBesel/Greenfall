@@ -9,13 +9,15 @@ extends Node
 ## slice's `field`, SphereJunkView as its `view`, sites, gravity), sky and day/night (OrbitDay),
 ## stand-in crews (OrbitCrews), the real Patch on a SphereMotor with SphereCam, the HUD, the
 ## Depot on the start pad, Lumi Level, the pause menu, hex levels (sparse), the Hub (logic; the
-## site prefab shows its stage), the workbench (bench anchor) + Upgrades, Research/Achievements/
-## Codex, music, WREN + subtitles, Goals, the restart checklist (Tutorial), Requests (Contracts).
+## site prefab shows its stage), the workbench + Upgrades, Research/Achievements/Codex, music,
+## WREN + subtitles, Goals, Tutorial, Requests, Interactables, WorldEvents, the Signal Tower,
+## Extras (CD player, nursery, album, welcome back, Seed of the Week), the Telescope, Camp (broken
+## bench, trash bin, yard builds), Glim, the crashed pod, CoreCharge, Objectives (+ the cell
+## outline), the garden (sparse, per cell). Yard systems stand on orbD's hub-0 anchors (yard_slot).
 ## GameState.world is the start site's own dict (GameState.use_orbit_world).
-## Not ported yet (left null on the slice, skipped): CityLayout/CityView/StreetDressing/litter/
-## far junk/water (orbD sites), Fleet/robot builder/Command view (orbC), SkyDirector/GlobeView/
-## FutureLayer (orbE), Camp (bench repair, trash bin, yard builds), garden, events, intro/
-## objectives/signal tower, core charge, outposts, eggs, ledger, telescope, extras, Glim, photo.
+## Not here: CityLayout/CityView/StreetDressing/litter/far junk/water (orbD sites), Fleet/robot
+## builder/Command view (orbC), SkyDirector/GlobeView/FutureLayer, the intro cinematic and photo
+## mode (orbE); outposts, eggs, the Ledger arc, Bloom/late director, fauna, frontier districts.
 ##
 ## Dev flags (phase A's, now on the slice): --orbit-walk[=boost] --orbit-lap-quit,
 ## --orbit-scoop, --orbit-cash --orbit-cash-quit, --orbit-view=follow|ground|command,
