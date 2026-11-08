@@ -585,25 +585,33 @@ msgstr ""
 msgid "+%s cubes"
 msgstr "+%s Würfel"
 
-#: fauna/fauna.gd:1211
+#: fauna/fauna.gd:1469
 msgid "E   pet %s"
 msgstr "E   %s streicheln"
 
-#: fauna/fauna.gd:1212
+#: fauna/fauna.gd:1470
 msgid "E   pet the cat"
 msgstr "E   die Katze streicheln"
 
-#: fauna/fauna.gd:1261
+#: fauna/fauna.gd:1528
+msgid "E   scatter crumbs for the birds"
+msgstr ""
+
+#: fauna/fauna.gd:1576
+msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
+msgstr ""
+
+#: fauna/fauna.gd:1632
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr ""
 "Die Katze hat beschlossen, dass du zu ihr gehörst. Darf ich vorstellen: %s. "
 "Sie wohnt jetzt an dieser Basis."
 
-#: fauna/fauna.gd:1574
+#: fauna/fauna.gd:1951
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "Neue Sichtung: %s. Steht jetzt im Kodex."
 
-#: fauna/fauna.gd:1642
+#: fauna/fauna.gd:2019
 msgid "Snap! A %s for your Collection."
 msgstr "Klick! Ein Foto (%s) für deine Sammlung."
 
@@ -10829,6 +10837,14 @@ msgid ""
 msgstr ""
 "Sanft wie ein Flüstern, schnell wie ein Gerücht. Das Foto ist ein bisschen "
 "verwackelt. Hat sich gelohnt."
+
+#: data/events.json:trinkets[crumb_bag].name
+msgid "Crumb Bag"
+msgstr ""
+
+#: data/events.json:trinkets[crumb_bag].desc
+msgid "A paper bag of crumbs and seed husks. The pigeons know the sound of it now."
+msgstr ""
 
 #: data/events.json:trinkets[pic_cat].name
 msgid "Photo: Stray Cat"

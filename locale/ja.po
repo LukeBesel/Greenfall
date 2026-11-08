@@ -16710,3 +16710,429 @@ msgid ""
 "%s\n"
 "Charted. No landing yet."
 msgstr ""
+
+#: automation/recycler.gd:219 systems/events.gd:480
+msgid "+%d bolts"
+msgstr "+%d ボルト"
+
+#: automation/rocket_tiers.gd:56
+msgid "Not enough materials"
+msgstr "素材が足りません"
+
+#: fauna/fauna.gd:1528
+msgid "E   scatter crumbs for the birds"
+msgstr ""
+
+#: fauna/fauna.gd:1576
+msgid ""
+"The birds have decided you're all right. Crumb Bag added to your Collection."
+msgstr ""
+
+#: plants/composter.gd:140
+msgid ""
+"COMPOST PRESS  Lv %d\n"
+"compost %s  →  seeds"
+msgstr ""
+"コンポストプレス  Lv %d\n"
+"コンポスト %s  →  種"
+
+#: player/patch.gd:470
+msgid "Salvaged: %s %s"
+msgstr "回収：%s %s"
+
+#: player/patch.gd:500
+msgid "Recovered: %s %s"
+msgstr "発見：%s %s"
+
+#: robots/fleet.gd:264
+msgid "Not enough bolts (scrap spare parts at Haggle's)"
+msgstr "ボルトが足りない（Haggle の店で予備パーツを解体しよう）"
+
+#: story/ledger.gd:258
+msgid "<< INTERCEPT // LEDGER PROMOTIONS // %d OF %d >>"
+msgstr "<< 傍受 // LEDGER キャンペーン // %d / %d >>"
+
+#: systems/collection.gd:88 ui/upgrades_screen.gd:17
+msgid "Contracts"
+msgstr "依頼"
+
+#: systems/contracts.gd:241
+msgid "Contract complete: %s. Claim %d tokens at the workbench."
+msgstr "依頼達成：%s。作業台でトークン %d 枚を受け取ろう。"
+
+#: systems/contracts.gd:247
+msgid ""
+"A contract ran out of time. No harm done; a new one will be posted soon."
+msgstr "依頼の期限が切れた。問題なし、すぐに新しい依頼が出る。"
+
+#: systems/contracts.gd:312
+msgid "Contract paid: +%d tokens, +%s cubes."
+msgstr "依頼の報酬：+%d トークン、+%s キューブ。"
+
+#: systems/contracts.gd:338
+msgid "%s fitted to the whole fleet."
+msgstr "%s をフリート全体に取り付けた。"
+
+#: systems/contracts.gd:344
+msgid "Printed: %s %s."
+msgstr "プリント完了：%s %s。"
+
+#: systems/contracts.gd:347
+msgid "+%d seeds."
+msgstr "+%d 種。"
+
+#: systems/contracts.gd:353
+msgid "+%d Maker Fragments (%d)."
+msgstr "+%d メイカーのかけら（%d）。"
+
+#: systems/contracts.gd:359
+msgid "Printed: %s. Fit it in the Builder tab."
+msgstr "プリント完了：%s。ビルダータブで取り付けよう。"
+
+#: systems/contracts.gd:369
+msgid "Unlocks with planting"
+msgstr "植えると解放"
+
+#: systems/contracts.gd:371
+msgid "Collection complete"
+msgstr "コレクション完成"
+
+#: systems/contracts.gd:375
+msgid "Needs %d tokens"
+msgstr "トークン %d 枚が必要"
+
+#: systems/events.gd:488
+msgid "+%d data"
+msgstr "+%d データ"
+
+#: systems/events.gd:506 systems/lumi_level.gd:236
+msgid "+%d token"
+msgid_plural "+%d tokens"
+msgstr[0] "+%d トークン"
+
+#: systems/research.gd:194
+msgid "Not enough data"
+msgstr "データが足りない"
+
+#: systems/research.gd:383
+msgid "data gained"
+msgstr "データ獲得量"
+
+#: systems/research.gd:455
+msgid ""
+"Field data logged. Spend Data on Research at the workbench (Research tab)."
+msgstr "フィールドデータを記録。作業台（研究タブ）でデータを研究に使おう。"
+
+#: systems/robot_builder.gd:349
+msgid "Needs %d Maker Fragments (%d)"
+msgstr "メイカーのかけらが %d 個必要（%d）"
+
+#: systems/robot_builder.gd:356 systems/robot_builder.gd:437
+msgid "Needs %d bolts"
+msgstr "ボルトが %d 個必要"
+
+#: systems/robot_builder.gd:368
+msgid "Haggle's stall · %s cubes + %d bolts"
+msgstr "Haggle の屋台 · %s キューブ + %d ボルト"
+
+#: systems/robot_builder.gd:370
+msgid "Token shop · ◈ %d"
+msgstr "トークンショップ · ◈ %d"
+
+#: systems/robot_builder.gd:374
+msgid "%d Maker Fragments"
+msgstr "メイカーのかけら %d 個"
+
+#: systems/robot_builder.gd:376
+msgid "%d bolts"
+msgstr "ボルト %d 個"
+
+#: systems/robot_builder.gd:459
+msgid "Contract token shop"
+msgstr "依頼トークンショップ"
+
+#: systems/robot_builder.gd:561
+msgid "A Maker Fragment was tucked inside it. (%d)"
+msgstr "中にメイカーのかけらが入っていた。（%d）"
+
+#: systems/robot_builder.gd:596
+msgid "%s spotted a Maker Fragment glinting in the junk. (%d)"
+msgstr "%s がガラクタの中で光るメイカーのかけらを見つけた。（%d）"
+
+#: systems/robot_builder.gd:604
+msgid "%s spotted a %s %s."
+msgstr "%s が見つけた：%s %s。"
+
+#: ui/builder_panel.gd:393
+msgid "Parts bin %d   ·   Maker Fragments %d   ·   Bolts %s"
+msgstr "パーツ箱 %d   ·   メイカーのかけら %d   ·   ボルト %s"
+
+#: ui/codex_screen.gd:553
+msgid "Hint: complete %d contracts at the workbench."
+msgstr "ヒント：作業台で依頼を %d 件達成しよう。"
+
+#: ui/codex_screen.gd:554
+msgid "Hint: Curio Capsules, in the workbench token shop."
+msgstr "ヒント：作業台のトークンショップにある珍品カプセル。"
+
+#: ui/codex_screen.gd:694
+msgid "Data earned"
+msgstr "獲得データ"
+
+#: ui/command_view.gd:780
+msgid "%s cubes, %s bolts, %s Control Core. %s"
+msgstr "%s キューブ、%s ボルト、%sコントロールコア。%s"
+
+#: ui/contracts_panel.gd:25
+msgid "CONTRACTS"
+msgstr "依頼"
+
+#: ui/contracts_panel.gd:28
+msgid ""
+"Optional jobs with a timer. Finish in time for tokens; nothing is lost if "
+"one runs out."
+msgstr ""
+"制限時間つきの任意の仕事。時間内に終えるとトークンがもらえる。期限が切れても"
+"失うものはない。"
+
+#: ui/contracts_panel.gd:42
+msgid "TOKEN SHOP"
+msgstr "トークンショップ"
+
+#: ui/contracts_panel.gd:81
+msgid "◈  %d tokens"
+msgstr "◈  %d トークン"
+
+#: ui/contracts_panel.gd:130
+msgid "A new contract is being posted."
+msgstr "新しい依頼を掲示中。"
+
+#: ui/contracts_panel.gd:141
+msgid "Reward  ◈ %d tokens  +  cubes"
+msgstr "報酬  ◈ %d トークン  +  キューブ"
+
+#: ui/contracts_panel.gd:188
+msgid "Claim  ◈ %d"
+msgstr "受け取る  ◈ %d"
+
+#: ui/contracts_panel.gd:241
+msgid "Finished. Claim your tokens!"
+msgstr "完了！トークンを受け取ろう！"
+
+#: ui/contracts_panel.gd:264
+msgid "Owned  ·  press to equip"
+msgstr "所持  ·  押して装備"
+
+#: ui/currency_cluster.gd:10
+msgid "SHEET METAL"
+msgstr "金属板"
+
+#: ui/currency_cluster.gd:10
+msgid "PLASTIC"
+msgstr "プラスチック"
+
+#: ui/currency_cluster.gd:10
+msgid "GLASS"
+msgstr "ガラス"
+
+#: ui/currency_cluster.gd:11
+msgid "DATA"
+msgstr "データ"
+
+#: ui/currency_cluster.gd:11
+msgid "TOKENS"
+msgstr "トークン"
+
+#: ui/currency_cluster.gd:11
+msgid "COMPOST"
+msgstr "コンポスト"
+
+#: ui/currency_cluster.gd:11
+msgid "BOLTS"
+msgstr "ボルト"
+
+#: ui/event_hud.gd:192
+msgid "CONTRACT READY  ·  claim it at the workbench"
+msgstr "依頼達成  ·  作業台で受け取ろう"
+
+#: ui/event_hud.gd:192
+msgid "%d CONTRACTS READY  ·  claim them at the workbench"
+msgstr "依頼 %d 件達成  ·  作業台で受け取ろう"
+
+#: ui/hub_panel.gd:82
+msgid "cubes"
+msgstr "キューブ"
+
+#: ui/hub_panel.gd:82
+msgid "sheet metal"
+msgstr "金属板"
+
+#: ui/hub_panel.gd:82
+msgid "plastic stock"
+msgstr "プラスチック在庫"
+
+#: ui/hub_panel.gd:82
+msgid "glass"
+msgstr "ガラス"
+
+#: ui/hub_panel.gd:82
+msgid "bolts"
+msgstr "ボルト"
+
+#: ui/hub_panel.gd:93
+msgid "Sheet metal %s    Plastic stock %s    Glass %s"
+msgstr "金属板 %s    プラスチック %s    ガラス %s"
+
+#: ui/research_node_card.gd:184 ui/research_panel.gd:203
+msgid "%s data  ·  %s"
+msgstr "%s データ  ·  %s"
+
+#: ui/research_panel.gd:34
+msgid "FIELD DATA"
+msgstr "フィールドデータ"
+
+#: ui/research_panel.gd:41
+msgid "Clean hexes, grow blooms, read shards and let robots work."
+msgstr "ヘックスを片づけ、花を咲かせ、破片を読み、ロボットに働いてもらおう。"
+
+#: ui/research_panel.gd:214
+msgid "%s cancelled. Data refunded."
+msgstr "%s をキャンセル。データを返却しました。"
+
+#: ui/robot_card.gd:93
+msgid "Needs %s cubes, %s bolts and a %s Control Core.  %s"
+msgstr "%s キューブ、%s ボルト、%sコントロールコアが必要。  %s"
+
+#: ui/stations_panel.gd:104
+msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Bolts %s"
+msgstr "リサイクルしたベール %d   ·   処分したガラクタ %s kg   ·   ボルト %s"
+
+#: ui/trade_panel.gd:71
+msgid "Bolts  %s      Parts in storage  %d"
+msgstr "ボルト  %s      保管中のパーツ  %d"
+
+#: ui/trade_panel.gd:112
+msgid "Scrap %d spare Rusty parts  ->  +%d bolts"
+msgstr "サビた予備パーツ %d 個を解体  ->  +%d ボルト"
+
+#: ui/trade_panel.gd:145
+msgid ""
+"%s  (own %d)\n"
+"%s cubes + %d bolts"
+msgstr ""
+"%s（所持 %d）\n"
+"%s キューブ + %d ボルト"
+
+#: data/achievements.json:achievements[data_500].desc
+msgid "Collect 500 field data."
+msgstr "フィールドデータを500集める。"
+
+#: data/events.json:contracts.templates[events].text
+msgid "Handle %d world events"
+msgstr "ワールドイベントを %d 回こなす"
+
+#: data/events.json:contracts.templates[events].text_1
+msgid "Handle a world event"
+msgstr "ワールドイベントをこなす"
+
+#: data/events.json:shop[part_vintage].name
+msgid "Vintage Blueprint Part"
+msgstr "ヴィンテージ設計図パーツ"
+
+#: data/events.json:shop[part_vintage].desc
+msgid "A random Vintage robot part, freshly printed."
+msgstr "ランダムなヴィンテージのロボットパーツ。プリントしたて。"
+
+#: data/events.json:shop[part_legendary].name
+msgid "Legendary Blueprint Part"
+msgstr "レジェンダリー設計図パーツ"
+
+#: data/events.json:shop[part_legendary].desc
+msgid "A Maker-Made Legendary part. The good stuff."
+msgstr "メイカー製のレジェンダリーパーツ。いいやつ。"
+
+#: data/events.json:shop[seed_crate].name
+msgid "Seed Crate"
+msgstr "種の木箱"
+
+#: data/events.json:shop[seed_crate].desc
+msgid "25 seeds in a crate that smells of summer."
+msgstr "夏の香りがする木箱に入った種25粒。"
+
+#: data/events.json:shop[curio_capsule].desc
+msgid "A sealed capsule with a collectible inside you haven't got yet."
+msgstr "まだ持っていないコレクションアイテムが入った密封カプセル。"
+
+#: data/events.json:shop[bp_fine_sieve].name
+msgid "Fine Sieve (Builder)"
+msgstr "細かいふるい（ビルダー）"
+
+#: data/events.json:shop[bp_fine_sieve].desc
+msgid "Cleaner tool: cleaner cubes, slower scooping."
+msgstr "清掃ツール：キューブがきれいに、すくうのは遅く。"
+
+#: data/events.json:shop[bp_jet_nozzle].name
+msgid "Jet Nozzle (Builder)"
+msgstr "ジェットノズル（ビルダー）"
+
+#: data/events.json:shop[bp_jet_nozzle].desc
+msgid "Waterer tool: quicker watering, narrower spray."
+msgstr "水やりツール：水やりが速く、散水は狭く。"
+
+#: data/events.json:shop[bp_propeller_cap].name
+msgid "Propeller Cap (Builder)"
+msgstr "プロペラキャップ（ビルダー）"
+
+#: data/events.json:shop[bp_propeller_cap].desc
+msgid "A topper that spins when its robot hurries."
+msgstr "ロボットが急ぐとくるくる回る頭飾り。"
+
+#: data/events.json:shop[bp_crate].desc
+msgid "A random robot builder part you don't have yet."
+msgstr "まだ持っていないランダムなビルダーパーツ。"
+
+#: data/events.json:shop[bp_fragments].name
+msgid "Maker Fragments x2"
+msgstr "メイカーのかけら x2"
+
+#: data/events.json:shop[bp_fragments].desc
+msgid "Two shards of Maker alloy for the Maker set."
+msgstr "メイカーセット用のメイカー合金のかけら2つ。"
+
+#: data/events.json:trinkets[tin_robot].desc
+msgid "Walks three steps and falls over. Patch relates."
+msgstr "3歩歩いて転ぶ。Lumi にはよくわかる。"
+
+#: data/events.json:trinkets[photo_glowtail_fox].desc
+msgid "Its tail glows when it's curious. It was very curious about Patch."
+msgstr "好奇心がわくと尻尾が光る。Lumi にとても興味しんしんだった。"
+
+#: data/events.json:trinkets[crumb_bag].name
+msgid "Crumb Bag"
+msgstr ""
+
+#: data/events.json:trinkets[crumb_bag].desc
+msgid ""
+"A paper bag of crumbs and seed husks. The pigeons know the sound of it now."
+msgstr ""
+
+#: data/hub.json:materials.metal.name
+msgid "Sheet Metal"
+msgstr "金属板"
+
+#: data/hub.json:materials.plastic.name
+msgid "Plastic Stock"
+msgstr "プラスチック在庫"
+
+#: data/stations.json:recycler.desc
+msgid ""
+"Shredder drums and a little smelter. Bales go in and never come back: out "
+"come bolts and clean building stock. Every bale burnt clean helps the sky."
+msgstr ""
+"粉砕ドラムと小さな溶解炉。ベールは入ったきり戻ってこない：出てくるのはボルト"
+"ときれいな建材。きれいに燃やしたベール一つひとつが空を助ける。"
+
+#: data/upgrades.json:upgrades[recycler_yield].desc
+msgid ""
+"Sharper shredder teeth and a hotter smelter. More bolts and stock per bale."
+msgstr "鋭い粉砕刃と高温の炉。ベール1個あたりのボルトと建材が増える。"

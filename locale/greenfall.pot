@@ -15542,3 +15542,422 @@ msgid ""
 "%s\n"
 "Charted. No landing yet."
 msgstr ""
+
+#: automation/recycler.gd:219 systems/events.gd:480
+msgid "+%d bolts"
+msgstr ""
+
+#: automation/rocket_tiers.gd:56
+msgid "Not enough materials"
+msgstr ""
+
+#: fauna/fauna.gd:1528
+msgid "E   scatter crumbs for the birds"
+msgstr ""
+
+#: fauna/fauna.gd:1576
+msgid ""
+"The birds have decided you're all right. Crumb Bag added to your Collection."
+msgstr ""
+
+#: plants/composter.gd:140
+msgid ""
+"COMPOST PRESS  Lv %d\n"
+"compost %s  →  seeds"
+msgstr ""
+
+#: player/patch.gd:470
+msgid "Salvaged: %s %s"
+msgstr ""
+
+#: player/patch.gd:500
+msgid "Recovered: %s %s"
+msgstr ""
+
+#: robots/fleet.gd:264
+msgid "Not enough bolts (scrap spare parts at Haggle's)"
+msgstr ""
+
+#: story/ledger.gd:258
+msgid "<< INTERCEPT // LEDGER PROMOTIONS // %d OF %d >>"
+msgstr ""
+
+#: systems/collection.gd:88 ui/upgrades_screen.gd:17
+msgid "Contracts"
+msgstr ""
+
+#: systems/contracts.gd:241
+msgid "Contract complete: %s. Claim %d tokens at the workbench."
+msgstr ""
+
+#: systems/contracts.gd:247
+msgid ""
+"A contract ran out of time. No harm done; a new one will be posted soon."
+msgstr ""
+
+#: systems/contracts.gd:312
+msgid "Contract paid: +%d tokens, +%s cubes."
+msgstr ""
+
+#: systems/contracts.gd:338
+msgid "%s fitted to the whole fleet."
+msgstr ""
+
+#: systems/contracts.gd:344
+msgid "Printed: %s %s."
+msgstr ""
+
+#: systems/contracts.gd:347
+msgid "+%d seeds."
+msgstr ""
+
+#: systems/contracts.gd:353
+msgid "+%d Maker Fragments (%d)."
+msgstr ""
+
+#: systems/contracts.gd:359
+msgid "Printed: %s. Fit it in the Builder tab."
+msgstr ""
+
+#: systems/contracts.gd:369
+msgid "Unlocks with planting"
+msgstr ""
+
+#: systems/contracts.gd:371
+msgid "Collection complete"
+msgstr ""
+
+#: systems/contracts.gd:375
+msgid "Needs %d tokens"
+msgstr ""
+
+#: systems/events.gd:488
+msgid "+%d data"
+msgstr ""
+
+#: systems/events.gd:506 systems/lumi_level.gd:236
+msgid "+%d token"
+msgid_plural "+%d tokens"
+msgstr[0] ""
+msgstr[1] ""
+
+#: systems/research.gd:194
+msgid "Not enough data"
+msgstr ""
+
+#: systems/research.gd:383
+msgid "data gained"
+msgstr ""
+
+#: systems/research.gd:455
+msgid ""
+"Field data logged. Spend Data on Research at the workbench (Research tab)."
+msgstr ""
+
+#: systems/robot_builder.gd:349
+msgid "Needs %d Maker Fragments (%d)"
+msgstr ""
+
+#: systems/robot_builder.gd:356 systems/robot_builder.gd:437
+msgid "Needs %d bolts"
+msgstr ""
+
+#: systems/robot_builder.gd:368
+msgid "Haggle's stall · %s cubes + %d bolts"
+msgstr ""
+
+#: systems/robot_builder.gd:370
+msgid "Token shop · ◈ %d"
+msgstr ""
+
+#: systems/robot_builder.gd:374
+msgid "%d Maker Fragments"
+msgstr ""
+
+#: systems/robot_builder.gd:376
+msgid "%d bolts"
+msgstr ""
+
+#: systems/robot_builder.gd:459
+msgid "Contract token shop"
+msgstr ""
+
+#: systems/robot_builder.gd:561
+msgid "A Maker Fragment was tucked inside it. (%d)"
+msgstr ""
+
+#: systems/robot_builder.gd:596
+msgid "%s spotted a Maker Fragment glinting in the junk. (%d)"
+msgstr ""
+
+#: systems/robot_builder.gd:604
+msgid "%s spotted a %s %s."
+msgstr ""
+
+#: ui/builder_panel.gd:393
+msgid "Parts bin %d   ·   Maker Fragments %d   ·   Bolts %s"
+msgstr ""
+
+#: ui/codex_screen.gd:553
+msgid "Hint: complete %d contracts at the workbench."
+msgstr ""
+
+#: ui/codex_screen.gd:554
+msgid "Hint: Curio Capsules, in the workbench token shop."
+msgstr ""
+
+#: ui/codex_screen.gd:694
+msgid "Data earned"
+msgstr ""
+
+#: ui/command_view.gd:780
+msgid "%s cubes, %s bolts, %s Control Core. %s"
+msgstr ""
+
+#: ui/contracts_panel.gd:25
+msgid "CONTRACTS"
+msgstr ""
+
+#: ui/contracts_panel.gd:28
+msgid ""
+"Optional jobs with a timer. Finish in time for tokens; nothing is lost if "
+"one runs out."
+msgstr ""
+
+#: ui/contracts_panel.gd:42
+msgid "TOKEN SHOP"
+msgstr ""
+
+#: ui/contracts_panel.gd:81
+msgid "◈  %d tokens"
+msgstr ""
+
+#: ui/contracts_panel.gd:130
+msgid "A new contract is being posted."
+msgstr ""
+
+#: ui/contracts_panel.gd:141
+msgid "Reward  ◈ %d tokens  +  cubes"
+msgstr ""
+
+#: ui/contracts_panel.gd:188
+msgid "Claim  ◈ %d"
+msgstr ""
+
+#: ui/contracts_panel.gd:241
+msgid "Finished. Claim your tokens!"
+msgstr ""
+
+#: ui/contracts_panel.gd:264
+msgid "Owned  ·  press to equip"
+msgstr ""
+
+#: ui/currency_cluster.gd:10
+msgid "SHEET METAL"
+msgstr ""
+
+#: ui/currency_cluster.gd:10
+msgid "PLASTIC"
+msgstr ""
+
+#: ui/currency_cluster.gd:10
+msgid "GLASS"
+msgstr ""
+
+#: ui/currency_cluster.gd:11
+msgid "DATA"
+msgstr ""
+
+#: ui/currency_cluster.gd:11
+msgid "TOKENS"
+msgstr ""
+
+#: ui/currency_cluster.gd:11
+msgid "COMPOST"
+msgstr ""
+
+#: ui/currency_cluster.gd:11
+msgid "BOLTS"
+msgstr ""
+
+#: ui/event_hud.gd:192
+msgid "CONTRACT READY  ·  claim it at the workbench"
+msgstr ""
+
+#: ui/event_hud.gd:192
+msgid "%d CONTRACTS READY  ·  claim them at the workbench"
+msgstr ""
+
+#: ui/hub_panel.gd:82
+msgid "cubes"
+msgstr ""
+
+#: ui/hub_panel.gd:82
+msgid "sheet metal"
+msgstr ""
+
+#: ui/hub_panel.gd:82
+msgid "plastic stock"
+msgstr ""
+
+#: ui/hub_panel.gd:82
+msgid "glass"
+msgstr ""
+
+#: ui/hub_panel.gd:82
+msgid "bolts"
+msgstr ""
+
+#: ui/hub_panel.gd:93
+msgid "Sheet metal %s    Plastic stock %s    Glass %s"
+msgstr ""
+
+#: ui/research_node_card.gd:184 ui/research_panel.gd:203
+msgid "%s data  ·  %s"
+msgstr ""
+
+#: ui/research_panel.gd:34
+msgid "FIELD DATA"
+msgstr ""
+
+#: ui/research_panel.gd:41
+msgid "Clean hexes, grow blooms, read shards and let robots work."
+msgstr ""
+
+#: ui/research_panel.gd:214
+msgid "%s cancelled. Data refunded."
+msgstr ""
+
+#: ui/robot_card.gd:93
+msgid "Needs %s cubes, %s bolts and a %s Control Core.  %s"
+msgstr ""
+
+#: ui/stations_panel.gd:104
+msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Bolts %s"
+msgstr ""
+
+#: ui/trade_panel.gd:71
+msgid "Bolts  %s      Parts in storage  %d"
+msgstr ""
+
+#: ui/trade_panel.gd:112
+msgid "Scrap %d spare Rusty parts  ->  +%d bolts"
+msgstr ""
+
+#: ui/trade_panel.gd:145
+msgid ""
+"%s  (own %d)\n"
+"%s cubes + %d bolts"
+msgstr ""
+
+#: data/achievements.json:achievements[data_500].desc
+msgid "Collect 500 field data."
+msgstr ""
+
+#: data/events.json:contracts.templates[events].text
+msgid "Handle %d world events"
+msgstr ""
+
+#: data/events.json:contracts.templates[events].text_1
+msgid "Handle a world event"
+msgstr ""
+
+#: data/events.json:shop[part_vintage].name
+msgid "Vintage Blueprint Part"
+msgstr ""
+
+#: data/events.json:shop[part_vintage].desc
+msgid "A random Vintage robot part, freshly printed."
+msgstr ""
+
+#: data/events.json:shop[part_legendary].name
+msgid "Legendary Blueprint Part"
+msgstr ""
+
+#: data/events.json:shop[part_legendary].desc
+msgid "A Maker-Made Legendary part. The good stuff."
+msgstr ""
+
+#: data/events.json:shop[seed_crate].name
+msgid "Seed Crate"
+msgstr ""
+
+#: data/events.json:shop[seed_crate].desc
+msgid "25 seeds in a crate that smells of summer."
+msgstr ""
+
+#: data/events.json:shop[curio_capsule].desc
+msgid "A sealed capsule with a collectible inside you haven't got yet."
+msgstr ""
+
+#: data/events.json:shop[bp_fine_sieve].name
+msgid "Fine Sieve (Builder)"
+msgstr ""
+
+#: data/events.json:shop[bp_fine_sieve].desc
+msgid "Cleaner tool: cleaner cubes, slower scooping."
+msgstr ""
+
+#: data/events.json:shop[bp_jet_nozzle].name
+msgid "Jet Nozzle (Builder)"
+msgstr ""
+
+#: data/events.json:shop[bp_jet_nozzle].desc
+msgid "Waterer tool: quicker watering, narrower spray."
+msgstr ""
+
+#: data/events.json:shop[bp_propeller_cap].name
+msgid "Propeller Cap (Builder)"
+msgstr ""
+
+#: data/events.json:shop[bp_propeller_cap].desc
+msgid "A topper that spins when its robot hurries."
+msgstr ""
+
+#: data/events.json:shop[bp_crate].desc
+msgid "A random robot builder part you don't have yet."
+msgstr ""
+
+#: data/events.json:shop[bp_fragments].name
+msgid "Maker Fragments x2"
+msgstr ""
+
+#: data/events.json:shop[bp_fragments].desc
+msgid "Two shards of Maker alloy for the Maker set."
+msgstr ""
+
+#: data/events.json:trinkets[tin_robot].desc
+msgid "Walks three steps and falls over. Patch relates."
+msgstr ""
+
+#: data/events.json:trinkets[photo_glowtail_fox].desc
+msgid "Its tail glows when it's curious. It was very curious about Patch."
+msgstr ""
+
+#: data/events.json:trinkets[crumb_bag].name
+msgid "Crumb Bag"
+msgstr ""
+
+#: data/events.json:trinkets[crumb_bag].desc
+msgid ""
+"A paper bag of crumbs and seed husks. The pigeons know the sound of it now."
+msgstr ""
+
+#: data/hub.json:materials.metal.name
+msgid "Sheet Metal"
+msgstr ""
+
+#: data/hub.json:materials.plastic.name
+msgid "Plastic Stock"
+msgstr ""
+
+#: data/stations.json:recycler.desc
+msgid ""
+"Shredder drums and a little smelter. Bales go in and never come back: out "
+"come bolts and clean building stock. Every bale burnt clean helps the sky."
+msgstr ""
+
+#: data/upgrades.json:upgrades[recycler_yield].desc
+msgid ""
+"Sharper shredder teeth and a hotter smelter. More bolts and stock per bale."
+msgstr ""

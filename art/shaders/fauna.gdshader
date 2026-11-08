@@ -3,7 +3,9 @@ shader_type spatial;
 // Cheap rig in the vertex shader: every vertex carries CUSTOM0 = (pivot.xyz, part id) and each
 // instance passes INSTANCE_CUSTOM = (cycle phase, gait/flap amount, packed head yaw+pitch,
 // packed coat index + tail amount). Parts: 0 body, 1-4 legs FL FR BL BR (trot), 5 head/neck,
-// 6 tail, 7/8 wings L/R, 9 fish body flex, 12 hind pair, 13 front pair (hoppers).
+// 6 tail, 7/8 wings L/R, 9 fish body flex, 10/11 outer wings L/R, 12 hind pair, 13 front pair
+// (hoppers). [fauna2] Wings flap in two segments: the arm about the shoulder, the hand (CUSTOM1 =
+// shoulder pivot) lagging behind and folding back on the upstroke, so a flap reads as a flap.
 // UV.x = how much the coat tint applies, UV.y = gloss (eyes, noses, wet beaks).
 render_mode diffuse_burley, specular_schlick_ggx, cull_back;
 
@@ -32,6 +34,7 @@ void vertex() {
 	float tail = mod(w, 2.0);
 	vec3 p = VERTEX - piv;
 	vec3 n = NORMAL;
+	vec3 base = piv;
 	if (part >= 1 && part <= 4) {
 		float off = (part == 2 || part == 3) ? 3.14159 : 0.0;
 		float a = sin(phase + off) * gait;
@@ -45,15 +48,24 @@ void vertex() {
 	} else if (part == 6) {
 		float a = sin(TIME * 5.0 + float(INSTANCE_ID) * 1.7) * tail;
 		p = rot_y(p, a); n = rot_y(n, a);
-	} else if (part == 7 || part == 8) {
-		float side = part == 7 ? -1.0 : 1.0;
-		float a = (sin(phase) * gait + tail * 0.35) * side;
+	} else if (part == 7 || part == 8 || part == 10 || part == 11) {
+		float side = (part == 7 || part == 10) ? -1.0 : 1.0;
+		// Main stroke (a touch more up than down) plus a slight dihedral when gliding.
+		float a = ((sin(phase) * 0.85 + 0.1) * gait + tail * 0.12) * side;
+		if (part >= 10) {
+			float fold = max(cos(phase), 0.0) * gait;
+			float lag = sin(phase - 0.9) * gait * 0.45 - fold * 0.3;
+			p = rot_y(p, -side * fold * 0.6); n = rot_y(n, -side * fold * 0.6);
+			p = rot_z(p, side * lag); n = rot_z(n, side * lag);
+			p += piv - CUSTOM1.xyz;
+			base = CUSTOM1.xyz;
+		}
 		p = rot_z(p, a); n = rot_z(n, a);
 	} else if (part == 9) {
 		float k = max(p.z, 0.0);
 		p.x += sin(phase - p.z * 9.0) * gait * k * 0.35;
 	}
-	VERTEX = p + piv;
+	VERTEX = p + base;
 	NORMAL = normalize(n);
 	// Cheap baked occlusion: undersides and the belly line sit in shadow.
 	v_ao = mix(0.62, 1.0, smoothstep(-0.7, 0.5, NORMAL.y));
