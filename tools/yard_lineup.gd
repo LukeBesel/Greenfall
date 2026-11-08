@@ -179,7 +179,7 @@ func _build_builds() -> void:
 		c.add_child(m)
 	var st: MeshInstance3D = YardArt.radio_stand().mi(0.15)
 	st.position = Vector3(41.0, 0, 1.5)
-	st.rotation_degrees = Vector3(0, 90, 0)
+	st.rotation_degrees = Vector3(0, -60, 0)  # front (+X) toward the camera
 	add_child(st)
 	YardArt.set_powered(st, true)
 	var n := Node3D.new()

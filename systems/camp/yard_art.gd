@@ -919,6 +919,11 @@ static func ground_for_level(world: Node, level: int, half: float = 8.5) -> void
 	patch.name = "KitGroundPatch"
 	patch.position.y = -GROUND_SINK
 	patch.set_meta("kit_state", st)
+	var plates: MeshInstance3D = patch.get_node_or_null("Plates") as MeshInstance3D
+	if plates and plates.mesh:  # drain covers read as black holes from above: light steel instead
+		for i: int in plates.mesh.get_surface_count():
+			if (plates.mesh as ArrayMesh).surface_get_name(i) == "dark_steel":
+				plates.set_surface_override_material(i, KitMat.steel(st, false))
 	root.add_child(patch)
 	_hide_slab(world)
 
@@ -1120,24 +1125,41 @@ static func composter() -> Dictionary:
 ## The console the boombox sits on (top at y 0.7) with a speaker stack each side. Front +X.
 static func radio_stand() -> Kit:
 	var k := Kit.new()
-	k.box(Vector3(0.7, 0.08, 0.9), Vector3(0, 0.04, 0), DARK)
-	k.box(Vector3(0.64, 0.6, 0.84), Vector3(0, 0.38, 0), TEAL, Vector3.ZERO, 0.05)
-	k.box(Vector3(0.7, 0.05, 0.9), Vector3(0, 0.69, 0), CREAM, Vector3.ZERO, 0.02)
-	k.box(Vector3(0.03, 0.42, 0.7), Vector3(0.325, 0.38, 0), CREAM, Vector3.ZERO, 0.015)
-	for i: int in 9:  # a shelf of CD cases
-		k.box(Vector3(0.12, 0.13, 0.018), Vector3(0.3, 0.3, -0.24 + i * 0.03), [RED, YELLOW, BLUE, CREAM, GREEN, ORANGE][i % 6], Vector3(0, 0, -6 if i == 5 else 0), 0.004)
-	k.decal("grille", Vector2(0.3, 0.16), Vector3(0.343, 0.5, 0.15), Vector3(0, 90, 0))
-	k.glow_box(Vector3(0.012, 0.03, 0.06), Vector3(0.345, 0.5, -0.2), WARM)
+	k.box(Vector3(0.74, 0.08, 0.94), Vector3(0, 0.04, 0), DARK, Vector3.ZERO, 0.03)
+	k.hazard(Vector3(0.75, 0.04, 0.95), Vector3(0, 0.07, 0))
+	k.box(Vector3(0.64, 0.6, 0.84), Vector3(0, 0.39, 0), TEAL, Vector3.ZERO, 0.06)
+	k.box(Vector3(0.72, 0.06, 0.92), Vector3(0, 0.67, 0), CREAM, Vector3.ZERO, 0.03)  # top at 0.7 (the boombox)
+	# Front (+X): a cream fascia with a disc slot, a lit display, a grille and a shelf of CDs.
+	k.box(Vector3(0.04, 0.5, 0.74), Vector3(0.32, 0.39, 0), CREAM, Vector3.ZERO, 0.02)
+	k.box(Vector3(0.02, 0.025, 0.24), Vector3(0.345, 0.58, -0.16), DARK, Vector3.ZERO, 0.008)  # disc slot
+	k.cyl(0.018, 0.02, Vector3(0.345, 0.58, 0.04), RED, Vector3(0, 0, 90), 0.005, 10)  # eject
+	k.box(Vector3(0.02, 0.09, 0.26), Vector3(0.345, 0.47, -0.16), DARK, Vector3.ZERO, 0.01)
+	k.glow_box(Vector3(0.012, 0.06, 0.22), Vector3(0.355, 0.47, -0.16), CYAN)  # display
+	k.box(Vector3(0.02, 0.2, 0.24), Vector3(0.345, 0.47, 0.2), DARK, Vector3.ZERO, 0.01)
+	k.decal("grille", Vector2(0.22, 0.18), Vector3(0.357, 0.47, 0.2), Vector3(0, 90, 0))
+	for i: int in 3:
+		k.cyl(0.02, 0.03, Vector3(0.35, 0.33, -0.22 + i * 0.07), [ORANGE, CREAM, CREAM][i], Vector3(0, 0, 90), 0.006, 10)
+	k.box(Vector3(0.16, 0.03, 0.66), Vector3(0.27, 0.2, 0), TEAL_D, Vector3.ZERO, 0.01)  # CD shelf
+	for i: int in 10:
+		k.box(Vector3(0.12, 0.13, 0.018), Vector3(0.28, 0.28, -0.27 + i * 0.03), [RED, YELLOW, BLUE, CREAM, GREEN, ORANGE][i % 6], Vector3(0, 0, -6 if i == 6 else 0), 0.004)
+	# Back: vent and bolts (it is seen from the yard too).
+	k.vent(0.4, 0.24, Vector3(-0.325, 0.42, 0), TEAL_D, Vector3(0, -90, 0), 4)
+	k.bolts4(Vector3(-0.325, 0.39, 0), Vector3(0, 0, 0.36), Vector3(0, 0.24, 0), Vector3.LEFT)
+	k.light(Vector3(0.5, 0.55, -0.1), CYAN, 0.2, 1.0)
 	for s: float in [-1.0, 1.0]:
-		var z: float = s * 0.72
-		k.box(Vector3(0.42, 0.06, 0.42), Vector3(0, 0.03, z), DARK)
-		k.box(Vector3(0.38, 0.92, 0.38), Vector3(0, 0.52, z), DARK.lightened(0.08), Vector3(0, s * -12, 0), 0.04)
+		var z: float = s * 0.74
+		k.push(Transform3D(Basis(Vector3.UP, deg_to_rad(s * -12.0)), Vector3(0, 0, z)))
+		k.box(Vector3(0.44, 0.08, 0.44), Vector3(0, 0.04, 0), DARK, Vector3.ZERO, 0.03)
+		k.box(Vector3(0.38, 0.92, 0.38), Vector3(0, 0.54, 0), DARK.lightened(0.1), Vector3.ZERO, 0.05)
+		k.box(Vector3(0.03, 0.86, 0.32), Vector3(0.19, 0.54, 0), TEAL, Vector3.ZERO, 0.015)  # front baffle
 		for y: float in [0.34, 0.76]:
-			var c: Vector3 = Vector3(0.19, y, z) + Basis(Vector3.UP, deg_to_rad(s * -12)) * Vector3(0.0, 0, 0)
-			k.cyl(0.13, 0.03, c, STEEL, Vector3(0, s * -12, 90), 0.008, 18)
-			k.cyl(0.11, 0.03, c + Vector3(0.008, 0, 0), RUBBER, Vector3(0, s * -12, 90), 0.008, 18)
-			k.cyl(0.035, 0.03, c + Vector3(0.016, 0, 0), ORANGE, Vector3(0, s * -12, 90), 0.006, 10)
-		k.box(Vector3(0.4, 0.05, 0.4), Vector3(0, 1.0, z), ORANGE, Vector3(0, s * -12, 0), 0.015)
+			k.cyl(0.13, 0.03, Vector3(0.21, y, 0), STEEL, Vector3(0, 0, 90), 0.008, 18)
+			k.cyl(0.11, 0.03, Vector3(0.22, y, 0), RUBBER, Vector3(0, 0, 90), 0.008, 18)
+			k.cyl(0.035, 0.03, Vector3(0.23, y, 0), ORANGE, Vector3(0, 0, 90), 0.006, 10)
+		k.decal("grille", Vector2(0.24, 0.12), Vector3(0.207, 0.55, 0), Vector3(0, 90, 0))
+		k.vent(0.24, 0.3, Vector3(-0.195, 0.6, 0), DARK, Vector3(0, -90, 0), 4)
+		k.box(Vector3(0.42, 0.06, 0.42), Vector3(0, 1.02, 0), ORANGE, Vector3.ZERO, 0.02)
+		k.pop()
 	k.cable([Vector3(-0.3, 0.6, -0.2), Vector3(-0.32, 0.3, -0.45), Vector3(-0.2, 0.03, -0.6), Vector3(-0.1, 0.5, -0.72)], 0.014)
 	k.cable([Vector3(-0.3, 0.6, 0.2), Vector3(-0.32, 0.3, 0.45), Vector3(-0.2, 0.03, 0.6), Vector3(-0.1, 0.5, 0.72)], 0.014)
 	return k
