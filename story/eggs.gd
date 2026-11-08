@@ -36,6 +36,9 @@ func setup() -> void:
 		defs[str(e["id"])] = e
 		order.append(str(e["id"]))
 	StorySfx.ensure()
+	if world.field is SphereField:  # [orbB] the globe: this hub's eggs, planned in the hub frame
+		_setup_globe(data)
+		return
 	var wild: bool = world.field.layout != null and world.field.layout.wild
 	var ids: Array[String] = district_eggs(order, defs, GameState.current_hub, world.field.seed_value, int(data.get("per_district", 9)),
 		wild, world.field.biome, int(data.get("wild_per_district", 4)))
@@ -64,6 +67,83 @@ func setup() -> void:
 	_refresh_visibility()
 	if DevHooks.has("spawn-egg"):
 		_dev_spawn.call_deferred(DevHooks.get_s("spawn-egg", "duck"))
+
+
+# --- [orbB] The globe: eggs per hub, in the hub frame (planet/orbit/hub_frame.gd) -----------
+
+var hub_index: int = 0  # the hub whose eggs these are (set by the frame host)
+var frame_cells := PackedInt32Array()  # that hub's region
+
+
+func _setup_globe(data: Dictionary) -> void:
+	var f: SphereField = world.field
+	var ids: Array[String] = district_eggs(order, defs, hub_index, f.seed_value + hub_index * 977, int(data.get("per_district", 9)),
+		hub_index != 0, "", int(data.get("wild_per_district", 4)))
+	var avoid: Array[Vector3] = [Vector3.ZERO]
+	var so: Node = world.get("orbit")
+	if so:  # the yard's anchors (bench, bin, pod, tower, ...) stay clear
+		for nm: String in ["bench", "depot", "bin", "pod", "signal_tower", "telescope", "radio", "locker", "nursery", "rocket_pad", "stations"]:
+			avoid.append(to_local(so.call("yard_point", nm)))
+	var plan: Array[Dictionary] = plan_spots_cells(self, f, frame_cells, ids, defs, avoid, f.seed_value + 9091 + hub_index * 31)
+	for p: Dictionary in plan:
+		_spawn(p)
+	print("[eggs] hub %d: %d eggs, %d props placed" % [hub_index, ids.size(), placed.size()])
+	if _jukebox_node:
+		StorySfx.prewarm_music_box()
+	_migrate_collected()
+	EventBus.junk_scooped.connect(_on_scooped)
+	EventBus.hex_cleaned.connect(func(_h: int, _p: Vector3, _b: BigNum) -> void: _refresh_visibility())
+	_refresh_visibility()
+
+
+## plan_spots for a globe hub region, in `frame`'s local metres (+Y up): open, clean-able land away
+## from the yard, wrecks, heaps, water and each other. Deterministic per hub.
+static func plan_spots_cells(frame: Node3D, f: SphereField, cells: PackedInt32Array, ids: Array[String], all_defs: Dictionary, avoid: Array[Vector3], seed_v: int) -> Array[Dictionary]:
+	var r := RandomNumberGenerator.new()
+	r.seed = seed_v
+	var used: Array[Vector3] = avoid.duplicate()
+	var out: Array[Dictionary] = []
+	var hexes: Array[int] = []
+	for c: int in cells:
+		if f.hex_hub[c] == 0 and not f.is_water(c):
+			hexes.append(c)
+	if hexes.is_empty():
+		return out
+	var lms: Array[Vector3] = []
+	for lm: Dictionary in f.landmarks:
+		lms.append(frame.to_local(lm["pos"]))
+	for egg_id: String in ids:
+		var d: Dictionary = all_defs[egg_id]
+		var n_parts: int = int(d.get("parts", 1))
+		var has_final: bool = d.has("final")
+		var min_r: float = maxf(15.0, float(d.get("min_spawn_dist", 0.0)))
+		for part: int in n_parts + (1 if has_final else 0):
+			var best := Vector3.INF
+			var best_hex: int = -1
+			for attempt: int in 120:
+				var hid: int = hexes[r.randi() % hexes.size()]
+				var c: Vector3 = frame.to_local(f.hex_center(hid))
+				var p: Vector3 = c + Vector3(r.randf_range(-1, 1), 0, r.randf_range(-1, 1)) * f.hex_size * 0.6
+				var wp: Vector3 = f.terrain.ground(frame.to_global(p).normalized())
+				if f.hex_at(wp) != hid or Vector2(p.x, p.z).length() < min_r or f.ground_height(hid, wp) > 0.05:
+					continue
+				var min_d: float = 9.0 if attempt < 70 else 5.0
+				var clash: bool = false
+				for u: Vector3 in used + lms:
+					if Vector2(u.x - p.x, u.z - p.z).length() < min_d:
+						clash = true
+						break
+				if clash:
+					continue
+				best = frame.to_local(wp)
+				best_hex = hid
+				break
+			if best == Vector3.INF:
+				continue
+			used.append(best)
+			var yaw: float = atan2(-best.x, -best.z) + r.randf_range(-0.35, 0.35)  # facing back toward the hub
+			out.append({"id": egg_id, "part": part, "final": has_final and part == n_parts, "pos": best, "yaw": yaw, "hex": best_hex})
+	return out
 
 
 # --- Placement (pure, deterministic) -------------------------------------------------
@@ -274,9 +354,12 @@ func _spawn(p: Dictionary) -> void:
 	var node: Node3D = EggProps.build(kind, int(p["part"]))
 	node.name = "Egg_%s_%d" % [p["id"], p["part"]]
 	add_child(node)
-	node.global_position = p["pos"]
+	node.position = p["pos"]  # [orbB] (this node sits at the origin on the flat game; in the hub frame on the globe)
 	node.rotation.y = float(p["yaw"])
-	PropColliders.fit(PropColliders.body(node, "Props"), node)  # [world2] egg props are solid (off while hidden)
+	if world.field is SphereField:  # [orbB] solid on the globe: a box from its own bounds
+		OrbitUp.fit_box(node)
+	else:
+		PropColliders.fit(PropColliders.body(node, "Props"), node)  # [world2] egg props are solid (off while hidden)
 	var e: Dictionary = p.duplicate()
 	e["node"] = node
 	e["def"] = d
@@ -336,7 +419,7 @@ func _refresh_visibility() -> void:
 			n.visible = is_found(id) or world.field.is_clean(int(e["hex"]))
 			PropColliders.set_active(n, n.visible)  # [world2]
 			if n.visible and not was and not is_found(id):
-				Vfx.burst("sparkle", n.global_position + Vector3(0, 0.5, 0), Color(0.6, 0.95, 1.0))
+				Vfx.burst("sparkle", n.global_position + OrbitUp.up(n.global_position) * 0.5, Color(0.6, 0.95, 1.0))
 				EventBus.toast.emit(tr("Something metal surfaced in the cleared ground."), "info")
 		elif bool(e["final"]):
 			n.visible = is_found(id) or _parts_seen(id).size() >= int(e["def"].get("parts", 1))
@@ -480,7 +563,7 @@ func _process(delta: float) -> void:
 			continue
 		var d: Dictionary = e["def"]
 		var id: String = e["id"]
-		var dist: float = Vector2(n.global_position.x - pp.x, n.global_position.z - pp.z).length()
+		var dist: float = OrbitUp.ground_dist(pp, n.global_position)  # [orbB] along the ground
 		match str(d.get("trigger", "")):
 			"near":
 				if dist < float(d.get("range", 4.0)) and not is_found(id):
@@ -519,7 +602,7 @@ func _glint(delta: float) -> void:
 			continue
 		if str(e["kind"]) == "gnome" and int(e["part"]) in _parts_seen(str(e["id"])):
 			continue
-		Vfx.burst("sparkle", n.global_position + Vector3(0, 1.1, 0), Color(1.0, 0.95, 0.75), 0.35)
+		Vfx.burst("sparkle", n.global_position + OrbitUp.up(n.global_position) * 1.1, Color(1.0, 0.95, 0.75), 0.35)
 
 
 func _on_scooped(_type_id: String, pos: Vector3) -> void:
@@ -551,13 +634,13 @@ func _mark_part(e: Dictionary) -> void:
 	_hop(n.get_node_or_null("Anim"))
 	Audio.play_scale("blip", seen.size() * 2, -6.0)
 	var label: String = tr("Gnome %d / %d") % [seen.size(), total] if str(e["kind"]) == "gnome" else "%d / %d" % [seen.size(), total]
-	Vfx.float_text(n.global_position + Vector3(0, 1.3, 0), label, Color(1.0, 0.9, 0.6), 1.1, 1.0)
+	Vfx.float_text(n.global_position + OrbitUp.up(n.global_position) * 1.3, label, Color(1.0, 0.9, 0.6), 1.1, 1.0)
 	if seen.size() >= total:
 		if e["def"].has("final"):
 			_refresh_visibility()
 			for f: Dictionary in placed:
 				if f["id"] == id and bool(f["final"]):
-					Vfx.burst("sparkle", (f["node"] as Node3D).global_position + Vector3(0, 0.5, 0), Color(1.0, 0.8, 0.5))
+					Vfx.burst("sparkle", (f["node"] as Node3D).global_position + OrbitUp.up((f["node"] as Node3D).global_position) * 0.5, Color(1.0, 0.8, 0.5))
 			EventBus.toast.emit(tr("The last poster points somewhere close. Something orange is curled up nearby."), "info")
 		else:
 			_chain_complete(e)
@@ -570,7 +653,7 @@ func _chain_complete(e: Dictionary) -> void:
 		if f["id"] != id:
 			continue
 		var g: Node3D = f["node"]
-		var to: Vector3 = world.patch.global_position - g.global_position
+		var to: Vector3 = g.get_parent().to_local(world.patch.global_position) - g.position  # [orbB] in its own frame
 		var tw := g.create_tween()
 		tw.tween_property(g, "rotation:y", atan2(to.x, to.z), 1.2).set_trans(Tween.TRANS_SINE)
 		tw.tween_callback(_hop.bind(g.get_node_or_null("Anim")))
@@ -615,8 +698,8 @@ func _collected(e: Dictionary) -> void:
 	var label: String = tr("Gnome %d / %d") % [count, total] if str(e["kind"]) == "gnome" else "%d / %d" % [count, total]
 	EventBus.toast.emit(tr("%s   ·   added to Lumi's collection") % label, "info")
 	if world and world.patch:
-		Vfx.float_text(world.patch.global_position + Vector3(0, 2.0, 0), label, Color(1.0, 0.9, 0.6), 1.1, 1.0)
-		Vfx.burst("sparkle", world.patch.global_position + Vector3(0, 1.1, 0), Color(1.0, 0.9, 0.6), 0.5)
+		Vfx.float_text(world.patch.global_position + OrbitUp.up(world.patch.global_position) * 2.0, label, Color(1.0, 0.9, 0.6), 1.1, 1.0)
+		Vfx.burst("sparkle", world.patch.global_position + OrbitUp.up(world.patch.global_position) * 1.1, Color(1.0, 0.9, 0.6), 0.5)
 	if count >= total and not is_found(id):
 		found(id)
 
@@ -659,7 +742,7 @@ func _use(e: Dictionary) -> void:
 		_effect(e)
 		return
 	if kind == "vending" and is_found(id):
-		Vfx.float_text((e["node"] as Node3D).global_position + Vector3(0, 2.2, 0), tr("SOLD OUT"), Color(1.0, 0.4, 0.3), 1.2, 1.0)
+		Vfx.float_text((e["node"] as Node3D).global_position + OrbitUp.up((e["node"] as Node3D).global_position) * 2.2, tr("SOLD OUT"), Color(1.0, 0.4, 0.3), 1.2, 1.0)
 		Audio.play("buzz", 1.3, -8.0)
 		_wobble(e["node"], 0.04)
 		return
@@ -672,7 +755,7 @@ func _effect(e: Dictionary) -> void:
 	var n: Node3D = e["node"]
 	EggPower.wake(n)  # [qafix] the poke brings the machine back to life
 	var anim: Node3D = n.get_node_or_null("Anim")
-	var top: Vector3 = n.global_position + Vector3(0, 1.6, 0)
+	var top: Vector3 = n.global_position + OrbitUp.up(n.global_position) * 1.6
 	match str(e["kind"]):
 		"duck":
 			Audio.play("quack", 1.0, -2.0)
@@ -691,14 +774,14 @@ func _effect(e: Dictionary) -> void:
 				tw.tween_property(anim, "position:y", 0.45, 0.4).set_trans(Tween.TRANS_BACK)
 				tw.tween_property(anim, "rotation_degrees:z", 90.0, 0.4)
 			Audio.play("dig", 1.0, -4.0)
-			Vfx.burst("soil", n.global_position + Vector3(0, 0.2, 0), Color(0.5, 0.4, 0.3))
+			Vfx.burst("soil", n.global_position + OrbitUp.up(n.global_position) * 0.2, Color(0.5, 0.4, 0.3))
 		"arcade":
 			Audio.play("arcade", 1.0, -4.0)
 			_flash(n.get_node_or_null("Screen"), Color(0.4, 1.0, 0.7), 3.0)
-			Vfx.float_text(top + Vector3(0, 0.6, 0), tr("NEW CHALLENGER!"), Color(0.5, 1.0, 0.7), 1.2, 1.0)
+			Vfx.float_text(top + OrbitUp.up(top) * 0.6, tr("NEW CHALLENGER!"), Color(0.5, 1.0, 0.7), 1.2, 1.0)
 			get_tree().create_timer(2.2, false).timeout.connect(func() -> void:
 				Audio.play("arcade", 0.6, -6.0)
-				Vfx.float_text(top + Vector3(0, 0.6, 0), tr("GAME OVER  ·  SCORE 12"), Color(1.0, 0.6, 0.4), 1.1, 1.0))
+				Vfx.float_text(top + OrbitUp.up(top) * 0.6, tr("GAME OVER  ·  SCORE 12"), Color(1.0, 0.6, 0.4), 1.1, 1.0))
 		"cat_shell":
 			Audio.play("purr", 1.0, -3.0)
 			var eye: OmniLight3D = n.get_node_or_null("Light")
@@ -709,7 +792,7 @@ func _effect(e: Dictionary) -> void:
 				var tw3 := anim.create_tween().set_loops(3)
 				tw3.tween_property(anim, "scale", Vector3(1.0, 1.06, 1.0), 0.5).set_trans(Tween.TRANS_SINE)
 				tw3.tween_property(anim, "scale", Vector3.ONE, 0.5).set_trans(Tween.TRANS_SINE)
-			Vfx.float_text(n.global_position + Vector3(0, 0.9, 0), "purrrr", Color(1.0, 0.8, 0.55), 1.0, 0.8)
+			Vfx.float_text(n.global_position + OrbitUp.up(n.global_position) * 0.9, "purrrr", Color(1.0, 0.8, 0.55), 1.0, 0.8)
 		"vending":
 			_wobble(n, 0.05)
 			Audio.play("clunk", 0.8, -2.0)
@@ -726,7 +809,7 @@ func _effect(e: Dictionary) -> void:
 			_tune_tv(e)  # [eggs2] the last broadcast (story/tv_broadcast.gd)
 		"snail":
 			_hop(anim)
-			Vfx.float_text(n.global_position + Vector3(0, 1.3, 0), tr("hi, Gus"), Color(0.9, 1.0, 0.8), 1.0, 0.8)
+			Vfx.float_text(n.global_position + OrbitUp.up(n.global_position) * 1.3, tr("hi, Gus"), Color(0.9, 1.0, 0.8), 1.0, 0.8)
 		"bench_bots":
 			var fl: Node3D = n.get_node_or_null("Flower")
 			if fl:
@@ -734,7 +817,7 @@ func _effect(e: Dictionary) -> void:
 				fl.scale = Vector3.ONE * 0.05
 				var tw5 := fl.create_tween()
 				tw5.tween_property(fl, "scale", Vector3.ONE * 0.5, 0.6).set_trans(Tween.TRANS_BACK)
-			Vfx.burst("sparkle", n.global_position + Vector3(0, 0.9, 0), Color(1.0, 0.9, 0.6), 0.6)
+			Vfx.burst("sparkle", n.global_position + OrbitUp.up(n.global_position) * 0.9, Color(1.0, 0.9, 0.6), 0.6)
 			Audio.play("chime", 1.3, -10.0)
 		"microwave":
 			for k: int in 3:
@@ -759,12 +842,12 @@ func _effect(e: Dictionary) -> void:
 			if prize:
 				prize.visible = false
 			if str(e["kind"]) == "fishing_net":
-				Vfx.burst("sparkle", n.global_position + Vector3(0, 0.6, 0), Color(0.7, 0.85, 1.0), 0.6)
+				Vfx.burst("sparkle", n.global_position + OrbitUp.up(n.global_position) * 0.6, Color(0.7, 0.85, 1.0), 0.6)
 		"pedestal":
 			if anim:
 				var twp := anim.create_tween()
 				twp.tween_property(anim, "rotation:y", anim.rotation.y + TAU, 1.6).set_trans(Tween.TRANS_SINE)
-			Vfx.burst("sparkle", n.global_position + Vector3(0, 1.3, 0), Color(1.0, 0.85, 0.3), 1.2)
+			Vfx.burst("sparkle", n.global_position + OrbitUp.up(n.global_position) * 1.3, Color(1.0, 0.85, 0.3), 1.2)
 			Audio.play("chime", 1.5, -6.0)
 		"weather_bot":
 			if anim:
@@ -772,7 +855,7 @@ func _effect(e: Dictionary) -> void:
 				twv.tween_property(anim, "rotation:y", anim.rotation.y + PI * 0.66, 0.25)
 			Audio.play("servo", 1.2, -6.0)
 			var fc: Array[String] = [tr("CONFETTI"), tr("LIGHT JAZZ"), tr("99% DUCKS"), tr("SUNNY (INDOORS)"), tr("FOG OF NOODLES")]
-			Vfx.float_text(top + Vector3(0, 1.4, 0), "FORECAST: " + fc[randi() % fc.size()], Color(0.7, 0.9, 1.0), 1.1, 1.4)
+			Vfx.float_text(top + OrbitUp.up(top) * 1.4, "FORECAST: " + fc[randi() % fc.size()], Color(0.7, 0.9, 1.0), 1.1, 1.4)
 		"potato":
 			_squash(anim)
 			Audio.play("dig", 1.4, -6.0)
@@ -793,7 +876,7 @@ func _effect(e: Dictionary) -> void:
 			Audio.play("servo", 0.7, -6.0)
 		"sand_car":
 			_wobble(anim, 0.05)
-			Vfx.burst("dust", n.global_position + Vector3(0, 0.6, 0), Color(0.9, 0.8, 0.6, 0.8), 1.2)
+			Vfx.burst("dust", n.global_position + OrbitUp.up(n.global_position) * 0.6, Color(0.9, 0.8, 0.6, 0.8), 1.2)
 			Audio.play("clunk", 0.7, -6.0)
 		"cairn":
 			var stone: Node3D = n.get_node_or_null("Anim/Top")
@@ -811,7 +894,7 @@ func _effect(e: Dictionary) -> void:
 				twf.tween_property(fire, "light_energy", 1.6, 1.2)
 			if flame:
 				flame.visible = true
-			Vfx.burst("sparkle", n.global_position + Vector3(0, 0.4, 0), Color(1.0, 0.6, 0.25), 0.8)
+			Vfx.burst("sparkle", n.global_position + OrbitUp.up(n.global_position) * 0.4, Color(1.0, 0.6, 0.25), 0.8)
 			Audio.play("whoosh", 0.6, -8.0)
 		"drill_press":
 			_wobble(n.get_node_or_null("Sign"), 0.08)
@@ -1058,7 +1141,7 @@ func found(id: String) -> void:
 	for k: String in rew:
 		GameState.add_currency(k, BigNum.from_float(float(rew[k])))
 		bits.append(L10nFmt.reward(k, int(rew[k])))  # [i18n2]
-	var pos: Vector3 = world.patch.global_position + Vector3(0, 1.8, 0) if world and world.patch else Vector3.ZERO
+	var pos: Vector3 = world.patch.global_position + OrbitUp.up(world.patch.global_position) * 1.8 if world and world.patch else Vector3.ZERO
 	Vfx.burst("confetti", pos, Color.WHITE, 0.5)
 	Audio.play("sparkle", 1.0, -4.0)
 	Audio.play("chime", 1.2, -8.0)

@@ -542,14 +542,26 @@ func _build_hub_frame() -> void:
 	hub_frame.setup(self)
 	hub_frame.hub_changed.connect(func(_h: int) -> void:
 		var fa: Node = hub_frame.node("Fauna")
-		w.set("fauna", fa as Fauna if fa else null))
+		w.set("fauna", fa as Fauna if fa else null)
+		var eg: Node = hub_frame.node("EasterEggs")
+		w.set("eggs", eg as EasterEggs if eg else null))
 	hub_frame.host("Fauna", func(f: HubFrame, _hub: int) -> Node:  # ambient animals return as hexes are restored
 		var fa := Fauna.new()
 		f.add_child(fa)
 		fa.frame_cells = f.region()
 		fa.setup(w)
 		return fa)
+	hub_frame.host("EasterEggs", func(f: HubFrame, hub: int) -> Node:  # each hub's easter eggs and collectibles
+		var eg := EasterEggs.new()
+		eg.name = "EasterEggs"
+		eg.world = w
+		eg.hub_index = hub
+		f.add_child(eg)
+		eg.frame_cells = f.region()
+		eg.setup()
+		return eg)
 	w.set("fauna", hub_frame.node("Fauna") as Fauna)
+	w.set("eggs", hub_frame.node("EasterEggs") as EasterEggs)
 
 
 ## The landing pod in its crash site on the start site's "pod" anchor. The intro cinematic itself
