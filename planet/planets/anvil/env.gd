@@ -393,6 +393,12 @@ func _update_suns() -> void:
 	var we: Environment = world.get("_env")
 	if we:
 		we.ambient_light_energy *= float((entry.get("ambient", {}) as Dictionary).get("energy_mult", 0.95))
+		# Nights stay readable: an ambient floor and a dim ember-tinted fog light.
+		var nt: Dictionary = entry.get("night", {})
+		var night_k: float = 1.0 - _smooth(-0.05, 0.15, sun.global_basis.z.y)
+		if night_k > 0.0:
+			we.ambient_light_energy = maxf(we.ambient_light_energy, float(nt.get("ambient_min", 0.85)) * night_k)
+			we.fog_light_color = we.fog_light_color.lerp(col(nt.get("fog"), Color(0.32, 0.14, 0.1)), night_k * 0.6)
 
 
 # --- Ground and terrain -------------------------------------------------------------------
@@ -505,6 +511,7 @@ func _build_terrain() -> void:
 	terrain_mat = _terrain_material(0.0)
 	slag_mat = _terrain_material(1.0)
 	slag_mat.set_shader_parameter("strata", 0.0)
+	slag_mat.set_shader_parameter("ember", 1.6)
 	var r_out: float = 1300.0
 	var nr: int = 150
 	var na: int = 400 if Settings.quality >= 1 else 300
@@ -777,7 +784,7 @@ func _build_particles() -> void:
 	_haze.gravity = Vector3.ZERO
 	_haze.scale_amount_min = 14.0
 	_haze.scale_amount_max = 26.0
-	_haze.color_ramp = _fade_ramp(0.06)
+	_haze.color_ramp = _fade_ramp(0.03)
 	add_child(_haze)
 	_motes = CPUParticles3D.new()
 	_motes.name = "SeedMotes"

@@ -142,9 +142,9 @@
     "district_name": "Anvil Foundry Flats",
     "sky": {
       "rayleigh": [
-        0.98,
-        0.66,
-        0.42
+        0.96,
+        0.52,
+        0.32
       ],
       "rayleigh_coef": 1.4,
       "mie": [
@@ -154,30 +154,30 @@
       ],
       "mie_eccentricity": 0.9,
       "sky_amt": 0.85,
-      "turbidity": 5.0,
+      "turbidity": 4.0,
       "mie_coef": 0.004,
       "ground": [
         0.42,
         0.2,
         0.12
       ],
-      "sat": 0.95,
+      "sat": 1.15,
       "exposure": 1.0,
-      "contrast": 1.08
+      "contrast": 1.18
     },
     "fog": {
       "color": [
-        0.9,
-        0.6,
-        0.44
+        0.62,
+        0.26,
+        0.14
       ],
-      "amt": 0.8,
-      "mult": 0.9,
-      "aerial": 0.3,
-      "fog_sky": 0.35,
+      "amt": 0.7,
+      "mult": 0.35,
+      "aerial": 0.15,
+      "fog_sky": 0.2,
       "height_fog": [
-        3.0,
-        0.006
+        2.0,
+        0.0
       ]
     },
     "sun": {
@@ -221,19 +221,19 @@
     },
     "palette": {
       "dust": [
-        0.78,
-        0.4,
-        0.24
+        0.72,
+        0.27,
+        0.14
       ],
       "rock": [
-        0.52,
-        0.27,
-        0.17
+        0.3,
+        0.11,
+        0.07
       ],
       "band": [
-        0.86,
-        0.56,
-        0.38
+        0.6,
+        0.24,
+        0.12
       ],
       "soot": [
         0.06,
@@ -267,11 +267,20 @@
       ]
     },
     "junk_tint": [
-      0.6,
-      0.27,
-      0.14,
+      0.5,
+      0.18,
+      0.08,
       0.55
     ],
-    "music_mood": "anvil_foundry"
+    "music_mood": "anvil_foundry",
+    "night": {
+      "_doc": "night floor so the play area stays readable (ambient energy, warm ember-tinted fog light)",
+      "ambient_min": 0.85,
+      "fog": [
+        0.32,
+        0.14,
+        0.1
+      ]
+    }
   }
 }

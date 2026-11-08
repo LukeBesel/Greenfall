@@ -23,6 +23,8 @@ uniform float restore = 0.0;
 uniform float slag = 0.0;
 uniform float strata = 1.0;
 uniform float ripple = 0.6;
+uniform vec3 ember_col = vec3(1.0, 0.32, 0.08);
+uniform float ember = 0.0;      // glowing cracks in slag (fades as restored)
 
 varying vec3 wpos;
 varying vec3 wnrm;
@@ -109,6 +111,13 @@ void fragment() {
 		rough = mix(rough, 0.32, slag * (0.4 + 0.6 * n3));
 		spec = mix(spec, 0.6, slag);
 	}
+	vec3 em = vec3(0.0);
+	if (slag > 0.001 && ember > 0.001) {
+		// Still-warm slag: thin glowing cracks, brighter low on the heap, dim by distance.
+		float cr = 1.0 - smoothstep(0.0, 0.035, abs(fbm(p * 0.35 + wpos.y * 0.2) - 0.5));
+		float low = 1.0 - smoothstep(0.0, 9.0, wpos.y - (fbm(p * 0.05) * 4.0));
+		em = ember_col * cr * (0.35 + 0.65 * low) * ember * (1.0 - restore);
+	}
 	float flat_ = 1.0 - smoothstep(0.25, 0.6, slope);
 	if (restore > 0.001) {
 		float lg = lum(two_scale(tex_g, p, 0.25));
@@ -127,4 +136,5 @@ void fragment() {
 	NORMAL = normalize((VIEW_MATRIX * vec4(wn, 0.0)).xyz);
 	ROUGHNESS = rough;
 	SPECULAR = spec;
+	EMISSION = em;
 }
