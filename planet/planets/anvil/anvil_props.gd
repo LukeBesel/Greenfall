@@ -52,7 +52,7 @@ static func noisy_cyl(r_top: float, r_bot: float, h: float, segs: int, rings: in
 		for j: int in segs:
 			var a0: int = i * (segs + 1) + j
 			var b0: int = a0 + segs + 1
-			for idx: int in [a0, b0, a0 + 1, a0 + 1, b0, b0 + 1]:
+			for idx: int in [a0, a0 + 1, b0, a0 + 1, b0 + 1, b0]:
 				st.add_index(idx)
 	st.generate_normals()
 	return st.commit()

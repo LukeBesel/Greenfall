@@ -281,6 +281,42 @@
         0.14,
         0.1
       ]
-    }
+    },
+    "sites": [
+      {
+        "id": "foundry_yard",
+        "kind": "hub",
+        "name": "Foundry Yard",
+        "script": "res://planet/planets/anvil/anvil_sites.gd",
+        "size_m": 96,
+        "clear_core_m": 12,
+        "desc": "hub base: casting hall, two stacks, conveyor truss and hopper, ore spur, ember slag tip, buried hauler"
+      },
+      {
+        "id": "foundry_tower",
+        "kind": "landmark",
+        "name": "Ledger Foundry Tower",
+        "script": "res://planet/planets/anvil/anvil_sites.gd",
+        "size_m": 84,
+        "desc": "the Ledger's colossal 130 m foundry stack on buttresses, pipes and slag tips"
+      },
+      {
+        "id": "lava_forge",
+        "kind": "landmark",
+        "name": "Lava Forge",
+        "script": "res://planet/planets/anvil/anvil_sites.gd",
+        "size_m": 92,
+        "desc": "running furnace pouring molten slag down a channel to a pool; ladle crane; cools as restored"
+      },
+      {
+        "id": "ruined_smelter",
+        "kind": "landmark",
+        "name": "Ruined Smelter",
+        "script": "res://planet/planets/anvil/anvil_sites.gd",
+        "size_m": 84,
+        "desc": "collapsed smelter hall frame, tipped and spilled pots, a toppled stack; restored as a planted pergola"
+      }
+    ],
+    "sites_api": "AnvilSites.build(site_root: Node3D, site_id, stage 1..5, restoration 0..1) -> Node3D; local +Y up, locally flat patch at the root's origin"
   }
 }

@@ -45,6 +45,8 @@ var groups: Dictionary = {}
 var mats: Dictionary = {}
 var rotors: Array[Node3D] = []
 var stacks: Array[Dictionary] = []
+## Site prefabs (anvil_sites.gd): a kit with materials only; the ground is locally flat (y 0).
+var flat_site: bool = false
 var terrain_mat: ShaderMaterial
 var slag_mat: ShaderMaterial
 
@@ -482,8 +484,26 @@ static func _terrace(h: float, step: float) -> float:
 	return (floorf(k) + _smooth(0.55, 0.95, f)) * step
 
 
-## Ground height for props (0 on the field).
+## A material/prop kit for placeable sites (no world, no terrain): palette materials, the
+## terrain shader as dust/slag, ground height 0. Parent it under the site so it is freed with it.
+static func kit() -> AnvilEnv:
+	var k := AnvilEnv.new()
+	k.name = "AnvilKit"
+	k.flat_site = true
+	k.entry = planet_entry()
+	k.look = load_json(DATA_PATH)
+	k.terrain_mat = k._terrain_material(0.0)
+	k.slag_mat = k._terrain_material(1.0)
+	k.slag_mat.set_shader_parameter("strata", 0.0)
+	k.slag_mat.set_shader_parameter("ember", 1.6)
+	k.set_process(false)
+	return k
+
+
+## Ground height for props (0 on the field and on flat sites).
 func gy(p: Vector3) -> float:
+	if flat_site:
+		return 0.0
 	if Vector2(p.x, p.z).length() < r_in + 3.0:
 		return 0.0
 	return maxf(height(p.x, p.z), -0.04)
@@ -870,6 +890,8 @@ func _place_moons() -> void:
 # --- Update ---------------------------------------------------------------------------------
 
 func _process(delta: float) -> void:
+	if flat_site:
+		return
 	_t += delta
 	_tick += delta
 	if has_meta("nohud"):
@@ -943,6 +965,28 @@ func _apply_restore() -> void:
 
 # --- Dev ------------------------------------------------------------------------------------
 
+## Dev (--anvil-site=id[,stage[,restoration]]): shows one placeable site prefab on its own: the
+## flat district, terrain and far props are hidden; sky, suns, moons and Lumi stay.
+func _site_preview(arg: String) -> void:
+	var a: PackedStringArray = arg.split(",")
+	var keep: Array[Node] = [self, world.get("patch"), world.get("cam"), world.get("sky_director"), world.get("_sun")]
+	for c: Node in world.get_children():
+		if c is Node3D and not (c in keep) and not (c is WorldEnvironment):
+			(c as Node3D).visible = false
+	for c: Node in get_children():
+		if c is Node3D and not (c is DirectionalLight3D) and not (c.name in ["Moons", "PrimaryDisc", "CompanionDisc", "RedHaze", "SeedMotes"]) and not str(c.name).begins_with("DustDevil"):
+			(c as Node3D).visible = false
+	var site_root := Node3D.new()
+	site_root.name = "SitePreview"
+	world.add_child(site_root)
+	var stage: int = int(a[1]) if a.size() > 1 else level
+	var rest: float = float(a[2]) if a.size() > 2 else restore
+	AnvilSites.build(site_root, a[0], stage, rest)
+	if world.get("hud") != null:
+		(world.hud as CanvasLayer).visible = false
+	print("[planet-anvil] site %s stage %d restoration %.2f" % [a[0], stage, rest])
+
+
 ## Dev (--anvil-lookbook): Anvil's props, materials and restoration look staged in front of Lumi
 ## (the junk there is cleared): an ember-cracked slag heap, an ore cart, a weathered stack section,
 ## a half-buried hauler, red-leaf and lichen plants. These are the parts that move to the globe.
@@ -1001,6 +1045,8 @@ func _lookbook() -> void:
 func _dev_hooks() -> void:
 	if DevHooks.has("anvil-lookbook"):
 		_lookbook()
+	if DevHooks.has("anvil-site"):
+		_site_preview(DevHooks.get_s("anvil-site", "foundry_yard"))
 	if DevHooks.has("planet-view"):
 		var v: PackedStringArray = DevHooks.get_s("planet-view", "0,40,40,0,0,0").split(",")
 		if v.size() >= 6:
