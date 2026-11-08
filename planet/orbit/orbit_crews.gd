@@ -89,13 +89,13 @@ func work_cell(c: int, left: float) -> void:
 			globe.junk_view.hide_piece(pid)
 		globe.write_cell(c)
 		globe.junk_view.refresh_hex(c)
-		if left <= 0.0 and field.hex_clean[c] == 0:
+		if SphereCells.clean_left(left) and field.hex_clean[c] == 0:  # [v2feel]
 			field.hex_clean[c] = 1
 			field.cleaned_count += 1
 	else:
 		globe.cells.set_junk(c, left)
 		field.settle(c)
-	if left <= 0.0 and globe.cells.state[c] == 0:
+	if SphereCells.clean_left(left) and globe.cells.state[c] == 0:  # [v2feel]
 		globe.cells.set_state(c, 1)
 	cell_worked.emit(c, left)
 

@@ -55,7 +55,7 @@ static func region_water(grid: SphereGrid, cells: SphereCells, hub: int, rings: 
 
 
 static func _dirty(cells: SphereCells, c: int) -> bool:
-	return cells.is_dirty(c) or (cells.state[c] == 5 and cells.junk[c] > 0.02)
+	return cells.is_dirty(c) or (cells.state[c] == 5 and cells.junk[c] > SphereCells.CLEAN_LEFT)
 
 
 static func _upc(cells: SphereCells, c: int) -> float:
@@ -77,7 +77,7 @@ static func units_left(cells: SphereCells, list: PackedInt32Array) -> float:
 static func write_cell(cells: SphereCells, field: SphereField, c: int, left: float) -> PackedInt32Array:
 	var gone := PackedInt32Array()
 	left = clampf(left, 0.0, 1.0)
-	if left <= 0.02:
+	if SphereCells.clean_left(left):  # [v2feel] the shared clean rule (95% cleared sweeps the rest)
 		left = 0.0  # SphereCells.is_dirty's threshold: a crumb is a clean cell
 	if field != null and field.materialized[c] == 1:
 		gone = field.reduce_to(c, left)
@@ -95,7 +95,7 @@ static func write_cell(cells: SphereCells, field: SphereField, c: int, left: flo
 
 
 ## The one rule for "this hex is now clean" in the ledger, the same one SphereField uses when a
-## save loads: not dirty any more (land junk <= 0.02, or a lake's floaters gone) -> hex_clean, and
+## save loads: not dirty any more (land junk <= SphereCells.CLEAN_LEFT, or a lake's floaters gone) -> hex_clean, and
 ## counted in cleaned_count unless it is hub ground or a lake. Returns true if it just turned clean.
 ## Keeps the live count identical to the count after a reload.
 static func sync_clean(cells: SphereCells, field: SphereField, c: int) -> bool:

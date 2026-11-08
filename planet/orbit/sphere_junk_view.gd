@@ -42,6 +42,8 @@ var _far_todo: Array[int] = []  # groups whose far mesh is still the near one (b
 func setup(p_field: HexField) -> void:
 	field = p_field
 	sfield = p_field as SphereField
+	if sfield and not sfield.hex_swept.is_connected(_on_swept):  # [v2feel] 95% clean sweeps the rest
+		sfield.hex_swept.connect(_on_swept)
 	quality = clampi(Settings.quality, 0, 3)
 	near_radius = JunkLod.NEAR_RADIUS[quality]
 	heavy_radius = JunkLod.HEAVY_RADIUS[quality]
@@ -271,6 +273,19 @@ func piece_transform(pid: int) -> Transform3D:
 func piece_mesh(pid: int) -> Mesh:
 	var m: String = sfield.piece_model[pid]
 	return AssetLib.model_mesh(m) if m != "" and AssetLib.has_model(m) else BoxMesh.new()
+
+
+## [v2feel] The leftovers of a cell that just counted as clean: gone with a small poof each
+## (a few poofs at most, and only for pieces on screen).
+func _on_swept(_cell: int, pids: PackedInt32Array) -> void:
+	var poofs: int = 0
+	for pid: int in pids:
+		var shown: bool = pid < _where.size() and _where[pid] != 0
+		_remove(pid)
+		if shown and poofs < 8:
+			poofs += 1
+			var p: Vector3 = sfield.piece_pos[pid]
+			Vfx.burst("dust", p + p.normalized() * 0.2, Color(0.75, 0.72, 0.62, 0.6), 0.5)
 
 
 func hide_piece(pid: int) -> void:
