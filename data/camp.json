@@ -1,0 +1,9 @@
+{
+  "_doc": "[camp] The landing yard (systems/camp/camp.gd, systems/camp/yard_builds.gd). A fresh base starts with only the pod, a broken workbench and the trash bin. Lumi repairs the bench (bench_repair_s) the first time E is pressed at it. Yard builds are bought in the Hub tab: requires_level is the hub level, requires_flag a GameState flag (first_sprout = the first seed has grown). pos is [x, z] in the yard (CityLayout.YARD_HALF = 8.5; the fence runs along the back and both sides, the front at +z is open). Keep every yard interactable at least min_gap metres from the next.",
+  "bench_repair_s": 2.6,
+  "min_gap": 3.0,
+  "builds": {
+    "radio": {"name": "Radio", "desc": "A valve radio on a crate by the fence. Plays the songs of the worlds you restore.", "cost": {"cubes": 1200}, "requires_level": 2, "pos": [6.6, 3.4], "yaw_deg": 180.0},
+    "nursery": {"name": "Robot Nursery", "desc": "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand.", "cost": {"cubes": 2500}, "requires_level": 1, "requires_flag": "first_sprout"}
+  }
+}

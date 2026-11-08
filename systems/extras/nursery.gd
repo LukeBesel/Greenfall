@@ -86,6 +86,8 @@ static func refund_for(tier: int) -> int:
 static func retire_block_reason(r: Robot) -> String:
 	if r == null or not is_instance_valid(r):
 		return "none"
+	if not YardBuilds.built("nursery"):  # [camp] the nursery is a Hub-tab build now
+		return TranslationServer.translate("Build the Robot Nursery in the Hub tab first.")
 	if r.tier <= LOW_TIER or served_s(r.robot_name) >= OLD_S:
 		return ""
 	var left: int = int(ceil((OLD_S - served_s(r.robot_name)) / 60.0))
@@ -137,6 +139,19 @@ func setup(p_world: Node) -> void:
 	position = center
 	_build_garden()
 	rebuild()
+	visible = YardBuilds.built("nursery")  # [camp] nothing until it's built (Hub tab)
+
+
+## [camp] Shows the garden once it's built (live: it rises out of the ground with sparkles).
+func set_built(on: bool, animate: bool) -> void:
+	visible = on
+	if not on or not animate:
+		return
+	scale = Vector3(1, 0.02, 1)
+	create_tween().tween_property(self, "scale", Vector3.ONE, 0.8).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	for q: int in 5:
+		Vfx.burst("sparkle", global_position + Vector3(randf_range(-2, 2), 0.5, randf_range(-1.5, 1.5)), Color(0.6, 1.0, 0.7), 0.6)
+	Audio.play("chime", 1.0, -6.0)
 
 
 func _pick_spot() -> Vector3:

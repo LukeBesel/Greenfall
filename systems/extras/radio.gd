@@ -10,15 +10,17 @@ extends Node3D
 ## unlock check.
 
 const PATH: String = "res://data/radio.json"
-## On the end of the workbench (scenes/slice.gd _build_board: the shack opens toward +X).
-const POS := Vector3(-5.55, 0.95, 3.35)
-const REACH_AT := Vector3(-4.75, 0.0, 3.45)
-const REACH: float = 1.15
+## [camp] Built from the Hub tab (systems/camp/yard_builds.gd) and placed by the fence, well away
+## from the workbench (they used to share the E prompt). Position: data/camp.json builds.radio.
+const POS := Vector3(6.6, 0.0, 3.4)
+const REACH: float = 1.6
 
 static var _cfg: Dictionary = {}
 
 var world: Node
 var _cone: Node3D
+var _set: Node3D  # [camp] the radio itself, on its crate
+var _anchor: Node3D  # [camp]
 var _dial: MeshInstance3D
 var _dial_mat: StandardMaterial3D
 var _t: float = 0.0
@@ -154,21 +156,37 @@ func setup(p_world: Node) -> void:
 	world = p_world
 	name = "Radio"
 	_build()
-	var y: float = 0.0
-	position = POS + Vector3(0, y, 0)
+	position = YardBuilds.pos("radio", POS)
+	rotation.y = deg_to_rad(float(YardBuilds.def("radio").get("yaw_deg", 180.0)))
 	var anchor := Node3D.new()
 	anchor.name = "RadioReach"
 	world.add_child(anchor)
-	anchor.global_position = REACH_AT
+	anchor.global_position = position + Basis(Vector3.UP, rotation.y) * Vector3(1.0, 0, 0)  # in front of it
+	_anchor = anchor
 	if world.get("interactables") != null:
 		(world.interactables as Interactables).register(anchor, REACH,
 			func() -> String: return tr("E   Radio: %s") % (tr(title(playing())) if playing() != "" else tr("mood music")),
-			func() -> void: ExtrasPanel.open_for(world, "radio"))
+			func() -> void: ExtrasPanel.open_for(world, "radio"),
+			func() -> bool: return visible)  # [camp] only once it's built
+	set_built(YardBuilds.built("radio"), false)  # [camp]
 	# Quietly catch up on songs earned before this build (no toast burst on load).
 	_note_here()
 	check_unlocks()
 	if playing() != "" and is_unlocked(playing()):
 		Audio.play_track(playing())
+
+
+## [camp] Shows the radio once it's built (live: it drops onto its crate with a puff).
+func set_built(on: bool, animate: bool) -> void:
+	visible = on
+	if _anchor:
+		_anchor.visible = on
+	if not on or not animate:
+		return
+	position.y = 1.4
+	create_tween().tween_property(self, "position:y", 0.0, 0.45).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+	Vfx.burst("dust", position, Color(0.7, 0.65, 0.6, 0.6), 1.0)
+	Audio.play("clunk", 1.1, -6.0)
 
 
 func _exit_tree() -> void:
@@ -200,23 +218,33 @@ func _note_here() -> void:
 
 
 func _build() -> void:
+	# [camp] Its own spot by the fence: a wooden crate with the radio on top (scaled up a little so
+	# it reads from the camera), facing into the yard.
+	var wood: StandardMaterial3D = DecorProps.wood()
+	add_child(EggProps.mesh(ProcMesh.rounded_box(Vector3(0.62, 0.7, 0.8), 0.03, 2), wood, Vector3(0, 0.35, 0)))
+	for z: float in [-0.2, 0.2]:
+		add_child(EggProps.mesh(ProcMesh.box(Vector3(0.64, 0.05, 0.05)), DecorProps.paint(Color(0.3, 0.22, 0.15), 0.7), Vector3(0, 0.5, z)))
+	_set = Node3D.new()
+	_set.position = Vector3(0, 0.7, 0)
+	_set.scale = Vector3.ONE * 1.6
+	add_child(_set)
 	var body_mat: StandardMaterial3D = DecorProps.paint(Color(0.55, 0.32, 0.2), 0.5)
 	var trim: StandardMaterial3D = DecorProps.paint(Color(0.86, 0.8, 0.66), 0.4, 0.2)
 	var dark: StandardMaterial3D = DecorProps.paint(Color(0.08, 0.08, 0.08), 0.8)
-	add_child(EggProps.mesh(ProcMesh.rounded_box(Vector3(0.24, 0.2, 0.36), 0.035, 3), body_mat, Vector3(0, 0.1, 0)))
-	add_child(EggProps.mesh(ProcMesh.box(Vector3(0.012, 0.15, 0.3)), trim, Vector3(0.121, 0.1, 0)))
+	_set.add_child(EggProps.mesh(ProcMesh.rounded_box(Vector3(0.24, 0.2, 0.36), 0.035, 3), body_mat, Vector3(0, 0.1, 0)))
+	_set.add_child(EggProps.mesh(ProcMesh.box(Vector3(0.012, 0.15, 0.3)), trim, Vector3(0.121, 0.1, 0)))
 	# Speaker grille (front faces +X, the yard) and a cone that pulses with the music.
 	_cone = Node3D.new()
 	_cone.position = Vector3(0.128, 0.1, 0.07)
-	add_child(_cone)
+	_set.add_child(_cone)
 	_cone.add_child(EggProps.mesh(ProcMesh.cyl(0.062, 0.062, 0.006, 20), dark, Vector3.ZERO, Vector3(0, 0, 90)))
 	_cone.add_child(EggProps.mesh(ProcMesh.cyl(0.02, 0.02, 0.008, 12), trim, Vector3(0.003, 0, 0), Vector3(0, 0, 90)))
 	# Tuning dial: a warm lit strip and two knobs.
 	_dial_mat = Mats.lamp(Color(1.0, 0.72, 0.38), 0.8)
 	_dial = EggProps.mesh(ProcMesh.box(Vector3(0.006, 0.035, 0.1)), _dial_mat, Vector3(0.129, 0.13, -0.09))
-	add_child(_dial)
+	_set.add_child(_dial)
 	for z: float in [-0.12, -0.055]:
-		add_child(EggProps.mesh(ProcMesh.cyl(0.018, 0.018, 0.02, 12), trim, Vector3(0.13, 0.055, z), Vector3(0, 0, 90)))
+		_set.add_child(EggProps.mesh(ProcMesh.cyl(0.018, 0.018, 0.02, 12), trim, Vector3(0.13, 0.055, z), Vector3(0, 0, 90)))
 	# Telescopic antenna.
-	add_child(EggProps.strut(Vector3(-0.05, 0.2, -0.13), Vector3(-0.14, 0.52, -0.2), 0.004, Mats.metal("chrome")))
-	add_child(EggProps.mesh(ProcMesh.sphere(0.009, 8, 4), trim, Vector3(-0.14, 0.52, -0.2)))
+	_set.add_child(EggProps.strut(Vector3(-0.05, 0.2, -0.13), Vector3(-0.14, 0.52, -0.2), 0.004, Mats.metal("chrome")))
+	_set.add_child(EggProps.mesh(ProcMesh.sphere(0.009, 8, 4), trim, Vector3(-0.14, 0.52, -0.2)))
