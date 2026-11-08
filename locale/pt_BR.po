@@ -1725,57 +1725,41 @@ msgstr "A primeira coisa que eles vão ver é um mundo verde de novo. Foi você.
 msgid "Homecoming"
 msgstr "Volta para casa"
 
-#: story/intro.gd:195
+#: story/intro.gd:197
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
 msgstr "Há trezentos anos, as últimas sementes deixaram Verdance a bordo da arca Cradle."
 
-#: story/intro.gd:196
+#: story/intro.gd:198
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
 msgstr "Lumi, o pequeno guardião de sementes da arca, cantava para as mudas toda noite."
 
-#: story/intro.gd:197
+#: story/intro.gd:199
 msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
 msgstr "Cantarolando de novo, Lumi? Elas não te ouvem, sabia? ...Mas crescem mais rápido quando você canta."
 
-#: story/intro.gd:198
+#: story/intro.gd:200
 msgid "Then, one night, the sky came apart."
 msgstr "Então, numa noite, o céu se partiu."
 
-#: story/intro.gd:199
+#: story/intro.gd:201
 msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
 msgstr "Rombo no casco do cofre! Lumi, deixa as bandejas, sai daí!"
 
-#: story/intro.gd:200
+#: story/intro.gd:202
 msgid "Lumi— hold on— I can't turn her around— hold on—"
 msgstr "Lumi— aguenta— não consigo virar ela— aguenta—"
 
-#: story/intro.gd:201
+#: story/intro.gd:203
 msgid "The ark could not turn back. The pod fell for days."
 msgstr "A arca não podia voltar. A cápsula caiu por dias."
 
-#: story/intro.gd:202
-msgid "...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance."
-msgstr "...Lumi? ...Lumi. O relé mal está aguentando, mas eu te achei. Você caiu. Você está em Verdance."
-
-#: story/intro.gd:203
-msgid "Your core runs on green light, the glow living things give off. There's no green left down there. That's why you're fading."
-msgstr "Seu núcleo funciona com luz verde, o brilho que os seres vivos emitem. Não sobrou nada verde aí embaixo. É por isso que você está se apagando."
-
-#: story/intro.gd:204
-msgid "So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core."
-msgstr "Então a gente faz um pouco. Limpe o chão, plante essas mudas. Cada flor alimenta seu núcleo."
-
-#: story/intro.gd:205
-msgid "Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time."
-msgstr "Encha seu Núcleo Floral. Reconstrua uma plataforma de lançamento. Aí você voa de volta para nós. ...Um regador por vez."
-
-#: story/intro.gd:802
+#: story/intro.gd:826
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "LUZ VERDE  ·  NADA DETECTADO"
 
 #: story/ledger.gd:161
 msgid "New at the workbench, Build tab: Signal Jammer. It scrambles the Ledger's drones near the base."
-msgstr ""
+msgstr "Novo na bancada, aba Construir: Bloqueador de sinal. Confunde os drones do Ledger perto da base."
 
 #: story/ledger.gd:170
 msgid "WREN traced the Ledger's relay: %s of the hub. Look for the red beacon."
@@ -1925,15 +1909,15 @@ msgstr "<< LEDGER // EXTRAOFICIAL >>"
 msgid "LEDGER  WMS-07"
 msgstr "LEDGER  WMS-07"
 
-#: story/objectives.gd:240
+#: story/objectives.gd:252
 msgid "Objective complete  ·  %s"
 msgstr "Objetivo concluído  ·  %s"
 
-#: story/objectives.gd:410
+#: story/objectives.gd:422
 msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
 msgstr "Ouviu esse bipe? Seu detector achou uma peça de robô enterrada aqui perto. Quanto mais rápido o bipe, mais perto você está."
 
-#: story/objectives.gd:411
+#: story/objectives.gd:423
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "PEÇA ENTERRADA: ande na direção dela até a leitura chegar ao máximo e desenterre."
 
@@ -2922,7 +2906,7 @@ msgstr "Álbum: uma foto de \"depois\" de %s (%s)."
 
 #: systems/extras/nursery.gd:90
 msgid "Build the Robot Nursery in the Build tab first."
-msgstr ""
+msgstr "Construa primeiro o Berçário de robôs na aba Construir."
 
 #: systems/extras/nursery.gd:94
 msgid "Only Mk I-II robots retire early. %s can retire in %d min."
@@ -4691,7 +4675,7 @@ msgstr "Personalize Lumi e cada robô: cores, olhos, peças de cabeça, enfeites
 
 #: ui/locker_panel.gd:125
 msgid "Opens at hub level %d (now %d). Upgrade the hub in the Upgrades tab."
-msgstr ""
+msgstr "Abre com a base no nível %d (agora %d). Melhore a base na aba Melhorias."
 
 #: ui/locker_panel.gd:160 ui/photo_mode.gd:393 ui/photo_mode.gd:420
 #: ui/upgrades_panel.gd:30
@@ -11908,7 +11892,7 @@ msgstr "Uma base maior sustenta mais robôs."
 
 #: data/objectives.json:objectives[base2].lines
 msgid "The hub can grow now. Rebuild it from the Upgrades tab at the workbench."
-msgstr ""
+msgstr "A base pode crescer agora. Reconstrua pela aba Melhorias da bancada."
 
 #: data/objectives.json:objectives[tower2].text
 msgid "Boost the signal tower"
@@ -15668,6 +15652,18 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance."
+#~ msgstr "...Lumi? ...Lumi. O relé mal está aguentando, mas eu te achei. Você caiu. Você está em Verdance."
+
+#~ msgid "Your core runs on green light, the glow living things give off. There's no green left down there. That's why you're fading."
+#~ msgstr "Seu núcleo funciona com luz verde, o brilho que os seres vivos emitem. Não sobrou nada verde aí embaixo. É por isso que você está se apagando."
+
+#~ msgid "So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core."
+#~ msgstr "Então a gente faz um pouco. Limpe o chão, plante essas mudas. Cada flor alimenta seu núcleo."
+
+#~ msgid "Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time."
+#~ msgstr "Encha seu Núcleo Floral. Reconstrua uma plataforma de lançamento. Aí você voa de volta para nós. ...Um regador por vez."
 
 #~ msgid "New at the workbench, Hub tab: Signal Jammer. It scrambles the Ledger's drones near the base."
 #~ msgstr "Novo na bancada, aba Base: Bloqueador de Sinal. Ele embaralha os drones do Ledger perto da base."
