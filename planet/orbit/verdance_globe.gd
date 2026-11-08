@@ -48,7 +48,8 @@ var day_min: float = 24.0
 var day_t: float = 0.5  # planet rotation phase (0..1)
 var sun2: DirectionalLight3D
 var sky_mat: ShaderMaterial
-var lamp: OmniLight3D
+var sky_director: SkyDirector  # [orbE] clock, suns, moon, weather (planet/sky_director.gd)
+var glim: GlimBot  # [orbE] the light buddy's lantern (nights stay readable)
 var _cubes_root: Node3D
 var _spin_axis := Vector3.UP
 var _sun_dir0 := Vector3.ZERO  # first sun, rotation phase 0, planet frame
@@ -173,7 +174,7 @@ func _ready() -> void:
 	Settings.apply_quality_to_tree(self)
 	# The quality pass sets the flat-world fog density (0.0025..0.005); on the orbit that is several
 	# times too thick, and from Command height the whole map turned to grey haze.
-	env.fog_density = 0.0003 if view_mode == "command" else 0.0011
+	env.fog_density = 0.0003 if view_mode == "command" else 0.0011  # [orbE] SkyDirector.fog_scale keeps this ratio
 	if not (DevHooks.has("orbit-nohud") or DevHooks.has("no-hud")):
 		hud = HUD.new()  # the game's HUD: cubes, bale meter, hex readout, prompts
 		hud.patch = lumi
@@ -806,68 +807,52 @@ var _elapsed: float = 0.0
 
 
 func _build_lights() -> void:
+	# [orbE] SkyDirector's sphere mode owns the clock, suns, moon, weather and sky shader; Glim
+	# (the light buddy) carries the local light that phase A's Lumi lamp stood in for.
 	day_min = DevHooks.get_f("orbit-day", 24.0)
-	var h: Vector3 = grid.centers[int(sites[0]["cell"])]
-	var lon: float = atan2(h.x, h.z)
-	_phi0 = lon + (DevHooks.get_f("orbit-time", 0.42) - 0.5) * TAU
-	sun2 = DirectionalLight3D.new()
-	sun2.name = "SecondSun"
-	sun2.light_color = Color(1.0, 0.72, 0.5)
-	sun2.shadow_enabled = false
-	sun2.sky_mode = DirectionalLight3D.SKY_MODE_LIGHT_ONLY
-	add_child(sun2)
-	lamp = OmniLight3D.new()  # Lumi's own light: nights stay readable (Glim takes this over)
-	lamp.name = "LumiLamp"
-	lamp.omni_range = 11.0
-	lamp.light_color = Color(0.75, 0.88, 1.0)
-	lamp.shadow_enabled = false
-	lumi.add_child(lamp)
-	lamp.position = Vector3(0, 2.4, 0.4)
+	sky_director = SkyDirector.new()
+	sky_director.name = "SkyDirector"
+	sky_director.world = self
+	sky_director.day_period_s = day_min * 60.0
+	sky_director.player_fn = func() -> Vector3: return lumi.global_position
+	sky_director.eye_fn = func() -> Vector3: return _orbit_cam.global_position if _orbit_cam else cam.camera.global_position
+	sky_director.space_fn = func() -> bool: return _orbit_cam != null
+	sky_director.clean_fn = func() -> float: return cells.clean_fraction()
+	sky_director.fog_scale = 0.27 if view_mode == "command" else 1.0
+	add_child(sky_director)
+	var t0: float = DevHooks.get_f("orbit-time", 0.42) if DevHooks.has("orbit-time") or not GameState.flags.has("orbit_spin") else -1.0
+	sky_director.setup_sphere(env, sun, sky_mat, grid.radius_m, t0)
+	if DevHooks.has("orbit-clouds"):
+		sky_director.clouds = DevHooks.get_f("orbit-clouds", 0.4)
+		sky_director.weather_frozen = true
+	if DevHooks.has("orbit-haze"):
+		sky_director.haze = DevHooks.get_f("orbit-haze", 1.0)
+	if DevHooks.has("orbit-freeze-time"):
+		sky_director.frozen = true
+	sun2 = sky_director.companion
+	glim = GlimBot.new()
+	glim.name = "Glim"
+	add_child(glim)
+	glim.target = lumi
+	glim.sky = sky_director
+	glim.set_light(Glim.value("light", "range", 6.0), Glim.value("light", "energy", 1.1))
+	glim.snap_to_target()
 
 
 ## World direction toward a sun at rotation phase phi (the planet's spin axis is world +Y).
 static func sun_dir(phi: float, decl: float) -> Vector3:
-	return Vector3(sin(phi) * cos(decl), sin(decl), cos(phi) * cos(decl)).normalized()
+	return SkyDirector.sphere_sun_dir(phi, decl)  # [orbE]
 
 
 ## Local time 0..1 (0.5 = noon) at a point, for the HUD clock and tests.
 func local_time(p: Vector3) -> float:
-	var phi: float = _phi0 + TAU * _elapsed / (day_min * 60.0)
-	var lon: float = atan2(p.x, p.z)
-	return fposmod(0.5 + (phi - lon) / TAU, 1.0)
+	return SkyDirector.local_time_at(sky_director.spin, p)  # [orbE]
 
 
-func _update_day(delta: float, f: Basis) -> void:
-	_elapsed += delta
-	var phi: float = _phi0 + TAU * _elapsed / (day_min * 60.0)
-	var s1: Vector3 = sun_dir(phi, DECLINATION)
-	var s2: Vector3 = sun_dir(phi + 0.42, DECLINATION - 0.12)
-	var u: Vector3 = lumi.up()
-	var e1: float = s1.dot(u)
-	var e2: float = s2.dot(u)
-	var d1: float = smoothstep(-0.06, 0.14, e1)
-	var d2: float = smoothstep(-0.06, 0.14, e2)
-	var day: float = maxf(d1, d2 * 0.8)
-	sun.global_basis = _toward(s1)
-	sun.light_energy = 1.2 * d1
-	sun.shadow_enabled = d1 > 0.05
-	sun2.global_basis = _toward(s2)
-	sun2.light_energy = 0.45 * d2
-	var cam_up: Vector3 = (_orbit_cam.global_position if _orbit_cam else cam.camera.global_position).normalized()
-	sky_mat.set_shader_parameter("up_dir", cam_up)
-	sky_mat.set_shader_parameter("sun1_dir", s1)
-	sky_mat.set_shader_parameter("sun2_dir", s2)
-	sky_mat.set_shader_parameter("day", day)
-	sky_mat.set_shader_parameter("star_phi", phi)
-	sky_mat.set_shader_parameter("space", 1.0 if _orbit_cam else 0.0)
-	env.ambient_light_energy = lerpf(0.75, 1.1, day)
-	env.ambient_light_sky_contribution = lerpf(0.25, 1.0, day)
-	env.ambient_light_color = Color(0.36, 0.44, 0.62)
-	env.tonemap_exposure = lerpf(1.55, 1.25, day)
-	lamp.light_energy = lerpf(2.2, 0.0, day)
-	lamp.visible = day < 0.98
-	stats["local_time"] = local_time(lumi.global_position)
-	stats["daylight"] = day
+func _update_day(_delta: float, _f: Basis) -> void:
+	# [orbE] SkyDirector._process advances the clock and lights the scene; keep the stats.
+	stats["local_time"] = sky_director.time_of_day
+	stats["daylight"] = sky_director.daylight
 
 
 static func _toward(d: Vector3) -> Basis:
