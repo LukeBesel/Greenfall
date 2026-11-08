@@ -70,6 +70,8 @@ func build(p_world: Node3D) -> void:
 		hook = func(g: OrbitPlanet) -> void: report.merge(OrbitMigrate.apply(g))
 	globe.build(seed_v, spec, int(DevHooks.get_f("orbit-hubs", -1.0)), od.get("planet", {}), od.get("cells", {}), OrbitSave.site_cells(od), hook)
 	hub_states = (od.get("hubs", {}) as Dictionary).duplicate(true)
+	# GameState.world is the start site's own dict on the globe (the flat one is kept for saves).
+	GameState.use_orbit_world(OrbitMigrate.hub_world() if migrate else ((od.get("hub_worlds", {}) as Dictionary).get("0", {}) as Dictionary).duplicate(true))
 	if migrate:
 		hub_states = report.get("hubs", {})
 		GameState.orbit = {"migrated": "flat_v%d" % GameState.SAVE_VERSION, "hubs": hub_states}
@@ -105,6 +107,7 @@ func build(p_world: Node3D) -> void:
 	_build_patch()
 	_build_depot(site)
 	sites = OrbitSites.attach(self)  # [orbD] sled, rocket hops, planet %, site state
+	_build_hub()
 	if DevHooks.has("orbit-bots") or not DevHooks.has("orbit-walk"):
 		crews.spawn_demo_bots(globe.start_cell(), int(DevHooks.get_f("orbit-bots", 4.0)), w)
 	var hl := HexLevels.new()  # sparse: only cleaned cells are tracked; levels also go to SphereCells
@@ -130,6 +133,8 @@ func build(p_world: Node3D) -> void:
 	w.add_child(pm)
 	pm.closed.connect(on_modal_closed)
 	w.set("pause_menu", pm)
+	_build_upgrades()
+	w.call("_setup_research_codex")  # slice.gd's own: Research, Achievements, the Codex (UI + data)
 	if loaded and not migrate:
 		restore_world()
 	elif migrate:
@@ -293,16 +298,95 @@ func cell_at(pos: Vector3) -> int:
 
 
 func try_interact(_p: Patch) -> void:
-	pass  # the bench, shards, seed tin and composter come with the hub sites
+	if near_bench():
+		open_upgrades()
 
 
 func interact_prompt(_p: Patch) -> String:
+	if near_bench():
+		return "upgrades"
 	return sites.interact_prompt() if sites else ""  # [orbD] the hover-sled
 
 
 func any_modal_open() -> bool:
+	for k: String in ["pause_menu", "upgrades", "codex"]:
+		var m: Node = w.get(k)
+		if m != null and bool(m.get("is_open")):
+			return true
+	return false
+
+
+# --- Hub and workbench (the start site) ---------------------------------------------------
+
+const BENCH_RANGE: float = 3.2
+
+
+## The base: hub.json levels, costs and scrubbers, logic only (the site prefab shows each level).
+## Its level lives in GameState.world (the start site's dict) and drives the site's stage.
+func _build_hub() -> void:
+	var hub := Hub.new()
+	hub.name = "Hub"
+	hub.visuals = false
+	w.add_child(hub)
+	w.set("hub", hub)
+	_sync_hub_level(hub.level)
+	hub.level_changed.connect(_sync_hub_level)
+
+
+func _sync_hub_level(l: int) -> void:
+	hub_states["0"] = {"level": l}
+	var sm: SiteManager = globe.site_manager
+	if sm:
+		sm.set_level(0, l)
+
+
+## The workbench: the start site's "bench" anchor (falls back to the pad centre).
+func bench_position() -> Vector3:
+	var sm: SiteManager = globe.site_manager
+	var sp: SitePrefab = sm.prefab(0) if sm else null
+	if sp:
+		return sp.global_transform * sp.anchor_local("bench").origin
+	return globe.site_point(0, Vector3(-3.6, 0, 2.2))
+
+
+func near_bench() -> bool:
+	var patch: Patch = w.get("patch")
+	return patch != null and patch.global_position.distance_to(bench_position()) < BENCH_RANGE
+
+
+func _build_upgrades() -> void:
+	var up := UpgradesScreen.new()
+	up.fleet = w.get("fleet")
+	up.hub = w.get("hub")
+	up.build_at = func() -> Vector3: return bench_position() + bench_position().normalized() * 0.2
+	w.add_child(up)
+	up.closed.connect(on_modal_closed)
+	w.set("upgrades", up)
+
+
+## slice.gd's open_upgrades: only at the bench (Tab elsewhere peeks the key hints).
+func open_upgrades() -> void:
 	var pm: PauseMenu = w.get("pause_menu")
-	return pm != null and pm.is_open
+	if pm.is_open:
+		return
+	if not near_bench() and not DevHooks.has("open"):
+		var hud: Node = w.get("hud")
+		if hud and hud.has_method("peek_hints"):
+			hud.call("peek_hints")
+		if not GameState.flags.get("bench_hint_seen", false):
+			GameState.flags["bench_hint_seen"] = true
+			EventBus.toast.emit(tr("Upgrades need a workbench. Head back to the hub."), "info")
+		return
+	(w.get("upgrades") as UpgradesScreen).open_screen()
+	set_input(false)
+
+
+func open_codex(tab: String = "") -> void:
+	var cx: CodexScreen = w.get("codex")
+	if cx == null or cx.is_open:
+		return
+	cx.open_screen(tab)
+	set_input(false)
 
 
 func set_input(on: bool) -> void:
@@ -320,9 +404,15 @@ func on_modal_closed() -> void:
 
 func unhandled_input(event: InputEvent) -> void:
 	var pm: PauseMenu = w.get("pause_menu")
-	if pm.is_open:
+	if any_modal_open():
 		return
-	if event.is_action_pressed("open_command"):
+	if event.is_action_pressed("open_codex") and w.get("codex"):
+		open_codex()
+		w.get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("open_upgrades"):
+		open_upgrades()
+		w.get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("open_command"):
 		cam.view = "follow" if cam.view == "command" else "command"
 		w.get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("pause"):
@@ -365,6 +455,7 @@ func persist_save() -> void:
 		"field": g.field.to_dict(),  # found parts, unlocked cells
 		"sites": OrbitSave.sites_to_array(g.sites),
 		"hubs": hub_states,
+		"hub_worlds": {"0": GameState.world},
 		"migrated": str(GameState.orbit.get("migrated", "")),
 		"hexes_paid": GameState.orbit.get("hexes_paid", {}),
 		"hex_levels": (w.get("hex_levels") as HexLevels).persist(),

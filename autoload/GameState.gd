@@ -22,6 +22,9 @@ var planet_state: Dictionary = {}
 ## [orbB] The walkable globe's state (scenes/slice_orbit.gd: schema, cells, sites, positions as
 ## direction + height). Empty until an --orbit run saves; the flat keys above are left alone.
 var orbit: Dictionary = {}
+## [orbB] On the globe `world` is the hub site's own dict (inside `orbit`), like a district's on the
+## flat game; the flat district's dict waits here, and saves keep writing it unchanged.
+var flat_world: Variant = null
 ## Set while switching districts: the next scene load uses the in-memory state (not saved).
 var reload_in_memory: bool = false
 var created_unix: float = 0.0
@@ -53,6 +56,7 @@ func new_game() -> void:
 	current_hub = 0
 	planet_state = {}
 	orbit = {}  # [orbB]
+	flat_world = null  # [orbB]
 	created_unix = Time.get_unix_time_from_system()
 	saved_unix = 0.0
 	_income_log.clear()
@@ -170,8 +174,15 @@ func add_junk_removed(type_id: String, volume: float) -> void:
 	stats["junk_removed"] = d
 
 
+## [orbB] Make `d` the active per-hub dict (the globe's start site); the flat one is kept for saves.
+func use_orbit_world(d: Dictionary) -> void:
+	if flat_world == null:
+		flat_world = world
+	world = d
+
+
 func _districts_for_save() -> Dictionary:
-	districts[current_hub] = world
+	districts[current_hub] = world if flat_world == null else flat_world  # [orbB]
 	var out: Dictionary = {}
 	for k: int in districts:
 		out[str(k)] = (districts[k] as Dictionary).duplicate(true)
@@ -180,6 +191,9 @@ func _districts_for_save() -> Dictionary:
 
 ## Switch the active district (call after the current scene has persisted into `world`).
 func switch_hub(i: int) -> void:
+	if flat_world != null:  # [orbB] the globe's hub dict is not a flat district
+		world = flat_world
+		flat_world = null
 	districts[current_hub] = world
 	current_hub = i
 	if not districts.has(i):
@@ -207,7 +221,7 @@ func to_dict() -> Dictionary:
 		"upgrades": upgrades.duplicate(true),
 		"stats": stats.duplicate(true),
 		"flags": flags.duplicate(true),
-		"world": world.duplicate(true),
+		"world": (world if flat_world == null else (flat_world as Dictionary)).duplicate(true),  # [orbB]
 		"parts": parts.duplicate(true),
 		"districts": _districts_for_save(),
 		"current_hub": current_hub,
@@ -238,6 +252,7 @@ func from_dict(d: Dictionary) -> void:
 	current_hub = int(d.get("current_hub", 0))
 	planet_state = (d.get("planet_state", {}) as Dictionary).duplicate(true)
 	orbit = (d.get("orbit", {}) as Dictionary).duplicate(true)  # [orbB]
+	flat_world = null
 	districts = {}
 	var ds: Dictionary = d.get("districts", {})
 	for k: Variant in ds:
