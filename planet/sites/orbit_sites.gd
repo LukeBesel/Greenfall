@@ -211,6 +211,8 @@ func _reach_audit() -> void:
 		await SiteReach.fix_anchors(p, so.globe.terrain)  # as SiteManager does after a build (idempotent) [orbE] a coroutine now
 		var t0: int = Time.get_ticks_msec()
 		var r: Dictionary = await SiteReach.audit(p, so.globe.terrain)  # [orbE] a coroutine now
+		if r.is_empty():
+			continue  # [orbE] the site went away while the audit waited
 		var cut: Array = r["cut"]
 		bad += cut.size() + (0 if r["start_free"] else 1)
 		print("[reach] %s hub %d %s: %d/%d anchors reachable, %d m2 walkable from the pad%s%s (%d ms)" % [
