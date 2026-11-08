@@ -981,6 +981,8 @@ func _shop(want: Dictionary) -> void:
 	var leak: bool = float(want.get("hub_save", 0.0)) <= 0.0
 	if robot == "" or fleet.can_build(robot):
 		reserve = float(want.get("hub_save", 0.0))
+	if not Pace.baler_unlocked() and Economy.is_unlocked(Pace.UP_BALER):
+		reserve = maxf(reserve, Economy.upgrade_cost(Pace.UP_BALER).to_float() * 0.6)  # [pace] a person saves for the Baler
 	guard = 0
 	while guard < 20:
 		guard += 1
