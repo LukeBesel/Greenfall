@@ -96,7 +96,7 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] Locked bot designs are hidden (silhouette or "???").
 - [ ] Character builder: colours, eyes, head piece, held item, companion, glow and laser colours.
 - [ ] The red antenna beacon stays on Lumi's head and never drifts off. (hero)
-- [ ] Aurora's model matches the concept art exactly. The owner reviews it, then the other 5 designs follow.
+- [ ] Aurora's model matches the concept art exactly: a round pill head, the stalk-and-paddle fin, the cyan chest band, arms up and out, and a chunky torso. It needs much more detail, with colours sampled from the reference down to the scuffs, speckles and glint colours. The owner reviews it again before the other 5 designs. The owner reviews it, then the other 5 designs follow.
 
 ## Light buddy and night (buddy)
 - [ ] Nights are bright enough, or day lasts longer early on.
