@@ -10,6 +10,7 @@ var sun: DirectionalLight3D
 var binary: BinarySun
 var _lumi: Node3D
 var _t: float = 0.0
+var _night: bool = false
 
 
 func _ready() -> void:
@@ -64,6 +65,19 @@ func _ready() -> void:
 	binary = BinarySun.new()
 	add_child(binary)
 	binary.setup("tidewell", sm)
+	if tod < 0.24 or tod > 0.76:  # [p_seas] night: a cool moon fill, dark sky, warm site lamps carry it
+		sun.rotation_degrees = Vector3(-35.0, 150.0, 0.0)
+		sun.light_color = Color(0.6, 0.72, 1.0)
+		sun.light_energy = 0.7
+		env.background_mode = Environment.BG_COLOR
+		env.background_color = Color(0.02, 0.035, 0.07)
+		env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+		env.ambient_light_color = Color(0.28, 0.38, 0.58)
+		env.ambient_light_energy = 0.5
+		env.tonemap_exposure = 1.5
+		env.glow_intensity = 0.7
+		env.fog_light_color = Color(0.08, 0.12, 0.2)
+		_night = true
 	var id: String = DevHooks.get_s("site", "hub_raft")
 	site = TideSite.place(id, self, int(DevHooks.get_f("site-stage", 0.0)), DevHooks.get_f("site-restore", 0.0), {"water_radius": 420.0})
 	if DevHooks.has("site-lumi"):
@@ -89,7 +103,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_t += delta
-	if binary:
+	if binary and not _night:
 		sun.light_energy = 2.8
 		binary.update(sun, 1.0)
 	if _lumi:

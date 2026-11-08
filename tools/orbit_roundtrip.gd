@@ -36,6 +36,9 @@ static func _snap(s: Node) -> Dictionary:
 		"hex_level_target": (s.get("hex_levels") as HexLevels).level_of(int(s.get_meta("rt_target", -1))),
 		"cells_level_target": g.cells.level[int(s.get_meta("rt_target", 0))],
 		"milestone_1": GameState.flags.get("hexm_1", false),
+		"hub_level": (s.get("hub") as Hub).level,
+		"bench_ok": Camp.bench_ok(),
+		"site_stage": g.site_manager.levels[0] if g.site_manager else -1,
 		"parts_near": s.field.part_pos.size() > 0,
 		"loose_cubes": cubes,
 		"sky_spin": snappedf((s.get("sky_director") as SkyDirector).spin, 0.01) if s.get("sky_director") is SkyDirector else -1.0,  # [orbE]
@@ -85,6 +88,23 @@ static func run(rt: Node, check: Callable) -> void:
 	g.cells.set_level(g.start_cell(), 3)
 	if g.field.part_pos.size() > 0:  # the detector dug one up
 		g.field.part_found[0] = 1
+	# The workbench: Lumi at the start site's bench anchor gets the prompt, E opens the Upgrades.
+	var so1: SliceOrbit = so
+	p.place_on_sphere(so1.bench_position() + so1.bench_position().normalized() * 0.3, p.forward())
+	await tree.physics_frame
+	check.call("orbit_bench_starts_broken", false, Camp.bench_ok())
+	check.call("orbit_bench_prompt", TranslationServer.translate("E   Workbench (broken): repair it"), s1.interact_prompt(p))
+	s1.try_interact(p)  # the first E repairs it
+	await tree.create_timer(float(Camp.cfg().get("bench_repair_s", 2.6)) + 0.6).timeout
+	check.call("orbit_bench_repaired", true, Camp.bench_ok())
+	s1.try_interact(p)
+	check.call("orbit_upgrades_open", true, (s1.get("upgrades") as UpgradesScreen).is_open)
+	(s1.get("upgrades") as UpgradesScreen).close_screen()
+	# The base: a hub upgrade raises the start site's stage and stays in the site's own dict.
+	GameState.add_currency("cubes", BigNum.from_float(1e6))
+	GameState.add_currency("parts", BigNum.from_float(1e5))
+	check.call("orbit_hub_upgrade", true, (s1.get("hub") as Hub).upgrade())
+	check.call("orbit_site_stage", 2, g.site_manager.levels[0] if g.site_manager else -1)
 	# Lumi walks 40 m off the pad with something in the chest.
 	var d: Vector3 = g.terrain.local_to_dir(g.start_cell(), 40.0, -25.0)
 	p.place_on_sphere(g.terrain.ground(d), -SphereGrid.frame(d).z)
@@ -94,6 +114,9 @@ static func run(rt: Node, check: Callable) -> void:
 	var ok: bool = SaveManager.save_game()
 	check.call("orbit_saved", true, ok)
 	var a: Dictionary = _snap(s1)
+	var disk: Dictionary = SaveManager.read_dict(SaveManager.slot_path())
+	check.call("orbit_flat_world_untouched", false, (disk.get("world", {}) as Dictionary).has("hub_level"))
+	check.call("orbit_hub_world_saved", 2, int((((disk.get("orbit", {}) as Dictionary).get("hub_worlds", {}) as Dictionary).get("0", {}) as Dictionary).get("hub_level", 0)))
 	var s1_target: int = int(s1.get_meta("rt_target", -1))
 	check.call("orbit_save_has_no_flat_xz", false, JSON.stringify(GameState.orbit.get("lumi", {})).contains("\"pos\""))
 	s1.queue_free()

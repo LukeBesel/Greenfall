@@ -60,6 +60,14 @@
       "ambient": 1.0,
       "exposure": 1.95,
       "ambient_color": [0.4, 0.5, 0.74]
+    },
+    "sites": {
+      "_doc": "[p_seas] Placeable hub-site prefabs (planet/planets/rime/rime_site.gd): RimeHubSite.place(id, root, stage 0-2, restoration 0-1, {radius, seed}); a local ice patch about 80-90 m across (walkable trimesh, PROP colliders on every structure). Preview: res://planet/planets/rime/site_preview.tscn -- --site=<id>.",
+      "script": "res://planet/planets/rime/rime_site.gd",
+      "hub_camp": {"kind": "hub", "name": "Drill Camp", "size_m": 88, "desc": "Cabins on skids round a plated yard, a greenhouse dome, fuel tanks, a comms mast and a snowcat."},
+      "derrick": {"kind": "landmark", "name": "Frozen Derrick", "size_m": 84, "desc": "A Ledger core-drill derrick frozen into the ice; a geothermal tap when restored."},
+      "borehole": {"kind": "landmark", "name": "The Borehole", "size_m": 92, "desc": "The shaft under its headframe and winder house; cold mist, then a warm glow."},
+      "hot_springs": {"kind": "landmark", "name": "Hot Springs", "size_m": 80, "desc": "Geothermal pools with a bathhouse and boardwalk; frozen, then steaming."}
     }
   },
   "ochre": {
