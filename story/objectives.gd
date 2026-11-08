@@ -223,7 +223,7 @@ func value_of(def: Dictionary) -> float:
 			var fl: Node = world.get("fleet") if world else null
 			if fl == null:
 				return 0.0
-			return float(fl.call("robots").size()) if key == "any" else float(fl.call("count", key))
+			return float(fl.call("robot_total")) if key == "any" else float(fl.call("count", key))  # [v3qa] globe crews count
 		"zone":
 			return float(Goals.zone_hex_count())
 		"hub_level":

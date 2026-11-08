@@ -284,6 +284,8 @@ func _on_anchors_fixed(i: int, p: SitePrefab) -> void:
 	var d: Variant = so.w.get("depot")
 	if d is Node3D and (d as Node3D).get_parent() == p.get_parent():
 		(d as Node3D).transform = p.anchor_local("depot")
+		if d is Depot:
+			(d as Depot).seat_bin(p)  # [v3clear]
 		if stations:
 			stations.transform = (d as Node3D).transform * Transform3D(Basis(), Vector3(0, 0, 1.8))
 

@@ -23,6 +23,11 @@ var input_enabled: bool = true
 var role: String = "clean"
 var hover_cell: int = -1
 var _paint: int = 0  # 1 paint, -1 erase
+## [v3qa] Controller: the cell under the screen centre is the cursor; A held paints, X held
+## erases, Y cycles the role (the flat Command view's pad scheme). A kid on a pad could not
+## paint a zone at all, so "Send your robot to work" never finished.
+var using_pad: bool = false
+var _pad_paint: int = 0
 var _was_command: bool = false
 ## Lumi's input: off while commanding, so the move keys pan the view instead of walking.
 var lumi_input: PlayerInput
@@ -86,6 +91,7 @@ func _process(_delta: float) -> void:
 		if streamer:
 			streamer.outlines = on
 		_paint = 0
+		_pad_paint = 0
 		if lumi_input:
 			lumi_input.enabled = not on
 		if not on and cam:
@@ -98,13 +104,31 @@ func _process(_delta: float) -> void:
 	var vp: Viewport = cam.get_viewport()
 	if vp == null:
 		return
-	hover_cell = pick_cell(cam.camera, vp.get_mouse_position(), surface, grid)
-	if _paint != 0 and hover_cell >= 0 and crew:
-		crew.set_zone_cell(role, hover_cell, _paint > 0)
+	var at: Vector2 = vp.get_visible_rect().size * 0.5 if using_pad else vp.get_mouse_position()  # [v3qa]
+	hover_cell = pick_cell(cam.camera, at, surface, grid)
+	var paint: int = _pad_paint if using_pad else _paint
+	if paint != 0 and hover_cell >= 0 and crew:
+		crew.set_zone_cell(role, hover_cell, paint > 0)
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not input_enabled or not is_active():
+		return
+	if event is InputEventJoypadButton or (event is InputEventJoypadMotion and absf((event as InputEventJoypadMotion).axis_value) > 0.4):
+		using_pad = true  # [v3qa]
+	elif event is InputEventMouseMotion and (event as InputEventMouseMotion).relative.length() > 2.0 or event is InputEventMouseButton:
+		using_pad = false
+		_pad_paint = 0
+	if event is InputEventJoypadButton:  # [v3qa] A paint, X erase, Y next role
+		var jb: InputEventJoypadButton = event
+		match jb.button_index:
+			JOY_BUTTON_A:
+				_pad_paint = 1 if jb.pressed else (0 if _pad_paint == 1 else _pad_paint)
+			JOY_BUTTON_X:
+				_pad_paint = -1 if jb.pressed else (0 if _pad_paint == -1 else _pad_paint)
+			JOY_BUTTON_Y:
+				if jb.pressed:
+					role = ROLES[(ROLES.find(role) + 1) % ROLES.size()]
 		return
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event
