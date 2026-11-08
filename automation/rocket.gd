@@ -555,7 +555,7 @@ func _arrive_camera(t: float, dt: float) -> void:
 	elif t < LAND_S + 1.4:
 		# [vqa2] Hover and touchdown from the open lot east of the pad.
 		_cam.fov = 48.0
-		_place_cam(o + Vector3(10.5, 1.6, -2.5) * k, mp + Vector3(0, 0.9 * k, 0), dt)
+		_place_cam(o + Vector3(10.5, 2.6, -2.5) * k, mp + Vector3(0, 0.9 * k, 0), dt)
 	else:
 		_cam.fov = 52.0
 		_place_cam(o + Vector3(7.5, 2.6, 4.0) * k, (o + _land_to) * 0.5 + Vector3(0, 1.2, 0), dt)
