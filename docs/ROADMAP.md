@@ -24,6 +24,12 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 4. More districts content: 41 eggs now; more biome props (nets, satellites) if Poly Haven gets them; per-biome plants/wildlife.
 5. Post-game (M11): done (wt/late). Next: per-world story threads with WREN, wildlife using the decor hook, tune Starseed income and Bloom thresholds after play-testing.
 
+## Update: shared art kit (wt/kit, Nov 8) [kit]
+- `art/kit/**`: materials (KitMat), bevelled geometry and Builder (KitMesh), props (KitProps), 7 state-aware buildings (KitBuilding: module_small/medium/large, tower, hangar, tank_farm, machine_housing) with `set_state` and `set_powered`, ground patches that replace flat slabs, a decal atlas, and a chunky wind turbine. API and art rules are in docs/ART_KIT.md.
+- Paint and trims are colour-per-vertex, so a building is about 9 draw calls. Buildings get auto LODs. Everything is cached.
+- Lineup render: `tools/kit_lineup.sh screenshots/kit/lineup`, or `--kit-lineup`. Tests: tests/test_art_kit.gd.
+- Next: yard, anvil, ochre, seas and orbD adopt the kit. The kit can add more building kinds on request.
+
 ## Update: loading screen keeps moving, Rime night glint (claude/greenfall-leftovers, Nov 8)
 - **District build across frames.** Behind the loading screen `scenes/slice.gd` builds as a coroutine: the
   heavy first half (field generation, FieldView ground/mounds/junk/landmarks, litter, far junk, CityView,

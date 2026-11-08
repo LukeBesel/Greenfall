@@ -193,7 +193,7 @@ func desired() -> Dictionary:
 			var far: float = minf(horizon, far_m)
 			stats["horizon_m"] = horizon
 			for c: int in grid.chunks_within(vd, far + hysteresis_m):
-				var d: float = maxf(0.0, (grid.centers[c].angle_to(vd) - grid.chunk_radius[c]) * R)
+				var d: float = maxf(0.0, (grid.chunk_center[c].angle_to(vd) - grid.chunk_radius[c]) * R)  # [orbB] chunk_center
 				var cur: int = loaded_lod(c)
 				var l0: float = lod0_m + (hysteresis_m if cur == 0 else 0.0)
 				var l1: float = lod1_m + (hysteresis_m if cur == 1 else 0.0)
@@ -221,7 +221,7 @@ func _wants_collision(c: int) -> bool:
 		var p: Vector3 = cc["pos"]
 		if terrain.altitude(p) > collide_m * 2.0:
 			continue
-		var d: float = (grid.centers[c].angle_to(p.normalized()) - grid.chunk_radius[c]) * terrain.R
+		var d: float = (grid.chunk_center[c].angle_to(p.normalized()) - grid.chunk_radius[c]) * terrain.R  # [orbB] chunk_center
 		if d < collide_m + hysteresis_m * 0.5:
 			return true
 	return false
@@ -277,7 +277,7 @@ func _pump(max_apply: int) -> void:
 		return
 	var vd: Vector3 = grid.centers[_view_cell]
 	var order: Array = _pending.keys()
-	order.sort_custom(func(a: int, b: int) -> bool: return grid.centers[a].dot(vd) > grid.centers[b].dot(vd))
+	order.sort_custom(func(a: int, b: int) -> bool: return grid.chunk_center[a].dot(vd) > grid.chunk_center[b].dot(vd))  # [orbB]
 	for c: int in order:
 		if _jobs.size() >= max_jobs:
 			break

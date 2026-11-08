@@ -1,6 +1,11 @@
 {
   "_doc": "Campaign planets, keyed by planet id (see planet/planets/planet_envs.gd). env: script with static apply(world, field, kind) and optional dev_hub / prepare_field / dress_view. sky: the env's own sky preset values; fog / sun / ambient: daytime light (night is the env's own); palette: key colours; junk_tint: the frost/dust coat on junk; music_mood: key for the sound helper. Suns come from data/solar_system.json (SolarSystem.suns_for) when present; sun here is the fallback. Optional: junk_biome (Ochre: its biome set is registered by the env), no_lakes (no planet lakes in the field), pieces_mult (junk per hex).",
+  "verdance": {
+    "name": "Verdance",
+    "globe": {"radius": 1.0, "frequency": 128, "hub_count": 10}
+  },
   "rime": {
+    "globe": {"radius": 1.2, "frequency": 154, "hub_count": 13},
     "name": "Rime",
     "world_type": "ice_moon",
     "tagline": "An ice moon, core-mined until it froze.",
@@ -58,6 +63,7 @@
     }
   },
   "ochre": {
+    "globe": {"radius": 0.85, "frequency": 109, "hub_count": 8},
     "id": "ochre",
     "name": "Ochre",
     "world_type": "desert",
@@ -140,6 +146,7 @@
     }
   },
   "tidewell": {
+    "globe": {"radius": 1.1, "frequency": 141, "hub_count": 12},
     "name": "Tidewell",
     "world_type": "ocean_world",
     "env": "res://planet/planets/tidewell/env.gd",
@@ -381,6 +388,7 @@
     }
   },
   "anvil": {
+    "globe": {"radius": 1.35, "frequency": 173, "hub_count": 16},
     "id": "anvil",
     "name": "Anvil",
     "world_type": "rust",

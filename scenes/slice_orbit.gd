@@ -48,17 +48,26 @@ func build(p_world: Node3D) -> void:
 	elif not DevHooks.has("fresh"):
 		loaded = SaveManager.load_game()
 	var od: Dictionary = GameState.orbit if loaded else {}
-	var seed_v: int = int(DevHooks.get_f("seed", float(od.get("seed", 4471))))
+	# The planet: --orbit-planet=<id>, else the saved one, else Verdance. Its size is data (GlobeSpec).
+	var pid: String = GlobeSpec.current_id() if DevHooks.has("orbit-planet") else str(od.get("planet_id", "verdance"))
+	var spec: Dictionary = GlobeSpec.of(pid)
+	if int(od.get("freq", spec["frequency"])) != int(spec["frequency"]) or str(od.get("planet_id", pid)) != pid:
+		push_warning("[orbit] saved globe is %s f=%d, building %s f=%d fresh" % [od.get("planet_id", "?"), int(od.get("freq", 0)), pid, int(spec["frequency"])])
+		od = {}
+		loaded = false
+	var seed_v: int = int(DevHooks.get_f("seed", float(od.get("seed", spec.get("seed", 4471)))))
 	globe = OrbitPlanet.new()
 	globe.name = "Globe"
 	w.add_child(globe)
-	globe.build(seed_v, int(DevHooks.get_f("orbit-hubs", 10.0)), od.get("planet", {}), od.get("cells", {}))
+	globe.build(seed_v, spec, int(DevHooks.get_f("orbit-hubs", -1.0)), od.get("planet", {}), od.get("cells", {}))
+	if od.has("field"):
+		globe.field.apply_dict(od["field"])
 	w.set("planet", globe.planet)
 	w.set("field", globe.field)
 	w.set("view", globe.junk_view)
 	w.set("anchor_cell", globe.start_cell())
 	w.set("hub_index", 0)
-	w.set("district_name", str(Economy.planet.get("name", "Verdance")))
+	w.set("district_name", pid.capitalize())
 	day = OrbitDay.new()
 	day.name = "Day"
 	w.add_child(day)
@@ -105,6 +114,9 @@ func build(p_world: Node3D) -> void:
 	var t2: int = Time.get_ticks_msec()
 	globe.streamer.settle()
 	globe.stats["settle_ms"] = Time.get_ticks_msec() - t2
+	var t3: int = Time.get_ticks_msec()
+	globe.refresh_junk_now()
+	globe.stats["junk_fill_ms"] = Time.get_ticks_msec() - t3
 	Settings.apply_quality_to_tree(w)
 	day.after_quality(view_mode == "command")
 	if DevHooks.has("give"):
@@ -118,9 +130,10 @@ func build(p_world: Node3D) -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	w.add_to_group("persist")
 	var g: OrbitPlanet = globe
-	print("[orbit] slice on the globe: R=%.0fm hexes=%d around=%.1fkm hubs=%d (nearest hub mean %.0fm, min %.0fm) loaded=%s built=%dms planet=%dms grid=%dms settle=%dms" % [
+	print("[orbit] %s f=%d near ring: pieces=%d parts=%d landmarks=%d mounds=%d" % [pid, g.grid.freq, g.field.piece_pos.size(), g.field.part_pos.size(), g.field.landmarks.size(), g.junk_view.mound_count()])
+	print("[orbit] slice on the globe: R=%.0fm hexes=%d around=%.1fkm hubs=%d (nearest hub mean %.0fm, min %.0fm) loaded=%s built=%dms planet=%dms grid=%dms settle=%dms junk_fill=%dms" % [
 		g.grid.radius_m, g.grid.cell_count(), TAU * g.grid.radius_m / 1000.0, g.sites.size(), g.hub_spacing(false), g.hub_spacing(true),
-		str(loaded), Time.get_ticks_msec() - t0, g.stats["planet_ms"], g.stats["grid_ms"], g.stats["settle_ms"]])
+		str(loaded), Time.get_ticks_msec() - t0, g.stats["planet_ms"], g.stats["grid_ms"], g.stats["settle_ms"], g.stats["junk_fill_ms"]])
 	w.emit_signal("built")
 
 
@@ -196,6 +209,7 @@ func collect_piece(pid: int) -> void:
 	var became_clean: bool = field.remove_piece(pid)
 	globe.write_cell(hid)
 	globe.junk_view.hide_piece(pid)
+	globe.junk_view.refresh_hex(hid, became_clean)
 	if became_clean:
 		on_hex_clean(hid)
 
@@ -286,10 +300,13 @@ func persist_save() -> void:
 	pd.erase("yaw")
 	GameState.orbit = {
 		"schema": SCHEMA,
+		"planet_id": str(g.spec.get("id", "verdance")),
+		"freq": g.grid.freq,
 		"seed": g.seed_value,
 		"cells_n": g.grid.cell_count(),
 		"planet": g.planet.to_dict(),
 		"cells": g.cells.to_dict(),
+		"field": g.field.to_dict(),  # found parts, unlocked cells
 		"day_t": day.elapsed(),
 		"lumi": {"at": g.to_dirh(patch.global_position), "fwd": _v_arr(patch.forward()), "cargo": pd},
 		"cubes": cubes,
