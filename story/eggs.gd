@@ -43,6 +43,8 @@ func setup() -> void:
 	avoid.append((LedgerArc.relay_spot(world.field)["pos"] as Vector3))
 	for s: Dictionary in Outposts.plan(world.field):  # [outposts] keep eggs off the outpost slabs
 		avoid.append(s["pos"] as Vector3)
+	if DevHooks.has("museum-sample"):  # [eggs2] dev: a partly filled collection
+		Museum.dev_sample()
 	if DevHooks.has("egg-parts"):  # [eggs2] dev: --egg-parts=ID marks every part of a collectible egg as collected
 		var pid: String = DevHooks.get_s("egg-parts", "gnomes")
 		if defs.has(pid):
