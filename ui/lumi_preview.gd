@@ -16,7 +16,7 @@ var _cam: Camera3D
 var _fx: PickupFx
 var _yaw: float = -0.45
 var _yaw_vel: float = 0.0
-var _idle: float = 99.0
+var _idle: float = 0.0
 var _drag: bool = false
 var _beam_t: float = -1.0
 var _junk_meshes: Array[Mesh] = []

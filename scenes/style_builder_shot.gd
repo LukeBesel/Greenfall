@@ -17,6 +17,7 @@ func _ready() -> void:
 		rng.seed = int(DevHooks.get_f("lumi-random", 1.0))
 		LumiStyle.set_current(LumiStyle.randomized(rng, LumiStyle.current()))
 	_b = LumiBuilder.open(null, self)
+	_b._preview.spin_speed = 0.0  # hold the 3/4 front view for the shot
 	var sel: String = DevHooks.get_s("lumi-builder-slot", "")
 	if sel != "":
 		_b.call_deferred("_select", sel)
