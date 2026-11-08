@@ -69,6 +69,7 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 ## Landing site and yard (camp)
 - [ ] The yard holds only the pod, a broken workbench and the trash bin. Everything else appears when it is unlocked.
 - [ ] Lumi plays a short repair animation on the workbench before it can be used.
+- [ ] Nothing appears on its own (not even the composter): everything besides the bench and bin is a Hub build. One-time builds drop off the Hub build list once built. (camp2)
 - [ ] The trash bin is upgradeable (bin → shredder).
 - [ ] There is no nursery at the start. It needs the first seed plus cubes.
 - [ ] The radio is built later at the hub. It sits away from the workbench, and its prompt names it.
