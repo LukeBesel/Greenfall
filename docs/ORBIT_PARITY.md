@@ -132,7 +132,7 @@ Same upgrades bought, no errors.
 | Future Layer | works | | `FutureLayerSphere`. |
 | Survey hologram (`GlobeView`), system map | works | | OrbitLayers (orbE). |
 | Photo mode | works | | OrbitLayers (orbE). |
-| Lens view overlay | missing | orbE | `LensOverlay` (first-person lens dressing). |
+| Lens view overlay | works | orbE | SphereCam has the lens view (V / R3, `--lens`): the eye at Lumi's lens, level on the local up. `LensOverlay` is built on the globe. Tested in `tests/test_sphere_lens.gd`. |
 | HUD, pause menu, settings, music | works | | Built; one planet line on the globe. |
 | Camera | works | | `SphereCam` replaces `CameraRig` (`world.cam` is null on the globe). |
 
