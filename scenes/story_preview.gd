@@ -125,11 +125,16 @@ func _setup_pod(crash: bool = false) -> void:
 	if crash:
 		# Before / after: damaged (smoke, sparks, torn panel, worn paint), then repaired.
 		EscapePod.set_open(pod, true, CrashSite.LEAN.x)
-		var eye: Vector3 = Vector3(-4.6, 2.2, -1.2)
-		_cam.look_at_from_position(eye, Vector3(0.6, 0.9, 1.0), Vector3.UP)
+		# Close 3/4: the door and the torn flank panel both in view.
+		var eye: Vector3 = Vector3(-2.9, 1.75, -1.8)
+		_cam.fov = 46.0
+		_cam.look_at_from_position(eye, Vector3(0.05, 1.0, 0.1), Vector3.UP)
 		site.set_stage(0)
-		_shots = [[4.0, Callable()], [7.0, Callable()], [15.0, Callable()]]
-		_events = [[4.5, func() -> void: site.set_stage(1)], [7.5, func() -> void: site.set_stage(2)]]
+		_shots = [[4.0, Callable()], [7.0, Callable()], [15.0, Callable()], [17.0, Callable()]]
+		_events = [[4.5, func() -> void: site.set_stage(1)], [7.5, func() -> void: site.set_stage(2)],
+			[15.5, func() -> void:
+				site.set_stage(3)
+				_cam.look_at_from_position(Vector3(-4.6, 2.6, -2.8), Vector3(0, 1.3, 0), Vector3.UP)]]
 		return
 	var front: Vector3 = pod.global_transform * Vector3(1.0, 1.1, -4.6)
 	_cam.look_at_from_position(front, pod.global_transform * Vector3(0, 0.85, 0), Vector3.UP)
