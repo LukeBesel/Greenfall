@@ -188,7 +188,12 @@ class Builder:
 		var l: float = d.length()
 		if l < 0.0001:
 			return
-		add(key, KitMesh.bevel_cylinder(radius, l, radius * 0.3, sides), KitMesh.look_y(a, d))
+		if radius < 0.06:
+			# thin rods: plain capped cylinder (bevels are invisible at this size), ~4x cheaper
+			var p := PackedVector3Array([Vector3(0, 0, 1), Vector3(radius, 0, 1), Vector3(radius, l, 1), Vector3(0, l, 1)])
+			add(key, KitMesh.lathe(p, mini(sides, 6)), KitMesh.look_y(a, d))
+		else:
+			add(key, KitMesh.bevel_cylinder(radius, l, radius * 0.3, sides), KitMesh.look_y(a, d))
 
 	func tube(key: String, pts: PackedVector3Array, radius: float, sides: int = 8, bend: float = 0.0) -> void:
 		add(key, KitMesh.sweep(pts, radius, sides, bend), Transform3D.IDENTITY)
@@ -205,24 +210,40 @@ class Builder:
 			n += (surf[k][4] as PackedInt32Array).size() / 3
 		return n
 
+	func _arrays(s: Array) -> Array:
+		var arrays: Array = []
+		arrays.resize(Mesh.ARRAY_MAX)
+		arrays[Mesh.ARRAY_VERTEX] = s[0]
+		arrays[Mesh.ARRAY_NORMAL] = s[1]
+		arrays[Mesh.ARRAY_COLOR] = s[2]
+		arrays[Mesh.ARRAY_TEX_UV] = s[3]
+		arrays[Mesh.ARRAY_INDEX] = s[4]
+		arrays[Mesh.ARRAY_CUSTOM0] = s[5]
+		return arrays
+
 	## Surfaces (draw calls) commit() will produce.
 	func surface_count() -> int:
 		return order.size()
 
-	func commit(into: ArrayMesh = null) -> ArrayMesh:
+	## lods: also generate automatic LODs (ImporterMesh) so distant copies draw far fewer
+	## triangles. Slower to build (cache the result); used by KitBuilding.
+	func commit(into: ArrayMesh = null, lods: bool = false) -> ArrayMesh:
+		if lods and into == null:
+			var im := ImporterMesh.new()
+			for k: String in order:
+				var s2: Array = surf[k]
+				if (s2[4] as PackedInt32Array).is_empty():
+					continue
+				im.add_surface(Mesh.PRIMITIVE_TRIANGLES, _arrays(s2), [], {}, null, k,
+					Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM0_SHIFT)
+			im.generate_lods(25.0, 60.0, [])
+			return im.get_mesh()
 		var m: ArrayMesh = into if into else ArrayMesh.new()
 		for k: String in order:
 			var s: Array = surf[k]
 			if (s[4] as PackedInt32Array).is_empty():
 				continue
-			var arrays: Array = []
-			arrays.resize(Mesh.ARRAY_MAX)
-			arrays[Mesh.ARRAY_VERTEX] = s[0]
-			arrays[Mesh.ARRAY_NORMAL] = s[1]
-			arrays[Mesh.ARRAY_COLOR] = s[2]
-			arrays[Mesh.ARRAY_TEX_UV] = s[3]
-			arrays[Mesh.ARRAY_INDEX] = s[4]
-			arrays[Mesh.ARRAY_CUSTOM0] = s[5]
+			var arrays: Array = _arrays(s)
 			m.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays, [], {},
 				Mesh.ARRAY_CUSTOM_RGBA_FLOAT << Mesh.ARRAY_FORMAT_CUSTOM0_SHIFT)
 			m.surface_set_name(m.get_surface_count() - 1, k)
@@ -303,7 +324,7 @@ static func _bevel_box(size: Vector3, bevel: float, seg: int) -> Array:
 		var va: int = f[3]
 		# inset ring per face (thin panels still get painted faces with worn edges)
 		var face_min: float = minf(size[ua], size[va])
-		var inset: float = minf(0.06, minf(inner[ua], inner[va]) * 0.5) if face_min > 0.06 else 0.0
+		var inset: float = minf(0.06, minf(inner[ua], inner[va]) * 0.5) if face_min > 0.4 else 0.0
 		var cu: PackedFloat32Array = _axis_coords(h[ua], r, seg, inset)
 		var cv: PackedFloat32Array = _axis_coords(h[va], r, seg, inset)
 		var base: int = v.size()
@@ -322,7 +343,8 @@ static func _bevel_box(size: Vector3, bevel: float, seg: int) -> Array:
 				v.append(pos)
 				nn.append(dn)
 				var din: float = minf(inner[ua] - absf(cu[i]), inner[va] - absf(cv[j]))
-				var edge: float = 1.0 - clampf(din / maxf(inset, 0.001), 0.0, 1.0) if inset > 0.0 else (1.0 if din <= 0.0001 else 0.0)
+				# small faces: edge = 1 only out on the bevel arc, 0 where the flat face starts
+				var edge: float = 1.0 - clampf(din / maxf(inset, 0.001), 0.0, 1.0) if inset > 0.0 else (1.0 if din < -0.0001 else 0.0)
 				var ao: float = lerpf(0.5, 1.0, clampf((pos.y + h.y) / minf(size.y, 1.2), 0.0, 1.0))
 				cc.append(Color(edge, ao, 0.5, 1.0))
 				uv.append(Vector2(cu[i], cv[j]))
@@ -429,6 +451,11 @@ static func bevel_cylinder(radius: float, height: float, bevel: float = 0.03, si
 		p.append(Vector3(radius - b - e, height, 0))
 	p.append(Vector3(0, height, 0))
 	return lathe(p, sides)
+
+
+## Cheap bolt/rivet head (domed, 6 sides) standing on y = 0, ~30 triangles.
+static func bolt(radius: float = 0.022, height: float = 0.025) -> Array:
+	return lathe(PackedVector3Array([Vector3(radius, 0, 1), Vector3(radius, height * 0.55, 1), Vector3(radius * 0.6, height, 1), Vector3(0, height, 1)]), 6)
 
 
 ## Flat quad in the XY plane facing +Z, UV 0..1 (decals, signs, solar cells).
@@ -617,7 +644,7 @@ static func panel_wall(b: Builder, w: float, h: float, t: Transform3D, opts: Dic
 				for bx: int in 2:
 					for by: int in 2:
 						var bp := Vector3(cx + (bx - 0.5) * (pw - 0.16), cy + (by - 0.5) * (ph - 0.16), depth * 0.25)
-						b.add("steel", bevel_cylinder(0.022, 0.025, 0.008, 6), t * xf(bp + off, Vector3(90, 0, 0)), -1.0, 0.0)
+						b.add("steel", bolt(), t * xf(bp + off, Vector3(90, 0, 0)), -1.0, 0.0)
 	if trim != "":
 		b.box("dark_steel", Vector3(w - 0.1, 0.12, 0.08), t * xf(Vector3(w * 0.5, h - 0.22, depth * 0.35)), 0.02)
 		b.box(trim, Vector3(w - 0.2, 0.04, 0.03), t * xf(Vector3(w * 0.5, h - 0.22, depth * 0.35 + 0.045)), 0.008)

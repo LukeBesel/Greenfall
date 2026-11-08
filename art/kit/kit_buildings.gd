@@ -122,7 +122,7 @@ static func mesh_for(kind_: String, state_: String, seed__: int, palette_: Dicti
 				push_warning("[kit] unknown building kind " + kind_)
 		var d := BuildData.new()
 		d.tris = b.tri_count()
-		d.mesh = b.commit()
+		d.mesh = b.commit(null, true)
 		d.lights = b.lights
 		return d) as BuildData
 
