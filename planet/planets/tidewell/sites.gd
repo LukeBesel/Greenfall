@@ -266,7 +266,7 @@ func _site_junk(r: float) -> void:
 		if bed_at(cp.x, cp.z).x > SEA_Y - 0.1 or _on_deck(cp):
 			continue
 		var sc: float = _rng.randf_range(2.6, 5.0)
-		b.add(pm, FrontierView._xf(cp, Vector3(0, _rng.randf() * 360.0, 0), Vector3(sc, 1, sc * 0.8)), net)
+		b.add(pm, _lxf(cp, Vector3(0, _rng.randf() * 360.0, 0), Vector3(sc, 1, sc * 0.8)), net)
 	b.flush(_groups["ruin"], false)
 
 
@@ -329,11 +329,11 @@ func _plank_deck(b: FrontierView.Batch, c: Vector3, rx: float, rz: float, y: flo
 
 
 func _planter(b: FrontierView.Batch, p: Vector3, r: float) -> void:
-	b.add(_blob_slab(_rng.randi() % 4, 0.2, 1.0), FrontierView._xf(p + Vector3(0, 0.2, 0), Vector3(0, _rng.randf() * 360.0, 0), Vector3(r, 0.4, r)), _mat("wood"))
+	b.add(_blob_slab(_rng.randi() % 4, 0.2, 1.0), _lxf(p + Vector3(0, 0.2, 0), Vector3(0, _rng.randf() * 360.0, 0), Vector3(r, 0.4, r)), _mat("wood"))
 	for k: int in 5:
 		var o := Vector3(_rng.randf_range(-0.6, 0.6), 0.5, _rng.randf_range(-0.6, 0.6)) * r
 		var s: float = _rng.randf_range(0.25, 0.5)
-		b.add(_lumpy(5 + k % 3, 0.55, 3.0), FrontierView._xf(p + o, Vector3(0, _rng.randf() * 360.0, 0), Vector3(s, s * 0.9, s)), _mat("mangrove"))
+		b.add(_lumpy(5 + k % 3, 0.55, 3.0), _lxf(p + o, Vector3(0, _rng.randf() * 360.0, 0), Vector3(s, s * 0.9, s)), _mat("mangrove"))
 
 
 func _mat(key: String) -> Material:
@@ -439,7 +439,7 @@ func _site_raft() -> void:
 		heap.append(Transform3D(Basis(Vector3.UP, _rng.randf() * TAU).rotated(Vector3.RIGHT, _rng.randf_range(-0.5, 0.5)), hp))
 	_scatter_models(["Barrel_01", "old_tyre", "trashbag", "wooden_crate_02", "plastic_jerrycan", "metal_trash_can", "cardboard_box_01", "lifebuoy"], heap, _groups["ruin"], 200.0)
 	for k: int in 4:
-		ruin.add(_lumpy(k, 0.5, 2.0), FrontierView._xf(Vector3(_rng.randf_range(-10, 10), deck_y + 0.2, _rng.randf_range(-8, 8)), Vector3(0, _rng.randf() * 360, 0), Vector3(1.6, 0.4, 1.3)), _mat("rust_dark"))
+		ruin.add(_lumpy(k, 0.5, 2.0), _lxf(Vector3(_rng.randf_range(-10, 10), deck_y + 0.2, _rng.randf_range(-8, 8)), Vector3(0, _rng.randf() * 360, 0), Vector3(1.6, 0.4, 1.3)), _mat("rust_dark"))
 	# Restored: planters, solar panels on the store, string lamps.
 	for k: int in 5:
 		_planter(grn, Vector3(_rng.randf_range(-10, 10), deck_y, _rng.randf_range(2, 10)), _rng.randf_range(0.8, 1.4))
@@ -451,12 +451,12 @@ func _site_raft() -> void:
 		var lamp := SphereMesh.new()
 		lamp.radius = 0.07
 		lamp.height = 0.14
-		grn.add(lamp, FrontierView._xf(lp), _mat("lamp_warm"))
+		grn.add(lamp, _lxf(lp), _mat("lamp_warm"))
 	# Future: a white canopy sail over the deck on slim masts.
 	for k: int in 3:
 		var a: float = TAU * k / 3.0
 		_cyl(fut, Vector3(cos(a) * 9.0, deck_y, sin(a) * 8.0), Vector3(cos(a) * 9.0, deck_y + 6.5, sin(a) * 8.0), 0.12, _mat("white"))
-	fut.add(_blob_slab(12, 0.12, 1.0, 3), FrontierView._xf(Vector3(0, deck_y + 6.6, 0), Vector3(4, 30, 0), Vector3(10.5, 0.08, 9.0)), _mat("white"))
+	fut.add(_blob_slab(12, 0.12, 1.0, 3), _lxf(Vector3(0, deck_y + 6.6, 0), Vector3(4, 30, 0), Vector3(10.5, 0.08, 9.0)), _mat("white"))
 	b.flush(_groups["always"])
 	ruin.flush(_groups["ruin"])
 	grn.flush(_groups["green"])
@@ -497,9 +497,9 @@ func _site_stilts() -> void:
 		var p := Vector3(c.x + cos(a) * d * 1.3, 0, c.y + sin(a) * d * 0.8)
 		p.y = bed_at(p.x, p.z).x - 0.2
 		var s: float = _rng.randf_range(0.6, 1.8)
-		b.add(_lumpy(k % 5, 0.42), FrontierView._xf(p, Vector3(_rng.randf() * 30, _rng.randf() * 360, 0), Vector3(s * 1.3, s * 0.6, s)), rock_mat)
+		b.add(_lumpy(k % 5, 0.42), _lxf(p, Vector3(_rng.randf() * 30, _rng.randf() * 360, 0), Vector3(s * 1.3, s * 0.6, s)), rock_mat)
 	var skiff := Vector3(c.x + 14.0, 0.3, c.y + 12.0)
-	b.add(_lumpy(2, 0.08, 1.0), FrontierView._xf(skiff, Vector3(0, 50, 12), Vector3(2.4, 0.5, 0.9)), _mat("rust_red"))
+	b.add(_lumpy(2, 0.08, 1.0), _lxf(skiff, Vector3(0, 50, 12), Vector3(2.4, 0.5, 0.9)), _mat("rust_red"))
 	var heap: Array[Transform3D] = []
 	for k: int in 70:
 		var a: float = _rng.randf() * TAU
@@ -541,7 +541,7 @@ func _green_on_wreck() -> void:
 		var hp: Vector3 = Vector3(0, -1.6 + SEA_Y, 0) + bs * Vector3(0, 5.8, -14.0 + k * 9.0)
 		for j: int in 4:
 			var s: float = _rng.randf_range(0.6, 1.2)
-			grn.add(_lumpy(5 + j % 3, 0.55, 3.0), FrontierView._xf(hp + Vector3(_rng.randf_range(-2.5, 2.5), 0.3, _rng.randf_range(-2, 2)), Vector3.ZERO, Vector3(s, s * 0.8, s)), _mat("mangrove"))
+			grn.add(_lumpy(5 + j % 3, 0.55, 3.0), _lxf(hp + Vector3(_rng.randf_range(-2.5, 2.5), 0.3, _rng.randf_range(-2, 2)), Vector3.ZERO, Vector3(s, s * 0.8, s)), _mat("mangrove"))
 	grn.flush(_groups["green"])
 
 
@@ -557,9 +557,9 @@ func _site_reef() -> void:
 		var p := Vector3(cos(a) * d * 1.3, 0, sin(a) * d)
 		var s: float = _rng.randf_range(0.5, 1.5)
 		var y: float = SEA_Y - _rng.randf_range(0.0, 0.35)
-		ruin.add(_lumpy(k % 5, 0.6, 3.5), FrontierView._xf(Vector3(p.x, y, p.z), Vector3(0, _rng.randf() * 360, 0), Vector3(s, s * 0.6, s)), _mat("coral_dead"))
+		ruin.add(_lumpy(k % 5, 0.6, 3.5), _lxf(Vector3(p.x, y, p.z), Vector3(0, _rng.randf() * 360, 0), Vector3(s, s * 0.6, s)), _mat("coral_dead"))
 		if k % 2 == 0:
-			grn.add(_lumpy((k + 1) % 5, 0.65, 4.0), FrontierView._xf(Vector3(p.x, y - 0.05, p.z), Vector3(0, _rng.randf() * 360, 0), Vector3(s * 0.8, s * 0.5, s * 0.8)), _mat("coral"))
+			grn.add(_lumpy((k + 1) % 5, 0.65, 4.0), _lxf(Vector3(p.x, y - 0.05, p.z), Vector3(0, _rng.randf() * 360, 0), Vector3(s * 0.8, s * 0.5, s * 0.8)), _mat("coral"))
 	for k: int in 6:
 		var a: float = TAU * k / 6.0 + 0.3
 		var gp := Vector3(cos(a) * 30.0, SEA_Y, sin(a) * 26.0)

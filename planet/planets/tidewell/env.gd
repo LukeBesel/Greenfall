@@ -750,7 +750,7 @@ func _dress_islands() -> void:
 			var p := Vector3(c.x + cos(a) * d, 0, c.y + sin(a) * d)
 			p.y = bed_at(p.x, p.z).x - 0.2
 			var s: float = _rng.randf_range(0.6, 2.2)
-			b_always.add(_lumpy(k % 5, 0.42), FrontierView._xf(p, Vector3(_rng.randf() * 30, _rng.randf() * 360, 0), Vector3(s, s * 0.65, s * 1.25)), rock_mat)
+			b_always.add(_lumpy(k % 5, 0.42), _lxf(p, Vector3(_rng.randf() * 30, _rng.randf() * 360, 0), Vector3(s, s * 0.65, s * 1.25)), rock_mat)
 		# Mangroves ring the shore, palms stand inland.
 		for k: int in int(rad * 0.9):
 			var a: float = TAU * float(k) / int(rad * 0.9) + _rng.randf() * 0.2
@@ -851,7 +851,7 @@ func _mangrove(b: FrontierView.Batch, p: Vector3, s: float, trunk_m: Material, l
 	for k: int in 4:
 		var o := Vector3(_rng.randf_range(-1, 1), _rng.randf_range(0.2, 0.9), _rng.randf_range(-1, 1)) * s
 		var r: float = _rng.randf_range(0.9, 1.5) * s
-		b.add(_lumpy(5 + k % 3, 0.5, 2.6), FrontierView._xf(top + o, Vector3(0, _rng.randf() * 360.0, 0), Vector3(r * 1.2, r * 0.7, r * 1.2)), leaf_m)
+		b.add(_lumpy(5 + k % 3, 0.5, 2.6), _lxf(top + o, Vector3(0, _rng.randf() * 360.0, 0), Vector3(r * 1.2, r * 0.7, r * 1.2)), leaf_m)
 
 
 func _snag(b: FrontierView.Batch, p: Vector3, m: Material) -> void:
@@ -1043,6 +1043,12 @@ func _blob_slab(variant: int, wobble: float = 0.18, h: float = 1.0, lobes: int =
 	return m
 
 
+## Transform with a LOCAL scale (ProcMesh.xf / FrontierView._xf scale in parent space, which
+## skews any rotated, non-uniformly scaled box).
+static func _lxf(pos: Vector3, rot_deg: Vector3 = Vector3.ZERO, scl: Vector3 = Vector3.ONE) -> Transform3D:
+	return Transform3D(Basis.from_euler(rot_deg * (PI / 180.0)) * Basis.from_scale(scl), pos)
+
+
 ## Basis with a local (pre-rotation) scale.
 static func _ls(b: Basis, s: Vector3) -> Basis:
 	return b * Basis.from_scale(s)
@@ -1051,7 +1057,7 @@ static func _ls(b: Basis, s: Vector3) -> Basis:
 func _box(b: FrontierView.Batch, pos: Vector3, size: Vector3, mat: Material, rot: Vector3 = Vector3.ZERO) -> void:
 	if not _mats.has("_box"):
 		_mats["_box"] = ProcMesh.rounded_box(Vector3.ONE, 0.07, 2)
-	b.add(_mats["_box"], FrontierView._xf(pos, rot, size), mat)
+	b.add(_mats["_box"], _lxf(pos, rot, size), mat)
 
 
 func _cyl(b: FrontierView.Batch, a: Vector3, c: Vector3, r: float, mat: Material) -> void:
@@ -1248,14 +1254,14 @@ func _build_towers() -> void:
 		for k: int in 5:
 			var o := Vector3(_rng.randf_range(-0.4, 0.4) * w, h + _rng.randf_range(0.0, 1.6), _rng.randf_range(-0.4, 0.4) * dpt)
 			var cs: float = _rng.randf_range(0.7, 1.6)
-			ruin.add(_lumpy(k % 5, 0.45, 2.2), FrontierView._xf(Vector3(p.x, 0, p.z) + Basis(Vector3.UP, yaw) * o, Vector3(_rng.randf() * 40, _rng.randf() * 360, 0), Vector3(cs * 1.3, cs, cs)), _mat("concrete"))
+			ruin.add(_lumpy(k % 5, 0.45, 2.2), _lxf(Vector3(p.x, 0, p.z) + Basis(Vector3.UP, yaw) * o, Vector3(_rng.randf() * 40, _rng.randf() * 360, 0), Vector3(cs * 1.3, cs, cs)), _mat("concrete"))
 			_cyl(ruin, Vector3(p.x, h, p.z) + Basis(Vector3.UP, yaw) * Vector3(o.x, 0, o.z), Vector3(p.x, h + 2.4, p.z) + Basis(Vector3.UP, yaw) * Vector3(o.x + 0.6, 0, o.z), 0.04, _mat("rust_dark"))
 		# Fallen slabs and rubble heaped against the shaft at the waterline.
 		for k: int in 6:
 			var ang: float = _rng.randf() * TAU
 			var rp := Vector3(p.x, -0.3, p.z) + Basis(Vector3.UP, yaw) * Vector3(cos(ang) * (w * 0.5 + 0.6), 0, sin(ang) * (dpt * 0.5 + 0.6))
 			var rs: float = _rng.randf_range(0.8, 2.0)
-			b.add(_lumpy((k + i) % 5, 0.4, 1.8), FrontierView._xf(rp, Vector3(_rng.randf() * 30, _rng.randf() * 360, 0), Vector3(rs * 1.4, rs * 0.6, rs)), _mat("concrete"))
+			b.add(_lumpy((k + i) % 5, 0.4, 1.8), _lxf(rp, Vector3(_rng.randf() * 30, _rng.randf() * 360, 0), Vector3(rs * 1.4, rs * 0.6, rs)), _mat("concrete"))
 		# Future crown.
 		_box(fut, Vector3(p.x, h + 0.9, p.z), Vector3(w + 0.4, 1.8, dpt + 0.4), _mat("white"), Vector3(tilt, rad_to_deg(yaw), 0))
 		_box(fut, Vector3(p.x, h + 0.25, p.z), Vector3(w + 0.46, 0.05, dpt + 0.46), _mat("lamp"), Vector3(tilt, rad_to_deg(yaw), 0))
@@ -1334,30 +1340,30 @@ func _build_lighthouses() -> void:
 			cm.top_radius = lerpf(1.8, 1.1, float(k + 1) / 4.0)
 			cm.height = h / 4.0
 			cm.radial_segments = 16
-			b.add(cm, FrontierView._xf(base + Vector3(0, y0 + h / 8.0, 0)), _mat("buoy_red") if k == 2 else _mat("white"))
+			b.add(cm, _lxf(base + Vector3(0, y0 + h / 8.0, 0)), _mat("buoy_red") if k == 2 else _mat("white"))
 		var gal := CylinderMesh.new()
 		gal.top_radius = 1.6
 		gal.bottom_radius = 1.6
 		gal.height = 0.25
 		gal.radial_segments = 16
-		b.add(gal, FrontierView._xf(base + Vector3(0, h + 0.1, 0)), _mat("rust_dark"))
+		b.add(gal, _lxf(base + Vector3(0, h + 0.1, 0)), _mat("rust_dark"))
 		var lan := CylinderMesh.new()
 		lan.top_radius = 0.85
 		lan.bottom_radius = 0.95
 		lan.height = 1.4
 		lan.radial_segments = 12
-		b.add(lan, FrontierView._xf(base + Vector3(0, h + 0.95, 0)), _mat("lamp_warm"))
+		b.add(lan, _lxf(base + Vector3(0, h + 0.95, 0)), _mat("lamp_warm"))
 		var cap := SphereMesh.new()
 		cap.radius = 1.0
 		cap.height = 1.0
 		cap.is_hemisphere = true
-		b.add(cap, FrontierView._xf(base + Vector3(0, h + 1.65, 0)), _mat("buoy_red"))
+		b.add(cap, _lxf(base + Vector3(0, h + 1.65, 0)), _mat("buoy_red"))
 		var stump := CylinderMesh.new()
 		stump.top_radius = 1.4
 		stump.bottom_radius = 1.8
 		stump.height = 6.0
 		stump.radial_segments = 12
-		ruin.add(stump, FrontierView._xf(base + Vector3(0, 3.0, 0), Vector3(4, 0, 2)), _mat("rust_dark"))
+		ruin.add(stump, _lxf(base + Vector3(0, 3.0, 0), Vector3(4, 0, 2)), _mat("rust_dark"))
 		# Beam: two thin cones back to back on a turning pivot (green group, so restored only).
 		var pivot := Node3D.new()
 		pivot.position = base + Vector3(0, h + 0.95, 0)
@@ -1394,12 +1400,12 @@ func _build_gardens() -> void:
 	for p: Vector3 in spots:
 		var r: float = _rng.randf_range(1.4, 2.6)
 		var yaw: float = _rng.randf() * 360.0
-		b.add(_blob_slab(k_g % 4, 0.22, 1.0), FrontierView._xf(p + Vector3(0, 0.02, 0), Vector3(0, yaw, 0), Vector3(r, 0.3, r)), _mat("wood"))
-		b.add(_blob_slab((k_g + 2) % 4, 0.26, 1.0), FrontierView._xf(p + Vector3(0, 0.2, 0), Vector3(0, yaw + 40.0, 0), Vector3(r * 0.86, 0.14, r * 0.86)), _mat("garden"))
+		b.add(_blob_slab(k_g % 4, 0.22, 1.0), _lxf(p + Vector3(0, 0.02, 0), Vector3(0, yaw, 0), Vector3(r, 0.3, r)), _mat("wood"))
+		b.add(_blob_slab((k_g + 2) % 4, 0.26, 1.0), _lxf(p + Vector3(0, 0.2, 0), Vector3(0, yaw + 40.0, 0), Vector3(r * 0.86, 0.14, r * 0.86)), _mat("garden"))
 		for k: int in 6:
 			var o := Vector3(_rng.randf_range(-0.6, 0.6), 0.36, _rng.randf_range(-0.6, 0.6)) * r
 			var s: float = _rng.randf_range(0.25, 0.6)
-			b.add(_lumpy(5 + k % 3, 0.55, 3.0), FrontierView._xf(p + Vector3(o.x, 0.36, o.z), Vector3(0, _rng.randf() * 360.0, 0), Vector3(s, s * 0.8, s)), _mat("mangrove"))
+			b.add(_lumpy(5 + k % 3, 0.55, 3.0), _lxf(p + Vector3(o.x, 0.36, o.z), Vector3(0, _rng.randf() * 360.0, 0), Vector3(s, s * 0.8, s)), _mat("mangrove"))
 		k_g += 1
 	b.flush(_groups["green"], false)
 
@@ -1413,8 +1419,8 @@ func _build_future() -> void:
 		var p: Vector3 = _sea_spot(_field_edge + 25.0, 160.0, 18.0)
 		var r: float = _rng.randf_range(7.0, 11.0)
 		var pyaw: float = _rng.randf() * 360.0
-		b.add(_blob_slab(10 + k, 0.1, 1.0, 3), FrontierView._xf(p + Vector3(0, 0.55, 0), Vector3(0, pyaw, 0), Vector3(r, 1.0, r)), _mat("white"))
-		lit.add(_blob_slab(10 + k, 0.1, 1.0, 3), FrontierView._xf(p + Vector3(0, 1.03, 0), Vector3(0, pyaw, 0), Vector3(r * 1.004, 0.03, r * 1.004)), _mat("lamp"))
+		b.add(_blob_slab(10 + k, 0.1, 1.0, 3), _lxf(p + Vector3(0, 0.55, 0), Vector3(0, pyaw, 0), Vector3(r, 1.0, r)), _mat("white"))
+		lit.add(_blob_slab(10 + k, 0.1, 1.0, 3), _lxf(p + Vector3(0, 1.03, 0), Vector3(0, pyaw, 0), Vector3(r * 1.004, 0.03, r * 1.004)), _mat("lamp"))
 		for f: int in 6:
 			var a: float = TAU * f / 6.0
 			_cyl(b, p + Vector3(cos(a) * r * 0.8, -1.2, sin(a) * r * 0.8), p + Vector3(cos(a) * r * 0.8, 0.2, sin(a) * r * 0.8), 0.5, _mat("white"))
@@ -1424,12 +1430,12 @@ func _build_future() -> void:
 			dome.height = r * 0.6
 			dome.is_hemisphere = true
 			dome.radial_segments = 24
-			b.add(dome, FrontierView._xf(p + Vector3(0, 1.05, 0)), Mats.glass(Color(0.6, 0.8, 0.85, 0.35), 0.05))
+			b.add(dome, _lxf(p + Vector3(0, 1.05, 0)), Mats.glass(Color(0.6, 0.8, 0.85, 0.35), 0.05))
 			var g := SphereMesh.new()
 			g.radius = r * 0.45
 			g.height = r * 0.35
 			g.is_hemisphere = true
-			b.add(g, FrontierView._xf(p + Vector3(0, 1.05, 0)), _mat("mangrove"))
+			b.add(g, _lxf(p + Vector3(0, 1.05, 0)), _mat("mangrove"))
 	for k: int in 4:
 		var p: Vector3 = _sea_spot(_field_edge + 10.0, 120.0, 12.0)
 		var yaw: float = _rng.randf() * 180.0
