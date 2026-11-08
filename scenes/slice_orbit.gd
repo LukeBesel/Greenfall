@@ -435,6 +435,10 @@ func _build_yard_systems() -> void:
 		w.add_child(tower)  # a child of the slice, as on the flat game (HubBuilds and the bot look it up)
 		tower.global_transform = (slot[0] as Node3D).global_transform * (slot[1] as Transform3D)  # after its _ready
 	_attach_camp()
+	var obj := Objectives.new()  # WREN's last message after the intro + the objective card and outline
+	obj.world = w
+	w.add_child(obj)
+	w.set("objectives", obj)
 
 
 ## A yard spot in world space (the anchor's origin, or the flat yard spot on the pad).

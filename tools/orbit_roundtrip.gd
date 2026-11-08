@@ -83,6 +83,16 @@ static func run(rt: Node, check: Callable) -> void:
 			if g.field.piece_alive[pid] == 1:
 				s1.collect_piece(pid)
 	check.call("orbit_cell_cleaned", clean0 + 1, s1.field.cleaned_count)
+	# The objective outline draws around a globe cell, in that cell's frame.
+	var ob: Objectives = s1.get("objectives")
+	if ob and ob.outline:
+		var oc: int = g.grid.neighbors(target)[2]
+		ob.outline.set_hex(oc)
+		for i: int in 40:
+			await tree.process_frame
+		var aabb: AABB = (ob.outline.get_child(0) as MeshInstance3D).get_aabb() if ob.outline.get_child_count() > 0 else AABB()
+		check.call("orbit_outline_on_cell", true, ob.outline.global_position.distance_to(g.field.hex_center(oc)) < 0.5)
+		check.call("orbit_outline_cell_sized", true, aabb.size.x > 12.0 and aabb.size.x < 24.0 and absf(aabb.size.y) < 3.0)
 	check.call("orbit_first_hex_milestone", true, GameState.flags.get("hexm_1", false))
 	await tree.create_timer(1.4).timeout  # HexLevels samples once a second: the clean cell reaches level 1
 	check.call("orbit_hex_level_1", 1, (s1.get("hex_levels") as HexLevels).level_of(target))
