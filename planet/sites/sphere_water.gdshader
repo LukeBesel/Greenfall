@@ -5,7 +5,7 @@ shader_type spatial;
 render_mode blend_mix, depth_draw_always, cull_back, specular_schlick_ggx;
 
 uniform sampler2D wave_nrm : hint_normal, filter_linear_mipmap, repeat_enable;
-uniform vec3 murky_col = vec3(0.16, 0.17, 0.14);
+uniform vec3 murky_col = vec3(0.11, 0.155, 0.145);  // [v3city] was 0.16, 0.17, 0.14 (grey): murky green, as the open water past it
 uniform vec3 clear_col = vec3(0.08, 0.42, 0.46);
 uniform vec2 alpha_mc = vec2(0.94, 0.62);
 uniform vec2 rough_mc = vec2(0.32, 0.08);  // [v1world] was 0.18, 0.04

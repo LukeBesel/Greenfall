@@ -66,8 +66,22 @@ void fragment() {
 	float bank = far_shell > 0.5 ? 0.0 : smoothstep(0.04, 0.5, wet);
 	col = mix(col, dirt * vec3(0.72, 0.66, 0.58), bank * 0.85);
 	col = mix(col, col * 0.42 + vec3(0.015, 0.03, 0.035), water);  // [v1world] wet mud on banks and beds (was a flat blue)
+	// [v3city] Open water past the near ring, where SphereWater lays no lake surface (QA: the far
+	// lake read as a flat grey plane): murky green-teal, clearer as it is cleaned, slow ripple
+	// mottling and a sky sheen toward grazing angles. Near the camera the lake surface covers it.
+	float open_k = far_shell > 0.5 ? 1.0 : smoothstep(50.0, 75.0, length(VERTEX));
+	float ow = water * open_k;
+	if (ow > 0.001) {
+		float rip = dot(tri(tex_rubble, wpos * 0.045 + vec3(TIME * 0.01, 0.0, TIME * 0.007), w), vec3(0.333));
+		float clear_w = 1.0 - smoothstep(0.1, 0.6, junk);
+		vec3 wcol = mix(vec3(0.1, 0.12, 0.085), vec3(0.05, 0.24, 0.27), clear_w);  // murky olive -> clear teal
+		wcol *= mix(0.85, 1.15, smoothstep(0.35, 0.65, rip));
+		float fres = pow(1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0), 3.0);
+		wcol = mix(wcol, vec3(0.28, 0.31, 0.29), fres * 0.25);
+		col = mix(col, wcol, ow);
+	}
 	col = mix(col, col * lod_color, lod_tint);
 	ALBEDO = col;
-	ROUGHNESS = mix(0.95, 0.6, water);  // [v1world] was 0.12 / 0.6: glossy banks mirrored the sky as a white strip
-	SPECULAR = mix(0.35, 0.4, water);
+	ROUGHNESS = mix(mix(0.95, 0.6, water), 0.55, ow);  // [v1world] was 0.12 / 0.6: glossy banks mirrored the sky as a white strip
+	SPECULAR = mix(mix(0.35, 0.4, water), 0.25, ow);
 }

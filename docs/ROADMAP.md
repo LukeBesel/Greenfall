@@ -905,3 +905,9 @@ rebuilt on the sphere. What carries over, and how to place it on a globe:
   - The new texts aren't translated.
   - The pad can look pale at noon.
   - Robot timing after the Bot Bay hasn't been checked.
+
+## Update: Verdance start town (wt/v3city, owner item 42, Nov 8)
+- Done: the start hub is a town. It has a 7x7 street grid cut to the flat pad and the lake shore (the yard sits on a lakeside peninsula). The forecourt rows stand past 40 m so the first hexes stay whole, then mid-rise blocks, then towers on the outer ring. Street furniture (`planet/street_furniture.gd`): crossings, centre lines, bus stops, benches, bins, post boxes, bollards, name posts, stop signs, traffic lights and parked wrecks. Past the pad, a skyline on the curved ground (`planet/sites/town_outskirts.gd`, 150-330 m, plinths, building_city `local_space`); the cells under those buildings become hub ground (F_HUB), and planet % no longer counts F_HUB cells.
+- Checks: `--city-walk` (planet/sites/city_walk.gd: walk area, pockets, all 8 ways out, junk reachability) and `--town-map=PATH` (top-down plan PNG).
+- QA fixes: the yard pad is now real bevelled slabs with 12 cm joints (it had 5 cm hairline seams). Open water past the near ring reads as water (murky olive to clear teal, ripple mottle, sheen), and the near lake surface is murky green, not grey.
+- Next: the other hubs as towns (the ruin_block sites still use the old 3x3), and the land between hubs (suburbs, outskirts and industrial edge, instanced with LOD). Also a waterfront along the start lake (quay, piers, boats).
