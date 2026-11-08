@@ -1,0 +1,1812 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+---  GUT  ---
+[1m[INFO]:  [0musing [/root/.local/share/godot/app_userdata/Greenfall] for temporary output.
+Godot version:  4.7.2
+GUT version:  9.7.1
+[4m
+
+res://tests/test_achievements.gd
+[0m* test_definitions
+* test_nothing_unlocked_on_a_fresh_game
+* test_stat_achievements_unlock_and_progress
+* test_junk_kg_uses_codex_weights
+* test_research_and_meta_achievements
+* test_hub_level_reads_all_districts
+* test_unlocks_persist_through_save
+* test_live_node_toasts_and_tracks_restored
+* test_codex_entries_and_scan
+* test_screen_builds_every_tab
+[33m    1146 Orphans[0m
+[33m        * [@ScrollContainer@361:<ScrollContainer#847652065825>] + 973
+        * [@HBoxContainer@195:<HBoxContainer#831663378978>] + 161[0m
+[33m1146 orphans[0m
+[1m10/10 passed.
+[0m[4m
+
+res://tests/test_bale_rest.gd
+[0m* test_dropped_bale_rests_on_flat_ground
+[33m    --- Awaiting 240 physics frames  ---
+[0m* test_bale_spawned_inside_the_ground_pops_out
+[33m    --- Awaiting 240 physics frames  ---
+[0m* test_fast_drop_never_tunnels
+[33m    --- Awaiting 240 physics frames  ---
+[0m* test_bale_on_the_curb_sits_on_the_sidewalk
+[33m    --- Awaiting 240 physics frames  ---
+[0m* test_overstuffed_bale_box_matches_its_look
+[33m    --- Awaiting 240 physics frames  ---
+[0m* test_bale_rests_on_a_junk_mound_and_settles_as_it_shrinks
+[33m    --- Awaiting 240 physics frames  ---
+[0m[33m    --- Awaiting 300 physics frames  ---
+[0m* test_free_spot_avoids_a_wall
+* test_heaps_are_solid_for_lumi_and_bots_and_shrink_as_cleared
+* test_bale_faces_point_outward
+[1m9/9 passed.
+[0m[4m
+
+res://tests/test_beat.gd
+[0m* test_every_goal_type_is_known_and_its_key_exists
+* test_the_chain_ends_on_the_cradle_and_the_seed_ark
+* test_frontier_unlocks_name_real_research_and_are_ordered
+* test_verdance_bloom_is_the_cradle_not_three_districts
+* test_campaign_progress_never_full_before_the_cradle
+* test_big_num_rounding_rolls_into_the_next_suffix
+* test_currencies_never_go_negative
+* test_garden_ramp_stats_and_research
+* test_credits_roll_reads_credits_md
+* test_save_falls_back_to_tmp_when_rename_was_interrupted
+* test_rocket_recharge_survives_a_clock_change
+* test_garden_robots_wait_for_base_level_3
+* test_credits_roll_has_no_markdown_table_rows
+[1m13/13 passed.
+[0m[4m
+
+res://tests/test_big_num.gd
+[0m* test_normalizes
+* test_add_and_sub
+* test_add_ignores_tiny
+* test_mul_div
+* test_compare
+* test_beyond_int64
+* test_format_short
+* test_format_sci_eng
+* test_serialize_roundtrip
+[1m9/9 passed.
+[0m[4m
+
+res://tests/test_bloom.gd
+[0m* test_district_summary_from_live_summary_or_level_bytes
+* test_thriving_district_threshold
+* test_milestones_unlock_in_order_and_pay_once
+* test_seed_ark_locked_until_bloom_then_endless_waves
+* test_globe_line_shows_next_bloom_before_the_ark
+* test_bloom_achievements_wired
+[1m6/6 passed.
+[0m[4m
+
+res://tests/test_camp.gd
+[0m* test_trash_bin_levels
+* test_yard_builds_need_level_flag_and_cubes
+* test_fresh_bench_is_broken_old_saves_keep_theirs
+* test_yard_interactables_are_spaced
+* test_yard_keeps_off_the_crash_site
+[1m5/5 passed.
+[0m[4m
+
+res://tests/test_collider_audit.gd
+[0m* test_start_district_props_all_collide
+* test_futuristic_base_props_all_collide
+* test_audit_catches_a_prop_without_a_collider
+[1m3/3 passed.
+[0m[4m
+
+res://tests/test_core_charge.gd
+[0m* test_compute_starts_low_and_caps_below_full
+* test_compute_grows_with_each_input
+* test_bloom_progress_uses_thriving_hexes
+* test_campaign_progress_steps_along_the_cradle_path
+* test_store_never_drops_and_records_beats_once
+* test_glow_brightens_after_half_charge
+[1m6/6 passed.
+[0m[4m
+
+res://tests/test_cradle_mode.gd
+[0m* test_prestige_earned_adds_up_each_source
+* test_bank_pays_only_what_is_new
+* test_heirloom_costs_grow_and_unlock_by_milestones
+* test_heirlooms_cap_at_max
+* test_heirloom_and_modifier_stat_multipliers
+* test_start_kit_from_heirloom_levels
+* test_long_nights_slow_only_the_night
+* test_world_zero_is_verdance_exactly
+* test_new_worlds_differ_and_are_deterministic
+* test_world_types_change_the_biome_mix
+* test_new_world_towns_have_new_names
+* test_launch_a_new_world_then_travel_back
+[cradle] new world 1: Toren seed=209586 type=ice_moon mods=["rich_salvage", "heavy_rain"] slot=1
+* test_profile_round_trips_through_its_dict
+* test_new_world_landing_town_is_dry
+[1m14/14 passed.
+[0m[4m
+
+res://tests/test_crash_site.gd
+[0m* test_pod_parts
+* test_stage_follows_upgrades
+* test_site_mends_on_upgrade
+[1m3/3 passed.
+[0m[4m
+
+res://tests/test_curiosities.gd
+[0m* test_curiosities_list_every_egg_with_hint_and_found_state
+* test_chain_eggs_report_parts_progress
+* test_new_eggs_have_props_and_wren_lines
+* test_wild_eggs_only_in_wilderness_districts
+* test_biome_sets_reference_real_models
+* test_biome_junk_keeps_piece_count_and_types
+* test_codex_lists_biome_landmarks
+* test_wild_egg_found_counts_for_achievement
+[1m8/8 passed.
+[0m[4m
+
+res://tests/test_deck.gd
+[0m* test_steam_deck_gets_low_and_bigger_ui
+* test_integrated_and_discrete_pc
+* test_macs
+* test_software_and_other_renderers_are_low
+* test_low_memory_steps_down
+* test_probe_rule
+* test_manual_choice_turns_auto_off_and_persists
+* test_particles_scale_with_preset
+* test_pad_can_confirm_and_back
+* test_glyph_names_per_family
+* test_style_from_controller_name
+* test_settings_glyph_follows_family
+* test_prompt_template_parse
+* test_tutorial_text_uses_glyphs
+* test_prompt_glyph_specs
+* test_font_floor
+* test_mesh_batch_instances_and_merges
+* test_mesh_batch_cells_split
+[1m18/18 passed.
+[0m[4m
+
+res://tests/test_decor.gd
+[0m* test_every_type_has_a_builder_and_sane_data
+* test_footprint_rotates
+* test_placement_rules
+* test_buying_and_refunds_make_moving_free
+* test_collection_gate
+* test_charm_bonus_is_small_and_capped
+* test_decorations_persist
+* test_wildlife_hook_groups
+[1m8/8 passed.
+[0m[4m
+
+res://tests/test_designs.gd
+[0m* test_six_designs_match_the_model
+* test_default_is_aurora_and_unlocked
+* test_unlock_by_any_condition
+* test_progress_text_and_unlock_text
+* test_buff_applies_only_to_worn_design_and_respects_looks_only
+* test_streak_grace_buff
+* test_every_design_builds_with_its_add_ons
+[1m7/7 passed.
+[0m[4m
+
+res://tests/test_economy.gd
+[0m* test_data_loaded
+* test_stat_add_and_mul
+* test_cost_growth_and_n
+* test_buy_spends_and_levels
+* test_buy_max_respects_budget_and_cap
+* test_cannot_overspend
+* test_cube_values
+* test_skill_beats_idle
+[1m8/8 passed.
+[0m[4m
+
+res://tests/test_eggs2.gd
+[0m* test_gnomes_are_collectible_pickups
+* test_collect_counts_once_per_part
+* test_old_save_seen_gnomes_count_as_collected
+* test_gnome_bed_shows_collected_and_salutes
+* test_no_base_display_for_collectibles
+* test_museum_lists_every_collectible_kind
+* test_museum_progress_and_completion
+* test_museum_unlocks_at_the_end
+* test_museum_builds_with_ghosts_for_missing
+* test_jukebox_hushes_music_until_lumi_walks_away
+* test_jukebox_end_restores_music
+* test_hush_owners_stack
+* test_telescope_is_far_from_spawn
+* test_telescope_move_keeps_other_eggs_in_place
+* test_tv_broadcast_tells_the_story
+* test_tv_broadcast_plays_through_and_can_close
+[1m16/16 passed.
+[0m[4m
+
+res://tests/test_events.gd
+[0m* test_next_delay_stays_in_range
+* test_pick_event_respects_eligibility_and_recent
+* test_pick_event_is_weighted
+* test_eligibility_from_context
+* test_reward_scaling_is_a_spike_not_a_flood
+* test_director_state_persists_in_flags
+* test_streak_tiers_and_bonus
+* test_streak_drains_gently_after_grace
+* test_streak_bale_peak
+* test_offer_uses_tier_numbers
+* test_contract_requirements_filter_templates
+* test_contract_lifecycle_done_and_failed
+* test_requests_start_on_their_own_and_never_expire
+* test_peak_contract_tracks_streak
+* test_requests_persist
+* test_claim_pays_cubes_or_parts_and_milestone_trinket
+* test_reward_track_unlocks_liveries_and_builder_parts
+* test_world_events_count_as_requests
+* test_collection_roll_and_grant
+[1m19/19 passed.
+[0m[4m
+
+res://tests/test_extras.gd
+[0m* test_every_song_is_a_track_the_score_knows
+* test_songs_unlock_with_progress
+* test_playing_a_song_holds_until_reset
+* test_garden_bonus_is_small_and_capped
+* test_only_old_or_low_tier_robots_retire
+* test_album_milestones
+* test_garden_grows_offline_once
+* test_watered_slots_grow_for_their_water_only
+* test_summary_rows_and_cap
+* test_iso_weeks
+* test_same_seed_and_twist_for_everyone
+* test_twists_limit_robots_only_in_the_challenge
+* test_score_rewards_speed
+* test_one_chip_per_week_and_bests
+* test_weekly_decor_needs_chips
+* test_challenge_hooks_cradle_mode_only_while_active
+* test_simulate_caps_and_never_pays_twice
+[1m17/17 passed.
+[0m[4m
+
+res://tests/test_fauna.gd
+[0m* test_city_cats_and_birds_need_clean_ground
+* test_rats_live_in_junk_and_leave_as_it_is_cleaned
+* test_green_levels_bring_their_animals
+* test_water_animals_need_a_clean_lake
+* test_frontier_biomes_have_their_own_animals
+* test_plan_respects_caps_and_is_stable
+* test_spots_keep_clear_of_junk
+* test_every_model_builds_with_a_rig
+    rat mesh aabb [P: (-0.015985, -0.000003, -0.107395), S: (0.03197, 0.033865, 0.14835)] rigged=false
+* test_custom_data_packs_head_and_coat
+* test_sightings_photos_and_adoption_persist_in_flags
+[1m10/10 passed.
+[0m[4m
+
+res://tests/test_fauna_space.gd
+[0m* test_animals_keep_their_distance
+* test_body_radii_follow_size
+* test_prop_grid_blocks_a_hydrant
+* test_prop_sizes
+* test_scan_stamps_props_and_skips_ground_cover
+* test_fences_and_the_yard
+* test_live_fauna_refuses_overlapping_spots
+* test_songbird_perches
+* test_frontier_ambience
+* test_lumi_pets_with_a_reach_and_tilt
+* test_bird_sounds_are_occasional
+* test_feeding_brings_the_flock
+[1m12/12 passed.
+[0m[4m
+
+res://tests/test_field.gd
+[0m* test_hex_math_roundtrip
+* test_generation_deterministic
+* test_hub_hexes_start_clean_and_empty
+* test_pieces_live_in_their_hex
+* test_gen1_keeps_the_old_layout
+* test_gen2_covers_more_but_keeps_volume
+* test_natural_borders_spill_past_straight_edges
+* test_removing_all_pieces_cleans_hex_once
+* test_scoop_target_in_front_only
+* test_compartment_overflow_rules
+[1m10/10 passed.
+[0m[4m
+
+res://tests/test_first_hour.gd
+[0m* test_steps_teach_one_thing_and_stay_short
+* test_glyphs_bb_colours_keys
+* test_tutorial_progress_counts_scoops
+* test_checklist_card_shows_and_finishes
+* test_marker_follows_target_and_hides
+* test_scoop_ladder_stays_gentle
+* test_coin_flight_hold_and_land
+* test_first_seed_is_one_early_seed
+* test_seed_finds_locked_until_tin_then_rate_limited
+[1m9/9 passed.
+[0m[4m
+
+res://tests/test_frontiers.gd
+[0m* test_planet_appends_one_hub_per_frontier
+* test_frontier_unlocks_follow_research_and_bases
+* test_frontier_fields_are_bigger_and_tougher
+* test_sandstorm_redusts_bare_unsheltered_hexes
+[frontier] storm 1 hit [22, 14, 4, 2, 1]
+* test_dust_flats_well_is_dry
+* test_ice_locks_junk_until_thawed
+* test_frozen_port_plants_need_greenhouse_or_hardy_seeds
+* test_draining_reveals_streets_ring_by_ring
+[frontier] drained stage 1: 12 hexes
+* test_cradle_pad_completion_fires_the_finale_hook
+[frontier] cradle district complete (hub 0)
+* test_frozen_port_state_round_trip
+[1m10/10 passed.
+[0m[4m
+
+res://tests/test_future_layer.gd
+[0m* test_dusty_district_shows_nothing
+* test_build_is_deterministic_per_level
+* test_each_level_adds_and_keys_are_unique
+* test_level_milestones
+* test_district_score_range
+* test_level_up_rebuilds_and_sweeps
+[future] score=0.00 pieces=0 built in 1.8 ms
+[1m6/6 passed.
+[0m[4m
+
+res://tests/test_garden.gd
+[0m* test_plant_water_grow
+* test_no_seeds_no_planting
+[1m2/2 passed.
+[0m[4m
+
+res://tests/test_geosphere.gd
+[0m* test_cell_counts_and_pentagons
+* test_neighbors_symmetric_and_close
+* test_corners_ordered
+* test_nearest_walk
+[1m4/4 passed.
+[0m[4m
+
+res://tests/test_glim.gd
+[0m* test_data_uses_only_three_currencies
+* test_found_after_time_and_pieces
+* test_clock_longer_days_until_found
+* test_night_lift_stays_after_found
+* test_buy_needs_found_money_and_requirements
+* test_tracks_max_out
+* test_looks_locked_until_met
+* test_state_survives_serialization
+* test_scanner_lists_remaining_pieces
+* test_night_amount
+* test_music_upgrade_gate
+* test_scan_hexes_by_tier
+[1m12/12 passed.
+[0m[4m
+
+res://tests/test_goals.gd
+[0m* test_chain_is_long_and_ids_unique
+* test_complete_pays_reward_and_advances
+* test_one_completion_per_beat
+* test_progress_persists_via_flags
+* test_value_types
+[1m5/5 passed.
+[0m[4m
+
+res://tests/test_green.gd
+[0m* test_grow_hex_levels_give_rising_life
+* test_grow_hex_leaves_work_for_watering_robots
+* test_hash_is_stable_and_in_range
+* test_plant_parts_split_variants
+* test_meadow_meshes_build
+[1m5/5 passed.
+[0m[4m
+
+res://tests/test_hex_levels.gd
+[0m* test_hub_hex_untracked_and_junk_is_zero
+* test_clean_then_planted_then_growing
+* test_sustained_needs_continuous_water
+* test_thriving_when_bloomed_and_sustained
+* test_persist_roundtrip
+* test_garden_stipend_pays_sustained_and_thriving_hexes
+[1m6/6 passed.
+[0m[4m
+
+res://tests/test_homeward.gd
+[0m* test_five_fixed_planets_in_order
+* test_planet_pct_weights_and_cap
+* test_store_never_drops_and_restoring_gives_relic_and_pick
+* test_verdance_pct_is_the_bloom_core
+* test_reach_needs_drive_and_chart
+* test_drive_gates_and_costs
+* test_planet_world_keeps_its_type_and_seed
+* test_profile_keeps_homeward_through_from_dict
+* test_picks_buy_heirlooms_without_starseeds
+* test_finale_redirect_rule
+* test_binary_suns_scale_with_distance
+* test_rocket_targets_are_out_of_hub_range
+* test_score_track_waits_for_the_ending
+[1m13/13 passed.
+[0m[4m
+
+res://tests/test_hub.gd
+[0m* test_upgrade_needs_materials
+* test_scrubber_requires_level_and_scales
+[1m2/2 passed.
+[0m[4m
+
+res://tests/test_hud.gd
+[0m* test_curve_is_smooth_and_grows
+* test_apply_xp_crosses_several_levels
+* test_xp_table_covers_the_sources
+* test_reward_schedule
+* test_state_lives_in_flags
+* test_live_node_grants_and_levels
+* test_notify_stack_caps_and_merges
+* test_currency_chip_appears_on_change
+* test_goal_tracker_compact_and_expandable
+* test_hud_mode_setting_persists
+[1m10/10 passed.
+[0m[4m
+
+res://tests/test_junk_coverage.gd
+[0m* test_the_whole_district_reads_covered
+    coverage 92.1% of 4857 open points; per surface { 2: [1031, 948], 1: [2920, 2776], 0: [906, 750] }; bare (> 3 m from junk) 0
+* test_ring_around_the_base_is_covered
+* test_yard_stays_clear
+* test_no_large_items_in_the_starting_hexes
+[1m4/4 passed.
+[0m[4m
+
+res://tests/test_junk_lod.gd
+[0m* test_far_mesh_is_much_lighter
+* test_starts_near_then_splits_by_distance
+* test_hide_and_show_keep_buffers_packed
+* test_camera_move_swaps_and_back
+* test_stars_fade_out_by_day
+* test_bands_hold_with_hysteresis
+[1m6/6 passed.
+[0m[4m
+
+res://tests/test_l10n.gd
+[0m* test_translations_registered
+* test_pseudo_translates_code_and_data_strings
+* test_every_translation_keeps_placeholders
+* test_sample_german_and_spanish
+* test_language_setting_persists_and_applies
+* test_ui_font_has_latin_extended_glyphs
+* test_full_translations_complete
+* test_cjk_glyphs_render
+* test_system_locale_mapping
+[1m9/9 passed.
+[0m[4m
+
+res://tests/test_l10n_fmt.gd
+[0m* test_reward_suffixes_english_plurals
+* test_reward_suffixes_translate
+* test_big_amounts
+* test_part_name_word_order
+* test_research_effect_lines
+* test_token_glyph_in_fonts
+[1m6/6 passed.
+[0m[4m
+
+res://tests/test_late_eggs.gd
+[0m* test_forty_plus_with_props_and_lines
+* test_frontier_eggs_only_in_their_frontier
+* test_other_world_eggs_only_on_new_worlds
+* test_codex_groups_cover_every_egg
+[1m4/4 passed.
+[0m[4m
+
+res://tests/test_ledger.gd
+[0m* test_acts_follow_progress_in_order
+* test_drop_is_small_and_dirties_a_clean_hex
+* test_drop_candidates_skip_planted_water_hub_and_dirty
+* test_dropped_state_survives_save_and_load
+* test_jammer_needs_drones_scales_and_persists_per_district
+* test_relay_spot_is_deterministic_and_on_open_ground
+* test_relay_visible_only_in_its_district_from_act_3
+* test_flags_survive_gamestate_roundtrip
+* test_egg_data_has_enough_original_secrets
+* test_egg_placement_deterministic_and_clear_of_buildings
+* test_finding_an_egg_rewards_once
+* test_interactables_pick_nearest_enabled
+* test_every_egg_prop_and_the_drone_build
+[1m13/13 passed.
+[0m[4m
+
+res://tests/test_lumi_style.gd
+[0m* test_data_is_complete
+* test_serialization_round_trip
+* test_unlock_gating
+* test_presets_reproduce_the_designs
+* test_preset_model_matches_the_design
+* test_custom_style_on_a_model
+* test_worn_style_and_bonus
+* test_saved_looks
+* test_builder_opens_and_wears
+    [DEPRECATED]:  wait_frames has been replaced with wait_physics_frames which is counted in _physics_process.  wait_process_frames has also been added which is counted in _process.
+    [DEPRECATED]:  wait_frames has been replaced with wait_physics_frames which is counted in _physics_process.  wait_process_frames has also been added which is counted in _process.
+* test_builder_embeds_as_a_control
+    [DEPRECATED]:  wait_frames has been replaced with wait_physics_frames which is counted in _physics_process.  wait_process_frames has also been added which is counted in _process.
+* test_cosmetic_targets_registry
+WARNING: CosmeticTargets.register(bad): needs an 'editor' Callable
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] register (res://systems/cosmetic_targets.gd:43)
+         [1] test_cosmetic_targets_registry (res://tests/test_lumi_style.gd:296)
+         [2] _run_test (res://addons/gut/gut.gd:622)
+         [3] _test_the_scripts (res://addons/gut/gut.gd:835)
+         [4] _run_test (res://addons/gut/gut.gd:650)
+         [5] test_builder_embeds_as_a_control (res://tests/test_lumi_style.gd:286)
+         [6] _end_wait (res://addons/gut/awaiter.gd:126)
+         [7] _on_tree_physics_frame (res://addons/gut/awaiter.gd:78)
+* test_locked_design_is_a_silhouette
+[1m12/12 passed.
+[0m[4m
+
+res://tests/test_machines_appear.gd
+[0m* test_machine_upgrades_need_their_machine
+* test_each_machine_spawns_its_node
+[1m2/2 passed.
+[0m[4m
+
+res://tests/test_money.gd
+[0m* test_exactly_three_currencies
+* test_legacy_alias_adds_and_reads_at_rate
+* test_legacy_alias_spends_and_affords
+* test_legacy_alias_warns_once_in_debug
+WARNING: [money] legacy currency 'tokens' is now 'parts' (x5.0); update the caller
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] _warn (res://core/currencies.gd:98)
+         [1] resolve (res://core/currencies.gd:89)
+         [2] add_currency (res://autoload/GameState.gd:84)
+         [3] test_legacy_alias_warns_once_in_debug (res://tests/test_money.gd:70)
+         [4] _run_test (res://addons/gut/gut.gd:622)
+         [5] _test_the_scripts (res://addons/gut/gut.gd:835)
+         [6] _run_test (res://addons/gut/gut.gd:650)
+         [7] test_builder_embeds_as_a_control (res://tests/test_lumi_style.gd:286)
+         [8] _end_wait (res://addons/gut/awaiter.gd:126)
+         [9] _on_tree_physics_frame (res://addons/gut/awaiter.gd:78)
+* test_fold_and_cost_dicts
+* test_migrate_v1_save_to_three_currencies
+* test_migrate_is_idempotent_for_v2
+* test_data_files_use_only_the_three
+[1m8/8 passed.
+[0m[4m
+
+res://tests/test_offline.gd
+[0m* test_no_robots_no_income
+* test_cleaners_need_hauler_to_deliver
+* test_capped_at_eight_hours
+* test_higher_tier_earns_more
+* test_capped_by_junk_left
+[1m5/5 passed.
+[0m[4m
+
+res://tests/test_onboard.gd
+[0m* test_brief_is_short
+* test_objectives_have_a_short_why
+* test_checklist_has_no_this_hex
+* test_objective_values_and_progress
+* test_wait_flag_shows_hint
+* test_contour_is_a_closed_loop_around_the_hex
+* test_inside_value_signs_on_a_straight_grid
+* test_requests_unlock_later
+* test_key_hints_show_first_minutes_and_on_demand
+* test_key_hints_strip_builds
+* test_detector_waits_for_the_checklist
+* test_objective_card_shows_current
+* test_waypoint_quiet_during_checklist_and_builds
+* test_shard_goal_wording_is_plain
+* test_signal_tower_tiers_and_migration
+* test_brief_is_wrens_last_message
+[1m16/16 passed.
+[0m[4m
+
+res://tests/test_orders.gd
+[0m* test_group_and_bot_orders
+* test_zone_ids_normalised_after_json
+[1m2/2 passed.
+[0m[4m
+
+res://tests/test_outposts.gd
+[0m* test_plan_is_deterministic_and_on_the_frontier
+* test_repair_needs_a_clean_hex_and_materials
+[outposts] district 0: 3 outposts hex35@(-43,11) hex30@(-9,-45) hex23@(35,30) levels []
+* test_upgrades_bigger_skip_then_recharge_pad
+[outposts] district 0: 3 outposts hex35@(-43,11) hex30@(-9,-45) hex23@(35,30) levels []
+* test_haulers_deliver_to_the_nearest_working_scale
+[outposts] district 0: 3 outposts hex35@(-43,11) hex30@(-9,-45) hex23@(35,30) levels []
+* test_recharge_pad_speeds_up_robots
+[outposts] district 0: 3 outposts hex35@(-43,11) hex30@(-9,-45) hex23@(35,30) levels []
+* test_levels_persist_into_a_new_district_load
+[outposts] district 0: 3 outposts hex35@(-43,11) hex30@(-9,-45) hex23@(35,30) levels []
+[outposts] district 0: 3 outposts hex35@(-43,11) hex30@(-9,-45) hex23@(35,30) levels [0, 2]
+* test_outpost_achievements_and_wren_lines_exist
+[1m7/7 passed.
+[0m[4m
+
+res://tests/test_pace.gd
+[0m* test_size_classes_match_world2_thresholds
+* test_lift_strength_steps_small_medium_large
+* test_baler_is_an_upgrade
+* test_dump_pays_less_than_a_bale
+* test_start_is_small_and_slow
+* test_only_one_upgrade_after_two_early_bales
+* test_automation_waits_for_the_base
+* test_events_gated_on_unlocks
+* test_old_saves_keep_their_tools
+[1m9/9 passed.
+[0m[4m
+
+res://tests/test_photo_mode.gd
+[0m* test_filters_cover_the_presets
+* test_poses_and_eyes
+* test_poser_restores_lumi_exactly
+* test_cannot_open_during_flights_and_cinematics
+* test_open_close_restores_everything
+* test_shot_paths_are_timestamped_pngs
+[1m6/6 passed.
+[0m[4m
+
+res://tests/test_planet.gd
+[0m* test_size_and_water
+* test_cities_on_land_and_spread
+* test_local_map_preserves_distance
+* test_save_roundtrip_and_counts
+[1m4/4 passed.
+[0m[4m
+
+res://tests/test_planet_audio.gd
+[0m* test_unknown_theme_is_ignored
+* test_all_planet_ids_switch
+* test_restoration_is_clamped_and_nan_safe
+* test_hold_and_release_theme
+* test_resolve_track_restores_the_same_motif
+* test_every_track_is_well_formed
+* test_planet_pools_have_calm_and_active_tracks
+* test_director_switches_planet_on_a_bar_line
+* test_silence_gap_between_tracks
+* test_radio_forced_track_loops_without_gaps
+* test_homecoming_quotes_the_motif
+WARNING: Music: unknown sting 'unknown_sting'
+     at: push_warning (core/variant/variant_utility.cpp:1033)
+     GDScript backtrace (most recent call first):
+         [0] sting (res://audio/music_director.gd:394)
+         [1] test_homecoming_quotes_the_motif (res://tests/test_planet_audio.gd:202)
+         [2] _run_test (res://addons/gut/gut.gd:622)
+         [3] _test_the_scripts (res://addons/gut/gut.gd:835)
+[34m[ExpectedError][0mExpected push_warning error containing 'unknown sting'.  
+* test_homecoming_mood_via_audio
+* test_ambience_beds
+* test_hover_spray_loop_and_duck
+[1m14/14 passed.
+[0m[4m
+
+res://tests/test_planet_globe.gd
+[0m* test_every_planet_builds
+* test_rings_and_clouds_where_fitting
+* test_restoration_reaches_every_material
+* test_lod_changes_octaves_and_instances
+* test_two_suns_companion_is_warmer_and_dimmer
+* test_sun_dirs_and_tracking
+* test_unknown_world_is_generic_rock
+[1m7/7 passed.
+[0m[4m
+
+res://tests/test_planet_rime.gd
+[0m* test_registry_entry
+* test_biome_set_registers
+* test_stages_and_restore
+* test_two_small_suns
+* test_env_applies_headless
+[rime] env built in 719 ms: level 1, 95 mesh nodes, 31 pads
+[1m5/5 passed.
+[0m[4m
+
+res://tests/test_profiles.gd
+[0m* test_old_saves_move_into_profile_one
+[save] moved 3 save files into the first profile (user://test_profiles_scratch/p1)
+* test_migration_never_overwrites_profile_one
+* test_migrated_profile_loads_as_profile_one
+[save] moved 2 save files into the first profile (user://saves_profiles_test/p1)
+* test_profiles_keep_their_own_worlds_and_heirlooms
+* test_new_game_in_one_profile_leaves_the_others
+* test_delete_profile_erases_only_that_one
+* test_summary_from_profile_and_save
+* test_rename
+* test_picker_cards_and_focus_grid
+* test_cloud_names_keep_profiles_apart
+[1m10/10 passed.
+[0m[4m
+
+res://tests/test_qa_fixes_a.gd
+[0m* test_reenabled_input_ignores_the_closing_press
+* test_offline_waiting_bales_are_credited
+* test_to_dict_updates_saved_unix
+[1m3/3 passed.
+[0m[4m
+
+res://tests/test_qa_fixes_b.gd
+[0m* test_skimmer_never_claims_the_auto_baler
+* test_picking_up_a_bale_clears_its_reservation
+* test_hauler_releases_a_bale_patch_grabbed
+* test_auto_baler_saves_junk_mid_press_and_mid_eject
+* test_recalled_hauler_delivers_without_collecting
+* test_stations_require_research_but_built_ones_stay
+* test_build_block_reason_shows_research_lock
+* test_multibots_respect_crew_caps
+* test_bale_roundtrip_keeps_dominant_and_volume
+* test_idle_drip_backs_off_before_rescanning
+* test_idle_hauler_backs_off
+* test_command_view_buttons_have_a_visible_focus_style
+[1m12/12 passed.
+[0m[4m
+
+res://tests/test_qa_fixes_c.gd
+[0m* test_stat_breakdown_base_for_robot_stats
+* test_detector_range_is_a_real_stat
+* test_goal_titles_fit_goals_card
+* test_upgrades_screen_tab_closes_and_focus_follows_tabs
+[1m4/4 passed.
+[0m[4m
+
+res://tests/test_radio_music.gd
+[0m* test_radio_song_replaces_the_score
+* test_back_to_mood_music_fades_the_score_in
+* test_muted_score_for_a_song_file_stays_silent
+[1m3/3 passed.
+[0m[4m
+
+res://tests/test_remote_progress.gd
+[0m* test_remote_is_a_fraction_of_offline
+* test_default_factor_from_data
+* test_capped_by_offline_cap
+* test_capped_by_junk_left_after_scaling
+* test_no_robots_no_gain
+* test_boost_overlap_and_effective_seconds
+* test_care_package_extra_is_capped_below_its_cost
+* test_share_and_hex_states
+* test_snapshot_from_save_is_read_only_and_complete
+* test_pending_grows_with_time_and_stops_at_cap
+* test_arrival_pays_only_after_world_travel
+* test_short_absence_pays_nothing
+* test_care_package_spend_and_one_at_a_time
+[1m13/13 passed.
+[0m[4m
+
+res://tests/test_research.gd
+[0m* test_tree_data_is_consistent
+* test_start_needs_data_and_prereqs
+* test_research_takes_real_time
+* test_queue_chains_through_offline_time
+* test_queue_limit
+* test_cancel_refunds_and_cascades
+* test_effects_apply_through_economy_stat
+* test_research_speed_shortens_time
+* test_robot_types_gated
+* test_plant_species_gated
+* test_data_award_and_bonus
+* test_live_node_awards_data_from_events
+* test_state_survives_save_round_trip
+[1m13/13 passed.
+[0m[4m
+
+res://tests/test_robot_builder.gd
+[0m* test_parts_are_cosmetic
+* test_some_parts_from_each_economy
+* test_fitting_uses_nothing_and_changes_no_stats
+[33m    292 Orphans[0m
+[33m        * [@Node3D@14782:<Node3D#5691385320690>] + 73
+        * [@Node3D@15001:<Node3D#5703867572528>] + 73
+        * [@MeshInstance3D@15074:<MeshInstance3D#5707625669257>] + 1
+        * [@MeshInstance3D@14932:<MeshInstance3D#5700025590646>] + 1
+        * [@MeshInstance3D@14855:<MeshInstance3D#5696082945206>] + 1
+        * [@Node3D@14859:<Node3D#5696267494611>] + 137[0m
+* test_tools_fit_their_crew_only
+* test_unlock_costs_parts_only
+* test_research_gate
+* test_maker_set_needs_parts_and_gives_bonus
+* test_full_custom_goal_stat
+[33m    614 Orphans[0m
+[33m        * [@MeshInstance3D@15434:<MeshInstance3D#5727456334381>] + 1
+        * [@Node3D@15632:<Node3D#5737136788217>] + 162
+        * [@Node3D@15438:<Node3D#5727624107031>] + 92
+        * [@MeshInstance3D@15605:<MeshInstance3D#5735962383571>] + 1
+        * [@MeshInstance3D@15705:<MeshInstance3D#5740894885865>] + 1
+        * [@MeshInstance3D@15869:<MeshInstance3D#5749350603663>] + 1
+        * [@Node3D@15796:<Node3D#5745592507453>] + 174
+        * [@Node3D@15361:<Node3D#5723698241950>] + 73
+        * [@MeshInstance3D@15511:<MeshInstance3D#5731382207253>] + 1
+        * [@Node3D@15532:<Node3D#5732204291054>] + 98[0m
+* test_kit_meshes_follow_the_build
+[33m    5459 Orphans[0m
+[33m        * [@Node3D@16155:<Node3D#5764064223832>] + 73
+        * [@MeshInstance3D@16228:<MeshInstance3D#5767822321573>] + 1
+        * [BuilderKit:<Node3D#5777838319682>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#5778526185579>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#5779197274247>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5779583150228>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#5779952249002>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5780321347770>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5780791109832>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5781244094677>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5782082955503>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5782284282107>(robot_kit.gd)] + 64
+        * [BuilderKit:<Node3D#5785824274858>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5787384556015>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5789280381488>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#5789649480252>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#5790085687894>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5790555449964>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5791092320902>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5791662746262>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5791830518432>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5792015067819>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5792434498244>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5792702933710>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5793239804636>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5796310035311>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#5796997901208>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#5797668989876>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5798054865857>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#5798423964631>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5798793063399>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5799262825461>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5799665478657>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5800504339483>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5800705666087>(robot_kit.gd)] + 64
+        * [BuilderKit:<Node3D#5804295990487>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5805856271644>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5807752097117>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#5808121195881>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#5808557403523>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5809127828891>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5809664699829>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5810235125189>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5810402897359>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5810587446746>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5811006877171>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5811275312637>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5811812183563>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5814412652180>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#5815217958596>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#5815972933355>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5816258146040>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#5816627244814>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5816912457503>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5817180892973>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5817398996794>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5817885536087>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5818086862691>(robot_kit.gd)] + 56
+        * [BuilderKit:<Node3D#5820737662975>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5822029508684>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5823321354393>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#5823606567078>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#5824042774720>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5824512536792>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5825082962170>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5825368174859>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5825535947029>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5825720496416>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5826139926841>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5826307699011>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5826559357266>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5828505514438>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#5829310820854>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#5830065795613>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5830351008298>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#5830720107072>(robot_kit.gd)] + 7
+        * [BuilderKit:<Node3D#5831022096978>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#5831307309665>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#5831542190703>(robot_kit.gd)] + 11
+        * [BuilderKit:<Node3D#5832045507213>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#5832263611034>(robot_kit.gd)] + 52
+        * [BuilderKit:<Node3D#5834713084714>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5836004930423>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5837296776132>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#5837581988817>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#5838018196459>(robot_kit.gd)] + 12
+        * [BuilderKit:<Node3D#5838487958531>(robot_kit.gd)] + 14
+        * [BuilderKit:<Node3D#5839058383909>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#5839343596598>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#5839511368768>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5839695918155>(robot_kit.gd)] + 12
+        * [BuilderKit:<Node3D#5840115348580>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#5840283120750>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#5840534779005>(robot_kit.gd)] + 7
+        * [BuilderKit:<Node3D#5844141880606>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#5844829746503>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#5845500835171>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5845886711152>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#5846255809926>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5846624908694>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5847094670756>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5847497323952>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5848336184778>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5848537511382>(robot_kit.gd)] + 64
+        * [BuilderKit:<Node3D#5852127835782>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5853688116939>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5855583942412>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#5855953041176>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#5856389248818>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5856607352637>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5856909342537>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5857479767897>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5857647540067>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5857832089454>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5858251519879>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5858519955345>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5859056826271>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5861690849316>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#5862378715213>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#5863049803881>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5863435679862>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#5863804778636>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5864173877404>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5864593307817>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5864995961013>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5865834821839>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5866036148443>(robot_kit.gd)] + 64
+        * [BuilderKit:<Node3D#5869626472843>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5871186754000>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5873082579473>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#5873451678237>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#5873887885879>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5874055658049>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5874357647949>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5874928073309>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5875095845479>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5875280394866>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5875699825291>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5875968260757>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5876505131683>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5878853942047>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#5879659248463>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#5880414223222>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5880699435907>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#5881068534681>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5881353747370>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5881571851191>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5881789955012>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5882276494305>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5882477820909>(robot_kit.gd)] + 60
+        * [BuilderKit:<Node3D#5885329947797>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5886621793506>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5887913639215>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#5888198851900>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#5888635059542>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5888836386146>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5889054489967>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5889339702656>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5889507474826>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5889692024213>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5890111454638>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5890279226808>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5890530885063>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5892560928316>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#5893366234732>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#5894121209491>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5894406422176>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#5894775520950>(robot_kit.gd)] + 7
+        * [BuilderKit:<Node3D#5895077510856>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#5895312391894>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#5895547272932>(robot_kit.gd)] + 11
+        * [BuilderKit:<Node3D#5896050589442>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#5896268693263>(robot_kit.gd)] + 72
+        * [BuilderKit:<Node3D#5899724799963>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5901016645672>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5902308491381>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#5902593704066>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#5903029911708>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5903231238312>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5903449342133>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#5903734554822>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#5903902326992>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5904086876379>(robot_kit.gd)] + 12
+        * [BuilderKit:<Node3D#5904506306804>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#5904674078974>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#5904925737229>(robot_kit.gd)] + 7
+        * [BuilderKit:<Node3D#5909455585741>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#5910143451638>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#5910713877008>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5911049421340>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#5911418520114>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5911787618882>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5912207049295>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5912609702491>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5913448563317>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5913649889921>(robot_kit.gd)] + 64
+        * [BuilderKit:<Node3D#5917189882672>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5918750163829>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5920645989302>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#5921015088066>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#5921451295708>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5921870726127>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5922441151487>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5922608923657>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5922793473044>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5923212903469>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5923481338935>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5924018209861>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5926887113944>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#5927574979841>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#5928195736860>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5928581612841>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#5928950711615>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5929319810383>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5929739240796>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5930141893992>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5930980754818>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5931182081422>(robot_kit.gd)] + 64
+        * [BuilderKit:<Node3D#5934722074173>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5936282355330>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5938178180803>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#5938547279567>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#5938983487209>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5939402917628>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5939973342988>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5940141115158>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5940325664545>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5940745094970>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5941013530436>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5941550401362>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5943848880091>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#5944654186507>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#5945358829617>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5945644042302>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#5946013141076>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5946298353765>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5946516457586>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5946734561407>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5947221100700>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5947422427304>(robot_kit.gd)] + 56
+        * [BuilderKit:<Node3D#5950022895939>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5951314741648>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5952606587357>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#5952891800042>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#5953328007684>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5953646774807>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5953931987496>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5954099759666>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5954284309053>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5954703739478>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5954871511648>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5955123169903>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5957220322028>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#5958025628444>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#5958730271554>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5959015484239>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#5959384583013>(robot_kit.gd)] + 7
+        * [BuilderKit:<Node3D#5959686572919>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#5959921453957>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#5960156334995>(robot_kit.gd)] + 11
+        * [BuilderKit:<Node3D#5960659651505>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#5960877755326>(robot_kit.gd)] + 52
+        * [BuilderKit:<Node3D#5963276897357>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5964568743066>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5965860588775>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#5966045138162>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#5966481345804>(robot_kit.gd)] + 9
+        * [BuilderKit:<Node3D#5966800112927>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#5967085325616>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#5967253097786>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5967437647173>(robot_kit.gd)] + 12
+        * [BuilderKit:<Node3D#5967857077598>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#5968024849768>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#5968276508023>(robot_kit.gd)] + 7
+        * [BuilderKit:<Node3D#5973259341388>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#5973947207285>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#5974567964304>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5974953840285>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#5975322939059>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5975692037827>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5976111468240>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5976514121436>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5977352982262>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5977554308866>(robot_kit.gd)] + 64
+        * [BuilderKit:<Node3D#5981094301617>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5982654582774>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#5984550408247>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#5984919507011>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#5985355714653>(robot_kit.gd)] + 7
+        * [BuilderKit:<Node3D#5985825476721>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#5986093912187>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5986664337547>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5986832109717>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5987016659104>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5987436089529>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5987704524995>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5988241395921>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5991764611455>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#5992452477352>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#5993022902722>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#5993358447054>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#5993727545828>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5994096644596>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5994516075009>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5994918728205>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5995757589031>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#5995958915635>(robot_kit.gd)] + 64
+        * [BuilderKit:<Node3D#5999498908386>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6001059189543>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6002955015016>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#6003324113780>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#6003760321422>(robot_kit.gd)] + 7
+        * [BuilderKit:<Node3D#6004179751841>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#6004448187307>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6005018612667>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6005186384837>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6005370934224>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6005790364649>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6006058800115>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6006595671041>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6009263248542>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#6010068554958>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#6010773198068>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#6011058410753>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#6011427509527>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6011712722216>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6011930826037>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6012148929858>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6012635469151>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6012836795755>(robot_kit.gd)] + 56
+        * [BuilderKit:<Node3D#6015437264390>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6016729110099>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6018020955808>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#6018306168493>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#6018742376135>(robot_kit.gd)] + 7
+        * [BuilderKit:<Node3D#6019061143258>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#6019245692645>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6019530905334>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6019698677504>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6019883226891>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6020302657316>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6020470429486>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6020722087741>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6022852794300>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#6023658100716>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#6024262080528>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#6024446629915>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#6024815728689>(robot_kit.gd)] + 7
+        * [BuilderKit:<Node3D#6025117718595>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#6025352599633>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#6025587480671>(robot_kit.gd)] + 11
+        * [BuilderKit:<Node3D#6026090797181>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#6026308901002>(robot_kit.gd)] + 52
+        * [BuilderKit:<Node3D#6028708043033>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6029999888742>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6031291734451>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#6031476283838>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#6031912491480>(robot_kit.gd)] + 7
+        * [BuilderKit:<Node3D#6032231258603>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#6032415807990>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#6032701020679>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#6032868792849>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#6033053342236>(robot_kit.gd)] + 12
+        * [BuilderKit:<Node3D#6033472772661>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#6033640544831>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#6033892203086>(robot_kit.gd)] + 7
+        * [BuilderKit:<Node3D#6037197314786>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#6037885180683>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#6038556269351>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#6038942145332>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#6039311244106>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6039680342874>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6040150104936>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6040552758132>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6041391618958>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6041592945562>(robot_kit.gd)] + 56
+        * [BuilderKit:<Node3D#6044780616754>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6046340897911>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6048236723384>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#6048605822148>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#6049042029790>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6049612455158>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6050149326096>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6050719751456>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6050887523626>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6051072073013>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6051491503438>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6051759938904>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6052296809830>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6054763060693>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#6055450926590>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#6056122015258>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#6056507891239>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#6056876990013>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6057246088781>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6057665519194>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6058068172390>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6058907033216>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6059108359820>(robot_kit.gd)] + 60
+        * [BuilderKit:<Node3D#6062497357616>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6064057638773>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6065953464246>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#6066322563010>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#6066758770652>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6067329196020>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6067866066958>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6068436492318>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6068604264488>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6068788813875>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6069208244300>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6069476679766>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6070013550692>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6071892598988>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#6072697905404>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#6073452880163>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#6073738092848>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#6074107191622>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6074392404311>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6074660839781>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6074878943602>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6075365482895>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6075566809499>(robot_kit.gd)] + 60
+        * [BuilderKit:<Node3D#6078418936387>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6079710782096>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6081002627805>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#6081287840490>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#6081724048132>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6082193810204>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6082764235582>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6083049448271>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6083217220441>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6083401769828>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6083821200253>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6083988972423>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6084240630678>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6086237119501>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#6087042425917>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#6087797400676>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#6088082613361>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#6088451712135>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6088736924824>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6089005360294>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6089223464115>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6089710003408>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6089911330012>(robot_kit.gd)] + 52
+        * [BuilderKit:<Node3D#6092360803692>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6093652649401>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6094944495110>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#6095229707795>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#6095665915437>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6096135677509>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6096706102887>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6096991315576>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6097159087746>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6097343637133>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6097763067558>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6097930839728>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6098182497983>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6103064668034>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#6103752533931>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#6104272627652>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#6104557840335>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#6104926939109>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6105296037877>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6105715468290>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6106118121486>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6106956982312>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6107158308916>(robot_kit.gd)] + 64
+        * [BuilderKit:<Node3D#6110698301667>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6112258582824>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6114154408297>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#6114422843763>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#6114859051405>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6115328813475>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6115865684413>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6116033456583>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6116335446483>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6116754876902>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6117174307321>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6117442742787>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6118013168147>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6118180940317>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6118365489704>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6118784920129>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6119053355595>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6119590226521>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6122811452143>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#6123499318040>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#6124120075059>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#6124505951040>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#6124875049814>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6125244148582>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6125663578995>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6126066232191>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6126905093017>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6127106419621>(robot_kit.gd)] + 64
+        * [BuilderKit:<Node3D#6130646412372>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6132206693529>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6134102519002>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#6134370954468>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#6134807162110>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6135276924180>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6135813795118>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6135981567288>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6136283557188>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6136702987607>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6137122418026>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6137390853492>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6137961278852>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6138129051022>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6138313600409>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6138733030834>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6139001466300>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6139538337226>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6142289800790>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#6143095107206>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#6143799750316>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#6144084963001>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#6144454061775>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6144739274464>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6144957378285>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6145175482106>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6145662021399>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6145863348003>(robot_kit.gd)] + 56
+        * [BuilderKit:<Node3D#6148463816638>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6149755662347>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6151047508056>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#6151232057443>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#6151668265085>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6152037363859>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6152607789237>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6152809115841>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6153027219662>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6153345986785>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6153664753908>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6153849303295>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6154134515984>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6154302288154>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6154486837541>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6154906267966>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6155074040136>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6155325698391>(robot_kit.gd)]
+        * [BuilderKit:<Node3D#6157875835351>(robot_kit.gd)] + 19
+        * [BuilderKit:<Node3D#6158681141767>(robot_kit.gd)] + 15
+        * [BuilderKit:<Node3D#6159385784877>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#6159670997562>(robot_kit.gd)] + 8
+        * [BuilderKit:<Node3D#6160040096336>(robot_kit.gd)] + 7
+        * [BuilderKit:<Node3D#6160342086242>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#6160576967280>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#6160811848318>(robot_kit.gd)] + 11
+        * [BuilderKit:<Node3D#6161315164828>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#6161533268649>(robot_kit.gd)] + 52
+        * [BuilderKit:<Node3D#6163932410680>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6165224256389>(robot_kit.gd)] + 28
+        * [BuilderKit:<Node3D#6166516102098>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#6166700651485>(robot_kit.gd)] + 10
+        * [BuilderKit:<Node3D#6167136859127>(robot_kit.gd)] + 12
+        * [BuilderKit:<Node3D#6167505957901>(robot_kit.gd)] + 14
+        * [BuilderKit:<Node3D#6168076383279>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#6168277709883>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#6168495813704>(robot_kit.gd)] + 9
+        * [BuilderKit:<Node3D#6168814580827>(robot_kit.gd)] + 7
+        * [BuilderKit:<Node3D#6169133347950>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#6169317897337>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#6169603110026>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#6169770882196>(robot_kit.gd)] + 5
+        * [BuilderKit:<Node3D#6169955431583>(robot_kit.gd)] + 12
+        * [BuilderKit:<Node3D#6170374862008>(robot_kit.gd)] + 4
+        * [BuilderKit:<Node3D#6170542634178>(robot_kit.gd)] + 6
+        * [BuilderKit:<Node3D#6170794292433>(robot_kit.gd)] + 7[0m
+* test_traits_are_stable_and_gentle
+* test_presets_and_save_dict
+[33m    292 Orphans[0m
+[33m        * [@Node3D@24494:<Node3D#6180961264458>] + 73
+        * [@MeshInstance3D@24937:<MeshInstance3D#6205204361009>] + 1
+        * [@Node3D@24864:<Node3D#6201446264861>] + 73
+        * [@MeshInstance3D@24644:<MeshInstance3D#6189584774045>] + 1
+        * [@MeshInstance3D@24567:<MeshInstance3D#6185658905672>] + 1
+        * [@Node3D@24571:<Node3D#6185826677841>] + 137[0m
+* test_shop_lists_every_shop_part
+* test_rename_moves_orders
+[1m13/13 passed.
+[0m[4m
+
+res://tests/test_robots_water.gd
+[0m* test_skimmer_defined_and_in_crews
+* test_crew_cap_follows_base_level
+* test_tier_scales_water_gear
+* test_waterer_picks_thirstiest_and_skips_taken
+* test_zone_first_for_waterers
+* test_spray_waters_several_plants_in_radius
+* test_refill_points_and_tanks
+* test_skimmer_works_the_lake_and_finds_shore
+* test_idle_status_and_park
+[1m9/9 passed.
+[0m[4m
+
+res://tests/test_rocket_tiers.gd
+[0m* test_tiers_get_better
+* test_upgrade_pays_and_persists
+* test_mk3_needs_research
+* test_recharge_follows_tier
+[1m4/4 passed.
+[0m[4m
+
+res://tests/test_save.gd
+[0m* test_roundtrip_gamestate
+* test_migrate_v0_float_currency
+* test_field_roundtrip
+* test_field_rejects_mismatched_seed
+[1m4/4 passed.
+[0m[4m
+
+res://tests/test_settings.gd
+[0m* test_defaults_have_no_conflicts
+* test_rebind_replaces_primary_only
+* test_rebind_persists_through_save_and_load
+* test_conflict_detected_in_same_context_only
+* test_reset_to_defaults
+* test_rebinding_back_to_default_clears_override
+* test_event_dict_round_trip
+* test_accessibility_settings_persist
+* test_colorblind_palette_differs
+* test_glyph_follows_device
+[1m10/10 passed.
+[0m[4m
+
+res://tests/test_ship.gd
+[0m* test_look_mapping
+* test_parts_grow_on_one_base
+* test_ship_and_pad_grow
+* test_model_builds_every_look
+* test_canopy_and_gear_animate
+* test_legacy_rocket_model_is_the_ship
+* test_pad_grows_with_the_ship
+* test_ark_keeps_its_api
+[1m8/8 passed.
+[0m[4m
+
+res://tests/test_stations.gd
+[0m* test_conveyor_costs_parts
+* test_recycler_needs_hub_level_2
+* test_auto_route_every_nth
+* test_recycler_destroys_bale_and_pays_parts
+* test_recycler_yield_upgrade
+* test_upgrade_multipliers
+* test_auto_baler_presses_a_bale
+* test_robot_dumps_into_baler
+* test_haul_drop_prefers_closer_feeder
+* test_save_state_roundtrip
+* test_hub_panel_shows_stations_section
+[33m    7 Orphans[0m
+[33m        * [@Label@29094:<Label#6494577782369>]
+        * [@Label@29089:<Label#6494242239649>]
+        * [@Label@29090:<Label#6494309348514>]
+        * [@Control@29091:<Control#6494376457383>]
+        * [@Control@29092:<Control#6494443566254>(currency_icon.gd)]
+        * [@Label@29093:<Label#6494510675121>]
+        * [@Control@29088:<Control#6494175130816>(currency_icon.gd)][0m
+[33m7 orphans[0m
+[1m11/11 passed.
+[0m[4m
+
+res://tests/test_steam.gd
+[0m* test_headless_runs_without_steam
+* test_achievement_unlock_is_mirrored_and_stored
+[steam] Steam active (app 480)
+* test_existing_unlocks_sync_on_load
+[steam] Steam active (app 480)
+* test_stats_mapping
+[steam] Steam active (app 480)
+* test_every_achievement_has_a_valid_api_name
+* test_store_page_uses_overlay_when_active
+[steam] Steam active (app 480)
+* test_cloud_conflict_rule
+* test_cloud_sync_newest_wins
+* test_cloud_disabled_does_nothing
+* test_demo_flag_and_limits
+* test_demo_caps_the_base
+[demo] end of demo (base)
+[1m11/11 passed.
+[0m[4m
+
+res://tests/test_street_dressing.gd
+[0m* test_collision_never_covers_junk
+* test_no_yard_fence_and_props_are_solid
+* test_deterministic_and_batched
+* test_ruined_base_fixes_up_with_level
+* test_starter_yard_is_never_ruined
+[1m5/5 passed.
+[0m[4m
+
+res://tests/test_subtitles.gd
+[0m* test_duration_rule
+* test_all_intro_lines_follow_the_rule
+* test_chunks_split_at_sentences
+* test_glitch_spans_stay_balanced_and_marked
+* test_one_line_at_a_time
+* test_intro_ends_with_the_brief
+[1m6/6 passed.
+[0m[4m
+
+res://tests/test_system_map.gd
+[0m* test_orbits_follow_au_and_leave_ring_room
+* test_ringed_planets_reach_past_twice_their_radius
+* test_zoom_fills_the_screen
+* test_start_of_game_only_verdance_is_known
+* test_planets_are_discovered_strictly_in_campaign_order
+* test_discovered_is_not_unlocked_until_chart_and_drive
+* test_telescope_spots_only_the_next_planet
+* test_map_has_no_3d_text_and_shows_only_discovered_planets
+* test_overview_fits_left_of_the_panel
+[1m9/9 passed.
+[0m[4m
+
+res://tests/test_tunes.gd
+[0m* test_library_matches_the_prompt_list
+* test_start_songs_and_cd_unlocks_are_saved
+[tunes] CD found: sunbaked
+* test_missing_files_are_skipped
+* test_shuffle_never_repeats_back_to_back
+[tunes] CD found: sunbaked
+[tunes] CD found: sprout_step
+[tunes] CD found: little_helpers
+* test_shuffle_fits_the_planet_and_moment
+[tunes] CD found: verdance_night
+[tunes] CD found: verdance_in_bloom
+[tunes] CD found: fall_of_lm1
+[tunes] CD found: the_ledger
+[tunes] CD found: sunbaked
+* test_cds_drop_per_planet_with_a_guarantee
+[tunes] CD found: sunbaked
+[tunes] CD found: fall_of_lm1
+[tunes] CD found: sprout_step
+[tunes] CD found: little_helpers
+[tunes] CD found: neon_gutters
+[tunes] CD found: bale_by_bale
+[tunes] CD found: rust_and_ribbons
+[tunes] CD found: old_town_at_rest
+[tunes] CD found: verdance_night
+[tunes] CD found: verdance_in_bloom
+* test_intact_cds_only_on_their_home_planet
+[tunes] CD found: little_helpers
+[tunes] CD found: neon_gutters
+[tunes] CD found: verdance_in_bloom
+[tunes] CD found: fall_of_lm1
+[tunes] CD found: rust_and_ribbons
+[tunes] CD found: old_town_at_rest
+[tunes] CD found: bale_by_bale
+[tunes] CD found: sprout_step
+[tunes] CD found: verdance_night
+[tunes] CD found: twin_noon
+[tunes] CD found: glass_dunes
+[tunes] CD found: oasis_terraces
+[tunes] CD found: sandglass
+[tunes] CD found: dune_caravan
+[tunes] CD found: mirage_night
+[tunes] CD found: sunbaked
+[tunes] CD found: strip_mine_shuffle
+[tunes] CD found: skipping_stones
+[tunes] CD found: low_tide_lofi
+[tunes] CD found: tidepools
+[tunes] CD found: hover_hop
+[tunes] CD found: glass_lagoon
+[tunes] CD found: kelp_garden
+[tunes] CD found: tradewinds
+[tunes] CD found: salt_and_sails
+[tunes] CD found: crunch_ice
+[tunes] CD found: thaw
+[tunes] CD found: long_night
+[tunes] CD found: ringlight
+[tunes] CD found: aurora_drift
+[tunes] CD found: hoarfrost
+[tunes] CD found: frozen_harbor
+[tunes] CD found: snowplow
+[tunes] CD found: ember_market
+[tunes] CD found: slag_run
+[tunes] CD found: the_ledger
+[tunes] CD found: iron_bloom
+[tunes] CD found: red_dust_waltz
+[tunes] CD found: foundry_heart
+[tunes] CD found: magma_crawl
+[tunes] CD found: ash_choir
+[tunes] CD found: red_engine
+* test_scratched_cd_plays_once_then_breaks
+[tunes] context play
+[tunes] now playing fall_of_lm1 (play)
+[tunes] scratched CD: fall_of_lm1 (last play)
+[tunes] scratched CD broke: fall_of_lm1
+[tunes] context none
+* test_no_scratched_cd_for_owned_songs
+[tunes] CD found: fall_of_lm1
+[tunes] CD found: the_ledger
+[tunes] CD found: sprout_step
+[tunes] CD found: little_helpers
+[tunes] CD found: neon_gutters
+[tunes] CD found: bale_by_bale
+[tunes] CD found: rust_and_ribbons
+[tunes] CD found: old_town_at_rest
+[tunes] CD found: verdance_night
+[tunes] CD found: verdance_in_bloom
+[tunes] CD found: sunbaked
+[tunes] CD found: strip_mine_shuffle
+[tunes] CD found: dune_caravan
+[tunes] CD found: glass_dunes
+[tunes] CD found: sandglass
+[tunes] CD found: twin_noon
+[tunes] CD found: mirage_night
+[tunes] CD found: oasis_terraces
+[tunes] CD found: tradewinds
+[tunes] CD found: hover_hop
+[tunes] CD found: skipping_stones
+[tunes] CD found: salt_and_sails
+[tunes] CD found: low_tide_lofi
+[tunes] CD found: glass_lagoon
+[tunes] CD found: tidepools
+[tunes] CD found: kelp_garden
+[tunes] CD found: snowplow
+[tunes] CD found: hoarfrost
+[tunes] CD found: crunch_ice
+[tunes] CD found: aurora_drift
+[tunes] CD found: ringlight
+[tunes] CD found: frozen_harbor
+[tunes] CD found: long_night
+[tunes] CD found: thaw
+[tunes] CD found: red_engine
+[tunes] CD found: slag_run
+[tunes] CD found: foundry_heart
+[tunes] CD found: ember_market
+[tunes] CD found: red_dust_waltz
+[tunes] CD found: magma_crawl
+[tunes] CD found: ash_choir
+[tunes] CD found: iron_bloom
+[tunes] CD found: sunbaked
+* test_director_plays_title_and_intro_songs
+[tunes] context menu
+[tunes] now playing greenfall_main (menu)
+[tunes] now playing fall_of_lm1 (intro)
+[tunes] context none
+* test_title_plays_random_songs_with_main_first
+[tunes] context menu
+[tunes] now playing greenfall_main (menu)
+[tunes] now playing clean_sweep (menu)
+[tunes] now playing dune_caravan (menu)
+[tunes] now playing greenfall_main (menu)
+[tunes] now playing sunbaked (menu)
+[tunes] now playing dune_caravan (menu)
+[tunes] now playing greenfall_main (menu)
+[tunes] now playing clean_sweep (menu)
+[tunes] now playing sunbaked (menu)
+[tunes] now playing greenfall_main (menu)
+[tunes] now playing dune_caravan (menu)
+[tunes] now playing clean_sweep (menu)
+[tunes] now playing greenfall_main (menu)
+[tunes] context none
+* test_director_background_gaps_and_cd_player
+[tunes] context play
+[tunes] now playing morning_shift (play)
+[tunes] CD player: shuffle
+[tunes] now playing clean_sweep (play, CD player shuffle)
+[tunes] CD player: morning_shift
+[tunes] now playing morning_shift (play, CD player morning_shift)
+[tunes] CD player: off
+[tunes] context none
+[1m12/12 passed.
+[0m[4m
+
+res://tests/test_ui2.gd
+[0m* test_salvage_pays_parts_by_rarity
+* test_leftover_items_fold_into_parts
+* test_save_v4_turns_robot_part_items_into_parts
+* test_robot_build_costs_parts_and_cubes
+* test_mk_tier_costs_parts_no_core
+* test_locker_opens_at_hub_level
+* test_locker_hosts_a_registered_lumi_editor_and_the_robot_editor
+[33m    158 Orphans[0m
+[33m        * [@Label@30122:<Label#6640757666314>]
+        * [@HBoxContainer@30123:<HBoxContainer#6640908661835>(builder_panel.gd)] + 141[0m
+* test_locker_locked_before_hub_level
+* test_tab_gate
+* test_tabs_are_the_simple_seven
+* test_robot_card_builds_with_parts
+[33m    19 Orphans[0m
+[33m        * [@Control@30326:<Control#6653407685621>]
+        * [@Label@30325:<Label#6653357353993>]
+        * [@Control@30340:<Control#6654548536386>(currency_icon.gd)]
+        * [@Control@30337:<Control#6654363987051>(currency_icon.gd)]
+        * [@Control@30333:<Control#6653894225004>]
+        * [@Label@30332:<Label#6653843893448>]
+        * [@Label@30341:<Label#6654615645898>]
+        * [@Label@30324:<Label#6653290246219>]
+        * [@Label@30328:<Label#6653541904499>]
+        * [@Control@30323:<Control#6653223137461>(currency_icon.gd)]
+        * [@Control@30327:<Control#6653474796097>(currency_icon.gd)]
+        * [@Control@30334:<Control#6653961335425>(currency_icon.gd)]
+        * [@Label@30331:<Label#6653776786139>]
+        * [@Control@30330:<Control#6653709677448>(currency_icon.gd)]
+        * [@Label@30336:<Label#6654095553417>]
+        * [@Label@30338:<Label#6654431097817>]
+        * [@Control@30339:<Control#6654481429538>]
+        * [@Label@30335:<Label#6654028444725>]
+        * [@Label@30329:<Label#6653609014494>][0m
+* test_hub_gains_list_the_next_level
+* test_tabs_appear_once_open_and_stay
+* test_pause_menu_has_no_save_button
+* test_settings_start_simple
+[33m    31 Orphans[0m
+[33m        * [@PanelContainer@30950:<PanelContainer#6692683125887>] + 5
+        * [@PanelContainer@30975:<PanelContainer#6694209875017>] + 4
+        * [@PanelContainer@30970:<PanelContainer#6693891108049>] + 4
+        * [@PanelContainer@30956:<PanelContainer#6693069024580>] + 5
+        * [@Control@30968:<Control#6693756890718>]
+        * [@PanelContainer@30962:<PanelContainer#6693421346826>] + 5
+        * [@Label@30949:<Label#6692582486679>]
+        * [@Label@30969:<Label#6693723337913>][0m
+[33m31 orphans[0m
+[1m15/15 passed.
+[0m[4m
+
+res://tests/test_world_bounds.gd
+[0m* test_is_lost
+* test_clamp_xz
+[1m2/2 passed.
+[0m[4m
+
+res://tests/test_world_look.gd
+[0m* test_every_world_type_has_its_own_look
+* test_verdance_has_no_look
+* test_current_follows_the_current_world
+* test_ice_moon_sky_has_a_ringed_planet_and_desert_is_amber
+* test_modifiers_show_in_the_look
+* test_the_look_eases_as_the_district_is_restored
+* test_landmarks_build_with_their_layers
+* test_landmark_spot_is_in_view_and_off_the_field
+* test_sky_bodies
+* test_story_beats_in_order
+* test_every_world_type_has_wren_lines_for_every_beat
+* test_planet_ids_map_onto_looks_and_lines
+* test_a_planet_env_script_is_called
+[worlds2] planet env user://test_planet_env.gd (city)
+* test_wren_speaks_world_lines_clearly
+* test_picker_lists_every_world_and_chains_focus
+* test_select_world_points_continue_at_it
+* test_profile_is_stamped_and_synced_to_steam_cloud
+[steam] Steam active (app 480)
+* test_binary_sun_defaults_and_geometry
+* test_every_sky_has_two_suns
+[1m19/19 passed.
+[0m[4m
+
+res://tests/test_wren.gd
+[0m* test_silent_until_awake
+* test_wake_when_the_signal_tower_goes_up
+* test_gate_holds_story_lines_until_the_tower
+* test_chatter_is_rare_and_spaced
+* test_clarity_follows_the_tower
+* test_no_repeats_until_pool_exhausted
+* test_vars_formatted
+[1m7/7 passed.
+[0m
+
+
+
+[33m==============================================
+[0m[33m= Run Summary
+[0m[33m==============================================
+[0m
+Totals
+------
+Deprecated            3
+
+Scripts              75
+Tests               637
+Passing Tests       637
+Asserts           112633
+Time              51.967s
+
+
+[32m---- All tests passed! ----
+[0m
+[check_exit] PASS roundtrip (exit 0)
+
+real	3m36.893s
+user	3m18.411s
+sys	0m2.693s

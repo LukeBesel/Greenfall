@@ -1,0 +1,260 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.4 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)
+ALSA lib confmisc.c:855:(parse_card) cannot find card '0'
+ALSA lib conf.c:5208:(_snd_config_evaluate) function snd_func_card_inum returned error: No such file or directory
+ALSA lib confmisc.c:422:(snd_func_concat) error evaluating strings
+ALSA lib conf.c:5208:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1342:(snd_func_refer) error evaluating name
+ALSA lib conf.c:5208:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5731:(snd_config_expand) Evaluate error: No such file or directory
+ALSA lib pcm.c:2721:(snd_pcm_open_noupdate) Unknown PCM default
+ERROR: Condition "status < 0" is true. Returning: ERR_CANT_OPEN
+   at: init_output_device (drivers/alsa/audio_driver_alsa.cpp:97)
+WARNING: All audio drivers failed, falling back to the dummy driver.
+     at: initialize (servers/audio/audio_server.cpp:258)
+
+[steam] GodotSteam extension not installed (addons/godotsteam); running without Steam
+[DevHooks] args: { "quality": "0", "perf": "1", "qa-watch": "1", "quit-after": "220", "fresh": "1", "bale-shot": "carry", "qa-seq": "150:shot=screenshots/qa/12_bale_carry.png;200:shot=screenshots/qa/12_bale_carry_b.png" }
+[qa] probe on, 2 steps
+[loader] loading res://scenes/main_menu.tscn
+[qa-watch] t=2.2 game=2.2
+  [610,600 60x24 a=1.00] Loading
+[perf] t=3s frames=8 game_fps=2.59 draw_calls=97 objects=126 prims=29526
+[qa-watch] t=3.3 game=3.3
+  [574,600 131x24 a=1.00] Setting the scene
+[loader] loading res://scenes/slice.tscn
+[qa-watch] t=3.9 game=3.9
+  [610,600 60x24 a=1.00] Loading
+WARNING: Screen-space indirect lighting (SSIL) is only available when using the Forward+ renderer.
+     at: environment_set_ssil (servers/rendering/storage/environment_storage.cpp:775)
+     GDScript backtrace (most recent call first):
+         [0] _build_environment (res://scenes/slice.gd:621)
+         [1] _ready (res://scenes/slice.gd:83)
+WARNING: Screen-space reflections (SSR) are only available when using the Forward+ renderer.
+     at: environment_set_ssr (servers/rendering/storage/environment_storage.cpp:653)
+     GDScript backtrace (most recent call first):
+         [0] _build_environment (res://scenes/slice.gd:622)
+         [1] _ready (res://scenes/slice.gd:83)
+WARNING: SDFGI is only available when using the Forward+ renderer.
+     at: environment_set_sdfgi (servers/rendering/storage/environment_storage.cpp:822)
+     GDScript backtrace (most recent call first):
+         [0] _build_environment (res://scenes/slice.gd:624)
+         [1] _ready (res://scenes/slice.gd:83)
+WARNING: Volumetric fog is only available when using the Forward+ renderer.
+     at: environment_set_volumetric_fog (servers/rendering/storage/environment_storage.cpp:458)
+     GDScript backtrace (most recent call first):
+         [0] _build_environment (res://scenes/slice.gd:628)
+         [1] _ready (res://scenes/slice.gd:83)
+WARNING: Screen-space AA is only available when using the Forward+ or Mobile renderer.
+     at: viewport_set_screen_space_aa (servers/rendering/renderer_viewport.cpp:1435)
+     GDScript backtrace (most recent call first):
+         [0] apply_render_quality (res://autoload/Settings.gd:646)
+         [1] _build_environment (res://scenes/slice.gd:657)
+         [2] _ready (res://scenes/slice.gd:83)
+[farjunk] 2858 pieces + 38361 litter from 75 to 125 m (12 models)
+[tunes] context play
+[slice] built in 13701 ms  district=Old Town hub=0
+[future] score=0.00 pieces=0 built in 1.8 ms
+[outposts] district 0: 3 outposts hex35@(-43,11) hex30@(-12,-48) hex42@(46,41) levels []
+[eggs] district 0: 12 eggs, 19 props placed
+[bale-shot] mound bale over pile (-24.91287, 11.81911, 1.772546, 1.041759)
+[perf] t=24s frames=22 game_fps=0.65 draw_calls=3406 objects=2770 prims=17148565
+[warmup] 343 materials across 2 viewports
+[qa-watch] t=24.5 game=24.5
+  [574,600 131x24 a=1.00] Warming up
+[meadow] grass=6668 flowers=3068 sprouts=2706 thriving=0 in 297 ms
+[perf] t=28s frames=25 game_fps=0.78 draw_calls=1711 objects=1831 prims=5546513
+[perf] t=32s frames=29 game_fps=1.07 draw_calls=1365 objects=1479 prims=5545171
+[perf] t=36s frames=33 game_fps=1.07 draw_calls=1487 objects=1607 prims=5765353
+[loader] ready in 33522 ms
+[perf] t=40s frames=37 game_fps=1.03 draw_calls=1482 objects=1602 prims=5766681
+[tunes] now playing fall_of_lm1 (intro)
+[intro] score: fall_of_lm1
+[intro] start (phase 0)
+[qa-watch] t=41.6 game=41.6
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[perf] t=43s frames=43 game_fps=1.95 draw_calls=1158 objects=1212 prims=168672
+[bale-shot] bale at (1.21, 0.3, 1.01) size 0.58 sleeping=true colors=[(0.6627, 0.6745, 0.6471, 1.0), (0.549, 0.4784, 0.3608, 1.0)]
+[bale-shot] bale at (1.93, 0.48, 1.26) size 0.60 sleeping=true colors=[(0.5412, 0.498, 0.4549, 1.0), (0.6627, 0.6745, 0.6471, 1.0), (0.3725, 0.4784, 0.3686, 1.0)]
+[bale-shot] bale at (0.0, 1.76, 1.92) size 0.59 sleeping=false colors=[(0.5412, 0.498, 0.4549, 1.0)]
+[bale-shot] bale at (1.21, 0.3, 0.12) size 0.64 sleeping=true colors=[(0.6627, 0.6745, 0.6471, 1.0), (0.1804, 0.1725, 0.1686, 1.0), (0.2902, 0.3529, 0.298, 1.0)]
+[bale-shot] bale at (2.07, 0.3, -0.53) size 0.58 sleeping=true colors=[(0.549, 0.4784, 0.3608, 1.0), (0.3725, 0.4784, 0.3686, 1.0)]
+[qa-watch] t=44.2 game=44.2
+  [460,273 360x94 a=0.08] GREENFALL
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[perf] t=46s frames=65 game_fps=7.02 draw_calls=1451 objects=1720 prims=189154
+[qa-watch] t=46.0 game=46.0
+  [255,667 770x29 a=1.00] Three hundred years ago, the last seeds left Verdance aboard the ark Cradle.
+  [460,273 360x94 a=1.00] GREENFALL
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[perf] t=49s frames=85 game_fps=6.41 draw_calls=1451 objects=1720 prims=190126
+[perf] t=52s frames=106 game_fps=6.71 draw_calls=1453 objects=1532 prims=191972
+[qa-watch] t=52.1 game=52.1
+  [460,273 360x94 a=1.00] GREENFALL
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=53.8 game=53.8
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[perf] t=56s frames=124 game_fps=5.30 draw_calls=236 objects=290 prims=80976
+[qa-watch] t=55.9 game=55.9
+  [301,667 678x29 a=0.84] Lumi, the ark's little seed-keeper, sang to the seedlings every night.
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[perf] t=59s frames=132 game_fps=2.64 draw_calls=247 objects=479 prims=90232
+[perf] t=62s frames=140 game_fps=2.51 draw_calls=247 objects=479 prims=105528
+[perf] t=65s frames=147 game_fps=2.28 draw_calls=246 objects=478 prims=109550
+[qa-watch] t=66.2 game=66.2
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=67.7 game=67.7
+  [343,672 38x18 a=1.00] WREN
+  [393,667 544x29 a=1.00] Humming again, Lumi? They can't hear you, you know.
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[perf] t=68s frames=154 game_fps=2.09 draw_calls=248 objects=439 prims=113788
+[perf] t=72s frames=161 game_fps=2.01 draw_calls=247 objects=438 prims=124686
+[perf] t=75s frames=167 game_fps=1.95 draw_calls=247 objects=438 prims=128074
+[perf] t=78s frames=173 game_fps=1.76 draw_calls=242 objects=296 prims=138546
+[qa-watch] t=78.1 game=78.1
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=79.9 game=79.9
+  [437,672 38x18 a=1.00] WREN
+  [487,667 356x29 a=1.00] ...They do grow faster when you do.
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[perf] t=82s frames=179 game_fps=1.63 draw_calls=247 objects=396 prims=140876
+[perf] t=85s frames=184 game_fps=1.60 draw_calls=247 objects=396 prims=140876
+[perf] t=88s frames=189 game_fps=1.58 draw_calls=246 objects=395 prims=142610
+[qa-watch] t=89.0 game=89.0
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=89.5 game=89.5
+  [457,667 365x29 a=1.00] Then, one night, the sky came apart.
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[perf] t=91s frames=209 game_fps=6.66 draw_calls=1134 objects=1276 prims=183782
+[qa-watch] t=93.5 game=93.5
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[perf] t=94s frames=232 game_fps=7.40 draw_calls=1445 objects=1499 prims=212884
+[perf] t=97s frames=251 game_fps=6.09 draw_calls=374 objects=428 prims=84758
+[qa-watch] t=97.6 game=97.6
+  [313,672 38x18 a=0.86] WREN
+  [363,667 603x29 a=0.86] Hull breach in the vault bay! Lumi, leave the trays, get clear!
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[perf] t=100s frames=261 game_fps=3.28 draw_calls=381 objects=599 prims=99848
+[perf] t=103s frames=271 game_fps=3.29 draw_calls=371 objects=589 prims=79070
+[qa-watch] t=104.8 game=104.8
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[perf] t=106s frames=287 game_fps=5.31 draw_calls=164 objects=218 prims=25804
+[qa-watch] t=108.3 game=108.3
+  [348,672 38x18 a=1.00] WREN
+  [398,667 533x29 a=1.00] Lumi— hold on— I can't turn her around— 1o#d %*@
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=108.8 game=108.8
+  [350,672 38x18 a=1.00] WREN
+  [400,667 529x29 a=1.00] Lumi— hold on— I can't turn her around— ho\& o|—
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=109.3 game=109.3
+  [354,672 38x18 a=1.00] WREN
+  [404,667 522x29 a=1.00] Lumi— hold on— I can't turn her around— ▒+ld &n+
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[perf] t=109s frames=310 game_fps=7.56 draw_calls=1441 objects=1614 prims=197088
+[qa-watch] t=109.9 game=109.9
+  [352,672 38x18 a=1.00] WREN
+  [402,667 525x29 a=1.00] Lumi— hold on— I can't turn her around— >#|d |\—
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=110.4 game=110.4
+  [355,672 38x18 a=1.00] WREN
+  [405,667 519x29 a=1.00] Lumi— hold on— I can't turn her around— <+l0 @+1
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=110.9 game=110.9
+  [347,672 38x18 a=1.00] WREN
+  [397,667 535x29 a=1.00] Lumi— hold on— I can't turn her around— %+▒# o%*
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=111.5 game=111.5
+  [347,672 38x18 a=1.00] WREN
+  [397,667 536x29 a=1.00] Lumi— hold on— I can't turn her around— ░**@ $+—
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=112.2 game=112.2
+  [359,672 38x18 a=1.00] WREN
+  [409,667 512x29 a=1.00] Lumi— hold on— I can't turn her around— \old 1n=
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[perf] t=113s frames=334 game_fps=7.87 draw_calls=981 objects=1035 prims=165372
+[qa-watch] t=112.7 game=112.7
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[qa-watch] t=114.9 game=114.9
+  [390,667 500x29 a=1.00] The ark could not turn back. The pod fell for days.
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[perf] t=116s frames=372 game_fps=12.47 draw_calls=14 objects=189 prims=33864
+[perf] t=119s frames=405 game_fps=10.76 draw_calls=164 objects=339 prims=43918
+[qa-watch] t=119.2 game=119.2
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+[perf] t=122s frames=435 game_fps=9.72 draw_calls=163 objects=217 prims=43748
+[perf] t=125s frames=454 game_fps=6.04 draw_calls=1007 objects=1152 prims=1031635
+[perf] t=128s frames=462 game_fps=2.60 draw_calls=903 objects=1032 prims=5773423
+[intro] song fades out at 67.0s (song at 66.7s)
+[perf] t=131s frames=466 game_fps=1.30 draw_calls=1239 objects=1390 prims=6658264
+[perf] t=134s frames=470 game_fps=1.30 draw_calls=1298 objects=1452 prims=6662072
+[perf] t=138s frames=475 game_fps=1.34 draw_calls=1276 objects=1432 prims=6677949
+[perf] t=141s frames=480 game_fps=1.35 draw_calls=1165 objects=1292 prims=7326197
+[perf] t=145s frames=485 game_fps=1.39 draw_calls=1171 objects=1298 prims=7326243
+[perf] t=149s frames=490 game_fps=1.40 draw_calls=1163 objects=1295 prims=7326003
+[qa] run shot=screenshots/qa/12_bale_carry.png
+[DevHooks] screenshot -> /workspace/Greenfall/screenshots/qa/12_bale_carry.png (OK)
+[perf] t=152s frames=494 game_fps=1.25 draw_calls=1297 objects=1428 prims=7345737
+[perf] t=155s frames=498 game_fps=1.31 draw_calls=1295 objects=1427 prims=7362073
+[perf] t=159s frames=503 game_fps=1.34 draw_calls=1305 objects=1438 prims=7378636
+[perf] t=162s frames=507 game_fps=1.30 draw_calls=1311 objects=1444 prims=7375744
+[perf] t=165s frames=511 game_fps=1.22 draw_calls=1303 objects=1440 prims=7361903
+[qa-watch] t=167.3 game=167.3
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+  [48,96 216x18 a=1.00] B L O O M   C O R E
+  [157,118 38x39 a=1.00] 4%
+  [48,161 216x18 a=1.00] GREEN LIGHT  ·  NONE DETECTED
+[perf] t=168s frames=515 game_fps=1.32 draw_calls=1312 objects=1548 prims=7363055
+[perf] t=171s frames=519 game_fps=1.31 draw_calls=1316 objects=1553 prims=7383079
+[perf] t=174s frames=523 game_fps=1.31 draw_calls=1310 objects=1542 prims=7383643
+[qa-watch] t=175.6 game=175.6
+  [313,672 38x18 a=1.00] WREN
+  [363,667 604x29 a=1.00] Lumi, it's WREN, the Cradle's caretaker. Your friend up here.
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+  [48,96 216x18 a=1.00] B L O O M   C O R E
+  [157,118 38x39 a=0.35] 4%
+  [48,161 216x18 a=1.00] GREEN LIGHT  ·  NONE DETECTED
+[perf] t=177s frames=527 game_fps=1.33 draw_calls=1313 objects=1707 prims=7366497
+[perf] t=181s frames=532 game_fps=1.35 draw_calls=1304 objects=1699 prims=7341325
+[perf] t=185s frames=537 game_fps=1.34 draw_calls=1300 objects=1694 prims=7334755
+[perf] t=188s frames=541 game_fps=1.28 draw_calls=1303 objects=1698 prims=7334827
+[perf] t=191s frames=546 game_fps=1.35 draw_calls=1298 objects=1529 prims=7334139
+[qa-watch] t=192.1 game=192.1
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+  [48,96 216x18 a=1.00] B L O O M   C O R E
+  [157,118 38x39 a=1.00] 4%
+  [48,161 216x18 a=1.00] GREEN LIGHT  ·  NONE DETECTED
+[perf] t=194s frames=550 game_fps=1.33 draw_calls=1299 objects=1645 prims=7334745
+[qa-watch] t=194.4 game=194.4
+  [414,672 38x18 a=1.00] WREN
+  [464,667 401x29 a=1.00] Your pod's down, and the relay's failing.
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+  [48,96 216x18 a=1.00] B L O O M   C O R E
+  [157,118 38x39 a=1.00] 4%
+  [48,161 216x18 a=1.00] GREEN LIGHT  ·  NONE DETECTED
+[perf] t=197s frames=554 game_fps=1.29 draw_calls=1301 objects=1647 prims=7334677
+[qa] run shot=screenshots/qa/12_bale_carry_b.png
+[DevHooks] screenshot -> /workspace/Greenfall/screenshots/qa/12_bale_carry_b.png (OK)
+[perf] t=201s frames=559 game_fps=1.34 draw_calls=1301 objects=1646 prims=7334681
+[perf] t=205s frames=564 game_fps=1.39 draw_calls=1299 objects=1646 prims=7334389
+[qa-watch] t=206.3 game=206.3
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+  [48,96 216x18 a=1.00] B L O O M   C O R E
+  [157,118 38x39 a=1.00] 4%
+  [48,161 216x18 a=1.00] GREEN LIGHT  ·  NONE DETECTED
+[perf] t=208s frames=568 game_fps=1.31 draw_calls=1296 objects=1528 prims=7274509
+[qa-watch] t=208.6 game=208.6
+  [230,672 38x18 a=0.84] WREN
+  [280,667 770x29 a=0.84] Bale junk to power the old base, then build a signal tower so I can reach you.
+  [1020,24 260x18 a=1.00] Space  pause   ·   Esc  skip
+  [48,96 216x18 a=1.00] B L O O M   C O R E
+  [157,118 38x39 a=0.35] 4%
+  [48,161 216x18 a=1.00] GREEN LIGHT  ·  NONE DETECTED
+[perf] t=212s frames=573 game_fps=1.35 draw_calls=1302 objects=1730 prims=7243982
+[perf] t=215s frames=578 game_fps=1.45 draw_calls=1297 objects=1728 prims=6670854
+[perf] t=218s frames=583 game_fps=1.53 draw_calls=1274 objects=1709 prims=6485515
+[DevHooks] quitting after 220.3s
+WARNING: 18 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

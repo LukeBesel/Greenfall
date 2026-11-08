@@ -1,0 +1,22 @@
+[stats] junk lod: near=2005 far=20021 radius=26 m id=-9223371431465710972
+[stats] group                 nodes  meshes  mm(inst)    labels  surf  shadow  est_draws   tris
+[stats] FieldView               268      46  222( 22026)      0   616     175       1407   2571015
+[stats] City                    394     255  139(  1103)      0   463     388       1314    623414
+[stats] Outposts                126     120    0(     0)      6   126     120        372     87756
+[stats] CrashSite               112     111    0(     0)      0   119      90        328      7366
+[stats] EasterEggs               71      65    1(    40)      5    73      67        213     50079
+[stats] Litter                   65       0   65(239432)      0   100       0        200   6840848
+[stats] Patch                    28      27    0(     0)      1    64      63        191     96342
+[stats] Garden                   90       0   90( 12442)      0    90       0        180    888084
+[stats] StreetDressing           36       8   15(   299)     13    71      13        155    176861
+[stats] FarJunk                  13       0   13( 41219)      0    36       0         72    274176
+[stats] Depot                    17      15    0(     0)      2    17      15         49      1244
+[stats] Fleet                    14      13    0(     0)      1    14      12         40      1344
+[stats] Shack                     6       6    0(     0)      0    13      13         39     10119
+[stats] first_seed                8       8    0(     0)      0     9       9         27      3386
+[stats] FirstFlower               2       2    0(     0)      0     4       4         12    105141
+[stats] SignalTower               4       4    0(     0)      0     4       4         12       644
+[stats] Fauna                     4       0    4(    19)      0     4       3         11     37348
+[stats] FutureLayer               3       0    3(     0)      0     3       0          6         0
+[stats] tutorial                  2       2    0(     0)      0     2       0          4       388
+[stats] TOTAL nodes=1268 meshes=686 multimeshes=553 mm_instances=316580 labels=28 surfaces=1832 shadow_surfaces=977 materials=240 est_draws=4641 tris=11775679

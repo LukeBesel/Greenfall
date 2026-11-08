@@ -431,3 +431,45 @@ WARNING: Screen-space AA is only available when using the Forward+ or Mobile ren
 [DevHooks] screenshot -> /workspace/Greenfall/screenshots/qa/08_intro_12.png (OK)
 [perf] t=452s frames=755 game_fps=0.90 draw_calls=1731 objects=2490 prims=8580783
 [perf] t=455s frames=758 game_fps=0.98 draw_calls=1728 objects=2488 prims=8580775
+[perf] t=458s frames=761 game_fps=0.98 draw_calls=1729 objects=2488 prims=8580779
+[perf] t=461s frames=764 game_fps=0.99 draw_calls=1732 objects=2489 prims=8580783
+[perf] t=464s frames=767 game_fps=0.98 draw_calls=1735 objects=2490 prims=8574473
+[perf] t=467s frames=770 game_fps=0.91 draw_calls=1729 objects=2487 prims=8574389
+[perf] t=470s frames=773 game_fps=0.98 draw_calls=1731 objects=2487 prims=8574393
+[perf] t=473s frames=776 game_fps=0.97 draw_calls=1731 objects=2489 prims=8574393
+[qa] run shot=screenshots/qa/08_intro_13.png
+[DevHooks] screenshot -> /workspace/Greenfall/screenshots/qa/08_intro_13.png (OK)
+[perf] t=477s frames=779 game_fps=0.91 draw_calls=1732 objects=2489 prims=8574399
+[perf] t=480s frames=783 game_fps=1.01 draw_calls=1731 objects=2487 prims=8574393
+[perf] t=483s frames=786 game_fps=1.00 draw_calls=1732 objects=2487 prims=8574397
+[perf] t=486s frames=789 game_fps=1.00 draw_calls=1732 objects=2489 prims=8574397
+[perf] t=490s frames=793 game_fps=1.05 draw_calls=1729 objects=2486 prims=8574389
+[perf] t=494s frames=797 game_fps=1.01 draw_calls=1730 objects=2487 prims=8574393
+[perf] t=498s frames=801 game_fps=1.00 draw_calls=1732 objects=2489 prims=8574397
+[qa] run shot=screenshots/qa/08_intro_14.png
+[DevHooks] screenshot -> /workspace/Greenfall/screenshots/qa/08_intro_14.png (OK)
+[perf] t=501s frames=804 game_fps=0.93 draw_calls=1731 objects=2489 prims=8574393
+[perf] t=505s frames=808 game_fps=1.02 draw_calls=1731 objects=2486 prims=8574397
+[perf] t=508s frames=811 game_fps=0.97 draw_calls=1732 objects=2488 prims=8574397
+[perf] t=512s frames=814 game_fps=0.99 draw_calls=1730 objects=2487 prims=8572905
+[perf] t=515s frames=817 game_fps=0.96 draw_calls=1728 objects=2485 prims=8572901
+[perf] t=518s frames=820 game_fps=0.99 draw_calls=1730 objects=2486 prims=8572907
+[perf] t=521s frames=823 game_fps=0.98 draw_calls=1733 objects=2487 prims=8572959
+[perf] t=524s frames=826 game_fps=0.98 draw_calls=1730 objects=2487 prims=8572905
+[qa] run shot=screenshots/qa/08_intro_15.png
+[DevHooks] screenshot -> /workspace/Greenfall/screenshots/qa/08_intro_15.png (OK)
+[perf] t=527s frames=829 game_fps=0.95 draw_calls=1730 objects=2486 prims=8572907
+[perf] t=531s frames=833 game_fps=1.03 draw_calls=1727 objects=2487 prims=8579221
+[perf] t=535s frames=837 game_fps=1.01 draw_calls=1731 objects=2488 prims=8576995
+[perf] t=539s frames=841 game_fps=1.00 draw_calls=1726 objects=2486 prims=8576981
+[perf] t=543s frames=845 game_fps=1.03 draw_calls=1728 objects=2486 prims=8576989
+[perf] t=547s frames=849 game_fps=1.01 draw_calls=1727 objects=2487 prims=8575025
+[perf] t=551s frames=853 game_fps=1.01 draw_calls=1726 objects=2484 prims=8575025
+[qa] run shot=screenshots/qa/08_intro_16.png
+[DevHooks] screenshot -> /workspace/Greenfall/screenshots/qa/08_intro_16.png (OK)
+[perf] t=554s frames=856 game_fps=0.96 draw_calls=1726 objects=2484 prims=8575023
+[perf] t=558s frames=860 game_fps=1.01 draw_calls=1730 objects=2486 prims=8575075
+[DevHooks] quitting after 560.7s
+[tunes] context none
+WARNING: 18 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
