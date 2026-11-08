@@ -180,6 +180,16 @@ func _blocked() -> bool:
 	return bool(world.get("launching")) if world.get("launching") != null else false
 
 
+## The hexes a pulse covers: Lumi's own (ring 0) or the rings around it.
+static func scan_hexes(f: HexField, pos: Vector3, ring: int) -> Array[int]:
+	var hexes: Array[int] = []
+	if ring > 0:
+		hexes = f.hexes_near(pos, ring)
+	else:
+		hexes.append(f.hex_at(pos))
+	return hexes
+
+
 ## Pulse the scanner over Lumi's hex (and the rings around it at higher tiers).
 func do_scan(manual: bool = true) -> int:
 	if bot == null or scan == null or scan.field == null:
@@ -189,7 +199,7 @@ func do_scan(manual: bool = true) -> int:
 		return -1
 	var f: HexField = scan.field
 	var ring: int = int(Glim.value("scan", "ring", 0.0))
-	var hexes: Array[int] = f.hexes_near(patch.global_position, ring) if ring > 0 else [f.hex_at(patch.global_position)] as Array[int]
+	var hexes: Array[int] = scan_hexes(f, patch.global_position, ring)
 	var n: int = scan.pulse(patch.global_position, hexes)
 	bot.scanning = 1.0
 	_cooldown = Glim.value("scan", "cooldown", 8.0)
