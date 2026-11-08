@@ -280,6 +280,15 @@ func _process(_delta: float) -> void:
 		stats["junk_ms"] = int(float(junk_view.stats.get("rebuild_us", 0)) / 1000.0)
 
 
+## Draw the near ring's junk right now (after loading: no pop-in over the first frames).
+func refresh_junk_now() -> void:
+	update_centres()
+	_junk_dirty = false
+	junk_view.rebuild(streamer.near_cells())
+	junk_view.flush()
+	stats["junk"] = int(junk_view.stats.get("pieces", 0))
+
+
 ## Mean and minimum distance from each hub to its nearest other hub (m).
 func hub_spacing(min_only: bool) -> float:
 	var s: float = 0.0

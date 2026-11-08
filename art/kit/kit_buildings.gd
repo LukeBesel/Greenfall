@@ -9,7 +9,7 @@ extends Node3D
 ## Geometry per (kind, state, seed) is cached; materials per (state, palette, powered) are cached.
 ## A building is ~8-14 surfaces (draw calls) + 2 MultiMeshes + its patch, whatever its detail.
 
-const KINDS: PackedStringArray = ["module_small", "module_medium", "module_large", "tower", "hangar", "tank_farm", "machine_housing"]
+const KINDS: PackedStringArray = ["module_small", "module_medium", "module_large", "tower", "hangar", "tank_farm", "machine_housing", "dome", "greenhouse"]
 
 ## Palette roles -> KitMat colours. Override any role per building/planet.
 const DEFAULT_PALETTE: Dictionary = KitMat.ROLES
@@ -18,6 +18,7 @@ const DEFAULT_PALETTE: Dictionary = KitMat.ROLES
 const FOOTPRINT: Dictionary = {
 	"module_small": Vector2(9, 8), "module_medium": Vector2(12, 10), "module_large": Vector2(16, 14),
 	"tower": Vector2(9, 9), "hangar": Vector2(15, 17), "tank_farm": Vector2(14, 11), "machine_housing": Vector2(10, 8),
+	"dome": Vector2(13, 14), "greenhouse": Vector2(14, 10),
 }
 
 var kind: String = "module_small"
@@ -118,6 +119,10 @@ static func mesh_for(kind_: String, state_: String, seed__: int, palette_: Dicti
 				_tank_farm(b, state_)
 			"machine_housing":
 				_machine_housing(b, state_)
+			"dome":
+				_dome(b, state_)
+			"greenhouse":
+				_greenhouse(b, state_)
 			_:
 				push_warning("[kit] unknown building kind " + kind_)
 		var d := BuildData.new()
@@ -537,3 +542,147 @@ static func _machine_housing(b: KitMesh.Builder, state: String) -> void:
 	b.rod("paint:pole", Vector3(-4.4, 0, -2.6), Vector3(-4.4, 3.9, -2.6), 0.1, 10)
 	b.box("dark_steel", Vector3(0.6, 0.12, 0.12), _x(Vector3(-4.4, 3.7, -2.6)), 0.02)
 	_clutter(b, state, [Vector3(3.8, 0, -2.4), Vector3(-3.4, 0, 2.6)], Vector3(4.2, 0, 3.0), [Vector3(-0.4, 0, 3.0)])
+
+
+static func _dome(b: KitMesh.Builder, state: String) -> void:
+	var broken: bool = state == "broken"
+	var r: float = 4.6
+	var base_y: float = 0.6
+	b.add("concrete", KitMesh.bevel_cylinder(r + 0.6, base_y, 0.12, 24), Transform3D.IDENTITY)
+	b.add("hazard", KitMesh.bevel_cylinder(r + 0.62, 0.12, 0.03, 24), _x(Vector3(0, base_y - 0.2, 0)))
+	var top_a: float = 74.0
+	# 8 shell sectors (painted), with a glass band between 38 and 54 degrees
+	for k: int in 8:
+		for band: int in 3:
+			var a0: float = [0.0, 38.0, 54.0][band]
+			var a1: float = [38.0, 54.0, top_a][band]
+			if broken and ((k == 2 and band == 2) or (k == 5 and band >= 1)):
+				continue
+			var p := PackedVector3Array()
+			var steps: int = 4
+			for q: int in steps + 1:
+				var a: float = deg_to_rad(lerpf(a0, a1, float(q) / steps))
+				p.append(Vector3(cos(a) * r, sin(a) * r, 1.0 if q == 0 or q == steps else 0.0))
+			for q: int in range(steps, -1, -1):
+				var a: float = deg_to_rad(lerpf(a0, a1, float(q) / steps))
+				p.append(Vector3(cos(a) * (r - 0.16), sin(a) * (r - 0.16), 1.0 if q == 0 or q == steps else 0.0))
+			p.append(p[0])
+			var key: String = "paint:main" if band != 1 else ("glass" if not broken else "rusty")
+			if band == 0 and k % 2 == 1:
+				key = "paint:accent" if not broken else "paint:main"
+			b.add(key, KitMesh.lathe(p, 4, 43.0), _x(Vector3(0, base_y, 0), Vector3(0, 45.0 * k + 1.0, 0)), -1.0, 0.0)
+	# meridian ribs + ring bands
+	for k: int in 8:
+		var pts := PackedVector3Array()
+		var ang: float = deg_to_rad(-45.0 * k)
+		for q: int in 10:
+			var a: float = deg_to_rad(lerpf(0.0, top_a + 4.0, q / 9.0))
+			pts.append(Vector3(cos(ang) * cos(a) * (r + 0.05), base_y + sin(a) * (r + 0.05), sin(ang) * cos(a) * (r + 0.05)))
+		b.tube("paint:accent", pts, 0.11, 8)
+	for a_deg: float in [38.0, 54.0]:
+		var ring := PackedVector3Array()
+		var a: float = deg_to_rad(a_deg)
+		for q: int in 33:
+			var t: float = TAU * q / 32.0
+			ring.append(Vector3(cos(t) * cos(a) * (r + 0.04), base_y + sin(a) * (r + 0.04), sin(t) * cos(a) * (r + 0.04)))
+		b.tube("dark_steel", ring, 0.07, 6)
+	# glowing ring under the glass band and a glass oculus cap with a beacon
+	var gr := PackedVector3Array()
+	for q: int in 33:
+		var t: float = TAU * q / 32.0
+		gr.append(Vector3(cos(t) * cos(deg_to_rad(37.0)) * (r + 0.1), base_y + sin(deg_to_rad(37.0)) * (r + 0.1), sin(t) * cos(deg_to_rad(37.0)) * (r + 0.1)))
+	b.tube("trim:cool", gr, 0.035, 5)
+	var cap_y: float = base_y + sin(deg_to_rad(top_a)) * r
+	var cap_r: float = cos(deg_to_rad(top_a)) * r + 0.2
+	b.add("paint:accent", KitMesh.bevel_cylinder(cap_r, 0.4, 0.1, 20), _x(Vector3(0, cap_y - 0.15, 0)))
+	b.add("glass" if not broken else "rusty", KitMesh.lathe(PackedVector3Array([Vector3(cap_r - 0.2, 0, 1), Vector3(cap_r - 0.35, 0.35, 0), Vector3(0.4, 0.6, 0), Vector3(0, 0.62, 0)]), 20), _x(Vector3(0, cap_y + 0.25, 0)))
+	KitProps.antenna(b, _x(Vector3(0.8, cap_y + 0.25, 0.3)), 1.6, state)
+	# entrance tunnel (+Z): small arch with a door, hazard frame and lamp
+	var tl: float = 2.4
+	var tr: float = 1.5
+	var tunnel := _shell(tr, tr + 0.18, 0.0, tl)
+	b.add("paint:main", KitMesh.lathe(tunnel, 12, 180.0), _x(Vector3(0, base_y, r + tl - 0.5), Vector3(-90, 0, 0)), -1.0, 0.0)
+	for zz: float in [r - 0.4, r + tl - 0.6]:
+		b.add("paint:accent", KitMesh.lathe(_shell(tr - 0.02, tr + 0.32, 0.0, 0.3), 12, 180.0), _x(Vector3(0, base_y, zz + 0.3), Vector3(-90, 0, 0)), -1.0, 0.0)
+	KitProps.hatch(b, _x(Vector3(0, base_y, r + tl - 0.55)), Vector2(1.3, 1.8), state)
+	b.box("concrete", Vector3(3.2, base_y, tl + 0.4), _x(Vector3(0, base_y * 0.5, r + tl * 0.5 - 0.3)), 0.06)
+	KitProps.stairs(b, _x(Vector3(0, 0, r + tl + 0.2)), base_y, 0.8, 1.6, "paint:rail", state)
+	b.decal("logo", Vector2(1.4, 1.4), _x(Vector3(-3.0, base_y + 1.8, 3.25), Vector3(0, -40, 0)))
+	b.decal("num_05", Vector2(0.9, 0.9), _x(Vector3(3.0, base_y + 1.8, 3.25), Vector3(0, 40, 0)))
+	b.lights.append({"pos": Vector3(0, base_y + 2.5, 0), "color": KitMat.GLOW["warm"], "range": 7.0, "energy": 1.4})
+	# interior: a tree and planters visible through the glass when restored
+	if not broken:
+		KitProps.bush(b, _x(Vector3(0, base_y, 0)), 1.6 if state == "restored" else 1.0)
+		b.rod("paint:pole", Vector3(0, base_y, 0), Vector3(0, base_y + 1.6, 0), 0.15, 8)
+	_clutter(b, state, [Vector3(5.6, 0, -3.8), Vector3(-6.0, 0, -2.6)], Vector3(2.6, 0, 7.6), [Vector3(-2.6, 0, 7.0)])
+
+
+static func _greenhouse(b: KitMesh.Builder, state: String) -> void:
+	var broken: bool = state == "broken"
+	var w: float = 5.6
+	var l: float = 9.0
+	var wall_h: float = 2.4
+	var ridge: float = 1.6
+	var y0: float = 0.5
+	# concrete base wall with painted kick panels
+	b.box("concrete", Vector3(w + 0.4, y0, l + 0.4), _x(Vector3(0, y0 * 0.5, 0)), 0.08, 2)
+	for sx: float in [-1.0, 1.0]:
+		b.box("paint:accent", Vector3(0.12, 0.5, l), _x(Vector3(sx * (w * 0.5 + 0.02), y0 + 0.25, 0)), 0.03)
+	# frame: posts every bay, eaves, ridge
+	var bays: int = 6
+	var bay: float = l / bays
+	for k: int in bays + 1:
+		var z: float = -l * 0.5 + k * bay
+		var tilt := Vector3(0, 0, 4.0 if broken and k == 2 else 0.0)
+		for sx: float in [-1.0, 1.0]:
+			b.box("paint:main", Vector3(0.14, wall_h, 0.14), _x(Vector3(sx * w * 0.5, y0 + wall_h * 0.5, z), tilt), 0.03)
+			b.rod("paint:main", Vector3(sx * w * 0.5, y0 + wall_h, z), Vector3(0, y0 + wall_h + ridge, z), 0.07, 6)
+	for sx: float in [-1.0, 1.0]:
+		b.box("paint:main", Vector3(0.16, 0.16, l + 0.16), _x(Vector3(sx * w * 0.5, y0 + wall_h, 0)), 0.04)
+	b.box("paint:accent", Vector3(0.26, 0.22, l + 0.5), _x(Vector3(0, y0 + wall_h + ridge, 0)), 0.06, 2)
+	# glass panes: walls and roof slopes (some missing / grimy when broken)
+	var slope_len: float = sqrt(ridge * ridge + w * w * 0.25)
+	var slope_ang: float = rad_to_deg(atan2(ridge, w * 0.5))
+	for k: int in bays:
+		var zc: float = -l * 0.5 + (k + 0.5) * bay
+		for sx: float in [-1.0, 1.0]:
+			if broken and b.rng.randf() < 0.3:
+				continue
+			b.box("glasshouse", Vector3(0.03, wall_h - 0.12, bay - 0.14), _x(Vector3(sx * w * 0.5, y0 + wall_h * 0.5, zc)), 0.008)
+			if broken and b.rng.randf() < 0.35:
+				continue
+			var vent_open: float = 18.0 if (state == "restored" and k % 3 == 1) else 0.0
+			b.box("glasshouse", Vector3(slope_len - 0.1, 0.03, bay - 0.14), _x(Vector3(sx * w * 0.25, y0 + wall_h + ridge * 0.5, zc), Vector3(0, 0, -sx * slope_ang - sx * vent_open * 0.2)), 0.008)
+	# gable ends: glass with a door at the front
+	for e: int in 2:
+		var z: float = (l * 0.5) * (1.0 if e == 0 else -1.0)
+		for q: int in 4:
+			var xc: float = -w * 0.5 + (q + 0.5) * w / 4.0
+			if e == 0 and (q == 1 or q == 2):
+				continue
+			b.box("glasshouse", Vector3(w / 4.0 - 0.1, wall_h - 0.1, 0.03), _x(Vector3(xc, y0 + wall_h * 0.5, z)), 0.008)
+		b.box("glasshouse", Vector3(w - 0.4, ridge * 0.9, 0.03), _x(Vector3(0, y0 + wall_h + ridge * 0.42, z)) * Transform3D(Basis().scaled(Vector3(1, 1, 1)), Vector3.ZERO), 0.008)
+	KitProps.hatch(b, _x(Vector3(0, y0, l * 0.5 + 0.05)), Vector2(1.4, 2.1), state, "paint:accent")
+	# beds with plants inside
+	for sx: float in [-1.0, 1.0]:
+		b.box("concrete", Vector3(1.4, 0.45, l - 1.2), _x(Vector3(sx * 1.6, y0 + 0.225, -0.3)), 0.05)
+		b.box("dirt", Vector3(1.26, 0.04, l - 1.34), _x(Vector3(sx * 1.6, y0 + 0.45, -0.3)), 0.01)
+		if not broken:
+			var n: int = 9 if state == "restored" else 5
+			for q: int in n:
+				var z: float = -l * 0.5 + 0.9 + q * (l - 2.2) / (n - 1)
+				KitProps.bush(b, _x(Vector3(sx * 1.6 + b.rng.randf_range(-0.25, 0.25), y0 + 0.45, z)), b.rng.randf_range(0.28, 0.42) * (1.0 if state == "restored" else 0.75))
+				if state == "restored" and q % 2 == 0:
+					b.add(["paint:flower_a", "paint:flower_b", "paint:yellow"][q % 3], KitMesh.pebble(q % 4), _x(Vector3(sx * 1.6 + 0.3, y0 + 0.9, z + 0.2)) * Transform3D(Basis().scaled(Vector3.ONE * 0.09), Vector3.ZERO), -1.0, 0.0)
+		else:
+			for q: int in 3:
+				b.add("rusty", KitMesh.pebble(q), _x(Vector3(sx * 1.6, y0 + 0.47, -2.0 + q * 2.0)) * Transform3D(Basis().scaled(Vector3(0.25, 0.1, 0.25)), Vector3.ZERO), -1.0, 0.0)
+	# grow lights along the ridge (thin warm strips) + sprinkler-free water tank and pipe
+	for sx: float in [-1.0, 1.0]:
+		b.box("trim:white", Vector3(0.05, 0.03, l - 1.0), _x(Vector3(sx * 1.6, y0 + wall_h + 0.2, 0)), 0.01)
+		b.rod("dark_steel", Vector3(sx * 1.6, y0 + wall_h + 0.22, -l * 0.4), Vector3(sx * 1.3, y0 + wall_h + ridge * 0.6, -l * 0.4), 0.015, 4)
+	b.lights.append({"pos": Vector3(0, y0 + wall_h, 0), "color": KitMat.GLOW["white"], "range": 7.5, "energy": 1.0})
+	KitProps.tank(b, _x(Vector3(w * 0.5 + 1.4, 0, -l * 0.5 + 1.2)), 0.8, 2.0, "paint:accent", state)
+	KitProps.pipe_run(b, Transform3D.IDENTITY, PackedVector3Array([Vector3(w * 0.5 + 1.4, 2.2, -l * 0.5 + 1.2), Vector3(w * 0.5 + 1.4, 2.8, -l * 0.5 + 1.2), Vector3(w * 0.5 + 0.3, 2.8, -l * 0.5 + 1.2)]), 0.08)
+	b.decal("label_seeds", Vector2(1.6, 0.4), _x(Vector3(0, y0 + wall_h + 0.35, l * 0.5 + 0.03)))
+	_clutter(b, state, [Vector3(-w * 0.5 - 1.6, 0, 2.6), Vector3(w * 0.5 + 1.6, 0, 2.8)], Vector3(-w * 0.5 - 1.4, 0, l * 0.5 + 0.8), [Vector3(2.6, 0, l * 0.5 + 1.2)])

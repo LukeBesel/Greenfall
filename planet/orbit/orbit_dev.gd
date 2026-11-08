@@ -50,8 +50,8 @@ func _process(delta: float) -> void:
 
 func perf_line() -> String:
 	var g: OrbitPlanet = so.globe
-	var s: String = "process_ms avg=%.2f max=%.2f physics_ms avg=%.2f junk=%d junk_ms=%d mounds=%d landmarks=%d draw_calls=%d prims=%d streamer=%s" % [
-		_perf[0] / maxi(_perf_n, 1), _perf[2], _perf[1] / maxi(_perf_n, 1), int(g.stats.get("junk", 0)), int(g.stats.get("junk_ms", 0)),
+	var s: String = "process_ms avg=%.2f max=%.2f physics_ms avg=%.2f junk=%d (near %d far %d) junk_ms=%d mounds=%d landmarks=%d draw_calls=%d prims=%d streamer=%s" % [
+		_perf[0] / maxi(_perf_n, 1), _perf[2], _perf[1] / maxi(_perf_n, 1), int(g.stats.get("junk", 0)), g.junk_view.counts().x, g.junk_view.counts().y, int(g.stats.get("junk_ms", 0)),
 		g.junk_view.mound_count(), g.junk_view.landmark_count(),
 		RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_DRAW_CALLS_IN_FRAME),
 		RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_PRIMITIVES_IN_FRAME), JSON.stringify(g.streamer.stats)]
