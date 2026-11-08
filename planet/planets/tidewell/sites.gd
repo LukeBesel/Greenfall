@@ -344,12 +344,16 @@ func _mat(key: String) -> Material:
 	match key:
 		"tin":
 			var t := AssetLib.pbr_material("corrugated_iron", 0.5, Color(0.95, 0.9, 0.82), true)
-			t.metallic = 0.15
+			t.metallic = 0.0  # painted tin: the arm metal channel read as a dark mirror from above
+			t.metallic_texture = null
+			t.cull_mode = BaseMaterial3D.CULL_DISABLED
 			_mats[key] = t
 			return t
 		"tin_roof":
 			var r := AssetLib.pbr_material("corrugated_iron", 0.5, Color(0.86, 0.62, 0.46), true)
-			r.metallic = 0.2
+			r.metallic = 0.0
+			r.metallic_texture = null
+			r.cull_mode = BaseMaterial3D.CULL_DISABLED
 			_mats[key] = r
 			return r
 		"plank_a", "plank_b", "plank_c":
