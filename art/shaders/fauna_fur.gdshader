@@ -17,8 +17,8 @@ uniform float patch_amt = 0.0;
 
 uniform float shell = 0.0;
 uniform bool baked = false;  // vendor models: the vertex colour is the albedo (no coat masks)
-uniform float fur_len = 0.007;
-uniform float density = 900.0;
+uniform float fur_len = 0.0045;
+uniform float density = 1700.0;
 uniform float sheen = 0.06;
 
 varying vec4 vc;

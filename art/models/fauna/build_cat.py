@@ -144,7 +144,7 @@ def coat(co, n):
 	elif z < 0.14:
 		s = math.sin(z * 95.0 + fbm(co, 14) * 0.8)
 	elif (co - HEAD).length < 0.09:
-		s = math.sin(x * 110.0 + fbm(co, 14) * 0.8) if z > HEAD.z + 0.03 else -1.0
+		s = (math.sin(x * 150.0 + fbm(co, 14) * 0.8) * 0.5 - 0.35) if z > HEAD.z + 0.035 else -1.0
 	else:
 		s = math.sin(y * 62.0 + (z - 0.18) * 30.0 * (1 if x > 0 else -1) * 0.5 + fbm(co, 10) * 0.7)
 	stripe = max(0.0, min(1.0, (s + 0.1) * 0.85)) ** 1.25 * (1.0 if n.z > -0.4 else 0.25)
@@ -404,6 +404,9 @@ if PREVIEW:
 	fb.preview(os.path.join(PREVIEW, "cat_lids.png"), lw + lf * 0.25 + Vector((0.05, 0, 0.05)), lw)
 	arm.animation_data.action = None
 	body.data.materials[0] = FUR
+	for o in parts:
+		if o.name.startswith("Eye"):
+			o.data.materials[0] = EYE
 	bpy.data.materials.remove(pv)
 	for o in ("PrevCam", "PrevSun"):
 		bpy.data.objects.remove(bpy.data.objects[o])

@@ -17,18 +17,25 @@ func _ready() -> void:
 	_out = DevHooks.get_s("out", "screenshots/lineup")
 	_ids = DevHooks.get_s("models", "cat,deer,deer_stag,seal,fox,rabbit,duck,pigeon,pigeon_fly,sparrow,songbird").split(",")
 	var env := Environment.new()
-	env.background_mode = Environment.BG_COLOR
-	env.background_color = Color(0.62, 0.7, 0.78)
-	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color(0.55, 0.6, 0.68)
-	env.ambient_light_energy = 0.7
+	env.background_mode = Environment.BG_SKY
+	var sky := Sky.new()
+	var sm := ProceduralSkyMaterial.new()
+	sm.sky_top_color = Color(0.45, 0.6, 0.8)
+	sm.sky_horizon_color = Color(0.82, 0.8, 0.74)
+	sm.ground_horizon_color = Color(0.7, 0.62, 0.52)
+	sm.ground_bottom_color = Color(0.45, 0.38, 0.3)
+	sky.sky_material = sm
+	env.sky = sky
+	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
+	env.ambient_light_energy = 0.9
 	env.tonemap_mode = Environment.TONE_MAPPER_AGX
+	env.ssao_enabled = true
 	var we := WorldEnvironment.new()
 	we.environment = env
 	add_child(we)
 	var sun := DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-40, -35, 0)
-	sun.light_energy = 2.0
+	sun.rotation_degrees = Vector3(-38, DevHooks.get_f("sun-yaw", 150.0), 0)
+	sun.light_energy = 2.2
 	sun.light_color = Color(1.0, 0.9, 0.78)
 	sun.shadow_enabled = true
 	add_child(sun)
@@ -36,7 +43,7 @@ func _ready() -> void:
 	var pm := PlaneMesh.new()
 	pm.size = Vector2(20, 20)
 	var gm := StandardMaterial3D.new()
-	gm.albedo_color = Color(0.55, 0.52, 0.45)
+	gm.albedo_color = Color(0.5, 0.47, 0.4)
 	gm.roughness = 0.95
 	pm.material = gm
 	ground.mesh = pm
@@ -73,8 +80,8 @@ func _process(_delta: float) -> void:
 		r.play(bits[2], 1.0, 0.0)
 		r.advance(0.3)
 		_cur = r
-		var rr: float = 0.42
-		var rc := Vector3(0, 0.2, -0.05)
+		var rr: float = DevHooks.get_f("rr", 0.42)
+		var rc := Vector3(0, DevHooks.get_f("rcy", 0.2), DevHooks.get_f("rcz", -0.05))
 		var ry: float = DevHooks.get_f("yaw", 0.75)
 		var rp: float = DevHooks.get_f("pitch", 0.22)
 		var rdir := Vector3(sin(ry) * cos(rp), sin(rp), -cos(ry) * cos(rp))

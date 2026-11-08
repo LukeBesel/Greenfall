@@ -8,7 +8,7 @@ extends Node3D
 ## only shows it. Far or numerous animals stay on the MultiMesh path.
 
 const DIR: String = "res://art/models/fauna/%s.glb"
-const SHELLS: int = 6
+const SHELLS: int = 8
 const SHELL_RANGE: float = 9.0
 ## Render layer for animals (bit 19), so Lumi's cyan hover light can leave them out.
 const LAYER: int = 1 << 18
@@ -111,7 +111,7 @@ func _wire(root: Node) -> void:
 			if m2 and m2.resource_name in ["Fur", "FurBaked"]:
 				fur_s = s2
 				baked = m2.resource_name == "FurBaked"
-		if fur_s >= 0:
+		if fur_s >= 0 and not str(mi.name).begins_with("Lid") and not str(mi.name).begins_with("LowLid"):
 			var sh := MeshInstance3D.new()
 			sh.mesh = mi.mesh
 			sh.skin = mi.skin
