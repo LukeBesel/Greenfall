@@ -94,7 +94,7 @@ func _ready() -> void:
 	quit.pressed.connect(func() -> void:
 		SaveManager.save_game()
 		close()
-		get_tree().change_scene_to_file("res://scenes/main_menu.tscn"))
+		Loader.goto("res://scenes/main_menu.tscn"))  # [intro2] loading screen
 	buttons.add_child(quit)
 	var note := UITheme.label(tr("Keep playing: the first district stays open, at base level %d.") % Demo.MAX_BASE_LEVEL, 12, UITheme.MUTED)
 	col.add_child(note)

@@ -24,6 +24,28 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 4. More districts content: 41 eggs now; more biome props (nets, satellites) if Poly Haven gets them; per-biome plants/wildlife.
 5. Post-game (M11): done (wt/late). Next: per-world story threads with WREN, wildlife using the decor hook, tune Starseed income and Bloom thresholds after play-testing.
 
+## Update: Homeward, the Verdance system campaign (wt/home)
+- The game now ends when the whole system is restored. Five fixed planets (Verdance, Ochre, Tidewell,
+  Rime, Anvil; data/homeward.json, systems/homeward.gd) are profile worlds with fixed seeds, types,
+  modifiers, a relic each and Ledger lore (arrival memo, half-way intercept, restored note). Cradle
+  Returns now plays "The Cradle Answers" (story/cradle_answers.gd) instead of the ending.
+- Rocket drive Mk V Orbital / VI Interplanetary / VII Homeward (cubes + parts, kept in the profile),
+  per-planet charts (previous planet at 50%), the solar map (ui/system_map.gd: 3D orrery, two suns,
+  zoom in to a planet and on into the survey globe), planet flights through the rocket's own sequence.
+- Ending: Mk VII at Cradle Returns (launch complex), the last seed, launch home, Homecoming
+  (story/homecoming.gd) -> the ark finale -> credits; random Cradle Mode worlds are now post-game.
+- Binary star (data/solar_system.json, SolarSystem.suns_for, planet/binary_sun.gd): every sky shows
+  Hearth and Ember. Heirlooms come from planet picks (one per restored planet).
+- Next: planet-specific goal chains (a new planet replays the Verdance chain from the start, including
+  frontier goals); land at a chosen district on another planet (its PlanetData isn't generated until
+  visited); pace the four planets end to end with the bot without --home-ff; a Lumi design for the
+  ending; worlds2's world picker should honour `Homeward` planets (records with "planet").
+## Update: planet globes (wt/globes, Nov 7)
+- Done: `ui/planet_globe.gd` (`PlanetGlobe.new()`, `.setup(id, restoration)`, `.set_restoration(f)`), a Node3D for any 3D view, with procedural shaders `art/shaders/planet_{verdance,ochre,tidewell,rime,anvil}.gdshader` (+ `planet_lib.gdshaderinc`, `planet_clouds`, `planet_atmo`, `planet_ring`, `planet_motes`, `planet_shard`): real relief normals from analytic-derivative FBM, night side, soft terminator, atmosphere rim, clouds/storm spirals, binary-sun lighting (both suns, companion warm), restoration blends, MultiMesh rings (Ochre dust ring, Rime ice-spike ring, Anvil fire ring), LOD by screen size. See docs/DECISIONS.md "Planet globes".
+- Done: the telescope orrery uses it (`[globes]` in ui/telescope_view.gd; globes lit from the orrery's sun nodes).
+- Dev: `res://tools/globe_shots.tscn` renders the close-ups, the lineup and Verdance 0/100% (`--globe-only=ID|lineup|verdance_rest`); `-- --globe-check` is the headless check. Tests: tests/test_planet_globe.gd.
+- Next: "home" swaps `ui/system_map.gd`'s spheres for `PlanetGlobe` (instructions in DECISIONS); optionally `story/space_stage.gd`'s cinematic planet.
+
 ## Update: three currencies (wt/money, Nov 7)
 - Done: exactly three currencies, Cubes / Parts / Seeds, from one source of truth (`data/currencies.json`, `core/currencies.gd`). Retired ids (bolts, sheet metal, plastic, glass, Data, compost, tokens, trinkets, Maker Fragments; Starseeds in the profile) are a legacy alias layer in `GameState.add_currency/get_currency/spend/can_afford` (fixed rates, one debug warning per id); `Currencies.fold()` for cost dicts, `GameState.can_afford_all/spend_all/add_all`. Every caller and data file uses the new ids (test_money checks the data files).
 - Done: save v2 (`SaveManager.migrate_v2`): old balances fold at the same rates; compost goes into the compost press hopper; Maker Fragments become Parts. Round trip has an old-save case.
@@ -40,6 +62,16 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - Hooks (tagged `[scope]`): `scenes/slice.gd` (adds the Telescope node, keeps `scope_from_memory`), `ui/hub_panel.gd` (section), `systems/codex.gd` (category), `data/research.json` (node), `data/codex.json`.
 - Dev: `--scope` (built free), `--scope-sample` (a sample visited world with no save), `--open=scope [--scope-pick=N]`, `--scope-open` (dome open), `--scope-look=N` (focus point), `--scope-debug`. Tests: `tests/test_remote_progress.gd`; the save round trip checks the telescope, its Codex entry and a care package in the profile.
 - Next: when "home" lands, pass `planet_id` on the profile world records so the five planets match by id; when "extras" lands, make its idle gains call `Offline.compute` too (remote progress only covers non-current worlds).
+## Update: keepsakes (wt/extras)
+- Done: one hook in `scenes/slice.gd` (`ExtrasDirector.attach`, `systems/extras/`), Pause > **Keepsakes** panel (`ui/extras_panel.gd`; LB/RB tabs, B closes).
+  - **Radio** (`radio.gd`, `data/radio.json`): a valve radio on the workbench (E opens the Radio tab). It plays the composed planet tracks from wt/sound (`Audio.play_track` / `stop_track`, titles from `Audio.music_track_title`; a restored planet plays the restored variant), looping with no gaps until "Back to mood music". 14 songs: Verdance's two from the start / 10 hexes, each planet's first on landing there (`Audio.get_planet_theme()`), the rest at that planet's base level 3 / 5, Homecoming with the Cradle. Unlock toast. `flags.radio` {unlocked, song, planets}.
+  - **Photo album** (`album.gd`): a "before" picture on first arrival, "after" pictures at half clean / 25% Thriving / base 5, from one fixed camera over the base (384x216 one-shot SubViewport, no SDFGI/SSR/volumetrics, `texture_get_data_async` read-back, JPG on a WorkerThreadPool task). Files in `<save_dir>/album/slot_N/` (per profile and slot; `user://extras_scratch` under --fresh). Before/after slider per district + photo-mode thumbnails. `flags.album`.
+  - **Robot nursery** (`nursery.gd`): Retire (Builder tab or the Nursery tab, press twice) for Mk I-II robots or ones in service >= 1 h: +2..8 Parts, they become caretakers in a fenced nursery garden at the base (potter, water the beds, wave at Lumi, E to say hi), keep name, parts and trait. +1% plant growth each, cap 6% (`CradleMode.stat_mod`). `flags.nursery`, `flags.nursery_service`.
+  - **Welcome back** (`welcome_back.gd`): small card instead of the toast: away time, fleet and what it did, cubes, plants grown/bloomed, air. Idle maths is **`Offline.simulate(world_state, seconds, junk_left, scrubbers, filter_per_s, garden)`** in `core/offline.gd` (cap CAP_S = 8 h and junk left; counts `offline_units` so nothing pays twice; `Offline.apply()` credits once). Plants grow offline only while watered and bloom once.
+  - **Seed of the Week** (`weekly.gd`, `weekly_run.gd`, `data/weekly.json`): ISO week (UTC) -> seed, world type, one of 7 twists (Scoopies Only, Dry Spell, Heavy Junk, Storm Week, Supply Rush, Long Nights, No Haulers). Clean 30 hexes, timed in play time; best time/score and paint chips in `<save_dir>/weekly.save`; runs in save slot 9, main save untouched (round-trip checked). Chips unlock two Garden Mode decorations (`weekly_pennant`, `weekly_arch`, `needs_chips`).
+  - 7 achievements, 2 goals; strings translated in all six languages.
+- Dev: `--extras=radio|album|nursery|weekly`, `--extras-welcome[=H]`, `--album-snap=before+m50`, `--nursery-sample=N`, `--radio-all`, `--radio-play=ID`, `--weekly`, `--extras-cam=x,z,yaw,dist,pitch`, `--extras-nohud`. Tests: `tests/test_extras.gd`; round trip: `tools/extras_roundtrip.gd`.
+- Next: tune the weekly goal (30 hexes) with an autoplay run of the challenge; a radio prop in frontier bases is on the same bench (check it renders there); the welcome card could list research finished offline.
 
 ## Update: visual QA pass (wt/vqa)
 - Done: Cradle Returns towers are premium curtain-wall glass (`art/shaders/tower_glass.gdshader`: metres-in-UV panel grid, hair-thin satin mullions, spandrels, per-panel tint/tilt, a few lit offices at night) with satin trims instead of white fins and floor bands; glass podiums and pavilions; the apron's dark band was smoothed normals across 30 m faces (`_arc_mesh` now flat); pale cool paving; lush lawn green via biome_tint.
@@ -412,3 +444,94 @@ solar-system orrery that zooms into a planet's globe to pick the hub (wt/home).
 Music (owner, Nov 7): music is frozen as-is; do not spend more time composing. The owner may source different
 music later, so keep tracks swappable (Audio.play_track ids). SFX should stay satisfying (pickup, bale, sale already
 tuned in the first-hour pass); no new SFX work unless a bug.
+## Update: restored ground turns green (wt/green)
+- Root causes of "restored districts look brown": (1) the Poly Haven grass ground textures
+  (sparse_grass / leafy_grass) are olive-brown and tan, so even life 1.0 rendered tan under AgX;
+  (2) the plant files are whole rows of variants (and their LOD copies) merged into one mesh, then
+  decimated to ~1500 tris, so each slot showed a thin smear of life-size 20-40 cm clumps; (3) most of
+  a city hex is road, which never changed; (4) only ~15-45 plant slots per 10 m hex.
+- `plants/meadow.gd` + `art/shaders/meadow.gdshader`: living ground cover placed once over lots,
+  sidewalk fringes and kerb verges (~8-11k grass tufts, ~2-3k flower clumps, ~3.4k row sprouts at
+  High), grown entirely in the vertex shader from the field's life texture (R life, G hex level, B row
+  angle) at the same warped position as the ground, so the edges follow HexField.border_warp and
+  nothing is rebuilt on the CPU. Thriving hexes add shrubs, ferns and small trees (real plant models).
+  Planted = dark tilled soil in furrows (ground_pbr) with sprouts on the crests; Growing = young grass
+  patches; Sustained = closed sward + flowers; Thriving = dense meadow, flower carpet, shrubs/trees.
+- Ground: grass recoloured to rich greens (`grass_mat`), tilled rows, restored streets get clean
+  grey asphalt, grass verges from the kerbs and moss in cracks. Life texture is RGBA8 (filterable
+  everywhere) and uploads once per frame.
+- Garden plants: one variant per slot (`plants/plant_parts.gd`), `plant_scale` 1.4 in plants.json.
+  Butterflies 1.8x.
+- Dev: `--restore=N[,level]` / `--restore-ramp` / `--restore=lake[,level]` (real planted slots,
+  life, part-watered plants, Drips + a Seedling), `--green-cam=hid,dist,pitch,yaw`,
+  `--garden-report[=S]`, `--no-meadow`. `--future=N` now uses the same realistic growth.
+- Ledger intercepts: compact top-left card, short, no footer, hidden in Command view, photo mode,
+  cinematics and with the HUD hidden (the relay cinematic's own lines still show). Header text is
+  now "INTERCEPT // LEDGER" / "LEDGER // AMENDED" (new msgids: re-run tools/extract_strings.py after
+  merging with the translations branch).
+- Duck egg ("Duck on Duty") used the merged fire_hydrant file (clean + aged hydrants plus caps):
+  now one aged hydrant. The --fauna-look=duck shot needs a green shore: use `--restore=lake,5`.
+- Next: per-variant garden batches raise draw calls (~130 batches with all species); a merged
+  per-chunk garden mesh would cut it. Grass density by quality preset should be checked on real GPUs.
+
+### Planet Rime environment (wt/p_rime)
+- Done: `planet/planets/rime/` (`RimeEnv`, entry `apply(world, field, kind)` plus `dev_hub`, `prepare_field`,
+  `dress_view`), registered in `data/planets.json` (read by `planet/planets/planet_envs.gd`). Own sky shader (black-blue
+  thin air, two small distant suns, stars by day, ringed gas giant, faint aurora), ice heightfield to the crater rim
+  (glassy ice, pressure ridges + slabs, glowing crevasses, drifts, mesas), borehole + headframe, core-drill
+  derricks, frozen geysers, ice spires/arches; restored: hot springs thaw, moss, flowers, ice-lanterns, greenhouse
+  domes, warm borehole. Junk set `rime_biome.json`; field ice sheet via `ground_pbr` `frontier_fx.w`.
+  Dev: `--planet-env=rime` (`--rime-cam`, `--rime-nohud`, `--rime-restore`). Shots: screenshots/planet_rime/.
+- Next (home): call the entry points when a Rime district loads; swap the fallback suns for
+  `SolarSystem.suns_for("rime")` (already read when `systems/solar_system.gd` exists).
+
+## Update: loading screen, readable subtitles, a better ark and pod (wt/intro2)
+- **Loading screen** (`ui/loading_screen.gd`, autoload `Loader`; `scenes/boot.tscn` is the main scene):
+  covers startup, New Game / Continue, back to title, rocket hub travel and world travel. Threaded
+  load (`ResourceLoader.load_threaded_request`), then the scene is instanced (the district still builds
+  synchronously in `_ready`, ~9 s headless: the bar holds at "Setting the scene"), then
+  `systems/shader_warmup.gd` draws every spatial material of the new scene once on tiny quads in front
+  of each viewport's camera for 5 frames, then it fades out. A Pixel-design Lumi (red/white, pink-red
+  glow) hovers along the bar scooping a line of garbage into its hopper.
+  Use `Loader.goto(path)` / `Loader.reload()` instead of `change_scene_to_file` / `reload_current_scene`.
+- **The purple screen** was the project's default clear colour, `Color(0.55, 0.45, 0.7)`, visible while
+  the first scene loaded and compiled with nothing drawn. Clear colour and boot splash are now
+  near-black (no splash image) and the loading screen draws from the first frame.
+- **Subtitles** (`ui/subtitles.gd`): one line at a time, bottom centre on a dark pill. Each line is
+  fully visible for 55 ms/char + 1.2 s (min 2.5 s), then fades, 0.45 s gap; long lines split into
+  one-line chunks at sentences/clauses. WREN, narration, cinematic captions (`Cine.caption`) and the
+  Ledger (`LedgerUplink` now wraps the same line, red LEDGER tag) all use it. In cinematics (HUD
+  hidden) it drops into the letterbox bar above the overlays. Glitches are purposeful (owner): readable
+  text only flickers/scrambles for ~150 ms as it appears; `[glitch]...[/glitch]`, `[REDACTED]` and `█`
+  spans glitch heavily the whole time; hostile Ledger lines get short whole-line jitter bursts.
+- **Intro** (`story/intro.gd`): all lines in `Intro.lines()`; every beat waits for its lines; slower
+  camera moves and ship glides; ~115 s unskipped (was ~55). Snappy wake-up blink flutter. The intro
+  waits for the loading screen before starting. `--intro` prints the tightest subtitle margin.
+- **The ark** (`story/cradle_ship.gd`, procedural, same API + `release_pod(k)`): broad flattened
+  teardrop hull, layered upper deck with a big glass seed-vault dome and garden, keel with a six-pod
+  rack, spinning greenhouse ring, two solar wings, five-bell engine cluster, chasing running lights.
+  The old Blender glb (`art/models/cradle`) is no longer used.
+- **Escape pod** (`story/escape_pod.gd`, `Intro.build_pod()` delegates): one lathed shell with the door
+  cut out of it (no overlapping faces), jamb, cabin lining, porthole, beacon; `open_door()` = seal pop
+  with steam from the seams, gravity drop into a ramp, settle, warm light spill on the ground.
+- **Pod = Seedglider family** (owner): ten-facet shell with sharp chines, swept graphite fins with
+  tangerine tips and orange running lamps, cyan glass porthole, thin cyan line, the ship palette;
+  uses `art/shaders/ship_paint.gdshader` (wt/ship) when present, else clear-coat StandardMaterial3D.
+  The ark's cargo rack holds six of these pods; the intro's pod leaves rack slot 2 exactly where it
+  hung (`CradleShip.pod_xform(k)`), falls, lands in its crash pose and opens with a lean-corrected ramp.
+- **Crash site** (`story/crash_site.gd`): scorched furrow along the approach, thrown-up clods, two hull
+  shards, the pod sunk and leaning, a light smoke plume (one CPUParticles3D), a torn panel with
+  flickering wiring, spark bursts and stuttering seams. Mends with upgrades (no new save state):
+  first upgrade = sparks stop, panel bolted back, faint smoke; 4 upgrade levels = repaired, clean paint,
+  calm beacon (`CrashSite.stage_for_upgrades()`).
+- **Playtest #2** (owner): Space / pad A pauses and resumes the intro and the Bloom Core memories
+  (`story/story_pause.gd`, freezes Engine.time_scale); Esc / B skips. The Codex has a "Watch the story"
+  button: `Intro.replay()` plays the whole intro with a temporary pod and puts Lumi, the camera and the
+  real crash site back afterwards (no save change). Repair stages read clearly: torn panel with live
+  wiring, then a bolted tangerine-studded patch, then a clean plate with a cyan line, a calm cyan halo on
+  the ground and blinking fin lamps.
+- Previews: `res://scenes/story_preview.tscn -- --view=ark|pod|crash|loading|introframe --out=...`.
+- Tests: `tests/test_subtitles.gd` (rule for every intro line, chunking, glitch spans, one line at a time),
+  `tests/test_crash_site.gd` (pod parts, door angle, repair stages).
+- Next: split the district build across frames so the loading bar keeps moving during it; pre-build
+  the intro's SpaceStage behind the loader (its first frames compile on the intro's black fade now).

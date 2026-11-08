@@ -1,11 +1,7 @@
 {
-  "first_cube_s": 51.8,
-  "first_cashin_s": 58.6,
-  "first_upgrade_s": 59.1,
-  "first_hex_s": 160.0,
-  "first_hexlv_1_s": 160.1,
-  "first_research_s": 225.6,
-  "first_robot_s": 624.2,
-  "first_scoopie_s": 624.2,
-  "first_haulbug_s": 626.3
+  "first_cube_s": 17.5,
+  "first_cashin_s": 21.6,
+  "first_upgrade_s": 21.9,
+  "first_hex_s": 83.8,
+  "first_hexlv_1_s": 84.2
 }

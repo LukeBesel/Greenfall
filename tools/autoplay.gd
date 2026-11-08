@@ -773,6 +773,13 @@ func _campaign(_p: Patch) -> void:
 		_mark("finale_done_s")
 	if int(GameState.stats.get("ark_waves", 0)) > 0:
 		_mark("ark_wave_1_s")
+	var home: String = AutoplayHome.step(world)  # [home] the system campaign: planets, Homeward rocket, the ending
+	if home != "":
+		if home != "wait" and home != "ending":
+			_event("home", {"what": home})
+		return
+	if not Homeward.done() and Homeward.current_planet() > 0 and DevHooks.has("home-ff"):
+		return  # [home] fast-forwarded planets: no district hops
 	var late: String = AutoplayLate.step(world)  # [late] post-game: decorate, Heirlooms, seed a new world
 	if late != "":
 		_event("late", {"what": late})

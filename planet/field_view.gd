@@ -37,6 +37,7 @@ var _piece_shown := PackedByteArray()
 var _dirty_tex: bool = false
 var _life_img: Image
 var _life_tex: ImageTexture
+var _life_dirty: bool = false  # [green] one texture upload per frame, however many hexes changed
 var _mounds: Array = []  # hex id -> Array[MeshInstance3D]
 
 
@@ -62,6 +63,9 @@ func _process(delta: float) -> void:
 	var cam: Camera3D = get_viewport().get_camera_3d() if lod else null  # [vqa2] junk LOD
 	if cam:
 		lod.update(delta, cam.global_position)
+	if _life_dirty:  # [green]
+		_life_dirty = false
+		_life_tex.update(_life_img)
 
 
 # --- Ground -----------------------------------------------------------------------
@@ -115,7 +119,7 @@ func _build_ground() -> void:
 	_ground_mat.set_shader_parameter("arm_arr", _tex_array(layers, "arm"))
 	_ground_mat.set_shader_parameter("frontier_fx", ground_fx)
 	_ground_mat.set_shader_parameter("state_tex", _state_tex)
-	_life_img = Image.create(size, size, false, Image.FORMAT_RF)
+	_life_img = Image.create(size, size, false, Image.FORMAT_RGBA8)  # [green] R life, G level / 5, B row angle (8-bit: always filterable)
 	_life_tex = ImageTexture.create_from_image(_life_img)
 	_ground_mat.set_shader_parameter("life_tex", _life_tex)
 	_ground_mat.set_shader_parameter("grid_radius", field.radius)
@@ -332,9 +336,30 @@ func state_texture() -> ImageTexture:
 
 
 func set_life(id: int, life: float) -> void:
+	_set_life_ch(id, 0, life)  # [green] keeps the level / row channels
+
+
+## [green] Hex level (0..5) and planting-row angle (0..1 = 0..PI) for the meadow and the tilled
+## soil (plants/meadow.gd, ground_pbr.gdshader).
+func set_level(id: int, level: int) -> void:
+	_set_life_ch(id, 1, float(level) / 5.0)
+
+
+func set_rows(id: int, angle01: float) -> void:
+	_set_life_ch(id, 2, angle01)
+
+
+func life_texture() -> ImageTexture:
+	return _life_tex
+
+
+func _set_life_ch(id: int, ch: int, v: float) -> void:
 	var a: Vector2i = field.hex_axial[id]
-	_life_img.set_pixel(a.x + field.radius, a.y + field.radius, Color(life, 0, 0))
-	_life_tex.update(_life_img)
+	var c: Color = _life_img.get_pixel(a.x + field.radius, a.y + field.radius)
+	c[ch] = clampf(v, 0.0, 1.0)
+	c.a = 1.0
+	_life_img.set_pixel(a.x + field.radius, a.y + field.radius, c)
+	_life_dirty = true
 
 
 func set_focus_hex(id: int) -> void:

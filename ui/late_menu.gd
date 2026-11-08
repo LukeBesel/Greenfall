@@ -18,7 +18,13 @@ static func add_buttons(menu: Node, vb: Control, make: Callable) -> Array[Button
 		if d:
 			d.open_bridge())
 	ark.name = "LateArk"
-	return [garden, ark]
+	var sysb: Button = make.call(vb, TranslationServer.translate("Solar system"), func() -> void:  # [home]
+		menu.call("close_menu")
+		var hd: HomewardDirector = HomewardDirector.of(menu.get_parent())
+		if hd:
+			hd.map.open_map())
+	sysb.name = "HomeSystem"
+	return [garden, ark, sysb]
 
 
 static func refresh(menu: Node) -> void:
@@ -27,7 +33,10 @@ static func refresh(menu: Node) -> void:
 	if g == null or a == null:
 		return
 	g.visible = Decor.unlocked()
-	a.visible = CradleMode.unlocked()
+	a.visible = (CradleMode.unlocked() or Homeward.answered()) and not WeeklyChallenge.active  # [home] Heirloom picks; [extras] none in the challenge
+	var hs: Button = menu.find_child("HomeSystem", true, false) as Button
+	if hs:
+		hs.visible = Homeward.answered() and Homeward.current_planet() >= 0
 	var vb: Node = g.get_parent()
 	var list: Array[Button] = []
 	for c: Node in vb.get_children():

@@ -409,6 +409,8 @@ func _start_flight() -> void:
 	model.plume.power = 0.0
 	for b: ColorRect in _bars:
 		b.visible = false
+	if HomewardDirector.start_flight(world, _to_hub, _flight_s):  # [home] planet trips and the home launch
+		return
 	world.globe.fly(world.hub_index, _to_hub, _flight_s)
 
 
@@ -418,6 +420,8 @@ func _travel() -> void:
 	_mode = ""
 	Input.stop_joy_vibration(0)
 	print("[rocket] travel to hub %d" % _to_hub)
+	if HomewardDirector.travel(world, _to_hub):  # [home]
+		return
 	world.travel_to(_to_hub)
 
 

@@ -113,6 +113,7 @@ func _process(delta: float) -> void:
 		var fwd := Vector3(dir.x, 0, dir.z) + Vector3(0.001, 0, 0)
 		var b: Basis = Basis.looking_at(fwd, Vector3.UP)
 		var flap: float = sin(t * 28.0 + float(f["phase"])) * 1.1
+		b = b.scaled(Vector3.ONE * 1.8)  # [green] readable from the game camera (wings were 5 cm)
 		if mmw:
 			mmw.set_instance_transform(k * 2, Transform3D(b * Basis(Vector3.BACK, flap) * Basis.from_scale(Vector3(-1, 1, 1)), pos))
 			mmw.set_instance_transform(k * 2 + 1, Transform3D(b * Basis(Vector3.BACK, -flap), pos))

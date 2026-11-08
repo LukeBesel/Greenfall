@@ -115,6 +115,9 @@ static func buy_block_reason(type_id: String) -> String:
 	var finds: int = int(d.get("needs_finds", 0))
 	if finds > 0 and Collection.count() < finds:
 		return TranslationServer.translate("Needs %d Collection finds (%d so far)") % [finds, Collection.count()]
+	var chips: int = int(d.get("needs_chips", 0))  # [extras] Seed of the Week paint chips
+	if chips > 0 and WeeklyChallenge.chip_count() < chips:
+		return TranslationServer.translate("Needs %d Seed of the Week paint chips (%d so far)") % [chips, WeeklyChallenge.chip_count()]
 	if not GameState.can_afford_all(cost(type_id)):  # [money]
 		return TranslationServer.translate("Needs %s") % cost_text(type_id)
 	return ""
