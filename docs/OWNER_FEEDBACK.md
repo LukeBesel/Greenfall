@@ -5,13 +5,13 @@ This is every note from the owner's playtests and requests, and who is working o
 Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, buddy, eggs2, orbit, hero, sysmap, p_ochre, p_tidewell, p_anvil.
 
 ## Start, loading and intro (intro2)
-- [ ] There is no purple "paused" screen at launch. A real loading screen shows a loading bar with the red Lumi picking up garbage in a line. No music plays during loading. (Reported in playtests #1 and #2.)
-- [ ] Only one text line shows at a time.
-- [ ] The text stays long enough to read, and the animation is slower and longer.
-- [ ] Subtitles sit at the bottom and are readable against the background.
-- [ ] Readable text has no heavy glitch effect. Heavy glitching is used only on redacted story text.
-- [ ] SPACEBAR pauses the story.
-- [ ] There is a way to rewatch the story ("Watch the story").
+- [x] (intro2 merged; the bar still pauses while the district builds, about 10 s on a dark screen, follow-up) There is no purple "paused" screen at launch. A real loading screen shows a loading bar with the red Lumi picking up garbage in a line. No music plays during loading. (Reported in playtests #1 and #2.)
+- [x] Only one text line shows at a time.
+- [x] The text stays long enough to read, and the animation is slower and longer.
+- [x] Subtitles sit at the bottom and are readable against the background.
+- [x] Readable text has no heavy glitch effect. Heavy glitching is used only on redacted story text.
+- [x] SPACEBAR pauses the story.
+- [x] There is a way to rewatch the story ("Watch the story").
 - [ ] Lumi's eyes have no glitches, no double eyes, and don't close slowly.
 - [ ] The escape pod door looks good and doesn't glitch.
 - [ ] The pod matches the ship design, and its animations match the pod.

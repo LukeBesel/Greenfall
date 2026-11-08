@@ -494,9 +494,9 @@ func _go(fade: bool) -> void:
 		_fade.mouse_filter = Control.MOUSE_FILTER_STOP
 		var tw: Tween = create_tween().set_trans(Tween.TRANS_SINE)
 		tw.tween_property(_fade, "color:a", 1.0, 0.45)
-		tw.tween_callback(func() -> void: get_tree().change_scene_to_file(GAME_SCENE))
+		tw.tween_callback(func() -> void: Loader.goto(GAME_SCENE))  # [intro2] loading screen
 	else:
-		get_tree().change_scene_to_file(GAME_SCENE)
+		Loader.goto(GAME_SCENE)
 
 
 ## [worlds2] Save profiles: pick a profile (and then a world), start over in one, rename or delete.
