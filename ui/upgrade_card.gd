@@ -180,17 +180,21 @@ func refresh() -> void:
 	var unit: String = tr(str(def.get("unit", "")))
 	var before: float = Economy.stat_with_upgrade_level(upgrade_id, lv)
 	var after: float = Economy.stat_with_upgrade_level(upgrade_id, lv + 1)
-	if not unlocked:
+	if not unlocked and def.has("requires_station") and not Stations.built_in_state(str(def["requires_station"])):
+		_change.text = tr("Build the %s first (Hub tab)") % tr(str(Economy.read_json("res://data/stations.json").get(str(def["requires_station"]), {}).get("name", def["requires_station"])))  # [camp]
+		_change.add_theme_color_override("font_color", UITheme.MUTED)
+	elif not unlocked:
 		var req: Dictionary = def.get("requires", {})
 		var parts: Array[String] = []
 		for rid: String in req:
 			parts.append(tr("%s Lv %d") % [tr(str(Economy.upgrade_defs[rid]["name"])), int(req[rid])])
 		_change.text = tr("Requires %s") % ", ".join(parts)
+		_change.text = Economy.lock_reason(upgrade_id)  # [pace] research / base-level locks too
 		_change.add_theme_color_override("font_color", UITheme.MUTED)
 	elif maxed:
 		_change.text = tr("%s%s  (max)") % [_fmt(before), unit]
 		_change.add_theme_color_override("font_color", UITheme.GOLD)
-	elif str(def["stat"]) == "auto_compactor":
+	elif str(def["stat"]) in ["auto_compactor", "baler_unlocked", "signal_finder"]:  # [pace] on/off unlocks
 		_change.text = tr("Off  →  On")
 		_change.add_theme_color_override("font_color", UITheme.GREEN)
 	else:

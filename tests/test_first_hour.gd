@@ -21,7 +21,7 @@ func test_steps_teach_one_thing_and_stay_short() -> void:
 		var t: String = Tutorial.glyphs(str(s["text"]))
 		assert_lt(t.length(), 44, "step '%s' is one short line" % s["id"])
 		assert_false(t.contains(". "), "step '%s' has a single sentence" % s["id"])
-	assert_eq(ids, ["scoop", "bale", "carry", "cash", "upgrade", "hex"])
+	assert_eq(ids, ["scoop", "bale", "carry", "cash", "upgrade"])  # [onboard] the hex step is the "Clean a hex" objective
 
 
 func test_glyphs_bb_colours_keys() -> void:

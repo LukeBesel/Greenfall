@@ -1,7 +1,10 @@
 shader_type spatial;
 // Compacted junk bale. Voronoi chunks colored by contents (crushed cans, plastic, paper, rubber),
 // with crumple normals, grime, and glints of bare metal. Object space, unit cube.
-render_mode diffuse_burley, specular_schlick_ggx;
+// [world2] Always opaque (explicit depth/cull), chunk colours jittered and desaturated so a
+// plastic-heavy bale reads as crushed mixed junk with printed labels, not a pale blue block, and
+// metal chunks are rough and sparse so they don't mirror the sky (the "transparent and blue" look).
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_schlick_ggx;
 
 uniform vec4 color_a : source_color = vec4(0.55, 0.52, 0.5, 1.0);
 uniform vec4 color_b : source_color = vec4(0.45, 0.43, 0.4, 1.0);
@@ -64,10 +67,18 @@ void fragment() {
 	} else if (r < mix_b + mix_c) {
 		col = color_c.rgb;
 	}
-	col *= mix(0.7, 1.08, fract(r * 7.13));
-	// Bare metal glints and labels on some chunks.
+	// [world2] Each crushed item is its own shade: value spread, a little hue drift, less saturation.
+	float lum = dot(col, vec3(0.299, 0.587, 0.114));
+	col = mix(vec3(lum), col, mix(0.45, 0.85, fract(r * 5.31)));
+	col *= mix(0.5, 1.05, fract(r * 7.13));
+	col.r *= mix(0.92, 1.08, fract(r * 13.7));
+	col.b *= mix(0.88, 1.0, fract(r * 17.3));
+	// Printed labels and caps: a few small chunks in the type's accent colour or label colours.
+	float lbl = step(0.88, fract(r * 11.3));
+	vec3 lab = fract(r * 23.9) < 0.5 ? fleck.rgb : (fract(r * 29.1) < 0.5 ? vec3(0.78, 0.16, 0.12) : vec3(0.9, 0.86, 0.74));
+	col = mix(col, lab, lbl * 0.85);
+	// Bare metal glints on some chunks.
 	float is_metal = step(1.0 - metal_share, fract(r * 3.7));
-	col = mix(col, fleck.rgb, step(0.93, fract(r * 11.3)) * 0.8);
 	// Crevices between chunks are dark.
 	float crev = (1.0 - smoothstep(0.0, 0.08, v.y));
 	col *= 1.0 - crev * 0.65;
@@ -78,7 +89,8 @@ void fragment() {
 	vec3 nrm = texture(detail_nrm, lp.zy * 1.3 + seed).rgb * w.x + texture(detail_nrm, lp.xz * 1.3 + seed).rgb * w.y + texture(detail_nrm, lp.xy * 1.3 + seed).rgb * w.z;
 	ALBEDO = mix(col, vec3(1.0), flash * 0.6);
 	NORMAL_MAP = nrm;
-	METALLIC = is_metal * 0.7;
-	ROUGHNESS = mix(0.85, 0.4, is_metal) + crev * 0.1;
+	METALLIC = is_metal * 0.5;
+	ROUGHNESS = mix(0.88, 0.55, is_metal) + crev * 0.1;
+	SPECULAR = 0.35;
 	EMISSION = vec3(1.0, 0.8, 0.45) * perfect * 0.04 + vec3(flash * 0.3);
 }

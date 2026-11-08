@@ -1,7 +1,12 @@
 {
   "_doc": "WREN's lines by trigger. WREN is the ark Cradle's AI, whispering to Lumi over a failing relay. Each trigger has lines per signal stage (the relay clears as the planet is restored): 0 = fragmented (rendered with glitches), 1 = recovering, 2 = clear. A line is never repeated until the pool for that trigger and stage is used up. {name} = Lumi's name, {robot} = a robot name.",
   "wake": [
-    ["...carrier... Lumi? Relay at four percent. It's WREN. Hello. Hello. I'm still here.", "...that ground you just cleared... the relay got stronger. Hello again. Do that again. Please."]
+    ["...Lumi? ...It's WREN. Your tower's carrying me. Barely. Keep it standing.", "...there you are. The signal's thin, but it's ours. Hello again, Lumi."]
+  ],
+  "signal_up": [
+    ["Better. Less static. Keep building."],
+    ["Much better. I can hear the wind on your end now. And I can tell you more."],
+    ["Clear as the garden deck. Now I can tell you everything I couldn't."]
   ],
   "hex_clean": [
     ["...that patch of ground. It's... brown. Brown is better than gray.", "Signal stronger. Did you do that?", "...clean... the relay likes that word. So do I.", "Another one. My static has a shape now."],
@@ -363,6 +368,12 @@
   "cradle_mode": [["...the vault... other worlds..."], ["The Cradle's seed vault has a lot more in it than one planet's worth. There are other worlds out here, Lumi. Ruined ones. Waiting."], ["Heirlooms, a whole map of worlds. Verdance stays green; we just take what we learned somewhere new."]],
   "new_world": [["...new ground... new junk..."], ["New world, new sky. Same job. You're better at it than you were the first time."], ["Look at that. Ruined, dusty, nobody's planted anything in centuries. You know what to do."]],
   "garden_place": [["...pretty..."], ["You're decorating. I approve. The cats are going to approve more."], ["A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."]],
+  "home_arrive": [["...new sky... two suns..."], ["New planet, same two suns. The Ledger's been here too. You can smell the paperwork."], ["Another world the Ledger left for dead. It doesn't know about you yet. It's about to."]],
+  "home_half": [["...signal... old one..."], ["Picked up something old on the band. Ledger traffic. Want to read it?"], ["Half-way here. Every time this place gets greener, its ghosts start talking. I've got another one for you."]],
+  "home_restored": [["...green... all of it..."], ["That's the whole planet breathing again. The Cradle will have seen that from orbit."], ["Another world alive. I logged it for the Cradle: 'Planet restored. Robot insufferably pleased with itself.' Accurate?"]],
+  "home_system_done": [["...five... five..."], ["Five worlds. All of them green. Lumi, I think the charter's met. Let's go home."], ["Every world around both suns, alive. Back to Verdance. Build the big one. It's time."]],
+  "home_rocket": [["...big... very big..."], ["That is the biggest rocket I've ever seen, and I've seen the inside of a cargo pod at re-entry."], ["The Homeward rocket. Made from all five worlds. Plant the last seed, Lumi, and then we fly."]],
+  "home_last_seed": [["...last one..."], ["Last seed. Yellow fence and everything. Class 4B would approve."], ["There. The last seed, in the ground where the Cradle left from. Now it's our turn to leave, and come back properly."]],
   "world_ice_moon_arrival": [
     ["An ice moon. The Ledger ran its cold storage out here. Cold keeps things, {name}. Including evidence.", "Everything froze where they dropped it. Even the junk looks like it's waiting for a refund."]
   ],

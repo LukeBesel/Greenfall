@@ -76,7 +76,7 @@ func _build_meshes() -> void:
 	# Tiny real items at very low detail.
 	for id: String in ["can_rusted", "bleach_bottle", "lubricant_spray", "garden_gloves_01", "drain_cleaner",
 			"multi_cleaner_bottle", "russian_food_cans_01", "oil_tin", "circuit_board"]:
-		_meshes.append(AssetLib.model_mesh_lite(id, [70, 140, 220, 220][clampi(Settings.quality, 0, 3)]))
+		_meshes.append(AssetLib.model_mesh_lite(id, [24, 90, 140, 140][clampi(Settings.quality, 0, 3)]))  # [world2] were 70, 140, 220, 220: the gen-2 carpet is bigger
 
 
 ## Real-world trash colours: mostly sun-faded paper, cardboard, grey film and black bags, with
@@ -124,22 +124,26 @@ func _build() -> void:
 			mult = 2.2
 		elif btype == CityLayout.Block.VACANT:
 			mult = 0.8
-		var n: int = int(area * DENSITY * mult * density_mult)  # [biomes]
+		# [world2] The carpet follows HexField.owner_hex: natural (warped) borders, and the streets of
+		# building-blocked hexes and the hub hex outside the yard belong to a neighbouring junk hex, so
+		# no street is bare and it all clears with that hex. Sampled over the larger square it owns.
+		var reach: float = HexField.GEN2_REACH
+		var n: int = int(area * DENSITY * mult * density_mult * reach * reach)  # [biomes]
 		var a: Vector2i = field.hex_axial[id]
 		for k: int in n:
-			var p := Vector3(c.x + _rng.randf_range(-1, 1) * field.hex_size, 0, c.z + _rng.randf_range(-1, 1) * field.hex_size)
-			if field.hex_at(p) != id:
+			var p := Vector3(c.x + _rng.randf_range(-1, 1) * field.hex_size * reach, 0, c.z + _rng.randf_range(-1, 1) * field.hex_size * reach)
+			if field.owner_hex(p) != id:
 				continue
 			var surf: int = layout.surface_at(p.x, p.z) if layout else 0
 			if surf == CityLayout.Surface.BUILDING or surf == CityLayout.Surface.YARD:
 				continue
-			if surf == CityLayout.Surface.ROAD and layout.curb_distance(p.x, p.z) > 1.5 and _rng.randf() < 0.45:
+			if surf == CityLayout.Surface.ROAD and layout.curb_distance(p.x, p.z) > 1.5 and _rng.randf() < 0.15:  # [world2] was 0.45: mid-road reads covered too
 				continue
 			# Layered carpet: later pieces sit on top of earlier ones so the ground disappears.
 			var layer: float = float(k) / float(n)
 			p.y = (layout.height_at(p.x, p.z) if layout else 0.0) + field.ground_height(id, p) * 0.9 + layer * 0.06 * mult
 			var n_items: int = _meshes.size() - 4
-			var mi: int = _rng.randi() % 4 if _rng.randf() < 0.72 else 4 + _rng.randi() % n_items
+			var mi: int = _rng.randi() % 4 if _rng.randf() < (0.86 if Settings.quality == Settings.Quality.LOW else 0.8) else 4 + _rng.randi() % n_items  # [world2] Low: fewer tiny items (the bulk of its triangles)
 			var b := Basis(Vector3.UP, _rng.randf() * TAU)
 			if mi >= 4:
 				b = b * Basis(Vector3.RIGHT, PI * 0.5)  # small items lie on their side
@@ -214,9 +218,9 @@ func sweep(pos: Vector3, radius: float) -> int:
 	var c1 := Vector2i(floori((pos.x + radius) / CELL), floori((pos.z + radius) / CELL))
 	var hexes: Dictionary = {}
 	for o: Vector3 in [Vector3.ZERO, Vector3(radius, 0, 0), Vector3(-radius, 0, 0), Vector3(0, 0, radius), Vector3(0, 0, -radius)]:
-		var h: int = field.hex_at(pos + o)
-		if h >= 0:
-			hexes[h] = true
+		for h: int in [field.hex_at(pos + o), field.owner_hex(pos + o)]:  # [world2] carpet owner may differ
+			if h >= 0 and h < _by_hex.size():
+				hexes[h] = true
 	for hid: int in hexes:
 		var bins: Dictionary = _by_hex[hid]
 		for cx: int in range(c0.x, c1.x + 1):

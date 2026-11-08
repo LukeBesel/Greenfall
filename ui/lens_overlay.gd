@@ -64,5 +64,5 @@ func _process(delta: float) -> void:
 		tr("BALE READY") if patch.compartment.ratio(patch.capacity()) >= 0.9 else ""]
 	_signal.text = ""
 	if patch.detector and patch.detector.target >= 0:
-		_signal.text = tr("◢ SIGNAL %d%%") % int(patch.detector.strength * 100.0)
+		_signal.text = tr("◢ BURIED PART %d%%") % int(patch.detector.strength * 100.0)
 	_signal.position = Vector2(_root.size.x * 0.5 - 50.0, _root.size.y * 0.5 + 44.0)

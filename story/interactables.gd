@@ -34,7 +34,7 @@ func nearest(pos: Vector3) -> Dictionary:
 		if not is_instance_valid(n):
 			_items.remove_at(i)
 			continue
-		if not n.is_inside_tree() or not n.visible:
+		if not n.is_inside_tree() or not n.is_visible_in_tree():  # [camp] hidden parents (unbuilt yard builds) too
 			continue
 		var en: Callable = e["enabled"]
 		if en.is_valid() and not bool(en.call()):

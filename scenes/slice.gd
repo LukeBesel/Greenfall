@@ -33,6 +33,7 @@ var water: WaterView
 var doc_view: DocumentView
 var interactables: Interactables
 var scope_from_memory: bool = false  # [scope]
+var camp: Camp  # [camp] the landing yard: broken bench, trash bin, yard builds (systems/camp/camp.gd)
 var eggs: EasterEggs
 var ledger: LedgerArc
 var outposts: Outposts  # [outposts] ruined frontier depots (automation/outposts.gd)
@@ -42,6 +43,7 @@ var contracts: Contracts  # [events] contracts board + token shop (systems/contr
 var photo: PhotoMode  # [photo] photo mode (ui/photo_mode.gd)
 var fauna: Fauna  # [wild] ambient animals (fauna/fauna.gd)
 var frontier: FrontierDistrict  # [biomes] late-game frontier districts (planet/frontier_district.gd)
+var planet_env: Dictionary = {}  # [planet-rime] dev: --planet-env=<id> dresses a district with a planet env (data/planets.json)
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var view: FieldView
 var depot: Depot
@@ -52,6 +54,7 @@ var upgrades: UpgradesScreen
 var command: CommandView
 var music: MusicHooks
 var intro: Intro
+var objectives: Objectives  # [onboard] first-minutes story objectives (story/objectives.gd)
 var core_charge: CoreCharge
 var composter: Composter
 var pause_menu: PauseMenu
@@ -100,6 +103,12 @@ func _ready() -> void:
 		GameState.switch_hub(int(planet.frontier_hubs.get(DevHooks.get_s("frontier", "dust_flats"), 0)))
 		if DevHooks.has("hub-level"):
 			GameState.world["hub_level"] = clampi(int(DevHooks.get_f("hub-level", 1.0)), 1, 5)
+	if DevHooks.has("planet-env"):  # [planet-rime] env contract: dev_hub / prepare_field / dress_view / apply
+		planet_env = PlanetEnvs.entry(DevHooks.get_s("planet-env", ""))
+		if not planet_env.is_empty() and not loaded:
+			GameState.switch_hub(PlanetEnvs.dev_hub(planet_env, planet))
+			if DevHooks.has("hub-level"):
+				GameState.world["hub_level"] = clampi(int(DevHooks.get_f("hub-level", 1.0)), 1, 5)
 	hub_index = clampi(GameState.current_hub, 0, planet.hubs.size() - 1)
 	anchor_cell = planet.hubs[hub_index]
 	# Each hub's district has its own deterministic seed; city hubs get streets, others are wild.
@@ -108,6 +117,8 @@ func _ready() -> void:
 	district_name = str(planet.cities[planet.city[anchor_cell]]["name"]) if is_city else PlanetData.BIOMES[planet.biome[anchor_cell]].capitalize().replace("_", " ")
 	var fk: Dictionary = Frontiers.field_params(planet, hub_index)  # [biomes] frontier district?
 	var f_radius: int = int(fk.get("radius", cfg.get("radius", 9)))
+	if fk.is_empty() and loaded and GameState.world.has("field") and int((GameState.world["field"] as Dictionary).get("junk_gen", 1)) < 2:
+		f_radius = int((GameState.world["field"] as Dictionary).get("radius", 3))  # [world2] pre-gen-2 saves keep their radius-3 field
 	if not fk.is_empty():
 		district_name = str(fk.get("name", district_name))
 	layout = CityLayout.new(seed_v, 150.0, (not is_city) if fk.is_empty() else str(fk.get("layout", "wild")) != "city")
@@ -119,6 +130,7 @@ func _ready() -> void:
 	if not fk.is_empty():  # [biomes]
 		field.biome = str(fk["biome"])
 		field.biome_set = Economy.biome_set(field.biome)
+	PlanetEnvs.call_env(planet_env, "prepare_field", [field])  # [planet-rime]
 	var ppx: Array = (cfg.get("pieces_per_hex", [6, 12]) as Array).duplicate()
 	if not fk.is_empty():  # [biomes] more junk per hex
 		ppx = [int(float(ppx[0]) * float(fk.get("pieces_mult", 1.0))), int(float(ppx[1]) * float(fk.get("pieces_mult", 1.0)))]
@@ -138,6 +150,7 @@ func _ready() -> void:
 	# Older saves were generated with straight hex borders; keep their piece layout identical.
 	if loaded and GameState.world.has("field"):
 		field.natural_borders = bool((GameState.world["field"] as Dictionary).get("natural_borders", false))
+		field.junk_gen = int((GameState.world["field"] as Dictionary).get("junk_gen", 1))  # [world2] older saves keep v1 junk
 	field.generate(types, Vector2i(int(ppx[0]), int(ppx[1])))
 	if not fk.is_empty():
 		Frontiers.toughen(field, float(fk.get("vol_mult", 1.0)))
@@ -163,6 +176,7 @@ func _ready() -> void:
 		view.skip_horizon = true  # [biomes2] FrontierView builds the terrain and skyline
 	elif CradleMode.current_index() > 0:  # [late] another world's ground (snow on an ice moon, sand on a desert world)
 		CradleMode.dress_view(view)
+	PlanetEnvs.call_env(planet_env, "dress_view", [view])  # [planet-rime]
 	view.setup(field)
 	water = WaterView.new()
 	water.name = "Water"
@@ -173,6 +187,12 @@ func _ready() -> void:
 	add_child(litter)
 	litter.density_mult = float(fk.get("litter_mult", 1.0))  # [biomes]
 	litter.setup(field)
+	if fk.is_empty():  # [world2] the world past the field stays covered (frontiers have their own terrain)
+		var far := FarJunk.new()
+		far.name = "FarJunk"
+		far.world = self
+		add_child(far)
+		far.build(field)
 	city = CityView.new()
 	city.name = "City"
 	add_child(city)
@@ -318,6 +338,11 @@ func _ready() -> void:
 	if DevHooks.has("unlock-seeds"):
 		GameState.flags["seeds_unlocked"] = true
 		GameState.add_currency("seeds", BigNum.from_float(200))
+	for dh: String in ["hub-level", "future", "robots", "post-finale", "new-world", "frontier", "research", "restore", "unlock-seeds", "demo-scoop"]:  # [pace] dev jumps past the slow start
+		if DevHooks.has(dh):
+			Pace.grant_early_unlocks()
+			break
+	Pace.sync_flags()  # [pace]
 	if DevHooks.has("upgrade-levels"):
 		# --upgrade-levels=multi_lock:3+laser_reach:4  (screenshots/testing)
 		for spec: String in DevHooks.get_s("upgrade-levels", "").split("+"):
@@ -398,7 +423,7 @@ func _ready() -> void:
 	add_child(wren)
 	var subs := Subtitles.new()
 	add_child(subs)
-	wren.line_started.connect(subs.show_line)
+	wren.line_out.connect(subs.show_line)  # [onboard] through the Signal Tower gate (story/wren.gd)
 	garden = Garden.new()
 	garden.name = "Garden"
 	garden.world = self
@@ -416,6 +441,10 @@ func _ready() -> void:
 		if frontier:  # [biomes] thaw the ice / run the pumps first so the preview covers every hex
 			frontier.dev_pre_preview()
 		FutureLayer.apply_preview(self, int(DevHooks.get_f("future", 5.0)))
+	if DevHooks.has("restore"):  # [green] --restore=N[,level]: honest green-district previews
+		GardenDev.apply_restore(self)
+	if DevHooks.has("green-cam"):  # [green]
+		GardenDev.apply_cam.call_deferred(self)
 	var future := FutureLayer.new()
 	future.name = "FutureLayer"
 	add_child(future)
@@ -496,6 +525,7 @@ func _ready() -> void:
 	# [beat] (Bloom connects EventBus.cradle_district_complete itself: a lambda here outlived the scene)
 	if frontier:  # [biomes] frontier mechanics and visuals, once the scene is built
 		frontier.setup()
+	PlanetEnvs.call_env(planet_env, "apply", [self, field, planet_env])  # [planet-rime]
 	core_charge = CoreCharge.new()  # Lumi's Bloom Core charge + its story beats (story/core_charge.gd)
 	core_charge.name = "CoreCharge"
 	core_charge.world = self
@@ -503,9 +533,10 @@ func _ready() -> void:
 	intro = Intro.new()
 	intro.world = self
 	add_child(intro)
+	# [onboard] The old "LM-1 online..." wake toast flashed by too fast to read; WREN's brief and the
+	# objective card (story/objectives.gd) tell the plan now, and they stay.
 	var wake := func() -> void:
-		get_tree().create_timer(1.5).timeout.connect(func() -> void:
-			Story.once("wake", tr("LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."), "story"))
+		pass
 	if intro.should_play():
 		intro.finished.connect(wake)
 		hud.visible = false  # [first] no one-frame HUD/world flash before the deferred intro starts
@@ -517,11 +548,27 @@ func _ready() -> void:
 			intro.place_pod.call_deferred()
 		if not loaded:
 			wake.call()
+	SignalTower.migrate(self)  # [onboard] WREN only talks through the Signal Tower (story/signal_tower.gd)
+	if GameState.current_hub == 0 and frontier == null:
+		var tower := SignalTower.new()
+		tower.name = "SignalTower"
+		tower.world = self
+		add_child(tower)
+	objectives = Objectives.new()  # [onboard] WREN's last message after the intro + the objective card
+	objectives.world = self
+	add_child(objectives)
 	LateDirector.attach(self)  # [late] Garden Mode, Ark Bridge, Cradle Mode worlds (systems/late_director.gd)
 	var scope := Telescope.new()  # [scope] the Telescope + remote progress (automation/telescope.gd)
 	scope.name = "Telescope"
 	scope.world = self
 	add_child(scope)
+	ExtrasDirector.attach(self)  # [extras] radio, nursery, album, welcome back, Seed of the Week (systems/extras/)
+	(func() -> void: PropColliders.push_out_pieces(self, field, view)).call_deferred()  # [world2] junk out of solid props
+	if DevHooks.has("bale-shot"):  # [world2] bale close-up staging (tools/bale_shot.gd)
+		var bs: Node = load("res://tools/bale_shot.gd").new()
+		bs.set("world", self)
+		add_child(bs)
+	camp = Camp.attach(self)  # [camp] after the extras: it shows the radio / nursery once built
 	if not bot and DisplayServer.get_name() != "headless":
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
@@ -626,6 +673,7 @@ func _build_board() -> void:
 	frame.mesh = ProcMesh.merge(parts)
 	frame.material_override = pipe
 	shack.add_child(frame)
+	_ruin_bits["frame"] = frame  # [camp]
 	var roof := MeshInstance3D.new()
 	_ruin_bits["roof"] = roof
 	roof.mesh = ProcMesh.box(Vector3(3.7, 0.03, 2.6))
@@ -633,11 +681,18 @@ func _build_board() -> void:
 	roof.position = Vector3(0, 2.3, -0.05)
 	roof.rotation_degrees = Vector3(-9, 0, 2)
 	shack.add_child(roof)
+	var roof_body := StaticBody3D.new()  # [world2] follows the roof: overhead when fixed, a slumped ramp of iron when ruined
+	roof_body.collision_layer = PhysLayers.PROP
+	var roof_cs := CollisionShape3D.new()
+	roof_cs.shape = PropColliders.box_shape(Vector3(3.6, 0.1, 2.5))
+	roof_body.add_child(roof_cs)
+	roof.add_child(roof_body)
 	var back := MeshInstance3D.new()
 	back.mesh = ProcMesh.box(Vector3(3.3, 2.3, 0.03))
 	back.material_override = iron
 	back.position = Vector3(0, 1.15, -1.15)
 	shack.add_child(back)
+	_ruin_bits["back"] = back  # [camp]
 	var side := MeshInstance3D.new()
 	_ruin_bits["side"] = side
 	side.mesh = ProcMesh.box(Vector3(0.03, 1.6, 1.4))
@@ -648,6 +703,7 @@ func _build_board() -> void:
 	var bench := Node3D.new()
 	bench.position = Vector3(0, 0, -0.65)
 	shack.add_child(bench)
+	_ruin_bits["bench"] = bench  # [camp] starts broken on a fresh base
 	var bparts: Array = []
 	bparts.append(ProcMesh.part(ProcMesh.box(Vector3(2.2, 0.06, 0.8)), ProcMesh.xf(Vector3(0, 0.92, 0))))
 	for x: float in [-1.0, 1.0]:
@@ -686,6 +742,11 @@ func _build_board() -> void:
 	cs.shape = bs
 	cs.position = Vector3(0, 1.2, -0.6)
 	sb.add_child(cs)
+	for px: float in [-1.6, 1.6]:  # [world2] the front posts
+		var pcs0 := CollisionShape3D.new()
+		pcs0.shape = PropColliders.cyl_shape(0.08, 2.1)
+		pcs0.position = Vector3(px, 1.05, 1.0)
+		sb.add_child(pcs0)
 	shack.add_child(sb)
 	# Hub dressing: a street lamp and a generator.
 	var sl := MeshInstance3D.new()
@@ -717,6 +778,7 @@ func _build_board() -> void:
 	gen.position = Vector3(-4.6, 0, 0.8)
 	gen.rotation_degrees = Vector3(0, 70, 0)
 	add_child(gen)
+	_ruin_bits["generator"] = gen  # [camp]
 
 
 ## Level 1 at any base but Old Town's start: the lean-to roof has slumped off its frame, the side
@@ -924,7 +986,7 @@ func travel_to(to_hub: int) -> void:
 	GameState.reload_in_memory = true
 	SaveManager.save_game(false)
 	get_tree().paused = false
-	get_tree().reload_current_scene()
+	Loader.reload()  # [intro2] loading screen
 
 
 ## Salvaged building materials from scooped junk (data/hub.json "materials").
@@ -963,6 +1025,9 @@ func try_interact(p: Patch) -> void:
 			doc_view.show_doc(doc)
 		return
 	if near_bench():
+		if camp and not Camp.bench_ok():  # [camp] the first E repairs the broken bench
+			camp.repair_bench()
+			return
 		open_upgrades()
 		return
 	if composter and composter.near(p.global_position):
@@ -978,7 +1043,7 @@ func interact_prompt(p: Patch) -> String:
 	if shards and shards.nearby(p.global_position) >= 0:
 		return "shard"
 	if near_bench():
-		return "upgrades"
+		return camp.bench_prompt() if camp else "upgrades"  # [camp] names the bench (and says if it's broken)
 	if composter and composter.near(p.global_position):
 		return composter.prompt()
 	if p.global_position.distance_to(FLOWER_POS) < 1.8:
@@ -998,8 +1063,15 @@ func open_upgrades() -> void:
 		return
 	# Upgrades are installed at a base workbench, not in the field.
 	if not near_bench() and not DevHooks.has("open"):
-		EventBus.toast.emit(tr("Upgrades need a workbench. Head back to the hub."), "info")
-		Audio.play("buzz", 1.2, -10.0)
+		# [onboard] Away from the bench, Tab shows the key hints while held (the toast only once).
+		if hud and hud.has_method("peek_hints"):
+			hud.peek_hints()
+		if not GameState.flags.get("bench_hint_seen", false):
+			GameState.flags["bench_hint_seen"] = true
+			EventBus.toast.emit(tr("Upgrades need a workbench. Head back to the hub."), "info")
+		return
+	if camp and not Camp.bench_ok() and not DevHooks.has("open"):  # [camp]
+		camp.repair_bench()
 		return
 	upgrades.open_screen()
 	if patch.input is PlayerInput:
@@ -1163,13 +1235,9 @@ func _restore_world(from_memory: bool = false) -> void:
 			if not field.is_clean(h):
 				junk_left += field.hex_left[h]
 		# [beat] Junk already "baled offline" stays on the field (geometry isn't advanced), so it must not
-		# pay again on the next reopen: count it against what is left.
-		junk_left = maxf(0.0, junk_left - float(GameState.world.get("offline_units", 0.0)))
-		var res: Dictionary = Offline.compute(GameState.world.get("robots", []), hub.scrubbers if hub else 0, float(sd.get("filter_per_s", 1.0)), away, junk_left)
-		GameState.world["offline_units"] = float(GameState.world.get("offline_units", 0.0)) + float(res["units"])
-		Offline.apply(res)
-		if float(res["units"]) > 0.0 or float(res["air"]) > 0.0:
-			get_tree().create_timer(2.0).timeout.connect(func() -> void: EventBus.toast.emit(Offline.summary_text(res), "story"))
+		# pay again on the next reopen: Offline.simulate counts it against what is left. [extras]
+		var res: Dictionary = Offline.simulate(GameState.world, away, junk_left, hub.scrubbers if hub else 0, float(sd.get("filter_per_s", 1.0)))
+		WelcomeBack.offer(res, away)  # [extras] garden growth + payout card once the garden is built (systems/extras/welcome_back.gd)
 	EventBus.toast.emit(tr("Welcome back. The junk waited for you."), "info")
 
 

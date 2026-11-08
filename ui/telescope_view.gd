@@ -283,6 +283,7 @@ func _clear_scene() -> void:
 		b.queue_free()
 	_planet_nodes.clear()
 	_orrery = null
+	_sel_ring = null  # [camp] freed with the orrery: never touch a stale ring
 	district = null
 	_first = null
 
@@ -392,6 +393,7 @@ func _build_orrery() -> void:
 	var pair := Node3D.new()
 	pair.name = "Pair"
 	_orrery.add_child(pair)
+	var sun_nodes: Array[Node3D] = []  # [globes] the globes are lit from these
 	for k: int in 2:
 		var s: Dictionary = a if k == 0 else b
 		var n := MeshInstance3D.new()
@@ -399,6 +401,7 @@ func _build_orrery() -> void:
 		n.material_override = _glow_mat(s["color"], 2.2 if k == 0 else 1.6)
 		n.position = Vector3(-1.4, 0, 0) if k == 0 else Vector3(3.6, 0, 0)
 		pair.add_child(n)
+		sun_nodes.append(n)
 		_halo(n, s["color"], 11.0 * float(s["size"]))
 		var l := OmniLight3D.new()
 		l.light_color = s["color"]
@@ -421,18 +424,16 @@ func _build_orrery() -> void:
 		pivot.rotation.y = float(i) * 2.1 + 0.4
 		pivot.set_meta("speed", 0.05 / pow(maxf(float(en["orbit_au"]), 0.2), 1.5))
 		_orrery.add_child(pivot)
-		var p := MeshInstance3D.new()
+		# [globes] Procedural planet globes (relief, clouds, rim, rings) lit by the two suns.
 		var pr: float = 1.0 + 0.25 * float(i % 3)
-		p.mesh = ProcMesh.sphere(pr, 24, 12)
-		var pm := StandardMaterial3D.new()
-		pm.albedo_color = en["color"]
-		pm.roughness = 0.8
-		if bool(en["visited"]) or bool(en["here"]):
-			pm.emission_enabled = true
-			pm.emission = (en["color"] as Color) * 0.15
-		p.material_override = pm
+		var p := PlanetGlobe.new()
+		p.radius = pr
+		p.max_lod = 2 if Settings.quality >= 2 else 1
 		p.position = Vector3(r, 0, 0)
 		pivot.add_child(p)
+		p.setup(str(en["id"]), _globe_restoration(en), en["color"])
+		if sun_nodes.size() == 2:
+			p.track_suns(sun_nodes[0], sun_nodes[1])
 		var lab := Label3D.new()
 		lab.text = tr(str(en["name"])).to_upper()
 		lab.font_size = 40
@@ -455,19 +456,33 @@ func _build_orrery() -> void:
 	_sel_ring.visible = false
 
 
+## [globes] How restored a world's globe looks: the live planet for the one you stand on, else
+## its saved district share (a district is only part of the planet, so it counts half).
+func _globe_restoration(en: Dictionary) -> float:
+	if bool(en.get("here", false)) and world and world.get("planet") != null and world.planet.has_method("restored_fraction"):
+		return clampf(float(world.planet.restored_fraction()), 0.0, 1.0)
+	if bool(en.get("visited", false)):
+		return clampf(float(RemoteProgress.snapshot(en["world"]).get("share", 0.0)) * 0.5, 0.0, 1.0)
+	return 0.0
+
+
 func _select(i: int) -> void:
 	picked = i
 	if mode != "system" or i < 0 or i >= entries.size():
 		return
 	var en: Dictionary = entries[i]
 	var w: Dictionary = en["world"]
+	var hk: int = Homeward.planet_index(str(en.get("id", "")))  # [sysmap2] spotting reveals the next planet on the map
+	if hk > 0 and Homeward.spot(hk):
+		EventBus.toast.emit(tr("Spotted %s: it now shows on the system map") % Homeward.planet_name(hk), "info")
 	if bool(en["visited"]):
 		var snap: Dictionary = RemoteProgress.snapshot(w)
 		_right.text = tr("%s\nDistrict %d%% clean · %d robots\nLast visit %s") % [tr(str(en["name"])), int(round(float(snap.get("share", 0.0)) * 100.0)), (snap.get("robots", []) as Array).size(), ago_text(float(snap.get("saved_unix", 0.0)))]
 	elif bool(en["here"]):
 		_right.text = tr("%s\nYou are here.") % tr(str(en["name"]))
 	else:
-		_right.text = tr("%s\nNot visited yet.") % tr(str(en["name"]))
+		# [sysmap2] no "not visited": a planet past the next one in order is still too faint to chart
+		_right.text = tr("An unknown world.\nToo faint to chart yet.") if hk > 0 and not Homeward.discovered(hk) else tr("%s\nCharted. No landing yet.") % tr(str(en["name"]))
 
 
 func _on_pick(i: int) -> void:
@@ -685,7 +700,7 @@ func _process(delta: float) -> void:
 	if absf(rx) > 0.2:
 		_yaw -= rx * delta * 1.2
 	if absf(ry) > 0.2:
-		_dist = clampf(_dist + ry * delta * 30.0, 30.0 if mode == "remote" else 60.0, 100.0 if mode == "remote" else 170.0)
+		_dist += ry * delta * 30.0
 	if mode == "system":
 		if _orrery:
 			for n: Node in _orrery.get_children():
@@ -696,8 +711,6 @@ func _process(delta: float) -> void:
 				pair.rotation.y += delta * 0.4
 		_yaw += delta * 0.02
 		_pitch = 0.95
-		if _dist < 50.0:
-			_dist = 122.0
 		var goal := Vector3.ZERO
 		if picked >= 0 and picked < _planet_nodes.size() and _sel_ring:
 			var pn: Node3D = _planet_nodes[picked]
@@ -712,10 +725,17 @@ func _process(delta: float) -> void:
 		if fmod(_t, 0.5) < delta:
 			_refresh_remote()
 		_check_spots(delta)
+	var dr: Vector2 = _dist_range()  # [camp] one zoom range per view for wheel and stick (no snapping back)
+	_dist = clampf(_dist, dr.x, dr.y)
 	var off := Vector3(sin(_yaw) * cos(_pitch), sin(_pitch), cos(_yaw) * cos(_pitch)) * _dist
 	_cam.position = _focus + off
 	_cam.look_at(_focus, Vector3.UP)
 	_reticle.queue_redraw()
+
+
+## [camp] Zoom limits: the orrery stays whole in the system view; a district stays in frame.
+func _dist_range() -> Vector2:
+	return Vector2(30.0, 100.0) if mode == "remote" else Vector2(80.0, 170.0)
 
 
 func _check_spots(delta: float) -> void:
@@ -771,9 +791,9 @@ func _on_view_input(ev: InputEvent) -> void:
 		if mb.button_index == MOUSE_BUTTON_LEFT:
 			_drag = mb.pressed
 		elif mb.button_index == MOUSE_BUTTON_WHEEL_UP and mb.pressed:
-			_dist = maxf(_dist - 4.0, 30.0)
+			_dist = maxf(_dist - 4.0, _dist_range().x)  # [camp]
 		elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN and mb.pressed:
-			_dist = minf(_dist + 4.0, 140.0)
+			_dist = minf(_dist + 4.0, _dist_range().y)  # [camp]
 	elif ev is InputEventMouseMotion and _drag:
 		_yaw -= (ev as InputEventMouseMotion).relative.x * 0.005
 

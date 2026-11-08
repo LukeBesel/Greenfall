@@ -722,10 +722,12 @@ func rebuild() -> void:
 			buf[o + 18] = cu.b
 			buf[o + 19] = float(_known[k])
 		var mm: MultiMesh = (_mmi[ch] as MultiMeshInstance3D).multimesh
+		(_mmi[ch] as MultiMeshInstance3D).set_meta("inst_xf", xfs)  # [world2] collider audit / FutureColliders
 		mm.instance_count = n
 		if n > 0:
 			mm.buffer = buf
 		(_mmi[ch] as MultiMeshInstance3D).visible = n > 0
+	_build_post_colliders(p["post"]["xf"])  # [world2]
 	_build_labels(p["labels"])
 	_movers = p["movers"]
 	for m: Dictionary in _movers:
@@ -739,6 +741,16 @@ func rebuild() -> void:
 	if not _built:
 		print("[future] score=%.2f pieces=%d built in %.1f ms" % [float(p["score"]), count(p), (Time.get_ticks_usec() - t0) / 1000.0])
 	_built = true
+
+
+## [world2] Way-sign posts standing on the ground are solid (shared cylinders, PhysLayers.PROP).
+func _build_post_colliders(xfs: Array) -> void:
+	var pb: StaticBody3D = PropColliders.body(self, "PostColliders")
+	for t: Transform3D in xfs:
+		var h: float = t.basis.y.length()
+		var base: Vector3 = t.origin - Vector3(0, h * 0.5, 0)
+		if base.y < 0.5 and h > 0.5:
+			PropColliders.add_cyl(pb, base, maxf(t.basis.x.length() * 0.5, 0.06), h)
 
 
 func _build_labels(list: Array) -> void:
@@ -1010,26 +1022,9 @@ static func apply_preview(w: Node, n: int) -> void:
 			w.litter.refresh_hex(hid)
 			planet.set_junk(w.slice_cells[hid], 0.0)
 			planet.mark_clean(w.slice_cells[hid])
-	if n >= 2 and g:
-		GameState.flags["seeds_unlocked"] = true
-		var stage: int = [0, 0, 1, 2, 3, 4][n]
+	if n >= 2 and g:  # [green] real planted slots at a stage mix for the level (plants/garden_dev.gd)
 		for hid: int in hl.levels:
-			var sl: PackedInt32Array = g.hex_slots.get(hid, PackedInt32Array())
-			var sum: float = 0.0
-			for i: int in sl.size():
-				var s: int = sl[i]
-				if n < 4 and i % 2 == 1:
-					continue
-				g.slot_species[s] = g._pick_species(s)  # [biomes] district-appropriate species (frontier natives)
-				g.slot_stage[s] = stage
-				g.slot_water[s] = float(g.species[g.slot_species[s]].get("water_s", 120))
-				g._update_inst(s)
-				sum += stage + 1.0
-			if sl.size() > 0:
-				var life: float = sum / (sl.size() * 5.0)
-				g.hex_life[hid] = life
-				w.view.set_life(hid, life)
-				planet.state[w.slice_cells[hid]] = PlanetData.State.RESTORED if life >= 0.8 else (PlanetData.State.GROWING if life >= 0.35 else PlanetData.State.PLANTED)
+			GardenDev.grow_hex(w, hid, n)
 	for hid: int in hl.levels:
 		hl.levels[hid] = maxi(int(hl.levels[hid]), n)
 	hl._recalc_bonus()

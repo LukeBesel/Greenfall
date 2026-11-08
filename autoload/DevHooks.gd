@@ -43,6 +43,7 @@ extends Node
 ##           after --design-unlock-at=S s (systems/designs.gd)
 ##   --pad-audit        [deck] open every screen pad-only and check focus reachability + B to close
 ##   --scene-stats[=S]  [deck] print a geometry census (tools/scene_stats.gd) after S s (headless ok)
+##   --objective=N --objective-clean=F --near-part --hints-full --requests-unlocked --detector-on --signal-tower=N  [onboard] story objectives (shots)
 ##   --tab=contracts    with --open=upgrades: the Requests board and its reward track [money] (--contracts-sample fills it)
 ##   [hud] --lumi-level=N start at Lumi Level N; --lumi-xp=N grant N XP; --lumi-levelup=S level up S s after start
 ##         (holds the level-up moment for screenshots); --tool=plant|water; --hud-pad (pad glyphs);
@@ -59,6 +60,8 @@ extends Node
 ##                      (--storm-hold keeps it blowing); --thaw-all; --frontier-heaters=N; --frontier-greenhouses=N;
 ##                      --drain=N runs the Sunken City pumps N times; --frontier-done[=S] fires the Cradle hook;
 ##                      --frontier-cam=dist,pitch,yaw and --frontier-nohud for landscape screenshots
+##   --planet-env=ID    [planet-rime] a wild district dressed by a campaign planet env (data/planets.json, e.g. rime);
+##                      Rime: --rime-cam=dist,pitch,yaw[,fov] --rime-nohud --rime-restore=0..1 (holds restoration)
 ##   --demo             [steam] run as the Steam demo build (Demo.is_demo()); --no-steam skips Steam init
 ##   --no-hud           [steam] hide HUD, toasts, subtitles and event banners (store screenshots, trailer)
 ##   --demo-end[=S]     [steam] show the end-of-demo screen after S seconds
@@ -74,6 +77,7 @@ var _frames: int = 0
 var _perf_frames: int = 0
 var _perf_wall: float = 0.0
 var _stats_done: bool = false  # [deck]
+var _garden_done: bool = false  # [green]
 
 
 func _ready() -> void:
@@ -144,6 +148,10 @@ func _process(delta: float) -> void:
 	if has("scene-stats") and _elapsed >= get_f("scene-stats", 4.0) and not _stats_done:  # [deck] geometry census
 		_stats_done = true
 		SceneStats.print_census(get_tree().current_scene)
+	if has("garden-report") and _elapsed >= get_f("garden-report", 4.0) and not _garden_done:  # [green]
+		_garden_done = true
+		if get_tree().current_scene and get_tree().current_scene.get("garden") != null:
+			GardenDev.report(get_tree().current_scene)
 	if has("quit-after") and _elapsed >= get_f("quit-after", 5.0):
 		print("[DevHooks] quitting after %.1fs" % _elapsed)
 		if has("report"):

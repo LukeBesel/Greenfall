@@ -245,7 +245,7 @@ func _process(delta: float) -> void:
 		if _drop_timer <= 0.0:
 			var ok: bool = start_drop()
 			_drop_timer = drop_interval() if ok else 40.0
-	if a >= 4 and drone == null and GameState.flags.get("seeds_unlocked", false):
+	if a >= 4 and drone == null and GameState.flags.get("seeds_unlocked", false) and bool(cfg.get("seed_drop", {}).get("enabled", true)):  # [pace] no spontaneous crates
 		_seed_timer -= delta
 		if _seed_timer <= 0.0:
 			_seed_timer = _range_of(cfg.get("seed_drop", {}).get("every_s", [200, 320]))
@@ -934,10 +934,11 @@ func resolve() -> void:
 		var who: String = str(l[0])
 		var text: String = tr(str(l[1])).format({"name": pname})  # [l10n]
 		var dur: float = float(l[2])
+		dur = maxf(dur, Subtitles.total_time(text))  # [intro2] every line stays up long enough to read
 		match who:
-			"wren": world.wren.line_started.emit(text, 2)
-			"ledger": uplink.show_now(text, false, maxf(dur - text.length() / 42.0 - 0.6, 0.3))
-			"friendly": uplink.show_now(text, true, maxf(dur - text.length() / 42.0 - 0.6, 0.3))
+			"wren": uplink._bind().show_now(text, "wren")
+			"ledger": uplink.show_now(text, false)
+			"friendly": uplink.show_now(text, true)
 		if str(l[1]).begins_with("RECALCULATING"):
 			_set_relay_friendly(true, true)
 			Vfx.burst("big_sparkle", rp + Vector3(0, 2.0, 0.4), Color(0.5, 1.0, 0.6))

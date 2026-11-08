@@ -113,6 +113,7 @@ func _process(delta: float) -> void:
 		var fwd := Vector3(dir.x, 0, dir.z) + Vector3(0.001, 0, 0)
 		var b: Basis = Basis.looking_at(fwd, Vector3.UP)
 		var flap: float = sin(t * 28.0 + float(f["phase"])) * 1.1
+		b = b.scaled(Vector3.ONE * 1.8)  # [green] readable from the game camera (wings were 5 cm)
 		if mmw:
 			mmw.set_instance_transform(k * 2, Transform3D(b * Basis(Vector3.BACK, flap) * Basis.from_scale(Vector3(-1, 1, 1)), pos))
 			mmw.set_instance_transform(k * 2 + 1, Transform3D(b * Basis(Vector3.BACK, -flap), pos))
@@ -127,5 +128,7 @@ func _process(delta: float) -> void:
 	if not _birds.is_empty():
 		_song_t -= delta
 		if _song_t <= 0.0:
-			_song_t = randf_range(1.5, 6.0) / sqrt(float(_birds.size()))
-			Audio.play("bird", randf_range(0.85, 1.25), -16.0, 0.0)
+			# [fauna2] Occasional, not constant: shares the global bird-call clock (Fauna.bird_call_ok).
+			_song_t = randf_range(20.0, 60.0)
+			if Fauna.bird_call_ok():
+				Audio.play("bird", randf_range(0.85, 1.25), -20.0, 0.0)

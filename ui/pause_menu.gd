@@ -15,6 +15,7 @@ var _menu: Control
 var _first: Button
 var _settings_btn: Button
 var _settings: SettingsPanel
+var _center_keys: Control  # [onboard] key hints strip
 
 
 func _ready() -> void:
@@ -57,14 +58,9 @@ func _ready() -> void:
 		close_menu()
 		photo_requested.emit()))
 	buttons.append_array(LateMenu.add_buttons(self, vb, _button))  # [late] Garden Mode, Ark Bridge
-	# [ui2] Keepsakes = the Codex Collection tab (Lumi Level keepsakes, finds, capsules).
-	buttons.append(_button(vb, tr("Keepsakes"), func() -> void:
+	buttons.append(_button(vb, tr("Keepsakes"), func() -> void:  # [extras] radio, album, nursery, Seed of the Week
 		close_menu()
-		var cx: Node = get_parent().get("codex") if get_parent() else null
-		if cx and cx.has_method("open_screen"):
-			cx.call("open_screen", "collection")
-		else:
-			codex_requested.emit()))
+		ExtrasPanel.open_for(get_parent(), "")))
 	_settings_btn = _button(vb, tr("Settings"), _open_settings)
 	buttons.append(_settings_btn)
 	# [ui2] No Save button: the game autosaves every minute and on quit. Quit saves and goes to
@@ -74,10 +70,20 @@ func _ready() -> void:
 		var b: Button = buttons[i]
 		b.focus_neighbor_top = b.get_path_to(buttons[wrapi(i - 1, 0, buttons.size())])
 		b.focus_neighbor_bottom = b.get_path_to(buttons[wrapi(i + 1, 0, buttons.size())])
+	# [onboard] The controls at a glance, under the menu (in game: hold Tab away from the workbench).
+	var keys_mc := MarginContainer.new()
+	keys_mc.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
+	keys_mc.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	keys_mc.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	keys_mc.add_theme_constant_override("margin_bottom", 28)
+	keys_mc.add_child(KeyHints.new(KeyHints.Mode.PAUSE))
+	_center_keys = keys_mc
+	_root.add_child(keys_mc)
 	_settings = SettingsPanel.new()
 	_settings.dim_background = false
 	_settings.closed.connect(func() -> void:
 		_menu.visible = true
+		_center_keys.visible = true  # [onboard]
 		_settings_btn.grab_focus())
 	_root.add_child(_settings)
 	_root.visible = false
@@ -99,6 +105,7 @@ func _button(parent: Control, text: String, cb: Callable) -> Button:
 
 func _open_settings() -> void:
 	_menu.visible = false
+	_center_keys.visible = false  # [onboard]
 	_settings.open_panel()
 
 
@@ -108,7 +115,7 @@ func _quit_to_title() -> void:
 	get_tree().paused = false
 	EventBus.ui_modal_changed.emit(false)
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	get_tree().change_scene_to_file(TITLE_SCENE)
+	Loader.goto(TITLE_SCENE)  # [intro2] loading screen
 
 
 func open_menu() -> void:

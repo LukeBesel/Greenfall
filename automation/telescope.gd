@@ -164,8 +164,13 @@ func _process(delta: float) -> void:
 # --- Model -----------------------------------------------------------------------------------
 
 func _pos() -> Vector3:
-	var p: Array = data.get("pos", [-5.6, -2.8])
+	var p: Array = data.get("pos", [-4.4, -6.2])  # [camp] the back edge of the yard
 	return Vector3(float(p[0]), 0.0, float(p[1]))
+
+
+## [camp] Where Lumi stands to use it (in front of the door), built or not.
+func door_point() -> Vector3:
+	return _pos() + Basis(Vector3.UP, deg_to_rad(float(data.get("yaw_deg", 30.0)))) * Vector3(0, 0, 2.2)
 
 
 static func _mat(c: Color, rough: float, metal: float = 0.0, coat: float = 0.0) -> StandardMaterial3D:
@@ -299,7 +304,7 @@ func _spawn(animate: bool) -> void:
 	col.add_child(cs)
 	_model.add_child(col)
 	if world and world.get("interactables") != null:
-		world.interactables.register(_anchor, float(data.get("use_range", 3.4)), func() -> String: return tr("E   look through the telescope"), open_view)
+		world.interactables.register(_anchor, float(data.get("use_range", 3.4)), func() -> String: return tr("E   Telescope: look across the system"), open_view)
 	if animate:
 		_model.scale = Vector3(1, 0.02, 1)
 		create_tween().tween_property(_model, "scale", Vector3.ONE, 1.4).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)

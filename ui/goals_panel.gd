@@ -17,6 +17,7 @@ var expanded: bool = false
 var _goals: Goals
 var _head: Label
 var checklist: ChecklistCard  # [first] restart checklist card (was right-aligned text)
+var objective: ObjectiveCard  # [onboard] the story objective with its why (story/objectives.gd)
 var _rows: Array[Dictionary] = []
 var _idle: float = 0.0
 var _last_sig: String = ""
@@ -27,6 +28,8 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	custom_minimum_size = Vector2(W, 0)
 	add_theme_constant_override("separation", 8)
+	objective = ObjectiveCard.new()  # [onboard] above the checklist: what to do and why
+	add_child(objective)
 	# Restart checklist card (tutorial; also borrowed for one-off "next step" hints).
 	checklist = ChecklistCard.new()
 	add_child(checklist)
@@ -82,6 +85,11 @@ func _checklist_running() -> bool:
 	return checklist.tutorial != null and not checklist.tutorial.done()
 
 
+## [onboard] While a story objective is on the card, the goal rows stay folded (G shows them).
+func _objective_running() -> bool:
+	return objective.objectives != null and not objective.objectives.current().is_empty()
+
+
 ## Step text without its "  3/8" counter (so counting up doesn't re-fade the block).
 static func _strip_count(t: String) -> String:
 	var i: int = t.rfind("   ")
@@ -112,6 +120,11 @@ func _process(delta: float) -> void:
 			return
 		_goals.completed.connect(_on_completed)
 		visible = true
+	if objective.objectives == null:  # [onboard]
+		var wo: Node = hud.get("world") if hud else null
+		var ob: Variant = wo.get("objectives") if wo else null
+		if ob is Objectives:
+			objective.bind(ob as Objectives)
 	var total: int = _goals.chain.size()
 	var done: int = _goals.done_count()
 	var show_n: int = 3 if expanded else 1
@@ -120,7 +133,7 @@ func _process(delta: float) -> void:
 	var sig: String = ""
 	for k: int in _rows.size():
 		var r: Dictionary = _rows[k]
-		(r["wrap"] as Control).visible = k < show_n and int(r["goal"]) >= 0 and (expanded or not _checklist_running())
+		(r["wrap"] as Control).visible = k < show_n and int(r["goal"]) >= 0 and (expanded or not (_checklist_running() or _objective_running()))
 		if r["busy"]:
 			continue
 		var gi: int = r["goal"]

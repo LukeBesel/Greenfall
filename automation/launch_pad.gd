@@ -121,6 +121,13 @@ func _build() -> void:
 	var tz := Vector3(0, 0, TOWER_Z)
 	_mi(self, ProcMesh.cyl(0.95, 1.05, 0.25, 6), grey, tz + Vector3(0, 0.12, 0))
 	_mi(self, RobotVisual._rbox(Vector3(1.0, 11.6, 1.0), 0.14, 3), white, tz + Vector3(0, 5.95, 0))
+	var tower_body := StaticBody3D.new()  # [world2] the service tower is solid
+	tower_body.collision_layer = PhysLayers.PROP
+	var tcs := CollisionShape3D.new()
+	tcs.shape = PropColliders.box_shape(Vector3(1.1, 11.6, 1.1))
+	tcs.position = tz + Vector3(0, 5.95, 0)
+	tower_body.add_child(tcs)
+	add_child(tower_body)
 	for x: float in [-0.36, 0.36]:
 		_mi(self, ProcMesh.box(Vector3(0.02, 10.8, 0.02)), glow, tz + Vector3(x, 5.9, 0.51))
 	for y: float in [3.0, 6.2, 9.4]:

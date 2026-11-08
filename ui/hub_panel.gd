@@ -24,6 +24,7 @@ var _scrub_btn: Button
 var _stations: StationsPanel  # [stations]
 var _scope: TelescopePanel  # [scope]
 var _jam_box: VBoxContainer
+var _yard: YardBuildsPanel  # [camp]
 var _jam: Label
 var _jam_btn: Button
 
@@ -114,6 +115,11 @@ func _ready() -> void:
 	side.add_child(tc[0])
 	_scope = TelescopePanel.new()
 	(tc[1] as VBoxContainer).add_child(_scope)
+	# [camp] trash bin, radio, nursery (ui/yard_builds_panel.gd)
+	var yc: Array = BenchKit.card()
+	side.add_child(yc[0])
+	_yard = YardBuildsPanel.new()
+	(yc[1] as VBoxContainer).add_child(_yard)
 	# Signal Jammer (the Ledger arc, story/ledger.gd): shown once the dump drones start.
 	var jc: Array = BenchKit.card()
 	side.add_child(jc[0])
@@ -245,6 +251,8 @@ func refresh() -> void:
 		(_stations.get_parent().get_parent() as Control).visible = _stations.visible
 	if _scope:  # [scope]
 		_scope.refresh()
+	if _yard:  # [camp]
+		_yard.refresh()
 	var lg: Node = _ledger()
 	var jam_on: bool = lg != null and lg.jammer_visible()
 	(_jam_box.get_parent() as Control).visible = jam_on

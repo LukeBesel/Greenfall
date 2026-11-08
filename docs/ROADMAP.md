@@ -26,7 +26,7 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 
 ## Update: simpler workbench (wt/ui2, Nov 7)
 Owner playtest #1: "SIMPLIFY GAME". The workbench is seven tabs (Lumi, Bots, Hub, Research, Rockets, Requests, Locker) with bigger text, one card style (`ui/bench_kit.gd`: card, title/body sizes, big button, cost row with the currency icons, spot pips) and every cost in Parts and/or cubes.
-- Done: robot part items are gone from the player-facing flow. `systems/robot_parts.gd`: a dug-up / spotted / rewarded robot part pays Parts at its rarity's value (Rusty 10 ... Legendary 450, `data/parts.json`); `GameState.parts` stays an empty legacy array that `RobotParts.fold_items()` folds into Parts every fleet tick. Save v3 (`SaveManager.migrate_v3`) converts held items at the same values. Robot builds cost cubes + Parts (`data/robots.json` "parts", x1.2 per robot owned), Mk tiers cubes + `Fleet.TIER_PARTS` (200 / 700 / 2000); no recipes, no Control Cores, no rarity bonus.
+- Done: robot part items are gone from the player-facing flow. `systems/robot_parts.gd`: a dug-up / spotted / rewarded robot part pays Parts at its rarity's value (Rusty 10 ... Legendary 450, `data/parts.json`); `GameState.parts` stays an empty legacy array that `RobotParts.fold_items()` folds into Parts every fleet tick. Save v4 (`SaveManager.migrate_v4`, after pace's v3) converts held items at the same values. Robot builds cost cubes + Parts (`data/robots.json` "parts", x1.2 per robot owned), Mk tiers cubes + `Fleet.TIER_PARTS` (200 / 700 / 2000); no recipes, no Control Cores, no rarity bonus.
 - Done: no Trade tab (Haggle's trade, scrap, swap, buy are removed; `ui/trade_panel.gd` deleted). Haggle's rotating builder stall is gone: shop parts are always listed in the Locker.
 - Done: Bots tab = one RobotCard per type like the Lumi cards: role icon, name, tier, one line, crew spots (filled / free pips) and Mk steps, big Build and Upgrade buttons with their cost under them; locked types show "Unlock with research: X" + a button to Research. The Multibot allocation board only shows once there are multibots.
 - Done: Hub tab = one big card for the next level (name, what it is, "What you get" list from `HubPanel.level_gains`, cost row, big Upgrade button, level pips); scrubbers, bale stations, telescope and jammer sit in a column beside it.
@@ -36,6 +36,59 @@ Owner playtest #1: "SIMPLIFY GAME". The workbench is seven tabs (Lumi, Bots, Hub
 - Done: new currency glyphs in `ui/hud_icons.gd` (faceted cube with shaded facets and a thin glow, eight-tooth gear with a hex bolt hole, a seed with a sprout); used by the HUD, workbench header, cost rows and the Lumi cards. Sheet: `xvfb-run -a godot --path . --rendering-driver opengl3 res://tools/ui2_icon_sheet.tscn`.
 - Done (playtest 2): holographic look for the workbench, pause menu and settings (`BenchKit.holo`: dark glass, thin cyan frame, soft glow; green glow = affordable, dim with "need N" in red = not). Tabs stay hidden until they open (`data/workbench.json`, any-of conditions on lifetime cubes / stats / hub level / flags; opened tabs stay; `UpgradesScreen.set_tab_gate` overrides for onboard). Lumi cards: no idle wobble, hairline bar, Buy / Max. Fleet upgrades sit on each robot card as one-line spots. Settings open on Basics (master, music, quality, fullscreen, sensitivity, language) with "More settings" revealing the full tabs. Pause: Resume, Codex, Photo mode, (Garden / Ark), Keepsakes (Codex Collection), Settings, Quit (saves, then the title; autosave every 60 s and on quit).
 - Dev: `--bench-all` shows every workbench tab; `--locker` opens the Locker early; old tab ids `--tab=cosmetics|builder|trade` map to locker / bots. Tests: `tests/test_ui2.gd` (+ updated builder / events / fleet tests).
+
+## Update: slow start (wt/pace, Nov 8)
+- Owner playtest #2 pacing: Lumi starts with a 12 chest, 3 pieces/s, small junk only and no bale press. New early upgrades: Baler (100), Lift Strength (50 / 500: medium, then large junk), Scoop Size (pieces per pulse), Signal Finder (violet-beam part signals). Before the Baler the chest is emptied loose at the trash bin (camp's TrashBin.deposit) or the scale.
+- Helpers (Salvage Logic research) and automation (Conveyor, Auto-Baler, Recycler, Auto Compactor, Magnet Arm) wait for base level 2: first robot ~36 min, stations ~45+ min. Magnet Arm pulls a few loose, liftable pieces at a time.
+- No spontaneous reward crates (Supply Drop event and Ledger seed drops off). Events/requests that need an unlock are flag-gated (Pace.sync_flags).
+- Old saves (v<3) are granted Baler, Lift 2 and the chest/scoop levels to match. Numbers and before/after table: docs/BALANCE.md "Slow start".
+- Open: re-measure after world2 (HexField.piece_size, no large items in the start ring) and camp (trash bin, bench repair) merge; onboarding objective "sell 3 bales" now needs the Baler first; whole-campaign autoplay not re-run (too long), late stages use dev jumps that grant the early unlocks.
+## Update: the landing yard (wt/camp, owner playtest #2)
+- Done: a fresh base is bare: the escape pod (intro2's crash site), a BROKEN workbench and the trash bin. Old Town's lean-to, generator, street lamp and the yard's poles, crates and festoons (street_dressing "Yard" layer) arrive with hub level 2; the compost press shows once something has grown (with a reveal).
+- Done: the workbench starts tilted on a buckled leg, tools in the dirt, sparking. The first E plays a ~2.6 s repair (Lumi turns, welds it with the claw beam, it rights itself); after that E opens it. `systems/camp/camp.gd`, state `GameState.world.camp.bench` (old saves: repaired).
+- Done: **TrashBin** (`automation/trash_bin.gd`, `data/trash_bin.json`): 5 levels (Dented Bin, Scrap Skip, Weigh Skip, Compactor, Smart Intake), each its own body in `automation/depot.gd`; value_mult and feed_interval per level; upgraded with E beside the bin or in the Hub tab (`ui/yard_builds_panel.gd`). Static API for pace: level(), max_level(), level_def(), next_def(), next_cost(), block_reason(hub_level), upgrade(hub_level), value_mult(), feed_interval(), events.changed.
+- Done: the radio and the robot nursery are Hub-tab yard builds (`systems/camp/yard_builds.gd`, `data/camp.json`): radio at hub level 2 for cubes, on its own crate by the right fence; nursery listed after the first sprout. Old saves keep theirs (migration in Camp.migrate). Retiring a robot needs the nursery built.
+- Done: radio songs replace the score: picking a song cuts the mood piece at once (pads fade in 0.6 s, melody and stingers dropped), stingers are muted while a song plays, and "Back to mood music" fades the score in from silence (`audio/music_director.gd` `_cut`, `tests/test_radio_music.gd`).
+- Done: the observatory Telescope stands at the back edge of the yard (-4.4, -6.2, door toward the yard); view fixes: one zoom range per view for wheel and stick (no snapping back), no stale selection ring.
+- Done: yard interactables are >= 3 m apart (`data/camp.json` min_gap, `tests/test_camp.gd`, `--camp-report`) and every prompt names its object ("Workbench: upgrades", "Trash bin (Lv 1): upgrade ...", "Radio: ...", "Telescope: ...").
+- Done: machines never sell invisibly: Belt Drive / Baler Hydraulics / Recycler Yield need their machine (`requires_station` in data/upgrades.json; hidden on the workbench until it stands), and every machine or yard build gets a reveal (`systems/camp/machine_reveal.gd`: light pillar, its name, a glowing trail from Lumi, chime). `tests/test_machines_appear.gd`.
+- Dev: `--camp-broken`, `--camp-fixed`, `--camp-repair`, `--camp-built=radio+nursery`, `--camp-bin=N`, `--camp-buy=conveyor+auto_baler`, `--camp-report`.
+- Open: the Keepsakes radio tab still plays songs before the radio is built; the yard builds have no build-from-the-yard placement (fixed spots).
+
+## Update: Homeward, the Verdance system campaign (wt/home)
+- The game now ends when the whole system is restored. Five fixed planets (Verdance, Ochre, Tidewell,
+  Rime, Anvil; data/homeward.json, systems/homeward.gd) are profile worlds with fixed seeds, types,
+  modifiers, a relic each and Ledger lore (arrival memo, half-way intercept, restored note). Cradle
+  Returns now plays "The Cradle Answers" (story/cradle_answers.gd) instead of the ending.
+- Rocket drive Mk V Orbital / VI Interplanetary / VII Homeward (cubes + parts, kept in the profile),
+  per-planet charts (previous planet at 50%), the solar map (ui/system_map.gd: 3D orrery, two suns,
+  zoom in to a planet and on into the survey globe), planet flights through the rocket's own sequence.
+- Ending: Mk VII at Cradle Returns (launch complex), the last seed, launch home, Homecoming
+  (story/homecoming.gd) -> the ark finale -> credits; random Cradle Mode worlds are now post-game.
+- Binary star (data/solar_system.json, SolarSystem.suns_for, planet/binary_sun.gd): every sky shows
+  Hearth and Ember. Heirlooms come from planet picks (one per restored planet).
+- Next: planet-specific goal chains (a new planet replays the Verdance chain from the start, including
+  frontier goals); land at a chosen district on another planet (its PlanetData isn't generated until
+  visited); pace the four planets end to end with the bot without --home-ff; a Lumi design for the
+  ending; worlds2's world picker should honour `Homeward` planets (records with "planet").
+## Update: planet globes (wt/globes, Nov 7)
+- Done: `ui/planet_globe.gd` (`PlanetGlobe.new()`, `.setup(id, restoration)`, `.set_restoration(f)`), a Node3D for any 3D view, with procedural shaders `art/shaders/planet_{verdance,ochre,tidewell,rime,anvil}.gdshader` (+ `planet_lib.gdshaderinc`, `planet_clouds`, `planet_atmo`, `planet_ring`, `planet_motes`, `planet_shard`): real relief normals from analytic-derivative FBM, night side, soft terminator, atmosphere rim, clouds/storm spirals, binary-sun lighting (both suns, companion warm), restoration blends, MultiMesh rings (Ochre dust ring, Rime ice-spike ring, Anvil fire ring), LOD by screen size. See docs/DECISIONS.md "Planet globes".
+- Done: the telescope orrery uses it (`[globes]` in ui/telescope_view.gd; globes lit from the orrery's sun nodes).
+- Dev: `res://tools/globe_shots.tscn` renders the close-ups, the lineup and Verdance 0/100% (`--globe-only=ID|lineup|verdance_rest`); `-- --globe-check` is the headless check. Tests: tests/test_planet_globe.gd.
+- Next: "home" swaps `ui/system_map.gd`'s spheres for `PlanetGlobe` (instructions in DECISIONS); optionally `story/space_stage.gd`'s cinematic planet.
+## Update: world and physics fixes from playtest #1 (wt/world2, Nov 7)
+- Done: **no yard fence** (ruined, patched or futuristic; the pole sleeves stay); lot fences elsewhere are broken runs with gaps.
+- Done: **every solid prop collides** (`PhysLayers.PROP`, `planet/prop_colliders.gd`, shared box/cylinder shapes): street lamps (slim posts), hydrants, utility boxes, payphones, billboard legs (its shape was never added), shop crates/barrels, yard corner kits (tarps, drums, work light), light poles, name/holo sign posts, planters, ruin junk, outposts (ruin and fixed), eggs (off while hidden), composter, greenhouse frame, landing pod, depot dial post, recycler motor, hub walls/office/masts, launch tower, future-layer posts, frontier ruins and pad pylons (column boxes from their merged geometry). Junk inside a prop is nudged out at load. `tools/collider_audit.gd` (`godot --headless --path . res://tools/collider_audit.tscn -- --fresh [--future=5 --stations=all --scope | --hub=N | --frontier=ID]`) reports 0 for all of those; `tests/test_collider_audit.gd`.
+- Done: **bales**: collider matches the drawn bale, CCD, lifted out of the ground after a spawn/put-down, put down short of walls (not onto roofs), rest on junk mounds (`PhysLayers.MOUND`, `planet/mound_colliders.gd`) and settle as the mound shrinks; opaque junk look (cube.gdshader). `tests/test_bale_rest.gd`; `--bale-shot[=mound]` stages a close-up.
+- Done: **junk covers the district** (gen 2, new games): see DECISIONS "Junk gen 2" and BALANCE "World2". Radius-4 Old Town field, far static junk past it (`planet/far_junk.gd`). `tests/test_junk_coverage.gd` checks coverage at generation.
+- Done (playtest #2): heaps solid for Lumi/robots and shrink as cleared; hub/blocked ground reads dirty until its owners are clean; `HexField.piece_size` size classes (for the "pace" helper's big-item upgrade), no large items in ring 1; bale carried above Lumi; chunkier strapped bale mesh.
+- Next: if a frontier should feel bigger again, raise its radius to 5 (perf: ~+60% pieces); far junk could fade into the frontier terrain too.
+## Update: Character Builder (wt/style, Nov 7)
+- Done: `systems/lumi_style.gd` + `data/style_parts.json`: Lumi's look is a dict of slots (paint, trim, accent, side modules, wear, pattern, eye shape + colour, light strips, head piece, chest icon, shoulders, held item, companion, hover glow, pickup laser, bonus). The six designs are presets read from `PatchModel.VARIANTS`; a custom look takes any unlocked design's bonus (`flags.patch_skin`), "Looks only" unchanged.
+- Done: applicator via two tagged hooks in `PatchModel._build` (`LumiStyle.variant_for` / `after_build`) and `player/lumi_style_rig.gd`: eye shapes round / visor bar / hearts as a next_pass (`art/shaders/lumi_eyes.gdshader`), heart chest icon, procedural antenna, halo, med kit, watering can, firefly, tiny drone (replaced by library meshes once the hero models them; names in DECISIONS). Laser colour feeds `PickupFx`; photo mode, title screen, cinematics, telescope/Ark views use the worn look.
+- Done: `ui/lumi_builder.gd` (`LumiBuilder`, a self-contained Control the Locker can host; `LumiBuilder.open()` overlays it): slot list, big turntable with zoom and a demo laser (`ui/lumi_preview.gd`), curated swatches + advanced HSV (80 parts), locked parts with how to unlock, randomize, reset to preset, 5 saved looks. Opened from Cosmetics ("Character Builder") or `--lumi-builder`.
+- Done: unlocks over the whole game (Lumi Level, hub level, designs, Collection finds, Requests, achievements, a few parts/seeds buys). Saved in flags (`lumi_style`, `lumi_looks`, `style_bought`); round trip covers them. Tests: `tests/test_lumi_style.gd`. Dev: `--lumi-random=SEED`, `--lumi-set=slot:value,..`, `--lumi-look=N`, `--lumi-parts-all`, `--lumi-builder`; lineup `scenes/style_lineup.tscn`.
+- Next: the hero helper models `acc_antenna`, `acc_halo`, `acc_icon_heart`, `acc_medkit`, `acc_watering_can`, `acc_firefly`, `acc_drone` and a `side` material; ui2 hosts `LumiBuilder` in the Locker.
 
 ## Update: three currencies (wt/money, Nov 7)
 - Done: exactly three currencies, Cubes / Parts / Seeds, from one source of truth (`data/currencies.json`, `core/currencies.gd`). Retired ids (bolts, sheet metal, plastic, glass, Data, compost, tokens, trinkets, Maker Fragments; Starseeds in the profile) are a legacy alias layer in `GameState.add_currency/get_currency/spend/can_afford` (fixed rates, one debug warning per id); `Currencies.fold()` for cost dicts, `GameState.can_afford_all/spend_all/add_all`. Every caller and data file uses the new ids (test_money checks the data files).
@@ -53,6 +106,16 @@ Owner playtest #1: "SIMPLIFY GAME". The workbench is seven tabs (Lumi, Bots, Hub
 - Hooks (tagged `[scope]`): `scenes/slice.gd` (adds the Telescope node, keeps `scope_from_memory`), `ui/hub_panel.gd` (section), `systems/codex.gd` (category), `data/research.json` (node), `data/codex.json`.
 - Dev: `--scope` (built free), `--scope-sample` (a sample visited world with no save), `--open=scope [--scope-pick=N]`, `--scope-open` (dome open), `--scope-look=N` (focus point), `--scope-debug`. Tests: `tests/test_remote_progress.gd`; the save round trip checks the telescope, its Codex entry and a care package in the profile.
 - Next: when "home" lands, pass `planet_id` on the profile world records so the five planets match by id; when "extras" lands, make its idle gains call `Offline.compute` too (remote progress only covers non-current worlds).
+## Update: keepsakes (wt/extras)
+- Done: one hook in `scenes/slice.gd` (`ExtrasDirector.attach`, `systems/extras/`), Pause > **Keepsakes** panel (`ui/extras_panel.gd`; LB/RB tabs, B closes).
+  - **Radio** (`radio.gd`, `data/radio.json`): a valve radio on the workbench (E opens the Radio tab). It plays the composed planet tracks from wt/sound (`Audio.play_track` / `stop_track`, titles from `Audio.music_track_title`; a restored planet plays the restored variant), looping with no gaps until "Back to mood music". 14 songs: Verdance's two from the start / 10 hexes, each planet's first on landing there (`Audio.get_planet_theme()`), the rest at that planet's base level 3 / 5, Homecoming with the Cradle. Unlock toast. `flags.radio` {unlocked, song, planets}.
+  - **Photo album** (`album.gd`): a "before" picture on first arrival, "after" pictures at half clean / 25% Thriving / base 5, from one fixed camera over the base (384x216 one-shot SubViewport, no SDFGI/SSR/volumetrics, `texture_get_data_async` read-back, JPG on a WorkerThreadPool task). Files in `<save_dir>/album/slot_N/` (per profile and slot; `user://extras_scratch` under --fresh). Before/after slider per district + photo-mode thumbnails. `flags.album`.
+  - **Robot nursery** (`nursery.gd`): Retire (Builder tab or the Nursery tab, press twice) for Mk I-II robots or ones in service >= 1 h: +2..8 Parts, they become caretakers in a fenced nursery garden at the base (potter, water the beds, wave at Lumi, E to say hi), keep name, parts and trait. +1% plant growth each, cap 6% (`CradleMode.stat_mod`). `flags.nursery`, `flags.nursery_service`.
+  - **Welcome back** (`welcome_back.gd`): small card instead of the toast: away time, fleet and what it did, cubes, plants grown/bloomed, air. Idle maths is **`Offline.simulate(world_state, seconds, junk_left, scrubbers, filter_per_s, garden)`** in `core/offline.gd` (cap CAP_S = 8 h and junk left; counts `offline_units` so nothing pays twice; `Offline.apply()` credits once). Plants grow offline only while watered and bloom once.
+  - **Seed of the Week** (`weekly.gd`, `weekly_run.gd`, `data/weekly.json`): ISO week (UTC) -> seed, world type, one of 7 twists (Scoopies Only, Dry Spell, Heavy Junk, Storm Week, Supply Rush, Long Nights, No Haulers). Clean 30 hexes, timed in play time; best time/score and paint chips in `<save_dir>/weekly.save`; runs in save slot 9, main save untouched (round-trip checked). Chips unlock two Garden Mode decorations (`weekly_pennant`, `weekly_arch`, `needs_chips`).
+  - 7 achievements, 2 goals; strings translated in all six languages.
+- Dev: `--extras=radio|album|nursery|weekly`, `--extras-welcome[=H]`, `--album-snap=before+m50`, `--nursery-sample=N`, `--radio-all`, `--radio-play=ID`, `--weekly`, `--extras-cam=x,z,yaw,dist,pitch`, `--extras-nohud`. Tests: `tests/test_extras.gd`; round trip: `tools/extras_roundtrip.gd`.
+- Next: tune the weekly goal (30 hexes) with an autoplay run of the challenge; a radio prop in frontier bases is on the same bench (check it renders there); the welcome card could list research finished offline.
 
 ## Update: visual QA pass (wt/vqa)
 - Done: Cradle Returns towers are premium curtain-wall glass (`art/shaders/tower_glass.gdshader`: metres-in-UV panel grid, hair-thin satin mullions, spandrels, per-panel tint/tilt, a few lit offices at night) with satin trims instead of white fins and floor bands; glass podiums and pavilions; the apron's dark band was smoothed normals across 30 m faces (`_arc_mesh` now flat); pale cool paving; lush lawn green via biome_tint.
@@ -76,7 +139,15 @@ Owner playtest #1: "SIMPLIFY GAME". The workbench is seven tabs (Lumi, Bots, Hub
   - Collection/Codex: first sightings (in view, near Lumi) unlock the new Codex **Animals** category (21 entries, `flags.fauna_seen`); photos in photo mode (`PhotoMode.camera()`, `captured`) add `pic_<species>` trinkets (source "Animal Photos", `flags.fauna_photos`). Achievements: A Friend in Old Town (pet a cat), Best Friends (adopted), Oh, Deer, Clear as Day (fish in a clean lake), Naturalist (10 species), Wildlife Photographer (6 photos). Goals: "Pet a stray cat" after hex_7, "Spot a deer" after hexlv_4x3; the autoplay bot pets a cat once.
   - Persisted: `flags.fauna_seen`, `fauna_photos`, `fauna_cat` {name, coat, hub}, `seen_deer`, `seen_fish`; stats `cats_petted`, `wildlife_petted` (any animal petted; the Pixel design reads it), `animals_spotted`, `animal_photos`. Save round trip checks them and that the adopted cat is back at the base.
   - Dev: `--fauna-look=SPECIES[,dist,pitch,yaw]` (puts Lumi next to one, frames it with its own held camera, hides the HUD and particle bursts, skips Bloom Core beat cinematics; the subject holds still unless `--fauna-free`; `--fauna-gap=M`, `--fauna-coat=N`, `--fauna-lerp`, `--fauna-fov`), `--fauna-pose=sit|groom|sleep|pet|graze|fly`, `--fauna-dense`, `--fauna-lakes` (clean every lake), `--fauna-report[=S]`, `--fauna-debug`. Tests: `tests/test_fauna.gd`.
-- Next: per-animal occlusion for photo credit; songbirds perching on trees/roofs; cat pet animation on Lumi's side (hand reach); more frontier ambience (seal colony sounds, desert insects at night).
+- Next: per-animal occlusion for photo credit; seal colony sounds; a female mallard and fawns (variety); robots stepping round animals.
+
+## Update: wildlife pass 2 (wt/fauna2)
+- Done (after the owner's "way more real and cuter" note): real models. The cat is sculpted and rigged in Blender (`art/models/fauna/build_cat.py` -> `cat.glb`: seamless remeshed skin, big glossy eyes, tabby/tuxedo/calico coat masks, actions Idle, Walk, Trot, Sit, Groom, Pet, Sleep, Stretch) and drawn by `fauna/fauna_rig.gd` (`FaunaRig`: AnimationPlayer driven from the Fauna state, head turns to look, eyes close asleep and when petted, fur shader + fur shells within 9 m, `art/shaders/fauna_fur.gdshader`, `fauna_eye.gdshader`). Deer, stags, red/fennec/arctic foxes use Quaternius's CC0 animated animals (`art/vendor/quaternius`, smoothed/recoloured by `build_quaternius.py`; walk, gallop, graze, idle). Birds (pigeon, sparrow, robin, gull, heron, crane), the mallard, rabbit, seal and fish are sculpted in Blender as smooth parts (`build_small.py` -> `<id>_parts.glb`, perched/flying poses) and assembled into the MultiMesh vertex-shader rig (`FaunaModels.sculpted`), with feathered two-part wings that flap with a lag and an upstroke fold. Rebuild: `blender -b --python art/models/fauna/build_<x>.py` (needs `apt-get install -y python3-numpy` for Blender's glTF exporter). The procedural builders remain for frogs, lizards, turtles, bees and as a fallback.
+- Done: placement rules (`fauna/fauna_space.gd`, `Fauna.spot_free`): body radius per species, no overlap with other grounded animals (where they stand and where they're heading) and a gentle push-apart while moving; a prop occupancy grid stamped from the world's prop-sized meshes (lamp posts, hydrants, utility boxes, crates, pots, barrels...; rebuilt every 90 s), a physics shape query on the static layer (anything with a collider), fences round parking/vacant lots, the hub yard (cats excepted) and its fence, outposts and buildings. Spawn spots, wander/flee targets, bird landings and the periodic re-check all use it.
+- Done: songbirds perch (`St.PERCH`): robins (60%), sparrows, pigeons and gulls sit on lamp-post tops, roof crowns and trees (`FaunaSpace.perches`, the top of tall slim meshes), look about, sing, and now and then drop to the ground or hop to another perch; flushed birds often fly up to one.
+- Done: Lumi pets with a claw reach and stroke plus a head tilt (`PatchModel.pet_reach`).
+- Done: frontier ambience (`fauna/fauna_ambience.gd`, synthesized in `FaunaSounds`): desert wind and day insects (Dust Flats, dune wilds), far gulls and creaking sea ice (Frozen Port, frost wilds), water lapping and heron calls (Sunken City).
+- Dev: `--fauna-look=wide[,dist,pitch,yaw]` frames the busiest patch of animals near Lumi; every `--fauna-look` camera is placed with ray/sphere casts and building checks and pulled in front of a hit, never inside a wall. `res://tools/fauna_lineup.tscn -- --models=deer,seal,... --out=PREFIX` renders model close-ups on their own (opengl3 is enough). Tests: `tests/test_fauna_space.gd`.
 
 ## Update: visual QA pass 2 (wt/vqa2)
 - Done: frontier junk distance LOD (`planet/junk_lod.gd`): near/far MultiMeshes per junk group, the near look unchanged, far meshes welded + simplified (the 10k-triangle plastic crate whose importer LODs stall drops to 124), packed `visible_instance_count` buffers. Medium spawn views: Sunken City 97.6 M -> 18.9 M primitives, Frozen Port 131 M -> 25.4 M (docs/PERFORMANCE.md). `--no-junk-lod` for A/B.
@@ -415,3 +486,107 @@ solar-system orrery that zooms into a planet's globe to pick the hub (wt/home).
 Music (owner, Nov 7): music is frozen as-is; do not spend more time composing. The owner may source different
 music later, so keep tracks swappable (Audio.play_track ids). SFX should stay satisfying (pickup, bale, sale already
 tuned in the first-hour pass); no new SFX work unless a bug.
+## Update: restored ground turns green (wt/green)
+- Root causes of "restored districts look brown": (1) the Poly Haven grass ground textures
+  (sparse_grass / leafy_grass) are olive-brown and tan, so even life 1.0 rendered tan under AgX;
+  (2) the plant files are whole rows of variants (and their LOD copies) merged into one mesh, then
+  decimated to ~1500 tris, so each slot showed a thin smear of life-size 20-40 cm clumps; (3) most of
+  a city hex is road, which never changed; (4) only ~15-45 plant slots per 10 m hex.
+- `plants/meadow.gd` + `art/shaders/meadow.gdshader`: living ground cover placed once over lots,
+  sidewalk fringes and kerb verges (~8-11k grass tufts, ~2-3k flower clumps, ~3.4k row sprouts at
+  High), grown entirely in the vertex shader from the field's life texture (R life, G hex level, B row
+  angle) at the same warped position as the ground, so the edges follow HexField.border_warp and
+  nothing is rebuilt on the CPU. Thriving hexes add shrubs, ferns and small trees (real plant models).
+  Planted = dark tilled soil in furrows (ground_pbr) with sprouts on the crests; Growing = young grass
+  patches; Sustained = closed sward + flowers; Thriving = dense meadow, flower carpet, shrubs/trees.
+- Ground: grass recoloured to rich greens (`grass_mat`), tilled rows, restored streets get clean
+  grey asphalt, grass verges from the kerbs and moss in cracks. Life texture is RGBA8 (filterable
+  everywhere) and uploads once per frame.
+- Garden plants: one variant per slot (`plants/plant_parts.gd`), `plant_scale` 1.4 in plants.json.
+  Butterflies 1.8x.
+- Dev: `--restore=N[,level]` / `--restore-ramp` / `--restore=lake[,level]` (real planted slots,
+  life, part-watered plants, Drips + a Seedling), `--green-cam=hid,dist,pitch,yaw`,
+  `--garden-report[=S]`, `--no-meadow`. `--future=N` now uses the same realistic growth.
+- Ledger intercepts: compact top-left card, short, no footer, hidden in Command view, photo mode,
+  cinematics and with the HUD hidden (the relay cinematic's own lines still show). Header text is
+  now "INTERCEPT // LEDGER" / "LEDGER // AMENDED" (new msgids: re-run tools/extract_strings.py after
+  merging with the translations branch).
+- Duck egg ("Duck on Duty") used the merged fire_hydrant file (clean + aged hydrants plus caps):
+  now one aged hydrant. The --fauna-look=duck shot needs a green shore: use `--restore=lake,5`.
+- Next: per-variant garden batches raise draw calls (~130 batches with all species); a merged
+  per-chunk garden mesh would cut it. Grass density by quality preset should be checked on real GPUs.
+
+### Planet Rime environment (wt/p_rime)
+- Done: `planet/planets/rime/` (`RimeEnv`, entry `apply(world, field, kind)` plus `dev_hub`, `prepare_field`,
+  `dress_view`), registered in `data/planets.json` (read by `planet/planets/planet_envs.gd`). Own sky shader (black-blue
+  thin air, two small distant suns, stars by day, ringed gas giant, faint aurora), ice heightfield to the crater rim
+  (glassy ice, pressure ridges + slabs, glowing crevasses, drifts, mesas), borehole + headframe, core-drill
+  derricks, frozen geysers, ice spires/arches; restored: hot springs thaw, moss, flowers, ice-lanterns, greenhouse
+  domes, warm borehole. Junk set `rime_biome.json`; field ice sheet via `ground_pbr` `frontier_fx.w`.
+  Dev: `--planet-env=rime` (`--rime-cam`, `--rime-nohud`, `--rime-restore`). Shots: screenshots/planet_rime/.
+- Next (home): call the entry points when a Rime district loads; swap the fallback suns for
+  `SolarSystem.suns_for("rime")` (already read when `systems/solar_system.gd` exists).
+
+## Update: loading screen, readable subtitles, a better ark and pod (wt/intro2)
+- **Loading screen** (`ui/loading_screen.gd`, autoload `Loader`; `scenes/boot.tscn` is the main scene):
+  covers startup, New Game / Continue, back to title, rocket hub travel and world travel. Threaded
+  load (`ResourceLoader.load_threaded_request`), then the scene is instanced (the district still builds
+  synchronously in `_ready`, ~9 s headless: the bar holds at "Setting the scene"), then
+  `systems/shader_warmup.gd` draws every spatial material of the new scene once on tiny quads in front
+  of each viewport's camera for 5 frames, then it fades out. A Pixel-design Lumi (red/white, pink-red
+  glow) hovers along the bar scooping a line of garbage into its hopper.
+  Use `Loader.goto(path)` / `Loader.reload()` instead of `change_scene_to_file` / `reload_current_scene`.
+- **The purple screen** was the project's default clear colour, `Color(0.55, 0.45, 0.7)`, visible while
+  the first scene loaded and compiled with nothing drawn. Clear colour and boot splash are now
+  near-black (no splash image) and the loading screen draws from the first frame.
+- **Subtitles** (`ui/subtitles.gd`): one line at a time, bottom centre on a dark pill. Each line is
+  fully visible for 55 ms/char + 1.2 s (min 2.5 s), then fades, 0.45 s gap; long lines split into
+  one-line chunks at sentences/clauses. WREN, narration, cinematic captions (`Cine.caption`) and the
+  Ledger (`LedgerUplink` now wraps the same line, red LEDGER tag) all use it. In cinematics (HUD
+  hidden) it drops into the letterbox bar above the overlays. Glitches are purposeful (owner): readable
+  text only flickers/scrambles for ~150 ms as it appears; `[glitch]...[/glitch]`, `[REDACTED]` and `█`
+  spans glitch heavily the whole time; hostile Ledger lines get short whole-line jitter bursts.
+- **Intro** (`story/intro.gd`): all lines in `Intro.lines()`; every beat waits for its lines; slower
+  camera moves and ship glides; ~115 s unskipped (was ~55). Snappy wake-up blink flutter. The intro
+  waits for the loading screen before starting. `--intro` prints the tightest subtitle margin.
+- **The ark** (`story/cradle_ship.gd`, procedural, same API + `release_pod(k)`): broad flattened
+  teardrop hull, layered upper deck with a big glass seed-vault dome and garden, keel with a six-pod
+  rack, spinning greenhouse ring, two solar wings, five-bell engine cluster, chasing running lights.
+  The old Blender glb (`art/models/cradle`) is no longer used.
+- **Escape pod** (`story/escape_pod.gd`, `Intro.build_pod()` delegates): one lathed shell with the door
+  cut out of it (no overlapping faces), jamb, cabin lining, porthole, beacon; `open_door()` = seal pop
+  with steam from the seams, gravity drop into a ramp, settle, warm light spill on the ground.
+- **Pod = Seedglider family** (owner): ten-facet shell with sharp chines, swept graphite fins with
+  tangerine tips and orange running lamps, cyan glass porthole, thin cyan line, the ship palette;
+  uses `art/shaders/ship_paint.gdshader` (wt/ship) when present, else clear-coat StandardMaterial3D.
+  The ark's cargo rack holds six of these pods; the intro's pod leaves rack slot 2 exactly where it
+  hung (`CradleShip.pod_xform(k)`), falls, lands in its crash pose and opens with a lean-corrected ramp.
+- **Crash site** (`story/crash_site.gd`): scorched furrow along the approach, thrown-up clods, two hull
+  shards, the pod sunk and leaning, a light smoke plume (one CPUParticles3D), a torn panel with
+  flickering wiring, spark bursts and stuttering seams. Mends with upgrades (no new save state):
+  first upgrade = sparks stop, panel bolted back, faint smoke; 4 upgrade levels = repaired, clean paint,
+  calm beacon (`CrashSite.stage_for_upgrades()`).
+- **Playtest #2** (owner): Space / pad A pauses and resumes the intro and the Bloom Core memories
+  (`story/story_pause.gd`, freezes Engine.time_scale); Esc / B skips. The Codex has a "Watch the story"
+  button: `Intro.replay()` plays the whole intro with a temporary pod and puts Lumi, the camera and the
+  real crash site back afterwards (no save change). Repair stages read clearly: torn panel with live
+  wiring, then a bolted tangerine-studded patch, then a clean plate with a cyan line, a calm cyan halo on
+  the ground and blinking fin lamps.
+- Previews: `res://scenes/story_preview.tscn -- --view=ark|pod|crash|loading|introframe --out=...`.
+- Tests: `tests/test_subtitles.gd` (rule for every intro line, chunking, glitch spans, one line at a time),
+  `tests/test_crash_site.gd` (pod parts, door angle, repair stages).
+- Next: split the district build across frames so the loading bar keeps moving during it; pre-build
+  the intro's SpaceStage behind the loader (its first frames compile on the intro's black fade now).
+
+## Update: first minutes, objectives and HUD readability (wt/onboard, Nov 7)
+- Done: **why Lumi cleans**. Right after the intro WREN gives the plan in four short lines (`data/objectives.json` "brief"): pod and relay dead, junk pressed into cubes powers the base recycler, power rebuilds the base and builds robots, green charges the Bloom Core so Lumi can call the Cradle. Then one **story objective** at a time on a card above the checklist (`story/objectives.gd`, `ui/objective_card.gd`), each with a one-line why: Power the base: sell 3 bales > Clean a hex > Build your first robot > Send your robot to work > Build a Haul Bug > Plant the first seed > Rebuild the base: level 2 > level 3 (opens the Requests board). Goal rows fold while an objective runs (G shows them). Old saves skip the brief and catch up silently.
+- Done: "Clean this hex completely" is gone from the checklist (its last step is the upgrade); the **Clean a hex** objective outlines its target hex on the ground (`story/objective_hex.gd`): marching-squares contour of the warped hex (`HexField.border_warp`, so it follows where the junk ends), a thin additive line with a faint inner wash and a slow running light, cyan warming to green as it clears, and the hex's % floating above. The last 30% gets the amber pointer at the remaining pieces.
+- Done: the detector's "SIGNAL %" reads **BURIED PART** and stays quiet during the restart checklist; the first time it picks up a part WREN explains it (plus a hint toast).
+- Done: **HUD readability**: HUD theme with a heavier font and a denser halo (`ui/hud_readable.gd`); key hints are a dark pill with key caps at 15 px (`ui/key_hints.gd`), shown for the first 10 min / during the checklist / Full HUD, and the full key list while Tab is held away from the workbench (the "needs a workbench" toast shows once) and in the pause menu; notifications get a soft fading backing; the context line is 14 px and brighter.
+- Done: the **Requests board opens later**: base level 3 or 45 min of play (`data/events.json` `unlock_hub_level` / `unlock_play_s`, `Contracts.unlocked()`), with a WREN line and toast; the workbench tab is hidden until then. Saves that already used the board keep it.
+- Dev: `--objective=N`, `--objective-clean=F`, `--near-part`, `--hints-full`, `--requests-unlocked`, `--detector-on`. Tests: `tests/test_onboard.gd`; the round trip checks the objective flags.
+- Done (playtest 2): a **purple waypoint** (`story/waypoint.gd`: a soft light beam on the target, a ring at its foot, a short flowing chevron trail on the ground from Lumi) points at the current objective's place (the scale with a bale in hand, the workbench for builds and base levels, the greenhouse once WREN hears the seed tin) and, after the objectives, at the current goal's (the next memory shard or the hex hiding it, the scale, the workbench, a buried part). "Read a memory shard" is now "Find a memory shard". The hex Lumi stands in gets a dimmer laser border (same outline as the objective's; contours are cached), replacing the straight amber focus line in the ground shader. The HUD context line always shows the hex % (or "OLD TOWN BASE" on the hub). The "LM-1 online" wake toast is gone (the brief and the card replace it).
+- Done (owner story direction): **WREN needs a signal**. In the crash WREN (the Cradle's caretaker AI, Lumi's friend) sends one last two-line message that breaks up (`[glitch]` tag for the subtitle component), then is silent until the **Signal Tower** in the yard is rebuilt (`story/signal_tower.gd`, `data/signal_tower.json`, at (3.4, -6.6), E to build/boost; tiers cost 50 cubes / 900 + 60 parts / 6000 + 300 / 30000 + 1200). Tier = relay signal 25/50/75/100% (HUD district block: "WREN SIGNAL"), WREN's clarity (`Wren.stage()`: tier 1 crackly, 2 clearer, 3+ clear) and releases story lines she couldn't send (`Wren` gate between `line_started` and the new `line_out`; up to 6 wait in `flags.wren_backlog`). Chatter (non-important `say()`) is a third as likely and at least 150 s apart. Objectives "Rebuild the signal tower" (2nd) and "Boost the signal tower" (after base 2). Old saves get tier 1-3 from their old WREN stage. The autoplay bot builds it. Dev: `--signal-tower=N`.
+- Open: intro2's crash cinematic still has its own WREN wake lines (story/intro.gd `_wake`); they should shrink to (or become) the one last message. Camp: please keep (3.4, -6.6) free (~3 m around) for the tower.
+- Note for "buddy": the outline is the base layer; the light-bot's per-piece highlighting goes on top.
+- Next: the objective lines name the "Bots" and "Hub" workbench tabs; if ui2's workbench rework renames them, update `data/objectives.json`.

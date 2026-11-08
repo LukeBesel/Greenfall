@@ -454,3 +454,7 @@ func _build() -> void:
 	cs2.shape = cy
 	cs2.position = Vector3(-1.55, 0.85, -0.3)
 	sb.add_child(cs2)
+	var cs3 := CollisionShape3D.new()  # [world2] the blower motor on the side
+	cs3.shape = PropColliders.box_shape(Vector3(0.7, 0.55, 0.5))
+	cs3.position = Vector3(1.35, 0.62, 0.15)
+	sb.add_child(cs3)

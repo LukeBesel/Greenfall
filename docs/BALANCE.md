@@ -459,6 +459,18 @@ Data changes (early-game values only):
   the fountain is 4, a bench 1.5, a path 0.2). Decorations refund in full when picked up.
 
 
+## Homeward pacing (wt/home, Nov 7)
+Owner target: the whole campaign 25-40 h for a human, every planet shorter than Verdance with its own twist.
+- Verdance to "The Cradle Answers": ~15-22 h human (unchanged, see above).
+- The four planets start from the Heirloom kit and the carried rocket tier (warp hops from the start) and
+  have smaller restoration targets (data/homeward.json): Ochre 110 Thriving + 1 base 5 (~2-2.5 h),
+  Tidewell 140 + 2 (~2.5-3 h), Rime 160 + 2 with Long Nights and Thin Soil (~3-3.5 h), Anvil 200 + 3
+  with Heavy Junk (~3.5-4.5 h): ~11-13.5 h, so ~27-36 h in all. *(assumption: scaled from the new-world
+  opening measured in wt/late, base 4 at ~55-80 game min; not measured end to end yet)*
+- Drive costs: Mk V 2.5M cubes + 300 parts is paid on Verdance late game (a Cradle-era stipend covers it in
+  well under an hour); Mk VI 1.2M + 500 parts on Ochre or Tidewell, around their base 5; Mk VII 8M + 2,000
+  parts back on Verdance after the system is restored (the Seed Ark gifts and four planets of stipends).
+- Each restored planet: a relic and one Heirloom pick (four picks over the campaign, so later planets speed up).
 ## Three currencies (wt/money, Nov 7)
 
 Owner: "mostly focus on fewer currencies ... keep it extremely low like 3 or less." The game now has
@@ -575,3 +587,92 @@ calls it and scales the result; nothing is duplicated.
   here into more cubes there. It is a nudge you can watch, not an income source.
 - **Telescope unlock:** base level 4, or the Observatory Optics research (Robotics tier 6, 500 Data). Cost
   6000 cubes + 40 parts (bolts until the money rework adds a parts currency). Tests: `tests/test_remote_progress.gd`.
+
+## Slow start (wt/pace, Nov 8)
+Owner playtest #2: the start was far too fast and strong (4 upgrades after two bales, auto-cubing
+and robots within minutes). Lumi now starts small and earns his tools (core/pace.gd).
+
+Start: chest 12 (was 30), scoop 3 pieces/s (was 8), 1 piece per pulse, small junk only, no bale
+press. Before the Baler the chest is emptied loose into the trash bin (camp's TrashBin.deposit,
+else the scale pad) for 1.0 x junk value (no Pure/Perfect/sell bonuses). Lumi Level cube rewards
+were the hidden early flood (+85 at level 2): cap_cubes_base 30 -> 8, floor 15 -> 5 per level.
+
+| Upgrade | Cost | Notes |
+|---|---|---|
+| Baler | 100 | unlocks bales (stat baler_unlocked) |
+| Lift Strength | 50, 500 | Lv1 medium (jerrycans, crates), Lv2 large (tyres, TVs, fridges); stat lift_class |
+| Scoop Size (multi_lock) | 70 x2.4, max 4 | +1 piece per pulse, no longer gated |
+| Compartment Size | 45 x1.55 | +5 chest |
+| Scoop Speed | 45 x1.6 | +40 % per level |
+| Carry Stack / Compactor Pressure | 120 / 150 | need the Baler |
+| Signal Finder | 400 | needs Detector Coil 1; Rare Part Signal (violet beam) event only after it |
+| Magnet Arm | 1500 x1.9 | Scoop Width 3 + Lift 2 + base 2; pulls 2 + 1/level loose surface pieces, never heaps or heavy ones |
+| Auto Compactor | 2500 | Auto-Baler research + Compartment 6 |
+
+Research: Salvage Logic (1000, base 2) unlocks Scoopie / Haul Bug / Skimmer; Conveyor (3000),
+Auto-Baler (4500) and Recycler need base 2. Upgrades take `requires_research` / `min_base_level`.
+Events take `requires.flag` (Pace.sync_flags: has_baler, has_lift_medium, has_lift_large,
+has_signal_finder) and `enabled`; bale requests need has_baler. Supply Drop and the Ledger's seed
+drops are off (no spontaneous reward crates). Old saves (v < 3) get Baler, Lift 2 and
+data/patch.json old_save_grant (Compartment +4, Scoop Speed +5).
+
+Autoplay, game minutes at --time-scale=4 (Old Town; before = 5db7ed8):
+
+| Milestone | Before | After | Target |
+|---|---|---|---|
+| First upgrade | 0.3 | 1.3 | 1.5-3 |
+| Upgrades bought by the 2nd bale | 1 (5 by 0.7 min) | 4-8 incl. Baler + Lift 1 (0-1 affordable, purse 28-84) (0 affordable then) | ~1 after two bales |
+| Baler / first bale | (no Baler) 0.3 | 3.5-4.9 / 3.6-5.0 | 4-6 |
+| Large lift | (always) | 9.3-9.8 (Lift 2 now 500, was 400 in these runs) | 10-15 |
+| First hex | 1.3 | 5.7-6.8 | |
+| First seed (seed tin) | 13.0 | 16.1-21.2 | 18-22 |
+| Base 2 | 18.0 | 25.6-31.1 | |
+| First robot | 6.3 | 37.2 (Salvage Logic 2500) | 35-45 |
+| Conveyor / Auto-Baler station | 32.0 / 35.2 | Conveyor research starts 42-50, station after | 35-45+ |
+
+Run-to-run spread is about a minute early on. Without world2's HexField.piece_size the start ring
+can still hold large models; Pace counts those as medium so the first hexes can be cleaned.
+## World2: the district reads covered (wt/world2, Nov 7)
+
+Owner: "the only clear areas should be what you or bots pick up." Junk gen 2 (new games; saves without
+`junk_gen` keep gen 1 and radius 3): Old Town's field is radius 4 (55 junk hexes, was 33), no mid-road
+sparsity, a full ring around the base, 40% of landfill junk between the heaps, and the streets of
+building-blocked hexes plus the hub hex outside the yard belong to the nearest junk hex. Every hex keeps
+gen 1's junk volume: pieces are smaller (`vol_scale`), and one pickup (Lumi's beam or a robot's scoop)
+takes the nearby little cluster along (`HexField.hex_cluster`, ~1/vol_scale pieces), so bales, cubes and
+hex flips pace as before. Past the field, `planet/far_junk.gd` lays static junk and paper to 125 m.
+
+Generation (seed 4471): 13.2k pieces / 13.3k volume (radius 3, gen 1) -> 25.7k pieces / 21.9k volume
+(radius 4, gen 2). Coverage (a piece within 1 m of open ground, `tests/test_junk_coverage.gd`): roads
+56% -> 92%, the ring around the base 38-59% -> 86-90%, nothing bare (> 3 m from junk).
+
+First-30-min autoplay (`--fresh --autoplay --time-scale=8 --quit-after=300`, game minutes, before ->
+after; the after bot first detoured to dig a buried part, hence the late first bale):
+
+| Milestone | Before | After |
+|---|---|---|
+| First bale / sale / upgrade | 0.3 / 0.4 / 0.4 | 1.3 / 1.6 / 1.4 |
+| First hex clean | 1.1 | 2.8 |
+| First research done | 5.3 | 5.8 |
+| First robot (Scoopie) | 6.4 | 6.0 |
+| First Haul Bug | 6.9 | 6.0 |
+| Seed tin | 13.9 | 11.4 |
+| Base level 2 | 13.0 | 16.9 |
+| First hex Sustained (lv 4) | 18.2 | 16.5 |
+| First hex Thriving (lv 5) | 25.1 | 24.9 |
+| First Skimmer | 25.2 | 15.6 |
+| At ~36 min: hexes clean / goals / earned | 22 / 49 / 42.5k (38 min) | 21 / 48 / 38.6k |
+
+Without the cluster pickup (volume kept, more pickups) the same run was 15-35% slower (base 2 at 18,
+first Thriving at 34.5); with gen-2 counts but no volume scaling the economy would run ahead instead.
+Solid props add bot "stuck escapes" (6 -> 31 in the run; the bot steers straight): no robot got stuck.
+
+Playtest #2 run (heaps now solid for Lumi and robots, `--save-dir` isolated): first robot 8.6, base 2
+16.6, first Thriving 32.2, 15 hexes / 44 goals / 29.8k earned at 34.7 min. Scooping heaps from the edge
+costs time on landfill hexes; the "pace" helper is re-pacing the start anyway (slower by design).
+Single autoplay runs vary a lot (part luck, the bot digging first); compare several before tuning.
+
+Render cost at the start view (lavapipe, `--perf`, primitives / draw calls): Low 9.71M / 1848 (gen 1)
+-> 6.02M / 1739 (gen 2, after the Low budget: tiny litter items at 24 tris and 14% of the carpet,
+half the far layer in one batch per model); High 20.6M -> 27.4M before the far-layer cut (estimator
+after it: 15.4M -> 19.9M, Medium 12.5M -> 16.8M).

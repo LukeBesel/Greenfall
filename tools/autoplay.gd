@@ -84,9 +84,12 @@ func _init(p_world: Node) -> void:
 	_start_t = float(GameState.stats.get("time_played", 0.0))
 	Research.now_override = 1000.0
 	_hook(EventBus.cube_made, func(_i: Dictionary) -> void: _mark("first_cube_s"))
-	_hook(EventBus.cube_cashed, func(_v: BigNum, _p: Vector3) -> void: _mark("first_cashin_s"))
+	_hook(EventBus.cube_cashed, func(_v: BigNum, _p: Vector3) -> void:
+		_mark("first_cashin_s")
+		_pace_cashed())  # [pace]
 	_hook(EventBus.upgrade_bought, func(id: String, lv: int) -> void:
 		_mark("first_upgrade_s")
+		_pace_bought(id, lv)  # [pace]
 		_progress()
 		_log.append({"t": _now(), "event": "upgrade", "id": id, "level": lv}))
 	_hook(EventBus.hex_cleaned, func(h: int, _p: Vector3, _b: BigNum) -> void:
@@ -254,7 +257,7 @@ func update(delta: float) -> void:
 		_escape_t -= delta
 		_move = _escape_dir
 		return
-	if not (_do_tin(p) or _do_bench(p) or _do_shard(p) or _do_deliver(p) or _do_pickup(p) or _do_dig(p) or _do_pet(p) or _do_garden(p)):
+	if not (_do_tin(p) or _do_bench(p) or _do_shard(p) or _do_dump(p) or _do_deliver(p) or _do_pickup(p) or _do_dig(p) or _do_pet(p) or _do_garden(p)):
 		_do_clean(p)
 	_watch_stuck(p, delta)
 
@@ -321,6 +324,9 @@ func _do_bench(p: Patch) -> bool:
 		return false
 	if p.global_position.distance_to(BENCH_POS) < 3.0:
 		_bench_trip = false
+		var cp: Camp = Camp.of(world)  # [camp] fix the broken bench first (the player presses E once)
+		if cp and not Camp.bench_ok():
+			cp.repair_now()
 		_manage(p)
 		return false
 	_set_task("bench")
@@ -408,6 +414,82 @@ func _do_deliver(p: Patch) -> bool:
 	_set_task("deliver")
 	_go(p, world.depot.global_position, 0.6)
 	return true
+
+
+## [pace] Before the Baler: roll to the trash bin (or the scale pad) when the chest is full, or
+## when there is nothing left to scoop.
+func _do_dump(p: Patch) -> bool:
+	if not Pace.dump_allowed() or p.compartment.is_empty() or not p.carried.is_empty():
+		return false
+	var full: bool = p.compartment.ratio(p.capacity()) >= 0.85
+	if not full and not (_task == "idle" or _task == "dump"):
+		return false
+	_set_task("dump")
+	var bin: Node3D = Pace.trash_bin(p.get_tree(), world.depot.global_position)
+	_go(p, bin.global_position if bin else world.depot.global_position, 0.6)
+	if _task_t > 60.0:
+		_set_task("")
+		return false
+	return true
+
+
+var _pace_cash_n: int = 0
+
+
+func _pace_cashed() -> void:
+	_pace_cash_n += 1
+	if _pace_cash_n == 2:
+		_report["pace_upgrades_at_2nd_bale"] = int(GameState.stats.get("upgrades_bought", 0))
+		_report["pace_affordable_at_2nd_bale"] = _pace_affordable()
+		_report["pace_cubes_at_2nd_bale"] = GameState.get_currency("cubes").to_float()
+
+
+## Distinct upgrades the purse could buy one level of right now.
+func _pace_affordable() -> int:
+	var n: int = 0
+	for id: String in Economy.upgrade_order:
+		if Economy.upgrade_defs[id].get("tab", "") == "patch" and Economy.is_unlocked(id) and not Economy.is_maxed(id) and GameState.can_afford("cubes", Economy.upgrade_cost(id)):
+			n += 1
+	return n
+
+
+func _pace_bought(id: String, lv: int) -> void:
+	match id:
+		Pace.UP_BALER:
+			_mark("baler_s")
+		Pace.UP_LIFT:
+			_mark("lift_%d_s" % lv)
+			_skip_hex.clear()  # heavy pieces are fair game now
+			_ignore_piece.clear()
+		"signal_finder":
+			_mark("signal_finder_s")
+		"auto_compactor":
+			_mark("auto_compactor_s")
+
+
+## The next slow-start unlock worth buying now ("" = none): the Baler first, then Lift Strength.
+func _pace_upgrade() -> String:
+	for id: String in [Pace.UP_BALER, Pace.UP_LIFT]:
+		if Economy.upgrade_defs.has(id) and Economy.is_unlocked(id) and not Economy.is_maxed(id):
+			if GameState.can_afford("cubes", Economy.upgrade_cost(id)):
+				return id
+			if id == Pace.UP_BALER:
+				return ""  # save for the Baler
+	return ""
+
+
+## [pace] The helper / automation research a planner works toward once the base allows it.
+func _pace_research_next() -> String:
+	for id: String in ["salvage_logic", "conveyor", "auto_baler"]:
+		if not Research.exists(id) or Research.has(id) or Research.is_active(id) or Research.is_queued(id):
+			continue
+		if Research.status(id) != "available":
+			return ""
+		var mb: int = int(Research.def(id).get("min_base_level", 0))
+		if int(GameState.world.get("hub_level", 1)) < mb:
+			return ""
+		return id
+	return ""
 
 
 func _drop_all(p: Patch) -> void:
@@ -624,7 +706,7 @@ func _do_clean(p: Patch) -> void:
 		p.set_tool(Patch.Tool.SCOOP)
 	var cap: float = p.capacity()
 	if p.compartment.ratio(cap) >= 0.9 and p.compartment.pending <= 0.0:
-		_cube = true
+		_cube = Pace.baler_unlocked()  # [pace] no Baler: _do_dump empties the chest at the bin
 		return
 	if p.compartment.fill + p.compartment.pending >= cap * 0.9:
 		return  # wait for in-flight pieces to land
@@ -634,7 +716,7 @@ func _do_clean(p: Patch) -> void:
 		return
 	if h < 0:
 		_set_task("idle")
-		if not p.compartment.is_empty():
+		if not p.compartment.is_empty() and Pace.baler_unlocked():  # [pace]
 			_cube = true
 		elif p.global_position.distance_to(WATER_STAND) > 4.0:
 			_go(p, WATER_STAND, 1.0)
@@ -700,7 +782,7 @@ func _nearest_piece_in(p: Patch, h: int) -> int:
 	var best: int = -1
 	var best_d: float = INF
 	for pid: int in field.hex_pieces[h]:
-		if field.piece_alive[pid] == 0 or _ignore_piece.has(pid):
+		if field.piece_alive[pid] == 0 or _ignore_piece.has(pid) or not Pace.can_lift(field, pid):  # [pace] Lift Strength
 			continue
 		var d: float = field.piece_pos[pid].distance_squared_to(p.global_position)
 		if d < best_d:
@@ -773,6 +855,13 @@ func _campaign(_p: Patch) -> void:
 		_mark("finale_done_s")
 	if int(GameState.stats.get("ark_waves", 0)) > 0:
 		_mark("ark_wave_1_s")
+	var home: String = AutoplayHome.step(world)  # [home] the system campaign: planets, Homeward rocket, the ending
+	if home != "":
+		if home != "wait" and home != "ending":
+			_event("home", {"what": home})
+		return
+	if not Homeward.done() and Homeward.current_planet() > 0 and DevHooks.has("home-ff"):
+		return  # [home] fast-forwarded planets: no district hops
 	var late: String = AutoplayLate.step(world)  # [late] post-game: decorate, Heirlooms, seed a new world
 	if late != "":
 		_event("late", {"what": late})
@@ -826,6 +915,8 @@ func _shopping_list() -> Dictionary:
 		for id: String in ["conveyor", "auto_baler", "recycler"]:
 			if st.block_reason(id) == "":
 				out["trip"] = true
+	if _pace_upgrade() != "":
+		out["trip"] = true  # [pace]
 	var up: String = _best_upgrade(float(out["reserve"]), float(out.get("hub_save", 0.0)) <= 0.0)
 	if up != "" and (_goal_upgrade() != "" or Economy.upgrade_cost(up).to_float() * 3.0 < cubes):
 		out["trip"] = true
@@ -834,6 +925,13 @@ func _shopping_list() -> Dictionary:
 
 func _shop(want: Dictionary) -> void:
 	var fleet: Fleet = world.fleet
+	# 0) [onboard] The Signal Tower: the first tier right away (WREN), later tiers with the base level.
+	var tower: SignalTower = world.get_node_or_null("SignalTower") as SignalTower
+	if tower and SignalTower.tier() < mini(SignalTower.max_tier(), maxi(1, int(GameState.world.get("hub_level", 1)))) \
+			and GameState.can_afford_all(SignalTower.next_cost(), 1.5):
+		GameState.spend_all(SignalTower.next_cost())
+		tower.raise()
+		_event("signal_tower", {"tier": SignalTower.tier()})
 	# 1) Research ([money] cubes from the research fund, see _research_ok).
 	var guard: int = 0
 	var rid: String = _research_pick()
@@ -850,6 +948,10 @@ func _shop(want: Dictionary) -> void:
 	var gu: String = _goal_upgrade()
 	if gu != "":
 		Economy.buy_upgrade(gu, 1)
+	# 2b) [pace] The slow-start unlocks (Baler, Lift Strength) before anything else.
+	var pu: String = _pace_upgrade()
+	if pu != "":
+		Economy.buy_upgrade(pu, 1)
 	# 3) Robots ([ui2] Parts + cubes; keep the next base level's Parts unless the robot can't wait).
 	var robot: String = str(want.get("robot", ""))
 	if robot != "":
@@ -885,6 +987,8 @@ func _shop(want: Dictionary) -> void:
 			if st.block_reason(id) != "" or not _mats_spare(st.def(id).get("cost", {}), force):
 				continue
 			if st.build(id):
+				_mark("first_station_s")  # [pace]
+				_mark("first_%s_s" % id)
 				_progress()
 				_event("station", {"id": id})
 		# Recycle every 2nd bale while the next base level is short of materials, else none.
@@ -903,6 +1007,11 @@ func _shop(want: Dictionary) -> void:
 	var leak: bool = float(want.get("hub_save", 0.0)) <= 0.0
 	if robot == "" or fleet.can_build(robot):
 		reserve = float(want.get("hub_save", 0.0))
+	var prn: String = _pace_research_next()
+	if prn != "":
+		reserve = maxf(reserve, Research.cost(prn).to_float())  # [pace]
+	if not Pace.baler_unlocked() and Economy.is_unlocked(Pace.UP_BALER):
+		reserve = maxf(reserve, Economy.upgrade_cost(Pace.UP_BALER).to_float() * 0.6)  # [pace] a person saves for the Baler
 	guard = 0
 	while guard < 20:
 		guard += 1
@@ -1126,6 +1235,8 @@ func _lake_dirty() -> bool:
 ## the base levels pace as they did with Data); it also starts research when it is rich.
 func _research_ok(id: String) -> bool:
 	var c: float = Research.cost(id).to_float()
+	if id in ["salvage_logic", "conveyor", "auto_baler"] and GameState.get_currency("cubes").to_float() >= c:
+		return true  # [pace] the helper and automation unlocks come before saving for base 3
 	var fund: float = float(GameState.stats.get("notes_cubes", 0.0)) + float(GameState.stats.get("wildlife_cubes", 0.0)) - float(GameState.stats.get("bot_research_spent", 0.0))
 	return c <= fund or GameState.get_currency("cubes").to_float() > maxf(c * 4.0, _research_reserve())
 
@@ -1140,6 +1251,9 @@ func _research_pick() -> String:
 	if not Research.active().is_empty() and Research.queue().size() >= Research.max_queue():
 		return ""
 	var saving: bool = false
+	var need: String = _pace_research_next()  # [pace] save for the helper / automation unlock
+	if need != "":
+		return need if _research_ok(need) and Research.can_start(need) else ""
 	var prio: Array[String] = AutoplayCampaign.research_first(world)
 	prio.append_array(RESEARCH_PRIORITY)
 	for id: String in prio:

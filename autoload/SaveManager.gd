@@ -173,6 +173,7 @@ func load_game() -> bool:
 	if d.is_empty():
 		return false
 	GameState.from_dict(migrate(d))
+	Pace.sync_flags()  # [pace]
 	EventBus.game_loaded.emit()
 	return true
 
@@ -220,8 +221,11 @@ static func migrate(d: Dictionary) -> Dictionary:
 		d = migrate_v2(d)  # [money]
 		v = 2
 	if v < 3:
-		d = migrate_v3(d)  # [ui2]
+		d = Pace.migrate_save(d)  # [pace] grant the slow-start unlocks to older saves
 		v = 3
+	if v < 4:
+		d = migrate_v4(d)  # [ui2]
+		v = 4
 	d["version"] = v
 	return d
 
@@ -258,10 +262,10 @@ static func migrate_v2(d: Dictionary) -> Dictionary:
 	return d
 
 
-## [ui2] v2 -> v3: robot part items (the rarity-graded parts the old recipes, Mk tiers and the
+## [ui2] v3 -> v4: robot part items (the rarity-graded parts the old recipes, Mk tiers and the
 ## Builder used) become Parts at their rarity's value (data/parts.json rarities[].parts), so
 ## a Vintage core is 150 parts. Builder parts are cosmetics now: nothing to convert there.
-static func migrate_v3(d: Dictionary) -> Dictionary:
+static func migrate_v4(d: Dictionary) -> Dictionary:
 	var items: Array = d.get("parts", []) if d.get("parts") is Array else []
 	var add: float = RobotParts.items_value(items)
 	var cur: Dictionary = d.get("currencies", {})

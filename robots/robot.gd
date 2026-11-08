@@ -67,7 +67,7 @@ const RESCAN_JITTER: float = 0.3
 func _ready() -> void:
 	add_to_group("robot")
 	collision_layer = 8
-	collision_mask = 1
+	collision_mask = 1 | PhysLayers.PROP  # [world2] props are solid
 	var cs := CollisionShape3D.new()
 	var sh := CylinderShape3D.new()
 	sh.radius = 0.35 if type_id in ["scoopie", "drip", "seedling"] else 0.45
@@ -495,6 +495,11 @@ func _pick(pid: int) -> void:
 	var vol: float = field.piece_vol[pid]
 	var start_xf: Transform3D = world.view.piece_transform(pid)
 	var mesh: Mesh = world.view.piece_mesh(pid)
+	var extras: Array = []  # [world2] gen-2 junk is finer: the scoop takes the little cluster along
+	for e: int in field.cluster_extra(pid):
+		extras.append([Economy.junk_ids[field.piece_type[e]], field.piece_vol[e]])
+		hopper.reserve(field.piece_vol[e])
+		world.collect_piece(e)
 	hopper.reserve(vol)
 	world.collect_piece(pid)
 	log_stats["junk"] = float(log_stats["junk"]) + 1.0
@@ -535,6 +540,10 @@ func _pick(pid: int) -> void:
 			hopper.add(type_id_j, vol)
 			GameState.add_junk_removed(type_id_j, vol)
 			world.salvage_materials(type_id_j, vol * 0.5)
+			for ex: Array in extras:  # [world2]
+				hopper.add(str(ex[0]), float(ex[1]))
+				GameState.add_junk_removed(str(ex[0]), float(ex[1]))
+				world.salvage_materials(str(ex[0]), float(ex[1]) * 0.5)
 			Audio.play("clink", randf_range(0.8, 1.1), -14.0))
 	if hov:
 		Vfx.burst("sparkle", start, Color(0.4, 1.0, 0.85), 0.4)

@@ -37,6 +37,7 @@ var _piece_shown := PackedByteArray()
 var _dirty_tex: bool = false
 var _life_img: Image
 var _life_tex: ImageTexture
+var _life_dirty: bool = false  # [green] one texture upload per frame, however many hexes changed
 var _mounds: Array = []  # hex id -> Array[MeshInstance3D]
 
 
@@ -62,6 +63,9 @@ func _process(delta: float) -> void:
 	var cam: Camera3D = get_viewport().get_camera_3d() if lod else null  # [vqa2] junk LOD
 	if cam:
 		lod.update(delta, cam.global_position)
+	if _life_dirty:  # [green]
+		_life_dirty = false
+		_life_tex.update(_life_img)
 
 
 # --- Ground -----------------------------------------------------------------------
@@ -115,7 +119,7 @@ func _build_ground() -> void:
 	_ground_mat.set_shader_parameter("arm_arr", _tex_array(layers, "arm"))
 	_ground_mat.set_shader_parameter("frontier_fx", ground_fx)
 	_ground_mat.set_shader_parameter("state_tex", _state_tex)
-	_life_img = Image.create(size, size, false, Image.FORMAT_RF)
+	_life_img = Image.create(size, size, false, Image.FORMAT_RGBA8)  # [green] R life, G level / 5, B row angle (8-bit: always filterable)
 	_life_tex = ImageTexture.create_from_image(_life_img)
 	_ground_mat.set_shader_parameter("life_tex", _life_tex)
 	_ground_mat.set_shader_parameter("grid_radius", field.radius)
@@ -243,7 +247,7 @@ static func _mound_mesh() -> ArrayMesh:
 			var b: Vector3 = pts[r][k + 1]
 			var c: Vector3 = pts[r + 1][k + 1]
 			var d: Vector3 = pts[r + 1][k]
-			for v: Vector3 in [a, c, b, a, d, c]:
+			for v: Vector3 in [a, b, c, a, c, d]:  # [world2] clockwise from outside (was inside-out)
 				st.add_vertex(v)
 	st.generate_normals()
 	return st.commit()
@@ -262,6 +266,7 @@ func _build_mounds() -> void:
 			mi.position = Vector3(pile.x, -0.02, pile.y)
 			mi.set_meta("pile", pile)
 			add_child(mi)
+			mi.set_meta("body", MoundColliders.make(self, pile))  # [world2] bales rest on the heap
 			list.append(mi)
 		_mounds[id] = list
 		_update_mounds(id)
@@ -273,6 +278,7 @@ func _update_mounds(id: int) -> void:
 		var pile: Vector4 = mi.get_meta("pile")
 		mi.visible = left > 0.0
 		mi.scale = Vector3(pile.z * 1.1, maxf(pile.w * left * 0.9, 0.001), pile.z * 1.1)
+		MoundColliders.update(mi.get_meta("body", null), mi.scale, mi.visible, 1.0 - field.removed_fraction(id))  # [world2]
 
 
 ## Re-seat remaining pieces of a hex on its (shrinking) mound.
@@ -307,6 +313,11 @@ func _set_shown(pid: int, on: bool) -> void:
 
 func refresh_hex(id: int, flipped_now: bool = false) -> void:
 	_write_hex(id, clock if flipped_now else -1.0)
+	if field.junk_gen >= 2:  # [world2] hub/blocked ground follows the junk hexes that own it
+		for o: Vector2i in Hex.DIRECTIONS:
+			var nb: int = int(field.axial_to_id.get(field.hex_axial[id] + o, -1))
+			if nb >= 0 and field.hex_hub[nb] != 0:
+				_write_hex(nb, clock if flipped_now else -1.0)
 	_update_mounds(id)
 	_resettle(id)
 	_dirty_tex = true
@@ -319,6 +330,10 @@ func _write_hex(id: int, flip_time: float) -> void:
 	var prev: Color = _state_img.get_pixel(x, y)
 	var ft: float = prev.g if flip_time == -1.0 else flip_time
 	var flag: float = 1.0 if field.hex_hub[id] == 1 else (0.5 if field.is_water(id) else 0.0)
+	if field.junk_gen >= 2 and field.hex_hub[id] != 0:  # [world2] only the yard slab is clean ground
+		var nb: Vector2 = FarJunk.owner_state(field, id)
+		_state_img.set_pixel(x, y, Color(nb.x, ft, nb.y, 0.0))
+		return
 	_state_img.set_pixel(x, y, Color(field.removed_fraction(id), ft, float(field.hex_clean[id]), flag))
 
 
@@ -332,13 +347,35 @@ func state_texture() -> ImageTexture:
 
 
 func set_life(id: int, life: float) -> void:
+	_set_life_ch(id, 0, life)  # [green] keeps the level / row channels
+
+
+## [green] Hex level (0..5) and planting-row angle (0..1 = 0..PI) for the meadow and the tilled
+## soil (plants/meadow.gd, ground_pbr.gdshader).
+func set_level(id: int, level: int) -> void:
+	_set_life_ch(id, 1, float(level) / 5.0)
+
+
+func set_rows(id: int, angle01: float) -> void:
+	_set_life_ch(id, 2, angle01)
+
+
+func life_texture() -> ImageTexture:
+	return _life_tex
+
+
+func _set_life_ch(id: int, ch: int, v: float) -> void:
 	var a: Vector2i = field.hex_axial[id]
-	_life_img.set_pixel(a.x + field.radius, a.y + field.radius, Color(life, 0, 0))
-	_life_tex.update(_life_img)
+	var c: Color = _life_img.get_pixel(a.x + field.radius, a.y + field.radius)
+	c[ch] = clampf(v, 0.0, 1.0)
+	c.a = 1.0
+	_life_img.set_pixel(a.x + field.radius, a.y + field.radius, c)
+	_life_dirty = true
 
 
-func set_focus_hex(id: int) -> void:
-	_ground_mat.set_shader_parameter("focus_axial", Vector2(9999, 9999) if id < 0 else Vector2(field.hex_axial[id]))
+func set_focus_hex(_id: int) -> void:
+	# [onboard] The straight amber focus line is replaced by the laser outline (story/objective_hex.gd).
+	_ground_mat.set_shader_parameter("focus_axial", Vector2(9999, 9999))
 
 
 func set_grid_visible(v: float) -> void:

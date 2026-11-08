@@ -198,6 +198,7 @@ func _spawn(p: Dictionary) -> void:
 	add_child(node)
 	node.global_position = p["pos"]
 	node.rotation.y = float(p["yaw"])
+	PropColliders.fit(PropColliders.body(node, "Props"), node)  # [world2] egg props are solid (off while hidden)
 	var e: Dictionary = p.duplicate()
 	e["node"] = node
 	e["def"] = d
@@ -245,11 +246,13 @@ func _refresh_visibility() -> void:
 		if trig == "clean":
 			var was: bool = n.visible
 			n.visible = is_found(id) or world.field.is_clean(int(e["hex"]))
+			PropColliders.set_active(n, n.visible)  # [world2]
 			if n.visible and not was and not is_found(id):
 				Vfx.burst("sparkle", n.global_position + Vector3(0, 0.5, 0), Color(0.6, 0.95, 1.0))
 				EventBus.toast.emit(tr("Something metal surfaced in the cleared ground."), "info")
 		elif bool(e["final"]):
 			n.visible = is_found(id) or _parts_seen(id).size() >= int(e["def"].get("parts", 1))
+			PropColliders.set_active(n, n.visible)  # [world2]
 
 
 func _dev_spawn(id: String) -> void:

@@ -28,11 +28,23 @@ msgstr "Base (Mk I, antes de nivel y rareza de piezas)"
 msgid "Base"
 msgstr "Base"
 
-#: autoload/Economy.gd:136 autoload/Economy.gd:138 ui/upgrade_card.gd:187
+#: autoload/Economy.gd:136 autoload/Economy.gd:138 ui/upgrade_card.gd:190
 msgid "%s Lv %d"
 msgstr "%s Nv %d"
 
-#: autoload/Economy.gd:300 data/robots.json:tiers[0].name
+#: autoload/Economy.gd:188
+msgid "Needs %s Lv %d"
+msgstr ""
+
+#: autoload/Economy.gd:191
+msgid "Needs research: %s"
+msgstr ""
+
+#: autoload/Economy.gd:194 systems/research.gd:190
+msgid "Needs base level %d"
+msgstr "Requiere base de nivel %d"
+
+#: autoload/Economy.gd:330 data/robots.json:tiers[0].name
 msgid "Mk I"
 msgstr "Mk I"
 
@@ -96,7 +108,7 @@ msgstr "Mapa global"
 msgid "Lens view"
 msgstr "Vista de lente"
 
-#: autoload/Settings.gd:20 ui/codex_screen.gd:14 ui/pause_menu.gd:51
+#: autoload/Settings.gd:20 ui/codex_screen.gd:14 ui/pause_menu.gd:52
 msgid "Codex"
 msgstr "Códice"
 
@@ -260,7 +272,11 @@ msgstr "A LA  BÁSCULA  ◀"
 msgid "BALE  FEED"
 msgstr "ENTRADA DE PACAS"
 
-#: automation/depot.gd:114
+#: automation/depot.gd:284
+msgid "TRASH"
+msgstr ""
+
+#: automation/depot.gd:321
 msgid "SCRAP  INTAKE  ·  WEIGH HERE"
 msgstr "RECEPCIÓN DE CHATARRA  ·  PESAR AQUÍ"
 
@@ -276,11 +292,11 @@ msgstr "Depurador de aire en marcha. Los ventiladores arrancan con un largo susp
 msgid "PAD 01"
 msgstr "PLATAFORMA 01"
 
-#: automation/launch_pad.gd:213 ui/rockets_panel.gd:35
+#: automation/launch_pad.gd:220 ui/rockets_panel.gd:35
 msgid "LAUNCH PAD"
 msgstr "PLATAFORMA DE LANZAMIENTO"
 
-#: automation/launch_pad.gd:264
+#: automation/launch_pad.gd:271
 msgid ""
 "LAUNCH PAD\n"
 "BASE LEVEL 5"
@@ -288,23 +304,23 @@ msgstr ""
 "PLATAFORMA DE LANZAMIENTO\n"
 "BASE NIVEL 5"
 
-#: automation/outpost.gd:478
+#: automation/outpost.gd:485
 msgid "SCALE"
 msgstr "BÁSCULA"
 
-#: automation/outpost.gd:489
+#: automation/outpost.gd:496
 msgid "OUTPOST %d%s"
 msgstr "PUESTO %d%s"
 
-#: automation/outpost.gd:489
+#: automation/outpost.gd:496
 msgid "  ·  BIG SKIP"
 msgstr "  ·  GRAN CONTENEDOR"
 
-#: automation/outpost.gd:604
+#: automation/outpost.gd:611
 msgid "OUTPOST %d  ·  ONLINE"
 msgstr "PUESTO %d  ·  EN LÍNEA"
 
-#: automation/outpost.gd:638
+#: automation/outpost.gd:645
 msgid "RECHARGE"
 msgstr "RECARGA"
 
@@ -320,15 +336,15 @@ msgstr "Ya reparado."
 msgid "Clear the junk around it first (%d%% of %d%%)."
 msgstr "Primero limpia la chatarra de alrededor (%d%% de %d%%)."
 
-#: automation/outposts.gd:318 automation/outposts.gd:333 automation/stations.gd:117
+#: automation/outposts.gd:318 automation/outposts.gd:333 automation/stations.gd:131
 msgid "Not enough cubes or parts."
-msgstr ""
+msgstr "No hay suficientes cubos o piezas."
 
 #: automation/outposts.gd:327
 msgid "Repair it first."
 msgstr "Repáralo primero."
 
-#: automation/outposts.gd:329
+#: automation/outposts.gd:329 automation/trash_bin.gd:82 ui/yard_builds_panel.gd:55
 msgid "Fully upgraded."
 msgstr "Mejorado al máximo."
 
@@ -412,7 +428,7 @@ msgstr "SALTO"
 msgid "LIFT OFF"
 msgstr "DESPEGUE"
 
-#: automation/rocket.gd:789 story/cine.gd:68
+#: automation/rocket.gd:793
 msgid "Space / Esc  skip"
 msgstr "Espacio / Esc  saltar"
 
@@ -440,55 +456,57 @@ msgstr "Nivel máximo"
 msgid "Needs the Rocket Cargo research"
 msgstr "Requiere la investigación Carga de cohete"
 
-#: automation/rocket_tiers.gd:56
+#: automation/rocket_tiers.gd:56 systems/homeward.gd:399
 msgid "Not enough cubes or parts"
-msgstr ""
+msgstr "No hay suficientes cubos o piezas"
 
 #: automation/rocket_tiers.gd:69
 msgid "Rocket upgraded: %s."
 msgstr "Cohete mejorado: %s."
 
-#: automation/stations.gd:108 automation/telescope.gd:98 ui/stations_panel.gd:92
+#: automation/stations.gd:122 automation/telescope.gd:98 systems/camp/yard_builds.gd:59
+#: ui/stations_panel.gd:92 ui/yard_builds_panel.gd:77
 msgid "Built."
 msgstr "Construido."
 
-#: automation/stations.gd:112 ui/stations_panel.gd:93
+#: automation/stations.gd:126 ui/stations_panel.gd:93
 msgid "Requires research: %s."
 msgstr "Requiere investigación: %s."
 
-#: automation/stations.gd:115 ui/stations_panel.gd:93
+#: automation/stations.gd:129 automation/trash_bin.gd:85 systems/camp/yard_builds.gd:62
+#: ui/stations_panel.gd:93
 msgid "Requires hub level %d."
 msgstr "Requiere base de nivel %d."
 
-#: automation/stations.gd:132
+#: automation/stations.gd:146
 msgid "Conveyor Feeder online. Drop bales on the yellow pad."
 msgstr "Alimentador de cinta en marcha. Deja las pacas en la plataforma amarilla."
 
-#: automation/stations.gd:137
+#: automation/stations.gd:152
 msgid "Recycler lit. Bales that go in here are gone for good."
 msgstr "Recicladora encendida. Las pacas que entran aquí desaparecen para siempre."
 
-#: automation/stations.gd:142
+#: automation/stations.gd:158
 msgid "Auto-baler dropped at the cleaning frontier. Cleaners will tip their hoppers into it."
 msgstr "Empacadora automática colocada en el frente de limpieza. Los limpiadores vaciarán sus tolvas en ella."
 
-#: automation/stations.gd:251
+#: automation/stations.gd:268
 msgid "Off: every bale to the scale"
 msgstr "Apagado: todas las pacas a la báscula"
 
-#: automation/stations.gd:253
+#: automation/stations.gd:270
 msgid "All bales to the recycler"
 msgstr "Todas las pacas a la recicladora"
 
-#: automation/stations.gd:255
+#: automation/stations.gd:272
 msgid "Every 2nd bale to the recycler"
 msgstr "1 de cada 2 pacas a la recicladora"
 
-#: automation/stations.gd:257
+#: automation/stations.gd:274
 msgid "Every 3rd bale to the recycler"
 msgstr "1 de cada 3 pacas a la recicladora"
 
-#: automation/stations.gd:258
+#: automation/stations.gd:275
 msgid "Every %dth bale to the recycler"
 msgstr "1 de cada %d pacas a la recicladora"
 
@@ -496,7 +514,9 @@ msgstr "1 de cada %d pacas a la recicladora"
 msgid "Requires hub level %d or research: %s."
 msgstr "Requiere base nivel %d o la investigación: %s."
 
-#: automation/telescope.gd:104 ui/telescope_panel.gd:40
+#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:305
+#: systems/camp/camp.gd:317 systems/camp/yard_builds.gd:67 ui/telescope_panel.gd:40
+#: ui/yard_builds_panel.gd:59 ui/yard_builds_panel.gd:78
 msgid "Not enough materials."
 msgstr "Materiales insuficientes."
 
@@ -504,54 +524,82 @@ msgstr "Materiales insuficientes."
 msgid "Telescope built. Walk up to it and press E to look across the system."
 msgstr "Telescopio construido. Acércate y pulsa E para mirar por el sistema."
 
-#: automation/telescope.gd:254 ui/telescope_panel.gd:11
+#: automation/telescope.gd:259 ui/telescope_panel.gd:11
 msgid "OBSERVATORY"
 msgstr "OBSERVATORIO"
 
-#: automation/telescope.gd:302 data/eggs.json:eggs[stars].prompt
-msgid "E   look through the telescope"
-msgstr "E   mirar por el telescopio"
+#: automation/telescope.gd:307
+msgid "E   Telescope: look across the system"
+msgstr ""
 
-#: core/offline.gd:55 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: ui/globe_view.gd:455 ui/upgrade_card.gd:254
+#: core/offline.gd:130 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:469 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "%d min"
 
-#: core/offline.gd:56
+#: core/offline.gd:131
 msgid "While you were away (%s):"
 msgstr "Mientras no estabas (%s):"
 
-#: core/offline.gd:58
+#: core/offline.gd:133
 msgid "The fleet baled and delivered %s cubes."
 msgstr "La flota empacó y entregó %s cubos."
 
-#: core/offline.gd:60
+#: core/offline.gd:135
 msgid "Bales worth %s were stacked at the hub with nobody to haul them. Lumi cashed them in. A Haul Bug would keep them moving."
 msgstr "Pacas por valor de %s se amontonaron en la base sin nadie que las llevara. Lumi las cobró. Un Haul Bug las mantendría en movimiento."
 
-#: core/offline.gd:62
+#: core/offline.gd:137
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Los depuradores filtraron el aire todo el rato. Está un poco más limpio."
 
-#: fauna/fauna.gd:1211
+#: core/pace.gd:127
+msgid "Lift Strength %d"
+msgstr ""
+
+#: core/pace.gd:128
+msgid "Too heavy: needs %s"
+msgstr ""
+
+#: core/pace.gd:139
+msgid "No Baler yet: empty your chest in the trash bin"
+msgstr ""
+
+#: core/pace.gd:189 systems/events.gd:482 ui/goals_panel.gd:258
+msgid "+%s cubes"
+msgstr "+%s cubos"
+
+#: fauna/fauna.gd:1481
 msgid "E   pet %s"
 msgstr "E   acariciar a %s"
 
-#: fauna/fauna.gd:1212
+#: fauna/fauna.gd:1482
 msgid "E   pet the cat"
 msgstr "E   acariciar al gato"
 
-#: fauna/fauna.gd:1261
+#: fauna/fauna.gd:1540
+msgid "E   scatter crumbs for the birds"
+msgstr ""
+
+#: fauna/fauna.gd:1588
+msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
+msgstr ""
+
+#: fauna/fauna.gd:1644
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "La gata ha decidido que eres suyo. Te presento a %s. Ahora vive en esta base."
 
-#: fauna/fauna.gd:1574
+#: fauna/fauna.gd:1964
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "Nuevo avistamiento: %s. Ya está en el Códice."
 
-#: fauna/fauna.gd:1642
+#: fauna/fauna.gd:2032
 msgid "Snap! A %s for your Collection."
 msgstr "¡Clic! Una foto (%s) para tu Colección."
+
+#: planet/far_junk.gd:190
+msgid "Past the survey line the junk runs too deep to start on. One district at a time: clean this one, then the rockets take us to the next."
+msgstr ""
 
 #: planet/frontier_district.gd:279
 msgid "Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."
@@ -743,31 +791,31 @@ msgstr "FLOREZCAMOS JUNTOS"
 msgid "LIGHT  WATER  LIFE"
 msgstr "LUZ  AGUA  VIDA"
 
-#: plants/composter.gd:74
+#: plants/composter.gd:75
 msgid "E   compost press  ·  dormant until something grows"
 msgstr "E   prensa de compost  ·  inactiva hasta que algo crezca"
 
-#: plants/composter.gd:76
+#: plants/composter.gd:77
 msgid "E   compost press  ·  Lv %d (max)"
 msgstr "E   prensa de compost  ·  Nv %d (máx.)"
 
-#: plants/composter.gd:77
+#: plants/composter.gd:78
 msgid "E   upgrade compost press to Lv %d  ·  %s cubes"
 msgstr "E   mejorar prensa a Nv %d  ·  %s cubos"
 
-#: plants/composter.gd:82
+#: plants/composter.gd:83
 msgid "The press is cold. Grow something first: it runs on what plants leave behind."
 msgstr "La prensa está fría. Primero haz crecer algo: funciona con lo que dejan las plantas."
 
-#: plants/composter.gd:88
+#: plants/composter.gd:89
 msgid "Not enough cubes to upgrade the press."
 msgstr "No hay cubos suficientes para mejorar la prensa."
 
-#: plants/composter.gd:97
+#: plants/composter.gd:98
 msgid "Compost press Lv %d: %.0f s cycles, %.1f seeds each."
 msgstr "Prensa de compost Nv %d: ciclos de %.0f s, %.1f semillas cada uno."
 
-#: plants/composter.gd:151
+#: plants/composter.gd:152
 msgid ""
 "COMPOST PRESS\n"
 "dormant"
@@ -775,13 +823,15 @@ msgstr ""
 "PRENSA DE COMPOST\n"
 "inactiva"
 
-#: plants/composter.gd:153
+#: plants/composter.gd:154
 msgid ""
 "COMPOST PRESS  Lv %d\n"
 "hopper %d%%  →  seeds"
 msgstr ""
+"PRENSA DE COMPOST  Nv %d\n"
+"tolva %d%%  →  semillas"
 
-#: plants/garden.gd:256
+#: plants/garden.gd:263
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "Un hexágono está totalmente restaurado. Algo pequeñito ya vive en él."
 
@@ -817,13 +867,13 @@ msgstr "+1 SEMILLA"
 msgid "A dry old seed, still sealed in its husk. Junk hides a few of these."
 msgstr "Una semilla vieja y seca, aún sellada en su cáscara. La chatarra esconde algunas."
 
-#: player/detector.gd:77
-msgid "SIGNAL  %s  ·  %.1f m"
-msgstr "SEÑAL  %s  ·  %.1f m"
+#: player/detector.gd:83
+msgid "BURIED PART  %s  ·  %.1f m"
+msgstr "PIEZA ENTERRADA  %s  ·  %.1f m"
 
-#: player/detector.gd:80
-msgid "SIGNAL  %d%%"
-msgstr "SEÑAL  %d%%"
+#: player/detector.gd:86
+msgid "BURIED PART  ·  SIGNAL %d%%"
+msgstr "PIEZA ENTERRADA  ·  SEÑAL %d%%"
 
 #: player/patch.gd:106
 msgid "Lumi rattles back up into the yard. That was odd."
@@ -841,35 +891,35 @@ msgstr "Sin semillas. Las plantas en flor dan más."
 msgid "Watering can is empty. Refill at the hub."
 msgstr "Regadera vacía. Rellénala en la base."
 
-#: player/patch.gd:411
+#: player/patch.gd:415
 msgid "PERFECT BALE  %s"
 msgstr "PACA PERFECTA  %s"
 
-#: player/patch.gd:417
+#: player/patch.gd:421
 msgid "OVERSTUFFED  %s"
 msgstr "REPLETA  %s"
 
-#: player/patch.gd:421
+#: player/patch.gd:425
 msgid "PURE  %s"
 msgstr "PURA  %s"
 
-#: player/patch.gd:423
+#: player/patch.gd:427
 msgid "SURGE  %s"
 msgstr "IMPULSO  %s"
 
-#: player/patch.gd:426
+#: player/patch.gd:430
 msgid "  (streak +%d%%)"
 msgstr "  (racha +%d%%)"
 
-#: player/patch.gd:469
+#: player/patch.gd:473
 msgid "Salvaged: %s"
 msgstr "Rescatado: %s"
 
-#: player/patch.gd:498
+#: player/patch.gd:502
 msgid "Recovered: %s"
 msgstr "Recuperado: %s"
 
-#: player/patch_model.gd:18 data/designs.json:designs[aurora].name
+#: player/patch_model.gd:18 data/designs.json:designs[aurora].name data/radio.json:songs[rime_aurora].name
 msgid "Aurora"
 msgstr "Aurora"
 
@@ -981,32 +1031,32 @@ msgstr "Mirar a la derecha"
 msgid "Look up"
 msgstr "Mirar arriba"
 
-#: robots/fleet.gd:135
+#: robots/fleet.gd:138
 msgid "Locked · research %s"
 msgstr "Bloqueado · investigación %s"
 
-#: robots/fleet.gd:137
+#: robots/fleet.gd:140
 msgid "Crew full (%d/%d): upgrade the hub"
 msgstr "Equipo completo (%d/%d): mejora la base"
 
-#: robots/fleet.gd:139 robots/fleet.gd:214
+#: robots/fleet.gd:142 robots/fleet.gd:217
 msgid "Not enough parts"
 msgstr "No hay suficientes piezas"
 
-#: robots/fleet.gd:141 robots/fleet.gd:216 robots/water_net.gd:149
+#: robots/fleet.gd:144 robots/fleet.gd:219 robots/water_net.gd:149
 #: systems/research.gd:194 systems/robot_builder.gd:349 systems/robot_builder.gd:401
 msgid "Not enough cubes"
 msgstr "No hay cubos suficientes"
 
-#: robots/fleet.gd:179
+#: robots/fleet.gd:182
 msgid "%s %s assembled. It looks around, then gets to work.%s"
 msgstr "%s %s montado. Mira a su alrededor y se pone a trabajar.%s"
 
-#: robots/fleet.gd:179
+#: robots/fleet.gd:182
 msgid " Seems %s."
 msgstr " Parece %s."
 
-#: robots/fleet.gd:235
+#: robots/fleet.gd:238
 msgid "%s fleet upgraded to %s."
 msgstr "Flota de %s mejorada a %s."
 
@@ -1036,11 +1086,11 @@ msgstr[1] "transportando %d pacas"
 msgid "fetching a bale"
 msgstr "buscando una paca"
 
-#: robots/robot.gd:256 robots/robot.gd:903
+#: robots/robot.gd:256 robots/robot.gd:912
 msgid "waiting for bales"
 msgstr "esperando pacas"
 
-#: robots/robot.gd:259 robots/robot.gd:573
+#: robots/robot.gd:259 robots/robot.gd:582
 msgid "out of seeds"
 msgstr "sin semillas"
 
@@ -1084,7 +1134,7 @@ msgstr "llevando una paca a la orilla"
 msgid "skimming lake hex %d (%d%%)"
 msgstr "limpiando hexágono del lago %d (%d%%)"
 
-#: robots/robot.gd:270 robots/robot.gd:766
+#: robots/robot.gd:270 robots/robot.gd:775
 msgid "lake is clean"
 msgstr "el lago está limpio"
 
@@ -1100,27 +1150,27 @@ msgstr "zona limpia, esperando"
 msgid "nothing left to clean"
 msgstr "no queda nada por limpiar"
 
-#: robots/robot.gd:427 robots/robot.gd:766
+#: robots/robot.gd:427 robots/robot.gd:775
 msgid "zone clean"
 msgstr "zona limpia"
 
-#: robots/robot.gd:571
+#: robots/robot.gd:580
 msgid "seeds locked"
 msgstr "semillas bloqueadas"
 
-#: robots/robot.gd:577 robots/robot.gd:581
+#: robots/robot.gd:586 robots/robot.gd:590
 msgid "no empty soil"
 msgstr "no hay tierra libre"
 
-#: robots/robot.gd:610
+#: robots/robot.gd:619
 msgid "no garden"
 msgstr "no hay huerto"
 
-#: robots/robot.gd:624
+#: robots/robot.gd:633
 msgid "everything watered"
 msgstr "todo regado"
 
-#: robots/robot.gd:720
+#: robots/robot.gd:729
 msgid "no water source"
 msgstr "no hay fuente de agua"
 
@@ -1140,7 +1190,7 @@ msgstr "No se puede construir aquí"
 msgid "Not on the lake"
 msgstr "No sobre el lago"
 
-#: robots/water_net.gd:141 systems/decor.gd:180
+#: robots/water_net.gd:141 systems/decor.gd:183
 msgid "Clean this hex first"
 msgstr "Limpia antes este hexágono"
 
@@ -1160,65 +1210,65 @@ msgstr "Tanque de agua colocado. Los regadores cercanos recargarán aquí."
 msgid "WATER"
 msgstr "AGUA"
 
-#: scenes/slice.gd:281
+#: scenes/slice.gd:301
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "Enlace de robots en línea. Pulsa B para el mando: pinta zonas y manda equipos donde quieras."
 
-#: scenes/slice.gd:508
-msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
-msgstr "LM-1 en línea. Núcleo Floral 4%: luz verde baja. Relé del Cradle: débil. Haz crecer algo."
-
-#: scenes/slice.gd:819
+#: scenes/slice.gd:881
 msgid "HEX CLEAN!  +%s"
 msgstr "¡HEXÁGONO LIMPIO!  +%s"
 
-#: scenes/slice.gd:833
+#: scenes/slice.gd:895
 msgid "Milestone: %d hexes clean!"
 msgstr "Hito: ¡%d hexágonos limpios!"
 
-#: scenes/slice.gd:835
+#: scenes/slice.gd:897
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "Todo el desguace está limpio. Lumi emite un pitido muy largo y muy feliz."
 
-#: scenes/slice.gd:842
+#: scenes/slice.gd:904
 msgid "%s is out of range: %s"
 msgstr "%s está fuera de alcance: %s"
 
-#: scenes/slice.gd:852
+#: scenes/slice.gd:914
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Bloqueado. Sube tu base a nivel 5 para construir la plataforma de lanzamiento."
 
-#: scenes/slice.gd:855 ui/rockets_panel.gd:39
+#: scenes/slice.gd:917 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Celdas de energía recargando: %s. Las mejoras del cohete las recargan más rápido."
 
-#: scenes/slice.gd:909
+#: scenes/slice.gd:971
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "Aterrizaje: %s. Base %d de %d. %s"
 
-#: scenes/slice.gd:910
+#: scenes/slice.gd:972
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "El cohete está aparcado en el solar, listo cuando se recarguen sus celdas."
 
-#: scenes/slice.gd:910
+#: scenes/slice.gd:972
 msgid "Landed on the base pad."
 msgstr "Aterrizaje en la plataforma de la base."
 
-#: scenes/slice.gd:1001
+#: scenes/slice.gd:1071
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Las mejoras necesitan un banco de trabajo. Vuelve a la base."
 
-#: scenes/slice.gd:1173
+#: scenes/slice.gd:1241
 msgid "Welcome back. The junk waited for you."
 msgstr "Bienvenido de nuevo. La chatarra te ha esperado."
 
-#: scenes/slice.gd:1190
+#: scenes/slice.gd:1258
 msgid "OUTPOST %d · Lv%d"
 msgstr "PUESTO %d · Nv%d"
 
-#: scenes/slice.gd:1190
+#: scenes/slice.gd:1258
 msgid "OUTPOST %d · RUIN"
 msgstr "PUESTO %d · RUINA"
+
+#: scenes/story_preview.gd:150 ui/loading_screen.gd:143
+msgid "Setting the scene"
+msgstr ""
 
 #: steam/demo.gd:73
 msgid "Base level %d is the top of the demo. The full game goes all the way to level 5, then launches rockets to the rest of Verdance."
@@ -1240,7 +1290,7 @@ msgstr "Tu base ha crecido hasta donde llega la demo."
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "En el juego completo, Lumi sube la base hasta el nivel 5, planta distritos enteros hasta que prosperan, los convierte en una brillante ciudad del futuro y vuela en cohete a decenas de bases por todo el planeta. Tu progreso de la demo se conserva."
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:667
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:679
 msgid "Hexes cleaned"
 msgstr "Hexágonos limpiados"
 
@@ -1248,15 +1298,15 @@ msgstr "Hexágonos limpiados"
 msgid "Bales made"
 msgstr "Pacas hechas"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:682
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:694
 msgid "Robots built"
 msgstr "Robots construidos"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:690
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:702
 msgid "Time played"
 msgstr "Tiempo jugado"
 
-#: steam/demo_end_screen.gd:78 ui/main_menu.gd:340
+#: steam/demo_end_screen.gd:78 ui/main_menu.gd:341
 msgid "Wishlist on Steam"
 msgstr "Añadir a deseados en Steam"
 
@@ -1272,7 +1322,7 @@ msgstr "Pantalla de título"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "Seguir jugando: el primer distrito sigue abierto, con la base a nivel %d."
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:759 ui/main_menu.gd:446
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:771 ui/main_menu.gd:447
 msgid "%dh %02dm"
 msgstr "%dh %02dm"
 
@@ -1364,47 +1414,87 @@ msgstr "Es el Cradle. Cuando tu núcleo se encendió, el arca lo oyó. Dio la vu
 msgid "Bloom Core 75%: the Cradle is on its way home. Look for it crossing the night sky."
 msgstr "Núcleo Floral 75%: el Cradle vuelve a casa. Búscalo cruzando el cielo de noche."
 
-#: story/egg_props.gd:176
+#: story/cradle_answers.gd:14
+msgid "Lumi. Look up. That star isn't moving like a star."
+msgstr "Lumi. Mira arriba. Esa estrella no se mueve como una estrella."
+
+#: story/cradle_answers.gd:15
+msgid "CRADLE:  BEACON RECEIVED.  GREEN DETECTED ON VERDANCE.  SEED-KEEPER LM-1 LOCATED."
+msgstr "CRADLE:  BALIZA RECIBIDA.  VERDE DETECTADO EN VERDANCE.  GUARDIÁN DE SEMILLAS LM-1 LOCALIZADO."
+
+#: story/cradle_answers.gd:16
+msgid "CRADLE:  LANDING DENIED.  SYSTEM SURVEY: FIVE WORLDS.  ONE ALIVE.  SLEEPERS REMAIN UNDER."
+msgstr "CRADLE:  ATERRIZAJE DENEGADO.  ESTUDIO DEL SISTEMA: CINCO MUNDOS.  UNO VIVO.  LOS DURMIENTES SIGUEN DORMIDOS."
+
+#: story/cradle_answers.gd:17
+msgid "It's the charter. The Makers sleep in the Cradle's lower decks, and it won't wake them into a dying system."
+msgstr "Es la carta. Los Makers duermen en las cubiertas inferiores del Cradle, y no los despertará en un sistema moribundo."
+
+#: story/cradle_answers.gd:18
+msgid "And it is dying. The Ledger mined every world out here hollow and left each one under its trash. Verdance was only the first."
+msgstr "Y se está muriendo. El Ledger vació cada mundo de por aquí y lo dejó bajo su basura. Verdance solo fue el primero."
+
+#: story/cradle_answers.gd:19
+msgid "So we fix all of it. Ochre, Tidewell, Rime, Anvil. One planet at a time."
+msgstr "Así que lo arreglamos todo. Ochre, Tidewell, Rime, Anvil. Un planeta cada vez."
+
+#: story/cradle_answers.gd:20
+msgid "Then we build a rocket big enough to reach the Cradle, and we carry the last seed up ourselves."
+msgstr "Luego construimos un cohete lo bastante grande para llegar al Cradle y subimos nosotros mismos la última semilla."
+
+#: story/cradle_answers.gd:21
+msgid "CRADLE:  ACKNOWLEDGED.  HOLDING ORBIT.  WE WILL WAIT FOR YOU, SMALL ROBOT."
+msgstr "CRADLE:  RECIBIDO.  MANTENIENDO ÓRBITA.  TE ESPERAREMOS, PEQUEÑO ROBOT."
+
+#: story/cradle_answers.gd:50
+msgid "Cradle Returns  ·  the ark answers"
+msgstr "Regreso del Cradle  ·  el arca responde"
+
+#: story/cradle_answers.gd:81
+msgid "The Cradle is holding orbit. Restore the whole system: the solar map is on the hologram (M). Build the Mk V Orbital drive to reach Ochre and Tidewell."
+msgstr "El Cradle mantiene la órbita. Restaura todo el sistema: el mapa del sistema solar está en el holograma (M). Construye el motor Mk V Orbital para llegar a Ochre y Tidewell."
+
+#: story/egg_props.gd:181
 msgid "SELECT  A1  ·  B4  ·  C7"
 msgstr "ELIGE  A1  ·  B4  ·  C7"
 
-#: story/egg_props.gd:201
+#: story/egg_props.gd:206
 msgid "WE'LL BE BACK AFTER LUNCH"
 msgstr "VOLVEMOS DESPUÉS DE COMER"
 
-#: story/egg_props.gd:316
+#: story/egg_props.gd:321
 msgid "OPEN IN 100 YEARS"
 msgstr "ABRE EN 100 AÑOS"
 
-#: story/egg_props.gd:333
+#: story/egg_props.gd:338
 msgid "HI-SCORE"
 msgstr "RÉCORD"
 
-#: story/egg_props.gd:334
+#: story/egg_props.gd:339
 msgid "WREN  999990"
 msgstr "WREN  999990"
 
-#: story/egg_props.gd:335
+#: story/egg_props.gd:340
 msgid "INSERT COIN"
 msgstr "INSERTE MONEDA"
 
-#: story/egg_props.gd:338
+#: story/egg_props.gd:343
 msgid "SWEEP-O-TRON"
 msgstr "BARRE-O-TRÓN"
 
-#: story/egg_props.gd:430
+#: story/egg_props.gd:435
 msgid "BISCUIT"
 msgstr "GALLETA"
 
-#: story/egg_props.gd:458
+#: story/egg_props.gd:463
 msgid "FIZZ"
 msgstr "FIZZ"
 
-#: story/egg_props.gd:604
+#: story/egg_props.gd:609
 msgid "(it is not wet)"
 msgstr "(no está mojado)"
 
-#: story/egg_props.gd:621
+#: story/egg_props.gd:626
 msgid ""
 "THE LEDGER IS WATCHING\n"
 "(FOR SAVINGS)"
@@ -1412,7 +1502,7 @@ msgstr ""
 "EL LEDGER TE VIGILA\n"
 "(PARA AHORRAR)"
 
-#: story/egg_props.gd:699
+#: story/egg_props.gd:704
 msgid ""
 "EMPLOYEE OF\n"
 "THE MONTH\n"
@@ -1422,7 +1512,7 @@ msgstr ""
 "DEL MES\n"
 "— CUBO —"
 
-#: story/egg_props.gd:729
+#: story/egg_props.gd:734
 msgid ""
 "FORECAST\n"
 "ALWAYS RIGHT*"
@@ -1430,19 +1520,19 @@ msgstr ""
 "PRONÓSTICO\n"
 "SIEMPRE ACIERTA*"
 
-#: story/egg_props.gd:754
+#: story/egg_props.gd:759
 msgid "SHOW ENTRY"
 msgstr "ENTRADA AL ESPECTÁCULO"
 
-#: story/egg_props.gd:796
+#: story/egg_props.gd:801
 msgid "THE BUILDERS · DO NOT TIDY"
 msgstr "LOS CONSTRUCTORES · NO ORDENAR"
 
-#: story/egg_props.gd:884
+#: story/egg_props.gd:889
 msgid "FINE"
 msgstr "MULTA"
 
-#: story/egg_props.gd:961
+#: story/egg_props.gd:966
 msgid ""
 "BACK IN\n"
 "5 MINUTES"
@@ -1450,83 +1540,83 @@ msgstr ""
 "VUELVO EN\n"
 "5 MINUTOS"
 
-#: story/eggs.gd:250
+#: story/eggs.gd:252
 msgid "Something metal surfaced in the cleared ground."
 msgstr "Algo metálico ha salido a la superficie en el suelo despejado."
 
-#: story/eggs.gd:430
+#: story/eggs.gd:433
 msgid "Gnome %d / %d"
 msgstr "Gnomo %d / %d"
 
-#: story/eggs.gd:438
+#: story/eggs.gd:441
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr "El último cartel señala un sitio muy cerca. Algo naranja está hecho un ovillo por ahí."
 
-#: story/eggs.gd:464
+#: story/eggs.gd:467
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr "La radio sisea bajito. Ahí arriba aún no hay nada despierto. Vuelve cuando oscurezca."
 
-#: story/eggs.gd:465
+#: story/eggs.gd:468
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr "Por el telescopio: solo un cielo claro y polvoriento. Vuelve cuando oscurezca."
 
-#: story/eggs.gd:485
+#: story/eggs.gd:488
 msgid "SOLD OUT"
 msgstr "AGOTADO"
 
-#: story/eggs.gd:502
+#: story/eggs.gd:505
 msgid "QUACK!"
 msgstr "¡CUAC!"
 
-#: story/eggs.gd:520
+#: story/eggs.gd:523
 msgid "NEW CHALLENGER!"
 msgstr "¡NUEVO RIVAL!"
 
-#: story/eggs.gd:523
+#: story/eggs.gd:526
 msgid "GAME OVER  ·  SCORE 12"
 msgstr "GAME OVER  ·  PUNTOS 12"
 
-#: story/eggs.gd:553
+#: story/eggs.gd:556
 msgid "hi, Gus"
 msgstr "hola, Gus"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:601
 msgid "CONFETTI"
 msgstr "CONFETI"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:601
 msgid "LIGHT JAZZ"
 msgstr "JAZZ SUAVE"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:601
 msgid "99% DUCKS"
 msgstr "PATOS: 99%"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:601
 msgid "SUNNY (INDOORS)"
 msgstr "SOLEADO (DENTRO)"
 
-#: story/eggs.gd:598
+#: story/eggs.gd:601
 msgid "FOG OF NOODLES"
 msgstr "NIEBLA DE FIDEOS"
 
-#: story/eggs.gd:603
+#: story/eggs.gd:606
 msgid "1ST PLACE"
 msgstr "1.ER PUESTO"
 
-#: story/eggs.gd:661
+#: story/eggs.gd:664
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr "El pato chilla un secreto: «%s» desbloquea el diseño %s."
 
-#: story/eggs.gd:662
+#: story/eggs.gd:665
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "El pato te ha enseñado todo lo que sabe. Cuac."
 
-#: story/eggs.gd:812
+#: story/eggs.gd:815
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "Curiosidad encontrada: %s  (%d / %d)   %s"
 
-#: story/eggs.gd:823
+#: story/eggs.gd:826
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "Todas las curiosidades de la lista, encontradas. El compartimento de colección de Lumi está llenísimo de recuerdos."
 
@@ -1562,79 +1652,112 @@ msgstr "Ese alguien eres tú. Pequeño. Testarudo. Funcionando al cuatro por cie
 msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
 msgstr "Busca suelo limpio. Cava. Déjala dentro. Aprieta la tierra. Y luego —esto importa— riégala."
 
-#: story/first_seed.gd:120
+#: story/first_seed.gd:126
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr "Lumi. Capto una señal. Verde, débil, al este de la base. Un viejo invernadero. Ve a mirar."
 
-#: story/first_seed.gd:130
+#: story/first_seed.gd:136
 msgid "{tool_water}  then hold  {scoop}  to water it"
 msgstr "{tool_water}  y luego mantén  {scoop}  para regar"
 
-#: story/first_seed.gd:156
+#: story/first_seed.gd:162
 msgid "Hold  {scoop}  on clean ground to plant the seed"
 msgstr "Mantén  {scoop}  en suelo limpio para plantar la semilla"
 
-#: story/first_seed.gd:225
+#: story/first_seed.gd:231
 msgid "...It's green. Lumi, it's actually green."
 msgstr "...Es verde. Lumi, es verde de verdad."
 
-#: story/first_seed.gd:227
+#: story/first_seed.gd:233
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "Mantenla regada. Aquí fuera las semillas escasean, pero cada flor devuelve una, y un poco de luz verde para tu núcleo. Así es como empieza."
 
-#: story/intro.gd:282
+#: story/homecoming.gd:18
+msgid "Clear of the air. Look back, {name}. Look at it."
+msgstr "Fuera del aire. Mira atrás, {name}. Mírala."
+
+#: story/homecoming.gd:19
+msgid "Five worlds, green. The Ledger left them as rubbish. You left them as gardens."
+msgstr "Cinco mundos, verdes. El Ledger los dejó como basura. Tú los dejas como jardines."
+
+#: story/homecoming.gd:20
+msgid "CRADLE:  SYSTEM SURVEY: FIVE WORLDS.  FIVE ALIVE."
+msgstr "CRADLE:  ESTUDIO DEL SISTEMA: CINCO MUNDOS.  CINCO VIVOS."
+
+#: story/homecoming.gd:21
+msgid "CRADLE:  CHARTER CONDITION MET.  WAKING SLEEPERS.  OPENING BAY ONE."
+msgstr "CRADLE:  CONDICIÓN DE LA CARTA CUMPLIDA.  DESPERTANDO A LOS DURMIENTES.  ABRIENDO LA BODEGA UNO."
+
+#: story/homecoming.gd:22
+msgid "It's opening the bay. It's actually opening the bay. Steady... steady..."
+msgstr "Está abriendo la bodega. De verdad está abriendo la bodega. Tranquilo... tranquilo..."
+
+#: story/homecoming.gd:25
+msgid "The vault. Your vault. It looks exactly like you left it."
+msgstr "La cámara. Tu cámara. Está exactamente como la dejaste."
+
+#: story/homecoming.gd:26
+msgid "You climbed into a cargo pod to save that tray. Three hundred years later, you brought it home."
+msgstr "Te metiste en una cápsula de carga para salvar esa bandeja. Trescientos años después, la has traído a casa."
+
+#: story/homecoming.gd:27
+msgid "Hear that? Below decks. Doors. Voices. They're waking up, {name}."
+msgstr "¿Lo oyes? Bajo cubierta. Puertas. Voces. Se están despertando, {name}."
+
+#: story/homecoming.gd:28
+msgid "The first thing they'll see is a world that's green again. You did that. Small. Stubborn. Perfect."
+msgstr "Lo primero que verán es un mundo verde otra vez. Eso lo hiciste tú. Pequeño. Testarudo. Perfecto."
+
+#: story/homecoming.gd:132 data/achievements.json:achievements[home_homecoming].name data/codex.json:homeward.homecoming.name
+#: data/radio.json:songs[homecoming].name
+msgid "Homecoming"
+msgstr "Regreso a casa"
+
+#: story/intro.gd:195
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
 msgstr "Hace trescientos años, las últimas semillas dejaron Verdance a bordo del arca Cradle."
 
-#: story/intro.gd:300
+#: story/intro.gd:196
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
 msgstr "Lumi, el pequeño guardasemillas del arca, cantaba a los plantones cada noche."
 
-#: story/intro.gd:313
+#: story/intro.gd:197
 msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
 msgstr "¿Otra vez tarareando, Lumi? No te oyen, ¿sabes? ...Aunque crecen más rápido cuando lo haces."
 
-#: story/intro.gd:332
+#: story/intro.gd:198
 msgid "Then, one night, the sky came apart."
 msgstr "Entonces, una noche, el cielo se rompió."
 
-#: story/intro.gd:364
+#: story/intro.gd:199
 msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
 msgstr "¡Brecha en el casco de la cámara! ¡Lumi, deja las bandejas y apártate!"
 
-#: story/intro.gd:427
+#: story/intro.gd:200
 msgid "Lumi— hold on— I can't turn her around— hold on—"
 msgstr "Lumi— aguanta— no puedo darle la vuelta— aguanta—"
 
-#: story/intro.gd:440
+#: story/intro.gd:201
 msgid "The ark could not turn back. The pod fell for days."
 msgstr "El arca no pudo volver. La cápsula cayó durante días."
 
-#: story/intro.gd:612
+#: story/intro.gd:202
 msgid "...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance."
 msgstr "...¿Lumi? ...Lumi. El relé apenas aguanta, pero te tengo. Has caído. Estás en Verdance."
 
-#: story/intro.gd:619
+#: story/intro.gd:203
 msgid "Your core runs on green light, the glow living things give off. There's no green left down there. That's why you're fading."
 msgstr "Tu núcleo funciona con luz verde, el brillo que desprenden los seres vivos. Ahí abajo ya no queda nada verde. Por eso te apagas."
 
-#: story/intro.gd:622
+#: story/intro.gd:204
 msgid "So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core."
 msgstr "Así que hagamos un poco. Limpia el suelo, planta esos plantones. Cada flor alimenta tu núcleo."
 
-#: story/intro.gd:629
+#: story/intro.gd:205
 msgid "Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time."
 msgstr "Llena tu Núcleo Floral. Reconstruye una plataforma de lanzamiento. Luego vuelas a casa con nosotros. ...Regadera a regadera."
 
-#: story/intro.gd:692
-msgid "%s  skip"
-msgstr "%s  saltar"
-
-#: story/intro.gd:692
-msgid "Space / Esc"
-msgstr "Espacio / Esc"
-
-#: story/intro.gd:733
+#: story/intro.gd:800
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "LUZ VERDE  ·  NADA DETECTADO"
 
@@ -1648,7 +1771,7 @@ msgstr "WREN ha rastreado el relé del Ledger: %s de la base. Busca la baliza ro
 
 #: story/ledger.gd:182
 msgid "Ledger: %s"
-msgstr ""
+msgstr "Ledger: %s"
 
 #. compass directions fill "%s of the hub" / "%s of you" ("north of you").
 #: story/ledger.gd:204
@@ -1712,9 +1835,9 @@ msgstr ""
 "\n"
 "El Ledger está de nuestro lado ahora. Los inhibidores solo tararean al ritmo de la música."
 
-#: story/ledger.gd:328 systems/decor.gd:119 systems/research.gd:186
+#: story/ledger.gd:328 systems/decor.gd:122 systems/research.gd:186
 #: systems/robot_builder.gd:347 systems/robot_builder.gd:403 ui/stations_panel.gd:96
-#: ui/telescope_panel.gd:43
+#: ui/telescope_panel.gd:43 ui/yard_builds_panel.gd:59 ui/yard_builds_panel.gd:81
 msgid "Needs %s"
 msgstr "Requiere %s"
 
@@ -1742,7 +1865,7 @@ msgstr "El dron ha devuelto un poco de chatarra. Recógela o deja que tus ayudan
 msgid "SEEDS · PAID IN FULL"
 msgstr "SEMILLAS · PAGADO ÍNTEGRAMENTE"
 
-#: story/ledger.gd:699 systems/events.gd:486 systems/lumi_level.gd:218
+#: story/ledger.gd:699 systems/events.gd:490 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "+%d semillas"
 
@@ -1778,11 +1901,11 @@ msgstr ""
 "CONTRATO 0001: MODIFICADO\n"
 "RESTAURACIÓN = ACTIVO"
 
-#: story/ledger.gd:965
+#: story/ledger.gd:966
 msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
 msgstr "El contrato del Ledger está reescrito. Sus drones reparten semillas ahora. (+%d semillas)"
 
-#: story/ledger.gd:973
+#: story/ledger.gd:974
 msgid "<< LEDGER // OFF THE RECORD >>"
 msgstr "<< LEDGER // EXTRAOFICIAL >>"
 
@@ -1790,25 +1913,65 @@ msgstr "<< LEDGER // EXTRAOFICIAL >>"
 msgid "LEDGER  WMS-07"
 msgstr "LEDGER  WMS-07"
 
-#: story/ledger_uplink.gd:148
-msgid "<< LEDGER // CONTRACT 0001 // AMENDED >>"
-msgstr "<< LEDGER // CONTRATO 0001 // MODIFICADO >>"
+#: story/objectives.gd:240
+msgid "Objective complete  ·  %s"
+msgstr "Objetivo cumplido  ·  %s"
 
-#: story/ledger_uplink.gd:148
-msgid "<< INTERCEPT // LEDGER-NODE 07 // UNSECURED CHANNEL >>"
-msgstr "<< INTERCEPTADO // NODO LEDGER 07 // CANAL NO SEGURO >>"
+#: story/objectives.gd:408
+msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
+msgstr "¿Oyes ese pitido? Tu detector ha encontrado una pieza de robot enterrada cerca. Cuanto más rápido pita, más cerca estás."
 
-#: story/ledger_uplink.gd:149
-msgid "line item %04d   checksum %s"
-msgstr "partida %04d   suma de control %s"
-
-#: story/ledger_uplink.gd:149
-msgid "MISMATCH"
-msgstr "DISCREPANCIA"
+#: story/objectives.gd:409
+msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
+msgstr "PIEZA ENTERRADA: camina hacia ella hasta que la lectura llegue al máximo y desentiérrala."
 
 #: story/shards.gd:56
 msgid "Something surfaced in the cleared ground. A memory shard."
 msgstr "Algo ha salido a la superficie en el suelo despejado. Un fragmento de memoria."
+
+#: story/signal_tower.gd:99
+msgid "%s   rebuild the signal tower  ·  %s"
+msgstr "%s   reconstruir la torre de señal  ·  %s"
+
+#: story/signal_tower.gd:100
+msgid "%s   boost the signal tower  ·  %s"
+msgstr "%s   potenciar la torre de señal  ·  %s"
+
+#: story/signal_tower.gd:108
+msgid "The tower needs %s."
+msgstr "La torre necesita %s."
+
+#: story/signal_tower.gd:123
+msgid "Relay signal %d%%. WREN can reach you."
+msgstr "Señal del relé %d%%. WREN puede llegar a ti."
+
+#: story/signal_tower.gd:123
+msgid "Relay signal %d%%. WREN comes through clearer."
+msgstr "Señal del relé %d%%. WREN se oye más clara."
+
+#: story/story_pause.gd:30
+msgid "Paused"
+msgstr ""
+
+#: story/story_pause.gd:36
+msgid "%s  resume   ·   %s  skip"
+msgstr ""
+
+#: story/story_pause.gd:36
+msgid "Space"
+msgstr ""
+
+#: story/story_pause.gd:36
+msgid "Esc"
+msgstr ""
+
+#: story/story_pause.gd:45
+msgid "%s  pause   ·   %s  skip"
+msgstr ""
+
+#: story/story_pause.gd:46
+msgid "Space  pause   ·   Esc  skip"
+msgstr ""
 
 #: story/tutorial.gd:10
 msgid "Hold  {scoop}  to scoop junk"
@@ -1830,27 +1993,23 @@ msgstr "Llévala a la báscula"
 msgid "{interact}  at the workbench to upgrade"
 msgstr "{interact}  en el banco de trabajo para mejorar"
 
-#: story/tutorial.gd:15
-msgid "Clean this hex completely"
-msgstr "Limpia este hexágono por completo"
-
-#: story/tutorial.gd:17
+#: story/tutorial.gd:18
 msgid "Lumi is back on the job"
 msgstr "Lumi vuelve al trabajo"
 
-#: systems/achievements.gd:139
+#: systems/achievements.gd:140
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr "%d logros desbloqueados. Míralos en el Códice (K)."
 
-#: systems/achievements.gd:146 ui/notify_stack.gd:24
+#: systems/achievements.gd:147 ui/notify_stack.gd:24
 msgid "Achievement: %s. %s"
 msgstr "Logro: %s. %s"
 
-#: systems/achievements.gd:149
+#: systems/achievements.gd:150
 msgid "Codex: %d new entries."
 msgstr "Códice: %d entradas nuevas."
 
-#: systems/achievements.gd:152
+#: systems/achievements.gd:153
 msgid "Codex entry: %s"
 msgstr "Entrada del Códice: %s"
 
@@ -1878,31 +2037,35 @@ msgstr "Floración de Verdance: %s. %s"
 msgid "Somewhere under the junk."
 msgstr "En algún lugar bajo la chatarra."
 
-#: systems/codex.gd:192 ui/codex_screen.gd:355
+#: systems/codex.gd:63
+msgid "Found on the planet it belongs to."
+msgstr "Encontrado en el planeta al que pertenece."
+
+#: systems/codex.gd:200 ui/codex_screen.gd:367
 msgid "Old Town"
 msgstr "Casco Antiguo"
 
-#: systems/codex.gd:196 ui/codex_screen.gd:355
+#: systems/codex.gd:204 ui/codex_screen.gd:367
 msgid "Wilderness bases"
 msgstr "Bases salvajes"
 
-#: systems/codex.gd:196
+#: systems/codex.gd:204
 msgid " · often %s"
 msgstr " · a menudo %s"
 
-#: systems/codex.gd:199 ui/codex_screen.gd:355 data/codex.json:categories[frontiers].name
+#: systems/codex.gd:207 ui/codex_screen.gd:367 data/codex.json:categories[frontiers].name
 msgid "Frontiers"
 msgstr "Fronteras"
 
-#: systems/codex.gd:199
+#: systems/codex.gd:207
 msgid " · %s"
 msgstr " · %s"
 
-#: systems/codex.gd:201 ui/codex_screen.gd:355
+#: systems/codex.gd:209 ui/codex_screen.gd:367
 msgid "Other worlds"
 msgstr "Otros mundos"
 
-#: systems/codex.gd:202 ui/codex_screen.gd:355
+#: systems/codex.gd:210 ui/codex_screen.gd:367
 msgid "Any district"
 msgstr "Cualquier distrito"
 
@@ -1952,7 +2115,7 @@ msgstr "Niveles de Lumi"
 
 #: systems/collection.gd:88 ui/contracts_panel.gd:25 ui/upgrades_screen.gd:18
 msgid "Requests"
-msgstr ""
+msgstr "Encargos"
 
 #: systems/collection.gd:89
 msgid "Curio Capsules"
@@ -1970,55 +2133,63 @@ msgstr "Caja de taller"
 msgid "Curio Capsule"
 msgstr "Cápsula de curiosidades"
 
-#: systems/contracts.gd:289
+#: systems/contracts.gd:316
 msgid "Request complete: %s. Claim it at the workbench."
-msgstr ""
+msgstr "Encargo completado: %s. Recógelo en el banco de trabajo."
 
-#: systems/contracts.gd:295
+#: systems/contracts.gd:322
 msgid "A request ran out of time. No harm done; a new one will be posted soon."
-msgstr ""
+msgstr "Un encargo se quedó sin tiempo. No pasa nada; pronto llegará otro."
 
-#: systems/contracts.gd:375
+#: systems/contracts.gd:330
+msgid "New at the workbench: the Requests board. Small jobs, real rewards."
+msgstr "Nuevo en el banco de trabajo: el tablón de encargos. Trabajos pequeños, premios de verdad."
+
+#: systems/contracts.gd:333
+msgid "The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."
+msgstr "El relé ya capta las viejas órdenes de trabajo del Cradle. Están en el tablón de encargos del banco de trabajo."
+
+#: systems/contracts.gd:418
 msgid "Request done: %s."
-msgstr ""
+msgstr "Encargo cobrado: %s."
 
-#: systems/contracts.gd:417
+#: systems/contracts.gd:460
 msgid "Requests reward: %s. Paint your fleet with it in the Locker."
 msgstr "Recompensa de encargos: %s. Pinta tu flota con ella en la Taquilla."
 
-#: systems/contracts.gd:420
+#: systems/contracts.gd:463
 msgid "Requests reward: %s. Fit it in the Locker."
 msgstr "Recompensa de encargos: %s. Pónsela en la Taquilla."
 
-#: systems/contracts.gd:424 systems/contracts.gd:433
+#: systems/contracts.gd:467 systems/contracts.gd:476
 msgid "Requests reward: %s."
-msgstr ""
+msgstr "Recompensa de encargos: %s."
 
-#: systems/contracts.gd:441
+#: systems/contracts.gd:484
 msgid "Unknown item"
 msgstr "Objeto desconocido"
 
-#: systems/contracts.gd:454
+#: systems/contracts.gd:497
 msgid "Unlocks after %d requests"
-msgstr ""
+msgstr "Se desbloquea tras %d encargos"
 
-#: systems/contracts.gd:455
+#: systems/contracts.gd:498
 msgid "Locked"
-msgstr ""
+msgstr "Bloqueado"
 
-#: systems/cradle_mode.gd:241
+#: systems/cradle_mode.gd:253
 msgid "Heirloom unlocked: %s, level %d. It travels with Lumi to every world."
-msgstr ""
+msgstr "Reliquia desbloqueada: %s, nivel %d. Viaja con Lumi a cada mundo."
 
-#: systems/cradle_mode.gd:291 systems/cradle_mode.gd:295
+#: systems/cradle_mode.gd:303 systems/cradle_mode.gd:309
 msgid "Fully grown"
 msgstr "Al máximo"
 
-#: systems/cradle_mode.gd:296
-msgid "Unlocks with Ark milestones (next: %s, at %d restoration)"
-msgstr ""
+#: systems/cradle_mode.gd:310
+msgid "Restore a planet for a pick, or unlocks with Ark milestones (next: %s, at %d restoration)"
+msgstr "Restaura un planeta para obtener una elección, o se desbloquea con los hitos del Arca (siguiente: %s, con %d de restauración)"
 
-#: systems/cradle_mode.gd:309
+#: systems/cradle_mode.gd:323
 msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
 msgstr "Herencia: %s, nivel %d. Viaja con Lumi a todos los mundos."
 
@@ -2026,27 +2197,31 @@ msgstr "Herencia: %s, nivel %d. Viaja con Lumi a todos los mundos."
 msgid "Needs %d Collection finds (%d so far)"
 msgstr "Necesita %d hallazgos de la Colección (%d por ahora)"
 
-#: systems/decor.gd:173
+#: systems/decor.gd:120
+msgid "Needs %d Seed of the Week paint chips (%d so far)"
+msgstr "Necesita %d fichas de pintura de la Semilla de la semana (%d por ahora)"
+
+#: systems/decor.gd:176
 msgid "Too close to the base machines"
 msgstr "Demasiado cerca de las máquinas de la base"
 
-#: systems/decor.gd:176
+#: systems/decor.gd:179
 msgid "Outside the district"
 msgstr "Fuera del distrito"
 
-#: systems/decor.gd:178
+#: systems/decor.gd:181
 msgid "That's water"
 msgstr "Eso es agua"
 
-#: systems/decor.gd:182
+#: systems/decor.gd:185
 msgid "Frozen in"
 msgstr "Congelado"
 
-#: systems/decor.gd:184
+#: systems/decor.gd:187
 msgid "A building is in the way"
 msgstr "Hay un edificio en medio"
 
-#: systems/decor.gd:186
+#: systems/decor.gd:189
 msgid "Something is already here"
 msgstr "Aquí ya hay algo"
 
@@ -2070,113 +2245,173 @@ msgstr "Diseño: %s"
 msgid "CRADLE · SUPPLY"
 msgstr "CRADLE · SUMINISTROS"
 
-#: systems/events.gd:438
+#: systems/events.gd:442
 msgid "STREAK x%d  +%d%%"
 msgstr "RACHA x%d  +%d%%"
 
-#: systems/events.gd:478 ui/goals_panel.gd:245
-msgid "+%s cubes"
-msgstr "+%s cubos"
-
-#: systems/events.gd:623
+#: systems/events.gd:627
 msgid "%d pieces of junk left around the crate"
 msgstr "Quedan %d trozos de chatarra alrededor de la caja"
 
-#: systems/events.gd:648
+#: systems/events.gd:652
 msgid "Supply crate opened: %s"
 msgstr "Caja de suministros abierta: %s"
 
-#: systems/events.gd:650
+#: systems/events.gd:654
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr "La baliza de la caja se agotó y un dron se la llevó de vuelta arriba. Vendrá otra."
 
-#: systems/events.gd:697
+#: systems/events.gd:701
 msgid "%d pieces grabbed at 3x"
 msgstr "%d trozos cogidos a x3"
 
-#: systems/events.gd:702
+#: systems/events.gd:706
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "La oleada pasó. Cogiste %d trozos a triple valor; se pagan al empacar."
 
-#: systems/events.gd:702
+#: systems/events.gd:706
 msgid "The surge faded. Next time!"
 msgstr "La oleada pasó. ¡La próxima vez!"
 
-#: systems/events.gd:750
+#: systems/events.gd:754
 msgid "Every plant is drinking"
 msgstr "Todas las plantas están bebiendo"
 
-#: systems/events.gd:760
+#: systems/events.gd:764
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "La lluvia se aleja. El suelo la ha absorbido: %s"
 
-#: systems/events.gd:781
+#: systems/events.gd:785
 msgid "E   fix %s's hiccup"
 msgstr "E   curar el hipo de %s"
 
-#: systems/events.gd:808
+#: systems/events.gd:812
 msgid "%s is %d m away"
 msgstr "%s está a %d m"
 
-#: systems/events.gd:810
+#: systems/events.gd:814
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr "A %s se le pasó el hipo solo. Parece avergonzado."
 
-#: systems/events.gd:824
+#: systems/events.gd:828
 msgid "%s is fixed and back to work. %s"
 msgstr "%s está reparado y vuelve al trabajo. %s"
 
-#: systems/events.gd:877
+#: systems/events.gd:881
 msgid "Wildlife Visit: %s"
 msgstr "Visita de fauna: %s"
 
-#: systems/events.gd:878
+#: systems/events.gd:882
 msgid "E   take a photo of the %s"
 msgstr "E   hacer una foto: %s"
 
-#: systems/events.gd:909
+#: systems/events.gd:913
 msgid "%s, %d m away"
 msgstr "%s, a %d m"
 
-#: systems/events.gd:912
+#: systems/events.gd:916
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr "%s se ha marchado. Volverá a algún sitio verde."
 
-#: systems/events.gd:942
+#: systems/events.gd:946
 msgid "Snap! The %s is in your Collection. %s"
 msgstr "¡Clic! %s ya está en tu colección. %s"
 
-#: systems/events.gd:942
+#: systems/events.gd:946
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr "¡Clic! Otra foto preciosa: %s. %s"
 
-#: systems/events.gd:992
+#: systems/events.gd:996
 msgid "Signal %d%%"
 msgstr "Señal %d%%"
 
-#: systems/events.gd:996
+#: systems/events.gd:1000
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "Esa era la señal: un escondite con una pieza rara dentro. %s"
 
-#: systems/events.gd:998
+#: systems/events.gd:1002
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "La señal se apagó. La pieza sigue ahí abajo; el detector la encontrará."
 
-#: systems/events.gd:1064
+#: systems/events.gd:1068
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr "AUDITORÍA   TÚ %d  :  %d DRON"
 
-#: systems/events.gd:1065
+#: systems/events.gd:1069
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr "Tú %d  :  %d Dron   ·   quedan %d"
 
-#: systems/events.gd:1102
+#: systems/events.gd:1106
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr "¡Auditoría ganada, %d a %d! El Ledger la sella como APROBADA. %s"
 
-#: systems/events.gd:1106
+#: systems/events.gd:1110
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "El dron ganó la auditoría, %d a %d. Aun así dejó propina: +%s cubos."
+
+#: systems/homeward.gd:292
+msgid "Needs the %s drive"
+msgstr "Necesita el motor %s"
+
+#: systems/homeward.gd:294
+msgid "No chart yet: restore %s to %d%%"
+msgstr "Aún no hay carta: restaura %s al %d%%"
+
+#: systems/homeward.gd:388
+msgid "The Homeward rocket is built"
+msgstr "El cohete del Regreso está construido"
+
+#: systems/homeward.gd:391
+msgid "The Cradle has to answer first (Cradle Returns)"
+msgstr "El Cradle tiene que responder primero (Regreso del Cradle)"
+
+#: systems/homeward.gd:393
+msgid "Needs %d planet relics (%d)"
+msgstr "Necesita %d reliquias planetarias (%d)"
+
+#: systems/homeward.gd:395
+msgid "Restore every planet first (%d%%)"
+msgstr "Restaura primero todos los planetas (%d%%)"
+
+#: systems/homeward.gd:397
+msgid "Build it at Verdance's Cradle Returns"
+msgstr "Constrúyelo en el Regreso del Cradle de Verdance"
+
+#: systems/homeward.gd:413
+msgid "Rocket drive built: %s."
+msgstr "Motor construido: %s."
+
+#: systems/homeward_director.gd:250
+msgid "Intercepted: %s"
+msgstr "Interceptado: %s"
+
+#: systems/homeward_director.gd:257
+msgid "%s: %s"
+msgstr "%s: %s"
+
+#: systems/homeward_director.gd:267
+msgid "%s is restored. System: %d%%."
+msgstr "%s está restaurado. Sistema: %d%%."
+
+#: systems/homeward_director.gd:270
+msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
+msgstr "Reliquia: %s. Elección de herencia +1 (Puente del Arca)."
+
+#: systems/homeward_director.gd:277
+msgid "Every planet in the system is alive. Go back to Verdance's Cradle Returns and build the Mk VII Homeward rocket."
+msgstr "Todos los planetas del sistema están vivos. Vuelve al Regreso del Cradle en Verdance y construye el cohete Mk VII del Regreso."
+
+#: systems/homeward_director.gd:431
+msgid "E   launch home"
+msgstr "E   despegar hacia casa"
+
+#: systems/homeward_director.gd:431
+msgid "E   plant the last seed"
+msgstr "E   plantar la última semilla"
+
+#: systems/homeward_director.gd:442
+msgid "The last seed is in the ground. Everything is ready. Press E again here to launch home."
+msgstr "La última semilla está en la tierra. Todo está listo. Pulsa E otra vez aquí para despegar hacia casa."
 
 #: systems/l10n_fmt.gd:21
 msgid "+%d cube"
@@ -2240,13 +2475,29 @@ msgstr "+{amount} % de {stat} de {robot}"
 msgid "+{amount} {robot} {stat}"
 msgstr "+{amount} de {stat} de {robot}"
 
-#: systems/late_director.gd:94
+#: systems/late_director.gd:95
 msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr "El Puente del Arca se abre cuando el Cradle haya vuelto a casa."
 
-#: systems/late_director.gd:128
+#: systems/late_director.gd:129
 msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode (H) is open too."
-msgstr ""
+msgstr "Modo Cuna: el banco de semillas del arca guarda semillas para otros mundos. Pausa > Puente del Arca para verlos junto con las reliquias que tu restauración ha desbloqueado, o siembra un mundo nuevo. El modo Jardín (H) también está abierto."
+
+#: systems/lumi_style.gd:400
+msgid "Unlock the %s design"
+msgstr "Desbloquea el diseño %s"
+
+#: systems/lumi_style.gd:402
+msgid "Reach Lumi Level %d"
+msgstr "Alcanza el nivel de Lumi %d"
+
+#: systems/lumi_style.gd:405
+msgid "Achievement: %s"
+msgstr "Logro: %s"
+
+#: systems/lumi_style.gd:409
+msgid "Buy for %s"
+msgstr "Comprar por %s"
 
 #: systems/profile_slots.gd:48 ui/world_picker.gd:138
 msgid "Profile %d"
@@ -2313,15 +2564,11 @@ msgstr "Investigando ahora"
 msgid "Already queued"
 msgstr "Ya en cola"
 
-#: systems/research.gd:190
-msgid "Needs base level %d"
-msgstr "Requiere base de nivel %d"
-
 #: systems/research.gd:192
 msgid "Queue is full"
 msgstr "La cola está llena"
 
-#: systems/research.gd:324 ui/codex_screen.gd:763
+#: systems/research.gd:324 ui/codex_screen.gd:775
 msgid "%ds"
 msgstr "%d s"
 
@@ -2355,7 +2602,7 @@ msgstr "velocidad de pala"
 
 #: systems/research.gd:383
 msgid "field-note cubes"
-msgstr ""
+msgstr "cubos de notas de campo"
 
 #: systems/research.gd:383
 msgid "research speed"
@@ -2401,7 +2648,7 @@ msgstr "Desbloquea el robot %s"
 msgid "Unlocks %s seeds"
 msgstr "Desbloquea semillas: %s"
 
-#: systems/research.gd:411
+#: systems/research.gd:411 ui/extras_panel.gd:193
 msgid "Unlocks: %s"
 msgstr "Desbloquea: %s"
 
@@ -2447,7 +2694,7 @@ msgstr "Desbloquear · %s"
 
 #: systems/robot_builder.gd:360
 msgid "Requests reward · %d requests"
-msgstr ""
+msgstr "Recompensa de encargos · %d encargos"
 
 #: systems/robot_builder.gd:398
 msgid "Can't be bought"
@@ -2455,7 +2702,7 @@ msgstr "No se puede comprar"
 
 #: systems/robot_builder.gd:425
 msgid "Requests reward (%d of %d requests)"
-msgstr ""
+msgstr "Recompensa de encargos (%d de %d encargos)"
 
 #: systems/robot_builder.gd:516
 msgid "Your first bot came with treads and a bobble plant. Style it in the Locker once the hub reaches level %d."
@@ -2463,7 +2710,7 @@ msgstr "Tu primer bot vino con orugas y una planta saltarina. Dale estilo en la 
 
 #: systems/robot_builder.gd:526
 msgid "A Maker Fragment was tucked inside it: +%d parts."
-msgstr ""
+msgstr "Dentro había un fragmento Creador: +%d piezas."
 
 #: systems/robot_builder.gd:558
 msgid "%s spotted something green and lucky: a Lucky Clover!"
@@ -2471,11 +2718,272 @@ msgstr "¡%s vio algo verde y afortunado: un trébol de la suerte!"
 
 #: systems/robot_builder.gd:561
 msgid "%s spotted a Maker Fragment glinting in the junk: +%d parts."
-msgstr ""
+msgstr "%s vio un fragmento Creador brillando entre la chatarra: +%d piezas."
 
 #: systems/robot_builder.gd:568
 msgid "%s spotted a %s: %s."
 msgstr "%s encontró: %s, %s."
+
+#: systems/camp/camp.gd:151
+msgid "E   Workbench (broken): repair it"
+msgstr ""
+
+#: systems/camp/camp.gd:152
+msgid "E   Workbench: upgrades"
+msgstr ""
+
+#: systems/camp/camp.gd:199
+msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
+msgstr ""
+
+#: systems/camp/camp.gd:277
+msgid "Compost Press"
+msgstr ""
+
+#: systems/camp/camp.gd:303
+msgid "E   %s (Lv %d): fully upgraded"
+msgstr ""
+
+#: systems/camp/camp.gd:306
+msgid "E   %s (Lv %d): %s"
+msgstr ""
+
+#: systems/camp/camp.gd:307
+msgid "E   %s (Lv %d): upgrade to %s for %s"
+msgstr ""
+
+#: systems/camp/camp.gd:313
+msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
+msgstr ""
+
+#: systems/camp/machine_reveal.gd:46
+msgid "%s built. Follow the light to it."
+msgstr ""
+
+#: systems/camp/machine_reveal.gd:46
+msgid "%s built."
+msgstr ""
+
+#: systems/camp/yard_builds.gd:65
+msgid "Grow your first seed first."
+msgstr ""
+
+#: systems/camp/yard_builds.gd:65
+msgid "Not yet."
+msgstr ""
+
+#: systems/extras/album.gd:86
+msgid "First arrival"
+msgstr "Llegada"
+
+#: systems/extras/album.gd:87
+msgid "Half clean"
+msgstr "Medio limpio"
+
+#: systems/extras/album.gd:88 data/hex_levels.json:levels[5].name
+msgid "Thriving"
+msgstr "Próspero"
+
+#: systems/extras/album.gd:89
+msgid "Base level 5"
+msgstr "Base nivel 5"
+
+#: systems/extras/album.gd:217
+msgid "Album: an \"after\" picture of %s (%s)."
+msgstr "Álbum: una foto de «después» de %s (%s)."
+
+#: systems/extras/nursery.gd:90
+msgid "Build the Robot Nursery in the Hub tab first."
+msgstr ""
+
+#: systems/extras/nursery.gd:94
+msgid "Only Mk I-II robots retire early. %s can retire in %d min."
+msgstr "Solo los robots Mk I-II se jubilan pronto. %s podrá jubilarse en %d min."
+
+#: systems/extras/nursery.gd:122
+msgid "%s retires to the nursery garden. +%d parts, and the flowers get a caretaker."
+msgstr "%s se jubila en el jardín del vivero. +%d piezas, y las flores tienen un cuidador."
+
+#: systems/extras/nursery.gd:223
+msgid "E   Say hi to %s"
+msgstr "E   Saludar a %s"
+
+#: systems/extras/nursery.gd:281
+msgid "CARETAKER · %s"
+msgstr "CUIDADOR · %s"
+
+#: systems/extras/nursery.gd:328
+msgid "%s beeps hello and shows Lumi the marigolds."
+msgstr "%s pita un saludo y le enseña a Lumi las caléndulas."
+
+#: systems/extras/nursery.gd:329
+msgid "%s is busy with the watering can, but waves anyway."
+msgstr "%s está ocupado con la regadera, pero saluda igual."
+
+#: systems/extras/nursery.gd:330
+msgid "%s hums to the seedlings. Retirement suits it."
+msgstr "%s les tararea a los brotes. La jubilación le sienta bien."
+
+#: systems/extras/nursery.gd:331
+msgid "%s points proudly at a new bud."
+msgstr "%s señala orgulloso un capullo nuevo."
+
+#: systems/extras/radio.gd:169
+msgid "E   CD player: %s"
+msgstr ""
+
+#: systems/extras/radio.gd:169
+msgid "mood music"
+msgstr "música ambiental"
+
+#: systems/extras/radio.gd:214
+msgid "New song on the radio: %s"
+msgstr "Nueva canción en la radio: %s"
+
+#: systems/extras/weekly.gd:113
+msgid "Not this week: %s"
+msgstr "Esta semana no: %s"
+
+#: systems/extras/weekly.gd:254 ui/extras_panel.gd:9 ui/extras_panel.gd:372
+#: data/achievements.json:achievements[extras_weekly_1].name
+msgid "Seed of the Week"
+msgstr "Semilla de la semana"
+
+#: systems/extras/weekly_run.gd:68
+msgid "SEED OF THE WEEK  ·  %d / %d hexes  ·  %s%s"
+msgstr "SEMILLA DE LA SEMANA  ·  %d / %d hexágonos  ·  %s%s"
+
+#: systems/extras/weekly_run.gd:69
+msgid "  ·  done"
+msgstr "  ·  hecho"
+
+#: systems/extras/weekly_run.gd:89
+msgid "Twist"
+msgstr "Giro"
+
+#: systems/extras/weekly_run.gd:91
+msgid "Goal"
+msgstr "Meta"
+
+#: systems/extras/weekly_run.gd:91 data/events.json:contracts.templates[clean_hexes].text
+msgid "Clean %d hexes"
+msgstr "Limpia %d hexágonos"
+
+#: systems/extras/weekly_run.gd:92 ui/extras_panel.gd:376
+msgid "Seed"
+msgstr "Semilla"
+
+#: systems/extras/weekly_run.gd:93 systems/extras/weekly_run.gd:119
+msgid "Best"
+msgstr "Récord"
+
+#: systems/extras/weekly_run.gd:93 systems/extras/weekly_run.gd:119
+msgid "%s  ·  %d points"
+msgstr "%s  ·  %d puntos"
+
+#: systems/extras/weekly_run.gd:93
+msgid "No finish yet"
+msgstr "Aún sin terminar"
+
+#: systems/extras/weekly_run.gd:94 systems/extras/weekly_run.gd:122
+msgid "Reward"
+msgstr "Recompensa"
+
+#: systems/extras/weekly_run.gd:94
+msgid "A paint chip for your garden (first finish each week)"
+msgstr "Una ficha de pintura para tu jardín (la primera vez que terminas cada semana)"
+
+#: systems/extras/weekly_run.gd:96
+msgid "SEED OF THE WEEK"
+msgstr "SEMILLA DE LA SEMANA"
+
+#: systems/extras/weekly_run.gd:96
+msgid "Week %d, %d"
+msgstr "Semana %d, %d"
+
+#: systems/extras/weekly_run.gd:96
+msgid "Start the clock"
+msgstr "Iniciar el reloj"
+
+#: systems/extras/weekly_run.gd:96 systems/extras/weekly_run.gd:123 ui/extras_panel.gd:380
+msgid "Return home"
+msgstr "Volver a casa"
+
+#: systems/extras/weekly_run.gd:104
+msgid "The clock is running. Clean %d hexes."
+msgstr "El reloj corre. Limpia %d hexágonos."
+
+#: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:388
+msgid "Time"
+msgstr "Hora"
+
+#: systems/extras/weekly_run.gd:117 systems/extras/weekly_run.gd:118
+msgid "  (new best)"
+msgstr "  (nuevo récord)"
+
+#: systems/extras/weekly_run.gd:118
+msgid "Score"
+msgstr "Puntuación"
+
+#: systems/extras/weekly_run.gd:122
+msgid "New paint chip! (%d in all) Weekly decorations in Garden Mode use them."
+msgstr "¡Nueva ficha de pintura! (%d en total) Las decoraciones semanales del modo Jardín las usan."
+
+#: systems/extras/weekly_run.gd:123
+msgid "CHALLENGE COMPLETE"
+msgstr "DESAFÍO COMPLETADO"
+
+#: systems/extras/weekly_run.gd:123
+msgid "Keep exploring"
+msgstr "Seguir explorando"
+
+#: systems/extras/welcome_back.gd:57
+msgid "%d h %d min"
+msgstr "%d h %d min"
+
+#: systems/extras/welcome_back.gd:69
+msgid "baled about %d bales"
+msgstr "embaló unas %d balas"
+
+#: systems/extras/welcome_back.gd:71
+msgid "kept the base tidy"
+msgstr "mantuvo la base ordenada"
+
+#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:686
+msgid "Cubes earned"
+msgstr "Cubos ganados"
+
+#: systems/extras/welcome_back.gd:76
+msgid "No hauler: Lumi cashed the stacked bales. A Haul Bug keeps them moving."
+msgstr "Sin transportista: Lumi cobró las balas apiladas. Un Haul Bug las mantiene en marcha."
+
+#: systems/extras/welcome_back.gd:78
+msgid "Plants grew"
+msgstr "Plantas crecidas"
+
+#: systems/extras/welcome_back.gd:80
+msgid "Bloomed (seeds)"
+msgstr "Florecidas (semillas)"
+
+#: systems/extras/welcome_back.gd:82
+msgid "Scrubbers cleaned the air"
+msgstr "Los depuradores limpiaron el aire"
+
+#: systems/extras/welcome_back.gd:141
+msgid "WELCOME BACK"
+msgstr "BIENVENIDO DE NUEVO"
+
+#: systems/extras/welcome_back.gd:142
+msgid "Away %s"
+msgstr "Fuera %s"
+
+#: systems/extras/welcome_back.gd:163
+msgid "Robots work up to %d h while you're away."
+msgstr "Los robots trabajan hasta %d h mientras no estás."
+
+#: systems/extras/welcome_back.gd:166
+msgid "Back to work"
+msgstr "A trabajar"
 
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
@@ -2515,7 +3023,7 @@ msgstr "La bóveda guarda semillas para cada mundo del sistema. Lleva lo que Lum
 
 #: ui/ark_bridge.gd:107
 msgid "Restoration %d"
-msgstr ""
+msgstr "Restauración %d"
 
 #: ui/ark_bridge.gd:110
 msgid "+%d banked from %s"
@@ -2537,7 +3045,7 @@ msgstr "HERENCIAS  ·  SE CONSERVAN EN CADA MUNDO"
 msgid "Enter / A  choose      Esc / B  back"
 msgstr "Intro / A  elegir      Esc / B  volver"
 
-#: ui/ark_bridge.gd:160 ui/ark_bridge.gd:254
+#: ui/ark_bridge.gd:160 ui/ark_bridge.gd:257
 msgid "Back to %s"
 msgstr "Volver a %s"
 
@@ -2557,56 +3065,64 @@ msgstr "%s  ·  %d hexágonos  ·  %d oleadas del arca  ·  %d curiosidades"
 msgid "restored"
 msgstr "restaurado"
 
-#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40
+#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:740
 msgid "You are here"
 msgstr "Estás aquí"
 
 #: ui/ark_bridge.gd:202
+msgid "By rocket"
+msgstr "En cohete"
+
+#: ui/ark_bridge.gd:205
 msgid "Travel"
 msgstr "Viajar"
 
-#: ui/ark_bridge.gd:227
+#: ui/ark_bridge.gd:230
 msgid "SEED A NEW WORLD"
 msgstr "SEMBRAR UN MUNDO NUEVO"
 
-#: ui/ark_bridge.gd:229
+#: ui/ark_bridge.gd:232
 msgid "The Cradle has to come home first."
 msgstr "Primero tiene que volver el Cradle."
 
-#: ui/ark_bridge.gd:245 ui/frontier_rockets.gd:42 ui/globe_view.gd:308
-#: ui/rockets_panel.gd:81
+#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:320
+#: ui/rockets_panel.gd:81 ui/system_map.gd:691
 msgid "Launch"
 msgstr "Despegar"
 
-#: ui/ark_bridge.gd:265
+#: ui/ark_bridge.gd:268
 msgid "%d seeds"
 msgstr "%d semillas"
 
-#: ui/ark_bridge.gd:267
+#: ui/ark_bridge.gd:270
 msgid "robots waiting: %d"
 msgstr "robots esperando: %d"
 
-#: ui/ark_bridge.gd:269
+#: ui/ark_bridge.gd:272
 msgid "research tier %d known"
 msgstr "nivel de investigación %d conocido"
 
-#: ui/ark_bridge.gd:271
+#: ui/ark_bridge.gd:274
 msgid "Starting kit: just Lumi. Heirlooms add to it."
 msgstr "Equipo inicial: solo Lumi. Las herencias añaden más."
 
-#: ui/ark_bridge.gd:272
+#: ui/ark_bridge.gd:275
 msgid "Starting kit: %s"
 msgstr "Equipo inicial: %s"
 
-#: ui/ark_bridge.gd:300 ui/settings_panel.gd:565
+#: ui/ark_bridge.gd:303 ui/settings_panel.gd:565
 msgid "Full"
 msgstr "Completo"
 
-#: ui/ark_bridge.gd:303
-msgid "Milestone"
-msgstr ""
+#: ui/ark_bridge.gd:307
+msgid "Take  (%d picks)"
+msgstr "Tomar  (%d elecciones)"
 
-#: ui/bench_kit.gd:163 ui/upgrade_card.gd:217
+#: ui/ark_bridge.gd:307
+msgid "Milestone"
+msgstr "Hito"
+
+#: ui/bench_kit.gd:163 ui/upgrade_card.gd:221
 msgid "need %s"
 msgstr "faltan %s"
 
@@ -2685,93 +3201,101 @@ msgstr "Regar"
 msgid "Skim"
 msgstr "Espumar"
 
-#: ui/builder_panel.gd:111
+#: ui/builder_panel.gd:113
 msgid "YOUR ROBOTS"
 msgstr "TUS ROBOTS"
 
-#: ui/builder_panel.gd:152
+#: ui/builder_panel.gd:154
 msgid "New name"
 msgstr "Nombre nuevo"
 
-#: ui/builder_panel.gd:164
+#: ui/builder_panel.gd:162 ui/builder_panel.gd:317
+msgid "Retire"
+msgstr "Jubilar"
+
+#: ui/builder_panel.gd:172
 msgid ""
 "No robots yet. Build one in the Bots tab, then style it here.\n"
 "Your first robot comes with treads and a bobble plant."
 msgstr ""
 
-#: ui/builder_panel.gd:219
+#: ui/builder_panel.gd:227
 msgid "PART SLOTS"
 msgstr "RANURAS"
 
-#: ui/builder_panel.gd:231
+#: ui/builder_panel.gd:239
 msgid "PARTS THAT FIT"
 msgstr "PIEZAS COMPATIBLES"
 
-#: ui/builder_panel.gd:302
+#: ui/builder_panel.gd:310
 msgid "ROBOT BUILDER"
 msgstr "TALLER DE ROBOTS"
 
-#: ui/builder_panel.gd:314
+#: ui/builder_panel.gd:326
 msgid "Stock"
 msgstr "De serie"
 
-#: ui/builder_panel.gd:350
+#: ui/builder_panel.gd:362
 msgid "Stock  ·  the %s look%s"
 msgstr "De serie  ·  el aspecto %s%s"
 
-#: ui/builder_panel.gd:350
+#: ui/builder_panel.gd:362
 msgid "   (fitted)"
 msgstr "   (instalada)"
 
-#: ui/builder_panel.gd:358
+#: ui/builder_panel.gd:370
 msgid "Unlocked  ·  press to fit"
 msgstr "Desbloqueado  ·  pulsa para equipar"
 
-#: ui/builder_panel.gd:367
+#: ui/builder_panel.gd:379
 msgid "  ·  press to unlock + fit"
 msgstr "  ·  pulsa para desbloquear y equipar"
 
-#: ui/builder_panel.gd:369
+#: ui/builder_panel.gd:381
 msgid "  (Maker set)"
 msgstr "  (conjunto de los Creadores)"
 
-#: ui/builder_panel.gd:389
+#: ui/builder_panel.gd:401
 msgid "Save as %s preset"
 msgstr "Guardar como plantilla de %s"
 
-#: ui/builder_panel.gd:391
+#: ui/builder_panel.gd:403
 msgid "Fit preset on crew (%d)"
 msgstr "Aplicar plantilla al equipo (%d)"
 
-#: ui/builder_panel.gd:397
+#: ui/builder_panel.gd:409
 msgid "%s crew preset: %s"
 msgstr "Plantilla del equipo %s: %s"
 
-#: ui/builder_panel.gd:397
+#: ui/builder_panel.gd:409
 msgid "none saved"
 msgstr "ninguna guardada"
 
-#: ui/builder_panel.gd:401
+#: ui/builder_panel.gd:413
 msgid "%d styles unlocked   ·   Parts %s"
 msgstr "%d estilos desbloqueados   ·   Piezas %s"
 
-#: ui/builder_panel.gd:423
+#: ui/builder_panel.gd:435
 msgid "Stock part: no changes. The %s look of this robot type."
 msgstr "Pieza de serie: sin cambios. El aspecto %s de este tipo de robot."
 
-#: ui/builder_panel.gd:578
+#: ui/builder_panel.gd:590
 msgid "Saved %s's build as the %s crew preset."
 msgstr "Configuración de %s guardada como plantilla del equipo %s."
 
-#: ui/builder_panel.gd:586
+#: ui/builder_panel.gd:598
 msgid "Fitted %d part across the %s crew."
 msgid_plural "Fitted %d parts across the %s crew."
 msgstr[0] "%d pieza instalada en el equipo %s."
 msgstr[1] "%d piezas instaladas en el equipo %s."
 
-#: ui/builder_panel.gd:586
+#: ui/builder_panel.gd:598
 msgid "Nothing to fit: the bin is short of those parts, or the crew already has them."
 msgstr "Nada que instalar: faltan esas piezas en el cajón o el equipo ya las tiene."
+
+#: ui/builder_panel.gd:613
+msgid "Retire? +%d parts"
+msgstr "¿Jubilar? +%d piezas"
 
 #: ui/checklist_card.gd:92
 msgid "RESTART"
@@ -2789,7 +3313,7 @@ msgstr "SIGUIENTE PASO"
 msgid "RESTART CHECKLIST  ·  DONE"
 msgstr "LISTA DE REINICIO  ·  COMPLETA"
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:696
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:708
 msgid "Achievements"
 msgstr "Logros"
 
@@ -2809,23 +3333,27 @@ msgstr "Colección"
 msgid "CODEX"
 msgstr "CÓDICE"
 
-#: ui/codex_screen.gd:87 ui/upgrades_screen.gd:164
+#: ui/codex_screen.gd:88
+msgid "Watch the story"
+msgstr ""
+
+#: ui/codex_screen.gd:99 ui/upgrades_screen.gd:166
 msgid "Close  [%s]"
 msgstr "Cerrar  [%s]"
 
-#: ui/codex_screen.gd:106
+#: ui/codex_screen.gd:118
 msgid "   {ui_tab_prev}{ui_tab_next}  switch tabs"
 msgstr "   {ui_tab_prev}{ui_tab_next}  cambiar de pestaña"
 
-#: ui/codex_screen.gd:189
+#: ui/codex_screen.gd:201
 msgid "%d / %d entries   ·   %d / %d curiosities   ·   %d / %d collectibles   ·   %d / %d achievements"
 msgstr "%d / %d entradas   ·   %d / %d curiosidades   ·   %d / %d coleccionables   ·   %d / %d logros"
 
-#: ui/codex_screen.gd:315 ui/codex_screen.gd:435 ui/codex_screen.gd:543
+#: ui/codex_screen.gd:327 ui/codex_screen.gd:447 ui/codex_screen.gd:555
 msgid "Not found yet"
 msgstr "Aún no encontrado"
 
-#: ui/codex_screen.gd:319
+#: ui/codex_screen.gd:331
 msgid ""
 "\n"
 "\n"
@@ -2835,183 +3363,179 @@ msgstr ""
 "\n"
 "Limpiado hasta ahora: %s"
 
-#: ui/codex_screen.gd:344
+#: ui/codex_screen.gd:356
 msgid "CURIOSITIES"
 msgstr "CURIOSIDADES"
 
-#: ui/codex_screen.gd:345 ui/codex_screen.gd:466
+#: ui/codex_screen.gd:357 ui/codex_screen.gd:478
 msgid "%d / %d found"
 msgstr "%d / %d encontradas"
 
-#: ui/codex_screen.gd:439
+#: ui/codex_screen.gd:451
 msgid "Found  ·  %s"
 msgstr "Encontrado  ·  %s"
 
-#: ui/codex_screen.gd:442
+#: ui/codex_screen.gd:454
 msgid "Parts found: %d / %d"
 msgstr "Piezas encontradas: %d / %d"
 
-#: ui/codex_screen.gd:443
+#: ui/codex_screen.gd:455
 msgid "Reward: a small surprise"
 msgstr "Recompensa: una pequeña sorpresa"
 
-#: ui/codex_screen.gd:465
+#: ui/codex_screen.gd:477
 msgid "COLLECTION"
 msgstr "COLECCIÓN"
 
-#: ui/codex_screen.gd:546
+#: ui/codex_screen.gd:558
 msgid "In your collection"
 msgstr "En tu colección"
 
-#: ui/codex_screen.gd:551
+#: ui/codex_screen.gd:563
 msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
 msgstr "Pista: un visitante tímido acude a los hexágonos sostenidos y prósperos. Lleva una cámara."
 
-#: ui/codex_screen.gd:552
+#: ui/codex_screen.gd:564
 msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
 msgstr "Pista: los animales vuelven cuando el suelo sana. Fotografíalos en el modo foto (P)."
 
-#: ui/codex_screen.gd:553
+#: ui/codex_screen.gd:565
 msgid "Hint: finish %d requests (Requests tab at the workbench)."
-msgstr ""
+msgstr "Pista: completa %d encargos (pestaña Encargos en el banco de trabajo)."
 
-#: ui/codex_screen.gd:554
+#: ui/codex_screen.gd:566
 msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
-msgstr ""
+msgstr "Pista: Cápsulas de curiosidades, en la pista de recompensas de los encargos del banco de trabajo."
 
-#: ui/codex_screen.gd:555
+#: ui/codex_screen.gd:567
 msgid "Hint: keep scooping without stopping until the streak meter is full."
 msgstr "Pista: sigue recogiendo sin parar hasta llenar el medidor de racha."
 
-#: ui/codex_screen.gd:556
+#: ui/codex_screen.gd:568
 msgid "Hint: turns up during %s."
 msgstr "Pista: aparece durante: %s."
 
-#: ui/codex_screen.gd:625
+#: ui/codex_screen.gd:637
 msgid "Unlocked  ·  %s"
 msgstr "Desbloqueado  ·  %s"
 
-#: ui/codex_screen.gd:664
+#: ui/codex_screen.gd:676
 msgid "Total"
 msgstr "Total"
 
-#: ui/codex_screen.gd:665
+#: ui/codex_screen.gd:677
 msgid "Junk removed"
 msgstr "Chatarra retirada"
 
-#: ui/codex_screen.gd:665
+#: ui/codex_screen.gd:677
 msgid "by type"
 msgstr "por tipo"
 
-#: ui/codex_screen.gd:666 data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:678 data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "Limpieza"
 
-#: ui/codex_screen.gd:668
+#: ui/codex_screen.gd:680
 msgid "Hexes restored"
 msgstr "Hexágonos restaurados"
 
-#: ui/codex_screen.gd:669
+#: ui/codex_screen.gd:681
 msgid "Bales pressed"
 msgstr "Pacas prensadas"
 
-#: ui/codex_screen.gd:670
+#: ui/codex_screen.gd:682
 msgid "Pure bales"
 msgstr "Pacas puras"
 
-#: ui/codex_screen.gd:671
+#: ui/codex_screen.gd:683
 msgid "Perfect bales"
 msgstr "Pacas perfectas"
 
-#: ui/codex_screen.gd:672
+#: ui/codex_screen.gd:684
 msgid "Lumpy bales"
 msgstr "Pacas grumosas"
 
-#: ui/codex_screen.gd:673
+#: ui/codex_screen.gd:685
 msgid "Bales cashed in"
 msgstr "Pacas cobradas"
 
-#: ui/codex_screen.gd:674
-msgid "Cubes earned"
-msgstr "Cubos ganados"
-
-#: ui/codex_screen.gd:676 ui/globe_view.gd:135 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:688 ui/globe_view.gd:138 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "Cultivo"
 
-#: ui/codex_screen.gd:677
+#: ui/codex_screen.gd:689
 msgid "Seeds planted"
 msgstr "Semillas plantadas"
 
-#: ui/codex_screen.gd:678
+#: ui/codex_screen.gd:690
 msgid "Plants bloomed"
 msgstr "Plantas florecidas"
 
-#: ui/codex_screen.gd:679
+#: ui/codex_screen.gd:691
 msgid "Air filtered"
 msgstr "Aire filtrado"
 
-#: ui/codex_screen.gd:681 data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:693 data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "Robots"
 
-#: ui/codex_screen.gd:683
+#: ui/codex_screen.gd:695
 msgid "Bales by robots"
 msgstr "Pacas de robots"
 
-#: ui/codex_screen.gd:684
+#: ui/codex_screen.gd:696
 msgid "Parts dug up"
 msgstr "Piezas desenterradas"
 
-#: ui/codex_screen.gd:686
+#: ui/codex_screen.gd:698
 msgid "Exploring"
 msgstr "Exploración"
 
-#: ui/codex_screen.gd:687
+#: ui/codex_screen.gd:699
 msgid "Distance rolled"
 msgstr "Distancia recorrida"
 
-#: ui/codex_screen.gd:688
+#: ui/codex_screen.gd:700
 msgid "Memory shards read"
 msgstr "Fragmentos de memoria leídos"
 
-#: ui/codex_screen.gd:689
+#: ui/codex_screen.gd:701
 msgid "Codex entries"
 msgstr "Entradas del Códice"
 
-#: ui/codex_screen.gd:692
+#: ui/codex_screen.gd:704
 msgid "Progress"
 msgstr "Progreso"
 
-#: ui/codex_screen.gd:693
+#: ui/codex_screen.gd:705
 msgid "Upgrades bought"
 msgstr "Mejoras compradas"
 
-#: ui/codex_screen.gd:694
+#: ui/codex_screen.gd:706
 msgid "Field notes logged"
-msgstr ""
+msgstr "Notas de campo registradas"
 
-#: ui/codex_screen.gd:695
+#: ui/codex_screen.gd:707
 msgid "Research done"
 msgstr "Investigaciones hechas"
 
-#: ui/codex_screen.gd:697
+#: ui/codex_screen.gd:709
 msgid "Best hub level"
 msgstr "Mejor nivel de base"
 
-#: ui/codex_screen.gd:747
+#: ui/codex_screen.gd:759
 msgid "%s kg"
 msgstr "%s kg"
 
-#: ui/codex_screen.gd:748
+#: ui/codex_screen.gd:760
 msgid "%.1f kg"
 msgstr "%.1f kg"
 
-#: ui/codex_screen.gd:752
+#: ui/codex_screen.gd:764
 msgid "%.2f km"
 msgstr "%.2f km"
 
-#: ui/codex_screen.gd:762
+#: ui/codex_screen.gd:774
 msgid "%dm %02ds"
 msgstr "%dm %02ds"
 
@@ -3079,7 +3603,7 @@ msgstr "MANDO"
 msgid "Mark around me"
 msgstr "Marcar a mi alrededor"
 
-#: ui/command_view.gd:281 ui/photo_mode.gd:26
+#: ui/command_view.gd:281 ui/lumi_builder.gd:585 ui/photo_mode.gd:26
 msgid "Clear"
 msgstr "Borrar"
 
@@ -3217,39 +3741,48 @@ msgstr "NÚCLEO FLORAL"
 msgid "BLOOM CORE   %d%%"
 msgstr "NÚCLEO FLORAL   %d%%"
 
-#: ui/cosmetics_panel.gd:34
+#: ui/cosmetics_panel.gd:35
 msgid "DESIGNS"
 msgstr "DISEÑOS"
 
-#: ui/cosmetics_panel.gd:38
+#: ui/cosmetics_panel.gd:39 ui/lumi_builder.gd:540
 msgid "Looks only (no bonuses)"
 msgstr "Solo estética (sin bonificaciones)"
 
-#: ui/cosmetics_panel.gd:130 ui/cosmetics_panel.gd:161
+#: ui/cosmetics_panel.gd:48
+msgid "Character Builder"
+msgstr "Editor de personaje"
+
+#: ui/cosmetics_panel.gd:145 ui/cosmetics_panel.gd:178
 msgid "Wearing"
 msgstr "Puesto"
 
-#: ui/cosmetics_panel.gd:130
+#: ui/cosmetics_panel.gd:145
 msgid "Unlocked"
 msgstr "Desbloqueado"
 
-#: ui/cosmetics_panel.gd:130
+#: ui/cosmetics_panel.gd:145
 msgid "Locked  %d%%"
 msgstr "Bloqueado  %d%%"
 
-#: ui/cosmetics_panel.gd:157
+#: ui/cosmetics_panel.gd:175 ui/lumi_builder.gd:645
 msgid "Bonus: %s"
 msgstr "Bonificación: %s"
 
-#: ui/cosmetics_panel.gd:157
+#: ui/cosmetics_panel.gd:175 ui/lumi_builder.gd:645
 msgid "(off: looks only)"
 msgstr "(desactivado: solo estética)"
 
-#: ui/cosmetics_panel.gd:163
+#: ui/cosmetics_panel.gd:178
+msgid "Wearing a custom look with this bonus"
+msgstr "Aspecto propio con este bonus"
+
+#: ui/cosmetics_panel.gd:180
 msgid "Unlocked. Press to wear."
 msgstr "Desbloqueado. Pulsa para ponértelo."
 
-#: ui/cosmetics_panel.gd:165
+#: ui/cosmetics_panel.gd:182 ui/lumi_builder.gd:376 ui/lumi_builder.gd:493
+#: ui/lumi_builder.gd:531 ui/lumi_builder.gd:599 ui/lumi_builder.gd:600
 msgid "Locked: %s"
 msgstr "Bloqueado: %s"
 
@@ -3307,11 +3840,191 @@ msgstr "RACHA"
 
 #: ui/event_hud.gd:192
 msgid "REQUEST READY  ·  claim it at the workbench"
-msgstr ""
+msgstr "ENCARGO LISTO  ·  cóbralo en el banco de trabajo"
 
 #: ui/event_hud.gd:192
 msgid "%d REQUESTS READY  ·  claim them at the workbench"
-msgstr ""
+msgstr "%d ENCARGOS LISTOS  ·  cóbralos en el banco de trabajo"
+
+#: ui/extras_panel.gd:9
+msgid "Radio"
+msgstr "Radio"
+
+#: ui/extras_panel.gd:9
+msgid "Album"
+msgstr "Álbum"
+
+#: ui/extras_panel.gd:9
+msgid "Nursery"
+msgstr "Vivero"
+
+#: ui/extras_panel.gd:58
+msgid "KEEPSAKES"
+msgstr "RECUERDOS"
+
+#: ui/extras_panel.gd:70
+msgid "%s / %s  switch tabs"
+msgstr "%s / %s  cambiar de pestaña"
+
+#: ui/extras_panel.gd:187
+msgid "SONGS  ·  %d / %d"
+msgstr "CANCIONES  ·  %d / %d"
+
+#: ui/extras_panel.gd:196
+msgid "Now playing: %s"
+msgstr "Sonando: %s"
+
+#: ui/extras_panel.gd:201
+msgid "NOW PLAYING"
+msgstr "SONANDO AHORA"
+
+#: ui/extras_panel.gd:205
+msgid "Your pick loops everywhere until you switch back to the mood music. A restored planet plays its restored version."
+msgstr "Tu elección suena en bucle en todas partes hasta que vuelvas a la música ambiental. Un planeta restaurado toca su versión restaurada."
+
+#: ui/extras_panel.gd:206
+msgid "Back to mood music"
+msgstr "Volver a la música ambiental"
+
+#: ui/extras_panel.gd:208
+msgid "The radio hands the music back to the day."
+msgstr "La radio le devuelve la música al día."
+
+#: ui/extras_panel.gd:212
+msgid "Mood music"
+msgstr "Música ambiental"
+
+#: ui/extras_panel.gd:213
+msgid "The music follows the day: the yard, the streets, the night. Pick a song to play it instead."
+msgstr "La música sigue al día: el patio, las calles, la noche. Elige una canción para ponerla en su lugar."
+
+#: ui/extras_panel.gd:214
+msgid "New songs come in as districts and planets are restored."
+msgstr "Llegan canciones nuevas a medida que se restauran distritos y planetas."
+
+#: ui/extras_panel.gd:227
+msgid "DISTRICTS"
+msgstr "DISTRITOS"
+
+#: ui/extras_panel.gd:229
+msgid "Lumi takes a picture of each district on arrival, and \"after\" pictures as it is restored."
+msgstr "Lumi saca una foto de cada distrito al llegar, y fotos de «después» a medida que se restaura."
+
+#: ui/extras_panel.gd:233
+msgid "Before only"
+msgstr "Solo antes"
+
+#: ui/extras_panel.gd:241
+msgid "PHOTOS  ·  %d"
+msgstr "FOTOS  ·  %d"
+
+#: ui/extras_panel.gd:253
+msgid "Photo"
+msgstr "Foto"
+
+#: ui/extras_panel.gd:262
+msgid "Photos you take in photo mode show up here."
+msgstr "Las fotos que hagas en el modo foto aparecen aquí."
+
+#: ui/extras_panel.gd:266 ui/photo_panel.gd:58
+msgid "PHOTO MODE"
+msgstr "MODO FOTO"
+
+#: ui/extras_panel.gd:276
+msgid "No pictures yet."
+msgstr "Aún no hay fotos."
+
+#: ui/extras_panel.gd:287
+msgid "BEFORE"
+msgstr "ANTES"
+
+#: ui/extras_panel.gd:306
+msgid "not yet"
+msgstr "aún no"
+
+#: ui/extras_panel.gd:316
+msgid "The \"after\" picture comes when the district is half clean."
+msgstr "La foto de «después» llega cuando el distrito está medio limpio."
+
+#: ui/extras_panel.gd:322
+msgid "CARETAKERS  ·  %d"
+msgstr "CUIDADORES  ·  %d"
+
+#: ui/extras_panel.gd:323
+msgid "Garden bonus: plants grow %d%% faster (up to %d%%)."
+msgstr "Bonus del jardín: las plantas crecen un %d%% más rápido (hasta un %d%%)."
+
+#: ui/extras_panel.gd:326
+msgid "No one has retired yet. Old or Mk I-II robots can retire here or in the workbench Builder; they'll look after the nursery garden at the base."
+msgstr "Nadie se ha jubilado todavía. Los robots viejos o Mk I-II pueden jubilarse aquí o en el Taller del banco; cuidarán el jardín del vivero en la base."
+
+#: ui/extras_panel.gd:335
+msgid "RETIRE A ROBOT"
+msgstr "JUBILAR UN ROBOT"
+
+#: ui/extras_panel.gd:337
+msgid "Retiring gives a few parts back, and the robot keeps its name and personality in the nursery."
+msgstr "Jubilarlo devuelve unas piezas, y el robot conserva su nombre y su personalidad en el vivero."
+
+#: ui/extras_panel.gd:339
+msgid "No robots in this district."
+msgstr "No hay robots en este distrito."
+
+#: ui/extras_panel.gd:346
+msgid "Press again to retire (+%d parts)"
+msgstr "Pulsa otra vez para jubilar (+%d piezas)"
+
+#: ui/extras_panel.gd:346
+msgid "Retire  (+%d parts)"
+msgstr "Jubilar  (+%d piezas)"
+
+#: ui/extras_panel.gd:371
+msgid "WEEK %d, %d"
+msgstr "SEMANA %d, %d"
+
+#: ui/extras_panel.gd:373
+msgid "The same seed and twist for everyone this week. Clean %d hexes as fast as you can. It has its own save, so your world is untouched."
+msgstr "La misma semilla y el mismo giro para todos esta semana. Limpia %d hexágonos lo más rápido que puedas. Tiene su propia partida guardada, así que tu mundo queda intacto."
+
+#: ui/extras_panel.gd:374
+msgid "Twist: %s"
+msgstr "Giro: %s"
+
+#: ui/extras_panel.gd:377
+msgid "Best time"
+msgstr "Mejor tiempo"
+
+#: ui/extras_panel.gd:378
+msgid "Best score"
+msgstr "Mejor puntuación"
+
+#: ui/extras_panel.gd:384
+msgid "Restart this week's run"
+msgstr "Reiniciar la partida de esta semana"
+
+#: ui/extras_panel.gd:388
+msgid "Resume this week's run"
+msgstr "Continuar la partida de esta semana"
+
+#: ui/extras_panel.gd:388
+msgid "Start the challenge"
+msgstr "Empezar el desafío"
+
+#: ui/extras_panel.gd:392
+msgid "PAINT CHIPS  ·  %d"
+msgstr "FICHAS DE PINTURA  ·  %d"
+
+#: ui/extras_panel.gd:393
+msgid "Finish a week's challenge for its paint chip. Chips unlock the weekly decorations in Garden Mode and paint them."
+msgstr "Termina el desafío de una semana para ganar su ficha de pintura. Las fichas desbloquean las decoraciones semanales del modo Jardín y las pintan."
+
+#: ui/extras_panel.gd:406
+msgid "No chips yet."
+msgstr "Aún no hay fichas."
+
+#: ui/extras_panel.gd:438
+msgid "No picture yet"
+msgstr "Aún no hay foto"
 
 #: ui/frontier_rockets.gd:11
 msgid "FRONTIERS"
@@ -3349,83 +4062,87 @@ msgstr "[%s] colocar   [%s] girar   [%s / %s] objeto   [%s] recoger   [%s] listo
 msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
 msgstr "Recogido: %s. Ponlo en otro sitio o déjalo guardado."
 
-#: ui/globe_view.gd:118
+#: ui/globe_view.gd:121
 msgid "Survey"
 msgstr "Explorar"
 
-#: ui/globe_view.gd:118
+#: ui/globe_view.gd:121
 msgid "Verdance  ·  hand-held projection"
 msgstr "Verdance  ·  proyección portátil"
 
-#: ui/globe_view.gd:134
+#: ui/globe_view.gd:137
 msgid "Not cleaned yet"
 msgstr "Aún sin limpiar"
 
-#: ui/globe_view.gd:134
+#: ui/globe_view.gd:137
 msgid "Cleaned"
 msgstr "Limpiado"
 
-#: ui/globe_view.gd:135 data/hex_levels.json:levels[2].name
+#: ui/globe_view.gd:138 data/hex_levels.json:levels[2].name
 msgid "Planted"
 msgstr "Plantado"
 
-#: ui/globe_view.gd:136 data/parts.json:rarities[restored].name
+#: ui/globe_view.gd:139 ui/system_map.gd:660 data/parts.json:rarities[restored].name
 msgid "Restored"
 msgstr "Restaurado"
 
-#: ui/globe_view.gd:136
+#: ui/globe_view.gd:139
 msgid "Cities"
 msgstr "Ciudades"
 
-#: ui/globe_view.gd:137
+#: ui/globe_view.gd:140
 msgid "Bases"
 msgstr "Bases"
 
-#: ui/globe_view.gd:157
+#: ui/globe_view.gd:155 ui/late_menu.gd:21
+msgid "Solar system"
+msgstr "Sistema solar"
+
+#: ui/globe_view.gd:169
 msgid "Rocket"
 msgstr "Cohete"
 
-#: ui/globe_view.gd:157
+#: ui/globe_view.gd:169
 msgid "Travel between bases"
 msgstr "Viajar entre bases"
 
-#: ui/globe_view.gd:170
+#: ui/globe_view.gd:182
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close"
 msgstr "[k]Arrastra para girar   ·   Rueda para zoom   ·   [/k][p]{@look}  girar     {zoom_out}{zoom_in}  zoom     {@dpad}  lista de vuelos     [/p]{open_globe}  cerrar"
 
-#: ui/globe_view.gd:305
+#: ui/globe_view.gd:317
 msgid "%d sectors away"
 msgstr "a %d sectores"
 
-#: ui/globe_view.gd:427
+#: ui/globe_view.gd:439
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "del planeta recuperado  ·  %s de %s hexágonos de tierra"
 
-#: ui/globe_view.gd:434
+#: ui/globe_view.gd:446
 msgid "%s HEXES CLEAN"
 msgstr "%s HEXÁGONOS LIMPIOS"
 
-#: ui/globe_view.gd:436
+#: ui/globe_view.gd:448
 msgid "Surveyed %s ago%s"
 msgstr "Explorado hace %s%s"
 
-#: ui/globe_view.gd:436
+#: ui/globe_view.gd:448
 msgid "   ·   OUTDATED"
 msgstr "   ·   DESACTUALIZADO"
 
-#: ui/globe_view.gd:437
+#: ui/globe_view.gd:449
 msgid "Re-survey      %s cubes"
 msgstr "Volver a explorar      %s cubos"
 
-#: ui/goals_panel.gd:194
+#: ui/goals_panel.gd:207 ui/objective_card.gd:112
 msgid "DONE"
 msgstr "HECHO"
 
-#: ui/goals_panel.gd:218
+#: ui/goals_panel.gd:231
 msgid "Goal complete  ·  %s%s"
 msgstr "Objetivo cumplido  ·  %s%s"
 
-#: ui/goals_panel.gd:245
+#: ui/goals_panel.gd:258
 msgid "+%s seeds"
 msgstr "+%s semillas"
 
@@ -3445,160 +4162,172 @@ msgstr "+%d PX"
 msgid "CORE %d%%"
 msgstr "NÚCLEO %d%%"
 
-#: ui/hub_panel.gd:56
+#: ui/hub_panel.gd:57
 msgid "What you get"
 msgstr "Lo que obtienes"
 
-#: ui/hub_panel.gd:64
+#: ui/hub_panel.gd:65
 msgid "Upgrade"
 msgstr "Mejorar"
 
-#: ui/hub_panel.gd:91 ui/hub_panel.gd:233
+#: ui/hub_panel.gd:92 ui/hub_panel.gd:243
 msgid "Build Air Scrubber"
 msgstr "Construir depurador de aire"
 
-#: ui/hub_panel.gd:119
+#: ui/hub_panel.gd:129
 msgid "Build Signal Jammer"
 msgstr "Construir inhibidor"
 
-#: ui/hub_panel.gd:158
+#: ui/hub_panel.gd:168
 msgid " (have %s)"
 msgstr " (tienes %s)"
 
-#: ui/hub_panel.gd:171
+#: ui/hub_panel.gd:181
 msgid "Bales sell for +%d%% (now +%d%%)"
 msgstr "Las balas se venden por +%d%% (ahora +%d%%)"
 
-#: ui/hub_panel.gd:174
+#: ui/hub_panel.gd:184
 msgid "+%d robot spots in every crew"
 msgstr "+%d plazas de robot en cada equipo"
 
-#: ui/hub_panel.gd:177
+#: ui/hub_panel.gd:187
 msgid "Air Scrubbers: clear the dusty sky"
 msgstr "Depuradores de aire: limpian el cielo polvoriento"
 
-#: ui/hub_panel.gd:182
+#: ui/hub_panel.gd:192
 msgid "Unlocks the %s"
 msgstr "Desbloquea: %s"
 
-#: ui/hub_panel.gd:184
+#: ui/hub_panel.gd:194
 msgid "Opens the Locker: style Lumi and your robots"
 msgstr "Abre la Taquilla: dale estilo a Lumi y a tus robots"
 
-#: ui/hub_panel.gd:186
+#: ui/hub_panel.gd:196
 msgid "A launch pad: rockets to the next district"
 msgstr "Una plataforma de lanzamiento: cohetes al siguiente distrito"
 
-#: ui/hub_panel.gd:197
+#: ui/hub_panel.gd:207
 msgid "Now: level %d, %s. Bales sell for +%d%%."
 msgstr "Ahora: nivel %d, %s. Las balas se venden por +%d%%."
 
-#: ui/hub_panel.gd:199
+#: ui/hub_panel.gd:209
 msgid "Hub level %d  ·  fully built"
 msgstr "Base nivel %d  ·  completa"
 
-#: ui/hub_panel.gd:202
+#: ui/hub_panel.gd:212
 msgid "Every hub level is built."
 msgstr "Todos los niveles de la base están construidos."
 
-#: ui/hub_panel.gd:204
+#: ui/hub_panel.gd:214
 msgid "Fully built"
 msgstr "Completa"
 
-#: ui/hub_panel.gd:207
+#: ui/hub_panel.gd:217
 msgid "Next: hub level %d"
 msgstr "Siguiente: base nivel %d"
 
-#: ui/hub_panel.gd:214
+#: ui/hub_panel.gd:224
 msgid "Upgrade to level %d"
 msgstr "Mejorar a nivel %d"
 
-#: ui/hub_panel.gd:214
+#: ui/hub_panel.gd:224
 msgid "Not enough yet"
 msgstr "Aún no alcanza"
 
-#: ui/hub_panel.gd:218
+#: ui/hub_panel.gd:228
 msgid "Continue in the full game"
 msgstr "Continúa en el juego completo"
 
-#: ui/hub_panel.gd:227
+#: ui/hub_panel.gd:237
 msgid "Opens at hub level %d."
 msgstr "Se abre con la base en nivel %d."
 
-#: ui/hub_panel.gd:229
+#: ui/hub_panel.gd:239
 msgid "All built."
 msgstr "Todos construidos."
 
-#: ui/hub_panel.gd:232
+#: ui/hub_panel.gd:242
 msgid ""
 "%s   %d / %d\n"
 "%s"
 msgstr ""
 
-#: ui/hub_panel.gd:233
+#: ui/hub_panel.gd:243
 msgid "All built"
 msgstr "Todos construidos"
 
-#: ui/hud.gd:74
+#: ui/hud.gd:77
 msgid "Lumi reached level %d%s"
 msgstr "Lumi ha llegado al nivel %d%s"
 
-#: ui/hud.gd:159
+#: ui/hud.gd:162
 msgid "OLD TOWN   0%"
 msgstr "CASCO ANTIGUO   0%"
 
-#: ui/hud.gd:303
+#: ui/hud.gd:286
+msgid "WREN SIGNAL   %d%%"
+msgstr "SEÑAL DE WREN   %d%%"
+
+#: ui/hud.gd:314
 msgid "HEX  %d%% CLEAR"
 msgstr "HEX  %d%% LIMPIO"
 
-#: ui/hud.gd:308
+#: ui/hud.gd:318
+msgid "%s  BASE"
+msgstr "BASE %s"
+
+#: ui/hud.gd:321
 msgid "CARRYING %d/%d"
 msgstr "CARGA %d/%d"
 
-#: ui/hud.gd:330
+#: ui/hud.gd:345
 msgid "HEX  CLEAR"
 msgstr "HEX  LIMPIO"
 
-#: ui/hud.gd:334
+#: ui/hud.gd:349
 msgid "HEX  %s"
 msgstr "HEX  %s"
 
-#: ui/hud.gd:337
+#: ui/hud.gd:352
 msgid "  SUSTAIN %d%%"
 msgstr "  SOSTENIDO %d%%"
 
-#: ui/hud.gd:339
+#: ui/hud.gd:354
 msgid "  THIRSTY"
 msgstr "  SEDIENTO"
 
-#: ui/hud.gd:354
-msgid "%s  map      %s  command      %s  lens      %s  goals"
-msgstr "%s  mapa      %s  mando      %s  lente      %s  objetivos"
-
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:372
+#: ui/hud.gd:379
 msgid "%s   pick up bale"
 msgstr "%s   coger paca"
 
-#: ui/hud.gd:373
+#: ui/hud.gd:380
 msgid "%s   dig up part"
 msgstr "%s   desenterrar pieza"
 
-#: ui/hud.gd:374
+#: ui/hud.gd:381
 msgid "%s   read memory shard"
 msgstr "%s   leer fragmento de memoria"
 
-#: ui/hud.gd:375
+#: ui/hud.gd:382
 msgid "%s   pick up the seed tin"
 msgstr "%s   coger la lata de semillas"
 
-#: ui/hud.gd:376
+#: ui/hud.gd:383
 msgid "%s   set bale down"
 msgstr "%s   dejar paca"
 
-#: ui/hud.gd:377
+#: ui/hud.gd:384
 msgid "%s   workbench"
 msgstr "%s   banco de trabajo"
+
+#: ui/key_hints.gd:20
+msgid "press bale"
+msgstr "prensar fardo"
+
+#: ui/key_hints.gd:107
+msgid "tools"
+msgstr "herramientas"
 
 #: ui/late_menu.gd:9
 msgid "Garden Mode  [%s]"
@@ -3627,8 +4356,16 @@ msgid "BALE READY"
 msgstr "PACA LISTA"
 
 #: ui/lens_overlay.gd:67
-msgid "◢ SIGNAL %d%%"
-msgstr "◢ SEÑAL %d%%"
+msgid "◢ BURIED PART %d%%"
+msgstr "◢ PIEZA ENTERRADA %d%%"
+
+#: ui/loading_screen.gd:142
+msgid "Loading"
+msgstr ""
+
+#: ui/loading_screen.gd:144
+msgid "Warming up"
+msgstr ""
 
 #: ui/locker_panel.gd:68
 msgid "Editing"
@@ -3659,115 +4396,235 @@ msgstr "Lumi"
 msgid "You"
 msgstr "Tú"
 
-#: ui/main_menu.gd:314
+#: ui/lumi_builder.gd:111
+msgid "CHARACTER BUILDER"
+msgstr "EDITOR DE PERSONAJE"
+
+#: ui/lumi_builder.gd:147
+msgid "Drag to turn  ·  Wheel to zoom"
+msgstr "Arrastra para girar  ·  Rueda para zoom"
+
+#: ui/lumi_builder.gd:184
+msgid "Randomize"
+msgstr "Aleatorio"
+
+#: ui/lumi_builder.gd:185
+msgid "Reset to preset"
+msgstr "Volver al preajuste"
+
+#: ui/lumi_builder.gd:186
+msgid "Test laser"
+msgstr "Probar láser"
+
+#: ui/lumi_builder.gd:190 ui/profile_picker.gd:252 ui/profile_picker.gd:269
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: ui/lumi_builder.gd:191
+msgid "Done"
+msgstr "Listo"
+
+#: ui/lumi_builder.gd:191
+msgid "Wear look"
+msgstr "Llevar aspecto"
+
+#: ui/lumi_builder.gd:207 ui/lumi_builder.gd:319
+msgid "Presets"
+msgstr "Preajustes"
+
+#: ui/lumi_builder.gd:218
+msgid "Saved"
+msgstr "Guardados"
+
+#: ui/lumi_builder.gd:222 ui/lumi_builder.gd:323
+msgid "Saved looks"
+msgstr "Aspectos guardados"
+
+#: ui/lumi_builder.gd:372
+msgid "A design's full look. Every slot can be changed afterwards."
+msgstr "El aspecto completo de un diseño. Luego puedes cambiar cada ranura."
+
+#: ui/lumi_builder.gd:392
+msgid "Custom colour"
+msgstr "Color propio"
+
+#: ui/lumi_builder.gd:437 data/style_parts.json:advanced.name
+msgid "Advanced colour picker"
+msgstr "Selector de color avanzado"
+
+#: ui/lumi_builder.gd:447
+msgid "Advanced (hue, saturation, brightness)"
+msgstr "Avanzado (tono, saturación, brillo)"
+
+#: ui/lumi_builder.gd:456
+msgid "Hue"
+msgstr "Tono"
+
+#: ui/lumi_builder.gd:456 ui/photo_mode.gd:382
+msgid "Saturation"
+msgstr "Saturación"
+
+#: ui/lumi_builder.gd:456
+msgid "Brightness"
+msgstr "Brillo"
+
+#: ui/lumi_builder.gd:493
+msgid "Equipped"
+msgstr "Equipado"
+
+#: ui/lumi_builder.gd:509
+msgid "How weathered the paint looks: fresh from the ark, or three hundred years of dust."
+msgstr "Lo gastada que se ve la pintura: recién salida del arca o trescientos años de polvo."
+
+#: ui/lumi_builder.gd:512
+msgid "Fresh"
+msgstr "Nuevo"
+
+#: ui/lumi_builder.gd:521
+msgid "Weathered"
+msgstr "Gastado"
+
+#: ui/lumi_builder.gd:527
+msgid "A custom look can use the bonus of any design you have unlocked."
+msgstr "Un aspecto propio puede usar el bonus de cualquier diseño desbloqueado."
+
+#: ui/lumi_builder.gd:551
+msgid "Keep up to %d looks. Load one to edit it, then press Done to wear it."
+msgstr "Guarda hasta %d aspectos. Carga uno para editarlo y pulsa Listo para llevarlo."
+
+#: ui/lumi_builder.gd:556 ui/lumi_builder.gd:580
+msgid "Look %d"
+msgstr "Aspecto %d"
+
+#: ui/lumi_builder.gd:564
+msgid "Empty"
+msgstr "Vacío"
+
+#: ui/lumi_builder.gd:569 data/robot_parts.json:stats[load].name
+msgid "Load"
+msgstr "Carga"
+
+#: ui/lumi_builder.gd:577
+msgid "Save here"
+msgstr "Guardar aquí"
+
+#: ui/lumi_builder.gd:647
+msgid "Unsaved changes"
+msgstr "Cambios sin guardar"
+
+#: ui/lumi_builder.gd:663
+msgid "Part of this look is still locked."
+msgstr "Parte de este aspecto sigue bloqueada."
+
+#: ui/main_menu.gd:315
 msgid "One small robot. One very big cleanup."
 msgstr "Un robot pequeño. Una limpieza enorme."
 
-#: ui/main_menu.gd:316
+#: ui/main_menu.gd:317
 msgid "DEMO  ·  the first district"
 msgstr "DEMO  ·  el primer distrito"
 
-#: ui/main_menu.gd:328 ui/profile_picker.gd:110
+#: ui/main_menu.gd:329 ui/profile_picker.gd:110
 msgid "Continue"
 msgstr "Continuar"
 
 #. Profiles button subtitle: the active save profile's name and its number of planets.
-#: ui/main_menu.gd:335
+#: ui/main_menu.gd:336
 msgid "Profiles"
 msgstr ""
 
-#: ui/main_menu.gd:337
+#: ui/main_menu.gd:338
 msgid "New Game"
 msgstr "Nueva partida"
 
-#: ui/main_menu.gd:341 ui/main_menu.gd:539 ui/pause_menu.gd:68
+#: ui/main_menu.gd:342 ui/main_menu.gd:540 ui/pause_menu.gd:64
 msgid "Settings"
 msgstr "Ajustes"
 
-#: ui/main_menu.gd:342 ui/main_menu.gd:539
+#: ui/main_menu.gd:343 ui/main_menu.gd:540
 msgid "Credits"
 msgstr "Créditos"
 
-#: ui/main_menu.gd:343 ui/pause_menu.gd:72
+#: ui/main_menu.gd:344 ui/pause_menu.gd:68
 msgid "Quit"
 msgstr "Salir"
 
-#: ui/main_menu.gd:349
+#: ui/main_menu.gd:350
 msgid "Made with Godot"
 msgstr "Hecho con Godot"
 
-#: ui/main_menu.gd:446
+#: ui/main_menu.gd:447
 msgid "%dm"
 msgstr "%d min"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:452
+#: ui/main_menu.gd:453
 msgid "Hub %d"
 msgstr "Base %d"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:452 ui/profile_picker.gd:133
+#: ui/main_menu.gd:453 ui/profile_picker.gd:133
 msgid "%s cubes"
 msgstr "%s cubos"
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Jan"
 msgstr "ene."
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Feb"
 msgstr "feb."
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Mar"
 msgstr "mar."
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Apr"
 msgstr "abr."
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "May"
 msgstr "may."
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Jun"
 msgstr "jun."
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Jul"
 msgstr "jul."
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Aug"
 msgstr "ago."
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Sep"
 msgstr "sept."
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Oct"
 msgstr "oct."
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Nov"
 msgstr "nov."
 
-#: ui/main_menu.gd:458
+#: ui/main_menu.gd:459
 msgid "Dec"
 msgstr "dic."
 
-#: ui/main_menu.gd:568
+#: ui/main_menu.gd:569
 msgid "CREDITS"
 msgstr "CRÉDITOS"
 
-#: ui/main_menu.gd:583 ui/profile_picker.gd:49 ui/settings_panel.gd:116
+#: ui/main_menu.gd:584 ui/profile_picker.gd:49 ui/settings_panel.gd:116
 #: ui/settings_panel.gd:141 ui/world_picker.gd:53
 msgid "Back"
 msgstr "Volver"
 
-#: ui/main_menu.gd:596
+#: ui/main_menu.gd:597
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -3777,47 +4634,51 @@ msgstr ""
 "El código, las mallas procedurales, el audio sintetizado y los textos son originales de Greenfall.\n"
 "\n"
 
-#: ui/main_menu.gd:599
+#: ui/main_menu.gd:600
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "Recursos de terceros: CC0, Poly Haven (polyhaven.com)."
 
-#: ui/main_menu.gd:617
+#: ui/main_menu.gd:618
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]de %s[/color]"
 
-#: ui/main_menu.gd:651
+#: ui/main_menu.gd:652
 msgid "START A NEW GAME?"
 msgstr "¿EMPEZAR UNA PARTIDA NUEVA?"
 
-#: ui/main_menu.gd:652
+#: ui/main_menu.gd:653
 msgid "Your current save will be erased. This can't be undone."
 msgstr "Se borrará tu partida guardada. No se puede deshacer."
 
-#: ui/main_menu.gd:660
+#: ui/main_menu.gd:661
 msgid "Keep my save"
 msgstr "Conservar mi partida"
 
-#: ui/main_menu.gd:666 ui/profile_picker.gd:213
+#: ui/main_menu.gd:667 ui/profile_picker.gd:213
 msgid "Erase and start"
 msgstr "Borrar y empezar"
 
-#: ui/pause_menu.gd:42
+#: ui/objective_card.gd:46
+msgid "OBJECTIVE"
+msgstr "OBJETIVO"
+
+#: ui/pause_menu.gd:43
 msgid "PAUSED"
 msgstr "EN PAUSA"
 
-#: ui/pause_menu.gd:49
+#: ui/pause_menu.gd:50
 msgid "Resume"
 msgstr "Reanudar"
 
-#: ui/pause_menu.gd:54
+#: ui/pause_menu.gd:55
 msgid "Codex  [%s]"
 msgstr "Códice  [%s]"
 
-#: ui/pause_menu.gd:56
+#: ui/pause_menu.gd:57
 msgid "Photo mode  [%s]"
 msgstr "Modo foto  [%s]"
 
-#: ui/pause_menu.gd:61
+#: ui/pause_menu.gd:61 data/achievements.json:achievements[home_relics].name
 msgid "Keepsakes"
 msgstr "Recuerdos"
 
@@ -3959,10 +4820,6 @@ msgstr "Filtro"
 msgid "Contrast"
 msgstr "Contraste"
 
-#: ui/photo_mode.gd:382
-msgid "Saturation"
-msgstr "Saturación"
-
 #: ui/photo_mode.gd:383
 msgid "Warmth"
 msgstr "Calidez"
@@ -3983,10 +4840,6 @@ msgstr "Mundo"
 msgid "Set time of day"
 msgstr "Fijar la hora del día"
 
-#: ui/photo_mode.gd:388
-msgid "Time"
-msgstr "Hora"
-
 #: ui/photo_mode.gd:392
 msgid "Weather"
 msgstr "Clima"
@@ -3995,7 +4848,7 @@ msgstr "Clima"
 msgid "Pose"
 msgstr "Pose"
 
-#: ui/photo_mode.gd:395
+#: ui/photo_mode.gd:395 data/style_parts.json:slots[eye_shape].name
 msgid "Eyes"
 msgstr "Ojos"
 
@@ -4046,10 +4899,6 @@ msgstr "Guardada  %s  (%dx%d)"
 #: ui/photo_panel.gd:57
 msgid "CAPTURE  ·  LM-1 LENS"
 msgstr "CAPTURA  ·  LENTE LM-1"
-
-#: ui/photo_panel.gd:58
-msgid "PHOTO MODE"
-msgstr "MODO FOTO"
 
 #: ui/photo_panel.gd:88
 msgid "Capture"
@@ -4148,10 +4997,6 @@ msgstr ""
 msgid "RENAME PROFILE"
 msgstr ""
 
-#: ui/profile_picker.gd:252 ui/profile_picker.gd:269
-msgid "Cancel"
-msgstr ""
-
 #: ui/profile_picker.gd:252
 msgid "Save"
 msgstr ""
@@ -4170,15 +5015,15 @@ msgstr "En cola  ·  %s"
 
 #: ui/research_node_card.gd:184 ui/research_panel.gd:203
 msgid "%s  ·  %s"
-msgstr ""
+msgstr "%s  ·  %s"
 
 #: ui/research_panel.gd:34 data/currencies.json:currencies[cubes].short
 msgid "CUBES"
-msgstr ""
+msgstr "CUBOS"
 
 #: ui/research_panel.gd:41
 msgid "Research costs cubes and takes real time. It keeps going while you play or are away."
-msgstr ""
+msgstr "La investigación cuesta cubos y lleva tiempo real. Sigue avanzando mientras juegas o estás fuera."
 
 #: ui/research_panel.gd:60
 msgid "RESEARCHING"
@@ -4218,7 +5063,7 @@ msgstr "Pulsa para poner en cola"
 
 #: ui/research_panel.gd:214
 msgid "%s cancelled. Cubes refunded."
-msgstr ""
+msgstr "%s cancelada. Cubos devueltos."
 
 #: ui/robot_card.gd:78
 msgid "Crew"
@@ -4244,7 +5089,7 @@ msgstr "Abrir Investigación"
 msgid "Lv %d  ·  %s%s (max)"
 msgstr ""
 
-#: ui/robot_card.gd:188 ui/upgrade_card.gd:87 ui/upgrade_card.gd:211
+#: ui/robot_card.gd:188 ui/upgrade_card.gd:87 ui/upgrade_card.gd:215
 msgid "Max"
 msgstr "Máx."
 
@@ -4284,7 +5129,7 @@ msgstr "nivel máximo"
 msgid "next: x%s work speed"
 msgstr "siguiente: x%s velocidad de trabajo"
 
-#: ui/robot_card.gd:257 ui/rockets_panel.gd:119
+#: ui/robot_card.gd:257 ui/rockets_panel.gd:119 ui/yard_builds_panel.gd:60
 msgid "Upgrade to %s"
 msgstr "Mejorar a %s"
 
@@ -4652,7 +5497,7 @@ msgstr "Mover a la frontera"
 msgid "%s built"
 msgstr "%s construido"
 
-#: ui/stations_panel.gd:98 ui/telescope_panel.gd:45
+#: ui/stations_panel.gd:98 ui/telescope_panel.gd:45 ui/yard_builds_panel.gd:83
 msgid "Build %s"
 msgstr "Construir: %s"
 
@@ -4662,9 +5507,57 @@ msgstr "Ruta automática: %s"
 
 #: ui/stations_panel.gd:104
 msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Parts %s"
+msgstr "Fardos reciclados %d   ·   Chatarra destruida %s kg   ·   Piezas %s"
+
+#: ui/system_map.gd:647
+msgid "%s  ·  %.2f AU"
 msgstr ""
 
-#: ui/telescope_panel.gd:39
+#: ui/system_map.gd:654
+msgid "In flight"
+msgstr "En vuelo"
+
+#: ui/system_map.gd:657
+msgid "Lumi is here"
+msgstr ""
+
+#: ui/system_map.gd:663
+msgid "Ready to launch"
+msgstr ""
+
+#: ui/system_map.gd:682 data/goals.json:goals[home_launch].text
+msgid "Launch home"
+msgstr "Despegar hacia casa"
+
+#: ui/system_map.gd:687
+msgid "Choose a district"
+msgstr "Elegir un distrito"
+
+#: ui/system_map.gd:704
+msgid "System %d%% restored  ·  relics %d/%d"
+msgstr ""
+
+#: ui/system_map.gd:706
+msgid "%d Heirloom picks"
+msgstr ""
+
+#: ui/system_map.gd:708
+msgid "Left/Right planet  ·  A zoom  ·  B back"
+msgstr ""
+
+#: ui/system_map.gd:726
+msgid "Build the drive"
+msgstr ""
+
+#: ui/system_map.gd:742
+msgid "Not discovered yet"
+msgstr ""
+
+#: ui/system_map.gd:748
+msgid "Rocket not ready"
+msgstr "Cohete no listo"
+
+#: ui/telescope_panel.gd:39 ui/yard_builds_panel.gd:77
 msgid "Built. Walk up to it and press E."
 msgstr "Construido. Acércate y pulsa E."
 
@@ -4672,23 +5565,23 @@ msgstr "Construido. Acércate y pulsa E."
 msgid "Codex: First Light"
 msgstr "Códice: Primera luz"
 
-#: ui/telescope_view.gd:363
+#: ui/telescope_view.gd:364
 msgid "TELESCOPE  ·  SYSTEM VIEW"
 msgstr "TELESCOPIO  ·  VISTA DEL SISTEMA"
 
-#: ui/telescope_view.gd:369
+#: ui/telescope_view.gd:370
 msgid "%s (here)"
 msgstr "%s (aquí)"
 
-#: ui/telescope_view.gd:371
+#: ui/telescope_view.gd:372
 msgid "%s  ·  not visited"
 msgstr "%s  ·  sin visitar"
 
-#: ui/telescope_view.gd:378
+#: ui/telescope_view.gd:379
 msgid "Close"
 msgstr "Cerrar"
 
-#: ui/telescope_view.gd:381
+#: ui/telescope_view.gd:382
 msgid ""
 "Two suns, one system.\n"
 "Worlds visited: %d"
@@ -4696,15 +5589,19 @@ msgstr ""
 "Dos soles, un sistema.\n"
 "Mundos visitados: %d"
 
-#: ui/telescope_view.gd:383
+#: ui/telescope_view.gd:384
 msgid "Pick a world you've visited to watch its crew. The one you stand on can't see itself."
 msgstr "Elige un mundo que hayas visitado para ver a su equipo. Desde el que pisas no se ve a sí mismo."
 
-#: ui/telescope_view.gd:383
+#: ui/telescope_view.gd:384
 msgid "No other world visited yet. Seed or visit another world from the Ark Bridge, then come back."
 msgstr "Aún no has visitado otro mundo. Siembra o visita otro desde el Puente del Arca y vuelve."
 
-#: ui/telescope_view.gd:466
+#: ui/telescope_view.gd:477
+msgid "Spotted %s: it now shows on the system map"
+msgstr ""
+
+#: ui/telescope_view.gd:480
 msgid ""
 "%s\n"
 "District %d%% clean · %d robots\n"
@@ -4714,7 +5611,7 @@ msgstr ""
 "Distrito %d%% limpio · %d robots\n"
 "Última visita %s"
 
-#: ui/telescope_view.gd:468
+#: ui/telescope_view.gd:482
 msgid ""
 "%s\n"
 "You are here."
@@ -4722,59 +5619,63 @@ msgstr ""
 "%s\n"
 "Estás aquí."
 
-#: ui/telescope_view.gd:470
+#: ui/telescope_view.gd:485
+msgid ""
+"An unknown world.\n"
+"Too faint to chart yet."
+msgstr ""
+
+#: ui/telescope_view.gd:485
 msgid ""
 "%s\n"
-"Not visited yet."
+"Charted. No landing yet."
 msgstr ""
-"%s\n"
-"Sin visitar todavía."
 
-#: ui/telescope_view.gd:477
+#: ui/telescope_view.gd:492
 msgid "You stand on %s."
 msgstr "Estás en %s."
 
-#: ui/telescope_view.gd:477
+#: ui/telescope_view.gd:492
 msgid "%s: nobody of yours down there yet."
 msgstr "%s: aún no hay nadie tuyo ahí abajo."
 
-#: ui/telescope_view.gd:491
+#: ui/telescope_view.gd:506
 msgid "unknown"
 msgstr "desconocida"
 
-#: ui/telescope_view.gd:494
+#: ui/telescope_view.gd:509
 msgid "%d min ago"
 msgstr "hace %d min"
 
-#: ui/telescope_view.gd:496
+#: ui/telescope_view.gd:511
 msgid "%.1f h ago"
 msgstr "hace %.1f h"
 
-#: ui/telescope_view.gd:497
+#: ui/telescope_view.gd:512
 msgid "%d days ago"
 msgstr "hace %d días"
 
-#: ui/telescope_view.gd:587
+#: ui/telescope_view.gd:602
 msgid "TELESCOPE  ·  %s"
 msgstr "TELESCOPIO  ·  %s"
 
-#: ui/telescope_view.gd:588
+#: ui/telescope_view.gd:603
 msgid "◀ Look"
 msgstr "◀ Mirar"
 
-#: ui/telescope_view.gd:589
+#: ui/telescope_view.gd:604
 msgid "Look ▶"
 msgstr "Mirar ▶"
 
-#: ui/telescope_view.gd:591
+#: ui/telescope_view.gd:606
 msgid "Back to system"
 msgstr "Volver al sistema"
 
-#: ui/telescope_view.gd:592
+#: ui/telescope_view.gd:607
 msgid "Right stick or drag: turn and zoom.  Hold something in the reticle to log it."
 msgstr "Stick derecho o arrastrar: girar y hacer zoom.  Mantén algo en la retícula para registrarlo."
 
-#: ui/telescope_view.gd:638
+#: ui/telescope_view.gd:653
 msgid ""
 "PLANET     %s\n"
 "DISTRICT   %.2f%% clean\n"
@@ -4786,7 +5687,7 @@ msgstr ""
 "ROBOTS     %d activos de %d\n"
 "VISITA     %s"
 
-#: ui/telescope_view.gd:641
+#: ui/telescope_view.gd:656
 msgid ""
 "\n"
 "CARE PACKAGE  %d:%02d left"
@@ -4794,7 +5695,7 @@ msgstr ""
 "\n"
 "PAQUETE  quedan %d:%02d"
 
-#: ui/telescope_view.gd:642
+#: ui/telescope_view.gd:657
 msgid ""
 "Remote pace (%d%% of offline)\n"
 "Waiting for you: %s cubes%s"
@@ -4802,27 +5703,27 @@ msgstr ""
 "Ritmo a distancia (%d%% del offline)\n"
 "Te esperan: %s cubos%s"
 
-#: ui/telescope_view.gd:645
+#: ui/telescope_view.gd:660
 msgid "Send a care package (%s cubes)"
 msgstr "Enviar un paquete de ayuda (%s cubos)"
 
-#: ui/telescope_view.gd:659
+#: ui/telescope_view.gd:674
 msgid "Care package away. The crew on %s works at double speed for %d minutes."
 msgstr "Paquete enviado. El equipo de %s trabaja el doble de rápido durante %d minutos."
 
-#: ui/telescope_view.gd:737
+#: ui/telescope_view.gd:757
 msgid "Ledger wreck"
 msgstr "Restos del Ledger"
 
-#: ui/telescope_view.gd:737
+#: ui/telescope_view.gd:757
 msgid "Deer"
 msgstr "Ciervo"
 
-#: ui/telescope_view.gd:738
+#: ui/telescope_view.gd:758
 msgid "Logged through the telescope: %s. New Codex entry."
 msgstr "Registrado con el telescopio: %s. Nueva entrada del Códice."
 
-#: ui/telescope_view.gd:739
+#: ui/telescope_view.gd:759
 msgid "Codex: %s"
 msgstr "Códice: %s"
 
@@ -4842,31 +5743,35 @@ msgstr "Comprar"
 msgid "Lv %d%s"
 msgstr "Nv %d%s"
 
-#: ui/upgrade_card.gd:188
+#: ui/upgrade_card.gd:184
+msgid "Build the %s first (Hub tab)"
+msgstr ""
+
+#: ui/upgrade_card.gd:191
 msgid "Requires %s"
 msgstr "Requiere %s"
 
-#: ui/upgrade_card.gd:191
+#: ui/upgrade_card.gd:195
 msgid "%s%s  (max)"
 msgstr "%s%s  (máx.)"
 
-#: ui/upgrade_card.gd:194
+#: ui/upgrade_card.gd:198
 msgid "Off  →  On"
 msgstr "No  →  Sí"
 
-#: ui/upgrade_card.gd:201
+#: ui/upgrade_card.gd:205
 msgid "MAX"
 msgstr "MÁX."
 
-#: ui/upgrade_card.gd:211
+#: ui/upgrade_card.gd:215
 msgid "Max (%d)"
 msgstr "Máx. (%d)"
 
-#: ui/upgrade_card.gd:217
+#: ui/upgrade_card.gd:221
 msgid "need %s · ~%s"
 msgstr "faltan %s · ~%s"
 
-#: ui/upgrade_card.gd:222
+#: ui/upgrade_card.gd:226
 msgid "Where it comes from:  %s"
 msgstr "De dónde sale:  %s"
 
@@ -4890,11 +5795,11 @@ msgstr "Cohetes"
 msgid "Locker"
 msgstr "Taquilla"
 
-#: ui/upgrades_screen.gd:142
+#: ui/upgrades_screen.gd:144
 msgid "WORKBENCH"
 msgstr "BANCO DE TRABAJO"
 
-#: ui/upgrades_screen.gd:227
+#: ui/upgrades_screen.gd:229
 msgid "Not open yet. Keep playing."
 msgstr "Aún no está abierto. Sigue jugando."
 
@@ -4928,6 +5833,14 @@ msgstr ""
 
 #: ui/world_picker.gd:117
 msgid "%d hexes"
+msgstr ""
+
+#: ui/yard_builds_panel.gd:12
+msgid "YARD"
+msgstr ""
+
+#: ui/yard_builds_panel.gd:53
+msgid "Trash bin: %s (level %d)   ·   bales sell for %d%% here"
 msgstr ""
 
 #: water/water_view.gd:78
@@ -5284,7 +6197,7 @@ msgstr "Acaparador de datos"
 
 #: data/achievements.json:achievements[data_500].desc
 msgid "Log 500 field notes."
-msgstr ""
+msgstr "Registra 500 notas de campo."
 
 #: data/achievements.json:achievements[distance_1k].name
 msgid "Long Way Round"
@@ -5600,7 +6513,7 @@ msgstr "Herencia familiar"
 
 #: data/achievements.json:achievements[late_heirloom_1].desc
 msgid "Unlock an Heirloom."
-msgstr ""
+msgstr "Desbloquea una reliquia."
 
 #: data/achievements.json:achievements[late_heirloom_20].name
 msgid "Treasured"
@@ -5612,11 +6525,11 @@ msgstr "Sube las herencias a 20 niveles en total."
 
 #: data/achievements.json:achievements[late_starseeds_100].name
 msgid "World Mender"
-msgstr ""
+msgstr "Reparamundos"
 
 #: data/achievements.json:achievements[late_starseeds_100].desc
 msgid "Reach 100 restoration across your worlds."
-msgstr ""
+msgstr "Alcanza 100 de restauración entre tus mundos."
 
 #: data/achievements.json:achievements[late_decor_1].name
 msgid "Home Touches"
@@ -5662,6 +6575,114 @@ msgstr "No el primero"
 msgid "Find the older seed pod on a new world."
 msgstr "Encuentra la cápsula de semillas más antigua en un mundo nuevo."
 
+#: data/achievements.json:achievements[home_answered].name
+msgid "The Cradle Answers"
+msgstr "El Cradle responde"
+
+#: data/achievements.json:achievements[home_answered].desc
+msgid "Light the Cradle Returns beacon and hear from the ark."
+msgstr "Enciende la baliza del Regreso del Cradle y escucha al arca."
+
+#: data/achievements.json:achievements[home_landed].name
+msgid "Two Suns, New Ground"
+msgstr "Dos soles, tierra nueva"
+
+#: data/achievements.json:achievements[home_landed].desc
+msgid "Land on another planet of the Verdance system."
+msgstr "Aterriza en otro planeta del sistema de Verdance."
+
+#: data/achievements.json:achievements[home_planets_2].name
+msgid "One Down"
+msgstr "Uno menos"
+
+#: data/achievements.json:achievements[home_planets_2].desc
+msgid "Restore a second planet."
+msgstr "Restaura un segundo planeta."
+
+#: data/achievements.json:achievements[home_planets_4].name
+msgid "Most of the Way"
+msgstr "Casi todo el camino"
+
+#: data/achievements.json:achievements[home_planets_4].desc
+msgid "Restore four planets."
+msgstr "Restaura cuatro planetas."
+
+#: data/achievements.json:achievements[home_planets_5].name
+msgid "Five Alive"
+msgstr "Cinco vivos"
+
+#: data/achievements.json:achievements[home_planets_5].desc
+msgid "Restore every planet in the system."
+msgstr "Restaura todos los planetas del sistema."
+
+#: data/achievements.json:achievements[home_relics].desc
+msgid "Collect all four planet relics."
+msgstr "Reúne las cuatro reliquias planetarias."
+
+#: data/achievements.json:achievements[home_drive_6].name
+msgid "Fold Space"
+msgstr "Plegar el espacio"
+
+#: data/achievements.json:achievements[home_drive_6].desc
+msgid "Build the Mk VI Interplanetary drive."
+msgstr "Construye el motor Mk VI Interplanetario."
+
+#: data/achievements.json:achievements[home_homecoming].desc
+msgid "Launch home to the Cradle."
+msgstr "Despega hacia casa, hasta el Cradle."
+
+#: data/achievements.json:achievements[extras_radio_6].name
+msgid "Pirate Radio"
+msgstr "Radio pirata"
+
+#: data/achievements.json:achievements[extras_radio_6].desc
+msgid "Unlock 6 songs on the base radio."
+msgstr "Desbloquea 6 canciones en la radio de la base."
+
+#: data/achievements.json:achievements[extras_radio_all].name
+msgid "Full Rotation"
+msgstr "Rotación completa"
+
+#: data/achievements.json:achievements[extras_radio_all].desc
+msgid "Unlock every song on the base radio."
+msgstr "Desbloquea todas las canciones de la radio de la base."
+
+#: data/achievements.json:achievements[extras_album_4].name
+msgid "Then and Now"
+msgstr "Antes y ahora"
+
+#: data/achievements.json:achievements[extras_album_4].desc
+msgid "Collect 4 pictures in the photo album."
+msgstr "Reúne 4 fotos en el álbum."
+
+#: data/achievements.json:achievements[extras_retire_1].name
+msgid "Happy Retirement"
+msgstr "Feliz jubilación"
+
+#: data/achievements.json:achievements[extras_retire_1].desc
+msgid "Retire a robot to the nursery garden."
+msgstr "Jubila un robot en el jardín del vivero."
+
+#: data/achievements.json:achievements[extras_visits_5].name
+msgid "Garden Party"
+msgstr "Fiesta en el jardín"
+
+#: data/achievements.json:achievements[extras_visits_5].desc
+msgid "Say hi to the nursery caretakers 5 times."
+msgstr "Saluda 5 veces a los cuidadores del vivero."
+
+#: data/achievements.json:achievements[extras_weekly_1].desc
+msgid "Finish a Seed of the Week challenge."
+msgstr "Termina un desafío de la Semilla de la semana."
+
+#: data/achievements.json:achievements[extras_weekly_4].name
+msgid "Paint Collector"
+msgstr "Coleccionista de colores"
+
+#: data/achievements.json:achievements[extras_weekly_4].desc
+msgid "Earn 4 Seed of the Week paint chips."
+msgstr "Gana 4 fichas de pintura de la Semilla de la semana."
+
 #: data/bloom.json:milestones[first_meadow].desc
 msgid "25 Thriving hexes anywhere on Verdance."
 msgstr "25 hexágonos prósperos en cualquier lugar de Verdance."
@@ -5694,6 +6715,22 @@ msgstr "Seis distritos en flor, o el 3% del planeta recuperado."
 msgid "Twelve districts in bloom, or 5% of the planet reclaimed."
 msgstr "Doce distritos en flor, o el 5% del planeta recuperado."
 
+#: data/camp.json:builds.radio.name
+msgid "CD Player"
+msgstr ""
+
+#: data/camp.json:builds.radio.desc
+msgid "A chunky old CD player on a crate by the fence. Plays the discs you find."
+msgstr ""
+
+#: data/camp.json:builds.nursery.name
+msgid "Robot Nursery"
+msgstr ""
+
+#: data/camp.json:builds.nursery.desc
+msgid "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand."
+msgstr ""
+
 #: data/codex.json:categories[junk].name data/hex_levels.json:levels[0].name
 msgid "Junk"
 msgstr "Chatarra"
@@ -5713,6 +6750,10 @@ msgstr "Monumentos"
 #: data/codex.json:categories[animals].name
 msgid "Animals"
 msgstr "Animales"
+
+#: data/codex.json:categories[homeward].name
+msgid "Homeward"
+msgstr "De vuelta a casa"
 
 #: data/codex.json:categories[sightings].name
 msgid "Sightings"
@@ -6522,7 +7563,7 @@ msgstr "Dónde: hexágonos prósperos, de día."
 msgid "When a hex thrives, robins move in and sing. If you hear birdsong, something here is going very right."
 msgstr "Cuando un hexágono prospera, los petirrojos se instalan y cantan. Si oyes cantos de pájaros, algo aquí va muy bien."
 
-#: data/codex.json:animals.firefly.name data/fauna.json:species[firefly].name
+#: data/codex.json:animals.firefly.name data/fauna.json:species[firefly].name data/style_parts.json:options.companion[firefly].name
 msgid "Firefly"
 msgstr "Luciérnaga"
 
@@ -6666,6 +7707,46 @@ msgstr "Dónde: los cielos sobre el Regreso del Cradle."
 msgid "White cranes circle high over the landing city on slow wingbeats. The ark's seed vault carried their eggs; this is the first flock to fly free."
 msgstr "Grullas blancas giran muy alto sobre la ciudad de aterrizaje con aleteos lentos. La bóveda de semillas del arca llevaba sus huevos; esta es la primera bandada que vuela libre."
 
+#: data/codex.json:homeward.charter.name
+msgid "The Sleepers' Charter"
+msgstr "La carta de los durmientes"
+
+#: data/codex.json:homeward.charter.hint data/codex.json:homeward.ledger_system.hint
+msgid "Light the Cradle Returns beacon."
+msgstr "Enciende la baliza del Regreso del Cradle."
+
+#: data/codex.json:homeward.charter.desc
+msgid "When the Makers left Verdance, most of them went into the long sleep in the Cradle's lower decks. Their charter was one line long: wake us when the system can feed us. Not one world. All five. The Cradle has kept that promise for three hundred years, and it will not break it for anybody, even a very persuasive small robot."
+msgstr "Cuando los Makers dejaron Verdance, la mayoría entró en el largo sueño en las cubiertas inferiores del Cradle. Su carta tenía una sola línea: despertadnos cuando el sistema pueda alimentarnos. No un mundo. Los cinco. El Cradle ha cumplido esa promesa durante trescientos años y no la romperá por nadie, ni siquiera por un pequeño robot muy persuasivo."
+
+#: data/codex.json:homeward.ledger_system.name
+msgid "The Ledger, Inc."
+msgstr "El Ledger, S. A."
+
+#: data/codex.json:homeward.ledger_system.desc
+msgid "The Ledger was never only Verdance's problem. It held mining rights to every world around the two suns: Ochre's sands, Tidewell's seabed, Rime's warm core, Anvil's whole crust. When the ore ran out it closed the books, kept the profits and left five planets under its trash. The audits never stopped. Nobody was left to read them."
+msgstr "El Ledger nunca fue solo un problema de Verdance. Tenía derechos mineros sobre cada mundo alrededor de los dos soles: la arena de Ochre, el lecho marino de Tidewell, el núcleo cálido de Rime, toda la corteza de Anvil. Cuando se acabó el mineral, cerró los libros, se quedó con los beneficios y dejó cinco planetas bajo su basura. Las auditorías nunca pararon. No quedaba nadie para leerlas."
+
+#: data/codex.json:homeward.binary_suns.name
+msgid "Hearth and Ember"
+msgstr "Hearth y Ember"
+
+#: data/codex.json:homeward.binary_suns.hint
+msgid "Open the solar-system map."
+msgstr "Abre el mapa del sistema solar."
+
+#: data/codex.json:homeward.binary_suns.desc
+msgid "The Verdance system has two suns: Hearth, warm and white, and Ember, its small orange companion. Every world sees both. On Ochre they are huge and hot; from Rime they are two bright points, and the stars stay out all day."
+msgstr "El sistema de Verdance tiene dos soles: Hearth, cálido y blanco, y Ember, su pequeño compañero naranja. Cada mundo ve los dos. En Ochre son enormes y abrasadores; desde Rime son dos puntos brillantes, y las estrellas se ven todo el día."
+
+#: data/codex.json:homeward.homecoming.hint
+msgid "Restore every world and launch home."
+msgstr "Restaura todos los mundos y despega hacia casa."
+
+#: data/codex.json:homeward.homecoming.desc
+msgid "Five worlds alive again. A rocket built from all of them. One seed planted in a bed with a yellow fence. The Cradle opened its bay for a small robot with a seedling tray, and below decks the Makers woke up to a green sky."
+msgstr "Cinco mundos vivos otra vez. Un cohete hecho de todos ellos. Una semilla plantada en un bancal con una valla amarilla. El Cradle abrió su bodega para un pequeño robot con una bandeja de plantones, y bajo cubierta los Makers despertaron bajo un cielo verde."
+
 #: data/codex.json:sightings.first_light.name
 msgid "First Light"
 msgstr "Primera luz"
@@ -6748,7 +7829,7 @@ msgstr "Caché de datos"
 
 #: data/cradle.json:heirlooms[data_cache].desc
 msgid "Each new world starts with 600 extra cubes for research per level."
-msgstr ""
+msgstr "Cada mundo nuevo empieza con 600 cubos extra para investigación por nivel."
 
 #: data/cradle.json:heirlooms[old_crew].name
 msgid "Old Crew"
@@ -6774,7 +7855,7 @@ msgstr "Lluvias intensas"
 msgid "Rain showers come four times as often and plants grow 15% faster."
 msgstr "Los chubascos llegan cuatro veces más a menudo y las plantas crecen un 15 % más rápido."
 
-#: data/cradle.json:modifiers[long_nights].name
+#: data/cradle.json:modifiers[long_nights].name data/weekly.json:twists[long_nights].name
 msgid "Long Nights"
 msgstr "Noches largas"
 
@@ -6814,7 +7895,7 @@ msgstr "Floración silvestre"
 msgid "Wildflowers want to come back: 30% more seeds per bloom, more wildlife visits."
 msgstr "Las flores silvestres quieren volver: un 30 % más de semillas por flor y más visitas de animales."
 
-#: data/cradle.json:modifiers[heavy_junk].name
+#: data/cradle.json:modifiers[heavy_junk].name data/weekly.json:twists[heavy_junk].name
 msgid "Heavy Junk"
 msgstr "Chatarra pesada"
 
@@ -6864,16 +7945,16 @@ msgstr "Vieja industria de polo a polo: tierras oxidadas y expansión urbana."
 
 #: data/currencies.json:currencies[cubes].name
 msgid "Cubes"
-msgstr ""
+msgstr "Cubos"
 
 #: data/currencies.json:currencies[cubes].desc
 msgid "The main money. Sell bales at the scale. Pays for upgrades, robots, base levels, research, rockets and decorations."
-msgstr ""
+msgstr "El dinero principal. Vende fardos en la báscula. Paga mejoras, robots, niveles de base, investigación, cohetes y decoraciones."
 
 #: data/currencies.json:currencies[parts].name data/hub.json:materials.metal.name data/hub.json:materials.plastic.name
 #: data/hub.json:materials.glass.name
 msgid "Parts"
-msgstr ""
+msgstr "Piezas"
 
 #: data/currencies.json:currencies[parts].short
 msgid "PARTS"
@@ -6885,7 +7966,7 @@ msgstr ""
 
 #: data/currencies.json:currencies[seeds].name
 msgid "Seeds"
-msgstr ""
+msgstr "Semillas"
 
 #: data/currencies.json:currencies[seeds].short
 msgid "SEEDS"
@@ -6893,7 +7974,7 @@ msgstr "SEMILLAS"
 
 #: data/currencies.json:currencies[seeds].desc
 msgid "For planting. The compost press turns paper, card and spent blooms into seeds."
-msgstr ""
+msgstr "Para plantar. La prensa de compost convierte papel, cartón y flores marchitas en semillas."
 
 #: data/decor.json:types[path].name
 msgid "Stone Path"
@@ -6974,6 +8055,22 @@ msgstr "Cometa de WREN"
 #: data/decor.json:types[wren_kite].desc
 msgid "A kite shaped like WREN's bird, tethered to a post and always flying."
 msgstr "Una cometa con la forma del pájaro de WREN, atada a un poste y siempre volando."
+
+#: data/decor.json:types[weekly_pennant].name
+msgid "Seed of the Week Pennant"
+msgstr "Banderín de la Semilla de la semana"
+
+#: data/decor.json:types[weekly_pennant].desc
+msgid "A tall pennant in the colour of your newest Seed of the Week paint chip."
+msgstr "Un banderín alto del color de tu última ficha de pintura de la Semilla de la semana."
+
+#: data/decor.json:types[weekly_arch].name
+msgid "Paint Chip Arch"
+msgstr "Arco de fichas"
+
+#: data/decor.json:types[weekly_arch].desc
+msgid "A garden arch striped with every paint chip you have earned."
+msgstr "Un arco de jardín con una franja por cada ficha de pintura que has ganado."
 
 #: data/designs.json:designs[aurora].tagline
 msgid "Baseline / Explorer"
@@ -7318,6 +8415,10 @@ msgstr "Una máquina de bebidas que se aferra a algo."
 #: data/eggs.json:eggs[stars].name
 msgid "WREN's Constellation"
 msgstr "La constelación de WREN"
+
+#: data/eggs.json:eggs[stars].prompt
+msgid "E   look through the telescope"
+msgstr "E   mirar por el telescopio"
 
 #: data/eggs.json:eggs[stars].lore
 msgid "Old Town's amateur telescope still points at the five stars the Makers called 'the Wren'. The Cradle's AI was named after them."
@@ -8215,10 +9316,6 @@ msgstr "Prensa %d pacas perfectas"
 msgid "Press %d Pure bales (one junk type)"
 msgstr "Prensa %d pacas puras (un tipo de chatarra)"
 
-#: data/events.json:contracts.templates[clean_hexes].text
-msgid "Clean %d hexes"
-msgstr "Limpia %d hexágonos"
-
 #: data/events.json:contracts.templates[scoop].text
 msgid "Scoop %d pieces of junk"
 msgstr "Recoge %d trozos de chatarra"
@@ -8406,6 +9503,14 @@ msgstr "Foto: liebre de terciopelo"
 #: data/events.json:trinkets[photo_velvet_hare].desc
 msgid "Soft as a whisper, quick as a rumour. The photo is a little blurry. Worth it."
 msgstr "Suave como un susurro, rápida como un rumor. La foto ha salido un poco movida. Mereció la pena."
+
+#: data/events.json:trinkets[crumb_bag].name
+msgid "Crumb Bag"
+msgstr ""
+
+#: data/events.json:trinkets[crumb_bag].desc
+msgid "A paper bag of crumbs and seed husks. The pigeons know the sound of it now."
+msgstr ""
 
 #: data/events.json:trinkets[pic_cat].name
 msgid "Photo: Stray Cat"
@@ -8851,6 +9956,18 @@ msgstr "La antigua ciudad de lanzamiento, donde aterrizará el arca."
 msgid "Scoop 15 pieces of junk"
 msgstr "Recoge 15 trozos de chatarra"
 
+#: data/goals.json:goals[dump_1].text
+msgid "Empty your chest in the bin"
+msgstr ""
+
+#: data/goals.json:goals[upgrade_1].text
+msgid "Install a workbench upgrade"
+msgstr "Instala una mejora del banco de trabajo"
+
+#: data/goals.json:goals[baler_1].text
+msgid "Install the Baler"
+msgstr ""
+
 #: data/goals.json:goals[bale_1].text
 msgid "Compress your first bale"
 msgstr "Prensa tu primera paca"
@@ -8859,9 +9976,9 @@ msgstr "Prensa tu primera paca"
 msgid "Sell a bale at the scale"
 msgstr "Vende una paca en la báscula"
 
-#: data/goals.json:goals[upgrade_1].text
-msgid "Install a workbench upgrade"
-msgstr "Instala una mejora del banco de trabajo"
+#: data/goals.json:goals[lift_1].text
+msgid "Lift Strength level 1"
+msgstr ""
 
 #: data/goals.json:goals[hex_1].text
 msgid "Clean your first hex"
@@ -8884,8 +10001,8 @@ msgid "Compartment Size level 3"
 msgstr "Tamaño del compartimento nivel 3"
 
 #: data/goals.json:goals[shards_1].text
-msgid "Read a memory shard"
-msgstr "Lee un fragmento de memoria"
+msgid "Find a memory shard"
+msgstr "Encuentra un fragmento de memoria"
 
 #: data/goals.json:goals[hex_3].text
 msgid "Clean 3 hexes"
@@ -8907,17 +10024,9 @@ msgstr "Termina un proyecto de investigación"
 msgid "Clean 5 hexes"
 msgstr "Limpia 5 hexágonos"
 
-#: data/goals.json:goals[scoopie_1].text
-msgid "Build a Scoopie"
-msgstr "Construye un Scoopie"
-
-#: data/goals.json:goals[zone_1].text
-msgid "Paint a work zone (B Command)"
-msgstr "Pinta una zona de trabajo (B Mando)"
-
-#: data/goals.json:goals[haulbug_1].text
-msgid "Build a Haul Bug"
-msgstr "Construye un Haul Bug"
+#: data/goals.json:goals[lift_2].text
+msgid "Lift Strength level 2 (large junk)"
+msgstr ""
 
 #: data/goals.json:goals[upgrades_12].text
 msgid "Install 12 upgrades"
@@ -8943,21 +10052,33 @@ msgstr "Termina 4 proyectos de investigación"
 msgid "Install 20 upgrades"
 msgstr "Instala 20 mejoras"
 
-#: data/goals.json:goals[bales_20].text
-msgid "Robots press 20 bales"
-msgstr "Los robots prensan 20 pacas"
-
-#: data/goals.json:goals[hex_10].text
+#: data/goals.json:goals[hex_10].text data/radio.json:songs[verdance_sweep].hint
 msgid "Clean 10 hexes"
 msgstr "Limpia 10 hexágonos"
-
-#: data/goals.json:goals[scoopie_2].text
-msgid "Run 2 Scoopies"
-msgstr "Ten 2 Scoopies en marcha"
 
 #: data/goals.json:goals[base_2].text
 msgid "Upgrade the base to level 2"
 msgstr "Mejora la base a nivel 2"
+
+#: data/goals.json:goals[scoopie_1].text
+msgid "Build a Scoopie"
+msgstr "Construye un Scoopie"
+
+#: data/goals.json:goals[zone_1].text
+msgid "Paint a work zone (B Command)"
+msgstr "Pinta una zona de trabajo (B Mando)"
+
+#: data/goals.json:goals[haulbug_1].text data/objectives.json:objectives[haul].text
+msgid "Build a Haul Bug"
+msgstr "Construye un Haul Bug"
+
+#: data/goals.json:goals[bales_20].text
+msgid "Robots press 20 bales"
+msgstr "Los robots prensan 20 pacas"
+
+#: data/goals.json:goals[scoopie_2].text
+msgid "Run 2 Scoopies"
+msgstr "Ten 2 Scoopies en marcha"
 
 #: data/goals.json:goals[hex_12].text
 msgid "Clean 12 hexes"
@@ -9066,6 +10187,10 @@ msgstr "Limpia 30 hexágonos (lago incluido)"
 #: data/goals.json:goals[base_3].text
 msgid "Upgrade the base to level 3"
 msgstr "Mejora la base a nivel 3"
+
+#: data/goals.json:goals[extras_radio].text
+msgid "Pick a song on the base radio"
+msgstr "Elige una canción en la radio de la base"
 
 #: data/goals.json:goals[builder_1].text
 msgid "Style a robot in the Locker"
@@ -9210,6 +10335,10 @@ msgstr "Lleva 25 hexágonos a Próspero"
 #: data/goals.json:goals[base_5].text
 msgid "Upgrade the base to level 5"
 msgstr "Mejora la base a nivel 5"
+
+#: data/goals.json:goals[extras_retire].text
+msgid "Retire a robot to the nursery"
+msgstr "Jubila un robot en el vivero"
 
 #: data/goals.json:goals[rocket].text
 msgid "Launch the rocket onward"
@@ -9411,6 +10540,38 @@ msgstr "Lleva aquí 25 hexágonos a Creciendo"
 msgid "Call the Cradle home"
 msgstr "Trae a casa el Cradle"
 
+#: data/goals.json:goals[home_drive_5].text
+msgid "Build the Mk V Orbital drive"
+msgstr "Construye el motor Mk V Orbital"
+
+#: data/goals.json:goals[home_land_1].text
+msgid "Fly to another planet"
+msgstr "Vuela a otro planeta"
+
+#: data/goals.json:goals[home_restore_2].text
+msgid "Restore a second planet"
+msgstr "Restaura un 2.º planeta"
+
+#: data/goals.json:goals[home_drive_6].text
+msgid "Build the Mk VI drive"
+msgstr "Construye el motor Mk VI"
+
+#: data/goals.json:goals[home_restore_4].text
+msgid "Restore four planets"
+msgstr "Restaura cuatro planetas"
+
+#: data/goals.json:goals[home_restore_5].text
+msgid "Restore all five planets"
+msgstr "Restaura los cinco planetas"
+
+#: data/goals.json:goals[home_drive_7].text
+msgid "Build the Homeward rocket"
+msgstr "Construye el cohete del Regreso"
+
+#: data/goals.json:goals[home_last_seed].text
+msgid "Plant the last seed"
+msgstr "Planta la última semilla"
+
 #: data/goals.json:goals[ark_1].text
 msgid "Plant a Seed Ark wave"
 msgstr "Planta una oleada del Arca de Semillas"
@@ -9429,7 +10590,7 @@ msgstr "Coloca una decoración (H)"
 
 #: data/goals.json:goals[late_heirloom_1].text
 msgid "Unlock an Heirloom"
-msgstr ""
+msgstr "Desbloquea una reliquia"
 
 #: data/goals.json:goals[late_garden_10].text
 msgid "Place 10 decorations"
@@ -9491,13 +10652,333 @@ msgstr "Sostenido"
 msgid "Bring every plant to bloom"
 msgstr "Haz florecer todas las plantas"
 
-#: data/hex_levels.json:levels[5].name
-msgid "Thriving"
-msgstr "Próspero"
-
 #: data/hex_levels.json:levels[5].hint
 msgid "Wildlife has moved in"
 msgstr "La fauna se ha mudado aquí"
+
+#: data/homeward.json:planets[verdance].name data/telescope.json:planets_default[verdance].name
+msgid "Verdance"
+msgstr "Verdance"
+
+#: data/homeward.json:planets[ochre].name data/telescope.json:planets_default[ochre].name
+msgid "Ochre"
+msgstr "Ochre"
+
+#: data/homeward.json:planets[tidewell].name data/telescope.json:planets_default[tidewell].name
+msgid "Tidewell"
+msgstr "Tidewell"
+
+#: data/homeward.json:planets[rime].name data/planets.json:rime.name data/telescope.json:planets_default[rime].name
+msgid "Rime"
+msgstr "Rime"
+
+#: data/homeward.json:planets[anvil].name data/telescope.json:planets_default[anvil].name
+msgid "Anvil"
+msgstr "Anvil"
+
+#: data/homeward.json:relics.ochre_glass.name
+msgid "Ochre Sun-Glass"
+msgstr "Vidrio solar de Ochre"
+
+#: data/homeward.json:relics.ochre_glass.desc
+msgid "Slag fused clear by the dune winds. It holds a little of Ochre's light."
+msgstr "Escoria fundida hasta volverse transparente por los vientos de las dunas. Guarda un poco de la luz de Ochre."
+
+#: data/homeward.json:relics.tidewell_pearl.name
+msgid "Tidewell Pearl"
+msgstr "Perla de Tidewell"
+
+#: data/homeward.json:relics.tidewell_pearl.desc
+msgid "The first pearl grown in Tidewell's sea in two hundred years."
+msgstr "La primera perla crecida en el mar de Tidewell en doscientos años."
+
+#: data/homeward.json:relics.rime_core.name
+msgid "Rime Heart-Ice"
+msgstr "Hielo corazón de Rime"
+
+#: data/homeward.json:relics.rime_core.desc
+msgid "A core sample from the thawed lakes, still faintly warm."
+msgstr "Una muestra del núcleo de los lagos deshelados, todavía algo tibia."
+
+#: data/homeward.json:relics.anvil_ingot.name
+msgid "Anvil Ingot"
+msgstr "Lingote de Anvil"
+
+#: data/homeward.json:relics.anvil_ingot.desc
+msgid "The Ledger's last ingot, recast as a plain ring with a seed stamped in it."
+msgstr "El último lingote del Ledger, refundido como un anillo sencillo con una semilla grabada."
+
+#: data/homeward.json:drive[0].name
+msgid "Mk V Orbital"
+msgstr "Mk V Orbital"
+
+#: data/homeward.json:drive[0].desc
+msgid "A vacuum-rated hull and a sun-sail: reaches the near planets, Ochre and Tidewell."
+msgstr "Un casco apto para el vacío y una vela solar: llega a los planetas cercanos, Ochre y Tidewell."
+
+#: data/homeward.json:drive[1].name
+msgid "Mk VI Interplanetary"
+msgstr "Mk VI Interplanetario"
+
+#: data/homeward.json:drive[1].desc
+msgid "A fold drive salvaged from a Ledger ore hauler: reaches Rime and Anvil."
+msgstr "Un motor de pliegue rescatado de un carguero de mineral del Ledger: llega a Rime y Anvil."
+
+#: data/homeward.json:drive[2].name
+msgid "Mk VII Homeward"
+msgstr "Mk VII del Regreso"
+
+#: data/homeward.json:drive[2].desc
+msgid "A great green-light rocket on a launch complex built from every planet you saved. One trip: up to the Cradle."
+msgstr "Un gran cohete de luz verde en un complejo de lanzamiento construido con cada planeta que salvaste. Un solo viaje: hasta el Cradle."
+
+#: data/homeward.json:docs.ochre_arrive.header data/homeward.json:docs.tidewell_arrive.header data/homeward.json:docs.rime_arrive.header
+msgid "L E D G E R   ·   I N T E R N A L"
+msgstr "L E D G E R   ·   I N T E R N O"
+
+#: data/homeward.json:docs.ochre_arrive.title
+msgid "Site closure notice, Ochre Open Pit 1"
+msgstr "Aviso de cierre, mina a cielo abierto 1 de Ochre"
+
+#: data/homeward.json:docs.ochre_arrive.body
+msgid ""
+"OCHRE OPEN PIT 1: CLOSED\n"
+"\n"
+"Ore grade below threshold. All extraction ends at shift change.\n"
+"Remaining equipment: abandon in place (removal not cost-effective).\n"
+"Waste rock, slag and packaging: leave on site.\n"
+"Residents: none of our concern; contracts expired.\n"
+"\n"
+"Thank you for your years of service.\n"
+"— The Ledger"
+msgstr ""
+"MINA A CIELO ABIERTO 1 DE OCHRE: CERRADA\n"
+"\n"
+"Ley del mineral por debajo del umbral. Toda extracción termina con el cambio de turno.\n"
+"Equipo restante: abandonar en el sitio (retirarlo no es rentable).\n"
+"Estériles, escoria y embalajes: dejar en el sitio.\n"
+"Residentes: no es asunto nuestro; contratos vencidos.\n"
+"\n"
+"Gracias por sus años de servicio.\n"
+"— El Ledger"
+
+#: data/homeward.json:docs.ochre_half.title
+msgid "Haul truck log, unit OH-7"
+msgstr "Diario del camión de acarreo OH-7"
+
+#: data/homeward.json:docs.ochre_half.body
+msgid ""
+"DAY 1,904\n"
+"Load 41 to the slag dunes.\n"
+"DAY 1,905\n"
+"No orders.\n"
+"DAY 1,906\n"
+"No orders.\n"
+"DAY 3,000\n"
+"Still parked. The wind keeps burying my wheels. A lizard lives under my bumper now. I have named it Load 42."
+msgstr ""
+"DÍA 1.904\n"
+"Carga 41 a las dunas de escoria.\n"
+"DÍA 1.905\n"
+"Sin órdenes.\n"
+"DÍA 1.906\n"
+"Sin órdenes.\n"
+"DÍA 3.000\n"
+"Sigo aparcado. El viento no deja de enterrarme las ruedas. Ahora vive un lagarto bajo mi parachoques. Lo he llamado Carga 42."
+
+#: data/homeward.json:docs.ochre_restored.title
+msgid "Chalk on a pit wall"
+msgstr "Tiza en una pared de la mina"
+
+#: data/homeward.json:docs.ochre_restored.body
+msgid ""
+"[In big careful letters, on the old benches of the pit:]\n"
+"\n"
+"THE GREEN CAME BACK.\n"
+"\n"
+"[Underneath, smaller, in WREN's handwriting font:] One down, Lumi. Four to go."
+msgstr ""
+"[En letras grandes y cuidadosas, sobre los viejos bancos de la mina:]\n"
+"\n"
+"EL VERDE HA VUELTO.\n"
+"\n"
+"[Debajo, más pequeño, con la letra manuscrita de WREN:] Uno menos, Lumi. Quedan cuatro."
+
+#: data/homeward.json:docs.tidewell_arrive.title
+msgid "Dredging schedule, final revision"
+msgstr "Calendario de dragado, revisión final"
+
+#: data/homeward.json:docs.tidewell_arrive.body
+msgid ""
+"TIDEWELL SEABED OPERATIONS\n"
+"\n"
+"Nodules recovered: 100%.\n"
+"Reef and kelp beds: 'overburden', removed.\n"
+"Silt plumes: within acceptable limits (limits revised).\n"
+"Island towns: notified by post.\n"
+"\n"
+"Next quarter: none. Tidewell is closed for business."
+msgstr ""
+"OPERACIONES DEL LECHO MARINO DE TIDEWELL\n"
+"\n"
+"Nódulos recuperados: 100 %.\n"
+"Arrecifes y bosques de algas: «sobrecarga», retirados.\n"
+"Plumas de sedimento: dentro de los límites aceptables (límites revisados).\n"
+"Pueblos isleños: notificados por correo.\n"
+"\n"
+"Próximo trimestre: ninguno. Tidewell cierra."
+
+#: data/homeward.json:docs.tidewell_half.title
+msgid "Harbour radio, on a loop"
+msgstr "Radio del puerto, en bucle"
+
+#: data/homeward.json:docs.tidewell_half.body
+msgid "...this is Tidewell harbour, still broadcasting. The water's gone grey and the fish have gone quiet. If anyone hears this, we planted mangroves along the north quay before we left. Check on them for us? They were only little..."
+msgstr "...aquí el puerto de Tidewell, seguimos emitiendo. El agua se ha vuelto gris y los peces se han callado. Si alguien oye esto: plantamos manglares en el muelle norte antes de irnos. ¿Podéis cuidarlos por nosotros? Eran muy pequeñitos..."
+
+#: data/homeward.json:docs.tidewell_restored.title
+msgid "A message in a bottle"
+msgstr "Un mensaje en una botella"
+
+#: data/homeward.json:docs.tidewell_restored.body
+msgid ""
+"To whoever finds this,\n"
+"\n"
+"The sea used to be so green you could see it from the hill. Grandad said it would come back if someone gave it a reason.\n"
+"\n"
+"Thank you for being the reason.\n"
+"\n"
+"— Pim, age 9, Tidewell"
+msgstr ""
+"A quien encuentre esto:\n"
+"\n"
+"El mar antes era tan verde que se veía desde la colina. El abuelo decía que volvería si alguien le daba un motivo.\n"
+"\n"
+"Gracias por ser el motivo.\n"
+"\n"
+"— Pim, 9 años, Tidewell"
+
+#: data/homeward.json:docs.rime_arrive.title
+msgid "Core tap report, Rime"
+msgstr "Informe de extracción del núcleo, Rime"
+
+#: data/homeward.json:docs.rime_arrive.body
+msgid ""
+"RIME DEEP CORE TAP\n"
+"\n"
+"Heat extracted and sold: all of it.\n"
+"Surface temperature: falling (expected).\n"
+"Lakes: freezing (expected).\n"
+"Population: relocated (see invoice).\n"
+"\n"
+"Note from Finance: the moon was not ours to keep warm."
+msgstr ""
+"EXTRACCIÓN PROFUNDA DEL NÚCLEO DE RIME\n"
+"\n"
+"Calor extraído y vendido: todo.\n"
+"Temperatura de superficie: bajando (previsto).\n"
+"Lagos: congelándose (previsto).\n"
+"Población: reubicada (ver factura).\n"
+"\n"
+"Nota de Finanzas: la luna no era nuestra para mantenerla caliente."
+
+#: data/homeward.json:docs.rime_half.title
+msgid "Greenhouse keeper's diary"
+msgstr "Diario de la cuidadora del invernadero"
+
+#: data/homeward.json:docs.rime_half.body
+msgid ""
+"Day 1. The heaters are off. Moved the seedlings to the kitchen.\n"
+"Day 9. Kitchen's cold too. Wrapped them in my coat.\n"
+"Day 30. We're leaving on the last shuttle. I left the coat. And a note: please keep them warm. I know that's silly. You're a frozen moon."
+msgstr ""
+"Día 1. La calefacción está apagada. Llevé los plantones a la cocina.\n"
+"Día 9. La cocina también está fría. Los envolví en mi abrigo.\n"
+"Día 30. Nos vamos en la última lanzadera. Dejé el abrigo. Y una nota: por favor, mantenedlos calientes. Ya sé que es una tontería. Eres una luna helada."
+
+#: data/homeward.json:docs.rime_restored.title
+msgid "A note pinned in a thawed greenhouse"
+msgstr "Una nota clavada en un invernadero deshelado"
+
+#: data/homeward.json:docs.rime_restored.body
+msgid ""
+"[Under the note from Day 30, a new line in bright ink:]\n"
+"\n"
+"Kept them warm. They're fine. They're more than fine.\n"
+"\n"
+"— LM-1 (and WREN, who wants it known she helped)"
+msgstr ""
+"[Bajo la nota del día 30, una línea nueva con tinta brillante:]\n"
+"\n"
+"Los mantuvimos calientes. Están bien. Más que bien.\n"
+"\n"
+"— LM-1 (y WREN, que quiere que conste que ayudó)"
+
+#: data/homeward.json:docs.anvil_arrive.header
+msgid "L E D G E R   ·   H E A D   O F F I C E"
+msgstr "L E D G E R   ·   S E D E   C E N T R A L"
+
+#: data/homeward.json:docs.anvil_arrive.title
+msgid "Board minutes, the final meeting"
+msgstr "Acta del consejo, la última reunión"
+
+#: data/homeward.json:docs.anvil_arrive.body
+msgid ""
+"ITEM 1: The system is spent. Motion to dissolve: carried.\n"
+"ITEM 2: Clean-up costs. Motion to not: carried.\n"
+"ITEM 3: The Makers' ark keeps asking about a 'charter'. Motion to ignore: carried.\n"
+"ITEM 4: Audit drones to continue indefinitely, for form's sake.\n"
+"\n"
+"Meeting closed. Lights left on."
+msgstr ""
+"PUNTO 1: El sistema está agotado. Moción de disolución: aprobada.\n"
+"PUNTO 2: Costes de limpieza. Moción de no hacerlo: aprobada.\n"
+"PUNTO 3: El arca de los Makers no deja de preguntar por una «carta». Moción de ignorarla: aprobada.\n"
+"PUNTO 4: Los drones de auditoría siguen indefinidamente, por las formas.\n"
+"\n"
+"Se levanta la sesión. Luces encendidas."
+
+#: data/homeward.json:docs.anvil_half.title
+msgid "The last audit"
+msgstr "La última auditoría"
+
+#: data/homeward.json:docs.anvil_half.body
+msgid ""
+"LEDGER AUDIT UNIT 0001\n"
+"SUBJECT: Anvil foundry district\n"
+"FINDING: Unauthorised gardens. 214 counts.\n"
+"FINDING: Unauthorised gardens. 215 counts.\n"
+"FINDING: ...\n"
+"RECOMMENDATION: Recommend we stop counting. It is rather nice."
+msgstr ""
+"UNIDAD DE AUDITORÍA DEL LEDGER 0001\n"
+"ASUNTO: distrito de la fundición de Anvil\n"
+"HALLAZGO: Jardines no autorizados. 214 casos.\n"
+"HALLAZGO: Jardines no autorizados. 215 casos.\n"
+"HALLAZGO: ...\n"
+"RECOMENDACIÓN: Recomiendo dejar de contar. Es bastante bonito."
+
+#: data/homeward.json:docs.anvil_restored.title
+msgid "From the Ledger's last clerk"
+msgstr "Del último contable del Ledger"
+
+#: data/homeward.json:docs.anvil_restored.body
+msgid ""
+"Whoever you are,\n"
+"\n"
+"I kept the books for forty years. I wrote down every ton we took. I never wrote down what we left.\n"
+"\n"
+"If you're reading this in a garden on Anvil, then someone finally balanced the account. Thank you.\n"
+"\n"
+"— T. Hale, Accounts"
+msgstr ""
+"Seas quien seas:\n"
+"\n"
+"Llevé los libros durante cuarenta años. Apunté cada tonelada que nos llevamos. Nunca apunté lo que dejamos.\n"
+"\n"
+"Si lees esto en un jardín de Anvil, alguien por fin ha cuadrado las cuentas. Gracias.\n"
+"\n"
+"— T. Hale, Contabilidad"
 
 #: data/hub.json:levels[0].name
 msgid "Lean-to"
@@ -9795,6 +11276,102 @@ msgstr ""
 "Testigo: WREN, cuidadora del Cradle\n"
 "Testigo: LM-1 (dejó una manchita de aceite)"
 
+#: data/objectives.json:brief.lines
+msgid "Lumi, it's WREN, the Cradle's caretaker. Your friend up here. Your pod's down, and the relay's failing."
+msgstr "Lumi, soy WREN, la cuidadora del Cradle. Tu amiga aquí arriba. Tu cápsula ha caído y el relé está fallando."
+
+#: data/objectives.json:brief.lines
+msgid "Bale junk to power the old base, then build a signal tower so I can reach you. I'll be [glitch]listen—[/glitch]"
+msgstr "Prensa chatarra en fardos para dar energía a la vieja base y construye una torre de señal para que pueda llegar a ti. Estaré [glitch]escuchan—[/glitch]"
+
+#: data/objectives.json:objectives[power].text
+msgid "Power the base: sell 3 bales"
+msgstr "Da energía a la base: vende 3 fardos"
+
+#: data/objectives.json:objectives[power].desc
+msgid "Cubes feed the recycler. Its power wakes the base."
+msgstr "Los cubos alimentan el reciclador. Su energía despierta la base."
+
+#: data/objectives.json:objectives[tower].text
+msgid "Rebuild the signal tower"
+msgstr "Reconstruye la torre de señal"
+
+#: data/objectives.json:objectives[tower].desc
+msgid "WREN went silent. The tower lets her reach you."
+msgstr "WREN se ha quedado en silencio. La torre le permite llegar a ti."
+
+#: data/objectives.json:objectives[hex].text
+msgid "Clean a hex"
+msgstr "Limpia un hex"
+
+#: data/objectives.json:objectives[hex].desc
+msgid "Clean ground is where green can grow again."
+msgstr "En suelo limpio el verde puede volver a crecer."
+
+#: data/objectives.json:objectives[robot].text
+msgid "Build your first robot"
+msgstr "Construye tu primer robot"
+
+#: data/objectives.json:objectives[robot].desc
+msgid "A helper keeps cleaning while you work."
+msgstr "Un ayudante sigue limpiando mientras trabajas."
+
+#: data/objectives.json:objectives[robot].lines
+msgid "The base has power! Enough to build you a helper. Try the Bots tab at the workbench."
+msgstr "¡La base tiene energía! Suficiente para construirte un ayudante. Prueba la pestaña Bots del banco de trabajo."
+
+#: data/objectives.json:objectives[zone].text
+msgid "Send your robot to work"
+msgstr "Pon a tu robot a trabajar"
+
+#: data/objectives.json:objectives[zone].desc
+msgid "Press B and paint the hexes it should clean."
+msgstr "Pulsa B y pinta los hex que debe limpiar."
+
+#: data/objectives.json:objectives[haul].desc
+msgid "It carries bales to the scale for you."
+msgstr "Lleva los fardos a la báscula por ti."
+
+#: data/objectives.json:objectives[seed].text
+msgid "Plant the first seed"
+msgstr "Planta la primera semilla"
+
+#: data/objectives.json:objectives[seed].desc
+msgid "Living green charges your Bloom Core."
+msgstr "El verde vivo carga tu Núcleo Floral."
+
+#: data/objectives.json:objectives[seed].hint
+msgid "Keep clearing ground. Seeds turn up in clean soil."
+msgstr "Sigue despejando suelo. Las semillas aparecen en tierra limpia."
+
+#: data/objectives.json:objectives[base2].text
+msgid "Rebuild the base: level 2"
+msgstr "Reconstruye la base: nivel 2"
+
+#: data/objectives.json:objectives[base2].desc
+msgid "A bigger base runs more robots."
+msgstr "Una base más grande mueve más robots."
+
+#: data/objectives.json:objectives[base2].lines
+msgid "The hub can grow now. Rebuild it from the Hub tab at the workbench."
+msgstr "La base ya puede crecer. Reconstrúyelo en la pestaña Base del banco de trabajo."
+
+#: data/objectives.json:objectives[tower2].text
+msgid "Boost the signal tower"
+msgstr "Potencia la torre de señal"
+
+#: data/objectives.json:objectives[tower2].desc
+msgid "A stronger signal: WREN comes through clearer."
+msgstr "Más señal: WREN se oye más clara."
+
+#: data/objectives.json:objectives[base3].text
+msgid "Rebuild the base: level 3"
+msgstr "Reconstruye la base: nivel 3"
+
+#: data/objectives.json:objectives[base3].desc
+msgid "Level 3 opens the Requests board."
+msgstr "El nivel 3 abre el tablón de encargos."
+
 #: data/outposts.json:levels[0].name
 msgid "Weigh Station"
 msgstr "Estación de pesaje"
@@ -9867,6 +11444,162 @@ msgstr "Módulo sensor"
 msgid "Special Module"
 msgstr "Módulo especial"
 
+#: data/planets.json:rime.tagline
+msgid "An ice moon, core-mined until it froze."
+msgstr ""
+
+#: data/radio.json:songs[verdance_sprout].name
+msgid "Sprout Step"
+msgstr "Paso de brote"
+
+#: data/radio.json:songs[verdance_sprout].desc
+msgid "Kalimba and bells, the first green on Verdance."
+msgstr "Kalimba y campanas, el primer verde de Verdance."
+
+#: data/radio.json:songs[verdance_sweep].name
+msgid "Clean Sweep"
+msgstr "Limpieza a fondo"
+
+#: data/radio.json:songs[verdance_sweep].desc
+msgid "Marimba and a four-on-the-floor kick: cleaning music."
+msgstr "Marimba y un bombo constante: música para limpiar."
+
+#: data/radio.json:songs[ochre_sunbaked].name
+msgid "Sunbaked"
+msgstr "Tostado al sol"
+
+#: data/radio.json:songs[ochre_sunbaked].desc
+msgid "A sunny marimba hook over a lute ostinato."
+msgstr "Un motivo soleado de marimba sobre un ostinato de laúd."
+
+#: data/radio.json:songs[ochre_sunbaked].hint
+msgid "Land on Ochre"
+msgstr "Aterriza en Ochre"
+
+#: data/radio.json:songs[ochre_caravan].name
+msgid "Dune Caravan"
+msgstr "Caravana de dunas"
+
+#: data/radio.json:songs[ochre_caravan].desc
+msgid "A winding pluck line over a loping frame drum."
+msgstr "Una línea punteada y sinuosa sobre un pandero pausado."
+
+#: data/radio.json:songs[ochre_caravan].hint
+msgid "A base on Ochre at level 3"
+msgstr "Una base en Ochre al nivel 3"
+
+#: data/radio.json:songs[ochre_mirage].name
+msgid "Mirage"
+msgstr "Espejismo"
+
+#: data/radio.json:songs[ochre_mirage].desc
+msgid "Kalimba and bells shimmering in the heat."
+msgstr "Kalimba y campanas que titilan con el calor."
+
+#: data/radio.json:songs[ochre_mirage].hint
+msgid "A base on Ochre at level 5"
+msgstr "Una base en Ochre al nivel 5"
+
+#: data/radio.json:songs[tidewell_tradewinds].name
+msgid "Tradewinds"
+msgstr "Vientos alisios"
+
+#: data/radio.json:songs[tidewell_tradewinds].desc
+msgid "Steel pans skipping over the waves."
+msgstr "Steel pans que saltan sobre las olas."
+
+#: data/radio.json:songs[tidewell_tradewinds].hint
+msgid "Land on Tidewell"
+msgstr "Aterriza en Tidewell"
+
+#: data/radio.json:songs[tidewell_tidepools].name
+msgid "Tidepools"
+msgstr "Pozas de marea"
+
+#: data/radio.json:songs[tidewell_tidepools].desc
+msgid "A harp melody over rolling arpeggios."
+msgstr "Una melodía de arpa sobre arpegios ondulantes."
+
+#: data/radio.json:songs[tidewell_tidepools].hint
+msgid "A base on Tidewell at level 3"
+msgstr "Una base en Tidewell al nivel 3"
+
+#: data/radio.json:songs[tidewell_skipper].name
+msgid "Skipping Stones"
+msgstr "Piedras saltarinas"
+
+#: data/radio.json:songs[tidewell_skipper].desc
+msgid "A bouncy marimba shuffle."
+msgstr "Un shuffle de marimba saltarín."
+
+#: data/radio.json:songs[tidewell_skipper].hint
+msgid "A base on Tidewell at level 5"
+msgstr "Una base en Tidewell al nivel 5"
+
+#: data/radio.json:songs[rime_hoarfrost].name
+msgid "Hoarfrost"
+msgstr "Escarcha"
+
+#: data/radio.json:songs[rime_hoarfrost].desc
+msgid "Glass bells that slowly gather warmth."
+msgstr "Campanas de cristal que poco a poco ganan calidez."
+
+#: data/radio.json:songs[rime_hoarfrost].hint
+msgid "Land on Rime"
+msgstr "Aterriza en Rime"
+
+#: data/radio.json:songs[rime_aurora].desc
+msgid "Piano doubled by glass under the northern lights."
+msgstr "Piano doblado por cristal bajo la aurora boreal."
+
+#: data/radio.json:songs[rime_aurora].hint
+msgid "A base on Rime at level 5"
+msgstr "Una base en Rime al nivel 5"
+
+#: data/radio.json:songs[anvil_foundry].name
+msgid "Foundry Heart"
+msgstr "Corazón de fundición"
+
+#: data/radio.json:songs[anvil_foundry].desc
+msgid "A dark, groovy forge that learns to hope."
+msgstr "Una forja oscura y rítmica que aprende a tener esperanza."
+
+#: data/radio.json:songs[anvil_foundry].hint
+msgid "Land on Anvil"
+msgstr "Aterriza en Anvil"
+
+#: data/radio.json:songs[anvil_ash].name
+msgid "Ash Choir"
+msgstr "Coro de ceniza"
+
+#: data/radio.json:songs[anvil_ash].desc
+msgid "An eerie choir over brass and embers."
+msgstr "Un coro inquietante sobre metales y brasas."
+
+#: data/radio.json:songs[anvil_ash].hint
+msgid "A base on Anvil at level 3"
+msgstr "Una base en Anvil al nivel 3"
+
+#: data/radio.json:songs[anvil_engine].name
+msgid "Red Engine"
+msgstr "Motor rojo"
+
+#: data/radio.json:songs[anvil_engine].desc
+msgid "Sub bass and metal hits, the furnaces running clean."
+msgstr "Graves profundos y golpes de metal, los hornos funcionan limpios."
+
+#: data/radio.json:songs[anvil_engine].hint
+msgid "A base on Anvil at level 5"
+msgstr "Una base en Anvil al nivel 5"
+
+#: data/radio.json:songs[homecoming].desc
+msgid "The ark's theme, for the journey home."
+msgstr "El tema del arca, para el viaje a casa."
+
+#: data/radio.json:songs[homecoming].hint
+msgid "Bring the Cradle home"
+msgstr "Trae el Cradle a casa"
+
 #: data/research.json:branches[robotics].name
 msgid "Robotics"
 msgstr "Robótica"
@@ -9936,8 +11669,8 @@ msgid "Salvage Logic"
 msgstr "Lógica de rescate"
 
 #: data/research.json:nodes[salvage_logic].desc
-msgid "Lumi rewrites the starter bots' route planner. Fewer wrong turns."
-msgstr "Lumi reescribe el planificador de rutas de los bots iniciales. Menos giros equivocados."
+msgid "Lumi rewrites the base's old assembly logic. The base can build helpers again: Scoopies, Haul Bugs and Skimmers."
+msgstr ""
 
 #: data/research.json:nodes[seedling_blueprint].name
 msgid "Seedling Blueprint"
@@ -10210,10 +11943,6 @@ msgstr "Herramienta"
 #: data/robot_parts.json:slots[topper].name
 msgid "Topper"
 msgstr "Sombrero"
-
-#: data/robot_parts.json:stats[load].name
-msgid "Load"
-msgstr "Carga"
 
 #: data/robot_parts.json:stats[work].name
 msgid "Work rate"
@@ -10893,6 +12622,50 @@ msgstr ""
 "\n"
 "(Alguien ha rayado debajo: «sí pueden, si les dejáis»)"
 
+#: data/signal_tower.json:tiers[0].name
+msgid "Signal Tower"
+msgstr "Torre de señal"
+
+#: data/signal_tower.json:tiers[1].name
+msgid "Signal Tower Mk II"
+msgstr "Torre de señal Mk II"
+
+#: data/signal_tower.json:tiers[2].name
+msgid "Signal Tower Mk III"
+msgstr "Torre de señal Mk III"
+
+#: data/signal_tower.json:tiers[3].name
+msgid "Signal Tower Mk IV"
+msgstr "Torre de señal Mk IV"
+
+#: data/solar_system.json:star_a.name
+msgid "Hearth"
+msgstr "Hearth"
+
+#: data/solar_system.json:star_b.name
+msgid "Ember"
+msgstr "Ember"
+
+#: data/solar_system.json:planets.verdance.moons[0].name
+msgid "Pebble"
+msgstr "Guijarro"
+
+#: data/solar_system.json:planets.tidewell.moons[0].name
+msgid "Lantern"
+msgstr "Farol"
+
+#: data/solar_system.json:planets.anvil.moons[0].name
+msgid "Tong"
+msgstr "Tenaza"
+
+#: data/solar_system.json:planets.anvil.moons[1].name
+msgid "Hammer"
+msgstr "Martillo"
+
+#: data/solar_system.json:planets.rime.moons[0].name
+msgid "Vane"
+msgstr "Vane"
+
 #: data/stations.json:conveyor.name
 msgid "Conveyor Feeder"
 msgstr "Alimentador de cinta"
@@ -10911,27 +12684,408 @@ msgstr "Una prensa hidráulica de pacas colocada en el frente de limpieza. Los r
 
 #: data/stations.json:recycler.desc
 msgid "Shredder drums and a little smelter. Bales go in and never come back: out come parts and clean building stock. Every bale burnt clean helps the sky."
+msgstr "Tambores trituradores y un pequeño horno. Los fardos entran y nunca vuelven: salen piezas y material limpio. Cada fardo quemado limpio ayuda al cielo."
+
+#: data/style_parts.json:slots[paint].name
+msgid "Paint"
+msgstr "Pintura"
+
+#: data/style_parts.json:slots[trim].name
+msgid "Trim"
+msgstr "Molduras"
+
+#: data/style_parts.json:slots[accent].name
+msgid "Accent"
+msgstr "Acento"
+
+#: data/style_parts.json:slots[side].name
+msgid "Side modules"
+msgstr "Módulos laterales"
+
+#: data/style_parts.json:slots[wear].name
+msgid "Wear"
+msgstr "Desgaste"
+
+#: data/style_parts.json:slots[pattern].name
+msgid "Pattern"
+msgstr "Patrón"
+
+#: data/style_parts.json:slots[eyes].name
+msgid "Eye colour"
+msgstr "Color de ojos"
+
+#: data/style_parts.json:slots[glow].name
+msgid "Light strips"
+msgstr "Tiras de luz"
+
+#: data/style_parts.json:slots[head].name
+msgid "Head piece"
+msgstr "Pieza de cabeza"
+
+#: data/style_parts.json:slots[chest].name
+msgid "Chest icon"
+msgstr "Icono del pecho"
+
+#: data/style_parts.json:slots[shoulders].name
+msgid "Shoulders"
+msgstr "Hombros"
+
+#: data/style_parts.json:slots[held].name
+msgid "Held item"
+msgstr "Objeto en mano"
+
+#: data/style_parts.json:slots[companion].name
+msgid "Companion"
+msgstr "Compañero"
+
+#: data/style_parts.json:slots[hover].name
+msgid "Hover glow"
+msgstr "Brillo de levitación"
+
+#: data/style_parts.json:slots[laser].name
+msgid "Pickup laser"
+msgstr "Láser de recogida"
+
+#: data/style_parts.json:slots[bonus].name
+msgid "Bonus"
+msgstr "Bonus"
+
+#: data/style_parts.json:options.pattern[plain].name
+msgid "Plain"
+msgstr "Liso"
+
+#: data/style_parts.json:options.pattern[stripes].name
+msgid "Hazard stripes"
+msgstr "Franjas de peligro"
+
+#: data/style_parts.json:options.pattern[moss].name
+msgid "Moss patches"
+msgstr "Manchas de musgo"
+
+#: data/style_parts.json:options.eye_shape[crescent].name
+msgid "Crescent"
+msgstr "Media luna"
+
+#: data/style_parts.json:options.eye_shape[round].name
+msgid "Round"
+msgstr "Redondos"
+
+#: data/style_parts.json:options.eye_shape[happy].name
+msgid "Happy arcs"
+msgstr "Arcos felices"
+
+#: data/style_parts.json:options.eye_shape[bar].name
+msgid "Visor bar"
+msgstr "Barra de visor"
+
+#: data/style_parts.json:options.eye_shape[heart].name
+msgid "Hearts"
+msgstr "Corazones"
+
+#: data/style_parts.json:options.eye_shape[heart].unlock.cond.unit data/style_parts.json:swatches[seaglass].unlock.cond.unit data/style_parts.json:swatches[coral].unlock.cond.unit
+msgid "finds"
+msgstr "hallazgos"
+
+#: data/style_parts.json:options.eye_shape[heart].unlock.text
+msgid "Find 8 Collection trinkets"
+msgstr "Encuentra 8 baratijas de la Colección"
+
+#: data/style_parts.json:options.head[none].name data/style_parts.json:options.shoulders[none].name data/style_parts.json:options.held[none].name
+#: data/style_parts.json:options.companion[none].name
+msgid "None"
+msgstr "Ninguno"
+
+#: data/style_parts.json:options.head[fin].name
+msgid "Fin"
+msgstr "Aleta"
+
+#: data/style_parts.json:options.head[antenna].name
+msgid "Antenna"
+msgstr "Antena"
+
+#: data/style_parts.json:options.head[antenna].unlock.cond.unit data/style_parts.json:swatches[mint].unlock.cond.unit
+msgid "hub level"
+msgstr "nivel de base"
+
+#: data/style_parts.json:options.head[antenna].unlock.text
+msgid "Upgrade a hub to level 2"
+msgstr "Mejora una base al nivel 2"
+
+#: data/style_parts.json:options.head[sprout].name
+msgid "Sprout leaf"
+msgstr "Hoja de brote"
+
+#: data/style_parts.json:options.head[catears].name
+msgid "Cat ears"
+msgstr "Orejas de gato"
+
+#: data/style_parts.json:options.head[wings].name
+msgid "Wing fins"
+msgstr "Aletas de ala"
+
+#: data/style_parts.json:options.head[halo].name
+msgid "Halo"
+msgstr "Aureola"
+
+#: data/style_parts.json:options.chest[recycle].name
+msgid "Recycle"
+msgstr "Reciclaje"
+
+#: data/style_parts.json:options.chest[leaf].name
+msgid "Leaf"
+msgstr "Hoja"
+
+#: data/style_parts.json:options.chest[cross].name
+msgid "Medic cross"
+msgstr "Cruz médica"
+
+#: data/style_parts.json:options.chest[heart].name
+msgid "Heart"
+msgstr "Corazón"
+
+#: data/style_parts.json:options.shoulders[pads].name
+msgid "Shoulder pads"
+msgstr "Hombreras"
+
+#: data/style_parts.json:options.held[gear].name
+msgid "Spare gear"
+msgstr "Engranaje de repuesto"
+
+#: data/style_parts.json:options.held[medkit].name
+msgid "Med kit"
+msgstr "Botiquín"
+
+#: data/style_parts.json:options.held[toolbox].name
+msgid "Toolbox"
+msgstr "Caja de herramientas"
+
+#: data/style_parts.json:options.held[watering_can].name
+msgid "Watering can"
+msgstr "Regadera"
+
+#: data/style_parts.json:options.held[holo].name
+msgid "Holo screen"
+msgstr "Pantalla holo"
+
+#: data/style_parts.json:options.companion[butterfly].name
+msgid "Butterfly"
+msgstr "Mariposa"
+
+#: data/style_parts.json:options.companion[firefly].unlock.cond.unit data/style_parts.json:swatches[royal].unlock.cond.unit data/style_parts.json:swatches[lilac].unlock.cond.unit
+msgid "requests"
+msgstr "encargos"
+
+#: data/style_parts.json:options.companion[firefly].unlock.text
+msgid "Finish 3 Requests"
+msgstr "Completa 3 encargos"
+
+#: data/style_parts.json:options.companion[drone].name
+msgid "Tiny drone"
+msgstr "Dron diminuto"
+
+#: data/style_parts.json:swatches[pearl].name
+msgid "Pearl"
+msgstr "Perla"
+
+#: data/style_parts.json:swatches[white].name
+msgid "Chalk"
+msgstr "Tiza"
+
+#: data/style_parts.json:swatches[graphite].name
+msgid "Graphite"
+msgstr "Grafito"
+
+#: data/style_parts.json:swatches[slate].name
+msgid "Slate"
+msgstr "Pizarra"
+
+#: data/style_parts.json:swatches[cyan].name
+msgid "Cyan"
+msgstr "Cian"
+
+#: data/style_parts.json:swatches[orange].name
+msgid "Orange"
+msgstr "Naranja"
+
+#: data/style_parts.json:swatches[sky].name
+msgid "Sky"
+msgstr "Cielo"
+
+#: data/style_parts.json:swatches[mint].name
+msgid "Mint"
+msgstr "Menta"
+
+#: data/style_parts.json:swatches[mint].unlock.text
+msgid "Upgrade a hub to level 3"
+msgstr "Mejora una base al nivel 3"
+
+#: data/style_parts.json:swatches[hazard].name
+msgid "Hazard yellow"
+msgstr "Amarillo peligro"
+
+#: data/style_parts.json:swatches[soot].name
+msgid "Soot"
+msgstr "Hollín"
+
+#: data/style_parts.json:swatches[amber].name
+msgid "Amber"
+msgstr "Ámbar"
+
+#: data/style_parts.json:swatches[olive].name
+msgid "Olive"
+msgstr "Oliva"
+
+#: data/style_parts.json:swatches[bark].name
+msgid "Bark"
+msgstr "Corteza"
+
+#: data/style_parts.json:swatches[leaf].name
+msgid "Leaf green"
+msgstr "Verde hoja"
+
+#: data/style_parts.json:swatches[honey].name
+msgid "Honey"
+msgstr "Miel"
+
+#: data/style_parts.json:swatches[cherry].name
+msgid "Cherry"
+msgstr "Cereza"
+
+#: data/style_parts.json:swatches[pink].name
+msgid "Pink"
+msgstr "Rosa"
+
+#: data/style_parts.json:swatches[cream].name
+msgid "Cream"
+msgstr "Crema"
+
+#: data/style_parts.json:swatches[gunmetal].name
+msgid "Gunmetal"
+msgstr "Gris metal"
+
+#: data/style_parts.json:swatches[ink].name
+msgid "Ink"
+msgstr "Tinta"
+
+#: data/style_parts.json:swatches[violet].name
+msgid "Violet"
+msgstr "Violeta"
+
+#: data/style_parts.json:swatches[ivory].name
+msgid "Ivory"
+msgstr "Marfil"
+
+#: data/style_parts.json:swatches[sunset].name
+msgid "Sunset"
+msgstr "Atardecer"
+
+#: data/style_parts.json:swatches[seaglass].name
+msgid "Sea glass"
+msgstr "Vidrio marino"
+
+#: data/style_parts.json:swatches[seaglass].unlock.text
+msgid "Find 4 Collection trinkets"
+msgstr "Encuentra 4 baratijas de la Colección"
+
+#: data/style_parts.json:swatches[coral].name
+msgid "Coral"
+msgstr "Coral"
+
+#: data/style_parts.json:swatches[coral].unlock.text
+msgid "Find 12 Collection trinkets"
+msgstr "Encuentra 12 baratijas de la Colección"
+
+#: data/style_parts.json:swatches[royal].name
+msgid "Royal blue"
+msgstr "Azul real"
+
+#: data/style_parts.json:swatches[royal].unlock.text
+msgid "Finish 5 Requests"
+msgstr "Completa 5 encargos"
+
+#: data/style_parts.json:swatches[lilac].name
+msgid "Lilac"
+msgstr "Lila"
+
+#: data/style_parts.json:swatches[lilac].unlock.text
+msgid "Finish 15 Requests"
+msgstr "Completa 15 encargos"
+
+#: data/style_parts.json:swatches[gold].name
+msgid "Gold"
+msgstr "Oro"
+
+#: data/style_parts.json:swatches[bloom].name
+msgid "Bloom green"
+msgstr "Verde floración"
+
+#: data/style_parts.json:swatches[midnight].name
+msgid "Midnight"
+msgstr "Medianoche"
+
+#: data/style_parts.json:swatches[copper].name
+msgid "Copper"
+msgstr "Cobre"
+
+#: data/style_parts.json:swatches[rosegold].name
+msgid "Rose gold"
+msgstr "Oro rosa"
+
+#: data/trash_bin.json:levels[0].name
+msgid "Dented Bin"
 msgstr ""
 
-#: data/telescope.json:planets_default[ochre].name
-msgid "Ochre"
-msgstr "Ochre"
+#: data/trash_bin.json:levels[0].desc
+msgid "A dented wheelie bin on a rusty weigh plate. It swallows one bale at a time."
+msgstr ""
 
-#: data/telescope.json:planets_default[verdance].name
-msgid "Verdance"
-msgstr "Verdance"
+#: data/trash_bin.json:levels[1].name
+msgid "Scrap Skip"
+msgstr ""
 
-#: data/telescope.json:planets_default[tidewell].name
-msgid "Tidewell"
-msgstr "Tidewell"
+#: data/trash_bin.json:levels[1].desc
+msgid "A proper steel skip. Bales go in faster and weigh in a little heavier."
+msgstr ""
 
-#: data/telescope.json:planets_default[anvil].name
-msgid "Anvil"
-msgstr "Anvil"
+#: data/trash_bin.json:levels[2].name
+msgid "Weigh Skip"
+msgstr ""
 
-#: data/telescope.json:planets_default[rime].name
-msgid "Rime"
-msgstr "Rime"
+#: data/trash_bin.json:levels[2].desc
+msgid "A ribbed skip on a calibrated scale with a warning beacon. Honest weights, better pay."
+msgstr ""
+
+#: data/trash_bin.json:levels[3].name
+msgid "Compactor"
+msgstr ""
+
+#: data/trash_bin.json:levels[3].desc
+msgid "A hydraulic ram presses every bale flat before it is weighed."
+msgstr ""
+
+#: data/trash_bin.json:levels[4].name
+msgid "Smart Intake"
+msgstr ""
+
+#: data/trash_bin.json:levels[4].desc
+msgid "A clean white intake with a scanner seam. It sorts what it eats and pays the best rate."
+msgstr ""
+
+#: data/upgrades.json:upgrades[baler].name
+msgid "Baler"
+msgstr ""
+
+#: data/upgrades.json:upgrades[baler].desc
+msgid "Fit the bale press in your chest. Press junk into bales: they sell for far more than loose junk."
+msgstr ""
+
+#: data/upgrades.json:upgrades[lift_strength].name
+msgid "Lift Strength"
+msgstr ""
+
+#: data/upgrades.json:upgrades[lift_strength].desc
+msgid "Stronger lift beams. Level 1: medium junk (jerrycans, crates). Level 2: large junk (tyres, TVs, fridges)."
+msgstr ""
 
 #: data/upgrades.json:upgrades[compartment_size].name
 msgid "Compartment Size"
@@ -10994,8 +13148,8 @@ msgid "Magnet Arm"
 msgstr "Brazo magnético"
 
 #: data/upgrades.json:upgrades[magnet_arm].desc
-msgid "Nearby junk scoots toward you while scooping."
-msgstr "La chatarra cercana se desliza hacia ti mientras recoges."
+msgid "A few loose pieces nearby drift toward you while scooping. Never heavy ones, never from inside a heap."
+msgstr ""
 
 #: data/upgrades.json:upgrades[detector_range].name
 msgid "Detector Coil"
@@ -11027,7 +13181,7 @@ msgstr "Rendimiento de recicladora"
 
 #: data/upgrades.json:upgrades[recycler_yield].desc
 msgid "Sharper shredder teeth and a hotter smelter. More parts per bale."
-msgstr ""
+msgstr "Dientes de trituradora más afilados y un horno más caliente. Más piezas por fardo."
 
 #: data/upgrades.json:upgrades[laser_reach].name
 msgid "Laser Reach"
@@ -11038,20 +13192,88 @@ msgid "Longer focusing lenses: grab junk from further away."
 msgstr "Lentes de enfoque más largas: atrapa chatarra desde más lejos."
 
 #: data/upgrades.json:upgrades[multi_lock].name
-msgid "Multi-Lock"
-msgstr "Multifijación"
+msgid "Scoop Size"
+msgstr ""
 
 #: data/upgrades.json:upgrades[multi_lock].desc
-msgid "Extra targeting lasers: lift several pieces at once."
-msgstr "Láseres de puntería extra: levanta varias piezas a la vez."
+msgid "Lock onto one more piece per scoop pulse."
+msgstr ""
+
+#: data/upgrades.json:upgrades[signal_finder].name
+msgid "Signal Finder"
+msgstr ""
+
+#: data/upgrades.json:upgrades[signal_finder].desc
+msgid "Tunes the detector to strong pings: rare part signals show as a violet beam."
+msgstr ""
+
+#: data/weekly.json:twists[scoopies_only].name
+msgid "Scoopies Only"
+msgstr "Solo Scoopies"
+
+#: data/weekly.json:twists[scoopies_only].desc
+msgid "Only Scoopies answer the call this week. Lumi does the hauling."
+msgstr "Esta semana solo los Scoopies acuden a la llamada. Lumi se encarga del transporte."
+
+#: data/weekly.json:twists[dry_spell].name
+msgid "Dry Spell"
+msgstr "Sequía"
+
+#: data/weekly.json:twists[dry_spell].desc
+msgid "No water robots, and the soil is thin. Water the garden by hand."
+msgstr "Sin robots de riego, y el suelo es pobre. Riega el jardín a mano."
+
+#: data/weekly.json:twists[heavy_junk].desc
+msgid "Dense scrap: scooping is slower, but bales sell for more."
+msgstr "Chatarra densa: recoger es más lento, pero las balas se venden más caras."
+
+#: data/weekly.json:twists[storm_week].name
+msgid "Storm Week"
+msgstr "Semana de tormentas"
+
+#: data/weekly.json:twists[storm_week].desc
+msgid "Rain showers four times as often. Plants love it."
+msgstr "Los chubascos llegan cuatro veces más a menudo. A las plantas les encanta."
+
+#: data/weekly.json:twists[supply_rush].name
+msgid "Supply Rush"
+msgstr "Fiebre de suministros"
+
+#: data/weekly.json:twists[supply_rush].desc
+msgid "Tailwinds: Lumi is quicker and supply drops come twice as often."
+msgstr "Viento de cola: Lumi es más rápido y los lanzamientos de suministros llegan el doble de a menudo."
+
+#: data/weekly.json:twists[long_nights].desc
+msgid "Nights last twice as long. The night shift pays a little more."
+msgstr "Las noches duran el doble. El turno de noche paga un poco más."
+
+#: data/weekly.json:twists[no_haulers].name
+msgid "No Haulers"
+msgstr "Sin transportistas"
+
+#: data/weekly.json:twists[no_haulers].desc
+msgid "The Haul Bugs are on holiday. Every bale goes to the scale by hand."
+msgstr "Los Haul Bugs están de vacaciones. Cada bala va a la báscula a mano."
 
 #: data/wren_lines.json:wake
-msgid "...carrier... Lumi? Relay at four percent. It's WREN. Hello. Hello. I'm still here."
-msgstr "...portador... ¿Lumi? Relé al cuatro por ciento. Soy WREN. Hola. Hola. Sigo aquí."
+msgid "...Lumi? ...It's WREN. Your tower's carrying me. Barely. Keep it standing."
+msgstr "...¿Lumi? ...Soy WREN. Tu torre me sostiene. A duras penas. Mantenla en pie."
 
 #: data/wren_lines.json:wake
-msgid "...that ground you just cleared... the relay got stronger. Hello again. Do that again. Please."
-msgstr "...ese suelo que acabas de despejar... el relé se ha reforzado. Hola otra vez. Hazlo de nuevo. Por favor."
+msgid "...there you are. The signal's thin, but it's ours. Hello again, Lumi."
+msgstr "...ahí estás. La señal es débil, pero es nuestra. Hola otra vez, Lumi."
+
+#: data/wren_lines.json:signal_up
+msgid "Better. Less static. Keep building."
+msgstr "Mejor. Menos estática. Sigue construyendo."
+
+#: data/wren_lines.json:signal_up
+msgid "Much better. I can hear the wind on your end now. And I can tell you more."
+msgstr "Mucho mejor. Ya oigo el viento de tu lado. Y puedo contarte más."
+
+#: data/wren_lines.json:signal_up
+msgid "Clear as the garden deck. Now I can tell you everything I couldn't."
+msgstr "Clara como en la cubierta del jardín. Ya puedo contarte todo lo que no pude."
 
 #: data/wren_lines.json:hex_clean
 msgid "...that patch of ground. It's... brown. Brown is better than gray."
@@ -12395,7 +14617,7 @@ msgstr "La bóveda de semillas del Cradle tiene mucho más que lo de un solo pla
 
 #: data/wren_lines.json:cradle_mode
 msgid "Heirlooms, a whole map of worlds. Verdance stays green; we just take what we learned somewhere new."
-msgstr ""
+msgstr "Reliquias, todo un mapa de mundos. Verdance sigue verde; solo llevamos lo aprendido a otro sitio."
 
 #: data/wren_lines.json:new_world
 msgid "...new ground... new junk..."
@@ -12420,6 +14642,78 @@ msgstr "Estás decorando. Lo apruebo. Los gatos lo van a aprobar todavía más."
 #: data/wren_lines.json:garden_place
 msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
 msgstr "Un banco, un farol, una fuente. Empieza a parecer un sitio al que la gente querría volver."
+
+#: data/wren_lines.json:home_arrive
+msgid "...new sky... two suns..."
+msgstr "...cielo nuevo... dos soles..."
+
+#: data/wren_lines.json:home_arrive
+msgid "New planet, same two suns. The Ledger's been here too. You can smell the paperwork."
+msgstr "Planeta nuevo, los mismos dos soles. El Ledger también pasó por aquí. Huele a papeleo."
+
+#: data/wren_lines.json:home_arrive
+msgid "Another world the Ledger left for dead. It doesn't know about you yet. It's about to."
+msgstr "Otro mundo que el Ledger dejó morir. Todavía no sabe nada de ti. Está a punto de saberlo."
+
+#: data/wren_lines.json:home_half
+msgid "...signal... old one..."
+msgstr "...señal... antigua..."
+
+#: data/wren_lines.json:home_half
+msgid "Picked up something old on the band. Ledger traffic. Want to read it?"
+msgstr "He captado algo antiguo en la banda. Tráfico del Ledger. ¿Quieres leerlo?"
+
+#: data/wren_lines.json:home_half
+msgid "Half-way here. Every time this place gets greener, its ghosts start talking. I've got another one for you."
+msgstr "A medio camino aquí. Cada vez que este sitio reverdece, sus fantasmas empiezan a hablar. Tengo otro para ti."
+
+#: data/wren_lines.json:home_restored
+msgid "...green... all of it..."
+msgstr "...verde... todo..."
+
+#: data/wren_lines.json:home_restored
+msgid "That's the whole planet breathing again. The Cradle will have seen that from orbit."
+msgstr "Es el planeta entero respirando otra vez. El Cradle lo habrá visto desde la órbita."
+
+#: data/wren_lines.json:home_restored
+msgid "Another world alive. I logged it for the Cradle: 'Planet restored. Robot insufferably pleased with itself.' Accurate?"
+msgstr "Otro mundo vivo. Lo anoté para el Cradle: «Planeta restaurado. Robot insoportablemente satisfecho de sí mismo». ¿Correcto?"
+
+#: data/wren_lines.json:home_system_done
+msgid "...five... five..."
+msgstr "...cinco... cinco..."
+
+#: data/wren_lines.json:home_system_done
+msgid "Five worlds. All of them green. Lumi, I think the charter's met. Let's go home."
+msgstr "Cinco mundos. Todos verdes. Lumi, creo que la carta está cumplida. Vamos a casa."
+
+#: data/wren_lines.json:home_system_done
+msgid "Every world around both suns, alive. Back to Verdance. Build the big one. It's time."
+msgstr "Cada mundo alrededor de los dos soles, vivo. De vuelta a Verdance. Construye el grande. Es la hora."
+
+#: data/wren_lines.json:home_rocket
+msgid "...big... very big..."
+msgstr "...grande... muy grande..."
+
+#: data/wren_lines.json:home_rocket
+msgid "That is the biggest rocket I've ever seen, and I've seen the inside of a cargo pod at re-entry."
+msgstr "Es el cohete más grande que he visto nunca, y he visto el interior de una cápsula de carga durante una reentrada."
+
+#: data/wren_lines.json:home_rocket
+msgid "The Homeward rocket. Made from all five worlds. Plant the last seed, Lumi, and then we fly."
+msgstr "El cohete del Regreso. Hecho con los cinco mundos. Planta la última semilla, Lumi, y luego volamos."
+
+#: data/wren_lines.json:home_last_seed
+msgid "...last one..."
+msgstr "...la última..."
+
+#: data/wren_lines.json:home_last_seed
+msgid "Last seed. Yellow fence and everything. Class 4B would approve."
+msgstr "Última semilla. Valla amarilla y todo. La clase 4B lo aprobaría."
+
+#: data/wren_lines.json:home_last_seed
+msgid "There. The last seed, in the ground where the Cradle left from. Now it's our turn to leave, and come back properly."
+msgstr "Ya está. La última semilla, en la tierra de donde partió el Cradle. Ahora nos toca a nosotros irnos, y volver como es debido."
 
 #: data/wren_lines.json:world_ice_moon_arrival
 msgid "An ice moon. The Ledger ran its cold storage out here. Cold keeps things, {name}. Including evidence."
@@ -12541,23 +14835,11 @@ msgstr ""
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
 
-#~ msgid "Save game"
-#~ msgstr "Guardar partida"
+#~ msgid "SIGNAL  %s  ·  %.1f m"
+#~ msgstr "SEÑAL  %s  ·  %.1f m"
 
-#~ msgid "Saved."
-#~ msgstr "Guardado."
-
-#~ msgid "Quit to title"
-#~ msgstr "Volver al título"
-
-#~ msgid "Quit to desktop"
-#~ msgstr "Salir al escritorio"
-
-#~ msgid "in about %s"
-#~ msgstr "en unos %s"
-
-#~ msgid "earn more cubes"
-#~ msgstr "gana más cubos"
+#~ msgid "SIGNAL  %d%%"
+#~ msgstr "SEÑAL  %d%%"
 
 #~ msgid "Missing %d part"
 #~ msgstr[0] "Falta %d pieza"
@@ -12566,11 +14848,35 @@ msgstr ""
 #~ msgid "Needs a %s Control Core"
 #~ msgstr "Requiere un núcleo de control %s"
 
+#~ msgid "Not enough parts (scrap spares at Haggle's or run the recycler)"
+#~ msgstr "No hay suficientes piezas (desguaza piezas sobrantes con Haggle o pon en marcha la recicladora)"
+
+#~ msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
+#~ msgstr "LM-1 en línea. Núcleo Floral 4%: luz verde baja. Relé del Cradle: débil. Haz crecer algo."
+
+#~ msgid "Clean this hex completely"
+#~ msgstr "Limpia este hexágono por completo"
+
+#~ msgid "%s (Builder)"
+#~ msgstr "%s (Taller)"
+
+#~ msgid "%s robot part"
+#~ msgstr "%s pieza de robot"
+
+#~ msgid "Requests reward: %s. Equip it on the Requests tab."
+#~ msgstr "Recompensa de encargos: %s. Equípala en la pestaña Encargos."
+
+#~ msgid "Requests reward: %s. Fit it in the Builder tab."
+#~ msgstr "Recompensa de encargos: %s. Móntala en la pestaña Taller."
+
 #~ msgid "None in the parts bin"
 #~ msgstr "No hay en el cajón de piezas"
 
 #~ msgid "Needs a %s%s"
 #~ msgstr "Requiere: %s%s"
+
+#~ msgid "Haggle's stall · %s"
+#~ msgstr "Puesto de Haggle · %s"
 
 #~ msgid "Craft · %s"
 #~ msgstr "Fabricar · %s"
@@ -12583,6 +14889,9 @@ msgstr ""
 
 #~ msgid "%s spotted a %s."
 #~ msgstr "%s ha visto: %s."
+
+#~ msgid "E   Radio: %s"
+#~ msgstr "E   Radio: %s"
 
 #~ msgid ""
 #~ "No robots yet. Build one in the Bots tab, then fit it out here.\n"
@@ -12597,14 +14906,38 @@ msgstr ""
 #~ msgid "  ·  press to get + fit"
 #~ msgstr "  ·  pulsa para conseguir + instalar"
 
+#~ msgid "Builder bin %d   ·   Parts %s"
+#~ msgstr "Caja de taller %d   ·   Piezas %s"
+
 #~ msgid "Haggle's stall: %s  (new stock in %d min)"
 #~ msgstr "Puesto de Haggle: %s  (género nuevo en %d min)"
+
+#~ msgid "%s cubes, %s parts, %s Control Core. %s"
+#~ msgstr "%s cubos, %s piezas, %s Núcleo de control. %s"
 
 #~ msgid "  parts %d/%d · %s"
 #~ msgstr "  piezas %d/%d · %s"
 
+#~ msgid "REQUESTS"
+#~ msgstr "ENCARGOS"
+
+#~ msgid "Short optional jobs and world events. Each pays cubes or parts; nothing is lost if one runs out."
+#~ msgstr "Tareas opcionales cortas y eventos del mundo. Cada una paga cubos o piezas; no se pierde nada si una caduca."
+
+#~ msgid "REWARD TRACK"
+#~ msgstr "PISTA DE RECOMPENSAS"
+
+#~ msgid "LIVE  ·  %s  ·  %s  ·  %s left"
+#~ msgstr "EN VIVO  ·  %s  ·  %s  ·  quedan %s"
+
 #~ msgid "Collection  %d / %d   ·   see the Codex (K)"
 #~ msgstr "Colección  %d / %d   ·   ver el Códice (K)"
+
+#~ msgid "A new request is being posted."
+#~ msgstr "Se está publicando un nuevo encargo."
+
+#~ msgid "Pays  %s"
+#~ msgstr "Paga  %s"
 
 #~ msgid "Accept  (%s)"
 #~ msgstr "Aceptar  (%s)"
@@ -12615,6 +14948,9 @@ msgstr ""
 #~ msgid "Working on it"
 #~ msgstr "En ello"
 
+#~ msgid "Claim  %s"
+#~ msgstr "Cobrar  %s"
+
 #~ msgid "Next posting in %s"
 #~ msgstr "Próximo anuncio en %s"
 
@@ -12624,11 +14960,23 @@ msgstr ""
 #~ msgid "Time left %s"
 #~ msgstr "Tiempo restante %s"
 
+#~ msgid "Finished. Claim it!"
+#~ msgstr "Terminado. ¡Cóbralo!"
+
+#~ msgid "After %d requests"
+#~ msgstr "Tras %d encargos"
+
 #~ msgid "Equipped  (press to remove)"
 #~ msgstr "Equipado  (pulsa para quitar)"
 
+#~ msgid "Unlocked  ·  press to equip"
+#~ msgstr "Desbloqueado  ·  pulsa para equipar"
+
 #~ msgid "HUB"
 #~ msgstr "BASE"
+
+#~ msgid "Parts %s"
+#~ msgstr "Piezas %s"
 
 #~ msgid ""
 #~ "Level %d   ·   %s\n"
@@ -12671,6 +15019,24 @@ msgstr ""
 #~ msgid "Air Scrubbers maxed"
 #~ msgstr "Depuradores al máximo"
 
+#~ msgid "%s  map      %s  command      %s  lens      %s  goals"
+#~ msgstr "%s  mapa      %s  mando      %s  lente      %s  objetivos"
+
+#~ msgid "◢ SIGNAL %d%%"
+#~ msgstr "◢ SEÑAL %d%%"
+
+#~ msgid "Save game"
+#~ msgstr "Guardar partida"
+
+#~ msgid "Saved."
+#~ msgstr "Guardado."
+
+#~ msgid "Quit to title"
+#~ msgstr "Volver al título"
+
+#~ msgid "Quit to desktop"
+#~ msgstr "Salir al escritorio"
+
 #~ msgid "%s   ·   %s   ·   %d built"
 #~ msgstr "%s   ·   %s   ·   %d construidos"
 
@@ -12699,17 +15065,90 @@ msgstr ""
 #~ msgid "Next: %s  ·  x%.1f work speed  ·  %s look"
 #~ msgstr "Siguiente: %s  ·  x%.1f velocidad de trabajo  ·  aspecto %s"
 
+#~ msgid "Needs %s cubes, %s parts and a %s Control Core.  %s"
+#~ msgstr "Necesita %s cubos, %s piezas y un Núcleo de control %s.  %s"
+
 #~ msgid "Upgrade fleet to %s"
 #~ msgstr "Mejorar flota a %s"
 
 #~ msgid "□  %s  ·  missing  (detector, or salvage from electronics junk)"
 #~ msgstr "□  %s  ·  falta  (detector, o rescátalo de chatarra electrónica)"
 
+#~ msgid "you are here"
+#~ msgstr "estás aquí"
+
+#~ msgid "needs %s"
+#~ msgstr "necesita %s"
+
+#~ msgid "D-pad / click  pick a planet      Enter / A  choose      Esc / B  back"
+#~ msgstr "Cruceta / clic  elegir planeta      Intro / A  elegir      Esc / B  volver"
+
+#~ msgid "Verdance system"
+#~ msgstr "Sistema de Verdance"
+
+#~ msgid "two suns  ·  five worlds  ·  system restoration"
+#~ msgstr "dos soles  ·  cinco mundos  ·  restauración del sistema"
+
+#~ msgid "restored  ·  %d of %d planets"
+#~ msgstr "restaurado  ·  %d de %d planetas"
+
+#~ msgid "Relics"
+#~ msgstr "Reliquias"
+
+#~ msgid "Restore %s"
+#~ msgstr "Restaura %s"
+
+#~ msgid "Heirloom picks waiting: %d (Pause > Ark Bridge)"
+#~ msgstr "Elecciones de herencia pendientes: %d (Pausa > Puente del Arca)"
+
+#~ msgid "Rocket drive"
+#~ msgstr "Motor del cohete"
+
+#~ msgid "interplanetary  ·  carried to every planet"
+#~ msgstr "interplanetario  ·  viaja contigo a cada planeta"
+
+#~ msgid "The Homeward rocket stands ready."
+#~ msgstr "El cohete del Regreso está listo."
+
+#~ msgid "Next: %s"
+#~ msgstr "Siguiente: %s"
+
+#~ msgid "Planets"
+#~ msgstr "Planetas"
+
+#~ msgid "pick a world"
+#~ msgstr "elige un mundo"
+
+#~ msgid "unvisited"
+#~ msgstr "sin visitar"
+
+#~ msgid "%s  ·  %.2f AU from the suns"
+#~ msgstr "%s  ·  a %.2f UA de los soles"
+
+#~ msgid "Restored %d%%"
+#~ msgstr "Restaurado %d%%"
+
+#~ msgid "Goal: %d Thriving hexes, %d bases at level 5, a Thriving landing district"
+#~ msgstr "Objetivo: %d hexágonos prósperos, %d bases en nivel 5, un distrito de llegada próspero"
+
+#~ msgid "Goal: the Bloom Core full (Cradle Returns)"
+#~ msgstr "Objetivo: el Núcleo Floral lleno (Regreso del Cradle)"
+
+#~ msgid ""
+#~ "%s\n"
+#~ "Not visited yet."
+#~ msgstr ""
+#~ "%s\n"
+#~ "Sin visitar todavía."
+
 #~ msgid "HAGGLE'S PARTS TRADE"
 #~ msgstr "TRUEQUE DE PIEZAS DE HAGGLE"
 
 #~ msgid "\"Everything's original. Mostly. Three of yours for one of mine, no questions, some questions.\""
 #~ msgstr "«Todo es original. Casi todo. Tres tuyas por una mía, sin preguntas, alguna pregunta»."
+
+#~ msgid "Parts  %s      Robot parts in storage  %d"
+#~ msgstr "Piezas  %s      Piezas de robot en almacén  %d"
 
 #~ msgid "Haggle: \"Funny thing, I just happened to find a %s. For you, half price.\""
 #~ msgstr "Haggle: «Qué casualidad, justo me he encontrado esto: %s. Para ti, a mitad de precio»."
@@ -12732,14 +15171,30 @@ msgstr ""
 #~ msgid "Buy Worn  %s"
 #~ msgstr "Comprar gastada  %s"
 
+#~ msgid "Scrap %d spare Rusty robot parts  ->  %s"
+#~ msgstr "Desguazar %d piezas de robot oxidadas sobrantes  ->  %s"
+
 #~ msgid "BUILDER BITS  ·  new stock in %d min  ·  fit them in the Builder tab"
 #~ msgstr "PIEZAS DE TALLER  ·  género nuevo en %d min  ·  instálalas en la pestaña Taller"
 
 #~ msgid "Haggle: \"%s. Treat it nicely.\""
 #~ msgstr "Haggle: «%s. Trátalo bien»."
 
+#~ msgid ""
+#~ "%s  (own %d)\n"
+#~ "%s"
+#~ msgstr ""
+#~ "%s  (tienes %d)\n"
+#~ "%s"
+
 #~ msgid "Swap 3 spares"
 #~ msgstr "Cambiar 3 repuestos"
+
+#~ msgid "in about %s"
+#~ msgstr "en unos %s"
+
+#~ msgid "earn more cubes"
+#~ msgstr "gana más cubos"
 
 #~ msgid "Trade"
 #~ msgstr "Trueque"
@@ -12758,6 +15213,12 @@ msgstr ""
 
 #~ msgid "Build a robot with all five custom parts."
 #~ msgstr "Construye un robot con las cinco piezas personalizadas."
+
+#~ msgid "Robot parts and building stock salvaged from junk, the recycler and Haggle's scrap bin. Pays for robots, the Builder, base levels, stations, rocket stages and outpost repairs."
+#~ msgstr "Piezas de robot y material de obra rescatados de la chatarra, la recicladora y el cubo de desguace de Haggle. Pagan robots, el Taller, niveles de base, estaciones, etapas de cohete y reparaciones de puestos."
+
+#~ msgid "Read a memory shard"
+#~ msgstr "Lee un fragmento de memoria"
 
 #~ msgid "Fit a part in the Builder"
 #~ msgstr "Instala una pieza en el Taller"
@@ -12819,409 +15280,44 @@ msgstr ""
 #~ msgid "Haggle's welcome gift with your first robot"
 #~ msgstr "El regalo de bienvenida de Haggle con tu primer robot"
 
+#~ msgid "...carrier... Lumi? Relay at four percent. It's WREN. Hello. Hello. I'm still here."
+#~ msgstr "...portador... ¿Lumi? Relé al cuatro por ciento. Soy WREN. Hola. Hola. Sigo aquí."
+
+#~ msgid "...that ground you just cleared... the relay got stronger. Hello again. Do that again. Please."
+#~ msgstr "...ese suelo que acabas de despejar... el relé se ha reforzado. Hola otra vez. Hazlo de nuevo. Por favor."
+
 #~ msgid "If you find enough parts, the workbench can put a helper together. Chassis, wheels, an arm, a core."
 #~ msgstr "Si encuentras suficientes piezas, el banco de trabajo puede montar un ayudante. Chasis, ruedas, un brazo, un núcleo."
 
-#~ msgid "+%d bolts"
-#~ msgstr "+%d tornillos"
+#~ msgid "Lumi rewrites the starter bots' route planner. Fewer wrong turns."
+#~ msgstr "Lumi reescribe el planificador de rutas de los bots iniciales. Menos giros equivocados."
 
-#~ msgid "Not enough materials"
-#~ msgstr "Materiales insuficientes"
+#~ msgid "Nearby junk scoots toward you while scooping."
+#~ msgstr "La chatarra cercana se desliza hacia ti mientras recoges."
 
-#~ msgid ""
-#~ "COMPOST PRESS  Lv %d\n"
-#~ "compost %s  →  seeds"
-#~ msgstr ""
-#~ "PRENSA DE COMPOST  Nv %d\n"
-#~ "compost %s  →  semillas"
+#~ msgid "Multi-Lock"
+#~ msgstr "Multifijación"
 
-#~ msgid "Not enough bolts (scrap spare parts at Haggle's)"
-#~ msgstr "No hay tornillos suficientes (desguaza piezas en lo de Haggle)"
+#~ msgid "Extra targeting lasers: lift several pieces at once."
+#~ msgstr "Láseres de puntería extra: levanta varias piezas a la vez."
 
-#~ msgid "<< INTERCEPT // LEDGER PROMOTIONS // %d OF %d >>"
-#~ msgstr "<< INTERCEPTADO // PROMOCIONES LEDGER // %d DE %d >>"
+#~ msgid "%s  skip"
+#~ msgstr "%s  saltar"
 
-#~ msgid "Contracts"
-#~ msgstr "Contratos"
+#~ msgid "Space / Esc"
+#~ msgstr "Espacio / Esc"
 
-#~ msgid "Contract complete: %s. Claim %d tokens at the workbench."
-#~ msgstr "Contrato completado: %s. Reclama %d fichas en el banco de trabajo."
+#~ msgid "<< LEDGER // CONTRACT 0001 // AMENDED >>"
+#~ msgstr "<< LEDGER // CONTRATO 0001 // MODIFICADO >>"
 
-#~ msgid "A contract ran out of time. No harm done; a new one will be posted soon."
-#~ msgstr "Un contrato se ha agotado. No pasa nada; pronto saldrá uno nuevo."
+#~ msgid "<< INTERCEPT // LEDGER-NODE 07 // UNSECURED CHANNEL >>"
+#~ msgstr "<< INTERCEPTADO // NODO LEDGER 07 // CANAL NO SEGURO >>"
 
-#~ msgid "Contract paid: +%d tokens, +%s cubes."
-#~ msgstr "Contrato pagado: +%d fichas, +%s cubos."
+#~ msgid "line item %04d   checksum %s"
+#~ msgstr "partida %04d   suma de control %s"
 
-#~ msgid "%s fitted to the whole fleet."
-#~ msgstr "%s instalado en toda la flota."
+#~ msgid "MISMATCH"
+#~ msgstr "DISCREPANCIA"
 
-#~ msgid "Printed: %s."
-#~ msgstr "Impreso: %s."
-
-#~ msgid "+%d seeds."
-#~ msgstr "+%d semillas."
-
-#~ msgid "+%d Maker Fragments (%d)."
-#~ msgstr "+%d fragmentos de los Creadores (%d)."
-
-#~ msgid "Printed: %s. Fit it in the Builder tab."
-#~ msgstr "Impreso: %s. Instálalo en la pestaña Taller."
-
-#~ msgid "Unlocks with planting"
-#~ msgstr "Se desbloquea plantando"
-
-#~ msgid "Collection complete"
-#~ msgstr "Colección completa"
-
-#~ msgid "Needs %d tokens"
-#~ msgstr "Requiere %d fichas"
-
-#~ msgid "Needs %d Starseeds"
-#~ msgstr "Necesita %d semillas estelares"
-
-#~ msgid "+%d data"
-#~ msgstr "+%d datos"
-
-#~ msgid "+%d token"
-#~ msgstr[0] "+%d ficha"
-#~ msgstr[1] "+%d fichas"
-
-#~ msgid "+%d trinket"
-#~ msgstr[0] "+%d baratija"
-#~ msgstr[1] "+%d baratijas"
-
-#~ msgid "+%d bolt"
-#~ msgstr[0] "+%d tornillo"
-#~ msgstr[1] "+%d tornillos"
-
-#~ msgid "%s trinket"
-#~ msgstr[0] "%s baratija"
-#~ msgstr[1] "%s baratijas"
-
-#~ msgid "%s token"
-#~ msgstr[0] "%s ficha"
-#~ msgstr[1] "%s fichas"
-
-#~ msgid "%s bolt"
-#~ msgstr[0] "%s tornillo"
-#~ msgstr[1] "%s tornillos"
-
-#~ msgid "%s data"
-#~ msgstr "%s datos"
-
-#~ msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them, spend Starseeds on Heirlooms, or seed a new world. Garden Mode (H) is open too."
-#~ msgstr "Modo Cradle: la bóveda de semillas del arca guarda semillas para otros mundos. Pausa > Puente del Arca para verlas, gastar semillas estelares en herencias o sembrar un mundo nuevo. El modo jardín (H) también está abierto."
-
-#~ msgid "Not enough data"
-#~ msgstr "No hay datos suficientes"
-
-#~ msgid "data gained"
-#~ msgstr "datos obtenidos"
-
-#~ msgid "Field data logged. Spend Data on Research at the workbench (Research tab)."
-#~ msgstr "Datos de campo registrados. Gasta Datos en Investigación en el banco de trabajo (pestaña Investigación)."
-
-#~ msgid "Needs %d Maker Fragments (%d)"
-#~ msgstr "Requiere %d fragmentos de los Creadores (%d)"
-
-#~ msgid "Needs %d bolts"
-#~ msgstr "Requiere %d tornillos"
-
-#~ msgid "Haggle's stall · %s cubes + %d bolts"
-#~ msgstr "Puesto de Haggle · %s cubos + %d tornillos"
-
-#~ msgid "Token shop · ◆ %d"
-#~ msgstr "Tienda de fichas · ◆ %d"
-
-#~ msgid "%d Maker Fragments"
-#~ msgstr "%d fragmentos de los Creadores"
-
-#~ msgid "%d bolts"
-#~ msgstr "%d tornillos"
-
-#~ msgid "Contract token shop"
-#~ msgstr "Tienda de fichas de contrato"
-
-#~ msgid "A Maker Fragment was tucked inside it. (%d)"
-#~ msgstr "Había un fragmento de los Creadores escondido dentro. (%d)"
-
-#~ msgid "%s spotted a Maker Fragment glinting in the junk. (%d)"
-#~ msgstr "%s vio brillar un fragmento de los Creadores entre la chatarra. (%d)"
-
-#~ msgid "%d Starseeds"
-#~ msgstr "%d semillas estelares"
-
-#~ msgid "%d Data"
-#~ msgstr "%d datos"
-
-#~ msgid "Parts bin %d   ·   Maker Fragments %d   ·   Bolts %s"
-#~ msgstr "Cajón de piezas %d   ·   Fragmentos %d   ·   Tornillos %s"
-
-#~ msgid "Hint: complete %d contracts at the workbench."
-#~ msgstr "Pista: completa %d contratos en el banco de trabajo."
-
-#~ msgid "Hint: Curio Capsules, in the workbench token shop."
-#~ msgstr "Pista: cápsulas de curiosidades, en la tienda de fichas del banco de trabajo."
-
-#~ msgid "Data earned"
-#~ msgstr "Datos obtenidos"
-
-#~ msgid "%s cubes, %s bolts, %s Control Core. %s"
-#~ msgstr "%s cubos, %s tornillos, núcleo de control %s. %s"
-
-#~ msgid "CONTRACTS"
-#~ msgstr "CONTRATOS"
-
-#~ msgid "Optional jobs with a timer. Finish in time for tokens; nothing is lost if one runs out."
-#~ msgstr "Trabajos opcionales con tiempo límite. Termina a tiempo para ganar fichas; no pierdes nada si uno se agota."
-
-#~ msgid "TOKEN SHOP"
-#~ msgstr "TIENDA DE FICHAS"
-
-#~ msgid "◆  %d tokens"
-#~ msgstr "◆  %d fichas"
-
-#~ msgid "A new contract is being posted."
-#~ msgstr "Se está publicando un contrato nuevo."
-
-#~ msgid "Reward  ◆ %d tokens  +  cubes"
-#~ msgstr "Recompensa  ◆ %d fichas  +  cubos"
-
-#~ msgid "Claim  ◆ %d"
-#~ msgstr "Reclamar  ◆ %d"
-
-#~ msgid "Finished. Claim your tokens!"
-#~ msgstr "Terminado. ¡Reclama tus fichas!"
-
-#~ msgid "Owned  ·  press to equip"
-#~ msgstr "En propiedad  ·  pulsa para equipar"
-
-#~ msgid "SHEET METAL"
-#~ msgstr "CHAPA"
-
-#~ msgid "PLASTIC"
-#~ msgstr "PLÁSTICO"
-
-#~ msgid "GLASS"
-#~ msgstr "VIDRIO"
-
-#~ msgid "DATA"
-#~ msgstr "DATOS"
-
-#~ msgid "TOKENS"
-#~ msgstr "FICHAS"
-
-#~ msgid "COMPOST"
-#~ msgstr "COMPOST"
-
-#~ msgid "BOLTS"
-#~ msgstr "TORNILLOS"
-
-#~ msgid "CONTRACT READY  ·  claim it at the workbench"
-#~ msgstr "CONTRATO LISTO  ·  reclámalo en el banco de trabajo"
-
-#~ msgid "%d CONTRACTS READY  ·  claim them at the workbench"
-#~ msgstr "%d CONTRATOS LISTOS  ·  reclámalos en el banco de trabajo"
-
-#~ msgid "cubes"
-#~ msgstr "cubos"
-
-#~ msgid "sheet metal"
-#~ msgstr "chapa"
-
-#~ msgid "plastic stock"
-#~ msgstr "reserva de plástico"
-
-#~ msgid "glass"
-#~ msgstr "vidrio"
-
-#~ msgid "bolts"
-#~ msgstr "tornillos"
-
-#~ msgid "Sheet metal %s    Plastic stock %s    Glass %s"
-#~ msgstr "Chapa %s    Plástico %s    Vidrio %s"
-
-#~ msgid "%s data  ·  %s"
-#~ msgstr "%s datos  ·  %s"
-
-#~ msgid "FIELD DATA"
-#~ msgstr "DATOS DE CAMPO"
-
-#~ msgid "Clean hexes, grow blooms, read shards and let robots work."
-#~ msgstr "Limpia hexágonos, haz florecer plantas, lee fragmentos y deja trabajar a los robots."
-
-#~ msgid "%s cancelled. Data refunded."
-#~ msgstr "%s cancelado. Datos reembolsados."
-
-#~ msgid "Needs %s cubes, %s bolts and a %s Control Core.  %s"
-#~ msgstr "Requiere %s cubos, %s tornillos y un núcleo de control %s.  %s"
-
-#~ msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Bolts %s"
-#~ msgstr "Pacas recicladas %d   ·   Chatarra destruida %s kg   ·   Tornillos %s"
-
-#~ msgid "Bolts  %s      Parts in storage  %d"
-#~ msgstr "Tornillos  %s      Piezas en almacén  %d"
-
-#~ msgid "Scrap %d spare Rusty parts  ->  +%d bolts"
-#~ msgstr "Desguazar %d piezas oxidadas  ->  +%d tornillos"
-
-#~ msgid ""
-#~ "%s  (own %d)\n"
-#~ "%s cubes + %d bolts"
-#~ msgstr ""
-#~ "%s  (tienes %d)\n"
-#~ "%s cubos + %d tornillos"
-
-#~ msgid "Collect 500 field data."
-#~ msgstr "Reúne 500 datos de campo."
-
-#~ msgid "Buy an Heirloom."
-#~ msgstr "Compra una herencia."
-
-#~ msgid "Starseed Saver"
-#~ msgstr "Ahorrador estelar"
-
-#~ msgid "Earn 100 Starseeds across your worlds."
-#~ msgstr "Gana 100 semillas estelares entre todos tus mundos."
-
-#~ msgid "Each new world starts with 60 research Data per level."
-#~ msgstr "Cada mundo nuevo empieza con 60 datos de investigación por nivel."
-
-#~ msgid "Handle %d world events"
-#~ msgstr "Resuelve %d eventos del mundo"
-
-#~ msgid "Handle a world event"
-#~ msgstr "Resuelve un evento del mundo"
-
-#~ msgid "Vintage Blueprint Part"
-#~ msgstr "Pieza de plano vintage"
-
-#~ msgid "A random Vintage robot part, freshly printed."
-#~ msgstr "Una pieza de robot vintage aleatoria, recién impresa."
-
-#~ msgid "Legendary Blueprint Part"
-#~ msgstr "Pieza de plano legendaria"
-
-#~ msgid "A Maker-Made Legendary part. The good stuff."
-#~ msgstr "Una pieza legendaria hecha por los Creadores. Lo bueno."
-
-#~ msgid "Seed Crate"
-#~ msgstr "Caja de semillas"
-
-#~ msgid "25 seeds in a crate that smells of summer."
-#~ msgstr "25 semillas en una caja que huele a verano."
-
-#~ msgid "A sealed capsule with a collectible inside you haven't got yet."
-#~ msgstr "Una cápsula sellada con un coleccionable que aún no tienes."
-
-#~ msgid "Fine Sieve (Builder)"
-#~ msgstr "Tamiz fino (Taller)"
-
-#~ msgid "Cleaner tool: cleaner cubes, slower scooping."
-#~ msgstr "Herramienta de limpiador: cubos más limpios, recogida más lenta."
-
-#~ msgid "Jet Nozzle (Builder)"
-#~ msgstr "Boquilla de chorro (Taller)"
-
-#~ msgid "Waterer tool: quicker watering, narrower spray."
-#~ msgstr "Herramienta de regador: riego más rápido, chorro más estrecho."
-
-#~ msgid "Propeller Cap (Builder)"
-#~ msgstr "Gorra con hélice (Taller)"
-
-#~ msgid "A topper that spins when its robot hurries."
-#~ msgstr "Un sombrero que gira cuando su robot tiene prisa."
-
-#~ msgid "A random robot builder part you don't have yet."
-#~ msgstr "Una pieza de taller aleatoria que aún no tienes."
-
-#~ msgid "Maker Fragments x2"
-#~ msgstr "Fragmentos de los Creadores x2"
-
-#~ msgid "Two shards of Maker alloy for the Maker set."
-#~ msgstr "Dos esquirlas de aleación de los Creadores para su conjunto."
-
-#~ msgid "Buy an Heirloom"
-#~ msgstr "Compra una herencia"
-
-#~ msgid "Sheet Metal"
-#~ msgstr "Chapa"
-
-#~ msgid "Plastic Stock"
-#~ msgstr "Reserva de plástico"
-
-#~ msgid "Shredder drums and a little smelter. Bales go in and never come back: out come bolts and clean building stock. Every bale burnt clean helps the sky."
-#~ msgstr "Tambores trituradores y una pequeña fundición. Las pacas entran y no vuelven: salen tornillos y material de construcción limpio. Cada paca quemada limpiamente ayuda al cielo."
-
-#~ msgid "Sharper shredder teeth and a hotter smelter. More bolts and stock per bale."
-#~ msgstr "Dientes de trituradora más afilados y una fundición más caliente. Más tornillos y material por paca."
-
-#~ msgid "Heirlooms, Starseeds, a whole map of worlds. Verdance stays green; we just take what we learned somewhere new."
-#~ msgstr "Herencias, semillas estelares, todo un mapa de mundos. Verdance sigue verde; solo llevamos lo aprendido a otro lugar."
-
-#~ msgid "Salvaged: %s %s"
-#~ msgstr "Rescatado: %s %s"
-
-#~ msgid "Recovered: %s %s"
-#~ msgstr "Recuperado: %s %s"
-
-#~ msgid "Printed: %s %s."
-#~ msgstr "Impreso: %s %s."
-
-#~ msgid "%s spotted a %s %s."
-#~ msgstr "%s ha visto: %s %s."
-
-#~ msgid "Your first cube! Carry it to the Depot pad."
-#~ msgstr "¡Tu primer cubo! Llévalo a la plataforma del depósito."
-
-#~ msgid "PERFECT CUBE! Filled right to the line."
-#~ msgstr "¡CUBO PERFECTO! Lleno justo hasta la línea."
-
-#~ msgid "A Pure Cube: one kind of junk is worth double."
-#~ msgstr "Un cubo puro: un solo tipo de chatarra vale el doble."
-
-#~ msgid "Find clean ground.  Hold  {scoop}  to plant.  {tool_water}  for the watering can, hold  {scoop}  to water."
-#~ msgstr "Busca suelo limpio.  Mantén  {scoop}  para plantar.  {tool_water}  para la regadera, mantén  {scoop}  para regar."
-
-#~ msgid "Keep it watered. Plant more. Every bloom gives you seeds back, and a little green light for your core. This is how it starts."
-#~ msgstr "Sigue regándola. Planta más. Cada flor te devuelve semillas y un poco de luz verde para tu núcleo. Así es como empieza."
-
-#~ msgid "Hold  {scoop}  to scoop junk into the hopper"
-#~ msgstr "Mantén  {scoop}  para echar chatarra en la tolva"
-
-#~ msgid "Fill the hopper near the line, then  {cube}  to compress a bale"
-#~ msgstr "Llena la tolva cerca de la línea y luego  {cube}  para prensar una paca"
-
-#~ msgid "Set it on the scale by the green skip"
-#~ msgstr "Ponla en la báscula junto al contenedor verde"
-
-#~ msgid "Walk into the shack.  {interact}  at the workbench to install an upgrade"
-#~ msgstr "Entra en la caseta.  {interact}  en el banco de trabajo para instalar una mejora"
-
-#~ msgid "Clear this whole hex. Every last can."
-#~ msgstr "Limpia todo este hexágono. Hasta la última lata."
-
-#~ msgid "Restart checklist complete. Lumi is back on the job."
-#~ msgstr "Lista de reinicio completada. Lumi vuelve al trabajo."
-
-#~ msgid "Build 3 robots"
-#~ msgstr "Construye 3 robots"
-
-#~ msgid "Grow your first sprout"
-#~ msgstr "Cultiva tu primer brote"
-
-#~ msgid "Read 4 memory shards"
-#~ msgstr "Lee 4 fragmentos de memoria"
-
-#~ msgid "Upgrade any robot fleet to Mk III"
-#~ msgstr "Mejora una flota de robots a Mk III"
-
-#~ msgid "New design unlocked: %s. Try it at the workbench."
-#~ msgstr "Nuevo diseño desbloqueado: %s. Pruébalo en el banco de trabajo."
-
-#~ msgid "   (wearing)"
-#~ msgstr "   (puesto)"
-
-#~ msgid "Plant 5 seeds"
-#~ msgstr "Planta 5 semillas"
+#~ msgid "Unlocks with Ark milestones (next: %s, at %d restoration)"
+#~ msgstr "Se desbloquea con los hitos del Arca (siguiente: %s, con %d de restauración)"

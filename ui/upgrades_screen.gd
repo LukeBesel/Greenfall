@@ -79,6 +79,8 @@ static func tab_visible(id: String, w: Node = null) -> bool:
 		return true
 	if _gates.has(id):
 		return tab_open(id)
+	if id == "contracts" and not Contracts.unlocked():  # [onboard] the board opens later (base 3, 45 min)
+		return false
 	var seen: Array = GameState.flags.get("bench_tabs", [])
 	if id in seen:
 		return true
@@ -279,6 +281,9 @@ func _populate() -> void:
 	for id: String in Economy.upgrade_order:
 		if str(Economy.upgrade_defs[id].get("tab", "patch")) != _tab or _tab == "bots":  # [ui2] bot upgrades live on their RobotCard
 			continue
+		var rs: String = str(Economy.upgrade_defs[id].get("requires_station", ""))
+		if rs != "" and not Stations.built_in_state(rs):
+			continue  # [camp] machine upgrades only show once the machine stands in the yard
 		var card := UpgradeCard.new(id)
 		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		card.bought.connect(func(_i: String, _n: int) -> void: _refresh_all())
@@ -396,6 +401,10 @@ func _relayout() -> void:
 
 func open_screen() -> void:
 	is_open = true
+	if _tab == "contracts" and not Contracts.unlocked():  # [onboard]
+		_tab = "patch"
+		_populate()
+	_style_tabs()  # [onboard] the Requests tab appears once the board is open
 	_root.visible = true
 	_refresh_all()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

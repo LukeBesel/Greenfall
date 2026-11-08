@@ -321,6 +321,18 @@ func stop_track() -> void:
 		_music.call("stop_track")
 
 
+## [camp] For songs played outside the score (recorded song files, the radio's library): true
+## silences the mood score and its stingers at once; false fades the score back in from silence.
+## Composed radio tracks (play_track) cut the score by themselves.
+func mute_score(on: bool) -> void:
+	if _music:
+		_music.call("set_muted", on)
+
+
+func is_score_muted() -> bool:
+	return bool(_music.get("muted")) if _music else false
+
+
 ## The composed track playing now ("" for a generative piece or a silence gap).
 func get_music_track() -> String:
 	return "" if _music == null or bool(_music.call("in_gap")) else str(_music.call("current_track"))

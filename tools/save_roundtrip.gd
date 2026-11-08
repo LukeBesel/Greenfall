@@ -14,6 +14,18 @@ func _check(name_: String, a: Variant, b: Variant) -> void:
 		_fails += 1
 
 
+## [style] A compact, order-stable signature of a look.
+func _style_sig(st: Dictionary) -> String:
+	var n: Dictionary = LumiStyle.normalize(st)
+	var bits: Array[String] = [str(n["bonus"]), str(n.get("name", ""))]
+	for k: String in LumiStyle.COLOR_SLOTS:
+		bits.append(LumiStyle.col(n, k).to_html(false))
+	for k: String in LumiStyle.PART_SLOTS:
+		bits.append(str(n[k]))
+	bits.append("%.2f" % float(n["wear"]))
+	return ",".join(bits)
+
+
 func _snapshot(s: Node) -> Dictionary:
 	var f: Fleet = s.fleet
 	var types: Array = []
@@ -71,12 +83,22 @@ func _snapshot(s: Node) -> Dictionary:
 		"fauna": _fauna(s),  # [wild]
 		# [skins] Lumi's designs: worn, unlocked, looks-only, and the model actually built with it.
 		"design": "%s %s looks_only=%s model=%s" % [Designs.current(), JSON.stringify(Designs.unlocked()), str(Designs.looks_only()), (s.patch.model as PatchModel).variant],
+		# [style] Character Builder: the worn look (and what the model actually shows), saved looks, bought parts.
+		"lumi_style": _style_sig(LumiStyle.current()),
+		"lumi_model": _style_sig(LumiStyle.style_for_model(s.patch.model)) + " laser=" + LumiStyle.laser_of(s.patch.model).to_html(false) + " rig=" + str(s.patch.model.get_node_or_null("LumiStyleRig") != null),
+		"lumi_looks": JSON.stringify(LumiStyle.looks().map(func(l: Variant) -> String: return _style_sig(l) if l is Dictionary and not (l as Dictionary).is_empty() else "-")),
+		"style_bought": JSON.stringify(LumiStyle.bought()),
 		# [late] Garden Mode decorations and their charm; Cradle Mode world tag.
 		"decor": JSON.stringify(GameState.world.get("decor", {})),
 		"decor_charm": snappedf(float(GameState.world.get("decor_charm", 0.0)), 0.01),
 		"world_index": int(GameState.flags.get("world_index", 0)),
 		# [scope] the Telescope at this base, its sightings and use stats.
+		# [onboard] story objectives, WREN's brief, the detector explanation, the Requests board unlock.
+		"onboard": "obj=%d tower=%d backlog=%d brief=%s signal=%s requests=%s" % [int(GameState.flags.get("objective_step", 0)), SignalTower.tier(), (GameState.flags.get("wren_backlog", []) as Array).size(), str(GameState.flags.get("onboard_brief", false)), str(GameState.flags.get("signal_explained", false)), str(GameState.flags.get("requests_unlocked", false))],
 		"telescope": "%s %s uses=%d" % [str(Telescope.of(s).built() if Telescope.of(s) else "none"), str(Codex.is_unlocked("sightings:first_light")), int(GameState.stats.get("telescope_uses", 0))],
+		"extras": JSON.stringify(ExtrasRoundtrip.snap(s)),  # [extras] radio, album, nursery
+		# [camp] the workbench repair, the trash bin's level, yard builds, and what's shown.
+		"camp": "bench=%s bin=L%d built=%s radio_shown=%s bench_prompt=%s" % [str(Camp.bench_ok()), TrashBin.level(), JSON.stringify(YardBuilds.state().get("built", {})), str(ExtrasDirector.of(s).radio.visible if ExtrasDirector.of(s) else false), (Camp.of(s).bench_prompt() if Camp.of(s) else "")],
 	}
 
 
@@ -216,7 +238,8 @@ func _frontier_roundtrip(packed: PackedScene, kid: String, hub_i: int) -> void:
 		_check("frontier_%s_%s" % [kid, k], before[k], after[k])
 	if kid == "cradle_returns":  # [beat] quit mid-finale: it plays again after loading, and the Seed Ark opens
 		await get_tree().create_timer(4.0).timeout
-		_check("cradle_finale_replays_after_load", true, BloomFinale.playing or bool(GameState.flags.get("bloom_finale_seen", false)))
+		# [home] before the home launch the Cradle Returns finale is "The Cradle Answers" (it replays too)
+		_check("cradle_finale_replays_after_load", true, BloomFinale.playing or CradleAnswers.playing or Homeward.answered() or bool(GameState.flags.get("bloom_finale_seen", false)))
 		_check("cradle_opens_seed_ark", true, Bloom.ark_unlocked())
 	s2.queue_free()
 	await get_tree().process_frame
@@ -312,6 +335,13 @@ func _ready() -> void:
 	Contracts.owned().append("livery_halo")
 	GameState.flags["livery"] = "livery_halo"
 	WorldEvents.persist_state()["recent"] = ["supply_drop", "rain_shower"]
+	# [onboard] Past the brief, on the "Rebuild the base: level 2" objective, detector explained, board open.
+	GameState.flags["onboard_brief"] = true
+	GameState.flags["objective_step"] = 7
+	GameState.flags["signal_explained"] = true
+	GameState.flags["requests_unlocked"] = true
+	GameState.flags["signal_tower"] = 2
+	GameState.flags["wren_backlog"] = ["A line WREN couldn't send."]
 	# [hud] Some Lumi XP across a couple of levels.
 	if s1.get("lumi_level") != null:
 		s1.lumi_level.add("dev", LumiLevel.need(1) + LumiLevel.need(2) + 37)
@@ -347,6 +377,19 @@ func _ready() -> void:
 	Designs.select("nova")
 	Designs.set_looks_only(true)
 	(s1.patch.model as PatchModel).set_variant("nova")
+	# [style] A custom look on Nova's bonus (heart eyes, halo, drone, pink laser), a saved look, a bought swatch.
+	var look: Dictionary = LumiStyle.preset("nova")
+	LumiStyle.set_value(look, "paint", Color("#3d63ff"))
+	LumiStyle.set_value(look, "laser", Color("#ff5480"))
+	LumiStyle.set_value(look, "hover", Color("#85ff5c"))
+	look["eye_shape"] = "heart"
+	look["head"] = "halo"
+	look["companion"] = "drone"
+	look["held"] = "medkit"
+	LumiStyle.set_current(look)
+	LumiStyle.save_look(1, LumiStyle.preset("bolt"), "Hazard")
+	LumiStyle.bought().append("swatch:copper")
+	LumiStyle.refresh_player(s1)
 	_late_decorate(s1, 4)  # [late] a few Garden Mode decorations
 	# [scope] Build the Telescope (research route) and log its first sighting.
 	var scope: Telescope = Telescope.of(s1)
@@ -360,6 +403,14 @@ func _ready() -> void:
 		GameState.inc_stat("telescope_uses", 2.0)
 	else:
 		_check("scope_node", true, false)
+	if Camp.of(s1):  # [camp] fix the bench, raise the bin, build the radio
+		Camp.of(s1).repair_now()
+		TrashBin.set_level(3)
+		YardBuilds.mark_built("radio")
+		ExtrasDirector.of(s1).radio.set_built(true, false)
+	else:
+		_check("camp_node", true, false)
+	ExtrasRoundtrip.setup(s1)  # [extras] radio song, album records, a retired caretaker
 	s1.patch.global_position = Vector3(3.0, 0.2, 5.0)
 	var dropped: JunkCube = JunkCube.create(BigNum.from_float(37.75), {"fill": 1.0})
 	s1.add_cube(dropped)
@@ -393,7 +444,9 @@ func _ready() -> void:
 	await get_tree().process_frame
 	for kid: String in ["frozen_port", "sunken_city", "dust_flats", "cradle_returns"]:
 		await _frontier_roundtrip(packed, kid, int(fhubs[kid]))
+	await ExtrasRoundtrip.weekly(self, packed)  # [extras] Seed of the Week in its own slot
 	await _late_multi_world(packed)  # [late] Cradle Mode: a second world, the profile, travel both ways
+	_homeward_roundtrip()  # [home] the system campaign's profile state
 	_profiles_roundtrip()  # [worlds2] save profiles: migration into p1, profiles kept apart
 	await _old_save_migration(packed)  # [money] a v1 save with the old currencies loads into the three
 	_v2_save_migration()  # [ui2] robot part items -> Parts
@@ -429,6 +482,9 @@ func _old_save_migration(packed: PackedScene) -> void:
 	_check("old_save_seeds", 15.0, snappedf(GameState.get_currency("seeds").to_float(), 0.01))
 	_check("old_save_hopper", 9.0, snappedf(Composter.hopper(), 0.01))
 	_check("old_save_builder_inv", 1, RobotBuilder.count("treads"))
+	_check("old_save_pace_baler", true, Pace.baler_unlocked())  # [pace] old saves keep their bale press
+	_check("old_save_pace_lift", Pace.SIZE_LARGE, Pace.lift_class())
+	_check("old_save_pace_chest", true, Economy.stat("capacity") >= 30.0)
 	GameState.reload_in_memory = true
 	var s3: Node = packed.instantiate()
 	get_tree().root.add_child(s3)
@@ -439,7 +495,7 @@ func _old_save_migration(packed: PackedScene) -> void:
 	await get_tree().process_frame
 
 
-## [ui2] A v2 save (three currencies, robot part items in storage) -> v3: the items become Parts
+## [ui2] A v2 save (three currencies, robot part items in storage) -> v4 (via pace v3): the items become Parts
 ## at their rarity's value; nothing else changes.
 func _v2_save_migration() -> void:
 	GameState.new_game()
@@ -451,7 +507,7 @@ func _v2_save_migration() -> void:
 	SaveManager.write_dict(SaveManager.slot_path(), d)
 	var ok: bool = SaveManager.load_game()
 	_check("v3_save_loads", true, ok)
-	_check("v3_save_version", 3, int(GameState.to_dict()["version"]))
+	_check("v4_save_version", GameState.SAVE_VERSION, int(GameState.to_dict()["version"]))
 	_check("v3_parts_from_items", 100.0 + 10.0 + 25.0 + 60.0 + 450.0, snappedf(GameState.get_currency("parts").to_float(), 0.01))
 	_check("v3_no_items_left", 0, GameState.parts.size())
 	_check("v3_tier_kept", 1, int(GameState.flags.get("tier_scoopie", 0)))
@@ -596,6 +652,55 @@ func _late_multi_world(packed: PackedScene) -> void:
 	CradleMode.profile = keep_profile
 	SaveManager.slot = 7
 	Economy.planet["name"] = "Verdance"
+
+
+# --- [home] Homeward: the system campaign lives in the profile ---------------------------------
+
+func _homeward_roundtrip() -> void:
+	var keep_profile: Dictionary = CradleMode.profile.duplicate(true)
+	var keep_persist: bool = CradleMode.persist
+	var keep_slot: int = SaveManager.slot
+	CradleMode.path_override = SaveManager.save_dir().path_join("roundtrip_homeward.save")
+	CradleMode.persist = true
+	CradleMode.profile = CradleMode.default_profile()
+	var hs: Dictionary = Homeward.state()
+	hs["answered"] = true
+	hs["drive"] = 6
+	hs["picks"] = 2
+	hs["rocket_tier"] = 4
+	(hs["pct"] as Dictionary)["verdance"] = 1.0
+	(hs["pct"] as Dictionary)["ochre"] = 1.0
+	(hs["pct"] as Dictionary)["tidewell"] = 0.62
+	hs["relics"] = ["ochre_glass"]
+	hs["beats"] = ["ochre_arrive", "ochre_half", "ochre_restored"]
+	hs["seen"] = ["rime"]  # [sysmap2] spotted by the telescope
+	var w: Dictionary = Homeward.make_planet_world(2)
+	CradleMode.save_profile()
+	var before: String = JSON.stringify(CradleMode.to_dict())
+	CradleMode.profile = {}
+	CradleMode.load_profile()
+	_check("home_profile_roundtrip", str(JSON.parse_string(before)), str(JSON.parse_string(JSON.stringify(CradleMode.to_dict()))))
+	_check("home_answered", true, Homeward.answered())
+	_check("home_drive", 6, Homeward.drive())
+	_check("home_picks", 2, Homeward.picks())
+	_check("home_relics", ["ochre_glass"], Homeward.relics())
+	_check("home_beat", true, Homeward.beat_done("ochre_half"))
+	_check("home_seen", ["rime"], Homeward.state().get("seen", []))
+	_check("home_rime_discovered", true, Homeward.discovered(3))
+	_check("home_pct_tidewell", 0.62, snappedf(Homeward.stored_pct(2), 0.01))
+	_check("home_system_pct", snappedf((1.0 + 1.0 + 0.62) / 5.0, 0.001), snappedf(Homeward.system_pct(), 0.001))
+	_check("home_planet_world", 1, Homeward.world_of(2))
+	CradleMode.profile["current"] = Homeward.world_of(2)
+	_check("home_planet_current", 2, Homeward.current_planet())
+	_check("home_planet_name", "Tidewell", CradleMode.world_name())
+	_check("home_planet_seed", int(Homeward.planet_def(2)["seed"]), CradleMode.world_seed())
+	_check("home_planet_type_mix", JSON.stringify(WorldGen.world_type("ocean_world").get("mix", {}).get("water_fraction")), JSON.stringify(CradleMode.planet_mix().get("water_fraction")))
+	_check("home_planet_slot", int(w["slot"]), int(CradleMode.current_world()["slot"]))
+	DirAccess.remove_absolute(CradleMode.profile_path())
+	CradleMode.path_override = ""
+	CradleMode.persist = keep_persist
+	CradleMode.profile = keep_profile
+	SaveManager.slot = keep_slot
 
 
 # --- [worlds2] Save profiles --------------------------------------------------------------

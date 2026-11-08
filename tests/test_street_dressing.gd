@@ -29,19 +29,31 @@ func _shapes(n: Node, out: Array) -> void:
 		_shapes(c, out)
 
 
-func test_collision_only_on_hub_ground_or_outside_field() -> void:
+func test_collision_never_covers_junk() -> void:
+	# [world2] Solid props stand anywhere now (lamps, kit, sign posts), but junk inside one is
+	# nudged out to its edge (PropColliders.push_out_pieces), so nothing is ever unreachable.
 	var d := _build()
 	var shapes: Array = []
 	_shapes(d, shapes)
 	assert_gt(shapes.size(), 0)
+	PropColliders.push_out_pieces(d, field)
 	for cs: CollisionShape3D in shapes:
-		var box := cs.shape as BoxShape3D
-		var c: Vector3 = cs.global_position
-		var h: Vector3 = box.size * 0.5
-		for o: Vector3 in [Vector3.ZERO, Vector3(h.x, 0, h.z), Vector3(-h.x, 0, h.z), Vector3(h.x, 0, -h.z), Vector3(-h.x, 0, -h.z)]:
-			var hid: int = field.hex_at(c + o)
-			assert_true(hid < 0 or field.hex_hub[hid] != 0, "collision at %s sits on a junk hex" % str(c + o))
-		assert_eq(field.pieces_within(c, maxf(h.x, h.z) + 0.3).size(), 0, "collision covers junk near %s" % str(c))
+		if not cs.has_meta("foot"):
+			continue
+		var f: Vector3 = cs.get_meta("foot")
+		for pid: int in field.pieces_within(Vector3(f.x, 0, f.y), f.z + 0.2):
+			fail_test("piece %d still inside the prop at %s" % [pid, str(Vector2(f.x, f.y))])
+
+
+func test_no_yard_fence_and_props_are_solid() -> void:
+	# [world2] The owner walked through the yard fence: it is gone, and props sit on PhysLayers.PROP.
+	var d := _build()
+	var bodies: Array = d.find_children("*", "StaticBody3D", true, false)
+	assert_gt(bodies.size(), 0)
+	for b: StaticBody3D in bodies:
+		if (b.get_parent() as Node3D).visible:
+			assert_eq(b.collision_layer, PhysLayers.PROP)
+	assert_false(d.has_method("_build_fence"), "no yard fence builder")
 
 
 func test_deterministic_and_batched() -> void:
@@ -77,5 +89,7 @@ func test_starter_yard_is_never_ruined() -> void:
 	add_child_autofree(d)
 	d.build(layout, field, 0, "Old Town", "", 1)
 	assert_false(d.has_node("Ruin"))
-	assert_true((d.get_node("Yard") as Node3D).visible)
+	assert_false((d.get_node("Yard") as Node3D).visible, "[camp] the starter yard is bare at level 1")
 	assert_true((d.get_node("Salvage") as Node3D).visible)
+	d.set_level(2, false)
+	assert_true((d.get_node("Yard") as Node3D).visible, "[camp] poles, crates and festoons come with level 2")

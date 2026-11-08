@@ -1,6 +1,34 @@
 {
-  "_doc": "Lumi upgrades. Effect per level: mode add => stat += amount*level; mode mul_pct => stat *= (1 + amount*level). cost = base_cost * growth^level. max_level -1 = unlimited.",
+  "_doc": "Lumi upgrades. Effect per level: mode add => stat += amount*level; mode mul_pct => stat *= (1 + amount*level). cost = base_cost * growth^level. max_level -1 = unlimited. requires: other upgrade levels; requires_research / min_base_level: research node / base level ([pace]).",
   "upgrades": [
+    {
+      "id": "baler",
+      "name": "Baler",
+      "tab": "patch",
+      "icon": "press",
+      "desc": "Fit the bale press in your chest. Press junk into bales: they sell for far more than loose junk.",
+      "stat": "baler_unlocked",
+      "mode": "add",
+      "amount": 1.0,
+      "unit": "",
+      "base_cost": 100,
+      "growth": 1.0,
+      "max_level": 1
+    },
+    {
+      "id": "lift_strength",
+      "name": "Lift Strength",
+      "tab": "patch",
+      "icon": "stack",
+      "desc": "Stronger lift beams. Level 1: medium junk (jerrycans, crates). Level 2: large junk (tyres, TVs, fridges).",
+      "stat": "lift_class",
+      "mode": "add",
+      "amount": 1.0,
+      "unit": "",
+      "base_cost": 50,
+      "growth": 10.0,
+      "max_level": 2
+    },
     {
       "id": "compartment_size",
       "name": "Compartment Size",
@@ -9,9 +37,9 @@
       "desc": "A roomier chest. More junk per cube.",
       "stat": "capacity",
       "mode": "add",
-      "amount": 6.0,
+      "amount": 5.0,
       "unit": "",
-      "base_cost": 30,
+      "base_cost": 45,
       "growth": 1.55,
       "max_level": 25
     },
@@ -25,7 +53,7 @@
       "mode": "add",
       "amount": 0.2,
       "unit": " m",
-      "base_cost": 40,
+      "base_cost": 55,
       "growth": 1.6,
       "max_level": 20
     },
@@ -39,7 +67,7 @@
       "mode": "mul_pct",
       "amount": 0.1,
       "unit": " m/s",
-      "base_cost": 50,
+      "base_cost": 60,
       "growth": 1.5,
       "max_level": 20
     },
@@ -53,9 +81,12 @@
       "mode": "add",
       "amount": 1.0,
       "unit": "",
-      "base_cost": 80,
+      "base_cost": 120,
       "growth": 1.9,
-      "max_level": 9
+      "max_level": 9,
+      "requires": {
+        "baler": 1
+      }
     },
     {
       "id": "compactor_pressure",
@@ -67,9 +98,12 @@
       "mode": "mul_pct",
       "amount": 0.12,
       "unit": "x",
-      "base_cost": 120,
+      "base_cost": 150,
       "growth": 1.65,
-      "max_level": 30
+      "max_level": 30,
+      "requires": {
+        "baler": 1
+      }
     },
     {
       "id": "scoop_speed",
@@ -79,9 +113,9 @@
       "desc": "Faster arms. Clinkier clinks.",
       "stat": "scoop_rate",
       "mode": "mul_pct",
-      "amount": 0.15,
+      "amount": 0.4,
       "unit": "/s",
-      "base_cost": 70,
+      "base_cost": 45,
       "growth": 1.6,
       "max_level": 15
     },
@@ -95,29 +129,33 @@
       "mode": "add",
       "amount": 1.0,
       "unit": "",
-      "base_cost": 300,
+      "base_cost": 2500,
       "growth": 1.0,
       "max_level": 1,
       "requires": {
-        "compartment_size": 2
-      }
+        "compartment_size": 6,
+        "baler": 1
+      },
+      "requires_research": "auto_baler"
     },
     {
       "id": "magnet_arm",
       "name": "Magnet Arm",
       "tab": "patch",
       "icon": "magnet",
-      "desc": "Nearby junk scoots toward you while scooping.",
+      "desc": "A few loose pieces nearby drift toward you while scooping. Never heavy ones, never from inside a heap.",
       "stat": "magnet_radius",
       "mode": "add",
       "amount": 0.6,
       "unit": " m",
-      "base_cost": 240,
-      "growth": 1.8,
+      "base_cost": 1500,
+      "growth": 1.9,
       "max_level": 6,
       "requires": {
-        "scoop_width": 2
-      }
+        "scoop_width": 3,
+        "lift_strength": 2
+      },
+      "min_base_level": 2
     },
     {
       "id": "detector_range",
@@ -135,6 +173,7 @@
     },
     {
       "id": "belt_speed",
+      "requires_station": "conveyor",
       "name": "Belt Drive",
       "tab": "hub",
       "icon": "speed",
@@ -149,6 +188,7 @@
     },
     {
       "id": "baler_speed",
+      "requires_station": "auto_baler",
       "name": "Baler Hydraulics",
       "tab": "hub",
       "icon": "press",
@@ -163,6 +203,7 @@
     },
     {
       "id": "recycler_yield",
+      "requires_station": "recycler",
       "name": "Recycler Yield",
       "tab": "hub",
       "icon": "auto",
@@ -194,19 +235,33 @@
     },
     {
       "id": "multi_lock",
-      "name": "Multi-Lock",
+      "name": "Scoop Size",
       "tab": "patch",
-      "icon": "beam",
-      "desc": "Extra targeting lasers: lift several pieces at once.",
+      "icon": "scoop",
+      "desc": "Lock onto one more piece per scoop pulse.",
       "stat": "pickup_count",
       "mode": "add",
       "amount": 1.0,
       "unit": "",
-      "base_cost": 450,
-      "growth": 2.6,
-      "max_level": 4,
+      "base_cost": 70,
+      "growth": 2.4,
+      "max_level": 4
+    },
+    {
+      "id": "signal_finder",
+      "name": "Signal Finder",
+      "tab": "patch",
+      "icon": "magnet",
+      "desc": "Tunes the detector to strong pings: rare part signals show as a violet beam.",
+      "stat": "signal_finder",
+      "mode": "add",
+      "amount": 1.0,
+      "unit": "",
+      "base_cost": 400,
+      "growth": 1.0,
+      "max_level": 1,
       "requires": {
-        "laser_reach": 2
+        "detector_range": 1
       }
     }
   ]

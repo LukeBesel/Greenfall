@@ -39,6 +39,7 @@ func _ready() -> void:
 	level = int(GameState.world.get("composter_level", 1))
 	_build()
 	position = POS
+	(func() -> void: PropColliders.fit(PropColliders.body(self, "Props"), self)).call_deferred()  # [world2] solid bins
 
 
 func active() -> bool:
@@ -66,7 +67,7 @@ func max_level() -> int:
 
 
 func near(p: Vector3) -> bool:
-	return p.distance_to(global_position) < RANGE
+	return is_visible_in_tree() and p.distance_to(global_position) < RANGE  # [camp] hidden until it works
 
 
 func prompt() -> String:

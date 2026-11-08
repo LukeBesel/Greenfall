@@ -35,6 +35,7 @@ func after_each() -> void:
 
 
 func _fleet() -> Fleet:
+	Research.grant("salvage_logic")  # [pace] helpers need Salvage Logic first
 	var f := Fleet.new()
 	add_child_autofree(f)
 	return f
@@ -66,20 +67,20 @@ func test_leftover_items_fold_into_parts() -> void:
 	assert_almost_eq(_parts_now(), 25.0 + 450.0, 0.001)
 
 
-func test_save_v3_turns_robot_part_items_into_parts() -> void:
+func test_save_v4_turns_robot_part_items_into_parts() -> void:
 	var d: Dictionary = {"version": 2, "currencies": {"cubes": BigNum.from_float(5).serialize(), "parts": BigNum.from_float(40).serialize(), "seeds": BigNum.zero().serialize()},
 		"parts": [{"type": 0, "rarity": 0}, {"type": 3, "rarity": 2}, {"type": 3, "rarity": 3}], "flags": {}}
 	var m: Dictionary = SaveManager.migrate(d)
-	assert_eq(int(m["version"]), 3)
+	assert_eq(int(m["version"]), GameState.SAVE_VERSION)
 	assert_eq((m["parts"] as Array).size(), 0)
 	assert_almost_eq(BigNum.from_serialized(m["currencies"]["parts"]).to_float(), 40.0 + 10.0 + 60.0 + 150.0, 0.001)
 	assert_almost_eq(float(m["flags"]["parts_migrated"]), 220.0, 0.001)
 	# A v1 save goes through v2 and v3.
 	var old: Dictionary = {"version": 1, "currencies": {"cubes": BigNum.from_float(5).serialize(), "bolts": BigNum.from_float(2).serialize()}, "parts": [{"type": 1, "rarity": 1}]}
 	var m2: Dictionary = SaveManager.migrate(old)
-	assert_eq(int(m2["version"]), 3)
+	assert_eq(int(m2["version"]), GameState.SAVE_VERSION)
 	assert_almost_eq(BigNum.from_serialized(m2["currencies"]["parts"]).to_float(), 2.0 * 5.0 + 25.0, 0.001)
-	assert_eq(GameState.SAVE_VERSION, 3)
+	assert_eq(GameState.SAVE_VERSION, 4)
 
 
 func test_robot_build_costs_parts_and_cubes() -> void:

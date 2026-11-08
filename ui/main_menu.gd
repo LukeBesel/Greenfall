@@ -145,8 +145,9 @@ func _build_stage() -> void:
 	_pivot = Node3D.new()
 	add_child(_pivot)
 	_model = PatchModel.new()
-	_pivot.add_child(_model)
 	var skin: String = str((_save.get("flags", {}) as Dictionary).get("patch_skin", ""))
+	_model.set_meta("lumi_style", LumiStyle.from_save_flags(_save.get("flags", {}), skin))  # [style] the save's look
+	_pivot.add_child(_model)
 	if skin != "":
 		_model.set_variant(skin)
 	_model.set_happy(0.9)
@@ -494,9 +495,9 @@ func _go(fade: bool) -> void:
 		_fade.mouse_filter = Control.MOUSE_FILTER_STOP
 		var tw: Tween = create_tween().set_trans(Tween.TRANS_SINE)
 		tw.tween_property(_fade, "color:a", 1.0, 0.45)
-		tw.tween_callback(func() -> void: get_tree().change_scene_to_file(GAME_SCENE))
+		tw.tween_callback(func() -> void: Loader.goto(GAME_SCENE))  # [intro2] loading screen
 	else:
-		get_tree().change_scene_to_file(GAME_SCENE)
+		Loader.goto(GAME_SCENE)
 
 
 ## [worlds2] Save profiles: pick a profile (and then a world), start over in one, rename or delete.
