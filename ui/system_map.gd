@@ -844,12 +844,12 @@ func _process(delta: float) -> void:
 		_cam.global_transform = _cam.global_transform.interpolate_with(drift, clampf(delta * 0.8, 0.0, 1.0))
 		_cam.frustum_offset = _ov_off
 	# Restoration can change while the map is open: retint the globes, don't rebuild.
+	var hk2: int = Homeward.current_planet()  # [orbE] Lumi's spot follows play
+	if hk2 >= 0 and hk2 < _globes.size() and _globes[hk2] and _globes[hk2].cell_shell:
+		_update_here(_globes[hk2])
 	_resto_t -= delta
 	if _resto_t <= 0.0:
 		_resto_t = 1.0
-		var hk2: int = Homeward.current_planet()  # [orbE]
-		if hk2 >= 0 and hk2 < _globes.size() and _globes[hk2] and _globes[hk2].cell_shell:
-			_update_here(_globes[hk2])
 		for k: int in _globes.size():
 			var g: PlanetGlobe = _globes[k]
 			if g and absf(Homeward.stored_pct(k) - g.restoration) > 0.001:
@@ -945,3 +945,5 @@ func _update_here(g: PlanetGlobe) -> void:
 	var p: Variant = world.get("lumi") if world.get("lumi") != null else world.get("patch")
 	if p is Node3D:
 		g.set_here((p as Node3D).global_position)
+		# Clean overview (owner, sysmap2): the pin only shows once zoomed in on Lumi's planet.
+		g.set_here_visible(_zoom_planet == Homeward.current_planet())

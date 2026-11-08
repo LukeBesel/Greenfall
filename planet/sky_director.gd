@@ -279,6 +279,8 @@ var _cloud_t: float = 0.0
 var _cloud_target: float = 0.35
 var _weather_t: float = 120.0
 var _tod_out: float = -1.0
+var _clean: float = 0.0
+var _clean_t: float = 0.0
 
 
 ## Sphere mode setup. Set player_fn / eye_fn (and optionally space_fn, clean_fn) first. The clock
@@ -356,7 +358,11 @@ func _process_sphere(delta: float) -> void:
 	if not frozen:
 		spin = fposmod(spin + TAU * delta / day_period_s * CradleMode.day_speed(time_of_day) * Glim.clock_mult(time_of_day), TAU)
 		GameState.flags["orbit_spin"] = spin
-	var clean: float = float(clean_fn.call()) if clean_fn.is_valid() else 0.0
+	_clean_t -= delta  # clean_fn walks every cell (164k+): ask every few seconds, haze eases anyway
+	if _clean_t <= 0.0:
+		_clean_t = 4.0
+		_clean = float(clean_fn.call()) if clean_fn.is_valid() else 0.0
+	var clean: float = _clean
 	var target: float = 1.0 - clampf(clean * 8.0 + float(GameState.stats.get("air_filtered", 0.0)) * 0.0005 + clear_bonus, 0.0, 0.85)
 	haze = lerpf(haze, target, clampf(delta * 0.2, 0.0, 1.0))
 	_cloud_t += delta

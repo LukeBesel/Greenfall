@@ -89,11 +89,13 @@ var _perf_n: int = 0
 func _ready() -> void:
 	var t0: int = Time.get_ticks_msec()
 	var seed_v: int = int(DevHooks.get_f("seed", 4471.0))
-	planet = PlanetData.new(seed_v, 7, 10.0)
+	var lv: int = int(DevHooks.get_f("orbit-level", 7.0))  # [orbE] perf: bigger globes (level 8 = 655k hexes)
+	var hex_m: float = DevHooks.get_f("orbit-hex", 10.0)
+	planet = PlanetData.new(seed_v, lv, hex_m)
 	planet.generate()
 	stats["planet_ms"] = Time.get_ticks_msec() - t0
 	var t1: int = Time.get_ticks_msec()
-	grid = SphereGrid.for_hex_size(7, 10.0)
+	grid = SphereGrid.for_hex_size(lv, hex_m)
 	terrain = SphereTerrain.new(grid, seed_v)
 	# The survey's elevation lifts the macro terrain: lakes sit low, hills read from Command view.
 	var sorted_e: PackedFloat32Array = planet.elevation.duplicate()

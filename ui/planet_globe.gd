@@ -202,6 +202,11 @@ func set_here(dir: Vector3) -> void:
 	_here.position = dir.normalized() * 1.03
 
 
+func set_here_visible(on: bool) -> void:
+	if _here:
+		_here.visible = on
+
+
 func set_restoration(f: float) -> void:
 	restoration = clampf(f, 0.0, 1.0)
 	for m: ShaderMaterial in _mats:
