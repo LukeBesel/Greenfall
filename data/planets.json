@@ -1,5 +1,5 @@
 {
-  "_doc": "Campaign planets, keyed by planet id (see planet/planets/planet_envs.gd). env: script with static apply(world, field, kind) and optional dev_hub / prepare_field / dress_view. sky: the env's own sky preset values; fog / sun / ambient: daytime light (night is the env's own); palette: key colours; junk_tint: the frost/dust coat on junk; music_mood: key for the sound helper. Suns come from data/solar_system.json (SolarSystem.suns_for) when present; sun here is the fallback.",
+  "_doc": "Campaign planets, keyed by planet id (see planet/planets/planet_envs.gd). env: script with static apply(world, field, kind) and optional dev_hub / prepare_field / dress_view. sky: the env's own sky preset values; fog / sun / ambient: daytime light (night is the env's own); palette: key colours; junk_tint: the frost/dust coat on junk; music_mood: key for the sound helper. Suns come from data/solar_system.json (SolarSystem.suns_for) when present; sun here is the fallback. Optional: junk_biome (Ochre: its biome set is registered by the env), no_lakes (no planet lakes in the field), pieces_mult (junk per hex).",
   "rime": {
     "name": "Rime",
     "world_type": "ice_moon",
@@ -8,130 +8,135 @@
     "biome": "rime",
     "sky": {
       "shader": "res://planet/planets/rime/rime_sky.gdshader",
-      "zenith": [
-        0.004,
-        0.008,
-        0.026
-      ],
-      "horizon": [
-        0.1,
-        0.19,
-        0.32
-      ],
+      "zenith": [0.004, 0.008, 0.026],
+      "horizon": [0.1, 0.19, 0.32],
       "stars_day": 0.8,
-      "giant_dir": [
-        -0.36,
-        0.38,
-        -0.85
-      ],
+      "giant_dir": [-0.36, 0.38, -0.85],
       "giant_radius_deg": 6.5,
       "ring_tilt_deg": 0.0,
       "aurora": 0.55,
       "giant_fade": 0.18,
-      "night_zenith": [
-        0.004,
-        0.008,
-        0.022
-      ]
+      "night_zenith": [0.004, 0.008, 0.022]
     },
     "fog": {
-      "color": [
-        0.55,
-        0.68,
-        0.9
-      ],
+      "color": [0.55, 0.68, 0.9],
       "density": 0.0006,
       "aerial": 0.35,
       "height": 1.6,
       "height_density": 0.006
     },
     "sun": {
-      "color": [
-        0.95,
-        0.96,
-        1.0
-      ],
+      "color": [0.95, 0.96, 1.0],
       "energy": 1.9,
       "size_mult": 0.32,
       "energy_mult": 0.62
     },
     "ambient": {
-      "color": [
-        0.6,
-        0.72,
-        0.92
-      ],
+      "color": [0.6, 0.72, 0.92],
       "energy": 1.0,
       "sky_contribution": 0.4
     },
     "palette": {
-      "ice": [
-        0.3,
-        0.55,
-        0.78
-      ],
-      "ice_deep": [
-        0.06,
-        0.2,
-        0.42
-      ],
-      "snow": [
-        0.93,
-        0.96,
-        1.0
-      ],
-      "crevasse": [
-        0.3,
-        0.7,
-        1.0
-      ],
-      "rust": [
-        0.42,
-        0.24,
-        0.16
-      ],
-      "ledger_paint": [
-        0.86,
-        0.42,
-        0.12
-      ],
-      "moss": [
-        0.3,
-        0.42,
-        0.17
-      ],
-      "pool": [
-        0.16,
-        0.62,
-        0.66
-      ],
-      "lantern": [
-        1.0,
-        0.78,
-        0.5
-      ],
-      "future_line": [
-        0.62,
-        0.9,
-        1.0
-      ]
+      "ice": [0.3, 0.55, 0.78],
+      "ice_deep": [0.06, 0.2, 0.42],
+      "snow": [0.93, 0.96, 1.0],
+      "crevasse": [0.3, 0.7, 1.0],
+      "rust": [0.42, 0.24, 0.16],
+      "ledger_paint": [0.86, 0.42, 0.12],
+      "moss": [0.3, 0.42, 0.17],
+      "pool": [0.16, 0.62, 0.66],
+      "lantern": [1.0, 0.78, 0.5],
+      "future_line": [0.62, 0.9, 1.0]
     },
-    "junk_tint": [
-      0.86,
-      0.93,
-      1.0,
-      0.6
-    ],
+    "junk_tint": [0.86, 0.93, 1.0, 0.6],
     "music_mood": "rime_ice",
     "night": {
       "giantshine": 1.05,
       "ambient": 1.0,
       "exposure": 1.95,
-      "ambient_color": [
-        0.4,
-        0.5,
-        0.74
-      ]
+      "ambient_color": [0.4, 0.5, 0.74]
+    }
+  },
+  "ochre": {
+    "id": "ochre",
+    "name": "Ochre",
+    "world_type": "desert",
+    "order": 1,
+    "junk_biome": "ochre_pit",
+    "prefer_biome": "dust_dunes",
+    "music_mood": "desert_heat",
+    "sky": {
+      "horizon_ruined": [0.96, 0.72, 0.46],
+      "horizon_restored": [0.95, 0.82, 0.62],
+      "zenith_ruined": [0.36, 0.5, 0.74],
+      "zenith_restored": [0.2, 0.42, 0.8],
+      "haze": [0.95, 0.66, 0.4],
+      "night_zenith": [0.02, 0.025, 0.06],
+      "night_horizon": [0.12, 0.07, 0.07],
+      "sun_separation_deg": 24.0,
+      "sun_a_size": 2.0,
+      "sun_b_size": 1.15,
+      "halo": 0.35,
+      "energy": 0.75
+    },
+    "fog": {
+      "color_ruined": [0.86, 0.6, 0.38],
+      "color_restored": [0.7, 0.76, 0.86],
+      "density_ruined": 0.00035,
+      "density_restored": 0.0002,
+      "aerial": 0.12,
+      "height_fog": [-14.0, 0.0008]
+    },
+    "sun": {
+      "color": [1.0, 0.94, 0.8],
+      "energy": 3.4,
+      "b_color": [1.0, 0.6, 0.36],
+      "b_energy": 0.9
+    },
+    "ambient": {
+      "energy": 0.7,
+      "color": [1.0, 0.88, 0.7]
+    },
+    "palette": {
+      "ochre": [0.86, 0.5, 0.19],
+      "terracotta": [0.68, 0.24, 0.12],
+      "cream": [0.94, 0.83, 0.62],
+      "plum": [0.4, 0.2, 0.23],
+      "salt": [0.95, 0.93, 0.87],
+      "oasis": [0.1, 0.55, 0.54],
+      "leaf": [0.36, 0.55, 0.22],
+      "ledger_yellow": [0.86, 0.62, 0.12],
+      "line": [0.78, 0.94, 1.0]
+    },
+    "junk_tint": [0.82, 0.58, 0.36, 0.45],
+    "ground_tint": [0.8, 0.55, 0.32, 0.62],
+    "env": "res://planet/planets/ochre/env.gd",
+    "biome": "ochre_pit",
+    "tagline": "The Ledger's first open-pit strip mine, closest to the twin suns.",
+    "no_lakes": true,
+    "pieces_mult": 1.6,
+    "exposure": 0.82,
+    "sites": {
+      "script": "res://planet/planets/ochre/sites.gd",
+      "api": "OchreSites.build(id, root, stage 1..5, restoration 0..1) -> Node3D, local +Y up, origin at the site centre",
+      "list": {
+        "hub_base": {
+          "name": "Ledger Haul Depot",
+          "diameter_m": 92
+        },
+        "toppled_excavator": {
+          "name": "The Fallen Wheel",
+          "diameter_m": 96
+        },
+        "pit_fragment": {
+          "name": "Bench Cut",
+          "diameter_m": 100
+        },
+        "oasis": {
+          "name": "Spring Terraces",
+          "diameter_m": 80
+        }
+      }
     }
   },
   "tidewell": {

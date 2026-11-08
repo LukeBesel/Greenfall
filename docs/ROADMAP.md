@@ -765,3 +765,52 @@ tuned in the first-hour pass); no new SFX work unless a bug.
 - CD player (Keepsakes tab, `ui/extras_cd_list.gd`): Shuffle / pick on repeat / off, lock + "found on" rows, CD case. Pre-Glim the music comes from the CD player (softer far away) and stops when you leave the district; with Glim's Music upgrade (`Glim.has_music()`, wt/buddy) any CD plays anywhere via N (`ui/tunes_picker.gd`). Credits: "Music by Lucas" (no Suno in the game; licensing note stays in audio/songs/README.md).
 - Dev: `--cds=a,b`, `--scratched=a`, `--cd-play=shuffle|id`, `--cd-drop`, `--glim-music`.
 - Next: autoplay bot could walk to CDs; a CD-player hub radio model is wt/camp.
+
+## Update: planet Ochre environment (wt/p_ochre)
+- Done: `planet/planets/ochre/` (OchreEnv `env.gd`, `pit.gd`, `props.gd`, `excavator.gd`, shaders, `junk_biome.json`):
+  the play field sits on a wide haul bench low inside an enormous terraced open-pit mine (2 steps down to a
+  sludge pond, 9 benches of layered ochre / terracotta / cream rock up to a ~100 m rim, haul roads spiralling
+  between them), layered mesas and salt pans on the plateau, a white-gold two-sun sky (canon binary star,
+  reads `SolarSystem.suns_for("ochre")` when home's helper exists) with a companion fill light, heat shimmer,
+  dust devils. Three bucket-wheel excavators (one toppled on the rim), haul trucks. Junk: ore tailings,
+  broken drill bits and rods, Ledger ore crates, bucket teeth, ore sacks (procedural, registered in AssetLib).
+  Stages: ruined (rust, slumped booms, salt crust) -> mid (repainted, booms raised, shade sails) -> future
+  (white machines with planters, wind-wheel vanes and a wind-catcher tower, solar sails with thin light
+  seams, a light seam on each terrace crest). Restoration (hex levels) greens the terraces from the floor up:
+  crop rows along the contours, water channels at each wall toe, vines, palms and succulents, an oasis pool.
+- Registry: `data/planets.json` (planet id -> env script, sky, fog, sun, ambient, palette, junk tint, music
+  mood); `planet/planets/planet_envs.gd` (PlanetEnvs: prepare/apply, dev hook). Dev: `--planet-env=ochre`
+  (a wild district dressed by the env), `--ochre-restore=0..1`, `--ochre-cam=x,y,z,tx,ty,tz`.
+- Integration for home/worlds2: call `PlanetEnvs.prepare(kind)` before the field is generated (junk models and
+  biome set), set `field.biome = kind.junk_biome`, `view.skip_horizon = true`, `field.set_meta("planet_env", id)`
+  (FutureLayer then skips its city spires), then `PlanetEnvs.apply(world, kind)` once the scene is built.
+- Next: waterfalls between terrace channels at the futuristic stage; tune on real hardware (pit terrain is
+  ~90k vertices in 16 sectors; plants ~4.7k instances in 28 MultiMeshes with visibility ranges).
+
+## Update: Ochre kit for the walkable globes (wt/p_ochre, Nov 8)
+Owner: planets become round, hex-covered, walkable globes (orbit helper). The flat pit, mesas and plateau in
+`planet/planets/ochre/` (pit.gd, `_build_terrain`, `_build_mesas`, ramps, falls) are a prototype only and will be
+rebuilt on the sphere. What carries over, and how to place it on a globe:
+- Registry: one `planet/planets/planet_envs.gd` (Rime's contract: dev_hub / prepare_field / dress_view / apply) and
+  one `data/planets.json` (rime + ochre). Ochre extras: `junk_biome`, `no_lakes`, `pieces_mult` (junk per hex,
+  "the whole world is trashed"), `prefer_biome`, `exposure`.
+- Palette (`planets.json` ochre.palette): ochre, terracotta, cream, plum strata; salt; oasis; leaf; Ledger yellow;
+  thin-line cyan. Sky/fog/ambient values there are the low-haze, high-contrast set (owner: vivid, not foggy).
+- Materials / shaders (`planet/planets/ochre/*.gdshader`), all world-space so they work on any surface:
+  - `ochre_terrain`: strata bands by height (pit walls and landforms share layers), quarry-rock triplanar,
+    red bench gravel, ochre sand, salt-pan crust (cell cracks), tailings streaks, cheap foot-of-wall occlusion,
+    restored crop rows / water channels / vines (COLOR channels: r level, g flat, b across, a "in the mine").
+    On a globe: drive COLOR from the hex's height band and slope instead of pit rings.
+  - `ochre_sky`: hot white-gold horizon, blue zenith above the haze, both suns from `SolarSystem.suns_for("ochre")`
+    (primary burns white, companion stays orange-red), stars at night.
+  - `ochre_water` (sludge -> oasis), `ochre_fall`, `ochre_sail` (canvas / solar membrane + thin hem light),
+    `ochre_foliage` (sway), `ochre_shimmer` (heat haze ring near the ground).
+- Props (`props.gd`, `excavator.gd`, all procedural, one draw per material): bucket-wheel excavator (ruined /
+  repainted / futuristic planter + wind wheel + wind-catcher), haul truck, junk set (tailings x2, tricone bit,
+  drill rod, crates x2, bucket tooth, ore sack; registered into AssetLib by `prepare_field`), boulder x3 (scree),
+  date palm x3, agave x2, barrel cactus, aloe, shade / solar sails. Each takes a Transform3D: place per hub site
+  with the local up vector as the basis Y.
+- Restoration rules (per hex on a globe, per bench here): junk clears and plants appear from the lowest ground
+  up (the water source) as hex levels rise; ruined (1) rust, slumped booms, extra scrap -> mid (2-3) repainted,
+  shade sails -> future (4-5) white machines with planters, solar sails, a thin light seam on crests, waterfalls.
+- Dev: `--planet-env=ochre`, `--ochre-lookbook=1|2` (kit under both suns), `--ochre-restore`, `--ochre-cam`.
