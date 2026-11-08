@@ -66,7 +66,7 @@ func max_level() -> int:
 
 
 func near(p: Vector3) -> bool:
-	return p.distance_to(global_position) < RANGE
+	return is_visible_in_tree() and p.distance_to(global_position) < RANGE  # [camp] hidden until it works
 
 
 func prompt() -> String:

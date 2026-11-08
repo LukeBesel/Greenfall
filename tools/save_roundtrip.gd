@@ -78,6 +78,8 @@ func _snapshot(s: Node) -> Dictionary:
 		# [scope] the Telescope at this base, its sightings and use stats.
 		"telescope": "%s %s uses=%d" % [str(Telescope.of(s).built() if Telescope.of(s) else "none"), str(Codex.is_unlocked("sightings:first_light")), int(GameState.stats.get("telescope_uses", 0))],
 		"extras": JSON.stringify(ExtrasRoundtrip.snap(s)),  # [extras] radio, album, nursery
+		# [camp] the workbench repair, the trash bin's level, yard builds, and what's shown.
+		"camp": "bench=%s bin=L%d built=%s radio_shown=%s bench_prompt=%s" % [str(Camp.bench_ok()), TrashBin.level(), JSON.stringify(YardBuilds.state().get("built", {})), str(ExtrasDirector.of(s).radio.visible if ExtrasDirector.of(s) else false), (Camp.of(s).bench_prompt() if Camp.of(s) else "")],
 	}
 
 
@@ -362,6 +364,13 @@ func _ready() -> void:
 		GameState.inc_stat("telescope_uses", 2.0)
 	else:
 		_check("scope_node", true, false)
+	if Camp.of(s1):  # [camp] fix the bench, raise the bin, build the radio
+		Camp.of(s1).repair_now()
+		TrashBin.set_level(3)
+		YardBuilds.mark_built("radio")
+		ExtrasDirector.of(s1).radio.set_built(true, false)
+	else:
+		_check("camp_node", true, false)
 	ExtrasRoundtrip.setup(s1)  # [extras] radio song, album records, a retired caretaker
 	s1.patch.global_position = Vector3(3.0, 0.2, 5.0)
 	var dropped: JunkCube = JunkCube.create(BigNum.from_float(37.75), {"fill": 1.0})

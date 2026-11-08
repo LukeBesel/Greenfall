@@ -77,5 +77,7 @@ func test_starter_yard_is_never_ruined() -> void:
 	add_child_autofree(d)
 	d.build(layout, field, 0, "Old Town", "", 1)
 	assert_false(d.has_node("Ruin"))
-	assert_true((d.get_node("Yard") as Node3D).visible)
+	assert_false((d.get_node("Yard") as Node3D).visible, "[camp] the starter yard is bare at level 1")
 	assert_true((d.get_node("Salvage") as Node3D).visible)
+	d.set_level(2, false)
+	assert_true((d.get_node("Yard") as Node3D).visible, "[camp] poles, crates and festoons come with level 2")

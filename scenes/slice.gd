@@ -33,6 +33,7 @@ var water: WaterView
 var doc_view: DocumentView
 var interactables: Interactables
 var scope_from_memory: bool = false  # [scope]
+var camp: Camp  # [camp] the landing yard: broken bench, trash bin, yard builds (systems/camp/camp.gd)
 var eggs: EasterEggs
 var ledger: LedgerArc
 var outposts: Outposts  # [outposts] ruined frontier depots (automation/outposts.gd)
@@ -527,6 +528,7 @@ func _ready() -> void:
 	scope.world = self
 	add_child(scope)
 	ExtrasDirector.attach(self)  # [extras] radio, nursery, album, welcome back, Seed of the Week (systems/extras/)
+	camp = Camp.attach(self)  # [camp] after the extras: it shows the radio / nursery once built
 	if not bot and DisplayServer.get_name() != "headless":
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
@@ -631,6 +633,7 @@ func _build_board() -> void:
 	frame.mesh = ProcMesh.merge(parts)
 	frame.material_override = pipe
 	shack.add_child(frame)
+	_ruin_bits["frame"] = frame  # [camp]
 	var roof := MeshInstance3D.new()
 	_ruin_bits["roof"] = roof
 	roof.mesh = ProcMesh.box(Vector3(3.7, 0.03, 2.6))
@@ -643,6 +646,7 @@ func _build_board() -> void:
 	back.material_override = iron
 	back.position = Vector3(0, 1.15, -1.15)
 	shack.add_child(back)
+	_ruin_bits["back"] = back  # [camp]
 	var side := MeshInstance3D.new()
 	_ruin_bits["side"] = side
 	side.mesh = ProcMesh.box(Vector3(0.03, 1.6, 1.4))
@@ -653,6 +657,7 @@ func _build_board() -> void:
 	var bench := Node3D.new()
 	bench.position = Vector3(0, 0, -0.65)
 	shack.add_child(bench)
+	_ruin_bits["bench"] = bench  # [camp] starts broken on a fresh base
 	var bparts: Array = []
 	bparts.append(ProcMesh.part(ProcMesh.box(Vector3(2.2, 0.06, 0.8)), ProcMesh.xf(Vector3(0, 0.92, 0))))
 	for x: float in [-1.0, 1.0]:
@@ -722,6 +727,7 @@ func _build_board() -> void:
 	gen.position = Vector3(-4.6, 0, 0.8)
 	gen.rotation_degrees = Vector3(0, 70, 0)
 	add_child(gen)
+	_ruin_bits["generator"] = gen  # [camp]
 
 
 ## Level 1 at any base but Old Town's start: the lean-to roof has slumped off its frame, the side
@@ -968,6 +974,9 @@ func try_interact(p: Patch) -> void:
 			doc_view.show_doc(doc)
 		return
 	if near_bench():
+		if camp and not Camp.bench_ok():  # [camp] the first E repairs the broken bench
+			camp.repair_bench()
+			return
 		open_upgrades()
 		return
 	if composter and composter.near(p.global_position):
@@ -983,7 +992,7 @@ func interact_prompt(p: Patch) -> String:
 	if shards and shards.nearby(p.global_position) >= 0:
 		return "shard"
 	if near_bench():
-		return "upgrades"
+		return camp.bench_prompt() if camp else "upgrades"  # [camp] names the bench (and says if it's broken)
 	if composter and composter.near(p.global_position):
 		return composter.prompt()
 	if p.global_position.distance_to(FLOWER_POS) < 1.8:
@@ -1005,6 +1014,9 @@ func open_upgrades() -> void:
 	if not near_bench() and not DevHooks.has("open"):
 		EventBus.toast.emit(tr("Upgrades need a workbench. Head back to the hub."), "info")
 		Audio.play("buzz", 1.2, -10.0)
+		return
+	if camp and not Camp.bench_ok() and not DevHooks.has("open"):  # [camp]
+		camp.repair_bench()
 		return
 	upgrades.open_screen()
 	if patch.input is PlayerInput:

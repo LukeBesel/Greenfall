@@ -321,6 +321,9 @@ func _do_bench(p: Patch) -> bool:
 		return false
 	if p.global_position.distance_to(BENCH_POS) < 3.0:
 		_bench_trip = false
+		var cp: Camp = Camp.of(world)  # [camp] fix the broken bench first (the player presses E once)
+		if cp and not Camp.bench_ok():
+			cp.repair_now()
 		_manage(p)
 		return false
 	_set_task("bench")
