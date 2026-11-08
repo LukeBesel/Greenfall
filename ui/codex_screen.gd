@@ -108,7 +108,7 @@ func _ready() -> void:
 	for t: Dictionary in TABS:
 		var b := Button.new()
 		b.text = tr(str(t["name"]))
-		b.custom_minimum_size = Vector2(124, 42)  # [vqa] was 150: five tabs + the prompt overflowed the Deck at 110%
+		b.custom_minimum_size = Vector2(100, 42)  # [vqa] was 150: five tabs + the prompt overflowed the Deck at 110%; [ui4] 100: six tabs at 125%
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.clip_text = true
 		b.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -116,7 +116,7 @@ func _ready() -> void:
 		b.pressed.connect(_set_tab.bind(str(t["id"])))
 		tabs.add_child(b)
 		_tab_buttons[str(t["id"])] = b
-	tabs.add_child(PromptLabel.new(tr("   {ui_tab_prev}{ui_tab_next}  switch tabs"), 13))  # [deck]
+	tabs.add_child(PromptLabel.new("  {ui_tab_prev}{ui_tab_next}", 13))  # [deck] [ui4] glyphs only (fits 125%)
 	_body = MarginContainer.new()
 	_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	vb.add_child(_body)
