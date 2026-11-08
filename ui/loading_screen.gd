@@ -437,11 +437,11 @@ func _draw_lumi(c: Control, at: Vector2, depth: float = 1.0) -> void:
 	c.draw_style_box(face, Rect2(-8, -11, 24, 16))
 	for ex: float in [0.0, 9.0]:  # one pair of eyes
 		var e := Vector2(ex, -3.0)
-		c.draw_circle(e, 5.0, Color(GLOW, 0.18))
 		if _blink > 0.0:
 			c.draw_line(e + Vector2(-2.5, 0), e + Vector2(2.5, 0), GLOW, 2.0)
-		else:
-			c.draw_arc(e, 2.6, PI * 0.35, TAU - PI * 0.35, 12, Color(1.0, 0.5, 0.65), 2.2, true)
+		else:  # [main] one solid eye each (the C arc + halo read as two sets of eyes)
+			c.draw_circle(e, 3.0, Color(1.0, 0.5, 0.65))
+			c.draw_circle(e + Vector2(-0.9, -1.0), 0.9, Color(1, 1, 1, 0.9))
 	c.draw_line(Vector2(2, -16), Vector2(5, -25), WHITE * dim, 2.0)
 	var pulse: float = 0.6 + 0.4 * sin(_t * 5.0)
 	c.draw_circle(Vector2(5, -26), 4.5, Color(GLOW, 0.25 * pulse))

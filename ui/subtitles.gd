@@ -72,6 +72,9 @@ var _cur: Dictionary = {}
 var _phase: int = 0  # 0 idle, 1 fade in, 2 hold, 3 fade out, 4 gap
 var _pt: float = 0.0
 var _hold: float = 0.0
+var _beeps_left: int = 0  # [main] robot beep-talk under spoken lines (no human voice-over)
+var _beep_t: float = 0.0
+var _beep_pitch: float = 1.0
 var _low: float = -1.0
 var _chars: String = ""
 var _mask: Array = []
@@ -447,6 +450,7 @@ func show_now(text: String, speaker: String = "") -> void:
 		_log_shown()
 	_cur = {}
 	_phase = 0
+	_beeps_left = 0
 	_pill.modulate.a = 0.0
 	_pill.visible = false
 	if text != "":
@@ -513,10 +517,12 @@ func _next() -> void:
 	_pill.modulate.a = 0.0
 	if not _speech_hidden and not spk.begins_with("toast:"):
 		Audio.duck(_hold + FADE_S * 2.0)  # [sound] music dips under the line
-		if str(_cur["speaker"]) == "wren":
-			Audio.play("blip", 1.05, -18.0, 0.03)
-		elif str(_cur["speaker"]).begins_with("ledger") and Audio.has_sound("ledger_tick"):
+		if str(_cur["speaker"]).begins_with("ledger") and Audio.has_sound("ledger_tick"):
 			Audio.play("ledger_tick", 1.0, -18.0, 0.05)
+		else:  # [main] a short burst of robot beeps per line: Wren higher, the narrator lower and softer
+			_beeps_left = clampi(int(_chars.length() / 6.0), 3, 12)
+			_beep_t = 0.0
+			_beep_pitch = 1.25 if str(_cur["speaker"]) == "wren" else 0.85
 
 
 ## Purposeful glitches. Readable words: a light flicker and scramble on appearance only (~150 ms).
@@ -591,6 +597,12 @@ func _process(delta: float) -> void:
 		offset = Vector2.ZERO
 		return
 	_pt += delta
+	if _beeps_left > 0:  # [main] beep-talk
+		_beep_t -= delta
+		if _beep_t <= 0.0:
+			_beeps_left -= 1
+			_beep_t = randf_range(0.07, 0.13)
+			Audio.play("blip", _beep_pitch * randf_range(0.85, 1.2), -16.0 if _beep_pitch > 1.0 else -19.0, 0.0)
 	if _phase in [1, 2, 3]:
 		_glitch(delta)
 	match _phase:

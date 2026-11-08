@@ -27,18 +27,13 @@ vec4 eye(vec2 p, vec2 c, float R, float bl) {
 	float r = length(d);
 	float aa = 0.02;
 	float disc = 1.0 - smoothstep(R - aa, R + aa, r);
-	// Pupil: offset toward the viewer's upper right (object -x, +y; the face looks down -Z).
-	vec2 pc = vec2(-0.23, 0.19) * R;
-	float Rp = 0.67 * R;
-	float rp = length(d - pc);
-	float pupil = 1.0 - smoothstep(Rp - aa, Rp + aa, rp);
-	float core = disc * (1.0 - pupil);
-	// White-hot along the inner (pupil) edge, fading to cyan at the outer rim.
-	float hot = core * (1.0 - smoothstep(0.0, R * 0.16, rp - Rp));
-	float halo = exp(-max(r - R, 0.0) * max(r - R, 0.0) * 55.0) * (1.0 - disc) * 0.6
-		+ exp(-(rp - Rp) * (rp - Rp) * 200.0) * pupil * 0.18;
-	float glint = 1.0 - smoothstep(0.075 * R * 0.9, 0.075 * R * 1.3, length(d - pc - vec2(-0.32, 0.36) * Rp));
-	glint *= pupil;
+	// [main] One solid glowing eye per side (owner: the old C-ring + pupil ring read as two sets of
+	// eyes). A filled disc, brighter toward the middle, a soft outer halo and one small glint.
+	float core = disc;
+	float hot = disc * (1.0 - smoothstep(0.0, R * 0.85, r)) * 0.55;
+	float halo = exp(-max(r - R, 0.0) * max(r - R, 0.0) * 55.0) * (1.0 - disc) * 0.6;
+	float glint = 1.0 - smoothstep(0.13 * R, 0.19 * R, length(d - vec2(-0.32, 0.34) * R));
+	glint *= disc;
 	// Happy: an upper arc (an upside-down U) like ^ ^.
 	vec2 dh = p - c - vec2(0.0, -R * 0.5);
 	float dah = abs(length(dh) - R * 0.85);

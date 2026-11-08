@@ -59,6 +59,8 @@ static func merge(parts: Array) -> ArrayMesh:
 		var basis_n: Basis = xf_.basis.inverse().transposed()
 		for s: int in mesh.get_surface_count():
 			var arr: Array = mesh.surface_get_arrays(s)
+			if arr.is_empty() or arr[Mesh.ARRAY_VERTEX] == null or arr[Mesh.ARRAY_NORMAL] == null:
+				continue  # [main] empty surface (a zero-size piece): nothing to merge
 			var pv: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
 			var pn: PackedVector3Array = arr[Mesh.ARRAY_NORMAL]
 			var pi: PackedInt32Array = arr[Mesh.ARRAY_INDEX] if arr[Mesh.ARRAY_INDEX] != null else PackedInt32Array()

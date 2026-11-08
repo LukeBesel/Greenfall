@@ -2043,6 +2043,9 @@ func mark_seen(sid: String) -> bool:
 func _sightings() -> void:
 	if _cam == null:
 		return
+	var intro: Variant = world.get("intro") if world else null  # [main] no sighting popups during the intro cinematic
+	if intro is Intro and (intro as Intro).running:
+		return
 	for a: Animal in animals:
 		if a.seen or a.state == St.LEAVE or a.fade < 0.9:
 			continue
