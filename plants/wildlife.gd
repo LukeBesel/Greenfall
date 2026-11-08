@@ -22,6 +22,8 @@ func setup() -> void:
 	EventBus.hex_level_changed.connect(func(hid: int, lvl: int) -> void:
 		if lvl == 3:
 			add_butterflies(hid, 3))
+	for c: int in frame_cells:  # [orbB] the globe: this hub's region only
+		_in_frame[c] = true
 	var hl: Node = world.get("hex_levels")
 	if hl:
 		for hid: Variant in hl.get("levels"):
@@ -42,7 +44,9 @@ func _make_wing() -> ArrayMesh:
 
 
 func _on_restored(hid: int) -> void:
-	var c: Vector3 = world.field.hex_center(hid)
+	if not _mine(hid):
+		return
+	var c: Vector3 = _c(hid)
 	for i: int in MAX_BUTTERFLIES_PER_HEX:
 		var pos: Vector3 = c + Vector3(randf_range(-6, 6), randf_range(0.4, 1.2), randf_range(-6, 6))
 		_flies.append({"pos": pos, "basis": Basis.IDENTITY, "home": c, "target": pos, "phase": randf() * TAU,
@@ -63,7 +67,9 @@ func _on_restored(hid: int) -> void:
 
 ## [wild] A few butterflies over a hex (Growing hexes; restored ones get the full set above).
 func add_butterflies(hid: int, n: int) -> void:
-	var c: Vector3 = world.field.hex_center(hid)
+	if not _mine(hid):
+		return
+	var c: Vector3 = _c(hid)
 	for i: int in n:
 		var pos: Vector3 = c + Vector3(randf_range(-5, 5), randf_range(0.4, 1.1), randf_range(-5, 5))
 		_flies.append({"pos": pos, "basis": Basis.IDENTITY, "home": c, "target": pos, "phase": randf() * TAU,
@@ -132,3 +138,20 @@ func _process(delta: float) -> void:
 			_song_t = randf_range(20.0, 60.0)
 			if Fauna.bird_call_ok():
 				Audio.play("bird", randf_range(0.85, 1.25), -20.0, 0.0)
+
+
+
+# --- [orbB] The globe: Wildlife runs in the hub frame (planet/orbit/hub_frame.gd), like Fauna ------
+# Positions are frame-local (site metres, +Y up); a hub's Wildlife only takes its region's cells.
+
+var frame_cells := PackedInt32Array()  # set by the frame host; empty on the flat game
+var _in_frame: Dictionary = {}
+
+
+func _mine(hid: int) -> bool:
+	return frame_cells.is_empty() or _in_frame.has(hid)
+
+
+## A cell's centre in this node's space (the world on the flat game).
+func _c(hid: int) -> Vector3:
+	return world.field.hex_center(hid) if frame_cells.is_empty() else to_local(world.field.hex_center(hid))

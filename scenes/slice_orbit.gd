@@ -632,7 +632,9 @@ func _build_hub_frame() -> void:
 		var op: Node = hub_frame.node("Outposts")
 		w.set("outposts", op as Outposts if op else null)
 		var lg: Node = hub_frame.node("Ledger")
-		w.set("ledger", lg as LedgerArc if lg else null))
+		w.set("ledger", lg as LedgerArc if lg else null)
+		var wl: Node = hub_frame.node("Wildlife")
+		w.set("wildlife", wl as Wildlife if wl else null))
 	hub_frame.host("Fauna", func(f: HubFrame, _hub: int) -> Node:  # ambient animals return as hexes are restored
 		var fa := Fauna.new()
 		f.add_child(fa)
@@ -667,6 +669,20 @@ func _build_hub_frame() -> void:
 		f.add_child(lg)
 		lg.setup()
 		return lg)
+	hub_frame.host("Wildlife", func(f: HubFrame, _hub: int) -> Node:  # butterflies, circling birds, birdsong
+		var wl := Wildlife.new()
+		wl.name = "Wildlife"
+		wl.world = w
+		wl.frame_cells = f.region()
+		f.add_child(wl)
+		wl.setup()
+		return wl)
+	hub_frame.host("MeadowSphere", func(f: HubFrame, _hub: int) -> Node:  # restored cells turn green
+		var md := MeadowSphere.new()
+		md.frame_cells = f.region()
+		f.add_child(md)
+		md.setup(w)
+		return md)
 	hub_frame.host("Decor", func(f: HubFrame, hub: int) -> Node:  # Garden Mode's decorations at this hub
 		var dc := Decor.new()
 		dc.hub_index = hub
@@ -676,6 +692,7 @@ func _build_hub_frame() -> void:
 	w.set("eggs", hub_frame.node("EasterEggs") as EasterEggs)
 	w.set("outposts", hub_frame.node("Outposts") as Outposts)
 	w.set("ledger", hub_frame.node("Ledger") as LedgerArc)
+	w.set("wildlife", hub_frame.node("Wildlife") as Wildlife)
 
 
 ## The landing pod in its crash site on the start site's "pod" anchor. The intro cinematic itself
