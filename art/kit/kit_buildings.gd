@@ -661,7 +661,13 @@ static func _greenhouse(b: KitMesh.Builder, state: String) -> void:
 			if e == 0 and (q == 1 or q == 2):
 				continue
 			b.box("glasshouse", Vector3(w / 4.0 - 0.1, wall_h - 0.1, 0.03), _x(Vector3(xc, y0 + wall_h * 0.5, z)), 0.008)
-		b.box("glasshouse", Vector3(w - 0.4, ridge * 0.9, 0.03), _x(Vector3(0, y0 + wall_h + ridge * 0.42, z)) * Transform3D(Basis().scaled(Vector3(1, 1, 1)), Vector3.ZERO), 0.008)
+		# gable triangle: vertical strips whose height follows the roof slope
+		var strips: int = 8
+		for q: int in strips:
+			var xc: float = -w * 0.5 + (q + 0.5) * w / strips
+			var hh: float = ridge * (1.0 - absf(xc) / (w * 0.5)) - 0.08
+			if hh > 0.05:
+				b.box("glasshouse", Vector3(w / strips - 0.06, hh, 0.03), _x(Vector3(xc, y0 + wall_h + hh * 0.5, z)), 0.008)
 	KitProps.hatch(b, _x(Vector3(0, y0, l * 0.5 + 0.05)), Vector2(1.4, 2.1), state, "paint:accent")
 	# beds with plants inside
 	for sx: float in [-1.0, 1.0]:
