@@ -25,6 +25,9 @@ var gravity: float = 20.0
 var speed: float = 4.6
 ## Boosted top speed = speed * boost_mult; boost_ramp = seconds to reach it from walking.
 var boost_mult: float = 4.0
+## [orbD] Vehicle multiplier on the walking top speed (the hover-sled sets it; Patch keeps
+## setting `speed` from its stat every frame).
+var speed_mult: float = 1.0
 var boost_ramp: float = 0.8
 var boost_lift: float = 0.35
 var jump_speed: float = 6.5
@@ -115,7 +118,7 @@ func step(body: CharacterBody3D, wish: Vector3, delta: float, boost: bool = fals
 	var w: Vector3 = SphereMath.tangent(wish, u).limit_length(1.0)
 	boost_t = move_toward(boost_t, 1.0 if boost and w.length() > 0.1 else 0.0, delta / maxf(boost_ramp, 0.01) * (1.0 if boost else 2.0))
 	var ease_b: float = boost_t * boost_t * (3.0 - 2.0 * boost_t)
-	var top: float = speed * lerpf(1.0, boost_mult, ease_b)
+	var top: float = speed * speed_mult * lerpf(1.0, boost_mult, ease_b)  # [orbD] speed_mult
 	var target: Vector3 = w * top
 	# Slopes: the tangent part of the ground normal points downhill.
 	var down: Vector3 = SphereMath.tangent(ground_normal, u)

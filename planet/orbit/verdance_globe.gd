@@ -190,6 +190,7 @@ func _ready() -> void:
 	stats["ready_ms"] = Time.get_ticks_msec() - t0
 	if DevHooks.has("orbit-cash"):
 		_cash_test.call_deferred()
+	_build_sled()  # [orbD] the hover-sled (player/vehicle.gd)
 	if DevHooks.has("orbit-hop"):  # [orbD] --orbit-hop=N[,M]: rocket hop to hub N (and back to M)
 		_dev_hop.call_deferred()
 	print("[orbit] integrated: R=%.0fm hexes=%d around=%.1fkm hubs=%d (nearest hub mean %.0fm, min %.0fm) ready=%dms planet=%dms grid=%dms settle=%dms" % [
@@ -362,6 +363,26 @@ func _build_sites() -> void:
 	var p: SitePrefab = site_manager.build_hub(0)
 	p.get_parent().name = "StartSite"
 	site_manager.point_shaders_at(p)
+
+
+## [orbD] The hover-sled, parked by the start site's rocket pad. --orbit-sled[=TIER] owns and
+## mounts it at the start (with --orbit-walk=boost it drives the lap test).
+var sled: HoverSled
+
+
+func _build_sled() -> void:
+	HoverSled.register_upgrade()
+	if DevHooks.has("orbit-sled"):
+		GameState.upgrades[HoverSled.UPGRADE_ID] = clampi(int(DevHooks.get_f("orbit-sled", 1.0)), 1, 3)
+	sled = HoverSled.new()
+	sled.name = "HoverSled"
+	sled.lumi = lumi
+	add_child(sled)
+	var sp: SitePrefab = site_manager.prefab(0)
+	var at: Transform3D = sp.global_transform * Transform3D(Basis(), sp.anchor_local("rocket_pad").origin + Vector3(7.0, 0, 2.0))
+	sled.global_transform = Transform3D(at.basis, terrain.ground(at.origin.normalized()))
+	if DevHooks.has("orbit-sled"):
+		sled.mount()
 
 
 ## [orbD] Rocket hops between hubs on this globe (planet/sites/hub_hop.gd).

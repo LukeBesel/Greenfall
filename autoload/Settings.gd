@@ -22,6 +22,7 @@ const REBINDABLE: Array = [
 	["zoom_in", "Zoom in"], ["zoom_out", "Zoom out"],
 	["photo_mode", "Photo mode"],  # [photo]
 	["glim_scan", "Glim: scan (hold: upgrades)"],  # [buddy]
+	["boost", "Hover boost"],  # [orbD] hold on the walkable globe (SphereInput)
 ]
 # l10n:end
 # l10n:begin
@@ -202,10 +203,11 @@ func _register_default_actions() -> void:
 		"ui_tab_prev": [_key(KEY_Q), _joy(JOY_BUTTON_LEFT_SHOULDER)],
 		"buy_max": [_key(KEY_SHIFT), _joy(JOY_BUTTON_LEFT_STICK)],
 		"open_codex": [_key(KEY_K), _joy(JOY_BUTTON_MISC1)],
-		"toggle_goals": [_key(KEY_G), _joy(JOY_BUTTON_LEFT_STICK)],  # [hud] expand the goal tracker
+		"toggle_goals": [_key(KEY_G)],  # [hud] expand the goal tracker; [orbD] LS click went to boost (sprint convention)
 		"photo_mode": [_key(KEY_P)],  # [photo] pad: via the pause menu
 		"garden_mode": [_key(KEY_H)],  # [late] Garden Mode (ui/garden_placer.gd); pad: via the pause menu
 		"glim_scan": [_key(KEY_F), _axis(JOY_AXIS_TRIGGER_LEFT, 1.0)],  # [buddy] tap: hex scan, hold: Glim panel
+		"boost": [_key(KEY_SHIFT), _joy(JOY_BUTTON_LEFT_STICK)],  # [orbD] hover-boost on the globe (x4), also the sled's boost
 	}
 	for action: String in _defaults:
 		if not InputMap.has_action(action):
