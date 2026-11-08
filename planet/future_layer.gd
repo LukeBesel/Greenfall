@@ -211,8 +211,12 @@ static func plan(fld: HexField, lay: CityLayout, levels: Dictionary, hub_level: 
 
 
 static func _plan_hex(p: Dictionary, fld: HexField, lay: CityLayout, hid: int, lv: int, slots: PackedVector3Array) -> void:
-	var c: Vector3 = fld.hex_center(hid)
-	var r: float = fld.hex_size
+	plan_hex_at(p, lay, hid, lv, slots, fld.hex_center(hid), fld.hex_size)
+
+
+## [orbE] One hex's pieces around centre c with hex radius r. The round planet calls it with c at
+## the origin of a cell's tangent frame and lay = null (planet/future_layer_sphere.gd).
+static func plan_hex_at(p: Dictionary, lay: CityLayout, hid: int, lv: int, slots: PackedVector3Array, c: Vector3, r: float) -> void:
 	var seam_en: float = [0.0, 1.15, 1.35, 1.5, 1.7, 2.0][lv]
 	# No seams along the hex edges: the ground itself now shows clean ground with an organic
 	# border (HexField.border_warp), and ruler-straight light lines fought that.

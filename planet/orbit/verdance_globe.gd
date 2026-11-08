@@ -49,7 +49,9 @@ var day_t: float = 0.5  # planet rotation phase (0..1)
 var sun2: DirectionalLight3D
 var sky_mat: ShaderMaterial
 var sky_director: SkyDirector  # [orbE] clock, suns, moon, weather (planet/sky_director.gd)
-var glim: GlimBot  # [orbE] the light buddy's lantern (nights stay readable)
+var future: FutureLayerSphere  # [orbE] the Future Layer on chunks
+var glim: GlimBot  # [orbE]
+var survey: GlobeView  # [orbE] the survey hologram the light buddy's lantern (nights stay readable)
 var _cubes_root: Node3D
 var _spin_axis := Vector3.UP
 var _sun_dir0 := Vector3.ZERO  # first sun, rotation phase 0, planet frame
@@ -775,6 +777,8 @@ func _process(delta: float) -> void:
 	_update_day(delta, f)
 	if Input.is_action_just_pressed("open_command") and lumi.input is PlayerInput and (lumi.input as PlayerInput).enabled:
 		cam.view = "follow" if cam.view == "command" else "command"
+	if survey and not survey.is_open and Input.is_action_just_pressed("open_globe") and lumi.input is PlayerInput and (lumi.input as PlayerInput).enabled:  # [orbE]
+		survey.open_view()
 	if _orbit_cam:  # the whole little planet with Lumi's side toward the camera
 		var u: Vector3 = lumi.up()
 		var d: Vector3 = (u * 0.82 + f.z * 0.57).normalized()
@@ -837,6 +841,31 @@ func _build_lights() -> void:
 	glim.sky = sky_director
 	glim.set_light(Glim.value("light", "range", 6.0), Glim.value("light", "energy", 1.1))
 	glim.snap_to_target()
+	# [orbE] The Future Layer per cell (SphereCells.level) on the near full-detail chunks.
+	future = FutureLayerSphere.new()
+	future.name = "FutureLayer"
+	add_child(future)
+	future.setup(grid, terrain, cells, streamer)
+	future.eye_fn = sky_director.eye_fn
+	future.sky = sky_director
+	# [orbE] The survey hologram (M): SphereCells through the far shell's big hexes, Lumi's cell marked.
+	survey = GlobeView.new()
+	survey.planet = planet
+	survey.cells = cells
+	survey.shell = streamer.shell
+	survey.sphere_grid = grid
+	survey.patch_cell_provider = func() -> int: return grid.cell_at(lumi.global_position)
+	survey.holder = lumi
+	survey.world_root = self
+	add_child(survey)
+	if DevHooks.has("orbit-survey"):  # open the hologram after the world settles (renders, checks)
+		get_tree().create_timer(DevHooks.get_f("orbit-survey", 3.0)).timeout.connect(survey.open_view)
+	if DevHooks.has("orbit-tour"):  # [orbE] day/dusk/night render tour (tools/orbit_sky_tour.gd)
+		var tour := OrbitSkyTour.new()
+		tour.sky = sky_director
+		add_child(tour)
+	if DevHooks.has("orbit-future"):
+		print("[future] dev levels on %d cells" % FutureLayerSphere.dev_seed(cells, grid, grid.cell_at(lumi.global_position), int(DevHooks.get_f("orbit-future", 10.0))))
 
 
 ## World direction toward a sun at rotation phase phi (the planet's spin axis is world +Y).
@@ -890,6 +919,8 @@ func _perf_line() -> String:
 		_perf[0] / maxi(_perf_n, 1), _perf[2], _perf[1] / maxi(_perf_n, 1), int(stats.get("junk", 0)), int(stats.get("junk_ms", 0)),
 		RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_DRAW_CALLS_IN_FRAME),
 		RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_PRIMITIVES_IN_FRAME), JSON.stringify(st)]
+	if future:  # [orbE]
+		s += " future=%s fps=%d" % [JSON.stringify(future.stats), Engine.get_frames_per_second()]
 	_perf = [0.0, 0.0, 0.0, 0.0]
 	_perf_n = 0
 	return s
