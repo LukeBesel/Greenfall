@@ -24,7 +24,7 @@ msgstr "Cada %s de la flota."
 msgid "Base (Mk I, before tier and part rarity)"
 msgstr "Base (Mk I, antes de nivel y rareza de piezas)"
 
-#: autoload/Economy.gd:128 ui/upgrades_panel.gd:34
+#: autoload/Economy.gd:128 ui/bench_lists.gd:12 ui/upgrades_panel.gd:34
 msgid "Base"
 msgstr "Base"
 
@@ -501,8 +501,8 @@ msgstr "1 de cada %d pacas a la recicladora"
 msgid "Requires hub level %d or research: %s."
 msgstr "Requiere base nivel %d o la investigación: %s."
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:353
-#: systems/camp/camp.gd:365 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
+#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:356
+#: systems/camp/camp.gd:368 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
 #: systems/camp/hub_builds.gd:161 systems/camp/hub_builds.gd:171 systems/camp/yard_builds.gd:69
 #: ui/telescope_panel.gd:40
 msgid "Not enough materials."
@@ -553,7 +553,7 @@ msgstr ""
 msgid "No Baler yet: empty your chest in the trash bin"
 msgstr ""
 
-#: core/pace.gd:189 systems/events.gd:482 ui/goals_panel.gd:258
+#: core/pace.gd:189 systems/events.gd:482 ui/goals_panel.gd:257
 msgid "+%s cubes"
 msgstr "+%s cubos"
 
@@ -577,7 +577,7 @@ msgstr ""
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "La gata ha decidido que eres suyo. Te presento a %s. Ahora vive en esta base."
 
-#: fauna/fauna.gd:1964
+#: fauna/fauna.gd:1964 ui/subtitles.gd:412
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "Nuevo avistamiento: %s. Ya está en el Códice."
 
@@ -2045,7 +2045,7 @@ msgstr "VOLVEREMOS"
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr "%d logros desbloqueados. Míralos en el Códice (K)."
 
-#: systems/achievements.gd:147 ui/notify_stack.gd:27
+#: systems/achievements.gd:147 ui/notify_stack.gd:27 ui/subtitles.gd:410
 msgid "Achievement: %s. %s"
 msgstr "Logro: %s. %s"
 
@@ -2832,31 +2832,31 @@ msgstr "%s encontró: %s, %s."
 msgid "New CD: %s by %s, from %s"
 msgstr "Nuevo CD: %s de %s, de %s"
 
-#: systems/camp/camp.gd:168
+#: systems/camp/camp.gd:171
 msgid "E   Workbench (broken): repair it"
 msgstr ""
 
-#: systems/camp/camp.gd:169
+#: systems/camp/camp.gd:172
 msgid "E   Workbench: upgrades"
 msgstr ""
 
-#: systems/camp/camp.gd:216
+#: systems/camp/camp.gd:219
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr ""
 
-#: systems/camp/camp.gd:351
+#: systems/camp/camp.gd:354
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr ""
 
-#: systems/camp/camp.gd:354
+#: systems/camp/camp.gd:357
 msgid "E   %s (Lv %d): %s"
 msgstr ""
 
-#: systems/camp/camp.gd:355
+#: systems/camp/camp.gd:358
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr ""
 
-#: systems/camp/camp.gd:361
+#: systems/camp/camp.gd:364
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr ""
 
@@ -2883,6 +2883,10 @@ msgstr "Museo"
 #: systems/camp/hub_builds.gd:190
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr "Una sala con un pedestal para todo lo que Lumi encontró, para quien venga después."
+
+#: systems/camp/locker_cabinet.gd:33
+msgid "E   open locker"
+msgstr "E   abrir taquilla"
 
 #: systems/camp/machine_reveal.gd:46
 msgid "%s built. Follow the light to it."
@@ -3294,12 +3298,37 @@ msgstr "Hito"
 msgid "need %s"
 msgstr "faltan %s"
 
+#: ui/bench_lists.gd:12 ui/photo_mode.gd:393 ui/photo_mode.gd:420
+#: ui/upgrades_panel.gd:30
+msgid "Lumi"
+msgstr "Lumi"
+
+#: ui/bench_lists.gd:12 ui/bench_lists.gd:13 ui/upgrades_panel.gd:43
+msgid "Machines"
+msgstr "Máquinas"
+
+#: ui/bench_lists.gd:12
+msgid "Glim"
+msgstr "Glim"
+
+#: ui/bench_lists.gd:12 ui/globe_view.gd:169 ui/upgrades_panel.gd:44
+msgid "Rocket"
+msgstr "Cohete"
+
+#: ui/bench_lists.gd:13
+msgid "Yard"
+msgstr "Patio"
+
+#: ui/bench_lists.gd:13
+msgid "Story"
+msgstr "Historia"
+
 #: ui/build_panel.gd:26
 msgid "Nothing new to build right now. New buildings unlock as you play."
 msgstr "Ahora no hay nada nuevo que construir. Desbloquearás edificios nuevos jugando."
 
 #: ui/build_panel.gd:105 ui/robot_card.gd:110 ui/robot_card.gd:244
-#: ui/upgrades_screen.gd:15 ui/yard_builds_panel.gd:17
+#: ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
 msgid "Build"
 msgstr "Construir"
 
@@ -3546,7 +3575,7 @@ msgstr "CÓDICE"
 msgid "Watch the story"
 msgstr ""
 
-#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:167
+#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:165
 msgid "Close  [%s]"
 msgstr "Cerrar  [%s]"
 
@@ -4420,10 +4449,6 @@ msgstr "Bases"
 msgid "Solar system"
 msgstr "Sistema solar"
 
-#: ui/globe_view.gd:169 ui/upgrades_panel.gd:44
-msgid "Rocket"
-msgstr "Cohete"
-
 #: ui/globe_view.gd:169
 msgid "Travel between bases"
 msgstr "Viajar entre bases"
@@ -4456,15 +4481,15 @@ msgstr "   ·   DESACTUALIZADO"
 msgid "Re-survey      %s cubes"
 msgstr "Volver a explorar      %s cubos"
 
-#: ui/goals_panel.gd:207 ui/objective_card.gd:112
+#: ui/goals_panel.gd:206 ui/list_detail.gd:404 ui/objective_card.gd:112
 msgid "DONE"
 msgstr "HECHO"
 
-#: ui/goals_panel.gd:231
+#: ui/goals_panel.gd:230
 msgid "Goal complete  ·  %s%s"
 msgstr "Objetivo cumplido  ·  %s%s"
 
-#: ui/goals_panel.gd:258
+#: ui/goals_panel.gd:257
 msgid "+%s seeds"
 msgstr "+%s semillas"
 
@@ -4586,60 +4611,60 @@ msgstr "Lumi ha llegado al nivel %d%s"
 msgid "OLD TOWN   0%"
 msgstr "CASCO ANTIGUO   0%"
 
-#: ui/hud.gd:286
+#: ui/hud.gd:289
 msgid "WREN SIGNAL   %d%%"
 msgstr "SEÑAL DE WREN   %d%%"
 
-#: ui/hud.gd:314
+#: ui/hud.gd:317
 msgid "HEX  %d%% CLEAR"
 msgstr "HEX  %d%% LIMPIO"
 
-#: ui/hud.gd:318
+#: ui/hud.gd:321
 msgid "%s  BASE"
 msgstr "BASE %s"
 
-#: ui/hud.gd:321
+#: ui/hud.gd:324
 msgid "CARRYING %d/%d"
 msgstr "CARGA %d/%d"
 
-#: ui/hud.gd:345
+#: ui/hud.gd:348
 msgid "HEX  CLEAR"
 msgstr "HEX  LIMPIO"
 
-#: ui/hud.gd:349
+#: ui/hud.gd:352
 msgid "HEX  %s"
 msgstr "HEX  %s"
 
-#: ui/hud.gd:352
+#: ui/hud.gd:355
 msgid "  SUSTAIN %d%%"
 msgstr "  SOSTENIDO %d%%"
 
-#: ui/hud.gd:354
+#: ui/hud.gd:357
 msgid "  THIRSTY"
 msgstr "  SEDIENTO"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:379
+#: ui/hud.gd:382
 msgid "%s   pick up bale"
 msgstr "%s   coger paca"
 
-#: ui/hud.gd:380
+#: ui/hud.gd:383
 msgid "%s   dig up part"
 msgstr "%s   desenterrar pieza"
 
-#: ui/hud.gd:381
+#: ui/hud.gd:384
 msgid "%s   read memory shard"
 msgstr "%s   leer fragmento de memoria"
 
-#: ui/hud.gd:382
+#: ui/hud.gd:385
 msgid "%s   pick up the seed tin"
 msgstr "%s   coger la lata de semillas"
 
-#: ui/hud.gd:383
+#: ui/hud.gd:386
 msgid "%s   set bale down"
 msgstr "%s   dejar paca"
 
-#: ui/hud.gd:384
+#: ui/hud.gd:387
 msgid "%s   workbench"
 msgstr "%s   banco de trabajo"
 
@@ -4681,6 +4706,38 @@ msgstr "PACA LISTA"
 msgid "◢ BURIED PART %d%%"
 msgstr "◢ PIEZA ENTERRADA %d%%"
 
+#: ui/list_detail.gd:88
+msgid "Nothing here yet. Keep playing."
+msgstr "Aquí aún no hay nada. Sigue jugando."
+
+#: ui/list_detail.gd:400
+msgid "LOCKED"
+msgstr "BLOQUEADO"
+
+#: ui/list_detail.gd:408 ui/profile_picker.gd:97
+msgid "ACTIVE"
+msgstr "ACTIVO"
+
+#: ui/list_detail.gd:424
+msgid "FREE"
+msgstr "GRATIS"
+
+#: ui/list_detail.gd:525
+msgid "REQUIRES   NOT YET   %s"
+msgstr "REQUIERE   AÚN NO   %s"
+
+#: ui/list_detail.gd:525
+msgid "Not unlocked yet. Keep playing."
+msgstr "Aún no desbloqueado. Sigue jugando."
+
+#: ui/list_detail.gd:528
+msgid "REQUIRES   %s"
+msgstr "REQUIERE   %s"
+
+#: ui/list_detail.gd:531
+msgid "REQUIRES   READY"
+msgstr "REQUIERE   LISTO"
+
 #: ui/loading_screen.gd:144
 msgid "Loading"
 msgstr ""
@@ -4689,30 +4746,29 @@ msgstr ""
 msgid "Warming up"
 msgstr ""
 
-#: ui/locker_panel.gd:81
+#: ui/locker_panel.gd:80
+msgid "LOCKER"
+msgstr "TAQUILLA"
+
+#: ui/locker_panel.gd:85 ui/telescope_view.gd:379
+msgid "Close"
+msgstr "Cerrar"
+
+#: ui/locker_panel.gd:154
 msgid "Fleet paint"
 msgstr "Pintura de flota"
 
-#: ui/locker_panel.gd:114
+#: ui/locker_panel.gd:187
 msgid "The Locker"
 msgstr "La Taquilla"
 
-#: ui/locker_panel.gd:115
+#: ui/locker_panel.gd:188
+msgid "Build the Locker in the Build tab, then open it in the yard."
+msgstr "Construye la Taquilla en la pestaña Construir y ábrela en el patio."
+
+#: ui/locker_panel.gd:189
 msgid "Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet paint. New pieces unlock as you play."
 msgstr "Dale estilo a Lumi y a cada robot: colores, ojos, piezas de cabeza, adornos, pintura de flota. Desbloqueas piezas nuevas jugando."
-
-#: ui/locker_panel.gd:125
-msgid "Opens at hub level %d (now %d). Upgrade the hub in the Upgrades tab."
-msgstr "Se abre con la base en nivel %d (ahora %d). Mejora la base en la pestaña Mejoras."
-
-#: ui/locker_panel.gd:160 ui/photo_mode.gd:393 ui/photo_mode.gd:420
-#: ui/upgrades_panel.gd:30
-msgid "Lumi"
-msgstr "Lumi"
-
-#: ui/locker_panel.gd:160
-msgid "You"
-msgstr "Tú"
 
 #: ui/lumi_builder.gd:111
 msgid "CHARACTER BUILDER"
@@ -5253,10 +5309,6 @@ msgstr ""
 
 #: ui/profile_picker.gd:39
 msgid "Each profile has its own planets and progress. Settings are shared."
-msgstr ""
-
-#: ui/profile_picker.gd:97
-msgid "ACTIVE"
 msgstr ""
 
 #: ui/profile_picker.gd:111
@@ -5947,10 +5999,6 @@ msgstr "%s (aquí)"
 msgid "%s  ·  not visited"
 msgstr "%s  ·  sin visitar"
 
-#: ui/telescope_view.gd:379
-msgid "Close"
-msgstr "Cerrar"
-
 #: ui/telescope_view.gd:382
 msgid ""
 "Two suns, one system.\n"
@@ -6161,11 +6209,7 @@ msgstr "faltan %s · ~%s"
 msgid "Where it comes from:  %s"
 msgstr "De dónde sale:  %s"
 
-#: ui/upgrades_panel.gd:43
-msgid "Machines"
-msgstr "Máquinas"
-
-#: ui/upgrades_screen.gd:14
+#: ui/upgrades_screen.gd:15
 msgid "Bots"
 msgstr "Bots"
 
@@ -6173,15 +6217,11 @@ msgstr "Bots"
 msgid "Research"
 msgstr "Investigación"
 
-#: ui/upgrades_screen.gd:18
-msgid "Locker"
-msgstr "Taquilla"
-
-#: ui/upgrades_screen.gd:145
+#: ui/upgrades_screen.gd:143
 msgid "WORKBENCH"
 msgstr "BANCO DE TRABAJO"
 
-#: ui/upgrades_screen.gd:230
+#: ui/upgrades_screen.gd:228
 msgid "Not open yet. Keep playing."
 msgstr "Aún no está abierto. Sigue jugando."
 
@@ -7140,6 +7180,14 @@ msgstr "Prensa restos vegetales en compost y semillas. Vale la pena cuando algo 
 #: data/camp.json:builds.radio.desc
 msgid "A chunky old CD player on a crate by the fence. Plays the discs you find."
 msgstr ""
+
+#: data/camp.json:builds.locker.name
+msgid "Locker"
+msgstr "Taquilla"
+
+#: data/camp.json:builds.locker.desc
+msgid "A tall steel locker by the bench. Open it to change Lumi's look, Glim's and your robots'."
+msgstr "Una taquilla alta de acero junto al banco. Ábrela para cambiar el aspecto de Lumi, de Glim y de tus robots."
 
 #: data/camp.json:builds.nursery.name
 msgid "Robot Nursery"
@@ -15716,6 +15764,12 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "Opens at hub level %d (now %d). Upgrade the hub in the Upgrades tab."
+#~ msgstr "Se abre con la base en nivel %d (ahora %d). Mejora la base en la pestaña Mejoras."
+
+#~ msgid "You"
+#~ msgstr "Tú"
 
 #~ msgid "%d / %d entries   ·   %d / %d curiosities   ·   %d / %d collectibles   ·   %d / %d achievements"
 #~ msgstr "%d / %d entradas   ·   %d / %d curiosidades   ·   %d / %d coleccionables   ·   %d / %d logros"

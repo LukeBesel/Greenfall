@@ -3,6 +3,23 @@
 import re, sys
 
 T = {
+"E   open locker": ["E   Spind öffnen", "E   abrir taquilla", "E   ouvrir le casier", "E   ロッカーを開く", "E   abrir armário", "E   打开储物柜"],
+"Glim": ["Glim", "Glim", "Glim", "Glim", "Glim", "Glim"],
+"Yard": ["Hof", "Patio", "Cour", "庭", "Pátio", "院子"],
+"Story": ["Geschichte", "Historia", "Histoire", "ストーリー", "História", "故事"],
+"Nothing here yet. Keep playing.": ["Hier ist noch nichts. Spiel weiter.", "Aquí aún no hay nada. Sigue jugando.", "Rien ici pour l'instant. Continue à jouer.", "まだ何もありません。プレイを続けよう。", "Nada aqui ainda. Continue jogando.", "这里还什么都没有。继续游戏吧。"],
+"LOCKED": ["GESPERRT", "BLOQUEADO", "VERROUILLÉ", "未解放", "BLOQUEADO", "未解锁"],
+"ACTIVE": ["AKTIV", "ACTIVO", "ACTIF", "進行中", "ATIVO", "进行中"],
+"FREE": ["GRATIS", "GRATIS", "GRATUIT", "無料", "GRÁTIS", "免费"],
+"DONE": ["FERTIG", "HECHO", "FAIT", "完了", "FEITO", "完成"],
+"REQUIRES   NOT YET   %s": ["BENÖTIGT   NOCH NICHT   %s", "REQUIERE   AÚN NO   %s", "REQUIS   PAS ENCORE   %s", "必要条件   未達成   %s", "REQUER   AINDA NÃO   %s", "需要   尚未满足   %s"],
+"Not unlocked yet. Keep playing.": ["Noch nicht freigeschaltet. Spiel weiter.", "Aún no desbloqueado. Sigue jugando.", "Pas encore débloqué. Continue à jouer.", "まだ解放されていません。プレイを続けよう。", "Ainda não desbloqueado. Continue jogando.", "尚未解锁。继续游戏吧。"],
+"REQUIRES   %s": ["BENÖTIGT   %s", "REQUIERE   %s", "REQUIS   %s", "必要条件   %s", "REQUER   %s", "需要   %s"],
+"REQUIRES   READY": ["BENÖTIGT   BEREIT", "REQUIERE   LISTO", "REQUIS   PRÊT", "必要条件   OK", "REQUER   PRONTO", "需要   已就绪"],
+"LOCKER": ["SPIND", "TAQUILLA", "CASIER", "ロッカー", "ARMÁRIO", "储物柜"],
+"Build the Locker in the Build tab, then open it in the yard.": ["Baue den Spind im Bauen-Tab und öffne ihn dann im Hof.", "Construye la Taquilla en la pestaña Construir y ábrela en el patio.", "Construis le Casier dans l'onglet Construire, puis ouvre-le dans la cour.", "建設タブでロッカーを建て、庭で開こう。", "Construa o Armário na aba Construir e abra-o no pátio.", "在建造页签建好储物柜，然后在院子里打开它。"],
+"A tall steel locker by the bench. Open it to change Lumi's look, Glim's and your robots'.": ["Ein hoher Stahlspind an der Werkbank. Öffne ihn, um Lumis, Glims und das Aussehen deiner Roboter zu ändern.", "Una taquilla alta de acero junto al banco. Ábrela para cambiar el aspecto de Lumi, de Glim y de tus robots.", "Un grand casier en acier près de l'établi. Ouvre-le pour changer l'apparence de Lumi, de Glim et de tes robots.", "作業台のそばの背の高い鋼鉄ロッカー。開けるとLumi、Glim、ロボットの見た目を変えられる。", "Um armário alto de aço junto à bancada. Abra-o para mudar o visual de Lumi, de Glim e dos seus robôs.", "工作台旁的高大钢制储物柜。打开它可以更换Lumi、Glim和机器人的外观。"],
+"Locker": ["Spind", "Taquilla", "Casier", "ロッカー", "Armário", "储物柜"],
 "{ui_cancel}  back": ["{ui_cancel}  zurück", "{ui_cancel}  volver", "{ui_cancel}  retour", "{ui_cancel}  戻る", "{ui_cancel}  voltar", "{ui_cancel}  返回"],
 "%d / %d curiosities": ["%d / %d Kuriositäten", "%d / %d curiosidades", "%d / %d curiosités", "珍品 %d / %d", "%d / %d curiosidades", "奇物 %d / %d"],
 "%d / %d collectibles": ["%d / %d Sammelstücke", "%d / %d coleccionables", "%d / %d objets de collection", "コレクション %d / %d", "%d / %d colecionáveis", "收藏品 %d / %d"],

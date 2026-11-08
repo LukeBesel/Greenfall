@@ -24,7 +24,7 @@ msgstr "机队中的每台%s。"
 msgid "Base (Mk I, before tier and part rarity)"
 msgstr "基础（Mk I，未计等级和零件稀有度）"
 
-#: autoload/Economy.gd:128 ui/upgrades_panel.gd:34
+#: autoload/Economy.gd:128 ui/bench_lists.gd:12 ui/upgrades_panel.gd:34
 msgid "Base"
 msgstr "基础"
 
@@ -501,8 +501,8 @@ msgstr "每 %d 个捆包送 1 个去回收炉"
 msgid "Requires hub level %d or research: %s."
 msgstr "需要基地等级 %d 或研究：%s。"
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:353
-#: systems/camp/camp.gd:365 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
+#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:356
+#: systems/camp/camp.gd:368 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:151
 #: systems/camp/hub_builds.gd:161 systems/camp/hub_builds.gd:171 systems/camp/yard_builds.gd:69
 #: ui/telescope_panel.gd:40
 msgid "Not enough materials."
@@ -553,7 +553,7 @@ msgstr ""
 msgid "No Baler yet: empty your chest in the trash bin"
 msgstr ""
 
-#: core/pace.gd:189 systems/events.gd:482 ui/goals_panel.gd:258
+#: core/pace.gd:189 systems/events.gd:482 ui/goals_panel.gd:257
 msgid "+%s cubes"
 msgstr "+%s 方块"
 
@@ -577,7 +577,7 @@ msgstr ""
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "这只猫认定你是她的了。来认识一下%s吧。她现在住在这个基地。"
 
-#: fauna/fauna.gd:1964
+#: fauna/fauna.gd:1964 ui/subtitles.gd:412
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "新发现：%s。已收入图鉴。"
 
@@ -2043,7 +2043,7 @@ msgstr "我们会回来的"
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr "已解锁 %d 个成就。在图鉴（K）里查看。"
 
-#: systems/achievements.gd:147 ui/notify_stack.gd:27
+#: systems/achievements.gd:147 ui/notify_stack.gd:27 ui/subtitles.gd:410
 msgid "Achievement: %s. %s"
 msgstr "成就：%s。%s"
 
@@ -2824,31 +2824,31 @@ msgstr "%s发现了%s：%s。"
 msgid "New CD: %s by %s, from %s"
 msgstr "新CD：%s，演奏：%s，来自%s"
 
-#: systems/camp/camp.gd:168
+#: systems/camp/camp.gd:171
 msgid "E   Workbench (broken): repair it"
 msgstr ""
 
-#: systems/camp/camp.gd:169
+#: systems/camp/camp.gd:172
 msgid "E   Workbench: upgrades"
 msgstr ""
 
-#: systems/camp/camp.gd:216
+#: systems/camp/camp.gd:219
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr ""
 
-#: systems/camp/camp.gd:351
+#: systems/camp/camp.gd:354
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr ""
 
-#: systems/camp/camp.gd:354
+#: systems/camp/camp.gd:357
 msgid "E   %s (Lv %d): %s"
 msgstr ""
 
-#: systems/camp/camp.gd:355
+#: systems/camp/camp.gd:358
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr ""
 
-#: systems/camp/camp.gd:361
+#: systems/camp/camp.gd:364
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr ""
 
@@ -2875,6 +2875,10 @@ msgstr "博物馆"
 #: systems/camp/hub_builds.gd:190
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr "一座大厅，为卢米找到的每件东西都设了展台，留给后来的人。"
+
+#: systems/camp/locker_cabinet.gd:33
+msgid "E   open locker"
+msgstr "E   打开储物柜"
 
 #: systems/camp/machine_reveal.gd:46
 msgid "%s built. Follow the light to it."
@@ -3286,12 +3290,37 @@ msgstr "里程碑"
 msgid "need %s"
 msgstr "还差%s"
 
+#: ui/bench_lists.gd:12 ui/photo_mode.gd:393 ui/photo_mode.gd:420
+#: ui/upgrades_panel.gd:30
+msgid "Lumi"
+msgstr "Lumi"
+
+#: ui/bench_lists.gd:12 ui/bench_lists.gd:13 ui/upgrades_panel.gd:43
+msgid "Machines"
+msgstr "机器"
+
+#: ui/bench_lists.gd:12
+msgid "Glim"
+msgstr "Glim"
+
+#: ui/bench_lists.gd:12 ui/globe_view.gd:169 ui/upgrades_panel.gd:44
+msgid "Rocket"
+msgstr "火箭"
+
+#: ui/bench_lists.gd:13
+msgid "Yard"
+msgstr "院子"
+
+#: ui/bench_lists.gd:13
+msgid "Story"
+msgstr "故事"
+
 #: ui/build_panel.gd:26
 msgid "Nothing new to build right now. New buildings unlock as you play."
 msgstr "目前没有新的可建造项目。新建筑会在游戏中解锁。"
 
 #: ui/build_panel.gd:105 ui/robot_card.gd:110 ui/robot_card.gd:244
-#: ui/upgrades_screen.gd:15 ui/yard_builds_panel.gd:17
+#: ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
 msgid "Build"
 msgstr "建造"
 
@@ -3537,7 +3566,7 @@ msgstr "图鉴"
 msgid "Watch the story"
 msgstr ""
 
-#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:167
+#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:165
 msgid "Close  [%s]"
 msgstr "关闭  [%s]"
 
@@ -4408,10 +4437,6 @@ msgstr "基地"
 msgid "Solar system"
 msgstr "太阳系"
 
-#: ui/globe_view.gd:169 ui/upgrades_panel.gd:44
-msgid "Rocket"
-msgstr "火箭"
-
 #: ui/globe_view.gd:169
 msgid "Travel between bases"
 msgstr "在基地间旅行"
@@ -4444,15 +4469,15 @@ msgstr "   ·   已过时"
 msgid "Re-survey      %s cubes"
 msgstr "重新勘测      %s 方块"
 
-#: ui/goals_panel.gd:207 ui/objective_card.gd:112
+#: ui/goals_panel.gd:206 ui/list_detail.gd:404 ui/objective_card.gd:112
 msgid "DONE"
 msgstr "完成"
 
-#: ui/goals_panel.gd:231
+#: ui/goals_panel.gd:230
 msgid "Goal complete  ·  %s%s"
 msgstr "目标完成  ·  %s%s"
 
-#: ui/goals_panel.gd:258
+#: ui/goals_panel.gd:257
 msgid "+%s seeds"
 msgstr "+%s 种子"
 
@@ -4574,60 +4599,60 @@ msgstr "Lumi 达到了 %d 级%s"
 msgid "OLD TOWN   0%"
 msgstr "老城区   0%"
 
-#: ui/hud.gd:286
+#: ui/hud.gd:289
 msgid "WREN SIGNAL   %d%%"
 msgstr "WREN 信号   %d%%"
 
-#: ui/hud.gd:314
+#: ui/hud.gd:317
 msgid "HEX  %d%% CLEAR"
 msgstr "六角格  已清理 %d%%"
 
-#: ui/hud.gd:318
+#: ui/hud.gd:321
 msgid "%s  BASE"
 msgstr "%s  基地"
 
-#: ui/hud.gd:321
+#: ui/hud.gd:324
 msgid "CARRYING %d/%d"
 msgstr "携带 %d/%d"
 
-#: ui/hud.gd:345
+#: ui/hud.gd:348
 msgid "HEX  CLEAR"
 msgstr "六角格  已清理"
 
-#: ui/hud.gd:349
+#: ui/hud.gd:352
 msgid "HEX  %s"
 msgstr "六角格  %s"
 
-#: ui/hud.gd:352
+#: ui/hud.gd:355
 msgid "  SUSTAIN %d%%"
 msgstr "  稳定 %d%%"
 
-#: ui/hud.gd:354
+#: ui/hud.gd:357
 msgid "  THIRSTY"
 msgstr "  缺水"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:379
+#: ui/hud.gd:382
 msgid "%s   pick up bale"
 msgstr "%s   拿起捆包"
 
-#: ui/hud.gd:380
+#: ui/hud.gd:383
 msgid "%s   dig up part"
 msgstr "%s   挖出零件"
 
-#: ui/hud.gd:381
+#: ui/hud.gd:384
 msgid "%s   read memory shard"
 msgstr "%s   阅读记忆碎片"
 
-#: ui/hud.gd:382
+#: ui/hud.gd:385
 msgid "%s   pick up the seed tin"
 msgstr "%s   拿起种子罐"
 
-#: ui/hud.gd:383
+#: ui/hud.gd:386
 msgid "%s   set bale down"
 msgstr "%s   放下捆包"
 
-#: ui/hud.gd:384
+#: ui/hud.gd:387
 msgid "%s   workbench"
 msgstr "%s   工作台"
 
@@ -4669,6 +4694,38 @@ msgstr "捆包就绪"
 msgid "◢ BURIED PART %d%%"
 msgstr "◢ 埋藏零件 %d%%"
 
+#: ui/list_detail.gd:88
+msgid "Nothing here yet. Keep playing."
+msgstr "这里还什么都没有。继续游戏吧。"
+
+#: ui/list_detail.gd:400
+msgid "LOCKED"
+msgstr "未解锁"
+
+#: ui/list_detail.gd:408 ui/profile_picker.gd:97
+msgid "ACTIVE"
+msgstr "进行中"
+
+#: ui/list_detail.gd:424
+msgid "FREE"
+msgstr "免费"
+
+#: ui/list_detail.gd:525
+msgid "REQUIRES   NOT YET   %s"
+msgstr "需要   尚未满足   %s"
+
+#: ui/list_detail.gd:525
+msgid "Not unlocked yet. Keep playing."
+msgstr "尚未解锁。继续游戏吧。"
+
+#: ui/list_detail.gd:528
+msgid "REQUIRES   %s"
+msgstr "需要   %s"
+
+#: ui/list_detail.gd:531
+msgid "REQUIRES   READY"
+msgstr "需要   已就绪"
+
 #: ui/loading_screen.gd:144
 msgid "Loading"
 msgstr ""
@@ -4677,30 +4734,29 @@ msgstr ""
 msgid "Warming up"
 msgstr ""
 
-#: ui/locker_panel.gd:81
+#: ui/locker_panel.gd:80
+msgid "LOCKER"
+msgstr "储物柜"
+
+#: ui/locker_panel.gd:85 ui/telescope_view.gd:379
+msgid "Close"
+msgstr "关闭"
+
+#: ui/locker_panel.gd:154
 msgid "Fleet paint"
 msgstr "车队涂装"
 
-#: ui/locker_panel.gd:114
+#: ui/locker_panel.gd:187
 msgid "The Locker"
 msgstr "储物柜"
 
-#: ui/locker_panel.gd:115
+#: ui/locker_panel.gd:188
+msgid "Build the Locker in the Build tab, then open it in the yard."
+msgstr "在建造页签建好储物柜，然后在院子里打开它。"
+
+#: ui/locker_panel.gd:189
 msgid "Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet paint. New pieces unlock as you play."
 msgstr "装扮Lumi和每台机器人：颜色、眼睛、头饰、顶饰、车队涂装。新部件会在游戏中逐步解锁。"
-
-#: ui/locker_panel.gd:125
-msgid "Opens at hub level %d (now %d). Upgrade the hub in the Upgrades tab."
-msgstr "基地%d级时开放（当前%d级）。在升级页签升级基地。"
-
-#: ui/locker_panel.gd:160 ui/photo_mode.gd:393 ui/photo_mode.gd:420
-#: ui/upgrades_panel.gd:30
-msgid "Lumi"
-msgstr "Lumi"
-
-#: ui/locker_panel.gd:160
-msgid "You"
-msgstr "你"
 
 #: ui/lumi_builder.gd:111
 msgid "CHARACTER BUILDER"
@@ -5241,10 +5297,6 @@ msgstr ""
 
 #: ui/profile_picker.gd:39
 msgid "Each profile has its own planets and progress. Settings are shared."
-msgstr ""
-
-#: ui/profile_picker.gd:97
-msgid "ACTIVE"
 msgstr ""
 
 #: ui/profile_picker.gd:111
@@ -5934,10 +5986,6 @@ msgstr "%s（此处）"
 msgid "%s  ·  not visited"
 msgstr "%s  ·  未造访"
 
-#: ui/telescope_view.gd:379
-msgid "Close"
-msgstr "关闭"
-
 #: ui/telescope_view.gd:382
 msgid ""
 "Two suns, one system.\n"
@@ -6148,11 +6196,7 @@ msgstr "还差%s · 约%s"
 msgid "Where it comes from:  %s"
 msgstr "来源：  %s"
 
-#: ui/upgrades_panel.gd:43
-msgid "Machines"
-msgstr "机器"
-
-#: ui/upgrades_screen.gd:14
+#: ui/upgrades_screen.gd:15
 msgid "Bots"
 msgstr "机器人"
 
@@ -6160,15 +6204,11 @@ msgstr "机器人"
 msgid "Research"
 msgstr "研究"
 
-#: ui/upgrades_screen.gd:18
-msgid "Locker"
-msgstr "储物柜"
-
-#: ui/upgrades_screen.gd:145
+#: ui/upgrades_screen.gd:143
 msgid "WORKBENCH"
 msgstr "工作台"
 
-#: ui/upgrades_screen.gd:230
+#: ui/upgrades_screen.gd:228
 msgid "Not open yet. Keep playing."
 msgstr "尚未开放。继续游戏吧。"
 
@@ -7127,6 +7167,14 @@ msgstr "把植物残渣压成堆肥和种子。有东西长出来后就值得建
 #: data/camp.json:builds.radio.desc
 msgid "A chunky old CD player on a crate by the fence. Plays the discs you find."
 msgstr ""
+
+#: data/camp.json:builds.locker.name
+msgid "Locker"
+msgstr "储物柜"
+
+#: data/camp.json:builds.locker.desc
+msgid "A tall steel locker by the bench. Open it to change Lumi's look, Glim's and your robots'."
+msgstr "工作台旁的高大钢制储物柜。打开它可以更换Lumi、Glim和机器人的外观。"
 
 #: data/camp.json:builds.nursery.name
 msgid "Robot Nursery"
@@ -15703,6 +15751,12 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "Opens at hub level %d (now %d). Upgrade the hub in the Upgrades tab."
+#~ msgstr "基地%d级时开放（当前%d级）。在升级页签升级基地。"
+
+#~ msgid "You"
+#~ msgstr "你"
 
 #~ msgid "%d / %d entries   ·   %d / %d curiosities   ·   %d / %d collectibles   ·   %d / %d achievements"
 #~ msgstr "条目 %d / %d   ·   奇物 %d / %d   ·   收藏品 %d / %d   ·   成就 %d / %d"
