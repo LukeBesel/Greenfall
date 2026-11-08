@@ -266,6 +266,7 @@ func _ready() -> void:
 	var bb: BuildBudget = BuildBudget.current
 	BuildBudget.end()
 	_build_board()
+	YardArt.dress_board(_ruin_bits)  # [yard] chunky kit look for the lean-to, bench, lamp, generator
 	if DevHooks.has("future"):  # --future=N preview: the hub at level N too (FutureLayer.apply_preview)
 		GameState.world["hub_level"] = clampi(int(DevHooks.get_f("future", 5.0)), 1, 5)
 	hub = Hub.new()

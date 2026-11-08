@@ -249,6 +249,7 @@ func _apply_bench(ok: bool, animate: bool) -> void:
 			tw.tween_interval(0.25 + i * 0.12)
 			tw.tween_property(n, "transform", xf, 0.4).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		i += 1
+	YardArt.bench_state(_bench, ok, animate)  # [yard] rust, slumped pegboard and dark lamp until fixed
 
 
 func _process(delta: float) -> void:
