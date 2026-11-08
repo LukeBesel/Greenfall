@@ -37,7 +37,7 @@ msgstr "[Ñééðš %s Ļv %d ~~]"
 msgid "Needs research: %s"
 msgstr "[Ñééðš ŕéšéàŕçĥ: %s ~~~]"
 
-#: autoload/Economy.gd:194 systems/research.gd:190
+#: autoload/Economy.gd:194 systems/research.gd:196
 msgid "Needs base level %d"
 msgstr "[Ñééðš bàšé ļévéļ %d ~~~~]"
 
@@ -441,7 +441,7 @@ msgstr "[Ţôþ ţîéŕ ~]"
 msgid "Needs the Rocket Cargo research"
 msgstr "[Ñééðš ţĥé Ŕôçķéţ Çàŕĝô ŕéšéàŕçĥ ~~~~~~~~]"
 
-#: automation/rocket_tiers.gd:56 systems/homeward.gd:399
+#: automation/rocket_tiers.gd:56 systems/homeward.gd:508
 msgid "Not enough cubes or parts"
 msgstr "[Ñôţ éñôûĝĥ çûbéš ôŕ þàŕţš ~~~~~~]"
 
@@ -499,8 +499,8 @@ msgstr "[Évéŕý %dţĥ bàļé ţô ţĥé ŕéçýçļéŕ ~~~~~~~~]"
 msgid "Requires hub level %d or research: %s."
 msgstr "[Ŕéqûîŕéš ĥûb ļévéļ %d ôŕ ŕéšéàŕçĥ: %s. ~~~~~~~~~~]"
 
-#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:305
-#: systems/camp/camp.gd:317 systems/camp/yard_builds.gd:67 ui/telescope_panel.gd:40
+#: automation/telescope.gd:104 automation/trash_bin.gd:87 systems/camp/camp.gd:306
+#: systems/camp/camp.gd:318 systems/camp/yard_builds.gd:67 ui/telescope_panel.gd:40
 #: ui/yard_builds_panel.gd:59 ui/yard_builds_panel.gd:78
 msgid "Not enough materials."
 msgstr "[Ñôţ éñôûĝĥ màţéŕîàļš. ~~~~]"
@@ -700,19 +700,19 @@ msgstr "[Ðîšţŕîçţ Ĝŕôŵîñĝ %d%% / %d%% ~~~~~~~]"
 msgid "%s Research %s"
 msgstr "[%s Ŕéšéàŕçĥ %s ~~]"
 
-#: planet/frontiers.gd:118
+#: planet/frontiers.gd:124
 msgid "%s %d bases at level 5 (%d)"
 msgstr "[%s %d bàšéš àţ ļévéļ 5 (%d) ~~~~~~]"
 
-#: planet/frontiers.gd:125
+#: planet/frontiers.gd:131
 msgid "%s %s base at level %d (%d)"
 msgstr "[%s %s bàšé àţ ļévéļ %d (%d) ~~~~~~]"
 
-#: planet/frontiers.gd:134
+#: planet/frontiers.gd:140
 msgid "%s All three frontier bases at level 5 (%d)"
 msgstr "[%s Àļļ ţĥŕéé ƒŕôñţîéŕ bàšéš àţ ļévéļ 5 (%d) ~~~~~~~~~~~~]"
 
-#: planet/frontiers.gd:143
+#: planet/frontiers.gd:149
 msgid "%s Every frontier %d%% Growing or better (lowest %d%%)"
 msgstr "[%s Évéŕý ƒŕôñţîéŕ %d%% Ĝŕôŵîñĝ ôŕ béţţéŕ (ļôŵéšţ %d%%) ~~~~~~~~~~~~~~~~]"
 
@@ -1049,7 +1049,7 @@ msgid "Not enough parts"
 msgstr "[Ñôţ éñôûĝĥ þàŕţš ~~~]"
 
 #: robots/fleet.gd:144 robots/fleet.gd:219 robots/water_net.gd:149
-#: systems/research.gd:194 systems/robot_builder.gd:349 systems/robot_builder.gd:401
+#: systems/research.gd:200 systems/robot_builder.gd:349 systems/robot_builder.gd:401
 msgid "Not enough cubes"
 msgstr "[Ñôţ éñôûĝĥ çûbéš ~~~]"
 
@@ -1115,7 +1115,7 @@ msgstr "[ŕéƒîļļîñĝ àţ %s (%d%%) ~~~~~]"
 msgid "base barrel"
 msgstr "[bàšé bàŕŕéļ ~]"
 
-#: robots/robot.gd:263 systems/research.gd:384
+#: robots/robot.gd:263 systems/research.gd:390
 msgid "tank"
 msgstr "[ţàñķ ~]"
 
@@ -1219,55 +1219,55 @@ msgstr "[ŴÀŢÉŔ ~]"
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "[Ŕôbôţ ûþļîñķ ôñļîñé. Þŕéšš B ƒôŕ Çômmàñð: þàîñţ žôñéš àñð šéñð çŕéŵš ŵĥéŕé ýôû ŵàñţ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:892
+#: scenes/slice.gd:893
 msgid "HEX CLEAN!  +%s"
 msgstr "[ĤÉX ÇĻÉÀÑ!  +%s ~~]"
 
-#: scenes/slice.gd:906
+#: scenes/slice.gd:907
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
-#: scenes/slice.gd:908
+#: scenes/slice.gd:909
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "[Ţĥé ŵĥôļé Ĵûñķýàŕð îš çļéàñ. Ļûmî bééþš à véŕý ļôñĝ, véŕý ĥàþþý bééþ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:915
+#: scenes/slice.gd:916
 msgid "%s is out of range: %s"
 msgstr "[%s îš ôûţ ôƒ ŕàñĝé: %s ~~~~~]"
 
-#: scenes/slice.gd:925
+#: scenes/slice.gd:926
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "[Ļôçķéð. Ûþĝŕàðé ýôûŕ bàšé ţô ļévéļ 5 ţô bûîļð ţĥé ļàûñçĥ þàð. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:928 ui/rockets_panel.gd:39
+#: scenes/slice.gd:929 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "[Éñéŕĝý çéļļš ŕéçĥàŕĝîñĝ: %s. Ŕôçķéţ ûþĝŕàðéš ŕéƒîļļ ţĥém ƒàšţéŕ. ~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:982
+#: scenes/slice.gd:983
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "[Ţôûçĥðôŵñ: %s. Ĥûb %d ôƒ %d. %s ~~~~~~~~]"
 
-#: scenes/slice.gd:983
+#: scenes/slice.gd:984
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "[Ţĥé ŕôçķéţ îš þàŕķéð ôñ ţĥé ļôţ, ŕéàðý ŵĥéñ îţš çéļļš ŕéƒîļļ. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:983
+#: scenes/slice.gd:984
 msgid "Landed on the base pad."
 msgstr "[Ļàñðéð ôñ ţĥé bàšé þàð. ~~~~~]"
 
-#: scenes/slice.gd:1082
+#: scenes/slice.gd:1083
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:1253
+#: scenes/slice.gd:1254
 msgid "Welcome back. The junk waited for you."
 msgstr "[Ŵéļçômé bàçķ. Ţĥé ĵûñķ ŵàîţéð ƒôŕ ýôû. ~~~~~~~~~~]"
 
-#: scenes/slice.gd:1270
+#: scenes/slice.gd:1271
 msgid "OUTPOST %d · Lv%d"
 msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 
-#: scenes/slice.gd:1270
+#: scenes/slice.gd:1271
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 
@@ -1367,55 +1367,55 @@ msgstr "[Ñôţĥîñĝ îš ŵàîţîñĝ ţô éñð, {name}. Ñôbôðý î�
 msgid "The Cradle is home. The Seed Ark is open: every bloom on Verdance counts toward the next wave. Progress shows on the hologram (M)."
 msgstr "[Ţĥé Çŕàðļé îš ĥômé. Ţĥé Šééð Àŕķ îš ôþéñ: évéŕý bļôôm ôñ Véŕðàñçé çôûñţš ţôŵàŕð ţĥé ñéxţ ŵàvé. Þŕôĝŕéšš šĥôŵš ôñ ţĥé ĥôļôĝŕàm (M). ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:203
+#: story/core_charge.gd:206
 msgid "Bloom Core 100%. Lumi's core is full of green light."
 msgstr "[Bļôôm Çôŕé 100%. Ļûmî'š çôŕé îš ƒûļļ ôƒ ĝŕééñ ļîĝĥţ. ~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:228
+#: story/core_charge.gd:231
 msgid "Bloom Core  25%"
 msgstr "[Bļôôm Çôŕé  25% ~~]"
 
-#: story/core_charge.gd:229
+#: story/core_charge.gd:232
 msgid "There. The relay just locked on. Lumi, I can hear you properly now. Clear as the old days."
 msgstr "[Ţĥéŕé. Ţĥé ŕéļàý ĵûšţ ļôçķéð ôñ. Ļûmî, Î çàñ ĥéàŕ ýôû þŕôþéŕļý ñôŵ. Çļéàŕ àš ţĥé ôļð ðàýš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:249
+#: story/core_charge.gd:252
 msgid "A memory  ·  the garden deck of the Cradle"
 msgstr "[À mémôŕý  ·  ţĥé ĝàŕðéñ ðéçķ ôƒ ţĥé Çŕàðļé ~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:260
+#: story/core_charge.gd:263
 msgid "Remember the garden deck? You watered every bed twice, just to be sure."
 msgstr "[Ŕémémbéŕ ţĥé ĝàŕðéñ ðéçķ? Ýôû ŵàţéŕéð évéŕý béð ţŵîçé, ĵûšţ ţô bé šûŕé. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:263
+#: story/core_charge.gd:266
 msgid "Every patch you grow down there is one more bed like these. You're not lost, Lumi. You're replanting."
 msgstr "[Évéŕý þàţçĥ ýôû ĝŕôŵ ðôŵñ ţĥéŕé îš ôñé môŕé béð ļîķé ţĥéšé. Ýôû'ŕé ñôţ ļôšţ, Ļûmî. Ýôû'ŕé ŕéþļàñţîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:267
+#: story/core_charge.gd:270
 msgid "Bloom Core 25%: WREN's signal is clear now."
 msgstr "[Bļôôm Çôŕé 25%: ŴŔÉÑ'š šîĝñàļ îš çļéàŕ ñôŵ. ~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:284
+#: story/core_charge.gd:287
 msgid "Bloom Core 50%: Lumi's glow is back, brighter than it has been in years."
 msgstr "[Bļôôm Çôŕé 50%: Ļûmî'š ĝļôŵ îš bàçķ, bŕîĝĥţéŕ ţĥàñ îţ ĥàš bééñ îñ ýéàŕš. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:286
+#: story/core_charge.gd:289
 msgid "Half charged. You're glowing, Lumi. Properly glowing. I'd forgotten you could be this bright."
 msgstr "[Ĥàļƒ çĥàŕĝéð. Ýôû'ŕé ĝļôŵîñĝ, Ļûmî. Þŕôþéŕļý ĝļôŵîñĝ. Î'ð ƒôŕĝôţţéñ ýôû çôûļð bé ţĥîš bŕîĝĥţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:319
+#: story/core_charge.gd:322
 msgid "That night..."
 msgstr "[Ţĥàţ ñîĝĥţ... ~~]"
 
-#: story/core_charge.gd:343
+#: story/core_charge.gd:346
 msgid "Lumi, look up. That light. West to east, steady, not twinkling."
 msgstr "[Ļûmî, ļôôķ ûþ. Ţĥàţ ļîĝĥţ. Ŵéšţ ţô éàšţ, šţéàðý, ñôţ ţŵîñķļîñĝ. ~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:348
+#: story/core_charge.gd:351
 msgid "That's the Cradle. When your core lit up, the ark heard it. She turned around. We're coming back for you."
 msgstr "[Ţĥàţ'š ţĥé Çŕàðļé. Ŵĥéñ ýôûŕ çôŕé ļîţ ûþ, ţĥé àŕķ ĥéàŕð îţ. Šĥé ţûŕñéð àŕôûñð. Ŵé'ŕé çômîñĝ bàçķ ƒôŕ ýôû. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:358
+#: story/core_charge.gd:361
 msgid "Bloom Core 75%: the Cradle is on its way home. Look for it crossing the night sky."
 msgstr "[Bļôôm Çôŕé 75%: ţĥé Çŕàðļé îš ôñ îţš ŵàý ĥômé. Ļôôķ ƒôŕ îţ çŕôššîñĝ ţĥé ñîĝĥţ šķý. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
@@ -1844,7 +1844,7 @@ msgstr ""
 "\n"
 "[Ţĥé Ļéðĝéŕ îš ôñ ôûŕ šîðé ñôŵ. Ţĥé ĵàmméŕš ĵûšţ ĥûm àļôñĝ ţô ţĥé mûšîç. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:328 systems/decor.gd:122 systems/research.gd:186
+#: story/ledger.gd:328 systems/decor.gd:122 systems/research.gd:192
 #: systems/robot_builder.gd:347 systems/robot_builder.gd:403 ui/stations_panel.gd:96
 #: ui/telescope_panel.gd:43 ui/yard_builds_panel.gd:59 ui/yard_builds_panel.gd:81
 msgid "Needs %s"
@@ -2406,35 +2406,55 @@ msgstr "[Àûðîţ ŵôñ, %d ţô %d! Ţĥé Ļéðĝéŕ šţàmþš îţ À�
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "[Ţĥé ðŕôñé ŵôñ ţĥé àûðîţ, %d ţô %d. Îţ ļéƒţ à ţîþ àñýŵàý: +%s çûbéš. ~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/homeward.gd:292
+#: systems/homeward.gd:147
+msgid "Restore %s to %d%% (%d%%) or get a base to level %d"
+msgstr "[Ŕéšţôŕé %s ţô %d%% (%d%%) ôŕ ĝéţ à bàšé ţô ļévéļ %d ~~~~~~~~~~~~~~~]"
+
+#: systems/homeward.gd:148
+msgid "Restore %s to %d%% (%d%%)"
+msgstr "[Ŕéšţôŕé %s ţô %d%% (%d%%) ~~~~~~]"
+
+#: systems/homeward.gd:155
+msgid "Restore another planet to %d%% (best %d%%)"
+msgstr "[Ŕéšţôŕé àñôţĥéŕ þļàñéţ ţô %d%% (béšţ %d%%) ~~~~~~~~~~~~]"
+
+#: systems/homeward.gd:206
+msgid "Needs %s: found on %s"
+msgstr "[Ñééðš %s: ƒôûñð ôñ %s ~~~~]"
+
+#: systems/homeward.gd:351
+msgid "New tech: %s. %s"
+msgstr "[Ñéŵ ţéçĥ: %s. %s ~~~]"
+
+#: systems/homeward.gd:398
 msgid "Needs the %s drive"
 msgstr "[Ñééðš ţĥé %s ðŕîvé ~~~]"
 
-#: systems/homeward.gd:294
+#: systems/homeward.gd:400
 msgid "No chart yet: restore %s to %d%%"
 msgstr "[Ñô çĥàŕţ ýéţ: ŕéšţôŕé %s ţô %d%% ~~~~~~~~]"
 
-#: systems/homeward.gd:388
+#: systems/homeward.gd:494
 msgid "The Homeward rocket is built"
 msgstr "[Ţĥé Ĥôméŵàŕð ŕôçķéţ îš bûîļţ ~~~~~~~]"
 
-#: systems/homeward.gd:391 systems/museum.gd:117
+#: systems/homeward.gd:497 systems/museum.gd:117
 msgid "The Cradle has to answer first (Cradle Returns)"
 msgstr "[Ţĥé Çŕàðļé ĥàš ţô àñšŵéŕ ƒîŕšţ (Çŕàðļé Ŕéţûŕñš) ~~~~~~~~~~~~~]"
 
-#: systems/homeward.gd:393
+#: systems/homeward.gd:502
 msgid "Needs %d planet relics (%d)"
 msgstr "[Ñééðš %d þļàñéţ ŕéļîçš (%d) ~~~~~~]"
 
-#: systems/homeward.gd:395
+#: systems/homeward.gd:504
 msgid "Restore every planet first (%d%%)"
 msgstr "[Ŕéšţôŕé évéŕý þļàñéţ ƒîŕšţ (%d%%) ~~~~~~~~~]"
 
-#: systems/homeward.gd:397
+#: systems/homeward.gd:506
 msgid "Build it at Verdance's Cradle Returns"
 msgstr "[Bûîļð îţ àţ Véŕðàñçé'š Çŕàðļé Ŕéţûŕñš ~~~~~~~~~~]"
 
-#: systems/homeward.gd:413
+#: systems/homeward.gd:522
 msgid "Rocket drive built: %s."
 msgstr "[Ŕôçķéţ ðŕîvé bûîļţ: %s. ~~~~~]"
 
@@ -2645,115 +2665,115 @@ msgstr "[À çàŕé þàçķàĝé îš àļŕéàðý ôñ îţš ŵàý. ~~~~
 msgid "Needs %s cubes."
 msgstr "[Ñééðš %s çûbéš. ~~]"
 
-#: systems/research.gd:173
+#: systems/research.gd:176
 msgid "Unknown research"
 msgstr "[Ûñķñôŵñ ŕéšéàŕçĥ ~~~]"
 
-#: systems/research.gd:176
+#: systems/research.gd:182
 msgid "Already researched"
 msgstr "[Àļŕéàðý ŕéšéàŕçĥéð ~~~]"
 
-#: systems/research.gd:178
+#: systems/research.gd:184
 msgid "Researching now"
 msgstr "[Ŕéšéàŕçĥîñĝ ñôŵ ~~]"
 
-#: systems/research.gd:180
+#: systems/research.gd:186
 msgid "Already queued"
 msgstr "[Àļŕéàðý qûéûéð ~~]"
 
-#: systems/research.gd:192
+#: systems/research.gd:198
 msgid "Queue is full"
 msgstr "[Qûéûé îš ƒûļļ ~~]"
 
-#: systems/research.gd:324 ui/codex_screen.gd:851
+#: systems/research.gd:330 ui/codex_screen.gd:851
 msgid "%ds"
 msgstr "[%dš ~]"
 
-#: systems/research.gd:371
+#: systems/research.gd:377
 msgid "Research: %s"
 msgstr "[Ŕéšéàŕçĥ: %s ~]"
 
-#: systems/research.gd:381
+#: systems/research.gd:387
 msgid "scoop reach"
 msgstr "[šçôôþ ŕéàçĥ ~]"
 
-#: systems/research.gd:381
+#: systems/research.gd:387
 msgid "scoop width"
 msgstr "[šçôôþ ŵîðţĥ ~]"
 
-#: systems/research.gd:381
+#: systems/research.gd:387
 msgid "compartment size"
 msgstr "[çômþàŕţméñţ šîžé ~~~]"
 
-#: systems/research.gd:382
+#: systems/research.gd:388
 msgid "bale value"
 msgstr "[bàļé vàļûé ~]"
 
-#: systems/research.gd:382
+#: systems/research.gd:388
 msgid "magnet radius"
 msgstr "[màĝñéţ ŕàðîûš ~~]"
 
-#: systems/research.gd:382
+#: systems/research.gd:388
 msgid "scoop speed"
 msgstr "[šçôôþ šþééð ~]"
 
-#: systems/research.gd:383
+#: systems/research.gd:389
 msgid "field-note cubes"
 msgstr "[ƒîéļð-ñôţé çûbéš ~~~]"
 
-#: systems/research.gd:383
+#: systems/research.gd:389
 msgid "research speed"
 msgstr "[ŕéšéàŕçĥ šþééð ~~]"
 
-#: systems/research.gd:383
+#: systems/research.gd:389
 msgid "lake clarity"
 msgstr "[ļàķé çļàŕîţý ~]"
 
-#: systems/research.gd:384
+#: systems/research.gd:390
 msgid "speed"
 msgstr "[šþééð ~]"
 
-#: systems/research.gd:384
+#: systems/research.gd:390
 msgid "work rate"
 msgstr "[ŵôŕķ ŕàţé ~]"
 
-#: systems/research.gd:384
+#: systems/research.gd:390
 msgid "range"
 msgstr "[ŕàñĝé ~]"
 
-#: systems/research.gd:385
+#: systems/research.gd:391
 msgid "bale quality"
 msgstr "[bàļé qûàļîţý ~]"
 
-#: systems/research.gd:385
+#: systems/research.gd:391
 msgid "carry"
 msgstr "[çàŕŕý ~]"
 
-#: systems/research.gd:386
+#: systems/research.gd:392
 msgid "plant growth"
 msgstr "[þļàñţ ĝŕôŵţĥ ~]"
 
-#: systems/research.gd:386
+#: systems/research.gd:392
 msgid "seeds per bloom"
 msgstr "[šééðš þéŕ bļôôm ~~]"
 
-#: systems/research.gd:407
+#: systems/research.gd:413
 msgid "Unlocks the %s robot"
 msgstr "[Ûñļôçķš ţĥé %s ŕôbôţ ~~~~]"
 
-#: systems/research.gd:409
+#: systems/research.gd:415
 msgid "Unlocks %s seeds"
 msgstr "[Ûñļôçķš %s šééðš ~~~]"
 
-#: systems/research.gd:411
+#: systems/research.gd:417
 msgid "Unlocks: %s"
 msgstr "[Ûñļôçķš: %s ~]"
 
-#: systems/research.gd:481
+#: systems/research.gd:487
 msgid "While you were away, research finished: %s."
 msgstr "[Ŵĥîļé ýôû ŵéŕé àŵàý, ŕéšéàŕçĥ ƒîñîšĥéð: %s. ~~~~~~~~~~~~]"
 
-#: systems/research.gd:504
+#: systems/research.gd:510
 msgid "Research complete: %s. %s"
 msgstr "[Ŕéšéàŕçĥ çômþļéţé: %s. %s ~~~~~~]"
 
@@ -2837,23 +2857,23 @@ msgstr "E   [Ŵôŕķbéñçĥ: ûþĝŕàðéš ~~~~]"
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "[Ŵôŕķbéñçĥ ƒîxéð. Þŕéšš É àţ îţ ţô šþéñð çûbéš ôñ ûþĝŕàðéš. ~~~~~~~~~~~~~~~~~]"
 
-#: systems/camp/camp.gd:277
+#: systems/camp/camp.gd:278
 msgid "Compost Press"
 msgstr "[Çômþôšţ Þŕéšš ~~]"
 
-#: systems/camp/camp.gd:303
+#: systems/camp/camp.gd:304
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr "E   [%s (Ļv %d): ƒûļļý ûþĝŕàðéð ~~~~~~]"
 
-#: systems/camp/camp.gd:306
+#: systems/camp/camp.gd:307
 msgid "E   %s (Lv %d): %s"
 msgstr "E   [%s (Ļv %d): %s ~~]"
 
-#: systems/camp/camp.gd:307
+#: systems/camp/camp.gd:308
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr "E   [%s (Ļv %d): ûþĝŕàðé ţô %s ƒôŕ %s ~~~~~~~~]"
 
-#: systems/camp/camp.gd:313
+#: systems/camp/camp.gd:314
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "[Ţŕàšĥ bîñ ûþĝŕàðéð: %s. Bàļéš šéļļ ƒôŕ %d%% ĥéŕé. ~~~~~~~~~~~~~~]"
 
@@ -11125,6 +11145,38 @@ msgstr "[Ŕîmé ~]"
 #: data/homeward.json:planets[anvil].name data/telescope.json:planets_default[anvil].name
 msgid "Anvil"
 msgstr "[Àñvîļ ~]"
+
+#: data/homeward.json:tech[deep_drill].name
+msgid "Deep Drill"
+msgstr "[Ðééþ Ðŕîļļ ~]"
+
+#: data/homeward.json:tech[deep_drill].desc
+msgid "Ochre's miners bored through bedrock. On Verdance it breaks open the buried landfill of the Dust Flats."
+msgstr "[Ôçĥŕé'š mîñéŕš bôŕéð ţĥŕôûĝĥ béðŕôçķ. Ôñ Véŕðàñçé îţ bŕéàķš ôþéñ ţĥé bûŕîéð ļàñðƒîļļ ôƒ ţĥé Ðûšţ Fļàţš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/homeward.json:tech[tide_pump].name
+msgid "Tide Pump"
+msgstr "[Ţîðé Þûmþ ~]"
+
+#: data/homeward.json:tech[tide_pump].desc
+msgid "Tidewell's sea pumps. On Verdance they drain the flooded streets of the Sunken City."
+msgstr "[Ţîðéŵéļļ'š šéà þûmþš. Ôñ Véŕðàñçé ţĥéý ðŕàîñ ţĥé ƒļôôðéð šţŕééţš ôƒ ţĥé Šûñķéñ Çîţý. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/homeward.json:tech[cryo_beacon].name
+msgid "Cryo Beacon"
+msgstr "[Çŕýô Béàçôñ ~]"
+
+#: data/homeward.json:tech[cryo_beacon].desc
+msgid "A beacon that sings through deep cold: what Verdance's Ark Beacon was missing."
+msgstr "[À béàçôñ ţĥàţ šîñĝš ţĥŕôûĝĥ ðééþ çôļð: ŵĥàţ Véŕðàñçé'š Àŕķ Béàçôñ ŵàš mîššîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/homeward.json:tech[heat_core].name
+msgid "Heat Core"
+msgstr "[Ĥéàţ Çôŕé ~]"
+
+#: data/homeward.json:tech[heat_core].desc
+msgid "Anvil's forge heart. Wound into the beam, it melts the Frozen Port's ice on Verdance."
+msgstr "[Àñvîļ'š ƒôŕĝé ĥéàŕţ. Ŵôûñð îñţô ţĥé béàm, îţ méļţš ţĥé Fŕôžéñ Þôŕţ'š îçé ôñ Véŕðàñçé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/homeward.json:relics.ochre_glass.name data/museum.json:exhibits[ochre_glass].name
 msgid "Ochre Sun-Glass"

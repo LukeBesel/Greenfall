@@ -54,17 +54,22 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] Order: a prototype and plan first, then the owner reviews, then a rollout split across helpers.
 
 ## Pacing and economy (pace)
-- [ ] There are only 3 currencies: cubes, parts and seeds.
-- [ ] You can pick up only a few pieces at a time at first. Upgrades grow this to today's speed.
-- [ ] Picking up large items needs a lift-strength upgrade.
-- [ ] Baling is an unlock upgrade.
-- [ ] After two bales you can afford about 1 upgrade.
-- [ ] Auto-cubing and automation come much later.
-- [ ] Overpowered upgrades are slowed down.
-- [ ] The magnet comes late, is capped, isn't glitchy, and never pulls pieces Lumi can't lift.
+- [x] There are only 3 currencies: cubes, parts and seeds.
+- [x] You can pick up only a few pieces at a time at first. Upgrades grow this to today's speed.
+- [x] Picking up large items needs a lift-strength upgrade.
+- [x] Baling is an unlock upgrade.
+- [x] After two bales you can afford about 1 upgrade.
+- [x] Auto-cubing and automation come much later.
+- [x] Overpowered upgrades are slowed down.
+- [x] The magnet comes late, is capped, isn't glitchy, and never pulls pieces Lumi can't lift.
 - [ ] The first seed comes at about 20 min (or with super luck). Planting ramps up at about 1 h.
-- [ ] The rare-part beam indicator is an upgrade, and dig events appear only once digging is unlocked.
-- [ ] Supply crates never appear out of nowhere: supplies are only found in the world. Every reward toast names exactly what you got, in readable text.
+- [x] Planting can come at 1-2 h: the garden takes off (Pollinator Survey) at about 75-110 min bot time (pace2: 106, was 163).
+- [ ] The whole game takes about 20 h, grindy but never boring: something new every 5-20 min, no goal-less stretch over 10-15 min. (pace2: targets and bot measurements in docs/BALANCE.md "Whole-game curve"; Verdance measured to 3.7 h bot, later planets still to measure.)
+- [ ] The first planet (Verdance, up to the launch to another planet) takes 3-4 h. (pace2: the Mk V opens at Verdance 50% or a level 3 base, 60k cubes.)
+- [x] You can unlock the next planet without 100% on the first one: drives open from partial progress (Mk V: Verdance 50% or a level 3 base; Mk VI: another planet at 50%); only the Homeward rocket needs the whole system.
+- [x] You can't 100% a planet until you bring tools from later planets (Deep Drill from Ochre, Tide Pump from Tidewell, Cryo Beacon from Rime, Heat Core from Anvil); the gated Verdance areas say "Needs Deep Drill: found on Ochre".
+- [x] The rare-part beam indicator is an upgrade, and dig events appear only once digging is unlocked.
+- [x] Supply crates never appear out of nowhere: supplies are only found in the world. Every reward toast names exactly what you got, in readable text.
 
 ## Landing site and yard (camp)
 - [ ] The yard holds only the pod, a broken workbench and the trash bin. Everything else appears when it is unlocked.

@@ -140,7 +140,11 @@ static func progress_blocker(nd: Dictionary) -> String:
 	if pp is Array and (pp as Array).size() >= 2:
 		var k: int = int(pp[0])
 		var need: float = float(pp[1])
-		if stored_pct(k) < need - 0.0001:
+		var ob: int = int(nd.get("or_base_level", 0))  # [pace2] or a base that far along there
+		var base_ok: bool = ob > 0 and current_planet() == k and (int(GameState.world.get("hub_level", 1)) >= ob or Frontiers.bases_at_level(ob) > 0)
+		if stored_pct(k) < need - 0.0001 and not base_ok:
+			if ob > 0:
+				return TranslationServer.translate("Restore %s to %d%% (%d%%) or get a base to level %d") % [planet_name(k), int(round(need * 100.0)), int(floor(stored_pct(k) * 100.0)), ob]
 			return TranslationServer.translate("Restore %s to %d%% (%d%%)") % [planet_name(k), int(round(need * 100.0)), int(floor(stored_pct(k) * 100.0))]
 	if nd.has("requires_other_pct"):
 		var need2: float = float(nd["requires_other_pct"])

@@ -1121,6 +1121,39 @@ func _goal_upgrade() -> String:
 	return ""
 
 
+## [pace2] Research an on-screen goal needs right now (a robot's blueprint, a "Research X" goal),
+## walking back through its prerequisites; "" when none can start.
+func _goal_research() -> String:
+	var gl: Goals = world.get("goals")
+	if gl == null:
+		return ""
+	for i: int in gl.current():
+		var g: Dictionary = gl.chain[i]
+		var want: String = ""
+		match str(g.get("type", "")):
+			"robot":
+				if not Research.robot_unlocked(str(g["key"])):
+					want = Research.robot_requirement(str(g["key"]))
+			"research":
+				want = str(g.get("key", ""))
+		var guard: int = 0
+		while want != "" and Research.exists(want) and not Research.has(want) and guard < 8:
+			guard += 1
+			if Research.is_active(want) or Research.is_queued(want):
+				break
+			if Research.status(want) == "available":
+				if Research.can_start(want):
+					return want
+				break
+			var nxt: String = ""
+			for r: String in Research.requires(want):
+				if not Research.has(r):
+					nxt = r
+					break
+			want = nxt
+	return ""
+
+
 const CLEANING_UPGRADES: Array[String] = ["compartment_size", "scoop_width", "carry_stack", "compactor_pressure", "scoop_speed",
 	"auto_compactor", "magnet_arm", "detector_range", "belt_speed", "baler_speed", "recycler_yield", "laser_reach", "multi_lock"]
 
@@ -1293,6 +1326,9 @@ func _research_pick() -> String:
 	if not Research.active().is_empty() and Research.queue().size() >= Research.max_queue():
 		return ""
 	var saving: bool = false
+	var gr: String = _goal_research()  # [pace2] the goal on screen first
+	if gr != "":
+		return gr
 	var need: String = _pace_research_next()  # [pace] save for the helper / automation unlock
 	if need != "":
 		return need if _research_ok(need) and Research.can_start(need) else ""

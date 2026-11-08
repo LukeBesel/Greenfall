@@ -96,7 +96,11 @@ func test_drive_gates_and_costs() -> void:
 	var pct: Dictionary = Homeward.state()["pct"]
 	assert_ne(Homeward.drive_blocker(), "", "Mk V waits for a partly restored Verdance")
 	assert_false(Homeward.system_open())
-	pct["verdance"] = 0.55  # [pace2] about half of Verdance, no Cradle answer, no relic
+	GameState.world["hub_level"] = 3  # [pace2] or a base at level 3 ...
+	assert_true(Homeward.system_open(), "a level 3 base opens the system too")
+	GameState.world["hub_level"] = 1
+	assert_false(Homeward.system_open())
+	pct["verdance"] = 0.55  # ... or about half of Verdance; no Cradle answer, no relic
 	assert_true(Homeward.system_open(), "the system map opens before 100%")
 	assert_string_contains(Homeward.drive_blocker(), "cubes")
 	GameState.add_currency("cubes", BigNum.from_float(5.0e6))
