@@ -3,12 +3,12 @@
   "count": [3, 4],
   "clean_needed": 0.9,
   "footprint": 3.6,
-  "repair_cost": {"cubes": 450, "sheet_metal": 18, "plastic_stock": 8},
+  "repair_cost": {"cubes": 450, "parts": 26},
   "repair_growth": 1.6,
   "levels": [
     {"level": 1, "name": "Weigh Station", "desc": "A working scale and skip on the frontier. Haul Bugs deliver to the nearest scale.", "sell_bonus": 0.0, "pad_radius": 1.6},
-    {"level": 2, "name": "Big Skip", "desc": "A bigger skip and a wider, faster scale plate. Bales here sell for 15% more.", "sell_bonus": 0.15, "pad_radius": 2.1, "cost": {"cubes": 1600, "sheet_metal": 40, "plastic_stock": 20}},
-    {"level": 3, "name": "Recharge Pad", "desc": "A charging pad. Robots passing over it run 40% faster for 25 s.", "sell_bonus": 0.2, "pad_radius": 2.1, "cost": {"cubes": 4200, "sheet_metal": 90, "plastic_stock": 45, "glass_cullet": 20}}
+    {"level": 2, "name": "Big Skip", "desc": "A bigger skip and a wider, faster scale plate. Bales here sell for 15% more.", "sell_bonus": 0.15, "pad_radius": 2.1, "cost": {"cubes": 1600, "parts": 60}},
+    {"level": 3, "name": "Recharge Pad", "desc": "A charging pad. Robots passing over it run 40% faster for 25 s.", "sell_bonus": 0.2, "pad_radius": 2.1, "cost": {"cubes": 4200, "parts": 155}}
   ],
   "charge_radius": 2.4,
   "charge_mult": 1.4,

@@ -1,6 +1,6 @@
 class_name ResearchPanel
 extends VBoxContainer
-## Workbench "Research" tab: Data balance, the active research with a progress ring and the
+## Workbench "Research" tab: Cubes balance [money], the active research with a progress ring and the
 ## queue, a detail box for the focused node, and the node graph (5 branches x 6 tiers).
 
 var _graph: Graph
@@ -24,21 +24,21 @@ func _ready() -> void:
 	var top := HBoxContainer.new()
 	top.add_theme_constant_override("separation", 12)
 	add_child(top)
-	# Data balance.
+	# [money] Cubes balance (research costs cubes plus real time).
 	var dbox := _glass()
 	dbox.custom_minimum_size = Vector2(230, 100)
 	top.add_child(dbox)
 	var dvb := VBoxContainer.new()
 	dvb.add_theme_constant_override("separation", 2)
 	dbox.add_child(dvb)
-	dvb.add_child(UITheme.label(tr("FIELD DATA"), 12, UITheme.MUTED))
+	dvb.add_child(UITheme.label(tr("CUBES"), 12, UITheme.MUTED))
 	var drow := HBoxContainer.new()
 	drow.add_theme_constant_override("separation", 8)
 	dvb.add_child(drow)
-	drow.add_child(ResearchIcons.IconView.new("data", 34, Color(0.45, 0.8, 1.0)))
-	_data_lbl = UITheme.label("0", 30, Color(0.6, 0.86, 1.0))
+	drow.add_child(CurrencyIcon.new("cubes", 30.0))
+	_data_lbl = UITheme.label("0", 30, UITheme.CREAM)
 	drow.add_child(_data_lbl)
-	var earn := UITheme.label(tr("Clean hexes, grow blooms, read shards and let robots work."), 12, UITheme.MUTED)
+	var earn := UITheme.label(tr("Research costs cubes and takes real time. It keeps going while you play or are away."), 12, UITheme.MUTED)
 	earn.autowrap_mode = TextServer.AUTOWRAP_WORD
 	earn.custom_minimum_size = Vector2(200, 0)
 	dvb.add_child(earn)
@@ -200,7 +200,7 @@ func _update_detail() -> void:
 			_d_cost.text = tr("Queued #%d") % (Research.queue_position(_focus_id) + 1)
 			_d_hint.text = tr("Press again to cancel (refund)")
 		_:
-			_d_cost.text = tr("%s data  ·  %s") % [Settings.fmt(Research.cost(_focus_id)), Research.time_text(Research.duration(_focus_id))]
+			_d_cost.text = tr("%s  ·  %s") % [L10nFmt.amount("cubes", Research.cost(_focus_id).to_float()), Research.time_text(Research.duration(_focus_id))]
 			var why: String = Research.reason(_focus_id)
 			_d_hint.text = why if why != "" else (tr("Press to research") if Research.active().is_empty() else tr("Press to queue"))
 
@@ -211,7 +211,7 @@ func _on_card_pressed(id: String) -> void:
 	if st == "active" or st == "queued":
 		Research.cancel(id)
 		Audio.play("click", 0.8, -6.0)
-		EventBus.toast.emit(tr("%s cancelled. Data refunded.") % tr(str(Research.def(id).get("name", id))), "info")
+		EventBus.toast.emit(tr("%s cancelled. Cubes refunded.") % tr(str(Research.def(id).get("name", id))), "info")
 	elif Research.start(id):
 		Audio.play("buy", 1.1, -3.0)
 		c.pop()

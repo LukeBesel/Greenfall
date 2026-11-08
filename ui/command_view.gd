@@ -777,7 +777,7 @@ func _refresh_build() -> void:
 					var maxed: bool = req.get("maxed", false)
 					(b as Button).text = tr("Max tier") if maxed else tr("Upgrade > %s") % tr(str(req["next"]["name"]))
 					(b as Button).disabled = maxed or not (at_bench and req["ok"])
-					(b as Button).tooltip_text = "" if maxed else tr("%s cubes, %s bolts, %s Control Core. %s") % [Settings.fmt(req["cost"]), Settings.fmt(req["bolts"]), tr(str(Economy.rarity(int(req["core_rarity"])).get("name", "?"))), req["reason"]]
+					(b as Button).tooltip_text = "" if maxed else tr("%s cubes, %s parts, %s Control Core. %s") % [Settings.fmt(req["cost"]), Settings.fmt(req["parts"]), tr(str(Economy.rarity(int(req["core_rarity"])).get("name", "?"))), req["reason"]]
 		elif c.has_meta("build_info"):
 			var t2: String = str(c.get_meta("build_info"))
 			var have: int = 0

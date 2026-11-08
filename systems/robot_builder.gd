@@ -147,12 +147,18 @@ static func take_part(id: String) -> bool:
 	return true
 
 
+## [money] Maker Fragments are Parts now (data/currencies.json legacy "fragments"): a find pays
+## FRAGMENT_PARTS parts; the Maker set costs parts + a Vintage-or-better robot part. Kept as calls
+## so older code and the maker_fragments stat keep working.
+const FRAGMENT_PARTS: float = 25.0
+
+
 static func fragments() -> int:
-	return int(st().get("fragments", 0))
+	return 0
 
 
 static func add_fragments(n: int) -> void:
-	st()["fragments"] = fragments() + n
+	GameState.add_currency("parts", BigNum.from_float(n * FRAGMENT_PARTS))
 	GameState.inc_stat("maker_fragments", n)
 
 
@@ -345,35 +351,31 @@ static func craft_block_reason(id: String) -> String:
 	var lr: String = locked_research(id)
 	if lr != "":
 		return TranslationServer.translate("Research %s") % TranslationServer.translate(str(Research.def(lr).get("name", lr)))
-	if int(src.get("fragments", 0)) > fragments():
-		return TranslationServer.translate("Needs %d Maker Fragments (%d)") % [int(src["fragments"]), fragments()]
 	var ptype: String = str(src.get("part", ""))
 	if ptype != "" and _part_to_use(ptype, int(src.get("min_rarity", 0))) < 0:
 		var pname: String = TranslationServer.translate(str(Economy.part_type(Fleet.part_index(ptype)).get("name", ptype)))
 		var mr: int = int(src.get("min_rarity", 0))
 		return TranslationServer.translate("Needs a %s%s") % ["%s+ " % TranslationServer.translate(str(Economy.rarity(mr).get("name", ""))) if mr > 0 else "", pname]
-	if not GameState.can_afford("bolts", BigNum.from_float(float(src.get("bolts", 0)))):
-		return TranslationServer.translate("Needs %d bolts") % int(src.get("bolts", 0))
+	if not GameState.can_afford("parts", BigNum.from_float(float(src.get("parts", 0)))):  # [money]
+		return TranslationServer.translate("Needs %s") % L10nFmt.amount("parts", float(src.get("parts", 0)))
 	if not GameState.can_afford("cubes", BigNum.from_float(float(src.get("cubes", 0)))):
 		return TranslationServer.translate("Not enough cubes")
 	return ""
 
 
-## Short cost line, e.g. "8 bolts + Drive Wheel Assembly".
+## Short cost line, e.g. "40 parts + Drive Wheel Assembly".
 static func cost_text(id: String) -> String:
 	var src: Dictionary = part(id).get("source", {})
 	var bits: Array[String] = []
 	match str(src.get("kind", "")):
 		"haggle":
-			return TranslationServer.translate("Haggle's stall · %s cubes + %d bolts") % [Settings.fmt(BigNum.from_float(float(src.get("cubes", 0)))), int(src.get("bolts", 0))]
-		"token":
-			return TranslationServer.translate("Token shop · ◆ %d") % int(src.get("tokens", 0))
+			return TranslationServer.translate("Haggle's stall · %s") % Currencies.cost_text({"cubes": src.get("cubes", 0), "parts": src.get("parts", 0)})  # [money]
+		"request":
+			return TranslationServer.translate("Requests reward · %d requests") % int(src.get("requests", 0))
 		"drop":
 			return TranslationServer.translate(str(src.get("hint", "Rare find")))
-	if int(src.get("fragments", 0)) > 0:
-		bits.append(TranslationServer.translate("%d Maker Fragments") % int(src["fragments"]))
-	if int(src.get("bolts", 0)) > 0:
-		bits.append(TranslationServer.translate("%d bolts") % int(src["bolts"]))
+	if int(src.get("parts", 0)) > 0:  # [money]
+		bits.append(L10nFmt.amount("parts", float(src["parts"])))
 	var ptype: String = str(src.get("part", ""))
 	if ptype != "":
 		var mr: int = int(src.get("min_rarity", 0))
@@ -390,10 +392,8 @@ static func craft(id: String) -> bool:
 	var ptype: String = str(src.get("part", ""))
 	if ptype != "":
 		GameState.parts.remove_at(_part_to_use(ptype, int(src.get("min_rarity", 0))))
-	GameState.spend("bolts", BigNum.from_float(float(src.get("bolts", 0))))
+	GameState.spend("parts", BigNum.from_float(float(src.get("parts", 0))))  # [money]
 	GameState.spend("cubes", BigNum.from_float(float(src.get("cubes", 0))))
-	if int(src.get("fragments", 0)) > 0:
-		st()["fragments"] = fragments() - int(src["fragments"])
 	add_part(id)
 	GameState.inc_stat("builder_crafted")
 	Audio.play("hydraulic", 1.2, -8.0)
@@ -433,8 +433,8 @@ static func haggle_block_reason(id: String) -> String:
 	var src: Dictionary = part(id).get("source", {})
 	if not GameState.can_afford("cubes", BigNum.from_float(float(src.get("cubes", 0)))):
 		return TranslationServer.translate("Not enough cubes")
-	if not GameState.can_afford("bolts", BigNum.from_float(float(src.get("bolts", 0)))):
-		return TranslationServer.translate("Needs %d bolts") % int(src.get("bolts", 0))
+	if not GameState.can_afford("parts", BigNum.from_float(float(src.get("parts", 0)))):  # [money]
+		return TranslationServer.translate("Needs %s") % L10nFmt.amount("parts", float(src.get("parts", 0)))
 	return ""
 
 
@@ -444,7 +444,7 @@ static func buy_haggle(id: String) -> String:
 		return why
 	var src: Dictionary = part(id)["source"]
 	GameState.spend("cubes", BigNum.from_float(float(src.get("cubes", 0))))
-	GameState.spend("bolts", BigNum.from_float(float(src.get("bolts", 0))))
+	GameState.spend("parts", BigNum.from_float(float(src.get("parts", 0))))  # [money]
 	add_part(id)
 	Audio.play("buy", 1.0, -3.0)
 	return ""
@@ -455,8 +455,8 @@ static func get_block_reason(id: String) -> String:
 	match source_kind(id):
 		"haggle":
 			return haggle_block_reason(id)
-		"token":
-			return TranslationServer.translate("Contract token shop")
+		"request":
+			return TranslationServer.translate("Requests reward (%d of %d requests)") % [mini(Contracts.done_total(), int(part(id).get("source", {}).get("requests", 0))), int(part(id).get("source", {}).get("requests", 0))]  # [money]
 		"drop":
 			return TranslationServer.translate(str(part(id).get("source", {}).get("hint", "Rare find")))
 	return craft_block_reason(id)
@@ -537,8 +537,7 @@ func _ready() -> void:
 static func sample_inventory() -> void:
 	for p: Dictionary in all_parts():
 		add_part(str(p["id"]), 2)
-	add_fragments(5)
-	GameState.add_currency("bolts", BigNum.from_float(120))
+	GameState.add_currency("parts", BigNum.from_float(600))  # [money]
 
 
 ## Haggle's welcome gift with the first robot: treads and a bobble plant.
@@ -558,7 +557,7 @@ func _on_part_found(_t: int, r: int) -> void:
 	var ch: Array = cfg().get("salvage", {}).get("dig_fragment_chance", [0.02])
 	if rng.randf() < float(ch[clampi(r, 0, ch.size() - 1)]):
 		add_fragments(1)
-		EventBus.toast.emit(tr("A Maker Fragment was tucked inside it. (%d)") % fragments(), "hint")
+		EventBus.toast.emit(tr("A Maker Fragment was tucked inside it: +%d parts.") % int(FRAGMENT_PARTS), "hint")  # [money]
 
 
 func _process(delta: float) -> void:
@@ -593,7 +592,7 @@ func _salvage_find(r: Robot, sc: Dictionary) -> void:
 		EventBus.toast.emit(tr("%s spotted something green and lucky: a Lucky Clover!") % r.robot_name, "story")
 	elif rng.randi() % maxi(int(sc.get("fragment_one_in", 10)), 1) == 0:
 		add_fragments(1)
-		EventBus.toast.emit(tr("%s spotted a Maker Fragment glinting in the junk. (%d)") % [r.robot_name, fragments()], "story")
+		EventBus.toast.emit(tr("%s spotted a Maker Fragment glinting in the junk: +%d parts.") % [r.robot_name, int(FRAGMENT_PARTS)], "story")  # [money]
 	else:
 		var t: int = rng.randi() % maxi(Economy.parts.get("types", [1]).size(), 1)
 		var rar: int = 0 if rng.randf() < 0.7 else 1

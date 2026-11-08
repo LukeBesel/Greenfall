@@ -1,11 +1,11 @@
 {
-  "_doc": "Robot parts found buried in hexes with the detector. rarity weight = relative chance; signal = how far the detector picks it up (multiplier).",
+  "_doc": "[money] parts = Parts paid when a spare is scrapped at Haggle's. Robot parts found buried in hexes with the detector. rarity weight = relative chance; signal = how far the detector picks it up (multiplier).",
   "rarities": [
-    {"id": "rusty", "name": "Rusty", "color": "#9c7a5b", "weight": 50, "signal": 1.0, "bolts": 2},
-    {"id": "worn", "name": "Worn", "color": "#c9c9c9", "weight": 28, "signal": 1.1, "bolts": 5},
-    {"id": "restored", "name": "Restored", "color": "#5fbf7a", "weight": 14, "signal": 1.2, "bolts": 12},
-    {"id": "vintage", "name": "Vintage", "color": "#4aa3df", "weight": 6, "signal": 1.35, "bolts": 30},
-    {"id": "legendary", "name": "Legendary Maker-Made", "color": "#e8b44a", "weight": 2, "signal": 1.6, "bolts": 90}
+    {"id": "rusty", "name": "Rusty", "color": "#9c7a5b", "weight": 50, "signal": 1.0, "parts": 10},
+    {"id": "worn", "name": "Worn", "color": "#c9c9c9", "weight": 28, "signal": 1.1, "parts": 25},
+    {"id": "restored", "name": "Restored", "color": "#5fbf7a", "weight": 14, "signal": 1.2, "parts": 60},
+    {"id": "vintage", "name": "Vintage", "color": "#4aa3df", "weight": 6, "signal": 1.35, "parts": 150},
+    {"id": "legendary", "name": "Legendary Maker-Made", "color": "#e8b44a", "weight": 2, "signal": 1.6, "parts": 450}
   ],
   "types": [
     {"id": "chassis", "name": "Chassis Frame", "model": "metal_toolbox"},

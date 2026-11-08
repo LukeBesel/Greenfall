@@ -55,6 +55,7 @@ func _setup() -> void:
 	placer.world = world
 	placer.decor = decor
 	world.add_child(placer)
+	HomewardDirector.attach(world)  # [home] the system campaign (systems/homeward_director.gd)
 	bridge = ArkBridge.new()
 	bridge.name = "ArkBridge"
 	bridge.world = world
@@ -90,7 +91,7 @@ func _setup() -> void:
 
 ## Opens the Ark Bridge (pause menu, autoplay). False while it is still locked.
 func open_bridge() -> bool:
-	if not CradleMode.unlocked():
+	if not (CradleMode.unlocked() or Homeward.answered()):  # [home] Heirloom picks open with the Cradle's answer
 		EventBus.toast.emit(tr("The Ark Bridge opens once the Cradle has come home."), "info")
 		return false
 	if world.patch.input is PlayerInput:
@@ -125,7 +126,7 @@ func _process(delta: float) -> void:
 		GameState.flags["late_bridge_hint"] = true
 		CradleMode.bank()
 		get_tree().create_timer(8.0, false).timeout.connect(func() -> void:
-			EventBus.toast.emit(tr("Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them, spend Starseeds on Heirlooms, or seed a new world. Garden Mode (H) is open too."), "story")
+			EventBus.toast.emit(tr("Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode (H) is open too."), "story")
 			if world.get("wren") != null:
 				world.wren.say("cradle_mode", 1.0, true))
 
@@ -163,7 +164,7 @@ func dev_post_finale() -> void:
 	GameState.stats["hexes_cleaned"] = maxf(float(GameState.stats.get("hexes_cleaned", 0.0)), 420.0)
 	GameState.world["hub_level"] = 5
 	GameState.add_currency("cubes", BigNum.from_float(DevHooks.get_f("post-cubes", 400000.0)))
-	GameState.add_currency("trinkets", BigNum.from_float(12))
+	GameState.add_currency("cubes", BigNum.from_float(1800))  # [money] was 12 trinkets
 	GameState.add_currency("seeds", BigNum.from_float(300))
 	if world.get("hub") != null and int(world.hub.level) < 5:  # the base as the campaign left it
 		for l: int in range(int(world.hub.level) + 1, 6):

@@ -312,18 +312,23 @@ def write_po(path: str, cat: Catalog, lang: str, plural: str, translations: dict
                 out.append(po_str("msgstr[%d]" % i, forms[i] if i < len(forms) else ""))
         else:
             out.append(po_str("msgstr", tr if isinstance(tr, str) else ""))
+    def obs(text: str) -> str:
+        # [money] Every line of an obsolete entry gets "#~ ": a bare continuation line of a
+        # multi-line string is read by Godot as part of the previous live msgstr.
+        return "".join("#~ " + ln + "\n" for ln in text.rstrip("\n").split("\n"))
+
     for (ctx, msgid), tr in (obsolete or {}).items():
         if not tr:
             continue
         out.append("\n")
         if ctx:
-            out.append("#~ " + po_str("msgctxt", ctx))
-        out.append("#~ " + po_str("msgid", msgid))
+            out.append(obs(po_str("msgctxt", ctx)))
+        out.append(obs(po_str("msgid", msgid)))
         if isinstance(tr, list):
             for i, f in enumerate(tr):
-                out.append("#~ " + po_str("msgstr[%d]" % i, f))
+                out.append(obs(po_str("msgstr[%d]" % i, f)))
         else:
-            out.append("#~ " + po_str("msgstr", tr))
+            out.append(obs(po_str("msgstr", tr)))
     text = "".join(out)
     return text
 

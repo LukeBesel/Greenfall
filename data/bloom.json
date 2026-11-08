@@ -4,19 +4,19 @@
   "default_land_hexes": 230,
   "milestones": [
     {"id": "first_meadow", "name": "First Meadow", "desc": "25 Thriving hexes anywhere on Verdance.",
-     "any": [{"type": "thriving_hexes", "target": 25}], "reward": {"cubes": 1500, "seeds": 30, "trinkets": 2}},
+     "any": [{"type": "thriving_hexes", "target": 25}], "reward": {"cubes": 1800, "seeds": 30}},
     {"id": "thriving_district", "name": "A District in Bloom", "desc": "One district with 60% of its land Thriving.",
-     "any": [{"type": "thriving_districts", "target": 1}], "reward": {"cubes": 4000, "seeds": 60, "trinkets": 4}},
+     "any": [{"type": "thriving_districts", "target": 1}], "reward": {"cubes": 4600, "seeds": 60}},
     {"id": "green_shoots", "name": "Green Shoots", "desc": "Reclaim 0.25% of the planet, as the hologram counts it.",
-     "any": [{"type": "planet_pct", "target": 0.25}, {"type": "thriving_hexes", "target": 150}], "reward": {"cubes": 6000, "seeds": 80, "trinkets": 4}},
+     "any": [{"type": "planet_pct", "target": 0.25}, {"type": "thriving_hexes", "target": 150}], "reward": {"cubes": 6600, "seeds": 80}},
     {"id": "verdance_bloom", "name": "Verdance Bloom", "desc": "The Cradle Returns landing pad is alive (or 2% of the planet reclaimed). Lumi's Bloom Core is full and the Cradle comes home.",
      "any": [{"type": "cradle_returned", "target": 1}, {"type": "planet_pct", "target": 2.0}], "finale": true,
-     "reward": {"cubes": 20000, "seeds": 200, "trinkets": 10}},
+     "reward": {"cubes": 21500, "seeds": 200}},
     {"id": "wide_bloom", "name": "Wide Bloom", "desc": "Six districts in bloom, or 3% of the planet reclaimed.",
-     "any": [{"type": "thriving_districts", "target": 6}, {"type": "planet_pct", "target": 3.0}], "reward": {"cubes": 60000, "seeds": 400, "trinkets": 12}},
+     "any": [{"type": "thriving_districts", "target": 6}, {"type": "planet_pct", "target": 3.0}], "reward": {"cubes": 61800, "seeds": 400}},
     {"id": "evergreen", "name": "Evergreen", "desc": "Twelve districts in bloom, or 5% of the planet reclaimed.",
-     "any": [{"type": "thriving_districts", "target": 12}, {"type": "planet_pct", "target": 5.0}], "reward": {"cubes": 250000, "seeds": 1000, "trinkets": 20}}
+     "any": [{"type": "thriving_districts", "target": 12}, {"type": "planet_pct", "target": 5.0}], "reward": {"cubes": 253000, "seeds": 1000}}
   ],
   "seed_ark": {"unlock": "verdance_bloom", "base": 120, "growth": 1.5, "reward_growth": 1.35,
-    "reward": {"cubes": 5000, "seeds": 80, "trinkets": 2}}
+    "reward": {"cubes": 5300, "seeds": 80}}
 }
