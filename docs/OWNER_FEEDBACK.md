@@ -97,6 +97,8 @@ Helper branches: intro2, onboard, world2, ui2, style, fauna2, ship, pace, camp, 
 - [ ] Currency icons look cool.
 - [ ] Locked tabs and options show a lock and can't be opened.
 - [ ] It's very clear what you can and can't afford.
+- [ ] Upgrade screens as simple as the owner's reference: a plain one-line list (icon, name, level pips, price tag, "?" locked rows) plus one detail panel with a big Install button. 3-4 tabs at most. (ui5)
+- [ ] The Locker is a physical yard build bought with parts; open it with E for cosmetics. It is not a workbench tab. (ui5)
 - [ ] Workbench tabs: Upgrades holds everything with tiers; Build holds one-time buildings, which drop off once built. As few tabs as possible. (ui3 + camp2)
 - [ ] The upgrades page isn't glitchy or bulky.
 - [ ] Settings are simplified.
