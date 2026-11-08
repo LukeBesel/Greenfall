@@ -440,7 +440,7 @@ msgstr "Palier max"
 msgid "Needs the Rocket Cargo research"
 msgstr "Nécessite la recherche Fret de fusée"
 
-#: automation/rocket_tiers.gd:56 systems/homeward.gd:343
+#: automation/rocket_tiers.gd:56 systems/homeward.gd:399
 msgid "Not enough cubes or parts"
 msgstr "Pas assez de cubes ou de pièces"
 
@@ -2286,67 +2286,67 @@ msgstr "Audit gagné, %d à %d ! Le Ledger tamponne APPROUVÉ. %s"
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "Le drone a gagné l'audit, %d à %d. Il a quand même laissé un pourboire : +%s cubes."
 
-#: systems/homeward.gd:289
+#: systems/homeward.gd:292
 msgid "Needs the %s drive"
 msgstr "Nécessite la propulsion %s"
 
-#: systems/homeward.gd:291
+#: systems/homeward.gd:294
 msgid "No chart yet: restore %s to %d%%"
 msgstr "Pas encore de carte : restaure %s à %d%%"
 
-#: systems/homeward.gd:332
+#: systems/homeward.gd:388
 msgid "The Homeward rocket is built"
 msgstr "La fusée du Retour est construite"
 
-#: systems/homeward.gd:335
+#: systems/homeward.gd:391
 msgid "The Cradle has to answer first (Cradle Returns)"
 msgstr "Le Cradle doit d'abord répondre (Retour du Cradle)"
 
-#: systems/homeward.gd:337
+#: systems/homeward.gd:393
 msgid "Needs %d planet relics (%d)"
 msgstr "Nécessite %d reliques planétaires (%d)"
 
-#: systems/homeward.gd:339
+#: systems/homeward.gd:395
 msgid "Restore every planet first (%d%%)"
 msgstr "Restaure d'abord chaque planète (%d%%)"
 
-#: systems/homeward.gd:341
+#: systems/homeward.gd:397
 msgid "Build it at Verdance's Cradle Returns"
 msgstr "Construis-la au Retour du Cradle, sur Verdance"
 
-#: systems/homeward.gd:357
+#: systems/homeward.gd:413
 msgid "Rocket drive built: %s."
 msgstr "Propulsion construite : %s."
 
-#: systems/homeward_director.gd:245
+#: systems/homeward_director.gd:250
 msgid "Intercepted: %s"
 msgstr "Intercepté : %s"
 
-#: systems/homeward_director.gd:252
+#: systems/homeward_director.gd:257
 msgid "%s: %s"
 msgstr "%s : %s"
 
-#: systems/homeward_director.gd:262
+#: systems/homeward_director.gd:267
 msgid "%s is restored. System: %d%%."
 msgstr "%s est restaurée. Système : %d%%."
 
-#: systems/homeward_director.gd:265
+#: systems/homeward_director.gd:270
 msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
 msgstr "Relique : %s. Choix d'héritage +1 (Pont de l'Arche)."
 
-#: systems/homeward_director.gd:272
+#: systems/homeward_director.gd:277
 msgid "Every planet in the system is alive. Go back to Verdance's Cradle Returns and build the Mk VII Homeward rocket."
 msgstr "Chaque planète du système est vivante. Retourne au Retour du Cradle sur Verdance et construis la fusée Mk VII du Retour."
 
-#: systems/homeward_director.gd:426
+#: systems/homeward_director.gd:431
 msgid "E   launch home"
 msgstr "E   décoller vers la maison"
 
-#: systems/homeward_director.gd:426
+#: systems/homeward_director.gd:431
 msgid "E   plant the last seed"
 msgstr "E   planter la dernière graine"
 
-#: systems/homeward_director.gd:437
+#: systems/homeward_director.gd:442
 msgid "The last seed is in the ground. Everything is ready. Press E again here to launch home."
 msgstr "La dernière graine est en terre. Tout est prêt. Appuie encore sur E ici pour décoller vers la maison."
 
@@ -2946,12 +2946,11 @@ msgstr "Pas encore visité"
 msgid "%s  ·  %d hexes  ·  %d ark waves  ·  %d curiosities"
 msgstr "%s  ·  %d hexagones  ·  %d vagues de l'arche  ·  %d curiosités"
 
-#: ui/ark_bridge.gd:192 ui/system_map.gd:389 ui/system_map.gd:612
-#: ui/world_picker.gd:119
+#: ui/ark_bridge.gd:192 ui/world_picker.gd:119
 msgid "restored"
 msgstr "restauré"
 
-#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:690
+#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:740
 msgid "You are here"
 msgstr "Tu es ici"
 
@@ -2972,7 +2971,7 @@ msgid "The Cradle has to come home first."
 msgstr "Le Cradle doit d'abord rentrer au port."
 
 #: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:320
-#: ui/rockets_panel.gd:81 ui/system_map.gd:676
+#: ui/rockets_panel.gd:81 ui/system_map.gd:691
 msgid "Launch"
 msgstr "Décoller"
 
@@ -4013,7 +4012,7 @@ msgstr "Nettoyé"
 msgid "Planted"
 msgstr "Planté"
 
-#: ui/globe_view.gd:139 data/parts.json:rarities[restored].name
+#: ui/globe_view.gd:139 ui/system_map.gd:660 data/parts.json:rarities[restored].name
 msgid "Restored"
 msgstr "Restauré"
 
@@ -5252,103 +5251,51 @@ msgstr "Itinéraire auto : %s"
 msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Parts %s"
 msgstr ""
 
-#: ui/system_map.gd:387 ui/system_map.gd:612
-msgid "you are here"
-msgstr "tu es ici"
+#: ui/system_map.gd:647
+msgid "%s  ·  %.2f AU"
+msgstr ""
 
-#: ui/system_map.gd:393
-msgid "needs %s"
-msgstr "nécessite %s"
-
-#: ui/system_map.gd:497
+#: ui/system_map.gd:654
 msgid "In flight"
 msgstr "En vol"
 
-#: ui/system_map.gd:497
-msgid "D-pad / click  pick a planet      Enter / A  choose      Esc / B  back"
-msgstr "Croix / clic  choisir une planète      Entrée / A  valider      Échap / B  retour"
-
-#: ui/system_map.gd:549
-msgid "Verdance system"
-msgstr "Système de Verdance"
-
-#: ui/system_map.gd:549
-msgid "two suns  ·  five worlds  ·  system restoration"
-msgstr "deux soleils  ·  cinq mondes  ·  restauration du système"
-
-#: ui/system_map.gd:554
-msgid "restored  ·  %d of %d planets"
-msgstr "restauré  ·  %d planètes sur %d"
-
-#: ui/system_map.gd:559
-msgid "Relics"
-msgstr "Reliques"
-
-#: ui/system_map.gd:564
-msgid "Restore %s"
-msgstr "Restaure %s"
-
-#: ui/system_map.gd:568
-msgid "Heirloom picks waiting: %d (Pause > Ark Bridge)"
-msgstr "Choix d'héritage en attente : %d (Pause > Pont de l'Arche)"
-
-#: ui/system_map.gd:569
-msgid "Rocket drive"
-msgstr "Propulsion de la fusée"
-
-#: ui/system_map.gd:569
-msgid "interplanetary  ·  carried to every planet"
-msgstr "interplanétaire  ·  suit Lumi sur chaque planète"
-
-#: ui/system_map.gd:576
-msgid "The Homeward rocket stands ready."
-msgstr "La fusée du Retour est prête."
-
-#: ui/system_map.gd:578
-msgid "Next: %s"
-msgstr "Suivant : %s"
-
-#: ui/system_map.gd:587
-msgid "Build"
-msgstr "Construire"
-
-#: ui/system_map.gd:602
-msgid "Planets"
-msgstr "Planètes"
-
-#: ui/system_map.gd:602
-msgid "pick a world"
-msgstr "choisis un monde"
-
-#: ui/system_map.gd:612
-msgid "unvisited"
-msgstr "non visitée"
-
-#: ui/system_map.gd:643
-msgid "%s  ·  %.2f AU from the suns"
-msgstr "%s  ·  à %.2f UA des soleils"
-
-#: ui/system_map.gd:655
-msgid "Restored %d%%"
-msgstr "Restaurée à %d%%"
-
 #: ui/system_map.gd:657
-msgid "Goal: %d Thriving hexes, %d bases at level 5, a Thriving landing district"
-msgstr "Objectif : %d hexagones florissants, %d bases au niveau 5, un district d'arrivée florissant"
+msgid "Lumi is here"
+msgstr ""
 
-#: ui/system_map.gd:657
-msgid "Goal: the Bloom Core full (Cradle Returns)"
-msgstr "Objectif : le Cœur floral plein (Retour du Cradle)"
+#: ui/system_map.gd:663
+msgid "Ready to launch"
+msgstr ""
 
-#: ui/system_map.gd:666 data/goals.json:goals[home_launch].text
+#: ui/system_map.gd:682 data/goals.json:goals[home_launch].text
 msgid "Launch home"
 msgstr "Décoller vers la maison"
 
-#: ui/system_map.gd:671
+#: ui/system_map.gd:687
 msgid "Choose a district"
 msgstr "Choisir un district"
 
-#: ui/system_map.gd:696
+#: ui/system_map.gd:704
+msgid "System %d%% restored  ·  relics %d/%d"
+msgstr ""
+
+#: ui/system_map.gd:706
+msgid "%d Heirloom picks"
+msgstr ""
+
+#: ui/system_map.gd:708
+msgid "Left/Right planet  ·  A zoom  ·  B back"
+msgstr ""
+
+#: ui/system_map.gd:726
+msgid "Build the drive"
+msgstr ""
+
+#: ui/system_map.gd:742
+msgid "Not discovered yet"
+msgstr ""
+
+#: ui/system_map.gd:748
 msgid "Rocket not ready"
 msgstr "Fusée pas prête"
 
@@ -5393,6 +5340,10 @@ msgid "No other world visited yet. Seed or visit another world from the Ark Brid
 msgstr "Aucun autre monde visité. Ensemence ou visite un monde depuis le Pont de l'Arche, puis reviens."
 
 #: ui/telescope_view.gd:476
+msgid "Spotted %s: it now shows on the system map"
+msgstr ""
+
+#: ui/telescope_view.gd:479
 msgid ""
 "%s\n"
 "District %d%% clean · %d robots\n"
@@ -5402,7 +5353,7 @@ msgstr ""
 "Quartier propre à %d%% · %d robots\n"
 "Dernière visite %s"
 
-#: ui/telescope_view.gd:478
+#: ui/telescope_view.gd:481
 msgid ""
 "%s\n"
 "You are here."
@@ -5410,59 +5361,63 @@ msgstr ""
 "%s\n"
 "Tu es ici."
 
-#: ui/telescope_view.gd:480
+#: ui/telescope_view.gd:484
+msgid ""
+"An unknown world.\n"
+"Too faint to chart yet."
+msgstr ""
+
+#: ui/telescope_view.gd:484
 msgid ""
 "%s\n"
-"Not visited yet."
+"Charted. No landing yet."
 msgstr ""
-"%s\n"
-"Pas encore visité."
 
-#: ui/telescope_view.gd:487
+#: ui/telescope_view.gd:491
 msgid "You stand on %s."
 msgstr "Tu te trouves sur %s."
 
-#: ui/telescope_view.gd:487
+#: ui/telescope_view.gd:491
 msgid "%s: nobody of yours down there yet."
 msgstr "%s : personne des tiens là-bas pour l'instant."
 
-#: ui/telescope_view.gd:501
+#: ui/telescope_view.gd:505
 msgid "unknown"
 msgstr "inconnue"
 
-#: ui/telescope_view.gd:504
+#: ui/telescope_view.gd:508
 msgid "%d min ago"
 msgstr "il y a %d min"
 
-#: ui/telescope_view.gd:506
+#: ui/telescope_view.gd:510
 msgid "%.1f h ago"
 msgstr "il y a %.1f h"
 
-#: ui/telescope_view.gd:507
+#: ui/telescope_view.gd:511
 msgid "%d days ago"
 msgstr "il y a %d jours"
 
-#: ui/telescope_view.gd:597
+#: ui/telescope_view.gd:601
 msgid "TELESCOPE  ·  %s"
 msgstr "TÉLESCOPE  ·  %s"
 
-#: ui/telescope_view.gd:598
+#: ui/telescope_view.gd:602
 msgid "◀ Look"
 msgstr "◀ Vue"
 
-#: ui/telescope_view.gd:599
+#: ui/telescope_view.gd:603
 msgid "Look ▶"
 msgstr "Vue ▶"
 
-#: ui/telescope_view.gd:601
+#: ui/telescope_view.gd:605
 msgid "Back to system"
 msgstr "Retour au système"
 
-#: ui/telescope_view.gd:602
+#: ui/telescope_view.gd:606
 msgid "Right stick or drag: turn and zoom.  Hold something in the reticle to log it."
 msgstr "Stick droit ou glisser : tourner et zoomer.  Garde quelque chose dans le réticule pour le noter."
 
-#: ui/telescope_view.gd:648
+#: ui/telescope_view.gd:652
 msgid ""
 "PLANET     %s\n"
 "DISTRICT   %.2f%% clean\n"
@@ -5474,7 +5429,7 @@ msgstr ""
 "ROBOTS     %d actifs sur %d\n"
 "VISITE     %s"
 
-#: ui/telescope_view.gd:651
+#: ui/telescope_view.gd:655
 msgid ""
 "\n"
 "CARE PACKAGE  %d:%02d left"
@@ -5482,7 +5437,7 @@ msgstr ""
 "\n"
 "COLIS  encore %d:%02d"
 
-#: ui/telescope_view.gd:652
+#: ui/telescope_view.gd:656
 msgid ""
 "Remote pace (%d%% of offline)\n"
 "Waiting for you: %s cubes%s"
@@ -5490,27 +5445,27 @@ msgstr ""
 "Rythme à distance (%d%% du hors-ligne)\n"
 "T'attend : %s cubes%s"
 
-#: ui/telescope_view.gd:655
+#: ui/telescope_view.gd:659
 msgid "Send a care package (%s cubes)"
 msgstr "Envoyer un colis de soutien (%s cubes)"
 
-#: ui/telescope_view.gd:669
+#: ui/telescope_view.gd:673
 msgid "Care package away. The crew on %s works at double speed for %d minutes."
 msgstr "Colis envoyé. L'équipe de %s travaille deux fois plus vite pendant %d minutes."
 
-#: ui/telescope_view.gd:747
+#: ui/telescope_view.gd:751
 msgid "Ledger wreck"
 msgstr "Épave du Ledger"
 
-#: ui/telescope_view.gd:747
+#: ui/telescope_view.gd:751
 msgid "Deer"
 msgstr "Cerf"
 
-#: ui/telescope_view.gd:748
+#: ui/telescope_view.gd:752
 msgid "Logged through the telescope: %s. New Codex entry."
 msgstr "Noté au télescope : %s. Nouvelle entrée du Codex."
 
-#: ui/telescope_view.gd:749
+#: ui/telescope_view.gd:753
 msgid "Codex: %s"
 msgstr "Codex : %s"
 
@@ -14114,6 +14069,76 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid ""
+#~ "%s\n"
+#~ "Not visited yet."
+#~ msgstr ""
+#~ "%s\n"
+#~ "Pas encore visité."
+
+#~ msgid "you are here"
+#~ msgstr "tu es ici"
+
+#~ msgid "needs %s"
+#~ msgstr "nécessite %s"
+
+#~ msgid "D-pad / click  pick a planet      Enter / A  choose      Esc / B  back"
+#~ msgstr "Croix / clic  choisir une planète      Entrée / A  valider      Échap / B  retour"
+
+#~ msgid "Verdance system"
+#~ msgstr "Système de Verdance"
+
+#~ msgid "two suns  ·  five worlds  ·  system restoration"
+#~ msgstr "deux soleils  ·  cinq mondes  ·  restauration du système"
+
+#~ msgid "restored  ·  %d of %d planets"
+#~ msgstr "restauré  ·  %d planètes sur %d"
+
+#~ msgid "Relics"
+#~ msgstr "Reliques"
+
+#~ msgid "Restore %s"
+#~ msgstr "Restaure %s"
+
+#~ msgid "Heirloom picks waiting: %d (Pause > Ark Bridge)"
+#~ msgstr "Choix d'héritage en attente : %d (Pause > Pont de l'Arche)"
+
+#~ msgid "Rocket drive"
+#~ msgstr "Propulsion de la fusée"
+
+#~ msgid "interplanetary  ·  carried to every planet"
+#~ msgstr "interplanétaire  ·  suit Lumi sur chaque planète"
+
+#~ msgid "The Homeward rocket stands ready."
+#~ msgstr "La fusée du Retour est prête."
+
+#~ msgid "Next: %s"
+#~ msgstr "Suivant : %s"
+
+#~ msgid "Build"
+#~ msgstr "Construire"
+
+#~ msgid "Planets"
+#~ msgstr "Planètes"
+
+#~ msgid "pick a world"
+#~ msgstr "choisis un monde"
+
+#~ msgid "unvisited"
+#~ msgstr "non visitée"
+
+#~ msgid "%s  ·  %.2f AU from the suns"
+#~ msgstr "%s  ·  à %.2f UA des soleils"
+
+#~ msgid "Restored %d%%"
+#~ msgstr "Restaurée à %d%%"
+
+#~ msgid "Goal: %d Thriving hexes, %d bases at level 5, a Thriving landing district"
+#~ msgstr "Objectif : %d hexagones florissants, %d bases au niveau 5, un district d'arrivée florissant"
+
+#~ msgid "Goal: the Bloom Core full (Cradle Returns)"
+#~ msgstr "Objectif : le Cœur floral plein (Retour du Cradle)"
 
 #~ msgid "line item %04d   checksum %s"
 #~ msgstr "ligne %04d   somme de contrôle %s"

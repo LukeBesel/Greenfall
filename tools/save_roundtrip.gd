@@ -601,6 +601,7 @@ func _homeward_roundtrip() -> void:
 	(hs["pct"] as Dictionary)["tidewell"] = 0.62
 	hs["relics"] = ["ochre_glass"]
 	hs["beats"] = ["ochre_arrive", "ochre_half", "ochre_restored"]
+	hs["seen"] = ["rime"]  # [sysmap2] spotted by the telescope
 	var w: Dictionary = Homeward.make_planet_world(2)
 	CradleMode.save_profile()
 	var before: String = JSON.stringify(CradleMode.to_dict())
@@ -612,6 +613,8 @@ func _homeward_roundtrip() -> void:
 	_check("home_picks", 2, Homeward.picks())
 	_check("home_relics", ["ochre_glass"], Homeward.relics())
 	_check("home_beat", true, Homeward.beat_done("ochre_half"))
+	_check("home_seen", ["rime"], Homeward.state().get("seen", []))
+	_check("home_rime_discovered", true, Homeward.discovered(3))
 	_check("home_pct_tidewell", 0.62, snappedf(Homeward.stored_pct(2), 0.01))
 	_check("home_system_pct", snappedf((1.0 + 1.0 + 0.62) / 5.0, 0.001), snappedf(Homeward.system_pct(), 0.001))
 	_check("home_planet_world", 1, Homeward.world_of(2))
