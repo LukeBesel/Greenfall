@@ -110,3 +110,51 @@ static func run(rt: Node, check: Callable) -> void:
 		check.call("orbit_" + k, a[k], b[k])
 	s2.queue_free()
 	await tree.process_frame
+	await _old_save(tree, packed, check)
+
+
+## An old flat save (tests/fixtures) loads into the globe: its cleaned cells, base level and
+## chest come over, Lumi stands on the start site, and the migrated globe saves and reloads.
+static func _old_save(tree: SceneTree, packed: PackedScene, check: Callable) -> void:
+	var d: Dictionary = SaveManager.read_dict(ProjectSettings.globalize_path("res://tests/fixtures/flat_v4_oldtown.save"))
+	check.call("orbit_old_fixture", true, not d.is_empty())
+	if d.is_empty():
+		return
+	SaveManager.write_dict(SaveManager.slot_path(), d)
+	GameState.new_game()
+	check.call("orbit_old_loads", true, SaveManager.load_game())
+	GameState.reload_in_memory = true
+	var s: Node = packed.instantiate()
+	tree.root.add_child(s)
+	for i: int in 5:
+		await tree.process_frame
+	var so: SliceOrbit = s.get("orbit")
+	var g: OrbitPlanet = so.globe
+	check.call("orbit_old_migrated", "flat_v%d" % GameState.SAVE_VERSION, str(GameState.orbit.get("migrated", "")))
+	check.call("orbit_old_base_level", 2, OrbitSave.hub_level({"hubs": so.hub_states}, 0))
+	var clean_cells: int = 0
+	for c: int in g.cells.n:
+		if g.cells.state[c] == 1 and not g.cells.has_flag(c, SphereCells.F_HUB):
+			clean_cells += 1
+	check.call("orbit_old_cells_cleaned", true, clean_cells >= 9)
+	var p: Patch = s.get("patch")
+	check.call("orbit_old_lumi_on_start_site", 0, g.site_at(p.global_position))
+	check.call("orbit_old_chest", 2.5, snappedf(p.compartment.fill, 0.01))
+	var cubes0: float = GameState.get_currency("cubes").to_float()
+	check.call("orbit_old_saved", true, SaveManager.save_game())
+	var cd: Dictionary = g.cells.to_dict()
+	s.queue_free()
+	await tree.process_frame
+	GameState.new_game()
+	SaveManager.load_game()
+	GameState.reload_in_memory = true
+	var s2: Node = packed.instantiate()
+	tree.root.add_child(s2)
+	for i: int in 5:
+		await tree.process_frame
+	var g2: OrbitPlanet = (s2.get("orbit") as SliceOrbit).globe
+	check.call("orbit_old_reload_cells", hash(cd["state"]), hash(g2.cells.to_dict()["state"]))
+	check.call("orbit_old_reload_base_level", 2, OrbitSave.hub_level({"hubs": (s2.get("orbit") as SliceOrbit).hub_states}, 0))
+	check.call("orbit_old_reload_cubes", cubes0, GameState.get_currency("cubes").to_float())
+	s2.queue_free()
+	await tree.process_frame

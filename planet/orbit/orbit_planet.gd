@@ -40,8 +40,9 @@ var _junk_dirty: bool = true
 
 ## Builds the globe of `p_spec` (GlobeSpec.of: frequency, hub_count). planet_state /
 ## cells_state are saved dicts (empty for a new game). n_hubs < 0: the spec's hub count.
-## site_cells: a save's pads, in order (empty: pick them from the survey).
-func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1, planet_state: Dictionary = {}, cells_state: Dictionary = {}, site_cells := PackedInt32Array()) -> void:
+## site_cells: a save's pads, in order (empty: pick them from the survey). before_field: called
+## once the cells and sites exist, before the field reads them (old-save migration).
+func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1, planet_state: Dictionary = {}, cells_state: Dictionary = {}, site_cells := PackedInt32Array(), before_field := Callable()) -> void:
 	seed_value = p_seed
 	spec = p_spec
 	var f: int = int(spec.get("frequency", GlobeSpec.VERDANCE_FREQ))
@@ -66,6 +67,8 @@ func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1
 	if not cells_state.is_empty() and not cells.apply_dict(cells_state):
 		push_warning("[orbit] saved cells didn't match this planet; starting its state fresh.")
 		_clear_sites()
+	if before_field.is_valid():
+		before_field.call(self)
 	cells.refresh_all()
 	field = SphereField.new(grid, terrain, cells, seed_value)
 	surface = SphereSurface.new(grid.radius_m)

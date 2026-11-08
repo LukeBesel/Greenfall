@@ -61,8 +61,18 @@ func build(p_world: Node3D) -> void:
 	globe = OrbitPlanet.new()
 	globe.name = "Globe"
 	w.add_child(globe)
-	globe.build(seed_v, spec, int(DevHooks.get_f("orbit-hubs", -1.0)), od.get("planet", {}), od.get("cells", {}), OrbitSave.site_cells(od))
+	# An old flat save without a globe yet: its survey and bases move onto this globe (OrbitMigrate).
+	var migrate: bool = loaded and od.is_empty() and OrbitMigrate.can_migrate(int(spec["frequency"]))
+	var report: Dictionary = {}
+	var hook := Callable()
+	if migrate:
+		hook = func(g: OrbitPlanet) -> void: report.merge(OrbitMigrate.apply(g))
+	globe.build(seed_v, spec, int(DevHooks.get_f("orbit-hubs", -1.0)), od.get("planet", {}), od.get("cells", {}), OrbitSave.site_cells(od), hook)
 	hub_states = (od.get("hubs", {}) as Dictionary).duplicate(true)
+	if migrate:
+		hub_states = report.get("hubs", {})
+		GameState.orbit = {"migrated": "flat_v%d" % GameState.SAVE_VERSION, "hubs": hub_states}
+		print("[orbit] migrated a flat save: %s" % JSON.stringify(report))
 	if od.has("field"):
 		globe.field.apply_dict(od["field"])
 	w.set("planet", globe.planet)
@@ -118,8 +128,10 @@ func build(p_world: Node3D) -> void:
 	w.add_child(pm)
 	pm.closed.connect(on_modal_closed)
 	w.set("pause_menu", pm)
-	if loaded:
+	if loaded and not migrate:
 		restore_world()
+	elif migrate:
+		(w.get("patch") as Patch).restore_cargo(OrbitMigrate.lumi_cargo())
 	globe.update_centres()
 	var t2: int = Time.get_ticks_msec()
 	globe.streamer.settle()
