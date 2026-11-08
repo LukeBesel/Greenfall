@@ -118,6 +118,7 @@ func prefab(i: int) -> SitePrefab:
 
 
 func _on_built(i: int, p: SitePrefab) -> void:
+	_attach_power(i, p)
 	_clear_footprints(i, p)
 	_probe_footprints.call_deferred(i, p)
 	site_built.emit(i, p)
@@ -322,6 +323,44 @@ func set_level(i: int, l: int) -> void:
 	levels[i] = clampi(l, 1, 5)
 	if prefabs[i] != null:
 		(prefabs[i] as SitePrefab).set_stage(levels[i])
+	var sp: StreetPower = power.get(i) as StreetPower
+	if sp and is_instance_valid(sp):
+		sp.set_hub_level(levels[i], true)
+
+
+## Street power per built site (planet/sites/site_power.gd): hub index -> StreetPower.
+var power: Dictionary = {}
+
+
+func _attach_power(i: int, p: SitePrefab) -> void:
+	if p.content == null:
+		return
+	var w: Node = globe.get_parent() if globe else null
+	if w == null:
+		return
+	# The start site builds with the globe, before the slice makes its HexLevels: wait for them.
+	for k: int in 600:
+		if w.get("hex_levels") is HexLevels or not is_inside_tree():
+			break
+		await get_tree().process_frame
+	var hl: Variant = w.get("hex_levels")
+	if not (hl is HexLevels) or p.content == null or not is_instance_valid(p.content):
+		return
+	var old: Variant = power.get(i)
+	if old is Node and is_instance_valid(old):
+		(old as Node).queue_free()
+	power.erase(i)
+	var lvl: int = levels[i]
+	var hub: Variant = w.get("hub") if i == 0 else null
+	if hub is Hub:
+		lvl = maxi(lvl, int((hub as Hub).level))
+	for c: Node in p.content.get_children():
+		if c is VerdanceSite:
+			var sp: StreetPower = SitePower.attach(c, grid, hl, lvl)
+			if sp:
+				power[i] = sp
+				if hub is Hub and not (hub as Hub).level_changed.is_connected(_on_hub0_level):
+					(hub as Hub).level_changed.connect(_on_hub0_level)
 
 
 ## Marks hub i as built (its region now counts for planet %).
@@ -496,3 +535,10 @@ static func _seg_hits_rect(a: Vector2, b: Vector2, r: Rect2) -> bool:
 		if Geometry2D.segment_intersects_segment(a, b, c[k], c[(k + 1) % 4]) != null:
 			return true
 	return false
+
+
+
+func _on_hub0_level(l: int) -> void:
+	var sp: StreetPower = power.get(0) as StreetPower
+	if sp and is_instance_valid(sp):
+		sp.set_hub_level(l, true)
