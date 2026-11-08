@@ -61,3 +61,25 @@ func test_lumi_far_proxy() -> void:
 	assert_lt(int(lod.stats["surfaces_out"]), int(lod.stats["surfaces_in"]))
 	assert_eq(lod.proxy.cast_shadow, GeometryInstance3D.SHADOW_CASTING_SETTING_OFF)
 	assert_almost_eq(lod.proxy.visibility_range_begin, LumiLod.SWITCH_M, 0.01)
+
+
+func test_far_impostor_is_one_surface() -> void:
+	var red := StandardMaterial3D.new()
+	red.albedo_color = Color(1, 0, 0)
+	var blue := StandardMaterial3D.new()
+	blue.albedo_color = Color(0, 0, 1)
+	var am := ArrayMesh.new()
+	for m: StandardMaterial3D in [red, blue]:
+		var bm := BoxMesh.new()
+		am.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, bm.surface_get_arrays(0))
+		am.surface_set_material(am.get_surface_count() - 1, m)
+	var one: Mesh = JunkFarSingle.single(am)
+	assert_eq(one.get_surface_count(), 1, "one draw per far model")
+	var cols: PackedColorArray = one.surface_get_arrays(0)[Mesh.ARRAY_COLOR]
+	var has_red: bool = false
+	var has_blue: bool = false
+	for c: Color in cols:
+		has_red = has_red or c.r > 0.9
+		has_blue = has_blue or c.b > 0.9
+	assert_true(has_red and has_blue, "each surface keeps its colour")
+	assert_eq(JunkFarSingle.single(BoxMesh.new()).get_surface_count(), 1, "single-surface meshes pass through")

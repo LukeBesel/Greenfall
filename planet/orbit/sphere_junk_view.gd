@@ -54,7 +54,8 @@ func _process(delta: float) -> void:
 	_pump(budget)
 	if not _far_todo.is_empty():
 		var g: int = _far_todo.pop_front()
-		_g_mm[g * 2 + 1].mesh = JunkLod.far_mesh(_g_model[g], JunkLod.FAR_TRIS[quality] * (4 if _g_heavy[g] == 1 else 1))
+		var fm: Mesh = JunkLod.far_mesh(_g_model[g], JunkLod.FAR_TRIS[quality] * (4 if _g_heavy[g] == 1 else 1))
+		_g_mm[g * 2 + 1].mesh = fm if DevHooks.has("no-far-single") else JunkFarSingle.single(fm)  # [orbE] one draw per far model
 	_t -= delta
 	if _t <= 0.0:
 		_t = JunkLod.UPDATE_EVERY
