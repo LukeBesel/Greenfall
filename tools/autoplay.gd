@@ -318,7 +318,10 @@ func _watch_stuck(p: Patch, delta: float) -> void:
 				_traps += 1
 				_report["bot_traps"] = _report.get("bot_traps", []) + [[snappedf(_now() / 60.0, 0.1), str(p.global_position.snapped(Vector3.ONE * 0.1)), _task]]
 				print("[bot-trap] t=%.1f task=%s pos=%s: back to the yard" % [_now() / 60.0, _task, str(p.global_position)])
-				p.global_position = BENCH_STAND + Vector3(0, 0.3, 1.5)
+				if world.get("orbit") != null and p.has_method("place_on_sphere"):  # [v1guide] the globe's yard
+					p.place_on_sphere(_bench_at() + _bench_at().normalized() * 0.3, p.forward())
+				else:
+					p.global_position = BENCH_STAND + Vector3(0, 0.3, 1.5)
 				p.velocity = Vector3.ZERO
 				_target_piece = -1
 				_set_task("")
@@ -364,7 +367,13 @@ func _haulers() -> int:
 
 
 func _at_base(p: Patch) -> bool:
-	return p.global_position.distance_to(BENCH_POS) < AT_BASE_R
+	return p.global_position.distance_to(_bench_at()) < AT_BASE_R
+
+
+## [v1guide] The workbench: the flat BENCH_POS, or the globe's bench anchor (the bot used to walk to
+## the flat spot on the globe for 60 s and then shop "remotely", which slowed every globe run).
+func _bench_at() -> Vector3:
+	return world.call("bench_pos") if world.get("orbit") != null and world.has_method("bench_pos") else BENCH_POS
 
 
 # --- Patch tasks -------------------------------------------------------------------------
@@ -389,7 +398,7 @@ func _do_tin(p: Patch) -> bool:
 func _do_bench(p: Patch) -> bool:
 	if not _bench_trip:
 		return false
-	if p.global_position.distance_to(BENCH_POS) < 3.0:
+	if p.global_position.distance_to(_bench_at()) < 3.0:  # [v1guide]
 		_bench_trip = false
 		var cp: Camp = Camp.of(world)  # [camp] fix the broken bench first (the player presses E once)
 		if cp and not Camp.bench_ok():
@@ -397,7 +406,10 @@ func _do_bench(p: Patch) -> bool:
 		_manage(p)
 		return false
 	_set_task("bench")
-	_go(p, BENCH_STAND, 0.4)
+	if world.get("orbit") != null:  # [v1guide] the globe's bench: walk up to it
+		_go(p, _bench_at(), 2.2)
+	else:
+		_go(p, BENCH_STAND, 0.4)
 	if _task_t > 60.0:
 		# Can't get there: count it, and shop anyway (the sim must not stall on pathing).
 		_bench_trip = false

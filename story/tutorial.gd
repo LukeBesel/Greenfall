@@ -30,6 +30,9 @@ var _target_t: float = 0.0
 
 func _ready() -> void:
 	step = int(GameState.flags.get("tutorial_step", 0))
+	if DevHooks.has("objective"):  # [v1guide] dev: jumping to an objective skips the checklist
+		step = STEPS.size()
+		GameState.flags["tutorial_step"] = step
 	EventBus.junk_scooped.connect(func(_t: String, _p: Vector3) -> void: _progress("scoop"))
 	EventBus.upgrade_bought.connect(func(_id: String, _l: int) -> void: _progress("upgrade"))
 	if not done():

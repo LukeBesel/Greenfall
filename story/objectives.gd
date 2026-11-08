@@ -41,6 +41,7 @@ const EARLY_ADDED: int = 4
 
 
 func _ready() -> void:
+	EventBus.upgrade_bought.connect(_on_upgrade_bought)  # [v1guide] the bale how-to
 	var cfg: Dictionary = Economy.read_json(PATH)
 	chain = cfg.get("objectives", [])
 	brief_lines = (cfg.get("brief", {}) as Dictionary).get("lines", [])
@@ -56,6 +57,7 @@ func _ready() -> void:
 		step = clampi(int(DevHooks.get_f("objective", 0.0)), 0, chain.size())
 		GameState.flags["objective_step"] = step
 		GameState.flags["onboard_brief"] = true
+		GameState.flags["tutorial_step"] = Tutorial.STEPS.size()  # [v1guide] past the checklist: the waypoint shows
 	if DevHooks.has("near-part"):  # dev: start a few metres from a buried part (signal shots)
 		_dev_near_part.call_deferred()
 	outline = ObjectiveHex.new()
@@ -193,7 +195,24 @@ static func texts(def: Dictionary) -> Array[String]:
 	var wf: String = str(def.get("wait_flag", ""))
 	if wf != "" and not GameState.flags.get(wf, false) and def.has("hint"):
 		why = str(def["hint"])
-	return [TranslationServer.translate(str(def.get("text", ""))), TranslationServer.translate(why)]
+	return [TranslationServer.translate(str(def.get("text", ""))), glyphs(TranslationServer.translate(why))]
+
+
+## [v1guide] "{cube}" style action names in a why line become the current key glyph ([C], [X]...).
+static func glyphs(text: String) -> String:
+	var i: int = text.find("{")
+	while i >= 0:
+		var j: int = text.find("}", i)
+		if j < 0:
+			break
+		var act: String = text.substr(i + 1, j - i - 1)
+		if not InputMap.has_action(act):
+			i = text.find("{", j)
+			continue
+		var g: String = "[%s]" % Settings.glyph(act)
+		text = text.substr(0, i) + g + text.substr(j + 1)
+		i = text.find("{", i + g.length())
+	return text
 
 
 ## Progress of the current objective: [0..1 or -1 for none, label]. Hex objectives show the target
@@ -230,6 +249,7 @@ func _process(delta: float) -> void:
 	if not revealed:
 		return
 	_explain_signal()
+	_bale_reminder(delta)
 	_hold = maxf(0.0, _hold - delta)
 	_t -= delta
 	if _t > 0.0:
@@ -428,6 +448,35 @@ func _bench_pos() -> Variant:
 func _depot_pos() -> Variant:
 	var d: Variant = world.get("depot")
 	return (d as Node3D).global_position if d is Node3D else null
+
+
+# --- [v1guide] How to make a bale -----------------------------------------------------------------
+
+## Owner 2026-11-08 #21: after the Baler there was no word on how to make a bale.
+static func bale_howto() -> String:
+	return TranslationServer.translate("Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale.") % Settings.glyph("cube")
+
+
+func _on_upgrade_bought(id: String, lv: int) -> void:
+	if id != Pace.UP_BALER or lv < 1 or GameState.flags.get("bale_howto", false):
+		return
+	GameState.flags["bale_howto"] = true
+	EventBus.toast.emit(bale_howto(), "hint")
+
+
+var _bale_nag_t: float = 0.0
+
+
+## Until the first bale is pressed: a full chest with the Baler gets the key over Lumi's head.
+func _bale_reminder(delta: float) -> void:
+	_bale_nag_t -= delta
+	if _bale_nag_t > 0.0 or not Pace.baler_unlocked() or int(GameState.stats.get("cubes_made", 0)) > 0:
+		return
+	var p: Patch = world.get("patch") as Patch
+	if p == null or p.compartment == null or p.compartment.fill < p.capacity() * 0.95:
+		return
+	_bale_nag_t = 9.0
+	Vfx.float_text(p.global_position + OrbitUp.up(p.global_position) * 2.0, tr("Chest full: press [%s] to make a bale") % Settings.glyph("cube"), Color(1.0, 0.86, 0.45), 0.55, 0.6)
 
 
 # --- The part detector -------------------------------------------------------------------------

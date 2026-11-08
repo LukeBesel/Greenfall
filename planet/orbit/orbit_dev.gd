@@ -31,6 +31,22 @@ func _ready() -> void:
 		_reload_check.call_deferred()
 	if DevHooks.has("orbit-fauna-perf"):
 		_fauna_perf.call_deferred()
+	if DevHooks.has("orbit-carry"):  # [v1guide] --orbit-carry=N: Lumi holds N fresh bales (carry pose shots)
+		_carry.call_deferred()
+
+
+## [v1guide] Hands Lumi N bales of different fills, as if he pressed and picked them up.
+func _carry() -> void:
+	await get_tree().create_timer(2.0).timeout
+	var lumi: Patch = _lumi()
+	var n: int = clampi(int(DevHooks.get_f("orbit-carry", 1.0)), 1, 6)
+	for k: int in n:
+		var info: Dictionary = Economy.evaluate_cube({"plastic": 6.0 + k, "metal": 2.0, "paper": 1.5}, 10.0)
+		var c: JunkCube = JunkCube.create(info["value"], info)
+		so.w.call("add_cube", c)
+		c.global_position = lumi.global_position + lumi.up() * 3.0
+		lumi.pick_up(c)
+	print("[orbit] carry: %d bales, top %.2f m over Lumi" % [n, lumi.up().dot(lumi.carried.back().global_position - lumi.global_position) if not lumi.carried.is_empty() else -1.0])
 
 
 func _lumi() -> Patch:
