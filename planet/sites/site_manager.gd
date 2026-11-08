@@ -115,7 +115,79 @@ func prefab(i: int) -> SitePrefab:
 
 func _on_built(i: int, p: SitePrefab) -> void:
 	_clear_footprints(i, p)
+	_probe_footprints.call_deferred(i, p)
 	site_built.emit(i, p)
+
+
+## Probe offsets inside a 10 m cell: the centre and six points 4 m out.
+const PROBE: Array[Vector2] = [Vector2.ZERO, Vector2(4, 0), Vector2(-4, 0), Vector2(2, 3.5), Vector2(-2, 3.5), Vector2(2, -3.5), Vector2(-2, -3.5)]
+const SOLID_ABOVE_M: float = 1.0
+
+
+## Footprints for any planet's prefab (Anvil, Ochre, Tidewell, Rime build their own colliders):
+## after a physics frame, rays come down onto the prefab's own bodies at a few points per site
+## cell; a cell under something solid more than SOLID_ABOVE_M above the pad goes clean, so globe
+## junk never sits inside a building. Returns the cells cleared.
+func _probe_footprints(i: int, p: SitePrefab) -> int:
+	if cells == null or not is_instance_valid(p) or not p.is_inside_tree():
+		return 0
+	await get_tree().physics_frame
+	if not is_instance_valid(p) or not p.is_inside_tree():
+		return 0
+	var n: int = probe_cells(i, p)
+	print("[sites] %s hub %d (%s): %d junk cells under its buildings cleared" % [planet_id, i, p.site_id, n])
+	return n
+
+
+func probe_cells(i: int, p: SitePrefab) -> int:
+	var space: PhysicsDirectSpaceState3D = p.get_world_3d().direct_space_state
+	if space == null:
+		return 0
+	var n: int = 0
+	for c: int in sites[i]["cells"]:
+		if not cells.is_dirty(c) and cells.state[c] != 0:
+			continue
+		var dir: Vector3 = grid.centers[c]
+		var f: Basis = SphereGrid.frame(dir)
+		for o: Vector2 in PROBE:
+			var d: Vector3 = (dir + (f.x * o.x + f.z * o.y) / terrain.R).normalized()
+			var g: Vector3 = terrain.ground(d)
+			if _solid_above(space, p, g, d):
+				_clear_cell(c)
+				n += 1
+				break
+	return n
+
+
+func _solid_above(space: PhysicsDirectSpaceState3D, p: SitePrefab, g: Vector3, up: Vector3) -> bool:
+	var q := PhysicsRayQueryParameters3D.create(g + up * 60.0, g + up * SOLID_ABOVE_M)
+	q.collision_mask = 0xFFFFFFFF
+	var ex: Array[RID] = []
+	for k: int in 6:
+		q.exclude = ex
+		var hit: Dictionary = space.intersect_ray(q)
+		if hit.is_empty():
+			return false
+		var co: Object = hit["collider"]
+		if co is Node and p.is_ancestor_of(co as Node):
+			return true
+		ex.append(hit["rid"])
+	return false
+
+
+func _clear_cell(c: int) -> void:
+	cells.set_junk(c, 0.0)
+	cells.set_state(c, 1)
+	var field: Variant = globe.get("field")
+	if field is SphereField:
+		var f: SphereField = field
+		f.hex_left[c] = 0.0
+		if f.hex_hub[c] == 0:
+			f.hex_hub[c] = 1
+			f.junk_hex_count -= 1
+			if f.hex_clean[c] == 1:
+				f.cleaned_count -= 1
+		f.hex_clean[c] = 1
 
 
 ## Junk never sits inside a building: cells whose centre falls in a footprint go clean.
@@ -129,23 +201,12 @@ func _clear_footprints(i: int, p: SitePrefab) -> void:
 	if rects.is_empty():
 		return
 	var inv: Transform3D = (sites[i]["transform"] as Transform3D).affine_inverse()
-	var field: Variant = globe.get("field")
 	for c: int in sites[i]["cells"]:
 		var lp: Vector3 = inv * terrain.ground(grid.centers[c])
 		var q := Vector2(lp.x, lp.z)
 		for r: Rect2 in rects:
 			if r.grow(1.5).has_point(q):
-				cells.set_junk(c, 0.0)
-				cells.set_state(c, 1)
-				if field is SphereField:
-					var f: SphereField = field
-					f.hex_left[c] = 0.0
-					if f.hex_hub[c] == 0:
-						f.hex_hub[c] = 1
-						f.junk_hex_count -= 1
-						if f.hex_clean[c] == 1:
-							f.cleaned_count -= 1
-					f.hex_clean[c] = 1
+				_clear_cell(c)
 				break
 
 
