@@ -10,8 +10,8 @@ extends Node3D
 ## Geometry is grouped in TILE_M tiles; each tile is one mesh in its own ground frame (the site's
 ## east/south carried over the sphere to the tile), so the city shader runs in object space there
 ## (building_city.gdshader local_space). Every building has a box collider. The hex cells a
-## building stands on are cleared (hub ground, F_HUB) when the site is built, so no junk lies
-## inside a building and outposts keep off them. Nothing stands on lake cells or steep ground.
+## building stands on keep their junk, but every piece keeps off the footprint (YardKeepOut
+## add_world, per piece), so no junk lies inside a building and outposts keep off them. Nothing stands on lake cells or steep ground.
 ##
 ## Positions are "site metres": the exponential map round the hub (x east, z south, distances
 ## along the ground), the same layout the town's pad uses near the hub.
@@ -28,10 +28,23 @@ var site_xf: Transform3D
 var terrain: SphereTerrain
 var grid: SphereGrid
 var cells: SphereCells
-var clear_cell: Callable       # func(cell: int)
 var town_r: float = 136.0
 var seed_value: int = 4471
 var stats: Dictionary = {}
+## [ground frame (world), Rect2 in that frame] per building: the junk keep-out (YardKeepOut.add_world).
+var foot: Array = []
+var r_in: float = R_IN
+var kind: String = "start"  # VerdanceSite.KINDS: the outskirts follow the town's character
+## Per kind: open-lot share [near, far], tower-block share near (tower_f floors), floors of the
+## other blocks near/far, works share near/far, warehouse-block share, detached houses.
+const PROFILES: Dictionary = {
+	"start": {"lots": [0.12, 0.3], "tower": 0.55, "tower_f": [14, 30], "mid": [6, 12], "far": [2, 7], "factory": [0.0, 0.3], "warehouse": 0.0},
+	"downtown": {"lots": [0.06, 0.18], "tower": 0.7, "tower_f": [16, 34], "mid": [8, 14], "far": [3, 9], "factory": [0.0, 0.25], "warehouse": 0.0},
+	"oldtown": {"lots": [0.12, 0.3], "tower": 0.0, "tower_f": [0, 0], "mid": [3, 7], "far": [2, 5], "factory": [0.15, 0.3], "warehouse": 0.05},
+	"industrial": {"lots": [0.28, 0.4], "tower": 0.0, "tower_f": [0, 0], "mid": [2, 5], "far": [2, 4], "factory": [0.85, 0.9], "warehouse": 0.5},
+	"suburb": {"lots": [0.12, 0.3], "tower": 0.0, "tower_f": [0, 0], "mid": [1, 2], "far": [1, 2], "factory": [0.05, 0.1], "warehouse": 0.0, "houses": true},
+	"harbour": {"lots": [0.15, 0.3], "tower": 0.1, "tower_f": [10, 16], "mid": [3, 7], "far": [2, 5], "factory": [0.5, 0.5], "warehouse": 0.3},
+}
 
 var _detail := BuildingDetail.new()
 var _lay := CityLayout.new(1, 1.0)  # only for its perimeter-building generator
@@ -98,41 +111,41 @@ func build() -> void:
 			var rect := Rect2(c - Vector2(half, half), Vector2(half, half) * 2.0)
 			var near := Vector2(clampf(0.0, rect.position.x, rect.end.x), clampf(0.0, rect.position.y, rect.end.y))
 			var far: float = Vector2(maxf(absf(rect.position.x), absf(rect.end.x)), maxf(absf(rect.position.y), absf(rect.end.y))).length()
-			if far <= town_r or near.length() < R_IN or c.length() > R_OUT:
+			if far <= town_r or near.length() < r_in or c.length() > R_OUT:
 				continue  # the pad town's own block, or beyond the outskirts
 			var dist: float = c.length()
-			if rng.randf() < (0.12 if dist < TOWER_R else 0.3):
+			var pf: Dictionary = PROFILES.get(kind, PROFILES["start"])
+			var ni: int = 0 if dist < TOWER_R else 1
+			if rng.randf() < float(pf["lots"][ni]):
 				lots += 1
 				continue  # an open lot
 			var blds: Array = []
-			if dist < TOWER_R and rng.randf() < 0.55:
-				blds = _tower_block(rect, c, rng)
+			if ni == 0 and rng.randf() < float(pf["tower"]):
+				blds = _tower_block(rect, c, rng, pf["tower_f"])
+			elif rng.randf() < float(pf["warehouse"]):
+				blds = _warehouse(rect, c, rng)
 			else:
-				blds = _lay._make_buildings(rect, rng, Vector2i(bx, bz))
+				blds = VerdanceSite._houses(rect, rng) if pf.get("houses", false) else _lay._make_buildings(rect, rng, Vector2i(bx, bz))
+				var fr: Array = pf["mid"] if ni == 0 else pf["far"]
 				for bd: Dictionary in blds:
-					var f: int = rng.randi_range(6, 12) if dist < TOWER_R else rng.randi_range(2, 7)
-					bd["floors"] = f
+					bd["floors"] = rng.randi_range(int(fr[0]), int(fr[1]))
 					bd["ruined"] = rng.randf() < 0.2
-					if dist > TOWER_R and rng.randf() < 0.3:
-						bd["style"] = "factory"
+					bd["style"] = "factory" if rng.randf() < float(pf["factory"][ni]) else "apartments"
 			var tk := Vector2i(floori((c.x + TILE_M * 0.5) / TILE_M), floori((c.y + TILE_M * 0.5) / TILE_M))
 			if not tiles.has(tk):
 				tiles[tk] = []
 			(tiles[tk] as Array).append_array(blds)
-	stats = {"tiles": 0, "buildings": 0, "skipped_wet": 0, "skipped_slope": 0, "lots": lots, "cells_cleared": 0, "tallest": 0}
+	stats = {"tiles": 0, "buildings": 0, "skipped_wet": 0, "skipped_slope": 0, "lots": lots, "tallest": 0}
 	var cleared: Dictionary = {}
 	for tk: Vector2i in tiles:
 		await BuildBudget.check("town:outskirts")
 		_build_tile(tk, tiles[tk], cleared)
-	for c2: int in cleared:
-		if clear_cell.is_valid():
-			clear_cell.call(c2)
-	stats["cells_cleared"] = cleared.size()
+	stats["footprints"] = foot.size()
 
 
 ## A tower block: one tower (podium plus setbacks via the proxy's tiers) on the side facing the
 ## hub, a low building or two behind it.
-func _tower_block(rect: Rect2, c: Vector2, rng: RandomNumberGenerator) -> Array:
+func _tower_block(rect: Rect2, c: Vector2, rng: RandomNumberGenerator, tf: Array = [14, 30]) -> Array:
 	var out: Array = []
 	var to_hub: Vector2 = -c.normalized()
 	var face := Vector2(signf(to_hub.x), 0) if absf(to_hub.x) > absf(to_hub.y) else Vector2(0, signf(to_hub.y))
@@ -148,7 +161,7 @@ func _tower_block(rect: Rect2, c: Vector2, rng: RandomNumberGenerator) -> Array:
 	else:
 		var z0: float = rng.randf_range(rect.position.y, rect.end.y - size.y)
 		pos = Vector2(rect.position.x if face.x < 0 else rect.end.x - size.x, z0)
-	var f: int = rng.randi_range(14, 30)
+	var f: int = rng.randi_range(int(tf[0]), int(tf[1]))
 	out.append({"rect": Rect2(pos, size), "face": face, "bays": int(tw / 3.0), "floors": f,
 		"style": "apartments", "seed": rng.randi(), "ruined": rng.randf() < 0.15})
 	# A low wing behind it, along the back edge.
@@ -161,6 +174,19 @@ func _tower_block(rect: Rect2, c: Vector2, rng: RandomNumberGenerator) -> Array:
 		out.append({"rect": br, "face": -face, "bays": bays, "floors": rng.randi_range(2, 5),
 			"style": "factory" if rng.randf() < 0.5 else "apartments", "seed": rng.randi(), "ruined": rng.randf() < 0.3})
 	return out
+
+
+## A works block: one big low shed filling most of the block, its doors to the street.
+func _warehouse(rect: Rect2, c: Vector2, rng: RandomNumberGenerator) -> Array:
+	var w: float = float(rng.randi_range(5, 7)) * 3.0
+	var d: float = rng.randf_range(13.0, 19.0)
+	var to_hub: Vector2 = -c.normalized()
+	var face := Vector2(signf(to_hub.x), 0) if absf(to_hub.x) > absf(to_hub.y) else Vector2(0, signf(to_hub.y))
+	var along_x: bool = absf(face.y) > 0.5
+	var size: Vector2 = Vector2(w, d) if along_x else Vector2(d, w)
+	var pos: Vector2 = rect.get_center() - size * 0.5 + Vector2(rng.randf_range(-1.5, 1.5), rng.randf_range(-1.5, 1.5))
+	return [{"rect": Rect2(pos, size), "face": face, "bays": int(w / 3.0), "floors": rng.randi_range(2, 3),
+		"style": "factory", "seed": rng.randi(), "ruined": rng.randf() < 0.25}]
 
 
 func _build_tile(tk: Vector2i, blds: Array, cleared: Dictionary) -> void:
@@ -223,16 +249,9 @@ func _build_tile(tk: Vector2i, blds: Array, cleared: Dictionary) -> void:
 		sb.add_child(cs)
 		placed += 1
 		stats["tallest"] = maxi(int(stats["tallest"]), int(bd["floors"]))
-		# Its cells: hub ground from now on.
-		var gr: Rect2 = r.grow(1.0)
-		var sx: int = maxi(2, int(ceil(gr.size.x / 4.0)))
-		var sz: int = maxi(2, int(ceil(gr.size.y / 4.0)))
-		for ix: int in sx + 1:
-			for iz: int in sz + 1:
-				var p := Vector2(gr.position.x + gr.size.x * ix / sx, gr.position.y + gr.size.y * iz / sz)
-				var cl: int = grid.cell_at(_dir(p.x, p.y))
-				if cells.state[cl] != 5:
-					cleared[cl] = true
+		# Junk keeps off its footprint, piece by piece (the cell keeps its trash look and the rest of
+		# its junk): world footprints in the tile's ground frame (YardKeepOut.add_world).
+		foot.append([fr, Rect2(lr.position - Vector2(0.3, 0.3), lr.size + Vector2(0.6, 0.6))])
 	if placed == 0:
 		sb.free()
 		return

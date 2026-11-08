@@ -630,6 +630,8 @@ static func _open_cells(frame: Node3D, f: SphereField, p: Vector3, foot: float) 
 		var h: int = f.hex_at(wq)
 		if h < 0 or f.is_water(h) or f.hex_hub[h] != 0 or f.cells.has_flag(h, SphereCells.F_SITE):
 			return false
+		if f.keep_out.is_valid() and bool(f.keep_out.call(wq.normalized())):
+			return false  # [v3city] inside a town building (the hubs' outskirts)
 		for lm: Dictionary in f.landmarks:
 			if OrbitUp.ground_dist(lm["pos"], wq) < 1.6:
 				return false

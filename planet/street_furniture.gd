@@ -12,7 +12,7 @@ extends Node3D
 ## hand their footprints to the junk keep-out (prop_rects), so no junk lies inside them.
 ## Nothing goes on lake cells (water_fn), inside `keep_r` of the yard, or out past `town_r`.
 
-const CELL: float = 72.0
+const CELL: float = 144.0  # [v3city] batch: one mesh per 144 m square and kind (few draws)
 const KERB: float = CityLayout.PITCH * 0.5 - CityLayout.ROAD_W * 0.5  # 13.5: kerb line from a block centre
 const ROAD_C: float = CityLayout.PITCH * 0.5                          # 18: road centre line
 const CAR_COLS: Array[String] = ["#8f3b2e", "#3d5f86", "#d8cfb8", "#6f9a83", "#c49a3a", "#6d6f72", "#b8b6ae",
@@ -28,6 +28,8 @@ var state: String = "broken"
 var obstacles: Array[Vector2] = []  # lamps, hydrants, boxes CityView put on the sidewalks
 var prop_rects: Array[Rect2] = []   # junk keep-out (site-local)
 var counts: Dictionary = {}
+var buildings: Array[Rect2] = []    # the town's building footprints (the quay keeps off them)
+var big_ship: bool = false          # one old ship run aground in the lake (the start town)
 
 var _rng := RandomNumberGenerator.new()
 var _b: Dictionary = {}       # cell -> KitMesh.Builder (street furniture)
@@ -52,6 +54,9 @@ func build(p_layout: CityLayout, seed_v: int) -> void:
 	await BuildBudget.check("town:wrecks")
 	_kerb_wrecks()
 	_lot_wrecks()
+	if water_fn.is_valid():
+		await BuildBudget.check("town:waterfront")
+		_waterfront()
 	await BuildBudget.check("town:flush")
 	_flush()
 
@@ -229,7 +234,7 @@ func _bus_stop(p: Vector2, o: Vector2) -> void:
 			b.box(col, Vector3(0.08, h, 0.08), xf * KitMesh.xf(Vector3(sx * (w * 0.5 - 0.05), h * 0.5, sz * (d * 0.5 - 0.05))), 0.01)
 	var tilt: float = _rng.randf_range(-3.0, 3.0) if _rng.randf() < 0.4 else 0.0
 	b.box(col, Vector3(w + 0.2, 0.1, d + 0.25), xf * KitMesh.xf(Vector3(0, h + 0.05, 0.08), Vector3(tilt, 0, 0)), 0.03)
-	b.box("steel", Vector3(w + 0.22, 0.14, 0.06), xf * KitMesh.xf(Vector3(0, h, d * 0.5 + 0.2)), 0.01)
+	b.box("paint:#9a9c9e", Vector3(w + 0.22, 0.14, 0.06), xf * KitMesh.xf(Vector3(0, h, d * 0.5 + 0.2)), 0.01)
 	if _rng.randf() < 0.75:
 		b.box("glass", Vector3(w - 0.15, 1.75, 0.03), xf * KitMesh.xf(Vector3(0, 1.15, -d * 0.5 + 0.04)), 0.005)
 	else:  # smashed: just the frame rail
@@ -241,10 +246,10 @@ func _bus_stop(p: Vector2, o: Vector2) -> void:
 	# Bench inside.
 	b.box("paint:#7a5a3a", Vector3(2.0, 0.06, 0.38), xf * KitMesh.xf(Vector3(-0.2, 0.46, -0.3)), 0.01)
 	for sx2: float in [-0.9, 0.5]:
-		b.box("dark_steel", Vector3(0.06, 0.44, 0.3), xf * KitMesh.xf(Vector3(sx2, 0.22, -0.3)), 0.01)
+		b.box("paint:#2c2e31", Vector3(0.06, 0.44, 0.3), xf * KitMesh.xf(Vector3(sx2, 0.22, -0.3)), 0.01)
 	# Stop pole by the kerb with its round sign and a timetable box.
 	var pole := xf * KitMesh.xf(Vector3(w * 0.5 + 0.7, 0, 0.5))
-	b.cyl("dark_steel", 0.04, 2.7, pole, 0.005, 8)
+	b.cyl("paint:#2c2e31", 0.04, 2.7, pole, 0.005, 8)
 	b.cyl("paint:#1f5fa8", 0.3, 0.04, pole * KitMesh.xf(Vector3(0, 2.55, 0), Vector3(90, 0, 0)), 0.01, 16)
 	b.cyl("paint:#f2efe6", 0.22, 0.05, pole * KitMesh.xf(Vector3(0, 2.55, 0.0), Vector3(90, 0, 0)), 0.01, 16)
 	b.box("paint:#f2efe6", Vector3(0.3, 0.42, 0.06), pole * KitMesh.xf(Vector3(0, 1.5, 0.05)), 0.01)
@@ -271,8 +276,8 @@ func _bench(p: Vector2, o: Vector2) -> void:
 	for k2: int in 2:
 		b.box(wood, Vector3(1.8, 0.11, 0.035), xf * KitMesh.xf(Vector3(0, 0.62 + k2 * 0.16, -0.3), Vector3(-12, 0, 0)), 0.01)
 	for sx: float in [-0.75, 0.75]:
-		b.box("dark_steel", Vector3(0.05, 0.45, 0.45), xf * KitMesh.xf(Vector3(sx, 0.225, -0.08)), 0.01)
-		b.box("dark_steel", Vector3(0.05, 0.42, 0.05), xf * KitMesh.xf(Vector3(sx, 0.62, -0.3), Vector3(-12, 0, 0)), 0.01)
+		b.box("paint:#2c2e31", Vector3(0.05, 0.45, 0.45), xf * KitMesh.xf(Vector3(sx, 0.225, -0.08)), 0.01)
+		b.box("paint:#2c2e31", Vector3(0.05, 0.42, 0.05), xf * KitMesh.xf(Vector3(sx, 0.62, -0.3), Vector3(-12, 0, 0)), 0.01)
 	_collide(xf, Vector3(1.8, 0.85, 0.5))
 	obstacles.append(p)
 	_count("benches")
@@ -285,15 +290,15 @@ func _bin(p: Vector2, o: Vector2) -> void:
 	if _rng.randf() < 0.18:  # knocked over, lid off, its bag spilled
 		var xf: Transform3D = _at(p, yaw) * KitMesh.xf(Vector3(0, 0.28, 0), Vector3(0, 0, 90))
 		b.cyl(col, 0.27, 0.85, xf * KitMesh.xf(Vector3(0, -0.42, 0)), 0.02, 12)
-		b.cyl("rubber", 0.24, 0.3, _at(p + o * 0.0 + Vector2(cos(yaw), sin(yaw)) * 0.75, yaw) * KitMesh.xf(Vector3(0, 0.0, 0)), 0.08, 8)
+		b.cyl("paint:#141416", 0.24, 0.3, _at(p + o * 0.0 + Vector2(cos(yaw), sin(yaw)) * 0.75, yaw) * KitMesh.xf(Vector3(0, 0.0, 0)), 0.08, 8)
 		_collide(_at(p, yaw), Vector3(0.6, 0.55, 0.9))
 	else:
 		var xf2: Transform3D = _at(p, yaw)
 		b.cyl(col, 0.27, 0.82, xf2, 0.02, 12)
-		b.cyl("dark_steel", 0.3, 0.07, xf2 * KitMesh.xf(Vector3(0, 0.82, 0)), 0.02, 12)
-		b.box("dark_steel", Vector3(0.22, 0.04, 0.06), xf2 * KitMesh.xf(Vector3(0, 0.9, 0)), 0.01)
+		b.cyl("paint:#2c2e31", 0.3, 0.07, xf2 * KitMesh.xf(Vector3(0, 0.82, 0)), 0.02, 12)
+		b.box("paint:#2c2e31", Vector3(0.22, 0.04, 0.06), xf2 * KitMesh.xf(Vector3(0, 0.9, 0)), 0.01)
 		if _rng.randf() < 0.5:  # overflowing
-			b.cyl("rubber", 0.2, 0.25, xf2 * KitMesh.xf(Vector3(0.05, 0.86, 0.02), Vector3(8, 0, 6)), 0.08, 8)
+			b.cyl("paint:#141416", 0.2, 0.25, xf2 * KitMesh.xf(Vector3(0.05, 0.86, 0.02), Vector3(8, 0, 6)), 0.08, 8)
 		_collide(xf2, Vector3(0.55, 0.9, 0.55))
 	obstacles.append(p)
 	_count("bins")
@@ -306,9 +311,9 @@ func _post_box(p: Vector2, o: Vector2) -> void:
 	var col: String = ["paint:#1f4f8a", "paint:#a8322a", "paint:#c49a3a"][_rng.randi() % 3]
 	b.box(col, Vector3(0.48, 0.95, 0.42), xf * KitMesh.xf(Vector3(0, 0.55, 0)), 0.03)
 	b.box(col, Vector3(0.5, 0.08, 0.44), xf * KitMesh.xf(Vector3(0, 1.06, 0)), 0.02)
-	b.box("dark_steel", Vector3(0.3, 0.04, 0.02), xf * KitMesh.xf(Vector3(0, 0.85, 0.22)), 0.005)
+	b.box("paint:#2c2e31", Vector3(0.3, 0.04, 0.02), xf * KitMesh.xf(Vector3(0, 0.85, 0.22)), 0.005)
 	for sx: float in [-0.18, 0.18]:
-		b.box("dark_steel", Vector3(0.05, 0.1, 0.32), xf * KitMesh.xf(Vector3(sx, 0.05, 0)), 0.01)
+		b.box("paint:#2c2e31", Vector3(0.05, 0.1, 0.32), xf * KitMesh.xf(Vector3(sx, 0.05, 0)), 0.01)
 	_collide(xf, Vector3(0.5, 1.1, 0.45))
 	obstacles.append(p)
 	_count("post_boxes")
@@ -362,7 +367,7 @@ func _name_post(p: Vector2) -> void:
 	var b: KitMesh.Builder = _builder(p)
 	var lean: Vector3 = Vector3(_rng.randf_range(-6, 6), 0, _rng.randf_range(-6, 6)) if _rng.randf() < 0.25 else Vector3.ZERO
 	var xf: Transform3D = _at(p, 0.0) * KitMesh.xf(Vector3.ZERO, lean)
-	b.cyl("dark_steel", 0.045, 3.0, xf, 0.005, 8)
+	b.cyl("paint:#2c2e31", 0.045, 3.0, xf, 0.005, 8)
 	var green: String = "paint:#2f6b45"
 	b.box(green, Vector3(1.0, 0.2, 0.03), xf * KitMesh.xf(Vector3(0.3, 2.85, 0)), 0.01)
 	b.box(green, Vector3(0.03, 0.2, 1.0), xf * KitMesh.xf(Vector3(0, 2.62, 0.3), Vector3(0, 0, _rng.randf_range(-8, 8))), 0.01)
@@ -378,7 +383,7 @@ func _stop_sign(p: Vector2, _ic: Vector2, to_ic: Vector2) -> void:
 	var face: Vector2 = Vector2(to_ic.x, 0) if _rng.randf() < 0.5 else Vector2(0, to_ic.y)
 	var yaw: float = atan2(face.x, face.y) + PI
 	var xf: Transform3D = _at(p, yaw)
-	b.cyl("dark_steel", 0.04, 2.5, xf, 0.005, 8)
+	b.cyl("paint:#2c2e31", 0.04, 2.5, xf, 0.005, 8)
 	b.cyl("paint:#b8322a", 0.36, 0.03, xf * KitMesh.xf(Vector3(0, 2.3, 0.05), Vector3(90, 22.5, 0)), 0.006, 8)
 	b.cyl("paint:#f2efe6", 0.3, 0.035, xf * KitMesh.xf(Vector3(0, 2.3, 0.052), Vector3(90, 22.5, 0)), 0.004, 8)
 	b.cyl("paint:#b8322a", 0.26, 0.04, xf * KitMesh.xf(Vector3(0, 2.3, 0.056), Vector3(90, 22.5, 0)), 0.004, 8)
@@ -392,11 +397,11 @@ func _traffic_light(p: Vector2, ic: Vector2) -> void:
 	var yaw: float = atan2(-to.x, -to.y)  # local -Z toward the junction
 	var bent: bool = _rng.randf() < 0.2
 	var xf: Transform3D = _at(p, yaw) * KitMesh.xf(Vector3.ZERO, Vector3(-9.0 if bent else 0.0, 0, 0))
-	b.cyl("dark_steel", 0.09, 4.6, xf, 0.01, 10)
-	b.cyl("dark_steel", 0.13, 0.5, xf, 0.01, 10)
+	b.cyl("paint:#2c2e31", 0.09, 4.6, xf, 0.01, 10)
+	b.cyl("paint:#2c2e31", 0.13, 0.5, xf, 0.01, 10)
 	# Arm out over the road with the signal head hanging from it; a second head on the pole.
 	var arm_l: float = 4.2
-	b.rod("dark_steel", xf * Vector3(0, 4.4, 0), xf * Vector3(0, 4.55, -arm_l), 0.055, 8)
+	b.rod("paint:#2c2e31", xf * Vector3(0, 4.4, 0), xf * Vector3(0, 4.55, -arm_l), 0.055, 8)
 	for at: Vector3 in [Vector3(0, 3.65, -arm_l + 0.3), Vector3(0.0, 2.6, 0.2)]:
 		var hx: Transform3D = xf * KitMesh.xf(at)
 		b.box("paint:#2a2c30", Vector3(0.36, 0.95, 0.3), hx, 0.03)
@@ -520,7 +525,7 @@ func _car(p: Vector2, yaw: float) -> void:
 				b.box("glass", Vector3(0.03, 0.42, 0.7), root * KitMesh.xf(Vector3(sx3 * (W - 0.05) * 0.5, cab_y + 0.62, L * 0.18)), 0.005)
 	# Bumpers, lights, wheels.
 	for sz: float in [-1.0, 1.0]:
-		b.box("dark_steel", Vector3(W + 0.04, 0.16, 0.14), root * KitMesh.xf(Vector3(0, clr + 0.14, sz * (L * 0.5 + 0.02))), 0.04)
+		b.box("paint:#2c2e31", Vector3(W + 0.04, 0.16, 0.14), root * KitMesh.xf(Vector3(0, clr + 0.14, sz * (L * 0.5 + 0.02))), 0.04)
 		for sx4: float in [-1.0, 1.0]:
 			var lamp: String = "paint:#e8e2cf" if sz > 0.0 else "paint:#9a2a22"
 			b.box(lamp, Vector3(0.32, 0.12, 0.04), root * KitMesh.xf(Vector3(sx4 * (W * 0.5 - 0.25), clr + body_h - 0.16, sz * (L * 0.5 + 0.005))), 0.01)
@@ -529,8 +534,8 @@ func _car(p: Vector2, yaw: float) -> void:
 			for sz2: float in [-1.0, 1.0]:
 				var flat: float = 0.06 if _rng.randf() < 0.4 else 0.0
 				var wx: Transform3D = root * KitMesh.xf(Vector3(sx5 * (W * 0.5 - 0.02) - sx5 * 0.11, 0.33 - flat * 0.5, sz2 * L * 0.32), Vector3(0, 0, 90))
-				b.cyl("rubber", 0.33, 0.22, wx * KitMesh.xf(Vector3(0, -0.11, 0)), 0.06, 14)
-				b.cyl("steel", 0.18, 0.24, wx * KitMesh.xf(Vector3(0, -0.12, 0)), 0.02, 10)
+				b.cyl("paint:#141416", 0.33, 0.22, wx * KitMesh.xf(Vector3(0, -0.11, 0)), 0.06, 14)
+				b.cyl("paint:#9a9c9e", 0.18, 0.24, wx * KitMesh.xf(Vector3(0, -0.12, 0)), 0.02, 10)
 	var h: float = clr + body_h + (1.0 if kind == 2 else 0.55)
 	_collide(_at(p, yaw), Vector3(W + 0.1, h, L + 0.1))
 	prop_rects.append(_rect_of(p, Vector2(W, L), yaw))
@@ -546,6 +551,214 @@ static func _rect_of(p: Vector2, size: Vector2, yaw: float) -> Rect2:
 	return Rect2(p - e, e * 2.0)
 
 
+# --- Waterfront -------------------------------------------------------------------------------
+
+const QUAY_STEP: float = 3.0
+const WATER_Y: float = -0.25  # the lake surface (SphereWater.BELOW_LAND under the land)
+
+
+## The lake shore inside the town: a paved quay with a stone edge, railing runs with gaps (Lumi can
+## still get down to the water and its floating junk), lamps, mooring bollards and benches; wooden
+## piers out over the water where it is deep enough, boats moored at them and a few adrift or sunk;
+## on the start lake an old ship run aground.
+func _waterfront() -> void:
+	var half: float = town_r + 12.0
+	var n: int = int(half * 2.0 / QUAY_STEP) + 1
+	var wet := PackedByteArray()
+	wet.resize(n * n)
+	for j: int in n:
+		for i: int in n:
+			var p := Vector2(-half + i * QUAY_STEP, -half + j * QUAY_STEP)
+			wet[j * n + i] = 1 if _wet(p) else 0
+	var at := func(i: int, j: int) -> int:
+		return 1 if i < 0 or j < 0 or i >= n or j >= n else wet[j * n + i]
+	var shore: Array = []  # [p, normal toward the water, i, j]
+	for j: int in n:
+		for i: int in n:
+			if wet[j * n + i] == 1:
+				continue
+			var p := Vector2(-half + i * QUAY_STEP, -half + j * QUAY_STEP)
+			var r: float = p.length()
+			if r < keep_r - 2.0 or r > town_r + 6.0:
+				continue
+			var nrm := Vector2.ZERO
+			var edge: bool = false
+			for dj: int in range(-1, 2):
+				for di: int in range(-1, 2):
+					if (di != 0 or dj != 0) and at.call(i + di, j + dj) == 1:
+						nrm += Vector2(di, dj).normalized()
+						if di == 0 or dj == 0:
+							edge = true
+			if not edge or nrm.length() < 0.3:
+				continue
+			if _in_rects(p, 2.5):
+				continue
+			shore.append([p, nrm.normalized(), i, j])
+	var k: int = 0
+	var piers: Array[Vector2] = []
+	for e: Array in shore:
+		var p: Vector2 = e[0]
+		var nrm: Vector2 = e[1]
+		var b: KitMesh.Builder = _builder(p)
+		var yaw: float = atan2(nrm.x, nrm.y)  # local +Z toward the water
+		var xf: Transform3D = _at(p, yaw)
+		# Paving and the stone edge dropping to the water.
+		b.box("paint:#8f8a80", Vector3(QUAY_STEP + 0.05, 0.1, QUAY_STEP + 0.05), xf * KitMesh.xf(Vector3(0, 0.0, 0)), 0.02)
+		b.box("paint:#6f6a62", Vector3(QUAY_STEP + 0.05, 0.9, 0.35), xf * KitMesh.xf(Vector3(0, -0.4, QUAY_STEP * 0.5)), 0.03)
+		var hsh: int = (int(e[2]) * 73856093) ^ (int(e[3]) * 19349663)
+		# Railing runs: two cells of rail, one open (steps down to the water).
+		if posmod(hsh, 3) != 0:
+			var rx: Transform3D = xf * KitMesh.xf(Vector3(0, 0.05, QUAY_STEP * 0.5 - 0.15))
+			for sx: float in [-1.4, 0.0, 1.4]:
+				b.box("paint:#2f5f66", Vector3(0.06, 1.0, 0.06), rx * KitMesh.xf(Vector3(sx, 0.5, 0)), 0.01)
+			b.box("paint:#2f5f66", Vector3(QUAY_STEP, 0.06, 0.06), rx * KitMesh.xf(Vector3(0, 1.0, 0)), 0.015)
+			b.box("paint:#2f5f66", Vector3(QUAY_STEP, 0.04, 0.04), rx * KitMesh.xf(Vector3(0, 0.55, 0)), 0.01)
+			_collide(rx, Vector3(QUAY_STEP, 1.05, 0.14))
+		elif posmod(hsh >> 3, 2) == 0:
+			# A mooring bollard on the open edge.
+			var bx: Transform3D = xf * KitMesh.xf(Vector3(0.6, 0.05, QUAY_STEP * 0.5 - 0.4))
+			b.cyl("paint:#2c2e31", 0.16, 0.45, bx, 0.03, 10)
+			b.cyl("paint:#2c2e31", 0.22, 0.07, bx * KitMesh.xf(Vector3(0, 0.45, 0)), 0.02, 10)
+			_collide(bx, Vector3(0.35, 0.5, 0.35))
+		if k % 6 == 2 and _clear_of(p, 3.0):
+			_quay_lamp(xf * KitMesh.xf(Vector3(-1.0, 0.05, 0.6)))
+			obstacles.append(p)
+		elif k % 9 == 5 and _clear_of(p, 3.0):
+			_bench(p - nrm * 0.6, nrm)
+		k += 1
+		_count("quay")
+		# A pier where the water runs out far enough.
+		var deep: bool = true
+		for d: float in [6.0, 12.0, 18.0, 22.0]:
+			if not _wet(p + nrm * d):
+				deep = false
+				break
+		var spaced: bool = true
+		for q: Vector2 in piers:
+			if q.distance_to(p) < 28.0:
+				spaced = false
+		if deep and spaced and (absf(nrm.x) > 0.92 or absf(nrm.y) > 0.92) and piers.size() < 4:
+			piers.append(p)
+			_pier(p, nrm.round().normalized())
+	if big_ship:
+		_ship(shore)
+
+
+func _in_rects(p: Vector2, grow: float) -> bool:
+	for r: Rect2 in buildings:
+		if r.grow(grow).has_point(p):
+			return true
+	return false
+
+
+func _quay_lamp(xf: Transform3D) -> void:
+	var b: KitMesh.Builder = _builder(Vector2(xf.origin.x, xf.origin.z))
+	b.cyl("paint:#2f3a3c", 0.07, 3.6, xf, 0.01, 10)
+	b.cyl("paint:#2f3a3c", 0.14, 0.4, xf, 0.02, 10)
+	b.box("paint:#2f3a3c", Vector3(0.36, 0.08, 0.36), xf * KitMesh.xf(Vector3(0, 3.62, 0)), 0.02)
+	b.box("trim:warm", Vector3(0.26, 0.34, 0.26), xf * KitMesh.xf(Vector3(0, 3.42, 0)), 0.02)
+	b.box("paint:#2f3a3c", Vector3(0.3, 0.06, 0.3), xf * KitMesh.xf(Vector3(0, 3.24, 0)), 0.02)
+	_collide(xf, Vector3(0.25, 3.6, 0.25))
+	_count("quay_lamps")
+
+
+## A wooden pier from the shore out over the water along `d`, with boats moored along it.
+func _pier(p: Vector2, d: Vector2) -> void:
+	var length: float = _rng.randf_range(14.0, 20.0)
+	var w: float = 3.0
+	var yaw: float = atan2(d.x, d.y)
+	var base: Transform3D = _at(p + d * 1.5, yaw)
+	var b: KitMesh.Builder = _builder(p + d * length * 0.5)
+	var y: float = 0.12
+	var t: float = 0.0
+	var plank: Array[String] = ["paint:#6b5038", "paint:#7a5c40", "paint:#5d4632"]
+	while t < length:
+		if _rng.randf() > 0.06:  # a few planks missing
+			b.box(plank[_rng.randi() % 3], Vector3(w, 0.07, 0.42), base * KitMesh.xf(Vector3(0, y - 0.035, t + 0.25)), 0.01)
+		t += 0.5
+	for z: float in range(0, int(length) + 1, 3):
+		for sx: float in [-1.0, 1.0]:
+			b.cyl("paint:#3d3024", 0.12, 1.6, base * KitMesh.xf(Vector3(sx * (w * 0.5 - 0.1), -1.3, float(z) + 0.2)), 0.02, 8)
+	for sx2: float in [-1.0, 1.0]:
+		b.box("paint:#4a3a2a", Vector3(0.14, 0.18, length), base * KitMesh.xf(Vector3(sx2 * (w * 0.5 - 0.05), y - 0.16, length * 0.5)), 0.02)
+	# The deck: walkable (Lumi steps on from the quay).
+	PropColliders.add_box(_body, base * Transform3D(Basis(), Vector3(0, y - 0.1, length * 0.5)), Vector3(w, 0.2, length))
+	var c: Vector2 = p + d * (1.5 + length * 0.5)
+	prop_rects.append(_rect_of(c, Vector2(w + 0.4, length), yaw))
+	_count("piers")
+	# Moored boats: one or two alongside, now and then one sunk at its berth.
+	var across := Vector2(d.y, -d.x)
+	for k: int in _rng.randi_range(1, 2):
+		var side: float = 1.0 if k == 0 else -1.0
+		var bp: Vector2 = p + d * (1.5 + length * _rng.randf_range(0.4, 0.8)) + across * side * (w * 0.5 + 1.6)
+		if _wet(bp):
+			_boat(bp, yaw + _rng.randf_range(-0.08, 0.08), _rng.randf() < 0.2)
+	# One adrift further out.
+	var dp: Vector2 = p + d * (length + 8.0) + across * _rng.randf_range(-6.0, 6.0)
+	if _wet(dp) and _rng.randf() < 0.6:
+		_boat(dp, _rng.randf() * TAU, _rng.randf() < 0.3)
+
+
+## A small boat on the lake (length along local Z): hull, gunwales, a wheelhouse on some.
+func _boat(p: Vector2, yaw: float, sunk: bool) -> void:
+	var b: KitMesh.Builder = _builder(p, true)
+	var L: float = _rng.randf_range(4.5, 7.0)
+	var W: float = L * 0.34
+	var col: String = ["paint:#e6e1d4", "paint:#2f5f86", "paint:#a8392c", "paint:#2f6f5a", "paint:#c49a3a"][_rng.randi() % 5]
+	var tilt := Vector3(_rng.randf_range(-6, 6), 0, _rng.randf_range(-8, 8))
+	var y: float = WATER_Y - 0.35
+	if sunk:
+		tilt = Vector3(_rng.randf_range(-18, 18), 0, _rng.randf_range(-25, 25))
+		y = WATER_Y - 0.75
+	var xf: Transform3D = _at(p, yaw) * KitMesh.xf(Vector3(0, y, 0), tilt)
+	b.box(col, Vector3(W * 0.7, 0.35, L * 0.8), xf * KitMesh.xf(Vector3(0, 0.18, -L * 0.05)), 0.08)
+	for sx: float in [-1.0, 1.0]:
+		b.box(col, Vector3(0.12, 0.75, L * 0.82), xf * KitMesh.xf(Vector3(sx * W * 0.42, 0.5, -L * 0.05), Vector3(0, 0, sx * 14.0)), 0.04)
+		b.box(col, Vector3(0.12, 0.7, L * 0.32), xf * KitMesh.xf(Vector3(sx * W * 0.22, 0.48, L * 0.4), Vector3(0, sx * 28.0, sx * 10.0)), 0.04)
+	b.box("paint:#2c2e31", Vector3(W, 0.08, L * 0.85), xf * KitMesh.xf(Vector3(0, 0.88, -L * 0.03)), 0.02)
+	b.box(col, Vector3(W * 0.84, 0.6, 0.12), xf * KitMesh.xf(Vector3(0, 0.5, -L * 0.45)), 0.04)
+	if L > 5.5:
+		b.box("paint:#e6e1d4", Vector3(W * 0.6, 1.0, L * 0.25), xf * KitMesh.xf(Vector3(0, 1.3, -L * 0.15)), 0.05)
+		b.box("glass", Vector3(W * 0.62, 0.35, L * 0.1), xf * KitMesh.xf(Vector3(0, 1.55, -L * 0.03)), 0.01)
+	_collide(_at(p, yaw) * Transform3D(Basis(), Vector3(0, WATER_Y - 0.4, 0)), Vector3(W + 0.2, 1.6, L))
+	prop_rects.append(_rect_of(p, Vector2(W, L), yaw))
+	obstacles.append(p)
+	_count("boats")
+
+
+## An old ship run aground in the lake, listing, a few dozen metres off the quay.
+func _ship(shore: Array) -> void:
+	if not AssetLib.has_model("dutch_ship_medium"):
+		return
+	var mesh: Mesh = AssetLib.model_mesh("dutch_ship_medium")
+	var bb: AABB = mesh.get_aabb()
+	var size: float = maxf(bb.size.x, bb.size.z)
+	var sc: float = clampf(26.0 / maxf(size, 1.0), 0.3, 1.2)
+	for e: Array in shore:
+		var p: Vector2 = e[0]
+		var nrm: Vector2 = e[1]
+		var c: Vector2 = p + nrm * 24.0
+		var ok: bool = c.length() > goal_r + 20.0
+		for o: Vector2 in [Vector2.ZERO, Vector2(12, 0), Vector2(-12, 0), Vector2(0, 12), Vector2(0, -12)]:
+			if not _wet(c + o):
+				ok = false
+		if not ok:
+			continue
+		var yaw: float = atan2(nrm.x, nrm.y) + PI * 0.5 + _rng.randf_range(-0.4, 0.4)
+		var xf := Transform3D(Basis.from_euler(Vector3(deg_to_rad(4.0), yaw, deg_to_rad(9.0))).scaled(Vector3.ONE * sc), Vector3(c.x, WATER_Y - 1.6, c.y))
+		var mi := MeshInstance3D.new()
+		mi.name = "ShipWreck"
+		mi.mesh = mesh
+		mi.transform = xf
+		mi.visibility_range_end = 700.0
+		add_child(mi)
+		var hx: Vector2 = Vector2(bb.size.x, bb.size.z) * sc
+		_collide(_at(c, yaw) * Transform3D(Basis(), Vector3(0, WATER_Y - 1.0, 0)), Vector3(hx.x * 0.8, bb.size.y * sc * 0.5, hx.y * 0.8))
+		prop_rects.append(_rect_of(c, hx * 0.85, yaw))
+		_count("ship")
+		return
+
+
 # --- Flush ------------------------------------------------------------------------------------
 
 func _flush() -> void:
@@ -559,6 +772,8 @@ func _flush() -> void:
 			KitMat.apply(mi, "broken" if pass_i == 1 else state, false)
 			mi.visibility_range_end = 230.0 if pass_i == 0 else 330.0
 			mi.visibility_range_end_margin = 20.0
+			if pass_i == 0:
+				mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF  # street furniture: thin, low, near the kerb
 			mi.set_meta("no_collide", true)
 			if pass_i == 1:
 				mi.set_meta("wreck", true)

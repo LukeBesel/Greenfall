@@ -130,6 +130,8 @@ static func plan_spots_cells(frame: Node3D, f: SphereField, cells: PackedInt32Ar
 				var wp: Vector3 = f.terrain.ground(frame.to_global(p).normalized())
 				if f.hex_at(wp) != hid or Vector2(p.x, p.z).length() < min_r or f.ground_height(hid, wp) > 0.05:
 					continue
+				if f.keep_out.is_valid() and bool(f.keep_out.call(wp.normalized())):
+					continue  # [v3city] not inside a town building or a parked wreck
 				var min_d: float = 9.0 if attempt < 70 else 5.0
 				var clash: bool = false
 				for u: Vector3 in used + lms:

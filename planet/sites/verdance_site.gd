@@ -28,8 +28,23 @@ const START_EXTENT: float = 108.0  # [v3city] 7 x 7 blocks cut to the start pad'
 ## YardKeepOut.SMALL_ONLY_M) stay whole. Floors per ring: forecourt row, mid-rise, skyline towers.
 const TOWN_R: float = 136.0
 const GOAL_R: float = 40.0
+const HUB_TOWN_R: float = 116.0  # [v3city] other hubs' pads are 120 m (OrbitPlanet.VERDANCE_HUB_SITE_M)
 const RING_FLOORS: Array = [[0, 0], [3, 5], [3, 8], [7, 16]]
 const TOWER_SHARE: float = 0.22  # ring-3 buildings that shoot up to 18-26 floors
+## [v3city] Town characters, so no two hubs look copy-pasted. Per ring 1..3: floors [min, max];
+## tower: share of outer-ring buildings that shoot up (tower_f floors); lots: share of open
+## blocks; factory: share of works/warehouse fronts; ruin: broken-off share (ring 1, rings 2+);
+## houses: small detached buildings with yards instead of perimeter rows.
+const KINDS: Dictionary = {
+	"start": {"rings": [[3, 5], [3, 8], [7, 16]], "tower": 0.22, "tower_f": [18, 26], "lots": 0.14, "factory": 0.35, "ruin": [0.3, 0.2]},
+	"downtown": {"rings": [[5, 9], [8, 16], [10, 18]], "tower": 0.4, "tower_f": [18, 30], "lots": 0.06, "factory": 0.08, "ruin": [0.4, 0.35]},
+	"oldtown": {"rings": [[3, 5], [3, 6], [3, 7]], "tower": 0.0, "tower_f": [0, 0], "lots": 0.12, "factory": 0.12, "ruin": [0.45, 0.4]},
+	"industrial": {"rings": [[2, 4], [2, 5], [2, 6]], "tower": 0.0, "tower_f": [0, 0], "lots": 0.32, "factory": 0.85, "ruin": [0.5, 0.45]},
+	"suburb": {"rings": [[1, 2], [1, 3], [1, 3]], "tower": 0.0, "tower_f": [0, 0], "lots": 0.12, "factory": 0.05, "ruin": [0.35, 0.3], "houses": true},
+	"harbour": {"rings": [[3, 6], [3, 7], [4, 8]], "tower": 0.05, "tower_f": [10, 14], "lots": 0.16, "factory": 0.45, "ruin": [0.45, 0.4]},
+}
+## Per hub (harbours take over where the lake reaches in): every character turns up on Verdance.
+const KIND_BY_HUB: Array[String] = ["oldtown", "downtown", "oldtown", "suburb", "industrial", "oldtown", "suburb", "industrial", "downtown", "suburb"]
 const HUB_EXTENT: float = 36.0     # 3 x 3 blocks, 108 m
 ## Which share of buildings are broken off on a ruined hub.
 const RUIN_SHARE: float = 0.7
@@ -50,6 +65,8 @@ var _kit_state: String = ""
 var district_name: String = ""
 var _rubble: Node3D
 var furniture: StreetFurniture  # [v3city] the start town's street life
+var town_r: float = TOWN_R  # [v3city] the town's reach on its pad (the pad's flat radius, less a margin)
+var kind: String = "start"   # [v3city] the town's character (KINDS)
 var outskirts: TownOutskirts  # [v3city] the city past the pad (the skyline)
 var globe_ctx: Dictionary = {}  # [v3city] {terrain, grid, cells, xf, clear} from SiteManager
 ## [v3city] func(x, z) -> bool: a site-local point on a lake cell (the start yard is by a lake).
@@ -94,6 +111,10 @@ static func build(parent: Node3D, p_site: String, stage: int, p_restoration: flo
 		s.water = opts["water"]  # [v3city]
 	if opts.get("globe") is Dictionary:
 		s.globe_ctx = opts["globe"]  # [v3city]
+	if opts.has("flat"):
+		s.town_r = float(opts["flat"]) - 4.0  # [v3city]
+	elif s.site_id != "start_yard":
+		s.town_r = HUB_TOWN_R
 	parent.add_child(s)
 	await s._make()
 	return s
@@ -190,35 +211,35 @@ func set_restoration(r: float) -> void:
 
 func _make() -> void:
 	var start: bool = site_id == "start_yard"
-	layout = CityLayout.new(seed_value, START_EXTENT if start else HUB_EXTENT)
-	if start:
-		_town_layout()  # [v3city]
-	else:
-		_ruin_layout(true)
+	layout = CityLayout.new(seed_value, START_EXTENT)  # [v3city] every Verdance hub is a town now
+	kind = "start" if start else _pick_kind()
+	_town_layout()
 	city = CityView.new()
 	city.name = "City"
 	city.skyline = false
 	city.buildings = CITY_BUILDINGS  # [v1world] the flat district's brick and factory buildings (owner, Nov 8); was the kit's
 	city.flush_walks = true
 	city.water_fn = water  # [v3city]
-	if start:  # [v3city] kit facades on the forecourt row, proxies (with colliders) beyond; props everywhere
-		city.detail_ring = 1
-		city.proxy_collide = true
-		city.prop_ring = 3
-		city.prop_radius = TOWN_R
+	# [v3city] kit facades on the inner ring, proxies (with colliders) beyond; props everywhere
+	city.detail_ring = 1
+	city.proxy_collide = true
+	city.prop_ring = 3
+	city.prop_radius = town_r
 	add_child(city)
 	await city.build(layout, _sidewalk_material())
 	await BuildBudget.check("site:roads")  # [orbE] behind the loading screen: a few kit buildings per frame
 	_roads()
 	await BuildBudget.check("site:kit")
 	await _kit_blocks()
-	if start:  # [v3city] bus stops, benches, bins, signs, traffic lights, road paint, parked wrecks
+	if true:  # [v3city] bus stops, benches, bins, signs, traffic lights, road paint, parked wrecks
 		furniture = StreetFurniture.new()
 		furniture.name = "Furniture"
 		furniture.water_fn = water
-		furniture.town_r = TOWN_R
-		furniture.goal_r = GOAL_R
+		furniture.town_r = town_r
+		furniture.goal_r = GOAL_R if start else 18.0
 		furniture.state = kit_state(level)
+		furniture.buildings = _foot.duplicate()
+		furniture.big_ship = start
 		var pb: Variant = city.get("_prop_body")
 		if pb is Node:
 			for cs: Node in (pb as Node).get_children():
@@ -229,19 +250,29 @@ func _make() -> void:
 		_extra_foot.append_array(furniture.prop_rects)
 		if DevHooks.has("load-report") or DevHooks.has("town-map"):
 			print("[town] street furniture: %s, %d road paint quads" % [str(furniture.counts), furniture._paint_n])
-	if start and not globe_ctx.is_empty():  # [v3city] the skyline round the pad
+	if not globe_ctx.is_empty():  # [v3city] the city round the pad
 		outskirts = TownOutskirts.new()
 		outskirts.name = "Outskirts"
 		outskirts.terrain = globe_ctx["terrain"]
 		outskirts.grid = globe_ctx["grid"]
 		outskirts.cells = globe_ctx["cells"]
 		outskirts.site_xf = globe_ctx["xf"]
-		outskirts.clear_cell = globe_ctx["clear"]
-		outskirts.town_r = TOWN_R
+		outskirts.town_r = town_r
+		outskirts.r_in = town_r - 8.0
 		outskirts.seed_value = seed_value
+		outskirts.kind = kind
 		add_child(outskirts)
 		await outskirts.build()
-		print("[town] outskirts: %s" % str(outskirts.stats))
+		print("[town] hub %d outskirts (%s): %s" % [hub_index, kind, str(outskirts.stats)])
+		var ko: Variant = globe_ctx.get("keep_out")
+		if ko is YardKeepOut:
+			(ko as YardKeepOut).add_world("outskirts%d" % hub_index, outskirts.foot)
+			if not start:  # the pad town's buildings and wrecks too (hub 0's are in the yard's own frame)
+				var items: Array = []
+				var sxf: Transform3D = globe_ctx["xf"]
+				for fr: Rect2 in _foot + _extra_foot:
+					items.append([sxf, fr])
+				(ko as YardKeepOut).add_world("town%d" % hub_index, items)
 	dressing = StreetDressing.new()
 	dressing.name = "Dressing"
 	dressing.skip_facades = not CITY_BUILDINGS  # [v1world] shopfronts, awnings, neon, murals, billboard, string lights
@@ -249,8 +280,8 @@ func _make() -> void:
 	add_child(dressing)
 	await dressing.build(layout, null, hub_index, district_name, "", level)
 	set_level(level)
-	if start and DevHooks.has("town-map"):
-		_town_map(DevHooks.get_s("town-map", "user://town_map.png"))
+	if DevHooks.has("town-map") and (start or DevHooks.has("town-map-hubs")):
+		_town_map(DevHooks.get_s("town-map", "user://town_map.png") if start else DevHooks.get_s("town-map", "user://town_map.png").replace(".png", "_hub%d.png" % hub_index))
 
 
 ## [v3city] The start town's blocks: the yard in the middle, the main street north and south of it
@@ -265,7 +296,7 @@ func _town_layout() -> void:
 		var b: Dictionary = layout.blocks[key]
 		var r: Rect2 = b["rect"]
 		var far: float = Vector2(maxf(absf(r.position.x), absf(r.end.x)), maxf(absf(r.position.y), absf(r.end.y))).length()
-		if far > TOWN_R:
+		if far > town_r:
 			layout.blocks.erase(key)
 			continue
 		if key == Vector2i.ZERO:
@@ -277,24 +308,34 @@ func _town_layout() -> void:
 			lake += 1
 			continue
 		var ring: int = maxi(absi(key.x), absi(key.y))
+		var pr: Dictionary = KINDS[kind]
+		var start: bool = kind == "start"
 		var t: int = CityLayout.Block.BUILDINGS
-		if key.x == 0 and ring <= 2:
+		if start and key.x == 0 and ring <= 2:
 			t = CityLayout.Block.LANDFILL if ring == 1 else CityLayout.Block.PARKING  # the main street's open lots
-		elif ring >= 2 and rng.randf() < 0.14:
-			t = CityLayout.Block.LANDFILL if rng.randf() < 0.6 else CityLayout.Block.VACANT
+		elif (ring >= 2 or not start) and rng.randf() < float(pr["lots"]):
+			var lr: float = rng.randf()
+			t = CityLayout.Block.PARKING if (kind == "industrial" and lr < 0.4) else (CityLayout.Block.LANDFILL if lr < 0.7 else CityLayout.Block.VACANT)
 		b["type"] = t
 		b["buildings"] = []
 		if t == CityLayout.Block.BUILDINGS:
-			b["buildings"] = _forecourt_row(r, key, rng) if ring == 1 else layout._make_buildings(r, rng, key)
+			if start and ring == 1:
+				b["buildings"] = _forecourt_row(r, key, rng)
+			elif pr.get("houses", false):
+				b["buildings"] = _houses(r, rng)
+			else:
+				b["buildings"] = layout._make_buildings(r, rng, key)
 			b["buildings"] = (b["buildings"] as Array).filter(func(bd: Dictionary) -> bool: return _wet_share((bd["rect"] as Rect2).grow(2.0), 2.0) == 0.0)
-			var fl: Array = RING_FLOORS[mini(ring, 3)]
+			var fl: Array = (pr["rings"] as Array)[clampi(ring, 1, 3) - 1]
 			for bd: Dictionary in b["buildings"]:
 				var f: int = rng.randi_range(int(fl[0]), int(fl[1]))
-				if ring >= 3 and rng.randf() < TOWER_SHARE:
-					f = rng.randi_range(18, 26)
-				bd["ruined"] = rng.randf() < (0.2 if ring >= 2 else 0.3)
-				bd["floors"] = maxi(2, f - (rng.randi_range(1, 3) if bd["ruined"] else 0))
-				if ring >= 3 and bd["style"] == "factory" and f > 8:
+				if ring >= (3 if start else 2) and rng.randf() < float(pr["tower"]):
+					f = rng.randi_range(int(pr["tower_f"][0]), int(pr["tower_f"][1]))
+				if not start or ring > 1:
+					bd["style"] = "factory" if rng.randf() < float(pr["factory"]) else "apartments"
+				bd["ruined"] = rng.randf() < float(pr["ruin"][0 if ring <= 1 else 1])
+				bd["floors"] = maxi(1 if pr.get("houses", false) else 2, f - (rng.randi_range(1, 3) if bd["ruined"] and f > 3 else 0))
+				if bd["style"] == "factory" and f > 8:
 					bd["style"] = "apartments"  # towers are offices and flats, not sheds
 			if b["buildings"].is_empty():
 				b["type"] = CityLayout.Block.LANDFILL
@@ -308,7 +349,7 @@ func _town_layout() -> void:
 		for bd: Dictionary in bl["buildings"]:
 			nb += 1
 			tall = maxi(tall, int(bd["floors"]))
-	print("[town] start town: %d blocks (types %s), %d buildings up to %d floors, %d blocks left to the lake" % [layout.blocks.size(), str(kinds), nb, tall, lake])
+	print("[town] hub %d %s town: %d blocks (types %s), %d buildings up to %d floors, %d blocks left to the lake" % [hub_index, kind, layout.blocks.size(), str(kinds), nb, tall, lake])
 
 
 ## [v3city] Dev: --town-map=PATH writes a top-down plan of the town (0.5 m a pixel): lake blue,
@@ -324,7 +365,7 @@ func _town_map(path: String) -> void:
 			var x: float = -half + (i + 0.5) * res
 			var col := Color(0.42, 0.36, 0.28)  # junk ground
 			var srf: int = layout.surface_at(x, z)
-			if Vector2(x, z).length() > TOWN_R + 10.0:
+			if Vector2(x, z).length() > town_r + 10.0:
 				col = Color(0.36, 0.32, 0.25)
 			elif srf == CityLayout.Surface.ROAD:
 				col = Color(0.3, 0.3, 0.32)
@@ -355,6 +396,50 @@ func _town_map(path: String) -> void:
 
 
 var _extra_foot: Array[Rect2] = []  # [v3city] furniture footprints (cars, shelters): junk keeps off them
+
+
+## [v3city] The hub's character: a harbour where the lake reaches into the town, else one of
+## HUB_KINDS, turned per hub so neighbouring hubs differ.
+func _pick_kind() -> String:
+	var wet: int = 0
+	var n: int = 0
+	for k: int in 48:
+		var a: float = TAU * k / 48.0
+		for rr: float in [40.0, 70.0, 100.0]:
+			n += 1
+			wet += 1 if _wet(cos(a) * rr, sin(a) * rr) else 0
+	if float(wet) / n > 0.12:
+		return "harbour"
+	return KIND_BY_HUB[hub_index % KIND_BY_HUB.size()]
+
+
+## [v3city] A suburb block: detached houses (one or two floors) round the block's edge, facing
+## the streets, with yards between them.
+static func _houses(r: Rect2, rng: RandomNumberGenerator) -> Array:
+	var out: Array = []
+	var sides: Array = [[Vector2(0, -1), r.position, Vector2(1, 0)], [Vector2(0, 1), Vector2(r.position.x, r.end.y - 8.0), Vector2(1, 0)],
+		[Vector2(-1, 0), Vector2(r.position.x, r.position.y + 9.0), Vector2(0, 1)], [Vector2(1, 0), Vector2(r.end.x - 8.0, r.position.y + 9.0), Vector2(0, 1)]]
+	for sd: Array in sides:
+		var face: Vector2 = sd[0]
+		var o: Vector2 = sd[1]
+		var along: Vector2 = sd[2]
+		var length: float = (r.size.x if along.x > 0.5 else r.size.y - 18.0)
+		var t: float = rng.randf_range(0.0, 2.0)
+		while t + 9.0 <= length:
+			if rng.randf() < 0.82:
+				var depth: float = rng.randf_range(6.5, 8.0)
+				var p: Vector2 = o + along * t
+				var setback: float = rng.randf_range(0.5, 2.0)
+				var br: Rect2
+				if along.x > 0.5:
+					var z0: float = p.y + (setback if face.y < 0 else 8.0 - depth - setback)
+					br = Rect2(Vector2(p.x, z0), Vector2(9.0, depth))
+				else:
+					var x0: float = p.x + (setback if face.x < 0 else 8.0 - depth - setback)
+					br = Rect2(Vector2(x0, p.y), Vector2(depth, 9.0))
+				out.append({"rect": br, "face": face, "bays": 3, "floors": 1, "style": "apartments", "seed": rng.randi(), "ruined": false})
+			t += rng.randf_range(10.5, 13.0)
+	return out
 
 
 ## [v3city] A forecourt block next to the yard: building rows along its outer edges only, set back
@@ -466,8 +551,8 @@ func _roads() -> void:
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var half_w: float = CityLayout.ROAD_W * 0.5 + 0.2
 	var step: float = 3.0
-	var town: bool = site_id == "start_yard"  # [v3city] both outer streets, fading out round the town's edge
-	_road_r = TOWN_R + 4.0 if town else INF
+	var town: bool = true  # [v3city] both outer streets, fading out round the town's edge
+	_road_r = town_r + 4.0
 	for axis: int in 2:
 		for k: int in range(-n - 1 if town else -n, n + 1):
 			var c: float = (k + 0.5) * CityLayout.PITCH
@@ -581,7 +666,7 @@ func _kit_blocks() -> void:
 					_kit(str(e[0]), Vector2(c.x + lp.x, c.y + lp.y), deg_to_rad(float(e[3]) + turn), pal, 1 + rng.randi() % 3)
 					await BuildBudget.check("site:kit")  # [orbE]
 			CityLayout.Block.LANDFILL, CityLayout.Block.VACANT, CityLayout.Block.PARKING:
-				if site_id == "start_yard" and maxi(absi(key.x), absi(key.y)) > 1:
+				if maxi(absi(key.x), absi(key.y)) > 1:
 					continue  # [v3city] the town's outer lots: junk ground, fences and wrecks (StreetFurniture)
 				_lots.append({"c": c, "kind": "landfill" if int(b["type"]) == CityLayout.Block.LANDFILL else "lot", "seed": 1 + rng.randi() % 3})
 	await BuildBudget.check("site:lots")  # [orbE]

@@ -316,7 +316,7 @@ func _place_hubs(n: int) -> void:
 		picks.append(best)
 	var blocked := func(c: int) -> bool: return cells.state[c] == WATER
 	for i: int in picks.size():
-		var flat_m: float = 140.0 if i == 0 else 82.0  # [orbD] a ruin_block prefab is 108 m square (corners at 76 m)
+		var flat_m: float = 140.0 if i == 0 else 120.0  # [v3city] hub towns  # [orbD] a ruin_block prefab is 108 m square (corners at 76 m)
 		var s: Dictionary = terrain.reserve_site(picks[i], flat_m, 40.0, blocked)
 		if s.is_empty():
 			s = terrain.reserve_site(picks[i], flat_m, 40.0)  # coast: allow it

@@ -15,6 +15,7 @@ extends Node3D
 const WATER: int = 5
 const START_SITE_M: float = 140.0  # start pad radius (the yard and its blocks)
 const HUB_SITE_M: float = 82.0  # [orbD] a ruin_block site prefab is 108 m square (corners at 76 m)
+const VERDANCE_HUB_SITE_M: float = 120.0  # [v3city] Verdance's hub towns (VerdanceSite.HUB_TOWN_R + a margin)
 const SITE_BLEND_M: float = 40.0
 
 var seed_value: int = 4471
@@ -147,7 +148,7 @@ func _place_hubs(n: int, fresh: bool, saved := PackedInt32Array()) -> void:
 		picks.append(best)
 	var blocked := func(c: int) -> bool: return cells.state[c] == WATER
 	for i: int in picks.size():
-		var r: float = START_SITE_M if i == 0 else HUB_SITE_M
+		var r: float = START_SITE_M if i == 0 else (VERDANCE_HUB_SITE_M if str(spec.get("id", "verdance")) == "verdance" else HUB_SITE_M)
 		var s: Dictionary = terrain.reserve_site(picks[i], r, SITE_BLEND_M, blocked)
 		if s.is_empty():
 			s = terrain.reserve_site(picks[i], r, SITE_BLEND_M)  # coast: allow it
