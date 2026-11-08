@@ -103,6 +103,8 @@ var start_base: bool = true
 var level: int = 1
 ## [biomes] Frontier districts dress their own landmarks (planet/frontier_view.gd); no shopfronts.
 var skip_facades: bool = false
+## [orbD] A globe hub site: the yard ground is the art kit's ground patch (no painted slab).
+var kit_yard: bool = false
 var _style := RandomNumberGenerator.new()   # palette, kits, landmark: fixed per district
 var _layers: Dictionary = {}                # layer name -> Node3D
 var _cur: Node3D
@@ -160,7 +162,8 @@ func build(p_layout: CityLayout, p_field: HexField, p_hub: int = 0, p_district: 
 			await BuildBudget.check("dress:street_lines")
 			_build_street_lines()
 	await BuildBudget.check("dress:yard_paint")
-	_build_yard_paint()
+	if not kit_yard:  # [orbD] globe sites lay a kit ground patch instead
+		_build_yard_paint()
 	if biome != "dust_dunes":
 		await BuildBudget.check("dress:puddles")
 		_build_puddles()

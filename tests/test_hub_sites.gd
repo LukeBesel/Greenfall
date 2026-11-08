@@ -79,6 +79,13 @@ func test_verdance_ruin_block_footprints() -> void:
 		if bool(bd.get("ruined", false)):
 			ruined += 1
 	assert_gt(ruined, 0)
+	# Every building is a kit building; the base level drives broken -> restored in place.
+	assert_gt(vs.kits.size(), 0)
+	assert_eq(vs.kits[0].state, "broken")
+	var content: Node = p.content
+	p.set_stage(4)
+	assert_eq(p.content, content)
+	assert_eq(vs.kits[0].state, "restored")
 
 
 func test_planet_fraction_counts_built_hub_regions_only() -> void:
