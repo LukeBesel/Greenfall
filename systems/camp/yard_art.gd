@@ -1226,3 +1226,304 @@ static func nursery_grass(size: Vector2) -> MultiMeshInstance3D:
 		mm.set_instance_color(i, Color(g * 0.8, g, g * 0.7))
 	mi.name = "Grass"
 	return mi
+
+
+# --- Signal tower (story/signal_tower.gd) ------------------------------------------------------------
+
+## A kit lattice mast per tier (1-4; tier 0 is not shown): concrete plinth, a cream equipment
+## cabinet with LEDs, four tapering legs braced every section, dishes, a railed platform, a halo
+## ring and whips, and at Mk IV a beacon dome and solar panels. Returns {kit, tip (Vector3)}.
+static func signal_tower(t: int) -> Dictionary:
+	var k := Kit.new()
+	var h: float = [3.0, 3.0, 4.2, 5.4, 6.6][clampi(t, 0, 4)]
+	k.box(Vector3(1.3, 0.24, 1.3), Vector3(0, 0.12, 0), Color.WHITE, Vector3.ZERO, 0.05, "concrete")
+	for sx: float in [-1.0, 1.0]:
+		for sz: float in [-1.0, 1.0]:
+			k.box(Vector3(0.22, 0.04, 0.22), Vector3(sx * 0.42, 0.26, sz * 0.42), GUNMETAL, Vector3.ZERO, 0.012)
+			k.bolts4(Vector3(sx * 0.42, 0.28, sz * 0.42), Vector3(0.07, 0, 0), Vector3(0, 0, 0.07), Vector3.UP, STEEL, 0.014)
+	# Lattice legs taper from 0.42 to 0.14 half-width.
+	var base_y: float = 0.28
+	var leg := func(y: float) -> float: return lerpf(0.42, 0.14, clampf((y - base_y) / h, 0.0, 1.0))
+	for sx: float in [-1.0, 1.0]:
+		for sz: float in [-1.0, 1.0]:
+			k.pipe(Vector3(sx * 0.42, base_y, sz * 0.42), Vector3(sx * 0.14, base_y + h, sz * 0.14), 0.035, TEAL, false)
+	var sections: int = int(round(h / 0.9))
+	for i: int in sections:
+		var y0: float = base_y + h * float(i) / sections
+		var y1: float = base_y + h * float(i + 1) / sections
+		var a0: float = leg.call(y0)
+		var a1: float = leg.call(y1)
+		for side: int in 4:
+			var bs := Basis(Vector3.UP, side * PI * 0.5)
+			k.pipe(bs * Vector3(-a0, y0, a0), bs * Vector3(a1, y1, a1), 0.016, CREAM, false)
+			k.pipe(bs * Vector3(-a1, y1, a1), bs * Vector3(a1, y1, a1), 0.018, TEAL_D, false)
+	# Equipment cabinet at the foot, conduit up a leg.
+	k.box(Vector3(0.5, 0.7, 0.34), Vector3(0.0, 0.63, 0.5), CREAM, Vector3.ZERO, 0.04)
+	k.box(Vector3(0.54, 0.05, 0.38), Vector3(0.0, 1.0, 0.5), TEAL, Vector3.ZERO, 0.02)
+	k.vent(0.3, 0.16, Vector3(0.0, 0.48, 0.672), CREAM.darkened(0.15), Vector3.ZERO, 3)
+	k.decal("power", Vector2(0.12, 0.12), Vector3(0.14, 0.8, 0.672))
+	for i: int in 3:
+		k.glow_box(Vector3(0.03, 0.03, 0.02), Vector3(-0.15 + i * 0.06, 0.86, 0.675), [MINT, MINT, AMBER][i])
+	k.pipe(Vector3(0.2, 0.98, 0.42), Vector3(0.2, 0.98, 0.42).lerp(Vector3(0.14, base_y + h * 0.95, 0.14), 1.0), 0.022, GUNMETAL, false)
+	k.hazard(Vector3(1.32, 0.06, 1.32), Vector3(0, 0.21, 0))
+	var tip_y: float = base_y + h
+	k.cyl(0.1, 0.3, Vector3(0, tip_y + 0.12, 0), GUNMETAL, Vector3.ZERO, 0.02, 10)
+	# Dishes: tier 1 low, tier 2 higher on the other side.
+	var dish := func(y: float, yaw: float, r: float) -> void:
+		k.push(Transform3D(Basis(Vector3.UP, yaw), Vector3(0, y, 0)))
+		k.box(Vector3(0.08, 0.08, 0.36), Vector3(0, 0, 0.3), GUNMETAL, Vector3.ZERO, 0.015)
+		k.push(Transform3D(Basis(Vector3.RIGHT, deg_to_rad(-75.0)), Vector3(0, 0, 0.5)))
+		k.cyl(r * 0.35, r * 0.28, Vector3(0, -r * 0.1, 0), CREAM, Vector3.ZERO, 0.02, 18, "paint", r)
+		k.cyl(r * 0.96, 0.03, Vector3(0, r * 0.05, 0), Color(0.97, 0.96, 0.92), Vector3.ZERO, 0.01, 20)
+		k.cyl(r, 0.04, Vector3(0, r * 0.04, 0), ORANGE, Vector3.ZERO, 0.012, 20, "paint", r * 1.0)
+		k.pipe(Vector3(0, 0.05, 0), Vector3(0, r * 0.8, 0), 0.012, STEEL, false)
+		k.cyl(0.04, 0.08, Vector3(0, r * 0.82, 0), DARK, Vector3.ZERO, 0.01, 8)
+		k.pop()
+		k.pop()
+	if t >= 1:
+		dish.call(base_y + h * 0.55, 0.0, 0.5)
+	if t >= 2:
+		dish.call(base_y + h * 0.8, PI * 0.85, 0.42)
+		var py: float = base_y + h * 0.66
+		var pa: float = leg.call(py) + 0.22
+		k.box(Vector3(pa * 2.0, 0.05, pa * 2.0), Vector3(0, py, 0), GUNMETAL, Vector3.ZERO, 0.015)
+		for side: int in 4:
+			var bs2 := Basis(Vector3.UP, side * PI * 0.5)
+			k.pipe(bs2 * Vector3(-pa, py + 0.4, pa), bs2 * Vector3(pa, py + 0.4, pa), 0.014, YELLOW, false)
+			k.pipe(bs2 * Vector3(pa, py, pa), bs2 * Vector3(pa, py + 0.4, pa), 0.014, YELLOW, false)
+	if t >= 3:
+		k.cyl(0.5, 0.04, Vector3(0, tip_y - 0.35, 0), GUNMETAL, Vector3.ZERO, 0.01, 24)
+		k.glow_cyl(0.52, 0.02, Vector3(0, tip_y - 0.33, 0), CYAN, Vector3.ZERO, 24)
+		for a: int in 3:
+			var d := Vector3(cos(a * TAU / 3.0), 0, sin(a * TAU / 3.0))
+			k.pipe(Vector3(0, tip_y - 0.1, 0) + d * 0.12, Vector3(0, tip_y + 0.8, 0) + d * 0.22, 0.01, STEEL, false)
+	if t >= 4:
+		k.cyl(0.16, 0.18, Vector3(0, tip_y + 0.36, 0), CREAM, Vector3.ZERO, 0.05, 14)
+		for s: float in [-1.0, 1.0]:
+			k.push(Transform3D(Basis(Vector3.RIGHT, deg_to_rad(-25.0)), Vector3(s * 0.62, 0.5, -0.55)))
+			k.box(Vector3(0.5, 0.04, 0.4), Vector3.ZERO, GUNMETAL, Vector3.ZERO, 0.01)
+			k.decal("solar_cells", Vector2(0.46, 0.36), Vector3(0, 0.025, 0), Vector3(-90, 0, 0))
+			k.pop()
+			k.pipe(Vector3(s * 0.62, 0.26, -0.5), Vector3(s * 0.62, 0.45, -0.5), 0.02, GUNMETAL, false)
+	k.light(Vector3(0, tip_y - 0.3, 0.4), CYAN, 0.3, 2.0)
+	return {"kit": k, "tip": Vector3(0, tip_y + (0.5 if t >= 4 else 0.3), 0)}
+
+
+# --- Kitify: older procedural builds onto the kit -----------------------------------------------------
+
+static var _kitify_cache: Dictionary = {}
+
+
+## Re-meshes every raw BoxMesh / CylinderMesh under `root` as a kit-bevelled mesh with the kit
+## surface shader (edge wear, baked AO, grime per `state`), keeping each node, transform and
+## animation. Paint colours come from the old material (worn_paint `paint_color`, albedo);
+## metals become steel / dark steel. Lamps (emissive), glass (transparent) and textured parts are
+## left as they are. Safe to call again: converted meshes are skipped.
+static func kitify(root: Node, state: String = "repaired") -> void:
+	if root == null:
+		return
+	for n: Node in root.find_children("*", "MeshInstance3D", true, false):
+		_kitify_one(n as MeshInstance3D, state)
+	if root is MeshInstance3D:
+		_kitify_one(root as MeshInstance3D, state)
+
+
+static func _kitify_one(mi: MeshInstance3D, state: String) -> void:
+	if mi.has_meta("kitified") or mi.mesh == null:
+		return
+	var key: String = _kit_key_for(mi.material_override)
+	if key == "":
+		return
+	var mesh: Mesh = mi.mesh
+	var ck: String
+	var prim: Array = []
+	if mesh is BoxMesh:
+		var sz: Vector3 = (mesh as BoxMesh).size
+		ck = "b%s|%s" % [str(sz), key]
+		if not _kitify_cache.has(ck):
+			prim = [sz]
+	elif mesh is CylinderMesh:
+		var cm := mesh as CylinderMesh
+		ck = "c%.3f,%.3f,%.3f,%d|%s" % [cm.top_radius, cm.bottom_radius, cm.height, cm.radial_segments, key]
+		if not _kitify_cache.has(ck):
+			prim = [cm]
+	else:
+		return
+	if not _kitify_cache.has(ck):
+		var b := KitMesh.Builder.new(3, {}, state)
+		if prim[0] is Vector3:
+			var sz2: Vector3 = prim[0]
+			b.box(key, sz2, Transform3D.IDENTITY, clampf(minf(sz2.x, minf(sz2.y, sz2.z)) * 0.2, 0.003, 0.04))
+		else:
+			var c: CylinderMesh = prim[0]
+			var t := Transform3D(Basis(), Vector3(0, -c.height * 0.5, 0))
+			var sides: int = clampi(c.radial_segments, 6, 20)
+			if absf(c.top_radius - c.bottom_radius) < 0.002:
+				b.cyl(key, c.top_radius, c.height, t, minf(0.03, minf(c.top_radius, c.height) * 0.2), sides)
+			else:
+				var p := PackedVector3Array([Vector3(0, 0, 1), Vector3(c.bottom_radius, 0, 1), Vector3(c.top_radius, c.height, 1), Vector3(0, c.height, 1)])
+				b.add(key, KitMesh.lathe(p, sides), t)
+		_kitify_cache[ck] = b.commit()
+	mi.mesh = _kitify_cache[ck]
+	mi.material_override = null
+	KitMat.apply(mi, state, true)
+	mi.set_meta("kitified", true)
+
+
+static func _kit_key_for(m: Material) -> String:
+	if m is ShaderMaterial:
+		var sm := m as ShaderMaterial
+		var pc: Variant = sm.get_shader_parameter("paint_color")
+		if pc is Color:
+			var c: Color = pc
+			return "paint:#" + Color(c.r, c.g, c.b).to_html(false)
+		return ""
+	if m is StandardMaterial3D:
+		var st := m as StandardMaterial3D
+		if st.emission_enabled or st.transparency != BaseMaterial3D.TRANSPARENCY_DISABLED:
+			return ""
+		if st.metallic > 0.5:
+			return "steel" if st.albedo_color.get_luminance() > 0.45 else "dark_steel"
+		if st.albedo_texture != null:
+			return ""
+		if st.albedo_color.get_luminance() < 0.08 and st.roughness > 0.8:
+			return "rubber"
+		var a: Color = st.albedo_color
+		return "paint:#" + Color(a.r, a.g, a.b).to_html(false)
+	return ""
+
+
+# --- Air scrubber (automation/hub.gd) -----------------------------------------------------------------
+
+## One scrubber unit (origin on the ground, ~1.3 x 1.9 x 1.3): skid, cream body on teal corner
+## posts, filter cartridges, louvres, an intake shroud on top (the fan node spins in it), down
+## pipes, status LEDs.
+static func scrubber() -> Kit:
+	var k := Kit.new()
+	k.box(Vector3(1.45, 0.1, 1.45), Vector3(0, 0.05, 0), DARK)
+	k.hazard(Vector3(1.46, 0.05, 1.46), Vector3(0, 0.08, 0))
+	k.box(Vector3(1.16, 1.5, 1.16), Vector3(0, 0.88, 0), CREAM, Vector3.ZERO, 0.06)
+	for sx: float in [-1.0, 1.0]:
+		for sz: float in [-1.0, 1.0]:
+			k.box(Vector3(0.14, 1.66, 0.14), Vector3(sx * 0.58, 0.9, sz * 0.58), TEAL)
+	k.box(Vector3(1.3, 0.1, 1.3), Vector3(0, 1.66, 0), TEAL_D, Vector3.ZERO, 0.03)
+	k.cyl(0.58, 0.16, Vector3(0, 1.79, 0), GUNMETAL, Vector3.ZERO, 0.03, 20)
+	k.cyl(0.5, 0.04, Vector3(0, 1.9, 0), DARK, Vector3.ZERO, 0.01, 20)
+	for side: int in 2:  # filter cartridges on +x and -x faces
+		var s: float = 1.0 if side == 0 else -1.0
+		for y: float in [0.55, 0.95, 1.35]:
+			k.cyl(0.14, 0.9, Vector3(s * 0.62, y, 0), CREAM.darkened(0.12), Vector3(90, 0, 0), 0.03, 14)
+			for z: float in [-0.45, 0.45]:
+				k.cyl(0.155, 0.05, Vector3(s * 0.62, y, z), ORANGE, Vector3(90, 0, 0), 0.012, 14)
+	k.vent(0.7, 0.5, Vector3(0, 1.0, 0.585), TEAL_D, Vector3.ZERO, 5)
+	k.vent(0.7, 0.5, Vector3(0, 1.0, -0.585), TEAL_D, Vector3(0, 180, 0), 5)
+	k.decal("grille", Vector2(0.4, 0.2), Vector3(0, 0.5, 0.585))
+	for i: int in 3:
+		k.glow_box(Vector3(0.04, 0.04, 0.02), Vector3(-0.15 + i * 0.1, 1.45, 0.59), [MINT, MINT, CYAN][i])
+	k.pipe(Vector3(0.45, 1.6, -0.62), Vector3(0.45, 0.12, -0.62), 0.05, GUNMETAL, true)
+	k.pipe(Vector3(0.45, 0.12, -0.62), Vector3(0.45, 0.12, -0.9), 0.05, GUNMETAL, true)
+	k.light(Vector3(0, 1.4, 0.9), CYAN, 0.2, 1.4)
+	return k
+
+
+# --- Signal jammer (story/ledger.gd) ------------------------------------------------------------------
+
+static func jammer_base() -> Kit:
+	var k := Kit.new()
+	k.box(Vector3(1.0, 0.1, 1.0), Vector3(0, 0.05, 0), DARK)
+	k.box(Vector3(0.9, 0.55, 0.9), Vector3(0, 0.37, 0), CREAM, Vector3.ZERO, 0.05)
+	k.box(Vector3(0.96, 0.06, 0.96), Vector3(0, 0.66, 0), RED, Vector3.ZERO, 0.02)
+	k.hazard(Vector3(0.92, 0.08, 0.92), Vector3(0, 0.16, 0))
+	k.box(Vector3(0.56, 0.16, 0.04), Vector3(0, 0.42, 0.46), DARK, Vector3.ZERO, 0.01)
+	k.decal("warn", Vector2(0.18, 0.18), Vector3(0.3, 0.42, -0.455), Vector3(0, 180, 0))
+	k.vent(0.4, 0.24, Vector3(0.455, 0.38, 0), CREAM.darkened(0.15), Vector3(0, 90, 0), 3)
+	k.cyl(0.12, 0.3, Vector3(0, 0.82, 0), GUNMETAL, Vector3.ZERO, 0.03, 12)
+	k.pipe(Vector3(0, 0.9, 0), Vector3(0, 3.0, 0), 0.06, GUNMETAL, false)
+	for y: float in [1.4, 2.2]:
+		k.cyl(0.09, 0.06, Vector3(0, y, 0), RED, Vector3.ZERO, 0.015, 12)
+	for a: int in 3:  # guy struts
+		var d := Vector3(cos(a * TAU / 3.0), 0, sin(a * TAU / 3.0))
+		k.pipe(d * 0.42 + Vector3(0, 0.66, 0), Vector3(0, 1.9, 0) + d * 0.05, 0.015, STEEL, false)
+	return k
+
+
+## The jammer's dish (in the Dish node: it turns): bowl, rim, feed arm (the Tip lamp sits at its end).
+static func jammer_dish() -> Kit:
+	var k := Kit.new()
+	k.push(Transform3D(Basis(Vector3.RIGHT, deg_to_rad(-70.0)), Vector3(0, 0, 0.1)))
+	k.cyl(0.2, 0.18, Vector3(0, -0.06, 0), CREAM, Vector3.ZERO, 0.02, 18, "paint", 0.55)
+	k.cyl(0.52, 0.03, Vector3(0, 0.05, 0), Color(0.96, 0.95, 0.9), Vector3.ZERO, 0.01, 20)
+	k.cyl(0.56, 0.045, Vector3(0, 0.05, 0), RED, Vector3.ZERO, 0.012, 22, "paint", 0.56)
+	k.pop()
+	k.pipe(Vector3(0, 0.05, 0.12), Vector3(0, 0.2, 0.56), 0.015, STEEL, false)
+	k.box(Vector3(0.12, 0.12, 0.2), Vector3(0, 0, -0.05), GUNMETAL, Vector3.ZERO, 0.02)
+	return k
+
+
+# --- Observatory annex (automation/telescope.gd; the dome itself is kitified) -------------------------
+
+## Kit dressing round the observatory (model-local: door at +Z): entrance steps with a hazard nose,
+## a utility box with LEDs and a pipe into the drum, a little dish, crates.
+static func observatory_dress() -> Kit:
+	var k := Kit.new()
+	k.box(Vector3(1.3, 0.1, 0.6), Vector3(0, 0.05, 2.45), Color.WHITE, Vector3.ZERO, 0.03, "concrete")
+	k.hazard(Vector3(1.3, 0.04, 0.08), Vector3(0, 0.11, 2.72))
+	for x: float in [-0.75, 0.75]:
+		k.box(Vector3(0.12, 0.7, 0.12), Vector3(x, 0.35, 2.4), TEAL)
+		k.glow_box(Vector3(0.06, 0.06, 0.02), Vector3(x, 0.66, 2.465), WARM)
+	k.push(Transform3D(Basis(Vector3.UP, deg_to_rad(-55.0)), Vector3.ZERO))
+	k.box(Vector3(0.6, 0.9, 0.5), Vector3(0, 0.45, 2.1), CREAM, Vector3.ZERO, 0.04)
+	k.box(Vector3(0.66, 0.06, 0.56), Vector3(0, 0.92, 2.1), TEAL, Vector3.ZERO, 0.02)
+	k.vent(0.36, 0.24, Vector3(0, 0.4, 2.355), CREAM.darkened(0.15), Vector3.ZERO, 3)
+	k.decal("power", Vector2(0.12, 0.12), Vector3(0.18, 0.72, 2.355))
+	for i: int in 3:
+		k.glow_box(Vector3(0.03, 0.03, 0.02), Vector3(-0.15 + i * 0.06, 0.74, 2.36), [MINT, CYAN, MINT][i])
+	k.pipe(Vector3(0, 0.95, 2.0), Vector3(0, 1.2, 1.75), 0.04, GUNMETAL, true)
+	k.pop()
+	k.push(Transform3D(Basis(Vector3.UP, deg_to_rad(130.0)), Vector3.ZERO))
+	k.box(Vector3(0.5, 0.4, 0.5), Vector3(0, 0.2, 2.2), ORANGE)
+	k.box(Vector3(0.4, 0.34, 0.4), Vector3(0.05, 0.57, 2.18), CREAM, Vector3(0, 15, 0))
+	k.cyl(0.24, 0.7, Vector3(0.7, 0.35, 2.0), BLUE)
+	k.pop()
+	return k
+
+
+# --- Museum hall (systems/museum.gd; the hall's own boxes are kitified) -------------------------------
+
+## Kit dressing for the 14 x 9 m pavilion (hall-local: front edge at z 0, back wall at z -9):
+## entrance steps, column bases and capitals, a teal roof fascia with skylights and vents, wall
+## pilasters, logo banners, planters and lamp posts at the front.
+static func museum_dress(w: float = 14.0, d: float = 9.0) -> Kit:
+	var k := Kit.new()
+	for i: int in 2:
+		k.box(Vector3(5.0 - i * 0.6, 0.12, 0.5), Vector3(0, 0.06 + i * 0.12, 0.45 - i * 0.25), Color.WHITE, Vector3.ZERO, 0.03, "concrete")
+	k.hazard(Vector3(5.0, 0.03, 0.06), Vector3(0, 0.13, 0.68))
+	for s: float in [-1.0, 1.0]:
+		var cx: float = s * (w * 0.5 - 0.3)
+		k.cyl(0.27, 0.22, Vector3(cx, 0.36, -0.3), TEAL, Vector3.ZERO, 0.04, 16)
+		k.cyl(0.27, 0.16, Vector3(cx, 3.37, -0.3), TEAL, Vector3.ZERO, 0.04, 16)
+		k.cyl(0.18, 0.05, Vector3(cx, 2.6, -0.3), ORANGE, Vector3.ZERO, 0.012, 14)
+		k.glow_box(Vector3(0.05, 0.4, 0.02), Vector3(cx, 1.8, -0.14), WARM)
+	# Roof fascia, skylights and vents.
+	for z: float in [0.42, -d - 0.42]:
+		k.box(Vector3(w + 0.9, 0.26, 0.08), Vector3(0, 3.55, z), TEAL, Vector3.ZERO, 0.025)
+	for x: float in [-(w * 0.5 + 0.42), w * 0.5 + 0.42]:
+		k.box(Vector3(0.08, 0.26, d + 0.9), Vector3(x, 3.55, -d * 0.5), TEAL, Vector3.ZERO, 0.025)
+	for x: float in [-4.0, 0.0, 4.0]:
+		k.box(Vector3(2.4, 0.16, 1.4), Vector3(x, 3.74, -d * 0.5), GUNMETAL, Vector3.ZERO, 0.03)
+		k.box(Vector3(2.2, 0.06, 1.2), Vector3(x, 3.84, -d * 0.5), Color.WHITE, Vector3.ZERO, 0.01, "glass")
+	for x: float in [-6.0, 6.0]:
+		k.vent(0.7, 0.4, Vector3(x, 3.86, -d + 1.0), GUNMETAL, Vector3(-90, 0, 0), 4)
+	# Pilasters and banners on the back wall's inner face.
+	for i: int in 7:
+		var x: float = -w * 0.5 + 1.0 + i * (w - 2.0) / 6.0
+		k.box(Vector3(0.24, 3.1, 0.08), Vector3(x, 1.8, -d + 0.34), CREAM.darkened(0.04), Vector3.ZERO, 0.03)
+	for x: float in [-4.6, 4.6]:
+		k.box(Vector3(1.4, 0.06, 0.06), Vector3(x, 3.0, -d + 0.4), GUNMETAL, Vector3.ZERO, 0.015)
+		k.box(Vector3(1.2, 1.7, 0.02), Vector3(x, 2.1, -d + 0.4), TEAL, Vector3.ZERO, 0.006)
+		k.decal("logo", Vector2(0.9, 0.9), Vector3(x, 2.25, -d + 0.42))
+	# Front: planters with bushes and two lamp posts.
+	for s: float in [-1.0, 1.0]:
+		KitProps.planter(k.b, k._t(ProcMesh.xf(Vector3(s * 4.2, 0.0, 1.2))), 2.2, "restored")
+		KitProps.lamp_post(k.b, k._t(ProcMesh.xf(Vector3(s * 7.4, 0.0, 1.0))), 3.6, "restored")
+	return k
