@@ -1512,7 +1512,7 @@ msgstr "最后一张海报指向附近某处。有个橙色的东西蜷在那儿
 
 #: story/eggs.gd:579
 msgid "%s   ·   added to Lumi's collection"
-msgstr ""
+msgstr "%s   ·   已加入 Lumi 的收藏"
 
 #: story/eggs.gd:595
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
@@ -1933,51 +1933,51 @@ msgstr "Lumi 重新上岗了"
 
 #: story/tv_broadcast.gd:20
 msgid "OLD TOWN IN BLOOM: SEED SWAP THIS SATURDAY"
-msgstr ""
+msgstr "老城区繁花盛开：本周六种子交换会"
 
 #: story/tv_broadcast.gd:21
 msgid "LEDGER SECURES EXTRACTION RIGHTS"
-msgstr ""
+msgstr "Ledger获得开采权"
 
 #: story/tv_broadcast.gd:22
 msgid "THE SYSTEM IS STRIP-MINED. THE WASTE STAYS HERE"
-msgstr ""
+msgstr "星系被掠夺式开采，垃圾留在这里"
 
 #: story/tv_broadcast.gd:23
 msgid "EVACUATION: ALL RESIDENTS TO THE CRADLE"
-msgstr ""
+msgstr "疏散通知：全体居民前往Cradle号"
 
 #: story/tv_broadcast.gd:24
 msgid "OLD TOWN, TONIGHT. A SIGN ON THE TOWN HALL"
-msgstr ""
+msgstr "今晚的老城区。市政厅上的横幅"
 
 #: story/tv_broadcast.gd:25 story/tv_broadcast.gd:197
 msgid "SIGNAL LOST"
-msgstr ""
+msgstr "信号丢失"
 
 #: story/tv_broadcast.gd:103
 msgid "CH 4  ·  OLD TOWN NEWS  ·  LAST BROADCAST"
-msgstr ""
+msgstr "4频道  ·  老城区新闻  ·  最后一次播报"
 
 #: story/tv_broadcast.gd:117
 msgid "{interact}  [k]/ Esc  [/k]turn it off"
-msgstr ""
+msgstr "{interact}  [k]/ Esc  [/k]关掉"
 
 #: story/tv_broadcast.gd:206
 msgid "LIVE"
-msgstr ""
+msgstr "直播"
 
 #: story/tv_broadcast.gd:326
 msgid "BREAKING"
-msgstr ""
+msgstr "突发"
 
 #: story/tv_broadcast.gd:354
 msgid "CRADLE"
-msgstr ""
+msgstr "Cradle号"
 
 #: story/tv_broadcast.gd:375
 msgid "WE'LL BE BACK"
-msgstr ""
+msgstr "我们会回来的"
 
 #: systems/achievements.gd:139
 msgid "%d achievements unlocked. See them in the Codex (K)."
@@ -2461,43 +2461,43 @@ msgstr ""
 
 #: systems/museum.gd:119
 msgid "Not enough cubes, parts or seeds"
-msgstr ""
+msgstr "方块、零件或种子不足"
 
 #: systems/museum.gd:184
 msgid "FUTURE MUSEUM"
-msgstr ""
+msgstr "未来的博物馆"
 
 #: systems/museum.gd:185
 msgid "for whoever comes next"
-msgstr ""
+msgstr "为后来的人"
 
 #: systems/museum.gd:197
 msgid "E   build the Museum   %s"
-msgstr ""
+msgstr "E   建造博物馆   %s"
 
 #: systems/museum.gd:197
 msgid "Museum   %s   (%s)"
-msgstr ""
+msgstr "博物馆   %s   (%s)"
 
 #: systems/museum.gd:216
 msgid "The Museum is built. Everything Lumi found has a place now, for whoever comes next."
-msgstr ""
+msgstr "博物馆建好了。Lumi 找到的一切都有了归处，留给后来的人。"
 
 #: systems/museum.gd:240
 msgid "THE MUSEUM OF COMING BACK"
-msgstr ""
+msgstr "归来博物馆"
 
 #: systems/museum.gd:241
 msgid "everything Lumi found, kept for whoever comes next"
-msgstr ""
+msgstr "Lumi 找到的一切，为后来的人保存"
 
 #: systems/museum.gd:268
 msgid "E   salute the Gnome Patrol"
-msgstr ""
+msgstr "E   向地精巡逻队敬礼"
 
 #: systems/museum.gd:428
 msgid "Every plinth is full. The Museum is complete: everything Lumi found, kept for whoever comes next."
-msgstr ""
+msgstr "所有展台都已摆满。博物馆完成了：Lumi 找到的一切，为后来的人保存。"
 
 #: systems/profile_slots.gd:48 ui/world_picker.gd:138
 msgid "Profile %d"
@@ -3352,35 +3352,35 @@ msgstr "收藏"
 
 #: ui/codex_screen.gd:549
 msgid "LUMI'S COLLECTION"
-msgstr ""
+msgstr "Lumi 的收藏"
 
 #: ui/codex_screen.gd:550
 msgid "%d / %d complete"
-msgstr ""
+msgstr "%d / %d 已完成"
 
 #: ui/codex_screen.gd:588
 msgid "TRINKETS AND CURIOS"
-msgstr ""
+msgstr "小玩意与珍奇"
 
 #: ui/codex_screen.gd:600
 msgid "EVERY PLANET"
-msgstr ""
+msgstr "所有星球"
 
 #: ui/codex_screen.gd:603
 msgid "In Lumi's collection. It has a plinth in the Museum."
-msgstr ""
+msgstr "在Lumi 的收藏里。它在博物馆有自己的展台。"
 
 #: ui/codex_screen.gd:605
 msgid "Hint: %s"
-msgstr ""
+msgstr "提示：%s"
 
 #: ui/codex_screen.gd:607
 msgid "The Museum: built"
-msgstr ""
+msgstr "博物馆：已建成"
 
 #: ui/codex_screen.gd:607
 msgid "The Museum is built at Cradle Returns, near the end of the journey."
-msgstr ""
+msgstr "博物馆建在Cradle Returns，接近旅程的终点。"
 
 #: ui/codex_screen.gd:619
 msgid "In your collection"
@@ -6247,11 +6247,11 @@ msgstr "找到 15 件奇物。"
 
 #: data/achievements.json:achievements[museum_complete].name
 msgid "For Whoever Comes Next"
-msgstr ""
+msgstr "为后来的人"
 
 #: data/achievements.json:achievements[museum_complete].desc
 msgid "Fill every plinth in the Museum."
-msgstr ""
+msgstr "摆满博物馆的每一个展台。"
 
 #: data/achievements.json:achievements[curio_all].name
 msgid "Every Last Secret"
@@ -8200,7 +8200,7 @@ msgstr "地精巡逻队"
 
 #: data/eggs.json:eggs[gnomes].prompt
 msgid "E   pick up gnome"
-msgstr ""
+msgstr "E   捡起地精"
 
 #: data/eggs.json:eggs[gnomes].lore
 msgid "Five garden gnomes, each facing a different street. A Maker kid's sign said they were 'on patrol'. They still are."
@@ -8212,7 +8212,7 @@ msgstr "五个地精全找到了。它们非常缓慢地转过身来，敬了个
 
 #: data/eggs.json:eggs[gnomes].hint
 msgid "Five small guards, each watching a different street. Pick them up."
-msgstr ""
+msgstr "五个小卫兵，各自守望一条街。把它们捡起来。"
 
 #: data/eggs.json:eggs[time_capsule].name
 msgid "Class of the Last Spring"
@@ -8400,15 +8400,15 @@ msgstr "E   调整天线"
 
 #: data/eggs.json:eggs[tv].lore
 msgid "A television on a lawn chair, still looping Old Town's last news broadcast: the spring seed swap, the Ledger's rigs coming down on their cables, the two suns' worlds strip-mined and buried in waste, the shuttles rising to the Cradle, and a banner on the town hall that says WE'LL BE BACK. Then static."
-msgstr ""
+msgstr "草坪椅上的一台电视，循环播放着老城区最后的新闻：春天的种子交换会，Ledger的钻机沿缆绳降下，两颗太阳的世界被掠夺开采、埋进垃圾，飞船升向Cradle号，还有市政厅上写着“我们会回来的”的横幅。然后是雪花。"
 
 #: data/eggs.json:eggs[tv].toast
 msgid "The broadcast ends in snow. Somebody left it running for whoever came back."
-msgstr ""
+msgstr "播报在雪花中结束。有人让它一直开着，留给回来的人。"
 
 #: data/eggs.json:eggs[tv].hint
 msgid "Somebody left the news on. Adjust the antenna."
-msgstr ""
+msgstr "有人没关新闻。调一调天线。"
 
 #: data/eggs.json:eggs[snail].name
 msgid "Gus"
@@ -11196,59 +11196,59 @@ msgstr ""
 
 #: data/museum.json:exhibits[gnomes].hint
 msgid "Five garden gnomes guard Old Town's streets. Pick them up."
-msgstr ""
+msgstr "五个花园地精守护着老城区的街道。把它们捡起来。"
 
 #: data/museum.json:exhibits[biscuit].name
 msgid "Biscuit's Shell"
-msgstr ""
+msgstr "饼干的外壳"
 
 #: data/museum.json:exhibits[time_capsule].name
 msgid "Time Capsule"
-msgstr ""
+msgstr "时间胶囊"
 
 #: data/museum.json:exhibits[broadcast].name
 msgid "The Last Broadcast"
-msgstr ""
+msgstr "最后的播报"
 
 #: data/museum.json:exhibits[broadcast].hint
 msgid "A TV on a lawn chair is still on. Adjust the antenna."
-msgstr ""
+msgstr "草坪椅上的电视还开着。调一调天线。"
 
 #: data/museum.json:exhibits[gold_cube].name
 msgid "The Golden Cube"
-msgstr ""
+msgstr "金色方块"
 
 #: data/museum.json:exhibits[curiosities].hint
 msgid "Every curiosity on every planet (Codex > Curiosities has the hints)."
-msgstr ""
+msgstr "每个星球上的每一件珍奇（提示见图鉴 > 珍奇）。"
 
 #: data/museum.json:exhibits[shards].hint
 msgid "Letters, notes and drawings surface as the ground is cleaned."
-msgstr ""
+msgstr "清理地面时，信件、便条和画会显露出来。"
 
 #: data/museum.json:exhibits[trinkets].name
 msgid "Trinkets and Curios"
-msgstr ""
+msgstr "小玩意与珍奇"
 
 #: data/museum.json:exhibits[trinkets].hint
 msgid "World events, requests, streaks and Curio Capsules."
-msgstr ""
+msgstr "世界事件、委托、连击和珍奇胶囊。"
 
 #: data/museum.json:exhibits[ochre_glass].hint
 msgid "Restore Ochre."
-msgstr ""
+msgstr "复兴 Ochre。"
 
 #: data/museum.json:exhibits[tidewell_pearl].hint
 msgid "Restore Tidewell."
-msgstr ""
+msgstr "复兴 Tidewell。"
 
 #: data/museum.json:exhibits[rime_core].hint
 msgid "Restore Rime."
-msgstr ""
+msgstr "复兴 Rime。"
 
 #: data/museum.json:exhibits[anvil_ingot].hint
 msgid "Restore Anvil."
-msgstr ""
+msgstr "复兴 Anvil。"
 
 #: data/outposts.json:levels[0].name
 msgid "Weigh Station"
@@ -13286,35 +13286,35 @@ msgstr "如果哪天另一头真有人接了，我想听听他们会说什么。
 
 #: data/wren_lines.json:museum_complete
 msgid "...all of it... kept..."
-msgstr ""
+msgstr "……全部……保存……"
 
 #: data/wren_lines.json:museum_complete
 msgid "Every plinth full. Whoever comes next will know exactly who was here, and what they loved."
-msgstr ""
+msgstr "每个展台都满了。后来的人会清楚地知道谁曾在这里，以及他们爱过什么。"
 
 #: data/wren_lines.json:museum_complete
 msgid "The Museum is complete. I've logged it as a landmark. Not a strategic one. A sentimental one."
-msgstr ""
+msgstr "博物馆完成了。我把它登记为地标。不是战略意义上的。是情感上的。"
 
 #: data/wren_lines.json:museum_complete
 msgid "Every last gnome, shard and ring, on its plinth. You didn't just clean the world, {name}. You remembered it."
-msgstr ""
+msgstr "每一个地精、每一块碎片、每一枚戒指都在自己的展台上。{name}，你不只是清理了世界。你记住了它。"
 
 #: data/wren_lines.json:egg_tv
 msgid "...broadcast... we'll be... back..."
-msgstr ""
+msgstr "……播报……我们会……回来……"
 
 #: data/wren_lines.json:egg_tv
 msgid "That was the last news out of Old Town. The rigs, the waste, the shuttles up to me. I carried every one of those people."
-msgstr ""
+msgstr "那是老城区最后的新闻。钻机、垃圾、升到我这里的飞船。那些人，我一个一个都载走了。"
 
 #: data/wren_lines.json:egg_tv
 msgid "'We'll be back.' They meant it. I still have the passenger list."
-msgstr ""
+msgstr "“我们会回来的。”他们是认真的。乘客名单我还留着。"
 
 #: data/wren_lines.json:egg_tv
 msgid "Still broadcasting, after all this time. Somebody wanted whoever came back to know what happened. Now you do."
-msgstr ""
+msgstr "这么久了，还在播。有人希望回来的人知道发生了什么。现在你知道了。"
 
 #: data/wren_lines.json:egg_snail
 msgid "...small... slow... alive...!"

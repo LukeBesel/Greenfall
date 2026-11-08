@@ -1515,7 +1515,7 @@ msgstr "O último pôster aponta para um lugar bem perto. Algo laranja está enr
 
 #: story/eggs.gd:579
 msgid "%s   ·   added to Lumi's collection"
-msgstr ""
+msgstr "%s   ·   adicionado à coleção de Lumi"
 
 #: story/eggs.gd:595
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
@@ -1936,51 +1936,51 @@ msgstr "Lumi está de volta ao trabalho"
 
 #: story/tv_broadcast.gd:20
 msgid "OLD TOWN IN BLOOM: SEED SWAP THIS SATURDAY"
-msgstr ""
+msgstr "CIDADE VELHA EM FLOR: TROCA DE SEMENTES NESTE SÁBADO"
 
 #: story/tv_broadcast.gd:21
 msgid "LEDGER SECURES EXTRACTION RIGHTS"
-msgstr ""
+msgstr "LEDGER GARANTE DIREITOS DE EXTRAÇÃO"
 
 #: story/tv_broadcast.gd:22
 msgid "THE SYSTEM IS STRIP-MINED. THE WASTE STAYS HERE"
-msgstr ""
+msgstr "O SISTEMA FOI SAQUEADO. O LIXO FICA AQUI"
 
 #: story/tv_broadcast.gd:23
 msgid "EVACUATION: ALL RESIDENTS TO THE CRADLE"
-msgstr ""
+msgstr "EVACUAÇÃO: TODOS OS MORADORES PARA A CRADLE"
 
 #: story/tv_broadcast.gd:24
 msgid "OLD TOWN, TONIGHT. A SIGN ON THE TOWN HALL"
-msgstr ""
+msgstr "CIDADE VELHA, ESTA NOITE. UMA FAIXA NA PREFEITURA"
 
 #: story/tv_broadcast.gd:25 story/tv_broadcast.gd:197
 msgid "SIGNAL LOST"
-msgstr ""
+msgstr "SINAL PERDIDO"
 
 #: story/tv_broadcast.gd:103
 msgid "CH 4  ·  OLD TOWN NEWS  ·  LAST BROADCAST"
-msgstr ""
+msgstr "CANAL 4  ·  NOTÍCIAS DO CIDADE VELHA  ·  ÚLTIMA TRANSMISSÃO"
 
 #: story/tv_broadcast.gd:117
 msgid "{interact}  [k]/ Esc  [/k]turn it off"
-msgstr ""
+msgstr "{interact}  [k]/ Esc  [/k]desligar"
 
 #: story/tv_broadcast.gd:206
 msgid "LIVE"
-msgstr ""
+msgstr "AO VIVO"
 
 #: story/tv_broadcast.gd:326
 msgid "BREAKING"
-msgstr ""
+msgstr "URGENTE"
 
 #: story/tv_broadcast.gd:354
 msgid "CRADLE"
-msgstr ""
+msgstr "CRADLE"
 
 #: story/tv_broadcast.gd:375
 msgid "WE'LL BE BACK"
-msgstr ""
+msgstr "VOLTAREMOS"
 
 #: systems/achievements.gd:139
 msgid "%d achievements unlocked. See them in the Codex (K)."
@@ -2470,43 +2470,43 @@ msgstr ""
 
 #: systems/museum.gd:119
 msgid "Not enough cubes, parts or seeds"
-msgstr ""
+msgstr "Cubos, peças ou sementes insuficientes"
 
 #: systems/museum.gd:184
 msgid "FUTURE MUSEUM"
-msgstr ""
+msgstr "FUTURO MUSEU"
 
 #: systems/museum.gd:185
 msgid "for whoever comes next"
-msgstr ""
+msgstr "para quem vier depois"
 
 #: systems/museum.gd:197
 msgid "E   build the Museum   %s"
-msgstr ""
+msgstr "E   construir o Museu   %s"
 
 #: systems/museum.gd:197
 msgid "Museum   %s   (%s)"
-msgstr ""
+msgstr "Museu   %s   (%s)"
 
 #: systems/museum.gd:216
 msgid "The Museum is built. Everything Lumi found has a place now, for whoever comes next."
-msgstr ""
+msgstr "O Museu está pronto. Tudo o que Lumi encontrou agora tem seu lugar, para quem vier depois."
 
 #: systems/museum.gd:240
 msgid "THE MUSEUM OF COMING BACK"
-msgstr ""
+msgstr "O MUSEU DO RETORNO"
 
 #: systems/museum.gd:241
 msgid "everything Lumi found, kept for whoever comes next"
-msgstr ""
+msgstr "tudo o que Lumi encontrou, guardado para quem vier depois"
 
 #: systems/museum.gd:268
 msgid "E   salute the Gnome Patrol"
-msgstr ""
+msgstr "E   saudar a Patrulha dos gnomos"
 
 #: systems/museum.gd:428
 msgid "Every plinth is full. The Museum is complete: everything Lumi found, kept for whoever comes next."
-msgstr ""
+msgstr "Todos os pedestais estão ocupados. O Museu está completo: tudo o que Lumi encontrou, guardado para quem vier depois."
 
 #: systems/profile_slots.gd:48 ui/world_picker.gd:138
 msgid "Profile %d"
@@ -3362,35 +3362,35 @@ msgstr "COLEÇÃO"
 
 #: ui/codex_screen.gd:549
 msgid "LUMI'S COLLECTION"
-msgstr ""
+msgstr "COLEÇÃO DA LUMI"
 
 #: ui/codex_screen.gd:550
 msgid "%d / %d complete"
-msgstr ""
+msgstr "%d / %d completos"
 
 #: ui/codex_screen.gd:588
 msgid "TRINKETS AND CURIOS"
-msgstr ""
+msgstr "BUGIGANGAS E CURIOSIDADES"
 
 #: ui/codex_screen.gd:600
 msgid "EVERY PLANET"
-msgstr ""
+msgstr "TODOS OS PLANETAS"
 
 #: ui/codex_screen.gd:603
 msgid "In Lumi's collection. It has a plinth in the Museum."
-msgstr ""
+msgstr "Na coleção de Lumi. Tem um pedestal no Museu."
 
 #: ui/codex_screen.gd:605
 msgid "Hint: %s"
-msgstr ""
+msgstr "Dica: %s"
 
 #: ui/codex_screen.gd:607
 msgid "The Museum: built"
-msgstr ""
+msgstr "O Museu: construído"
 
 #: ui/codex_screen.gd:607
 msgid "The Museum is built at Cradle Returns, near the end of the journey."
-msgstr ""
+msgstr "O Museu é construído em Cradle Returns, perto do fim da jornada."
 
 #: ui/codex_screen.gd:619
 msgid "In your collection"
@@ -6259,11 +6259,11 @@ msgstr "Encontre 15 curiosidades."
 
 #: data/achievements.json:achievements[museum_complete].name
 msgid "For Whoever Comes Next"
-msgstr ""
+msgstr "Para quem vier depois"
 
 #: data/achievements.json:achievements[museum_complete].desc
 msgid "Fill every plinth in the Museum."
-msgstr ""
+msgstr "Ocupe todos os pedestais do Museu."
 
 #: data/achievements.json:achievements[curio_all].name
 msgid "Every Last Secret"
@@ -8212,7 +8212,7 @@ msgstr "Patrulha dos gnomos"
 
 #: data/eggs.json:eggs[gnomes].prompt
 msgid "E   pick up gnome"
-msgstr ""
+msgstr "E   pegar o gnomo"
 
 #: data/eggs.json:eggs[gnomes].lore
 msgid "Five garden gnomes, each facing a different street. A Maker kid's sign said they were 'on patrol'. They still are."
@@ -8224,7 +8224,7 @@ msgstr "Os cinco gnomos encontrados. Eles se viram, bem devagar, e batem contin�
 
 #: data/eggs.json:eggs[gnomes].hint
 msgid "Five small guards, each watching a different street. Pick them up."
-msgstr ""
+msgstr "Cinco pequenos guardas, cada um vigiando uma rua diferente. Pegue-os."
 
 #: data/eggs.json:eggs[time_capsule].name
 msgid "Class of the Last Spring"
@@ -8412,15 +8412,15 @@ msgstr "E   ajustar a antena"
 
 #: data/eggs.json:eggs[tv].lore
 msgid "A television on a lawn chair, still looping Old Town's last news broadcast: the spring seed swap, the Ledger's rigs coming down on their cables, the two suns' worlds strip-mined and buried in waste, the shuttles rising to the Cradle, and a banner on the town hall that says WE'LL BE BACK. Then static."
-msgstr ""
+msgstr "Uma TV numa cadeira de jardim, repetindo o último telejornal do Cidade Velha: a troca de sementes da primavera, as perfuratrizes do Ledger descendo nos cabos, os mundos dos dois sóis saqueados e soterrados de lixo, as naves subindo para a Cradle e uma faixa na prefeitura dizendo VOLTAREMOS. Depois, chuvisco."
 
 #: data/eggs.json:eggs[tv].toast
 msgid "The broadcast ends in snow. Somebody left it running for whoever came back."
-msgstr ""
+msgstr "A transmissão termina em chuvisco. Alguém a deixou ligada para quem voltasse."
 
 #: data/eggs.json:eggs[tv].hint
 msgid "Somebody left the news on. Adjust the antenna."
-msgstr ""
+msgstr "Alguém deixou o jornal ligado. Ajuste a antena."
 
 #: data/eggs.json:eggs[snail].name
 msgid "Gus"
@@ -11208,59 +11208,59 @@ msgstr ""
 
 #: data/museum.json:exhibits[gnomes].hint
 msgid "Five garden gnomes guard Old Town's streets. Pick them up."
-msgstr ""
+msgstr "Cinco gnomos de jardim guardam as ruas do Cidade Velha. Pegue-os."
 
 #: data/museum.json:exhibits[biscuit].name
 msgid "Biscuit's Shell"
-msgstr ""
+msgstr "A carapaça do Biscuit"
 
 #: data/museum.json:exhibits[time_capsule].name
 msgid "Time Capsule"
-msgstr ""
+msgstr "Cápsula do tempo"
 
 #: data/museum.json:exhibits[broadcast].name
 msgid "The Last Broadcast"
-msgstr ""
+msgstr "A última transmissão"
 
 #: data/museum.json:exhibits[broadcast].hint
 msgid "A TV on a lawn chair is still on. Adjust the antenna."
-msgstr ""
+msgstr "Uma TV numa cadeira de jardim ainda está ligada. Ajuste a antena."
 
 #: data/museum.json:exhibits[gold_cube].name
 msgid "The Golden Cube"
-msgstr ""
+msgstr "O Cubo Dourado"
 
 #: data/museum.json:exhibits[curiosities].hint
 msgid "Every curiosity on every planet (Codex > Curiosities has the hints)."
-msgstr ""
+msgstr "Todas as curiosidades de todos os planetas (as dicas estão em Códice > Curiosidades)."
 
 #: data/museum.json:exhibits[shards].hint
 msgid "Letters, notes and drawings surface as the ground is cleaned."
-msgstr ""
+msgstr "Cartas, bilhetes e desenhos aparecem conforme o chão é limpo."
 
 #: data/museum.json:exhibits[trinkets].name
 msgid "Trinkets and Curios"
-msgstr ""
+msgstr "Bugigangas e curiosidades"
 
 #: data/museum.json:exhibits[trinkets].hint
 msgid "World events, requests, streaks and Curio Capsules."
-msgstr ""
+msgstr "Eventos, pedidos, sequências e Cápsulas de curiosidades."
 
 #: data/museum.json:exhibits[ochre_glass].hint
 msgid "Restore Ochre."
-msgstr ""
+msgstr "Restaure Ochre."
 
 #: data/museum.json:exhibits[tidewell_pearl].hint
 msgid "Restore Tidewell."
-msgstr ""
+msgstr "Restaure Tidewell."
 
 #: data/museum.json:exhibits[rime_core].hint
 msgid "Restore Rime."
-msgstr ""
+msgstr "Restaure Rime."
 
 #: data/museum.json:exhibits[anvil_ingot].hint
 msgid "Restore Anvil."
-msgstr ""
+msgstr "Restaure Anvil."
 
 #: data/outposts.json:levels[0].name
 msgid "Weigh Station"
@@ -13298,35 +13298,35 @@ msgstr "Se um dia alguém atender do outro lado, eu queria ouvir o que vai dizer
 
 #: data/wren_lines.json:museum_complete
 msgid "...all of it... kept..."
-msgstr ""
+msgstr "...tudo... guardado..."
 
 #: data/wren_lines.json:museum_complete
 msgid "Every plinth full. Whoever comes next will know exactly who was here, and what they loved."
-msgstr ""
+msgstr "Todos os pedestais ocupados. Quem vier depois vai saber exatamente quem esteve aqui e o que amava."
 
 #: data/wren_lines.json:museum_complete
 msgid "The Museum is complete. I've logged it as a landmark. Not a strategic one. A sentimental one."
-msgstr ""
+msgstr "O Museu está completo. Registrei como ponto de referência. Não estratégico. Sentimental."
 
 #: data/wren_lines.json:museum_complete
 msgid "Every last gnome, shard and ring, on its plinth. You didn't just clean the world, {name}. You remembered it."
-msgstr ""
+msgstr "Cada gnomo, fragmento e anel em seu pedestal. Você não só limpou o mundo, {name}. Você se lembrou dele."
 
 #: data/wren_lines.json:egg_tv
 msgid "...broadcast... we'll be... back..."
-msgstr ""
+msgstr "...transmissão... volta... remos..."
 
 #: data/wren_lines.json:egg_tv
 msgid "That was the last news out of Old Town. The rigs, the waste, the shuttles up to me. I carried every one of those people."
-msgstr ""
+msgstr "Essas foram as últimas notícias do Cidade Velha. As perfuratrizes, o lixo, as naves subindo até mim. Eu levei cada uma dessas pessoas."
 
 #: data/wren_lines.json:egg_tv
 msgid "'We'll be back.' They meant it. I still have the passenger list."
-msgstr ""
+msgstr "'Voltaremos.' Eles falavam sério. Ainda tenho a lista de passageiros."
 
 #: data/wren_lines.json:egg_tv
 msgid "Still broadcasting, after all this time. Somebody wanted whoever came back to know what happened. Now you do."
-msgstr ""
+msgstr "Ainda transmitindo, depois de tanto tempo. Alguém queria que quem voltasse soubesse o que aconteceu. Agora você sabe."
 
 #: data/wren_lines.json:egg_snail
 msgid "...small... slow... alive...!"
