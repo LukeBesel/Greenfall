@@ -221,22 +221,33 @@ func route(from: int, to: int, role: String = "clean") -> PackedInt32Array:
 	return SpherePath.astar_grid(grid, from, to, pass_fn, 6000)
 
 
-func junk_left(c: int) -> float:
-	var real: float = cells.junk[c] if cells.is_dirty(c) else 0.0
+func _real_left(c: int) -> float:
 	if field != null and field.materialized[c] == 1:
-		real = 1.0 - field.removed_fraction(c) if field.hex_clean[c] == 0 else 0.0
-	return minf(real, float(_left.get(c, 1.0)))
+		return 1.0 - field.removed_fraction(c) if field.hex_clean[c] == 0 else 0.0
+	return cells.junk[c] if cells.is_dirty(c) else 0.0
 
 
-## Robots work in small steps; a materialized cell loses whole pieces, so the work target is kept
-## here and the pieces follow it (otherwise a step smaller than one piece would never add up).
+func junk_left(c: int) -> float:
+	var real: float = _real_left(c)
+	if not _left.has(c):
+		return real
+	if real <= 0.0:
+		return 0.0
+	# Work target, less anything someone else (Lumi) took since the crew's last write.
+	var a: Array = _left[c]
+	return clampf(float(a[0]) - maxf(0.0, float(a[1]) - real), 0.0, 1.0)
+
+
+## Robots work in small steps; a materialized cell loses whole pieces, so the work target is the
+## account (the pieces follow it, a piece ahead or behind) - otherwise a step smaller than one
+## piece would never add up, and a big piece would lose junk nobody baled.
 func work_cell(c: int, left: float) -> void:
 	var was_dirty: bool = cells.is_dirty(c)
-	if left > 0.02:
-		_left[c] = left
+	var gone: PackedInt32Array = SphereOffline.write_cell(cells, field, c, left)
+	if left > 0.02 and cells.is_dirty(c):
+		_left[c] = [left, _real_left(c)]
 	else:
 		_left.erase(c)
-	var gone: PackedInt32Array = SphereOffline.write_cell(cells, field, c, left)
 	if junk_view != null:
 		for pid: int in gone:
 			junk_view.call("hide_piece", pid)

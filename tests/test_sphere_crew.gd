@@ -291,3 +291,31 @@ func test_command_pick_returns_the_cell_under_the_cursor() -> void:
 	var slant: Vector3 = (surface.ground(d) - (o + off * 60.0)).normalized()
 	assert_eq(_g5.cell_at(SphereCommand.ray_dir(o + off * 60.0, slant, surface)), cell, "slanted ray hits the same hex")
 	assert_eq(SphereCommand.ray_dir(o, d, surface), Vector3.ZERO, "looking at the sky picks nothing")
+
+
+func test_materialized_cell_takes_a_full_cell_of_work() -> void:
+	# Pieces are removed whole; the crew's work target keeps the account, so a cell's worth of
+	# junk goes into the hopper before the cell is clean (big pieces must not lose junk).
+	var w: Dictionary = _world()
+	var crew: SphereCrew = w["crew"]
+	var cells: SphereCells = w["cells"]
+	var field := SphereField.new(_g5, _t5, cells, 7)
+	crew.field = field
+	var c: int = _g5.cells_around(100, 1)[3]
+	field.materialize(c)
+	assert_eq(field.pieces_in(c).size(), SphereField.FULL_PIECES)
+	var u: Dictionary = crew.spawn("scoopie", 0, c)
+	crew.order(u, c)
+	var at_clean: Array = [-1.0]
+	crew.cell_cleaned.connect(func(cc: int) -> void:
+		if cc == c:
+			at_clean[0] = float(u["log"]["junk"]))
+	_run(crew, 200.0, 0.1)
+	assert_false(cells.is_dirty(c), "cleaned")
+	var got: float = at_clean[0]
+	assert_gt(got, SphereOffline.UNITS_PER_CELL * 0.93, "about a full cell baled (%.1f)" % got)
+	assert_lt(got, SphereOffline.UNITS_PER_CELL * 1.01)
+	var alive: int = 0
+	for pid: int in field.pieces_in(c):
+		alive += field.piece_alive[pid]
+	assert_lte(alive, 1, "the pieces are gone too")

@@ -27,6 +27,8 @@ var day: OrbitDay
 var crews: OrbitCrews
 var cam: SphereCam
 var dev: OrbitDev
+var robots: SphereCrew  # [orbC] the crew on the globe (robots/sphere/orbit_robots.gd)
+var from_memory: bool = false  # [orbC] reloaded by rocket travel: no offline payout
 var view_mode: String = "follow"
 
 
@@ -44,6 +46,7 @@ func build(p_world: Node3D) -> void:
 	if GameState.reload_in_memory:
 		GameState.reload_in_memory = false
 		loaded = true
+		from_memory = true  # [orbC]
 	elif not DevHooks.has("fresh"):
 		loaded = SaveManager.load_game()
 	var od: Dictionary = GameState.orbit if loaded else {}
@@ -66,7 +69,7 @@ func build(p_world: Node3D) -> void:
 	crews.name = "Crews"
 	w.add_child(crews)
 	crews.setup(globe)
-	for i: int in range(1, globe.sites.size()):
+	for i: int in range(1, globe.sites.size() if DevHooks.has("orbit-bots") else 0):  # [orbC] stand-ins only on request: far work is the crew's
 		crews.add_far_crew(int(globe.sites[i]["cell"]), 0.25 + 0.05 * (i % 4))
 	if DevHooks.has("orbit-presim"):
 		var all_crews: Array[Dictionary] = []
@@ -80,7 +83,8 @@ func build(p_world: Node3D) -> void:
 	var site: Node3D = globe.build_start_site()
 	_build_patch()
 	_build_depot(site)
-	if DevHooks.has("orbit-bots") or not DevHooks.has("orbit-walk"):
+	robots = OrbitRobots.build(self)  # [orbC]
+	if DevHooks.has("orbit-bots"):  # [orbC] stand-in bots only on request (the crew replaces them)
 		crews.spawn_demo_bots(globe.start_cell(), int(DevHooks.get_f("orbit-bots", 4.0)), w)
 	var lumi_level := LumiLevel.new()
 	lumi_level.name = "LumiLevel"
@@ -249,6 +253,7 @@ func unhandled_input(event: InputEvent) -> void:
 		return
 	if event.is_action_pressed("open_command"):
 		cam.view = "follow" if cam.view == "command" else "command"
+		OrbitRobots.on_view(self)  # [orbC]
 		w.get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("pause"):
 		pm.open_menu()
@@ -288,6 +293,7 @@ func persist_save() -> void:
 		"day_t": day.elapsed(),
 		"lumi": {"at": g.to_dirh(patch.global_position), "fwd": _v_arr(patch.forward()), "cargo": pd},
 		"cubes": cubes,
+		"robots": OrbitRobots.save(robots),  # [orbC]
 	}
 
 
@@ -313,6 +319,7 @@ func restore_world() -> void:
 		cam.reset_frame(patch.forward())
 		cam.snap()
 	patch.restore_cargo(ld.get("cargo", {}))
+	OrbitRobots.restore(self, robots, od, not from_memory)  # [orbC] crew + offline jump
 
 
 static func _v_arr(v: Vector3) -> Array:
