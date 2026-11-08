@@ -1072,6 +1072,10 @@ func _lookbook() -> void:
 ## --planet-cam=dist,pitch,yaw[,fov] for landscape shots; --planet-view=x,y,z,lx,ly,lz[,fov] puts a
 ## free camera anywhere (landmark close-ups beyond the walkable field).
 func _dev_hooks() -> void:
+	if DevHooks.has("shot-from-ready"):
+		# Dev: count --shot-delay / --quit-after from the moment Anvil is built (the async district
+		# loader takes minutes on software rendering).
+		DevHooks.set("_start_ms", Time.get_ticks_msec())
 	if DevHooks.has("anvil-lookbook"):
 		_lookbook()
 	if DevHooks.has("anvil-site"):
