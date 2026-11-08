@@ -170,6 +170,17 @@
       ]
     },
     {
+      "id": "hex10",
+      "text": "Clean 10 hexes",
+      "desc": "Robots help. Press {open_command} to give them hexes.",
+      "type": "stat",
+      "key": "hexes_cleaned",
+      "target": 10,
+      "lines": [
+        "Ten clean hexes. Your robots are learning from you, Lumi."
+      ]
+    },
+    {
       "id": "base2",
       "text": "Rebuild the base to level 2",
       "desc": "Workbench, Upgrades tab. More robots can work.",
@@ -187,6 +198,28 @@
       "target": 2,
       "lines": [
         "Boost the tower. I want to hear you clearly."
+      ]
+    },
+    {
+      "id": "research1",
+      "text": "Finish a research project",
+      "desc": "Workbench, Research tab. Research unlocks new robots.",
+      "type": "stat",
+      "key": "research_done",
+      "target": 1,
+      "lines": [
+        "Your bench can study now. Research unlocks new machines and seeds."
+      ]
+    },
+    {
+      "id": "hex20",
+      "text": "Clean 20 hexes",
+      "desc": "More clean ground means more room to grow.",
+      "type": "stat",
+      "key": "hexes_cleaned",
+      "target": 20,
+      "lines": [
+        "Twenty hexes. The air already smells different."
       ]
     },
     {

@@ -38,6 +38,11 @@ func _ready() -> void:
 		_say("toast(%s): %s" % [kind, text]))
 	get_tree().root.tree_exiting.connect(_summary)
 	get_tree().create_timer(3.0).timeout.connect(_bin_check)
+	if DevHooks.has("clarity-bench"):  # dev: open the workbench after S s (workbench shots)
+		get_tree().create_timer(DevHooks.get_f("clarity-bench", 20.0), true, false, true).timeout.connect(func() -> void:
+			if Camp.of(world):
+				Camp.of(world).repair_now()
+			world.call("open_upgrades"))
 
 
 ## The trash bin's body against its "bin" anchor (the bay is drawn round it): should be ~0 m.

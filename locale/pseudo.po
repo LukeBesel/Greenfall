@@ -524,7 +524,7 @@ msgstr "[Bàļéš ŵôŕţĥ %s ŵéŕé šţàçķéð àţ ţĥé ĥûb ŵî�
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "[Ţĥé šçŕûbbéŕš ƒîļţéŕéð ţĥé àîŕ ţĥé ŵĥôļé ţîmé. Îţ'š à ļîţţļé çļéàŕéŕ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: core/pace.gd:147 story/objectives.gd:787
+#: core/pace.gd:147 story/objectives.gd:789
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "[Ţôô ĥéàvý. Ûþĝŕàðé Ļîƒţ àţ ţĥé béñçĥ. ~~~~~~~~~~]"
 
@@ -1989,43 +1989,43 @@ msgstr "[Ôbĵéçţîvé çômþļéţé  ·  %s ~~~~~~]"
 msgid "Goal complete  ·  %s"
 msgstr "[Ĝôàļ çômþļéţé  ·  %s ~~~~]"
 
-#: story/objectives.gd:633
+#: story/objectives.gd:635
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "[Bàļéŕ îñšţàļļéð! Fîļļ ýôûŕ çĥéšţ, þŕéšš [%s] ţô þŕéšš à bàļé, ţĥéñ çàŕŕý îţ ţô ţĥé šçàļé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:655 story/objectives.gd:775
+#: story/objectives.gd:657 story/objectives.gd:777
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "[Ýôûŕ çĥéšţ îš ƒûļļ. Þŕéšš [%s] ţô màķé à bàļé. ~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:671
+#: story/objectives.gd:673
 msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
 msgstr "[Ĥéàŕ ţĥàţ bééþîñĝ? Ýôûŕ ðéţéçţôŕ'š ƒôûñð à ŕôbôţ þàŕţ bûŕîéð ñéàŕbý. Ţĥé ƒàšţéŕ îţ bééþš, ţĥé çļôšéŕ ýôû àŕé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:673
+#: story/objectives.gd:675
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "[BÛŔÎÉÐ ÞÀŔŢ: ŵàļķ ţôŵàŕð îţ ûñţîļ ţĥé ŕéàðîñĝ þéàķš, ţĥéñ ðîĝ îţ ûþ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:776
+#: story/objectives.gd:778
 msgid "Your chest is full. Bring it to the bin."
 msgstr "[Ýôûŕ çĥéšţ îš ƒûļļ. Bŕîñĝ îţ ţô ţĥé bîñ. ~~~~~~~~~~~]"
 
-#: story/objectives.gd:783
+#: story/objectives.gd:785
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "[Ýôûŕ çĥéšţ îš ƒûļļ. Ĥéàð ĥômé: ţĥé bîñ îš ûñðéŕ ţĥé ţàļļ šmôķé. ~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:785
+#: story/objectives.gd:787
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "[Çàŕŕý ýôûŕ bàļé ĥômé: ţĥé šçàļé îš ûñðéŕ ţĥé ţàļļ šmôķé. ~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:785
+#: story/objectives.gd:787
 msgid "Carry your bale to the scale by the bin."
 msgstr "[Çàŕŕý ýôûŕ bàļé ţô ţĥé šçàļé bý ţĥé bîñ. ~~~~~~~~~~~]"
 
-#: story/objectives.gd:792
+#: story/objectives.gd:794
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "[Ĥéàð ĥômé: ƒôļļôŵ ţĥé béàm ţô ţĥé ţàļļ šmôķé. ~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:802
+#: story/objectives.gd:804
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "[Ñôţĥîñĝ ţô þîçķ ûþ ĥéŕé. Ŵàļķ ţô môŕé ţŕàšĥ. ~~~~~~~~~~~~]"
 
@@ -10811,7 +10811,7 @@ msgstr "[Ðîĝ ûþ 2 ŕôbôţ þàŕţš ~~~~]"
 msgid "Earn 1,000 cubes"
 msgstr "[Éàŕñ 1,000 çûbéš ~~~]"
 
-#: data/goals.json:goals[research_1].text
+#: data/goals.json:goals[research_1].text data/objectives.json:objectives[research1].text
 msgid "Finish a research project"
 msgstr "[Fîñîšĥ à ŕéšéàŕçĥ þŕôĵéçţ ~~~~~~]"
 
@@ -10847,7 +10847,7 @@ msgstr "[Fîñîšĥ 4 ŕéšéàŕçĥ þŕôĵéçţš ~~~~~~]"
 msgid "Buy 20 upgrades"
 msgstr "[Bûý 20 ûþĝŕàðéš ~~]"
 
-#: data/goals.json:goals[hex_10].text data/radio.json:songs[verdance_sweep].hint
+#: data/goals.json:goals[hex_10].text data/objectives.json:objectives[hex10].text data/radio.json:songs[verdance_sweep].hint
 msgid "Clean 10 hexes"
 msgstr "[Çļéàñ 10 ĥéxéš ~~]"
 
@@ -10943,7 +10943,7 @@ msgstr "[Ŕéçýçļé 5 bàļéš ~~]"
 msgid "Get a hex to Growing"
 msgstr "[Ĝéţ à ĥéx ţô Ĝŕôŵîñĝ ~~~~]"
 
-#: data/goals.json:goals[hex_20].text
+#: data/goals.json:goals[hex_20].text data/objectives.json:objectives[hex20].text
 msgid "Clean 20 hexes"
 msgstr "[Çļéàñ 20 ĥéxéš ~~]"
 
@@ -12340,6 +12340,14 @@ msgstr "[Ķééþ çļéàñîñĝ. Šééðš ţûŕñ ûþ îñ çļéàñ ĝ�
 msgid "Something green is waking out there. Plant the first seed."
 msgstr "[Šôméţĥîñĝ ĝŕééñ îš ŵàķîñĝ ôûţ ţĥéŕé. Þļàñţ ţĥé ƒîŕšţ šééð. ~~~~~~~~~~~~~~~~~]"
 
+#: data/objectives.json:objectives[hex10].desc
+msgid "Robots help. Press {open_command} to give them hexes."
+msgstr "[Ŕôbôţš ĥéļþ. Þŕéšš {open_command} ţô ĝîvé ţĥém ĥéxéš. ~~~~~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[hex10].lines
+msgid "Ten clean hexes. Your robots are learning from you, Lumi."
+msgstr "[Ţéñ çļéàñ ĥéxéš. Ýôûŕ ŕôbôţš àŕé ļéàŕñîñĝ ƒŕôm ýôû, Ļûmî. ~~~~~~~~~~~~~~~~~]"
+
 #: data/objectives.json:objectives[base2].text
 msgid "Rebuild the base to level 2"
 msgstr "[Ŕébûîļð ţĥé bàšé ţô ļévéļ 2 ~~~~~~]"
@@ -12363,6 +12371,22 @@ msgstr "[Ŵôŕķbéñçĥ. ŴŔÉÑ ŵîļļ šôûñð çļéàŕéŕ. ~~~~~~~
 #: data/objectives.json:objectives[tower2].lines
 msgid "Boost the tower. I want to hear you clearly."
 msgstr "[Bôôšţ ţĥé ţôŵéŕ. Î ŵàñţ ţô ĥéàŕ ýôû çļéàŕļý. ~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[research1].desc
+msgid "Workbench, Research tab. Research unlocks new robots."
+msgstr "[Ŵôŕķbéñçĥ, Ŕéšéàŕçĥ ţàb. Ŕéšéàŕçĥ ûñļôçķš ñéŵ ŕôbôţš. ~~~~~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[research1].lines
+msgid "Your bench can study now. Research unlocks new machines and seeds."
+msgstr "[Ýôûŕ béñçĥ çàñ šţûðý ñôŵ. Ŕéšéàŕçĥ ûñļôçķš ñéŵ màçĥîñéš àñð šééðš. ~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[hex20].desc
+msgid "More clean ground means more room to grow."
+msgstr "[Môŕé çļéàñ ĝŕôûñð méàñš môŕé ŕôôm ţô ĝŕôŵ. ~~~~~~~~~~~~]"
+
+#: data/objectives.json:objectives[hex20].lines
+msgid "Twenty hexes. The air already smells different."
+msgstr "[Ţŵéñţý ĥéxéš. Ţĥé àîŕ àļŕéàðý šméļļš ðîƒƒéŕéñţ. ~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[base3].text
 msgid "Rebuild the base to level 3"

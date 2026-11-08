@@ -905,3 +905,23 @@ rebuilt on the sphere. What carries over, and how to place it on a globe:
   - The new texts aren't translated.
   - The pad can look pale at noon.
   - Robot timing after the Bot Bay hasn't been checked.
+
+## Update: Verdance clarity pass (wt/v3clear, owner item 41)
+- **Texts:** objectives, checklist, prompts, toasts and WREN briefs use short, plain words, start with a verb and show the key glyph. "Compartment Size" is now "Chest Size". Codex toasts stay quiet until the tower is up.
+- **One next thing:** the objective card's why line turns into an amber hint for these cases (`Objectives.situation_hint`):
+  - chest full
+  - piece too heavy
+  - not enough cubes (how many are missing and how to earn them)
+  - nothing to pick up nearby
+  - far from home when the next thing is at home (the beam points home)
+- **Pace:**
+  - Bot Bay costs 1200 cubes and 40 parts. The first Scoopie costs 800 cubes (was 1100).
+  - New steps: "Clean 2 hexes", "Clean 10 hexes", "Finish a research project" and "Clean 20 hexes".
+  - Orbit autoplay (8x): the whole story chain to base 2 runs in ~43 min. No step stalls. The gaps between steps are 4-7 min.
+  - On the globe, the robot objective counts the crew, and autoplay plants (sparse garden slots).
+- **Workbench:** 48 px rows. Affordable rows stand out and the current goal's row has a cyan frame. Locked rows show their name and what unlocks them. A bought row flashes.
+- **Fixes:**
+  - The trash bin stands inside its bay (`Depot.seat_bin` on the "bin" anchor).
+  - The robot objective counts the globe's crew.
+  - The HEX line sits above the level bar.
+- **Tool:** `--clarity-log` prints over time what the player is told (card, prompts, toasts, WREN).

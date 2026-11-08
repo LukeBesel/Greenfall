@@ -1,1 +1,16 @@
-{}
+{
+  "first_upgrade_s": 72.6,
+  "baler_s": 116.0,
+  "first_cube_s": 123.0,
+  "first_cashin_s": 127.7,
+  "lift_1_s": 157.3,
+  "first_hex_s": 388.9,
+  "first_hexlv_1_s": 389.3,
+  "lift_2_s": 394.0,
+  "first_research_s": 1266.1,
+  "first_robot_s": 1678.4,
+  "first_scoopie_s": 1678.4,
+  "first_haulbug_s": 1729.0,
+  "seed_tin_s": 1889.2,
+  "base_2_s": 2560.2
+}

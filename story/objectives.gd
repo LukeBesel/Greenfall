@@ -484,12 +484,14 @@ func step_target(def: Dictionary) -> Dictionary:
 				out["row"] = ["build", "signal_tower"] if SignalTower.tier() == 0 else ["patch", "hb_signal_tower"]
 				var aff2: bool = GameState.can_afford_all(SignalTower.next_cost())
 				out["to"] = "bench" if aff2 else ("depot" if p and not p.carried.is_empty() else "hex")
-			"hex", "hex2", "hex3", "zone":  # [v3clear] hex2
+			"hex", "hex2", "hex3", "hex10", "hex20", "zone":  # [v3clear] hex2, hex10, hex20
 				out["to"] = "hex"
 			"bench2":
 				out = {"to": "bench" if BenchTiers.block_reason(world) == "" else "hex", "row": ["patch", "bench_tier"]}
 			"robot", "haul":
 				out = {"to": "bench", "row": ["bots", ""]}
+			"research1":  # [v3clear]
+				out = {"to": "bench", "row": ["research", ""]}
 			"base2", "base3":
 				out = {"to": "bench", "row": ["patch", "hub_level"]}
 			"seed":
