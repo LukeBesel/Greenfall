@@ -176,7 +176,7 @@ static func scan(world: Node = null) -> Array[String]:
 		var p: Vector3 = (patch as Node3D).global_position
 		for l: Dictionary in (field as HexField).landmarks:
 			var lp: Variant = l.get("pos")
-			if lp is Vector3 and Vector2(p.x - (lp as Vector3).x, p.z - (lp as Vector3).z).length() < LANDMARK_RANGE:
+			if lp is Vector3 and OrbitUp.ground_dist(p, lp as Vector3) < LANDMARK_RANGE:  # [orbB] along the ground
 				var key: String = "landmarks:" + str(l["model"])
 				if unlock(key):
 					out.append(key)

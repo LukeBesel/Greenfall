@@ -56,7 +56,7 @@ Owner decisions are in `docs/DECISIONS.md` ("Round planets"). Phase A is on `wt/
    - An old save loads into the globe.
    - The flat game is unchanged.
 
-**[orbB] Status (Nov 8):** B1 skeleton, per-planet sizes, field parity, JunkLOD, the hex-clean flow by cell id, save schema 2 and old-save migration are done (`--orbit` round trip covers each). Still open: the remaining systems on the "not ported yet" list in `scenes/slice_orbit.gd` (Hub/Camp/garden/story/events), which belong to their owners' ports.
+**[orbB] Status (Nov 8):** B1 skeleton, per-planet sizes, field parity, JunkLOD, the hex-clean flow by cell id, save schema 2 and old-save migration are done (`--orbit` round trip covers each). Since then (Nov 8-9) the game's systems run on the globe: per-hub world dict, Hub, workbench + Upgrades, Research/Codex, story (WREN, goals, tutorial, objectives + cell outline, core charge, signal tower, pod), events, Camp on orbD's anchors, extras, telescope, Glim, the garden (sparse), the autoplay bot, and pacing matched to the flat game (decision b). The "Not here" list in `scenes/slice_orbit.gd` names what is left and whose it is.
 
 ## Helper 2: Robots, Command view, offline (phase C)
 **Goal:** the crew works the globe. Near robots are real; far robots are data. Command view drives them.

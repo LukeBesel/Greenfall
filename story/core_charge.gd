@@ -282,8 +282,9 @@ func _beat_glow() -> void:
 		tw.tween_property(model, "core_glow", GLOW_BRIGHT, 1.6)
 		model.flash()
 		model.set_happy(1.0)
-	Vfx.burst("big_sparkle", p + Vector3(0, 1.0, 0), Color(0.5, 1.0, 0.85), 1.2)
-	Vfx.burst("sparkle", p + Vector3(0, 0.6, 0), Color(0.7, 1.0, 0.6), 1.0)
+	var gu: Vector3 = WorldUp.at(world, p)  # [orbB] local up on a round planet
+	Vfx.burst("big_sparkle", p + gu * 1.0, Color(0.5, 1.0, 0.85), 1.2)
+	Vfx.burst("sparkle", p + gu * 0.6, Color(0.7, 1.0, 0.6), 1.0)
 	Audio.play("fanfare", 1.3, -10.0)
 	EventBus.toast.emit(tr("Bloom Core 50%: Lumi's glow is back, brighter than it has been in years."), "story")
 	if world.get("wren") != null:

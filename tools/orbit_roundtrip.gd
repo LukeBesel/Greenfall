@@ -44,6 +44,7 @@ static func _snap(s: Node) -> Dictionary:
 		"milestone_1": GameState.flags.get("hexm_1", false),
 		"hub_level": (s.get("hub") as Hub).level,
 		"bench_ok": Camp.bench_ok(),
+		"garden": _garden_sig(s),
 		"yard_built": JSON.stringify(YardBuilds.state().get("built", {})),
 		"site_stage": g.site_manager.levels[0] if g.site_manager else -1,
 		"parts_near": s.field.part_pos.size() > 0,
@@ -65,6 +66,19 @@ static func _freeze_crew(s: Node) -> void:
 			(u["bot"] as Node).set_process(false)
 
 
+static func _garden_sig(s: Node) -> String:
+	var gdn: Garden = s.get("garden")
+	if gdn == null:
+		return "-"
+	var cells: Dictionary = gdn.persist_sparse().get("cells", {})
+	var keys: Array = cells.keys()
+	keys.sort()
+	var parts: Array = []
+	for k: Variant in keys:
+		parts.append("%s:%s" % [str(k), str((cells[k] as Array)[0])])
+	return ",".join(parts)
+
+
 static func run(rt: Node, check: Callable) -> void:
 	var tree: SceneTree = rt.get_tree()
 	var packed: PackedScene = load("res://scenes/slice.tscn")
@@ -78,6 +92,30 @@ static func run(rt: Node, check: Callable) -> void:
 		return
 	var g: OrbitPlanet = so.globe
 	var p: Patch = s1.get("patch")
+	# The start view: the crashed pod stays behind the follow camera, and nothing big sits between
+	# the camera and Lumi (orbE's render had the camera inside the pod).
+	var cam3: Camera3D = so.cam.camera
+	var site: Node3D = s1.get_meta("orbit_pod", null) as Node3D
+	if site and cam3:
+		var to_pod: Vector3 = site.global_position - cam3.global_position
+		var fwd3: Vector3 = -cam3.global_basis.z
+		check.call("orbit_pod_out_of_view", true, to_pod.normalized().dot(fwd3) < cos(deg_to_rad(cam3.fov * 0.8)))
+		check.call("orbit_camera_clear_of_pod", true, to_pod.length() > 3.0)
+	var blockers: Array = []
+	if cam3:
+		for n: Node in s1.find_children("*", "GeometryInstance3D", true, false):
+			var gi := n as GeometryInstance3D
+			if not gi.is_visible_in_tree() or gi is MultiMeshInstance3D or s1.get("patch").is_ancestor_of(gi) or (s1.get_node_or_null("Glim") and s1.get_node("Glim").is_ancestor_of(gi)):
+				continue
+			if n.get_parent() is OrbitPlanet or str(n.get_path()).contains("Streamer") or str(n.get_path()).contains("Content/"):
+				continue
+			var ab: AABB = gi.global_transform * gi.get_aabb()
+			if ab.size.length() < 1.5:
+				continue
+			var mid: Vector3 = cam3.global_position.lerp(p.global_position, 0.5)
+			if ab.grow(0.2).has_point(mid) or ab.grow(0.2).has_point(cam3.global_position):
+				blockers.append(str(s1.get_path_to(gi)))
+	check.call("orbit_start_view_clear", "[]", str(blockers))
 	GameState.add_currency("cubes", BigNum.from_float(1234))
 	# Clean the dirty near cell closest to Lumi, by hand.
 	var target: int = -1
@@ -95,6 +133,45 @@ static func run(rt: Node, check: Callable) -> void:
 			if g.field.piece_alive[pid] == 1:
 				s1.collect_piece(pid)
 	check.call("orbit_cell_cleaned", clean0 + 1, s1.field.cleaned_count)
+	# The garden: plant and water in the cell Lumi just cleaned (its slots are made on demand).
+	var gdn: Garden = s1.get("garden")
+	GameState.flags["seeds_unlocked"] = true
+	GameState.add_currency("seeds", BigNum.from_float(10))
+	var ctr: Vector3 = g.field.hex_center(target)
+	var fwd: Vector3 = SphereGrid.frame(ctr.normalized()).x
+	var planted_n: int = 0
+	for k: int in 3:
+		var sl: int = gdn.free_slot_near(ctr - fwd * 1.0, fwd, 6.0)
+		if sl >= 0 and gdn.plant(sl):
+			gdn.water(sl, 120.0)
+			planted_n += 1
+	check.call("orbit_garden_planted", 3, planted_n)
+	check.call("orbit_garden_slots_on_ground", true, gdn.slot_pos.size() > 0 and absf(gdn.slot_pos[0].length() - (g.grid.radius_m + g.terrain.height(gdn.slot_pos[0].normalized()))) < 0.05)
+	# Glim's scanner marks the junk of the cell Lumi stands in (pieces by how big they look).
+	var gd: GlimDirector = GlimDirector.of(s1)
+	if gd:
+		Glim.set_found(true)
+		if gd.bot == null:
+			gd.call("_spawn", false)
+		var dc: int = -1
+		for c: int in g.streamer.near_cells():
+			if g.field.hex_hub[c] == 0 and not g.field.is_clean(c) and g.field.hex_water[c] == 0 and g.field.pieces_in(c).size() > 20:
+				dc = c
+				break
+		if dc >= 0:
+			p.place_on_sphere(g.field.hex_center(dc), p.forward())
+			await tree.physics_frame
+			check.call("orbit_glim_scan_marks", true, gd.do_scan(false) > 0)
+	# The objective outline draws around a globe cell, in that cell's frame.
+	var ob: Objectives = s1.get("objectives")
+	if ob and ob.outline:
+		var oc: int = g.grid.neighbors(target)[2]
+		ob.outline.set_hex(oc)
+		for i: int in 40:
+			await tree.process_frame
+		var aabb: AABB = (ob.outline.get_child(0) as MeshInstance3D).get_aabb() if ob.outline.get_child_count() > 0 else AABB()
+		check.call("orbit_outline_on_cell", true, ob.outline.global_position.distance_to(g.field.hex_center(oc)) < 0.5)
+		check.call("orbit_outline_cell_sized", true, aabb.size.x > 12.0 and aabb.size.x < 24.0 and absf(aabb.size.y) < 3.0)
 	check.call("orbit_first_hex_milestone", true, GameState.flags.get("hexm_1", false))
 	await tree.create_timer(1.4).timeout  # HexLevels samples once a second: the clean cell reaches level 1
 	check.call("orbit_hex_level_1", 1, (s1.get("hex_levels") as HexLevels).level_of(target))
@@ -124,6 +201,16 @@ static func run(rt: Node, check: Callable) -> void:
 	await tree.physics_frame
 	check.call("orbit_bin_prompt", true, s1.interact_prompt(p) != "")
 	YardBuilds.mark_built("radio")
+	var scope: Telescope = Telescope.of(s1)
+	check.call("orbit_telescope_at_anchor", true, scope != null and scope.door_point().distance_to(so1.yard_point("telescope")) < 3.0)
+	var ex: ExtrasDirector = ExtrasDirector.of(s1)
+	check.call("orbit_radio_on_anchor", true, ex != null and ex.radio != null and ex.radio.global_position.distance_to(so1.yard_point("radio")) < 0.1)
+	if ex and ex.radio:
+		ex.radio.set_built(true, false)
+		var reach: Node3D = ex.radio.get("_anchor") as Node3D
+		p.place_on_sphere(reach.global_position, p.forward())
+		await tree.physics_frame
+		check.call("orbit_radio_prompt", true, s1.interact_prompt(p).contains(TranslationServer.translate("E   CD player: %s").split(":")[0]))
 	# The base: a hub upgrade raises the start site's stage and stays in the site's own dict.
 	GameState.add_currency("cubes", BigNum.from_float(1e6))
 	GameState.add_currency("parts", BigNum.from_float(1e5))

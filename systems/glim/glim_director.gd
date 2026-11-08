@@ -213,9 +213,9 @@ func do_scan(manual: bool = true) -> int:
 	if manual:
 		GameState.inc_stat("glim_scans")
 		if n == 0:
-			Vfx.float_text(bot.global_position + Vector3(0, 0.45, 0), tr("All clear here!"), Color(0.6, 0.95, 1.0), 0.8, 0.8)
+			Vfx.float_text(bot.global_position + OrbitUp.up(bot.global_position) * 0.45, tr("All clear here!"), Color(0.6, 0.95, 1.0), 0.8, 0.8)
 		elif scan.last_big > 0 and scan.last_big == n:
-			Vfx.float_text(bot.global_position + Vector3(0, 0.45, 0), tr("Only big pieces left"), Color(1.0, 0.7, 0.35), 0.8, 0.8)
+			Vfx.float_text(bot.global_position + OrbitUp.up(bot.global_position) * 0.45, tr("Only big pieces left"), Color(1.0, 0.7, 0.35), 0.8, 0.8)
 	return n
 
 
@@ -299,10 +299,13 @@ func _magnet(dt: float) -> void:
 	var max_vol: float = Glim.value("magnet", "max_vol", 0.4)
 	var me: Vector3 = patch.global_position
 	for pid: int in f.pieces_within(me, r):
-		if f.piece_vol[pid] > max_vol:
+		if f.visual_vol(pid) > max_vol:  # [orbB] by how big it looks (the globe's ledger volume is scaled)
 			continue
 		var to_me: Vector3 = me - f.piece_pos[pid]
-		to_me.y = 0.0
+		if OrbitUp.on_globe():  # [orbB] along the ground
+			to_me -= OrbitUp.up(me) * to_me.dot(OrbitUp.up(me))
+		else:
+			to_me.y = 0.0
 		var d: float = to_me.length()
 		if d > 1.1:
 			view.call("move_piece", pid, f.piece_pos[pid] + to_me / d * minf(1.2 * dt, d - 1.1))

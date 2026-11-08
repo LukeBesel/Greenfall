@@ -24,6 +24,98 @@ const EDGE_M: float = 1.2
 const MAX_EDGE_M: float = 6.0
 ## Anchors moved by fix_anchors keep this far apart (machines 3 m apart, minus a little).
 const SPACING_M: float = 2.6
+## Walking lane kept between moved machines' footprints.
+const LANE_M: float = 1.2
+## Footprint radius (m) of the model standing on each anchor (the start yard's machines).
+const FOOT: Dictionary = {"nursery": 3.0, "stations": 4.2, "shack": 2.2, "telescope": 2.0, "fabricator": 2.5,
+	"pod": 2.2, "depot": 2.2, "bench": 2.2, "signal_tower": 1.3, "composter": 1.3, "generator": 1.0, "radio": 0.9,
+	"locker": 0.8, "bin": 0.8, "camera_bot": 0.5, "door": 0.5}
+
+
+## With every machine standing as a disc of its footprint: does a walk from the landing spot over
+## the reachable ground still get to every machine's edge (within EDGE_M of its rim)?
+static func _no_worse(before: Array, after: Array) -> bool:
+	if after.is_empty() or not bool(after[after.size() - 1]):
+		return false  # the new machine itself must be reachable
+	for i: int in before.size():
+		if bool(before[i]) and not bool(after[i]):
+			return false
+	return true
+
+
+## Per disc: is its edge reachable from the landing spot with every disc standing?
+static func _reached(state: PackedByteArray, n: int, discs: Array, start: Vector3) -> Array:
+	var to_i := func(x: float, z: float) -> int:
+		var ix: int = int(round((x + HALF_M) / STEP))
+		var iz: int = int(round((z + HALF_M) / STEP))
+		return -1 if ix < 0 or iz < 0 or ix >= n or iz >= n else iz * n + ix
+	var blocked := func(i: int) -> bool:
+		var x: float = (i % n) * STEP - HALF_M
+		var z: float = floori(float(i) / n) * STEP - HALF_M
+		for d: Array in discs:
+			var dp: Vector3 = d[0]
+			if dp.distance_to(start) < 0.05:
+				continue  # the landing spot is kept clear for spacing, it isn't an obstacle
+			if Vector2(dp.x - x, dp.z - z).length() < float(d[1]):
+				return true
+		return false
+	var out: Array = []
+	var s0: int = to_i.call(start.x, start.z)
+	if s0 < 0 or state[s0] != 3:
+		for d: Array in discs:
+			out.append(true)  # no landing information: don't block placement
+		return out
+	var seen := PackedByteArray()
+	seen.resize(n * n)
+	var stack := PackedInt32Array([s0])
+	seen[s0] = 1
+	while not stack.is_empty():
+		var c: int = stack[stack.size() - 1]
+		stack.resize(stack.size() - 1)
+		var cx: int = c % n
+		var cz: int = floori(float(c) / n)
+		for dd: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			var nx: int = cx + dd.x
+			var nz: int = cz + dd.y
+			if nx < 0 or nz < 0 or nx >= n or nz >= n:
+				continue
+			var j: int = nz * n + nx
+			if seen[j] == 1 or state[j] != 3 or blocked.call(j):
+				continue
+			seen[j] = 1
+			stack.append(j)
+	for d: Array in discs:
+		var dp: Vector3 = d[0]
+		var lim: float = float(d[1]) + EDGE_M
+		var ok: bool = false
+		var r: int = int(ceil(lim / STEP))
+		for dz: int in range(-r, r + 1):
+			for dx: int in range(-r, r + 1):
+				if Vector2(dx, dz).length() * STEP > lim:
+					continue
+				var j2: int = to_i.call(dp.x + dx * STEP, dp.z + dz * STEP)
+				if j2 >= 0 and seen[j2] == 1:
+					ok = true
+					break
+			if ok:
+				break
+		out.append(ok)
+	return out
+
+
+static func foot(nm: String) -> float:
+	return float(FOOT.get(nm, 0.4))
+
+
+## True when the anchor's footprint (a circle of `rad`) sits on reachable ground: centre and rim.
+static func _all_reach(reach_at: Callable, c: Vector3, rad: float) -> bool:
+	if not reach_at.call(c):
+		return false
+	for k: int in 8:
+		var a: float = TAU * k / 8.0
+		if not reach_at.call(c + Vector3(cos(a), 0, sin(a)) * rad * 0.8):
+			return false
+	return true
 
 
 static func audit(p: SitePrefab, terrain: SphereTerrain, only: Node = null) -> Dictionary:
@@ -141,6 +233,33 @@ static func audit(p: SitePrefab, terrain: SphereTerrain, only: Node = null) -> D
 		anchors[nm] = reach_ok
 		if not reach_ok:
 			cut.append(nm)
+	if DevHooks.has("reach-map") and only == null:  # dev: the walk map round the site, 1 char per metre
+		var rows: PackedStringArray = []
+		var hm: int = int(DevHooks.get_f("reach-map", 45.0))
+		for z: int in range(-hm, hm + 1, 1):
+			var line: String = ""
+			for x: int in range(-hm, hm + 1, 1):
+				var j3: int = to_idx.call(float(x), float(z))
+				var ch: String = " "
+				if j3 >= 0:
+					if state[j3] == 0:
+						free.call(j3)
+					ch = [" ", ".", "#", "o"][state[j3]]
+					if ch == "." and floor_h[j3] > 0.3:
+						ch = ","  # free, on a deck or pad (raised floor) but not reached
+				if x == int(round(start_l.x)) and z == int(round(start_l.z)):
+					ch = "S"
+				line += ch
+			rows.append(line)
+		print("[reach-map]\n" + "\n".join(rows))
+		var prof: PackedStringArray = []
+		for xx: int in range(0, 46):
+			var j4: int = to_idx.call(float(xx), -0.6)
+			if j4 >= 0:
+				if state[j4] == 0:
+					free.call(j4)
+				prof.append("%d:%s%.2f" % [xx, ["?", "", "#", "o"][state[j4]], floor_h[j4]])
+		print("[reach-prof] " + " ".join(prof))
 	var why: String = ""
 	if s0 >= 0 and state[s0] != 3:  # what blocks the landing spot (for the report)
 		for hit: Dictionary in space.intersect_shape(q, 8):
@@ -225,7 +344,7 @@ static func fix_anchors(p: SitePrefab, terrain: SphereTerrain) -> PackedStringAr
 		reserved.append(pad.position)
 		reserved.append(pad.position + Vector3(4.5, 0, 3.0))
 	# 2. Every other anchor: on ground Lumi can reach from there (a raft's deck, not the sea), clear
-	# of the prefab's geometry and SPACING_M from anchors already settled.
+	# of the prefab's geometry and of the other machines' footprints with a walking lane between.
 	var r: Dictionary = audit(p, terrain, p.content)
 	var state: PackedByteArray = r["state"]
 	var n: int = r["n"]
@@ -233,35 +352,50 @@ static func fix_anchors(p: SitePrefab, terrain: SphereTerrain) -> PackedStringAr
 		var ix: int = int(round((l.x + HALF_M) / STEP))
 		var iz: int = int(round((l.z + HALF_M) / STEP))
 		return ix >= 0 and iz >= 0 and ix < n and iz < n and state[iz * n + ix] == 3
-	var spaced := func(l: Vector3) -> bool:
-		for q: Vector3 in reserved:
-			if Vector2(q.x - l.x, q.z - l.z).length() < SPACING_M:
+	var placed: Array = []  # [pos, radius]
+	if pad:
+		placed.append([pad.position + Vector3(4.5, 0, 3.0), 1.2])  # Lumi's landing spot
+	var spaced := func(l: Vector3, rad: float) -> bool:
+		for q: Array in placed:
+			var qp: Vector3 = q[0]
+			if Vector2(qp.x - l.x, qp.z - l.z).length() < rad + float(q[1]) + LANE_M:
 				return false
 		return true
-	for nm: String in p.anchor_names():
-		if nm == "rocket_pad":
-			continue
+	var todo: Array[String] = []
+	for nm: String in p.anchor_names():  # pass 1: designed anchors, and reachable depot/bench/door, stay
+		if nm == "rocket_pad" or nm == "shack":
+			continue  # the lean-to stands over the bench (YardSite): the bench's footprint covers it
+		var keep: bool = nm in p.designed or (nm in ["depot", "bench", "door"] and reach_at.call(p.anchor(nm).position))
+		if keep:
+			placed.append([p.anchor(nm).position, foot(nm)])
+		else:
+			todo.append(nm)
+	todo.sort_custom(func(x: String, y: String) -> bool: return foot(x) > foot(y))  # big machines first
+	for nm: String in todo:  # pass 2: the rest go to the nearest reachable spot with room
 		var m: Marker3D = p.anchor(nm)
 		var at: Vector3 = m.position
-		var ok: bool = reach_at.call(at)  # a designed layout keeps its spacing; only moved anchors are spaced
-		if not ok:
-			var best := at
-			var found: bool = false
-			var rr: float = STEP
-			while rr <= HALF_M and not found:
-				var k_n: int = maxi(8, int(TAU * rr / STEP))
-				for k: int in k_n:
-					var a: float = TAU * k / k_n
-					var c := at + Vector3(cos(a) * rr, 0, sin(a) * rr)
-					if reach_at.call(c) and spaced.call(c):
-						best = c
+		var rad: float = foot(nm)
+		var rr: float = STEP
+		var found: bool = false
+		while rr <= HALF_M and not found:
+			var k_n: int = maxi(8, int(TAU * rr / STEP))
+			for k: int in k_n:
+				var a: float = TAU * k / k_n
+				var c := at + Vector3(cos(a) * rr, 0, sin(a) * rr)
+				if _all_reach(reach_at, c, rad) and spaced.call(c, rad):
+					var trial: Array = placed.duplicate()
+					trial.append([c, rad])
+					var land: Vector3 = pad.position + Vector3(4.5, 0, 3.0) if pad else Vector3.ZERO
+					if _no_worse(_reached(state, n, placed, land), _reached(state, n, trial, land)):
+						m.position = c
 						found = true
 						break
-				rr += STEP
-			if found:
-				m.position = best
-				moved.append(nm)
-		reserved.append(m.position)
+			rr += STEP
+		if found:
+			moved.append(nm)
+		if DevHooks.has("reach-debug"):
+			print("[reach-fix] %s r=%.1f %s at (%.1f, %.1f)" % [nm, rad, "placed" if found else "NO ROOM", m.position.x, m.position.z])
+		placed.append([m.position, rad])
 	if not moved.is_empty():
 		p.anchors_moved.emit(moved)
 	return moved
