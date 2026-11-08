@@ -233,7 +233,7 @@ func float_text(pos: Vector3, text: String, color: Color = Color.WHITE, size: fl
 	l.set_meta("tween", tw)
 	tw.set_parallel(true)
 	tw.tween_property(l, "modulate:a", color.a, 0.12)
-	tw.tween_property(l, "global_position", pos + Vector3(0, rise, 0), 1.6).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tw.tween_property(l, "global_position", pos + OrbitUp.up(pos) * rise, 1.6)  # [v1guide] rises along the local up on the globe.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tw.tween_property(l, "modulate:a", 0.0, 0.5).set_delay(1.1)
 	tw.tween_property(l, "outline_modulate:a", 0.0, 0.5).set_delay(1.1)
 	tw.chain().tween_callback(func() -> void: l.visible = false)

@@ -139,8 +139,10 @@ func test_quiet_minutes_after_the_pod_lands() -> void:
 		assert_eq(d.current(), "", "no song yet at %.0f s" % t)
 		if d.current() != "":
 			break
-	for i: int in 200:
+	for i: int in 200:  # [main] stop at the first song: in headless runs it can end at once
 		d.tick(1.0)
+		if d.current() != "":
+			break
 	assert_ne(d.current(), "", "then the music starts")
 	assert_ne(d.current(), MAIN, "and not the main theme right after the title's")
 	d.set_context("none")

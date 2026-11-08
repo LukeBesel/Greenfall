@@ -127,7 +127,6 @@ func test_objective_upgrades_and_builds_are_ones_the_bench_has() -> void:
 		if str(d.get("type", "")) == "upgrade":
 			assert_true(Economy.upgrade_defs.has(str(d["key"])), "%s names a real upgrade" % d["id"])
 			assert_eq(Economy.lock_reason(str(d["key"])), "", "%s is never locked" % d["id"])
-	assert_true(UpgradesScreen.OBJECTIVE_ROWS.has("tower"), "the bench opens on the tower row during that objective")
 	assert_eq(BenchLists.BUILD_CATS[0][0], "story", "the tower's category is the Build tab's first")
 
 

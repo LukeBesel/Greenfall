@@ -14,10 +14,21 @@ var _combo: int = 0
 var _combo_t: float = 0.0
 
 
+static var _inst: CoinFlight  # [v1guide]
+
+
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	EventBus.cube_cashed.connect(_on_cashed)
+	_inst = self
+
+
+## [v1guide] Cubes from somewhere that isn't a bale sale (the trash bin before the Baler) fly into
+## the counter the same way, without counting as a sold bale. Already added to the wallet.
+static func fly(world_pos: Vector3, value: float) -> void:
+	if is_instance_valid(_inst) and value > 0.0:
+		_inst._on_cashed(BigNum.from_float(value), world_pos)
 
 
 static func coin_count(value: float) -> int:

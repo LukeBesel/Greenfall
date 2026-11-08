@@ -1,17 +1,17 @@
 {
-  "_doc": "[onboard] The first-minutes story objectives (story/objectives.gd, ui/objective_card.gd). One at a time, in order, each with a one-line why (desc). brief.lines: WREN's one last message in the crash (two subtitle lines), then she is silent until the Signal Tower (story/signal_tower.gd). Objective fields: text (title), desc (the why), hint (shown instead of desc until wait_flag is set), type stat|robot|zone|hub_level|flag|core|tower|upgrade|bench ([v1guide] the workbench tier, ui/bench_tiers.gd), key, target (absolute: lifetime stats), hex (true: outline the target hex on the ground with its % cleaned), lines (WREN, when the objective starts). Data stays English; tr() at display.",
+  "_doc": "[onboard] The first-minutes story objectives (story/objectives.gd, ui/objective_card.gd). One at a time, in order, each with a one-line why (desc). brief.lines: WREN's one last message in the crash (two subtitle lines), then she is silent until the Signal Tower (story/signal_tower.gd). Objective fields: text (title), desc (the why), hint (shown instead of desc until wait_flag is set), type stat|robot|zone|hub_level|flag|core|tower|upgrade|bench ([v1guide] the workbench tier, ui/bench_tiers.gd), key, target (absolute: lifetime stats), desc/hint may hold {action} key glyphs, e.g. {cube} ([v1guide]); hex (true: outline the target hex on the ground with its % cleaned), lines (WREN, when the objective starts). Data stays English; tr() at display.",
   "brief": {
     "lines": [
-      "Lumi, it's WREN, the Cradle's caretaker. Your friend up here. Your pod's down, and the relay's failing.",
-      "Fix the bench, clear junk for cubes, then build a signal tower to reach me. I'll be [glitch]listen—[/glitch]"
+      "Lumi, it's WREN, up on the Cradle. Your pod's down and the relay's failing. I can barely hear you.",
+      "Pick up the junk, look for parts, and build a signal tower so we can talk. I'll be [glitch]listen—[/glitch]"
     ]
   },
   "objectives": [
-    {"id": "dump3", "text": "Fill the trash bin 3 times", "desc": "Each chestful of junk pays a few cubes.", "type": "stat", "key": "junk_dumps", "target": 3},
+    {"id": "dump3", "text": "Fill the trash bin 3 times", "desc": "Each chestful pays cubes toward the signal tower.", "type": "stat", "key": "junk_dumps", "target": 3},
     {"id": "compartment", "text": "Buy Compartment Size", "desc": "A bigger chest means fewer trips to the bin.", "type": "upgrade", "key": "compartment_size", "target": 1},
     {"id": "scoop_size", "text": "Buy Scoop Size", "desc": "Grab more junk at once. At the workbench.", "type": "upgrade", "key": "multi_lock", "target": 1},
     {"id": "baler", "text": "Save up for the Baler", "desc": "It presses junk into bales. Bales sell for far more.", "type": "upgrade", "key": "baler", "target": 1},
-    {"id": "power", "text": "Power the base: sell 3 bales", "desc": "Cubes feed the recycler. Its power wakes the base.", "type": "stat", "key": "cubes_cashed", "target": 3},
+    {"id": "power", "text": "Power the base: sell 3 bales", "desc": "Full chest? Press {cube} for a bale, carry it to the scale.", "type": "stat", "key": "cubes_cashed", "target": 3},
     {"id": "tower", "text": "Build the signal tower", "desc": "WREN went silent. Build it in the workbench's Build tab.", "type": "tower", "target": 1},
     {"id": "hex", "text": "Clean a hex", "desc": "Clean ground is where green can grow again.", "type": "stat", "key": "hexes_cleaned", "target": 1, "hex": true},
     {"id": "bench2", "text": "Upgrade the workbench: Bot Bay", "desc": "A bot bay lets you build helpers. Upgrades tab, Base.", "type": "bench", "target": 2},

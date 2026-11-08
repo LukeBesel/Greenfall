@@ -90,6 +90,12 @@ func _objective_running() -> bool:
 	return objective.objectives != null and not objective.objectives.current().is_empty()
 
 
+## [v1guide] One goal timeline: the story objectives drive the goals and the objective card shows
+## the one current step, so the goal rows stay hidden.
+func _timeline() -> bool:
+	return _goals != null and _goals.driven
+
+
 ## Step text without its "  3/8" counter (so counting up doesn't re-fade the block).
 static func _strip_count(t: String) -> String:
 	var i: int = t.rfind("   ")
@@ -128,12 +134,12 @@ func _process(delta: float) -> void:
 	var total: int = _goals.chain.size()
 	var done: int = _goals.done_count()
 	var show_n: int = 3 if expanded else 1
-	_head.visible = expanded
+	_head.visible = expanded and not _timeline()
 	_head.text = ("G O A L S    %d / %d" % [done, total]) if done < total else "A L L   G O A L S   D O N E"
 	var sig: String = ""
 	for k: int in _rows.size():
 		var r: Dictionary = _rows[k]
-		(r["wrap"] as Control).visible = k < show_n and int(r["goal"]) >= 0 and (expanded or not (_checklist_running() or _objective_running()))
+		(r["wrap"] as Control).visible = k < show_n and int(r["goal"]) >= 0 and (expanded or not (_checklist_running() or _objective_running())) and not _timeline()
 		if r["busy"]:
 			continue
 		var gi: int = r["goal"]
@@ -225,6 +231,8 @@ func _draw_line(r: Dictionary) -> void:
 
 func _on_completed(gi: int) -> void:
 	_idle = 0.0
+	if _timeline():  # [v1guide] the objective card says it (one timeline), or it was folded in quietly
+		return
 	var reward: String = reward_text(_goals.reward_of(gi), 1.0)
 	if hud and hud.has_method("notify"):
 		hud.call("notify", tr("Goal complete  ·  %s%s") % [tr(str(_goals.chain[gi].get("text", ""))), ("    " + reward) if reward != "" else ""], "goal")
