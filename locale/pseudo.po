@@ -1297,7 +1297,7 @@ msgstr "[Ýôûŕ bàšé ĥàš ĝŕôŵñ àš ƒàŕ àš ţĥé ðémô ĝô
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "[Îñ ţĥé ƒûļļ ĝàmé Ļûmî bûîļðš ţĥé bàšé ûþ ţô ļévéļ 5, þļàñţš ŵĥôļé ðîšţŕîçţš ûñţîļ ţĥéý ţĥŕîvé, ĝŕôŵš ţĥém îñţô à bŕîĝĥţ ƒûţûŕé çîţý, àñð ƒļîéš ŕôçķéţš ţô ðôžéñš ôƒ bàšéš àçŕôšš ţĥé þļàñéţ. Ýôûŕ ðémô þŕôĝŕéšš çàŕŕîéš ôvéŕ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:755
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:765
 msgid "Hexes cleaned"
 msgstr "[Ĥéxéš çļéàñéð ~~]"
 
@@ -1305,11 +1305,11 @@ msgstr "[Ĥéxéš çļéàñéð ~~]"
 msgid "Bales made"
 msgstr "[Bàļéš màðé ~]"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:770
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:780
 msgid "Robots built"
 msgstr "[Ŕôbôţš bûîļţ ~]"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:778
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:788
 msgid "Time played"
 msgstr "[Ţîmé þļàýéð ~]"
 
@@ -1329,7 +1329,7 @@ msgstr "[Ţîţļé šçŕééñ ~]"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "[Ķééþ þļàýîñĝ: ţĥé ƒîŕšţ ðîšţŕîçţ šţàýš ôþéñ, àţ bàšé ļévéļ %d. ~~~~~~~~~~~~~~~~~~~]"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:847 ui/main_menu.gd:457
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:857 ui/main_menu.gd:457
 msgid "%dh %02dm"
 msgstr "[%dĥ %02dm ~]"
 
@@ -2044,7 +2044,7 @@ msgstr "[ŴÉ'ĻĻ BÉ BÀÇĶ ~~]"
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr "[%d àçĥîévéméñţš ûñļôçķéð. Šéé ţĥém îñ ţĥé Çôðéx (Ķ). ~~~~~~~~~~~~~~~]"
 
-#: systems/achievements.gd:147 ui/notify_stack.gd:24
+#: systems/achievements.gd:147 ui/notify_stack.gd:27
 msgid "Achievement: %s. %s"
 msgstr "[Àçĥîévéméñţ: %s. %s ~~~~]"
 
@@ -2084,11 +2084,11 @@ msgstr "[Šôméŵĥéŕé ûñðéŕ ţĥé ĵûñķ. ~~~~~~]"
 msgid "Found on the planet it belongs to."
 msgstr "[Fôûñð ôñ ţĥé þļàñéţ îţ béļôñĝš ţô. ~~~~~~~~~]"
 
-#: systems/codex.gd:200 ui/codex_screen.gd:370
+#: systems/codex.gd:200 ui/codex_screen.gd:380
 msgid "Old Town"
 msgstr "[Ôļð Ţôŵñ ~]"
 
-#: systems/codex.gd:204 ui/codex_screen.gd:370
+#: systems/codex.gd:204 ui/codex_screen.gd:380
 msgid "Wilderness bases"
 msgstr "[Ŵîļðéŕñéšš bàšéš ~~~]"
 
@@ -2096,7 +2096,7 @@ msgstr "[Ŵîļðéŕñéšš bàšéš ~~~]"
 msgid " · often %s"
 msgstr " [· ôƒţéñ %s ~]"
 
-#: systems/codex.gd:207 ui/codex_screen.gd:370 data/codex.json:categories[frontiers].name
+#: systems/codex.gd:207 ui/codex_screen.gd:380 data/codex.json:categories[frontiers].name
 msgid "Frontiers"
 msgstr "[Fŕôñţîéŕš ~]"
 
@@ -2104,11 +2104,11 @@ msgstr "[Fŕôñţîéŕš ~]"
 msgid " · %s"
 msgstr " [· %s]"
 
-#: systems/codex.gd:209 ui/codex_screen.gd:370
+#: systems/codex.gd:209 ui/codex_screen.gd:380
 msgid "Other worlds"
 msgstr "[Ôţĥéŕ ŵôŕļðš ~]"
 
-#: systems/codex.gd:210 ui/codex_screen.gd:370
+#: systems/codex.gd:210 ui/codex_screen.gd:380
 msgid "Any district"
 msgstr "[Àñý ðîšţŕîçţ ~]"
 
@@ -2610,20 +2610,20 @@ msgstr "[Þŕôƒîļé %d ~]"
 msgid "%d:%02d h"
 msgstr "[%d:%02d ĥ ~]"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:228 ui/settings_panel.gd:311
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:237 ui/settings_panel.gd:320
 msgid "Low"
 msgstr "[Ļôŵ ~]"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:228 ui/settings_panel.gd:311
-#: ui/settings_panel.gd:584
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:237 ui/settings_panel.gd:320
+#: ui/settings_panel.gd:593
 msgid "Medium"
 msgstr "[Méðîûm ~]"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:228 ui/settings_panel.gd:311
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:237 ui/settings_panel.gd:320
 msgid "High"
 msgstr "[Ĥîĝĥ ~]"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:228 ui/settings_panel.gd:311
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:237 ui/settings_panel.gd:320
 msgid "Ultra"
 msgstr "[Ûļţŕà ~]"
 
@@ -2671,7 +2671,7 @@ msgstr "[Àļŕéàðý qûéûéð ~~]"
 msgid "Queue is full"
 msgstr "[Qûéûé îš ƒûļļ ~~]"
 
-#: systems/research.gd:330 ui/codex_screen.gd:851
+#: systems/research.gd:330 ui/codex_screen.gd:861
 msgid "%ds"
 msgstr "[%dš ~]"
 
@@ -3080,7 +3080,7 @@ msgstr "[bàļéð àbôûţ %d bàļéš ~~~~]"
 msgid "kept the base tidy"
 msgstr "[ķéþţ ţĥé bàšé ţîðý ~~~]"
 
-#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:762
+#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:772
 msgid "Cubes earned"
 msgstr "[Çûbéš éàŕñéð ~]"
 
@@ -3277,7 +3277,7 @@ msgstr "[Šţàŕţîñĝ ķîţ: ĵûšţ Ļûmî. Ĥéîŕļôômš àðð ţ�
 msgid "Starting kit: %s"
 msgstr "[Šţàŕţîñĝ ķîţ: %s ~~~]"
 
-#: ui/ark_bridge.gd:303 ui/settings_panel.gd:565
+#: ui/ark_bridge.gd:303 ui/settings_panel.gd:574
 msgid "Full"
 msgstr "[Fûļļ ~]"
 
@@ -3519,7 +3519,7 @@ msgstr "[Fîñð ôñé ôƒ ţĥéîŕ ÇÐš îñ ţĥé ŕûbbļé ôñ %s. ~
 msgid "Your CDs (%d / %d): %s"
 msgstr "[Ýôûŕ ÇÐš (%d / %d): %s ~~~~~]"
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:784
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:794
 msgid "Achievements"
 msgstr "[Àçĥîévéméñţš ~]"
 
@@ -3551,16 +3551,28 @@ msgstr "[Ŵàţçĥ ţĥé šţôŕý ~~]"
 msgid "Close  [%s]"
 msgstr "[Çļôšé  [%s] ~]"
 
-#: ui/codex_screen.gd:202
-msgid "%d / %d entries   ·   %d / %d curiosities   ·   %d / %d collectibles   ·   %d / %d achievements"
-msgstr "[%d / %d éñţŕîéš   ·   %d / %d çûŕîôšîţîéš   ·   %d / %d çôļļéçţîbļéš   ·   %d / %d àçĥîévéméñţš ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+#: ui/codex_screen.gd:205
+msgid "%d / %d curiosities"
+msgstr "[%d / %d çûŕîôšîţîéš ~~~~]"
 
-#: ui/codex_screen.gd:330 ui/codex_screen.gd:450 ui/codex_screen.gd:616
-#: ui/codex_screen.gd:631
+#: ui/codex_screen.gd:207
+msgid "%d / %d collectibles"
+msgstr "[%d / %d çôļļéçţîbļéš ~~~~]"
+
+#: ui/codex_screen.gd:209
+msgid "%d / %d achievements"
+msgstr "[%d / %d àçĥîévéméñţš ~~~~]"
+
+#: ui/codex_screen.gd:211
+msgid "%d / %d entries"
+msgstr "[%d / %d éñţŕîéš ~~]"
+
+#: ui/codex_screen.gd:340 ui/codex_screen.gd:460 ui/codex_screen.gd:626
+#: ui/codex_screen.gd:641
 msgid "Not found yet"
 msgstr "[Ñôţ ƒôûñð ýéţ ~~]"
 
-#: ui/codex_screen.gd:334
+#: ui/codex_screen.gd:344
 msgid ""
 "\n"
 "\n"
@@ -3570,211 +3582,211 @@ msgstr ""
 "\n"
 "[Çļéàŕéð šô ƒàŕ: %s ~~~~]"
 
-#: ui/codex_screen.gd:359
+#: ui/codex_screen.gd:369
 msgid "CURIOSITIES"
 msgstr "[ÇÛŔÎÔŠÎŢÎÉŠ ~]"
 
-#: ui/codex_screen.gd:360 ui/codex_screen.gd:481
+#: ui/codex_screen.gd:370 ui/codex_screen.gd:491
 msgid "%d / %d found"
 msgstr "[%d / %d ƒôûñð ~~]"
 
-#: ui/codex_screen.gd:454
+#: ui/codex_screen.gd:464
 msgid "Found  ·  %s"
 msgstr "[Fôûñð  ·  %s ~]"
 
-#: ui/codex_screen.gd:457
+#: ui/codex_screen.gd:467
 msgid "Parts found: %d / %d"
 msgstr "[Þàŕţš ƒôûñð: %d / %d ~~~~]"
 
-#: ui/codex_screen.gd:458
+#: ui/codex_screen.gd:468
 msgid "Reward: a small surprise"
 msgstr "[Ŕéŵàŕð: à šmàļļ šûŕþŕîšé ~~~~~]"
 
-#: ui/codex_screen.gd:480
+#: ui/codex_screen.gd:490
 msgid "COLLECTION"
 msgstr "[ÇÔĻĻÉÇŢÎÔÑ ~]"
 
-#: ui/codex_screen.gd:564
+#: ui/codex_screen.gd:574
 msgid "LUMI'S COLLECTION"
 msgstr "[ĻÛMÎ'Š ÇÔĻĻÉÇŢÎÔÑ ~~~]"
 
-#: ui/codex_screen.gd:565
+#: ui/codex_screen.gd:575
 msgid "%d / %d complete"
 msgstr "[%d / %d çômþļéţé ~~~]"
 
-#: ui/codex_screen.gd:603
+#: ui/codex_screen.gd:613
 msgid "TRINKETS AND CURIOS"
 msgstr "[ŢŔÎÑĶÉŢŠ ÀÑÐ ÇÛŔÎÔŠ ~~~~]"
 
-#: ui/codex_screen.gd:615
+#: ui/codex_screen.gd:625
 msgid "EVERY PLANET"
 msgstr "[ÉVÉŔÝ ÞĻÀÑÉŢ ~]"
 
-#: ui/codex_screen.gd:618
+#: ui/codex_screen.gd:628
 msgid "In Lumi's collection. It has a plinth in the Museum."
 msgstr "[Îñ Ļûmî'š çôļļéçţîôñ. Îţ ĥàš à þļîñţĥ îñ ţĥé Mûšéûm. ~~~~~~~~~~~~~~~]"
 
-#: ui/codex_screen.gd:620
+#: ui/codex_screen.gd:630
 msgid "Hint: %s"
 msgstr "[Ĥîñţ: %s ~]"
 
-#: ui/codex_screen.gd:622
+#: ui/codex_screen.gd:632
 msgid "The Museum: built"
 msgstr "[Ţĥé Mûšéûm: bûîļţ ~~~]"
 
-#: ui/codex_screen.gd:622
+#: ui/codex_screen.gd:632
 msgid "The Museum is built at Cradle Returns, near the end of the journey."
 msgstr "[Ţĥé Mûšéûm îš bûîļţ àţ Çŕàðļé Ŕéţûŕñš, ñéàŕ ţĥé éñð ôƒ ţĥé ĵôûŕñéý. ~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/codex_screen.gd:634
+#: ui/codex_screen.gd:644
 msgid "In your collection"
 msgstr "[Îñ ýôûŕ çôļļéçţîôñ ~~~]"
 
-#: ui/codex_screen.gd:639
+#: ui/codex_screen.gd:649
 msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
 msgstr "[Ĥîñţ: à šĥý vîšîţôŕ çôméš ţô Šûšţàîñéð àñð Ţĥŕîvîñĝ ĥéxéš. Bŕîñĝ à çàméŕà. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/codex_screen.gd:640
+#: ui/codex_screen.gd:650
 msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
 msgstr "[Ĥîñţ: àñîmàļš çômé bàçķ àš ţĥé ĝŕôûñð ĥéàļš. Þĥôţôĝŕàþĥ ţĥém îñ þĥôţô môðé (Þ). ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/codex_screen.gd:641
+#: ui/codex_screen.gd:651
 msgid "Hint: finish %d requests (Requests tab at the workbench)."
 msgstr "[Ĥîñţ: ƒîñîšĥ %d ŕéqûéšţš (Ŕéqûéšţš ţàb àţ ţĥé ŵôŕķbéñçĥ). ~~~~~~~~~~~~~~~~~]"
 
-#: ui/codex_screen.gd:642
+#: ui/codex_screen.gd:652
 msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
 msgstr "[Ĥîñţ: Çûŕîô Çàþšûļéš, ôñ ţĥé Ŕéqûéšţš ŕéŵàŕð ţŕàçķ àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/codex_screen.gd:643
+#: ui/codex_screen.gd:653
 msgid "Hint: keep scooping without stopping until the streak meter is full."
 msgstr "[Ĥîñţ: ķééþ šçôôþîñĝ ŵîţĥôûţ šţôþþîñĝ ûñţîļ ţĥé šţŕéàķ méţéŕ îš ƒûļļ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/codex_screen.gd:644
+#: ui/codex_screen.gd:654
 msgid "Hint: turns up during %s."
 msgstr "[Ĥîñţ: ţûŕñš ûþ ðûŕîñĝ %s. ~~~~~~]"
 
-#: ui/codex_screen.gd:713
+#: ui/codex_screen.gd:723
 msgid "Unlocked  ·  %s"
 msgstr "[Ûñļôçķéð  ·  %s ~~]"
 
-#: ui/codex_screen.gd:752
+#: ui/codex_screen.gd:762
 msgid "Total"
 msgstr "[Ţôţàļ ~]"
 
-#: ui/codex_screen.gd:753
+#: ui/codex_screen.gd:763
 msgid "Junk removed"
 msgstr "[Ĵûñķ ŕémôvéð ~]"
 
-#: ui/codex_screen.gd:753
+#: ui/codex_screen.gd:763
 msgid "by type"
 msgstr "[bý ţýþé ~]"
 
-#: ui/codex_screen.gd:754 data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:764 data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "[Çļéàñîñĝ ~]"
 
-#: ui/codex_screen.gd:756
+#: ui/codex_screen.gd:766
 msgid "Hexes restored"
 msgstr "[Ĥéxéš ŕéšţôŕéð ~~]"
 
-#: ui/codex_screen.gd:757
+#: ui/codex_screen.gd:767
 msgid "Bales pressed"
 msgstr "[Bàļéš þŕéššéð ~~]"
 
-#: ui/codex_screen.gd:758
+#: ui/codex_screen.gd:768
 msgid "Pure bales"
 msgstr "[Þûŕé bàļéš ~]"
 
-#: ui/codex_screen.gd:759
+#: ui/codex_screen.gd:769
 msgid "Perfect bales"
 msgstr "[Þéŕƒéçţ bàļéš ~~]"
 
-#: ui/codex_screen.gd:760
+#: ui/codex_screen.gd:770
 msgid "Lumpy bales"
 msgstr "[Ļûmþý bàļéš ~]"
 
-#: ui/codex_screen.gd:761
+#: ui/codex_screen.gd:771
 msgid "Bales cashed in"
 msgstr "[Bàļéš çàšĥéð îñ ~~]"
 
-#: ui/codex_screen.gd:764 ui/globe_view.gd:138 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:774 ui/globe_view.gd:138 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "[Ĝŕôŵîñĝ ~]"
 
-#: ui/codex_screen.gd:765
+#: ui/codex_screen.gd:775
 msgid "Seeds planted"
 msgstr "[Šééðš þļàñţéð ~~]"
 
-#: ui/codex_screen.gd:766
+#: ui/codex_screen.gd:776
 msgid "Plants bloomed"
 msgstr "[Þļàñţš bļôôméð ~~]"
 
-#: ui/codex_screen.gd:767
+#: ui/codex_screen.gd:777
 msgid "Air filtered"
 msgstr "[Àîŕ ƒîļţéŕéð ~]"
 
-#: ui/codex_screen.gd:769 data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:779 data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "[Ŕôbôţš ~]"
 
-#: ui/codex_screen.gd:771
+#: ui/codex_screen.gd:781
 msgid "Bales by robots"
 msgstr "[Bàļéš bý ŕôbôţš ~~]"
 
-#: ui/codex_screen.gd:772
+#: ui/codex_screen.gd:782
 msgid "Parts dug up"
 msgstr "[Þàŕţš ðûĝ ûþ ~]"
 
-#: ui/codex_screen.gd:774
+#: ui/codex_screen.gd:784
 msgid "Exploring"
 msgstr "[Éxþļôŕîñĝ ~]"
 
-#: ui/codex_screen.gd:775
+#: ui/codex_screen.gd:785
 msgid "Distance rolled"
 msgstr "[Ðîšţàñçé ŕôļļéð ~~]"
 
-#: ui/codex_screen.gd:776
+#: ui/codex_screen.gd:786
 msgid "Memory shards read"
 msgstr "[Mémôŕý šĥàŕðš ŕéàð ~~~]"
 
-#: ui/codex_screen.gd:777
+#: ui/codex_screen.gd:787
 msgid "Codex entries"
 msgstr "[Çôðéx éñţŕîéš ~~]"
 
-#: ui/codex_screen.gd:780
+#: ui/codex_screen.gd:790
 msgid "Progress"
 msgstr "[Þŕôĝŕéšš ~]"
 
-#: ui/codex_screen.gd:781
+#: ui/codex_screen.gd:791
 msgid "Upgrades bought"
 msgstr "[Ûþĝŕàðéš bôûĝĥţ ~~]"
 
-#: ui/codex_screen.gd:782
+#: ui/codex_screen.gd:792
 msgid "Field notes logged"
 msgstr "[Fîéļð ñôţéš ļôĝĝéð ~~~]"
 
-#: ui/codex_screen.gd:783
+#: ui/codex_screen.gd:793
 msgid "Research done"
 msgstr "[Ŕéšéàŕçĥ ðôñé ~~]"
 
-#: ui/codex_screen.gd:785
+#: ui/codex_screen.gd:795
 msgid "Best hub level"
 msgstr "[Béšţ ĥûb ļévéļ ~~]"
 
-#: ui/codex_screen.gd:835
+#: ui/codex_screen.gd:845
 msgid "%s kg"
 msgstr "[%s ķĝ ~]"
 
-#: ui/codex_screen.gd:836
+#: ui/codex_screen.gd:846
 msgid "%.1f kg"
 msgstr "[%.1f ķĝ ~]"
 
-#: ui/codex_screen.gd:840
+#: ui/codex_screen.gd:850
 msgid "%.2f km"
 msgstr "[%.2f ķm ~]"
 
-#: ui/codex_screen.gd:850
+#: ui/codex_screen.gd:860
 msgid "%dm %02ds"
 msgstr "[%dm %02dš ~]"
 
@@ -4928,8 +4940,8 @@ msgstr "[Ðéç ~]"
 msgid "CREDITS"
 msgstr "[ÇŔÉÐÎŢŠ ~]"
 
-#: ui/main_menu.gd:594 ui/profile_picker.gd:49 ui/settings_panel.gd:116
-#: ui/settings_panel.gd:141 ui/world_picker.gd:53
+#: ui/main_menu.gd:594 ui/profile_picker.gd:49 ui/settings_panel.gd:122
+#: ui/settings_panel.gd:147 ui/world_picker.gd:53
 msgid "Back"
 msgstr "[Bàçķ ~]"
 
@@ -5060,7 +5072,7 @@ msgstr "[Þĥôţô môðé îšñ'ţ àvàîļàbļé ðûŕîñĝ à ŕôçķ�
 msgid "Photo mode isn't available during a cinematic."
 msgstr "[Þĥôţô môðé îšñ'ţ àvàîļàbļé ðûŕîñĝ à çîñémàţîç. ~~~~~~~~~~~~~]"
 
-#: ui/photo_mode.gd:367 ui/photo_mode.gd:420 ui/settings_panel.gd:373
+#: ui/photo_mode.gd:367 ui/photo_mode.gd:420 ui/settings_panel.gd:382
 msgid "Camera"
 msgstr "[Çàméŕà ~]"
 
@@ -5068,7 +5080,7 @@ msgstr "[Çàméŕà ~]"
 msgid "Mode"
 msgstr "[Môðé ~]"
 
-#: ui/photo_mode.gd:369 ui/settings_panel.gd:381
+#: ui/photo_mode.gd:369 ui/settings_panel.gd:390
 msgid "Field of view"
 msgstr "[Fîéļð ôƒ vîéŵ ~~]"
 
@@ -5105,7 +5117,7 @@ msgid "Blur"
 msgstr "[Bļûŕ ~]"
 
 #: ui/photo_mode.gd:377 ui/photo_panel.gd:240 ui/photo_panel.gd:242
-#: ui/photo_panel.gd:280 ui/settings_panel.gd:671
+#: ui/photo_panel.gd:280 ui/settings_panel.gd:680
 msgid "Off"
 msgstr "[Ôƒƒ ~]"
 
@@ -5218,7 +5230,7 @@ msgid "Exit"
 msgstr "[Éxîţ ~]"
 
 #: ui/photo_panel.gd:240 ui/photo_panel.gd:242 ui/photo_panel.gd:280
-#: ui/settings_panel.gd:671
+#: ui/settings_panel.gd:680
 msgid "On"
 msgstr "[Ôñ ~]"
 
@@ -5530,7 +5542,7 @@ msgstr "[Ýôû ļéàvé ţĥé šçŕàţçĥéð ÇÐ ŵĥéŕé îţ ļàý.
 msgid "The scratched CD cracks and falls apart. %s"
 msgstr "[Ţĥé šçŕàţçĥéð ÇÐ çŕàçķš àñð ƒàļļš àþàŕţ. %s ~~~~~~~~~~~~]"
 
-#: ui/settings_panel.gd:12 ui/settings_panel.gd:221
+#: ui/settings_panel.gd:12
 msgid "Basics"
 msgstr "[Bàšîçš ~]"
 
@@ -5554,291 +5566,295 @@ msgstr "[Ĝàméþļàý ~]"
 msgid "Accessibility"
 msgstr "[Àççéššîbîļîţý ~~]"
 
-#: ui/settings_panel.gd:61
+#: ui/settings_panel.gd:63
 msgid "SETTINGS"
 msgstr "[ŠÉŢŢÎÑĜŠ ~]"
 
-#: ui/settings_panel.gd:64
+#: ui/settings_panel.gd:66
 msgid "{ui_tab_prev}{ui_tab_next}  switch tabs     {ui_cancel}  back"
 msgstr "[{ui_tab_prev}{ui_tab_next}  šŵîţçĥ ţàbš     {ui_cancel}  bàçķ ~~~~~~~~~~~~~~~~~~]"
 
-#: ui/settings_panel.gd:111
+#: ui/settings_panel.gd:70
+msgid "{ui_cancel}  back"
+msgstr "[{ui_cancel}  bàçķ ~~~]"
+
+#: ui/settings_panel.gd:117
 msgid "Changes are saved automatically."
 msgstr "[Çĥàñĝéš àŕé šàvéð àûţômàţîçàļļý. ~~~~~~~~]"
 
-#: ui/settings_panel.gd:228 ui/settings_panel.gd:311
+#: ui/settings_panel.gd:237 ui/settings_panel.gd:320
 msgid "Quality preset"
 msgstr "[Qûàļîţý þŕéšéţ ~~]"
 
-#: ui/settings_panel.gd:231 ui/settings_panel.gd:330
+#: ui/settings_panel.gd:240 ui/settings_panel.gd:339
 msgid "Fullscreen"
 msgstr "[Fûļļšçŕééñ ~]"
 
-#: ui/settings_panel.gd:234 ui/settings_panel.gd:374
+#: ui/settings_panel.gd:243 ui/settings_panel.gd:383
 msgid "Mouse sensitivity"
 msgstr "[Môûšé šéñšîţîvîţý ~~~]"
 
-#: ui/settings_panel.gd:238 ui/settings_panel.gd:550
+#: ui/settings_panel.gd:247 ui/settings_panel.gd:559
 msgid "System default"
 msgstr "[Šýšţém ðéƒàûļţ ~~]"
 
-#: ui/settings_panel.gd:239 ui/settings_panel.gd:548 ui/settings_panel.gd:551
+#: ui/settings_panel.gd:248 ui/settings_panel.gd:557 ui/settings_panel.gd:560
 msgid "Language"
 msgstr "[Ļàñĝûàĝé ~]"
 
-#: ui/settings_panel.gd:244
+#: ui/settings_panel.gd:253
 msgid "More settings  (sound, graphics, controls, accessibility)"
 msgstr "[Môŕé šéţţîñĝš  (šôûñð, ĝŕàþĥîçš, çôñţŕôļš, àççéššîbîļîţý) ~~~~~~~~~~~~~~~~~]"
 
-#: ui/settings_panel.gd:250
+#: ui/settings_panel.gd:259
 msgid "Everything else"
 msgstr "[Évéŕýţĥîñĝ éļšé ~~]"
 
-#: ui/settings_panel.gd:290
+#: ui/settings_panel.gd:299
 msgid "Volume"
 msgstr "[Vôļûmé ~]"
 
-#: ui/settings_panel.gd:297
+#: ui/settings_panel.gd:306
 msgid "Sound effects"
 msgstr "[Šôûñð éƒƒéçţš ~~]"
 
-#: ui/settings_panel.gd:304
+#: ui/settings_panel.gd:313
 msgid "Rendering"
 msgstr "[Ŕéñðéŕîñĝ ~]"
 
-#: ui/settings_panel.gd:305
+#: ui/settings_panel.gd:314
 msgid "Low drops GI and fog; Ultra adds reflections."
 msgstr "[Ļôŵ ðŕôþš ĜÎ àñð ƒôĝ; Ûļţŕà àððš ŕéƒļéçţîôñš. ~~~~~~~~~~~~~]"
 
-#: ui/settings_panel.gd:306
+#: ui/settings_panel.gd:315
 msgid "This renderer always uses the Low preset."
 msgstr "[Ţĥîš ŕéñðéŕéŕ àļŵàýš ûšéš ţĥé Ļôŵ þŕéšéţ. ~~~~~~~~~~~]"
 
-#: ui/settings_panel.gd:308
+#: ui/settings_panel.gd:317
 msgid "Detected: %s for %s. "
 msgstr "[Ðéţéçţéð: %s ƒôŕ %s. ~~~~] "
 
-#: ui/settings_panel.gd:309
+#: ui/settings_panel.gd:318
 msgid "Your choice (hardware: %s). "
 msgstr "[Ýôûŕ çĥôîçé (ĥàŕðŵàŕé: %s). ~~~~~~~] "
 
-#: ui/settings_panel.gd:310
+#: ui/settings_panel.gd:319
 msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
 msgstr "[Ļôŵ ðŕôþš ĜÎ, ƒôĝ àñð šĥàðôŵš ðéţàîļ; Ûļţŕà àððš ŕéƒļéçţîôñš. ~~~~~~~~~~~~~~~~~~]"
 
-#: ui/settings_panel.gd:318
+#: ui/settings_panel.gd:327
 msgid "Renderer"
 msgstr "[Ŕéñðéŕéŕ ~]"
 
-#: ui/settings_panel.gd:318
+#: ui/settings_panel.gd:327
 msgid "Standard (Forward+)"
 msgstr "[Šţàñðàŕð (Fôŕŵàŕð+) ~~~~]"
 
-#: ui/settings_panel.gd:318
+#: ui/settings_panel.gd:327
 msgid "Light (Mobile)"
 msgstr "[Ļîĝĥţ (Môbîļé) ~~]"
 
-#: ui/settings_panel.gd:320
+#: ui/settings_panel.gd:329
 msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
 msgstr "[Ļîĝĥţ šûîţš ôļðéŕ îñţéĝŕàţéð ĝŕàþĥîçš. Ţàķéš éƒƒéçţ àƒţéŕ ŕéšţàŕţîñĝ ţĥé ĝàmé (ñôŵ: %s). ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/settings_panel.gd:326
+#: ui/settings_panel.gd:335
 msgid "Render scale"
 msgstr "[Ŕéñðéŕ šçàļé ~]"
 
-#: ui/settings_panel.gd:328
+#: ui/settings_panel.gd:337
 msgid "Lower renders 3D at a smaller size; the interface stays sharp."
 msgstr "[Ļôŵéŕ ŕéñðéŕš 3Ð àţ à šmàļļéŕ šîžé; ţĥé îñţéŕƒàçé šţàýš šĥàŕþ. ~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/settings_panel.gd:329
+#: ui/settings_panel.gd:338
 msgid "Display"
 msgstr "[Ðîšþļàý ~]"
 
-#: ui/settings_panel.gd:333
+#: ui/settings_panel.gd:342
 msgid "V-Sync"
 msgstr "[V-Šýñç ~]"
 
-#: ui/settings_panel.gd:339 ui/settings_panel.gd:368
+#: ui/settings_panel.gd:348 ui/settings_panel.gd:377
 msgid "Bindings"
 msgstr "[Bîñðîñĝš ~]"
 
-#: ui/settings_panel.gd:342
+#: ui/settings_panel.gd:351
 msgid "ACTION   (select a binding to rebind it)"
 msgstr "[ÀÇŢÎÔÑ   (šéļéçţ à bîñðîñĝ ţô ŕébîñð îţ) ~~~~~~~~~~~]"
 
-#: ui/settings_panel.gd:345
+#: ui/settings_panel.gd:354
 msgid "KEYBOARD / MOUSE"
 msgstr "[ĶÉÝBÔÀŔÐ / MÔÛŠÉ ~~~]"
 
-#: ui/settings_panel.gd:345
+#: ui/settings_panel.gd:354
 msgid "CONTROLLER"
 msgstr "[ÇÔÑŢŔÔĻĻÉŔ ~]"
 
-#: ui/settings_panel.gd:361
+#: ui/settings_panel.gd:370
 msgid "Reset to defaults"
 msgstr "[Ŕéšéţ ţô ðéƒàûļţš ~~~]"
 
-#: ui/settings_panel.gd:368
+#: ui/settings_panel.gd:377
 msgid "Restore every key and controller binding."
 msgstr "[Ŕéšţôŕé évéŕý ķéý àñð çôñţŕôļļéŕ bîñðîñĝ. ~~~~~~~~~~~]"
 
-#: ui/settings_panel.gd:370
+#: ui/settings_panel.gd:379
 msgid "Button prompts"
 msgstr "[Bûţţôñ þŕômþţš ~~]"
 
-#: ui/settings_panel.gd:372
+#: ui/settings_panel.gd:381
 msgid "Controller art: Automatic follows the connected pad."
 msgstr "[Çôñţŕôļļéŕ àŕţ: Àûţômàţîç ƒôļļôŵš ţĥé çôññéçţéð þàð. ~~~~~~~~~~~~~~~]"
 
-#: ui/settings_panel.gd:377
+#: ui/settings_panel.gd:386
 msgid "Stick look speed"
 msgstr "[Šţîçķ ļôôķ šþééð ~~~]"
 
-#: ui/settings_panel.gd:380
+#: ui/settings_panel.gd:389
 msgid "Invert look Y"
 msgstr "[Îñvéŕţ ļôôķ Ý ~~]"
 
-#: ui/settings_panel.gd:384
+#: ui/settings_panel.gd:393
 msgid "Mouse smoothing"
 msgstr "[Môûšé šmôôţĥîñĝ ~~]"
 
-#: ui/settings_panel.gd:385
+#: ui/settings_panel.gd:394
 msgid "Eases mouse look over a few frames."
 msgstr "[Éàšéš môûšé ļôôķ ôvéŕ à ƒéŵ ƒŕàméš. ~~~~~~~~~]"
 
-#: ui/settings_panel.gd:386
+#: ui/settings_panel.gd:395
 msgid "Scooping"
 msgstr "[Šçôôþîñĝ ~]"
 
-#: ui/settings_panel.gd:387
+#: ui/settings_panel.gd:396
 msgid "Scoop button"
 msgstr "[Šçôôþ bûţţôñ ~]"
 
-#: ui/settings_panel.gd:387
+#: ui/settings_panel.gd:396
 msgid "Hold"
 msgstr "[Ĥôļð ~]"
 
-#: ui/settings_panel.gd:387
+#: ui/settings_panel.gd:396
 msgid "Toggle"
 msgstr "[Ţôĝĝļé ~]"
 
-#: ui/settings_panel.gd:428
+#: ui/settings_panel.gd:437
 msgid "press a button…"
 msgstr "[þŕéšš à bûţţôñ… ~~]"
 
-#: ui/settings_panel.gd:428
+#: ui/settings_panel.gd:437
 msgid "press a key…"
 msgstr "[þŕéšš à ķéý… ~]"
 
-#: ui/settings_panel.gd:460
+#: ui/settings_panel.gd:469
 msgid "Conflict: %s is used by both %s and %s."
 msgstr "[Çôñƒļîçţ: %s îš ûšéð bý bôţĥ %s àñð %s. ~~~~~~~~~~~]"
 
-#: ui/settings_panel.gd:554
+#: ui/settings_panel.gd:563
 msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
 msgstr "[Méñûš, ĤÛÐ, šûbţîţļéš àñð šţôŕý ţéxţ. Þšéûðô îš ƒôŕ ţéšţîñĝ ţŕàñšļàţîôñš. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/settings_panel.gd:555
+#: ui/settings_panel.gd:564
 msgid "Comfort"
 msgstr "[Çômƒôŕţ ~]"
 
-#: ui/settings_panel.gd:556
+#: ui/settings_panel.gd:565
 msgid "Camera shake"
 msgstr "[Çàméŕà šĥàķé ~]"
 
-#: ui/settings_panel.gd:558
+#: ui/settings_panel.gd:567
 msgid "Reduced motion"
 msgstr "[Ŕéðûçéð môţîôñ ~~]"
 
-#: ui/settings_panel.gd:559
+#: ui/settings_panel.gd:568
 msgid "Calmer camera and fewer bouncy effects."
 msgstr "[Çàļméŕ çàméŕà àñð ƒéŵéŕ bôûñçý éƒƒéçţš. ~~~~~~~~~~~]"
 
-#: ui/settings_panel.gd:560 ui/settings_panel.gd:570
+#: ui/settings_panel.gd:569 ui/settings_panel.gd:579
 msgid "Interface"
 msgstr "[Îñţéŕƒàçé ~]"
 
-#: ui/settings_panel.gd:561
+#: ui/settings_panel.gd:570
 msgid "Number format"
 msgstr "[Ñûmbéŕ ƒôŕmàţ ~~]"
 
-#: ui/settings_panel.gd:561
+#: ui/settings_panel.gd:570
 msgid "Short (1.2K)"
 msgstr "[Šĥôŕţ (1.2Ķ) ~]"
 
-#: ui/settings_panel.gd:561
+#: ui/settings_panel.gd:570
 msgid "Scientific (1.2e3)"
 msgstr "[Šçîéñţîƒîç (1.2é3) ~~~]"
 
-#: ui/settings_panel.gd:561
+#: ui/settings_panel.gd:570
 msgid "Engineering (1.2e3)"
 msgstr "[Éñĝîñééŕîñĝ (1.2é3) ~~~~]"
 
-#: ui/settings_panel.gd:563
+#: ui/settings_panel.gd:572
 msgid "Best-value tags"
 msgstr "[Béšţ-vàļûé ţàĝš ~~]"
 
-#: ui/settings_panel.gd:564
+#: ui/settings_panel.gd:573
 msgid "Tag the affordable upgrade that gives the most per cube."
 msgstr "[Ţàĝ ţĥé àƒƒôŕðàbļé ûþĝŕàðé ţĥàţ ĝîvéš ţĥé môšţ þéŕ çûbé. ~~~~~~~~~~~~~~~~~]"
 
-#: ui/settings_panel.gd:565
+#: ui/settings_panel.gd:574
 msgid "HUD"
 msgstr "[ĤÛÐ ~]"
 
-#: ui/settings_panel.gd:565
+#: ui/settings_panel.gd:574
 msgid "Minimal"
 msgstr "[Mîñîmàļ ~]"
 
-#: ui/settings_panel.gd:565
+#: ui/settings_panel.gd:574
 msgid "Hidden"
 msgstr "[Ĥîððéñ ~]"
 
-#: ui/settings_panel.gd:566
+#: ui/settings_panel.gd:575
 msgid "Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."
 msgstr "[Mîñîmàļ ƒàðéš éxţŕàš àƒţéŕ à ƒéŵ šéçôñðš. Ĥîððéñ ķééþš ôñļý þŕômþţš àñð méššàĝéš. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/settings_panel.gd:576
+#: ui/settings_panel.gd:585
 msgid "Interface scale"
 msgstr "[Îñţéŕƒàçé šçàļé ~~]"
 
-#: ui/settings_panel.gd:578
+#: ui/settings_panel.gd:587
 msgid "Size of menus, HUD and subtitles."
 msgstr "[Šîžé ôƒ méñûš, ĤÛÐ àñð šûbţîţļéš. ~~~~~~~~~]"
 
-#: ui/settings_panel.gd:579
+#: ui/settings_panel.gd:588
 msgid "Colour-blind palette"
 msgstr "[Çôļôûŕ-bļîñð þàļéţţé ~~~~]"
 
-#: ui/settings_panel.gd:580
+#: ui/settings_panel.gd:589
 msgid "Okabe-Ito colours for hex progress, the hopper meter and part rarity."
 msgstr "[Ôķàbé-Îţô çôļôûŕš ƒôŕ ĥéx þŕôĝŕéšš, ţĥé ĥôþþéŕ méţéŕ àñð þàŕţ ŕàŕîţý. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/settings_panel.gd:581 ui/settings_panel.gd:582
+#: ui/settings_panel.gd:590 ui/settings_panel.gd:591
 msgid "Subtitles"
 msgstr "[Šûbţîţļéš ~]"
 
-#: ui/settings_panel.gd:583
+#: ui/settings_panel.gd:592
 msgid "WREN and Ledger lines."
 msgstr "[ŴŔÉÑ àñð Ļéðĝéŕ ļîñéš. ~~~~~]"
 
-#: ui/settings_panel.gd:584
+#: ui/settings_panel.gd:593
 msgid "Subtitle size"
 msgstr "[Šûbţîţļé šîžé ~~]"
 
-#: ui/settings_panel.gd:584
+#: ui/settings_panel.gd:593
 msgid "Small"
 msgstr "[Šmàļļ ~]"
 
-#: ui/settings_panel.gd:584
+#: ui/settings_panel.gd:593
 msgid "Large"
 msgstr "[Ļàŕĝé ~]"
 
-#: ui/settings_panel.gd:586
+#: ui/settings_panel.gd:595
 msgid "Subtitle background"
 msgstr "[Šûbţîţļé bàçķĝŕôûñð ~~~~]"
 
-#: ui/settings_panel.gd:587
+#: ui/settings_panel.gd:596
 msgid "A solid backdrop behind subtitle text."
 msgstr "[À šôļîð bàçķðŕôþ béĥîñð šûbţîţļé ţéxţ. ~~~~~~~~~~]"
 
