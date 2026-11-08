@@ -34,6 +34,8 @@ var _prop_body: StaticBody3D  # [world2] street furniture and lot fences (PhysLa
 ## [orbD] A hub site prefab on the globe (planet/sites/verdance_site.gd): no skyline backdrop
 ## (the globe's own far shell is the horizon).
 var skyline: bool = true
+## [orbD] false: sidewalks, kerbs, fences and street furniture only (the site places kit buildings).
+var buildings: bool = true
 
 
 func build(p_layout: CityLayout, p_ground_material: Material) -> void:
@@ -142,7 +144,7 @@ func _build_block(key: Vector2i, b: Dictionary) -> void:
 		CityLayout.Block.BUILDINGS:
 			_body = BuildingDetail.Geo.new()
 			_det = BuildingDetail.Geo.new()
-			for bd: Dictionary in b["buildings"]:
+			for bd: Dictionary in (b["buildings"] if buildings else []):  # [orbD]
 				if detailed:
 					_build_building(key, bd)
 				else:

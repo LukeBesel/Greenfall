@@ -1,10 +1,12 @@
 class_name VerdanceSite
 extends Node3D
-## [orbD] Verdance's hub sites on the walkable globe, built from the flat game's real city kit:
-## a small local CityLayout (a 3 x 3 block grid around the hub yard, 5 x 5 for the start yard)
-## dressed by CityView (modular facade kits, BuildingDetail roofs, sidewalks, kerbs, street
-## furniture) and StreetDressing (shopfronts, murals, billboard, yard slab and paint, puddles,
-## weeds, drifts, the landmark, the ruin layer). Nothing grey-boxed.
+## [orbD] Verdance's hub sites on the walkable globe. A small local CityLayout (a 3 x 3 block
+## grid around the hub yard) gives the street grid: CityView lays its sidewalks, kerbs, lot
+## fences and street furniture, and every building is a shared art-kit building (KitBuilding:
+## modules, towers, hangars, tank farms, machine housings, art/kit/**, docs/ART_KIT.md) on its
+## own kit ground patch, broken while the base is ruined, repaired at level 2-3, restored at 4-5.
+## Landfill lots get kit debris, crate stacks and tipped barrels. StreetDressing adds the yard
+## (slab, paint, puddles, weeds, drifts, the landmark, the ruin layer); no facade dressing.
 ## Everything is in site-local metres (+Y up, y = 0 on the pad, x east, z south), so it stands on
 ## a SphereTerrain site pad under PlanetEnvs.build_site, or alone in a preview.
 ## Sites:
@@ -17,7 +19,7 @@ extends Node3D
 ## through the `site_inv` shader global, which SiteManager points at the nearest site.
 
 const SITES: Array[String] = ["start_yard", "ruin_block"]
-const START_EXTENT: float = 72.0   # 5 x 5 blocks, 180 m: on the start pad (140 m flat radius)
+const START_EXTENT: float = 36.0   # 3 x 3 blocks, 108 m, on the start pad (140 m flat radius)
 const HUB_EXTENT: float = 36.0     # 3 x 3 blocks, 108 m
 ## Which share of buildings are broken off on a ruined hub.
 const RUIN_SHARE: float = 0.7
@@ -31,6 +33,10 @@ var restoration: float = 0.0
 var layout: CityLayout
 var city: CityView
 var dressing: StreetDressing
+var kit_root: Node3D
+var kits: Array[KitBuilding] = []
+var _foot: Array[Rect2] = []
+var _kit_state: String = ""
 var district_name: String = ""
 var _rubble: Node3D
 
@@ -52,12 +58,7 @@ static func build(parent: Node3D, p_site: String, stage: int, p_restoration: flo
 
 ## Site-local rectangles that are solid (building footprints): the globe clears junk under them.
 func footprints() -> Array[Rect2]:
-	var out: Array[Rect2] = []
-	if layout == null:
-		return out
-	for bd: Dictionary in layout.all_buildings():
-		out.append(bd["rect"])
-	return out
+	return _foot.duplicate()
 
 
 ## Anchors inside the hub yard (the centre block, ~11 m half-size): the depot and the bench on
@@ -83,6 +84,17 @@ func set_level(l: int) -> void:
 		dressing.set_level(level, is_inside_tree())
 	if _rubble:
 		_rubble.visible = level <= 1
+	var ks: String = kit_state(level)
+	if ks != _kit_state:
+		_kit_state = ks
+		for k: KitBuilding in kits:
+			k.set_state(ks)
+			k.set_powered(level >= 2)
+
+
+## The kit state for a base level: broken (1), repaired (2-3), restored (4-5).
+static func kit_state(l: int) -> String:
+	return "broken" if l <= 1 else ("repaired" if l <= 3 else "restored")
 
 
 func set_restoration(r: float) -> void:
@@ -98,14 +110,16 @@ func _make() -> void:
 	city = CityView.new()
 	city.name = "City"
 	city.skyline = false
+	city.buildings = false  # the kit's buildings instead (below)
 	add_child(city)
 	await city.build(layout, _sidewalk_material())
 	_roads()
+	_kit_blocks()
 	dressing = StreetDressing.new()
 	dressing.name = "Dressing"
+	dressing.skip_facades = true
 	add_child(dressing)
 	await dressing.build(layout, null, hub_index, district_name, "", level)
-	_build_rubble()
 	set_level(level)
 
 
@@ -204,75 +218,68 @@ func _road_quad(st: SurfaceTool, axis: int, c: float, t0: float, t1: float, hw: 
 		st.add_vertex(p)
 
 
-## Rubble at the foot of broken buildings: real junk/debris models in MultiMeshes, mounds of
-## broken concrete (lumpy meshes), tipped slabs. Shown while the base is ruined (level 1).
-func _build_rubble() -> void:
-	_rubble = Node3D.new()
-	_rubble.name = "Rubble"
-	add_child(_rubble)
+## Block layouts in block-local metres (the inner rect is ~21.8 m square): [kind, x, z, yaw°].
+const PATTERNS: Array = [
+	[["module_large", 0.0, 0.0, 0.0]],
+	[["module_medium", 0.0, -5.4, 0.0], ["module_medium", 0.0, 5.4, 180.0]],
+	[["module_small", -5.0, -4.6, 0.0], ["module_small", 5.0, -4.6, 0.0], ["machine_housing", -5.0, 5.0, 180.0], ["module_small", 5.0, 5.0, 180.0]],
+	[["hangar", 0.0, 0.0, 90.0]],
+	[["tank_farm", 0.0, -4.0, 0.0], ["machine_housing", 0.0, 6.2, 180.0]],
+	[["tower", -5.5, -5.5, 0.0], ["module_medium", 3.5, 4.0, 180.0]],
+]
+## Verdance's kit palette (docs/ART_KIT.md): cream with a teal accent; a few buildings take a
+## second accent so a block isn't one colour.
+const ACCENTS: Array[String] = ["teal", "teal", "navy", "orange"]
+
+
+## Every building block gets kit buildings on kit ground patches; landfill lots get kit debris,
+## crate stacks and tipped barrels. Kit meshes are cached per kind / state / seed, so seeds are
+## folded to a few variants per kind.
+func _kit_blocks() -> void:
+	kit_root = Node3D.new()
+	kit_root.name = "Kit"
+	add_child(kit_root)
+	_kit_state = kit_state(level)
 	var rng := RandomNumberGenerator.new()
-	rng.seed = seed_value + 97
-	var conc: StandardMaterial3D = AssetLib.pbr_material("concrete_wall_008", 0.5, Color(0.62, 0.6, 0.56), true)
-	var brick: StandardMaterial3D = AssetLib.pbr_material("red_brick", 0.6, Color(0.7, 0.6, 0.56), true)
-	var b := FrontierView.Batch.new()
-	for bd: Dictionary in layout.all_buildings():
-		if not bool(bd.get("ruined", false)):
+	rng.seed = seed_value + 401
+	var junk := KitMesh.Builder.new(seed_value, {"main": "cream", "accent": "teal"}, _kit_state)
+	var any_junk: bool = false
+	for key: Vector2i in layout.blocks:
+		if key == Vector2i.ZERO:
 			continue
-		var r: Rect2 = bd["rect"]
-		var face: Vector2 = bd["face"]
-		var n: int = 3 + int(r.size.length() / 6.0)
-		for k: int in n:
-			# Spill out in front of the facade, onto the sidewalk and the street.
-			var along: float = rng.randf()
-			var p2: Vector2
-			if absf(face.y) > 0.5:
-				p2 = Vector2(lerpf(r.position.x, r.end.x, along), (r.position.y if face.y < 0 else r.end.y) + face.y * rng.randf_range(0.5, 4.5))
-			else:
-				p2 = Vector2((r.position.x if face.x < 0 else r.end.x) + face.x * rng.randf_range(0.5, 4.5), lerpf(r.position.y, r.end.y, along))
-			var sz := Vector3(rng.randf_range(0.5, 1.6), rng.randf_range(0.2, 0.7), rng.randf_range(0.4, 1.3))
-			var bas := Basis.from_euler(Vector3(rng.randf_range(-0.5, 0.5), rng.randf() * TAU, rng.randf_range(-0.5, 0.5))).scaled(sz)
-			b.add(_chunk_mesh(), Transform3D(bas, Vector3(p2.x, sz.y * 0.25, p2.y)), brick if rng.randf() < 0.35 else conc)
-		# A long tipped slab off the broken top, leaning on the facade.
-		if rng.randf() < 0.55:
-			var mid: Vector2 = r.get_center() + face * (minf(r.size.x, r.size.y) * 0.5 + 1.2)
-			var yaw: float = atan2(face.x, face.y)
-			var bas2 := Basis(Vector3.UP, yaw) * Basis(Vector3.RIGHT, -rng.randf_range(0.35, 0.7))
-			b.add(_chunk_mesh(), Transform3D(bas2.scaled(Vector3(rng.randf_range(2.4, 4.0), 0.25, rng.randf_range(2.5, 4.5))), Vector3(mid.x, 0.9, mid.y)), conc)
-	b.flush(_rubble)
-	for c: Node in _rubble.get_children():
-		c.set_meta("no_collide", true)
-
-
-static var _chunk: ArrayMesh
-
-
-## A chunky broken-concrete lump (unit size, bevelled, irregular): never a raw box.
-static func _chunk_mesh() -> ArrayMesh:
-	if _chunk:
-		return _chunk
-	var sm := SphereMesh.new()
-	sm.radius = 0.5
-	sm.height = 1.0
-	sm.radial_segments = 7
-	sm.rings = 4
-	var arr: Array = sm.get_mesh_arrays()
-	var v: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
-	var nz := FastNoiseLite.new()
-	nz.seed = 7
-	nz.frequency = 2.2
-	for i: int in v.size():
-		var p: Vector3 = v[i]
-		var k: float = 1.0 + nz.get_noise_3dv(p * 2.0) * 0.35
-		p *= k
-		# Flatten into a slab-ish chunk with a facetted top.
-		p.y = clampf(p.y, -0.42, 0.38)
-		v[i] = p
-	arr[Mesh.ARRAY_VERTEX] = v
-	var st := SurfaceTool.new()
-	var tmp := ArrayMesh.new()
-	tmp.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
-	st.create_from(tmp, 0)
-	st.set_smooth_group(-1)
-	st.generate_normals()
-	_chunk = st.commit()
-	return _chunk
+		var b: Dictionary = layout.blocks[key]
+		var c: Vector2 = (b["rect"] as Rect2).get_center()
+		match int(b["type"]):
+			CityLayout.Block.BUILDINGS:
+				var pat: Array = PATTERNS[rng.randi() % PATTERNS.size()]
+				var turn: float = float(rng.randi() % 4) * 90.0 if pat.size() == 1 else (0.0 if rng.randf() < 0.5 else 180.0)
+				for e: Array in pat:
+					var kind: String = e[0]
+					var lp := Vector2(float(e[1]), float(e[2])).rotated(deg_to_rad(-turn))
+					var yaw: float = deg_to_rad(float(e[3]) + turn)
+					var pal: Dictionary = {"main": "cream", "accent": ACCENTS[rng.randi() % ACCENTS.size()]}
+					var kb: KitBuilding = KitBuilding.create(kind, _kit_state, 1 + rng.randi() % 3, pal, level >= 2)
+					kb.position = Vector3(c.x + lp.x, 0.0, c.y + lp.y)
+					kb.rotation.y = yaw
+					kit_root.add_child(kb)
+					kits.append(kb)
+					var fp: Vector2 = KitBuilding.FOOTPRINT.get(kind, Vector2(10, 10)) * 0.8
+					if absf(sin(yaw)) > 0.5:
+						fp = Vector2(fp.y, fp.x)
+					_foot.append(Rect2(Vector2(kb.position.x, kb.position.z) - fp * 0.5, fp))
+			CityLayout.Block.LANDFILL:
+				any_junk = true
+				var t := Transform3D(Basis(), Vector3(c.x, 0, c.y))
+				KitProps.debris(junk, t, 9.0, 26)
+				KitProps.crate_stack(junk, t * KitMesh.xf(Vector3(rng.randf_range(-6, 6), 0, rng.randf_range(-6, 6)), Vector3(0, rng.randf() * 90.0, 0)), 3 + rng.randi() % 3, _kit_state)
+				for k: int in 3:
+					KitProps.barrel(junk, t * KitMesh.xf(Vector3(rng.randf_range(-8, 8), 0.0, rng.randf_range(-8, 8)), Vector3(0, rng.randf() * 180.0, 0)), "paint:barrel", rng.randf() < 0.5)
+				var gp: Node3D = KitMesh.ground_patch(Vector2(18, 18), _kit_state, 1 + rng.randi() % 3)
+				gp.position = Vector3(c.x, 0, c.y)
+				kit_root.add_child(gp)
+	if any_junk:
+		var mi: MeshInstance3D = KitMesh.instance(junk)
+		mi.name = "LotJunk"
+		kit_root.add_child(mi)
+	# The kit has no bodies of its own: one trimesh body for the buildings' solid meshes.
+	SitePrefab.collision_for(kit_root, self)
