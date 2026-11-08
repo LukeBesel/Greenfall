@@ -79,8 +79,9 @@ func hopper_pos() -> Vector3:
 
 
 func pad_contains(p: Vector3) -> bool:
-	var d: Vector3 = p - hopper_pos()
-	return absf(d.x) <= PAD_HALF and absf(d.z) <= PAD_HALF and p.y < 1.6
+	var lp: Vector3 = _l(p)  # [orbD] world -> belt-local
+	var d: Vector3 = lp - hopper_pos()
+	return absf(d.x) <= PAD_HALF and absf(d.z) <= PAD_HALF and lp.y < 1.6
 
 
 func speed() -> float:
@@ -356,8 +357,8 @@ func _advance(line: Line, v: float, delta: float) -> void:
 		it["s"] = s
 		var dir: Vector3 = line.dir_at(s)
 		var up: Vector3 = dir.cross(Vector3.UP).normalized().cross(dir)
-		c.global_position = line.point_at(s) + up * (c.size * 0.5 + 0.01)
-		c.global_basis = Basis.looking_at(Vector3(dir.x, 0, dir.z).normalized() if absf(dir.y) < 0.99 else Vector3.FORWARD, Vector3.UP)
+		c.global_position = _g(line.point_at(s) + up * (c.size * 0.5 + 0.01))  # [orbD]
+		c.global_basis = (global_basis if is_inside_tree() else Basis()) * Basis.looking_at(Vector3(dir.x, 0, dir.z).normalized() if absf(dir.y) < 0.99 else Vector3.FORWARD, Vector3.UP)
 		if i == 0 and s >= line.total - 0.001 and _deliver(line, c):
 			line.items.remove_at(0)
 			continue
@@ -372,7 +373,7 @@ func _deliver(line: Line, c: JunkCube) -> bool:
 		return true
 	var dir: Vector3 = line.dir_at(line.total)
 	if stations:
-		stations.release_cube(c, c.global_position + dir * 0.15, dir * speed() + Vector3(0, -0.3, 0))
+		stations.release_cube(c, c.global_position + _gd(dir) * 0.15, _gd(dir * speed() + Vector3(0, -0.3, 0)))  # [orbD]
 	Audio.play("thud", 1.1, -12.0)
 	return true
 
@@ -401,7 +402,7 @@ func _try_feed() -> void:
 	if not line.entry_free(float(stations.def("conveyor").get("gap", 0.75)) if stations else 0.75):
 		# Belt backed up: leave the bale on the pad for now.
 		if from_patch and stations:
-			stations.release_cube(cube, hopper_pos() + Vector3(randf_range(-0.3, 0.3), 0.7, randf_range(-0.3, 0.3)))
+			stations.release_cube(cube, _g(hopper_pos() + Vector3(randf_range(-0.3, 0.3), 0.7, randf_range(-0.3, 0.3))))  # [orbD]
 		if dest == "recycler":
 			stations.route_count -= 1
 		_feed_t = 0.3
@@ -418,7 +419,7 @@ func _turn_and_push(cube: JunkCube, line: Line) -> void:
 			cube.reparent(self, true)
 		else:
 			add_child(cube)
-	var start: Vector3 = cube.global_position
+	var start: Vector3 = _l(cube.global_position)  # [orbD] the turn-and-push runs in belt-local space
 	var center: Vector3 = hopper_pos() + Vector3(0, 0.2 + cube.size * 0.5, 0)
 	var dir: Vector3 = line.dir_at(0.0)
 	var yaw: float = atan2(-dir.x, -dir.z)
@@ -427,7 +428,7 @@ func _turn_and_push(cube: JunkCube, line: Line) -> void:
 	tw.tween_method(func(t: float) -> void:
 		if is_instance_valid(cube):
 			var top: Vector3 = (start + center) * 0.5 + Vector3(0, 0.25, 0)
-			cube.global_position = start.lerp(top, t).lerp(top.lerp(center, t), t)
+			cube.global_position = _g(start.lerp(top, t).lerp(top.lerp(center, t), t))
 		, 0.0, 1.0, 0.25)
 	tw.tween_callback(func() -> void:
 		Audio.play("clunk", 1.1, -9.0)
@@ -437,13 +438,13 @@ func _turn_and_push(cube: JunkCube, line: Line) -> void:
 	tw.tween_method(func(a: float) -> void:
 		_turntable.rotation.y = a
 		if is_instance_valid(cube):
-			cube.global_basis = Basis(Vector3.UP, a)
+			cube.global_basis = (global_basis if is_inside_tree() else Basis()) * Basis(Vector3.UP, a)
 		, yaw0, target, 0.3).set_trans(Tween.TRANS_SINE)
 	tw.tween_method(func(t: float) -> void:
 		for r: Node3D in _turn_rollers:
 			r.rotation.x = -t * 8.0
 		if is_instance_valid(cube):
-			cube.global_position = center.lerp(entry, t)
+			cube.global_position = _g(center.lerp(entry, t))
 		, 0.0, 1.0, 0.75 / maxf(speed(), 0.2))
 	tw.tween_callback(func() -> void:
 		_pending = null
@@ -470,7 +471,7 @@ func demo_load(cubes: Array[JunkCube]) -> void:
 			c.reparent(self, true)
 			line.items.append({"cube": c, "s": line.total * (0.85 - 0.3 * k) if dest == "depot" else line.total * 0.55})
 	for k2: int in range(i, cubes.size()):
-		cubes[k2].global_position = hopper_pos() + Vector3(-0.2 + (k2 - i) * 0.1, 0.5 + (k2 - i) * 0.7, 0.1)
+		cubes[k2].global_position = _g(hopper_pos() + Vector3(-0.2 + (k2 - i) * 0.1, 0.5 + (k2 - i) * 0.7, 0.1))  # [orbD]
 
 
 func held_dicts() -> Array:
@@ -482,3 +483,18 @@ func held_dicts() -> Array:
 	if _pending and is_instance_valid(_pending):
 		out.append(_pending.to_dict())
 	return out
+
+
+# --- [orbD] Machine-local <-> world (identity on the flat game, where the machines sit at the
+# origin; on a globe the Stations node stands in the start site's frame) -------------------------
+
+func _g(p: Vector3) -> Vector3:
+	return global_transform * p if is_inside_tree() else p
+
+
+func _gd(v: Vector3) -> Vector3:
+	return global_basis * v if is_inside_tree() else v
+
+
+func _l(p: Vector3) -> Vector3:
+	return to_local(p) if is_inside_tree() else p

@@ -240,6 +240,11 @@ func _yield_to_real_systems() -> void:
 		_composter.queue_free()
 		_composter = null
 		_slots.erase("composter")
+	# The real Stations (OrbitSites builds them on the globe) bring their own machines.
+	if not _stations.is_empty() and world.is_inside_tree() and Stations.of(world) != null:
+		for id: String in _stations:
+			(_stations[id] as Node).queue_free()
+		_stations.clear()
 	# Radio and nursery: the extras' own models stand once they show (built).
 	var ex: ExtrasDirector = ExtrasDirector.of(world)
 	if ex:
