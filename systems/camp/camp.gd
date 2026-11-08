@@ -249,6 +249,7 @@ func _apply_bench(ok: bool, animate: bool) -> void:
 			tw.tween_interval(0.25 + i * 0.12)
 			tw.tween_property(n, "transform", xf, 0.4).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		i += 1
+	YardArt.bench_state(_bench, ok, animate)  # [yard] rust, slumped pegboard and dark lamp until fixed
 
 
 func _process(delta: float) -> void:
@@ -285,6 +286,7 @@ func _apply_builds() -> void:
 	if gen:
 		gen.visible = YardBuilds.built("generator")
 		_set_solid(gen, gen.visible)  # [pace2]
+	YardArt.ground_for_level(world, hub_level())  # [yard] kit ground patch: repaired, restored from L3
 	var dressing: Node = world.get("dressing")
 	if dressing and dressing.has_method("set_level"):
 		var hub: Hub = world.get("hub") as Hub
