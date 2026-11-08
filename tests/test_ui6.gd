@@ -85,3 +85,88 @@ func test_no_locker_tab() -> void:
 	for t: Dictionary in UpgradesScreen.TABS:
 		assert_ne(str(t["id"]), "locker")
 	assert_lte(UpgradesScreen.TABS.size(), 5)
+
+
+## [ui7] The Bots tab in the list pattern, with a hidden Fabricator slot for orbC.
+func test_bots_rows_and_fabricator_slot() -> void:
+	Research.grant("salvage_logic")
+	var f := Fleet.new()
+	add_child_autofree(f)
+	var rows: Array = BenchBots.rows(f, Callable())
+	var builds: Array = rows.filter(func(r: Dictionary) -> bool: return str(r["cat"]) == "build")
+	assert_eq(builds.size(), Economy.robot_order.size(), "one build row per robot type")
+	assert_true(rows.filter(func(r: Dictionary) -> bool: return str(r["cat"]) == "fabricator").is_empty(), "no Fabricator until it plugs in")
+	BenchBots.set_fabricator(func(_w: Node) -> Array: return [{"id": "fab_1", "cat": "fabricator", "name": "Queue", "state": "busy"}])
+	rows = BenchBots.rows(f, Callable())
+	assert_eq(rows.filter(func(r: Dictionary) -> bool: return str(r["cat"]) == "fabricator").size(), 1)
+	BenchBots.set_fabricator(Callable())
+	GameState.currencies["cubes"] = BigNum.from_float(1.0e6)
+	GameState.currencies["parts"] = BigNum.from_float(1.0e4)
+	rows = BenchBots.rows(f, Callable())
+	var hb: Dictionary = rows.filter(func(r: Dictionary) -> bool: return str(r["id"]) == "build_haulbug")[0]
+	assert_eq(str(hb["state"]), "ready")
+	assert_true((hb["act"] as Callable).call())
+	assert_eq(f.count("haulbug"), 1)
+	rows = BenchBots.rows(f, Callable())
+	assert_false(rows.filter(func(r: Dictionary) -> bool: return str(r["id"]) == "tier_haulbug").is_empty(), "a Mk row once you have one")
+
+
+## [ui7] Robot looks are per type: a design reaches every robot of the type, new ones too, and
+## it survives a save.
+func test_type_design_reaches_new_bots_and_saves() -> void:
+	Research.grant("salvage_logic")
+	var f := Fleet.new()
+	add_child_autofree(f)
+	var a: Robot = f.spawn("scoopie", 0, Vector3.ZERO, 0.0, "Old-01")
+	RobotBuilder.add_part("treads")
+	assert_eq(RobotDesign.set_part(f, "scoopie", "mobility", "treads"), "")
+	RobotDesign.set_field(f, "scoopie", "glow", "mint")
+	assert_eq(str(a.build.get("mobility", "")), "treads", "an existing scoopie wears it")
+	var b: Robot = f.spawn("scoopie", 0, Vector3(2, 0, 0), 0.0, "New-02")
+	assert_eq(str(b.build.get("mobility", "")), "treads", "a newly built scoopie picks up its type's design")
+	var h: Robot = f.spawn("haulbug", 0, Vector3(4, 0, 0), 0.0, "Hauler-03")
+	assert_true(h.build.is_empty(), "other types keep their own look")
+	var mats: Array = b.visual.get("_glow_mats")
+	if not mats.is_empty():
+		assert_eq((mats[0] as StandardMaterial3D).emission, RobotDesign.glow_color("mint"), "the type's glow colour")
+	var saved: Dictionary = JSON.parse_string(JSON.stringify(GameState.to_dict()))
+	GameState.flags.erase("robot_designs")
+	GameState.from_dict(saved)
+	assert_eq(str(RobotDesign.parts("scoopie").get("mobility", "")), "treads", "the design survives save / load")
+	assert_eq(str(RobotDesign.of("scoopie").get("glow", "")), "mint")
+
+
+func test_ship_style_unlocks_and_wear() -> void:
+	var paints: Array = ShipStyle.items("paints")
+	assert_eq(paints.size(), 6)
+	assert_eq(ShipStyle.items("trims").size(), 3)
+	assert_true(ShipStyle.unlocked("paints", "pearl"))
+	assert_false(ShipStyle.listed("paints", "lunar"), "tier-locked looks stay hidden")
+	assert_true(ShipStyle.wear("paints", "sunset"))
+	assert_eq(ShipStyle.paint_color(), Color.html("#f2a46b"))
+	assert_false(ShipStyle.wear("paints", "coral"), "bought first")
+	GameState.currencies["parts"] = BigNum.from_float(1000.0)
+	assert_true(ShipStyle.buy("paints", "coral"))
+	assert_true(ShipStyle.wear("paints", "coral"))
+
+
+func test_locker_bot_rows_hide_locked_parts() -> void:
+	var f := Fleet.new()
+	add_child_autofree(f)
+	var rows: Array = LockerEditors.bot_rows(f, "scoopie")
+	for r: Dictionary in rows:
+		if str(r["cat"]) == "parts":
+			var pid: String = str(r["id"]).trim_prefix("part_")
+			assert_eq(RobotBuilder.locked_research(pid), "", "%s: research-locked parts stay hidden" % pid)
+	assert_gt(rows.filter(func(r: Dictionary) -> bool: return str(r["cat"]) == "glow").size(), 5)
+
+
+## [ui7] The Fabricator is a Bots category, and globe robots wear the type design too.
+func test_globe_robots_get_the_type_design_hook() -> void:
+	RobotDesign.register_hooks()
+	assert_true(SphereCrew.dress_hooks.has(Callable(RobotDesign.dress_sphere)) or SphereCrew.dress_hooks.size() > 0)
+	var body := Node3D.new()
+	add_child_autofree(body)
+	RobotDesign._all()["scoopie"] = {"livery": ""}
+	RobotDesign.dress_sphere(body, null, "scoopie", 0)
+	assert_null(body.get_node_or_null(Liveries.NODE_NAME), "a plain design wears no livery")
