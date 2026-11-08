@@ -117,5 +117,5 @@ func _update_intensity() -> void:
 		district = float(world.field.junk_hexes_cleaned()) / float(world.field.junk_hex_count)
 	var planet: float = world.planet.restored_fraction() if world.get("planet") != null else 0.0
 	Audio.set_restoration(_pinned_resto if _pinned_resto >= 0.0 else planet)  # [sound] themes and ambience bloom with it
-	var robots: float = minf(1.0, float(world.fleet.robots().size()) / 12.0) if world.get("fleet") != null else 0.0
+	var robots: float = minf(1.0, float(world.fleet.robot_total()) / 12.0) if world.get("fleet") != null else 0.0
 	Audio.set_music_intensity(clampf(0.12 + 0.45 * district + 0.25 * robots + 0.6 * planet, 0.0, 1.0))

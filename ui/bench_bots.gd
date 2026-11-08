@@ -114,5 +114,5 @@ static func rows(fleet: Fleet, build_at: Callable) -> Array:
 static func counter(fleet: Fleet) -> String:
 	if fleet == null:
 		return ""
-	var total: int = int(fleet.call("robot_total")) if fleet.has_method("robot_total") else fleet.robots().size()  # [orbC] globe crews
+	var total: int = fleet.robot_total()  # [orbC] globe crews
 	return _tr("ROBOTS  %d   ·   CREW SPOTS %d") % [total, fleet.crew_cap()]

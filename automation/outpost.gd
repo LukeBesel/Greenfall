@@ -118,6 +118,24 @@ func set_level(new_level: int, animate: bool, done: Callable = Callable()) -> vo
 			done.call())
 
 
+## [v3qa] On a round planet the outpost stands on one tangent plane at its centre, so on a slope
+## the wreck's far pieces floated up to ~0.6 m (QA_VERDANCE #5). Each top-level piece rides up or
+## down to the terrain under its own footprint; the flat game is untouched.
+func _conform(root: Node3D) -> void:
+	var f: Variant = world.get("field") if world else null
+	if not f is SphereField or not is_inside_tree():
+		return
+	var terrain: SphereTerrain = (f as SphereField).terrain
+	for c: Node in root.get_children():
+		if not c is Node3D or c is CollisionObject3D:
+			continue
+		var n: Node3D = c
+		var foot: Vector3 = to_global(Vector3(n.position.x, 0.0, n.position.z))
+		var dh: float = -terrain.altitude(foot)
+		if absf(dh) > 0.02:
+			n.position.y += clampf(dh, -1.5, 1.5)
+
+
 func _clear_ruin() -> void:
 	var old: Node3D = _ruin
 	_ruin = null
@@ -397,6 +415,7 @@ func _build_ruin() -> void:
 	_model(_ruin, "cardboard_box_01", PAD + Vector3(0.2, 0.1, 0.9), 33.0, 0.4, Vector3(0, 0, 12))
 	_model(_ruin, "plastic_crate_01", KIOSK + Vector3(1.4, 0.0, 1.6), 64.0, 0.35, Vector3(0, 0, 0))
 	_model(_ruin, "rusted_wheel_rim_01", Vector3(1.2, 0.05, -1.0), 10.0, 0.12)
+	_conform(_ruin)  # [v3qa]
 	PropColliders.fit(PropColliders.body(_ruin, "Props"), _ruin)  # [world2] the wreck is solid
 
 
@@ -643,6 +662,7 @@ func _build_fixed(lv: int, drop_lv: int) -> void:
 		_charge_light = EggProps.glow(Color(0.35, 0.85, 1.0), 1.0, 4.0, Vector3(0, 0.6, 0))
 		cp.add_child(_charge_light)
 		cp.add_child(EggProps.label(tr("RECHARGE"), 34, Color(0.75, 0.95, 1.0), Vector3(0, 0.14, 0.7), Vector3(-90, 0, 0), true))
+	_conform(_fixed)  # [v3qa]
 	if drop_lv > 0:
 		_drop_in(drop_lv)
 
@@ -681,7 +701,7 @@ func _drop_in(from_lv: int) -> void:
 		tw.tween_callback(func() -> void: n.visible = true)
 		tw.tween_property(n, "transform", final, 0.45).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 		tw.tween_callback(func() -> void:
-			Vfx.burst("sparkle", to_global(final.origin) + Vector3(0, 0.3, 0), Color(1.0, 0.8, 0.4), 0.5)
+			Vfx.burst("sparkle", to_global(final.origin + Vector3(0, 0.3, 0)), Color(1.0, 0.8, 0.4), 0.5)  # [v3qa] local up (globe)
 			Vfx.burst("dust", to_global(final.origin), Color(0.65, 0.6, 0.52, 0.5), 0.5)
 			Audio.play("clunk", randf_range(0.9, 1.2), -10.0))
 		d += 0.2

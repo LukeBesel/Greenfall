@@ -233,6 +233,8 @@ func build(p_world: Node3D) -> void:
 		w.emit_signal("built")
 	if DevHooks.has("yard-probe"):  # [v1yard] junk distance from the pad and pod, what stands at the start
 		YardProbe.attach(self)
+	if DevHooks.has("ground-probe"):  # [v3qa] floating / sunken props and junk around Lumi
+		GroundProbe.attach(self)
 
 
 func _build_patch() -> void:
