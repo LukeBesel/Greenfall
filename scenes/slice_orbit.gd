@@ -412,6 +412,11 @@ func _build_yard_systems() -> void:
 	ia.name = "Interactables"
 	w.add_child(ia)
 	w.set("interactables", ia)
+	var ev := WorldEvents.new()  # world events + the cleaning streak (systems/events.gd)
+	ev.name = "WorldEvents"
+	ev.world = w
+	w.add_child(ev)
+	w.set("events", ev)
 	SignalTower.migrate(w)  # WREN only talks through the Signal Tower (story/signal_tower.gd)
 	if GameState.current_hub == 0:
 		var tower := SignalTower.new()
