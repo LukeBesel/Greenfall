@@ -114,7 +114,7 @@ Same upgrades bought, no errors.
 | System | Status | Owner | Evidence and notes |
 |---|---|---|---|
 | WREN, subtitles, uplink | works | | Built; the Ledger's uplink lines run. |
-| Intro cinematic | missing | orbE | On the globe the pod is placed and `intro_done` is set; the cinematic doesn't play. |
+| Intro cinematic | works | orbE | A new game plays the whole intro on the globe (ark, storm, fall, landing, wake). The landing and wake shots run in the start site's "pod" anchor frame (`Intro.site_xf`, level on the local up), the crash site lies on the pad, and the end places the pod the globe's way. Lumi stands on the ground beside it. Saves, tools and headless runs place the pod at once. Headless check: `--orbit --intro` (finishes, input restored, Lumi 0.0 m above ground, 3.4 m from the pod). |
 | Crashed pod | works | | `orbit_pod_out_of_view`, `orbit_camera_clear_of_pod`. |
 | Core charge | works | | Built. |
 | Memory shards + document view | missing | orbB | Shards in cleaned cells restore WREN's memory. `doc_view` is null, so the Ledger's "read the amended contract" does nothing on the globe. |
