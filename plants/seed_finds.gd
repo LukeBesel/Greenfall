@@ -38,8 +38,8 @@ func _on_scooped(type_id: String, pos: Vector3) -> void:
 	_cooldown = float(_cfg.get("cooldown_s", 60.0))
 	GameState.add_currency("seeds", BigNum.from_float(1.0))
 	GameState.inc_stat("seeds_found_rubble")
-	Vfx.burst("sparkle", pos + Vector3(0, 1.0, 0), Color(0.7, 1.0, 0.55), 0.5)
-	Vfx.float_text(pos + Vector3(0, 1.7, 0), tr("+1 SEED"), Color(0.7, 1.0, 0.6), 0.5, 0.7)
+	Vfx.burst("sparkle", pos + OrbitUp.up(pos) * 1.0, Color(0.7, 1.0, 0.55), 0.5)  # [orbB] local up (Vector3.UP flat)
+	Vfx.float_text(pos + OrbitUp.up(pos) * 1.7, tr("+1 SEED"), Color(0.7, 1.0, 0.6), 0.5, 0.7)
 	Audio.play("chime", 1.6, -12.0)
 	if not GameState.flags.get("seed_find_hint", false):
 		GameState.flags["seed_find_hint"] = true

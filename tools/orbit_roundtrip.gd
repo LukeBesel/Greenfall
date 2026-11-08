@@ -332,6 +332,36 @@ static func _first_seed_check(tree: SceneTree, s: Node, so: SliceOrbit, check: C
 	await tree.process_frame
 	check.call("orbit_seed_controls_back", "hud true cam true", "hud %s cam %s" % [str((s.get("hud") as CanvasLayer).visible), str(so.cam.input_enabled)])
 	fcfg["hexes_needed"] = need0
+	# The compost press stands on the "composter" anchor, hidden until it's a Hub build; once
+	# built, its own model replaces the yard's stand-in, paper feeds it and it presses seeds.
+	var cmp: Composter = s.get("composter") as Composter
+	check.call("orbit_composter_on_anchor", true, cmp != null and cmp.global_position.distance_to(so.yard_point("composter")) < 0.1 and not cmp.visible)
+	if cmp:
+		YardBuilds.mark_built("composter")
+		(s.get("camp") as Camp)._apply_builds()  # (a Hub build does this through Camp's build handler)
+		await tree.create_timer(1.3).timeout
+		var stand_in: bool = false
+		for n: Node in s.find_children("*", "Node3D", true, false):
+			if n is YardSite and (n as YardSite).get("_composter") != null:
+				stand_in = true
+		check.call("orbit_composter_built_one_model", true, cmp.visible and not stand_in)
+		p.place_on_sphere(cmp.global_position + cmp.global_basis.z * 1.6, p.forward())
+		await tree.physics_frame
+		check.call("orbit_composter_prompt", true, s.interact_prompt(p).contains("compost press"))
+		GameState.flags["first_sprout"] = true
+		var h0: float = Composter.hopper()
+		s.salvage_materials("paper", 10.0)
+		check.call("orbit_composter_takes_paper", true, Composter.hopper() > h0)
+		var sd0: float = GameState.get_currency("seeds").to_float()
+		Engine.time_scale = 20.0
+		await tree.create_timer(cmp.cycle_seconds() + 1.0).timeout
+		Engine.time_scale = 1.0
+		check.call("orbit_composter_presses_seeds", true, GameState.get_currency("seeds").to_float() > sd0)
+	var sf: SeedFinds = null
+	for n2: Node in s.get_children():
+		if n2 is SeedFinds:
+			sf = n2
+	check.call("orbit_seed_finds", true, sf != null and sf.chance_for("paper") > 0.0)
 	p.place_on_sphere(back, p.forward())
 
 

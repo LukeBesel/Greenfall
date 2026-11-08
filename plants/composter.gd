@@ -94,7 +94,7 @@ func interact() -> void:
 	level += 1
 	GameState.world["composter_level"] = level
 	GameState.inc_stat("upgrades_bought")
-	Vfx.burst("big_sparkle", global_position + Vector3(0, 1.4, 0), Color(0.7, 1.0, 0.55))
+	Vfx.burst("big_sparkle", to_global(Vector3(0, 1.4, 0)), Color(0.7, 1.0, 0.55))  # [orbB] its own up
 	Audio.play("hydraulic", 1.0, -6.0)
 	Audio.music_sting("upgrade")
 	EventBus.toast.emit(tr("Compost press Lv %d: %.0f s cycles, %.1f seeds each.") % [level, cycle_seconds(), seeds_per_cycle()], "story")
@@ -130,7 +130,7 @@ func _process(delta: float) -> void:
 		_steam_t -= delta
 		if _steam_t <= 0.0:
 			_steam_t = 1.2
-			Vfx.burst("steam", global_position + Vector3(-0.6, 1.5, 0), Color(0.9, 0.95, 0.9, 0.5), 0.4)
+			Vfx.burst("steam", to_global(Vector3(-0.6, 1.5, 0)), Color(0.9, 0.95, 0.9, 0.5), 0.4)
 	var k: float = clampf(_cycle_t / cycle_seconds(), 0.0, 1.0)
 	_press_head.position.y = 1.15 - 0.25 * smoothstep(0.85, 1.0, k)
 	if _cycle_t >= cycle_seconds():
@@ -139,8 +139,8 @@ func _process(delta: float) -> void:
 		var n: float = seeds_per_cycle()
 		GameState.add_currency("seeds", BigNum.from_float(n))
 		GameState.inc_stat("seeds_pressed", n)
-		Vfx.burst("soil", global_position + Vector3(0.6, 0.6, -0.4), Color(0.45, 0.33, 0.2), 0.5)
-		Vfx.burst("sparkle", global_position + Vector3(0.6, 0.9, -0.4), Color(0.7, 1.0, 0.5), 0.3)
+		Vfx.burst("soil", to_global(Vector3(0.6, 0.6, -0.4)), Color(0.45, 0.33, 0.2), 0.5)
+		Vfx.burst("sparkle", to_global(Vector3(0.6, 0.9, -0.4)), Color(0.7, 1.0, 0.5), 0.3)
 		Audio.play("thud", 1.3, -12.0)
 		Audio.play("pop", 1.2, -10.0)
 	if Engine.get_process_frames() % 20 == 0:

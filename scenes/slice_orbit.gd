@@ -391,6 +391,10 @@ func try_interact(p: Patch) -> void:
 	if fs and fs.near_tin(p.global_position):  # the Maker seed tin in the greenhouse
 		fs.take_tin()
 		return
+	var cmp: Composter = w.get("composter")
+	if cmp and cmp.near(p.global_position):
+		cmp.interact()
+		return
 	if near_bench():
 		var camp: Camp = w.get("camp")
 		if not Camp.bench_ok():
@@ -410,6 +414,9 @@ func interact_prompt(p: Patch) -> String:
 	var fs: FirstSeed = w.get("first_seed")
 	if fs and fs.near_tin(p.global_position):
 		return "seed"
+	var cmp: Composter = w.get("composter")
+	if cmp and cmp.near(p.global_position):
+		return cmp.prompt()
 	if near_bench():
 		var camp: Camp = w.get("camp")
 		if camp:
@@ -512,6 +519,7 @@ func _build_yard_systems() -> void:
 	w.set("objectives", obj)
 	_build_hub_frame()
 	_attach_first_seed.call_deferred()
+	_attach_seed_economy()
 	var bloom := Bloom.new()  # post-game milestones + Seed Ark (systems/bloom.gd)
 	bloom.name = "Bloom"
 	bloom.world = w
@@ -560,6 +568,23 @@ func _attach_first_seed() -> void:
 	fs.place_on_globe(self)
 	fs.setup()
 	w.set("first_seed", fs)
+
+
+## The seed economy at the base: the compost press on the start yard's "composter" anchor (its own
+## model and label; YardSite's stand-in steps aside), and the early seed finds in scooped junk.
+func _attach_seed_economy() -> void:
+	var finds := SeedFinds.new()
+	finds.name = "SeedFinds"
+	finds.world = w
+	w.add_child(finds)
+	var cmp := Composter.new()
+	cmp.name = "Composter"
+	cmp.world = w
+	w.add_child(cmp)
+	var slot: Array = yard_slot("composter", Composter.POS)
+	cmp.global_transform = (slot[0] as Node3D).global_transform * (slot[1] as Transform3D)
+	cmp.visible = YardBuilds.built("composter")
+	w.set("composter", cmp)
 
 
 ## Flat-yard systems that live at whichever hub Lumi is near (planet/orbit/hub_frame.gd): they keep
@@ -707,6 +732,10 @@ func reseat_yard() -> void:
 	var bin_reach: Variant = camp.get("_bin_anchor") if camp else null
 	if bin_reach is Node3D:
 		(bin_reach as Node3D).global_position = yard_point("bin")
+	var cmp: Node3D = w.get("composter") as Node3D  # the compost press
+	if cmp:
+		var cs: Array = yard_slot("composter", Composter.POS)
+		cmp.global_transform = (cs[0] as Node3D).global_transform * (cs[1] as Transform3D)
 	# [orbB] the CD player, the nursery, the Telescope and the crashed pod follow their anchors too
 	var ex: ExtrasDirector = ExtrasDirector.of(w)
 	if ex and ex.radio:

@@ -234,6 +234,12 @@ func _yield_to_real_systems() -> void:
 	if _pod and (world.has_meta("orbit_pod") or world.get_node_or_null("CrashSite") != null):
 		_pod.get_parent().queue_free()  # this node's crash site holder
 		_pod = null
+	# [orbB] The compost press: the real Composter (its drum, press and label) once it shows.
+	var cmp: Node3D = world.get("composter") as Node3D
+	if _composter and cmp and cmp.visible:
+		_composter.queue_free()
+		_composter = null
+		_slots.erase("composter")
 	# Radio and nursery: the extras' own models stand once they show (built).
 	var ex: ExtrasDirector = ExtrasDirector.of(world)
 	if ex:

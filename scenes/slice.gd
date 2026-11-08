@@ -1195,7 +1195,9 @@ func travel_to(to_hub: int) -> void:
 
 ## Salvaged building materials from scooped junk (data/hub.json "materials").
 func salvage_materials(type_id: String, vol: float) -> void:
-	if orbit:  # [orbB] hub materials come with the hub sites
+	if orbit:  # [orbB] hub materials come with the hub sites; paper still feeds the press
+		if composter:
+			composter.on_salvage(type_id, vol)
 		return
 	if composter:
 		composter.on_salvage(type_id, vol)
