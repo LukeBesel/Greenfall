@@ -29,6 +29,9 @@ run() {
 }
 
 run roundtrip res://tools/save_roundtrip.tscn -- --fresh --save-dir=check_exit_$$  # own save folder: parallel runs cannot clobber it
+# [v1menu] The round world is the default, so the plain round trip is the globe's; the dormant flat
+# game keeps its own until it is removed.
+run roundtrip_flat res://tools/save_roundtrip.tscn -- --fresh --flat --save-dir=check_exit_flat_$$
 # [orbB] the globe's save -> load across two processes (Lumi's position, currencies)
 if tools/orbit_reload_check.sh >screenshots/check_exit_orbit_reload.log 2>&1; then
 	echo "[check_exit] PASS orbit_reload (two processes)"
