@@ -91,3 +91,17 @@ func test_pad_grows_with_the_ship() -> void:
 	a.set_clamps(1.0)
 	a.set_gangway(0.0)
 	assert_true(a.gangway.visible)
+
+
+func test_ark_keeps_its_api() -> void:
+	var ark := CradleShip.new()
+	add_child_autofree(ark)
+	assert_gt(ark.get_child_count(), 8, "the ark is built from ark.glb parts")
+	assert_eq(ark.find_children("*", "", false, false).filter(func(n: Node) -> bool: return n.name.begins_with("ark_")).size(), 8)
+	var p: Vector3 = ark.pod_world(2)
+	assert_almost_eq(p.y, CradleShip.POD_Y, 0.01)
+	assert_true(ark.pod_xform(2).origin.distance_to(p) < 2.0, "the rack pod hangs where pod_world says")
+	ark.release_pod(2)
+	ark.release_pod(2, false)
+	assert_gt(ark.wake_points().size(), 10)
+	assert_gt(ark.dome_world().y, 5.0)
