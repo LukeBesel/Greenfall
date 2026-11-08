@@ -104,3 +104,16 @@ func test_one_turn_per_day_period() -> void:
 		_sd._process(1.0)  # 100 s = a tenth of a turn
 	var turned: float = fposmod(_sd.spin - s0, TAU) / TAU
 	assert_almost_eq(turned, 0.1, 0.01, "the spin is the only clock (daytime, Glim found)")
+
+
+func test_binary_sun_on_the_globe() -> void:
+	_setup(1840.0, Vector3(0, 0, 1840), 0.5)
+	assert_not_null(_sd.binary, "the globe has the BinarySun like every planet")
+	assert_eq(_sd.binary.planet_id, "verdance")
+	assert_eq(_sd.companion, _sd.binary.fill, "its fill is the companion light")
+	assert_gt(_sd.binary.fill.light_energy, 0.0, "the companion's warm fill at noon")
+	assert_false(_sd.binary.fill.shadow_enabled, "unshadowed (the primary carries shadows)")
+	assert_gt(_sd.sun.light_energy, _sd.binary.fill.light_energy)
+	_sd.time_of_day = 0.0
+	_sd._process(0.0)
+	assert_false(_sd.binary.fill.visible, "set with the suns at night")

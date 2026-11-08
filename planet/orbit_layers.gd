@@ -92,6 +92,13 @@ func _build() -> void:
 	system_map.world = w
 	w.add_child(system_map)
 	survey.open_system = func() -> void: system_map.open_map(true)
+	var lens := LensOverlay.new()  # [orbE] the lens view's dressing (SphereCam.lens_view)
+	lens.name = "LensOverlay"
+	lens.cam = so.cam
+	lens.patch = patch
+	w.add_child(lens)
+	if DevHooks.has("lens"):  # as on the flat slice: start in the lens view
+		so.cam.lens_view = true
 	var photo := PhotoMode.new()
 	photo.world = w
 	w.add_child(photo)

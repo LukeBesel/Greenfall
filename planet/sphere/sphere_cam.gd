@@ -16,6 +16,10 @@ var view: String = "follow":
 	set(v):
 		view = v
 var input_enabled: bool = true
+## [orbE] First-person lens view (the flat CameraRig's, for LensOverlay): the eye at Lumi's lens,
+## looking along the camera frame, level on the local up.
+var lens_view: bool = false
+var _near0: float = -1.0
 var pitch: float = -0.32
 var distance: float = 6.2
 var min_distance: float = 3.5
@@ -88,6 +92,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		var inv: float = -1.0 if _setting("invert_y", false) else 1.0
 		_look_pending += Vector2(m.relative.x, m.relative.y * inv) * float(_setting("mouse_sensitivity", 0.003))
 		_manual_t = manual_hold
+	elif InputMap.has_action("lens_view") and event.is_action_pressed("lens_view") and view == "follow":  # [orbE]
+		lens_view = not lens_view
 	elif event.is_action_pressed("zoom_in"):
 		if view == "command":
 			command_height = maxf(min_command, command_height * 0.85)
@@ -161,7 +167,10 @@ func update_camera(delta: float) -> void:
 		_look_pending -= take
 		if _look_pending.length_squared() < 1e-8:
 			_look_pending = Vector2.ZERO
-	pitch = clampf(pitch, -1.35, -0.06)
+	if lens_view and view == "follow":  # [orbE] the lens looks level and up as well
+		pitch = clampf(pitch, -0.9, 0.6)
+	else:
+		pitch = clampf(pitch, -1.35, -0.06)
 	# Boost: lazily swing behind the heading, pull back, widen the lens.
 	var boost: float = 0.0
 	var spd: float = 0.0
@@ -209,8 +218,24 @@ func update_camera(delta: float) -> void:
 	if absf(fwd_v.dot(up_ref)) > 0.995:
 		up_ref = -frame.z
 	camera.global_transform = Transform3D(Basis.looking_at(fwd_v, up_ref), pos)
+	_lens_pose(u)  # [orbE]
 	var base_fov: float = float(_setting("fov", fov))
 	camera.fov = lerpf(camera.fov, base_fov + 12.0 * _boost_fx - 8.0 * e, SphereMath.damp(6.0, delta)) if delta > 0.0 else base_fov
+
+
+## [orbE] Lens view: the camera at the model's lens point, looking along the frame with pitch.
+func _lens_pose(u: Vector3) -> void:
+	if _near0 < 0.0:
+		_near0 = camera.near
+	var model: Node3D = target.get("model") as Node3D if "model" in target else null
+	if not lens_view or view != "follow" or model == null:
+		camera.near = _near0
+		return
+	var lp: Variant = model.get("lens_point")
+	var eye: Vector3 = model.to_global(lp if lp is Vector3 else Vector3(0, 0.78, -0.3))
+	var look: Vector3 = (-frame.z * cos(pitch) + u * sin(pitch)).normalized()
+	camera.global_transform = Transform3D(Basis.looking_at(look, u), eye)
+	camera.near = 0.32  # look past the lens housing itself (as the flat lens view)
 
 
 ## Spring-arm: the longest clear distance along `dir` from `from` (sphere sweep, radius 0.3).

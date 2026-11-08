@@ -3,7 +3,7 @@ extends CanvasLayer
 ## First-person lens view dressing: vignette/grain shader, corner brackets, reticle and a small
 ## diegetic readout (zoom, iris, hopper, signal). Shown only while the camera is in lens view.
 
-var cam: CameraRig
+var cam: Node  # CameraRig, or SphereCam on the globe [orbE] (anything with `lens_view`)
 var patch: Patch
 var _root: Control
 var _readout: Label
@@ -52,7 +52,7 @@ func _draw_frame() -> void:
 
 func _process(delta: float) -> void:
 	_t += delta
-	var on: bool = cam != null and cam.lens_view
+	var on: bool = cam != null and bool(cam.get("lens_view"))  # [orbE]
 	_root.visible = on
 	if not on or patch == null:
 		return

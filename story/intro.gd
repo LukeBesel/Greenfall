@@ -130,6 +130,15 @@ func should_play() -> bool:
 
 ## Places the pod landmark (called every load once the intro has happened).
 func place_pod() -> void:
+	if place_pod_fn.is_valid():  # [orbE] the globe places its own pod (same spot, its colliders)
+		if _site and is_instance_valid(_site):
+			_site.queue_free()
+		elif _pod and is_instance_valid(_pod):
+			_pod.queue_free()
+		_site = null
+		_pod = null
+		place_pod_fn.call()
+		return
 	if _pod == null:
 		_pod = build_pod()
 		world.add_child(_pod)
@@ -152,6 +161,8 @@ func _crash_pose() -> void:
 	if fire:
 		fire.queue_free()
 	_site = CrashSite.attach(world, _pod, _w(POD_POS + Vector3(0, _ground(POD_POS), 0)), 0.5)  # [orbE]
+	if site_xf != Transform3D.IDENTITY:  # [orbE] lie on the globe's pad, not the world's flat plane
+		_site.global_basis = site_xf.basis.orthonormalized()
 
 
 func _ground(p: Vector3) -> float:
@@ -165,6 +176,11 @@ func _ground(p: Vector3) -> float:
 ## every shot, the chase camera and Lumi's drift stay level on the curve. Identity on the flat
 ## game: nothing there changes. The globe slice sets it with site_for_anchor(pod anchor).
 var site_xf := Transform3D.IDENTITY
+## [orbE] On the globe: the pod anchor's frame when the intro starts (anchors settle while
+## loading), the globe's own pod placement at the end, and the globe camera's hand-off.
+var site_fn: Callable  # () -> Transform3D
+var place_pod_fn: Callable  # () -> void
+var cam_reset_fn: Callable  # () -> void
 
 
 static func site_for_anchor(anchor: Transform3D) -> Transform3D:
@@ -289,6 +305,8 @@ func play() -> void:
 		_set_player_enabled(false)
 		await ld.wait_done()
 		_waiting = false
+	if site_fn.is_valid():  # [orbE]
+		site_xf = site_fn.call()
 	running = true
 	var patch: Node3D = world.patch
 	_set_player_enabled(false)
@@ -963,8 +981,12 @@ func _finish() -> void:
 	var model: PatchModel = _model()
 	if not _replay:
 		place_pod()
-		if patch.global_position.distance_to(POD_POS) > 6.0 or _skipped or not patch.visible:
-			patch.global_position = Vector3(0, 0.05, 3.0)
+		if _v(patch.global_position).distance_to(POD_POS) > 6.0 or _skipped or not patch.visible:  # [orbE] _v/_w: identity on flat
+			patch.global_position = _w(Vector3(0, 0.05, 3.0))
+		if site_xf != Transform3D.IDENTITY and patch.has_method("place_on_sphere"):  # [orbE] stand on the globe
+			var fwd: Vector3 = -patch.global_basis.z
+			fwd -= _up() * fwd.dot(_up())
+			patch.call("place_on_sphere", patch.global_position, fwd.normalized() if fwd.length() > 0.01 else -site_xf.basis.z)
 	GameState.flags["intro_done"] = true
 	_tunes_land(1.2 if _skipped else 4.0)  # [tunes]
 	if _skipped:
@@ -993,6 +1015,8 @@ func _finish() -> void:
 		elif world.get("cam") != null and world.cam.has_method("snap"):
 			world.cam.yaw = patch.rotation.y
 			world.cam.snap()
+		elif cam_reset_fn.is_valid():  # [orbE] the globe's SphereCam behind Lumi
+			cam_reset_fn.call()
 		var modal: bool = world.has_method("any_modal_open") and world.any_modal_open()
 		if _prev_cam and is_instance_valid(_prev_cam) and not modal:
 			_prev_cam.current = true
@@ -1064,3 +1088,5 @@ func _set_player_enabled(on: bool) -> void:
 		(patch.input as PlayerInput).enabled = on
 	if world.get("cam") != null:
 		world.cam.input_enabled = on
+	elif world.get("orbit") != null and world.get("orbit").has_method("set_input"):  # [orbE] the globe
+		world.get("orbit").call("set_input", on)

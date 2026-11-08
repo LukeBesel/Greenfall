@@ -301,12 +301,19 @@ func setup_sphere(p_env: Environment, p_sun: DirectionalLight3D, p_sky: ShaderMa
 	moon.sky_mode = DirectionalLight3D.SKY_MODE_LIGHT_ONLY
 	add_child(moon)
 	_suns = BinarySun.suns_for(current_planet_id())
-	companion = DirectionalLight3D.new()
-	companion.name = "CompanionFill"
-	companion.shadow_enabled = false  # performance: the primary carries the shadows
+	# The same BinarySun as the flat sky (planet id, the companion's unshadowed warm fill), so
+	# everything that reads sky_director.binary works on the globe. Its disc quad stays hidden:
+	# the world-space sky shader draws the disc where the companion really is on the curve, and
+	# this director drives the fill along the planet's spin (BinarySun.update assumes a flat up).
+	binary = BinarySun.new()
+	binary.name = "BinarySun"
+	add_child(binary)
+	binary.setup(current_planet_id(), null)
+	if binary._quad:
+		binary._quad.visible = false
+		binary.set_process(false)
+	companion = binary.fill
 	companion.light_color = BinarySun.color_of(_suns["b"].get("color"), BinarySun.DEFAULT_B["color"])
-	companion.sky_mode = DirectionalLight3D.SKY_MODE_LIGHT_ONLY
-	add_child(companion)
 	sun.sky_mode = DirectionalLight3D.SKY_MODE_LIGHT_ONLY
 	sky_shader.set_shader_parameter("sun1_color", BinarySun.color_of(_suns["a"].get("color"), BinarySun.DEFAULT_A["color"]))
 	sky_shader.set_shader_parameter("sun2_color", companion.light_color)

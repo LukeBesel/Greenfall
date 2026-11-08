@@ -114,13 +114,13 @@ Same upgrades bought, no errors.
 | System | Status | Owner | Evidence and notes |
 |---|---|---|---|
 | WREN, subtitles, uplink | works | | Built; the Ledger's uplink lines run. |
-| Intro cinematic | missing | orbE | On the globe the pod is placed and `intro_done` is set; the cinematic doesn't play. |
+| Intro cinematic | works | orbE | A new game plays the whole intro on the globe (ark, storm, fall, landing, wake). The landing and wake shots run in the start site's "pod" anchor frame (`Intro.site_xf`, level on the local up), the crash site lies on the pad, and the end places the pod the globe's way. Lumi stands on the ground beside it. Saves, tools and headless runs place the pod at once. Headless check: `--orbit --intro` (finishes, input restored, Lumi 0.0 m above ground, 3.4 m from the pod). |
 | Crashed pod | works | | `orbit_pod_out_of_view`, `orbit_camera_clear_of_pod`. |
 | Core charge | works | | Built. |
 | Memory shards + document view | works | | In the start hub's region; they surface on the ground when their cell is clean. The paper view also opens the Ledger's contract and the eggs' notes. Checks: `orbit_shard*`. |
 | Easter eggs, collectibles, museum | works | | Per hub; `orbit_eggs_*`, `orbit_egg_prompt`. |
 | Ledger arc (drones, jammers, relay, resolve) | works | | Per hub; `orbit_ledger_*`. The resolve cinematic runs in the frame; I didn't take a picture of it. |
-| Bloom (milestones, Seed Ark, finale) | partial | orbE | Built; the finale on the globe is unchecked. |
+| Bloom (milestones, Seed Ark, finale) | works | orbE | Headless framing check (`--orbit --bloom-finale`, all planets): camera 1.3 m up, no roll, ark 40 deg up, same as the flat game. On a globe the orbit picks its clearest start yaw and a two-way spring arm keeps site geometry from blocking the view. Verdance, Anvil, Tidewell and Rime are clear. Open: on Ochre, Lumi's spawn spot is under or against the start site's geometry, so the camera can't see her from any side. That needs a site or spawn fix (orbD / p_ochre). |
 | Late game: Ark Bridge, Cradle Mode worlds, Homeward | partial | orbB / orbE | Built (`LateDirector`, `HomewardDirector`, `ArkBridge`). Launching a new Cradle world onto a globe is unchecked. |
 
 ## Sky, maps, camera, UI
@@ -128,11 +128,11 @@ Same upgrades bought, no errors.
 | System | Status | Owner | Evidence and notes |
 |---|---|---|---|
 | Day/night, weather, clouds (`SkyDirector`) | works | | Sphere mode via OrbitLayers (orbE); `sky_spin` / `sky_clouds` in the save comparison. |
-| Binary sun companion | missing | orbE | `BinarySun` isn't built on the globe. |
+| Binary sun companion | works | orbE | The globe builds the same `BinarySun` (`sky_director.binary`: planet id, unshadowed warm fill). The sphere sky drives its fill along the spin; the world-space sky shader draws the disc. Tested in `tests/test_sky_sphere.gd`. |
 | Future Layer | works | | `FutureLayerSphere`. |
 | Survey hologram (`GlobeView`), system map | works | | OrbitLayers (orbE). |
 | Photo mode | works | | OrbitLayers (orbE). |
-| Lens view overlay | missing | orbE | `LensOverlay` (first-person lens dressing). |
+| Lens view overlay | works | orbE | SphereCam has the lens view (V / R3, `--lens`): the eye at Lumi's lens, level on the local up. `LensOverlay` is built on the globe. Tested in `tests/test_sphere_lens.gd`. |
 | HUD, pause menu, settings, music | works | | Built; one planet line on the globe. |
 | Camera | works | | `SphereCam` replaces `CameraRig` (`world.cam` is null on the globe). |
 

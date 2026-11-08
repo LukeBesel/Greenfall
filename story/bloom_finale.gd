@@ -25,6 +25,8 @@ const LINES: Array[Array] = [
 ## Where the ark parks, relative to the district spawn.
 const PARK := Vector3(-6.0, 62.0, -70.0)
 
+var _yaw0: float = 0.6  # [orbE] the orbit's start yaw
+var _framing_logged: bool = false  # [orbE]
 var world: Node
 var _bars: Array[ColorRect] = []
 var _letterbox: CanvasLayer
@@ -40,6 +42,50 @@ func _total_time() -> float:
 	for l: Array in LINES:
 		t += float(l[1])
 	return t
+
+
+## [orbE] The orbit's start yaw with the clearest view of Lumi along the whole move (globe sites
+## stand close around the pad on some planets); 0.6, the flat game's, when that is clear.
+func _best_yaw(c: Vector3) -> float:
+	var best: float = 0.6
+	var best_n: int = -1
+	for off: float in [0.0, 0.5, -0.5, 1.0, -1.0, 1.6, -1.6, 2.3, -2.3, 3.0]:
+		var n: int = 0
+		for i: int in 9:
+			var k: float = i / 8.0
+			var yaw: float = 0.6 + off + k * 1.6
+			var want: Vector3 = c + _fb * (Vector3(sin(yaw), 0, cos(yaw)) * lerpf(5.5, 7.5, k) + Vector3(0, lerpf(0.8, 1.8, k), 0))
+			if _clear_of_sites(c + _fb.y * 0.9, want).is_equal_approx(want):
+				n += 1
+		if n > best_n:
+			best_n = n
+			best = 0.6 + off
+		if n == 9:
+			break
+	return best
+
+
+## [orbE] Spring arm: the camera pulled in to just before the first site collider between Lumi
+## and where it wants to be (the player is not an obstacle).
+func _clear_of_sites(from: Vector3, want: Vector3) -> Vector3:
+	# The ray starts 0.6 m out: geometry right against Lumi (a canopy post, a deck edge at the spawn)
+	# isn't between her and the camera. Cast both ways: trimesh colliders only hit their front faces.
+	var start: Vector3 = from + (want - from).normalized() * 0.6
+	var space: PhysicsDirectSpaceState3D = _cam.get_world_3d().direct_space_state
+	var ex: Array[RID] = []
+	var patch_n: Node = world.get("patch") as Node
+	if patch_n is CollisionObject3D:
+		ex.append((patch_n as CollisionObject3D).get_rid())
+	var near_d: float = INF
+	for pair: Array in [[start, want], [want, start]]:
+		var q := PhysicsRayQueryParameters3D.create(pair[0], pair[1])
+		q.exclude = ex
+		var hit: Dictionary = space.intersect_ray(q)
+		if not hit.is_empty():
+			near_d = minf(near_d, from.distance_to(hit["position"] as Vector3))
+	if near_d == INF:
+		return want
+	return from + (want - from).normalized() * maxf(2.0, near_d - 0.35)
 
 
 ## The parked ark (also used by CoreCharge on later loads).
@@ -117,6 +163,10 @@ func play() -> void:
 	var next_line: float = 0.0
 	var t: float = 0.0
 	var waved: bool = false
+	if _fb != Basis():  # [orbE] the clearest orbit around Lumi on a globe site (colliders in place first)
+		for i: int in 2:
+			await get_tree().physics_frame
+		_yaw0 = _best_yaw(c)
 	while t < total:
 		if get_tree().paused:  # [beat] the pause menu holds the scene
 			await get_tree().process_frame
@@ -133,11 +183,25 @@ func play() -> void:
 			next_line += float(l[1])
 			line_i += 1
 		var k: float = t / total
-		var yaw: float = 0.6 + k * 1.6
+		var yaw: float = _yaw0 + k * 1.6  # [orbE] _yaw0: 0.6 on the flat game
 		var cam_pos: Vector3 = c + _fb * (Vector3(sin(yaw), 0, cos(yaw)) * lerpf(5.5, 7.5, k) + Vector3(0, lerpf(0.8, 1.8, k), 0))
 		var look: Vector3 = (c + _fb.y * 1.0).lerp(_ark.global_position, clampf(0.62 - absf(k - 0.45) * 0.6, 0.25, 0.62))
+		if _fb != Basis():  # [orbE] globe sites (Ochre, Rime) stand around Lumi: keep the camera in front of them
+			cam_pos = _clear_of_sites(c + _fb.y * 0.9, cam_pos)
 		_cam.global_position = cam_pos
 		_cam.look_at(look, _fb.y)
+		if DevHooks.has("bloom-finale") and not _framing_logged and k >= 0.5:  # [orbE] headless framing check
+			_framing_logged = true
+			var up: Vector3 = _fb.y
+			var to_ark: Vector3 = (_ark.global_position - cam_pos).normalized()
+			var q := PhysicsRayQueryParameters3D.create(cam_pos, c + up * 0.9 + (cam_pos - c - up * 0.9).normalized() * 0.6)
+			var patch_n: Node = world.get("patch") as Node
+			if patch_n is CollisionObject3D:
+				q.exclude = [(patch_n as CollisionObject3D).get_rid()]
+			var hit: Dictionary = _cam.get_world_3d().direct_space_state.intersect_ray(q)
+			print("[finale] framing: cam %.2f m above the stage, roll %.3f, ark %.0f deg above the horizon, Lumi %.1f m from the camera, view to Lumi %s" % [
+				(cam_pos - c).dot(up), _cam.global_basis.x.dot(up), rad_to_deg(asin(clampf(to_ark.dot(up), -1.0, 1.0))), cam_pos.distance_to(c),
+				"clear" if hit.is_empty() else "BLOCKED by %s" % str((hit["collider"] as Node).name if hit["collider"] is Node else "?")])
 		if model:
 			model.look_toward(_ark.global_position)
 			# Lumi waves up at the ark when it says welcome home.

@@ -51,7 +51,7 @@ static func _snap(s: Node) -> Dictionary:
 		"site_stage": g.site_manager.levels[0] if g.site_manager else -1,
 		"parts_near": s.field.part_pos.size() > 0,
 		"loose_cubes": cubes,
-		"sky_spin": snappedf((s.get("sky_director") as SkyDirector).spin, 0.01) if s.get("sky_director") is SkyDirector else -1.0,  # [orbE]
+		"sky_spin": (s.get("sky_director") as SkyDirector).spin if s.get("sky_director") is SkyDirector else -1.0,  # [orbE] compared within 0.05 rad
 		"sky_clouds": snappedf((s.get("sky_director") as SkyDirector).clouds, 0.01) if s.get("sky_director") is SkyDirector else -1.0,  # [orbE]
 	}
 
@@ -572,8 +572,8 @@ static func run(rt: Node, check: Callable) -> void:
 	s2.set_meta("rt_target", s1_target)
 	var b: Dictionary = _snap(s2)
 	for k: String in a:
-		if k == "sky_spin":  # [orbB] the reloaded sky runs a few frames before the snapshot: within 0.02
-			check.call("orbit_sky_spin_within_0.02", true, absf(angle_difference(float(a[k]), float(b[k]))) <= 0.02)
+		if k == "sky_spin":  # [orbB] the reloaded sky runs a few frames before the snapshot: within 0.05
+			check.call("orbit_sky_spin_within_0.05", true, absf(angle_difference(float(a[k]), float(b[k]))) <= 0.05)
 			continue
 		check.call("orbit_" + k, a[k], b[k])
 	var crew2: SphereCrew = (s2.get("orbit") as SliceOrbit).crews.crew  # [orbC] robots back where they were

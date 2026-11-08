@@ -518,7 +518,7 @@ func _build_yard_systems() -> void:
 	scope.global_transform = (tslot[0] as Node3D).global_transform * (tslot[1] as Transform3D) * Transform3D(Basis(), -(scope.call("_pos") as Vector3))
 	_attach_camp()
 	GlimDirector.attach(w)  # Glim the lantern bot: light, hex scanner, upgrades, looks (systems/glim/)
-	_place_pod()
+	_start_intro_or_place_pod()  # [orbE] the intro cinematic on the globe (new games); else the pod as before
 	var cc := CoreCharge.new()  # Lumi's Bloom Core charge and its story beats (story/core_charge.gd)
 	cc.name = "CoreCharge"
 	cc.world = w
@@ -676,6 +676,36 @@ func _build_hub_frame() -> void:
 	w.set("eggs", hub_frame.node("EasterEggs") as EasterEggs)
 	w.set("outposts", hub_frame.node("Outposts") as Outposts)
 	w.set("ledger", hub_frame.node("Ledger") as LedgerArc)
+
+
+## [orbE] A new game plays the intro cinematic (story/intro.gd) in the pod anchor's frame; its
+## end places the pod the globe's way (_place_pod). Saves, tools and headless runs: the pod at once.
+func _start_intro_or_place_pod() -> void:
+	var intro := Intro.new()
+	intro.name = "Intro"
+	intro.world = w
+	w.add_child(intro)
+	w.set("intro", intro)
+	if not intro.should_play():
+		_place_pod()
+		return
+	intro.site_fn = func() -> Transform3D:
+		var at: Vector3 = yard_point("pod")
+		return Intro.site_for_anchor(Transform3D(SphereGrid.frame(at.normalized()), at))
+	intro.place_pod_fn = _place_pod
+	intro.cam_reset_fn = func() -> void:
+		var patch: Patch = w.get("patch")
+		cam.reset_frame(patch.forward())
+		cam.snap()
+		if DevHooks.has("intro"):
+			var pod_site: Node3D = w.get_meta("orbit_pod", null)
+			print("[intro] globe: Lumi %.2f m above the ground, %.1f m from the pod, pod placed=%s" % [
+				globe.surface.altitude(patch.global_position), patch.global_position.distance_to(pod_site.global_position) if pod_site else -1.0, str(pod_site != null)])
+	var hud: Node = w.get("hud")
+	if hud:
+		hud.visible = false  # no one-frame HUD flash before the deferred intro starts (as the flat slice)
+	intro.cover_now()
+	intro.play.call_deferred()
 
 
 ## The landing pod in its crash site on the start site's "pod" anchor. The intro cinematic itself
@@ -1067,6 +1097,10 @@ func restore_world() -> void:
 		patch.place_on_sphere(p, Vector3(float(f[0]), float(f[1]), float(f[2])))
 		cam.reset_frame(patch.forward())
 		cam.snap()
+		if DevHooks.has("intro"):
+			var pod_site: Node3D = w.get_meta("orbit_pod", null)
+			print("[intro] globe: Lumi %.2f m above the ground, %.1f m from the pod, pod placed=%s" % [
+				globe.surface.altitude(patch.global_position), patch.global_position.distance_to(pod_site.global_position) if pod_site else -1.0, str(pod_site != null)])
 	patch.restore_cargo(ld.get("cargo", {}))
 	if sites:  # [orbD]
 		sites.load_state(od.get("site_state", {}))
