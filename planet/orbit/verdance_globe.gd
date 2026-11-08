@@ -466,30 +466,46 @@ func _build_depot(s: Dictionary) -> void:
 	depot.rotation.y = -PI * 0.5
 
 
-## Dev: press a bale, carry it to the depot and cash it (headless proof of the loop).
+## Dev: the start loop on the planet, headless. Before the Baler: scoop, roll to the bin (the
+## Depot) and empty the chest for cubes. With the Baler: press a bale, carry it, cash it.
 func _cash_test() -> void:
-	var before: String = Settings.fmt(GameState.get_currency("cubes"))
+	var c0: float = GameState.get_currency("cubes").to_float()
 	for k: int in 12:
 		var pid: int = field.nearest_alive(lumi.global_position)
 		if pid >= 0:
 			lumi._take_piece(pid)
 	await get_tree().create_timer(1.0).timeout
-	print("[orbit] cash: pieces=%d near=%d fill=%.2f" % [field.piece_count(), streamer.near_cells().size(), lumi.compartment.fill])
+	var fill: float = lumi.compartment.fill
+	lumi.place_on_sphere(depot.global_position + depot.global_basis.y * 0.5, lumi.forward())
+	await get_tree().create_timer(1.5).timeout
+	var c1: float = GameState.get_currency("cubes").to_float()
+	var dumped: bool = c1 > c0 and lumi.compartment.is_empty()
+	print("[orbit] cash: dump (no Baler) fill=%.1f cubes %.0f -> %.0f %s" % [fill, c0, c1, "ok" if dumped else "FAIL"])
+	# With the Baler.
+	GameState.upgrades["baler"] = 1
+	var spot: Vector3 = terrain.local_to_dir(int(sites[0]["cell"]), 0.0, 9.0)
+	lumi.place_on_sphere(terrain.ground(spot), -SphereGrid.frame(spot).z)
+	await get_tree().create_timer(0.5).timeout
+	for k: int in 12:
+		var pid: int = field.nearest_alive(lumi.global_position)
+		if pid >= 0:
+			lumi._take_piece(pid)
+	await get_tree().create_timer(1.0).timeout
 	lumi.start_cube()
 	await get_tree().create_timer(2.4).timeout
 	var c: JunkCube = lumi.nearest_loose_cube()
 	var alt: float = surface.altitude(c.global_position) if c else -99.0
-	print("[orbit] cash: bale made=%s alt_above_ground=%.2f carried=%d" % [str(c != null), alt, lumi.carried.size()])
+	print("[orbit] cash: bale made=%s alt_above_ground=%.2f" % [str(c != null), alt])
 	if c:
 		lumi.pick_up(c)
 	await get_tree().create_timer(0.6).timeout
 	lumi.place_on_sphere(depot.global_position + depot.global_basis.y * 0.5, lumi.forward())
 	await get_tree().create_timer(3.0).timeout
-	var after: String = Settings.fmt(GameState.get_currency("cubes"))
-	print("[orbit] cash: cubes %s -> %s depot_cashed=%d hexes_cleaned=%d %s" % [before, after, depot.cashed, int(GameState.stats.get("hexes_cleaned", 0)),
-		"PASS" if depot.cashed >= 1 else "FAIL"])
+	var c2: float = GameState.get_currency("cubes").to_float()
+	var ok: bool = dumped and depot.cashed >= 1 and c2 > c1
+	print("[orbit] cash: bale cashed=%d cubes %.0f -> %.0f %s" % [depot.cashed, c1, c2, "PASS" if ok else "FAIL"])
 	if DevHooks.has("orbit-lap-quit") or DevHooks.has("orbit-cash-quit"):
-		get_tree().quit(0 if depot.cashed >= 1 else 1)
+		get_tree().quit(0 if ok else 1)
 
 
 # --- Robots: this node is the SphereBot graph -------------------------------------------
