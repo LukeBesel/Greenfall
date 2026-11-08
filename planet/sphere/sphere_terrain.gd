@@ -49,10 +49,53 @@ func set_noise(m_amp: float, m_freq: float, d_amp: float, d_freq: float) -> void
 	_detail.frequency = d_freq
 
 
+## Per-cell elevation layer (e.g. PlanetData.elevation): metres = (value - offset) * scale,
+## interpolated smoothly (barycentric over the icosphere triangle) and added to the noise.
+var cell_elevation := PackedFloat32Array()
+var elevation_scale: float = 0.0
+var elevation_offset: float = 0.0
+
+
+## Raise or lower the macro terrain from per-cell values at the grid's level (ids match
+## PlanetData at the same level). Lakes then sit low: pass e.g. PlanetData.elevation with
+## offset = its sea level. Call before building chunks; values is kept by reference.
+func set_cell_elevation(values: PackedFloat32Array, scale_m: float, offset: float = 0.0) -> void:
+	cell_elevation = values if values.size() == grid.cell_count() else PackedFloat32Array()
+	elevation_scale = scale_m
+	elevation_offset = offset
+
+
+## Interpolated per-cell elevation at a direction (m), 0 without a layer.
+func elevation_at(dir: Vector3) -> float:
+	if cell_elevation.is_empty():
+		return 0.0
+	var c: int = grid.cell_at(dir)
+	var b6: int = c * SphereGrid.MAX_N
+	for k: int in grid.nbr_count[c]:
+		var t: int = grid.cell_tri[b6 + k] * 3
+		var ia: int = grid.tris[t]
+		var ib: int = grid.tris[t + 1]
+		var ic: int = grid.tris[t + 2]
+		var a: Vector3 = grid.centers[ia]
+		var b: Vector3 = grid.centers[ib]
+		var cc: Vector3 = grid.centers[ic]
+		var wa: float = dir.dot(b.cross(cc))
+		var wb: float = dir.dot(cc.cross(a))
+		var wc: float = dir.dot(a.cross(b))
+		if wa >= -1e-7 and wb >= -1e-7 and wc >= -1e-7:
+			var sum: float = maxf(wa + wb + wc, 1e-12)
+			var v: float = (cell_elevation[ia] * wa + cell_elevation[ib] * wb + cell_elevation[ic] * wc) / sum
+			return (v - elevation_offset) * elevation_scale
+	return (cell_elevation[c] - elevation_offset) * elevation_scale
+
+
 ## Natural height (m above R) without sites.
 func raw_height(dir: Vector3) -> float:
 	var p: Vector3 = dir * R
-	return _macro.get_noise_3dv(p) * macro_amp + _detail.get_noise_3dv(p) * detail_amp
+	var h: float = _macro.get_noise_3dv(p) * macro_amp + _detail.get_noise_3dv(p) * detail_amp
+	if not cell_elevation.is_empty():
+		h += elevation_at(dir)
+	return h
 
 
 ## Terrain height (m above R) for a unit direction, sites included.

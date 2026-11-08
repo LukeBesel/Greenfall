@@ -9,8 +9,8 @@ extends Node3D
 ##   tallest hills behind it), capped at far_m; past that, and for any view higher than
 ##   shell_only_alt, the far shell (one coarse icosphere mesh reading the same state texture).
 ## - Collision (trimesh) only for chunks within collide_m of a physics centre (Lumi, robots).
-## - The near ring: cells within near_m of the view centre (3D junk and other per-hex props
-##   belong only there); near_changed(added, removed) fires when the ring moves.
+## - The near ring: cells within near_m of the view centre and of every body (3D junk and other
+##   per-hex props belong only there); near_changed(added, removed) fires when it moves.
 ##
 ## Centres: set_centre(key, world_pos, kind) with kind VIEW (camera: picks LOD and the near ring)
 ## or BODY (collision only). remove_centre(key) when a robot goes away.
@@ -57,7 +57,7 @@ var _shell: MeshInstance3D
 var _line_mat: StandardMaterial3D
 var _near := PackedInt32Array()
 var _near_set: Dictionary = {}
-var _near_cell: int = -1
+var _near_keys: int = -1
 var _view_cell: int = 0
 var _want: Dictionary = {}
 
@@ -91,8 +91,16 @@ static func default_material(p_cells: SphereCells) -> ShaderMaterial:
 	return m
 
 
-func set_centre(key: Variant, pos: Vector3, kind: int = BODY) -> void:
-	_centres[key] = {"pos": pos, "kind": kind}
+## ring_m: radius of this centre's near ring (-1 = near_m, 0 = none).
+func set_centre(key: Variant, pos: Vector3, kind: int = BODY, ring_m: float = -1.0) -> void:
+	var cc: Dictionary = _centres.get(key, {})
+	if cc.is_empty():
+		_centres[key] = cc
+	cc["pos"] = pos
+	cc["kind"] = kind
+	if float(cc.get("ring_m", -1.0)) != ring_m:
+		cc["ring_m"] = ring_m
+		cc.erase("ring_key")
 
 
 func remove_centre(key: Variant) -> void:
@@ -236,11 +244,7 @@ func _update_wants() -> void:
 				ch["body"] = null
 		elif not _jobs.has(c):
 			_queue(c, l)
-	# Near ring around the view centre.
-	for key: Variant in _centres:
-		var cc: Dictionary = _centres[key]
-		if int(cc["kind"]) == VIEW:
-			_update_near(cc["pos"])
+	_update_near_rings()
 	_count_stats()
 
 
@@ -398,21 +402,40 @@ func _count_stats() -> void:
 
 # --- Near ring ----------------------------------------------------------------------------
 
-func _update_near(pos: Vector3) -> void:
-	var cell: int = grid.cell_at_from(pos, _view_cell)
-	_view_cell = cell
-	var low: bool = terrain.altitude(pos) < near_m * 2.0
-	var key: int = cell if low else -2
-	if key == _near_cell:
+## Near ring = union of each centre's ring (cells within its ring_m, default near_m), so a robot
+## working far from Lumi keeps its own junk ring. A centre higher than 2 x its ring_m has none.
+func _update_near_rings() -> void:
+	var changed: bool = false
+	for key: Variant in _centres:
+		var cc: Dictionary = _centres[key]
+		var pos: Vector3 = cc["pos"]
+		var rm: float = float(cc.get("ring_m", -1.0))
+		if rm < 0.0:
+			rm = near_m
+		var hint: int = int(cc.get("cell", -1))
+		var cell: int = grid.cell_at_from(pos, hint)
+		cc["cell"] = cell
+		if int(cc["kind"]) == VIEW:
+			_view_cell = cell
+		var low: bool = rm > 0.0 and terrain.altitude(pos) < rm * 2.0
+		var k: int = cell if low else -2
+		if cc.has("ring") and int(cc.get("ring_key", -3)) == k:
+			continue
+		cc["ring_key"] = k
+		cc["ring"] = grid.cells_within(pos, rm, cell) if low else PackedInt32Array()
+		changed = true
+	if not changed and _near_keys == _centres.size():
 		return
-	_near_cell = key
-	var nw: PackedInt32Array = PackedInt32Array()
-	if low:
-		nw = grid.cells_within(pos, near_m, cell)
+	_near_keys = _centres.size()
 	var nset: Dictionary = {}
+	var nw := PackedInt32Array()
+	for key: Variant in _centres:
+		for c: int in ((_centres[key] as Dictionary)["ring"] as PackedInt32Array):
+			if not nset.has(c):
+				nset[c] = true
+				nw.append(c)
 	var added := PackedInt32Array()
 	for c: int in nw:
-		nset[c] = true
 		if not _near_set.has(c):
 			added.append(c)
 	var removed := PackedInt32Array()
