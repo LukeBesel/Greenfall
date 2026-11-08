@@ -464,6 +464,12 @@ func _cell_junk(cell: int) -> Array:
 func _rebuild_junk() -> void:
 	var t0: int = Time.get_ticks_msec()
 	_junk_ring = globe.cells_around(_walker_cell, JUNK_RINGS)
+	if _junk_cache.size() > 2500:  # keep the transform cache to the cells near Lumi
+		var keep: Dictionary = {}
+		for c: int in _junk_ring:
+			if _junk_cache.has(c):
+				keep[c] = _junk_cache[c]
+		_junk_cache = keep
 	_junk_ring_set.clear()
 	for c: int in _junk_ring:
 		_junk_ring_set[c] = true
