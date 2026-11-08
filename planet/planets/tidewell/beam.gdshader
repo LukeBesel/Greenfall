@@ -1,7 +1,7 @@
 shader_type spatial;
 // [planet-tidewell] A lighthouse's thin light beam: a long narrow cone, brightest at the lamp,
 // fading along its length and at its edges. Additive and very faint (owner: thin, subtle glow).
-render_mode unshaded, blend_add, depth_draw_never, cull_disabled, shadows_disabled;
+render_mode unshaded, blend_add, depth_draw_never, cull_disabled, shadows_disabled, fog_disabled;
 
 uniform vec3 color : source_color = vec3(1.0, 0.95, 0.82);
 uniform float energy = 0.35;

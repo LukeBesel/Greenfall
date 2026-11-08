@@ -125,7 +125,7 @@ func test_grade_blend() -> void:
 
 
 func test_suns_fallback() -> void:
-	var s: Dictionary = TideSuns.read_suns("tidewell")
+	var s: Dictionary = BinarySun.suns_for("tidewell")
 	assert_true(s.has("a") and s.has("b"))
 	assert_gt(float(s["a"]["energy"]), float(s["b"]["energy"]), "the companion is the dimmer star")
 	assert_gt(float(s["a"]["size"]), float(s["b"]["size"]))

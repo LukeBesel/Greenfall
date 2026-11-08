@@ -20,7 +20,7 @@ extends Node3D
 ##                   turning beams, clear lagoons; futuristic: white sea platforms, floating
 ##                   solar rafts, light buoys with hair-thin light
 ##   TideHover       Lumi floats: bob, wake ring, spray, reflection; skimmers leave wakes
-##   TideSuns        the binary star (two lights, two glints on the sea)
+##   suns            the shared BinarySun, retargeted to Tidewell's orbit (two glints on the sea)
 ## Stages: ruin (base 1, little cleaned) -> restored (base 2-3 or 35% cleaned) -> future (4-5).
 ##
 ## FOR THE WALKABLE SPHERE (owner, Nov 8: flat-world layout work stopped here). What transfers:
@@ -31,7 +31,6 @@ extends Node3D
 ##   - Hovering over water is generic: world.set_meta("hover_water", true) removes the wading
 ##     slowdown (player/patch.gd), and TideHover (bob, wake ring via the sea's `wakes` uniform,
 ##     spray, mirrored reflection via mirror.gdshader) works on any world with a water surface.
-##   - TideSuns: the binary star (second unshadowed light + sky disc) for any planet id.
 ##   - net.gdshader (trash-raft ghost nets), beam.gdshader (thin lighthouse beams), sun_disc.
 ##   - Props as builders (each takes a position/yaw, merges per material): _build_rigs (jack-up
 ##     dredging rig), _build_barge (half-sunk ore barge), _build_towers (drowned tower tops with
@@ -73,7 +72,6 @@ var stage: int = 0
 var ocean: MeshInstance3D
 var ocean_mat: ShaderMaterial
 var hover: TideHover
-var suns: TideSuns
 var islands: Array[Dictionary] = []
 
 var _groups: Dictionary = {}
@@ -1487,14 +1485,9 @@ func _setup_sky() -> void:
 	var sky: Dictionary = kind.get("sky", {})
 	_grade_ruin = sky.get("ruined", {})
 	_grade_clean = sky.get("restored", {})
-	var sun: DirectionalLight3D = world.get("_sun")
-	if sun:
-		suns = TideSuns.new()
-		suns.name = "TideSuns"
-		add_child(suns)
-		suns.setup(world, sun)
-	var env: Environment = null
 	var sd: Node = world.get("sky_director")
+	_retarget_suns(sd)
+	var env: Environment = null
 	if sd:
 		env = sd.get("env")
 	if env:
@@ -1503,6 +1496,25 @@ func _setup_sky() -> void:
 		var ac: Array = amb.get("color", [])
 		if ac.size() >= 3:
 			env.ambient_light_color = Color(float(ac[0]), float(ac[1]), float(ac[2]))
+
+
+## The shared binary star (planet/binary_sun.gd, data/solar_system.json) seen from Tidewell's orbit:
+## the sky director made it for the current world; rebuild it for "tidewell" (dev hook / campaign).
+static func _retarget_suns(sd: Node) -> void:
+	if sd == null or sd.get("binary") == null:
+		return
+	var old: BinarySun = sd.get("binary")
+	if old.planet_id == "tidewell":
+		return
+	var sm: PhysicalSkyMaterial = sd.get("sky_mat")
+	if sm and old.get("_base_disk_scale") != null:
+		sm.sun_disk_scale = float(old.get("_base_disk_scale"))
+	var bs := BinarySun.new()
+	bs.name = "BinarySunTidewell"
+	sd.add_child(bs)
+	bs.setup("tidewell", sm)
+	sd.set("binary", bs)
+	old.queue_free()
 
 
 static func _blend_grade(a: Dictionary, b: Dictionary, t: float) -> Dictionary:
