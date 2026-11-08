@@ -91,153 +91,6 @@ static func ground_patch(kit: AnvilEnv, root: Node3D, radius: float, seed_v: int
 	root.add_child(mi)
 
 
-## An irregular cracked slab (yard apron, furnace floor): a noisy polygon, never a rectangle.
-static func slab(b: Batch, m: Material, c: Vector3, size: Vector2, yaw: float, seed_v: int) -> void:
-	var nz := FastNoiseLite.new()
-	nz.seed = seed_v
-	var st := SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var n: int = 40
-	st.add_vertex(Vector3(0, 0.12, 0))
-	for k: int in n + 1:
-		var a: float = TAU * float(k % n) / n
-		var sq: float = 1.0 / maxf(absf(cos(a)), absf(sin(a)))  # squarish, chipped outline
-		var r: float = minf(sq, 1.25) * (1.0 + nz.get_noise_1d(a * 30.0) * 0.08)
-		st.add_vertex(Vector3(cos(a) * r * size.x * 0.5, 0.1 + nz.get_noise_1d(a * 11.0) * 0.04, sin(a) * r * size.y * 0.5))
-	for k: int in n:
-		for idx: int in [0, k + 1, k + 2]:
-			st.add_index(idx)
-	st.generate_normals()
-	b.add(st.commit(), Transform3D(Basis(Vector3.UP, yaw), c), m)
-
-
-
-## A worn concrete yard apron: cracked plates on dark joints, some split or shattered, a few
-## missing; glossy oil stains, scattered grit, and a raised kerb with displaced and missing stones.
-## Restoration lifts the stains and grit and lets moss into the joints.
-static func apron(kit: AnvilEnv, root: Node3D, c: Vector3, size: Vector2, yaw: float, restoration: float, seed_v: int) -> void:
-	var rng := RandomNumberGenerator.new()
-	rng.seed = seed_v * 31 + 7
-	var basis := Basis(Vector3.UP, yaw)
-	var b := Batch.new()
-	var mats: Array[Material] = [kit.mat("apron_a"), kit.mat("apron_b"), kit.mat("apron_c")]
-	var plate: float = 3.0
-	var nx: int = int(ceil(size.x / plate))
-	var nz: int = int(ceil(size.y / plate))
-	var tops: Array[Vector3] = []
-	# The dark joint bed under the plates.
-	AnvilProps.add_plate(b, basis, c + Vector3(0, 0.04, 0), Vector3(nx * plate + 0.2, 0.08, nz * plate + 0.2), kit.mat("soot"))
-	for ix: int in nx:
-		for iz: int in nz:
-			var edge: bool = ix == 0 or iz == 0 or ix == nx - 1 or iz == nz - 1
-			if (edge and rng.randf() < 0.18) or rng.randf() < 0.04:
-				continue  # broken out: dust shows
-			var lc := Vector3((ix + 0.5) * plate - nx * plate * 0.5, 0.0, (iz + 0.5) * plate - nz * plate * 0.5)
-			var top_y: float = 0.2 + rng.randf_range(-0.035, 0.03)
-			var tilt := Basis(Vector3(rng.randf_range(-1, 1), 0, rng.randf_range(-1, 1)).normalized(), deg_to_rad(rng.randf_range(0.0, 0.8)))
-			var m: Material = mats[rng.randi() % 3]
-			var w: float = plate - 0.07
-			var roll: float = rng.randf()
-			if roll < 0.3:
-				# Cracked in two along one axis, the halves settled differently.
-				var f: float = rng.randf_range(0.3, 0.7)
-				var ax: bool = rng.randf() < 0.5
-				for half: int in 2:
-					var hw: float = (w * f if half == 0 else w * (1.0 - f)) - 0.025
-					var off: float = (-w * 0.5 + hw * 0.5) if half == 0 else (w * 0.5 - hw * 0.5)
-					var pc: Vector3 = lc + (Vector3(off, 0, 0) if ax else Vector3(0, 0, off))
-					var sz: Vector3 = Vector3(hw, 0.2, w) if ax else Vector3(w, 0.2, hw)
-					var y: float = top_y - 0.1 + rng.randf_range(-0.03, 0.02)
-					AnvilProps.add_plate(b, basis * tilt * Basis(Vector3.UP, rng.randf_range(-0.01, 0.01)), c + basis * (pc + Vector3(0, y, 0)), sz, m)
-			elif roll < 0.38:
-				# Shattered: a few chunks.
-				for k: int in 4:
-					var q := Vector3((float(k % 2) - 0.5) * w * 0.5, 0.0, (float(k >> 1) - 0.5) * w * 0.5)
-					var sz := Vector3(w * rng.randf_range(0.38, 0.48), 0.18, w * rng.randf_range(0.38, 0.48))
-					var y2: float = top_y - 0.11 + rng.randf_range(-0.05, 0.02)
-					AnvilProps.add_plate(b, basis * Basis(Vector3.UP, rng.randf_range(-0.12, 0.12)) * Basis(Vector3.RIGHT, rng.randf_range(-0.05, 0.05)), c + basis * (lc + q + Vector3(0, y2, 0)), sz, m)
-			else:
-				AnvilProps.add_plate(b, basis * tilt, c + basis * (lc + Vector3(0, top_y - 0.1, 0)), Vector3(w, 0.2, w), m)
-			tops.append(c + basis * (lc + Vector3(0, top_y + 0.004, 0)))
-	# Kerb: raised beveled stones round the edge, some shoved out of line, a few gone.
-	var hx: float = nx * plate * 0.5 + 0.25
-	var hz: float = nz * plate * 0.5 + 0.25
-	for side: int in 4:
-		var along: float = (hx if side < 2 else hz) * 2.0
-		var n: int = int(along / 1.0)
-		for k: int in n:
-			if rng.randf() < 0.07:
-				continue
-			var t: float = -along * 0.5 + (k + 0.5) * along / n
-			var lp: Vector3
-			var rot: float
-			match side:
-				0:
-					lp = Vector3(t, 0, -hz)
-					rot = 0.0
-				1:
-					lp = Vector3(t, 0, hz)
-					rot = 0.0
-				2:
-					lp = Vector3(-hx, 0, t)
-					rot = PI * 0.5
-				_:
-					lp = Vector3(hx, 0, t)
-					rot = PI * 0.5
-			var shove: float = rng.randf_range(-0.04, 0.04) + (rng.randf_range(0.1, 0.35) if rng.randf() < 0.08 else 0.0)
-			var tip: float = rng.randf_range(-0.03, 0.03) + (rng.randf_range(0.1, 0.4) if rng.randf() < 0.05 else 0.0)
-			var kb := basis * Basis(Vector3.UP, rot + rng.randf_range(-0.03, 0.03)) * Basis(Vector3.RIGHT, tip)
-			AnvilProps.add_plate(b, kb, c + basis * (lp + Vector3(0, 0.28, 0)) + kb * Vector3(0, 0, shove), Vector3(0.96, 0.4, 0.3), kit.mat("kerb"))
-	# Moss in the joints once restored.
-	if restoration > 0.45:
-		for ix: int in nx + 1:
-			AnvilProps.add_plate(b, basis, c + basis * Vector3(ix * plate - nx * plate * 0.5, 0.11, 0), Vector3(0.09, 0.06, nz * plate), kit.mat("green"))
-		for iz: int in nz + 1:
-			AnvilProps.add_plate(b, basis, c + basis * Vector3(0, 0.11, iz * plate - nz * plate * 0.5), Vector3(nx * plate, 0.06, 0.09), kit.mat("green"))
-	b.flush(root)
-	# Oil stains: glossy dark blots lying on plate tops.
-	var left: float = 1.0 - clampf(restoration * 1.2, 0.0, 1.0)
-	var n_oil: int = int(tops.size() * 0.45 * left)
-	if n_oil > 0:
-		var om := MultiMesh.new()
-		om.transform_format = MultiMesh.TRANSFORM_3D
-		var pm := PlaneMesh.new()
-		pm.size = Vector2.ONE
-		pm.material = kit.mat("oil")
-		om.mesh = pm
-		om.instance_count = n_oil
-		for k: int in n_oil:
-			var t: Vector3 = tops[rng.randi() % tops.size()]
-			var sx: float = rng.randf_range(0.5, 2.2)
-			om.set_instance_transform(k, Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(sx, 1.0, sx * rng.randf_range(0.4, 1.0))), t + basis * Vector3(rng.randf_range(-1.0, 1.0), 0.0, rng.randf_range(-1.0, 1.0))))
-		var omi := MultiMeshInstance3D.new()
-		omi.name = "OilStains"
-		omi.multimesh = om
-		omi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		root.add_child(omi)
-	# Grit: small stones and slag crumbs over the plates and along the kerb.
-	var n_grit: int = int(nx * nz * 14 * (0.3 + 0.7 * left))
-	for gi: int in 2:
-		var gm := MultiMesh.new()
-		gm.transform_format = MultiMesh.TRANSFORM_3D
-		gm.mesh = AnvilProps.slag_mesh(900 + gi)
-		var half_n: int = n_grit >> 1
-		gm.instance_count = half_n
-		for k: int in half_n:
-			var lp := Vector3(rng.randf_range(-hx, hx), 0.0, rng.randf_range(-hz, hz))
-			if rng.randf() < 0.35:
-				lp = Vector3(clampf(lp.x * 1.3, -hx - 0.4, hx + 0.4), 0.0, clampf(lp.z * 1.3, -hz - 0.4, hz + 0.4))
-			var g: float = rng.randf_range(0.04, 0.16)
-			gm.set_instance_transform(k, Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(g, g * 0.6, g)), c + basis * (lp + Vector3(0, 0.19, 0))))
-		var gmi := MultiMeshInstance3D.new()
-		gmi.name = "Grit%d" % gi
-		gmi.multimesh = gm
-		gmi.material_override = kit.mat("ore") if gi == 0 else kit.slag_mat
-		gmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		gmi.visibility_range_end = 60.0
-		root.add_child(gmi)
-
-
 ## A low, broken ring of slag ridges and junk round the site, so its edge never ends in a line.
 static func edge_ring(kit: AnvilEnv, root: Node3D, radius: float, restoration: float, seed_v: int) -> void:
 	var rng := RandomNumberGenerator.new()
@@ -467,91 +320,6 @@ static func trash(kit: AnvilEnv, root: Node3D, radius: float, keep_r: float, cou
 	b.flush(root)
 
 
-## Hardy restoration planting: red-leaf and lichen clumps.
-static func plants(kit: AnvilEnv, root: Node3D, radius: float, keep_r: float, count: int, restoration: float, seed_v: int) -> void:
-	if restoration < 0.08:
-		return
-	var defs: Array = kit.look.get("plants", [])
-	var rng := RandomNumberGenerator.new()
-	rng.seed = seed_v
-	for d: Dictionary in defs:
-		var mesh: Mesh = AnvilEnv.tinted_mesh(str(d["id"]), AnvilEnv.col(d.get("tint"), Color.WHITE), 500)
-		if mesh == null:
-			continue
-		var n: int = int(count * restoration / defs.size())
-		var mm := MultiMesh.new()
-		mm.transform_format = MultiMesh.TRANSFORM_3D
-		mm.mesh = mesh
-		mm.instance_count = n
-		var sc: Array = d.get("scale", [1.0, 1.5])
-		for i: int in n:
-			var a: float = rng.randf() * TAU
-			var r: float = lerpf(keep_r, radius * 0.9, sqrt(rng.randf()))
-			mm.set_instance_transform(i, Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3.ONE * rng.randf_range(float(sc[0]), float(sc[1]))), Vector3(cos(a) * r, -0.05, sin(a) * r)))
-		var mmi := MultiMeshInstance3D.new()
-		mmi.name = "Plants_" + str(d["id"])
-		mmi.multimesh = mm
-		mmi.visibility_range_end = 120.0
-		mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		root.add_child(mmi)
-
-
-## A sawtooth-roofed casting hall: corrugated walls, beveled frames, roof panels missing when ruined.
-static func hall(kit: AnvilEnv, b: Batch, fut: Batch, c: Vector3, yaw: float, len_: float, w: float, h: float, broken: bool, seed_v: int) -> void:
-	var basis := Basis(Vector3.UP, yaw)
-	var rng := RandomNumberGenerator.new()
-	rng.seed = seed_v
-	# Walls as panels (not one box): a few missing or sagging when ruined.
-	var panels: int = int(len_ / 4.0)
-	for side: float in [-1.0, 1.0]:
-		for k: int in panels:
-			if broken and rng.randf() < 0.18:
-				continue
-			var lx: float = -len_ * 0.5 + (k + 0.5) * len_ / panels
-			var sag: float = rng.randf_range(-0.04, 0.04) if broken else 0.0
-			var ph: float = h * rng.randf_range(0.93, 1.0)
-			AnvilProps.add_plate(b, basis * Basis(Vector3.RIGHT, sag), c + basis * Vector3(lx, ph * 0.5, side * w * 0.5), Vector3(len_ / panels * 0.98, ph, 0.25), kit.mat("corr"))
-	for side: float in [-1.0, 1.0]:
-		AnvilProps.add_plate(b, basis, c + basis * Vector3(side * len_ * 0.5, h * 0.5, 0), Vector3(0.25, h, w), kit.mat("corr"))
-	# Frame columns and the sawtooth roof.
-	for k: int in panels + 1:
-		var lx: float = -len_ * 0.5 + k * len_ / panels
-		for side: float in [-1.0, 1.0]:
-			AnvilProps.add_beam(b, c + basis * Vector3(lx, 0, side * (w * 0.5 + 0.3)), c + basis * Vector3(lx, h + 0.4, side * (w * 0.5 + 0.3)), 0.45, kit.mat("rust"))
-	var teeth: int = int(len_ / 6.0)
-	for k: int in teeth:
-		if broken and rng.randf() < 0.3:
-			continue
-		var lx: float = -len_ * 0.5 + (k + 0.5) * len_ / teeth
-		AnvilProps.add_plate(b, basis * Basis(Vector3.FORWARD, 0.45), c + basis * Vector3(lx, h + 1.4, 0), Vector3(len_ / teeth * 1.05, 0.3, w), kit.mat("corr"))
-		AnvilProps.add_plate(b, basis, c + basis * Vector3(lx + len_ / teeth * 0.45, h + 1.3, 0), Vector3(0.3, 2.8, w), kit.mat("stack"))
-	# A loading door, dark inside.
-	AnvilProps.add_plate(b, basis, c + basis * Vector3(0, h * 0.3, w * 0.5 + 0.08), Vector3(6.0, h * 0.6, 0.3), kit.mat("soot"))
-	# Hazard-striped door frame and a grimy skirting along the walls.
-	for sx: float in [-1.0, 1.0]:
-		AnvilProps.add_plate(b, basis, c + basis * Vector3(sx * 3.25, h * 0.32, w * 0.5 + 0.18), Vector3(0.45, h * 0.64, 0.2), kit.mat("hazard"))
-	AnvilProps.add_plate(b, basis, c + basis * Vector3(0, h * 0.64 + 0.2, w * 0.5 + 0.18), Vector3(6.9, 0.4, 0.2), kit.mat("hazard"))
-	for side: float in [-1.0, 1.0]:
-		AnvilProps.add_plate(b, basis, c + basis * Vector3(0, 0.45, side * (w * 0.5 + 0.16)), Vector3(len_, 0.9, 0.12), kit.mat("concrete"))
-	# Roof vents (stubby cowled stacks) and caged wall lamps (lit once restored).
-	for k: int in 3:
-		var vp: Vector3 = c + basis * Vector3(-len_ * 0.3 + k * len_ * 0.3, h + 3.4, rng.randf_range(-w * 0.25, w * 0.25))
-		b.add(AnvilProps.noisy_cyl(0.55, 0.6, 1.8, 14, 2, 0.03, seed_v + k), Transform3D(Basis(), vp), kit.mat("shell"))
-		b.add(ProcMesh.cyl(0.9, 0.5, 0.4, 14), Transform3D(Basis(), vp + Vector3(0, 1.2, 0)), kit.mat("rust"))
-	for k: int in 4:
-		var lp: Vector3 = c + basis * Vector3(-len_ * 0.375 + k * len_ * 0.25, h * 0.78, w * 0.5 + 0.35)
-		AnvilProps.add_plate(b, basis, lp + basis * Vector3(0, 0.25, -0.12), Vector3(0.25, 0.12, 0.3), kit.mat("rust"))
-		b.add(ProcMesh.sphere(0.16, 10, 5), Transform3D(Basis(), lp), kit.mat("lamp_dead"))
-		fut.add(ProcMesh.sphere(0.17, 10, 5), Transform3D(Basis(), lp), kit.mat("lamp_warm"))
-	for side: float in [-1.0, 1.0]:
-		fut.add(AnvilProps.box(), Transform3D(basis * Basis.from_scale(Vector3(len_, 0.12, 0.12)), c + basis * Vector3(0, h - 0.3, side * (w * 0.5 + 0.45))), kit.mat("line"))
-		fut.add(AnvilProps.box(), Transform3D(basis * Basis.from_scale(Vector3(len_ * 0.95, 0.7, 0.5)), c + basis * Vector3(0, h * 0.62, side * (w * 0.5 + 0.5))), kit.mat("green"))
-
-
-static func turbine(kit: AnvilEnv, root: Node3D, base: Vector3, h: float, k: int) -> void:
-	AnvilProps.turbine(kit, root, base, h, k)
-
-
 ## A molten channel along a polyline (local points, y ignored): ribbon with UV.x = metres along,
 ## UV.y across, set a little into the ground, lined with slag banks.
 static func lava_channel(kit: AnvilEnv, root: Node3D, pts: PackedVector3Array, width: float, lava: Material, seed_v: int) -> void:
@@ -622,155 +390,172 @@ static func lava_material(heat: float) -> ShaderMaterial:
 	return m
 
 
-static func _flush_stage(root: Node3D, stage: int, always: Batch, ruin: Batch, high: Batch, fut: Batch) -> void:
-	always.flush(root)
-	if stage == 1:
-		ruin.flush(root)
-	if stage >= 3:
-		high.flush(root)
-	if stage >= 4:
-		fut.flush(root)
+# --- Sites (built from the art kit: AnvilKit + KitBuilding) ------------------------------------
+
+static func _b(stage: int, seed_v: int, palette: Dictionary) -> KitMesh.Builder:
+	return KitMesh.Builder.new(seed_v, palette, AnvilKit.kit_state(stage))
 
 
-# --- Sites ------------------------------------------------------------------------------------
+static func _kit_patch(root: Node3D, size: Vector2, stage: int, seed_v: int, pos: Vector3, yaw_deg: float = 0.0) -> void:
+	var gp: Node3D = KitMesh.ground_patch(size, AnvilKit.kit_state(stage), seed_v)
+	gp.position = pos + Vector3(0, 0.02, 0)
+	gp.rotation_degrees.y = yaw_deg
+	root.add_child(gp)
+
+
+## A kit wind turbine (scaled up to Anvil size) with its spinning rotor.
+static func turbine(root: Node3D, stage: int, base: Vector3, scl: float, k: int) -> void:
+	var st: String = AnvilKit.kit_state(stage)
+	var b := _b(stage, 70 + k, AnvilKit.HABITAT)
+	var t := Transform3D(Basis(Vector3.UP, k * 0.9).scaled(Vector3.ONE * scl), base)
+	KitProps.wind_turbine(b, t, 14.0, st)
+	AnvilKit.node(b, root, "Turbine%d" % k, stage >= 2)
+	var rot := AnvilRotor.new()
+	rot.name = "TurbineRotor%d" % k
+	rot.speed = 0.6 + 0.1 * (k % 3)
+	rot.transform = Transform3D(t.basis, t * KitProps.turbine_hub(14.0))
+	var mi := MeshInstance3D.new()
+	mi.mesh = KitProps.turbine_rotor(st, 6.0, AnvilKit.HABITAT)
+	KitMat.apply(mi, st, stage >= 2)
+	rot.add_child(mi)
+	root.add_child(rot)
+
+
+## Lived-in clutter: crate stacks, barrels (some tipped), a lamp post, debris when broken.
+static func _clutter(b: KitMesh.Builder, spots: Array, lamp_at: Array) -> void:
+	var st: String = b.state
+	for k: int in spots.size():
+		var p: Vector3 = spots[k]
+		var yaw: float = b.rng.randf_range(0, 360)
+		match k % 3:
+			0:
+				KitProps.crate_stack(b, AnvilKit.x(p, Vector3(0, yaw, 0)), 3 + k % 3, st)
+			1:
+				for q: int in 3:
+					KitProps.barrel(b, AnvilKit.x(p + Vector3(q * 0.75, 0, b.rng.randf_range(-0.3, 0.3)), Vector3(0, yaw, 0)), "paint:barrel", st == "broken" and q == 1)
+			_:
+				if st == "broken":
+					KitProps.debris(b, AnvilKit.x(p), 3.0, 10)
+				else:
+					KitProps.crate(b, AnvilKit.x(p, Vector3(0, yaw, 0)))
+	for lp: Vector3 in lamp_at:
+		KitProps.lamp_post(b, AnvilKit.x(lp), 5.5, st)
+
 
 static func _foundry_yard(kit: AnvilEnv, root: Node3D, stage: int, restoration: float) -> void:
 	var r: float = eff(stage, restoration)
+	var pw: bool = stage >= 2
 	ground_patch(kit, root, 48.0, 101)
-	var b := Batch.new()
-	var ruin := Batch.new()
-	var high := Batch.new()
-	var fut := Batch.new()
-	apron(kit, root, Vector3(0, 0, -2), Vector2(26, 22), 0.08, restoration, 5)
-	hall(kit, b, fut, Vector3(-2, 0, -27), 0.05, 34.0, 15.0, 11.0, stage <= 2, 7)
-	AnvilProps._stack(kit, b, fut, Vector3(-22, -5.5, -31), 44.0, 3.2, 1)
-	AnvilProps._stack(kit, b, fut, Vector3(19, -5.5, -35), 36.0, 2.7, 4)
-	AnvilProps._truss(kit, b, fut, Vector3(14, 0, -22), Vector3(30, 0, 6), 9.0)
-	# Power and signal cables slung from the stacks to the hall roof.
+	_kit_patch(root, Vector2(26, 22), stage, 5, Vector3(0, 0, -2))
+	# Kit buildings: the casting hall, an office module, a machine house and a tank farm.
+	AnvilKit.building(root, "hangar", stage, 11, AnvilKit.FOUNDRY, Vector3(-2, 0, -29), 0.0, 1.6)
+	AnvilKit.building(root, "module_medium", stage, 12, AnvilKit.HABITAT, Vector3(-27, 0, 4), 70.0, 1.2)
+	AnvilKit.building(root, "machine_housing", stage, 13, AnvilKit.FOUNDRY, Vector3(25, 0, -12), -80.0, 1.3)
+	AnvilKit.building(root, "tank_farm", stage, 14, AnvilKit.FOUNDRY, Vector3(27, 0, 16), -120.0, 1.15)
+	var b := _b(stage, 15, AnvilKit.FOUNDRY)
+	AnvilKit.stack(b, AnvilKit.x(Vector3(-24, 0, -40)), 40.0, 3.0, 1)
+	AnvilKit.stack(b, AnvilKit.x(Vector3(20, 0, -42)), 33.0, 2.6, 4)
+	AnvilKit.truss(b, Vector3(10, 0, -22), Vector3(30, 0, 2), 8.0)
+	var hop := PackedVector3Array([Vector3(0.6, 0, 1), Vector3(2.4, 3.0, 0), Vector3(2.6, 3.1, 1), Vector3(2.6, 3.4, 1), Vector3(0.6, 3.4, 0)])
+	b.add("paint:main", KitMesh.lathe(hop, 16), AnvilKit.x(Vector3(31, 6.0, 4)))
+	for sx: float in [-1.0, 1.0]:
+		for sz: float in [-1.0, 1.0]:
+			b.rod("paint:accent", Vector3(31 + sx * 1.8, 0.2, 4 + sz * 1.8), Vector3(31 + sx * 1.3, 6.2, 4 + sz * 1.3), 0.14, 6)
+	AnvilKit.track(b, Vector3(-30, 0, 26), Vector3(6, 0, 31))
 	for k: int in 3:
-		AnvilProps.cable(b, Vector3(-20.5, 14.0 + k * 1.2, -29.5), Vector3(-14.0 + k * 3.0, 11.6, -20.0), 1.4 + k * 0.4, 0.06, kit.mat("cable"))
-		AnvilProps.cable(b, Vector3(17.8, 12.0 + k, -33.5), Vector3(10.0 + k * 2.5, 11.6, -20.0), 1.2 + k * 0.5, 0.06, kit.mat("cable"))
-	# Hopper tower at the truss end.
-	b.add(AnvilProps.noisy_cyl(2.6, 1.0, 5.0, 16, 4, 0.03, 12), Transform3D(Basis(), Vector3(30, 9.0, 6)), kit.mat("shell"))
-	for sx: float in [-1.6, 1.6]:
-		for sz: float in [-1.6, 1.6]:
-			AnvilProps.add_beam(b, Vector3(30 + sx * 1.4, 0, 6 + sz * 1.4), Vector3(30 + sx, 7.0, 6 + sz), 0.35, kit.mat("rust"))
-	# Ember slag tip and a buried hauler.
-	b.add(AnvilProps.slag_mesh(21), Transform3D(Basis(Vector3.UP, 1.2) * Basis.from_scale(Vector3(9.0, 4.8, 7.5)), Vector3(-30, -0.2, 10)), kit.slag_mat)
-	AnvilProps._hauler(kit, b, high, Transform3D(Basis(Vector3.UP, 2.1) * Basis(Vector3.FORWARD, 0.14) * Basis.from_scale(Vector3.ONE * 0.62), Vector3(31, -1.6, 26)), 0)
-	# Ore spur with carts along the south side.
-	_cart_line(kit, b, Vector3(-30, 0, 24), Vector3(6, 0, 30), 3)
-	# Ruin: a fallen stack section across the yard edge.
-	ruin.add(AnvilProps.noisy_cyl(2.4, 2.6, 18.0, 24, 6, 0.04, 77), Transform3D(Basis(Vector3.UP, 0.5) * Basis(Vector3.FORWARD, PI * 0.5 - 0.06), Vector3(-26, 2.2, -10)), kit.mat("shell"))
+		var tp: Vector3 = Vector3(-30, 0, 26).lerp(Vector3(6, 0, 31), 0.2 + 0.28 * k)
+		AnvilKit.ore_cart(b, Transform3D(Basis(Vector3.UP, atan2(36.0, 5.0) + PI * 0.5), tp + Vector3(0, 0.3, 0)), stage == 1 and k == 1)
+	for k: int in 3:
+		KitProps.cable(b, Transform3D.IDENTITY, Vector3(-21.6, 14.0 + k * 1.3, -38.0), Vector3(-10.0 + k * 3.0, 13.5, -23.0), 1.4 + k * 0.4, 0.06)
+	_clutter(b, [Vector3(-8, 0, 12), Vector3(9, 0, 11), Vector3(-15, 0, -12), Vector3(15, 0, -6), Vector3(-6, 0, 20), Vector3(18, 0, 22)], [Vector3(-13.5, 0, 8.5), Vector3(13.5, 0, 8.5)])
+	AnvilKit.node(b, root, "Foundry", pw)
 	if stage >= 3:
-		AnvilProps._dome(kit, high, Vector3(-26, 0, 28), 8.0, 3)
-	_flush_stage(root, stage, b, ruin, high, fut)
+		var db := _dome_b(stage)
+		AnvilKit.dome(db, AnvilKit.x(Vector3(-28, 0, 28)), 7.0)
+		AnvilKit.node(db, root, "Dome", pw)
+	var hb := _b(stage, 16, AnvilKit.LEDGER)
+	AnvilKit.hauler(hb, Transform3D(Basis(Vector3.UP, 2.1), Vector3(32, 0, 30)))
+	AnvilKit.node(hb, root, "Hauler", pw)
+	var sb := Batch.new()
+	sb.add(AnvilProps.slag_mesh(21), Transform3D(Basis(Vector3.UP, 1.2) * Basis.from_scale(Vector3(9.0, 4.8, 7.5)), Vector3(-34, -0.2, 14)), kit.slag_mat)
+	sb.flush(root)
 	if stage >= 2:
-		turbine(kit, root, Vector3(38, 0, -24), 30.0, 0)
+		turbine(root, stage, Vector3(40, 0, -26), 1.7, 0)
 	if stage >= 4:
-		turbine(kit, root, Vector3(-40, 0, -6), 34.0, 1)
+		turbine(root, stage, Vector3(-42, 0, -10), 1.9, 1)
 	edge_ring(kit, root, 46.0, r, 1501)
-	trash(kit, root, 46.0, 12.0, 900, r, 501)
-	ground_cover(kit, root, 46.0, 12.0, r, 601)
+	trash(kit, root, 46.0, 13.0, 700, r, 501)
+	ground_cover(kit, root, 46.0, 13.0, r, 601)
 
 
-static func _cart_line(kit: AnvilEnv, b: Batch, a: Vector3, c: Vector3, carts: int) -> void:
-	var d: Vector3 = c - a
-	var n: int = int(d.length() / 1.2)
-	var side := Vector3(-d.z, 0, d.x).normalized()
-	for k: int in n:
-		var p: Vector3 = a + d * (float(k) / n)
-		AnvilProps.add_box(b, p + Vector3(0, 0.06, 0), Vector3(0.35, 0.16, 2.4), kit.mat("soot"), Vector3(0, rad_to_deg(atan2(-d.z, d.x)) + 90.0, 0))
-	for off: float in [-0.75, 0.75]:
-		AnvilProps.add_beam(b, a + side * off + Vector3(0, 0.25, 0), c + side * off + Vector3(0, 0.25, 0), 0.14, kit.mat("rust"))
-	for k: int in carts:
-		var p: Vector3 = a + d * (0.2 + 0.25 * k)
-		var tip: float = 0.5 if k == 1 else 0.0
-		var xf := Transform3D(Basis(Vector3.UP, atan2(-d.z, d.x)) * Basis(Vector3.RIGHT, tip), p + side * (1.6 if tip > 0.0 else 0.0))
-		b.add(AnvilProps.box(), xf * Transform3D(Basis.from_scale(Vector3(2.4, 0.35, 1.5)), Vector3(0, 0.55, 0)), kit.mat("rust"))
-		b.add(AnvilProps.noisy_cyl(1.25, 0.95, 1.5, 14, 2, 0.05, 50 + k), xf * Transform3D(Basis.from_scale(Vector3(1.0, 1.0, 0.75)), Vector3(0, 1.5, 0)), kit.mat("cart"))
-		b.add(AnvilProps.slag_mesh(60 + k), xf * Transform3D(Basis.from_scale(Vector3(1.0, 0.6, 0.7)), Vector3(0, 2.0, 0)), kit.mat("ore"))
+static func _dome_b(stage: int) -> KitMesh.Builder:
+	return KitMesh.Builder.new(17, AnvilKit.HABITAT, "restored" if stage >= 4 else "repaired")
 
 
 static func _foundry_tower(kit: AnvilEnv, root: Node3D, stage: int, restoration: float) -> void:
 	var r: float = eff(stage, restoration)
+	var pw: bool = stage >= 2
 	ground_patch(kit, root, 42.0, 202)
-	var b := Batch.new()
-	var ruin := Batch.new()
-	var high := Batch.new()
-	var fut := Batch.new()
-	apron(kit, root, Vector3.ZERO, Vector2(30, 30), 0.3, restoration, 9)
-	AnvilProps._stack(kit, b, fut, Vector3(0, -4.0, 0), 128.0, 8.0, 3)
-	# Buttresses: leaning lattice legs braced to the first gallery.
+	_kit_patch(root, Vector2(28, 28), stage, 9, Vector3.ZERO, 20.0)
+	var b := _b(stage, 21, AnvilKit.FOUNDRY)
+	AnvilKit.stack(b, AnvilKit.x(Vector3.ZERO), 118.0, 7.0, 3)
+	# Buttresses: four lattice legs braced to the first gallery, on concrete feet.
 	for k: int in 4:
 		var a: float = TAU * k / 4.0 + 0.4
 		var d := Vector3(cos(a), 0, sin(a))
-		var foot: Vector3 = d * 22.0
-		var top: Vector3 = d * 9.2 + Vector3(0, 40.0, 0)
+		var side := Vector3(-d.z, 0, d.x)
+		var foot: Vector3 = d * 21.0
+		var top: Vector3 = d * 7.8 + Vector3(0, 42.0, 0)
 		for sgn: float in [-1.0, 1.0]:
-			var off: Vector3 = Vector3(-d.z, 0, d.x) * 2.2 * sgn
-			AnvilProps.add_beam(b, foot + off, top + off * 0.4, 0.8, kit.mat("rust"))
-		for j: int in 6:
-			var t0: float = float(j) / 6.0
-			var t1: float = float(j + 1) / 6.0
-			AnvilProps.add_beam(b, foot.lerp(top, t0) + Vector3(-d.z, 0, d.x) * 2.2, foot.lerp(top, t1) - Vector3(-d.z, 0, d.x) * 2.2 * (1.0 - t1 * 0.6), 0.3, kit.mat("rust"))
-		AnvilProps.add_box(b, foot + Vector3(0, 0.8, 0), Vector3(4.0, 1.6, 4.0), kit.mat("concrete"), Vector3(0, rad_to_deg(-a), 0))
-		fut.add(AnvilProps.box(), FrontierView._beam_xf(foot + Vector3(0, 0.3, 0), top - Vector3(0, 0.3, 0), 0.1), kit.mat("line"))
+			b.rod("paint:accent", foot + side * 2.0 * sgn + Vector3(0, 1.0, 0), top + side * 0.9 * sgn, 0.42, 8)
+		for j: int in 7:
+			var t0: float = float(j) / 7.0
+			var t1: float = float(j + 1) / 7.0
+			b.rod("paint:main", foot.lerp(top, t0) + side * lerpf(2.0, 0.9, t0) + Vector3(0, 1.0, 0), foot.lerp(top, t1) - side * lerpf(2.0, 0.9, t1) + Vector3(0, 1.0, 0), 0.16, 6)
+		b.box("concrete", Vector3(5.5, 1.6, 4.0), AnvilKit.x(foot + Vector3(0, 0.8, 0), Vector3(0, rad_to_deg(-a), 0)), 0.25)
+		b.decal("chevrons", Vector2(2.2, 0.8), AnvilKit.x(foot + d * 2.76 + Vector3(0, 0.9, 0), Vector3(0, rad_to_deg(atan2(d.x, d.z)), 0)))
 	# Pipes snaking out of the plinth into the ground.
-	for k: int in 5:
-		var a: float = 0.9 + k * 0.35
-		var p0 := Vector3(cos(a) * 12.0, 2.5, sin(a) * 12.0)
-		var p1 := Vector3(cos(a) * 30.0, -0.4, sin(a) * 30.0)
-		b.add(AnvilProps.noisy_cyl(0.7, 0.7, 1.0, 12, 6, 0.02, 90 + k), FrontierView._beam_xf(p0, p1, 1.0), kit.mat("shell"))
-	# Slag tips at the base.
+	for k: int in 4:
+		var a2: float = 0.9 + k * 0.4
+		KitProps.pipe_run(b, Transform3D.IDENTITY, PackedVector3Array([Vector3(cos(a2) * 10.5, 2.2, sin(a2) * 10.5), Vector3(cos(a2) * 18.0, 2.2, sin(a2) * 18.0), Vector3(cos(a2) * 22.0, 0.3, sin(a2) * 22.0)]), 0.45, "paint:pipe")
+	if stage == 1:
+		b.add("paint:main", KitMesh.bevel_cylinder(3.6, 18.0, 0.3, 28), Transform3D(Basis(Vector3.UP, 2.2) * Basis(Vector3.FORWARD, PI * 0.5 + 0.06), Vector3(-26, 3.4, 18)))
+		KitProps.debris(b, AnvilKit.x(Vector3(-20, 0, 22)), 6.0, 18)
+	_clutter(b, [Vector3(14, 0, 14), Vector3(-15, 0, 12), Vector3(16, 0, -14), Vector3(-12, 0, -16)], [Vector3(11, 0, 9), Vector3(-11, 0, -9)])
+	AnvilKit.node(b, root, "Tower", pw)
+	AnvilKit.building(root, "module_medium", stage, 22, AnvilKit.HABITAT, Vector3(24, 0, 16), -40.0, 1.15)
+	AnvilKit.building(root, "machine_housing", stage, 23, AnvilKit.FOUNDRY, Vector3(-23, 0, -16), 130.0, 1.2)
+	var sb := Batch.new()
 	for k: int in 3:
-		var a: float = 3.6 + k * 0.9
-		b.add(AnvilProps.slag_mesh(30 + k), Transform3D(Basis(Vector3.UP, a) * Basis.from_scale(Vector3(8.0, 4.0 + k, 6.5)), Vector3(cos(a) * 28.0, -0.2, sin(a) * 28.0)), kit.slag_mat)
-	ruin.add(AnvilProps.noisy_cyl(4.0, 4.2, 22.0, 28, 6, 0.05, 15), Transform3D(Basis(Vector3.UP, 2.2) * Basis(Vector3.FORWARD, PI * 0.5 + 0.08), Vector3(-24, 3.6, 18)), kit.mat("shell"))
+		var a3: float = 3.6 + k * 0.9
+		sb.add(AnvilProps.slag_mesh(30 + k), Transform3D(Basis(Vector3.UP, a3) * Basis.from_scale(Vector3(8.0, 4.0 + k, 6.5)), Vector3(cos(a3) * 30.0, -0.2, sin(a3) * 30.0)), kit.slag_mat)
+	sb.flush(root)
 	if stage >= 3:
-		AnvilProps._dome(kit, high, Vector3(26, 0, -18), 7.0, 5)
-	_flush_stage(root, stage, b, ruin, high, fut)
+		var db := _dome_b(stage)
+		AnvilKit.dome(db, AnvilKit.x(Vector3(28, 0, -20)), 6.5)
+		AnvilKit.node(db, root, "Dome", pw)
+	if stage >= 4:
+		turbine(root, stage, Vector3(-34, 0, 22), 1.7, 2)
 	edge_ring(kit, root, 40.0, r, 1503)
-	trash(kit, root, 40.0, 14.0, 800, r, 503)
-	ground_cover(kit, root, 40.0, 14.0, r, 603)
+	trash(kit, root, 40.0, 15.0, 650, r, 503)
+	ground_cover(kit, root, 40.0, 15.0, r, 603)
 
 
 static func _lava_forge(kit: AnvilEnv, root: Node3D, stage: int, restoration: float) -> void:
 	var r: float = eff(stage, restoration)
+	var pw: bool = stage >= 2
 	ground_patch(kit, root, 46.0, 303)
-	var b := Batch.new()
-	var ruin := Batch.new()
-	var high := Batch.new()
-	var fut := Batch.new()
 	var heat: float = 1.0 - 0.9 * smoothstep(0.1, 0.85, r)
 	var lava: ShaderMaterial = lava_material(heat)
-	# The furnace: a squat, bulging shell banded with straps, a hood and a soot-black chimney.
-	var f := Vector3(-6, 0, -16)
-	apron(kit, root, f + Vector3(0, 0, 2), Vector2(22, 18), 0.2, restoration, 13)
-	b.add(AnvilProps.noisy_cyl(4.6, 7.2, 13.0, 36, 10, 0.035, 41), Transform3D(Basis(), f + Vector3(0, 6.5, 0)), kit.mat("shell"))
-	for k: int in 5:
-		var y: float = 1.5 + k * 2.6
-		var rr: float = lerpf(7.2, 4.6, y / 13.0) + 0.2
-		b.add(ProcMesh.torus(rr - 0.18, rr + 0.18, 40, 6), Transform3D(Basis(), f + Vector3(0, y, 0)), kit.mat("rust"))
-	b.add(AnvilProps.noisy_cyl(1.6, 4.8, 4.0, 28, 4, 0.03, 42), Transform3D(Basis(), f + Vector3(0, 15.0, 0)), kit.mat("shell"))
-	b.add(AnvilProps.noisy_cyl(1.3, 1.7, 26.0, 18, 10, 0.03, 43), Transform3D(Basis(), f + Vector3(0, 30.0, 0)), kit.mat("shell"))
-	# Tuyeres: blast pipes ringing the hearth from a bustle main.
-	b.add(ProcMesh.torus(8.0, 8.9, 48, 8), Transform3D(Basis(), f + Vector3(0, 5.0, 0)), kit.mat("stack"))
-	for k: int in 10:
-		var a: float = TAU * k / 10.0
-		AnvilProps.add_beam(b, f + Vector3(cos(a) * 8.4, 5.0, sin(a) * 8.4), f + Vector3(cos(a) * 6.6, 2.4, sin(a) * 6.6), 0.45, kit.mat("rust"))
-	# Tap hole glow at the front.
-	var hole := StandardMaterial3D.new()
-	hole.albedo_color = Color(0.2, 0.05, 0.02)
-	hole.emission_enabled = true
-	hole.emission = Color(1.0, 0.45, 0.12)
-	hole.emission_energy_multiplier = 2.5 * heat + 0.3
-	b.add(ProcMesh.sphere(1.2, 14, 8), Transform3D(Basis.from_scale(Vector3(1.0, 0.7, 0.5)), f + Vector3(0, 1.0, 7.0)), hole)
-	# The pour: a channel winding out to a cooling pool.
+	var f := Vector3(-6, 0, -18)
+	_kit_patch(root, Vector2(24, 12), stage, 13, f + Vector3(0, 0, 14))
+	var b := _b(stage, 31, AnvilKit.FOUNDRY)
+	AnvilKit.furnace(b, AnvilKit.x(f))
+	# The pour: a channel winding out to a cooling pool, a ladle crane straddling it.
 	var pts := PackedVector3Array()
 	for k: int in 34:
 		var t: float = float(k) / 33.0
-		pts.append(f + Vector3(sin(t * 4.2) * 6.0 + t * 26.0, 0, 7.5 + t * 34.0))
+		pts.append(f + Vector3(sin(t * 4.2) * 6.0 + t * 26.0, 0, 9.5 + t * 34.0))
 	lava_channel(kit, root, pts, 2.6, lava, 7)
 	var pool_c: Vector3 = pts[pts.size() - 1] + Vector3(3, 0, 4)
 	var pool := MeshInstance3D.new()
@@ -780,81 +565,94 @@ static func _lava_forge(kit: AnvilEnv, root: Node3D, stage: int, restoration: fl
 	pool.material_override = lava
 	pool.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	root.add_child(pool)
+	var sb := Batch.new()
 	for k: int in 9:
 		var a: float = TAU * k / 9.0
-		b.add(AnvilProps.slag_mesh(120 + k), Transform3D(Basis(Vector3.UP, a) * Basis.from_scale(Vector3(2.6, 1.2, 2.0)), pool_c + Vector3(cos(a) * 7.6, -0.2, sin(a) * 6.2)), kit.slag_mat)
-	# A ladle crane straddling the channel.
-	var cc: Vector3 = pts[12]
-	for sgn: float in [-1.0, 1.0]:
-		var leg: Vector3 = cc + Vector3(-7.0 * sgn, 0, 2.0 * sgn)
-		for dz: float in [-2.0, 2.0]:
-			var lb: Vector3 = leg + Vector3(0, 0, dz)
-			var lt: Vector3 = leg + Vector3(0, 12.0, 0)
-			b.add(AnvilProps.noisy_cyl(0.32, 0.4, 1.0, 12, 4, 0.03, 70 + int(dz)), FrontierView._beam_xf(lb, lt, 1.0), kit.mat("rust"))
-	AnvilProps.add_beam(b, cc + Vector3(-7.5, 12.4, -2.0), cc + Vector3(7.5, 12.4, 2.0), 1.1, kit.mat("hauler"))
-	AnvilProps.add_beam(b, cc + Vector3(0, 12.0, 0), cc + Vector3(0, 6.5, 0), 0.08, kit.mat("soot"))
-	b.add(AnvilProps.noisy_cyl(1.6, 1.1, 2.4, 18, 3, 0.05, 55), Transform3D(Basis(Vector3.RIGHT, 0.35), cc + Vector3(0, 5.2, 0)), kit.mat("shell"))
-	# Restored: the forge feeds a greenhouse with its heat.
+		sb.add(AnvilProps.slag_mesh(120 + k), Transform3D(Basis(Vector3.UP, a) * Basis.from_scale(Vector3(2.6, 1.2, 2.0)), pool_c + Vector3(cos(a) * 7.6, -0.2, sin(a) * 6.2)), kit.slag_mat)
+	sb.flush(root)
+	var cc: Vector3 = pts[14]
+	AnvilKit.crane(b, Vector3(cc.x, 0, cc.z), 15.0, 12.0, 0.35)
+	_clutter(b, [Vector3(-20, 0, -2), Vector3(-16, 0, 8), Vector3(6, 0, -24), Vector3(-24, 0, -18)], [Vector3(-12, 0, 2), Vector3(4, 0, -6)])
+	AnvilKit.node(b, root, "Forge", pw)
+	# The tap hole: lava light, whatever the power state.
+	var hole := StandardMaterial3D.new()
+	hole.albedo_color = Color(0.2, 0.05, 0.02)
+	hole.emission_enabled = true
+	hole.emission = Color(1.0, 0.45, 0.12)
+	hole.emission_energy_multiplier = 2.5 * heat + 0.3
+	var hm := MeshInstance3D.new()
+	hm.name = "TapHole"
+	hm.mesh = ProcMesh.sphere(1.3, 16, 8)
+	hm.scale = Vector3(1.0, 0.7, 0.5)
+	hm.position = f + Vector3(0, 2.2, 7.3)
+	hm.material_override = hole
+	root.add_child(hm)
+	AnvilKit.building(root, "machine_housing", stage, 32, AnvilKit.FOUNDRY, Vector3(16, 0, -26), -30.0, 1.2)
+	AnvilKit.building(root, "tank_farm", stage, 33, AnvilKit.FOUNDRY, Vector3(-30, 0, -4), 80.0, 1.0)
 	if stage >= 3:
-		AnvilProps._dome(kit, high, Vector3(-28, 0, 16), 8.0, 9)
-	fut.add(ProcMesh.torus(7.3, 7.5, 64, 4), Transform3D(Basis(), f + Vector3(0, 0.4, 0)), kit.mat("line"))
-	ruin.add(AnvilProps.noisy_cyl(1.3, 1.5, 12.0, 16, 4, 0.04, 66), Transform3D(Basis(Vector3.UP, 0.9) * Basis(Vector3.FORWARD, PI * 0.5), Vector3(14, 1.2, -22)), kit.mat("shell"))
-	_flush_stage(root, stage, b, ruin, high, fut)
+		var db := _dome_b(stage)
+		AnvilKit.dome(db, AnvilKit.x(Vector3(-28, 0, 22)), 7.0)
+		AnvilKit.node(db, root, "Dome", pw)
 	if stage >= 4:
-		turbine(kit, root, Vector3(32, 0, -20), 28.0, 2)
+		turbine(root, stage, Vector3(34, 0, -22), 1.6, 3)
 	edge_ring(kit, root, 44.0, r, 1505)
-	trash(kit, root, 44.0, 7.0, 800, r, 505)
+	trash(kit, root, 44.0, 8.0, 650, r, 505)
 	ground_cover(kit, root, 44.0, 10.0, r, 605)
 
 
 static func _ruined_smelter(kit: AnvilEnv, root: Node3D, stage: int, restoration: float) -> void:
 	var r: float = eff(stage, restoration)
+	var pw: bool = stage >= 2
 	ground_patch(kit, root, 42.0, 404)
-	var b := Batch.new()
-	var ruin := Batch.new()
-	var high := Batch.new()
-	var fut := Batch.new()
+	_kit_patch(root, Vector2(38, 24), stage, 17, Vector3(0, 0, -4), -6.0)
+	var b := _b(stage, 41, AnvilKit.FOUNDRY)
+	var broken: bool = stage == 1
+	var key: String = "rusty" if broken else "paint:main"
+	var basis := Basis(Vector3.UP, -0.1)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 404
-	apron(kit, root, Vector3(0, 0, -4), Vector2(40, 24), -0.1, restoration, 17)
-	# The hall's frame: columns standing, leaning or snapped; fallen roof trusses.
-	var basis := Basis(Vector3.UP, -0.1)
+	# The hall's frame: I-beam columns standing, leaning or snapped; roof girders, some fallen.
 	for k: int in 8:
 		for side: float in [-1.0, 1.0]:
 			var base: Vector3 = basis * Vector3(-17.5 + k * 5.0, 0, side * 10.0) + Vector3(0, 0, -4)
-			var hgt: float = 12.0 if rng.randf() > 0.3 else rng.randf_range(3.0, 8.0)
-			var lean := Vector3(rng.randf_range(-1.5, 1.5), 0, rng.randf_range(-1.5, 1.5)) * (0.0 if hgt > 10.0 and rng.randf() > 0.4 else 1.0)
-			AnvilProps.add_beam(b, base, base + lean + Vector3(0, hgt, 0), 0.6, kit.mat("rust"))
-			fut.add(AnvilProps.noisy_cyl(0.75, 0.9, 1.0, 10, 4, 0.12, 200 + k), FrontierView._beam_xf(base, base + lean * 0.8 + Vector3(0, hgt * 0.8, 0), 1.0), kit.mat("green"))
-			if hgt > 10.0 and k % 2 == 0:
+			var hgt: float = 11.0 if (not broken or rng.randf() > 0.3) else rng.randf_range(3.0, 7.0)
+			var lean := Vector3(rng.randf_range(-1.2, 1.2), 0, rng.randf_range(-1.2, 1.2)) if (broken and rng.randf() < 0.4) else Vector3.ZERO
+			AnvilKit.i_beam(b, base, base + lean + Vector3(0, hgt, 0), 0.55, key)
+			b.box("concrete", Vector3(1.2, 0.5, 1.2), AnvilKit.x(base + Vector3(0, 0.25, 0)), 0.1)
+			if hgt > 10.0 and k % 2 == 0 and (not broken or rng.randf() < 0.6):
 				var top: Vector3 = base + lean + Vector3(0, hgt, 0)
-				AnvilProps.add_beam(b, top, top + basis * Vector3(0, 1.5, -side * 10.0), 0.4, kit.mat("rust"))
-				fut.add(AnvilProps.box(), FrontierView._beam_xf(top + Vector3(0, -0.4, 0), top + basis * Vector3(0, 1.1, -side * 10.0), 0.1), kit.mat("line"))
-	for k: int in 4:
-		var p: Vector3 = basis * Vector3(rng.randf_range(-15, 15), 0, rng.randf_range(-7, 7)) + Vector3(0, 0, -4)
-		var q: Vector3 = p + Vector3(rng.randf_range(-6, 6), rng.randf_range(0.5, 3.0), rng.randf_range(-6, 6))
-		AnvilProps.add_beam(b, p + Vector3(0, 0.3, 0), q, 0.5, kit.mat("rust"))
-	# Smelting pots: one upright, one tipped, one spilled with a frozen slag tongue.
-	var pots: Array = [[Vector3(-10, 0, 16), 0.0], [Vector3(2, 0, 18), 0.6], [Vector3(13, 0, 15), 1.45]]
+				AnvilKit.i_beam(b, top, top + basis * Vector3(0, 1.4, -side * 10.0), 0.45, key)
+			if stage >= 4:
+				KitProps.planter(b, AnvilKit.x(base + Vector3(0.9, 0, 0), Vector3(0, 90, 0)), 1.4, "restored")
+				b.add("trim:warm", KitMesh.bevel_box(Vector3(0.05, 0.05, 1.6), 0.02), AnvilKit.x(base + Vector3(0, 3.0, 0.32)))
+	if broken:
+		for k: int in 4:
+			var p: Vector3 = basis * Vector3(rng.randf_range(-15, 15), 0, rng.randf_range(-7, 7)) + Vector3(0, 0, -4)
+			AnvilKit.i_beam(b, p + Vector3(0, 0.3, 0), p + Vector3(rng.randf_range(-6, 6), rng.randf_range(0.5, 3.0), rng.randf_range(-6, 6)), 0.45, "rusty")
+		KitProps.debris(b, AnvilKit.x(Vector3(-6, 0, -2)), 8.0, 24)
+	# Smelting pots: upright, tipped, and one spilled with a frozen slag tongue.
+	var pots: Array = [[Vector3(-10, 0, 16), 0.0], [Vector3(2, 0, 18), 0.6 if broken else 0.0], [Vector3(13, 0, 15), 1.45 if broken else 0.0]]
 	for k: int in pots.size():
 		var pp: Vector3 = pots[k][0]
 		var tilt: float = float(pots[k][1])
-		var xf := Transform3D(Basis(Vector3.UP, k * 1.7) * Basis(Vector3.RIGHT, tilt), pp + Vector3(0, 3.0 * cos(tilt) + 0.6, 0))
-		b.add(AnvilProps.noisy_cyl(3.2, 2.4, 6.0, 28, 6, 0.04, 300 + k), xf, kit.mat("shell"))
-		b.add(ProcMesh.torus(3.1, 3.6, 32, 6), xf * Transform3D(Basis(), Vector3(0, 3.0, 0)), kit.mat("rust"))
-		# Solid pot: a base and a crust of set slag inside, not a hollow cup.
-		b.add(ProcMesh.cyl(2.4, 2.4, 0.4, 24), xf * Transform3D(Basis(), Vector3(0, -2.9, 0)), kit.mat("rust"))
-		b.add(ProcMesh.cyl(3.05, 3.0, 0.5, 24), xf * Transform3D(Basis(), Vector3(0, 2.2, 0)), kit.slag_mat)
-		if k == 2:
-			b.add(AnvilProps.slag_mesh(310), Transform3D(Basis(Vector3.UP, 0.4) * Basis.from_scale(Vector3(8.0, 1.0, 4.0)), pp + Vector3(5.0, -0.1, 2.0)), kit.slag_mat)
-	# The toppled stack, broken in two.
-	b.add(AnvilProps.noisy_cyl(2.8, 3.2, 20.0, 28, 8, 0.05, 330), Transform3D(Basis(Vector3.UP, 0.3) * Basis(Vector3.FORWARD, PI * 0.5 - 0.04), Vector3(-22, 3.0, -26)), kit.mat("shell"))
-	b.add(AnvilProps.noisy_cyl(2.5, 2.8, 14.0, 28, 6, 0.06, 331), Transform3D(Basis(Vector3.UP, 0.75) * Basis(Vector3.FORWARD, PI * 0.5 + 0.12), Vector3(-5, 2.6, -32)), kit.mat("shell"))
-	b.add(AnvilProps.slag_mesh(332), Transform3D(Basis.from_scale(Vector3(6.0, 3.5, 5.0)), Vector3(26, -0.2, -20)), kit.slag_mat)
-	ruin.add(AnvilProps.slag_mesh(333), Transform3D(Basis.from_scale(Vector3(4.0, 2.0, 3.0)), Vector3(-28, -0.2, 8)), kit.mat("rust"))
+		AnvilKit.pot(b, Transform3D(Basis(Vector3.UP, k * 1.7) * Basis(Vector3.RIGHT, tilt), pp + Vector3(0, 0.6 + (2.6 if tilt > 1.0 else 0.0), 0)))
+	# The toppled stack (broken) or a short restored stack.
+	if broken:
+		AnvilKit.stack(b, Transform3D(Basis(Vector3.UP, 0.3) * Basis(Vector3.FORWARD, PI * 0.5 - 0.04), Vector3(-30, 3.2, -28)), 22.0, 2.6, 6)
+	else:
+		AnvilKit.stack(b, AnvilKit.x(Vector3(-26, 0, -30)), 26.0, 2.6, 6)
+	_clutter(b, [Vector3(-22, 0, 4), Vector3(20, 0, -2), Vector3(-4, 0, 14), Vector3(22, 0, 10)], [Vector3(-18, 0, 9), Vector3(18, 0, 9)])
+	AnvilKit.node(b, root, "Smelter", pw)
+	var sb := Batch.new()
+	sb.add(AnvilProps.slag_mesh(310), Transform3D(Basis(Vector3.UP, 0.4) * Basis.from_scale(Vector3(8.0, 1.0, 4.0)), Vector3(18, -0.1, 17)), kit.slag_mat)
+	sb.add(AnvilProps.slag_mesh(332), Transform3D(Basis.from_scale(Vector3(6.0, 3.5, 5.0)), Vector3(26, -0.2, -20)), kit.slag_mat)
+	sb.flush(root)
 	if stage >= 3:
-		AnvilProps._dome(kit, high, Vector3(26, 0, 22), 7.0, 11)
-	_flush_stage(root, stage, b, ruin, high, fut)
+		var db := _dome_b(stage)
+		AnvilKit.dome(db, AnvilKit.x(Vector3(26, 0, 24)), 6.5)
+		AnvilKit.node(db, root, "Dome", pw)
+	if stage >= 4:
+		turbine(root, stage, Vector3(-34, 0, 18), 1.6, 4)
 	edge_ring(kit, root, 40.0, r, 1507)
-	trash(kit, root, 40.0, 6.0, 900, r, 507)
-	ground_cover(kit, root, 40.0, 6.0, r * (1.2 if stage >= 4 else 1.0), 607)
+	trash(kit, root, 40.0, 6.0, 700, r, 507)
+	ground_cover(kit, root, 40.0, 6.0, r, 607)
