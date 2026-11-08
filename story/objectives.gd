@@ -65,7 +65,13 @@ func _ready() -> void:
 	else:
 		var intro: Variant = world.get("intro") if world else null
 		if intro is Intro and (intro as Intro).should_play():
-			(intro as Intro).finished.connect(func() -> void: _brief_after(1.2))
+			# [intro3] The intro plays the brief at the crash itself; afterwards only the card shows
+			# (or the brief plays here if the intro was skipped before it).
+			(intro as Intro).finished.connect(func() -> void:
+				if (intro as Intro).brief_played:
+					_reveal()
+				else:
+					_brief_after(1.2))
 		else:
 			_brief_after(2.0)
 
@@ -98,9 +104,15 @@ func _play_brief() -> void:
 		_reveal()
 		return
 	var last: String = tr(str(brief_lines[-1]))
-	w.line_started.connect(func(text: String, _st: int) -> void:
+	# [intro3] Not CONNECT_ONE_SHOT: that dropped the handler on the first line, so the card only
+	# came after the 30 s fallback.
+	var on_line := func(text: String, _st: int) -> void:
 		if text == last:
-			_reveal(), CONNECT_ONE_SHOT)
+			_reveal()
+	w.line_started.connect(on_line)
+	changed.connect(func(_s: int) -> void:
+		if w.line_started.is_connected(on_line):
+			w.line_started.disconnect(on_line), CONNECT_ONE_SHOT)
 	for l: Variant in brief_lines:
 		w.speak(tr(str(l)), 0, true)  # her last message: crackly (stage 0), and it gets through
 	get_tree().create_timer(30.0).timeout.connect(_reveal)
