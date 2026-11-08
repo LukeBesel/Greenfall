@@ -106,13 +106,33 @@ static func _fauna_check(tree: SceneTree, s: Node, so: SliceOrbit, check: Callab
 			bad.append("%s alt %.1f" % [str(a.sp), alt])
 	check.call("orbit_fauna_animals", true, fa.animals.size() > 0)
 	check.call("orbit_fauna_on_the_ground", "[]", str(bad))
+	# Easter eggs: this hub's set, standing on the ground clear of the yard; one can be poked.
+	var eg: EasterEggs = hf.node("EasterEggs") as EasterEggs
+	check.call("orbit_eggs_placed", true, eg != null and eg.placed.size() > 0)
+	var off: Array = []
+	for e: Dictionary in eg.placed:
+		var en0: Node3D = e["node"]
+		var alt: float = g.surface.altitude(en0.global_position)
+		var dm: float = g.grid.great_circle_m(en0.global_position, g.grid.centers[g.start_cell()])
+		if absf(alt) > 0.6 or dm < 13.0 or dm > 450.0:
+			off.append("%s alt %.2f at %.0f m" % [str(e["id"]), alt, dm])
+	check.call("orbit_eggs_on_the_ground", "[]", str(off))
+	var e0: Dictionary = eg.placed[0]
+	var en: Node3D = e0["node"]
+	en.visible = true
 	var p: Patch = s.get("patch")
 	var back: Vector3 = p.global_position
+	p.place_on_sphere(en.global_position + en.global_basis.z * 1.4, p.forward())
+	await tree.physics_frame
+	check.call("orbit_egg_prompt", true, s.interact_prompt(p) != "")
+	var eggs0: Array = eg.placed.map(func(x: Dictionary) -> String: return str(x["id"]))
 	var h1: Vector3 = g.terrain.ground(g.grid.centers[int(g.sites[1]["cell"])])
 	p.place_on_sphere(h1, p.forward())
 	hf.check_now()
 	check.call("orbit_fauna_frame_hops", 1, hf.hub)
 	check.call("orbit_fauna_rebuilt_at_hub", true, hf.node("Fauna") != null and hf.node("Fauna") != fa)
+	var eg1: EasterEggs = hf.node("EasterEggs") as EasterEggs
+	check.call("orbit_eggs_hub1_own_set", true, eg1 != null and eg1 != eg and eg1.hub_index == 1 and (eg1.placed.size() == 0 or eg1.placed.map(func(x: Dictionary) -> String: return str(x["id"])) != eggs0))
 	var mid: Vector3 = (back.normalized() + h1.normalized()).normalized()
 	p.place_on_sphere(g.terrain.ground(mid), p.forward())
 	hf.check_now()
