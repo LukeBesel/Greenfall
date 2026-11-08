@@ -30,7 +30,8 @@ static func build(site_root: Node3D, site_id: String, stage: int, restoration: f
 	restoration = clampf(restoration, 0.0, 1.0)
 	kit.level = stage
 	kit.restore = restoration
-	kit.terrain_mat.set_shader_parameter("restore", restoration)
+	# The ground only lichens and reddens; the grass, flowers and thickets are real plants.
+	kit.terrain_mat.set_shader_parameter("restore", restoration * 0.55)
 	kit.slag_mat.set_shader_parameter("restore", restoration * 0.8)
 	match site_id:
 		"foundry_yard":
@@ -74,7 +75,7 @@ static func ground_patch(kit: AnvilEnv, root: Node3D, radius: float, seed_v: int
 			var rr: float = edge_r * u
 			var x: float = cos(a) * rr
 			var z: float = sin(a) * rr
-			var y: float = nz.get_noise_2d(x, z) * 0.35 * smoothstep(0.15, 0.5, u) - 0.9 * smoothstep(0.8, 1.0, u) - 0.03
+			var y: float = nz.get_noise_2d(x, z) * 0.35 * smoothstep(0.15, 0.5, u) - 0.3 * smoothstep(0.85, 1.0, u) - 0.03
 			st.add_vertex(Vector3(x, y, z))
 	for j: int in na:
 		for i: int in nr - 1:
@@ -110,8 +111,318 @@ static func slab(b: Batch, m: Material, c: Vector3, size: Vector2, yaw: float, s
 	b.add(st.commit(), Transform3D(Basis(Vector3.UP, yaw), c), m)
 
 
+
+## A worn concrete yard apron: cracked plates on dark joints, some split or shattered, a few
+## missing; glossy oil stains, scattered grit, and a raised kerb with displaced and missing stones.
+## Restoration lifts the stains and grit and lets moss into the joints.
+static func apron(kit: AnvilEnv, root: Node3D, c: Vector3, size: Vector2, yaw: float, restoration: float, seed_v: int) -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_v * 31 + 7
+	var basis := Basis(Vector3.UP, yaw)
+	var b := Batch.new()
+	var mats: Array[Material] = [kit.mat("apron_a"), kit.mat("apron_b"), kit.mat("apron_c")]
+	var plate: float = 3.0
+	var nx: int = int(ceil(size.x / plate))
+	var nz: int = int(ceil(size.y / plate))
+	var tops: Array[Vector3] = []
+	# The dark joint bed under the plates.
+	AnvilProps.add_plate(b, basis, c + Vector3(0, 0.04, 0), Vector3(nx * plate + 0.2, 0.08, nz * plate + 0.2), kit.mat("soot"))
+	for ix: int in nx:
+		for iz: int in nz:
+			var edge: bool = ix == 0 or iz == 0 or ix == nx - 1 or iz == nz - 1
+			if (edge and rng.randf() < 0.18) or rng.randf() < 0.04:
+				continue  # broken out: dust shows
+			var lc := Vector3((ix + 0.5) * plate - nx * plate * 0.5, 0.0, (iz + 0.5) * plate - nz * plate * 0.5)
+			var top_y: float = 0.2 + rng.randf_range(-0.035, 0.03)
+			var tilt := Basis(Vector3(rng.randf_range(-1, 1), 0, rng.randf_range(-1, 1)).normalized(), deg_to_rad(rng.randf_range(0.0, 0.8)))
+			var m: Material = mats[rng.randi() % 3]
+			var w: float = plate - 0.07
+			var roll: float = rng.randf()
+			if roll < 0.3:
+				# Cracked in two along one axis, the halves settled differently.
+				var f: float = rng.randf_range(0.3, 0.7)
+				var ax: bool = rng.randf() < 0.5
+				for half: int in 2:
+					var hw: float = (w * f if half == 0 else w * (1.0 - f)) - 0.025
+					var off: float = (-w * 0.5 + hw * 0.5) if half == 0 else (w * 0.5 - hw * 0.5)
+					var pc: Vector3 = lc + (Vector3(off, 0, 0) if ax else Vector3(0, 0, off))
+					var sz: Vector3 = Vector3(hw, 0.2, w) if ax else Vector3(w, 0.2, hw)
+					var y: float = top_y - 0.1 + rng.randf_range(-0.03, 0.02)
+					AnvilProps.add_plate(b, basis * tilt * Basis(Vector3.UP, rng.randf_range(-0.01, 0.01)), c + basis * (pc + Vector3(0, y, 0)), sz, m)
+			elif roll < 0.38:
+				# Shattered: a few chunks.
+				for k: int in 4:
+					var q := Vector3((float(k % 2) - 0.5) * w * 0.5, 0.0, (float(k >> 1) - 0.5) * w * 0.5)
+					var sz := Vector3(w * rng.randf_range(0.38, 0.48), 0.18, w * rng.randf_range(0.38, 0.48))
+					var y2: float = top_y - 0.11 + rng.randf_range(-0.05, 0.02)
+					AnvilProps.add_plate(b, basis * Basis(Vector3.UP, rng.randf_range(-0.12, 0.12)) * Basis(Vector3.RIGHT, rng.randf_range(-0.05, 0.05)), c + basis * (lc + q + Vector3(0, y2, 0)), sz, m)
+			else:
+				AnvilProps.add_plate(b, basis * tilt, c + basis * (lc + Vector3(0, top_y - 0.1, 0)), Vector3(w, 0.2, w), m)
+			tops.append(c + basis * (lc + Vector3(0, top_y + 0.004, 0)))
+	# Kerb: raised beveled stones round the edge, some shoved out of line, a few gone.
+	var hx: float = nx * plate * 0.5 + 0.25
+	var hz: float = nz * plate * 0.5 + 0.25
+	for side: int in 4:
+		var along: float = (hx if side < 2 else hz) * 2.0
+		var n: int = int(along / 1.0)
+		for k: int in n:
+			if rng.randf() < 0.07:
+				continue
+			var t: float = -along * 0.5 + (k + 0.5) * along / n
+			var lp: Vector3
+			var rot: float
+			match side:
+				0:
+					lp = Vector3(t, 0, -hz)
+					rot = 0.0
+				1:
+					lp = Vector3(t, 0, hz)
+					rot = 0.0
+				2:
+					lp = Vector3(-hx, 0, t)
+					rot = PI * 0.5
+				_:
+					lp = Vector3(hx, 0, t)
+					rot = PI * 0.5
+			var shove: float = rng.randf_range(-0.04, 0.04) + (rng.randf_range(0.1, 0.35) if rng.randf() < 0.08 else 0.0)
+			var tip: float = rng.randf_range(-0.03, 0.03) + (rng.randf_range(0.1, 0.4) if rng.randf() < 0.05 else 0.0)
+			var kb := basis * Basis(Vector3.UP, rot + rng.randf_range(-0.03, 0.03)) * Basis(Vector3.RIGHT, tip)
+			AnvilProps.add_plate(b, kb, c + basis * (lp + Vector3(0, 0.28, 0)) + kb * Vector3(0, 0, shove), Vector3(0.96, 0.4, 0.3), kit.mat("kerb"))
+	# Moss in the joints once restored.
+	if restoration > 0.45:
+		for ix: int in nx + 1:
+			AnvilProps.add_plate(b, basis, c + basis * Vector3(ix * plate - nx * plate * 0.5, 0.11, 0), Vector3(0.09, 0.06, nz * plate), kit.mat("green"))
+		for iz: int in nz + 1:
+			AnvilProps.add_plate(b, basis, c + basis * Vector3(0, 0.11, iz * plate - nz * plate * 0.5), Vector3(nx * plate, 0.06, 0.09), kit.mat("green"))
+	b.flush(root)
+	# Oil stains: glossy dark blots lying on plate tops.
+	var left: float = 1.0 - clampf(restoration * 1.2, 0.0, 1.0)
+	var n_oil: int = int(tops.size() * 0.45 * left)
+	if n_oil > 0:
+		var om := MultiMesh.new()
+		om.transform_format = MultiMesh.TRANSFORM_3D
+		var pm := PlaneMesh.new()
+		pm.size = Vector2.ONE
+		pm.material = kit.mat("oil")
+		om.mesh = pm
+		om.instance_count = n_oil
+		for k: int in n_oil:
+			var t: Vector3 = tops[rng.randi() % tops.size()]
+			var sx: float = rng.randf_range(0.5, 2.2)
+			om.set_instance_transform(k, Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(sx, 1.0, sx * rng.randf_range(0.4, 1.0))), t + basis * Vector3(rng.randf_range(-1.0, 1.0), 0.0, rng.randf_range(-1.0, 1.0))))
+		var omi := MultiMeshInstance3D.new()
+		omi.name = "OilStains"
+		omi.multimesh = om
+		omi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		root.add_child(omi)
+	# Grit: small stones and slag crumbs over the plates and along the kerb.
+	var n_grit: int = int(nx * nz * 14 * (0.3 + 0.7 * left))
+	for gi: int in 2:
+		var gm := MultiMesh.new()
+		gm.transform_format = MultiMesh.TRANSFORM_3D
+		gm.mesh = AnvilProps.slag_mesh(900 + gi)
+		var half_n: int = n_grit >> 1
+		gm.instance_count = half_n
+		for k: int in half_n:
+			var lp := Vector3(rng.randf_range(-hx, hx), 0.0, rng.randf_range(-hz, hz))
+			if rng.randf() < 0.35:
+				lp = Vector3(clampf(lp.x * 1.3, -hx - 0.4, hx + 0.4), 0.0, clampf(lp.z * 1.3, -hz - 0.4, hz + 0.4))
+			var g: float = rng.randf_range(0.04, 0.16)
+			gm.set_instance_transform(k, Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(g, g * 0.6, g)), c + basis * (lp + Vector3(0, 0.19, 0))))
+		var gmi := MultiMeshInstance3D.new()
+		gmi.name = "Grit%d" % gi
+		gmi.multimesh = gm
+		gmi.material_override = kit.mat("ore") if gi == 0 else kit.slag_mat
+		gmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		gmi.visibility_range_end = 60.0
+		root.add_child(gmi)
+
+
+## A low, broken ring of slag ridges and junk round the site, so its edge never ends in a line.
+static func edge_ring(kit: AnvilEnv, root: Node3D, radius: float, restoration: float, seed_v: int) -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_v
+	var b := Batch.new()
+	var n: int = int(radius * 0.7)
+	for k: int in n:
+		var a: float = TAU * k / n + rng.randf_range(-0.08, 0.08)
+		if rng.randf() < 0.18:
+			continue  # gaps: ways in
+		var r: float = radius * rng.randf_range(0.88, 1.12)
+		var len_: float = rng.randf_range(5.0, 11.0)
+		var hgt: float = rng.randf_range(0.6, 2.2)
+		var bs := Basis(Vector3.UP, -a) * Basis.from_scale(Vector3(rng.randf_range(2.0, 3.5), hgt, len_ * 0.5))
+		b.add(AnvilProps.slag_mesh(seed_v + k), Transform3D(bs, Vector3(cos(a) * r, -0.35, sin(a) * r)), kit.mat("ridge"))
+		if rng.randf() < 0.35:
+			var r2: float = r + rng.randf_range(4.0, 9.0)
+			b.add(AnvilProps.slag_mesh(seed_v + 400 + k), Transform3D(Basis(Vector3.UP, rng.randf() * TAU) * Basis.from_scale(Vector3.ONE * rng.randf_range(1.2, 3.0) * Vector3(1.0, 0.45, 1.0)), Vector3(cos(a + 0.05) * r2, -0.3, sin(a + 0.05) * r2)), kit.mat("rust") if k % 2 else kit.mat("ridge"))
+	b.flush(root)
+	trash(kit, root, radius * 1.35, radius * 0.86, 260, restoration * 0.6, seed_v + 77, -0.2, "EdgeTrash_")
+
+
+## Restored ground: zones of meadow grass with flowers, red-leaf thickets, lichen beds and bare
+## dust, crossed by gravel paths; grass heights vary by zone and noise.
+static func ground_cover(kit: AnvilEnv, root: Node3D, radius: float, keep_r: float, restoration: float, seed_v: int) -> void:
+	if restoration < 0.08:
+		return
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_v
+	var nz := FastNoiseLite.new()
+	nz.seed = seed_v
+	nz.frequency = 0.045
+	var nz2 := FastNoiseLite.new()
+	nz2.seed = seed_v + 5
+	nz2.frequency = 0.16
+	# Gravel paths out from the core.
+	var paths: Array[PackedVector3Array] = []
+	var n_paths: int = 3
+	for p: int in n_paths:
+		var a0: float = TAU * p / n_paths + rng.randf_range(-0.4, 0.4)
+		var pts := PackedVector3Array()
+		var steps: int = int(radius / 2.0)
+		for k: int in steps + 1:
+			var t: float = float(k) / steps
+			var a: float = a0 + sin(t * 3.0 + p) * 0.25
+			var r: float = lerpf(keep_r * 0.8, radius * 0.95, t)
+			pts.append(Vector3(cos(a) * r, 0.0, sin(a) * r))
+		paths.append(pts)
+		path_ribbon(kit, root, pts, 1.8, seed_v + p)
+	var near_path := func(x: float, z: float, w: float) -> bool:
+		for pts: PackedVector3Array in paths:
+			for k: int in range(0, pts.size(), 1):
+				if Vector2(pts[k].x - x, pts[k].z - z).length() < w:
+					return true
+		return false
+	var q: int = clampi(Settings.quality, 0, 3)
+	var grass_n: int = int([1800, 2600, 3600, 4200][q] * restoration)
+	var flower_n: int = int([300, 450, 600, 700][q] * restoration)
+	var tuft: ArrayMesh = Meadow._tuft_mesh()
+	var flower: ArrayMesh = Meadow._flower_mesh()
+	var gmat := ShaderMaterial.new()
+	gmat.shader = preload("res://planet/planets/anvil/anvil_grass.gdshader")
+	for kind: int in 2:
+		var want: int = grass_n if kind == 0 else flower_n
+		var xfs: Array[Transform3D] = []
+		var cols: Array[Color] = []
+		var tries: int = 0
+		while xfs.size() < want and tries < want * 6:
+			tries += 1
+			var a: float = rng.randf() * TAU
+			var r: float = lerpf(keep_r, radius * 0.97, sqrt(rng.randf()))
+			var x: float = cos(a) * r
+			var z: float = sin(a) * r
+			var zone: float = nz.get_noise_2d(x, z)
+			# Meadow where zone is low-mid; flowers only in its heart.
+			if zone > 0.12 or zone < -0.45:
+				continue
+			if kind == 1 and (zone > -0.05 or nz2.get_noise_2d(x, z) < 0.1):
+				continue
+			if near_path.call(x, z, 1.5):
+				continue
+			var lush: float = clampf(0.5 - zone * 1.6 + nz2.get_noise_2d(x, z) * 0.5, 0.0, 1.0)
+			var hgt: float = lerpf(0.25, 0.95, lush) * rng.randf_range(0.7, 1.25) * (0.7 if kind == 1 else 1.0)
+			var wid: float = rng.randf_range(0.8, 1.3) * (0.6 if kind == 1 else 1.0)
+			xfs.append(Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(wid, hgt, wid)), Vector3(x, -0.02, z)))
+			var g := Color(0.28, 0.5, 0.17).lerp(Color(0.5, 0.52, 0.2), rng.randf() * (1.0 - lush))
+			g = g.lerp(Color(0.62, 0.22, 0.14), 0.25 * rng.randf() * (1.0 - lush))
+			cols.append(Color(g.r, g.g, g.b, rng.randf()))
+		var mm := MultiMesh.new()
+		mm.transform_format = MultiMesh.TRANSFORM_3D
+		mm.use_custom_data = true
+		mm.mesh = tuft if kind == 0 else flower
+		mm.instance_count = xfs.size()
+		for i: int in xfs.size():
+			mm.set_instance_transform(i, xfs[i])
+			mm.set_instance_custom_data(i, cols[i])
+		var mmi := MultiMeshInstance3D.new()
+		mmi.name = "Plants_meadow" if kind == 0 else "Plants_flowers"
+		mmi.multimesh = mm
+		mmi.material_override = gmat
+		mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		mmi.visibility_range_end = 110.0
+		root.add_child(mmi)
+	# Red-leaf thickets (zone high) and lichen beds (zone very low): the planet's own models.
+	var defs: Array = kit.look.get("plants", [])
+	for d: Dictionary in defs:
+		var id: String = str(d["id"])
+		var mesh: Mesh = AnvilEnv.tinted_mesh(id, AnvilEnv.col(d.get("tint"), Color.WHITE), 500)
+		if mesh == null:
+			continue
+		var lichen: bool = id in ["moss_01", "shrub_01"]
+		var want2: int = int(160 * restoration)
+		var mm2 := MultiMesh.new()
+		mm2.transform_format = MultiMesh.TRANSFORM_3D
+		mm2.mesh = mesh
+		var xf2: Array[Transform3D] = []
+		var sc: Array = d.get("scale", [1.0, 1.5])
+		var tries2: int = 0
+		while xf2.size() < want2 and tries2 < want2 * 10:
+			tries2 += 1
+			var a: float = rng.randf() * TAU
+			var r: float = lerpf(keep_r, radius * 0.97, sqrt(rng.randf()))
+			var x: float = cos(a) * r
+			var z: float = sin(a) * r
+			var zone: float = nz.get_noise_2d(x, z)
+			if (lichen and zone > -0.42) or (not lichen and (zone < 0.14 or zone > 0.5)):
+				continue
+			if near_path.call(x, z, 1.3):
+				continue
+			xf2.append(Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3.ONE * rng.randf_range(float(sc[0]), float(sc[1]))), Vector3(x, -0.05, z)))
+		mm2.instance_count = xf2.size()
+		for i: int in xf2.size():
+			mm2.set_instance_transform(i, xf2[i])
+		var mmi2 := MultiMeshInstance3D.new()
+		mmi2.name = "Plants_" + id
+		mmi2.multimesh = mm2
+		mmi2.visibility_range_end = 110.0
+		mmi2.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		root.add_child(mmi2)
+
+
+## A gravel path ribbon (UV in metres) with a scatter of edging stones.
+static func path_ribbon(kit: AnvilEnv, root: Node3D, pts: PackedVector3Array, width: float, seed_v: int) -> void:
+	var nz := FastNoiseLite.new()
+	nz.seed = seed_v
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var dist: float = 0.0
+	var stones := Batch.new()
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_v
+	for i: int in pts.size():
+		var p: Vector3 = pts[i]
+		var t: Vector3 = pts[mini(i + 1, pts.size() - 1)] - pts[maxi(i - 1, 0)]
+		t.y = 0.0
+		t = t.normalized()
+		var side := Vector3(-t.z, 0, t.x)
+		if i > 0:
+			dist += pts[i].distance_to(pts[i - 1])
+		var hw: float = width * 0.5 * (1.0 + nz.get_noise_1d(dist * 4.0) * 0.25)
+		st.set_uv(Vector2(-hw, dist))
+		st.add_vertex(Vector3(p.x, 0.06, p.z) - side * hw)
+		st.set_uv(Vector2(hw, dist))
+		st.add_vertex(Vector3(p.x, 0.06, p.z) + side * hw)
+		for sgn: float in [-1.0, 1.0]:
+			if rng.randf() < 0.7:
+				var q: Vector3 = p + side * sgn * (hw + rng.randf_range(0.0, 0.25)) + t * rng.randf_range(-0.8, 0.8)
+				var g: float = rng.randf_range(0.12, 0.3)
+				stones.add(AnvilProps.slag_mesh(seed_v + i * 2 + int(sgn)), Transform3D(Basis(Vector3.UP, rng.randf() * TAU) * Basis.from_scale(Vector3(g, g * 0.6, g)), q + Vector3(0, 0.02, 0)), kit.mat("kerb"))
+	for i: int in pts.size() - 1:
+		var a: int = i * 2
+		for idx: int in [a, a + 2, a + 1, a + 1, a + 2, a + 3]:
+			st.add_index(idx)
+	st.generate_normals()
+	var mi := MeshInstance3D.new()
+	mi.name = "GravelPath"
+	mi.mesh = st.commit()
+	mi.material_override = kit.mat("gravel")
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	root.add_child(mi)
+	stones.flush(root)
+
+
 ## Junk everywhere (outside keep_r), rust/soot coated; restoration clears it piece by piece.
-static func trash(kit: AnvilEnv, root: Node3D, radius: float, keep_r: float, count: int, restoration: float, seed_v: int) -> void:
+static func trash(kit: AnvilEnv, root: Node3D, radius: float, keep_r: float, count: int, restoration: float, seed_v: int, y0: float = 0.0, prefix: String = "Trash_") -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v
 	var coat := ShaderMaterial.new()
@@ -136,11 +447,11 @@ static func trash(kit: AnvilEnv, root: Node3D, radius: float, keep_r: float, cou
 			var p := Vector3(cos(a) * r, 0, sin(a) * r)
 			var tilt := Basis(Vector3(rng.randf_range(-1, 1), 0, rng.randf_range(-1, 1)).normalized(), rng.randf_range(0.0, 1.4)) if rng.randf() < 0.55 else Basis()
 			var bs: Basis = Basis(Vector3.UP, rng.randf() * TAU) * tilt * Basis.from_scale(Vector3.ONE * rng.randf_range(1.1, 1.8))
-			p.y = -aabb.position.y * 0.6 - 0.05
+			p.y = -aabb.position.y * 0.6 - 0.05 + y0
 			mm.set_instance_transform(i, Transform3D(bs, p))
 		mm.visible_instance_count = int(per * left)
 		var mmi := MultiMeshInstance3D.new()
-		mmi.name = "Trash_" + id
+		mmi.name = prefix + id
 		mmi.multimesh = mm
 		mmi.material_overlay = coat
 		mmi.visibility_range_end = 140.0
@@ -314,7 +625,7 @@ static func _foundry_yard(kit: AnvilEnv, root: Node3D, stage: int, restoration: 
 	var ruin := Batch.new()
 	var high := Batch.new()
 	var fut := Batch.new()
-	slab(b, kit.mat("concrete"), Vector3(0, 0, -2), Vector2(26, 22), 0.08, 5)
+	apron(kit, root, Vector3(0, 0, -2), Vector2(26, 22), 0.08, restoration, 5)
 	hall(kit, b, fut, Vector3(-2, 0, -27), 0.05, 34.0, 15.0, 11.0, stage <= 2, 7)
 	AnvilProps._stack(kit, b, fut, Vector3(-22, -5.5, -31), 44.0, 3.2, 1)
 	AnvilProps._stack(kit, b, fut, Vector3(19, -5.5, -35), 36.0, 2.7, 4)
@@ -338,8 +649,9 @@ static func _foundry_yard(kit: AnvilEnv, root: Node3D, stage: int, restoration: 
 		turbine(kit, root, Vector3(38, 0, -24), 30.0, 0)
 	if stage >= 4:
 		turbine(kit, root, Vector3(-40, 0, -6), 34.0, 1)
+	edge_ring(kit, root, 46.0, r, 1501)
 	trash(kit, root, 46.0, 12.0, 900, r, 501)
-	plants(kit, root, 46.0, 12.0, 500, r, 601)
+	ground_cover(kit, root, 46.0, 12.0, r, 601)
 
 
 static func _cart_line(kit: AnvilEnv, b: Batch, a: Vector3, c: Vector3, carts: int) -> void:
@@ -367,7 +679,7 @@ static func _foundry_tower(kit: AnvilEnv, root: Node3D, stage: int, restoration:
 	var ruin := Batch.new()
 	var high := Batch.new()
 	var fut := Batch.new()
-	slab(b, kit.mat("concrete"), Vector3.ZERO, Vector2(30, 30), 0.3, 9)
+	apron(kit, root, Vector3.ZERO, Vector2(30, 30), 0.3, restoration, 9)
 	AnvilProps._stack(kit, b, fut, Vector3(0, -4.0, 0), 128.0, 8.0, 3)
 	# Buttresses: leaning lattice legs braced to the first gallery.
 	for k: int in 4:
@@ -398,8 +710,9 @@ static func _foundry_tower(kit: AnvilEnv, root: Node3D, stage: int, restoration:
 	if stage >= 3:
 		AnvilProps._dome(kit, high, Vector3(26, 0, -18), 7.0, 5)
 	_flush_stage(root, stage, b, ruin, high, fut)
+	edge_ring(kit, root, 40.0, r, 1503)
 	trash(kit, root, 40.0, 14.0, 800, r, 503)
-	plants(kit, root, 40.0, 14.0, 420, r, 603)
+	ground_cover(kit, root, 40.0, 14.0, r, 603)
 
 
 static func _lava_forge(kit: AnvilEnv, root: Node3D, stage: int, restoration: float) -> void:
@@ -413,7 +726,7 @@ static func _lava_forge(kit: AnvilEnv, root: Node3D, stage: int, restoration: fl
 	var lava: ShaderMaterial = lava_material(heat)
 	# The furnace: a squat, bulging shell banded with straps, a hood and a soot-black chimney.
 	var f := Vector3(-6, 0, -16)
-	slab(b, kit.mat("concrete"), f + Vector3(0, 0, 2), Vector2(22, 18), 0.2, 13)
+	apron(kit, root, f + Vector3(0, 0, 2), Vector2(22, 18), 0.2, restoration, 13)
 	b.add(AnvilProps.noisy_cyl(4.6, 7.2, 13.0, 36, 10, 0.035, 41), Transform3D(Basis(), f + Vector3(0, 6.5, 0)), kit.mat("shell"))
 	for k: int in 5:
 		var y: float = 1.5 + k * 2.6
@@ -469,8 +782,9 @@ static func _lava_forge(kit: AnvilEnv, root: Node3D, stage: int, restoration: fl
 	_flush_stage(root, stage, b, ruin, high, fut)
 	if stage >= 4:
 		turbine(kit, root, Vector3(32, 0, -20), 28.0, 2)
+	edge_ring(kit, root, 44.0, r, 1505)
 	trash(kit, root, 44.0, 7.0, 800, r, 505)
-	plants(kit, root, 44.0, 10.0, 420, r, 605)
+	ground_cover(kit, root, 44.0, 10.0, r, 605)
 
 
 static func _ruined_smelter(kit: AnvilEnv, root: Node3D, stage: int, restoration: float) -> void:
@@ -482,7 +796,7 @@ static func _ruined_smelter(kit: AnvilEnv, root: Node3D, stage: int, restoration
 	var fut := Batch.new()
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 404
-	slab(b, kit.mat("concrete"), Vector3(0, 0, -4), Vector2(40, 24), -0.1, 17)
+	apron(kit, root, Vector3(0, 0, -4), Vector2(40, 24), -0.1, restoration, 17)
 	# The hall's frame: columns standing, leaning or snapped; fallen roof trusses.
 	var basis := Basis(Vector3.UP, -0.1)
 	for k: int in 8:
@@ -521,5 +835,6 @@ static func _ruined_smelter(kit: AnvilEnv, root: Node3D, stage: int, restoration
 	if stage >= 3:
 		AnvilProps._dome(kit, high, Vector3(26, 0, 22), 7.0, 11)
 	_flush_stage(root, stage, b, ruin, high, fut)
+	edge_ring(kit, root, 40.0, r, 1507)
 	trash(kit, root, 40.0, 6.0, 900, r, 507)
-	plants(kit, root, 40.0, 6.0, 520, r * (1.2 if stage >= 4 else 1.0), 607)
+	ground_cover(kit, root, 40.0, 6.0, r * (1.2 if stage >= 4 else 1.0), 607)

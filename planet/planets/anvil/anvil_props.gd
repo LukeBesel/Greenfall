@@ -116,6 +116,30 @@ static func make_mat(env: AnvilEnv, key: String) -> Material:
 			return dm
 		"beacon":
 			return Mats.lamp(Color(1.0, 0.18, 0.1), 2.2)
+		"apron_a", "apron_b", "apron_c":
+			# Worn concrete plates in three tints (dusty pink-grey, oil-darkened, sun-bleached).
+			var tint: Color = {"apron_a": Color(0.78, 0.62, 0.56), "apron_b": Color(0.6, 0.48, 0.44), "apron_c": Color(0.86, 0.74, 0.66)}[key]
+			return AssetLib.pbr_material("concrete_floor_worn_001", 0.33, tint, true)
+		"kerb":
+			return AssetLib.pbr_material("concrete_wall_008", 0.5, Color(0.7, 0.6, 0.56), true)
+		"oil":
+			var o := StandardMaterial3D.new()
+			o.albedo_color = Color(0.015, 0.012, 0.01, 0.82)
+			o.albedo_texture = AnvilEnv.soft_dot()
+			o.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			o.roughness = 0.12
+			o.metallic = 0.25
+			o.render_priority = 1
+			return o
+		"gravel":
+			var gv := AssetLib.pbr_material("dry_ground_rocks", 0.5, Color(0.62, 0.5, 0.46), false)
+			gv.metallic = 0.0
+			return gv
+		"ridge":
+			var rg: ShaderMaterial = env._terrain_material(0.55)
+			rg.set_shader_parameter("ember", 0.0)
+			rg.set_shader_parameter("strata", 0.6)
+			return rg
 		"rust":
 			return AssetLib.pbr_material("rusty_metal_03", 0.12, Color(0.92, 0.62, 0.5), true)
 		"corr":

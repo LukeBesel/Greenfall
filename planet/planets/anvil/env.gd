@@ -990,7 +990,7 @@ func _site_preview(arg: String) -> void:
 	var pm := PlaneMesh.new()
 	pm.size = Vector2(1600, 1600)
 	back.mesh = pm
-	back.position.y = -0.7
+	back.position.y = -0.22
 	back.material_override = terrain_mat
 	site_root.add_child(back)
 	if world.get("hud") != null:
