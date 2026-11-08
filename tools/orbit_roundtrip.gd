@@ -80,6 +80,30 @@ static func run(rt: Node, check: Callable) -> void:
 		return
 	var g: OrbitPlanet = so.globe
 	var p: Patch = s1.get("patch")
+	# The start view: the crashed pod stays behind the follow camera, and nothing big sits between
+	# the camera and Lumi (orbE's render had the camera inside the pod).
+	var cam3: Camera3D = so.cam.camera
+	var site: Node3D = s1.get_meta("orbit_pod", null) as Node3D
+	if site and cam3:
+		var to_pod: Vector3 = site.global_position - cam3.global_position
+		var fwd3: Vector3 = -cam3.global_basis.z
+		check.call("orbit_pod_out_of_view", true, to_pod.normalized().dot(fwd3) < cos(deg_to_rad(cam3.fov * 0.8)))
+		check.call("orbit_camera_clear_of_pod", true, to_pod.length() > 3.0)
+	var blockers: Array = []
+	if cam3:
+		for n: Node in s1.find_children("*", "GeometryInstance3D", true, false):
+			var gi := n as GeometryInstance3D
+			if not gi.is_visible_in_tree() or gi is MultiMeshInstance3D or s1.get("patch").is_ancestor_of(gi) or (s1.get_node_or_null("Glim") and s1.get_node("Glim").is_ancestor_of(gi)):
+				continue
+			if n.get_parent() is OrbitPlanet or str(n.get_path()).contains("Streamer") or str(n.get_path()).contains("Content/"):
+				continue
+			var ab: AABB = gi.global_transform * gi.get_aabb()
+			if ab.size.length() < 1.5:
+				continue
+			var mid: Vector3 = cam3.global_position.lerp(p.global_position, 0.5)
+			if ab.grow(0.2).has_point(mid) or ab.grow(0.2).has_point(cam3.global_position):
+				blockers.append(str(s1.get_path_to(gi)))
+	check.call("orbit_start_view_clear", "[]", str(blockers))
 	GameState.add_currency("cubes", BigNum.from_float(1234))
 	# Clean the dirty near cell closest to Lumi, by hand.
 	var target: int = -1

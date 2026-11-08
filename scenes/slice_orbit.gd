@@ -202,7 +202,9 @@ func build(p_world: Node3D) -> void:
 func _build_patch() -> void:
 	var g: OrbitPlanet = globe
 	var hub_cell: int = g.start_cell()
-	var spawn_dir: Vector3 = g.terrain.local_to_dir(hub_cell, 0.0, 6.0)
+	# Facing north from the pad's middle: the crashed pod (anchor "pod", 9.8 m south) stays behind
+	# the follow camera (~6 m back) instead of filling the view or swallowing the camera.
+	var spawn_dir: Vector3 = g.terrain.local_to_dir(hub_cell, 0.0, 0.5)
 	var north: Vector3 = -SphereGrid.frame(spawn_dir).z
 	cam = SphereCam.new()
 	cam.name = "SphereCam"

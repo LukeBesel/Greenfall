@@ -290,6 +290,10 @@ func _process(delta: float) -> void:
 		elif world.has_method("planet_fraction"):
 			frac = world.planet_fraction()
 		_planet_label.text = "%s   %s%%" % [str(Economy.planet.get("name", "Verdance")).to_upper(), _fmt_small_pct(frac * 100.0)]
+		if orb is SliceOrbit:  # [orbB] the globe has no district: one planet line (hub regions), its bar
+			_field_label.text = _planet_label.text
+			_field_frac = frac
+			_planet_label.visible = false
 		_field_bar.queue_redraw()
 		_relay_label.text = tr("WREN SIGNAL   %d%%") % SignalTower.signal_pct()
 		var sig: String = _field_label.text + _planet_label.text + _relay_label.text
@@ -343,6 +347,8 @@ func _update_context(delta: float, minimal: bool) -> void:
 	var want: float = (1.0 if (_context_idle < CONTEXT_HOLD_S or strong or not patch.carried.is_empty()) else 0.8) if text != "" else 0.0
 	if hotbar.celebrating():
 		want = 0.0
+	if Subtitles.current and is_instance_valid(Subtitles.current) and Subtitles.current.current_text() != "":
+		want = 0.0  # [orbB] owner rule (onboard2): one message line on screen at a time
 	_context.modulate.a = move_toward(_context.modulate.a, want, delta * (4.0 if want > 0.0 else 1.2))
 
 
