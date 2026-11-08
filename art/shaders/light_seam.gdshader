@@ -7,6 +7,9 @@ shader_type spatial;
 // (pulse + a slow bob; pieces of one ring share a seed so they float together).
 // Lines "draw in" from their start (unit box x = -0.5) when born; orbs swell in.
 render_mode unshaded, cull_back, shadows_disabled;
+// [orbD] Site frame on a walkable globe (identity on the flat game): "world" maths run in the
+// nearest hub site's local metres, y up on its pad (planet/sites/site_manager.gd).
+global uniform mat4 site_inv;
 
 uniform float t_now = 0.0;       // the layer's clock (seconds), matches `born`
 uniform float reveal_s = 1.1;    // how long a new piece takes to draw in
@@ -40,7 +43,7 @@ void vertex() {
 	} else if (v_kind > 2.5) {
 		VERTEX *= smoothstep(0.0, 1.0, rv);  // beacons and steady orbs swell in
 	}
-	v_world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	v_world = (site_inv * MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 }
 
 void fragment() {

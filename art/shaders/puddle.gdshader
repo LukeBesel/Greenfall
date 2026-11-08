@@ -3,6 +3,9 @@ shader_type spatial;
 // it up; near-zero roughness in the middle, a dark wet rim, and a thin-film rainbow where oil
 // floats on top. Shape and sheen come from world-space noise, so every puddle differs.
 render_mode cull_back;
+// [orbD] Site frame on a walkable globe (identity on the flat game): "world" maths run in the
+// nearest hub site's local metres, y up on its pad (planet/sites/site_manager.gd).
+global uniform mat4 site_inv;
 
 uniform float oil = 1.0;
 
@@ -31,7 +34,7 @@ float fbm(vec2 p) {
 }
 
 void vertex() {
-	v_world = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	v_world = (site_inv * MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 }
 
 void fragment() {

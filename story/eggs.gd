@@ -286,6 +286,8 @@ func _spawn(p: Dictionary) -> void:
 		_jukebox_node = node
 	if is_found(str(p["id"])):
 		_show_found_state(node, kind)
+	elif EggPower.applies(kind):  # [qafix] world3: machines are dead until Lumi pokes them
+		EggPower.kill(node)
 	if bool(d.get("collect", false)) and EggCollect.has_part(str(p["id"]), int(p["part"])):  # [eggs2] already brought home
 		node.visible = false
 	if kind == "telescope":  # [eggs2] the tube points at the Wren
@@ -668,6 +670,7 @@ func _use(e: Dictionary) -> void:
 ## The fun part: each egg's little reaction (also replayed after it has been found).
 func _effect(e: Dictionary) -> void:
 	var n: Node3D = e["node"]
+	EggPower.wake(n)  # [qafix] the poke brings the machine back to life
 	var anim: Node3D = n.get_node_or_null("Anim")
 	var top: Vector3 = n.global_position + Vector3(0, 1.6, 0)
 	match str(e["kind"]):
@@ -1023,7 +1026,7 @@ func _animate(delta: float) -> void:
 			l.light_energy = maxf(0.0, l.light_energy - delta * 0.6)
 	# Security camera: swivels to follow Patch when near.
 	for e: Dictionary in placed:
-		if str(e["kind"]) != "camera" or world.patch == null:
+		if str(e["kind"]) != "camera" or world.patch == null or EggPower.is_dead(e["node"]):  # [qafix] a dead camera doesn't track
 			continue
 		var head: Node3D = (e["node"] as Node3D).get_node_or_null("Anim")
 		if head == null:

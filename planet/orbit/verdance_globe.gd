@@ -96,7 +96,7 @@ func _ready() -> void:
 	cells = SphereCells.from_planet(planet)
 	stats["grid_ms"] = Time.get_ticks_msec() - t1
 	view_mode = DevHooks.get_s("orbit-view", "follow")
-	_place_hubs(int(DevHooks.get_f("orbit-hubs", 10.0)))
+	_place_hubs(int(DevHooks.get_f("orbit-hubs", float(PlanetEnvs.globe("verdance")["hub_count"]))))  # [orbD] hub count from data
 	crews.clear()
 	for i: int in range(1, sites.size() if not SphereCrewDev.wanted() else 0):  # [orbC] the phase C crew replaces the stand-in crews
 		crews.append({"hub": int(sites[i]["cell"]), "rate": 0.25 + 0.05 * (i % 4), "acc": 0.0})
@@ -128,7 +128,7 @@ func _ready() -> void:
 	_cubes_root = Node3D.new()
 	_cubes_root.name = "Cubes"
 	add_child(_cubes_root)
-	_build_base(sites[0])
+	_build_sites()  # [orbD] hub site prefabs (planet/sites/), replaces the grey-box _build_base
 	for i: int in sites.size():
 		_build_beacon(sites[i], i == 0)
 	# Lumi (the real Patch) on the start site, facing north up the main street.
@@ -194,6 +194,9 @@ func _ready() -> void:
 	stats["ready_ms"] = Time.get_ticks_msec() - t0
 	if DevHooks.has("orbit-cash"):
 		_cash_test.call_deferred()
+	_build_sled()  # [orbD] the hover-sled (player/vehicle.gd)
+	if DevHooks.has("orbit-hop"):  # [orbD] --orbit-hop=N[,M]: rocket hop to hub N (and back to M)
+		_dev_hop.call_deferred()
 	print("[orbit] integrated: R=%.0fm hexes=%d around=%.1fkm hubs=%d (nearest hub mean %.0fm, min %.0fm) ready=%dms planet=%dms grid=%dms settle=%dms" % [
 		grid.radius_m, grid.cell_count(), TAU * grid.radius_m / 1000.0, sites.size(), _hub_spacing(false), _hub_spacing(true),
 		stats["ready_ms"], stats["planet_ms"], stats["grid_ms"], stats["settle_ms"]])
@@ -302,9 +305,10 @@ func _place_hubs(n: int) -> void:
 		picks.append(best)
 	var blocked := func(c: int) -> bool: return cells.state[c] == WATER
 	for i: int in picks.size():
-		var s: Dictionary = terrain.reserve_site(picks[i], 140.0 if i == 0 else 45.0, 40.0, blocked)
+		var flat_m: float = 140.0 if i == 0 else 82.0  # [orbD] a ruin_block prefab is 108 m square (corners at 76 m)
+		var s: Dictionary = terrain.reserve_site(picks[i], flat_m, 40.0, blocked)
 		if s.is_empty():
-			s = terrain.reserve_site(picks[i], 140.0 if i == 0 else 45.0, 40.0)  # coast: allow it
+			s = terrain.reserve_site(picks[i], flat_m, 40.0)  # coast: allow it
 		if s.is_empty():
 			continue
 		sites.append(s)
@@ -349,6 +353,75 @@ func _build_beacon(s: Dictionary, home: bool) -> void:
 	root.global_transform = s["transform"]
 	root.add_child(mi)
 	mi.position = Vector3(9.0, cyl.height * 0.5, -9.0) if home else Vector3(0, cyl.height * 0.5, 0)
+
+
+## [orbD] Every hub's site prefab (SiteManager builds the near ones; the start yard now).
+var site_manager: SiteManager
+
+
+func _build_sites() -> void:
+	site_manager = SiteManager.new()
+	site_manager.name = "Sites"
+	add_child(site_manager)
+	site_manager.setup(self, "verdance", sites, planet.seed_value)
+	var p: SitePrefab = site_manager.build_hub(0, true)
+	p.get_parent().name = "StartSite"
+	site_manager.point_shaders_at(p)
+
+
+## [orbD] The hover-sled, parked by the start site's rocket pad. --orbit-sled[=TIER] owns and
+## mounts it at the start (with --orbit-walk=boost it drives the lap test).
+var sled: HoverSled
+
+
+func _build_sled() -> void:
+	HoverSled.register_upgrade()
+	if DevHooks.has("orbit-sled"):
+		GameState.upgrades[HoverSled.UPGRADE_ID] = clampi(int(DevHooks.get_f("orbit-sled", 1.0)), 1, 3)
+	sled = HoverSled.new()
+	sled.name = "HoverSled"
+	sled.lumi = lumi
+	add_child(sled)
+	var sp: SitePrefab = site_manager.prefab(0)
+	var at: Transform3D = sp.global_transform * Transform3D(Basis(), sp.anchor_local("rocket_pad").origin + Vector3(7.0, 0, 2.0))
+	sled.global_transform = Transform3D(at.basis, terrain.ground(at.origin.normalized()))
+	if DevHooks.has("orbit-sled"):
+		sled.mount()
+
+
+## [orbD] Patch asks the world for an interact prompt when nothing of its own applies.
+func interact_prompt(_p: Node) -> String:
+	var t: String = sled.prompt() if sled else ""
+	return ("E   " + t) if t != "" else ""
+
+
+## [orbD] Rocket hops between hubs on this globe (planet/sites/hub_hop.gd).
+var hub_hop: HubHop
+
+
+func hop_to(i: int) -> bool:
+	if hub_hop == null:
+		hub_hop = HubHop.new()
+		hub_hop.name = "HubHop"
+		add_child(hub_hop)
+	var from_i: int = site_manager.nearest if site_manager.nearest >= 0 else 0
+	return await hub_hop.hop(self, from_i, clampi(i, 0, sites.size() - 1))
+
+
+func _dev_hop() -> void:
+	await get_tree().create_timer(1.0).timeout
+	var hops: PackedStringArray = DevHooks.get_s("orbit-hop", "1").split(",")
+	for h: String in hops:
+		var t0: int = Time.get_ticks_msec()
+		var ok: bool = await hop_to(int(h))
+		var d: float = lumi.global_position.distance_to(site_manager.pad_xf(int(h)).origin)
+		print("[hop] to hub %s: %s in %d ms, %.1f m from its pad, site built %s" % [h, "ok" if ok else "FAIL", Time.get_ticks_msec() - t0, d, site_manager.prefab(int(h)) != null])
+		await get_tree().create_timer(1.0).timeout
+
+
+## [orbD] Planet % over the built hubs' regions (owner decision Nov 8); the HUD reads it.
+func planet_fraction() -> float:
+	return site_manager.planet_fraction() if site_manager else 0.0
 
 
 ## The start base as a site prefab: everything in site-local metres on the flat pad (y = 0 is
@@ -522,7 +595,7 @@ func _exit_tree() -> void:
 
 ## The cash-in depot on the start site's pad (site-local metres, like any site prefab).
 func _build_depot(s: Dictionary) -> void:
-	var root: Node3D = get_node_or_null("StartSite")
+	var root: Node3D = site_manager.roots[0] if site_manager else get_node_or_null("StartSite")  # [orbD]
 	depot = Depot.new()
 	depot.name = "Depot"
 	depot.world = self
@@ -530,6 +603,9 @@ func _build_depot(s: Dictionary) -> void:
 	root.add_child(depot)
 	depot.position = Vector3(5.5, 0.0, 3.5)
 	depot.rotation.y = -PI * 0.5
+	var sp: SitePrefab = site_manager.prefab(0) if site_manager else null  # [orbD] on the site's depot anchor
+	if sp:
+		depot.transform = sp.anchor_local("depot")
 
 
 ## Dev: the start loop on the planet, headless. Before the Baler: scoop, roll to the bin (the
