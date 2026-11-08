@@ -26,8 +26,8 @@ uniform float cloud_t = 0.0;      // seconds (wind drift)
 uniform float storm = 0.0;        // dust storm 0..1
 uniform float night_lift = 1.0;   // brighter early nights (SkyDirector.night_lift)
 uniform float night_dark = 0.0;   // Long Nights
-uniform vec3 zenith_day : source_color = vec3(0.24, 0.42, 0.78);
-uniform vec3 zenith_clear : source_color = vec3(0.17, 0.42, 0.86);
+uniform vec3 zenith_day : source_color = vec3(0.2, 0.42, 0.82);
+uniform vec3 zenith_clear : source_color = vec3(0.12, 0.38, 0.9);
 uniform vec3 horizon_day : source_color = vec3(0.78, 0.74, 0.66);
 uniform vec3 horizon_clear : source_color = vec3(0.68, 0.8, 0.93);
 uniform vec3 haze_day : source_color = vec3(0.55, 0.52, 0.48);
@@ -74,8 +74,9 @@ void sky() {
 	vec3 d = normalize(EYEDIR);
 	float e = dot(d, up_dir);  // elevation of the view ray
 	float h = clamp(e, 0.0, 1.0);
-	vec3 zen = mix(zenith_clear, zenith_day, haze);
-	vec3 hor = mix(horizon_clear, horizon_day, haze);
+	// Vivid even in Act 1 (owner): the dust only warms the low sky, the zenith stays blue.
+	vec3 zen = mix(zenith_clear, zenith_day, haze * 0.4);
+	vec3 hor = mix(horizon_clear, horizon_day, haze * 0.6);
 	vec3 day_col = mix(hor, zen, pow(h, 0.55));
 	float lift = 1.0 + 0.7 * night_lift - 0.5 * night_dark;
 	vec3 night_col = mix(horizon_night, zenith_night, pow(h, 0.7)) * lift;

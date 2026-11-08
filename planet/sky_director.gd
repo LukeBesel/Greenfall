@@ -435,8 +435,16 @@ func _apply_sphere() -> void:
 	env.tonemap_exposure = lerpf(1.55, 1.25, day) * (1.0 + 0.15 * lift) * (1.0 - 0.2 * nd)
 	# Fog: dusty and warm in Act 1, clear blue as the air is scrubbed, deep blue at night.
 	env.fog_enabled = not space
-	env.fog_density = lerpf(0.0007, 0.0014, haze) * fog_scale
-	var fog_day: Color = Color(0.7, 0.8, 0.94).lerp(Color(0.8, 0.76, 0.68), haze)
+	# Volumetric fog is for the flat district's short distances: the quality pass turns it on at
+	# Medium+ with Godot's default density (0.05), which washed the globe and its sky flat grey
+	# (owner: vivid blue sky with the two suns, not haze). Plain depth fog does the aerial haze.
+	env.volumetric_fog_enabled = false
+	env.fog_density = lerpf(0.0005, 0.001, haze) * fog_scale
+	env.fog_sky_affect = 0.0
+	env.adjustment_enabled = true
+	env.adjustment_saturation = lerpf(1.12, 1.2, day)
+	env.adjustment_contrast = 1.06
+	var fog_day: Color = Color(0.62, 0.75, 0.94).lerp(Color(0.78, 0.76, 0.72), haze * 0.5)
 	var fog_night: Color = Color(0.11, 0.14, 0.22) * (1.0 + 0.6 * lift)
 	if night_tint.a > 0.0:
 		fog_night = fog_night.lerp(Color(night_tint.r, night_tint.g, night_tint.b) * 0.4, night_tint.a)
