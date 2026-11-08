@@ -202,6 +202,9 @@ func _populate() -> void:
 	for id: String in Economy.upgrade_order:
 		if str(Economy.upgrade_defs[id].get("tab", "patch")) != _tab:
 			continue
+		var rs: String = str(Economy.upgrade_defs[id].get("requires_station", ""))
+		if rs != "" and not Stations.built_in_state(rs):
+			continue  # [camp] machine upgrades only show once the machine stands in the yard
 		var card := UpgradeCard.new(id)
 		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		card.bought.connect(func(_i: String, _n: int) -> void: _refresh_all())

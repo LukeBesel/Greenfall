@@ -27,6 +27,7 @@ var _bench_xf: Transform3D
 var _tools: Array = []  # [node, home transform, broken transform]
 var _spark_t: float = 0.0
 var _bin_anchor: Node3D
+var _comp_polled: bool = false
 
 
 static func attach(slice: Node) -> Camp:
@@ -237,7 +238,10 @@ func _on_built(id: String) -> void:
 		"nursery":
 			if ex and ex.nursery:
 				ex.nursery.set_built(true, true)
-	EventBus.toast.emit(tr("%s built in the yard.") % tr(str(YardBuilds.def(id).get("name", id))), "info")
+	var at: Vector3 = YardBuilds.pos(id, Vector3.ZERO)
+	if id == "nursery" and ex and ex.nursery:
+		at = ex.nursery.global_position
+	MachineReveal.reveal(world, tr(str(YardBuilds.def(id).get("name", id))), at)
 
 
 ## Composter: hidden until it works (something has grown). Polled: the flag is set by story code.
@@ -247,6 +251,9 @@ func _physics_process(_delta: float) -> void:
 		var on: bool = bool(comp.call("active"))
 		if comp.visible != on:
 			comp.visible = on
+			if on and _comp_polled:  # woke up during play (not on load): show where it is
+				MachineReveal.reveal(world, tr("Compost Press"), comp.global_position)
+		_comp_polled = true
 
 
 # --- The trash bin --------------------------------------------------------------------------------
