@@ -101,7 +101,7 @@ func _studio() -> void:
 	env.ambient_light_energy = 0.55
 	env.tonemap_mode = Environment.TONE_MAPPER_AGX
 	env.glow_enabled = true
-	env.glow_intensity = 0.55
+	env.glow_intensity = 0.45
 	env.glow_hdr_threshold = 1.0
 	env.ssao_enabled = true
 	env.ssao_intensity = 1.4
@@ -117,8 +117,9 @@ func _studio() -> void:
 	add_child(key)
 	var rim := DirectionalLight3D.new()
 	rim.rotation_degrees = Vector3(-18, 200, 0)
-	rim.light_energy = 1.4
+	rim.light_energy = 1.1
 	rim.light_color = Color(0.55, 0.8, 1.0)
+	rim.light_specular = 0.4
 	add_child(rim)
 	var fill := DirectionalLight3D.new()
 	fill.rotation_degrees = Vector3(-10, -70, 0)
@@ -130,8 +131,9 @@ func _studio() -> void:
 	pm.size = Vector2(400, 400)
 	var gm := StandardMaterial3D.new()
 	gm.albedo_color = Color(0.05, 0.055, 0.065)
-	gm.roughness = 0.28
-	gm.metallic = 0.2
+	gm.roughness = 0.85
+	gm.metallic = 0.0
+	gm.specular_mode = BaseMaterial3D.SPECULAR_DISABLED  # the rim light glinting off the floor bloomed across the frame
 	pm.material = gm
 	ground.mesh = pm
 	add_child(ground)

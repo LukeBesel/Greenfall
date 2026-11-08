@@ -499,7 +499,7 @@ func _build_banners() -> void:
 	for sx: float in [1.0, -1.0]:
 		for k: int in 2:
 			var q := QuadMesh.new()
-			q.size = Vector2(4.5 + k * 1.5, 0.05)
+			q.size = Vector2(3.6 + k * 1.2, 0.09)
 			var mi := MeshInstance3D.new()
 			mi.mesh = q
 			mi.material_override = m
