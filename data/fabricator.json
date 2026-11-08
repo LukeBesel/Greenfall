@@ -1,0 +1,13 @@
+{
+  "_doc": "[orbC] The Bot Fabricator (robots/fabricator/bot_fabricator.gd): a Hub build (data/builds.json id bot_fabricator) that builds robots on its own from cubes and parts, on a mix the player sets in its panel (ui/fabricator_panel.gd). Unlocked from the campaign planet unlock_planet on (Tidewell, 3rd; docs/DECISIONS.md 'Planets differ in size'). Each robot costs the type's base cost and parts (data/robots.json) x cost_mult, with no per-robot growth, and takes build_s seconds. The fleet cap on a round planet is cap_per_kcell robots per 1,000 hexes of that planet (planets.json globe frequency), so it scales with size: Verdance ~98, Tidewell ~166, Rime ~252, Anvil ~393. On a flat district the cap is flat_cap_crews x the hub's crew cap. Robots it builds are sent to the hub with the fewest robots and work there on their own (far crews keep it cheap: only near robots are real).",
+  "name": "Bot Fabricator",
+  "desc": "A bot that builds bots. Set the mix and it keeps the line running on cubes and parts, sending each new robot out to the hub that needs it most.",
+  "cost": {"cubes": 30000, "parts": 900},
+  "unlock_planet": "tidewell",
+  "build_s": 45.0,
+  "cost_mult": 0.6,
+  "cap_per_kcell": 0.6,
+  "flat_cap_crews": 3,
+  "max_weight": 9,
+  "default_mix": {"scoopie": 3, "haulbug": 1}
+}

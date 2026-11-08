@@ -256,6 +256,13 @@ func _populate() -> void:
 		_panel = ld
 		return
 	_relayout()
+	if _tab == "bots" and BotFabricator.of(w) != null:  # [orbC] the Bot Fabricator's one panel, first
+		var fc: Array = BenchKit.card()
+		(fc[0] as Control).size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		_grid.add_child(fc[0])
+		var fp := FabricatorPanel.new()
+		fp.fab = BotFabricator.of(w)
+		(fc[1] as VBoxContainer).add_child(fp)
 	if _tab == "bots" and fleet:
 		for rid: String in Economy.robot_order:
 			var rc := RobotCard.new(rid, fleet, build_at)

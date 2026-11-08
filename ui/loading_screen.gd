@@ -27,6 +27,7 @@ const WHITE := Color(0.95, 0.93, 0.9)
 const GLOW := Color(1.0, 0.33, 0.5)
 const CREAM := Color(0.95, 0.92, 0.85)
 const BAR_W: float = 560.0
+const TITLE_TOP: float = 28.0  # [qafix] px between the screen top and the title's cap line
 const PIECES: int = 15
 const MIN_SHOW_S: float = 1.1
 const LUMI_SCALE: float = 1.6
@@ -348,7 +349,11 @@ func _draw_bar() -> void:
 	var font: Font = UITheme.font()
 	var title: String = "GREENFALL"
 	var tw: float = font.get_string_size(title, HORIZONTAL_ALIGNMENT_LEFT, -1, 30).x
-	c.draw_string(font, Vector2((c.size.x - tw) * 0.5, r.position.y - (360.0 if _vignette else 120.0)), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 30, Color(CREAM, 0.85))
+	# [qafix] The title sat 360 px over the bar, which put it at the very top of a 720 px screen (only
+	# the bottom of the letters showed) and off-screen on shorter ones. Keep it at least TITLE_TOP px
+	# below the top edge.
+	var base_y: float = maxf(r.position.y - (360.0 if _vignette else 120.0), TITLE_TOP + font.get_ascent(30))
+	c.draw_string(font, Vector2((c.size.x - tw) * 0.5, base_y), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 30, Color(CREAM, 0.85))
 	# Track and fill (the cleaned stretch glows faintly pink behind Lumi).
 	c.draw_rect(Rect2(r.position - Vector2(2, 2), r.size + Vector2(4, 4)), Color(1, 1, 1, 0.06))
 	_round_rect(c, r, Color(0.09, 0.1, 0.13))
