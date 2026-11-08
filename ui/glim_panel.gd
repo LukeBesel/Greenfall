@@ -148,7 +148,7 @@ func _track_row(t: Dictionary) -> Control:
 			if Glim.tier(k) < int(req[k]):
 				need = tr("Needs %s %d") % [tr(str(Glim.track(k).get("name", k))), int(req[k])]
 				break
-		b.text = need if need != "" else tr(why)
+		b.text = need if need != "" else TranslationServer.translate(why)
 		b.disabled = true
 	else:
 		var cost: Dictionary = Glim.next_cost(id)

@@ -120,107 +120,111 @@ msgstr "ズームアウト"
 msgid "Photo mode"
 msgstr "フォトモード"
 
-#: autoload/Settings.gd:29
+#: autoload/Settings.gd:24
+msgid "Glim: scan (hold: upgrades)"
+msgstr ""
+
+#: autoload/Settings.gd:30
 msgid "View"
 msgstr "ビュー"
 
-#: autoload/Settings.gd:29
+#: autoload/Settings.gd:30
 msgid "Menu"
 msgstr "メニュー"
 
-#: autoload/Settings.gd:29
+#: autoload/Settings.gd:30
 msgid "LS"
 msgstr "Lスティック"
 
-#: autoload/Settings.gd:30
+#: autoload/Settings.gd:31
 msgid "RS"
 msgstr "Rスティック"
 
-#: autoload/Settings.gd:30
+#: autoload/Settings.gd:31
 msgid "LB"
 msgstr "LB"
 
-#: autoload/Settings.gd:30
+#: autoload/Settings.gd:31
 msgid "RB"
 msgstr "RB"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:32
 msgid "D-pad up"
 msgstr "十字キー上"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:32
 msgid "D-pad down"
 msgstr "十字キー下"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:33
 msgid "D-pad left"
 msgstr "十字キー左"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:33
 msgid "D-pad right"
 msgstr "十字キー右"
 
-#: autoload/Settings.gd:33
+#: autoload/Settings.gd:34
 msgid "Share"
 msgstr "シェア"
 
-#: autoload/Settings.gd:516
+#: autoload/Settings.gd:518
 msgid "LMB"
 msgstr "左クリック"
 
-#: autoload/Settings.gd:517
+#: autoload/Settings.gd:519
 msgid "RMB"
 msgstr "右クリック"
 
-#: autoload/Settings.gd:518
+#: autoload/Settings.gd:520
 msgid "MMB"
 msgstr "中クリック"
 
-#: autoload/Settings.gd:519
+#: autoload/Settings.gd:521
 msgid "Wheel up"
 msgstr "ホイール上"
 
-#: autoload/Settings.gd:520
+#: autoload/Settings.gd:522
 msgid "Wheel down"
 msgstr "ホイール下"
 
-#: autoload/Settings.gd:521
+#: autoload/Settings.gd:523
 msgid "Mouse %d"
 msgstr "マウス %d"
 
-#: autoload/Settings.gd:523
+#: autoload/Settings.gd:525
 msgid "Button %d"
 msgstr "ボタン %d"
 
-#: autoload/Settings.gd:528
+#: autoload/Settings.gd:530
 msgid "LS left"
 msgstr "Lスティック左"
 
-#: autoload/Settings.gd:528
+#: autoload/Settings.gd:530
 msgid "LS right"
 msgstr "Lスティック右"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:531
 msgid "LS up"
 msgstr "Lスティック上"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:531
 msgid "LS down"
 msgstr "Lスティック下"
 
-#: autoload/Settings.gd:530
+#: autoload/Settings.gd:532
 msgid "RS left"
 msgstr "Rスティック左"
 
-#: autoload/Settings.gd:530
+#: autoload/Settings.gd:532
 msgid "RS right"
 msgstr "Rスティック右"
 
-#: autoload/Settings.gd:531
+#: autoload/Settings.gd:533
 msgid "RS up"
 msgstr "Rスティック上"
 
-#: autoload/Settings.gd:531
+#: autoload/Settings.gd:533
 msgid "RS down"
 msgstr "Rスティック下"
 
@@ -876,7 +880,7 @@ msgstr "Aurora"
 msgid "Bolt"
 msgstr "Bolt"
 
-#: player/patch_model.gd:20 data/designs.json:designs[sprout].name
+#: player/patch_model.gd:20 data/designs.json:designs[sprout].name data/glim.json:tops[sprout].name
 msgid "Sprout"
 msgstr "Sprout"
 
@@ -1176,55 +1180,55 @@ msgstr "ロボットアップリンク接続。B で指揮ビュー：ゾーン�
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 起動。ブルームコア 4%：緑の光 微弱。Cradle号リレー：かすか。何かを育てよう。"
 
-#: scenes/slice.gd:824
+#: scenes/slice.gd:825
 msgid "HEX CLEAN!  +%s"
 msgstr "ヘックス クリーン！  +%s"
 
-#: scenes/slice.gd:838
+#: scenes/slice.gd:839
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice.gd:840
+#: scenes/slice.gd:841
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "ジャンクヤードがまるごときれいになった。Lumi はとても長くて、とてもうれしそうなビープを鳴らした。"
 
-#: scenes/slice.gd:847
+#: scenes/slice.gd:848
 msgid "%s is out of range: %s"
 msgstr "%s は範囲外：%s"
 
-#: scenes/slice.gd:857
+#: scenes/slice.gd:858
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "ロック中。発射台を建てるには基地をレベル5に上げよう。"
 
-#: scenes/slice.gd:860 ui/rockets_panel.gd:39
+#: scenes/slice.gd:861 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "エネルギーセル充電中：%s。ロケットのアップグレードで充電が速くなる。"
 
-#: scenes/slice.gd:914
+#: scenes/slice.gd:915
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陸：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:915
+#: scenes/slice.gd:916
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "ロケットは空き地に駐機中。セルが満タンになればいつでも行ける。"
 
-#: scenes/slice.gd:915
+#: scenes/slice.gd:916
 msgid "Landed on the base pad."
 msgstr "基地のパッドに着陸した。"
 
-#: scenes/slice.gd:1006
+#: scenes/slice.gd:1007
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice.gd:1174
+#: scenes/slice.gd:1176
 msgid "Welcome back. The junk waited for you."
 msgstr "おかえり。ガラクタが待っていたよ。"
 
-#: scenes/slice.gd:1191
+#: scenes/slice.gd:1193
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨基地 %d · Lv%d"
 
-#: scenes/slice.gd:1191
+#: scenes/slice.gd:1193
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨基地 %d · 廃墟"
 
@@ -2737,7 +2741,7 @@ msgstr "ひねり"
 msgid "Goal"
 msgstr "目標"
 
-#: systems/extras/weekly_run.gd:91 data/events.json:contracts.templates[clean_hexes].text
+#: systems/extras/weekly_run.gd:91 systems/glim/glim.gd:14 data/events.json:contracts.templates[clean_hexes].text
 msgid "Clean %d hexes"
 msgstr "ヘックスを %d 個片づける"
 
@@ -2856,6 +2860,46 @@ msgstr "不在のあいだ、ロボットは最大 %d 時間働く。"
 #: systems/extras/welcome_back.gd:166
 msgid "Back to work"
 msgstr "仕事に戻る"
+
+#: systems/glim/glim.gd:14
+msgid "Find Glim first"
+msgstr ""
+
+#: systems/glim/glim.gd:14 ui/glim_panel.gd:142
+msgid "Maxed"
+msgstr ""
+
+#: systems/glim/glim.gd:14 ui/glim_panel.gd:149
+msgid "Needs %s %d"
+msgstr ""
+
+#: systems/glim/glim.gd:14
+msgid "Buy for %s"
+msgstr ""
+
+#: systems/glim/glim.gd:14
+msgid "Buy %d Glim upgrades"
+msgstr ""
+
+#: systems/glim/glim_director.gd:147
+msgid "A little lantern bot flickers awake in the junk beside you: Glim! He'll light the way at night."
+msgstr ""
+
+#: systems/glim/glim_director.gd:149
+msgid "Something in the junk blinks back at you: Glim, a little lantern bot! He'll light the way at night."
+msgstr ""
+
+#: systems/glim/glim_director.gd:151
+msgid "Tap %s: Glim scans your hex for junk you missed. Hold %s for his upgrades."
+msgstr ""
+
+#: systems/glim/glim_director.gd:196
+msgid "All clear here!"
+msgstr ""
+
+#: systems/glim/glim_director.gd:198
+msgid "Only big pieces left"
+msgstr ""
 
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
@@ -3973,6 +4017,30 @@ msgstr "[%s] 置く   [%s] 回す   [%s / %s] アイテム   [%s] 拾う   [%s] 
 #: ui/garden_placer.gd:291
 msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
 msgstr "拾った：%s。別の場所に置くか、しまっておこう。"
+
+#: ui/glim_panel.gd:40
+msgid "GLIM"
+msgstr ""
+
+#: ui/glim_panel.gd:42
+msgid "lantern bot"
+msgstr ""
+
+#: ui/glim_panel.gd:64
+msgid "%s  close"
+msgstr ""
+
+#: ui/glim_panel.gd:105 ui/upgrades_screen.gd:71
+msgid "UPGRADES"
+msgstr "アップグレード"
+
+#: ui/glim_panel.gd:195
+msgid "LOOKS"
+msgstr ""
+
+#: ui/glim_panel.gd:220
+msgid "???  %s"
+msgstr ""
 
 #: ui/globe_view.gd:121
 msgid "Survey"
@@ -5364,7 +5432,7 @@ msgstr "訪れたことのある世界を選ぶと、そこのクルーを見ら
 msgid "No other world visited yet. Seed or visit another world from the Ark Bridge, then come back."
 msgstr "まだ他の世界を訪れていない。アークブリッジから別の世界に種をまくか訪れてから、また来よう。"
 
-#: ui/telescope_view.gd:466
+#: ui/telescope_view.gd:476
 msgid ""
 "%s\n"
 "District %d%% clean · %d robots\n"
@@ -5374,7 +5442,7 @@ msgstr ""
 "地区 %d%% きれい · ロボット %d 台\n"
 "最終訪問 %s"
 
-#: ui/telescope_view.gd:468
+#: ui/telescope_view.gd:478
 msgid ""
 "%s\n"
 "You are here."
@@ -5382,7 +5450,7 @@ msgstr ""
 "%s\n"
 "ここにいる。"
 
-#: ui/telescope_view.gd:470
+#: ui/telescope_view.gd:480
 msgid ""
 "%s\n"
 "Not visited yet."
@@ -5390,51 +5458,51 @@ msgstr ""
 "%s\n"
 "まだ訪れていない。"
 
-#: ui/telescope_view.gd:477
+#: ui/telescope_view.gd:487
 msgid "You stand on %s."
 msgstr "いまは %s にいる。"
 
-#: ui/telescope_view.gd:477
+#: ui/telescope_view.gd:487
 msgid "%s: nobody of yours down there yet."
 msgstr "%s：まだ仲間は誰もいない。"
 
-#: ui/telescope_view.gd:491
+#: ui/telescope_view.gd:501
 msgid "unknown"
 msgstr "不明"
 
-#: ui/telescope_view.gd:494
+#: ui/telescope_view.gd:504
 msgid "%d min ago"
 msgstr "%d 分前"
 
-#: ui/telescope_view.gd:496
+#: ui/telescope_view.gd:506
 msgid "%.1f h ago"
 msgstr "%.1f 時間前"
 
-#: ui/telescope_view.gd:497
+#: ui/telescope_view.gd:507
 msgid "%d days ago"
 msgstr "%d 日前"
 
-#: ui/telescope_view.gd:587
+#: ui/telescope_view.gd:597
 msgid "TELESCOPE  ·  %s"
 msgstr "望遠鏡  ·  %s"
 
-#: ui/telescope_view.gd:588
+#: ui/telescope_view.gd:598
 msgid "◀ Look"
 msgstr "◀ 視点"
 
-#: ui/telescope_view.gd:589
+#: ui/telescope_view.gd:599
 msgid "Look ▶"
 msgstr "視点 ▶"
 
-#: ui/telescope_view.gd:591
+#: ui/telescope_view.gd:601
 msgid "Back to system"
 msgstr "星系に戻る"
 
-#: ui/telescope_view.gd:592
+#: ui/telescope_view.gd:602
 msgid "Right stick or drag: turn and zoom.  Hold something in the reticle to log it."
 msgstr "右スティックかドラッグ：回転とズーム。  照準に何かをとらえ続けると記録できる。"
 
-#: ui/telescope_view.gd:638
+#: ui/telescope_view.gd:648
 msgid ""
 "PLANET     %s\n"
 "DISTRICT   %.2f%% clean\n"
@@ -5446,7 +5514,7 @@ msgstr ""
 "ロボット   %d / %d 台が稼働中\n"
 "最終訪問   %s"
 
-#: ui/telescope_view.gd:641
+#: ui/telescope_view.gd:651
 msgid ""
 "\n"
 "CARE PACKAGE  %d:%02d left"
@@ -5454,7 +5522,7 @@ msgstr ""
 "\n"
 "支援物資  残り %d:%02d"
 
-#: ui/telescope_view.gd:642
+#: ui/telescope_view.gd:652
 msgid ""
 "Remote pace (%d%% of offline)\n"
 "Waiting for you: %s cubes%s"
@@ -5462,27 +5530,27 @@ msgstr ""
 "遠隔ペース（オフラインの %d%%）\n"
 "受け取り待ち：%s キューブ%s"
 
-#: ui/telescope_view.gd:645
+#: ui/telescope_view.gd:655
 msgid "Send a care package (%s cubes)"
 msgstr "支援物資を送る（%s キューブ）"
 
-#: ui/telescope_view.gd:659
+#: ui/telescope_view.gd:669
 msgid "Care package away. The crew on %s works at double speed for %d minutes."
 msgstr "支援物資を送った。%s のクルーが %d 分間、倍の速さで働く。"
 
-#: ui/telescope_view.gd:737
+#: ui/telescope_view.gd:747
 msgid "Ledger wreck"
 msgstr "Ledger の残骸"
 
-#: ui/telescope_view.gd:737
+#: ui/telescope_view.gd:747
 msgid "Deer"
 msgstr "シカ"
 
-#: ui/telescope_view.gd:738
+#: ui/telescope_view.gd:748
 msgid "Logged through the telescope: %s. New Codex entry."
 msgstr "望遠鏡で記録：%s。図鑑に新しい項目。"
 
-#: ui/telescope_view.gd:739
+#: ui/telescope_view.gd:749
 msgid "Codex: %s"
 msgstr "図鑑：%s"
 
@@ -5627,10 +5695,6 @@ msgstr "見た目"
 #: ui/upgrades_screen.gd:18
 msgid "Builder"
 msgstr "ビルダー"
-
-#: ui/upgrades_screen.gd:71
-msgid "UPGRADES"
-msgstr "アップグレード"
 
 #: ui/upgrades_screen.gd:103
 msgid "%s (soon)"
@@ -9745,6 +9809,94 @@ msgstr "水に沈んだ中心街。屋根が水面から突き出ている。"
 msgid "The old launch city, where the ark will land."
 msgstr "アークが降り立つ、昔の発射都市。"
 
+#: data/glim.json:tracks[light].name data/solar_system.json:planets.tidewell.moons[0].name
+msgid "Lantern"
+msgstr "ランタン"
+
+#: data/glim.json:tracks[light].desc
+msgid "A brighter, wider lantern for night shifts."
+msgstr ""
+
+#: data/glim.json:tracks[scan].name
+msgid "Hex Scanner"
+msgstr ""
+
+#: data/glim.json:tracks[scan].desc
+msgid "Pings the junk left in your hex. Upgrades reach the hexes around you and recharge faster."
+msgstr ""
+
+#: data/glim.json:tracks[auto].name
+msgid "Auto-Scan"
+msgstr ""
+
+#: data/glim.json:tracks[auto].desc
+msgid "Glim pings on his own every few seconds."
+msgstr ""
+
+#: data/glim.json:tracks[magnet].name
+msgid "Tidy Tug"
+msgstr ""
+
+#: data/glim.json:tracks[magnet].desc
+msgid "A gentle tractor tug: tiny pieces scoot toward Lumi."
+msgstr ""
+
+#: data/glim.json:shells[pearl].name
+msgid "Pearl"
+msgstr ""
+
+#: data/glim.json:shells[sunset].name
+msgid "Sunset"
+msgstr ""
+
+#: data/glim.json:shells[moss].name
+msgid "Moss"
+msgstr ""
+
+#: data/glim.json:shells[graphite].name
+msgid "Graphite"
+msgstr ""
+
+#: data/glim.json:shells[blossom].name
+msgid "Blossom"
+msgstr ""
+
+#: data/glim.json:glows[cyan].name
+msgid "Cyan"
+msgstr ""
+
+#: data/glim.json:glows[ember].name data/solar_system.json:star_b.name
+msgid "Ember"
+msgstr "Ember"
+
+#: data/glim.json:glows[leaf].name
+msgid "Leaf"
+msgstr ""
+
+#: data/glim.json:glows[violet].name
+msgid "Violet"
+msgstr ""
+
+#: data/glim.json:glows[rose].name
+msgid "Rose"
+msgstr ""
+
+#: data/glim.json:tops[none].name
+msgid "Nothing"
+msgstr ""
+
+#: data/glim.json:tops[antenna].name
+msgid "Antenna"
+msgstr ""
+
+#: data/glim.json:tops[beanie].name
+msgid "Little Beanie"
+msgstr ""
+
+#: data/glim.json:tops[halo].name
+msgid "Halo"
+msgstr ""
+
 #: data/goals.json:goals[scoop_15].text
 msgid "Scoop 15 pieces of junk"
 msgstr "ガラクタを15個すくう"
@@ -12311,17 +12463,9 @@ msgstr ""
 msgid "Hearth"
 msgstr "Hearth"
 
-#: data/solar_system.json:star_b.name
-msgid "Ember"
-msgstr "Ember"
-
 #: data/solar_system.json:planets.verdance.moons[0].name
 msgid "Pebble"
 msgstr "ペブル"
-
-#: data/solar_system.json:planets.tidewell.moons[0].name
-msgid "Lantern"
-msgstr "ランタン"
 
 #: data/solar_system.json:planets.anvil.moons[0].name
 msgid "Tong"

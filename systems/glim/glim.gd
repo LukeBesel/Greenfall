@@ -9,6 +9,11 @@ const FLAG: String = "glim"
 const SLOTS: Array[String] = ["shells", "glows", "tops"]
 const DEFAULT_LOOK: Dictionary = {"shells": "pearl", "glows": "cyan", "tops": "antenna"}
 
+## Player-facing reasons and hints returned in English below (translated where shown).
+# l10n:begin
+const STRINGS: Array[String] = ["Find Glim first", "Maxed", "Needs %s %d", "Buy for %s", "Buy %d Glim upgrades", "Clean %d hexes"]
+# l10n:end
+
 static var _data: Dictionary = {}
 ## Dev / tests: every look counts as unlocked.
 static var dev_all: bool = false

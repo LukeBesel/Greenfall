@@ -150,6 +150,7 @@ func find_now(reason: String = "junk") -> void:
 	get_tree().create_timer(4.0).timeout.connect(func() -> void:
 		EventBus.toast.emit(tr("Tap %s: Glim scans your hex for junk you missed. Hold %s for his upgrades.") % [key, key], "tip"))
 	GameState.inc_stat("glim_found")
+	print("[glim] found (%s) at %.1f min played" % [reason, float(GameState.stats.get("time_played", 0.0)) / 60.0])
 
 
 func _on_scooped(_type_id: String, _pos: Vector3) -> void:

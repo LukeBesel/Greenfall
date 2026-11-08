@@ -117,107 +117,111 @@ msgstr "[Žôôm ôûţ ~]"
 msgid "Photo mode"
 msgstr "[Þĥôţô môðé ~]"
 
-#: autoload/Settings.gd:29
+#: autoload/Settings.gd:24
+msgid "Glim: scan (hold: upgrades)"
+msgstr "[Ĝļîm: šçàñ (ĥôļð: ûþĝŕàðéš) ~~~~~~]"
+
+#: autoload/Settings.gd:30
 msgid "View"
 msgstr "[Vîéŵ ~]"
 
-#: autoload/Settings.gd:29
+#: autoload/Settings.gd:30
 msgid "Menu"
 msgstr "[Méñû ~]"
 
-#: autoload/Settings.gd:29
+#: autoload/Settings.gd:30
 msgid "LS"
 msgstr "[ĻŠ ~]"
 
-#: autoload/Settings.gd:30
+#: autoload/Settings.gd:31
 msgid "RS"
 msgstr "[ŔŠ ~]"
 
-#: autoload/Settings.gd:30
+#: autoload/Settings.gd:31
 msgid "LB"
 msgstr "[ĻB ~]"
 
-#: autoload/Settings.gd:30
+#: autoload/Settings.gd:31
 msgid "RB"
 msgstr "[ŔB ~]"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:32
 msgid "D-pad up"
 msgstr "[Ð-þàð ûþ ~]"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:32
 msgid "D-pad down"
 msgstr "[Ð-þàð ðôŵñ ~]"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:33
 msgid "D-pad left"
 msgstr "[Ð-þàð ļéƒţ ~]"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:33
 msgid "D-pad right"
 msgstr "[Ð-þàð ŕîĝĥţ ~]"
 
-#: autoload/Settings.gd:33
+#: autoload/Settings.gd:34
 msgid "Share"
 msgstr "[Šĥàŕé ~]"
 
-#: autoload/Settings.gd:516
+#: autoload/Settings.gd:518
 msgid "LMB"
 msgstr "[ĻMB ~]"
 
-#: autoload/Settings.gd:517
+#: autoload/Settings.gd:519
 msgid "RMB"
 msgstr "[ŔMB ~]"
 
-#: autoload/Settings.gd:518
+#: autoload/Settings.gd:520
 msgid "MMB"
 msgstr "[MMB ~]"
 
-#: autoload/Settings.gd:519
+#: autoload/Settings.gd:521
 msgid "Wheel up"
 msgstr "[Ŵĥééļ ûþ ~]"
 
-#: autoload/Settings.gd:520
+#: autoload/Settings.gd:522
 msgid "Wheel down"
 msgstr "[Ŵĥééļ ðôŵñ ~]"
 
-#: autoload/Settings.gd:521
+#: autoload/Settings.gd:523
 msgid "Mouse %d"
 msgstr "[Môûšé %d ~]"
 
-#: autoload/Settings.gd:523
+#: autoload/Settings.gd:525
 msgid "Button %d"
 msgstr "[Bûţţôñ %d ~]"
 
-#: autoload/Settings.gd:528
+#: autoload/Settings.gd:530
 msgid "LS left"
 msgstr "[ĻŠ ļéƒţ ~]"
 
-#: autoload/Settings.gd:528
+#: autoload/Settings.gd:530
 msgid "LS right"
 msgstr "[ĻŠ ŕîĝĥţ ~]"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:531
 msgid "LS up"
 msgstr "[ĻŠ ûþ ~]"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:531
 msgid "LS down"
 msgstr "[ĻŠ ðôŵñ ~]"
 
-#: autoload/Settings.gd:530
+#: autoload/Settings.gd:532
 msgid "RS left"
 msgstr "[ŔŠ ļéƒţ ~]"
 
-#: autoload/Settings.gd:530
+#: autoload/Settings.gd:532
 msgid "RS right"
 msgstr "[ŔŠ ŕîĝĥţ ~]"
 
-#: autoload/Settings.gd:531
+#: autoload/Settings.gd:533
 msgid "RS up"
 msgstr "[ŔŠ ûþ ~]"
 
-#: autoload/Settings.gd:531
+#: autoload/Settings.gd:533
 msgid "RS down"
 msgstr "[ŔŠ ðôŵñ ~]"
 
@@ -876,7 +880,7 @@ msgstr "[Àûŕôŕà ~]"
 msgid "Bolt"
 msgstr "[Bôļţ ~]"
 
-#: player/patch_model.gd:20 data/designs.json:designs[sprout].name
+#: player/patch_model.gd:20 data/designs.json:designs[sprout].name data/glim.json:tops[sprout].name
 msgid "Sprout"
 msgstr "[Šþŕôûţ ~]"
 
@@ -1178,55 +1182,55 @@ msgstr "[Ŕôbôţ ûþļîñķ ôñļîñé. Þŕéšš B ƒôŕ Çômmàñð: 
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "[ĻM-1 ôñļîñé. Bļôôm Çôŕé 4%: ĝŕééñ ļîĝĥţ ļôŵ. Çŕàðļé ŕéļàý: ƒàîñţ. Ĝŕôŵ šôméţĥîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:824
+#: scenes/slice.gd:825
 msgid "HEX CLEAN!  +%s"
 msgstr "[ĤÉX ÇĻÉÀÑ!  +%s ~~]"
 
-#: scenes/slice.gd:838
+#: scenes/slice.gd:839
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
-#: scenes/slice.gd:840
+#: scenes/slice.gd:841
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "[Ţĥé ŵĥôļé Ĵûñķýàŕð îš çļéàñ. Ļûmî bééþš à véŕý ļôñĝ, véŕý ĥàþþý bééþ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:847
+#: scenes/slice.gd:848
 msgid "%s is out of range: %s"
 msgstr "[%s îš ôûţ ôƒ ŕàñĝé: %s ~~~~~]"
 
-#: scenes/slice.gd:857
+#: scenes/slice.gd:858
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "[Ļôçķéð. Ûþĝŕàðé ýôûŕ bàšé ţô ļévéļ 5 ţô bûîļð ţĥé ļàûñçĥ þàð. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:860 ui/rockets_panel.gd:39
+#: scenes/slice.gd:861 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "[Éñéŕĝý çéļļš ŕéçĥàŕĝîñĝ: %s. Ŕôçķéţ ûþĝŕàðéš ŕéƒîļļ ţĥém ƒàšţéŕ. ~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:914
+#: scenes/slice.gd:915
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "[Ţôûçĥðôŵñ: %s. Ĥûb %d ôƒ %d. %s ~~~~~~~~]"
 
-#: scenes/slice.gd:915
+#: scenes/slice.gd:916
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "[Ţĥé ŕôçķéţ îš þàŕķéð ôñ ţĥé ļôţ, ŕéàðý ŵĥéñ îţš çéļļš ŕéƒîļļ. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:915
+#: scenes/slice.gd:916
 msgid "Landed on the base pad."
 msgstr "[Ļàñðéð ôñ ţĥé bàšé þàð. ~~~~~]"
 
-#: scenes/slice.gd:1006
+#: scenes/slice.gd:1007
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:1174
+#: scenes/slice.gd:1176
 msgid "Welcome back. The junk waited for you."
 msgstr "[Ŵéļçômé bàçķ. Ţĥé ĵûñķ ŵàîţéð ƒôŕ ýôû. ~~~~~~~~~~]"
 
-#: scenes/slice.gd:1191
+#: scenes/slice.gd:1193
 msgid "OUTPOST %d · Lv%d"
 msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 
-#: scenes/slice.gd:1191
+#: scenes/slice.gd:1193
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 
@@ -2745,7 +2749,7 @@ msgstr "[Ţŵîšţ ~]"
 msgid "Goal"
 msgstr "[Ĝôàļ ~]"
 
-#: systems/extras/weekly_run.gd:91 data/events.json:contracts.templates[clean_hexes].text
+#: systems/extras/weekly_run.gd:91 systems/glim/glim.gd:14 data/events.json:contracts.templates[clean_hexes].text
 msgid "Clean %d hexes"
 msgstr "[Çļéàñ %d ĥéxéš ~~]"
 
@@ -2864,6 +2868,46 @@ msgstr "[Ŕôbôţš ŵôŕķ ûþ ţô %d ĥ ŵĥîļé ýôû'ŕé àŵàý. ~
 #: systems/extras/welcome_back.gd:166
 msgid "Back to work"
 msgstr "[Bàçķ ţô ŵôŕķ ~]"
+
+#: systems/glim/glim.gd:14
+msgid "Find Glim first"
+msgstr "[Fîñð Ĝļîm ƒîŕšţ ~~]"
+
+#: systems/glim/glim.gd:14 ui/glim_panel.gd:142
+msgid "Maxed"
+msgstr "[Màxéð ~]"
+
+#: systems/glim/glim.gd:14 ui/glim_panel.gd:149
+msgid "Needs %s %d"
+msgstr "[Ñééðš %s %d ~]"
+
+#: systems/glim/glim.gd:14
+msgid "Buy for %s"
+msgstr "[Bûý ƒôŕ %s ~]"
+
+#: systems/glim/glim.gd:14
+msgid "Buy %d Glim upgrades"
+msgstr "[Bûý %d Ĝļîm ûþĝŕàðéš ~~~~]"
+
+#: systems/glim/glim_director.gd:147
+msgid "A little lantern bot flickers awake in the junk beside you: Glim! He'll light the way at night."
+msgstr "[À ļîţţļé ļàñţéŕñ bôţ ƒļîçķéŕš àŵàķé îñ ţĥé ĵûñķ béšîðé ýôû: Ĝļîm! Ĥé'ļļ ļîĝĥţ ţĥé ŵàý àţ ñîĝĥţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: systems/glim/glim_director.gd:149
+msgid "Something in the junk blinks back at you: Glim, a little lantern bot! He'll light the way at night."
+msgstr "[Šôméţĥîñĝ îñ ţĥé ĵûñķ bļîñķš bàçķ àţ ýôû: Ĝļîm, à ļîţţļé ļàñţéŕñ bôţ! Ĥé'ļļ ļîĝĥţ ţĥé ŵàý àţ ñîĝĥţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: systems/glim/glim_director.gd:151
+msgid "Tap %s: Glim scans your hex for junk you missed. Hold %s for his upgrades."
+msgstr "[Ţàþ %s: Ĝļîm šçàñš ýôûŕ ĥéx ƒôŕ ĵûñķ ýôû mîššéð. Ĥôļð %s ƒôŕ ĥîš ûþĝŕàðéš. ~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: systems/glim/glim_director.gd:196
+msgid "All clear here!"
+msgstr "[Àļļ çļéàŕ ĥéŕé! ~~]"
+
+#: systems/glim/glim_director.gd:198
+msgid "Only big pieces left"
+msgstr "[Ôñļý bîĝ þîéçéš ļéƒţ ~~~~]"
 
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
@@ -3983,6 +4027,30 @@ msgstr "[[%s] þļàçé   [%s] ŕôţàţé   [%s / %s] îţém   [%s] þîçķ
 #: ui/garden_placer.gd:291
 msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
 msgstr "[Þîçķéð ûþ: %s. Þûţ îţ ðôŵñ šôméŵĥéŕé éļšé, ôŕ ļéàvé îţ îñ šţôŕàĝé. ~~~~~~~~~~~~~~~~~~~~]"
+
+#: ui/glim_panel.gd:40
+msgid "GLIM"
+msgstr "[ĜĻÎM ~]"
+
+#: ui/glim_panel.gd:42
+msgid "lantern bot"
+msgstr "[ļàñţéŕñ bôţ ~]"
+
+#: ui/glim_panel.gd:64
+msgid "%s  close"
+msgstr "[%s  çļôšé ~]"
+
+#: ui/glim_panel.gd:105 ui/upgrades_screen.gd:71
+msgid "UPGRADES"
+msgstr "[ÛÞĜŔÀÐÉŠ ~]"
+
+#: ui/glim_panel.gd:195
+msgid "LOOKS"
+msgstr "[ĻÔÔĶŠ ~]"
+
+#: ui/glim_panel.gd:220
+msgid "???  %s"
+msgstr "[???  %s]"
 
 #: ui/globe_view.gd:121
 msgid "Survey"
@@ -5375,7 +5443,7 @@ msgstr "[Þîçķ à ŵôŕļð ýôû'vé vîšîţéð ţô ŵàţçĥ îţš 
 msgid "No other world visited yet. Seed or visit another world from the Ark Bridge, then come back."
 msgstr "[Ñô ôţĥéŕ ŵôŕļð vîšîţéð ýéţ. Šééð ôŕ vîšîţ àñôţĥéŕ ŵôŕļð ƒŕôm ţĥé Àŕķ Bŕîðĝé, ţĥéñ çômé bàçķ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/telescope_view.gd:466
+#: ui/telescope_view.gd:476
 msgid ""
 "%s\n"
 "District %d%% clean · %d robots\n"
@@ -5385,7 +5453,7 @@ msgstr ""
 "Ðîšţŕîçţ %d%% çļéàñ · %d ŕôbôţš\n"
 "Ļàšţ vîšîţ %s ~~~~~~~~~~~~~~]"
 
-#: ui/telescope_view.gd:468
+#: ui/telescope_view.gd:478
 msgid ""
 "%s\n"
 "You are here."
@@ -5393,7 +5461,7 @@ msgstr ""
 "[%s\n"
 "Ýôû àŕé ĥéŕé. ~~~]"
 
-#: ui/telescope_view.gd:470
+#: ui/telescope_view.gd:480
 msgid ""
 "%s\n"
 "Not visited yet."
@@ -5401,51 +5469,51 @@ msgstr ""
 "[%s\n"
 "Ñôţ vîšîţéð ýéţ. ~~~~]"
 
-#: ui/telescope_view.gd:477
+#: ui/telescope_view.gd:487
 msgid "You stand on %s."
 msgstr "[Ýôû šţàñð ôñ %s. ~~~]"
 
-#: ui/telescope_view.gd:477
+#: ui/telescope_view.gd:487
 msgid "%s: nobody of yours down there yet."
 msgstr "[%s: ñôbôðý ôƒ ýôûŕš ðôŵñ ţĥéŕé ýéţ. ~~~~~~~~~]"
 
-#: ui/telescope_view.gd:491
+#: ui/telescope_view.gd:501
 msgid "unknown"
 msgstr "[ûñķñôŵñ ~]"
 
-#: ui/telescope_view.gd:494
+#: ui/telescope_view.gd:504
 msgid "%d min ago"
 msgstr "[%d mîñ àĝô ~]"
 
-#: ui/telescope_view.gd:496
+#: ui/telescope_view.gd:506
 msgid "%.1f h ago"
 msgstr "[%.1f ĥ àĝô ~]"
 
-#: ui/telescope_view.gd:497
+#: ui/telescope_view.gd:507
 msgid "%d days ago"
 msgstr "[%d ðàýš àĝô ~]"
 
-#: ui/telescope_view.gd:587
+#: ui/telescope_view.gd:597
 msgid "TELESCOPE  ·  %s"
 msgstr "[ŢÉĻÉŠÇÔÞÉ  ·  %s ~~~]"
 
-#: ui/telescope_view.gd:588
+#: ui/telescope_view.gd:598
 msgid "◀ Look"
 msgstr "[◀ Ļôôķ ~]"
 
-#: ui/telescope_view.gd:589
+#: ui/telescope_view.gd:599
 msgid "Look ▶"
 msgstr "[Ļôôķ ▶ ~]"
 
-#: ui/telescope_view.gd:591
+#: ui/telescope_view.gd:601
 msgid "Back to system"
 msgstr "[Bàçķ ţô šýšţém ~~]"
 
-#: ui/telescope_view.gd:592
+#: ui/telescope_view.gd:602
 msgid "Right stick or drag: turn and zoom.  Hold something in the reticle to log it."
 msgstr "[Ŕîĝĥţ šţîçķ ôŕ ðŕàĝ: ţûŕñ àñð žôôm.  Ĥôļð šôméţĥîñĝ îñ ţĥé ŕéţîçļé ţô ļôĝ îţ. ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/telescope_view.gd:638
+#: ui/telescope_view.gd:648
 msgid ""
 "PLANET     %s\n"
 "DISTRICT   %.2f%% clean\n"
@@ -5457,7 +5525,7 @@ msgstr ""
 "ŔÔBÔŢŠ     %d àçţîvé ôƒ %d\n"
 "ĻÀŠŢ VÎŠÎŢ %s ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/telescope_view.gd:641
+#: ui/telescope_view.gd:651
 msgid ""
 "\n"
 "CARE PACKAGE  %d:%02d left"
@@ -5465,7 +5533,7 @@ msgstr ""
 "\n"
 "[ÇÀŔÉ ÞÀÇĶÀĜÉ  %d:%02d ļéƒţ ~~~~~~]"
 
-#: ui/telescope_view.gd:642
+#: ui/telescope_view.gd:652
 msgid ""
 "Remote pace (%d%% of offline)\n"
 "Waiting for you: %s cubes%s"
@@ -5473,27 +5541,27 @@ msgstr ""
 "[Ŕémôţé þàçé (%d%% ôƒ ôƒƒļîñé)\n"
 "Ŵàîţîñĝ ƒôŕ ýôû: %s çûbéš%s ~~~~~~~~~~~~~~~~~]"
 
-#: ui/telescope_view.gd:645
+#: ui/telescope_view.gd:655
 msgid "Send a care package (%s cubes)"
 msgstr "[Šéñð à çàŕé þàçķàĝé (%s çûbéš) ~~~~~~~]"
 
-#: ui/telescope_view.gd:659
+#: ui/telescope_view.gd:669
 msgid "Care package away. The crew on %s works at double speed for %d minutes."
 msgstr "[Çàŕé þàçķàĝé àŵàý. Ţĥé çŕéŵ ôñ %s ŵôŕķš àţ ðôûbļé šþééð ƒôŕ %d mîñûţéš. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/telescope_view.gd:737
+#: ui/telescope_view.gd:747
 msgid "Ledger wreck"
 msgstr "[Ļéðĝéŕ ŵŕéçķ ~]"
 
-#: ui/telescope_view.gd:737
+#: ui/telescope_view.gd:747
 msgid "Deer"
 msgstr "[Ðééŕ ~]"
 
-#: ui/telescope_view.gd:738
+#: ui/telescope_view.gd:748
 msgid "Logged through the telescope: %s. New Codex entry."
 msgstr "[Ļôĝĝéð ţĥŕôûĝĥ ţĥé ţéļéšçôþé: %s. Ñéŵ Çôðéx éñţŕý. ~~~~~~~~~~~~~~~]"
 
-#: ui/telescope_view.gd:739
+#: ui/telescope_view.gd:749
 msgid "Codex: %s"
 msgstr "[Çôðéx: %s ~]"
 
@@ -5640,10 +5708,6 @@ msgstr "[Çôšméţîçš ~]"
 #: ui/upgrades_screen.gd:18
 msgid "Builder"
 msgstr "[Bûîļðéŕ ~]"
-
-#: ui/upgrades_screen.gd:71
-msgid "UPGRADES"
-msgstr "[ÛÞĜŔÀÐÉŠ ~]"
 
 #: ui/upgrades_screen.gd:103
 msgid "%s (soon)"
@@ -9758,6 +9822,94 @@ msgstr "[À ƒļôôðéð ðôŵñţôŵñ. Ŕôôƒţôþš þôķé ôûţ ô
 msgid "The old launch city, where the ark will land."
 msgstr "[Ţĥé ôļð ļàûñçĥ çîţý, ŵĥéŕé ţĥé àŕķ ŵîļļ ļàñð. ~~~~~~~~~~~~~]"
 
+#: data/glim.json:tracks[light].name data/solar_system.json:planets.tidewell.moons[0].name
+msgid "Lantern"
+msgstr "[Ļàñţéŕñ ~]"
+
+#: data/glim.json:tracks[light].desc
+msgid "A brighter, wider lantern for night shifts."
+msgstr "[À bŕîĝĥţéŕ, ŵîðéŕ ļàñţéŕñ ƒôŕ ñîĝĥţ šĥîƒţš. ~~~~~~~~~~~~]"
+
+#: data/glim.json:tracks[scan].name
+msgid "Hex Scanner"
+msgstr "[Ĥéx Šçàññéŕ ~]"
+
+#: data/glim.json:tracks[scan].desc
+msgid "Pings the junk left in your hex. Upgrades reach the hexes around you and recharge faster."
+msgstr "[Þîñĝš ţĥé ĵûñķ ļéƒţ îñ ýôûŕ ĥéx. Ûþĝŕàðéš ŕéàçĥ ţĥé ĥéxéš àŕôûñð ýôû àñð ŕéçĥàŕĝé ƒàšţéŕ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/glim.json:tracks[auto].name
+msgid "Auto-Scan"
+msgstr "[Àûţô-Šçàñ ~]"
+
+#: data/glim.json:tracks[auto].desc
+msgid "Glim pings on his own every few seconds."
+msgstr "[Ĝļîm þîñĝš ôñ ĥîš ôŵñ évéŕý ƒéŵ šéçôñðš. ~~~~~~~~~~~]"
+
+#: data/glim.json:tracks[magnet].name
+msgid "Tidy Tug"
+msgstr "[Ţîðý Ţûĝ ~]"
+
+#: data/glim.json:tracks[magnet].desc
+msgid "A gentle tractor tug: tiny pieces scoot toward Lumi."
+msgstr "[À ĝéñţļé ţŕàçţôŕ ţûĝ: ţîñý þîéçéš šçôôţ ţôŵàŕð Ļûmî. ~~~~~~~~~~~~~~~]"
+
+#: data/glim.json:shells[pearl].name
+msgid "Pearl"
+msgstr "[Þéàŕļ ~]"
+
+#: data/glim.json:shells[sunset].name
+msgid "Sunset"
+msgstr "[Šûñšéţ ~]"
+
+#: data/glim.json:shells[moss].name
+msgid "Moss"
+msgstr "[Môšš ~]"
+
+#: data/glim.json:shells[graphite].name
+msgid "Graphite"
+msgstr "[Ĝŕàþĥîţé ~]"
+
+#: data/glim.json:shells[blossom].name
+msgid "Blossom"
+msgstr "[Bļôššôm ~]"
+
+#: data/glim.json:glows[cyan].name
+msgid "Cyan"
+msgstr "[Çýàñ ~]"
+
+#: data/glim.json:glows[ember].name data/solar_system.json:star_b.name
+msgid "Ember"
+msgstr "[Émbéŕ ~]"
+
+#: data/glim.json:glows[leaf].name
+msgid "Leaf"
+msgstr "[Ļéàƒ ~]"
+
+#: data/glim.json:glows[violet].name
+msgid "Violet"
+msgstr "[Vîôļéţ ~]"
+
+#: data/glim.json:glows[rose].name
+msgid "Rose"
+msgstr "[Ŕôšé ~]"
+
+#: data/glim.json:tops[none].name
+msgid "Nothing"
+msgstr "[Ñôţĥîñĝ ~]"
+
+#: data/glim.json:tops[antenna].name
+msgid "Antenna"
+msgstr "[Àñţéññà ~]"
+
+#: data/glim.json:tops[beanie].name
+msgid "Little Beanie"
+msgstr "[Ļîţţļé Béàñîé ~~]"
+
+#: data/glim.json:tops[halo].name
+msgid "Halo"
+msgstr "[Ĥàļô ~]"
+
 #: data/goals.json:goals[scoop_15].text
 msgid "Scoop 15 pieces of junk"
 msgstr "[Šçôôþ 15 þîéçéš ôƒ ĵûñķ ~~~~~]"
@@ -12324,17 +12476,9 @@ msgstr ""
 msgid "Hearth"
 msgstr "[Ĥéàŕţĥ ~]"
 
-#: data/solar_system.json:star_b.name
-msgid "Ember"
-msgstr "[Émbéŕ ~]"
-
 #: data/solar_system.json:planets.verdance.moons[0].name
 msgid "Pebble"
 msgstr "[Þébbļé ~]"
-
-#: data/solar_system.json:planets.tidewell.moons[0].name
-msgid "Lantern"
-msgstr "[Ļàñţéŕñ ~]"
 
 #: data/solar_system.json:planets.anvil.moons[0].name
 msgid "Tong"
