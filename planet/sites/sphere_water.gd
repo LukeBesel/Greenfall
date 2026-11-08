@@ -9,7 +9,7 @@ extends Node3D
 ## jumping now and then with a splash), and cleaning a lake cell Lumi can see plays the lake-clear
 ## moment (chime, whoosh, a little shake, Wren's line) and stocks it.
 
-const BELOW_LAND: float = 0.12
+const BELOW_LAND: float = 0.25  # [v1world] was 0.12: the chunk bank (sphere_chunk_job._wetness) crosses this inside the cell
 const FISH_PER_CELL: int = 3
 const FISH_SPREAD: float = 5.0  # jump starts within this far of the cell centre (10 m cells)
 

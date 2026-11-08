@@ -115,16 +115,20 @@ func _vertex(d: Vector3, hint: int, full: bool) -> int:
 		own = grid.walk((d + w * (_cell_ang * warp_amount)).normalized(), hint)
 	var R: float = terrain.R
 	var h: float = terrain.height(d)
-	var wet: bool = state.size() > own and state[own] == WATER
-	if wet:
-		h -= terrain.water_drop
+	# [v1world] Shorelines: the lake bed is a smooth bank, not a step on the warped cell border. Wetness
+	# blends the water state of the nearest cell and its neighbours by distance (unwarped, so it is the
+	# same for every chunk and LOD), with a little noise so the shore wanders. The bank meets the lake
+	# surface (SphereWater, 0.25 m below the land) inside the water cell; at the hex edge the ground is
+	# back at land height, so the surface's own edge always hides under the bank (no z-fight, no wall).
+	var wetf: float = _wetness(d, own if not full else grid.walk(d, hint))
+	var off: float = -terrain.water_drop * smoothstep(0.55, 0.85, wetf)
+	h += off
 	var p0: Vector3 = d * (R + h)
 	# Normal from the height field (forward differences, 1.5 m), water stays flat.
 	var f: Basis = SphereGrid.frame(d)
 	var e: float = 1.5 / R
 	var dx: Vector3 = (d + f.x * e).normalized()
 	var dz: Vector3 = (d + f.z * e).normalized()
-	var off: float = -terrain.water_drop if wet else 0.0
 	var px: Vector3 = dx * (R + terrain.height(dx) + off)
 	var pz: Vector3 = dz * (R + terrain.height(dz) + off)
 	var nrm: Vector3 = (pz - p0).cross(px - p0).normalized()
@@ -132,5 +136,34 @@ func _vertex(d: Vector3, hint: int, full: bool) -> int:
 		nrm = -nrm
 	verts.append(p0)
 	normals.append(nrm)
-	uv2.append(Vector2(float(own), float(hint)))
+	uv2.append(Vector2(float(own), wetf))  # [v1world] y: wetness (sphere_ground.gdshader's water tint); was the walk hint, unread
 	return verts.size() - 1
+
+
+## [v1world] 0 (land) .. 1 (open water): water cells near d, weighted by distance from their centres.
+func _wetness(d: Vector3, c0: int) -> float:
+	if state.size() <= c0:
+		return 0.0
+	var span: float = _cell_ang * 1.75  # about one centre-to-centre spacing
+	var ws: float = 0.0
+	var wet: float = 0.0
+	var any: bool = state[c0] == WATER
+	var nb: PackedInt32Array = grid.neighbors(c0)
+	if not any:
+		for o: int in nb:
+			if state.size() > o and state[o] == WATER:
+				any = true
+				break
+	if not any:
+		return 0.0
+	for k: int in nb.size() + 1:
+		var c: int = c0 if k == 0 else nb[k - 1]
+		var w: float = maxf(0.0, 1.0 - d.angle_to(grid.centers[c]) / span)
+		w *= w
+		ws += w
+		if state.size() > c and state[c] == WATER:
+			wet += w
+	var f: float = wet / maxf(ws, 0.000001)
+	if not warp.is_empty() and f > 0.0 and f < 1.0:
+		f += (warp[0] as FastNoiseLite).get_noise_3dv(d * terrain.R * 1.4) * 0.22
+	return clampf(f, 0.0, 1.0)

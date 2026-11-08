@@ -97,6 +97,10 @@ func _process(_delta: float) -> void:
 	for c: int in _job_cells:  # field state read here, so the thread never reads what the game writes
 		_job_ctx["rem"][c] = sfield.removed_fraction(c)
 		_job_ctx["piles"][c] = (sfield.hex_piles[c] as Array).duplicate() if c < sfield.hex_piles.size() else []
+	var kob: Object = sfield.keep_out.get_object() if sfield.keep_out.is_valid() else null
+	if kob is YardKeepOut:  # [v1world] a copy for the worker (footprints may still be appended on the main thread)
+		var yk: YardKeepOut = kob
+		_job_ctx["ko"] = {"rects": yk.rects.duplicate(), "discs": yk.discs.duplicate(), "inv": yk.xf_inv, "r": yk.radius}
 	_task = WorkerThreadPool.add_task(_job, false, "litter cells")
 
 
@@ -141,6 +145,7 @@ func _compute_cell(c: int) -> Dictionary:
 	for o: int in grid.neighbors(c):
 		nb.append(grid.centers[o])
 	var piles: Array = _job_ctx["piles"][c]
+	var ko: Dictionary = _job_ctx.get("ko", {})
 	var pile_k: float = 0.3 + 0.7 * (1.0 - rem)
 	var raw := PackedFloat32Array()  # 16 floats a piece (3x4 transform, colour), all meshes
 	var raw_m := PackedInt32Array()
@@ -160,7 +165,7 @@ func _compute_cell(c: int) -> Dictionary:
 			if d.dot(qc) > dc:
 				mine = false  # only on this cell (its neighbours lay their own)
 				break
-		if mine and sfield.keep_out.is_valid() and bool(sfield.keep_out.call(d)):
+		if mine and not ko.is_empty() and _ko_blocks(ko, d):  # [v1world] the yard keep-out, from a main-thread snapshot
 			mine = false  # [v1yard] none on the start yard's pad
 		if not mine:
 			continue
@@ -228,6 +233,18 @@ func _compute_cell(c: int) -> Dictionary:
 			bins[key] = lst
 			idx += 1
 	return {"xf": xf, "bufs": bufs, "pts": pts, "thr": thr_m, "bins": bins}
+
+
+static func _ko_blocks(ko: Dictionary, dir: Vector3) -> bool:
+	var p: Vector3 = (ko["inv"] as Transform3D) * (dir.normalized() * float(ko["r"]))
+	var q := Vector2(p.x, p.z)
+	for r: Rect2 in ko["rects"]:
+		if r.has_point(q):
+			return true
+	for dd: Vector3 in ko["discs"]:
+		if q.distance_squared_to(Vector2(dd.x, dd.y)) < dd.z * dd.z:
+			return true
+	return false
 
 
 const _PAL: Array[Color] = [

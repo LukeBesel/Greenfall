@@ -120,7 +120,7 @@ func test_floating_junk_on_lakes() -> void:
 	assert_eq(pids.size(), SphereField.FLOAT_PIECES)
 	for pid: int in pids:
 		var alt: float = f.piece_pos[pid].length() - (_grid.radius_m + _terrain.height(f.piece_pos[pid].normalized()))
-		assert_almost_eq(alt, -_terrain.water_drop - 0.06, 0.05, "floating at the lake surface")
+		assert_almost_eq(alt, -SphereWater.BELOW_LAND - 0.06, 0.05, "floating at the lake surface")  # [v1world] the surface, not the bed
 	for pid: int in pids:
 		f.remove_piece(pid)
 	assert_eq(f.hex_clean[w], 1, "a cleared lake flips clean")

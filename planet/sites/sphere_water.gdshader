@@ -8,7 +8,7 @@ uniform sampler2D wave_nrm : hint_normal, filter_linear_mipmap, repeat_enable;
 uniform vec3 murky_col = vec3(0.16, 0.17, 0.14);
 uniform vec3 clear_col = vec3(0.08, 0.42, 0.46);
 uniform vec2 alpha_mc = vec2(0.94, 0.62);
-uniform vec2 rough_mc = vec2(0.18, 0.04);
+uniform vec2 rough_mc = vec2(0.32, 0.08);  // [v1world] was 0.18, 0.04
 instance uniform float clarity = 0.0;
 
 varying vec3 lp;
@@ -26,9 +26,9 @@ void fragment() {
 	float c = clamp(clarity, 0.0, 1.0);
 	vec3 col = mix(murky_col, clear_col, c * c);
 	float fres = pow(1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0), 4.0);
-	ALBEDO = col + vec3(0.05, 0.07, 0.08) * fres;
+	ALBEDO = col + vec3(0.03, 0.04, 0.045) * fres;  // [v1world] softer sheen
 	ROUGHNESS = mix(rough_mc.x, rough_mc.y, c);
 	METALLIC = 0.0;
-	SPECULAR = 0.6;
+	SPECULAR = 0.35;  // [v1world] was 0.6: lakes read as pale sky mirrors from the shore
 	ALPHA = mix(alpha_mc.x, alpha_mc.y, c) + fres * 0.2;
 }

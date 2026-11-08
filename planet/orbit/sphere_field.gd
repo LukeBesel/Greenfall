@@ -322,7 +322,7 @@ func _seat(pid: int, d: Vector3) -> void:
 	var cell: int = piece_hex[pid]
 	var base: Vector3 = terrain.ground(d)
 	if hex_water[cell] == 1:
-		base -= d * terrain.water_drop
+		base -= d * SphereWater.BELOW_LAND  # [v1world] floaters ride the lake surface (was the bed, water_drop down)
 	var pos: Vector3 = base + d * piece_lift[pid]
 	if piece_embed[pid] > 0.0:
 		pos += d * ground_height(cell, base) * piece_embed[pid]

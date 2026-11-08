@@ -19,6 +19,8 @@ extends Node3D
 ## through the `site_inv` shader global, which SiteManager points at the nearest site.
 
 const SITES: Array[String] = ["start_yard", "ruin_block"]
+## [v1world] Hub blocks use the flat city's buildings (CityView) and facade dressing, not kit buildings.
+const CITY_BUILDINGS: bool = true
 const START_EXTENT: float = 36.0   # 3 x 3 blocks, 108 m, on the start pad (140 m flat radius)
 const HUB_EXTENT: float = 36.0     # 3 x 3 blocks, 108 m
 ## Which share of buildings are broken off on a ruined hub.
@@ -72,7 +74,7 @@ func anchors() -> Dictionary:
 		"rocket_pad": [Vector3(0, 0, -6.5), 0.0],
 	}
 	if site_id == "start_yard":
-		a.merge(START_YARD_ANCHORS)
+		a.merge(START_YARD_ANCHORS, true)  # [v1yard] the start yard's depot moves by the bench
 	return a
 
 
@@ -83,7 +85,10 @@ func anchors() -> Dictionary:
 ## bot, nursery. The pod sits behind Lumi's spawn at (0, 6). Lamps on the yard's corners.
 const START_YARD_ANCHORS: Dictionary = {
 	"pod": [Vector3(0, 0, 9.8), 0.0],
-	"bin": [Vector3(8.0, 0, 4.3), -PI * 0.5],
+	# [v1yard] The trash bin (the depot and its bin's reach) on the west side, 5.5 m from the bench,
+	# in a marked, lit bay on the pad's edge: trash, bin and bench a few steps apart.
+	"depot": [Vector3(-8.0, 0, 2.0), PI * 0.5],
+	"bin": [Vector3(-8.0, 0, -1.3), PI * 0.5],
 	"stations": [Vector3(16.5, 0, 1.5), 0.0],  # out on the street east of the yard (flat: "keep the base yard free")
 	"radio": [Vector3(5.0, 0, -1.5), -PI * 0.5],
 	"signal_tower": [Vector3(8.0, 0, -7.5), -PI * 0.5],
@@ -91,8 +96,8 @@ const START_YARD_ANCHORS: Dictionary = {
 	"shack": [Vector3(-7.35, 0, 7.5), PI * 0.5],  # over the bench: the flat lean-to has it 0.65 m in from its centre
 	"fabricator": [Vector3(-6.0, 0, -9.6), 0.0],
 	"generator": [Vector3(-5.0, 0, 9.5), PI],
-	"composter": [Vector3(-8.5, 0, 3.8), PI * 0.5],
-	"locker": [Vector3(-8.5, 0, 0.2), PI * 0.5],
+	"composter": [Vector3(8.5, 0, 3.8), -PI * 0.5],  # [v1yard] east, where the depot was
+	"locker": [Vector3(8.5, 0, 0.2), -PI * 0.5],
 	"camera_bot": [Vector3(-5.0, 0, -2.0), PI * 0.5],
 	"nursery": [Vector3(-7.5, 0, -5.5), PI * 0.5],
 	"lamps_0": [Vector3(-3.6, 0, -10.0), 0.0],
@@ -142,7 +147,7 @@ func _make() -> void:
 	city = CityView.new()
 	city.name = "City"
 	city.skyline = false
-	city.buildings = false  # the kit's buildings instead (below)
+	city.buildings = CITY_BUILDINGS  # [v1world] the flat district's brick and factory buildings (owner, Nov 8); was the kit's
 	city.flush_walks = true
 	add_child(city)
 	await city.build(layout, _sidewalk_material())
@@ -152,7 +157,7 @@ func _make() -> void:
 	await _kit_blocks()
 	dressing = StreetDressing.new()
 	dressing.name = "Dressing"
-	dressing.skip_facades = true
+	dressing.skip_facades = not CITY_BUILDINGS  # [v1world] shopfronts, awnings, neon, murals, billboard, string lights
 	dressing.kit_yard = true
 	add_child(dressing)
 	await dressing.build(layout, null, hub_index, district_name, "", level)
@@ -286,10 +291,13 @@ func _kit_blocks() -> void:
 			continue
 		var b: Dictionary = layout.blocks[key]
 		var c: Vector2 = (b["rect"] as Rect2).get_center()
-		if key == hero_key and site_id != "start_yard":
+		if key == hero_key and site_id != "start_yard" and not CITY_BUILDINGS:
 			_hero(c)
 			continue
 		match int(b["type"]):
+			CityLayout.Block.BUILDINGS when CITY_BUILDINGS:  # [v1world] CityView builds them; junk clears off their footprints
+				for bd: Dictionary in b["buildings"]:
+					_foot.append(bd["rect"])
 			CityLayout.Block.BUILDINGS:
 				var pat: Array = PATTERNS[rng.randi() % PATTERNS.size()]
 				var turn: float = float(rng.randi() % 4) * 90.0 if pat.size() == 1 else (0.0 if rng.randf() < 0.5 else 180.0)
@@ -336,6 +344,36 @@ func _hero(c: Vector2) -> void:
 	_kit("dome", c + Vector2(-8.5, 6.5), 0.0, pal, 1 + hub_index % 3)
 
 
+## [v1yard] The start yard's pad: one flat, clean slab of pale concrete panels (thin joints, a
+## darker kerb lip and a teal edge line), no missing plates, grit or tufts. Lumi lands on it, so it
+## should read as solid, swept ground against the trash round it.
+static func clean_pad(size: float) -> Node3D:
+	var k := YardArt.Kit.new()
+	var h: float = size * 0.5
+	k.box(Vector3(size, 0.06, size), Vector3(0, 0.03, 0), Color(0.47, 0.47, 0.45), Vector3.ZERO, 0.02)
+	var n: int = 6
+	var step: float = size / n
+	for i: int in range(1, n):
+		var c: float = -h + i * step
+		k.box(Vector3(size - 0.5, 0.008, 0.05), Vector3(0, 0.062, c), Color(0.34, 0.34, 0.33))
+		k.box(Vector3(0.05, 0.008, size - 0.5), Vector3(c, 0.062, 0), Color(0.34, 0.34, 0.33))
+	for side: int in 4:
+		var along_x: bool = side < 2
+		var sgn: float = -1.0 if side % 2 == 0 else 1.0
+		var lip := Vector3(size, 0.1, 0.3) if along_x else Vector3(0.3, 0.1, size)
+		var at := Vector3(0, 0.05, sgn * (h - 0.15)) if along_x else Vector3(sgn * (h - 0.15), 0.05, 0)
+		k.box(lip, at, Color(0.42, 0.43, 0.42), Vector3.ZERO, 0.03)
+		var line := Vector3(size - 0.9, 0.008, 0.08) if along_x else Vector3(0.08, 0.008, size - 0.9)
+		var lat := Vector3(0, 0.062, sgn * (h - 0.55)) if along_x else Vector3(sgn * (h - 0.55), 0.062, 0)
+		k.box(line, lat, Color(0.3, 0.75, 0.78))
+	var mi: MeshInstance3D = k.mi(0.08, "CleanPad")
+	mi.set_meta("no_collide", true)
+	var root := Node3D.new()
+	root.name = "YardPad"
+	root.add_child(mi)
+	return root
+
+
 ## Yard and lot dressing for the current state: kit ground patches everywhere; landfill heaps of
 ## kit debris, crate stacks and tipped barrels while broken, tidied when repaired, planters with
 ## bushes and flowers when restored. Rebuilt on a state change (meshes are kit-cached).
@@ -352,7 +390,7 @@ func _build_lots() -> void:
 	for lot: Dictionary in _lots:
 		var c: Vector2 = lot["c"]
 		var yard: bool = lot["kind"] == "yard"
-		var gp: Node3D = KitMesh.ground_patch(Vector2(21, 21) if yard else Vector2(18, 18), st, int(lot["seed"]))
+		var gp: Node3D = clean_pad(21.0) if yard and site_id == "start_yard" else KitMesh.ground_patch(Vector2(21, 21) if yard else Vector2(18, 18), st, int(lot["seed"]))  # [v1yard]
 		gp.position = Vector3(c.x, 0.0, c.y)
 		_lot_root.add_child(gp)
 		var t := Transform3D(Basis(), Vector3(c.x, 0, c.y))
