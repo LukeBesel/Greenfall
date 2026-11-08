@@ -156,9 +156,16 @@ func build_crew(so: Node) -> SphereCrew:
 	var g: Object = so.get("globe")
 	var patch: Node3D = (so.get("w") as Node).get("patch")
 	crew = SphereCrewDev.install(g, so.get("w"), patch, so.get("cam"), Callable(g, "write_cell"))
-	crew.cell_cleaned.connect(func(_c: int) -> void:
-		var f: SphereField = g.get("field")
-		EventBus.field_progress_changed.emit(f.cleaned_count, f.junk_hex_count))
+	# Robot-cleaned hexes go through the player's flow (bonus, stats, milestones, hex levels via
+	# EventBus.hex_cleaned), quietly when Lumi can't see them.
+	crew.cell_cleaned.connect(func(c: int) -> void:
+		var lumi: Node3D = (so.get("w") as Node).get("patch")
+		var near: bool = lumi != null and lumi.global_position.distance_to((g.get("field") as SphereField).hex_center(c)) < 60.0
+		if so.has_method("on_hex_clean"):
+			so.call("on_hex_clean", c, not near)
+		else:
+			var f: SphereField = g.get("field")
+			EventBus.field_progress_changed.emit(f.cleaned_count, f.junk_hex_count))
 	_watch_sites(g)
 	if DevHooks.has("fabricator-build"):  # dev: a Fabricator standing at this planet's base
 		BotFabricator.state(BotFabricator.planet_of(so.get("w")))["built"] = true

@@ -81,18 +81,30 @@ static func write_cell(cells: SphereCells, field: SphereField, c: int, left: flo
 		left = 0.0  # SphereCells.is_dirty's threshold: a crumb is a clean cell
 	if field != null and field.materialized[c] == 1:
 		gone = field.reduce_to(c, left)
-		var real_left: float = 1.0 - field.removed_fraction(c)
+		var real_left: float = 1.0 - field.removed_fraction(c) if field.hex_clean[c] == 0 else 0.0
 		cells.set_junk(c, real_left if left > 0.0 else 0.0)
-		if left <= 0.0 and field.hex_clean[c] == 0:
-			field.hex_clean[c] = 1
-			field.cleaned_count += 1
 	else:
 		cells.set_junk(c, left)
-		if field != null:
-			field.settle(c)
-	if left <= 0.0 and cells.state[c] == 0:
+		if field != null and field.materialized[c] == 0:
+			field.hex_left[c] = cells.junk[c]
+			field.hex_total[c] = 1.0
+	if (left <= 0.0 or not cells.is_dirty(c)) and cells.state[c] == 0:
 		cells.set_state(c, 1)
+	sync_clean(cells, field, c)
 	return gone
+
+
+## The one rule for "this hex is now clean" in the ledger, the same one SphereField uses when a
+## save loads: not dirty any more (land junk <= 0.02, or a lake's floaters gone) -> hex_clean, and
+## counted in cleaned_count unless it is hub ground or a lake. Returns true if it just turned clean.
+## Keeps the live count identical to the count after a reload.
+static func sync_clean(cells: SphereCells, field: SphereField, c: int) -> bool:
+	if field == null or field.hex_clean[c] == 1 or field.cell_dirty(c):
+		return false
+	field.hex_clean[c] = 1
+	if field.hex_hub[c] == 0 and field.hex_water[c] == 0:
+		field.cleaned_count += 1
+	return true
 
 
 ## Take `units` of junk from the region, nearest dirty cell first. Returns {units, cells (cleaned
