@@ -53,6 +53,10 @@ func _setup() -> void:
 	if bool(GameState.flags.get("arrived_from_rocket", false)) or DevHooks.has("orbit-arrive"):
 		GameState.flags.erase("arrived_from_rocket")
 		_arrive.call_deferred()
+	if DevHooks.has("orbit-home"):  # dev: --orbit-home, the Homeward launch (drive Mk VII + last seed given)
+		Homeward.state()["drive"] = maxi(Homeward.drive(), 7)
+		GameState.flags["home_last_seed"] = true
+		get_tree().create_timer(2.0).timeout.connect(func() -> void: HomewardDirector.launch_home(so.w))
 	if DevHooks.has("orbit-planet-hop"):  # dev: --orbit-planet-hop=K, the interplanet rocket to planet K
 		get_tree().create_timer(2.0).timeout.connect(func() -> void: launch_planet(Homeward.PLANET_BASE - int(DevHooks.get_f("orbit-planet-hop", 1.0))))
 
@@ -99,8 +103,7 @@ func _wire_survey() -> void:
 ## target: Homeward's launch target (PLANET_BASE - k). The Cradle (HOME) is not on a globe yet.
 func launch_planet(target: int) -> bool:
 	if target == Homeward.HOME:
-		EventBus.toast.emit(tr("The Homeward launch leaves from the flat Cradle site for now."), "info")
-		return false
+		return await launch_home()
 	var k: int = Homeward.PLANET_BASE - target
 	if sm == null or hop.flying:
 		return false
@@ -114,6 +117,26 @@ func launch_planet(target: int) -> bool:
 		GameState.flags.erase("arrived_from_rocket")
 		return false
 	return true
+
+
+## The Homeward launch from this globe: lift off from the nearest hub's pad, then the real ending
+## (Homecoming: the rise to the Cradle, the vault, the finale). Lumi is set back on the pad out
+## of sight first, since the finale films him landing in the ark's beam.
+func launch_home() -> bool:
+	if sm == null or hop.flying:
+		return false
+	so.w.set("launching", true)
+	var from_i: int = sm.nearest if sm.nearest >= 0 else 0
+	var patch: Patch = so.w.get("patch")
+	await hop.depart_with(sm, patch, so.cam, so.globe.terrain, from_i)
+	hop._step_off(sm, patch, so.cam, so.globe.terrain, from_i)
+	patch.visible = false
+	print("[hop] Homeward launch from %s hub %d" % [so.globe.planet_id, from_i])
+	var h: Homecoming = Homecoming.play_now(so.w)
+	await get_tree().create_timer(0.5).timeout
+	hop.clear_veil()
+	so.w.set("launching", false)
+	return h != null
 
 
 func _arrive() -> void:

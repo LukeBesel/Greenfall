@@ -44,7 +44,7 @@ static func rows(fleet: Fleet, build_at: Callable) -> Array:
 		var cap: int = fleet.crew_cap()
 		var in_crew: int = fleet.crew_size(crew)
 		# Build.
-		if not Research.robot_unlocked(rid):
+		if not Research.robot_unlocked(rid) and n == 0:
 			out.append({"id": "build_" + rid, "cat": "build", "state": "locked", "name": name_,
 				"requires": _tr("Research: %s") % _tr(str(Research.def(Research.robot_requirement(rid)).get("name", "?")))})
 		else:
