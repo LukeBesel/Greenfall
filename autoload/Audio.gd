@@ -50,6 +50,11 @@ var _hold_id: String = ""  # [sound] radio preview (wins over the world while se
 var _hold_resto: float = 0.0
 var _duck_until_us: int = 0
 var _duck: float = 0.0  # 0..1, smoothed
+## [eggs2] Hush: a source that plays its own music in the world (the jukebox) fades the whole
+## score out (mood layers, stingers, radio tracks: everything on the Music bus) while it plays.
+const HUSH_FADE_S: float = 1.5
+var _hush_by: Dictionary = {}  # owner -> true
+var _hush: float = 0.0  # 0..1, smoothed
 
 
 func _ready() -> void:
@@ -131,7 +136,7 @@ func apply_volumes() -> void:
 	# [sound] A slider at 0 mutes its bus (linear_to_db(0) is -inf); the duck rides on top.
 	_set_bus_level(0, Settings.master_volume, 0.0)
 	_set_bus_level(AudioServer.get_bus_index("SFX"), Settings.sfx_volume, 0.0)
-	_set_bus_level(AudioServer.get_bus_index("Music"), Settings.music_volume, DUCK_MUSIC_DB * _duck)
+	_set_bus_level(AudioServer.get_bus_index("Music"), Settings.music_volume * (1.0 - _hush), DUCK_MUSIC_DB * _duck)  # [eggs2] hush
 	_set_bus_level(AudioServer.get_bus_index("Ambience"), 1.0, DUCK_AMB_DB * _duck)
 
 
@@ -153,6 +158,33 @@ func duck(seconds: float) -> void:
 
 func get_duck() -> float:
 	return _duck
+
+
+## [eggs2] Fades all background music out (over HUSH_FADE_S) until every owner has called
+## unhush_music(). SFX and the ambience bed keep playing.
+func hush_music(owner_id: String) -> void:
+	_hush_by[owner_id] = true
+
+
+func unhush_music(owner_id: String) -> void:
+	_hush_by.erase(owner_id)
+
+
+func is_music_hushed() -> bool:
+	return not _hush_by.is_empty()
+
+
+## 0 = normal music, 1 = fully faded out.
+func get_hush() -> float:
+	return _hush
+
+
+## Eases the hush toward its target; _process calls it with real time (tests call it directly).
+func step_hush(dt: float) -> void:
+	var want: float = 1.0 if not _hush_by.is_empty() else 0.0
+	if want != _hush:
+		_hush = move_toward(_hush, want, dt / HUSH_FADE_S)
+		apply_volumes()
 
 
 # --- Playback -----------------------------------------------------------------
@@ -402,6 +434,7 @@ func _process(_delta: float) -> void:
 	var now: int = Time.get_ticks_usec()
 	var dt: float = (now - _music_last_us) / 1000000.0
 	_music_last_us = now
+	step_hush(dt)  # [eggs2]
 	_music.set("enabled", music_enabled)
 	_music.call("update", dt)
 	if _music_lpf:

@@ -44,6 +44,7 @@ var photo: PhotoMode  # [photo] photo mode (ui/photo_mode.gd)
 var fauna: Fauna  # [wild] ambient animals (fauna/fauna.gd)
 var frontier: FrontierDistrict  # [biomes] late-game frontier districts (planet/frontier_district.gd)
 var planet_env: Dictionary = {}  # [planet-rime] dev: --planet-env=<id> dresses a district with a planet env (data/planets.json)
+var bounds: WorldBounds  # [orbit] soft edge + fall rescue (planet/world_bounds.gd)
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var view: FieldView
 var depot: Depot
@@ -326,6 +327,15 @@ func _ready() -> void:
 		cam.distance = DevHooks.get_f("demo-dist", 2.8)
 		cam.pitch = -0.3
 		cam.snap()
+	bounds = WorldBounds.new()  # [orbit] Lumi, robots and cubes never fall off the world
+	bounds.name = "WorldBounds"
+	bounds.world = self
+	add_child(bounds)
+	if DevHooks.has("edge-test"):  # [orbit] headless WorldBounds check
+		var et := EdgeTest.new()
+		et.world = self
+		et.bounds = bounds
+		add_child(et)
 	if DevHooks.has("lens"):
 		cam.lens_view = true
 	if DevHooks.has("cam"):
@@ -569,6 +579,7 @@ func _ready() -> void:
 		bs.set("world", self)
 		add_child(bs)
 	camp = Camp.attach(self)  # [camp] after the extras: it shows the radio / nursery once built
+	GlimDirector.attach(self)  # [buddy] Glim the lantern bot: light, hex scanner, upgrades, looks (systems/glim/)
 	if not bot and DisplayServer.get_name() != "headless":
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
@@ -1142,7 +1153,8 @@ func _open_command() -> void:
 func any_modal_open() -> bool:
 	return upgrades.is_open or pause_menu.is_open or globe.is_open or command.is_open \
 		or (codex != null and codex.is_open) or (doc_view != null and doc_view.is_open) \
-		or (photo != null and photo.is_open)  # [photo]
+		or (photo != null and photo.is_open) \
+		or (get_node_or_null("GlimPanel") != null and (get_node("GlimPanel") as GlimPanel).is_open)  # [photo] [buddy]
 
 
 func _on_modal_closed() -> void:
