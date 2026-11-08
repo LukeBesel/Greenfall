@@ -84,6 +84,7 @@ func _audit_game(w: Node) -> void:
 		_check("Workbench/%s" % t["name"], up.get("_root"))
 		await _shot()
 	await _close_with_b("Workbench", func() -> bool: return up.is_open)
+	await _audit_locker(w)
 	var cv: CommandView = w.get("command")
 	w.call("_open_command")
 	await _frames(6)
@@ -157,6 +158,40 @@ func _audit_settings(sp: SettingsPanel, label: String) -> void:
 		await _shot()
 
 
+## [ui7] The Locker overlay, every section (Lumi, Glim, Bots, Rocket). The audit opens all four:
+## it builds the Locker, finds Glim and lifts the rocket tier for this run only.
+func _audit_locker(w: Node) -> void:
+	YardBuilds.mark_built("locker")
+	Glim.st()["found"] = true
+	if int(GameState.flags.get("rocket_tier", 1)) < 2:
+		GameState.flags["rocket_tier"] = 2
+	var cl: CanvasLayer = LockerPanel.open_overlay(w)
+	await _frames(6)
+	var lp: LockerPanel = null
+	for n: Node in cl.find_children("*", "", true, false):
+		if n is LockerPanel:
+			lp = n as LockerPanel
+			break
+	var root: Control = cl.get_child(0) as Control
+	var secs: Array[String] = []
+	for b: Button in lp.get("_who_btns"):
+		secs.append(str(b.get_meta("who")))
+	for want: String in ["target:lumi", "target:glim", "bots", "rocket"]:
+		if not (want in secs):
+			_fail("Locker", "no %s section" % want)
+	for sec: String in secs:
+		lp.set_editing(sec)
+		await _frames(5)
+		var f: Button = lp.first_button()
+		if f:
+			f.grab_focus()
+		await _frames(2)
+		_check("Locker/%s" % sec.trim_prefix("target:"), root)
+		await _shot()
+	await _close_with_b("Locker", func() -> bool: return is_instance_valid(cl) and not cl.has_meta("closing"))
+	await _frames(10)
+
+
 func _close_with_b(label: String, still_open: Callable) -> void:
 	await _press_pad(JOY_BUTTON_B)
 	await _frames(3)
@@ -209,6 +244,10 @@ func _check(label: String, root: Control, focus_optional: bool = false) -> void:
 	for c: Control in all:
 		if not seen.has(c):
 			missing.append(_name(c))
+	if not missing.is_empty() and DevHooks.has("audit-why"):  # [ui7] where the unreachable ones sit
+		for c: Control in all:
+			if not seen.has(c):
+				print("[pad]   unreachable: %s (%s) text=%s" % [root.get_path_to(c), c.get_parent().get_class(), str(c.get("text")).left(24)])
 	if not missing.is_empty():
 		problems.append("%d unreachable: %s" % [missing.size(), ", ".join(missing.slice(0, 6))])
 	# Panels must fit the screen (e.g. 1280x800 at 110% interface scale): anything visible poking
