@@ -377,3 +377,56 @@ or ~190 lower than the table. Still to do, by owner:
 - The escape pod (above).
 - The Anvil road barriers: 8 meshes, 487k triangles, a RetopoFlow export that needs a LOD.
 - The far junk impostors (~100 draws).
+
+### Perf pass 4 (Nov 8, headless): pod, landmarks, far impostors, site reach
+
+Same method. A/B switches: `--no-pod-batch`, `--no-far-single` (plus the pass 3 ones).
+
+**1. The escape pod batched** (`story/pod_batch.gd`): ~90 meshes become a few merged meshes.
+- The static shell merges per material in the pod's own space, so it flies, leans and lands with
+  the pod.
+- Each repair-stage group that `EscapePod.set_condition` shows or hides as a unit (Patches,
+  Planter, Bolts) merges inside itself.
+- Untouched: anything looked up by name (Hatch and the door, Beacon, Scorch, HoverGlow/Light,
+  PodLight, Spill, ReentryFire), anything held in the pod's metadata (canopy, porthole, damage
+  kit), anything scripted or with an overlay.
+- Shared materials keep the glitching seams, glyph and fin lamps animating.
+- `tests/test_pod_batch.gd` checks every stage still swaps, the animation runs on each stage and
+  unmerge restores. About -254 est. draws on both planets.
+
+**2. Landmark LOD** (`SphereJunkView._build_landmark`): a landmark uses its own import LOD within
+a triangle budget per preset (Low 3k, Medium 6k, High 12k, Ultra 24k).
+- Anvil's concrete road barriers were a 61k-triangle RetopoFlow export each, 8 in view.
+- Anvil scene: 3.19 M → 2.07 M triangles. Models under budget (the 4.5k covered car) are
+  unchanged.
+
+**3. Far junk impostors in one draw per model** (`planet/junk_far_single.gd`): the far band
+kept every surface of a model (a crate of wine bottles: 16 draws). Its surfaces now merge into
+one, each tinted with its material's average colour (albedo × texture average), under one shared
+material. The near band is unchanged. -70 est. draws on Verdance.
+
+**4. Site reach without long frames.** orbD's anchor fix (`SiteReach.fix_anchors`, which places
+the yard's 16 machines on reachable ground since 61d8b61) took ~5 s in one frame on Anvil.
+- `fix_anchors` and `audit` are now coroutines that yield behind the loading screen. They stay
+  synchronous without a budget.
+- The flood fill tests a rasterised disc mask instead of every disc per cell. Same result:
+  `--site-reach` passes on all 5 planets, and the same anchors move.
+- The loader waits for the start site's probe, so it never spills past the loading screen.
+
+| | Longest loading frame | Loader ready |
+|---|---|---|
+| Verdance | **0.44 s** | 10.3 s |
+| Anvil | **0.72 s** | 11.2 s |
+
+Ready times went up a little: the yields add frames, and the box was loaded.
+
+| Estimated draws (census, start site, Medium) | All batching off | All on |
+|---|---|---|
+| Verdance | 2,381 | **1,670** |
+| Anvil | 2,262 | **1,734** |
+
+Left over:
+- A hub built later in play (no loading screen) still runs its reach audit in one go: the
+  physics sweep is ~0.5-0.7 s, the flood fills are now cheap. Spreading it over frames in
+  SiteManager's runtime builds is the next step (orbD).
+- Lumi's rig near the camera (62 surfaces).
