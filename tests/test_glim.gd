@@ -242,13 +242,13 @@ func test_glim_in_locker_targets() -> void:
 func test_locker_edits_glim() -> void:
 	GlimDirector.register_cosmetics()
 	Glim.set_found(true)
-	GameState.flags["locker_open"] = true
+	YardBuilds.mark_built("locker")  # [ui6] the Locker is a yard build now
 	var lp := LockerPanel.new()
 	add_child_autofree(lp)
 	await wait_frames(2)
 	var ids: Array[String] = []
 	for b: Button in lp._who_btns:
 		ids.append(str(b.get_meta("who")))
-	assert_has(ids, "ct:glim", "Glim has a button in the Locker's bot bar")
-	lp.set_editing("ct:glim")
+	assert_has(ids, "target:glim", "Glim has a button in the Locker's bot bar")
+	lp.set_editing("target:glim")
 	assert_true(lp._editor is GlimPanel.GlimLooksEditor, "and his looks editor opens")

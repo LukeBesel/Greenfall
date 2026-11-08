@@ -34,11 +34,11 @@ msgstr "%s Nv %d"
 
 #: autoload/Economy.gd:188
 msgid "Needs %s Lv %d"
-msgstr ""
+msgstr "Precisa de %s Nv %d"
 
 #: autoload/Economy.gd:191
 msgid "Needs research: %s"
-msgstr ""
+msgstr "Precisa de pesquisa: %s"
 
 #: autoload/Economy.gd:194 systems/research.gd:196
 msgid "Needs base level %d"
@@ -134,7 +134,7 @@ msgstr "Modo foto"
 
 #: autoload/Settings.gd:24
 msgid "Glim: scan (hold: upgrades)"
-msgstr ""
+msgstr "Glim: escanear (segure: melhorias)"
 
 #: autoload/Settings.gd:30
 msgid "View"
@@ -278,7 +278,7 @@ msgstr "ENTRADA DE FARDOS"
 
 #: automation/depot.gd:284
 msgid "TRASH"
-msgstr ""
+msgstr "LIXO"
 
 #: automation/depot.gd:321
 msgid "SCRAP  INTAKE  ·  WEIGH HERE"
@@ -298,7 +298,7 @@ msgstr "PLATAFORMA 01"
 
 #: automation/launch_pad.gd:238
 msgid "LANDING PAD"
-msgstr ""
+msgstr "PLATAFORMA DE POUSO"
 
 #: automation/launch_pad.gd:301
 msgid ""
@@ -7183,7 +7183,7 @@ msgstr "O poste de rua e as luminárias ao longo da cerca, religados. Luz para o
 
 #: data/camp.json:builds.composter.name
 msgid "Compost Press"
-msgstr ""
+msgstr "Prensa de composto"
 
 #: data/camp.json:builds.composter.desc
 msgid "Presses plant scraps into compost and seeds. Worth building once something grows."
@@ -7191,7 +7191,7 @@ msgstr "Prensa restos de plantas em composto e sementes. Vale a pena quando algo
 
 #: data/camp.json:builds.radio.desc
 msgid "A chunky old CD player on a crate by the fence. Plays the discs you find."
-msgstr ""
+msgstr "Um velho e robusto CD player sobre um caixote junto à cerca. Toca os discos que você encontra."
 
 #: data/camp.json:builds.locker.name
 msgid "Locker"
@@ -7203,7 +7203,7 @@ msgstr "Um armário alto de aço junto à bancada. Abra-o para mudar o visual de
 
 #: data/camp.json:builds.nursery.name
 msgid "Robot Nursery"
-msgstr ""
+msgstr "Berçário de robôs"
 
 #: data/camp.json:builds.nursery.desc
 msgid "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand."

@@ -34,11 +34,11 @@ msgstr "%s %d 级"
 
 #: autoload/Economy.gd:188
 msgid "Needs %s Lv %d"
-msgstr ""
+msgstr "需要%s %d级"
 
 #: autoload/Economy.gd:191
 msgid "Needs research: %s"
-msgstr ""
+msgstr "需要研究：%s"
 
 #: autoload/Economy.gd:194 systems/research.gd:196
 msgid "Needs base level %d"
@@ -134,7 +134,7 @@ msgstr "拍照模式"
 
 #: autoload/Settings.gd:24
 msgid "Glim: scan (hold: upgrades)"
-msgstr ""
+msgstr "Glim：扫描（按住：升级）"
 
 #: autoload/Settings.gd:30
 msgid "View"
@@ -278,7 +278,7 @@ msgstr "捆包入口"
 
 #: automation/depot.gd:284
 msgid "TRASH"
-msgstr ""
+msgstr "垃圾"
 
 #: automation/depot.gd:321
 msgid "SCRAP  INTAKE  ·  WEIGH HERE"
@@ -298,7 +298,7 @@ msgstr "平台 01"
 
 #: automation/launch_pad.gd:238
 msgid "LANDING PAD"
-msgstr ""
+msgstr "着陆台"
 
 #: automation/launch_pad.gd:301
 msgid ""
@@ -7170,7 +7170,7 @@ msgstr "重新接线的路灯和围栏边的杆灯。夜里给院子照明。"
 
 #: data/camp.json:builds.composter.name
 msgid "Compost Press"
-msgstr ""
+msgstr "堆肥压榨机"
 
 #: data/camp.json:builds.composter.desc
 msgid "Presses plant scraps into compost and seeds. Worth building once something grows."
@@ -7178,7 +7178,7 @@ msgstr "把植物残渣压成堆肥和种子。有东西长出来后就值得建
 
 #: data/camp.json:builds.radio.desc
 msgid "A chunky old CD player on a crate by the fence. Plays the discs you find."
-msgstr ""
+msgstr "围栏边木箱上一台笨重的老式CD机。播放你找到的唱片。"
 
 #: data/camp.json:builds.locker.name
 msgid "Locker"
@@ -7190,7 +7190,7 @@ msgstr "工作台旁的高大钢制储物柜。打开它可以更换Lumi、Glim�
 
 #: data/camp.json:builds.nursery.name
 msgid "Robot Nursery"
-msgstr ""
+msgstr "机器人育儿所"
 
 #: data/camp.json:builds.nursery.desc
 msgid "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand."

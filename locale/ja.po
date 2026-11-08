@@ -34,11 +34,11 @@ msgstr "%s Lv %d"
 
 #: autoload/Economy.gd:188
 msgid "Needs %s Lv %d"
-msgstr ""
+msgstr "%s Lv %dが必要"
 
 #: autoload/Economy.gd:191
 msgid "Needs research: %s"
-msgstr ""
+msgstr "研究が必要：%s"
 
 #: autoload/Economy.gd:194 systems/research.gd:196
 msgid "Needs base level %d"
@@ -134,7 +134,7 @@ msgstr "フォトモード"
 
 #: autoload/Settings.gd:24
 msgid "Glim: scan (hold: upgrades)"
-msgstr ""
+msgstr "Glim：スキャン（長押し：アップグレード）"
 
 #: autoload/Settings.gd:30
 msgid "View"
@@ -278,7 +278,7 @@ msgstr "ベール投入口"
 
 #: automation/depot.gd:284
 msgid "TRASH"
-msgstr ""
+msgstr "ゴミ"
 
 #: automation/depot.gd:321
 msgid "SCRAP  INTAKE  ·  WEIGH HERE"
@@ -298,7 +298,7 @@ msgstr "パッド 01"
 
 #: automation/launch_pad.gd:238
 msgid "LANDING PAD"
-msgstr ""
+msgstr "着陸パッド"
 
 #: automation/launch_pad.gd:301
 msgid ""
@@ -7170,7 +7170,7 @@ msgstr "街灯とフェンス沿いのポールライトを配線し直す。夜
 
 #: data/camp.json:builds.composter.name
 msgid "Compost Press"
-msgstr ""
+msgstr "堆肥プレス"
 
 #: data/camp.json:builds.composter.desc
 msgid "Presses plant scraps into compost and seeds. Worth building once something grows."
@@ -7178,7 +7178,7 @@ msgstr "植物くずを堆肥と種にプレスする。何かが育ったら建
 
 #: data/camp.json:builds.radio.desc
 msgid "A chunky old CD player on a crate by the fence. Plays the discs you find."
-msgstr ""
+msgstr "柵のそばの木箱に載った古くてごつい CD プレーヤー。見つけたディスクを再生します。"
 
 #: data/camp.json:builds.locker.name
 msgid "Locker"
@@ -7190,7 +7190,7 @@ msgstr "作業台のそばの背の高い鋼鉄ロッカー。開けるとLumi�
 
 #: data/camp.json:builds.nursery.name
 msgid "Robot Nursery"
-msgstr ""
+msgstr "ロボット保育所"
 
 #: data/camp.json:builds.nursery.desc
 msgid "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand."
