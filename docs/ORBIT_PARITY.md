@@ -128,7 +128,7 @@ Same upgrades bought, no errors.
 | System | Status | Owner | Evidence and notes |
 |---|---|---|---|
 | Day/night, weather, clouds (`SkyDirector`) | works | | Sphere mode via OrbitLayers (orbE); `sky_spin` / `sky_clouds` in the save comparison. |
-| Binary sun companion | missing | orbE | `BinarySun` isn't built on the globe. |
+| Binary sun companion | works | orbE | The globe builds the same `BinarySun` (`sky_director.binary`: planet id, unshadowed warm fill). The sphere sky drives its fill along the spin; the world-space sky shader draws the disc. Tested in `tests/test_sky_sphere.gd`. |
 | Future Layer | works | | `FutureLayerSphere`. |
 | Survey hologram (`GlobeView`), system map | works | | OrbitLayers (orbE). |
 | Photo mode | works | | OrbitLayers (orbE). |
