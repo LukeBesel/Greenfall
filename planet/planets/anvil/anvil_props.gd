@@ -464,18 +464,18 @@ static func slag_mesh(seed_v: int) -> ArrayMesh:
 	nz.frequency = 1.4
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var na: int = 40
-	var nr: int = 12
+	var na: int = 56
+	var nr: int = 14
 	for j: int in na + 1:
 		var a: float = TAU * j / na
 		for i: int in nr:
 			var u: float = float(i) / (nr - 1)
-			var rr: float = u * (1.0 + nz.get_noise_2d(cos(a), sin(a)) * 0.35)
+			var rr: float = u * (1.0 + nz.get_noise_2d(cos(a) * 0.6, sin(a) * 0.6) * 0.22)
 			# Lumpy tipped-load profile: a ragged crest, dumped lobes and gullies down the flanks.
 			var gully: float = absf(nz.get_noise_2d(cos(a) * 4.0 + 9.0, sin(a) * 4.0)) * 0.06 * u
 			# Rounded, lumpy tip (a dumped heap, not a cone): domed crest, knobbly dumped blocks.
 			var dome: float = pow(maxf(1.0 - u * u, 0.0), 0.75)
-			var lumps: float = nz.get_noise_2d(cos(a) * u * 5.0 + 20.0, sin(a) * u * 5.0) * 0.16 + nz.get_noise_2d(cos(a) * u * 13.0, sin(a) * u * 13.0) * 0.06
+			var lumps: float = nz.get_noise_3d(cos(a) * u * 4.0, sin(a) * u * 4.0, 20.0) * 0.14 + nz.get_noise_3d(cos(a) * u * 11.0, sin(a) * u * 11.0, 50.0) * 0.07
 			var hgt: float = dome * (0.82 + nz.get_noise_2d(cos(a) * 2.0 + 3.0, sin(a) * 2.0) * 0.3) - gully + lumps * (1.0 - u * 0.6)
 			st.add_vertex(Vector3(cos(a) * rr, maxf(hgt, 0.0) - (0.05 if i == nr - 1 else 0.0), sin(a) * rr))
 	for j: int in na:
