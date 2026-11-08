@@ -3341,7 +3341,7 @@ msgstr "Portée d'arrosage"
 msgid "Refill"
 msgstr "Recharge"
 
-#: ui/builder_panel.gd:21 ui/command_view.gd:1202 ui/command_view.gd:1205
+#: ui/builder_panel.gd:21 ui/command_view.gd:1238 ui/command_view.gd:1241
 #: data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr "Nettoyer"
@@ -3529,10 +3529,6 @@ msgstr ""
 #: ui/codex_screen.gd:100 ui/upgrades_screen.gd:167
 msgid "Close  [%s]"
 msgstr "Fermer  [%s]"
-
-#: ui/codex_screen.gd:119
-msgid "   {ui_tab_prev}{ui_tab_next}  switch tabs"
-msgstr "   {ui_tab_prev}{ui_tab_next}  changer d'onglet"
 
 #: ui/codex_screen.gd:202
 msgid "%d / %d entries   ·   %d / %d curiosities   ·   %d / %d collectibles   ·   %d / %d achievements"
@@ -3833,97 +3829,97 @@ msgstr "Effacer"
 msgid "CREWS"
 msgstr "ÉQUIPES"
 
-#: ui/command_view.gd:594
+#: ui/command_view.gd:600
 msgid "Following the %s orders. Mark hexes or pick a mode to give it its own."
 msgstr "Suit les ordres %s. Marque des hexagones ou choisis un mode pour lui donner les siens."
 
-#: ui/command_view.gd:603
+#: ui/command_view.gd:609
 msgid "No orders yet: roaming the district. Drag on the ground to mark where to work."
 msgstr "Pas encore d'ordres : patrouille le quartier. Glisse sur le sol pour marquer où travailler."
 
-#: ui/command_view.gd:646
+#: ui/command_view.gd:678
 msgid "No robots yet. Build one at the workbench."
 msgstr "Pas encore de robots. Construis-en un à l'établi."
 
-#: ui/command_view.gd:773
+#: ui/command_view.gd:809
 msgid "Build %s  %s"
 msgstr "Construire %s  %s"
 
-#: ui/command_view.gd:778
+#: ui/command_view.gd:814
 msgid "Max tier"
 msgstr "Palier max"
 
-#: ui/command_view.gd:778
+#: ui/command_view.gd:814
 msgid "Upgrade > %s"
 msgstr "Améliorer > %s"
 
-#: ui/command_view.gd:784
+#: ui/command_view.gd:820
 msgid "ready"
 msgstr "prêt"
 
-#: ui/command_view.gd:784
+#: ui/command_view.gd:820
 msgid "build at the workbench"
 msgstr "à construire à l'établi"
 
-#: ui/command_view.gd:791
+#: ui/command_view.gd:827
 msgid "Place refill tank here  %s  (%d/%d)"
 msgstr "Poser un réservoir ici  %s  (%d/%d)"
 
-#: ui/command_view.gd:793
+#: ui/command_view.gd:829
 msgid "A Water Tank at your hex. Waterers refill at the nearest one."
 msgstr "Un réservoir sur ton hexagone. Les arroseurs se remplissent au plus proche."
 
-#: ui/command_view.gd:1050
+#: ui/command_view.gd:1086
 msgid "%s · %d HEX"
 msgid_plural "%s · %d HEXES"
 msgstr[0] "%s · %d HEX"
 msgstr[1] "%s · %d HEX"
 
-#: ui/command_view.gd:1086
+#: ui/command_view.gd:1122
 msgid "BASE"
 msgstr "BASE"
 
-#: ui/command_view.gd:1093
+#: ui/command_view.gd:1129
 msgid "YOU"
 msgstr "TOI"
 
-#: ui/command_view.gd:1193
+#: ui/command_view.gd:1229
 msgid "HEX %d"
 msgstr "HEX %d"
 
-#: ui/command_view.gd:1197
+#: ui/command_view.gd:1233
 msgid "BASE YARD"
 msgstr "COUR DE LA BASE"
 
-#: ui/command_view.gd:1198
+#: ui/command_view.gd:1234
 msgid "Home ground, always clean"
 msgstr "Chez soi, toujours propre"
 
-#: ui/command_view.gd:1200
+#: ui/command_view.gd:1236
 msgid "LAKE HEX %d"
 msgstr "HEX DU LAC %d"
 
-#: ui/command_view.gd:1202
+#: ui/command_view.gd:1238
 msgid "Floating junk  %d%% left"
 msgstr "Ferraille flottante  reste %d%%"
 
-#: ui/command_view.gd:1208
+#: ui/command_view.gd:1244
 msgid "Junk  %d%% left"
 msgstr "Ferraille  reste %d%%"
 
-#: ui/command_view.gd:1214
+#: ui/command_view.gd:1250
 msgid "Level %d · %s"
 msgstr "Niveau %d · %s"
 
-#: ui/command_view.gd:1216
+#: ui/command_view.gd:1252
 msgid "In %s zone"
 msgstr "Zone %s"
 
-#: ui/command_view.gd:1269
+#: ui/command_view.gd:1305
 msgid "%d robots"
 msgstr "%d robots"
 
-#: ui/command_view.gd:1272
+#: ui/command_view.gd:1308
 msgid "%d / %d hexes clean"
 msgstr "%d / %d hexagones propres"
 
@@ -15652,6 +15648,9 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "   {ui_tab_prev}{ui_tab_next}  switch tabs"
+#~ msgstr "   {ui_tab_prev}{ui_tab_next}  changer d'onglet"
 
 #~ msgid "...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance."
 #~ msgstr "...Lumi ? ...Lumi. Le relais tient à peine, mais je te capte. Tu as atterri. Tu es sur Verdance."

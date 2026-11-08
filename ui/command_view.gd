@@ -311,11 +311,9 @@ func _ready() -> void:
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	sv.add_child(scroll)
 	# [ui4] The crew list gives up height on short screens (1280x720 at 125%) so the panel fits.
-	var fit_list := func() -> void:
-		if is_instance_valid(scroll) and scroll.is_inside_tree():
-			scroll.custom_minimum_size.y = clampf(scroll.get_viewport().get_visible_rect().size.y - 370.0, 140.0, 330.0)
-	fit_list.call_deferred()
-	get_viewport().size_changed.connect(fit_list)
+	_list_scroll = scroll
+	_fit_list.call_deferred()
+	get_viewport().size_changed.connect(_fit_list)  # a method: disconnects itself when the view is freed
 	_list = VBoxContainer.new()
 	_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_list.add_theme_constant_override("separation", 3)
@@ -610,6 +608,14 @@ func _refresh() -> void:
 	for b: Node in _mode_row.get_children():
 		(b as Button).button_pressed = str(b.get_meta("mode")) == mode
 	_rebuild_list()
+
+
+var _list_scroll: ScrollContainer  # [ui4]
+
+
+func _fit_list() -> void:
+	if is_instance_valid(_list_scroll) and _list_scroll.is_inside_tree():
+		_list_scroll.custom_minimum_size.y = clampf(_list_scroll.get_viewport().get_visible_rect().size.y - 370.0, 140.0, 330.0)
 
 
 func _rebuild_list() -> void:
