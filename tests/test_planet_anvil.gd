@@ -69,3 +69,30 @@ func test_applies_on_stub_world() -> void:
 	var s: Dictionary = env.suns()
 	assert_true(s.has("a") and s.has("b"), "two suns")
 	assert_lt(float(s["b"]["size"]), float(s["a"]["size"]))
+
+
+func _visible_trash(site: Node) -> int:
+	var n: int = 0
+	for mmi: Node in site.find_children("Trash_*", "MultiMeshInstance3D", true, false):
+		n += (mmi as MultiMeshInstance3D).multimesh.visible_instance_count
+	return n
+
+
+func test_sites_build_ruined_and_restored() -> void:
+	var reg: Array = AnvilEnv.planet_entry().get("sites", [])
+	assert_eq(reg.size(), AnvilSites.SITES.size(), "every site is in data/planets.json")
+	for id: String in AnvilSites.SITES:
+		var a := Node3D.new()
+		add_child_autofree(a)
+		var ruined: Node3D = AnvilSites.build(a, id, 1, 0.0)
+		assert_not_null(ruined.get_node_or_null("Ground"), id + " has its own ground patch")
+		assert_gt(_visible_trash(ruined), 50, id + " is trashed when ruined")
+		assert_eq(ruined.find_children("Plants_*", "", true, false).size(), 0)
+		var b := Node3D.new()
+		add_child_autofree(b)
+		var fixed: Node3D = AnvilSites.build(b, id, 5, 1.0)
+		assert_eq(_visible_trash(fixed), 0, id + " is cleared when restored")
+		assert_gt(fixed.find_children("Plants_*", "", true, false).size(), 0, id + " is planted when restored")
+		# Locally flat: nothing sits far below the site root.
+		for mi: Node in fixed.find_children("*", "MeshInstance3D", true, false):
+			assert_gt((mi as MeshInstance3D).global_position.y, -10.0)
