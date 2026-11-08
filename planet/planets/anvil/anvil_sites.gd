@@ -44,6 +44,7 @@ static func build(site_root: Node3D, site_id: String, stage: int, restoration: f
 			_ruined_smelter(kit, root, stage, restoration)
 		_:
 			push_warning("AnvilSites: unknown site " + site_id)
+	KitBatch.merge(root)  # [orbE] perf: the site's kit buildings as one surface per material
 	root.set_meta("site", site_id)
 	root.set_meta("stage", stage)
 	root.set_meta("restoration", restoration)
@@ -69,6 +70,7 @@ static func build_async(site_root: Node3D, site_id: String, stage: int, restorat
 	for step: Callable in _foundry_yard_steps(kit, root, stage, restoration):
 		step.call()
 		await BuildBudget.check("anvil:yard")
+	KitBatch.merge(root)  # [orbE]
 	root.set_meta("site", site_id)
 	root.set_meta("stage", stage)
 	root.set_meta("restoration", restoration)
