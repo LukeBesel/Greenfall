@@ -342,10 +342,15 @@ func _build_ui() -> void:
 	# [worlds2] Save profiles (and each profile's worlds).
 	var pname: String = ProfileSlots.display_name(CradleMode.profile, SaveManager.profile_slot)
 	# TRANSLATORS: Profiles button subtitle: the active save profile's name and its number of planets.
+	# [qafix] QA #33: with no save, New Game comes first (and takes the focus), Profiles after it.
+	if _save.is_empty():
+		_new_game = _menu_button(tr("New Game"), _on_new_game)
+		buttons.append(_new_game)
 	_profiles_btn = _menu_button(tr("Profiles"), _open_profiles, "%s  ·  %s" % [pname, tr_n("%d planet", "%d planets", CradleMode.worlds().size()) % CradleMode.worlds().size()])
 	buttons.append(_profiles_btn)
-	_new_game = _menu_button(tr("New Game"), _on_new_game)
-	buttons.append(_new_game)
+	if not _save.is_empty():
+		_new_game = _menu_button(tr("New Game"), _on_new_game)
+		buttons.append(_new_game)
 	if Demo.is_demo():  # [steam]
 		buttons.append(_menu_button(tr("Wishlist on Steam"), SteamService.open_store_page))
 	buttons.append(_menu_button(tr("Settings"), _open_settings))

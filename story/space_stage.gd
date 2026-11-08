@@ -50,7 +50,7 @@ func _ready() -> void:
 	vp.world_3d = World3D.new()
 	vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	vp.msaa_3d = Viewport.MSAA_2X
-	vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA
+	vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA if RenderingServer.get_current_rendering_method() != "gl_compatibility" else Viewport.SCREEN_SPACE_AA_DISABLED  # [qafix] QA #35
 	vp.handle_input_locally = false
 	vp.gui_disable_input = true
 	add_child(vp)

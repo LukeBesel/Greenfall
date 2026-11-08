@@ -748,14 +748,15 @@ func _build_environment() -> void:
 	env.ssao_enabled = true
 	env.ssao_radius = 1.0
 	env.ssao_intensity = 1.6
-	env.ssil_enabled = true
-	env.ssr_enabled = true
+	var fwd_plus: bool = RenderingServer.get_current_rendering_method() == "forward_plus"  # [qafix] QA #35: no "only on Forward+" warnings on Compatibility
+	env.ssil_enabled = fwd_plus  # [qafix]
+	env.ssr_enabled = fwd_plus  # [qafix]
 	env.ssr_max_steps = 48
-	env.sdfgi_enabled = true
+	env.sdfgi_enabled = fwd_plus  # [qafix]
 	env.sdfgi_use_occlusion = true
 	env.sdfgi_cascades = 4
 	env.sdfgi_min_cell_size = 0.2
-	env.volumetric_fog_enabled = true
+	env.volumetric_fog_enabled = fwd_plus  # [qafix]
 	env.volumetric_fog_density = 0.006
 	env.volumetric_fog_albedo = Color(0.85, 0.86, 0.9)
 	env.volumetric_fog_emission = Color(0.04, 0.045, 0.06)
