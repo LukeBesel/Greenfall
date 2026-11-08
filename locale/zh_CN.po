@@ -416,7 +416,7 @@ msgstr "跃迁"
 msgid "LIFT OFF"
 msgstr "升空"
 
-#: automation/rocket.gd:793 story/cine.gd:68
+#: automation/rocket.gd:793
 msgid "Space / Esc  skip"
 msgstr "空格 / Esc  跳过"
 
@@ -1176,65 +1176,69 @@ msgstr "水箱已放置。附近的浇水机器人会来这里补水。"
 msgid "WATER"
 msgstr "水"
 
-#: scenes/slice.gd:282
+#: scenes/slice.gd:291
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "机器人上行链路上线。按 B 打开指挥：划定区域，把队伍派到你想去的地方。"
 
-#: scenes/slice.gd:513
+#: scenes/slice.gd:523
 msgid "LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."
 msgstr "LM-1 上线。绽放核心 4%：绿光微弱。Cradle号中继：若有若无。种点东西吧。"
 
-#: scenes/slice.gd:830
+#: scenes/slice.gd:840
 msgid "HEX CLEAN!  +%s"
 msgstr "六角格清理完毕！  +%s"
 
-#: scenes/slice.gd:844
+#: scenes/slice.gd:854
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice.gd:846
+#: scenes/slice.gd:856
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "整个废料场都干净了。Lumi 发出一声好长好长、非常开心的哔——"
 
-#: scenes/slice.gd:853
+#: scenes/slice.gd:863
 msgid "%s is out of range: %s"
 msgstr "%s 超出范围：%s"
 
-#: scenes/slice.gd:863
+#: scenes/slice.gd:873
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "未解锁。将基地升到 5 级才能建造发射台。"
 
-#: scenes/slice.gd:866 ui/rockets_panel.gd:39
+#: scenes/slice.gd:876 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
 
-#: scenes/slice.gd:920
+#: scenes/slice.gd:930
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陆：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:921
+#: scenes/slice.gd:931
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "火箭停在空地上，电池充满就能出发。"
 
-#: scenes/slice.gd:921
+#: scenes/slice.gd:931
 msgid "Landed on the base pad."
 msgstr "已降落在基地平台。"
 
-#: scenes/slice.gd:1015
+#: scenes/slice.gd:1025
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice.gd:1186
+#: scenes/slice.gd:1196
 msgid "Welcome back. The junk waited for you."
 msgstr "欢迎回来。废料一直在等你。"
 
-#: scenes/slice.gd:1203
+#: scenes/slice.gd:1213
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨 %d · %d级"
 
-#: scenes/slice.gd:1203
+#: scenes/slice.gd:1213
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨 %d · 废墟"
+
+#: scenes/story_preview.gd:150 ui/loading_screen.gd:143
+msgid "Setting the scene"
+msgstr ""
 
 #: steam/demo.gd:73
 msgid "Base level %d is the top of the demo. The full game goes all the way to level 5, then launches rockets to the rest of Verdance."
@@ -1256,7 +1260,7 @@ msgstr "你的基地已经成长到试玩版的极限。"
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "在完整版中，Lumi 会把基地建到 5 级，种满整片街区直到繁茂，让它们成长为明亮的未来城市，还会乘火箭飞往星球上的数十座基地。你的试玩进度会被保留。"
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:667
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:679
 msgid "Hexes cleaned"
 msgstr "已清理六角格"
 
@@ -1264,11 +1268,11 @@ msgstr "已清理六角格"
 msgid "Bales made"
 msgstr "已制作捆包"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:682
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:694
 msgid "Robots built"
 msgstr "已建造机器人"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:690
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:702
 msgid "Time played"
 msgstr "游戏时长"
 
@@ -1288,7 +1292,7 @@ msgstr "标题画面"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "继续游戏：第一个街区仍然开放，基地等级 %d。"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:759 ui/main_menu.gd:446
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:771 ui/main_menu.gd:446
 msgid "%dh %02dm"
 msgstr "%d时%02d分"
 
@@ -1679,59 +1683,51 @@ msgstr "他们看到的第一样东西，会是一个重新变绿的世界。是
 msgid "Homecoming"
 msgstr "归乡"
 
-#: story/intro.gd:282
+#: story/intro.gd:193
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
 msgstr "三百年前，最后的种子乘着方舟 Cradle号离开了 Verdance。"
 
-#: story/intro.gd:300
+#: story/intro.gd:194
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
 msgstr "Lumi，方舟上的小小守种者，每晚都为幼苗唱歌。"
 
-#: story/intro.gd:313
+#: story/intro.gd:195
 msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
 msgstr "又在哼歌了，Lumi？它们听不见的，你知道吧。……不过你唱的时候，它们确实长得更快。"
 
-#: story/intro.gd:332
+#: story/intro.gd:196
 msgid "Then, one night, the sky came apart."
 msgstr "然后，某天夜里，天空碎裂了。"
 
-#: story/intro.gd:364
+#: story/intro.gd:197
 msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
 msgstr "种子库舱段船体破裂！Lumi，别管托盘了，快离开！"
 
-#: story/intro.gd:427
+#: story/intro.gd:198
 msgid "Lumi— hold on— I can't turn her around— hold on—"
 msgstr "Lumi——坚持住——我没法让它调头——坚持住——"
 
-#: story/intro.gd:440
+#: story/intro.gd:199
 msgid "The ark could not turn back. The pod fell for days."
 msgstr "方舟无法回头。逃生舱坠落了好几天。"
 
-#: story/intro.gd:612
+#: story/intro.gd:200
 msgid "...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance."
 msgstr "……Lumi？……Lumi。中继快撑不住了，但我联系上你了。你着陆了。你在 Verdance 上。"
 
-#: story/intro.gd:619
+#: story/intro.gd:201
 msgid "Your core runs on green light, the glow living things give off. There's no green left down there. That's why you're fading."
 msgstr "你的核心靠绿光运转，就是生命散发的那种光。下面已经没有绿色了。所以你在慢慢熄灭。"
 
-#: story/intro.gd:622
+#: story/intro.gd:202
 msgid "So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core."
 msgstr "那我们就造一些出来。清理地面，种下那些幼苗。每一朵花都会滋养你的核心。"
 
-#: story/intro.gd:629
+#: story/intro.gd:203
 msgid "Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time."
 msgstr "充满你的绽放核心。重建一座发射场。然后飞回我们身边。……一壶水一壶水地来。"
 
-#: story/intro.gd:692
-msgid "%s  skip"
-msgstr "%s  跳过"
-
-#: story/intro.gd:692
-msgid "Space / Esc"
-msgstr "空格 / Esc"
-
-#: story/intro.gd:733
+#: story/intro.gd:798
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "绿光  ·  未检测到"
 
@@ -1876,11 +1872,11 @@ msgstr ""
 "合同 0001：已修订\n"
 "修复 = 资产"
 
-#: story/ledger.gd:965
+#: story/ledger.gd:966
 msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
 msgstr "Ledger 的合同已改写。它的无人机现在运送种子了。（+%d 种子）"
 
-#: story/ledger.gd:973
+#: story/ledger.gd:974
 msgid "<< LEDGER // OFF THE RECORD >>"
 msgstr "<< LEDGER // 非正式记录 >>"
 
@@ -1888,25 +1884,33 @@ msgstr "<< LEDGER // 非正式记录 >>"
 msgid "LEDGER  WMS-07"
 msgstr "LEDGER  WMS-07"
 
-#: story/ledger_uplink.gd:159
-msgid "LEDGER // AMENDED"
-msgstr ""
-
-#: story/ledger_uplink.gd:159
-msgid "INTERCEPT // LEDGER"
-msgstr ""
-
-#: story/ledger_uplink.gd:160
-msgid "line item %04d   checksum %s"
-msgstr "条目 %04d   校验和 %s"
-
-#: story/ledger_uplink.gd:160
-msgid "MISMATCH"
-msgstr "不匹配"
-
 #: story/shards.gd:56
 msgid "Something surfaced in the cleared ground. A memory shard."
 msgstr "清理过的地面里冒出了什么东西。一块记忆碎片。"
+
+#: story/story_pause.gd:30
+msgid "Paused"
+msgstr ""
+
+#: story/story_pause.gd:36
+msgid "%s  resume   ·   %s  skip"
+msgstr ""
+
+#: story/story_pause.gd:36
+msgid "Space"
+msgstr ""
+
+#: story/story_pause.gd:36
+msgid "Esc"
+msgstr ""
+
+#: story/story_pause.gd:45
+msgid "%s  pause   ·   %s  skip"
+msgstr ""
+
+#: story/story_pause.gd:46
+msgid "Space  pause   ·   Esc  skip"
+msgstr ""
 
 #: story/tutorial.gd:10
 msgid "Hold  {scoop}  to scoop junk"
@@ -1980,11 +1984,11 @@ msgstr "在废料底下的某个地方。"
 msgid "Found on the planet it belongs to."
 msgstr "在它所属的星球上找到。"
 
-#: systems/codex.gd:200 ui/codex_screen.gd:355
+#: systems/codex.gd:200 ui/codex_screen.gd:367
 msgid "Old Town"
 msgstr "老城区"
 
-#: systems/codex.gd:204 ui/codex_screen.gd:355
+#: systems/codex.gd:204 ui/codex_screen.gd:367
 msgid "Wilderness bases"
 msgstr "荒野基地"
 
@@ -1992,7 +1996,7 @@ msgstr "荒野基地"
 msgid " · often %s"
 msgstr " · 常见于%s"
 
-#: systems/codex.gd:207 ui/codex_screen.gd:355 data/codex.json:categories[frontiers].name
+#: systems/codex.gd:207 ui/codex_screen.gd:367 data/codex.json:categories[frontiers].name
 msgid "Frontiers"
 msgstr "边境"
 
@@ -2000,11 +2004,11 @@ msgstr "边境"
 msgid " · %s"
 msgstr " · %s"
 
-#: systems/codex.gd:209 ui/codex_screen.gd:355
+#: systems/codex.gd:209 ui/codex_screen.gd:367
 msgid "Other worlds"
 msgstr "其他世界"
 
-#: systems/codex.gd:210 ui/codex_screen.gd:355
+#: systems/codex.gd:210 ui/codex_screen.gd:367
 msgid "Any district"
 msgstr "任意街区"
 
@@ -2488,7 +2492,7 @@ msgstr "需要基地等级 %d"
 msgid "Queue is full"
 msgstr "队列已满"
 
-#: systems/research.gd:324 ui/codex_screen.gd:763
+#: systems/research.gd:324 ui/codex_screen.gd:775
 msgid "%ds"
 msgstr "%d秒"
 
@@ -2882,7 +2886,7 @@ msgstr "压了大约 %d 个捆包"
 msgid "kept the base tidy"
 msgstr "把基地收拾得整整齐齐"
 
-#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:674
+#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:686
 msgid "Cubes earned"
 msgstr "赚到的方块"
 
@@ -3248,7 +3252,7 @@ msgstr "下一步"
 msgid "RESTART CHECKLIST  ·  DONE"
 msgstr "重启清单  ·  完成"
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:696
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:708
 msgid "Achievements"
 msgstr "成就"
 
@@ -3268,23 +3272,27 @@ msgstr "收藏"
 msgid "CODEX"
 msgstr "图鉴"
 
-#: ui/codex_screen.gd:87 ui/upgrades_screen.gd:92
+#: ui/codex_screen.gd:88
+msgid "Watch the story"
+msgstr ""
+
+#: ui/codex_screen.gd:99 ui/upgrades_screen.gd:92
 msgid "Close  [%s]"
 msgstr "关闭  [%s]"
 
-#: ui/codex_screen.gd:106
+#: ui/codex_screen.gd:118
 msgid "   {ui_tab_prev}{ui_tab_next}  switch tabs"
 msgstr "   {ui_tab_prev}{ui_tab_next}  切换页面"
 
-#: ui/codex_screen.gd:189
+#: ui/codex_screen.gd:201
 msgid "%d / %d entries   ·   %d / %d curiosities   ·   %d / %d collectibles   ·   %d / %d achievements"
 msgstr "条目 %d / %d   ·   奇物 %d / %d   ·   收藏品 %d / %d   ·   成就 %d / %d"
 
-#: ui/codex_screen.gd:315 ui/codex_screen.gd:435 ui/codex_screen.gd:543
+#: ui/codex_screen.gd:327 ui/codex_screen.gd:447 ui/codex_screen.gd:555
 msgid "Not found yet"
 msgstr "尚未发现"
 
-#: ui/codex_screen.gd:319
+#: ui/codex_screen.gd:331
 msgid ""
 "\n"
 "\n"
@@ -3294,179 +3302,179 @@ msgstr ""
 "\n"
 "已清理：%s"
 
-#: ui/codex_screen.gd:344
+#: ui/codex_screen.gd:356
 msgid "CURIOSITIES"
 msgstr "奇物"
 
-#: ui/codex_screen.gd:345 ui/codex_screen.gd:466
+#: ui/codex_screen.gd:357 ui/codex_screen.gd:478
 msgid "%d / %d found"
 msgstr "已找到 %d / %d"
 
-#: ui/codex_screen.gd:439
+#: ui/codex_screen.gd:451
 msgid "Found  ·  %s"
 msgstr "已找到  ·  %s"
 
-#: ui/codex_screen.gd:442
+#: ui/codex_screen.gd:454
 msgid "Parts found: %d / %d"
 msgstr "已找到零件：%d / %d"
 
-#: ui/codex_screen.gd:443
+#: ui/codex_screen.gd:455
 msgid "Reward: a small surprise"
 msgstr "奖励：一个小惊喜"
 
-#: ui/codex_screen.gd:465
+#: ui/codex_screen.gd:477
 msgid "COLLECTION"
 msgstr "收藏"
 
-#: ui/codex_screen.gd:546
+#: ui/codex_screen.gd:558
 msgid "In your collection"
 msgstr "已收藏"
 
-#: ui/codex_screen.gd:551
+#: ui/codex_screen.gd:563
 msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
 msgstr "提示：一位害羞的访客会来到稳定和繁茂的六角格。带上相机。"
 
-#: ui/codex_screen.gd:552
+#: ui/codex_screen.gd:564
 msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
 msgstr "提示：大地恢复后，动物就会回来。用拍照模式（P）给它们拍照吧。"
 
-#: ui/codex_screen.gd:553
+#: ui/codex_screen.gd:565
 msgid "Hint: finish %d requests (Requests tab at the workbench)."
 msgstr ""
 
-#: ui/codex_screen.gd:554
+#: ui/codex_screen.gd:566
 msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
 msgstr ""
 
-#: ui/codex_screen.gd:555
+#: ui/codex_screen.gd:567
 msgid "Hint: keep scooping without stopping until the streak meter is full."
 msgstr "提示：不停地铲，直到连击条满。"
 
-#: ui/codex_screen.gd:556
+#: ui/codex_screen.gd:568
 msgid "Hint: turns up during %s."
 msgstr "提示：在%s期间出现。"
 
-#: ui/codex_screen.gd:625
+#: ui/codex_screen.gd:637
 msgid "Unlocked  ·  %s"
 msgstr "已解锁  ·  %s"
 
-#: ui/codex_screen.gd:664
+#: ui/codex_screen.gd:676
 msgid "Total"
 msgstr "总计"
 
-#: ui/codex_screen.gd:665
+#: ui/codex_screen.gd:677
 msgid "Junk removed"
 msgstr "清除的废料"
 
-#: ui/codex_screen.gd:665
+#: ui/codex_screen.gd:677
 msgid "by type"
 msgstr "按种类"
 
-#: ui/codex_screen.gd:666 data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:678 data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "清理"
 
-#: ui/codex_screen.gd:668
+#: ui/codex_screen.gd:680
 msgid "Hexes restored"
 msgstr "恢复的六角格"
 
-#: ui/codex_screen.gd:669
+#: ui/codex_screen.gd:681
 msgid "Bales pressed"
 msgstr "压制的捆包"
 
-#: ui/codex_screen.gd:670
+#: ui/codex_screen.gd:682
 msgid "Pure bales"
 msgstr "纯净捆包"
 
-#: ui/codex_screen.gd:671
+#: ui/codex_screen.gd:683
 msgid "Perfect bales"
 msgstr "完美捆包"
 
-#: ui/codex_screen.gd:672
+#: ui/codex_screen.gd:684
 msgid "Lumpy bales"
 msgstr "不平整捆包"
 
-#: ui/codex_screen.gd:673
+#: ui/codex_screen.gd:685
 msgid "Bales cashed in"
 msgstr "兑现的捆包"
 
-#: ui/codex_screen.gd:676 ui/globe_view.gd:138 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:688 ui/globe_view.gd:138 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "种植"
 
-#: ui/codex_screen.gd:677
+#: ui/codex_screen.gd:689
 msgid "Seeds planted"
 msgstr "播下的种子"
 
-#: ui/codex_screen.gd:678
+#: ui/codex_screen.gd:690
 msgid "Plants bloomed"
 msgstr "开花的植物"
 
-#: ui/codex_screen.gd:679
+#: ui/codex_screen.gd:691
 msgid "Air filtered"
 msgstr "过滤的空气"
 
-#: ui/codex_screen.gd:681 data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:693 data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "机器人"
 
-#: ui/codex_screen.gd:683
+#: ui/codex_screen.gd:695
 msgid "Bales by robots"
 msgstr "机器人打的捆包"
 
-#: ui/codex_screen.gd:684
+#: ui/codex_screen.gd:696
 msgid "Parts dug up"
 msgstr "挖出的零件"
 
-#: ui/codex_screen.gd:686
+#: ui/codex_screen.gd:698
 msgid "Exploring"
 msgstr "探索"
 
-#: ui/codex_screen.gd:687
+#: ui/codex_screen.gd:699
 msgid "Distance rolled"
 msgstr "行驶距离"
 
-#: ui/codex_screen.gd:688
+#: ui/codex_screen.gd:700
 msgid "Memory shards read"
 msgstr "读过的记忆碎片"
 
-#: ui/codex_screen.gd:689
+#: ui/codex_screen.gd:701
 msgid "Codex entries"
 msgstr "图鉴条目"
 
-#: ui/codex_screen.gd:692
+#: ui/codex_screen.gd:704
 msgid "Progress"
 msgstr "进度"
 
-#: ui/codex_screen.gd:693
+#: ui/codex_screen.gd:705
 msgid "Upgrades bought"
 msgstr "购买的升级"
 
-#: ui/codex_screen.gd:694
+#: ui/codex_screen.gd:706
 msgid "Field notes logged"
 msgstr ""
 
-#: ui/codex_screen.gd:695
+#: ui/codex_screen.gd:707
 msgid "Research done"
 msgstr "完成的研究"
 
-#: ui/codex_screen.gd:697
+#: ui/codex_screen.gd:709
 msgid "Best hub level"
 msgstr "最高基地等级"
 
-#: ui/codex_screen.gd:747
+#: ui/codex_screen.gd:759
 msgid "%s kg"
 msgstr "%s 千克"
 
-#: ui/codex_screen.gd:748
+#: ui/codex_screen.gd:760
 msgid "%.1f kg"
 msgstr "%.1f 千克"
 
-#: ui/codex_screen.gd:752
+#: ui/codex_screen.gd:764
 msgid "%.2f km"
 msgstr "%.2f 公里"
 
-#: ui/codex_screen.gd:762
+#: ui/codex_screen.gd:774
 msgid "%dm %02ds"
 msgstr "%d分%02d秒"
 
@@ -4302,6 +4310,14 @@ msgstr "捆包就绪"
 #: ui/lens_overlay.gd:67
 msgid "◢ SIGNAL %d%%"
 msgstr "◢ 信号 %d%%"
+
+#: ui/loading_screen.gd:142
+msgid "Loading"
+msgstr ""
+
+#: ui/loading_screen.gd:144
+msgid "Warming up"
+msgstr ""
 
 #: ui/main_menu.gd:314
 msgid "One small robot. One very big cleanup."
@@ -10539,7 +10555,7 @@ msgstr "Ochre"
 msgid "Tidewell"
 msgstr "Tidewell"
 
-#: data/homeward.json:planets[rime].name data/telescope.json:planets_default[rime].name
+#: data/homeward.json:planets[rime].name data/planets.json:rime.name data/telescope.json:planets_default[rime].name
 msgid "Rime"
 msgstr "Rime"
 
@@ -11218,6 +11234,10 @@ msgstr "传感器模块"
 #: data/parts.json:types[module].name
 msgid "Special Module"
 msgstr "特殊模块"
+
+#: data/planets.json:rime.tagline
+msgid "An ice moon, core-mined until it froze."
+msgstr ""
 
 #: data/radio.json:songs[verdance_sprout].name
 msgid "Sprout Step"
@@ -14212,6 +14232,18 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#~ msgid "line item %04d   checksum %s"
+#~ msgstr "条目 %04d   校验和 %s"
+
+#~ msgid "MISMATCH"
+#~ msgstr "不匹配"
+
+#~ msgid "%s  skip"
+#~ msgstr "%s  跳过"
+
+#~ msgid "Space / Esc"
+#~ msgstr "空格 / Esc"
 
 #~ msgid "<< LEDGER // CONTRACT 0001 // AMENDED >>"
 #~ msgstr "<< LEDGER // 合同 0001 // 已修订 >>"

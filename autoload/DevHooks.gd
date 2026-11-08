@@ -58,6 +58,8 @@ extends Node
 ##                      (--storm-hold keeps it blowing); --thaw-all; --frontier-heaters=N; --frontier-greenhouses=N;
 ##                      --drain=N runs the Sunken City pumps N times; --frontier-done[=S] fires the Cradle hook;
 ##                      --frontier-cam=dist,pitch,yaw and --frontier-nohud for landscape screenshots
+##   --planet-env=ID    [planet-rime] a wild district dressed by a campaign planet env (data/planets.json, e.g. rime);
+##                      Rime: --rime-cam=dist,pitch,yaw[,fov] --rime-nohud --rime-restore=0..1 (holds restoration)
 ##   --demo             [steam] run as the Steam demo build (Demo.is_demo()); --no-steam skips Steam init
 ##   --no-hud           [steam] hide HUD, toasts, subtitles and event banners (store screenshots, trailer)
 ##   --demo-end[=S]     [steam] show the end-of-demo screen after S seconds

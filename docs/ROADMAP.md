@@ -475,3 +475,65 @@ tuned in the first-hour pass); no new SFX work unless a bug.
   now one aged hydrant. The --fauna-look=duck shot needs a green shore: use `--restore=lake,5`.
 - Next: per-variant garden batches raise draw calls (~130 batches with all species); a merged
   per-chunk garden mesh would cut it. Grass density by quality preset should be checked on real GPUs.
+
+### Planet Rime environment (wt/p_rime)
+- Done: `planet/planets/rime/` (`RimeEnv`, entry `apply(world, field, kind)` plus `dev_hub`, `prepare_field`,
+  `dress_view`), registered in `data/planets.json` (read by `planet/planets/planet_envs.gd`). Own sky shader (black-blue
+  thin air, two small distant suns, stars by day, ringed gas giant, faint aurora), ice heightfield to the crater rim
+  (glassy ice, pressure ridges + slabs, glowing crevasses, drifts, mesas), borehole + headframe, core-drill
+  derricks, frozen geysers, ice spires/arches; restored: hot springs thaw, moss, flowers, ice-lanterns, greenhouse
+  domes, warm borehole. Junk set `rime_biome.json`; field ice sheet via `ground_pbr` `frontier_fx.w`.
+  Dev: `--planet-env=rime` (`--rime-cam`, `--rime-nohud`, `--rime-restore`). Shots: screenshots/planet_rime/.
+- Next (home): call the entry points when a Rime district loads; swap the fallback suns for
+  `SolarSystem.suns_for("rime")` (already read when `systems/solar_system.gd` exists).
+
+## Update: loading screen, readable subtitles, a better ark and pod (wt/intro2)
+- **Loading screen** (`ui/loading_screen.gd`, autoload `Loader`; `scenes/boot.tscn` is the main scene):
+  covers startup, New Game / Continue, back to title, rocket hub travel and world travel. Threaded
+  load (`ResourceLoader.load_threaded_request`), then the scene is instanced (the district still builds
+  synchronously in `_ready`, ~9 s headless: the bar holds at "Setting the scene"), then
+  `systems/shader_warmup.gd` draws every spatial material of the new scene once on tiny quads in front
+  of each viewport's camera for 5 frames, then it fades out. A Pixel-design Lumi (red/white, pink-red
+  glow) hovers along the bar scooping a line of garbage into its hopper.
+  Use `Loader.goto(path)` / `Loader.reload()` instead of `change_scene_to_file` / `reload_current_scene`.
+- **The purple screen** was the project's default clear colour, `Color(0.55, 0.45, 0.7)`, visible while
+  the first scene loaded and compiled with nothing drawn. Clear colour and boot splash are now
+  near-black (no splash image) and the loading screen draws from the first frame.
+- **Subtitles** (`ui/subtitles.gd`): one line at a time, bottom centre on a dark pill. Each line is
+  fully visible for 55 ms/char + 1.2 s (min 2.5 s), then fades, 0.45 s gap; long lines split into
+  one-line chunks at sentences/clauses. WREN, narration, cinematic captions (`Cine.caption`) and the
+  Ledger (`LedgerUplink` now wraps the same line, red LEDGER tag) all use it. In cinematics (HUD
+  hidden) it drops into the letterbox bar above the overlays. Glitches are purposeful (owner): readable
+  text only flickers/scrambles for ~150 ms as it appears; `[glitch]...[/glitch]`, `[REDACTED]` and `█`
+  spans glitch heavily the whole time; hostile Ledger lines get short whole-line jitter bursts.
+- **Intro** (`story/intro.gd`): all lines in `Intro.lines()`; every beat waits for its lines; slower
+  camera moves and ship glides; ~115 s unskipped (was ~55). Snappy wake-up blink flutter. The intro
+  waits for the loading screen before starting. `--intro` prints the tightest subtitle margin.
+- **The ark** (`story/cradle_ship.gd`, procedural, same API + `release_pod(k)`): broad flattened
+  teardrop hull, layered upper deck with a big glass seed-vault dome and garden, keel with a six-pod
+  rack, spinning greenhouse ring, two solar wings, five-bell engine cluster, chasing running lights.
+  The old Blender glb (`art/models/cradle`) is no longer used.
+- **Escape pod** (`story/escape_pod.gd`, `Intro.build_pod()` delegates): one lathed shell with the door
+  cut out of it (no overlapping faces), jamb, cabin lining, porthole, beacon; `open_door()` = seal pop
+  with steam from the seams, gravity drop into a ramp, settle, warm light spill on the ground.
+- **Pod = Seedglider family** (owner): ten-facet shell with sharp chines, swept graphite fins with
+  tangerine tips and orange running lamps, cyan glass porthole, thin cyan line, the ship palette;
+  uses `art/shaders/ship_paint.gdshader` (wt/ship) when present, else clear-coat StandardMaterial3D.
+  The ark's cargo rack holds six of these pods; the intro's pod leaves rack slot 2 exactly where it
+  hung (`CradleShip.pod_xform(k)`), falls, lands in its crash pose and opens with a lean-corrected ramp.
+- **Crash site** (`story/crash_site.gd`): scorched furrow along the approach, thrown-up clods, two hull
+  shards, the pod sunk and leaning, a light smoke plume (one CPUParticles3D), a torn panel with
+  flickering wiring, spark bursts and stuttering seams. Mends with upgrades (no new save state):
+  first upgrade = sparks stop, panel bolted back, faint smoke; 4 upgrade levels = repaired, clean paint,
+  calm beacon (`CrashSite.stage_for_upgrades()`).
+- **Playtest #2** (owner): Space / pad A pauses and resumes the intro and the Bloom Core memories
+  (`story/story_pause.gd`, freezes Engine.time_scale); Esc / B skips. The Codex has a "Watch the story"
+  button: `Intro.replay()` plays the whole intro with a temporary pod and puts Lumi, the camera and the
+  real crash site back afterwards (no save change). Repair stages read clearly: torn panel with live
+  wiring, then a bolted tangerine-studded patch, then a clean plate with a cyan line, a calm cyan halo on
+  the ground and blinking fin lamps.
+- Previews: `res://scenes/story_preview.tscn -- --view=ark|pod|crash|loading|introframe --out=...`.
+- Tests: `tests/test_subtitles.gd` (rule for every intro line, chunking, glitch spans, one line at a time),
+  `tests/test_crash_site.gd` (pod parts, door angle, repair stages).
+- Next: split the district build across frames so the loading bar keeps moving during it; pre-build
+  the intro's SpaceStage behind the loader (its first frames compile on the intro's black fade now).
