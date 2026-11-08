@@ -111,3 +111,28 @@ func test_yard_interactables_are_spaced() -> void:
 			var b: Vector3 = pts[keys[j]]
 			assert_gte(Vector2(a.x - b.x, a.z - b.z).length(), gap, "%s and %s are far enough apart" % [keys[i], keys[j]])
 	assert_gte(Vector2(radio.x + 3.6, radio.z - 2.2).length(), 8.0, "the radio is nowhere near the workbench")
+
+
+## The escape pod's crash site (intro2): the pod, its ~8 m furrow and the door ramp stay clear of
+## the yard's things.
+func test_yard_keeps_off_the_crash_site() -> void:
+	var pod := Vector3(Intro.POD_POS.x, 0, Intro.POD_POS.z)
+	var keep: Array = [[pod, 3.0]]
+	for t: float in [1.0, 2.0, 3.0, 4.0]:
+		keep.append([pod + Vector3(-0.48, 0, -0.88) * t, 1.6])  # door ramp
+	for t: float in [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]:
+		keep.append([pod + Vector3(-0.83, 0, 0.55) * t, 1.6])  # furrow
+	var tp: Array = RemoteProgress.cfg().get("pos", [0, 0])
+	var things: Dictionary = {
+		"workbench": [Vector3(-4.9, 0, 2.2), 2.0],
+		"trash_bin": [Vector3(0, 0, -3.2), 2.2],
+		"radio": [YardBuilds.pos("radio", Radio.POS), 1.0],
+		"nursery": [Nursery.SPOTS[0], 3.0],
+		"telescope": [Vector3(float(tp[0]), 0, float(tp[1])), 2.4],
+	}
+	for k: String in things:
+		var p: Vector3 = things[k][0]
+		var r: float = things[k][1]
+		for z: Array in keep:
+			var c: Vector3 = z[0]
+			assert_gt(Vector2(p.x - c.x, p.z - c.z).length(), r + float(z[1]), "%s clear of the crash site at (%.1f, %.1f)" % [k, c.x, c.z])
