@@ -86,6 +86,9 @@ var _start_t: float = 0.0
 
 func _init(p_world: Node) -> void:
 	world = p_world
+	var pw := PauseWatch.new()  # [qafix] a paused tree never stalls the bot (tools/pause_watch.gd)
+	pw.world = p_world
+	p_world.add_child.call_deferred(pw)
 	_start_t = float(GameState.stats.get("time_played", 0.0))
 	Research.now_override = 1000.0
 	_hook(EventBus.cube_made, func(_i: Dictionary) -> void: _mark("first_cube_s"))
