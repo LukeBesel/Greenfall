@@ -230,3 +230,7 @@ Direction: the flat world's vibe is better, so build it into the round world: bu
 38. After walking away I couldn't tell which way home was. The pod's smoke should be a super tall plume, a landmark for home visible from far away.
 39. A hex stuck at 96% with no findable leftovers: this is the 95% rule (item 36). It's the top priority.
 40. Map view (M) looks great but is a little glitched, and it's too close to Moon Sweepers (legal risk). Make it our own style. The launch/travel UI must NOT be in the map; it appears only when you press E at the rocket.
+
+## 2026-11-08 direction: Verdance must feel finished
+41. The first planet must be completely free of glitches, easy to make progress on, and simple enough that a young kid could understand and play it. Make it feel real and professional.
+42. The city feels empty: about 3 buildings and that's it. It doesn't feel whole or working. Verdance needs a full, lived-in city (streets, blocks, districts, signs, lights, parked junk), like the flat world's districts or better.
