@@ -71,6 +71,7 @@ func _ready() -> void:
 	var sign_label := Mats.stencil(tr("TO  SCALE  ◀"), 60, Color(0.12, 0.1, 0.08, 0.9))
 	sign_label.position = Vector3(3.4, 0.5, hp.z + BELT_W * 0.5 + 0.075)
 	add_child(sign_label)
+	YardArt.kitify(self)  # [yard] bevelled kit parts and shaders
 
 
 func hopper_pos() -> Vector3:
@@ -93,6 +94,7 @@ func add_recycler_line() -> void:
 	if stations == null or stations.recycler == null:
 		return
 	_add_line(stations.recycler.belt_path(hp + Vector3(0, 0.16, -PAD_HALF - 0.05)), "recycler")
+	YardArt.kitify(self)  # [yard]
 
 
 ## Fast-build flourish when bought.

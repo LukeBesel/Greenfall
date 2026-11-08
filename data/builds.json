@@ -70,6 +70,10 @@
       "id": "signal_jammer",
       "kind": "tiered",
       "first_build_one_time": true
+    },
+    {
+      "id": "bot_fabricator",
+      "kind": "one_time"
     }
   ]
 }

@@ -151,9 +151,8 @@ func _ready() -> void:
 	var pv := VBoxContainer.new()
 	pv.add_theme_constant_override("separation", 2)
 	bar.add_child(pv)
-	pv.add_child(BenchKit.caps(tr("Fleet paint")))
-	_paint = HBoxContainer.new()
-	_paint.add_theme_constant_override("separation", 6)
+	_paint = HBoxContainer.new()  # [ui7] fleet paint moved into the Bots section (per robot type)
+	_paint.visible = false
 	pv.add_child(_paint)
 	# The editor scrolls sideways if a wide one (the Lumi builder) meets a small screen at a big
 	# UI scale, instead of pushing the workbench off the screen.
@@ -168,7 +167,6 @@ func _ready() -> void:
 	_host.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	hsc.add_child(_host)
 	_rebuild_list()
-	_rebuild_paint()
 	_show_editor()
 
 
@@ -225,12 +223,21 @@ func _rebuild_list() -> void:
 		var tid: String = str(t.get("id", ""))
 		if CosmeticTargets.is_unlocked(tid):
 			_add_who("target:" + tid, CosmeticTargets.display_name(tid), "", UITheme.GOLD if tid == "lumi" else BenchKit.HOLO)
-	for r: Robot in _bots():
-		var sub: String = "%s  ·  %s" % [tr(str(Economy.robots.get(r.type_id, {}).get("name", r.type_id))), Economy.tier_name(r.tier)]
-		_add_who(r.robot_name, r.robot_name, sub, RobotBuilder.CREW_COLORS.get(r.role(), UITheme.GOLD))
-	if not _who.begins_with("target:") and _find_robot(_who) == null:
+	# [ui7] Four sections: Lumi, Glim (CosmeticTargets), Bots (one design per robot type), Rocket.
+	if not LockerEditors.bot_types(fleet).is_empty():
+		_add_who("bots", tr("Bots"), "", BenchKit.HOLO)
+	if _rocket_open():
+		_add_who("rocket", tr("Rocket"), "", BenchKit.HOLO)
+	var ok: bool = false
+	for b: Button in _who_btns:
+		ok = ok or str(b.get_meta("who")) == _who
+	if not ok:
 		_who = "target:lumi"
 	_style_list()
+
+
+func _rocket_open() -> bool:
+	return UpgradesScreen.tab_visible("rockets", world) or int(GameState.flags.get("rocket_tier", 1)) > 1
 
 
 func _add_who(id: String, title: String, sub: String, col: Color) -> void:
@@ -274,10 +281,7 @@ func set_editing(who: String) -> void:
 
 
 func _show_editor() -> void:
-	var kind: String = _who if _who.begins_with("target:") else "robot"
-	if kind == "robot" and _editor_kind == "robot" and is_instance_valid(_robot_editor):
-		_robot_editor.select_robot(_find_robot(_who))
-		return
+	var kind: String = _who
 	_clear_editor()
 	_editor_kind = kind
 	var ed: Control = _make_editor(kind)
@@ -313,6 +317,12 @@ func _make_editor(kind: String) -> Control:
 		ed = reg
 		if ed.get_parent():
 			ed.get_parent().remove_child(ed)
+	elif kind == "bots":  # [ui7] per-type robot designs
+		var be := LockerEditors.BotEditor.new()
+		be.fleet = fleet
+		ed = be
+	elif kind == "rocket":  # [ui7] ship paint, trim, glow
+		ed = LockerEditors.ShipEditor.new()
 	elif kind.begins_with("target:"):  # [ui6] CosmeticTargets editors (Lumi's builder, Glim's looks, ...)
 		ed = CosmeticTargets.make_editor(kind.substr(7), world)
 	elif kind == "lumi":
@@ -379,9 +389,7 @@ func _process(delta: float) -> void:
 		return
 	_t = 0.0
 	if _bots_signature() != _bots_sig:
-		_rebuild_list()
-		if not _who.begins_with("target:") and _find_robot(_who) == null:
-			set_editing("target:lumi")
+		_rebuild_list()  # [ui7] keeps the section when it's still there
 
 
 func _exit_tree() -> void:

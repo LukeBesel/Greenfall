@@ -71,6 +71,8 @@ func _snapshot(s: Node) -> Dictionary:
 		"contracts_done": int(Contracts.state().get("done_total", 0)),
 		"trinkets": JSON.stringify(Collection.found_list()),
 		"livery": Liveries.equipped(),
+		"robot_designs": JSON.stringify(GameState.flags.get("robot_designs", {})),  # [ui7] per-type robot looks
+		"ship_style": JSON.stringify(GameState.flags.get("ship_style", {})),  # [ui7] Locker ship looks
 		"shop_owned": JSON.stringify(Contracts.owned()),
 		"events_recent": JSON.stringify(WorldEvents.persist_state().get("recent", [])),
 		# [hud] Lumi Level (level, XP into it, lifetime XP).
@@ -393,6 +395,7 @@ func _ready() -> void:
 			RobotBuilder.equip(r, "head", "big_eye")
 			RobotBuilder.equip(r, "topper", "top_hat")
 			RobotBuilder.save_preset("clean", r.build)
+			RobotDesign.set_field(s1.fleet, "scoopie", "glow", "amber")  # [ui7] a type design
 			RobotBuilder.rename(s1.fleet, r, "Bobbin-42")
 		elif r.type_id == "haulbug":
 			RobotBuilder.equip(r, "tool", "long_forks")

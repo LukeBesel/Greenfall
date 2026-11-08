@@ -32,6 +32,7 @@ var day: OrbitDay
 var crews: OrbitCrews
 var cam: SphereCam
 var dev: OrbitDev
+var from_memory: bool = false  # [orbC] reloaded by rocket travel: no offline payout
 var layers: OrbitLayers  # [orbE]
 var view_mode: String = "follow"
 var sites: OrbitSites  # [orbD]
@@ -52,6 +53,7 @@ func build(p_world: Node3D) -> void:
 	if GameState.reload_in_memory:
 		GameState.reload_in_memory = false
 		loaded = true
+		from_memory = true  # [orbC]
 	elif not DevHooks.has("fresh"):
 		loaded = SaveManager.load_game()
 	var od: Dictionary = OrbitSave.migrate(GameState.orbit) if loaded else {}
@@ -98,7 +100,7 @@ func build(p_world: Node3D) -> void:
 	crews.name = "Crews"
 	w.add_child(crews)
 	crews.setup(globe)
-	for i: int in range(1, globe.sites.size()):
+	for i: int in range(1, globe.sites.size() if DevHooks.has("orbit-bots") else 0):  # [orbC] stand-ins only on request: far work is the crew's
 		crews.add_far_crew(int(globe.sites[i]["cell"]), 0.25 + 0.05 * (i % 4))
 	if DevHooks.has("orbit-presim"):
 		var all_crews: Array[Dictionary] = []
@@ -116,7 +118,8 @@ func build(p_world: Node3D) -> void:
 	sites = OrbitSites.attach(self)  # [orbD] sled, rocket hops, planet %, site state
 	_build_hub()
 	_build_bench()
-	if DevHooks.has("orbit-bots") or not DevHooks.has("orbit-walk"):
+	crews.build_crew(self)  # [orbC] the robot crew (planet/orbit/orbit_crews.gd)
+	if DevHooks.has("orbit-bots"):  # [orbC] stand-in bots only on request (the crew replaces them)
 		crews.spawn_demo_bots(globe.start_cell(), int(DevHooks.get_f("orbit-bots", 4.0)), w)
 	var hl := HexLevels.new()  # sparse: only cleaned cells are tracked; levels also go to SphereCells
 	hl.name = "HexLevels"
@@ -199,6 +202,11 @@ func _build_patch() -> void:
 	match DevHooks.get_s("orbit-walk", "") if DevHooks.has("orbit-walk") else "-":
 		"-":
 			patch.input = SphereInput.new()
+			if DevHooks.has("autoplay"):  # the pacing bot (tools/autoplay.gd), moving along the ground
+				var ab := AutoplayBot.new(w)
+				ab.world_space = true
+				patch.input = ab
+				w.set("bot", ab)
 		"boost":
 			patch.input = SphereAutoInput.new(Vector3(0, 0, -1), true)
 		_:
@@ -260,6 +268,13 @@ func collect_piece(pid: int) -> void:
 	globe.junk_view.refresh_hex(hid, became_clean)
 	if became_clean:
 		on_hex_clean(hid)
+
+
+## A bite off a heavy piece (Patch._take_piece): the cell's numbers and its heap follow.
+func piece_bitten(pid: int) -> void:
+	var hid: int = globe.field.piece_hex[pid]
+	globe.write_cell(hid)
+	globe.junk_view.refresh_hex(hid)
 
 
 ## slice.gd's _on_hex_clean by cell id: first-clean bonus (a re-dirtied cell pays only the flat
@@ -563,6 +578,7 @@ func unhandled_input(event: InputEvent) -> void:
 		w.get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("open_command"):
 		cam.view = "follow" if cam.view == "command" else "command"
+		crews.on_view(self)  # [orbC]
 		w.get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("pause"):
 		pm.open_menu()
@@ -611,6 +627,7 @@ func persist_save() -> void:
 		"day_t": day.elapsed(),
 		"lumi": {"at": g.to_dirh(patch.global_position), "fwd": _v_arr(patch.forward()), "cargo": pd},
 		"cubes": cubes,
+		"robots": crews.save_crew(),  # [orbC]
 		"site_state": sites.save_state() if sites else {},  # [orbD] built hubs, levels, growth (main: renamed from "sites", which orbB uses for site geometry)
 	}
 
@@ -639,6 +656,7 @@ func restore_world() -> void:
 	patch.restore_cargo(ld.get("cargo", {}))
 	if sites:  # [orbD]
 		sites.load_state(od.get("site_state", {}))
+	crews.restore_crew(self, od, not from_memory)  # [orbC] crew + offline jump
 
 
 static func _v_arr(v: Vector3) -> Array:
