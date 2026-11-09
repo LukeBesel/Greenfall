@@ -507,5 +507,5 @@ func _process(delta: float) -> void:
 
 func _on_completed(id: String) -> void:
 	Audio.play("chime", 1.2, -3.0)
-	EventBus.toast.emit(tr("Research complete: %s. %s") % [tr(str(def(id).get("name", id))), ". ".join(effect_lines(id))], "story")
+	EventBus.toast.emit(tr("Research complete: %s.") % tr(str(def(id).get("name", id))), "goal" if Once.take("toast_first_research") else "reward")  # [v4calm] no stat list; the first one only
 	_garden_applied = -1

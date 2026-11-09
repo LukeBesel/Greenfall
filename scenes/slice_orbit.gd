@@ -376,7 +376,7 @@ func on_hex_clean(hid: int, quiet: bool = false) -> void:
 			Audio.play("fanfare", 1.0, -5.0)
 			if patch:
 				Vfx.burst("confetti", patch.global_position + patch.up() * 1.5, Color.WHITE)
-			EventBus.toast.emit(tr("Milestone: %d hexes clean!") % n, "story")
+			EventBus.toast.emit(tr("Milestone: %d hexes clean!") % n, "reward")  # [v4calm] cut (the fanfare says it)
 
 
 ## Hexes counted for milestones: the cells this save paid a first-clean bonus for (far crews'

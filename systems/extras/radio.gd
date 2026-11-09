@@ -231,7 +231,7 @@ func _process(delta: float) -> void:
 	_check_t = 0.0
 	_note_here()
 	for id: String in check_unlocks():
-		EventBus.toast.emit(tr("New song on the radio: %s") % tr(title(id)), "info")
+		EventBus.toast.emit(tr("New song on the radio: %s") % tr(title(id)), "reward")  # [v4calm] cut
 		Audio.play("chime", 1.3, -8.0)
 
 

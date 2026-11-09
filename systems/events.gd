@@ -332,7 +332,7 @@ func _finish(handled: bool, text: String = "") -> void:
 		if world.get("wren") != null:
 			world.wren.say("event_won", 0.4)
 	if text != "":
-		EventBus.toast.emit(text, "story" if handled else "info")
+		EventBus.toast.emit(text, "reward")  # [v4calm] item 49: no payout summaries
 	print("[events] ended %s handled=%s  %s" % [id, str(handled), text])
 	event_ended.emit(id, handled)
 

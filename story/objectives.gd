@@ -484,6 +484,9 @@ func step_target(def: Dictionary) -> Dictionary:
 				out["row"] = ["build", "signal_tower"] if SignalTower.tier() == 0 else ["patch", "hb_signal_tower"]
 				var aff2: bool = GameState.can_afford_all(SignalTower.next_cost())
 				out["to"] = "bench" if aff2 else ("depot" if p and not p.carried.is_empty() else "hex")
+			"glim":  # [v4calm] item 43: the Repair Glim build once it's affordable; else earn
+				var aff3: bool = GameState.can_afford_all(YardBuilds.def("glim").get("cost", {}))
+				out = {"to": "bench" if aff3 else ("depot" if p and not p.carried.is_empty() else "hex"), "row": ["build", "glim"]}
 			"hex", "hex2", "hex3", "hex10", "hex20", "zone":  # [v3clear] hex2, hex10, hex20
 				out["to"] = "hex"
 			"bench2":
@@ -670,7 +673,7 @@ func _explain_signal() -> void:
 	GameState.flags["signal_explained"] = true
 	var w: Wren = _wren()
 	if w and w.awake():  # [qafix] WREN only gets through once a tower is up; otherwise the toast says it
-		w.speak(tr("Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."), 1)
+		w.speak(tr("Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."), 1)  # [v4calm] the lamp is quiet now
 	else:  # [qafix] QA P1 #2: one line, not WREN and a toast saying the same thing
 		EventBus.toast.emit(tr("BURIED PART: walk toward it until the reading peaks, then dig it up."), "hint")
 

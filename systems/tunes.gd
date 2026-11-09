@@ -157,7 +157,7 @@ static func grant(id: String, quiet: bool = false) -> bool:
 	GameState.inc_stat("cds_found")
 	print("[tunes] CD found: %s" % id)
 	if not quiet:
-		EventBus.toast.emit(toast_text(id), "info")
+		EventBus.toast.emit(toast_text(id), "info" if Once.take("toast_first_cd") else "reward")  # [v4calm] the first CD only
 		Audio.play("sparkle", 1.1, -6.0)
 	return true
 

@@ -50,7 +50,7 @@ func build(type_id: String, at: Vector3) -> Robot:
 		u["role"] = join_crew(type_id) if join_crew(type_id) != "" else "clean"
 	GameState.inc_stat("robots_built")
 	EventBus.robot_built.emit(rname)
-	EventBus.toast.emit(tr("%s %s assembled. It looks around, then gets to work.") % [tr(str(Economy.robots[type_id]["name"])), rname], "story")
+	EventBus.toast.emit(tr("%s %s assembled. It looks around, then gets to work.") % [tr(str(Economy.robots[type_id]["name"])), rname], "story" if Once.take("toast_first_robot") else "reward")  # [v4calm] only the first
 	var stand_in := Robot.new()
 	stand_in.type_id = type_id
 	stand_in.robot_name = rname

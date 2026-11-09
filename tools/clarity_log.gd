@@ -18,6 +18,8 @@ var _empty_since: float = -1.0
 var _worst_empty: float = 0.0
 var _cards: int = 0
 var _toasts: int = 0
+var _cut: int = 0  # [v4calm]
+var _wren_n: int = 0  # [v4calm]
 var _wren_hooked: bool = false
 var _fleet_t: float = 0.0
 var _last_fleet: String = "-"
@@ -34,6 +36,10 @@ func _ready() -> void:
 		Research.grant("salvage_logic")
 		GameState.add_currency("parts", BigNum.from_float(500.0))
 	EventBus.toast.connect(func(text: String, kind: String) -> void:
+		if Subtitles.cut(text, kind):  # [v4calm] cut toasts never show; listed so the audit sees them
+			_cut += 1
+			_say("cut(%s): %s" % [kind, text])
+			return
 		_toasts += 1
 		_say("toast(%s): %s" % [kind, text]))
 	get_tree().root.tree_exiting.connect(_summary)
@@ -69,7 +75,9 @@ func _process(delta: float) -> void:
 		var wr: Variant = world.get("wren")
 		if wr is Wren:
 			_wren_hooked = true
-			(wr as Wren).line_started.connect(func(text: String, _st: int) -> void: _say("WREN: " + text))
+			(wr as Wren).line_out.connect(func(text: String, _st: int) -> void:  # [v4calm] what reaches the screen
+				_wren_n += 1
+				_say("WREN: " + text))
 	_t -= delta / maxf(Engine.time_scale, 0.001)
 	if _t > 0.0:
 		return
@@ -135,4 +143,4 @@ static func card_text(w: Node, with_count: bool = true) -> String:
 
 
 func _summary() -> void:
-	_say("summary: %d card changes, %d toasts, longest empty card %.0f s" % [_cards, _toasts, _worst_empty])
+	_say("summary: %d card changes, %d toasts (%d cut), %d WREN lines, longest empty card %.0f s" % [_cards, _toasts, _cut, _wren_n, _worst_empty])

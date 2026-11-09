@@ -97,7 +97,7 @@ func interact() -> void:
 	Vfx.burst("big_sparkle", to_global(Vector3(0, 1.4, 0)), Color(0.7, 1.0, 0.55))  # [orbB] its own up
 	Audio.play("hydraulic", 1.0, -6.0)
 	Audio.music_sting("upgrade")
-	EventBus.toast.emit(tr("Compost press Lv %d: %.0f s cycles, %.1f seeds each.") % [level, cycle_seconds(), seeds_per_cycle()], "story")
+	EventBus.toast.emit(tr("Compost press Lv %d: %.0f s cycles, %.1f seeds each.") % [level, cycle_seconds(), seeds_per_cycle()], "reward")  # [v4calm] stat toast: cut
 	_refresh_label()
 
 

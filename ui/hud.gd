@@ -259,6 +259,8 @@ func _on_compartment(fill: float, cap: float) -> void:
 ## [onboard2] One message line: toasts go to the subtitle bar's queue (ui/subtitles.gd), one at a
 ## time with reading time. The old bottom-left stack is only a fallback where there is no bar.
 func show_toast(text: String, kind: String = "info") -> void:
+	if Subtitles.cut(text, kind):  # [v4calm] item 49: reward chatter never shows
+		return
 	if not Subtitles.post(text, kind):
 		_notify.push(text, kind)
 

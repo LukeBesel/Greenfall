@@ -113,11 +113,11 @@ func fish_count() -> int:
 func _on_clean(hid: int, _pos: Vector3, _bonus: BigNum) -> void:
 	if hid < 0 or hid >= cells.n or cells.state[hid] != 5 or not _cell.has(hid):
 		return
-	Audio.play("chime", 0.6, -2.0)
-	Audio.play("whoosh", 0.4, -6.0)
-	EventBus.shake_requested.emit(0.1)
+	if BeepGate.take("lake_clear", 20.0):  # [v4calm] item 50: water bots clear many lake hexes in a row
+		Audio.play("chime", 0.6, -6.0)
+		Audio.play("whoosh", 0.4, -10.0)
 	var wren: Variant = world.get("wren") if world else null
-	if wren is Wren:
+	if wren is Wren and Once.take("wren_lake_clear"):  # [v4calm] item 45: once per save, not per lake hex
 		(wren as Wren).line_started.emit(tr("The water... I can see the bottom. Lumi, there's something moving down there."), 1)
 	if not _fish.any(func(f: Dictionary) -> bool: return int(f["cell"]) == hid):
 		_stock_fish(hid)
