@@ -265,6 +265,9 @@ static func _fauna_check(tree: SceneTree, s: Node, so: SliceOrbit, check: Callab
 	check.call("orbit_garden_mode_closes", true, not lt.placer.is_open and sc.target == p)
 	GameState.world["hub_level"] = hl0
 	var h1: Vector3 = g.terrain.ground(g.grid.centers[int(g.sites[1]["cell"])])
+	var sp1: SitePrefab = g.site_manager.build_hub(1, true)  # [v4world] the frame wakes a hub once its town is built (as a walk or a hop gets it)
+	if not sp1.is_built:
+		await sp1.rebuilt
 	p.place_on_sphere(h1, p.forward())
 	hf.check_now()
 	check.call("orbit_fauna_frame_hops", 1, hf.hub)
