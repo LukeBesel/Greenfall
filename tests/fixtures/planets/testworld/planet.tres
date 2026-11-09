@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="PlanetDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://core/planet_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"testworld"
+display_name = "Test World"
+tagline = "A dummy planet used only by tests."
+order = 99
+shipped = false
+globe_frequency = 16
+hub_count = 2
+world_seed = 7
+target_playtime_min = 10.0
+tables = Dictionary[String, String]({
+"pollution": "res://tests/fixtures/planets/testworld/data/minimal.json",
+"upgrades": "res://tests/fixtures/planets/testworld/data/minimal.json",
+"regrowth": "res://tests/fixtures/planets/testworld/data/minimal.json",
+"tutorial": "res://tests/fixtures/planets/testworld/data/minimal.json",
+"goals": "res://tests/fixtures/planets/testworld/data/minimal.json"
+})
+palette = Dictionary[String, Color]({})
+music_set = ""

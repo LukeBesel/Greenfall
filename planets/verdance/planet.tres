@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="PlanetDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://core/planet_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"verdance"
+display_name = "Verdance"
+tagline = "Home, buried under what was left behind."
+order = 0
+shipped = true
+globe_frequency = 128
+hub_count = 10
+world_seed = 4471
+target_playtime_min = 240.0
+tables = Dictionary[String, String]({
+"pollution": "res://data/junk.json",
+"upgrades": "res://data/upgrades.json",
+"regrowth": "res://data/hex_levels.json",
+"tutorial": "res://data/objectives.json",
+"goals": "res://data/goals.json",
+"research": "res://data/research.json",
+"robots": "res://data/robots.json",
+"hub": "res://data/hub.json",
+"stations": "res://data/stations.json",
+"plants": "res://data/plants.json",
+"fauna": "res://data/fauna.json",
+"events": "res://data/events.json"
+})
+palette = Dictionary[String, Color]({})
+music_set = "verdance"

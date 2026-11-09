@@ -1,6 +1,6 @@
 # Greenfall: Planet 1 tasks
 
-The work list for `docs/PLAN.md`. One row per task. **Kind** is LEAD (the lead does it) or DELEGATE (a subagent does it). A task is done only when its acceptance criteria pass, the code reviewer has approved it and the QA tester has run the suite. Status values: todo, doing, review, done.
+The work list for `docs/PLAN.md`. One row per task. **Kind** is LEAD (the lead does it) or DELEGATE (a subagent does it). A task is done only when its acceptance criteria pass, the code reviewer has approved it and the QA tester has run the suite. Status values: todo, doing, review, done. In progress now (Nov 9): M1-01, M1-04, M1-13.
 
 Every milestone ends with the same gate (not repeated below): full test suite, save round trip, exit check, bot playthrough, engagement review, the dummy-planet reusability test, docs updated, a commit, and a short report to the owner.
 
@@ -12,7 +12,8 @@ Agents: architect (systems-architect-assistant), builder (systems-builder), save
 |---|---|---|---|---|---|---|
 | M1-01 | Bug triage on the merged build | qa | DELEGATE | `docs/PLAN.md` section 6, `tests/` | - | Every "verify" bug is reproduced or closed with evidence; new bugs added with severity; a failing test exists for each confirmed P1 |
 | M1-02 | Design spec: districts, sources, mastery, rigs, Surge, the ending | lead | LEAD | `docs/design/PLANET1_DESIGN.md` | - | Each mechanic has rules, data shape, numbers to tune and the events it emits; logged in DECISIONS |
-| M1-03 | PlanetDefinition schema and `Planets` autoload | lead | LEAD | `core/planet_definition.gd`, `autoload/Planets.gd`, `planets/verdance/planet.tres` | - | Typed resource covering every field in STYLE section 5; `Planets.current()` returns it; unit tests for load and validation errors |
+| M1-03 | PlanetDefinition schema and `Planets` autoload | lead | LEAD | `core/planet_definition.gd`, `autoload/Planets.gd`, `planets/verdance/planet.tres` | - | **Done (Nov 9).** Typed resource covering every field in STYLE section 5; `Planets.current()` returns it; unit tests for load and validation errors |
+
 | M1-04 | Remove the flat world | architect | DELEGATE | `scenes/slice.gd`, `planet/hex_field.gd`, `planet/city_*.gd`, `planet/frontier*.gd`, `planet/field_view.gd`, flat branches across the code | M1-01 | No `--flat` path, no flat-or-globe branch left in shared code; suite and round trip pass; line count reported |
 | M1-05 | Split world assembly into `world/` builders | architect | DELEGATE | `scenes/slice.gd`, `scenes/slice_orbit.gd`, new `world/*.gd` | M1-04 | One assembler under 300 lines calling named builders in a documented order; no behaviour change (bot run milestones within 5% of before) |
 | M1-06 | Move Verdance data and scripts to `planets/verdance/` | architect | DELEGATE | `data/*.json` (planet content), `planet/sites/verdance_site.gd`, `planet/sites/town_outskirts.gd`, `planet/sites/hinterland.gd`, `autoload/Economy.gd` | M1-03 | Economy loads planet tables through the definition; `data/` holds only planet-independent files; suite passes |
@@ -22,7 +23,7 @@ Agents: architect (systems-architect-assistant), builder (systems-builder), save
 | M1-10 | Restoration model and ending hook (R1), logic only | builder | DELEGATE | `systems/restoration.gd`, `systems/bloom.gd`, `planets/verdance/data/restoration.json` | M1-02, M1-07 | Planet restoration is computed from district states by a data rule; reaching 100% emits `planet_restored`; no cap from other planets; unit tests |
 | M1-11 | Fix confirmed P1 bugs (B2, B3, B4 and any found in triage) | fixer | DELEGATE | per bug | M1-01 | Each fix has a regression test that failed before it |
 | M1-12 | Fast balance simulator, first version (R12) | balance | DELEGATE | `tools/pace_sim/*`, `docs/PLANET_PLAYBOOK.md` | M1-06 | Runs a full planet model in under 10 s from the planet's data; prints the cadence table from PLAN section 9; reproduces the Nov 9 bot beats within 20% |
-| M1-13 | Unify the eye systems; refit the five other designs to the new head | builder | DELEGATE | `player/patch_model.gd`, `player/lumi_style_rig.gd`, `art/shaders/bot_face.gdshader`, `art/models/aurora/designs_addons.py` | - | One eye-shape path; all six designs render with add-ons seated on the head; hero tests pass |
+| M1-13 | All six designs match the owner's concept sheet (crescent or smiling eyes, never solid); one eye system; add-ons refitted to the new head. Animation polish is a later task | world | DELEGATE | `player/patch_model.gd`, `player/lumi_style_rig.gd`, `art/shaders/bot_face.gdshader`, `art/models/aurora/designs_addons.py` | - | One eye-shape path; all six designs render with add-ons seated on the head; hero tests pass |
 | M1-14 | Originality audit, pass 1 | review | DELEGATE | whole repo, `docs/ORIGINALITY.md` | - | Every mention of another game removed from code and data; a checklist of elements built "after" a reference (map, workbench, hub hall, terms) with a proposed change for each |
 | M1-15 | Architecture doc rewrite | docs | DELEGATE | `docs/ARCHITECTURE.md` | M1-08 | Describes the target layout as built; old split plan removed |
 

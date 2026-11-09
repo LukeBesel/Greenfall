@@ -383,3 +383,6 @@ The owner approved the plan and left the open calls to the lead ("decide what is
 - **Lead and branch.** This session leads the Planet 1 work on `claude/greenfall-aurora`. Work from other branches is merged in by the lead only when it serves the plan.
 - **Target playtime stays at about 4 hours** to the ending.
 - **Agents.** Fifteen definitions in `.claude/agents/`, all on Opus 5.5. Code-changing agents work in their own git worktrees; the lead reviews and merges. Two or three run at a time.
+- **Models (owner, Nov 9).** Opus 5.5 agents do routine execution. Fable agents may be used for work where being right matters most: reviewing large refactors, the save format, and checks on core design.
+- **All six robot designs must match the concept sheet** (`art/concept/lumi_concept.png`), not only Aurora. Animation that "makes sense" is wanted but is a later pass.
+- **PlanetDefinition landed** (`core/planet_definition.gd`, `autoload/Planets.gd`, `planets/verdance/planet.tres`). For now its tables point at the existing files in `data/`; task M1-06 moves them into the planet's folder. A dummy planet in `tests/fixtures/planets/testworld/` proves a second planet registers from its folder alone.
