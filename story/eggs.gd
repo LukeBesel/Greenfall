@@ -140,6 +140,9 @@ static func plan_spots_cells(frame: Node3D, f: SphereField, cells: PackedInt32Ar
 						break
 				if clash:
 					continue
+				var tr_: TargetReach = TargetReach.for_field(f)  # [v4world] #55: reachable (not walled in, steep or wet)
+				if tr_ and tr_.reach(wp) != "":
+					continue
 				best = frame.to_local(wp)
 				best_hex = hid
 				break

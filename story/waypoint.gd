@@ -135,12 +135,30 @@ func _ready() -> void:
 
 
 ## World position to point at, or null for none.
+## [v4world] Owner playtest 3 #55 (the beam went into a building's wall): on the globe the beam
+## never stands inside a collider, a building footprint, a lake or a walled-in spot; it moves to
+## the nearest open ground (TargetReach.beacon_point). Re-checked every RECHECK_S (colliders and
+## footprints stream in as Lumi nears) or when the target moves.
 func set_target(p: Variant) -> void:
-	_target = p
+	if not (p is Vector3) or world == null or not (world.get("field") is SphereField):
+		_target = p
+		_raw = null
+		return
+	if _raw is Vector3 and _target is Vector3 and (p as Vector3).distance_to(_raw) < 0.3 and _recheck > 0.0:
+		return
+	_raw = p
+	_recheck = RECHECK_S
+	_target = TargetReach.beacon_point(world, p)
+
+
+const RECHECK_S: float = 2.0
+var _raw: Variant = null
+var _recheck: float = 0.0
 
 
 func _process(delta: float) -> void:
 	_t += delta
+	_recheck -= delta  # [v4world]
 	var p: Patch = world.get("patch") as Patch if world else null
 	var hud_on: bool = world != null and (world.get("hud") == null or (world.hud as CanvasLayer).visible)
 	var modal: bool = world != null and world.has_method("any_modal_open") and bool(world.call("any_modal_open"))
