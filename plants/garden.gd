@@ -84,16 +84,11 @@ func add_hex(hid: int) -> void:
 		_chunk_cap[ck] = int(_chunk_cap.get(ck, 0)) + 1
 
 
-## [biomes] Can this empty slot take a seed here? (not under water; frontier rules: cold, greenhouses)
+## [biomes] Can this empty slot take a seed here? (not under water, not on paving)
 func plantable(s: int) -> bool:
 	if world == null or world.field.is_water(slot_hex[s]):
 		return false
-	if sparse and on_paving(s):  # [v4grow] streets, sidewalks and kerbs, the pad, buildings
-		return false
-	var fr: Variant = world.get("frontier")
-	if fr is FrontierDistrict:
-		return (fr as FrontierDistrict).slot_plantable(slot_hex[s])
-	return true
+	return not (sparse and on_paving(s))  # [v4grow] streets, sidewalks and kerbs, the pad, buildings
 
 
 ## [orbB] Sparse mode: make a land cell's slots (once) and restore what a save had planted there.

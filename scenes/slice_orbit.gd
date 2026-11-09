@@ -1,9 +1,7 @@
 class_name SliceOrbit
 extends Node
-## [orbB] The slice on the walkable globe (--orbit). scenes/slice.gd hands its build to this node
-## and routes a few calls here (tagged `# [orbB]` hooks); the slice keeps being `world` for
-## Patch, the HUD, the Depot and every system, so systems port one at a time by moving out of
-## the "not ported yet" list below.
+## [orbB] The slice on the walkable globe. scenes/slice.gd hands its build to this node and routes
+## its calls here; the slice keeps being `world` for Patch, the HUD, the Depot and every system.
 ##
 ## Built here: the globe (OrbitPlanet: survey, terrain, cells, streamer, SphereField as the
 ## slice's `field`, SphereJunkView as its `view`, sites, gravity), sky and day/night (OrbitDay),
@@ -23,8 +21,7 @@ extends Node
 ## Dev flags (phase A's, now on the slice): --orbit-walk[=boost] --orbit-lap-quit,
 ## --orbit-scoop, --orbit-cash --orbit-cash-quit, --orbit-view=follow|ground|command,
 ## --orbit-day=MIN, --orbit-time=0..1, --orbit-presim=MIN, --orbit-hubs=N, --orbit-cam=D,P,
-## --orbit-bots=N (stand-in SphereBots, default 4). The phase A scenes stay reachable as
-## --orbit=globe (planet/orbit/verdance_globe.tscn) and --orbit=v1.
+## --orbit-bots=N (stand-in SphereBots, default 4).
 
 const SCHEMA: int = OrbitSave.SCHEMA  # GameState.orbit layout: core/save_orbit.gd
 const HEX_MILESTONES: Array[int] = [1, 5, 10, 25, 50, 100, 150, 200, 264]  # slice.gd's, by cell id here
@@ -40,11 +37,6 @@ var layers: OrbitLayers  # [orbE]
 var view_mode: String = "follow"
 var sites: OrbitSites  # [orbD]
 var hub_states: Dictionary = {}  # site index (str) -> {level} (core/save_orbit.gd); the Hub port fills it
-
-
-## True unless a phase A prototype (--orbit=v1 / --orbit=globe) is asked for: the game is the globe.
-static func wanted() -> bool:
-	return not (DevHooks.has("orbit") and DevHooks.get_s("orbit", "") in ["v1", "globe"])
 
 
 ## Builds the whole orbit slice into `p_world`. [orbE] Behind the loading screen (a BuildBudget is

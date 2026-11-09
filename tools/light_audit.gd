@@ -10,7 +10,7 @@ extends Node
 ## as lit when their `energy * power` is above a faint glow and some vertex is not flagged dead.
 
 const SKIP_CLASSES: Array[String] = ["Patch", "Robot", "CameraRig", "PickupFx", "HUD", "PhotoMode", "Vfx", "GlobeView",
-	"SkyDirector", "JunkCube", "Glim", "GlimBot", "LitterView", "FarJunk", "Fauna", "Wildlife", "Garden"]
+	"SkyDirector", "JunkCube", "Glim", "GlimBot", "LitterView", "Fauna", "Wildlife", "Garden"]
 const SKIP_NAMES: Array[String] = ["Sky", "Weather", "Fleet", "Cubes", "Fauna", "Garden", "Plants"]
 ## Not the district's power, listed apart (tools run) and left out of the check:
 ##   CrashSite  Lumi's own crashed pod (its damaged beacon and sparking wires are the pod story)

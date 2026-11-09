@@ -678,14 +678,13 @@ func _pick_plant_hex(g: Garden) -> int:
 			return _plant_hex
 	var best: int = -1
 	var best_s: float = INF
-	var pad: Array[int] = AutoplayCampaign.pad_hexes(world)
 	for h: int in _hexes():
 		if not _land(h) or not world.field.is_clean(h):
 			continue
 		var pc: Vector2i = _hex_planted(g, h)
 		if pc.y == 0 or pc.x >= pc.y:
 			continue
-		var s: float = world.field.hex_center(h).length() - (100.0 if pc.x > 0 else 0.0) - (500.0 if h in pad else 0.0)
+		var s: float = world.field.hex_center(h).length() - (100.0 if pc.x > 0 else 0.0)
 		if s < best_s:
 			best_s = s
 			best = h
@@ -944,22 +943,10 @@ func _manage(p: Patch) -> void:
 	_shop(want)
 
 
-## [beat] The whole-game layer: frontier chores and rocket trips (tools/autoplay_campaign.gd).
+## [beat] The whole-game layer: campaign milestones and rocket trips (tools/autoplay_campaign.gd).
 func _campaign(_p: Patch) -> void:
 	if bool(world.get("launching")):
 		return
-	var chore: String = AutoplayCampaign.frontier_chores(world)
-	if chore != "":
-		_progress()
-		_event("frontier", {"what": chore})
-	var kid: String = AutoplayCampaign.frontier_kid(world)
-	if kid != "":
-		_mark("arrive_%s_s" % kid)
-		var fr: FrontierDistrict = world.get("frontier")
-		if fr and fr.growing_frac >= 0.5:
-			_mark("%s_growing50_s" % kid)
-		if int(world.hub.level) >= 5:
-			_mark("%s_base5_s" % kid)
 	for b: Variant in CoreCharge.beats_done():
 		_mark("core_%d_s" % int(b))
 	if GameState.flags.get("seeds_unlocked", false):

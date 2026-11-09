@@ -7,7 +7,7 @@ extends Node
 const MEMBERS: Array[String] = ["field", "layout", "city", "litter", "tutorial", "wren", "fleet", "planet", "globe",
 	"sky_director", "hub", "rocket", "shards", "garden", "hex_levels", "goals", "first_seed", "wildlife", "water",
 	"doc_view", "interactables", "camp", "eggs", "ledger", "outposts", "events", "lumi_level", "contracts", "photo",
-	"fauna", "frontier", "planet_env", "bounds", "orbit", "view", "depot", "patch", "cam", "hud", "upgrades",
+	"fauna", "orbit", "view", "depot", "patch", "cam", "hud", "upgrades",
 	"command", "music", "intro", "objectives", "core_charge", "composter", "pause_menu", "research", "achievements",
 	"codex", "dressing", "street_power"]
 
