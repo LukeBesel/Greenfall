@@ -72,6 +72,16 @@
       "requires_level": 1,
       "requires_flag": "first_sprout"
     },
+    "glim": {
+      "name": "Repair Glim",
+      "desc": "The little lantern bot who held on to your pod all the way down. Patch him up and he'll follow you and light the way.",
+      "cost": {"cubes": 80, "parts": 10},
+      "requires_level": 1,
+      "requires_bench": true,
+      "requires_flag": "glim_ready",
+      "hidden_until_unlocked": true,
+      "global": true
+    },
     "camera_bot": {
       "name": "Blink",
       "desc": "A little floating camera bot with a big lens for a face. Builds once; then he follows Lumi from base to base and photo mode opens.",

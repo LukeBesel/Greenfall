@@ -1063,6 +1063,11 @@ func _shop(want: Dictionary) -> void:
 	var pu: String = _pace_upgrade()
 	if pu != "":
 		Economy.buy_upgrade(pu, 1)
+	# 2b2) [v4calm] Repair Glim (the workbench Build entry) as soon as it's listed and paid for.
+	if HubBuilds.listed(world, GlimDirector.BUILD_ID) and str(HubBuilds.entry(world, GlimDirector.BUILD_ID)["reason"]) == "" \
+			and HubBuilds.build(world, GlimDirector.BUILD_ID):
+		_event("build", {"id": "glim"})
+		_mark("glim_repair_s")
 	# 2c) [buddy] Glim's Lantern and Hex Scanner when affordable (1.5x margin: never starves the core loop).
 	for gid: String in ["light", "scan"]:
 		if Glim.block_reason(gid) == "" and GameState.can_afford_all(Glim.next_cost(gid), 1.5) and Glim.buy(gid):
