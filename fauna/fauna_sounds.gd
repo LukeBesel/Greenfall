@@ -15,23 +15,38 @@ static func ensure() -> void:
 	if _done:
 		return
 	_done = true
+	# [v1menu] The synthesis is pure maths: behind the loading screen it runs on a worker thread
+	# (one task, so the rng order and the sounds are unchanged) and the loader keeps animating;
+	# the streams are registered on the main thread afterwards. Synchronous without a budget.
+	var bufs: Dictionary = {}
+	if BuildBudget.active():
+		var task: int = WorkerThreadPool.add_task(_synth_all.bind(bufs), false, "fauna sounds")
+		while not WorkerThreadPool.is_task_completed(task):
+			await BuildBudget.pause("sounds (thread)")
+		WorkerThreadPool.wait_for_task_completion(task)
+	else:
+		_synth_all(bufs)
+	for name: String in ["purr", "meow", "coo", "chirp", "song", "quack", "gull", "frog", "seal", "flutter"]:
+		Audio.override(name, bufs[name])
+	await BuildBudget.check("sounds")
+
+
+## Every sound's streams, synthesized in the original rng order (name -> Array of AudioStreamWAV).
+static func _synth_all(out: Dictionary) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 9091
-	var reg := func(name: String, bufs: Array) -> void:
-		var streams: Array = []
-		for b: PackedFloat32Array in bufs:
-			streams.append(wav(b))
-		Audio.override(name, streams)
-	reg.call("purr", [purr(rng, 0.0), purr(rng, 0.15), purr(rng, -0.1)])
-	reg.call("meow", [meow(0.0), meow(0.12), meow(-0.08)])
-	reg.call("coo", [coo(0.0), coo(0.1), coo(-0.06)])
-	reg.call("chirp", [chirp(rng, 0), chirp(rng, 1), chirp(rng, 2), chirp(rng, 3)])
-	reg.call("song", [song(rng, 0), song(rng, 1), song(rng, 2), song(rng, 3)])
-	reg.call("quack", [quack(rng, 0.0), quack(rng, 0.08), quack(rng, -0.06)])
-	reg.call("gull", [gull(0.0), gull(0.1), gull(-0.08)])
-	reg.call("frog", [frog(rng, 0.0), frog(rng, 0.12), frog(rng, -0.1)])
-	reg.call("seal", [seal(0.0), seal(0.1), seal(-0.1)])
-	reg.call("flutter", [flutter(rng, 0.8), flutter(rng, 1.0), flutter(rng, 1.3)])
+	out["purr"] = [purr(rng, 0.0), purr(rng, 0.15), purr(rng, -0.1)]
+	out["meow"] = [meow(0.0), meow(0.12), meow(-0.08)]
+	out["coo"] = [coo(0.0), coo(0.1), coo(-0.06)]
+	out["chirp"] = [chirp(rng, 0), chirp(rng, 1), chirp(rng, 2), chirp(rng, 3)]
+	out["song"] = [song(rng, 0), song(rng, 1), song(rng, 2), song(rng, 3)]
+	out["quack"] = [quack(rng, 0.0), quack(rng, 0.08), quack(rng, -0.06)]
+	out["gull"] = [gull(0.0), gull(0.1), gull(-0.08)]
+	out["frog"] = [frog(rng, 0.0), frog(rng, 0.12), frog(rng, -0.1)]
+	out["seal"] = [seal(0.0), seal(0.1), seal(-0.1)]
+	out["flutter"] = [flutter(rng, 0.8), flutter(rng, 1.0), flutter(rng, 1.3)]
+	for name: String in out:
+		out[name] = (out[name] as Array).map(func(b: PackedFloat32Array) -> AudioStreamWAV: return wav(b))
 
 
 static func crickets_loop() -> AudioStreamWAV:
@@ -217,9 +232,10 @@ static func flutter(rng: RandomNumberGenerator, rate: float) -> PackedFloat32Arr
 	for i: int in b.size():
 		var t: float = float(i) / RATE
 		var n: float = rng.randf_range(-1.0, 1.0)
-		lp += (n - lp) * 0.35
-		var beat: float = pow(0.5 + 0.5 * sin(TAU * 14.0 * rate * t + sin(TAU * 3.0 * t)), 4.0)
-		b[i] = lp * beat * 0.4 * (1.0 - smoothstep(0.3, 0.9, t)) * smoothstep(0.0, 0.03, t)
+		# [fauna2] Softer: darker noise, fewer and rounder wingbeats that slow and fade.
+		lp += (n - lp) * 0.12
+		var beat: float = pow(0.5 + 0.5 * sin(TAU * 9.0 * rate * t * (1.0 - 0.3 * t)), 2.0)
+		b[i] = lp * beat * 0.3 * (1.0 - smoothstep(0.25, 0.9, t)) * smoothstep(0.0, 0.05, t)
 	return b
 
 
@@ -239,4 +255,151 @@ static func crickets(rng: RandomNumberGenerator) -> PackedFloat32Array:
 				gate = pow(0.5 + 0.5 * sin(TAU * 60.0 * t), 2.0) * sin(PI * k / 0.3)
 			s += sin(TAU * vo.x * t) * gate
 		b[i] = s * 0.035 + rng.randf_range(-0.002, 0.002)
+	return b
+
+
+# --- [fauna2] Frontier ambience ------------------------------------------------------------------
+
+static var _loops: Dictionary = {}
+
+
+## Registers the frontier one-shots (ice creaks, heron calls) with Audio.
+static func ensure_frontier() -> void:
+	if Audio.has_sound("ice_creak"):
+		return
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 6161
+	Audio.override("ice_creak", [wav(ice_creak(rng, 0.0)), wav(ice_creak(rng, 0.25)), wav(ice_creak(rng, -0.2))])
+	Audio.override("heron", [wav(heron(rng, 0.0)), wav(heron(rng, 0.08)), wav(heron(rng, -0.06))])
+
+
+## Seamless ambience beds, made on first use: wind (desert gusts), insects (cicadas and a
+## buzz), lapping (water against stones).
+static func loop_stream(id: String) -> AudioStreamWAV:
+	if not _loops.has(id):
+		var rng := RandomNumberGenerator.new()
+		rng.seed = hash(id)
+		var b := PackedFloat32Array()
+		match id:
+			"wind": b = wind(rng)
+			"insects": b = insects(rng)
+			"lapping": b = lapping(rng)
+		_loops[id] = wav(b, true)
+	return _loops[id]
+
+
+## Makes a buffer loop seamlessly: its last `fade` seconds are crossfaded into its start and
+## then dropped.
+static func loopify(b: PackedFloat32Array, fade: float) -> PackedFloat32Array:
+	var f: int = int(fade * RATE)
+	var n: int = b.size() - f
+	var out := PackedFloat32Array()
+	out.resize(n)
+	for i: int in n:
+		out[i] = b[i]
+	for i: int in f:
+		var k: float = float(i) / f
+		out[i] = b[i] * k + b[n + i] * (1.0 - k)
+	return out
+
+
+## Desert wind: low rumbling noise with slow gusts and a faint whistle on the strong ones.
+static func wind(rng: RandomNumberGenerator) -> PackedFloat32Array:
+	var dur: float = 9.0
+	var b := _buf(dur + 1.5)
+	var lp: float = 0.0
+	var lp2: float = 0.0
+	var bp: float = 0.0
+	var bv: float = 0.0
+	for i: int in b.size():
+		var t: float = float(i) / RATE
+		var gust: float = 0.55 + 0.3 * sin(TAU * t / 4.5) + 0.15 * sin(TAU * t / 1.7 + 1.3)
+		var n: float = rng.randf_range(-1.0, 1.0)
+		var cut: float = 0.02 + 0.05 * gust
+		lp += (n - lp) * cut
+		lp2 += (lp - lp2) * cut
+		# A resonant band (~700 Hz) for the whistle.
+		var w: float = TAU * (650.0 + 120.0 * gust) / RATE
+		bv += (n - bp) * w * 0.08 - bv * 0.02
+		bp += bv * w
+		b[i] = lp2 * 0.9 * gust + bp * 0.01 * maxf(gust - 0.7, 0.0)
+	return loopify(b, 1.5)
+
+
+## Insects: a cicada drone (pulsed high buzz, swelling and fading) and a softer second voice.
+static func insects(rng: RandomNumberGenerator) -> PackedFloat32Array:
+	var dur: float = 8.0
+	var b := _buf(dur)
+	for i: int in b.size():
+		var t: float = float(i) / RATE
+		var swell: float = pow(0.5 + 0.5 * sin(TAU * t / 8.0 - PI * 0.5), 1.5)
+		var swell2: float = pow(0.5 + 0.5 * sin(TAU * t / 4.0 + 1.0), 2.0)
+		var pulse: float = pow(0.5 + 0.5 * sin(TAU * 110.0 * t), 3.0)
+		var pulse2: float = pow(0.5 + 0.5 * sin(TAU * 72.0 * t), 2.0)
+		var s: float = sin(TAU * 5200.0 * t) * pulse * swell + sin(TAU * 3800.0 * t) * pulse2 * swell2 * 0.5
+		b[i] = s * 0.03 + rng.randf_range(-0.003, 0.003)
+	return b
+
+
+## Water lapping against stones and walls: soft, irregular sloshes with the odd plip.
+static func lapping(rng: RandomNumberGenerator) -> PackedFloat32Array:
+	var dur: float = 8.0
+	var b := _buf(dur + 1.0)
+	var lp: float = 0.0
+	var lp2: float = 0.0
+	var next: float = 0.0
+	var env: float = 0.0
+	var plips: Array[Vector2] = []
+	for k: int in 5:
+		plips.append(Vector2(rng.randf_range(0.0, dur), rng.randf_range(900.0, 1600.0)))
+	for i: int in b.size():
+		var t: float = float(i) / RATE
+		if t >= next:
+			next = t + rng.randf_range(0.7, 1.8)
+			env = rng.randf_range(0.6, 1.0)
+		env *= 0.99985
+		var n: float = rng.randf_range(-1.0, 1.0)
+		lp += (n - lp) * 0.08
+		lp2 += (lp - lp2) * 0.08
+		var s: float = lp2 * env * 1.6
+		for pl: Vector2 in plips:
+			var d: float = t - pl.x
+			if d >= 0.0 and d < 0.12:
+				s += sin(TAU * pl.y * (1.0 + d * 3.0) * d) * exp(-d * 40.0) * 0.08
+		b[i] = s
+	return loopify(b, 1.0)
+
+
+## Sea ice under strain: a stick-slip groan that speeds up, then a small crack.
+static func ice_creak(rng: RandomNumberGenerator, v: float) -> PackedFloat32Array:
+	var b := _buf(1.4)
+	var ph: float = 0.0
+	var lp: float = 0.0
+	for i: int in b.size():
+		var t: float = float(i) / RATE
+		var x: float = t / 1.4
+		var f: float = (90.0 + 60.0 * x + rng.randf_range(-6.0, 6.0)) * (1.0 + v)
+		ph += TAU * f / RATE
+		var saw: float = fmod(ph / TAU, 1.0) * 2.0 - 1.0
+		var slip: float = pow(0.5 + 0.5 * sin(TAU * (14.0 + 30.0 * x) * t), 6.0)
+		var crack: float = 0.0
+		if x > 0.78 and x < 0.86:
+			crack = rng.randf_range(-1.0, 1.0) * exp(-(x - 0.78) * 60.0)
+		lp += (saw * slip - lp) * 0.3
+		b[i] = (lp * 0.5 + crack * 0.6) * sin(PI * minf(x / 0.9, 1.0)) * 0.22
+	return b
+
+
+## A grey heron's harsh "fraank": a rough low call with a noisy edge.
+static func heron(rng: RandomNumberGenerator, v: float) -> PackedFloat32Array:
+	var b := _buf(0.55)
+	var ph: float = 0.0
+	for i: int in b.size():
+		var t: float = float(i) / RATE
+		var x: float = t / 0.55
+		ph += TAU * (330.0 - 90.0 * x) * (1.0 + v) / RATE
+		var saw: float = fmod(ph / TAU, 1.0) * 2.0 - 1.0
+		var rough: float = 0.65 + 0.35 * sin(TAU * 48.0 * t)
+		var s: float = (saw * 0.6 + sin(ph * 3.0) * 0.25 + rng.randf_range(-0.3, 0.3)) * rough
+		b[i] = s * sin(PI * pow(x, 0.4)) * 0.1
 	return b

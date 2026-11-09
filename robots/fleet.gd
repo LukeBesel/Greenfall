@@ -12,6 +12,7 @@ var _report_done: bool = false
 
 func _ready() -> void:
 	add_to_group("persist")
+	RobotDesign.register_hooks()  # [ui7] Locker type designs on globe robots too
 	if world != null:
 		water_net = WaterNet.new()
 		water_net.name = "WaterNet"
@@ -20,6 +21,8 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	if not GameState.parts.is_empty():
+		RobotParts.fold_items()  # [ui2] robot part items from older code become Parts
 	# --bot-report (or any --robots run): print what every robot got done just before --quit-after ends the run.
 	if _report_done or not (DevHooks.has("bot-report") or DevHooks.has("robots")) or not DevHooks.has("quit-after"):
 		return
@@ -46,6 +49,12 @@ func robots() -> Array[Robot]:
 	return out
 
 
+## [v3qa] How many robots there are. SphereFleet (round planets) counts its crew: its robots()
+## is empty, so goals and objectives that asked robots().size() never saw the first robot.
+func robot_total() -> int:
+	return robots().size()
+
+
 func count(type_id: String) -> int:
 	var n: int = 0
 	for r: Robot in robots():
@@ -58,17 +67,6 @@ func tier_of(type_id: String) -> int:
 	return int(GameState.flags.get("tier_" + type_id, 0))
 
 
-## Best stored part of a type (highest rarity), or -1 index into GameState.parts.
-func _best_part(part_type_idx: int, min_rarity: int = 0) -> int:
-	var best: int = -1
-	for i: int in GameState.parts.size():
-		var p: Dictionary = GameState.parts[i]
-		if int(p["type"]) == part_type_idx and int(p["rarity"]) >= min_rarity:
-			if best < 0 or int(p["rarity"]) > int(GameState.parts[best]["rarity"]):
-				best = i
-	return best
-
-
 static func part_index(part_id: String) -> int:
 	var types: Array = Economy.parts.get("types", [])
 	for i: int in types.size():
@@ -77,51 +75,15 @@ static func part_index(part_id: String) -> int:
 	return -1
 
 
-## Lowest Control Core rarity that some robot type's next Mk tier needs (huge when none does).
-## Cores at or above it are worth keeping for upgrade_tier.
+## [ui2] Kept for older callers: robots no longer need a recipe of part items (builds cost Parts,
+## build_parts()), so there is nothing to show or to miss.
+func recipe_status(_type_id: String) -> Array:
+	return []
+
+
+## [ui2] Kept for older callers: no Control Cores any more.
 func core_keep_rarity() -> int:
-	var need: int = 1 << 30
-	for tid: String in Economy.robot_order:
-		var t: int = tier_of(tid)
-		if t + 1 >= Economy.robot_tiers.size():
-			continue
-		var r: int = int(Economy.robot_tiers[t + 1].get("requires_core_rarity", 0))
-		if r >= 0:
-			need = mini(need, r)
-	return need
-
-
-## Recipe status: Array of {part_id, name, have: bool, rarity: int}.
-## Non-core slots take the best part in storage. The "core" slot spares tier-up cores: it takes
-## the best core below core_keep_rarity(), and only if there is none, the weakest one above it.
-func recipe_status(type_id: String) -> Array:
-	var out: Array = []
-	var used: Dictionary = {}
-	var keep: int = core_keep_rarity()
-	for part_id: String in Economy.robots[type_id].get("recipe", []):
-		var idx: int = part_index(part_id)
-		var have: int = -1
-		for i: int in GameState.parts.size():
-			if used.has(i) or int(GameState.parts[i]["type"]) != idx:
-				continue
-			if have < 0:
-				have = i
-				continue
-			var ri: int = int(GameState.parts[i]["rarity"])
-			var rh: int = int(GameState.parts[have]["rarity"])
-			if part_id == "core":
-				if (ri < keep) != (rh < keep):
-					if ri < keep:
-						have = i  # a spare core always beats one needed for a Mk tier
-				elif (ri > rh) if ri < keep else (ri < rh):
-					have = i
-			elif ri > rh:
-				have = i
-		if have >= 0:
-			used[have] = true
-		out.append({"part_id": part_id, "name": tr(str(Economy.part_type(idx).get("name", part_id))), "have": have >= 0,
-			"rarity": int(GameState.parts[have]["rarity"]) if have >= 0 else -1, "index": have})
-	return out
+	return 1 << 30
 
 
 # --- Crews and caps ----------------------------------------------------------------------
@@ -180,15 +142,13 @@ func build_block_reason(type_id: String) -> String:
 	if wk != "":
 		return wk
 	if not Research.robot_unlocked(type_id):
+		if Research.is_story(Research.robot_requirement(type_id)):  # [v4bots] arrives later by itself
+			return Research.robot_lock_text(type_id)
 		return tr("Locked · research %s") % tr(str(Research.def(Research.robot_requirement(type_id)).get("name", "?")))
 	if join_crew(type_id) == "":
 		return tr("Crew full (%d/%d): upgrade the hub") % [crew_size(crew_of_type(type_id)), crew_cap()]
-	var missing: int = 0
-	for r: Dictionary in recipe_status(type_id):
-		if not r["have"]:
-			missing += 1
-	if missing > 0:
-		return tr_n("Missing %d part", "Missing %d parts", missing) % missing
+	if not GameState.can_afford("parts", build_parts(type_id)):  # [ui2] builds cost Parts + cubes
+		return tr("Not enough parts")
 	if not GameState.can_afford("cubes", build_cost(type_id)):
 		return tr("Not enough cubes")
 	return ""
@@ -199,6 +159,15 @@ func build_cost(type_id: String) -> BigNum:
 	return BigNum.from_float(base * pow(1.35, count(type_id)))
 
 
+## [ui2] Parts for the next robot of a type (data/robots.json "parts"; x1.2 per robot owned).
+const PARTS_GROWTH: float = 1.2
+
+
+func build_parts(type_id: String) -> BigNum:
+	var base: float = float(Economy.robots[type_id].get("parts", 30))
+	return BigNum.from_float(ceilf(base * pow(PARTS_GROWTH, count(type_id))))
+
+
 func can_build(type_id: String) -> bool:
 	return build_block_reason(type_id) == ""
 
@@ -207,18 +176,9 @@ func build(type_id: String, at: Vector3) -> Robot:
 	if not can_build(type_id):
 		return null
 	var crew: String = join_crew(type_id)
-	var status: Array = recipe_status(type_id)
-	var rarity_sum: float = 0.0
-	var to_remove: Array[int] = []
-	for r: Dictionary in status:
-		to_remove.append(int(r["index"]))
-		rarity_sum += float(r["rarity"])
+	GameState.spend("parts", build_parts(type_id))  # [ui2] Parts + cubes, no part recipe
 	GameState.spend("cubes", build_cost(type_id))
-	to_remove.sort()
-	to_remove.reverse()
-	for i: int in to_remove:
-		GameState.parts.remove_at(i)
-	var bonus: float = 0.05 * rarity_sum / maxf(status.size(), 1.0)
+	var bonus: float = 0.0
 	var rname: String = NAMES[randi() % NAMES.size()] + "-%02d" % (randi() % 100)
 	while find_robot(rname) != null:
 		rname = NAMES[randi() % NAMES.size()] + "-%02d" % (randi() % 100)
@@ -228,7 +188,7 @@ func build(type_id: String, at: Vector3) -> Robot:
 	GameState.inc_stat("robots_built")
 	EventBus.robot_built.emit(r.robot_name)
 	var quirk: String = tr(str(RobotBuilder.trait_def(RobotBuilder.trait_of(r)).get("name", ""))).to_lower()  # [drones] personality
-	EventBus.toast.emit(tr("%s %s assembled. It looks around, then gets to work.%s") % [tr(str(Economy.robots[type_id]["name"])), r.robot_name, (tr(" Seems %s.") % quirk) if quirk != "" else ""], "story")
+	EventBus.toast.emit(tr("%s %s assembled. It looks around, then gets to work.%s") % [tr(str(Economy.robots[type_id]["name"])), r.robot_name, (tr(" Seems %s.") % quirk) if quirk != "" else ""], "story" if Once.take("toast_first_robot") else "reward")  # [v4calm] only the first
 	return r
 
 
@@ -241,31 +201,33 @@ func spawn(type_id: String, tier: int, at: Vector3, bonus: float, rname: String)
 	r.world = world
 	add_child(r)
 	r.global_position = at
+	RobotDesign.apply(r)  # [ui7] every robot wears its type's design (the Locker), new ones too
 	# Boot-up: a little flash of sparks and a servo whine.
 	Vfx.burst("sparkle", at + Vector3(0, 0.6, 0), Color(1.0, 0.8, 0.4), 0.6)
 	Audio.play("servo", 0.7, -8.0)
 	return r
 
 
-## Next tier requirements for a type: {cost: BigNum, core_rarity: int, ok: bool, reason: String}
+## [ui2] Parts for each Mk step (Mk II, III, IV). The Restored+ Control Core used to be the gate
+## (a rare find); these keep Mk tiers about as far apart as they were.
+const TIER_PARTS: Array[float] = [200.0, 700.0, 2000.0]
+
+
+## Next tier requirements for a type: {cost: BigNum (cubes), parts: BigNum, ok: bool, reason: String}
 func tier_requirements(type_id: String) -> Dictionary:
 	var t: int = tier_of(type_id)
 	if t + 1 >= Economy.robot_tiers.size():
 		return {"maxed": true}
 	var nt: Dictionary = Economy.robot_tiers[t + 1]
 	var cost := BigNum.from_float(float(Economy.robots[type_id].get("cost", 100)) * float(nt.get("cost_mult", 1)))
-	var need: int = int(nt.get("requires_core_rarity", 0))
-	var core_i: int = _best_part(part_index("core"), need)
-	var parts := BigNum.from_float([50.0, 200.0, 750.0][clampi(t, 0, 2)])  # [money] was 10/40/150 bolts
-	var ok: bool = GameState.can_afford("cubes", cost) and core_i >= 0 and GameState.can_afford("parts", parts)
+	var parts := BigNum.from_float(TIER_PARTS[clampi(t, 0, 2)])  # [ui2] Parts only, no Control Core
+	var ok: bool = GameState.can_afford("cubes", cost) and GameState.can_afford("parts", parts)
 	var reason: String = ""
-	if core_i < 0:
-		reason = tr("Needs a %s Control Core") % tr(str(Economy.rarity(need).get("name", "?")))
+	if not GameState.can_afford("parts", parts):
+		reason = tr("Not enough parts")
 	elif not GameState.can_afford("cubes", cost):
 		reason = tr("Not enough cubes")
-	elif not GameState.can_afford("parts", parts):
-		reason = tr("Not enough parts (scrap spares at Haggle's or run the recycler)")
-	return {"maxed": false, "cost": cost, "parts": parts, "core_rarity": need, "ok": ok, "reason": reason, "next": nt}
+	return {"maxed": false, "cost": cost, "parts": parts, "core_rarity": 0, "ok": ok, "reason": reason, "next": nt}
 
 
 func upgrade_tier(type_id: String) -> bool:
@@ -274,7 +236,6 @@ func upgrade_tier(type_id: String) -> bool:
 		return false
 	GameState.spend("cubes", req["cost"])
 	GameState.spend("parts", req["parts"])
-	GameState.parts.remove_at(_best_part(part_index("core"), int(req["core_rarity"])))
 	var t: int = tier_of(type_id) + 1
 	GameState.flags["tier_" + type_id] = t
 	# Fast-build moment: each robot of this type gets rebuilt in a shower of sparks.
@@ -473,4 +434,4 @@ func restore() -> void:
 		r.job = str(d.get("job", "clean"))
 		r.hopper.from_dict(d.get("hopper", {}))
 		r.trait_id = str(d.get("trait", ""))  # [drones] builder parts + personality
-		RobotBuilder.set_build(r, d.get("build", {}))
+		RobotBuilder.set_build(r, RobotDesign.parts(r.type_id) if RobotDesign.of(r.type_id).has("parts") else d.get("build", {}))  # [ui7] the type's design wins

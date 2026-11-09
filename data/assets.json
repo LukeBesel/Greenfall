@@ -135,7 +135,15 @@
     "asphalt_02",
     "sand_01",
     "snow_02",
-    "damp_sand"
+    "damp_sand",
+    "quarry_wall",
+    "red_laterite_soil_stones",
+    "terrain_red_01"
   ],
-  "polyhaven_hdris": []
+  "polyhaven_hdris": [],
+  "vendored": [
+    {"id": "quaternius_deer", "path": "art/vendor/quaternius/Deer.gltf", "name": "Deer (Ultimate Animated Animal Pack)", "type": "model", "author": "Quaternius", "license": "CC0", "source": "https://quaternius.com/packs/ultimateanimatedanimals.html"},
+    {"id": "quaternius_stag", "path": "art/vendor/quaternius/Stag.gltf", "name": "Stag (Ultimate Animated Animal Pack)", "type": "model", "author": "Quaternius", "license": "CC0", "source": "https://quaternius.com/packs/ultimateanimatedanimals.html"},
+    {"id": "quaternius_fox", "path": "art/vendor/quaternius/Fox.gltf", "name": "Fox (Ultimate Animated Animal Pack)", "type": "model", "author": "Quaternius", "license": "CC0", "source": "https://quaternius.com/packs/ultimateanimatedanimals.html"}
+  ]
 }

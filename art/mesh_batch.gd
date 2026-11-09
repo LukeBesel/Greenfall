@@ -52,37 +52,59 @@ func is_empty() -> bool:
 func flush(parent: Node) -> Array[GeometryInstance3D]:
 	var out: Array[GeometryInstance3D] = []
 	for key: String in _inst:
-		var b: Dictionary = _inst[key]
-		var xfs: Array = b["xfs"]
-		var g: GeometryInstance3D
-		if xfs.size() == 1:
-			var mi := MeshInstance3D.new()
-			mi.mesh = b["mesh"]
-			mi.transform = xfs[0]
-			g = mi
-		else:
-			var mm := MultiMesh.new()
-			mm.transform_format = MultiMesh.TRANSFORM_3D
-			mm.mesh = b["mesh"]
-			mm.instance_count = xfs.size()
-			for i: int in xfs.size():
-				mm.set_instance_transform(i, xfs[i])
-			var mmi := MultiMeshInstance3D.new()
-			mmi.multimesh = mm
-			g = mmi
-		_finish(g, b["mat"], b["shadow"])
-		parent.add_child(g)
-		out.append(g)
+		_flush_inst(_inst[key], parent, out)
 	for key: String in _merge:
-		var b: Dictionary = _merge[key]
-		var mi := MeshInstance3D.new()
-		mi.mesh = merged_mesh(b["parts"])
-		_finish(mi, b["mat"], b["shadow"])
-		parent.add_child(mi)
-		out.append(mi)
+		_flush_merge(_merge[key], parent, out)
 	_inst.clear()
 	_merge.clear()
 	return out
+
+
+## [leftovers] flush() that yields to the loading screen between batches (BuildBudget); the same
+## nodes in the same order. Await it.
+func flush_async(parent: Node) -> Array[GeometryInstance3D]:
+	var out: Array[GeometryInstance3D] = []
+	for key: String in _inst:
+		await BuildBudget.check("batch")
+		_flush_inst(_inst[key], parent, out)
+	for key: String in _merge:
+		await BuildBudget.check("batch merge")
+		_flush_merge(_merge[key], parent, out)
+	_inst.clear()
+	_merge.clear()
+	return out
+
+
+func _flush_inst(b: Dictionary, parent: Node, out: Array[GeometryInstance3D]) -> void:
+	var xfs: Array = b["xfs"]
+	var g: GeometryInstance3D
+	if xfs.size() == 1:
+		var mi := MeshInstance3D.new()
+		mi.mesh = b["mesh"]
+		mi.transform = xfs[0]
+		g = mi
+	else:
+		var mm := MultiMesh.new()
+		mm.transform_format = MultiMesh.TRANSFORM_3D
+		mm.mesh = b["mesh"]
+		mm.instance_count = xfs.size()
+		for i: int in xfs.size():
+			mm.set_instance_transform(i, xfs[i])
+		var mmi := MultiMeshInstance3D.new()
+		mmi.multimesh = mm
+		mmi.set_meta("inst_xf", xfs)  # [world2] CPU copy for tools/collider_audit.gd (headless can't read MultiMeshes back)
+		g = mmi
+	_finish(g, b["mat"], b["shadow"])
+	parent.add_child(g)
+	out.append(g)
+
+
+func _flush_merge(b: Dictionary, parent: Node, out: Array[GeometryInstance3D]) -> void:
+	var mi := MeshInstance3D.new()
+	mi.mesh = merged_mesh(b["parts"])
+	_finish(mi, b["mat"], b["shadow"])
+	parent.add_child(mi)
+	out.append(mi)
 
 
 func _finish(g: GeometryInstance3D, mat: Material, shadow: bool) -> void:
@@ -111,6 +133,10 @@ static func merged_mesh(parts: Array) -> ArrayMesh:
 	var datas: Array = []
 	for p: Array in parts:
 		var arr: Array = (p[0] as Mesh).surface_get_arrays(int(p[1]))
+		if arr.size() <= Mesh.ARRAY_INDEX or arr[Mesh.ARRAY_VERTEX] == null:  # [main] empty or unreadable surface (dummy renderer on reload): merge nothing for it
+			arr = []
+			arr.resize(Mesh.ARRAY_MAX)
+			arr[Mesh.ARRAY_VERTEX] = PackedVector3Array()
 		datas.append(arr)
 		all_t = all_t and arr[Mesh.ARRAY_TANGENT] != null
 		all_uv = all_uv and arr[Mesh.ARRAY_TEX_UV] != null

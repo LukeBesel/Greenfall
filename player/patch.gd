@@ -44,6 +44,12 @@ var _focus_hex: int = -1
 var prompt: String = ""
 enum Tool { SCOOP, PLANT, WATER }
 var tool: int = Tool.SCOOP
+## [orbit] Set by enable_sphere() when Lumi walks a round planet (planet/orbit/): radial gravity
+## and hover through SphereMotor, input in the camera's surface frame. Null = the flat districts.
+var sphere: SphereSurface
+var sphere_motor: SphereMotor
+var sphere_cam: Node3D  # SphereCam (anything with a `frame: Basis`)
+var _shape: CollisionShape3D
 var water: float = 0.0
 var _plant_t: float = 0.0
 var _water_t: float = 0.0
@@ -52,13 +58,14 @@ var _water_t: float = 0.0
 func _ready() -> void:
 	add_to_group("patch")
 	collision_layer = 2
-	collision_mask = 1 | 4
+	collision_mask = 1 | 4 | PhysLayers.PROP  # [world2] props are solid
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
 	box.size = Vector3(1.1, 1.2, 1.0)
 	shape.shape = box
 	shape.position = Vector3(0, 0.6, 0)
 	add_child(shape)
+	_shape = shape
 	model = PatchModel.new()
 	model.name = "Model"
 	add_child(model)
@@ -76,6 +83,36 @@ func _ready() -> void:
 	add_child(_stack_root)
 	if input == null:
 		input = PlayerInput.new()
+
+
+## [orbit] Local up: the radial direction on a round planet, world +Y in the flat districts.
+func up() -> Vector3:
+	return sphere.up_at(global_position) if sphere else Vector3.UP
+
+
+## [orbit] Switches Lumi to a round planet: SphereMotor movement (hover, radial gravity, boost,
+## jump), the collision box lifted so it only meets walls and props.
+func enable_sphere(surface: SphereSurface, cam_node: Node3D) -> void:
+	sphere = surface
+	sphere_cam = cam_node
+	sphere_motor = SphereMotor.new(surface)
+	sphere_motor.landed.connect(func(impact: float) -> void:
+		if impact > 2.0:
+			model.squash(-clampf(impact * 0.06, 0.1, 0.45)))
+	sphere_motor.jumped.connect(func() -> void:
+		model.squash(0.3)
+		Audio.play("whoosh", 1.3, -12.0))
+	motion_mode = CharacterBody3D.MOTION_MODE_FLOATING
+	wall_min_slide_angle = 0.0
+	if _shape:
+		(_shape.shape as BoxShape3D).size = Vector3(1.1, 0.95, 1.0)
+		_shape.position = Vector3(0, 0.25 + 0.475, 0)
+
+
+## [orbit] Puts Lumi on the planet's ground under `pos`, facing `fwd`.
+func place_on_sphere(pos: Vector3, fwd: Vector3) -> void:
+	sphere_motor.place(self, pos, fwd)
+	_prev_vel = Vector3.ZERO
 
 
 func stat(id: String) -> float:
@@ -99,7 +136,10 @@ func _physics_process(delta: float) -> void:
 	_move(delta)
 	# Safety net: if physics ever pushes Patch through the ground (seen once in a long autoplay run,
 	# wedged against the base), put him back in the yard instead of falling forever.
-	if global_position.y < -30.0:
+	if sphere and sphere.altitude(global_position) < -3.0:  # [orbit] under the planet's ground
+		place_on_sphere(global_position, forward())
+		GameState.inc_stat("fell_through")
+	elif sphere == null and global_position.y < -30.0:
 		global_position = Vector3(0.0, 0.6, 3.0)
 		velocity = Vector3.ZERO
 		GameState.inc_stat("fell_through")
@@ -115,35 +155,109 @@ func _physics_process(delta: float) -> void:
 
 # --- Movement -----------------------------------------------------------------
 
+## [v4bots] Hover Jets (data/upgrades.json hover_jets), a world where everyone floats (Tidewell),
+## or riding the hover-sled (player/vehicle.gd parks itself under Lumi while mounted).
+func can_hover_water() -> bool:
+	if stat("hover_water") >= 1.0 or (world != null and world.has_meta("hover_water")):
+		return true
+	var sled: HoverSled = get_node_or_null("HoverSled") as HoverSled
+	return sled != null and sled.mounted
+
+
+func _water_at(p: Vector3) -> bool:
+	if world == null or world.field == null:
+		return false
+	var h: int = world.field.hex_at(p)
+	return h >= 0 and world.field.is_water(h)
+
+
+## [v4bots] The move with the lake taken out: straight on if the ground ahead is land, else the
+## nearest turn (up to 85 degrees either way) that stays on land, slowed by how far it turns, so
+## he slides along the shore. ZERO when every way ahead is water.
+func shore_clamp(wish: Vector3, probe_m: float) -> Vector3:
+	var out: Vector3 = shore_clamp_at(global_position, up(), wish, probe_m, _water_at)
+	if not out.is_equal_approx(wish):
+		_shore_hint()
+	return out
+
+
+static func shore_clamp_at(pos: Vector3, u: Vector3, wish: Vector3, probe_m: float, is_water: Callable) -> Vector3:
+	var n: Vector3 = wish.normalized()
+	if not bool(is_water.call(pos + n * probe_m)):
+		return wish
+	for deg: float in [25.0, -25.0, 50.0, -50.0, 70.0, -70.0, 85.0, -85.0]:
+		var d: Vector3 = n.rotated(u, deg_to_rad(deg))
+		if not bool(is_water.call(pos + d * probe_m)):
+			return d * wish.length() * cos(deg_to_rad(deg))
+	return Vector3.ZERO
+
+
+## Once per save: why he stopped, and the fix.
+func _shore_hint() -> void:
+	if GameState.flags.get("shore_hint", false) or stat("hover_water") >= 1.0:
+		return
+	GameState.flags["shore_hint"] = true
+	EventBus.toast.emit(tr("Lumi can't swim. Hover Jets at the workbench let him float over lakes."), "info")
+
+
 func _move(delta: float) -> void:
-	var wish: Vector3 = Vector3.ZERO if _cubing > 0.0 else input.get_world_move(cam_yaw_provider.call())
+	var wish: Vector3 = Vector3.ZERO
+	if _cubing <= 0.0:
+		if sphere_motor:  # [orbit] stick is camera-local (x right, z back): read it in the camera's surface frame
+			var mv: Vector3 = input.get_world_move(0.0)
+			if input.get("world_space") == true:  # [orbB] the autoplay bot steers in world space
+				wish = mv - up() * mv.dot(up())
+			else:
+				var f: Basis = sphere_cam.get("frame") if sphere_cam and "frame" in sphere_cam else global_basis
+				wish = f.x * mv.x + f.z * mv.z
+		else:
+			wish = input.get_world_move(cam_yaw_provider.call())
 	var speed: float = stat("move_speed") * (0.55 if input.scoop_held() and wish.length() > 0.1 else 1.0)
 	# Wading: Patch can't swim yet. Shallow lake water slows him and splashes.
 	var here: int = world.field.hex_at(global_position) if world and world.field else -1
-	if here >= 0 and world.field.is_water(here):
+	var hover: bool = can_hover_water()
+	if here >= 0 and world.field.is_water(here) and not hover:  # [planet-tidewell] floats over water there
 		speed *= 0.45
-		if Vector2(velocity.x, velocity.z).length() > 0.5 and randf() < 0.15:
-			Vfx.burst("soil", global_position + Vector3(0, 0.15, 0), Color(0.6, 0.7, 0.75, 0.7), 0.3)
+		if _tangent(velocity).length() > 0.5 and randf() < 0.15:
+			Vfx.burst("soil", global_position + up() * 0.15, Color(0.6, 0.7, 0.75, 0.7), 0.3)
+	# [v4bots] Owner item 54: no Hover Jets, no lakes. On land he stops at the shore (sliding along
+	# it); already in the water (a load, a knock) he can still wade out.
+	var shore: bool = here >= 0 and not hover and not world.field.is_water(here)
+	var from: Vector3 = global_position
+	if shore and wish.length() > 0.01:
+		wish = shore_clamp(wish, 0.9 + stat("move_speed") * delta * 4.0)
 	# A heavy stack slows him a touch, never much.
 	speed *= 1.0 - 0.03 * carried.size()
-	var target: Vector3 = wish * speed
-	var hv := Vector3(velocity.x, 0.0, velocity.z)
-	var rate: float = ACCEL if target.length() > hv.length() else DECEL
-	hv = hv.move_toward(target, rate * delta)
-	velocity.x = hv.x
-	velocity.z = hv.z
-	velocity.y = 0.0 if is_on_floor() else velocity.y - GRAVITY * delta
-	if wish.length() > 0.1:
-		var target_yaw: float = atan2(-wish.x, -wish.z)
-		rotation.y = lerp_angle(rotation.y, target_yaw, clampf(TURN_RATE * delta, 0.0, 1.0))
-	move_and_slide()
+	if sphere_motor:
+		sphere_motor.speed = speed
+		var boost: bool = _cubing <= 0.0 and input.has_method("boost_held") and bool(input.call("boost_held"))
+		var jump: bool = _cubing <= 0.0 and input.has_method("jump_pressed") and bool(input.call("jump_pressed"))
+		sphere_motor.step(self, wish, delta, boost, jump)
+	else:
+		var target: Vector3 = wish * speed
+		var hv := Vector3(velocity.x, 0.0, velocity.z)
+		var rate: float = ACCEL if target.length() > hv.length() else DECEL
+		hv = hv.move_toward(target, rate * delta)
+		velocity.x = hv.x
+		velocity.z = hv.z
+		velocity.y = 0.0 if is_on_floor() else velocity.y - GRAVITY * delta
+		if wish.length() > 0.1:
+			var target_yaw: float = atan2(-wish.x, -wish.z)
+			rotation.y = lerp_angle(rotation.y, target_yaw, clampf(TURN_RATE * delta, 0.0, 1.0))
+		move_and_slide()
+	if shore and _water_at(global_position):  # [v4bots] momentum (a boost) carried him past the probe
+		global_position = from
+		if sphere_motor:
+			sphere_motor.hv = Vector3.ZERO
+		velocity = up() * velocity.dot(up())
+		_shore_hint()
 	# Nudge cubes we bump into.
 	for i: int in get_slide_collision_count():
 		var col: KinematicCollision3D = get_slide_collision(i)
 		var body: Object = col.get_collider()
 		if body is JunkCube and not (body as JunkCube).carried:
 			(body as JunkCube).apply_central_impulse(-col.get_normal() * 0.6)
-	var hspeed: float = Vector2(velocity.x, velocity.z).length()
+	var hspeed: float = _tangent(velocity).length()
 	var accel_w: Vector3 = (velocity - _prev_vel) / maxf(delta, 0.0001)
 	_prev_vel = velocity
 	var local_acc: Vector3 = global_transform.basis.inverse() * accel_w
@@ -151,7 +265,7 @@ func _move(delta: float) -> void:
 	var now_moving: bool = hspeed > 0.6
 	if now_moving != _moving:
 		_moving = now_moving
-		Vfx.burst("dust", global_position + Vector3(0, 0.1, 0), Color(0.8, 0.65, 0.5, 0.7), 0.8)
+		Vfx.burst("dust", global_position + up() * 0.1, Color(0.8, 0.65, 0.5, 0.7), 0.8)
 		Audio.play("squeak", 1.0 if now_moving else 0.85, -10.0, 0.1)
 		model.squash(0.25 if now_moving else -0.3)
 	if now_moving:
@@ -168,12 +282,19 @@ func _move(delta: float) -> void:
 		_idle_time += delta
 
 
+## The part of v along the ground (drops the local-up component).
+func _tangent(v: Vector3) -> Vector3:
+	var u: Vector3 = up()
+	return v - u * v.dot(u)
+
+
 # --- Tools: plant and water ---------------------------------------------------------
 
 func water_cap() -> float:
 	return float(Economy.read_json("res://data/plants.json").get("water_tank", 30)) if _water_cap < 0.0 else _water_cap
 
 var _water_cap: float = -1.0
+var _no_slot_ms: int = -100000  # [v4grow]
 
 
 func set_tool(t: int) -> void:
@@ -211,6 +332,9 @@ func _handle_tools(delta: float) -> void:
 	if tool == Tool.PLANT and _plant_t <= 0.0:
 		_plant_t = 0.65
 		var s: int = g.free_slot_near(global_position, forward())
+		if s < 0 and g.sparse and Time.get_ticks_msec() - _no_slot_ms > 6000:  # [v4grow] say why nothing went in
+			_no_slot_ms = Time.get_ticks_msec()
+			EventBus.toast.emit(tr("Seeds need clean, open ground: not streets, kerbs or the pad."), "info")
 		if s >= 0:
 			if g.plant(s):
 				model.set_scooping(true)
@@ -229,8 +353,8 @@ func _handle_tools(delta: float) -> void:
 		# The old can leaks: a bit is lost with every pour (an upgrade fixes it).
 		water = maxf(0.0, water - (1.0 if GameState.level_of("fix_can") > 0 else 1.3))
 		var spot: Vector3 = global_position + forward() * 1.3
-		Vfx.burst("soil", spot + Vector3(0, 0.6, 0), Color(0.55, 0.75, 1.0, 0.8), 0.7)
-		Vfx.burst("dust", spot + Vector3(0, 0.05, 0), Color(0.6, 0.75, 0.9, 0.4), 0.3)
+		Vfx.burst("soil", spot + up() * 0.6, Color(0.55, 0.75, 1.0, 0.8), 0.7)
+		Vfx.burst("dust", spot + up() * 0.05, Color(0.6, 0.75, 0.9, 0.4), 0.3)
 		if randf() < 0.5:
 			Audio.play("steam", 1.8, -16.0)
 		for slot: int in g.planted_near(global_position, forward()):
@@ -240,7 +364,7 @@ func _handle_tools(delta: float) -> void:
 # --- Scooping -----------------------------------------------------------------
 
 func scoop_origin() -> Vector3:
-	return global_position + Vector3(0, 0.2, 0) - global_transform.basis.z * 0.25
+	return global_position + up() * 0.2 - global_transform.basis.z * 0.25
 
 
 func forward() -> Vector3:
@@ -274,12 +398,14 @@ func _handle_scoop(delta: float) -> void:
 	# Magnet arm: pull nearby junk toward the scoop.
 	var mag: float = stat("magnet_radius")
 	if mag > 0.0:
-		var field: HexField = world.field
-		for pid: int in field.pieces_within(scoop_origin(), stat("scoop_reach") + mag):
-			var to_me: Vector3 = scoop_origin() - field.piece_pos[pid]
-			to_me.y = 0.0
-			if to_me.length() > 0.4:
-				world.view.move_piece(pid, field.piece_pos[pid] + to_me.normalized() * minf(2.5 * delta, to_me.length()))
+		if sphere:  # [orbit] pull along the ground (local up)
+			var field: HexField = world.field
+			for pid: int in field.pieces_within(scoop_origin(), stat("scoop_reach") + mag):
+				var to_me: Vector3 = _tangent(scoop_origin() - field.piece_pos[pid])
+				if to_me.length() > 0.4:
+					world.view.move_piece(pid, field.piece_pos[pid] + to_me.normalized() * minf(2.5 * delta, to_me.length()))
+		else:
+			Pace.magnet_step(self, world.field, world.view, scoop_origin(), stat("scoop_reach") + mag, delta)  # [pace] capped, smooth, liftable only
 	_scoop_timer -= delta
 	if _scoop_timer > 0.0:
 		return
@@ -289,11 +415,17 @@ func _handle_scoop(delta: float) -> void:
 	for k: int in locks:
 		if k > 0 and not compartment.can_accept(cap):
 			break
-		var pid: int = world.field.find_scoop_target(scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"))
+		var pid: int = Pace.find_scoop_target(world.field, scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"), Pace.lift_class())  # [pace] Lift Strength
 		if pid < 0:
+			if k == 0 and not Pace.press_hint(self, world.field):  # [orbC] stuck with a part-full chest: say "press"
+				Pace.heavy_hint(self, world.field, scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"))  # [pace]
 			break
+		var extra: PackedInt32Array = world.field.cluster_extra(pid)  # [world2] gen-2 junk is finer: grab the little cluster
 		_take_piece(pid)
 		took += 1
+		for e: int in extra:
+			if world.field.piece_alive[e] == 1 and compartment.can_accept(cap):
+				_take_piece(e)
 	if took > 0:
 		_scoop_timer = 1.0 / maxf(stat("scoop_rate"), 0.5)
 
@@ -302,13 +434,20 @@ func _take_piece(pid: int) -> void:
 	var field: HexField = world.field
 	var type_id: String = Economy.junk_ids[field.piece_type[pid]]
 	var vol: float = field.piece_vol[pid]
+	var whole: bool = true
+	if field.has_method("bite"):  # [orbB] globe pieces are heavy: a flat scoop pulse's worth per take
+		vol = float(field.call("bite", pid, SphereField.FLAT_BITE_VOL))
+		whole = bool(field.call("is_whole_take", pid, vol))
 	var start_xf: Transform3D = world.view.piece_transform(pid)
 	var mesh: Mesh = world.view.piece_mesh(pid)
 	var color: Color = Color.html(str(Economy.junk_types[type_id].get("cube_color", "#888888")))
 	compartment.reserve(vol)
 	if world.get("events") != null:
 		world.events.on_patch_take(pid, vol)  # [events] streak, surge share, audit score
-	world.collect_piece(pid)
+	if whole:
+		world.collect_piece(pid)
+	elif world.has_method("piece_bitten"):  # [orbB] the piece stays; its cell's junk goes down
+		world.call("piece_bitten", pid)
 	# Tractor beam show (pooled, see PickupFx): lock-on reticle, twin lasers, lift with arcs,
 	# compress to light and stream into the chest hopper. Big pieces get a heavier, slower take.
 	var big: bool = vol >= BIG_PIECE_VOL
@@ -340,7 +479,7 @@ func _piece_arrived(type_id: String, vol: float, color: Color) -> void:
 		Audio.play("ding", 1.0, -6.0)
 		model.flash()
 	_was_in_band = in_band
-	if stat("auto_compactor") >= 1.0 and not compartment.can_accept(cap) and _cubing <= 0.0:
+	if stat("auto_compactor") >= 1.0 and Pace.baler_unlocked() and not compartment.can_accept(cap) and _cubing <= 0.0:  # [pace]
 		start_cube()
 
 
@@ -366,6 +505,9 @@ func _handle_cubing(delta: float) -> void:
 			model.open_hatch(0.0)
 		return
 	if input.cube_pressed():
+		if not Pace.baler_unlocked():  # [pace] the bale press is an upgrade
+			Pace.baler_hint(self)
+			return
 		if compartment.is_empty() or compartment.pending > 0.0:
 			if compartment.is_empty():
 				Audio.play("buzz", 1.2, -10.0)
@@ -374,7 +516,7 @@ func _handle_cubing(delta: float) -> void:
 
 
 func start_cube() -> void:
-	if compartment.is_empty():
+	if compartment.is_empty() or not Pace.baler_unlocked():  # [pace]
 		return
 	_cubing = CUBE_TIME
 	_cube_spawned = false
@@ -398,9 +540,9 @@ func _spawn_cube() -> void:
 	var cube: JunkCube = JunkCube.create(info["value"], info)
 	world.add_cube(cube)
 	cube.global_position = to_global(model.back_hatch_point + Vector3(0, 0.05, 0.3))
-	cube.rotation.y = rotation.y
+	cube.global_basis = global_basis.orthonormalized()
 	# Pushed out by the ram: slides off the lip and drops with weight.
-	cube.linear_velocity = global_transform.basis.z * 1.4 + Vector3(0, 0.4, 0)
+	cube.linear_velocity = global_transform.basis.z * 1.4 + up() * 0.4
 	cube.angular_velocity = global_transform.basis.x * -1.2
 	Audio.play("clunk", 1.0, -4.0)
 	GameState.inc_stat("cubes_made")
@@ -424,7 +566,7 @@ func _spawn_cube() -> void:
 		color = Color(1.0, 0.82, 0.3)
 	if float(info.get("streak_bonus", 0.0)) > 0.0:
 		label += tr("  (streak +%d%%)") % int(round(float(info["streak_bonus"]) * 100.0))
-	Vfx.float_text(global_position + Vector3(0, 1.9, 0), label, color, 0.45, 0.7)
+	Vfx.float_text(global_position + up() * 1.9, label, color, 0.45, 0.7)
 	EventBus.cube_made.emit(info)
 	get_tree().create_timer(1.5).timeout.connect(func() -> void: if is_instance_valid(model): model.set_happy(0.5))
 
@@ -464,10 +606,9 @@ func _maybe_salvage_part(type_id: String) -> void:
 			r = i
 			break
 	var t: int = randi() % Economy.parts.get("types", [1]).size()
-	GameState.parts.append({"type": t, "rarity": r})
-	EventBus.part_found.emit(t, r)
+	RobotParts.salvage(t, r)  # [ui2] salvaged robot parts pay Parts
 	var rd: Dictionary = Economy.rarity(r)
-	EventBus.toast.emit(tr("Salvaged: %s") % L10nFmt.part_label(tr(str(rd.get("name", ""))), tr(str(Economy.part_type(t).get("name", "part")))), "hint")  # [i18n2]
+	EventBus.toast.emit(tr("Salvaged: %s") % L10nFmt.part_label(tr(str(rd.get("name", ""))), tr(str(Economy.part_type(t).get("name", "part")))) + "  " + RobotParts.gain_text(r), "reward")  # [v4calm] cut  [i18n2] [ui2]
 	Audio.play("ding", 1.3, -10.0)
 
 
@@ -475,9 +616,8 @@ func _on_part_found(idx: int) -> void:
 	var f: HexField = world.field
 	var t: int = f.part_type[idx]
 	var r: int = f.part_rarity[idx]
-	GameState.parts.append({"type": t, "rarity": r})
 	GameState.inc_stat("parts_found")
-	EventBus.part_found.emit(t, r)
+	RobotParts.salvage(t, r)  # [ui2] pays Parts at the rarity's value
 	var rar: Dictionary = Economy.rarity(r)
 	var pt: Dictionary = Economy.part_type(t)
 	var col: Color = UITheme.rarity_color(r)
@@ -497,7 +637,7 @@ func _on_part_found(idx: int) -> void:
 	if r >= 3:
 		Audio.play("fanfare", 1.0, -8.0)
 	Vfx.float_text(pos + Vector3(0, 1.4, 0), L10nFmt.part_label(tr(str(rar.get("name", ""))), tr(str(pt.get("name", "Part")))), col, 0.55, 0.8)  # [i18n2]
-	EventBus.toast.emit(tr("Recovered: %s") % L10nFmt.part_label(tr(str(rar.get("name", ""))), tr(str(pt.get("name", "part")))), "hint")  # [i18n2]
+	EventBus.toast.emit(tr("Recovered: %s") % L10nFmt.part_label(tr(str(rar.get("name", ""))), tr(str(pt.get("name", "part")))) + "  " + RobotParts.gain_text(r), "reward")  # [v4calm] cut  [i18n2] [qafix] QA #20: name the Parts it paid
 
 
 func nearest_loose_cube() -> JunkCube:
@@ -508,7 +648,7 @@ func nearest_loose_cube() -> JunkCube:
 		if c.carried or c.claimed:
 			continue
 		var d: Vector3 = c.global_position - global_position
-		d.y *= 0.5
+		d -= up() * d.dot(up()) * 0.5
 		# Prefer cubes in front.
 		var score: float = d.length() - maxf(0.0, d.normalized().dot(forward())) * 0.4
 		if score < best_d:
@@ -553,9 +693,12 @@ func place_top_cube() -> void:
 	var c: JunkCube = pop_carried_cube()
 	if c == null:
 		return
-	var front: Vector3 = global_position + forward() * 1.25
+	if sphere:
+		_place_cube_sphere(c)
+		return
 	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
-	var q := PhysicsRayQueryParameters3D.create(front + Vector3(0, 12.0, 0), front + Vector3(0, -1.0, 0), 1 | 4)
+	var front: Vector3 = JunkCube.free_spot(space, global_position, forward(), c.size)  # [world2] never into a wall or prop
+	var q := PhysicsRayQueryParameters3D.create(front + Vector3(0, 2.5, 0), front + Vector3(0, -1.0, 0), 1 | 4 | PhysLayers.MOUND)  # [world2] from just above (not onto roofs), heaps count
 	var hit: Dictionary = space.intersect_ray(q)
 	var y: float = 0.0
 	if not hit.is_empty():
@@ -579,7 +722,40 @@ func place_top_cube() -> void:
 	model.squash(0.2)
 
 
+## [orbit] place_top_cube on a round planet: everything along the local up.
+func _place_cube_sphere(c: JunkCube) -> void:
+	var front: Vector3 = global_position + forward() * 1.25
+	var u: Vector3 = sphere.up_at(front)
+	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+	var q := PhysicsRayQueryParameters3D.create(front + u * 2.5, front - u * 1.0, 1 | 4 | PhysLayers.MOUND)
+	var hit: Dictionary = space.intersect_ray(q)
+	var base: Vector3 = sphere.ground(u)
+	if not hit.is_empty():
+		var hp: Vector3 = hit["position"]
+		base = front + u * (hp - front).dot(u)
+		if hit["collider"] is JunkCube:
+			var cp: Vector3 = (hit["collider"] as JunkCube).global_position
+			base = cp + u * (hp - cp).dot(u)
+	var dest: Vector3 = base + u * (c.size * 0.5 + 0.02)
+	var start: Vector3 = c.global_position
+	var rest_basis: Basis = global_basis.orthonormalized()
+	var tw := c.create_tween()
+	tw.tween_method(func(t: float) -> void:
+		var top: Vector3 = (start + dest) * 0.5 + u * 0.6
+		c.global_position = start.lerp(top, t).lerp(top.lerp(dest, t), t)
+		, 0.0, 1.0, 0.2)
+	tw.tween_callback(func() -> void:
+		c.global_basis = rest_basis
+		c.set_carried(false)
+		c.linear_velocity = Vector3.ZERO
+		Audio.play("thud", 1.0, -6.0)
+		c.squish(0.18))
+	model.squash(0.2)
+
+
 func _update_stack(delta: float) -> void:
+	if not carried.is_empty():
+		_stack_root.position = CarryPoint.of(model, self)  # [world2] held clearly above Lumi, not inside him
 	# Wobbly spring sway driven by acceleration.
 	var acc: Vector3 = global_transform.basis.inverse() * (velocity - _prev_vel)
 	_stack_sway_v += (Vector2(acc.z, -acc.x) * 0.9 - _stack_sway * 60.0 - _stack_sway_v * 7.0) * delta
@@ -621,11 +797,11 @@ func _update_hints(delta: float) -> void:
 	model.sleeping = _idle_time > 45.0
 	if _idle_time > 8.0 and fmod(_idle_time, 9.0) < delta:
 		model.shudder(0.25)
-		Vfx.burst("bits", global_position + Vector3(0, 1.0, 0), Color(0.75, 0.4, 0.2), 0.6)
-		Audio.play("beep", 0.9, -12.0)
+		Vfx.burst("bits", global_position + up() * 1.0, Color(0.75, 0.4, 0.2), 0.6)
+		if _idle_time < 20.0:  # [v4calm] item 50: one soft beep per idle stretch, not every 9 s
+			Audio.play("beep", 0.9, -20.0)
 	if model.sleeping and fmod(_idle_time, 3.0) < delta:
-		Vfx.float_text(global_position + Vector3(0.3, 1.8, 0), "z", Color(0.9, 0.9, 1.0), 0.7, 0.8)
-		Audio.play("beep", 0.6, -18.0)
+		Vfx.float_text(global_position + up() * 1.8 + global_basis.x * 0.3, "z", Color(0.9, 0.9, 1.0), 0.7, 0.8)  # [v4calm] silent snore
 	# Hex under the scoop for the HUD readout.
 	if world and world.field:
 		var h: int = world.field.hex_at(scoop_origin() + forward() * 1.0)

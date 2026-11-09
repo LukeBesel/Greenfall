@@ -36,12 +36,13 @@ var _bars: Array[ColorRect] = []
 
 func setup() -> void:
 	add_to_group("ledger")
+	_globe = world.field is SphereField  # [orbB]
 	cfg = Economy.read_json("res://data/ledger.json")
 	StorySfx.ensure()
 	rng.randomize()
 	uplink = LedgerUplink.new()
 	add_child(uplink)
-	for i: int in jammer_count():
+	for i: int in (jammer_count() if _jam_here() else 0):  # [orbB] the jammers stand at the base (hub 0)
 		_build_jammer(i, false)
 	_coupon_timer = _range("coupon_every_s", 300.0) * 0.5
 	_drop_timer = float(cfg.get("drop", {}).get("first_after_s", 45.0))
@@ -58,7 +59,7 @@ func _dev_hooks() -> void:
 			GameState.flags["first_sprout"] = true
 			GameState.flags["seeds_unlocked"] = true
 		if a >= 3:
-			GameState.flags["ledger_relay_hub"] = GameState.current_hub
+			GameState.flags["ledger_relay_hub"] = _hub()  # [orbB]
 		GameState.flags["ledger_act"] = a
 		GameState.flags["wren_awake"] = true
 		_place_relay()
@@ -71,10 +72,10 @@ func _dev_hooks() -> void:
 				_dev_clean_nearest()
 			if not start_drop(true):
 				print("[ledger] no hex to drop on")
-			elif DevHooks.has("shot"):
+			elif DevHooks.has("shot") and not _globe:
 				_dev_frame(_last_spot))
-	if DevHooks.has("spawn-relay") and relay:
-		var p: Vector3 = relay.global_position + relay.global_transform.basis.z * 5.0
+	if DevHooks.has("spawn-relay") and relay and not _globe:
+		var p: Vector3 = relay.global_position + relay.transform.basis.z * 5.0
 		world.patch.global_position = p + Vector3(0, 0.2, 0)
 		world.patch.rotation.y = atan2(p.x - relay.global_position.x, p.z - relay.global_position.z)
 		world.cam.yaw = world.patch.rotation.y
@@ -103,8 +104,8 @@ func _dev_frame(spot: Vector3) -> void:
 func _dev_clean_nearest() -> void:
 	var field: HexField = world.field
 	var best: int = -1
-	for id: int in field.hex_count():
-		if field.hex_hub[id] != 0 or field.is_water(id) or field.is_clean(id):
+	for id: int in (frame_cells if _globe else range(field.hex_count())):  # [orbB] the hub region, made cells
+		if field.hex_hub[id] != 0 or field.is_water(id) or field.is_clean(id) or (_globe and (field as SphereField).materialized[id] == 0):
 			continue
 		if best < 0 or field.hex_center(id).distance_to(world.patch.global_position) < field.hex_center(best).distance_to(world.patch.global_position):
 			best = id
@@ -158,16 +159,16 @@ func _check_acts() -> void:
 		_drop_timer = float(cfg.get("drop", {}).get("first_after_s", 45.0))
 		_wren_later("ledger_drones", 7.0)
 		get_tree().create_timer(14.0, false).timeout.connect(func() -> void:
-			EventBus.toast.emit(tr("New at the workbench, Hub tab: Signal Jammer. It scrambles the Ledger's drones near the base."), "hint"))
+			EventBus.toast.emit(tr("New at the workbench, Build tab: Signal Jammer. It scrambles the Ledger's drones near the base."), "hint"))
 	if cur < 3 and nxt >= 3:
-		GameState.flags["ledger_relay_hub"] = GameState.current_hub
+		GameState.flags["ledger_relay_hub"] = _hub()  # [orbB]
 		_place_relay()
 		for l: String in _act_lines("act3"):
 			uplink.show_line(l)
 		_wren_later("ledger_relay", 8.0)
 		get_tree().create_timer(12.0, false).timeout.connect(func() -> void:
 			if relay:
-				EventBus.toast.emit(tr("WREN traced the Ledger's relay: %s of the hub. Look for the red beacon.") % compass_label(relay.global_position), "story"))
+				EventBus.toast.emit(tr("WREN traced the Ledger's relay: %s of the hub. Look for the red beacon.") % compass_label(relay.position), "story"))  # [orbB] from the hub (frame-local)
 
 
 ## [money] Only the first uplink_lines_per_act lines of an act take the uplink banner (rarer,
@@ -179,7 +180,7 @@ func _act_lines(key: String) -> Array:
 
 ## [money] A small notify-stack entry instead of the big uplink banner.
 func _note(text: String) -> void:
-	EventBus.toast.emit(tr("Ledger: %s") % tr(text), "info")
+	EventBus.toast.emit(tr("Ledger: %s") % tr(text), "info" if Once.take("toast_ledger_note") else "reward")  # [v4calm] item 49: the first one only
 
 
 func _wren_later(trigger: String, delay: float) -> void:
@@ -245,7 +246,7 @@ func _process(delta: float) -> void:
 		if _drop_timer <= 0.0:
 			var ok: bool = start_drop()
 			_drop_timer = drop_interval() if ok else 40.0
-	if a >= 4 and drone == null and GameState.flags.get("seeds_unlocked", false):
+	if a >= 4 and drone == null and GameState.flags.get("seeds_unlocked", false) and bool(cfg.get("seed_drop", {}).get("enabled", true)):  # [pace] no spontaneous crates
 		_seed_timer -= delta
 		if _seed_timer <= 0.0:
 			_seed_timer = _range_of(cfg.get("seed_drop", {}).get("every_s", [200, 320]))
@@ -296,7 +297,7 @@ func jammer_visible() -> bool:
 
 func can_build_jammer() -> bool:
 	var d: Dictionary = jammer_def()
-	return act() >= 2 and not resolved() and jammer_count() < int(d.get("max", 3)) and Hub.can_pay(d.get("cost", {}), jammer_cost_mult())
+	return _jam_here() and act() >= 2 and not resolved() and jammer_count() < int(d.get("max", 3)) and Hub.can_pay(d.get("cost", {}), jammer_cost_mult())
 
 
 func build_jammer() -> bool:
@@ -339,20 +340,17 @@ func _build_jammer(i: int, animate: bool) -> void:
 	var n := Node3D.new()
 	n.name = "Jammer%d" % i
 	add_child(n)
-	var pos: Vector3 = JAMMER_SPOTS[i % JAMMER_SPOTS.size()]
+	var pos: Vector3 = JAMMER_SPOTS[i % JAMMER_SPOTS.size()] if not _globe else jammer_spot(i)  # [orbB]
 	n.position = pos
-	var paint: ShaderMaterial = Mats.worn_paint(Color(0.85, 0.85, 0.8), 0.85, 0.3, 70.0 + i, 0.4)
-	var steel: StandardMaterial3D = Mats.metal("steel")
-	n.add_child(EggProps.mesh(ProcMesh.rounded_box(Vector3(0.9, 0.6, 0.9), 0.06, 2), paint, Vector3(0, 0.3, 0)))
-	n.add_child(EggProps.mesh(ProcMesh.cyl(0.05, 0.07, 2.6, 8), steel, Vector3(0, 1.9, 0)))
-	n.add_child(EggProps.mesh(ProcMesh.box(Vector3(0.5, 0.12, 0.02)), Mats.lamp(Color(0.3, 0.8, 1.0), 1.4), Vector3(0, 0.42, 0.46)))
+	# [yard] Kit base, mast and dish (systems/camp/yard_art.gd); the Dish turns, the Tip glows.
+	var base_mi: MeshInstance3D = YardArt.jammer_base().mi(0.15, "Base")
+	n.add_child(base_mi)
+	n.add_child(EggProps.mesh(ProcMesh.box(Vector3(0.5, 0.12, 0.02)), Mats.lamp(Color(0.3, 0.8, 1.0), 1.4), Vector3(0, 0.42, 0.485)))
 	var dish := Node3D.new()
 	dish.name = "Dish"
 	dish.position = Vector3(0, 3.0, 0)
 	n.add_child(dish)
-	var bowl := EggProps.mesh(ProcMesh.hemisphere(0.55, 18, 5), paint, Vector3(0, 0, 0.1), Vector3(-70, 0, 0), Vector3(1, 0.35, 1))
-	dish.add_child(bowl)
-	dish.add_child(EggProps.mesh(ProcMesh.cyl(0.015, 0.015, 0.5, 6), steel, Vector3(0, 0.12, 0.35), Vector3(-70, 0, 0)))
+	dish.add_child(YardArt.jammer_dish().mi(0.15, "Bowl"))
 	var tip := EggProps.mesh(ProcMesh.sphere(0.06, 8, 4), Mats.lamp(Color(0.3, 0.8, 1.0), 4.0), Vector3(0, 0.2, 0.58))
 	tip.name = "Tip"
 	dish.add_child(tip)
@@ -369,7 +367,7 @@ func _build_jammer(i: int, animate: bool) -> void:
 		var tw := create_tween()
 		tw.tween_property(n, "scale", Vector3.ONE, 0.6).set_trans(Tween.TRANS_BACK)
 		tw.tween_callback(func() -> void:
-			Vfx.burst("sparkle", n.global_position + Vector3(0, 3.0, 0), Color(0.4, 0.85, 1.0))
+			Vfx.burst("sparkle", n.to_global(Vector3(0, 3.0, 0)), Color(0.4, 0.85, 1.0))
 			Vfx.ring(n.global_position, jammer_radius(), Color(0.4, 0.85, 1.0, 0.7), 1.4)
 			Audio.play("servo", 1.0, -6.0))
 
@@ -387,10 +385,13 @@ func is_planted(hid: int) -> bool:
 
 
 ## Clean, unplanted, dry, non-hub hexes that still have removed pieces to bring back.
-static func drop_candidates(field: HexField, planted: Callable = Callable()) -> Array[int]:
+static func drop_candidates(field: HexField, planted: Callable = Callable(), cells: Variant = null) -> Array[int]:
 	var out: Array[int] = []
-	for id: int in field.hex_count():
+	var sf: SphereField = field as SphereField
+	for id: int in (cells if cells != null else range(field.hex_count())):  # [orbB] a hub region's cells on the globe
 		if field.hex_hub[id] != 0 or field.is_water(id) or not field.is_clean(id):
+			continue
+		if sf and sf.materialized[id] == 0:  # [orbB] only cells Lumi's ring made have pieces to bring back
 			continue
 		if planted.is_valid() and bool(planted.call(id)):
 			continue
@@ -422,6 +423,8 @@ static func pick_drop_pieces(field: HexField, hid: int, r: RandomNumberGenerator
 
 
 func _ground(x: float, z: float) -> float:
+	if _globe:  # [orbB] the globe's ground in this hub frame
+		return to_local((world.field as SphereField).terrain.ground(to_global(Vector3(x, 0.0, z)).normalized())).y
 	var layout: CityLayout = world.field.layout
 	return clampf(layout.height_at(x, z), 0.0, 0.3) if layout else 0.0
 
@@ -431,7 +434,7 @@ func start_drop(force: bool = false) -> bool:
 	if drone != null or world == null:
 		return false
 	var field: HexField = world.field
-	var cands: Array[int] = drop_candidates(field, is_planted)
+	var cands: Array[int] = drop_candidates(field, is_planted, frame_cells if _globe else null)
 	if cands.is_empty():
 		return false
 	var pp: Vector3 = world.patch.global_position
@@ -452,9 +455,10 @@ func start_drop(force: bool = false) -> bool:
 	for pid: int in pids:
 		spot += field.piece_pos[pid]
 	spot /= pids.size()
+	spot = _l(spot)  # [orbB] frame-local from here on (identity on the flat game)
 	spot.y = _ground(spot.x, spot.z)
 	_last_spot = spot
-	var jammed: bool = jammer_count() > 0 and Vector2(spot.x, spot.z).length() < jammer_radius() and not force
+	var jammed: bool = jammer_count() > 0 and _jam_here() and Vector2(spot.x, spot.z).length() < jammer_radius() and not force
 	_fly_dump(hid, pids, spot, jammed)
 	return true
 
@@ -464,7 +468,7 @@ func _spawn_drone(friendly: bool, from: Vector3) -> LedgerDrone:
 	d.friendly = friendly
 	d.ground_y = _ground
 	add_child(d)
-	d.global_position = from
+	d.position = from  # [orbB] the Ledger's frame (its parent's; the world on the flat game)
 	return d
 
 
@@ -480,7 +484,7 @@ func _marker(spot: Vector3, col: Color) -> MeshInstance3D:
 	m.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	m.scale = Vector3(1, 0.05, 1)
 	add_child(m)
-	m.global_position = spot + Vector3(0, 0.06, 0)
+	m.position = spot + Vector3(0, 0.06, 0)  # [orbB]
 	var tw := m.create_tween().set_loops()
 	tw.tween_property(m, "scale", Vector3(0.8, 0.05, 0.8), 0.45)
 	tw.tween_property(m, "scale", Vector3(1.05, 0.05, 1.05), 0.45)
@@ -490,8 +494,9 @@ func _marker(spot: Vector3, col: Color) -> MeshInstance3D:
 func _fly_dump(hid: int, pids: PackedInt32Array, spot: Vector3, jammed: bool) -> void:
 	var warn: Array = cfg.get("drop_warn", [])
 	var first: bool = int(GameState.stats.get("ledger_drops", 0)) == 0 and int(GameState.stats.get("ledger_jammed", 0)) == 0
-	EventBus.toast.emit(tr("Ledger drone inbound, %s! It's heading for a clean hex.") % compass_label(spot - world.patch.global_position) if not first
-		else tr("A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground.") % compass_label(spot - world.patch.global_position), "story")
+	EventBus.toast.emit(tr("Ledger drone inbound, %s! It's heading for a clean hex.") % compass_label(spot - _l(world.patch.global_position)) if not first
+		else tr("A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground.") % compass_label(spot - _l(world.patch.global_position)),
+		"story" if first or BeepGate.take("toast_ledger_drone", 600.0) else "reward")  # [v4calm] item 49: at most one warning per 10 min
 	if not warn.is_empty() and first:  # [money] only the very first drone gets the uplink banner
 		uplink.show_line(str(warn[rng.randi() % warn.size()]))
 	Audio.play("glitch", 0.8, -8.0)
@@ -515,10 +520,10 @@ func _fly_dump(hid: int, pids: PackedInt32Array, spot: Vector3, jammed: bool) ->
 		var edge := Vector3(edge_flat.x, hover.y + 2.0, edge_flat.z)
 		if Vector2(from.x, from.z).length() < jammer_radius() + 4.0:
 			edge = from.lerp(hover, 0.3)
-		tw.tween_property(drone, "global_position", edge, warn_s).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+		tw.tween_property(drone, "position", edge, warn_s).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 		tw.tween_callback(func() -> void: _jammed(marker, from))
 	else:
-		tw.tween_property(drone, "global_position", hover, warn_s).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+		tw.tween_property(drone, "position", hover, warn_s).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 		tw.tween_callback(func() -> void: _dump(hid, pids, marker, from))
 
 
@@ -527,12 +532,12 @@ func _jammed(marker: MeshInstance3D, exit_from: Vector3) -> void:
 	if d == null:
 		return
 	Vfx.burst("bits", d.global_position, Color(0.4, 0.85, 1.0), 1.5)
-	Vfx.float_text(d.global_position + Vector3(0, 1.2, 0), tr("SIGNAL JAMMED"), Color(0.45, 0.9, 1.0), 1.6, 1.2)
+	Vfx.float_text(_w(d.position + Vector3(0, 1.2, 0)), tr("SIGNAL JAMMED"), Color(0.45, 0.9, 1.0), 1.6, 1.2)
 	Audio.play("buzz", 0.7, -4.0)
 	Audio.play("glitch", 1.2, -6.0)
 	for j: Node3D in _jammers:
 		Vfx.ring(j.global_position, 3.0, Color(0.4, 0.85, 1.0, 0.8), 0.8)
-	Vfx.ring(Vector3.ZERO, jammer_radius(), Color(0.4, 0.85, 1.0, 0.5), 1.2)
+	Vfx.ring(_w(Vector3.ZERO), jammer_radius(), Color(0.4, 0.85, 1.0, 0.5), 1.2)
 	var j_lines: Array = cfg.get("jammed", [])
 	if not j_lines.is_empty() and rng.randf() < float(cfg.get("jammed_line_chance", 0.35)):  # [money]
 		_note(str(j_lines[rng.randi() % j_lines.size()]))
@@ -545,7 +550,7 @@ func _jammed(marker: MeshInstance3D, exit_from: Vector3) -> void:
 	tw.tween_property(d, "rotation:z", 0.5, 0.15)
 	tw.tween_property(d, "rotation:z", -0.5, 0.2)
 	tw.tween_property(d, "rotation:z", 0.0, 0.15)
-	tw.tween_property(d, "global_position", exit_from + Vector3(0, 8, 0), 6.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tw.tween_property(d, "position", exit_from + Vector3(0, 8, 0), 6.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	tw.tween_callback(_drone_done.bind(d))
 
 
@@ -559,7 +564,7 @@ func _dump(hid: int, pids: PackedInt32Array, marker: MeshInstance3D, exit_from: 
 		marker.queue_free()
 		uplink.show_line(tr("Target re-classified as ASSET. Aborting. ...Interesting."))
 		var tw0 := d.create_tween()
-		tw0.tween_property(d, "global_position", exit_from, 6.0).set_trans(Tween.TRANS_SINE)
+		tw0.tween_property(d, "position", exit_from, 6.0).set_trans(Tween.TRANS_SINE)
 		tw0.tween_callback(_drone_done.bind(d))
 		return
 	d.set_beam(3.0)
@@ -571,7 +576,7 @@ func _dump(hid: int, pids: PackedInt32Array, marker: MeshInstance3D, exit_from: 
 	tw.tween_interval(2.4)
 	tw.tween_callback(d.open_bin.bind(false))
 	tw.tween_callback(d.set_beam.bind(0.0))
-	tw.tween_property(d, "global_position", exit_from + Vector3(0, 10, 0), 7.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tw.tween_property(d, "position", exit_from + Vector3(0, 10, 0), 7.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	tw.tween_callback(_drone_done.bind(d))
 
 
@@ -580,9 +585,14 @@ func _dump(hid: int, pids: PackedInt32Array, marker: MeshInstance3D, exit_from: 
 func _release(hid: int, pids: PackedInt32Array, marker: MeshInstance3D) -> void:
 	var field: HexField = world.field
 	var view: FieldView = world.view
-	var origin: Vector3 = drone.global_position + Vector3(0, -0.7, 0) if drone else field.hex_center(hid) + Vector3(0, 6, 0)
+	var origin: Vector3 = _w(drone.position + Vector3(0, -0.7, 0)) if drone else _w(_l(field.hex_center(hid)) + Vector3(0, 6, 0))
 	field.revive_pieces(pids)
-	if world.get("planet") != null and world.get("slice_cells") != null:
+	if _globe:  # [orbB] the cell's numbers follow (dirty again: the save and the ground texture)
+		var so: SliceOrbit = world.get("orbit")
+		if field.hex_clean[hid] == 0:
+			so.globe.cells.set_state(hid, 0)
+		so.globe.write_cell(hid)
+	elif world.get("planet") != null and world.get("slice_cells") != null:
 		world.planet.set_junk(world.slice_cells[hid], 1.0 - field.removed_fraction(hid))
 	var last: float = 0.0
 	var falling: Array[Node3D] = []
@@ -602,7 +612,7 @@ func _release(hid: int, pids: PackedInt32Array, marker: MeshInstance3D) -> void:
 		tw.tween_interval(delay)
 		tw.tween_property(mi, "global_transform", target, dur).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 		tw.tween_callback(func() -> void:
-			Vfx.burst("dust", target.origin + Vector3(0, 0.1, 0), Color(0.6, 0.55, 0.5, 0.6), 0.4)
+			Vfx.burst("dust", target.origin + OrbitUp.up(target.origin) * 0.1, Color(0.6, 0.55, 0.5, 0.6), 0.4)
 			if i % 3 == 0:
 				Audio.play("clink", rng.randf_range(0.8, 1.1), -10.0))
 	get_tree().create_timer(last + 0.05, false).timeout.connect(func() -> void: _landed(hid, pids, marker, falling))
@@ -624,7 +634,7 @@ func _landed(hid: int, pids: PackedInt32Array, marker: MeshInstance3D, falling: 
 	EventBus.ledger_event.emit("drop", {"hex": hid, "pieces": pids.size()})
 	if int(GameState.stats.get("ledger_drops", 0)) <= 1:
 		EventBus.toast.emit(tr("The drone dumped a little junk back. Scoop it up, or let your helpers tidy it. A Signal Jammer at the base keeps drones away."), "hint")
-	if world.get("wren") != null:
+	if world.get("wren") != null and Once.take("wren_ledger_drop"):  # [v4calm] once per save
 		world.wren.say("ledger_drop", 0.9, true)
 
 
@@ -642,11 +652,11 @@ func start_seed_drop(at: Vector3 = Vector3.INF) -> bool:
 		return false
 	var spot: Vector3 = at
 	if spot == Vector3.INF:
-		var pp: Vector3 = world.patch.global_position
+		var pp: Vector3 = _l(world.patch.global_position)  # [orbB]
 		spot = pp
 		for k: int in 20:
 			var c: Vector3 = pp + Vector3(rng.randf_range(-1, 1), 0, rng.randf_range(-1, 1)).normalized() * rng.randf_range(5.0, 10.0)
-			var h: int = world.field.hex_at(c)
+			var h: int = world.field.hex_at(_w(c))
 			if h >= 0 and not world.field.is_water(h) and (world.field.layout == null or world.field.layout.surface_at(c.x, c.z) != CityLayout.Surface.BUILDING):
 				spot = c
 				break
@@ -658,13 +668,13 @@ func start_seed_drop(at: Vector3 = Vector3.INF) -> bool:
 	drone.cargo.add_child(crate)
 	var d: LedgerDrone = drone
 	var tw := d.create_tween()
-	tw.tween_property(d, "global_position", spot + Vector3(0, 5.5, 0), 6.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tw.tween_property(d, "position", spot + Vector3(0, 5.5, 0), 6.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	tw.tween_callback(d.open_bin.bind(true))
 	tw.tween_interval(0.35)
 	tw.tween_callback(func() -> void: _drop_crate(crate, spot))
 	tw.tween_interval(1.0)
 	tw.tween_callback(d.open_bin.bind(false))
-	tw.tween_property(d, "global_position", spot - dir * 60.0 + Vector3(0, 24, 0), 7.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tw.tween_property(d, "position", spot - dir * 60.0 + Vector3(0, 24, 0), 7.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	tw.tween_callback(_drone_done.bind(d))
 	if rng.randf() < float(cfg.get("friendly_line_chance", 0.2)):  # [money] rarer, as a small note
 		var fl: Array = cfg.get("friendly", [])
@@ -689,14 +699,14 @@ func _drop_crate(crate: Node3D, spot: Vector3) -> void:
 	add_child(crate)
 	crate.global_position = gp
 	var tw := crate.create_tween()
-	tw.tween_property(crate, "global_position", spot + Vector3(0, 0.43, 0), 0.8).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tw.tween_property(crate, "position", spot + Vector3(0, 0.43, 0), 0.8).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	tw.tween_callback(func() -> void:
 		var r: Array = cfg.get("seed_drop", {}).get("seeds", [3, 6])
 		var n: int = rng.randi_range(int(r[0]), int(r[1]))
 		GameState.add_currency("seeds", BigNum.from_float(n))
 		GameState.inc_stat("ledger_seed_drops")
-		Vfx.burst("sparkle", spot + Vector3(0, 0.6, 0), Color(0.6, 1.0, 0.6))
-		Vfx.float_text(spot + Vector3(0, 1.4, 0), tr("+%d seeds") % n, Color(0.6, 1.0, 0.6), 1.3, 1.5)
+		Vfx.burst("sparkle", _w(spot + Vector3(0, 0.6, 0)), Color(0.6, 1.0, 0.6))
+		Vfx.float_text(_w(spot + Vector3(0, 1.4, 0)), tr("+%d seeds") % n, Color(0.6, 1.0, 0.6), 1.3, 1.5)
 		Audio.play("pop", 1.0, -4.0)
 		EventBus.ledger_event.emit("seeds", {"seeds": n})
 		if world.get("wren") != null:
@@ -750,19 +760,21 @@ static func relay_spot(field: HexField) -> Dictionary:
 
 
 func relay_visible() -> bool:
-	return act() >= 3 and int(GameState.flags.get("ledger_relay_hub", -1)) == GameState.current_hub
+	return act() >= 3 and int(GameState.flags.get("ledger_relay_hub", -1)) == _hub()
 
 
 func _place_relay() -> void:
 	if relay != null or world == null or not relay_visible():
 		return
-	var spot: Dictionary = relay_spot(world.field)
+	var spot: Dictionary = relay_spot_cells(self, world.field, frame_cells, hub_index) if _globe else relay_spot(world.field)
 	relay = _build_relay()
 	add_child(relay)
 	var p: Vector3 = spot["pos"]
 	p.y = _ground(p.x, p.z)
-	relay.global_position = p
+	relay.position = p  # [orbB] frame-local (the world on the flat game)
 	relay.rotation.y = float(spot["yaw"])
+	if _globe:
+		relay.transform = spot["xf"]
 	_set_relay_friendly(resolved(), false)
 	if world.get("interactables") != null:
 		world.interactables.register(relay, 3.2, func() -> String:
@@ -907,20 +919,22 @@ func resolve() -> void:
 	add_child(cam)
 	var prev: Camera3D = get_viewport().get_camera_3d()
 	cam.current = true
-	var rp: Vector3 = relay.global_position
-	var fwd: Vector3 = relay.global_transform.basis.z
-	var right: Vector3 = relay.global_transform.basis.x
+	# [orbB] All in the Ledger's frame (the world on the flat game, the hub frame on the globe).
+	var rp: Vector3 = relay.position
+	var fwd: Vector3 = relay.transform.basis.z
+	var right: Vector3 = relay.transform.basis.x
 	var look := rp + Vector3(0, 1.7, 0)
 	var orbit := func(a: float, dist: float, h: float) -> void:
 		var off: Vector3 = (fwd * cos(a) + right * sin(a)) * dist
-		cam.global_position = rp + off + Vector3(0, h, 0)
-		cam.look_at(look, Vector3.UP)
+		cam.position = rp + off + Vector3(0, h, 0)
+		cam.look_at(to_global(look), global_basis.y)
 	orbit.call(0.9, 6.5, 2.2)
 	# Patch steps up to the console.
 	var pp: Vector3 = rp + fwd * 1.6 + Vector3(0, 0.05, 0)
 	var ptw := create_tween()
-	ptw.tween_property(world.patch, "global_position", pp, 1.2).set_trans(Tween.TRANS_SINE)
-	world.patch.rotation.y = atan2(fwd.x, fwd.z)  # forward (-Z) toward the console
+	ptw.tween_property(world.patch, "global_position", _w(pp), 1.2).set_trans(Tween.TRANS_SINE)
+	if not _globe:  # (the globe's Patch turns with its SphereMotor)
+		world.patch.rotation.y = atan2(fwd.x, fwd.z)  # forward (-Z) toward the console
 	var lines: Array = cfg.get("cinematic", [])
 	var total: float = 0.0
 	for l: Array in lines:
@@ -941,7 +955,7 @@ func resolve() -> void:
 			"friendly": uplink.show_now(text, true)
 		if str(l[1]).begins_with("RECALCULATING"):
 			_set_relay_friendly(true, true)
-			Vfx.burst("big_sparkle", rp + Vector3(0, 2.0, 0.4), Color(0.5, 1.0, 0.6))
+			Vfx.burst("big_sparkle", _w(rp + Vector3(0, 2.0, 0.4)), Color(0.5, 1.0, 0.6))
 			Audio.play("chime", 0.8, -4.0)
 			EventBus.shake_requested.emit(0.2)
 		if who == "friendly":
@@ -977,22 +991,140 @@ func resolve() -> void:
 func _cinematic_drones(rp: Vector3, cam: Camera3D, look: Vector3) -> void:
 	# Two repainted drones sweep over the relay; one leaves a seed crate beside it.
 	for k: int in 2:
-		var side: Vector3 = relay.global_transform.basis.x * (1.0 if k == 0 else -1.0)
-		var d := _spawn_drone(true, rp - relay.global_transform.basis.z * 40.0 + side * 8.0 + Vector3(0, 14, 0))
+		var side: Vector3 = relay.transform.basis.x * (1.0 if k == 0 else -1.0)
+		var d := _spawn_drone(true, rp - relay.transform.basis.z * 40.0 + side * 8.0 + Vector3(0, 14, 0))
 		d.set_friendly(true)
 		var tw := d.create_tween()
-		tw.tween_property(d, "global_position", rp + relay.global_transform.basis.z * 3.0 + side * 3.0 + Vector3(0, 6.0 + k, 0), 3.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+		tw.tween_property(d, "position", rp + relay.transform.basis.z * 3.0 + side * 3.0 + Vector3(0, 6.0 + k, 0), 3.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 		if k == 0:
 			var crate := _seed_crate()
 			d.cargo.add_child(crate)
 			tw.tween_callback(d.open_bin.bind(true))
-			tw.tween_callback(func() -> void: _drop_crate(crate, rp + relay.global_transform.basis.z * 3.0 + side * 2.2))
+			tw.tween_callback(func() -> void: _drop_crate(crate, rp + relay.transform.basis.z * 3.0 + side * 2.2))
 		tw.tween_interval(2.0)
-		tw.tween_property(d, "global_position", rp + relay.global_transform.basis.z * 60.0 + Vector3(0, 25, 0), 6.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+		tw.tween_property(d, "position", rp + relay.transform.basis.z * 60.0 + Vector3(0, 25, 0), 6.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 		tw.tween_callback(d.queue_free)
 	# The camera lifts and tilts up to watch them come in.
 	var ctw := create_tween()
-	var from: Vector3 = cam.global_position
+	var from: Vector3 = cam.position
 	ctw.tween_method(func(v: float) -> void:
-		cam.global_position = from + Vector3(0, v * 1.5, 0)
-		cam.look_at(look.lerp(rp + Vector3(0, 6.0, 0) + relay.global_transform.basis.z * 2.0, v), Vector3.UP), 0.0, 1.0, 3.0).set_trans(Tween.TRANS_SINE)
+		cam.position = from + Vector3(0, v * 1.5, 0)
+		cam.look_at(to_global(look.lerp(rp + Vector3(0, 6.0, 0) + relay.transform.basis.z * 2.0, v)), global_basis.y), 0.0, 1.0, 3.0).set_trans(Tween.TRANS_SINE)
+
+
+# --- [orbB] The globe: the Ledger per hub, in the hub frame (planet/orbit/hub_frame.gd) ----------
+# Its acts, coupons and seeds are global (GameState.flags); drones, markers, crates and the relay
+# live in the frame (site-local metres, +Y up), converting at the edges. The jammers stand at the
+# base (hub 0); the relay appears at the hub where act 3 began.
+
+var hub_index: int = 0  # the hub this Ledger runs at (set by the frame host)
+var frame_cells := PackedInt32Array()  # that hub's region
+var _globe: bool = false
+
+
+func _hub() -> int:
+	return hub_index if _globe else GameState.current_hub
+
+
+func _jam_here() -> bool:
+	return not _globe or hub_index == 0
+
+
+func _w(p: Vector3) -> Vector3:
+	return to_global(p) if _globe else p
+
+
+func _l(p: Vector3) -> Vector3:
+	return to_local(p) if _globe else p
+
+
+## The relay spot of a hub (frame-local {pos, yaw, hex, xf}): among the farthest open cells of
+## its region, outside the site, clear of the outposts; upright on the ground's own up.
+static func relay_spot_cells(frame: Node3D, f: SphereField, cells: PackedInt32Array, hub: int) -> Dictionary:
+	var r := RandomNumberGenerator.new()
+	r.seed = f.seed_value + 555 + hub * 71
+	var outposts: Array[Vector3] = []
+	for o: Dictionary in Outposts.plan_cells(frame, f, cells, {}, hub):
+		outposts.append(o["pos"])
+	var cand: Array = []  # [distance, cell]
+	for id: int in cells:
+		if f.hex_hub[id] != 0 or f.is_water(id) or f.cells.has_flag(id, SphereCells.F_SITE):
+			continue
+		var c: Vector3 = frame.to_local(f.hex_center(id))
+		cand.append([Vector2(c.x, c.z).length(), id])
+	if cand.is_empty():
+		return {"pos": Vector3(12, 0, 12), "yaw": 0.0, "hex": -1, "xf": Transform3D(Basis.IDENTITY, Vector3(12, 0, 12))}
+	cand.sort_custom(func(a: Array, b: Array) -> bool: return float(a[0]) > float(b[0]))
+	var far: Array = cand.slice(0, maxi(8, int(cand.size() / 10.0)))
+	var best: Vector3 = frame.to_local(f.terrain.ground(f.hex_center(int(far[0][1])).normalized()))
+	var best_hex: int = int(far[0][1])
+	for attempt: int in 60:
+		var id: int = int(far[r.randi() % far.size()][1])
+		var c: Vector3 = frame.to_local(f.hex_center(id)) + Vector3(r.randf_range(-1, 1), 0, r.randf_range(-1, 1)) * f.hex_size * 0.45
+		var wp: Vector3 = f.terrain.ground(frame.to_global(c).normalized())
+		if f.hex_at(wp) != id:
+			continue
+		var clash: bool = false
+		var tr_: TargetReach = TargetReach.for_field(f)  # [v4world] #55: not in a town building or walled in
+		if tr_ and tr_.reach(wp) != "":
+			continue
+		for o: Vector3 in outposts:
+			if Vector2(o.x - c.x, o.z - c.z).length() < 12.0:
+				clash = true
+		for lm: Dictionary in f.landmarks:
+			if OrbitUp.ground_dist(lm["pos"], wp) < 3.5:
+				clash = true
+		if clash:
+			continue
+		best = frame.to_local(wp)
+		best_hex = id
+		break
+	var tr2: TargetReach = TargetReach.for_field(f)  # [v4world] #55: the fallback too
+	if tr2 and tr2.reach(frame.to_global(best)) != "":
+		best = frame.to_local(tr2.open_spot(frame.to_global(best)))
+	var yaw: float = atan2(-best.x, -best.z)
+	var up: Vector3 = (frame.global_basis.inverse() * f.up_at(frame.to_global(best))).normalized()
+	var bas: Basis = Basis(Quaternion(Vector3.UP, up)) * Basis(Vector3.UP, yaw)
+	return {"pos": best, "yaw": yaw, "hex": best_hex, "xf": Transform3D(bas, best)}
+
+
+const YARD_ANCHORS: Array[String] = ["bench", "depot", "bin", "pod", "signal_tower", "telescope", "radio", "locker", "nursery", "rocket_pad", "stations"]
+
+
+## The globe: jammer i's spot at the base, frame-local on the ground. The site prefab's yard has its
+## own furniture where the flat spots are, so the first free points on rings 9-15 m out are taken
+## (clear of the yard anchors and the other jammers, nothing solid there). Deterministic.
+func jammer_spot(i: int) -> Vector3:
+	var so: Node = world.get("orbit")
+	var taken: Array[Vector3] = []
+	for nm: String in YARD_ANCHORS:
+		taken.append(to_local(so.call("yard_point", nm)) if so else Vector3.INF)
+	var found: Array[Vector3] = []
+	for rr: float in [9.0, 11.0, 13.0, 15.0]:
+		for k: int in 24:
+			var a: float = TAU * (float(k) + (0.5 if int(rr) % 2 == 1 else 0.0)) / 24.0 + 2.6
+			var c := Vector3(cos(a) * rr, 0.0, sin(a) * rr)
+			c.y = _ground(c.x, c.z)
+			var ok: bool = true
+			for t: Vector3 in taken + found:
+				if t != Vector3.INF and Vector2(t.x - c.x, t.z - c.z).length() < (4.0 if found.has(t) else 3.5):
+					ok = false
+					break
+			if ok and not _solid_at(c):
+				found.append(c)
+				if found.size() > i:
+					return found[i]
+	return JAMMER_SPOTS[i % JAMMER_SPOTS.size()]
+
+
+func _solid_at(c: Vector3) -> bool:
+	if not is_inside_tree() or get_world_3d() == null:
+		return false
+	var sh := CylinderShape3D.new()
+	sh.radius = 0.8
+	sh.height = 2.2
+	var q := PhysicsShapeQueryParameters3D.new()
+	q.shape = sh
+	q.transform = Transform3D(global_basis.orthonormalized(), to_global(c + Vector3(0, 1.5, 0)))
+	q.collision_mask = 1 | PhysLayers.PROP  # the static world and props (the site prefabs' structures)
+	return not get_world_3d().direct_space_state.intersect_shape(q, 1).is_empty()

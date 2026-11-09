@@ -106,7 +106,7 @@ func restore() -> void:
 	model.holding = _snap.get("holding", false)
 	if model._face_mat:
 		model._face_mat.set_shader_parameter("wink", 0.0)
-		model._face_mat.set_shader_parameter("eye_color", PatchModel.VARIANTS[model.variant]["glow"])
+		model._face_mat.set_shader_parameter("eye_color", LumiStyle.eyes_of(model))  # [style]
 	if _props and is_instance_valid(_props):
 		_props.queue_free()
 	_props = null
@@ -372,7 +372,7 @@ func _apply_pose() -> void:
 	face.set_shader_parameter("wink", _cur["wink"])
 	face.set_shader_parameter("look", _cur["look"])
 	face.set_shader_parameter("energy", _cur["energy"])
-	var glow: Color = PatchModel.VARIANTS[m.variant]["glow"]
+	var glow: Color = LumiStyle.eyes_of(m)  # [style]
 	face.set_shader_parameter("eye_color", glow.lerp(Color(1.0, 0.45, 0.3), float(_cur["dim"]) * 0.55))
 
 
@@ -399,7 +399,7 @@ func _update_props(_delta: float) -> void:
 				_holo = _make_holo()
 			"sleepy":
 				_battery = _make_battery()
-	var glow: Color = PatchModel.VARIANTS[model.variant]["glow"]
+	var glow: Color = LumiStyle.laser_of(model)  # [style] photo beams use the laser colour
 	if not _beams.is_empty():
 		var sweep: float = sin(_t * 1.4)
 		var fwd: Vector3 = -model.global_transform.basis.z
@@ -436,7 +436,7 @@ func _beam_mesh() -> MeshInstance3D:
 	mi.mesh = c
 	var mat := StandardMaterial3D.new()
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	var g: Color = PatchModel.glow_of(model.variant) if model else Color(0.3, 0.88, 1.0)  # [skins] design glow
+	var g: Color = LumiStyle.glow_of_model(model) if model else Color(0.3, 0.88, 1.0)  # [skins] design glow [style]
 	mat.albedo_color = g.lerp(Color.WHITE, 0.6)
 	mat.emission_enabled = true
 	mat.emission = g
@@ -535,7 +535,7 @@ void fragment() {
 """
 	var mat := ShaderMaterial.new()
 	mat.shader = sh
-	mat.set_shader_parameter("col", PatchModel.VARIANTS[model.variant]["glow"])
+	mat.set_shader_parameter("col", LumiStyle.glow_of_model(model))  # [style]
 	var globe := MeshInstance3D.new()
 	globe.mesh = ProcMesh.sphere(0.12, 32, 16)
 	globe.material_override = mat

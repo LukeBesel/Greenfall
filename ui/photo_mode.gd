@@ -110,6 +110,8 @@ func set_value(key: String, v: Variant) -> void:
 func block_reason(from_menu: bool = false) -> String:
 	if is_open:
 		return "open"
+	if not CameraBot.available():
+		return "locked"  # [camp3] photo mode comes with Blink, the camera bot (a Build-tab build)
 	if world == null or world.get("patch") == null:
 		return "unavailable"
 	if bool(world.get("launching")):
@@ -146,6 +148,7 @@ func open(_from_menu: bool = false) -> void:
 	if is_open or world == null:
 		return
 	is_open = true
+	GameState.inc_stat("photo_mode_opens")  # [camp3] (old saves that used photo mode keep Blink)
 	var tree: SceneTree = get_tree()
 	_snap = {"paused": tree.paused, "mouse": Input.mouse_mode, "disable_3d": tree.root.disable_3d}
 	_snapshot_world()
@@ -478,9 +481,9 @@ func _on_value(key: String) -> void:
 				_logo.visible = bool(values["logo"])
 		"cam_mode":
 			if int(values["cam_mode"]) == 1 and _cam:
-				_t_free = _cam.global_position
+				_t_free = _local_frame().inverse() * (_cam.global_position - _lumi_pos()) if _sphere() else _cam.global_position  # [orbE]
 				_c_free = _t_free
-				var f: Vector3 = -_cam.global_transform.basis.z
+				var f: Vector3 = _local_frame().inverse() * -_cam.global_transform.basis.z
 				_t_yaw = atan2(-f.x, -f.z)
 				_t_pitch = asin(clampf(f.y, -1.0, 1.0))
 				_c_yaw = _t_yaw
@@ -572,7 +575,7 @@ func reset_camera(full: bool = true) -> void:
 		values["fov"] = 50.0
 		values["cam_mode"] = 0
 		# Face Lumi from the front-left three-quarter view.
-		_t_yaw = patch.global_rotation.y + PI + 0.5
+		_t_yaw = _patch_yaw(patch) + PI + 0.5  # [orbE] local frame on a round planet
 		_t_pitch = -0.12
 		if _panel:
 			_panel.refresh()
@@ -583,6 +586,29 @@ func reset_camera(full: bool = true) -> void:
 func _lumi_pos() -> Vector3:
 	var patch: Node3D = world.get("patch")
 	return patch.global_position
+
+
+## [orbE] On a round planet the camera works in Lumi's local frame (y = local up, x east, z south):
+## yaw and pitch are around the local up, and the free camera's position is an offset in that
+## frame. On the flat game this is the identity and nothing changes.
+func _local_frame() -> Basis:
+	var patch: Node3D = world.get("patch") if world else null
+	if patch and patch.get("sphere") != null and patch.has_method("up"):
+		return SphereGrid.frame(patch.call("up"))
+	return Basis()
+
+
+func _sphere() -> bool:
+	var patch: Node3D = world.get("patch") if world else null
+	return patch != null and patch.get("sphere") != null
+
+
+## Lumi's heading in the camera frame (the flat game's global_rotation.y).
+func _patch_yaw(patch: Node3D) -> float:
+	if not _sphere():
+		return patch.global_rotation.y
+	var z: Vector3 = _local_frame().inverse() * patch.global_basis.z
+	return atan2(z.x, z.z)
 
 
 func _pad() -> int:
@@ -660,7 +686,10 @@ func _poll_input(delta: float) -> void:
 func _update_camera(delta: float) -> void:
 	if _cam == null:
 		return
-	var lumi: Vector3 = _lumi_pos()
+	var lumi_w: Vector3 = _lumi_pos()
+	var sph: bool = _sphere()  # [orbE] work in Lumi's local frame, then turn into the world
+	var fr: Basis = _local_frame()
+	var lumi: Vector3 = Vector3.ZERO if sph else lumi_w
 	var free: bool = int(values["cam_mode"]) == 1
 	_t_pitch = clampf(_t_pitch, -1.45, 1.2 if free else 0.55)
 	var k: float = 1.0 - exp(-delta * 10.0)
@@ -687,10 +716,14 @@ func _update_camera(delta: float) -> void:
 		pos.y = maxf(pos.y, lumi.y + 0.08)
 		basis = Basis.looking_at(focus - pos, Vector3.UP) if pos.distance_to(focus) > 0.01 else rot
 	basis = basis * Basis(Vector3.FORWARD, deg_to_rad(_c_roll))
+	if sph:
+		pos = lumi_w + fr * pos
+		basis = fr * basis
+		lumi = lumi_w
 	_cam.global_transform = Transform3D(basis, pos)
 	_cam.fov = _c_fov
 	# Depth of field: focus on Lumi's face (auto) or at a set distance.
-	var head: Vector3 = lumi + Vector3(0, 0.75, 0)
+	var head: Vector3 = lumi + fr.y * 0.75  # [orbE] fr is the identity on flat
 	var fd: float = pos.distance_to(head) if bool(values["autofocus"]) else float(values["focus"])
 	if bool(values["autofocus"]) and absf(float(values["focus"]) - fd) > 0.05:
 		values["focus"] = fd
@@ -797,7 +830,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				values["fov"] = clampf(float(values["fov"]) + d * 3.0, 20.0, 100.0)
 				_panel.refresh("fov")
 			elif int(values["cam_mode"]) == 1:
-				_t_free += -_cam.global_transform.basis.z * -d * 0.6
+				_t_free += _local_frame().inverse() * -_cam.global_transform.basis.z * -d * 0.6  # [orbE] identity on flat
 			else:
 				values["distance"] = clampf(float(values["distance"]) * (1.0 + d * 0.08), 1.0, 12.0)
 				_panel.refresh("distance")
@@ -967,7 +1000,7 @@ func _dev_apply(entry: String) -> void:
 						set_value(k, float(v))
 	var patch: Node3D = world.get("patch")
 	if cam_keys.has("yaw"):
-		_t_yaw = patch.global_rotation.y + float(cam_keys["yaw"])
+		_t_yaw = _patch_yaw(patch) + float(cam_keys["yaw"])  # [orbE]
 	if cam_keys.has("pitch"):
 		_t_pitch = float(cam_keys["pitch"])
 	if _panel:

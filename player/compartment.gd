@@ -23,6 +23,8 @@ func reserve(volume: float) -> void:
 
 func add(type_id: String, volume: float) -> void:
 	pending = maxf(0.0, pending - volume)
+	if pending < 0.0001:  # [orbB] float residue (e.g. 1e-15) must not count as "still flying in" and block a dump
+		pending = 0.0
 	contents[type_id] = float(contents.get(type_id, 0.0)) + volume
 	fill += volume
 

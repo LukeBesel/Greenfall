@@ -21,6 +21,8 @@ const REBINDABLE: Array = [
 	["toggle_goals", "Show more goals"],  # [hud]
 	["zoom_in", "Zoom in"], ["zoom_out", "Zoom out"],
 	["photo_mode", "Photo mode"],  # [photo]
+	["glim_scan", "Glim: scan (hold: upgrades)"],  # [buddy]
+	["boost", "Hover boost"],  # [orbD] hold on the walkable globe (SphereInput)
 ]
 # l10n:end
 # l10n:begin
@@ -31,6 +33,7 @@ const JOY_NAMES: Dictionary = {
 	JOY_BUTTON_DPAD_UP: "D-pad up", JOY_BUTTON_DPAD_DOWN: "D-pad down",
 	JOY_BUTTON_DPAD_LEFT: "D-pad left", JOY_BUTTON_DPAD_RIGHT: "D-pad right",
 	JOY_BUTTON_MISC1: "Share",
+	JOY_BUTTON_TOUCHPAD: "Touchpad", JOY_BUTTON_PADDLE1: "Paddle 1",  # [orbD]
 }
 # l10n:end
 enum SubtitleSize { SMALL, MEDIUM, LARGE }
@@ -67,12 +70,17 @@ var music_volume: float = 0.55
 var mouse_sensitivity: float = 0.0035
 var invert_y: bool = false
 var best_value_tags: bool = true
+## [orbB] New Game / Continue start on the walkable globe (scenes/slice_orbit.gd), with its own save
+## folder (SaveManager.root_dir). [v1menu] The round world is the game now: always true, never saved
+## or loaded (old settings files hold the preview's `false`). The dev hook `--flat` turns it off to
+## reach the dormant flat game (SaveManager.round_planets).
+var round_planets: bool = true
 ## [hud] In-game HUD density: FULL (everything, no auto-fade), MINIMAL (default: non-essential
 ## elements fade after a few seconds without change), HIDDEN (only prompts and notifications).
 enum HudMode { FULL, MINIMAL, HIDDEN }
 var hud_mode: int = HudMode.MINIMAL
 enum Quality { LOW, MEDIUM, HIGH, ULTRA }
-var quality: int = Quality.HIGH
+var quality: int = Quality.MEDIUM  # [v1menu] Medium on a first run (owner, 2026-11-08)
 var fullscreen: bool = false
 var vsync: bool = true
 ## 3D render resolution as a fraction of the window (UI stays sharp).
@@ -115,6 +123,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_register_default_actions()
 	load_settings()
+	PadHold.install(get_tree())  # [orbD] hold the pad's map button (View) for the goal tracker
 	for a: String in OS.get_cmdline_user_args():  # [l10n] dev hook: --locale=pseudo|de|es|en
 		if a.begins_with("--locale="):
 			locale_override = a.substr(9)
@@ -201,9 +210,11 @@ func _register_default_actions() -> void:
 		"ui_tab_prev": [_key(KEY_Q), _joy(JOY_BUTTON_LEFT_SHOULDER)],
 		"buy_max": [_key(KEY_SHIFT), _joy(JOY_BUTTON_LEFT_STICK)],
 		"open_codex": [_key(KEY_K), _joy(JOY_BUTTON_MISC1)],
-		"toggle_goals": [_key(KEY_G), _joy(JOY_BUTTON_LEFT_STICK)],  # [hud] expand the goal tracker
+		"toggle_goals": [_key(KEY_G), _joy(JOY_BUTTON_TOUCHPAD), _joy(JOY_BUTTON_PADDLE1)],  # [hud] expand the goal tracker; [orbD] pad: hold View (ui/pad_hold.gd), or touchpad / paddle 1
 		"photo_mode": [_key(KEY_P)],  # [photo] pad: via the pause menu
 		"garden_mode": [_key(KEY_H)],  # [late] Garden Mode (ui/garden_placer.gd); pad: via the pause menu
+		"glim_scan": [_key(KEY_F), _axis(JOY_AXIS_TRIGGER_LEFT, 1.0)],  # [buddy] tap: hex scan, hold: Glim panel
+		"boost": [_key(KEY_SHIFT), _joy(JOY_BUTTON_LEFT_STICK)],  # [orbD] hover-boost on the globe (x4), also the sled's boost
 	}
 	for action: String in _defaults:
 		if not InputMap.has_action(action):
@@ -536,6 +547,10 @@ static func event_label(ev: InputEvent) -> String:
 
 ## Glyph text for an action on the device last used (e.g. "E" or "A"), for HUD prompts.
 func glyph(action: String) -> String:
+	if action == PadHold.LONG_ACTION and last_input_pad:  # [orbD] on a pad the goals are "hold View"
+		var mb: InputEvent = binding(PadHold.SHORT_ACTION, true)
+		if mb and is_pad_event(mb):
+			return tr("hold %s") % PadGlyphs.event_name(mb)
 	var ev: InputEvent = binding(action, last_input_pad)
 	if ev == null:
 		ev = binding(action, not last_input_pad)
@@ -640,8 +655,11 @@ func apply_render_quality(env: Environment, vp: Viewport) -> void:
 	if vp:
 		vp.use_taa = q >= Quality.HIGH
 		# [deck] Low: no MSAA (costly on APUs); FXAA instead.
-		vp.msaa_3d = Viewport.MSAA_DISABLED if (q >= Quality.HIGH or q == Quality.LOW) else Viewport.MSAA_2X
-		vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA if q <= Quality.MEDIUM else Viewport.SCREEN_SPACE_AA_DISABLED
+		# [v1menu] No MSAA on any preset: changing the sample count rebuilt every pipeline, the main
+		# reason a preset change stalled. Low/Medium use FXAA, High/Ultra TAA.
+		vp.msaa_3d = Viewport.MSAA_DISABLED
+		var ssaa_ok: bool = RenderingServer.get_current_rendering_method() != "gl_compatibility"  # [qafix] QA #35: FXAA only warns there
+		vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA if (q <= Quality.MEDIUM and ssaa_ok) else Viewport.SCREEN_SPACE_AA_DISABLED
 		vp.mesh_lod_threshold = [4.0, 2.0, 1.0, 0.5][q]
 	RenderingServer.directional_shadow_atlas_set_size([2048, 4096, 4096, 8192][q], true)
 	# [deck] Shadow filtering: fewer PCF taps on Low (still soft-edged).
@@ -670,7 +688,7 @@ func auto_detect_display(cfg: ConfigFile) -> void:
 		return
 	var d: Dictionary = QualityDetect.pick(QualityDetect.probe_info())
 	if not has_q:
-		quality = int(d["quality"])
+		quality = mini(int(d["quality"]), Quality.MEDIUM)  # [v1menu] first run: Medium at most (weaker hardware still gets Low)
 		if not cfg.has_section_key("display", "render_scale"):
 			render_scale = float(d["render_scale"])
 		quality_auto = true

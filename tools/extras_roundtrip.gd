@@ -11,6 +11,11 @@ static func setup(s: Node) -> void:
 	Radio.note_planet("ochre", 3)
 	Radio.check_unlocks()
 	Radio.play("ochre_caravan")
+	Tunes.grant("sunbaked", true)  # [tunes] a CD found, one lying in the rubble, the pity counter
+	CdFinds.pending()["dune_caravan"] = {"hub": GameState.current_hub, "hex": 3, "planet": "ochre"}
+	Tunes.st()["pity"] = 7
+	Tunes.hold("strip_mine_shuffle")  # a scratched CD in the case
+	Tunes.note_play("clean_sweep")
 	var e: Dictionary = PhotoAlbum.entry(GameState.current_hub)
 	e["name"] = "Old Town"
 	e["before"] = PhotoAlbum.dir().path_join("h0_before.jpg")
@@ -30,6 +35,8 @@ static func snap(s: Node) -> Dictionary:
 	var nu: Nursery = Nursery.of(s)
 	return {
 		"radio": JSON.stringify(Radio.st()),
+		"songs": JSON.stringify(JSON.parse_string(JSON.stringify(Tunes.st()))),  # [tunes] ints load back as floats
+		"songs_found": ",".join(Tunes.found()),
 		"radio_track": Audio.get_music_track() if Audio.get_music_track() != "" else Radio.playing(),
 		"album": JSON.stringify(PhotoAlbum.st()),
 		"nursery": JSON.stringify(Nursery.list()),

@@ -1,8 +1,9 @@
 {
-  "_doc": "Robot types. requires_research = research node id needed before the type can be built (absent = unlocked from the start). recipe = part type ids needed to build one (any rarity; higher rarity adds +5% per rarity step to the robot's stats). stats = Mk I base values. tiers = visual/stat tiers: mult multiplies all work stats; requires_core_rarity = rarity index of a Control Core consumed to reach the tier. Fleet upgrades apply to every robot of the type.",
+  "_doc": "Robot types. requires_research = research node id needed before the type can be built (absent = unlocked from the start). [ui2] parts = Parts for the first robot of the type (with cost in cubes; cubes grow x1.35 and parts x1.2 per robot owned). recipe = flavour only now (the part types a robot is made of; nothing is consumed). stats = Mk I base values. tiers = visual/stat tiers: mult multiplies all work stats; requires_core_rarity = unused since [ui2] (Mk steps cost cubes + Fleet.TIER_PARTS). Fleet upgrades apply to every robot of the type.",
   "types": [
     {
       "id": "scoopie",
+      "requires_research": "salvage_logic",
       "name": "Scoopie",
       "role": "clean",
       "desc": "Small cleaner. Picks junk in its hex and leaves bales behind.",
@@ -12,7 +13,8 @@
         "arm",
         "core"
       ],
-      "cost": 1100,
+      "cost": 800,
+      "parts": 70,
       "stats": {
         "speed": 1.6,
         "scoop_rate": 1.4,
@@ -64,6 +66,7 @@
     },
     {
       "id": "haulbug",
+      "requires_research": "haul_rig",
       "name": "Haul Bug",
       "role": "haul",
       "desc": "Fork cart. Carries loose bales to the scale.",
@@ -73,6 +76,7 @@
         "battery"
       ],
       "cost": 400,
+      "parts": 40,
       "stats": {
         "speed": 2.8,
         "carry": 2.0
@@ -113,6 +117,7 @@
         "hopper"
       ],
       "cost": 700,
+      "parts": 45,
       "stats": {
         "speed": 1.5,
         "work_rate": 0.8
@@ -153,6 +158,7 @@
         "battery"
       ],
       "cost": 700,
+      "parts": 45,
       "stats": {
         "speed": 1.7,
         "work_rate": 1.0,
@@ -205,6 +211,7 @@
     },
     {
       "id": "skimmer",
+      "requires_research": "skimmer_rig",
       "name": "Skimmer",
       "role": "skim",
       "desc": "Hover pontoon bot with a net arm. Skims floating junk off the lake and leaves bales on the shore for haulers.",
@@ -215,6 +222,7 @@
         "battery"
       ],
       "cost": 800,
+      "parts": 60,
       "stats": {
         "speed": 1.8,
         "scoop_rate": 1.5,
@@ -268,6 +276,7 @@
         "module"
       ],
       "cost": 1600,
+      "parts": 140,
       "stats": {
         "speed": 1.6,
         "scoop_rate": 1.0,

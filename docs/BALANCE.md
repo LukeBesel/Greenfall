@@ -587,3 +587,230 @@ calls it and scales the result; nothing is duplicated.
   here into more cubes there. It is a nudge you can watch, not an income source.
 - **Telescope unlock:** base level 4, or the Observatory Optics research (Robotics tier 6, 500 Data). Cost
   6000 cubes + 40 parts (bolts until the money rework adds a parts currency). Tests: `tests/test_remote_progress.gd`.
+
+## Slow start (wt/pace, Nov 8)
+Owner playtest #2: the start was far too fast and strong (4 upgrades after two bales, auto-cubing
+and robots within minutes). Lumi now starts small and earns his tools (core/pace.gd).
+
+Start: chest 12 (was 30), scoop 3 pieces/s (was 8), 1 piece per pulse, small junk only, no bale
+press. Before the Baler the chest is emptied loose into the trash bin (camp's TrashBin.deposit,
+else the scale pad) for 1.0 x junk value (no Pure/Perfect/sell bonuses). Lumi Level cube rewards
+were the hidden early flood (+85 at level 2): cap_cubes_base 30 -> 8, floor 15 -> 5 per level.
+
+| Upgrade | Cost | Notes |
+|---|---|---|
+| Baler | 100 | unlocks bales (stat baler_unlocked) |
+| Lift Strength | 50, 500 | Lv1 medium (jerrycans, crates), Lv2 large (tyres, TVs, fridges); stat lift_class |
+| Scoop Size (multi_lock) | 70 x2.4, max 4 | +1 piece per pulse, no longer gated |
+| Compartment Size | 45 x1.55 | +5 chest |
+| Scoop Speed | 45 x1.6 | +40 % per level |
+| Carry Stack / Compactor Pressure | 120 / 150 | need the Baler |
+| Signal Finder | 400 | needs Detector Coil 1; Rare Part Signal (violet beam) event only after it |
+| Magnet Arm | 1500 x1.9 | Scoop Width 3 + Lift 2 + base 2; pulls 2 + 1/level loose surface pieces, never heaps or heavy ones |
+| Auto Compactor | 2500 | Auto-Baler research + Compartment 6 |
+
+Research: Salvage Logic (1000, base 2) unlocks Scoopie / Haul Bug / Skimmer; Conveyor (3000),
+Auto-Baler (4500) and Recycler need base 2. Upgrades take `requires_research` / `min_base_level`.
+Events take `requires.flag` (Pace.sync_flags: has_baler, has_lift_medium, has_lift_large,
+has_signal_finder) and `enabled`; bale requests need has_baler. Supply Drop and the Ledger's seed
+drops are off (no spontaneous reward crates). Old saves (v < 3) get Baler, Lift 2 and
+data/patch.json old_save_grant (Compartment +4, Scoop Speed +5).
+
+Autoplay, game minutes at --time-scale=4 (Old Town; before = 5db7ed8):
+
+| Milestone | Before | After | Target |
+|---|---|---|---|
+| First upgrade | 0.3 | 1.3 | 1.5-3 |
+| Upgrades bought by the 2nd bale | 1 (5 by 0.7 min) | 4-8 incl. Baler + Lift 1 (0-1 affordable, purse 28-84) (0 affordable then) | ~1 after two bales |
+| Baler / first bale | (no Baler) 0.3 | 3.5-4.9 / 3.6-5.0 | 4-6 |
+| Large lift | (always) | 9.3-9.8 (Lift 2 now 500, was 400 in these runs) | 10-15 |
+| First hex | 1.3 | 5.7-6.8 | |
+| First seed (seed tin) | 13.0 | 16.1-21.2 | 18-22 |
+| Base 2 | 18.0 | 25.6-31.1 | |
+| First robot | 6.3 | 37.2 (Salvage Logic 2500) | 35-45 |
+| Conveyor / Auto-Baler station | 32.0 / 35.2 | Conveyor research starts 42-50, station after | 35-45+ |
+
+Run-to-run spread is about a minute early on. Without world2's HexField.piece_size the start ring
+can still hold large models; Pace counts those as medium so the first hexes can be cleaned.
+## World2: the district reads covered (wt/world2, Nov 7)
+
+Owner: "the only clear areas should be what you or bots pick up." Junk gen 2 (new games; saves without
+`junk_gen` keep gen 1 and radius 3): Old Town's field is radius 4 (55 junk hexes, was 33), no mid-road
+sparsity, a full ring around the base, 40% of landfill junk between the heaps, and the streets of
+building-blocked hexes plus the hub hex outside the yard belong to the nearest junk hex. Every hex keeps
+gen 1's junk volume: pieces are smaller (`vol_scale`), and one pickup (Lumi's beam or a robot's scoop)
+takes the nearby little cluster along (`HexField.hex_cluster`, ~1/vol_scale pieces), so bales, cubes and
+hex flips pace as before. Past the field, `planet/far_junk.gd` lays static junk and paper to 125 m.
+
+Generation (seed 4471): 13.2k pieces / 13.3k volume (radius 3, gen 1) -> 25.7k pieces / 21.9k volume
+(radius 4, gen 2). Coverage (a piece within 1 m of open ground, `tests/test_junk_coverage.gd`): roads
+56% -> 92%, the ring around the base 38-59% -> 86-90%, nothing bare (> 3 m from junk).
+
+First-30-min autoplay (`--fresh --autoplay --time-scale=8 --quit-after=300`, game minutes, before ->
+after; the after bot first detoured to dig a buried part, hence the late first bale):
+
+| Milestone | Before | After |
+|---|---|---|
+| First bale / sale / upgrade | 0.3 / 0.4 / 0.4 | 1.3 / 1.6 / 1.4 |
+| First hex clean | 1.1 | 2.8 |
+| First research done | 5.3 | 5.8 |
+| First robot (Scoopie) | 6.4 | 6.0 |
+| First Haul Bug | 6.9 | 6.0 |
+| Seed tin | 13.9 | 11.4 |
+| Base level 2 | 13.0 | 16.9 |
+| First hex Sustained (lv 4) | 18.2 | 16.5 |
+| First hex Thriving (lv 5) | 25.1 | 24.9 |
+| First Skimmer | 25.2 | 15.6 |
+| At ~36 min: hexes clean / goals / earned | 22 / 49 / 42.5k (38 min) | 21 / 48 / 38.6k |
+
+Without the cluster pickup (volume kept, more pickups) the same run was 15-35% slower (base 2 at 18,
+first Thriving at 34.5); with gen-2 counts but no volume scaling the economy would run ahead instead.
+Solid props add bot "stuck escapes" (6 -> 31 in the run; the bot steers straight): no robot got stuck.
+
+Playtest #2 run (heaps now solid for Lumi and robots, `--save-dir` isolated): first robot 8.6, base 2
+16.6, first Thriving 32.2, 15 hexes / 44 goals / 29.8k earned at 34.7 min. Scooping heaps from the edge
+costs time on landfill hexes; the "pace" helper is re-pacing the start anyway (slower by design).
+Single autoplay runs vary a lot (part luck, the bot digging first); compare several before tuning.
+
+Render cost at the start view (lavapipe, `--perf`, primitives / draw calls): Low 9.71M / 1848 (gen 1)
+-> 6.02M / 1739 (gen 2, after the Low budget: tiny litter items at 24 tris and 14% of the carpet,
+half the far layer in one batch per model); High 20.6M -> 27.4M before the far-layer cut (estimator
+after it: 15.4M -> 19.9M, Medium 12.5M -> 16.8M).
+
+## Whole-game curve and return trips (wt/pace2, Nov 8)
+Owner targets: the whole game about 20 h for a typical player, grindy but never boring; Verdance
+(New Game to the first launch to another planet) 3-4 h; planting ramps at 1-2 h (garden takes off
+75-110 min); something new every 5-10 min early and 10-20 min later; no goal-less stretch over
+10-15 min. You can leave a planet at about 50%; 100% needs tools from later planets.
+
+**Bot-to-human factor: about 2x.** The autoplay bot never reads, never explores and shops
+instantly, but it now loses time to props and heaps (world2 colliders) and plays the slow start
+the same as a person. So bot targets are half the human ones:
+
+| Stretch | Human target | Bot target | Bot measured (pace2 run 4, 16x) |
+|---|---|---|---|
+| Baler / first bale | 5-10 min | 3-5 | 9.5 |
+| Base 2 | 40-60 min | 20-30 | 27.5 |
+| First robot | 60-90 min | 35-45 | 46.8 (Salvage Logic 2500; now 1800) |
+| Base 3 | 2.5-3 h | 75-100 | 102.1 |
+| Garden takes off (Pollinator Survey) | 2.5-3.5 h | 75-110 | 106.0 (was 163) |
+| Base 4 | 4.5-5.5 h | 150-170 | 168.3 (was 164) |
+| Verdance system opens (Mk V: 50% or a level 3 base) | 3-4 h | 1.5-2 h | gate at base 3 = 102; Mk V (60k) est. 130-140, to measure |
+| Each later planet to its chart (50%) | 3-4 h | 1.5-2 h | not measured yet |
+| Return trips (Verdance 68% -> 100%, each planet's cap) + Homeward | 3-4 h | 1.5-2 h | not measured yet |
+| Whole game | ~20 h | ~10 h | not measured yet |
+
+Before (main after the pace merge, coordinator's run): base 2 31, first robot 40, base 3 81,
+garden 163, base 4 164, base 5 / launch 246 min. The garden fix was the bot hoarding 1.5x the next
+base's cost before researching (Pollinator Survey 2000 waited 80 min with 17k cubes in hand); the
+bot now keeps half the next base and works an on-screen goal's research first.
+
+**Return trips (data/homeward.json `tech`, planets' `needs_tech`, research `requires_tech`).**
+A planet's restoration (Homeward's planet-% value, whatever it counts: hub regions on round
+planets) is capped until the listed tech is found; each tech is found when its planet reaches
+25%. Every cap is above the chart (50%), so you can always move on.
+
+| Planet | Found there (at 25%) | Where it is needed |
+|---|---|---|
+| Verdance | (start) | Its own cap: 68% without the Deep Drill, 80% without the Tide Pump, 90% without the Heat Core, 97% without the Cryo Beacon |
+| Ochre | Deep Drill | Verdance's buried landfill: Dune Charts research, so the Dust Flats; caps Ochre at 75% without the Tide Pump, 90% without the Heat Core |
+| Tidewell | Tide Pump | Verdance's flooded streets: Pump Works, so the Sunken City; Ochre's last quarter; caps Tidewell at 75% without the Cryo Beacon, 90% without the Heat Core |
+| Rime | Cryo Beacon | Verdance's Ark Beacon (the Cradle Returns and the finale); Tidewell's last quarter; Rime itself caps at 80% without the Heat Core |
+| Anvil | Heat Core | Verdance's Thermal Lance, so the Frozen Port's ice; the last 10% of Ochre, Tidewell and Rime |
+
+Drives open from partial progress: Mk V (60k cubes, was 2.5M) needs Verdance at 50% or a base at level 3 (data `or_base_level`: the core only passes 25% around base 3 now that the frontiers wait for later-planet tech); Mk VI needs
+another planet at 50%; only Mk VII Homeward keeps the whole system at 100% plus all relics. Relics
+and 100% stay completion rewards. The Bloom Core follows Verdance's cap, so the 75% ark-star beat
+and the Cradle finale come on a return trip; the system map, the late menu's planet switch and the
+Ark Bridge open with `Homeward.system_open()` (the Cradle's answer, a built Mk V, or the Mk V gate).
+
+The campaign bot (tools/autoplay_home.gd) works a planet until it reaches its current cap, or
+plateaus past its chart for 30 min, then goes to the first planet that can still improve: forward
+while there are new planets, back once new tech raises an earlier cap.
+
+Levers for round planets: everything above is data (caps, `at`, drive gates and costs), read through
+Homeward.stored_pct, so a new planet-% definition keeps the same gates.
+
+Measured run 4 (pace2, 16x; before the Mk V `or_base_level` gate, so the bot stayed on Verdance):
+base 5 177 min (was 246), second district base 5 208; Bloom Core 25% at 105 min and still under
+50% at 222 min. Goal-less stretches over 15 min: 29.5-46.8 (saving for Salvage Logic; now 1800
+cubes) and 102-143 (the bot did not research the Seedling Blueprint; it now researches what an
+on-screen goal needs). A 16x run manages only about 2x real time here, so later planets need staged
+runs (`--save-dir=campaign_pace2` without `--fresh`).
+
+Also fixed on the way (bot pacing was skewed): the bare Old Town yard hid the lean-to but kept its
+front posts solid (invisible walls where Lumi stuck for minutes; camp now turns collision off with
+the hidden parts); the bot sidesteps obstacles, and when boxed in for 90 s hops back to the yard and
+logs `[bot-trap]`; `--time-scale` above 4 raises the physics tick rate so steps stay as short as 4x.
+
+## Cross-planet pacing (orbC, Nov 8)
+Owner: later planets are bigger (up to 4x Verdance's area on Anvil) but each must play faster, never
+slower: the tools, bots and drive upgrades from each planet speed the work up. Whole game ~20 h,
+Verdance 3-4 h, something new every 5-20 min. Bot-to-human factor about 2x (see above), so a later
+planet's "can leave" point (50%) should come in about 1.5-2 h of bot time, and never after Verdance's.
+
+**Method.** The flat autoplay bot (tools/autoplay.gd), one stage per planet, headless at 16x:
+`--fresh --save-dir=pace_<id> --planet-start=<id> --heirlooms=<picks> --autoplay --time-scale=16
+--quit-at-pct=50` (scratchpad/orbc/pace.sh). `--planet-start` (systems/cradle_mode.gd) lands on a
+campaign planet the way rocket travel does (new world state, carried flags, rocket tier).
+`--quit-at-pct=N` saves and stops when Homeward.measure_current() reaches N%; the log carries
+`planet`/`pct` per minute and the milestones file `pct25/50/75_<id>_s`. Assumed Heirloom picks, one
+per planet before (the restoration reward): Ochre Old Crew 1; Tidewell Old Crew 2 + Head Start 1;
+Rime + Quick Beam 1; Anvil + Archivist 1. The flat game stands in for the round planets (autoplay
+does not play the globe yet): a planet's size there is its Thriving target (110 / 140 / 160 / 200
+Thriving hexes and 1 / 2 / 2 / 3 bases at level 5, so more districts to restore).
+
+**Levers (data).**
+- `data/homeward.json` planets[k].`arrival` (new, Homeward.apply_arrival on landing): what the crew
+  brings from the planets before: research tier (every research below it granted: blueprints, beam,
+  stations), a starting crew on top of the Heirloom kit, robot Mk tiers, cubes, parts, seeds.
+
+| Planet | research tier | crew | robot Mk (index) | cubes / parts / seeds |
+|---|---|---|---|---|
+| Ochre | 3 | 2 Scoopie, Haul Bug, Seedling | - | 4k / 400 / - |
+| Tidewell | 3 | 2 Scoopie, Haul Bug, Seedling, Drip | Scoopie II | 5k / 500 / - |
+| Rime | 4 | 2 Scoopie, Haul Bug, 2 Seedling, 2 Drip | Scoopie, Haul Bug, Seedling II; Drip III | 10k / 1k / 80 |
+| Anvil | 5 | 3 Scoopie, Haul Bug, 3 Seedling, 2 Drip, Multibot | Scoopie, Haul Bug III; Seedling, Drip IV | 15k / 1.5k / 150 |
+
+- The Bot Fabricator (data/fabricator.json, from Tidewell on): 8k cubes + 300 parts, robots at 0.35x
+  their price (a Scoopie 385 cubes + 25 parts) with no growth, 30 s each, fleet cap 0.6 per 1,000
+  hexes on a globe (Verdance 98, Ochre 71, Tidewell 165, Rime 252, Anvil 393), 3x the crew cap on a
+  flat district. It was 30k + 900 and robots 0.6x: on Tidewell that landed at about 2-2.5 h, near
+  the planet's end.
+- The bot (tools/autoplay.gd): builds the Fabricator as soon as it is offered and paid for (robot
+  builds wait, the upgrade loop saves for it), keeps one robot's cubes in reserve while the line runs
+  below its cap, and sets a mix of cleaners and haulers plus planters and waterers once researched
+  (more Seedlings when seeds pile up). `_fabricator_mix`.
+
+**Measured (bot game minutes to the planet's 50%).**
+
+| Planet | before (no arrival kit) | v1 kit | final | 25% | base 5 | Fabricator | goal gaps over 20 min |
+|---|---|---|---|---|---|---|---|
+| Verdance (fresh) | 50% at 433; leave point base 3 at 114 (Mk V gate) | - | - | 120 | 162 | - | none (max 15.2) |
+| Ochre | 25% not reached at 155 | 143 | 122 | 80 | 118 | (not unlocked) | none |
+| Tidewell | Fabricator never bought in 92 min | 119.5 | 119.5 | 84 | 112 | 29 | none (max 5.2) |
+| Rime | - | 146 (v1) | ~145 (139 / 151, 3 runs) | 75 | 100-106 | 5 | 20.0 max (one, at the edge) |
+| Anvil | - | 227 | 140 (v2 kit 152) | 70 | 76 | 4 | none |
+
+Goals came every 2.5-4 min on every planet; no goal-less stretch over 20 min anywhere (the longest
+20.0 min, once, on Rime). Run-to-run spread is large (Anvil's 25% came at 75 and at 139 min with the same
+data), so treat single numbers as +-20%.
+
+**Whole game (bot time, x2 for a person).** Verdance to its leave point ~1.9-2.2 h (base 3 at 114
+min, Mk V soon after), then Ochre ~2.0, Tidewell ~2.0, Rime ~2.4, Anvil ~2.3 to 50%, plus the
+return trips (50% -> 100% with the later tech, est. 1.5-2 h): about 10-11 h bot, so ~20-22 h for a
+person. Verdance's own 50% (the Bloom Core) comes much later (433 bot min) because its frontiers wait
+for later-planet tech; that is by design (return trips).
+
+Result: every later planet reaches 50% in 2.0-2.5 bot hours (4-5 h for a person), within ~20% of
+the 1.5-2 h target and never slower than Verdance's own path to the same point. They still come in
+a little after Verdance's leave point (base 3, ~1.9 h bot), mostly because the 50% needs Thriving
+hexes over several districts (planting is the bottleneck: seeds pile up while Seedlings are few).
+Next lever if a person's runs come in slow: more planters in the arrival kits or a Seedling-first
+default Fabricator mix, not lower Thriving targets (those are the planets' size).
+
+**Caveats.** The flat districts don't grow with the globe's area: on round planets the Fabricator's
+size-scaled fleet cap and far crews carry the bigger planets (orbit autoplay is not wired yet). The
+bot spends greedily, so the Fabricator's fleet stays near 20 robots on a flat district; a person who
+sets the mix and lets it run gets more. Two bot runs stalled with the tree paused (a modal the bot
+does not close) at random times; the watchdog in those runs found `paused=true`, cause still open.

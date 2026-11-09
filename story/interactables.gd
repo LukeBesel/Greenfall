@@ -30,16 +30,21 @@ func nearest(pos: Vector3) -> Dictionary:
 	var best_d: float = INF
 	for i: int in range(_items.size() - 1, -1, -1):
 		var e: Dictionary = _items[i]
-		var n: Node3D = e["node"]
-		if not is_instance_valid(n):
+		var nv: Variant = e["node"]
+		if not is_instance_valid(nv):  # [orbB] check before the typed assignment (a freed anchor errors there)
 			_items.remove_at(i)
 			continue
-		if not n.is_inside_tree() or not n.visible:
+		var n: Node3D = nv
+		if not n.is_inside_tree() or not n.is_visible_in_tree():  # [camp] hidden parents (unbuilt yard builds) too
 			continue
 		var en: Callable = e["enabled"]
 		if en.is_valid() and not bool(en.call()):
 			continue
 		var d: float = Vector2(n.global_position.x - pos.x, n.global_position.z - pos.z).length()
+		if JunkCube.planet_radius > 0.0:  # [orbB] round planet: distance along the ground
+			var dv: Vector3 = n.global_position - pos
+			var u: Vector3 = pos.normalized()
+			d = (dv - u * dv.dot(u)).length()
 		if d < float(e["r"]) and d < best_d:
 			best_d = d
 			best = e

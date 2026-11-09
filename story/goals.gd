@@ -16,6 +16,12 @@ var chain: Array = []
 var visible_count: int = 3
 var _done: Dictionary = {}
 var _tick: float = 0.0
+## [v1guide] One goal timeline (owner 2026-11-08): when the story Objectives drive the chain they
+## show one goal at a time on the objective card and complete it themselves; Goals never ticks on
+## its own then (no goal finishing in the background while a story step is up).
+var driven: bool = false
+## [v1guide] Set on a quiet completion (absorb): the HUD skips its own toast for those.
+var quiet: bool = false
 
 
 func _ready() -> void:
@@ -74,7 +80,7 @@ func value_of(i: int) -> float:
 			var fl: Node = world.get("fleet") if world else null
 			if fl == null:
 				return 0.0
-			return float(fl.call("robots").size()) if key == "any" else float(fl.call("count", key))
+			return float(fl.call("robot_total")) if key == "any" else float(fl.call("count", key))  # [v3qa] globe crews count
 		"tier":
 			var best: int = 0
 			for k: String in GameState.flags:
@@ -131,6 +137,8 @@ static func zone_hex_count() -> int:
 			if ord_ is Dictionary:
 				for h: Variant in (ord_ as Dictionary).get("zone", []):
 					seen[int(h)] = true
+	if SphereCrew.active != null and is_instance_valid(SphereCrew.active):  # [v3qa] round planets
+		seen.merge(SphereCrew.active.zone_cells())
 	return seen.size()
 
 
@@ -151,11 +159,28 @@ func _process(delta: float) -> void:
 
 ## Completes at most one current goal whose condition holds. Returns its index or -1.
 func check() -> int:
+	if driven:
+		return -1
 	for i: int in current():
 		if value_of(i) >= target_of(i):
 			complete(i)
 			return i
 	return -1
+
+
+## [v1guide] Folds every goal whose condition already holds into the step just finished: completes
+## them quietly and returns their summed rewards (already paid).
+func absorb() -> Dictionary:
+	var total: Dictionary = {}
+	quiet = true
+	for i: int in chain.size():
+		if not is_done(i) and value_of(i) >= target_of(i):
+			var r: Dictionary = reward_of(i)
+			for k: String in r:
+				total[k] = float(total.get(k, 0.0)) + float(r[k])
+			complete(i)
+	quiet = false
+	return total
 
 
 func complete(i: int) -> void:
@@ -171,6 +196,7 @@ func complete(i: int) -> void:
 		if float(r[k]) > 0.0:
 			GameState.add_currency(k, BigNum.from_float(float(r[k])))
 	GameState.inc_stat("goals_completed")
-	Audio.play("coin", 1.15, -6.0)
-	Audio.play("chime", 1.3, -10.0)
+	if not quiet:
+		Audio.play("coin", 1.15, -6.0)
+		Audio.play("chime", 1.3, -10.0)
 	completed.emit(i)

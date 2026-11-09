@@ -13,6 +13,7 @@ const CURRENCY: String = "cubes"  # [money] research costs cubes (was Data) plus
 static var _cfg: Dictionary = {}
 static var _defs: Dictionary = {}
 static var _order: Array[String] = []
+static var _story: Array[String] = []  # [v4bots] story unlocks: in _defs, never in the tree (_order)
 static var _mods: Dictionary = {}  # stat id -> Vector2(add, mul)
 static var _mods_done: Array = []
 static var _mods_size: int = -1
@@ -34,11 +35,16 @@ static func _ensure() -> void:
 	for n: Dictionary in _cfg.get("nodes", []):
 		_defs[str(n["id"])] = n
 		_order.append(str(n["id"]))
+	for n: Dictionary in _cfg.get("story_unlocks", []):
+		n["story"] = true
+		_defs[str(n["id"])] = n
+		_story.append(str(n["id"]))
 
 
 static func reload() -> void:
 	_defs.clear()
 	_order.clear()
+	_story.clear()
 	_mods_size = -1
 	_ensure()
 
@@ -132,10 +138,15 @@ static func queue_position(id: String) -> int:
 static func status(id: String) -> String:
 	if has(id):
 		return "researched"
+	if is_story(id):  # [v4bots] arrives by itself, never started
+		return "locked"
 	if is_active(id):
 		return "active"
 	if is_queued(id):
 		return "queued"
+	var rt: String = str(def(id).get("requires_tech", ""))  # [pace2]
+	if rt != "" and not Homeward.has_tech(rt):
+		return "locked"
 	return "available" if prereqs_met(id, true) else "locked"
 
 
@@ -171,6 +182,11 @@ static func can_start(id: String) -> bool:
 static func reason(id: String) -> String:
 	if not exists(id):
 		return TranslationServer.translate("Unknown research")
+	if is_story(id) and not has(id):  # [v4bots]
+		return TranslationServer.translate(str(def(id).get("hint", "Comes later")))
+	var rt: String = str(def(id).get("requires_tech", ""))  # [pace2] tools from later planets
+	if rt != "" and not Homeward.has_tech(rt) and not has(id):
+		return Homeward.tech_hint(rt)
 	match status(id):
 		"researched":
 			return TranslationServer.translate("Already researched")
@@ -424,6 +440,80 @@ static func robot_requirement(type_id: String) -> String:
 	return str(Economy.robots.get(type_id, {}).get("requires_research", ""))
 
 
+## [v4bots] What a locked robot card says: the research to do, or a story unlock's hint.
+static func robot_lock_text(type_id: String) -> String:
+	var req: String = robot_requirement(type_id)
+	if is_story(req):
+		return TranslationServer.translate(str(def(req).get("hint", "Comes later")))
+	return TranslationServer.translate("Research: %s") % TranslationServer.translate(str(def(req).get("name", "?")))
+
+
+# --- Story unlocks ([v4bots]) ------------------------------------------------------------
+# Owner 2026-11-09: the Scoopie comes alone, the Haul Bug a while later, the Skimmer later still.
+# They are not tree cards: they arrive by themselves (data/research.json story_unlocks).
+
+static func is_story(id: String) -> bool:
+	return bool(def(id).get("story", false))
+
+
+static func story_ids() -> Array[String]:
+	_ensure()
+	return _story
+
+
+## One story condition: the workbench.json ones, plus since_first_robot and owned.
+static func story_cond(c: Array, w: Node = null) -> bool:
+	match str(c[0]):
+		"since_first_robot":
+			if not GameState.flags.has("first_robot_t"):
+				return false
+			return float(GameState.stats.get("time_played", 0.0)) - float(GameState.flags["first_robot_t"]) >= float(c[1])
+		"owned":
+			var f: Variant = w.get("fleet") if w != null and is_instance_valid(w) else null
+			return f != null and is_instance_valid(f) and (f as Object).has_method("count") and int((f as Object).call("count", str(c[1]))) >= int(c[2])
+	return UpgradesScreen.cond_ok(c, w)
+
+
+static func story_ready(id: String, w: Node = null) -> bool:
+	if has(id) or not is_story(id):
+		return false
+	var d: Dictionary = def(id)
+	for r: String in d.get("requires", []):
+		if not has(r):
+			return false
+	for c: Variant in d.get("any", []):
+		if c is Array and story_cond(c, w):
+			return true
+	var when: Array = d.get("when", [])
+	if when.is_empty():
+		return false
+	for c: Variant in when:
+		if not (c is Array and story_cond(c, w)):
+			return false
+	return true
+
+
+## Marks the first robot's time, then grants every story unlock that is due (quietly: no
+## research_done stat, no research toast). Sets flags[id] for the objectives' wait_flag.
+static func check_story(w: Node = null) -> Array[String]:
+	var out: Array[String] = []
+	if not GameState.flags.has("first_robot_t") and float(GameState.stats.get("robots_built", 0.0)) >= 1.0:
+		GameState.flags["first_robot_t"] = float(GameState.stats.get("time_played", 0.0))
+	for id: String in story_ids():
+		if story_ready(id, w):
+			unlock_story(id)
+			out.append(id)
+	return out
+
+
+static func unlock_story(id: String) -> void:
+	if not exists(id) or has(id):
+		return
+	done_list().append(id)
+	_mods_size = -1
+	GameState.flags[id] = true
+
+
 static func plant_unlocked(species: Dictionary) -> bool:
 	var req: String = str(species.get("requires_research", ""))
 	return req == "" or has(req)
@@ -487,6 +577,8 @@ func _process(delta: float) -> void:
 		return
 	_tick = 0.0
 	update()
+	for sid: String in check_story(world):  # [v4bots] the Haul Bug / Skimmer plans arrive
+		_announce_story(sid)
 	var rewards: Dictionary = {"plants_bloomed": "plant_bloomed", "shards_found": "shard_read", "robot_bales": "robot_bale"}
 	for k: String in rewards:
 		var v: float = float(GameState.stats.get(k, 0.0))
@@ -499,7 +591,18 @@ func _process(delta: float) -> void:
 		apply_garden(world.get("garden"))
 
 
+## [v4bots] One message for a story unlock: WREN says it, or (while she is silent) a toast.
+func _announce_story(id: String) -> void:
+	Audio.play("chime", 1.2, -3.0)
+	var line: String = tr(str(def(id).get("line", "")))
+	var w: Variant = world.get("wren") if world != null and is_instance_valid(world) else null
+	if w != null and is_instance_valid(w) and w is Wren and (w as Wren).awake() and line != "":
+		(w as Wren).speak(line, (w as Wren).stage())
+	else:
+		EventBus.toast.emit(tr("New robot plans: %s. %s") % [tr(str(def(id).get("name", id))), ". ".join(effect_lines(id))], "story")
+
+
 func _on_completed(id: String) -> void:
 	Audio.play("chime", 1.2, -3.0)
-	EventBus.toast.emit(tr("Research complete: %s. %s") % [tr(str(def(id).get("name", id))), ". ".join(effect_lines(id))], "story")
+	EventBus.toast.emit(tr("Research complete: %s.") % tr(str(def(id).get("name", id))), "goal" if Once.take("toast_first_research") else "reward")  # [v4calm] no stat list; the first one only
 	_garden_applied = -1

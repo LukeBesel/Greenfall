@@ -1,11 +1,11 @@
 class_name GoalsPanel
 extends VBoxContainer
 ## Compact goal tracker (top-right, under the district line). No card: right-aligned text over a
-## hairline progress line. Shows the current goal; the toggle_goals key (G / L3) expands it to
+## hairline progress line. Shows the current goal; the toggle_goals key (G, or hold View on a pad) expands it to
 ## the next three with their rewards. The restart checklist (tutorial steps) uses the same style
 ## above the goal and fades away once the tutorial is done. A finished goal flashes green, sends
 ## an elegant toast to the notification stack, then the next one fades in.
-## In Minimal HUD mode the tracker dims after a few seconds without progress.
+## [onboard2] The tracker never dims: goals stay fully readable in every HUD mode.
 
 const W: float = 280.0
 const ROW_W: float = W  ## titles must fit (tests/test_qa_fixes_c.gd)
@@ -17,16 +17,20 @@ var expanded: bool = false
 var _goals: Goals
 var _head: Label
 var checklist: ChecklistCard  # [first] restart checklist card (was right-aligned text)
+var objective: ObjectiveCard  # [onboard] the story objective with its why (story/objectives.gd)
 var _rows: Array[Dictionary] = []
 var _idle: float = 0.0
 var _last_sig: String = ""
 var _alpha: float = 1.0
+var _sub: String = ""  # [v2guide] the latest checklist / hint text
 
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	custom_minimum_size = Vector2(W, 0)
 	add_theme_constant_override("separation", 8)
+	objective = ObjectiveCard.new()  # [onboard] above the checklist: what to do and why
+	add_child(objective)
 	# Restart checklist card (tutorial; also borrowed for one-off "next step" hints).
 	checklist = ChecklistCard.new()
 	add_child(checklist)
@@ -73,13 +77,41 @@ func set_checklist(text: String) -> void:
 	if checklist.tutorial == null:
 		var w: Node = hud.get("world") if hud else null
 		checklist.tutorial = (w.get("tutorial") as Tutorial) if w else null
-	checklist.set_text(text)
+	_sub = text
+	_route_sub()
+
+
+## [v2guide] Owner playtest 2 #33: ONE card. While a story objective is on the card, the checklist
+## step (or a one-off hint) replaces the card's text instead of showing as a second card; before the
+## objectives show (the first minute) the checklist card carries it alone.
+func _route_sub() -> void:
+	if _objective_running() and objective.visible:
+		if checklist.visible:
+			checklist.visible = false
+			checklist.modulate.a = 0.0
+		var tut: Tutorial = checklist.tutorial
+		var pr: Array = tut.step_progress() if tut and not tut.done() else [-1.0, ""]
+		objective.set_substep(ChecklistCard._strip_bb(_sub).strip_edges().replace("  ", " "), pr)
+	else:
+		objective.set_substep("")
+		checklist.set_text(_sub)
 
 
 ## [first] While the restart checklist runs, the goal rows stay out of the way (one instruction at a
 ## time); they fade in once it is done.
 func _checklist_running() -> bool:
 	return checklist.tutorial != null and not checklist.tutorial.done()
+
+
+## [onboard] While a story objective is on the card, the goal rows stay folded (G shows them).
+func _objective_running() -> bool:
+	return objective.objectives != null and not objective.objectives.current().is_empty()
+
+
+## [v1guide] One goal timeline: the story objectives drive the goals and the objective card shows
+## the one current step, so the goal rows stay hidden.
+func _timeline() -> bool:
+	return _goals != null and _goals.driven
 
 
 ## Step text without its "  3/8" counter (so counting up doesn't re-fade the block).
@@ -112,15 +144,21 @@ func _process(delta: float) -> void:
 			return
 		_goals.completed.connect(_on_completed)
 		visible = true
+	if objective.objectives == null:  # [onboard]
+		var wo: Node = hud.get("world") if hud else null
+		var ob: Variant = wo.get("objectives") if wo else null
+		if ob is Objectives:
+			objective.bind(ob as Objectives)
+	_route_sub()  # [v2guide]
 	var total: int = _goals.chain.size()
 	var done: int = _goals.done_count()
 	var show_n: int = 3 if expanded else 1
-	_head.visible = expanded
+	_head.visible = expanded and not _timeline()
 	_head.text = ("G O A L S    %d / %d" % [done, total]) if done < total else "A L L   G O A L S   D O N E"
 	var sig: String = ""
 	for k: int in _rows.size():
 		var r: Dictionary = _rows[k]
-		(r["wrap"] as Control).visible = k < show_n and int(r["goal"]) >= 0 and (expanded or not _checklist_running())
+		(r["wrap"] as Control).visible = k < show_n and int(r["goal"]) >= 0 and (expanded or not (_checklist_running() or _objective_running())) and not _timeline()
 		if r["busy"]:
 			continue
 		var gi: int = r["goal"]
@@ -137,9 +175,8 @@ func _process(delta: float) -> void:
 		_last_sig = sig
 		_idle = 0.0
 	_idle += delta
+	# [onboard2] QA P1: goals stay fully readable (dimming to 50% was unreadable over bright ground).
 	var want: float = 1.0
-	if Settings.hud_mode == Settings.HudMode.MINIMAL and not expanded and _idle > DIM_AFTER_S:
-		want = 0.5
 	_alpha = move_toward(_alpha, want, delta * (3.0 if want > _alpha else 0.5))
 	modulate.a = _alpha
 
@@ -213,6 +250,8 @@ func _draw_line(r: Dictionary) -> void:
 
 func _on_completed(gi: int) -> void:
 	_idle = 0.0
+	if _timeline():  # [v1guide] the objective card says it (one timeline), or it was folded in quietly
+		return
 	var reward: String = reward_text(_goals.reward_of(gi), 1.0)
 	if hud and hud.has_method("notify"):
 		hud.call("notify", tr("Goal complete  ·  %s%s") % [tr(str(_goals.chain[gi].get("text", ""))), ("    " + reward) if reward != "" else ""], "goal")

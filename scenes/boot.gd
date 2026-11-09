@@ -4,4 +4,13 @@ extends Node
 
 
 func _ready() -> void:
+	if DevHooks.has("sphere-demo"):  # [sgrid] hex globe foundation demo (planet/sphere/sphere_demo.gd)
+		get_tree().change_scene_to_file.call_deferred("res://planet/sphere/sphere_demo.tscn")
+		return
+	if DevHooks.has("orbit") and SliceOrbit.wanted():  # [orbB] (the preview toggle starts from the title screen) --orbit: the game's slice on the walkable globe (scenes/slice_orbit.gd)
+		Loader.goto("res://scenes/slice.tscn")
+		return
+	if DevHooks.has("orbit"):  # [orbit] walkable globe prototype (planet/orbit/verdance_globe.gd; --orbit=v1 the first one)
+		Loader.goto("res://planet/orbit/%s.tscn" % ("orbit_world" if DevHooks.get_s("orbit", "") == "v1" else "verdance_globe"))
+		return
 	Loader.goto("res://scenes/main_menu.tscn")

@@ -13,6 +13,9 @@ var scrubbers: int = 0
 var _parts: Array[Node3D] = []
 var _fans: Array[Node3D] = []
 var _demo_t: float = 0.0  # [steam]
+## [orbB] false on the globe: the hub site's prefab shows each level (orbD's SitePrefab.set_stage),
+## so the flat yard's lean-to/office/solar/turbine pieces aren't built.
+var visuals: bool = true
 
 
 func _ready() -> void:
@@ -171,10 +174,13 @@ const SOLAR_ROW := Vector3(3.2, 0.0, 7.5)
 
 
 func _build_level(l: int, animate: bool) -> void:
+	if not visuals:  # [orbB]
+		return
 	var iron: StandardMaterial3D = AssetLib.pbr_material("corrugated_iron", 0.6, Color(0.92, 0.9, 0.86), true)
 	var paint: ShaderMaterial = Mats.worn_paint(Color(0.35, 0.55, 0.62), 0.8, 0.4, 20.0 + l, 0.4)
 	var white: ShaderMaterial = Mats.worn_paint(Color(0.9, 0.9, 0.86), 0.9, 0.2, 30.0 + l, 0.2)
 	var d: float = 0.0
+	var pb: StaticBody3D = PropColliders.body(self, "Props%d" % l)  # [world2] solid walls, office, masts
 	match l:
 		2:
 			# Enclose the lean-to: walls, a roll-up door, floodlights. (Shack sits at x=-4.9, z=2.2.)
@@ -182,6 +188,7 @@ func _build_level(l: int, animate: bool) -> void:
 				_scaffold(Vector3(-4.9, 0, 2.2), Vector3(4.0, 2.8, 3.2), 2.2)
 			for spec: Array in [[Vector3(-4.9, 1.2, 0.6), Vector3(3.6, 2.4, 0.06)], [Vector3(-4.9, 1.2, 3.8), Vector3(3.6, 2.4, 0.06)], [Vector3(-6.7, 1.2, 2.2), Vector3(0.06, 2.4, 3.2)]]:
 				_piece(ProcMesh.box(spec[1]), iron, Transform3D(Basis(), spec[0]), animate, d)
+				PropColliders.add_box(pb, Transform3D(Basis(), to_global(spec[0])), (spec[1] as Vector3).max(Vector3(0.16, 0, 0.16)))  # [world2]
 				d += 0.25
 			_piece(ProcMesh.box(Vector3(4.0, 0.08, 3.6)), paint, Transform3D(Basis(), Vector3(-4.9, 2.5, 2.2)), animate, d)
 			for z: float in [0.9, 3.5]:
@@ -199,6 +206,8 @@ func _build_level(l: int, animate: bool) -> void:
 			_piece(ProcMesh.box(Vector3(4.2, 0.12, 3.2)), paint, Transform3D(Basis(), Vector3(5.5, 2.86, 4.5)), animate, 0.3)
 			_piece(ProcMesh.box(Vector3(0.9, 1.8, 0.05)), Mats.glass(Color(0.2, 0.3, 0.35, 0.7)), Transform3D(Basis(), Vector3(5.0, 1.0, 2.97)), animate, 0.5)
 			_piece(ProcMesh.cyl(0.04, 0.06, 7.0, 6), Mats.metal("steel"), Transform3D(Basis(), Vector3(7.0, 3.5, 5.5)), animate, 0.8)
+			PropColliders.add_box(pb, Transform3D(Basis(), to_global(Vector3(5.5, 1.4, 4.5))), Vector3(4.0, 2.8, 3.1))  # [world2] the office
+			PropColliders.add_cyl(pb, to_global(Vector3(7.0, 0.0, 5.5)), 0.08, 7.0)
 			_piece(ProcMesh.sphere(0.12, 8, 4), Mats.lamp(Color(1.0, 0.2, 0.15), 3.0), Transform3D(Basis(), Vector3(7.0, 7.05, 5.5)), animate, 1.0)
 		4:
 			# [vqa2] Solar row in the front-right of the yard, in front of the level-3 office. It used to
@@ -222,6 +231,7 @@ func _build_level(l: int, animate: bool) -> void:
 			if animate:
 				_scaffold(Vector3(-7.0, 0, -5.0), Vector3(2.0, 9.0, 2.0), 2.6)
 			_piece(ProcMesh.cyl(0.15, 0.3, 9.0, 10), white, Transform3D(Basis(), Vector3(-7.0, 4.5, -5.0)), animate, 0.0)
+			PropColliders.add_cyl(pb, to_global(Vector3(-7.0, 0.0, -5.0)), 0.3, 9.0)  # [world2] the turbine mast
 			_piece(ProcMesh.capsule(0.25, 0.9), white, Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3(-7.0, 9.0, -4.7)), animate, 0.4)
 			var rotor := Node3D.new()
 			rotor.position = Vector3(-7.0, 9.0, -4.25)
@@ -249,10 +259,13 @@ func _build_level(l: int, animate: bool) -> void:
 
 
 func _build_scrubber(i: int, animate: bool) -> void:
+	if not visuals:  # [orbB]
+		return
 	var pos := Vector3(6.5 - i * 1.6, 0, -6.5)
-	var body: ShaderMaterial = Mats.worn_paint(Color(0.3, 0.42, 0.36), 0.75, 0.5, 40.0 + i, 0.5)
-	_piece(ProcMesh.rounded_box(Vector3(1.3, 1.8, 1.3), 0.08, 2), body, Transform3D(Basis(), pos + Vector3(0, 0.9, 0)), animate, 0.0)
-	_piece(ProcMesh.cyl(0.55, 0.55, 0.12, 20), Mats.metal("dark_steel"), Transform3D(Basis(), pos + Vector3(0, 1.86, 0)), animate, 0.3)
+	# [yard] A kit scrubber unit (systems/camp/yard_art.gd YardArt.scrubber); the fan spins in its shroud.
+	var unit: MeshInstance3D = _piece(ArrayMesh.new(), null, Transform3D(Basis(Vector3.UP, i * 0.4), pos), animate, 0.0)
+	YardArt.scrubber().into(unit, 0.15)
+	YardArt.set_powered(unit, true)
 	var fan := Node3D.new()
 	fan.position = pos + Vector3(0, 1.95, 0)
 	add_child(fan)
@@ -263,6 +276,7 @@ func _build_scrubber(i: int, animate: bool) -> void:
 		b.rotation = Vector3(0.25, TAU * k / 4.0, 0)
 		fan.add_child(b)
 	fan.rotation.x = -PI * 0.5
+	YardArt.kitify(fan)  # [yard]
 	_fans.append(fan)
 	if animate:
 		Vfx.burst("dust", pos + Vector3(0, 2.2, 0), Color(0.7, 0.65, 0.6, 0.6), 1.5)

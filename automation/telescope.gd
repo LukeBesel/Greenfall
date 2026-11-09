@@ -164,8 +164,14 @@ func _process(delta: float) -> void:
 # --- Model -----------------------------------------------------------------------------------
 
 func _pos() -> Vector3:
-	var p: Array = data.get("pos", [-5.6, -2.8])
+	var p: Array = data.get("pos", [-4.4, -6.2])  # [camp] the back edge of the yard
 	return Vector3(float(p[0]), 0.0, float(p[1]))
+
+
+## [camp] Where Lumi stands to use it (in front of the door), built or not.
+func door_point() -> Vector3:
+	var local: Vector3 = _pos() + Basis(Vector3.UP, deg_to_rad(float(data.get("yaw_deg", 30.0)))) * Vector3(0, 0, 2.2)
+	return to_global(local) if is_inside_tree() else local  # [orbB] world space (this node sits on the globe's anchor)
 
 
 static func _mat(c: Color, rough: float, metal: float = 0.0, coat: float = 0.0) -> StandardMaterial3D:
@@ -286,6 +292,10 @@ func _spawn(animate: bool) -> void:
 	# A slim mast with a soft aviation light, like the rest of the restored base.
 	_mi(_model, ProcMesh.cyl(0.025, 0.035, 1.4, 6), satin, Vector3(1.35, 2.1, -0.9))
 	_mi(_model, ProcMesh.sphere(0.06, 8, 4), Mats.lamp(Color(0.6, 0.9, 1.0), 2.0), Vector3(1.35, 2.83, -0.9))
+	YardArt.kitify(_model)  # [yard] bevelled kit parts and shaders (glass, glow rings and domes stay)
+	var annex: MeshInstance3D = YardArt.observatory_dress().mi(0.12, "Annex")  # [yard]
+	_model.add_child(annex)
+	YardArt.set_powered(annex, true)
 	_anchor = Node3D.new()
 	_anchor.position = _model.position + Basis(Vector3.UP, _model.rotation.y) * Vector3(0, 0, 2.2)
 	add_child(_anchor)
@@ -299,8 +309,8 @@ func _spawn(animate: bool) -> void:
 	col.add_child(cs)
 	_model.add_child(col)
 	if world and world.get("interactables") != null:
-		world.interactables.register(_anchor, float(data.get("use_range", 3.4)), func() -> String: return tr("E   look through the telescope"), open_view)
+		world.interactables.register(_anchor, float(data.get("use_range", 3.4)), func() -> String: return tr("E   Telescope: look across the system"), open_view)
 	if animate:
 		_model.scale = Vector3(1, 0.02, 1)
 		create_tween().tween_property(_model, "scale", Vector3.ONE, 1.4).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-		Vfx.burst("sparkle", _model.global_position + Vector3(0, 2.0, 0), Color(0.7, 0.9, 1.0), 1.0)
+		Vfx.burst("sparkle", _model.global_position + _model.global_basis.y.normalized() * 2.0, Color(0.7, 0.9, 1.0), 1.0)  # [orbB] local up

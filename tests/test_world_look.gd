@@ -251,6 +251,7 @@ func test_wren_speaks_world_lines_clearly() -> void:
 	var w := Wren.new()
 	add_child_autofree(w)
 	GameState.flags["wren_awake"] = true
+	GameState.flags["signal_tower"] = 1  # [onboard] WREN talks through the Signal Tower
 	var got: Array = []
 	w.line_started.connect(func(text: String, st: int) -> void: got.append([text, st]))
 	w.say(WorldStory.trigger("rust_world", "memory_1"), 1.0, true, {}, 2)

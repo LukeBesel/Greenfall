@@ -206,13 +206,18 @@ static func plan(fld: HexField, lay: CityLayout, levels: Dictionary, hub_level: 
 	_plan_buildings(p, fld, lay, levels, s)
 	_plan_roads(p, fld, lay, levels)
 	_plan_hub(p, hub_level)
-	_plan_skyline(p, fld, lay, s)
+	if not fld.has_meta("planet_env"):  # [planet-ochre] planet envs own their skyline
+		_plan_skyline(p, fld, lay, s)
 	return p
 
 
 static func _plan_hex(p: Dictionary, fld: HexField, lay: CityLayout, hid: int, lv: int, slots: PackedVector3Array) -> void:
-	var c: Vector3 = fld.hex_center(hid)
-	var r: float = fld.hex_size
+	plan_hex_at(p, lay, hid, lv, slots, fld.hex_center(hid), fld.hex_size)
+
+
+## [orbE] One hex's pieces around centre c with hex radius r. The round planet calls it with c at
+## the origin of a cell's tangent frame and lay = null (planet/future_layer_sphere.gd).
+static func plan_hex_at(p: Dictionary, lay: CityLayout, hid: int, lv: int, slots: PackedVector3Array, c: Vector3, r: float) -> void:
 	var seam_en: float = [0.0, 1.15, 1.35, 1.5, 1.7, 2.0][lv]
 	# No seams along the hex edges: the ground itself now shows clean ground with an organic
 	# border (HexField.border_warp), and ruler-straight light lines fought that.
@@ -722,10 +727,12 @@ func rebuild() -> void:
 			buf[o + 18] = cu.b
 			buf[o + 19] = float(_known[k])
 		var mm: MultiMesh = (_mmi[ch] as MultiMeshInstance3D).multimesh
+		(_mmi[ch] as MultiMeshInstance3D).set_meta("inst_xf", xfs)  # [world2] collider audit / FutureColliders
 		mm.instance_count = n
 		if n > 0:
 			mm.buffer = buf
 		(_mmi[ch] as MultiMeshInstance3D).visible = n > 0
+	_build_post_colliders(p["post"]["xf"])  # [world2]
 	_build_labels(p["labels"])
 	_movers = p["movers"]
 	for m: Dictionary in _movers:
@@ -739,6 +746,16 @@ func rebuild() -> void:
 	if not _built:
 		print("[future] score=%.2f pieces=%d built in %.1f ms" % [float(p["score"]), count(p), (Time.get_ticks_usec() - t0) / 1000.0])
 	_built = true
+
+
+## [world2] Way-sign posts standing on the ground are solid (shared cylinders, PhysLayers.PROP).
+func _build_post_colliders(xfs: Array) -> void:
+	var pb: StaticBody3D = PropColliders.body(self, "PostColliders")
+	for t: Transform3D in xfs:
+		var h: float = t.basis.y.length()
+		var base: Vector3 = t.origin - Vector3(0, h * 0.5, 0)
+		if base.y < 0.5 and h > 0.5:
+			PropColliders.add_cyl(pb, base, maxf(t.basis.x.length() * 0.5, 0.06), h)
 
 
 func _build_labels(list: Array) -> void:

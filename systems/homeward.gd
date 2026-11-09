@@ -84,13 +84,16 @@ static func state() -> Dictionary:
 
 ## A loaded profile's homeward dict, cleaned (numbers back to ints after JSON).
 static func sanitize(d: Variant) -> Dictionary:
-	var out: Dictionary = {"pct": {}, "beats": [], "relics": []}
+	var out: Dictionary = {"pct": {}, "beats": [], "relics": [], "techs": []}
 	if not (d is Dictionary):
 		return out
 	var src: Dictionary = d
 	for k: Variant in src.get("pct", {}):
 		(out["pct"] as Dictionary)[str(k)] = clampf(float(src["pct"][k]), 0.0, 1.0)
-	for k: String in ["beats", "relics"]:
+	out["seen"] = []  # [sysmap2] planet ids spotted early by the telescope
+	for x: Variant in src.get("seen", []):
+		(out["seen"] as Array).append(str(x))
+	for k: String in ["beats", "relics", "techs"]:  # [pace2] techs: tools found on later planets
 		for x: Variant in src.get(k, []):
 			(out[k] as Array).append(str(x))
 	out["drive"] = int(src.get("drive", 0))
@@ -119,6 +122,40 @@ static func answered() -> bool:
 	return bool(state().get("answered", false))
 
 
+## [pace2] The system (map, drives, other planets) opens with partial progress: the Cradle's
+## answer, a built Mk V, or Verdance far enough along for the Mk V gate (data: drive requires_*).
+static func system_open() -> bool:
+	if answered() or drive() >= 5:
+		return true
+	var d5: Dictionary = drive_def(5)
+	return not d5.is_empty() and progress_blocker(d5) == ""
+
+
+## [pace2] "" when a drive tier's partial-progress gates hold (pure on the stored percentages):
+## requires_planet_pct [k, pct]: planet k restored to pct; requires_other_pct: any planet other
+## than Verdance restored to pct (its chart). 100% and relics stay optional except where a tier
+## still lists requires_relics / requires_system (Mk VII Homeward).
+static func progress_blocker(nd: Dictionary) -> String:
+	var pp: Variant = nd.get("requires_planet_pct")
+	if pp is Array and (pp as Array).size() >= 2:
+		var k: int = int(pp[0])
+		var need: float = float(pp[1])
+		var ob: int = int(nd.get("or_base_level", 0))  # [pace2] or a base that far along there
+		var base_ok: bool = ob > 0 and current_planet() == k and (int(GameState.world.get("hub_level", 1)) >= ob or Frontiers.bases_at_level(ob) > 0)
+		if stored_pct(k) < need - 0.0001 and not base_ok:
+			if ob > 0:
+				return TranslationServer.translate("Restore %s to %d%% (%d%%) or get a base to level %d") % [planet_name(k), int(round(need * 100.0)), int(floor(stored_pct(k) * 100.0)), ob]
+			return TranslationServer.translate("Restore %s to %d%% (%d%%)") % [planet_name(k), int(round(need * 100.0)), int(floor(stored_pct(k) * 100.0))]
+	if nd.has("requires_other_pct"):
+		var need2: float = float(nd["requires_other_pct"])
+		var best: float = 0.0
+		for k2: int in range(1, planets().size()):
+			best = maxf(best, stored_pct(k2))
+		if best < need2 - 0.0001:
+			return TranslationServer.translate("Restore another planet to %d%% (best %d%%)") % [int(round(need2 * 100.0)), int(floor(best * 100.0))]
+	return ""
+
+
 static func done() -> bool:
 	return bool(state().get("done", false))
 
@@ -129,6 +166,76 @@ static func picks() -> int:
 
 static func relics() -> Array:
 	return state()["relics"]
+
+
+# --- [pace2] Tech from later planets (return trips) -------------------------------------------
+
+static func techs() -> Array:
+	var s: Dictionary = state()
+	if not (s.get("techs") is Array):
+		s["techs"] = []
+	return s["techs"]
+
+
+static func has_tech(id: String) -> bool:
+	return id in techs() or DevHooks.has("all-tech")
+
+
+static func tech_defs() -> Array:
+	return cfg().get("tech", [])
+
+
+static func tech_def(id: String) -> Dictionary:
+	for t: Dictionary in tech_defs():
+		if str(t.get("id", "")) == id:
+			return t
+	return {}
+
+
+static func tech_name(id: String) -> String:
+	return TranslationServer.translate(str(tech_def(id).get("name", id)))
+
+
+## "Deep Drill: found on Ochre" (the hint shown wherever a tech gates something).
+static func tech_hint(id: String) -> String:
+	var pid: String = str(tech_def(id).get("planet", ""))
+	var pname: String = pid
+	for k: int in planets().size():
+		if str(planet_def(k).get("id", "")) == pid:
+			pname = planet_name(k)
+	return TranslationServer.translate("Needs %s: found on %s") % [tech_name(id), pname]
+
+
+## Highest restoration planet k can reach with the tech found so far (1.0 = no cap).
+static func cap_for(k: int) -> float:
+	var cap: float = 1.0
+	for pair: Variant in planet_def(k).get("needs_tech", []):
+		if pair is Array and (pair as Array).size() >= 2 and not has_tech(str(pair[0])):
+			cap = minf(cap, float(pair[1]))
+	return cap
+
+
+## The tech still missing for planet k's next step (its lowest cap), or "".
+static func blocking_tech(k: int) -> String:
+	var best: String = ""
+	var cap: float = 2.0
+	for pair: Variant in planet_def(k).get("needs_tech", []):
+		if pair is Array and (pair as Array).size() >= 2 and not has_tech(str(pair[0])) and float(pair[1]) < cap:
+			cap = float(pair[1])
+			best = str(pair[0])
+	return best
+
+
+## Grants the tech found on planet k once its restoration reaches each tech's `at`. Returns new ids.
+static func grant_techs(k: int) -> Array[String]:
+	var out: Array[String] = []
+	var pid: String = str(planet_def(k).get("id", ""))
+	for t: Dictionary in tech_defs():
+		var id: String = str(t.get("id", ""))
+		if str(t.get("planet", "")) == pid and not (id in techs()) and stored_pct(k) >= float(t.get("at", 0.25)) - 0.0001:
+			techs().append(id)
+			out.append(id)
+	return out
 
 
 static func beat_done(key: String) -> bool:
@@ -236,10 +343,12 @@ static func store_current(v: float) -> Array[int]:
 		return out
 	var id: String = str(planet_def(k).get("id", ""))
 	var old: float = stored_pct(k)
-	var now: float = maxf(old, clampf(v, 0.0, 1.0))
+	var now: float = maxf(old, minf(clampf(v, 0.0, 1.0), cap_for(k)))  # [pace2] capped until later-planet tech
 	if now <= old:
 		return out
 	(state()["pct"] as Dictionary)[id] = now
+	for tid: String in grant_techs(k):  # [pace2]
+		EventBus.toast.emit(TranslationServer.translate("New tech: %s. %s") % [tech_name(tid), TranslationServer.translate(str(tech_def(tid).get("desc", "")))], "story")
 	if old < 0.9999 and now >= 0.9999:
 		out.append(k)
 		var relic: String = str(planet_def(k).get("relic", ""))
@@ -303,6 +412,59 @@ static func can_reach(k: int) -> bool:
 	return reach_blocker(k, drive(), pct_list()) == ""
 
 
+# --- [sysmap2] Discovery ------------------------------------------------------------------------
+# Planets are found strictly in campaign order (data/homeward.json). Planet k shows on the system
+# map once planet k-1 is discovered and either reaches discover_at, was spotted by the telescope
+# (state "seen", see spot()) or Lumi has been to k. Unlocked (travel allowed) = discovered and
+# reach_blocker() clear (the chart at chart_at and the drive tier).
+
+## Pure: is planet k discovered, given per-planet restoration, the spotted ids and visited flags.
+static func discovered_of(k: int, pcts: Array, seen: Array, visited: Array) -> bool:
+	if k <= 0:
+		return true
+	if k >= planets().size() or not discovered_of(k - 1, pcts, seen, visited):
+		return false
+	if k < visited.size() and bool(visited[k]):
+		return true
+	if str(planet_def(k).get("id", "")) in seen:
+		return true
+	return float(pcts[k - 1]) >= float(cfg().get("discover_at", 0.25)) - 0.0001
+
+
+static func _visited_list() -> Array:
+	var out: Array = []
+	for k: int in planets().size():
+		out.append(k == current_planet() or world_of(k) >= 0)
+	return out
+
+
+static func discovered(k: int) -> bool:
+	return discovered_of(k, pct_list(), state().get("seen", []), _visited_list())
+
+
+## Travel allowed: discovered, charted and the drive reaches it (or Lumi is already there).
+static func unlocked(k: int) -> bool:
+	return k == current_planet() or (discovered(k) and can_reach(k))
+
+
+## How many planets are discovered (they always form a prefix of the campaign order).
+static func discovered_count() -> int:
+	var n: int = 0
+	while n < planets().size() and discovered(n):
+		n += 1
+	return n
+
+
+## The telescope spotted planet k. Only the next undiscovered planet in order can be spotted.
+## Returns true if this revealed it.
+static func spot(k: int) -> bool:
+	if k <= 0 or k >= planets().size() or discovered(k) or k != discovered_count():
+		return false
+	(state()["seen"] as Array).append(str(planet_def(k).get("id", "")))
+	save()
+	return true
+
+
 # --- Drive upgrades ---------------------------------------------------------------------------
 
 static func next_drive() -> Dictionary:
@@ -333,6 +495,9 @@ static func drive_blocker(at_home_site: bool = false) -> String:
 	var flag: String = str(nd.get("requires_flag", ""))
 	if flag == "cradle_answered" and not answered():
 		return TranslationServer.translate("The Cradle has to answer first (Cradle Returns)")
+	var pb: String = progress_blocker(nd)  # [pace2]
+	if pb != "":
+		return pb
 	if relics().size() < int(nd.get("requires_relics", 0)):
 		return TranslationServer.translate("Needs %d planet relics (%d)") % [int(nd["requires_relics"]), relics().size()]
 	if system_pct() < float(nd.get("requires_system", 0.0)) - 0.0001:
@@ -366,6 +531,44 @@ static func cost_text(cost: Dictionary) -> String:
 
 
 # --- Travel -----------------------------------------------------------------------------------
+
+## [orbC] What a crew brings to planet k (data/homeward.json planets[k].arrival): the tools and
+## bots of the planets before it, so each bigger planet starts further along and never plays
+## slower than Verdance. Keys (all optional): research_tier (grants every research below that
+## tier), robots (kit robots, added to the Heirloom crew), robot_tier {type: Mk index}, cubes, parts,
+## seeds (also unlocks seeds).
+static func arrival_kit(k: int) -> Dictionary:
+	return (planet_def(k).get("arrival", {}) as Dictionary).duplicate(true) if k > 0 else {}
+
+
+static func apply_arrival(k: int) -> Dictionary:
+	return apply_kit(arrival_kit(k))
+
+
+static func apply_kit(a: Dictionary) -> Dictionary:
+	if a.is_empty():
+		return a
+	if float(a.get("cubes", 0.0)) > 0.0:
+		GameState.add_currency("cubes", BigNum.from_float(float(a["cubes"])))
+	if float(a.get("parts", 0.0)) > 0.0:
+		GameState.add_currency("parts", BigNum.from_float(float(a["parts"])))
+	if float(a.get("seeds", 0.0)) > 0.0:
+		GameState.add_currency("seeds", BigNum.from_float(float(a["seeds"])))
+		GameState.flags["seeds_unlocked"] = true
+	var tier: int = int(a.get("research_tier", 0))
+	if tier > 0:
+		for rid: String in Research.ids():
+			if int(Research.def(rid).get("tier", 0)) < tier and not Research.has(rid):
+				Research.grant(rid)
+	var bots: Array = (GameState.flags.get("late_start_robots", []) as Array).duplicate()
+	bots.append_array(a.get("robots", []))
+	if not bots.is_empty():
+		GameState.flags["late_start_robots"] = bots
+	var rt: Dictionary = a.get("robot_tier", {})
+	for t: String in rt:
+		GameState.flags["tier_" + t] = maxi(int(GameState.flags.get("tier_" + t, 0)), int(rt[t]))
+	return a
+
 
 ## Creates planet k's world record (fixed seed, name, type, modifiers) in the profile.
 static func make_planet_world(k: int) -> Dictionary:

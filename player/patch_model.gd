@@ -17,7 +17,7 @@ extends Node3D
 # procedural extras (holo, butterfly, case); icon: chest screen icon; happy: resting smile (0..1).
 # l10n:begin
 const VARIANTS: Dictionary = {
-	"aurora": {"name": "Aurora", "paint": Color(0.78, 0.74, 0.725), "trim": Color(0.412, 0.435, 0.471), "glow": Color(0.25, 0.886, 0.94), "accent": Color(0.945, 0.42, 0.012), "lamp": Color(0.973, 0.686, 0.035), "paddle": Color(0.953, 0.753, 0.251), "icon": "recycle", "grime": 0.75, "acc": ["antenna"]},
+	"aurora": {"name": "Aurora", "paint": Color(0.78, 0.74, 0.725), "trim": Color(0.412, 0.435, 0.471), "glow": Color(0.25, 0.886, 0.94), "accent": Color(0.945, 0.42, 0.012), "lamp": Color(0.973, 0.686, 0.035), "paddle": Color(0.953, 0.753, 0.251), "icon": "recycle", "grime": 0.75, "eyes": "round", "acc": ["antenna"]},  # eyes: owner (main, Nov 8): one solid glowing eye per side; the concept crescent stays a builder option
 	"bolt": {"name": "Bolt", "paint": Color(0.95, 0.7, 0.1), "trim": Color(0.32, 0.29, 0.24), "glow": Color(1.0, 0.68, 0.18), "accent": Color(0.95, 0.72, 0.12), "lamp": Color(1.0, 0.6, 0.12), "icon": "recycle", "coverage": 0.8, "grime": 0.85, "stripes": 1.0, "acc": ["antenna", "acc_pad_r", "acc_pad_l", "gear"]},
 	"sprout": {"name": "Sprout", "paint": Color(0.47, 0.53, 0.23), "trim": Color(0.33, 0.35, 0.22), "glow": Color(0.52, 1.0, 0.36), "accent": Color(0.86, 0.62, 0.22), "lamp": Color(0.6, 1.0, 0.35), "icon": "leaf", "grime": 0.7, "moss": 0.6, "acc": ["acc_sprout"]},
 	"pixel": {"name": "Pixel", "paint": Color(0.8, 0.15, 0.14), "trim": Color(0.6, 0.12, 0.12), "glow": Color(1.0, 0.33, 0.5), "accent": Color(0.93, 0.91, 0.88), "lamp": Color(1.0, 0.4, 0.55), "icon": "recycle", "happy": 1.0, "acc": ["acc_pixel", "butterfly"]},
@@ -116,8 +116,11 @@ var _dip: float = 0.0
 ## Holding up the survey hologram (right claw raised, palm up).
 var holding: bool = false
 var _hold: float = 0.0
+var _pet_t: float = 0.0  # [fauna2] petting an animal: claw reach + head tilt
+var _pet_dur: float = 0.0
 ## Bloom Core glow: multiplies the eyes, thruster ring and cyan trim (low battery < 1, charged > 1).
 var core_glow: float = 1.0
+const EYE_MIN_ENERGY: float = 2.8  # [v2feel]
 
 
 ## Set before adding to the tree to build a given design (previews) instead of the worn one.
@@ -259,7 +262,7 @@ func _find_sun() -> void:
 
 
 func _build() -> void:
-	var v: Dictionary = VARIANTS[variant]
+	var v: Dictionary = LumiStyle.variant_for(self, VARIANTS[variant])  # [style] Character Builder look (systems/lumi_style.gd)
 	var glow: Color = v["glow"]
 	var accent_c: Color = v["accent"]
 	_paint_mats.clear()
@@ -337,6 +340,7 @@ func _build() -> void:
 	hover_light.omni_range = 0.9
 	hover_light.position = Vector3(0, 0.06, 0)
 	hover_light.shadow_enabled = false
+	hover_light.light_cull_mask = 0xFFFFF & ~(1 << 18)  # [fauna2] not on animals (FaunaRig.LAYER): no cyan cats
 	_float.add_child(hover_light)
 	# His own soft key light (only lights his meshes) so he reads against the busy world.
 	var key := OmniLight3D.new()
@@ -416,6 +420,7 @@ func _build() -> void:
 	_beam.top_level = true
 	_beam.visible = false
 	add_child(_beam)
+	LumiStyle.after_build(self)  # [style] eyes, side modules, hover ring, extra add-ons, laser colour
 
 
 # --- Design add-ons -----------------------------------------------------------------------------
@@ -660,9 +665,20 @@ func _process(delta: float) -> void:
 		_arm_r.rotation.z = lerpf(_arm_r.rotation.z, 0.35, e)
 		var elbow_h: Node3D = _arm_r.get_meta("elbow")
 		elbow_h.rotation.x = lerpf(ARM_REST.y, 0.9, e)
+	var pet_e: float = _pet_env(delta)
+	if pet_e > 0.0:
+		# [fauna2] Petting: the right claw reaches down and forward and strokes; the left arm lifts a
+		# little in sympathy, the elbow softens.
+		var stroke: float = sin(_t * 5.5)
+		_arm_r.rotation.x = lerpf(_arm_r.rotation.x, -0.78 + stroke * 0.12, pet_e)
+		_arm_r.rotation.z = lerpf(_arm_r.rotation.z, -0.12 + stroke * 0.05, pet_e)
+		_arm_l.rotation.x = lerpf(_arm_l.rotation.x, -0.25, pet_e * 0.6)
+		var elbow_p: Node3D = _arm_r.get_meta("elbow")
+		elbow_p.rotation.x = lerpf(elbow_p.rotation.x, 0.35 + stroke * 0.08, pet_e)
 	for f: Node3D in _claws:
 		var dir: Vector2 = f.get_meta("dir")
 		var open: float = (0.5 + 0.5 * sin(s * 1.5)) if _scoop_amt > 0.1 else lerpf(0.2, 0.9, _hold)
+		open = lerpf(open, 0.55 + 0.15 * sin(_t * 5.5), pet_e)
 		f.rotation = Vector3(-dir.y, dir.x, 0) * open * 0.6
 	_update_beam(delta)
 	_update_hopper(delta)
@@ -678,7 +694,7 @@ func _process(delta: float) -> void:
 	# Head look and face.
 	_head_yaw = lerp_angle(_head_yaw, _head_yaw_target, delta * 4.0)
 	_head.rotation.y = _head_yaw
-	_head.rotation.z = sin(_t * 0.7) * 0.03 + (0.08 if _happy > 0.8 else 0.0)
+	_head.rotation.z = sin(_t * 0.7) * 0.03 + (0.08 if _happy > 0.8 else 0.0) + pet_e * 0.2  # [fauna2] head tilt while petting
 	_look = _look.lerp(_look_target, delta * 6.0)
 	_happy = lerpf(_happy, _happy_target, delta * 4.0)
 	_iris_now = _happy
@@ -708,9 +724,11 @@ func _process(delta: float) -> void:
 	_happy_face = move_toward(_happy_face, 1.0 if want_happy else 0.0, delta * 6.0)
 	_face_mat.set_shader_parameter("look", _look)
 	_face_mat.set_shader_parameter("happy", _happy_face)
-	_face_mat.set_shader_parameter("blink", maxf(_blink, sleep_e * 0.9))
+	# [v2feel] Asleep: cleanly shut (0.9 left a squashed sliver); eased by the hero's sleep curve.
+	_face_mat.set_shader_parameter("blink", maxf(_blink, sleep_e))
 	_eye_flash = maxf(0.0, _eye_flash - delta * 6.0)
-	_face_mat.set_shader_parameter("energy", lerpf(4.0 * core_glow + _flash * 2.0 + _eye_flash * 3.0, 1.2 * minf(core_glow, 1.0), sleep_e))
+	# [v2feel] Awake eyes stay fully lit on a low core; the core and ring still show the battery.
+	_face_mat.set_shader_parameter("energy", lerpf(maxf(4.0 * core_glow, EYE_MIN_ENERGY) + _flash * 2.0 + _eye_flash * 3.0, 1.2 * minf(core_glow, 1.0), sleep_e))
 
 
 func set_motion(speed: float, speed_ratio: float, local_accel: Vector2, delta: float) -> void:
@@ -919,6 +937,27 @@ static func blink_curve(t: float) -> float:
 		return 1.0
 	var b: float = 1.0 - (t - BLINK_CLOSE - BLINK_HOLD) / BLINK_OPEN
 	return b * b * (3.0 - 2.0 * b)
+
+
+## [fauna2] Pet an animal for `duration` seconds: claw reach and stroke, head tilt.
+func pet_reach(duration: float = 2.4) -> void:
+	_pet_dur = maxf(duration, 0.5)
+	_pet_t = _pet_dur
+
+
+func is_petting() -> bool:
+	return _pet_t > 0.0
+
+
+## 0..1 envelope of the petting pose (eases in over 0.3 s, out over the last 0.45 s).
+func _pet_env(delta: float) -> float:
+	if _pet_t <= 0.0:
+		return 0.0
+	_pet_t = maxf(0.0, _pet_t - delta)
+	var into: float = clampf((_pet_dur - _pet_t) / 0.3, 0.0, 1.0)
+	var out: float = clampf(_pet_t / 0.45, 0.0, 1.0)
+	var e: float = minf(into, out)
+	return e * e * (3.0 - 2.0 * e)
 
 
 func set_happy(amount: float) -> void:

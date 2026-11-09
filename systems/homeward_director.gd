@@ -22,7 +22,7 @@ extends Node
 ##   --fly-planet=N[,S]       launch the rocket to system planet N after S seconds (no checks)
 
 const CHECK_S: float = 3.0
-const BED_OFFSET := Vector3(7.0, 0.0, 3.0)
+const BED_OFFSET := Vector3(10.5, 0.0, 4.5)  # [ship] clear of the Mk VII landing pad (radius ~8.7)
 
 var world: Node
 var map: SystemMap
@@ -116,6 +116,11 @@ func _dev_hooks() -> void:
 				Homeward.make_planet_world(k)
 		CradleMode.profile["current"] = 0
 		Homeward.mirror_stats()
+	if DevHooks.has("home-pct"):  # [sysmap2] dev: --home-pct=verdance:1,ochre:0.3 sets planet restoration
+		for kv: String in DevHooks.get_s("home-pct", "").split(","):
+			var parts: PackedStringArray = kv.split(":")
+			if parts.size() == 2 and Homeward.planet_index(parts[0]) >= 0:
+				(s["pct"] as Dictionary)[parts[0]] = clampf(float(parts[1]), 0.0, 1.0)
 	if DevHooks.has("home-ready"):
 		s["drive"] = 7
 		GameState.flags["home_last_seed"] = true
@@ -159,7 +164,10 @@ func _dress_planet() -> void:
 	if ResourceLoader.exists(path):
 		var scr: GDScript = load(path) as GDScript
 		if scr:
-			scr.call("apply", world, world.field, Frontiers.world_kind(world))
+			if world.has_meta("planet_env_applied"):  # [main] WorldLookView may have run it already
+				return
+			world.set_meta("planet_env_applied", true)
+			scr.call("apply", world, world.field, Frontiers.def(Frontiers.world_kind(world)))  # [main] envs take the kind def (Dictionary), not its id
 			print("[home] planet env %s applied" % path)
 
 
@@ -312,6 +320,9 @@ static func launch_planet(w: Node, k: int) -> bool:
 static func _launch(w: Node, target: int) -> bool:
 	if bool(w.get("launching")):
 		return false
+	if OrbitSites.of(w):  # [orbD] on a walkable globe: lift off from the hub's pad, then switch worlds
+		OrbitSites.of(w).launch_planet(target)
+		return true
 	if w.get("rocket") == null and w.has_method("_place_rocket"):
 		w.call("_place_rocket", false)
 	var r: Variant = w.get("rocket")
@@ -324,7 +335,8 @@ static func _launch(w: Node, target: int) -> bool:
 
 ## Mk VII built and the last seed planted, at the Homeward complex.
 static func home_ready(w: Node) -> bool:
-	return Homeward.drive() >= 7 and bool(GameState.flags.get("home_last_seed", false)) and Homeward.at_home_site(w) and not Homeward.done()
+	var here: bool = Homeward.at_home_site(w) or (OrbitSites.of(w) != null and Homeward.current_planet() == 0)  # [orbD] on Verdance's globe: from any hub pad
+	return Homeward.drive() >= 7 and bool(GameState.flags.get("home_last_seed", false)) and here and not Homeward.done()
 
 
 static func launch_home(w: Node) -> bool:
@@ -358,7 +370,7 @@ func _build_home_site() -> void:
 	# Four tall service towers with green beacons and a ring gantry around the pad.
 	for i: int in 4:
 		var a: float = PI * 0.25 + i * PI * 0.5
-		var p: Vector3 = pad + Vector3(cos(a), 0, sin(a)) * 9.0
+		var p: Vector3 = pad + Vector3(cos(a), 0, sin(a)) * 12.5  # [ship] outside the Mk VII's wings
 		var tower := MeshInstance3D.new()
 		tower.mesh = ProcMesh.box(Vector3(1.2, 26.0, 1.2))
 		tower.material_override = steel
@@ -376,13 +388,13 @@ func _build_home_site() -> void:
 		lamp.position = p + Vector3(0, 26.6, 0)
 		_complex.add_child(lamp)
 	var ring := MeshInstance3D.new()
-	ring.mesh = ProcMesh.torus(8.6, 9.4, 64, 6)
+	ring.mesh = ProcMesh.torus(12.1, 12.9, 64, 6)  # [ship]
 	ring.material_override = white
 	ring.position = pad + Vector3(0, 18.0, 0)
 	ring.scale = Vector3(1, 0.5, 1)
 	_complex.add_child(ring)
 	var glow := MeshInstance3D.new()
-	glow.mesh = ProcMesh.torus(8.9, 9.1, 64, 4)
+	glow.mesh = ProcMesh.torus(12.4, 12.6, 64, 4)  # [ship]
 	glow.material_override = green
 	glow.position = pad + Vector3(0, 18.25, 0)
 	glow.scale = Vector3(1, 0.3, 1)

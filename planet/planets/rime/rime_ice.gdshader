@@ -18,6 +18,8 @@ uniform vec3 moss_col : source_color = vec3(0.3, 0.42, 0.17);
 uniform vec3 spoil_col : source_color = vec3(0.34, 0.31, 0.29);
 uniform float restore = 0.0;
 uniform float night = 0.0;
+uniform vec2 moss_centre = vec2(0.0);  // [p_seas] site prefabs grow moss round their own centre
+uniform float moss_off = 60.0;
 uniform float moss_r = 120.0;      // moss reaches this far out from the base at full restore
 uniform vec4 hole = vec4(0.0, 0.0, -1.0, 0.0);   // borehole x, z, radius (fragments inside are cut)
 uniform vec4 sites[8];             // drill spoil: x, z, radius, strength
@@ -110,9 +112,9 @@ void fragment() {
 	alb = mix(alb, spoil_col * (0.8 + 0.4 * n2), spoil * 0.75);
 	rough = mix(rough, 0.85, spoil);
 	// --- Restored: moss carpets out of the hollows ---------------------------------------
-	float r = length(p);
+	float r = length(p - moss_centre);
 	if (restore > 0.001) {
-		float reach = 1.0 - smoothstep(moss_r * restore * 0.6, moss_r * restore, r - 60.0);
+		float reach = 1.0 - smoothstep(moss_r * restore * 0.6, moss_r * restore, r - moss_off);
 		float m = smoothstep(0.55, 0.3, n2 - hollow * 0.45 + slope * 1.2 + crev - restore * 0.25) * reach * restore;
 		m *= 1.0 - steep;
 		vec3 mc = texture(moss_tex, p * 0.21).rgb * moss_col * 2.2;
@@ -130,9 +132,18 @@ void fragment() {
 	vec3 tn = texture(snow_nrm, p * 0.11).rgb * 2.0 - 1.0;
 	float nk = snow_amt * 0.6 * (1.0 - smoothstep(40.0, 200.0, dist));
 	vec3 wn = normalize(n * max(tn.z, 0.2) + vec3(1.0, 0.0, 0.0) * tn.x * nk + vec3(0.0, 0.0, 1.0) * -tn.y * nk);
+	// [leftovers] Night glint: giantshine (a strong directional light at night exposure) mirrored
+	// in the glassy ice made a hard white hotspot on the flats around the borehole headframe.
+	// At night bare ice is roughened (most where the view grazes it) so the giantshine spreads into
+	// a soft broad sheen, and its specular is clamped. By day the ice stays glassy.
+	float ndv = clamp(dot(n, normalize(CAMERA_POSITION_WORLD - wpos)), 0.0, 1.0);
+	float graze = 1.0 - smoothstep(0.1, 0.7, ndv);
+	float bare = 1.0 - snow_amt;
+	rough = max(rough, (0.3 + 0.14 * graze) * night * bare + 0.12 * graze * bare);
+	float spec = mix(0.7, 0.4, snow_amt) * (1.0 - 0.45 * night * bare);
 	ALBEDO = alb;
 	NORMAL = normalize((VIEW_MATRIX * vec4(wn, 0.0)).xyz);
 	ROUGHNESS = rough;
-	SPECULAR = mix(0.7, 0.4, snow_amt);
+	SPECULAR = spec;
 	EMISSION = em;
 }

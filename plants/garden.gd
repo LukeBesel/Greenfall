@@ -5,6 +5,10 @@ extends Node3D
 ## die). Blooms drop seeds. Hex life = mean stage / 4 drives the ground turning green and the
 ## planet cell state (Planted -> Growing -> Restored).
 
+## [v4grow] A seed went in / a plant got water (was_dry: it had none). plants/garden_marks.gd.
+signal planted(slot: int)
+signal watered(slot: int, was_dry: bool)
+
 var world: Node
 var cfg: Dictionary
 var species: Array = []
@@ -36,6 +40,11 @@ var _tick: float = 0.0
 const VARIANT_TRIS: int = 3000  # [green]
 const MAX_VARIANTS: int = 3  # [green] caps the batch count (chunk x species x variant)
 var meadow: Meadow  # [green] living ground cover driven by hex life (plants/meadow.gd)
+## [orbB] Sparse (the globe): a cell's slots are made when Lumi plants or waters near it (a 164k-cell
+## globe can't hold every slot), laid out in the cell's own frame on the globe ground and seeded by
+## the cell, so a cell always gets the same slots; saved per cell, not by slot index.
+var sparse: bool = false
+var _saved_cells: Dictionary = {}  # cell -> [species bytes, stage bytes, water floats] not made yet
 
 
 func setup() -> void:
@@ -44,6 +53,9 @@ func setup() -> void:
 	for s: Dictionary in species:
 		_sp_weight_sum += float(s.get("weight", 1.0))
 	var field: HexField = world.field
+	if sparse:  # [orbB] slots come per cell, on demand (ensure_hex)
+		_load_sparse()
+		return
 	for id: int in field.hex_count():
 		if field.hex_hub[id] == 0 and not field.is_water(id) and not (id in late_hexes):
 			_make_slots(id)
@@ -76,14 +88,48 @@ func add_hex(hid: int) -> void:
 func plantable(s: int) -> bool:
 	if world == null or world.field.is_water(slot_hex[s]):
 		return false
+	if sparse and on_paving(s):  # [v4grow] streets, sidewalks and kerbs, the pad, buildings
+		return false
 	var fr: Variant = world.get("frontier")
 	if fr is FrontierDistrict:
 		return (fr as FrontierDistrict).slot_plantable(slot_hex[s])
 	return true
 
 
+## [orbB] Sparse mode: make a land cell's slots (once) and restore what a save had planted there.
+func ensure_hex(hid: int) -> void:
+	if not sparse or hid < 0 or hex_slots.has(hid):
+		return
+	var field: HexField = world.field
+	if field.hex_hub[hid] != 0 or field.is_water(hid):
+		return
+	var first: int = slot_pos.size()
+	_make_slots(hid)
+	for i: int in range(first, slot_pos.size()):
+		var ck: Vector2i = _chunk_of(i)
+		_chunk_cap[ck] = int(_chunk_cap.get(ck, 0)) + 1
+	var d: Variant = _saved_cells.get(hid)
+	if d is Array and (d as Array).size() == 3:
+		var sp: PackedByteArray = d[0]
+		var st: PackedByteArray = d[1]
+		var wa: PackedFloat32Array = d[2]
+		var ids: PackedInt32Array = hex_slots[hid]
+		for k: int in mini(ids.size(), sp.size()):
+			var sl: int = ids[k]
+			slot_species[sl] = int(sp[k]) - 1
+			slot_stage[sl] = st[k]
+			slot_water[sl] = wa[k] if k < wa.size() else 0.0
+			if slot_species[sl] >= 0:
+				_update_inst(sl)
+		_saved_cells.erase(hid)
+		_recount(hid)
+
+
 func _make_slots(hid: int) -> void:
 	var field: HexField = world.field
+	if field is SphereField:  # [orbB] the cell's own frame on the globe ground
+		_make_slots_sphere(field as SphereField, hid)
+		return
 	var spacing: float = float(cfg.get("slot_spacing", 2.3))
 	var c: Vector3 = field.hex_center(hid)
 	var rng := RandomNumberGenerator.new()
@@ -109,6 +155,32 @@ func _make_slots(hid: int) -> void:
 	hex_slots[hid] = ids
 
 
+func _make_slots_sphere(f: SphereField, hid: int) -> void:
+	var spacing: float = float(cfg.get("slot_spacing", 2.3))
+	var ctr: Vector3 = f.grid.centers[hid]
+	var fr: Basis = SphereGrid.frame(ctr)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = f.seed_value * 31 + hid
+	var ids := PackedInt32Array()
+	var r: int = int(ceil(f.hex_size / spacing)) + 1
+	for gx: int in range(-r, r + 1):
+		for gz: int in range(-r, r + 1):
+			var lx: float = gx * spacing + rng.randf_range(-0.5, 0.5)
+			var lz: float = gz * spacing + rng.randf_range(-0.5, 0.5)
+			var d: Vector3 = (ctr + (fr.x * lx + fr.z * lz) / f.grid.radius_m).normalized()
+			if f.grid.cell_at(d) != hid:
+				continue
+			ids.append(slot_pos.size())
+			slot_pos.append(f.terrain.ground(d))
+			slot_hex.append(hid)
+			slot_species.append(-1)
+			slot_stage.append(0)
+			slot_progress.append(0.0)
+			slot_water.append(0.0)
+			slot_yaw.append(rng.randf() * TAU)
+	hex_slots[hid] = ids
+
+
 func unlocked() -> bool:
 	return GameState.flags.get("seeds_unlocked", false)
 
@@ -122,6 +194,7 @@ func planted_near(pos: Vector3, fwd: Vector3, reach: float = 2.8) -> Array[int]:
 	var out: Array[int] = []
 	var hid: int = world.field.hex_at(pos + fwd * 1.0)
 	for h: int in [hid, world.field.hex_at(pos)]:
+		ensure_hex(h)  # [orbB]
 		if not hex_slots.has(h):
 			continue
 		for s: int in hex_slots[h]:
@@ -134,6 +207,8 @@ func _slot_near(pos: Vector3, fwd: Vector3, reach: float, empty: bool) -> int:
 	var best: int = -1
 	var best_d: float = INF
 	for h: int in [world.field.hex_at(pos + fwd * 1.0), world.field.hex_at(pos)]:
+		if world.field.is_clean(h):
+			ensure_hex(h)  # [orbB]
 		if not hex_slots.has(h) or not world.field.is_clean(h):
 			continue
 		for s: int in hex_slots[h]:
@@ -158,10 +233,11 @@ func plant(slot: int) -> bool:
 	slot_water[slot] = 0.0
 	_update_inst(slot)
 	var p: Vector3 = slot_pos[slot]
-	Vfx.burst("soil", p + Vector3(0, 0.05, 0), Color(0.36, 0.27, 0.2), 0.8)
+	Vfx.burst("soil", p + OrbitUp.up(p) * 0.05, Color(0.36, 0.27, 0.2), 0.8)  # [orbB] local up
 	Audio.play("dig", 1.1, -8.0)
 	GameState.inc_stat("plants_planted")
 	_recount(slot_hex[slot])
+	planted.emit(slot)  # [v4grow]
 	return true
 
 
@@ -172,7 +248,9 @@ func water(slot: int, amount_s: float) -> void:
 	var was_dry: bool = slot_water[slot] <= 0.0
 	slot_water[slot] = minf(slot_water[slot] + amount_s, float(sp.get("water_s", 120)))
 	if was_dry:
+		_perk[slot] = PERK_S  # [v4grow] it straightens up with a little bounce
 		_update_inst(slot)
+	watered.emit(slot, was_dry)
 
 
 func _pick_species(slot: int) -> int:
@@ -198,6 +276,7 @@ func _pick_species(slot: int) -> int:
 
 
 func _process(delta: float) -> void:
+	_perk_step(delta)  # [v4grow]
 	_tick += delta
 	if _tick < 0.5:
 		return
@@ -232,7 +311,7 @@ func _process(delta: float) -> void:
 					if slot_stage[s] == 4:
 						GameState.add_currency("seeds", BigNum.from_float(float(sp.get("seed_yield", 0.5)) * seed_mult))
 						GameState.inc_stat("plants_bloomed")
-						Vfx.burst("sparkle", slot_pos[s] + Vector3(0, 0.5, 0), Color(1.0, 0.95, 0.6), 0.25)
+						Vfx.burst("sparkle", slot_pos[s] + OrbitUp.up(slot_pos[s]) * 0.5, Color(1.0, 0.95, 0.6), 0.25)  # [orbB]
 	for h: int in changed_hexes:
 		_recount(h)
 
@@ -251,7 +330,7 @@ func _recount(hid: int) -> void:
 	hex_life[hid] = life
 	world.view.set_life(hid, life)
 	var planet: PlanetData = world.planet
-	var cell: int = world.slice_cells[hid]
+	var cell: int = hid if sparse else world.slice_cells[hid]  # [orbB] cell ids are planet ids on the globe
 	var before: int = planet.state[cell]
 	if life >= float(cfg.get("restored_life", 0.8)):
 		planet.state[cell] = PlanetData.State.RESTORED
@@ -259,6 +338,10 @@ func _recount(hid: int) -> void:
 		planet.state[cell] = PlanetData.State.GROWING
 	elif planted > 0:
 		planet.state[cell] = PlanetData.State.PLANTED
+	if sparse and before != planet.state[cell]:  # [orbB] the globe's cells (far shell, planet %) follow
+		var so: Node = world.get("orbit")
+		if so:
+			(so.get("globe") as OrbitPlanet).cells.set_state(cell, planet.state[cell])
 	if before != planet.state[cell] and planet.state[cell] == PlanetData.State.RESTORED:
 		EventBus.toast.emit(tr("A hex is fully restored. Something small is already living in it."), "story")
 		Audio.play("chime", 0.8, -4.0)
@@ -268,16 +351,22 @@ func _recount(hid: int) -> void:
 # --- Visuals -------------------------------------------------------------------------
 
 func _slot_xf(s: int) -> Transform3D:
+	if sparse:  # [v4grow]
+		return _slot_xf_globe(s)
 	var sp: Dictionary = species[slot_species[s]]
 	var stages: Array = cfg.get("stage_scale", [0.1, 0.3, 0.5, 0.8, 1.0])
 	var sc: float = float(stages[slot_stage[s]]) * float(sp.get("scale", 1.0)) * float(cfg.get("plant_scale", 1.0))  # [green]
 	var b := Basis(Vector3.UP, slot_yaw[s]).scaled(Vector3.ONE * sc)
 	if slot_water[s] <= 0.0 and slot_stage[s] > 0:
 		b = Basis(Vector3.RIGHT, 0.35) * b  # droop when thirsty
+	if sparse:  # [orbB] stand on the local ground
+		b = SphereGrid.frame(slot_pos[s].normalized()) * b
 	return Transform3D(b, slot_pos[s])
 
 
 func _chunk_of(s: int) -> Vector2i:
+	if sparse:  # [orbB] batch by the globe's chunks
+		return Vector2i((world.field as SphereField).grid.cell_chunk[slot_hex[s]], -1)
 	return Vector2i(floori(slot_pos[s].x / CHUNK), floori(slot_pos[s].z / CHUNK))
 
 
@@ -296,6 +385,8 @@ func _update_inst(s: int) -> void:
 			var mm := MultiMesh.new()
 			mm.transform_format = MultiMesh.TRANSFORM_3D
 			mm.mesh = PlantParts.variants(str(species[slot_species[s]]["model"]), VARIANT_TRIS)[vi]
+			if sparse:  # [v4grow] a touch brighter and greener on the globe (they read pale)
+				mm.mesh = _vivid(mm.mesh)
 			mm.instance_count = int(_chunk_cap.get(ck, 1))
 			mm.visible_instance_count = 0
 			var mmi := MultiMeshInstance3D.new()
@@ -321,7 +412,43 @@ func _update_inst(s: int) -> void:
 
 # --- Persistence -----------------------------------------------------------------------
 
+## [orbB] Sparse save: per planted cell, its slots' species / stage / water.
+func persist_sparse() -> Dictionary:
+	var out: Dictionary = {}
+	for h: int in hex_slots:
+		var ids: PackedInt32Array = hex_slots[h]
+		var any: bool = false
+		var sp := PackedByteArray()
+		var st := PackedByteArray()
+		var wa := PackedFloat32Array()
+		for sl: int in ids:
+			sp.append(slot_species[sl] + 1)
+			st.append(slot_stage[sl])
+			wa.append(slot_water[sl])
+			any = any or slot_species[sl] >= 0
+		if any:
+			out[str(h)] = [Marshalls.raw_to_base64(sp), Marshalls.raw_to_base64(st), Marshalls.raw_to_base64(wa.to_byte_array())]
+	for h: int in _saved_cells:  # planted cells this run never came near: keep them
+		var e: Array = _saved_cells[h]
+		out[str(h)] = [Marshalls.raw_to_base64(e[0]), Marshalls.raw_to_base64(e[1]), Marshalls.raw_to_base64((e[2] as PackedFloat32Array).to_byte_array())]
+	return {"cells": out}
+
+
+func _load_sparse() -> void:
+	var d: Dictionary = GameState.world.get("garden", {})
+	var cells: Dictionary = d.get("cells", {})
+	for k: Variant in cells:
+		var e: Array = cells[k]
+		if e.size() < 3:
+			continue
+		_saved_cells[int(str(k))] = [Marshalls.base64_to_raw(str(e[0])), Marshalls.base64_to_raw(str(e[1])), Marshalls.base64_to_raw(str(e[2])).to_float32_array()]
+	for h: int in _saved_cells.keys():  # planted cells come back with their plants
+		ensure_hex(h)
+
+
 func persist() -> Dictionary:
+	if sparse:  # [orbB]
+		return persist_sparse()
 	var sp := PackedByteArray()
 	sp.resize(slot_species.size())
 	for i: int in slot_species.size():
@@ -348,3 +475,177 @@ func _load() -> void:
 			_update_inst(i)
 	for h: int in hex_slots:
 		_recount(h)
+
+
+# --- [v4grow] Owner playtest 3 #51: plants you can see on the globe ------------------------------
+# The Poly Haven clumps are 7-40 cm tall: at the flat game's scale a fresh seed was 2 cm and a
+# bloom 18 cm, invisible from Lumi's camera. On the globe each species is sized to a real height
+# per stage (data/plants.json globe_heights, capped in width), the seed and sprout stages are the
+# GardenMarks sprout on its soil mound, a thirsty plant droops hard, and a watered one perks up.
+
+const PERK_S: float = 0.7
+var _perk: Dictionary = {}  # slot -> seconds of the perk-up bounce left
+var _variant_size: Dictionary = {}  # "species|variant" -> AABB size of that clump
+
+
+## 0..1 bounce while a just-watered plant straightens (0 when none).
+func perk_of(s: int) -> float:
+	return sin(PI * (1.0 - float(_perk[s]) / PERK_S)) if _perk.has(s) else 0.0
+
+
+func _perk_step(delta: float) -> void:
+	if _perk.is_empty():
+		return
+	for s: int in _perk.keys():
+		_perk[s] = float(_perk[s]) - delta
+		if float(_perk[s]) <= 0.0:
+			_perk.erase(s)
+		if slot_species[s] >= 0:
+			_update_inst(s)
+
+
+## Height (m) a plant of this stage stands on the globe (0: only the sprout shows).
+func globe_height(stage: int) -> float:
+	var hs: Array = cfg.get("globe_heights", [0.0, 0.0, 0.5, 0.75, 1.0])
+	return float(hs[clampi(stage, 0, hs.size() - 1)])
+
+
+## The uniform scale that makes slot s's clump globe_height(stage) tall (times the species'
+## scale), no wider than globe_max_width.
+func globe_scale(s: int) -> float:
+	var h: float = globe_height(slot_stage[s])
+	if h <= 0.0:
+		return 0.0
+	var key: String = "%d|%d" % [slot_species[s], _variant_of(s)]
+	if not _variant_size.has(key):
+		var vs: Array = PlantParts.variants(str(species[slot_species[s]]["model"]), VARIANT_TRIS)
+		_variant_size[key] = (vs[_variant_of(s)] as Mesh).get_aabb().size if not vs.is_empty() else Vector3(0.3, 0.3, 0.3)
+	var sz: Vector3 = _variant_size[key]
+	var sc: float = h * float(species[slot_species[s]].get("scale", 1.0)) / maxf(sz.y, 0.05)
+	return minf(sc, float(cfg.get("globe_max_width", 1.6)) / maxf(maxf(sz.x, sz.z), 0.05))
+
+
+func _slot_xf_globe(s: int) -> Transform3D:
+	var sc: float = globe_scale(s) * (1.0 + 0.18 * perk_of(s))
+	if sc <= 0.0:
+		return Transform3D(Basis().scaled(Vector3.ONE * 0.0001), slot_pos[s])
+	var b := Basis(Vector3.UP, slot_yaw[s]).scaled(Vector3.ONE * sc)
+	if slot_water[s] <= 0.0:  # thirsty: a hard droop, squat and leaning
+		b = Basis(Vector3.RIGHT, 0.55) * b.scaled(Vector3(1.1, 0.72, 1.1))
+	return Transform3D(SphereGrid.frame(slot_pos[s].normalized()) * b, slot_pos[s] + slot_pos[s].normalized() * lift_of(s))
+
+
+## Planted slots on the cells made so far (sparse: the cells Lumi has been near).
+func planted_slots() -> PackedInt32Array:
+	var out := PackedInt32Array()
+	for h: int in hex_slots:
+		for sl: int in hex_slots[h]:
+			if slot_species[sl] >= 0:
+				out.append(sl)
+	return out
+
+
+# --- [v4grow] Planting stays off the paving on the globe -----------------------------------------
+# The flat game made no slots on roads or buildings (CityLayout surfaces). On the globe a cell's
+# slots are kept as they were (their order is what the save holds), and a slot on a town's street,
+# sidewalk and kerb, the yard pad or a building can't take a seed (its soil mound would sit half
+# under the tiles). Checked at the slot and MOUND_R round it. The lots' kit ground patches (8 cm
+# concrete plates on sand) stay plantable as on the flat game, but the mound and the plant stand on
+# top of the plates (lift_of), and the patch's kerb band is kept clear. Cached once the town is in.
+
+const PAVED: Array[int] = [CityLayout.Surface.ROAD, CityLayout.Surface.SIDEWALK, CityLayout.Surface.BUILDING, CityLayout.Surface.YARD]
+const MOUND_R: float = 0.7
+const LOT_HALF: float = 9.0  # VerdanceSite's lot ground patch (18 x 18 m)
+const LOT_KERB_M: float = 0.8
+const PLATE_TOP: float = 0.12
+var _paving: Dictionary = {}  # slot -> [on paving, lift (m)] (known)
+
+
+## True when slot s lies on (or its mound would reach) a loaded town's paving.
+func on_paving(s: int) -> bool:
+	return bool(_ground_info(s)[0])
+
+
+## How far above the terrain slot s's ground is (the top of a lot's plates, else 0).
+func lift_of(s: int) -> float:
+	return float(_ground_info(s)[1]) if sparse else 0.0
+
+
+func _ground_info(s: int) -> Array:
+	if _paving.has(s):
+		return _paving[s]
+	var towns: Array = _towns()
+	if towns.is_empty():
+		return [false, 0.0]  # no town loaded here yet: open ground (asked again later)
+	var p: Vector3 = slot_pos[s]
+	var out: Array = [false, 0.0]
+	for t: Array in towns:
+		var vs: VerdanceSite = t[0]
+		var loc: Vector3 = (t[1] as Transform3D) * p
+		if Vector2(loc.x, loc.z).length() > vs.town_r + MOUND_R:
+			continue
+		for o: Vector2 in [Vector2.ZERO, Vector2(MOUND_R, 0), Vector2(-MOUND_R, 0), Vector2(0, MOUND_R), Vector2(0, -MOUND_R)]:
+			if paved(vs.layout, loc.x + o.x, loc.z + o.y):
+				out[0] = true
+		var lots: Variant = vs.get("_lots")
+		for lot: Dictionary in lots if lots is Array else []:
+			var d: Vector2 = (Vector2(loc.x, loc.z) - (lot["c"] as Vector2)).abs()
+			var m: float = maxf(d.x, d.y)
+			if m < LOT_HALF + MOUND_R:
+				if m > LOT_HALF - LOT_KERB_M - MOUND_R:
+					out[0] = true  # the patch's kerb band
+				else:
+					out[1] = PLATE_TOP
+	_paving[s] = out
+	return out
+
+
+## Paving in a town layout at site-local (x, z): its streets (only round blocks the town kept),
+## sidewalks and kerbs, the yard pad and building footprints.
+static func paved(lay: CityLayout, x: float, z: float) -> bool:
+	if lay == null:
+		return false
+	var srf: int = lay.surface_at(x, z)
+	if not srf in PAVED:
+		return false
+	return srf == CityLayout.Surface.YARD or lay.wild or lay.blocks.has(lay.block_key_at(x, z))
+
+
+## [VerdanceSite, inverse of its transform] for every loaded town on the globe.
+func _towns() -> Array:
+	var out: Array = []
+	var so: Variant = world.get("orbit") if world else null
+	var sm: SiteManager = (so as Object).get("globe").get("site_manager") as SiteManager if so is Object else null
+	if sm == null:
+		return out
+	for pf: Variant in sm.prefabs:
+		if not (pf is SitePrefab) or not is_instance_valid(pf) or (pf as SitePrefab).content == null:
+			continue
+		for c: Node in (pf as SitePrefab).content.get_children():
+			if c is VerdanceSite and (c as VerdanceSite).layout != null and (c as Node3D).is_inside_tree():
+				out.append([c, (c as Node3D).global_transform.affine_inverse()])
+	return out
+
+
+# --- [v4grow] Grown plants read pale on the globe: a richer copy of each clump's materials -------
+
+const VIVID_TINT := Color(1.08, 1.22, 0.98)
+static var _vivid_cache: Dictionary = {}  # mesh rid -> Mesh
+
+
+static func _vivid(m: Mesh) -> Mesh:
+	if m == null:
+		return m
+	if _vivid_cache.has(m.get_rid()):
+		return _vivid_cache[m.get_rid()]
+	var out: Mesh = m.duplicate()
+	for i: int in out.get_surface_count():
+		var mat: Material = out.surface_get_material(i)
+		if mat is BaseMaterial3D:
+			var v: BaseMaterial3D = (mat as BaseMaterial3D).duplicate()
+			v.albedo_color = v.albedo_color * VIVID_TINT
+			v.roughness = maxf(v.roughness, 0.85)  # less sky sheen (the whitish cast)
+			v.metallic_specular = minf(v.metallic_specular, 0.3)
+			out.surface_set_material(i, v)
+	_vivid_cache[m.get_rid()] = out
+	return out

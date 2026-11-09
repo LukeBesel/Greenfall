@@ -107,6 +107,8 @@ static func model_part(id: String, node_name: String) -> Mesh:
 	var key: String = id + "::" + node_name
 	if _parts.has(key):
 		return _parts[key]
+	if tracing and not traced.has("part:" + id + "::" + node_name):
+		traced.append("part:" + id + "::" + node_name)
 	var ps: PackedScene = load(MODEL_DIR % [id, id])
 	var root: Node = ps.instantiate()
 	var mesh: Mesh = null
@@ -123,12 +125,34 @@ static func model_part(id: String, node_name: String) -> Mesh:
 	return mesh
 
 
+## [leftovers] Behind the loading screen: load a model's file on a loader thread (frames keep
+## drawing) and build its mesh, so the next model_mesh(id) is a cache hit. Plain call otherwise.
+static func fetch_model(id: String) -> void:
+	if _meshes.has(id):
+		return
+	var keep: Resource = await BuildBudget.fetch(MODEL_DIR % [id, id])
+	if not _meshes.has(id):
+		var was: bool = tracing
+		tracing = false  # fetched: not a blocking load
+		_load_model(id)
+		tracing = was
+	keep = null
+
+
+## [leftovers] Model ids loaded (blocking) by _load_model / model_part while `tracing`: the
+## district build's preload list (scenes/slice.gd --record-preload).
+static var tracing: bool = false
+static var traced: Array[String] = []
+
+
 static func has_model(id: String) -> bool:
 	return ResourceLoader.exists(MODEL_DIR % [id, id])
 
 
 static func _load_model(id: String) -> void:
 	var path: String = MODEL_DIR % [id, id]
+	if tracing and not traced.has(id):
+		traced.append(id)
 	var ps: PackedScene = load(path)
 	if ps == null:
 		push_error("Missing model %s" % id)
@@ -145,8 +169,26 @@ static func _load_model(id: String) -> void:
 	else:
 		mesh = _merge(found)
 	root.free()
+	if id in DEAD_LAMPS:
+		_kill_emission(mesh)
+	if mesh == null:  # [main] guard: never leave the id without an AABB
+		_aabbs[id] = AABB(Vector3(-0.1, 0, -0.1), Vector3(0.2, 0.2, 0.2))
+		return
 	_meshes[id] = mesh
 	_aabbs[id] = mesh.get_aabb()
+
+
+## [world3] Models whose lamps ship lit; in this world nothing works until it is fixed.
+const DEAD_LAMPS: Array[String] = ["ocean_buoy"]
+
+
+static func _kill_emission(mesh: Mesh) -> void:
+	for s: int in mesh.get_surface_count():
+		var m: StandardMaterial3D = mesh.surface_get_material(s) as StandardMaterial3D
+		if m and m.emission_enabled:
+			var d: StandardMaterial3D = m.duplicate()
+			d.emission_enabled = false
+			mesh.surface_set_material(s, d)
 
 
 static func _collect(n: Node, xf: Transform3D, out: Array) -> void:
@@ -174,6 +216,8 @@ static func _merge(found: Array) -> ArrayMesh:
 		var nb: Basis = xf.basis.inverse().transposed()
 		for s: int in mi.mesh.get_surface_count():
 			var arr: Array = mi.mesh.surface_get_arrays(s)
+			if arr.size() <= Mesh.ARRAY_VERTEX or arr[Mesh.ARRAY_VERTEX] == null:
+				continue  # [main] unreadable surface (intermittent on the dummy renderer): skip it
 			var v: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
 			for i: int in v.size():
 				v[i] = xf * v[i]

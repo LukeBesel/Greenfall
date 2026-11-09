@@ -1,0 +1,247 @@
+{
+  "_doc": "[onboard] The first-minutes story objectives (story/objectives.gd, ui/objective_card.gd). One at a time, in order, each with a one-line why (desc). brief.lines: WREN's one last message in the crash (two subtitle lines), then she is silent until the Signal Tower (story/signal_tower.gd). Objective fields: text (title), desc (the why), hint (shown instead of desc until wait_flag is set), type stat|robot|zone|hub_level|flag|core|tower|upgrade|bench ([v1guide] the workbench tier, ui/bench_tiers.gd), key, target (absolute: lifetime stats), desc/hint may hold {action} key glyphs, e.g. {cube} ([v1guide]); hex (true: outline the target hex on the ground with its % cleaned), lines (WREN, when the objective starts). Data stays English; tr() at display.",
+  "wren_brief": {
+    "_doc": "[v2guide] WREN once the signal tower carries her (story/objectives.gd _narrate): who she is and the plan home. Then each new story step speaks its lines[0], once.",
+    "lines": [
+      "Lumi, it's WREN. I run the Cradle, our big ship. I never stopped listening for you.",
+      "The Cradle can't land on a dead world. Let's make Verdance green again.",
+      "Every plant fills your Bloom Core. When it's full, the Cradle comes down and we go home."
+    ]
+  },
+  "brief": {
+    "lines": [
+      "Lumi, it's WREN, up on the Cradle. Your pod crashed, and my signal is weak.",
+      "Pick up trash, find parts, and build a signal tower so we can talk. I'll be [glitch]listen—[/glitch]"
+    ]
+  },
+  "objectives": [
+    {
+      "id": "dump3",
+      "text": "Fill the trash bin 3 times",
+      "desc": "Hold {scoop} to pick up trash. Empty it at the bin.",
+      "type": "stat",
+      "key": "junk_dumps",
+      "target": 3,
+      "lines": [
+        "Start small, Lumi. Every load in the bin earns cubes."
+      ]
+    },
+    {
+      "id": "compartment",
+      "text": "Buy a bigger chest",
+      "desc": "Workbench: Chest Size. Fewer trips to the bin.",
+      "type": "upgrade",
+      "key": "compartment_size",
+      "target": 1,
+      "lines": [
+        "A bigger chest means fewer trips. The bench can fit one."
+      ]
+    },
+    {
+      "id": "scoop_size",
+      "text": "Buy Scoop Size",
+      "desc": "Workbench: grab more trash at once.",
+      "type": "upgrade",
+      "key": "multi_lock",
+      "target": 1,
+      "lines": [
+        "A wider scoop. More trash per grab, less walking."
+      ]
+    },
+    {
+      "id": "baler",
+      "text": "Save up for the Baler",
+      "desc": "The Baler squeezes trash into bales. Bales sell for more.",
+      "type": "upgrade",
+      "key": "baler",
+      "target": 1,
+      "lines": [
+        "Save up for the Baler. Bales sell for much more than loose trash."
+      ]
+    },
+    {
+      "id": "power",
+      "text": "Sell 3 bales",
+      "desc": "Full chest? Press {cube} for a bale. Carry it to the scale.",
+      "type": "stat",
+      "key": "cubes_cashed",
+      "target": 3,
+      "lines": [
+        "Carry bales to the scale by the bin. Three of them and the base wakes up."
+      ]
+    },
+    {
+      "id": "tower",
+      "text": "Build the signal tower",
+      "desc": "Workbench, Build tab. Then WREN can talk to you.",
+      "type": "tower",
+      "target": 1,
+      "lines": [
+        "Build the tower, Lumi. Then I can stay with you."
+      ]
+    },
+    {
+      "id": "glim",
+      "text": "Repair Glim",
+      "desc": "Workbench, Build tab. The little bot stuck to your pod.",
+      "type": "flag",
+      "key": "glim_repaired",
+      "target": 1,
+      "lines": ["Lumi... something's still holding on to your pod. Small. Lantern-shaped. Patch him up at the bench."]
+    },
+    {
+      "id": "hex",
+      "text": "Clean the glowing hex",
+      "desc": "Pick up every piece inside the outline.",
+      "type": "stat",
+      "key": "hexes_cleaned",
+      "target": 1,
+      "hex": true,
+      "lines": [
+        "First, one clean hex. Clear the outlined one. Green starts on clean ground."
+      ]
+    },
+    {
+      "id": "hex2",
+      "text": "Clean 2 hexes",
+      "desc": "Clean ground lets plants grow again.",
+      "type": "stat",
+      "key": "hexes_cleaned",
+      "target": 2,
+      "lines": [
+        "Two clean hexes. Keep going, Lumi."
+      ]
+    },
+    {
+      "id": "hex3",
+      "text": "Clean 3 hexes",
+      "desc": "3 clean hexes unlock the Bot Bay.",
+      "type": "stat",
+      "key": "hexes_cleaned",
+      "target": 3,
+      "lines": [
+        "Three clean hexes. The planet notices, believe me."
+      ]
+    },
+    {
+      "id": "bench2",
+      "text": "Add a Bot Bay to the bench",
+      "desc": "Workbench, Upgrades tab: Bot Bay.",
+      "type": "bench",
+      "target": 2,
+      "lines": [
+        "Add a Bot Bay to the bench. You shouldn't do this alone."
+      ]
+    },
+    {
+      "id": "robot",
+      "text": "Build your first robot",
+      "desc": "Workbench, Bots tab. Robots clean for you.",
+      "type": "robot",
+      "key": "any",
+      "target": 1,
+      "lines": [
+        "The base has power! Enough to build you a helper. Try the Bots tab at the workbench."
+      ]
+    },
+    {
+      "id": "zone",
+      "text": "Send your robot to work",
+      "desc": "Press {open_command}, then paint hexes for it to clean.",
+      "type": "zone",
+      "target": 1,
+      "lines": [
+        "Give your robot a hex to work on. It wants a job."
+      ]
+    },
+    {
+      "id": "seed",
+      "text": "Plant the first seed",
+      "desc": "Plants fill your Bloom Core.",
+      "hint": "Keep cleaning. Seeds turn up in clean ground.",
+      "wait_flag": "seed_signal",
+      "type": "stat",
+      "key": "plants_planted",
+      "target": 1,
+      "lines": [
+        "Something green is waking out there. Plant the first seed."
+      ]
+    },
+    {
+      "id": "hex10",
+      "text": "Clean 10 hexes",
+      "desc": "Robots help. Press {open_command} to give them hexes.",
+      "type": "stat",
+      "key": "hexes_cleaned",
+      "target": 10,
+      "lines": [
+        "Ten clean hexes. Your robots are learning from you, Lumi."
+      ]
+    },
+    {
+      "id": "base2",
+      "text": "Rebuild the base to level 2",
+      "desc": "Workbench, Upgrades tab. More robots can work.",
+      "type": "hub_level",
+      "target": 2,
+      "lines": [
+        "The base can grow now. Rebuild it from the Upgrades tab at the workbench."
+      ]
+    },
+    {
+      "id": "haul",
+      "text": "Build a Haul Bug",
+      "desc": "Workbench, Bots tab. It carries bales to the scale for you.",
+      "hint": "Keep cleaning. WREN is looking for Haul Bug plans.",
+      "wait_flag": "haul_rig",
+      "type": "robot",
+      "key": "haulbug",
+      "target": 1,
+      "lines": [
+        "A Haul Bug carries bales for you. Build one at the bench."
+      ]
+    },
+    {
+      "id": "tower2",
+      "text": "Boost the signal tower",
+      "desc": "Workbench. WREN will sound clearer.",
+      "type": "tower",
+      "target": 2,
+      "lines": [
+        "Boost the tower. I want to hear you clearly."
+      ]
+    },
+    {
+      "id": "research1",
+      "text": "Finish a research project",
+      "desc": "Workbench, Research tab. Research unlocks new robots.",
+      "type": "stat",
+      "key": "research_done",
+      "target": 1,
+      "lines": [
+        "Your bench can study now. Research unlocks new machines and seeds."
+      ]
+    },
+    {
+      "id": "hex20",
+      "text": "Clean 20 hexes",
+      "desc": "More clean ground means more room to grow.",
+      "type": "stat",
+      "key": "hexes_cleaned",
+      "target": 20,
+      "lines": [
+        "Twenty hexes. The air already smells different."
+      ]
+    },
+    {
+      "id": "base3",
+      "text": "Rebuild the base to level 3",
+      "desc": "Workbench, Upgrades tab. It opens the Request Board.",
+      "type": "hub_level",
+      "target": 3,
+      "lines": [
+        "One more base level. The Cradle is watching, Lumi."
+      ]
+    }
+  ]
+}

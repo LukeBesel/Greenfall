@@ -104,10 +104,14 @@ static func eligible_ids(ctx: Dictionary) -> Dictionary:
 			ok = false
 		if bool(req.get("ledger_resolved", false)) and not bool(ctx.get("ledger_resolved", false)):
 			ok = false
+		if str(req.get("flag", "")) != "" and not bool((ctx.get("flags", GameState.flags) as Dictionary).get(str(req["flag"]), false)):
+			ok = false  # [pace] needs an unlock (has_baler, has_signal_finder, ...: Pace.sync_flags)
 		if id in ["supply_drop", "salvage_surge", "ledger_audit"] and int(ctx.get("junk_hexes", 0)) <= 0:
 			ok = false
 		if id == "rare_part_signal" and int(ctx.get("parts_left", 0)) <= 0:
 			ok = false
+		if not bool(e.get("enabled", true)):
+			ok = false  # [pace] no spontaneous reward crates (owner playtest #2): supplies are found, never dropped
 		out[id] = ok
 	return out
 
@@ -235,7 +239,7 @@ func _process(delta: float) -> void:
 func context() -> Dictionary:
 	var f: HexField = world.field
 	var junk: int = 0
-	for h: int in f.hex_count():
+	for h: int in OrbitUp.hexes(f, world.patch.global_position):  # [orbB]
 		if f.hex_hub[h] == 0 and not f.is_water(h) and not f.is_clean(h):
 			junk += 1
 	var planted: int = 0
@@ -251,7 +255,7 @@ func context() -> Dictionary:
 			lvl = maxi(lvl, int(hl.levels[h]))
 	var parts_left: int = f.part_found.count(0)
 	var fleet: Fleet = world.get("fleet") as Fleet
-	return {"junk_hexes": junk, "planted": planted, "robots": fleet.robots().size() if fleet else 0, "max_hex_level": lvl,
+	return {"junk_hexes": junk, "planted": planted, "robots": fleet.robot_total() if fleet else 0, "max_hex_level": lvl,
 		"ledger_resolved": LedgerArc.resolved(), "parts_left": parts_left}
 
 
@@ -328,7 +332,7 @@ func _finish(handled: bool, text: String = "") -> void:
 		if world.get("wren") != null:
 			world.wren.say("event_won", 0.4)
 	if text != "":
-		EventBus.toast.emit(text, "story" if handled else "info")
+		EventBus.toast.emit(text, "reward")  # [v4calm] item 49: no payout summaries
 	print("[events] ended %s handled=%s  %s" % [id, str(handled), text])
 	event_ended.emit(id, handled)
 
@@ -369,7 +373,17 @@ func _ground(x: float, z: float) -> float:
 
 
 func _gp(p: Vector3) -> Vector3:
+	if world.field is SphereField:  # [orbB] the globe's ground under p
+		return (world.field as SphereField).terrain.ground(p.normalized())
 	return Vector3(p.x, _ground(p.x, p.z), p.z)
+
+
+## [orbB] Stand a placed prop upright on the local ground (keeps its yaw); no-op on the flat game.
+func _upright(n: Node3D) -> void:
+	if OrbitUp.on_globe():
+		var sc: Vector3 = n.scale
+		n.global_basis = SphereGrid.frame(n.global_position.normalized()) * Basis(Vector3.UP, n.rotation.y)
+		n.scale = sc
 
 
 func _update_active(delta: float) -> void:
@@ -400,7 +414,7 @@ func on_patch_take(pid: int, vol: float) -> void:
 				_bale_surge += vol
 				active["took"] = int(active.get("took", 0)) + 1
 				if int(active["took"]) % 6 == 1:
-					Vfx.float_text(world.field.piece_pos[pid] + Vector3(0, 1.0, 0), "x3", Color(1.0, 0.82, 0.3), 0.5, 0.9)
+					Vfx.float_text(world.field.piece_pos[pid] + OrbitUp.up(world.field.piece_pos[pid]) * 1.0, "x3", Color(1.0, 0.82, 0.3), 0.5, 0.9)
 		"ledger_audit":
 			if (active.get("zone_set", {}) as Dictionary).has(pid):
 				active["player"] = int(active.get("player", 0)) + 1
@@ -434,13 +448,13 @@ func _on_streak_up(tier: int) -> void:
 	var p: Patch = world.patch
 	var col: Color = Color(0.45, 0.9, 1.0).lerp(Color(1.0, 0.75, 0.25), float(tier) / maxf(streak.max_tier, 1))
 	Audio.play_scale("chime", tier + 2, -8.0)
-	Vfx.ring(p.global_position + Vector3(0, 0.1, 0), 1.2 + tier * 0.25, col, 0.5)
-	Vfx.float_text(p.global_position + Vector3(0, 2.2, 0), tr("STREAK x%d  +%d%%") % [tier, int(round(streak.bonus() * 100.0))], col, 0.55, 0.9)
+	Vfx.ring(p.global_position + OrbitUp.up(p.global_position) * 0.1, 1.2 + tier * 0.25, col, 0.5)
+	Vfx.float_text(p.global_position + OrbitUp.up(p.global_position) * 2.2, tr("STREAK x%d  +%d%%") % [tier, int(round(streak.bonus() * 100.0))], col, 0.55, 0.9)
 	var best: float = float(GameState.stats.get("best_streak_tier", 0))
 	if tier > best:
 		GameState.stats["best_streak_tier"] = tier
 	if tier >= streak.max_tier:
-		Vfx.burst("sparkle", p.global_position + Vector3(0, 1.2, 0), col, 1.0)
+		Vfx.burst("sparkle", p.global_position + OrbitUp.up(p.global_position) * 1.2, col, 1.0)
 		GameState.inc_stat("max_streaks")
 		if Collection.grant("streak_medal") or rng.randf() < 0.3:
 			if world.get("wren") != null:
@@ -493,16 +507,15 @@ func _pay(rw: Dictionary, at: Vector3, source: String) -> String:
 			var pr: Array = rw["part_rarity"]
 			r = int(pr[0]) if rng.randf() < 0.75 else int(pr[1])
 		var t: int = rng.randi() % maxi(Economy.parts.get("types", [1]).size(), 1)
-		GameState.parts.append({"type": t, "rarity": r})
-		EventBus.part_found.emit(t, r)
-		bits.append("+" + L10nFmt.part_name(r, t))  # [i18n2]
+		RobotParts.salvage(t, r)  # [ui2] a found robot part pays Parts
+		bits.append(RobotParts.gain_text(r))
 	if rng.randf() < float(rw.get("trinket_chance", 0.0)):
 		var tid: String = Collection.roll(source, rng.randf())
 		if tid != "" and Collection.grant(tid):
 			bits.append(tr(str(Collection.def(tid).get("name", tid))))
 	var text: String = "  ".join(bits)
 	if text != "":
-		Vfx.float_text(at + Vector3(0, 1.6, 0), text, Color(0.75, 1.0, 0.85), 0.55, 1.6)
+		Vfx.float_text(at + OrbitUp.up(at) * 1.6, text, Color(0.75, 1.0, 0.85), 0.55, 1.6)
 	Audio.play("coin", 1.1, -4.0)
 	return text
 
@@ -514,7 +527,7 @@ func _junk_hexes(min_alive: int, min_d: float, max_d: float) -> Array[int]:
 	var f: HexField = world.field
 	var pp: Vector3 = world.patch.global_position
 	var out: Array[int] = []
-	for h: int in f.hex_count():
+	for h: int in OrbitUp.hexes(f, world.patch.global_position):  # [orbB]
 		if f.hex_hub[h] != 0 or f.is_water(h) or f.is_clean(h):
 			continue
 		var alive: int = 0
@@ -522,7 +535,7 @@ func _junk_hexes(min_alive: int, min_d: float, max_d: float) -> Array[int]:
 			alive += f.piece_alive[pid]
 		if alive < min_alive:
 			continue
-		var d: float = Vector2(f.hex_center(h).x - pp.x, f.hex_center(h).z - pp.z).length()
+		var d: float = OrbitUp.ground_dist(pp, f.hex_center(h))  # [orbB]
 		if d >= min_d and d <= max_d:
 			out.append(h)
 	out.sort_custom(func(a: int, b: int) -> bool: return f.hex_center(a).distance_to(pp) < f.hex_center(b).distance_to(pp))
@@ -543,7 +556,7 @@ func _junk_spot(radius: float, min_n: int, min_d: float, max_d: float, force: bo
 			if f.piece_alive[pid] == 0:
 				continue
 			var p: Vector3 = f.piece_pos[pid]
-			var d: float = Vector2(p.x - pp.x, p.z - pp.z).length()
+			var d: float = OrbitUp.ground_dist(pp, p)  # [orbB]
 			if (d < min_d or d > max_d) and not force:
 				continue
 			var zone: PackedInt32Array = f.pieces_within(p, radius)
@@ -570,6 +583,7 @@ func _start_supply(d: Dictionary, force: bool) -> bool:
 	add_child(root)
 	_keep(root)
 	root.global_position = pos
+	_upright(root)  # [orbB]
 	var ring: MeshInstance3D = EventProps.zone_ring(r, col)
 	root.add_child(ring)
 	var beacon: Node3D = EventProps.beacon(col, 30.0, 0.3)
@@ -597,7 +611,7 @@ func _supply_landed() -> void:
 		return
 	active["landed"] = true
 	var pos: Vector3 = active["pos"]
-	Vfx.burst("dust", pos + Vector3(0, 0.2, 0), Color(0.7, 0.66, 0.6, 0.7), 1.6)
+	Vfx.burst("dust", pos + OrbitUp.up(pos) * 0.2, Color(0.7, 0.66, 0.6, 0.7), 1.6)
 	Audio.play("thud", 0.8, -2.0)
 	EventBus.shake_requested.emit(0.08)
 	var chute: Node3D = active.get("chute")
@@ -642,8 +656,8 @@ func _update_supply() -> void:
 			var ring: Node = root.get_node_or_null("ZoneRing")
 			if ring:
 				ring.queue_free()
-		Vfx.burst("big_sparkle", pos + Vector3(0, 0.8, 0), Color(0.5, 0.95, 1.0))
-		Vfx.burst("confetti", pos + Vector3(0, 1.0, 0), Color.WHITE, 0.6)
+		Vfx.burst("big_sparkle", pos + OrbitUp.up(pos) * 0.8, Color(0.5, 0.95, 1.0))
+		Vfx.burst("confetti", pos + OrbitUp.up(pos) * 1.0, Color.WHITE, 0.6)
 		Audio.play("fanfare", 1.15, -6.0)
 		var got: String = _pay(def("supply_drop").get("reward", {}), pos, "supply_drop")
 		_finish(true, tr("Supply crate opened: %s") % got)
@@ -669,12 +683,14 @@ func _start_surge(_d: Dictionary, force: bool) -> bool:
 	add_child(glow)
 	_keep(glow)
 	glow.global_position = c
+	_upright(glow)  # [orbB]
 	active["glow"] = glow
 	var beacon: Node3D = EventProps.beacon(col, 18.0, 0.5)
 	add_child(beacon)
 	_keep(beacon)
 	beacon.global_position = c
-	Vfx.ring(c + Vector3(0, 0.2, 0), world.field.hex_size, col, 1.2)
+	_upright(beacon)  # [orbB]
+	Vfx.ring(c + OrbitUp.up(c) * 0.2, world.field.hex_size, col, 1.2)
 	return true
 
 
@@ -691,10 +707,10 @@ func _update_surge(_delta: float) -> void:
 	if _tick_t > 0.35:
 		_tick_t = 0.0
 		var pids: PackedInt32Array = world.field.hex_pieces[h]
-		for k: int in 3:
+		for k: int in (3 if not pids.is_empty() else 0):  # [v3qa] a globe cell out of the near ring has no pieces
 			var pid: int = pids[rng.randi() % pids.size()]
 			if world.field.piece_alive[pid] == 1:
-				Vfx.burst("sparkle", world.field.piece_pos[pid] + Vector3(0, 0.2, 0), Color(1.0, 0.85, 0.35), 0.25)
+				Vfx.burst("sparkle", world.field.piece_pos[pid] + OrbitUp.up(world.field.piece_pos[pid]) * 0.2, Color(1.0, 0.85, 0.35), 0.25)
 	active["progress"] = tr("%d pieces grabbed at 3x") % int(active.get("took", 0))
 	if float(active["left"]) <= 0.0 or world.field.is_clean(h):
 		var took: int = int(active.get("took", 0))
@@ -722,8 +738,9 @@ func _start_rain(_d: Dictionary, _force: bool) -> bool:
 			continue
 		var pd: MeshInstance3D = EventProps.puddle(rng.randf_range(0.5, 1.3))
 		add_child(pd)
-		pd.global_position = _gp(p) + Vector3(0, 0.03, 0)
+		pd.global_position = _gp(p) + OrbitUp.up(p) * 0.03
 		pd.rotation.y = rng.randf() * TAU
+		_upright(pd)  # [orbB]
 		pd.scale = Vector3(0.01, 1, 0.01)
 		pd.create_tween().tween_property(pd, "scale", Vector3(1, 1, randf_range(0.55, 0.9)), 6.0)
 		puddles.append(pd)
@@ -799,7 +816,7 @@ func _update_hiccup(delta: float) -> void:
 	# Hic! A little hop, a puff and a squeak every so often.
 	if _tick_t > 1.6:
 		_tick_t = 0.0
-		Vfx.burst("steam", bot.global_position + Vector3(0, 1.0, 0), Color(0.9, 0.9, 0.9, 0.5), 0.5)
+		Vfx.burst("steam", bot.global_position + OrbitUp.up(bot.global_position) * 1.0, Color(0.9, 0.9, 0.9, 0.5), 0.5)
 		Audio.play("squeak", rng.randf_range(1.3, 1.6), -10.0)
 		if bot.visual:
 			var tw := bot.visual.create_tween()
@@ -818,7 +835,7 @@ func _fix_hiccup() -> void:
 	var bot: Robot = r
 	world.interactables.unregister(bot)
 	bot.set_physics_process(true)
-	Vfx.burst("sparkle", bot.global_position + Vector3(0, 1.0, 0), Color(1.0, 0.75, 0.35), 0.9)
+	Vfx.burst("sparkle", bot.global_position + OrbitUp.up(bot.global_position) * 1.0, Color(1.0, 0.75, 0.35), 0.9)
 	Audio.play("servo", 1.0, -4.0)
 	Audio.play("ding", 1.2, -6.0)
 	var got: String = _pay(def("robot_hiccup").get("reward", {}), bot.global_position, "robot_hiccup")
@@ -842,7 +859,7 @@ func _start_wildlife(d: Dictionary, force: bool) -> bool:
 	if best < 0 and force:
 		var f: HexField = world.field
 		var near: float = INF
-		for h: int in f.hex_count():
+		for h: int in OrbitUp.hexes(f, world.patch.global_position):  # [orbB]
 			if f.is_water(h) or f.hex_hub[h] != 0:
 				continue
 			var dd: float = f.hex_center(h).distance_to(pp)
@@ -865,9 +882,10 @@ func _start_wildlife(d: Dictionary, force: bool) -> bool:
 	add_child(an)
 	_keep(an)
 	an.global_position = at
+	_upright(an)  # [orbB]
 	an.scale = Vector3.ONE * 0.01
 	an.create_tween().tween_property(an, "scale", Vector3.ONE, 0.6).set_trans(Tween.TRANS_BACK)
-	Vfx.burst("sparkle", at + Vector3(0, 0.6, 0), Color.html(str(pick["glow"])), 0.6)
+	Vfx.burst("sparkle", at + OrbitUp.up(at) * 0.6, Color.html(str(pick["glow"])), 0.6)
 	active["animal"] = an
 	active["animal_id"] = str(pick["id"])
 	active["animal_name"] = tr(str(pick["name"]))
@@ -887,14 +905,24 @@ func _update_wildlife(delta: float) -> void:
 		return
 	var goal: Vector3 = active["goal"]
 	var to: Vector3 = goal - an.global_position
-	to.y = 0.0
+	if OrbitUp.on_globe():  # [orbB] along the ground
+		var u: Vector3 = an.global_position.normalized()
+		to -= u * to.dot(u)
+	else:
+		to.y = 0.0
 	var body: Node3D = an.get_node("Body")
 	var hop: bool = str(active["animal_body"]) in ["hare", "hedgehog"]
 	if to.length() > 0.25:
 		var spd: float = 1.3 if hop else 0.8
 		an.global_position += to.normalized() * minf(spd * delta, to.length())
-		an.global_position.y = _ground(an.global_position.x, an.global_position.z)
-		an.rotation.y = lerp_angle(an.rotation.y, atan2(-to.x, -to.z), minf(delta * 4.0, 1.0))
+		if OrbitUp.on_globe():  # [orbB] on the ground, facing where it walks
+			an.global_position = _gp(an.global_position)
+			var sc: Vector3 = an.scale
+			an.global_basis = an.global_basis.orthonormalized().slerp(Basis.looking_at(-to.normalized(), an.global_position.normalized()), minf(delta * 4.0, 1.0)).orthonormalized()
+			an.scale = sc
+		else:
+			an.global_position.y = _ground(an.global_position.x, an.global_position.z)
+			an.rotation.y = lerp_angle(an.rotation.y, atan2(-to.x, -to.z), minf(delta * 4.0, 1.0))
 		body.position.y = absf(sin(_anim_t * (9.0 if hop else 6.0))) * (0.12 if hop else 0.03)
 	else:
 		body.position.y = lerpf(body.position.y, 0.0, minf(delta * 6.0, 1.0))
@@ -970,6 +998,7 @@ func _start_signal(_d: Dictionary, force: bool) -> bool:
 	add_child(root)
 	_keep(root)
 	root.global_position = pos
+	_upright(root)  # [orbB]
 	root.add_child(EventProps.beacon(col, 34.0, 0.4))
 	var ring: MeshInstance3D = EventProps.zone_ring(4.0, col)
 	root.add_child(ring)
@@ -1024,6 +1053,7 @@ func _start_audit(d: Dictionary, force: bool) -> bool:
 	add_child(root)
 	_keep(root)
 	root.global_position = pos
+	_upright(root)  # [orbB]
 	root.add_child(EventProps.zone_ring(r, col))
 	var board := Label3D.new()
 	board.name = "Score"
@@ -1042,10 +1072,12 @@ func _start_audit(d: Dictionary, force: bool) -> bool:
 	add_child(drone)
 	_keep(drone)
 	var dir := Vector3(rng.randf_range(-1, 1), 0, rng.randf_range(-1, 1)).normalized()
-	drone.global_position = pos + dir * 50.0 + Vector3(0, 18, 0)
+	if OrbitUp.on_globe():  # [orbB] a ground direction
+		dir = (dir - OrbitUp.up(pos) * dir.dot(OrbitUp.up(pos))).normalized()
+	drone.global_position = pos + dir * 50.0 + OrbitUp.up(pos) * 18.0
 	active["drone"] = drone
 	var tw := drone.create_tween()
-	tw.tween_property(drone, "global_position", pos + Vector3(0, 4.5, 0), 5.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tw.tween_property(drone, "global_position", pos + OrbitUp.up(pos) * 4.5, 5.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	tw.tween_callback(func() -> void:
 		if active.get("id", "") == "ledger_audit":
 			active["working"] = true
@@ -1074,14 +1106,14 @@ func _update_audit(_delta: float) -> void:
 				bd = dd
 				best = pid
 		var pp: Vector3 = world.field.piece_pos[best]
-		Vfx.burst("sparkle", pp + Vector3(0, 0.2, 0), Color(0.4, 1.0, 0.6), 0.3)
+		Vfx.burst("sparkle", pp + OrbitUp.up(pp) * 0.2, Color(0.4, 1.0, 0.6), 0.3)
 		world.collect_piece(best)
 		active["drone_n"] = int(active["drone_n"]) + 1
 		var old: Variant = active.get("dtw")
 		if old is Tween and (old as Tween).is_valid():
 			(old as Tween).kill()
 		var tw := drone.create_tween()
-		tw.tween_property(drone, "global_position", Vector3(pp.x, _ground(pp.x, pp.z) + 4.0, pp.z), float(active["pace"]) * 0.9)
+		tw.tween_property(drone, "global_position", _gp(pp) + OrbitUp.up(pp) * 4.0, float(active["pace"]) * 0.9)
 		active["dtw"] = tw
 	if alive.size() <= 2 or float(active["left"]) <= 0.0:
 		var you: int = int(active["player"])
@@ -1094,8 +1126,10 @@ func _update_audit(_delta: float) -> void:
 			_props.erase(drone)
 			drone.set_beam(0.0)
 			var dir := Vector3(rng.randf_range(-1, 1), 0, rng.randf_range(-1, 1)).normalized()
+			if OrbitUp.on_globe():  # [orbB]
+				dir = (dir - OrbitUp.up(drone.global_position) * dir.dot(OrbitUp.up(drone.global_position))).normalized()
 			var tw := drone.create_tween()
-			tw.tween_property(drone, "global_position", drone.global_position + dir * 60.0 + Vector3(0, 22, 0), 6.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+			tw.tween_property(drone, "global_position", drone.global_position + dir * 60.0 + OrbitUp.up(drone.global_position) * 22.0, 6.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 			tw.tween_callback(drone.queue_free)
 		if won:
 			var got: String = _pay(def("ledger_audit").get("reward", {}), active["pos"], "ledger_audit")

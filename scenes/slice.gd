@@ -33,6 +33,7 @@ var water: WaterView
 var doc_view: DocumentView
 var interactables: Interactables
 var scope_from_memory: bool = false  # [scope]
+var camp: Camp  # [camp] the landing yard: broken bench, trash bin, yard builds (systems/camp/camp.gd)
 var eggs: EasterEggs
 var ledger: LedgerArc
 var outposts: Outposts  # [outposts] ruined frontier depots (automation/outposts.gd)
@@ -43,7 +44,9 @@ var photo: PhotoMode  # [photo] photo mode (ui/photo_mode.gd)
 var fauna: Fauna  # [wild] ambient animals (fauna/fauna.gd)
 var frontier: FrontierDistrict  # [biomes] late-game frontier districts (planet/frontier_district.gd)
 var planet_env: Dictionary = {}  # [planet-rime] dev: --planet-env=<id> dresses a district with a planet env (data/planets.json)
+var bounds: WorldBounds  # [orbit] soft edge + fall rescue (planet/world_bounds.gd)
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
+var orbit: SliceOrbit  # [orbB] --orbit: the slice on the walkable globe (scenes/slice_orbit.gd); null on the flat game
 var view: FieldView
 var depot: Depot
 var patch: Patch
@@ -53,6 +56,7 @@ var upgrades: UpgradesScreen
 var command: CommandView
 var music: MusicHooks
 var intro: Intro
+var objectives: Objectives  # [onboard] first-minutes story objectives (story/objectives.gd)
 var core_charge: CoreCharge
 var composter: Composter
 var pause_menu: PauseMenu
@@ -65,19 +69,73 @@ var _flower: Node3D
 var _sun: DirectionalLight3D
 var _env: Environment
 var dressing: StreetDressing
+var street_power: StreetPower  # [world3] the district's dead street lights (planet/street_power.gd)
 ## Shack and yard lamp pieces that sit derelict while a non-starter base is at level 1.
 var _ruin_bits: Dictionary = {}
 var _t: float = 0.0
 ## Rocket launch → flight → travel: no modal hotkeys, and closing a modal doesn't hand control back.
 var launching: bool = false
+## [leftovers] True while the district builds across frames behind the loading screen (a
+## BuildBudget is open: ui/loading_screen.gd). `built` fires once everything exists.
+var building: bool = false
+var _t_build: int = 0
+var _env_pending: Environment
+signal built
 
 
 func _ready() -> void:
+	if SliceOrbit.wanted():  # [orbB] --orbit: this slice builds on the globe instead
+		orbit = SliceOrbit.new()
+		orbit.name = "Orbit"
+		add_child(orbit)
+		# [orbE] Like the flat district: behind the loading screen the globe builds across frames,
+		# disabled and unrendered until it is whole (orbB measured a ~15 s first frame).
+		building = BuildBudget.active()
+		var ovp: Viewport = get_viewport()
+		var o_had_3d: bool = not ovp.disable_3d
+		if building:
+			process_mode = Node.PROCESS_MODE_DISABLED
+			ovp.disable_3d = true
+		var obb: BuildBudget = BuildBudget.current
+		await orbit.build(self)
+		if building:
+			if obb and DevHooks.has("load-report"):
+				print("[slice] globe build spread over %d frames, longest slice %.0f ms (%s)" % [obb.frames, obb.longest_us / 1000.0, obb.longest_at])
+			building = false
+			process_mode = Node.PROCESS_MODE_INHERIT
+			ovp.disable_3d = not o_had_3d
+			built.emit()
+			if DevHooks.has("load-report"):  # [orbE] the first live frame after the build
+				var tf: int = Time.get_ticks_msec()
+				await get_tree().process_frame
+				var tf2: int = Time.get_ticks_msec()
+				await get_tree().process_frame
+				print("[orbit-load] first live frames: %d ms, %d ms" % [tf2 - tf, Time.get_ticks_msec() - tf2])
+		return
+	if DevHooks.has("orbit"):  # [orbit] phase A prototypes: --orbit=globe (verdance_globe), --orbit=v1 (orbit_world)
+		get_tree().change_scene_to_file.call_deferred("res://planet/orbit/%s.tscn" % ("orbit_world" if DevHooks.get_s("orbit", "") == "v1" else "verdance_globe"))
+		return
+	if DevHooks.has("sphere-walk"):  # [smove] Lumi on a stand-in planet (planet/sphere/sphere_walk.gd)
+		get_tree().change_scene_to_file.call_deferred("res://planet/sphere/sphere_walk.tscn")
+		return
 	var t0: int = Time.get_ticks_msec()
-	add_to_group("persist")
+	_t_build = t0
+	# [leftovers] Behind the loading screen the heavy first half (field, views, city, dressing)
+	# yields between chunks so the bar keeps moving; the scene stays disabled until it is whole.
+	# Everything from _build_board() on (gameplay nodes, UI, story) still runs in one go, so the
+	# order of their _ready / deferred calls is exactly as before. Without a budget (tests,
+	# tools) nothing yields at all.
+	building = BuildBudget.active()
+	var vp: Viewport = get_viewport()
+	var had_3d: bool = not vp.disable_3d
+	if building:
+		process_mode = Node.PROCESS_MODE_DISABLED
+		vp.disable_3d = true  # nothing of the half-built world renders (the vignette has its own viewport)
+	AssetLib.tracing = DevHooks.has("record-preload")
 	# Backstop: never start a district frozen (e.g. paused during a rocket flight).
 	get_tree().paused = false
 	_build_environment()
+	await _step(0.02, 0.03, "env")
 	var cfg: Dictionary = Economy.planet.get("slice_field", {})
 	var base_seed: int = int(DevHooks.get_f("seed", float(CradleMode.world_seed())))  # [late] Cradle Mode worlds (Verdance = slice_field seed)
 	var loaded: bool = false
@@ -97,6 +155,7 @@ func _ready() -> void:
 	planet.generate()
 	if not GameState.planet_state.is_empty():
 		planet.apply_dict(GameState.planet_state)
+	await _step(0.03, 0.06, "planet")
 	if DevHooks.has("frontier") and not loaded:  # [biomes] dev: --frontier=dust_flats|frozen_port|sunken_city|cradle_returns
 		GameState.switch_hub(int(planet.frontier_hubs.get(DevHooks.get_s("frontier", "dust_flats"), 0)))
 		if DevHooks.has("hub-level"):
@@ -115,6 +174,8 @@ func _ready() -> void:
 	district_name = str(planet.cities[planet.city[anchor_cell]]["name"]) if is_city else PlanetData.BIOMES[planet.biome[anchor_cell]].capitalize().replace("_", " ")
 	var fk: Dictionary = Frontiers.field_params(planet, hub_index)  # [biomes] frontier district?
 	var f_radius: int = int(fk.get("radius", cfg.get("radius", 9)))
+	if fk.is_empty() and loaded and GameState.world.has("field") and int((GameState.world["field"] as Dictionary).get("junk_gen", 1)) < 2:
+		f_radius = int((GameState.world["field"] as Dictionary).get("radius", 3))  # [world2] pre-gen-2 saves keep their radius-3 field
 	if not fk.is_empty():
 		district_name = str(fk.get("name", district_name))
 	layout = CityLayout.new(seed_v, 150.0, (not is_city) if fk.is_empty() else str(fk.get("layout", "wild")) != "city")
@@ -143,10 +204,16 @@ func _ready() -> void:
 	if not fk.is_empty():  # [biomes] the frontier's own harbour / flood replaces planet lakes
 		field.water_ids = Frontiers.water_ids_for(fk, f_radius, float(cfg.get("hex_size", 3.2)))
 		field.float_mult = float(fk.get("float_mult", 1.0))
+	if bool(planet_env.get("no_lakes", false)):  # [planet-ochre] a dry planet: no planet lakes in the field
+		field.water_ids = {}
+	if planet_env.has("pieces_mult"):  # [planet-ochre] a trashed planet: more junk per hex
+		ppx = [int(float(ppx[0]) * float(planet_env["pieces_mult"])), int(float(ppx[1]) * float(planet_env["pieces_mult"]))]
 	# Older saves were generated with straight hex borders; keep their piece layout identical.
 	if loaded and GameState.world.has("field"):
 		field.natural_borders = bool((GameState.world["field"] as Dictionary).get("natural_borders", false))
-	field.generate(types, Vector2i(int(ppx[0]), int(ppx[1])))
+		field.junk_gen = int((GameState.world["field"] as Dictionary).get("junk_gen", 1))  # [world2] older saves keep v1 junk
+	await _step(0.06, 0.09, "field")
+	await field.generate(types, Vector2i(int(ppx[0]), int(ppx[1])))
 	if not fk.is_empty():
 		Frontiers.toughen(field, float(fk.get("vol_mult", 1.0)))
 	field.place_landmarks(Economy.landmarks_for(field.biome))
@@ -161,8 +228,21 @@ func _ready() -> void:
 		frontier.name = "Frontier"
 		add_child(frontier)
 		frontier.prepare(self)
+	await _step(0.09, 0.12, "prefetch")
+	# [leftovers] Off the main thread while the views build: the ground's layout bake and the litter
+	# carpet's placement run on WorkerThreadPool threads (both read-only on the field and layout,
+	# which nothing changes until they are collected).
+	var bake_job: Dictionary = layout.bake_start(layout.extent * 2.0, 0.25) if building and layout else {}
+	litter = LitterView.new()
+	litter.name = "Litter"
+	litter.density_mult = float(fk.get("litter_mult", 1.0))  # [biomes]
+	await litter.start(field)
+	await _step(0.12, 0.2, "preload")
+	var keep: Array = (await _preload_models()) if building else []
+	await _step(0.2, 0.45, "view")
 	view = FieldView.new()
 	view.name = "FieldView"
+	view.layout_job = bake_job
 	add_child(view)
 	if not fk.is_empty():  # [biomes] frontier ground textures and shader extras
 		view.layer_swap = fk.get("ground_layers", {})
@@ -172,27 +252,34 @@ func _ready() -> void:
 	elif CradleMode.current_index() > 0:  # [late] another world's ground (snow on an ice moon, sand on a desert world)
 		CradleMode.dress_view(view)
 	PlanetEnvs.call_env(planet_env, "dress_view", [view])  # [planet-rime]
-	view.setup(field)
+	await view.setup(field)
 	water = WaterView.new()
 	water.name = "Water"
 	water.world = self
 	add_child(water)
-	litter = LitterView.new()
-	litter.name = "Litter"
+	await _step(0.45, 0.55, "litter")
 	add_child(litter)
-	litter.density_mult = float(fk.get("litter_mult", 1.0))  # [biomes]
-	litter.setup(field)
+	await litter.finish()
+	if fk.is_empty():  # [world2] the world past the field stays covered (frontiers have their own terrain)
+		await _step(0.55, 0.65, "far junk")
+		var far := FarJunk.new()
+		far.name = "FarJunk"
+		far.world = self
+		add_child(far)
+		await far.build(field)
+	await _step(0.65, 0.85, "city")
 	city = CityView.new()
 	city.name = "City"
 	add_child(city)
-	city.build(layout, view.ground_material)
+	await city.build(layout, view.ground_material)
 	# Awnings, neon, murals, string lights, yard slab and props (planet/street_dressing.gd).
+	await _step(0.85, 0.95, "dressing")
 	if not DevHooks.has("no-dressing"):
 		dressing = StreetDressing.new()
 		dressing.name = "StreetDressing"
 		add_child(dressing)
 		dressing.skip_facades = not fk.is_empty()  # [biomes] (the Sunken City's facades sit below the waterline)
-		dressing.build(layout, field, hub_index, district_name, ("" if is_city else field.biome) if fk.is_empty() else str(fk.get("dressing_biome", "")), int(GameState.world.get("hub_level", 1)))
+		await dressing.build(layout, field, hub_index, district_name, ("" if is_city else field.biome) if fk.is_empty() else str(fk.get("dressing_biome", "")), int(GameState.world.get("hub_level", 1)))
 	_cubes_root = Node3D.new()
 	_cubes_root.name = "Cubes"
 	add_child(_cubes_root)
@@ -200,7 +287,20 @@ func _ready() -> void:
 	depot.name = "Depot"
 	depot.position = Vector3(0, 0, -1.8)
 	add_child(depot)
+	# [leftovers] Warm what the one-go half would otherwise make on the spot: the synthesised animal
+	# and story sounds (made once per run) and the models it loads (data/preload_models.json).
+	await _step(0.95, 0.96, "sounds")
+	await FaunaSounds.ensure()
+	await BuildBudget.check("sounds")
+	FaunaSounds.crickets_loop()
+	await BuildBudget.check("sounds")
+	StorySfx.ensure()
+	# --- From here on: one go (see the top of _ready). The budget closes so nothing below yields.
+	await _step(0.96, 1.0, "systems")
+	var bb: BuildBudget = BuildBudget.current
+	BuildBudget.end()
 	_build_board()
+	YardArt.dress_board(_ruin_bits, self)  # [yard] chunky kit look for the lean-to, bench, lamp, generator
 	if DevHooks.has("future"):  # --future=N preview: the hub at level N too (FutureLayer.apply_preview)
 		GameState.world["hub_level"] = clampi(int(DevHooks.get_f("future", 5.0)), 1, 5)
 	hub = Hub.new()
@@ -315,6 +415,15 @@ func _ready() -> void:
 		cam.distance = DevHooks.get_f("demo-dist", 2.8)
 		cam.pitch = -0.3
 		cam.snap()
+	bounds = WorldBounds.new()  # [orbit] Lumi, robots and cubes never fall off the world
+	bounds.name = "WorldBounds"
+	bounds.world = self
+	add_child(bounds)
+	if DevHooks.has("edge-test"):  # [orbit] headless WorldBounds check
+		var et := EdgeTest.new()
+		et.world = self
+		et.bounds = bounds
+		add_child(et)
 	if DevHooks.has("lens"):
 		cam.lens_view = true
 	if DevHooks.has("cam"):
@@ -327,6 +436,11 @@ func _ready() -> void:
 	if DevHooks.has("unlock-seeds"):
 		GameState.flags["seeds_unlocked"] = true
 		GameState.add_currency("seeds", BigNum.from_float(200))
+	for dh: String in ["hub-level", "future", "robots", "post-finale", "new-world", "frontier", "research", "restore", "unlock-seeds", "demo-scoop"]:  # [pace] dev jumps past the slow start
+		if DevHooks.has(dh):
+			Pace.grant_early_unlocks()
+			break
+	Pace.sync_flags()  # [pace]
 	if DevHooks.has("upgrade-levels"):
 		# --upgrade-levels=multi_lock:3+laser_reach:4  (screenshots/testing)
 		for spec: String in DevHooks.get_s("upgrade-levels", "").split("+"):
@@ -335,7 +449,7 @@ func _ready() -> void:
 	if DevHooks.has("give-parts"):
 		for k: int in int(DevHooks.get_f("give-parts", 8.0)):
 			@warning_ignore("integer_division")  # [health]
-			GameState.parts.append({"type": k % 8, "rarity": mini(k / 8, 4)})
+			RobotParts.salvage(k % 8, mini(k / 8, 4), false)  # [ui2] Parts now
 	if DevHooks.has("clean-hexes"):
 		# --clean-hexes=N  pre-clean the N land hexes nearest the base (to test planters/waterers).
 		var land: Array = range(field.hex_count()).filter(func(h: int) -> bool: return field.hex_hub[h] == 0 and not field.is_water(h) and not field.is_clean(h))
@@ -407,7 +521,7 @@ func _ready() -> void:
 	add_child(wren)
 	var subs := Subtitles.new()
 	add_child(subs)
-	wren.line_started.connect(subs.show_line)
+	wren.line_out.connect(subs.show_line)  # [onboard] through the Signal Tower gate (story/wren.gd)
 	garden = Garden.new()
 	garden.name = "Garden"
 	garden.world = self
@@ -420,6 +534,7 @@ func _ready() -> void:
 	hex_levels.world = self
 	add_child(hex_levels)
 	hex_levels.setup()
+	_setup_street_power()  # [world3]
 	# Future layer: the district builds up into a glowing city as hexes level (planet/future_layer.gd).
 	if DevHooks.has("future"):
 		if frontier:  # [biomes] thaw the ice / run the pumps first so the preview covers every hex
@@ -517,9 +632,10 @@ func _ready() -> void:
 	intro = Intro.new()
 	intro.world = self
 	add_child(intro)
+	# [onboard] The old "LM-1 online..." wake toast flashed by too fast to read; WREN's brief and the
+	# objective card (story/objectives.gd) tell the plan now, and they stay.
 	var wake := func() -> void:
-		get_tree().create_timer(1.5).timeout.connect(func() -> void:
-			Story.once("wake", tr("LM-1 online. Bloom Core 4%: green light low. Cradle relay: faint. Grow something."), "story"))
+		pass
 	if intro.should_play():
 		intro.finished.connect(wake)
 		hud.visible = false  # [first] no one-frame HUD/world flash before the deferred intro starts
@@ -531,14 +647,94 @@ func _ready() -> void:
 			intro.place_pod.call_deferred()
 		if not loaded:
 			wake.call()
+	SignalTower.migrate(self)  # [onboard] WREN only talks through the Signal Tower (story/signal_tower.gd)
+	if GameState.current_hub == 0 and frontier == null:
+		var tower := SignalTower.new()
+		tower.name = "SignalTower"
+		tower.world = self
+		add_child(tower)
+	objectives = Objectives.new()  # [onboard] WREN's last message after the intro + the objective card
+	objectives.world = self
+	add_child(objectives)
 	LateDirector.attach(self)  # [late] Garden Mode, Ark Bridge, Cradle Mode worlds (systems/late_director.gd)
 	var scope := Telescope.new()  # [scope] the Telescope + remote progress (automation/telescope.gd)
 	scope.name = "Telescope"
 	scope.world = self
 	add_child(scope)
 	ExtrasDirector.attach(self)  # [extras] radio, nursery, album, welcome back, Seed of the Week (systems/extras/)
+	(func() -> void: PropColliders.push_out_pieces(self, field, view)).call_deferred()  # [world2] junk out of solid props
+	if DevHooks.has("bale-shot"):  # [world2] bale close-up staging (tools/bale_shot.gd)
+		var bs: Node = load("res://tools/bale_shot.gd").new()
+		bs.set("world", self)
+		add_child(bs)
+	camp = Camp.attach(self)  # [camp] after the extras: it shows the radio / nursery once built
+	GlimDirector.attach(self)  # [buddy] Glim the lantern bot: light, hex scanner, upgrades, looks (systems/glim/)
 	if not bot and DisplayServer.get_name() != "headless":
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	add_to_group("persist")  # [leftovers] last: no autosave can gather a half-built district
+	keep.clear()
+	if AssetLib.tracing:
+		_record_preload()
+	if building:
+		if bb:
+			print("[slice] build spread over %d frames, longest slice %.0f ms (%s)" % [bb.frames, bb.longest_us / 1000.0, bb.longest_at])
+		building = false
+		process_mode = Node.PROCESS_MODE_INHERIT
+		vp.disable_3d = not had_3d
+		if _env_pending:
+			Settings.apply_render_quality(_env_pending, vp)
+			_env_pending = null
+	built.emit()
+
+
+const PRELOAD_LIST: String = "res://data/preload_models.json"
+
+
+## [leftovers] Models (and model parts) the build would load one by one on the main thread (city
+## props, dressing, the one-go half), fetched on loader threads and meshed while the loading
+## screen still draws. Recorded with --record-preload (any district; ids merge). A missing or
+## stale entry only means that model loads where it is used, as before.
+func _preload_models() -> Array:
+	var keep: Array = []
+	var ids: Array = Economy.read_json(PRELOAD_LIST).get("models", []) if FileAccess.file_exists(PRELOAD_LIST) else []
+	for i: int in ids.size():
+		BuildBudget.sub(float(i) / maxf(1.0, ids.size()))
+		var id: String = str(ids[i])
+		if id.begins_with("part:"):
+			var spec: String = id.substr(5)
+			var mid: String = spec.get_slice("::", 0)
+			if AssetLib.has_model(mid):
+				var r: Resource = await BuildBudget.fetch(AssetLib.MODEL_DIR % [mid, mid])
+				if r:
+					keep.append(r)
+				await BuildBudget.check("preload")
+				AssetLib.model_part(mid, spec.get_slice("::", 1))
+		elif AssetLib.has_model(id):
+			await AssetLib.fetch_model(id)
+		await BuildBudget.check("preload")
+	return keep
+
+
+## Dev (--record-preload): merge the models this build's one-go half loaded into PRELOAD_LIST.
+func _record_preload() -> void:
+	AssetLib.tracing = false
+	var have: Array = Economy.read_json(PRELOAD_LIST).get("models", []) if FileAccess.file_exists(PRELOAD_LIST) else []
+	for id: String in AssetLib.traced:
+		if not have.has(id):
+			have.append(id)
+	var f := FileAccess.open(PRELOAD_LIST, FileAccess.WRITE)
+	f.store_string(JSON.stringify({"_note": "Models the district build loads on the main thread (scenes/slice.gd _preload_models). Regenerate: godot --headless --path . -- --fresh --record-preload --quit-after=30", "models": have}, "\t") + "\n")
+	f.close()
+	print("[slice] preload list: %d models (%d this build)" % [have.size(), AssetLib.traced.size()])
+
+
+## [leftovers] A build step boundary: progress for the bar, and a frame back to the loading screen
+## if this frame's slice is used up. Free when nothing is loading.
+func _step(from: float, to: float, at: String) -> void:
+	if building and DevHooks.has("load-report"):
+		print("[slice] step %s at %d ms" % [at, Time.get_ticks_msec() - _t_build])
+	BuildBudget.span(from, to)
+	await BuildBudget.check(at)
 
 
 func _build_environment() -> void:
@@ -575,14 +771,15 @@ func _build_environment() -> void:
 	env.ssao_enabled = true
 	env.ssao_radius = 1.0
 	env.ssao_intensity = 1.6
-	env.ssil_enabled = true
-	env.ssr_enabled = true
+	var fwd_plus: bool = RenderingServer.get_current_rendering_method() == "forward_plus"  # [qafix] QA #35: no "only on Forward+" warnings on Compatibility
+	env.ssil_enabled = fwd_plus  # [qafix]
+	env.ssr_enabled = fwd_plus  # [qafix]
 	env.ssr_max_steps = 48
-	env.sdfgi_enabled = true
+	env.sdfgi_enabled = fwd_plus  # [qafix]
 	env.sdfgi_use_occlusion = true
 	env.sdfgi_cascades = 4
 	env.sdfgi_min_cell_size = 0.2
-	env.volumetric_fog_enabled = true
+	env.volumetric_fog_enabled = fwd_plus  # [qafix]
 	env.volumetric_fog_density = 0.006
 	env.volumetric_fog_albedo = Color(0.85, 0.86, 0.9)
 	env.volumetric_fog_emission = Color(0.04, 0.045, 0.06)
@@ -611,7 +808,13 @@ func _build_environment() -> void:
 	_sun.shadow_blur = 1.0
 	_sun.directional_shadow_max_distance = 80.0
 	add_child(_sun)
-	Settings.apply_render_quality(env, get_viewport())
+	# [leftovers] Its global shadow-filter settings recompile every pipeline, the loading screen's
+	# included (a 9 s frozen frame on software Vulkan): behind the loading screen it waits for the
+	# end of the build, where the warm-up compiles the district's shaders anyway.
+	if building:
+		_env_pending = env
+	else:
+		Settings.apply_render_quality(env, get_viewport())
 	Settings.apply_sun_quality(_sun)
 	sky_director = SkyDirector.new()
 	sky_director.world = self
@@ -641,6 +844,7 @@ func _build_board() -> void:
 	frame.mesh = ProcMesh.merge(parts)
 	frame.material_override = pipe
 	shack.add_child(frame)
+	_ruin_bits["frame"] = frame  # [camp]
 	var roof := MeshInstance3D.new()
 	_ruin_bits["roof"] = roof
 	roof.mesh = ProcMesh.box(Vector3(3.7, 0.03, 2.6))
@@ -648,11 +852,18 @@ func _build_board() -> void:
 	roof.position = Vector3(0, 2.3, -0.05)
 	roof.rotation_degrees = Vector3(-9, 0, 2)
 	shack.add_child(roof)
+	var roof_body := StaticBody3D.new()  # [world2] follows the roof: overhead when fixed, a slumped ramp of iron when ruined
+	roof_body.collision_layer = PhysLayers.PROP
+	var roof_cs := CollisionShape3D.new()
+	roof_cs.shape = PropColliders.box_shape(Vector3(3.6, 0.1, 2.5))
+	roof_body.add_child(roof_cs)
+	roof.add_child(roof_body)
 	var back := MeshInstance3D.new()
 	back.mesh = ProcMesh.box(Vector3(3.3, 2.3, 0.03))
 	back.material_override = iron
 	back.position = Vector3(0, 1.15, -1.15)
 	shack.add_child(back)
+	_ruin_bits["back"] = back  # [camp]
 	var side := MeshInstance3D.new()
 	_ruin_bits["side"] = side
 	side.mesh = ProcMesh.box(Vector3(0.03, 1.6, 1.4))
@@ -663,6 +874,7 @@ func _build_board() -> void:
 	var bench := Node3D.new()
 	bench.position = Vector3(0, 0, -0.65)
 	shack.add_child(bench)
+	_ruin_bits["bench"] = bench  # [camp] starts broken on a fresh base
 	var bparts: Array = []
 	bparts.append(ProcMesh.part(ProcMesh.box(Vector3(2.2, 0.06, 0.8)), ProcMesh.xf(Vector3(0, 0.92, 0))))
 	for x: float in [-1.0, 1.0]:
@@ -701,6 +913,12 @@ func _build_board() -> void:
 	cs.shape = bs
 	cs.position = Vector3(0, 1.2, -0.6)
 	sb.add_child(cs)
+	for px: float in [-1.6, 1.6]:  # [world2] the front posts
+		var pcs0 := CollisionShape3D.new()
+		pcs0.shape = PropColliders.cyl_shape(0.08, 2.1)
+		pcs0.position = Vector3(px, 1.05, 1.0)
+		sb.add_child(pcs0)
+		_ruin_bits["post_l" if px < 0.0 else "post_r"] = pcs0  # [pace2] camp turns these off with the bare lean-to
 	shack.add_child(sb)
 	# Hub dressing: a street lamp and a generator.
 	var sl := MeshInstance3D.new()
@@ -732,6 +950,23 @@ func _build_board() -> void:
 	gen.position = Vector3(-4.6, 0, 0.8)
 	gen.rotation_degrees = Vector3(0, 70, 0)
 	add_child(gen)
+	_ruin_bits["generator"] = gen  # [camp]
+
+
+## [world3] When you land nothing works: street lamps, shop neon and string lights wake up as
+## their hexes reach Sustained, or round the base at hub level 3 (planet/street_power.gd).
+func _setup_street_power() -> void:
+	street_power = StreetPower.new()
+	street_power.name = "StreetPower"
+	add_child(street_power)
+	street_power.setup(field, hex_levels, hub.level if hub else 1)
+	if city:
+		street_power.add_bulbs(city.lamp_bulbs)
+	if dressing:
+		street_power.add_groups(dressing.power_groups)
+	street_power.apply(false)
+	if hub:
+		hub.level_changed.connect(func(l: int) -> void: street_power.set_hub_level(l, true))
 
 
 ## Level 1 at any base but Old Town's start: the lean-to roof has slumped off its frame, the side
@@ -781,6 +1016,8 @@ func _build_flower() -> void:
 
 func _process(delta: float) -> void:
 	_t += delta
+	if orbit:  # [orbB]
+		return
 	if _flower:
 		_flower.rotation.z = sin(_t * 1.1) * 0.02
 
@@ -799,11 +1036,16 @@ func _map_slice_to_planet() -> void:
 
 
 func planet_cell_at(pos: Vector3) -> int:
+	if orbit:  # [orbB] cell ids are the planet's ids
+		return orbit.cell_at(pos)
 	var anchor: int = anchor_cell
 	return planet.grid.nearest_from(planet.local_to_dir(anchor, pos.x, pos.z), anchor)
 
 
 func collect_piece(pid: int) -> void:
+	if orbit:  # [orbB]
+		orbit.collect_piece(pid)
+		return
 	var hid: int = field.piece_hex[pid]
 	var became_clean: bool = field.remove_piece(pid)
 	planet.set_junk(slice_cells[hid], 1.0 - field.removed_fraction(hid))
@@ -816,7 +1058,16 @@ func collect_piece(pid: int) -> void:
 		_on_hex_clean(hid)
 
 
+## [orbB] A bite was taken off a heavy globe piece (Patch._take_piece): the cell's numbers follow.
+func piece_bitten(pid: int) -> void:
+	if orbit:
+		orbit.piece_bitten(pid)
+
+
 func _on_hex_clean(hid: int) -> void:
+	if orbit:  # [orbB]
+		orbit.on_hex_clean(hid)
+		return
 	# A hex the Ledger re-dumped on pays only the flat part of its bonus the second time and doesn't
 	# count again toward "Clean N hexes" (otherwise a dump is a profit).
 	var paid: Dictionary = GameState.world.get("hexes_paid", {})
@@ -944,6 +1195,10 @@ func travel_to(to_hub: int) -> void:
 
 ## Salvaged building materials from scooped junk (data/hub.json "materials").
 func salvage_materials(type_id: String, vol: float) -> void:
+	if orbit:  # [orbB] hub materials come with the hub sites; paper still feeds the press
+		if composter:
+			composter.on_salvage(type_id, vol)
+		return
 	if composter:
 		composter.on_salvage(type_id, vol)
 	var m: Dictionary = hub.data.get("materials", {}).get(type_id, {})
@@ -967,6 +1222,9 @@ func _hitstop(duration: float, scale_: float) -> void:
 # --- Interaction / UI -------------------------------------------------------------
 
 func try_interact(p: Patch) -> void:
+	if orbit:  # [orbB]
+		orbit.try_interact(p)
+		return
 	if interactables and interactables.try_use(p.global_position):
 		return
 	if first_seed.near_tin(p.global_position):
@@ -978,6 +1236,9 @@ func try_interact(p: Patch) -> void:
 			doc_view.show_doc(doc)
 		return
 	if near_bench():
+		if camp and not Camp.bench_ok():  # [camp] the first E repairs the broken bench
+			camp.repair_bench()
+			return
 		open_upgrades()
 		return
 	if composter and composter.near(p.global_position):
@@ -985,6 +1246,8 @@ func try_interact(p: Patch) -> void:
 
 
 func interact_prompt(p: Patch) -> String:
+	if orbit:  # [orbB]
+		return orbit.interact_prompt(p)
 	var ip: String = interactables.prompt(p.global_position) if interactables else ""
 	if ip != "":
 		return ip
@@ -993,7 +1256,7 @@ func interact_prompt(p: Patch) -> String:
 	if shards and shards.nearby(p.global_position) >= 0:
 		return "shard"
 	if near_bench():
-		return "upgrades"
+		return camp.bench_prompt() if camp else "upgrades"  # [camp] names the bench (and says if it's broken)
 	if composter and composter.near(p.global_position):
 		return composter.prompt()
 	if p.global_position.distance_to(FLOWER_POS) < 1.8:
@@ -1004,17 +1267,34 @@ func interact_prompt(p: Patch) -> String:
 const BENCH_RANGE: float = 3.2
 
 
+## [orbB] Where the workbench is: BOARD_POS on the flat game, the start site's bench anchor on the globe.
+func bench_pos() -> Vector3:
+	return orbit.bench_position() if orbit else BOARD_POS
+
+
 func near_bench() -> bool:
+	if orbit:  # [orbB] the start site's bench anchor
+		return orbit.near_bench()
 	return patch != null and patch.global_position.distance_to(BOARD_POS) < BENCH_RANGE
 
 
 func open_upgrades() -> void:
+	if orbit:  # [orbB]
+		orbit.open_upgrades()
+		return
 	if pause_menu.is_open:
 		return
 	# Upgrades are installed at a base workbench, not in the field.
 	if not near_bench() and not DevHooks.has("open"):
-		EventBus.toast.emit(tr("Upgrades need a workbench. Head back to the hub."), "info")
-		Audio.play("buzz", 1.2, -10.0)
+		# [onboard] Away from the bench, Tab shows the key hints while held (the toast only once).
+		if hud and hud.has_method("peek_hints"):
+			hud.peek_hints()
+		if not GameState.flags.get("bench_hint_seen", false):
+			GameState.flags["bench_hint_seen"] = true
+			EventBus.toast.emit(tr("Upgrades need a workbench. Head back to the hub."), "info")
+		return
+	if camp and not Camp.bench_ok() and not DevHooks.has("open"):  # [camp]
+		camp.repair_bench()
 		return
 	upgrades.open_screen()
 	if patch.input is PlayerInput:
@@ -1067,8 +1347,13 @@ func _setup_research_codex() -> void:
 
 
 func _open_codex(tab: String = "") -> void:
+	if orbit:  # [orbB]
+		orbit.open_codex(tab)
+		return
 	if codex.is_open:
 		return
+	if pause_menu.is_open:  # [ui7] never stack the Codex on the pause menu
+		pause_menu.close_menu()
 	codex.open_screen(tab)
 	if patch.input is PlayerInput:
 		(patch.input as PlayerInput).enabled = false
@@ -1083,12 +1368,18 @@ func _open_command() -> void:
 
 
 func any_modal_open() -> bool:
+	if orbit:  # [orbB]
+		return orbit.any_modal_open()
 	return upgrades.is_open or pause_menu.is_open or globe.is_open or command.is_open \
 		or (codex != null and codex.is_open) or (doc_view != null and doc_view.is_open) \
-		or (photo != null and photo.is_open)  # [photo]
+		or (photo != null and photo.is_open) \
+		or (get_node_or_null("GlimPanel") != null and (get_node("GlimPanel") as GlimPanel).is_open)  # [photo] [buddy]
 
 
 func _on_modal_closed() -> void:
+	if orbit:  # [orbB]
+		orbit.on_modal_closed()
+		return
 	# During the rocket launch the rocket owns the camera and Patch stays hidden and still.
 	if launching:
 		return
@@ -1100,6 +1391,9 @@ func _on_modal_closed() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if orbit:  # [orbB]
+		orbit.unhandled_input(event)
+		return
 	if launching or upgrades.is_open or pause_menu.is_open or globe.is_open or command.is_open or intro.busy() or (codex and codex.is_open):
 		return
 	if event.is_action_pressed("open_codex") and codex:
@@ -1133,6 +1427,9 @@ func _unhandled_input(event: InputEvent) -> void:
 # --- Persistence -----------------------------------------------------------------
 
 func persist_save() -> void:
+	if orbit:  # [orbB] GameState.orbit (direction + height); the flat district state is left as it was
+		orbit.persist_save()
+		return
 	GameState.world["field"] = field.to_dict()
 	GameState.planet_state = planet.to_dict()
 	GameState.world["garden"] = garden.persist()
@@ -1158,6 +1455,9 @@ func persist_save() -> void:
 
 ## from_memory: reloaded by rocket travel (not from disk), so no offline payout or welcome back.
 func _restore_world(from_memory: bool = false) -> void:
+	if orbit:  # [orbB]
+		orbit.restore_world()
+		return
 	for cd: Dictionary in GameState.world.get("cubes", []):
 		var c: JunkCube = JunkCube.from_dict(cd)
 		add_cube(c)
@@ -1168,6 +1468,7 @@ func _restore_world(from_memory: bool = false) -> void:
 	if GameState.world.has("patch"):
 		patch.from_dict(GameState.world["patch"])
 	fleet.restore()
+	BotFabricator.attach(self)  # [orbC] a built Bot Fabricator keeps its line running
 	if from_memory:
 		return
 	var away: float = Time.get_unix_time_from_system() - GameState.saved_unix

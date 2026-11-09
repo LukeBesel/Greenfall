@@ -38,7 +38,7 @@ static func rounded_box(size: Vector3, radius: float, seg: int = 4, color: Color
 		for j: int in n:
 			for i: int in n:
 				var q: Array = [grid[j][i], grid[j][i + 1], grid[j + 1][i + 1], grid[j + 1][i]]
-				for idx: int in [0, 2, 1, 0, 3, 2]:
+				for idx: int in [0, 1, 2, 0, 2, 3]:  # [world2] clockwise from outside (was inside-out: see-through with back-face culling)
 					st.set_color(color)
 					st.set_normal(q[idx][1])
 					st.add_vertex(q[idx][0])
@@ -59,6 +59,8 @@ static func merge(parts: Array) -> ArrayMesh:
 		var basis_n: Basis = xf_.basis.inverse().transposed()
 		for s: int in mesh.get_surface_count():
 			var arr: Array = mesh.surface_get_arrays(s)
+			if arr.is_empty() or arr[Mesh.ARRAY_VERTEX] == null or arr[Mesh.ARRAY_NORMAL] == null:
+				continue  # [main] empty surface (a zero-size piece): nothing to merge
 			var pv: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
 			var pn: PackedVector3Array = arr[Mesh.ARRAY_NORMAL]
 			var pi: PackedInt32Array = arr[Mesh.ARRAY_INDEX] if arr[Mesh.ARRAY_INDEX] != null else PackedInt32Array()

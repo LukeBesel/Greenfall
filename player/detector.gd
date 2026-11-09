@@ -13,6 +13,10 @@ var digging: float = 0.0
 
 var _cfg: Dictionary
 var _beep_timer: float = 0.0
+var _sound_t: float = 0.0  # [v2feel] time to the next audible beep
+const SOUND_NEAR_M: float = 3.0  # [v4calm] the beep is heard only this close to the part
+const SOUND_GAP_S: float = 2.0  # [v4calm] shortest gap between audible beeps (was 0.45)
+const SOUND_DB: float = -24.0  # [v4calm] quiet
 var _flash: float = 0.0
 
 
@@ -37,14 +41,18 @@ func _process(delta: float) -> void:
 		(model as PatchModel).set_beacon(_flash)
 	if digging > 0.0:
 		return
+	if not active():  # [onboard] quiet during the restart checklist: one new thing at a time
+		target = -1
+		strength = 0.0
+		readout_changed.emit("", Color.WHITE, 0.0)
+		return
 	var r: float = range_m()
 	target = field.nearest_part(patch.global_position, r)
 	if target < 0:
 		strength = 0.0
 		readout_changed.emit("", Color.WHITE, 0.0)
 		return
-	var p: Vector3 = field.part_pos[target]
-	var d: float = Vector2(p.x - patch.global_position.x, p.z - patch.global_position.z).length()
+	var d: float = field.part_distance(target, patch.global_position)  # [orbB] along the ground (flat: x/z)
 	var sig: float = float(Economy.rarity(field.part_rarity[target]).get("signal", 1.0))
 	strength = clampf(1.0 - d / (r * sig), 0.0, 1.0)
 	var interval: float = lerpf(float(_cfg.get("max_interval", 1.4)), float(_cfg.get("min_interval", 0.08)), pow(strength, 1.6))
@@ -52,23 +60,41 @@ func _process(delta: float) -> void:
 	if _beep_timer <= 0.0:
 		_beep_timer = interval
 		_flash = 1.0
-		Audio.play("detector", lerpf(0.9, 1.5, strength), lerpf(-20.0, -7.0, strength), 0.0)
+		# [v2feel] Owner item 32: the lamp's beep played nonstop (the globe always has a part in
+		# range). Far off the lamp only blinks; it beeps once Lumi is homing in, and never faster
+		# than SOUND_GAP_S.
+		# [v4calm] Owner item 50: still too much. Silent unless Lumi is right on it (SOUND_NEAR_M),
+		# one soft beep per SOUND_GAP_S at most.
+		if beep_allowed(d, _sound_t):
+			_sound_t = SOUND_GAP_S
+			Audio.play("detector", lerpf(1.0, 1.2, strength), SOUND_DB, 0.0)
+	_sound_t = maxf(0.0, _sound_t - delta)
 	var rar: Dictionary = Economy.rarity(field.part_rarity[target])
 	var text: String = ""
 	var col := Color(1, 0.3, 0.25)
 	if d < 4.0:
-		text = tr("SIGNAL  %s  ·  %.1f m") % [tr(str(rar.get("name", "?"))).to_upper(), d]
+		# [onboard] "BURIED PART" says what the signal is (it read "SIGNAL 62%", unexplained).
+		text = tr("BURIED PART  %s  ·  %.1f m") % [tr(str(rar.get("name", "?"))).to_upper(), d]
 		col = UITheme.rarity_color(field.part_rarity[target])
 	elif strength > 0.0:
-		text = tr("SIGNAL  %d%%") % int(strength * 100.0)
+		text = tr("BURIED PART  ·  SIGNAL %d%%") % int(strength * 100.0)
 	readout_changed.emit(text, col, strength)
+
+
+## [v4calm] An audible beep: only within SOUND_NEAR_M, and once the gap timer has run out.
+static func beep_allowed(dist_m: float, gap_left: float) -> bool:
+	return dist_m <= SOUND_NEAR_M and gap_left <= 0.0
+
+
+## [onboard] The detector listens once the restart checklist is done (dev: --detector-on).
+static func active() -> bool:
+	return int(GameState.flags.get("tutorial_step", 0)) >= Tutorial.STEPS.size() or DevHooks.has("detector-on")
 
 
 func can_dig() -> bool:
 	if target < 0 or digging > 0.0:
 		return false
-	var p: Vector3 = field.part_pos[target]
-	return Vector2(p.x - patch.global_position.x, p.z - patch.global_position.z).length() <= float(_cfg.get("dig_range", 1.4))
+	return field.part_distance(target, patch.global_position) <= float(_cfg.get("dig_range", 1.4))  # [orbB]
 
 
 ## Starts digging; calls back on_found(part_index) when done.

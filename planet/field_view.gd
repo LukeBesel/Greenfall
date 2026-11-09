@@ -39,19 +39,30 @@ var _life_img: Image
 var _life_tex: ImageTexture
 var _life_dirty: bool = false  # [green] one texture upload per frame, however many hexes changed
 var _mounds: Array = []  # hex id -> Array[MeshInstance3D]
+## [leftovers] A layout bake already running on worker threads (CityLayout.bake_start), set before
+## setup(); the ground picks it up at the end of setup instead of baking inline.
+var layout_job: Dictionary = {}
 
 
+## [leftovers] A coroutine when a BuildBudget is open (the loading screen): it yields between
+## chunks. Without one it runs straight through, as before.
 func setup(p_field: HexField) -> void:
 	field = p_field
 	layout = field.layout
 	_build_ground()
-	_build_mounds()
-	_build_junk()
-	_build_landmarks()
+	BuildBudget.sub(0.05)
+	await BuildBudget.check("fv:ground")
+	await _build_mounds()
+	await _build_junk()
+	await _build_landmarks()
 	_apply_biome()
 	for id: int in field.hex_count():
 		_write_hex(id, -100.0)
 	_flush()
+	if not layout_job.is_empty():
+		_ground_mat.set_shader_parameter("layout_tex", ImageTexture.create_from_image(await layout.bake_collect(layout_job)))
+		layout_job = {}
+	BuildBudget.sub(1.0)
 
 
 func _process(delta: float) -> void:
@@ -126,7 +137,8 @@ func _build_ground() -> void:
 	_ground_mat.set_shader_parameter("hex_size", field.hex_size)
 	var extent: float = (layout.extent * 2.0) if layout else (field.radius + 8) * field.hex_size * 2.4
 	if layout:
-		_ground_mat.set_shader_parameter("layout_tex", ImageTexture.create_from_image(layout.bake_image(extent, 0.25)))
+		if layout_job.is_empty():
+			_ground_mat.set_shader_parameter("layout_tex", ImageTexture.create_from_image(layout.bake_image(extent, 0.25)))
 		_ground_mat.set_shader_parameter("layout_size", extent)
 	_ground_mat.set_shader_parameter("warp_tex", ImageTexture.create_from_image(field.border_warp_image(extent)))
 	_ground_mat.set_shader_parameter("warp_size", extent)
@@ -193,12 +205,19 @@ func _build_junk() -> void:
 	_piece_slot.resize(field.piece_count())
 	_piece_shown.resize(field.piece_count())
 	lod = JunkLod.new(field, Settings.quality)  # [vqa2] near/far junk LOD (planet/junk_lod.gd)
+	var gi: int = 0
 	for key: String in groups:
+		gi += 1
+		BuildBudget.sub(0.1 + 0.75 * float(gi) / groups.size())
+		await BuildBudget.check("fv:junk")
 		var pids: PackedInt32Array = groups[key]
 		var model: String = key.split("|")[1]
 		# Small litter doesn't cast sun shadows (SSAO grounds it); bigger items do.
 		var vol: float = field.piece_vol[pids[0]]
+		await AssetLib.fetch_model(model)  # [leftovers] its file loads on a loader thread
+		await BuildBudget.check("fv:junk model")
 		var near_mesh: Mesh = AssetLib.model_mesh_lite(model, [320, 500, 700, 700][clampi(Settings.quality, 0, 3)])  # [deck] lighter junk on Low/Medium
+		await BuildBudget.check("fv:junk lite")
 		var idx: int = lod.add_group(self, "Junk_" + key.replace("|", "_").replace(",", "_"), model, near_mesh, pids, vol >= 1.2, Settings.quality)
 		_mms.append(lod.near_mm[idx])
 		_mmis.append(lod.near_mmi[idx])
@@ -209,6 +228,8 @@ func _build_junk() -> void:
 			_piece_shown[pid] = 1 if field.piece_alive[pid] == 1 else 0
 			if field.piece_alive[pid] == 1:
 				lod.show_piece(pid, piece_transform(pid))
+			if i & 63 == 63:
+				await BuildBudget.check("fv:junk pieces")
 
 
 ## [biomes2] Frontiers: a weathering overlay (art/shaders/junk_coat.gdshader) on every junk piece.
@@ -247,7 +268,7 @@ static func _mound_mesh() -> ArrayMesh:
 			var b: Vector3 = pts[r][k + 1]
 			var c: Vector3 = pts[r + 1][k + 1]
 			var d: Vector3 = pts[r + 1][k]
-			for v: Vector3 in [a, c, b, a, d, c]:
+			for v: Vector3 in [a, b, c, a, c, d]:  # [world2] clockwise from outside (was inside-out)
 				st.add_vertex(v)
 	st.generate_normals()
 	return st.commit()
@@ -259,6 +280,7 @@ func _build_mounds() -> void:
 	mesh.surface_set_material(0, mat)
 	_mounds.resize(field.hex_count())
 	for id: int in field.hex_count():
+		await BuildBudget.check("fv:mounds")
 		var list: Array = []
 		for pile: Vector4 in field.hex_piles[id]:
 			var mi := MeshInstance3D.new()
@@ -266,6 +288,7 @@ func _build_mounds() -> void:
 			mi.position = Vector3(pile.x, -0.02, pile.y)
 			mi.set_meta("pile", pile)
 			add_child(mi)
+			mi.set_meta("body", MoundColliders.make(self, pile))  # [world2] bales rest on the heap
 			list.append(mi)
 		_mounds[id] = list
 		_update_mounds(id)
@@ -277,6 +300,7 @@ func _update_mounds(id: int) -> void:
 		var pile: Vector4 = mi.get_meta("pile")
 		mi.visible = left > 0.0
 		mi.scale = Vector3(pile.z * 1.1, maxf(pile.w * left * 0.9, 0.001), pile.z * 1.1)
+		MoundColliders.update(mi.get_meta("body", null), mi.scale, mi.visible, 1.0 - field.removed_fraction(id))  # [world2]
 
 
 ## Re-seat remaining pieces of a hex on its (shrinking) mound.
@@ -311,6 +335,11 @@ func _set_shown(pid: int, on: bool) -> void:
 
 func refresh_hex(id: int, flipped_now: bool = false) -> void:
 	_write_hex(id, clock if flipped_now else -1.0)
+	if field.junk_gen >= 2:  # [world2] hub/blocked ground follows the junk hexes that own it
+		for o: Vector2i in Hex.DIRECTIONS:
+			var nb: int = int(field.axial_to_id.get(field.hex_axial[id] + o, -1))
+			if nb >= 0 and field.hex_hub[nb] != 0:
+				_write_hex(nb, clock if flipped_now else -1.0)
 	_update_mounds(id)
 	_resettle(id)
 	_dirty_tex = true
@@ -323,6 +352,10 @@ func _write_hex(id: int, flip_time: float) -> void:
 	var prev: Color = _state_img.get_pixel(x, y)
 	var ft: float = prev.g if flip_time == -1.0 else flip_time
 	var flag: float = 1.0 if field.hex_hub[id] == 1 else (0.5 if field.is_water(id) else 0.0)
+	if field.junk_gen >= 2 and field.hex_hub[id] != 0:  # [world2] only the yard slab is clean ground
+		var nb: Vector2 = FarJunk.owner_state(field, id)
+		_state_img.set_pixel(x, y, Color(nb.x, ft, nb.y, 0.0))
+		return
 	_state_img.set_pixel(x, y, Color(field.removed_fraction(id), ft, float(field.hex_clean[id]), flag))
 
 
@@ -362,8 +395,9 @@ func _set_life_ch(id: int, ch: int, v: float) -> void:
 	_life_dirty = true
 
 
-func set_focus_hex(id: int) -> void:
-	_ground_mat.set_shader_parameter("focus_axial", Vector2(9999, 9999) if id < 0 else Vector2(field.hex_axial[id]))
+func set_focus_hex(_id: int) -> void:
+	# [onboard] The straight amber focus line is replaced by the laser outline (story/objective_hex.gd).
+	_ground_mat.set_shader_parameter("focus_axial", Vector2(9999, 9999))
 
 
 func set_grid_visible(v: float) -> void:
@@ -396,6 +430,9 @@ func _add_prop(model: String, pos: Vector3, yaw: float, collide: bool, scl: floa
 func _build_landmarks() -> void:
 	var coat: Material = _biome_coat()
 	for lm: Dictionary in field.landmarks:
+		await BuildBudget.check("fv:landmarks")
+		await AssetLib.fetch_model(str(lm["model"]))
+		await BuildBudget.check("fv:landmark model")
 		var mi: MeshInstance3D = _add_prop(str(lm["model"]), lm["pos"], float(lm["yaw"]), true)
 		if coat:
 			mi.material_overlay = coat

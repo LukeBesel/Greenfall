@@ -1,0 +1,3 @@
+Ultimate Animated Animal Pack by Quaternius (https://quaternius.com/packs/ultimateanimatedanimals.html)
+License: CC0 1.0 Universal (public domain). Deer.gltf, Stag.gltf, Fox.gltf, unmodified.
+Used by art/models/fauna/build_quaternius.py, which smooths and recolours them into art/models/fauna/*.glb.

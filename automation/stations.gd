@@ -60,6 +60,20 @@ static func of(n: Node) -> Stations:
 	return n.get_tree().get_first_node_in_group("stations") as Stations
 
 
+## [camp] Whether machine `id` ("conveyor", "auto_baler", "recycler") stands at this base, from
+## the saved state (works without the scene: Economy uses it to lock the machine upgrades).
+static func built_in_state(id: String) -> bool:
+	var st: Variant = GameState.world.get("stations")
+	if not (st is Dictionary):
+		return false
+	match id:
+		"conveyor", "recycler":
+			return bool((st as Dictionary).get(id, false))
+		"auto_baler", "baler":
+			return (st as Dictionary).has("baler")
+	return false
+
+
 func state() -> Dictionary:
 	if not GameState.world.has("stations"):
 		GameState.world["stations"] = {}
@@ -130,16 +144,19 @@ func build(id: String) -> bool:
 			_spawn_conveyor()
 			conveyor.build_in()
 			EventBus.toast.emit(tr("Conveyor Feeder online. Drop bales on the yellow pad."), "story")
+			MachineReveal.reveal(world, tr(str(def("conveyor").get("name", "Conveyor Feeder"))), HOPPER_POS, false)  # [camp]
 		"recycler":
 			st["recycler"] = true
 			_spawn_recycler()
 			recycler.build_in()
 			EventBus.toast.emit(tr("Recycler lit. Bales that go in here are gone for good."), "story")
+			MachineReveal.reveal(world, tr(str(def("recycler").get("name", "Recycler"))), RECYCLER_POS, false)  # [camp]
 		"auto_baler":
 			var p: Vector3 = frontier_pos()
 			_spawn_baler(p, true)
 			st["baler"] = baler.to_dict()
 			EventBus.toast.emit(tr("Auto-baler dropped at the cleaning frontier. Cleaners will tip their hoppers into it."), "story")
+			MachineReveal.reveal(world, tr(str(def("auto_baler").get("name", "Auto-baler"))), p, false)  # [camp] it lands out at the frontier: follow the trail
 	Audio.play("buy", 1.0, -2.0)
 	return true
 
@@ -160,6 +177,8 @@ func relocate_baler() -> bool:
 func frontier_pos() -> Vector3:
 	if world == null or world.get("field") == null:
 		return DEMO_BALER_POS
+	if world.get("field") is SphereField:  # [orbD] the globe: the start hub's region only (Stations-local)
+		return _frontier_on_globe()
 	var field: HexField = world.field
 	var c := Vector3.ZERO
 	var wsum: float = 0.0
@@ -220,10 +239,11 @@ func _spawn_baler(pos: Vector3, animate: bool) -> void:
 		baler.name = "AutoBaler"
 		baler.stations = self
 		add_child(baler)
-	if animate:
+	if animate and not (world and world.get("field") is SphereField):
 		baler.drop_at(pos)
 	else:
 		baler.place(pos)
+		_seat_on_globe(baler)  # [orbD]
 
 
 # --- Routing -----------------------------------------------------------------------
@@ -285,7 +305,7 @@ static func dump_step(r: Robot) -> Vector3:
 		return Vector3.ZERO
 	var m: Vector3 = r._steer(b.dump_point(), 0.8)
 	if m == Vector3.ZERO:
-		var from: Vector3 = r.global_position + Vector3(0, 0.8, 0)
+		var from: Vector3 = r.global_position + (s_up(r) * 0.8)  # [orbD] local up
 		b.accept(r.hopper.take_all(), from)
 		r._busy = 1.0
 		r.remove_meta("dump_to")
@@ -300,7 +320,7 @@ static func haul_drop(r: Node3D, depot_pos: Vector3) -> Vector3:
 		return depot_pos
 	if s.world and s.world.get("depot") != null and (s.world.depot as Depot).pad_contains(r.global_position):
 		return depot_pos
-	var hp: Vector3 = s.conveyor.hopper_pos()
+	var hp: Vector3 = s.conveyor._g(s.conveyor.hopper_pos())  # [orbD] world point
 	if r.global_position.distance_squared_to(hp) < r.global_position.distance_squared_to(depot_pos):
 		return hp
 	return depot_pos
@@ -343,7 +363,7 @@ func add_loose(c: JunkCube, pos: Vector3) -> void:
 		world.add_cube(c)
 	else:
 		add_child(c)
-	c.global_position = pos
+	c.global_position = global_transform * pos if is_inside_tree() else pos  # [orbD] pos is Stations-local
 
 
 func persist_save() -> void:
@@ -392,3 +412,59 @@ func _demo_feed() -> void:
 			baler._t = baler._dur * DevHooks.get_f("stations-pose", 0.3)
 			baler._update_visuals(0.0)
 			baler.set_physics_process(false)
+
+
+## [orbD] Local up of whatever stands at node n (a planet's radial up, else +Y).
+static func s_up(n: Node3D) -> Vector3:
+	return n.global_position.normalized() if JunkCube.planet_radius > 0.0 else Vector3.UP
+
+
+## [orbD] frontier_pos on a globe: the clean cell nearest the junk front of the start hub's region,
+## in this node's local frame (164k cells would take seconds to scan).
+func _frontier_on_globe() -> Vector3:
+	var so: Variant = world.get("orbit")
+	var sm: SiteManager = (so as SliceOrbit).globe.site_manager if so is SliceOrbit else null
+	var field: SphereField = world.get("field")
+	if sm == null or sm.regions.is_empty():
+		return DEMO_BALER_POS
+	var reg: PackedInt32Array = sm.regions[0]
+	var c := Vector3.ZERO
+	var wsum: float = 0.0
+	for id: int in reg:
+		if field.hex_hub[id] != 0 or field.is_clean(id) or field.is_water(id):
+			continue
+		var w: float = 1.0 - field.removed_fraction(id)
+		c += to_local(field.hex_center(id)) * w
+		wsum += w
+	if wsum <= 0.0:
+		return DEMO_BALER_POS
+	c /= wsum
+	var best := Vector3.INF
+	var best_d: float = INF
+	for id: int in reg:
+		if field.is_water(id) or not field.is_clean(id) or field.hex_hub[id] == 2:
+			continue
+		var lp: Vector3 = to_local(field.hex_center(id))
+		if Vector2(lp.x, lp.z).length() < 14.0:
+			continue  # keep the base yard free
+		var d: float = lp.distance_squared_to(c)
+		if d < best_d:
+			best_d = d
+			best = lp
+	if best == Vector3.INF:
+		var dir: Vector3 = Vector3(c.x, 0, c.z).normalized()
+		return dir * 16.0 if dir != Vector3.ZERO else DEMO_BALER_POS
+	return Vector3(best.x, 0.0, best.z)
+
+
+## [orbD] On a globe a machine placed far out in this node's tangent plane floats or sinks (the
+## planet curves away): put it on the real ground under it, upright on the local up, same heading.
+func _seat_on_globe(n: Node3D) -> void:
+	var so: Variant = world.get("orbit") if world else null
+	if not (so is SliceOrbit) or not n.is_inside_tree():
+		return
+	var terrain: SphereTerrain = (so as SliceOrbit).globe.terrain
+	var up: Vector3 = n.global_position.normalized()
+	var fwd: Vector3 = n.global_basis.z
+	fwd = (fwd - up * fwd.dot(up)).normalized()
+	n.global_transform = Transform3D(Basis(up.cross(fwd), up, fwd).orthonormalized(), terrain.ground(up))

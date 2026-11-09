@@ -1,0 +1,18 @@
+{
+  "_doc": "[ui2] Workbench tabs appear only once they are open (the owner: don't show what you can't use yet). A tab opens when ANY of its conditions holds, and stays open for good (flags.bench_tabs). Conditions: [\"earned\", N] lifetime cubes earned; [\"stat\", key, N] GameState.stats[key] >= N; [\"hub_level\", N]; [\"flag\", key]; [\"always\"]; [\"builds\"] something to build or built (HubBuilds, [ui3]). rockets is not a tab any more: it sets when the Upgrades tab shows its Rocket section. Other systems can add a gate in code: UpgradesScreen.set_tab_gate(id, func() -> bool, hint), which wins over this table. [v1guide] [\"bench_tier\", N] the workbench's tier; [\"tower\", N] the signal tower's tier. Owner 2026-11-08: tabs past Upgrades and Build open only by upgrading the workbench (tiers, ui/bench_tiers.gd): each tier lists the tabs it opens, its cost and what it waits for (requires: conditions, all must hold). grants_research: research the tier brings with it (the Bot Bay comes with Salvage Logic, so its first robot can be built before the Research tab opens). upgrade_order: the fixed order of the Upgrades tab's Lumi and machine rows (owner: rows never move by price); ids not listed follow in data/upgrades.json order.",
+  "tabs": {
+    "patch": [["always"]],
+    "bots": [["bench_tier", 2]],
+    "research": [["bench_tier", 3]],
+    "build": [["builds"]],
+    "contracts": [["bench_tier", 4]],
+    "rockets": [["hub_level", 4]]
+  },
+  "tiers": [
+    {"name": "Workbench", "desc": "The repaired bench: upgrades for Lumi and things to build.", "tabs": ["patch", "build"]},
+    {"name": "Workbench Mk II: Bot Bay", "desc": "Adds a bot bay. Build helpers that keep cleaning while you work.", "tabs": ["bots"], "cost": {"cubes": 1200, "parts": 40}, "requires": [["tower", 1], ["stat", "hexes_cleaned", 3]], "grants_research": ["salvage_logic"]},
+    {"name": "Workbench Mk III: Research Desk", "desc": "Adds a research desk. Study what you dig up to unlock machines and seeds.", "tabs": ["research"], "cost": {"cubes": 2500, "parts": 60}, "requires": [["hub_level", 2]]},
+    {"name": "Workbench Mk IV: Request Board", "desc": "Adds a request board. Take on jobs for tokens and rare parts.", "tabs": ["contracts"], "cost": {"cubes": 8000, "parts": 150}, "requires": [["hub_level", 3]]}
+  ],
+  "upgrade_order": ["compartment_size", "multi_lock", "baler", "scoop_speed", "lift_strength", "scoop_width", "tread_speed", "carry_stack", "compactor_pressure", "laser_reach", "detector_range", "signal_finder", "hover_jets", "magnet_arm", "auto_compactor", "belt_speed", "baler_speed", "recycler_yield"]
+}

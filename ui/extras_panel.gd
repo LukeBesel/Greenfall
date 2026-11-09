@@ -6,7 +6,7 @@ extends CanvasLayer
 ## before/after slider, B (or Esc) closes.
 
 const TABS: Array[String] = ["radio", "album", "nursery", "weekly"]
-const TAB_NAMES: Dictionary = {"radio": "Radio", "album": "Album", "nursery": "Nursery", "weekly": "Seed of the Week"}  # l10n
+const TAB_NAMES: Dictionary = {"radio": "CD Player", "album": "Album", "nursery": "Nursery", "weekly": "Seed of the Week"}  # l10n
 const VIEW_SIZE := Vector2(560, 315)
 
 var world: Node
@@ -23,6 +23,27 @@ var _view: BeforeAfterView
 var _slider: HSlider
 var _tex_cache: Dictionary = {}
 var _confirm: String = ""
+
+
+## [qafix] QA #22: a tab shows only once its thing exists (owner: "the radio is built later at
+## the hub", "there is no nursery at the start"). The Seed of the Week is always there.
+static func tab_open(t: String) -> bool:
+	match t:
+		"radio":
+			return YardBuilds.built("radio")
+		"album":
+			return CameraBot.available() or not PhotoAlbum.districts().is_empty()
+		"nursery":
+			return YardBuilds.built("nursery") or Nursery.count() > 0
+	return true
+
+
+static func open_tabs() -> Array[String]:
+	var out: Array[String] = []
+	for t: String in TABS:
+		if tab_open(t):
+			out.append(t)
+	return out
 
 
 static func open_for(slice: Node, p_tab: String = "radio") -> void:
@@ -79,6 +100,11 @@ func _ready() -> void:
 func open_panel(p_tab: String = "") -> void:
 	if p_tab in TABS:
 		tab = p_tab
+	var tabs: Array[String] = open_tabs()  # [qafix]
+	if not (tab in tabs):
+		tab = tabs[0]
+	for k: String in _tab_btns:
+		(_tab_btns[k] as Button).visible = k in tabs
 	if not is_open:
 		is_open = true
 		_root.visible = true
@@ -184,34 +210,11 @@ func _tex(path: String) -> Texture2D:
 # --- Radio -------------------------------------------------------------------------------
 
 func _build_radio() -> void:
-	var left: VBoxContainer = _col(420, tr("SONGS  ·  %d / %d") % [Radio.unlocked_count(), Radio.songs().size()])
-	var cur: String = Radio.playing()
-	for s: Dictionary in Radio.songs():
-		var id: String = str(s["id"])
-		var ok: bool = Radio.is_unlocked(id)
-		var txt: String = ("%s%s\n%s" % ["▶  " if id == cur else "", tr(Radio.title(id)), tr(str(s.get("desc", "")))]) if ok \
-			else ("? ? ?\n%s" % (tr("Unlocks: %s") % tr(str(s.get("hint", "")))))
-		var b: Button = _btn(left, txt, func() -> void:
-			if Radio.play(id):
-				EventBus.toast.emit(tr("Now playing: %s") % tr(Radio.title(id)), "info")
-			_rebuild(), 56)
-		b.add_theme_color_override("font_color", UITheme.GOLD if id == cur else (UITheme.CREAM if ok else UITheme.MUTED))
-		if id == cur:
-			_first = b
-	var right: VBoxContainer = _col(0, tr("NOW PLAYING"))
-	if cur != "":
-		right.add_child(UITheme.label(tr(Radio.title(cur)), 26, Color.WHITE))
-		right.add_child(_wrap(tr(str(Radio.song(cur).get("desc", ""))), 15, UITheme.MUTED))
-		right.add_child(_wrap(tr("Your pick loops everywhere until you switch back to the mood music. A restored planet plays its restored version."), 13, UITheme.MUTED))
-		var back: Button = _btn(right, tr("Back to mood music"), func() -> void:
-			Radio.play("")
-			EventBus.toast.emit(tr("The radio hands the music back to the day."), "info")
-			_rebuild())
-		UITheme.orange_button(back)
-	else:
-		right.add_child(UITheme.label(tr("Mood music"), 26, Color.WHITE))
-		right.add_child(_wrap(tr("The music follows the day: the yard, the streets, the night. Pick a song to play it instead."), 15, UITheme.MUTED))
-	right.add_child(_wrap(tr("New songs come in as districts and planets are restored."), 13, UITheme.GREEN))
+	# [tunes] The CD player: Shuffle (all your CDs), or pick one to play on repeat. Locked CDs show
+	# where they are found. ui/extras_cd_list.gd builds the rows.
+	ExtrasCdList.build(self, _body, func(b: Button) -> void:
+		if _first == null:
+			_first = b, _rebuild)
 
 
 # --- Album -------------------------------------------------------------------------------
@@ -323,7 +326,7 @@ func _build_nursery() -> void:
 	left.add_child(_wrap(tr("Garden bonus: plants grow %d%% faster (up to %d%%).") % [int(round(Nursery.garden_bonus() * 100.0)), int(round(Nursery.BONUS_CAP * 100.0))], 14, UITheme.GREEN))
 	var recs: Array = Nursery.list()
 	if recs.is_empty():
-		left.add_child(_wrap(tr("No one has retired yet. Old or Mk I-II robots can retire here or in the workbench Builder; they'll look after the nursery garden at the base."), 14, UITheme.MUTED))
+		left.add_child(_wrap(tr("No one has retired yet. Old or Mk I-II robots can retire here; they'll look after the nursery garden at the base."), 14, UITheme.MUTED))
 	for i: int in range(recs.size() - 1, -1, -1):
 		var r: Dictionary = recs[i]
 		var tdef: Dictionary = RobotBuilder.trait_def(str(r.get("trait", "")))
@@ -413,8 +416,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		close_panel()
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("ui_tab_next") or event.is_action_pressed("ui_tab_prev"):
-		var i: int = TABS.find(tab)
-		_set_tab(TABS[(i + (1 if event.is_action_pressed("ui_tab_next") else TABS.size() - 1)) % TABS.size()])
+		var tabs: Array[String] = open_tabs()  # [qafix] only the tabs that are there
+		var i: int = maxi(tabs.find(tab), 0)
+		_set_tab(tabs[(i + (1 if event.is_action_pressed("ui_tab_next") else tabs.size() - 1)) % tabs.size()])
 		get_viewport().set_input_as_handled()
 
 

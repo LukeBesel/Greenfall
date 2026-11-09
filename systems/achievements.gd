@@ -123,6 +123,7 @@ func _ready() -> void:
 	EventBus.research_completed.connect(func(_id: String) -> void: _t = 1.0)
 	EventBus.hex_cleaned.connect(func(_h: int, _p: Vector3, _b: BigNum) -> void: _t = maxf(_t, 0.7))
 	Designs.dev_hooks(world)  # [skins] --design / --designs-all / --design-unlock
+	LumiStyle.dev_hooks(world)  # [style] --lumi-random / --lumi-set / --lumi-builder
 
 
 func _process(delta: float) -> void:
@@ -145,8 +146,10 @@ func _process(delta: float) -> void:
 		var a: Dictionary = def(id)
 		EventBus.toast.emit(tr("Achievement: %s. %s") % [tr(str(a.get("name", id))), tr(str(a.get("desc", "")))], "story")
 		Audio.play("chime", 1.0, -2.0)
+	if SignalTower.tier() == 0 and not DevHooks.has("codex-toasts"):
+		found.clear()  # [v3clear] owner item 41: no Codex chatter in the first minutes (the entries are still logged)
 	if found.size() > 2:
 		EventBus.toast.emit(tr("Codex: %d new entries.") % found.size(), "info")
 	else:
 		for k: String in found:
-			EventBus.toast.emit(tr("Codex entry: %s") % tr(str(Codex.entry(k).get("name", k))), "info")
+			EventBus.toast.emit(tr("Codex entry: %s") % tr(str(Codex.entry(k).get("name", k))), "reward")  # [v4calm] cut

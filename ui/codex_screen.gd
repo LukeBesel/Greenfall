@@ -16,6 +16,7 @@ const TABS: Array[Dictionary] = [
 	{"id": "stats", "name": "Stats"},
 	{"id": "curiosities", "name": "Curiosities"},
 	{"id": "collection", "name": "Collection"},
+	{"id": "artists", "name": "Artists"},  # [tunes]
 ]
 # l10n:end
 const COLLECT_COLOR := Color(0.55, 0.95, 0.85)
@@ -107,7 +108,7 @@ func _ready() -> void:
 	for t: Dictionary in TABS:
 		var b := Button.new()
 		b.text = tr(str(t["name"]))
-		b.custom_minimum_size = Vector2(124, 42)  # [vqa] was 150: five tabs + the prompt overflowed the Deck at 110%
+		b.custom_minimum_size = Vector2(100, 42)  # [vqa] was 150: five tabs + the prompt overflowed the Deck at 110%; [ui4] 100: six tabs at 125%
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		b.clip_text = true
 		b.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -115,7 +116,7 @@ func _ready() -> void:
 		b.pressed.connect(_set_tab.bind(str(t["id"])))
 		tabs.add_child(b)
 		_tab_buttons[str(t["id"])] = b
-	tabs.add_child(PromptLabel.new(tr("   {ui_tab_prev}{ui_tab_next}  switch tabs"), 13))  # [deck]
+	tabs.add_child(PromptLabel.new("  {ui_tab_prev}{ui_tab_next}", 13))  # [deck] [ui4] glyphs only (fits 125%)
 	_body = MarginContainer.new()
 	_body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	vb.add_child(_body)
@@ -198,8 +199,18 @@ func _build_tab() -> void:
 		var on: bool = id == _tab
 		b.add_theme_stylebox_override("normal", UITheme.box(Color(0.2, 0.15, 0.07, 0.9) if on else UITheme.TEAL, UITheme.GOLD if on else UITheme.RUST, 1, 6, 8))
 		b.add_theme_color_override("font_color", UITheme.GOLD if on else UITheme.CREAM)
-	_summary.text = tr("%d / %d entries   ·   %d / %d curiosities   ·   %d / %d collectibles   ·   %d / %d achievements") % [Codex.count(), Codex.total(),
-		Codex.curiosities_found(), Codex.egg_defs().size(), Collection.count(), Collection.total(), Achievements.unlocked_count(), Achievements.defs().size()]
+	# [ui5] One counter, for the tab you're on (four on one line wrapped and restated the tabs).
+	match _tab:
+		"curiosities":
+			_summary.text = tr("%d / %d curiosities") % [Codex.curiosities_found(), Codex.egg_defs().size()]
+		"collection":
+			_summary.text = tr("%d / %d collectibles") % [Collection.count(), Collection.total()]
+		"achievements":
+			_summary.text = tr("%d / %d achievements") % [Achievements.unlocked_count(), Achievements.defs().size()]
+		"codex":
+			_summary.text = tr("%d / %d entries") % [Codex.count(), Codex.total()]
+		_:
+			_summary.text = ""
 	var first: Control = null
 	match _tab:
 		"codex":
@@ -212,6 +223,8 @@ func _build_tab() -> void:
 			first = _build_curiosities()
 		"collection":
 			first = _build_collection()
+		"artists":
+			first = CodexArtists.build(_body)  # [tunes]
 	if first:
 		first.call_deferred("grab_focus")
 
@@ -483,7 +496,7 @@ func _build_collection() -> Control:
 	bar.custom_minimum_size = Vector2(160, 6)
 	bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	head.add_child(bar)
-	var first: Control = null
+	var first: Control = _build_museum_list(list)  # [eggs2] Lumi's collection (every collectible, all planets)
 	var pick: Dictionary = {}
 	for src: String in Collection.sources():
 		var items: Array = Collection.defs().filter(func(t: Dictionary) -> bool: return str(t.get("source", "")) == src)
@@ -539,11 +552,84 @@ func _build_collection() -> Control:
 	_c_reward.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_c_reward.custom_minimum_size = Vector2(280, 0)
 	dv.add_child(_c_reward)
-	if pick.is_empty() and not Collection.defs().is_empty():
-		pick = Collection.defs()[0]
-	if not pick.is_empty():
-		_show_trinket(pick)
+	if not Museum.exhibits().is_empty():  # [eggs2]
+		_show_exhibit(Museum.exhibits()[0])
+	else:
+		if pick.is_empty() and not Collection.defs().is_empty():
+			pick = Collection.defs()[0]
+		if not pick.is_empty():
+			_show_trinket(pick)
 	return first
+
+
+# [eggs2] Lumi's collection: every collectible in the game (data/museum.json) with counts and a
+# silhouette while missing; the same list fills the Museum's plinths.
+func _build_museum_list(list: VBoxContainer) -> Control:
+	var xs: Array = Museum.exhibits()
+	if xs.is_empty():
+		return null
+	var head := HBoxContainer.new()
+	head.add_theme_constant_override("separation", 8)
+	list.add_child(head)
+	head.add_child(UITheme.label(tr("LUMI'S COLLECTION"), 15, COLLECT_COLOR))
+	head.add_child(UITheme.label(tr("%d / %d complete") % [Museum.filled(), xs.size()], 13, UITheme.MUTED))
+	var flow := HFlowContainer.new()
+	flow.add_theme_constant_override("h_separation", 8)
+	flow.add_theme_constant_override("v_separation", 8)
+	list.add_child(flow)
+	var first: Control = null
+	for x: Dictionary in xs:
+		var p: Vector2i = Museum.progress(x)
+		var got: bool = p.x > 0
+		var b := Button.new()
+		b.custom_minimum_size = Vector2(236, 48)
+		b.clip_text = true
+		var col: Color = Color.html(str(x.get("color", ""))) if str(x.get("color", "")) != "" else COLLECT_COLOR
+		b.add_theme_stylebox_override("normal", UITheme.box(Color(col.r * 0.15 + 0.05, col.g * 0.15 + 0.05, col.b * 0.15 + 0.05, 0.9) if got else Color(0.05, 0.055, 0.06, 0.85), Color(col, 0.45) if got else Color(1, 1, 1, 0.06), 1, 8, 8))
+		b.add_theme_stylebox_override("hover", UITheme.box(Color(0.12, 0.12, 0.12, 0.95), UITheme.GOLD, 1, 8, 8))
+		b.add_theme_stylebox_override("focus", UITheme.box(Color(0, 0, 0, 0), UITheme.GOLD, 2, 8, 8))
+		var hb := HBoxContainer.new()
+		hb.set_anchors_preset(Control.PRESET_FULL_RECT)
+		hb.offset_left = 8
+		hb.add_theme_constant_override("separation", 8)
+		hb.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		b.add_child(hb)
+		hb.add_child(CollectIcon.new(str(x.get("shape", "dot")), got, col, 34.0))
+		var name_: String = tr(str(x["name"])) if got else "? ? ?"
+		var cnt: String = ("  %d / %d" % [p.x, p.y]) if p.y > 1 else ("  ✓" if got else "")
+		var l: Label = UITheme.label(name_ + cnt, 14, UITheme.CREAM if got else Color(UITheme.MUTED, 0.8))
+		l.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		l.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		hb.add_child(l)
+		UITheme.juice(b, 1.04)
+		b.focus_entered.connect(_show_exhibit.bind(x))
+		b.mouse_entered.connect(_show_exhibit.bind(x))
+		b.pressed.connect(func() -> void:
+			_show_exhibit(x)
+			Audio.play("click", 1.3, -10.0))
+		flow.add_child(b)
+		if first == null:
+			first = b
+	list.add_child(UITheme.label(tr("TRINKETS AND CURIOS"), 13, UITheme.MUTED))
+	return first
+
+
+func _show_exhibit(x: Dictionary) -> void:  # [eggs2]
+	if _c_icon == null:
+		return
+	var p: Vector2i = Museum.progress(x)
+	var got: bool = p.x > 0
+	_c_icon.text = "◆" if p.x >= p.y else ("◇" if got else "?")
+	_c_icon.add_theme_color_override("font_color", COLLECT_COLOR if got else Color(UITheme.MUTED, 0.6))
+	var planet: String = str(x.get("planet", ""))
+	_c_where.text = (tr("EVERY PLANET") if planet == "all" else tr(planet.capitalize()).to_upper()) + ("   ·   %d / %d" % [p.x, p.y] if p.y > 1 else "")
+	_c_name.text = tr(str(x["name"])) if got else tr("Not found yet")
+	if p.x >= p.y:
+		_c_text.text = tr("In Lumi's collection. It has a plinth in the Museum.")
+	else:
+		_c_text.text = tr("Hint: %s") % tr(Museum.hint(x)) if Museum.hint(x) != "" else ""
+	_c_text.add_theme_color_override("font_color", UITheme.CREAM if got else UITheme.MUTED)
+	_c_reward.text = tr("The Museum: built") if Museum.built() else tr("The Museum is built at Cradle Returns, near the end of the journey.")
 
 
 func _show_trinket(t: Dictionary) -> void:

@@ -25,6 +25,8 @@ const LINES: Array[Array] = [
 ## Where the ark parks, relative to the district spawn.
 const PARK := Vector3(-6.0, 62.0, -70.0)
 
+var _yaw0: float = 0.6  # [orbE] the orbit's start yaw
+var _framing_logged: bool = false  # [orbE]
 var world: Node
 var _bars: Array[ColorRect] = []
 var _letterbox: CanvasLayer
@@ -42,16 +44,69 @@ func _total_time() -> float:
 	return t
 
 
+## [orbE] The orbit's start yaw with the clearest view of Lumi along the whole move (globe sites
+## stand close around the pad on some planets); 0.6, the flat game's, when that is clear.
+func _best_yaw(c: Vector3) -> float:
+	var best: float = 0.6
+	var best_n: int = -1
+	for off: float in [0.0, 0.5, -0.5, 1.0, -1.0, 1.6, -1.6, 2.3, -2.3, 3.0]:
+		var n: int = 0
+		for i: int in 9:
+			var k: float = i / 8.0
+			var yaw: float = 0.6 + off + k * 1.6
+			var want: Vector3 = c + _fb * (Vector3(sin(yaw), 0, cos(yaw)) * lerpf(5.5, 7.5, k) + Vector3(0, lerpf(0.8, 1.8, k), 0))
+			if _clear_of_sites(c + _fb.y * 0.9, want).is_equal_approx(want):
+				n += 1
+		if n > best_n:
+			best_n = n
+			best = 0.6 + off
+		if n == 9:
+			break
+	return best
+
+
+## [orbE] Spring arm: the camera pulled in to just before the first site collider between Lumi
+## and where it wants to be (the player is not an obstacle).
+func _clear_of_sites(from: Vector3, want: Vector3) -> Vector3:
+	# The ray starts 0.6 m out: geometry right against Lumi (a canopy post, a deck edge at the spawn)
+	# isn't between her and the camera. Cast both ways: trimesh colliders only hit their front faces.
+	var start: Vector3 = from + (want - from).normalized() * 0.6
+	var space: PhysicsDirectSpaceState3D = _cam.get_world_3d().direct_space_state
+	var ex: Array[RID] = []
+	var patch_n: Node = world.get("patch") as Node
+	if patch_n is CollisionObject3D:
+		ex.append((patch_n as CollisionObject3D).get_rid())
+	var near_d: float = INF
+	for pair: Array in [[start, want], [want, start]]:
+		var q := PhysicsRayQueryParameters3D.create(pair[0], pair[1])
+		q.exclude = ex
+		var hit: Dictionary = space.intersect_ray(q)
+		if not hit.is_empty():
+			near_d = minf(near_d, from.distance_to(hit["position"] as Vector3))
+	if near_d == INF:
+		return want
+	return from + (want - from).normalized() * maxf(2.0, near_d - 0.35)
+
+
 ## The parked ark (also used by CoreCharge on later loads).
 static func park_ark(parent: Node, center: Vector3) -> CradleShip:
 	var ark := CradleShip.new()
 	ark.name = "CradleParked"
-	ark.scale = Vector3.ONE * 1.6
 	parent.add_child(ark)
-	ark.global_position = center + PARK
-	ark.rotation.y = 0.4
+	var fb: Basis = frame_at(parent, center)  # [orbD] the local surface frame (identity on the flat game)
+	ark.global_transform = Transform3D(fb * Basis(Vector3.UP, 0.4) * Basis().scaled(Vector3.ONE * 1.6), center + fb * PARK)
 	ark.thrust = 0.3
 	return ark
+
+
+## [orbD] The ground frame at a point: on a walkable globe y is the local up (WorldUp), else the
+## identity, so the finale stages around Lumi the same way on a round planet.
+static func frame_at(w: Node, p: Vector3) -> Basis:
+	var up: Vector3 = WorldUp.at(w, p)
+	return Basis() if up.is_equal_approx(Vector3.UP) else SphereGrid.frame(up)
+
+
+var _fb := Basis()  # [orbD]
 
 
 func play() -> void:
@@ -71,14 +126,17 @@ func play() -> void:
 		_bars.append(r)
 	if world.get("music") != null:
 		world.music.set_cinematic(true)
-	world.hud.visible = false
-	world.cam.input_enabled = false
+	if world.get("hud"):  # [orbD] the globe slice may run without these
+		world.hud.visible = false
+	if world.get("cam"):
+		world.cam.input_enabled = false
 	if world.patch.input is PlayerInput:
 		(world.patch.input as PlayerInput).enabled = false
 	_set_bars(90.0)
 	Audio.play("fanfare", 0.7, -8.0)
 	var patch: Node3D = world.patch
 	var c: Vector3 = patch.global_position
+	_fb = frame_at(world, c)  # [orbD]
 	var model: PatchModel = patch.get("model") as PatchModel
 	# The ark: from high in the sky down to its parking spot over the district.
 	var old: Node = world.get_node_or_null("CradleParked")
@@ -86,7 +144,7 @@ func play() -> void:
 		old.free()
 	_ark = park_ark(world, c)
 	var park: Vector3 = _ark.global_position
-	_ark.global_position = park + Vector3(-160, 220, -260)
+	_ark.global_position = park + _fb * Vector3(-160, 220, -260)
 	_ark.thrust = 1.6
 	var desc := _ark.create_tween()
 	desc.tween_interval(3.0)
@@ -105,6 +163,10 @@ func play() -> void:
 	var next_line: float = 0.0
 	var t: float = 0.0
 	var waved: bool = false
+	if _fb != Basis():  # [orbE] the clearest orbit around Lumi on a globe site (colliders in place first)
+		for i: int in 2:
+			await get_tree().physics_frame
+		_yaw0 = _best_yaw(c)
 	while t < total:
 		if get_tree().paused:  # [beat] the pause menu holds the scene
 			await get_tree().process_frame
@@ -112,7 +174,8 @@ func play() -> void:
 		t += get_process_delta_time()
 		if t >= next_line and line_i < LINES.size():
 			var l: Array = LINES[line_i]
-			world.wren.line_started.emit(tr(str(l[0])).format({"name": name_s}), 2)
+			if world.get("wren"):  # [orbD]
+				world.wren.line_started.emit(tr(str(l[0])).format({"name": name_s}), 2)
 			if line_i == 2 or line_i == 6 or line_i == 7:
 				_seed_rain(8 if line_i != 6 else 14)
 			if line_i == 4:
@@ -120,11 +183,25 @@ func play() -> void:
 			next_line += float(l[1])
 			line_i += 1
 		var k: float = t / total
-		var yaw: float = 0.6 + k * 1.6
-		var cam_pos: Vector3 = c + Vector3(sin(yaw), 0, cos(yaw)) * lerpf(5.5, 7.5, k) + Vector3(0, lerpf(0.8, 1.8, k), 0)
-		var look: Vector3 = (c + Vector3(0, 1.0, 0)).lerp(_ark.global_position, clampf(0.62 - absf(k - 0.45) * 0.6, 0.25, 0.62))
+		var yaw: float = _yaw0 + k * 1.6  # [orbE] _yaw0: 0.6 on the flat game
+		var cam_pos: Vector3 = c + _fb * (Vector3(sin(yaw), 0, cos(yaw)) * lerpf(5.5, 7.5, k) + Vector3(0, lerpf(0.8, 1.8, k), 0))
+		var look: Vector3 = (c + _fb.y * 1.0).lerp(_ark.global_position, clampf(0.62 - absf(k - 0.45) * 0.6, 0.25, 0.62))
+		if _fb != Basis():  # [orbE] globe sites (Ochre, Rime) stand around Lumi: keep the camera in front of them
+			cam_pos = _clear_of_sites(c + _fb.y * 0.9, cam_pos)
 		_cam.global_position = cam_pos
-		_cam.look_at(look, Vector3.UP)
+		_cam.look_at(look, _fb.y)
+		if DevHooks.has("bloom-finale") and not _framing_logged and k >= 0.5:  # [orbE] headless framing check
+			_framing_logged = true
+			var up: Vector3 = _fb.y
+			var to_ark: Vector3 = (_ark.global_position - cam_pos).normalized()
+			var q := PhysicsRayQueryParameters3D.create(cam_pos, c + up * 0.9 + (cam_pos - c - up * 0.9).normalized() * 0.6)
+			var patch_n: Node = world.get("patch") as Node
+			if patch_n is CollisionObject3D:
+				q.exclude = [(patch_n as CollisionObject3D).get_rid()]
+			var hit: Dictionary = _cam.get_world_3d().direct_space_state.intersect_ray(q)
+			print("[finale] framing: cam %.2f m above the stage, roll %.3f, ark %.0f deg above the horizon, Lumi %.1f m from the camera, view to Lumi %s" % [
+				(cam_pos - c).dot(up), _cam.global_basis.x.dot(up), rad_to_deg(asin(clampf(to_ark.dot(up), -1.0, 1.0))), cam_pos.distance_to(c),
+				"clear" if hit.is_empty() else "BLOCKED by %s" % str((hit["collider"] as Node).name if hit["collider"] is Node else "?")])
 		if model:
 			model.look_toward(_ark.global_position)
 			# Lumi waves up at the ark when it says welcome home.
@@ -169,8 +246,10 @@ func _restore() -> void:
 	if _cam and is_instance_valid(_cam):
 		_cam.queue_free()
 	_cam = null
-	world.hud.visible = true
-	world.cam.input_enabled = true
+	if world.get("hud"):  # [orbD]
+		world.hud.visible = true
+	if world.get("cam"):
+		world.cam.input_enabled = true
 	if world.patch.input is PlayerInput:
 		(world.patch.input as PlayerInput).enabled = true
 	if world.get("music") != null:
@@ -191,7 +270,7 @@ func _set_bars(h: float) -> void:
 ## A soft cyan beam from the ark's belly down to Lumi.
 func _open_beam(c: Vector3) -> void:
 	var top: Vector3 = _ark.pod_world(2)
-	var h: float = maxf(top.y - c.y, 1.0)
+	var h: float = maxf((top - c).dot(_fb.y), 1.0)  # [orbD] along the local up
 	_beam = MeshInstance3D.new()
 	var cm := CylinderMesh.new()
 	cm.top_radius = 1.2
@@ -232,20 +311,20 @@ func _seed_rain(count: int) -> void:
 	mat.emission_enabled = true
 	mat.emission = Color(0.7, 1.0, 0.55)
 	mat.emission_energy_multiplier = 3.0
-	var from: Vector3 = _ark.global_position if _ark else c + Vector3(0, 50, 0)
+	var from: Vector3 = _ark.global_position if _ark else c + _fb.y * 50.0
 	for k: int in count:
 		var pod := MeshInstance3D.new()
 		pod.mesh = ProcMesh.sphere(0.18, 10, 5)
 		pod.material_override = mat
 		add_child(pod)
 		var a: float = randf() * TAU
-		var land: Vector3 = c + Vector3(cos(a), 0, sin(a)) * randf_range(3.0, 14.0)
-		pod.global_position = from + Vector3(randf_range(-8, 8), randf_range(-4.0, 0.0), randf_range(-8, 8))
+		var land: Vector3 = c + _fb * Vector3(cos(a), 0, sin(a)) * randf_range(3.0, 14.0)
+		pod.global_position = from + _fb * Vector3(randf_range(-8, 8), randf_range(-4.0, 0.0), randf_range(-8, 8))
 		var tw := pod.create_tween()
 		tw.tween_interval(randf_range(0.0, 2.5))
-		tw.tween_property(pod, "global_position", land + Vector3(0, 0.3, 0), randf_range(3.2, 4.4)).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+		tw.tween_property(pod, "global_position", land + _fb.y * 0.3, randf_range(3.2, 4.4)).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 		tw.tween_callback(func() -> void:
-			Vfx.burst("big_sparkle", land + Vector3(0, 0.4, 0), Color(0.75, 1.0, 0.6), 0.6)
-			Vfx.burst("confetti", land + Vector3(0, 0.6, 0), Color(1.0, 0.8, 0.9), 0.4)
+			Vfx.burst("big_sparkle", land + _fb.y * 0.4, Color(0.75, 1.0, 0.6), 0.6)
+			Vfx.burst("confetti", land + _fb.y * 0.6, Color(1.0, 0.8, 0.9), 0.4)
 			Audio.play("chime", randf_range(1.1, 1.6), -12.0)
 			pod.queue_free())

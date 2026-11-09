@@ -233,7 +233,7 @@ func float_text(pos: Vector3, text: String, color: Color = Color.WHITE, size: fl
 	l.set_meta("tween", tw)
 	tw.set_parallel(true)
 	tw.tween_property(l, "modulate:a", color.a, 0.12)
-	tw.tween_property(l, "global_position", pos + Vector3(0, rise, 0), 1.6).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tw.tween_property(l, "global_position", pos + OrbitUp.up(pos) * rise, 1.6)  # [v1guide] rises along the local up on the globe.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tw.tween_property(l, "modulate:a", 0.0, 0.5).set_delay(1.1)
 	tw.tween_property(l, "outline_modulate:a", 0.0, 0.5).set_delay(1.1)
 	tw.chain().tween_callback(func() -> void: l.visible = false)
@@ -277,6 +277,9 @@ func ring(pos: Vector3, radius: float, color: Color, duration: float = 0.6) -> v
 	mi.mesh = t
 	_root.add_child(mi)
 	mi.global_position = pos + Vector3(0, 0.05, 0)
+	if JunkCube.planet_radius > 0.0:  # [orbB] round planet: lie flat on the local ground
+		mi.quaternion = Quaternion(SphereGrid.frame(pos.normalized()))
+		mi.global_position = pos + pos.normalized() * 0.05
 	mi.scale = Vector3(0.2, 0.05, 0.2)
 	var tw: Tween = create_tween().set_parallel(true)
 	tw.tween_property(mi, "scale", Vector3(radius, 0.05, radius), duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)

@@ -27,20 +27,41 @@ var _stipend_acc: float = 0.0
 var celebrate: bool = true
 
 
+## [orbB] Sparse (the globe): only cells that were cleaned are tracked (a 164k-cell globe would
+## be sampled every second otherwise); untracked land cells read level 0. Saved in GameState.orbit.
+var sparse: bool = false
+
+
 func setup() -> void:
 	cfg = Economy.read_json("res://data/hex_levels.json")
 	_window = maxi(1, int(round(float(cfg.get("sustain_window_s", 180)) / float(cfg.get("sample_s", 1.0)))))
 	var field: HexField = world.field
-	for id: int in field.hex_count():
-		if field.hex_hub[id] == 0 and not field.is_water(id):
-			levels[id] = 0
+	if sparse:  # [orbB]
+		EventBus.hex_cleaned.connect(_on_cleaned_sparse)
+	else:
+		for id: int in field.hex_count():
+			if field.hex_hub[id] == 0 and not field.is_water(id):
+				levels[id] = 0
 	_load()
 	_recalc_bonus()
 	add_to_group("persist")
 
 
 func level_of(hid: int) -> int:
+	if sparse and not levels.has(hid):  # [orbB]
+		var f: HexField = world.field
+		return 0 if hid >= 0 and hid < f.hex_count() and f.hex_hub[hid] == 0 and not f.is_water(hid) else -1
 	return int(levels.get(hid, -1))
+
+
+func _on_cleaned_sparse(hid: int, _c: Vector3, _b: BigNum) -> void:
+	track(hid)
+
+
+## [orbB] Sparse mode: start tracking a cell (once it is clean).
+func track(hid: int) -> void:
+	if is_instance_valid(world) and not levels.has(hid) and world.field.hex_hub[hid] == 0 and not world.field.is_water(hid):
+		levels[hid] = 0
 
 
 func level_def(l: int) -> Dictionary:
@@ -248,16 +269,17 @@ func _celebrate(hid: int, to: int, reward: Dictionary) -> void:
 	var c: Vector3 = world.field.hex_center(hid)
 	var col: Color = LEVEL_COLORS[clampi(to, 0, MAX_LEVEL)]
 	var nm: String = level_name(to)
-	Vfx.burst("big_sparkle" if to >= 4 else "sparkle", c + Vector3(0, 0.5, 0), col, 1.0 if to >= 4 else 2.0)
+	var up: Vector3 = world.field.call("up_at", c) if world.field.has_method("up_at") else Vector3.UP  # [orbB] radial on the globe
+	Vfx.burst("big_sparkle" if to >= 4 else "sparkle", c + up * 0.5, col, 1.0 if to >= 4 else 2.0)
 	Vfx.ring(c, world.field.hex_size * 1.05, Color(col.r, col.g, col.b, 0.85), 0.9)
-	Vfx.float_text(c + Vector3(0, 2.0, 0), tr("HEX LV %d  %s") % [to, nm.to_upper()], col, 1.3 if to < 4 else 1.7, 2.2)
+	Vfx.float_text(c + up * 2.0, tr("HEX LV %d  %s") % [to, nm.to_upper()], col, 1.3 if to < 4 else 1.7, 2.2)
 	Audio.play("sparkle" if to < 4 else "chime", 0.9 + 0.08 * to, -6.0 if to < 4 else -3.0)
 	if to == MAX_LEVEL:
 		Audio.play("bird", 1.1, -10.0, 0.0)
 		var wl: Node = world.get("wildlife")
 		if wl and wl.has_method("_on_restored"):
 			wl.call("_on_restored", hid)  # extra butterflies and a bird for a thriving hex
-	EventBus.toast.emit(tr("Hex Lv %d  %s.   %s") % [to, nm, reward_text(reward)], "story" if to >= 4 else "hint")
+	EventBus.toast.emit(tr("Hex Lv %d  %s.   %s") % [to, nm, reward_text(reward)], "reward")  # [v4calm] item 49: hex level-ups are reward chatter (the hex's own FX shows it)
 
 
 func _recalc_bonus() -> void:
@@ -276,6 +298,8 @@ func _recalc_bonus() -> void:
 # --- Persistence -----------------------------------------------------------------------
 
 func persist_save() -> void:
+	if sparse:  # [orbB] the globe saves it in GameState.orbit (scenes/slice_orbit.gd)
+		return
 	GameState.world["hex_levels"] = persist()
 
 
@@ -292,8 +316,12 @@ func persist() -> Dictionary:
 
 
 func _load() -> void:
-	var d: Dictionary = GameState.world.get("hex_levels", {})
+	var d: Dictionary = GameState.world.get("hex_levels", {}) if not sparse else GameState.orbit.get("hex_levels", {})  # [orbB]
 	var raw: PackedByteArray = Marshalls.base64_to_raw(str(d.get("levels", ""))) if d.has("levels") else PackedByteArray()
+	if sparse and raw.size() == world.field.hex_count():  # [orbB] cleaned cells come back tracked
+		for id: int in raw.size():
+			if raw[id] > 0:
+				track(id)
 	if raw.size() != world.field.hex_count():
 		# Old save (or fresh field): catch up silently to what each hex already shows, no rewards.
 		for id: int in levels:

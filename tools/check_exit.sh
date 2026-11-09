@@ -14,6 +14,7 @@ run() {
 	local code=$?
 	if [ "$code" -ne 0 ]; then
 		echo "[check_exit] FAIL $name: exit code $code (134 = crash at quit; see $log)"
+		grep -m10 -E "FAIL|SCRIPT ERROR" "$log"  # [main] show the failing checks in CI logs
 		fail=1
 	elif grep -q "SCRIPT ERROR" "$log"; then
 		echo "[check_exit] FAIL $name: SCRIPT ERROR in $log"
@@ -29,6 +30,16 @@ run() {
 }
 
 run roundtrip res://tools/save_roundtrip.tscn -- --fresh --save-dir=check_exit_$$  # own save folder: parallel runs cannot clobber it
+# [v1menu] The round world is the default, so the plain round trip is the globe's; the dormant flat
+# game keeps its own until it is removed.
+run roundtrip_flat res://tools/save_roundtrip.tscn -- --fresh --flat --save-dir=check_exit_flat_$$
+# [orbB] the globe's save -> load across two processes (Lumi's position, currencies)
+if tools/orbit_reload_check.sh >screenshots/check_exit_orbit_reload.log 2>&1; then
+	echo "[check_exit] PASS orbit_reload (two processes)"
+else
+	echo "[check_exit] FAIL orbit_reload: see screenshots/check_exit_orbit_reload.log"
+	fail=1
+fi
 if [ "$1" = "--quick" ]; then
 	run quit15 -- --fresh --quit-after=15
 fi

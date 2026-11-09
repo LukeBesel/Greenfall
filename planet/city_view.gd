@@ -30,6 +30,34 @@ var _props := MeshBatch.new()
 ## [worlds2] A Cradle Mode world's facade tint (systems/world_look.gd): frosted, sun-bleached,
 ## coastal, overgrown or corroded cities. White on Verdance.
 var look_tint := Color.WHITE
+var _prop_body: StaticBody3D  # [world2] street furniture and lot fences (PhysLayers.PROP)
+## [orbD] A hub site prefab on the globe (planet/sites/verdance_site.gd): no skyline backdrop
+## (the globe's own far shell is the horizon).
+var skyline: bool = true
+## [orbD] false: sidewalks, kerbs, fences and street furniture only (the site places kit buildings).
+var buildings: bool = true
+## [orbD] Flush sidewalks (2 cm, no slab or kerb colliders): on a globe site loose junk lies on the
+## cells under them, and a 12 cm slab hid it and snagged Lumi along the kerb.
+var flush_walks: bool = false
+## [v3city] Globe hub towns (planet/sites/verdance_site.gd): blocks within detail_ring get the
+## kit facades, the rest proxies; proxy_collide gives every proxy building a box collider (the
+## town is walkable, not a backdrop); street props reach prop_ring blocks within prop_radius m.
+var detail_ring: int = DETAIL_RING
+var proxy_collide: bool = false
+var prop_ring: int = DETAIL_RING
+var prop_radius: float = INF
+var _bld_body: StaticBody3D  # [v3city] one body for every proxy building's box
+## [v3city] func(x, z) -> bool: site-local point on a lake cell (globe towns): no props there.
+var water_fn: Callable
+
+
+func _wet(x: float, z: float) -> bool:
+	return water_fn.is_valid() and bool(water_fn.call(x, z))
+
+
+func _walk_h() -> float:  # [orbD] the sidewalk top street furniture stands on
+	return 0.02 if flush_walks else CityLayout.CURB_H
+
 
 
 func build(p_layout: CityLayout, p_ground_material: Material) -> void:
@@ -41,23 +69,35 @@ func build(p_layout: CityLayout, p_ground_material: Material) -> void:
 	_static.cell = CityLayout.PITCH * 2.0
 	_props.cell = CityLayout.PITCH * 2.0
 	_props.visibility_end = 260.0
-	_load_kit(APT)
-	_load_kit(FAC)
+	await _load_kit(APT)
+	await _load_kit(FAC)
 	_curb_mat = AssetLib.pbr_material("concrete_pavement", 1.2, Color(0.82, 0.8, 0.78), true)
+	var bi: int = 0
 	for key: Vector2i in layout.blocks:
+		bi += 1
+		BuildBudget.sub(0.6 * float(bi) / layout.blocks.size())
+		await BuildBudget.check("city:block")  # [leftovers] time-sliced behind the loading screen
 		_build_block(key, layout.blocks[key])
-	_flush_batches()
+	await BuildBudget.check("city:batches")
+	await _flush_batches()
 	if not layout.wild:
-		_build_street_props()
-		_build_skyline()  # wilderness has its own horizon (FieldView hills and biome wrecks)
-	_static.flush(self)
-	_props.flush(self)
+		await BuildBudget.check("city:props")
+		await _build_street_props()
+		if skyline:  # [orbD]
+			await BuildBudget.check("city:skyline")
+			await _build_skyline()  # wilderness has its own horizon (FieldView hills and biome wrecks)
+	await BuildBudget.check("city:static")
+	await _static.flush_async(self)
+	await BuildBudget.check("city:props flush")
+	await _props.flush_async(self)
 
 
 # --- Kit --------------------------------------------------------------------------
 
 func _load_kit(id: String) -> void:
-	var ps: PackedScene = load(AssetLib.MODEL_DIR % [id, id])
+	var keep: Resource = await BuildBudget.fetch(AssetLib.MODEL_DIR % [id, id])  # [leftovers]
+	await BuildBudget.check("city:kit")
+	var ps: PackedScene = keep if keep is PackedScene else load(AssetLib.MODEL_DIR % [id, id])
 	var root: Node = ps.instantiate()
 	var d: Dictionary = {}
 	for c: Node in root.get_children():
@@ -92,6 +132,7 @@ func _place(_block: Vector2i, kit: String, piece: String, xf: Transform3D) -> vo
 
 func _flush_batches() -> void:
 	for key: String in _batches:
+		await BuildBudget.check("city:batch")
 		var parts: PackedStringArray = key.split("|")
 		var mesh: Mesh = AssetLib.lite(_kit[parts[0]][parts[1]], 600)
 		var xfs: Array = _batches[key]
@@ -103,6 +144,7 @@ func _flush_batches() -> void:
 			mm.set_instance_transform(i, xfs[i])
 		var mmi := MultiMeshInstance3D.new()
 		mmi.multimesh = mm
+		mmi.set_meta("inst_xf", xfs)  # [world2] for the collider audit
 		mmi.visibility_range_end = 420.0
 		add_child(mmi)
 	_batches.clear()
@@ -118,22 +160,40 @@ func _build_block(key: Vector2i, b: Dictionary) -> void:
 	var rect: Rect2 = b["rect"]
 	if layout.wild:
 		return  # the hub yard's fence belongs to StreetDressing (it is ruined, then repaired)
-	var detailed: bool = maxi(absi(key.x), absi(key.y)) <= DETAIL_RING
+	var detailed: bool = maxi(absi(key.x), absi(key.y)) <= detail_ring  # [v3city]
 	_build_sidewalks(rect, detailed)
 	match int(b["type"]):
 		CityLayout.Block.BUILDINGS:
 			_body = BuildingDetail.Geo.new()
 			_det = BuildingDetail.Geo.new()
-			for bd: Dictionary in b["buildings"]:
+			for bd: Dictionary in (b["buildings"] if buildings else []):  # [orbD]
 				if detailed:
 					_build_building(key, bd)
 				else:
 					_detail.proxy_building(bd, _body, _det)
+					if proxy_collide:  # [v3city]
+						_proxy_box(bd)
 			_flush_block(key)
 		CityLayout.Block.HUB:
 			pass  # yard fence: StreetDressing
 		CityLayout.Block.PARKING, CityLayout.Block.VACANT:
 			_build_fence(rect, false)
+
+
+## [v3city] A proxy building's collider: its footprint up to the roof (tiers set back above).
+func _proxy_box(bd: Dictionary) -> void:
+	if _bld_body == null:
+		_bld_body = StaticBody3D.new()
+		_bld_body.name = "ProxyBuildings"
+		add_child(_bld_body)
+	var r: Rect2 = bd["rect"]
+	var h: float = float(bd["floors"]) * FLOOR_H
+	var cs := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = Vector3(r.size.x, h, r.size.y)
+	cs.shape = box
+	cs.position = Vector3(r.get_center().x, h * 0.5, r.get_center().y)
+	_bld_body.add_child(cs)
 
 
 ## One body and one detail MeshInstance per block, centred on the block so the detail mesh's
@@ -166,7 +226,7 @@ func _build_sidewalks(r: Rect2, detailed: bool = true) -> void:
 	# Sidewalk ring around the block: 4 slabs; tops use the shared ground shader so hex state
 	# and dirt show on them; curb faces are concrete. Collision slopes up so Patch can roll on.
 	var w: float = CityLayout.WALK_W
-	var h: float = CityLayout.CURB_H
+	var h: float = CityLayout.CURB_H if not flush_walks else 0.02  # [orbD]
 	var outer := r.grow(w)
 	var slabs: Array[Rect2] = [
 		Rect2(outer.position, Vector2(outer.size.x, w)),
@@ -174,6 +234,8 @@ func _build_sidewalks(r: Rect2, detailed: bool = true) -> void:
 		Rect2(Vector2(outer.position.x, r.position.y), Vector2(w, r.size.y)),
 		Rect2(Vector2(r.end.x, r.position.y), Vector2(w, r.size.y)),
 	]
+	if water_fn.is_valid():  # [v3city] a lakeside block: its sidewalk and kerb stop at the shore
+		slabs = _dry_pieces(slabs)
 	for s: Rect2 in slabs:
 		var pm := PlaneMesh.new()
 		pm.size = s.size
@@ -194,14 +256,28 @@ func _build_sidewalks(r: Rect2, detailed: bool = true) -> void:
 			Vector3(x0, h, z0), Vector3(x1, h, z0), Vector3(x1, h, z1), Vector3(x0, h, z1)])
 		cs.shape = shape
 		body.add_child(cs)
-		if detailed:
+		if detailed and not flush_walks:  # [orbD] flush walks: nothing to catch on (globe sites)
 			add_child(body)
 		else:
 			body.free()
 	# Curb faces (outer edge only, facing the road).
 	var curb_parts: Array = []
-	for e: Array in [[outer.position, Vector2(outer.end.x, outer.position.y)], [Vector2(outer.position.x, outer.end.y), outer.end],
-			[outer.position, Vector2(outer.position.x, outer.end.y)], [Vector2(outer.end.x, outer.position.y), outer.end]]:
+	var edges: Array = [[outer.position, Vector2(outer.end.x, outer.position.y)], [Vector2(outer.position.x, outer.end.y), outer.end],
+			[outer.position, Vector2(outer.position.x, outer.end.y)], [Vector2(outer.end.x, outer.position.y), outer.end]]
+	if water_fn.is_valid():  # [v3city] kerb runs only on dry ground
+		var dry: Array = []
+		for e0: Array in edges:
+			var a0: Vector2 = e0[0]
+			var b0: Vector2 = e0[1]
+			var k: int = maxi(1, int(ceil(a0.distance_to(b0) / 3.0)))
+			for i: int in k:
+				var p0: Vector2 = a0.lerp(b0, float(i) / k)
+				var p1: Vector2 = a0.lerp(b0, float(i + 1) / k)
+				var m0: Vector2 = (p0 + p1) * 0.5
+				if not _wet(m0.x, m0.y) and not _wet(p0.x, p0.y) and not _wet(p1.x, p1.y):
+					dry.append([p0, p1])
+		edges = dry
+	for e: Array in edges:
 		var a: Vector2 = e[0]
 		var bb: Vector2 = e[1]
 		var len_: float = a.distance_to(bb)
@@ -210,6 +286,27 @@ func _build_sidewalks(r: Rect2, detailed: bool = true) -> void:
 		curb_parts.append(ProcMesh.part(ProcMesh.box(Vector3(len_, h + 0.02, 0.22) if horiz else Vector3(0.22, h + 0.02, len_)),
 			ProcMesh.xf(Vector3(mid.x, h * 0.5 - 0.005, mid.y))))
 	_static.merge(ProcMesh.merge(curb_parts), Transform3D.IDENTITY, _curb_mat, true, Vector3(r.get_center().x, 0, r.get_center().y))  # [deck]
+
+
+## [v3city] Slabs cut into pieces of at most 3 m, keeping only the dry ones.
+func _dry_pieces(slabs: Array[Rect2]) -> Array[Rect2]:
+	var out: Array[Rect2] = []
+	for r: Rect2 in slabs:
+		var along_x: bool = r.size.x >= r.size.y
+		var length: float = r.size.x if along_x else r.size.y
+		var k: int = maxi(1, int(ceil(length / 3.0)))
+		var step: float = length / k
+		for i: int in k:
+			var pr: Rect2 = Rect2(r.position + Vector2(i * step, 0), Vector2(step, r.size.y)) if along_x \
+				else Rect2(r.position + Vector2(0, i * step), Vector2(r.size.x, step))
+			var wet: bool = false
+			for q: Vector2 in [pr.get_center(), pr.position, pr.end, Vector2(pr.position.x, pr.end.y), Vector2(pr.end.x, pr.position.y)]:
+				if _wet(q.x, q.y):
+					wet = true
+					break
+			if not wet:
+				out.append(pr)
+	return out
 
 
 func _build_building(block: Vector2i, bd: Dictionary) -> void:
@@ -326,9 +423,12 @@ func _fire_escape_mesh(node: String) -> Mesh:
 
 
 func _build_fence(r: Rect2, partial: bool) -> void:
-	# Low chainlink run along part of a lot's edge.
+	# [world2] Broken chain-link runs along a lot's edges: a few panels standing, then a gap where
+	# the fence is down, so a lot is never boxed in. Each standing run gets one thin box collider.
 	var mat: StandardMaterial3D = Mats.metal("steel")
 	var parts: Array = []
+	if _prop_body == null:
+		_prop_body = PropColliders.body(self, "StreetProps")
 	var edges: Array = [[r.position, Vector2(r.end.x, r.position.y)], [r.position, Vector2(r.position.x, r.end.y)]]
 	if not partial:
 		edges.append([Vector2(r.end.x, r.position.y), r.end])
@@ -336,16 +436,43 @@ func _build_fence(r: Rect2, partial: bool) -> void:
 		var a: Vector2 = e[0]
 		var bb: Vector2 = e[1]
 		var n: int = int(a.distance_to(bb) / 2.5)
-		for k: int in n + 1:
-			if partial and _rng.randf() < 0.35:
+		var k: int = _rng.randi_range(0, 2)  # start a little way in: corners stay open
+		while k < n:
+			var run: int = mini(_rng.randi_range(1, 3), n - k)
+			var p0: Vector2 = a.lerp(bb, float(k) / n)
+			var p1: Vector2 = a.lerp(bb, float(k + run) / n)
+			if _wet(p0.x, p0.y) or _wet(p1.x, p1.y):  # [v3city] no fence out in the lake
+				k += run + 2
 				continue
-			var p: Vector2 = a.lerp(bb, float(k) / n)
-			parts.append(ProcMesh.part(ProcMesh.cyl(0.03, 0.03, 1.8, 6), ProcMesh.xf(Vector3(p.x, 0.9, p.y), Vector3(_rng.randf_range(-4, 4), 0, _rng.randf_range(-4, 4)))))
-		var mid: Vector2 = (a + bb) * 0.5
-		var len_: float = a.distance_to(bb)
-		var horiz: bool = absf(a.y - bb.y) < 0.01
-		parts.append(ProcMesh.part(ProcMesh.cyl(0.02, 0.02, len_, 6), ProcMesh.xf(Vector3(mid.x, 1.78, mid.y), Vector3(0, 0, 90) if horiz else Vector3(90, 0, 0))))
+			for q: int in run + 1:
+				var p: Vector2 = a.lerp(bb, float(k + q) / n)
+				parts.append(ProcMesh.part(ProcMesh.cyl(0.03, 0.03, 1.8, 6), ProcMesh.xf(Vector3(p.x, 0.9, p.y), Vector3(_rng.randf_range(-4, 4), 0, _rng.randf_range(-4, 4)))))
+			var mid: Vector2 = (p0 + p1) * 0.5
+			var len_: float = p0.distance_to(p1)
+			var horiz: bool = absf(a.y - bb.y) < 0.01
+			for y: float in [1.78, 0.9]:
+				parts.append(ProcMesh.part(ProcMesh.cyl(0.02, 0.02, len_, 6), ProcMesh.xf(Vector3(mid.x, y, mid.y), Vector3(0, 0, 90) if horiz else Vector3(90, 0, 0))))
+			# Chain-link suggested by a diagonal lattice of thin wires.
+			for q: int in int(len_ / 0.6):
+				var t0: float = float(q) / int(len_ / 0.6)
+				var t1: float = minf(t0 + 0.6 / len_, 1.0)
+				var x0: Vector2 = p0.lerp(p1, t0)
+				var x1: Vector2 = p0.lerp(p1, t1)
+				var d3 := Vector3(x1.x - x0.x, 1.6, x1.y - x0.y)
+				var c3 := Vector3((x0.x + x1.x) * 0.5, 0.88, (x0.y + x1.y) * 0.5)
+				parts.append(ProcMesh.part(ProcMesh.cyl(0.006, 0.006, d3.length(), 3), Transform3D(_align_y(d3), c3)))
+				var d4 := Vector3(x0.x - x1.x, 1.6, x0.y - x1.y)
+				parts.append(ProcMesh.part(ProcMesh.cyl(0.006, 0.006, d4.length(), 3), Transform3D(_align_y(d4), c3)))
+			PropColliders.add_run(_prop_body, Vector3(p0.x, 0, p0.y), Vector3(p1.x, 0, p1.y), 1.8, 0.16)
+			k += run + _rng.randi_range(2, 3)  # the gap: two or three panels down
 	_static.merge(ProcMesh.merge(parts), Transform3D.IDENTITY, mat, true, Vector3(r.get_center().x, 0, r.get_center().y))  # [deck]
+
+
+## Basis whose Y axis points along d (for rods between two points).
+static func _align_y(d: Vector3) -> Basis:
+	var y: Vector3 = d.normalized()
+	var x: Vector3 = y.cross(Vector3.FORWARD if absf(y.z) < 0.9 else Vector3.RIGHT).normalized()
+	return Basis(x, y, x.cross(y))
 
 
 # --- Street furniture ---------------------------------------------------------------
@@ -353,20 +480,52 @@ func _build_fence(r: Rect2, partial: bool) -> void:
 ## [deck] Street props are instanced per model and 72 m cell (MeshBatch); collision stays as
 ## plain StaticBody3D nodes with the same transform.
 func _mesh_prop(model: String, pos: Vector3, yaw: float, collide: bool, scl: float = 1.0, roll: float = 0.0) -> void:
+	if _wet(pos.x, pos.z):
+		return  # [v3city] not on the lake
 	var mesh: Mesh = AssetLib.lite(AssetLib.model_part(model.get_slice("::", 0), model.get_slice("::", 1)) if "::" in model else AssetLib.model_mesh(model), 2500)
 	var xf := Transform3D(Basis.from_euler(Vector3(0.0, yaw, roll)) * Basis.from_scale(Vector3.ONE * scl), pos)
 	_props.instance(mesh, xf)
 	if collide:
+		# [world2] One shared PROP body, shared shapes; lamp posts get a slim post (their heads and
+		# arms are overhead), everything else a box of its bounds.
+		if _prop_body == null:
+			_prop_body = PropColliders.body(self, "StreetProps")
 		var aabb: AABB = mesh.get_aabb()
-		var body := StaticBody3D.new()
-		body.transform = Transform3D(Basis.from_euler(Vector3(0.0, yaw, roll)), pos)
-		var cs := CollisionShape3D.new()
-		var box := BoxShape3D.new()
-		box.size = Vector3(maxf(aabb.size.x, 0.2), aabb.size.y, maxf(aabb.size.z, 0.2)) * scl * 0.9
-		cs.shape = box
-		cs.position = aabb.get_center() * scl
-		body.add_child(cs)
-		add_child(body)
+		var rot := Basis.from_euler(Vector3(0.0, yaw, roll))
+		if "lamp" in model:
+			var foot: Vector3 = pos + rot * Vector3(0, 0, 0)
+			PropColliders.add_box(_prop_body, Transform3D(rot, foot + rot * Vector3(0, aabb.end.y * scl * 0.5, 0)), Vector3(0.3, aabb.end.y * scl, 0.3))
+		else:
+			PropColliders.add_box(_prop_body, Transform3D(rot, pos + rot * (aabb.get_center() * scl)), Vector3(maxf(aabb.size.x, 0.2), aabb.size.y, maxf(aabb.size.z, 0.2)) * scl * 0.9)
+
+
+## [world3] Street lamp heads, [Transform3D, Color]: dead bulbs that StreetPower lights by hex.
+var lamp_bulbs: Array = []
+static var _bulb_at: Dictionary = {}
+
+
+## Centre and size of a lamp model's bulb (its "*_bulb" / "*_glass" surfaces).
+static func lamp_head(model: String) -> Array:
+	if _bulb_at.has(model):
+		return _bulb_at[model]
+	var out: Array = [Vector3(0, 3.0, 0), 0.12]
+	var m: Mesh = AssetLib.model_mesh(model) if AssetLib.has_model(model) else null
+	if m:
+		for s: int in m.get_surface_count():
+			var mat: Material = m.surface_get_material(s)
+			var nm: String = mat.resource_name if mat else ""
+			if nm.ends_with("_glass") or nm.ends_with("_bulb"):
+				var lo := Vector3(1e9, 1e9, 1e9)
+				var hi := -lo
+				for v: Vector3 in m.surface_get_arrays(s)[Mesh.ARRAY_VERTEX] as PackedVector3Array:
+					lo = lo.min(v)
+					hi = hi.max(v)
+				if nm.ends_with("_bulb"):
+					out[0] = (lo + hi) * 0.5
+				else:
+					out[1] = minf(hi.x - lo.x, hi.y - lo.y) * 0.3
+	_bulb_at[model] = out
+	return out
 
 
 func _build_street_props() -> void:
@@ -376,10 +535,13 @@ func _build_street_props() -> void:
 	var walk_mid: float = half - CityLayout.ROAD_W * 0.5 - CityLayout.WALK_W * 0.5
 	for bx: int in range(-n, n + 1):
 		for bz: int in range(-n, n + 1):
+			await BuildBudget.check("city:street props")
 			var c := Vector2(bx, bz) * CityLayout.PITCH
-			if c.length() > layout.extent:
+			if c.length() > (prop_radius if prop_radius < INF else layout.extent):  # [v3city]
 				continue
-			var near: bool = maxi(absi(bx), absi(bz)) <= DETAIL_RING
+			if prop_radius < INF and not layout.blocks.has(Vector2i(bx, bz)):
+				continue  # [v3city] a globe town's dropped blocks (off the pad)
+			var near: bool = maxi(absi(bx), absi(bz)) <= prop_ring  # [v3city]
 			if not near:
 				continue
 			# Lamps and poles on two sidewalks of each block.
@@ -389,24 +551,31 @@ func _build_street_props() -> void:
 					var t: float = -half + 6.0 + k * lamp_spacing
 					var p: Vector2 = c + (Vector2(t, -walk_mid - 0.6) if side == 0 else Vector2(walk_mid + 0.6, t))
 					var yaw: float = PI if side == 0 else -PI * 0.5
-					if _rng.randf() < 0.75:
+					if _rng.randf() < 0.75 and not _wet(p.x, p.y):  # [v3city]
 						var lamp_model: String = "street_lamp_02" if _rng.randf() < 0.5 else "street_lamp_01"
 						var lamp_yaw: float = yaw + _rng.randf_range(-0.05, 0.05)
 						var lean: float = _rng.randf_range(-0.15, 0.15) if _rng.randf() < 0.15 else 0.0  # leaning, half-collapsed
-						_mesh_prop(lamp_model, Vector3(p.x, CityLayout.CURB_H, p.y), lamp_yaw, near, 1.0, lean)
+						if lean == 0.0 and fmod(absf(p.x * 0.37 + p.y * 0.61), 1.0) < 0.2:
+							lean = 0.2 if p.x > p.y else -0.18  # [world3] more of them bent (own hash: the RNG stays as it was)
+						_mesh_prop(lamp_model, Vector3(p.x, _walk_h(), p.y), lamp_yaw, near, 1.0, lean)
+						if lean == 0.0:  # [world3] standing ones get a (dead) bulb; bent ones are beyond repair
+							var head: Array = lamp_head(lamp_model)
+							var lxf := Transform3D(Basis.from_euler(Vector3(0.0, lamp_yaw, 0.0)), Vector3(p.x, _walk_h(), p.y))
+							var r: float = head[1]
+							lamp_bulbs.append([Transform3D(Basis().scaled(Vector3(r, r * 1.2, r) / 0.06), lxf * (head[0] as Vector3)), Color(1.0, 0.86, 0.62)])
 			if not near:
 				continue
 			# Hydrant, manholes, a payphone, benches, utility boxes.
 			var q: Vector2 = c + Vector2(_rng.randf_range(-half + 5, half - 5), -walk_mid + 0.7)
-			_mesh_prop("fire_hydrant::fire_hydrant_aged", Vector3(q.x, CityLayout.CURB_H, q.y), _rng.randf() * TAU, true)
+			_mesh_prop("fire_hydrant::fire_hydrant_aged", Vector3(q.x, _walk_h(), q.y), _rng.randf() * TAU, true)
 			var m: Vector2 = c + Vector2(_rng.randf_range(-6, 6), half)
 			_mesh_prop("water_manhole_cover", Vector3(m.x, 0.005, m.y), _rng.randf() * TAU, false)
 			if _rng.randf() < 0.4:
 				var u: Vector2 = c + Vector2(walk_mid + 0.5, _rng.randf_range(-half + 4, half - 4))
-				_mesh_prop("utility_box_01", Vector3(u.x, CityLayout.CURB_H, u.y), -PI * 0.5, true)
+				_mesh_prop("utility_box_01", Vector3(u.x, _walk_h(), u.y), -PI * 0.5, true)
 			if _rng.randf() < 0.1:
 				var pp: Vector2 = c + Vector2(_rng.randf_range(-half + 4, half - 4), walk_mid + 0.3)
-				_mesh_prop("korean_public_payphone_01", Vector3(pp.x, CityLayout.CURB_H, pp.y), 0.0, true)
+				_mesh_prop("korean_public_payphone_01", Vector3(pp.x, _walk_h(), pp.y), 0.0, true)
 
 
 # --- Skyline ------------------------------------------------------------------------
@@ -444,6 +613,8 @@ func _build_skyline() -> void:
 	var rust_w: StandardMaterial3D = rust_mat.duplicate()
 	rust_w.uv1_world_triplanar = true
 	for i: int in 90:
+		if i % 10 == 9:
+			await BuildBudget.check("city:skyline")
 		var ang: float = TAU * i / 90.0 + _rng.randf_range(-0.03, 0.03)
 		var dist: float = r0 + _rng.randf_range(0.0, 170.0)
 		var w: float = _rng.randf_range(14.0, 28.0)

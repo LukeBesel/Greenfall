@@ -7,13 +7,15 @@ extends Node
 
 # l10n:begin
 const STEPS: Array[Dictionary] = [
-	{"id": "scoop", "text": "Hold  {scoop}  to scoop junk", "goal": 8},
-	{"id": "bale", "text": "Press  {cube}  to press a bale"},
-	{"id": "carry", "text": "{interact}  to pick up the bale"},
-	{"id": "cash", "text": "Carry it onto the scale"},
-	{"id": "upgrade", "text": "{interact}  at the workbench to upgrade"},
-	{"id": "hex", "text": "Clean this hex completely"},
+	{"id": "repair", "text": "Fix the workbench: press  {interact}  at it"},
+	{"id": "scoop", "text": "Pick up trash: hold  {scoop}", "goal": 8},
+	{"id": "dump", "text": "Bring your chest to the trash bin"},
+	{"id": "upgrade", "text": "Buy an upgrade: press  {interact}  at the bench"},
 ]
+# [onboard2] QA P2: every early step uses what Lumi has at the start (the broken bench, his scoop,
+# the trash bin). Bales come later, with the Baler (story objectives, data/objectives.json).
+# [onboard] "Clean this hex completely" is now the story objective "Clean a hex" (story/objectives.gd),
+# which outlines its hex on the ground; an old save on that step simply counts the checklist as done.
 const DONE_TEXT: String = "Lumi is back on the job"
 # l10n:end
 
@@ -24,21 +26,25 @@ var step: int = 0
 var marker: TutorialMarker
 var _count: int = 0
 var _target_t: float = 0.0
-var _target_hex: int = -1
 
 
 func _ready() -> void:
 	step = int(GameState.flags.get("tutorial_step", 0))
+	if DevHooks.has("objective"):  # [v1guide] dev: jumping to an objective skips the checklist
+		step = STEPS.size()
+		GameState.flags["tutorial_step"] = step
 	EventBus.junk_scooped.connect(func(_t: String, _p: Vector3) -> void: _progress("scoop"))
-	EventBus.cube_made.connect(func(_i: Dictionary) -> void: _progress("bale"))
-	EventBus.cube_cashed.connect(func(_v: BigNum, _p: Vector3) -> void: _progress("cash"))
 	EventBus.upgrade_bought.connect(func(_id: String, _l: int) -> void: _progress("upgrade"))
-	EventBus.hex_cleaned.connect(func(_h: int, _p: Vector3, _b: BigNum) -> void: _progress("hex"))
 	if not done():
 		marker = TutorialMarker.new()
 		marker.world = world
 		add_child(marker)
 	_announce.call_deferred()
+	if DevHooks.has("chest-full"):  # [v2guide] dev: start with a full chest (shots of the dump step)
+		(func() -> void:
+			var pt: Patch = world.get("patch") as Patch if world else null
+			if pt:
+				pt.compartment.fill = pt.capacity()).call_deferred()
 	Settings.input_device_changed.connect(func(_p: bool) -> void:  # [deck] prompts follow the device
 		if not done():
 			EventBus.tutorial_changed.emit(current_text()))
@@ -91,9 +97,6 @@ func step_progress() -> Array:
 	if s.has("goal"):
 		var g: int = int(s["goal"])
 		return [float(mini(_count, g)) / g, "%d / %d" % [mini(_count, g), g]]
-	if s["id"] == "hex" and _target_hex >= 0 and world and world.field:
-		var f: float = (world.field as HexField).removed_fraction(_target_hex)
-		return [f, "%d%%" % int(floor(f * 100.0))]
 	return [-1.0, ""]
 
 
@@ -101,7 +104,10 @@ func _process(delta: float) -> void:
 	if done() or world == null:
 		return
 	# Steps that depend on state rather than an event.
-	if STEPS[step]["id"] == "carry" and not world.patch.carried.is_empty():
+	if STEPS[step]["id"] == "repair" and Camp.bench_ok() and not _camp_repairing():
+		_advance()
+		return
+	elif STEPS[step]["id"] == "dump" and int(GameState.stats.get("junk_dumps", 0)) > 0:
 		_advance()
 		return
 	elif STEPS[step]["id"] == "upgrade" and GameState.level_of("compartment_size") + GameState.level_of("scoop_width") + GameState.stats.get("upgrades_bought", 0) > 0:
@@ -111,7 +117,9 @@ func _process(delta: float) -> void:
 	if _target_t <= 0.0 and marker:
 		_target_t = TARGET_REFRESH_S
 		var t: Dictionary = target()
-		if t.is_empty():
+		var ob: Objectives = world.get("objectives") as Objectives
+		# [v2guide] the purple beacon points at places once the card shows; #37: never at pieces
+		if t.is_empty() or (ob and ob.revealed) or str(t.get("kind", "")) == "piece":
 			marker.clear()
 		else:
 			marker.set_target(t["pos"], str(t["kind"]))
@@ -130,24 +138,23 @@ func target() -> Dictionary:
 			var pid: int = f.nearest_alive(at)
 			if pid >= 0:
 				return {"pos": f.piece_pos[pid], "kind": "piece"}
-		"bale":
+		"repair":
+			return {"pos": world.call("bench_pos"), "kind": "bench"}  # [orbB] the globe's bench anchor too
+		"dump":
 			if p.compartment.is_empty():
 				var pid2: int = f.nearest_alive(at)
 				return {} if pid2 < 0 else {"pos": f.piece_pos[pid2], "kind": "piece"}
-			return {"pos": p.to_global(p.model.back_hatch_point), "kind": "self"}
-		"carry":
-			var cube: JunkCube = _nearest_loose_cube(at)
-			return {} if cube == null else {"pos": cube.global_position, "kind": "bale"}
-		"cash":
-			if world.get("depot") != null:
-				return {"pos": (world.depot as Node3D).global_position, "kind": "pad"}
+			var bin: Variant = Objectives.bin_point(world)  # [v2guide] the bin's body, not the scale plate
+			if bin is Vector3:
+				return {"pos": bin, "kind": "pad"}
 		"upgrade":
-			return {"pos": world.BOARD_POS, "kind": "bench"}
-		"hex":
-			var pid3: int = _last_pieces_target(at)
-			if pid3 >= 0:
-				return {"pos": f.piece_pos[pid3], "kind": "piece"}
+			return {"pos": world.call("bench_pos"), "kind": "bench"}  # [orbB]
 	return {}
+
+
+func _camp_repairing() -> bool:
+	var c: Variant = world.get_node_or_null("Camp") if world else null
+	return c is Camp and (c as Camp).repairing
 
 
 func _nearest_loose_cube(at: Vector3) -> JunkCube:
@@ -162,41 +169,6 @@ func _nearest_loose_cube(at: Vector3) -> JunkCube:
 			bd = d
 			best = c
 	return best
-
-
-func _hex_ok(f: HexField, h: int) -> bool:
-	return h >= 0 and not f.is_clean(h) and f.hex_hub[h] == 0 and not f.is_water(h) and not f.locked.has(h)
-
-
-## The hex to finish: the one Lumi is working on, else the most-cleared unfinished hex nearby.
-## Points at its nearest remaining piece so the last can is never a hunt.
-func _last_pieces_target(at: Vector3) -> int:
-	var f: HexField = world.field
-	var h: int = world.patch.focus_hex()
-	if not _hex_ok(f, h):
-		h = _target_hex if _hex_ok(f, _target_hex) else -1
-		if h < 0:
-			var best: float = -INF
-			for hid: int in f.hexes_near(at, 2):
-				if not _hex_ok(f, hid):
-					continue
-				var score: float = f.removed_fraction(hid) - f.hex_center(hid).distance_to(at) * 0.01
-				if score > best:
-					best = score
-					h = hid
-	_target_hex = h
-	if h < 0:
-		return f.nearest_alive(at)
-	var out: int = -1
-	var bd: float = INF
-	for pid: int in f.hex_pieces[h]:
-		if f.piece_alive[pid] == 0:
-			continue
-		var d: float = f.piece_pos[pid].distance_squared_to(at)
-		if d < bd:
-			bd = d
-			out = pid
-	return out
 
 
 func _progress(id: String) -> void:
@@ -216,6 +188,8 @@ func _advance() -> void:
 	_count = 0
 	_target_t = 0.0
 	GameState.flags["tutorial_step"] = step
+	if DevHooks.has("autoplay"):  # pacing log
+		print("[onboard] checklist step %d done at %.1f min" % [step, float(GameState.stats.get("time_played", 0.0)) / 60.0])
 	Audio.play("ding", 1.2, -12.0)
 	_announce()
 

@@ -38,10 +38,36 @@ func _ready() -> void:
 
 ## [steam] The demo keeps its saves apart (Demo.SAVE_DIR) so a full-game save never opens in it.
 ## [worlds2] The folder that holds the profile folders.
-func root_dir() -> String:
+func root_dir(flat: bool = false) -> String:
+	if round_planets() and not flat:  # [orbB] the round world keeps its saves apart
+		return ("user://saves_" + dev_dir if dev_dir != "" else (Demo.SAVE_DIR if Demo.is_demo() else SAVE_DIR)) + ROUND_SUFFIX
 	if dev_dir != "":  # [beat]
 		return "user://saves_" + dev_dir
 	return Demo.SAVE_DIR if Demo.is_demo() else SAVE_DIR
+
+
+## [orbB] The round world (Settings.round_planets): New Game and Continue start on the globe
+## (SliceOrbit.wanted), saving under user://saves_round (profiles, worlds, album and all), so the
+## flat game's saves are never read or written. Steam Cloud stays the flat game's (SteamService
+## skips the round tree's files). [v1menu] The default since the 2026-11-08 playtest, the demo
+## included (user://saves_demo_round); `--flat` (dev) reaches the dormant flat game.
+const ROUND_SUFFIX: String = "_round"
+
+
+func round_planets() -> bool:
+	return Settings.round_planets and not "--flat" in OS.get_cmdline_user_args()  # [v1menu]
+
+
+## Turns the preview on or off (title screen): saves the setting, then points at that save tree's
+## remembered profile and reloads its Cradle profile. The caller rebuilds the menu.
+func set_round_planets(on: bool) -> void:
+	Settings.round_planets = on
+	Settings.save_settings()
+	migrate_to_profiles(root_dir())
+	profile_slot = read_profile_choice()
+	DirAccess.make_dir_recursive_absolute(save_dir())
+	CradleMode.boot()
+	print("[save] round planets %s: %s" % ["on" if on else "off", save_dir()])
 
 
 ## [worlds2] The current save profile's folder: world slots and profile.save live here.
@@ -49,8 +75,8 @@ func save_dir() -> String:
 	return profile_dir(profile_slot)
 
 
-func profile_dir(n: int) -> String:
-	return root_dir().path_join("p%d" % clampi(n, 1, PROFILES))
+func profile_dir(n: int, flat: bool = false) -> String:  # [orbB] flat: the flat game's tree whatever the preview
+	return root_dir(flat).path_join("p%d" % clampi(n, 1, PROFILES))
 
 
 ## [worlds2] Moves pre-profile saves (slot_N.save, profile.save in `root`) into root/p1, unless p1
@@ -173,6 +199,7 @@ func load_game() -> bool:
 	if d.is_empty():
 		return false
 	GameState.from_dict(migrate(d))
+	Pace.sync_flags()  # [pace]
 	EventBus.game_loaded.emit()
 	return true
 
@@ -219,6 +246,12 @@ static func migrate(d: Dictionary) -> Dictionary:
 	if v < 2:
 		d = migrate_v2(d)  # [money]
 		v = 2
+	if v < 3:
+		d = Pace.migrate_save(d)  # [pace] grant the slow-start unlocks to older saves
+		v = 3
+	if v < 4:
+		d = migrate_v4(d)  # [ui2]
+		v = 4
 	d["version"] = v
 	return d
 
@@ -251,5 +284,22 @@ static func migrate_v2(d: Dictionary) -> Dictionary:
 			if slots[i] is Dictionary and str((slots[i] as Dictionary).get("tpl", "")) == "events":
 				slots[i] = {"state": "wait", "wait": 30.0}
 	flags["money_migrated"] = true
+	d["flags"] = flags
+	return d
+
+
+## [ui2] v3 -> v4: robot part items (the rarity-graded parts the old recipes, Mk tiers and the
+## Builder used) become Parts at their rarity's value (data/parts.json rarities[].parts), so
+## a Vintage core is 150 parts. Builder parts are cosmetics now: nothing to convert there.
+static func migrate_v4(d: Dictionary) -> Dictionary:
+	var items: Array = d.get("parts", []) if d.get("parts") is Array else []
+	var add: float = RobotParts.items_value(items)
+	var cur: Dictionary = d.get("currencies", {})
+	var p: BigNum = BigNum.from_serialized(cur["parts"]) if cur.has("parts") else BigNum.zero()
+	cur["parts"] = p.add(BigNum.from_float(add)).serialize()
+	d["currencies"] = cur
+	d["parts"] = []
+	var flags: Dictionary = d.get("flags", {})
+	flags["parts_migrated"] = add
 	d["flags"] = flags
 	return d

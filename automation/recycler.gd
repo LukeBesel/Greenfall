@@ -34,11 +34,12 @@ var _ingot_n: int = 0
 func _ready() -> void:
 	add_to_group("recycler")
 	_build()
+	YardArt.kitify(self)  # [yard] bevelled kit parts and shaders
 
 
 ## Belt path for the conveyor's incline line, from the feeder pad edge up over the throat lip.
 func belt_path(from: Vector3) -> Array[Vector3]:
-	var xf: Transform3D = global_transform if is_inside_tree() else transform
+	var xf: Transform3D = transform  # [orbD] in the parent (Stations) space, like the conveyor's own points
 	return [from, xf * Vector3(0, 1.45, 1.35), xf * Vector3(0, 1.45, 0.62)]
 
 
@@ -47,8 +48,9 @@ func throat_world() -> Vector3:
 
 
 func pad_contains(p: Vector3) -> bool:
-	var d: Vector3 = p - to_global(PAD_LOCAL)
-	return absf(d.x) <= PAD_HALF and absf(d.z) <= PAD_HALF and p.y < 1.6
+	var lp: Vector3 = _l(p)  # [orbD] world -> recycler-local
+	var d: Vector3 = lp - PAD_LOCAL
+	return absf(d.x) <= PAD_HALF and absf(d.z) <= PAD_HALF and lp.y < 1.6
 
 
 func can_feed() -> bool:
@@ -70,8 +72,9 @@ func feed(cube: JunkCube) -> void:
 			add_child(cube)
 	queue.append(cube)
 	var start: Vector3 = cube.global_position
-	var end: Vector3 = throat_world() + Vector3(0, 0.25, 0)
-	var top: Vector3 = (start + end) * 0.5 + Vector3(0, 0.5 + maxf(0.0, end.y - start.y) * 0.4, 0)
+	var upv: Vector3 = _gd(Vector3.UP)  # [orbD] local up
+	var end: Vector3 = throat_world() + upv * 0.25
+	var top: Vector3 = (start + end) * 0.5 + upv * (0.5 + maxf(0.0, (end - start).dot(upv)) * 0.4)
 	cube.set_meta("arriving", true)
 	var tw := cube.create_tween()
 	tw.tween_method(func(t: float) -> void:
@@ -191,7 +194,7 @@ func _work(delta: float) -> void:
 	var base: Vector3 = throat_world()
 	# The bale sinks between the drums, chewed smaller and shaking.
 	var shake := Vector3(randf_range(-1, 1), 0, randf_range(-1, 1)) * 0.03 * (1.0 - k)
-	_cur.global_position = base + Vector3(0, 0.25 - 0.55 * smoothstep(0.0, 1.0, k), 0) + shake
+	_cur.global_position = base + _gd(Vector3(0, 0.25 - 0.55 * smoothstep(0.0, 1.0, k), 0) + shake)  # [orbD]
 	_cur.scale = Vector3.ONE * lerpf(1.0, 0.15, smoothstep(0.1, 1.0, k))
 	_cur.rotation.z = sin(_t * 30.0) * 0.06
 	_spark_t -= delta
@@ -454,3 +457,22 @@ func _build() -> void:
 	cs2.shape = cy
 	cs2.position = Vector3(-1.55, 0.85, -0.3)
 	sb.add_child(cs2)
+	var cs3 := CollisionShape3D.new()  # [world2] the blower motor on the side
+	cs3.shape = PropColliders.box_shape(Vector3(0.7, 0.55, 0.5))
+	cs3.position = Vector3(1.35, 0.62, 0.15)
+	sb.add_child(cs3)
+
+
+# --- [orbD] Machine-local <-> world (identity on the flat game, where the machines sit at the
+# origin; on a globe the Stations node stands in the start site's frame) -------------------------
+
+func _g(p: Vector3) -> Vector3:
+	return global_transform * p if is_inside_tree() else p
+
+
+func _gd(v: Vector3) -> Vector3:
+	return global_basis * v if is_inside_tree() else v
+
+
+func _l(p: Vector3) -> Vector3:
+	return to_local(p) if is_inside_tree() else p

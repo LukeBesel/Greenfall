@@ -3,7 +3,7 @@ extends Node
 ## Runs the fixed-rate simulation tick (10 Hz) independent of frame rate.
 
 const SIM_HZ: float = 10.0
-const SAVE_VERSION: int = 2  # [money] v2: three currencies (cubes, parts, seeds)
+const SAVE_VERSION: int = 4  # [money] v2: three currencies (cubes, parts, seeds); [pace] v3: Baler / Lift Strength upgrades; [ui2] v4: robot part items -> Parts
 const RATE_WINDOW_S: float = 60.0
 
 var currencies: Dictionary = {}  # id -> BigNum
@@ -12,13 +12,19 @@ var stats: Dictionary = {}  # id -> float / Dictionary
 var flags: Dictionary = {}  # id -> Variant (milestones, tutorial, easter eggs)
 ## Opaque per-system blobs (field, player, loose cubes, ...). Systems write and read their own key.
 var world: Dictionary = {}
-## Robot parts in storage: Array of {type: int, rarity: int}.
+## Legacy robot part items ({type, rarity}); [ui2] always folded into Parts (RobotParts.fold_items).
 var parts: Array = []
 ## Per-hub district state. `world` is always districts[current_hub].
 var districts: Dictionary = {}
 var current_hub: int = 0
 ## Whole-planet state (PlanetData.to_dict()).
 var planet_state: Dictionary = {}
+## [orbB] The walkable globe's state (scenes/slice_orbit.gd: schema, cells, sites, positions as
+## direction + height). Empty until an --orbit run saves; the flat keys above are left alone.
+var orbit: Dictionary = {}
+## [orbB] On the globe `world` is the hub site's own dict (inside `orbit`), like a district's on the
+## flat game; the flat district's dict waits here, and saves keep writing it unchanged.
+var flat_world: Variant = null
 ## Set while switching districts: the next scene load uses the in-memory state (not saved).
 var reload_in_memory: bool = false
 var created_unix: float = 0.0
@@ -49,6 +55,8 @@ func new_game() -> void:
 	districts = {0: world}
 	current_hub = 0
 	planet_state = {}
+	orbit = {}  # [orbB]
+	flat_world = null  # [orbB]
 	created_unix = Time.get_unix_time_from_system()
 	saved_unix = 0.0
 	_income_log.clear()
@@ -166,8 +174,15 @@ func add_junk_removed(type_id: String, volume: float) -> void:
 	stats["junk_removed"] = d
 
 
+## [orbB] Make `d` the active per-hub dict (the globe's start site); the flat one is kept for saves.
+func use_orbit_world(d: Dictionary) -> void:
+	if flat_world == null:
+		flat_world = world
+	world = d
+
+
 func _districts_for_save() -> Dictionary:
-	districts[current_hub] = world
+	districts[current_hub] = world if flat_world == null else flat_world  # [orbB]
 	var out: Dictionary = {}
 	for k: int in districts:
 		out[str(k)] = (districts[k] as Dictionary).duplicate(true)
@@ -176,6 +191,9 @@ func _districts_for_save() -> Dictionary:
 
 ## Switch the active district (call after the current scene has persisted into `world`).
 func switch_hub(i: int) -> void:
+	if flat_world != null:  # [orbB] the globe's hub dict is not a flat district
+		world = flat_world
+		flat_world = null
 	districts[current_hub] = world
 	current_hub = i
 	if not districts.has(i):
@@ -203,11 +221,12 @@ func to_dict() -> Dictionary:
 		"upgrades": upgrades.duplicate(true),
 		"stats": stats.duplicate(true),
 		"flags": flags.duplicate(true),
-		"world": world.duplicate(true),
+		"world": (world if flat_world == null else (flat_world as Dictionary)).duplicate(true),  # [orbB]
 		"parts": parts.duplicate(true),
 		"districts": _districts_for_save(),
 		"current_hub": current_hub,
 		"planet_state": planet_state.duplicate(true),
+		"orbit": orbit.duplicate(true),  # [orbB]
 	}
 
 
@@ -232,6 +251,8 @@ func from_dict(d: Dictionary) -> void:
 	parts = (d.get("parts", []) as Array).duplicate(true)
 	current_hub = int(d.get("current_hub", 0))
 	planet_state = (d.get("planet_state", {}) as Dictionary).duplicate(true)
+	orbit = (d.get("orbit", {}) as Dictionary).duplicate(true)  # [orbB]
+	flat_world = null
 	districts = {}
 	var ds: Dictionary = d.get("districts", {})
 	for k: Variant in ds:

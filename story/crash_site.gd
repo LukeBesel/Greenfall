@@ -4,34 +4,28 @@ extends Node3D
 ## in from the direction it fell, a ring of thrown-up dirt, the pod sunk in and leaning back, a thin
 ## smoke plume, and damaged panels that flicker and spit sparks.
 ## It mends as Lumi does: the repair stage follows the upgrades bought (no extra save state).
-##   stage 0 (no upgrades yet)   smoking, sparking, a hanging panel, glitching seams, worn paint
-##   stage 1 (first upgrade)     sparks stop, the panel is bolted back, a faint wisp of smoke
-##   stage 2 (REPAIR_LEVELS)     repaired: clean paint, steady cyan seams, beacon blinking calmly
+##   stage 0 (no upgrades yet)   smoking, sparking, torn panel and dangling wire, cracked glass,
+##                               stuttering seams, heat-tinted sooty paint
+##   stage 1 (first upgrade)     sparks stop, bolted patch plates, strobing fin lamps, faint smoke
+##   stage 2 (REPAIR_LEVELS)     restored: clean pearl and tangerine, lit fins, hover glow underneath
+##   stage 3 (PLANTER_LEVELS)    planter-beacon: seedlings round the skirt and a soft beacon beam
+## The pod's own look per stage lives in EscapePod.set_condition() / animate().
 ## Cheap: one CPUParticles3D (smoke), pooled Vfx sparks, a couple of lights. Works in Compatibility.
 
 const LEAN := Vector3(0.2, 0.0, 0.11)  # back and to the side (radians)
 const SINK: float = 0.14
 ## Total upgrade levels for the full repair.
 const REPAIR_LEVELS: int = 4
+## Total upgrade levels for the planter-beacon (late game).
+const PLANTER_LEVELS: int = 14
 ## The direction the pod came in from (the intro's chase starts at land + (-120, 95, 80)).
 const FROM_DIR := Vector3(-120, 0, 80)
 
 var pod: Node3D
 var stage: int = -1
 var _smoke: CPUParticles3D
-var _panel: Node3D
-var _wires: OmniLight3D
-var _wire_node: Node3D
-var _plate: MeshInstance3D
-var _bolts: Node3D
-var _plate_line: MeshInstance3D
-var _halo: MeshInstance3D
-var _fin_lamps: Array[StandardMaterial3D] = []
-var _wire_mat: StandardMaterial3D
-var _seam: StandardMaterial3D
 var _beacon: StandardMaterial3D
 var _spark_t: float = 1.0
-var _glitch_t: float = 0.0
 var _t: float = 0.0
 
 
@@ -60,6 +54,9 @@ func setup(yaw: float) -> void:
 	_build_ground()
 	_build_damage()
 	set_stage(stage_for_upgrades())
+	PropBatch.merge(self)  # [orbE] perf: the furrow's clods and shards (static) as one mesh per material
+	_build_plume()  # [v2feel] after the merge: the plume's shader works in its own frame
+	PodBatch.merge(pod)  # [orbE] perf: the pod's static shell and each repair-stage group, merged per material
 	if not EventBus.upgrade_bought.is_connected(_on_upgrade):
 		EventBus.upgrade_bought.connect(_on_upgrade)
 
@@ -69,6 +66,8 @@ static func stage_for_upgrades() -> int:
 	var total: int = 0
 	for k: String in GameState.upgrades:
 		total += int(GameState.upgrades[k])
+	if total >= PLANTER_LEVELS:
+		return 3
 	return 0 if total <= 0 else (1 if total < REPAIR_LEVELS else 2)
 
 
@@ -83,23 +82,10 @@ func _on_upgrade(_id: String, _lvl: int) -> void:
 
 
 func set_stage(s: int) -> void:
-	stage = clampi(s, 0, 2)
+	stage = clampi(s, 0, 3)
 	_smoke.emitting = stage < 2
 	_smoke.color = Color(0.42, 0.4, 0.38, 0.45 if stage == 0 else 0.18)
-	_panel.rotation = Vector3(-0.8, 0.0, 0.18) if stage == 0 else Vector3.ZERO
-	_wires.visible = stage == 0
-	_wire_node.visible = stage == 0
-	EscapePod.set_wear(pod, EscapePod.PEARL, 0.45 if stage == 0 else (0.25 if stage == 1 else 0.0))
-	_seam.emission_energy_multiplier = 1.5
-	_seam.emission = EscapePod.CYAN
-	# Patched: tangerine bolts on the plate. Repaired: clean plate with a cyan line, a calm halo,
-	# the fin running lamps blinking in turn.
-	_bolts.visible = stage >= 1
-	_plate_line.visible = stage == 2
-	_plate.material_override = EscapePod.paint(EscapePod.PANEL if stage < 2 else EscapePod.PEARL, 0.35, 0.3 if stage < 2 else 0.0)
-	_halo.visible = stage == 2
-	for m: StandardMaterial3D in _fin_lamps:
-		m.emission_energy_multiplier = 0.0 if stage == 0 else 2.5
+	EscapePod.set_condition(pod, stage)
 
 
 # --- Ground ------------------------------------------------------------------------------
@@ -160,80 +146,9 @@ func _build_ground() -> void:
 # --- Damage -----------------------------------------------------------------------------
 
 func _build_damage() -> void:
-	# The cyan seam and beacon materials (shared by the pod's meshes) flicker while damaged.
-	var body: MeshInstance3D = pod.get_node("Body")
-	for i: int in body.mesh.get_surface_count():
-		var m: Material = body.mesh.surface_get_material(i)
-		if m is StandardMaterial3D and (m as StandardMaterial3D).emission_enabled and (m as StandardMaterial3D).emission.b > 0.8:
-			_seam = m
-	if _seam == null:
-		_seam = Mats.lamp(EscapePod.CYAN, 1.5)
-	for k: int in 3:
-		var fl: MeshInstance3D = pod.get_node_or_null("Fin%d/Lamp" % k)
-		if fl:
-			fl.material_override = (fl.material_override as StandardMaterial3D).duplicate()
-			_fin_lamps.append(fl.material_override as StandardMaterial3D)
 	var bn: MeshInstance3D = pod.get_node_or_null("Beacon")
 	_beacon = bn.material_override as StandardMaterial3D if bn else Mats.lamp(EscapePod.LAMP, 3.0)
-	# A hull panel torn loose on the flank facing the start, hanging from its top edge.
-	var a: float = EscapePod._ang(3) + PI / EscapePod.SEGS  # the facet left of the door
-	var y: float = 1.12
-	var r: float = EscapePod._door_r(y)
-	var home: Vector3 = EscapePod._pt(a, y, r * cos(PI / EscapePod.SEGS) + 0.012)
-	# Oriented onto the facet (+Z = outward); the plate swings out about its top edge (local X).
-	var face := Node3D.new()
-	face.name = "LoosePanel"
-	face.position = home
-	face.basis = Basis.looking_at(-Vector3(sin(a), 0, -cos(a)), Vector3.UP)
-	pod.add_child(face)
-	var swing := Node3D.new()
-	face.add_child(swing)
-	var plate := MeshInstance3D.new()
-	plate.mesh = ProcMesh.box(Vector3(0.36, 0.3, 0.018))
-	plate.material_override = EscapePod.paint(EscapePod.PANEL, 0.35, 0.3)
-	plate.position = Vector3(0, -0.15, 0.009)
-	swing.add_child(plate)
-	_plate = plate
-	# Repair details: four bolt heads (patched) and a thin cyan line across the plate (repaired).
-	_bolts = Node3D.new()
-	swing.add_child(_bolts)
-	for bx: float in [-0.15, 0.15]:
-		for by: float in [-0.03, -0.27]:
-			var bolt := MeshInstance3D.new()
-			bolt.mesh = ProcMesh.cyl(0.014, 0.014, 0.012, 6)
-			bolt.material_override = EscapePod.paint(EscapePod.TANGERINE, 0.3)
-			bolt.rotation.x = PI * 0.5
-			bolt.position = Vector3(bx, by, 0.022)
-			_bolts.add_child(bolt)
-	_plate_line = MeshInstance3D.new()
-	_plate_line.mesh = ProcMesh.box(Vector3(0.26, 0.008, 0.004))
-	_plate_line.material_override = Mats.lamp(EscapePod.CYAN, 1.5)
-	_plate_line.position = Vector3(0, -0.15, 0.02)
-	swing.add_child(_plate_line)
-	# Repaired: a thin cyan halo on the ground around the pod.
-	_halo = MeshInstance3D.new()
-	_halo.mesh = ProcMesh.torus(1.15, 1.19, 64, 4)
-	_halo.material_override = Mats.lamp(EscapePod.CYAN, 1.2)
-	_halo.scale = Vector3(1, 0.2, 1)
-	_halo.position = Vector3(0, 0.03, 0)
-	_halo.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	add_child(_halo)
-	_panel = swing
-	# Exposed wiring behind it: a hot glow that flickers.
-	var wires := MeshInstance3D.new()
-	wires.name = "Wires"
-	wires.mesh = ProcMesh.box(Vector3(0.24, 0.18, 0.01))
-	_wire_mat = Mats.lamp(Color(1.0, 0.5, 0.2), 2.0)
-	wires.material_override = _wire_mat
-	wires.position = Vector3(0, -0.15, 0.006)
-	face.add_child(wires)
-	_wire_node = wires
-	_wires = OmniLight3D.new()
-	_wires.light_color = Color(1.0, 0.55, 0.25)
-	_wires.light_energy = 0.0
-	_wires.omni_range = 1.6
-	_wires.position = home + Vector3(sin(a), 0, -cos(a)) * 0.25 + Vector3(0, -0.15, 0)
-	pod.add_child(_wires)
+	var home: Vector3 = EscapePod.facet_point(4, 1.2, 0.0)
 	# Smoke: a light plume from the top of the pod, drifting with the breeze.
 	_smoke = CPUParticles3D.new()
 	_smoke.name = "Smoke"
@@ -276,36 +191,50 @@ func _build_damage() -> void:
 	pod.add_child(_smoke)
 
 
+## [v2feel] Owner item 38: a very tall smoke column over the pod, home's landmark from far across the
+## globe (one cylinder and a shader, art/shaders/smoke_plume.gdshader). In the site's frame: +Y up.
+const PLUME_H: float = 320.0
+
+
+func _build_plume() -> void:
+	var cyl := CylinderMesh.new()
+	cyl.height = PLUME_H
+	cyl.bottom_radius = 1.0
+	cyl.top_radius = 22.0
+	cyl.radial_segments = 18
+	cyl.rings = 16
+	cyl.cap_top = false
+	cyl.cap_bottom = false
+	var mat := ShaderMaterial.new()
+	mat.shader = load("res://art/shaders/smoke_plume.gdshader")
+	mat.set_shader_parameter("height", PLUME_H)
+	cyl.material = mat
+	var mi := MeshInstance3D.new()
+	mi.name = "Plume"
+	mi.mesh = cyl
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	mi.custom_aabb = AABB(Vector3(-40, -PLUME_H * 0.5, -40), Vector3(120, PLUME_H, 80))
+	mi.position = Vector3(0, PLUME_H * 0.5 + 1.2, 0)
+	mi.add_to_group("see_through")  # transparent and faded near the camera: never a view blocker
+	add_child(mi)
+
+
 func _process(delta: float) -> void:
 	_t += delta
+	EscapePod.animate(pod, _t, delta)
 	# The beacon: a nervous double blink while damaged, a calm slow blink once repaired.
 	if _beacon:
-		var on: bool = fmod(_t, 0.7) < 0.08 or (fmod(_t, 0.7) > 0.16 and fmod(_t, 0.7) < 0.22) if stage == 0 else fmod(_t, 2.2) < 0.15
+		var ph: float = fmod(_t, 0.7)
+		var on: bool = (ph < 0.08 or (ph > 0.16 and ph < 0.22)) if stage == 0 else fmod(_t, 2.2) < 0.15
 		_beacon.emission_energy_multiplier = 3.0 if on else 0.3
-	if stage == 2:
-		for k: int in _fin_lamps.size():
-			_fin_lamps[k].emission_energy_multiplier = 3.0 if fmod(_t * 0.8 + k * 0.33, 1.0) < 0.12 else 0.4
-		_halo.material_override.set("emission_energy_multiplier", 1.0 + 0.25 * sin(_t * 1.6))
 	if stage != 0:
 		return
-	# Glitching seams: mostly steady, with short stutters (on/off, a red tinge).
-	_glitch_t -= delta
-	if _glitch_t <= 0.0:
-		_glitch_t = randf_range(0.05, 0.12) if randf() < 0.55 else randf_range(0.6, 2.2)
-		var bad: bool = randf() < 0.5
-		_seam.emission_energy_multiplier = randf_range(0.0, 0.4) if bad else 1.5
-		_seam.emission = EscapePod.CYAN.lerp(Color(1.0, 0.3, 0.3), 0.6) if bad and randf() < 0.3 else EscapePod.CYAN
-	# Wiring flicker and spark bursts from the torn panel.
-	var w: float = 0.6 + 0.4 * sin(_t * 37.0) * sin(_t * 13.0)
-	_wire_mat.emission_energy_multiplier = 1.0 + 2.5 * maxf(w, 0.0)
-	_wires.light_energy = 0.4 + 0.6 * maxf(w, 0.0)
 	_spark_t -= delta
 	if _spark_t <= 0.0:
 		_spark_t = randf_range(1.1, 3.4)
-		var at: Vector3 = _wires.global_position
+		var at: Vector3 = EscapePod.spark(pod)
 		Vfx.burst("sparkle", at, Color(1.0, 0.62, 0.25), 0.35)
 		if randf() < 0.5:
 			Vfx.burst("sparkle", at + Vector3(0, -0.1, 0), Color(1.0, 0.85, 0.55), 0.2)
-		_wires.light_energy = 2.2
 		if is_inside_tree() and randf() < 0.4 and Audio.has_sound("zap"):
 			Audio.play("zap", randf_range(1.2, 1.6), -24.0)

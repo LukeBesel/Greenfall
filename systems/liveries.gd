@@ -15,8 +15,8 @@ static func equipped() -> String:
 static func sync(fleet: Fleet) -> void:
 	if fleet == null:
 		return
-	var want: String = equipped()
 	for r: Robot in fleet.robots():
+		var want: String = RobotDesign.livery_for(r.type_id)  # [ui7] per robot type (the Locker's Bots section)
 		var cur: Node = r.get_node_or_null(NODE_NAME)
 		var have: String = str(cur.get_meta("livery", "")) if cur else ""
 		if have == want:

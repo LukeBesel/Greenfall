@@ -23,17 +23,38 @@ var _by_hex: Array = []
 var _meshes: Array[Mesh] = []
 var _rng := RandomNumberGenerator.new()
 var _carpet_mat: StandardMaterial3D
+## [leftovers] The carpet's placement runs on a worker thread while the district builds (start()),
+## and finish() turns its buffers into MultiMeshes. Groups: [mesh index, buffer, instance count].
+var _task: int = -1
+var _out: Array = []
 
 
 func setup(p_field: HexField) -> void:
+	await start(p_field)
+	await finish()
+
+
+## Meshes on the main thread, then the placement: on a WorkerThreadPool thread when a BuildBudget
+## is open (it only reads the field and layout, and owns _rng / _by_hex until finish()).
+func start(p_field: HexField) -> void:
 	field = p_field
 	layout = field.layout
 	_rng.seed = field.seed_value + 4242
 	var coat: Array = field.biome_set.get("coat", [])
 	if Frontiers.is_frontier_biome(field.biome) and coat.size() >= 3:
 		_dust = Color(float(coat[0]), float(coat[1]), float(coat[2]), 1.0)
-	_build_meshes()
-	_build()
+	await _build_meshes()
+	field.border_warp(Vector3.ZERO)  # its noise is created lazily: do that here, not on the thread
+	if BuildBudget.active():
+		_task = BuildBudget.add_task(_build, "litter carpet")
+	else:
+		_build()
+
+
+func finish() -> void:
+	await BuildBudget.join(_task)
+	_task = -1
+	await _apply()
 
 
 static func _crumple(size: Vector2, segs: int, height: float, rng: RandomNumberGenerator, color: Color) -> ArrayMesh:
@@ -76,7 +97,9 @@ func _build_meshes() -> void:
 	# Tiny real items at very low detail.
 	for id: String in ["can_rusted", "bleach_bottle", "lubricant_spray", "garden_gloves_01", "drain_cleaner",
 			"multi_cleaner_bottle", "russian_food_cans_01", "oil_tin", "circuit_board"]:
-		_meshes.append(AssetLib.model_mesh_lite(id, [70, 140, 220, 220][clampi(Settings.quality, 0, 3)]))
+		await AssetLib.fetch_model(id)  # [leftovers] behind the loading screen: off the main thread
+		await BuildBudget.check("litter:meshes")
+		_meshes.append(AssetLib.model_mesh_lite(id, [24, 90, 140, 140][clampi(Settings.quality, 0, 3)]))  # [world2] were 70, 140, 220, 220: the gen-2 carpet is bigger
 
 
 ## Real-world trash colours: mostly sun-faded paper, cardboard, grey film and black bags, with
@@ -124,22 +147,26 @@ func _build() -> void:
 			mult = 2.2
 		elif btype == CityLayout.Block.VACANT:
 			mult = 0.8
-		var n: int = int(area * DENSITY * mult * density_mult)  # [biomes]
+		# [world2] The carpet follows HexField.owner_hex: natural (warped) borders, and the streets of
+		# building-blocked hexes and the hub hex outside the yard belong to a neighbouring junk hex, so
+		# no street is bare and it all clears with that hex. Sampled over the larger square it owns.
+		var reach: float = HexField.GEN2_REACH
+		var n: int = int(area * DENSITY * mult * density_mult * reach * reach)  # [biomes]
 		var a: Vector2i = field.hex_axial[id]
 		for k: int in n:
-			var p := Vector3(c.x + _rng.randf_range(-1, 1) * field.hex_size, 0, c.z + _rng.randf_range(-1, 1) * field.hex_size)
-			if field.hex_at(p) != id:
+			var p := Vector3(c.x + _rng.randf_range(-1, 1) * field.hex_size * reach, 0, c.z + _rng.randf_range(-1, 1) * field.hex_size * reach)
+			if field.owner_hex(p) != id:
 				continue
 			var surf: int = layout.surface_at(p.x, p.z) if layout else 0
 			if surf == CityLayout.Surface.BUILDING or surf == CityLayout.Surface.YARD:
 				continue
-			if surf == CityLayout.Surface.ROAD and layout.curb_distance(p.x, p.z) > 1.5 and _rng.randf() < 0.45:
+			if surf == CityLayout.Surface.ROAD and layout.curb_distance(p.x, p.z) > 1.5 and _rng.randf() < 0.15:  # [world2] was 0.45: mid-road reads covered too
 				continue
 			# Layered carpet: later pieces sit on top of earlier ones so the ground disappears.
 			var layer: float = float(k) / float(n)
 			p.y = (layout.height_at(p.x, p.z) if layout else 0.0) + field.ground_height(id, p) * 0.9 + layer * 0.06 * mult
 			var n_items: int = _meshes.size() - 4
-			var mi: int = _rng.randi() % 4 if _rng.randf() < 0.72 else 4 + _rng.randi() % n_items
+			var mi: int = _rng.randi() % 4 if _rng.randf() < (0.86 if Settings.quality == Settings.Quality.LOW else 0.8) else 4 + _rng.randi() % n_items  # [world2] Low: fewer tiny items (the bulk of its triangles)
 			var b := Basis(Vector3.UP, _rng.randf() * TAU)
 			if mi >= 4:
 				b = b * Basis(Vector3.RIGHT, PI * 0.5)  # small items lie on their side
@@ -152,27 +179,62 @@ func _build() -> void:
 			var arr: Array = groups[key]
 			arr.append([xf, _litter_color() if mi < 4 else Color.WHITE, id, p.x, p.z, _rng.randf()])
 			groups[key] = arr
+	# [leftovers] Instance data straight into MultiMesh buffers (3x4 row-major transform, then the
+	# colour), so the main thread sets one buffer per group instead of ~150k instances.
+	_out.clear()
+	var hidden_xf: Transform3D = _hidden()
 	for key: String in groups:
 		var items: Array = groups[key]
 		var mesh_i: int = int(key.split("|")[1])
-		var mm := MultiMesh.new()
-		mm.transform_format = MultiMesh.TRANSFORM_3D
-		mm.use_colors = mesh_i < 4
-		mm.mesh = _meshes[mesh_i]
-		mm.instance_count = items.size()
-		var mm_idx: int = _mms.size()
+		var colors: bool = mesh_i < 4
+		var stride: int = 16 if colors else 12
+		var buf := PackedFloat32Array()
+		buf.resize(items.size() * stride)
+		var mm_idx: int = _out.size()
 		for i: int in items.size():
 			var it: Array = items[i]
 			var hid: int = it[2]
 			var visible_: bool = field.hex_clean[hid] == 0 and float(it[5]) >= field.removed_fraction(hid) * 0.9
-			mm.set_instance_transform(i, it[0] if visible_ else _hidden())
-			if mm.use_colors:
-				mm.set_instance_color(i, it[1])
+			var t: Transform3D = it[0] if visible_ else hidden_xf
+			var o: int = i * stride
+			buf[o] = t.basis.x.x
+			buf[o + 1] = t.basis.y.x
+			buf[o + 2] = t.basis.z.x
+			buf[o + 3] = t.origin.x
+			buf[o + 4] = t.basis.x.y
+			buf[o + 5] = t.basis.y.y
+			buf[o + 6] = t.basis.z.y
+			buf[o + 7] = t.origin.y
+			buf[o + 8] = t.basis.x.z
+			buf[o + 9] = t.basis.y.z
+			buf[o + 10] = t.basis.z.z
+			buf[o + 11] = t.origin.z
+			if colors:
+				var col: Color = it[1]
+				buf[o + 12] = col.r
+				buf[o + 13] = col.g
+				buf[o + 14] = col.b
+				buf[o + 15] = col.a
 			var cell := Vector2i(floori(float(it[3]) / CELL), floori(float(it[4]) / CELL))
 			var bins: Dictionary = _by_hex[hid]
 			var lst: Array = bins.get(cell, [])
 			lst.append([mm_idx, i, it[3], it[4], it[5]])
 			bins[cell] = lst
+		_out.append([mesh_i, buf, items.size()])
+
+
+## Main thread: one MultiMesh (+ instance node) per group from the buffers _build() made.
+func _apply() -> void:
+	for g: Array in _out:
+		await BuildBudget.check("litter:apply")
+		var mesh_i: int = g[0]
+		var mm := MultiMesh.new()
+		mm.transform_format = MultiMesh.TRANSFORM_3D
+		mm.use_colors = mesh_i < 4
+		mm.mesh = _meshes[mesh_i]
+		mm.instance_count = int(g[2])
+		if int(g[2]) > 0:
+			mm.buffer = g[1]
 		_mms.append(mm)
 		var mmi := MultiMeshInstance3D.new()
 		mmi.multimesh = mm
@@ -200,6 +262,7 @@ func _build() -> void:
 			mat.uv1_scale = Vector3.ONE * 3.0
 			mmi.material_override = mat
 		add_child(mmi)
+	_out.clear()
 
 
 func _hidden() -> Transform3D:
@@ -214,9 +277,9 @@ func sweep(pos: Vector3, radius: float) -> int:
 	var c1 := Vector2i(floori((pos.x + radius) / CELL), floori((pos.z + radius) / CELL))
 	var hexes: Dictionary = {}
 	for o: Vector3 in [Vector3.ZERO, Vector3(radius, 0, 0), Vector3(-radius, 0, 0), Vector3(0, 0, radius), Vector3(0, 0, -radius)]:
-		var h: int = field.hex_at(pos + o)
-		if h >= 0:
-			hexes[h] = true
+		for h: int in [field.hex_at(pos + o), field.owner_hex(pos + o)]:  # [world2] carpet owner may differ
+			if h >= 0 and h < _by_hex.size():
+				hexes[h] = true
 	for hid: int in hexes:
 		var bins: Dictionary = _by_hex[hid]
 		for cx: int in range(c0.x, c1.x + 1):

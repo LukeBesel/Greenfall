@@ -104,7 +104,10 @@ static func beats_done() -> Array:
 ## Raises the stored charge (never lowers it). Returns milestones newly crossed (in order).
 static func store(c: float) -> Array[int]:
 	var old: float = stored()
-	var now: float = maxf(old, clampf(c, 0.0, 1.0))
+	# [pace2] On Verdance the core can't pass what the tech found so far allows (data/homeward.json
+	# needs_tech): the Dust Flats, Sunken City, Frozen Port and the Cradle wait for return trips.
+	var cap: float = Homeward.cap_for(0) if Homeward.current_planet() == 0 else 1.0
+	var now: float = maxf(old, minf(clampf(c, 0.0, 1.0), cap))
 	GameState.flags["core_charge"] = now
 	var out: Array[int] = []
 	for b: int in BEATS:
@@ -216,11 +219,12 @@ func _beat_memory() -> void:
 	c.begin()
 	var p: Vector3 = (world.patch as Node3D).global_position
 	var model: PatchModel = _model()
+	var up: Vector3 = WorldUp.at(world, p)  # [orbE] local up on a round planet
 	var front: Vector3 = -(world.patch as Node3D).global_transform.basis.z
-	front.y = 0.0
-	front = front.normalized() if front.length() > 0.1 else Vector3.FORWARD
-	var side: Vector3 = front.cross(Vector3.UP).normalized()
-	c.cam.global_transform = Transform3D(Basis(), p + front * 2.6 + side * 0.9 + Vector3(0, 1.2, 0)).looking_at(p + Vector3(0, 0.8, 0), Vector3.UP)
+	front -= up * front.dot(up)
+	front = front.normalized() if front.length() > 0.1 else WorldUp.flat(world, p, Vector3.FORWARD)
+	var side: Vector3 = front.cross(up).normalized()
+	c.cam.global_transform = Transform3D(Basis(), p + front * 2.6 + side * 0.9 + up * 1.2).looking_at(p + up * 0.8, up)
 	if model:
 		model.flash()
 		model.set_happy(1.0)
@@ -278,8 +282,9 @@ func _beat_glow() -> void:
 		tw.tween_property(model, "core_glow", GLOW_BRIGHT, 1.6)
 		model.flash()
 		model.set_happy(1.0)
-	Vfx.burst("big_sparkle", p + Vector3(0, 1.0, 0), Color(0.5, 1.0, 0.85), 1.2)
-	Vfx.burst("sparkle", p + Vector3(0, 0.6, 0), Color(0.7, 1.0, 0.6), 1.0)
+	var gu: Vector3 = WorldUp.at(world, p)  # [orbB] local up on a round planet
+	Vfx.burst("big_sparkle", p + gu * 1.0, Color(0.5, 1.0, 0.85), 1.2)
+	Vfx.burst("sparkle", p + gu * 0.6, Color(0.7, 1.0, 0.6), 1.0)
 	Audio.play("fanfare", 1.3, -10.0)
 	EventBus.toast.emit(tr("Bloom Core 50%: Lumi's glow is back, brighter than it has been in years."), "story")
 	if world.get("wren") != null:
@@ -308,13 +313,14 @@ func _beat_ark_star() -> void:
 	var p: Vector3 = patch.global_position
 	var model: PatchModel = _model()
 	# Low behind Lumi, looking up past it at the sky.
+	var up: Vector3 = WorldUp.at(world, p)  # [orbE] local up on a round planet
 	var fwd: Vector3 = -patch.global_transform.basis.z
-	fwd.y = 0.0
-	fwd = fwd.normalized() if fwd.length() > 0.1 else Vector3.FORWARD
-	var right: Vector3 = fwd.cross(Vector3.UP).normalized()
-	var cam_pos: Vector3 = p - fwd * 3.2 + Vector3(0, 0.55, 0) + right * 0.8
-	var look: Vector3 = p + fwd * 20.0 + Vector3(0, 13.0, 0)
-	c.cam.global_transform = Transform3D(Basis(), cam_pos).looking_at(look, Vector3.UP)
+	fwd -= up * fwd.dot(up)
+	fwd = fwd.normalized() if fwd.length() > 0.1 else WorldUp.flat(world, p, Vector3.FORWARD)
+	var right: Vector3 = fwd.cross(up).normalized()
+	var cam_pos: Vector3 = p - fwd * 3.2 + up * 0.55 + right * 0.8
+	var look: Vector3 = p + fwd * 20.0 + up * 13.0
+	c.cam.global_transform = Transform3D(Basis(), cam_pos).looking_at(look, up)
 	c.cam.fov = 58.0
 	c.caption(tr("That night..."))
 	c.fade_to(0.0, 1.4)

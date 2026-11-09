@@ -53,10 +53,12 @@ func _init(px: Vector2i = Vector2i(320, 320)) -> void:
 	_vp.add_child(_pivot)
 
 
-func show_design(id: String) -> void:
-	if id == _id or not PatchModel.VARIANTS.has(id):
+## `hidden`: a locked design shows only as a dark silhouette (owner: never the actual look). [style]
+func show_design(id: String, hidden: bool = false) -> void:
+	if (id == _id and hidden == _hidden) or not PatchModel.VARIANTS.has(id):
 		return
 	_id = id
+	_hidden = hidden
 	if _model == null:
 		_model = PatchModel.new()
 		_model.preview_variant = id
@@ -64,6 +66,11 @@ func show_design(id: String) -> void:
 	else:
 		_model.set_variant(id)
 	_model.set_happy(0.8)
+	if hidden:
+		LumiStyle.silhouette(_model)
+
+
+var _hidden: bool = false
 
 
 func _process(delta: float) -> void:

@@ -86,6 +86,8 @@ static func refund_for(tier: int) -> int:
 static func retire_block_reason(r: Robot) -> String:
 	if r == null or not is_instance_valid(r):
 		return "none"
+	if not YardBuilds.built("nursery"):  # [camp] the nursery is a Hub-tab build now
+		return TranslationServer.translate("Build the Robot Nursery in the Build tab first.")
 	if r.tier <= LOW_TIER or served_s(r.robot_name) >= OLD_S:
 		return ""
 	var left: int = int(ceil((OLD_S - served_s(r.robot_name)) / 60.0))
@@ -137,6 +139,19 @@ func setup(p_world: Node) -> void:
 	position = center
 	_build_garden()
 	rebuild()
+	visible = YardBuilds.built("nursery")  # [camp] nothing until it's built (Hub tab)
+
+
+## [camp] Shows the garden once it's built (live: it rises out of the ground with sparkles).
+func set_built(on: bool, animate: bool) -> void:
+	visible = on
+	if not on or not animate:
+		return
+	scale = Vector3(1, 0.02, 1)
+	create_tween().tween_property(self, "scale", Vector3.ONE, 0.8).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	for q: int in 5:
+		Vfx.burst("sparkle", global_position + Vector3(randf_range(-2, 2), 0.5, randf_range(-1.5, 1.5)), Color(0.6, 1.0, 0.7), 0.6)
+	Audio.play("chime", 1.0, -6.0)
 
 
 func _pick_spot() -> Vector3:
@@ -159,30 +174,21 @@ func _pick_spot() -> Vector3:
 
 
 func _build_garden() -> void:
-	var kerb: StandardMaterial3D = DecorProps.stone(Color(0.8, 0.78, 0.73))
 	var hx: float = SIZE.x * 0.5
 	var hz: float = SIZE.y * 0.5
-	# Low stone kerb around a lawn, a gap on the yard side to walk in.
-	add_child(EggProps.mesh(ProcMesh.box(Vector3(SIZE.x, 0.03, SIZE.y)), DecorProps.leaves(Color(0.32, 0.5, 0.24)), Vector3(0, 0.015, 0)))
-	for z: float in [-hz, hz]:
-		var w: float = SIZE.x if z < 0 else SIZE.x * 0.36
-		for x: float in ([0.0] if z < 0 else [-hx + w * 0.5, hx - w * 0.5]):
-			add_child(EggProps.mesh(ProcMesh.rounded_box(Vector3(w, 0.18, 0.12), 0.02, 2), kerb, Vector3(x, 0.09, z)))
-	for x: float in [-hx, hx]:
-		add_child(EggProps.mesh(ProcMesh.rounded_box(Vector3(0.12, 0.18, SIZE.y), 0.02, 2), kerb, Vector3(x, 0.09, 0)))
+	# [yard] Soil bed with dense grass, segmented kerbs (gap on the yard side), a charging shelter.
+	var hard: MeshInstance3D = YardArt.nursery(SIZE).mi(0.15, "Garden")
+	add_child(hard)
+	YardArt.set_powered(hard, true)  # only shows once built
+	add_child(YardArt.nursery_grass(SIZE))
 	# Flower beds the caretakers tend.
 	for p: Vector3 in [Vector3(-1.25, 0, -0.85), Vector3(1.25, 0, -0.85), Vector3(-0.4, 0, 0.75)]:
 		var bed: Node3D = DecorProps.flower_bed()
 		bed.position = p
 		add_child(bed)
 		_beds.append(p)
-	# A little shed sign and a watering can.
-	var post: StandardMaterial3D = DecorProps.wood()
-	add_child(EggProps.mesh(ProcMesh.box(Vector3(0.07, 1.0, 0.07)), post, Vector3(hx - 0.45, 0.5, hz - 0.2)))
-	add_child(EggProps.mesh(ProcMesh.rounded_box(Vector3(0.9, 0.34, 0.05), 0.02, 2), DecorProps.paint(Color(0.92, 0.9, 0.84), 0.5), Vector3(hx - 0.45, 1.0, hz - 0.17)))
-	var sign: Label3D = EggProps.label("NURSERY", 46, Color(0.24, 0.42, 0.26), Vector3(hx - 0.45, 1.0, hz - 0.14))
+	var sign: Label3D = EggProps.label("NURSERY", 46, Color(0.24, 0.42, 0.26), Vector3(hx - 0.45, 1.0, hz - 0.165))
 	add_child(sign)
-	add_child(EggProps.mesh(ProcMesh.cyl(0.08, 0.1, 0.18, 10), DecorProps.paint(Color(0.3, 0.55, 0.62), 0.4, 0.4), Vector3(-hx + 0.5, 0.09, hz - 0.5)))
 
 
 ## Rebuilds the caretakers from GameState (after a retire, or on load).

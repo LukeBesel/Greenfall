@@ -26,7 +26,7 @@ var ground_y: Callable  # (x, z) -> float
 
 func _ready() -> void:
 	_build()
-	_last_pos = global_position
+	_last_pos = position  # [orbB] parent frame
 
 
 func _build() -> void:
@@ -171,9 +171,10 @@ func _process(delta: float) -> void:
 		r.rotate_y(delta * 38.0)
 	var hull: Node3D = get_node("Hull")
 	# Bob, and bank into the direction of travel.
-	var vel: Vector3 = (global_position - _last_pos) / maxf(delta, 0.0001)
-	_last_pos = global_position
-	var local_v: Vector3 = global_transform.basis.inverse() * vel
+	# [orbB] in the parent's frame (the Ledger: the world on the flat game, a hub frame on the globe)
+	var vel: Vector3 = (position - _last_pos) / maxf(delta, 0.0001)
+	_last_pos = position
+	var local_v: Vector3 = transform.basis.inverse() * vel
 	hull.position.y = sin(_t * 2.2) * 0.08
 	hull.rotation.x = lerpf(hull.rotation.x, clampf(local_v.z * 0.04, -0.35, 0.35), minf(delta * 4.0, 1.0))
 	hull.rotation.z = lerpf(hull.rotation.z, clampf(-local_v.x * 0.04, -0.35, 0.35), minf(delta * 4.0, 1.0))
@@ -181,10 +182,9 @@ func _process(delta: float) -> void:
 		var want: float = atan2(vel.x, vel.z)
 		rotation.y = lerp_angle(rotation.y, want, minf(delta * 2.5, 1.0))
 	if _shadow:
-		var gy: float = float(ground_y.call(global_position.x, global_position.z)) if ground_y.is_valid() else 0.0
-		var h: float = maxf(global_position.y - gy, 0.1)
-		_shadow.global_position = Vector3(global_position.x, gy + 0.04, global_position.z)
-		_shadow.global_rotation = Vector3(0, rotation.y, 0)
+		var gy: float = float(ground_y.call(position.x, position.z)) if ground_y.is_valid() else 0.0
+		var h: float = maxf(position.y - gy, 0.1)
+		_shadow.global_transform = get_parent().global_transform * Transform3D(Basis(Vector3.UP, rotation.y), Vector3(position.x, gy + 0.04, position.z))
 		var s: float = clampf(1.4 - h * 0.03, 0.6, 1.4)
 		_shadow.scale = Vector3(s, 1, s)
 		_shadow_mat.albedo_color.a = clampf(0.75 - h * 0.025, 0.12, 0.7)

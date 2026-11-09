@@ -24,6 +24,8 @@ extends Node
 ##   --robots=type:n,..  spawn test robots (slice.gd); any --robots run prints a [bots] report before quitting
 ##   --clean-hexes=N    pre-clean the N land hexes nearest the base
 ##   --bot-report       print the [bots] robot report before --quit-after
+##   --orbit-far-crew[=N] --offline-jump[=S]  [orbC] round-planet crew checks (robots/sphere/sphere_crew_dev.gd)
+##   --fabricator [--fabricator-build]  [orbC] unlock (and, on --orbit, build and fund) the Bot Fabricator
 ##   --trace-bot=NAME   print one robot's state every 2 s (target, hopper, stall timer, status)
 ##   --ledger-act=N     jump the Ledger arc to act N (1 intercepts, 2 drones, 3 relay, 4 resolved)
 ##   --ledger-drop[=S]  force a Ledger dump drone S seconds after start (ignores jammers)
@@ -32,6 +34,10 @@ extends Node
 ##   --demo-scoop       Patch scoops the nearest junk nonstop (pickup animation shots; --demo-yaw, --demo-speed)
 ##   --spawn-egg=ID     put Patch next to an easter egg in this district (data/eggs.json ids);
 ##                      --egg-dist=M sets the distance, --egg-poke[=S] plays its reaction after S s
+##                      [eggs2] --egg-use[=S] presses E on it after S s; --egg-parts=ID marks a collectible egg's parts
+##                      collected; --tv-frame=N holds the TV broadcast on frame N, --tv-step=S advances it every S wall-clock s
+##   [eggs2] Museum: --museum (unlocked), --museum-here (build site in this district), --museum-built, --museum-sample
+##                      (a partly filled collection), --spawn-museum (--museum-dist/--museum-side/--museum-yaw)
 ##   --event=ID         [events] force a world event (supply_drop, salvage_surge, rain_shower, robot_hiccup,
 ##                      wildlife_visit, rare_part_signal, ledger_audit) --event-at=S wall-clock seconds after start (default 3);
 ##                      --event-land drops the supply crate from just above the junk, slowly (screenshots)
@@ -43,6 +49,7 @@ extends Node
 ##           after --design-unlock-at=S s (systems/designs.gd)
 ##   --pad-audit        [deck] open every screen pad-only and check focus reachability + B to close
 ##   --scene-stats[=S]  [deck] print a geometry census (tools/scene_stats.gd) after S s (headless ok)
+##   --objective=N --objective-clean=F --near-part --hints-full --requests-unlocked --detector-on --signal-tower=N  [onboard] story objectives (shots)
 ##   --tab=contracts    with --open=upgrades: the Requests board and its reward track [money] (--contracts-sample fills it)
 ##   [hud] --lumi-level=N start at Lumi Level N; --lumi-xp=N grant N XP; --lumi-levelup=S level up S s after start
 ##         (holds the level-up moment for screenshots); --tool=plant|water; --hud-pad (pad glyphs);
@@ -52,6 +59,7 @@ extends Node
 ##   --builder-sample   [drones] stocked builder parts bin; --builder-demo showcase builds on the robots;
 ##                      --builder-shot fixed camera (--bshot-cam=x,y,z --bshot-at=x,y,z --bshot-fov --bshot-nohud --bshot-lumi);
 ##                      --tab=builder [--builder-robot=N --builder-slot=ID --builder-opt=N] focuses a part
+##   [ui2] --locker opens the workbench Locker before hub level 3 (--tab=locker; cosmetics/builder/trade map to locker/bots)
 ##   [vqa2] --no-junk-lod keeps all junk on its near mesh (A/B perf); --lod-debug prints junk LOD flips
 ##   --frontier=ID      [biomes] start in a frontier district (dust_flats, frozen_port, sunken_city, cradle_returns);
 ##                      --frontiers-open lets the rocket fly there without the unlocks; --storm[=S] sandstorm after S s
@@ -65,6 +73,7 @@ extends Node
 ##   --demo-end[=S]     [steam] show the end-of-demo screen after S seconds
 ##   [late] --post-finale (Verdance won), --world=N, --heirlooms=id:lv+.., --starseeds=N, --open=ark|garden,
 ##          --decor-sample, --new-world[=S], --no-banner; full list in systems/late_director.gd
+##   [kit] --kit-lineup  art kit lineup (docs/ART_KIT.md); with --out=PREFIX it renders every piece and quits
 
 var args: Dictionary = {}
 var _elapsed: float = 0.0
@@ -95,16 +104,26 @@ func _ready() -> void:
 		Settings.colorblind = true
 	if has("time-scale"):
 		Engine.time_scale = float(args["time-scale"])
+		# [pace2] Keep each physics step as short as at 4x: at 16x a 120 Hz tick is 0.13 s of game
+		# time and Lumi wedges into props and heaps, which skews fast-forward pacing runs.
+		if Engine.time_scale > 4.0:
+			var base_hz: int = int(ProjectSettings.get_setting("physics/common/physics_ticks_per_second", 120))
+			Engine.physics_ticks_per_second = int(ceil(base_hz * Engine.time_scale / 4.0))
+			Engine.max_physics_steps_per_frame = maxi(Engine.max_physics_steps_per_frame, 8 * int(ceil(Engine.time_scale / 4.0)))
 	if has("l10n-audit"):  # [l10n] untranslated on-screen text (tools/l10n_audit.gd), use with --locale=pseudo
 		var au := L10nAudit.new()
 		au.name = "L10nAudit"
 		add_child(au)
+	if has("quality-probe"):  # [v1menu] times quality preset switches (tools/quality_switch_probe.gd)
+		add_child(load("res://tools/quality_switch_probe.gd").new())
 	if has("pad-audit"):  # [deck] controller-only screen audit (tools/pad_audit.gd)
 		add_child(PadAudit.new())
 	if has("no-hud"):  # [steam] store/trailer shots without HUD, toasts and subtitles
 		add_child(load("res://steam/store_shots.gd").new())
 	if has("demo-end"):  # [steam] open the end-of-demo screen after S seconds (screenshots)
 		get_tree().create_timer(get_f("demo-end", 5.0)).timeout.connect(func() -> void: Demo.show_end_screen("auto"))
+	if has("kit-lineup"):  # [kit] art kit lineup (art/kit/kit_lineup.gd; --out=PREFIX renders and quits)
+		get_tree().change_scene_to_file.call_deferred("res://art/kit/kit_lineup.tscn")
 	if not args.is_empty():
 		print("[DevHooks] args: ", args)
 

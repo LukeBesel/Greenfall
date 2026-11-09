@@ -23,6 +23,8 @@ var running: bool = false
 ## True from _finish() until the fade-out has handed the camera and controls back.
 var ending: bool = false
 var _waiting: bool = false
+## [intro3] WREN's brief was played inside the intro (the objectives only reveal their card).
+var brief_played: bool = false
 
 var _cam: Camera3D
 var _prev_cam: Camera3D
@@ -65,7 +67,9 @@ const WREN_GLITCH := 0
 ## Builds the pod prop (also used after the intro as a landmark, and by the cinematic sets).
 ## [intro2] Rebuilt in story/escape_pod.gd: a real door opening, no overlapping faces.
 static func build_pod() -> Node3D:
-	return EscapePod.build()
+	var pod: Node3D = EscapePod.build()
+	GlimDirector.cling_to(pod)  # [v4calm] item 43: Glim holds on to the pod until he's repaired
+	return pod
 
 
 ## Re-entry plasma: nested glowing cones trailing behind (+Y) a falling pod. See _flicker_fire.
@@ -128,6 +132,15 @@ func should_play() -> bool:
 
 ## Places the pod landmark (called every load once the intro has happened).
 func place_pod() -> void:
+	if place_pod_fn.is_valid():  # [orbE] the globe places its own pod (same spot, its colliders)
+		if _site and is_instance_valid(_site):
+			_site.queue_free()
+		elif _pod and is_instance_valid(_pod):
+			_pod.queue_free()
+		_site = null
+		_pod = null
+		place_pod_fn.call()
+		return
 	if _pod == null:
 		_pod = build_pod()
 		world.add_child(_pod)
@@ -135,6 +148,8 @@ func place_pod() -> void:
 	_crash_pose()
 	_hatch = _pod.get_node("Hatch")
 	EscapePod.set_open(_pod, true, CrashSite.LEAN.x)
+	PropColliders.fit(PropColliders.body(_pod, "Props"), _pod)  # [world2] the landed pod is solid
+	PropColliders.push_out_pieces(_pod, world.field, world.get("view"))
 	if _fire and is_instance_valid(_fire):
 		_fire.queue_free()
 	_fire = null
@@ -147,12 +162,43 @@ func _crash_pose() -> void:
 	var fire: Node = _pod.get_node_or_null("ReentryFire")
 	if fire:
 		fire.queue_free()
-	_site = CrashSite.attach(world, _pod, POD_POS + Vector3(0, _ground(POD_POS), 0), 0.5)
+	_site = CrashSite.attach(world, _pod, _w(POD_POS + Vector3(0, _ground(POD_POS), 0)), 0.5)  # [orbE]
+	if site_xf != Transform3D.IDENTITY:  # [orbE] lie on the globe's pad, not the world's flat plane
+		_site.global_basis = site_xf.basis.orthonormalized()
 
 
 func _ground(p: Vector3) -> float:
-	var layout: CityLayout = world.field.layout
+	var layout: CityLayout = world.field.get("layout") as CityLayout  # [orbE] the globe's field has none
 	return clampf(layout.height_at(p.x, p.z), 0.0, 0.3) if layout else 0.0
+
+
+# --- [orbE] Round planet: the in-world shots in the pod site's frame -----------------------
+## The landing and wake shots are written in flat coordinates around POD_POS (+Y up). On a
+## globe, site_xf maps them onto the pod anchor's frame (origin on the pad, +Y the local up), so
+## every shot, the chase camera and Lumi's drift stay level on the curve. Identity on the flat
+## game: nothing there changes. The globe slice sets it with site_for_anchor(pod anchor).
+var site_xf := Transform3D.IDENTITY
+## [orbE] On the globe: the pod anchor's frame when the intro starts (anchors settle while
+## loading), the globe's own pod placement at the end, and the globe camera's hand-off.
+var site_fn: Callable  # () -> Transform3D
+var place_pod_fn: Callable  # () -> void
+var cam_reset_fn: Callable  # () -> void
+
+
+static func site_for_anchor(anchor: Transform3D) -> Transform3D:
+	return anchor * Transform3D(Basis(), -POD_POS)
+
+
+func _w(v: Vector3) -> Vector3:  # intro (flat) coordinates -> world
+	return site_xf * v
+
+
+func _v(p: Vector3) -> Vector3:  # world -> intro coordinates
+	return site_xf.affine_inverse() * p
+
+
+func _up() -> Vector3:
+	return site_xf.basis.y.normalized()
 
 
 func _model() -> PatchModel:
@@ -189,7 +235,7 @@ func _drop_cover() -> void:
 ## optional "tail": the signal breaks up on the last words (heavy glitch on that span only).
 ## Kept in one place so tests can check the subtitle timing rule against all of them.
 static func lines() -> Dictionary:
-	return {
+	var out: Dictionary = {
 		"title": [TranslationServer.translate("Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."), ""],
 		"vault": [TranslationServer.translate("Lumi, the ark's little seed-keeper, sang to the seedlings every night."), ""],
 		"hum": [TranslationServer.translate("Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."), "wren"],
@@ -197,11 +243,25 @@ static func lines() -> Dictionary:
 		"breach": [TranslationServer.translate("Hull breach in the vault bay! Lumi, leave the trays, get clear!"), "wren"],
 		"hold_on": [TranslationServer.translate("Lumi— hold on— I can't turn her around— hold on—"), "wren", "tail"],
 		"fall": [TranslationServer.translate("The ark could not turn back. The pod fell for days."), ""],
-		"wake": [TranslationServer.translate("...Lumi? ...Lumi. The relay's barely holding, but I've got you. You're down. You're on Verdance."), "wren"],
-		"green": [TranslationServer.translate("Your core runs on green light, the glow living things give off. There's no green left down there. That's why you're fading."), "wren"],
-		"plan": [TranslationServer.translate("So we make some. Clean the ground, plant those seedlings. Every bloom feeds your core."), "wren"],
-		"home": [TranslationServer.translate("Fill your Bloom Core. Rebuild a launch site. Then you fly home to us. ...One can at a time."), "wren"],
 	}
+	# [intro3] At the crash WREN gets ONE last message through before the relay dies: onboarding's
+	# brief (data/objectives.json "brief"), its last words breaking up in a [glitch] span. She is
+	# silent after that until the signal tower is built.
+	var brief: Array = brief_lines()
+	for i: int in brief.size():
+		out["brief_%d" % i] = [TranslationServer.translate(str(brief[i])), "wren"]
+	return out
+
+
+## The brief's raw lines from data/objectives.json (translated when shown).
+static func brief_lines() -> Array:
+	var f := FileAccess.open("res://data/objectives.json", FileAccess.READ)
+	if f == null:
+		return []
+	var d: Variant = JSON.parse_string(f.get_as_text())
+	if not (d is Dictionary):
+		return []
+	return ((d as Dictionary).get("brief", {}) as Dictionary).get("lines", [])
 
 
 ## Rewatch the whole intro from the Codex. A temporary pod plays the landing; afterwards Lumi, the
@@ -247,6 +307,8 @@ func play() -> void:
 		_set_player_enabled(false)
 		await ld.wait_done()
 		_waiting = false
+	if site_fn.is_valid():  # [orbE]
+		site_xf = site_fn.call()
 	running = true
 	var patch: Node3D = world.patch
 	_set_player_enabled(false)
@@ -254,6 +316,7 @@ func play() -> void:
 		world.hud.visible = false
 	if world.get("music") != null:
 		world.music.set_cinematic(true)
+	_tunes_start()  # [tunes] The Fall of LM-1 from the first frame (before the motif, which it replaces)
 	Audio.music_sting("motif")  # [sound] the Greenfall motif; the Homecoming ending quotes it
 	_build_overlay()
 	_drop_cover()  # [first]
@@ -559,7 +622,7 @@ func _phase_landing() -> void:
 	var land: Vector3 = POD_POS + Vector3(0, _ground(POD_POS), 0)
 	_pod.visible = true
 	var start: Vector3 = land + Vector3(-120, 95, 80)
-	_pod.global_position = start
+	_pod.global_position = _w(start)  # [orbE]
 	_fire = build_fire()
 	_pod.add_child(_fire)
 	# Chase shot: riding above the burning pod, the junk city rushing up below.
@@ -574,23 +637,23 @@ func _phase_landing() -> void:
 		trail_t += dt
 		var k: float = clampf(trail_t / dur, 0.0, 1.0)
 		var pos: Vector3 = start.lerp(land, k * k)
-		_pod.global_position = pos
-		_pod.look_at(pos + dir, Vector3.UP)
+		_pod.global_position = _w(pos)  # [orbE]
+		_pod.look_at(_w(pos + dir), _up())
 		_pod.rotate_object_local(Vector3.RIGHT, -PI * 0.5)
 		_pod.rotate_object_local(Vector3.UP, trail_t * 1.6)
 		_flicker_fire(_fire, trail_t)
 		if k < 0.7:
 			# Above and behind, looking down past the pod at the city.
-			_cam.global_position = pos - dir * 10.0 + Vector3(2.5, 5.0, 0)
-			_cam.look_at(pos.lerp(land, 0.6) + Vector3(0, 6.0, 0), Vector3.UP)
+			_cam.global_position = _w(pos - dir * 10.0 + Vector3(2.5, 5.0, 0))  # [orbE]
+			_cam.look_at(_w(pos.lerp(land, 0.6) + Vector3(0, 6.0, 0)), _up())
 			_cam.fov = 62.0
 		elif _cam_manual:
 			_cam_manual = false
 			_cam.fov = 55.0
 			_shot(land + Vector3(-13, 3.5, 15), land + Vector3(-6, 12, 6), land + Vector3(-11, 3, 13), land + Vector3(0, 1.5, 0), dur * 0.3)
 		if randf() < 0.7:
-			Vfx.burst("steam", pos - dir * 2.0, Color(0.45, 0.42, 0.4, 0.8), 0.7)
-			Vfx.burst("sparkle", pos, Color(1.0, 0.6, 0.25), 0.3)
+			Vfx.burst("steam", _w(pos - dir * 2.0), Color(0.45, 0.42, 0.4, 0.8), 0.7)  # [orbE]
+			Vfx.burst("sparkle", _w(pos), Color(1.0, 0.6, 0.25), 0.3)
 		await get_tree().process_frame
 	_cam_manual = false
 	if _skipped:
@@ -601,12 +664,12 @@ func _phase_landing() -> void:
 		_fire.queue_free()
 		_fire = null
 		EscapePod.set_open(_pod, true, CrashSite.LEAN.x)
-		var o_from: Vector3 = _pod.global_transform * Vector3(0, 0.3, -0.3)
-		var o_to: Vector3 = _pod.global_transform * Vector3(0, 0.05, -2.2)
+		var o_from: Vector3 = _v(_pod.global_transform * Vector3(0, 0.3, -0.3))  # [orbE] intro coordinates
+		var o_to: Vector3 = _v(_pod.global_transform * Vector3(0, 0.05, -2.2))
 		o_to.y = _ground(o_to) + 0.05
 		patch.visible = true
-		patch.global_position = o_to
-		patch.look_at(o_to + (o_to - o_from) * Vector3(1, 0, 1), Vector3.UP)
+		patch.global_position = _w(o_to)
+		patch.look_at(_w(o_to + (o_to - o_from) * Vector3(1, 0, 1)), _up())
 		if model:
 			model.core_glow = 0.15
 		await _wake(o_from, o_to)
@@ -614,18 +677,19 @@ func _phase_landing() -> void:
 	_crash_pose()
 	_fire.queue_free()
 	_fire = null
+	_tunes_land()  # [tunes]
 	Audio.play("thud", 0.5, 4.0)
 	Audio.play("crunch", 0.6, 0.0)
 	EventBus.shake_requested.emit(1.0)
 	for i: int in 8:
-		Vfx.burst("dust", land + Vector3(randf_range(-1.8, 1.8), 0.3, randf_range(-1.8, 1.8)), Color(0.6, 0.55, 0.48, 0.8), 1.6)
-	Vfx.burst("bits", land + Vector3(0, 0.5, 0), Color(0.4, 0.38, 0.34), 1.0)
+		Vfx.burst("dust", _w(land + Vector3(randf_range(-1.8, 1.8), 0.3, randf_range(-1.8, 1.8))), Color(0.6, 0.55, 0.48, 0.8), 1.6)  # [orbE]
+	Vfx.burst("bits", _w(land + Vector3(0, 0.5, 0)), Color(0.4, 0.38, 0.34), 1.0)
 	_shot(land + Vector3(-11, 3, 13), land + Vector3(0, 1.5, 0), land + Vector3(-9, 2.4, 11), land + Vector3(0, 1.2, 0), 3.0)
 	if await _hold(2.4):
 		return
 	# Close on the door: a hiss of steam, the seal pops, it drops into a ramp, warm light spills
 	# out and Lumi drifts out nearly powerless.
-	var front: Vector3 = _pod.global_transform * Vector3(1.1, 1.05, -4.9)
+	var front: Vector3 = _v(_pod.global_transform * Vector3(1.1, 1.05, -4.9))  # [orbE] intro coordinates
 	_shot(front + Vector3(0, 0.45, 0), land + Vector3(0, 1.0, 0), front, land + Vector3(0, 0.75, 0), 8.0)
 	if await _hold(1.2):
 		return
@@ -638,16 +702,16 @@ func _phase_landing() -> void:
 	Audio.play("hydraulic", 0.8, -4.0)
 	if await _hold(open_t - 0.6 + 0.5):
 		return
-	var out_from: Vector3 = _pod.global_transform * Vector3(0, 0.3, -0.3)
-	var out_to: Vector3 = _pod.global_transform * Vector3(0, 0.05, -2.2)
+	var out_from: Vector3 = _v(_pod.global_transform * Vector3(0, 0.3, -0.3))  # [orbE] intro coordinates
+	var out_to: Vector3 = _v(_pod.global_transform * Vector3(0, 0.05, -2.2))
 	out_to.y = _ground(out_to) + 0.05
 	patch.visible = true
-	patch.global_position = out_from
+	patch.global_position = _w(out_from)
 	# Patch faces -Z: look along the drift so Lumi floats out face first.
-	patch.look_at(patch.global_position + (out_to - out_from) * Vector3(1, 0, 1), Vector3.UP)
+	patch.look_at(_w(out_from + (out_to - out_from) * Vector3(1, 0, 1)), _up())
 	if model:
 		model.core_glow = 0.15
-	create_tween().tween_property(patch, "global_position", out_to, 2.8).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	create_tween().tween_property(patch, "global_position", _w(out_to), 2.8).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	if await _hold(3.0):
 		return
 	await _wake(out_from, out_to)
@@ -679,27 +743,35 @@ func _wake(out_from: Vector3, out_to: Vector3) -> void:
 	if await _hold(1.4):
 		return
 	if model:
-		model.look_toward(out_to + Vector3(-3, 1, 2))
+		model.look_toward(_w(out_to + Vector3(-3, 1, 2)))  # [orbE]
 	if await _hold(1.1):
 		return
 	if model:
-		model.look_toward(out_to + Vector3(3, 1, 2))
-	if await _hold(_say("wake")):
+		model.look_toward(_w(out_to + Vector3(3, 1, 2)))
+	# WREN's one last message gets through, then the relay dies (the objectives card follows).
+	var all: Dictionary = lines()
+	if not all.has("brief_0"):
+		await _hold(1.0)
+		return
+	GameState.flags["onboard_brief"] = true  # the objectives don't replay it
+	brief_played = true
+	if await _hold(_say("brief_0")):
 		return
 	if model:
 		model.look_toward(null)
-	# Pull back so the battery readout and Lumi share the frame.
-	_shot(_cam.global_position, out_to + Vector3(0, 0.7, 0), out_to + fwd * 3.2 + Vector3(1.4, 1.5, 0.6), out_to + Vector3(0, 0.6, 0), 16.0)
-	if await _hold(_say("green")):
-		return
-	if model:
 		model.set_happy(0.7)
 		model.flash()
 		Audio.play("chirp" if Audio.has_sound("chirp") else "blip", 1.3, -6.0)
-	if await _hold(_say("plan")):
-		return
-	_say("home")
-	await _wait_lines(0.6)
+	# Pull back so the battery readout and Lumi share the frame while her signal breaks up.
+	_shot(_v(_cam.global_position), out_to + Vector3(0, 0.7, 0), out_to + fwd * 3.2 + Vector3(1.4, 1.5, 0.6), out_to + Vector3(0, 0.6, 0), 12.0)
+	var k: int = 1
+	while all.has("brief_%d" % k):
+		_say("brief_%d" % k)
+		k += 1
+	await _wait_lines(0.4)
+	if not _skipped:
+		Audio.play("glitch" if Audio.has_sound("glitch") else "blip", 0.7, -10.0)  # the relay drops
+		await _hold(1.2)
 
 # --- Overlay ------------------------------------------------------------------------------
 
@@ -775,7 +847,7 @@ func _build_battery(root: Control) -> void:
 	box.modulate.a = 0.0
 	root.add_child(box)
 	_battery = box
-	box.add_child(UITheme.label("B L O O M   C O R E", 12, Color(1, 1, 1, 0.6)))
+	box.add_child(UITheme.label("B L O O M   C O R E", 15, Color(1, 1, 1, 0.85)))  # [qafix] QA #27: was 12 px at 60%
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 10)
 	box.add_child(row)
@@ -795,7 +867,7 @@ func _build_battery(root: Control) -> void:
 	cells.add_child(nub)
 	_battery_pct = UITheme.label("%d%%" % int(round(CoreCharge.START * 100.0)), 26, Color(1.0, 0.45, 0.3))
 	row.add_child(_battery_pct)
-	box.add_child(UITheme.label(tr("GREEN LIGHT  ·  NONE DETECTED"), 12, Color(1.0, 0.6, 0.4, 0.85)))
+	box.add_child(UITheme.label(tr("GREEN LIGHT  ·  NONE DETECTED"), 15, Color(1.0, 0.6, 0.4, 0.95)))  # [qafix] QA #27
 
 
 func _show_battery() -> void:
@@ -840,8 +912,8 @@ func _fade_to(a: float, dur: float) -> void:
 
 
 func _shot(from: Vector3, from_look: Vector3, to: Vector3, to_look: Vector3, dur: float) -> void:
-	_cam_from = Transform3D(Basis(), from).looking_at(from_look, Vector3.UP)
-	_cam_to = Transform3D(Basis(), to).looking_at(to_look, Vector3.UP)
+	_cam_from = Transform3D(Basis(), _w(from)).looking_at(_w(from_look), _up())  # [orbE] site frame
+	_cam_to = Transform3D(Basis(), _w(to)).looking_at(_w(to_look), _up())
 	_cam_dur = maxf(dur, 0.01)
 	_cam_t = 0.0
 	if _cam:
@@ -851,6 +923,9 @@ func _shot(from: Vector3, from_look: Vector3, to: Vector3, to_look: Vector3, dur
 func _process(delta: float) -> void:
 	if not running:
 		return
+	var td: Node = Tunes.director()  # [tunes] the song holds still while the cinematic is paused
+	if td and Tunes.context() == "intro":
+		td.call("set_paused", _pauser != null and _pauser.paused)
 	_t += delta
 	if _cam and not _cam_manual:
 		_cam_t += delta
@@ -908,9 +983,14 @@ func _finish() -> void:
 	var model: PatchModel = _model()
 	if not _replay:
 		place_pod()
-		if patch.global_position.distance_to(POD_POS) > 6.0 or _skipped or not patch.visible:
-			patch.global_position = Vector3(0, 0.05, 3.0)
+		if _v(patch.global_position).distance_to(POD_POS) > 6.0 or _skipped or not patch.visible:  # [orbE] _v/_w: identity on flat
+			patch.global_position = _w(Vector3(0, 0.05, 3.0))
+		if site_xf != Transform3D.IDENTITY and patch.has_method("place_on_sphere"):  # [orbE] stand on the globe
+			var fwd: Vector3 = -patch.global_basis.z
+			fwd -= _up() * fwd.dot(_up())
+			patch.call("place_on_sphere", patch.global_position, fwd.normalized() if fwd.length() > 0.01 else -site_xf.basis.z)
 	GameState.flags["intro_done"] = true
+	_tunes_land(1.2 if _skipped else 4.0)  # [tunes]
 	if _skipped:
 		_subs().clear()
 	_report_subtitles()
@@ -932,9 +1012,13 @@ func _finish() -> void:
 			model.core_glow = CoreCharge.glow_for_flags()
 		# [first] Behind the black: put the gameplay camera right behind Lumi so the first frame
 		# doesn't glide in from wherever the rig was parked during the cinematic.
-		if world.get("cam") != null and world.cam.has_method("snap"):
+		if world.get("cam") != null and world.cam.has_method("hand_off"):  # [onboard2] normal framing, clear arm
+			world.cam.hand_off(patch.rotation.y)
+		elif world.get("cam") != null and world.cam.has_method("snap"):
 			world.cam.yaw = patch.rotation.y
 			world.cam.snap()
+		elif cam_reset_fn.is_valid():  # [orbE] the globe's SphereCam behind Lumi
+			cam_reset_fn.call()
 		var modal: bool = world.has_method("any_modal_open") and world.any_modal_open()
 		if _prev_cam and is_instance_valid(_prev_cam) and not modal:
 			_prev_cam.current = true
@@ -945,6 +1029,10 @@ func _finish() -> void:
 			world.hud.visible = true
 		if world.get("music") != null:
 			world.music.set_cinematic(false)
+		var td2: Node = Tunes.director()  # [tunes] back to the background shuffle
+		if td2:
+			td2.call("set_paused", false)
+		Tunes.set_context("play")
 		for b: ColorRect in _bars:
 			b.visible = false
 		_title.visible = false
@@ -957,6 +1045,23 @@ func _finish() -> void:
 	tw.tween_callback(func() -> void:
 		_layer.queue_free()
 		finished.emit())
+
+
+## [tunes] The Fall of LM-1 (audio/songs/fall_of_lm1.mp3) scores the intro from its first frame.
+## Without the file the synth score and the motif play as before.
+func _tunes_start() -> void:
+	var td: Node = Tunes.director()
+	if td:
+		td.call("intro_start")
+	print("[intro] score: %s" % (Tunes.now_playing() if Tunes.now_playing() != "" else "synth"))
+
+
+## The pod has landed: the song fades out under the impact and the quiet wake-up.
+func _tunes_land(fade: float = 4.0) -> void:
+	var td: Node = Tunes.director()
+	if td and Tunes.context() == "intro" and Tunes.now_playing() != "":
+		print("[intro] song fades out at %.1fs (song at %.1fs)" % [_t, float(td.call("position"))])
+		td.call("intro_land", fade)
 
 
 ## [intro2] Dev check: how long each intro line was really on screen against the reading rule.
@@ -985,3 +1090,5 @@ func _set_player_enabled(on: bool) -> void:
 		(patch.input as PlayerInput).enabled = on
 	if world.get("cam") != null:
 		world.cam.input_enabled = on
+	elif world.get("orbit") != null and world.get("orbit").has_method("set_input"):  # [orbE] the globe
+		world.get("orbit").call("set_input", on)

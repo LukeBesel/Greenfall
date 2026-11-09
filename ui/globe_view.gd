@@ -7,16 +7,24 @@ extends CanvasLayer
 
 signal closed
 
+## [v2map] Owner note 40: our own look, a warm seed-keeper's hologram. Restoration reads as junk
+## grey turning to leaf green as hexes are cleaned and planted; water a deep teal.
 const COLORS: Dictionary = {
-	PlanetData.State.JUNK: Color(1.0, 0.45, 0.1),
-	PlanetData.State.CLEAN: Color(0.4, 1.0, 0.3),
-	PlanetData.State.PLANTED: Color(0.3, 0.95, 0.5),
-	PlanetData.State.GROWING: Color(0.2, 1.0, 0.7),
-	PlanetData.State.RESTORED: Color(0.75, 1.0, 0.45),
-	PlanetData.State.WATER: Color(0.08, 0.2, 0.45),
+	PlanetData.State.JUNK: Color(0.6, 0.55, 0.48),
+	PlanetData.State.CLEAN: Color(0.86, 0.84, 0.62),
+	PlanetData.State.PLANTED: Color(0.68, 0.86, 0.45),
+	PlanetData.State.GROWING: Color(0.5, 0.84, 0.38),
+	PlanetData.State.RESTORED: Color(0.36, 0.8, 0.32),
+	PlanetData.State.WATER: Color(0.1, 0.3, 0.36),
 }
 
 var planet: PlanetData
+## [orbE] Round planet (--orbit): the survey reads SphereCells (same ids as `planet`) and draws the
+## far shell's big hexes; sphere_grid places the "you are here" marker; Lumi holds it on local up.
+var cells: SphereCells
+var shell: SphereShell
+var sphere_grid: SphereGrid
+var _shell_snap: Image
 var patch_cell_provider: Callable = func() -> int: return -1
 var is_open: bool = false
 
@@ -57,6 +65,9 @@ var rocket_ready: Callable = func() -> bool: return false
 ## Why the rocket can't launch right now (shown in the hub list while rocket_ready is false).
 var rocket_lock_text: Callable = func() -> String: return "Locked. Upgrade your base to level 5 to build the launch pad."
 var launch_to: Callable = func(_hub: int) -> void: pass
+## [orbD] Which hubs the launch list offers (indices into planet.hubs); unset: the flat game's
+## base hubs. On a walkable globe: the hub sites (planet/sites/orbit_sites.gd).
+var hub_order: Callable = Callable()
 var current_hub: int = 0
 var _fly_t: float = -1.0
 var _fly_from := Vector3.ZERO
@@ -67,6 +78,13 @@ var _flight_locked: bool = false
 ## [home] Opens the solar-system map (set by systems/homeward_director.gd); the button hides without it.
 var open_system: Callable = Callable()
 var _system_btn: Button
+## [v2map] Owner note 40: on the round game the map is only a map; the rocket's destination list
+## (ui/rocket_picker.gd, E at the rocket) does the travel. false hides the Rocket card.
+var travel_in_map: bool = true
+var _rocket_card: Control
+var _hint: PromptLabel
+## [v2map] How many bases the legend counts (the round globe has its hub sites, not planet.hubs).
+var hub_count: Callable = Callable()
 
 
 func _ready() -> void:
@@ -118,10 +136,10 @@ func _ready() -> void:
 	left.add_theme_constant_override("separation", 12)
 	left.position = Vector2(28, 28)
 	_root.add_child(left)
-	var c1: Array = _holo_card(tr("Survey"), 300, tr("Verdance  ·  hand-held projection"))
+	var c1: Array = _holo_card(tr("Survey"), 300, tr("Verdance  ·  seed-keeper's survey"))
 	left.add_child(c1[0])
 	var b1: VBoxContainer = c1[1]
-	_pct = UITheme.label("0.0 %", 40, HOLO.lerp(Color.WHITE, 0.7))
+	_pct = UITheme.label("0.0 %", 40, CREAM)
 	b1.add_child(_pct)
 	_pct_sub = UITheme.label("", 13, UITheme.MUTED)
 	b1.add_child(_pct_sub)
@@ -136,14 +154,14 @@ func _ready() -> void:
 	b1.add_child(_rows)
 	for k: Array in [["junk", _legend_col(PlanetData.State.JUNK), tr("Not cleaned yet")], ["clean", _legend_col(PlanetData.State.CLEAN), tr("Cleaned")],
 			["planted", _legend_col(PlanetData.State.PLANTED), tr("Planted")], ["growing", _legend_col(PlanetData.State.GROWING), tr("Growing")],
-			["restored", _legend_col(PlanetData.State.RESTORED), tr("Restored")], ["cities", Color(0.85, 0.88, 0.92), tr("Cities")],
-			["hubs", Color(1.0, 0.75, 0.25), tr("Bases")]]:
+			["restored", _legend_col(PlanetData.State.RESTORED), tr("Restored")], ["cities", CREAM, tr("Cities")],
+			["hubs", MapGlyphs.LEAF, tr("Hubs")]]:
 		var r: HBoxContainer = UITheme.stat_row(k[1], k[2])
 		r.name = k[0]
 		_rows.add_child(r)
 	_age = UITheme.label("", 13, UITheme.GOLD)
 	b1.add_child(_age)
-	_ark = UITheme.label("", 13, Color(0.6, 1.0, 0.55))  # [bloom] Seed Ark / Verdance Bloom line
+	_ark = UITheme.label("", 13, MapGlyphs.LEAF)  # [bloom] Seed Ark / Verdance Bloom line
 	b1.add_child(_ark)
 	_resurvey = Button.new()
 	_resurvey.custom_minimum_size = Vector2(0, 38)
@@ -166,72 +184,75 @@ func _ready() -> void:
 	right.offset_top = 28
 	right.grow_horizontal = Control.GROW_DIRECTION_BEGIN
 	_root.add_child(right)
+	_rocket_card = right
 	var c2: Array = _holo_card(tr("Rocket"), 320, tr("Travel between bases"))
 	right.add_child(c2[0])
 	_hub_list = VBoxContainer.new()
 	_hub_list.add_theme_constant_override("separation", 6)
 	(c2[1] as VBoxContainer).add_child(_hub_list)
-	# Bottom centre: big readout.
-	_big = UITheme.label("", 24, Color(HOLO, 0.9))
-	_big.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
-	_big.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	_big.offset_top = -86
-	_big.offset_bottom = -46
+	# [v2map] Top centre: big readout and the controls on one soft plate (at the bottom the
+	# subtitles covered them, and bare text over the daylit world was hard to read).
+	var top := PanelContainer.new()
+	top.add_theme_stylebox_override("panel", UITheme.box(Color(0.04, 0.1, 0.09, 0.7), Color(HOLO, 0.25), 1, 12, 10))
+	top.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	top.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	top.offset_top = 18
+	top.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_root.add_child(top)
+	var tv := VBoxContainer.new()
+	tv.add_theme_constant_override("separation", 2)
+	top.add_child(tv)
+	_big = UITheme.label("", 24, CREAM)
 	_big.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_root.add_child(_big)
+	tv.add_child(_big)
 	var hint := PromptLabel.new(tr("[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close"), 13)  # [deck]
 	hint.align_center = true
-	hint.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
-	hint.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	hint.offset_top = -38
-	hint.offset_bottom = -18
-	_root.add_child(hint)
+	tv.add_child(hint)
+	_hint = hint
 	_root.visible = false
 
 
-const HOLO := Color(0.45, 0.88, 1.0)
+const HOLO := Color(0.47, 0.86, 0.78)  # [v2map] seed-keeper teal (was a cold cyan)
+const CREAM := Color(0.98, 0.93, 0.8)
 
 
-## Translucent projected pane: faint cyan glass, hairline edge, corner ticks, light title.
+## [v2map] A warm, rounded plate: dark teal glass, a hairline, a sprout glyph by a cream title.
 func _holo_card(title: String, width: float, subtitle: String) -> Array:
 	var pc := PanelContainer.new()
-	var sb := UITheme.box(Color(0.04, 0.16, 0.22, 0.55), Color(HOLO, 0.45), 1, 2, 14)
-	sb.shadow_color = Color(HOLO, 0.1)
-	sb.shadow_size = 8
+	var sb := UITheme.box(Color(0.04, 0.1, 0.09, 0.78), Color(HOLO, 0.3), 1, 12, 16)
 	pc.add_theme_stylebox_override("panel", sb)
 	pc.custom_minimum_size = Vector2(width, 0)
 	var body := VBoxContainer.new()
 	body.add_theme_constant_override("separation", 6)
 	pc.add_child(body)
-	body.add_child(UITheme.label(subtitle, 11, Color(HOLO, 0.7)))
-	body.add_child(UITheme.label(title.to_upper(), 20, HOLO.lerp(Color.WHITE, 0.5)))
+	var head := HBoxContainer.new()
+	head.add_theme_constant_override("separation", 8)
+	body.add_child(head)
+	var glyph := TextureRect.new()
+	glyph.texture = MapGlyphs.texture("sprout")
+	glyph.custom_minimum_size = Vector2(30, 30)
+	glyph.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	glyph.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	head.add_child(glyph)
+	var tv := VBoxContainer.new()
+	tv.add_theme_constant_override("separation", 0)
+	head.add_child(tv)
+	tv.add_child(UITheme.label(title, 20, CREAM))
+	tv.add_child(UITheme.label(subtitle, 11, Color(HOLO, 0.85)))
 	var line := ColorRect.new()
-	line.color = Color(HOLO, 0.5)
+	line.color = Color(HOLO, 0.3)
 	line.custom_minimum_size = Vector2(0, 1)
 	body.add_child(line)
-	# Corner ticks drawn over the pane.
-	var ticks := Control.new()
-	ticks.set_anchors_preset(Control.PRESET_FULL_RECT)
-	ticks.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	pc.add_child(ticks)
-	ticks.draw.connect(func() -> void:
-		var sz: Vector2 = ticks.size
-		var c := Color(HOLO, 0.9)
-		for corner: Vector2 in [Vector2.ZERO, Vector2(sz.x, 0), Vector2(0, sz.y), sz]:
-			var dx: float = 1.0 if corner.x == 0.0 else -1.0
-			var dy: float = 1.0 if corner.y == 0.0 else -1.0
-			ticks.draw_line(corner, corner + Vector2(dx * 12, 0), c, 2.0)
-			ticks.draw_line(corner, corner + Vector2(0, dy * 12), c, 2.0))
 	return [pc, body]
 
 
 func _holo_button(b: Button) -> void:
-	b.add_theme_stylebox_override("normal", UITheme.box(Color(HOLO, 0.16), Color(HOLO, 0.6), 1, 2, 8))
-	b.add_theme_stylebox_override("hover", UITheme.box(Color(HOLO, 0.3), Color(HOLO, 0.9), 1, 2, 8))
-	b.add_theme_stylebox_override("pressed", UITheme.box(Color(HOLO, 0.45), HOLO, 1, 2, 8))
-	b.add_theme_stylebox_override("disabled", UITheme.box(Color(HOLO, 0.04), Color(HOLO, 0.15), 1, 2, 8))
-	b.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
-	b.add_theme_color_override("font_color", HOLO.lerp(Color.WHITE, 0.6))
+	b.add_theme_stylebox_override("normal", UITheme.box(Color(HOLO, 0.16), Color(HOLO, 0.5), 1, 10, 8))
+	b.add_theme_stylebox_override("hover", UITheme.box(Color(HOLO, 0.3), Color(CREAM, 0.8), 1, 10, 8))
+	b.add_theme_stylebox_override("pressed", UITheme.box(Color(HOLO, 0.45), CREAM, 1, 10, 8))
+	b.add_theme_stylebox_override("disabled", UITheme.box(Color(HOLO, 0.04), Color(HOLO, 0.15), 1, 10, 8))
+	b.add_theme_stylebox_override("focus", UITheme.box(Color(HOLO, 0.3), CREAM, 2, 10, 8))
+	b.add_theme_color_override("font_color", CREAM)
 	b.add_theme_color_override("font_hover_color", Color.WHITE)
 	b.add_theme_color_override("font_disabled_color", Color(HOLO, 0.35))
 
@@ -242,7 +263,10 @@ func survey_cost() -> BigNum:
 
 ## Takes a fresh snapshot of the planet state (free on first use).
 func survey() -> void:
-	_snapshot = planet.state.duplicate()
+	if cells and shell:  # [orbE]
+		shell.update(1000.0)  # flush pending big-hex aggregates first
+		_shell_snap = SphereMapMesh.snapshot(shell)
+	_snapshot = cells.state.duplicate() if cells else planet.state.duplicate()
 	_snapshot_time = float(GameState.stats.get("time_played", 0.0))
 	_build_mesh()
 
@@ -261,7 +285,14 @@ func open_view() -> void:
 	_root.modulate.a = 0.0
 	create_tween().tween_property(_root, "modulate:a", 1.0, 0.25)
 	_refresh_text()
-	_refresh_hubs()
+	if sphere_grid and int(patch_cell_provider.call()) >= 0:  # [v2map] open on Lumi's side of the globe
+		focus_on(int(patch_cell_provider.call()))
+	_rocket_card.visible = travel_in_map  # [v2map]
+	if travel_in_map:
+		_refresh_hubs()
+	elif not _hint.has_meta("v2map"):
+		_hint.set_meta("v2map", true)
+		_hint.set_template(tr("[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     [/p]{open_globe}  close"))
 	_focus_first.call_deferred()  # [deck] pad players need a focused control for the D-pad
 
 
@@ -300,6 +331,8 @@ func _refresh_hubs() -> void:
 		_hub_list.add_child(l)
 	var here: Vector3 = planet.grid.centers[planet.hubs[current_hub]]
 	var order: Array = range(planet.base_hub_count if planet.base_hub_count > 0 else planet.hubs.size())  # [biomes] frontiers launch from the Rockets tab
+	if hub_order.is_valid():  # [orbD]
+		order = hub_order.call()
 	order.sort_custom(func(a: int, b: int) -> bool:
 		return here.angle_to(planet.grid.centers[planet.hubs[a]]) < here.angle_to(planet.grid.centers[planet.hubs[b]]))
 	for i: int in order.filter(func(x: int) -> bool: return x != current_hub).slice(0, 5):  # [biomes]
@@ -440,7 +473,7 @@ func _refresh_text() -> void:
 	_bar.value = frac * 100.0
 	var vals: Dictionary = {"junk": junk, "clean": counts.get(PlanetData.State.CLEAN, 0), "planted": counts.get(PlanetData.State.PLANTED, 0),
 		"growing": counts.get(PlanetData.State.GROWING, 0), "restored": counts.get(PlanetData.State.RESTORED, 0),
-		"cities": planet.cities.size(), "hubs": planet.hubs.size()}
+		"cities": planet.cities.size(), "hubs": int(hub_count.call()) if hub_count.is_valid() else planet.hubs.size()}
 	for k: String in vals:
 		((_rows.get_node(k) as HBoxContainer).get_node("Value") as Label).text = _num(int(vals[k]))
 	_big.text = tr("%s HEXES CLEAN") % _num(cleaned)
@@ -448,7 +481,7 @@ func _refresh_text() -> void:
 	_age.text = tr("Surveyed %s ago%s") % [_fmt_age(age), tr("   ·   OUTDATED") if age > 600.0 else ""]
 	_resurvey.text = tr("Re-survey      %s cubes") % Settings.fmt(survey_cost())
 	if _system_btn:  # [home]
-		_system_btn.visible = open_system.is_valid() and Homeward.answered()
+		_system_btn.visible = open_system.is_valid() and Homeward.system_open()  # [pace2] partial progress opens the system
 	_ark.text = Bloom.globe_line()
 	_ark.visible = _ark.text != ""
 
@@ -471,6 +504,19 @@ func _fmt_age(s: float) -> String:
 
 
 func _build_mesh() -> void:
+	if shell and _shell_snap:  # [orbE] the big hexes of the far shell, coloured from the snapshot
+		var snap: Image = _shell_snap
+		# [v2map] no gaps between the big hexes: at hand-held size they were sub-pixel and stippled
+		_globe.mesh = SphereMapMesh.build(shell.coarse, func(c: int) -> Color: return SphereMapMesh.survey_color(SphereMapMesh.shares(snap, c)), 1.004, 1.0)
+		if _holo_mat == null:
+			_holo_mat = ShaderMaterial.new()
+			_holo_mat.shader = preload("res://art/shaders/hologram.gdshader")
+		_globe.mesh.surface_set_material(0, _holo_mat)
+		if _grid_lines == null:
+			_grid_lines = MeshInstance3D.new()
+			_grid_lines.mesh = _lat_long_mesh()
+			_pivot.add_child(_grid_lines)
+		return
 	var g: GeoSphere = planet.grid
 	var verts := PackedVector3Array()
 	var cols := PackedColorArray()
@@ -515,14 +561,14 @@ func _build_mesh() -> void:
 func _lat_long_mesh() -> ArrayMesh:
 	var v := PackedVector3Array()
 	var r: float = 1.012
-	for lat_i: int in range(-75, 90, 15):
+	for lat_i: int in range(-60, 90, 30):  # [v2map] a light hand: every 30 degrees
 		var lat: float = deg_to_rad(float(lat_i))
 		for k: int in 96:
 			var a0: float = TAU * k / 96.0
 			var a1: float = TAU * (k + 1) / 96.0
 			v.append(Vector3(cos(lat) * cos(a0), sin(lat), cos(lat) * sin(a0)) * r)
 			v.append(Vector3(cos(lat) * cos(a1), sin(lat), cos(lat) * sin(a1)) * r)
-	for lon_i: int in range(0, 360, 15):
+	for lon_i: int in range(0, 360, 30):
 		var lon: float = deg_to_rad(float(lon_i))
 		for k: int in 48:
 			var b0: float = -PI * 0.5 + PI * k / 48.0
@@ -537,7 +583,9 @@ func _lat_long_mesh() -> ArrayMesh:
 	var mat := StandardMaterial3D.new()
 	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	mat.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
-	mat.albedo_color = Color(0.35, 0.8, 1.0, 1.0) * 0.25
+	mat.albedo_color = Color(HOLO.r, HOLO.g, HOLO.b, 1.0) * 0.3
+	mat.disable_fog = true  # [v2map] glitch pass: the world fog greyed the hologram in hand-held mode
+	mat.render_priority = 1  # after the globe (same centre: sorting flipped lines over / under it)
 	m.surface_set_material(0, mat)
 	return m
 
@@ -574,8 +622,10 @@ func _process(delta: float) -> void:
 		return
 	var pc: int = patch_cell_provider.call()
 	if pc >= 0:
-		_marker.position = planet.grid.centers[pc] * 1.02
+		_marker.position = (sphere_grid.centers[pc] if sphere_grid else planet.grid.centers[pc]) * 1.02  # [orbE]
 		_marker.scale = Vector3.ONE * (1.0 + 0.3 * sin(Time.get_ticks_msec() * 0.008))
+		if sphere_grid:  # [orbE] "you are here": a gold pin standing on Lumi's big hex
+			_here_pin(sphere_grid.centers[pc])
 	if Engine.get_process_frames() % 30 == 0:
 		_refresh_text()
 
@@ -606,31 +656,89 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _place_handheld(delta: float) -> void:
 	var model: PatchModel = holder.get("model")
-	var hand: Vector3 = model.hand_point() if model else holder.global_position + Vector3(0, 1.0, 0)
+	# [orbE] Local up: on a round planet "up" is the radial direction under Lumi.
+	var up: Vector3 = (holder.call("up") as Vector3) if holder.has_method("up") else Vector3.UP
+	var hand: Vector3 = model.hand_point() if model else holder.global_position + up * 1.0
 	var r: float = 0.3
 	var side: Vector3 = (model.global_basis.x if model else holder.global_basis.x).normalized()
 	var fwd0: Vector3 = -(model.global_basis.z if model else holder.global_basis.z)
-	fwd0.y = 0.0
-	hand += side * 0.18 + fwd0.normalized() * 0.12
-	var center: Vector3 = hand + Vector3(0, r + 0.1, 0)
+	fwd0 -= up * fwd0.dot(up)
+	fwd0 = fwd0.normalized()
+	# [v2map] Glitch pass: the globe floats in front of Lumi at eye height and the camera looks over
+	# his right shoulder at it. (It used to sit at his hand with the camera in front of him, so his
+	# big head covered most of the globe.)
+	var center: Vector3 = holder.global_position + up * 1.25 + fwd0 * 0.75 + side * 0.05
 	_anchor.global_position = center
-	# Beam: from the claw up into the globe.
-	var h: float = center.y - hand.y
-	_beam.global_transform = Transform3D(Basis().scaled(Vector3(r * 0.9, h, r * 0.9)), hand + Vector3(0, h * 0.5, 0))
-	# Camera in front of Patch, a little to the side: Aurora's face lit by the globe it holds.
-	var fwd: Vector3 = -(model.global_basis.z if model else holder.global_basis.z)
-	fwd.y = 0.0
-	fwd = fwd.normalized()
-	var right: Vector3 = fwd.cross(Vector3.UP)
-	var dist: float = remap(_zoom, 1.4, 6.0, 0.9, 2.6)
-	var want: Vector3 = center + fwd * dist * 1.1 - right * dist * 0.75 + Vector3(0, 0.1 + dist * 0.1, 0)
+	if up != Vector3.UP:
+		_anchor.global_basis = SphereMath.basis_from_up_fwd(up, fwd0).scaled(_anchor.scale)
+	# Beam: from the claw to the globe's underside.
+	var bottom: Vector3 = center - up * r * 0.8
+	var axis: Vector3 = bottom - hand
+	var h: float = maxf(axis.length(), 0.01)
+	var y: Vector3 = axis / h
+	var x: Vector3 = y.cross(fwd0 if absf(y.dot(fwd0)) < 0.95 else side).normalized()
+	var z: Vector3 = x.cross(y).normalized()
+	_beam.global_transform = Transform3D(Basis(x * r * 0.9, y * h, z * r * 0.9), hand + axis * 0.5)
+	var right: Vector3 = fwd0.cross(up).normalized()
+	var dist: float = remap(_zoom, 1.4, 6.0, 1.1, 3.0)
+	var want: Vector3 = center - fwd0 * dist + right * dist * 0.3 + up * dist * 0.38
 	_world_cam.global_position = _world_cam.global_position.lerp(want, clampf(delta * 4.0, 0.0, 1.0))
-	var look_at_p: Vector3 = center.lerp(holder.global_position + Vector3(0, 0.75, 0), 0.4)
-	_world_cam.look_at(look_at_p, Vector3.UP)
+	# Aim a little left of the globe so it sits right of centre, clear of the survey card.
+	_world_cam.look_at(center - right * dist * 0.2, up)
+
+
+var _pin: Sprite3D  # [v2map] the Lumi glyph
+
+
+## [v2map] "You are here": a small Lumi glyph standing on his big hex (was a gold pin and orb).
+func _here_pin(dir: Vector3) -> void:
+	if _pin == null:
+		_pin = MapGlyphs.sprite("lumi", GLYPH_PX * 1.15)
+		_pin.name = "YouAreHere"
+		_pin.offset = Vector2(-26, MapGlyphs.SIZE * 0.5)  # beside the start hub's sprout, not on it
+		_pin.render_priority = 3
+		_pivot.add_child(_pin)
+		_marker.visible = false
+		_place_glyphs()
+	if not _pod_placed and Engine.get_process_frames() % 60 == 0:  # the start site may still be building
+		_place_glyphs()
+	var up: Vector3 = dir.normalized()
+	_pin.position = up * (1.006 + 0.004 * sin(Time.get_ticks_msec() * 0.004))
+
+
+## Glyph size on a unit globe (texture px -> units): about 0.29 tall, readable hand-held.
+const GLYPH_PX: float = 0.0045
+## [v2map] Directions (from the planet centre) of the hub sites and the crashed pod (set by
+## planet/orbit_layers.gd); drawn as sprout and smoke-plume glyphs.
+var hub_dirs: Callable = Callable()
+var pod_dir: Callable = Callable()
+var _glyphs: Node3D
+var _pod_placed: bool = false
+
+
+func _place_glyphs() -> void:
+	if _glyphs:
+		_glyphs.queue_free()
+	_glyphs = Node3D.new()
+	_glyphs.name = "Glyphs"
+	_pivot.add_child(_glyphs)
+	if hub_dirs.is_valid():
+		for d: Vector3 in hub_dirs.call():
+			var g: Sprite3D = MapGlyphs.sprite("sprout", GLYPH_PX)
+			g.position = d.normalized() * 1.006
+			_glyphs.add_child(g)
+	if pod_dir.is_valid():
+		var pd: Vector3 = pod_dir.call()
+		if pd != Vector3.ZERO:
+			var g: Sprite3D = MapGlyphs.sprite("plume", GLYPH_PX)
+			g.offset = Vector2(26, MapGlyphs.SIZE * 0.5)  # the pod is on the start site too: to the right
+			_pod_placed = true
+			g.position = pd.normalized() * 1.006
+			_glyphs.add_child(g)
 
 
 func focus_on(cell: int) -> void:
-	var c: Vector3 = planet.grid.centers[cell]
+	var c: Vector3 = sphere_grid.centers[cell] if sphere_grid else planet.grid.centers[cell]  # [orbE]
 	_yaw = -atan2(c.x, c.z)
 	_pitch = asin(clampf(c.y, -1.0, 1.0))
 

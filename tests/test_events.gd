@@ -62,16 +62,19 @@ func test_pick_event_is_weighted() -> void:
 
 
 func test_eligibility_from_context() -> void:
-	var early: Dictionary = WorldEvents.eligible_ids({"junk_hexes": 30, "planted": 0, "robots": 0, "max_hex_level": 1, "ledger_resolved": false, "parts_left": 3})
-	assert_true(early["supply_drop"])
+	var early: Dictionary = WorldEvents.eligible_ids({"junk_hexes": 30, "planted": 0, "robots": 0, "max_hex_level": 1, "ledger_resolved": false, "parts_left": 3, "flags": {"has_baler": true, "has_signal_finder": true}})
+	assert_false(early["supply_drop"], "[pace] no crates out of the sky")
 	assert_true(early["salvage_surge"])
 	assert_true(early["rare_part_signal"])
 	assert_false(early["rain_shower"], "rain needs plants")
 	assert_false(early["robot_hiccup"], "hiccup needs a robot")
 	assert_false(early["wildlife_visit"], "wildlife needs a Sustained hex")
 	assert_false(early["ledger_audit"], "audit waits for the Ledger arc")
+	var fresh: Dictionary = WorldEvents.eligible_ids({"junk_hexes": 30, "parts_left": 3, "flags": {}})  # [pace]
+	assert_false(fresh["rare_part_signal"], "the violet beam needs the Signal Finder")
+	assert_false(fresh["salvage_surge"], "bale bonuses need the Baler")
 	var late: Dictionary = WorldEvents.eligible_ids({"junk_hexes": 0, "planted": 40, "robots": 6, "max_hex_level": 5, "ledger_resolved": true, "parts_left": 0})
-	assert_false(late["supply_drop"], "no junk left -> no drop")
+	assert_false(late["supply_drop"])
 	assert_false(late["rare_part_signal"])
 	assert_true(late["rain_shower"])
 	assert_true(late["robot_hiccup"])
@@ -166,6 +169,7 @@ func test_contract_requirements_filter_templates() -> void:
 
 
 func test_contract_lifecycle_done_and_failed() -> void:
+	Contracts.auto_accept = false  # [ui2] the old Accept / Pass flow (kept behind the flag)
 	var st: Dictionary = Contracts.state()
 	var stats: Dictionary = {"junk_scooped": 50.0}
 	var vf := func(s: Dictionary) -> float: return Contracts.value_of(s, stats, 0)
@@ -197,6 +201,31 @@ func test_contract_lifecycle_done_and_failed() -> void:
 	c["offer_left"] = 1.0
 	var ev3: Array[Dictionary] = Contracts.step(st, 2.0, vf, _offer_fn)
 	assert_true(ev3.any(func(e: Dictionary) -> bool: return e["kind"] == "offer" and e["i"] == 2))
+	Contracts.auto_accept = true
+
+
+## [ui2] The simple board: requests start on their own, count from when they were posted, never
+## expire, and only need a Claim.
+func test_requests_start_on_their_own_and_never_expire() -> void:
+	assert_true(Contracts.auto_accept)
+	var st: Dictionary = Contracts.state()
+	st["slots"] = []
+	var stats: Dictionary = {"junk_scooped": 10.0}
+	var vf := func(s: Dictionary) -> float: return Contracts.value_of(s, stats, 0)
+	Contracts.step(st, 0.0, vf, _offer_fn)
+	for s: Dictionary in st["slots"]:
+		assert_eq(s["state"], "active", "no Accept step")
+		assert_eq(float(s["base"]), 10.0)
+	var a: Dictionary = st["slots"][0]
+	Contracts.step(st, float(a["time_s"]) * 3.0, vf, _offer_fn)
+	assert_eq(a["state"], "active", "no time limit")
+	stats["junk_scooped"] = 10.0 + float(a["n"])
+	Contracts.step(st, 1.0, vf, _offer_fn)
+	assert_eq(a["state"], "done")
+	# An old save's open offer starts on the next tick.
+	st["slots"][1] = Contracts.make_offer(Contracts.template("scoop"), 0)
+	Contracts.step(st, 0.5, vf, _offer_fn)
+	assert_eq(st["slots"][1]["state"], "active")
 
 
 func test_peak_contract_tracks_streak() -> void:
@@ -269,9 +298,10 @@ func test_reward_track_unlocks_liveries_and_builder_parts() -> void:
 	assert_eq(RobotBuilder.count("propeller_cap"), 1, "3 requests: the Propeller Cap")
 	c.count_done(0)
 	assert_eq(RobotBuilder.count("propeller_cap"), 1, "each step is granted once")
-	var before: int = GameState.parts.size()
+	var before: float = GameState.get_currency("parts").to_float()
 	c.count_done(17 + 5)  # past the last step (20): one repeat Vintage part per repeat_every
-	assert_true(GameState.parts.size() >= before + 3, "rare robot parts from the track and its repeats")
+	assert_true(GameState.get_currency("parts").to_float() >= before + 450.0 * 2.0 + 150.0 * 2.0 - 0.01, "[ui2] the track's rare robot parts pay Parts")
+	assert_eq(GameState.parts.size(), 0, "no robot part items")
 	c.free()
 
 

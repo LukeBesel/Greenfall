@@ -21,10 +21,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Cache the engine and templates: the download from GitHub releases sometimes times out (wget exit 4).
+      - name: Cache Godot downloads
+        uses: actions/cache@v4
+        with:
+          path: godot-dl
+          key: godot-${{ env.GODOT_VERSION }}
+
       - name: Install Godot and export templates
         run: |
-          wget -q https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip
-          wget -q https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz
+          mkdir -p godot-dl
+          base=https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable
+          for f in Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip Godot_v${GODOT_VERSION}-stable_export_templates.tpz; do
+            [ -s godot-dl/$f ] || wget -q --tries=6 --waitretry=15 --retry-connrefused --timeout=120 -O godot-dl/$f "$base/$f" || { rm -f godot-dl/$f; exit 1; }
+            cp godot-dl/$f .
+          done
           unzip -q Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip
           mv Godot_v${GODOT_VERSION}-stable_linux.x86_64 godot
           mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable

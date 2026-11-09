@@ -20,6 +20,8 @@ const BEFORE_DELAY_S: float = 6.0
 const CAM_POS := Vector3(15.0, 17.0, 21.0)
 const CAM_AT := Vector3(-3.0, 0.0, -12.0)
 
+var _land_n: int = 0  # [orbE] cached land count on the globe
+var _land_next_ms: int = 0
 var world: Node
 var _alive_t: float = 0.0
 var _busy: bool = false
@@ -181,6 +183,24 @@ func _thriving_share() -> float:
 		return 0.0
 	var land: int = 0
 	var thr: int = 0
+	if hl.sparse:  # [orbE] the globe: only tracked cells have levels, so count those (same result;
+		# the full pass walked all 164k-655k cells every 3 s, a ~270 ms hitch on Anvil). The land
+		# count changes only with hub ground: refreshed every 30 s over the packed arrays.
+		var now: int = Time.get_ticks_msec()
+		if now >= _land_next_ms:
+			_land_next_ms = now + 30000
+			_land_n = 0
+			var wat: PackedByteArray = f.hex_water
+			var hub: PackedByteArray = f.hex_hub
+			for h: int in f.hex_count():
+				if wat[h] == 0 and hub[h] == 0:
+					_land_n += 1
+		land = _land_n
+		for h: Variant in hl.levels:
+			var hi: int = int(h)
+			if int(hl.levels[h]) >= HexLevels.MAX_LEVEL and not f.is_water(hi) and f.hex_hub[hi] == 0:
+				thr += 1
+		return float(thr) / float(land) if land > 0 else 0.0
 	for h: int in f.hex_count():
 		if f.is_water(h) or f.hex_hub[h] != 0:
 			continue
@@ -230,7 +250,7 @@ func _render() -> Image:
 	vp.world_3d = world.get_viewport().find_world_3d()
 	vp.msaa_3d = Viewport.MSAA_DISABLED
 	vp.use_taa = false
-	vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA
+	vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA if RenderingServer.get_current_rendering_method() != "gl_compatibility" else Viewport.SCREEN_SPACE_AA_DISABLED  # [qafix] QA #35
 	vp.render_target_update_mode = SubViewport.UPDATE_ONCE
 	var cam := Camera3D.new()
 	cam.fov = 58.0
