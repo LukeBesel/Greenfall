@@ -2,7 +2,7 @@
 name: systems-builder
 description: Builds gameplay systems: core loop, grind loops, resources, upgrades, progression, robots. Use for new or changed game mechanics specified by the lead.
 tools: Read, Edit, Write, Grep, Glob, Bash
-model: claude-opus-5-5
+model: claude-fable-5-2
 ---
 
 # systems-builder

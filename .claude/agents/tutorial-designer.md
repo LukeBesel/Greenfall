@@ -2,7 +2,7 @@
 name: tutorial-designer
 description: Builds data-driven onboarding: tutorial steps, triggers, pointers, hints, skip and replay. Use for anything that teaches the player.
 tools: Read, Edit, Write, Grep, Glob, Bash
-model: claude-opus-5-5
+model: claude-fable-5-2
 ---
 
 # tutorial-designer

@@ -2,7 +2,7 @@
 name: bug-fixer
 description: Fixes reported bugs, adding a regression test for each one. Use when a bug has a reproduction.
 tools: Read, Edit, Write, Grep, Glob, Bash
-model: claude-opus-5-5
+model: claude-fable-5-2
 ---
 
 # bug-fixer

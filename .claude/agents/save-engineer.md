@@ -2,7 +2,7 @@
 name: save-engineer
 description: Owns saving and loading: per-planet and global save sections, versioning, migrations, autosave, corruption protection. Use for any change to the save format or persistence code.
 tools: Read, Edit, Write, Grep, Glob, Bash
-model: claude-opus-5-5
+model: claude-fable-5-2
 ---
 
 # save-engineer

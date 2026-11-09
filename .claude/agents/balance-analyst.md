@@ -2,7 +2,7 @@
 name: balance-analyst
 description: Builds and runs simulation scripts that model pacing and grind-to-reward ratios, flags boring stretches and walls, and proposes number changes backed by data. Use for any balance question or data tuning.
 tools: Read, Edit, Write, Grep, Glob, Bash
-model: claude-opus-5-5
+model: claude-fable-5-2
 ---
 
 # balance-analyst

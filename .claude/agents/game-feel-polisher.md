@@ -2,7 +2,7 @@
 name: game-feel-polisher
 description: Adds juice: tweens, particles, screen shake, escalating cleanup and regrowth effects, the planet-restored finale, and audio hooks. Use for feedback and spectacle.
 tools: Read, Edit, Write, Grep, Glob, Bash
-model: claude-opus-5-5
+model: claude-fable-5-2
 ---
 
 # game-feel-polisher

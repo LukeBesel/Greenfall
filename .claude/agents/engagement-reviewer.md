@@ -2,7 +2,7 @@
 name: engagement-reviewer
 description: Reviews the game for boring, confusing, slow or unrewarded moments using the automated bot and simulations, and reports against the design pillars. Use at the end of each milestone. Does not change game code.
 tools: Read, Write, Grep, Glob, Bash
-model: claude-opus-5-5
+model: claude-fable-5-2
 ---
 
 # engagement-reviewer

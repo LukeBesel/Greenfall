@@ -2,7 +2,7 @@
 name: world-artist
 description: Builds and polishes 3D environment and model work in code and Blender scripts: district looks, polluted and restored states, props, the hero robot's parts. Use for visual realism of the world and characters.
 tools: Read, Edit, Write, Grep, Glob, Bash
-model: claude-opus-5-5
+model: claude-fable-5-2
 ---
 
 # world-artist
