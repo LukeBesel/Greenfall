@@ -19,6 +19,10 @@
       "first_build_one_time": true
     },
     {
+      "id": "glim",
+      "kind": "one_time"
+    },
+    {
       "id": "composter",
       "kind": "one_time"
     },

@@ -1,7 +1,7 @@
 class_name GlimDirector
 extends Node
-## [buddy] Wires Glim into a district (one call from scenes/slice.gd): finds him in the junk
-## (Glim.ready_to_find, or at the first dusk), keeps his body (GlimBot) beside Lumi, runs the hex
+## [buddy] Wires Glim into a district (one call from scenes/slice.gd): keeps his body (GlimBot)
+## beside Lumi once he's repaired, runs the hex
 ## scanner (GlimScan: tap glim_scan = F / LT; auto-pulse from the Auto-Scan track), the Tidy Tug
 ## magnet for tiny pieces, and opens the Glim panel (hold glim_scan; ui/glim_panel.gd).
 ## Dev hooks:
@@ -13,8 +13,21 @@ extends Node
 ##   --glim-open[=S]        open the Glim panel after S wall-clock seconds
 ##   --glim-cam[=dist]      close-up camera on Glim (screenshots)
 ##   --glim-groove[=BPM]    Glim bobs to an imaginary song (music visuals without a song)
+##   --glim-repair[=S]      [v4calm] the Repair Glim build is bought S game seconds in (default 4)
+##   (--glim-cam frames the broken Glim on the pod while he isn't repaired)
 
 const HOLD_OPEN_S: float = 0.45
+## [v4calm] Owner item 43: Glim is a little helper bot who followed Lumi and clung to the pod in the
+## fall. Until he's repaired (the workbench Build entry "Repair Glim", data/camp.json builds.glim)
+## he hangs on the crashed pod, dark (STUCK_NAME, a broken GlimBot on the pod). Buying the repair
+## sets flags.glim_repaired (the objective) and flags.glim_repair_pending; the moment itself plays
+## once no menu is open: sparks, he flickers awake, a happy chirp, WREN's line, and he floats over
+## to Lumi and follows from then on. He is no longer found in the junk or at dusk.
+const STUCK_NAME: String = "GlimStuck"
+const STUCK_GROUP: String = "glim_stuck"
+## Pod-local: on the shell just right of the door (the door faces -Z), at chest height.
+const STUCK_POS := Vector3(0.80, 1.22, -0.47)
+const BUILD_ID: String = "glim"
 
 var world: Node
 var bot: GlimBot
@@ -28,6 +41,8 @@ var _dusk_checked: bool = false
 var _dev_scan_t: float = -1.0
 var _pieces: int = 0
 var _music_t: float = 0.0
+var _moment: bool = false  # [v4calm] the repair moment is playing
+var _dev_repair_at: float = -1.0  # [v4calm] --glim-repair
 
 
 static func attach(slice: Node) -> GlimDirector:
@@ -58,6 +73,12 @@ func _setup() -> void:
 	panel.director = self
 	world.add_child(panel)
 	EventBus.junk_scooped.connect(_on_scooped)
+	YardBuilds.events.built.connect(_on_yard_built)  # [v4calm]
+	if Glim.is_found():  # [v4calm] saves from before the repair build: he's already with Lumi
+		GameState.flags["glim_repaired"] = true
+		GameState.flags["glim_ready"] = true
+		if not YardBuilds.built(BUILD_ID):
+			YardBuilds.mark_built(BUILD_ID)
 	EventBus.upgrade_bought.connect(func(id: String, _lv: int) -> void:
 		if id.begins_with("glim_"):
 			refresh())
@@ -70,6 +91,8 @@ func _setup() -> void:
 		get_tree().create_timer(DevHooks.get_f("glim-open", 2.0), true, false, true).timeout.connect(func() -> void: panel.open_panel())
 	if DevHooks.has("glim-cam"):
 		_cam.call_deferred()
+	if DevHooks.has("glim-repair"):  # [v4calm] wall clock, like --shot-delay
+		_dev_repair_at = DevHooks.get_f("glim-repair", 4.0)
 
 
 func _dev_hooks() -> void:
@@ -104,7 +127,7 @@ static func register_cosmetics() -> void:
 		"order": 20,
 		"editor": GlimDirector.make_looks_editor,
 		"unlocked": Glim.is_found,
-		"hint": "Find the little lantern bot in the junk",
+		"hint": "Repair Glim at the workbench",  # [v4calm]
 	})
 
 
@@ -146,11 +169,120 @@ func refresh() -> void:
 		bot.apply_look()
 
 
+## [v4calm] A broken Glim clinging to this pod (Intro.build_pod), unless he's already repaired.
+static func cling_to(pod: Node3D) -> GlimBot:
+	if pod == null or Glim.is_found():
+		return null
+	var g := GlimBot.new()
+	g.name = STUCK_NAME
+	g.broken = true
+	g.add_to_group(STUCK_GROUP)
+	pod.add_child(g)
+	g.position = STUCK_POS
+	var out := Vector3(STUCK_POS.x, 0.0, STUCK_POS.z).normalized()
+	g.basis = Basis.looking_at(out, Vector3.UP)  # his face (-Z) out from the shell, his back on it
+	return g
+
+
+## The broken Glim on the crashed pod in this world (null if there is none).
+func stuck_bot() -> GlimBot:
+	for n: Node in get_tree().get_nodes_in_group(STUCK_GROUP):
+		if n is GlimBot and is_instance_valid(n) and world.is_ancestor_of(n):
+			return n as GlimBot
+	return null
+
+
+func _on_yard_built(id: String) -> void:
+	if id != BUILD_ID or Glim.is_found():
+		return
+	GameState.flags["glim_repaired"] = true
+	GameState.flags["glim_repair_pending"] = true
+	print("[glim] repair bought at %.1f min played" % (float(GameState.stats.get("time_played", 0.0)) / 60.0))
+
+
+## [v4calm] The repair moment: short and special. Sparks on the pod, he flickers awake, a happy
+## chirp, one WREN line, then he floats over to Lumi's shoulder and the lantern is his.
+func play_repair() -> void:
+	if _moment or Glim.is_found():
+		return
+	_moment = true
+	GameState.flags.erase("glim_repair_pending")
+	GameState.flags["glim_repaired"] = true
+	var stuck: GlimBot = stuck_bot()
+	var patch: Node3D = world.get("patch") as Node3D
+	if stuck == null or patch == null:  # no pod here (tools): he simply appears beside Lumi
+		_moment = false
+		find_now("repair")
+		return
+	var at: Vector3 = stuck.global_position
+	var up: Vector3 = OrbitUp.up(at)
+	Vfx.burst("sparkle", at, Color(1.0, 0.7, 0.3), 0.9)
+	Audio.play("buzz", 1.8, -14.0)
+	await get_tree().create_timer(0.55).timeout
+	if not is_instance_valid(stuck):
+		_moment = false
+		return
+	Vfx.burst("sparkle", at + up * 0.1, Color(0.5, 0.95, 1.0), 1.0)
+	Audio.play("charge", 1.5, -12.0)
+	stuck.broken = false
+	stuck.wake = 0.0
+	var tw := stuck.create_tween()
+	tw.tween_property(stuck, "wake", 1.0, 1.1)
+	await tw.finished
+	if not is_instance_valid(stuck):
+		_moment = false
+		return
+	Vfx.burst("big_sparkle", at, Color(0.5, 0.95, 1.0))
+	Audio.play("blip", 1.7, -12.0)  # a happy two-note chirp
+	get_tree().create_timer(0.13).timeout.connect(func() -> void: Audio.play("blip", 2.15, -12.0))
+	at = stuck.global_position
+	var rot: Basis = stuck.global_basis
+	stuck.queue_free()
+	Glim.set_found(true)
+	_spawn(false)
+	bot.target = null
+	bot.global_position = at
+	bot.global_basis = rot
+	bot.scanning = 1.0
+	var w: Variant = world.get("wren")
+	var line: String = tr("Glim! He held on to your pod the whole way down, just to stay with you. Welcome back, little light.")
+	if w is Wren and (w as Wren).awake():
+		(w as Wren).speak(line, (w as Wren).stage())
+	else:
+		EventBus.toast.emit(tr("Glim blinks awake. He held on to the pod the whole way down, just to stay with Lumi."), "story")
+	# He floats up and over to Lumi's shoulder, then follows as usual.
+	var glide := bot.create_tween()
+	var from: Vector3 = at
+	glide.tween_method(func(k: float) -> void:
+		if bot and is_instance_valid(patch):
+			var dest: Vector3 = patch.global_position + patch.global_basis.orthonormalized() * GlimBot.FOLLOW_OFFSET
+			var arc: Vector3 = OrbitUp.up(dest) * sin(k * PI) * 1.2
+			bot.global_position = from.lerp(dest, k * k * (3.0 - 2.0 * k)) + arc, 0.0, 1.0, 1.6)
+	await glide.finished
+	if bot:
+		bot.target = patch
+	_moment = false
+	GameState.inc_stat("glim_found")
+	var key: String = Settings.glyph("glim_scan")
+	get_tree().create_timer(6.0).timeout.connect(func() -> void:
+		EventBus.toast.emit(tr("Tap %s: Glim scans your hex for junk you missed. Hold %s for his upgrades.") % [key, key], "hint"))
+	print("[glim] repaired at %.1f min played" % (float(GameState.stats.get("time_played", 0.0)) / 60.0))
+
+
 func find_now(reason: String = "junk") -> void:
 	if Glim.is_found():
 		return
 	Glim.set_found(true)
+	GameState.flags["glim_repaired"] = true  # [v4calm]
+	GameState.flags["glim_ready"] = true
+	if not YardBuilds.built(BUILD_ID):
+		YardBuilds.mark_built(BUILD_ID)
+	for n: Node in get_tree().get_nodes_in_group(STUCK_GROUP):
+		n.queue_free()
 	_spawn(true)
+	if reason == "repair":
+		print("[glim] repaired (no pod in this world)")
+		return
 	var key: String = Settings.glyph("glim_scan")
 	if reason == "dusk":
 		EventBus.toast.emit(tr("A little lantern bot flickers awake in the junk beside you: Glim! He'll light the way at night."), "story")
@@ -169,8 +301,7 @@ func _on_scooped(_type_id: String, _pos: Vector3) -> void:
 	var scooped: int = _pieces + int(GameState.stats.get("glim_pieces", 0.0))
 	GameState.stats["glim_pieces"] = float(scooped)
 	_pieces = 0
-	if Glim.ready_to_find(float(GameState.stats.get("time_played", 0.0)), scooped):
-		find_now("junk")
+	# [v4calm] item 43: no more finding him in the junk; the workbench repair brings him back
 
 
 func _blocked() -> bool:
@@ -222,7 +353,7 @@ func do_scan(manual: bool = true) -> int:
 func _process(delta: float) -> void:
 	_cooldown = maxf(0.0, _cooldown - delta)
 	if not Glim.is_found():
-		_check_dusk()
+		_tick_repair()  # [v4calm] (was _check_dusk: no more finding him at dusk)
 		return
 	if bot == null:
 		_spawn(false)
@@ -276,7 +407,24 @@ func _input_poll(delta: float) -> void:
 		_hold = -1.0
 
 
-## Before he's found, the first dusk finds him anyway (no one plays the night in the dark).
+## [v4calm] Before the repair: the Build entry opens once the signal tower stands (the objective
+## follows it), and a bought repair plays its moment as soon as no menu is open.
+func _tick_repair() -> void:
+	if _moment:
+		return
+	if _dev_repair_at >= 0.0 and DevHooks._elapsed >= _dev_repair_at:
+		_dev_repair_at = -1.0
+		GameState.flags["glim_ready"] = true
+		if not YardBuilds.built(BUILD_ID):
+			YardBuilds.mark_built(BUILD_ID)
+			_on_yard_built(BUILD_ID)
+	if not GameState.flags.get("glim_ready", false) and SignalTower.tier() >= 1:
+		GameState.flags["glim_ready"] = true
+	if GameState.flags.get("glim_repair_pending", false) and not _blocked():
+		play_repair()
+
+
+## Before he's found, the first dusk found him anyway (unused since v4calm: kept for reference).
 func _check_dusk() -> void:
 	var sd: Node = world.get("sky_director")
 	if sd == null:
@@ -312,8 +460,11 @@ func _magnet(dt: float) -> void:
 
 
 func _cam() -> void:
+	if bot == null:  # [v4calm] the broken Glim on the pod (and the repair moment)
+		_cam_stuck()
+		return
 	var cam: Node = world.get("cam")
-	if bot == null or cam == null:
+	if cam == null:
 		return
 	var c3: Camera3D = cam.get_viewport().get_camera_3d()
 	if c3 == null:
@@ -330,4 +481,38 @@ func _cam() -> void:
 			c3.global_position = eye
 			c3.look_at(p + Vector3(0, -0.02, 0), Vector3.UP)
 			c3.fov = 40.0
+	get_tree().process_frame.connect(follow)
+
+
+## [v4calm] Dev: a fixed camera in front of the broken Glim on the pod; it follows him once he's up.
+## Re-applied every frame (the loader and the camera rig reset the view while the world settles).
+func _cam_stuck() -> void:
+	var dist: float = DevHooks.get_f("glim-cam", 2.4)
+	var state: Dictionary = {}
+	var follow := func() -> void:
+		if not state.has("eye"):
+			var st: GlimBot = stuck_bot()
+			if st == null:
+				return
+			var p0: Vector3 = st.global_position
+			var up: Vector3 = OrbitUp.up(p0)
+			var face: Vector3 = (st.global_basis * Vector3(0, 0, -1)).normalized()
+			var side: Vector3 = face.cross(up).normalized()
+			state["p0"] = p0
+			state["up"] = up
+			state["eye"] = p0 + (face * 1.0 + up * 0.25 + side * 0.45).normalized() * dist
+			print("[glim] glim-cam on the broken Glim at %s" % str(p0))
+			var own := Camera3D.new()  # our own camera: the rig keeps driving its own
+			own.name = "GlimShotCam"
+			world.add_child(own)
+			state["cam"] = own
+		var c3: Camera3D = state["cam"]
+		if not c3.current:
+			c3.make_current()
+		var p: Vector3 = state["p0"]
+		if bot and is_instance_valid(bot):
+			p = bot.global_position
+		c3.global_position = state["eye"]
+		c3.look_at(p, state["up"])
+		c3.fov = 50.0
 	get_tree().process_frame.connect(follow)

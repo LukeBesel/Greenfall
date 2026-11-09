@@ -2,7 +2,7 @@
   "_doc": "[buddy] Glim, the little lantern bot that follows Lumi (systems/glim/). Tracks are bought tier by tier; tier n costs tracks.<id>.tiers[n-1].cost (cubes / parts / seeds only). Values per tier are absolute (index 0 = before any upgrade). Looks: shells, glows and tops; 'unlock' is {cost}, {glim_tier: total tiers}, {hexes: N} or empty (free).",
   "name": "Glim",
   "found": {
-    "_doc": "Glim turns up in the junk once Lumi has played min_time_s AND scooped min_pieces pieces (the next scoop finds him), or at the first dusk, whichever comes first.",
+    "_doc": "[v4calm] Unused in play: Glim now clings to the crashed pod until the workbench build Repair Glim (data/camp.json builds.glim). These only feed Glim.ready_to_find.",
     "min_time_s": 300,
     "min_pieces": 25
   },

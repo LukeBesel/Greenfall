@@ -30,6 +30,10 @@ var _t: float = 0.0
 var _blink_t: float = 2.0
 var _vel := Vector3.ZERO
 var _yaw: float = 0.0
+## [v4calm] Owner item 43: before he's repaired Glim hangs on the crashed pod, dark and still
+## (GlimDirector.cling_to). wake 0..1 runs the repair moment: flicker, eyes open, lantern on.
+var broken: bool = false
+var wake: float = 1.0
 
 
 func _ready() -> void:
@@ -216,6 +220,25 @@ func _sphere_up() -> Vector3:
 	return Vector3.ZERO
 
 
+## [v4calm] Stuck to the pod: slumped, eyes shut, the lantern a dying ember that flickers now and
+## then. While waking (wake 0..1): the flicker steadies, he straightens and his eyes open.
+func _broken_pose() -> void:
+	var w: float = clampf(wake, 0.0, 1.0) if not broken else 0.0
+	var twitch: float = sin(_t * 23.0) * 0.03 if fmod(_t, 4.7) < 0.25 else 0.0
+	_root.position = Vector3.ZERO
+	_root.rotation = Vector3(lerpf(0.55, 0.0, w) + twitch, 0.0, lerpf(0.4, 0.0, w))
+	var ember: float = 0.12 + (0.9 if fmod(_t * 1.7, 3.3) < 0.08 else 0.0)
+	var flick: float = (1.0 if fmod(_t * 13.0, 1.0) < 0.6 else 0.3) if w > 0.0 and w < 0.7 else 1.0
+	_core_mat.emission_energy_multiplier = lerpf(ember, 3.6, w) * flick
+	for e: MeshInstance3D in _eyes:
+		e.scale = Vector3(1.0, lerpf(0.12, 1.0, smoothstep(0.4, 0.8, w)), 1.0)
+	light.visible = w > 0.3
+	light.omni_range = lerpf(0.5, 2.5, w)
+	light.light_energy = w * 0.9 * flick
+	if not broken and w >= 1.0:
+		_root.rotation = Vector3.ZERO
+
+
 ## How bright the lantern should be: full at night, a faint glow by day.
 static func night_amount(time_of_day: float) -> float:
 	var d: float = absf(fmod(time_of_day + 1.0, 1.0) - 0.5)  # 0 noon .. 0.5 midnight
@@ -225,6 +248,9 @@ static func night_amount(time_of_day: float) -> float:
 func _process(delta: float) -> void:
 	_t += delta
 	scanning = maxf(0.0, scanning - delta * 1.6)
+	if broken or wake < 1.0:  # [v4calm]
+		_broken_pose()
+		return
 	if target and is_instance_valid(target):
 		visible = target.is_visible_in_tree()  # hidden with Lumi (rocket launch, cinematics)
 		var want: Vector3 = _follow_point()
