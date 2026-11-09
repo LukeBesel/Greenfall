@@ -88,6 +88,8 @@ func add_hex(hid: int) -> void:
 func plantable(s: int) -> bool:
 	if world == null or world.field.is_water(slot_hex[s]):
 		return false
+	if sparse and on_paving(s):  # [v4grow] streets, sidewalks and kerbs, the pad, buildings
+		return false
 	var fr: Variant = world.get("frontier")
 	if fr is FrontierDistrict:
 		return (fr as FrontierDistrict).slot_plantable(slot_hex[s])
@@ -383,6 +385,8 @@ func _update_inst(s: int) -> void:
 			var mm := MultiMesh.new()
 			mm.transform_format = MultiMesh.TRANSFORM_3D
 			mm.mesh = PlantParts.variants(str(species[slot_species[s]]["model"]), VARIANT_TRIS)[vi]
+			if sparse:  # [v4grow] a touch brighter and greener on the globe (they read pale)
+				mm.mesh = _vivid(mm.mesh)
 			mm.instance_count = int(_chunk_cap.get(ck, 1))
 			mm.visible_instance_count = 0
 			var mmi := MultiMeshInstance3D.new()
@@ -528,7 +532,7 @@ func _slot_xf_globe(s: int) -> Transform3D:
 	var b := Basis(Vector3.UP, slot_yaw[s]).scaled(Vector3.ONE * sc)
 	if slot_water[s] <= 0.0:  # thirsty: a hard droop, squat and leaning
 		b = Basis(Vector3.RIGHT, 0.55) * b.scaled(Vector3(1.1, 0.72, 1.1))
-	return Transform3D(SphereGrid.frame(slot_pos[s].normalized()) * b, slot_pos[s])
+	return Transform3D(SphereGrid.frame(slot_pos[s].normalized()) * b, slot_pos[s] + slot_pos[s].normalized() * lift_of(s))
 
 
 ## Planted slots on the cells made so far (sparse: the cells Lumi has been near).
@@ -538,4 +542,110 @@ func planted_slots() -> PackedInt32Array:
 		for sl: int in hex_slots[h]:
 			if slot_species[sl] >= 0:
 				out.append(sl)
+	return out
+
+
+# --- [v4grow] Planting stays off the paving on the globe -----------------------------------------
+# The flat game made no slots on roads or buildings (CityLayout surfaces). On the globe a cell's
+# slots are kept as they were (their order is what the save holds), and a slot on a town's street,
+# sidewalk and kerb, the yard pad or a building can't take a seed (its soil mound would sit half
+# under the tiles). Checked at the slot and MOUND_R round it. The lots' kit ground patches (8 cm
+# concrete plates on sand) stay plantable as on the flat game, but the mound and the plant stand on
+# top of the plates (lift_of), and the patch's kerb band is kept clear. Cached once the town is in.
+
+const PAVED: Array[int] = [CityLayout.Surface.ROAD, CityLayout.Surface.SIDEWALK, CityLayout.Surface.BUILDING, CityLayout.Surface.YARD]
+const MOUND_R: float = 0.7
+const LOT_HALF: float = 9.0  # VerdanceSite's lot ground patch (18 x 18 m)
+const LOT_KERB_M: float = 0.8
+const PLATE_TOP: float = 0.12
+var _paving: Dictionary = {}  # slot -> [on paving, lift (m)] (known)
+
+
+## True when slot s lies on (or its mound would reach) a loaded town's paving.
+func on_paving(s: int) -> bool:
+	return bool(_ground_info(s)[0])
+
+
+## How far above the terrain slot s's ground is (the top of a lot's plates, else 0).
+func lift_of(s: int) -> float:
+	return float(_ground_info(s)[1]) if sparse else 0.0
+
+
+func _ground_info(s: int) -> Array:
+	if _paving.has(s):
+		return _paving[s]
+	var towns: Array = _towns()
+	if towns.is_empty():
+		return [false, 0.0]  # no town loaded here yet: open ground (asked again later)
+	var p: Vector3 = slot_pos[s]
+	var out: Array = [false, 0.0]
+	for t: Array in towns:
+		var vs: VerdanceSite = t[0]
+		var loc: Vector3 = (t[1] as Transform3D) * p
+		if Vector2(loc.x, loc.z).length() > vs.town_r + MOUND_R:
+			continue
+		for o: Vector2 in [Vector2.ZERO, Vector2(MOUND_R, 0), Vector2(-MOUND_R, 0), Vector2(0, MOUND_R), Vector2(0, -MOUND_R)]:
+			if paved(vs.layout, loc.x + o.x, loc.z + o.y):
+				out[0] = true
+		var lots: Variant = vs.get("_lots")
+		for lot: Dictionary in lots if lots is Array else []:
+			var d: Vector2 = (Vector2(loc.x, loc.z) - (lot["c"] as Vector2)).abs()
+			var m: float = maxf(d.x, d.y)
+			if m < LOT_HALF + MOUND_R:
+				if m > LOT_HALF - LOT_KERB_M - MOUND_R:
+					out[0] = true  # the patch's kerb band
+				else:
+					out[1] = PLATE_TOP
+	_paving[s] = out
+	return out
+
+
+## Paving in a town layout at site-local (x, z): its streets (only round blocks the town kept),
+## sidewalks and kerbs, the yard pad and building footprints.
+static func paved(lay: CityLayout, x: float, z: float) -> bool:
+	if lay == null:
+		return false
+	var srf: int = lay.surface_at(x, z)
+	if not srf in PAVED:
+		return false
+	return srf == CityLayout.Surface.YARD or lay.wild or lay.blocks.has(lay.block_key_at(x, z))
+
+
+## [VerdanceSite, inverse of its transform] for every loaded town on the globe.
+func _towns() -> Array:
+	var out: Array = []
+	var so: Variant = world.get("orbit") if world else null
+	var sm: SiteManager = (so as Object).get("globe").get("site_manager") as SiteManager if so is Object else null
+	if sm == null:
+		return out
+	for pf: Variant in sm.prefabs:
+		if not (pf is SitePrefab) or not is_instance_valid(pf) or (pf as SitePrefab).content == null:
+			continue
+		for c: Node in (pf as SitePrefab).content.get_children():
+			if c is VerdanceSite and (c as VerdanceSite).layout != null and (c as Node3D).is_inside_tree():
+				out.append([c, (c as Node3D).global_transform.affine_inverse()])
+	return out
+
+
+# --- [v4grow] Grown plants read pale on the globe: a richer copy of each clump's materials -------
+
+const VIVID_TINT := Color(1.08, 1.22, 0.98)
+static var _vivid_cache: Dictionary = {}  # mesh rid -> Mesh
+
+
+static func _vivid(m: Mesh) -> Mesh:
+	if m == null:
+		return m
+	if _vivid_cache.has(m.get_rid()):
+		return _vivid_cache[m.get_rid()]
+	var out: Mesh = m.duplicate()
+	for i: int in out.get_surface_count():
+		var mat: Material = out.surface_get_material(i)
+		if mat is BaseMaterial3D:
+			var v: BaseMaterial3D = (mat as BaseMaterial3D).duplicate()
+			v.albedo_color = v.albedo_color * VIVID_TINT
+			v.roughness = maxf(v.roughness, 0.85)  # less sky sheen (the whitish cast)
+			v.metallic_specular = minf(v.metallic_specular, 0.3)
+			out.surface_set_material(i, v)
+	_vivid_cache[m.get_rid()] = out
 	return out
