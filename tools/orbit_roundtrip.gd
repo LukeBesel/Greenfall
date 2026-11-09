@@ -309,6 +309,20 @@ static func _first_seed_check(tree: SceneTree, s: Node, so: SliceOrbit, check: C
 	var local: Vector3 = site.affine_inverse() * gh
 	var tilt: float = rad_to_deg(fs.global_basis.y.angle_to(gh.normalized()))
 	check.call("orbit_greenhouse_east_on_ground", true, absf(g.surface.altitude(gh)) < 0.7 and tilt < 1.0 and local.x > 0.0 and Vector2(local.x, local.z).length() > 14.0 and Vector2(local.x, local.z).length() < 75.0)
+	# [v4grow] #48/#55: the tin is reachable and seen (nothing in the footprint, open sky), and the
+	# seed step's beacon stands on it once its signal is in.
+	var bl: Array[String] = fs.blockers()
+	check.call("orbit_greenhouse_clear", "[]", str(bl))
+	var ob: Objectives = s.get("objectives") as Objectives
+	if ob:
+		var sig0: Variant = GameState.flags.get("seed_signal", false)
+		var unl0: Variant = GameState.flags.get("seeds_unlocked", false)
+		GameState.flags["seed_signal"] = true
+		GameState.flags.erase("seeds_unlocked")
+		var bt: Variant = ob.step_target({"id": "seed"}).get("pos", null)
+		check.call("orbit_seed_beacon_on_tin", true, bt is Vector3 and (bt as Vector3).distance_to(fs._tin.global_position) < 0.6)
+		GameState.flags["seed_signal"] = sig0
+		GameState.flags["seeds_unlocked"] = unl0
 	var fcfg: Dictionary = s.garden.cfg.get("first_seed", {})
 	var need0: Variant = fcfg.get("hexes_needed", 5)
 	fcfg["hexes_needed"] = 0

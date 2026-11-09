@@ -47,6 +47,8 @@ func setup() -> void:
 		_letterbox.add_child(r)
 		_bars.append(r)
 	_check.call_deferred()
+	if _globe and DevHooks.has("seed-probe"):  # [v4grow]
+		_probe()
 
 
 func _build_greenhouse() -> void:
@@ -119,17 +121,20 @@ func _build_greenhouse() -> void:
 
 
 func ready_to_find() -> bool:
-	return not GameState.flags.get("seeds_unlocked", false) and world.field.cleaned_count >= int(world.garden.cfg.get("first_seed", {}).get("hexes_needed", 5))
+	if GameState.flags.get("seeds_unlocked", false):
+		return false
+	if GameState.flags.get("seed_signal", false):  # [v4grow] a signal given early (the hint timer) holds
+		return true
+	return world.field.cleaned_count >= int(world.garden.cfg.get("first_seed", {}).get("hexes_needed", 5))
 
 
 func _check() -> void:
 	if ready_to_find() and not GameState.flags.get("seed_signal", false):
-		GameState.flags["seed_signal"] = true
-		world.wren.line_started.emit(tr("Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."), 1)
-		Audio.play("detector", 0.7, -6.0)
+		give_signal()  # [v4grow]
 
 
 func _process(delta: float) -> void:
+	_hint_tick(delta)  # [v4grow]
 	if _tin and _tin.visible and ready_to_find():
 		_tin_light.light_energy = 1.2 + sin(Time.get_ticks_msec() * 0.004) * 0.6
 		_tin.rotation.y += delta * 0.5
@@ -319,3 +324,126 @@ static func find_spot(so: SliceOrbit, site: Transform3D) -> Transform3D:
 			var bas: Basis = Basis(Quaternion(site.basis.y.normalized(), up)) * site.basis.orthonormalized() * lb
 			return Transform3D(bas, wc)
 	return best
+
+
+# --- [v4grow] Owner playtest 3 #48: the first seed is hard to find ------------------------------
+# On the "Plant the first seed" step the beacon and trail stand on the tin once its signal is in.
+# The signal used to wait for 7 clean hexes, so a player who reached the step with fewer had no
+# marker at all, only "Keep cleaning". After HINT_AFTER_S on the step without the signal, WREN
+# picks it up anyway and the beacon leads to the greenhouse.
+
+const HINT_AFTER_S: float = 75.0
+var _seed_step_t: float = 0.0
+
+
+## The point the objective's beacon stands on: the tin while it is there, else the greenhouse.
+func tin_point() -> Vector3:
+	return _tin.global_position if _tin != null and _tin.visible else greenhouse_point()
+
+
+## Seconds on the seed step (paused while a modal or the cinematic runs); at HINT_AFTER_S without
+## the signal, the signal comes on its own.
+func _hint_tick(delta: float) -> void:
+	if _active or GameState.flags.get("seeds_unlocked", false) or GameState.flags.get("seed_signal", false):
+		return
+	var ob: Objectives = world.get("objectives") as Objectives if world else null
+	if ob == null or str(ob.current().get("id", "")) != "seed":
+		return
+	if world.has_method("any_modal_open") and bool(world.call("any_modal_open")):
+		return
+	_seed_step_t += delta
+	if _seed_step_t >= HINT_AFTER_S:
+		give_signal(tr("Lumi, that green signal is back, stronger now. Follow the beam: the old greenhouse."))
+
+
+## Turns the tin's signal on (the glow, the beacon on the seed step), with WREN's line.
+func give_signal(line: String = "") -> void:
+	if GameState.flags.get("seed_signal", false) or GameState.flags.get("seeds_unlocked", false):
+		return
+	GameState.flags["seed_signal"] = true
+	if world.get("wren") != null:
+		world.wren.line_started.emit(line if line != "" else tr("Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."), 1)
+	Audio.play("detector", 0.7, -6.0)
+
+
+# --- [v4grow] Dev probe: is the greenhouse reachable and visible? ---------------------------------
+
+## --seed-probe: once the world has streamed in, prints where the greenhouse stands, what overlaps
+## its footprint (other than its own bodies), what is overhead of the tin, wet cells under it, and
+## what stands in the way on the straight line from the bench.
+func _probe() -> void:
+	await get_tree().create_timer(DevHooks.get_f("seed-probe", 6.0)).timeout
+	var so: SliceOrbit = world.get("orbit") as SliceOrbit
+	if so == null:
+		return
+	var site: Transform3D = so.globe.sites[0]["transform"]
+	var gh: Vector3 = greenhouse_point()
+	var loc: Vector3 = site.affine_inverse() * gh
+	var bench: Vector3 = so.bench_position()
+	print("[seed-probe] greenhouse site-local (%.1f, %.1f) ground %.1f m from the bench, %.1f m from Lumi" % [loc.x, loc.z,
+		OrbitUp.ground_dist(bench, gh), OrbitUp.ground_dist(world.patch.global_position, gh)])
+	for l: String in blockers():
+		print("[seed-probe] blocked: %s" % l)
+	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+	var own: Array[RID] = _own_rids()
+	var tin: Vector3 = _tin.global_position
+	var f: SphereField = so.globe.field
+	var wet: int = 0
+	for o: Vector3 in [Vector3.ZERO, Vector3(3, 0, 4), Vector3(-3, 0, 4), Vector3(3, 0, -4), Vector3(-3, 0, -4)]:
+		var c: int = f.hex_at(to_global(GREENHOUSE_POS + o))
+		if c < 0 or f.is_water(c):
+			wet += 1
+	print("[seed-probe] wet corners: %d, tin altitude %.2f m" % [wet, so.globe.surface.altitude(tin)])
+	var block: Array[String] = []
+	var n: int = int(OrbitUp.ground_dist(bench, gh))
+	var sq := PhysicsShapeQueryParameters3D.new()
+	var sph := SphereShape3D.new()
+	sph.radius = 0.5
+	sq.shape = sph
+	sq.collision_mask = PhysLayers.SOLID
+	sq.exclude = own
+	for i: int in range(3, n - 4):
+		var d: Vector3 = bench.normalized().slerp(gh.normalized(), float(i) / n)
+		var gp: Vector3 = so.globe.terrain.ground(d)
+		sq.transform = Transform3D(Basis(), gp + d * 0.9)
+		for h: Dictionary in space.intersect_shape(sq, 4):
+			var nm: String = str((h["collider"] as Node).name) if h["collider"] is Node else "?"
+			if not nm in block:
+				block.append("%s@%dm" % [nm, i])
+	print("[seed-probe] on the line from the bench: %s" % str(block))
+	print("[seed-probe] cleaned_count %d junk_hex_count %d ready %s signal %s" % [f.cleaned_count, f.junk_hex_count, str(ready_to_find()), str(GameState.flags.get("seed_signal", false))])
+
+
+func _own_rids() -> Array[RID]:
+	var own: Array[RID] = []
+	for b: Node in find_children("*", "CollisionObject3D", true, false):
+		own.append((b as CollisionObject3D).get_rid())
+	return own
+
+
+## What keeps Lumi from the tin (empty when it is reachable and seen): solid colliders in the
+## greenhouse's footprint other than its own, and anything overhead of the tin (a building, a heap).
+func blockers() -> Array[String]:
+	var out: Array[String] = []
+	if _tin == null or not is_inside_tree():
+		return out
+	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+	var own: Array[RID] = _own_rids()
+	var gh: Vector3 = greenhouse_point()
+	var up: Vector3 = OrbitUp.up(gh)
+	var q := PhysicsShapeQueryParameters3D.new()
+	var box := BoxShape3D.new()
+	box.size = Vector3(6.6, 2.2, 9.6)
+	q.shape = box
+	q.transform = Transform3D(global_basis.orthonormalized(), gh + up * 1.5)
+	q.collision_mask = PhysLayers.SOLID
+	q.exclude = own
+	for h: Dictionary in space.intersect_shape(q, 8):
+		out.append("footprint: %s" % (str((h["collider"] as Node).get_path()) if h["collider"] is Node else "?"))
+	var tin: Vector3 = _tin.global_position
+	var rq := PhysicsRayQueryParameters3D.create(tin + up * 60.0, tin + up * 0.2, PhysLayers.SOLID | PhysLayers.MOUND)
+	rq.exclude = own
+	var over: Dictionary = space.intersect_ray(rq)
+	if not over.is_empty():
+		out.append("overhead: %s" % (str((over["collider"] as Node).get_path()) if over["collider"] is Node else "?"))
+	return out
