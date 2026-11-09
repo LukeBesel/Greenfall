@@ -171,6 +171,9 @@ static func _load_model(id: String) -> void:
 	root.free()
 	if id in DEAD_LAMPS:
 		_kill_emission(mesh)
+	if mesh == null:  # [main] guard: never leave the id without an AABB
+		_aabbs[id] = AABB(Vector3(-0.1, 0, -0.1), Vector3(0.2, 0.2, 0.2))
+		return
 	_meshes[id] = mesh
 	_aabbs[id] = mesh.get_aabb()
 
@@ -213,6 +216,8 @@ static func _merge(found: Array) -> ArrayMesh:
 		var nb: Basis = xf.basis.inverse().transposed()
 		for s: int in mi.mesh.get_surface_count():
 			var arr: Array = mi.mesh.surface_get_arrays(s)
+			if arr.size() <= Mesh.ARRAY_VERTEX or arr[Mesh.ARRAY_VERTEX] == null:
+				continue  # [main] unreadable surface (intermittent on the dummy renderer): skip it
 			var v: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
 			for i: int in v.size():
 				v[i] = xf * v[i]
