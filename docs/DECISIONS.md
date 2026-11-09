@@ -374,3 +374,12 @@ The owner's new brief: finish Planet 1 as a complete, polished, original experie
 - **PlanetDefinition is a typed Resource that points to JSON tables.** The game's content is already JSON with tooling and translation hooks; a Resource adds typing and validation without rewriting 55 data files.
 - **One extra agent: world-artist.** The brief's list had no owner for 3D environment and model work, which is a large part of this game. No agents were dropped.
 - **Earlier owner feedback that conflicts with the new brief** is resolved in favour of the new brief, and listed in the Phase 0 report: the workbench "like" the reference game, hubs "as good as" the reference game's hubs (kept as a quality bar, not a design model), and the round-planet structure by reference (kept as a structure, with every specific made our own).
+
+## Owner approval of Phase 0 (Nov 9, 2026)
+The owner approved the plan and left the open calls to the lead ("decide what is best").
+- **Eyes: the concept sheet's cute crescent eyes, never solid discs.** Aurora, Sprout, Nova and Patch rest on the crescent; Bolt and Pixel rest on the smiling arcs, as drawn on the sheet. This reverses main's Nov 8 solid-eye change.
+- **The flat world is removed.** Planets are round.
+- **Later planets must work in future.** They are parked, not deleted: their content moves behind the PlanetDefinition system as data and planet-folder scripts, out of the Planet 1 build, with a test that a second planet still loads.
+- **Lead and branch.** This session leads the Planet 1 work on `claude/greenfall-aurora`. Work from other branches is merged in by the lead only when it serves the plan.
+- **Target playtime stays at about 4 hours** to the ending.
+- **Agents.** Fifteen definitions in `.claude/agents/`, all on Opus 5.5. Code-changing agents work in their own git worktrees; the lead reviews and merges. Two or three run at a time.
