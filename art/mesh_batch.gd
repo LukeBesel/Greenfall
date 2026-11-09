@@ -133,6 +133,10 @@ static func merged_mesh(parts: Array) -> ArrayMesh:
 	var datas: Array = []
 	for p: Array in parts:
 		var arr: Array = (p[0] as Mesh).surface_get_arrays(int(p[1]))
+		if arr.size() <= Mesh.ARRAY_INDEX or arr[Mesh.ARRAY_VERTEX] == null:  # [main] empty or unreadable surface (dummy renderer on reload): merge nothing for it
+			arr = []
+			arr.resize(Mesh.ARRAY_MAX)
+			arr[Mesh.ARRAY_VERTEX] = PackedVector3Array()
 		datas.append(arr)
 		all_t = all_t and arr[Mesh.ARRAY_TANGENT] != null
 		all_uv = all_uv and arr[Mesh.ARRAY_TEX_UV] != null
