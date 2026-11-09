@@ -320,7 +320,7 @@ func _run(s: Subtitles, seconds: float) -> Array:
 
 func test_two_messages_at_once_never_show_together() -> void:
 	var s := _bar()
-	s.queue_toast("New sighting: Pigeon. It's in the Codex now.", "info")
+	s.queue_toast("The drone is heading for a clean hex.", "info")  # [v4calm] sightings are cut now
 	s.queue_toast("Workbench fixed. Press E at it to spend cubes on upgrades.", "info")
 	var seen: Array = _run(s, 20.0)
 	assert_eq(seen.size(), 2, "both shown, one after the other")
@@ -334,7 +334,7 @@ func test_story_goes_before_info_and_speech_before_both() -> void:
 	s.queue_toast("Second info line.", "info")
 	s.queue_toast("A story beat.", "story")
 	s.queue_line("WREN speaks.", "wren")
-	var order: Array = _run(s, 30.0).map(func(e: Array) -> String: return str(e[0]))
+	var order: Array = _run(s, 45.0).map(func(e: Array) -> String: return str(e[0]))  # [v4calm] longer gaps round toasts
 	assert_eq(order, ["First info line.", "WREN speaks.", "A story beat.", "Second info line."])
 
 

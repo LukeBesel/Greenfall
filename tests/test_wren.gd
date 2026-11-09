@@ -53,14 +53,14 @@ func test_chatter_is_rare_and_spaced() -> void:  # [onboard]
 		wren._queue.clear()
 		wren._cooldown = 0.0
 		wren._chatter_t = 0.0
-		wren.say("hex_clean", 1.0)
+		wren.say("night", 1.0)  # [v4calm] hex_clean is muted now
 		n += wren._queue.size()
 	assert_between(n, 40, 110, "about a third of the old rate")
 	wren._chatter_t = 0.0
 	wren._queue.clear()
 	for i: int in 50:
 		wren._cooldown = 0.0
-		wren.say("hex_clean", 1.0)
+		wren.say("night", 1.0)
 	assert_lte(wren._queue.size(), 1, "never two chatter lines within the gap")
 
 
@@ -72,10 +72,10 @@ func test_clarity_follows_the_tower() -> void:  # [onboard]
 
 func test_no_repeats_until_pool_exhausted() -> void:
 	GameState.flags["signal_tower"] = 1
-	var pool: Array = wren.lines["hex_clean"][0]
+	var pool: Array = wren.lines["ledger_drop"][0]  # [v4calm] hex_clean is muted now
 	var seen: Dictionary = {}
 	for i: int in pool.size():
-		wren.say("hex_clean", 1.0, true)
+		wren.say("ledger_drop", 1.0, true)
 	for q: Dictionary in wren._queue:
 		seen[q["text"]] = true
 	assert_eq(seen.size(), pool.size())

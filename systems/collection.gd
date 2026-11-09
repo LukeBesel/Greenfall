@@ -50,7 +50,7 @@ static func grant(id: String, quiet: bool = false) -> bool:
 	found_list().append(id)
 	GameState.inc_stat("trinkets_found")
 	if not quiet:
-		EventBus.toast.emit(TranslationServer.translate("New for your Collection: %s. See it in the Codex (K).") % TranslationServer.translate(str(def(id).get("name", id))), "story")
+		EventBus.toast.emit(TranslationServer.translate("New for your Collection: %s. See it in the Codex (K).") % TranslationServer.translate(str(def(id).get("name", id))), "reward")  # [v4calm] cut
 		Audio.play("sparkle", 1.1, -6.0)
 	return true
 

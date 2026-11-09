@@ -9,6 +9,7 @@ extends Node3D
 const NODE_NAME: String = "Persona"
 const TAG_Y: float = 1.34
 const HEAR_M: float = 9.0
+const BOT_GAP_S: float = 8.0  # [v4calm] at most one robot beep this often, across the whole crew
 
 var robot: Robot
 var trait_id: String = ""
@@ -155,22 +156,23 @@ func _tick_beep(delta: float, idle: bool) -> void:
 	_greet_t -= delta
 	var dist: float = _patch_dist()
 	if trait_id == "chatty" and dist < 3.0 and _greet_t <= 0.0:
-		_greet_t = 25.0
-		_beep(dist, 2)
+		_greet_t = 60.0  # [v4calm] was 25 s
+		if BeepGate.take("bot", BOT_GAP_S):
+			_beep(dist, 1)
 		_show_emote("!", Color(1.0, 0.75, 0.3))
 		return
 	if _beep_t > 0.0:
 		return
 	var every: float = float(_def.get("every", 10.0))
-	_beep_t = every * randf_range(0.7, 1.4) * (0.7 if idle else 1.3)
-	if dist < HEAR_M:
-		_beep(dist, 1 if trait_id != "chatty" else 2)
+	_beep_t = every * 3.0 * randf_range(0.7, 1.4) * (0.7 if idle else 1.3)  # [v4calm] 3x rarer
+	if dist < HEAR_M and BeepGate.take("bot", BOT_GAP_S):  # [v4calm] item 50: the whole crew shares one slot
+		_beep(dist, 1)
 
 
 func _beep(dist: float, n: int) -> void:
 	var snd: String = str(_def.get("beep", "blip"))
 	var pitch: float = float(_def.get("pitch", 1.0)) * randf_range(0.92, 1.1)
-	var vol: float = -16.0 - dist * 1.3
+	var vol: float = -22.0 - dist * 1.3  # [v4calm] softer (was -16)
 	Audio.play(snd, pitch, vol)
 	if n > 1:
 		get_tree().create_timer(0.14).timeout.connect(func() -> void: Audio.play(snd, pitch * 1.18, vol - 1.0))

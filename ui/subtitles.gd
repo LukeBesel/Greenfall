@@ -35,7 +35,7 @@ const MAX_QUEUE: int = 8
 ## numbers is replaced by the newer one ("+12 cubes" then "+15 cubes" shows once); low-value lines
 ## that waited too long are dropped; speech and story are never dropped.
 const TOAST_MAX_QUEUE: int = 6
-const STALE_S: Dictionary = {0: 25.0, -1: 40.0}
+const STALE_S: Dictionary = {0: 20.0, -1: 12.0}  # [v4calm] was {0: 25, -1: 40}
 const TOAST_KINDS: Dictionary = {
 	"story": {"prio": 2, "col": Color(1.0, 0.86, 0.6)},
 	"goal": {"prio": 1, "col": Color(0.7, 0.93, 1.0)},
@@ -44,6 +44,8 @@ const TOAST_KINDS: Dictionary = {
 	"achievement": {"prio": 1, "col": Color(1.0, 0.82, 0.45)},
 	"info": {"prio": 0, "col": Color(0.95, 0.94, 0.9)},
 	"low": {"prio": -1, "col": Color(0.88, 0.88, 0.85)},
+	"reward": {"prio": -1, "col": Color(0.88, 0.88, 0.85)},  # [v4calm] cut (CUT_KINDS)
+	"tip": {"prio": 1, "col": Color(0.78, 1.0, 0.78)},  # [v4calm] same as hint
 }
 
 const SPEAKERS: Dictionary = {
@@ -90,6 +92,41 @@ var _speech_hidden: bool = false
 
 
 # --- Timing rule (pure, tested) ---------------------------------------------------------
+
+## [v4calm] Owner item 49 ("far too many messages"): toast kinds that never reach the screen.
+## reward = stat and reward chatter (parts found, hex level-ups, new looks, event payouts),
+## achievement / level / low = unlocks the menus already show. Story beats, goals, how-to hints and
+## warnings (info) still show, one at a time.
+const CUT_KINDS: Array[String] = ["reward", "achievement", "level", "low"]
+## [v4calm] Breathing room between two messages on the bar when a toast is involved.
+const TOAST_GAP_S: float = 2.0
+## [v4calm] Messages cut so far (dev: the clarity log's summary).
+static var cut_count: int = 0
+
+
+## [v4calm] True when a toast is cut (never shown). Same kind mapping as queue_toast.
+static func cut(text: String, kind: String) -> bool:
+	return toast_kind(text, kind) in CUT_KINDS
+
+
+## [v4calm] Seconds of empty bar after a line before the next one: a short beat between spoken
+## lines, a longer one whenever a toast is the one leaving or the one coming.
+static func gap_after(speaker: String, next_is_toast: bool) -> float:
+	return TOAST_GAP_S if speaker.begins_with("toast:") or next_is_toast else GAP_S
+
+
+func _next_is_toast() -> bool:
+	return not _queue.is_empty() and int(_queue[0].get("prio", 3)) < 3
+
+
+## [v4calm] Owner item 50: the soft chirp under a WREN line (dB).
+const CHIRP_DB: float = -22.0
+
+
+## [v4calm] Beeps under a spoken chunk: one soft chirp on the first chunk of a WREN line, else none.
+static func beeps_for(speaker: String, first_chunk: bool) -> int:
+	return 1 if speaker == "wren" and first_chunk else 0
+
 
 ## Seconds a line (or chunk) stays fully visible.
 static func duration_for(text: String) -> float:
@@ -354,7 +391,7 @@ func queue_line(text: String, speaker: String = "") -> void:
 	var cs: PackedStringArray = chunks(text)
 	var items: Array[Dictionary] = []
 	for i: int in cs.size():
-		items.append({"text": cs[i], "speaker": speaker, "last": i == cs.size() - 1, "prio": 3, "t": _clock})
+		items.append({"text": cs[i], "speaker": speaker, "first": i == 0, "last": i == cs.size() - 1, "prio": 3, "t": _clock})
 	_enqueue(items)
 	var speech: int = 0
 	for q: Dictionary in _queue:
@@ -375,6 +412,9 @@ func queue_toast(text: String, kind: String = "info") -> void:
 	if text.strip_edges() == "":
 		return
 	kind = toast_kind(text, kind)
+	if kind in CUT_KINDS:  # [v4calm] item 49
+		cut_count += 1
+		return
 	var prio: int = int((TOAST_KINDS[kind] as Dictionary)["prio"])
 	if current_text() == text or (_phase == 4 and str(_cur.get("text", "")) == text):
 		return  # the same line is up right now
@@ -409,7 +449,7 @@ func queue_toast(text: String, kind: String = "info") -> void:
 
 ## Kind from the text when the caller only said "info" (achievements, sightings).
 static func toast_kind(text: String, kind: String) -> String:
-	if kind == "info":
+	if kind in ["info", "story", "hint"]:  # [v4calm] achievements arrive as "story"
 		if text.begins_with("Achievement") or text.begins_with(TranslationServer.translate("Achievement: %s. %s").get_slice("%", 0)):
 			return "achievement"
 		if text.begins_with(TranslationServer.translate("New sighting: %s. It's in the Codex now.").get_slice("%", 0)) or text.begins_with("New sighting"):
@@ -519,10 +559,10 @@ func _next() -> void:
 		Audio.duck(_hold + FADE_S * 2.0)  # [sound] music dips under the line
 		if str(_cur["speaker"]).begins_with("ledger") and Audio.has_sound("ledger_tick"):
 			Audio.play("ledger_tick", 1.0, -18.0, 0.05)
-		else:  # [main] a short burst of robot beeps per line: Wren higher, the narrator lower and softer
-			_beeps_left = clampi(int(_chars.length() / 6.0), 3, 12)
+		else:  # [v4calm] owner item 50: no beep-talk. One soft chirp at the start of a WREN line, none for narration
+			_beeps_left = beeps_for(str(_cur["speaker"]), bool(_cur.get("first", true)))
 			_beep_t = 0.0
-			_beep_pitch = 1.25 if str(_cur["speaker"]) == "wren" else 0.85
+			_beep_pitch = 1.2
 
 
 ## Purposeful glitches. Readable words: a light flicker and scramble on appearance only (~150 ms).
@@ -602,7 +642,7 @@ func _process(delta: float) -> void:
 		if _beep_t <= 0.0:
 			_beeps_left -= 1
 			_beep_t = randf_range(0.07, 0.13)
-			Audio.play("blip", _beep_pitch * randf_range(0.85, 1.2), -16.0 if _beep_pitch > 1.0 else -19.0, 0.0)
+			Audio.play("blip", _beep_pitch * randf_range(0.95, 1.05), CHIRP_DB, 0.0)
 	if _phase in [1, 2, 3]:
 		_glitch(delta)
 	match _phase:
@@ -626,5 +666,5 @@ func _process(delta: float) -> void:
 				_phase = 4
 				_pt = 0.0
 		4:
-			if _pt >= GAP_S:
+			if _pt >= gap_after(str(_cur.get("speaker", "")), _next_is_toast()):  # [v4calm] spacing
 				_next()

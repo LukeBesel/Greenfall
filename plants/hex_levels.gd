@@ -279,7 +279,7 @@ func _celebrate(hid: int, to: int, reward: Dictionary) -> void:
 		var wl: Node = world.get("wildlife")
 		if wl and wl.has_method("_on_restored"):
 			wl.call("_on_restored", hid)  # extra butterflies and a bird for a thriving hex
-	EventBus.toast.emit(tr("Hex Lv %d  %s.   %s") % [to, nm, reward_text(reward)], "story" if to >= 4 else "hint")
+	EventBus.toast.emit(tr("Hex Lv %d  %s.   %s") % [to, nm, reward_text(reward)], "reward")  # [v4calm] item 49: hex level-ups are reward chatter (the hex's own FX shows it)
 
 
 func _recalc_bonus() -> void:

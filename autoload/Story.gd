@@ -19,10 +19,8 @@ func once(id: String, text: String, kind: String = "story") -> void:
 
 func _on_cube_made(info: Dictionary) -> void:
 	# [first] The restart checklist teaches carrying the bale; these only name the bonuses, once.
-	if info.get("perfect", false):
-		once("first_perfect", tr("Perfect bale: filled right to the gold line."), "hint")
-	elif info.get("pure", false):
-		once("first_pure", tr("Pure bale: one kind of junk is worth double."), "hint")
+	# [v4calm] item 49: the perfect / pure bale notes are reward chatter (the scale's FX shows it)
+	pass
 
 
 func _on_hex_cleaned(_hex_id: int, _pos: Vector3, _bonus: BigNum) -> void:
@@ -30,4 +28,4 @@ func _on_hex_cleaned(_hex_id: int, _pos: Vector3, _bonus: BigNum) -> void:
 
 
 func _on_upgrade_bought(_id: String, _level: int) -> void:
-	once("first_upgrade", tr("Upgraded! Lumi is a little stronger now."), "hint")
+	pass  # [v4calm] item 49: "Upgraded!" was chatter

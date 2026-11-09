@@ -152,4 +152,4 @@ func _process(delta: float) -> void:
 		EventBus.toast.emit(tr("Codex: %d new entries.") % found.size(), "info")
 	else:
 		for k: String in found:
-			EventBus.toast.emit(tr("Codex entry: %s") % tr(str(Codex.entry(k).get("name", k))), "info")
+			EventBus.toast.emit(tr("Codex entry: %s") % tr(str(Codex.entry(k).get("name", k))), "reward")  # [v4calm] cut
