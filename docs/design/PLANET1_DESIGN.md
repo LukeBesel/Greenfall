@@ -154,3 +154,48 @@ Decided in task M3-13 after the loop is rebuilt; current leaning:
 | 6 | 817 | 45 min | 24 | 30% |
 
 Lumi's hand rate grows from about 1 hex per 2.5 minutes at the start to about 4 hexes a minute by district 6 (tracks, rigs, mastery, Surge).
+
+## 13. Looks: found pieces and the Locker (owner, Nov 9)
+
+Owner's rules: all six designs look exactly like the concept sheet, whole robot, not only the eyes. New designs and cosmetics are **rare and hard to get**. You **find items in the world** to unlock what you can wear. A **Locker** is a place you build, where you design your bot from what you have found.
+
+### The fiction
+The six designs are six old robot models that once worked on this planet. Their wrecks and spare parts are still out there under the trash. Lumi salvages pieces and can wear them.
+
+### Pieces
+- Every look is made of **pieces**, one per slot: paint set, wear pattern, eye shape, glow colour, head piece, ear lenses, shoulders, chest plate, held item, hip item, companion. A design (Bolt, Sprout, Pixel, Nova, Patch) is a **set** of 6 to 8 pieces.
+- A piece can be worn only after it is found. Nothing cosmetic is bought, and nothing unlocks from a counter (the old "press 50 bales" style rules are removed).
+- Unfound pieces show in the Locker as a dark silhouette with "???" and one hint line about where that kind of thing turns up ("Old machines rust in the scrapyard").
+- Wearing a complete set shows the set's name and gives its small bonus. Mixed looks give no bonus, so looks are a free choice.
+- Pieces are **global progress**: they stay with the player across planets. Where they are hidden is planet data.
+
+### Where pieces are found (table `finds` in the planet folder; piece list in `data/cosmetics.json`)
+| Source | What it gives | Rarity |
+|---|---|---|
+| Paint tins and lens chips buried in ordinary hexes (the detector helps) | single colours, glow colours | uncommon: about one per 40 hexes |
+| A robot wreck, one per district, hidden off the main path | 2 pieces of that district's design | rare: needs exploring and hand-clearing |
+| Shutting down a district's source | 1 piece of that district's design | once per district |
+| Secrets and open ground | the last pieces of each set, companions | very rare |
+
+```json
+{"finds": [
+  {"piece": "head_cat_ears", "where": "wreck", "district": "smogworks"},
+  {"piece": "paint_bolt", "where": "source", "district": "scrapyard"},
+  {"piece": "swatch_teal", "where": "buried", "chance_per_hex": 0.025}
+]}
+```
+
+### Pace (the simulator and the bot check these)
+- First piece (a colour): about minute 25. It triggers the "Build a Locker" step.
+- First complete new design: not before about 1 h 30.
+- By the ending a typical player has 2 complete designs and scattered pieces of the others.
+- All six complete: only with full completion (about 8 hours).
+- A found piece is a moment: a short reveal on Lumi, the piece named, and a pointer to the Locker.
+
+### The Locker
+- A build in the yard (a tall salvaged steel locker with a small turntable), offered after the first piece is found.
+- Using it puts Lumi on the turntable with the camera orbiting; the panel lists the slots, found pieces first.
+- It is the only place looks are edited: Lumi, the lantern companion and the crew's robots (one look per robot type).
+- Saved looks: three presets.
+
+Events: `piece_found(piece_id, source)`, `set_completed(design_id)`, `look_changed()`.
