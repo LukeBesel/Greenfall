@@ -114,6 +114,8 @@ func test_crew_cap_follows_base_level() -> void:
 	GameState.currencies["parts"] = BigNum.from_float(1.0e6)  # [ui2] builds cost Parts
 	var fl: Variant = (GameState.flags["research"] as Dictionary).duplicate(true) if GameState.flags.get("research") is Dictionary else null
 	Research.grant("salvage_logic")  # [pace] helpers need Salvage Logic first
+	Research.unlock_story("haul_rig")  # [v4bots] the Skimmer's plans come after the Haul Bug's
+	Research.unlock_story("skimmer_rig")
 	assert_false(f.can_build("scoopie"), "cleaner crew is full at level 1")
 	assert_string_contains(f.build_block_reason("scoopie"), "Crew full")
 	assert_true(f.can_build("skimmer"), "other crews still have room")

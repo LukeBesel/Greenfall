@@ -6,14 +6,20 @@ extends Node3D
 ## Bugs fetch it (the cube goes) and carry their load on their back (a strapped bale mesh).
 ## When Lumi picks a crew bale up (or the Depot claims it), it is his: the record is dropped and
 ## the cube lives on as a normal loose cube. Records only, far away, so hundreds stay cheap.
+## [v4bots] Owner item 52: bales Lumi makes (loose cubes resting on the ground near him) join the
+## crew's bales once a Haul Bug works here, so haulers fetch his bales too (not ones on a feeder
+## pad, a scale's pad, an outpost's pad or right by the Depot: he is cashing those himself).
 
 const NEAR_M: float = 110.0
 const FAR_M: float = 140.0  # hysteresis: a cube goes back to a record past this
 const MAX_CUBES: int = 60
+const ADOPT_REST_S: float = 3.0  # [v4bots] a loose bale lies still this long before haulers take it
+const ADOPT_DEPOT_M: float = 6.0
 
 var crew: SphereCrew
 var _cubes: Dictionary = {}  # bale id -> JunkCube
 var _t: float = 0.0
+var _rest: Dictionary = {}  # [v4bots] loose cube instance id -> seconds lying still
 static var _cargo_mesh: ArrayMesh
 static var _strap: ArrayMesh
 
@@ -31,6 +37,7 @@ func _process(delta: float) -> void:
 	_t += delta
 	if _t < 0.3:
 		return
+	adopt_loose(_t)
 	sync()
 	_t = 0.0
 
@@ -83,7 +90,8 @@ func sync() -> void:
 
 
 func _spawn_cube(b: Dictionary, d: Vector3) -> JunkCube:
-	var c := JunkCube.create(BigNum.from_float(float(b["value"])), b.get("info", bale_info(float(b.get("units", 10.0)))))
+	var c := JunkCube.create(BigNum.from_float(float(b.get("raw", b["value"]))),  # [v4bots] raw: an adopted bale of Lumi's
+			b.get("info", bale_info(float(b.get("units", 10.0)))))
 	add_child(c)
 	var up: Vector3 = d
 	var p: Vector3 = crew.surface.ground(d) + up * (c.size * 0.5 + 0.04)
@@ -150,3 +158,75 @@ static func dress_cargo(bot: SphereBot, n: int) -> void:
 		st.position = mi.position
 		st.rotation = mi.rotation
 		holder.add_child(st)
+
+
+## [v4bots] Lumi's resting loose bales become crew bales (records + cubes under this node) while
+## a Haul Bug is on the crew. dt: seconds since the last call (time lying still).
+func adopt_loose(dt: float) -> int:
+	if crew == null or crew.focus == null or not is_instance_valid(crew.focus) or not _has_hauler():
+		_rest.clear()
+		return 0
+	var root: Node = crew.world.get("_cubes_root") as Node if crew.world != null else null
+	if root == null:
+		return 0
+	var fd: Vector3 = crew.surface.up_at(crew.focus.global_position)
+	var depot: Node3D = crew.world.get("depot") as Node3D
+	var seen: Dictionary = {}
+	var n: int = 0
+	for ch: Node in root.get_children():
+		var c: JunkCube = ch as JunkCube
+		if c == null or c.carried or c.claimed or c.is_queued_for_deletion() or bool(c.get_meta("reserved", false)):
+			continue
+		var key: int = c.get_instance_id()
+		if c.linear_velocity.length() > 0.25:
+			continue  # still rolling: the clock starts again
+		seen[key] = true
+		_rest[key] = float(_rest.get(key, 0.0)) + dt
+		if float(_rest[key]) < ADOPT_REST_S or _cubes.size() >= MAX_CUBES:
+			continue
+		var d: Vector3 = crew.surface.up_at(c.global_position)
+		if fd.angle_to(d) * crew.surface.radius > NEAR_M or not keep_for_haulers(c, depot):
+			continue
+		adopt(c)
+		seen.erase(key)
+		n += 1
+	for k: int in _rest.keys():
+		if not seen.has(k):
+			_rest.erase(k)
+	return n
+
+
+## False for a bale Lumi is cashing or feeding himself (a pad, or right by the Depot).
+func keep_for_haulers(c: JunkCube, depot: Node3D = null) -> bool:
+	if Stations.on_feeder(c) or Outposts.on_pad(crew.world, c.global_position):
+		return false
+	if depot != null and is_instance_valid(depot):
+		if depot.has_method("pad_contains") and bool(depot.call("pad_contains", c.global_position)):
+			return false
+		if depot.global_position.distance_to(c.global_position) < ADOPT_DEPOT_M:
+			return false
+	return true
+
+
+## One loose cube into the crew's bales: a record, and the cube parked here like a crew bale.
+## The record pays what the Depot would (crew cash is raw value), so a hauled bale of Lumi's is
+## worth the same as one he carries in; the cube keeps its own value if he picks it up again.
+func adopt(c: JunkCube) -> int:
+	crew._bale_seq += 1
+	var id: int = crew._bale_seq
+	var d: Vector3 = crew.surface.up_at(c.global_position)
+	var depot: Node = crew.world.get("depot") as Node if crew.world != null else null
+	var mult: float = float(depot.call("sell_factor")) if depot != null and depot.has_method("sell_factor") else 1.0
+	crew.bales.append({"id": id, "cell": crew.grid.cell_at(d), "dir": d, "value": c.value.to_float() * mult,
+		"units": float(c.info.get("volume", float(c.info.get("fill", 1.0)) * 12.0)), "claimed": "", "info": c.info, "raw": c.value.to_float()})
+	c.reparent(self, true)
+	_cubes[id] = c
+	_rest.erase(c.get_instance_id())
+	return id
+
+
+func _has_hauler() -> bool:
+	for u: Dictionary in crew.units:
+		if str(u.get("role", "")) == "haul":
+			return true
+	return false

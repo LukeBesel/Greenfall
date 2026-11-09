@@ -155,17 +155,6 @@
       ]
     },
     {
-      "id": "haul",
-      "text": "Build a Haul Bug",
-      "desc": "It carries bales to the scale for you.",
-      "type": "robot",
-      "key": "haulbug",
-      "target": 1,
-      "lines": [
-        "A Haul Bug carries bales for you. Build one at the bench."
-      ]
-    },
-    {
       "id": "seed",
       "text": "Plant the first seed",
       "desc": "Plants fill your Bloom Core.",
@@ -197,6 +186,19 @@
       "target": 2,
       "lines": [
         "The base can grow now. Rebuild it from the Upgrades tab at the workbench."
+      ]
+    },
+    {
+      "id": "haul",
+      "text": "Build a Haul Bug",
+      "desc": "Workbench, Bots tab. It carries bales to the scale for you.",
+      "hint": "Keep cleaning. WREN is looking for Haul Bug plans.",
+      "wait_flag": "haul_rig",
+      "type": "robot",
+      "key": "haulbug",
+      "target": 1,
+      "lines": [
+        "A Haul Bug carries bales for you. Build one at the bench."
       ]
     },
     {

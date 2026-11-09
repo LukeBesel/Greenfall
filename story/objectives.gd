@@ -491,8 +491,10 @@ func step_target(def: Dictionary) -> Dictionary:
 				out["to"] = "hex"
 			"bench2":
 				out = {"to": "bench" if BenchTiers.block_reason(world) == "" else "hex", "row": ["patch", "bench_tier"]}
-			"robot", "haul":
+			"robot":
 				out = {"to": "bench", "row": ["bots", ""]}
+			"haul":  # [v4bots] waits for the Haul Bug plans (Research.check_story): clean meanwhile
+				out = {"to": "bench", "row": ["bots", ""]} if Research.robot_unlocked("haulbug") else {"to": "hex", "row": []}
 			"research1":  # [v3clear]
 				out = {"to": "bench", "row": ["research", ""]}
 			"base2", "base3":

@@ -1161,7 +1161,10 @@ func to_dict() -> Dictionary:
 	var bl: Array = []
 	for b: Dictionary in bales:
 		var bd: Vector3 = b.get("dir", grid.centers[int(b["cell"])])
-		bl.append({"cell": b["cell"], "dir": [bd.x, bd.y, bd.z], "value": b["value"], "units": b.get("units", 0.0)})
+		var bd_rec: Dictionary = {"cell": b["cell"], "dir": [bd.x, bd.y, bd.z], "value": b["value"], "units": b.get("units", 0.0)}
+		if b.has("raw"):  # [v4bots] one of Lumi's bales (SphereBales.adopt): his cube's own value
+			bd_rec["raw"] = b["raw"]
+		bl.append(bd_rec)
 	var zd: Dictionary = {}  # [v3qa] painted Command zones survive a reload
 	for r: Variant in zones:
 		zd[str(r)] = (zones[r] as Dictionary).keys()
@@ -1195,6 +1198,8 @@ func from_dict(d: Dictionary) -> void:
 		var dv: Array = b.get("dir", [])
 		var bd: Vector3 = Vector3(float(dv[0]), float(dv[1]), float(dv[2])).normalized() if dv.size() == 3 else grid.centers[int(b["cell"])]
 		bales.append({"id": _bale_seq, "cell": int(b["cell"]), "dir": bd, "value": float(b["value"]), "units": float(b.get("units", 0.0)), "claimed": ""})
+		if b.has("raw"):
+			bales[-1]["raw"] = float(b["raw"])
 	cashed = float(d.get("cashed", 0.0))
 	zones.clear()  # [v3qa]
 	var zd: Dictionary = d.get("zones", {})

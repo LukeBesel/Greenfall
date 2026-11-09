@@ -38,6 +38,7 @@ var _interact: bool = false
 var _dt: float = 0.0
 var _cooldown: float = 0.0
 var _stuck_timer: float = 0.0
+var _shore_blocks: int = 0  # [v4bots] escapes with water straight ahead (no Hover Jets yet)
 var _escape_side: float = 1.0  # [pace2]
 var _trap_pos: Vector3 = Vector3.INF
 var _trap_t: float = 0.0
@@ -344,6 +345,13 @@ func _watch_stuck(p: Patch, delta: float) -> void:
 		if _target_piece >= 0 and DevHooks.has("bot-debug"):
 			var f: HexField = world.field
 			print("[bot-esc] t=%.1f task=%s pos=%s piece=%d at %s size=%d embed=%.2f" % [_now() / 60.0, _task, str(p.global_position), _target_piece, str(f.piece_pos[_target_piece]), Pace.piece_size(f, _target_piece), f.piece_embed[_target_piece] if _target_piece < f.piece_embed.size() else -1.0])
+		if p.has_method("can_hover_water") and not p.can_hover_water():  # [v4bots] a lake in the way (item 54)
+			var ahead: Vector3 = p.global_position + (_move - p.up() * _move.dot(p.up())).normalized() * 1.5
+			if p.call("_water_at", ahead):
+				_shore_blocks += 1
+				_report["shore_blocks"] = _shore_blocks
+				if _shore_blocks <= 12:
+					print("[bot-shore] t=%.1f task=%s pos=%s: a lake in the way" % [_now() / 60.0, _task, str(p.global_position.snappedf(0.1))])
 		# [pace2] Sidestep around the obstacle (perpendicular to where we were heading, alternating
 		# sides, a little backwards) instead of a random direction that often points back into it.
 		var head: Vector3 = Vector3(_move.x, 0, _move.z).normalized()
@@ -378,6 +386,13 @@ func _at_base(p: Patch) -> bool:
 ## the flat spot on the globe for 60 s and then shop "remotely", which slowed every globe run).
 func _bench_at() -> Vector3:
 	return world.call("bench_pos") if world.get("orbit") != null and world.has_method("bench_pos") else BENCH_POS
+
+
+## [v4bots] Where the can refills (anywhere in the hub hex, Patch._handle_tools): the flat
+## WATER_STAND, or by the globe's bench. The globe used the flat point, a spot near the planet's
+## centre: the bot walked off in a fixed direction (it waded through lakes until item 54).
+func _water_at() -> Vector3:
+	return _bench_at() if world.get("orbit") != null and world.has_method("bench_pos") else WATER_STAND
 
 
 # --- Patch tasks -------------------------------------------------------------------------
@@ -546,6 +561,8 @@ func _pace_bought(id: String, lv: int) -> void:
 			_ignore_piece.clear()
 		"signal_finder":
 			_mark("signal_finder_s")
+		"hover_jets":  # [v4bots]
+			_mark("hover_jets_s")
 		"auto_compactor":
 			_mark("auto_compactor_s")
 
@@ -724,7 +741,7 @@ func _do_garden(p: Patch) -> bool:
 			_refilling = false
 		else:
 			_set_task("refill")
-			_go(p, WATER_STAND, 0.5)
+			_go(p, _water_at(), 0.5)
 			return true
 	if _water_target >= 0 and (g.slot_species[_water_target] < 0 or g.slot_water[_water_target] > 50.0):
 		_water_target = -1
@@ -815,8 +832,8 @@ func _do_clean(p: Patch) -> void:
 		_set_task("idle")
 		if not p.compartment.is_empty() and Pace.baler_unlocked():  # [pace]
 			_cube = true
-		elif p.global_position.distance_to(WATER_STAND) > 4.0:
-			_go(p, WATER_STAND, 1.0)
+		elif p.global_position.distance_to(_water_at()) > 4.0:
+			_go(p, _water_at(), 1.0)
 		return
 	_set_task("clean")
 	if _target_piece < 0 or field.piece_alive[_target_piece] == 0 or field.piece_hex[_target_piece] != h:
@@ -1314,7 +1331,9 @@ func _useful_upgrade(id: String) -> bool:
 func _essential(type_id: String) -> bool:
 	var fleet: Fleet = world.fleet
 	if fleet.count(type_id) == 0:
-		return true
+		# [v4bots] The Skimmer's plans come mid-save for base 2 (Research story_unlocks): the card
+		# says base 2, so the bot saves first, as a player following it would.
+		return type_id != "skimmer" or int(GameState.world.get("hub_level", 1)) >= 2
 	match type_id:
 		"drip":
 			return _drips() < (world.hex_levels.count_at_least(2) if world.get("hex_levels") else 0)
@@ -1356,6 +1375,10 @@ func _robot_goal(type_id: String) -> bool:
 ## Cheapest useful upgrade affordable while keeping `reserve` cubes (or, with leak, under 15% of the purse).
 func _best_upgrade(reserve: float, leak: bool = true) -> String:
 	var cubes: float = GameState.get_currency("cubes").to_float()
+	# [v4bots] Stopped at a shore (the one-time hint): Hover Jets first, as a player would.
+	if GameState.flags.get("shore_hint", false) and Economy.is_unlocked("hover_jets") and not Economy.is_maxed("hover_jets") \
+			and Economy.upgrade_cost("hover_jets").to_float() <= cubes:
+		return "hover_jets"
 	var best: String = ""
 	var best_c: float = INF
 	for id: String in Economy.upgrade_order:

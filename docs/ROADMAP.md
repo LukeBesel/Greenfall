@@ -938,3 +938,25 @@ rebuilt on the sphere. What carries over, and how to place it on a globe:
 - #55, every target reachable: TargetReach (planet/sites/target_reach.gd) covers footprints (start town, hub towns, outskirts, hinterland via YardKeepOut.in_building), water, steep ground and colliders near Lumi, plus a walk-out check (no walled-in courtyards). Shards, CDs and parts move to the nearest reachable ground. Outposts, eggs, gnomes, the Ledger relay and the First Seed greenhouse only take reachable spots. The hub frame waits for a hub's town to be built. The beacon never stands in a collider or footprint. Audit: `--orbit --target-reach` (was 399/2857 unreachable, now 0). Test: tests/test_target_reach.gd.
 - #53, water: the near lake surface was wound backwards, so it was culled from above and players only saw the lake bed (the "flat slab"). The new sphere_water.gdshader has world-space waves with noise chop, depth tint from the shore (vertex colours), see-through shallows, shore foam, and murky olive with scum before cleaning, dark blue-green after. Its fresnel sky reflection and sun glints are computed in the shader from the sky material (SphereWater.sync_sky), with the renderer's own reflection off, so opengl3 and Forward+ agree (no cyan or grey slabs). The far ground water uses the same palette, and lake murk now reaches the state texture. Dev: `--lake-view[=back_m]`, `--lake-view-high[=m]`, `--lake-clean`, `--lake-debug`. Test: tests/test_sphere_water_look.gd.
 - Open: not yet seen on Forward+/Metal (all renders were opengl3); the murky near-ring water is slightly darker than the far water from high up.
+## Update: robot unlock order, hauling Lumi's bales, Hover Jets (wt/v4bots, owner items 44, 46, 52, 54)
+- **Unlock order (44, 46):** the Bot Bay (Salvage Logic) brings only the Scoopie. The Haul Bug and the Skimmer are "story unlocks" (`data/research.json` story_unlocks, `Research.check_story`): not tree cards and no cost. They arrive by themselves, and WREN says one line for each (a toast while she is silent).
+  - Haul Bug plans: 20 min of play after the first robot, with 8 hexes cleaned.
+  - Skimmer plans: 35 min after the first robot, with a first plant.
+  - Base level 3 (or owning one already, for older saves) grants them at once.
+  - Drip is unchanged (Drip Blueprint, base 3).
+  - The "Build a Haul Bug" step moved after "Rebuild the base to level 2". It waits on `flags.haul_rig` with a "WREN is looking for plans" hint, and its pointer leads to the hexes until then.
+  - Locked cards say "comes later" instead of naming a research.
+- **Haulers take Lumi's bales (52):** on the globe, a loose bale lying still for 3 s near Lumi joins the crew's bales while a Haul Bug is on the crew (`SphereBales.adopt_loose`). It skips bales on feeder, scale or outpost pads and within 6 m of the Depot. The record pays the Depot's sell factor (crew cash is raw value); the cube keeps its own value if Lumi takes it back. Saved with the crew (`raw`).
+- **Hover Jets (54):** a new Lumi upgrade (1500 cubes, Tread Speed 1, base 2, stat `hover_water`).
+  - Without it, Lumi stops at the shore and slides along it (`Patch.shore_clamp`: a probe ahead, then turns up to 85 degrees; a post-move check undoes a boost that carried him in).
+  - Already in water, he can still wade out.
+  - The hover-sled and Tidewell's `hover_water` meta also let him cross.
+  - A one-time toast names the fix.
+  - Lake hexes were never objective targets.
+- **Autoplay:**
+  - On the globe the bot refilled the can at the flat WATER_STAND (a point near the planet's centre) and wandered off; now it refills by the globe's bench (`_water_at`).
+  - It buys Hover Jets first once a shore has stopped it, and saves for base 2 before the first Skimmer.
+  - Escapes with water ahead print as `[bot-shore]`.
+  - Orbit autoplay (8x): first robot 20.9 min, base 2 34.9, Haul Bug 41.1, Hover Jets 49.2, Skimmer 56.0, no script errors, no shore stalls.
+- **Open:** the bot's stuck escapes climb in the garden phase (13 at 47 min, 77 at 107 min, all after Hover Jets). This looks unrelated to the shore block and is worth a look.
+- Tests: `tests/test_v4bots.gd` (unlock order and timing, objective order, adoption and pads, the shore clamp, the upgrade).
