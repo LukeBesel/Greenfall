@@ -11,7 +11,7 @@ Agents: architect (systems-architect-assistant), builder (systems-builder), save
 | ID | Title | Owner | Kind | Files | Depends | Acceptance |
 |---|---|---|---|---|---|---|
 | M1-01 | Bug triage on the merged build | qa | DELEGATE | `docs/PLAN.md` section 6, `tests/` | - | Every "verify" bug is reproduced or closed with evidence; new bugs added with severity; a failing test exists for each confirmed P1 |
-| M1-02 | Design spec: districts, sources, mastery, rigs, Surge, the ending | lead | LEAD | `docs/design/PLANET1_DESIGN.md` | - | Each mechanic has rules, data shape, numbers to tune and the events it emits; logged in DECISIONS |
+| M1-02 | Design spec: districts, sources, mastery, rigs, Surge, the ending | lead | LEAD | `docs/design/PLANET1_DESIGN.md` | - | **Done (Nov 9).** Each mechanic has rules, data shape, numbers to tune and the events it emits; logged in DECISIONS |
 | M1-03 | PlanetDefinition schema and `Planets` autoload | lead | LEAD | `core/planet_definition.gd`, `autoload/Planets.gd`, `planets/verdance/planet.tres` | - | **Done (Nov 9).** Typed resource covering every field in STYLE section 5; `Planets.current()` returns it; unit tests for load and validation errors |
 
 | M1-04 | Remove the flat world | architect | DELEGATE | `scenes/slice.gd`, `planet/hex_field.gd`, `planet/city_*.gd`, `planet/frontier*.gd`, `planet/field_view.gd`, flat branches across the code | M1-01 | No `--flat` path, no flat-or-globe branch left in shared code; suite and round trip pass; line count reported |
