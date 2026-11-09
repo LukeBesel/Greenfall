@@ -46,7 +46,6 @@ func test_junk_view_is_the_slice_view() -> void:
 
 
 func test_wanted_only_for_the_orbit_slice() -> void:
-	# [v1menu] The round world is the default: the slice builds on the globe unless --flat (dev)
-	# or a phase A prototype (--orbit=v1 / --orbit=globe) asks otherwise.
+	# The slice always builds on the globe unless a phase A prototype (--orbit=v1 / --orbit=globe) asks otherwise.
 	var proto: bool = DevHooks.has("orbit") and DevHooks.get_s("orbit", "") in ["v1", "globe"]
-	assert_eq(SliceOrbit.wanted(), not proto and not "--flat" in OS.get_cmdline_user_args(), "on by default: the round world is the game")
+	assert_eq(SliceOrbit.wanted(), not proto, "the round world is the game")
