@@ -46,6 +46,7 @@ func add_footprints(fp: Array[Rect2]) -> void:
 		var g: Rect2 = r.grow(FOOT_GROW_M)
 		_bin_rect(g)  # [v3city] the start town has a few hundred: binned, not scanned
 	_binned = true
+	version += 1  # [v4world]
 
 
 ## [v3city] Footprints binned in BIN_M squares (the pad and pod stay in the plain lists).
@@ -89,6 +90,24 @@ func blocks(dir: Vector3) -> bool:
 	return blocks_local(local(dir)) or (_world_n > 0 and _blocks_world(dir))
 
 
+## [v4world] Whether a direction lies inside a building footprint (grown FOOT_GROW_M): the start
+## site's binned footprints and every hub town's, outskirts' and hinterland's, but not the pad or
+## the pod's crash site (Lumi walks there). TargetReach uses it (owner playtest 3 #55).
+func in_building(dir: Vector3) -> bool:
+	if _binned:
+		var q: Vector2 = local(dir)
+		var bin: Variant = _bins.get(Vector2i(floori(q.x / BIN_M), floori(q.y / BIN_M)))
+		if bin != null:
+			for r2: Rect2 in bin:
+				if r2.has_point(q):
+					return true
+	return _world_n > 0 and _blocks_world(dir)
+
+
+## [v4world] Bumped whenever footprints are added: spots checked before can be checked again.
+var version: int = 0
+
+
 # --- [v3city] Town outskirts round any hub: footprints in their own ground frames ----------------
 ## Buckets of WORLD_M (by direction x planet radius) -> [[frame inverse, Rect2 (frame-local), r]].
 const WORLD_M: float = 16.0
@@ -122,6 +141,7 @@ func add_world(key: Variant, items: Array) -> void:
 					_world[k] = []
 				(_world[k] as Array).append([inv, r, rad])
 		_world_n += 1
+	version += 1  # [v4world]
 
 
 func _wkey(d: Vector3, rad: float) -> Vector3i:
