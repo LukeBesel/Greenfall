@@ -67,7 +67,9 @@ const WREN_GLITCH := 0
 ## Builds the pod prop (also used after the intro as a landmark, and by the cinematic sets).
 ## [intro2] Rebuilt in story/escape_pod.gd: a real door opening, no overlapping faces.
 static func build_pod() -> Node3D:
-	return EscapePod.build()
+	var pod: Node3D = EscapePod.build()
+	GlimDirector.cling_to(pod)  # [v4calm] item 43: Glim holds on to the pod until he's repaired
+	return pod
 
 
 ## Re-entry plasma: nested glowing cones trailing behind (+Y) a falling pod. See _flicker_fire.

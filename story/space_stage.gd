@@ -247,6 +247,9 @@ func _build_vault() -> void:
 	var bay := _mesh(root, ProcMesh.cyl(1.25, 1.25, 3.6, 32), dark, Vector3(0, 1.8, 4.65))
 	bay.scale = Vector3(1, 1, 0.4)
 	vault_pod = Intro.build_pod()
+	var gv: GlimBot = vault_pod.get_node_or_null(GlimDirector.STUCK_NAME) as GlimBot
+	if gv:  # [v4calm] in the ark he's awake, perched on Lumi's pod; dark only after the fall
+		gv.broken = false
 	(vault_pod.get_node("Scorch") as Node3D).visible = false
 	vault_pod.position = Vector3(0, 0, 3.7)
 	root.add_child(vault_pod)

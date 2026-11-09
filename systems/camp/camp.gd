@@ -305,6 +305,8 @@ func _was_shown(k: String) -> bool:
 
 
 func _on_built(id: String) -> void:
+	if id == "glim":  # [v4calm] Glim's own repair moment (systems/glim/glim_director.gd), no machine reveal
+		return
 	var ex: ExtrasDirector = ExtrasDirector.of(world)
 	match id:
 		"radio":

@@ -473,6 +473,22 @@ static func run(rt: Node, check: Callable) -> void:
 	GameState.add_currency("seeds", BigNum.from_float(10))
 	var ctr: Vector3 = g.field.hex_center(target)
 	var fwd: Vector3 = SphereGrid.frame(ctr.normalized()).x
+	# [v4grow] Planting stays off streets, kerbs and the pad: if this cell is all paving, clean a
+	# nearby cell with open ground and plant there.
+	if gdn.free_slot_near(ctr - fwd * 1.0, fwd, 6.0) < 0:
+		for c2: int in g.field.hexes_near(ctr, 3):
+			if g.field.hex_hub[c2] != 0 or g.field.is_water(c2):
+				continue
+			so.crews.work_cell(c2, 0.0)
+			gdn.ensure_hex(c2)
+			var c2p: Vector3 = g.field.hex_center(c2)
+			if gdn.free_slot_near(c2p - fwd * 1.0, fwd, 6.0) >= 0:
+				var open_n: int = 0
+				for sl2: int in gdn.hex_slots.get(c2, PackedInt32Array()):
+					open_n += 1 if gdn.plantable(sl2) and gdn.slot_pos[sl2].distance_to(c2p) < 6.0 else 0
+				if open_n >= 3:
+					ctr = c2p
+					break
 	var planted_n: int = 0
 	for k: int in 3:
 		var sl: int = gdn.free_slot_near(ctr - fwd * 1.0, fwd, 6.0)
@@ -481,6 +497,21 @@ static func run(rt: Node, check: Callable) -> void:
 			planted_n += 1
 	check.call("orbit_garden_planted", 3, planted_n)
 	check.call("orbit_garden_slots_on_ground", true, gdn.slot_pos.size() > 0 and absf(gdn.slot_pos[0].length() - (g.grid.radius_m + g.terrain.height(gdn.slot_pos[0].normalized()))) < 0.05)
+	# [v4grow] #51: the planted cell reads from Lumi's camera (mounds, a ring on the cell, real-size
+	# plants once grown).
+	var gm: GardenMarks = s1.get_node_or_null("GardenMarks") as GardenMarks
+	if gm:
+		gm._refresh()
+	check.call("orbit_garden_marks", "planted 3 rings 1", "planted %d rings %d" % [int(gm.shown["planted"]), int(gm.shown["rings"])] if gm else "none")
+	var big: bool = true
+	for sl: int in gdn.planted_slots():
+		var st0: int = gdn.slot_stage[sl]
+		gdn.slot_stage[sl] = 4
+		var vs: Array = PlantParts.variants(str(gdn.species[gdn.slot_species[sl]]["model"]), Garden.VARIANT_TRIS)
+		var sz: Vector3 = (vs[gdn._variant_of(sl)] as Mesh).get_aabb().size * gdn.globe_scale(sl)
+		big = big and (sz.y >= 0.4 or maxf(sz.x, sz.z) >= 1.0)
+		gdn.slot_stage[sl] = st0
+	check.call("orbit_garden_blooms_read", true, big)
 	await _fauna_check(tree, s1, so, check)
 	await _first_seed_check(tree, s1, so, check)
 	# Glim's scanner marks the junk of the cell Lumi stands in (pieces by how big they look).

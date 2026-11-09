@@ -81,6 +81,15 @@
       ]
     },
     {
+      "id": "glim",
+      "text": "Repair Glim",
+      "desc": "Workbench, Build tab. The little bot stuck to your pod.",
+      "type": "flag",
+      "key": "glim_repaired",
+      "target": 1,
+      "lines": ["Lumi... something's still holding on to your pod. Small. Lantern-shaped. Patch him up at the bench."]
+    },
+    {
       "id": "hex",
       "text": "Clean the glowing hex",
       "desc": "Pick up every piece inside the outline.",
