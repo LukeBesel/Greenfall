@@ -158,6 +158,7 @@ func build(p_world: Node3D) -> void:
 	w.add_child(garden)
 	w.set("garden", garden)
 	garden.setup()
+	GardenMarks.attach(w)  # [v4grow] #51: soil mounds, sprouts, thirsty drops, cell rings, the can's ring
 	var hl := HexLevels.new()  # sparse: only cleaned cells are tracked; levels also go to SphereCells
 	hl.name = "HexLevels"
 	hl.world = w

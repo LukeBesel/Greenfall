@@ -5,6 +5,10 @@ extends Node3D
 ## die). Blooms drop seeds. Hex life = mean stage / 4 drives the ground turning green and the
 ## planet cell state (Planted -> Growing -> Restored).
 
+## [v4grow] A seed went in / a plant got water (was_dry: it had none). plants/garden_marks.gd.
+signal planted(slot: int)
+signal watered(slot: int, was_dry: bool)
+
 var world: Node
 var cfg: Dictionary
 var species: Array = []
@@ -231,6 +235,7 @@ func plant(slot: int) -> bool:
 	Audio.play("dig", 1.1, -8.0)
 	GameState.inc_stat("plants_planted")
 	_recount(slot_hex[slot])
+	planted.emit(slot)  # [v4grow]
 	return true
 
 
@@ -241,7 +246,9 @@ func water(slot: int, amount_s: float) -> void:
 	var was_dry: bool = slot_water[slot] <= 0.0
 	slot_water[slot] = minf(slot_water[slot] + amount_s, float(sp.get("water_s", 120)))
 	if was_dry:
+		_perk[slot] = PERK_S  # [v4grow] it straightens up with a little bounce
 		_update_inst(slot)
+	watered.emit(slot, was_dry)
 
 
 func _pick_species(slot: int) -> int:
@@ -267,6 +274,7 @@ func _pick_species(slot: int) -> int:
 
 
 func _process(delta: float) -> void:
+	_perk_step(delta)  # [v4grow]
 	_tick += delta
 	if _tick < 0.5:
 		return
@@ -341,6 +349,8 @@ func _recount(hid: int) -> void:
 # --- Visuals -------------------------------------------------------------------------
 
 func _slot_xf(s: int) -> Transform3D:
+	if sparse:  # [v4grow]
+		return _slot_xf_globe(s)
 	var sp: Dictionary = species[slot_species[s]]
 	var stages: Array = cfg.get("stage_scale", [0.1, 0.3, 0.5, 0.8, 1.0])
 	var sc: float = float(stages[slot_stage[s]]) * float(sp.get("scale", 1.0)) * float(cfg.get("plant_scale", 1.0))  # [green]
@@ -461,3 +471,71 @@ func _load() -> void:
 			_update_inst(i)
 	for h: int in hex_slots:
 		_recount(h)
+
+
+# --- [v4grow] Owner playtest 3 #51: plants you can see on the globe ------------------------------
+# The Poly Haven clumps are 7-40 cm tall: at the flat game's scale a fresh seed was 2 cm and a
+# bloom 18 cm, invisible from Lumi's camera. On the globe each species is sized to a real height
+# per stage (data/plants.json globe_heights, capped in width), the seed and sprout stages are the
+# GardenMarks sprout on its soil mound, a thirsty plant droops hard, and a watered one perks up.
+
+const PERK_S: float = 0.7
+var _perk: Dictionary = {}  # slot -> seconds of the perk-up bounce left
+var _variant_size: Dictionary = {}  # "species|variant" -> AABB size of that clump
+
+
+## 0..1 bounce while a just-watered plant straightens (0 when none).
+func perk_of(s: int) -> float:
+	return sin(PI * (1.0 - float(_perk[s]) / PERK_S)) if _perk.has(s) else 0.0
+
+
+func _perk_step(delta: float) -> void:
+	if _perk.is_empty():
+		return
+	for s: int in _perk.keys():
+		_perk[s] = float(_perk[s]) - delta
+		if float(_perk[s]) <= 0.0:
+			_perk.erase(s)
+		if slot_species[s] >= 0:
+			_update_inst(s)
+
+
+## Height (m) a plant of this stage stands on the globe (0: only the sprout shows).
+func globe_height(stage: int) -> float:
+	var hs: Array = cfg.get("globe_heights", [0.0, 0.0, 0.5, 0.75, 1.0])
+	return float(hs[clampi(stage, 0, hs.size() - 1)])
+
+
+## The uniform scale that makes slot s's clump globe_height(stage) tall (times the species'
+## scale), no wider than globe_max_width.
+func globe_scale(s: int) -> float:
+	var h: float = globe_height(slot_stage[s])
+	if h <= 0.0:
+		return 0.0
+	var key: String = "%d|%d" % [slot_species[s], _variant_of(s)]
+	if not _variant_size.has(key):
+		var vs: Array = PlantParts.variants(str(species[slot_species[s]]["model"]), VARIANT_TRIS)
+		_variant_size[key] = (vs[_variant_of(s)] as Mesh).get_aabb().size if not vs.is_empty() else Vector3(0.3, 0.3, 0.3)
+	var sz: Vector3 = _variant_size[key]
+	var sc: float = h * float(species[slot_species[s]].get("scale", 1.0)) / maxf(sz.y, 0.05)
+	return minf(sc, float(cfg.get("globe_max_width", 1.6)) / maxf(maxf(sz.x, sz.z), 0.05))
+
+
+func _slot_xf_globe(s: int) -> Transform3D:
+	var sc: float = globe_scale(s) * (1.0 + 0.18 * perk_of(s))
+	if sc <= 0.0:
+		return Transform3D(Basis().scaled(Vector3.ONE * 0.0001), slot_pos[s])
+	var b := Basis(Vector3.UP, slot_yaw[s]).scaled(Vector3.ONE * sc)
+	if slot_water[s] <= 0.0:  # thirsty: a hard droop, squat and leaning
+		b = Basis(Vector3.RIGHT, 0.55) * b.scaled(Vector3(1.1, 0.72, 1.1))
+	return Transform3D(SphereGrid.frame(slot_pos[s].normalized()) * b, slot_pos[s])
+
+
+## Planted slots on the cells made so far (sparse: the cells Lumi has been near).
+func planted_slots() -> PackedInt32Array:
+	var out := PackedInt32Array()
+	for h: int in hex_slots:
+		for sl: int in hex_slots[h]:
+			if slot_species[sl] >= 0:
+				out.append(sl)
+	return out

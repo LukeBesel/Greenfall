@@ -478,6 +478,21 @@ static func run(rt: Node, check: Callable) -> void:
 			planted_n += 1
 	check.call("orbit_garden_planted", 3, planted_n)
 	check.call("orbit_garden_slots_on_ground", true, gdn.slot_pos.size() > 0 and absf(gdn.slot_pos[0].length() - (g.grid.radius_m + g.terrain.height(gdn.slot_pos[0].normalized()))) < 0.05)
+	# [v4grow] #51: the planted cell reads from Lumi's camera (mounds, a ring on the cell, real-size
+	# plants once grown).
+	var gm: GardenMarks = s1.get_node_or_null("GardenMarks") as GardenMarks
+	if gm:
+		gm._refresh()
+	check.call("orbit_garden_marks", "planted 3 rings 1", "planted %d rings %d" % [int(gm.shown["planted"]), int(gm.shown["rings"])] if gm else "none")
+	var big: bool = true
+	for sl: int in gdn.planted_slots():
+		var st0: int = gdn.slot_stage[sl]
+		gdn.slot_stage[sl] = 4
+		var vs: Array = PlantParts.variants(str(gdn.species[gdn.slot_species[sl]]["model"]), Garden.VARIANT_TRIS)
+		var sz: Vector3 = (vs[gdn._variant_of(sl)] as Mesh).get_aabb().size * gdn.globe_scale(sl)
+		big = big and (sz.y >= 0.4 or maxf(sz.x, sz.z) >= 1.0)
+		gdn.slot_stage[sl] = st0
+	check.call("orbit_garden_blooms_read", true, big)
 	await _fauna_check(tree, s1, so, check)
 	await _first_seed_check(tree, s1, so, check)
 	# Glim's scanner marks the junk of the cell Lumi stands in (pieces by how big they look).

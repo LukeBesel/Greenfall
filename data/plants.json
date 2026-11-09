@@ -1,7 +1,9 @@
 {
-  "_doc": "Meadow species planted from seed. plant_scale = game-scale size of every plant (the Poly Haven clumps are life-size, ~20-40 cm, too small to read from the game camera). stage_scale = model scale per stage (seed, sprout, young, mature, bloom). grow_s = seconds per stage while watered. water_s = how long one watering lasts. seed_yield = seeds dropped when it blooms. requires_research = research node that unlocks the species (locked species are never picked; new species go last so a locked roll falls back to the first species). biomes = only planted in those frontier districts (planet/frontiers.gd). cold_hardy = can grow outdoors in the Frozen Port once Cold-Hardy Seeds is researched (others need a greenhouse there).",
+  "_doc": "Meadow species planted from seed. plant_scale = game-scale size of every plant (the Poly Haven clumps are life-size, ~20-40 cm, too small to read from the game camera). stage_scale = model scale per stage (seed, sprout, young, mature, bloom). grow_s = seconds per stage while watered. water_s = how long one watering lasts. seed_yield = seeds dropped when it blooms. requires_research = research node that unlocks the species (locked species are never picked; new species go last so a locked roll falls back to the first species). biomes = only planted in those frontier districts (planet/frontiers.gd). cold_hardy = can grow outdoors in the Frozen Port once Cold-Hardy Seeds is researched (others need a greenhouse there). globe_heights = [v4grow] on the globe, the height in metres of a plant per stage (times its scale; 0 = only the sprout on its soil mound shows, plants/garden_marks.gd), no wider than globe_max_width.",
   "slot_spacing": 2.3,
   "plant_scale": 1.4,
+  "globe_heights": [0.0, 0.0, 0.55, 0.8, 1.05],
+  "globe_max_width": 1.7,
   "restored_life": 0.8,
   "species": [
     {"id": "grass", "model": "grass_medium_01", "weight": 4, "scale": 0.9, "grow_s": 60, "water_s": 120, "seed_yield": 0.3},
