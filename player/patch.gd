@@ -155,6 +155,51 @@ func _physics_process(delta: float) -> void:
 
 # --- Movement -----------------------------------------------------------------
 
+## [v4bots] Hover Jets (data/upgrades.json hover_jets), a world where everyone floats (Tidewell),
+## or riding the hover-sled (player/vehicle.gd parks itself under Lumi while mounted).
+func can_hover_water() -> bool:
+	if stat("hover_water") >= 1.0 or (world != null and world.has_meta("hover_water")):
+		return true
+	var sled: HoverSled = get_node_or_null("HoverSled") as HoverSled
+	return sled != null and sled.mounted
+
+
+func _water_at(p: Vector3) -> bool:
+	if world == null or world.field == null:
+		return false
+	var h: int = world.field.hex_at(p)
+	return h >= 0 and world.field.is_water(h)
+
+
+## [v4bots] The move with the lake taken out: straight on if the ground ahead is land, else the
+## nearest turn (up to 85 degrees either way) that stays on land, slowed by how far it turns, so
+## he slides along the shore. ZERO when every way ahead is water.
+func shore_clamp(wish: Vector3, probe_m: float) -> Vector3:
+	var out: Vector3 = shore_clamp_at(global_position, up(), wish, probe_m, _water_at)
+	if not out.is_equal_approx(wish):
+		_shore_hint()
+	return out
+
+
+static func shore_clamp_at(pos: Vector3, u: Vector3, wish: Vector3, probe_m: float, is_water: Callable) -> Vector3:
+	var n: Vector3 = wish.normalized()
+	if not bool(is_water.call(pos + n * probe_m)):
+		return wish
+	for deg: float in [25.0, -25.0, 50.0, -50.0, 70.0, -70.0, 85.0, -85.0]:
+		var d: Vector3 = n.rotated(u, deg_to_rad(deg))
+		if not bool(is_water.call(pos + d * probe_m)):
+			return d * wish.length() * cos(deg_to_rad(deg))
+	return Vector3.ZERO
+
+
+## Once per save: why he stopped, and the fix.
+func _shore_hint() -> void:
+	if GameState.flags.get("shore_hint", false) or stat("hover_water") >= 1.0:
+		return
+	GameState.flags["shore_hint"] = true
+	EventBus.toast.emit(tr("Lumi can't swim. Hover Jets at the workbench let him float over lakes."), "info")
+
+
 func _move(delta: float) -> void:
 	var wish: Vector3 = Vector3.ZERO
 	if _cubing <= 0.0:
@@ -170,10 +215,17 @@ func _move(delta: float) -> void:
 	var speed: float = stat("move_speed") * (0.55 if input.scoop_held() and wish.length() > 0.1 else 1.0)
 	# Wading: Patch can't swim yet. Shallow lake water slows him and splashes.
 	var here: int = world.field.hex_at(global_position) if world and world.field else -1
-	if here >= 0 and world.field.is_water(here) and not world.has_meta("hover_water"):  # [planet-tidewell] floats over water there
+	var hover: bool = can_hover_water()
+	if here >= 0 and world.field.is_water(here) and not hover:  # [planet-tidewell] floats over water there
 		speed *= 0.45
 		if _tangent(velocity).length() > 0.5 and randf() < 0.15:
 			Vfx.burst("soil", global_position + up() * 0.15, Color(0.6, 0.7, 0.75, 0.7), 0.3)
+	# [v4bots] Owner item 54: no Hover Jets, no lakes. On land he stops at the shore (sliding along
+	# it); already in the water (a load, a knock) he can still wade out.
+	var shore: bool = here >= 0 and not hover and not world.field.is_water(here)
+	var from: Vector3 = global_position
+	if shore and wish.length() > 0.01:
+		wish = shore_clamp(wish, 0.9 + stat("move_speed") * delta * 4.0)
 	# A heavy stack slows him a touch, never much.
 	speed *= 1.0 - 0.03 * carried.size()
 	if sphere_motor:
@@ -193,6 +245,12 @@ func _move(delta: float) -> void:
 			var target_yaw: float = atan2(-wish.x, -wish.z)
 			rotation.y = lerp_angle(rotation.y, target_yaw, clampf(TURN_RATE * delta, 0.0, 1.0))
 		move_and_slide()
+	if shore and _water_at(global_position):  # [v4bots] momentum (a boost) carried him past the probe
+		global_position = from
+		if sphere_motor:
+			sphere_motor.hv = Vector3.ZERO
+		velocity = up() * velocity.dot(up())
+		_shore_hint()
 	# Nudge cubes we bump into.
 	for i: int in get_slide_collision_count():
 		var col: KinematicCollision3D = get_slide_collision(i)

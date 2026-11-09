@@ -66,7 +66,7 @@
     },
     {
       "id": "haulbug",
-      "requires_research": "salvage_logic",
+      "requires_research": "haul_rig",
       "name": "Haul Bug",
       "role": "haul",
       "desc": "Fork cart. Carries loose bales to the scale.",
@@ -211,7 +211,7 @@
     },
     {
       "id": "skimmer",
-      "requires_research": "salvage_logic",
+      "requires_research": "skimmer_rig",
       "name": "Skimmer",
       "role": "skim",
       "desc": "Hover pontoon bot with a net arm. Skims floating junk off the lake and leaves bales on the shore for haulers.",

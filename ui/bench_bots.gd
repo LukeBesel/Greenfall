@@ -46,7 +46,7 @@ static func rows(fleet: Fleet, build_at: Callable) -> Array:
 		# Build.
 		if not Research.robot_unlocked(rid) and n == 0:
 			out.append({"id": "build_" + rid, "cat": "build", "state": "locked", "name": name_,
-				"requires": _tr("Research: %s") % _tr(str(Research.def(Research.robot_requirement(rid)).get("name", "?")))})
+				"requires": Research.robot_lock_text(rid)})  # [v4bots] research, or "comes later"
 		else:
 			var cost: Dictionary = {"cubes": fleet.build_cost(rid).to_float(), "parts": fleet.build_parts(rid).to_float()}
 			var why: String = fleet.build_block_reason(rid)

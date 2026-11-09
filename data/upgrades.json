@@ -263,6 +263,24 @@
       "requires": {
         "detector_range": 1
       }
+    },
+    {
+      "id": "hover_jets",
+      "name": "Hover Jets",
+      "tab": "patch",
+      "icon": "tread",
+      "desc": "Little jets under the treads. Lumi floats over lakes instead of stopping at the shore.",
+      "stat": "hover_water",
+      "mode": "add",
+      "amount": 1.0,
+      "unit": "",
+      "base_cost": 1500,
+      "growth": 1.0,
+      "max_level": 1,
+      "requires": {
+        "tread_speed": 1
+      },
+      "min_base_level": 2
     }
   ]
 }

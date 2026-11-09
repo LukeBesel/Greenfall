@@ -219,7 +219,7 @@ func refresh() -> void:
 		_ups.visible = false
 	modulate = Color(1, 1, 1, 0.72) if locked else Color.WHITE
 	if locked:
-		_lock_lbl.text = tr("Unlock with research: %s") % tr(str(Research.def(Research.robot_requirement(type_id)).get("name", "?")))
+		_lock_lbl.text = Research.robot_lock_text(type_id) if Research.is_story(Research.robot_requirement(type_id)) else tr("Unlock with research: %s") % tr(str(Research.def(Research.robot_requirement(type_id)).get("name", "?")))  # [v4bots]
 		_why.visible = false
 		_extra.visible = false
 		add_theme_stylebox_override("panel", BenchKit.holo(Color(1, 1, 1, 0.08), BenchKit.CARD_BG, 0.0))

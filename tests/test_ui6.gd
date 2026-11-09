@@ -88,6 +88,7 @@ func test_no_locker_tab() -> void:
 ## [ui7] The Bots tab in the list pattern, with a hidden Fabricator slot for orbC.
 func test_bots_rows_and_fabricator_slot() -> void:
 	Research.grant("salvage_logic")
+	Research.unlock_story("haul_rig")  # [v4bots]
 	var f := Fleet.new()
 	add_child_autofree(f)
 	var rows: Array = BenchBots.rows(f, Callable())

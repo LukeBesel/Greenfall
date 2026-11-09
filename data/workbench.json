@@ -14,5 +14,5 @@
     {"name": "Workbench Mk III: Research Desk", "desc": "Adds a research desk. Study what you dig up to unlock machines and seeds.", "tabs": ["research"], "cost": {"cubes": 2500, "parts": 60}, "requires": [["hub_level", 2]]},
     {"name": "Workbench Mk IV: Request Board", "desc": "Adds a request board. Take on jobs for tokens and rare parts.", "tabs": ["contracts"], "cost": {"cubes": 8000, "parts": 150}, "requires": [["hub_level", 3]]}
   ],
-  "upgrade_order": ["compartment_size", "multi_lock", "baler", "scoop_speed", "lift_strength", "scoop_width", "tread_speed", "carry_stack", "compactor_pressure", "laser_reach", "detector_range", "signal_finder", "magnet_arm", "auto_compactor", "belt_speed", "baler_speed", "recycler_yield"]
+  "upgrade_order": ["compartment_size", "multi_lock", "baler", "scoop_speed", "lift_strength", "scoop_width", "tread_speed", "carry_stack", "compactor_pressure", "laser_reach", "detector_range", "signal_finder", "hover_jets", "magnet_arm", "auto_compactor", "belt_speed", "baler_speed", "recycler_yield"]
 }

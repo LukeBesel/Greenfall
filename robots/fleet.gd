@@ -142,6 +142,8 @@ func build_block_reason(type_id: String) -> String:
 	if wk != "":
 		return wk
 	if not Research.robot_unlocked(type_id):
+		if Research.is_story(Research.robot_requirement(type_id)):  # [v4bots] arrives later by itself
+			return Research.robot_lock_text(type_id)
 		return tr("Locked · research %s") % tr(str(Research.def(Research.robot_requirement(type_id)).get("name", "?")))
 	if join_crew(type_id) == "":
 		return tr("Crew full (%d/%d): upgrade the hub") % [crew_size(crew_of_type(type_id)), crew_cap()]

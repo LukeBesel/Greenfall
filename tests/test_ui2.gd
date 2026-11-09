@@ -36,6 +36,7 @@ func after_each() -> void:
 
 func _fleet() -> Fleet:
 	Research.grant("salvage_logic")  # [pace] helpers need Salvage Logic first
+	Research.unlock_story("haul_rig")  # [v4bots] the Haul Bug's plans come later
 	var f := Fleet.new()
 	add_child_autofree(f)
 	return f
