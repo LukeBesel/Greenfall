@@ -14,6 +14,7 @@ run() {
 	local code=$?
 	if [ "$code" -ne 0 ]; then
 		echo "[check_exit] FAIL $name: exit code $code (134 = crash at quit; see $log)"
+		grep -m10 -E "FAIL|SCRIPT ERROR" "$log"  # [main] show the failing checks in CI logs
 		fail=1
 	elif grep -q "SCRIPT ERROR" "$log"; then
 		echo "[check_exit] FAIL $name: SCRIPT ERROR in $log"
