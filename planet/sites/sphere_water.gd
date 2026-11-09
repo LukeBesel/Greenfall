@@ -30,7 +30,7 @@ func setup_globe(g: Node) -> void:
 	cells = g.get("cells")
 	_mat = ShaderMaterial.new()
 	_mat.shader = preload("res://planet/sites/sphere_water.gdshader")
-	_mat.set_shader_parameter("wave_nrm", AssetLib.tex("rubble", "nor_gl"))
+	globe_ref = g  # [v4world] its streamer's ground materials get the sky too (far water)
 	var st: SphereStreamer = g.get("streamer")
 	if st:
 		st.near_changed.connect(_on_near)
@@ -65,21 +65,43 @@ func _build(c: int) -> void:
 	var corners: PackedVector3Array = grid.corners(c)
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	# [v4world] A fan over the corners and the edge midpoints, each vertex carrying how close the
+	# shore is (COLOR.r, 1 at the waterline) and how deep the lake is there (COLOR.g); both come
+	# from the point alone, so neighbouring cells agree on their shared vertices.
+	var rim: Array[Vector3] = []
+	for k: int in corners.size():
+		var a0: Vector3 = corners[k].normalized()
+		var b0: Vector3 = corners[(k + 1) % corners.size()].normalized()
+		rim.append(a0)
+		rim.append((a0 + b0).normalized())
 	var ctr: Vector3 = inv * origin
 	var pts: Array[Vector3] = []
-	for k: int in corners.size():
-		var d: Vector3 = corners[k].normalized()
+	var cols: Array[Color] = []
+	for d: Vector3 in rim:
 		pts.append(inv * (d * (terrain.R + terrain.height(d) - BELOW_LAND)))
+		cols.append(_shore_col(d))
+	var c_col: Color = _shore_col(dir)
 	for k: int in pts.size():
 		var a: Vector3 = pts[k]
 		var b: Vector3 = pts[(k + 1) % pts.size()]
-		for v: Vector3 in [ctr, b, a] if (b - ctr).cross(a - ctr).dot(Vector3.UP) > 0.0 else [ctr, a, b]:
+		var ca: Color = cols[k]
+		var cb: Color = cols[(k + 1) % pts.size()]
+		# Clockwise seen from above (Godot's front face): the surface was wound the other way and
+		# culled from above, so only the lake bed showed (the "flat slab" of owner playtest 3 #53).
+		var tri: Array = [[ctr, c_col], [a, ca], [b, cb]] if (b - ctr).cross(a - ctr).dot(Vector3.UP) > 0.0 else [[ctr, c_col], [b, cb], [a, ca]]
+		for e: Array in tri:
 			st.set_normal(Vector3.UP)
-			st.add_vertex(v)
+			st.set_color(e[1])
+			st.add_vertex(e[0])
 	var mi := MeshInstance3D.new()
 	mi.name = "Lake%d" % c
 	mi.mesh = st.commit()
 	mi.material_override = _mat
+	if DevHooks.has("lake-debug"):  # [v4world] dev: lake surfaces in flat red (which surface is which)
+		var dm := StandardMaterial3D.new()
+		dm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		dm.albedo_color = Color.RED
+		mi.material_override = dm
 	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	mi.transform = xf
 	add_child(mi)
@@ -87,6 +109,121 @@ func _build(c: int) -> void:
 	_tint(c)
 	if _clear(c):
 		_stock_fish(c)
+
+
+## [v4world] Shore and depth at a ground direction: r = 1 at the waterline fading out ~4 m onto
+## the water, g = 0 at the bank to 1 about SHORE_DEEP_M out (the deep middle of a lake).
+const SHORE_DEEP_M: float = 22.0
+var _shore_cache: Dictionary = {}
+
+
+func _shore_col(d: Vector3) -> Color:
+	var key := Vector3i(roundi(d.x * 1.0e5), roundi(d.y * 1.0e5), roundi(d.z * 1.0e5))
+	var hit: Variant = _shore_cache.get(key)
+	if hit != null:
+		return hit
+	var land_m: float = SHORE_DEEP_M + 10.0
+	for o: int in grid.cells_within(d, SHORE_DEEP_M + 10.0):
+		if cells.state[o] == 5:
+			continue
+		# Distance to that land cell's edge, about its centre distance less its inradius.
+		land_m = minf(land_m, grid.centers[o].angle_to(d) * terrain.R - _inradius())
+	land_m = maxf(land_m, 0.0)
+	var col := Color(1.0 - smoothstep(0.0, 4.5, land_m), smoothstep(1.5, SHORE_DEEP_M, land_m), 0.0, 1.0)
+	if _shore_cache.size() > 20000:
+		_shore_cache.clear()
+	_shore_cache[key] = col
+	return col
+
+
+var _inr: float = -1.0
+
+
+func _inradius() -> float:
+	if _inr < 0.0:
+		var c0: int = mini(1000, grid.cell_count() - 1)  # not one of the 12 pentagons
+		var cs: PackedVector3Array = grid.corners(c0)
+		var m0: Vector3 = ((cs[0].normalized() + cs[1].normalized()) * 0.5)
+		_inr = m0.normalized().angle_to(grid.centers[c0]) * terrain.R
+	return _inr
+
+
+## [v4world] The sky the water mirrors, from the sky material (zenith, horizon, day, the sun),
+## for this lake surface and the ground shader's far water, a few times a second.
+var _sky_t: float = 0.0
+
+
+func _sky_tick(delta: float) -> void:
+	_sky_t -= delta
+	if _sky_t > 0.0:
+		return
+	_sky_t = 0.2
+	sync_sky()
+
+
+func sync_sky() -> void:
+	if not is_inside_tree():
+		return
+	var env: Environment = get_viewport().world_3d.environment if get_viewport() and get_viewport().world_3d else null
+	var sm: ShaderMaterial = env.sky.sky_material as ShaderMaterial if env and env.sky else null
+	var mats: Array[ShaderMaterial] = [_mat]
+	if streamer_mats.is_empty() and globe_ref:
+		var st: Object = globe_ref.get("streamer")
+		if st:
+			for k: String in ["material", "shell_material"]:
+				var m: Variant = st.get(k)
+				if m is ShaderMaterial:
+					streamer_mats.append(m)
+	mats.append_array(streamer_mats)
+	var p: Dictionary = sky_params(sm, get_viewport().get_camera_3d())
+	for m: ShaderMaterial in mats:
+		if m == null:
+			continue
+		for k2: String in p:
+			m.set_shader_parameter(k2, p[k2])
+
+
+var streamer_mats: Array[ShaderMaterial] = []
+var globe_ref: Node
+
+
+## The water's sky uniforms from the sky shader's own (orbit_sky.gdshader: day mixes its night
+## colours to its hazy day colours) and the camera's local up.
+static func sky_params(sm: ShaderMaterial, cam: Camera3D) -> Dictionary:
+	var out: Dictionary = {}
+	if sm == null:
+		return out
+	var gv := func(k: String, fb: Variant) -> Variant:
+		var v: Variant = sm.get_shader_parameter(k)
+		return fb if v == null else v
+	var day: float = float(gv.call("day", 1.0))
+	var haze: float = float(gv.call("haze", 1.0))
+	var zd: Color = _c(gv.call("zenith_day", Color(0.2, 0.42, 0.82)))
+	var zc: Color = _c(gv.call("zenith_clear", Color(0.12, 0.38, 0.9)))
+	var hd: Color = _c(gv.call("horizon_day", Color(0.74, 0.7, 0.6)))
+	var hc: Color = _c(gv.call("horizon_clear", Color(0.46, 0.66, 0.95)))
+	var zn: Color = _c(gv.call("zenith_night", Color(0.03, 0.05, 0.11)))
+	var hn: Color = _c(gv.call("horizon_night", Color(0.09, 0.12, 0.21)))
+	var zen: Color = zn.lerp(zc.lerp(zd, haze * 0.4), day)
+	var hor: Color = hn.lerp(hc.lerp(hd, haze * 0.4), day)
+	out["sky_zen"] = Vector3(zen.r, zen.g, zen.b)
+	out["sky_hor"] = Vector3(hor.r, hor.g, hor.b)
+	out["sky_day"] = day
+	var s1: Vector3 = gv.call("sun1_dir", Vector3.UP)
+	var up: Vector3 = cam.global_position.normalized() if cam else Vector3.UP
+	out["sun_dir"] = s1.normalized()
+	out["sun_vis"] = smoothstep(-0.03, 0.12, s1.normalized().dot(up))
+	var warm: float = 1.0 - smoothstep(0.05, 0.4, s1.normalized().dot(up))  # low sun: a warmer glint
+	out["sun_col"] = Vector3(1.0, 0.95, 0.85).lerp(Vector3(1.0, 0.62, 0.32), warm)
+	return out
+
+
+static func _c(v: Variant) -> Color:
+	if v is Color:
+		return v
+	if v is Vector3:
+		return Color((v as Vector3).x, (v as Vector3).y, (v as Vector3).z)
+	return Color.WHITE
 
 
 ## Clarity from the cell's junk: a cleaned lake goes clear.
@@ -152,6 +289,7 @@ func _new_jump(fish: Dictionary) -> void:
 
 
 func _process(_delta: float) -> void:
+	_sky_tick(_delta)  # [v4world]
 	if _fish.is_empty():
 		return
 	var t: float = Time.get_ticks_msec() * 0.001
@@ -174,3 +312,69 @@ func _process(_delta: float) -> void:
 			n.visible = false
 			if ph > 5.9:
 				_new_jump(fish)
+
+
+## [v4world] Dev: --lake-view[=back_m] puts Lumi on the shore of the lake nearest the start, back_m
+## (default 4) from the water's edge, facing out over it (water look renders: owner playtest 3 #53;
+## add --lake-view-high[=40] for a camera that many metres up, --lake-clean for cleaned lakes).
+static func dev_view(so: SliceOrbit) -> void:
+	var tree: SceneTree = so.w.get_tree()
+	var patch: Patch = null
+	for k: int in 600:  # until Lumi is placed (the scene builds over many frames)
+		await tree.process_frame
+		patch = so.w.get("patch") as Patch
+		if patch and patch.is_inside_tree() and patch.global_position.length() > 1.0:
+			break
+	await tree.create_timer(2.0).timeout
+	var g: OrbitPlanet = so.globe
+	if patch == null:
+		print("[lake-view] no Lumi")
+		return
+	var from: Vector3 = g.grid.centers[g.start_cell()].normalized()
+	if DevHooks.has("lake-clean"):  # every lake round the start cleaned (the clear look)
+		for c0: int in g.grid.cells_within(from, 900.0):
+			if g.cells.state[c0] == 5:
+				g.cells.set_junk(c0, 0.0)
+		g.cells.flush()
+	var best: int = -1
+	var best_land: int = -1
+	var bd: float = INF
+	for c: int in g.grid.cells_within(from, 900.0):
+		if g.cells.state[c] != 5 or g.cells.has_flag(c, SphereCells.F_SITE) or g.grid.centers[c].angle_to(from) * g.terrain.R < 60.0:
+			continue  # not the wet cells under the pad
+		var wet_n: int = 0
+		for o: int in g.grid.neighbors(c):
+			wet_n += 1 if g.cells.state[o] == 5 else 0
+		if wet_n < 4:
+			continue  # the edge of open water, not a puddle cell
+		for o2: int in g.grid.neighbors(c):
+			if g.cells.state[o2] == 5 or g.cells.has_flag(o2, SphereCells.F_SITE):
+				continue
+			var d: float = g.grid.centers[o2].angle_to(from)
+			if d < bd:
+				bd = d
+				best = c
+				best_land = o2
+	if best < 0:
+		print("[lake-view] no lake near the start")
+		return
+	var wc: Vector3 = g.grid.centers[best]
+	var lc: Vector3 = g.grid.centers[best_land]
+	var up: Vector3 = lc.normalized()
+	var to_w: Vector3 = (wc - lc)
+	to_w = (to_w - up * to_w.dot(up)).normalized()
+	var back: float = DevHooks.get_f("lake-view", 4.0)
+	var at: Vector3 = g.terrain.ground((lc * g.terrain.R - to_w * back).normalized())
+	patch.place_on_sphere(at, to_w)
+	so.cam.reset_frame(to_w)
+	so.cam.snap()
+	if DevHooks.has("lake-view-high"):  # a free camera H m up over the shore, looking out over the lake
+		var hh: float = DevHooks.get_f("lake-view-high", 40.0)
+		var hc := Camera3D.new()
+		hc.name = "LakeViewCam"
+		hc.far = 4000.0
+		so.w.add_child(hc)
+		var eye: Vector3 = at + up * hh - to_w * hh * 0.5
+		hc.look_at_from_position(eye, at + to_w * hh * 1.4, up)
+		hc.current = true
+	print("[lake-view] Lumi on the shore of lake cell %d, %.0f m from the start, facing the water" % [best, bd * g.terrain.R])

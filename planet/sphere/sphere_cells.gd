@@ -65,7 +65,7 @@ func _write_all() -> void:
 	for i: int in n:
 		var st: int = state[i]
 		var o: int = i * 4
-		data[o] = int((junk[i] if st == 0 else 0.0) * 255.0 + 0.5)
+		data[o] = int((junk[i] if st == 0 or st == 5 else 0.0) * 255.0 + 0.5)  # [v4world] lakes too: the far water's murk (sphere_ground.gdshader)
 		data[o + 1] = st * 36
 		data[o + 2] = biome[i] * 17
 		data[o + 3] = (level[i] << 4) | (flags[i] & 15)
@@ -73,7 +73,7 @@ func _write_all() -> void:
 
 
 func _write(i: int) -> void:
-	var j: float = junk[i] if state[i] == 0 else 0.0
+	var j: float = junk[i] if state[i] == 0 or state[i] == 5 else 0.0  # [v4world] lakes too
 	@warning_ignore("integer_division")
 	image.set_pixel(i % TEX_W, i / TEX_W, Color8(int(j * 255.0 + 0.5), state[i] * 36, biome[i] * 17, (level[i] << 4) | (flags[i] & 15)))
 

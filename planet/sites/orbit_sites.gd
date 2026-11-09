@@ -343,6 +343,8 @@ func _build_water() -> void:
 	so.w.add_child(water)
 	water.world = so.w
 	water.setup_globe(so.globe)
+	if DevHooks.has("lake-view"):  # [v4world] dev: Lumi on a lake shore (water look renders)
+		SphereWater.dev_view(so)
 	if DevHooks.has("water-report"):
 		get_tree().create_timer(DevHooks.get_f("water-report", 6.0)).timeout.connect(func() -> void:
 			print("[water] %d lake cells shown, %d fish" % [water.count(), water.fish_count()]))

@@ -16,6 +16,13 @@ uniform float far_shell = 0.0;
 // Debug: tint each LOD (0 = off).
 uniform float lod_tint = 0.0;
 uniform vec3 lod_color = vec3(1.0);
+// [v4world] The sky the far water mirrors (SphereWater.sync_sky feeds these, as for the lake surface).
+uniform vec3 sky_zen : source_color = vec3(0.18, 0.38, 0.75);
+uniform vec3 sky_hor : source_color = vec3(0.62, 0.66, 0.66);
+uniform float sky_day = 1.0;
+uniform vec3 sun_dir = vec3(0.0, 1.0, 0.0);
+uniform vec3 sun_col : source_color = vec3(1.0, 0.95, 0.85);
+uniform float sun_vis = 1.0;
 
 varying vec4 st;
 varying vec3 wpos;
@@ -71,17 +78,37 @@ void fragment() {
 	// mottling and a sky sheen toward grazing angles. Near the camera the lake surface covers it.
 	float open_k = far_shell > 0.5 ? 1.0 : smoothstep(50.0, 75.0, length(VERTEX));
 	float ow = water * open_k;
+	// [v4world] Owner playtest 3 #53: the far water as the lake surface (sphere_water.gdshader):
+	// dark olive-brown murky water, deep blue-green once clean, slow swell and ripple mottling, our
+	// own fresnel sky reflection (blue-leaning, capped so far lakes don't turn into pale slabs) and
+	// sun glints; the renderer's own reflection is off over water (it read cyan on opengl3).
+	vec3 wem = vec3(0.0);
 	if (ow > 0.001) {
+		vec3 up = normalize(wpos);
 		float rip = dot(tri(tex_rubble, wpos * 0.045 + vec3(TIME * 0.01, 0.0, TIME * 0.007), w), vec3(0.333));
 		float clear_w = 1.0 - smoothstep(0.1, 0.6, junk);
-		vec3 wcol = mix(vec3(0.1, 0.12, 0.085), vec3(0.05, 0.24, 0.27), clear_w);  // murky olive -> clear teal
-		wcol *= mix(0.85, 1.15, smoothstep(0.35, 0.65, rip));
-		float fres = pow(1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0), 3.0);
-		wcol = mix(wcol, vec3(0.28, 0.31, 0.29), fres * 0.25);
+		vec3 wcol = mix(vec3(0.05, 0.058, 0.032), vec3(0.01, 0.055, 0.075), clear_w);  // murky olive -> deep blue-green
+		wcol *= mix(0.85, 1.12, smoothstep(0.35, 0.65, rip));
+		vec3 g = vec3(0.0);
+		g += vec3(0.71, 0.12, 0.69) * 0.05 * cos(dot(wpos, vec3(0.71, 0.12, 0.69)) * 0.7 - TIME * 0.9);
+		g += vec3(-0.35, 0.62, 0.70) * 0.05 * cos(dot(wpos, vec3(-0.35, 0.62, 0.70)) * 1.1 - TIME * 1.2);
+		g += vec3(0.88, -0.45, 0.15) * 0.04 * cos(dot(wpos, vec3(0.88, -0.45, 0.15)) * 1.9 - TIME * 1.6);
+		g += (vec3(rip) - 0.5) * 0.12;
+		g -= up * dot(g, up);
+		vec3 nw = normalize(up - g * mix(0.6, 1.0, clear_w));
+		vec3 vw = normalize(CAMERA_POSITION_WORLD - wpos);
+		float fres = 0.02 + 0.98 * pow(1.0 - clamp(dot(nw, vw), 0.0, 1.0), 5.0);
+		vec3 rv = reflect(-vw, nw);
+		vec3 sky = mix(sky_hor, sky_zen, 0.3 + 0.7 * smoothstep(0.0, 0.45, clamp(dot(rv, up), 0.0, 1.0)));
+		wem = sky * min(fres, 0.55) * mix(0.32, 0.6, clear_w) * mix(0.25, 1.0, sky_day);
+		vec3 hv = normalize(sun_dir + vw);
+		float nh = clamp(dot(nw, hv), 0.0, 1.0);
+		wem += sun_col * (pow(nh, mix(140.0, 700.0, clear_w)) * mix(0.25, 5.0, clear_w) + pow(nh, 50.0) * mix(0.04, 0.08, clear_w)) * sun_vis;
 		col = mix(col, wcol, ow);
 	}
 	col = mix(col, col * lod_color, lod_tint);
 	ALBEDO = col;
-	ROUGHNESS = mix(mix(0.95, 0.6, water), 0.55, ow);  // [v1world] was 0.12 / 0.6: glossy banks mirrored the sky as a white strip
-	SPECULAR = mix(mix(0.35, 0.4, water), 0.25, ow);
+	ROUGHNESS = mix(mix(0.95, 0.6, water), 1.0, ow);  // [v1world] was 0.12 / 0.6: glossy banks mirrored the sky as a white strip
+	SPECULAR = mix(mix(0.35, 0.4, water), 0.0, ow);  // [v4world] open water: the sky is our own (wem)
+	EMISSION = wem * ow;
 }
