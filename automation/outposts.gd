@@ -576,7 +576,9 @@ static func plan_cells(frame: Node3D, f: SphereField, cells: PackedInt32Array, c
 		return out
 	var a0: float = r.randf() * TAU
 	var used: Dictionary = {}
-	for k: int in n:
+	var tr_: TargetReach = TargetReach.for_field(f)  # [v4world] #55: only sites Lumi can get to (not walled in by buildings, steep ground or water)
+	var k: int = 0
+	while k < n:
 		var want: float = a0 + TAU * float(k) / float(n)
 		var best: int = -1
 		var best_s: float = INF
@@ -597,9 +599,13 @@ static func plan_cells(frame: Node3D, f: SphereField, cells: PackedInt32Array, c
 				best_s = score
 				best = si
 		if best < 0:
+			k += 1
 			continue
 		used[best] = true
 		var pp: Vector3 = sites[best]["pos"]
+		if tr_ and tr_.reach(frame.to_global(pp)) != "":
+			continue  # [v4world] this one is cut off: the next best for the same slot
+		k += 1
 		var yaw: float = atan2(-pp.x, -pp.z)  # facing the hub
 		var up: Vector3 = (frame.global_basis.inverse() * f.up_at(frame.to_global(pp))).normalized()
 		var bas: Basis = Basis(Quaternion(Vector3.UP, up)) * Basis(Vector3.UP, yaw)

@@ -35,6 +35,48 @@ func setup() -> void:
 			_reveal(hid, false)
 
 
+## Where the shard in hex hid surfaces (and the beacon stands before it does).
+## [v4world] Owner playtest 3 #55: on the globe, the nearest reachable open ground to the hex's
+## spot (TargetReach: not in a building, a lake, on steep ground or walled in); re-checked when
+## more footprints are known (YardKeepOut.version).
+var _spots: Dictionary = {}  # hex id -> [keep-out version, Vector3]
+
+
+func spot(hid: int) -> Vector3:
+	if not _globe:
+		return world.field.hex_center(hid) + Vector3(1.2, 0.0, 0.8)
+	var t: TargetReach = TargetReach.for_world(world, true)
+	var ver: int = t.keep_out.version if t.keep_out else 0
+	var c: Variant = _spots.get(hid)
+	if c is Array and int(c[0]) == ver:
+		return c[1]
+	var fr: Basis = SphereGrid.frame(world.field.hex_center(hid).normalized())
+	var p: Vector3 = t.open_spot((world.field.hex_center(hid) + fr.x * 1.2 + fr.z * 0.8).normalized())
+	_spots[hid] = [ver, p]
+	return p
+
+
+## [v4world] #55: surfaced shards move when more building footprints become known (a town that
+## finished building after they surfaced), so none is left inside a building.
+var _ko_ver: int = -1
+var _ko_t: float = 0.0
+
+
+func _process(delta: float) -> void:
+	_ko_t -= delta
+	if not _globe or _ko_t > 0.0 or _visible.is_empty():
+		return
+	_ko_t = 2.0
+	var t: TargetReach = TargetReach.for_world(world)
+	var ver: int = t.keep_out.version if t and t.keep_out else 0
+	if ver == _ko_ver:
+		return
+	_ko_ver = ver
+	for hid: int in _visible:
+		var pos: Vector3 = spot(hid)
+		(_visible[hid] as Node3D).global_transform = Transform3D(SphereGrid.frame(pos.normalized()), pos)
+
+
 func found(i: int) -> bool:
 	return str(docs[i]["id"]) in GameState.flags.get("shards_found", [])
 
@@ -42,14 +84,12 @@ func found(i: int) -> bool:
 func _reveal(hid: int, fresh: bool) -> void:
 	if not _placed.has(hid) or found(int(_placed[hid])) or _visible.has(hid):
 		return
-	var pos: Vector3 = world.field.hex_center(hid) + Vector3(1.2, 0.0, 0.8)
+	var pos: Vector3 = spot(hid)
 	var node := Node3D.new()
 	add_child(node)
 	node.global_position = pos
 	if _globe:  # [orbB] the same offset in the cell's own frame, on the ground, upright
-		var fr: Basis = SphereGrid.frame(world.field.hex_center(hid).normalized())
-		pos = (world.field as SphereField).terrain.ground((world.field.hex_center(hid) + fr.x * 1.2 + fr.z * 0.8).normalized())
-		node.global_transform = Transform3D(fr, pos)
+		node.global_transform = Transform3D(SphereGrid.frame(pos.normalized()), pos)
 	var mi := MeshInstance3D.new()
 	mi.mesh = AssetLib.model_mesh_lite("portable_cassette_player" if AssetLib.has_model("portable_cassette_player") else "boombox", 2000)
 	mi.scale = Vector3.ONE * 0.6
@@ -86,7 +126,7 @@ func waypoint(from: Vector3) -> Dictionary:
 		var d2: float = c.distance_to(from)
 		if d2 < bd:
 			bd = d2
-			best = {"pos": c, "surfaced": false, "hex": hid}
+			best = {"pos": spot(hid) if _globe else c, "surfaced": false, "hex": hid}  # [v4world] #55: where it will surface, on open ground
 	return best
 
 

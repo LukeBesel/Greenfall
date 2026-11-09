@@ -305,7 +305,12 @@ static func find_spot(so: SliceOrbit, site: Transform3D) -> Transform3D:
 				hi = maxf(hi, h)
 				var cell: int = f.hex_at(gp)
 				wet = wet or cell < 0 or f.is_water(cell)
+				var ko: Object = f.keep_out.get_object() if f.keep_out.is_valid() else null  # [v4world] #55: not in a town building
+				wet = wet or (ko is YardKeepOut and (ko as YardKeepOut).in_building(gp))
 			if wet or hi - lo > 0.6:
+				continue
+			var tr_: TargetReach = TargetReach.for_field(f)  # [v4world] #55: the way in isn't walled off
+			if tr_ and tr_.reach(site * c) != "":
 				continue
 			c.y = (lo + hi) * 0.5
 			var wc: Vector3 = site * c

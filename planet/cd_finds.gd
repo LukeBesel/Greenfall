@@ -155,15 +155,33 @@ func _restore() -> void:
 				_show(str(id), hid, false)
 
 
+## Where a CD turns up in hex hid.
+## [v4world] Owner playtest 3 #55: on the globe the offset lies in the hex's own ground frame and
+## the disc goes to the nearest reachable open ground (TargetReach): never inside a building, a
+## lake, a collider or on steep ground.
+func spot(hid: int, scratched: bool = false) -> Vector3:
+	var off: Vector3 = OFFSET if not scratched else Vector3(1.0, 0.04, -0.8)
+	if not (world.field is SphereField):
+		return world.field.hex_center(hid) + off
+	var t: TargetReach = TargetReach.for_world(world, true)
+	var c: Vector3 = world.field.hex_center(hid)
+	var fr: Basis = SphereGrid.frame(c.normalized())
+	var g: Vector3 = t.open_spot((c + fr.x * off.x + fr.z * off.z).normalized())
+	return g + g.normalized() * off.y
+
+
 func _show(id: String, hid: int, fresh: bool) -> void:
 	if _discs.has(id):
 		return
 	var scratched: bool = id.begins_with("s:")
 	var node: Node3D = build_cd(scratched)
 	add_child(node)
-	var pos: Vector3 = world.field.hex_center(hid) + (OFFSET if not scratched else Vector3(1.0, 0.04, -0.8))
+	var pos: Vector3 = spot(hid, scratched)
 	node.global_position = pos
 	node.rotation.y = rng.randf() * TAU
+	if world.field is SphereField:  # [v4world] upright on the round ground
+		var up: Vector3 = pos.normalized()
+		node.global_transform = Transform3D(Basis(up, node.rotation.y) * SphereGrid.frame(up), pos)
 	_discs[id] = node
 	print("[tunes] CD in the rubble: %s at hex %d%s" % [id, hid, "" if fresh else " (still there)"])
 	if fresh:

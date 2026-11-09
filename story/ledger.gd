@@ -1064,6 +1064,9 @@ static func relay_spot_cells(frame: Node3D, f: SphereField, cells: PackedInt32Ar
 		if f.hex_at(wp) != id:
 			continue
 		var clash: bool = false
+		var tr_: TargetReach = TargetReach.for_field(f)  # [v4world] #55: not in a town building or walled in
+		if tr_ and tr_.reach(wp) != "":
+			continue
 		for o: Vector3 in outposts:
 			if Vector2(o.x - c.x, o.z - c.z).length() < 12.0:
 				clash = true
@@ -1075,6 +1078,9 @@ static func relay_spot_cells(frame: Node3D, f: SphereField, cells: PackedInt32Ar
 		best = frame.to_local(wp)
 		best_hex = id
 		break
+	var tr2: TargetReach = TargetReach.for_field(f)  # [v4world] #55: the fallback too
+	if tr2 and tr2.reach(frame.to_global(best)) != "":
+		best = frame.to_local(tr2.open_spot(frame.to_global(best)))
 	var yaw: float = atan2(-best.x, -best.z)
 	var up: Vector3 = (frame.global_basis.inverse() * f.up_at(frame.to_global(best))).normalized()
 	var bas: Basis = Basis(Quaternion(Vector3.UP, up)) * Basis(Vector3.UP, yaw)

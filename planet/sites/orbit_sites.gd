@@ -58,6 +58,8 @@ func _setup() -> void:
 		_reach_audit.call_deferred()
 	if DevHooks.has("city-walk"):  # [v3city] dev: walk check of the start town (planet/sites/city_walk.gd)
 		CityWalk.run_dev(so)
+	if DevHooks.has("target-reach"):  # [v4world] dev: every collectible and objective target reachable (planet/sites/target_audit.gd)
+		TargetAudit.run_dev(so)
 	if bool(GameState.flags.get("arrived_from_rocket", false)) or DevHooks.has("orbit-arrive"):
 		GameState.flags.erase("arrived_from_rocket")
 		_arrive.call_deferred()
