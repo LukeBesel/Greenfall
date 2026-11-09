@@ -14,6 +14,11 @@ signal line_out(text: String, stage: int)
 const CHATTER_MULT: float = 0.35
 const CHATTER_GAP_S: float = 150.0
 const BACKLOG_MAX: int = 6
+## [v4calm] Owner item 49 ("far too many messages"): reward chatter and stat remarks are cut. These
+## triggers never speak; story beats, goals and warnings still do.
+const MUTED: Array[String] = ["hex_clean", "perfect", "upgrade", "idle", "part_rare", "milestone", "streak_max", "ledger_coupon", "egg_found", "bloom_milestone", "event_won"]
+## [v4calm] Owner item 47: these speak once per save (Once flags), never again.
+const ONCE: Array[String] = ["robot_built", "first_robot_hint", "globe", "jammer_built", "greenhouse_built", "outpost_repaired", "outpost_upgraded"]
 
 var lines: Dictionary = {}
 var _queue: Array[Dictionary] = []
@@ -99,6 +104,10 @@ func on_signal_raised(tier_: int) -> void:
 ## ark's own relay, clear from the first line).
 func say(trigger: String, chance: float = 1.0, important: bool = false, vars: Dictionary = {}, stage_override: int = -1) -> void:
 	if not awake() and stage_override < 0:  # [onboard] no tower, no WREN (other worlds: the ark's relay)
+		return
+	if trigger in MUTED or (trigger.begins_with("event_") and stage_override < 0):  # [v4calm] item 49 (events: their toast says it)
+		return
+	if trigger in ONCE and not Once.take("wren_" + trigger):  # [v4calm] item 47
 		return
 	if not important:  # [onboard] chatter: much rarer, spaced out
 		chance *= CHATTER_MULT

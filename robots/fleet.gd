@@ -186,7 +186,7 @@ func build(type_id: String, at: Vector3) -> Robot:
 	GameState.inc_stat("robots_built")
 	EventBus.robot_built.emit(r.robot_name)
 	var quirk: String = tr(str(RobotBuilder.trait_def(RobotBuilder.trait_of(r)).get("name", ""))).to_lower()  # [drones] personality
-	EventBus.toast.emit(tr("%s %s assembled. It looks around, then gets to work.%s") % [tr(str(Economy.robots[type_id]["name"])), r.robot_name, (tr(" Seems %s.") % quirk) if quirk != "" else ""], "story")
+	EventBus.toast.emit(tr("%s %s assembled. It looks around, then gets to work.%s") % [tr(str(Economy.robots[type_id]["name"])), r.robot_name, (tr(" Seems %s.") % quirk) if quirk != "" else ""], "story" if Once.take("toast_first_robot") else "reward")  # [v4calm] only the first
 	return r
 
 

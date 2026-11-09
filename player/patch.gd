@@ -546,7 +546,7 @@ func _maybe_salvage_part(type_id: String) -> void:
 	var t: int = randi() % Economy.parts.get("types", [1]).size()
 	RobotParts.salvage(t, r)  # [ui2] salvaged robot parts pay Parts
 	var rd: Dictionary = Economy.rarity(r)
-	EventBus.toast.emit(tr("Salvaged: %s") % L10nFmt.part_label(tr(str(rd.get("name", ""))), tr(str(Economy.part_type(t).get("name", "part")))) + "  " + RobotParts.gain_text(r), "hint")  # [i18n2] [ui2]
+	EventBus.toast.emit(tr("Salvaged: %s") % L10nFmt.part_label(tr(str(rd.get("name", ""))), tr(str(Economy.part_type(t).get("name", "part")))) + "  " + RobotParts.gain_text(r), "reward")  # [v4calm] cut  [i18n2] [ui2]
 	Audio.play("ding", 1.3, -10.0)
 
 
@@ -575,7 +575,7 @@ func _on_part_found(idx: int) -> void:
 	if r >= 3:
 		Audio.play("fanfare", 1.0, -8.0)
 	Vfx.float_text(pos + Vector3(0, 1.4, 0), L10nFmt.part_label(tr(str(rar.get("name", ""))), tr(str(pt.get("name", "Part")))), col, 0.55, 0.8)  # [i18n2]
-	EventBus.toast.emit(tr("Recovered: %s") % L10nFmt.part_label(tr(str(rar.get("name", ""))), tr(str(pt.get("name", "part")))) + "  " + RobotParts.gain_text(r), "hint")  # [i18n2] [qafix] QA #20: name the Parts it paid
+	EventBus.toast.emit(tr("Recovered: %s") % L10nFmt.part_label(tr(str(rar.get("name", ""))), tr(str(pt.get("name", "part")))) + "  " + RobotParts.gain_text(r), "reward")  # [v4calm] cut  [i18n2] [qafix] QA #20: name the Parts it paid
 
 
 func nearest_loose_cube() -> JunkCube:
@@ -736,10 +736,10 @@ func _update_hints(delta: float) -> void:
 	if _idle_time > 8.0 and fmod(_idle_time, 9.0) < delta:
 		model.shudder(0.25)
 		Vfx.burst("bits", global_position + up() * 1.0, Color(0.75, 0.4, 0.2), 0.6)
-		Audio.play("beep", 0.9, -12.0)
+		if _idle_time < 20.0:  # [v4calm] item 50: one soft beep per idle stretch, not every 9 s
+			Audio.play("beep", 0.9, -20.0)
 	if model.sleeping and fmod(_idle_time, 3.0) < delta:
-		Vfx.float_text(global_position + up() * 1.8 + global_basis.x * 0.3, "z", Color(0.9, 0.9, 1.0), 0.7, 0.8)
-		Audio.play("beep", 0.6, -18.0)
+		Vfx.float_text(global_position + up() * 1.8 + global_basis.x * 0.3, "z", Color(0.9, 0.9, 1.0), 0.7, 0.8)  # [v4calm] silent snore
 	# Hex under the scoop for the HUD readout.
 	if world and world.field:
 		var h: int = world.field.hex_at(scoop_origin() + forward() * 1.0)

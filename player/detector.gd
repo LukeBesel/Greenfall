@@ -14,8 +14,9 @@ var digging: float = 0.0
 var _cfg: Dictionary
 var _beep_timer: float = 0.0
 var _sound_t: float = 0.0  # [v2feel] time to the next audible beep
-const SOUND_FROM: float = 0.55  # [v2feel] signal strength where the beep starts (about 7 m at 16 m range)
-const SOUND_GAP_S: float = 0.45  # [v2feel] shortest gap between audible beeps
+const SOUND_NEAR_M: float = 3.0  # [v4calm] the beep is heard only this close to the part
+const SOUND_GAP_S: float = 2.0  # [v4calm] shortest gap between audible beeps (was 0.45)
+const SOUND_DB: float = -24.0  # [v4calm] quiet
 var _lamp: MeshInstance3D
 var _lamp_mat: StandardMaterial3D
 var _light: OmniLight3D
@@ -79,10 +80,12 @@ func _process(delta: float) -> void:
 		# [v2feel] Owner item 32: the lamp's beep played nonstop (the globe always has a part in
 		# range). Far off the lamp only blinks; it beeps once Lumi is homing in, and never faster
 		# than SOUND_GAP_S.
-		_sound_t -= interval
-		if strength >= SOUND_FROM and _sound_t <= 0.0:
+		# [v4calm] Owner item 50: still too much. Silent unless Lumi is right on it (SOUND_NEAR_M),
+		# one soft beep per SOUND_GAP_S at most.
+		if beep_allowed(d, _sound_t):
 			_sound_t = SOUND_GAP_S
-			Audio.play("detector", lerpf(0.9, 1.5, strength), lerpf(-22.0, -11.0, strength), 0.0)
+			Audio.play("detector", lerpf(1.0, 1.2, strength), SOUND_DB, 0.0)
+	_sound_t = maxf(0.0, _sound_t - delta)
 	var rar: Dictionary = Economy.rarity(field.part_rarity[target])
 	var text: String = ""
 	var col := Color(1, 0.3, 0.25)
@@ -93,6 +96,11 @@ func _process(delta: float) -> void:
 	elif strength > 0.0:
 		text = tr("BURIED PART  ·  SIGNAL %d%%") % int(strength * 100.0)
 	readout_changed.emit(text, col, strength)
+
+
+## [v4calm] An audible beep: only within SOUND_NEAR_M, and once the gap timer has run out.
+static func beep_allowed(dist_m: float, gap_left: float) -> bool:
+	return dist_m <= SOUND_NEAR_M and gap_left <= 0.0
 
 
 ## [onboard] The detector listens once the restart checklist is done (dev: --detector-on).

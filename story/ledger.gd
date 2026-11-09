@@ -180,7 +180,7 @@ func _act_lines(key: String) -> Array:
 
 ## [money] A small notify-stack entry instead of the big uplink banner.
 func _note(text: String) -> void:
-	EventBus.toast.emit(tr("Ledger: %s") % tr(text), "info")
+	EventBus.toast.emit(tr("Ledger: %s") % tr(text), "info" if Once.take("toast_ledger_note") else "reward")  # [v4calm] item 49: the first one only
 
 
 func _wren_later(trigger: String, delay: float) -> void:
@@ -495,7 +495,8 @@ func _fly_dump(hid: int, pids: PackedInt32Array, spot: Vector3, jammed: bool) ->
 	var warn: Array = cfg.get("drop_warn", [])
 	var first: bool = int(GameState.stats.get("ledger_drops", 0)) == 0 and int(GameState.stats.get("ledger_jammed", 0)) == 0
 	EventBus.toast.emit(tr("Ledger drone inbound, %s! It's heading for a clean hex.") % compass_label(spot - _l(world.patch.global_position)) if not first
-		else tr("A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground.") % compass_label(spot - _l(world.patch.global_position)), "story")
+		else tr("A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground.") % compass_label(spot - _l(world.patch.global_position)),
+		"story" if first or BeepGate.take("toast_ledger_drone", 600.0) else "reward")  # [v4calm] item 49: at most one warning per 10 min
 	if not warn.is_empty() and first:  # [money] only the very first drone gets the uplink banner
 		uplink.show_line(str(warn[rng.randi() % warn.size()]))
 	Audio.play("glitch", 0.8, -8.0)
@@ -633,7 +634,7 @@ func _landed(hid: int, pids: PackedInt32Array, marker: MeshInstance3D, falling: 
 	EventBus.ledger_event.emit("drop", {"hex": hid, "pieces": pids.size()})
 	if int(GameState.stats.get("ledger_drops", 0)) <= 1:
 		EventBus.toast.emit(tr("The drone dumped a little junk back. Scoop it up, or let your helpers tidy it. A Signal Jammer at the base keeps drones away."), "hint")
-	if world.get("wren") != null:
+	if world.get("wren") != null and Once.take("wren_ledger_drop"):  # [v4calm] once per save
 		world.wren.say("ledger_drop", 0.9, true)
 
 

@@ -132,7 +132,7 @@ func raise() -> void:
 	Audio.play("chime", 0.9, -4.0)
 	Audio.play("servo", 0.8, -8.0)
 	Vfx.burst("sparkle", global_position + global_basis.y.normalized() * (2.0 + tier() * 1.1), GLOW)  # [orbB] local up
-	EventBus.toast.emit(tr("Relay signal %d%%. WREN can reach you.") % signal_pct() if tier() == 1 else tr("Relay signal %d%%. WREN comes through clearer.") % signal_pct(), "story")
+	EventBus.toast.emit(tr("Relay signal %d%%. WREN can reach you.") % signal_pct() if tier() == 1 else tr("Relay signal %d%%. WREN comes through clearer.") % signal_pct(), "reward")  # [v4calm] cut: WREN's own line says it
 	var w: Variant = world.get("wren") if world else null
 	if w is Wren:
 		(w as Wren).on_signal_raised(tier())

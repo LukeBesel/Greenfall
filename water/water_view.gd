@@ -75,7 +75,8 @@ func _on_clean(hid: int, _pos: Vector3, _bonus: BigNum) -> void:
 	Audio.play("chime", 0.6, -2.0)
 	Audio.play("whoosh", 0.4, -6.0)
 	EventBus.shake_requested.emit(0.1)
-	world.wren.line_started.emit(tr("The water... I can see the bottom. Lumi, there's something moving down there."), 1)
+	if Once.take("wren_lake_clear"):  # [v4calm] item 45
+		world.wren.line_started.emit(tr("The water... I can see the bottom. Lumi, there's something moving down there."), 1)
 	_stock_fish(hid)
 
 

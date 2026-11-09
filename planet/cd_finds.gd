@@ -186,8 +186,8 @@ func _show(id: String, hid: int, fresh: bool) -> void:
 	print("[tunes] CD in the rubble: %s at hex %d%s" % [id, hid, "" if fresh else " (still there)"])
 	if fresh:
 		Vfx.burst("sparkle", pos + Vector3(0, 0.3, 0), Color(0.75, 0.9, 1.0), 0.6)
-		Audio.play("detector", 1.25, -10.0)
-		EventBus.toast.emit(tr("A scratched CD turned up in the rubble.") if scratched else tr("Something shiny turned up in the cleared rubble. An old CD!"), "hint")
+		Audio.play("detector", 1.25, -18.0)  # [v4calm] softer
+		EventBus.toast.emit(tr("A scratched CD turned up in the rubble.") if scratched else tr("Something shiny turned up in the cleared rubble. An old CD!"), "hint" if Once.take("toast_cd_rubble") else "reward")  # [v4calm] the first only
 
 
 func _process(delta: float) -> void:
