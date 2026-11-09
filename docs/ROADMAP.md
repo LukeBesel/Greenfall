@@ -1,5 +1,7 @@
 # Greenfall Roadmap
 
+**Nov 9, 2026: Planet 1 redesign.** The current plan is `docs/PLAN.md` with tasks in `docs/TASKS.md`, rules in `docs/STYLE.md` and lessons in `docs/PLANET_PLAYBOOK.md`. Phase 0 (audit and plan) is done and waits for the owner's approval; nothing below this line has been changed by it yet. Older plan: `docs/archive/PLAN_v1_2026-11.md`.
+
 Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next steps), `docs/PLAN.md` (milestones + owner feature requests), `docs/DECISIONS.md` (choices and assumptions), `docs/BUILD_PROMPT.md` (the owner's full brief).
 
 ## Status (Nov 2026)
