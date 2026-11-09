@@ -69,8 +69,18 @@ func check_now() -> void:
 	var cur_m: float = g.grid.great_circle_m(patch.global_position, g.grid.centers[int(g.sites[hub]["cell"])]) if hub >= 0 else INF
 	if hub >= 0 and cur_m > SLEEP_M:
 		_set_hub(-1)
-	if best >= 0 and best != hub and best_m < WAKE_M:
+	if best >= 0 and best != hub and best_m < WAKE_M and _site_ready(best):
 		_set_hub(best)
+
+
+## [v4world] Owner playtest 3 #55: a hub's outposts, eggs and relay are placed only once its town
+## is built, so its buildings' footprints are known and nothing lands inside one.
+func _site_ready(i: int) -> bool:
+	var sm: Variant = so.globe.get("site_manager") if so and so.globe else null
+	if not (sm is SiteManager):
+		return true
+	var p: SitePrefab = (sm as SiteManager).prefab(i)
+	return p != null and p.is_built
 
 
 func _set_hub(i: int) -> void:

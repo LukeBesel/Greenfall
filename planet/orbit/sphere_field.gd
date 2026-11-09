@@ -456,12 +456,20 @@ func _roll_parts(cell: int) -> void:
 				break
 		var key: int = cell * 4 + k
 		ids.append(part_pos.size())
-		part_pos.append(terrain.ground(d))
+		part_pos.append(_part_ground(d))
 		part_type.append(rng.randi() % types.size())
 		part_rarity.append(ri)
 		part_found.append(1 if _found_keys.has(key) else 0)
 		_part_key.append(key)
 	_cell_parts[cell] = ids
+
+
+## [v4world] Owner playtest 3 #55: a buried part never lies inside a building, a lake, on steep
+## ground or walled in: it moves to the nearest reachable open ground (TargetReach; no rng drawn,
+## so the rolls stay as they were).
+func _part_ground(d: Vector3) -> Vector3:
+	var t: TargetReach = TargetReach.for_field(self)
+	return t.open_spot(d) if t else terrain.ground(d)
 
 
 ## Nearest unfound part within range (or -1): only the cells around pos are searched.
