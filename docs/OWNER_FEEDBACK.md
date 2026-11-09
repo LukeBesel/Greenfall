@@ -234,3 +234,19 @@ Direction: the flat world's vibe is better, so build it into the round world: bu
 ## 2026-11-08 direction: Verdance must feel finished
 41. The first planet must be completely free of glitches, easy to make progress on, and simple enough that a young kid could understand and play it. Make it feel real and professional.
 42. The city feels empty: about 3 buildings and that's it. It doesn't feel whole or working. Verdance needs a full, lived-in city (streets, blocks, districts, signs, lights, parked junk), like the flat world's districts or better.
+
+## 2026-11-09 playtest 3
+43. The little floating bot (Glim) should be a build and a much bigger deal: a helper who followed you and clung to the pod to be with you.
+44. The water bot unlocks way too fast.
+45. Every time the water bot cleans a hex, WREN's "I can see the bottom…" line plays again. It should play once.
+46. Unlock the Scoopie first, and have just him for a while before the Hauler.
+47. After building bots the first time, the "I hear another voice" line must not repeat every time.
+48. The first seed is hard to find: after a bit, show an indicator to where it is.
+49. Far too many messages at once; it's hard to know what's happening. Cut them way down.
+50. The beeping is still super annoying: way less, or none.
+51. Planted plants can't be seen, so I don't know where to water or whether it's working.
+52. Haulers should also pick up the bales I make.
+53. The water still doesn't look like water.
+54. Lumi should need an upgrade to hover over water.
+55. The objective led me under a building I can't get to. Every target must be reachable.
+56. Overall: it still needs more polish.
