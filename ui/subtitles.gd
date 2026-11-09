@@ -35,7 +35,7 @@ const MAX_QUEUE: int = 8
 ## numbers is replaced by the newer one ("+12 cubes" then "+15 cubes" shows once); low-value lines
 ## that waited too long are dropped; speech and story are never dropped.
 const TOAST_MAX_QUEUE: int = 6
-const STALE_S: Dictionary = {0: 12.0, -1: 12.0, 1: 20.0}  # [v4calm] was {0: 25, -1: 40}
+const STALE_S: Dictionary = {0: 20.0, -1: 12.0}  # [v4calm] was {0: 25, -1: 40}
 const TOAST_KINDS: Dictionary = {
 	"story": {"prio": 2, "col": Color(1.0, 0.86, 0.6)},
 	"goal": {"prio": 1, "col": Color(0.7, 0.93, 1.0)},
