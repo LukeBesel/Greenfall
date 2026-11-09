@@ -109,3 +109,17 @@ func test_marks_show_soil_sprouts_and_thirst() -> void:
 	g.water(slots[0], 30.0)
 	assert_eq(got.size(), 2)
 	assert_false(bool(got[1][1]), "watering it again: not dry")
+
+
+func test_no_planting_on_streets_kerbs_or_the_pad() -> void:
+	var lay := CityLayout.new(4471, 108.0)
+	var key: Vector2i = Vector2i(1, 1)
+	assert_true(lay.blocks.has(key), "a town block")
+	var c := Vector2(key) * CityLayout.PITCH
+	var road_x: float = c.x + CityLayout.PITCH * 0.5  # the street between two blocks
+	assert_true(Garden.paved(lay, road_x, c.y), "a street")
+	var walk_x: float = c.x + CityLayout.PITCH * 0.5 - CityLayout.ROAD_W * 0.5 - CityLayout.WALK_W * 0.5
+	assert_true(Garden.paved(lay, walk_x, c.y), "a sidewalk and its kerb")
+	assert_true(Garden.paved(lay, 0.0, 0.0), "the hub's yard pad")
+	var lot: bool = lay.surface_at(c.x, c.y) == CityLayout.Surface.LOT
+	assert_eq(Garden.paved(lay, c.x, c.y), not lot, "a lot's middle is open ground")

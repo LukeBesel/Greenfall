@@ -182,11 +182,11 @@ static func _soil_mesh() -> Mesh:
 	var c := CylinderMesh.new()
 	c.top_radius = 0.46
 	c.bottom_radius = 0.68
-	c.height = 0.14
+	c.height = 0.26  # from 12 cm under the ground (never floats on a slope) to 14 cm over it
 	c.radial_segments = 14
 	c.rings = 1
 	c.cap_bottom = false
-	return ProcMesh.merge([ProcMesh.part(c, ProcMesh.xf(Vector3(0, 0.03, 0)), Color(1, 1, 1))])
+	return ProcMesh.merge([ProcMesh.part(c, ProcMesh.xf(Vector3(0, 0.01, 0)), Color(1, 1, 1))])
 
 
 ## A seedling 1 m tall (scaled per stage): a stem, two broad leaves and a bud.
@@ -246,8 +246,9 @@ func _refresh() -> void:
 		var fr: Basis = SphereGrid.frame(sp.normalized()) if OrbitUp.on_globe() else Basis()
 		var up: Vector3 = fr.y
 		var wet: float = wetness(s)
+		sp += up * garden.lift_of(s)  # on a lot's plates: on top of them
 		var dry: bool = garden.slot_water[s] <= 0.0
-		soil.set_instance_transform(n, Transform3D(fr * Basis(Vector3.UP, garden.slot_yaw[s]), sp - up * 0.02))
+		soil.set_instance_transform(n, Transform3D(fr * Basis(Vector3.UP, garden.slot_yaw[s]), sp))
 		soil.set_instance_color(n, DRY_SOIL.lerp(WET_SOIL, wet))
 		soil.set_instance_custom_data(n, Color(wet, 1.0 if s in reach else 0.0, 0.0, 0.0))
 		n += 1
@@ -387,7 +388,7 @@ func _dev_garden(delay: float) -> void:
 		((so as Object).get("crews") as OrbitCrews).work_cell(h, 0.0)
 		garden.ensure_hex(h)
 		for sl: int in garden.hex_slots.get(h, PackedInt32Array()):
-			if garden.slot_pos[sl].distance_to(c) > 9.0:
+			if garden.slot_pos[sl].distance_to(c) > 9.0 or not garden.plantable(sl):
 				continue
 			garden.slot_species[sl] = k % 6
 			garden.slot_stage[sl] = k % 5
@@ -399,4 +400,7 @@ func _dev_garden(delay: float) -> void:
 		p.tool = Patch.Tool.WATER
 	_t = 0.0
 	await get_tree().create_timer(0.5, true, false, true).timeout
-	print("[garden-marks] demo bed: %d plants; shown %s" % [k, str(shown)])
+	var paved: int = 0
+	for sl: int in garden._paving:
+		paved += 1 if bool(garden._paving[sl][0]) else 0
+	print("[garden-marks] demo bed: %d plants (%d slots on paving skipped); shown %s" % [k, paved, str(shown)])

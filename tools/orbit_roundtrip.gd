@@ -473,6 +473,22 @@ static func run(rt: Node, check: Callable) -> void:
 	GameState.add_currency("seeds", BigNum.from_float(10))
 	var ctr: Vector3 = g.field.hex_center(target)
 	var fwd: Vector3 = SphereGrid.frame(ctr.normalized()).x
+	# [v4grow] Planting stays off streets, kerbs and the pad: if this cell is all paving, clean a
+	# nearby cell with open ground and plant there.
+	if gdn.free_slot_near(ctr - fwd * 1.0, fwd, 6.0) < 0:
+		for c2: int in g.field.hexes_near(ctr, 3):
+			if g.field.hex_hub[c2] != 0 or g.field.is_water(c2):
+				continue
+			so.crews.work_cell(c2, 0.0)
+			gdn.ensure_hex(c2)
+			var c2p: Vector3 = g.field.hex_center(c2)
+			if gdn.free_slot_near(c2p - fwd * 1.0, fwd, 6.0) >= 0:
+				var open_n: int = 0
+				for sl2: int in gdn.hex_slots.get(c2, PackedInt32Array()):
+					open_n += 1 if gdn.plantable(sl2) and gdn.slot_pos[sl2].distance_to(c2p) < 6.0 else 0
+				if open_n >= 3:
+					ctr = c2p
+					break
 	var planted_n: int = 0
 	for k: int in 3:
 		var sl: int = gdn.free_slot_near(ctr - fwd * 1.0, fwd, 6.0)
