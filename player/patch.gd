@@ -236,6 +236,7 @@ func water_cap() -> float:
 	return float(Economy.read_json("res://data/plants.json").get("water_tank", 30)) if _water_cap < 0.0 else _water_cap
 
 var _water_cap: float = -1.0
+var _no_slot_ms: int = -100000  # [v4grow]
 
 
 func set_tool(t: int) -> void:
@@ -273,6 +274,9 @@ func _handle_tools(delta: float) -> void:
 	if tool == Tool.PLANT and _plant_t <= 0.0:
 		_plant_t = 0.65
 		var s: int = g.free_slot_near(global_position, forward())
+		if s < 0 and g.sparse and Time.get_ticks_msec() - _no_slot_ms > 6000:  # [v4grow] say why nothing went in
+			_no_slot_ms = Time.get_ticks_msec()
+			EventBus.toast.emit(tr("Seeds need clean, open ground: not streets, kerbs or the pad."), "info")
 		if s >= 0:
 			if g.plant(s):
 				model.set_scooping(true)
