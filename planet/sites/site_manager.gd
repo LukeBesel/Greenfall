@@ -416,10 +416,7 @@ func _attach_power(i: int, p: SitePrefab) -> void:
 	var hl: Variant = w.get("hex_levels")
 	if not (hl is HexLevels) or p.content == null or not is_instance_valid(p.content):
 		return
-	var old: Variant = power.get(i)
-	if old is Node and is_instance_valid(old):
-		(old as Node).queue_free()
-	power.erase(i)
+	_drop_power(i)
 	var lvl: int = levels[i]
 	var hub: Variant = w.get("hub") if i == 0 else null
 	if hub is Hub:
@@ -431,6 +428,15 @@ func _attach_power(i: int, p: SitePrefab) -> void:
 				power[i] = sp
 				if hub is Hub and not (hub as Hub).level_changed.is_connected(_on_hub0_level):
 					(hub as Hub).level_changed.connect(_on_hub0_level)
+
+
+## Forgets hub i's street power. Its node is often gone already: it is freed with the site when
+## Lumi leaves the hub, and the site is built again on the way back.
+func _drop_power(i: int) -> void:
+	var old: Variant = power.get(i)
+	if is_instance_valid(old):
+		(old as Node).queue_free()
+	power.erase(i)
 
 
 ## Marks hub i as built (its region now counts for planet %).

@@ -123,5 +123,23 @@ func test_picker_fly_hands_the_site_to_the_globe_hop() -> void:
 	# What the slice wires that signal to exists (planet/sites/orbit_sites.gd).
 	var os := OrbitSites.new()
 	autofree(os)
-	assert_true(os.has_method("hop_to") and os.has_method("hop_to_hub") and os.has_method("launch_planet"))
+	assert_true(os.has_method("hop_to") and os.has_method("launch_planet"))
 	assert_eq(os.site_of_hub(0), -1, "no hub has a site before the survey is wired")
+	assert_false(os.can_hop_to_hub(0), "so the bot's hub hop has nowhere to go yet")
+
+
+# Hopping away frees a hub's site and its street power with it; hopping back builds the site again.
+func test_site_power_of_a_freed_site_is_dropped_cleanly() -> void:
+	var sm := SiteManager.new()
+	autofree(sm)
+	var gone := Node.new()
+	sm.power[0] = gone
+	gone.free()
+	sm._drop_power(0)
+	assert_false(sm.power.has(0))
+	var live := Node.new()
+	add_child_autofree(live)
+	sm.power[1] = live
+	sm._drop_power(1)
+	assert_true(live.is_queued_for_deletion())
+	assert_false(sm.power.has(1))

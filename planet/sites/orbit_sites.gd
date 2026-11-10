@@ -406,13 +406,18 @@ func site_of_hub(hub_i: int) -> int:
 	return int(site) if site != null else -1
 
 
-## Rocket hop to the site on planet hub `hub_i`, for callers that think in hubs (the play bot).
-## False when the rocket is not there to fly, is in flight, or already stands on that hub.
-func hop_to_hub(hub_i: int) -> bool:
+## Whether the rocket can hop to planet hub `hub_i` now: the hub has a site, the rocket is owned,
+## on the ground and not already standing there.
+func can_hop_to_hub(hub_i: int) -> bool:
 	var site: int = site_of_hub(hub_i)
-	if site < 0 or site == rocket_site() or hop.flying or not rocket_unlocked():
+	return site >= 0 and site != rocket_site() and not hop.flying and rocket_unlocked()
+
+
+## Rocket hop to the site on planet hub `hub_i`, for callers that think in hubs (the play bot).
+func hop_to_hub(hub_i: int) -> bool:
+	if not can_hop_to_hub(hub_i):
 		return false
-	return await hop_to(site)
+	return await hop_to(site_of_hub(hub_i))
 
 
 func save_state() -> Dictionary:

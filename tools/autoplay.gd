@@ -954,7 +954,7 @@ func _campaign(_p: Patch) -> void:
 	if _now() < 30.0 or DevHooks.has("no-travel"):
 		return  # settle in after landing
 	var to: int = AutoplayCampaign.next_hub(world)
-	if to >= 0 and world.rocket_status() == "" and p_ok(_p):
+	if to >= 0 and world.rocket_status() == "" and p_ok(_p) and OrbitSites.of(world).can_hop_to_hub(to):
 		_event("launch", {"from": int(world.hub_index), "to": to, "kind": world.planet.frontier_kind(to)})
 		AutoplayCampaign.mark("launch_%d_s" % GameState.districts.size(), _now())
 		OrbitSites.of(world).hop_to_hub(to)
