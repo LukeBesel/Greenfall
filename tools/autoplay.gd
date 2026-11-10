@@ -345,6 +345,13 @@ func _watch_stuck(p: Patch, delta: float) -> void:
 		if _target_piece >= 0 and DevHooks.has("bot-debug"):
 			var f: HexField = world.field
 			print("[bot-esc] t=%.1f task=%s pos=%s piece=%d at %s size=%d embed=%.2f" % [_now() / 60.0, _task, str(p.global_position), _target_piece, str(f.piece_pos[_target_piece]), Pace.piece_size(f, _target_piece), f.piece_embed[_target_piece] if _target_piece < f.piece_embed.size() else -1.0])
+		if DevHooks.has("bot-debug"):  # every escape: what it was doing, where, and what is in the way (B7 triage)
+			var fwd: Vector3 = (_move - p.up() * _move.dot(p.up())).normalized()
+			var wet: Array[int] = []
+			for m: float in [1.5, 5.0, 15.0]:
+				wet.append(int(bool(p.call("_water_at", p.global_position + fwd * m))))
+			print("[bot-esc2] t=%.1f n=%d task=%s pos=%s cell=%d water_ahead(1.5/5/15m)=%s hover=%d piece=%d water_target=%d" % [_now() / 60.0, _escapes, _task,
+				str(p.global_position.snappedf(0.1)), world.field.hex_at(p.global_position), str(wet), int(p.can_hover_water()), _target_piece, _water_target])
 		if p.has_method("can_hover_water") and not p.can_hover_water():  # [v4bots] a lake in the way (item 54)
 			var ahead: Vector3 = p.global_position + (_move - p.up() * _move.dot(p.up())).normalized() * 1.5
 			if p.call("_water_at", ahead):
