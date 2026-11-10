@@ -255,6 +255,14 @@ static func _col(a: Variant, fallback: Color) -> Color:
 
 const SPHERE_DECL: float = 0.25   # the suns' declination (rad)
 const SPHERE_DAY_S: float = 1440.0  # one turn of the planet: 24 min (phase A)
+## Daylight on the globe: bright, not bleached (style guide 9). A softer sun under a lower exposure
+## keeps light walls, roofs and pads off pure white; more sky fill holds the shade up; the extra
+## saturation carries brick, awnings and junk.
+const HIGH_FOG_FROM_M: float = 300.0  # camera height where the depth fog starts to thin
+const SPHERE_SUN_ENERGY: float = 1.95
+const SPHERE_DAY_AMBIENT: float = 1.2
+const SPHERE_DAY_EXPOSURE: float = 1.1
+const SPHERE_DAY_SATURATION: float = 1.26
 
 var sphere: bool = false
 var sky_shader: ShaderMaterial
@@ -401,7 +409,7 @@ func _apply_sphere() -> void:
 	var nd: float = clampf(night_dark, 0.0, 1.0) * night
 	# Primary: warm and low at dawn and dusk, white at noon; it carries the shadows.
 	sun.global_basis = _toward_dir(s1)
-	sun.light_energy = 2.2 * sun_up * float(_suns["a"].get("energy", 1.0)) * (1.0 - 0.55 * storm)
+	sun.light_energy = SPHERE_SUN_ENERGY * sun_up * float(_suns["a"].get("energy", 1.0)) * (1.0 - 0.55 * storm)
 	sun.light_color = Color(1.0, 0.7, 0.45).lerp(Color(1.0, 0.94, 0.85), smoothstep(0.1, 0.55, e1))
 	sun.visible = sun.light_energy > 0.01
 	companion.global_basis = _toward_dir(s2)
@@ -429,25 +437,28 @@ func _apply_sphere() -> void:
 	sky_shader.set_shader_parameter("night_dark", clampf(night_dark, 0.0, 1.0))
 	# Ambient and exposure: the night side keeps a readable blue fill (owner: nights not too dark).
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
-	env.ambient_light_energy = lerpf(0.85, 1.1, day) * (1.0 + 0.45 * lift) * (1.0 - 0.4 * nd)
+	env.ambient_light_energy = lerpf(0.85, SPHERE_DAY_AMBIENT, day) * (1.0 + 0.45 * lift) * (1.0 - 0.4 * nd)
 	env.ambient_light_sky_contribution = lerpf(0.3, 1.0, day)
 	var amb := Color(0.36, 0.44, 0.62)
 	if night_tint.a > 0.0:
 		amb = amb.lerp(Color(night_tint.r, night_tint.g, night_tint.b), night_tint.a * night * 0.5)
 	env.ambient_light_color = amb
-	env.tonemap_exposure = lerpf(1.55, 1.25, day) * (1.0 + 0.15 * lift) * (1.0 - 0.2 * nd)
+	env.tonemap_exposure = lerpf(1.55, SPHERE_DAY_EXPOSURE, day) * (1.0 + 0.15 * lift) * (1.0 - 0.2 * nd)
 	# Fog: dusty and warm in Act 1, clear blue as the air is scrubbed, deep blue at night.
 	env.fog_enabled = not space
 	# Volumetric fog is for the flat district's short distances: the quality pass turns it on at
 	# Medium+ with Godot's default density (0.05), which washed the globe and its sky flat grey
 	# (owner: vivid blue sky with the two suns, not haze). Plain depth fog does the aerial haze.
 	env.volumetric_fog_enabled = false
-	env.fog_density = lerpf(0.0005, 0.001, haze) * fog_scale
+	# Thin, so distant towers and ground keep their colour; thinner still from high above (the fall,
+	# a raised Command view), where the whole view is far away and plain depth fog would bleach the globe.
+	var high: float = maxf(0.0, e.length() - planet_radius - HIGH_FOG_FROM_M)
+	env.fog_density = lerpf(0.0003, 0.0005, haze) * fog_scale / (1.0 + high / HIGH_FOG_FROM_M)
 	env.fog_sky_affect = 0.0
 	env.adjustment_enabled = true
-	env.adjustment_saturation = lerpf(1.12, 1.2, day)
+	env.adjustment_saturation = lerpf(1.12, SPHERE_DAY_SATURATION, day)
 	env.adjustment_contrast = 1.06
-	var fog_day: Color = Color(0.62, 0.75, 0.94).lerp(Color(0.78, 0.76, 0.72), haze * 0.5)
+	var fog_day: Color = Color(0.62, 0.75, 0.94).lerp(Color(0.72, 0.8, 0.92), haze * 0.5)  # pale blue air, also while dusty
 	var fog_night: Color = Color(0.11, 0.14, 0.22) * (1.0 + 0.6 * lift)
 	if night_tint.a > 0.0:
 		fog_night = fog_night.lerp(Color(night_tint.r, night_tint.g, night_tint.b) * 0.4, night_tint.a)
