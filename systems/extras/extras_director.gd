@@ -95,7 +95,7 @@ func persist_save() -> void:
 	var left: float = 0.0
 	for h: int in OrbitUp.hexes(f, world.bench_pos()):  # the hub region
 		if not f.is_clean(h):
-			left += (1.0 - f.removed_fraction(h)) * SphereField.FLAT_HEX_VOL  # volume, materialized or not
+			left += (1.0 - f.removed_fraction(h)) * f.worth.work(h)  # volume, materialized or not
 	GameState.world["junk_left"] = left
 
 

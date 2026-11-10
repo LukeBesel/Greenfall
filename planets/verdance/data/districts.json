@@ -1,20 +1,30 @@
 {
-  "_doc": "The cities of this planet in play order (design spec section 1; systems/districts.gd). Each one is a chapter. stage_share: the share of a city's land hexes that must have reached a regrowth stage for the city to be at that stage. open_ground_rings: region size of a hub site that is not a city (open ground: optional, counted only for the whole planet). open_ground_travel: when the rocket offers open-ground sites: 'all_unlocked' = once every city is unlocked, 'always', 'never'. districts[]: id (never changes once shipped: saves use it), name (shown to the player, translated where shown), site (index of the hub site the city stands on), rings (size: the hexes within this many rings of the site's hex, 1 + 3r(r+1) of them away from the grid's twelve five-sided cells), pollution (the pollution kinds its hexes hold; read by the pollution system, not by districts.gd), unlock (the rule that opens the city: {type: 'start'} = open from a new game; {type: 'district_stage', district, stage} = when that city reaches that stage). Sizes and the unlock stage are the accepted balance numbers (design spec section 17).",
+  "_doc": "The cities of this planet in play order (design spec section 1; systems/districts.gd). Each one is a chapter. stage_share: the share of a city's land hexes that must have reached a regrowth stage for the city to be at that stage. open_ground_rings: region size of a hub site that is not a city (open ground: optional, counted only for the whole planet). open_ground_travel: when the rocket offers open-ground sites: 'all_unlocked' = once every city is unlocked, 'always', 'never'. open_ground: hex_work and hex_cubes of a hex outside every city (see below). stage_reward: the CITY stage payout (systems/city_payouts.gd), paid once when the city itself reaches stage 1..5: cubes[stage] x the city's hex_cubes / ref_cubes. With robots earning nothing this and Lumi's own loads and bales are the only cube income. income_ref_s: seconds of a city's income_ref no single reward may exceed (the 3-minute rule, design spec section 14; the tests check every reward against it). districts[]: id (never changes once shipped: saves use it), name (shown to the player, translated where shown), site (index of the hub site the city stands on), rings (size: the hexes within this many rings of the site's hex, 1 + 3r(r+1) of them away from the grid's twelve five-sided cells), pollution (the pollution kinds its hexes hold; read by the pollution system, not by districts.gd), hex_work (units of waste in one of its hexes: core/hex_worth.gd), hex_cubes (what ONE cleaned hex is worth in cubes when Lumi tips its waste loose; a load or bale pays its share by the share of the hex's waste it holds, a pressed bale times its press quality; a unit of waste has no price of its own, so a heavier hex does not pay more), first_hexes (optional: the hexes within `rings` of the site hold only `work` units, rising evenly to hex_work at `full_ring`, so the first minutes are quick), income_ref (the city's average cube income per second at the bot's pace, from the accepted proposal; used only to judge reward sizes), unlock (the rule that opens the city: {type: 'start'} = open from a new game; {type: 'district_stage', district, stage} = when that city reaches that stage). Sizes, the unlock stage, hex_work, hex_cubes and the stage payouts are the accepted balance numbers (design spec section 17, docs/reviews/BALANCE_PROPOSAL_P1_V2.md).",
   "stage_share": 0.8,
   "open_ground_rings": 18,
   "open_ground_travel": "all_unlocked",
+  "open_ground": {
+    "hex_work": 340.0,
+    "hex_cubes": 120.0
+  },
+  "stage_reward": {
+    "ref_cubes": 100.0,
+    "cubes": [
+      0,
+      100,
+      150,
+      300,
+      1000,
+      1200
+    ]
+  },
+  "income_ref_s": 180.0,
   "districts": [
-    {"id": "old_town", "name": "Old Town", "site": 0, "rings": 6, "pollution": ["litter"],
-     "unlock": {"type": "start"}},
-    {"id": "scrapyard", "name": "Ironside", "site": 7, "rings": 9, "pollution": ["litter", "wrecks"],
-     "unlock": {"type": "district_stage", "district": "old_town", "stage": 4}},
-    {"id": "kettle_bay", "name": "Kettle Bay", "site": 3, "rings": 12, "pollution": ["litter", "wrecks", "slick"],
-     "unlock": {"type": "district_stage", "district": "scrapyard", "stage": 4}},
-    {"id": "highreach", "name": "Highreach", "site": 8, "rings": 16, "pollution": ["litter", "wrecks", "slick", "smog"],
-     "unlock": {"type": "district_stage", "district": "kettle_bay", "stage": 4}},
-    {"id": "lowmeadow", "name": "Lowmeadow", "site": 9, "rings": 20, "pollution": ["litter", "wrecks", "smog", "blight"],
-     "unlock": {"type": "district_stage", "district": "highreach", "stage": 4}},
-    {"id": "old_capital", "name": "Old Capital", "site": 1, "rings": 26, "pollution": ["litter", "wrecks", "slick", "smog", "blight"],
-     "unlock": {"type": "district_stage", "district": "lowmeadow", "stage": 4}}
+    {"id": "old_town", "name": "Old Town", "site": 0, "rings": 6, "pollution": ["litter"], "hex_work": 144.0, "hex_cubes": 116.0, "first_hexes": {"work": 120.0, "rings": 1, "full_ring": 3}, "income_ref": 14.0, "unlock": {"type": "start"}},
+    {"id": "scrapyard", "name": "Ironside", "site": 7, "rings": 9, "pollution": ["litter", "wrecks"], "hex_work": 340.0, "hex_cubes": 120.0, "income_ref": 16.0, "unlock": {"type": "district_stage", "district": "old_town", "stage": 4}},
+    {"id": "kettle_bay", "name": "Kettle Bay", "site": 3, "rings": 12, "pollution": ["litter", "wrecks", "slick"], "hex_work": 305.0, "hex_cubes": 125.0, "income_ref": 33.0, "unlock": {"type": "district_stage", "district": "scrapyard", "stage": 4}},
+    {"id": "highreach", "name": "Highreach", "site": 8, "rings": 16, "pollution": ["litter", "wrecks", "slick", "smog"], "hex_work": 540.0, "hex_cubes": 130.0, "income_ref": 40.0, "unlock": {"type": "district_stage", "district": "kettle_bay", "stage": 4}},
+    {"id": "lowmeadow", "name": "Lowmeadow", "site": 9, "rings": 20, "pollution": ["litter", "wrecks", "smog", "blight"], "hex_work": 960.0, "hex_cubes": 135.0, "income_ref": 71.0, "unlock": {"type": "district_stage", "district": "highreach", "stage": 4}},
+    {"id": "old_capital", "name": "Old Capital", "site": 1, "rings": 26, "pollution": ["litter", "wrecks", "slick", "smog", "blight"], "hex_work": 4600.0, "hex_cubes": 330.0, "income_ref": 51.0, "unlock": {"type": "district_stage", "district": "lowmeadow", "stage": 4}}
   ]
 }

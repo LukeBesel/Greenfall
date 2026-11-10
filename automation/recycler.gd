@@ -86,6 +86,10 @@ func feed(cube: JunkCube) -> void:
 		Audio.play("thud", 0.8, -6.0))
 
 
+## The flag that holds the part of a Part the recycler has not paid out yet.
+const FLAG_PARTS_CARRY: String = "recycler_parts_carry"
+
+
 ## Pays out for one bale and frees it. Returns what it gave: {parts, cubes, kg}.
 ## [money] Bolts and the three building stocks are one currency now: Parts. A bale gives a flat
 ## parts_per_bale plus its volume's worth of stock (metal-heavy bales give the most).
@@ -94,7 +98,7 @@ func recycle(cube: JunkCube) -> Dictionary:
 	var y: float = Stations.yield_mult()
 	var fill: float = clampf(float(cube.info.get("fill", 1.0)), 0.25, 1.2)
 	var vol: float = float(cube.info.get("volume", fill * 12.0))
-	var parts: float = maxf(1.0, round(float(d.get("parts_per_bale", 10.0)) * (0.5 + fill) * y))
+	var parts: float = float(d.get("parts_per_bale", 10.0)) * (0.5 + fill) * y
 	var cubes: BigNum = cube.value.mul_f(float(d.get("cube_mult", 0.25)))
 	if _hub_data.is_empty():
 		_hub_data = Economy.planet_table("hub")
@@ -108,8 +112,12 @@ func recycle(cube: JunkCube) -> Dictionary:
 		# Mixed or unknown junk: the average of the three stocks.
 		for k: String in mdefs:
 			parts += per * float(mdefs[k].get("per_unit", 0.1)) / maxf(mdefs.size(), 1.0)
-	parts = round(parts * 10.0) / 10.0
-	GameState.add_currency("parts", BigNum.from_float(parts))
+	# Whole Parts only: what is left of a Part is kept (in the save) for the next bale.
+	var owed: float = parts + float(GameState.flags.get(FLAG_PARTS_CARRY, 0.0))
+	parts = floorf(owed + 0.000001)
+	GameState.flags[FLAG_PARTS_CARRY] = maxf(0.0, owed - parts)
+	if parts > 0.0:
+		GameState.add_currency("parts", BigNum.from_float(parts))
 	if cubes.mantissa > 0.0:
 		GameState.add_currency("cubes", cubes)
 	var kg: float = cube.mass

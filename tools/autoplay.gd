@@ -92,7 +92,10 @@ func _init(p_world: Node) -> void:
 	_hook(EventBus.cube_made, func(_i: Dictionary) -> void: _mark("first_cube_s"))
 	_hook(EventBus.cube_cashed, func(_v: BigNum, _p: Vector3) -> void:
 		_mark("first_cashin_s")
+		_mark("first_payout_s")
 		_pace_cashed())  # [pace]
+	_hook(EventBus.load_tipped, func(_c: float, _p: Vector3) -> void: _mark("first_payout_s"))
+	_hook(EventBus.currency_changed, _on_currency)
 	_hook(EventBus.upgrade_bought, func(id: String, lv: int) -> void:
 		_mark("first_upgrade_s")
 		_pace_bought(id, lv)  # [pace]
@@ -100,6 +103,7 @@ func _init(p_world: Node) -> void:
 		_log.append({"t": _now(), "event": "upgrade", "id": id, "level": lv}))
 	_hook(EventBus.hex_cleaned, func(h: int, _p: Vector3, _b: BigNum) -> void:
 		_mark("first_hex_s")
+		_hex_times.append(_now())
 		_event("hex_clean", {"hex": h, "n": world.field.cleaned_count}))
 	_hook(EventBus.hex_level_changed, func(h: int, lv: int) -> void:
 		_mark("first_hexlv_%d_s" % lv)
@@ -124,6 +128,71 @@ func _init(p_world: Node) -> void:
 
 
 var _hooks: Array = []
+## Pacing record (docs/reviews/M3-19_ECONOMY.md): every spend (a purchase) with its time, the most
+## cubes held, and the time each of the first hexes came clean. Times are game seconds.
+var _spend_times: Array[float] = []
+var _held: Dictionary = {}
+var _max_cubes: float = 0.0
+var _hex_times: Array[float] = []
+var _pacing_printed: bool = false
+const PACING_WINDOW_S: float = 1200.0
+
+
+## A currency went down: something was bought. Cubes held are tracked for the ceiling check.
+func _on_currency(id: String, amount: BigNum) -> void:
+	var now: float = amount.to_float()
+	var was: float = float(_held.get(id, 0.0))
+	_held[id] = now
+	if id == "cubes":
+		_max_cubes = maxf(_max_cubes, now)
+	if now < was - 0.5 and id in ["cubes", "parts"]:
+		_spend_times.append(_now())
+
+
+## Seconds since the bot took control (the load and landing before it are not play).
+func _since_control(t: float) -> float:
+	return t - float(_report.get("control_s", _start_t))
+
+
+## The longest wait between two purchases inside the first `window_s` seconds of control.
+func _longest_purchase_gap(window_s: float) -> float:
+	var prev: float = 0.0
+	var worst: float = 0.0
+	for t: float in _spend_times:
+		var at: float = _since_control(t)
+		if at > window_s:
+			break
+		worst = maxf(worst, at - prev)
+		prev = at
+	return maxf(worst, minf(_since_control(_now()), window_s) - prev)
+
+
+## Dev: --hand-log=N prints Lumi's hand loop once a second up to N seconds of control, from
+## --hand-log-from=M when given (what
+## he is doing, the chest, how far the bin is, how clean the hex under him is), to see where the
+## first minutes go.
+func _hand_log(p: Patch) -> void:
+	var at: float = _since_control(_now())
+	if not DevHooks.has("hand-log") or at > DevHooks.get_f("hand-log", 120.0) or at < DevHooks.get_f("hand-log-from", 0.0):
+		return
+	var f: HexField = world.field
+	var h: int = f.hex_at(p.global_position)
+	print("[hand] %5.1f s task=%-7s chest=%4.1f/%2.0f bin=%4.1f m hex=%d clean=%3.0f%% cubes=%.0f" % [_since_control(_now()), _task, p.compartment.fill, p.capacity(),
+		p.global_position.distance_to((world.depot as Depot).bin_world()), h, f.removed_fraction(h) * 100.0 if h >= 0 else 0.0, GameState.get_currency("cubes").to_float()])
+
+
+## One line with the beats the economy review compares against the accepted proposal.
+func _print_pacing(tag: String) -> void:
+	var beats: Array[String] = []
+	for key: String in ["first_payout_s", "first_upgrade_s", "first_hex_s", "baler_s", "tower_s", "bench_2_s", "first_robot_s", "base_2_s"]:
+		if _report.has(key):
+			beats.append("%s=%.0f" % [key.trim_suffix("_s"), _since_control(float(_report[key]))])
+	var hexes: Array[String] = []
+	for i: int in mini(_hex_times.size(), 12):
+		hexes.append("%.0f" % _since_control(_hex_times[i]))
+	print("[Autoplay] pacing %s (s from control at %.0f s): %s | hexes at %s | purchases=%d longest gap in first %d min=%.0f s | most cubes held=%.0f" % [
+		tag, float(_report.get("control_s", _start_t)), " ".join(beats), ",".join(hexes), _spend_times.size(), int(PACING_WINDOW_S / 60.0),
+		_longest_purchase_gap(PACING_WINDOW_S), _max_cubes])
 
 
 func _hook(sig: Signal, f: Callable) -> void:
@@ -257,6 +326,10 @@ func update(delta: float) -> void:
 	if p == null:
 		return
 	_dt = delta
+	_mark("control_s")
+	if not _pacing_printed and _since_control(_now()) >= PACING_WINDOW_S:
+		_pacing_printed = true
+		_print_pacing("first %d min" % int(PACING_WINDOW_S / 60.0))
 	Research.now_override = 1000.0 + float(GameState.stats.get("time_played", 0.0))
 	RocketTiers.now_override = 1000.0 + float(GameState.stats.get("time_played", 0.0))  # [beat]
 	if DevHooks.has("game-minutes") and _now() >= DevHooks.get_f("game-minutes", 60.0) * 60.0 and not _stopping:
@@ -284,6 +357,7 @@ func update(delta: float) -> void:
 		_track_research(_mgmt_t)
 		_mgmt_t = 0.0
 		_manage(p)
+		_hand_log(p)
 	if world.first_seed and world.first_seed.get("_active"):
 		return  # the seed-tin cinematic
 	if p._cubing > 0.0 or p.detector.digging > 0.0:
@@ -513,8 +587,11 @@ func _do_dump(p: Patch) -> bool:
 	if not full and not (_task == "idle" or _task == "dump"):
 		return false
 	_set_task("dump")
-	var bin: Node3D = Pace.trash_bin(p.get_tree(), world.depot.global_position)
-	_go(p, bin.global_position if bin else world.depot.global_position, 0.6)
+	# The bin body or the weigh plate, whichever is nearer: a loose load tips at either.
+	var depot: Depot = world.depot
+	var bin_at: Vector3 = depot.bin_world()
+	var nearer_bin: bool = p.global_position.distance_to(bin_at) < p.global_position.distance_to(depot.global_position)
+	_go(p, bin_at if nearer_bin else depot.global_position, 0.6)
 	if _task_t > 60.0:
 		_set_task("")
 		return false
@@ -785,11 +862,14 @@ func _pick_focus(p: Patch) -> int:
 		return _focus_hex
 	var best: int = -1
 	var best_s: float = INF
+	var base: Vector3 = (world.depot as Depot).bin_world() if world.depot else p.global_position
 	for h: int in _hexes():
 		if not _land(h) or f.is_clean(h) or _skip_hex.has(h) or f.locked.has(h):
 			continue
 		var c: Vector3 = f.hex_center(h)
-		var s: float = c.length() + 0.6 * c.distance_to(p.global_position) - 25.0 * f.removed_fraction(h)
+		# Near the bin first (short tips), then near Lumi, and finish what is started. The first term
+		# was the flat world's distance from the base at the origin; on the globe that is the depot.
+		var s: float = c.distance_to(base) + 0.6 * c.distance_to(p.global_position) - 25.0 * f.removed_fraction(h)
 		if s < best_s:
 			best_s = s
 			best = h
@@ -975,7 +1055,13 @@ func _shopping_list() -> Dictionary:
 			out["trip"] = true
 	var hub: Hub = world.hub
 	var nxt: Dictionary = hub.level_def(hub.level + 1)
-	if not nxt.is_empty():
+	var card: Dictionary = _card_purchase()
+	if not card.is_empty():
+		# The step on the card is a purchase: a player saves for it and walks back when it is paid for.
+		out["reserve"] = maxf(float(out["reserve"]), float(card.get("cubes", 0.0)))
+		if GameState.can_afford_all(card):
+			out["trip"] = true
+	if not nxt.is_empty() and hub.block_reason() == "":
 		var c: Dictionary = nxt.get("cost", {})
 		var mats_ok: bool = true
 		for k: String in c:
@@ -1003,19 +1089,38 @@ func _shopping_list() -> Dictionary:
 	return out
 
 
+## The cost of what the objective card asks Lumi to buy right now, when it is the signal tower or
+## a workbench tier that waits only for its price ({} otherwise).
+func _card_purchase() -> Dictionary:
+	var obj: Objectives = world.get("objectives") as Objectives
+	if obj == null:
+		return {}
+	match str(obj.current().get("type", "")):
+		"tower":
+			return SignalTower.next_cost() if SignalTower.tier() < SignalTower.max_tier() else {}
+		"bench":
+			return BenchTiers.next_cost() if BenchTiers.block_reason(world) == "" else {}
+	return {}
+
+
 func _shop(want: Dictionary) -> void:
 	var fleet: Fleet = world.fleet
 	# 0) [onboard] The Signal Tower: the first tier right away (WREN), later tiers with the base level.
+	# When the card asks for it, it is bought the moment it is paid for; otherwise with cubes to spare.
 	var tower: SignalTower = world.get_node_or_null("SignalTower") as SignalTower
+	var obj_now: Objectives = world.get("objectives") as Objectives
+	var tower_asked: bool = obj_now != null and str(obj_now.current().get("type", "")) == "tower"
 	if tower and SignalTower.tier() < mini(SignalTower.max_tier(), maxi(1, int(GameState.world.get("hub_level", 1)))) \
-			and GameState.can_afford_all(SignalTower.next_cost(), 1.5):
+			and GameState.can_afford_all(SignalTower.next_cost(), 1.0 if tower_asked else 1.5):
 		GameState.spend_all(SignalTower.next_cost())
 		tower.raise()
+		_mark("tower_s")
 		_event("signal_tower", {"tier": SignalTower.tier()})
 	# 0b) [v1guide] The workbench tiers (ui/bench_tiers.gd): the Bots / Research / Requests tabs only
 	# open by upgrading the bench, so a player buys the next tier as soon as it's offered and paid.
 	if BenchTiers.can_buy(world) and BenchTiers.buy(world):
 		_progress()
+		_mark("bench_%d_s" % BenchTiers.tier())
 		_event("bench_tier", {"tier": BenchTiers.tier()})
 	# 0c) [v1guide] The story objective's upgrade (Compartment, Scoop Size, the Baler): what the card asks for.
 	var obj: Objectives = world.get("objectives") as Objectives
@@ -1299,6 +1404,9 @@ func _robot_goal(type_id: String) -> bool:
 
 
 ## Cheapest useful upgrade affordable while keeping `reserve` cubes (or, with leak, under 15% of the purse).
+const LEAK_OF_RESERVE: float = 0.2
+
+
 func _best_upgrade(reserve: float, leak: bool = true) -> String:
 	var cubes: float = GameState.get_currency("cubes").to_float()
 	# [v4bots] Stopped at a shore (the one-time hint): Hover Jets first, as a player would.
@@ -1316,7 +1424,9 @@ func _best_upgrade(reserve: float, leak: bool = true) -> String:
 			best = id
 	if best == "" or best_c > cubes:
 		return ""
-	if cubes - best_c >= reserve or (leak and best_c <= cubes * 0.15):
+	# While saving for something, a person still picks up the cheap levels: under 15% of the purse,
+	# or under a fifth of what is being saved for.
+	if cubes - best_c >= reserve or (leak and best_c <= maxf(cubes * 0.15, reserve * LEAK_OF_RESERVE)):
 		return best
 	return ""
 
@@ -1676,6 +1786,10 @@ func _gaps(times: Array[float], end_t: float) -> Array:
 
 func write_report() -> void:
 	var end_t: float = _now()
+	_print_pacing("end of run")
+	_report["purchases"] = _spend_times.size()
+	_report["longest_purchase_gap_first_20_min_s"] = snappedf(_longest_purchase_gap(PACING_WINDOW_S), 0.1)
+	_report["max_cubes_held"] = snappedf(_max_cubes, 1.0)
 	_report["game_time_s"] = end_t
 	_report["game_time_min"] = snappedf(end_t / 60.0, 0.1)
 	_report["cubes"] = GameState.get_currency("cubes").to_float()

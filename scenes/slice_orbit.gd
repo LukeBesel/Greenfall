@@ -39,6 +39,7 @@ var view_mode: String = "follow"
 var sites: OrbitSites  # [orbD]
 var districts: Districts  # the cities and their regrowth stages (systems/districts.gd)
 var restoration: Restoration  # launch progress, the launch point, the whole-planet share
+var city_payouts: CityPayouts  # cubes paid once when a city reaches a regrowth stage
 var ending: PlanetEnding  # the launch cinematic and the end screen
 var hub_states: Dictionary = {}  # site index (str) -> {level} (core/save_orbit.gd); the Hub port fills it
 
@@ -345,8 +346,9 @@ func on_hex_clean(hid: int, quiet: bool = false) -> void:
 	var first: bool = not paid.has(str(hid))
 	paid[str(hid)] = true
 	GameState.orbit["hexes_paid"] = paid
-	var bonus: BigNum = Economy.hex_bonus(field.hex_total[hid] if first else 0.0)
-	GameState.add_currency("cubes", bonus)
+	# A clean hex pays nothing by itself: its value was in the loads Lumi took from it (HexWorth),
+	# and a robot's cleaning earns no cubes. The signal keeps its bonus argument for listeners.
+	var bonus: BigNum = BigNum.zero()
 	if first:
 		GameState.inc_stat("hexes_cleaned")
 	var center: Vector3 = field.hex_center(hid)
@@ -356,7 +358,7 @@ func on_hex_clean(hid: int, quiet: bool = false) -> void:
 		Audio.play("chime", 1.0, -3.0)
 		Vfx.burst("big_sparkle", center + u * 0.3, Color(1.0, 0.92, 0.55))
 		Vfx.ring(center, field.hex_size * 1.1, Color(1.0, 0.9, 0.5, 0.9), 0.8)
-		Vfx.float_text(center + u * 1.4, tr("HEX CLEAN!  +%s") % Settings.fmt(bonus), Color(1.0, 0.92, 0.45), 1.5, 2.0)
+		Vfx.float_text(center + u * 1.4, tr("HEX CLEAN!"), Color(1.0, 0.92, 0.45), 1.5, 2.0)
 	EventBus.hex_cleaned.emit(hid, center, bonus)
 	EventBus.field_progress_changed.emit(field.cleaned_count, field.junk_hex_count)
 	if patch and not quiet:  # [orbC]
@@ -403,6 +405,11 @@ func _build_districts(levels: HexLevels) -> void:
 	districts.setup(def, globe.grid, globe.cells, site_cells)
 	districts.load_state(GameState.orbit.get("districts", {}))
 	districts.player_cell_fn = _player_cell
+	city_payouts = CityPayouts.new()
+	city_payouts.name = "CityPayouts"
+	w.add_child(city_payouts)
+	city_payouts.setup(def, districts)
+	city_payouts.load_state(GameState.orbit.get("city_payouts", {}))
 	restoration = Restoration.new()
 	restoration.name = "Restoration"
 	w.add_child(restoration)
@@ -1126,6 +1133,7 @@ func persist_save() -> void:
 		"cubes": cubes,
 		"robots": crews.save_crew(),  # [orbC]
 		"districts": districts.save_state() if districts else {},
+		"city_payouts": city_payouts.save_state() if city_payouts else {},
 		"restoration": restoration.save_state() if restoration else {},
 		"site_state": sites.save_state() if sites else {},  # [orbD] built hubs, levels, growth (main: renamed from "sites", which orbB uses for site geometry)
 	}

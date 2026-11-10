@@ -248,6 +248,7 @@ func load_state(d: Dictionary) -> void:
 	_quiet = true
 	_apply_unlocks()
 	_quiet = false
+	_publish_open()
 	var focus: int = _index.get(str(d.get("focus", "")), -1)
 	if focus >= 0 and _unlocked[focus] == 1:
 		_focus = focus
@@ -440,6 +441,13 @@ func _apply_unlocks() -> void:
 			EventBus.district_unlocked.emit(str(_specs[i]["id"]))
 			if i == _current:
 				_enter(i)
+	_publish_open()
+
+
+## Writes how many districts are open where the economy reads it: each open district opens the
+## next price tier of the upgrade tracks (Economy.tiers_open).
+func _publish_open() -> void:
+	GameState.flags[Economy.FLAG_TIERS_OPEN] = maxi(1, unlocked_count())
 
 
 func _rule_met(rule: Dictionary) -> bool:

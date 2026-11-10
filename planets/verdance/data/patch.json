@@ -1,13 +1,13 @@
 {
-  "_doc": "Lumi's base stats before upgrades. plant_growth / seed_yield: garden-wide multipliers on plant growth speed and seeds per bloom (research raises them: the ~1 h garden ramp, docs/BALANCE.md). [pace] Slow start: small chest, slow scoop; baler_unlocked / lift_class / signal_finder come from the Baler, Lift Strength and Signal Finder upgrades. [v4bots] hover_water: Hover Jets (owner item 54): without them Lumi stops at the shore. dump: loose junk emptied before the Baler pays mult x junk value (the camp trash bin pays its own rate). magnet: the Magnet Arm pulls at most pull_base + pull_per_level x its level loose pieces at a time (nearest first; never a piece seated in a heap or too heavy for Lift Strength), at pull_speed m/s, until they are stop_m from the scoop. old_save_grant: levels added to saves from before the slow start.",
+  "_doc": "Lumi's base stats before upgrades. plant_growth / seed_yield: garden-wide multipliers on plant growth speed and seeds per bloom (research raises them: the ~1 h garden ramp, docs/BALANCE.md). [pace] Slow start: small chest, slow scoop; baler_unlocked / lift_class / signal_finder come from the Baler, Lift Strength and Signal Finder upgrades. [v4bots] hover_water: Hover Jets (owner item 54): without them Lumi stops at the shore. scoop.bite_vol: units of waste one scoop pulse lifts before Scoop Size (stat pickup_count multiplies it); Lumi's hand rate is bite_vol x pickup_count x scoop_rate units a second, 4.9 at the start before aiming losses (the accepted proposal's 4 a second). carry_stack: bales Lumi carries at once. cube: what a pressed bale pays against the same load tipped loose, by press quality: plain_mult (under good_from full, or overstuffed), good_mult (at least good_from full), perfect_mult (inside perfect_band). Every one is above dump.mult: tipping never beats pressing (design spec section 16.7). dump: a loose load tipped in the bin pays mult x its worth (its share of the hexes it came from, core/hex_worth.gd); after_baler: whether the bin still takes loose loads once the Baler is fitted; radius_m: how close to the bin Lumi tips. magnet: the Magnet Arm pulls at most pull_base + pull_per_level x its level loose pieces at a time (nearest first; never a piece seated in a heap or too heavy for Lift Strength), at pull_speed m/s, until they are stop_m from the scoop. old_save_grant: levels added to saves from before the slow start.",
   "stats": {
     "capacity": 12.0,
     "scoop_width": 1.4,
     "scoop_reach": 2.4,
     "pickup_count": 1.0,
-    "scoop_rate": 3.0,
-    "move_speed": 4.6,
-    "carry_stack": 1,
+    "scoop_rate": 4.0,
+    "move_speed": 5.0,
+    "carry_stack": 2,
     "cube_value_mult": 1.0,
     "auto_compactor": 0,
     "magnet_radius": 0.0,
@@ -22,18 +22,23 @@
     "signal_finder": 0.0,
     "hover_water": 0.0
   },
+  "scoop": {
+    "bite_vol": 1.22
+  },
   "cube": {
-    "pure_mult": 2.0,
+    "plain_mult": 1.15,
+    "good_mult": 1.3,
     "perfect_mult": 1.5,
-    "lumpy_mult": 0.8,
+    "good_from": 0.6,
     "perfect_band": [
       0.9,
       1.0
     ]
   },
   "dump": {
-    "mult": 1.3,
-    "after_baler": false
+    "mult": 1.0,
+    "after_baler": false,
+    "radius_m": 4.0
   },
   "magnet": {
     "pull_base": 2,

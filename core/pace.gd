@@ -21,7 +21,8 @@ const MEDIUM_VOL: float = 1.5
 const LARGE_VOL: float = 2.5
 ## Save version that introduced these upgrades (older saves are granted them, see migrate_save).
 const SAVE_VERSION: int = 3
-## How close Lumi rolls to the trash bin to empty his chest.
+## How close Lumi rolls to the trash bin to empty his chest when the planet's data does not say
+## (the "player" table, dump.radius_m).
 const BIN_RADIUS: float = 2.2
 
 static var _model_vol: Dictionary = {}
@@ -206,6 +207,21 @@ static func baler_hint(patch: Node3D) -> void:
 	Vfx.float_text(patch.global_position + OrbitUp.up(patch.global_position) * 1.9, TranslationServer.translate("No Baler yet. Bring your chest to the bin."), Color(1.0, 0.85, 0.5), 0.4, 0.7)
 
 
+# --- The scoop pulse ------------------------------------------------------------------------
+
+## A pulse stops looking for more once less than this much of its volume is left.
+const PULSE_CRUMB: float = 0.08
+## The most pieces one pulse lifts (each one flies into the chest; keeps the effects pool sane).
+const PULSE_MAX_PIECES: int = 8
+
+
+## Units of waste one scoop pulse lifts: the bite (the planet's "player" table, scoop.bite_vol)
+## times Scoop Size (stat pickup_count). Lumi's hand rate is this times the pulses a second.
+static func pulse_volume() -> float:
+	var bite: float = float((Economy.scoop_rules.get("bite_vol", SphereField.FLAT_BITE_VOL)))
+	return maxf(bite * maxf(Economy.stat("pickup_count"), 0.1), PULSE_CRUMB * 2.0)
+
+
 # --- The Magnet Arm ------------------------------------------------------------------------
 
 static var _magnet_cfg: Dictionary = {}
@@ -246,46 +262,40 @@ static func magnet_targets(field: HexField, in_range: PackedInt32Array, origin: 
 
 # --- Emptying the chest (before the Baler) -------------------------------------------------
 
-## Cubes paid for dumping `contents` (type -> volume) loose, without the trash bin's own rate.
-static func dump_value(contents: Dictionary) -> float:
-	var cfg: Dictionary = _dump()
-	var v: float = 0.0
-	for t: String in contents:
-		v += float(contents[t]) * float(Economy.junk_types.get(t, {}).get("value", 1.0))
-	return v * float(cfg.get("mult", 0.5)) * Economy.stat("cube_value_mult")
-
-static var _dump_cfg: Dictionary = {}
+## Cubes paid for tipping a load loose: `worth` (the load's share of the hexes it came from,
+## HexWorth) at the planet's loose rate. A load with no worth on record (below zero: an old save's
+## chest) is priced by the unit at each waste type's value. A pressed bale of the same load always
+## pays more (Economy.press_mult).
+static func dump_value(contents: Dictionary, worth: float = -1.0) -> float:
+	var v: float = worth
+	if v < 0.0:
+		v = 0.0
+		for t: String in contents:
+			v += float(contents[t]) * float(Economy.junk_types.get(t, {}).get("value", 1.0))
+	return v * Economy.loose_mult()
 
 
 ## True while Lumi may empty his chest loose (no Baler yet, or data allows it after).
 static func dump_allowed() -> bool:
 	if not baler_unlocked():
 		return true
-	return bool(_dump().get("after_baler", false))
+	return bool(Economy.dump_rules.get("after_baler", false))
 
 
-## The loose-dump rules from the planet's "player" table, kept until the planet changes.
-static func _dump() -> Dictionary:
-	if _dump_cfg.is_empty():
-		_dump_cfg = Economy.planet_table("player").get("dump", {})
-		Economy.drop_on_planet_change(_drop_planet_cache)
-	return _dump_cfg
+## How close to the bin Lumi tips a loose load.
+static func bin_radius() -> float:
+	return float(Economy.dump_rules.get("radius_m", BIN_RADIUS))
 
 
-## Empties Lumi's chest into `into` (a TrashBin with deposit(volume), else pays dump_value) and
-## shows the payout at `at`. Returns cubes paid (0 if nothing happened).
-static func dump_compartment(patch: Node3D, at: Vector3, into: Object = null) -> float:
+## Empties Lumi's chest loose and shows the payout at `at`. Returns cubes paid (0 if nothing
+## happened).
+static func dump_compartment(patch: Node3D, at: Vector3) -> float:
 	var comp: Compartment = patch.get("compartment")
 	if comp == null or comp.is_empty() or comp.pending > 0.0 or float(patch.get("_cubing")) > 0.0:
 		return 0.0
-	var vol: float = comp.fill
+	var worth: float = comp.worth
 	var contents: Dictionary = comp.take_all()
-	var paid: float = 0.0
-	if into != null and into.has_method("deposit"):
-		paid = float(into.call("deposit", vol))  # camp's TrashBin pays (its tier rate) and returns it
-	else:
-		paid = dump_value(contents)
-		GameState.add_currency("cubes", BigNum.from_float(paid))
+	var paid: float = Economy.pay_whole_cubes(dump_value(contents, worth))
 	GameState.inc_stat("junk_dumps")
 	var cap: float = float(patch.call("capacity"))
 	EventBus.compartment_changed.emit(0.0, cap)
@@ -304,30 +314,18 @@ static func dump_compartment(patch: Node3D, at: Vector3, into: Object = null) ->
 	if paid > 0.0:
 		Vfx.float_text(at + up * 0.6, TranslationServer.translate("+%s cubes") % Settings.fmt(BigNum.from_float(paid)), Color(1.0, 0.86, 0.45), 0.6, 1.0)
 		CoinFlight.fly(at, paid)
+	EventBus.load_tipped.emit(paid, at)
 	return paid
 
 
 ## Per-frame check from the depot (and anything else Lumi can empty into): dumps when Lumi is
 ## within `radius` of `pos` with junk in his chest and dumping is allowed.
-static func try_dump(patch: Node3D, pos: Vector3, radius: float, into: Object = null) -> float:
+static func try_dump(patch: Node3D, pos: Vector3, radius: float) -> float:
 	if patch == null or not dump_allowed():
 		return 0.0
 	if OrbitUp.ground_dist(pos, patch.global_position) > radius:
 		return 0.0
-	return dump_compartment(patch, pos + OrbitUp.up(pos) * 0.8, into)  # [v1guide] the bin's mouth on the globe too
-
-
-## The nearest trash bin node (camp's TrashBin, group "trash_bin") or null.
-static func trash_bin(tree: SceneTree, near: Vector3) -> Node3D:
-	var best: Node3D = null
-	var best_d: float = INF
-	for n: Node in tree.get_nodes_in_group("trash_bin"):
-		if n is Node3D and n.has_method("deposit"):
-			var dd: float = (n as Node3D).global_position.distance_to(near)
-			if dd < best_d:
-				best_d = dd
-				best = n
-	return best
+	return dump_compartment(patch, pos + OrbitUp.up(pos) * 0.8)  # [v1guide] the bin's mouth on the globe too
 
 
 # --- Saves ---------------------------------------------------------------------------------
@@ -374,5 +372,4 @@ static func signal_finder() -> bool:
 
 static func _drop_planet_cache() -> void:
 	_model_vol = {}
-	_dump_cfg = {}
 	_magnet_cfg = {}

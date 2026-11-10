@@ -413,35 +413,44 @@ func _handle_scoop(delta: float) -> void:
 	_scoop_timer -= delta
 	if _scoop_timer > 0.0:
 		return
-	# Multi-Lock: one laser per piece, several pieces per pulse once upgraded.
-	var locks: int = maxi(1, int(round(stat("pickup_count"))))
+	# One pulse lifts a set volume of waste (Pace.pulse_volume: the bite, times Scoop Size), from as
+	# many pieces as it takes: light litter goes several pieces at a time, a heavy piece in bites.
+	var budget: float = Pace.pulse_volume()
 	var took: int = 0
-	for k: int in locks:
-		if k > 0 and not compartment.can_accept(cap):
+	while budget > Pace.PULSE_CRUMB and took < Pace.PULSE_MAX_PIECES:
+		if took > 0 and not compartment.can_accept(cap):
 			break
 		var pid: int = Pace.find_scoop_target(world.field, scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"), Pace.lift_class())  # [pace] Lift Strength
 		if pid < 0:
-			if k == 0 and not Pace.press_hint(self, world.field):  # [orbC] stuck with a part-full chest: say "press"
+			if took == 0 and not Pace.press_hint(self, world.field):  # [orbC] stuck with a part-full chest: say "press"
 				Pace.heavy_hint(self, world.field, scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"))  # [pace]
 			break
 		var extra: PackedInt32Array = world.field.cluster_extra(pid)  # [world2] gen-2 junk is finer: grab the little cluster
-		_take_piece(pid)
+		budget -= _take_piece(pid, budget)
 		took += 1
 		for e: int in extra:
-			if world.field.piece_alive[e] == 1 and compartment.can_accept(cap):
-				_take_piece(e)
+			if world.field.piece_alive[e] == 1 and compartment.can_accept(cap) and budget > Pace.PULSE_CRUMB:
+				budget -= _take_piece(e, budget)
 	if took > 0:
 		_scoop_timer = 1.0 / maxf(stat("scoop_rate"), 0.5)
 
 
-func _take_piece(pid: int) -> void:
+## Takes up to `max_vol` of a piece into the chest (the whole piece when that is all of it).
+## Returns the volume taken.
+func _take_piece(pid: int, max_vol: float) -> float:
 	var field: HexField = world.field
 	var type_id: String = Economy.junk_ids[field.piece_type[pid]]
+	var hid: int = field.piece_hex[pid]
+	var left_before: float = field.hex_left[hid]
 	var vol: float = field.piece_vol[pid]
 	var whole: bool = true
-	if field.has_method("bite"):  # [orbB] globe pieces are heavy: a flat scoop pulse's worth per take
-		vol = float(field.call("bite", pid, SphereField.FLAT_BITE_VOL))
+	if field.has_method("bite"):  # [orbB] globe pieces are heavy: a scoop pulse's worth per take
+		vol = float(field.call("bite", pid, max_vol))
 		whole = bool(field.call("is_whole_take", pid, vol))
+	# The load's share of the hex's cube value, and its chance of a part worth stripping.
+	var sf: SphereField = field as SphereField
+	var cubes: float = sf.worth.share(hid, vol, left_before, field.hex_total[hid], field.clean_threshold) if sf else -1.0
+	var strip_scale: float = RobotParts.strip_scale(vol, field.hex_total[hid])
 	var start_xf: Transform3D = world.view.piece_transform(pid)
 	var mesh: Mesh = world.view.piece_mesh(pid)
 	var color: Color = Color.html(str(Economy.junk_types[type_id].get("cube_color", "#888888")))
@@ -460,12 +469,15 @@ func _take_piece(pid: int) -> void:
 	# Arrival is timer-driven so a cut-short animation can never leave volume stuck as pending.
 	get_tree().create_timer(dur, false).timeout.connect(func() -> void:
 		if is_instance_valid(self):
-			_piece_arrived(type_id, vol, color))
+			_piece_arrived(type_id, vol, color, cubes, strip_scale))
+	return vol
 
 
-func _piece_arrived(type_id: String, vol: float, color: Color) -> void:
-	compartment.add(type_id, vol)
-	_maybe_salvage_part(type_id)
+func _piece_arrived(type_id: String, vol: float, color: Color, cubes: float = 0.0, strip_scale: float = 1.0) -> void:
+	if cubes < 0.0:  # a field with no hex values: priced by the unit
+		cubes = vol * float(Economy.junk_types.get(type_id, {}).get("value", 1.0))
+	compartment.add(type_id, vol, cubes)
+	_maybe_salvage_part(type_id, strip_scale)
 	world.salvage_materials(type_id, vol)
 	GameState.add_junk_removed(type_id, vol)
 	_scoop_combo = mini(_scoop_combo + 1, 10)
@@ -534,8 +546,9 @@ func start_cube() -> void:
 
 func _spawn_cube() -> void:
 	var cap: float = capacity()
+	var worth: float = compartment.worth
 	var contents: Dictionary = compartment.take_all()
-	var info: Dictionary = Economy.evaluate_cube(contents, cap)
+	var info: Dictionary = Economy.evaluate_cube(contents, cap, -1.0, worth)
 	if world.get("events") != null:
 		info = world.events.apply_bale_bonus(info)  # [events] streak tier + Salvage Surge share
 	_was_in_band = false
@@ -562,9 +575,10 @@ func _spawn_cube() -> void:
 		GameState.inc_stat("lumpy_cubes")
 		label = tr("OVERSTUFFED  %s") % label
 		color = Color(0.8, 0.78, 0.82)
+	elif str(info.get("quality", "")) == Economy.PRESS_GOOD:
+		label = tr("GOOD BALE  %s") % label
 	if info["pure"]:
 		GameState.inc_stat("pure_cubes")
-		label = tr("PURE  %s") % label
 	if float(info.get("surge_frac", 0.0)) > 0.0:
 		label = tr("SURGE  %s") % label
 		color = Color(1.0, 0.82, 0.3)
@@ -595,20 +609,14 @@ func _handle_interact() -> void:
 		place_top_cube()
 
 
-## Electronics (and rarely metal) junk sometimes yields a usable robot part.
-func _maybe_salvage_part(type_id: String) -> void:
-	var chance: float = float(Economy.robot_cfg.get("part_drop", {}).get(type_id, 0.0))
+## Now and then a piece of waste is worth stripping: it yields a robot part (the chance per take
+## by waste type is in the planet's "robots" table, part_drop; `scale` keeps the parts in a hex the
+## same however heavy the hex is, RobotParts.strip_scale).
+func _maybe_salvage_part(type_id: String, scale: float = 1.0) -> void:
+	var chance: float = float(Economy.robot_cfg.get("part_drop", {}).get(type_id, 0.0)) * scale
 	if randf() >= chance:
 		return
-	var rar: Array = Economy.parts.get("rarities", [])
-	var roll: float = randf() * 100.0
-	var r: int = 0
-	var acc: float = 0.0
-	for i: int in rar.size():
-		acc += float(rar[i]["weight"])
-		if roll <= acc:
-			r = i
-			break
+	var r: int = RobotParts.roll_rarity(randf())
 	var t: int = randi() % Economy.parts.get("types", [1]).size()
 	RobotParts.salvage(t, r)  # [ui2] salvaged robot parts pay Parts
 	var rd: Dictionary = Economy.rarity(r)

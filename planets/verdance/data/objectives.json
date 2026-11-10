@@ -1,5 +1,5 @@
 {
-  "_doc": "[onboard] The first-minutes story objectives (story/objectives.gd, ui/objective_card.gd). One at a time, in order, each with a one-line why (desc). brief.lines: WREN's one last message in the crash (two subtitle lines), then she is silent until the Signal Tower (story/signal_tower.gd). Objective fields: text (title), desc (the why), hint (shown instead of desc until wait_flag is set), type stat|robot|zone|hub_level|flag|core|tower|upgrade|bench|launch|city_stage|cities_restored (the planet measures of systems/restoration.gd: launch = launch progress 0..1 shown as a percentage; city_stage = the regrowth stage of the city named by key, or of the current city when key is empty; cities_restored = cities at the launch stage; core is Lumi's Bloom Core and is not the planet's measure) ([v1guide] the workbench tier, ui/bench_tiers.gd), key, target (absolute: lifetime stats), also (stat steps: more lifetime stats counted with key, so no purchase can close the step off; the first step counts bales sold too, because the bin takes no loose loads once the Baler is fitted), desc/hint may hold {action} key glyphs, e.g. {cube} ([v1guide]); hex (true: outline the target hex on the ground with its % cleaned), lines (WREN, when the objective starts). Data stays English; tr() at display.",
+  "_doc": "[onboard] The first-minutes story objectives (story/objectives.gd, ui/objective_card.gd). One at a time, in order, each with a one-line why (desc). brief.lines: WREN's one last message in the crash (two subtitle lines), then she is silent until the Signal Tower (story/signal_tower.gd). Objective fields: text (title), desc (the why), hint (shown instead of desc until wait_flag is set), type stat|robot|zone|hub_level|flag|core|tower|upgrade|bench|launch|city_stage|cities_restored (the planet measures of systems/restoration.gd: launch = launch progress 0..1 shown as a percentage; city_stage = the regrowth stage of the city named by key, or of the current city when key is empty; cities_restored = cities at the launch stage; core is Lumi's Bloom Core and is not the planet's measure) ([v1guide] the workbench tier, ui/bench_tiers.gd), key, target (absolute: lifetime stats), also (stat steps: more lifetime stats counted with key, so no purchase can close the step off; the first step counts bales sold too, because the bin takes no loose loads once the Baler is fitted), desc/hint may hold {action} key glyphs, e.g. {cube} ([v1guide]); hex (true: outline the target hex on the ground with its % cleaned), lines (WREN, when the objective starts). Data stays English; tr() at display. [M3-19] Order for the fast start (design spec section 17: first upgrade inside 90 s, first clean hex inside 3 minutes, the Baler near minute 8, the street of 7 hexes near minute 10, the tower near minute 15, the first robot near minute 20).",
   "wren_brief": {
     "_doc": "[v2guide] WREN once the signal tower carries her (story/objectives.gd _narrate): who she is and the plan home. Then each new story step speaks its lines[0], once.",
     "lines": [
@@ -21,7 +21,9 @@
       "desc": "Hold {scoop} to pick up trash. Empty it at the bin.",
       "type": "stat",
       "key": "junk_dumps",
-      "also": ["cubes_cashed"],
+      "also": [
+        "cubes_cashed"
+      ],
       "target": 3,
       "lines": [
         "Start small, Lumi. Every load in the bin earns cubes."
@@ -39,6 +41,18 @@
       ]
     },
     {
+      "id": "hex",
+      "text": "Clean the glowing hex",
+      "desc": "Pick up every piece inside the outline.",
+      "type": "stat",
+      "key": "hexes_cleaned",
+      "target": 1,
+      "hex": true,
+      "lines": [
+        "First, one clean hex. Clear the outlined one. Green starts on clean ground."
+      ]
+    },
+    {
       "id": "scoop_size",
       "text": "Buy Scoop Size",
       "desc": "Workbench: grab more trash at once.",
@@ -50,14 +64,25 @@
       ]
     },
     {
+      "id": "hex2",
+      "text": "Clean 2 hexes",
+      "desc": "Clean ground lets plants grow again.",
+      "type": "stat",
+      "key": "hexes_cleaned",
+      "target": 2,
+      "lines": [
+        "Two clean hexes. Keep going, Lumi."
+      ]
+    },
+    {
       "id": "baler",
       "text": "Save up for the Baler",
-      "desc": "The Baler squeezes trash into bales. Bales sell for more.",
+      "desc": "The Baler squeezes trash into bales. A bale always sells for more.",
       "type": "upgrade",
       "key": "baler",
       "target": 1,
       "lines": [
-        "Save up for the Baler. Bales sell for much more than loose trash."
+        "Save up for the Baler. A pressed bale always sells for more than loose trash."
       ]
     },
     {
@@ -69,6 +94,17 @@
       "target": 3,
       "lines": [
         "Carry bales to the scale by the bin. Three of them and the base wakes up."
+      ]
+    },
+    {
+      "id": "street",
+      "text": "Clear the street",
+      "desc": "Clean the 7 hexes round the base.",
+      "type": "stat",
+      "key": "hexes_cleaned",
+      "target": 7,
+      "lines": [
+        "Clear the whole street, Lumi. Seven hexes round the base."
       ]
     },
     {
@@ -88,40 +124,8 @@
       "type": "flag",
       "key": "glim_repaired",
       "target": 1,
-      "lines": ["Lumi... something's still holding on to your pod. Small. Lantern-shaped. Patch him up at the bench."]
-    },
-    {
-      "id": "hex",
-      "text": "Clean the glowing hex",
-      "desc": "Pick up every piece inside the outline.",
-      "type": "stat",
-      "key": "hexes_cleaned",
-      "target": 1,
-      "hex": true,
       "lines": [
-        "First, one clean hex. Clear the outlined one. Green starts on clean ground."
-      ]
-    },
-    {
-      "id": "hex2",
-      "text": "Clean 2 hexes",
-      "desc": "Clean ground lets plants grow again.",
-      "type": "stat",
-      "key": "hexes_cleaned",
-      "target": 2,
-      "lines": [
-        "Two clean hexes. Keep going, Lumi."
-      ]
-    },
-    {
-      "id": "hex3",
-      "text": "Clean 3 hexes",
-      "desc": "3 clean hexes unlock the Bot Bay.",
-      "type": "stat",
-      "key": "hexes_cleaned",
-      "target": 3,
-      "lines": [
-        "Three clean hexes. The planet notices, believe me."
+        "Lumi... something's still holding on to your pod. Small. Lantern-shaped. Patch him up at the bench."
       ]
     },
     {
@@ -137,7 +141,7 @@
     {
       "id": "robot",
       "text": "Build your first robot",
-      "desc": "Workbench, Bots tab. Robots clean for you.",
+      "desc": "Workbench, Bots tab. A robot costs parts you dig up and strip.",
       "type": "robot",
       "key": "any",
       "target": 1,

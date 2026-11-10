@@ -30,7 +30,7 @@ const FLAT_DISTRICT_HEXES: float = 61.0  # a radius-4 flat district: landmark co
 ## piece and its little cluster, ~1.22 volume: here Lumi takes a heavy piece in bites of that size
 ## (bite()), so the scoop speed per volume and the chest/bale granularity stay the flat game's.
 ## Pieces keep their model's size; only their volume (the ledger) is scaled.
-const FLAT_HEX_VOL: float = 407.0
+const FLAT_HEX_VOL: float = HexWorth.DEFAULT_WORK
 const FLAT_LAKE_VOL: float = 75.0  # a flat lake hex: 70-110 floaters of ~0.8
 const FLAT_BITE_VOL: float = 1.22
 const PILE_EMBED := Vector2(0.55, 1.02)
@@ -48,6 +48,7 @@ var _lift_cache: Dictionary = {}  # model id -> [upright lift, lying lift]
 var piece_lift := PackedFloat32Array()  # [orbB] rest offset above the ground (before the pile)
 var piece_model_vol := PackedFloat32Array()  # [orbB] the model's own volume (piece_vol is scaled for pacing)
 var parts_def: Dictionary = {}  # data/parts.json (set before cells materialize; Economy.parts by default)
+var buried_per_hex: float = -1.0  # buried parts a hex (RobotParts.buried_per_hex); below zero: parts_def's
 var landmark_defs: Array = []   # [{id, count}] (Economy.landmarks_for(biome))
 var locked_biomes: Dictionary = {}  # biome index -> true: those cells stay locked
 var _cell_parts: Dictionary = {}  # cell -> PackedInt32Array of part ids
@@ -60,6 +61,9 @@ var _saved_unlocked: Dictionary = {}  # cells of a locked biome a save says are 
 var keep_out: Callable
 ## [v1yard] Cells with no big items (cell -> true): the start's cells, as the flat game's first hexes.
 var small_only: Dictionary = {}
+## Units of waste and cube value per hex (the planet's districts table). The globe sets the planet's
+## own once its sites are placed; until then every hex has the default weight.
+var worth: HexWorth
 const KEEP_OUT_TRIES: int = 8
 
 
@@ -122,6 +126,8 @@ func _init(p_grid: SphereGrid, p_terrain: SphereTerrain, p_cells: SphereCells, p
 		_type_w.append(w)
 		_type_wsum += w
 	parts_def = Economy.parts
+	buried_per_hex = RobotParts.buried_per_hex()
+	worth = HexWorth.for_planet(null, null, PackedInt32Array())
 	landmark_defs = Economy.landmarks_for("")
 	_bag_type = Economy.junk_ids.find("plastic") if AssetLib.has_model("trashbag") else -1  # [v1world]
 
@@ -254,9 +260,10 @@ func materialize(cell: int) -> PackedInt32Array:
 		vol_sum += vol
 	hex_pieces[cell] = out
 	# The cell's ledger in volume: total so that left / total stays the cell's junk fraction.
-	_scale_cell(out, vol_sum, FLAT_HEX_VOL * left)
-	hex_left[cell] = FLAT_HEX_VOL * left
-	hex_total[cell] = FLAT_HEX_VOL
+	var work: float = worth.work(cell)
+	_scale_cell(out, vol_sum, work * left)
+	hex_left[cell] = work * left
+	hex_total[cell] = work
 	return out
 
 
@@ -434,7 +441,7 @@ func _roll_parts(cell: int) -> void:
 		return
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash([seed_value, cell, 21])
-	var chance: float = float(parts_def.get("chance_per_hex", 0.14))
+	var chance: float = buried_per_hex if buried_per_hex >= 0.0 else float(parts_def.get("chance_per_hex", 0.14))
 	var n: int = int(floor(chance)) + (1 if rng.randf() < chance - floor(chance) else 0)
 	if n == 0:
 		return

@@ -136,7 +136,7 @@ func _cash_test() -> void:
 	for k: int in 12:
 		var pid: int = g.field.nearest_alive(lumi.global_position)
 		if pid >= 0:
-			lumi._take_piece(pid)
+			lumi._take_piece(pid, Pace.pulse_volume())
 	await get_tree().create_timer(1.0).timeout
 	var fill: float = lumi.compartment.fill
 	lumi.place_on_sphere(depot.global_position + depot.global_basis.y * 0.5, lumi.forward())
@@ -151,7 +151,7 @@ func _cash_test() -> void:
 	for k: int in 12:
 		var pid: int = g.field.nearest_alive(lumi.global_position)
 		if pid >= 0:
-			lumi._take_piece(pid)
+			lumi._take_piece(pid, Pace.pulse_volume())
 	await get_tree().create_timer(1.0).timeout
 	lumi.start_cube()
 	await get_tree().create_timer(2.4).timeout

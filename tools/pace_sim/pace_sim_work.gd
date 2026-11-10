@@ -19,6 +19,10 @@ var data: PaceSimData
 # Lumi's stats, refreshed after every purchase.
 var capacity: float = 0.0
 var hand_rate: float = 0.0
+## Units of waste in the hex Lumi is working, and what the chest's load pays tipped loose (its
+## share of the hexes it came from, as HexWorth counts it).
+var hex_vol: float = 0.0
+var chest_worth: float = 0.0
 var move_speed: float = 1.0
 var carry_cap: int = 1
 var baler: bool = false
@@ -56,7 +60,8 @@ var _unit_rate: Dictionary[String, float] = {}
 func _init(model: PaceSimModel) -> void:
 	m = model
 	data = model.data
-	hex_left = data.hex_vol
+	hex_vol = data.hex_work(0)
+	hex_left = hex_vol
 	for i: int in GARDEN_TOP + 1:
 		garden.append([])
 
@@ -69,12 +74,11 @@ func refresh_stats() -> void:
 	carry_cap = maxi(1, int(round(Economy.stat("carry_stack"))))
 	baler = Pace.baler_unlocked()
 	lift = Pace.lift_class()
-	var locks: float = maxf(1.0, round(Economy.stat("pickup_count")))
 	var beam: float = Economy.stat("scoop_width") * Economy.stat("scoop_reach")
 	var beam_base: float = maxf(Economy.base_stat("scoop_width") * Economy.base_stat("scoop_reach"), 0.001)
 	var beam_gain: float = pow(maxf(beam / beam_base, 0.001), data.k("beam_exponent"))
 	# Seconds per unit of volume: the pulse itself, plus finding and facing the next pieces.
-	var pulse_s: float = 1.0 / (maxf(Economy.stat("scoop_rate"), 0.5) * locks * data.mean_bite * data.k("hand_duty"))
+	var pulse_s: float = 1.0 / (maxf(Economy.stat("scoop_rate"), 0.5) * Pace.pulse_volume() * data.k("hand_duty"))
 	hand_rate = 1.0 / (pulse_s + data.k("seek_s_per_volume") / beam_gain)
 	for id: String in m.robots:
 		_unit_rate[id] = Offline.unit_rate(id, int(m.robot_tier.get(id, 0)))
@@ -152,8 +156,8 @@ func _leave_for_base() -> bool:
 func _scoop(left: float) -> float:
 	if hand_rate <= 0.0 or region_done():
 		return 0.0
-	var must_stay: float = data.hex_vol * (1.0 - data.clean_frac)
-	var cannot_lift: float = 0.0 if hexes_done < data.starter_hexes else data.hex_vol * (1.0 - data.liftable_share(lift))
+	var must_stay: float = hex_vol * (1.0 - data.clean_frac)
+	var cannot_lift: float = 0.0 if hexes_done < data.starter_hexes else hex_vol * (1.0 - data.liftable_share(lift))
 	var avail: float = hex_left - maxf(must_stay, cannot_lift)
 	if avail <= 0.0001:
 		stuck_s += left  # every piece left is too heavy: Lumi waits for Lift Strength
@@ -165,23 +169,25 @@ func _scoop(left: float) -> float:
 	var rate: float = hand_rate * (1.0 - _garden_share())
 	var take: float = minf(minf(rate * left, room), avail)
 	chest += take
+	chest_worth += HexWorth.share_of(data.hex_cubes, take, hex_left, hex_vol, data.clean_frac)
 	hex_left -= take
-	hand_hexes += take / (data.hex_vol * data.clean_frac)
-	_salvage(take / data.mean_bite)
+	hand_hexes += take / (hex_vol * data.clean_frac)
+	_salvage(take)
 	if garden_open():
 		_seed_finds(take / data.mean_bite, take / rate)
 	if hex_left <= must_stay + 0.0001:
 		hex_cleaned(true)
-		hex_left = data.hex_vol
+		hex_vol = data.hex_work(hexes_done)
+		hex_left = hex_vol
 	if capacity * FILL_AT - chest <= 0.0001:
 		_chest_full()
 	return left - take / rate
 
 
-## Robot parts that fall out of scooped junk: Parts, at the rarity table's average value.
-func _salvage(bites: float) -> void:
-	m.add_stat("junk_scooped", bites)
-	var finds: float = bites * data.finds_per_bite * data.k("parts_luck")
+## Robot parts stripped from `units` of scooped waste: Parts, at the rarity table's average value.
+func _salvage(units: float) -> void:
+	m.add_stat("junk_scooped", units / maxf(data.mean_bite, 0.001))
+	var finds: float = units * data.finds_per_unit(hex_vol) * data.k("parts_luck")
 	if m.seed_value != 0:
 		var whole: float = floor(finds)
 		finds = whole + (1.0 if m.rng.randf() < finds - whole else 0.0)
@@ -208,8 +214,9 @@ func _contents() -> Dictionary:
 func _phase_done() -> void:
 	match phase:
 		Phase.PRESS:
-			var info: Dictionary = Economy.evaluate_cube(_contents(), capacity)
+			var info: Dictionary = Economy.evaluate_cube(_contents(), capacity, -1.0, chest_worth)
 			chest = 0.0
+			chest_worth = 0.0
 			m.add_stat("cubes_made")
 			if info["perfect"]:
 				m.add_stat("perfect_cubes")
@@ -233,9 +240,10 @@ func _phase_done() -> void:
 
 func _at_base() -> void:
 	if chest > 0.0 and not baler:
-		m.pay(Pace.dump_value(_contents()), "dump")
+		m.pay(Pace.dump_value(_contents(), chest_worth), "dump")
 		m.add_stat("junk_dumps")
 		chest = 0.0
+		chest_worth = 0.0
 	for value: float in carried:
 		m.pay(value, "bale_sold")
 		m.add_stat("cubes_cashed")
@@ -246,11 +254,14 @@ func _at_base() -> void:
 
 # --- Hexes ---------------------------------------------------------------------------------
 
-## A hex reached the clean rule: the first-clean bonus, the field note and the regrowth reward.
+## A hex reached the clean rule: the field note and the regrowth reward (a clean hex pays no cubes
+## by itself), and the city's first stage payout when enough of the district is clean.
 func hex_cleaned(by_hand: bool) -> void:
 	hexes_done += 1
 	m.add_stat("hexes_cleaned")
-	m.pay(Economy.hex_bonus(data.hex_vol).to_float() + field_note("hex_cleaned") + _level_reward(1), "hex")
+	m.pay(field_note("hex_cleaned") + _level_reward(1), "hex")
+	if hexes_done == Districts.hexes_needed(PackedInt32Array([maxi(data.region_hexes - 1, 0)]), data.stage_share):
+		m.pay(CityPayouts.reward_for(data.stage_rule, data.hex_cubes, 1), "city_stage")
 	garden[1].append(m.t)
 	if by_hand:
 		m.parts += data.parts_per_hex_buried * data.k("buried_find_share")
@@ -300,7 +311,7 @@ func _crew(dt: float) -> void:
 		_hopper[id] = _hopper.get(id, 0.0) + units
 		while _hopper[id] >= cap:
 			_hopper[id] -= cap
-			backlog.append(Offline.units_value([{"type": id, "tier": tier}], cap))
+			backlog.append(0.0)  # a robot's bale is waste on its way out: robots earn no cubes
 			m.add_stat("robot_bales")
 			m.pay(field_note("robot_bale"))
 	while _crew_part >= 1.0:

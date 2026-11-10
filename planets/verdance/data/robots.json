@@ -1,5 +1,5 @@
 {
-  "_doc": "Robot types. requires_research = research node id needed before the type can be built (absent = unlocked from the start). [ui2] parts = Parts for the first robot of the type (with cost in cubes; cubes grow x1.35 and parts x1.2 per robot owned). recipe = flavour only now (the part types a robot is made of; nothing is consumed). stats = Mk I base values. tiers = visual/stat tiers: mult multiplies all work stats; requires_core_rarity = unused since [ui2] (Mk steps cost cubes + Fleet.TIER_PARTS). Fleet upgrades apply to every robot of the type.",
+  "_doc": "Robot types. requires_research = research node id needed before the type can be built (absent = unlocked from the start). [ui2] parts = Parts for the first robot of the type (with cost in cubes; cubes grow x1.35 and parts x1.2 per robot owned). recipe = flavour only now (the part types a robot is made of; nothing is consumed). stats = Mk I base values. tiers = visual/stat tiers: mult multiplies all work stats; requires_core_rarity = unused since [ui2] (Mk steps cost cubes + Fleet.TIER_PARTS). Fleet upgrades apply to every robot of the type. [M3-19] Robots and what they build cost Parts only (cubes pay for Lumi's own upgrades, base levels and builds); the Scoopie's 10 Parts is the accepted proposal's first-robot price. part_drop: the chance, by waste type, that a take of salvage.ref_take units holds a piece worth stripping (one robot part) on a hex of salvage.ref_work units; the chance is scaled so a hex yields the same parts however heavy it is. salvage: Parts are scarce here (design spec section 14: 0 to 3 a hex, from Lumi's own hands only): rarity_parts = Parts one found robot part pays by rarity (rusty to legendary), buried_per_hex = buried parts a hex holds on average (about one in three hexes), ref_take and ref_work as above. With these a hex yields about 0.8 Parts: half buried, half stripped. fragment_parts = Parts a Maker Fragment pays.",
   "types": [
     {
       "id": "scoopie",
@@ -13,8 +13,8 @@
         "arm",
         "core"
       ],
-      "cost": 800,
-      "parts": 70,
+      "cost": 0,
+      "parts": 10,
       "stats": {
         "speed": 1.6,
         "scoop_rate": 1.4,
@@ -75,8 +75,8 @@
         "locomotion",
         "battery"
       ],
-      "cost": 400,
-      "parts": 40,
+      "cost": 0,
+      "parts": 16,
       "stats": {
         "speed": 2.8,
         "carry": 2.0
@@ -116,8 +116,8 @@
         "arm",
         "hopper"
       ],
-      "cost": 700,
-      "parts": 45,
+      "cost": 0,
+      "parts": 30,
       "stats": {
         "speed": 1.5,
         "work_rate": 0.8
@@ -157,8 +157,8 @@
         "hopper",
         "battery"
       ],
-      "cost": 700,
-      "parts": 45,
+      "cost": 0,
+      "parts": 22,
       "stats": {
         "speed": 1.7,
         "work_rate": 1.0,
@@ -221,8 +221,8 @@
         "arm",
         "battery"
       ],
-      "cost": 800,
-      "parts": 60,
+      "cost": 0,
+      "parts": 22,
       "stats": {
         "speed": 1.8,
         "scoop_rate": 1.5,
@@ -275,8 +275,8 @@
         "core",
         "module"
       ],
-      "cost": 1600,
-      "parts": 140,
+      "cost": 0,
+      "parts": 45,
       "stats": {
         "speed": 1.6,
         "scoop_rate": 1.0,
@@ -331,8 +331,8 @@
     }
   ],
   "part_drop": {
-    "electronics": 0.06,
-    "metal": 0.012
+    "electronics": 0.024,
+    "metal": 0.0075
   },
   "crew_cap": {
     "_doc": "Max robots per crew (role) = base + per_level * hub level.",
@@ -347,5 +347,18 @@
     "capacity": 80.0,
     "regen": 1.2,
     "min_spacing": 4.0
+  },
+  "salvage": {
+    "fragment_parts": 3,
+    "rarity_parts": [
+      1,
+      1,
+      2,
+      2,
+      3
+    ],
+    "buried_per_hex": 0.33,
+    "ref_take": 1.22,
+    "ref_work": 120.0
   }
 }

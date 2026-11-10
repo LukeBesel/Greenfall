@@ -1,10 +1,10 @@
 {
-  "_doc": "[camp] The trash bin at each base (automation/trash_bin.gd, drawn by automation/depot.gd). Level 1 is free; each later level costs `cost` (cubes / parts / seeds, folded by Currencies) and needs hub level `requires_level`. value_mult multiplies what a bale sells for here (on top of the hub bonus); feed_interval is the seconds between bales hopping off Lumi's back into the bin. Tuned by pace.",
+  "_doc": "[camp] The trash bin at each base (automation/trash_bin.gd, drawn by automation/depot.gd). Level 1 is free; each later level costs `cost` (cubes / parts / seeds, folded by Currencies) and needs hub level `requires_level`. value_mult multiplies what a bale sells for here (on top of the hub bonus); feed_interval is the seconds between bales hopping off Lumi's back into the bin. Tuned by pace. [M3-19] value_mult is 1.0 at every level: a better bin takes bales faster, it does not pay more (few multipliers: design spec section 14). Costs are cubes only.",
   "levels": [
     {"name": "Dented Bin", "desc": "A dented wheelie bin on a rusty weigh plate. It swallows one bale at a time.", "value_mult": 1.0, "feed_interval": 0.3},
-    {"name": "Scrap Skip", "desc": "A proper steel skip. Bales go in faster and weigh in a little heavier.", "cost": {"cubes": 250}, "requires_level": 1, "value_mult": 1.08, "feed_interval": 0.2},
-    {"name": "Weigh Skip", "desc": "A ribbed skip on a calibrated scale with a warning beacon. Honest weights, better pay.", "cost": {"cubes": 1500, "parts": 10}, "requires_level": 2, "value_mult": 1.18, "feed_interval": 0.16},
-    {"name": "Compactor", "desc": "A hydraulic ram presses every bale flat before it is weighed.", "cost": {"cubes": 6000, "parts": 30}, "requires_level": 3, "value_mult": 1.3, "feed_interval": 0.12},
-    {"name": "Shredder", "desc": "A clean white shredder with twin rotors and a scanner seam. It shreds every bale and pays the best rate.", "cost": {"cubes": 20000, "parts": 80}, "requires_level": 4, "value_mult": 1.45, "feed_interval": 0.09}
+    {"name": "Scrap Skip", "desc": "A proper steel skip. Bales go in faster.", "cost": {"cubes": 250}, "requires_level": 1, "value_mult": 1.0, "feed_interval": 0.2},
+    {"name": "Weigh Skip", "desc": "A ribbed skip on a calibrated scale with a warning beacon. It takes a whole stack without a pause.", "cost": {"cubes": 600}, "requires_level": 2, "value_mult": 1.0, "feed_interval": 0.16},
+    {"name": "Compactor", "desc": "A hydraulic ram presses every bale flat before it is weighed.", "cost": {"cubes": 1000}, "requires_level": 3, "value_mult": 1.0, "feed_interval": 0.12},
+    {"name": "Shredder", "desc": "A clean white shredder with twin rotors and a scanner seam. It swallows bales as fast as they land.", "cost": {"cubes": 1500}, "requires_level": 4, "value_mult": 1.0, "feed_interval": 0.09}
   ]
 }

@@ -97,6 +97,10 @@ func build(p_seed: int, p_spec: Dictionary = {}, n_hubs: int = -1, planet_state:
 	await BuildBudget.check("globe cells")  # [orbE]
 	tq = Time.get_ticks_msec()
 	field = SphereField.new(grid, terrain, cells, seed_value)
+	var hub_cells := PackedInt32Array()
+	for site: Dictionary in sites:
+		hub_cells.append(int(site["cell"]))
+	field.worth = HexWorth.for_planet(Planets.current(), grid, hub_cells)
 	var ko: YardKeepOut = yard_keep_out()  # [v1yard] junk right up to the pad's edge, small pieces near the start
 	if ko:
 		field.keep_out = ko.blocks

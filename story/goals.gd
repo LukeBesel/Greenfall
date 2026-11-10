@@ -2,9 +2,11 @@ class_name Goals
 extends Node
 ## The goal chain (data/goals.json): always a few next things to do, in an order that teaches
 ## clean -> bale -> upgrade -> robots -> command zones -> plant -> watering robots -> sustain ->
-## base levels -> rocket. The first `visible` unfinished goals are current; a current goal whose
-## condition holds completes (one per beat, so a backlog cascades), pays its reward and the next
-## one slides in. Completed ids persist in GameState.flags["goals_done"].
+## base levels -> rocket. The first `visible` unfinished goals are current (what the HUD shows).
+## A goal pays the moment its condition holds, wherever it stands in the chain and whatever the
+## card shows (design spec section 14: rewards never wait and never land in a burst); one per beat,
+## so an old save's backlog arrives as a short run of small wins. Completed ids persist in
+## GameState.flags["goals_done"].
 
 signal completed(index: int)
 
@@ -17,11 +19,11 @@ var visible_count: int = 3
 var _done: Dictionary = {}
 var _tick: float = 0.0
 ## [v1guide] One goal timeline (owner 2026-11-08): when the story Objectives drive the chain they
-## show one goal at a time on the objective card and complete it themselves; Goals never ticks on
-## its own then (no goal finishing in the background while a story step is up).
+## show one goal at a time on the objective card. The card completes its own goal (card_goal);
+## every other goal still pays here the moment it holds.
 var driven: bool = false
-## [v1guide] Set on a quiet completion (absorb): the HUD skips its own toast for those.
-var quiet: bool = false
+## The chain index the objective card is showing and will complete itself (-1: none).
+var card_goal: int = -1
 
 
 func _ready() -> void:
@@ -157,30 +159,16 @@ func _process(delta: float) -> void:
 		check()
 
 
-## Completes at most one current goal whose condition holds. Returns its index or -1.
+## Completes at most one goal whose condition holds, anywhere in the chain (the card's own goal is
+## left to the card). Returns its index or -1.
 func check() -> int:
-	if driven:
-		return -1
-	for i: int in current():
+	for i: int in chain.size():
+		if i == card_goal or is_done(i):
+			continue
 		if value_of(i) >= target_of(i):
 			complete(i)
 			return i
 	return -1
-
-
-## [v1guide] Folds every goal whose condition already holds into the step just finished: completes
-## them quietly and returns their summed rewards (already paid).
-func absorb() -> Dictionary:
-	var total: Dictionary = {}
-	quiet = true
-	for i: int in chain.size():
-		if not is_done(i) and value_of(i) >= target_of(i):
-			var r: Dictionary = reward_of(i)
-			for k: String in r:
-				total[k] = float(total.get(k, 0.0)) + float(r[k])
-			complete(i)
-	quiet = false
-	return total
 
 
 func complete(i: int) -> void:
@@ -196,7 +184,6 @@ func complete(i: int) -> void:
 		if float(r[k]) > 0.0:
 			GameState.add_currency(k, BigNum.from_float(float(r[k])))
 	GameState.inc_stat("goals_completed")
-	if not quiet:
-		Audio.play("coin", 1.15, -6.0)
-		Audio.play("chime", 1.3, -10.0)
+	Audio.play("coin", 1.15, -6.0)
+	Audio.play("chime", 1.3, -10.0)
 	completed.emit(i)

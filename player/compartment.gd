@@ -4,6 +4,9 @@ extends RefCounted
 
 var contents: Dictionary = {}  # type_id -> volume
 var fill: float = 0.0
+## What the load pays tipped loose: the sum of its shares of the hexes it came from (HexWorth).
+## Below zero when unknown (a chest saved before hexes had a value): priced by the unit instead.
+var worth: float = 0.0
 ## Volume of pieces already flying in (counted so scooping never overshoots by more than one piece).
 var pending: float = 0.0
 
@@ -21,7 +24,9 @@ func reserve(volume: float) -> void:
 	pending += volume
 
 
-func add(type_id: String, volume: float) -> void:
+func add(type_id: String, volume: float, cubes: float = 0.0) -> void:
+	if worth >= 0.0:
+		worth += cubes
 	pending = maxf(0.0, pending - volume)
 	if pending < 0.0001:  # [orbB] float residue (e.g. 1e-15) must not count as "still flying in" and block a dump
 		pending = 0.0
@@ -43,14 +48,16 @@ func take_all() -> Dictionary:
 	var out: Dictionary = contents.duplicate()
 	contents.clear()
 	fill = 0.0
+	worth = 0.0
 	return out
 
 
 func to_dict() -> Dictionary:
-	return {"contents": contents.duplicate(), "fill": fill}
+	return {"contents": contents.duplicate(), "fill": fill, "worth": worth}
 
 
 func from_dict(d: Dictionary) -> void:
 	contents = (d.get("contents", {}) as Dictionary).duplicate()
 	fill = float(d.get("fill", 0.0))
+	worth = float(d.get("worth", -1.0 if fill > 0.0 else 0.0))
 	pending = 0.0

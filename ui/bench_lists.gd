@@ -119,13 +119,13 @@ static func _base(world: Node) -> Array:
 			var cost: Dictionary = nxt.get("cost", {})
 			var gains: Array[String] = HubPanel.level_gains(hub, hub.level + 1)
 			var table: Array = [[_tr("Level"), "%d / %d" % [hub.level, (hub.data.get("levels", []) as Array).size()]],
-				[_tr("Now"), _tr("Bales +%d%%") % int(round(hub.sell_mult() * 100.0))]]
+				[_tr("Now"), _tr(str(hub.level_def(hub.level).get("name", "")))]]
 			if not gains.is_empty():
 				table.append([_tr("Next"), gains[0]])
 			table.append([_tr("Cost"), _price_text(cost)])
 			out.append({"id": "hub_level", "cat": "base", "icon": "hex", "icon_set": "ui", "name": _tr(str(nxt.get("name", ""))),
 				"desc": _tr(str(nxt.get("desc", ""))), "lv": hub.level, "max": (hub.data.get("levels", []) as Array).size(),
-				"price": cost, "state": _state(cost), "table": table, "requires": "",
+				"price": cost, "state": _state(cost) if hub.block_reason() == "" else "locked", "table": table, "requires": hub.block_reason(),
 				"action": _tr("Build hub level %d") % (hub.level + 1), "act": func() -> bool: return hub.upgrade()})
 	for e: Dictionary in HubBuilds.available(world, "tiered"):
 		var id: String = str(e["id"])

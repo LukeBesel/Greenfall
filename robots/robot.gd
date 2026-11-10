@@ -556,6 +556,7 @@ func _make_bale() -> void:
 	var contents: Dictionary = hopper.take_all()
 	var info: Dictionary = Economy.evaluate_cube(contents, cap, stat("efficiency"))
 	info["perfect"] = false
+	info["value"] = BigNum.zero()  # robots earn no cubes: the bale is waste on its way out
 	var cube: JunkCube = JunkCube.create(info["value"], info)
 	world.add_cube(cube)
 	cube.global_position = global_position + global_transform.basis.z * 0.7 + Vector3(0, 0.5, 0)

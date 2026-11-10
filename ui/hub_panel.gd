@@ -203,7 +203,10 @@ func refresh() -> void:
 	_lv_pips.set_counts(hub.level, max_lv)
 	var cur: Dictionary = hub.level_def(hub.level)
 	var nxt: Dictionary = hub.level_def(hub.level + 1)
-	_now.text = tr("Now: level %d, %s. Bales sell for +%d%%.") % [hub.level, tr(str(cur.get("name", ""))), int(round(hub.sell_mult() * 100.0))]
+	if hub.sell_mult() > 0.0:
+		_now.text = tr("Now: level %d, %s. Bales sell for +%d%%.") % [hub.level, tr(str(cur.get("name", ""))), int(round(hub.sell_mult() * 100.0))]
+	else:
+		_now.text = tr("Now: level %d, %s.") % [hub.level, tr(str(cur.get("name", "")))]
 	if nxt.is_empty():
 		_lv_lbl.text = tr("Hub level %d  ·  fully built") % hub.level
 		_name.text = tr(str(cur.get("name", "")))

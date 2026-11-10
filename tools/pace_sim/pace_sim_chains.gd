@@ -33,6 +33,7 @@ func step(dt: float) -> void:
 	_side_events()
 	_research(dt)
 	_story_unlocks()
+	pay_goals()
 	_objectives()
 
 
@@ -137,8 +138,8 @@ func current_objective() -> Dictionary:
 	return data.objectives[objective_index] if objective_index < data.objectives.size() else {}
 
 
-## The card shows one step at a time: the story objectives in order, then the goal chain. When a
-## step is done, every goal whose condition already holds is completed with it (Goals.absorb).
+## The card shows one step at a time: the story objectives in order, then the goal chain. Goals
+## are paid as they complete, whatever the card shows (pay_goals).
 func _objectives() -> void:
 	var guard: int = 0
 	while guard < 40:
@@ -164,7 +165,7 @@ func _objectives() -> void:
 			m.record.objective(m.t, str(row.get("id", "")))
 			objective_index += 1
 		_objective_since = m.t
-		_absorb()
+		pay_goals()
 
 
 ## What the game does when a step comes up: the seed signal's hint timer, and the yard build
@@ -194,7 +195,8 @@ func current_goals() -> Array[int]:
 	return out
 
 
-func _absorb() -> void:
+## Every goal pays the moment its condition holds, wherever it stands in the chain (Goals.check).
+func pay_goals() -> void:
 	for i: int in data.goals.size():
 		if goals_done.has(i):
 			continue

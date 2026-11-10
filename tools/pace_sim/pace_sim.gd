@@ -111,7 +111,7 @@ static func summary(result: Dictionary) -> PackedStringArray:
 		return out
 	var d: PaceSimData = model.data
 	out.append("derived from data: hex volume %.0f (clean at %.0f%%), mean take %.2f, %.0f takes a hex, %.2f cubes a unit, %.0f Parts a hand-cleaned hex before luck, hexes %.1f m apart, %d small-junk start hexes, %d hexes in the hub region, %.0f seeds to plant a hex, bloom after %.0f s" % [
-		d.hex_vol, d.clean_frac * 100.0, d.mean_bite, d.bites_per_hex, d.avg_value, d.bites_per_hex * d.parts_per_bite + d.parts_per_hex_buried,
+		d.hex_vol, d.clean_frac * 100.0, d.mean_bite, d.bites_per_hex, d.hex_cubes / maxf(d.hex_vol, 0.001), d.finds_per_unit(d.hex_vol) * d.hex_vol * d.clean_frac * PaceSimData.mean_part_value() + d.parts_per_hex_buried,
 		d.cell_spacing, d.starter_hexes, d.region_hexes, d.seeds_to_plant, d.bloom_s])
 	out.append("end state: hexes=%d cubes=%.0f earned=%.0f parts=%.0f robots=%d base=%d upgrades=%d research=%d goals=%d/%d" % [
 		model.work.hexes_done, model.cubes, model.earned, model.parts, model.robot_total(), model.hub_level,

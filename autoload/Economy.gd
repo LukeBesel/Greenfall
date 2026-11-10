@@ -8,6 +8,10 @@ var upgrade_defs: Dictionary = {}  # id -> Dictionary
 var upgrade_order: Array[String] = []
 var patch_base: Dictionary = {}
 var cube_rules: Dictionary = {}
+## Tipping a loose load (the planet's "player" table, key "dump"): {mult, after_baler, radius_m}.
+var dump_rules: Dictionary = {}
+## The scoop pulse (the planet's "player" table, key "scoop"): {bite_vol}.
+var scoop_rules: Dictionary = {}
 var planet: Dictionary = {}
 var landmarks: Array = []
 ## Wilderness biome junk sets (the planet's "pollution" table, key "biomes"), keyed by PlanetData biome name.
@@ -17,6 +21,13 @@ var robots: Dictionary = {}  # type id -> def
 var robot_order: Array[String] = []
 var robot_tiers: Array = []
 var robot_cfg: Dictionary = {}
+## Price tiers of the upgrade tracks (the planet's "upgrades" table, key "tiers"): {levels, ratio,
+## cost}, one entry per district in play order. Empty on a planet whose upgrades are not tiered.
+var track_tiers: Dictionary = {}
+## The flag that holds how many districts are open (Districts writes it; one from a new game).
+const FLAG_TIERS_OPEN: String = "districts_open"
+## The flag that holds the part of a cube not paid out yet (see whole_cubes).
+const FLAG_CUBE_CARRY: String = "cube_carry"
 
 var _planet_cache_drops: Array[Callable] = []
 
@@ -74,12 +85,16 @@ func load_data() -> void:
 		junk_ids.append(t["id"])
 	upgrade_defs.clear()
 	upgrade_order.clear()
-	for u: Dictionary in planet_table("upgrades").get("upgrades", []):
+	var ud: Dictionary = planet_table("upgrades")
+	track_tiers = ud.get("tiers", {})
+	for u: Dictionary in ud.get("upgrades", []):
 		upgrade_defs[u["id"]] = u
 		upgrade_order.append(u["id"])
 	var pd: Dictionary = planet_table("player")
 	patch_base = pd.get("stats", {})
 	cube_rules = pd.get("cube", {})
+	dump_rules = pd.get("dump", {})
+	scoop_rules = pd.get("scoop", {})
 	planet = planet_table("field")
 	parts = read_json("res://data/parts.json")
 	robot_cfg = planet_table("robots")
@@ -177,13 +192,87 @@ func _fmt_stat(v: float) -> String:
 
 # --- Upgrades -----------------------------------------------------------------
 
+## The last level of an upgrade on this planet (-1 = no limit).
 func upgrade_max(id: String) -> int:
-	return int(upgrade_defs[id].get("max_level", -1))
+	var u: Dictionary = upgrade_defs[id]
+	if is_track(u):
+		var total: int = 0
+		for n: int in _tier_levels(u):
+			total += n
+		return total
+	return int(u.get("max_level", -1))
+
+
+## The last level that can be bought now: a track sells the levels of the tiers its open
+## districts have reached; anything else its max level.
+func upgrade_cap(id: String) -> int:
+	var u: Dictionary = upgrade_defs[id]
+	if not is_track(u):
+		return upgrade_max(id)
+	var levels: Array[int] = _tier_levels(u)
+	var total: int = 0
+	for t: int in mini(tiers_open(), levels.size()):
+		total += levels[t]
+	return total
 
 
 func is_maxed(id: String) -> bool:
-	var m: int = upgrade_max(id)
+	var m: int = upgrade_cap(id)
 	return m >= 0 and GameState.level_of(id) >= m
+
+
+## True when a track has sold every level its open districts allow but has more on this planet.
+func waits_for_district(id: String) -> bool:
+	return upgrade_defs.has(id) and is_maxed(id) and GameState.level_of(id) < upgrade_max(id)
+
+
+## How many districts are open: each one opens the next price tier of every track.
+func tiers_open() -> int:
+	return maxi(1, int(GameState.flags.get(FLAG_TIERS_OPEN, 1)))
+
+
+## A track is an upgrade priced by tier (the planet's upgrades table has "tiers" and the row says
+## "track": true); every other upgrade costs base_cost x growth^level up to max_level.
+func is_track(u: Dictionary) -> bool:
+	return bool(u.get("track", false)) and not track_tiers.is_empty()
+
+
+## Levels a track holds in each tier: its own "tier_levels" or the table's.
+func _tier_levels(u: Dictionary) -> Array[int]:
+	var out: Array[int] = []
+	for n: Variant in u.get("tier_levels", track_tiers.get("levels", [])):
+		out.append(maxi(0, int(n)))
+	return out
+
+
+## Cost of a track's level `level` -> `level + 1`: inside a tier each level costs the tier's ratio
+## times the one before. The track's first tier starts at the row's base_cost (when it has one),
+## every other tier at weight x the tier's cost.
+func track_cost(u: Dictionary, level: int) -> float:
+	var levels: Array[int] = _tier_levels(u)
+	var ratios: Array = track_tiers.get("ratio", [])
+	var costs: Array = track_tiers.get("cost", [])
+	var tier: int = -1
+	var first_tier: int = -1
+	var first: int = 0  # the track level `tier` starts at
+	var below: int = 0
+	for t: int in levels.size():
+		if levels[t] <= 0:
+			continue
+		if first_tier < 0:
+			first_tier = t
+		tier = t
+		first = below
+		if level < below + levels[t]:
+			break
+		below += levels[t]
+	if tier < 0:
+		return 0.0
+	var start: float = float(u.get("base_cost", 0.0))
+	if tier != first_tier or start <= 0.0:
+		start = float(u.get("weight", 1.0)) * (float(costs[tier]) if tier < costs.size() else 0.0)
+	var ratio: float = float(ratios[tier]) if tier < ratios.size() else 1.0
+	return round(start * pow(ratio, level - first))
 
 
 func is_unlocked(id: String) -> bool:
@@ -192,6 +281,8 @@ func is_unlocked(id: String) -> bool:
 	# built first: they used to sell with nothing in the yard to show for it.
 	var sid: String = str(upgrade_defs[id].get("requires_station", ""))
 	if sid != "" and not Stations.built_in_state(sid):
+		return false
+	if int(u.get("min_district", 0)) >= tiers_open():
 		return false
 	var req: Dictionary = u.get("requires", {})
 	for rid: String in req:
@@ -210,6 +301,8 @@ func is_unlocked(id: String) -> bool:
 ## [pace] Why an upgrade is locked, for the workbench ("" when unlocked).
 func lock_reason(id: String) -> String:
 	var u: Dictionary = upgrade_defs[id]
+	if int(u.get("min_district", 0)) >= tiers_open():
+		return tr("Opens in a later city")
 	var req: Dictionary = u.get("requires", {})
 	for rid: String in req:
 		if GameState.level_of(rid) < int(req[rid]) and upgrade_defs.has(rid):
@@ -231,31 +324,30 @@ static func cost_at(base_cost: float, growth: float, level: int) -> BigNum:
 func upgrade_cost(id: String, level: int = -1) -> BigNum:
 	var u: Dictionary = upgrade_defs[id]
 	var lv: int = level if level >= 0 else GameState.level_of(id)
+	if is_track(u):
+		return BigNum.from_float(track_cost(u, lv))
 	return cost_at(float(u["base_cost"]), float(u["growth"]), lv)
 
 
-## Total cost of buying n levels starting from the current level (geometric series).
+## Total cost of buying n levels starting from the current level.
 func cost_for_n(id: String, n: int) -> BigNum:
-	var u: Dictionary = upgrade_defs[id]
 	var lv: int = GameState.level_of(id)
-	var g: float = float(u["growth"])
-	var first: BigNum = cost_at(float(u["base_cost"]), g, lv)
-	if is_equal_approx(g, 1.0):
-		return first.mul_f(n)
-	return first.mul_f((pow(g, n) - 1.0) / (g - 1.0))
+	var total: BigNum = BigNum.zero()
+	for k: int in n:
+		total = total.add(upgrade_cost(id, lv + k))
+	return total
 
 
-## How many levels the player can buy right now, respecting max level.
+## How many levels the player can buy right now, respecting the level cap.
 func max_affordable(id: String, budget: BigNum = null) -> int:
 	var money: BigNum = budget if budget != null else GameState.get_currency("cubes")
-	var u: Dictionary = upgrade_defs[id]
-	var m: int = upgrade_max(id)
+	var m: int = upgrade_cap(id)
 	var room: int = 1000 if m < 0 else m - GameState.level_of(id)
 	var n: int = 0
 	var spent: BigNum = BigNum.zero()
 	var lv: int = GameState.level_of(id)
 	while n < room:
-		var c: BigNum = cost_at(float(u["base_cost"]), float(u["growth"]), lv + n)
+		var c: BigNum = upgrade_cost(id, lv + n)
 		if not money.gte(spent.add(c)):
 			break
 		spent = spent.add(c)
@@ -290,11 +382,16 @@ func stat_with_upgrade_level(id: String, level: int) -> float:
 
 # --- Cubes --------------------------------------------------------------------
 
-## contents: type_id -> volume. Returns {value: BigNum, pure: bool, perfect: bool, lumpy: bool,
-## dominant: type_id, colors: Array[Color], volume: float}.
-func evaluate_cube(contents: Dictionary, capacity: float, value_mult: float = -1.0) -> Dictionary:
+## What a pressed bale is worth. contents: type_id -> volume. `worth`: what the load pays tipped
+## loose (its share of the hexes it came from, HexWorth); below zero the load is priced by the unit
+## at each waste type's value (loads with no hex behind them). The press quality multiplies it:
+## plain, good (at least good_from full) or perfect (inside perfect_band); an overstuffed chest
+## presses a plain bale. Every one of them pays more than tipping the same load loose.
+## Returns {value: BigNum, quality: "plain" | "good" | "perfect", pure, perfect, lumpy, dominant,
+## colors, volume, fill, loose: float}.
+func evaluate_cube(contents: Dictionary, capacity: float, value_mult: float = -1.0, worth: float = -1.0) -> Dictionary:
 	var vol: float = 0.0
-	var base_value: float = 0.0
+	var unit_value: float = 0.0
 	var dominant: String = ""
 	var dom_vol: float = -1.0
 	var types_present: int = 0
@@ -304,22 +401,17 @@ func evaluate_cube(contents: Dictionary, capacity: float, value_mult: float = -1
 			continue
 		types_present += 1
 		vol += v
-		base_value += v * float(junk_types.get(t, {}).get("value", 1.0))
+		unit_value += v * float(junk_types.get(t, {}).get("value", 1.0))
 		if v > dom_vol:
 			dom_vol = v
 			dominant = t
 	var fill: float = vol / maxf(capacity, 0.001)
 	var band: Array = cube_rules.get("perfect_band", [0.9, 1.0])
-	var pure: bool = types_present == 1
 	var lumpy: bool = fill > float(band[1]) + 0.0001
 	var perfect: bool = not lumpy and fill >= float(band[0])
-	var mult: float = value_mult if value_mult >= 0.0 else stat("cube_value_mult")
-	if pure:
-		mult *= float(cube_rules.get("pure_mult", 2.0))
-	if perfect:
-		mult *= float(cube_rules.get("perfect_mult", 1.5))
-	if lumpy:
-		mult *= float(cube_rules.get("lumpy_mult", 0.8))
+	var quality: String = press_quality(fill)
+	var loose: float = worth if worth >= 0.0 else unit_value
+	var mult: float = (value_mult if value_mult >= 0.0 else stat("cube_value_mult")) * press_mult(quality)
 	var colors: Array[Color] = []
 	var sorted_types: Array = contents.keys()
 	sorted_types.sort_custom(func(a: String, b: String) -> bool: return float(contents[a]) > float(contents[b]))
@@ -327,10 +419,55 @@ func evaluate_cube(contents: Dictionary, capacity: float, value_mult: float = -1
 		if float(contents[t]) > 0.0 and colors.size() < 3:
 			colors.append(Color.html(str(junk_types.get(t, {}).get("cube_color", "#888888"))))
 	return {
-		"value": BigNum.from_float(base_value * mult),
-		"pure": pure, "perfect": perfect, "lumpy": lumpy,
+		"value": BigNum.from_float(loose * mult), "quality": quality, "loose": loose,
+		"pure": types_present == 1, "perfect": perfect, "lumpy": lumpy,
 		"dominant": dominant, "colors": colors, "volume": vol, "fill": fill,
 	}
+
+
+const PRESS_PLAIN: String = "plain"
+const PRESS_GOOD: String = "good"
+const PRESS_PERFECT: String = "perfect"
+
+
+## The quality of a bale pressed with the chest `fill` full (1.0 = to the brim).
+func press_quality(fill: float) -> String:
+	var band: Array = cube_rules.get("perfect_band", [0.9, 1.0])
+	if fill > float(band[1]) + 0.0001:
+		return PRESS_PLAIN
+	if fill >= float(band[0]):
+		return PRESS_PERFECT
+	return PRESS_GOOD if fill >= float(cube_rules.get("good_from", 0.6)) else PRESS_PLAIN
+
+
+## What a bale of that quality pays against the same load tipped loose (the planet's "player"
+## table, cube.plain_mult / good_mult / perfect_mult). Never less than a hair above the loose
+## rate: a pressed bale always beats tipping.
+func press_mult(quality: String) -> float:
+	return maxf(float(cube_rules.get(quality + "_mult", 1.0)), loose_mult() * MIN_PRESS_EDGE)
+
+
+## The least a pressed bale pays against a loose load when a planet's data would let them tie.
+const MIN_PRESS_EDGE: float = 1.01
+
+
+## What a loose load pays against its worth (the planet's "player" table, dump.mult).
+func loose_mult() -> float:
+	return float(dump_rules.get("mult", 1.0))
+
+
+## Pays `amount` cubes as a whole number: the part of a cube left over is kept (in the save) and
+## added to the next payout, so the purse always shows whole cubes and nothing is lost to rounding.
+## Returns the cubes paid now.
+func pay_whole_cubes(amount: float) -> float:
+	if amount <= 0.0:
+		return 0.0
+	var total: float = amount + float(GameState.flags.get(FLAG_CUBE_CARRY, 0.0))
+	var whole: float = floorf(total + 0.000001)
+	GameState.flags[FLAG_CUBE_CARRY] = maxf(0.0, total - whole)
+	if whole > 0.0:
+		GameState.add_currency("cubes", BigNum.from_float(whole))
+	return whole
 
 
 func rarity(idx: int) -> Dictionary:
@@ -356,11 +493,6 @@ func robot_stat(type_id: String, stat_id: String, tier: int = 0, rarity_bonus: f
 
 func tier_name(tier: int) -> String:
 	return tr(str(robot_tiers[clampi(tier, 0, robot_tiers.size() - 1)].get("name", "Mk I"))) if not robot_tiers.is_empty() else tr("Mk I")
-
-
-func hex_bonus(junk_volume: float) -> BigNum:
-	var f: Dictionary = planet.get("slice_field", {})
-	return BigNum.from_float(float(f.get("bonus_base", 4.0)) + junk_volume * float(f.get("bonus_per_volume", 0.3)))
 
 
 ## Biome set for a wilderness district ({} for cities or unknown biomes).
