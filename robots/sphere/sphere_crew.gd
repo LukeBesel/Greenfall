@@ -416,7 +416,7 @@ func route(from: int, to: int, role: String = "clean") -> PackedInt32Array:
 	var key: int = from * grid.cell_count() + to
 	if _loose_to.size() > 400:
 		_loose_to.clear()
-	if float(_loose_to.get(key, 0.0)) < _t:
+	if float(_loose_to.get(key, -1.0)) < _t:
 		var strict: PackedInt32Array = SpherePath.astar_grid(grid, from, to, pass_fn, 6000)
 		if not strict.is_empty():
 			return strict
