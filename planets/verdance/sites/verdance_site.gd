@@ -1,5 +1,5 @@
 class_name VerdanceSite
-extends Node3D
+extends TownSite
 ## [orbD] Verdance's hub sites on the walkable globe. A small local CityLayout (a 3 x 3 block
 ## grid around the hub yard) gives the street grid: CityView lays its sidewalks, kerbs, lot
 ## fences and street furniture, and every building is a shared art-kit building (KitBuilding:
@@ -28,7 +28,7 @@ const START_EXTENT: float = 108.0  # [v3city] 7 x 7 blocks cut to the start pad'
 ## YardKeepOut.SMALL_ONLY_M) stay whole. Floors per ring: forecourt row, mid-rise, skyline towers.
 const TOWN_R: float = 136.0
 const GOAL_R: float = 40.0
-const HUB_TOWN_R: float = 116.0  # [v3city] other hubs' pads are 120 m (OrbitPlanet.VERDANCE_HUB_SITE_M)
+const HUB_TOWN_R: float = 116.0  # [v3city] other hubs' pads are 120 m (data/sites.json hub_pad_m)
 const RING_FLOORS: Array = [[0, 0], [3, 5], [3, 8], [7, 16]]
 const TOWER_SHARE: float = 0.22  # ring-3 buildings that shoot up to 18-26 floors
 ## [v3city] Town characters, so no two hubs look copy-pasted. Per ring 1..3: floors [min, max];
@@ -55,7 +55,6 @@ var hub_index: int = 0
 var seed_value: int = 4471
 var level: int = 1
 var restoration: float = 0.0
-var layout: CityLayout
 var city: CityView
 var dressing: StreetDressing
 var kit_root: Node3D
@@ -65,7 +64,6 @@ var _kit_state: String = ""
 var district_name: String = ""
 var _rubble: Node3D
 var furniture: StreetFurniture  # [v3city] the start town's street life
-var town_r: float = TOWN_R  # [v3city] the town's reach on its pad (the pad's flat radius, less a margin)
 var kind: String = "start"   # [v3city] the town's character (KINDS)
 var outskirts: TownOutskirts  # [v3city] the city past the pad (the skyline)
 var globe_ctx: Dictionary = {}  # [v3city] {terrain, grid, cells, xf, clear} from SiteManager
@@ -118,6 +116,21 @@ static func build(parent: Node3D, p_site: String, stage: int, p_restoration: flo
 	parent.add_child(s)
 	await s._make()
 	return s
+
+
+func _init() -> void:
+	town_r = TOWN_R  # [v3city] the town's reach on its pad (the pad's flat radius, less a margin)
+
+
+## Sites-script hook (SiteBuilders): the land between the hub towns (Hinterland). ctx: {parent,
+## grid, terrain, cells, hubs, seed, keep_out, focus}.
+static func build_surroundings(ctx: Dictionary) -> Node3D:
+	var land := Hinterland.new()
+	land.name = "Hinterland"
+	(ctx["parent"] as Node).add_child(land)
+	land.setup(ctx["grid"], ctx["terrain"], ctx["cells"], ctx["hubs"], int(ctx["seed"]), ctx.get("keep_out") as YardKeepOut)
+	land.focus = ctx.get("focus")
+	return land
 
 
 ## Sites-script hook (SiteBuilders): builds site `p_site` under `parent`.

@@ -422,7 +422,7 @@ func _attach_power(i: int, p: SitePrefab) -> void:
 	if hub is Hub:
 		lvl = maxi(lvl, int((hub as Hub).level))
 	for c: Node in p.content.get_children():
-		if c is VerdanceSite:
+		if c is TownSite:
 			var sp: StreetPower = SitePower.attach(c, grid, hl, lvl)
 			if sp:
 				power[i] = sp
@@ -545,8 +545,8 @@ func detour(from: Vector3, to: Vector3) -> Vector3:
 	for c: Node in p.content.get_children() if p.content else []:
 		if c.has_method("footprints"):
 			rects.append_array(c.call("footprints"))
-		if c is VerdanceSite and (c as VerdanceSite).layout:
-			var n: int = int(ceil((c as VerdanceSite).layout.extent / CityLayout.PITCH))
+		if c is TownSite and (c as TownSite).layout:
+			var n: int = int(ceil((c as TownSite).layout.extent / CityLayout.PITCH))
 			for k: int in range(-n - 1, n + 1):
 				streets.append((k + 0.5) * CityLayout.PITCH)
 	if rects.is_empty() or streets.is_empty():
