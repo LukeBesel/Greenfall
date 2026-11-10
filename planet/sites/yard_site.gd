@@ -69,6 +69,9 @@ func _on_anchors_moved(_names: PackedStringArray) -> void:
 func _build(bench: Node3D) -> void:
 	# The lean-to over the bench: the flat layout (shack-local, opening toward +Z), so the bench
 	# stands where it does on the flat yard, 0.65 m in from the shack's centre.
+	# [v5load] Behind the loading screen this builds across frames; the caller waits with
+	# BuildBudget.idle() before Camp reads `bits`. Without a budget: one go, as before.
+	BuildBudget.busy += 1
 	var shack := Node3D.new()
 	shack.name = "Shack"
 	add_child(shack)
@@ -131,6 +134,7 @@ func _build(bench: Node3D) -> void:
 			light.position.y = YardArt.LAMP_HEAD_Y - 0.12
 			light.light_energy = 2.6
 			_extra_lamps.append(holder)
+	await BuildBudget.check("yard site")  # [v5load]
 	var gen_holder: Node3D = _slot("generator")
 	var gen := MeshInstance3D.new()
 	gen.name = "Generator"
@@ -138,7 +142,9 @@ func _build(bench: Node3D) -> void:
 	bits["generator"] = gen
 	YardArt.dress_board(bits)  # the yard helper's models into the flat node layout
 	gen.position = Vector3.ZERO  # dress_board moves it out from under the flat lean-to; here the anchor is the spot
+	await BuildBudget.check("yard site")  # [v5load]
 	_bin_bay()
+	await BuildBudget.check("yard site")  # [v5load]
 	# Compost press, CD-player stand, robot nursery (the models their systems build).
 	_composter = _slot("composter")
 	var cp: Dictionary = YardArt.composter()
@@ -148,13 +154,16 @@ func _build(bench: Node3D) -> void:
 		m.position = pair[1]
 		_composter.add_child(m)
 	YardArt.solid(_composter, Vector3(1.6, 1.4, 1.2), Vector3(0.5, 0.7, 0), "ComposterBody")
+	await BuildBudget.check("yard site")  # [v5load]
 	_radio = _slot("radio")
 	_radio.add_child(YardArt.radio_stand().mi(0.15, "Stand"))
 	YardArt.solid(_radio, Vector3(1.2, 1.3, 0.8), Vector3(0, 0.65, 0), "RadioBody")
+	await BuildBudget.check("yard site")  # [v5load]
 	_nursery = _slot("nursery")
 	_nursery.add_child(YardArt.nursery(Vector2(5.0, 3.4)).mi(0.15, "Garden"))
 	_nursery.add_child(YardArt.nursery_grass(Vector2(5.0, 3.4)))
 	# The telescope's own model (automation/telescope.gd), without its view or remote progress.
+	await BuildBudget.check("yard site")  # [v5load]
 	_telescope = _slot("telescope")
 	var sc := Telescope.new()
 	sc.data = RemoteProgress.cfg()
@@ -166,6 +175,7 @@ func _build(bench: Node3D) -> void:
 		_telescope.add_child(model)
 	sc.free()
 	# Stations: the real machine nodes, idle (their logic is the flat game's Stations), in a row.
+	await BuildBudget.check("yard site")  # [v5load]
 	var st_root: Node3D = _slot("stations")
 	var row: Array = [["conveyor", Conveyor.new(), Vector3(0, 0, 0)], ["auto_baler", AutoBaler.new(), Vector3(0, 0, -3.2)], ["recycler", Recycler.new(), Vector3(0, 0, 3.2)]]
 	for e: Array in row:
@@ -175,14 +185,18 @@ func _build(bench: Node3D) -> void:
 		st_root.add_child(n)
 		_stations[e[0]] = n
 	# The Bot Fabricator (systems/camp/fabricator_model.gd; logic: robots/fabricator, orbC).
+	await BuildBudget.check("yard site")  # [v5load]
 	var fab_slot: Node3D = _slot("fabricator")
 	_fabricator = FabricatorModel.new()
 	fab_slot.add_child(_fabricator)
 	# The escape pod in its crash site (story/intro.gd's pod, story/crash_site.gd), hatch open.
+	await BuildBudget.check("yard site")  # [v5load]
 	var pod_slot: Node3D = _slot("pod")
 	_pod = Intro.build_pod()
 	CrashSite.attach(pod_slot, _pod, pod_slot.global_position if pod_slot.is_inside_tree() else Vector3.ZERO, 0.5)
 	EscapePod.set_open(_pod, true, CrashSite.LEAN.x)
+	await BuildBudget.check("yard site")  # [v5load]
+	BuildBudget.busy -= 1
 	if DevHooks.has("yard-all"):  # dev: the telescope, stations and Fabricator as built (their systems aren't on the globe yet)
 		GameState.world["telescope"] = {"built": true}
 		GameState.world["stations"] = {"conveyor": true, "recycler": true, "baler": {"pos": [0.0, 0.0]}}

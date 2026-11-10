@@ -137,7 +137,7 @@ func setup(p_world: Node) -> void:
 	name = "Nursery"
 	center = _pick_spot()
 	position = center
-	_build_garden()
+	await _build_garden()
 	rebuild()
 	visible = YardBuilds.built("nursery")  # [camp] nothing until it's built (Hub tab)
 
@@ -180,13 +180,19 @@ func _build_garden() -> void:
 	var hard: MeshInstance3D = YardArt.nursery(SIZE).mi(0.15, "Garden")
 	add_child(hard)
 	YardArt.set_powered(hard, true)  # only shows once built
+	if world.get("orbit") != null:  # [v5load] behind the globe's loader (ExtrasDirector waits)
+		await BuildBudget.check("nursery:bed")
 	add_child(YardArt.nursery_grass(SIZE))
+	if world.get("orbit") != null:
+		await BuildBudget.check("nursery:grass")
 	# Flower beds the caretakers tend.
 	for p: Vector3 in [Vector3(-1.25, 0, -0.85), Vector3(1.25, 0, -0.85), Vector3(-0.4, 0, 0.75)]:
 		var bed: Node3D = DecorProps.flower_bed()
 		bed.position = p
 		add_child(bed)
 		_beds.append(p)
+		if world.get("orbit") != null:
+			await BuildBudget.check("nursery:flower bed")
 	var sign: Label3D = EggProps.label("NURSERY", 46, Color(0.24, 0.42, 0.26), Vector3(hx - 0.45, 1.0, hz - 0.165))
 	add_child(sign)
 

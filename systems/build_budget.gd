@@ -50,6 +50,12 @@ static func begin(p_tree: SceneTree) -> BuildBudget:
 	current = BuildBudget.new()
 	current.tree = p_tree
 	current._since = Time.get_ticks_usec()
+	lap_on = DevHooks.has("load-report")
+	_lap_us = current._since
+	if lap_on:
+		_lap_cpu = cpu_us()
+		_since_cpu = _lap_cpu
+		longest_cpu_us = 0
 	return current
 
 
@@ -72,10 +78,15 @@ static func pause(at: String = "") -> void:
 	if b == null:
 		return
 	b._note(at)
+	last_at = at
 	var t0: int = Time.get_ticks_usec()
 	await b.tree.process_frame
 	b.frames += 1
 	b._since = Time.get_ticks_usec()
+	_lap_us = b._since
+	if lap_on:
+		_since_cpu = cpu_us()
+		_lap_cpu = _since_cpu
 	var f: int = b._since - t0
 	if f > 500000 and DevHooks.has("load-report"):
 		print("[budget] a %.0f ms frame after %s" % [f / 1000.0, at])
@@ -107,6 +118,18 @@ static func sub(f: float) -> void:
 ## Build progress 0..1.
 func progress() -> float:
 	return lerpf(_from, _to, _sub)
+
+
+## [v5load] Builders that carry on across frames after their caller returned (a setup() that a
+## synchronous caller can't await): they count themselves in and out here, and the build waits
+## with idle() before it reads what they make. Always 0 without a budget.
+static var busy: int = 0
+static var last_at: String = ""  # the latest yield's label (the loader's --load-report)
+
+
+static func idle() -> void:
+	while current != null and busy > 0:
+		await pause("background")
 
 
 ## Build tasks not yet waited on. WorkerThreadPool keeps a task (and the script its callable
@@ -169,10 +192,48 @@ static func fetch(path: String) -> Resource:
 	return ResourceLoader.load_threaded_get(path)
 
 
+## [v5load] Profiling aid for --load-report: prints the main-thread time since the last lap (or
+## yield) when it is over 40 ms, so a long stretch between two yields can be pinned to a step.
+static var _lap_us: int = 0
+static var lap_on: bool = false
+
+
+static func lap(label: String) -> void:
+	if not lap_on:
+		return
+	var now: int = Time.get_ticks_usec()
+	var cpu: int = cpu_us()
+	if _lap_us > 0 and now - _lap_us > 40000:
+		print("[lap] %.0f ms (cpu %.0f): %s" % [(now - _lap_us) / 1000.0, (cpu - _lap_cpu) / 1000.0, label])
+	_lap_us = now
+	_lap_cpu = cpu
+
+
+## [v5load] This thread's CPU time (Linux: /proc/thread-self/schedstat), or 0. Wall-clock slices on
+## a busy box (other helpers' builds) read 2-3x long; the CPU time is what an idle machine sees.
+static var _lap_cpu: int = 0
+static var _since_cpu: int = 0
+static var longest_cpu_us: int = 0
+static var longest_cpu_at: String = ""
+
+
+static func cpu_us() -> int:
+	var f := FileAccess.open("/proc/thread-self/schedstat", FileAccess.READ)
+	if f == null:
+		return 0
+	@warning_ignore("integer_division")
+	return int(f.get_line().get_slice(" ", 0)) / 1000
+
+
 func _note(at: String) -> void:
 	var d: int = Time.get_ticks_usec() - _since
-	if d > 80000 and DevHooks.has("load-report"):
-		print("[budget] %.0f ms of work before the yield at %s" % [d / 1000.0, at])
+	if lap_on:
+		var c: int = cpu_us() - _since_cpu
+		if c > longest_cpu_us:
+			longest_cpu_us = c
+			longest_cpu_at = at
+		if d > 80000:
+			print("[budget] %.0f ms (cpu %.0f) of work before the yield at %s" % [d / 1000.0, c / 1000.0, at])
 	if d > longest_us:
 		longest_us = d
 		longest_at = at

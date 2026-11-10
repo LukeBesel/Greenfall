@@ -64,6 +64,9 @@ func build(p_world: Node3D) -> void:
 	elif not DevHooks.has("fresh"):
 		loaded = SaveManager.load_game()
 	var od: Dictionary = OrbitSave.migrate(GameState.orbit) if loaded else {}
+	AssetLib.tracing = DevHooks.has("load-report") or DevHooks.has("record-preload")  # [v5load] blocking model loads, to the end of the build
+	AssetLib.traced.clear()
+	var ck_task: int = BuildBudget.add_task(FaunaSounds.crickets_loop, "crickets") if BuildBudget.active() else -1  # [v5load] the cricket bed's synthesis (pure maths)
 	var preload_n: int = OrbitPreload.start()  # [orbE] junk models load on threads while the planet builds
 	# The planet: --orbit-planet=<id>, else the saved one, else Verdance. Its size is data (GlobeSpec).
 	var home_pid: String = str(Homeward.planet_def(maxi(Homeward.current_planet(), 0)).get("id", "verdance"))  # [orbD] a new world after an interplanet flight
@@ -112,6 +115,7 @@ func build(p_world: Node3D) -> void:
 	crews.name = "Crews"
 	w.add_child(crews)
 	crews.setup(globe)
+	BuildBudget.lap("orbit crews setup")
 	for i: int in range(1, globe.sites.size() if DevHooks.has("orbit-bots") else 0):  # [orbC] stand-ins only on request: far work is the crew's
 		crews.add_far_crew(int(globe.sites[i]["cell"]), 0.25 + 0.05 * (i % 4))
 	if DevHooks.has("orbit-presim"):
@@ -125,14 +129,11 @@ func build(p_world: Node3D) -> void:
 	w.set("_cubes_root", cubes_root)
 	await BuildBudget.check("orbit crews")  # [orbE]
 	var tq: int = Time.get_ticks_msec()  # [orbE] load breakdown
-	var tr0: bool = AssetLib.tracing
-	if DevHooks.has("load-report"):
-		AssetLib.tracing = true
-		AssetLib.traced.clear()
+	await OrbitPreload.warm()  # [v5load] the build's own models: files from the loader threads, meshes within budget
 	var site: Node3D = await globe.build_start_site()
+	BuildBudget.lap("orbit start site")
 	if DevHooks.has("load-report"):  # [orbE] what the start site loads on the main thread
-		print("[orbit-load] start site %d ms, %d models: %s" % [Time.get_ticks_msec() - tq, AssetLib.traced.size(), ",".join(AssetLib.traced)])
-		AssetLib.tracing = tr0
+		print("[orbit-load] start site %d ms" % (Time.get_ticks_msec() - tq))
 	await BuildBudget.check("orbit start site")  # [orbE]
 	# The site's deferred footprint probe and anchor fix (physics queries and flood fills, yielding
 	# themselves): wait for it here, so it never stacks with a build slice or outlives the loader.
@@ -141,12 +142,22 @@ func build(p_world: Node3D) -> void:
 	while BuildBudget.active() and globe.site_manager and not globe.site_manager.probed.has(0) and Time.get_ticks_msec() - wait_t < 30000:
 		await BuildBudget.pause("site probe")
 	_build_patch()
+	BuildBudget.lap("orbit patch")
+	await BuildBudget.check("orbit patch")  # [v5load]
 	_build_depot(site)
+	BuildBudget.lap("orbit depot")
 	await BuildBudget.check("orbit lumi")  # [orbE]
 	sites = OrbitSites.attach(self)  # [orbD] sled, rocket hops, planet %, site state
+	BuildBudget.lap("orbit sites attach")
+	await BuildBudget.check("orbit sites")  # [v5load]
 	_build_hub()
+	BuildBudget.lap("orbit hub")
+	await BuildBudget.check("orbit hub")  # [v5load]
 	_build_bench()
+	BuildBudget.lap("orbit bench")
+	await BuildBudget.check("orbit bench")  # [v5load]
 	crews.build_crew(self)  # [orbC] the robot crew (planet/orbit/orbit_crews.gd)
+	BuildBudget.lap("orbit build_crew")
 	if DevHooks.has("orbit-bots"):  # [orbC] stand-in bots only on request (the crew replaces them)
 		crews.spawn_demo_bots(globe.start_cell(), int(DevHooks.get_f("orbit-bots", 4.0)), w)
 	await BuildBudget.check("orbit crew")  # [orbE]
@@ -158,6 +169,7 @@ func build(p_world: Node3D) -> void:
 	w.add_child(garden)
 	w.set("garden", garden)
 	garden.setup()
+	BuildBudget.lap("orbit garden")
 	GardenMarks.attach(w)  # [v4grow] #51: soil mounds, sprouts, thirsty drops, cell rings, the can's ring
 	var hl := HexLevels.new()  # sparse: only cleaned cells are tracked; levels also go to SphereCells
 	hl.name = "HexLevels"
@@ -166,12 +178,14 @@ func build(p_world: Node3D) -> void:
 	w.set("hex_levels", hl)  # before add_child: its tree-entered hooks may read world.hex_levels
 	w.add_child(hl)
 	hl.setup()
+	BuildBudget.lap("orbit hexlevels")
 	EventBus.hex_level_changed.connect(_on_hex_level)
 	var lumi_level := LumiLevel.new()
 	lumi_level.name = "LumiLevel"
 	lumi_level.world = w
 	w.add_child(lumi_level)
 	w.set("lumi_level", lumi_level)
+	BuildBudget.lap("orbit lumilevel")
 	if not (DevHooks.has("orbit-nohud") or DevHooks.has("no-hud")):
 		var hud := HUD.new()
 		hud.patch = w.get("patch")
@@ -182,12 +196,18 @@ func build(p_world: Node3D) -> void:
 	w.add_child(pm)
 	pm.closed.connect(on_modal_closed)
 	w.set("pause_menu", pm)
+	BuildBudget.lap("orbit hud+pause")
 	await BuildBudget.check("orbit hud")  # [orbE]
 	_build_upgrades()
+	BuildBudget.lap("orbit upgrades")
 	w.call("_setup_research_codex")  # slice.gd's own: Research, Achievements, the Codex (UI + data)
+	BuildBudget.lap("orbit codex")
 	await BuildBudget.check("orbit codex")  # [orbE]
+	await BuildBudget.join(ck_task)  # [v5load]
 	_build_story()
-	_build_yard_systems()
+	BuildBudget.lap("orbit story")
+	await _build_yard_systems()
+	BuildBudget.lap("orbit yard systems")
 	await BuildBudget.check("orbit story")  # [orbE]
 	if loaded and not migrate:
 		restore_world()
@@ -197,22 +217,27 @@ func build(p_world: Node3D) -> void:
 	tq = Time.get_ticks_msec()
 	layers = OrbitLayers.attach(self)  # [orbE] sky + day/night, Glim, future layer, survey, system map, photo mode
 	globe.stats["layers_ms"] = Time.get_ticks_msec() - tq
+	BuildBudget.lap("orbit layers")
 	await BuildBudget.check("orbit layers")  # [orbE]
 	BuildBudget.span(0.8, 1.0)
 	var tw: int = Time.get_ticks_msec()
-	OrbitPreload.finish()  # [orbE] models were loading on threads all along; the settle seats them
+	await OrbitPreload.finish()  # [orbE] models were loading on threads all along; the settle seats them
 	globe.stats["preload_wait_ms"] = Time.get_ticks_msec() - tw
 	globe.stats["preload_models"] = preload_n
+	BuildBudget.lap("orbit preload finish")
 	globe.update_centres()
 	var t2: int = Time.get_ticks_msec()
+	globe.defer_fill = BuildBudget.active()  # [v5load] the first ring's junk fills in slices (refresh_junk_async)
 	await globe.streamer.settle_async(20000, not DevHooks.has("orbit-settle-all"))  # [orbE] near chunks only; the rest streams in
 	globe.stats["settle_ms"] = Time.get_ticks_msec() - t2
 	var t3: int = Time.get_ticks_msec()
-	globe.refresh_junk_now()
+	await globe.refresh_junk_async()
 	globe.stats["junk_fill_ms"] = Time.get_ticks_msec() - t3
+	BuildBudget.lap("orbit junk fill")
 	await BuildBudget.check("orbit junk")  # [orbE]
 	Settings.apply_quality_to_tree(w)
 	day.after_quality(view_mode == "command")
+	BuildBudget.lap("orbit quality")
 	if DevHooks.has("give"):
 		GameState.add_currency("cubes", BigNum.from_float(DevHooks.get_f("give", 100.0)))
 	Pace.sync_flags()
@@ -228,6 +253,11 @@ func build(p_world: Node3D) -> void:
 	print("[orbit] slice on the globe: R=%.0fm hexes=%d around=%.1fkm hubs=%d (nearest hub mean %.0fm, min %.0fm) loaded=%s built=%dms planet=%dms grid=%dms settle=%dms junk_fill=%dms" % [
 		g.grid.radius_m, g.grid.cell_count(), TAU * g.grid.radius_m / 1000.0, g.sites.size(), g.hub_spacing(false), g.hub_spacing(true),
 		str(loaded), Time.get_ticks_msec() - t0, g.stats["planet_ms"], g.stats["grid_ms"], g.stats["settle_ms"], g.stats["junk_fill_ms"]])
+	if AssetLib.tracing:  # [v5load]
+		print("[orbit-load] %d models loaded on the main thread: %s" % [AssetLib.traced.size(), ",".join(AssetLib.traced)])
+		if DevHooks.has("record-preload"):
+			OrbitPreload.record(AssetLib.traced)
+		AssetLib.tracing = false
 	if DevHooks.has("load-report"):  # [orbE] where the build time goes
 		print("[orbit-load] %s streamer=%s chunks=%d cells/chunk=%d" % [JSON.stringify(g.stats), JSON.stringify(g.streamer.stats), g.grid.chunk_count(), g.grid.cell_count() / maxi(g.grid.chunk_count(), 1)])
 	if not bool(w.get("building")):  # [orbE] behind the loader, slice.gd emits once it has re-enabled the world
@@ -508,11 +538,15 @@ func _build_yard_systems() -> void:
 	var ia := Interactables.new()  # generic E-interactables (eggs, relay, bin, tower, ...)
 	ia.name = "Interactables"
 	w.add_child(ia)
+	BuildBudget.lap("yard:ia")
+	await BuildBudget.check("yard:ia")  # [v5load]
 	w.set("interactables", ia)
 	var ev := WorldEvents.new()  # world events + the cleaning streak (systems/events.gd)
 	ev.name = "WorldEvents"
 	ev.world = w
 	w.add_child(ev)
+	BuildBudget.lap("yard:ev")
+	await BuildBudget.check("yard:ev")  # [v5load]
 	w.set("events", ev)
 	SignalTower.migrate(w)  # WREN only talks through the Signal Tower (story/signal_tower.gd)
 	if GameState.current_hub == 0:
@@ -522,35 +556,63 @@ func _build_yard_systems() -> void:
 		var slot: Array = yard_slot("signal_tower", SignalTower.pos())
 		w.add_child(tower)  # a child of the slice, as on the flat game (HubBuilds and the bot look it up)
 		tower.global_transform = (slot[0] as Node3D).global_transform * (slot[1] as Transform3D)  # after its _ready
-	_attach_extras()
+	await _attach_extras()
+	BuildBudget.lap("yard:_attach_extras")
+	await BuildBudget.check("yard:_attach_extras")  # [v5load]
 	var scope := Telescope.new()  # the Telescope + remote progress (automation/telescope.gd)
 	scope.name = "Telescope"
 	scope.world = w
 	w.add_child(scope)
+	BuildBudget.lap("yard:scope")
+	await BuildBudget.check("yard:scope")  # [v5load]
 	# Its model sits at _pos() in its own frame: put that point on the "telescope" anchor.
 	var tslot: Array = yard_slot("telescope", scope.call("_pos"))
 	scope.global_transform = (tslot[0] as Node3D).global_transform * (tslot[1] as Transform3D) * Transform3D(Basis(), -(scope.call("_pos") as Vector3))
-	_attach_camp()
+	await _attach_camp()
+	BuildBudget.lap("yard:_attach_camp")
+	await BuildBudget.check("yard:_attach_camp")  # [v5load]
 	GlimDirector.attach(w)  # Glim the lantern bot: light, hex scanner, upgrades, looks (systems/glim/)
+	BuildBudget.lap("yard:GlimDirector")
+	await BuildBudget.check("yard:GlimDirector")  # [v5load]
 	_start_intro_or_place_pod()  # [orbE] the intro cinematic on the globe (new games); else the pod as before
+	BuildBudget.lap("yard:_start_intro_or_place_pod")
+	await BuildBudget.check("yard:_start_intro_or_place_pod")  # [v5load]
 	var cc := CoreCharge.new()  # Lumi's Bloom Core charge and its story beats (story/core_charge.gd)
 	cc.name = "CoreCharge"
 	cc.world = w
 	w.add_child(cc)
+	BuildBudget.lap("yard:cc")
+	await BuildBudget.check("yard:cc")  # [v5load]
 	w.set("core_charge", cc)
 	var obj := Objectives.new()  # WREN's last message after the intro + the objective card and outline
 	obj.world = w
 	w.add_child(obj)
+	BuildBudget.lap("yard:obj")
+	await BuildBudget.check("yard:obj")  # [v5load]
 	w.set("objectives", obj)
-	_build_hub_frame()
-	_attach_first_seed.call_deferred()
+	await _build_hub_frame()
+	BuildBudget.lap("yard:_build_hub_frame")
+	await BuildBudget.check("yard:_build_hub_frame")  # [v5load]
 	_attach_seed_economy()
+	BuildBudget.lap("yard:_attach_seed_economy")
+	await BuildBudget.check("yard:seed economy")  # [v5load]
 	_attach_shards()
+	BuildBudget.lap("yard:_attach_shards")
+	await BuildBudget.check("yard:shards")  # [v5load]
 	var bloom := Bloom.new()  # post-game milestones + Seed Ark (systems/bloom.gd)
 	bloom.name = "Bloom"
 	bloom.world = w
 	w.add_child(bloom)
+	BuildBudget.lap("yard:bloom")
 	LateDirector.attach(w)  # Homeward, the Ark Bridge, world look/story, Garden Mode (its decor per hub in the frame)
+	BuildBudget.lap("yard:LateDirector")
+	# [v5load] The greenhouse builds deferred (after everything above, as before): behind the loader
+	# it gets a frame of its own instead of landing on top of the next build slice (a 190 ms frame).
+	if BuildBudget.active():
+		await BuildBudget.pause("yard:late")
+	_attach_first_seed.call_deferred()
+	if BuildBudget.active():
+		await BuildBudget.pause("yard:first seed")
 
 
 ## A yard spot in world space (the anchor's origin, or the flat yard spot on the pad).
@@ -565,6 +627,7 @@ func yard_point(anchor: String) -> Vector3:
 ## wander in its own frame, so they come along).
 func _attach_extras() -> void:
 	var ex: ExtrasDirector = ExtrasDirector.attach(w)
+	await BuildBudget.idle()  # [v5load] its setup hands frames back behind the loader
 	if ex == null:
 		return
 	if ex.radio:
@@ -653,6 +716,7 @@ func _build_hub_frame() -> void:
 		fa.frame_cells = f.region()
 		fa.setup(w)
 		return fa)
+	await BuildBudget.check("hub frame:fauna")  # [v5load]
 	hub_frame.host("Outposts", func(f: HubFrame, hub: int) -> Node:  # each hub's ruined frontier outposts
 		var op := Outposts.new()
 		op.name = "Outposts"
@@ -662,6 +726,7 @@ func _build_hub_frame() -> void:
 		f.add_child(op)
 		op.setup()
 		return op)
+	await BuildBudget.check("hub frame:outposts")  # [v5load]
 	hub_frame.host("EasterEggs", func(f: HubFrame, hub: int) -> Node:  # each hub's easter eggs and collectibles
 		var eg := EasterEggs.new()
 		eg.name = "EasterEggs"
@@ -671,6 +736,8 @@ func _build_hub_frame() -> void:
 		eg.frame_cells = f.region()
 		eg.setup()
 		return eg)
+	await BuildBudget.idle()  # [v5load] the eggs plan and spawn across frames
+	await BuildBudget.check("hub frame:eggs")  # [v5load]
 	w.set("fauna", hub_frame.node("Fauna") as Fauna)
 	hub_frame.host("Ledger", func(f: HubFrame, hub: int) -> Node:  # the Ledger arc: drones, jammers and the relay at this hub
 		var lg := LedgerArc.new()
@@ -681,6 +748,7 @@ func _build_hub_frame() -> void:
 		f.add_child(lg)
 		lg.setup()
 		return lg)
+	await BuildBudget.check("hub frame:ledger")  # [v5load]
 	hub_frame.host("Decor", func(f: HubFrame, hub: int) -> Node:  # Garden Mode's decorations at this hub
 		var dc := Decor.new()
 		dc.hub_index = hub
@@ -780,7 +848,10 @@ func _attach_camp() -> void:
 		w.set("_ruin_bits", ys.bits)
 	else:
 		w.set("_ruin_bits", {"bench": bench})
+	await BuildBudget.idle()  # [v5load] the yard models build across frames
+	await BuildBudget.check("camp:yard site")  # [v5load]
 	var camp: Camp = Camp.attach(w)
+	await BuildBudget.idle()  # [v5load] its setup hands frames back behind the loader
 	w.set("camp", camp)
 	if camp == null:
 		_apply_bench(Camp.bench_ok(), false)

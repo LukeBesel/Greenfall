@@ -22,7 +22,7 @@
 - Autoplay pacing: `godot --headless --path . -- --fresh --autoplay --time-scale=4 --quit-after=200` (report in screenshots/autoplay_report.json).
 - Save/load round trip (all systems): `godot --headless --path . res://tools/save_roundtrip.tscn -- --fresh` (prints PASS/FAIL per system, exit 1 on failure).
 - Robot report: add `--robots=scoopie:3,haulbug:2,... --time-scale=4 --quit-after=90` to a headless run; prints a `[bots]` table.
-- Load timing: add `--load-report` to a run (headless or rendered); prints build steps, slices over 80 ms, and `[loader] ready in N ms, longest frame M ms`. After changing what the district build loads, refresh `data/preload_models.json` with `--record-preload`.
+- Load timing: add `--load-report` to a run (headless or rendered); prints build steps, slices over 80 ms, and `[loader] ready in N ms, longest frame M ms`. After changing what the district build loads, refresh `data/preload_models.json` with `--record-preload`. On the globe the list is `data/orbit_preload.json`: `godot --headless --path . -- --fresh --orbit --record-preload --quit-after=30`.
 - Title screen shot: `xvfb-run -a -s "-screen 0 1280x720x24" godot --path . --rendering-driver vulkan --resolution 1280x720 -- --menu --quality=1 --shot=screenshots/title_menu.png --shot-delay=40 --quit-after=43`
 - Assets: `python3 tools/fetch_assets.py` after editing `data/assets.json`; new vendor textures need `compress/mode=2` (+ `compress/normal_map=1` for `*_nor_gl_*`) in their .import files.
 - Blender (for modeling) is not preinstalled: `apt-get install -y --no-install-recommends blender`, then script it with `blender -b --python script.py`.

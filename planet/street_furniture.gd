@@ -53,12 +53,13 @@ func build(p_layout: CityLayout, seed_v: int) -> void:
 	_corners()
 	await BuildBudget.check("town:wrecks")
 	_kerb_wrecks()
+	await BuildBudget.check("town:lot wrecks")  # [v5load]
 	_lot_wrecks()
 	if water_fn.is_valid():
 		await BuildBudget.check("town:waterfront")
 		_waterfront()
 	await BuildBudget.check("town:flush")
-	_flush()
+	await _flush()
 
 
 func set_state(st: String) -> void:
@@ -779,6 +780,7 @@ func _flush() -> void:
 				mi.set_meta("wreck", true)
 			add_child(mi)
 			_meshes.append(mi)
+			await BuildBudget.check("town:flush cell")  # [v5load]
 	if _paint_n > 0:
 		var pm := MeshInstance3D.new()
 		pm.name = "RoadPaint"

@@ -65,7 +65,8 @@ var _view_cell: int = 0
 var _want: Dictionary = {}
 
 
-func setup(p_grid: SphereGrid, p_terrain: SphereTerrain, p_cells: SphereCells, p_mat: ShaderMaterial = null) -> void:
+## defer_shell [v5load]: the caller builds the far shell itself with `await build_shell_async()`.
+func setup(p_grid: SphereGrid, p_terrain: SphereTerrain, p_cells: SphereCells, p_mat: ShaderMaterial = null, defer_shell: bool = false) -> void:
 	grid = p_grid
 	terrain = p_terrain
 	cells = p_cells
@@ -79,7 +80,8 @@ func setup(p_grid: SphereGrid, p_terrain: SphereTerrain, p_cells: SphereCells, p
 	_line_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	_line_mat.albedo_color = Color(0.55, 0.95, 1.0, 0.75)
 	_line_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	_build_shell()
+	if not defer_shell:
+		_build_shell()
 
 
 static func default_material(p_cells: SphereCells) -> ShaderMaterial:
@@ -179,14 +181,21 @@ func settle_async(max_ms: int = 20000, near_only: bool = false) -> void:
 				_pending.erase(c)
 	while (not _pending.is_empty() or not _jobs.is_empty()) and Time.get_ticks_msec() - t0 < max_ms:
 		_pump(1)
-		if BuildBudget.due():
+		# [v5load] Hand the frame back when the slice is used up, and also whenever no job has
+		# landed yet: spinning here until the slice ran out froze the loader for the whole slice.
+		if BuildBudget.due() or not _job_landed():
 			await BuildBudget.pause("settle")
-		else:
-			OS.delay_usec(500)
 	for c: int in later:
 		if not _chunks.has(c) and not _jobs.has(c):
 			_pending[c] = later[c]
 	_count_stats()
+
+
+func _job_landed() -> bool:
+	for c: int in _jobs:
+		if WorkerThreadPool.is_task_completed(int((_jobs[c] as Dictionary)["task"])):
+			return true
+	return false
 
 
 func _process(delta: float) -> void:
@@ -500,11 +509,30 @@ func _update_near_rings() -> void:
 ## The whole planet at low detail, as a map of big hexes (SphereShell): one flat-coloured hex
 ## per level-`shell_level` cell, coloured by the fine hexes it covers and refreshed as they
 ## change, heights from the terrain, sunk a little so chunks always cover it.
-func _build_shell() -> void:
+## [v5load] The far shell behind the loading screen: its map, aggregate and mesh arrays are pure
+## data (0.6-0.9 s on Verdance) and run on a worker thread; only the uploads stay on this one.
+func build_shell_async() -> void:
+	if shell != null or not BuildBudget.active():
+		_build_shell()
+		return
+	var sh := SphereShell.new(grid, cells, terrain, shell_level, shell_city, true)
+	sh.drop = shell_drop
+	var box: Array = [null]
+	var work := func() -> void:
+		sh.prepare()
+		box[0] = sh.build_arrays()
+	await BuildBudget.join(BuildBudget.add_task(work, "far shell"))
+	sh.finish()
+	shell = sh
+	_build_shell(sh.mesh_from(box[0]))
+
+
+func _build_shell(am: ArrayMesh = null) -> void:
 	if shell == null:
 		shell = SphereShell.new(grid, cells, terrain, shell_level, shell_city)
 		shell.drop = shell_drop
-	var am: ArrayMesh = shell.build_mesh()
+	if am == null:
+		am = shell.build_mesh()
 	if _shell == null:
 		_shell = MeshInstance3D.new()
 		_shell.name = "FarShell"

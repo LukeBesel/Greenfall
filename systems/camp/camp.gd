@@ -40,6 +40,13 @@ static func attach(slice: Node) -> Camp:
 	return c
 
 
+## [v5load] On the globe the loader's build waits for this setup (BuildBudget.idle), so it may hand
+## frames back between its steps. The flat game and budget-less runs stay synchronous.
+func _slice(at: String) -> void:
+	if world.get("orbit") != null:
+		await BuildBudget.check(at)
+
+
 static func of(slice: Node) -> Camp:
 	return slice.get_node_or_null("Camp") as Camp if slice else null
 
@@ -130,10 +137,14 @@ func _setup() -> void:
 				_tools.append([n, n.transform, broken])
 	_apply_bench(bench_ok(), false)
 	var hub: Hub = world.get("hub") as Hub
+	BuildBudget.busy += 1  # [v5load]
+	await _slice("camp:bench")
 	_apply_builds()  # [camp2] everything but the bench and the bin is a Hub build
+	await _slice("camp:builds")
 	var locker := LockerCabinet.new()  # [ui6] the Locker is a yard build: E opens the character builder
 	world.add_child(locker)
 	locker.setup(world)
+	await _slice("camp:locker")
 	if hub:
 		hub.level_changed.connect(func(_l: int) -> void: _apply_builds())  # after the slice's own ruin/level pass
 	YardBuilds.events.built.connect(_on_built)
@@ -141,6 +152,7 @@ func _setup() -> void:
 	camera_bot = CameraBot.new()  # [camp3] Blink: hidden until built
 	world.add_child(camera_bot)
 	camera_bot.setup(world)
+	BuildBudget.busy -= 1  # [v5load]
 	if DevHooks.has("camp-repair"):
 		get_tree().create_timer(1.0).timeout.connect(repair_bench)
 	if DevHooks.has("camp-buy"):  # buy stations live (with their reveal), e.g. conveyor+auto_baler

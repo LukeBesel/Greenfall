@@ -214,6 +214,7 @@ func _make() -> void:
 	layout = CityLayout.new(seed_value, START_EXTENT)  # [v3city] every Verdance hub is a town now
 	kind = "start" if start else _pick_kind()
 	_town_layout()
+	BuildBudget.lap("site:town layout")
 	city = CityView.new()
 	city.name = "City"
 	city.skyline = false
@@ -227,8 +228,10 @@ func _make() -> void:
 	city.prop_radius = town_r
 	add_child(city)
 	await city.build(layout, _sidewalk_material())
+	BuildBudget.lap("site:city")
 	await BuildBudget.check("site:roads")  # [orbE] behind the loading screen: a few kit buildings per frame
 	_roads()
+	BuildBudget.lap("site:roads")
 	await BuildBudget.check("site:kit")
 	await _kit_blocks()
 	if true:  # [v3city] bus stops, benches, bins, signs, traffic lights, road paint, parked wrecks
@@ -247,6 +250,7 @@ func _make() -> void:
 					furniture.obstacles.append(Vector2((cs as Node3D).position.x, (cs as Node3D).position.z))
 		add_child(furniture)
 		await furniture.build(layout, seed_value)
+		BuildBudget.lap("site:furniture")
 		_extra_foot.append_array(furniture.prop_rects)
 		if DevHooks.has("load-report") or DevHooks.has("town-map"):
 			print("[town] street furniture: %s, %d road paint quads" % [str(furniture.counts), furniture._paint_n])
@@ -263,6 +267,7 @@ func _make() -> void:
 		outskirts.kind = kind
 		add_child(outskirts)
 		await outskirts.build()
+		BuildBudget.lap("site:outskirts")
 		print("[town] hub %d outskirts (%s): %s" % [hub_index, kind, str(outskirts.stats)])
 		var ko: Variant = globe_ctx.get("keep_out")
 		if ko is YardKeepOut:
@@ -280,6 +285,7 @@ func _make() -> void:
 	add_child(dressing)
 	await dressing.build(layout, null, hub_index, district_name, "", level)
 	set_level(level)
+	BuildBudget.lap("site:set_level")
 	if DevHooks.has("town-map") and (start or DevHooks.has("town-map-hubs")):
 		_town_map(DevHooks.get_s("town-map", "user://town_map.png") if start else DevHooks.get_s("town-map", "user://town_map.png").replace(".png", "_hub%d.png" % hub_index))
 
@@ -670,11 +676,14 @@ func _kit_blocks() -> void:
 					continue  # [v3city] the town's outer lots: junk ground, fences and wrecks (StreetFurniture)
 				_lots.append({"c": c, "kind": "landfill" if int(b["type"]) == CityLayout.Block.LANDFILL else "lot", "seed": 1 + rng.randi() % 3})
 	await BuildBudget.check("site:lots")  # [orbE]
-	_build_lots()
+	await _build_lots(true)
+	BuildBudget.lap("site:lots")
 	await BuildBudget.check("site:collision")  # [orbE]
 	# The kit has no bodies of its own: one trimesh body for the buildings' solid meshes.
 	SitePrefab.collision_for(kit_root, self)
+	BuildBudget.lap("site:collision_for")
 	KitBatch.merge(kit_root)  # [orbE] perf: one surface per material for all the yard's buildings
+	BuildBudget.lap("site:kitbatch")
 
 
 var _lots: Array[Dictionary] = []
@@ -746,7 +755,9 @@ static func clean_pad(size: float) -> Node3D:
 ## Yard and lot dressing for the current state: kit ground patches everywhere; landfill heaps of
 ## kit debris, crate stacks and tipped barrels while broken, tidied when repaired, planters with
 ## bushes and flowers when restored. Rebuilt on a state change (meshes are kit-cached).
-func _build_lots() -> void:
+## sliced [v5load]: behind the loader, hand frames back between lots (set_level's rebuild in play
+## stays one call).
+func _build_lots(sliced: bool = false) -> void:
 	if _lot_root:
 		_lot_root.free()
 	_lot_root = Node3D.new()
@@ -762,6 +773,8 @@ func _build_lots() -> void:
 		var gp: Node3D = clean_pad(21.0) if yard and site_id == "start_yard" else KitMesh.ground_patch(Vector2(21, 21) if yard else Vector2(18, 18), st, int(lot["seed"]))  # [v1yard]
 		gp.position = Vector3(c.x, 0.0, c.y)
 		_lot_root.add_child(gp)
+		if sliced:
+			await BuildBudget.check("site:lot")
 		var t := Transform3D(Basis(), Vector3(c.x, 0, c.y))
 		if yard:
 			# Lived-in clutter on the yard's edges, clear of the anchors and the way out north.
@@ -790,6 +803,8 @@ func _build_lots() -> void:
 				for k: int in 4:
 					KitProps.planter(b, t * KitMesh.xf(Vector3(-6.0 + k * 4.0, 0, rng.randf_range(-3, 3)), Vector3(0, 90.0 * (k % 2), 0)), 2.6, st)
 				KitProps.lamp_post(b, t * KitMesh.xf(Vector3(6, 0, 6)), 4.5, st)
+	if sliced:
+		await BuildBudget.check("site:lot props")
 	var mi: MeshInstance3D = KitMesh.instance(b)
 	mi.name = "LotProps"
 	_lot_root.add_child(mi)

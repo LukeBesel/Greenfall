@@ -149,7 +149,8 @@ func build(p_layout: CityLayout, p_field: HexField, p_hub: int = 0, p_district: 
 	_cur = self
 	_style.seed = layout.seed_value * 31 + 4242
 	_pick_style()
-	_begin("Base")
+	await BuildBudget.check("dress:layer")  # [v5load]
+	await _begin("Base")
 	if not layout.wild and not skip_facades:  # [biomes]
 		_collect_facades()
 		await BuildBudget.check("dress:shopfronts")  # [leftovers] time-sliced behind the loading screen
@@ -175,15 +176,19 @@ func build(p_layout: CityLayout, p_field: HexField, p_hub: int = 0, p_district: 
 	_build_landmark()
 	await BuildBudget.check("dress:name_sign")
 	if level <= 1 and not start_base:
-		_begin("Ruin")
+		await BuildBudget.check("dress:layer")  # [v5load]
+		await _begin("Ruin")
 		await BuildBudget.check("dress:ruin")
-		_build_ruin()
-	_begin("Salvage")
+		await _build_ruin()
+	await BuildBudget.check("dress:layer")  # [v5load]
+	await _begin("Salvage")
 	_build_name_sign(false)  # [world2] no yard fence
-	_begin("Lamps")  # [camp2] the pole lamps are part of the "Yard Lamps" Hub build
+	await BuildBudget.check("dress:layer")  # [v5load]
+	await _begin("Lamps")  # [camp2] the pole lamps are part of the "Yard Lamps" Hub build
 	await BuildBudget.check("dress:pole_lamps")
 	_build_pole_lamps()
-	_begin("Yard")
+	await BuildBudget.check("dress:layer")  # [v5load]
+	await _begin("Yard")
 	await BuildBudget.check("dress:poles")
 	_build_poles()
 	await BuildBudget.check("dress:crates")
@@ -195,22 +200,25 @@ func build(p_layout: CityLayout, p_field: HexField, p_hub: int = 0, p_district: 
 	if not layout.wild and not start_base:
 		await BuildBudget.check("dress:street_lines")
 		_build_street_lines()
-	_begin("Future")
+	await BuildBudget.check("dress:layer")  # [v5load]
+	await _begin("Future")
 	_build_pole_sleeves()  # [world2] the white panel fence is gone; the pole sleeves stay
 	await BuildBudget.check("dress:holo_sign")
 	_build_holo_sign()
 	await BuildBudget.check("dress:guide_lights")
 	_build_guide_lights()
-	_begin("Thrive")
+	await BuildBudget.check("dress:layer")  # [v5load]
+	await _begin("Thrive")
 	await BuildBudget.check("dress:planters")
 	_build_planters()
 	await BuildBudget.check("dress:drones")
-	_build_drones()
-	_begin("Beacon")
+	await _build_drones()
+	await BuildBudget.check("dress:layer")  # [v5load]
+	await _begin("Beacon")
 	await BuildBudget.check("dress:beacon")
 	_build_beacon()
 	await BuildBudget.check("dress:flush")
-	_flush()
+	await _flush()
 	for g: Dictionary in power_groups:  # [world3] StreetPower switches these, not the layer reveal
 		(g["node"] as Node).set_meta("street_power", true)
 	set_level(level, false)
@@ -243,7 +251,7 @@ func _layer_range(nm: String) -> Vector2i:
 ## has its own RNG seed so it looks the same however the base got to its level.
 func _begin(nm: String) -> void:
 	if _cur != self:
-		_flush()
+		await _flush()
 	var node := Node3D.new()
 	node.name = nm
 	add_child(node)
@@ -1511,6 +1519,7 @@ func _flush() -> void:
 		mi.material_override = mat
 		mi.name = "Deco"
 		_cur.add_child(mi)
+	await BuildBudget.check("dress:flush")  # [v5load] a layer's flush was one 100-180 ms slice (136 ms in play)
 	if not _tubes.empty():
 		var nm := ShaderMaterial.new()
 		nm.shader = preload("res://art/shaders/neon.gdshader")
@@ -1523,6 +1532,7 @@ func _flush() -> void:
 		_cur.add_child(ti)
 		if _cur == _layers.get("Base") or _cur == _layers.get("Ruin"):
 			nm.set_shader_parameter("power", 0.0)  # [world3] nothing works when you land
+	await BuildBudget.check("dress:flush")
 	if not _bulbs.is_empty():
 		var bm := ShaderMaterial.new()
 		bm.shader = preload("res://art/shaders/neon.gdshader")
@@ -1533,6 +1543,7 @@ func _flush() -> void:
 			bm.set_shader_parameter("power", 0.0)  # [world3] dead wires stay dead
 		var bulb := _bulb_mesh()
 		_mm("Bulbs", bulb, _bulbs, bm, false)
+	await BuildBudget.check("dress:flush")
 	var fabric := ShaderMaterial.new()
 	fabric.shader = preload("res://art/shaders/fabric.gdshader")
 	if not _pennants.is_empty():
@@ -1541,6 +1552,7 @@ func _flush() -> void:
 	for k: int in 3:
 		if not (_cloth[k] as Array).is_empty():
 			_mm("Laundry%d" % k, cloth_meshes[k], _cloth[k], fabric, true)
+	await BuildBudget.check("dress:flush")
 	if not _crates.is_empty():
 		_mm("Crates", _crate_mesh(), _crates, mat, true)
 	if not _drums.is_empty():
@@ -1551,6 +1563,7 @@ func _flush() -> void:
 		_mm("Pots", _pot_mesh(), _pots, mat, true)
 	if not _twigs.is_empty():
 		_mm("DeadPlants", _twig_mesh(), _twigs, mat, true)
+	await BuildBudget.check("dress:flush")
 	if not _puddles.is_empty():
 		var pm := ShaderMaterial.new()
 		pm.shader = preload("res://art/shaders/puddle.gdshader")
@@ -1570,6 +1583,7 @@ func _flush() -> void:
 		for xf: Transform3D in _props[id]:
 			items3.append([xf, Color.WHITE])
 		_mm("Prop_" + id, AssetLib.model_mesh_lite(id, 1500), items3, null, true, false)
+		await BuildBudget.check("dress:flush prop")
 	for id: String in _weeds:
 		var items2: Array = []
 		for xf: Transform3D in _weeds[id]:
@@ -1577,6 +1591,7 @@ func _flush() -> void:
 		var mi2: MultiMeshInstance3D = _mm("Weeds_" + id, AssetLib.model_mesh_lite(id, 400), items2, null, false, false)
 		mi2.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		mi2.visibility_range_end = 70.0
+		await BuildBudget.check("dress:flush weeds")
 
 
 func _mm(nm: String, mesh: Mesh, items: Array, mat: Material, shadows: bool, colors: bool = true) -> MultiMeshInstance3D:
@@ -2259,6 +2274,7 @@ func _beach_shack(p: Vector3) -> void:
 
 func _build_ruin() -> void:
 	_build_name_sign(true)  # [world2] no ruined fence either
+	await BuildBudget.check("dress:ruin sign")  # [v5load]
 	# The light poles: most have toppled into the yard; one still stands, trailing dead wires.
 	var tops: Array[Vector3] = _pole_tops()
 	var stand: int = _rng.randi() % 2
@@ -2290,6 +2306,7 @@ func _build_ruin() -> void:
 		if (absf(p.x) < 2.4 and p.z > -1.0) or p.distance_to(Vector3(0, 0, -2.2)) < 3.2 or p.distance_to(Vector3(-4.9, 0, 2.2)) < 2.6 or p.distance_to(Vector3(7.0, 0, -0.8)) < 1.6:
 			continue
 		placed += 1
+		await BuildBudget.check("dress:ruin junk")  # [v5load]
 		var yaw: float = _rng.randf() * TAU
 		match _rng.randi() % 6:
 			0, 1:
@@ -2632,6 +2649,7 @@ func _build_drones() -> void:
 		ti.material_override = _glow_mat(4.0)
 		ti.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		d.add_child(ti)
+		await BuildBudget.check("dress:drone")  # [v5load]
 
 
 ## Level 5: a floating ring of light over the yard and a beacon on the landmark.
