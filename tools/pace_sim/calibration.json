@@ -1,0 +1,167 @@
+{
+ "_doc": "Numbers the pacing simulator cannot derive from planet data. constants: id -> {value, how}; 'how' says how the value was measured or, when it is only an estimate, says so. side_events: stats the model does not simulate but the bot raises on the side; each reaches 1 at first_s and then rises by 1 every every_s (0 = once). build_sets_flag: yard build id -> the flag building it sets (shared code, not planet content). bot_mirror: lists the full-game bot hardcodes (tools/autoplay.gd), kept here so the policy scripts name no content; ids a planet does not have are skipped. Re-measure after any change to the bot or to the hand loop: see tools/pace_sim/README.md.",
+ "constants": {
+  "hand_duty": {
+   "value": 0.8,
+   "how": "x"
+  },
+  "trip_overhead_s": {
+   "value": 8.0,
+   "how": "x"
+  },
+  "bale_handle_s": {
+   "value": 2.0,
+   "how": "x"
+  },
+  "bench_gap_s": {
+   "value": 20.0,
+   "how": "Copied from tools/autoplay.gd _manage: the bot walks back to the bench at most every 20 s."
+  },
+  "yard_offset_m": {
+   "value": 6.0,
+   "how": "PLACEHOLDER until fitted."
+  },
+  "beam_exponent": {
+   "value": 0.5,
+   "how": "ESTIMATE, not measured."
+  },
+  "parts_luck": {
+   "value": 0.5,
+   "how": "x"
+  },
+  "buried_find_share": {
+   "value": 0.5,
+   "how": "ESTIMATE, not measured."
+  },
+  "haul_overhead_s": {
+   "value": 8.0,
+   "how": "ESTIMATE, not measured."
+  },
+  "recycle_every": {
+   "value": 4.0,
+   "how": "Copied from tools/autoplay.gd _shop."
+  },
+  "robot_cost_growth": {
+   "value": 1.35,
+   "how": "Copied from robots/fleet.gd build_cost."
+  },
+  "garden_time_share": {
+   "value": 0.37,
+   "how": "x"
+  },
+  "seed_fetch_s": {
+   "value": 90.0,
+   "how": "PLACEHOLDER until fitted."
+  },
+  "drip_hexes": {
+   "value": 3.0,
+   "how": "ESTIMATE, not measured."
+  },
+  "bot_to_player": {
+   "value": 2.0,
+   "how": "docs/PLAN.md section 3: the bot plays about twice as fast as a new player."
+  },
+  "seek_s_per_volume": {
+   "value": 0.09,
+   "how": "x"
+  },
+  "plant_seed_s": {
+   "value": 6.0,
+   "how": "x"
+  },
+  "robot_plant_seed_s": {
+   "value": 8.0,
+   "how": "x"
+  },
+  "yard_parts": {
+   "value": 70.0,
+   "how": "x"
+  },
+  "yard_finds": {
+   "value": 2.0,
+   "how": "x"
+  },
+  "yard_finds_s": {
+   "value": 75.0,
+   "how": "x"
+  },
+  "crew_travel_s_per_ring": {
+   "value": 50.0,
+   "how": "x"
+  },
+  "start_delay_s": {
+   "value": 40.0,
+   "how": "x"
+  }
+ },
+ "side_events": {
+  "shards_found": {
+   "first_s": 900,
+   "every_s": 1200
+  },
+  "cats_petted": {
+   "first_s": 1800,
+   "every_s": 0
+  }
+ },
+ "build_sets_flag": {
+  "glim": "glim_repaired"
+ },
+ "bot_mirror": {
+  "buddy_tracks": [
+   "light",
+   "scan"
+  ],
+  "research_first": [
+   "salvage_logic",
+   "conveyor",
+   "auto_baler"
+  ],
+  "research_garden_chain": [
+   "soil_survey",
+   "hardy_weeds",
+   "wild_mint",
+   "pollinator_survey"
+  ],
+  "garden_chain_base_level": 3,
+  "research_priority": [
+   "salvage_logic",
+   "soil_survey",
+   "water_testing",
+   "field_notebook",
+   "scoop_beam",
+   "hardy_weeds",
+   "seedling_blueprint",
+   "big_tanks",
+   "drip_blueprint",
+   "wild_mint",
+   "pollinator_survey",
+   "conveyor",
+   "wide_beam",
+   "auto_baler",
+   "recycler",
+   "bigger_hopper",
+   "auto_sort",
+   "haul_routes",
+   "spray_heads",
+   "bale_tuning",
+   "multibot_blueprint",
+   "rocket_cargo",
+   "silt_filters",
+   "pump_lines",
+   "irrigation",
+   "dune_charts",
+   "field_magnet",
+   "tractor_beam",
+   "dew_condensers",
+   "thermal_lance",
+   "pump_works",
+   "ark_beacon",
+   "hedgerows",
+   "evergreens",
+   "dune_fences",
+   "cold_hardy_seeds",
+   "heat_pumps"
+  ]
+ }
+}
