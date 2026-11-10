@@ -407,7 +407,7 @@ func _apply_sphere() -> void:
 	sun.global_basis = _toward_dir(s1)
 	sun.light_energy = 2.2 * sun_up * float(_suns["a"].get("energy", 1.0)) * (1.0 - 0.55 * storm)
 	# [v5look] Dusty air warms the noon sun (flat Verdance's golden light); it whitens as the air clears.
-	var noon_col: Color = Color(1.0, 0.95, 0.87).lerp(Color(1.0, 0.9, 0.74), haze)
+	var noon_col: Color = Color(1.0, 0.95, 0.87).lerp(Color(1.0, 0.92, 0.79), haze)
 	sun.light_color = Color(1.0, 0.66, 0.4).lerp(noon_col, smoothstep(0.08, 0.5, e1))
 	sun.visible = sun.light_energy > 0.01
 	companion.global_basis = _toward_dir(s2)
@@ -440,7 +440,7 @@ func _apply_sphere() -> void:
 	# alone gave cold, hard shadows next to flat Verdance); at night the blue fill as before.
 	env.ambient_light_sky_contribution = lerpf(0.3, 0.6, day)
 	var low_sun: float = day * (1.0 - smoothstep(0.1, 0.45, maxf(e1, 0.0)))  # dawn and dusk
-	var amb_day: Color = Color(0.8, 0.86, 0.96).lerp(Color(1.0, 0.88, 0.7), haze).lerp(Color(1.0, 0.72, 0.56), low_sun * 0.5)
+	var amb_day: Color = Color(0.8, 0.86, 0.96).lerp(Color(0.97, 0.9, 0.78), haze).lerp(Color(1.0, 0.72, 0.56), low_sun * 0.5)
 	var amb := Color(0.36, 0.44, 0.62).lerp(amb_day, day)
 	if night_tint.a > 0.0:
 		amb = amb.lerp(Color(night_tint.r, night_tint.g, night_tint.b), night_tint.a * night * 0.5)

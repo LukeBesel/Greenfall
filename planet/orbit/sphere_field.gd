@@ -58,6 +58,7 @@ var _saved_unlocked: Dictionary = {}  # cells of a locked biome a save says are 
 ## [v1yard] func(dir: Vector3) -> bool: ground where no piece may lie (the start yard's pad, the
 ## pod, building footprints; YardKeepOut). Pieces that land there are re-rolled, then dropped.
 var keep_out: Callable
+var pile_block: Callable  # [v5look] (cell) -> bool: no junk mounds on this cell (the hinterland's road hexes)
 ## [v1yard] Cells with no big items (cell -> true): the start's cells, as the flat game's first hexes.
 var small_only: Dictionary = {}
 const KEEP_OUT_TRIES: int = 8
@@ -193,7 +194,7 @@ func materialize(cell: int) -> PackedInt32Array:
 	var count: int = int(round(DRAW_PIECES * left))  # [v1world]
 	var ctr: Vector3 = grid.centers[cell]
 	var f: Basis = SphereGrid.frame(ctr)
-	var piles: Array = [] if cells.has_flag(cell, SphereCells.F_SITE) else _roll_piles(cell)  # [orbD] mounds wedged against kerbs and kit walls stalled Lumi; site cells keep loose junk only
+	var piles: Array = [] if cells.has_flag(cell, SphereCells.F_SITE) or (pile_block.is_valid() and bool(pile_block.call(cell))) else _roll_piles(cell)  # [orbD] mounds wedged against kerbs and kit walls stalled Lumi; site cells keep loose junk only
 	hex_piles[cell] = piles
 	var lm: Dictionary = landmarks[_cell_landmark[cell]] if _cell_landmark.has(cell) else {}
 	var lm_at: Vector2 = cell_local(cell, lm["pos"]) if not lm.is_empty() else Vector2.ZERO
