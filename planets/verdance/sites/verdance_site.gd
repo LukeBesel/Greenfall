@@ -45,6 +45,11 @@ const KINDS: Dictionary = {
 }
 ## Per hub (harbours take over where the lake reaches in): every character turns up on Verdance.
 const KIND_BY_HUB: Array[String] = ["oldtown", "downtown", "oldtown", "suburb", "industrial", "oldtown", "suburb", "industrial", "downtown", "suburb"]
+## Each kind's tall prop (StreetDressing.landmark_kind), until the source landmarks stand.
+const LANDMARK_BY_KIND: Dictionary = {
+	"start": "water_tower", "oldtown": "water_tower", "downtown": "radio_mast", "industrial": "crane",
+	"suburb": "ferris_wheel", "harbour": "lighthouse",
+}
 const HUB_EXTENT: float = 36.0     # 3 x 3 blocks, 108 m
 ## Which share of buildings are broken off on a ruined hub.
 const RUIN_SHARE: float = 0.7
@@ -281,6 +286,7 @@ func _make() -> void:
 	dressing.name = "Dressing"
 	dressing.skip_facades = not CITY_BUILDINGS  # [v1world] shopfronts, awnings, neon, murals, billboard, string lights
 	dressing.kit_yard = true
+	dressing.landmark_kind = str(LANDMARK_BY_KIND.get(kind, ""))
 	add_child(dressing)
 	await dressing.build(layout, null, hub_index, district_name, "", level)
 	set_level(level)

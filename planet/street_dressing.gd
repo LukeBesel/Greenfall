@@ -73,6 +73,8 @@ const GLYPHS: Dictionary = {
 	"3": [[Vector2(0, 5), Vector2(1, 6), Vector2(3, 6), Vector2(4, 5), Vector2(4, 4), Vector2(3, 3), Vector2(1.5, 3)], [Vector2(3, 3), Vector2(4, 2), Vector2(4, 1), Vector2(3, 0), Vector2(1, 0), Vector2(0, 1)]],
 }
 
+## The town's tall prop, when its site script picks one (a city landmark kind or "lighthouse"); "" = by hub number.
+var landmark_kind: String = ""
 var layout: CityLayout
 var field: HexField
 
@@ -1885,7 +1887,7 @@ func _build_landmark() -> void:
 	var city_kinds: Array[String] = ["water_tower", "crane", "ferris_wheel", "radio_mast", "smokestack", "old_bus"]
 	match biome:
 		"":
-			_lm_kind = city_kinds[hub_index % city_kinds.size()]
+			_lm_kind = landmark_kind if city_kinds.has(landmark_kind) or landmark_kind == "lighthouse" else city_kinds[hub_index % city_kinds.size()]
 		"dust_dunes":
 			_lm_kind = "windpump"
 		"frostcap":
