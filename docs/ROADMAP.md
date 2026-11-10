@@ -993,3 +993,12 @@ Superseded by "Current state of round Verdance" at the top. Most of its open lis
   - Orbit autoplay (8x): first robot 20.9 min, base 2 34.9, Haul Bug 41.1, Hover Jets 49.2, Skimmer 56.0, no script errors, no shore stalls.
 - **Open:** the bot's stuck escapes climb in the garden phase (13 at 47 min, 77 at 107 min, all after Hover Jets). This looks unrelated to the shore block and is worth a look.
 - Tests: `tests/test_v4bots.gd` (unlock order and timing, objective order, adoption and pads, the shore clamp, the upgrade).
+
+## 2026-11-10: v5load (loading, hitches, draw cost, cloud saves)
+Details and numbers in docs/PERFORMANCE.md (perf passes 6-8).
+- Done: no long loading frames on Verdance (longest about 0.12 s of CPU, was 1.2-2.3 s); the build is no slower, rendered or headless.
+- Done: hitches in play (junk ring, wildlife, hub switch on a rocket hop, autosave); a fifth of the ring's junk was never drawn, fixed.
+- Done: draw cost down 10% on Medium and 21% on Low at the start site; cheaper far water.
+- Done: Steam Cloud covers the round world's saves; demo saves carry over into the round tree.
+- Open: the frame where the 3D scene first draws at the end of loading (shader warm-up) is one long frame; needs a check on real hardware.
+- Open: a hub town building as Lumi walks to it (25-45 ms frames for about 3 s); Anvil's yard builder (0.45 s slice); litter batching (428 MultiMeshes a ring).

@@ -561,3 +561,42 @@ Left: one animal spawn can still take about 30 ms (finding a free spot); a hub t
 Lumi walks to it (not hops) keeps frames at 25-45 ms for about 3 s with a few 90-140 ms steps
 (the play budget is 6 ms plus the longest step in the town builders); a walk-in hub switch is
 five frames of 100-400 ms instead of one of 1.3 s.
+
+### Perf pass 8 (Nov 10, v5load): draw cost with the towns, litter and lakes
+
+Census (`--scene-stats=22`, headless, start site, whole scene, one shadow split counted). The
+census now leaves out instances past their `visibility_range_end` from the camera (it used to
+count them; `STATS_NO_RANGE=1` gives the old numbers) and names unnamed meshes by their parents
+when a group is split (`STATS_SPLIT=Globe`). A/B switches: `--no-shadow-trim`,
+`--no-litter-range`, `--water-ripple-far=100000`.
+
+| Start site | Est. draws before | after | Shadow-casting surfaces | Triangles before | after |
+|---|---|---|---|---|---|
+| Medium | 4,206 | **3,794** (-10%) | 688 -> 564 (-18%) | 7.03 M | 6.54 M (-7%) |
+| Low | 4,206 | **3,322** (-21%) | 688 -> 564 | 4.48 M | 3.85 M (-14%) |
+
+Where the scene's draws are now (Medium): ground litter 1,248 (428 MultiMeshes: one per cell and
+item kind, 3.1 M triangles), the start town about 1,400, the hub's outposts and eggs 543, Lumi
+217, the crash site 164, the hinterland 144.
+
+What changed:
+- **Shadows off where none showed.** Facade kit pieces that lie flat on the wall (under 30 cm
+  deep: windows, doors, panels, trims; the building body behind them casts), street props under
+  12 cm tall (manhole covers), and the outposts' and easter eggs' paint lines, shards, thin plates
+  and bits under 12 cm. 124 fewer shadow surfaces, each a draw per shadow split (Medium has two).
+- **Litter distance by preset.** Tiny items (5-15 cm, about a pixel at 50 m) stop at 50 m on
+  Medium (60 m before) and 35 m on Low; the paper carpet keeps 90 m on Medium, 60 m on Low.
+  High and Ultra are unchanged.
+- **Lake shader.** The wave numbers and speeds are constants (a division and a square root per
+  wave per pixel before); the scum noise is skipped on clean water; the three shortest waves
+  (1.3 m and under) and the value-noise chop fade out by `ripple_far` (Low 60 m, Medium 250 m,
+  High and Ultra 400 m) and are not computed past it. Per pixel: 7 waves and 5 noise lookups (40
+  hashes) before; past the fade 4 waves and 1-2 lookups (8-16 hashes). Checked with a rendered
+  pair at Medium from the start town's shore (ripple_far 250 against 100000): no visible
+  difference; the far band differs by under 1/255 on average.
+
+Not done, and why: the outposts' ruin pieces (90 meshes) only merge to 75 surfaces because every
+piece has its own worn-paint material, and merging breaks the scatter when an outpost is repaired.
+The litter is the next real win: 428 MultiMeshes for one ring. One MultiMesh per item kind for
+the whole ring would be about 12 draws, but every ring move would re-upload the buffer; a mesh
+merged per cell would lose the per-piece sweep.

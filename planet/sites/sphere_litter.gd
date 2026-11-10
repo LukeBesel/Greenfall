@@ -12,6 +12,8 @@ extends LitterView
 const PER_M2: float = 2.6  # [v1world] was the density for every preset; now PER_M2_Q
 ## [v1world] Pieces a square metre by quality (Low .. Ultra). The flat carpet lays ~20.
 const PER_M2_Q: Array[float] = [8.0, 11.0, 14.0, 14.0]
+const ITEM_RANGE: Array[float] = [35.0, 50.0, 60.0, 60.0]  # [v5load] metres, Low .. Ultra
+const CARPET_RANGE: Array[float] = [60.0, 90.0, 90.0, 90.0]
 const HG_N: int = 9  # height grid samples a side over the cell (2.25 m apart)
 const BIN_M: float = 2.0  # [v1world] sweep bins (cell-frame metres)
 const CELL_R: float = 9.0  # placement radius round the cell centre (10 m hexes overlap a little)
@@ -312,7 +314,14 @@ func _apply_cell(c: int, data: Dictionary) -> void:
 		var mmi := MultiMeshInstance3D.new()
 		mmi.multimesh = mm
 		mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		mmi.visibility_range_end = 90.0 if mm.use_colors else 60.0
+		# [v5load] Draw cost: the litter is a third of the scene's draws. Tiny items (5-15 cm) are
+		# about a pixel at 50 m, so they stop there on Medium (60 m before) and at 35 m on Low; the
+		# paper carpet keeps its 90 m (60 m on Low). `--no-litter-range`: the old 60 / 90 m.
+		var ql: int = clampi(Settings.quality, 0, 3)
+		mmi.visibility_range_end = ITEM_RANGE[ql] if not mm.use_colors else CARPET_RANGE[ql]
+		if DevHooks.has("no-litter-range"):
+			mmi.visibility_range_end = 90.0 if mm.use_colors else 60.0
+		mmi.visibility_range_end_margin = 4.0
 		if mm.use_colors:
 			mmi.material_override = _carpet()
 		node.add_child(mmi)

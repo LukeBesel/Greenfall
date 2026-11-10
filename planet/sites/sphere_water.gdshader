@@ -21,6 +21,12 @@ uniform float sky_day = 1.0;
 uniform vec3 sun_dir = vec3(0.0, 1.0, 0.0);
 uniform vec3 sun_col : source_color = vec3(1.0, 0.95, 0.85);
 uniform float sun_vis = 1.0;
+// [v5load] Per-pixel cost. The three shortest waves (1.3 m and under) and the value-noise chop
+// fade out between 0.6 x ripple_far and ripple_far from the camera, where they are a few pixels
+// wide or less, and are not computed past it (SphereWater sets it by preset: Low 60 m, Medium
+// 250 m, High 400 m). Wave numbers and speeds are constants now (they were a division and a
+// square root per wave per pixel), and the scum noise is skipped on clean water.
+uniform float ripple_far = 250.0;
 
 const vec3 CLEAR_DEEP = vec3(0.008, 0.05, 0.07);
 const vec3 CLEAR_SHALLOW = vec3(0.03, 0.16, 0.15);
@@ -47,20 +53,30 @@ float vnoise(vec3 p) {
 		mix(mix(hash3(i + vec3(0, 0, 1)), hash3(i + vec3(1, 0, 1)), f.x), mix(hash3(i + vec3(0, 1, 1)), hash3(i + vec3(1, 1, 1)), f.x), f.y), f.z);
 }
 
+// direction (any 3D: its part along the ground sets the heading), wavelength m, slope
+const vec3 WD[7] = vec3[](vec3(0.71, 0.12, 0.69), vec3(-0.35, 0.62, 0.70), vec3(0.88, -0.45, 0.15),
+	vec3(-0.6, -0.5, 0.62), vec3(0.2, 0.93, -0.3), vec3(0.55, 0.4, -0.73), vec3(-0.82, 0.21, -0.53));
+// Wavelengths 9.0, 5.7, 3.4, 2.1, 1.3, 0.83, 0.53 m: k = 2 pi / L, speed = sqrt(9.8 / k).
+const float WK[7] = float[](0.698132, 1.102313, 1.847996, 2.991993, 4.833219, 7.570103, 11.855067);
+const float WSP[7] = float[](3.746661, 2.981677, 2.302834, 1.809809, 1.423950, 1.137790, 0.909203);
+const float WS[7] = float[](0.05, 0.05, 0.045, 0.04, 0.035, 0.028, 0.02);
+
 // Gradient of the wave height field (world space). calm: 0 crisp .. 1 sluggish (polluted).
-vec3 wave_grad(vec3 p, float t, float calm) {
+// fine: 1 near the camera, 0 where the three shortest waves are dropped.
+vec3 wave_grad(vec3 p, float t, float calm, float fine) {
 	vec3 g = vec3(0.0);
-	// direction (any 3D: its part along the ground sets the heading), wavelength m, slope
-	vec3 D[7] = vec3[](vec3(0.71, 0.12, 0.69), vec3(-0.35, 0.62, 0.70), vec3(0.88, -0.45, 0.15),
-		vec3(-0.6, -0.5, 0.62), vec3(0.2, 0.93, -0.3), vec3(0.55, 0.4, -0.73), vec3(-0.82, 0.21, -0.53));
-	float L[7] = float[](9.0, 5.7, 3.4, 2.1, 1.3, 0.83, 0.53);
-	float S[7] = float[](0.05, 0.05, 0.045, 0.04, 0.035, 0.028, 0.02);
-	for (int i = 0; i < 7; i++) {
-		float k = 6.2831853 / L[i];
-		float sp = sqrt(9.8 / k) * mix(1.0, 0.45, calm);
-		float ph = dot(p, D[i]) * k - t * sp * k + float(i) * 1.7;
-		float a = S[i] * mix(1.0, i < 3 ? 0.7 : 0.25, calm);  // polluted water: the small ripples die
-		g += D[i] * a * cos(ph);
+	float slow = mix(1.0, 0.45, calm);
+	for (int i = 0; i < 4; i++) {
+		float ph = dot(p, WD[i]) * WK[i] - t * WSP[i] * slow * WK[i] + float(i) * 1.7;
+		float a = WS[i] * mix(1.0, i < 3 ? 0.7 : 0.25, calm);  // polluted water: the small ripples die
+		g += WD[i] * a * cos(ph);
+	}
+	if (fine > 0.0) {
+		for (int i = 4; i < 7; i++) {
+			float ph = dot(p, WD[i]) * WK[i] - t * WSP[i] * slow * WK[i] + float(i) * 1.7;
+			float a = WS[i] * mix(1.0, 0.25, calm) * fine;
+			g += WD[i] * a * cos(ph);
+		}
 	}
 	return g;
 }
@@ -70,14 +86,17 @@ void fragment() {
 	float shore = COLOR.r;
 	float deep = COLOR.g;
 	vec3 up = normalize(wpos);
-	vec3 g = wave_grad(wpos, TIME, 1.0 - c);
+	float fine = 1.0 - smoothstep(ripple_far * 0.6, ripple_far, length(CAMERA_POSITION_WORLD - wpos));
+	vec3 g = wave_grad(wpos, TIME, 1.0 - c, fine);
 	// Irregular chop on top (value noise, finite differences along the ground): the sines alone
 	// lined the sun's glitter up in stripes.
-	vec3 tx = normalize(cross(up, vec3(0.0, 0.0, 1.0) + up.yzx * 0.1));
-	vec3 tz = cross(tx, up);
-	vec3 q = wpos * 1.1 + vec3(TIME * 0.21, TIME * 0.17, -TIME * 0.19);
-	float n0 = vnoise(q);
-	g += (tx * (vnoise(q + tx * 0.35) - n0) + tz * (vnoise(q + tz * 0.35) - n0)) * mix(0.12, 0.3, c);
+	if (fine > 0.0) {
+		vec3 tx = normalize(cross(up, vec3(0.0, 0.0, 1.0) + up.yzx * 0.1));
+		vec3 tz = cross(tx, up);
+		vec3 q = wpos * 1.1 + vec3(TIME * 0.21, TIME * 0.17, -TIME * 0.19);
+		float n0 = vnoise(q);
+		g += (tx * (vnoise(q + tx * 0.35) - n0) + tz * (vnoise(q + tz * 0.35) - n0)) * mix(0.12, 0.3, c) * fine;
+	}
 	g -= up * dot(g, up);
 	vec3 nw = normalize(up - g);
 	NORMAL = normalize((VIEW_MATRIX * vec4(nw, 0.0)).xyz);
@@ -90,8 +109,10 @@ void fragment() {
 	vec3 deep_c = mix(MURKY_DEEP, CLEAR_DEEP, c);
 	vec3 col = mix(shallow, deep_c, smoothstep(0.0, 1.0, deep));
 	// Polluted: blotchy scum and an oily brown film drifting on the surface.
-	float scum = smoothstep(0.5, 0.85, vnoise(wpos * 0.6 + vec3(TIME * 0.03, 0.0, TIME * 0.02))) * (1.0 - c);
-	col = mix(col, vec3(0.12, 0.11, 0.06), scum * 0.3);
+	if (c < 0.999) {
+		float scum = smoothstep(0.5, 0.85, vnoise(wpos * 0.6 + vec3(TIME * 0.03, 0.0, TIME * 0.02))) * (1.0 - c);
+		col = mix(col, vec3(0.12, 0.11, 0.06), scum * 0.3);
+	}
 	// Foam along the waterline: a soft band that breathes with the waves.
 	float fn = vnoise(wpos * 1.7 + vec3(0.0, TIME * 0.25, 0.0));
 	float foam = smoothstep(0.62, 0.95, shore + (fn - 0.5) * 0.35 + 0.06 * sin(TIME * 1.3 + dot(wpos, vec3(0.4, 0.3, 0.5))));

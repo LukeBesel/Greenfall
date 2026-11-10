@@ -151,8 +151,18 @@ func _flush_batches() -> void:
 		mmi.multimesh = mm
 		mmi.set_meta("inst_xf", xfs)  # [world2] for the collider audit
 		mmi.visibility_range_end = 420.0
+		# [v5load] Facade pieces that lie flat on the wall (windows, doors, panels, trims: under
+		# FLAT_PIECE_M deep) don't cast: the building's body behind them does, and at the sun's
+		# shadow resolution a few centimetres of relief never showed. Balconies, awnings and the
+		# like keep their shadows. About a third of the town's shadow draws.
+		var bb: Vector3 = mesh.get_aabb().size
+		if minf(bb.x, minf(bb.y, bb.z)) < FLAT_PIECE_M and not DevHooks.has("no-shadow-trim"):
+			mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		add_child(mmi)
 	_batches.clear()
+
+
+const FLAT_PIECE_M: float = 0.3
 
 
 # --- Blocks -------------------------------------------------------------------------
@@ -490,7 +500,8 @@ func _mesh_prop(model: String, pos: Vector3, yaw: float, collide: bool, scl: flo
 		return  # [v3city] not on the lake
 	var mesh: Mesh = AssetLib.lite(AssetLib.model_part(model.get_slice("::", 0), model.get_slice("::", 1)) if "::" in model else AssetLib.model_mesh(model), 2500)
 	var xf := Transform3D(Basis.from_euler(Vector3(0.0, yaw, roll)) * Basis.from_scale(Vector3.ONE * scl), pos)
-	_props.instance(mesh, xf)
+	# [v5load] Props that lie on the ground (manhole covers, grates: under 12 cm tall) cast no shadow.
+	_props.instance(mesh, xf, null, mesh.get_aabb().size.y * scl >= 0.12 or DevHooks.has("no-shadow-trim"))
 	if collide:
 		# [world2] One shared PROP body, shared shapes; lamp posts get a slim post (their heads and
 		# arms are overhead), everything else a box of its bounds.
