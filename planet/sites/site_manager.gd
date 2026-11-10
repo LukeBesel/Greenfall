@@ -413,6 +413,9 @@ func _attach_power(i: int, p: SitePrefab) -> void:
 		if w.get("hex_levels") is HexLevels or not is_inside_tree():
 			break
 		await get_tree().process_frame
+	# The wait can outlive the site: Lumi starting or landing far from this hub frees its prefab.
+	if not is_instance_valid(p) or not is_instance_valid(w):
+		return
 	var hl: Variant = w.get("hex_levels")
 	if not (hl is HexLevels) or p.content == null or not is_instance_valid(p.content):
 		return
