@@ -76,7 +76,7 @@ func choose(m: PaceSimRdModel) -> String:
 	var can_clean: bool = w.can_clean(z)
 	if w.tending_open():
 		var batch: float = TEND_BATCH_HEXES if can_clean else 0.0001
-		if z.count[1] >= batch:
+		if z.count[1] >= batch and m.seeds >= m.data.num("regrowth.seeds.per_hex"):
 			return "plant"
 		if z.thirsty(m.t, true) >= batch:
 			return "water"
@@ -172,6 +172,10 @@ func _fits_beside(m: PaceSimRdModel, item: Dictionary, gate: Dictionary) -> bool
 	return float(item["parts"]) <= 0.0 or m.parts - float(item["parts"]) >= float(gate["parts"])
 
 
+func _crew_buy(item: Dictionary) -> bool:
+	return str(item["type"]) == "robot" or str(item["type"]) == "repair"
+
+
 ## After a purchase the bench is looked at again at once; after none, a little later.
 func _bought(m: PaceSimRdModel, did: bool) -> void:
 	if did:
@@ -206,6 +210,8 @@ func _buy_best(m: PaceSimRdModel, offers: Array[Dictionary], gate: Dictionary) -
 	var best_score: float = 0.0
 	var top_track: String = ""
 	var top_track_score: float = 0.0
+	var saw_build: bool = false
+	var saw_repair: bool = false
 	for item: Dictionary in offers:
 		var type: String = str(item["type"])
 		if type == "research" or _is_gate(item):
@@ -218,12 +224,16 @@ func _buy_best(m: PaceSimRdModel, offers: Array[Dictionary], gate: Dictionary) -
 			top_track = str(item["id"])
 		if not m.can_afford(item) or not _fits_beside(m, item, gate):
 			continue
+		saw_build = saw_build or type == "robot"
+		saw_repair = saw_repair or type == "repair"
 		if score > best_score:
 			best_score = score
 			best = item
 	if best.is_empty() or not m.buy(best):
 		return
 	_bought(m, true)
+	if _crew_buy(best) and saw_build and saw_repair:
+		m.record.crew_choices[str(best["type"])] = m.record.crew_choices.get(str(best["type"]), 0) + 1
 	if str(best["type"]) == "track":
 		m.record.track_buys[str(best["id"])] = m.record.track_buys.get(str(best["id"]), 0) + 1
 		m.record.track_tops[top_track] = m.record.track_tops.get(top_track, 0) + 1

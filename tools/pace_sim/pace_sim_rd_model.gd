@@ -20,12 +20,13 @@ var cubes: float = 0.0
 var parts: float = 0.0
 var earned: float = 0.0
 var parts_earned: float = 0.0
+var seeds: float = 0.0
 ## Ids owned: unlocks, finished research nodes, grants, rig modules.
 var owned: Dictionary[String, bool] = {}
 var levels: Dictionary[String, int] = {}
 var robots: Dictionary[String, int] = {}
-## Robot type -> Mk tier index.
-var mk: Dictionary[String, int] = {}
+## Robot type -> how many of them are repaired (the second tier).
+var repaired: Dictionary[String, int] = {}
 var mastery: Dictionary[String, int] = {}
 var mastery_units: Dictionary[String, float] = {}
 ## Counters that conditions read: bales, hexes, pieces, mastery_<kind>.
@@ -114,6 +115,17 @@ func robot_total() -> int:
 	return n
 
 
+## The most robots the base can run at its level.
+func crew_cap() -> int:
+	return int((data.tables["robots"]["crew_cap"] as Array)[base_level - 1])
+
+
+## A one-off reward (a district stage, a source): paid at once and measured against income.
+func reward(amount: float) -> void:
+	record.lump(self, amount)
+	pay(amount)
+
+
 func count_of(counter: String) -> float:
 	return counters.get(counter, 0.0)
 
@@ -154,6 +166,8 @@ func grant(id: String) -> void:
 		base_level = maxi(base_level, int(sets.get("base_level", base_level)))
 	if data.modules.has(id):
 		rig_dirty = true
+	if id == str(data.tables["regrowth"]["unlock"]):
+		seeds += data.num("regrowth.seeds.kit")
 	emit("own:" + id)
 	rates.dirty = true
 	items_dirty = true
@@ -202,7 +216,7 @@ func conditions_met(row: Dictionary) -> bool:
 
 
 ## Everything on offer now: {type, id, cubes, parts, gate, crew}. Types: track, unlock, research,
-## robot, mk, module.
+## robot, repair, module.
 func items() -> Array[Dictionary]:
 	if items_dirty or t - _items_at >= ITEMS_REFRESH_S:
 		_items = PaceSimRdOffers.build(self)
@@ -226,6 +240,7 @@ func any_affordable() -> bool:
 func buy(item: Dictionary) -> bool:
 	if not can_afford(item):
 		return false
+	var income_before: float = rates.income_now()
 	cubes -= float(item["cubes"])
 	parts -= float(item["parts"])
 	_apply(item, 1)
@@ -242,12 +257,13 @@ func buy(item: Dictionary) -> bool:
 		"robot":
 			emit("first_robot")
 			emit("robot:" + id)
-		"mk":
-			emit("first_mk2")
+		"repair":
+			emit("first_repair")
 	busy_s += data.num("balance.hand.shop_s")
 	record.purchase(t, str(item["type"]), id, float(item["cubes"]), float(item["parts"]))
 	rates.dirty = true
 	items_dirty = true
+	record.income_jump(self, str(item["type"]) + ":" + id, income_before, rates.income_now())
 	return true
 
 
@@ -270,8 +286,8 @@ func _apply(item: Dictionary, by: int) -> void:
 			levels[id] = levels.get(id, 0) + by
 		"robot":
 			robots[id] = robots.get(id, 0) + by
-		"mk":
-			mk[id] = mk.get(id, 0) + by
+		"repair":
+			repaired[id] = repaired.get(id, 0) + by
 
 
 func _tick() -> void:
@@ -286,8 +302,7 @@ func _tick() -> void:
 	work.crew_tick()
 	work.grow_tick()
 	_after_work()
-	if any_affordable():
-		record.can_afford(t)
+	record.offers(self)
 	record.sample(self)
 
 
@@ -330,9 +345,9 @@ func _hex_cleaned(z: PaceSimRdDistrict) -> void:
 
 
 func _district_stage(z: PaceSimRdDistrict, s: int) -> void:
-	var reward: Dictionary = data.tables["regrowth"]["district_stage_reward"]
-	pay(float((reward["cubes"] as Array)[s]) * z.reward_mult)
-	add_data(float((reward["data"] as Array)[s]))
+	var stage_reward: Dictionary = data.tables["regrowth"]["district_stage_reward"]
+	reward(float((stage_reward["cubes"] as Array)[s]) * z.reward_mult)
+	add_data(float((stage_reward["data"] as Array)[s]))
 	emit("stage:%s:%d" % [z.id, s])
 	record.district_goal(t, "stage:%s:%d" % [z.id, s])
 	record.win(t)

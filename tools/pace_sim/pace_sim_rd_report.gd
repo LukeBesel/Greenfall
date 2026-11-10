@@ -51,6 +51,7 @@ static func build(m: PaceSimRdModel) -> Dictionary:
 	checks.append(_spike_check(spikes, end_s, k))
 	checks.append(_share_check(rec, k))
 	checks.append_array(PaceSimRdDesignChecks.build(m, end_s, k))
+	checks.append_array(PaceSimRdEconomyChecks.build(m, end_s, k))
 	return {"beats": _beats(m, k), "checks": checks, "districts": _districts(m, end_s, k), "spikes": spikes,
 		"hex_spikes": _spikes(rec, "hand_hexes", "crew_hexes", k), "notes": _notes(m, end_s, k), "ended": m.ended_at >= 0.0, "end_min": end_s / 60.0}
 
@@ -58,7 +59,7 @@ static func build(m: PaceSimRdModel) -> Dictionary:
 ## True when every check of the report passed.
 static func all_pass(report: Dictionary) -> bool:
 	for c: Dictionary in report["checks"]:
-		if not c["pass"]:
+		if not c["pass"] and not bool(c.get("advisory", false)):
 			return false
 	return true
 
@@ -80,7 +81,8 @@ static func lines(report: Dictionary) -> PackedStringArray:
 	out.append("")
 	out.append("checks (limits are player time; measured bot time x bot_to_player):")
 	for c: Dictionary in report["checks"]:
-		out.append("%s  %-24s %10s  (limit %s)  %s" % ["PASS" if c["pass"] else "FAIL", c["id"], c["shown"], c["limit_shown"], c["note"]])
+		var mark: String = "PASS" if c["pass"] else ("NOTE" if bool(c.get("advisory", false)) else "FAIL")
+		out.append("%s  %-26s %10s  (limit %s)  %s" % [mark, c["id"], c["shown"], c["limit_shown"], c["note"]])
 	for n: String in report["notes"]:
 		out.append("note: " + n)
 	return out
@@ -214,11 +216,12 @@ static func _notes(m: PaceSimRdModel, end_s: float, k: float) -> PackedStringArr
 	notes.append("mastery at the end: " + ", ".join(levels))
 	var crew: PackedStringArray = []
 	for type: String in m.robots:
-		crew.append("%s x%d%s" % [type, m.robots[type], " Mk II" if m.mk.get(type, 0) > 0 else ""])
+		crew.append("%s x%d (%d repaired)" % [type, m.robots[type], m.repaired.get(type, 0)])
 	notes.append("crew at the end: %d (%s), base level %d" % [m.robot_total(), ", ".join(crew), m.base_level])
 	var spent: PackedStringArray = []
 	for key: String in m.work.seconds:
 		spent.append("%s %.0f%%" % [key, m.work.seconds[key] / end_s * 100.0])
 	notes.append("Lumi's time: " + ", ".join(spent))
-	notes.append("field data lost with no research active: %.0f; pieces found: %d; cubes left %.0f, Parts left %.0f" % [m.record.data_lost, m.pieces.size(), m.cubes, m.parts])
+	notes.append("field data lost with no research active: %.0f; pieces found: %d; cubes left %.0f, Parts left %.0f of %.0f earned, seeds left %.0f" % [
+		m.record.data_lost, m.pieces.size(), m.cubes, m.parts, m.parts_earned, m.seeds])
 	return notes

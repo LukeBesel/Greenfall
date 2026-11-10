@@ -1,7 +1,8 @@
 class_name PaceSimRdOffers
 extends RefCounted
 ## Builds the list of things the redesign model has on offer at the bench right now, with their
-## costs: track levels, one-off unlocks, research nodes, robots, Mk refits and rig modules.
+## costs: track levels, one-off unlocks, research nodes, robots, robot repairs and rig modules.
+## Every offer costs one currency only (design spec section 14: one job per currency).
 
 
 ## Every offer as {type, id, cubes, parts, gate, crew}.
@@ -52,21 +53,17 @@ static func _research(m: PaceSimRdModel, out: Array[Dictionary]) -> void:
 
 
 static func _robots(m: PaceSimRdModel, out: Array[Dictionary]) -> void:
-	var cfg: Dictionary = m.data.tables["robots"]
-	var tiers: Array = cfg["tiers"]
+	var crew_row: Dictionary = {"crew": true}
+	var room: bool = m.robot_total() < m.crew_cap()
 	for id: String in m.data.robot_types:
 		var row: Dictionary = m.data.robot_types[id]
 		if not m.conditions_met(row):
 			continue
 		var have: int = m.robots.get(id, 0)
-		var crew_row: Dictionary = {"crew": true}
-		if have < int((row["cap"] as Array)[m.base_level - 1]):
-			out.append(_offer("robot", id, float(row["cost"]["cubes"]) * pow(float(cfg["cost_growth"]), float(have)),
-				float(row["cost"]["parts"]) * pow(float(cfg["parts_growth"]), float(have)), crew_row))
-		var next_tier: int = m.mk.get(id, 0) + 1
-		if have > 0 and next_tier < tiers.size() and m.owned.has(str(tiers[next_tier]["requires"])):
-			out.append(_offer("mk", id, float(row["cost"]["cubes"]) * float(tiers[next_tier]["cost_mult"]) * float(have),
-				float(row["cost"]["parts"]) * float(tiers[next_tier]["parts_mult"]) * float(have), crew_row))
+		if room and have < int(row["max"]):
+			out.append(_offer("robot", id, 0.0, float(row["parts"]) + float(row["parts_step"]) * float(have), crew_row))
+		if m.repaired.get(id, 0) < have and m.owned.has(str(m.data.tables["robots"]["repair_requires"])):
+			out.append(_offer("repair", id, 0.0, float(row["repair_parts"]), crew_row))
 
 
 static func _modules(m: PaceSimRdModel, out: Array[Dictionary]) -> void:

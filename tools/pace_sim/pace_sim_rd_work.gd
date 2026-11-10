@@ -139,6 +139,7 @@ func grow_tick() -> void:
 func _stage_reward(z: PaceSimRdDistrict, s: int, n: float) -> void:
 	var reward: Dictionary = _d.tables["regrowth"]["stage_reward"]
 	_m.pay(n * float((reward["cubes"] as Array)[s]) * z.reward_mult)
+	_m.seeds += n * float((_d.tables["regrowth"]["seeds"]["from_stage"] as Array)[s])
 	_m.add_data(n * float((reward["data"] as Array)[s]))
 	_m.record.win(_m.t)
 	if z.index == _m.here:
@@ -185,6 +186,8 @@ func _hand_output(z: PaceSimRdDistrict, kind: String, units: float) -> void:
 		if _load_acc >= 1.0:
 			if _m.rates.has_baler():
 				_m.bump("bales", floor(_load_acc))
+				if _m.record.first_bale_value <= 0.0:
+					_m.record.first_bale_value = _m.rates.capacity() * _m.rates.unit_value(kind)
 			_load_acc = fmod(_load_acc, 1.0)
 			_m.emit("first_payout")
 			_m.record.win(_m.t)
@@ -212,7 +215,7 @@ func _gain_mastery(kind: String, amount: float) -> void:
 
 
 func _plant() -> bool:
-	var used: float = zone().plant(_m.rates.plant_rate() * PaceSimRdModel.TICK_S)
+	var used: float = _plant_in(zone(), _m.rates.plant_rate() * PaceSimRdModel.TICK_S)
 	if used > 0.0:
 		_m.emit("first_plant")
 		_stage_reward(zone(), PaceSimRdDistrict.PLANTED, used)
@@ -226,6 +229,14 @@ func _water(only_dry: bool) -> bool:
 	if used > 0.0:
 		_m.record.win(_m.t)
 	return used > 0.0
+
+
+## Plants up to `n` hexes of a district with the seeds on hand; returns hexes planted.
+func _plant_in(z: PaceSimRdDistrict, n: float) -> float:
+	var per_hex: float = _d.num("regrowth.seeds.per_hex")
+	var used: float = z.plant(minf(n, _m.seeds / per_hex))
+	_m.seeds -= used * per_hex
+	return used
 
 
 ## The source job: walk in, clear its surroundings by hand, then the hands-on action.
@@ -252,7 +263,6 @@ func _source() -> bool:
 	z.source_at = _m.t
 	_source_step_done(z, 3)
 	_m.emit("source_shut:" + z.id)
-	_m.pay(float(src["payout"]["cubes"]))
 	_m.gain_parts(float(src["payout"]["parts"]))
 	_m.add_data(float(src["payout"]["data"]))
 	for id: Variant in src.get("grants", []):
@@ -298,6 +308,9 @@ func _travel(to: int) -> void:
 	_m.here = to
 	if z.entered_at < 0.0:
 		z.entered_at = _m.t
+		if _m.record.d1_hand_hexes <= 0.0:
+			_m.record.d1_parts = _m.parts_earned
+			_m.record.d1_hand_hexes = _m.hand_hexes
 		_m.busy_s += float(z.row["arrival_s"])
 		_m.emit("enter:" + z.id)
 		_m.record.win(_m.t)
@@ -322,6 +335,7 @@ func _crew_clean(type: String, row: Dictionary, n: float, linked: float) -> void
 	var rate: float = _m.rates.robot_rate(type, kind, near) * (linked if near else 1.0)
 	var units: float = z.add_units(kind, n * rate * PaceSimRdModel.TICK_S)
 	_m.pay(units * float(_d.kinds[kind]["yield"]["cubes"]) * float(_d.kinds[kind]["crew_value"]))
+	_m.gain_parts(units * float(_d.kinds[kind]["yield"].get("parts", 0.0)) * float(_d.kinds[kind].get("crew_parts", 0.0)))
 	_m.crew_units += units
 	_m.crew_hexes += units / z.hex_work
 	z.crew_units += units
@@ -341,15 +355,14 @@ func _crew_zone(allowed: Array[String]) -> PaceSimRdDistrict:
 func _crew_tend(type: String, field: String, n: float) -> void:
 	if not tending_open():
 		return
-	var tier: Dictionary = (_d.tables["robots"]["tiers"] as Array)[_m.mk.get(type, 0)]
 	var key: String = type + field
 	var regrowth: Dictionary = _d.tables["regrowth"]
-	var budget: float = _tend_acc.get(key, 0.0) + float(_d.robot_types[type][field]) * n * float(tier["mult"]) * _m.rates.stat("crew_rate")
+	var budget: float = _tend_acc.get(key, 0.0) + float(_d.robot_types[type][field]) * n * _m.rates.tier_mult(type) * _m.rates.stat("crew_rate")
 	for z: PaceSimRdDistrict in _m.zones:
 		if budget < 1.0 or z.index >= _m.unlocked:
 			break
 		if field == "plant_rate":
-			var planted: float = z.plant(floor(budget))
+			var planted: float = _plant_in(z, floor(budget))
 			budget -= planted
 			if planted > 0.0:
 				_stage_reward(z, PaceSimRdDistrict.PLANTED, planted)

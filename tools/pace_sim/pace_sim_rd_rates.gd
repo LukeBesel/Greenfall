@@ -7,7 +7,7 @@ extends RefCounted
 ## Rate used for a kind Lumi has no tool for, so that "cannot work it" still compares as a number.
 const NO_TOOL_RATE: float = 0.02
 ## Bisection steps when solving how long a district still takes.
-const SOLVE_STEPS: int = 24
+const SOLVE_STEPS: int = 14
 
 ## Set whenever something that feeds a stat changes; the cache is rebuilt on the next read.
 var dirty: bool = true
@@ -133,10 +133,32 @@ func robot_rate(type: String, kind: String, near: bool) -> float:
 	var level: int = _m.mastery.get(kind, 0)
 	if level < int(speed["min_level"]):
 		return 0.0
-	var tier: Dictionary = (_d.tables["robots"]["tiers"] as Array)[_m.mk.get(type, 0)]
 	var rate: float = float(_d.robot_types[type]["rate"]) * (float(speed["base"]) + float(speed["per_level"]) * float(level))
-	rate *= float(tier["mult"]) * stat("crew_rate")
+	rate *= tier_mult(type) * stat("crew_rate")
 	return rate * (1.0 + _d.num("robots.near_bonus")) if near else rate
+
+
+## Average speed multiplier of a robot type from its repaired robots (rusty ones count 1.0).
+func tier_mult(type: String) -> float:
+	var n: int = _m.robots.get(type, 0)
+	if n <= 0:
+		return 1.0
+	return 1.0 + (_d.num("robots.repaired_mult") - 1.0) * float(_m.repaired.get(type, 0)) / float(n)
+
+
+## Cubes a second right now: Lumi on the best-paying kind she can work here, plus the crew's bales.
+func income_now() -> float:
+	var z: PaceSimRdDistrict = _m.zones[_m.here]
+	var best: float = 0.0
+	for kind: String in z.mix:
+		if kind_usable(kind):
+			best = maxf(best, throughput(kind) * unit_value(kind))
+	var crew: float = 0.0
+	for type: String in _m.robots:
+		for kind: Variant in _d.robot_types[type].get("kinds", []):
+			if z.mix.has(str(kind)):
+				crew += robot_rate(type, str(kind), true) * float(_m.robots[type]) * float(_d.kinds[str(kind)]["yield"]["cubes"]) * float(_d.kinds[str(kind)]["crew_value"])
+	return best * surge_factor() + crew
 
 
 ## Units a second the whole crew would clear in a district with Lumi there.
@@ -202,8 +224,7 @@ func water_rate() -> float:
 func crew_tend_rate(field: String) -> float:
 	var total: float = 0.0
 	for type: String in _m.robots:
-		var tier: Dictionary = (_d.tables["robots"]["tiers"] as Array)[_m.mk.get(type, 0)]
-		total += float(_d.robot_types[type].get(field, 0.0)) * float(_m.robots[type]) * float(tier["mult"]) * stat("crew_rate")
+		total += float(_d.robot_types[type].get(field, 0.0)) * float(_m.robots[type]) * tier_mult(type) * stat("crew_rate")
 	return total
 
 
@@ -244,6 +265,9 @@ func _rebuild() -> void:
 			_apply(_d.nodes[id])
 	for slot: String in _m.rig:
 		_apply(_d.modules[_m.rig[slot]])
+	for type: String in _m.robots:
+		if _m.robots[type] > 0:
+			_apply(_d.robot_types[type])
 
 
 func _apply(row: Dictionary) -> void:
