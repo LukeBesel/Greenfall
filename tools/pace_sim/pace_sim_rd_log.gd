@@ -25,7 +25,7 @@ var minutes: Array[Dictionary] = []
 var track_buys: Dictionary[String, int] = {}
 var track_tops: Dictionary[String, int] = {}
 ## The same count with every open track priced the same (the track with the largest gain).
-var track_tops_equal: Dictionary[String, int] = {}
+var track_tops_equal: Dictionary[String, float] = {}
 ## District id -> {slot: best module there}.
 var rig_best: Dictionary[String, Dictionary] = {}
 ## Highest ratio seen of tipping income over pressing income, and when.

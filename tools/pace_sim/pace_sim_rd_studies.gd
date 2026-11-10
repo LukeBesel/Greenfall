@@ -10,6 +10,8 @@ const FASTEST_SHARE: float = 0.6
 ## Time to the launch point must differ by at least this share between the best and the worst
 ## sensible rig loadout.
 const RIG_SPREAD_MIN: float = 0.08
+## Loadouts within this many player minutes of each other in a city are a tie there.
+const RIG_TIE_MIN: float = 0.5
 
 
 static func _check(id: String, passed: bool, value: float, shown: String, limit_shown: String, note: String) -> Dictionary:
@@ -133,10 +135,16 @@ static func _rig_checks(rows: Array[Dictionary]) -> Array[Dictionary]:
 	for i: int in cities:
 		var quickest: String = ""
 		var quickest_min: float = INF
+		var slowest_min: float = 0.0
 		for row: Dictionary in rows:
+			slowest_min = maxf(slowest_min, float(row["city_min"][i]))
 			if float(row["city_min"][i]) < quickest_min:
 				quickest_min = float(row["city_min"][i])
 				quickest = str(row["name"])
+		# A city where no module is owned yet plays the same for every loadout: it has no winner.
+		if slowest_min - quickest_min < RIG_TIE_MIN:
+			by_city.append("(tie)")
+			continue
 		winners[quickest] = winners.get(quickest, 0) + 1
 		by_city.append(quickest)
 	return [
@@ -180,7 +188,7 @@ static func sensitivity_lines(study: Dictionary) -> PackedStringArray:
 	var out: PackedStringArray = ["constant                                        base      change  launch(bot min)  crew  failed checks (else the tightest pass)"]
 	for row: Dictionary in study["rows"]:
 		for run: Dictionary in row["runs"]:
-			out.append("%-46s %8.4g  %+5.0f%%  %-15s  %4d  %s" % [row["path"], float(row["base"]), (float(run["factor"]) - 1.0) * 100.0,
+			out.append("%-46s %8s  %5s%%  %-15s  %4d  %s" % [row["path"], String.num(float(row["base"]), 3), "%+d" % int(round((float(run["factor"]) - 1.0) * 100.0)),
 				"%.1f" % float(run["end_min"]) if run["ended"] else "none", run["crew"],
 				", ".join(run["failed"]) if not (run["failed"] as Array).is_empty() else "none (%s)" % run["tightest"]])
 	out.append_array(_check_lines(study["checks"]))

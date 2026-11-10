@@ -288,6 +288,9 @@ func _rebuild() -> void:
 		var row: Dictionary = _d.tracks[id]
 		var key: String = str(row["stat"])
 		_mult[key] = _mult.get(key, 1.0) * (1.0 + float(row["add"]) * float(_m.levels[id]))
+		var also: Dictionary = row.get("also", {})
+		for other: String in also:
+			_mult[other] = _mult.get(other, 1.0) * (1.0 + float(also[other]) * float(_m.levels[id]))
 	for id: String in _m.owned:
 		if _d.unlocks.has(id):
 			_apply(_d.unlocks[id])

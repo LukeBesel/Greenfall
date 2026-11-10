@@ -68,20 +68,20 @@ static func _pressed(m: PaceSimRdModel) -> Dictionary:
 ## Fails when, with every open track priced the same, one track was the best buy in more than
 ## half of the track purchases, or a track on offer was never bought.
 static func _tracks(m: PaceSimRdModel) -> Dictionary:
-	var total: int = 0
+	var total: float = 0.0
 	for id: String in m.record.track_tops_equal:
 		total += m.record.track_tops_equal[id]
 	var worst: float = 0.0
 	var unbought: int = 0
 	var shares: PackedStringArray = []
 	for id: String in m.data.tracks:
-		var share: float = float(m.record.track_tops_equal.get(id, 0)) / float(maxi(total, 1))
+		var share: float = m.record.track_tops_equal.get(id, 0.0) / maxf(total, 1.0)
 		worst = maxf(worst, share)
 		if m.record.track_buys.get(id, 0) == 0:
 			unbought += 1
 		shares.append("%s %.0f%% (at its real price %.0f%%, %d bought)" % [id, share * 100.0,
-			float(m.record.track_tops.get(id, 0)) / float(maxi(total, 1)) * 100.0, m.record.track_buys.get(id, 0)])
-	return PaceSimRdReport.used(_check("no_dominant_track", total > 0 and unbought == 0 and worst <= PaceSimRdReport.DOMINANT_TRACK_SHARE, worst, "%.0f%%" % (worst * 100.0),
+			float(m.record.track_tops.get(id, 0)) / maxf(total, 1.0) * 100.0, m.record.track_buys.get(id, 0)])
+	return PaceSimRdReport.used(_check("no_dominant_track", total > 0.0 and unbought == 0 and worst <= PaceSimRdReport.DOMINANT_TRACK_SHARE, worst, "%.0f%%" % (worst * 100.0),
 		"at most %.0f%%" % (PaceSimRdReport.DOMINANT_TRACK_SHARE * 100.0), "share of track purchases each track led at equal prices: " + ", ".join(shares)),
 		worst / PaceSimRdReport.DOMINANT_TRACK_SHARE)
 

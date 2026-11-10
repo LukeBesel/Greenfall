@@ -24,6 +24,9 @@ const RETURN_SHARE: float = 0.3
 const MIX_HOLD_S: float = 10.0
 ## Added to a research node's field-data cost when ranking a node that only adds to a stat.
 const AMPLIFIER_NODE_RANK: float = 100000.0
+## A track "leads" at equal prices only when it is clearly the best buy: tracks whose gain is
+## within this share of the best gain share the lead.
+const TIE_SHARE: float = 0.1
 ## Seconds before the offers are weighed again after a look that bought nothing.
 const LOOK_AGAIN_S: float = 5.0
 ## What the first parts finder or robot builder is worth to the player's ranking: they add no
@@ -31,6 +34,9 @@ const LOOK_AGAIN_S: float = 5.0
 const CHAIN_ROBOT_GAIN: float = 1.0
 ## Another robot builder is bought once this many times its price in Parts is lying unused.
 const PARTS_PILE_FACTOR: float = 2.0
+## The Assembler's line is paused for the rocket once a rocket part has been on offer, and out
+## of reach, for this many seconds: a player short of Parts stops building robots to launch.
+const ROCKET_PATIENCE_S: float = 90.0
 
 ## False: never builds robots or anything only robots need. The one factory the rocket's parts
 ## are made in is still built (offers marked "launch"), or the launch point could not be reached.
@@ -46,6 +52,8 @@ var fixed_rig: Dictionary[String, String] = {}
 var _next_look: float = 0.0
 var _mix_type: String = ""
 var _mix_until: float = 0.0
+var _rocket_part: String = ""
+var _rocket_since: float = 0.0
 
 
 ## Called when Lumi is free: buy at most one thing.
@@ -121,6 +129,12 @@ func next_build(m: PaceSimRdModel) -> String:
 ## a type, that is on offer. These are small and open something new.
 func _parts_kept_back(m: PaceSimRdModel) -> float:
 	var keep: float = 0.0
+	var part: Dictionary = m.rocket_next()
+	if part.is_empty() or str(part["id"]) != _rocket_part:
+		_rocket_part = str(part.get("id", ""))
+		_rocket_since = m.t
+	elif m.t - _rocket_since > ROCKET_PATIENCE_S:
+		keep = float(part["parts"])
 	for item: Dictionary in m.items():
 		var first_of_type: bool = str(item["type"]) == "robot" and m.robots.get(str(item["id"]), 0) == 0 and not m.is_building(str(item["id"]))
 		if str(item["type"]) == "research" or first_of_type:
@@ -258,8 +272,7 @@ func _buy_best(m: PaceSimRdModel, offers: Array[Dictionary], gate: Dictionary) -
 	var best_score: Dictionary[String, float] = {"parts": 0.0, "cubes": 0.0}
 	var top_track: String = ""
 	var top_track_score: float = 0.0
-	var top_equal: String = ""
-	var top_equal_gain: float = 0.0
+	var track_gains: Dictionary[String, float] = {}
 	var seen: Dictionary[String, bool] = {}
 	var saving_parts: bool = _saving_parts(m, offers)
 	for item: Dictionary in offers:
@@ -274,9 +287,8 @@ func _buy_best(m: PaceSimRdModel, offers: Array[Dictionary], gate: Dictionary) -
 		if type == "track" and score > top_track_score:
 			top_track_score = score
 			top_track = str(item["id"])
-		if type == "track" and gain > top_equal_gain:
-			top_equal_gain = gain
-			top_equal = str(item["id"])
+		if type == "track":
+			track_gains[str(item["id"])] = gain
 		if not m.can_afford(item) or not _fits_beside(item, gate):
 			continue
 		seen[type] = true
@@ -292,8 +304,25 @@ func _buy_best(m: PaceSimRdModel, offers: Array[Dictionary], gate: Dictionary) -
 	if str(pick["type"]) == "track":
 		m.record.track_buys[str(pick["id"])] = m.record.track_buys.get(str(pick["id"]), 0) + 1
 		m.record.track_tops[top_track] = m.record.track_tops.get(top_track, 0) + 1
-		m.record.track_tops_equal[top_equal] = m.record.track_tops_equal.get(top_equal, 0) + 1
+		_record_equal_price_lead(m, track_gains)
 	m.rig_dirty = m.rig_dirty or str(pick["type"]) == "module"
+
+
+## Which track would be the best buy if every open track cost the same: the largest gain. Tracks
+## within TIE_SHARE of it share the lead, so two tracks with the same effect do not each "lead"
+## by the order they are listed in.
+func _record_equal_price_lead(m: PaceSimRdModel, gains: Dictionary[String, float]) -> void:
+	var best: float = 0.0
+	for id: String in gains:
+		best = maxf(best, gains[id])
+	if best <= 0.0:
+		return
+	var leaders: PackedStringArray = []
+	for id: String in gains:
+		if gains[id] >= best * (1.0 - TIE_SHARE):
+			leaders.append(id)
+	for id: String in leaders:
+		m.record.track_tops_equal[id] = m.record.track_tops_equal.get(id, 0.0) + 1.0 / float(leaders.size())
 
 
 ## True while something new costs Parts the player does not have yet: a research node that opens

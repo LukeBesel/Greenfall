@@ -172,7 +172,7 @@ func rocket_district() -> int:
 
 
 ## The rocket part that can be ordered now, or {}: one at a time, in order, each once that
-## share of the launch city is clean (and its source shut where the part says so).
+## share of the launch city's cleaning work is done (and its source shut where the part says so).
 func rocket_next() -> Dictionary:
 	if rocket_done() or rocket_left_s > 0.0 or rocket_ready or assemblers() <= 0:
 		return {}
@@ -180,7 +180,7 @@ func rocket_next() -> Dictionary:
 	if at < 0 or at >= unlocked or zones[at].entered_at < 0.0:
 		return {}
 	var part: Dictionary = rocket_parts()[rocket_fitted]
-	if zones[at].clean_share() + 0.0001 < float(part.get("at_clean_share", 0.0)) or (bool(part.get("after_source", false)) and not zones[at].source_shut()):
+	if zones[at].work_share() + 0.0001 < float(part.get("at_progress", 0.0)) or (bool(part.get("after_source", false)) and not zones[at].source_shut()):
 		return {}
 	return part
 
@@ -456,6 +456,8 @@ func _after_work() -> void:
 			break
 		for i: int in z.take_new_clean():
 			_hex_cleaned(z)
+		# Conditions can wait on a city's progress: percent of its cleaning work done.
+		counters["progress_" + z.id] = z.work_share() * 100.0
 		var before: int = z.stage
 		if z.update_stage(t):
 			for s: int in range(before + 1, z.stage + 1):

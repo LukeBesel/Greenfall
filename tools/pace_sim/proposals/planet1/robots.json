@@ -4,7 +4,7 @@
   "near_bonus": 0.25,
   "distance": {"shift_s": 300.0, "s_per_ring": 2.0},
   "crew_cap": [8, 56, 90, 120, 160, 200],
-  "chain": {"scrounger": "scrounger", "assembler": "assembler", "carry": 8.0, "trip_s": 30.0, "trip_s_per_ring": 1.5, "assembly_s": 40.0, "hand_dig_s": 4.0},
+  "chain": {"scrounger": "scrounger", "assembler": "assembler", "carry": 8.0, "trip_s": 30.0, "trip_s_per_ring": 1.5, "assembly_s": 40.0, "hand_dig_s": 3.0},
   "haul_share": 0.5,
   "repaired_mult": 1.6,
   "repaired_build_mult": 1.5,

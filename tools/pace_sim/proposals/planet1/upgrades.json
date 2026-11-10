@@ -1,12 +1,12 @@
 {
   "_doc": "PROPOSAL (task M3-01), not game data. Lumi's tracks and the one-off unlocks (spec sections 7 and 14). Everything here costs CUBES only. TIERS: each district opens one tier of every track (tier 0 = district 1). tier_levels = levels a tier holds; tier_ratio = cost ratio from one level to the next inside that tier; tier_cost = what the first level of a tier costs for a track of weight 1 (tier 0 uses the track's own first_cost instead). Cost of a level = (first_cost in tier 0, else weight x tier_cost[tier]) x tier_ratio[tier]^(position inside the tier). The tier price rises because the district's waste is richer, not through a running multiplier. TRACKS: stat = the stat the track multiplies by (1 + add x level), so every level adds the same amount; requires = an id that must be owned; first_tier = the tier it opens in; planet_levels = levels on this planet; final_levels = where the track ends in the whole game, so later planets have tiers to add. UNLOCKS: cost {cubes}; requires = owned ids; district = index of the district that must be open; when = counters that must be reached (bales, hexes, pieces, mastery_<kind>); auto = owned the moment its conditions hold, at no cost (a find); gate = the default player saves for it; crew = only useful with robots; mods = stat multipliers; set = values set (base_level). Unlocks with no cost and no auto flag are granted by a district's source (districts.json grants).",
-  "tier_levels": [8, 4, 5, 5, 6, 6],
+  "tier_levels": [8, 4, 5, 5, 10, 12],
   "tier_ratio": [1.6, 1.3, 1.25, 1.2, 1.12, 1.12],
   "tier_cost": [1, 650, 800, 1150, 1900, 2100],
   "tracks": {
     "sweep_speed": {"name": "Sweep Speed", "stat": "hand_rate", "add": 0.18, "first_cost": 40, "weight": 1.0, "first_tier": 0, "planet_levels": 41, "final_levels": 75},
     "chest_size": {"name": "Chest Size", "stat": "capacity", "add": 1.0, "first_cost": 50, "weight": 1.0, "first_tier": 0, "planet_levels": 41, "final_levels": 75},
-    "sweep_width": {"name": "Sweep Width", "stat": "hand_rate", "add": 0.18, "first_cost": 45, "weight": 1.0, "first_tier": 0, "planet_levels": 41, "final_levels": 75},
+    "sweep_width": {"name": "Sweep Width", "stat": "hand_rate", "add": 0.18, "first_cost": 40, "weight": 1.0, "first_tier": 0, "planet_levels": 41, "final_levels": 75},
     "tend_reach": {"name": "Tending Reach", "stat": "tend", "add": 0.3, "first_cost": 60, "weight": 0.7, "first_tier": 0, "requires": "seed_kit", "planet_levels": 41, "final_levels": 75},
     "core_charge": {"name": "Core Charge", "stat": "surge_rate", "add": 0.12, "first_cost": 0, "weight": 0.6, "first_tier": 3, "requires": "surge_core", "planet_levels": 24, "final_levels": 58}
   },

@@ -124,6 +124,15 @@ func clean_share() -> float:
 	return float(clean_hexes) / float(hexes)
 
 
+## Share of all the district's cleaning work that is done, 0..1. It rises steadily through a
+## city, where the count of fully clean hexes waits on the kind that lags.
+func work_share() -> float:
+	var total: float = 0.0
+	for kind: String in done:
+		total += done[kind]
+	return total / (float(hexes) * hex_work)
+
+
 ## Share of hexes at `at_stage` or above.
 func share_at(at_stage: int) -> float:
 	var n: float = 0.0

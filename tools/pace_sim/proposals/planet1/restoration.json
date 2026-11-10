@@ -4,12 +4,12 @@
   "stage_values": [0, 0.25, 0.45, 0.65, 0.85, 1.0],
   "launch": {"when": "all_districts_stage", "stage": 5, "sequence": "bloom",
     "rocket": {"district": "the_works", "parts": [
-      {"id": "launch_frame", "name": "Launch frame", "parts": 300, "assembly_s": 60.0, "fit_s": 20.0, "at_clean_share": 0.2},
-      {"id": "fuel_tanks", "name": "Fuel tanks", "parts": 350, "assembly_s": 60.0, "fit_s": 20.0, "at_clean_share": 0.28},
-      {"id": "engine_cluster", "name": "Engine cluster", "parts": 400, "assembly_s": 60.0, "fit_s": 20.0, "at_clean_share": 0.36},
-      {"id": "guidance_core", "name": "Guidance core", "parts": 450, "assembly_s": 60.0, "fit_s": 20.0, "at_clean_share": 0.44},
-      {"id": "hull_plates", "name": "Hull plates", "parts": 500, "assembly_s": 60.0, "fit_s": 20.0, "at_clean_share": 0.52},
-      {"id": "nose_cone", "name": "Nose cone", "parts": 600, "assembly_s": 60.0, "fit_s": 20.0, "at_clean_share": 0.6, "after_source": true}
+      {"id": "launch_frame", "name": "Launch frame", "parts": 300, "assembly_s": 45.0, "fit_s": 20.0, "at_progress": 0.35},
+      {"id": "fuel_tanks", "name": "Fuel tanks", "parts": 350, "assembly_s": 45.0, "fit_s": 20.0, "at_progress": 0.45},
+      {"id": "engine_cluster", "name": "Engine cluster", "parts": 400, "assembly_s": 45.0, "fit_s": 20.0, "at_progress": 0.55},
+      {"id": "guidance_core", "name": "Guidance core", "parts": 450, "assembly_s": 45.0, "fit_s": 20.0, "at_progress": 0.65},
+      {"id": "hull_plates", "name": "Hull plates", "parts": 500, "assembly_s": 45.0, "fit_s": 20.0, "at_progress": 0.75},
+      {"id": "nose_cone", "name": "Nose cone", "parts": 600, "assembly_s": 45.0, "fit_s": 20.0, "at_progress": 0.85, "after_source": true}
     ]}},
-  "planet": {"measure": "cell_share_restored", "stages": [0.01, 0.05, 0.25, 0.5, 1.0], "open_ground_hex_work": 2400.0, "outpost_rings": 26, "finish_in_hours": [10, 20, 40]}
+  "planet": {"measure": "cell_share_restored", "stages": [0.01, 0.05, 0.25, 0.5, 1.0], "open_ground_hex_work": 3900.0, "outpost_rings": 26, "finish_in_hours": [10, 20, 40]}
 }
