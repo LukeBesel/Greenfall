@@ -815,7 +815,10 @@ func _do_garden(p: Patch) -> bool:
 			_refilling = false
 		else:
 			_set_task("refill")
-			_go(p, _water_at(), 0.5)
+			if DevHooks.has("bot-debug") and _task_t > 20.0 and int(_task_t * 10.0) % 100 == 0:  # [v5play]
+				var hh: int = world.field.hex_at(p.global_position)
+				print("[bot-refill] %.0f s: water %.1f / %.1f at hex %d hub flag %d local %s" % [_task_t, p.water, cap, hh, world.field.hex_hub[hh] if hh >= 0 else -1, str(_local_m(p.global_position))])
+			_go(p, _water_at(), 2.5)  # [v5play] the can fills anywhere in the hub hex: no need to bump the bench
 			return true
 	if _water_target >= 0 and (g.slot_species[_water_target] < 0 or g.slot_water[_water_target] > 50.0):
 		_water_target = -1
@@ -1058,7 +1061,7 @@ func _campaign(_p: Patch) -> void:
 		_event("late", {"what": late})
 		if late == "seed new world":
 			return
-	if _now() < 30.0 or DevHooks.has("no-travel"):
+	if _now() < 30.0 or DevHooks.has("no-travel") or world.get("orbit") != null:  # [v5play] the globe's hops are OrbitSites' (the flat launch is refused there)
 		return  # settle in after landing
 	var to: int = AutoplayCampaign.next_hub(world)
 	if to >= 0 and world.rocket_status() == "" and p_ok(_p):
@@ -1227,7 +1230,9 @@ func _shop(want: Dictionary) -> void:
 			while st.route_n != want_n and g2 < 8:
 				st.cycle_route()
 				g2 += 1
-		if st.baler and st.baler.idle() and st.baler.global_position.distance_to(st.frontier_pos()) > 25.0:
+		# [v5play] frontier_pos() is Stations-local (on the globe that is far from world space): the
+		# bot moved the baler every second, 40 cubes a time, and never saved a cube after the Auto-Baler.
+		if st.baler and st.baler.idle() and st.to_local(st.baler.global_position).distance_to(st.frontier_pos()) > 25.0:
 			st.relocate_baler()
 	# 6) Water tanks near planted hexes far from the barrel.
 	_place_tanks()

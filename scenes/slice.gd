@@ -1104,6 +1104,9 @@ func _on_hex_clean(hid: int) -> void:
 func _launch(to_hub: int) -> void:
 	if launching or Demo.block("rocket"):  # [steam] demo: first district only
 		return
+	if orbit:  # [v5play] the globe flies with its own rocket (OrbitSites: E at the pad), never the flat launch
+		EventBus.toast.emit(tr("Walk to the rocket on the launch pad and press E to choose where to fly."), "info")
+		return
 	if not Frontiers.can_launch(planet, to_hub):  # [biomes] frontier destinations unlock late
 		EventBus.toast.emit(tr("%s is out of range: %s") % [Frontiers.kind_name(planet.frontier_kind(to_hub)), "  ".join(Frontiers.unlock_status(planet.frontier_kind(to_hub), planet.frontier_hubs)["lines"])], "info")
 		return

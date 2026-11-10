@@ -54,6 +54,13 @@ func refresh() -> void:
 	bar.value = 100.0 * minf(1.0, float(world.hub.level if world.hub else 1) / 5.0)
 	sv.add_child(bar)
 	_tier_box()
+	if world.get("orbit") != null:
+		# [v5play] On the round planet the rocket itself is the way to fly (press E at the pad, pick
+		# a hub). The list below launched the flat game's rocket: script errors, no flight.
+		var how := UITheme.label(tr("Walk to the rocket on the launch pad and press E to choose where to fly.") if ready_ else tr("The rocket lands on the pad when the base reaches level 5."), 15, UITheme.CREAM)
+		how.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		add_child(how)
+		return
 	add_child(UITheme.label(tr("NEARBY BASES"), 13, UITheme.MUTED))
 	var here_i: int = int(world.hub_index)
 	var here: Vector3 = planet.grid.centers[planet.hubs[here_i]]

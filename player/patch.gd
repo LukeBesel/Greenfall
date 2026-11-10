@@ -297,6 +297,22 @@ var _water_cap: float = -1.0
 var _no_slot_ms: int = -100000  # [v4grow]
 
 
+## Where the can fills: a hub hex, and [v5play] on the globe anywhere on the yard (within
+## REFILL_YARD_M of the workbench). Only some of the pad's hexes carry the hub flag there, and the
+## bench's own hex doesn't: "Refill at the hub" did nothing by the bench or the pod.
+const REFILL_YARD_M: float = 16.0
+func at_water_refill() -> bool:
+	if world == null or world.get("field") == null:
+		return false
+	var h: int = world.field.hex_at(global_position)
+	if h >= 0 and world.field.hex_hub[h] == 1:
+		return true
+	if sphere_motor != null and world.has_method("bench_pos"):
+		var b: Variant = world.call("bench_pos")
+		return b is Vector3 and global_position.distance_to(b) < REFILL_YARD_M
+	return false
+
+
 func set_tool(t: int) -> void:
 	if t != Tool.SCOOP and (world == null or world.get("garden") == null or not world.garden.unlocked()):
 		EventBus.toast.emit(tr("No seeds yet. Keep cleaning."), "info")
@@ -319,7 +335,7 @@ func _handle_tools(delta: float) -> void:
 	if _water_cap < 0.0:
 		_water_cap = float(Economy.read_json("res://data/plants.json").get("water_tank", 30))
 	# Refill at the hub's water barrel (anywhere in the yard).
-	if world and world.field and world.field.hex_at(global_position) >= 0 and world.field.hex_hub[world.field.hex_at(global_position)] == 1:
+	if at_water_refill():
 		if water < _water_cap:
 			water = minf(_water_cap, water + delta * 8.0)
 	if world == null or world.get("garden") == null or _cubing > 0.0:
