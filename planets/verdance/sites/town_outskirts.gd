@@ -38,7 +38,7 @@ var kind: String = "start"  # VerdanceSite.KINDS: the outskirts follow the town'
 ## Per kind: open-lot share [near, far], tower-block share near (tower_f floors), floors of the
 ## other blocks near/far, works share near/far, warehouse-block share, detached houses.
 const PROFILES: Dictionary = {
-	"start": {"lots": [0.12, 0.3], "tower": 0.55, "tower_f": [14, 30], "mid": [6, 12], "far": [2, 7], "factory": [0.0, 0.3], "warehouse": 0.0},
+	"start": {"lots": [0.05, 0.15], "tower": 0.55, "tower_f": [14, 30], "mid": [6, 12], "far": [2, 7], "factory": [0.0, 0.3], "warehouse": 0.0},
 	"downtown": {"lots": [0.06, 0.18], "tower": 0.7, "tower_f": [16, 34], "mid": [8, 14], "far": [3, 9], "factory": [0.0, 0.25], "warehouse": 0.0},
 	"oldtown": {"lots": [0.12, 0.3], "tower": 0.0, "tower_f": [0, 0], "mid": [3, 7], "far": [2, 5], "factory": [0.15, 0.3], "warehouse": 0.05},
 	"industrial": {"lots": [0.28, 0.4], "tower": 0.0, "tower_f": [0, 0], "mid": [2, 5], "far": [2, 4], "factory": [0.85, 0.9], "warehouse": 0.5},
