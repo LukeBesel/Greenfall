@@ -47,10 +47,7 @@ static func of(slice: Node) -> HomewardDirector:
 
 
 func _setup() -> void:
-	map = SystemMap.new()
-	map.name = "SystemMap"
-	map.world = world
-	world.add_child(map)
+	map = SystemMap.shared(world)  # [v5text] on the round game the orbit set-up already made it
 	var g: Variant = world.get("globe")
 	if g is GlobeView:
 		(g as GlobeView).open_system = func() -> void: map.open_map(true)

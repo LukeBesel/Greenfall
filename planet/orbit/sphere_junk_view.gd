@@ -55,9 +55,7 @@ func setup(p_field: HexField) -> void:
 func _process(delta: float) -> void:
 	_pump(budget)
 	if not _far_todo.is_empty():
-		var g: int = _far_todo.pop_front()
-		var fm: Mesh = JunkLod.far_mesh(_g_model[g], JunkLod.FAR_TRIS[quality] * (4 if _g_heavy[g] == 1 else 1))
-		_g_mm[g * 2 + 1].mesh = fm if DevHooks.has("no-far-single") else JunkFarSingle.single(fm)  # [orbE] one draw per far model
+		_build_far(_far_todo.pop_front())
 	_t -= delta
 	if _t <= 0.0:
 		_t = JunkLod.UPDATE_EVERY
@@ -177,6 +175,56 @@ func rebuild(near: PackedInt32Array) -> void:
 
 func flush() -> void:
 	_pump(1 << 30)
+
+
+## [v5load] rebuild() + flush() behind the loading screen, yielding between cells, plus the far
+## meshes the first live frames would otherwise build one a frame (JunkLod.far_mesh is slow).
+func rebuild_async(near: PackedInt32Array) -> void:
+	var want: Dictionary = {}
+	for c: int in near:
+		want[c] = true
+		if not _shown_cells.has(c):
+			_queue.append([c, true])
+		_ensure_extras(c)
+		await BuildBudget.check("junk extras")
+	for c: int in _shown_cells:
+		if not want.has(c):
+			_queue.append([c, false])
+	_near = near
+	# The ring's models: their near (lite) and far meshes are mesh simplification, 50-200 ms each
+	# and not divisible. One worker task makes them all while the loader keeps drawing (nothing
+	# else builds meanwhile: the caller awaits this); the groups and _build_far below then find
+	# them cached.
+	if BuildBudget.active():
+		var models: Dictionary = {}
+		for op: Array in _queue:
+			if op[1]:
+				for pid: int in sfield.pieces_in(int(op[0])):
+					if sfield.piece_alive[pid] == 1:
+						models[sfield.piece_model[pid]] = true
+		var todo: Array[String] = []
+		for m: String in models:
+			if m != "" and not _groups.has(m) and AssetLib.has_model(m):
+				todo.append(m)
+		var q: int = quality
+		var warm := func() -> void:
+			for m: String in todo:
+				var nm: Mesh = AssetLib.model_mesh_lite(m, [320, 500, 700, 700][q])
+				var fm: Mesh = JunkLod.far_mesh(m, JunkLod.FAR_TRIS[q] * (4 if JunkLod._tris(nm) > JunkLod.HEAVY_TRIS else 1))
+				if not DevHooks.has("no-far-single"):
+					JunkFarSingle.single(fm)
+		await BuildBudget.join(BuildBudget.add_task(warm, "junk meshes"))
+	while not _queue.is_empty():
+		_pump(40)
+		await BuildBudget.check("junk pieces")
+	while not _far_todo.is_empty():
+		_build_far(_far_todo.pop_front())
+		await BuildBudget.check("junk far mesh")
+
+
+func _build_far(g: int) -> void:
+	var fm: Mesh = JunkLod.far_mesh(_g_model[g], JunkLod.FAR_TRIS[quality] * (4 if _g_heavy[g] == 1 else 1))
+	_g_mm[g * 2 + 1].mesh = fm if DevHooks.has("no-far-single") else JunkFarSingle.single(fm)  # [orbE] one draw per far model
 
 
 func _pump(max_pieces: int) -> void:

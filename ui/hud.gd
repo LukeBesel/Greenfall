@@ -386,7 +386,12 @@ func _on_signal(text: String, color: Color, strength: float) -> void:
 	_signal_strength = strength
 
 
-func _fmt_small_pct(p: float) -> String:
+## [v5text] Shared with the survey map (ui/globe_view.gd), so both print the planet % the same way.
+static func fmt_small_pct(p: float) -> String:
+	return _fmt_small_pct(p)
+
+
+static func _fmt_small_pct(p: float) -> String:
 	if p <= 0.0:
 		return "0.0000"
 	if p < 0.01:

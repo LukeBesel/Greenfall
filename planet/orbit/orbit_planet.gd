@@ -50,15 +50,15 @@ func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1
 	spec = p_spec
 	var f: int = int(spec.get("frequency", GlobeSpec.VERDANCE_FREQ))
 	var t0: int = Time.get_ticks_msec()
-	grid = SphereGrid.for_freq(f, GlobeSpec.HEX_M)
-	stats["grid_load_ms"] = Time.get_ticks_msec() - t0  # [orbE]
-	var lv: int = SphereGrid.level_of_freq(f)
-	# The survey runs on the same cells: level grids keep their GeoSphere, others share this grid.
-	planet = PlanetData.new(seed_value, lv, GlobeSpec.HEX_M) if lv >= 0 else PlanetData.new(seed_value, 0, GlobeSpec.HEX_M, GeoSphere.from_grid(grid))
-	terrain = SphereTerrain.new(grid, seed_value)
-	# [orbE] The survey and the terrain's elevation are pure data: behind the loading screen they run
-	# on a worker thread while the bar keeps moving (Anvil: 2-4 s that froze the first frame).
+	# [v5load] The grid cache read (0.6 s), the survey and the terrain's elevation are pure data: behind
+	# the loading screen they all run on a worker thread while the bar keeps moving.
 	var survey := func() -> void:
+		grid = SphereGrid.for_freq(f, GlobeSpec.HEX_M)
+		stats["grid_load_ms"] = Time.get_ticks_msec() - t0  # [orbE]
+		var lv: int = SphereGrid.level_of_freq(f)
+		# The survey runs on the same cells: level grids keep their GeoSphere, others share this grid.
+		planet = PlanetData.new(seed_value, lv, GlobeSpec.HEX_M) if lv >= 0 else PlanetData.new(seed_value, 0, GlobeSpec.HEX_M, GeoSphere.from_grid(grid))
+		terrain = SphereTerrain.new(grid, seed_value)
 		planet.generate()
 		if not planet_state.is_empty():
 			planet.apply_dict(planet_state)
@@ -71,6 +71,7 @@ func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1
 	else:
 		survey.call()
 	stats["planet_ms"] = Time.get_ticks_msec() - t0
+	BuildBudget.lap("globe survey")
 	await BuildBudget.check("globe survey")
 	var t1: int = Time.get_ticks_msec()
 	# [orbE] The cells without from_planet's texture pass: refresh_all below writes it once.
@@ -87,13 +88,18 @@ func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1
 	if before_field.is_valid():
 		before_field.call(self)
 	stats["hubs_ms"] = Time.get_ticks_msec() - tq
+	BuildBudget.lap("globe hubs")
 	await BuildBudget.check("globe hubs")  # [orbE]
 	tq = Time.get_ticks_msec()
 	cells.refresh_all()
 	stats["refresh_ms"] = Time.get_ticks_msec() - tq
+	BuildBudget.lap("globe cells")
 	await BuildBudget.check("globe cells")  # [orbE]
 	tq = Time.get_ticks_msec()
-	field = SphereField.new(grid, terrain, cells, seed_value)
+	if BuildBudget.active():  # [v5load] the per-cell ledger is pure data: on a worker thread behind the loader
+		await BuildBudget.join(BuildBudget.add_task(func() -> void: field = SphereField.new(grid, terrain, cells, seed_value), "globe field"))
+	else:
+		field = SphereField.new(grid, terrain, cells, seed_value)
 	var ko: YardKeepOut = yard_keep_out()  # [v1yard] junk right up to the pad's edge, small pieces near the start
 	if ko:
 		field.keep_out = ko.blocks
@@ -101,6 +107,7 @@ func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1
 		for c: int in grid.cells_within(grid.centers[c0], YardKeepOut.SMALL_ONLY_M, c0):
 			field.small_only[c] = true
 	stats["field_ms"] = Time.get_ticks_msec() - tq
+	BuildBudget.lap("globe field")
 	await BuildBudget.check("globe field")  # [orbE]
 	surface = SphereSurface.new(grid.radius_m)
 	surface.height_fn = terrain.height
@@ -113,8 +120,10 @@ func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1
 	add_child(streamer)
 	OrbitQuality.apply_streamer(streamer, Settings.quality, grid.radius_m)  # [orbE] per-preset budgets
 	tq = Time.get_ticks_msec()
-	streamer.setup(grid, terrain, cells)
+	streamer.setup(grid, terrain, cells, null, true)
+	await streamer.build_shell_async()  # [v5load] data on a worker thread behind the loader
 	stats["streamer_setup_ms"] = Time.get_ticks_msec() - tq
+	BuildBudget.lap("globe shell")
 	await BuildBudget.check("globe shell")  # [orbE]
 	tq = Time.get_ticks_msec()
 	streamer.near_changed.connect(_on_near_changed)
@@ -268,7 +277,7 @@ func _on_near_changed(added: PackedInt32Array, _removed: PackedInt32Array) -> vo
 	for c: int in added:
 		if field.materialized[c] == 1:
 			continue
-		var now: bool = not _live
+		var now: bool = not _live and not defer_fill
 		for p: Vector3 in soon:
 			if grid.great_circle_m(p, grid.centers[c]) < FILL_NOW_M:
 				now = true
@@ -401,6 +410,30 @@ func _process(_delta: float) -> void:
 
 
 ## Draw the near ring's junk right now (after loading: no pop-in over the first frames).
+## [v5load] Behind the loading screen the first near ring's cells queue up instead of all
+## materializing inside the streamer's first update (0.4 s); refresh_junk_async drains them.
+var defer_fill: bool = false
+
+
+## [v5load] refresh_junk_now across frames (the loader's BuildBudget): the queued cells, the ring's
+## heaps and landmarks, the piece buffers and the far meshes, a slice at a time. Same result.
+func refresh_junk_async() -> void:
+	defer_fill = false
+	if not BuildBudget.active():
+		refresh_junk_now()
+		return
+	update_centres()
+	while not _fill_q.is_empty():
+		var c: int = _fill_q.pop_front()
+		_fill_set.erase(c)
+		if field.materialized[c] == 0 and streamer.is_near(c):
+			field.materialize(c)
+		await BuildBudget.check("junk fill")
+	_junk_dirty = false
+	await junk_view.rebuild_async(streamer.near_cells())
+	stats["junk"] = int(junk_view.stats.get("pieces", 0))
+
+
 func refresh_junk_now() -> void:
 	update_centres()
 	_drain_fill(true)  # [v1world]

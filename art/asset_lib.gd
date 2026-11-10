@@ -27,6 +27,8 @@ static func model_mesh_lite(id: String, max_tris: int = 1500) -> Mesh:
 	var key: String = "%s@%d" % [id, max_tris]
 	if _lite.has(key):
 		return _lite[key]
+	if tracing and not traced.has("lite:" + key):  # [v5load] mesh simplification: 50-150 ms, not divisible
+		traced.append("lite:" + key)
 	var out: Mesh = lite(model_mesh(id), max_tris)
 	_lite[key] = out
 	return out
@@ -109,6 +111,7 @@ static func model_part(id: String, node_name: String) -> Mesh:
 		return _parts[key]
 	if tracing and not traced.has("part:" + id + "::" + node_name):
 		traced.append("part:" + id + "::" + node_name)
+	var t0: int = Time.get_ticks_usec()
 	var ps: PackedScene = load(MODEL_DIR % [id, id])
 	var root: Node = ps.instantiate()
 	var mesh: Mesh = null
@@ -122,6 +125,7 @@ static func model_part(id: String, node_name: String) -> Mesh:
 	if mesh == null:
 		mesh = model_mesh(id)
 	_parts[key] = mesh
+	_trace_time("part:" + key, t0)
 	return mesh
 
 
@@ -145,6 +149,13 @@ static var tracing: bool = false
 static var traced: Array[String] = []
 
 
+## [v5load] --load-report: every blocking model load over 15 ms, with its time.
+static func _trace_time(id: String, t0: int) -> void:
+	var d: int = Time.get_ticks_usec() - t0
+	if tracing and BuildBudget.lap_on and d > 15000:
+		print("[model] %.0f ms: %s" % [d / 1000.0, id])
+
+
 static func has_model(id: String) -> bool:
 	return ResourceLoader.exists(MODEL_DIR % [id, id])
 
@@ -153,6 +164,7 @@ static func _load_model(id: String) -> void:
 	var path: String = MODEL_DIR % [id, id]
 	if tracing and not traced.has(id):
 		traced.append(id)
+	var t0: int = Time.get_ticks_usec()
 	var ps: PackedScene = load(path)
 	if ps == null:
 		push_error("Missing model %s" % id)
@@ -176,6 +188,7 @@ static func _load_model(id: String) -> void:
 		return
 	_meshes[id] = mesh
 	_aabbs[id] = mesh.get_aabb()
+	_trace_time(id, t0)
 
 
 ## [world3] Models whose lamps ship lit; in this world nothing works until it is fixed.
@@ -248,6 +261,13 @@ static func _merge(found: Array) -> ArrayMesh:
 
 static func tex(id: String, map: String) -> Texture2D:
 	var p: String = TEX_DIR % [id, id, map]
+	if tracing and not ResourceLoader.has_cached(p) and ResourceLoader.exists(p):  # [v5load] blocking texture loads
+		var t0: int = Time.get_ticks_usec()
+		var r: Texture2D = load(p)
+		if not traced.has("tex:" + p):
+			traced.append("tex:" + p)
+		_trace_time("tex:" + p.get_file(), t0)
+		return r
 	return load(p) if ResourceLoader.exists(p) else null
 
 

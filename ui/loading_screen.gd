@@ -134,6 +134,8 @@ func goto(path: String) -> void:
 	_t = 0.0
 	_shown_ms = Time.get_ticks_msec()
 	max_stall_ms = 0.0
+	_last_cpu_us = 0  # [v5load]
+	_max_cpu_us = 0
 	_last_frame_us = 0
 	shown = 0.0
 	target = 0.03
@@ -199,6 +201,14 @@ func _process(delta: float) -> void:
 				max_stall_ms = (now_us - _last_frame_us) / 1000.0
 				_stall_stage = _stage
 		_last_frame_us = now_us
+		if BuildBudget.lap_on:  # [v5load] --load-report: the main thread's own CPU time per frame (a busy box inflates wall time)
+			var cpu: int = BuildBudget.cpu_us()
+			if _last_cpu_us > 0 and cpu - _last_cpu_us > _max_cpu_us:
+				_max_cpu_us = cpu - _last_cpu_us
+				_cpu_stage = _stage
+				if _max_cpu_us > 100000:
+					print("[loader] a %.0f ms (cpu) frame; last build yield: %s" % [_max_cpu_us / 1000.0, BuildBudget.last_at])
+			_last_cpu_us = cpu
 	var real: float = delta / maxf(Engine.time_scale, 0.0001)  # [intro2] pacing in real seconds
 	real = minf(real, 0.1)
 	_t += real
@@ -262,6 +272,8 @@ func _process(delta: float) -> void:
 						_warm.queue_free()
 						_warm = null
 					print("[loader] ready in %d ms, longest frame %.0f ms (ending in stage %s) (%s)" % [Time.get_ticks_msec() - _shown_ms, max_stall_ms, ["idle", "load", "pre-build", "warm-up", "fade", "switch", "build"][_stall_stage], _path])
+					if BuildBudget.lap_on:  # [v5load]
+						print("[loader] longest frame by main-thread CPU time: %.0f ms (stage %s); longest build slice %.0f ms at %s" % [_max_cpu_us / 1000.0, ["idle", "load", "pre-build", "warm-up", "fade", "switch", "build"][_cpu_stage], BuildBudget.longest_cpu_us / 1000.0, BuildBudget.longest_cpu_at])
 		4:
 			_alpha = maxf(0.0, _alpha - real / 0.45)
 			_apply_alpha()
@@ -280,6 +292,11 @@ func _process(delta: float) -> void:
 	_canvas.queue_redraw()
 	if active and DevHooks.has("loader-shot") and _path.ends_with("slice.tscn"):
 		_dev_shot()
+
+
+var _last_cpu_us: int = 0  # [v5load]
+var _max_cpu_us: int = 0
+var _cpu_stage: int = 0
 
 
 ## [v1menu] --loader-shot=PREFIX: saves PREFIX_1.png .. _3.png while the game scene loads (renders).

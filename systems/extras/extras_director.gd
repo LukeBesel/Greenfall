@@ -46,17 +46,21 @@ func _setup() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	add_to_group("persist")
 	GameState.stats["weekly_chips"] = float(WeeklyChallenge.chip_count())  # profile-wide, mirrored for achievements
+	BuildBudget.busy += 1  # [v5load]
 	radio = Radio.new()
 	world.add_child(radio)
 	radio.setup(world)
+	await _slice("extras:radio")
 	nursery = Nursery.new()
 	world.add_child(nursery)
 	if DevHooks.has("nursery-sample"):
 		_sample_nursery(int(DevHooks.get_f("nursery-sample", 4.0)))
-	nursery.setup(world)
+	await nursery.setup(world)
+	await _slice("extras:nursery")
 	album = PhotoAlbum.new()
 	add_child(album)
 	album.setup(world)
+	await _slice("extras:album")
 	if DevHooks.has("album-adopt"):  # shots: pick up pictures a previous --save-dir run left on disk
 		album.dev_adopt()
 	panel = ExtrasPanel.new()
@@ -68,6 +72,7 @@ func _setup() -> void:
 		run.name = "WeeklyRun"
 		run.world = world
 		world.add_child(run)
+	BuildBudget.busy -= 1  # [v5load]
 	if DevHooks.has("radio-all"):
 		for s: Dictionary in Radio.songs():
 			if s.has("cond") and not (str(s["id"]) in (Radio.st()["unlocked"] as Array)):
@@ -93,6 +98,13 @@ func _setup() -> void:
 		_cam.call_deferred()
 	if DevHooks.has("extras-nohud") and world.get("hud") != null:
 		(func() -> void: world.hud.visible = false).call_deferred()
+
+
+## [v5load] On the globe the loader's build waits for this setup (BuildBudget.idle), so it may hand
+## frames back between its steps. The flat game and budget-less runs stay synchronous.
+func _slice(at: String) -> void:
+	if world.get("orbit") != null:
+		await BuildBudget.check(at)
 
 
 ## Saved with the district: what junk is left, so Offline.simulate can cap a district that

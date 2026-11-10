@@ -464,3 +464,47 @@ work a frame; the loading screen keeps its own budget).
 
 The Mac check: `godot --path . -- --orbit --quality=1 --perf` (and `--orbit-planet=anvil`), then
 read `game_fps` and `draw_calls`.
+
+### Perf pass 6 (Nov 10, v5load, headless): no long loading frames on Verdance
+
+Measured again after the start town, hub towns, hinterland and waterfront went in. Same box
+(4 shared cores, load average 5-9 from other helpers), so `--load-report` now also prints the main
+thread's own CPU time (`/proc/thread-self/schedstat`): wall time on this box reads 2-3x long.
+
+| Verdance, `--fresh --orbit --load-report` | Before (a86fb5b) | After |
+|---|---|---|
+| Longest loading frame (wall) | 1.2 s quiet box, 1.8-2.3 s busy box | 0.16-0.24 s busy box |
+| Longest loading frame (main-thread CPU) | not measured | **115-127 ms** |
+| Longest build slice (CPU) | 1,072 ms (orbit story) | 109-123 ms (town:flush) |
+| Loader ready (same box, back to back) | 16.1-17.3 s | **13.1-14.0 s** |
+| First live frame | 144 ms | 60-90 ms |
+
+What changed:
+- **Worker threads for pure data:** the grid cache read, the far shell (map, aggregate, mesh
+  arrays; `SphereStreamer.build_shell_async`), the SphereField ledger and the cricket bed's
+  synthesis join the survey on `BuildBudget.add_task`.
+- **`data/orbit_preload.json`** (`OrbitPreload.warm`): every model, model part, texture and "lite"
+  (simplified) mesh the build used to load or make on the main thread. Files load on the loader
+  threads from the start of the build; one worker task meshes and simplifies them (mesh
+  simplification is 50-150 ms a model and can't be split). Refresh after changing what the build
+  uses: `godot --headless --path . -- --fresh --orbit --record-preload --quit-after=30`. A stale
+  list is safe: a missing model just loads where it is used.
+- **The near ring's junk** fills in slices (`OrbitPlanet.refresh_junk_async`): cells materialize
+  one per check, its near and far meshes are made on a worker, pieces seat 40 at a time, and the
+  far meshes are all made before the first live frame (they used to build one per frame in play).
+- **The settle loop** no longer spins on the main thread until its slice runs out; it yields
+  whenever no chunk has landed.
+- **Yields inside the long steps:** yard systems, hub frame hosts, easter eggs, extras, camp,
+  yard models, nursery, the town's lots, detailed city blocks, street furniture and the street
+  dressing's layer flushes. A `setup()` that a synchronous caller can't await counts itself in
+  `BuildBudget.busy` and the build waits with `BuildBudget.idle()`.
+- The deferred greenhouse build gets a frame of its own.
+
+`BuildBudget.check` only yields once 45 ms of the slice are used, so a slice is 45 ms plus the
+longest indivisible step. What is left on Verdance is all 60-110 ms: the waterfront piers, a kit
+ground patch, one detailed building, the outposts plan. Anvil's own yard builder still has a
+0.45 s slice (`anvil:yard`); Verdance was the brief.
+
+Tools: `--load-report` prints `[budget] N ms (cpu M)` per long slice, `[lap]` lines for the
+steps between yields, `[model]` for any blocking model or texture load, the models still loaded
+on the main thread, and the longest frame by CPU time.

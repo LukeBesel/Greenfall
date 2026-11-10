@@ -272,6 +272,8 @@ func survey() -> void:
 
 
 func open_view() -> void:
+	if DevHooks.has("survey-zoom"):  # [v5text] dev: open the survey at a zoom (1.4 near .. 6.0 far)
+		_zoom = clampf(DevHooks.get_f("survey-zoom", 3.2), 1.4, 6.0)
 	if planet == null:
 		return
 	if _snapshot.is_empty():
@@ -461,16 +463,22 @@ func _on_resurvey() -> void:
 func _refresh_text() -> void:
 	var counts: Dictionary = {}
 	var land: int = 0
-	for st: int in _snapshot:
+	# [v5text] Hub ground (the yards and the ground under town buildings) is nobody's work: the HUD's
+	# planet % leaves it out, so the rows here do too (a new game no longer shows "386 hexes clean").
+	var hub_ground: bool = cells != null and cells.flags.size() == _snapshot.size()
+	for i: int in _snapshot.size():
+		var st: int = _snapshot[i]
+		if hub_ground and st != PlanetData.State.WATER and (cells.flags[i] & SphereCells.F_HUB) != 0:
+			continue
 		counts[st] = int(counts.get(st, 0)) + 1
 		if st != PlanetData.State.WATER:
 			land += 1
 	var junk: int = int(counts.get(PlanetData.State.JUNK, 0))
 	var cleaned: int = land - junk
-	var frac: float = float(cleaned) / maxf(land, 1)
-	_pct.text = "%.3f %%" % (100.0 * frac)
-	_pct_sub.text = tr("of the planet reclaimed  ·  %s of %s land hexes") % [_num(cleaned), _num(land)]
-	_bar.value = frac * 100.0
+	var head: Array = headline(cleaned, land)  # [v5text]
+	_pct.text = str(head[0])
+	_pct_sub.text = str(head[1])
+	_bar.value = float(head[2]) * 100.0
 	var vals: Dictionary = {"junk": junk, "clean": counts.get(PlanetData.State.CLEAN, 0), "planted": counts.get(PlanetData.State.PLANTED, 0),
 		"growing": counts.get(PlanetData.State.GROWING, 0), "restored": counts.get(PlanetData.State.RESTORED, 0),
 		"cities": planet.cities.size(), "hubs": int(hub_count.call()) if hub_count.is_valid() else planet.hubs.size()}
@@ -484,6 +492,16 @@ func _refresh_text() -> void:
 		_system_btn.visible = open_system.is_valid() and Homeward.system_open()  # [pace2] partial progress opens the system
 	_ark.text = Bloom.globe_line()
 	_ark.visible = _ark.text != ""
+
+
+## [v5text] The card's big number: [text, what it means, fraction 0..1]. On the round game it is
+## the HUD's planet % (same value, same digits); the flat survey keeps its whole-planet count.
+func headline(cleaned: int, land: int) -> Array:
+	if planet_fraction_fn.is_valid():
+		var f: float = clampf(float(planet_fraction_fn.call()), 0.0, 1.0)
+		return ["%s %%" % HUD.fmt_small_pct(100.0 * f), tr("of the ground around your hubs is clean"), f]
+	var frac: float = float(cleaned) / maxf(land, 1)
+	return ["%.3f %%" % (100.0 * frac), tr("of the planet reclaimed  ·  %s of %s land hexes") % [_num(cleaned), _num(land)], frac]
 
 
 static func _num(n: int) -> String:
@@ -695,8 +713,7 @@ func _here_pin(dir: Vector3) -> void:
 	if _pin == null:
 		_pin = MapGlyphs.sprite("lumi", GLYPH_PX * 1.15)
 		_pin.name = "YouAreHere"
-		_pin.offset = Vector2(-26, MapGlyphs.SIZE * 0.5)  # beside the start hub's sprout, not on it
-		_pin.render_priority = 3
+		_pin.render_priority = 4  # [v5text] Lumi is drawn over the plume and the sprouts
 		_pivot.add_child(_pin)
 		_marker.visible = false
 		_place_glyphs()
@@ -704,6 +721,76 @@ func _here_pin(dir: Vector3) -> void:
 		_place_glyphs()
 	var up: Vector3 = dir.normalized()
 	_pin.position = up * (1.006 + 0.004 * sin(Time.get_ticks_msec() * 0.004))
+	_declutter(up)
+
+
+## [v5text] Lumi, the start hub's sprout and the pod's plume all stand on the start hub, and the
+## fixed +-26 px nudges left them on top of each other. Now: glyphs keep about the same size on
+## screen at any zoom; a glyph steps aside (a whole glyph width, not half) only while it really
+## shares its spot with another one; and zoomed far out the plume, the least important of the
+## three, is hidden. Priority: Lumi, then hubs, then the pod.
+const PLUME_HIDE_ZOOM: float = 4.3
+const LUMI_SIDE_PX: float = -46.0  # Lumi's 1.15x glyph clears the sprout's left leaf
+const PLUME_SIDE_PX: float = 46.0
+
+
+## Glyph size factor that keeps a glyph about as big on screen as at the default zoom (3.2). The
+## hand-held hologram's camera moves less per zoom step (see _place_handheld) than the full-screen one.
+static func glyph_scale(zoom: float, handheld: bool = false) -> float:
+	if handheld:
+		return clampf(remap(zoom, 1.4, 6.0, 1.1, 3.0) / remap(3.2, 1.4, 6.0, 1.1, 3.0), 0.6, 1.5)
+	return clampf(zoom / 3.2, 0.55, 1.3)
+
+
+## Whether two glyph anchors (unit directions) are close enough to cover each other at this scale.
+static func glyphs_touch(a: Vector3, b: Vector3, scale: float) -> bool:
+	return a.angle_to(b) < MapGlyphs.SIZE * GLYPH_PX * scale * 0.8
+
+
+## The side nudges (px) and plume visibility for Lumi at `lumi`, hubs at `hubs`, the pod at `pod`
+## (Vector3.ZERO for none). Returns {lumi_px, plume_px, plume_visible}.
+static func glyph_layout(lumi: Vector3, hubs: Array, pod: Vector3, zoom: float, handheld: bool = false) -> Dictionary:
+	var sc: float = glyph_scale(zoom, handheld)
+	var lumi_near_hub: bool = false
+	var pod_near_hub: bool = false
+	for h: Vector3 in hubs:
+		lumi_near_hub = lumi_near_hub or (lumi != Vector3.ZERO and glyphs_touch(lumi, h.normalized(), sc))
+		pod_near_hub = pod_near_hub or (pod != Vector3.ZERO and glyphs_touch(pod, h.normalized(), sc))
+	var lumi_near_pod: bool = lumi != Vector3.ZERO and pod != Vector3.ZERO and glyphs_touch(lumi, pod, sc)
+	return {
+		"lumi_px": LUMI_SIDE_PX if lumi_near_hub or lumi_near_pod else 0.0,
+		"plume_px": PLUME_SIDE_PX if pod_near_hub or lumi_near_pod else 0.0,
+		"plume_visible": pod != Vector3.ZERO and (zoom <= PLUME_HIDE_ZOOM or not (pod_near_hub or lumi_near_pod)),
+	}
+
+
+func _declutter(lumi_dir: Vector3) -> void:
+	var sc: float = glyph_scale(_zoom, _handheld)
+	var lay: Dictionary = glyph_layout(lumi_dir, _hub_dirs, _pod_dir, _zoom, _handheld)
+	_pin.pixel_size = GLYPH_PX * 1.15 * sc
+	_pin.offset = Vector2(float(lay["lumi_px"]), MapGlyphs.SIZE * 0.5)
+	# A billboard that stands beside its anchor reaches into the globe on the side toward the
+	# globe's middle, and the depth test cut it away (the plume never showed; sprouts lost a leaf).
+	# So glyphs skip the depth test, and the far side is hidden here instead.
+	var cam: Camera3D = _world_cam if _handheld and _world_cam else _cam
+	var centre: Vector3 = _pivot.global_position
+	var to_cam: Vector3 = (cam.global_position - centre).normalized() if cam else Vector3.ZERO
+	_pin.no_depth_test = true
+	_pin.visible = faces_camera(_pin.global_position - centre, to_cam)
+	if _glyphs:
+		for g: Node in _glyphs.get_children():
+			var sp: Sprite3D = g as Sprite3D
+			sp.pixel_size = GLYPH_PX * sc
+			sp.no_depth_test = true
+			sp.visible = faces_camera(sp.global_position - centre, to_cam)
+	if _plume and is_instance_valid(_plume):
+		_plume.offset = Vector2(float(lay["plume_px"]), MapGlyphs.SIZE * 0.5)
+		_plume.visible = _plume.visible and bool(lay["plume_visible"])
+
+
+## Whether a glyph anchored at `from_centre` (from the globe's middle) is on the side the camera sees.
+static func faces_camera(from_centre: Vector3, to_cam: Vector3) -> bool:
+	return to_cam == Vector3.ZERO or from_centre.normalized().dot(to_cam) > 0.15
 
 
 ## Glyph size on a unit globe (texture px -> units): about 0.29 tall, readable hand-held.
@@ -712,8 +799,15 @@ const GLYPH_PX: float = 0.0045
 ## planet/orbit_layers.gd); drawn as sprout and smoke-plume glyphs.
 var hub_dirs: Callable = Callable()
 var pod_dir: Callable = Callable()
+## [v5text] The planet % the HUD shows (SiteManager.planet_fraction: the clean share of the ground
+## around the built hubs). When set, the survey card shows this same number, live, instead of its
+## own whole-planet count, so "VERDANCE 0.26%" on the HUD and the map agree.
+var planet_fraction_fn: Callable = Callable()
 var _glyphs: Node3D
 var _pod_placed: bool = false
+var _plume: Sprite3D  # [v5text]
+var _hub_dirs: Array = []
+var _pod_dir: Vector3 = Vector3.ZERO
 
 
 func _place_glyphs() -> void:
@@ -722,8 +816,12 @@ func _place_glyphs() -> void:
 	_glyphs = Node3D.new()
 	_glyphs.name = "Glyphs"
 	_pivot.add_child(_glyphs)
+	_plume = null
+	_hub_dirs = []
+	_pod_dir = Vector3.ZERO
 	if hub_dirs.is_valid():
-		for d: Vector3 in hub_dirs.call():
+		_hub_dirs = hub_dirs.call()
+		for d: Vector3 in _hub_dirs:
 			var g: Sprite3D = MapGlyphs.sprite("sprout", GLYPH_PX)
 			g.position = d.normalized() * 1.006
 			_glyphs.add_child(g)
@@ -731,9 +829,10 @@ func _place_glyphs() -> void:
 		var pd: Vector3 = pod_dir.call()
 		if pd != Vector3.ZERO:
 			var g: Sprite3D = MapGlyphs.sprite("plume", GLYPH_PX)
-			g.offset = Vector2(26, MapGlyphs.SIZE * 0.5)  # the pod is on the start site too: to the right
 			_pod_placed = true
-			g.position = pd.normalized() * 1.006
+			_pod_dir = pd.normalized()
+			_plume = g
+			g.position = _pod_dir * 1.006
 			_glyphs.add_child(g)
 
 

@@ -40,13 +40,22 @@ var _dirty: Dictionary = {}
 var _dirty_t: float = 0.0
 
 
+## [v5load] deferred: only keep the inputs; the caller runs prepare() (pure data, any thread),
+## build_arrays() (same) and then finish() on the main thread. Without it, as before.
 func _init(p_fine: SphereGrid, p_cells: SphereCells, p_terrain: SphereTerrain, p_level: int = 5,
-		p_city := PackedInt32Array()) -> void:
+		p_city := PackedInt32Array(), deferred: bool = false) -> void:
 	fine = p_fine
 	city = p_city
 	cells = p_cells
 	terrain = p_terrain
 	level = mini(p_level, fine.level)
+	if not deferred:
+		prepare()
+		finish()
+
+
+## The coarse grid, the fine-to-coarse map and the first aggregate: data only (worker thread safe).
+func prepare() -> void:
 	coarse = SphereGrid.cached(level)
 	var t0: int = Time.get_ticks_msec()
 	_map_cells()
@@ -59,6 +68,10 @@ func _init(p_fine: SphereGrid, p_cells: SphereCells, p_terrain: SphereTerrain, p
 	_water.resize(n)
 	for c: int in n:
 		_aggregate(c)
+
+
+## Main thread: the textures and the change hook.
+func finish() -> void:
 	tex_a = ImageTexture.create_from_image(_img_a)
 	tex_b = ImageTexture.create_from_image(_img_b)
 	cells.cell_changed.connect(_on_cell_changed)
@@ -204,6 +217,18 @@ func update(delta: float, every: float = 0.5) -> int:
 ## UV2.x = coarse cell id (flat per hex). Corner heights are shared by the 3 hexes that meet
 ## there, so the shell is watertight.
 func build_mesh() -> ArrayMesh:
+	return mesh_from(build_arrays())
+
+
+## [v5load] The upload half of build_mesh (main thread).
+func mesh_from(arr: Array) -> ArrayMesh:
+	var am := ArrayMesh.new()
+	am.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
+	return am
+
+
+## [v5load] The data half of build_mesh: the surface arrays (worker thread safe).
+func build_arrays() -> Array:
 	var t0: int = Time.get_ticks_msec()
 	var nc: int = coarse.cell_count()
 	var ntri: int = coarse.tri_center.size()
@@ -272,11 +297,9 @@ func build_mesh() -> ArrayMesh:
 	arr[Mesh.ARRAY_TEX_UV] = uv
 	arr[Mesh.ARRAY_TEX_UV2] = uv2
 	arr[Mesh.ARRAY_INDEX] = idx
-	var am := ArrayMesh.new()
-	am.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
 	stats["mesh_ms"] = Time.get_ticks_msec() - t0
 	stats["tris"] = idx.size() / 3
-	return am
+	return arr
 
 
 func make_material(ground: ShaderMaterial) -> ShaderMaterial:

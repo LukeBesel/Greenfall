@@ -49,9 +49,9 @@ func test_preview_starts_on_the_globe() -> void:
 	assert_true(SliceOrbit.wanted(), "New Game / Continue build the slice on the globe")
 
 
-func test_preview_never_reaches_steam_cloud() -> void:
+func test_round_saves_have_their_own_cloud_names() -> void:  # [v5load] the round world syncs to Steam Cloud now
 	Settings.round_planets = true
-	assert_true(SteamService._round_preview(SaveManager.slot_path()))
-	assert_true(SteamService._round_preview(CradleMode.profile_path()))
+	assert_true(SteamCloud.cloud_name(SaveManager.slot_path()).begins_with(SteamCloud.ROUND_PREFIX + "p"))
+	assert_true(SteamCloud.cloud_name(CradleMode.profile_path()).begins_with(SteamCloud.ROUND_PREFIX + "p"))
 	Settings.round_planets = false
-	assert_false(SteamService._round_preview(SaveManager.slot_path()), "flat saves sync as before")
+	assert_true(SteamCloud.cloud_name(SaveManager.slot_path()).begins_with("p"), "flat saves keep their names")

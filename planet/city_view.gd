@@ -71,13 +71,18 @@ func build(p_layout: CityLayout, p_ground_material: Material) -> void:
 	_props.visibility_end = 260.0
 	await _load_kit(APT)
 	await _load_kit(FAC)
+	if buildings:  # [v5load] the fire escape's file and its light mesh (130 ms inside the first apartment block)
+		var fe: Resource = await BuildBudget.fetch(AssetLib.MODEL_DIR % ["modular_fire_escape", "modular_fire_escape"])
+		await BuildBudget.check("city:fire escape")
+		AssetLib.lite(_fire_escape_mesh("modular_fire_escape_platform_middle"), 800)
+		fe = null
 	_curb_mat = AssetLib.pbr_material("concrete_pavement", 1.2, Color(0.82, 0.8, 0.78), true)
 	var bi: int = 0
 	for key: Vector2i in layout.blocks:
 		bi += 1
 		BuildBudget.sub(0.6 * float(bi) / layout.blocks.size())
 		await BuildBudget.check("city:block")  # [leftovers] time-sliced behind the loading screen
-		_build_block(key, layout.blocks[key])
+		await _build_block(key, layout.blocks[key])
 	await BuildBudget.check("city:batches")
 	await _flush_batches()
 	if not layout.wild:
@@ -173,6 +178,7 @@ func _build_block(key: Vector2i, b: Dictionary) -> void:
 					_detail.proxy_building(bd, _body, _det)
 					if proxy_collide:  # [v3city]
 						_proxy_box(bd)
+				await BuildBudget.check("city:building")  # [v5load] a detailed block was one 150 ms slice
 			_flush_block(key)
 		CityLayout.Block.HUB:
 			pass  # yard fence: StreetDressing

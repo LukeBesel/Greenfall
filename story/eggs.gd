@@ -76,9 +76,13 @@ var frame_cells := PackedInt32Array()  # that hub's region
 
 
 func _setup_globe(data: Dictionary) -> void:
+	# [v5load] Behind the loading screen this plans and spawns across frames (the caller waits with
+	# BuildBudget.idle()); without a budget it runs in one go, as before.
+	BuildBudget.busy += 1
 	var f: SphereField = world.field
 	var ids: Array[String] = district_eggs(order, defs, hub_index, f.seed_value + hub_index * 977, int(data.get("per_district", 9)),
 		hub_index != 0, "", int(data.get("wild_per_district", 4)))
+	await BuildBudget.check("eggs:pick")
 	var avoid: Array[Vector3] = [Vector3.ZERO]
 	var so: Node = world.get("orbit")
 	if so:  # the yard's anchors (bench, bin, pod, tower, ...) stay clear
@@ -86,10 +90,14 @@ func _setup_globe(data: Dictionary) -> void:
 			avoid.append(to_local(so.call("yard_point", nm)))
 	for s: Dictionary in Outposts.plan_cells(self, f, frame_cells, {}, hub_index):  # keep off the outpost slabs
 		avoid.append(s["pos"] as Vector3)
+	await BuildBudget.check("eggs:outposts")
 	avoid.append(LedgerArc.relay_spot_cells(self, f, frame_cells, hub_index)["pos"] as Vector3)  # and the Ledger's relay
+	await BuildBudget.check("eggs:relay")
 	var plan: Array[Dictionary] = plan_spots_cells(self, f, frame_cells, ids, defs, avoid, f.seed_value + 9091 + hub_index * 31)
 	for p: Dictionary in plan:
+		await BuildBudget.check("eggs:spawn")
 		_spawn(p)
+	BuildBudget.busy -= 1
 	print("[eggs] hub %d: %d eggs, %d props placed" % [hub_index, ids.size(), placed.size()])
 	if _jukebox_node:
 		StorySfx.prewarm_music_box()

@@ -512,6 +512,15 @@ static func run(rt: Node, check: Callable) -> void:
 		big = big and (sz.y >= 0.4 or maxf(sz.x, sz.z) >= 1.0)
 		gdn.slot_stage[sl] = st0
 	check.call("orbit_garden_blooms_read", true, big)
+	# [v5text] One system map on the round game (the orbit set-up and Homeward share it), and the
+	# survey card shows the HUD's planet %.
+	var maps: int = 0
+	for c: Node in s1.get_children():
+		if c is SystemMap:
+			maps += 1
+	var hd: HomewardDirector = HomewardDirector.of(s1)
+	check.call("orbit_one_system_map", "1 shared true", "%d shared %s" % [maps, hd != null and so.layers != null and hd.map == so.layers.system_map])
+	check.call("orbit_survey_pct_is_the_hud_pct", "%s %%" % HUD.fmt_small_pct(so.sites.planet_fraction() * 100.0), str(so.layers.survey.headline(1, 2)[0]))
 	await _fauna_check(tree, s1, so, check)
 	await _first_seed_check(tree, s1, so, check)
 	# Glim's scanner marks the junk of the cell Lumi stands in (pieces by how big they look).
@@ -544,7 +553,10 @@ static func run(rt: Node, check: Callable) -> void:
 		check.call("orbit_outline_cell_sized", true, aabb.size.x > 12.0 and aabb.size.x < 24.0 and absf(aabb.size.y) < 3.0)
 		ob.set_process(true)
 	check.call("orbit_first_hex_milestone", true, GameState.flags.get("hexm_1", false))
-	await tree.create_timer(1.4).timeout  # HexLevels samples once a second: the clean cell reaches level 1
+	for i: int in 30:  # [main] HexLevels samples once a second; on slow runners (CI) one 1.4 s wait can miss it, so poll up to 6 s
+		await tree.create_timer(0.2).timeout
+		if i >= 6 and (s1.get("hex_levels") as HexLevels).level_of(target) >= 1:
+			break
 	check.call("orbit_hex_level_1", 1, (s1.get("hex_levels") as HexLevels).level_of(target))
 	s1.set_meta("rt_target", target)
 	# Half-clean a second one and set a level on a third (the far shell / future layer read these).

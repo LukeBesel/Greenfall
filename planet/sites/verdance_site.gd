@@ -214,6 +214,7 @@ func _make() -> void:
 	layout = CityLayout.new(seed_value, START_EXTENT)  # [v3city] every Verdance hub is a town now
 	kind = "start" if start else _pick_kind()
 	_town_layout()
+	BuildBudget.lap("site:town layout")
 	city = CityView.new()
 	city.name = "City"
 	city.skyline = false
@@ -227,8 +228,10 @@ func _make() -> void:
 	city.prop_radius = town_r
 	add_child(city)
 	await city.build(layout, _sidewalk_material())
+	BuildBudget.lap("site:city")
 	await BuildBudget.check("site:roads")  # [orbE] behind the loading screen: a few kit buildings per frame
 	_roads()
+	BuildBudget.lap("site:roads")
 	await BuildBudget.check("site:kit")
 	await _kit_blocks()
 	if true:  # [v3city] bus stops, benches, bins, signs, traffic lights, road paint, parked wrecks
@@ -247,6 +250,7 @@ func _make() -> void:
 					furniture.obstacles.append(Vector2((cs as Node3D).position.x, (cs as Node3D).position.z))
 		add_child(furniture)
 		await furniture.build(layout, seed_value)
+		BuildBudget.lap("site:furniture")
 		_extra_foot.append_array(furniture.prop_rects)
 		if DevHooks.has("load-report") or DevHooks.has("town-map"):
 			print("[town] street furniture: %s, %d road paint quads" % [str(furniture.counts), furniture._paint_n])
@@ -263,6 +267,7 @@ func _make() -> void:
 		outskirts.kind = kind
 		add_child(outskirts)
 		await outskirts.build()
+		BuildBudget.lap("site:outskirts")
 		print("[town] hub %d outskirts (%s): %s" % [hub_index, kind, str(outskirts.stats)])
 		var ko: Variant = globe_ctx.get("keep_out")
 		if ko is YardKeepOut:
@@ -280,6 +285,7 @@ func _make() -> void:
 	add_child(dressing)
 	await dressing.build(layout, null, hub_index, district_name, "", level)
 	set_level(level)
+	BuildBudget.lap("site:set_level")
 	if DevHooks.has("town-map") and (start or DevHooks.has("town-map-hubs")):
 		_town_map(DevHooks.get_s("town-map", "user://town_map.png") if start else DevHooks.get_s("town-map", "user://town_map.png").replace(".png", "_hub%d.png" % hub_index))
 
@@ -670,11 +676,14 @@ func _kit_blocks() -> void:
 					continue  # [v3city] the town's outer lots: junk ground, fences and wrecks (StreetFurniture)
 				_lots.append({"c": c, "kind": "landfill" if int(b["type"]) == CityLayout.Block.LANDFILL else "lot", "seed": 1 + rng.randi() % 3})
 	await BuildBudget.check("site:lots")  # [orbE]
-	_build_lots()
+	await _build_lots(true)
+	BuildBudget.lap("site:lots")
 	await BuildBudget.check("site:collision")  # [orbE]
 	# The kit has no bodies of its own: one trimesh body for the buildings' solid meshes.
 	SitePrefab.collision_for(kit_root, self)
+	BuildBudget.lap("site:collision_for")
 	KitBatch.merge(kit_root)  # [orbE] perf: one surface per material for all the yard's buildings
+	BuildBudget.lap("site:kitbatch")
 
 
 var _lots: Array[Dictionary] = []
@@ -714,15 +723,15 @@ static func clean_pad(size: float) -> Node3D:
 	# [v3city] Real slabs, not painted hairlines (QA: the 5 cm seam strips read as glitch lines
 	# across the pad): a dark bedding layer, and on it 6 x 6 bevelled panels with 12 cm joints,
 	# each a touch lighter or darker, so the joints read as paving at any distance.
-	k.box(Vector3(size, 0.05, size), Vector3(0, 0.025, 0), Color(0.3, 0.3, 0.29), Vector3.ZERO, 0.02)
+	k.box(Vector3(size, 0.05, size), Vector3(0, 0.025, 0), Color(0.19, 0.19, 0.18), Vector3.ZERO, 0.02)
 	var n: int = 6
 	var step: float = size / n
 	var tone := RandomNumberGenerator.new()
 	tone.seed = 4471
 	for i: int in n:
 		for j: int in n:
-			var t: float = tone.randf_range(-0.035, 0.035)
-			var col := Color(0.47 + t, 0.47 + t, 0.45 + t * 0.9)
+			var t: float = float(tone.randi_range(-2, 2)) * 0.016  # [v5look] 5 tones = 5 materials, not 36
+			var col := Color(0.335 + t, 0.325 + t, 0.3 + t * 0.9)
 			var cx: float = -h + (i + 0.5) * step
 			var cz: float = -h + (j + 0.5) * step
 			k.box(Vector3(step - 0.12, 0.03, step - 0.12), Vector3(cx, 0.06, cz), col, Vector3.ZERO, 0.015)
@@ -731,11 +740,12 @@ static func clean_pad(size: float) -> Node3D:
 		var sgn: float = -1.0 if side % 2 == 0 else 1.0
 		var lip := Vector3(size, 0.1, 0.3) if along_x else Vector3(0.3, 0.1, size)
 		var at := Vector3(0, 0.05, sgn * (h - 0.15)) if along_x else Vector3(sgn * (h - 0.15), 0.05, 0)
-		k.box(lip, at, Color(0.42, 0.43, 0.42), Vector3.ZERO, 0.03)
+		k.box(lip, at, Color(0.27, 0.27, 0.26), Vector3.ZERO, 0.03)
 		var line := Vector3(size - 0.9, 0.008, 0.12) if along_x else Vector3(0.12, 0.008, size - 0.9)
 		var lat := Vector3(0, 0.078, sgn * (h - 0.55)) if along_x else Vector3(sgn * (h - 0.55), 0.078, 0)
 		k.box(line, lat, Color(0.3, 0.75, 0.78))
 	var mi: MeshInstance3D = k.mi(0.08, "CleanPad")
+	_matte_pad(mi)
 	mi.set_meta("no_collide", true)
 	var root := Node3D.new()
 	root.name = "YardPad"
@@ -743,10 +753,29 @@ static func clean_pad(size: float) -> Node3D:
 	return root
 
 
+## [v5look] The pad is concrete, not fresh paint: the kit's restored paint has a clearcoat and
+## bare-steel edges, which mirrored the noon sky and blew the whole pad out to white.
+static func _matte_pad(mi: MeshInstance3D) -> void:
+	for s: int in mi.mesh.get_surface_count():
+		var m: ShaderMaterial = mi.get_surface_override_material(s) as ShaderMaterial
+		if m == null or not m.resource_name.begins_with("paint:"):
+			continue
+		m = m.duplicate()
+		m.set_shader_parameter("clearcoat_amt", 0.0)
+		m.set_shader_parameter("paint_roughness", 0.94)
+		m.set_shader_parameter("paint_metallic", 0.0)
+		m.set_shader_parameter("base_metallic", 0.0)
+		m.set_shader_parameter("edge_wear", 0.0)
+		m.set_shader_parameter("paint_normal_strength", 0.35)
+		mi.set_surface_override_material(s, m)
+
+
 ## Yard and lot dressing for the current state: kit ground patches everywhere; landfill heaps of
 ## kit debris, crate stacks and tipped barrels while broken, tidied when repaired, planters with
 ## bushes and flowers when restored. Rebuilt on a state change (meshes are kit-cached).
-func _build_lots() -> void:
+## sliced [v5load]: behind the loader, hand frames back between lots (set_level's rebuild in play
+## stays one call).
+func _build_lots(sliced: bool = false) -> void:
 	if _lot_root:
 		_lot_root.free()
 	_lot_root = Node3D.new()
@@ -762,6 +791,8 @@ func _build_lots() -> void:
 		var gp: Node3D = clean_pad(21.0) if yard and site_id == "start_yard" else KitMesh.ground_patch(Vector2(21, 21) if yard else Vector2(18, 18), st, int(lot["seed"]))  # [v1yard]
 		gp.position = Vector3(c.x, 0.0, c.y)
 		_lot_root.add_child(gp)
+		if sliced:
+			await BuildBudget.check("site:lot")
 		var t := Transform3D(Basis(), Vector3(c.x, 0, c.y))
 		if yard:
 			# Lived-in clutter on the yard's edges, clear of the anchors and the way out north.
@@ -790,6 +821,8 @@ func _build_lots() -> void:
 				for k: int in 4:
 					KitProps.planter(b, t * KitMesh.xf(Vector3(-6.0 + k * 4.0, 0, rng.randf_range(-3, 3)), Vector3(0, 90.0 * (k % 2), 0)), 2.6, st)
 				KitProps.lamp_post(b, t * KitMesh.xf(Vector3(6, 0, 6)), 4.5, st)
+	if sliced:
+		await BuildBudget.check("site:lot props")
 	var mi: MeshInstance3D = KitMesh.instance(b)
 	mi.name = "LotProps"
 	_lot_root.add_child(mi)

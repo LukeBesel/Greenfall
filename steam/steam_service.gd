@@ -99,9 +99,16 @@ func attach(s: Object, init: bool = true) -> bool:
 		if legacy > 0:
 			print("[steam] cloud: %d pre-profile saves adopted into profile 1" % legacy)
 		for n: int in range(1, SaveManager.PROFILES + 1):
-			var res: Dictionary = cloud.sync_dir(SaveManager.profile_dir(n, true), "p%d_" % n)  # [orbB] the flat game's saves only
+			var res: Dictionary = cloud.sync_dir(SaveManager.profile_dir(n, true), SteamCloud.profile_prefix(n, false))  # the flat game's saves (older builds, --flat)
 			if not res.is_empty():
 				print("[steam] cloud sync p%d: " % n, res)
+		# [v5load] The round world is the game now and saves under user://saves_round: sync that tree
+		# too, under its own cloud prefix. (It used to be skipped as a preview.)
+		if SaveManager.round_planets():
+			for n: int in range(1, SaveManager.PROFILES + 1):
+				var res2: Dictionary = cloud.sync_dir(SaveManager.profile_dir(n), SteamCloud.profile_prefix(n, true))
+				if not res2.is_empty():
+					print("[steam] cloud sync round p%d: " % n, res2)
 	sync_achievements()
 	print("[steam] ", status)
 	return true
@@ -217,12 +224,12 @@ func store_now() -> void:
 
 ## Called by SaveManager after a save file was written.
 func on_saved(path: String) -> void:
-	if active and cloud and not _round_preview(path):
+	if active and cloud:  # [v5load] round-world saves too (SteamCloud.cloud_name gives them their prefix)
 		cloud.push(path)
 
 
 func on_deleted(path: String) -> void:
-	if active and cloud and not _round_preview(path):
+	if active and cloud:
 		cloud.delete(SteamCloud.cloud_name(path))  # [worlds2] profile-prefixed name
 
 
@@ -238,9 +245,3 @@ func open_store_page() -> void:
 		return
 	if DisplayServer.get_name() != "headless":
 		OS.shell_open(store_url())
-
-
-## [orbB] Round-planets preview saves (SaveManager.ROUND_SUFFIX) never reach Steam Cloud: their
-## cloud names would be the flat game's.
-func _round_preview(path: String) -> bool:
-	return path.contains(SaveManager.ROUND_SUFFIX + "/")
