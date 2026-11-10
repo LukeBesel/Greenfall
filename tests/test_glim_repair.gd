@@ -56,7 +56,7 @@ func test_buying_it_completes_the_step_and_queues_the_moment() -> void:
 
 
 func test_objective_follows_the_tower() -> void:
-	var objs: Array = (Economy.read_json("res://data/objectives.json") as Dictionary)["objectives"]
+	var objs: Array = (Economy.planet_table("tutorial") as Dictionary)["objectives"]
 	var ids: Array = objs.map(func(o: Dictionary) -> String: return str(o["id"]))
 	var i: int = ids.find("glim")
 	assert_gt(i, 0)

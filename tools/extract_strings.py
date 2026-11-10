@@ -10,7 +10,7 @@ Sources:
     on it extracted: use that for const tables that are translated where they are shown.
     A `# TRANSLATORS: ...` comment on the line(s) just above a call becomes a translator note.
   * Scenes (.tscn): text / tooltip_text / placeholder_text / title properties.
-  * data/*.json: the player-facing fields listed in JSON_RULES below.
+  * data/*.json and planets/<id>/data/*.json: the player-facing fields listed in JSON_RULES below.
 
 Usage:  python3 tools/extract_strings.py [--check]
   --check  exit 1 if the POT on disk is out of date (for CI), write nothing.
@@ -436,10 +436,16 @@ def build() -> Catalog:
         scan_gd(cat, p)
     for p in walk_files(".tscn"):
         scan_tscn(cat, p)
-    data_dir = os.path.join(ROOT, "data")
-    for f in sorted(os.listdir(data_dir)):
-        if f.endswith(".json"):
-            scan_json(cat, os.path.join(data_dir, f))
+    # Global tables in data/ and every planet's own tables, in file-name order so the catalog
+    # keeps its order when a table moves between the two.
+    data_dirs = [os.path.join(ROOT, "data")]
+    planets_dir = os.path.join(ROOT, "planets")
+    for planet in sorted(os.listdir(planets_dir)):
+        if os.path.isdir(os.path.join(planets_dir, planet, "data")):
+            data_dirs.append(os.path.join(planets_dir, planet, "data"))
+    tables = [os.path.join(d, f) for d in data_dirs for f in os.listdir(d) if f.endswith(".json")]
+    for path in sorted(tables, key=lambda p: (os.path.basename(p), p)):
+        scan_json(cat, path)
     return cat
 
 

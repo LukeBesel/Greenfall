@@ -54,7 +54,7 @@ func test_card_shows_the_situation_hint_in_place_of_the_why() -> void:
 
 
 func test_early_texts_are_short_and_verb_first() -> void:
-	var cfg: Dictionary = Economy.read_json("res://data/objectives.json")
+	var cfg: Dictionary = Economy.planet_table("tutorial")
 	for d: Dictionary in cfg["objectives"]:
 		assert_lt(str(d["text"]).split(" ").size(), 8, "short title: %s" % d["text"])
 	for s: Dictionary in Tutorial.STEPS:

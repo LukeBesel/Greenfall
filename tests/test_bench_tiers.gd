@@ -120,7 +120,7 @@ func test_buying_keeps_the_row_in_place() -> void:
 
 
 func test_objective_upgrades_and_builds_are_ones_the_bench_has() -> void:
-	var cfg: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/objectives.json"))
+	var cfg: Dictionary = Economy.planet_table("tutorial")
 	var ids: Array = (cfg["objectives"] as Array).map(func(d: Dictionary) -> String: return str(d["id"]))
 	assert_lt(ids.find("bench2"), ids.find("robot"), "the Bot Bay comes before the first robot")
 	assert_lt(ids.find("tower"), ids.find("bench2"))

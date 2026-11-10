@@ -167,7 +167,7 @@ func test_robot_types_gated() -> void:
 func test_plant_species_gated() -> void:
 	var g := FakeGarden.new()
 	add_child_autofree(g)
-	g.species = (Economy.read_json("res://data/plants.json")["species"] as Array).duplicate(true)
+	g.species = (Economy.planet_table("plants")["species"] as Array).duplicate(true)
 	Research.apply_garden(g)
 	var by_id: Dictionary = {}
 	for sp: Dictionary in g.species:

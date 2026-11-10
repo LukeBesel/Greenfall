@@ -93,7 +93,7 @@ func test_late_bases_get_the_plans_at_once() -> void:
 func test_haul_objective_waits_after_base_two() -> void:
 	var ids: Array = []
 	var haul: Dictionary = {}
-	for o: Dictionary in Economy.read_json("res://data/objectives.json")["objectives"]:
+	for o: Dictionary in Economy.planet_table("tutorial")["objectives"]:
 		ids.append(str(o["id"]))
 		if str(o["id"]) == "haul":
 			haul = o

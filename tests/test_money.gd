@@ -124,9 +124,11 @@ func test_migrate_is_idempotent_for_v2() -> void:
 func test_data_files_use_only_the_three() -> void:
 	var legacy: Dictionary = Currencies.cfg()["legacy"]
 	var bad: Array[String] = []
-	for f: String in ["hub", "stations", "outposts", "rockets", "ledger", "goals", "decor", "eggs", "bloom", "hex_levels", "events", "upgrades", "research", "designs", "lumi_level", "robot_parts", "parts"]:
-		var d: Dictionary = Economy.read_json("res://data/%s.json" % f)
-		_scan(d, f, legacy, bad)
+	for f: String in ["rockets", "decor", "designs", "robot_parts", "parts"]:
+		_scan(Economy.read_json("res://data/%s.json" % f), f, legacy, bad)
+	for t: String in ["hub", "stations", "outposts", "ledger", "goals", "eggs", "postgame", "regrowth", "events", "upgrades", "research", "robot_level"]:
+		assert_true(Planets.current().has_table(t), "the planet has a '%s' table" % t)
+		_scan(Economy.planet_table(t), t, legacy, bad)
 	assert_eq(bad, [] as Array[String], "legacy currency keys in data: %s" % ", ".join(bad))
 
 

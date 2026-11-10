@@ -36,7 +36,7 @@ func before_each() -> void:
 	add_child(_w)
 	_ob = Objectives.new()
 	_ob.world = _w
-	_ob.chain = (JSON.parse_string(FileAccess.get_file_as_string("res://data/objectives.json")) as Dictionary)["objectives"]
+	_ob.chain = (Economy.planet_table("tutorial") as Dictionary)["objectives"]
 	_ob.revealed = true
 	_ob.step = _ob.chain.map(func(d: Dictionary) -> String: return str(d["id"])).find("seed")
 	_w.objectives = _ob

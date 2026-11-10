@@ -151,7 +151,7 @@ func test_persist_roundtrip() -> void:
 
 func test_garden_stipend_pays_sustained_and_thriving_hexes() -> void:
 	var hl := HexLevels.new()
-	hl.cfg = Economy.read_json("res://data/hex_levels.json")
+	hl.cfg = Economy.planet_table("regrowth")
 	hl.levels = {1: 5, 2: 4, 3: 2}
 	hl._recalc_bonus()
 	var per_min: float = hl.bonus("cubes_per_min")

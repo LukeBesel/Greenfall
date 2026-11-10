@@ -16,7 +16,7 @@ func after_each() -> void:
 
 
 func _defs() -> Array:
-	return Economy.read_json("res://data/eggs.json")["eggs"]
+	return Economy.planet_table("eggs")["eggs"]
 
 
 func _order_and_defs() -> Array:
@@ -31,7 +31,7 @@ func _order_and_defs() -> Array:
 func test_forty_plus_with_props_and_lines() -> void:
 	var all: Array = _defs()
 	assert_gte(all.size(), 40)
-	var wren: Dictionary = Economy.read_json("res://data/wren_lines.json")
+	var wren: Dictionary = Economy.planet_table("guide_lines")
 	for e: Dictionary in all:
 		var n: Node3D = EggProps.build(str(e["kind"]))
 		assert_gt(n.get_child_count(), 0, "%s has a real prop" % e["id"])

@@ -98,7 +98,7 @@ func test_every_step_has_a_target() -> void:
 	var t: Array = _timeline()
 	var g: Goals = t[1]
 	var o: Objectives = t[2]
-	var cfg: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/objectives.json"))
+	var cfg: Dictionary = Economy.planet_table("tutorial")
 	for d: Dictionary in cfg["objectives"]:
 		assert_ne(str(o.step_target(d).get("to", "")), "", "story step %s points somewhere" % d["id"])
 	for i: int in g.chain.size():
