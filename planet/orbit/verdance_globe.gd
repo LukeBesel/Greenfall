@@ -945,11 +945,9 @@ func _build_lights() -> void:
 	survey.patch_cell_provider = func() -> int: return grid.cell_at(lumi.global_position)
 	survey.holder = lumi
 	survey.world_root = self
+	survey.planet_fraction_fn = planet_fraction  # [v5text] the HUD's planet %
 	add_child(survey)
-	system_map = SystemMap.new()  # [orbE] the orrery; Verdance's globe shows the walked cells
-	system_map.name = "SystemMap"
-	system_map.world = self
-	add_child(system_map)
+	system_map = SystemMap.shared(self)  # [orbE] the orrery; Verdance's globe shows the walked cells
 	survey.open_system = func() -> void: system_map.open_map(true)
 	if DevHooks.has("orbit-sysmap"):
 		get_tree().create_timer(DevHooks.get_f("orbit-sysmap", 3.0)).timeout.connect(func() -> void: system_map.open_map(true))

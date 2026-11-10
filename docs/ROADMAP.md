@@ -2,7 +2,38 @@
 
 Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next steps), `docs/PLAN.md` (milestones + owner feature requests), `docs/DECISIONS.md` (choices and assumptions), `docs/BUILD_PROMPT.md` (the owner's full brief).
 
-## Status (Nov 2026)
+## Current state of round Verdance (2026-11-10)
+
+The round world is the game, and the work is on its first planet, Verdance. The owner's bar: it must feel finished, with no glitches, easy progress, and simple enough for a young kid (docs/OWNER_FEEDBACK.md, items 1-56). This section is the one status summary; everything below it is the detail and the history.
+
+**Done**
+- **Start:** a clean loading screen, Medium quality by default, simple settings, robot beeps under the intro lines, and an intro fall onto a planet covered in trash.
+- **World:** Verdance has flat-world trash density. Every hub is a town with its own character, with street furniture, outskirts and waterfronts, and the land between hubs has junk fields, suburbs and industrial edges. Lakes read as water, and the shorelines are clean.
+- **Start yard:** a flat, clean pad with trash right up to its edge, the bin bay next to the workbench, a fitted pod collider, and a tall smoke plume that marks home. No vehicle or buddy at the start.
+- **Guidance:** one goal timeline with one card. The beam and ring lead only to places. Hint lines cover a full chest, a piece too heavy, too few cubes, nothing nearby and the way home. WREN says why you are cleaning and narrates the goals once the tower is up. Messages and beeps are cut down, and one-time lines play once.
+- **Hexes:** a hex counts as clean at 95% and the rest is swept away. The first hexes hold no large items.
+- **Workbench:** tiers unlock the tabs (Bot Bay, Research Desk, Request Board). Rows keep a fixed order, a click shows details, and locked rows say what unlocks them.
+- **Robots:** the Scoopie comes first. Haul Bug and Skimmer plans arrive later by themselves. Haulers take Lumi's bales. The Command view works on a controller.
+- **Growing and water:** plants are visible (sizes, soil, thirst). The first seed has a beacon. Hover Jets are needed to cross lakes.
+- **Glim:** a story build, the lantern bot who held on to the pod.
+- **Reach:** every collectible and objective target stands on reachable ground (`--target-reach`).
+- **Map:** our own survey style with sprout, Lumi and plume glyphs. Travel is at the rocket (press E), not in the map. Glyphs no longer cover each other on the start hub, the map shows the HUD's planet %, and the round game has one system map.
+- **Text:** all 3,992 strings are translated into German, French, Spanish, Brazilian Portuguese, Simplified Chinese and Japanese. A test fails when an early-game string has no translation.
+- **Checks:** 967 unit tests, the save round trips (flat and `--orbit`) and the two-process orbit reload. The dev checks are listed in CLAUDE.md.
+
+**Open**
+- **Renderers:** every render so far used opengl3 (Compatibility). Nobody has looked at Verdance on Forward+ or Metal, and the owner's Mac perf run (`--quality=1 --perf`) is still to do.
+- **Look:** the globe's light was harsher than the flat world's and the pad looked pale at noon. v5look's warm-light and matte-pad pass is merged, but the owner has not seen it yet. A flat grey sea on the horizon and a thin straight line across the junk field were reported and not rechecked since the water fix (docs/QA_VERDANCE.md, 12 and 13).
+- **Hinterland:** the suburb houses have no pitched roofs, there are no road strips between houses, and there is no walk check there.
+- **Autoplay:** the bot's stuck escapes climb in the garden phase (13 at 47 min, 77 at 107 min).
+- **Bale clipping** into Lumi's body (item 22) has not been reproduced.
+- **Translations** are machine drafts. No native speaker has reviewed them. In-world shop signs (PAWN, SHOE REPAIR, OLD TOWN) stay English in every language.
+- **Map:** the survey's hex counts are a snapshot (they update on Re-survey), while its planet % is live.
+- **Flat world:** code that only the flat world used is still in the tree.
+- **Other planets** on the globe (Ochre, Rime, Anvil, Tidewell) are out of focus: Haul Bugs find no path there, and the Ochre finale camera is blocked.
+- **Polish (item 56):** the v5 wave was still running when this was written (v5play: bugs from play-testing; v5look: light, sky, hinterland; v5load: loader, perf, saves). Add their results here.
+
+## Milestones (history, from the flat-world era)
 - [x] M0 Setup, M1 Slice (city district, Aurora/Patch, baling, tutorial, lens view)
 - [x] M2 Planet layer: 40k-hex planet, hand-held survey hologram (M), districts per base, rocket travel. Seamless sphere walking deferred (see DECISIONS).
 - [x] M3 Robots: Scoopie, Haul Bug, Seedling, Drip, Skimmer, Multibot; Mk I-IV tiers with visual upgrades; crews with caps; Command mode (B) to paint zones and give orders; build/upgrade from Command.
@@ -15,7 +46,7 @@ Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next
 - [~] M10 Polish: title screen, settings, music score, QA pass (40 fixes in flight); Windows/Linux/macOS builds from CI.
 - [x] M11 Post-game: Verdance Bloom milestones, Cradle finale (the true ending, then end credits), endless Seed Ark waves, Cradle Mode (new worlds, Starseeds, Heirlooms, world modifiers, Ark Bridge), Garden Mode decorating. Whole game playable New Game -> Cradle -> Seed Ark -> new worlds; see docs/WALKTHROUGH.md.
 
-## Next steps for a new session
+## Next steps (history, written before the round world became the game)
 0. Owner-side Steam/Apple setup: see docs/steam/README.md (app id, depots, signing). Website: enable Pages, fill website/config.js.
 0b. Visual QA: see docs/VISUAL_QA.md (render checklist with dev-hook commands and status); its "todo" rows are the next sweep.
 1. Play-test feedback from the owner (docs/PLAYTEST.md); fix what they hit first.
@@ -864,7 +895,8 @@ rebuilt on the sphere. What carries over, and how to place it on a globe:
 - Done (orbD, Nov 8 late): the start yard's models on the globe (`planet/sites/yard_site.gd`): the yard helper's own models (YardArt, the build scripts, FabricatorModel, the intro's pod) on the hub-0 anchors. Camp drives the lean-to/bench/lamp/generator bits as on the flat game; YardSite follows the same saved state for the extra lamps, compost press, radio, nursery, telescope, stations and Bot Fabricator. Every planet's start site gets the yard anchors; anchors inside another planet's geometry or off its walkable ground move to reachable, spaced spots, and the models follow. Dev: `--yard-report`, `--yard-all`. `--site-reach` with the whole yard built: Verdance, Ochre, Rime, Anvil PASS; Tidewell's raft deck (~150 m2) is too small for all 20 machines (17/20; the early yard passes).
 - Done (orbD): Homeward launch and interplanet rocket on the globe, kit hover-sled with ride animation, footprints for every planet's sites (F_HUB, round-trip safe), lap autowalk detours, SphereMotor wedge fix.
 
-## Status 2026-11-08: play-ready wrap-up
+## History 2026-11-08: play-ready wrap-up
+Superseded by "Current state of round Verdance" at the top.
 - **Merged this round:**
   - Round-planet parity: First Seed, compost press, seed finds, memory shards and the document view.
   - Stations, litter, lakes with fish, street power.
@@ -887,7 +919,8 @@ rebuilt on the sphere. What carries over, and how to place it on a globe:
   - The other 5 Lumi designs and planet music themes.
 - **Owner:** a Mac perf run, `--orbit --quality=1 --perf`, then the same with `--orbit-planet=anvil`.
 
-## Status 2026-11-08 evening: round Verdance v1 pass (owner playtest notes)
+## History 2026-11-08 evening: round Verdance v1 pass (owner playtest notes)
+Superseded by "Current state of round Verdance" at the top. Most of its open list is closed.
 - **Done and merged:**
   - Round world is the only mode.
   - New loading screen, settings and music rules.
