@@ -6,8 +6,7 @@ extends RefCounted
 ## owns the thing:
 ##   once-builds (drop off the list when built): lean-to, generator, yard lamps, compost press,
 ##     CD player, robot nursery (systems/camp/yard_builds.gd), the bale stations
-##     (automation/stations.gd), the telescope (automation/telescope.gd), the museum
-##     (systems/museum.gd, only at its site);
+##     (automation/stations.gd);
 ##   tiered (only the next tier is shown): the trash bin (automation/trash_bin.gd) and the signal
 ##     tower (story/signal_tower.gd, only at the start base).
 ## An entry is only listed once its unlock condition holds (no spoilers). Building one shows it in
@@ -20,6 +19,9 @@ extends RefCounted
 ## first_build_one_time (the signal tower) shows its first tier in the Build tab.
 
 const TABLE: String = "builds"
+## Builds owned by their own system (the match arms below). Every other id is a yard build
+## (systems/camp/yard_builds.gd) and needs a definition in the yard table.
+const SYSTEM_BUILDS: Array[String] = ["trash_bin", "signal_tower", "air_scrubber", "signal_jammer", "conveyor", "auto_baler", "recycler"]
 
 static var _cfg: Dictionary = {}
 
@@ -31,15 +33,18 @@ static func cfg() -> Dictionary:
 	return _cfg
 
 
-
 static func _drop_planet_cache() -> void:
 	_cfg = {}
 
 
+## The builds this game can offer, in table order. A planet's table may also list builds whose
+## system is not part of this game (parked features): those have no owner here and are skipped.
 static func ids() -> Array[String]:
 	var out: Array[String] = []
 	for b: Dictionary in cfg().get("builds", []):
-		out.append(str(b["id"]))
+		var id: String = str(b["id"])
+		if id in SYSTEM_BUILDS or not YardBuilds.def(id).is_empty():
+			out.append(id)
 	return out
 
 
@@ -101,13 +106,6 @@ static func is_built(world: Node, id: String) -> bool:
 			return lg != null and (LedgerArc.jammer_count() >= int(lg.call("jammer_def").get("max", 3)) or bool(lg.call("resolved")))
 		"conveyor", "auto_baler", "recycler":
 			return Stations.built_in_state(id)
-		"telescope":
-			var t: Telescope = Telescope.of(world) if world else null
-			return t != null and t.built()
-		"museum":
-			return Museum.built()
-		"bot_fabricator":  # [orbC] per planet (robots/fabricator/bot_fabricator.gd)
-			return BotFabricator.built(world)
 	return YardBuilds.built(id)
 
 
@@ -128,16 +126,6 @@ static func listed(world: Node, id: String) -> bool:
 			return lg != null and bool(lg.call("jammer_visible"))
 		"conveyor", "auto_baler", "recycler":
 			return Stations.of(world) != null and Research.exists(id) and Research.has(id) if world else false
-		"telescope":
-			var t: Telescope = Telescope.of(world) if world else null
-			if t == null:
-				return false
-			var rid: String = str(t.data.get("requires_research", "observatory"))
-			return _hub_level(world) >= int(t.data.get("requires_level", 4)) or (Research.exists(rid) and Research.has(rid))
-		"museum":
-			return world != null and Museum.site_here(world) and Museum.unlocked()
-		"bot_fabricator":  # [orbC] from the 3rd planet (Tidewell) on
-			return BotFabricator.unlocked(world)
 	return YardBuilds.listed(id, _hub_level(world))
 
 
@@ -188,23 +176,6 @@ static func entry(world: Node, id: String) -> Dictionary:
 				e["desc"] = str(st.def(id).get("desc", ""))
 				e["cost"] = st.def(id).get("cost", {})
 				e["reason"] = st.block_reason(id)
-		"telescope":
-			var t: Telescope = Telescope.of(world) if world else null
-			if t:
-				e["name"] = str(t.data.get("name", "Telescope"))
-				e["desc"] = str(t.data.get("desc", ""))
-				e["cost"] = Telescope.cost()
-				e["reason"] = t.block_reason()
-		"museum":
-			e["name"] = TranslationServer.translate("Museum")
-			e["desc"] = TranslationServer.translate("A hall with a plinth for everything Lumi found, for whoever comes next.")
-			e["cost"] = Museum.cost()
-			e["reason"] = Museum.blocker()
-		"bot_fabricator":  # [orbC]
-			e["name"] = str(BotFabricator.cfg().get("name", "Bot Fabricator"))
-			e["desc"] = str(BotFabricator.cfg().get("desc", ""))
-			e["cost"] = BotFabricator.cost()
-			e["reason"] = BotFabricator.block_reason(world)
 		_:
 			var d: Dictionary = YardBuilds.def(id)
 			e["name"] = str(d.get("name", id))
@@ -236,8 +207,6 @@ static func built_names(world: Node) -> Array[String]:
 	var out: Array[String] = []
 	for id: String in ids():
 		if str(def(id).get("kind", "one_time")) != "one_time":
-			continue
-		if id == "museum" and not (world != null and Museum.site_here(world)):
 			continue
 		if is_built(world, id):
 			out.append(str(entry(world, id)["name"]))
@@ -279,22 +248,6 @@ static func build(world: Node, id: String) -> bool:
 			var st: Stations = Stations.of(world)
 			if st == null or not st.build(id):
 				return false
-		"telescope":
-			var t: Telescope = Telescope.of(world)
-			if t == null or not t.build():
-				return false
-			MachineReveal.reveal(world, nm, t.door_point(), false)
-		"museum":
-			var m: Node = world.get_node_or_null("Museum")
-			if m == null or not bool(m.call("build_from_hub")):
-				return false
-			MachineReveal.reveal(world, nm, (m as Node3D).global_position, false)
-		"bot_fabricator":  # [orbC]
-			if not BotFabricator.build(world):
-				return false
-			var fdp: Node3D = world.get("depot") as Node3D if world else null
-			if fdp:
-				MachineReveal.reveal(world, nm, fdp.global_position, false)
 		_:
 			if not YardBuilds.build(id, _hub_level(world)):
 				return false  # Camp shows it and reveals it (YardBuilds.events.built)

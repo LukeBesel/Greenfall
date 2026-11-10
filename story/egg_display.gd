@@ -1,6 +1,6 @@
 class_name EggDisplay
 extends Node3D
-## [eggs2] A small self-contained display for a collectible egg (EggCollect), used on its Museum plinth: a low
+## [eggs2] A small self-contained display for a collectible egg (EggCollect), a low
 ## garden bed with a hand-painted sign and one slot per part. Collected parts stand in their slot;
 ## missing ones show an empty peg. When the set is complete, `salute()` plays the egg's finale
 ## (the gnomes turn to face Lumi and hop). Reusable: pass the egg id, part count, a title and a

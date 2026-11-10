@@ -12,9 +12,8 @@ const UPGRADE_CATS: Array = [["lumi", "Lumi"], ["base", "Base"], ["machines", "M
 const BUILD_CATS: Array = [["story", "Story"], ["yard", "Yard"], ["machines", "Machines"]]  # [v1guide] the signal tower first: it's the first build the story asks for
 # l10n:end
 const BUILD_CAT_OF: Dictionary = {
-	"conveyor": "machines", "auto_baler": "machines", "recycler": "machines", "telescope": "machines", "air_scrubber": "machines",
-	"signal_tower": "story", "signal_jammer": "story", "museum": "story",
-	"bot_fabricator": "machines",  # [orbC]
+	"conveyor": "machines", "auto_baler": "machines", "recycler": "machines", "air_scrubber": "machines",
+	"signal_tower": "story", "signal_jammer": "story",
 }
 
 
@@ -245,7 +244,7 @@ static func builds(world: Node) -> Array:
 	for c: Array in BUILD_CATS:
 		kept.append_array(_trim(out.filter(func(r: Dictionary) -> bool: return str(r["cat"]) == str(c[0]))))
 	out = kept
-	# Machines that stand keep their few controls (route, move, the telescope view).
+	# Machines that stand keep their few controls (route, move).
 	var st: Stations = Stations.of(world) if world else null
 	if st and (st.conveyor != null or st.baler != null or st.recycler != null):
 		out.append({"id": "stations_ctl", "cat": "machines", "icon": "auto", "icon_set": "ui", "name": _tr("Bale stations"), "desc": "",
@@ -254,10 +253,6 @@ static func builds(world: Node) -> Array:
 				for g: Node in sp.find_children("*", "GridContainer", true, false):
 					(g as Control).visible = false
 				return sp})
-	var t: Telescope = Telescope.of(world) if world else null
-	if t and t.built():
-		out.append({"id": "telescope_ctl", "cat": "machines", "icon": "star", "name": _tr("Telescope"), "desc": "",
-			"state": "done", "table": [], "action": "", "custom": func(_w: Node) -> Control: return TelescopePanel.new()})
 	return out
 
 

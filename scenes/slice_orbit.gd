@@ -9,7 +9,7 @@ extends Node
 ## Depot on the start pad, Lumi Level, the pause menu, hex levels (sparse), the Hub (logic; the
 ## site prefab shows its stage), the workbench + Upgrades, Research/Achievements/Codex, music,
 ## WREN + subtitles, Goals, Tutorial, Requests, Interactables, WorldEvents, the Signal Tower,
-## Extras (CD player, nursery, album, welcome back, Seed of the Week), the Telescope, Camp (broken
+## Extras (CD player, nursery, album, welcome back, Seed of the Week), Camp (broken
 ## bench, trash bin, yard builds), Glim, the crashed pod, CoreCharge, Objectives (+ the cell
 ## outline), the garden (sparse, per cell). Yard systems stand on orbD's hub-0 anchors (yard_slot).
 ## GameState.world is the start site's own dict (GameState.use_orbit_world).
@@ -513,13 +513,6 @@ func _build_yard_systems() -> void:
 		w.add_child(tower)  # a child of the slice, as on the flat game (HubBuilds and the bot look it up)
 		tower.global_transform = (slot[0] as Node3D).global_transform * (slot[1] as Transform3D)  # after its _ready
 	_attach_extras()
-	var scope := Telescope.new()  # the Telescope + remote progress (automation/telescope.gd)
-	scope.name = "Telescope"
-	scope.world = w
-	w.add_child(scope)
-	# Its model sits at _pos() in its own frame: put that point on the "telescope" anchor.
-	var tslot: Array = yard_slot("telescope", scope.call("_pos"))
-	scope.global_transform = (tslot[0] as Node3D).global_transform * (tslot[1] as Transform3D) * Transform3D(Basis(), -(scope.call("_pos") as Vector3))
 	_attach_camp()
 	GlimDirector.attach(w)  # Glim the lantern bot: light, hex scanner, upgrades, looks (systems/glim/)
 	_start_intro_or_place_pod()  # [orbE] the intro cinematic on the globe (new games); else the pod as before
@@ -819,7 +812,7 @@ func reseat_yard() -> void:
 	if cmp:
 		var cs: Array = yard_slot("composter", Composter.POS)
 		cmp.global_transform = (cs[0] as Node3D).global_transform * (cs[1] as Transform3D)
-	# [orbB] the CD player, the nursery, the Telescope and the crashed pod follow their anchors too
+	# [orbB] the CD player, the nursery and the crashed pod follow their anchors too
 	var ex: ExtrasDirector = ExtrasDirector.of(w)
 	if ex and ex.radio:
 		var rs: Array = yard_slot("radio", Radio.POS)
@@ -831,11 +824,6 @@ func reseat_yard() -> void:
 		var ns: Array = yard_slot("nursery", ex.nursery.position)
 		ex.nursery.global_transform = (ns[0] as Node3D).global_transform * (ns[1] as Transform3D)
 		ex.nursery.set("center", ex.nursery.global_position)
-	var scope: Telescope = Telescope.of(w)
-	if scope:
-		var tp: Vector3 = scope.call("_pos")
-		var tsl: Array = yard_slot("telescope", tp)
-		scope.global_transform = (tsl[0] as Node3D).global_transform * (tsl[1] as Transform3D) * Transform3D(Basis(), -tp)
 	var pod_site: Node3D = w.get_meta("orbit_pod", null) as Node3D
 	if pod_site:
 		var at: Vector3 = yard_point("pod")

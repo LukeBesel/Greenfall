@@ -93,16 +93,12 @@ func test_yard_interactables_are_spaced() -> void:
 	assert_gte(gap, 3.0)
 	var radio: Vector3 = YardBuilds.pos("radio", Radio.POS)
 	var ryaw: float = deg_to_rad(float(YardBuilds.def("radio").get("yaw_deg", 180.0)))
-	var tcfg: Dictionary = RemoteProgress.cfg()
-	var tp: Array = tcfg.get("pos", [0, 0])
-	var door: Vector3 = Vector3(float(tp[0]), 0, float(tp[1])) + Basis(Vector3.UP, deg_to_rad(float(tcfg.get("yaw_deg", 0.0)))) * Vector3(0, 0, 2.2)
 	var pts: Dictionary = {
 		"workbench": Vector3(-3.6, 0, 2.2),
 		"trash_bin": Camp.BIN_ANCHOR,
 		"composter": Composter.POS,
 		"flower": Vector3(2.9, 0, 1.4),
 		"radio": radio + Basis(Vector3.UP, ryaw) * Vector3(1.0, 0, 0),
-		"telescope": door,
 	}
 	var keys: Array = pts.keys()
 	for i: int in keys.size():
@@ -122,13 +118,11 @@ func test_yard_keeps_off_the_crash_site() -> void:
 		keep.append([pod + Vector3(-0.48, 0, -0.88) * t, 1.6])  # door ramp
 	for t: float in [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]:
 		keep.append([pod + Vector3(-0.83, 0, 0.55) * t, 1.6])  # furrow
-	var tp: Array = RemoteProgress.cfg().get("pos", [0, 0])
 	var things: Dictionary = {
 		"workbench": [Vector3(-4.9, 0, 2.2), 2.0],
 		"trash_bin": [Vector3(0, 0, -3.2), 2.2],
 		"radio": [YardBuilds.pos("radio", Radio.POS), 1.0],
 		"nursery": [Nursery.SPOTS[0], 3.0],
-		"telescope": [Vector3(float(tp[0]), 0, float(tp[1])), 2.4],
 	}
 	for k: String in things:
 		var p: Vector3 = things[k][0]

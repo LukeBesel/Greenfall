@@ -2,8 +2,8 @@ class_name RobotDesign
 extends RefCounted
 ## [ui7] Robot looks are designed per robot TYPE (owner: "paint all planting bots green, and every
 ## planting bot, existing or newly built, wears it"). The Locker's Bots section edits a type's
-## design; every robot of that type wears it, including ones built later (Fleet.spawn, the
-## Fabricator) and ones restored from a save.
+## design; every robot of that type wears it, including ones built later (Fleet.spawn)
+## and ones restored from a save.
 ##
 ## Design (GameState.flags["robot_designs"][type_id]):
 ##   {"parts": {slot: part_id}  (Robot Builder parts; owned parts fit every robot),

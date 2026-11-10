@@ -48,7 +48,7 @@ func test_fresh_base_offers_only_unlocked_things() -> void:
 	var once: Array = _ids("one_time")
 	for id: String in ["shack", "generator", "lamps"]:
 		assert_has(once, id)
-	for id: String in ["composter", "nursery", "conveyor", "telescope", "museum"]:
+	for id: String in ["composter", "nursery", "conveyor"]:
 		assert_does_not_have(once, id, "%s isn't offered before it is unlocked" % id)
 	assert_eq(_ids("tiered"), ["trash_bin"], "the bin's next level is the only upgrade")
 	GameState.flags["first_sprout"] = true

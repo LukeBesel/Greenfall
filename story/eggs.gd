@@ -472,7 +472,7 @@ func _migrate_collected() -> void:
 
 
 ## E on a collectible part: the tractor beam lifts it into Lumi's compartment and it joins her
-## collection (Codex > Collection; shown in the Museum at the end). The last one completes the egg.
+## collection (Codex > Collection). The last one completes the egg.
 func _collect(e: Dictionary) -> void:
 	var id: String = e["id"]
 	var part: int = int(e["part"])

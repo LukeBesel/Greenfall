@@ -292,7 +292,7 @@ func _populate() -> void:
 				ld.provider = func() -> Array: return BenchLists.builds(w)
 				ld.categories = BenchLists.BUILD_CATS
 				ld.counter = func() -> String: return BenchLists.builds_counter(w)
-			"bots":  # [ui7] Build / Tiers / Fleet / Fabricator (ui/bench_bots.gd)
+			"bots":  # [ui7] Build / Tiers / Fleet (ui/bench_bots.gd)
 				var fl: Fleet = fleet
 				var ba: Callable = build_at
 				ld.provider = func() -> Array: return BenchBots.rows(fl, ba)
@@ -307,8 +307,7 @@ func _populate() -> void:
 		_panel = ld
 		return
 	_relayout()
-	# [ui7] The Bots tab is a list + detail (ui/bench_bots.gd); orbC's Fabricator panel is its
-	# "Fabricator" category's detail now.
+	# [ui7] The Bots tab is a list + detail (ui/bench_bots.gd).
 	for id: String in Economy.upgrade_order:
 		if str(Economy.upgrade_defs[id].get("tab", "patch")) != _tab or _tab == "bots":  # [ui2] bot upgrades live on their RobotCard
 			continue

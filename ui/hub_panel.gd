@@ -2,7 +2,7 @@ class_name HubPanel
 extends HBoxContainer
 ## Workbench "Hub" tab. [ui2] Left: one big card for the next hub level (what it is, what it
 ## gives you, the cost in Parts and cubes, a big Upgrade button, the level spots). Right: the
-## smaller things built at the hub (Air Scrubbers, bale stations, the Telescope, the Jammer).
+## smaller things built at the hub (Air Scrubbers, bale stations, the Jammer).
 
 ## Height of the scrolling side column (fits the workbench at 1280x800 and 110% UI scale).
 const SIDE_H: float = 460.0
@@ -24,7 +24,6 @@ var _scrub: Label
 var _scrub_cost: BenchKit.CostRow
 var _scrub_btn: Button
 var _stations: StationsPanel  # [stations]
-var _scope: TelescopePanel  # [scope]
 var _jam_box: VBoxContainer
 var _yard: YardBuildsPanel  # [camp]
 var _jam: Label
@@ -115,11 +114,6 @@ func _ready() -> void:
 		(b as Button).custom_minimum_size.x = 0.0  # fits beside the level card at 125% UI scale
 		(b as Button).clip_text = true
 		(b as Button).text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	# [scope] The Telescope (ui/telescope_panel.gd).
-	var tc: Array = BenchKit.card()
-	side.add_child(tc[0])
-	_scope = TelescopePanel.new()
-	(tc[1] as VBoxContainer).add_child(_scope)
 	# [camp] trash bin, radio, nursery (ui/yard_builds_panel.gd)
 	var yc: Array = BenchKit.card()
 	side.add_child(yc[0])
@@ -256,9 +250,6 @@ func refresh() -> void:
 	if _stations:  # [stations]
 		_stations.refresh()
 		(_stations.get_parent().get_parent() as Control).visible = _stations.visible
-	if _scope:  # [scope]
-		_scope.refresh()
-		(_scope.get_parent().get_parent() as Control).visible = false  # [camp2] built from the BUILD list
 	if _yard:  # [camp]
 		_yard.refresh()
 	var lg: Node = _ledger()

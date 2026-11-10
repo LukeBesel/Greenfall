@@ -52,8 +52,7 @@ static func units_value(robots: Array, units: float) -> float:
 	return units * AVG_VALUE_PER_UNIT * eff
 
 
-## [extras] The one entry point for idle gains on a district (the welcome-back card, and anything
-## that shows remote progress, e.g. a telescope onto other planets): what `world_state` (a
+## [extras] The one entry point for idle gains on a district (the welcome-back card): what `world_state` (a
 ## GameState.districts entry) earns over `seconds` away. Hard cap: CAP_S of time, and the junk the
 ## district has left. Junk already paid for offline (`world_state.offline_units`) is counted against
 ## what is left and the new units are added to it, so calling this again for the same time (or the
@@ -62,7 +61,7 @@ static func units_value(robots: Array, units: float) -> float:
 ##   junk_left      the district's remaining junk volume; < 0 reads world_state.junk_left (written
 ##                  at every save by systems/extras/extras_director.gd; 0 if never saved)
 ##   scrubbers, filter_per_s   the base's air scrubbers
-##   garden         the live Garden to grow (optional; remote districts pass null and get no plants)
+##   garden         the live Garden to grow (optional; null grows no plants)
 ## Returns compute()'s keys plus: away_raw (uncapped seconds), robots (the fleet), and garden
 ## {grew, bloomed, seeds, hexes} (the seeds are credited by apply()).
 static func simulate(world_state: Dictionary, seconds: float, junk_left: float = -1.0, scrubbers: int = 0, filter_per_s: float = 1.0, garden: Garden = null) -> Dictionary:

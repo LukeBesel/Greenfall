@@ -56,13 +56,13 @@ var depots: Dictionary = {}  # hub cell -> depot cell
 var depot_points: Dictionary = {}
 var spend_seeds: bool = true
 ## Near budget: at most this many real SphereBots; past it the farthest near robots are records
-## too (a Fabricator fleet of hundreds stays cheap even right around Lumi).
+## too (a fleet of hundreds stays cheap even right around Lumi).
 var max_near: int = 48
 ## Dev: the terrain, so the report can recount cleaned hexes the way a reload does.
 var terrain_for_recount: SphereTerrain
 var _touched: Dictionary = {}  # dev: cells the crew wrote
-## Robot looks (owner: designed per type at the Locker, worn by every robot of that type, the
-## Fabricator's included). Every globe robot that becomes real is dressed by dress(): the equipped
+## Robot looks (owner: designed per type at the Locker, worn by every robot of that type).
+## Every globe robot that becomes real is dressed by dress(): the equipped
 ## livery (systems/liveries.gd, as on the flat fleet) and then each hook here, called as
 ## hook.call(body: Node3D, visual: Node3D, type_id: String, tier: int). The Locker's per-type
 ## design registers itself with SphereCrew.dress_hooks.append(...).
@@ -1118,7 +1118,7 @@ func cells_cleaned() -> int:
 
 
 func _maybe_report() -> void:
-	if _report_done or not (DevHooks.has("bot-report") or DevHooks.has("robots") or DevHooks.has("orbit-far-crew") or DevHooks.has("fabricator-build")) or not DevHooks.has("quit-after"):
+	if _report_done or not (DevHooks.has("bot-report") or DevHooks.has("robots") or DevHooks.has("orbit-far-crew")) or not DevHooks.has("quit-after"):
 		return
 	if DevHooks._elapsed >= DevHooks.get_f("quit-after", 5.0) - 1.0:
 		_report_done = true

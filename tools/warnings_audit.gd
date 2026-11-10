@@ -3,10 +3,10 @@ extends SceneTree
 ## debugger), so tools/warnings_audit.sh turns every "warn" level warning into an error through a
 ## temporary override.cfg and this script compiles every project script once (on the first frame); each warning is then
 ## printed as "SCRIPT ERROR: Parse Error: ... (Warning treated as error.)" with its file and line.
-## Run through tools/warnings_audit.sh, not directly. Skips addons/ (GUT).
+## Run through tools/warnings_audit.sh, not directly. Skips addons/ (GUT) and parked/ (not in the game).
 ##   --list-levels   print the warn-level settings as override.cfg lines (used by the shell script)
 
-const SKIP: Array[String] = ["res://addons/", "res://.godot/"]
+const SKIP: Array[String] = ["res://addons/", "res://.godot/", "res://parked/"]
 
 
 func _init() -> void:

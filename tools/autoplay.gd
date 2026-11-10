@@ -1059,25 +1059,12 @@ func _shop(want: Dictionary) -> void:
 			if gd:
 				gd.refresh()
 			_event("glim_" + gid, {"tier": Glim.tier(gid)})
-	# 2d) [orbC] The Bot Fabricator (3rd planet on): built as soon as it is paid for; until then
-	# ordinary robot builds wait (it builds them cheaper), and the upgrade loop saves for it.
-	var fab_wait: bool = false
-	if HubBuilds.listed(world, "bot_fabricator") and not BotFabricator.built(world):
-		if str(HubBuilds.entry(world, "bot_fabricator")["reason"]) == "" and HubBuilds.build(world, "bot_fabricator"):
-			_event("build", {"id": "bot_fabricator"})
-			_mark("fabricator_s")
-			_progress()
-		else:
-			fab_wait = true
-	_fabricator_mix(world)
 	# 3) Robots ([ui2] Parts + cubes; keep the next base level's Parts unless the robot can't wait).
 	var robot: String = str(want.get("robot", "")) if fleet != null and BenchTiers.tab_open("bots") else ""  # [orbB] no Fleet on the globe yet (orbC)  # [v1guide] the Bots tab is open
 	if robot != "":
 		var hub_save: float = float(want.get("hub_save", 0.0))
 		var spare: float = GameState.get_currency("cubes").to_float() - float(want.get("robot_cost", 0.0))
 		var must: bool = _robot_goal(robot) or _essential(robot)
-		if fab_wait and not must:
-			robot = ""  # [orbC] saving for the Fabricator
 		var ok: bool = hub_save <= 0.0 or spare >= hub_save or must
 		ok = ok and (must or hub_save <= 0.0 or _mats_spare({"parts": fleet.build_parts(robot).to_float()}, false))
 		if ok and robot != "" and fleet.can_build(robot):
@@ -1136,11 +1123,6 @@ func _shop(want: Dictionary) -> void:
 		reserve = maxf(reserve, Economy.upgrade_cost(Pace.UP_BALER).to_float())  # [pace] a person saves for the Baler
 	if not BenchTiers.next_def().is_empty() and BenchTiers.block_reason(world) == "":
 		reserve = maxf(reserve, float(BenchTiers.next_cost().get("cubes", 0.0)))  # [v1guide] a person saves for the next bench tier
-	if HubBuilds.listed(world, "bot_fabricator") and not BotFabricator.built(world):
-		reserve = maxf(reserve, float(BotFabricator.cost().get("cubes", 0)))  # [orbC] a person saves for the Fabricator
-	var fab_now: BotFabricator = BotFabricator.of(world)
-	if fab_now != null and fab_now.fleet_size() < fab_now.cap_now():
-		reserve = maxf(reserve, float(BotFabricator.robot_cost("scoopie")["cubes"]))  # [orbC] keep the line running
 	guard = 0
 	while guard < 20:
 		guard += 1
@@ -1165,25 +1147,6 @@ func _shop(want: Dictionary) -> void:
 			cp.interact()
 			_progress()
 			_event("composter", {"level": cp.level})
-
-
-## [orbC] The Fabricator's mix: cleaners and haulers, plus planters and waterers once researched
-## (Thriving hexes are half of a planet's restoration).
-func _fabricator_mix(world: Node) -> void:
-	var fab: BotFabricator = BotFabricator.of(world)
-	if fab == null:
-		return
-	var want: Dictionary = {"scoopie": 3, "haulbug": 1}
-	var ok: Array[String] = BotFabricator.types()
-	var seeds: float = GameState.get_currency("seeds").to_float()
-	if ok.has("seedling"):
-		want["seedling"] = 3 if seeds > 100.0 else 1  # seeds piling up: more planters
-	if ok.has("drip"):
-		want["drip"] = 2
-	if seeds > 100.0:
-		want["scoopie"] = 2
-	if fab.mix() != want:
-		fab.set_mix(want)
 
 
 ## Materials the next base level still needs (cubes ignored).

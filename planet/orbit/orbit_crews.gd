@@ -175,11 +175,6 @@ func build_crew(so: Node) -> SphereCrew:
 		sf.crew = crew
 		w.add_child(sf)
 		w.set("fleet", sf)
-	if DevHooks.has("fabricator-build"):  # dev: a Fabricator standing at this planet's base
-		BotFabricator.state(BotFabricator.planet_of(so.get("w")))["built"] = true
-		GameState.add_currency("cubes", BigNum.from_float(DevHooks.get_f("fabricator-build", 1e6) if DevHooks.get_f("fabricator-build", 1.0) > 1.0 else 1e6))
-		GameState.add_currency("parts", BigNum.from_float(1e5))
-	BotFabricator.attach(so.get("w"))  # a built Bot Fabricator builds into this crew
 	return crew
 
 

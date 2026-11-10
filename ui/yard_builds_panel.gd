@@ -2,7 +2,7 @@ class_name YardBuildsPanel
 extends VBoxContainer
 ## [camp2] Hub tab section: BUILD. One list of every yard structure that can be built here now
 ## (systems/camp/hub_builds.gd, kind one_time): lean-to, generator, lamps, the first signal tower,
-## compost press, CD player, bale stations, nursery, telescope, museum, the first jammer. Only what
+## compost press, CD player, bale stations, nursery, the first jammer. Only what
 ## is unlocked is listed; they drop off once built (a collapsed "Built:" line names them). Tiered
 ## things (trash bin levels, tower tiers, scrubbers, more jammers) are the Upgrades tab's (ui3).
 
