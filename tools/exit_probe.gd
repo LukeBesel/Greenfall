@@ -2,7 +2,9 @@ extends Node
 ## Exit-state probe (bug B2): does a reload resume from the moment of exit or from the last autosave?
 ## Two processes share a dev save folder:
 ##   godot --headless --path . res://tools/exit_probe.tscn -- --fresh --autoplay --time-scale=8 --save-dir=b2probe --probe=write --exit-at=170
-##   godot --headless --path . res://tools/exit_probe.tscn -- --save-dir=b2probe --probe=read
+##   godot --headless --path . res://tools/exit_probe.tscn -- --save-dir=b2probe --probe=read [--no-away]
+## --no-away reloads as if no real time passed since the save (no offline jump for the crews), so a
+## late save can be compared key by key; research still finishes on the real clock.
 ## "write" plays the globe under the bot, snapshots the state at every autosave and at --exit-at
 ## (game seconds; with --exit-carrying, the first moment after it with a bale on Lumi's back), then quits the way closing the window does (NOTIFICATION_WM_CLOSE_REQUEST to the
 ## whole tree). "read" starts the slice from that save and prints, per key, whether the reloaded
@@ -17,29 +19,52 @@ var _slice: Node
 var _autosave: Dictionary = {}
 var _exit_at: float = 170.0
 var _done: bool = false
+var _away_s: float = -1.0
+var _carry_t: float = 0.0
 
 
 func _ready() -> void:
 	_exit_at = DevHooks.get_f("exit-at", 170.0)
+	if DevHooks.has("no-away") and DevHooks.get_s("probe", "write") != "write":
+		# The slice loads the save and restores the crews in one go, so the save's own clock is moved
+		# to now (this dev save only): their offline jump then finds no time away.
+		var d: Dictionary = SaveManager.read_dict(SaveManager.slot_path())
+		if not d.is_empty():
+			d["saved_unix"] = Time.get_unix_time_from_system()
+			SaveManager.write_dict(SaveManager.slot_path(), d)
 	_slice = (load("res://scenes/slice.tscn") as PackedScene).instantiate()
 	get_tree().root.add_child.call_deferred(_slice)
 	if DevHooks.get_s("probe", "write") == "write":
 		EventBus.game_saved.connect(_on_saved)
 	else:
+		SaveManager.set_process(false)  # a slow reload must not autosave over the save it is checking
 		_read.call_deferred()
 
 
 func _process(_delta: float) -> void:
+	if _away_s < 0.0 and GameState.saved_unix > 0.0:
+		_away_s = Time.get_unix_time_from_system() - GameState.saved_unix
+		print("[b2] the save is %.0f s old (real time away)" % _away_s)
 	if _done or DevHooks.get_s("probe", "write") != "write" or not _ready_world():
 		return
 	if float(GameState.stats.get("time_played", 0.0)) < _exit_at:
 		return
-	if DevHooks.has("exit-carrying") and (_slice.get("patch") as Patch).carried.is_empty():
-		return  # wait for a moment with a bale on Lumi's back
+	if DevHooks.has("exit-carrying"):  # wait for a bale that has sat on Lumi for a second (its pick-up tween is over)
+		_carry_t = _carry_t + _delta if not (_slice.get("patch") as Patch).carried.is_empty() else 0.0
+		if _carry_t > 0.0 and DevHooks.has("probe-verbose"):  # the bale's height on the stack, frame by frame
+			var cp: Patch = _slice.get("patch") as Patch
+			print("[b8] carried %.2f s: bale y on the stack %.2f (rest %.2f), frozen=%s" % [_carry_t, cp.carried[0].position.y, cp.carried[0].size * 0.5, str(cp.carried[0].freeze)])
+		if _carry_t < 1.0:
+			return
 	_done = true
 	EventBus.game_saved.disconnect(_on_saved)
 	if DevHooks.has("exit-carrying"):
 		print("[b8] %s" % JSON.stringify(carry_gap(_slice.get("patch") as Patch)))
+		if DevHooks.has("probe-verbose"):
+			var pp: Patch = _slice.get("patch") as Patch
+			var b0: JunkCube = pp.carried[0]
+			print("[b8] parent=%s top_level=%s bale.position=%s parent.position=%s patch.scale=%s model.scale=%s model.position=%s task_carried_for=%.2f s" % [b0.get_parent().name, str(b0.top_level),
+				str(b0.position.snappedf(0.01)), str((b0.get_parent() as Node3D).position.snappedf(0.01)), str(pp.scale), str(pp.model.scale), str(pp.model.position.snappedf(0.01)), _carry_t])
 	var snaps: Dictionary = {"exit": snapshot(_slice), "autosave": _autosave}
 	var f: FileAccess = FileAccess.open(SNAP_PATH, FileAccess.WRITE)
 	f.store_string(JSON.stringify(snaps))
@@ -123,6 +148,9 @@ static func snapshot(s: Node) -> Dictionary:
 		out[k] = JSON.parse_string(JSON.stringify(base[k]))
 	var p: Patch = s.get("patch")
 	var g: OrbitPlanet = (s.get("orbit") as SliceOrbit).globe
+	# Found parts by saved key: the field's own array only knows the cells built so far, and a reload
+	# builds fewer of them than a long session has.
+	out["parts_found"] = Marshalls.base64_to_raw(str(g.field.to_dict().get("parts_found", ""))).to_int32_array().size()
 	out["lumi_at"] = [p.global_position.x, p.global_position.y, p.global_position.z]
 	out["carried_bales"] = p.carried.size()
 	out["time_played"] = snappedf(float(GameState.stats.get("time_played", 0.0)), 1.0)
@@ -155,13 +183,12 @@ static func carry_gap(p: Patch) -> Dictionary:
 		top_all = maxf(top_all, ab.end.y)
 		if ab.size.x >= 0.12 or ab.size.z >= 0.12:
 			top_solid = maxf(top_solid, ab.end.y)
-	var bottom: float = INF
-	for n: Node in p.carried[0].find_children("*", "MeshInstance3D", true, false):
-		var mi := n as MeshInstance3D
-		if mi.mesh != null:
-			bottom = minf(bottom, ((inv * mi.global_transform) * mi.mesh.get_aabb()).position.y)
+	# The bale's own box (its size around its origin): its child meshes include a ground shadow.
+	var bale: JunkCube = p.carried[0]
+	var bottom: float = (inv * bale.global_position).y - bale.size * 0.5
 	return {"bale_bottom": snappedf(bottom, 0.01), "model_top_solid": snappedf(top_solid, 0.01), "model_top_all": snappedf(top_all, 0.01),
-		"gap_solid": snappedf(bottom - top_solid, 0.01), "gap_all": snappedf(bottom - top_all, 0.01), "bales": p.carried.size()}
+		"gap_solid": snappedf(bottom - top_solid, 0.01), "gap_all": snappedf(bottom - top_all, 0.01), "bales": p.carried.size(),
+		"bale_size": snappedf(bale.size, 0.01), "carry_point_y": snappedf(CarryPoint.of(p.model, p).y, 0.01)}
 
 
 static func _find_marks(n: Node) -> GardenMarks:
