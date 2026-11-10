@@ -113,7 +113,7 @@ void fragment() {
 		vec3 up = normalize(wpos);
 		float rip = dot(tri(tex_rubble, wpos * 0.045 + vec3(TIME * 0.01, 0.0, TIME * 0.007), w), vec3(0.333));
 		float clear_w = 1.0 - smoothstep(0.1, 0.6, junk);
-		vec3 wcol = mix(vec3(0.05, 0.058, 0.032), vec3(0.01, 0.055, 0.075), clear_w);  // murky olive -> deep blue-green
+		vec3 wcol = mix(vec3(0.048, 0.105, 0.078), vec3(0.01, 0.055, 0.075), clear_w);  // cloudy algae green-teal -> deep blue-green
 		wcol *= mix(0.85, 1.12, smoothstep(0.35, 0.65, rip));
 		vec3 g = vec3(0.0);
 		g += vec3(0.71, 0.12, 0.69) * 0.05 * cos(dot(wpos, vec3(0.71, 0.12, 0.69)) * 0.7 - TIME * 0.9);

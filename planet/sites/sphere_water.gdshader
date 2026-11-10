@@ -4,7 +4,7 @@ shader_type spatial;
 // blue slabs). Rewritten so it reads as water and looks the same on every renderer:
 //  - body: a dark blue-green that deepens away from the shore (vertex COLOR.g: 0 at the bank,
 //    1 a few cells out), lighter and see-through over the shallows (COLOR.r: 1 at the waterline);
-//    murky olive-brown and nearly opaque before cleaning, clear after (`clarity`, per cell);
+//    cloudy green-blue and nearly opaque before cleaning, clear after (`clarity`, per cell);
 //  - waves: a sum of travelling sine waves in WORLD space (seamless across cells, no texture),
 //    bending the normal; calmer and oilier while polluted;
 //  - the sky: our own fresnel reflection of the sky's zenith/horizon colours and sun glints
@@ -24,8 +24,9 @@ uniform float sun_vis = 1.0;
 
 const vec3 CLEAR_DEEP = vec3(0.008, 0.05, 0.07);
 const vec3 CLEAR_SHALLOW = vec3(0.03, 0.16, 0.15);
-const vec3 MURKY_DEEP = vec3(0.045, 0.055, 0.03);
-const vec3 MURKY_SHALLOW = vec3(0.09, 0.095, 0.05);
+// Dirty water is a cloudy algae green-teal (greener and paler than the clean deep blue), not olive mud: the scum, film and floating junk say "polluted".
+const vec3 MURKY_DEEP = vec3(0.045, 0.1, 0.075);
+const vec3 MURKY_SHALLOW = vec3(0.09, 0.17, 0.115);
 
 varying vec3 wpos;
 
@@ -91,7 +92,7 @@ void fragment() {
 	vec3 col = mix(shallow, deep_c, smoothstep(0.0, 1.0, deep));
 	// Polluted: blotchy scum and an oily brown film drifting on the surface.
 	float scum = smoothstep(0.5, 0.85, vnoise(wpos * 0.6 + vec3(TIME * 0.03, 0.0, TIME * 0.02))) * (1.0 - c);
-	col = mix(col, vec3(0.12, 0.11, 0.06), scum * 0.3);
+	col = mix(col, vec3(0.12, 0.11, 0.06), scum * 0.4);
 	// Foam along the waterline: a soft band that breathes with the waves.
 	float fn = vnoise(wpos * 1.7 + vec3(0.0, TIME * 0.25, 0.0));
 	float foam = smoothstep(0.62, 0.95, shore + (fn - 0.5) * 0.35 + 0.06 * sin(TIME * 1.3 + dot(wpos, vec3(0.4, 0.3, 0.5))));
