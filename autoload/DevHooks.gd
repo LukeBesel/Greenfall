@@ -80,7 +80,6 @@ var _frames: int = 0
 var _perf_frames: int = 0
 var _perf_wall: float = 0.0
 var _stats_done: bool = false  # [deck]
-var _garden_done: bool = false  # [green]
 
 
 func _ready() -> void:
@@ -161,10 +160,6 @@ func _process(delta: float) -> void:
 	if has("scene-stats") and _elapsed >= get_f("scene-stats", 4.0) and not _stats_done:  # [deck] geometry census
 		_stats_done = true
 		SceneStats.print_census(get_tree().current_scene)
-	if has("garden-report") and _elapsed >= get_f("garden-report", 4.0) and not _garden_done:  # [green]
-		_garden_done = true
-		if get_tree().current_scene and get_tree().current_scene.get("garden") != null:
-			GardenDev.report(get_tree().current_scene)
 	if has("quit-after") and _elapsed >= get_f("quit-after", 5.0):
 		print("[DevHooks] quitting after %.1fs" % _elapsed)
 		if has("report"):

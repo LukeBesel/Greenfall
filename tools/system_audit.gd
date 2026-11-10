@@ -26,7 +26,6 @@ func _ready() -> void:
 	for m: String in MEMBERS:
 		var v: Variant = s.get(m)
 		(set_ if v != null and (not v is Object or is_instance_valid(v)) else unset).append(m)
-	print("[audit] mode=%s" % ("orbit" if s.get("orbit") != null else "flat"))
 	print("[audit] members set: ", " ".join(set_))
 	print("[audit] members null: ", " ".join(unset))
 	var classes: Dictionary = {}

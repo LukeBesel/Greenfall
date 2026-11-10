@@ -3,17 +3,9 @@ extends GutTest
 ## press, recalled haulers, research gates, Control Core choice, multibot crew caps, saved bale
 ## info, idle rescan back-off and the Command view controller focus style.
 
-class FakeView:
-	extends RefCounted
-	func set_life(_id: int, _life: float) -> void:
-		pass
-
 class FakeWorld:
 	extends Node3D
 	var field: HexField
-	var view := FakeView.new()
-	var planet: PlanetData
-	var slice_cells := PackedInt32Array()
 	var garden: Garden
 	var depot: Node3D
 	var patch: Node3D
@@ -67,11 +59,6 @@ func _make() -> FakeWorld:
 		types.append(Economy.junk_types[id])
 	w.field = HexField.new(2, 6.0, 5)
 	w.field.generate(types, Vector2i(5, 8))
-	w.planet = PlanetData.new(5, 3, 10.0)
-	w.planet.generate()
-	w.slice_cells.resize(w.field.hex_count())
-	for i: int in w.field.hex_count():
-		w.slice_cells[i] = i
 	add_child_autofree(w)
 	var d := Depot.new()
 	w.depot = d
