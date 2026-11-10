@@ -1,6 +1,6 @@
 # Greenfall: Planet 1 tasks
 
-The work list for `docs/PLAN.md`. One row per task. **Kind** is LEAD (the lead does it) or DELEGATE (a subagent does it). A task is done only when its acceptance criteria pass, the code reviewer has approved it and the QA tester has run the suite. Status values: todo, doing, review, done. In progress now (Nov 10): M1-01, M1-08 with M1-07.
+The work list for `docs/PLAN.md`. One row per task. **Kind** is LEAD (the lead does it) or DELEGATE (a subagent does it). A task is done only when its acceptance criteria pass, the code reviewer has approved it and the QA tester has run the suite. Status values: todo, doing, review, done. In progress now (Nov 10): M1-08, M1-11.
 
 Every milestone ends with the same gate (not repeated below): full test suite, save round trip, exit check, bot playthrough, engagement review, the dummy-planet reusability test, docs updated, a commit, and a short report to the owner.
 
@@ -10,7 +10,7 @@ Agents: architect (systems-architect-assistant), builder (systems-builder), save
 
 | ID | Title | Owner | Kind | Files | Depends | Acceptance |
 |---|---|---|---|---|---|---|
-| M1-01 | Bug triage on the merged build | qa | DELEGATE | `docs/PLAN.md` section 6, `tests/` | - | Every "verify" bug is reproduced or closed with evidence; new bugs added with severity; a failing test exists for each confirmed P1 |
+| M1-01 | Bug triage on the merged build | qa | DELEGATE | `docs/PLAN.md` section 6, `tests/` | - | **Done (Nov 10), merged.** 5 confirmed with pending tests (B8, B23, B24, B25, B26), 1 already fixed, 2 not reproduced, 1 visual-only; report in `docs/reviews/TRIAGE_M1.md` |
 | M1-02 | Design spec: districts, sources, mastery, rigs, Surge, the ending | lead | LEAD | `docs/design/PLANET1_DESIGN.md` | - | **Done (Nov 9).** Each mechanic has rules, data shape, numbers to tune and the events it emits; logged in DECISIONS |
 | M1-03 | PlanetDefinition schema and `Planets` autoload | lead | LEAD | `core/planet_definition.gd`, `autoload/Planets.gd`, `planets/verdance/planet.tres` | - | **Done (Nov 9).** Typed resource covering every field in STYLE section 5; `Planets.current()` returns it; unit tests for load and validation errors |
 

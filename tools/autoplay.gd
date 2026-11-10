@@ -331,6 +331,13 @@ func _watch_stuck(p: Patch, delta: float) -> void:
 		if _target_piece >= 0 and DevHooks.has("bot-debug"):
 			var f: HexField = world.field
 			print("[bot-esc] t=%.1f task=%s pos=%s piece=%d at %s size=%d embed=%.2f" % [_now() / 60.0, _task, str(p.global_position), _target_piece, str(f.piece_pos[_target_piece]), Pace.piece_size(f, _target_piece), f.piece_embed[_target_piece] if _target_piece < f.piece_embed.size() else -1.0])
+		if DevHooks.has("bot-debug"):  # every escape: what it was doing, where, and what is in the way (B7 triage)
+			var fwd: Vector3 = (_move - p.up() * _move.dot(p.up())).normalized()
+			var wet: Array[int] = []
+			for m: float in [1.5, 5.0, 15.0]:
+				wet.append(int(bool(p.call("_water_at", p.global_position + fwd * m))))
+			print("[bot-esc2] t=%.1f n=%d task=%s pos=%s cell=%d water_ahead(1.5/5/15m)=%s hover=%d piece=%d water_target=%d" % [_now() / 60.0, _escapes, _task,
+				str(p.global_position.snappedf(0.1)), world.field.hex_at(p.global_position), str(wet), int(p.can_hover_water()), _target_piece, _water_target])
 		if p.has_method("can_hover_water") and not p.can_hover_water():  # [v4bots] a lake in the way (item 54)
 			var ahead: Vector3 = p.global_position + (_move - p.up() * _move.dot(p.up())).normalized() * 1.5
 			if p.call("_water_at", ahead):
@@ -373,9 +380,12 @@ func _bench_at() -> Vector3:
 	return world.bench_pos()
 
 
-## [v4bots] Where the can refills (anywhere in the hub hex, Patch._handle_tools): by the bench.
+## [v4bots] Where the can refills: on hub ground only (Patch._handle_tools reads hex_hub). On the
+## globe that is the one cell the scale stands on; the bench is in the next cell, where the can
+## stays empty and the bot pushed at the bench until its stuck-escape fired (B7: 85 of 89 escapes).
 func _water_at() -> Vector3:
-	return _bench_at()
+	var d: Variant = world.get("depot")
+	return (d as Node3D).global_position if d is Node3D else _bench_at()
 
 
 # --- Patch tasks -------------------------------------------------------------------------
@@ -1634,12 +1644,22 @@ func _robot_health() -> Dictionary:
 	return counts
 
 
-func _snapshot() -> void:
+## Robots owned, by type. On the globe they live in the crew, not in Fleet.robots() (B21: the
+## report showed none), so this asks the fleet's own count.
+func _robot_counts() -> Dictionary:
+	var out: Dictionary = {}
 	var fl: Fleet = world.fleet
-	var types: Dictionary = {}
-	if fl:
-		for r: Robot in fl.robots():
-			types[r.type_id] = int(types.get(r.type_id, 0)) + 1
+	if fl == null:
+		return out
+	for id: String in Economy.robot_order:
+		var n: int = fl.count(id)
+		if n > 0:
+			out[id] = n
+	return out
+
+
+func _snapshot() -> void:
+	var types: Dictionary = _robot_counts()
 	var hl: HexLevels = world.get("hex_levels")
 	var lv: Array = []
 	if hl:
@@ -1724,10 +1744,7 @@ func write_report() -> void:
 	_report["remote_shops"] = _remote_shops
 	_report["parts_found"] = GameState.stats.get("parts_found", 0)
 	_report["hub_level"] = int(world.hub.level)
-	var types: Dictionary = {}
-	if world.fleet:
-		for r: Robot in world.fleet.robots():
-			types[r.type_id] = int(types.get(r.type_id, 0)) + 1
+	var types: Dictionary = _robot_counts()
 	_report["robots"] = types
 	# Gaps: stretches > 3 min with no goal completed; and with no goal and nothing new bought.
 	_report["goal_gaps_min"] = _gaps(_goal_times, end_t)

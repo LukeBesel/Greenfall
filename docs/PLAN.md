@@ -160,12 +160,16 @@ Severity: **P1** blocks finishing or loses progress, **P2** hurts the experience
 | B23 | P2 | The magnet on the globe is uncapped and pulls pieces that are buried or too heavy for Lumi to lift (owner rule: capped, never pulls what Lumi cannot lift). The old cap was flat-only. | M1-04 review |
 | B24 | P1 | Confirmed: junk hidden inside building footprints leaves a hex stuck below 100%. | Triage (B3) |
 | B25 | P1 | Confirmed: buying the Baler before finishing "fill the bin 3 times" stalls the first objective. | Triage (B4) |
-| B26 | P2 | The rocket's recharge after a hop never starts. | M1-04b |
-| B27 | P2 | `EventBus.shake_requested` has no listener, so screen shake never happens. | M1-04b |
-| B28 | P3 | `boot.gd` still reads the old `--orbit` flag; the museum and the going-home complex still use flat coordinates (both are parked features). | M1-04b |
+| B26 | P2 | "Finish a research project" completes by itself when the Bot Bay is bought. | Triage |
+| B27 | P2 | The watering can refills only inside one unmarked 10 m cell at the scale; the bench and greenhouse are outside it. | Triage |
+| B28 | P2 | The objective card waits 11 minutes on "Build a Haul Bug" while later steps are already done. Belongs with the pacing work. | Triage |
+| B29 | P3 | `--quit-after` counts real seconds; the docs say game seconds. | Triage |
+| B30 | P2 | The rocket's recharge after a hop never starts. | M1-04b |
+| B31 | P2 | `EventBus.shake_requested` has no listener, so screen shake never happens. | M1-04b |
+| B32 | P3 | `boot.gd` still reads the old `--orbit` flag. | M1-04b |
 | B22 | P3 | Other-planet issues (hauler paths, finale camera, fauna upright) are out of scope and leave with R10. | Roadmap |
 
-M1 starts with a triage pass that verifies each "verify" row and adds anything new.
+Triage is done: `docs/reviews/TRIAGE_M1.md` has the evidence, causes and suggested fixes. B2 was already fixed; B6 and B10 did not reproduce; B7 and B21 were faults in the bot and are fixed there; B9 needs a rendered check.
 
 ## 7. Core loop and progression
 
