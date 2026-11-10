@@ -582,3 +582,54 @@ func test_b30_a_hub_hop_starts_the_rockets_recharge() -> void:
 	assert_eq(sites.hop_blocker(), "", "once the cells are full it flies again")
 	RocketTiers.now_override = -1.0
 	GameState.flags = flags
+
+
+# --- B31: screen shake on the globe camera -----------------------------------------------------------
+
+## The globe's follow camera on a target standing on a bare sphere.
+func _globe_cam() -> SphereCam:
+	var target := Node3D.new()
+	add_child_autofree(target)
+	target.global_position = Vector3(0.0, 1000.0, 0.0)
+	var cam := SphereCam.new()
+	cam.target = target
+	cam.input_enabled = false
+	add_child_autofree(cam)
+	cam.set_process(false)
+	cam.reset_frame(Vector3.FORWARD)
+	return cam
+
+
+## B31: gameplay asks for a shake on EventBus.shake_requested (a bale cashed, a hex cleaned). The
+## listener was the flat camera rig, removed with the flat world, so nothing shook on the globe.
+func test_b31_a_requested_shake_moves_the_globe_camera() -> void:
+	var was: float = Settings.shake_intensity
+	var calm: bool = Settings.reduced_motion
+	Settings.shake_intensity = 1.0
+	Settings.reduced_motion = false
+	var cam: SphereCam = _globe_cam()
+	cam.update_camera(0.016)
+	assert_eq(Vector2(cam.camera.h_offset, cam.camera.v_offset), Vector2.ZERO, "a still camera before the shake")
+	EventBus.shake_requested.emit(0.8)
+	cam.update_camera(0.016)
+	assert_gt(Vector2(cam.camera.h_offset, cam.camera.v_offset).length(), 0.01, "the shake moves the camera's offset")
+	for i: int in 120:
+		cam.update_camera(0.016)
+	assert_almost_eq(Vector2(cam.camera.h_offset, cam.camera.v_offset).length(), 0.0, 0.0001, "and it dies away")
+	Settings.shake_intensity = was
+	Settings.reduced_motion = calm
+
+
+## B31: the camera shake setting at 0 (and reduced motion) turns it off.
+func test_b31_the_shake_setting_at_zero_keeps_the_camera_still() -> void:
+	var was: float = Settings.shake_intensity
+	var calm: bool = Settings.reduced_motion
+	var cam: SphereCam = _globe_cam()
+	for off: Array in [[0.0, false], [1.0, true]]:
+		Settings.shake_intensity = float(off[0])
+		Settings.reduced_motion = bool(off[1])
+		EventBus.shake_requested.emit(0.8)
+		cam.update_camera(0.016)
+		assert_eq(Vector2(cam.camera.h_offset, cam.camera.v_offset), Vector2.ZERO, "shake %.0f, reduced motion %s: no shake" % [float(off[0]), str(off[1])])
+	Settings.shake_intensity = was
+	Settings.reduced_motion = calm

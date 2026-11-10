@@ -7,7 +7,8 @@ extends Node3D
 ## local up, so the horizon stays level at any latitude, poles included.
 ## Views: "follow" (behind and above, mouse / right-stick orbit, zoom, spring-arm collision) and
 ## "command" (high overhead looking down at the local area; zoom changes the height). Hover-boost
-## pulls the camera back, widens the FOV and lazily swings it behind Lumi's heading.
+## pulls the camera back, widens the FOV and lazily swings it behind Lumi's heading. It is the
+## game's screen-shake listener (EventBus.shake_requested).
 
 var target: Node3D
 var surface: SphereSurface
@@ -34,6 +35,12 @@ var collide_mask: int = 1
 var follow_rate: float = 1.6
 var manual_hold: float = 1.5
 
+## Screen shake (EventBus.shake_requested): requests add up as trauma, which dies away; the camera
+## offset swings with its square, scaled by the player's Camera shake setting.
+const SHAKE_DECAY: float = 1.6
+const SHAKE_SPEED: float = 40.0
+const SHAKE_OFFSET_M: float = 0.25
+
 var camera: Camera3D
 ## [orbC] Command view can pan away from the target: a unit direction on the planet it centres on
 ## (ZERO = over the target). pan_command() moves it; leaving Command view recentres.
@@ -45,6 +52,8 @@ var _look_pending := Vector2.ZERO
 var _manual_t: float = 0.0
 var _last_up := Vector3.ZERO
 var _boost_fx: float = 0.0
+var _trauma: float = 0.0
+var _shake_t: float = 0.0
 
 
 func _ready() -> void:
@@ -56,11 +65,31 @@ func _ready() -> void:
 	camera.current = true
 	if surface == null:
 		surface = SphereSurface.new()
+	EventBus.shake_requested.connect(add_trauma)
 
 
 func _setting(n: String, d: Variant) -> Variant:
 	var s: Node = get_node_or_null("/root/Settings")
 	return s.get(n) if s and s.get(n) != null else d
+
+
+## Adds to the shake (0..1). Nothing when the player turned camera shake off or asked for reduced motion.
+func add_trauma(amount: float) -> void:
+	if _shake_scale() > 0.0:
+		_trauma = clampf(_trauma + amount, 0.0, 1.0)
+
+
+func _shake_scale() -> float:
+	return 0.0 if _setting("reduced_motion", false) else float(_setting("shake_intensity", 1.0))
+
+
+## Swings the lens off its axis while trauma lasts. Offsets only: the horizon stays level.
+func _shake(delta: float) -> void:
+	_trauma = maxf(0.0, _trauma - delta * SHAKE_DECAY)
+	_shake_t += delta * SHAKE_SPEED
+	var s: float = _trauma * _trauma * _shake_scale() * SHAKE_OFFSET_M
+	camera.h_offset = sin(_shake_t * 1.3) * s
+	camera.v_offset = sin(_shake_t * 1.7 + 2.0) * s
 
 
 ## Re-centres the frame behind the target's facing `fwd` and snaps the camera into place.
@@ -219,6 +248,7 @@ func update_camera(delta: float) -> void:
 		up_ref = -frame.z
 	camera.global_transform = Transform3D(Basis.looking_at(fwd_v, up_ref), pos)
 	_lens_pose(u)  # [orbE]
+	_shake(delta)
 	var base_fov: float = float(_setting("fov", fov))
 	camera.fov = lerpf(camera.fov, base_fov + 12.0 * _boost_fx - 8.0 * e, SphereMath.damp(6.0, delta)) if delta > 0.0 else base_fov
 
