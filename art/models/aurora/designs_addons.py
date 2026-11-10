@@ -10,8 +10,9 @@
 import random
 
 
-def leaf(name, length, width, center, material, rot=(0, 0, 0), cup=0.25, curl=0.12, thick=0.005):
-	"""A leaf blade along +Y: pointed tip, rounded base, cupped across, curling back at the tip."""
+def leaf(name, length, width, center, material, rot=(0, 0, 0), cup=0.25, curl=0.12, thick=0.005, vein=None):
+	"""A leaf blade along +Y: pointed tip, rounded base, cupped across, curling back at the tip.
+	vein = a material name adds a raised midrib and side veins on both faces."""
 	bm = bmesh.new()
 	nu, nv = 18, 8
 	grid = []
@@ -36,6 +37,14 @@ def leaf(name, length, width, center, material, rot=(0, 0, 0), cup=0.25, curl=0.
 	md = obj.modifiers.new("sub", 'SUBSURF')
 	md.levels = 1
 	apply_mods(obj)
+	if vein:
+		ribs = [tube(name + "_rib", [(0, u * length, -curl * length * u * u - 0.001) for u in (0.0, 0.25, 0.5, 0.75, 0.96)], thick * 0.62, vein, sides=6, r_end=thick * 0.3)]
+		for k, u in enumerate((0.22, 0.4, 0.58, 0.74)):
+			w = width * (math.sin(math.pi * min(u * 1.04, 1.0)) ** 0.7) * 0.42
+			for sx in (-1, 1):
+				ribs.append(tube(name + "_vein", [(0, u * length, -curl * length * u * u), (sx * w * 0.55, (u + 0.07) * length, cup * w * 0.3 - curl * length * (u + 0.07) ** 2),
+					(sx * w, (u + 0.12) * length, cup * w - curl * length * (u + 0.12) ** 2)], thick * 0.42, vein, sides=5, r_end=thick * 0.2))
+		obj = join(name, [obj] + ribs)
 	xform(obj, center, rot)
 	return smooth(obj)
 
@@ -109,51 +118,57 @@ EAR_X = HA - 0.022 + 0.062
 EAR_C = Vector((EAR_X, SM_Y, SM_Z))
 
 # ------------------------------------------------------------------------------------------ SPROUT
-# A two-leaf seedling growing from a soil-filled socket on the crown (instead of the fin), and moss
-# grown over the crown's front edge (a separate, static part: the seedling sways, the moss does not).
-p, n = crown(0.075, 0.11)
+# A two-leaf seedling growing from a soil-filled socket where the fin sits on the other designs
+# (back of the crown, toward the right side), with two broad veined leaves, and moss grown in thick
+# tufts on the crown (a separate, static part: the seedling sways, the moss does not).
+p, n = crown(0.12, 0.13)
 SPROUT_P = Vector(p) - Vector(n) * 0.004
 sp = [
-	lathe("sp_socket", [(0.034, 0.012), (0.04, 0.008), (0.042, -0.002), (0.04, -0.02), (0.0, -0.02)], "dark", segs=28),
-	torus("sp_socket_rim", 0.037, 0.0045, (0, 0.01, 0), "steel", major=28, minor=6),
-	lathe("sp_soil", [(0.0, 0.016), (0.02, 0.015), (0.033, 0.011), (0.035, 0.006)], "moss", segs=24),
-	tube("sp_stem", [(0, 0.008, 0), (0.004, 0.04, 0.004), (-0.004, 0.08, 0.0), (0.0, 0.112, -0.006)], 0.0075, "leaf", sides=10, r_end=0.005),
-	leaf("sp_leaf_a", 0.14, 0.09, (0.0, 0.108, -0.006), "leaf", rot=(-12, 25, -58), cup=0.22, curl=0.1),
-	leaf("sp_leaf_b", 0.125, 0.082, (-0.002, 0.104, -0.004), "leaf", rot=(8, -30, 60), cup=0.22, curl=0.1),
-	tube("sp_vein_a", [(0.0, 0.11, -0.006), (0.05, 0.14, -0.004), (0.1, 0.165, 0.004)], 0.0016, "moss", sides=5),
-	tube("sp_vein_b", [(0.0, 0.106, -0.004), (-0.045, 0.135, -0.002), (-0.09, 0.158, 0.006)], 0.0016, "moss", sides=5),
+	lathe("sp_socket", [(0.036, 0.012), (0.043, 0.008), (0.045, -0.002), (0.043, -0.02), (0.0, -0.02)], "dark", segs=28),
+	torus("sp_socket_rim", 0.04, 0.0048, (0, 0.01, 0), "steel", major=28, minor=6),
+	lathe("sp_soil", [(0.0, 0.017), (0.022, 0.016), (0.036, 0.011), (0.038, 0.006)], "moss", segs=24),
+	tube("sp_stem", [(0, 0.008, 0), (0.007, 0.035, 0.004), (-0.003, 0.065, 0.0), (0.0, 0.092, -0.004)], 0.0095, "leaf", sides=10, r_end=0.0065),
+	leaf("sp_leaf_a", 0.215, 0.118, (0.002, 0.088, -0.004), "leaf", rot=(32, 18, -70), cup=0.2, curl=0.09, thick=0.006, vein="leaf_vein"),
+	leaf("sp_leaf_b", 0.185, 0.104, (-0.002, 0.09, -0.004), "leaf", rot=(26, -22, 38), cup=0.2, curl=0.07, thick=0.006, vein="leaf_vein"),
 ]
 for k in range(7):
 	a = 2 * math.pi * k / 7 + 0.3
-	sp.append(blob("sp_clump", 0.012, (math.cos(a) * 0.03, 0.014, math.sin(a) * 0.03), (0, 1, 0), "moss", squash=0.6, rng=RNG, sub=0))
+	sp.append(blob("sp_clump", 0.013, (math.cos(a) * 0.032, 0.014, math.sin(a) * 0.032), (0, 1, 0), "moss", squash=0.6, rng=RNG, sub=0))
 for o in sp:
 	o.data.transform(Matrix.Translation(SPROUT_P))
 ACC["acc_sprout"] = (join("acc_sprout", sp), SPROUT_P)
 
-moss = []
-for k in range(240):
-	# A soft mat, densest on the crown's front edge and top, thinning toward the back and the sides.
-	x = (RNG.random() * 2 - 1) * (0.34 - 0.1 * RNG.random())
-	z = -0.29 + RNG.random() ** 1.8 * 0.4
-	p, n = crown(x, z)
-	if p is None or p.y < HC + HB * 0.6:
-		continue
-	r = 0.007 + RNG.random() ** 2 * 0.013
-	moss.append(blob("moss_clump", r, p - n * 0.0015, n, "moss", squash=0.32, rng=RNG, sub=0))
+
+def moss_patch(cx, cz, sx, sz, count, r0=0.011, r1=0.017):
+	"""A dense tuft: overlapping lumpy clumps, thickest in the middle, thinning at the rim."""
+	out = []
+	for _k in range(count):
+		gx, gz = RNG.gauss(0, 1), RNG.gauss(0, 1)
+		q, qn = crown(cx + gx * sx, cz + gz * sz)
+		if q is None or qn.y < 0.3:
+			continue
+		fall = math.exp(-(gx * gx + gz * gz) * 0.35)
+		r = (r0 + RNG.random() ** 2 * r1) * (0.55 + 0.6 * fall)
+		out.append(blob("moss_clump", r, q - qn * 0.002, qn, "moss", squash=0.42 + 0.3 * fall, rng=RNG, sub=1 if r > 0.016 else 0))
+	return out
+
+
+# The sheet: one thick tuft on the crown's front left, a little round the seedling, a wisp on the right edge.
+moss = moss_patch(-0.17, -0.1, 0.085, 0.05, 130) + moss_patch(0.12, 0.13, 0.05, 0.04, 40, 0.008, 0.012) + moss_patch(0.31, -0.03, 0.025, 0.06, 26, 0.007, 0.011)
 ACC["acc_moss"] = (join("acc_moss", moss), HEAD_P)
 
-# Chest icon: two leaves sprouting from a short stem (the sheet's eco plate).
+# Chest icon: a tall leaf and a smaller one sprouting from a short stem (the sheet's eco plate).
 ic = [
-	leaf("ic_leaf_l", 0.07, 0.05, (0.0, -0.03, 0.0), "glow", rot=(0, 0, 32), cup=0.0, curl=0.0, thick=0.006),
-	leaf("ic_leaf_r", 0.07, 0.05, (0.0, -0.03, 0.0), "glow", rot=(0, 0, -32), cup=0.0, curl=0.0, thick=0.006),
-	rbox("ic_stem", (0.008, 0.03, 0.006), (0, -0.04, 0), 0.002, "glow", sub=0, segs=1),
+	leaf("ic_leaf_r", 0.088, 0.058, (0.004, -0.036, 0.0), "glow", rot=(0, 0, 20), cup=0.0, curl=0.0, thick=0.006),
+	leaf("ic_leaf_l", 0.064, 0.046, (0.0, -0.034, 0.0), "glow", rot=(0, 0, -52), cup=0.0, curl=0.0, thick=0.006),
+	rbox("ic_stem", (0.008, 0.026, 0.006), (0.002, -0.044, 0), 0.002, "glow", sub=0, segs=1),
 ]
 for o in ic:
 	o.data.transform(Matrix.Scale(0.5, 4, Vector((0, 0, 1))))
 	o.data.transform(Matrix.Translation(ICON_P + Vector((0, 0.004, -0.001))))
 ACC["acc_icon_leaf"] = (join("acc_icon_leaf", ic), ICON_P)
 
-# Ear emblem: a small glowing leaf on each side lens.
+# Ear emblems: a small glowing sign on each side lens.
 def ear_emblem(name, parts_fn):
 	out = []
 	for s_ in (1, -1):
@@ -166,90 +181,143 @@ def ear_emblem(name, parts_fn):
 
 
 def _leaf_emblem():
-	a = leaf("el_leaf", 0.075, 0.05, (0, -0.036, 0), "glow", rot=(0, 0, -20), cup=0.0, curl=0.0, thick=0.006)
-	a.data.transform(Matrix.Scale(0.4, 4, Vector((0, 0, 1))))
-	return [a, tube("el_vein", [(0.008, -0.03, -0.004), (-0.002, 0.0, -0.004), (-0.012, 0.03, -0.004)], 0.0018, "dark", sides=5)]
+	a = leaf("el_leaf", 0.092, 0.06, (0, -0.044, -0.006), "glow", rot=(0, 0, -20), cup=0.0, curl=0.0, thick=0.012)
+	return [a, tube("el_vein", [(0.01, -0.036, -0.013), (-0.002, 0.0, -0.013), (-0.015, 0.036, -0.013)], 0.0022, "dark", sides=5)]
 
 
 ACC["acc_ear_leaf"] = (ear_emblem("acc_ear_leaf", _leaf_emblem), HEAD_P)
 
+# Plastic bottle held in the left claw (origin = the grip, round its lower third), with three
+# glowing pickup-beam bands round it (the sheet's green beam).
+bt = [
+	lathe("bt_body", [(0.0, 0.13), (0.012, 0.13), (0.016, 0.115), (0.02, 0.1), (0.036, 0.075), (0.05, 0.05), (0.052, 0.03), (0.047, 0.02),
+		(0.052, 0.008), (0.047, -0.004), (0.052, -0.016), (0.047, -0.03), (0.052, -0.044), (0.052, -0.09), (0.048, -0.1), (0.04, -0.106), (0.0, -0.103)], "bottle", segs=40),
+	lathe("bt_cap", [(0.0, 0.158), (0.016, 0.158), (0.018, 0.152), (0.018, 0.132), (0.014, 0.13), (0.0, 0.13)], "bottle_cap", segs=24),
+	torus("bt_ring", 0.0185, 0.003, (0, 0.127, 0), "bottle_cap", major=24, minor=6),
+]
+for k, (y, tilt) in enumerate(((-0.055, 8), (-0.005, -6), (0.045, 10))):
+	r = torus("bt_beam", 0.062 - k * 0.002, 0.0036, (0, 0, 0), "glow", major=56, minor=8)
+	xform(r, (0, y, 0), (tilt, 0, tilt * 0.6))
+	bt.append(r)
+bottle = join("acc_bottle", bt)
+bottle.data.transform(Matrix.Translation(Vector((0, 0.07, 0))) @ Matrix.Scale(1.6, 4))
+ACC["acc_bottle"] = (bottle, Vector((0, 0, 0)))
+
 
 # --------------------------------------------------------------------------------------------- NOVA
-# Cat-ear fins on the head's top corners, tilted out and back a little, each with a glowing violet
-# inner panel framed by a dark rim, sitting in a dark collar on the shell.
+# Cat-ear fins on the head's top corners, leaning out and turned to face outward a little, each a
+# thick shell with a recessed dark panel edged by a glowing violet V, in a dark collar on the shell.
 ears = []
 for s_ in (-1, 1):
-	x0 = s_ * 0.255
-	p, n = crown(x0, 0.0)
-	c = Vector((x0, p.y - 0.05, 0.0))
-	rot = (6, s_ * -12, s_ * -18)
+	x0 = s_ * 0.275
+	p, n = crown(x0, 0.01)
+	c = Vector((x0, p.y - 0.055, 0.01))
+	rot = (5, s_ * -24, s_ * -21)
 	ax = s_ * -0.1
-	# Modelled upright at the origin (front face at z = -0.031), then turned and moved as one.
+	# Modelled upright at the origin (front face at z = -0.035), then turned and moved as one.
 	ear = [
-		prism("cat_ear", rounded_tri(0.25, 0.29, 0.045, apex_x=ax), 0.066, (0, 0, 0), "paint", bevel=0.017, segs=3, sub=1),
-		prism("cat_ear_rim", rounded_tri(0.185, 0.22, 0.032, apex_x=ax), 0.01, (0, 0.014, -0.032), "dark", bevel=0.003, segs=2, sub=1),
-		prism("cat_ear_in", rounded_tri(0.145, 0.18, 0.026, apex_x=ax), 0.01, (0, 0.03, -0.037), "glow", bevel=0.003, segs=2, sub=1),
+		prism("cat_ear", rounded_tri(0.29, 0.34, 0.05, apex_x=ax), 0.074, (0, 0, 0), "paint", bevel=0.019, segs=3, sub=1),
+		prism("cat_ear_rim", rounded_tri(0.215, 0.26, 0.036, apex_x=ax), 0.01, (0, 0.016, -0.036), "dark", bevel=0.003, segs=2, sub=1),
+		prism("cat_ear_in", rounded_tri(0.175, 0.215, 0.03, apex_x=ax), 0.01, (0, 0.032, -0.041), "glow", bevel=0.003, segs=2, sub=1),
+		prism("cat_ear_core", rounded_tri(0.118, 0.15, 0.022, apex_x=ax), 0.01, (0, 0.05, -0.0445), "trim", bevel=0.003, segs=2, sub=1),
 	]
 	for o in ear:
 		xform(o, c, rot)
 	ears += ear
-	ears.append(lathe("cat_ear_collar", [(0.0, 0.03), (0.1, 0.03), (0.115, 0.018), (0.12, -0.01), (0.0, -0.01)], "dark", segs=40, center=(x0, p.y - 0.035, 0.0)))
-	for dz in (-0.07, 0.07):
-		q, qn = crown(x0 + s_ * 0.06, dz)
+	ears.append(lathe("cat_ear_collar", [(0.0, 0.03), (0.115, 0.03), (0.13, 0.018), (0.136, -0.012), (0.0, -0.012)], "dark", segs=40, center=(x0, p.y - 0.04, 0.01)))
+	for dz in (-0.085, 0.1):
+		q, qn = crown(x0 - s_ * 0.085, dz)
 		if q is not None:
 			ears.append(screw(q, qn, r=0.006))
 ACC["acc_catears"] = (join("acc_catears", ears), HEAD_P)
 
+# Seam glow: light lines lying in the head's panel grooves (the ring behind the side modules and
+# the crown panel), so the dark shell reads as lit from inside.
+seams = []
+ring = []
+for k in range(41):
+	t = math.pi * (-0.2 + 1.4 * k / 40)
+	q, qn = shell_hit((math.cos(t) * 2.0, HC + math.sin(t) * 2.0, 0.15), (-math.cos(t), -math.sin(t), 0))
+	if q is not None:
+		ring.append(q + qn * 0.0005)
+seams.append(tube("seam_ring", ring, 0.005, "glow", sides=5))
+for s_ in (-1, 1):
+	line = []
+	for k in range(15):
+		q, qn = crown(s_ * 0.165, -0.085 + 0.225 * k / 14)
+		line.append(q + qn * 0.0005)
+	seams.append(tube("seam_crown", line, 0.0048, "glow", sides=6))
+line = []
+for k in range(13):
+	q, qn = crown(-0.165 + 0.33 * k / 12, -0.09)
+	line.append(q + qn * 0.0005)
+seams.append(tube("seam_crown_f", line, 0.0048, "glow", sides=6))
+ACC["acc_seams"] = (join("acc_seams", seams), HEAD_P)
+
+# Holographic data panel (origin = its centre, facing -Z): a light frame, a faint pane, the
+# recycling sign, a rising bar chart, text lines and a small status ring.
+HW_, HH_ = 0.23, 0.175
+frame = []
+for (cx, cy, a0) in ((HW_ - 0.03, -HH_ + 0.03, -90), (HW_ - 0.03, HH_ - 0.03, 0), (-HW_ + 0.03, HH_ - 0.03, 90), (-HW_ + 0.03, -HH_ + 0.03, 180)):
+	for k in range(8):
+		a = math.radians(a0 + 90 * k / 8)
+		frame.append((cx + math.cos(a) * 0.03, cy + math.sin(a) * 0.03, 0.0))
+holo = [
+	loop_tube("holo_frame", frame, 0.0034, "holo", sides=6),
+	rbox("holo_pane", (HW_ * 2 - 0.01, HH_ * 2 - 0.01, 0.001), (0, 0, 0.001), 0.0, "holo_fill", sub=0),
+	recycle_icon("holo_icon", 0.15, (-0.035, 0.035, -0.002), "holo"),
+	torus("holo_ring", 0.02, 0.0035, (0.165, 0.125, -0.002), "holo", axis='Z', major=24, minor=6),
+	rbox("holo_head", (0.1, 0.01, 0.002), (0.085, 0.125, -0.002), 0.0, "holo", sub=0),
+	rbox("holo_base", (0.19, 0.004, 0.002), (0.1, -0.132, -0.002), 0.0, "holo", sub=0),
+]
+for k, h in enumerate((0.03, 0.045, 0.04, 0.07, 0.095, 0.125)):
+	holo.append(rbox("holo_bar", (0.02, h, 0.002), (0.02 + k * 0.03, -0.128 + h * 0.5, -0.002), 0.0, "holo", sub=0))
+for k, ln in enumerate((0.1, 0.075, 0.09, 0.06, 0.085, 0.05, 0.07)):
+	holo.append(rbox("holo_line", (ln, 0.006, 0.002), (0.2 - 0.105 + ln * 0.5 - 0.02, 0.085 - k * 0.019, -0.002), 0.0, "holo", sub=0))
+for k, ln in enumerate((0.12, 0.09, 0.11)):
+	holo.append(rbox("holo_line", (ln, 0.006, 0.002), (-0.2 + ln * 0.5, -0.09 - k * 0.019, -0.002), 0.0, "holo", sub=0))
+ACC["acc_holo"] = (join("acc_holo", holo), Vector((0, 0, 0)))
+
 
 # -------------------------------------------------------------------------------------------- PIXEL
-# Swept wing fins rising from the head's upper sides (red, with a cream stripe), and a cream lower
-# head: a painted panel over the shell below the red cap, open round the visor, neck and vent.
-def wing_pts(n=28):
-	"""Swept fin outline along +Y (root at y=0): a broad root, a raked leading edge, rounded tip."""
-	pts = []
-	for i in range(n + 1):
-		t = i / n
-		y = t * 0.2
-		x = 0.055 * (1 - t) ** 0.6 + 0.012 + 0.07 * t * t
-		pts.append((x, y))
-	for i in range(1, 12):
-		a = math.pi * i / 12
-		pts.append((0.056 + 0.026 * math.cos(a), 0.2 + math.sin(a) * 0.03))
-	for i in range(1, n):
-		t = 1 - i / n
-		y = t * 0.2
-		x = -0.05 * (1 - t) ** 0.8 + 0.03 * t * t
-		pts.append((x, y))
-	return pts
+# Wing fins on the head's upper sides (the sheet's portrait): broad, thick blades that reach out,
+# up a little and back past the head, the tip drooping, red with a cream flash along the top, each
+# on a faired root; and (a separate piece) a cream lower head.
+WING = [(-0.06, -0.068), (0.08, -0.086), (0.2, -0.078), (0.3, -0.042), (0.348, 0.014), (0.325, 0.062), (0.22, 0.082), (0.08, 0.082), (-0.06, 0.07)]
+FLASH = [(0.03, -0.03), (0.19, -0.034), (0.285, -0.01), (0.292, 0.02), (0.2, 0.036), (0.03, 0.03)]
+
+
+def wing_blade(name, pts, thick, material, bevel, sub):
+	"""Outline in (out, back) with the thickness up; thinner and drooping toward the tip."""
+	o = prism(name, pts, thick, (0, 0, 0), material, bevel=bevel, segs=3, sub=sub)
+	for v in o.data.vertices:
+		t = min(max(v.co.x / 0.34, 0.0), 1.0)
+		v.co.z *= 1.0 - 0.5 * t
+		v.co.z += 0.05 * t * t
+	o.data.transform(Matrix.Rotation(math.radians(90), 4, 'X'))
+	return o
 
 
 wings = []
 for s_ in (-1, 1):
-	x0 = s_ * 0.3
-	p, n = crown(x0, 0.06)
-	root = Vector((x0, p.y - 0.06, 0.06))
-	rot = (30, s_ * 14, s_ * -52)
-	f = prism("wing_fin", wing_pts(), 0.034, (0, 0, 0), "paint", bevel=0.012, segs=3, sub=1)
-	f.data.transform(Matrix.Scale(1.3, 4))
-	for v in f.data.vertices:
-		t = min(max(v.co.y / 0.23, 0.0), 1.0)
-		v.co.z *= 1.0 - 0.45 * t        # thinner toward the tip
-		v.co.z += 0.05 * t * t           # sweeping back
-	stripe = prism("wing_stripe", [(0.012, 0.03), (0.034, 0.03), (0.06, 0.19), (0.04, 0.2)], 0.036, (0, 0, 0), "accent", bevel=0.004, segs=2, sub=0)
-	stripe.data.transform(Matrix.Scale(1.3, 4))
-	for v in stripe.data.vertices:
-		t = min(max(v.co.y / 0.23, 0.0), 1.0)
-		v.co.z *= 1.0 - 0.45 * t
-		v.co.z += 0.05 * t * t
-	for o in (f, stripe):
+	p, n = crown(s_ * 0.325, 0.03)
+	root = Vector((s_ * 0.325, p.y - 0.04, 0.03))
+	rot = (0, s_ * -32, s_ * 24)
+	blade = wing_blade("wing_fin", WING, 0.056, "paint", 0.016, 1)
+	flash = wing_blade("wing_flash", FLASH, 0.064, "accent", 0.004, 0)
+	fair = rbox("wing_root", (0.11, 0.075, 0.2), (0.0, -0.005, 0.005), 0.03, "paint", segs=3, sub=1)
+	lip = rbox("wing_root_lip", (0.125, 0.02, 0.215), (0.0, -0.04, 0.005), 0.008, "trim", segs=2, sub=1)
+	for o in (blade, flash, fair, lip):
 		if s_ < 0:
 			o.data.transform(Matrix.Scale(-1, 4, Vector((1, 0, 0))))
 			o.data.flip_normals()
 		xform(o, root, rot)
-	wings += [f, stripe, lathe("wing_root", [(0.0, 0.025), (0.05, 0.025), (0.06, 0.012), (0.062, -0.02), (0.0, -0.02)], "trim", segs=32, center=root + Vector((0, 0.01, 0)))]
-	q, qn = crown(x0 * 0.82, 0.12)
-	if q is not None:
-		wings.append(screw(q, qn, r=0.006))
+	wings += [blade, flash, fair, lip]
+	for dz in (-0.1, 0.14):
+		q, qn = crown(s_ * 0.24, dz)
+		if q is not None:
+			wings.append(screw(q, qn, r=0.006))
+ACC["acc_pixel"] = (join("acc_pixel", wings), HEAD_P)
 
 # Cream lower head: the shell below the cap, pushed out 4 mm and given a 3 mm thickness.
 band = capsule("pixel_band", "accent", nu=56, nv=112)
@@ -284,8 +352,8 @@ md.thickness = 0.003
 md.offset = 1.0
 apply_mods(band)
 smooth(band)
-wings.append(band)
-ACC["acc_pixel"] = (join("acc_pixel", wings), HEAD_P)
+band.name = "acc_twotone"
+ACC["acc_twotone"] = (band, HEAD_P)
 
 
 def _heart_emblem():
@@ -293,6 +361,9 @@ def _heart_emblem():
 
 
 ACC["acc_ear_heart"] = (ear_emblem("acc_ear_heart", _heart_emblem), HEAD_P)
+
+# Chest icon: a heart filling the plate.
+ACC["acc_icon_heart"] = (prism("acc_icon_heart", heart_pts(0.135), 0.008, ICON_P + Vector((0, 0.002, 0)), "glow", bevel=0.003, segs=2, sub=1), ICON_P)
 
 # Butterfly companion (Pixel): one wing (PatchModel mirrors and flaps it) and a body.
 w_pts = [(0.0, 0.0)]
@@ -310,27 +381,32 @@ ACC["acc_bfly_body"] = (join("acc_bfly_body", [
 
 
 # --------------------------------------------------------------------------------------------- BOLT
-# Chunky hazard shoulder pads (pivot = shoulder): a yellow armour block over the shoulder cap with a
-# dark bevelled frame on its outer face, an amber hex-nut emblem, steel bolts and a dark under-lip.
+# Chunky hazard shoulder pads (pivot = shoulder): a big armour block over the shoulder with dark
+# recessed panels on its outer and front faces, an amber hex-nut emblem, steel bolts and a dark lip.
 def pad(name):
-	c = S + Vector((0.095, 0.045, 0.0))
-	rot = (0, 0, -14)
+	c = S + Vector((0.105, 0.03, 0.0))
+	rot = (0, 0, -10)
 	parts = [
-		rbox("pad_shell", (0.15, 0.2, 0.25), c, 0.045, "paint", segs=4, sub=2, rot=rot),
-		rbox("pad_lip", (0.155, 0.032, 0.255), c + Vector((0.004, -0.1, 0)), 0.013, "trim", segs=2, sub=1, rot=rot),
+		rbox("pad_shell", (0.19, 0.215, 0.27), c, 0.04, "paint", segs=4, sub=2, rot=rot),
+		rbox("pad_lip", (0.196, 0.034, 0.276), c + Vector((0.004, -0.105, 0)), 0.013, "trim", segs=2, sub=1, rot=rot),
+		rbox("pad_top", (0.12, 0.012, 0.19), c + Vector((-0.018, 0.106, 0)), 0.005, "trim", segs=2, sub=1, rot=rot),
 	]
-	fx = c + Vector((0.076, 0.016, 0.0))
-	for (sz, off) in (((0.012, 0.012, 0.2), (0, 0.075, 0)), ((0.012, 0.012, 0.2), (0, -0.06, 0)), ((0.012, 0.135, 0.012), (0, 0.007, 0.1)), ((0.012, 0.135, 0.012), (0, 0.007, -0.1))):
-		parts.append(rbox("pad_frame", sz, fx + Vector(off), 0.004, "trim", sub=0, segs=2, rot=rot))
-	parts.append(rbox("pad_badge", (0.01, 0.07, 0.07), fx + Vector((0.002, 0.005, 0.0)), 0.012, "dark", segs=2, sub=1, rot=rot))
-	nut = prism("pad_nut", ngon(0.026, 6, math.pi / 6), 0.008, (0, 0, 0), "lamp_accent", bevel=0.002, segs=1, sub=0)
-	boolean(nut, cyl("nut_hole", 0.011, 0.04, (0, 0, 0), "lamp_accent", axis='Z', verts=20))
+	fx = c + Vector((0.096, 0.012, 0.0))
+	parts.append(rbox("pad_face", (0.012, 0.15, 0.2), fx + Vector((-0.002, 0.004, 0.0)), 0.014, "trim", segs=2, sub=1, rot=rot))
+	parts.append(rbox("pad_badge", (0.012, 0.09, 0.09), fx + Vector((0.003, 0.004, 0.0)), 0.014, "dark", segs=2, sub=1, rot=rot))
+	nut = prism("pad_nut", ngon(0.03, 6, math.pi / 6), 0.008, (0, 0, 0), "lamp_accent", bevel=0.002, segs=1, sub=0)
+	boolean(nut, cyl("nut_hole", 0.013, 0.04, (0, 0, 0), "lamp_accent", axis='Z', verts=20))
 	face_out(nut, 1)
-	xform(nut, fx + Vector((0.008, 0.005, 0.0)), rot)
+	xform(nut, fx + Vector((0.01, 0.004, 0.0)), rot)
 	parts.append(nut)
-	for y in (0.06, -0.045):
-		for z in (-0.08, 0.08):
-			parts.append(cyl("pad_bolt", 0.009, 0.012, fx + Vector((0.005, y, z)), "steel", axis='X', verts=12, bevel=0.003, rot=(0, 90, rot[2])))
+	for y in (0.066, -0.058):
+		for z in (-0.085, 0.085):
+			parts.append(cyl("pad_bolt", 0.009, 0.012, fx + Vector((0.004, y + 0.004, z)), "steel", axis='X', verts=12, bevel=0.003, rot=(0, 90, rot[2])))
+	# Front face: a dark inset with two steel bolts (the face the player sees most).
+	ff = c + Vector((0.0, 0.008, -0.136))
+	parts.append(rbox("pad_front", (0.13, 0.14, 0.012), ff, 0.012, "trim", segs=2, sub=1, rot=rot))
+	parts.append(rbox("pad_front_slot", (0.085, 0.022, 0.012), ff + Vector((0, 0.03, -0.003)), 0.006, "dark", segs=2, sub=0, rot=rot))
+	parts.append(rbox("pad_front_lamp", (0.05, 0.014, 0.012), ff + Vector((0, -0.03, -0.003)), 0.005, "lamp_accent", segs=2, sub=0, rot=rot))
 	return join(name, parts)
 
 
@@ -339,68 +415,104 @@ ACC["acc_pad_l"] = (mirror_x(ACC["acc_pad_r"][0], "acc_pad_l"), SH_L)
 
 
 def _nut_emblem():
-	o = prism("el_nut", ngon(0.04, 6, math.pi / 6), 0.01, (0, 0, 0), "lamp_accent", bevel=0.003, segs=2, sub=0)
-	boolean(o, cyl("el_nut_hole", 0.018, 0.04, (0, 0, 0), "lamp_accent", axis='Z', verts=24))
-	return [o, torus("el_nut_ring", 0.018, 0.003, (0, 0, -0.004), "dark", axis='Z', major=24, minor=6)]
+	# A square armoured bezel over the round lens (paint frame, dark face) carrying an amber hex nut.
+	o = prism("el_nut", ngon(0.046, 6, math.pi / 6), 0.012, (0, 0, -0.016), "lamp_accent", bevel=0.003, segs=2, sub=0)
+	boolean(o, cyl("el_nut_hole", 0.021, 0.06, (0, 0, -0.016), "lamp_accent", axis='Z', verts=24))
+	return [o, torus("el_nut_ring", 0.021, 0.0035, (0, 0, -0.018), "dark", axis='Z', major=24, minor=6),
+		rbox("el_bezel", (0.275, 0.275, 0.04), (0, 0, 0.014), 0.055, "paint", segs=3, sub=1),
+		rbox("el_bezel_face", (0.2, 0.2, 0.02), (0, 0, -0.004), 0.04, "trim", segs=3, sub=1),
+		rbox("el_bezel_core", (0.135, 0.135, 0.02), (0, 0, -0.009), 0.03, "dark", segs=3, sub=1)] + [
+		screw((sx * 0.112, sy * 0.112, -0.006), (0, 0, -1), r=0.007) for sx in (-1, 1) for sy in (-1, 1)]
 
 
 ACC["acc_ear_nut"] = (ear_emblem("acc_ear_nut", _nut_emblem), HEAD_P)
 
-# A big rusty spur gear (held in the left claw by its rim).
+# Dark panels (hazard pattern): a black plate over the crown and a strip down the back of the head.
+dp = capsule("panels_dark", "dark", nu=56, nv=112)
+bm = bmesh.new()
+bm.from_mesh(dp.data)
+bm.normal_update()
+kill = []
+for f in bm.faces:
+	c = f.calc_center_median()
+	crown_p = abs(c.x) < 0.158 and -0.2 < c.z < 0.1 and c.y > HC
+	side_p = 0.2 < abs(c.x) < 0.3 and -0.17 < c.z < 0.1 and c.y > HC + HB * 0.55
+	if not (crown_p or side_p):
+		kill.append(f)
+bmesh.ops.delete(bm, geom=kill, context='FACES')
+for v in bm.verts:
+	v.co += v.normal * 0.003
+bm.to_mesh(dp.data)
+bm.free()
+md = dp.modifiers.new("sol", 'SOLIDIFY')
+md.thickness = 0.004
+md.offset = 1.0
+apply_mods(dp)
+smooth(dp)
+dp.name = "acc_panels"
+ACC["acc_panels"] = (dp, HEAD_P)
+
+# A big rusty ring gear (held in the left claw by its rim; origin = the grip point on the rim).
 g_pts = []
-TEETH = 12
+TEETH = 14
+G_R = 0.118
 for k in range(TEETH):
 	a0 = 2 * math.pi * k / TEETH
-	for (da, r) in ((-0.42, 0.098), (-0.22, 0.123), (0.22, 0.123), (0.42, 0.098)):
+	for (da, r) in ((-0.5, G_R), (-0.3, G_R + 0.03), (0.3, G_R + 0.03), (0.5, G_R)):
 		a = a0 + da * 2 * math.pi / TEETH / 2
 		g_pts.append((math.cos(a) * r, math.sin(a) * r))
-gear = prism("gear", g_pts, 0.03, (0, 0, 0), "rust", bevel=0.005, segs=2, sub=0)
+gear = prism("gear", g_pts, 0.04, (0, 0, 0), "rust", bevel=0.006, segs=2, sub=0)
 gear.data.use_auto_smooth = True
-for k in range(6):
-	a = 2 * math.pi * k / 6
-	boolean(gear, cyl("gear_hole", 0.022, 0.06, (math.cos(a) * 0.062, math.sin(a) * 0.062, 0), "rust", axis='Z', verts=20))
-boolean(gear, cyl("gear_axle", 0.018, 0.06, (0, 0, 0), "rust", axis='Z', verts=24))
-ACC["acc_gear"] = (join("acc_gear", [gear, torus("gear_hub", 0.026, 0.008, (0, 0, 0.015), "rust", axis='Z', major=28, minor=6),
-	torus("gear_hub_b", 0.026, 0.008, (0, 0, -0.015), "rust", axis='Z', major=28, minor=6),
-	torus("gear_rim", 0.088, 0.005, (0, 0, 0.015), "rust", axis='Z', major=60, minor=6)]), Vector((0, 0, 0)))
+boolean(gear, cyl("gear_bore", 0.062, 0.08, (0, 0, 0), "rust", axis='Z', verts=40))
+gear = join("acc_gear", [gear, torus("gear_lip", 0.07, 0.008, (0, 0, 0.02), "rust", axis='Z', major=40, minor=6),
+	torus("gear_lip_b", 0.07, 0.008, (0, 0, -0.02), "rust", axis='Z', major=40, minor=6)])
+gear.data.transform(Matrix.Translation(Vector((0, G_R * 0.78, 0))))
+ACC["acc_gear"] = (gear, Vector((0, 0, 0)))
 
 
 # -------------------------------------------------------------------------------------------- PATCH
-# Medic satchel on the right hip: a rounded orange bag with a flap, a white cross, a side pocket,
-# steel buckles and a strap up over the shoulder.
-TB = Vector((TW * 0.5 + 0.07, 0.34, 0.07))
+# Medic satchel behind the right arm (origin = its centre): a rounded orange bag turned to face
+# front-right, with a dark strap band, a flap, a cream patch carrying an orange cross, a side
+# pocket, steel buckles, a top bracket and a strap up to the back.
+TB = Vector((TW * 0.5 + 0.15, 0.37, 0.17))
 tb = [
-	rbox("tb_bag", (0.11, 0.19, 0.24), TB, 0.04, "accent", segs=3, sub=2),
-	rbox("tb_flap", (0.116, 0.06, 0.245), TB + Vector((0.002, 0.07, 0)), 0.02, "accent", segs=3, sub=1),
-	rbox("tb_flap_edge", (0.118, 0.008, 0.247), TB + Vector((0.002, 0.04, 0)), 0.003, "trim", sub=0, segs=1),
-	rbox("tb_pocket", (0.04, 0.1, 0.1), TB + Vector((0.0, -0.025, 0.13)), 0.014, "accent", segs=2, sub=1),
-	rbox("tb_cross_h", (0.006, 0.03, 0.095), TB + Vector((0.056, -0.02, 0)), 0.003, "decal", sub=0, segs=1),
-	rbox("tb_cross_v", (0.006, 0.095, 0.03), TB + Vector((0.056, -0.02, 0)), 0.003, "decal", sub=0, segs=1),
-	tube("tb_strap", [TB + Vector((-0.01, 0.07, -0.08)), Vector((TW * 0.5 + 0.02, 0.52, -0.1)), Vector((TW * 0.5 - 0.06, 0.6, -0.08))], 0.009, "trim", sides=8),
-	tube("tb_strap_b", [TB + Vector((-0.01, 0.07, 0.08)), Vector((TW * 0.5 + 0.02, 0.52, 0.12)), Vector((TW * 0.5 - 0.06, 0.6, 0.1))], 0.009, "trim", sides=8),
+	rbox("tb_bag", (0.14, 0.26, 0.23), (0, 0, 0), 0.05, "accent", segs=3, sub=2),
+	rbox("tb_flap", (0.148, 0.07, 0.236), (0.002, 0.095, 0), 0.024, "accent", segs=3, sub=1),
+	rbox("tb_band", (0.15, 0.03, 0.238), (0.002, 0.052, 0), 0.008, "trim", sub=1, segs=2),
+	rbox("tb_pocket", (0.05, 0.11, 0.1), (0.0, -0.04, 0.125), 0.016, "accent", segs=2, sub=1),
+	rbox("tb_cross_h", (0.014, 0.032, 0.1), (0.068, -0.035, 0), 0.004, "decal", sub=0, segs=1),
+	rbox("tb_cross_v", (0.014, 0.1, 0.032), (0.068, -0.035, 0), 0.004, "decal", sub=0, segs=1),
+	rbox("tb_bracket", (0.07, 0.03, 0.13), (0.0, 0.14, 0), 0.01, "trim", sub=1, segs=2),
+	cyl("tb_pin", 0.012, 0.16, (0.0, 0.15, 0), "steel", axis='Z', verts=12, bevel=0.003),
 ]
-for z in (-0.06, 0.06):
-	tb.append(rbox("tb_buckle", (0.01, 0.034, 0.024), TB + Vector((0.058, 0.045, z * 1.2)), 0.003, "steel", sub=0, segs=1))
+for z in (-0.07, 0.07):
+	tb.append(rbox("tb_buckle", (0.012, 0.04, 0.028), (0.074, 0.052, z), 0.004, "steel", sub=0, segs=1))
+for o in tb:
+	xform(o, TB, (0, 32, 0))
+tb.append(tube("tb_strap", [TB + Vector((-0.02, 0.15, -0.02)), Vector((TW * 0.5 + 0.03, 0.555, 0.12)), Vector((TW * 0.5 - 0.09, 0.575, 0.15))], 0.011, "trim", sides=8))
 ACC["acc_toolbox"] = (join("acc_toolbox", tb), TB)
 
-# Carry case (left claw grips the handle; origin = the handle's grip point): weathered rusty-orange
-# box with a seam, corner guards, latches and a white recycling emblem.
+# Carry case (left claw grips the handle; origin = the handle's grip point): a weathered orange
+# box with a lid seam, dark corner guards, steel latches and a white recycling emblem.
 case = [
-	rbox("cs_body", (0.27, 0.19, 0.11), (0, -0.135, 0), 0.022, "case", segs=3, sub=2),
-	rbox("cs_lid", (0.275, 0.05, 0.115), (0, -0.06, 0), 0.02, "case", segs=3, sub=1),
-	rbox("cs_seam", (0.277, 0.008, 0.117), (0, -0.087, 0), 0.003, "trim", sub=0, segs=1),
-	tube("cs_handle", [(-0.06, -0.035, 0), (-0.05, 0.0, 0), (0.05, 0.0, 0), (0.06, -0.035, 0)], 0.01, "trim", sides=10),
+	rbox("cs_body", (0.27, 0.19, 0.12), (0, -0.135, 0), 0.022, "case", segs=3, sub=2),
+	rbox("cs_lid", (0.275, 0.05, 0.125), (0, -0.06, 0), 0.02, "case", segs=3, sub=1),
+	rbox("cs_seam", (0.277, 0.008, 0.127), (0, -0.087, 0), 0.003, "trim", sub=0, segs=1),
+	tube("cs_handle", [(-0.06, -0.035, 0), (-0.05, 0.0, 0), (0.05, 0.0, 0), (0.06, -0.035, 0)], 0.01, "steel", sides=10),
 ]
 for x in (-0.135, 0.135):
 	for y in (-0.05, -0.225):
-		case.append(rbox("cs_corner", (0.03, 0.03, 0.12), (x * 0.97, y, 0), 0.008, "trim", sub=1, segs=2))
-	case.append(rbox("cs_latch", (0.026, 0.034, 0.012), (x * 0.62, -0.085, -0.058), 0.004, "steel", sub=0, segs=1))
+		case.append(rbox("cs_corner", (0.03, 0.03, 0.13), (x * 0.97, y, 0), 0.008, "trim", sub=1, segs=2))
+	case.append(rbox("cs_latch", (0.026, 0.034, 0.012), (x * 0.62, -0.085, -0.063), 0.004, "steel", sub=0, segs=1))
+	case.append(rbox("cs_hinge", (0.02, 0.014, 0.02), (x * 0.45, -0.036, 0), 0.004, "steel", sub=0, segs=1))
 for zs in (-1, 1):
-	ic = recycle_icon("cs_icon", 0.085, (0, -0.15, zs * 0.0565), "decal")
+	ic = recycle_icon("cs_icon", 0.095, (0, -0.15, zs * 0.0615), "decal")
 	if zs > 0:
-		ic.data.transform(Matrix.Translation(Vector((0, -0.15, 0.0565))) @ Matrix.Rotation(math.pi, 4, 'Y') @ Matrix.Translation(-Vector((0, -0.15, 0.0565))))
+		ic.data.transform(Matrix.Translation(Vector((0, -0.15, 0.0615))) @ Matrix.Rotation(math.pi, 4, 'Y') @ Matrix.Translation(-Vector((0, -0.15, 0.0615))))
 	case.append(ic)
-ACC["acc_case"] = (join("acc_case", case), Vector((0, 0, 0)))
+case = join("acc_case", case)
+case.data.transform(Matrix.Scale(1.3, 4))
+ACC["acc_case"] = (case, Vector((0, 0, 0)))
 
 # Chest icon: the medic cross filling the plate.
 ACC["acc_icon_cross"] = (join("acc_icon_cross", [
@@ -425,21 +537,6 @@ rd = [
 for k in range(4):
 	rd.append(rbox("rd_slat", (0.004, 0.007, 0.06), RD + Vector((0.045, -0.014 - k * 0.013, -0.006)), 0.001, "steel", sub=0, segs=1))
 ACC["acc_radio"] = (join("acc_radio", rd), HEAD_P)
-
-# ------------------------------------------------------------------------------------------- SPROUT
-# Plastic bottle held in the left claw (origin = the grip, round its middle), with three glowing
-# pickup-beam bands round it (the sheet's green beam).
-bt = [
-	lathe("bt_body", [(0.0, 0.13), (0.012, 0.13), (0.016, 0.115), (0.02, 0.1), (0.036, 0.075), (0.05, 0.05), (0.052, 0.03), (0.047, 0.02),
-		(0.052, 0.008), (0.047, -0.004), (0.052, -0.016), (0.052, -0.09), (0.048, -0.1), (0.04, -0.106), (0.0, -0.103)], "bottle", segs=40),
-	lathe("bt_cap", [(0.0, 0.158), (0.016, 0.158), (0.018, 0.152), (0.018, 0.132), (0.014, 0.13), (0.0, 0.13)], "bottle_cap", segs=24),
-	torus("bt_ring", 0.0185, 0.003, (0, 0.127, 0), "bottle_cap", major=24, minor=6),
-]
-for k, (y, tilt) in enumerate(((-0.06, 8), (0.0, -6), (0.06, 10))):
-	r = torus("bt_beam", 0.064 - k * 0.002, 0.0045, (0, 0, 0), "glow", major=56, minor=8)
-	xform(r, (0, y, 0), (tilt, 0, tilt * 0.6))
-	bt.append(r)
-ACC["acc_bottle"] = (join("acc_bottle", bt), Vector((0, 0, 0)))
 
 ACC_OBJS = [o for (o, _p) in ACC.values()]
 for name, (o, piv) in ACC.items():

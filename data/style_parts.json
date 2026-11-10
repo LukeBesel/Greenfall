@@ -1,5 +1,5 @@
 {
-  "_doc": "Lumi's Character Builder (systems/lumi_style.gd, ui/lumi_builder.gd). A style is a dict of slots: colour slots (paint, trim, accent, eyes, side, glow, hover, laser) take any swatch the player has unlocked (or any colour once the advanced picker is unlocked); part slots pick one option id each. Option fields: acc = PatchModel-native add-on names (PatchModel.VARIANTS acc ids, built by PatchModel itself), parts = add-on mesh names looked up in the add-on library (aurora.glb + designs.glb, first one found wins; a procedural fallback named by build is used when none exists). unlock (absent = free): {design: id} unlocked with that design; {lumi_level: n}; {achievement: id}; {cond: achievement-style condition, text}; {cost: {parts|cubes|seeds: n}} bought once in the builder. The six designs are presets that fill every slot (LumiStyle.preset).",
+  "_doc": "Lumi's Character Builder (systems/lumi_style.gd, ui/lumi_builder.gd). A style is a dict of slots: colour slots (paint, trim, accent, eyes, side, glow, hover, laser) take any swatch the player has unlocked (or any colour once the advanced picker is unlocked); part slots pick one option id each. Option fields: acc = PatchModel-native add-on names (PatchModel.VARIANTS acc ids, built by PatchModel itself), parts = add-on mesh names looked up in the add-on library (aurora.glb + designs.glb, first one found wins; a procedural fallback named by build is used when none exists). unlock (absent = free): {design: id} unlocked with that design; {lumi_level: n}; {achievement: id}; {cond: achievement-style condition, text}; {cost: {parts|cubes|seeds: n}} bought once in the builder. Part slots: pattern (wear pattern and its panels), eye_shape, head (head piece), ears (ear lenses and side pieces), chest (plate icon), shoulders, held (left claw), hip, companion; the first option of a slot is its empty one. The six designs are presets that fill every slot (LumiStyle.preset).",
   "slots": [
     {
       "id": "paint",
@@ -62,6 +62,12 @@
       "group": "Add-ons"
     },
     {
+      "id": "ears",
+      "kind": "part",
+      "name": "Ear lenses",
+      "group": "Add-ons"
+    },
+    {
       "id": "chest",
       "kind": "part",
       "name": "Chest icon",
@@ -77,6 +83,12 @@
       "id": "held",
       "kind": "part",
       "name": "Held item",
+      "group": "Add-ons"
+    },
+    {
+      "id": "hip",
+      "kind": "part",
+      "name": "Hip item",
       "group": "Add-ons"
     },
     {
@@ -113,6 +125,9 @@
       {
         "id": "stripes",
         "name": "Hazard stripes",
+        "acc": [
+          "acc_panels"
+        ],
         "unlock": {
           "design": "bolt"
         }
@@ -120,8 +135,31 @@
       {
         "id": "moss",
         "name": "Moss patches",
+        "acc": [
+          "acc_moss"
+        ],
         "unlock": {
           "design": "sprout"
+        }
+      },
+      {
+        "id": "seams",
+        "name": "Seam glow",
+        "acc": [
+          "acc_seams"
+        ],
+        "unlock": {
+          "design": "nova"
+        }
+      },
+      {
+        "id": "twotone",
+        "name": "Two-tone shell",
+        "acc": [
+          "acc_twotone"
+        ],
+        "unlock": {
+          "design": "pixel"
         }
       }
     ],
@@ -235,6 +273,52 @@
         }
       }
     ],
+    "ears": [
+      {
+        "id": "plain",
+        "name": "Plain"
+      },
+      {
+        "id": "heart",
+        "name": "Heart lenses",
+        "acc": [
+          "acc_ear_heart"
+        ],
+        "unlock": {
+          "design": "pixel"
+        }
+      },
+      {
+        "id": "leaf",
+        "name": "Leaf lenses",
+        "acc": [
+          "acc_ear_leaf"
+        ],
+        "unlock": {
+          "design": "sprout"
+        }
+      },
+      {
+        "id": "nut",
+        "name": "Hex-nut bezels",
+        "acc": [
+          "acc_ear_nut"
+        ],
+        "unlock": {
+          "design": "bolt"
+        }
+      },
+      {
+        "id": "radio",
+        "name": "Side radio",
+        "acc": [
+          "acc_radio"
+        ],
+        "unlock": {
+          "design": "patch"
+        }
+      }
+    ],
     "chest": [
       {
         "id": "recycle",
@@ -299,6 +383,16 @@
         }
       },
       {
+        "id": "bottle",
+        "name": "Plastic bottle",
+        "acc": [
+          "bottle"
+        ],
+        "unlock": {
+          "design": "sprout"
+        }
+      },
+      {
         "id": "medkit",
         "name": "Med kit",
         "parts": [
@@ -311,9 +405,8 @@
       },
       {
         "id": "toolbox",
-        "name": "Toolbox",
+        "name": "Carry case",
         "acc": [
-          "acc_toolbox",
           "case"
         ],
         "unlock": {
@@ -339,6 +432,22 @@
         ],
         "unlock": {
           "design": "nova"
+        }
+      }
+    ],
+    "hip": [
+      {
+        "id": "none",
+        "name": "None"
+      },
+      {
+        "id": "satchel",
+        "name": "Medic satchel",
+        "acc": [
+          "acc_toolbox"
+        ],
+        "unlock": {
+          "design": "patch"
         }
       }
     ],

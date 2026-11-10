@@ -101,7 +101,7 @@ func _ready() -> void:
 	add_child(we)
 	# Warm side key (from the viewer's left, a little behind), a warm back rim and a cool soft fill.
 	var key := DirectionalLight3D.new()
-	key.light_color = Color(1.0, 0.68, 0.42) if portrait else Color(1.0, 0.86, 0.74)
+	key.light_color = Color(1.0, 0.76, 0.54) if portrait else Color(1.0, 0.86, 0.74)  # warm, but paint hues still read (yellow is not orange)
 	key.light_energy = 2.0 if portrait else 1.7  # saturated paints (yellow, red) wash out above this
 	key.shadow_enabled = true
 	key.directional_shadow_max_distance = 12.0
@@ -114,8 +114,9 @@ func _ready() -> void:
 	add_child(rim)
 	rim.look_at_from_position(Vector3(-1.5, 2.6, 3.0), Vector3.ZERO, Vector3.UP)  # [hero v2] sun behind and above (concept)
 	var fill := DirectionalLight3D.new()
-	fill.light_color = Color(0.62, 0.74, 1.0)
-	fill.light_energy = 0.35
+	# Portrait: a near-neutral front fill, so the chest plate and held props read in their own colours.
+	fill.light_color = Color(0.86, 0.88, 0.95) if portrait else Color(0.62, 0.74, 1.0)
+	fill.light_energy = 0.6 if portrait else 0.35
 	add_child(fill)
 	fill.look_at_from_position(Vector3(-2.5, 0.8, -3.0), Vector3.ZERO, Vector3.UP)
 	# Ground: dusty dirt (portrait) or a dark studio floor (turnaround).
@@ -156,8 +157,8 @@ func _ready() -> void:
 		# [hero v2] The concept looks down on him a little (the crown and fin read against the sky).
 		var a: float = deg_to_rad(31.0)
 		# Far enough back that head pieces (fin, seedling, ears) and the held prop stay in frame.
-		var d: float = 3.05
-		_shots = [[Vector3(sin(a) * d, 1.6, -cos(a) * d), Vector3(-0.2, 0.8, -0.05)]]
+		var d: float = 2.9
+		_shots = [[Vector3(sin(a) * d, 1.5, -cos(a) * d), Vector3(-0.2, 0.74, -0.05)]]
 		for k: int in _variants.size() - 1:
 			_shots.append(_shots[0])
 		var cam_attr := CameraAttributesPractical.new()
@@ -245,6 +246,8 @@ func _pose() -> void:
 		return
 	_model._blink_timer = 100.0  # no random blink in a review shot
 	_model._blink_t = -1.0
+	_model._idle_t = 10.0  # idle props (holo panel, carry case) are out
+	_model._prop_amt = 1.0
 	# [hero v2] Flying pose of the portrait: pitched forward and leaning toward the can (Aurora);
 	# the other designs as on their concept-sheet portraits.
 	var pose: Array = POSES.get(_variant, POSES["aurora"])
@@ -258,6 +261,13 @@ func _pose() -> void:
 	for f: Node3D in _model.get("_claws"):
 		var dir: Vector2 = f.get_meta("dir")
 		f.rotation = Vector3(-dir.y, dir.x, 0) * float(pose[5])
+	_model._update_held()  # held items follow the posed claw
+	var bfly: Node3D = _model.get("_bfly")
+	if bfly:
+		# The sheet's butterfly: up and to the side of the reaching claw, wings half open.
+		bfly.global_transform = Transform3D(Basis.from_euler(Vector3(0.5, 2.5, 0.3)).scaled(Vector3.ONE * PatchModel.BFLY_SCALE), Vector3(-0.8, 1.32, -0.1))
+		for h: Node3D in _model.get("_bfly_wings"):
+			h.rotation.z = 0.55 * float(h.get_meta("side", 1.0))
 	var a: Vector3 = _model.claw_point_l()
 	(get_node("ClawLight") as OmniLight3D).global_position = a
 	for k: int in _lasers.size():

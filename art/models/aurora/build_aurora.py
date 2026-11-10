@@ -928,7 +928,7 @@ def bake_ao(targets, hidden):
 if not DESIGNS_ONLY:
 	bake_ao([o for o in HERO_OBJS if o.name not in ("finger", "finger_tip")], ACC_OBJS)
 for o in ACC_OBJS:
-	if o.name in ("acc_wing", "acc_bfly_body", "acc_gear", "acc_case", "acc_bottle"):
+	if o.name in ("acc_wing", "acc_bfly_body", "acc_gear", "acc_case", "acc_bottle", "acc_holo"):
 		continue
 	bake_ao([o], [x for x in ACC_OBJS if x is not o])
 
@@ -1111,7 +1111,8 @@ print("hero tris (fingers/tips once):", tris, sorted(((len(o.data.loop_triangles
 if os.environ.get("PREVIEW"):
 	cols = {"paint": (0.8, 0.78, 0.74), "trim": (0.08, 0.085, 0.095), "accent": (0.9, 0.4, 0.08), "dark": (0.05, 0.05, 0.055),
 		"steel": (0.5, 0.5, 0.5), "glow": (0.3, 0.9, 1.0), "lamp_accent": (1.0, 0.6, 0.2), "screen": (0.01, 0.01, 0.01),
-		"face": (0.01, 0.01, 0.012), "paddle": (0.95, 0.66, 0.2), "paddle_edge": (1.0, 0.8, 0.45), "latch": (0.95, 0.42, 0.02), "cable": (0.12, 0.12, 0.13), "plate": (0.85, 0.83, 0.78), "fin": (0.55, 0.57, 0.6), "claw": (0.3, 0.31, 0.33), "glow_soft": (0.3, 0.9, 1.0), "thruster": (0.3, 0.9, 1.0), "thruster_core": (0.6, 1.0, 1.0)}
+		"face": (0.01, 0.01, 0.012), "paddle": (0.95, 0.66, 0.2), "paddle_edge": (1.0, 0.8, 0.45), "latch": (0.95, 0.42, 0.02), "cable": (0.12, 0.12, 0.13), "plate": (0.85, 0.83, 0.78), "fin": (0.55, 0.57, 0.6), "claw": (0.3, 0.31, 0.33), "glow_soft": (0.3, 0.9, 1.0), "thruster": (0.3, 0.9, 1.0), "thruster_core": (0.6, 1.0, 1.0),
+		"leaf": (0.3, 0.6, 0.15), "leaf_vein": (0.2, 0.4, 0.1), "moss": (0.22, 0.33, 0.1), "decal": (0.9, 0.9, 0.85), "case": (0.6, 0.3, 0.1)}
 	for name, m in MATS.items():
 		b = m.node_tree.nodes["Principled BSDF"]
 		b.inputs["Base Color"].default_value = (*cols.get(name, (0.5, 0.5, 0.5)), 1)
@@ -1123,8 +1124,8 @@ if os.environ.get("PREVIEW"):
 	# so they stay hidden), and hides the fin where the design has none.
 	pd = os.environ.get("PREVIEW_DESIGN", "")
 	if pd:
-		keep = {"bolt": ["acc_pad_r", "acc_pad_l", "acc_ear_nut"], "sprout": ["acc_sprout", "acc_moss", "acc_ear_leaf", "acc_icon_leaf"],
-			"pixel": ["acc_pixel", "acc_ear_heart"], "nova": ["acc_catears"], "patch": ["acc_toolbox", "acc_radio", "acc_icon_cross"]}.get(pd, [])
+		keep = {"bolt": ["acc_pad_r", "acc_pad_l", "acc_ear_nut", "acc_panels"], "sprout": ["acc_sprout", "acc_moss", "acc_ear_leaf", "acc_icon_leaf"],
+			"pixel": ["acc_pixel", "acc_twotone", "acc_ear_heart"], "nova": ["acc_catears", "acc_seams"], "patch": ["acc_toolbox", "acc_radio", "acc_icon_cross"]}.get(pd, [])
 		for o in objs:
 			if o.name.startswith("acc_") and o.name not in keep:
 				o.hide_render = True

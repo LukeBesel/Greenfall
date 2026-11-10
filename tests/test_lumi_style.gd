@@ -184,8 +184,10 @@ func test_custom_style_on_a_model() -> void:
 	m.set_meta("lumi_style", s)
 	add_child_autofree(m)
 	assert_not_null(m.get_node_or_null("LumiStyleRig"))
-	assert_not_null(m._face_mat.next_pass, "heart eyes overlay")
-	assert_lt(float(m._face_mat.get_shader_parameter("eye_radius")), 0.0, "native eyes hidden")
+	# One eye path: the face shader draws the builder's shape itself, with no overlay pass.
+	assert_null(m._face_mat.next_pass, "no eye overlay")
+	assert_eq(int(m._face_mat.get_shader_parameter("eye_shape")), PatchModel.EYE_SHAPES.find("heart"), "heart eyes in the face shader")
+	assert_gt(float(m._face_mat.get_shader_parameter("eye_radius")), 0.0, "native eyes shown")
 	for n: String in ["lumi_halo", "lumi_medkit", "lumi_drone"]:
 		assert_eq(m.find_children(n, "", true, false).size(), 1, n)
 	assert_true(LumiStyle._close(LumiStyle.laser_of(m), Color("#ff5480"), 0.002))

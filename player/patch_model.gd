@@ -15,21 +15,26 @@ extends Node3D
 # paint / trim / accent: hero_paint colours; glow: eyes, hover ring, chest light and pickup lasers;
 # lamp: the small accent lights (cheeks, vent LEDs); latch: the glowing chest latches (else accent);
 # ear_glow: the side modules' ring lenses (else glow); plate: the raised chest plate (else paint);
-# icon: chest icon (recycle / leaf / cross) with icon_col (else glow) and icon_lit (emission, 0 =
-# painted on); chips: wear chip colour; dark / fin / claw / cable: COLOR_DEFAULTS overrides;
-# coverage/grime: wear; moss and stripes: hero_paint extras; eyes: EYE_SHAPES (resting look) and
-# happy: 1.0 rests on smiling arcs; smile: the small visor smile; ear_icon: emblem on both side lenses
-# (designs.glb acc_ear_<id>); acc: add-ons from designs.glb (+ "antenna" from aurora.glb) and
-# procedural extras (holo, butterfly, case), each mapped to a builder option; props: the sheet's
-# signature props (designs.glb acc_<id>), shown only with the design's own preset look.
+# arm: the arm armour (else paint); icon: chest icon (recycle / leaf / cross) with icon_col (else
+# glow) and icon_lit (emission, 0 = painted on); chips: wear chip colour; dark / fin / claw / cable:
+# COLOR_DEFAULTS overrides; coverage / grime / specks / dust: wear; moss and stripes: hero_paint
+# extras; eyes: EYE_SHAPES (resting look) and happy: 1.0 rests on smiling arcs; smile: the small
+# visor smile; acc: every add-on piece, each one a builder option in data/style_parts.json (pieces
+# from designs.glb by mesh name, "antenna" from aurora.glb, and the animated ones: gear, bottle,
+# holo, case, butterfly).
 # l10n:begin
 const VARIANTS: Dictionary = {
 	"aurora": {"name": "Aurora", "paint": Color(0.78, 0.74, 0.725), "trim": Color(0.412, 0.435, 0.471), "glow": Color(0.25, 0.886, 0.94), "accent": Color(0.945, 0.42, 0.012), "lamp": Color(0.973, 0.686, 0.035), "paddle": Color(0.953, 0.753, 0.251), "icon": "recycle", "grime": 0.75, "eyes": "crescent", "acc": ["antenna"]},  # eyes: owner (Nov 9): the concept sheet's crescent eyes, never solid discs
-	"bolt": {"name": "Bolt", "paint": Color(0.93, 0.66, 0.09), "trim": Color(0.3, 0.28, 0.24), "glow": Color(1.0, 0.7, 0.2), "accent": Color(0.96, 0.56, 0.08), "lamp": Color(1.0, 0.62, 0.12), "paddle": Color(0.97, 0.72, 0.2), "plate": Color(0.96, 0.71, 0.14), "icon": "recycle", "icon_col": Color(0.05, 0.045, 0.04), "icon_lit": 0.0, "chips": Color(0.07, 0.06, 0.05), "claw": Color(0.27, 0.26, 0.24), "coverage": 0.8, "grime": 0.85, "stripes": 1.0, "eyes": "crescent", "happy": 1.0, "smile": 1.0, "ear_icon": "nut", "acc": ["antenna", "acc_pad_r", "acc_pad_l", "gear"]},  # rests on smiling arcs with a small smile (sheet)
-	"sprout": {"name": "Sprout", "paint": Color(0.43, 0.46, 0.2), "trim": Color(0.3, 0.32, 0.18), "glow": Color(0.55, 1.0, 0.3), "accent": Color(0.35, 0.38, 0.16), "lamp": Color(1.0, 0.6, 0.16), "latch": Color(0.55, 1.0, 0.3), "plate": Color(0.5, 0.53, 0.25), "icon": "leaf", "claw": Color(0.42, 0.44, 0.32), "grime": 0.7, "moss": 0.6, "eyes": "crescent", "ear_icon": "leaf", "props": ["bottle"], "acc": ["acc_sprout"]},
-	"pixel": {"name": "Pixel", "paint": Color(0.76, 0.15, 0.13), "trim": Color(0.62, 0.13, 0.12), "glow": Color(1.0, 0.38, 0.58), "accent": Color(0.9, 0.88, 0.84), "lamp": Color(1.0, 0.4, 0.58), "latch": Color(1.0, 0.38, 0.58), "plate": Color(0.8, 0.17, 0.14), "icon": "recycle", "icon_col": Color(0.95, 0.94, 0.92), "icon_lit": 0.6, "claw": Color(0.5, 0.13, 0.12), "eyes": "crescent", "happy": 1.0, "smile": 1.0, "ear_icon": "heart", "acc": ["acc_pixel", "butterfly"]},  # rests on smiling arcs (sheet)
-	"nova": {"name": "Nova", "paint": Color(0.21, 0.21, 0.24), "trim": Color(0.15, 0.14, 0.18), "glow": Color(0.7, 0.38, 1.0), "accent": Color(0.3, 0.28, 0.34), "lamp": Color(0.72, 0.42, 1.0), "latch": Color(0.7, 0.38, 1.0), "plate": Color(0.17, 0.17, 0.2), "icon": "recycle", "claw": Color(0.3, 0.3, 0.33), "metal": 0.35, "eyes": "crescent", "acc": ["acc_catears", "holo"]},
-	"patch": {"name": "Patch", "paint": Color(0.89, 0.87, 0.83), "trim": Color(0.35, 0.36, 0.38), "glow": Color(1.0, 0.7, 0.22), "accent": Color(0.95, 0.46, 0.09), "lamp": Color(1.0, 0.6, 0.15), "paddle": Color(0.98, 0.74, 0.28), "plate": Color(0.94, 0.46, 0.1), "icon": "cross", "icon_col": Color(0.96, 0.95, 0.92), "icon_lit": 0.4, "ear_glow": Color(0.45, 0.95, 0.4), "eyes": "crescent", "props": ["radio"], "acc": ["antenna", "acc_toolbox", "case"]},
+	# Bolt: hazard yellow with black chips and dark panels; rests on smiling arcs with a small smile.
+	"bolt": {"name": "Bolt", "paint": Color(0.94, 0.65, 0.05), "trim": Color(0.2, 0.19, 0.17), "glow": Color(1.0, 0.66, 0.14), "accent": Color(0.94, 0.6, 0.05), "lamp": Color(1.0, 0.62, 0.1), "paddle": Color(0.97, 0.7, 0.12), "plate": Color(0.96, 0.69, 0.08), "icon": "recycle", "icon_col": Color(0.05, 0.045, 0.04), "icon_lit": 0.0, "chips": Color(0.05, 0.045, 0.04), "claw": Color(0.8, 0.56, 0.08), "coverage": 0.84, "grime": 0.6, "specks": 1.0, "dust": 0.12, "stripes": 1.0, "eyes": "crescent", "happy": 1.0, "smile": 1.0, "acc": ["antenna", "acc_panels", "acc_ear_nut", "acc_pad_r", "acc_pad_l", "gear"]},
+	# Sprout: olive green with moss on the crown and a seedling instead of the fin.
+	"sprout": {"name": "Sprout", "paint": Color(0.36, 0.45, 0.2), "trim": Color(0.25, 0.29, 0.16), "glow": Color(0.5, 1.0, 0.25), "accent": Color(0.36, 0.42, 0.17), "lamp": Color(1.0, 0.6, 0.16), "latch": Color(0.5, 1.0, 0.25), "plate": Color(0.47, 0.52, 0.24), "icon": "leaf", "claw": Color(0.42, 0.47, 0.3), "grime": 0.6, "dust": 0.2, "moss": 0.6, "eyes": "crescent", "acc": ["acc_sprout", "acc_moss", "acc_ear_leaf", "bottle"]},
+	# Pixel: red over a cream lower head, wing fins, heart lenses; rests on smiling arcs.
+	"pixel": {"name": "Pixel", "paint": Color(0.74, 0.11, 0.1), "trim": Color(0.5, 0.1, 0.1), "glow": Color(1.0, 0.36, 0.56), "accent": Color(0.87, 0.84, 0.79), "lamp": Color(1.0, 0.36, 0.56), "latch": Color(1.0, 0.36, 0.56), "plate": Color(0.8, 0.14, 0.11), "icon": "recycle", "icon_col": Color(0.95, 0.94, 0.92), "icon_lit": 0.6, "claw": Color(0.62, 0.12, 0.11), "chips": Color(0.72, 0.66, 0.62), "dust": 0.15, "eyes": "crescent", "happy": 1.0, "smile": 1.0, "acc": ["acc_pixel", "acc_twotone", "acc_ear_heart", "butterfly"]},
+	# Nova: dark gunmetal lit violet from its seams, cat-ear fins, a holo data panel.
+	"nova": {"name": "Nova", "paint": Color(0.18, 0.17, 0.23), "trim": Color(0.13, 0.12, 0.17), "glow": Color(0.68, 0.36, 1.0), "accent": Color(0.26, 0.24, 0.31), "lamp": Color(0.7, 0.4, 1.0), "latch": Color(0.68, 0.36, 1.0), "plate": Color(0.21, 0.2, 0.25), "icon": "recycle", "claw": Color(0.25, 0.24, 0.3), "metal": 0.4, "dust": 0.15, "grime": 0.45, "eyes": "crescent", "acc": ["acc_catears", "acc_seams", "holo"]},
+	# Patch: white with orange panels and arms, a medic cross, satchel, carry case and side radio.
+	"patch": {"name": "Patch", "paint": Color(0.86, 0.84, 0.8), "trim": Color(0.35, 0.36, 0.38), "glow": Color(1.0, 0.68, 0.2), "accent": Color(0.94, 0.45, 0.07), "lamp": Color(1.0, 0.6, 0.15), "paddle": Color(0.98, 0.72, 0.22), "plate": Color(0.94, 0.44, 0.07), "arm": Color(0.93, 0.5, 0.09), "icon": "cross", "icon_col": Color(0.96, 0.95, 0.92), "icon_lit": 0.4, "ear_glow": Color(0.45, 0.95, 0.4), "eyes": "crescent", "acc": ["antenna", "acc_radio", "acc_toolbox", "case"]},
 }
 # l10n:end
 
@@ -230,9 +235,9 @@ func _part(parent: Node3D, part: String, pos: Vector3 = Vector3.ZERO) -> MeshIns
 		var src: Material = mi.mesh.surface_get_material(i)
 		var key: String = src.resource_name if src else ""
 		if _mats.has(key):
-			var mat: Material = _mats[key]
+			var mat: Material = _mats["arm"] if key == "paint" and part.begins_with("arm_") else _mats[key]
 			# Add-ons (designs.glb, "acc_*") have their own UVs: no hero mask atlas on them.
-			if part.begins_with("acc_") and mat is ShaderMaterial and float((mat as ShaderMaterial).get_shader_parameter("use_mask")) > 0.5:
+			if part.begins_with("acc_") and mat is ShaderMaterial and (mat as ShaderMaterial).shader == HERO_PAINT and float((mat as ShaderMaterial).get_shader_parameter("use_mask")) > 0.5:
 				if not _acc_mats.has(key):
 					var c: ShaderMaterial = (mat as ShaderMaterial).duplicate()
 					c.set_shader_parameter("use_mask", 0.0)
@@ -296,14 +301,18 @@ func _build() -> void:
 		"paddle_edge": Mats.lamp((v.get("paddle", accent_c) as Color).lightened(0.12), 1.1),
 		"latch": Mats.lamp(v.get("latch", accent_c), 1.4),  # [hero v2] saturated orange (sampled #F16B03)
 		"cable": _paint(_col(v, "cable"), 31.0, 1.0, 0.0, 0.55),
+		"arm": _paint(v.get("arm", v["paint"]), 43.0, cover, float(v.get("metal", 0.0)), 0.32, 0.6),
 		# Design add-on materials (designs.glb).
-		"rust": _paint(Color(0.45, 0.27, 0.15), 13.0, 0.35, 0.5, 0.55),
+		"rust": _paint(Color(0.5, 0.26, 0.11), 13.0, 0.9, 0.25, 0.75),
 		"decal": _paint(Color(0.93, 0.92, 0.88), 37.0, 0.9, 0.0, 0.45),
-		"case": _paint(Color(0.6, 0.32, 0.12), 41.0, 0.7, 0.2, 0.5),
+		"case": _paint(Color(0.8, 0.4, 0.1), 41.0, 0.74, 0.15, 0.5),
 		"bottle": _bottle_mat(),
 		"bottle_cap": _cap_mat(),
-		"leaf": _leaf_mat(),
+		"leaf": _leaf_mat(Color(0.3, 0.6, 0.16)),
+		"leaf_vein": _leaf_mat(Color(0.2, 0.42, 0.1)),
 		"moss": _moss_mat(),
+		"holo": _holo_mat_of(HOLO_COLOR, 2.6, 1.0),
+		"holo_fill": _holo_mat_of(HOLO_COLOR, 0.5, 0.16),
 		"wing": _wing_mat(glow),
 		"screen": screen,
 		"thruster": _ring_mat,
@@ -322,8 +331,15 @@ func _build() -> void:
 		m.set_shader_parameter("moss", float(v.get("moss", 0.0)))
 		if v.has("chips"):
 			m.set_shader_parameter("chip_color", v["chips"])
-	(_mats["case"] as ShaderMaterial).set_shader_parameter("grime", 0.9)
+		if v.has("dust"):
+			m.set_shader_parameter("dust", float(v["dust"]))
+	if v.has("specks"):
+		for k: String in ["paint", "plate", "arm", "accent"]:
+			(_mats[k] as ShaderMaterial).set_shader_parameter("specks", float(v["specks"]))
+	(_mats["case"] as ShaderMaterial).set_shader_parameter("grime", 0.75)
+	(_mats["case"] as ShaderMaterial).set_shader_parameter("rust_amount", 0.6)
 	(_mats["rust"] as ShaderMaterial).set_shader_parameter("rust_amount", 0.9)
+	(_mats["rust"] as ShaderMaterial).set_shader_parameter("chip_color", Color(0.22, 0.12, 0.06))
 	(_mats["paddle"] as ShaderMaterial).set_shader_parameter("grime", 0.2)
 	(_mats["claw"] as ShaderMaterial).set_shader_parameter("specks", 0.5)
 	_acc_mats.clear()
@@ -451,9 +467,9 @@ func _build() -> void:
 
 var _icon_mesh: MeshInstance3D
 var _sprout: Node3D
-## Props that come and go: Nova's holo screen and Patch's carry case (left claw); Sprout's bottle stays.
-var _holo: MeshInstance3D
-var _holo_mat: ShaderMaterial
+## Held items ride the left claw but keep their own facing (set every frame, see _update_held):
+## the gear and the bottle stay; Nova's holo panel and Patch's carry case come and go when idle.
+var _holo: Node3D
 var _case: Node3D
 var _gear: Node3D
 var _bottle: Node3D
@@ -462,6 +478,11 @@ var _bfly_wings: Array[Node3D] = []
 var _idle_t: float = 0.0
 var _prop_amt: float = 0.0
 var _happy_bias: float = 0.0
+## The holo panel is light-blue projector light on every design (sheet), not the design's glow.
+const HOLO_COLOR := Color(0.42, 0.8, 1.0)
+const BFLY_SCALE := 2.2
+## Fin-less heads carry the detector beacon on the crown itself (head space).
+const BEACON_CROWN := Vector3(0, 0.648, 0.196)
 
 
 func _build_accessories(v: Dictionary) -> void:
@@ -474,18 +495,24 @@ func _build_accessories(v: Dictionary) -> void:
 	_bfly_wings.clear()
 	_happy_bias = clampf((float(v.get("happy", 0.5)) - 0.5) * 2.0, 0.0, 1.0)
 	var head_p: Vector3 = _pivot("head")
-	for a: String in v.get("acc", []):
+	var acc: Array = v.get("acc", [])
+	if not ("antenna" in acc) and _anchors.has("beacon"):
+		# No fin mount to sit on: a small dark lamp base on the crown instead.
+		var bn: Node3D = _anchors["beacon"]
+		bn.position = BEACON_CROWN
+		var base := CylinderMesh.new()
+		base.top_radius = 0.011
+		base.bottom_radius = 0.016
+		base.height = 0.024
+		base.radial_segments = 12
+		_mi(bn, base, _mats["dark"], Vector3(0, -0.016, 0))
+	for a: String in acc:
 		match a:
-			"antenna", "acc_catears", "acc_pixel":
-				_part(_head, a, _pivot(a) - head_p)
 			"acc_sprout":
 				_sprout = Node3D.new()
 				_sprout.position = _pivot(a) - head_p
 				_head.add_child(_sprout)
 				_part(_sprout, a)
-				# The moss it grew from stays put on the crown while the seedling sways.
-				if _parts.has("acc_moss"):
-					_part(_head, "acc_moss", _pivot("acc_moss") - head_p)
 			"acc_pad_r", "acc_pad_l":
 				_part(_arm_r if a.ends_with("_r") else _arm_l, a)
 				# Heavier stance: the padded shoulders sit a touch wider.
@@ -493,61 +520,59 @@ func _build_accessories(v: Dictionary) -> void:
 			"acc_toolbox":
 				_part(_float, a, _pivot(a))
 			"gear":
-				# A spare gear gripped in the left claw by its rim, standing on edge.
-				var wrist: Node3D = _arm_l.get_meta("wrist")
-				_gear = Node3D.new()
-				_gear.position = Vector3(0.0, -0.01, -0.23)  # the claw grips the near rim
-				_gear.rotation = Vector3(0.25, PI * 0.5, 0.0)
-				wrist.add_child(_gear)
-				_part(_gear, "acc_gear")
-			"case":
-				_case = Node3D.new()
-				_case.top_level = true
-				_case.visible = false
-				add_child(_case)
-				_part(_case, "acc_case")
-			"holo":
-				_holo = MeshInstance3D.new()
-				var q := QuadMesh.new()
-				q.size = Vector2(0.42, 0.3)
-				_holo.mesh = q
-				_holo_mat = ShaderMaterial.new()
-				_holo_mat.shader = preload("res://art/shaders/holo_panel.gdshader")
-				_holo_mat.set_shader_parameter("col", v["glow"])
-				_holo.material_override = _holo_mat
-				_holo.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-				_holo.top_level = true
-				_holo.visible = false
-				_holo.layers = 1 | HERO_LAYER
-				add_child(_holo)
-			"butterfly":
-				_bfly = Node3D.new()
-				_bfly.top_level = true
-				_bfly.scale = Vector3.ONE * 2.2
-				add_child(_bfly)
-				_part(_bfly, "acc_bfly_body")
-				for side: float in [-1.0, 1.0]:
-					var hinge := Node3D.new()
-					hinge.scale = Vector3(side, 1.0, 1.0)
-					hinge.set_meta("side", side)
-					_bfly.add_child(hinge)
-					var w: MeshInstance3D = _part(hinge, "acc_wing")
-					w.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-					w.scale.z = -1.0  # the big forewing toward the head (-Z)
-					_bfly_wings.append(hinge)
-	var emblem: String = "acc_ear_" + str(v.get("ear_icon", ""))
-	if _parts.has(emblem):
-		_part(_head, emblem, _pivot(emblem) - head_p)
-	for pr: String in v.get("props", []):
-		match pr:
-			"radio":
-				_part(_head, "acc_radio", _pivot("acc_radio") - head_p)
+				_gear = _held_item("acc_gear", true)
 			"bottle":
-				# Held in the left claw, kept upright like the case (the sheet's bottle in a green beam).
-				_bottle = Node3D.new()
-				_bottle.top_level = true
-				add_child(_bottle)
-				_part(_bottle, "acc_bottle")
+				_bottle = _held_item("acc_bottle", true)
+			"case":
+				_case = _held_item("acc_case", false)
+			"holo":
+				_holo = _held_item("acc_holo", false)
+				for mi: MeshInstance3D in _holo.find_children("*", "MeshInstance3D", true, false):
+					mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			"butterfly":
+				_build_butterfly()
+			_:
+				# Head pieces (fin, ears, wings, panels, lens emblems, radio): fixed to the head.
+				if _parts.has(a):
+					_part(_head, a, _pivot(a) - head_p)
+
+
+## A held item: its own top-level node (positioned from the left wrist each frame).
+func _held_item(part: String, shown: bool) -> Node3D:
+	var n := Node3D.new()
+	n.top_level = true
+	n.visible = shown
+	add_child(n)
+	if _parts.has(part):
+		_part(n, part)
+	return n
+
+
+func _build_butterfly() -> void:
+	_bfly = Node3D.new()
+	_bfly.top_level = true
+	_bfly.scale = Vector3.ONE * BFLY_SCALE
+	add_child(_bfly)
+	_part(_bfly, "acc_bfly_body")
+	for side: float in [-1.0, 1.0]:
+		var hinge := Node3D.new()
+		hinge.scale = Vector3(side, 1.0, 1.0)
+		hinge.set_meta("side", side)
+		_bfly.add_child(hinge)
+		var w: MeshInstance3D = _part(hinge, "acc_wing")
+		w.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		w.scale.z = -1.0  # the big forewing toward the head (-Z)
+		_bfly_wings.append(hinge)
+
+
+func _holo_mat_of(c: Color, energy: float, alpha: float) -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	m.albedo_color = Color(c.r * energy, c.g * energy, c.b * energy, alpha)
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	m.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+	m.cull_mode = BaseMaterial3D.CULL_DISABLED
+	return m
 
 
 func _bottle_mat() -> StandardMaterial3D:
@@ -569,9 +594,9 @@ func _cap_mat() -> StandardMaterial3D:
 	return m
 
 
-func _leaf_mat() -> StandardMaterial3D:
+func _leaf_mat(c: Color) -> StandardMaterial3D:
 	var m := StandardMaterial3D.new()
-	m.albedo_color = Color(0.3, 0.6, 0.18)
+	m.albedo_color = c
 	m.roughness = 0.38
 	m.metallic_specular = 0.6
 	m.backlight_enabled = true
@@ -584,23 +609,23 @@ func _leaf_mat() -> StandardMaterial3D:
 
 func _moss_mat() -> StandardMaterial3D:
 	var m := StandardMaterial3D.new()
-	m.albedo_color = Color(0.25, 0.36, 0.11)
+	m.albedo_color = Color(0.2, 0.31, 0.09)
 	m.roughness = 0.95
 	m.vertex_color_use_as_albedo = false
 	m.rim_enabled = true
-	m.rim = 0.5
-	m.rim_tint = 0.6
+	m.rim = 0.3
+	m.rim_tint = 0.8
 	return m
 
 
 func _wing_mat(glow: Color) -> StandardMaterial3D:
 	var m := StandardMaterial3D.new()
-	m.albedo_color = Color(1.0, 0.62, 0.25, 0.92).lerp(glow, 0.2)
+	m.albedo_color = Color(1.0, 0.8, 0.55, 0.94).lerp(glow, 0.1)
 	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	m.cull_mode = BaseMaterial3D.CULL_DISABLED
 	m.emission_enabled = true
-	m.emission = Color(1.0, 0.6, 0.35).lerp(glow, 0.4)
-	m.emission_energy_multiplier = 0.6
+	m.emission = Color(1.0, 0.7, 0.45).lerp(glow, 0.25)
+	m.emission_energy_multiplier = 0.45
 	m.roughness = 0.5
 	return m
 
@@ -614,28 +639,7 @@ func _update_accessories(delta: float) -> void:
 	# Props show after a few idle seconds and stay a while (then a short break: "occasionally").
 	var want: bool = _idle_t > 2.5 and fmod(_idle_t - 2.5, 26.0) < 18.0
 	_prop_amt = move_toward(_prop_amt, 1.0 if want else 0.0, delta * (2.5 if want else 6.0))
-	if _holo:
-		_holo.visible = _prop_amt > 0.01
-		if _holo.visible:
-			var e: float = _prop_amt * _prop_amt * (3.0 - 2.0 * _prop_amt)
-			var b: Basis = _float.global_transform.basis
-			var fwd: Vector3 = -b.z
-			var side: Vector3 = b.x
-			# Beside the raised left claw, which points at it (sheet: the panel at Nova's left hand).
-			var p: Vector3 = claw_point_l() + fwd * 0.14 - side * 0.12 + Vector3.UP * (0.16 + sin(_t * 1.4) * 0.008)
-			var face_dir: Vector3 = (fwd * 0.55 - side * 0.85).normalized()
-			_holo.global_transform = Transform3D(Basis.looking_at(-face_dir, Vector3.UP).scaled(Vector3(e, e, 1.0)), p)
-			_holo_mat.set_shader_parameter("amt", e)
-			_holo_mat.set_shader_parameter("t_now", _t)
-	if _case:
-		_case.visible = _prop_amt > 0.5 and _beam_target == null
-		if _case.visible:
-			var wrist: Node3D = _arm_l.get_meta("wrist")
-			_case.global_transform = Transform3D(_float.global_transform.basis.rotated(Vector3.UP, 0.0), wrist.to_global(Vector3(0, -0.01, -0.07)))
-	if _bottle:
-		_bottle.visible = _beam_target == null
-		var wrist_b: Node3D = _arm_l.get_meta("wrist")
-		_bottle.global_transform = Transform3D(_float.global_transform.basis.rotated(_float.global_transform.basis.z, 0.25), wrist_b.to_global(Vector3(0, -0.01, -0.17)))
+	_update_held()
 	if _case or _holo:
 		# Carry pose: the left arm a little out and forward (case), or raised to point (holo).
 		var e2: float = _prop_amt * _prop_amt * (3.0 - 2.0 * _prop_amt)
@@ -655,10 +659,34 @@ func _update_accessories(delta: float) -> void:
 		var pos: Vector3 = c + basis_m * off
 		var vel := Vector3(-sin(a), 0.0, cos(a) * 0.75)
 		var heading: Vector3 = (basis_m * vel).normalized()
-		_bfly.global_transform = Transform3D(Basis.looking_at(heading, Vector3.UP).rotated(heading, sin(_t * 2.0) * 0.2).scaled(Vector3.ONE * 2.2), pos)
+		_bfly.global_transform = Transform3D(Basis.looking_at(heading, Vector3.UP).rotated(heading, sin(_t * 2.0) * 0.2).scaled(Vector3.ONE * BFLY_SCALE), pos)
 		var flap: float = sin(_t * 17.0) * 0.85 + 0.35
 		for h: Node3D in _bfly_wings:
 			h.rotation.z = flap * float(h.get_meta("side", 1.0))
+
+
+## Held items follow the left claw but keep facing the way the body faces, like the sheet: the gear
+## stands face-on, the bottle and the case hang upright, the holo panel floats beside the fingertip.
+func _update_held() -> void:
+	var wrist: Node3D = _arm_l.get_meta("wrist")
+	var body: Basis = _float.global_transform.basis.orthonormalized()
+	var free_hand: bool = _beam_target == null
+	if _gear:
+		_gear.visible = free_hand
+		# The mesh's grip point is on its rim, the wheel above it: turned so the wheel sits outside the claw.
+		_gear.global_transform = Transform3D(body.rotated(body.y, -0.4) * Basis(Vector3.BACK, PI * 0.5), wrist.to_global(Vector3(0, 0.0, -0.15)))
+	if _bottle:
+		_bottle.visible = free_hand
+		_bottle.global_transform = Transform3D(body.rotated(body.z, 0.3), wrist.to_global(Vector3(0, -0.01, -0.17)))
+	if _case:
+		_case.visible = _prop_amt > 0.5 and free_hand
+		_case.global_transform = Transform3D(body.rotated(body.y, -0.3), wrist.to_global(Vector3(0, -0.01, -0.1)))
+	if _holo:
+		_holo.visible = _prop_amt > 0.01
+		if _holo.visible:
+			var e: float = _prop_amt * _prop_amt * (3.0 - 2.0 * _prop_amt)
+			var p: Vector3 = claw_point_l() - body.z * 0.06 - body.x * 0.24 + body.y * (0.1 + sin(_t * 1.4) * 0.008)
+			_holo.global_transform = Transform3D(body.rotated(body.y, -0.35).scaled(Vector3(e, e, 1.0)), p)
 
 
 func _build_arm(side: float) -> Node3D:
@@ -880,7 +908,8 @@ func set_beacon(amount: float) -> void:
 
 
 func beacon_world() -> Vector3:
-	return _head.to_global(BEACON_LOCAL)
+	var b: Node3D = _anchors.get("beacon") as Node3D
+	return b.global_position if b else _head.to_global(BEACON_LOCAL)
 
 
 func get_anchor(anchor: String) -> Node3D:
