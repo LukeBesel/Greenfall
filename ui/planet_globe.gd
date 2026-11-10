@@ -1,43 +1,26 @@
 class_name PlanetGlobe
 extends Node3D
 ## [globes] A reusable planet globe for any 3D view (telescope orrery, system map, story shots).
-##   var g := PlanetGlobe.new(); add_child(g); g.setup("rime", 0.3)
+##   var g := PlanetGlobe.new(); add_child(g); g.setup(planet_id, 0.3)
 ##   g.set_restoration(0.8)
-## Five planets (art/shaders/planet_<id>.gdshader): procedural 3D-noise relief with real normals
+## Every registered planet (its definition's `globe_shader` and the `globe` block of its look
+## table: seed, tilt, spin, au, clouds, atmo, ring): procedural 3D-noise relief with real normals
 ## (domain-warped FBM ranges and valleys, canyons, terraces, cracks), a night side, a soft
 ## terminator, an atmosphere rim shell, cloud layers where fitting, and ring/debris systems as
-## MultiMeshes (Ochre's dust ring, Rime's ring of ice spikes, Anvil's fire ring of embers and ash).
+## MultiMeshes (a dust ring, a ring of ice spikes, a fire ring of embers and ash).
 ## Lit by the binary suns: SolarSystem.suns_for() when that helper exists, else data/solar_system.json,
 ## else the canon defaults. Light directions come from the view (key light from the upper left of
 ## the active camera) unless the host calls set_sun_dirs() or track_suns() (orrery: real sun nodes).
 ## LOD: fewer noise octaves, coarser spheres and fewer debris instances when small on screen.
-## Unknown ids get a generic rocky world (the Anvil shader, tinted, no seams).
+## Unknown ids get a generic rocky world (the shared rocky shader, tinted, no seams).
 
-const IDS: Array[String] = ["ochre", "verdance", "tidewell", "anvil", "rime"]
 const SOLAR_PATH := "res://data/solar_system.json"
 const OCTAVES: Array[int] = [4, 6, 8]
 const SEGS: Array[Vector2i] = [Vector2i(40, 20), Vector2i(72, 36), Vector2i(128, 64)]
 const MOTE_SHARE: Array[float] = [0.35, 0.7, 1.0]
 
-## Per-planet look. Colours are linear-ish albedo; tilt in radians; spin in rad/s.
-const CFG: Dictionary = {
-	"verdance": {"seed": 3.7, "tilt": 0.41, "spin": 0.05, "au": 1.0,
-		"clouds": {"col_ruin": Color(0.4, 0.32, 0.24), "col_ok": Color(0.94, 0.95, 0.97), "cover_ruin": 0.44, "cover_ok": 0.37, "opacity_ruin": 0.5, "opacity_ok": 0.88, "scale": 2.0, "band": 0.25, "storms": 1, "swirl": 0.8, "storm_size": 0.28},
-		"atmo": {"col_ruin": Color(0.62, 0.45, 0.3), "col_ok": Color(0.32, 0.58, 1.0), "strength_ruin": 0.45, "strength_ok": 0.62, "thickness": 0.07}},
-	"ochre": {"seed": 1.3, "face": -0.3, "tilt": 0.22, "spin": 0.035, "au": 0.62,
-		"atmo": {"col_ruin": Color(0.95, 0.66, 0.38), "col_ok": Color(0.85, 0.7, 0.55), "strength_ruin": 0.5, "strength_ok": 0.45, "thickness": 0.09, "falloff": 0.35},
-		"ring": "dust"},
-	"tidewell": {"seed": 5.9, "tilt": 0.3, "spin": 0.06, "au": 1.55,
-		"clouds": {"col_ruin": Color(0.72, 0.74, 0.74), "col_ok": Color(0.97, 0.98, 1.0), "cover_ruin": 0.42, "cover_ok": 0.38, "opacity_ruin": 0.8, "opacity_ok": 0.92, "scale": 2.3, "band": 0.45, "storms": 3, "swirl": 0.8, "storm_size": 0.34},
-		"atmo": {"col_ruin": Color(0.42, 0.58, 0.8), "col_ok": Color(0.3, 0.56, 1.0), "strength_ruin": 0.55, "strength_ok": 0.65, "thickness": 0.07}},
-	"anvil": {"seed": 8.2, "face": -1.3, "tilt": 0.44, "spin": 0.04, "au": 2.4,
-		"clouds": {"col_ruin": Color(0.55, 0.36, 0.26), "col_ok": Color(0.85, 0.78, 0.72), "cover_ruin": 0.22, "cover_ok": 0.2, "opacity_ruin": 0.4, "opacity_ok": 0.5, "scale": 1.6, "band": 0.8, "storms": 0, "sharp": 0.2},
-		"atmo": {"col_ruin": Color(0.85, 0.42, 0.25), "col_ok": Color(0.75, 0.55, 0.45), "strength_ruin": 0.4, "strength_ok": 0.45, "thickness": 0.05},
-		"ring": "fire"},
-	"rime": {"seed": 2.2, "tilt": 0.12, "spin": 0.025, "au": 3.9,
-		"atmo": {"col_ruin": Color(0.62, 0.8, 1.0), "col_ok": Color(0.55, 0.85, 1.0), "strength_ruin": 0.5, "strength_ok": 0.6, "thickness": 0.04},
-		"ring": "ice"},
-}
+## Look of a globe whose planet has no `globe` block in its look table.
+const ROCKY_SHADER: Shader = preload("res://art/shaders/planet_rocky.gdshader")
 
 ## Visual radius (local units). The globe node itself is never scaled, so labels and markers that
 ## a host parents to it keep their size.
@@ -101,7 +84,7 @@ func setup(id: String, restoration_: float = 0.0, tint: Color = Color(0.0, 0.0, 
 	_surface = _sphere_node(1.0, _surface_shader(planet_id))
 	_surface_mat = _surface.material_override as ShaderMaterial
 	_surface_mat.set_shader_parameter("seed", float(_cfg.get("seed", 0.0)))
-	if not IDS.has(planet_id):
+	if not has_look(planet_id):
 		var t: Color = tint if tint.a > 0.0 else Color(0.75, 0.7, 0.65)
 		_param(_surface_mat, "tint", Color(t.r * 1.6, t.g * 1.6, t.b * 1.6))
 		_surface_mat.set_shader_parameter("seams", 0.0)
@@ -211,7 +194,7 @@ func set_restoration(f: float) -> void:
 	restoration = clampf(f, 0.0, 1.0)
 	for m: ShaderMaterial in _mats:
 		m.set_shader_parameter("restoration", restoration)
-	# Anvil's fire ring cools as the foundries go quiet; Ochre's dust settles a little.
+	# A fire ring cools as the foundries go quiet; a dust ring settles a little.
 	var ring: String = str(_cfg.get("ring", ""))
 	for mm: MultiMeshInstance3D in _multis:
 		var mat: ShaderMaterial = mm.material_override as ShaderMaterial
@@ -253,29 +236,42 @@ func set_lod(level: int) -> void:
 		_apply_lod(level)
 
 
+static var _config_cache: Dictionary = {}
+
+
+## Whether a planet id has its own map-globe look (a `globe` block in its look table).
+static func has_look(id: String) -> bool:
+	return Planets.has(id) and Planets.by_id(id).table("look").get("globe") is Dictionary
+
+
+## The globe look of a planet id: the `globe` block of its look table with its colours as Color
+## (seed, tilt and face in radians, spin in rad/s, au, clouds, atmo, ring). Unknown: a grey world.
 static func config(id: String) -> Dictionary:
-	if CFG.has(id):
-		return CFG[id]
-	return {"seed": float(absi(id.hash()) % 97) * 0.1, "tilt": 0.25, "spin": 0.04, "au": 2.0,
+	if _config_cache.has(id):
+		return _config_cache[id]
+	var out: Dictionary = {"seed": float(absi(id.hash()) % 97) * 0.1, "tilt": 0.25, "spin": 0.04, "au": 2.0,
 		"atmo": {"col_ruin": Color(0.6, 0.62, 0.7), "col_ok": Color(0.45, 0.65, 1.0), "strength_ruin": 0.5, "strength_ok": 0.7, "thickness": 0.05}}
+	if has_look(id):
+		out = (Planets.by_id(id).table("look")["globe"] as Dictionary).duplicate(true)
+		for layer: String in ["clouds", "atmo"]:
+			var block: Variant = out.get(layer)
+			for key: String in block if block is Dictionary else {}:
+				if key.begins_with("col_"):
+					block[key] = _col(block[key], Color.WHITE)
+				elif key == "storms":
+					block[key] = int(block[key])  # an int uniform; JSON numbers parse as float
+	_config_cache[id] = out
+	return out
 
 
 static func _surface_shader(id: String) -> Shader:
-	match id:
-		"verdance":
-			return preload("res://art/shaders/planet_verdance.gdshader")
-		"ochre":
-			return preload("res://art/shaders/planet_ochre.gdshader")
-		"tidewell":
-			return preload("res://art/shaders/planet_tidewell.gdshader")
-		"rime":
-			return preload("res://art/shaders/planet_rime.gdshader")
-	return preload("res://art/shaders/planet_anvil.gdshader")
+	var def: PlanetDefinition = Planets.by_id(id) if Planets.has(id) else null
+	return def.globe_shader if def and def.globe_shader else ROCKY_SHADER
 
 
 ## The two suns' colours as this planet sees them: SolarSystem.suns_for() if present, else the solar
 ## system file, else the canon (warm primary, cooler orange companion, 14 degrees apart). Energies
-## fall off with orbit distance, softened for a UI view (Rime still reads, Ochre doesn't blow out).
+## fall off with orbit distance, softened for a UI view (the farthest planet still reads, the nearest doesn't blow out).
 static func sun_light(id: String) -> Dictionary:
 	if _sun_cache.has(id):
 		return _sun_cache[id]
@@ -473,7 +469,7 @@ func _add_multi(mm: MultiMesh, shader: Shader, params: Dictionary, prio: int) ->
 
 
 func _build_dust_ring() -> void:
-	# Ochre: a faint sand/dust ring with a wider haze of drifting grains trailing around it.
+	# Dust: a faint sand/dust ring with a wider haze of drifting grains trailing around it.
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 7101
 	_ring_pivot.rotation = Vector3(0.18, 0.0, -0.1)
@@ -483,7 +479,7 @@ func _build_dust_ring() -> void:
 
 
 func _build_ice_ring() -> void:
-	# Rime: an orbiting ring of ice spikes and shards, faint ice dust and glitter.
+	# Ice: an orbiting ring of ice spikes and shards, faint ice dust and glitter.
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 4407
 	_ring_pivot.rotation = Vector3(0.3, 0.0, 0.08)
@@ -516,7 +512,7 @@ func _build_ice_ring() -> void:
 
 
 func _build_fire_ring() -> void:
-	# Anvil: a band of glowing embers and ash from the foundries; thin and subtle.
+	# Fire: a band of glowing embers and ash from the foundries; thin and subtle.
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 9203
 	_ring_pivot.rotation = Vector3(-0.22, 0.0, 0.12)

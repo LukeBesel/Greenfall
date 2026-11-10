@@ -4,12 +4,14 @@ extends GutTest
 
 
 func test_registry_entry() -> void:
-	var k: Dictionary = PlanetEnvs.entry("ochre")
-	assert_false(k.is_empty(), "data/planets.json has ochre")
-	for key: String in ["id", "name", "world_type", "env", "sky", "fog", "sun", "ambient", "palette", "junk_tint", "music_mood"]:
+	var def: PlanetDefinition = Planets.by_id(&"ochre")
+	assert_not_null(def, "ochre is registered")
+	var k: Dictionary = def.look()
+	for key: String in ["id", "name", "world_type", "sky", "fog", "sun", "ambient", "palette", "junk_tint", "globe", "orbit"]:
 		assert_true(k.has(key), "ochre has %s" % key)
-	assert_true(ResourceLoader.exists(str(k["env"])), "env script exists")
-	assert_false(PlanetEnvs.entry("rime").is_empty(), "rime shares the registry")
+	assert_eq(def.env_script, OchreEnv as Script, "the definition names the env script")
+	assert_ne(def.music_set, "")
+	assert_true(Planets.has(&"rime"), "rime shares the registry")
 
 
 func test_pit_shape() -> void:
@@ -38,9 +40,10 @@ func test_pit_shape() -> void:
 
 
 func test_prepare_registers_junk() -> void:
-	var k: Dictionary = PlanetEnvs.entry("ochre")
+	var k: Dictionary = Planets.by_id(&"ochre").look()
 	var f := HexField.new(3, 3.2, 5)
-	PlanetEnvs.call_env(k, "prepare_field", [f])
+	Planets.by_id(&"ochre").call_env("prepare_field", [f])
+	assert_null(Planets.by_id(&"ochre").call_env("no_such_hook"), "a missing hook is skipped")
 	assert_eq(f.biome, str(k["junk_biome"]), "prepare_field sets the junk biome")
 	var set: Dictionary = Economy.biome_set(str(k["junk_biome"]))
 	assert_false(set.is_empty(), "junk biome set registered")
@@ -58,7 +61,7 @@ func test_apply_headless_and_stages() -> void:
 	var world := Node3D.new()
 	add_child_autofree(world)
 	var field := HexField.new(4, 3.2, 11)
-	OchreEnv.apply(world, field, PlanetEnvs.entry("ochre"))
+	OchreEnv.apply(world, field, Planets.by_id(&"ochre").look())
 	var env: OchreEnv = world.get_node_or_null("OchreEnv")
 	assert_not_null(env, "env node added")
 	assert_gt(env.find_children("Pit*", "MeshInstance3D", true, false).size(), 8, "pit terrain sectors")
@@ -101,10 +104,9 @@ func test_apply_headless_and_stages() -> void:
 
 
 func test_site_prefabs_build_local() -> void:
-	var sites: Dictionary = (PlanetEnvs.entry("ochre").get("sites", {}) as Dictionary).get("list", {})
-	assert_eq(sites.size(), OchreSites.SITES.size(), "registry lists every site")
+	assert_eq(SiteBuilders.sites_of("ochre").size(), OchreSites.SITES.size(), "the sites table lists every site")
 	for id: String in OchreSites.SITES:
-		assert_true(sites.has(id), "%s in registry" % id)
+		assert_false(SiteBuilders.find("ochre", id).is_empty(), "%s in the sites table" % id)
 		for stage: int in [1, 5]:
 			var root := Node3D.new()
 			add_child_autofree(root)

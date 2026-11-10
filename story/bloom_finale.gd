@@ -1,6 +1,6 @@
 class_name BloomFinale
 extends Node3D
-## Post-game story beat: "Verdance Bloom". Lumi's Bloom Core is full (story/core_charge.gd) and the
+## Post-game story beat: the finale Bloom milestone. Lumi's Bloom Core is full (story/core_charge.gd) and the
 ## planet is green enough: the ark Cradle comes home. A letterboxed cinematic: the ark descends out
 ## of the sky over Lumi, opens its seed bays and lowers a beam of light; Lumi waves; glowing seed
 ## pods fall and burst into petals; WREN and the Cradle speak; the Seed Ark loop opens. The ark
@@ -13,12 +13,12 @@ static var playing: bool = false
 # l10n:begin
 const LINES: Array[Array] = [
 	["Lumi. Stop for a second. Look up.", 3.5],
-	["Your core just hit full. Every bloom on Verdance is shining green, and the Cradle can see all of it.", 6.0],
+	["Your core just hit full. Every bloom on {planet} is shining green, and the Cradle can see all of it.", 6.0],
 	["CRADLE:  GREEN DETECTED.  SEED-KEEPER LM-1 LOCATED.  BEGINNING DESCENT.", 5.5],
 	["Three hundred years we waited up there for proof the soil remembered how. You were the proof.", 6.0],
-	["CRADLE:  WELCOME HOME, SMALL ROBOT.  ...WELCOME HOME, VERDANCE.", 5.0],
+	["CRADLE:  WELCOME HOME, SMALL ROBOT.  ...WELCOME HOME, {PLANET}.", 5.0],
 	["It called you small. From the Cradle, that's a compliment. I checked.", 4.5],
-	["The seed bays are open. From now on every bloom, anywhere on Verdance, fills the next Seed Ark wave.", 6.0],
+	["The seed bays are open. From now on every bloom, anywhere on {planet}, fills the next Seed Ark wave.", 6.0],
 	["Nothing is waiting to end, {name}. Nobody is keeping score. We're home. We just keep planting.", 5.5],
 ]
 # l10n:end
@@ -173,7 +173,7 @@ func play() -> void:
 		if t >= next_line and line_i < LINES.size():
 			var l: Array = LINES[line_i]
 			if world.get("wren"):  # [orbD]
-				world.wren.line_started.emit(tr(str(l[0])).format({"name": name_s}), 2)
+				world.wren.line_started.emit(Planets.current().name_in(tr(str(l[0]))).format({"name": name_s}), 2)
 			if line_i == 2 or line_i == 6 or line_i == 7:
 				_seed_rain(8 if line_i != 6 else 14)
 			if line_i == 4:
@@ -184,7 +184,7 @@ func play() -> void:
 		var yaw: float = _yaw0 + k * 1.6  # [orbE] _yaw0: 0.6 on the flat game
 		var cam_pos: Vector3 = c + _fb * (Vector3(sin(yaw), 0, cos(yaw)) * lerpf(5.5, 7.5, k) + Vector3(0, lerpf(0.8, 1.8, k), 0))
 		var look: Vector3 = (c + _fb.y * 1.0).lerp(_ark.global_position, clampf(0.62 - absf(k - 0.45) * 0.6, 0.25, 0.62))
-		if _fb != Basis():  # [orbE] globe sites (Ochre, Rime) stand around Lumi: keep the camera in front of them
+		if _fb != Basis():  # [orbE] a planet's own globe sites stand around Lumi: keep the camera in front of them
 			cam_pos = _clear_of_sites(c + _fb.y * 0.9, cam_pos)
 		_cam.global_position = cam_pos
 		_cam.look_at(look, _fb.y)
@@ -222,7 +222,7 @@ func play() -> void:
 		print("[finale] credits rolling")
 		await roll.finished
 		print("[finale] credits done; the game goes on")
-	EventBus.toast.emit(tr("The Cradle is home. The Seed Ark is open: every bloom on Verdance counts toward the next wave. Progress shows on the hologram (M)."), "story")
+	EventBus.toast.emit(Planets.current().name_in(tr("The Cradle is home. The Seed Ark is open: every bloom on {planet} counts toward the next wave. Progress shows on the hologram (M).")), "story")
 	await get_tree().create_timer(1.0).timeout
 	queue_free()
 

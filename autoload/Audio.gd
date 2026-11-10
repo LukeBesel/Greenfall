@@ -7,7 +7,7 @@ extends Node
 ## "night", "base", "cinematic", "menu", "homecoming"), `set_music_intensity(0..1)` and `music_sting(name)`.
 ##
 ## [sound] Planets: `set_planet_theme(id)` re-voices the score and swaps the ambience bed for a
-## solar-system planet ("verdance", "ochre", "tidewell", "rime", "anvil"); `set_restoration(0..1)`
+## registered planet (its definition's `music_set`); `set_restoration(0..1)`
 ## blooms both from ruined to restored. `hold_theme()` / `release_theme()` let the radio preview
 ## a theme without fighting the planet. `duck(seconds)` dips music and ambience under WREN lines.
 ## See docs/AUDIO.md.
@@ -26,7 +26,6 @@ const MusicSynth := preload("res://audio/music_synth.gd")
 const MusicDirector := preload("res://audio/music_director.gd")
 const MusicVoices := preload("res://audio/music_voices.gd")
 const PlanetSynth := preload("res://audio/planet_synth.gd")  # [sound]
-const PlanetThemes := preload("res://audio/planet_themes.gd")  # [sound]
 const MusicTracks := preload("res://audio/music_tracks.gd")  # [sound]
 const AmbienceBeds := preload("res://audio/ambience.gd")  # [sound]
 const AmbienceSynth := preload("res://audio/ambience_synth.gd")  # [sound]
@@ -45,7 +44,8 @@ var _music_lpf: AudioEffectLowPassFilter
 var _music_last_us: int = 0
 var _music_samples: Dictionary = {}
 var _ambience: Node  # [sound] audio/ambience.gd
-var _theme_world: String = "verdance"  # [sound] what the planet asked for
+var _theme_world: String = ""  # [sound] the planet id the world asked for
+var _theme_applied: String = ""  # [sound] the planet id whose music set plays now
 var _resto_world: float = 0.0
 var _hold_id: String = ""  # [sound] radio preview (wins over the world while set)
 var _hold_resto: float = 0.0
@@ -70,7 +70,7 @@ func _ready() -> void:
 		add_child(p)
 		_players.append(p)
 	var music_samples: Dictionary = MusicSynth.build_all()
-	music_samples.merge(PlanetSynth.build("groove", music_samples))  # [sound] Verdance's upbeat tracks
+	music_samples.merge(PlanetSynth.build("groove", music_samples))  # [sound] the upbeat cleaning tracks
 	_music_samples = music_samples
 	_music_voices = MusicVoices.new()
 	_music_voices.name = "MusicVoices"
@@ -81,6 +81,14 @@ func _ready() -> void:
 	_ambience = AmbienceBeds.new()
 	_ambience.name = "Ambience"
 	add_child(_ambience)
+	# [sound] The score follows the planet being played (its definition's music set).
+	_theme_world = String(Planets.current_id())
+	_theme_applied = _theme_world
+	if music_set_of(_theme_world) not in ["", MusicTracks.DEFAULT_SET]:
+		_apply_theme(_theme_world, _resto_world)
+	Planets.current_changed.connect(func(def: PlanetDefinition) -> void:
+		if def:
+			set_planet_theme(String(def.id)))
 	var tunes: Node = TunesDirector.new()  # [tunes] the owner's songs (systems/tunes.gd)
 	tunes.name = "TunesDirector"
 	add_child(tunes)
@@ -236,7 +244,7 @@ func loop(sound: String, level: float, pitch: float = 1.0) -> void:
 			p.stop()
 		return
 	if p == null:
-		if not _loops.has(sound) and sound == "hover_spray":  # [sound] Lumi over water (Tidewell)
+		if not _loops.has(sound) and sound == "hover_spray":  # [sound] Lumi over water (a hover planet)
 			var rng := RandomNumberGenerator.new()
 			rng.seed = 2323
 			_loops[sound] = _wav(AmbienceSynth.spray(rng), true)
@@ -290,11 +298,12 @@ func get_music_mood() -> String:
 
 # --- Planets [sound] ----------------------------------------------------------
 
-## Planet theme for music and ambience: "verdance" (default), "ochre", "tidewell", "rime",
-## "anvil". Unknown ids are ignored (returns false). The first call for a planet synthesizes its
-## instruments and ambience (~0.1-0.3 s), so call it while the planet loads.
+## Planet theme for music and ambience: a registered planet id (the default is the planet being
+## played). Its definition's `music_set` picks the tracks, instruments and ambience bed. Unknown
+## ids and planets without a known music set are ignored (returns false). The first call for a
+## planet synthesizes its instruments and ambience (~0.1-0.3 s), so call it while the planet loads.
 func set_planet_theme(id: String) -> bool:
-	if not PlanetThemes.has(id):
+	if music_set_of(id) == "":
 		return false
 	_theme_world = id
 	if _hold_id == "":
@@ -303,7 +312,13 @@ func set_planet_theme(id: String) -> bool:
 
 
 func get_planet_theme() -> String:
-	return str(_music.get("theme")) if _music else _theme_world
+	return _theme_applied if _music else _theme_world
+
+
+## The music set of a planet id, or "" when the planet is unknown or names no known set.
+func music_set_of(id: String) -> String:
+	var def: PlanetDefinition = Planets.by_id(id) if Planets.has(id) else null
+	return def.music_set if def and MusicTracks.has_set(def.music_set) else ""
 
 
 ## How restored the current planet is, 0..1: the theme blooms fuller and warmer, and the ambience
@@ -323,7 +338,7 @@ func get_restoration() -> float:
 ## For the radio: plays planet theme `id` at `restoration` until release_theme(), whatever the
 ## planet sets meanwhile (that is remembered and restored on release). Unknown ids are ignored.
 func hold_theme(id: String, restoration: float = 1.0) -> bool:
-	if not PlanetThemes.has(id) or is_nan(restoration):
+	if music_set_of(id) == "" or is_nan(restoration):
 		return false
 	_hold_id = id
 	_hold_resto = clampf(restoration, 0.0, 1.0)
@@ -349,8 +364,8 @@ func music_activity(amount: float) -> void:
 func play_track(id: String) -> bool:
 	if _music == null or not MusicTracks.TRACKS.has(id):
 		return false
-	var planet: String = str(MusicTracks.TRACKS[id]["planet"])
-	_ensure_instruments(planet if planet != "" else "homecoming")
+	var music_set: String = str(MusicTracks.TRACKS[id]["set"])
+	_ensure_instruments(music_set if music_set != "" else "homecoming")
 	return bool(_music.call("play_track", id))
 
 
@@ -376,12 +391,13 @@ func get_music_track() -> String:
 	return "" if _music == null or bool(_music.call("in_gap")) else str(_music.call("current_track"))
 
 
-## Composed track ids, all or for one planet ("verdance", "ochre", ...; "" = all).
+## Composed track ids, all or for one planet id ("" = all).
 func music_track_ids(planet: String = "") -> Array[String]:
+	if planet != "":
+		var music_set: String = music_set_of(planet)
+		return MusicTracks.for_set(music_set) if music_set != "" else ([] as Array[String])
 	var out: Array[String] = []
-	for id: String in MusicTracks.TRACKS:
-		if planet == "" or str(MusicTracks.TRACKS[id]["planet"]) == planet:
-			out.append(id)
+	out.assign(MusicTracks.TRACKS.keys())
 	return out
 
 
@@ -390,21 +406,30 @@ func music_track_title(id: String) -> String:
 	return str(MusicTracks.TRACKS[id]["title"]) if MusicTracks.TRACKS.has(id) else ""
 
 
+## Ids of the registered planets that have a music theme, in campaign order.
 func planet_theme_ids() -> Array[String]:
-	return PlanetThemes.IDS.duplicate()
+	var out: Array[String] = []
+	for def: PlanetDefinition in Planets.all():
+		if MusicTracks.has_set(def.music_set):
+			out.append(String(def.id))
+	return out
 
 
 func _apply_theme(id: String, resto: float) -> void:
 	if _music == null:
 		return
-	_ensure_instruments(id)
-	_music.call("set_theme", id)
+	var music_set: String = music_set_of(id)
+	if music_set == "":
+		music_set = MusicTracks.DEFAULT_SET
+	_theme_applied = id
+	_ensure_instruments(music_set)
+	_music.call("set_theme", music_set)
 	if _ambience:
-		_ambience.call("set_planet", id)
+		_ambience.call("set_planet", music_set)
 	_apply_resto(resto)
 
 
-## Builds instrument group `group` (a planet id, "groove" or "homecoming") if any is missing.
+## Builds instrument group `group` (a music set, "groove" or "homecoming") if any is missing.
 func _ensure_instruments(group: String) -> void:
 	for n: String in PlanetSynth.NEEDS.get(group, []):
 		if not _music_samples.has(n):

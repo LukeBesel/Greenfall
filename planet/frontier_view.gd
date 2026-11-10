@@ -1,6 +1,6 @@
 class_name FrontierView
 extends RefCounted
-## The names the later planets' site code (planet/planets/*) still uses for the mesh batcher, from
+## The names the later planets' site code (planets/*) still uses for the mesh batcher, from
 ## when it lived with the frontier district visuals. It is MaterialBatch (planet/material_batch.gd) now.
 
 

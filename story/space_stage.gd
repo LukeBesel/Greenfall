@@ -1,9 +1,9 @@
 class_name SpaceStage
 extends SubViewportContainer
-## A self-contained little film set for the story cinematics that happen off Verdance: its own
+## A self-contained little film set for the story cinematics that happen off the planet: its own
 ## 3D world in a SubViewport (so the game's sky, fog and lights stay untouched), shown full screen
 ## under the cinematic letterbox. Holds three sets, one visible at a time:
-##   "space"  : starfield, Verdance below, the ark Cradle, meteors, the cargo pod.
+##   "space"  : starfield, the planet below, the ark Cradle, meteors, the cargo pod.
 ##   "vault"  : the Cradle's seed vault, a small round room of glowing seed drawers (Lumi + tray).
 ##   "garden" : the ark's garden deck under the glass dome (a warm memory).
 ## Free it to drop everything; nothing outside it is touched.

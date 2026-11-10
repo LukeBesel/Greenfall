@@ -137,10 +137,17 @@ func _run() -> void:
 	get_tree().quit(0)
 
 
+func _planet_ids() -> Array[String]:
+	var out: Array[String] = []
+	for def: PlanetDefinition in Planets.all():
+		out.append(String(def.id))
+	return out
+
+
 func _check() -> void:
 	_fresh_stage()
 	var ok: bool = true
-	for id: String in PlanetGlobe.IDS + ["mystery"]:
+	for id: String in _planet_ids() + ["mystery"]:
 		var g := _globe(id, 1.0, Vector3.ZERO, 0.5, -1)
 		g.set_restoration(1.0)
 		ok = ok and g.planet_id == id

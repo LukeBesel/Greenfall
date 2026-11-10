@@ -1,0 +1,26 @@
+{
+  "_doc": "Dummy planet: one objective and a one-line brief. Same fields as a real tutorial table.",
+  "wren_brief": {
+    "lines": [
+      "Test brief, part two."
+    ]
+  },
+  "brief": {
+    "lines": [
+      "Test brief."
+    ]
+  },
+  "objectives": [
+    {
+      "id": "test_scoop",
+      "text": "Pick up 3 pieces",
+      "desc": "Hold {scoop} to pick up trash.",
+      "type": "stat",
+      "key": "junk_scooped",
+      "target": 3,
+      "lines": [
+        "Test line."
+      ]
+    }
+  ]
+}

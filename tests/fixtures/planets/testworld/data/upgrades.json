@@ -1,0 +1,19 @@
+{
+  "_doc": "Dummy planet: one upgrade. Same fields as a real upgrades table.",
+  "upgrades": [
+    {
+      "id": "test_reach",
+      "name": "Test Reach",
+      "tab": "patch",
+      "icon": "speed",
+      "desc": "A longer scoop.",
+      "stat": "scoop_reach",
+      "mode": "add",
+      "amount": 0.2,
+      "unit": "m",
+      "base_cost": 10,
+      "growth": 1.5,
+      "max_level": 3
+    }
+  ]
+}

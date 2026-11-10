@@ -14,14 +14,23 @@ func _multis(g: PlanetGlobe) -> Array:
 	return g.find_children("*", "MultiMeshInstance3D", true, false)
 
 
+func _ids() -> Array[String]:
+	var out: Array[String] = []
+	for def: PlanetDefinition in Planets.all():
+		out.append(String(def.id))
+	return out
+
+
 func test_every_planet_builds() -> void:
-	for id: String in PlanetGlobe.IDS:
+	assert_eq(_ids().size(), 5)
+	for id: String in _ids():
+		assert_true(PlanetGlobe.has_look(id), "%s has a globe block in its look table" % id)
 		var g := _make(id)
 		assert_eq(g.planet_id, id)
 		var surf: MeshInstance3D = g.find_child("Body", true, false).get_child(0) as MeshInstance3D
 		assert_not_null(surf, "%s has a surface" % id)
 		var sm: ShaderMaterial = surf.material_override as ShaderMaterial
-		assert_true(sm.shader.resource_path.ends_with("planet_%s.gdshader" % id), "%s uses its own shader" % id)
+		assert_eq(sm.shader, Planets.by_id(id).globe_shader, "%s uses the shader its definition names" % id)
 		assert_eq(g.find_children("*", "MeshInstance3D", true, false).size() >= 2, true, "%s has an atmosphere shell" % id)
 
 
@@ -67,7 +76,7 @@ func test_lod_changes_octaves_and_instances() -> void:
 
 
 func test_two_suns_companion_is_warmer_and_dimmer() -> void:
-	for id: String in PlanetGlobe.IDS:
+	for id: String in _ids():
 		var s: Dictionary = PlanetGlobe.sun_light(id)
 		var a: Color = s["a"]
 		var b: Color = s["b"]

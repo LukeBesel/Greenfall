@@ -376,7 +376,7 @@ func _build_landmark(lm: Dictionary) -> Node3D:
 		return root
 	var mi := MeshInstance3D.new()
 	# [orbE] perf: a landmark's mesh within a triangle budget per preset, using the model's own
-	# import LODs (AssetLib.lite): Anvil's concrete road barriers were 61k triangles each (8 in view).
+	# import LODs (AssetLib.lite): one planet's concrete road barriers were 61k triangles each (8 in view).
 	mi.mesh = AssetLib.model_mesh_lite(model, LANDMARK_TRIS[clampi(Settings.quality, 0, 3)])
 	root.add_child(mi)
 	# Solid like the flat props (PhysLayers.PROP): one box from the model's bounds, in its own frame.

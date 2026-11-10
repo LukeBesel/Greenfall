@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="PlanetDefinition" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://core/planet_definition.gd" id="1"]
+[ext_resource type="Script" path="res://planets/ochre/env.gd" id="2"]
+[ext_resource type="Script" path="res://planets/ochre/sites.gd" id="3"]
+[ext_resource type="Shader" path="res://planets/ochre/globe.gdshader" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = &"ochre"
+display_name = "Ochre"
+tagline = "The Ledger's first open-pit strip mine, closest to the twin suns."
+order = 1
+shipped = false
+globe_frequency = 109
+hub_count = 8
+world_seed = 4471
+target_playtime_min = 240.0
+tables = Dictionary[String, String]({
+"pollution": "res://planets/verdance/data/junk.json",
+"upgrades": "res://planets/verdance/data/upgrades.json",
+"regrowth": "res://planets/verdance/data/hex_levels.json",
+"tutorial": "res://planets/verdance/data/objectives.json",
+"goals": "res://planets/verdance/data/goals.json",
+"look": "res://planets/ochre/data/look.json",
+"sites": "res://planets/ochre/data/sites.json"
+})
+env_script = ExtResource("2")
+sites_script = ExtResource("3")
+globe_shader = ExtResource("4")
+palette = Dictionary[String, Color]({})
+music_set = "desert_heat"

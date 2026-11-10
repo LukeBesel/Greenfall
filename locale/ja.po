@@ -1348,16 +1348,16 @@ msgid "Setting the scene"
 msgstr "舞台を準備中"
 
 #: steam/demo.gd:73
-msgid "Base level %d is the top of the demo. The full game goes all the way to level 5, then launches rockets to the rest of Verdance."
-msgstr "体験版は基地レベル %d までです。製品版ではレベル5まで上げて、ロケットで Verdance の各地へ飛び立てます。"
+msgid "Base level %d is the top of the demo. The full game goes all the way to level 5, then launches rockets to the rest of {planet}."
+msgstr "体験版は基地レベル %d までです。製品版ではレベル5まで上げて、ロケットで {planet} の各地へ飛び立てます。"
 
 #: steam/demo_end_screen.gd:36
 msgid "END OF THE DEMO"
 msgstr "体験版はここまで"
 
 #: steam/demo_end_screen.gd:46
-msgid "The launch pad is waiting, but the rest of Verdance is in the full game."
-msgstr "発射台が待っているけれど、Verdance の続きは製品版で。"
+msgid "The launch pad is waiting, but the rest of {planet} is in the full game."
+msgstr "発射台が待っているけれど、{planet} の続きは製品版で。"
 
 #: steam/demo_end_screen.gd:47
 msgid "Your base has grown as far as the demo goes."
@@ -1408,8 +1408,8 @@ msgid "Lumi. Stop for a second. Look up."
 msgstr "Lumi。ちょっと止まって。上を見て。"
 
 #: story/bloom_finale.gd:16
-msgid "Your core just hit full. Every bloom on Verdance is shining green, and the Cradle can see all of it."
-msgstr "君のコアがいま満タンになった。Verdance じゅうの花が緑に輝いていて、Cradle号にはその全部が見えている。"
+msgid "Your core just hit full. Every bloom on {planet} is shining green, and the Cradle can see all of it."
+msgstr "君のコアがいま満タンになった。{planet} じゅうの花が緑に輝いていて、Cradle号にはその全部が見えている。"
 
 #: story/bloom_finale.gd:17
 msgid "CRADLE:  GREEN DETECTED.  SEED-KEEPER LM-1 LOCATED.  BEGINNING DESCENT."
@@ -1420,24 +1420,24 @@ msgid "Three hundred years we waited up there for proof the soil remembered how.
 msgstr "三百年、上で待っていた。大地がやり方を覚えているという証拠を。君がその証拠だった。"
 
 #: story/bloom_finale.gd:19
-msgid "CRADLE:  WELCOME HOME, SMALL ROBOT.  ...WELCOME HOME, VERDANCE."
-msgstr "CRADLE号：おかえり、小さなロボット。……おかえり、VERDANCE。"
+msgid "CRADLE:  WELCOME HOME, SMALL ROBOT.  ...WELCOME HOME, {PLANET}."
+msgstr "CRADLE号：おかえり、小さなロボット。……おかえり、{PLANET}。"
 
 #: story/bloom_finale.gd:20
 msgid "It called you small. From the Cradle, that's a compliment. I checked."
 msgstr "君を「小さい」って言ってたね。Cradle号が言うなら、それはほめ言葉だよ。確認した。"
 
 #: story/bloom_finale.gd:21
-msgid "The seed bays are open. From now on every bloom, anywhere on Verdance, fills the next Seed Ark wave."
-msgstr "種子ベイが開いた。これからは Verdance のどこで咲いた花も、次のシードアークの波を満たしていく。"
+msgid "The seed bays are open. From now on every bloom, anywhere on {planet}, fills the next Seed Ark wave."
+msgstr "種子ベイが開いた。これからは {planet} のどこで咲いた花も、次のシードアークの波を満たしていく。"
 
 #: story/bloom_finale.gd:22
 msgid "Nothing is waiting to end, {name}. Nobody is keeping score. We're home. We just keep planting."
 msgstr "終わりを待っているものは何もないよ、{name}。誰も点数をつけてない。私たちは帰ってきた。あとは植え続けるだけ。"
 
 #: story/bloom_finale.gd:227
-msgid "The Cradle is home. The Seed Ark is open: every bloom on Verdance counts toward the next wave. Progress shows on the hologram (M)."
-msgstr "Cradle号が帰還した。シードアークが開いた：Verdance で咲く花はすべて次の波に数えられる。進行はホログラム（M）で。"
+msgid "The Cradle is home. The Seed Ark is open: every bloom on {planet} counts toward the next wave. Progress shows on the hologram (M)."
+msgstr "Cradle号が帰還した。シードアークが開いた：{planet} で咲く花はすべて次の波に数えられる。進行はホログラム（M）で。"
 
 #: story/core_charge.gd:206
 msgid "Bloom Core 100%. Lumi's core is full of green light."
@@ -1795,8 +1795,8 @@ msgid "Homecoming"
 msgstr "帰郷"
 
 #: story/intro.gd:237
-msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
-msgstr "三百年前、最後の種はアーク Cradle号に乗って Verdance を去った。"
+msgid "Three hundred years ago, the last seeds left {planet} aboard the ark Cradle."
+msgstr "三百年前、最後の種はアーク Cradle号に乗って {planet} を去った。"
 
 #: story/intro.gd:238
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
@@ -2163,8 +2163,8 @@ msgid "Codex entry: %s"
 msgstr "図鑑の項目：%s"
 
 #: systems/bloom.gd:169
-msgid "Verdance Bloom %d / %d  ·  next: %s"
-msgstr "Verdance ブルーム %d / %d  ·  次：%s"
+msgid "{planet} Bloom %d / %d  ·  next: %s"
+msgstr "{planet} ブルーム %d / %d  ·  次：%s"
 
 #: systems/bloom.gd:171
 msgid "Seed Ark wave %d  ·  %d / %d blooms planet-wide"
@@ -2179,8 +2179,8 @@ msgid "Seed Ark wave %d planted across Verdance. The Cradle drops a gift. Next w
 msgstr "シードアーク第%d波が Verdance じゅうに植えられた。Cradle号から贈り物が落ちてくる。次の波：花 %d 輪。"
 
 #: systems/bloom.gd:268
-msgid "Verdance Bloom: %s. %s"
-msgstr "Verdance ブルーム：%s。%s"
+msgid "{planet} Bloom: %s. %s"
+msgstr "{planet} ブルーム：%s。%s"
 
 #: systems/codex.gd:40
 msgid "Somewhere under the junk."
@@ -4582,7 +4582,7 @@ msgid "Survey"
 msgstr "調査"
 
 #: ui/globe_view.gd:139
-msgid "Verdance  ·  seed-keeper's survey"
+msgid "{planet}  ·  seed-keeper's survey"
 msgstr ""
 
 #: ui/globe_view.gd:155
@@ -5748,8 +5748,8 @@ msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the
 msgstr "発射台には Lv 5 の基地が必要（いまは Lv %d）。アップグレードタブで基地を強化しよう。"
 
 #: ui/rockets_panel.gd:48
-msgid "Rockets to the rest of Verdance are in the full game. The demo stays in the first district."
-msgstr "Verdance の各地へのロケットは製品版で。体験版は最初の地区だけです。"
+msgid "Rockets to the rest of {planet} are in the full game. The demo stays in the first district."
+msgstr "{planet} の各地へのロケットは製品版で。体験版は最初の地区だけです。"
 
 #: ui/rockets_panel.gd:57
 msgid "NEARBY BASES"

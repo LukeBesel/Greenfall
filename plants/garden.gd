@@ -438,7 +438,7 @@ func planted_slots() -> PackedInt32Array:
 
 const PAVED: Array[int] = [CityLayout.Surface.ROAD, CityLayout.Surface.SIDEWALK, CityLayout.Surface.BUILDING, CityLayout.Surface.YARD]
 const MOUND_R: float = 0.7
-const LOT_HALF: float = 9.0  # VerdanceSite's lot ground patch (18 x 18 m)
+const LOT_HALF: float = 9.0  # a town's lot ground patch (18 x 18 m)
 const LOT_KERB_M: float = 0.8
 const PLATE_TOP: float = 0.12
 var _paving: Dictionary = {}  # slot -> [on paving, lift (m)] (known)
@@ -463,7 +463,7 @@ func _ground_info(s: int) -> Array:
 	var p: Vector3 = slot_pos[s]
 	var out: Array = [false, 0.0]
 	for t: Array in towns:
-		var vs: VerdanceSite = t[0]
+		var vs: TownSite = t[0]
 		var loc: Vector3 = (t[1] as Transform3D) * p
 		if Vector2(loc.x, loc.z).length() > vs.town_r + MOUND_R:
 			continue
@@ -494,7 +494,7 @@ static func paved(lay: CityLayout, x: float, z: float) -> bool:
 	return srf == CityLayout.Surface.YARD or lay.wild or lay.blocks.has(lay.block_key_at(x, z))
 
 
-## [VerdanceSite, inverse of its transform] for every loaded town on the globe.
+## [TownSite, inverse of its transform] for every loaded town on the globe.
 func _towns() -> Array:
 	var out: Array = []
 	if site_manager == null:
@@ -503,7 +503,7 @@ func _towns() -> Array:
 		if not (pf is SitePrefab) or not is_instance_valid(pf) or (pf as SitePrefab).content == null:
 			continue
 		for c: Node in (pf as SitePrefab).content.get_children():
-			if c is VerdanceSite and (c as VerdanceSite).layout != null and (c as Node3D).is_inside_tree():
+			if c is TownSite and (c as TownSite).layout != null and (c as Node3D).is_inside_tree():
 				out.append([c, (c as Node3D).global_transform.affine_inverse()])
 	return out
 

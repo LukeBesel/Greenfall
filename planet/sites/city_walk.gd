@@ -177,7 +177,10 @@ static func run_dev(so: SliceOrbit) -> void:
 				var lp0: Vector3 = inv0 * so.globe.grid.centers[c] * so.globe.terrain.R
 				wl.append("(%.0f,%.0f)" % [lp0.x, lp0.z])
 		print("[walk] water cells on the site: %d %s" % [wl.size(), " ".join(wl)])
-	var half: float = VerdanceSite.TOWN_R + 14.0
+	var half: float = p.size_m * 0.5 + 14.0
+	for c: Node in p.content.get_children() if p.content else []:
+		if c is TownSite:
+			half = (c as TownSite).town_r + 14.0
 	var t0: int = Time.get_ticks_msec()
 	var r: Dictionary = run(p, so.globe.terrain, so.globe.field, half, Vector3(0, 0, 6))
 	var names: PackedStringArray = ["E", "SE", "S", "SW", "W", "NW", "N", "NE"]

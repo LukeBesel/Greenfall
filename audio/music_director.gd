@@ -4,10 +4,10 @@ extends RefCounted
 ## Two kinds of pieces share one sequencer:
 ## - Generative pieces (MOODS): a slow chord progression drives an evolving pad, a soft bass, a
 ##   felt-piano / kalimba melody built from call-and-answer phrases, bell shimmer and (only at
-##   high intensity) a brushed shaker and a felted kick. Verdance's explore / night / base.
+##   high intensity) a brushed shaker and a felted kick. The explore / night / base moods of a GENERATIVE_CALM set.
 ## - [sound] Composed tracks (audio/music_tracks.gd): an 8-chord progression, a motif (the hook)
-##   re-fitted to each chord, a groove, a bassline and a form. Every planet has a rotating pool of
-##   calm and active tracks; Verdance adds upbeat cleaning tracks. Busy play (`pulse_activity`)
+##   re-fitted to each chord, a groove, a bassline and a form. Every music set has a rotating pool of
+##   calm and active tracks; a GENERATIVE_CALM set adds upbeat cleaning tracks. Busy play (`pulse_activity`)
 ##   picks the active ones and pushes their drums; night and base pick calm ones.
 ## Pieces rotate with silence gaps between them (only the air bed plays), like the quiet moments
 ## between tracks in a sandbox game. Layers fade with `intensity` (0..1) and `mood`; harmony and
@@ -17,7 +17,6 @@ extends RefCounted
 ## `set_gain(id, gain)` and `stop(id)` on `backend`. At runtime that is audio/music_voices.gd
 ## (a pool of AudioStreamPlayers); tools/render_music.gd uses audio/music_offline_mixer.gd.
 
-const Themes := preload("res://audio/planet_themes.gd")  # [sound]
 const Tracks := preload("res://audio/music_tracks.gd")  # [sound]
 
 const KEY_ROOT: int = 50  # D3: the generative score lives in D major so moods can crossfade.
@@ -119,7 +118,7 @@ var enabled: bool = true
 var intensity: float = 0.35
 var mood: String = "explore"  # mix targets follow this immediately
 var lpf_cutoff: float = 6500.0  # smoothed; the host applies it to the Music bus
-var theme: String = "verdance"  # [sound] planet (picks the track pool)
+var theme: String = Tracks.DEFAULT_SET  # [sound] music set (picks the track pool)
 var restoration: float = 0.0  # [sound] 0 ruined .. 1 restored (current planet)
 var activity: float = 0.0  # [sound] 0..1, recent cleaning / building; decays over ~a minute
 var gaps_enabled: bool = true  # [sound] silence between pieces
@@ -127,7 +126,7 @@ var forced_track: String = ""  # [sound] the radio: loop this track, no gaps
 var muted: bool = false  # [camp] a song from outside the score plays (Audio.mute_score): stay silent
 
 var _active: String = "explore"  # harmony / tempo follow this (switches on a bar line)
-var _active_theme: String = "verdance"
+var _active_theme: String = Tracks.DEFAULT_SET
 var _track: String = ""  # [sound] current composed track ("" = the generative mood piece)
 var _last_track: String = "-"
 var _cycles_left: int = 5
@@ -256,10 +255,10 @@ func set_mood(m: String) -> void:
 	_dirty = true
 
 
-## [sound] Planet id ("verdance", "ochre", "tidewell", "rime", "anvil"). Unknown ids are ignored
-## (returns false). The new planet's pool takes over at the next bar line.
+## [sound] A music set (MusicTracks.SETS). Unknown names are ignored (returns false). The new
+## set's pool takes over at the next bar line.
 func set_theme(id: String) -> bool:
-	if not Themes.has(id):
+	if not Tracks.has_set(id):
 		return false
 	if id != theme:
 		theme = id
@@ -467,7 +466,7 @@ func _pick_track() -> String:
 		return "homecoming"
 	if not THEMED_MOODS.has(_active):
 		return ""
-	var pool: Array[String] = Tracks.for_planet(_active_theme)
+	var pool: Array[String] = Tracks.for_set(_active_theme)
 	var want: String = "calm"
 	if _active == "explore":
 		var energy: float = maxf(activity, intensity * 0.85)
@@ -477,8 +476,8 @@ func _pick_track() -> String:
 	for id: String in pool:
 		if str(Tracks.TRACKS[id]["energy"]) == want:
 			cand.append(id)
-	if _active_theme == "verdance" and want == "calm":
-		cand = [""]  # Verdance's calm pieces are the generative moods
+	if want == "calm" and Tracks.GENERATIVE_CALM.has(_active_theme):
+		cand = [""]  # this set's calm pieces are the generative moods
 	if cand.is_empty():
 		cand = pool if not pool.is_empty() else [""]
 	if cand.size() > 1:
@@ -818,7 +817,7 @@ func _play_arp(m: Dictionary) -> void:
 	_note(str(m["arp_sample"]), n, G_TEX * tx * (0.9 if _step % 4 == 0 else 0.65) * rng.randf_range(0.85, 1.0))
 
 
-## [sound] Extra track textures: Rime's glass twinkles.
+## [sound] Extra track textures: glass twinkles.
 func _play_texture(m: Dictionary, tx: float) -> void:
 	if tx <= 0.01 or str(m["texture"]) != "twinkle" or rng.randf() >= 0.09:
 		return

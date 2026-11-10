@@ -13,17 +13,18 @@ extends RefCounted
 ##                                    within 10%, and the cells it cleaned
 
 
-## The globe's planet id (OrbitPlanet.spec, GlobeSpec.of), Verdance for the phase A scene.
+## The globe's planet id (OrbitPlanet.spec), the planet being played when the globe has no spec.
 static func planet_of(src: Object) -> String:
 	var sp: Variant = src.get("spec")
-	return str((sp as Dictionary).get("id", "verdance")) if sp is Dictionary else "verdance"
+	var current: String = String(Planets.current_id())
+	return str((sp as Dictionary).get("id", current)) if sp is Dictionary else current
 
 
 static func wanted() -> bool:
 	return DevHooks.has("robots") or DevHooks.has("orbit-far-crew") or DevHooks.has("offline-jump")
 
 
-## `src` = the globe (OrbitPlanet in the slice, VerdanceGlobe in the phase A scene): grid, cells,
+## `src` = the globe (OrbitPlanet in the slice, the phase A globe in its scene): grid, cells,
 ## field, surface, swarm, streamer, junk_view, sites. `write_cell` (optional) is called for each
 ## cell the crew works (the survey / planet % bookkeeping). The crew's dev robots come from flags.
 static func install(src: Object, parent: Node, lumi: Node3D, cam: SphereCam, write_cell: Callable = Callable()) -> SphereCrew:
@@ -74,7 +75,7 @@ static func install(src: Object, parent: Node, lumi: Node3D, cam: SphereCam, wri
 		parent.add_child(pr)
 	if DevHooks.has("orbit-far-crew"):
 		var si: int = clampi(int(DevHooks.get_f("orbit-far-crew", 0.0)), 0, src.sites.size() - 1)
-		if si <= 1:  # a bare flag reads as "1"  # default: the hub nearest the start (~1.6-1.7 km on Verdance)
+		if si <= 1:  # a bare flag reads as "1"  # default: the hub nearest the start (~1.6-1.7 km on a frequency-128 globe)
 			var best: float = INF
 			for i: int in range(1, src.sites.size()):
 				var dm: float = (src.grid as SphereGrid).distance_m(start, int((src.sites[i] as Dictionary)["cell"]))

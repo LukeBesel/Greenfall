@@ -1,6 +1,6 @@
 class_name OrbitDay
 extends Node
-## [orbB] Sky, suns and the real day/night sides of a globe (phase A's VerdanceGlobe day code as
+## [orbB] Sky, suns and the real day/night sides of a globe (phase A's globe day code as
 ## its own node; orbE merges SkyDirector into this). Two suns fixed in space light one side of
 ## the planet; the planet turns once every day_min minutes, so walking far changes local time.
 ## The sky shader (orbit_sky.gdshader) works in world space with the local up under the camera.

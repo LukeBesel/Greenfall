@@ -1,0 +1,34 @@
+{
+  "_doc": "Hub and landmark site prefabs on the walkable globe (SiteBuilders; built by the definition's sites_script). sites: [{id, kind (hub | landmark), name, size_m (pad diameter), clear_core_m (junk-free core, default 12), start_only (true: only hub 0 gets it; the other hubs cycle through the rest), desc}], hubs first. Optional: hub_pad_m (flat pad radius of hubs after the first, default 82), fill_pad (the builder gets the pad's flat radius as opts.flat), yard_keep_out (the start yard keeps junk off its pad piece by piece), api (a note on the script's entry point).",
+  "api": "[p_seas] Placeable hub-site prefabs (planets/rime/rime_site.gd): RimeHubSite.place(id, root, stage 0-2, restoration 0-1, {radius, seed}); a local ice patch about 80-90 m across (walkable trimesh, PROP colliders on every structure). Preview: res://planets/rime/site_preview.tscn -- --site=<id>.",
+  "sites": [
+    {
+      "id": "hub_camp",
+      "kind": "hub",
+      "name": "Drill Camp",
+      "size_m": 88,
+      "desc": "Cabins on skids round a plated yard, a greenhouse dome, fuel tanks, a comms mast and a snowcat."
+    },
+    {
+      "id": "derrick",
+      "kind": "landmark",
+      "name": "Frozen Derrick",
+      "size_m": 84,
+      "desc": "A Ledger core-drill derrick frozen into the ice; a geothermal tap when restored."
+    },
+    {
+      "id": "borehole",
+      "kind": "landmark",
+      "name": "The Borehole",
+      "size_m": 92,
+      "desc": "The shaft under its headframe and winder house; cold mist, then a warm glow."
+    },
+    {
+      "id": "hot_springs",
+      "kind": "landmark",
+      "name": "Hot Springs",
+      "size_m": 80,
+      "desc": "Geothermal pools with a bathhouse and boardwalk; frozen, then steaming."
+    }
+  ]
+}

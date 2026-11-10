@@ -4,7 +4,7 @@ extends Node
 ## [intro2] Paced for reading: every story line goes through the game's one subtitle line
 ## (ui/subtitles.gd, one line at a time at the bottom) and each beat waits for its lines.
 ## Tells how Lumi got here:
-##   A. Space: Verdance below, the ark Cradle glides past (title). Inside the seed vault, Lumi
+##   A. Space: the planet below, the ark Cradle glides past (title). Inside the seed vault, Lumi
 ##      hums to a tray of seedlings.
 ##   B. A meteor storm: meteors streak past, one hits, alarms go red. In the vault Lumi grabs the
 ##      tray and climbs into a cargo pod; the breach blows the pod out and the ark sails on.
@@ -230,7 +230,7 @@ func _drop_cover() -> void:
 ## Kept in one place so tests can check the subtitle timing rule against all of them.
 static func lines() -> Dictionary:
 	var out: Dictionary = {
-		"title": [TranslationServer.translate("Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."), ""],
+		"title": [Planets.current().name_in(TranslationServer.translate("Three hundred years ago, the last seeds left {planet} aboard the ark Cradle.")), ""],
 		"vault": [TranslationServer.translate("Lumi, the ark's little seed-keeper, sang to the seedlings every night."), ""],
 		"hum": [TranslationServer.translate("Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."), "wren"],
 		"storm": [TranslationServer.translate("Then, one night, the sky came apart."), ""],
@@ -564,7 +564,7 @@ func _phase_fall() -> void:
 	var line_t: float = _say("fall")
 	if await _hold(1.4):
 		return
-	# Re-entry: the pod tumbles toward Verdance wrapped in fire.
+	# Re-entry: the pod tumbles toward the planet wrapped in fire.
 	st.show_set("space")
 	st.pod.visible = true
 	var fire: Node3D = build_fire()

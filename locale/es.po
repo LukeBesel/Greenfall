@@ -1350,16 +1350,16 @@ msgid "Setting the scene"
 msgstr "Preparando la escena"
 
 #: steam/demo.gd:73
-msgid "Base level %d is the top of the demo. The full game goes all the way to level 5, then launches rockets to the rest of Verdance."
-msgstr "El nivel de base %d es el tope de la demo. El juego completo llega hasta el nivel 5 y luego lanza cohetes al resto de Verdance."
+msgid "Base level %d is the top of the demo. The full game goes all the way to level 5, then launches rockets to the rest of {planet}."
+msgstr "El nivel de base %d es el tope de la demo. El juego completo llega hasta el nivel 5 y luego lanza cohetes al resto de {planet}."
 
 #: steam/demo_end_screen.gd:36
 msgid "END OF THE DEMO"
 msgstr "FIN DE LA DEMO"
 
 #: steam/demo_end_screen.gd:46
-msgid "The launch pad is waiting, but the rest of Verdance is in the full game."
-msgstr "La plataforma de lanzamiento espera, pero el resto de Verdance está en el juego completo."
+msgid "The launch pad is waiting, but the rest of {planet} is in the full game."
+msgstr "La plataforma de lanzamiento espera, pero el resto de {planet} está en el juego completo."
 
 #: steam/demo_end_screen.gd:47
 msgid "Your base has grown as far as the demo goes."
@@ -1410,8 +1410,8 @@ msgid "Lumi. Stop for a second. Look up."
 msgstr "Lumi. Para un segundo. Mira arriba."
 
 #: story/bloom_finale.gd:16
-msgid "Your core just hit full. Every bloom on Verdance is shining green, and the Cradle can see all of it."
-msgstr "Tu núcleo acaba de llenarse. Cada flor de Verdance brilla en verde, y el Cradle lo ve todo."
+msgid "Your core just hit full. Every bloom on {planet} is shining green, and the Cradle can see all of it."
+msgstr "Tu núcleo acaba de llenarse. Cada flor de {planet} brilla en verde, y el Cradle lo ve todo."
 
 #: story/bloom_finale.gd:17
 msgid "CRADLE:  GREEN DETECTED.  SEED-KEEPER LM-1 LOCATED.  BEGINNING DESCENT."
@@ -1422,24 +1422,24 @@ msgid "Three hundred years we waited up there for proof the soil remembered how.
 msgstr "Trescientos años esperamos ahí arriba una prueba de que el suelo recordaba cómo. Tú fuiste la prueba."
 
 #: story/bloom_finale.gd:19
-msgid "CRADLE:  WELCOME HOME, SMALL ROBOT.  ...WELCOME HOME, VERDANCE."
-msgstr "CRADLE:  BIENVENIDO A CASA, PEQUEÑO ROBOT.  ...BIENVENIDA A CASA, VERDANCE."
+msgid "CRADLE:  WELCOME HOME, SMALL ROBOT.  ...WELCOME HOME, {PLANET}."
+msgstr "CRADLE:  BIENVENIDO A CASA, PEQUEÑO ROBOT.  ...BIENVENIDA A CASA, {PLANET}."
 
 #: story/bloom_finale.gd:20
 msgid "It called you small. From the Cradle, that's a compliment. I checked."
 msgstr "Te ha llamado pequeño. Viniendo del Cradle, es un cumplido. Lo he comprobado."
 
 #: story/bloom_finale.gd:21
-msgid "The seed bays are open. From now on every bloom, anywhere on Verdance, fills the next Seed Ark wave."
-msgstr "Las bahías de semillas están abiertas. A partir de ahora, cada flor, en cualquier lugar de Verdance, llena la próxima oleada del Arca de Semillas."
+msgid "The seed bays are open. From now on every bloom, anywhere on {planet}, fills the next Seed Ark wave."
+msgstr "Las bahías de semillas están abiertas. A partir de ahora, cada flor, en cualquier lugar de {planet}, llena la próxima oleada del Arca de Semillas."
 
 #: story/bloom_finale.gd:22
 msgid "Nothing is waiting to end, {name}. Nobody is keeping score. We're home. We just keep planting."
 msgstr "Nada está esperando a terminar, {name}. Nadie lleva la cuenta. Estamos en casa. Solo seguimos plantando."
 
 #: story/bloom_finale.gd:227
-msgid "The Cradle is home. The Seed Ark is open: every bloom on Verdance counts toward the next wave. Progress shows on the hologram (M)."
-msgstr "El Cradle está en casa. El Arca de Semillas está abierta: cada flor de Verdance cuenta para la próxima oleada. El progreso se ve en el holograma (M)."
+msgid "The Cradle is home. The Seed Ark is open: every bloom on {planet} counts toward the next wave. Progress shows on the hologram (M)."
+msgstr "El Cradle está en casa. El Arca de Semillas está abierta: cada flor de {planet} cuenta para la próxima oleada. El progreso se ve en el holograma (M)."
 
 #: story/core_charge.gd:206
 msgid "Bloom Core 100%. Lumi's core is full of green light."
@@ -1797,8 +1797,8 @@ msgid "Homecoming"
 msgstr "Regreso a casa"
 
 #: story/intro.gd:237
-msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
-msgstr "Hace trescientos años, las últimas semillas dejaron Verdance a bordo del arca Cradle."
+msgid "Three hundred years ago, the last seeds left {planet} aboard the ark Cradle."
+msgstr "Hace trescientos años, las últimas semillas dejaron {planet} a bordo del arca Cradle."
 
 #: story/intro.gd:238
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
@@ -2165,8 +2165,8 @@ msgid "Codex entry: %s"
 msgstr "Entrada del Códice: %s"
 
 #: systems/bloom.gd:169
-msgid "Verdance Bloom %d / %d  ·  next: %s"
-msgstr "Floración de Verdance %d / %d  ·  siguiente: %s"
+msgid "{planet} Bloom %d / %d  ·  next: %s"
+msgstr "Floración de {planet} %d / %d  ·  siguiente: %s"
 
 #: systems/bloom.gd:171
 msgid "Seed Ark wave %d  ·  %d / %d blooms planet-wide"
@@ -2181,8 +2181,8 @@ msgid "Seed Ark wave %d planted across Verdance. The Cradle drops a gift. Next w
 msgstr "Oleada %d del Arca de Semillas plantada por Verdance. El Cradle suelta un regalo. Próxima oleada: %d flores."
 
 #: systems/bloom.gd:268
-msgid "Verdance Bloom: %s. %s"
-msgstr "Floración de Verdance: %s. %s"
+msgid "{planet} Bloom: %s. %s"
+msgstr "Floración de {planet}: %s. %s"
 
 #: systems/codex.gd:40
 msgid "Somewhere under the junk."
@@ -4594,7 +4594,7 @@ msgid "Survey"
 msgstr "Explorar"
 
 #: ui/globe_view.gd:139
-msgid "Verdance  ·  seed-keeper's survey"
+msgid "{planet}  ·  seed-keeper's survey"
 msgstr ""
 
 #: ui/globe_view.gd:155
@@ -5761,8 +5761,8 @@ msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the
 msgstr "La plataforma de lanzamiento requiere una base de nivel 5 (la tuya es de nivel %d). Mejora la base en la pestaña Mejoras."
 
 #: ui/rockets_panel.gd:48
-msgid "Rockets to the rest of Verdance are in the full game. The demo stays in the first district."
-msgstr "Los cohetes al resto de Verdance están en el juego completo. La demo se queda en el primer distrito."
+msgid "Rockets to the rest of {planet} are in the full game. The demo stays in the first district."
+msgstr "Los cohetes al resto de {planet} están en el juego completo. La demo se queda en el primer distrito."
 
 #: ui/rockets_panel.gd:57
 msgid "NEARBY BASES"

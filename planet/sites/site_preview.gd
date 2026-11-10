@@ -1,11 +1,11 @@
 extends Node3D
-## [orbD] Site prefab preview and report (no globe, no district): builds PlanetEnvs.build_site
+## [orbD] Site prefab preview and report (no globe, no district): builds SiteBuilders.build_site
 ## prefabs on a plain ground disc, under a sun and sky, and prints a [site] line per prefab.
 ##   godot --headless --path . res://planet/sites/site_preview.tscn -- --sites=all --quit-after=1
 ##   xvfb-run ... godot --path . --rendering-driver opengl3 --resolution 960x540 \
-##     res://planet/sites/site_preview.tscn -- --site=verdance/ruin_block --stage=1 \
+##     res://planet/sites/site_preview.tscn -- --site=<planet id>/<site id> --stage=1 \
 ##     --site-cam=dist,pitch,yaw --shot=screenshots/orbD/x.png --shot-delay=20 --quit-after=24
-## --site=planet/id (default verdance/start_yard), --sites=all (every planet's hub sites side by
+## --site=planet/id (default: the current planet's start site), --sites=all (every planet's hub sites side by
 ## side, report only), --stage=1..5, --restore=0..1, --hub=N (hub index: seeds the ruin blocks),
 ## --tilt (build the site on a tilted frame, like a site far round the globe: checks site_inv).
 
@@ -21,11 +21,11 @@ func _ready() -> void:
 	var rest: float = DevHooks.get_f("restore", 0.0)
 	var list: Array = []
 	if DevHooks.get_s("sites", "") == "all":
-		for pid: String in ["verdance", "rime", "anvil", "tidewell", "ochre"]:
-			for d: Dictionary in SiteBuilders.sites_of(pid):
-				list.append([pid, str(d["id"])])
+		for def: PlanetDefinition in Planets.all():
+			for d: Dictionary in SiteBuilders.sites_of(String(def.id)):
+				list.append([String(def.id), str(d["id"])])
 	else:
-		var s: PackedStringArray = DevHooks.get_s("site", "verdance/start_yard").split("/")
+		var s: PackedStringArray = DevHooks.get_s("site", String(Planets.current_id())).split("/")
 		list.append([s[0], s[1] if s.size() > 1 else SiteBuilders.site_for_hub(s[0], 0)])
 	var x: float = 0.0
 	var tilt: bool = DevHooks.has("tilt")
@@ -36,8 +36,8 @@ func _ready() -> void:
 		if tilt:
 			xf = Transform3D(Basis(Vector3(1, 0, 1).normalized(), 0.9), Vector3(x, 0, 0))
 		var t0: int = Time.get_ticks_msec()
-		var p: SitePrefab = PlanetEnvs.build_site(sr, {"planet": e[0], "prefab": e[1], "transform": xf,
-			"hub_index": int(DevHooks.get_f("hub", 0.0 if e[1] == "start_yard" else 1.0)), "seed": 4471}, stage, rest)
+		var p: SitePrefab = SiteBuilders.build_site(sr, {"planet": e[0], "prefab": e[1], "transform": xf,
+			"hub_index": int(DevHooks.get_f("hub", 0.0 if e[1] == SiteBuilders.site_for_hub(e[0], 0) else 1.0)), "seed": 4471}, stage, rest)
 		if not p.is_built:
 			await p.rebuilt
 		prefabs.append(p)

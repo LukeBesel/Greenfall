@@ -34,7 +34,7 @@ func test_every_goal_type_is_known_and_its_key_exists() -> void:
 		"research", "bases_l5", "frontier_base", "frontier_growing"]
 	var code: String = _all_code()
 	var ids: Dictionary = {}
-	for g: Dictionary in Goals.playable(Economy.planet_table("goals")["goals"]):
+	for g: Dictionary in Economy.planet_table("goals")["goals"]:
 		var id: String = str(g["id"])
 		assert_false(ids.has(id), "goal id %s is unique" % id)
 		ids[id] = true
@@ -57,22 +57,25 @@ func test_every_goal_type_is_known_and_its_key_exists() -> void:
 				assert_true(key == "any" or Economy.robots.has(key), "goal %s names a real robot" % id)
 
 
-## Goals that wait on a parked feature's stat (data/parked.json) never reach the chain.
-func test_goals_of_parked_features_are_left_out() -> void:
-	var parked: Array = Economy.read_json(Goals.PARKED_PATH)["stats"]
-	assert_gt(parked.size(), 0)
+## Stats only a parked feature wrote (parked/README.md). No goal may wait on one: nothing in the
+## game writes them, so the ordered chain would stall there.
+const PARKED_STATS: Array[String] = ["drive_tier", "planets_landed", "planets_restored", "last_seed", "homecoming", "ark_waves", "ark_bridge_opened", "heirloom_levels", "worlds_seeded"]
+
+
+func test_no_goal_waits_on_a_parked_feature() -> void:
 	var code: String = _all_code()
-	for key: String in parked:
+	for key: String in PARKED_STATS:
 		assert_false(code.contains('inc_stat("%s"' % key) or code.contains('stats["%s"]' % key), "nothing in the game writes %s" % key)
-	var all: Array = Economy.planet_table("goals")["goals"]
-	var kept: Array = Goals.playable(all)
-	for g: Dictionary in kept:
-		assert_false(str(g.get("type", "stat")) == "stat" and str(g.get("key", "")) in parked, "goal %s is playable" % g["id"])
-	assert_true(kept.any(func(g: Dictionary) -> bool: return str(g["id"]) == "late_garden_1"), "Garden Mode goals stay")
+	var goals: Array = Economy.planet_table("goals")["goals"]
+	for g: Dictionary in goals:
+		assert_false(str(g.get("type", "stat")) == "stat" and str(g.get("key", "")) in PARKED_STATS, "goal %s can be finished" % g["id"])
+	assert_true(goals.any(func(g: Dictionary) -> bool: return str(g["id"]) == "late_garden_1"), "Garden Mode goals stay")
+	assert_false(FileAccess.file_exists("res://data/parked.json"), "the parked-goal filter and its list are gone")
+	assert_false(Research.exists("observatory"), "the research node that unlocked only the parked Telescope is gone")
 
 
 func test_the_chain_ends_on_the_cradle() -> void:
-	var chain: Array = Goals.playable(Economy.planet_table("goals")["goals"])
+	var chain: Array = Economy.planet_table("goals")["goals"]
 	var order: Array[String] = []
 	for g: Dictionary in chain:
 		order.append(str(g["id"]))

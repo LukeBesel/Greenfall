@@ -133,7 +133,7 @@ func _ready() -> void:
 	left.add_theme_constant_override("separation", 12)
 	left.position = Vector2(28, 28)
 	_root.add_child(left)
-	var c1: Array = _holo_card(tr("Survey"), 300, tr("Verdance  ·  seed-keeper's survey"))
+	var c1: Array = _holo_card(tr("Survey"), 300, Planets.current().name_in(tr("{planet}  ·  seed-keeper's survey")))
 	left.add_child(c1[0])
 	var b1: VBoxContainer = c1[1]
 	_pct = UITheme.label("0.0 %", 40, CREAM)

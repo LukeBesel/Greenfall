@@ -29,12 +29,14 @@ func test_runs_on_the_first_planet_and_reaches_the_early_beats() -> void:
 	assert_gt(PaceSim.summary(result).size(), 10, "the report prints")
 
 
-func test_runs_on_the_dummy_planet_and_reports_no_content() -> void:
+func test_runs_on_the_dummy_planet_without_errors() -> void:
+	# The dummy planet has small real tables (so a world can be built from it); the simulator must
+	# run on whatever a planet provides and say so plainly if something it needs is missing.
 	var result: Dictionary = PaceSim.run(DUMMY, 30.0)
 	assert_true(result["ok"], str(result["error"]))
-	assert_false(result["content"], "the dummy planet's tables are empty")
-	assert_true("pollution" in (result["missing"] as PackedStringArray), "the empty pollution table is named")
-	assert_string_contains("\n".join(PaceSim.summary(result)), "no content")
+	assert_gt(PaceSim.summary(result).size(), 0, "the report prints")
+	if not result["content"]:
+		assert_string_contains("\n".join(PaceSim.summary(result)), "no content")
 
 
 func test_same_seed_gives_the_same_run() -> void:

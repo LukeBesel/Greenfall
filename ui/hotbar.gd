@@ -1,6 +1,6 @@
 class_name Hotbar
 extends Control
-## Bottom-centre hotbar (Minecraft-style, Greenfall look) with the Lumi Level bar above it and the
+## Bottom-centre hotbar with the Lumi Level bar above it and the
 ## hopper gauge folded in underneath:
 ##   level   level number centred over a thin XP bar; a tiny Bloom Core ring at its left end
 ##           (set_core_charge); "+XP" ticks; a restrained flash + chime on level-up

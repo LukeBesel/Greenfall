@@ -1,6 +1,6 @@
 class_name OrbitCrews
 extends Node
-## [orbB] The robots' side of a globe (phase A's VerdanceGlobe crew code as its own node; orbC
+## [orbB] The robots' side of a globe (phase A's globe crew code as its own node; orbC
 ## ports the real Fleet onto it). Near robots are SphereBots on the hex graph (this node is their
 ## `graph`: claim_dirty, path, work_cell, junk_left, release); far crews are data only, each
 ## clearing whole cells nearest its hub at `rate` cells per minute (the shape of Offline.compute).

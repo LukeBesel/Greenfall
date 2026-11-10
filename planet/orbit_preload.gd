@@ -2,7 +2,7 @@ class_name OrbitPreload
 extends RefCounted
 ## [orbE] Load time on the globe (docs/PERFORMANCE.md): the near ring's junk needs every junk and
 ## landmark model, and AssetLib loaded them one by one on the main thread inside the streamer's
-## first settle (7 s on Anvil). start() asks the resource loader for all of them on its threads
+## first settle (7 s on the largest globe). start() asks the resource loader for all of them on its threads
 ## at the top of the build; by the time the planet, grid and field are made they are in memory,
 ## and AssetLib's load() is a cache hit. finish() collects them (and keeps them referenced).
 

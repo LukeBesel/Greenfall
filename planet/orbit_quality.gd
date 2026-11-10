@@ -13,6 +13,8 @@ const BUDGETS: Array[Dictionary] = [
 	{"lod0_m": 280.0, "lod1_m": 760.0, "far_m": 2300.0, "apply": 2, "future_m": 380.0, "moon_shadow": true},  # High
 	{"lod0_m": 320.0, "lod1_m": 860.0, "far_m": 2600.0, "apply": 3, "future_m": 420.0, "moon_shadow": true},  # Ultra
 ]
+## Globe radius (m) the far distances in BUDGETS were tuned on (a frequency-128 globe).
+const REFERENCE_R: float = 1840.0
 
 
 static func budget(q: int) -> Dictionary:
@@ -25,7 +27,7 @@ static func apply_streamer(st: SphereStreamer, q: int, radius_m: float) -> void:
 	var b: Dictionary = budget(q)
 	st.lod0_m = float(b["lod0_m"])
 	st.lod1_m = float(b["lod1_m"])
-	st.far_m = float(b["far_m"]) * clampf(radius_m / GlobeSize.VERDANCE_R, 0.85, 1.4)
+	st.far_m = float(b["far_m"]) * clampf(radius_m / REFERENCE_R, 0.85, 1.4)
 	st.apply_per_frame = int(b["apply"])
 
 

@@ -4,7 +4,7 @@ extends GutTest
 
 func test_bin_body_stands_on_its_bay_anchor() -> void:
 	# The start yard's depot anchor and the "bin" anchor the marked bay is drawn round
-	# (planet/sites/verdance_site.gd START_YARD_ANCHORS): the bin body must stand on the latter.
+	# (SitePrefab.START_YARD_ANCHORS): the bin body must stand on the latter.
 	var root := Node3D.new()
 	add_child_autofree(root)
 	var sp := SitePrefab.new()

@@ -1,0 +1,39 @@
+{
+  "_doc": "Dummy planet: two junk types, no biome sets, no landmarks. Same fields as a real pollution table (types: id, name, value, cube_color, flecks, weight, models [{id, vol, w, lie}]).",
+  "types": [
+    {
+      "id": "slag",
+      "name": "Test Slag",
+      "value": 1.0,
+      "cube_color": "#7a7a7a",
+      "flecks": "#999999",
+      "weight": 1.0,
+      "models": [
+        {
+          "id": "can_rusted",
+          "vol": 0.35,
+          "w": 1.0,
+          "lie": 0.5
+        }
+      ]
+    },
+    {
+      "id": "wrap",
+      "name": "Test Wrap",
+      "value": 0.5,
+      "cube_color": "#b0b0a0",
+      "flecks": "#d0d0c0",
+      "weight": 1.0,
+      "models": [
+        {
+          "id": "lubricant_spray",
+          "vol": 0.3,
+          "w": 1.0,
+          "lie": 0.5
+        }
+      ]
+    }
+  ],
+  "landmarks": [],
+  "biomes": {}
+}

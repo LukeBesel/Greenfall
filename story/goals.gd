@@ -9,9 +9,6 @@ extends Node
 signal completed(index: int)
 
 const BEAT_S: float = 0.7
-const PARKED_PATH: String = "res://data/parked.json"
-
-static var _parked_stats: Array = []
 
 var world: Node
 var cfg: Dictionary
@@ -34,20 +31,11 @@ func _ready() -> void:
 
 func load_chain() -> void:
 	cfg = Economy.planet_table("goals")
-	chain = playable(cfg.get("goals", []))
+	chain = cfg.get("goals", [])
 	visible_count = int(cfg.get("visible", 3))
 	_done.clear()
 	for id: Variant in GameState.flags.get("goals_done", []):
 		_done[str(id)] = true
-
-
-## The goals this game can finish, in table order. A planet's table may still hold goals that wait
-## on a stat only a parked feature writes (data/parked.json "stats"); those are left out.
-static func playable(goals: Array) -> Array:
-	if _parked_stats.is_empty():
-		_parked_stats = Economy.read_json(PARKED_PATH).get("stats", [])
-	return goals.filter(func(g: Dictionary) -> bool:
-		return str(g.get("type", "stat")) != "stat" or not (str(g.get("key", "")) in _parked_stats))
 
 
 func is_done(i: int) -> bool:

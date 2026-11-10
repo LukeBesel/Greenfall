@@ -13,7 +13,7 @@ extends RefCounted
 
 const STATES: PackedStringArray = ["broken", "repaired", "restored"]
 
-## Cohesive kit palette (Moon Sweepers-like: warm creams, teal, orange, saturated but not neon).
+## Cohesive kit palette (warm creams, teal, orange, saturated but not neon).
 const PALETTE: Dictionary = {
 	"cream": Color(0.88, 0.8, 0.64),
 	"white": Color(0.88, 0.89, 0.9),

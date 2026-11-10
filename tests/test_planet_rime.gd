@@ -25,11 +25,13 @@ func _field() -> HexField:
 
 
 func test_registry_entry() -> void:
-	var e: Dictionary = PlanetEnvs.entry("rime")
-	assert_false(e.is_empty(), "data/planets.json has rime")
+	var def: PlanetDefinition = Planets.by_id(&"rime")
+	assert_not_null(def, "rime is registered")
+	var e: Dictionary = def.look()
 	assert_eq(str(e.get("world_type")), "ice_moon")
-	assert_true(ResourceLoader.exists(str(e.get("env"))))
-	for k: String in ["name", "sky", "fog", "sun", "ambient", "palette", "junk_tint", "music_mood"]:
+	assert_eq(def.env_script, RimeEnv as Script)
+	assert_ne(def.music_set, "")
+	for k: String in ["name", "sky", "fog", "sun", "ambient", "palette", "junk_tint", "globe", "orbit"]:
 		assert_true(e.has(k), "rime entry has %s" % k)
 
 
@@ -73,7 +75,7 @@ func test_env_applies_headless() -> void:
 	RimeEnv.dress_view(w.view)
 	w.add_child(w.view)
 	w.view.setup(w.field)
-	RimeEnv.apply(w, w.field, PlanetEnvs.entry("rime"))
+	RimeEnv.apply(w, w.field, Planets.by_id(&"rime").look())
 	var re: RimeEnv = w.get_node_or_null("RimeEnv")
 	assert_not_null(re)
 	assert_true(env.sky.sky_material is ShaderMaterial, "Rime's own sky")

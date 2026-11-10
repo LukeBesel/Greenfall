@@ -1,7 +1,7 @@
 class_name SitePower
 extends RefCounted
 ## [orbD] Street power at hub sites on the walkable globe: the flat rule (planet/street_power.gd,
-## world3) unchanged. Every street lamp head and every powered dressing light of a Verdance site
+## world3) unchanged. Every street lamp head and every powered dressing light of a town site
 ## starts dead and comes on when its globe cell's hex level reaches Sustained, or round the base
 ## (30 m) once that hub reaches level 3, with PowerFx's flicker. A StreetPower lives in each
 ## site's own frame; it finds its lights' cells through CellLookup, a tiny HexField whose

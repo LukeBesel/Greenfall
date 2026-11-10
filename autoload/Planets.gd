@@ -8,6 +8,8 @@ signal current_changed(planet: PlanetDefinition)
 
 const PLANETS_DIR: String = "res://planets"
 const DEFINITION_FILE: String = "planet.tres"
+## Dev flag: `--orbit-planet=<id>` starts on that planet, shipped or not.
+const DEV_PLANET_FLAG: String = "--orbit-planet="
 
 var _defs: Dictionary[StringName, PlanetDefinition] = {}
 var _current: PlanetDefinition
@@ -18,6 +20,9 @@ func _ready() -> void:
 	var first: PlanetDefinition = first_shipped()
 	if first:
 		_current = first
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with(DEV_PLANET_FLAG):
+			set_current(StringName(arg.trim_prefix(DEV_PLANET_FLAG)))
 
 
 ## Loads every `<dir>/<id>/planet.tres`. Returns how many were added. Invalid ones are reported

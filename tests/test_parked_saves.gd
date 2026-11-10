@@ -104,6 +104,11 @@ func test_parked_keys_are_ignored_not_migrated() -> void:
 		assert_false(id in chain_ids, "goal %s is not in the chain" % id)
 	assert_eq(goals.done_count(), (_raw["flags"]["goals_done"] as Array).size() - Fixture.PARKED_GOALS.size(), "only playable goals count as done")
 	assert_false(goals.current().is_empty(), "the chain goes on")
+	# Research: a finished node the game no longer has is carried and ignored.
+	assert_true("observatory" in Research.done_list(), "the old save finished the removed node")
+	assert_false(Research.exists("observatory"))
+	assert_eq(Research.breakdown("no_such_stat").size(), 0, "walking the finished list copes with the unknown id")
+	assert_eq(Research.stat_mod("no_such_stat", 2.0), 2.0)
 	# Achievements and the Codex count what the game still has.
 	var real_unlocks: int = (_raw["flags"]["achievements"] as Dictionary).size() - Fixture.PARKED_ACHIEVEMENTS.size()
 	assert_eq(Achievements.unlocked_count(), real_unlocks, "parked achievements are not counted")

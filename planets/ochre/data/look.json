@@ -1,0 +1,184 @@
+{
+  "_doc": "The planet's look: what its env script and the shared sky, map and audio helpers read (PlanetDefinition.look()). world_type: a label for tools. sky / fog / sun / ambient / night / restored: values the env script applies (its own meaning per planet; colours are [r, g, b] or [r, g, b, a]). palette: key colours by role. junk_tint: the coat on junk [r, g, b, strength]. globe: the map globe (PlanetGlobe): seed, tilt and face (radians), spin (rad/s), au (light falloff), optional clouds {col_ruin, col_ok, cover_*, opacity_*, scale, band, storms, swirl, storm_size, sharp}, atmo {col_ruin, col_ok, strength_ruin, strength_ok, thickness, falloff} and ring (dust | ice | fire). orbit: this planet's place round the binary star (SolarSystem.planet): orbit_au, tilt_deg, sep_deg and sep_angle_deg (the companion sun's separation and direction), day_length_s, moons, day_stars. Other keys are flags the env script reads (no_lakes, pieces_mult, junk_biome, prefer_biome, district, exposure...).",
+  "world_type": "desert",
+  "junk_biome": "ochre_pit",
+  "prefer_biome": "dust_dunes",
+  "sky": {
+    "horizon_ruined": [
+      0.96,
+      0.72,
+      0.46
+    ],
+    "horizon_restored": [
+      1.0,
+      0.78,
+      0.48
+    ],
+    "zenith_ruined": [
+      0.36,
+      0.5,
+      0.74
+    ],
+    "zenith_restored": [
+      0.2,
+      0.45,
+      0.9
+    ],
+    "haze": [
+      0.98,
+      0.6,
+      0.3
+    ],
+    "night_zenith": [
+      0.02,
+      0.025,
+      0.06
+    ],
+    "night_horizon": [
+      0.12,
+      0.07,
+      0.07
+    ],
+    "sun_separation_deg": 24.0,
+    "sun_a_size": 2.0,
+    "sun_b_size": 1.15,
+    "halo": 0.35,
+    "energy": 0.75
+  },
+  "fog": {
+    "color_ruined": [
+      0.86,
+      0.6,
+      0.38
+    ],
+    "color_restored": [
+      0.7,
+      0.76,
+      0.86
+    ],
+    "density_ruined": 0.00035,
+    "density_restored": 0.00012,
+    "aerial": 0.12,
+    "height_fog": [
+      -14.0,
+      0.0008
+    ]
+  },
+  "sun": {
+    "color": [
+      1.0,
+      0.94,
+      0.8
+    ],
+    "energy": 3.4,
+    "b_color": [
+      1.0,
+      0.6,
+      0.36
+    ],
+    "b_energy": 0.9
+  },
+  "ambient": {
+    "energy": 0.7,
+    "color": [
+      1.0,
+      0.88,
+      0.7
+    ]
+  },
+  "palette": {
+    "ochre": [
+      0.86,
+      0.5,
+      0.19
+    ],
+    "terracotta": [
+      0.68,
+      0.24,
+      0.12
+    ],
+    "cream": [
+      0.94,
+      0.83,
+      0.62
+    ],
+    "plum": [
+      0.4,
+      0.2,
+      0.23
+    ],
+    "salt": [
+      0.8,
+      0.77,
+      0.7
+    ],
+    "oasis": [
+      0.1,
+      0.55,
+      0.54
+    ],
+    "leaf": [
+      0.36,
+      0.55,
+      0.22
+    ],
+    "ledger_yellow": [
+      0.86,
+      0.62,
+      0.12
+    ],
+    "line": [
+      0.78,
+      0.94,
+      1.0
+    ]
+  },
+  "junk_tint": [
+    0.82,
+    0.58,
+    0.36,
+    0.45
+  ],
+  "ground_tint": [
+    0.8,
+    0.55,
+    0.32,
+    0.62
+  ],
+  "biome": "ochre_pit",
+  "no_lakes": true,
+  "pieces_mult": 1.6,
+  "exposure": 0.82,
+  "globe": {
+    "seed": 1.3,
+    "face": -0.3,
+    "tilt": 0.22,
+    "spin": 0.035,
+    "au": 0.62,
+    "atmo": {
+      "col_ruin": [
+        0.95,
+        0.66,
+        0.38
+      ],
+      "col_ok": [
+        0.85,
+        0.7,
+        0.55
+      ],
+      "strength_ruin": 0.5,
+      "strength_ok": 0.45,
+      "thickness": 0.09,
+      "falloff": 0.35
+    },
+    "ring": "dust"
+  },
+  "orbit": {
+    "orbit_au": 0.72,
+    "tilt_deg": 8,
+    "sep_deg": 19,
+    "sep_angle_deg": 20,
+    "day_length_s": 1080,
+    "moons": []
+  }
+}

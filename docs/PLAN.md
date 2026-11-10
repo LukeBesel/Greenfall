@@ -173,6 +173,7 @@ Severity: **P1** blocks finishing or loses progress, **P2** hurts the experience
 
 | B33 | P2 | Nothing asks the player to buy the Research Desk, so "Finish a research project" can sit open for a long time. | Bug-fix pass |
 | B34 | P2 | A long bot run printed NaN transform errors and the crew stalled from minute 73 to 80; `--quit-after` did not stop that run. Needs triage. | Simulator calibration run |
+| B35 | P2 | `Research._ready` connects EventBus lambdas that are never disconnected, so research data is awarded once per world built (more after each reload or hub hop). | M1-07 |
 
 Triage is done: `docs/reviews/TRIAGE_M1.md` has the evidence, causes and suggested fixes. B2 was already fixed; B6 and B10 did not reproduce; B7 and B21 were faults in the bot and are fixed there; B9 needs a rendered check.
 

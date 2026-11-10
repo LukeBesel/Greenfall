@@ -1,7 +1,7 @@
 class_name OrbitPlanet
 extends Node3D
 ## [orbB] Phase B: one planet as a walkable globe, the world the slice builds on under --orbit
-## (scenes/slice_orbit.gd). The globe core of phase A's VerdanceGlobe as a reusable node:
+## (scenes/slice_orbit.gd). The globe core as a reusable node:
 ## survey data (PlanetData level 7, 163,842 cells), SphereGrid + SphereTerrain, per-cell state
 ## (SphereCells), the streamer, the walk surface, scoopable junk (SphereField + SphereJunkView),
 ## hub sites and radial gravity. No player, camera or HUD: the slice owns those.
@@ -10,16 +10,15 @@ extends Node3D
 ## Split for the phase B-E helpers:
 ## - OrbitDay  (planet/orbit/orbit_day.gd): sky, suns, real day/night sides (orbE).
 ## - OrbitCrews (planet/orbit/orbit_crews.gd): the SphereBot graph and far crews (orbC).
-## - Sites: _place_hubs / build_start_site here until PlanetEnvs.build_site lands (orbD).
+## - Sites: _place_hubs / build_start_site here; the prefabs are SiteManager's (orbD).
 
 const WATER: int = 5
 const START_SITE_M: float = 140.0  # start pad radius (the yard and its blocks)
-const HUB_SITE_M: float = 82.0  # [orbD] a ruin_block site prefab is 108 m square (corners at 76 m)
-const VERDANCE_HUB_SITE_M: float = 120.0  # [v3city] Verdance's hub towns (VerdanceSite.HUB_TOWN_R + a margin)
+const HUB_SITE_M: float = 82.0  # [orbD] pad radius of the other hubs unless the planet's sites table sets hub_pad_m
 const SITE_BLEND_M: float = 40.0
 
 var seed_value: int = 4471
-var spec: Dictionary = GlobeSpec.DEFAULT  # GlobeSpec.of(planet id): frequency, hub_count, radius
+var spec: Dictionary = {}  # PlanetDefinition.globe_spec(): id, frequency, hub_count, seed
 var planet: PlanetData
 var grid: SphereGrid
 var terrain: SphereTerrain
@@ -33,7 +32,7 @@ var hubs: Array[int] = []
 var sites: Array[Dictionary] = []
 var start_site: Node3D
 var site_manager: SiteManager  # [orbD] every hub's site prefab (planet/sites/)
-var planet_id: String = "verdance"  # [orbD] which planet's site prefabs
+var planet_id: String = ""  # [orbD] which planet's site prefabs ("" until built: the planet being played)
 var stats: Dictionary = {}
 ## Bodies the streamer keeps 3D around (key -> Node3D); "view" is the camera.
 var trackers: Dictionary = {}
@@ -41,23 +40,26 @@ var view_camera: Callable  # -> Vector3: where the camera is (for the "view" cen
 var _junk_dirty: bool = true
 
 
-## Builds the globe of `p_spec` (GlobeSpec.of: frequency, hub_count). planet_state /
+## Builds the globe of `p_spec` (PlanetDefinition.globe_spec: id, frequency, hub_count; empty or
+## partial: the planet being played fills in the rest). planet_state /
 ## cells_state are saved dicts (empty for a new game). n_hubs < 0: the spec's hub count.
 ## site_cells: a save's pads, in order (empty: pick them from the survey). before_field: called
 ## once the cells and sites exist, before the field reads them (old-save migration).
-func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1, planet_state: Dictionary = {}, cells_state: Dictionary = {}, site_cells := PackedInt32Array(), before_field := Callable()) -> void:
+func build(p_seed: int, p_spec: Dictionary = {}, n_hubs: int = -1, planet_state: Dictionary = {}, cells_state: Dictionary = {}, site_cells := PackedInt32Array(), before_field := Callable()) -> void:
 	seed_value = p_seed
-	spec = p_spec
-	var f: int = int(spec.get("frequency", GlobeSpec.VERDANCE_FREQ))
+	spec = Planets.current().globe_spec()
+	spec.merge(p_spec, true)
+	planet_id = str(spec["id"])
+	var f: int = int(spec["frequency"])
 	var t0: int = Time.get_ticks_msec()
-	grid = SphereGrid.for_freq(f, GlobeSpec.HEX_M)
+	grid = SphereGrid.for_freq(f, PlanetDefinition.CELL_M)
 	stats["grid_load_ms"] = Time.get_ticks_msec() - t0  # [orbE]
 	var lv: int = SphereGrid.level_of_freq(f)
 	# The survey runs on the same cells: level grids keep their GeoSphere, others share this grid.
-	planet = PlanetData.new(seed_value, lv, GlobeSpec.HEX_M) if lv >= 0 else PlanetData.new(seed_value, 0, GlobeSpec.HEX_M, GeoSphere.from_grid(grid))
+	planet = PlanetData.new(seed_value, lv, PlanetDefinition.CELL_M) if lv >= 0 else PlanetData.new(seed_value, 0, PlanetDefinition.CELL_M, GeoSphere.from_grid(grid))
 	terrain = SphereTerrain.new(grid, seed_value)
 	# [orbE] The survey and the terrain's elevation are pure data: behind the loading screen they run
-	# on a worker thread while the bar keeps moving (Anvil: 2-4 s that froze the first frame).
+	# on a worker thread while the bar keeps moving (2-4 s that froze the first frame on the largest globe).
 	var survey := func() -> void:
 		planet.generate()
 		if not planet_state.is_empty():
@@ -147,8 +149,9 @@ func _place_hubs(n: int, fresh: bool, saved := PackedInt32Array()) -> void:
 				best = h
 		picks.append(best)
 	var blocked := func(c: int) -> bool: return cells.state[c] == WATER
+	var hub_r: float = SiteBuilders.hub_pad_m(planet_id, HUB_SITE_M)
 	for i: int in picks.size():
-		var r: float = START_SITE_M if i == 0 else (VERDANCE_HUB_SITE_M if str(spec.get("id", "verdance")) == "verdance" else HUB_SITE_M)
+		var r: float = START_SITE_M if i == 0 else hub_r
 		var s: Dictionary = terrain.reserve_site(picks[i], r, SITE_BLEND_M, blocked)
 		if s.is_empty():
 			s = terrain.reserve_site(picks[i], r, SITE_BLEND_M)  # coast: allow it
@@ -184,9 +187,10 @@ func _clear_sites() -> void:
 
 
 ## [v1yard] The start yard's per-piece keep-out (the pad, the pod; SiteManager adds the building
-## footprints), or null off Verdance (other planets' start prefabs keep the 22 m clear core).
+## footprints), or null on a planet whose sites table has no yard_keep_out (its start prefab keeps
+## the 22 m clear core).
 func yard_keep_out() -> YardKeepOut:
-	if _keep_out == null and not sites.is_empty() and str(spec.get("id", "verdance")) == "verdance":
+	if _keep_out == null and not sites.is_empty() and SiteBuilders.has_yard_keep_out(planet_id):
 		_keep_out = YardKeepOut.for_site(sites[0], terrain)
 	return _keep_out
 
@@ -208,14 +212,13 @@ func site_at(p: Vector3) -> int:
 
 
 ## Stand-in start base in site-local metres on the flat pad (y = 0 is the pad, +y up): the
-## contract PlanetEnvs.build_site gets (orbD replaces this with the real yard prefab).
+## contract SiteBuilders.build_site gets (orbD replaces this with the real yard prefab).
 func build_start_site() -> Node3D:
 	# [orbD] The real hub sites: SiteManager builds the start yard prefab now (in this frame, so
 	# its anchors are ready for the depot) and the other hubs as Lumi comes near.
 	site_manager = SiteManager.new()
 	site_manager.name = "Sites"
 	add_child(site_manager)
-	planet_id = str(spec.get("id", planet_id))  # [orbD] --orbit-planet: that planet's site prefabs
 	site_manager.setup(self, planet_id, sites, seed_value)
 	# [orbE] Behind the loading screen the yard builds across frames like the flat district (it
 	# was one 5-7 s frame); without a budget it builds at once, as before.

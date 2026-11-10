@@ -1,7 +1,7 @@
 class_name YardSite
 extends Node3D
 ## [orbD] The start yard's models on the walkable globe, on the hub-0 site prefab's anchors
-## (VerdanceSite.START_YARD_ANCHORS). Every model is the yard helper's own (YardArt, the build
+## (SitePrefab.START_YARD_ANCHORS). Every model is the yard helper's own (YardArt, the build
 ## scripts, the intro's pod); nothing is redrawn here. Who shows what:
 ##   Camp (systems/camp/camp.gd) drives the parts it drives on the flat game, through the slice's
 ##   `_ruin_bits`: the lean-to (frame, roof, back, side, work lamp, bulb, posts), the bench

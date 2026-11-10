@@ -51,7 +51,7 @@ static func _reached(state: PackedByteArray, n: int, discs: Array, start: Vector
 		return -1 if ix < 0 or iz < 0 or ix >= n or iz >= n else iz * n + ix
 	# [orbE] The discs rasterised once into a mask (same test per cell as before: closer than the
 	# disc's radius, the landing spot excepted). The flood fill checked every disc for every cell:
-	# ~20 discs x 62k cells per fill, ~5 s for a start yard on Anvil.
+	# ~20 discs x 62k cells per fill, ~5 s for a start yard on the largest globe.
 	var mask := PackedByteArray()
 	mask.resize(n * n)
 	for d: Array in discs:
@@ -342,7 +342,7 @@ static func nearest_free(p: SitePrefab, terrain: SphereTerrain, local: Vector3, 
 
 
 ## Moves a prefab's standard anchors out of its geometry (builders that don't know the anchor
-## defaults: Ochre's yard, Tidewell's raft deck). The rocket pad moves so that the spot Lumi
+## defaults: a planet's own yard or raft deck). The rocket pad moves so that the spot Lumi
 ## steps off to is free. Returns the anchors moved.
 # --- [orbE] Frame budget ------------------------------------------------------------------
 ## Behind the loading screen the audit yields on the loader's BuildBudget. In play (a hub built
@@ -382,7 +382,7 @@ static func _pause(at: String) -> void:
 
 
 ## [orbE] A coroutine: behind the globe's loading screen it yields between candidate spots (the
-## yard's 16 machines took ~5 s of flood fills in one frame on Anvil); without a BuildBudget it
+## yard's 16 machines took ~5 s of flood fills in one frame on the largest globe); without a BuildBudget it
 ## runs straight through, exactly as before.
 static func fix_anchors(p: SitePrefab, terrain: SphereTerrain) -> PackedStringArray:
 	var moved := PackedStringArray()

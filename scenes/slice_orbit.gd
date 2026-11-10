@@ -55,15 +55,16 @@ func build(p_world: Node3D) -> void:
 		loaded = SaveManager.load_game()
 	var od: Dictionary = OrbitSave.migrate(GameState.orbit) if loaded else {}
 	var preload_n: int = OrbitPreload.start()  # [orbE] junk models load on threads while the planet builds
-	# The planet: --orbit-planet=<id>, else the saved one, else the current planet. Its size is data (GlobeSpec).
-	var pid: String = GlobeSpec.current_id() if DevHooks.has("orbit-planet") else str(od.get("planet_id", String(Planets.current_id())))
-	var spec: Dictionary = GlobeSpec.of(pid)
+	# The planet being played (Planets.current(); the dev flag --orbit-planet=<id> picks another at
+	# boot). Its size is data (PlanetDefinition.globe_spec).
+	var pid: String = String(Planets.current_id())
+	var spec: Dictionary = Planets.current().globe_spec()
 	if int(od.get("freq", spec["frequency"])) != int(spec["frequency"]) or str(od.get("planet_id", pid)) != pid:
 		push_warning("[orbit] saved globe is %s f=%d, building %s f=%d fresh" % [od.get("planet_id", "?"), int(od.get("freq", 0)), pid, int(spec["frequency"])])
 		od = {}
 		loaded = false
 		GameState.orbit = {}
-	var seed_v: int = int(DevHooks.get_f("seed", float(od.get("seed", spec.get("seed", 4471)))))
+	var seed_v: int = int(DevHooks.get_f("seed", float(od.get("seed", spec["seed"]))))
 	globe = OrbitPlanet.new()
 	globe.name = "Globe"
 	w.add_child(globe)
@@ -92,7 +93,7 @@ func build(p_world: Node3D) -> void:
 	w.set("view", globe.junk_view)
 	w.set("anchor_cell", globe.start_cell())
 	w.set("hub_index", 0)
-	w.set("district_name", pid.capitalize())
+	w.set("district_name", Planets.current().display_name)
 	day = OrbitDay.new()
 	day.name = "Day"
 	w.add_child(day)
@@ -1067,7 +1068,7 @@ func persist_save() -> void:
 	pd.erase("yaw")
 	GameState.orbit = {
 		"schema": SCHEMA,
-		"planet_id": str(g.spec.get("id", "verdance")),
+		"planet_id": g.planet_id,
 		"freq": g.grid.freq,
 		"seed": g.seed_value,
 		"cells_n": g.grid.cell_count(),

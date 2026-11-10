@@ -44,7 +44,7 @@ func refresh() -> void:
 		sv.add_child(UITheme.label(tr("Not built yet"), 20, UITheme.CREAM))
 		var l := UITheme.label(tr("The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Upgrades tab.") % lvl, 14, UITheme.MUTED)
 		if not Demo.rockets_allowed():  # [steam]
-			l.text = tr("Rockets to the rest of Verdance are in the full game. The demo stays in the first district.")
+			l.text = Planets.current().name_in(tr("Rockets to the rest of {planet} are in the full game. The demo stays in the first district."))
 		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		sv.add_child(l)
 	var bar := ProgressBar.new()

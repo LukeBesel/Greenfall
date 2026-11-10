@@ -1,4 +1,0 @@
-{
-  "_doc": "Bookkeeping for parked features (parked/README.md, task M1-08). stats: GameState.stats keys that only a parked feature writes. A planet's goal table may still hold goals that wait on one of them; the goal chain leaves those out (Goals.playable in story/goals.gd), so the tracker never shows a goal nobody can finish. When a feature comes back, take its stats off this list. When no planet table holds such goals any more, delete this file and the filter.",
-  "stats": ["drive_tier", "planets_landed", "planets_restored", "last_seed", "homecoming", "ark_waves", "ark_bridge_opened", "heirloom_levels", "worlds_seeded"]
-}

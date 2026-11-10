@@ -11,7 +11,7 @@ reasons behind it: docs/DECISIONS.md, "Planet audio".
 | `audio/music_tracks.gd` | The composed tracks (data): motifs, progressions, grooves, restored variants |
 | `audio/music_synth.gd` | Base instruments (pads, felt piano, kalimba, bell, bass, shaker, kick, air) |
 | `audio/planet_synth.gd` | Planet and groove instruments, built lazily per group |
-| `audio/planet_themes.gd` | Planet ids and the modes the tracks use |
+| `audio/planet_themes.gd` | The modes the tracks use. A planet picks its music set (tracks, instruments, ambience bed) with `music_set` in its PlanetDefinition; `MusicTracks.SETS` lists the sets |
 | `audio/ambience.gd`, `audio/ambience_synth.gd` | Planet ambience beds (loops + random events) |
 | `audio/music_hooks.gd` | Drives mood, intensity, restoration and activity from the game |
 

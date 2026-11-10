@@ -140,7 +140,7 @@ var _rebuild_shell_later: bool = false
 ## Blocks until every wanted chunk is built (loading screens, tests, screenshots).
 ## [orbE] near_only: only the full-detail (LOD 0) and collision chunks block; mid-distance
 ## chunks are queued and stream in during the first seconds of play (the far shell covers them).
-## Loading screens use it: Anvil's settle went from ~7-14 s to the near ring only.
+## Loading screens use it: the largest globe's settle went from ~7-14 s to the near ring only.
 func settle(max_ms: int = 20000, near_only: bool = false) -> void:
 	var t0: int = Time.get_ticks_msec()
 	_update_wants()

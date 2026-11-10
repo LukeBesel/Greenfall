@@ -22,6 +22,25 @@ Status: started in Phase 0 (Nov 9, 2026). Sections marked *(fills in during Mx)*
 
 A new planet should need no change outside its folder. If it does, the shared system is missing a data field: add the field, do not add a branch.
 
+### What a planet folder holds today (M1-07)
+`Planets` registers every `planets/<id>/planet.tres` at start. `shipped = false` keeps a planet out of the game but loadable by id (tests, and the dev flag `--orbit-planet=<id>`). Five are registered: the first planet ships; four later ones are parked as data (their READMEs say what they inherit).
+
+| In the definition | What it is for | Read by |
+|---|---|---|
+| `id`, `display_name`, `tagline`, `order`, `shipped` | Identity. Text takes the name through `name_in("... {planet} ...")` | `Planets`, HUD, story text |
+| `globe_frequency`, `hub_count`, `world_seed` | Globe size (10 m cells, radius 14.375 m per unit of frequency), number of hub sites, seed: `globe_spec()` | `OrbitPlanet`, `SphereOffline` |
+| `tables` | Table name to JSON file. Five are required; the rest are optional | `Economy.planet_table(name)` |
+| `tables["look"]` | Sky, fog, sun, ambient, palette, junk tint (the env script's values), `globe` (the map globe) and `orbit` (place round the binary star) | the env script, `PlanetGlobe`, `SolarSystem` |
+| `tables["sites"]` | The hub and landmark site list, plus `hub_pad_m`, `fill_pad`, `yard_keep_out` | `SiteBuilders`, `OrbitPlanet` |
+| `sites_script` | Static hooks that build the sites: `build_site` (or `build_async` / `build` / `place`), optional `restyle_site`, `build_surroundings` | `SiteBuilders` only |
+| `env_script` | Static hooks for the planet's own environment art: `dev_hub`, `prepare_field`, `dress_view`, `apply` | `PlanetDefinition.call_env` only |
+| `globe_shader` | Surface shader of the map globe (empty: the shared rocky world) | `PlanetGlobe` |
+| `music_set` | One of `MusicTracks.SETS`: tracks, instruments and ambience bed | `Audio` |
+
+A site script that is a town on a street grid extends the shared `TownSite` (`planet/sites/town_site.gd`), so the garden, street power and outposts can read its streets without knowing the planet. A planet with no sites table gets a bare pad with the shared yard anchors (`SitePrefab.START_YARD_ANCHORS`).
+
+Two tests hold the rule: `tests/test_planets.gd` fails when a shared script quotes a planet id or a planet folder, and `tests/test_planet_reuse.gd` builds, runs, saves and loads the world on the dummy planet in `tests/fixtures/planets/testworld/` (five small tables, one site, one 18-line sites script).
+
 ## 2. What made Planet 1 addictive *(fills in during M3-M6)*
 Design intent, to be confirmed by measurement:
 - A win every 20-40 seconds and a purchase within 3 minutes, at every stage.

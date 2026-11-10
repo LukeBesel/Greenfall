@@ -82,7 +82,7 @@ Owner decisions are in `docs/DECISIONS.md` ("Round planets"). Phase A is on `wt/
 **Goal:** every hub is a site prefab on its pad, with the start yard as the shared vision describes it. The rocket hops between hubs, and boost/vehicle cover ground nearby.
 
 1. **Site API:**
-   - `PlanetEnvs` (`planet/planets/planet_envs.gd`, `data/planets.json`) gets `build_site(site_root: Node3D, site: Dictionary, stage: int, restoration: float)`.
+   - `SiteBuilders` (`planet/sites/site_builders.gd`; the planet's `sites` table and `sites_script`, since M1-07) has `build_site(site_root: Node3D, site: Dictionary, stage: int, restoration: float)`.
    - `site` is what `SphereTerrain.reserve_site` returns: `transform`, `flat`, `blend`, `cells`.
    - The cloud renders showed grey-box buildings: those were phase-A stand-ins. Real city dressing (the flat game's `StreetDressing`/`CityView` buildings, props and materials) must come over here; nothing blocky ships.
    - Prefabs are 60-100 m and built in site-local metres (+Y up, y = 0 on the pad), with their own collision. They provide named anchors (`depot`, `bench`, `rocket_pad`, `door`) and `set_stage` / `set_restoration`.

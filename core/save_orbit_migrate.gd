@@ -3,7 +3,7 @@ extends RefCounted
 ## [orbB] Old (flat) saves onto the walkable globe. A flat save keeps its whole-planet survey in
 ## GameState.planet_state: PlanetData at level 6 (40,962 cells), where every district hex wrote
 ## its junk left to its planet cell (slice.gd slice_cells / collect_piece). The globe is level 7
-## (Verdance, f = 128) and the grid is hierarchical: a level-6 id is the same level-7 id, and
+## (the first planet, f = 128) and the grid is hierarchical: a level-6 id is the same level-7 id, and
 ## every other level-7 cell is the midpoint of a level-6 edge, so its parent is the nearer of its
 ## two level-6 neighbours. Each changed level-6 cell's junk fraction is spread over the level-7
 ## cells it covers; base levels move to the nearest globe hub; Lumi starts on the start site with

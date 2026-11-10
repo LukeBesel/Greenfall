@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="PlanetDefinition" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://core/planet_definition.gd" id="1"]
+[ext_resource type="Script" path="res://planets/tidewell/env.gd" id="2"]
+[ext_resource type="Script" path="res://planets/tidewell/sites.gd" id="3"]
+[ext_resource type="Shader" path="res://planets/tidewell/globe.gdshader" id="4"]
+
+[resource]
+script = ExtResource("1")
+id = &"tidewell"
+display_name = "Tidewell"
+tagline = "An ocean world. The Ledger's dredging rigs still stand in the shallows."
+order = 2
+shipped = false
+globe_frequency = 166
+hub_count = 12
+world_seed = 4471
+target_playtime_min = 240.0
+tables = Dictionary[String, String]({
+"pollution": "res://planets/verdance/data/junk.json",
+"upgrades": "res://planets/verdance/data/upgrades.json",
+"regrowth": "res://planets/verdance/data/hex_levels.json",
+"tutorial": "res://planets/verdance/data/objectives.json",
+"goals": "res://planets/verdance/data/goals.json",
+"look": "res://planets/tidewell/data/look.json",
+"sites": "res://planets/tidewell/data/sites.json"
+})
+env_script = ExtResource("2")
+sites_script = ExtResource("3")
+globe_shader = ExtResource("4")
+palette = Dictionary[String, Color]({})
+music_set = "ocean_swell"

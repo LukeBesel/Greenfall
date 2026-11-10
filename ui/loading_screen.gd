@@ -13,7 +13,7 @@ extends CanvasLayer
 ##   3. ShaderWarmup draws every material in the new scene once, off-screen behind this cover,
 ##      for a few frames so the first gameplay frames neither hitch nor flash,
 ## then it fades out. [v1menu] The picture (owner, 2026-11-08: "simple, clean, continuous"): a
-## night sky with a small round Verdance in the middle, red Pixel Lumi orbiting it, and a thin
+## night sky with a small round planet in the middle, red Pixel Lumi orbiting it, and a thin
 ## progress ring around the planet. All 2D on this canvas (the 3D LoadingVignette, whose Lumi
 ## showed two sets of eyes, is dormant); animation steps are capped per frame so a long build
 ## slice slows the orbit for a frame instead of making it jump.
@@ -316,7 +316,7 @@ func _headless() -> bool:
 	return DisplayServer.get_name() == "headless" or DevHooks.has("shot")
 
 
-# --- [v1menu] The picture: night sky, round Verdance, orbiting Lumi, progress ring ----------
+# --- [v1menu] The picture: night sky, round planet, orbiting Lumi, progress ring ----------
 
 func _reset_pieces() -> void:
 	if _stars.size() > 0:
@@ -376,7 +376,7 @@ func _draw_bar() -> void:
 	c.draw_string(font, Vector2((sz.x - pw) * 0.5, ctr.y + RING_R + ORBIT.y * 0.2 + 40.0), pct, HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color(CREAM, 0.5))
 
 
-## A small round Verdance: sea, a few green lands, a lit side and a soft atmosphere rim.
+## A small round planet: sea, a few green lands, a lit side and a soft atmosphere rim.
 func _draw_planet(c: Control, ctr: Vector2) -> void:
 	for k: int in 6:
 		c.draw_circle(ctr, PLANET_R + 34.0 - k * 6.0, Color(ATMO, 0.012 + k * 0.006))

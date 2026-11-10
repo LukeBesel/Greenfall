@@ -2,8 +2,8 @@ class_name CoreCharge
 extends Node
 ## Lumi's Bloom Core: the charge (0..1) its green-light core gets back from the life it grows.
 ## Fed by blooms (stats.plants_bloomed), this district's hex levels (plants/hex_levels.gd) and
-## progress toward the Verdance Bloom milestone (systems/bloom.gd: Thriving hexes / districts /
-## planet fraction). It never drops. 100% is exactly the Verdance Bloom, which plays the finale
+## progress toward the finale Bloom milestone (systems/bloom.gd: Thriving hexes / districts /
+## planet fraction). It never drops. 100% is exactly the finale milestone, which plays the finale
 ## (story/bloom_finale.gd: the ark comes home). Milestone beats, each once:
 ##   25%  WREN's signal clears; a memory of the ark's garden deck (off-world flashback).
 ##   50%  Lumi's glow brightens for good (PatchModel.core_glow).
@@ -16,7 +16,7 @@ extends Node
 const START := 0.04
 const BEATS: Array[int] = [25, 50, 75, 100]
 const CHECK_S := 1.5
-## Weights: blooms, hex level points, Verdance Bloom progress (sum with START is 1.0).
+## Weights: blooms, hex level points, finale milestone progress (sum with START is 1.0).
 const W_BLOOMS := 0.16
 const BLOOMS_FULL := 40.0
 const W_LEVELS := 0.2
@@ -37,7 +37,7 @@ var _star: Node3D
 
 # --- Pure helpers (tests) ----------------------------------------------------------------
 
-## Charge from the inputs. bloom_progress = 0..1 toward the Verdance Bloom. Never reaches 1.0
+## Charge from the inputs. bloom_progress = 0..1 toward the finale milestone. Never reaches 1.0
 ## until that milestone is actually done, so the finale and "core full" stay the same moment.
 static func compute(blooms: float, level_points: float, bloom_progress_: float, bloom_done: bool) -> float:
 	if bloom_done:
@@ -47,12 +47,12 @@ static func compute(blooms: float, level_points: float, bloom_progress_: float, 
 	return minf(c, 0.99)
 
 
-## Smooth progress toward the Verdance Bloom from a Bloom.measure() dict (the milestone's own
+## Smooth progress toward the finale milestone from a Bloom.measure() dict (the milestone's own
 ## conditions, plus Thriving hexes as a stand-in for whole districts so it moves steadily).
 static func bloom_progress(m: Dictionary) -> float:
 	var ms: Dictionary = {}
 	for x: Dictionary in Bloom.milestones():
-		if str(x.get("id", "")) == "verdance_bloom":
+		if str(x.get("id", "")) == Bloom.finale_id():
 			ms = x
 	var p: float = Bloom.progress(ms, m) if not ms.is_empty() else 0.0
 	var per_district: float = float(Bloom.cfg().get("thriving_district_ratio", 0.6)) * float(Bloom.cfg().get("default_land_hexes", 230))
@@ -64,7 +64,7 @@ static func bloom_progress(m: Dictionary) -> float:
 ## [beat] 0..1 along the critical path to the Cradle: bases at level 5 (2 open the Dust Flats),
 ## each of the three frontiers visited, its base levelled and half its land Growing, then the
 ## Cradle Returns visited, its pad clean and the district Growing. Reaches ~0.72 on arriving at
-## the Cradle (the 75% beat) and 1.0 only when the Cradle is complete (also the Verdance Bloom).
+## the Cradle (the 75% beat) and 1.0 only when the Cradle is complete (also the finale milestone).
 static func campaign_progress(frontier_hubs: Dictionary) -> float:
 	var p: float = 0.03 * mini(Frontiers.bases_at_level(5), 2)
 	for fid: String in ["dust_flats", "frozen_port", "sunken_city"]:
@@ -156,7 +156,7 @@ func measure() -> float:
 			levels += float(hl.levels[id])
 	var bl: Node = world.get_node_or_null("Bloom") if world else null
 	var m: Dictionary = (bl as Bloom).measure_now() if bl is Bloom else {}
-	return compute(blooms, levels, bloom_progress(m), Bloom.is_done("verdance_bloom"))
+	return compute(blooms, levels, bloom_progress(m), Bloom.is_done(Bloom.finale_id()))
 
 
 func _process(delta: float) -> void:

@@ -231,7 +231,7 @@ func regrowth_table() -> Dictionary:
 
 func _load_chains() -> void:
 	objectives = _rows("tutorial", "objectives")
-	goals.assign(Goals.playable(_rows("goals", "goals")))
+	goals.assign(_rows("goals", "goals"))
 	goals_visible = int(Economy.planet_table("goals").get("visible", 3))
 	hub_levels = _rows("hub", "levels")
 	tower_tiers = _rows("signal_tower", "tiers")

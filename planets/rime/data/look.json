@@ -1,0 +1,175 @@
+{
+  "_doc": "The planet's look: what its env script and the shared sky, map and audio helpers read (PlanetDefinition.look()). world_type: a label for tools. sky / fog / sun / ambient / night / restored: values the env script applies (its own meaning per planet; colours are [r, g, b] or [r, g, b, a]). palette: key colours by role. junk_tint: the coat on junk [r, g, b, strength]. globe: the map globe (PlanetGlobe): seed, tilt and face (radians), spin (rad/s), au (light falloff), optional clouds {col_ruin, col_ok, cover_*, opacity_*, scale, band, storms, swirl, storm_size, sharp}, atmo {col_ruin, col_ok, strength_ruin, strength_ok, thickness, falloff} and ring (dust | ice | fire). orbit: this planet's place round the binary star (SolarSystem.planet): orbit_au, tilt_deg, sep_deg and sep_angle_deg (the companion sun's separation and direction), day_length_s, moons, day_stars. Other keys are flags the env script reads (no_lakes, pieces_mult, junk_biome, prefer_biome, district, exposure...).",
+  "world_type": "ice_moon",
+  "biome": "rime",
+  "sky": {
+    "shader": "res://planets/rime/rime_sky.gdshader",
+    "zenith": [
+      0.004,
+      0.008,
+      0.026
+    ],
+    "horizon": [
+      0.1,
+      0.19,
+      0.32
+    ],
+    "stars_day": 0.8,
+    "giant_dir": [
+      -0.36,
+      0.38,
+      -0.85
+    ],
+    "giant_radius_deg": 6.5,
+    "ring_tilt_deg": 0.0,
+    "aurora": 0.55,
+    "giant_fade": 0.18,
+    "night_zenith": [
+      0.004,
+      0.008,
+      0.022
+    ]
+  },
+  "fog": {
+    "color": [
+      0.55,
+      0.68,
+      0.9
+    ],
+    "density": 0.0006,
+    "aerial": 0.35,
+    "height": 1.6,
+    "height_density": 0.006
+  },
+  "sun": {
+    "color": [
+      0.95,
+      0.96,
+      1.0
+    ],
+    "energy": 1.9,
+    "size_mult": 0.32,
+    "energy_mult": 0.62
+  },
+  "ambient": {
+    "color": [
+      0.6,
+      0.72,
+      0.92
+    ],
+    "energy": 1.0,
+    "sky_contribution": 0.4
+  },
+  "palette": {
+    "ice": [
+      0.3,
+      0.55,
+      0.78
+    ],
+    "ice_deep": [
+      0.06,
+      0.2,
+      0.42
+    ],
+    "snow": [
+      0.93,
+      0.96,
+      1.0
+    ],
+    "crevasse": [
+      0.3,
+      0.7,
+      1.0
+    ],
+    "rust": [
+      0.42,
+      0.24,
+      0.16
+    ],
+    "ledger_paint": [
+      0.86,
+      0.42,
+      0.12
+    ],
+    "moss": [
+      0.3,
+      0.42,
+      0.17
+    ],
+    "pool": [
+      0.16,
+      0.62,
+      0.66
+    ],
+    "lantern": [
+      1.0,
+      0.78,
+      0.5
+    ],
+    "future_line": [
+      0.62,
+      0.9,
+      1.0
+    ]
+  },
+  "junk_tint": [
+    0.86,
+    0.93,
+    1.0,
+    0.6
+  ],
+  "night": {
+    "giantshine": 1.05,
+    "ambient": 1.0,
+    "exposure": 1.95,
+    "ambient_color": [
+      0.4,
+      0.5,
+      0.74
+    ]
+  },
+  "globe": {
+    "seed": 2.2,
+    "tilt": 0.12,
+    "spin": 0.025,
+    "au": 3.9,
+    "atmo": {
+      "col_ruin": [
+        0.62,
+        0.8,
+        1.0
+      ],
+      "col_ok": [
+        0.55,
+        0.85,
+        1.0
+      ],
+      "strength_ruin": 0.5,
+      "strength_ok": 0.6,
+      "thickness": 0.04
+    },
+    "ring": "ice"
+  },
+  "orbit": {
+    "orbit_au": 2.7,
+    "tilt_deg": 4,
+    "sep_deg": 5.5,
+    "sep_angle_deg": -15,
+    "day_length_s": 1500,
+    "day_stars": true,
+    "moons": [
+      {
+        "name": "Vane",
+        "size": 4.0,
+        "color": [
+          0.78,
+          0.7,
+          0.58
+        ],
+        "orbit": 3.0,
+        "ringed": true,
+        "kind": "gas_giant"
+      }
+    ]
+  }
+}

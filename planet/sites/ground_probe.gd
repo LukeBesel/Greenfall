@@ -1,7 +1,7 @@
 class_name GroundProbe
 extends Node
 ## [v3qa] Dev QA: `--orbit --ground-probe[=FRAMES] [--ground-probe-r=M] [--ground-probe-quit]`.
-## Owner item 41 (no glitches on Verdance). After the start area streams in, lists what looks
+## Owner item 41 (no glitches on the ground). After the start area streams in, lists what looks
 ## wrong on the ground around Lumi:
 ##   - floating: a visible prop whose lowest corner is over GAP m above the terrain and that
 ##     nothing (another mesh's box or a collider) holds up;
