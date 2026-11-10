@@ -260,6 +260,10 @@ func proxy_building(bd: Dictionary, body: Geo, det: Geo) -> void:
 	tint = tint.lightened(rng.randf_range(-0.04, 0.06))
 	var roof_tint: Color = ROOF_TINTS[rng.randi() % ROOF_TINTS.size()]
 	var roof_flags: int = (F_ROOF_CONCRETE if rng.randf() < 0.35 else 0) | (F_ROOF_SEAMS_X if rng.randf() < 0.5 else 0)
+	if bd.has("tint"):  # a caller's own paint (a planet's house colours) over the drawn palette
+		tint = bd["tint"]
+	if bd.has("roof_tint"):
+		roof_tint = bd["roof_tint"]
 	var flags: int = F_RIBBON if factory else 0
 	var shop: bool = not factory and rng.randf() < 0.7
 	var uvo: Vector2 = _bay_uv(r, int(bd["seed"]) & 0xffff)

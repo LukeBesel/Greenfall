@@ -32,7 +32,25 @@ const ARCH: Array = [
 	["works", 15.0, 12.0, 3, "factory"],
 ]
 const PROPS: Array[String] = ["car", "pole", "tank", "fence"]
-const VARIANTS: int = 3  # looks per archetype (palette, shopfront, roof clutter)
+const VARIANTS: int = 5  # looks per archetype (paint, roof, shopfront, roof clutter)
+## Paint per look: [wall, roof]. Look 0 keeps the building kit's own palette; the others are the
+## town's house paints and roof colours, worn by the facade texture on top (style guide 9).
+const HOUSE_PAINT: Array = [
+	[],
+	[Color(0.7, 0.92, 0.8), Color(0.66, 0.26, 0.2)],
+	[Color(1.0, 0.88, 0.56), Color(0.26, 0.46, 0.34)],
+	[Color(1.0, 0.66, 0.56), Color(0.3, 0.38, 0.54)],
+	[Color(0.64, 0.82, 1.0), Color(0.78, 0.42, 0.26)],
+]
+const WORKS_PAINT: Array = [
+	[],
+	[Color(0.98, 0.8, 0.36), Color(0.36, 0.38, 0.42)],
+	[Color(0.5, 0.68, 0.9), Color(0.62, 0.28, 0.22)],
+	[Color(0.9, 0.5, 0.4), Color(0.7, 0.7, 0.68)],
+	[Color(0.56, 0.78, 0.7), Color(0.34, 0.44, 0.38)],
+]
+## Wreck paint: one MultiMesh per colour.
+const CAR_PAINT: Array[String] = ["#7a3b30", "#1f8f8a", "#e2b21f", "#e8e4d8", "#c7322a"]
 
 var grid: SphereGrid
 var terrain: SphereTerrain
@@ -87,6 +105,10 @@ func _build_archetypes() -> void:
 		var d: float = a[2]
 		var r := Rect2(-w * 0.5, -d * 0.5, w, d)
 		var bd: Dictionary = {"rect": r, "face": Vector2(0, 1), "bays": int(w / 3.0), "floors": int(a[3]), "style": a[4], "seed": 9001 + vi * 7919, "ruined": vi % 2 == 1}
+		var paint: Array = (WORKS_PAINT if a[4] == "factory" else HOUSE_PAINT)[vi % VARIANTS]
+		if not paint.is_empty():
+			bd["tint"] = paint[0]
+			bd["roof_tint"] = paint[1]
 		var body := BuildingDetail.Geo.new()
 		var dg := BuildingDetail.Geo.new()
 		det.proxy_building(bd, body, dg)
@@ -102,7 +124,9 @@ func _build_archetypes() -> void:
 		_mm_near.append(_mmi("Near_" + str(a[0]), near_g.mesh(), mat, true))
 		_mm_far.append(_mmi("Far_" + str(a[0]), body.mesh(), mat, false))
 	for p: String in PROPS:
-		_mm_props.append(_mmi("Prop_" + p, _prop_mesh(p), null, p != "fence"))
+		_mm_props.append(_mmi("Prop_" + p, _prop_mesh(p, CAR_PAINT[0]), null, p != "fence"))
+	for ci: int in range(1, CAR_PAINT.size()):  # the other wreck colours, after the base props
+		_mm_props.append(_mmi("Prop_car_%d" % ci, _prop_mesh("car", CAR_PAINT[ci]), null, true))
 
 
 ## (No visibility ranges: a MultiMesh spans the whole ring, so near/far is split per instance on
@@ -122,12 +146,12 @@ func _mmi(nm: String, mesh: Mesh, mat: Material, shadow: bool) -> MultiMeshInsta
 	return mi
 
 
-func _prop_mesh(p: String) -> Mesh:
+func _prop_mesh(p: String, car_paint: String) -> Mesh:
 	var b := KitMesh.Builder.new(77, {}, "broken")
 	match p:
 		"car":
-			b.box("paint:#7a3b30", Vector3(1.78, 0.62, 4.2), KitMesh.xf(Vector3(0, 0.6, 0)), 0.09)
-			b.box("paint:#7a3b30", Vector3(1.6, 0.5, 2.0), KitMesh.xf(Vector3(0, 1.15, -0.15)), 0.08)
+			b.box("paint:" + car_paint, Vector3(1.78, 0.62, 4.2), KitMesh.xf(Vector3(0, 0.6, 0)), 0.09)
+			b.box("paint:" + car_paint, Vector3(1.6, 0.5, 2.0), KitMesh.xf(Vector3(0, 1.15, -0.15)), 0.08)
 			b.box("glass", Vector3(1.62, 0.36, 1.8), KitMesh.xf(Vector3(0, 1.17, -0.15)), 0.02)
 			for sx: float in [-0.78, 0.78]:
 				for sz: float in [-1.35, 1.35]:
@@ -214,8 +238,8 @@ func _decide(c: int) -> Array:
 	if kind == -99:
 		# Props on the open ground: wrecks, poles along the suburbs, tanks by the works, fences.
 		var pr: float = _hash01(c, 6)
-		if zone == 0 and pr < 0.035:
-			kind = -1  # car
+		if zone == 0 and pr < 0.12:  # open junk fields: wrecks, and now and then a tank or a run of fence
+			kind = -1 if pr < 0.075 else (-3 if pr < 0.09 else -4)
 		elif zone == 1 and pr < 0.07:
 			kind = -2 if pr < 0.05 else -1
 		elif zone == 2 and pr < 0.1:
@@ -248,7 +272,7 @@ func _decide(c: int) -> Array:
 		return out
 	var base: float = hi if kind >= 0 else (lo + hi) * 0.5
 	var xf := Transform3D(b, d2 * (terrain.R + base - (0.05 if kind >= 0 else 0.0)))
-	out.append([kind, xf, size, posmod(hash([seed_value, c, 12]), VARIANTS)])
+	out.append([kind, xf, size, posmod(hash([seed_value, c, 12]), VARIANTS * CAR_PAINT.size())])
 	return out
 
 
@@ -305,7 +329,7 @@ func _rebuild(pos: Vector3) -> void:
 	for i: int in ARCH.size() * VARIANTS:
 		near_l.append([])
 		far_l.append([])
-	for i2: int in PROPS.size():
+	for i2: int in _mm_props.size():
 		prop_l.append([])
 	var vis2: float = (VIEW_M + 20.0) * (VIEW_M + 20.0)
 	var n_b: int = 0
@@ -321,16 +345,17 @@ func _rebuild(pos: Vector3) -> void:
 				continue
 			var k: int = e[0]
 			if k >= 0:
-				var kv: int = k * VARIANTS + int(e[3]) if e.size() > 3 else k * VARIANTS
+				var kv: int = k * VARIANTS + int(e[3]) % VARIANTS
 				((near_l[kv] if d2 < NEAR_M * NEAR_M else far_l[kv]) as Array).append(xf)
 				n_b += 1
 			elif d2 < 320.0 * 320.0:
-				(prop_l[-k - 1] as Array).append(xf)
+				var paint: int = int(e[3]) % CAR_PAINT.size() if k == -1 else 0
+				(prop_l[-k - 1 if paint == 0 else PROPS.size() + paint - 1] as Array).append(xf)
 				n_p += 1
 	for i3: int in ARCH.size() * VARIANTS:
 		_fill(_mm_near[i3], near_l[i3])
 		_fill(_mm_far[i3], far_l[i3])
-	for i4: int in PROPS.size():
+	for i4: int in _mm_props.size():
 		_fill(_mm_props[i4], prop_l[i4])
 	stats["buildings"] = n_b
 	stats["props"] = n_p
