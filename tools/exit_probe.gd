@@ -38,6 +38,8 @@ func _process(_delta: float) -> void:
 		return  # wait for a moment with a bale on Lumi's back
 	_done = true
 	EventBus.game_saved.disconnect(_on_saved)
+	if DevHooks.has("exit-carrying"):
+		print("[b8] %s" % JSON.stringify(carry_gap(_slice.get("patch") as Patch)))
 	var snaps: Dictionary = {"exit": snapshot(_slice), "autosave": _autosave}
 	var f: FileAccess = FileAccess.open(SNAP_PATH, FileAccess.WRITE)
 	f.store_string(JSON.stringify(snaps))
@@ -66,6 +68,11 @@ func _read() -> void:
 		await get_tree().process_frame
 		OrbitRoundtrip._freeze_crew(_slice)
 	var got: Dictionary = snapshot(_slice)
+	var marks: GardenMarks = _find_marks(_slice)
+	if marks != null:  # B9: what the reloaded garden draws for its plants (counts only; the look needs a render)
+		for i: int in 20:
+			await get_tree().process_frame
+		print("[b9] garden marks after the reload: %s" % JSON.stringify(marks.shown))
 	var snaps: Variant = JSON.parse_string(FileAccess.get_file_as_string(SNAP_PATH))
 	if not snaps is Dictionary:
 		print("[b2] FAIL no snapshots at %s (run --probe=write first)" % SNAP_PATH)
@@ -129,3 +136,39 @@ static func snapshot(s: Node) -> Dictionary:
 	out["zone_cells"] = Goals.zone_hex_count()
 	out["cells_junk_hash"] = hash(g.cells.to_dict()["junk"])
 	return out
+
+
+## B8, the part a headless run can measure: how far the lowest point of the first carried bale sits
+## above the top of Lumi's model, in Lumi's own space (m; negative = the bale's box dips into the
+## body's box). "solid" skips thin parts the way CarryPoint does; "all" counts every visible mesh.
+static func carry_gap(p: Patch) -> Dictionary:
+	var inv: Transform3D = p.global_transform.affine_inverse()
+	var top_solid: float = 0.0
+	var top_all: float = 0.0
+	for n: Node in p.model.find_children("*", "MeshInstance3D", true, false):
+		var mi := n as MeshInstance3D
+		if mi.mesh == null or not mi.is_visible_in_tree():
+			continue
+		var ab: AABB = (inv * mi.global_transform) * mi.mesh.get_aabb()
+		if ab.position.y > 2.5:
+			continue
+		top_all = maxf(top_all, ab.end.y)
+		if ab.size.x >= 0.12 or ab.size.z >= 0.12:
+			top_solid = maxf(top_solid, ab.end.y)
+	var bottom: float = INF
+	for n: Node in p.carried[0].find_children("*", "MeshInstance3D", true, false):
+		var mi := n as MeshInstance3D
+		if mi.mesh != null:
+			bottom = minf(bottom, ((inv * mi.global_transform) * mi.mesh.get_aabb()).position.y)
+	return {"bale_bottom": snappedf(bottom, 0.01), "model_top_solid": snappedf(top_solid, 0.01), "model_top_all": snappedf(top_all, 0.01),
+		"gap_solid": snappedf(bottom - top_solid, 0.01), "gap_all": snappedf(bottom - top_all, 0.01), "bales": p.carried.size()}
+
+
+static func _find_marks(n: Node) -> GardenMarks:
+	if n is GardenMarks:
+		return n as GardenMarks
+	for c: Node in n.get_children():
+		var m: GardenMarks = _find_marks(c)
+		if m != null:
+			return m
+	return null

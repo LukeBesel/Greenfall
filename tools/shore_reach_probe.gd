@@ -61,6 +61,11 @@ func _run() -> void:
 	if depot is Node3D:
 		places["scale"] = (depot as Node3D).global_position
 		places["bin"] = Objectives.bin_point(_slice)
+	var hubs: Array[String] = []
+	for c: int in g.grid.cells_within(g.grid.centers[c0], 80.0, c0):
+		if f.hex_hub[c] == 1:
+			hubs.append("%d@%.0fm" % [c, g.grid.distance_m(c, c0)])
+	print("[b6] hub cells within 80 m (where the watering can refills, Patch._handle_tools): %s" % str(hubs))
 	var bad: int = 0
 	for k: String in places:
 		var pos: Variant = places[k]
@@ -71,7 +76,8 @@ func _run() -> void:
 		var ok: bool = group.has(c)
 		if not ok:
 			bad += 1
-		print("[b6] %s %s: cell %d, %.0f m from the start cell, %s" % ["OK" if ok else "CUT_OFF", k, c, g.grid.distance_m(c, c0), "water" if f.is_water(c) else "land"])
+		print("[b6] %s %s: cell %d, %.0f m from the start cell, %s, %s" % ["OK" if ok else "CUT_OFF", k, c, g.grid.distance_m(c, c0), "water" if f.is_water(c) else "land",
+			"hub cell (the can refills here)" if f.hex_hub[c] == 1 else "not a hub cell"])
 	_list_eggs(g, f, c0, group)
 	print("[b6] %s (%d required places cut off)" % ["PASS" if bad == 0 else "FAIL", bad])
 	get_tree().quit(1 if bad > 0 else 0)
