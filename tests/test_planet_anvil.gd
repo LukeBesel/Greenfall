@@ -19,9 +19,12 @@ func _types() -> Array:
 
 func test_registry_entry_is_complete() -> void:
 	var e: Dictionary = AnvilEnv.planet_entry()
-	for k: String in ["id", "name", "world_type", "env", "sky", "fog", "sun", "ambient", "palette", "junk_tint", "music_mood"]:
-		assert_true(e.has(k), "data/planets.json anvil lacks " + k)
-	assert_true(ResourceLoader.exists(str(e.get("env", ""))))
+	for k: String in ["id", "name", "world_type", "sky", "fog", "sun", "ambient", "palette", "junk_tint", "globe", "orbit"]:
+		assert_true(e.has(k), "anvil's look table lacks " + k)
+	var def: PlanetDefinition = Planets.by_id(&"anvil")
+	assert_eq(def.env_script, AnvilEnv as Script)
+	assert_eq(def.sites_script, AnvilSites as Script)
+	assert_ne(def.music_set, "")
 
 
 func test_junk_swap_keeps_types_and_counts() -> void:
@@ -79,8 +82,8 @@ func _visible_trash(site: Node) -> int:
 
 
 func test_sites_build_ruined_and_restored() -> void:
-	var reg: Array = AnvilEnv.planet_entry().get("sites", [])
-	assert_eq(reg.size(), AnvilSites.SITES.size(), "every site is in data/planets.json")
+	var reg: Array = SiteBuilders.sites_of("anvil")
+	assert_eq(reg.size(), AnvilSites.SITES.size(), "every site is in the planet's sites table")
 	for id: String in AnvilSites.SITES:
 		var a := Node3D.new()
 		add_child_autofree(a)

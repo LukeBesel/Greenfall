@@ -1,6 +1,8 @@
-[gd_resource type="Resource" script_class="PlanetDefinition" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="PlanetDefinition" load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://core/planet_definition.gd" id="1"]
+[ext_resource type="Script" path="res://planet/sites/verdance_site.gd" id="2"]
+[ext_resource type="Shader" path="res://planets/verdance/globe.gdshader" id="3"]
 
 [resource]
 script = ExtResource("1")
@@ -41,7 +43,11 @@ tables = Dictionary[String, String]({
 "ledger": "res://planets/verdance/data/ledger.json",
 "codex": "res://planets/verdance/data/codex.json",
 "museum": "res://planets/verdance/data/museum.json",
-"postgame": "res://planets/verdance/data/bloom.json"
+"postgame": "res://planets/verdance/data/bloom.json",
+"look": "res://planets/verdance/data/look.json",
+"sites": "res://planets/verdance/data/sites.json"
 })
+sites_script = ExtResource("2")
+globe_shader = ExtResource("3")
 palette = Dictionary[String, Color]({})
 music_set = "verdance"

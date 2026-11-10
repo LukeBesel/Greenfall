@@ -34,7 +34,7 @@ static func for_site(site: Dictionary, terrain: SphereTerrain) -> YardKeepOut:
 	k.radius = terrain.R + float(site.get("h0", 0.0))
 	var h: float = PAD_HALF_M + PAD_MARGIN_M
 	k.rects.append(Rect2(-h, -h, h * 2.0, h * 2.0))
-	var pod: Array = VerdanceSite.START_YARD_ANCHORS["pod"]
+	var pod: Array = SitePrefab.START_YARD_ANCHORS["pod"]
 	var pp: Vector3 = pod[0]
 	k.discs.append(Vector3(pp.x, pp.z, POD_CLEAR_M))
 	return k

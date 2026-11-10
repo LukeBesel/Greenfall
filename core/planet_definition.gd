@@ -13,8 +13,12 @@ const REQUIRED_TABLES: Array[String] = ["pollution", "upgrades", "regrowth", "tu
 const OPTIONAL_TABLES: Array[String] = [
 	"districts", "restoration", "rigs", "research", "robots", "balance", "sites", "hub", "stations", "plants", "fauna", "events", "story",
 	"player", "robot_level", "field", "builds", "yard", "trash_bin", "outposts", "frontiers", "signal_tower",
-	"guide_lines", "shards", "eggs", "ledger", "codex", "museum", "postgame",
+	"guide_lines", "shards", "eggs", "ledger", "codex", "museum", "postgame", "look",
 ]
+## Side of one hex cell on every globe, in metres.
+const CELL_M: float = 10.0
+## Globe radius in metres per unit of grid frequency (10 m cells: frequency 128 is 1,840 m).
+const RADIUS_M_PER_FREQUENCY: float = 14.375
 
 ## Stable id: lowercase, one word. Saves are keyed by it, so it never changes after release.
 @export var id: StringName
@@ -42,9 +46,17 @@ const OPTIONAL_TABLES: Array[String] = [
 @export var tables: Dictionary[String, String] = {}
 
 @export_group("Look and sound")
-## Optional script with static hooks for this planet's own art: apply(world, field, kind),
-## dress_view(...). Shared code calls it only through this field.
+## Optional script with static hooks for this planet's own environment art. Shared code calls it
+## only through `call_env`. Hooks, all optional: dev_hub(planet), prepare_field(field),
+## dress_view(view), apply(world, field, look).
 @export var env_script: Script
+## Optional script with static hooks for this planet's hub and landmark sites (the "sites" table
+## lists them). Shared code calls it only through SiteBuilders. Hooks: build_site(parent, site_id,
+## stage, restoration, opts) or build / place / build_async; optional restyle_site(content, stage,
+## restoration), start_anchors(), build_surroundings(ctx).
+@export var sites_script: Script
+## Surface shader of this planet's map globe (PlanetGlobe). Empty: the shared rocky world.
+@export var globe_shader: Shader
 ## Key colours by role (ground_polluted, ground_restored, sky_day, accent...).
 @export var palette: Dictionary[String, Color] = {}
 ## Key for the music director's track set.
@@ -73,7 +85,54 @@ func has_table(table_name: String) -> bool:
 
 ## Number of cells on this planet's globe.
 func cell_count() -> int:
-	return 10 * globe_frequency * globe_frequency + 2
+	return cells_for(globe_frequency)
+
+
+## Number of cells on a globe of grid frequency `frequency`.
+static func cells_for(frequency: int) -> int:
+	return 10 * frequency * frequency + 2
+
+
+## Radius of this planet's globe in metres.
+func radius_m() -> float:
+	return RADIUS_M_PER_FREQUENCY * float(globe_frequency)
+
+
+## What the globe builder needs: {id, frequency, hub_count, seed}.
+func globe_spec() -> Dictionary:
+	return {"id": String(id), "frequency": maxi(1, globe_frequency), "hub_count": maxi(1, hub_count), "seed": world_seed}
+
+
+## The optional "look" table (sky, fog, sun, ambient, palette, junk tint, map globe, orbit...) with
+## "id" and "name" filled in: what this planet's env hooks receive. A private copy.
+func look() -> Dictionary:
+	var out: Dictionary = table("look").duplicate(true)
+	out["id"] = String(id)
+	out["name"] = display_name
+	return out
+
+
+## Calls a static hook of `env_script`. Returns its result, or null when the planet has no env
+## script or the script has no such hook.
+func call_env(hook: String, args: Array = []) -> Variant:
+	return call_hook(env_script, hook, args)
+
+
+## Whether a planet script has a static function called `hook`.
+static func has_hook(script: Script, hook: String) -> bool:
+	if script == null:
+		return false
+	for method: Dictionary in script.get_script_method_list():
+		if str(method.get("name", "")) == hook:
+			return true
+	return false
+
+
+## Calls a static function of a planet script when it exists. Null otherwise.
+static func call_hook(script: Script, hook: String, args: Array = []) -> Variant:
+	if not has_hook(script, hook):
+		return null
+	return script.callv(hook, args)
 
 
 ## Problems that would stop this planet from loading. Empty when the definition is usable.

@@ -42,7 +42,7 @@ var hub_cell: int = -1
 var depot_cell: int = -1
 ## Hub region size in rings: scales with the planet's area per hub (SphereOffline.rings_for).
 var rings: int = SphereOffline.REGION_RINGS
-var planet_id: String = "verdance"
+var planet_id: String = ""  # "" = the planet being played
 var visuals: bool = true
 ## Seconds between far-crew steps (records are cheap; a step can be any length).
 var far_every: float = 0.25
@@ -106,7 +106,7 @@ func _exit_tree() -> void:
 		active = null
 
 
-func setup(p_grid: SphereGrid, p_cells: SphereCells, p_field: SphereField, p_surface: SphereSurface, p_swarm: SphereSwarm = null, p_streamer: SphereStreamer = null, p_planet: String = "verdance") -> void:
+func setup(p_grid: SphereGrid, p_cells: SphereCells, p_field: SphereField, p_surface: SphereSurface, p_swarm: SphereSwarm = null, p_streamer: SphereStreamer = null, p_planet: String = "") -> void:
 	active = self  # [v3qa]
 	planet_id = p_planet
 	rings = SphereOffline.rings_for(p_grid, p_planet)

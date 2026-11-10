@@ -1,6 +1,6 @@
 extends GutTest
-## [orbB] Planets differ in size: SphereGrid at any subdivision frequency, GlobeSpec from
-## data/planets.json, and the survey (PlanetData) on the same cells.
+## [orbB] Planets differ in size: SphereGrid at any subdivision frequency, the globe spec from
+## each PlanetDefinition, and the survey (PlanetData) on the same cells.
 
 var _g: SphereGrid
 
@@ -56,16 +56,19 @@ func test_power_of_two_is_the_level_grid() -> void:
 	assert_eq(a.chunk_center[3], a.centers[3], "level chunk centres are the id prefix")
 
 
-func test_globe_spec_from_planets_json() -> void:
-	assert_eq(int(GlobeSpec.of("verdance")["frequency"]), 128)
+func test_globe_spec_from_the_definitions() -> void:
+	assert_eq(int(Planets.by_id(&"verdance").globe_spec()["frequency"]), 128)
 	var sizes: Array = []
-	for id: String in ["ochre", "verdance", "tidewell", "rime", "anvil"]:
-		sizes.append(int(GlobeSpec.of(id)["frequency"]))
+	for id: StringName in [&"ochre", &"verdance", &"tidewell", &"rime", &"anvil"]:
+		var spec: Dictionary = Planets.by_id(id).globe_spec()
+		assert_eq(str(spec["id"]), String(id))
+		sizes.append(int(spec["frequency"]))
 	var sorted_s: Array = sizes.duplicate()
 	sorted_s.sort()
 	assert_eq(sizes, sorted_s, "Ochre < Verdance < Tidewell < Rime < Anvil")
-	assert_almost_eq(float(GlobeSpec.of("anvil")["frequency"]) / 128.0, 2.0, 0.01, "Anvil ~4x Verdance area")
-	assert_eq(int(GlobeSpec.of("nowhere")["frequency"]), 128, "unknown planet: Verdance's size")
+	assert_almost_eq(float(Planets.by_id(&"anvil").globe_frequency) / 128.0, 2.0, 0.01, "Anvil ~4x Verdance area")
+	assert_almost_eq(Planets.by_id(&"verdance").radius_m(), 1840.0, 0.5)
+	assert_eq(PlanetDefinition.cells_for(128), 163842)
 
 
 func test_survey_on_a_lattice_grid() -> void:

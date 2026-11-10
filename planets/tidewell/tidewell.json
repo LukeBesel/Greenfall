@@ -1,0 +1,43 @@
+{
+  "_doc": "[planet-tidewell] Tidewell's own data (planets/tidewell/env.gd). biome_set: the nets-and-buoys junk palette, registered into Economy.biome_sets as 'tidewell' (same format as data/junk.json biomes). land: the district's dry hexes (ring 1 crescent around the raft base + small islands). floaters: model swaps for floating junk (same junk type, so cubes and saves are unchanged) and raft clustering. islands: the archipelago beyond the field. stages: restoration thresholds.",
+  "biome_set": {
+    "name": "Tidewell",
+    "swap": 0.45,
+    "models": {
+      "metal": [{"id": "Barrel_01", "vol": 2.4, "w": 1.0, "lie": 0.85}, {"id": "barrel_03", "vol": 2.4, "w": 0.6, "lie": 0.8}, {"id": "metal_jerrycan", "vol": 1.0, "w": 0.6, "lie": 0.6}],
+      "plastic": [{"id": "plastic_jerrycan", "vol": 2.4, "w": 1.0, "lie": 0.5}],
+      "rubber": [{"id": "lifebuoy", "vol": 1.2, "w": 2.0, "lie": 0.95}, {"id": "rubber_boots", "vol": 0.9, "w": 1.0, "lie": 0.6}, {"id": "old_tyre", "vol": 2.5, "w": 0.6, "lie": 0.7}],
+      "paper": [{"id": "wooden_crate_02", "vol": 2.0, "w": 1.5, "lie": 0.25}]
+    },
+    "shore_swap": 0.7,
+    "shore": {
+      "rubber": [{"id": "lifebuoy", "vol": 1.2, "w": 2.0, "lie": 0.95}, {"id": "rubber_boots", "vol": 0.9, "w": 1.0, "lie": 0.6}],
+      "plastic": [{"id": "plastic_jerrycan", "vol": 2.4, "w": 1.0, "lie": 0.5}],
+      "metal": [{"id": "Barrel_01", "vol": 2.4, "w": 1.0, "lie": 0.85}],
+      "paper": [{"id": "wooden_crate_02", "vol": 2.0, "w": 1.0, "lie": 0.25}]
+    },
+    "landmarks": [{"id": "ocean_buoy", "count": 3}, {"id": "Barrel_01", "count": 3}, {"id": "wooden_crate_02", "count": 3}],
+    "ground_tint": [0.92, 0.86, 0.7, 0.45],
+    "grass_tint": [0.92, 1.08, 0.82],
+    "coat": [0.86, 0.84, 0.76, 0.3],
+    "hills": [0.9, 0.88, 0.8],
+    "horizon": []
+  },
+  "land": {"ring1": 3, "islands": [[3, 2], [4, 1], [3, 1], [2, 1]]},
+  "floaters": {
+    "swap": 0.55,
+    "pools": {
+      "plastic": ["plastic_jerrycan", "bleach_bottle", "plastic_bottle_gallon", "multi_cleaner_bottle"],
+      "rubber": ["lifebuoy", "lifebuoy", "rubber_boots", "old_tyre"],
+      "paper": ["wooden_crate_02", "cardboard_box_01"],
+      "glass": ["wine_bottles_01"]
+    },
+    "never": ["plastic_crate_01"],
+    "lying": ["plastic_bottle_gallon", "bleach_bottle", "old_tyre", "wine_bottles_01", "lifebuoy", "lifebuoy", "plastic_jerrycan", "rubber_boots"],
+    "rafts_per_hex": [1, 3],
+    "raft_frac": 0.55,
+    "raft_r": [2.2, 3.6]
+  },
+  "islands": {"count": 9, "near": [75, 260], "far": [420, 900], "far_count": 5},
+  "stages": {"restored_at": 0.35, "future_level": 4}
+}

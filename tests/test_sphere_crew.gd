@@ -271,11 +271,11 @@ func test_offline_capped_by_region_junk() -> void:
 
 func test_region_scales_with_planet_size() -> void:
 	assert_eq(SphereOffline.region_rings(163842, 10), 16, "Verdance")
-	# Every planet's hub region keeps the same share of its hub's ground (planets.json globe).
+	# Every planet's hub region keeps the same share of its hub's ground (each definition's globe).
 	var ref: float = (1.0 + 3.0 * 16.0 * 17.0) / (163842.0 / 10.0)
 	for id: String in ["verdance", "ochre", "tidewell", "rime", "anvil"]:
-		var sp: Dictionary = GlobeSpec.of(id)
-		var n: int = GlobeSpec.cells_for(int(sp["frequency"]))
+		var sp: Dictionary = Planets.by_id(id).globe_spec()
+		var n: int = PlanetDefinition.cells_for(int(sp["frequency"]))
 		var hubs: int = SphereOffline.hub_count(id)
 		assert_eq(hubs, int(sp["hub_count"]))
 		var r: int = SphereOffline.region_rings(n, hubs)

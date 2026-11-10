@@ -5,12 +5,12 @@ extends GutTest
 
 
 func test_globe_sizes() -> void:
-	assert_almost_eq(GlobeSize.scale_of("verdance"), 1.0, 0.001)
-	assert_lt(GlobeSize.scale_of("ochre"), 1.0)
-	assert_gt(GlobeSize.scale_of("anvil"), GlobeSize.scale_of("rime"))
-	assert_eq(GlobeSize.cells_of("anvil"), 655362, "Anvil is the largest globe (2x radius, 655k hexes)")
-	assert_eq(GlobeSize.cells_of("verdance"), 163842)
-	assert_almost_eq(GlobeSize.radius_m("verdance"), 1840.0, 0.5)
+	var home: PlanetDefinition = Planets.by_id(&"verdance")
+	assert_lt(Planets.by_id(&"ochre").radius_m(), home.radius_m())
+	assert_gt(Planets.by_id(&"anvil").radius_m(), Planets.by_id(&"rime").radius_m())
+	assert_eq(Planets.by_id(&"anvil").cell_count(), 655362, "Anvil is the largest globe (2x radius, 655k hexes)")
+	assert_eq(home.cell_count(), 163842)
+	assert_almost_eq(home.radius_m(), 1840.0, 0.5)
 
 
 func test_survey_colours_follow_shares() -> void:

@@ -3,7 +3,7 @@ extends RefCounted
 ## [orbB] The walkable globe's save (GameState.orbit), next to the flat district state, which an
 ## orbit run never rewrites until phase F. Layout (schema 2):
 ##   schema      int (this file's SCHEMA)
-##   planet_id   "verdance" | "ochre" | ... (GlobeSpec), freq: grid subdivision frequency
+##   planet_id   the PlanetDefinition id, freq: grid subdivision frequency
 ##   seed        survey / terrain seed
 ##   cells_n     cell count (10·freq²+2)
 ##   planet      PlanetData.to_dict() (survey junk/state, packed)
@@ -31,12 +31,13 @@ static func migrate(od: Dictionary) -> Dictionary:
 	if od.is_empty():
 		return od
 	if v < 2:
-		# schema 1 (B1 skeleton): Verdance only, no site list, no hub states. Sites are re-derived
-		# from the survey (same seed and size give the same pads).
+		# schema 1 (B1 skeleton): the first planet only, no site list, no hub states. Sites are
+		# re-derived from the survey (same seed and size give the same pads).
+		var first: PlanetDefinition = Planets.first_shipped()
 		if not od.has("planet_id"):
-			od["planet_id"] = "verdance"
+			od["planet_id"] = String(first.id)
 		if not od.has("freq"):
-			od["freq"] = GlobeSpec.VERDANCE_FREQ
+			od["freq"] = first.globe_frequency
 		if not od.has("hubs"):
 			od["hubs"] = {}
 		if not od.has("hub_worlds"):

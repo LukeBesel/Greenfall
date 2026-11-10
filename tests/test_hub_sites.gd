@@ -1,5 +1,5 @@
 extends GutTest
-## [orbD] Hub sites on the globe: PlanetEnvs.build_site / SitePrefab, SiteBuilders dispatch,
+## [orbD] Hub sites on the globe: SiteBuilders.build_site / SitePrefab, SiteBuilders dispatch,
 ## SiteManager planet % over hub regions and growth.
 
 
@@ -22,15 +22,16 @@ func _globe(level: int = 4) -> FakeGlobe:
 
 
 func test_globe_sizes_scale_from_verdance() -> void:
-	var v: Dictionary = PlanetEnvs.globe("verdance")
-	var a: Dictionary = PlanetEnvs.globe("anvil")
-	var o: Dictionary = PlanetEnvs.globe("ochre")
-	assert_gt(float(a["radius_m"]), float(v["radius_m"]))
-	assert_lt(float(o["radius_m"]), float(v["radius_m"]))
-	assert_gt(int(a["hub_count"]), int(v["hub_count"]))
+	var v: PlanetDefinition = Planets.by_id(&"verdance")
+	var a: PlanetDefinition = Planets.by_id(&"anvil")
+	var o: PlanetDefinition = Planets.by_id(&"ochre")
+	assert_gt(a.radius_m(), v.radius_m())
+	assert_lt(o.radius_m(), v.radius_m())
+	assert_gt(a.hub_count, v.hub_count)
 
 
 func test_site_for_hub() -> void:
+	assert_eq(SiteBuilders.site_for_hub("", 0), "start_yard", "an empty id is the planet being played")
 	assert_eq(SiteBuilders.site_for_hub("verdance", 0), "start_yard")
 	assert_eq(SiteBuilders.site_for_hub("verdance", 4), "ruin_block")
 	assert_eq(SiteBuilders.site_for_hub("anvil", 0), "foundry_yard")
@@ -38,16 +39,16 @@ func test_site_for_hub() -> void:
 	assert_eq(SiteBuilders.site_for_hub("rime", 0), "hub_camp")
 	assert_eq(SiteBuilders.site_for_hub("ochre", 0), "hub_base")
 	assert_eq(SiteBuilders.site_for_hub("ochre", 5), "hub_base", "only hub bases are hubs")
-	assert_eq(SiteBuilders.tide_stage(1), 0)
-	assert_eq(SiteBuilders.tide_stage(3), 1)
-	assert_eq(SiteBuilders.tide_stage(5), 2)
+	assert_eq(SiteBuilders.place_stage(1), 0)
+	assert_eq(SiteBuilders.place_stage(3), 1)
+	assert_eq(SiteBuilders.place_stage(5), 2)
 
 
 func test_build_site_has_anchors_collision_and_restyles() -> void:
 	var root := Node3D.new()
 	add_child_autofree(root)
 	var xf := Transform3D(SphereGrid.frame(Vector3(0.3, 0.8, 0.2).normalized()), Vector3(5, 1800, 3))
-	var p: SitePrefab = PlanetEnvs.build_site(root, {"planet": "rime", "prefab": "hub_camp", "transform": xf}, 1, 0.0)
+	var p: SitePrefab = SiteBuilders.build_site(root, {"planet": "rime", "prefab": "hub_camp", "transform": xf}, 1, 0.0)
 	if not p.is_built:
 		await p.rebuilt
 	assert_true(p.is_built)
@@ -66,7 +67,7 @@ func test_build_site_has_anchors_collision_and_restyles() -> void:
 func test_verdance_ruin_block_footprints() -> void:
 	var root := Node3D.new()
 	add_child_autofree(root)
-	var p: SitePrefab = PlanetEnvs.build_site(root, {"planet": "verdance", "prefab": "ruin_block", "hub_index": 2}, 1, 0.0)
+	var p: SitePrefab = SiteBuilders.build_site(root, {"planet": "verdance", "prefab": "ruin_block", "hub_index": 2}, 1, 0.0)
 	if not p.is_built:
 		await p.rebuilt
 	var vs: VerdanceSite = p.content.get_child(0) as VerdanceSite

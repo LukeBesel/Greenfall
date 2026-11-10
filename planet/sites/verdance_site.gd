@@ -8,7 +8,7 @@ extends Node3D
 ## Landfill lots get kit debris, crate stacks and tipped barrels. StreetDressing adds the yard
 ## (slab, paint, puddles, weeds, drifts, the landmark, the ruin layer); no facade dressing.
 ## Everything is in site-local metres (+Y up, y = 0 on the pad, x east, z south), so it stands on
-## a SphereTerrain site pad under PlanetEnvs.build_site, or alone in a preview.
+## a SphereTerrain site pad under SiteBuilders.build_site, or alone in a preview.
 ## Sites:
 ##   start_yard  hub 0: the landing yard (pod + broken workbench + trash bin go on its anchors;
 ##               every other machine is a Hub build), intact-but-dusty blocks around it
@@ -120,6 +120,21 @@ static func build(parent: Node3D, p_site: String, stage: int, p_restoration: flo
 	return s
 
 
+## Sites-script hook (SiteBuilders): builds site `p_site` under `parent`.
+static func build_site(parent: Node3D, p_site: String, stage: int, p_restoration: float, opts: Dictionary) -> void:
+	await build(parent, p_site, stage, p_restoration, opts)
+
+
+## Sites-script hook (SiteBuilders): restyles the site built under `content` in place.
+static func restyle_site(content: Node3D, stage: int, p_restoration: float) -> bool:
+	for c: Node in content.get_children():
+		if c is VerdanceSite:
+			(c as VerdanceSite).set_level(stage)
+			(c as VerdanceSite).set_restoration(p_restoration)
+			return true
+	return false
+
+
 ## Site-local rectangles that are solid (building footprints): the globe clears junk under them.
 func footprints() -> Array[Rect2]:
 	return _foot.duplicate()
@@ -145,33 +160,9 @@ func anchors() -> Dictionary:
 	return a
 
 
-## [orbD] The start yard's machines and Hub builds (orbB ports Camp onto these; owner rules: the
-## yard starts with only the pod, the broken bench and the bin; interactables at least 3 m apart;
-## the lane north out of the yard, |x| < 2.5 m, stays open). East: depot, bin, stations, radio,
-## signal tower, telescope. West: bench (shack over it), generator, composter, locker, camera
-## bot, nursery. The pod sits behind Lumi's spawn at (0, 6). Lamps on the yard's corners.
-const START_YARD_ANCHORS: Dictionary = {
-	"pod": [Vector3(0, 0, 9.8), 0.0],
-	# [v1yard] The trash bin (the depot and its bin's reach) on the west side, 5.5 m from the bench,
-	# in a marked, lit bay on the pad's edge: trash, bin and bench a few steps apart.
-	"depot": [Vector3(-8.0, 0, 2.0), PI * 0.5],
-	"bin": [Vector3(-8.0, 0, -1.3), PI * 0.5],
-	"stations": [Vector3(16.5, 0, 1.5), 0.0],  # out on the street east of the yard (flat: "keep the base yard free")
-	"radio": [Vector3(5.0, 0, -1.5), -PI * 0.5],
-	"signal_tower": [Vector3(8.0, 0, -7.5), -PI * 0.5],
-	"telescope": [Vector3(4.8, 0, -9.0), 0.0],
-	"shack": [Vector3(-7.35, 0, 7.5), PI * 0.5],  # over the bench: the flat lean-to has it 0.65 m in from its centre
-	"fabricator": [Vector3(-6.0, 0, -9.6), 0.0],
-	"generator": [Vector3(-5.0, 0, 9.5), PI],
-	"composter": [Vector3(8.5, 0, 3.8), -PI * 0.5],  # [v1yard] east, where the depot was
-	"locker": [Vector3(8.5, 0, 0.2), -PI * 0.5],
-	"camera_bot": [Vector3(-5.0, 0, -2.0), PI * 0.5],
-	"nursery": [Vector3(-7.5, 0, -5.5), PI * 0.5],
-	"lamps_0": [Vector3(-3.6, 0, -10.0), 0.0],
-	"lamps_1": [Vector3(3.6, 0, -10.0), 0.0],
-	"lamps_2": [Vector3(-10.2, 0, 10.2), 0.0],
-	"lamps_3": [Vector3(10.2, 0, 10.2), 0.0],
-}
+## The start yard's anchors: the shared yard layout every planet's start site gets
+## (SitePrefab.START_YARD_ANCHORS).
+const START_YARD_ANCHORS: Dictionary = SitePrefab.START_YARD_ANCHORS
 
 
 ## Half-size of the built area (m).

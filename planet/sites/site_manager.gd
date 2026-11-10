@@ -1,6 +1,6 @@
 class_name SiteManager
 extends Node3D
-## [orbD] Every hub site on one walkable globe: builds each hub's prefab (PlanetEnvs.build_site)
+## [orbD] Every hub site on one walkable globe: builds each hub's prefab (SiteBuilders.build_site)
 ## when Lumi comes within BUILD_R of it and frees it past FREE_R (only the near site is 3D, the
 ## rest is the far shell), clears junk under building footprints, keeps the `site_inv` shader
 ## global on the nearest site, and owns the hub-region bookkeeping:
@@ -31,7 +31,7 @@ const PLAY_BUDGET_US: int = 4000  # [orbE] reach audit work per frame in play
 const PLAY_SLICE_US: int = 6000  # [v3city] a hub town's build work per frame in play
 var probed: Dictionary = {}  # [orbE] hub index -> true once its footprint probe and anchor fix are done
 var globe: Node3D
-var planet_id: String = "verdance"
+var planet_id: String = ""  # "" = the planet being played
 var grid: SphereGrid
 var terrain: SphereTerrain
 var cells: SphereCells
@@ -104,7 +104,7 @@ func build_hub(i: int, sync: bool = false) -> SitePrefab:
 	s["seed"] = _seed
 	s["water_fn"] = water_fn(i)  # [v3city] the town keeps its buildings, streets and props off the lake cells
 	s["globe_ctx"] = {"terrain": terrain, "grid": grid, "cells": cells, "xf": sites[i]["transform"], "clear": _clear_cell, "keep_out": _keep_out(0)}  # [v3city] the outskirts
-	var p: SitePrefab = PlanetEnvs.build_site(roots[i], s, levels[i], restoration_of(i))
+	var p: SitePrefab = SiteBuilders.build_site(roots[i], s, levels[i], restoration_of(i))
 	prefabs[i] = p
 	if sync:
 		BuildBudget.current = budget
@@ -163,7 +163,7 @@ const PROBE: Array[Vector2] = [Vector2.ZERO, Vector2(4, 0), Vector2(-4, 0), Vect
 const SOLID_ABOVE_M: float = 1.0
 
 
-## Footprints for any planet's prefab (Anvil, Ochre, Tidewell, Rime build their own colliders):
+## Footprints for any planet's prefab (some build their own colliders):
 ## after a physics frame, rays come down onto the prefab's own bodies at a few points per site
 ## cell; a cell under something solid more than SOLID_ABOVE_M above the pad goes clean, so globe
 ## junk never sits inside a building. Returns the cells cleared.
@@ -215,7 +215,7 @@ func probe_cells(i: int, p: SitePrefab) -> int:
 	return n
 
 
-## [orbD] A stage restyled in place can add buildings (Ochre's stage 2): the cells under them go
+## [orbD] A stage restyled in place can add buildings (a later stage of a planet's own site): the cells under them go
 ## clean now, as the probe after a build at that stage would (else a reload clears a cell the save
 ## had dirty).
 func _reprobe(i: int, p: SitePrefab) -> void:

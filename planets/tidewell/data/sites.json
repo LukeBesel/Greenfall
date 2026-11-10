@@ -1,0 +1,48 @@
+{
+  "_doc": "Hub and landmark site prefabs on the walkable globe (SiteBuilders; built by the definition's sites_script). sites: [{id, kind (hub | landmark), name, size_m (pad diameter), clear_core_m (junk-free core, default 12), start_only (true: only hub 0 gets it; the other hubs cycle through the rest), desc}], hubs first. Optional: hub_pad_m (flat pad radius of hubs after the first, default 82), fill_pad (the builder gets the pad's flat radius as opts.flat), yard_keep_out (the start yard keeps junk off its pad piece by piece), api (a note on the script's entry point).",
+  "api": "Placeable site prefabs for the walkable globe (planets/tidewell/sites.gd): TideSite.place(id, root, stage 0-2, restoration 0-1, {water_radius, seed}); a local flat patch about 60-100 m across, sea level at y = 0.14, no world-origin assumptions. Preview: res://planets/tidewell/site_preview.tscn -- --site=<id>.",
+  "sites": [
+    {
+      "id": "hub_raft",
+      "kind": "hub",
+      "name": "Anchored Raft",
+      "size_m": 92,
+      "desc": "Timber raft deck on rusted pontoons: workshop shack, store, deck crane, fuel tank, moorings."
+    },
+    {
+      "id": "hub_stilts",
+      "kind": "hub",
+      "name": "Stilt Yard",
+      "size_m": 96,
+      "desc": "A sandy islet with a stilt deck and huts over the water, boardwalk, beached skiff."
+    },
+    {
+      "id": "wreck",
+      "kind": "landmark",
+      "name": "Ore Barge Wreck",
+      "size_m": 100,
+      "desc": "The Ledger's half-sunk mining barge by a sandbar; hoppers turn to planters when restored."
+    },
+    {
+      "id": "dredge_rig",
+      "kind": "landmark",
+      "name": "Dredge Rig",
+      "size_m": 88,
+      "desc": "A Ledger jack-up dredging rig with bucket ladder, derrick and crane."
+    },
+    {
+      "id": "reef_garden",
+      "kind": "landmark",
+      "name": "Reef Garden",
+      "size_m": 84,
+      "desc": "Bleached coral breaking the surface among nets; live coral and floating gardens when restored."
+    },
+    {
+      "id": "buoy_field",
+      "kind": "landmark",
+      "name": "Buoy Field",
+      "size_m": 80,
+      "desc": "Rows of mooring buoys strung with rope and ghost nets; light caps when futuristic."
+    }
+  ]
+}

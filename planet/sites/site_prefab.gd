@@ -1,6 +1,6 @@
 class_name SitePrefab
 extends Node3D
-## [orbD] One hub (or landmark) site on a walkable globe: the node PlanetEnvs.build_site returns.
+## [orbD] One hub (or landmark) site on a walkable globe: the node SiteBuilders.build_site returns.
 ## It sits at the site's transform (origin on the level pad, +Y = surface normal, x east, z south)
 ## and holds the planet's own prefab built in site-local metres, plus:
 ## - anchors: Marker3D children under "Anchors" named depot, bench, rocket_pad, door (and any extra
@@ -9,7 +9,7 @@ extends Node3D
 ## - collision: one StaticBody3D (layer 1, which SphereMotor's ground ray reads) with trimesh
 ##   shapes of the prefab's solid meshes, unless the builder made its own bodies.
 ## - set_stage(level 1..5) / set_restoration(0..1): live re-dress. Builders that can re-dress in
-##   place (TideSite / RimeHubSite.set_state, VerdanceSite.set_level) do;
+##   place (a `place` site's set_state, a sites script's restyle_site) do;
 ##   the rest are rebuilt.
 
 signal rebuilt
@@ -19,6 +19,34 @@ signal anchors_moved(names: PackedStringArray)
 const ANCHORS: Array[String] = ["depot", "bench", "rocket_pad", "door"]
 ## Meshes lower than this (m) get no collider: decals, puddles, ground patches and thin litter.
 const MIN_COLLIDE_H: float = 0.9
+
+## [orbD] The start yard's machines and Hub builds (owner rules: the
+## yard starts with only the pod, the broken bench and the bin; interactables at least 3 m apart;
+## the lane north out of the yard, |x| < 2.5 m, stays open). East: depot, bin, stations, radio,
+## signal tower. West: bench (shack over it), generator, composter, locker, camera
+## bot, nursery. The pod sits behind Lumi's spawn at (0, 6). Lamps on the yard's corners.
+const START_YARD_ANCHORS: Dictionary = {
+	"pod": [Vector3(0, 0, 9.8), 0.0],
+	# [v1yard] The trash bin (the depot and its bin's reach) on the west side, 5.5 m from the bench,
+	# in a marked, lit bay on the pad's edge: trash, bin and bench a few steps apart.
+	"depot": [Vector3(-8.0, 0, 2.0), PI * 0.5],
+	"bin": [Vector3(-8.0, 0, -1.3), PI * 0.5],
+	"stations": [Vector3(16.5, 0, 1.5), 0.0],  # out on the street east of the yard (flat: "keep the base yard free")
+	"radio": [Vector3(5.0, 0, -1.5), -PI * 0.5],
+	"signal_tower": [Vector3(8.0, 0, -7.5), -PI * 0.5],
+	"telescope": [Vector3(4.8, 0, -9.0), 0.0],
+	"shack": [Vector3(-7.35, 0, 7.5), PI * 0.5],  # over the bench: the flat lean-to has it 0.65 m in from its centre
+	"fabricator": [Vector3(-6.0, 0, -9.6), 0.0],
+	"generator": [Vector3(-5.0, 0, 9.5), PI],
+	"composter": [Vector3(8.5, 0, 3.8), -PI * 0.5],  # [v1yard] east, where the depot was
+	"locker": [Vector3(8.5, 0, 0.2), -PI * 0.5],
+	"camera_bot": [Vector3(-5.0, 0, -2.0), PI * 0.5],
+	"nursery": [Vector3(-7.5, 0, -5.5), PI * 0.5],
+	"lamps_0": [Vector3(-3.6, 0, -10.0), 0.0],
+	"lamps_1": [Vector3(3.6, 0, -10.0), 0.0],
+	"lamps_2": [Vector3(-10.2, 0, 10.2), 0.0],
+	"lamps_3": [Vector3(10.2, 0, 10.2), 0.0],
+}
 
 var planet_id: String = ""
 var site_id: String = ""
@@ -38,7 +66,7 @@ var anchors_root: Node3D
 var body: StaticBody3D
 var build_ms: int = 0
 var is_built: bool = false
-## [orbD] A start site: the yard's anchors (VerdanceSite.START_YARD_ANCHORS) fill in where the
+## [orbD] A start site: the yard's anchors (START_YARD_ANCHORS) fill in where the
 ## planet's own prefab has none.
 var start_yard: bool = false
 ## Anchors the planet's own builder laid out (anchors()): fix_anchors leaves them where they are.
@@ -159,9 +187,9 @@ func _default_anchors() -> void:
 					set_anchor(nm, own[nm][0], own[nm][1])
 					designed.append(nm)
 	if start_yard:
-		for nm: String in VerdanceSite.START_YARD_ANCHORS:
+		for nm: String in START_YARD_ANCHORS:
 			if anchor(nm) == null:
-				var e: Array = VerdanceSite.START_YARD_ANCHORS[nm]
+				var e: Array = START_YARD_ANCHORS[nm]
 				set_anchor(nm, e[0], e[1])
 	for nm: String in defaults:
 		if anchor(nm) == null:

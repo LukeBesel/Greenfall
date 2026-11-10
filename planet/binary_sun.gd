@@ -14,7 +14,7 @@ const HELPER: String = "res://systems/solar_system.gd"
 const DEFAULT_A: Dictionary = {"color": Color(1.0, 0.95, 0.85), "size": 1.0, "energy": 1.0}
 const DEFAULT_B: Dictionary = {"color": Color(1.0, 0.62, 0.38), "size": 0.55, "energy": 0.25, "separation": 14.0}
 
-var planet_id: String = "verdance"
+var planet_id: String = ""  # "" = the first shipped planet's orbit
 var a: Dictionary = DEFAULT_A.duplicate()
 var b: Dictionary = DEFAULT_B.duplicate()
 var separation_deg: float = 14.0

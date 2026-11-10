@@ -1,7 +1,7 @@
 extends Node3D
 ## [orbE] Light preview of the round planet's sky and nights (renders that fit the shared box):
-## Lumi's model, Glim and a few junk props on a curved patch of a Verdance-sized globe (its real
-## radius from GlobeSize), lit by SkyDirector's sphere mode with the world-space sky shader, the
+## Lumi's model, Glim and a few junk props on a curved patch of a planet-sized globe (its real
+## radius from the PlanetDefinition), lit by SkyDirector's sphere mode with the world-space sky shader, the
 ## binary suns, the moon, clouds and the night lift, exactly as on the globe. No grid, streamer
 ## or 164k-cell state, so it renders in a fraction of the memory.
 ##   res://tools/sky_preview.tscn -- --orbit-tour=0.5,0.76,0.97 --tour-shot=screenshots/orbE/sky
@@ -10,7 +10,7 @@ extends Node3D
 var sky: SkyDirector
 var lumi: Node3D
 var cam: Camera3D
-var radius: float = GlobeSize.VERDANCE_R
+var radius: float = 1840.0
 var site: Node3D  # everything on the ground, built around +Y, then turned to the site's latitude
 
 
@@ -23,7 +23,8 @@ class Body extends Node3D:
 
 
 func _ready() -> void:
-	radius = GlobeSize.radius_m(DevHooks.get_s("preview-planet", "verdance"))
+	var preview: String = DevHooks.get_s("preview-planet", String(Planets.current_id()))
+	radius = (Planets.by_id(preview) if Planets.has(preview) else Planets.current()).radius_m()
 	var env := Environment.new()
 	env.background_mode = Environment.BG_SKY
 	var sk := Sky.new()

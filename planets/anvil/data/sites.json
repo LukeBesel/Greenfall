@@ -1,0 +1,35 @@
+{
+  "_doc": "Hub and landmark site prefabs on the walkable globe (SiteBuilders; built by the definition's sites_script). sites: [{id, kind (hub | landmark), name, size_m (pad diameter), clear_core_m (junk-free core, default 12), start_only (true: only hub 0 gets it; the other hubs cycle through the rest), desc}], hubs first. Optional: hub_pad_m (flat pad radius of hubs after the first, default 82), fill_pad (the builder gets the pad's flat radius as opts.flat), yard_keep_out (the start yard keeps junk off its pad piece by piece), api (a note on the script's entry point).",
+  "api": "AnvilSites.build(site_root: Node3D, site_id, stage 1..5, restoration 0..1) -> Node3D; local +Y up, locally flat patch at the root's origin",
+  "sites": [
+    {
+      "id": "foundry_yard",
+      "kind": "hub",
+      "name": "Foundry Yard",
+      "size_m": 96,
+      "clear_core_m": 12,
+      "desc": "hub base: casting hall, two stacks, conveyor truss and hopper, ore spur, ember slag tip, buried hauler"
+    },
+    {
+      "id": "foundry_tower",
+      "kind": "landmark",
+      "name": "Ledger Foundry Tower",
+      "size_m": 84,
+      "desc": "the Ledger's colossal 130 m foundry stack on buttresses, pipes and slag tips"
+    },
+    {
+      "id": "lava_forge",
+      "kind": "landmark",
+      "name": "Lava Forge",
+      "size_m": 92,
+      "desc": "running furnace pouring molten slag down a channel to a pool; ladle crane; cools as restored"
+    },
+    {
+      "id": "ruined_smelter",
+      "kind": "landmark",
+      "name": "Ruined Smelter",
+      "size_m": 84,
+      "desc": "collapsed smelter hall frame, tipped and spilled pots, a toppled stack; restored as a planted pergola"
+    }
+  ]
+}

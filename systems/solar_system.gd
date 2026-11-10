@@ -1,13 +1,14 @@
 class_name SolarSystem
 extends RefCounted
-## [home] The Verdance system's binary star, the single source of truth for every sky
+## [home] The system's binary star, the single source of truth for every sky
 ## (data/solar_system.json, docs/DECISIONS.md "Binary suns"). Every planet sees the same two suns,
 ## the warm primary Hearth and the small orange companion Ember; size and light fall off with the
 ## planet's orbital distance. Use:
 ##   SolarSystem.suns_for(id, primary_dir) -> {a: {dir, color, size, energy}, b: {...}}
 ##     dir: unit vector FROM the ground TOWARD the sun. a.dir = primary_dir (the sky director's sun
 ##     path); b.dir = a.dir turned by the planet's separation, so the pair rises and sets together.
-##   SolarSystem.planet(id) -> the planet's entry (orbit_au, tilt_deg, day_length_s, moons, ...)
+##   SolarSystem.planet(id) -> the planet's orbit (orbit_au, tilt_deg, day_length_s, moons, ...):
+##     the `orbit` block of its look table
 ## Missing file or planet: the defaults below (the same ones the other helpers fall back to).
 
 const PATH: String = "res://data/solar_system.json"
@@ -24,13 +25,15 @@ static func cfg() -> Dictionary:
 			var d: Variant = JSON.parse_string(FileAccess.get_file_as_string(PATH))
 			_cfg = d if d is Dictionary else {}
 		if _cfg.is_empty():
-			_cfg = {"star_a": DEFAULT_A, "star_b": DEFAULT_B, "planets": {}}
+			_cfg = {"star_a": DEFAULT_A, "star_b": DEFAULT_B}
 	return _cfg
 
 
+## The planet's orbit block. An unknown id gets the first shipped planet's.
 static func planet(id: String) -> Dictionary:
-	var p: Dictionary = cfg().get("planets", {})
-	return p.get(id, p.get("verdance", {}))
+	var def: PlanetDefinition = Planets.by_id(id) if Planets.has(id) else Planets.first_shipped()
+	var orbit: Variant = def.table("look").get("orbit", {}) if def else {}
+	return orbit if orbit is Dictionary else {}
 
 
 static func orbit_au(id: String) -> float:

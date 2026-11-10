@@ -14,7 +14,7 @@ class FakeWorld:
 
 
 func _kind() -> Dictionary:
-	return (Economy.read_json("res://data/planets.json") as Dictionary).get("tidewell", {})
+	return Planets.by_id(&"tidewell").look()
 
 
 func _types() -> Array:
@@ -36,12 +36,13 @@ func _field(seed_v: int = 4471) -> HexField:
 	return f
 
 
-func test_registered_in_planets_json() -> void:
+func test_registered_with_its_look() -> void:
 	var k: Dictionary = _kind()
 	assert_eq(str(k.get("world_type", "")), "ocean_world")
-	assert_true(ResourceLoader.exists(str(k.get("env", ""))))
-	for key: String in ["sky", "fog", "sun", "ambient", "palette", "junk_tint", "music_mood", "district"]:
-		assert_true(k.has(key), "planets.json tidewell has " + key)
+	assert_eq(Planets.by_id(&"tidewell").env_script, TidewellEnv as Script)
+	assert_ne(Planets.by_id(&"tidewell").music_set, "")
+	for key: String in ["sky", "fog", "sun", "ambient", "palette", "junk_tint", "district", "globe", "orbit"]:
+		assert_true(k.has(key), "tidewell's look table has " + key)
 
 
 func test_mostly_ocean_with_islands() -> void:
@@ -132,9 +133,8 @@ func test_suns_fallback() -> void:
 
 
 func test_site_prefabs_build_and_restage() -> void:
-	var reg: Dictionary = _kind().get("sites", {})
 	for id: String in TideSite.SITES:
-		assert_true(reg.has(id), "registry lists " + id)
+		assert_false(SiteBuilders.find("tidewell", id).is_empty(), "the sites table lists " + id)
 		var root := Node3D.new()
 		add_child_autofree(root)
 		root.position = Vector3(500, 30, -200)  # anywhere: sites are local

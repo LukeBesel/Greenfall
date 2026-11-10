@@ -25,7 +25,7 @@ extends RefCounted
 ## Level 7: nearby ground reads flat, the curve shows gently at the horizon (~200 m) and clearly
 ## from a jump or the Command view; hubs ~1.7 km apart need the rocket; the grid loads in ~30 ms.
 ##
-## [orbB] Any subdivision frequency f (10·f²+2 cells, planets differ in size: GlobeSpec):
+## [orbB] Any subdivision frequency f (10·f²+2 cells, planets differ in size: PlanetDefinition.globe_frequency):
 ## for_freq(f). A power-of-two f is level log2(f) exactly as above (same ids, same cache). Any
 ## other f subdivides each icosahedron face as a lattice (class I geodesic); ids are not
 ## hierarchical then, so chunks keep their own centres (chunk_center) on a coarse lattice of

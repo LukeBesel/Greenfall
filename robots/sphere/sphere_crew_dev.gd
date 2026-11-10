@@ -13,10 +13,11 @@ extends RefCounted
 ##                                    within 10%, and the cells it cleaned
 
 
-## The globe's planet id (OrbitPlanet.spec, GlobeSpec.of), Verdance for the phase A scene.
+## The globe's planet id (OrbitPlanet.spec), the planet being played when the globe has no spec.
 static func planet_of(src: Object) -> String:
 	var sp: Variant = src.get("spec")
-	return str((sp as Dictionary).get("id", "verdance")) if sp is Dictionary else "verdance"
+	var current: String = String(Planets.current_id())
+	return str((sp as Dictionary).get("id", current)) if sp is Dictionary else current
 
 
 static func wanted() -> bool:
