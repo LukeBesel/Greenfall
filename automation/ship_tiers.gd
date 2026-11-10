@@ -3,43 +3,26 @@ extends RefCounted
 ## [ship] Which look Lumi's ship has, and which parts it carries (automation/ship_model.gd).
 ## One base ship that grows as planets are finished: the in-planet tiers (RocketTiers, Mk I-IV,
 ## bought in the Rockets tab) add wing extensions, better engines, a canopy upgrade, landing gear
-## and cargo pods; the interplanetary drive (Homeward, Mk V-VII, wt/home) lengthens the hull, adds
-## engine pairs, a fold ring, big wings and finally the seed vault. Gameplay semantics stay with
-## RocketTiers / Homeward: this only maps them to a look (1..7).
+## and cargo pods. Looks 5-7 (the interplanetary drive: a longer hull, engine pairs, a fold ring,
+## big wings and the seed vault) belong to the parked travel layer and are only shown with
+## --ship-tier=N. Gameplay semantics stay with RocketTiers: this only maps its tier to a look.
 
 const MAX_LOOK: int = 7
-const HOMEWARD_PATH := "res://systems/homeward.gd"
 ## Overall model scale per look (index = look); the parts themselves add length and span too.
 const SCALES: Array[float] = [1.15, 1.15, 1.15, 1.2, 1.25, 1.35, 1.5, 1.75]
 ## Landing pad deck scale per look (the pad grows with the ship).
 const PAD_SCALES: Array[float] = [1.0, 1.0, 1.0, 1.05, 1.1, 1.3, 1.55, 1.85]
 
 
-## The ship's look: Homeward's drive tier (5-7) once built, else the in-planet rocket tier (1-4).
-## --ship-tier=N overrides (screenshots).
+## The ship's look: the in-planet rocket tier (1-4). --ship-tier=N overrides (screenshots).
 static func look() -> int:
 	if DevHooks.has("ship-tier"):
 		return clampi(int(DevHooks.get_f("ship-tier", 1.0)), 1, MAX_LOOK)
-	return look_for(RocketTiers.tier(), drive_tier())
+	return look_for(RocketTiers.tier())
 
 
-static func look_for(rocket_tier: int, drive: int) -> int:
-	if drive >= 5:
-		return clampi(drive, 5, MAX_LOOK)
+static func look_for(rocket_tier: int) -> int:
 	return clampi(rocket_tier, 1, 4)
-
-
-## Homeward's interplanetary drive tier (0, 5, 6, 7); 0 when Homeward is not in this build.
-## Called dynamically so this file compiles with or without wt/home merged.
-static func drive_tier() -> int:
-	if DevHooks.has("drive"):
-		return int(DevHooks.get_f("drive", 0.0))
-	if not ResourceLoader.exists(HOMEWARD_PATH):
-		return 0
-	var s: Script = load(HOMEWARD_PATH)
-	if s == null or not ("drive" in s.get_script_method_list().map(func(m: Dictionary) -> String: return str(m["name"]))):
-		return 0
-	return int(s.call("drive"))
 
 
 static func scale_of(t: int) -> float:

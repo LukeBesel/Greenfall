@@ -61,19 +61,9 @@ func test_store_never_drops_and_records_beats_once() -> void:
 	assert_eq(CoreCharge.store(0.3), [25] as Array[int])
 	assert_eq(CoreCharge.store(0.1), [] as Array[int])
 	assert_almost_eq(CoreCharge.stored(), 0.3, 0.0001)
-	# [pace2] On Verdance the core stops at the cap of the tech found so far (later planets).
-	var keep: Dictionary = CradleMode.profile.duplicate(true)
-	var keep_p: bool = CradleMode.persist
-	CradleMode.persist = false
-	CradleMode.profile = CradleMode.default_profile()
-	assert_eq(CoreCharge.store(0.8), [50] as Array[int], "75% waits for the Deep Drill")
-	assert_almost_eq(CoreCharge.stored(), Homeward.cap_for(0), 0.0001)
-	for t: Dictionary in Homeward.tech_defs():
-		Homeward.techs().append(str(t["id"]))
-	assert_eq(CoreCharge.store(0.8), [75] as Array[int])
+	# Nothing outside this planet caps the core: one big step crosses every beat on the way.
+	assert_eq(CoreCharge.store(0.8), [50, 75] as Array[int])
 	assert_eq(CoreCharge.store(1.0), [100] as Array[int])
-	CradleMode.profile = keep
-	CradleMode.persist = keep_p
 	assert_eq(CoreCharge.beats_done(), [25, 50, 75, 100])
 
 

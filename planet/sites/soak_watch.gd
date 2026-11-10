@@ -6,8 +6,7 @@ extends Node
 ## the autoplay bot drives) and robots that haven't moved in 10 minutes or sit far off the ground.
 ## Prints a state digest at start (after a load) and at exit, so a save -> reload mismatch shows as
 ## two digests that differ. Lines: "[soak] ...", "[soak] WARN ...", "[soak] digest ...".
-## Also --soak-hops: once --soak-play=S game seconds have passed, hops to every hub and back to 0;
-## --soak-planet=K: then the interplanet rocket to planet K.
+## Also --soak-hops: once --soak-play=S game seconds have passed, hops to every hub and back to 0.
 
 var so: SliceOrbit
 var _t: float = 0.0
@@ -176,7 +175,3 @@ func _hops() -> void:
 			_warn("hop to hub %d: %s, %.1f m from the pad" % [i, "refused" if not ok else "landed off the pad", d])
 		await get_tree().create_timer(3.0).timeout
 	_phase = "after_hops"
-	if DevHooks.has("soak-planet"):
-		var k: int = int(DevHooks.get_f("soak-planet", 1.0))
-		print("[soak] rocket to planet %d" % k)
-		os.launch_planet(Homeward.PLANET_BASE - k)

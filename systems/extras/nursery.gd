@@ -4,7 +4,7 @@ extends Node3D
 ## become garden caretakers in a small nursery garden at the base: they potter between the flower
 ## beds, water them, and wave at Lumi. They keep their names, looks (Builder parts) and
 ## personalities (systems/robot_builder.gd traits). Retiring refunds a few Parts, and every
-## caretaker adds a tiny permanent plant-growth bonus (capped), through CradleMode.stat_mod.
+## caretaker adds a tiny permanent plant-growth bonus (capped), through Economy.stat.
 ## State: GameState.flags.nursery = [{name, type, tier, trait, build, unix, from}] and
 ## flags.nursery_service = {robot name: time_played when first seen} (how long a robot has served).
 
@@ -47,7 +47,7 @@ static func garden_bonus(n: int = -1) -> float:
 	return minf(float(count() if n < 0 else n) * BONUS_PER, BONUS_CAP)
 
 
-## Economy.stat hook (via CradleMode.stat_mod): caretakers make plants grow a little faster.
+## Economy.stat hook: caretakers make plants grow a little faster.
 static func stat_mult(stat_id: String) -> float:
 	if stat_id != "plant_growth":
 		return 1.0

@@ -138,9 +138,6 @@ func join_crew(type_id: String) -> String:
 
 ## "" if the type can be built now, else why not (research, crew cap, parts, cubes).
 func build_block_reason(type_id: String) -> String:
-	var wk: String = WeeklyChallenge.robot_block(type_id)  # [extras] Seed of the Week twist
-	if wk != "":
-		return wk
 	if not Research.robot_unlocked(type_id):
 		if Research.is_story(Research.robot_requirement(type_id)):  # [v4bots] arrives later by itself
 			return Research.robot_lock_text(type_id)

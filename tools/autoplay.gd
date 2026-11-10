@@ -937,20 +937,6 @@ func _campaign(_p: Patch) -> void:
 		_mark("cradle_complete_s")
 	if GameState.flags.get("bloom_finale_seen", false):
 		_mark("finale_done_s")
-	if int(GameState.stats.get("ark_waves", 0)) > 0:
-		_mark("ark_wave_1_s")
-	var home: String = AutoplayHome.step(world)  # [home] the system campaign: planets, Homeward rocket, the ending
-	if home != "":
-		if home != "wait" and home != "ending":
-			_event("home", {"what": home})
-		return
-	if not Homeward.done() and Homeward.current_planet() > 0 and DevHooks.has("home-ff"):
-		return  # [home] fast-forwarded planets: no district hops
-	var late: String = AutoplayLate.step(world)  # [late] post-game: decorate, Heirlooms, seed a new world
-	if late != "":
-		_event("late", {"what": late})
-		if late == "seed new world":
-			return
 	if _now() < 30.0 or DevHooks.has("no-travel"):
 		return  # settle in after landing
 	var to: int = AutoplayCampaign.next_hub(world)
@@ -1615,22 +1601,20 @@ func _snapshot() -> void:
 		"hexes": world.field.cleaned_count, "hex_levels": lv, "robots": types, "hub": int(world.hub.level),
 		"task": _task, "research": Research.active_id(), "upgrades": int(GameState.stats.get("upgrades_bought", 0)),
 		"bots": _robot_health(), "goals": ngoals, "stats": _stat_pick(["research_done", "plants_bloomed", "garden_stipend", "air_filtered", "robots_built", "robot_bales", "bales_recycled", "plants_planted"]),
-		"planet": str(Homeward.planet_def(Homeward.current_planet()).get("id", "")), "pct": snappedf(Homeward.measure_current(), 0.001)})  # [orbC] planet restoration
-	var pk: int = Homeward.current_planet()  # [orbC] pacing marks: 25% / 50% of each planet
-	if pk >= 0:
-		var pid: String = str(Homeward.planet_def(pk).get("id", ""))
-		var pct: float = Homeward.measure_current()
-		for th: int in [25, 50, 75]:
-			if pct * 100.0 >= th:
-				AutoplayCampaign.mark("pct%d_%s_s" % [th, pid], _now())
-		# Staged pacing runs: --quit-at-pct=50 saves and stops once this planet is that restored.
-		if DevHooks.has("quit-at-pct") and pct * 100.0 >= DevHooks.get_f("quit-at-pct", 50.0) and not _pct_quit:
-			_pct_quit = true
-			print("[autoplay] %s at %.0f%% after %.1f game min (campaign %.1f min): saving and quitting" % [pid, pct * 100.0, _now() / 60.0,
-				float(GameState.stats.get("time_played", 0.0)) / 60.0])
-			write_report()
-			SaveManager.save_game()
-			world.get_tree().quit()
+		"planet": String(Planets.current_id()), "pct": snappedf(Restoration.value(), 0.001)})  # [orbC] planet restoration
+	var pid: String = String(Planets.current_id())  # [orbC] pacing marks: 25% / 50% / 75% of the planet
+	var pct: float = Restoration.value()
+	for th: int in [25, 50, 75]:
+		if pct * 100.0 >= th:
+			AutoplayCampaign.mark("pct%d_%s_s" % [th, pid], _now())
+	# Staged pacing runs: --quit-at-pct=50 saves and stops once this planet is that restored.
+	if DevHooks.has("quit-at-pct") and pct * 100.0 >= DevHooks.get_f("quit-at-pct", 50.0) and not _pct_quit:
+		_pct_quit = true
+		print("[autoplay] %s at %.0f%% after %.1f game min (campaign %.1f min): saving and quitting" % [pid, pct * 100.0, _now() / 60.0,
+			float(GameState.stats.get("time_played", 0.0)) / 60.0])
+		write_report()
+		SaveManager.save_game()
+		world.get_tree().quit()
 	print("[Autoplay] %5.1f min cubes=%d rate=%.2f/s partscur=%.0f seeds=%.0f parts=%d hexes=%d lv=%s robots=%s hub=%d task=%s goals=%d research=%s pos=%s esc=%d" % [_now() / 60.0,  # [money]
 		int(GameState.get_currency("cubes").to_float()), GameState.income_rate(), GameState.get_currency("parts").to_float(),
 		GameState.get_currency("seeds").to_float(), GameState.parts.size(),

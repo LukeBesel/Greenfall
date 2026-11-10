@@ -75,9 +75,6 @@ var _fly_to := Vector3.ZERO
 var _fly_dur: float = 5.0
 ## Set by fly(): the rocket flight hologram can't be dismissed (the scene reloads after it).
 var _flight_locked: bool = false
-## [home] Opens the solar-system map (set by systems/homeward_director.gd); the button hides without it.
-var open_system: Callable = Callable()
-var _system_btn: Button
 ## [v2map] Owner note 40: on the round game the map is only a map; the rocket's destination list
 ## (ui/rocket_picker.gd, E at the rocket) does the travel. false hides the Rocket card.
 var travel_in_map: bool = true
@@ -161,22 +158,13 @@ func _ready() -> void:
 		_rows.add_child(r)
 	_age = UITheme.label("", 13, UITheme.GOLD)
 	b1.add_child(_age)
-	_ark = UITheme.label("", 13, MapGlyphs.LEAF)  # [bloom] Seed Ark / Verdance Bloom line
+	_ark = UITheme.label("", 13, MapGlyphs.LEAF)  # [bloom] the Bloom milestone line
 	b1.add_child(_ark)
 	_resurvey = Button.new()
 	_resurvey.custom_minimum_size = Vector2(0, 38)
 	_holo_button(_resurvey)
 	_resurvey.pressed.connect(_on_resurvey)
 	b1.add_child(_resurvey)
-	_system_btn = Button.new()  # [home] zoom out to the solar-system map (ui/system_map.gd)
-	_system_btn.custom_minimum_size = Vector2(0, 38)
-	_system_btn.text = tr("Solar system")
-	_holo_button(_system_btn)
-	_system_btn.pressed.connect(func() -> void:
-		if open_system.is_valid() and not _flight_locked:
-			close_view()
-			open_system.call())
-	b1.add_child(_system_btn)
 	# Right: rocket destinations.
 	var right := VBoxContainer.new()
 	right.set_anchors_preset(Control.PRESET_TOP_RIGHT)
@@ -480,8 +468,6 @@ func _refresh_text() -> void:
 	var age: float = float(GameState.stats.get("time_played", 0.0)) - _snapshot_time
 	_age.text = tr("Surveyed %s ago%s") % [_fmt_age(age), tr("   ·   OUTDATED") if age > 600.0 else ""]
 	_resurvey.text = tr("Re-survey      %s cubes") % Settings.fmt(survey_cost())
-	if _system_btn:  # [home]
-		_system_btn.visible = open_system.is_valid() and Homeward.system_open()  # [pace2] partial progress opens the system
 	_ark.text = Bloom.globe_line()
 	_ark.visible = _ark.text != ""
 

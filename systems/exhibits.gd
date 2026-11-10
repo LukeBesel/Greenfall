@@ -49,8 +49,6 @@ static func progress(x: Dictionary) -> Vector2i:
 			var n: int = 0
 			var t: int = 0
 			for e: Dictionary in Codex.egg_defs():
-				if str(e.get("where", "")) == "new_world":
-					continue
 				t += 1
 				n += 1 if EasterEggs.is_found(str(e["id"])) else 0
 			return Vector2i(n, t)

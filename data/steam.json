@@ -12,7 +12,6 @@
   {"api": "SHARDS_FOUND", "key": "shards_found", "type": "INT", "name": "Memory shards found"},
   {"api": "EGGS_FOUND", "key": "eggs_found", "type": "INT", "name": "Curiosities found"},
   {"api": "OUTPOSTS_REPAIRED", "key": "outposts_repaired", "type": "INT", "name": "Outposts repaired"},
-  {"api": "ARK_WAVES", "key": "ark_waves", "type": "INT", "name": "Seed Ark waves"},
   {"api": "DISTANCE_M", "key": "distance_m", "type": "FLOAT", "name": "Distance driven (m)"},
   {"api": "MINUTES_PLAYED", "key": "time_played", "type": "INT", "scale": 0.016666667, "name": "Minutes played"}
  ]

@@ -47,10 +47,9 @@ static func _col(a: Variant, fb: Color) -> Color:
 	return fb
 
 
-## The planet id of the current world: a fixed system planet, else Verdance's sky.
+## The planet id of the current world.
 static func current_id() -> String:
-	var k: int = Homeward.current_planet()
-	return str(Homeward.planet_def(k).get("id", "verdance")) if k >= 0 else "verdance"
+	return String(Planets.current_id())
 
 
 ## The companion's direction from the primary's (pure).

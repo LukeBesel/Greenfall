@@ -60,15 +60,6 @@ func _setup() -> void:
 		CityWalk.run_dev(so)
 	if DevHooks.has("target-reach"):  # [v4world] dev: every collectible and objective target reachable (planet/sites/target_audit.gd)
 		TargetAudit.run_dev(so)
-	if bool(GameState.flags.get("arrived_from_rocket", false)) or DevHooks.has("orbit-arrive"):
-		GameState.flags.erase("arrived_from_rocket")
-		_arrive.call_deferred()
-	if DevHooks.has("orbit-home"):  # dev: --orbit-home, the Homeward launch (drive Mk VII + last seed given)
-		Homeward.state()["drive"] = maxi(Homeward.drive(), 7)
-		GameState.flags["home_last_seed"] = true
-		get_tree().create_timer(2.0).timeout.connect(func() -> void: HomewardDirector.launch_home(so.w))
-	if DevHooks.has("orbit-planet-hop"):  # dev: --orbit-planet-hop=K, the interplanet rocket to planet K
-		get_tree().create_timer(2.0).timeout.connect(func() -> void: launch_planet(Homeward.PLANET_BASE - int(DevHooks.get_f("orbit-planet-hop", 1.0))))
 
 
 static func of(world: Node) -> OrbitSites:
@@ -78,7 +69,7 @@ static func of(world: Node) -> OrbitSites:
 ## [v2map] Owner note 40: the survey map (M) is only a map. Travel is at the rocket: it stands on
 ## the pad of the hub Lumi last landed at (from base level 5, or once Lumi
 ## has flown), and E there opens the destination list (ui/rocket_picker.gd): the other hubs on
-## this globe (a rocket hop), other planets once the system is open, and the Homeward launch.
+## this globe (a rocket hop).
 ## Dev: --orbit-survey-launch=N still flies to the Nth hub in that list; --rocket parks it at once.
 var picker: RocketPicker
 var rocket_spot: Node3D
@@ -101,13 +92,9 @@ func _wire_survey() -> void:
 	so.w.add_child(picker)
 	picker.entries_fn = destinations
 	picker.blocker_fn = func() -> String: return tr("The rocket is in flight.") if hop.flying or bool(so.w.get("launching")) else ""
-	picker.planets_open = func() -> bool: return Homeward.system_open()
-	picker.open_planets = _open_planets
-	picker.home_ready = func() -> bool: return HomewardDirector.home_ready(so.w)
-	picker.launch_home = func() -> void: HomewardDirector.launch_home(so.w)
 	picker.picked.connect(func(site: int) -> void: hop_to(site))
 	picker.closed.connect(func() -> void:
-		if not hop.flying and not (so.layers and so.layers.system_map and so.layers.system_map.is_open):
+		if not hop.flying:
 			so.on_modal_closed())
 	rocket_spot = Node3D.new()
 	rocket_spot.name = "RocketSpot"
@@ -136,7 +123,7 @@ func _wire_survey() -> void:
 
 
 ## Whether Lumi has a rocket on this globe: base level 5 builds it (as the flat game's launch pad),
-## and once Lumi has flown (a hop or an arrival from another planet) it travels with him.
+## and once Lumi has flown (a hop) it travels with him.
 func rocket_unlocked() -> bool:
 	var hub: Variant = so.w.get("hub")
 	return DevHooks.has("rocket") or bool(GameState.orbit.get("rocket_owned", false)) \
@@ -186,18 +173,6 @@ func site_name(i: int) -> String:
 	return tr("Hub %d") % i
 
 
-func _open_planets() -> void:
-	var m: SystemMap = so.layers.system_map if so.layers else null
-	var d: HomewardDirector = HomewardDirector.of(so.w)
-	if d and d.map:
-		m = d.map
-	if m == null:
-		so.on_modal_closed()
-		return
-	m.on_here = open_rocket
-	m.open_map(false, true)
-
-
 ## Keeps the parked rocket on its pad (shown once unlocked and the pad's site is built).
 func _sync_rocket() -> void:
 	if rocket_spot == null or sm == null:
@@ -242,53 +217,6 @@ func _process(delta: float) -> void:
 	if _rocket_t >= 0.5:
 		_rocket_t = 0.0
 		_sync_rocket()
-
-
-## The interplanet rocket from this globe (SystemMap -> HomewardDirector): lift off from the
-## nearest hub's pad, then Homeward switches worlds; the new globe lands Lumi on its start site.
-## target: Homeward's launch target (PLANET_BASE - k). The Cradle (HOME) is not on a globe yet.
-func launch_planet(target: int) -> bool:
-	if target == Homeward.HOME:
-		return await launch_home()
-	var k: int = Homeward.PLANET_BASE - target
-	if sm == null or hop.flying:
-		return false
-	so.w.set("launching", true)
-	GameState.flags["arrived_from_rocket"] = true
-	var from_i: int = sm.nearest if sm.nearest >= 0 else 0
-	await hop.depart_with(sm, so.w.get("patch"), so.cam, so.globe.terrain, from_i)
-	print("[hop] interplanet to %s" % Homeward.planet_name(k))
-	if not Homeward.travel_to_planet(k, get_tree()):
-		so.w.set("launching", false)
-		GameState.flags.erase("arrived_from_rocket")
-		return false
-	return true
-
-
-## The Homeward launch from this globe: lift off from the nearest hub's pad, then the real ending
-## (Homecoming: the rise to the Cradle, the vault, the finale). Lumi is set back on the pad out
-## of sight first, since the finale films him landing in the ark's beam.
-func launch_home() -> bool:
-	if sm == null or hop.flying:
-		return false
-	so.w.set("launching", true)
-	var from_i: int = sm.nearest if sm.nearest >= 0 else 0
-	var patch: Patch = so.w.get("patch")
-	await hop.depart_with(sm, patch, so.cam, so.globe.terrain, from_i)
-	hop._step_off(sm, patch, so.cam, so.globe.terrain, from_i)
-	patch.visible = false
-	print("[hop] Homeward launch from %s hub %d" % [so.globe.planet_id, from_i])
-	var h: Homecoming = Homecoming.play_now(so.w)
-	await get_tree().create_timer(0.5).timeout
-	hop.clear_veil()
-	so.w.set("launching", false)
-	return h != null
-
-
-func _arrive() -> void:
-	await get_tree().create_timer(0.3).timeout
-	var ok: bool = await hop.arrive_with(sm, so.w.get("patch"), so.cam, so.globe.terrain, 0)
-	print("[hop] arrived on %s start site: %s" % [so.globe.planet_id, "ok" if ok else "FAIL"])
 
 
 ## The start site's depot follows its anchor if it had to move out of the prefab's geometry.

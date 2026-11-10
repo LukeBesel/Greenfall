@@ -27,9 +27,6 @@ const DETAIL_RANGE: float = 240.0
 ## object space for these, so merging is exact), fire escapes instanced per cell.
 var _static := MeshBatch.new()
 var _props := MeshBatch.new()
-## [worlds2] A Cradle Mode world's facade tint (systems/world_look.gd): frosted, sun-bleached,
-## coastal, overgrown or corroded cities. White on Verdance.
-var look_tint := Color.WHITE
 var _prop_body: StaticBody3D  # [world2] street furniture and lot fences (PhysLayers.PROP)
 ## [orbD] A hub site prefab on the globe (planet/sites/verdance_site.gd): no skyline backdrop
 ## (the globe's own far shell is the horizon).
@@ -59,13 +56,10 @@ func _walk_h() -> float:  # [orbD] the sidewalk top street furniture stands on
 	return 0.02 if flush_walks else CityLayout.CURB_H
 
 
-
 func build(p_layout: CityLayout, p_ground_material: Material) -> void:
 	layout = p_layout
 	ground_material = p_ground_material
 	_rng.seed = layout.seed_value + 1234
-	look_tint = WorldLook.city_tint(WorldLook.current())  # [worlds2]
-	_detail.world_tint = look_tint
 	_static.cell = CityLayout.PITCH * 2.0
 	_props.cell = CityLayout.PITCH * 2.0
 	_props.visibility_end = 260.0
@@ -385,7 +379,7 @@ func _build_building(block: Vector2i, bd: Dictionary) -> void:
 	var pal: Array = BuildingDetail.APT_PALETTE[(int(bd["seed"]) >> 3) % BuildingDetail.APT_PALETTE.size()]
 	var shell_r: Rect2 = BuildingDetail._inset_front(mass_r.grow(-0.02), face, 0.6, 0.0)
 	_body.uv = BuildingDetail._bay_uv(r, int(bd["seed"]) & 0xffff)
-	_body.mat(BuildingDetail.K_FACADE, pal[1] * look_tint, pal[0], BuildingDetail.F_RIBBON if kit == FAC else 0)  # [worlds2] tint
+	_body.mat(BuildingDetail.K_FACADE, pal[1], pal[0], BuildingDetail.F_RIBBON if kit == FAC else 0)
 	_body.abox(Vector3(shell_r.position.x, 0.0, shell_r.position.y), Vector3(shell_r.size.x, height, shell_r.size.y), BuildingDetail.K_ROOF if ruin_from < floors else -2)
 	_detail.kit_roof(_body, _det, r, face, mass_h, floors, kit == FAC, int(bd["seed"]), ruin_from < floors)
 	# Fire escape on some apartment facades.
@@ -592,7 +586,7 @@ func _build_skyline() -> void:
 		m.shader = preload("res://art/shaders/building_far.gdshader")
 		m.set_shader_parameter("wall_alb", AssetLib.tex(facades[i][0], "diff"))
 		m.set_shader_parameter("wall_nrm", AssetLib.tex(facades[i][0], "nor_gl"))
-		m.set_shader_parameter("tint", facades[i][1] * look_tint)  # [worlds2]
+		m.set_shader_parameter("tint", facades[i][1])
 		m.set_shader_parameter("seed", 3.1 + float(i) * 0.61)
 		mats.append(m)
 	var roof_mat: StandardMaterial3D = AssetLib.pbr_material("concrete_wall_008", 0.2, Color(0.55, 0.53, 0.5), true)

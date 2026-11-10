@@ -1,19 +1,7 @@
 extends GutTest
 ## [late] The newer curiosities (data/eggs.json, story/egg_props_late.gd): 40+ in all, a prop for
-## every one, frontier eggs only in their frontier, other-world eggs only on Cradle Mode worlds,
+## every one, frontier eggs only in their frontier, other-world eggs (a parked feature) never placed,
 ## Codex groups and WREN lines for each.
-
-var _profile: Dictionary
-
-
-func before_each() -> void:
-	_profile = CradleMode.profile.duplicate(true)
-	CradleMode.profile = CradleMode.default_profile()
-
-
-func after_each() -> void:
-	CradleMode.profile = _profile
-
 
 func _defs() -> Array:
 	return Economy.planet_table("eggs")["eggs"]
@@ -55,20 +43,24 @@ func test_frontier_eggs_only_in_their_frontier() -> void:
 				assert_false(str(od[1][id].get("where", "")) in ["frontier", "new_world"], "%s stays out of ordinary districts" % id)
 
 
-func test_other_world_eggs_only_on_new_worlds() -> void:
+func test_other_world_eggs_are_never_placed_or_listed() -> void:
 	var od: Array = _order_and_defs()
-	var home: Array[String] = EasterEggs.district_eggs(od[0], od[1], 0, 4471, 10)
-	assert_false("older_pod" in home)
-	CradleMode._add_world()
-	CradleMode.profile["current"] = 1
-	var away: Array[String] = EasterEggs.district_eggs(od[0], od[1], 0, 4471, 10)
-	assert_true("older_pod" in away)
-	assert_true("heirloom_tin" in away)
-	assert_eq(away.size(), home.size() + 2)
+	var other: Array[String] = []
+	for id: String in od[0]:
+		if str(od[1][id].get("where", "")) == "new_world":
+			other.append(id)
+	assert_gt(other.size(), 0, "the table still holds the parked eggs")
+	var listed: Array = Codex.egg_defs().map(func(e: Dictionary) -> String: return str(e["id"]))
+	for hub: int in 6:
+		var placed: Array[String] = EasterEggs.district_eggs(od[0], od[1], hub, 4471, 10, hub > 2, "")
+		for id: String in other:
+			assert_false(id in placed, "%s is never placed (hub %d)" % [id, hub])
+	for id: String in other:
+		assert_false(id in listed, "%s is not a curiosity the Codex counts" % id)
 
 
 func test_codex_groups_cover_every_egg() -> void:
-	var groups: Array[String] = ["Old Town", "Any district", "Wilderness bases", "Frontiers", "Other worlds"]
+	var groups: Array[String] = ["Old Town", "Any district", "Wilderness bases", "Frontiers"]
 	for c: Dictionary in Codex.curiosities():
 		var ok: bool = false
 		for g: String in groups:

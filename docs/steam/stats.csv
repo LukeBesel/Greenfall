@@ -10,6 +10,5 @@ PLANTS_BLOOMED,INT,Plants bloomed,Client,yes,0,plants_bloomed
 SHARDS_FOUND,INT,Memory shards found,Client,yes,0,shards_found
 EGGS_FOUND,INT,Curiosities found,Client,yes,0,eggs_found
 OUTPOSTS_REPAIRED,INT,Outposts repaired,Client,yes,0,outposts_repaired
-ARK_WAVES,INT,Seed Ark waves,Client,yes,0,ark_waves
 DISTANCE_M,FLOAT,Distance driven (m),Client,yes,0,distance_m
 MINUTES_PLAYED,INT,Minutes played,Client,yes,0,time_played

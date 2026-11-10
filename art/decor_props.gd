@@ -20,8 +20,6 @@ static func build(type_id: String) -> Node3D:
 		"statue": return statue()
 		"lumi_sculpture": return lumi_sculpture()
 		"wren_kite": return wren_kite()
-		"weekly_pennant": return WeeklyProps.pennant()  # [extras]
-		"weekly_arch": return WeeklyProps.arch()  # [extras]
 	var n := Node3D.new()
 	n.add_child(EggProps.mesh(ProcMesh.box(Vector3(0.6, 0.6, 0.6)), stone()))
 	return n

@@ -5,7 +5,7 @@ extends Node3D
 ## GameState.world["decor"] = {"items": [{t, x, z, r}]} (x, z = grid cell of the footprint's
 ## corner, r = quarter turns). Charm (the sum of every item's charm) is cached in
 ## GameState.world["decor_charm"] and gives this district a small plant-growth bonus through
-## CradleMode.stat_mod -> Decor.stat_mult.
+## Economy.stat -> Decor.stat_mult.
 ##
 ## Wildlife hook (no dependency either way): every placed item is a Node3D in group "decor" with
 ##   meta "decor_type" (String) and meta "decor_wildlife" (Array of animal kinds that like it,
@@ -91,7 +91,7 @@ static func charm_bonus(charm: float) -> float:
 	return minf(charm * float(cfg().get("charm_growth", 0.004)), float(cfg().get("charm_cap", 0.08)))
 
 
-## Economy.stat hook (via CradleMode.stat_mod): this district's charm speeds its plants up a little.
+## Economy.stat hook: this district's charm speeds its plants up a little.
 static func stat_mult(stat_id: String) -> float:
 	if stat_id != "plant_growth":
 		return 1.0
@@ -115,17 +115,14 @@ static func buy_block_reason(type_id: String) -> String:
 	var finds: int = int(d.get("needs_finds", 0))
 	if finds > 0 and Collection.count() < finds:
 		return TranslationServer.translate("Needs %d Collection finds (%d so far)") % [finds, Collection.count()]
-	var chips: int = int(d.get("needs_chips", 0))  # [extras] Seed of the Week paint chips
-	if chips > 0 and WeeklyChallenge.chip_count() < chips:
-		return TranslationServer.translate("Needs %d Seed of the Week paint chips (%d so far)") % [chips, WeeklyChallenge.chip_count()]
 	if not GameState.can_afford_all(cost(type_id)):  # [money]
 		return TranslationServer.translate("Needs %s") % cost_text(type_id)
 	return ""
 
 
-## Garden Mode is open in this district: after any Cradle finale, or with the base at level 5.
+## Garden Mode is open in this district: after the finale, or with the base at level 5.
 static func unlocked() -> bool:
-	return CradleMode.unlocked() or int(GameState.world.get("hub_level", 1)) >= int(cfg().get("unlock_hub_level", 5)) or DevHooks.has("garden")
+	return bool(GameState.flags.get("bloom_finale_seen", false)) or int(GameState.world.get("hub_level", 1)) >= int(cfg().get("unlock_hub_level", 5)) or DevHooks.has("garden")
 
 
 ## Animals of `kind` can find the decorations they like through this (wildlife hook).

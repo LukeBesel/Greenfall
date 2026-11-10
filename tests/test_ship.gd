@@ -1,15 +1,13 @@
 extends GutTest
 ## [ship] Lumi's ship (automation/ship_model.gd, automation/ship_tiers.gd, automation/launch_pad.gd):
-## the look follows RocketTiers (Mk I-IV) and Homeward's drive (Mk V-VII); each look keeps the base
+## the look follows RocketTiers (Mk I-IV); each look keeps the base
 ## and adds parts; the ship and its pad grow; the model builds every look with engines and a canopy.
 
 
 func test_look_mapping() -> void:
-	assert_eq(ShipTiers.look_for(1, 0), 1)
-	assert_eq(ShipTiers.look_for(4, 0), 4)
-	assert_eq(ShipTiers.look_for(2, 5), 5, "the drive tier wins once built")
-	assert_eq(ShipTiers.look_for(4, 7), 7)
-	assert_eq(ShipTiers.look_for(9, 0), 4, "in-planet tiers cap at Mk IV")
+	assert_eq(ShipTiers.look_for(1), 1)
+	assert_eq(ShipTiers.look_for(4), 4)
+	assert_eq(ShipTiers.look_for(9), 4, "in-planet tiers cap at Mk IV")
 
 
 func test_parts_grow_on_one_base() -> void:

@@ -124,7 +124,6 @@ static func district_eggs(all_ids: Array[String], all_defs: Dictionary, hub: int
 		for id: String in all_ids:
 			if bool(all_defs[id].get("starter", false)):
 				out.append(id)
-		out.append_array(EggPropsLate.new_world_eggs(all_ids, all_defs))  # [late] Cradle Mode worlds' own finds
 		return out
 	var r := RandomNumberGenerator.new()
 	r.seed = seed_v + 313
@@ -132,7 +131,7 @@ static func district_eggs(all_ids: Array[String], all_defs: Dictionary, hub: int
 	var wild_ids: Array[String] = []
 	out.append_array(EggPropsLate.frontier_eggs(all_ids, all_defs, biome))  # [late] frontier-only eggs go first
 	for id: String in all_ids:
-		if str(all_defs[id].get("where", "")) in ["frontier", "new_world"]:  # [late]
+		if str(all_defs[id].get("where", "")) in ["frontier", "new_world"]:  # [late] (new_world: a parked feature's eggs, never placed)
 			continue
 		if str(all_defs[id].get("where", "")) == "wild":
 			wild_ids.append(id)

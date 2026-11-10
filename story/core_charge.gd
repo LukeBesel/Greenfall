@@ -104,10 +104,7 @@ static func beats_done() -> Array:
 ## Raises the stored charge (never lowers it). Returns milestones newly crossed (in order).
 static func store(c: float) -> Array[int]:
 	var old: float = stored()
-	# [pace2] On Verdance the core can't pass what the tech found so far allows (data/homeward.json
-	# needs_tech): the Dust Flats, Sunken City, Frozen Port and the Cradle wait for return trips.
-	var cap: float = Homeward.cap_for(0) if Homeward.current_planet() == 0 else 1.0
-	var now: float = maxf(old, minf(clampf(c, 0.0, 1.0), cap))
+	var now: float = maxf(old, clampf(c, 0.0, 1.0))
 	GameState.flags["core_charge"] = now
 	var out: Array[int] = []
 	for b: int in BEATS:
@@ -187,7 +184,7 @@ func _quiet() -> bool:
 	var fs: Variant = world.get("first_seed")
 	if fs is FirstSeed and bool((fs as FirstSeed).get("_active")):
 		return false
-	return not BloomFinale.playing and not CradleAnswers.playing and not Homecoming.playing  # [home]
+	return not BloomFinale.playing
 
 
 func _play(beat: int) -> void:

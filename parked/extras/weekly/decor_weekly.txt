@@ -1,0 +1,5 @@
+Parked with the Seed of the Week (M1-08): the two decoration types of data/decor.json that need paint chips ("needs_chips"). Put them back at the end of its "types" list; their props are in weekly_props.gd.
+
+    {"id": "weekly_pennant", "name": "Seed of the Week Pennant", "desc": "A tall pennant in the colour of your newest Seed of the Week paint chip.", "size": [1, 1], "cost": {"cubes": 2000}, "needs_chips": 1, "charm": 1.5, "wildlife": ["bird"]},
+    {"id": "weekly_arch", "name": "Paint Chip Arch", "desc": "A garden arch striped with every paint chip you have earned.", "size": [2, 1], "cost": {"cubes": 9000}, "needs_chips": 3, "charm": 3.0, "wildlife": ["bird", "cat"]}
+

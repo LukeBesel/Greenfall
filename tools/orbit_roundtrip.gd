@@ -244,7 +244,7 @@ static func _fauna_check(tree: SceneTree, s: Node, so: SliceOrbit, check: Callab
 	# Garden Mode: this hub's decor sits in the frame on the ground; the yard's machines and its
 	# buildings block a spot; the placer opens on it with the SphereCam following its cursor.
 	var dc: Decor = hf.node("Decor") as Decor
-	var lt: LateDirector = LateDirector.of(s)
+	var lt: GardenDirector = GardenDirector.of(s)
 	check.call("orbit_decor_at_hub", true, dc != null and lt != null and lt.decor == dc and lt.placer.decor == dc)
 	var t0: String = Decor.type_ids()[0]
 	var c0: Vector2i = _free_decor_cell(dc, t0, back)

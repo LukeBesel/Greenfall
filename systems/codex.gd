@@ -188,9 +188,12 @@ static func scan(world: Node = null) -> Array[String]:
 static var _eggs: Array = []
 
 
+## The curiosities that can be found in this game, in table order. Eggs that wait on another world
+## ("where": "new_world") are left out: there is no such world to find them on.
 static func egg_defs() -> Array:
 	if _eggs.is_empty():
-		_eggs = Economy.planet_table("eggs").get("eggs", [])
+		_eggs = (Economy.planet_table("eggs").get("eggs", []) as Array).filter(
+			func(e: Dictionary) -> bool: return str(e.get("where", "")) != "new_world")
 		Economy.drop_on_planet_change(_drop_planet_cache)
 	return _eggs
 
@@ -206,8 +209,6 @@ static func egg_where(e: Dictionary) -> String:
 	if str(e.get("where", "")) == "frontier":  # [late]
 		var fb: String = str(e.get("biome", ""))
 		return TranslationServer.translate("Frontiers") + TranslationServer.translate(" · %s") % TranslationServer.translate(str(Economy.biome_set(fb).get("name", fb.capitalize().replace("_", " "))))
-	if str(e.get("where", "")) == "new_world":  # [late]
-		return TranslationServer.translate("Other worlds")
 	return TranslationServer.translate("Any district")
 
 

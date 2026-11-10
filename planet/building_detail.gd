@@ -60,8 +60,6 @@ const SOIL := Color(0.3, 0.23, 0.17)
 const COPING := Color(0.9, 0.88, 0.84)
 
 static var _mat: ShaderMaterial
-## [worlds2] Facade tint of a Cradle Mode world (CityView.look_tint).
-var world_tint := Color.WHITE
 
 
 static func material() -> ShaderMaterial:
@@ -259,7 +257,7 @@ func proxy_building(bd: Dictionary, body: Geo, det: Geo) -> void:
 	var pal: Array = (FAC_PALETTE if factory else APT_PALETTE)[rng.randi() % (FAC_PALETTE if factory else APT_PALETTE).size()]
 	var tex: int = pal[0]
 	var tint: Color = pal[1]
-	tint = tint.lightened(rng.randf_range(-0.04, 0.06)) * world_tint  # [worlds2] world facade tint
+	tint = tint.lightened(rng.randf_range(-0.04, 0.06))
 	var roof_tint: Color = ROOF_TINTS[rng.randi() % ROOF_TINTS.size()]
 	var roof_flags: int = (F_ROOF_CONCRETE if rng.randf() < 0.35 else 0) | (F_ROOF_SEAMS_X if rng.randf() < 0.5 else 0)
 	var flags: int = F_RIBBON if factory else 0

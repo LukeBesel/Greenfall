@@ -5,7 +5,7 @@ extends Node3D
 ## accents, thin cyan light lines, small orange running lights and Lumi's C eyes on the nose sensor.
 ## Modelled in Blender (art/models/ship/build_ship.py -> ship.glb + ship_points.json) as modular
 ## parts on one base; ShipTiers.parts_for(look) picks which ones a tier carries, so the ship visibly
-## grows from the Mk I one-seat glider to the Mk VII Homeward with its seed vault.
+## grows from the Mk I one-seat glider to the Mk VII with its seed vault.
 ## Local frame: the nose points +Z, ground at y=0 with the gear down. VTOL: lift fans in the wings
 ## (set_lift) and main engines at the back (plume / boosters, `plume.power`).
 
@@ -89,8 +89,8 @@ static func extent(t: int) -> Vector2:
 	return Vector2(length, half_span)
 
 
-## A ready-built ship at the player's current look (or `t`), for the solar-system map, the
-## Homecoming cinematic and other displays. `engines` 0..1 lights the main engines.
+## A ready-built ship at the player's current look (or `t`), for previews and
+## other displays. `engines` 0..1 lights the main engines.
 ## Scale it with ShipTiers.scale_of(ship.tier) for true size relative to the pad.
 static func for_display(t: int = -1, engines: float = 0.0) -> ShipModel:
 	var m := ShipModel.new()

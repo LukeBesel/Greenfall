@@ -2,9 +2,8 @@ class_name RocketPicker
 extends CanvasLayer
 ## [v2map] The rocket's destination list (owner note 40: travel only at the rocket, never in the
 ## map). E at the parked rocket on a hub's pad (planet/sites/orbit_sites.gd) opens it: the other
-## hubs on this globe (nearest first, each with a Fly button), then "Other planets" once the
-## system is open (the solar-system map in travel mode, ui/system_map.gd) and "Launch home" when
-## the Homeward rocket is ready. Esc / B closes. Pad: the first Fly button takes focus.
+## hubs on this globe (nearest first, each with a Fly button). Esc / B closes. Pad: the first Fly
+## button takes focus.
 
 signal closed
 signal picked(site: int)
@@ -14,11 +13,6 @@ var is_open: bool = false
 var entries_fn: Callable = func() -> Array: return []
 ## "" when the rocket can fly now, else why not (shown instead of the buttons).
 var blocker_fn: Callable = func() -> String: return ""
-## Optional: the solar-system map in travel mode (hidden when invalid or the system is not open).
-var open_planets: Callable = Callable()
-var planets_open: Callable = func() -> bool: return false
-var launch_home: Callable = Callable()
-var home_ready: Callable = func() -> bool: return false
 
 var _root: Control
 var _list: VBoxContainer
@@ -130,23 +124,6 @@ func _rebuild() -> void:
 		_list.add_child(row)
 		if _first == null and not b.disabled:
 			_first = b
-	if launch_home.is_valid() and bool(home_ready.call()):
-		var hb2 := _button(tr("Launch home"))
-		hb2.disabled = why != ""
-		hb2.pressed.connect(func() -> void:
-			close()
-			launch_home.call())
-		_list.add_child(hb2)
-		if _first == null and not hb2.disabled:
-			_first = hb2
-	if open_planets.is_valid() and bool(planets_open.call()):
-		var pb := _button(tr("Other planets"))
-		pb.pressed.connect(func() -> void:
-			close()
-			open_planets.call())
-		_list.add_child(pb)
-		if _first == null:
-			_first = pb
 
 
 func _button(text: String) -> Button:

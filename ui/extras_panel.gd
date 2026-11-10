@@ -1,12 +1,12 @@
 class_name ExtrasPanel
 extends CanvasLayer
-## [extras] Keepsakes: the radio, the photo album, the robot nursery and the Seed of the Week in
+## [extras] Keepsakes: the radio, the photo album and the robot nursery in
 ## one small panel (Pause > Keepsakes; the base radio opens it on the Radio tab).
 ## Pad: LB / RB switch tabs, the d-pad moves focus, A presses, left / right moves the album's
 ## before/after slider, B (or Esc) closes.
 
-const TABS: Array[String] = ["radio", "album", "nursery", "weekly"]
-const TAB_NAMES: Dictionary = {"radio": "CD Player", "album": "Album", "nursery": "Nursery", "weekly": "Seed of the Week"}  # l10n
+const TABS: Array[String] = ["radio", "album", "nursery"]
+const TAB_NAMES: Dictionary = {"radio": "CD Player", "album": "Album", "nursery": "Nursery"}  # l10n
 const VIEW_SIZE := Vector2(560, 315)
 
 var world: Node
@@ -26,7 +26,7 @@ var _confirm: String = ""
 
 
 ## [qafix] QA #22: a tab shows only once its thing exists (owner: "the radio is built later at
-## the hub", "there is no nursery at the start"). The Seed of the Week is always there.
+## the hub", "there is no nursery at the start").
 static func tab_open(t: String) -> bool:
 	match t:
 		"radio":
@@ -35,7 +35,7 @@ static func tab_open(t: String) -> bool:
 			return CameraBot.available() or not PhotoAlbum.districts().is_empty()
 		"nursery":
 			return YardBuilds.built("nursery") or Nursery.count() > 0
-	return true
+	return false
 
 
 static func open_tabs() -> Array[String]:
@@ -101,6 +101,8 @@ func open_panel(p_tab: String = "") -> void:
 	if p_tab in TABS:
 		tab = p_tab
 	var tabs: Array[String] = open_tabs()  # [qafix]
+	if tabs.is_empty():  # nothing to show yet (the pause menu hides its entry until then)
+		return
 	if not (tab in tabs):
 		tab = tabs[0]
 	for k: String in _tab_btns:
@@ -151,7 +153,6 @@ func _rebuild() -> void:
 		"radio": _build_radio()
 		"album": _build_album()
 		"nursery": _build_nursery()
-		"weekly": _build_weekly()
 	if _first:
 		_first.call_deferred("grab_focus")
 
@@ -363,50 +364,6 @@ func _build_nursery() -> void:
 		b.add_theme_color_override("font_color", UITheme.GOLD if _confirm == key else (UITheme.CREAM if why == "" else UITheme.MUTED))
 		if _confirm == key:
 			_first = b
-
-
-# --- Seed of the Week --------------------------------------------------------------------
-
-func _build_weekly() -> void:
-	var w: Vector2i = WeeklyChallenge.iso_week(WeeklyChallenge.now())
-	var tw: Dictionary = WeeklyChallenge.twist()
-	var wr: Dictionary = WeeklyChallenge.week_rec()
-	var left: VBoxContainer = _col(520, tr("WEEK %d, %d") % [w.y, w.x])
-	left.add_child(UITheme.label(tr("Seed of the Week"), 26, Color.WHITE))
-	left.add_child(_wrap(tr("The same seed and twist for everyone this week. Clean %d hexes as fast as you can. It has its own save, so your world is untouched.") % WeeklyChallenge.goal_hexes(), 14, UITheme.MUTED))
-	left.add_child(UITheme.stat_row(UITheme.GOLD, tr("Twist: %s") % tr(str(tw.get("name", ""))), ""))
-	left.add_child(_wrap(tr(str(tw.get("desc", ""))), 13, UITheme.MUTED))
-	left.add_child(UITheme.stat_row(UITheme.CREAM, tr("Seed"), str(WeeklyChallenge.current_seed())))
-	left.add_child(UITheme.stat_row(UITheme.CREAM, tr("Best time"), WeeklyChallenge.clock_text(float(wr["best_time"])) if float(wr.get("best_time", 0.0)) > 0.0 else "--"))
-	left.add_child(UITheme.stat_row(UITheme.CREAM, tr("Best score"), str(int(wr.get("best_score", 0))) if int(wr.get("best_score", 0)) > 0 else "--"))
-	if WeeklyChallenge.active:
-		var home: Button = _btn(left, tr("Return home"), func() -> void:
-			close_panel()
-			WeeklyChallenge.leave(get_tree()))
-		UITheme.orange_button(home)
-		_btn(left, tr("Restart this week's run"), func() -> void:
-			close_panel()
-			WeeklyChallenge.restart(get_tree()))
-	else:
-		var go: Button = _btn(left, tr("Resume this week's run") if WeeklyChallenge.has_run() else tr("Start the challenge"), func() -> void:
-			close_panel()
-			WeeklyChallenge.start(get_tree()))
-		UITheme.orange_button(go)
-	var right: VBoxContainer = _col(0, tr("PAINT CHIPS  ·  %d") % WeeklyChallenge.chip_count())
-	right.add_child(_wrap(tr("Finish a week's challenge for its paint chip. Chips unlock the weekly decorations in Garden Mode and paint them."), 13, UITheme.MUTED))
-	var grid := GridContainer.new()
-	grid.columns = 6
-	grid.add_theme_constant_override("h_separation", 8)
-	grid.add_theme_constant_override("v_separation", 8)
-	right.add_child(grid)
-	for c: Variant in WeeklyChallenge.chips():
-		var chip := Panel.new()
-		chip.custom_minimum_size = Vector2(44, 56)
-		chip.tooltip_text = str((c as Dictionary).get("week", ""))
-		chip.add_theme_stylebox_override("panel", UITheme.box(Color.html(str((c as Dictionary).get("color", "#e8a33d"))), Color(1, 1, 1, 0.5), 1, 4, 0))
-		grid.add_child(chip)
-	if WeeklyChallenge.chips().is_empty():
-		right.add_child(_wrap(tr("No chips yet."), 14, UITheme.MUTED))
 
 
 func _unhandled_input(event: InputEvent) -> void:

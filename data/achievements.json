@@ -609,17 +609,6 @@
    }
   },
   {
-   "id": "museum_complete",
-   "name": "For Whoever Comes Next",
-   "desc": "Fill every plinth in the Museum.",
-   "icon": "star",
-   "cond": {
-    "type": "flag",
-    "target": 1,
-    "key": "museum_complete"
-   }
-  },
-  {
    "id": "curio_all",
    "name": "Every Last Secret",
    "desc": "Find all 29 curiosities on Verdance.",
@@ -727,28 +716,6 @@
     "type": "flag",
     "target": 1,
     "key": "bloom_evergreen"
-   }
-  },
-  {
-   "id": "ark_1",
-   "name": "Seed Ark",
-   "desc": "Complete a Seed Ark wave.",
-   "icon": "sprout",
-   "cond": {
-    "type": "stat",
-    "target": 1,
-    "key": "ark_waves"
-   }
-  },
-  {
-   "id": "ark_10",
-   "name": "Tender of Worlds",
-   "desc": "Complete 10 Seed Ark waves.",
-   "icon": "sprout",
-   "cond": {
-    "type": "stat",
-    "target": 10,
-    "key": "ark_waves"
    }
   },
   {
@@ -884,72 +851,6 @@
    }
   },
   {
-   "id": "late_bridge",
-   "name": "On the Bridge",
-   "desc": "Open the Ark Bridge after the Cradle comes home.",
-   "icon": "rocket",
-   "cond": {
-    "type": "stat",
-    "target": 1,
-    "key": "ark_bridge_opened"
-   }
-  },
-  {
-   "id": "late_world_1",
-   "name": "Seed Mission",
-   "desc": "Seed a new world from the Cradle's vault.",
-   "icon": "rocket",
-   "cond": {
-    "type": "stat",
-    "target": 1,
-    "key": "worlds_seeded"
-   }
-  },
-  {
-   "id": "late_world_3",
-   "name": "Gardener of Worlds",
-   "desc": "Seed three new worlds.",
-   "icon": "map",
-   "cond": {
-    "type": "stat",
-    "target": 3,
-    "key": "worlds_seeded"
-   }
-  },
-  {
-   "id": "late_heirloom_1",
-   "name": "Family Heirloom",
-   "desc": "Unlock an Heirloom.",
-   "icon": "star",
-   "cond": {
-    "type": "stat",
-    "target": 1,
-    "key": "heirloom_levels"
-   }
-  },
-  {
-   "id": "late_heirloom_20",
-   "name": "Treasured",
-   "desc": "Grow Heirlooms to 20 levels in all.",
-   "icon": "trophy",
-   "cond": {
-    "type": "stat",
-    "target": 20,
-    "key": "heirloom_levels"
-   }
-  },
-  {
-   "id": "late_starseeds_100",
-   "name": "World Mender",
-   "desc": "Reach 100 restoration across your worlds.",
-   "icon": "star",
-   "cond": {
-    "type": "stat",
-    "target": 100,
-    "key": "starseeds_earned"
-   }
-  },
-  {
    "id": "late_decor_1",
    "name": "Home Touches",
    "desc": "Place a decoration in Garden Mode.",
@@ -994,28 +895,6 @@
    }
   },
   {
-   "id": "late_eggs_40",
-   "name": "Cabinet of Curiosities",
-   "desc": "Find 40 curiosities.",
-   "icon": "book",
-   "cond": {
-    "type": "stat",
-    "target": 40,
-    "key": "eggs_found"
-   }
-  },
-  {
-   "id": "late_older_pod",
-   "name": "Not the First",
-   "desc": "Find the older seed pod on a new world.",
-   "icon": "sprout",
-   "cond": {
-    "type": "flag",
-    "target": 1,
-    "key": "egg_older_pod"
-   }
-  },
-  {
    "id": "home_answered",
    "name": "The Cradle Answers",
    "desc": "Light the Cradle Returns beacon and hear from the ark.",
@@ -1026,89 +905,10 @@
     "key": "cradle_answered"
    }
   },
-  {
-   "id": "home_landed",
-   "name": "Two Suns, New Ground",
-   "desc": "Land on another planet of the Verdance system.",
-   "icon": "map",
-   "cond": {
-    "type": "stat",
-    "target": 1,
-    "key": "planets_landed"
-   }
-  },
-  {
-   "id": "home_planets_2",
-   "name": "One Down",
-   "desc": "Restore a second planet.",
-   "icon": "leaf",
-   "cond": {
-    "type": "stat",
-    "target": 2,
-    "key": "planets_restored"
-   }
-  },
-  {
-   "id": "home_planets_4",
-   "name": "Most of the Way",
-   "desc": "Restore four planets.",
-   "icon": "tree",
-   "cond": {
-    "type": "stat",
-    "target": 4,
-    "key": "planets_restored"
-   }
-  },
-  {
-   "id": "home_planets_5",
-   "name": "Five Alive",
-   "desc": "Restore every planet in the system.",
-   "icon": "trophy",
-   "cond": {
-    "type": "stat",
-    "target": 5,
-    "key": "planets_restored"
-   }
-  },
-  {
-   "id": "home_relics",
-   "name": "Keepsakes",
-   "desc": "Collect all four planet relics.",
-   "icon": "star",
-   "cond": {
-    "type": "stat",
-    "target": 4,
-    "key": "relics_found"
-   }
-  },
-  {
-   "id": "home_drive_6",
-   "name": "Fold Space",
-   "desc": "Build the Mk VI Interplanetary drive.",
-   "icon": "rocket",
-   "cond": {
-    "type": "stat",
-    "target": 6,
-    "key": "drive_tier"
-   }
-  },
-  {
-   "id": "home_homecoming",
-   "name": "Homecoming",
-   "desc": "Launch home to the Cradle.",
-   "icon": "trophy",
-   "cond": {
-    "type": "stat",
-    "target": 1,
-    "key": "homecoming"
-   }
-  },
     {"id": "extras_radio_6", "name": "Pirate Radio", "desc": "Unlock 6 songs on the base radio.", "icon": "wave", "cond": {"type": "stat", "key": "radio_songs", "target": 6}},
     {"id": "extras_radio_all", "name": "Full Rotation", "desc": "Unlock every song on the base radio.", "icon": "star", "cond": {"type": "stat", "key": "radio_songs", "target": 14}},
     {"id": "extras_album_4", "name": "Then and Now", "desc": "Collect 4 pictures in the photo album.", "icon": "map", "cond": {"type": "stat", "key": "album_shots", "target": 4}},
     {"id": "extras_retire_1", "name": "Happy Retirement", "desc": "Retire a robot to the nursery garden.", "icon": "bot", "cond": {"type": "stat", "key": "robots_retired", "target": 1}},
-    {"id": "extras_visits_5", "name": "Garden Party", "desc": "Say hi to the nursery caretakers 5 times.", "icon": "flower", "cond": {"type": "stat", "key": "nursery_visits", "target": 5}},
-    {"id": "extras_weekly_1", "name": "Seed of the Week", "desc": "Finish a Seed of the Week challenge.", "icon": "trophy", "cond": {"type": "stat", "key": "weekly_chips", "target": 1}},
-    {"id": "extras_weekly_4", "name": "Paint Collector", "desc": "Earn 4 Seed of the Week paint chips.", "icon": "chip", "cond": {"type": "stat", "key": "weekly_chips", "target": 4}}
+    {"id": "extras_visits_5", "name": "Garden Party", "desc": "Say hi to the nursery caretakers 5 times.", "icon": "flower", "cond": {"type": "stat", "key": "nursery_visits", "target": 5}}
  ]
 }

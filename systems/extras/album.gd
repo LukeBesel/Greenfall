@@ -45,8 +45,13 @@ static func st() -> Dictionary:
 	return d
 
 
+## Whether this run writes saves (not under --fresh / --nosave, unless --save-dir gives it its own folder).
+static func _persists() -> bool:
+	return not (DevHooks.has("fresh") or DevHooks.has("nosave")) or SaveManager.dev_dir != ""
+
+
 static func dir() -> String:
-	if not CradleMode.persist:  # --fresh / tests: never touch a player's album
+	if not _persists():  # --fresh: never touch a player's album
 		return "user://extras_scratch/album/slot_%d" % SaveManager.slot
 	return SaveManager.save_dir().path_join("album").path_join("slot_%d" % SaveManager.slot)
 

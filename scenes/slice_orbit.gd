@@ -55,9 +55,8 @@ func build(p_world: Node3D) -> void:
 		loaded = SaveManager.load_game()
 	var od: Dictionary = OrbitSave.migrate(GameState.orbit) if loaded else {}
 	var preload_n: int = OrbitPreload.start()  # [orbE] junk models load on threads while the planet builds
-	# The planet: --orbit-planet=<id>, else the saved one, else Verdance. Its size is data (GlobeSpec).
-	var home_pid: String = str(Homeward.planet_def(maxi(Homeward.current_planet(), 0)).get("id", "verdance"))  # [orbD] a new world after an interplanet flight
-	var pid: String = GlobeSpec.current_id() if DevHooks.has("orbit-planet") else str(od.get("planet_id", home_pid))
+	# The planet: --orbit-planet=<id>, else the saved one, else the current planet. Its size is data (GlobeSpec).
+	var pid: String = GlobeSpec.current_id() if DevHooks.has("orbit-planet") else str(od.get("planet_id", String(Planets.current_id())))
 	var spec: Dictionary = GlobeSpec.of(pid)
 	if int(od.get("freq", spec["frequency"])) != int(spec["frequency"]) or str(od.get("planet_id", pid)) != pid:
 		push_warning("[orbit] saved globe is %s f=%d, building %s f=%d fresh" % [od.get("planet_id", "?"), int(od.get("freq", 0)), pid, int(spec["frequency"])])
@@ -529,11 +528,11 @@ func _build_yard_systems() -> void:
 	_attach_first_seed.call_deferred()
 	_attach_seed_economy()
 	_attach_shards()
-	var bloom := Bloom.new()  # post-game milestones + Seed Ark (systems/bloom.gd)
+	var bloom := Bloom.new()  # the Bloom milestones and the finale (systems/bloom.gd)
 	bloom.name = "Bloom"
 	bloom.world = w
 	w.add_child(bloom)
-	LateDirector.attach(w)  # Homeward, the Ark Bridge, world look/story, Garden Mode (its decor per hub in the frame)
+	GardenDirector.attach(w)  # Garden Mode (its decor per hub in the frame)
 
 
 ## A yard spot in world space (the anchor's origin, or the flat yard spot on the pad).

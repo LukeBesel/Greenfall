@@ -34,7 +34,7 @@ func test_every_goal_type_is_known_and_its_key_exists() -> void:
 		"research", "bases_l5", "frontier_base", "frontier_growing"]
 	var code: String = _all_code()
 	var ids: Dictionary = {}
-	for g: Dictionary in Economy.planet_table("goals")["goals"]:
+	for g: Dictionary in Goals.playable(Economy.planet_table("goals")["goals"]):
 		var id: String = str(g["id"])
 		assert_false(ids.has(id), "goal id %s is unique" % id)
 		ids[id] = true
@@ -57,13 +57,27 @@ func test_every_goal_type_is_known_and_its_key_exists() -> void:
 				assert_true(key == "any" or Economy.robots.has(key), "goal %s names a real robot" % id)
 
 
-func test_the_chain_ends_on_the_cradle_and_the_seed_ark() -> void:
-	var chain: Array = Economy.planet_table("goals")["goals"]
+## Goals that wait on a parked feature's stat (data/parked.json) never reach the chain.
+func test_goals_of_parked_features_are_left_out() -> void:
+	var parked: Array = Economy.read_json(Goals.PARKED_PATH)["stats"]
+	assert_gt(parked.size(), 0)
+	var code: String = _all_code()
+	for key: String in parked:
+		assert_false(code.contains('inc_stat("%s"' % key) or code.contains('stats["%s"]' % key), "nothing in the game writes %s" % key)
+	var all: Array = Economy.planet_table("goals")["goals"]
+	var kept: Array = Goals.playable(all)
+	for g: Dictionary in kept:
+		assert_false(str(g.get("type", "stat")) == "stat" and str(g.get("key", "")) in parked, "goal %s is playable" % g["id"])
+	assert_true(kept.any(func(g: Dictionary) -> bool: return str(g["id"]) == "late_garden_1"), "Garden Mode goals stay")
+
+
+func test_the_chain_ends_on_the_cradle() -> void:
+	var chain: Array = Goals.playable(Economy.planet_table("goals")["goals"])
 	var order: Array[String] = []
 	for g: Dictionary in chain:
 		order.append(str(g["id"]))
 	for a: Array in [["base_5", "rocket"], ["rocket", "visit_dust"], ["visit_dust", "visit_frozen"], ["visit_frozen", "visit_sunken"],
-			["visit_sunken", "visit_cradle"], ["visit_cradle", "cradle_home"], ["cradle_home", "ark_1"], ["plant_5", "pollinator"]]:
+			["visit_sunken", "visit_cradle"], ["visit_cradle", "cradle_home"], ["plant_5", "pollinator"]]:
 		assert_lt(order.find(a[0]), order.find(a[1]), "%s comes before %s" % a)
 	# Research goals in the first district would wall the chain once its junk runs out.
 	assert_gt(order.find("research_20"), order.find("rocket"))
@@ -86,10 +100,8 @@ func test_verdance_bloom_is_the_cradle_not_three_districts() -> void:
 	GameState.flags["bloom_done"] = []
 	var three: Dictionary = {"thriving_hexes": 120, "thriving_districts": 3, "planet_pct": 1.2}
 	assert_false("verdance_bloom" in Bloom.check(three))
-	assert_false(Bloom.ark_unlocked())
 	three["cradle_returned"] = 1.0
 	assert_true("verdance_bloom" in Bloom.check(three))
-	assert_true(Bloom.ark_unlocked(), "the Seed Ark opens with the Cradle")
 	assert_eq(CoreCharge.compute(0.0, 0.0, 0.0, Bloom.is_done("verdance_bloom")), 1.0, "core full at the Cradle")
 
 
