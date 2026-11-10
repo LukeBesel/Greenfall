@@ -25,7 +25,23 @@ tables = Dictionary[String, String]({
 "stations": "res://data/stations.json",
 "plants": "res://data/plants.json",
 "fauna": "res://data/fauna.json",
-"events": "res://data/events.json"
+"events": "res://data/events.json",
+"player": "res://data/patch.json",
+"robot_level": "res://data/lumi_level.json",
+"field": "res://data/planet.json",
+"builds": "res://data/builds.json",
+"yard": "res://data/camp.json",
+"trash_bin": "res://data/trash_bin.json",
+"outposts": "res://data/outposts.json",
+"frontiers": "res://data/frontiers.json",
+"signal_tower": "res://data/signal_tower.json",
+"guide_lines": "res://data/wren_lines.json",
+"shards": "res://data/shards.json",
+"eggs": "res://data/eggs.json",
+"ledger": "res://data/ledger.json",
+"codex": "res://data/codex.json",
+"museum": "res://data/museum.json",
+"postgame": "res://data/bloom.json"
 })
 palette = Dictionary[String, Color]({})
 music_set = "verdance"

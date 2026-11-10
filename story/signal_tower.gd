@@ -7,7 +7,7 @@ extends Node3D
 ## (Wren backlog). Tier lives in GameState.flags["signal_tower"] (global: one relay network).
 ## Old saves get the tier matching the signal they had (restoration stages).
 
-const PATH: String = "res://data/signal_tower.json"
+const TABLE: String = "signal_tower"
 const GLOW := Color(0.55, 0.9, 1.0)
 
 static var _cfg: Dictionary = {}
@@ -21,8 +21,14 @@ var _col: CollisionShape3D  # [camp2]
 
 static func cfg() -> Dictionary:
 	if _cfg.is_empty():
-		_cfg = Economy.read_json(PATH)
+		_cfg = Economy.planet_table(TABLE)
+		Economy.drop_on_planet_change(_drop_planet_cache)
 	return _cfg
+
+
+
+static func _drop_planet_cache() -> void:
+	_cfg = {}
 
 
 static func tier() -> int:

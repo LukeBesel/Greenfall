@@ -19,15 +19,21 @@ extends RefCounted
 ## workbench tabs read): one_time -> the Build tab, tiered -> the Upgrades tab. A tiered id with
 ## first_build_one_time (the signal tower) shows its first tier in the Build tab.
 
-const PATH: String = "res://data/builds.json"
+const TABLE: String = "builds"
 
 static var _cfg: Dictionary = {}
 
 
 static func cfg() -> Dictionary:
 	if _cfg.is_empty():
-		_cfg = Economy.read_json(PATH)
+		_cfg = Economy.planet_table(TABLE)
+		Economy.drop_on_planet_change(_drop_planet_cache)
 	return _cfg
+
+
+
+static func _drop_planet_cache() -> void:
+	_cfg = {}
 
 
 static func ids() -> Array[String]:

@@ -30,7 +30,7 @@ var _jukebox_on: bool = false  # [eggs2] the waltz is playing (the score is hush
 
 
 func setup() -> void:
-	var data: Dictionary = Economy.read_json("res://data/eggs.json")
+	var data: Dictionary = Economy.planet_table("eggs")
 	for e: Dictionary in data.get("eggs", []):
 		defs[str(e["id"])] = e
 		order.append(str(e["id"]))

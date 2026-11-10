@@ -77,10 +77,10 @@ func load_data() -> void:
 	for u: Dictionary in planet_table("upgrades").get("upgrades", []):
 		upgrade_defs[u["id"]] = u
 		upgrade_order.append(u["id"])
-	var pd: Dictionary = read_json("res://data/patch.json")
+	var pd: Dictionary = planet_table("player")
 	patch_base = pd.get("stats", {})
 	cube_rules = pd.get("cube", {})
-	planet = read_json("res://data/planet.json")
+	planet = planet_table("field")
 	parts = read_json("res://data/parts.json")
 	robot_cfg = planet_table("robots")
 	robots.clear()

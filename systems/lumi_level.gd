@@ -13,7 +13,7 @@ extends Node
 signal xp_gained(amount: int, source: String)
 signal leveled(level: int, reward_text: String)
 
-const PATH: String = "res://data/lumi_level.json"
+const TABLE: String = "robot_level"
 const POLL_S: float = 1.0
 
 static var _cfg: Dictionary = {}
@@ -31,8 +31,14 @@ var _granting: bool = false
 
 static func cfg() -> Dictionary:
 	if _cfg.is_empty():
-		_cfg = Economy.read_json(PATH)
+		_cfg = Economy.planet_table(TABLE)
+		Economy.drop_on_planet_change(_drop_planet_cache)
 	return _cfg
+
+
+
+static func _drop_planet_cache() -> void:
+	_cfg = {}
 
 
 ## XP needed to go from `level` to `level + 1`.

@@ -8,7 +8,7 @@ extends Node
 ## flags.seed_ark {wave, start}, flags.bloom_finale_seen, flags.biomes_visited,
 ## world.bloom_summary {thriving, land} per district, stats.ark_waves.
 
-const PATH: String = "res://data/bloom.json"
+const TABLE: String = "postgame"
 const CHECK_S: float = 2.0
 
 static var _cfg: Dictionary = {}
@@ -20,8 +20,14 @@ var _finale_pending: bool = false
 
 static func cfg() -> Dictionary:
 	if _cfg.is_empty():
-		_cfg = Economy.read_json(PATH)
+		_cfg = Economy.planet_table(TABLE)
+		Economy.drop_on_planet_change(_drop_planet_cache)
 	return _cfg
+
+
+
+static func _drop_planet_cache() -> void:
+	_cfg = {}
 
 
 static func milestones() -> Array:
