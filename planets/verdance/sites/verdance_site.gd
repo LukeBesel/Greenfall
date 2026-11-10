@@ -45,6 +45,10 @@ const KINDS: Dictionary = {
 }
 ## Per hub (harbours take over where the lake reaches in): every character turns up on Verdance.
 const KIND_BY_HUB: Array[String] = ["oldtown", "downtown", "oldtown", "suburb", "industrial", "oldtown", "suburb", "industrial", "downtown", "suburb"]
+## Ruined towns after dark: the share of standing street lamps whose emergency cell still glows, and
+## how many of those nearest the camera cast real light.
+const RUIN_LAMP_SHARE: float = 0.4
+const RUIN_LIGHT_CAP: int = 6
 ## Each kind's tall prop (StreetDressing.landmark_kind), until the source landmarks stand.
 const LANDMARK_BY_KIND: Dictionary = {
 	"start": "water_tower", "oldtown": "water_tower", "downtown": "radio_mast", "industrial": "crane",
@@ -71,6 +75,7 @@ var _rubble: Node3D
 var furniture: StreetFurniture  # [v3city] the start town's street life
 var kind: String = "start"   # [v3city] the town's character (KINDS)
 var outskirts: TownOutskirts  # [v3city] the city past the pad (the skyline)
+var ruin_lights: RuinLights  # the last lamps still glowing after dark in a ruined town (hubs past the start)
 var globe_ctx: Dictionary = {}  # [v3city] {terrain, grid, cells, xf, clear} from SiteManager
 ## [v3city] func(x, z) -> bool: a site-local point on a lake cell (the start yard is by a lake).
 var water: Callable
@@ -289,6 +294,13 @@ func _make() -> void:
 	dressing.landmark_kind = str(LANDMARK_BY_KIND.get(kind, ""))
 	add_child(dressing)
 	await dressing.build(layout, null, hub_index, district_name, "", level)
+	if not start and city and not city.lamp_bulbs.is_empty():
+		ruin_lights = RuinLights.new()
+		ruin_lights.name = "RuinLights"
+		add_child(ruin_lights)
+		var alive: int = ruin_lights.setup(city.lamp_bulbs, RUIN_LAMP_SHARE, seed_value, RUIN_LIGHT_CAP)
+		if DevHooks.has("load-report"):
+			print("[town] hub %d ruin lights: %d of %d lamp heads glow after dark, %d real lights" % [hub_index, alive, city.lamp_bulbs.size(), ruin_lights.light_count()])
 	set_level(level)
 	if DevHooks.has("town-map") and (start or DevHooks.has("town-map-hubs")):
 		_town_map(DevHooks.get_s("town-map", "user://town_map.png") if start else DevHooks.get_s("town-map", "user://town_map.png").replace(".png", "_hub%d.png" % hub_index))
