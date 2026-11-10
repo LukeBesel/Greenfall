@@ -6,6 +6,8 @@ const FIXTURES: String = "res://tests/fixtures/planets"
 const DUMMY: StringName = &"testworld"
 const FOUR_HOURS_MIN: float = 240.0
 const TIME_LIMIT_MS: int = 10000
+## No player of the redesign may reach the launch point in under this share of the target time.
+const REDESIGN_FASTEST_SHARE: float = 0.6
 
 
 func before_each() -> void:
@@ -68,3 +70,54 @@ func test_the_game_state_is_left_as_it_was() -> void:
 func test_unknown_planet_or_policy_is_an_error_not_a_crash() -> void:
 	assert_false(PaceSim.run(&"no_such_planet", 5.0)["ok"])
 	assert_false(PaceSim.run(Planets.first_shipped().id, 5.0, "no_such_policy")["ok"])
+
+
+# --- The redesign model (--model=redesign) and its proposal data set ---
+
+func test_redesign_runs_the_same_way_twice() -> void:
+	var a: Dictionary = PaceSimRedesign.run()
+	var b: Dictionary = PaceSimRedesign.run()
+	assert_true(a["ok"], str(a["error"]))
+	assert_eq((a["model"] as PaceSimRdModel).record.csv(), (b["model"] as PaceSimRdModel).record.csv(), "the time series match")
+	assert_eq((a["model"] as PaceSimRdModel).record.events, (b["model"] as PaceSimRdModel).record.events, "the events match")
+	assert_lt(int(a["real_ms"]), TIME_LIMIT_MS, "a redesign run took %d ms" % int(a["real_ms"]))
+
+
+func test_redesign_proposal_reaches_the_launch_point_and_passes_its_own_checks() -> void:
+	var result: Dictionary = PaceSimRedesign.run()
+	assert_true(result["ok"], str(result["error"]))
+	var report: Dictionary = result["report"]
+	assert_true(report["ended"], "the default player reaches the launch point")
+	assert_gt((report["checks"] as Array).size(), 30, "cadence, design and economy checks all ran")
+	for check: Dictionary in report["checks"]:
+		if bool(check.get("advisory", false)):
+			continue
+		assert_true(check["pass"], "%s: %s (limit %s) %s" % [check["id"], check["shown"], check["limit_shown"], check["note"]])
+	assert_gt(PaceSimRedesign.summary(result).size(), 40, "the report prints")
+
+
+func test_redesign_is_finishable_by_every_player_and_never_too_fast() -> void:
+	for policy: String in PaceSimRedesign.COMPARE_POLICIES:
+		var result: Dictionary = PaceSimRedesign.run(PaceSimRedesign.DEFAULT_PROPOSAL, PaceSimRedesign.MAX_MINUTES, policy)
+		assert_true(result["ok"], str(result["error"]))
+		var model: PaceSimRdModel = result["model"]
+		var aim: float = model.data.num("balance.target_bot_min.aim")
+		assert_true(result["report"]["ended"], "the '%s' player reaches the launch point" % policy)
+		assert_gt(float(result["report"]["end_min"]), aim * REDESIGN_FASTEST_SHARE, "the '%s' player does not finish in under 60%% of the target" % policy)
+		assert_lte(model.robot_total(), model.crew_cap(), "the '%s' player's crew stays inside the cap" % policy)
+
+
+func test_redesign_reads_its_own_proposal_and_leaves_the_game_alone() -> void:
+	GameState.upgrades["pace_sim_marker"] = 3
+	var planet_before: StringName = Planets.current_id()
+	var base: Dictionary = PaceSimRedesign.run(PaceSimRedesign.DEFAULT_PROPOSAL, 30.0)
+	var heavier: Dictionary = PaceSimRedesign.run(PaceSimRedesign.DEFAULT_PROPOSAL, 30.0, PaceSimRedesign.DEFAULT_POLICY,
+		{"set": {"districts.districts.0.hex_work": 400.0}})
+	assert_lt((heavier["model"] as PaceSimRdModel).hexes_clean, (base["model"] as PaceSimRdModel).hexes_clean, "an override of a proposal value changes the run")
+	assert_eq(int(GameState.upgrades.get("pace_sim_marker", 0)), 3, "upgrade levels are put back")
+	assert_eq(Planets.current_id(), planet_before, "the current planet is put back")
+	GameState.upgrades.erase("pace_sim_marker")
+	assert_false(PaceSimRedesign.run("no_such_proposal")["ok"], "an unknown proposal is an error")
+	assert_false(PaceSimRedesign.run(PaceSimRedesign.DEFAULT_PROPOSAL, 5.0, "no_such_policy")["ok"], "an unknown policy is an error")
+	assert_false(PaceSimRedesign.run(PaceSimRedesign.DEFAULT_PROPOSAL, 5.0, PaceSimRedesign.DEFAULT_POLICY, {"set": {"no.such.path": 1.0}})["ok"],
+		"an override of a value that does not exist is an error")

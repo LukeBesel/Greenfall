@@ -46,6 +46,15 @@ static func _miss(c: Dictionary) -> float:
 	return minf(3.0, float(c["value"]) / limit - 1.0)
 
 
+## A number with four significant digits, for the printed --set string.
+static func _short(value: float) -> String:
+	if value == 0.0:
+		return "0"
+	var digits: int = clampi(3 - int(floor(log(absf(value)) / log(10.0))), 0, 6)
+	return String.num(value, digits)
+
+
+## Runs the search; progress is printed as it goes, the result is returned as lines.
 static func run(proposal: String, tries: int, base: Dictionary) -> PackedStringArray:
 	var params: Array = Economy.read_json(PARAMS_PATH).get("params", [])
 	var current: Dictionary = base.duplicate()
@@ -73,13 +82,13 @@ static func run(proposal: String, tries: int, base: Dictionary) -> PackedStringA
 					best = p
 					current = trial
 					improved = true
-					out.append("search: %s = %.4g -> penalty %.2f" % [path, float(trial[path]), p])
+					print("search: %s = %s -> penalty %.2f" % [path, _short(float(trial[path])), p])
 					break
 		if not improved:
 			step *= 0.5
 	var pairs: PackedStringArray = []
 	for path: String in current:
-		pairs.append("%s=%.4g" % [path, float(current[path])])
+		pairs.append("%s=%s" % [path, _short(float(current[path]))])
 	out.append("search: %d runs, best penalty %.2f" % [done, best])
 	out.append("search: --set=" + ",".join(pairs))
 	return out

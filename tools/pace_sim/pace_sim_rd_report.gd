@@ -13,6 +13,8 @@ const LIMITS: Dictionary[String, float] = {
 const FIRST_HOUR_S: float = 3600.0
 ## Player minutes the cleaning rate is averaged over for the spike rule.
 const SPIKE_WINDOW_MIN: float = 6.0
+## The crew-size curve in the notes shows one point every this many bot minutes.
+const CREW_CURVE_STEP_MIN: int = 10
 ## A track is called dominant when it leads the ranking in more than this share of track purchases.
 const DOMINANT_TRACK_SHARE: float = 0.5
 ## The first found piece should land within this many player minutes of the spec's minute 25.
@@ -200,6 +202,15 @@ static func _notes(m: PaceSimRdModel, end_s: float, k: float) -> PackedStringArr
 	for type: String in m.robots:
 		crew.append("%s x%d%s" % [type, m.robots[type], " repaired" if m.repaired.get(type, 0) > 0 else ""])
 	notes.append("crew at the end: %d (%s), base level %d" % [m.robot_total(), ", ".join(crew), m.base_level])
+	var curve: PackedStringArray = []
+	for i: int in range(CREW_CURVE_STEP_MIN - 1, m.record.minutes.size(), CREW_CURVE_STEP_MIN):
+		curve.append("%d: %d" % [m.record.minutes[i]["minute"], m.record.minutes[i]["robots"]])
+	notes.append("crew over time (bot minute: robots): " + ", ".join(curve))
+	var by_city: PackedStringArray = []
+	for z: PaceSimRdDistrict in m.zones:
+		by_city.append("%s %d" % [z.id, z.crew_at_stage4])
+	notes.append("crew when each city reached stage 4: %s; Parts the Scroungers carried in: %.0f of %.0f earned; robots the Assemblers built: %d" % [
+		", ".join(by_city), m.scrounged, m.parts_earned, m.assembled])
 	var spent: PackedStringArray = []
 	for key: String in m.work.seconds:
 		spent.append("%s %.0f%%" % [key, m.work.seconds[key] / end_s * 100.0])

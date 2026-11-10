@@ -235,11 +235,14 @@ func _buy_best(m: PaceSimRdModel, offers: Array[Dictionary], gate: Dictionary) -
 	var top_track: String = ""
 	var top_track_score: float = 0.0
 	var seen: Dictionary[String, bool] = {}
+	var saving_parts: bool = _saving_parts(m, offers)
 	for item: Dictionary in offers:
 		var type: String = str(item["type"])
 		if type == "research" or _is_gate(item) or (type != "track" and not m.can_afford(item)):
 			continue
 		var pool: String = "parts" if float(item["parts"]) > 0.0 else "cubes"
+		if pool == "parts" and saving_parts:
+			continue
 		var score: float = _gain(m, z, item, before) / maxf(float(item[pool]), 1.0)
 		if type == "track" and score > top_track_score:
 			top_track_score = score
@@ -260,6 +263,20 @@ func _buy_best(m: PaceSimRdModel, offers: Array[Dictionary], gate: Dictionary) -
 		m.record.track_buys[str(pick["id"])] = m.record.track_buys.get(str(pick["id"]), 0) + 1
 		m.record.track_tops[top_track] = m.record.track_tops.get(top_track, 0) + 1
 	m.rig_dirty = m.rig_dirty or str(pick["type"]) == "module"
+
+
+## True while something new costs Parts the player does not have yet: a research node that opens
+## a robot type, or the first robot of a type. Until it is bought no Parts go to anything else.
+func _saving_parts(m: PaceSimRdModel, offers: Array[Dictionary]) -> bool:
+	for item: Dictionary in offers:
+		if float(item["parts"]) <= 0.0 or m.can_afford(item):
+			continue
+		var id: String = str(item["id"])
+		if str(item["type"]) == "research" and (m.data.nodes[id].get("mods", {}) as Dictionary).is_empty():
+			return true
+		if str(item["type"]) == "robot" and m.robots.get(id, 0) == 0:
+			return true
+	return false
 
 
 ## Value gained by an offer, tried and taken back. The chain's own robots add no cleaning, so

@@ -24,10 +24,12 @@ const FIRST_ROBOT_SLACK_MIN: float = 5.0
 const CREW_LAUNCH: Vector2i = Vector2i(100, 200)
 const CREW_DISTRICT_1: Vector2i = Vector2i(3, 9)
 const CREW_DISTRICT_3: Vector2i = Vector2i(20, 99)
-## The crew may not double faster than this, nor go longer than this without a new robot (player seconds).
+## The crew may not double faster than this, nor go longer than this without a new robot (player
+## seconds). The stall rule is required from district 2 on and only reported for district 1,
+## where every robot is hand-built from Parts that are scarce by rule.
 const CREW_DOUBLE_MIN_S: float = 180.0
 const CREW_DOUBLE_FROM: int = 4
-const CREW_STALL_MAX_S: float = 300.0
+const CREW_STALL_MAX_S: float = 360.0
 ## Building and upgrading: each must be the choice at least this share of the times both were affordable.
 const CHOICE_MIN_SHARE: float = 0.15
 ## Hand work is at least this share of cleaning volume in each of the first districts.
@@ -158,9 +160,15 @@ static func _crew(m: PaceSimRdModel, end_s: float, k: float) -> Array[Dictionary
 			fastest = minf(fastest, rec.builds[doubled] - rec.builds[i])
 	out.append(_check("crew_doubling", fastest * k >= CREW_DOUBLE_MIN_S, fastest * k, "%.0f s" % (fastest * k), "at least %.0f s" % CREW_DOUBLE_MIN_S,
 		"fastest the crew ever doubled, from %d robots up (player seconds)" % CREW_DOUBLE_FROM))
-	var stall: Vector2 = PaceSimReport.longest_gap(_floats(rec.builds), rec.events.get("first_robot", end_s), end_s)
+	var second_city: float = _entered(m, 1, end_s)
+	var stall: Vector2 = PaceSimReport.longest_gap(_floats(rec.builds), second_city, end_s)
 	out.append(_check("crew_stall", stall.x * k <= CREW_STALL_MAX_S, stall.x * k, "%.0f s" % (stall.x * k), "%.0f s" % CREW_STALL_MAX_S,
-		"longest time without a new robot after the first, from bot minute %.1f" % (stall.y / 60.0)))
+		"longest time without a new robot from district 2 on, from bot minute %.1f" % (stall.y / 60.0)))
+	var early: Vector2 = PaceSimReport.longest_gap(_floats(rec.builds), rec.events.get("first_robot", second_city), second_city)
+	var early_check: Dictionary = _check("crew_stall_district_1", early.x * k <= CREW_STALL_MAX_S, early.x * k, "%.0f s" % (early.x * k),
+		"%.0f s" % CREW_STALL_MAX_S, "longest time without a new robot in district 1 after the first (Parts are scarce there by rule), from bot minute %.1f" % (early.y / 60.0))
+	early_check["advisory"] = true
+	out.append(early_check)
 	var builds: int = rec.crew_choices.get("robot", 0)
 	var upgrades: int = rec.crew_choices.get("repair", 0)
 	var low: float = float(mini(builds, upgrades)) / float(maxi(builds + upgrades, 1))

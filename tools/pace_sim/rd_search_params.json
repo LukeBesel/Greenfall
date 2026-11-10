@@ -2,6 +2,8 @@
   "_doc": "Proposal values the redesign search (--model=redesign --search=N) may change, as dotted paths into the proposal tables, each with the range it may move in. The search is a coordinate hill-climb: it tries one value up and down by a step, keeps a change that lowers the penalty (failed checks and how far they missed, distance from the target ending time, distance from the spec's per-district minutes, hand share under a district's floor), and prints the best set as a --set string.",
   "params": [
     {"path": "upgrades.tier_ratio.0", "min": 1.25, "max": 1.6},
+    {"path": "upgrades.tracks.sweep_speed.weight", "min": 1.0, "max": 3.0},
+    {"path": "upgrades.tracks.sweep_width.weight", "min": 1.0, "max": 3.0},
     {"path": "districts.districts.0.hex_work", "min": 90, "max": 160},
     {"path": "districts.districts.1.hex_work", "min": 100, "max": 300},
     {"path": "districts.districts.2.hex_work", "min": 110, "max": 450},

@@ -3,5 +3,5 @@
   "weights": {"per_district": "equal"},
   "stage_values": [0, 0.25, 0.45, 0.65, 0.85, 1.0],
   "launch": {"when": "all_districts_stage", "stage": 5, "sequence": "bloom"},
-  "planet": {"measure": "cell_share_restored", "stages": [0.01, 0.05, 0.25, 0.5, 1.0], "open_ground_hex_work": 380.0, "finish_in_hours": [10, 40]}
+  "planet": {"measure": "cell_share_restored", "stages": [0.01, 0.05, 0.25, 0.5, 1.0], "open_ground_hex_work": 880.0, "finish_in_hours": [10, 40]}
 }

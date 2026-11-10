@@ -116,3 +116,40 @@ A policy is one script in `policies/` that extends `PaceSimPolicy` and implement
 | `pace_sim_log.gd`, `pace_sim_report.gd` | records, beats table, cadence checks, CSV |
 | `pace_sim_policy.gd`, `policies/greedy.gd` | policy base and the bot-like policy |
 | `calibration.json`, `calibration_bot_run.log` | constants and the run they were measured from |
+
+## The redesign model (`--model=redesign`)
+
+A second model next to the one above (`--model=current`, the default, unchanged). It plays Planet 1 as `docs/design/PLANET1_DESIGN.md` describes it, before any of it is built, from a PROPOSAL data set in `tools/pace_sim/proposals/<name>/`. It never reads or changes game data for the new mechanics; the two things the redesign keeps (the junk table's average value and the perfect-press multiplier) are read from the planet through `Planets`.
+
+```
+godot --headless --path . res://tools/pace_sim/pace_sim.tscn -- --model=redesign [options]
+```
+
+| Option | Meaning |
+|---|---|
+| `--proposal=NAME` | Folder under `proposals/` (default `planet1`). Its `balance.json` names the planet. |
+| `--policy=NAME` | A player, one script in `rd_policies/`: `default`, `rush_robots`, `no_robots`, `all_scroungers`, `no_scroungers`. |
+| `--minutes=N` | Stop after N bot minutes if the launch point has not come (default 300). |
+| `--rig=a,b,c` | Keep these rig modules fitted instead of the best for each district. |
+| `--set=path=value,...` | What-if: replace proposal values by dotted path (`districts.districts.2.hex_work=300`). |
+| `--compare=1` | One line per policy: launch time, crew, failed checks. |
+| `--search=N` | Hill-climb over the values in `rd_search_params.json` for N runs; prints the best `--set`. |
+| `--purchases=1`, `--csv=PATH` | Every purchase; one row per minute. |
+
+From code: `PaceSimRedesign.run(proposal, max_minutes, policy, {"set": {...}, "rig": {...}})`.
+
+**What it models** (rates and events, one-second ticks): six districts with their pollution kinds and tool gates; Lumi's rate per kind with chest handling, mastery and rig modules; robots that need mastery 1, speed up with mastery and work 25% faster in Lumi's district; the Scrounger and Assembler chain (buried parts left by every cleaned hex, carried in at a trip-limited rate, assembled one robot at a time); the three-step source job that caps hexes at stage 3; planting (seeds), watering bursts and growth as batches of hexes; research paid in stock and field data; tracks with a price tier per district; the Surge; district stages, unlocks, the launch point; found pieces and the Locker.
+
+**The player** (`pace_sim_rd_policy.gd`): always working by hand; buys gates first, then the best value per cube and per Part (the two never compete); values a purchase by how much sooner the district is finished, counting the kind that lags; fits the best rig per district; moves on at stage 4 and comes back to finish stage 5.
+
+**Checks.** Times are bot seconds; every limit from `docs/PLAN.md` section 9 is a player limit, so measured times are multiplied by `bot_to_player` (2) before they are compared. Cadence: first payout, first upgrade, first hex, small wins, something affordable, goals (any, "now" tier, district tier), new mechanics, power spikes. Design: launch time, no rig module best everywhere, a bale beats tipping, no track leading all the time, first piece near minute 25, the set completing near the end. Economy (spec section 14): early scale, income jumps, reward size, one job per currency, scarce Parts in district 1, first robot near minute 20, crew 100-200 at the launch point, the crew's climb, doubling and stalls, build against upgrade, hand share of 10% in districts 1-3. `parts_wait` is reported only (NOTE). Results: `docs/reviews/BALANCE_PROPOSAL_P1.md`.
+
+| File | Job |
+|---|---|
+| `pace_sim_redesign.gd` | entry: run, summary, compare, command line |
+| `pace_sim_rd_data.gd` | the proposal tables, kept planet values, cost formulas |
+| `pace_sim_rd_model.gd`, `pace_sim_rd_offers.gd` | state, purchases, what is on offer |
+| `pace_sim_rd_work.gd`, `pace_sim_rd_district.gd`, `pace_sim_rd_rates.gd` | each tick's work, a district's hexes and growth, every rate |
+| `pace_sim_rd_policy.gd`, `rd_policies/` | the players |
+| `pace_sim_rd_log.gd`, `pace_sim_rd_report.gd`, `pace_sim_rd_design_checks.gd`, `pace_sim_rd_economy_checks.gd` | records and checks |
+| `pace_sim_rd_search.gd`, `rd_search_params.json` | the number search |

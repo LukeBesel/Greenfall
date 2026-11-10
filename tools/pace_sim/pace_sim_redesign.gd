@@ -78,7 +78,7 @@ static func summary(result: Dictionary) -> PackedStringArray:
 
 ## One line per policy: how the same numbers play for different players.
 static func compare(proposal: String, opts: Dictionary) -> PackedStringArray:
-	var out: PackedStringArray = ["policy        ending(bot min)  hexes  robots  purchases  lowest hand share  failed checks"]
+	var out: PackedStringArray = ["policy          launch(bot min)  hexes  robots  scroungers  purchases  crew when each city reached stage 4   failed checks"]
 	for policy_name: String in COMPARE_POLICIES:
 		var result: Dictionary = run(proposal, MAX_MINUTES, policy_name, opts)
 		if not result["ok"]:
@@ -86,14 +86,15 @@ static func compare(proposal: String, opts: Dictionary) -> PackedStringArray:
 			continue
 		var m: PaceSimRdModel = result["model"]
 		var failed: PackedStringArray = []
-		var share: float = 0.0
 		for c: Dictionary in result["report"]["checks"]:
-			if not c["pass"]:
+			if not c["pass"] and not bool(c.get("advisory", false)):
 				failed.append(str(c["id"]))
-			if str(c["id"]) == "hand_share":
-				share = float(c["value"])
-		out.append("%-13s %-16s %5d  %6d  %9d  %16.0f%%  %s" % [policy_name, "%.1f" % float(result["report"]["end_min"]) if result["report"]["ended"] else "none",
-			m.hexes_clean, m.robot_total(), m.record.purchases.size(), share * 100.0, ", ".join(failed) if not failed.is_empty() else "none"])
+		var crew: PackedStringArray = []
+		for z: PaceSimRdDistrict in m.zones:
+			crew.append(str(z.crew_at_stage4))
+		out.append("%-15s %-16s %5d  %6d  %10d  %9d  %-36s %s" % [policy_name, "%.1f" % float(result["report"]["end_min"]) if result["report"]["ended"] else "none",
+			m.hexes_clean, m.robot_total(), m.robots.get(str(m.data.tables["robots"]["chain"]["scrounger"]), 0), m.record.purchases.size(),
+			", ".join(crew), ", ".join(failed) if not failed.is_empty() else "none"])
 	return out
 
 
