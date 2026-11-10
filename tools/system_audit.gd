@@ -1,8 +1,8 @@
 extends Node
-## [orbB] Which of the slice's systems a run builds, flat or on the globe (docs/ORBIT_PARITY.md):
-##   godot --headless --path . res://tools/system_audit.tscn -- --fresh [--orbit]
+## [orbB] Which of the slice's systems a run builds:
+##   godot --headless --path . res://tools/system_audit.tscn -- --fresh
 ## Prints the slice's named members (set or null) and every script class in the slice's tree,
-## then quits. Compare the flat and --orbit outputs.
+## then quits.
 
 const MEMBERS: Array[String] = ["field", "litter", "tutorial", "wren", "fleet", "planet", "globe",
 	"sky_director", "hub", "rocket", "shards", "garden", "hex_levels", "goals", "first_seed", "water",
