@@ -215,6 +215,9 @@ func value_of(def: Dictionary) -> float:
 	if def.has("_goal") and goals():
 		return goals().value_of(int(def["_goal"]))
 	var key: String = str(def.get("key", ""))
+	var planet_measure: float = Restoration.measure(str(def.get("type", "stat")), key)  # launch, city_stage, cities_restored
+	if planet_measure >= 0.0:
+		return planet_measure
 	match str(def.get("type", "stat")):
 		"stat":  # "also": more lifetime stats that count toward the step (no purchase closes it off)
 			var total: float = _stat(key)
@@ -293,7 +296,7 @@ func progress() -> Array:
 			return [have / need, "%s / %s" % [Settings.fmt(BigNum.from_float(have)), Settings.fmt(BigNum.from_float(need))]]
 	var tgt: float = target_of(def)
 	var v: float = minf(value_of(def), tgt)
-	if str(def.get("type", "")) == "core":
+	if str(def.get("type", "")) in ["core", Restoration.MEASURE_LAUNCH]:
 		return [v / maxf(tgt, 0.0001), "%d%%" % int(floor(v * 100.0))]
 	return [v / maxf(tgt, 0.0001), ("%d / %d" % [int(v), int(tgt)]) if tgt > 1.0 else ""]
 

@@ -14,10 +14,10 @@ func setup() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = world.field.seed_value + 77
 	var candidates: Array[int] = []
-	# [orbB] The start hub's region, nearest the hub first.
+	# [orbB] The ground round the start hub, nearest the hub first.
 	var globe: OrbitPlanet = (world.orbit as SliceOrbit).globe
 	var f: SphereField = world.field
-	for id: int in globe.grid.cells_around(globe.start_cell(), SiteManager.REGION_RINGS):
+	for id: int in globe.grid.cells_around(globe.start_cell(), HubFrame.AREA_RINGS):
 		if f.hex_hub[id] == 0 and not f.is_water(id) and not f.cells.has_flag(id, SphereCells.F_SITE):
 			candidates.append(id)
 	var hub_c: Vector3 = globe.field.hex_center(globe.start_cell())

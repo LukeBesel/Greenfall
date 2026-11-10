@@ -6,6 +6,8 @@ extends GutTest
 
 const FIXTURES: String = "res://tests/fixtures/planets"
 const DUMMY: StringName = &"testworld"
+## A parked planet: registered, not shipped, with no districts table of its own.
+const PARKED: StringName = &"ochre"
 const WORLD_SCENE: String = "res://scenes/slice.tscn"
 ## A slot no other test or tool writes.
 const SLOT: int = 8
@@ -77,6 +79,19 @@ func test_world_builds_runs_saves_and_loads_on_the_dummy_planet() -> void:
 	assert_true(start.is_built, "the start site was built")
 	assert_not_null(start.content.find_child("TestPadMarker", true, false), "by the fixture's sites script")
 	assert_not_null(start.anchor("depot"), "with the shared yard anchors")
+	# No districts table: the planet plays as one district, its start site, named after the planet.
+	var so: SliceOrbit = _world.get("orbit")
+	assert_not_null(so.districts, "the districts were built")
+	assert_not_null(so.restoration, "and the planet's goals")
+	if so.districts == null or so.restoration == null:
+		return
+	assert_false(dummy.has_table(Districts.TABLE))
+	assert_eq(so.districts.ids(), [String(DUMMY)] as Array[String])
+	assert_true(so.districts.is_unlocked(String(DUMMY)))
+	assert_eq(so.districts.site_of(String(DUMMY)), 0)
+	assert_gt(so.districts.land_of(String(DUMMY)), 0, "it has land to restore")
+	assert_eq(globe.site_manager.rings_of(0), Districts.FALLBACK_RINGS)
+	assert_false(so.restoration.is_launched())
 	var player: Node3D = _world.get("patch")
 	assert_not_null(player, "the player was placed")
 	if player == null:
@@ -91,6 +106,8 @@ func test_world_builds_runs_saves_and_loads_on_the_dummy_planet() -> void:
 	assert_true(SaveManager.save_game(), "the game saved")
 	var before: Dictionary = _snapshot(_world)
 	assert_eq(str(GameState.orbit.get("planet_id", "")), String(DUMMY), "the save names the dummy planet")
+	assert_true((GameState.orbit.get("districts", {}) as Dictionary).has("stages"), "district state is in the planet's save section")
+	assert_true((GameState.orbit.get("restoration", {}) as Dictionary).has("launched"))
 	_world.queue_free()
 	await wait_process_frames(2)
 	GameState.new_game()
@@ -103,6 +120,37 @@ func test_world_builds_runs_saves_and_loads_on_the_dummy_planet() -> void:
 	var after: Dictionary = _snapshot(_world)
 	for key: String in before:
 		assert_eq(after[key], before[key], "%s survives the round trip" % key)
+
+
+## A parked planet has no districts or restoration table either, and far more ground than the
+## dummy: its world builds and runs with the one implicit district and no errors.
+func test_world_builds_and_runs_on_a_parked_planet_without_a_districts_table() -> void:
+	Planets.set_current(PARKED)
+	GameState.new_game()
+	var parked: PlanetDefinition = Planets.current()
+	assert_false(parked.has_table(Districts.TABLE))
+	assert_false(parked.has_table(Restoration.TABLE))
+	_world = await _build_world()
+	var globe: OrbitPlanet = _globe(_world)
+	assert_not_null(globe, "the globe was built")
+	if globe == null:
+		return
+	assert_eq(globe.planet_id, String(PARKED))
+	var so: SliceOrbit = _world.get("orbit")
+	assert_not_null(so.districts, "the districts were built")
+	if so.districts == null:
+		return
+	assert_eq(so.districts.ids(), [String(PARKED)] as Array[String])
+	assert_eq(so.districts.name_of(String(PARKED)), parked.display_name)
+	assert_gt(so.districts.land_of(String(PARKED)), 0)
+	assert_eq(so.districts.focus_id(), String(PARKED))
+	for site: int in globe.sites.size():
+		assert_true(so.districts.site_offered(site), "site %d is open to the rocket" % site)
+	await wait_seconds(RUN_SECONDS)
+	assert_almost_eq(Restoration.value(), so.restoration.launch_value(), 0.0001)
+	assert_false(so.restoration.is_launched())
+	assert_true(SaveManager.save_game(), "the game saved")
+	assert_true((GameState.orbit.get("districts", {}) as Dictionary).has("stages"))
 
 
 func _globe(world: Node) -> OrbitPlanet:
@@ -137,6 +185,8 @@ func _snapshot(world: Node) -> Dictionary:
 		"cell_junk": hash(cells["junk"]),
 		"cell_level": hash(cells["level"]),
 		"cubes": snappedf(GameState.get_currency("cubes").to_float(), 0.01),
+		"districts": JSON.stringify((world.get("orbit") as SliceOrbit).districts.save_state()),
+		"restoration": JSON.stringify((world.get("orbit") as SliceOrbit).restoration.save_state()),
 		"player_direction": "%.3f,%.3f,%.3f" % [at[0], at[1], at[2]],
 	}
 

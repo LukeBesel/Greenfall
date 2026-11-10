@@ -204,12 +204,12 @@ var world_space: bool = false
 var _play_area := PackedInt32Array()
 
 
-## The hexes the bot plays: the start hub's region (of the globe's 164k+ cells), the cells that
-## count for planet % (SiteManager.REGION_RINGS rings).
+## The hexes the bot plays: the ground round the start hub (of the globe's 164k+ cells): the first
+## district and the land just past it (HubFrame.AREA_RINGS rings), so it never runs out of work.
 func _hexes() -> PackedInt32Array:
 	if _play_area.is_empty():
 		var sf: SphereField = world.field
-		_play_area = sf.grid.cells_around((world.orbit as SliceOrbit).globe.start_cell(), SiteManager.REGION_RINGS)
+		_play_area = sf.grid.cells_around((world.orbit as SliceOrbit).globe.start_cell(), HubFrame.AREA_RINGS)
 	return _play_area
 
 
@@ -1621,7 +1621,8 @@ func _snapshot() -> void:
 		"hexes": world.field.cleaned_count, "hex_levels": lv, "robots": types, "hub": int(world.hub.level),
 		"task": _task, "research": Research.active_id(), "upgrades": int(GameState.stats.get("upgrades_bought", 0)),
 		"bots": _robot_health(), "goals": ngoals, "stats": _stat_pick(["research_done", "plants_bloomed", "garden_stipend", "air_filtered", "robots_built", "robot_bales", "bales_recycled", "plants_planted"]),
-		"planet": String(Planets.current_id()), "pct": snappedf(Restoration.value(), 0.001)})  # [orbC] planet restoration
+		"planet": String(Planets.current_id()), "pct": snappedf(Restoration.value(), 0.001),  # launch progress
+		"city": _city_id(), "city_stage": int(Restoration.measure(Restoration.MEASURE_CITY_STAGE)), "city_share": snappedf(_city_share(), 0.001)})
 	var pid: String = String(Planets.current_id())  # [orbC] pacing marks: 25% / 50% / 75% of the planet
 	var pct: float = Restoration.value()
 	for th: int in [25, 50, 75]:
@@ -1635,10 +1636,22 @@ func _snapshot() -> void:
 		write_report()
 		SaveManager.save_game()
 		world.get_tree().quit()
-	print("[Autoplay] %5.1f min cubes=%d rate=%.2f/s partscur=%.0f seeds=%.0f parts=%d hexes=%d lv=%s robots=%s hub=%d task=%s goals=%d research=%s pos=%s esc=%d" % [_now() / 60.0,  # [money]
+	print("[Autoplay] %5.1f min city=%s stage=%d share=%d%% launch=%.1f%% cubes=%d rate=%.2f/s partscur=%.0f seeds=%.0f parts=%d hexes=%d lv=%s robots=%s hub=%d task=%s goals=%d research=%s pos=%s esc=%d" % [_now() / 60.0,  # [money]
+		_city_id(), int(Restoration.measure(Restoration.MEASURE_CITY_STAGE)), int(floor(_city_share() * 100.0)), pct * 100.0,
 		int(GameState.get_currency("cubes").to_float()), GameState.income_rate(), GameState.get_currency("parts").to_float(),
 		GameState.get_currency("seeds").to_float(), GameState.parts.size(),
 		world.field.cleaned_count, str(lv), str(types), int(world.hub.level), _task, ngoals, Research.active_id(), str(world.patch.global_position.snappedf(0.1)), _escapes])
+
+
+## The city (district) the readout shows, and its share toward its next regrowth stage.
+func _city_id() -> String:
+	var r: Restoration = Restoration.active()
+	return r.districts.focus_id() if r and r.districts else ""
+
+
+func _city_share() -> float:
+	var r: Restoration = Restoration.active()
+	return r.districts.share_of(r.districts.focus_id()) if r and r.districts else 0.0
 
 
 func _stat_pick(keys: Array) -> Dictionary:

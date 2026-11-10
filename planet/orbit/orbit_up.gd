@@ -5,7 +5,7 @@ extends RefCounted
 ## (preview stages, unit tests of single machines) up is +Y and distance is across x/z.
 
 ## Cells within this many rings of a point count as "the field" for globe-wide scans (~310 m:
-## the hub region, SiteManager.REGION_RINGS).
+## the ground round a hub, HubFrame.AREA_RINGS).
 const RINGS: int = 18
 
 

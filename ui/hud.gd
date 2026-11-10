@@ -20,8 +20,7 @@ const FADE_AFTER_S: float = 6.0
 const CONTEXT_HOLD_S: float = 3.0
 const CONTEXT_COLOR := Color(0.8, 0.82, 0.8)  # [onboard] brighter than UITheme.MUTED
 
-var _planet_t: float = 0.0  # [orbE] planet % refresh timer
-var _planet_frac: float = 0.0
+var _planet_t: float = 0.0  # refresh timer of the planet readout
 var patch: Patch
 var world: Node
 
@@ -281,22 +280,19 @@ func _process(delta: float) -> void:
 	var cc: Variant = world.get("core_charge") if world else null  # [story2] Bloom Core ring by the level bar
 	if cc is CoreCharge:
 		set_core_charge((cc as CoreCharge).shown)
-	# The planet readout needs the globe's sites: until they exist it shows nothing, not 0%.
-	var sites: OrbitSites = (world.orbit as SliceOrbit).sites if world and world.field else null
-	_field_label.visible = sites != null
-	_field_bar.visible = sites != null
-	if sites:
-		# [orbE] The planet % walks every hub-region cell (~3.5 ms a frame on the largest globe): a few times a
-		# second is plenty for a percentage.
+	# The planet readout needs the globe's districts: until they exist it shows nothing.
+	var so: SliceOrbit = (world.orbit as SliceOrbit) if world and world.field else null
+	var districts: Districts = so.districts if so else null
+	var shown: bool = districts != null and districts.focus_id() != ""
+	_field_label.visible = shown
+	_field_bar.visible = shown
+	_planet_label.visible = shown
+	if shown:
+		# A few times a second is plenty for a readout.
 		_planet_t -= get_process_delta_time()
 		if _planet_t <= 0.0:
 			_planet_t = 0.25
-			_planet_frac = sites.planet_fraction()
-		# [orbB] The globe has no district: one planet line (hub regions) and its bar.
-		_planet_label.text = "%s   %s%%" % [Planets.current().display_name.to_upper(), _fmt_small_pct(_planet_frac * 100.0)]
-		_field_label.text = _planet_label.text
-		_field_frac = _planet_frac
-		_planet_label.visible = false
+			_refresh_district(districts, so.restoration)
 		_field_bar.queue_redraw()
 		_relay_label.text = tr("WREN SIGNAL   %d%%") % SignalTower.signal_pct()
 		_relay_label.visible = SignalTower.tier() > 0  # [v3clear] hide what isn't relevant yet: no 0% before the tower
@@ -379,14 +375,21 @@ func _on_signal(text: String, color: Color, strength: float) -> void:
 	_signal_strength = strength
 
 
-func _fmt_small_pct(p: float) -> String:
-	if p <= 0.0:
-		return "0.0000"
-	if p < 0.01:
-		return "%.4f" % p
-	if p < 1.0:
-		return "%.3f" % p
-	return "%.2f" % p
+## The planet readout: the city the player is in (or was last in) with its regrowth stage and the
+## share toward the next stage ("Old Town · Growing 62%"), the bar for that share, and how many
+## cities are restored. Never a planet figure with decimals.
+func _refresh_district(districts: Districts, restoration: Restoration) -> void:
+	var id: String = districts.focus_id()
+	var stage: int = districts.stage_of(id)
+	var stage_text: String = tr(Districts.stage_name(Planets.current(), stage))
+	_field_frac = districts.share_of(id)
+	if stage >= Districts.MAX_STAGE:
+		_field_label.text = tr("%s · %s") % [tr(districts.name_of(id)), stage_text]
+	else:
+		_field_label.text = tr("%s · %s %d%%") % [tr(districts.name_of(id)), stage_text, int(floor(_field_frac * 100.0))]
+	var total: int = districts.count()
+	var done: int = restoration.districts_restored() if restoration else 0
+	_planet_label.text = tr_n("%d of %d city restored", "%d of %d cities restored", total) % [done, total]
 
 
 ## Prompt line; the button glyph follows the last input device ("E  interact" / "A  interact").

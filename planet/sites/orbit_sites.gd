@@ -3,7 +3,7 @@ extends Node
 ## [orbD] Hub sites, rocket hops and the hover-sled on the real slice-on-globe (scenes/slice_orbit.gd).
 ## OrbitPlanet.build_start_site() makes the SiteManager and the start yard prefab; this node adds
 ## what needs Lumi and the camera: the manager's focus, the parked hover-sled, hops, the interact
-## prompt, planet %, saving the sites' state, and the dev flags:
+## prompt, the travel rule, saving the sites' state, and the dev flags:
 ##   --orbit-hop=N[,M]   rocket hop to hub N (then M) once the slice is up; prints [hop] lines
 ##   --orbit-sled[=T]    own the sled at tier T and ride it from the start
 ## Use: OrbitSites.attach(slice_orbit) after the patch, camera and depot exist.
@@ -92,6 +92,7 @@ func _wire_survey() -> void:
 	so.w.add_child(picker)
 	picker.entries_fn = destinations
 	picker.blocker_fn = hop_blocker
+	picker.empty_fn = next_city_hint
 	picker.picked.connect(func(site: int) -> void: hop_to(site))
 	picker.closed.connect(func() -> void:
 		if not hop.flying:
@@ -123,11 +124,12 @@ func _wire_survey() -> void:
 
 
 ## Whether Lumi has a rocket on this globe: base level 5 builds it (as the flat game's launch pad),
-## and once Lumi has flown (a hop) it travels with him.
+## a second district unlocking brings it out (there is somewhere to go), and once Lumi has flown
+## (a hop) it travels with him.
 func rocket_unlocked() -> bool:
 	var hub: Variant = so.w.get("hub")
 	return DevHooks.has("rocket") or bool(GameState.orbit.get("rocket_owned", false)) \
-		or (hub is Hub and (hub as Hub).level >= 5)
+		or (hub is Hub and (hub as Hub).level >= 5) or (so.districts != null and so.districts.unlocked_count() > 1)
 
 
 ## The hub whose pad the rocket stands on (the last landing, else the start site).
@@ -157,7 +159,14 @@ func open_rocket() -> void:
 	picker.open()
 
 
-## The other hubs on this globe, nearest first: [{site, name, km}].
+## Travel rule (systems/districts.gd): whether the rocket may fly to site i. A district's site
+## once the district is unlocked; open ground as the planet's districts table says (by default
+## once every district is unlocked).
+func site_offered(i: int) -> bool:
+	return so.districts == null or so.districts.site_offered(i)
+
+
+## The other hubs on this globe the rocket may fly to, nearest first: [{site, name, km}].
 func destinations() -> Array:
 	var out: Array = []
 	if sm == null:
@@ -166,7 +175,7 @@ func destinations() -> Array:
 	var here: Vector3 = sm.pad_xf(from_i).origin.normalized()
 	var R: float = so.globe.terrain.R
 	for i: int in sm.sites.size():
-		if i == from_i or (not _site_hub.is_empty() and not _site_hub.has(i)):
+		if i == from_i or (not _site_hub.is_empty() and not _site_hub.has(i)) or not site_offered(i):
 			continue
 		var d: Vector3 = (sm.sites[i]["transform"] as Transform3D).origin.normalized()
 		out.append({"site": i, "name": site_name(i), "km": here.angle_to(d) * R / 1000.0})
@@ -174,7 +183,28 @@ func destinations() -> Array:
 	return out.slice(0, 6)
 
 
+## What opens the next district, for the rocket's list when nowhere is open yet ("" when every
+## district is unlocked or the next one has no stage rule).
+func next_city_hint() -> String:
+	var d: Districts = so.districts
+	if d == null:
+		return ""
+	for id: String in d.ids():
+		if d.is_unlocked(id):
+			continue
+		var rule: Dictionary = d.spec_of(id)["unlock"]
+		var other: String = str(rule.get("district", ""))
+		if str(rule.get("type", "")) != Districts.UNLOCK_DISTRICT_STAGE or not d.has(other):
+			return ""
+		return tr("Nowhere to fly yet. Get %s to %s to open %s.") % [tr(d.name_of(other)),
+			tr(Districts.stage_name(Planets.current(), int(rule.get("stage", Districts.MAX_STAGE)))), tr(d.name_of(id))]
+	return ""
+
+
 func site_name(i: int) -> String:
+	var district: String = so.districts.district_of_site(i) if so.districts else ""
+	if district != "":
+		return tr(so.districts.name_of(district))
 	var pl: PlanetData = so.globe.planet
 	if _site_hub.has(i):
 		var cell: int = pl.hubs[int(_site_hub[i])]
@@ -322,10 +352,6 @@ func interact_prompt() -> String:
 	return ("E   " + t) if t != "" else ""
 
 
-func planet_fraction() -> float:
-	return sm.planet_fraction() if sm else 0.0
-
-
 ## Rocket hop to hub i from the nearest one.
 func hop_to(i: int) -> bool:
 	if sm == null:
@@ -349,7 +375,7 @@ func site_of_hub(hub_i: int) -> int:
 ## on the ground with full cells and not already standing there.
 func can_hop_to_hub(hub_i: int) -> bool:
 	var site: int = site_of_hub(hub_i)
-	return site >= 0 and site != rocket_site() and hop_blocker() == "" and rocket_unlocked()
+	return site >= 0 and site != rocket_site() and hop_blocker() == "" and rocket_unlocked() and site_offered(site)
 
 
 ## Rocket hop to the site on planet hub `hub_i`, for callers that think in hubs (the play bot).

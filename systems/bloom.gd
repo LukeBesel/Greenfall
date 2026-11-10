@@ -2,9 +2,12 @@ class_name Bloom
 extends Node
 ## Post-game (M11): planet-scale Bloom milestones (the planet's "postgame" table). Pure
 ## helpers are static (tests use them); the live node (added by the slice) keeps this district's
-## summary fresh, checks milestones and plays the Cradle finale once.
+## summary fresh and checks milestones. Milestones pay and are celebrated; none of them is the
+## planet's ending any more: the ending is the launch point (systems/restoration.gd fires
+## launch_ready, story/planet_ending.gd plays the cinematic and the end screen). play_finale() is
+## kept only for the dev flags that preview the cinematic (--bloom-finale, --core-beat=100).
 ## State: flags.bloom_done (Array of ids), flags.bloom_<id> (for achievements),
-## flags.bloom_finale_seen, flags.biomes_visited, world.bloom_summary {thriving, land} per district.
+## flags.biomes_visited, world.bloom_summary {thriving, land} per district.
 
 const TABLE: String = "postgame"
 const CHECK_S: float = 2.0
@@ -13,7 +16,6 @@ static var _cfg: Dictionary = {}
 
 var world: Node
 var _t: float = 0.0
-var _finale_pending: bool = false
 
 
 static func cfg() -> Dictionary:
@@ -142,18 +144,11 @@ static func globe_line() -> String:
 
 func _ready() -> void:
 	add_to_group("persist")
-	# [beat] A method connection is dropped with this node (the slice's old one-shot lambda was not,
-	# and fired into freed districts after rocket trips).
-	EventBus.cradle_district_complete.connect(_on_cradle_complete)
 	_visit_biome.call_deferred()
-	# [beat] The finale milestone is done but the finale never finished (quit mid-cinematic, or an
-	# older save): play it again at the next quiet moment.
-	if is_done(finale_id()) and not GameState.flags.get("bloom_finale_seen", false):
-		_finale_pending = true
 	if DevHooks.has("credits"):  # [beat] --credits[=S]: roll the end credits S seconds in
 		get_tree().create_timer(DevHooks.get_f("credits", 3.0)).timeout.connect(func() -> void: CreditsRoll.play(world))
 	if DevHooks.has("bloom-finale"):
-		(func() -> void: play_finale(true)).call_deferred()
+		play_finale.call_deferred()
 
 
 func persist_save() -> void:
@@ -211,8 +206,6 @@ func _process(delta: float) -> void:
 	if _t < CHECK_S:
 		return
 	_t = 0.0
-	if _finale_pending:
-		play_finale()
 	var got: Array[String] = check(measure_now())
 	for id: String in got:
 		_celebrate(id)
@@ -231,8 +224,6 @@ func _celebrate(id: String) -> void:
 		Vfx.burst("big_sparkle", bp + OrbitUp.up(bp) * 1.5, Color(0.8, 1.0, 0.6))  # [orbB] local up
 	if world and world.get("wren") != null:
 		world.wren.say("bloom_milestone", 1.0, true)
-	if bool(ms.get("finale", false)):
-		play_finale()
 
 
 static func _reward_text(r: Dictionary) -> String:
@@ -242,37 +233,27 @@ static func _reward_text(r: Dictionary) -> String:
 	return "  ".join(bits)
 
 
-func _on_cradle_complete(_hub: int) -> void:
-	play_finale()
-
-
-## The Cradle answers (once). Waits for a quiet moment if a menu or another scene is busy.
-func play_finale(force: bool = false) -> void:
-	if GameState.flags.get("bloom_finale_seen", false) and not force:
-		_finale_pending = false
+## Dev preview of the ending cinematic (--bloom-finale, --core-beat=100): plays it now, with no
+## end screen after it. The real ending is PlanetEnding's.
+func play_finale() -> void:
+	if BloomFinale.playing or world == null:
 		return
-	if BloomFinale.playing:
-		_finale_pending = false
-		return
-	if world == null or (world.has_method("any_modal_open") and world.any_modal_open()) or bool(world.get("launching")) or _busy_story():
-		_finale_pending = true
-		return
-	_finale_pending = false
-	# [beat] bloom_finale_seen is set when the cinematic ends (BloomFinale), so quitting halfway
-	# replays it on the next load instead of losing the ending.
 	var f := BloomFinale.new()
 	f.world = world
 	world.add_child(f)
 	f.play()
 
 
-## [beat] Another cinematic owns the screen (intro, first seed, a Bloom Core beat).
-func _busy_story() -> bool:
-	var intro: Variant = world.get("intro")
+## Whether something else owns the screen right now: a menu, a rocket launch or another cinematic
+## (intro, first seed, a Bloom Core beat, the ending). Cinematics wait for a quiet moment.
+static func story_busy(w: Node) -> bool:
+	if w == null or (w.has_method("any_modal_open") and w.call("any_modal_open")) or w.get("launching") == true:
+		return true
+	var intro: Variant = w.get("intro")
 	if intro is Intro and (intro as Intro).busy():
 		return true
-	var fs: Variant = world.get("first_seed")
+	var fs: Variant = w.get("first_seed")
 	if fs is FirstSeed and bool((fs as FirstSeed).get("_active")):
 		return true
-	var cc: Variant = world.get("core_charge")
-	return cc is CoreCharge and bool((cc as CoreCharge).get("_busy"))
+	var cc: Variant = w.get("core_charge")
+	return BloomFinale.playing or (cc is CoreCharge and bool((cc as CoreCharge).get("_busy")))

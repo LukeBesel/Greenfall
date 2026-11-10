@@ -65,6 +65,9 @@ extends Node
 ##   --no-hud           [steam] hide HUD, toasts, subtitles and event banners (store screenshots, trailer)
 ##   --demo-end[=S]     [steam] show the end-of-demo screen after S seconds
 ##   [garden] --open=garden, --garden, --decor-sample, --garden-cam; full list in systems/garden_director.gd
+##   --district-stage=ID:N[,ID:N]  set every land hex of a district (city) to regrowth stage N once the
+##                      world is up (systems/districts_dev.gd); --launch-ready[=S] meets the planet's launch
+##                      rule S wall-clock seconds after start (default 20): the ending plays fast, no credits
 ##   [kit] --kit-lineup  art kit lineup (docs/ART_KIT.md); with --out=PREFIX it renders every piece and quits
 
 var args: Dictionary = {}

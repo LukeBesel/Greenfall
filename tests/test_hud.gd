@@ -157,8 +157,10 @@ func test_hud_mode_setting_persists() -> void:
 	assert_true(InputMap.has_action("toggle_goals"), "goal tracker toggle is bound")
 
 
-# The planet readout needs the globe's sites: before they exist it shows nothing, not 0%.
-func test_planet_readout_shows_nothing_until_the_sites_exist() -> void:
+# The planet readout needs the globe's districts: before they exist it shows nothing. Then it is
+# the current city, its regrowth stage and the share toward the next stage, and the cities
+# restored: never a planet percentage with decimals.
+func test_planet_readout_shows_the_current_city_its_stage_and_the_cities_restored() -> void:
 	var w: Node3D = (load("res://scenes/slice.gd") as GDScript).new()
 	autofree(w)
 	var so := SliceOrbit.new()
@@ -169,11 +171,30 @@ func test_planet_readout_shows_nothing_until_the_sites_exist() -> void:
 	hud.world = w
 	add_child_autofree(hud)
 	hud._process(0.016)
-	assert_false(hud._field_label.visible, "no planet line before the sites exist")
+	assert_false(hud._field_label.visible, "no planet line before the districts exist")
 	assert_false(hud._field_bar.visible)
+	assert_false(hud._planet_label.visible)
 	assert_eq(hud._field_label.text, "", "and no stale text behind it")
-	so.sites = OrbitSites.new()
-	autofree(so.sites)
+	var fx := DistrictFixture.new(Planets.current_id())
+	so.districts = fx.districts
+	so.restoration = fx.restoration
+	var first: String = fx.districts.ids()[0]
+	var total: int = fx.districts.count()
+	var need: int = Districts.hexes_needed(PackedInt32Array([fx.districts.land_of(first)]), fx.districts.stage_share)
+	fx.set_district_stage(first, 3)
+	fx.set_district_stage(first, 4, ceili(need * 0.62))
 	hud._process(0.016)
 	assert_true(hud._field_label.visible)
-	assert_string_contains(hud._field_label.text, "%")
+	assert_true(hud._planet_label.visible)
+	var city: String = fx.districts.name_of(first)
+	var stage: String = Districts.stage_name(Planets.current(), 3)
+	assert_eq(hud._field_label.text, "%s · %s %d%%" % [city, stage, int(floor(fx.districts.share_of(first) * 100.0))])
+	assert_string_contains(hud._field_label.text, " 62%")
+	assert_almost_eq(hud._field_frac, fx.districts.share_of(first), 0.0001, "the bar is the share toward the next stage")
+	assert_eq(hud._planet_label.text, ("0 of %d cities restored" if total != 1 else "0 of %d city restored") % total)
+	fx.set_district_stage(first, 5)
+	hud._planet_t = 0.0
+	hud._process(0.016)
+	assert_eq(hud._field_label.text, "%s · %s" % [city, Districts.stage_name(Planets.current(), 5)], "the last stage has no share to show")
+	assert_string_contains(hud._planet_label.text, "1 of %d" % total)
+	fx.free_systems()

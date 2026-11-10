@@ -39,6 +39,8 @@ static func _snap(s: Node) -> Dictionary:
 		"sites": str(OrbitSave.site_cells(GameState.orbit)),
 		"sites_built": str(OrbitSave.sites_to_array((s.orbit as SliceOrbit).globe.sites)),
 		"hexes_paid": (GameState.orbit.get("hexes_paid", {}) as Dictionary).size(),
+		"districts": JSON.stringify((s.orbit as SliceOrbit).districts.save_state()),  # stages, unlocked, visited
+		"restoration": JSON.stringify((s.orbit as SliceOrbit).restoration.save_state()),
 		"hex_level_target": (s.get("hex_levels") as HexLevels).level_of(int(s.get_meta("rt_target", -1))),
 		"cells_level_target": g.cells.level[int(s.get_meta("rt_target", 0))],
 		"milestone_1": GameState.flags.get("hexm_1", false),
@@ -382,7 +384,7 @@ static func _first_seed_check(tree: SceneTree, s: Node, so: SliceOrbit, check: C
 	# Memory shards: placed in the start hub's region; one surfaces when its cell is clean, on the
 	# ground; E reads it in the document view and it counts as found.
 	var sh: ShardSystem = s.get("shards") as ShardSystem
-	var region0: PackedInt32Array = g.grid.cells_around(g.start_cell(), SiteManager.REGION_RINGS)
+	var region0: PackedInt32Array = g.grid.cells_around(g.start_cell(), HubFrame.AREA_RINGS)
 	var placed_ok: bool = sh != null and sh._placed.size() == sh.docs.size() and sh.docs.size() > 0
 	if placed_ok:
 		for hid: int in sh._placed:
