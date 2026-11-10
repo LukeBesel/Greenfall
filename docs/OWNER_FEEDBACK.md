@@ -250,3 +250,4 @@ Direction: the flat world's vibe is better, so build it into the round world: bu
 54. Lumi should need an upgrade to hover over water.
 55. The objective led me under a building I can't get to. Every target must be reachable.
 56. Overall: it still needs more polish.
+57. Balance the timing (base 3 and the rest) so the first planet takes 4–5 hours in total.
