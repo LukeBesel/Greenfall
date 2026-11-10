@@ -12,8 +12,11 @@ const W_POWER: float = 1.0
 const W_HAND: float = 0.5
 const W_INCOME: float = 0.7
 const W_TEND: float = 0.5
-## Cubes one Part is counted as when comparing costs and incomes.
-const PARTS_WEIGHT: float = 4.0
+## Parts are counted in cubes at the player's lifetime cubes-per-Part rate times this share
+## (Parts buy about this share of what matters), inside the two limits.
+const PARTS_SHARE: float = 0.25
+const PARTS_WEIGHT_MIN: float = 2.0
+const PARTS_WEIGHT_MAX: float = 400.0
 ## While saving for a gate, other things are bought only up to this share of the gate's cost.
 const SIDE_BUY_SHARE: float = 0.35
 ## Lumi stops sweeping to plant or water once this many hexes are waiting (or nothing is left to sweep).
@@ -21,7 +24,7 @@ const TEND_BATCH_HEXES: float = 6.0
 ## Lumi hops back to an older district when this share of its hexes can take a watering.
 const RETURN_SHARE: float = 0.3
 ## Seconds before the offers are weighed again after a look that bought nothing.
-const LOOK_AGAIN_S: float = 4.0
+const LOOK_AGAIN_S: float = 5.0
 
 ## False: never builds robots or anything only robots need.
 var buys_robots: bool = true
@@ -45,19 +48,20 @@ func shop(m: PaceSimRdModel) -> void:
 	for item: Dictionary in m.items():
 		if buys_robots or not bool(item["crew"]):
 			offers.append(item)
-	var reserve: float = 0.0
+	var gate: Dictionary = {}
 	for item: Dictionary in offers:
 		if not _is_gate(item):
 			continue
 		if m.can_afford(item):
 			_bought(m, m.buy(item))
 			return
-		reserve = float(item["cubes"]) if reserve <= 0.0 else minf(reserve, float(item["cubes"]))
+		if gate.is_empty() or float(item["cubes"]) < float(gate["cubes"]):
+			gate = item
 	var node: Dictionary = _cheapest_research(m, offers)
-	if not node.is_empty() and (reserve <= 0.0 or float(node["cubes"]) <= reserve * SIDE_BUY_SHARE):
+	if not node.is_empty() and _fits_beside(m, node, gate):
 		_bought(m, m.buy(node))
 		return
-	_buy_best(m, offers, reserve)
+	_buy_best(m, offers, gate)
 
 
 ## What Lumi does this tick.
@@ -71,7 +75,7 @@ func choose(m: PaceSimRdModel) -> String:
 		var batch: float = TEND_BATCH_HEXES if can_clean else 0.0001
 		if z.count[1] >= batch:
 			return "plant"
-		if z.thirsty(m.t) >= batch:
+		if z.thirsty(m.t, true) >= batch:
 			return "water"
 	if not w.wreck_here(z).is_empty():
 		return "explore"
@@ -79,6 +83,8 @@ func choose(m: PaceSimRdModel) -> String:
 	var target: int = _target_district(m)
 	if target != m.here and moving_on:
 		return "travel:%d" % target
+	if not can_clean and w.tending_open() and z.stage < PaceSimRdDistrict.TOP_STAGE and z.thirsty(m.t, false) > 0.0:
+		return "boost"
 	var back: int = _district_to_water(m)
 	if back >= 0 and moving_on:
 		return "travel:%d" % back
@@ -96,7 +102,7 @@ func value(m: PaceSimRdModel, z: PaceSimRdDistrict) -> float:
 	var r: PaceSimRdRates = m.rates
 	var hand: float = r.hand_power(z) * r.surge_factor()
 	var crew: float = r.crew_power(z)
-	var v: float = W_POWER * log(hand + crew) + W_HAND * log(hand) + W_INCOME * log(r.hand_income(z, PARTS_WEIGHT) * r.surge_factor() + crew)
+	var v: float = W_POWER * log(hand + crew) + W_HAND * log(hand) + W_INCOME * log(r.hand_income(z, parts_weight(m)) * r.surge_factor() + crew)
 	if m.work.tending_open():
 		var plant: float = r.plant_rate() + r.crew_tend_rate("plant_rate")
 		var water: float = r.water_rate() + r.crew_tend_rate("water_rate")
@@ -145,6 +151,20 @@ func best_modules(m: PaceSimRdModel, z: PaceSimRdDistrict) -> Dictionary:
 	return out
 
 
+## Cubes one Part is worth to this player right now.
+func parts_weight(m: PaceSimRdModel) -> float:
+	return clampf(PARTS_SHARE * m.earned / maxf(m.parts_earned, 1.0), PARTS_WEIGHT_MIN, PARTS_WEIGHT_MAX)
+
+
+## While saving for a gate, a side purchase must be cheap in cubes and leave the gate's Parts alone.
+func _fits_beside(m: PaceSimRdModel, item: Dictionary, gate: Dictionary) -> bool:
+	if gate.is_empty():
+		return true
+	if float(item["cubes"]) > float(gate["cubes"]) * SIDE_BUY_SHARE:
+		return false
+	return float(item["parts"]) <= 0.0 or m.parts - float(item["parts"]) >= float(gate["parts"])
+
+
 ## After a purchase the bench is looked at again at once; after none, a little later.
 func _bought(m: PaceSimRdModel, did: bool) -> void:
 	if did:
@@ -164,7 +184,7 @@ func _cheapest_research(m: PaceSimRdModel, offers: Array[Dictionary]) -> Diction
 
 
 ## Buys the affordable offer with the most value gained per cube; records which track led.
-func _buy_best(m: PaceSimRdModel, offers: Array[Dictionary], reserve: float) -> void:
+func _buy_best(m: PaceSimRdModel, offers: Array[Dictionary], gate: Dictionary) -> void:
 	var z: PaceSimRdDistrict = m.work.zone()
 	var before: float = value(m, z)
 	var best: Dictionary = {}
@@ -175,11 +195,13 @@ func _buy_best(m: PaceSimRdModel, offers: Array[Dictionary], reserve: float) -> 
 		var type: String = str(item["type"])
 		if type == "research" or _is_gate(item):
 			continue
-		var score: float = _gain(m, z, item, before) / maxf(float(item["cubes"]) + float(item["parts"]) * PARTS_WEIGHT, 1.0)
+		if type != "track" and not m.can_afford(item):
+			continue
+		var score: float = _gain(m, z, item, before) / maxf(float(item["cubes"]) + float(item["parts"]) * parts_weight(m), 1.0)
 		if type == "track" and score > top_track_score:
 			top_track_score = score
 			top_track = str(item["id"])
-		if not m.can_afford(item) or (reserve > 0.0 and float(item["cubes"]) > reserve * SIDE_BUY_SHARE):
+		if not m.can_afford(item) or not _fits_beside(m, item, gate):
 			continue
 		if score > best_score:
 			best_score = score
@@ -220,6 +242,6 @@ func _district_to_water(m: PaceSimRdModel) -> int:
 		return -1
 	for z: PaceSimRdDistrict in m.zones:
 		if z.index < m.unlocked and z.index != m.here and z.stage < 5 and z.entered_at >= 0.0 \
-				and z.thirsty(m.t) >= RETURN_SHARE * float(z.hexes):
+				and z.thirsty(m.t, false) >= RETURN_SHARE * float(z.hexes):
 			return z.index
 	return -1

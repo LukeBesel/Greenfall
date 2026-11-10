@@ -2,8 +2,8 @@ class_name PaceSimRdWork
 extends RefCounted
 ## One tick of work in the redesign model: what Lumi does (sweep, plant, water, the source job, a
 ## hop, a wreck), what the crew does, how hexes grow, and the Surge.
-## Lumi's choices come from the policy as plain strings: clean, plant, water, source, explore,
-## travel:<district index>, idle.
+## Lumi's choices come from the policy as plain strings: clean, plant, water (dry hexes), boost
+## (water again for another burst), source, explore, travel:<district index>, idle.
 
 const MERGE_EVERY_S: float = 5.0
 
@@ -75,7 +75,9 @@ func act(choice: String) -> void:
 		"plant":
 			worked = _plant()
 		"water":
-			worked = _water()
+			worked = _water(true)
+		"boost":
+			worked = _water(false)
 		"source":
 			worked = _source()
 		"explore":
@@ -136,7 +138,7 @@ func grow_tick() -> void:
 
 func _stage_reward(z: PaceSimRdDistrict, s: int, n: float) -> void:
 	var reward: Dictionary = _d.tables["regrowth"]["stage_reward"]
-	_m.pay(n * float((reward["cubes"] as Array)[s]) * float(z.row["stage_reward_mult"]))
+	_m.pay(n * float((reward["cubes"] as Array)[s]) * z.reward_mult)
 	_m.add_data(n * float((reward["data"] as Array)[s]))
 	_m.record.win(_m.t)
 	if z.index == _m.here:
@@ -174,7 +176,7 @@ func _clean() -> bool:
 func _hand_output(z: PaceSimRdDistrict, kind: String, units: float) -> void:
 	var row: Dictionary = _d.kinds[kind]
 	_m.pay(units * _m.rates.unit_value(kind))
-	_m.parts += units * _m.rates.unit_parts(kind)
+	_m.gain_parts(units * _m.rates.unit_parts(kind))
 	_m.hand_units += units
 	_m.hand_hexes += units / z.hex_work
 	z.hand_units += units
@@ -213,13 +215,14 @@ func _plant() -> bool:
 	var used: float = zone().plant(_m.rates.plant_rate() * PaceSimRdModel.TICK_S)
 	if used > 0.0:
 		_m.emit("first_plant")
+		_stage_reward(zone(), PaceSimRdDistrict.PLANTED, used)
 	return used > 0.0
 
 
-func _water() -> bool:
+func _water(only_dry: bool) -> bool:
 	var regrowth: Dictionary = _d.tables["regrowth"]
 	var used: float = zone().water(_m.rates.water_rate() * PaceSimRdModel.TICK_S, _m.t, float(regrowth["burst_pts"]),
-		float(regrowth["wet_s"]), float(regrowth["rewater_s"]))
+		float(regrowth["wet_s"]), float(regrowth["rewater_s"]), only_dry)
 	return used > 0.0
 
 
@@ -248,7 +251,7 @@ func _source() -> bool:
 	_source_step_done(z, 3)
 	_m.emit("source_shut:" + z.id)
 	_m.pay(float(src["payout"]["cubes"]))
-	_m.parts += float(src["payout"]["parts"])
+	_m.gain_parts(float(src["payout"]["parts"]))
 	_m.add_data(float(src["payout"]["data"]))
 	for id: Variant in src.get("grants", []):
 		_m.grant(str(id))
@@ -295,6 +298,7 @@ func _travel(to: int) -> void:
 		z.entered_at = _m.t
 		_m.busy_s += float(z.row["arrival_s"])
 		_m.emit("enter:" + z.id)
+		_m.record.win(_m.t)
 	else:
 		_m.busy_s += _d.num("districts.hop_s")
 	_m.rig_dirty = true
@@ -331,7 +335,7 @@ func _crew_zone(allowed: Array[String]) -> PaceSimRdDistrict:
 	return null
 
 
-## Tender robots plant or water whole hexes, oldest district first.
+## Tender robots plant or water whole hexes, oldest district first, dry hexes before wet ones.
 func _crew_tend(type: String, field: String, n: float) -> void:
 	if not tending_open():
 		return
@@ -343,7 +347,11 @@ func _crew_tend(type: String, field: String, n: float) -> void:
 		if budget < 1.0 or z.index >= _m.unlocked:
 			break
 		if field == "plant_rate":
-			budget -= z.plant(floor(budget))
+			var planted: float = z.plant(floor(budget))
+			budget -= planted
+			if planted > 0.0:
+				_stage_reward(z, PaceSimRdDistrict.PLANTED, planted)
 		else:
-			budget -= z.water(floor(budget), _m.t, float(regrowth["burst_pts"]), float(regrowth["wet_s"]), float(regrowth["rewater_s"]))
+			for only_dry: bool in [true, false]:
+				budget -= z.water(floor(budget), _m.t, float(regrowth["burst_pts"]), float(regrowth["wet_s"]), float(regrowth["rewater_s"]), only_dry)
 	_tend_acc[key] = minf(budget, 1.0 + float(_d.robot_types[type][field]) * n)

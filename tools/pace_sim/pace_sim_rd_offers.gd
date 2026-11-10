@@ -65,8 +65,8 @@ static func _robots(m: PaceSimRdModel, out: Array[Dictionary]) -> void:
 				float(row["cost"]["parts"]) * pow(float(cfg["parts_growth"]), float(have)), crew_row))
 		var next_tier: int = m.mk.get(id, 0) + 1
 		if have > 0 and next_tier < tiers.size() and m.owned.has(str(tiers[next_tier]["requires"])):
-			var mult: float = float(tiers[next_tier]["cost_mult"]) * float(have)
-			out.append(_offer("mk", id, float(row["cost"]["cubes"]) * mult, float(row["cost"]["parts"]) * mult, crew_row))
+			out.append(_offer("mk", id, float(row["cost"]["cubes"]) * float(tiers[next_tier]["cost_mult"]) * float(have),
+				float(row["cost"]["parts"]) * float(tiers[next_tier]["parts_mult"]) * float(have), crew_row))
 
 
 static func _modules(m: PaceSimRdModel, out: Array[Dictionary]) -> void:

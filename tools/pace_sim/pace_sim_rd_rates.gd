@@ -122,7 +122,7 @@ func hand_income(z: PaceSimRdDistrict, parts_weight: float) -> float:
 	var per_unit: float = 0.0
 	for kind: String in z.mix:
 		per_unit += z.mix[kind] * (unit_value(kind) + unit_parts(kind) * parts_weight)
-	return per_unit * hand_power(z) + float(z.row["hex_bonus"]["cubes"]) * hand_power(z) / z.hex_work
+	return per_unit * hand_power(z) + z.hex_bonus * hand_power(z) / z.hex_work
 
 
 ## Units a second one robot of a type clears of a kind; 0 below the mastery it needs.

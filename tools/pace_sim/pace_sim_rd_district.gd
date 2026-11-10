@@ -21,6 +21,9 @@ var index: int = 0
 var id: String = ""
 var hexes: int = 0
 var hex_work: float = 0.0
+## Cubes paid when one of its hexes is clean, and the multiplier on regrowth rewards.
+var hex_bonus: float = 0.0
+var reward_mult: float = 1.0
 var mix: Dictionary[String, float] = {}
 ## Units cleared per kind, and hexes that have every kind cleared.
 var done: Dictionary[String, float] = {}
@@ -140,24 +143,26 @@ func plant(n: float) -> float:
 	return used
 
 
-## Hexes that can take a watering burst now. Hexes held at the source's cap are left out.
-func thirsty(t: float) -> float:
+## Hexes that can take a watering burst now (`only_dry`: only those not growing at full rate).
+## Hexes held at the source's cap are left out.
+func thirsty(t: float, only_dry: bool) -> float:
 	var n: float = 0.0
 	for b: Array in batches:
-		if float(b[B_BURST]) <= t and not _capped(b):
+		if float(b[B_BURST]) <= t and not (only_dry and float(b[B_WET]) > t) and not _capped(b):
 			n += float(b[B_COUNT])
 	return n
 
 
 ## Waters up to `n` hexes, lowest stage first: a burst of growth now, full growth for `wet_s`.
-func water(n: float, t: float, burst: float, wet_s: float, rewater_s: float) -> float:
+## `only_dry` leaves hexes that are still wet alone.
+func water(n: float, t: float, burst: float, wet_s: float, rewater_s: float, only_dry: bool) -> float:
 	var left: float = n
 	for s: int in range(PLANTED, TOP_STAGE):
 		var i: int = 0
 		while i < batches.size() and left > 0.0001:
 			var b: Array = batches[i]
 			i += 1
-			if int(b[B_STAGE]) != s or float(b[B_BURST]) > t or _capped(b):
+			if int(b[B_STAGE]) != s or float(b[B_BURST]) > t or (only_dry and float(b[B_WET]) > t) or _capped(b):
 				continue
 			if float(b[B_COUNT]) > left:
 				b[B_COUNT] = float(b[B_COUNT]) - left

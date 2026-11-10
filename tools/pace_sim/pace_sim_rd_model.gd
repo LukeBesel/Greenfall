@@ -19,6 +19,7 @@ var t: float = 0.0
 var cubes: float = 0.0
 var parts: float = 0.0
 var earned: float = 0.0
+var parts_earned: float = 0.0
 ## Ids owned: unlocks, finished research nodes, grants, rig modules.
 var owned: Dictionary[String, bool] = {}
 var levels: Dictionary[String, int] = {}
@@ -63,7 +64,10 @@ func _init(model_data: PaceSimRdData, player: PaceSimRdPolicy) -> void:
 	work = PaceSimRdWork.new(self)
 	var need: Array = data.tables["regrowth"]["points_to_leave"]
 	for i: int in data.districts.size():
-		zones.append(PaceSimRdDistrict.new(data.districts[i], i, data.num("districts.stage_share"), need, int(data.num("districts.source_caps_stage"))))
+		var z := PaceSimRdDistrict.new(data.districts[i], i, data.num("districts.stage_share"), need, int(data.num("districts.source_caps_stage")))
+		z.hex_bonus = z.hex_work * data.num("districts.hex_bonus.cubes_per_work")
+		z.reward_mult = z.hex_work / data.num("districts.stage_reward_ref_work")
+		zones.append(z)
 	for kind: String in data.kinds:
 		mastery[kind] = 0
 		mastery_units[kind] = 0.0
@@ -96,6 +100,11 @@ func emit(event: String) -> void:
 func pay(amount: float) -> void:
 	cubes += amount
 	earned += amount
+
+
+func gain_parts(amount: float) -> void:
+	parts += amount
+	parts_earned += amount
 
 
 func robot_total() -> int:
@@ -311,8 +320,8 @@ func _after_work() -> void:
 func _hex_cleaned(z: PaceSimRdDistrict) -> void:
 	hexes_clean += 1
 	bump("hexes")
-	pay(float(z.row["hex_bonus"]["cubes"]))
-	add_data(float(z.row["hex_bonus"]["data"]))
+	pay(z.hex_bonus)
+	add_data(data.num("districts.hex_bonus.data"))
 	record.hex(t)
 	record.win(t)
 	emit("hexes_%d" % hexes_clean)
@@ -322,7 +331,7 @@ func _hex_cleaned(z: PaceSimRdDistrict) -> void:
 
 func _district_stage(z: PaceSimRdDistrict, s: int) -> void:
 	var reward: Dictionary = data.tables["regrowth"]["district_stage_reward"]
-	pay(float((reward["cubes"] as Array)[s]) * float(z.row["stage_reward_mult"]))
+	pay(float((reward["cubes"] as Array)[s]) * z.reward_mult)
 	add_data(float((reward["data"] as Array)[s]))
 	emit("stage:%s:%d" % [z.id, s])
 	record.district_goal(t, "stage:%s:%d" % [z.id, s])
