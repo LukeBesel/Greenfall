@@ -166,6 +166,102 @@ func test_full_translations_complete() -> void:
 	assert_eq(tr_n("+%d part", "+%d parts", 0) % 0, "+0 pièce")
 
 
+## [v5text] Where the first hours of the round game get their text. A string from one of these
+## sources must be translated in every shipped language (no 5% allowance): a kid starting in
+## German must never meet an English objective, hint or workbench row.
+## After adding a string: python3 tools/extract_strings.py, then tools/l10n_status.py --export
+## and tools/l10n_merge_draft.py (docs/LOCALIZATION.md).
+const EARLY_SOURCES: Array[String] = [
+	"data/objectives.json", "data/goals.json", "data/workbench.json", "data/upgrades.json",
+	"data/camp.json", "data/research.json", "data/robots.json",
+	"story/objectives.gd", "story/tutorial.gd", "story/first_seed.gd", "core/pace.gd",
+	"autoload/Story.gd", "scenes/slice_orbit.gd", "planet/sites/", "player/patch.gd",
+	"systems/camp/camp.gd", "systems/glim/glim_director.gd", "systems/research.gd",
+	"robots/sphere/", "ui/bench_", "ui/list_detail.gd", "ui/upgrades_screen.gd",
+	"ui/key_hints.gd", "ui/rocket_picker.gd", "ui/globe_view.gd", "ui/system_map.gd", "ui/planet_globe.gd",
+]
+
+
+## [v5text] The POT's entries as [msgctxt, msgid, refs] (refs = the "#: file:line ..." text).
+func _pot_entries() -> Array:
+	var out: Array = []
+	var fh := FileAccess.open("res://locale/greenfall.pot", FileAccess.READ)
+	if fh == null:
+		return out
+	var refs: String = ""
+	var ctx: String = ""
+	var id: String = ""
+	var field: String = ""
+	var lines: PackedStringArray = fh.get_as_text().split("\n")
+	lines.append("")
+	for raw: String in lines:
+		var line: String = raw.strip_edges()
+		if line == "":
+			if id != "":
+				out.append([ctx, id, refs])
+			refs = ""
+			ctx = ""
+			id = ""
+			field = ""
+		elif line.begins_with("#:"):
+			refs += line.substr(2) + " "
+		elif line.begins_with("#"):
+			continue
+		elif line.begins_with("msgctxt "):
+			field = "ctx"
+			ctx = _po_text(line.substr(8))
+		elif line.begins_with("msgid "):
+			field = "id"
+			id = _po_text(line.substr(6))
+		elif line.begins_with("msg"):
+			field = ""
+		elif line.begins_with("\"") and field == "id":
+			id += _po_text(line)
+		elif line.begins_with("\"") and field == "ctx":
+			ctx += _po_text(line)
+	return out
+
+
+func _po_text(quoted: String) -> String:
+	var v: Variant = JSON.parse_string(quoted.strip_edges())  # PO escapes are JSON escapes
+	return str(v) if v != null else ""
+
+
+## [v5text] Strict: every early-game string is translated in every shipped language.
+func test_early_game_strings_translated() -> void:
+	var early: Array = []
+	for e: Array in _pot_entries():
+		for src: String in EARLY_SOURCES:
+			if (" " + str(e[2])).contains(" " + src):
+				early.append(e)
+				break
+	assert_gt(early.size(), 600, "early-game strings found in the POT (%d)" % early.size())
+	# The catalog knows the strings the game shows first (guards the parser and the source list).
+	var ids: Dictionary = {}
+	for e: Array in early:
+		ids[e[1]] = true
+	var data: Dictionary = Economy.read_json("res://data/objectives.json")
+	for o: Dictionary in data.get("objectives", []):
+		assert_true(ids.has(str(o.get("text", ""))), "objective '%s' is in the POT (run tools/extract_strings.py)" % o.get("text", ""))
+	for must: String in ["Hover Jets", "Repair Glim", "Where to?", "Chest Size", "You can buy this now!"]:
+		assert_true(ids.has(must), "'%s' is an early-game msgid" % must)
+	for l: String in FULL:
+		var t: Translation = load("res://locale/%s.po" % l)
+		var missing: Array[String] = []
+		for e: Array in early:
+			if str(t.get_message(str(e[1]), str(e[0]))) == "":
+				missing.append(str(e[1]))
+		assert_eq(missing, [] as Array[String], "%s: early-game strings without a translation (tools/l10n_status.py --missing %s)" % [l, l])
+	# Spot checks: the new lines really reach the player in another language.
+	TranslationServer.set_locale("de")
+	assert_eq(tr("Repair Glim"), "Glim reparieren")
+	assert_eq(tr("Where to?"), "Wohin?")
+	TranslationServer.set_locale("ja")
+	assert_ne(tr("Hover Jets"), "Hover Jets")
+	TranslationServer.set_locale("fr")
+	assert_true(tr("Your chest is full. Press [%s] to make a bale.").contains("[%s]"))
+
+
 ## [i18n] With a CJK locale active, the UI and Ledger fonts render every character its .po uses.
 func test_cjk_glyphs_render() -> void:
 	for l: String in CJK:

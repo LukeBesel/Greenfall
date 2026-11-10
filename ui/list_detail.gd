@@ -656,7 +656,7 @@ static func short_text(price: Dictionary) -> String:
 				how = TranslationServer.translate("Pick up trash to earn them.") if cid == "cubes" else TranslationServer.translate("Dig up parts and salvage junk to get them.")
 	if miss.is_empty():
 		return ""
-	return TranslationServer.translate("Need %s. %s") % [" and ".join(miss), how]
+	return TranslationServer.translate("Need %s. %s") % [", ".join(miss), how]  # [v5text] no English "and"
 
 
 ## [v3clear] The id of the workbench row the objective card's current step asks for ("" for none).

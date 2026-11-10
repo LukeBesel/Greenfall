@@ -187,7 +187,7 @@ func _build_garden() -> void:
 		bed.position = p
 		add_child(bed)
 		_beds.append(p)
-	var sign: Label3D = EggProps.label("NURSERY", 46, Color(0.24, 0.42, 0.26), Vector3(hx - 0.45, 1.0, hz - 0.165))
+	var sign: Label3D = EggProps.label(tr("NURSERY"), 46, Color(0.24, 0.42, 0.26), Vector3(hx - 0.45, 1.0, hz - 0.165))
 	add_child(sign)
 
 
