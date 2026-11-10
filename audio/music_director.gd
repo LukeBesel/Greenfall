@@ -91,7 +91,7 @@ const MOODS: Dictionary = {
 		"voice": "kalimba", "mel_lo": 62, "mel_hi": 78, "density": 0.45, "bright": 0.5,
 		"pad_attack": 3.0, "lpf": 5000.0, "intensity": 0.45, "tacet": 0.25, "swell": false,
 	},
-	# [sound] The Homecoming ending. Plays the "homecoming" track (audio/music_tracks.gd); these
+	# [sound] The ending's mood. Plays the "homecoming" track (audio/music_tracks.gd); these
 	# values only stand in until its first bar.
 	"homecoming": {
 		"bpm": 60.0,

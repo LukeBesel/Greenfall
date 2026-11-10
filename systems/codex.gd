@@ -107,10 +107,12 @@ static func unlock(key: String) -> bool:
 	return true
 
 
+## Unlocked entries (of one category, or all). Keys in a save that are no longer entries (a parked
+## feature's) are not counted.
 static func count(cat: String = "*") -> int:
 	var n: int = 0
-	for k: Variant in unlocked_list():
-		if cat == "*" or str(k).begins_with(cat + ":"):
+	for e: Dictionary in entries():
+		if (cat == "*" or e["cat"] == cat) and is_unlocked(e["key"]):
 			n += 1
 	return n
 

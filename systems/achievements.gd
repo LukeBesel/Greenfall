@@ -40,8 +40,14 @@ static func is_unlocked(id: String) -> bool:
 	return v is Dictionary and (v as Dictionary).has(id)
 
 
+## How many of the achievements in the data are unlocked. A save may also hold ids that are no
+## longer in the data (a parked feature's): those are kept in the save but not counted.
 static func unlocked_count() -> int:
-	return unlocked_map().size()
+	var n: int = 0
+	for a: Dictionary in defs():
+		if is_unlocked(str(a["id"])):
+			n += 1
+	return n
 
 
 static func best_hub_level() -> int:

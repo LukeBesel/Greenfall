@@ -100,12 +100,10 @@ func on_signal_raised(tier_: int) -> void:
 
 
 ## Queue a line from a trigger pool. chance < 1 lets frequent events stay sparse.
-## [worlds2] stage_override >= 0 speaks from that signal stage (Cradle Mode worlds: WREN talks over the
-## ark's own relay, clear from the first line).
-func say(trigger: String, chance: float = 1.0, important: bool = false, vars: Dictionary = {}, stage_override: int = -1) -> void:
-	if not awake() and stage_override < 0:  # [onboard] no tower, no WREN (other worlds: the ark's relay)
+func say(trigger: String, chance: float = 1.0, important: bool = false, vars: Dictionary = {}) -> void:
+	if not awake():  # [onboard] no tower, no WREN
 		return
-	if trigger in MUTED or (trigger.begins_with("event_") and stage_override < 0):  # [v4calm] item 49 (events: their toast says it)
+	if trigger in MUTED or trigger.begins_with("event_"):  # [v4calm] item 49 (events: their toast says it)
 		return
 	if trigger in ONCE and not Once.take("wren_" + trigger):  # [v4calm] item 47
 		return
@@ -122,7 +120,7 @@ func say(trigger: String, chance: float = 1.0, important: bool = false, vars: Di
 	var pools: Array = lines.get(trigger, [])
 	if pools.is_empty():
 		return
-	var st: int = mini(stage() if stage_override < 0 else stage_override, pools.size() - 1)
+	var st: int = mini(stage(), pools.size() - 1)
 	var pool: Array = pools[st]
 	if pool.is_empty():
 		return
@@ -139,9 +137,7 @@ func say(trigger: String, chance: float = 1.0, important: bool = false, vars: Di
 	used.append(pick)
 	GameState.flags[used_key] = used
 	var text: String = tr(str(pool[pick])).format({"name": GameState.flags.get("patch_name", "Lumi")}.merged(vars))
-	if stage_override >= 0:
-		_pass[text] = true
-	_queue.append({"text": text, "stage": st if stage_override < 0 else stage_override})
+	_queue.append({"text": text, "stage": st})
 
 
 func _process(delta: float) -> void:
