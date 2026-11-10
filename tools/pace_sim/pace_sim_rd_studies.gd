@@ -10,8 +10,8 @@ const FASTEST_SHARE: float = 0.6
 ## Time to the launch point must differ by at least this share between the best and the worst
 ## sensible rig loadout.
 const RIG_SPREAD_MIN: float = 0.08
-## Loadouts within this many player minutes of each other in a city are a tie there.
-const RIG_TIE_MIN: float = 0.5
+## A loadout wins a city when it is quicker there than the next loadout by at least this share.
+const RIG_TIE_SHARE: float = 0.02
 
 
 static func _check(id: String, passed: bool, value: float, shown: String, limit_shown: String, note: String) -> Dictionary:
@@ -90,17 +90,28 @@ static func rigs(proposal: String, opts: Dictionary) -> Dictionary:
 	var rows: Array[Dictionary] = []
 	var loadouts: Dictionary = table.get("loadouts", {})
 	for loadout: String in loadouts:
-		var rig: Dictionary = {}
-		for module: Variant in loadouts[loadout]:
-			rig[str(table["modules"][str(module)]["slot"])] = str(module)
-		var result: Dictionary = PaceSimRedesign.run(proposal, PaceSimRedesign.MAX_MINUTES, PaceSimRedesign.DEFAULT_POLICY, {"set": opts.get("set", {}), "rig": rig})
+		var rig: Dictionary = _slots(table, loadouts[loadout]["modules"])
+		# A loadout whose modules come late names the loadout its player wears until then.
+		var before: Dictionary = {}
+		if loadouts[loadout].has("before"):
+			before = _slots(table, loadouts[str(loadouts[loadout]["before"])]["modules"])
+		var result: Dictionary = PaceSimRedesign.run(proposal, PaceSimRedesign.MAX_MINUTES, PaceSimRedesign.DEFAULT_POLICY,
+			{"set": opts.get("set", {}), "rig": rig, "rig_before": before})
 		var city_min: Array[float] = []
 		if result["ok"]:
 			for d: Dictionary in result["report"]["districts"]:
 				city_min.append(float(d["player_min"]))
-		rows.append({"name": loadout, "modules": loadouts[loadout], "ended": result["ok"] and bool(result["report"]["ended"]),
+		rows.append({"name": loadout, "modules": loadouts[loadout]["modules"], "ended": result["ok"] and bool(result["report"]["ended"]),
 			"end_min": float(result["report"]["end_min"]) if result["ok"] else 0.0, "city_min": city_min})
 	return {"rows": rows, "checks": _rig_checks(rows)}
+
+
+## {slot: module} for a list of module ids.
+static func _slots(table: Dictionary, modules: Array) -> Dictionary:
+	var out: Dictionary = {}
+	for module: Variant in modules:
+		out[str(table["modules"][str(module)]["slot"])] = str(module)
+	return out
 
 
 static func rigs_lines(study: Dictionary) -> PackedStringArray:
@@ -135,14 +146,18 @@ static func _rig_checks(rows: Array[Dictionary]) -> Array[Dictionary]:
 	for i: int in cities:
 		var quickest: String = ""
 		var quickest_min: float = INF
-		var slowest_min: float = 0.0
+		var second_min: float = INF
 		for row: Dictionary in rows:
-			slowest_min = maxf(slowest_min, float(row["city_min"][i]))
-			if float(row["city_min"][i]) < quickest_min:
-				quickest_min = float(row["city_min"][i])
+			var minutes: float = float(row["city_min"][i])
+			if minutes < quickest_min:
+				second_min = quickest_min
+				quickest_min = minutes
 				quickest = str(row["name"])
-		# A city where no module is owned yet plays the same for every loadout: it has no winner.
-		if slowest_min - quickest_min < RIG_TIE_MIN:
+			elif minutes < second_min:
+				second_min = minutes
+		# A loadout wins a city only when it beats the next one clearly (cities where no module
+		# is owned yet play the same for everyone).
+		if second_min - quickest_min < RIG_TIE_SHARE * quickest_min:
 			by_city.append("(tie)")
 			continue
 		winners[quickest] = winners.get(quickest, 0) + 1

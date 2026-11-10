@@ -3,11 +3,11 @@
   "slots": ["arm", "chest", "drive"],
   "slot_unlock": {"arm": "rig_slot_arm", "drive": "rig_slot_drive", "chest": "rig_slot_chest"},
   "loadouts": {
-    "sweeper": ["wide_sweep", "deep_hold", "sprint_coils"],
-    "wrecker": ["heavy_claw", "press_frame", "hover_skirt"],
-    "skimmer": ["long_reach", "deep_hold", "hover_skirt"],
-    "foreman": ["guide_arm", "sorter", "relay_mast"],
-    "trader": ["wide_sweep", "press_frame", "tow_hitch"]
+    "sweeper": {"modules": ["wide_sweep", "deep_hold", "sprint_coils"]},
+    "wrecker": {"modules": ["heavy_claw", "press_frame", "hover_skirt"]},
+    "skimmer": {"modules": ["long_reach", "deep_hold", "hover_skirt"]},
+    "trader": {"modules": ["wide_sweep", "press_frame", "tow_hitch"]},
+    "foreman": {"modules": ["guide_arm", "sorter", "relay_mast"], "before": "sweeper"}
   },
   "modules": {
     "wide_sweep": {"slot": "arm", "name": "Wide Sweep", "mods": {"kind_litter": 1.5, "kind_blight": 1.3}, "source": "grant"},

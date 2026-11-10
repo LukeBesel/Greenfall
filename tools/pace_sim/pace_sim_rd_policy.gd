@@ -48,6 +48,8 @@ var rushes_robots: bool = false
 var scrounger_share: float = 0.15
 ## Slot -> module to keep fitted whenever it is owned (empty = fit the best for the district).
 var fixed_rig: Dictionary[String, String] = {}
+## Slot -> module worn in that slot until the fixed one is owned (a loadout built late in the run).
+var fallback_rig: Dictionary[String, String] = {}
 
 var _next_look: float = 0.0
 var _mix_type: String = ""
@@ -193,6 +195,9 @@ func refit(m: PaceSimRdModel) -> void:
 		var want: String = fixed_rig.get(str(slot), "")
 		if want != "" and m.fit(want):
 			continue
+		var until_then: String = fallback_rig.get(str(slot), "")
+		if until_then != "" and m.fit(until_then):
+			continue
 		var best: String = ""
 		var best_v: float = -INF
 		for id: String in m.data.modules:
@@ -247,12 +252,13 @@ func _is_gate(item: Dictionary) -> bool:
 
 
 ## The research node to start: one that opens something new (no stat of its own) before one that
-## only adds to a stat, and the least field data first within each group.
+## only adds to a stat, and the least field data first within each group. A node is started only
+## when the bank already holds its field data, so one slow node never blocks the bench.
 func _cheapest_research(m: PaceSimRdModel, offers: Array[Dictionary]) -> Dictionary:
 	var best: Dictionary = {}
 	var best_rank: float = INF
 	for item: Dictionary in offers:
-		if str(item["type"]) != "research" or not m.can_afford(item):
+		if str(item["type"]) != "research" or not m.can_afford(item) or float(item["data"]) > m.data_bank:
 			continue
 		var opens: bool = (m.data.nodes[str(item["id"])].get("mods", {}) as Dictionary).is_empty()
 		var rank: float = float(item["data"]) + (0.0 if opens else AMPLIFIER_NODE_RANK)

@@ -21,7 +21,7 @@
     "filter_stacks": {"name": "Filter Stacks", "district": 3, "requires": ["scrubber_units"], "cost": {"cubes": 1500, "data": 600}, "mods": {"kind_smog": 1.5}},
     "root_mats": {"name": "Root Mats", "district": 4, "requires": ["cleansing_plants"], "cost": {"cubes": 2000, "data": 800}, "mods": {"kind_blight": 1.5}},
     "fast_coupling": {"name": "Fast Coupling", "district": 4, "cost": {"cubes": 2200, "data": 1000}, "mods": {"handle": 0.7}},
-    "crew_overhaul": {"name": "Crew Overhaul", "district": 5, "requires": ["repair_bench"], "when": {"progress_the_works": 40}, "cost": {"parts": 200, "data": 1500}, "mods": {"crew_rate": 1.5}, "crew": true},
+    "crew_overhaul": {"name": "Crew Overhaul", "district": 5, "requires": ["repair_bench"], "when": {"progress_the_works": 33}, "cost": {"parts": 200, "data": 1500}, "mods": {"crew_rate": 2.0}, "crew": true},
     "deep_roots": {"name": "Deep Roots", "district": 5, "cost": {"cubes": 2800, "data": 1500}, "mods": {"tend": 1.5}}
   }
 }

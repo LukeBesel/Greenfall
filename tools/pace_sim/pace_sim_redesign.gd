@@ -25,7 +25,7 @@ static func load_policy(policy_name: String) -> PaceSimRdPolicy:
 
 ## Plays proposal `proposal` to the ending (or `max_minutes`) and returns {ok, error, proposal,
 ## policy, model, report, real_ms}. opts: "set" = {dotted path: number} overrides of proposal
-## values, "rig" = {slot: module} to keep fitted. The game's progress state is put aside for the
+## values, "rig" = {slot: module} to keep fitted, "rig_before" = {slot: module} worn until then. The game's progress state is put aside for the
 ## run and put back after.
 static func run(proposal: String = DEFAULT_PROPOSAL, max_minutes: float = MAX_MINUTES, policy_name: String = DEFAULT_POLICY,
 		opts: Dictionary = {}) -> Dictionary:
@@ -36,6 +36,7 @@ static func run(proposal: String = DEFAULT_PROPOSAL, max_minutes: float = MAX_MI
 	if policy == null:
 		return {"ok": false, "error": "unknown policy '%s' (no %s/%s.gd)" % [policy_name, POLICY_DIR, policy_name]}
 	policy.fixed_rig.assign(opts.get("rig", {}))
+	policy.fallback_rig.assign(opts.get("rig_before", {}))
 	var started: int = Time.get_ticks_msec()
 	var planet_before: StringName = Planets.current_id()
 	var kept: Array = [GameState.upgrades, GameState.flags, GameState.world, GameState.stats, GameState.currencies]

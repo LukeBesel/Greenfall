@@ -11,7 +11,7 @@
     {"id": "old_town", "site": 0, "rings": 6, "pollution": ["litter"], "mix": {"litter": 1.0}, "introduces": "litter", "hex_cubes": "kept:pollution", "hex_work": 144.0, "arrival_s": 0.0, "buried_parts_per_hex": 0.0,
      "source": {"id": "burst_main", "reach_s": 15.0, "clear_hexes": 4.0, "action_s": 10.0, "trickle_hexes_per_min": 0.1, "trickle_cap_hexes": 2.0, "payout": {"parts": 45, "data": 20}, "grants": ["rig_slot_arm", "wide_sweep"]},
      "unlock": {"type": "start"}, "target": {"player_min": 50, "crew": 8, "hand_share": 0.1}},
-    {"id": "scrapyard", "site": 1, "rings": 9, "pollution": ["litter", "wrecks"], "mix": {"litter": 0.55, "wrecks": 0.45}, "introduces": "wrecks", "hex_cubes": 120.0, "hex_work": 320.0, "arrival_s": 12.0, "buried_parts_per_hex": 1.0,
+    {"id": "scrapyard", "site": 1, "rings": 9, "pollution": ["litter", "wrecks"], "mix": {"litter": 0.55, "wrecks": 0.45}, "introduces": "wrecks", "hex_cubes": 120.0, "hex_work": 340.0, "arrival_s": 12.0, "buried_parts_per_hex": 1.0,
      "source": {"id": "crusher_stack", "reach_s": 15.0, "clear_hexes": 6.0, "action_s": 10.0, "trickle_hexes_per_min": 0.15, "trickle_cap_hexes": 3.0, "payout": {"parts": 90, "data": 30}, "grants": ["rig_slot_drive", "hover_skirt"]},
      "unlock": {"type": "district_stage", "district": "old_town", "stage": 4}, "target": {"player_min": 30, "crew": 28, "hand_share": 0.1}},
     {"id": "greywater", "site": 2, "rings": 12, "pollution": ["litter", "wrecks", "slick"], "mix": {"litter": 0.35, "wrecks": 0.2, "slick": 0.45}, "introduces": "slick", "hex_cubes": 125.0, "hex_work": 305.0, "arrival_s": 12.0, "arrival_parts": 130.0, "buried_parts_per_hex": 1.8,
@@ -23,7 +23,7 @@
     {"id": "ash_fields", "site": 4, "rings": 20, "pollution": ["litter", "wrecks", "smog", "blight"], "mix": {"litter": 0.25, "wrecks": 0.2, "smog": 0.2, "blight": 0.35}, "introduces": "blight", "hex_cubes": 135.0, "hex_work": 960.0, "arrival_s": 12.0, "buried_parts_per_hex": 2.0,
      "source": {"id": "leach_pit", "reach_s": 15.0, "clear_hexes": 8.0, "action_s": 10.0, "trickle_hexes_per_min": 0.3, "trickle_cap_hexes": 6.0, "payout": {"parts": 250, "data": 80}, "grants": ["power_cell_3"]},
      "unlock": {"type": "district_stage", "district": "smogworks", "stage": 4}, "target": {"player_min": 35, "crew": 160, "hand_share": 0}},
-    {"id": "the_works", "site": 5, "rings": 26, "pollution": ["litter", "wrecks", "slick", "smog", "blight"], "mix": {"litter": 0.2, "wrecks": 0.2, "slick": 0.2, "smog": 0.2, "blight": 0.2}, "introduces": "", "hex_cubes": 330.0, "hex_work": 3900.0, "arrival_s": 12.0, "buried_parts_per_hex": 2.4,
+    {"id": "the_works", "site": 5, "rings": 26, "pollution": ["litter", "wrecks", "slick", "smog", "blight"], "mix": {"litter": 0.2, "wrecks": 0.2, "slick": 0.2, "smog": 0.2, "blight": 0.2}, "introduces": "", "hex_cubes": 330.0, "hex_work": 4600.0, "arrival_s": 12.0, "buried_parts_per_hex": 2.4,
      "source": {"id": "main_stack", "reach_s": 20.0, "clear_hexes": 10.0, "action_s": 15.0, "trickle_hexes_per_min": 0.4, "trickle_cap_hexes": 8.0, "payout": {"parts": 300, "data": 100}, "grants": []},
      "unlock": {"type": "district_stage", "district": "ash_fields", "stage": 4}, "target": {"player_min": 45, "crew": 200, "hand_share": 0}}
   ]

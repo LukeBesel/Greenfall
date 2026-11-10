@@ -3,10 +3,10 @@
   "set": {"id": "sprout", "pieces": ["sprout_paint", "sprout_eyes", "sprout_head", "sprout_shoulders", "sprout_chest", "sprout_hip", "sprout_companion"]},
   "buried": [{"piece": "swatch_teal", "after_hexes": 36}, {"piece": "glow_amber", "after_hexes": 300}, {"piece": "swatch_rust", "after_hexes": 800}, {"piece": "glow_mint", "after_hexes": 1500}, {"piece": "swatch_slate", "after_hexes": 2300}, {"piece": "glow_rose", "after_hexes": 3200}, {"piece": "swatch_moss", "after_hexes": 4000}, {"piece": "glow_white", "after_hexes": 4700}],
   "wreck": [
-    {"piece": "sprout_paint", "district": "scrapyard", "at_clean_share": 0.5, "explore_s": 30.0},
-    {"piece": "sprout_eyes", "district": "greywater", "at_clean_share": 0.5, "explore_s": 30.0},
-    {"piece": "sprout_shoulders", "district": "smogworks", "at_clean_share": 0.5, "explore_s": 30.0},
-    {"piece": "sprout_hip", "district": "ash_fields", "at_clean_share": 0.5, "explore_s": 30.0}
+    {"piece": "sprout_paint", "district": "scrapyard", "at_clean_share": 0.5, "explore_s": 15.0},
+    {"piece": "sprout_eyes", "district": "greywater", "at_clean_share": 0.5, "explore_s": 15.0},
+    {"piece": "sprout_shoulders", "district": "smogworks", "at_clean_share": 0.5, "explore_s": 15.0},
+    {"piece": "sprout_hip", "district": "ash_fields", "at_clean_share": 0.5, "explore_s": 15.0}
   ],
   "source": [{"piece": "sprout_head", "district": "greywater"}, {"piece": "sprout_chest", "district": "ash_fields"}, {"piece": "sprout_companion", "district": "the_works"}]
 }
