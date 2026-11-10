@@ -142,7 +142,7 @@ func _process(delta: float) -> void:
 		GameState.inc_stat("blink_shoots")
 	_was_open = shooting
 	# Where he wants to be: his spot in the yard, or (photo mode) a little in front of Lumi.
-	var up: Vector3 = OrbitUp.up(_home)  # [orbB] local up (world up on the flat game)
+	var up: Vector3 = OrbitUp.up(_home)  # [orbB] local up
 	var goal: Vector3 = _home + up * 1.5
 	var look: Vector3 = patch.global_position + up * 0.9 if patch else goal + Vector3(0, 0, 1)
 	if shooting and patch:
@@ -152,15 +152,9 @@ func _process(delta: float) -> void:
 		goal = _home + up * 1.5  # Lumi is out in the field: he stays home
 	global_position = global_position.lerp(goal + up * (sin(_t * 2.1) * 0.06), clampf(delta * (3.0 if shooting else 1.5), 0.0, 1.0))
 	var to: Vector3 = look - global_position
-	if OrbitUp.on_globe():  # [orbB] face along the local ground
-		to -= up * to.dot(up)
-		if to.length() > 0.05:
-			global_basis = global_basis.orthonormalized().slerp(Basis.looking_at(-to.normalized(), up), clampf(delta * 4.0, 0.0, 1.0)).orthonormalized()
-	else:
-		to.y = 0.0
-		if to.length() > 0.05:
-			var want: float = atan2(-to.x, -to.z)
-			rotation.y = lerp_angle(rotation.y, want, clampf(delta * 4.0, 0.0, 1.0))
+	to -= up * to.dot(up)  # [orbB] face along the local ground
+	if to.length() > 0.05:
+		global_basis = global_basis.orthonormalized().slerp(Basis.looking_at(-to.normalized(), up), clampf(delta * 4.0, 0.0, 1.0)).orthonormalized()
 	_model.rotation.z = sin(_t * 1.3) * 0.06
 	# Iris: breathes at rest, tightens while shooting, flashes white on a capture.
 	_flash = maxf(0.0, _flash - delta * 3.0)

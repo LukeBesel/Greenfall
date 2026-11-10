@@ -243,7 +243,7 @@ func _refresh() -> void:
 			continue
 		if n >= MAX_N:
 			break
-		var fr: Basis = SphereGrid.frame(sp.normalized()) if OrbitUp.on_globe() else Basis()
+		var fr: Basis = SphereGrid.frame(OrbitUp.up(sp))
 		var up: Vector3 = fr.y
 		var wet: float = wetness(s)
 		sp += up * garden.lift_of(s)  # on a lot's plates: on top of them

@@ -267,12 +267,7 @@ static func dump_compartment(patch: Node3D, at: Vector3, into: Object = null) ->
 static func try_dump(patch: Node3D, pos: Vector3, radius: float, into: Object = null) -> float:
 	if patch == null or not dump_allowed():
 		return 0.0
-	var d: Vector3 = patch.global_position - pos
-	if JunkCube.planet_radius > 0.0:  # [orbit] round planet: drop the local-up part
-		d -= pos.normalized() * d.dot(pos.normalized())
-	else:
-		d.y = 0.0
-	if d.length() > radius:
+	if OrbitUp.ground_dist(pos, patch.global_position) > radius:
 		return 0.0
 	return dump_compartment(patch, pos + OrbitUp.up(pos) * 0.8, into)  # [v1guide] the bin's mouth on the globe too
 
@@ -313,47 +308,6 @@ static func migrate_save(d: Dictionary) -> Dictionary:
 static func grant_early_unlocks() -> void:
 	GameState.upgrades[UP_BALER] = maxi(1, GameState.level_of(UP_BALER))
 	GameState.upgrades[UP_LIFT] = maxi(2, GameState.level_of(UP_LIFT))
-
-
-# --- Magnet Arm ----------------------------------------------------------------------------
-
-static var _mag_pids: PackedInt32Array = PackedInt32Array()
-static var _mag_pick_t: float = 0.0
-
-
-## Magnet Arm, tamed: pulls at most a few loose surface pieces at a time (never pieces inside a
-## heap, never pieces Lumi can't lift), easing them in so nothing jitters against the pile.
-static func magnet_step(patch: Node3D, field: HexField, view: Object, origin: Vector3, radius: float, delta: float) -> void:
-	_mag_pick_t -= delta
-	if _mag_pick_t <= 0.0:
-		_mag_pick_t = 0.35
-		var cap: int = 2 + int(Economy.stat("magnet_radius") / 0.6)  # about one more piece per Magnet Arm level
-		var cands: Array = []
-		var embed: PackedFloat32Array = field.get("piece_embed") if field.get("piece_embed") is PackedFloat32Array else PackedFloat32Array()
-		for pid: int in field.pieces_within(origin, radius):
-			if pid < embed.size() and embed[pid] > 0.0:
-				continue  # part of a heap: stays put, the scoop digs it out
-			if not can_lift(field, pid):
-				continue
-			cands.append([field.piece_pos[pid].distance_squared_to(origin), pid])
-		cands.sort_custom(func(a: Array, b: Array) -> bool: return float(a[0]) < float(b[0]))
-		_mag_pids = PackedInt32Array()
-		for i: int in mini(cap, cands.size()):
-			_mag_pids.append(int(cands[i][1]))
-	for pid: int in _mag_pids:
-		if pid >= field.piece_alive.size() or field.piece_alive[pid] == 0:
-			continue
-		var to_me: Vector3 = origin - field.piece_pos[pid]
-		if JunkCube.planet_radius > 0.0:  # [orbB] round planet: along the ground
-			var u: Vector3 = field.piece_pos[pid].normalized()
-			to_me -= u * to_me.dot(u)
-		else:
-			to_me.y = 0.0
-		var dist: float = to_me.length()
-		if dist > 0.5:
-			# Ease in: fast far away, gentle at the end (no snapping into the scoop).
-			var step: float = minf(clampf(dist * 1.6, 0.4, 2.2) * delta, dist - 0.45)
-			view.call("move_piece", pid, field.piece_pos[pid] + to_me / dist * step)
 
 
 # --- Unlock flags (for flag-gated events, requests and goals) ------------------------------

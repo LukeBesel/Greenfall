@@ -4,10 +4,6 @@ extends CharacterBody3D
 ## compacting cubes (Pure / Perfect / Lumpy), carrying a wobbly stack and dropping or stacking cubes.
 ## All intent comes from an InputSource so the player, touch and the autoplay bot share this code.
 
-const ACCEL: float = 16.0
-const DECEL: float = 22.0
-const TURN_RATE: float = 9.0
-const GRAVITY: float = 20.0
 const PICKUP_RANGE: float = 1.9
 const CUBE_TIME: float = 1.7
 ## Pieces at least this big get the heavy pickup animation.
@@ -15,7 +11,6 @@ const BIG_PIECE_VOL: float = 1.5
 
 var input: InputSource
 var world: Node  # the slice scene: field, view, collect_piece(), depot
-var cam_yaw_provider: Callable = func() -> float: return 0.0
 
 var compartment := Compartment.new()
 var carried: Array[JunkCube] = []
@@ -44,8 +39,8 @@ var _focus_hex: int = -1
 var prompt: String = ""
 enum Tool { SCOOP, PLANT, WATER }
 var tool: int = Tool.SCOOP
-## [orbit] Set by enable_sphere() when Lumi walks a round planet (planet/orbit/): radial gravity
-## and hover through SphereMotor, input in the camera's surface frame. Null = the flat districts.
+## [orbit] Set by enable_sphere() once the planet is built (planet/orbit/): radial gravity and
+## hover through SphereMotor, input in the camera's surface frame.
 var sphere: SphereSurface
 var sphere_motor: SphereMotor
 var sphere_cam: Node3D  # SphereCam (anything with a `frame: Basis`)
@@ -85,7 +80,7 @@ func _ready() -> void:
 		input = PlayerInput.new()
 
 
-## [orbit] Local up: the radial direction on a round planet, world +Y in the flat districts.
+## [orbit] Local up: the radial direction on the planet (+Y until enable_sphere has run).
 func up() -> Vector3:
 	return sphere.up_at(global_position) if sphere else Vector3.UP
 
@@ -136,12 +131,8 @@ func _physics_process(delta: float) -> void:
 	_move(delta)
 	# Safety net: if physics ever pushes Patch through the ground (seen once in a long autoplay run,
 	# wedged against the base), put him back in the yard instead of falling forever.
-	if sphere and sphere.altitude(global_position) < -3.0:  # [orbit] under the planet's ground
+	if sphere.altitude(global_position) < -3.0:  # [orbit] under the planet's ground
 		place_on_sphere(global_position, forward())
-		GameState.inc_stat("fell_through")
-	elif sphere == null and global_position.y < -30.0:
-		global_position = Vector3(0.0, 0.6, 3.0)
-		velocity = Vector3.ZERO
 		GameState.inc_stat("fell_through")
 		EventBus.toast.emit(tr("Lumi rattles back up into the yard. That was odd."), "info")
 	_handle_cubing(delta)
@@ -203,15 +194,13 @@ func _shore_hint() -> void:
 func _move(delta: float) -> void:
 	var wish: Vector3 = Vector3.ZERO
 	if _cubing <= 0.0:
-		if sphere_motor:  # [orbit] stick is camera-local (x right, z back): read it in the camera's surface frame
-			var mv: Vector3 = input.get_world_move(0.0)
-			if input.get("world_space") == true:  # [orbB] the autoplay bot steers in world space
-				wish = mv - up() * mv.dot(up())
-			else:
-				var f: Basis = sphere_cam.get("frame") if sphere_cam and "frame" in sphere_cam else global_basis
-				wish = f.x * mv.x + f.z * mv.z
+		# [orbit] The stick is camera-local (x right, z back): read it in the camera's surface frame.
+		var mv: Vector3 = input.get_world_move(0.0)
+		if input.get("world_space") == true:  # [orbB] the autoplay bot steers in world space
+			wish = mv - up() * mv.dot(up())
 		else:
-			wish = input.get_world_move(cam_yaw_provider.call())
+			var f: Basis = sphere_cam.get("frame") if sphere_cam and "frame" in sphere_cam else global_basis
+			wish = f.x * mv.x + f.z * mv.z
 	var speed: float = stat("move_speed") * (0.55 if input.scoop_held() and wish.length() > 0.1 else 1.0)
 	# Wading: Patch can't swim yet. Shallow lake water slows him and splashes.
 	var here: int = world.field.hex_at(global_position) if world and world.field else -1
@@ -228,27 +217,13 @@ func _move(delta: float) -> void:
 		wish = shore_clamp(wish, 0.9 + stat("move_speed") * delta * 4.0)
 	# A heavy stack slows him a touch, never much.
 	speed *= 1.0 - 0.03 * carried.size()
-	if sphere_motor:
-		sphere_motor.speed = speed
-		var boost: bool = _cubing <= 0.0 and input.has_method("boost_held") and bool(input.call("boost_held"))
-		var jump: bool = _cubing <= 0.0 and input.has_method("jump_pressed") and bool(input.call("jump_pressed"))
-		sphere_motor.step(self, wish, delta, boost, jump)
-	else:
-		var target: Vector3 = wish * speed
-		var hv := Vector3(velocity.x, 0.0, velocity.z)
-		var rate: float = ACCEL if target.length() > hv.length() else DECEL
-		hv = hv.move_toward(target, rate * delta)
-		velocity.x = hv.x
-		velocity.z = hv.z
-		velocity.y = 0.0 if is_on_floor() else velocity.y - GRAVITY * delta
-		if wish.length() > 0.1:
-			var target_yaw: float = atan2(-wish.x, -wish.z)
-			rotation.y = lerp_angle(rotation.y, target_yaw, clampf(TURN_RATE * delta, 0.0, 1.0))
-		move_and_slide()
+	sphere_motor.speed = speed
+	var boost: bool = _cubing <= 0.0 and input.has_method("boost_held") and bool(input.call("boost_held"))
+	var jump: bool = _cubing <= 0.0 and input.has_method("jump_pressed") and bool(input.call("jump_pressed"))
+	sphere_motor.step(self, wish, delta, boost, jump)
 	if shore and _water_at(global_position):  # [v4bots] momentum (a boost) carried him past the probe
 		global_position = from
-		if sphere_motor:
-			sphere_motor.hv = Vector3.ZERO
+		sphere_motor.hv = Vector3.ZERO
 		velocity = up() * velocity.dot(up())
 		_shore_hint()
 	# Nudge cubes we bump into.
@@ -398,14 +373,11 @@ func _handle_scoop(delta: float) -> void:
 	# Magnet arm: pull nearby junk toward the scoop.
 	var mag: float = stat("magnet_radius")
 	if mag > 0.0:
-		if sphere:  # [orbit] pull along the ground (local up)
-			var field: HexField = world.field
-			for pid: int in field.pieces_within(scoop_origin(), stat("scoop_reach") + mag):
-				var to_me: Vector3 = _tangent(scoop_origin() - field.piece_pos[pid])
-				if to_me.length() > 0.4:
-					world.view.move_piece(pid, field.piece_pos[pid] + to_me.normalized() * minf(2.5 * delta, to_me.length()))
-		else:
-			Pace.magnet_step(self, world.field, world.view, scoop_origin(), stat("scoop_reach") + mag, delta)  # [pace] capped, smooth, liftable only
+		var field: HexField = world.field  # [orbit] pull along the ground (local up)
+		for pid: int in field.pieces_within(scoop_origin(), stat("scoop_reach") + mag):
+			var to_me: Vector3 = _tangent(scoop_origin() - field.piece_pos[pid])
+			if to_me.length() > 0.4:
+				world.view.move_piece(pid, field.piece_pos[pid] + to_me.normalized() * minf(2.5 * delta, to_me.length()))
 	_scoop_timer -= delta
 	if _scoop_timer > 0.0:
 		return
@@ -693,37 +665,6 @@ func place_top_cube() -> void:
 	var c: JunkCube = pop_carried_cube()
 	if c == null:
 		return
-	if sphere:
-		_place_cube_sphere(c)
-		return
-	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
-	var front: Vector3 = JunkCube.free_spot(space, global_position, forward(), c.size)  # [world2] never into a wall or prop
-	var q := PhysicsRayQueryParameters3D.create(front + Vector3(0, 2.5, 0), front + Vector3(0, -1.0, 0), 1 | 4 | PhysLayers.MOUND)  # [world2] from just above (not onto roofs), heaps count
-	var hit: Dictionary = space.intersect_ray(q)
-	var y: float = 0.0
-	if not hit.is_empty():
-		y = (hit["position"] as Vector3).y
-		if hit["collider"] is JunkCube:
-			front = (hit["collider"] as JunkCube).global_position
-			front.y = y
-	var dest: Vector3 = front + Vector3(0, c.size * 0.5 + 0.02, 0)
-	var start: Vector3 = c.global_position
-	var tw := c.create_tween()
-	tw.tween_method(func(t: float) -> void:
-		var top: Vector3 = (start + dest) * 0.5 + Vector3(0, 0.6, 0)
-		c.global_position = start.lerp(top, t).lerp(top.lerp(dest, t), t)
-		, 0.0, 1.0, 0.2)
-	tw.tween_callback(func() -> void:
-		c.rotation = Vector3(0, rotation.y, 0)
-		c.set_carried(false)
-		c.linear_velocity = Vector3.ZERO
-		Audio.play("thud", 1.0, -6.0)
-		c.squish(0.18))
-	model.squash(0.2)
-
-
-## [orbit] place_top_cube on a round planet: everything along the local up.
-func _place_cube_sphere(c: JunkCube) -> void:
 	var front: Vector3 = global_position + forward() * 1.25
 	var u: Vector3 = sphere.up_at(front)
 	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state

@@ -450,10 +450,7 @@ func _magnet(dt: float) -> void:
 		if f.visual_vol(pid) > max_vol:  # [orbB] by how big it looks (the globe's ledger volume is scaled)
 			continue
 		var to_me: Vector3 = me - f.piece_pos[pid]
-		if OrbitUp.on_globe():  # [orbB] along the ground
-			to_me -= OrbitUp.up(me) * to_me.dot(OrbitUp.up(me))
-		else:
-			to_me.y = 0.0
+		to_me -= OrbitUp.up(me) * to_me.dot(OrbitUp.up(me))  # [orbB] along the ground
 		var d: float = to_me.length()
 		if d > 1.1:
 			view.call("move_piece", pid, f.piece_pos[pid] + to_me / d * minf(1.2 * dt, d - 1.1))

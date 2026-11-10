@@ -225,11 +225,8 @@ func _go(p: Patch, target: Vector3, stop_dist: float = 0.3) -> float:
 
 func _go_raw(p: Patch, target: Vector3, stop_dist: float = 0.3) -> float:
 	var d: Vector3 = target - p.global_position
-	if JunkCube.planet_radius > 0.0:  # [orbB] round planet: drop the local-up part
-		var u: Vector3 = p.global_position.normalized()
-		d -= u * d.dot(u)
-	else:
-		d.y = 0.0
+	var u: Vector3 = p.global_position.normalized()  # [orbB] along the ground: drop the local-up part
+	d -= u * d.dot(u)
 	var dist: float = d.length()
 	_move = d.normalized() * clampf(dist / 1.5, 0.35, 1.0) if dist > stop_dist else Vector3.ZERO
 	# Obstacle unstick: no progress for a while -> sidestep around it.
@@ -240,7 +237,7 @@ func _go_raw(p: Patch, target: Vector3, stop_dist: float = 0.3) -> float:
 			_progress_pos = p.global_position
 			_progress_t = 0.0
 		elif _progress_t > 1.2:
-			var side := (Vector3(d.z, 0, -d.x) if JunkCube.planet_radius <= 0.0 else d.cross(p.global_position.normalized())).normalized() * (1.0 if randf() < 0.5 else -1.0)  # [orbB]
+			var side := d.cross(u).normalized() * (1.0 if randf() < 0.5 else -1.0)  # [orbB]
 			_detour = side
 			_detour_t = 1.4
 			_progress_t = 0.0
@@ -616,7 +613,7 @@ func _do_dig(p: Patch) -> bool:
 		if det.target < 0 or _skip_hex.has(-100 - det.target):
 			return false
 		var pp: Vector3 = world.field.part_pos[det.target]
-		if (Vector2(pp.x - p.global_position.x, pp.z - p.global_position.z).length() if JunkCube.planet_radius <= 0.0 else pp.distance_to(p.global_position)) > 14.0:  # [orbB]
+		if pp.distance_to(p.global_position) > 14.0:
 			return false
 		_dig_target = det.target
 	_set_task("dig")
@@ -1516,7 +1513,7 @@ func _paint_zones() -> void:
 	for h: int in _hexes():
 		if _land(h) and not f.is_clean(h) and h != _focus_hex:
 			cand.append(h)
-	var o: Vector3 = world.depot.global_position if f is SphereField and world.get("depot") != null else Vector3.ZERO  # [v3qa] the globe's centre is the planet's
+	var o: Vector3 = world.depot.global_position  # [v3qa] nearest the base first
 	cand.sort_custom(func(a: int, b: int) -> bool: return f.hex_center(a).distance_to(o) - 8.0 * f.removed_fraction(a) < f.hex_center(b).distance_to(o) - 8.0 * f.removed_fraction(b))
 	_set_zone("clean", cand.slice(0, want_n))
 	var g: Garden = world.garden
