@@ -524,12 +524,63 @@ static func bench_body() -> Kit:
 	k.box(Vector3(0.2, 0.12, 0.05), Vector3(0.98, 1.06, 0.42), BLUE)
 	k.box(Vector3(0.2, 0.12, 0.05), Vector3(0.98, 1.06, 0.26), BLUE)
 	k.cyl(0.012, 0.3, Vector3(0.98, 1.02, 0.5), STEEL, Vector3(0, 0, 90), 0.003, 6)
+	# The worn top: a bolted steel wear plate, burn rings, saw kerfs and a parts tray.
+	k.box(Vector3(0.72, 0.012, 0.5), Vector3(0.1, 0.956, 0.05), STEEL, Vector3.ZERO, 0.004)
+	k.bolts4(Vector3(0.1, 0.962, 0.05), Vector3(0.32, 0, 0), Vector3(0, 0, 0.21), Vector3.UP, GUNMETAL, 0.014)
+	for ring: Array in [[-0.42, 0.2, 0.07], [-0.55, -0.12, 0.05], [0.62, -0.22, 0.06]]:
+		k.cyl(float(ring[2]), 0.004, Vector3(float(ring[0]), 0.953, float(ring[1])), DARK, Vector3.ZERO, 0.001, 12)
+	for i: int in 4:
+		k.box(Vector3(0.16 + 0.05 * i, 0.004, 0.006), Vector3(-0.2 + 0.07 * i, 0.953, 0.34 - 0.02 * i), WOOD.darkened(0.45), Vector3(0, 12 - 9 * i, 0), 0.001)
+	k.box(Vector3(0.34, 0.04, 0.22), Vector3(-0.72, 0.972, 0.22), YELLOW, Vector3(0, 8, 0), 0.01)
+	k.box(Vector3(0.3, 0.02, 0.18), Vector3(-0.72, 0.99, 0.22), DARK, Vector3(0, 8, 0), 0.004)
+	for i: int in 5:
+		k.bolt(Vector3(-0.82 + i * 0.05, 0.995, 0.2 + 0.03 * (i % 2)), Vector3.UP, BRASS if i % 2 == 0 else STEEL, 0.014)
+	# The vice's screw, handle and anvil pad.
+	k.cyl(0.022, 0.26, Vector3(0.98, 1.06, 0.56), STEEL, Vector3(90, 0, 0), 0.004, 8)
+	k.cyl(0.03, 0.03, Vector3(0.98, 1.06, 0.7), GUNMETAL, Vector3(90, 0, 0), 0.006, 8)
+	k.box(Vector3(0.16, 0.03, 0.1), Vector3(0.98, 1.065, 0.15), STEEL, Vector3.ZERO, 0.006)
+	# A soldering iron in its stand, a mug and an oil can.
+	k.cyl(0.05, 0.02, Vector3(0.55, 0.962, 0.3), GUNMETAL, Vector3.ZERO, 0.004, 10)
+	k.pipe(Vector3(0.55, 0.97, 0.3), Vector3(0.66, 1.08, 0.24), 0.012, ORANGE, false)
+	k.pipe(Vector3(0.66, 1.08, 0.24), Vector3(0.72, 1.13, 0.21), 0.006, STEEL, false)
+	k.cyl(0.045, 0.1, Vector3(-0.1, 1.0, -0.26), CREAM, Vector3.ZERO, 0.01, 12)
+	k.cyl(0.06, 0.12, Vector3(0.36, 1.01, -0.28), RED, Vector3.ZERO, 0.012, 12, "paint", 0.03)
+	k.pipe(Vector3(0.36, 1.07, -0.28), Vector3(0.5, 1.12, -0.25), 0.007, BRASS, false)
+	# Lower shelf: a red toolbox, a jerrycan and a small reel of teal cable.
+	k.box(Vector3(0.52, 0.2, 0.26), Vector3(0.1, 0.38, 0.12), RED)
+	k.box(Vector3(0.54, 0.05, 0.28), Vector3(0.1, 0.5, 0.12), RED.darkened(0.15))
+	k.box(Vector3(0.2, 0.02, 0.03), Vector3(0.1, 0.55, 0.12), STEEL, Vector3.ZERO, 0.006)
+	for sx: float in [-0.17, 0.17]:
+		k.box(Vector3(0.05, 0.05, 0.012), Vector3(0.1 + sx, 0.46, 0.256), STEEL, Vector3.ZERO, 0.004)
+	k.box(Vector3(0.2, 0.3, 0.3), Vector3(0.62, 0.43, -0.08), YELLOW, Vector3(0, 6, 0), 0.03)
+	k.cyl(0.03, 0.05, Vector3(0.62, 0.6, -0.16), DARK, Vector3.ZERO, 0.006, 8)
+	_reel(k, Vector3(0.62, 0.41, 0.2), 0.13, 0.14, TEAL, Vector3(0, 0, 90))
+	# Two cable reels on the floor at the bench's end: salvage waiting to be stripped.
+	_reel(k, Vector3(1.42, 0.3, 0.02), 0.3, 0.3, ORANGE, Vector3(90, 0, 0))
+	_reel(k, Vector3(1.5, 0.13, 0.55), 0.2, 0.24, YELLOW, Vector3(0, 0, 0), 0.26)
+	k.cable([Vector3(1.42, 0.5, 0.02), Vector3(1.3, 0.3, 0.3), Vector3(1.2, 0.03, 0.62), Vector3(0.85, 0.03, 0.78)], 0.02, ORANGE)
 	# Cable from the top down the back leg to the floor.
 	k.cable([Vector3(0.9, 0.95, -0.4), Vector3(1.0, 0.7, -0.42), Vector3(1.05, 0.2, -0.44), Vector3(1.25, 0.03, -0.3)], 0.018)
 	return k
 
 
-## The pegboard, its shelf, the desk lamp and a little monitor (powered once the bench is fixed).
+## A cable reel: two plywood flanges on a steel hub with a winding of coloured cable. `rot` turns
+## its axis (local Y); `h` is its width along the axis.
+static func _reel(k: Kit, pos: Vector3, r: float, w: float, cable_col: Color, rot: Vector3, h: float = -1.0) -> void:
+	var width: float = w if h < 0.0 else h
+	k.push(ProcMesh.xf(pos, rot))
+	for sy: float in [-1.0, 1.0]:
+		k.cyl(r, 0.03, Vector3(0, sy * width * 0.5, 0), WOOD.lightened(0.1), Vector3.ZERO, 0.008, 16)
+		for i: int in 4:
+			var a: float = TAU * i / 4.0 + 0.4
+			k.bolt(Vector3(cos(a) * r * 0.55, sy * (width * 0.5 + 0.015), sin(a) * r * 0.55), Vector3(0, sy, 0), STEEL, 0.014)
+	k.cyl(r * 0.32, width + 0.05, Vector3.ZERO, GUNMETAL, Vector3.ZERO, 0.006, 10)
+	k.cyl(r * 0.72, width - 0.04, Vector3.ZERO, cable_col, Vector3.ZERO, 0.02, 16)
+	for i: int in 4:
+		k.cyl(r * 0.725, 0.006, Vector3(0, lerpf(-0.35, 0.35, float(i) / 3.0) * (width - 0.06), 0), cable_col.darkened(0.3), Vector3.ZERO, 0.001, 16)
+	k.pop()
+
+
 static func bench_upper() -> Kit:
 	var k := Kit.new()
 	for x: float in [-1.05, 1.05]:

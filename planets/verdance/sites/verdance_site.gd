@@ -727,41 +727,57 @@ func _hero(c: Vector2) -> void:
 	_kit("dome", c + Vector2(-8.5, 6.5), 0.0, pal, 1 + hub_index % 3)
 
 
-## [v1yard] The start yard's pad: one flat, clean slab of pale concrete panels (thin joints, a
-## darker kerb lip and a teal edge line), no missing plates, grit or tufts. Lumi lands on it, so it
-## should read as solid, swept ground against the trash round it.
+## The start yard's pad: one flat slab of worn concrete paving (systems/camp/yard_pad.gdshader:
+## slabs with joints, stains, soot round the crashed pod and worn floor paint: a safety line and
+## Lumi's teal line round the edge, a landing ring, a hatched gate on the way out, the bin bay's
+## blue floor and the bench's orange work zone), on a dark bedding layer with a kerb lip. Lumi lands
+## on it, so it reads as solid, swept, used ground against the trash round it.
+const PAD_TOP: float = 0.07
+static var _pad_mat: ShaderMaterial
+
+
 static func clean_pad(size: float) -> Node3D:
 	var k := YardArt.Kit.new()
 	var h: float = size * 0.5
-	# [v3city] Real slabs, not painted hairlines (QA: the 5 cm seam strips read as glitch lines
-	# across the pad): a dark bedding layer, and on it 6 x 6 bevelled panels with 12 cm joints,
-	# each a touch lighter or darker, so the joints read as paving at any distance.
 	k.box(Vector3(size, 0.05, size), Vector3(0, 0.025, 0), Color(0.3, 0.3, 0.29), Vector3.ZERO, 0.02)
-	var n: int = 6
-	var step: float = size / n
-	var tone := RandomNumberGenerator.new()
-	tone.seed = 4471
-	for i: int in n:
-		for j: int in n:
-			var t: float = tone.randf_range(-0.035, 0.035)
-			var col := Color(0.47 + t, 0.47 + t, 0.45 + t * 0.9)
-			var cx: float = -h + (i + 0.5) * step
-			var cz: float = -h + (j + 0.5) * step
-			k.box(Vector3(step - 0.12, 0.03, step - 0.12), Vector3(cx, 0.06, cz), col, Vector3.ZERO, 0.015)
 	for side: int in 4:
 		var along_x: bool = side < 2
 		var sgn: float = -1.0 if side % 2 == 0 else 1.0
 		var lip := Vector3(size, 0.1, 0.3) if along_x else Vector3(0.3, 0.1, size)
 		var at := Vector3(0, 0.05, sgn * (h - 0.15)) if along_x else Vector3(sgn * (h - 0.15), 0.05, 0)
-		k.box(lip, at, Color(0.42, 0.43, 0.42), Vector3.ZERO, 0.03)
-		var line := Vector3(size - 0.9, 0.008, 0.12) if along_x else Vector3(0.12, 0.008, size - 0.9)
-		var lat := Vector3(0, 0.078, sgn * (h - 0.55)) if along_x else Vector3(sgn * (h - 0.55), 0.078, 0)
-		k.box(line, lat, Color(0.3, 0.75, 0.78))
-	var mi: MeshInstance3D = k.mi(0.08, "CleanPad")
+		k.box(lip, at, Color(0.34, 0.35, 0.35), Vector3.ZERO, 0.03, "concrete")
+	var mi: MeshInstance3D = k.mi(0.3, "PadKerb")
 	mi.set_meta("no_collide", true)
+	if _pad_mat == null:
+		_pad_mat = ShaderMaterial.new()
+		_pad_mat.shader = load("res://systems/camp/yard_pad.gdshader")
+		_pad_mat.set_shader_parameter("tex_concrete", AssetLib.tex("concrete_floor_worn_001", "diff"))
+		_pad_mat.set_shader_parameter("nrm_concrete", AssetLib.tex("concrete_floor_worn_001", "nor_gl"))
+	_pad_mat.set_shader_parameter("half_size", h - 0.3)
+	# The marked places follow the yard's anchors: the bin bay (YardSite._bin_bay's rectangle), the
+	# lean-to and bench, the pod.
+	var dep: Vector3 = START_YARD_ANCHORS["depot"][0]
+	var bin: Vector3 = START_YARD_ANCHORS["bin"][0]
+	_pad_mat.set_shader_parameter("bay_rect", Vector4(dep.x, (dep.z + bin.z) * 0.5, 2.3, absf(dep.z - bin.z) * 0.5 + 2.2))
+	var shack: Vector3 = START_YARD_ANCHORS["shack"][0]
+	_pad_mat.set_shader_parameter("work_rect", Vector4(shack.x, shack.z, 2.6, 2.3))
+	var pod: Vector3 = START_YARD_ANCHORS["pod"][0]
+	_pad_mat.set_shader_parameter("pod_at", Vector2(pod.x, pod.z))
+	var from: Vector3 = CrashSite.FROM_DIR.normalized()
+	_pad_mat.set_shader_parameter("pod_from", Vector2(from.x, from.z))
+	var top := MeshInstance3D.new()
+	top.name = "PadTop"
+	var pm := PlaneMesh.new()
+	pm.size = Vector2(size - 0.6, size - 0.6)
+	top.mesh = pm
+	top.material_override = _pad_mat
+	top.position.y = PAD_TOP
+	top.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	top.set_meta("no_collide", true)
 	var root := Node3D.new()
 	root.name = "YardPad"
 	root.add_child(mi)
+	root.add_child(top)
 	return root
 
 

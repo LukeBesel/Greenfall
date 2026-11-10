@@ -12,8 +12,8 @@ extends Node3D
 ## The pod's own look per stage lives in EscapePod.set_condition() / animate().
 ## Cheap: one CPUParticles3D (smoke), pooled Vfx sparks, a couple of lights. Works in Compatibility.
 
-const LEAN := Vector3(0.2, 0.0, 0.11)  # back and to the side (radians)
-const SINK: float = 0.14
+const LEAN := Vector3(0.28, 0.0, 0.15)  # back and to the side (radians): it reads as crashed from across the yard
+const SINK: float = 0.2
 ## Total upgrade levels for the full repair.
 const REPAIR_LEVELS: int = 4
 ## Total upgrade levels for the planter-beacon (late game).
@@ -84,7 +84,7 @@ func _on_upgrade(_id: String, _lvl: int) -> void:
 func set_stage(s: int) -> void:
 	stage = clampi(s, 0, 3)
 	_smoke.emitting = stage < 2
-	_smoke.color = Color(0.42, 0.4, 0.38, 0.45 if stage == 0 else 0.18)
+	_smoke.color = Color(0.3, 0.29, 0.28, 0.62 if stage == 0 else 0.2)
 	EscapePod.set_condition(pod, stage)
 
 
@@ -94,7 +94,7 @@ func _build_ground() -> void:
 	var back: Vector3 = Vector3(FROM_DIR.x, 0, FROM_DIR.z).normalized()
 	var ang: float = atan2(back.x, back.z)
 	# The furrow: two soft dark smears stretched back along the approach.
-	for layer: Array in [[Vector2(2.8, 8.0), 0.8, 0.018, 2.6], [Vector2(1.5, 5.0), 0.92, 0.024, 1.8]]:
+	for layer: Array in [[Vector2(3.4, 15.0), 0.85, 0.018, 5.6], [Vector2(1.8, 10.0), 0.95, 0.024, 4.0], [Vector2(5.2, 5.2), 0.9, 0.03, 0.0]]:
 		var mi := MeshInstance3D.new()
 		var pm := PlaneMesh.new()
 		pm.size = layer[0]
@@ -111,7 +111,7 @@ func _build_ground() -> void:
 		add_child(mi)
 	# Thrown-up earth: low clods along the furrow's lips and in a bank in front of the pod.
 	var dirt := StandardMaterial3D.new()
-	dirt.albedo_color = Color(0.3, 0.24, 0.18)
+	dirt.albedo_color = Color(0.2, 0.15, 0.11)
 	dirt.roughness = 1.0
 	var burnt := StandardMaterial3D.new()
 	burnt.albedo_color = Color(0.11, 0.09, 0.08)
@@ -132,13 +132,36 @@ func _build_ground() -> void:
 		clod.rotation.y = rng.randf() * TAU
 		clod.position = p + Vector3(0, 0.0, 0)
 		add_child(clod)
+	# The furrow's lips: two long ridges of ploughed-up earth that fade out behind the pod, and the
+	# bank it pushed up where it stopped. Low enough to walk over.
+	for i: int in 90:
+		var t: float = pow(rng.randf(), 0.8)
+		var along2: float = lerpf(0.3, 13.0, t)
+		var sgn: float = 1.0 if i % 2 == 0 else -1.0
+		var lat2: float = sgn * (lerpf(1.3, 0.7, t) + rng.randf_range(-0.3, 0.45))
+		var ridge := MeshInstance3D.new()
+		ridge.mesh = ProcMesh.sphere(lerpf(0.36, 0.14, t) * rng.randf_range(0.6, 1.25), 7, 4)
+		ridge.material_override = burnt if rng.randf() < lerpf(0.6, 0.25, t) else dirt
+		ridge.scale = Vector3(rng.randf_range(0.8, 1.3), rng.randf_range(0.3, 0.5), rng.randf_range(1.0, 1.8))
+		ridge.rotation.y = ang + rng.randf_range(-0.7, 0.7)
+		ridge.position = back * along2 + side * lat2
+		add_child(ridge)
+	for i: int in 7:
+		var a: float = lerpf(-1.1, 1.1, float(i) / 6.0)
+		var bank := MeshInstance3D.new()
+		bank.mesh = ProcMesh.sphere(rng.randf_range(0.34, 0.5), 8, 5)
+		bank.material_override = dirt if i % 3 != 1 else burnt
+		bank.scale = Vector3(1.5, 0.45, 1.0)
+		bank.rotation.y = ang + a
+		bank.position = -back * (1.25 * cos(a)) + side * (1.35 * sin(a))
+		add_child(bank)
 	# Two hull shards that broke off on impact.
 	var shard_m: Material = EscapePod.paint(EscapePod.PANEL, 0.4, 0.5)
-	for k: int in 2:
+	for k: int in 6:
 		var sh := MeshInstance3D.new()
-		sh.mesh = ProcMesh.box(Vector3(0.36, 0.025, 0.24))
+		sh.mesh = ProcMesh.box(Vector3(0.36, 0.025, 0.24) * (1.0 + 0.35 * (k % 3)))
 		sh.material_override = shard_m
-		sh.position = back * (2.6 + k * 1.7) + side * (0.7 - k * 1.3) + Vector3(0, 0.05, 0)
+		sh.position = back * (2.6 + k * 1.7) + side * ((0.7 - (k % 2) * 1.3) * (1.0 + 0.2 * k)) + Vector3(0, 0.05, 0)
 		sh.rotation = Vector3(0.3, rng.randf() * TAU, 0.2)
 		add_child(sh)
 
@@ -153,7 +176,7 @@ func _build_damage() -> void:
 	_smoke = CPUParticles3D.new()
 	_smoke.name = "Smoke"
 	var q := QuadMesh.new()
-	q.size = Vector2(0.9, 0.9)
+	q.size = Vector2(1.3, 1.3)
 	var sm := StandardMaterial3D.new()
 	sm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	sm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
@@ -163,8 +186,8 @@ func _build_damage() -> void:
 	sm.disable_receive_shadows = true
 	q.material = sm
 	_smoke.mesh = q
-	_smoke.amount = 14
-	_smoke.lifetime = 5.5
+	_smoke.amount = 30
+	_smoke.lifetime = 7.5
 	_smoke.preprocess = 5.0
 	_smoke.local_coords = false
 	_smoke.emission_shape = CPUParticles3D.EMISSION_SHAPE_SPHERE
@@ -172,14 +195,14 @@ func _build_damage() -> void:
 	_smoke.direction = Vector3(0.25, 1, 0.1)
 	_smoke.spread = 12.0
 	_smoke.gravity = Vector3(0.18, 0.25, 0.05)
-	_smoke.initial_velocity_min = 0.35
-	_smoke.initial_velocity_max = 0.6
+	_smoke.initial_velocity_min = 0.7
+	_smoke.initial_velocity_max = 1.1
 	_smoke.angle_max = 180.0
 	_smoke.scale_amount_min = 0.6
 	_smoke.scale_amount_max = 1.0
 	var curve := Curve.new()
 	curve.add_point(Vector2(0, 0.4))
-	curve.add_point(Vector2(1, 2.6))
+	curve.add_point(Vector2(1, 3.4))
 	_smoke.scale_amount_curve = curve
 	var ramp := Gradient.new()
 	ramp.set_color(0, Color(1, 1, 1, 0.0))
