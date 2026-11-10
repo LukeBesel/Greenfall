@@ -24,8 +24,8 @@ var by_node: Dictionary = {}  # node name -> props stamped (debug)
 ## Perches for songbirds: the top of tall slim things (lamp posts, poles, trees, roof crowns).
 var perches := PackedVector3Array()
 static var _tops: Dictionary = {}  # mesh RID id -> local top point (Vector3)
-## [orbB] The globe: scan() maps world geometry into this frame (Fauna's hub frame) and keeps
-## only props within reach metres (xz) of center. Identity / unlimited on the flat game.
+## scan() maps world geometry into this frame (Fauna's hub frame) and keeps only props within
+## reach metres (xz) of center.
 var frame := Transform3D.IDENTITY
 var reach: float = INF
 var center := Vector2.ZERO
@@ -220,46 +220,3 @@ func _stamp_bb(bb: AABB) -> void:
 	# A thin pole's AABB can include an overhanging arm: stamp the footprint, shrunk a little.
 	var r := Rect2(bb.position.x, bb.position.z, bb.size.x, bb.size.z)
 	add_rect(r.grow(-minf(0.1, minf(r.size.x, r.size.y) * 0.25)))
-
-
-## Fences: the chain-link runs round parking and vacant lots in city districts (CityView). True
-## when p keeps at least margin from every fence line and is not in the hub yard (unless yard_ok).
-static func layout_ok(lay: CityLayout, p: Vector3, margin: float, yard_ok: bool = false) -> bool:
-	if lay == null:
-		return true
-	var s: int = lay.surface_at(p.x, p.z)
-	if s == CityLayout.Surface.BUILDING:
-		return false
-	if s == CityLayout.Surface.YARD and not yard_ok:
-		return false
-	# Keep off the yard fence too (it stands just outside the yard square).
-	if not yard_ok:
-		var hub_c := Vector2.ZERO
-		if not lay.wild:
-			var hk: Vector2i = lay.block_key_at(p.x, p.z)
-			if int(lay.blocks.get(hk, {}).get("type", -1)) == CityLayout.Block.HUB:
-				hub_c = Vector2(hk) * CityLayout.PITCH
-			else:
-				hub_c = Vector2(INF, INF)
-		if hub_c.x != INF:
-			var hh: float = CityLayout.YARD_HALF + 0.15 + margin
-			if absf(p.x - hub_c.x) < hh and absf(p.z - hub_c.y) < hh:
-				return false
-	if lay.wild:
-		return true
-	var b: Dictionary = lay.blocks.get(lay.block_key_at(p.x, p.z), {})
-	if b.is_empty():
-		return true
-	var t: int = int(b["type"])
-	if t != CityLayout.Block.PARKING and t != CityLayout.Block.VACANT:
-		return true
-	var r: Rect2 = b["rect"]
-	var dx: float = minf(absf(p.x - r.position.x), absf(p.x - r.end.x))
-	var dz: float = minf(absf(p.z - r.position.y), absf(p.z - r.end.y))
-	var inside_x: bool = p.x > r.position.x - margin and p.x < r.end.x + margin
-	var inside_z: bool = p.z > r.position.y - margin and p.z < r.end.y + margin
-	if inside_z and dx < margin:
-		return false
-	if inside_x and dz < margin:
-		return false
-	return true

@@ -35,15 +35,12 @@ var ignore: Node
 var _q: PhysicsShapeQueryParameters3D
 
 
-## The test for a globe field (null on the flat game). p_space: also probe colliders (only
-## loaded near Lumi).
-static func for_field(f: HexField, p_space: PhysicsDirectSpaceState3D = null, p_ignore: Node = null) -> TargetReach:
-	if not (f is SphereField):
-		return null
+## The test for a field. p_space: also probe colliders (only loaded near Lumi).
+static func for_field(f: SphereField, p_space: PhysicsDirectSpaceState3D = null, p_ignore: Node = null) -> TargetReach:
 	var t := TargetReach.new()
 	t.field = f
-	t.terrain = (f as SphereField).terrain
-	var kc: Callable = (f as SphereField).keep_out
+	t.terrain = f.terrain
+	var kc: Callable = f.keep_out
 	t.keep_out = kc.get_object() as YardKeepOut if kc.is_valid() else null
 	t.ignore = p_ignore
 	t.space = p_space
@@ -56,7 +53,7 @@ static func for_world(w: Node, with_physics: bool = false, p_ignore: Node = null
 	var sp: PhysicsDirectSpaceState3D = null
 	if with_physics and w is Node3D and w.is_inside_tree():
 		sp = (w as Node3D).get_world_3d().direct_space_state
-	return for_field(w.get("field") as HexField, sp, p_ignore)
+	return for_field(w.get("field") as SphereField, sp, p_ignore)
 
 
 ## Why a ground direction isn't free ("" when it is): "water", "building", "steep", "solid".

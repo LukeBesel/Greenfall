@@ -72,51 +72,6 @@ func test_wait_flag_shows_hint() -> void:
 	assert_eq(Objectives.texts(d)[1], "Why.")
 
 
-func _field() -> HexField:
-	var f := HexField.new(4, 3.2, 99)
-	f.hex_axial = Hex.spiral(4)
-	for i: int in f.hex_axial.size():
-		f.axial_to_id[f.hex_axial[i]] = i
-	return f
-
-
-func test_contour_is_a_closed_loop_around_the_hex() -> void:
-	var f := _field()
-	var h: int = int(f.axial_to_id[Vector2i(1, 0)])
-	for natural: bool in [false, true]:
-		f.natural_borders = natural
-		var loops: Array[PackedVector2Array] = ObjectiveHex.contour(f, h)
-		assert_gt(loops.size(), 0)
-		var c3: Vector3 = f.hex_center(h)
-		var c := Vector2(c3.x, c3.z)
-		var biggest: PackedVector2Array = loops[0]
-		for l: PackedVector2Array in loops:
-			if l.size() > biggest.size():
-				biggest = l
-		var per: float = 0.0
-		for i: int in biggest.size():
-			per += biggest[i].distance_to(biggest[(i + 1) % biggest.size()])
-			var p := Vector3(biggest[i].x, 0, biggest[i].y)
-			var got: int = f.hex_at(p + f.border_warp(p)) if natural else f.hex_at(p)
-			assert_lt(absf(ObjectiveHex.inside_value(f, h, biggest[i])), 0.12, "points sit on the border")
-			if i % 9 == 0 and not natural:
-				assert_lt(c.distance_to(biggest[i]), f.hex_size + 0.2, "straight hex: within the corners")
-			if got != h and got != -1:
-				pass  # on the border either side is fine
-		assert_gt(per, 6.0 * f.hex_size * 0.8, "about a hex perimeter (natural: %s)" % natural)
-	if not f.natural_borders:
-		return
-	assert_gt(ObjectiveHex.inside_value(f, h, Vector2(f.hex_center(h).x, f.hex_center(h).z)), -10.0)
-
-
-func test_inside_value_signs_on_a_straight_grid() -> void:
-	var f := _field()
-	f.natural_borders = false
-	var h: int = int(f.axial_to_id[Vector2i(0, 0)])
-	assert_gt(ObjectiveHex.inside_value(f, h, Vector2.ZERO), 0.0)
-	assert_lt(ObjectiveHex.inside_value(f, h, Vector2(f.hex_size * 2.0, 0)), 0.0)
-
-
 func test_requests_unlock_later() -> void:
 	var st: Dictionary = {"slots": [], "done_total": 0}
 	assert_false(Contracts.unlock_due(1, 600.0, st), "not in the first minutes")

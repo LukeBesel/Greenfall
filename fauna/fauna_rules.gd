@@ -173,41 +173,9 @@ static func plan(contexts: Array, regs: Array, night: bool, district_seed: int, 
 	return out
 
 
-## Hex contexts for a live district. level_of: Callable(hid) -> int (-1 when untracked).
-static func contexts(field: HexField, level_of: Callable, cells := PackedInt32Array()) -> Array:
-	if field is SphereField and not cells.is_empty():  # [orbB] the globe: a hub region's cells
-		return _contexts_cells(field as SphereField, level_of, cells)
-	var out: Array = []
-	var lv := PackedInt32Array()
-	lv.resize(field.hex_count())
-	for h: int in field.hex_count():
-		lv[h] = int(level_of.call(h))
-	for h: int in field.hex_count():
-		var water: bool = field.is_water(h)
-		var hub: bool = field.hex_hub[h] != 0
-		var near: int = -1
-		var edge: bool = false
-		var shore: bool = false
-		for nb: Vector2i in Hex.neighbors(field.hex_axial[h]):
-			var j: int = int(field.axial_to_id.get(nb, -1))
-			if j < 0:
-				edge = true
-				continue
-			if field.is_water(j):
-				shore = true
-				continue
-			near = maxi(near, 1 if field.hex_hub[j] != 0 else lv[j])
-			if lv[j] < 4 and field.hex_hub[j] == 0:
-				edge = true
-		out.append({"hex": h, "level": lv[h], "hub": hub, "water": water, "shore": shore and not water,
-			"clean": field.is_clean(h) or hub, "removed": field.removed_fraction(h), "locked": field.locked.has(h),
-			"edge": edge and lv[h] >= 4, "near_level": near})
-	return out
-
-
-## [orbB] contexts() over a globe region (cell ids, grid neighbours; a cell outside the region is
-## the region's edge, like a hex outside the flat field).
-static func _contexts_cells(field: SphereField, level_of: Callable, cells: PackedInt32Array) -> Array:
+## Hex contexts for a hub region's cells (cell ids, grid neighbours; a cell outside the region is
+## the region's edge). level_of: Callable(hid) -> int (-1 when untracked).
+static func contexts(field: SphereField, level_of: Callable, cells: PackedInt32Array) -> Array:
 	var out: Array = []
 	var inr: Dictionary = {}
 	var lv: Dictionary = {}
@@ -236,13 +204,11 @@ static func _contexts_cells(field: SphereField, level_of: Callable, cells: Packe
 	return out
 
 
-## A point an animal may stand on: inside the field, no junk piece within r, not a building
-## footprint, and (unless junk_ok) not on a hex that still has junk mounds under it.
+## A point an animal may stand on: no junk piece within r (along the local ground) and (unless
+## junk_ok) not on a hex that still has junk mounds under it.
 static func spot_ok(field: HexField, p: Vector3, r: float, junk_ok: bool = false) -> bool:
 	var h: int = field.hex_at(p)
 	if h < 0:
-		return false
-	if field.layout and field.layout.surface_at(p.x, p.z) == CityLayout.Surface.BUILDING:
 		return false
 	if not junk_ok and not field.is_clean(h) and field.hex_hub[h] == 0:
 		return false
@@ -258,10 +224,7 @@ static func spot_ok(field: HexField, p: Vector3, r: float, junk_ok: bool = false
 		for pid: int in field.hex_pieces[hh]:
 			if field.piece_alive[pid] == 1:
 				var d: Vector3 = field.piece_pos[pid] - p
-				if field is SphereField:  # [orbB] along the local ground
-					d -= p.normalized() * d.dot(p.normalized())
-					if d.length_squared() < r2:
-						return false
-				elif d.x * d.x + d.z * d.z < r2:
+				d -= p.normalized() * d.dot(p.normalized())
+				if d.length_squared() < r2:
 					return false
 	return true
