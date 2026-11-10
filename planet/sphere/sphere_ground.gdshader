@@ -37,6 +37,29 @@ void vertex() {
 	wet = UV2.y;
 }
 
+float fleck_hash(vec3 p) {
+	p = fract(p * vec3(0.1031, 0.1030, 0.0973));
+	p += dot(p, p.yxz + 33.33);
+	return fract((p.x + p.y) * p.z);
+}
+
+// Junk seen from far off keeps its colours (style guide 9): can red, crate blue, bottle green, sack
+// yellow, tarp teal and paper white as separate patches of one cell size (small ones solid, heap-sized ones only a tint). Each size fades out before
+// its cells shrink under a pixel, so nothing shimmers; the next size up takes over.
+vec3 junk_flecks(vec3 base, vec3 pos, float cell_m, float share, float amount) {
+	vec3 q = pos / cell_m;
+	vec3 dq = fwidth(q);
+	float keep = 1.0 - smoothstep(0.45, 1.2, max(dq.x, max(dq.y, dq.z)));
+	vec3 id = floor(q);
+	float pick = fleck_hash(id + 17.3);
+	vec3 c = pick < 0.2 ? vec3(0.8, 0.14, 0.1) : pick < 0.4 ? vec3(0.12, 0.36, 0.8) : pick < 0.56 ? vec3(0.13, 0.56, 0.26)
+		: pick < 0.74 ? vec3(0.95, 0.74, 0.1) : pick < 0.86 ? vec3(0.08, 0.6, 0.62) : vec3(0.9, 0.9, 0.86);
+	vec3 f = abs(fract(q) - 0.5);
+	float size = mix(0.28, 0.5, fleck_hash(id + 5.1));
+	float inside = step(max(f.x, max(f.y, f.z)), size);
+	return mix(base, c, step(1.0 - share, fleck_hash(id)) * inside * keep * amount);
+}
+
 vec3 tri(sampler2D t, vec3 p, vec3 w) {
 	return texture(t, p.yz).rgb * w.x + texture(t, p.xz).rgb * w.y + texture(t, p.xy).rgb * w.z;
 }
@@ -60,6 +83,9 @@ void fragment() {
 	vec3 trash = mix(vec3(0.07, 0.07, 0.08), vec3(0.4, 0.31, 0.22), smoothstep(0.3, 0.46, tl));
 	trash = mix(trash, vec3(0.74, 0.7, 0.6), smoothstep(0.52, 0.62, tl2) * 0.85);
 	dirt = mix(dirt, trash, far_k * 0.7);
+	float fs = mix(1.0, 4.0, far_shell);
+	vec3 flecked = junk_flecks(junk_flecks(junk_flecks(dirt, wpos + 77.1, 10.0 * fs, 0.12, 0.6), wpos + 31.7, 5.0 * fs, 0.24, 1.0), wpos, 1.3 * fs, 0.3, 1.0);
+	dirt = mix(dirt, flecked, far_k);
 	vec3 clean = tri(tex_clean, p, w) * vec3(0.95, 0.93, 0.9);
 	vec3 grass = tri(tex_grass, p * 0.8, w) * vec3(0.85, 1.0, 0.8);
 	float green = smoothstep(1.5, 2.5, state + (n - 0.45));

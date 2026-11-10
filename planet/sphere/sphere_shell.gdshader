@@ -40,6 +40,29 @@ void vertex() {
 	wnrm = normalize((MODEL_MATRIX * vec4(VERTEX, 0.0)).xyz);
 }
 
+float fleck_hash(vec3 p) {
+	p = fract(p * vec3(0.1031, 0.1030, 0.0973));
+	p += dot(p, p.yxz + 33.33);
+	return fract((p.x + p.y) * p.z);
+}
+
+// Junk seen from far off keeps its colours (style guide 9): can red, crate blue, bottle green, sack
+// yellow, tarp teal and paper white as separate patches of one cell size (small ones solid, heap-sized ones only a tint). Each size fades out before
+// its cells shrink under a pixel, so nothing shimmers; the next size up takes over.
+vec3 junk_flecks(vec3 base, vec3 pos, float cell_m, float share, float amount) {
+	vec3 q = pos / cell_m;
+	vec3 dq = fwidth(q);
+	float keep = 1.0 - smoothstep(0.45, 1.2, max(dq.x, max(dq.y, dq.z)));
+	vec3 id = floor(q);
+	float pick = fleck_hash(id + 17.3);
+	vec3 c = pick < 0.2 ? vec3(0.8, 0.14, 0.1) : pick < 0.4 ? vec3(0.12, 0.36, 0.8) : pick < 0.56 ? vec3(0.13, 0.56, 0.26)
+		: pick < 0.74 ? vec3(0.95, 0.74, 0.1) : pick < 0.86 ? vec3(0.08, 0.6, 0.62) : vec3(0.9, 0.9, 0.86);
+	vec3 f = abs(fract(q) - 0.5);
+	float size = mix(0.28, 0.5, fleck_hash(id + 5.1));
+	float inside = step(max(f.x, max(f.y, f.z)), size);
+	return mix(base, c, step(1.0 - share, fleck_hash(id)) * inside * keep * amount);
+}
+
 vec3 tri(sampler2D t, vec3 p, vec3 w) {
 	return texture(t, p.yz).rgb * w.x + texture(t, p.xz).rgb * w.y + texture(t, p.xy).rgb * w.z;
 }
@@ -70,6 +93,7 @@ void fragment() {
 	trash = mix(trash, vec3(0.7, 0.66, 0.56), smoothstep(0.52, 0.6, tn2) * 0.75);
 	trash = mix(trash, vec3(0.52, 0.22, 0.14), smoothstep(0.56, 0.62, tn) * 0.5);
 	dirt = mix(dirt * 0.65, trash, 0.72);
+	dirt = junk_flecks(junk_flecks(junk_flecks(dirt, wpos + 77.1, 64.0, 0.14, 0.55), wpos + 31.7, 26.0, 0.24, 0.9), wpos, 9.0, 0.3, 1.0);
 	vec3 cleaned = mix(base, vec3(0.56, 0.54, 0.40), 0.7);  // fresh cleared soil
 	// Greener the further it got: planted (light) -> restored (lush).
 	float gl = green / land;

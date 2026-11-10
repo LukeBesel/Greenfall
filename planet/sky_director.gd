@@ -258,6 +258,7 @@ const SPHERE_DAY_S: float = 1440.0  # one turn of the planet: 24 min (phase A)
 ## Daylight on the globe: bright, not bleached (style guide 9). A softer sun under a lower exposure
 ## keeps light walls, roofs and pads off pure white; more sky fill holds the shade up; the extra
 ## saturation carries brick, awnings and junk.
+const HIGH_FOG_FROM_M: float = 300.0  # camera height where the depth fog starts to thin
 const SPHERE_SUN_ENERGY: float = 1.95
 const SPHERE_DAY_AMBIENT: float = 1.2
 const SPHERE_DAY_EXPOSURE: float = 1.1
@@ -449,7 +450,10 @@ func _apply_sphere() -> void:
 	# Medium+ with Godot's default density (0.05), which washed the globe and its sky flat grey
 	# (owner: vivid blue sky with the two suns, not haze). Plain depth fog does the aerial haze.
 	env.volumetric_fog_enabled = false
-	env.fog_density = lerpf(0.0003, 0.0005, haze) * fog_scale  # thin: distant towers and ground keep their colour
+	# Thin, so distant towers and ground keep their colour; thinner still from high above (the fall,
+	# a raised Command view), where the whole view is far away and plain depth fog would bleach the globe.
+	var high: float = maxf(0.0, e.length() - planet_radius - HIGH_FOG_FROM_M)
+	env.fog_density = lerpf(0.0003, 0.0005, haze) * fog_scale / (1.0 + high / HIGH_FOG_FROM_M)
 	env.fog_sky_affect = 0.0
 	env.adjustment_enabled = true
 	env.adjustment_saturation = lerpf(1.12, SPHERE_DAY_SATURATION, day)
