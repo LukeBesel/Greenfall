@@ -30,3 +30,58 @@ Glitch hunt on the default game (`--orbit`, first planet Verdance) by helper v3q
 ## Not covered here
 - Renders on Forward+ (lavapipe) were killed or ran under 1 fps on the shared box; the renders above use the Compatibility renderer (`--rendering-driver opengl3`), which runs fine.
 - Frame times: the headless soak's `[orbit-perf]` numbers (avg 50–100 ms) reflect four helpers sharing four cores, not the game.
+
+## Play-test, first 2 hours (helper v5play, 2026-11-10)
+
+One 144-minute orbit autoplay from a fresh save (`--fresh --orbit --autoplay --soak --bot-debug --time-scale=8 --save-dir=...`), then a continue in new processes, plus the checks below. Fixes carry the tag `[v5play]`; tests are in `tests/test_v5play.gd`.
+
+### New tools
+- **Hinterland walk check** (`planet/sites/hinter_walk.gd`): `godot --headless --path . -- --fresh --orbit --no-intro --hinter-walk [--hinter-walk-spots=N] [--hinter-walk-at=x,z]`. Puts Lumi in the densest building clusters in view of the start town, flood-fills his box over a 50 m disc against the hinterland's colliders, lakes and steep ground, and reports walled-in pockets, shut directions, junk on unreachable ground and the tightest gap between two footprints. Exit 1 on a failure.
+- **Bot escapes**: with `--bot-debug` every stuck escape prints `[bot-esc2]` with the place (start-site metres, as `--orbit-spawn`) and the colliders Lumi pushes against.
+- **Soak digest**: also robots by type, zoned hexes, plants, loose bales, crew bales, Hover Jets, the story step, goals done, once-per-save flags and the rocket's hub. `--soak-bales` lists where the loose bales lie. `--crew-debug` prints each failed robot route.
+- **Two-process reload** (`tools/orbit_reload_check.sh`) also checks the rocket's keys.
+
+### Found and fixed
+
+| # | Area | What | Status | Repro / check |
+|---|---|---|---|---|
+| P1 | Robots | Every Haul Bug stood "idle: no path" for most of the game: 301 bales waiting at 144 min, each hauler had carried about 20. In the town the cells under buildings and street kit are blocked for routes; on 17 m cells that cuts the cell graph into pockets, and a hauler inside one found no route to the Depot. It also picked the same unreachable bale again every second. Now a failed strict route falls back to a route over land through blocked cells (near robots steer round the walls themselves), and haulers skip a bale they just failed to reach. Same save, 9 minutes later: 218 bales waiting, haulers at 51-82 bales each, cubes 2K to 8.7K with Lumi standing still. | fixed | `--bot-report` on a long save: `idle: no path`. Test: `test_route_leaves_a_pocket_of_blocked_cells`. |
+| P2 | Junk | Junk lay inside buildings on the outskirts and in the hinterland (10 and 37 pieces in two of four 50 m discs), where nobody can clean it. The keep-out filed each footprint under the 16 m buckets of sample points 8 m apart, so a bucket the footprint only clipped got nothing. Now every bucket the footprint's box touches. | fixed | `--hinter-walk` before: `junk ... / 37 unreachable`. Test: `test_keep_out_covers_whole_footprints` (435 of 68,820 points missed before). |
+| P3 | Hinterland | A warehouse (18 x 15 m, on hexes 17 m apart) could stand 0.5 m from the house on the next hex, or overlap it: a wedge spot for Lumi (1.1 m wide) and robots. Now the smaller of two neighbours closer than 2.2 m is dropped (2 of 512 footprints in view of the start town). | fixed | `--hinter-walk`: `tightest gap 0.50 m` before, 2.33 m after. Test: `test_hinterland_leaves_no_wedge_gaps`. |
+| P4 | Garden | A plant just across a hex border (or across the pad's edge) got no water, and a free spot there took no seed, though the ring showed it in reach: only Lumi's hex and the hex 1 m ahead were looked at. The autoplay bot stood for minutes "watering" such a plant. Now every hex the reach circle touches. A pour gives 60 s once (it was 30 s twice, as the plant was listed twice). | fixed | Test: `test_plant_over_the_hex_border_is_in_reach`. |
+| P5 | Economy | On the globe scooped junk paid no Parts (the function returned early since the first globe port), so Parts came only from digs, events and requests. Base 2 (150 Parts) and base 3 (350) sat behind a Parts wall whenever the player had spent Parts on robots, and the hint "Dig up parts and salvage junk" was half wrong. Scooped metal, plastic and glass pay Parts again, as `data/hub.json` says (stat `parts_salvaged`). No cost was changed. | fixed | Run 1: Parts 14 from minute 51 to 69 while base 2 needed 150. |
+| P6 | Clarity | "Rebuild the base to level N" and "Build a ..." showed no hint about what was missing. The card now says "Need N more cubes / parts" for base levels and robots too. | fixed | `--clarity-log` on a save at base 2: `card: Rebuild the base to level 3 | Need 7.6K more cubes. Pick up trash to earn them.` |
+| P7 | Rocket / save | After a rocket hop, a save and a reload, Lumi stood at the far hub but the rocket was back on the start pad (and gone below base level 5): `save_world` rebuilt `GameState.orbit` without `rocket_site` and `rocket_owned`. Kept now. | fixed | `--rocket --orbit-survey-launch=0 --save-dir=X`, then continue with `--orbit-rocket-open`: `parked true at site 9`. `tools/orbit_reload_check.sh`: `rocket=kept`. |
+| P8 | Rocket / goals | The goal "Launch the rocket onward" could never complete on the globe (it counted the flat game's districts) and had no beam. It now counts the hubs Lumi has flown to (`orbit.hubs_flown`) and the beam stands on the rocket, or leads to the bench while the base is under level 5. | fixed | Code; the goal comes after base 5, far past 2 hours. |
+| P9 | Autoplay | The bot's sideways escape used world X/Z on the globe (a random slanted direction), so an escape rarely freed it: this is why "stuck escapes" climbed. It now steps sideways along the ground, and walks round the First Seed greenhouse. | fixed (tool) | Run 1: 14 escapes in a row at (-7.7, 9.3), then a `[bot-trap]`. |
+
+### Stuck spots (lead 1)
+- All 31 escapes of run 1 were at two places: the First Seed greenhouse at (11, 12), on the straight line between the bench and the eastern fields (15 escapes), and the nook between the shack and the workbench at (-7.7, 9.3), where the bot pushed at a plant behind the shack with a bale beside it (14 escapes, one trap). Neither is a trap for a player: both are visible obstacles with open ground round them. None at kerbs, quay railings, piers, new town buildings or the shore.
+- Start town walk (`--city-walk`): 70,674 m2 free, all reached, out on every side, no pockets. Hinterland walk: four spots, all free ground reached, no pockets.
+
+### Pacing, run 1 (before the fixes)
+| Step | Bot minute |
+|---|---|
+| Baler, first bale, signal tower, Glim | 2.9 - 3.6 |
+| First hex / 2 hexes / 3 hexes | 7.3 / 14.2 / 19.9 |
+| Bot Bay (bench tier 2) | 20.1 |
+| First Scoopie, first zone | 28.2 |
+| Seed tin | 30.7 |
+| 10 hexes | 38.4 |
+| Haul Bug plans | 48.2 |
+| **Base level 2** | **71.4** (33 minutes after "10 hexes") |
+| Haul Bug, tower 2, research, 20 hexes (all done at once) | 71.5 |
+| Hover Jets | 71.4 |
+| Skimmer | 91.7 |
+| **Base level 3** | **not reached by 144** |
+
+Gaps over 8 minutes: Bot Bay to first Scoopie (8.1), 10 hexes to base 2 (33), base 2 to the end (73, base 3 never came). Causes: P1 (no hauling, so little income), P5 (no Parts) and P4 (the bot watered one unreachable plant for minutes). The bot also bought three Haul Bugs (146 Parts) while the card asked for base 2.
+
+### Save and continue (lead 4)
+- A continue in a new process after the 144-minute run: robots (5 Scoopies, 5 Haul Bugs, 1 Skimmer), 6 zoned hexes, 11 plants, 48 loose bales, 294 crew bales, Hover Jets, the story step (base 3), 42 goals, Glim repaired and every once-per-save flag came back. No WREN line and no once-per-save toast played again. Two exits and reloads in a row gave the same digest.
+- Not a bug, a dev-flag limit: `--quit-after` quits without the save-on-close, so a reload starts from the last 60 s autosave. A player's quit (window close, pause, focus loss) saves.
+- No SCRIPT ERROR and no warning in 144 minutes.
+
+### Rocket (lead 3)
+- The rocket comes with base level 5 (28,000 cubes and 140 Parts for level 4, then 30,000 and 110): far past the first two hours. The Upgrades tab says so on the base card, the Rockets panel says "The launch pad comes with a level 5 base", and the goal chain leads there (base 4, base 5, "Launch the rocket onward").
+- With `--rocket`: the prompt "E  Rocket: choose a destination" shows at the pad, the list offers the six nearest hubs, the hop to hub 9 (1.6 km) lands Lumi by its pad and the save brings him and the rocket back there (after P7).

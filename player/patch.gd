@@ -358,7 +358,7 @@ func _handle_tools(delta: float) -> void:
 		if randf() < 0.5:
 			Audio.play("steam", 1.8, -16.0)
 		for slot: int in g.planted_near(global_position, forward()):
-			g.water(slot, 30.0)
+			g.water(slot, 60.0)  # [v5play] planted_near lists a plant once now (it came twice: 2 x 30)
 
 
 # --- Scooping -----------------------------------------------------------------

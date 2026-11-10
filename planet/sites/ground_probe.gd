@@ -119,6 +119,8 @@ func report() -> PackedStringArray:
 		if f.piece_alive[pid] == 0 or f.piece_pos[pid].distance_to(centre) > radius:
 			continue
 		var al2: float = g.terrain.altitude(f.piece_pos[pid]) - (f.piece_lift[pid] if pid < f.piece_lift.size() else 0.0)  # lift: origin over the ground
+		if pid < f.piece_embed.size() and f.piece_embed[pid] > 0.0:  # [v5play] on its heap (300+ false alarms a disc in the hinterland)
+			al2 -= f.ground_height(f.piece_hex[pid], f.piece_pos[pid]) * f.piece_embed[pid]
 		if al2 > GAP + 0.6 or al2 < -BURY:
 			var hc: int = f.piece_hex[pid]
 			if f.is_water(hc):

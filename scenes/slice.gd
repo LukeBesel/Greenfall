@@ -1195,16 +1195,18 @@ func travel_to(to_hub: int) -> void:
 
 ## Salvaged building materials from scooped junk (data/hub.json "materials").
 func salvage_materials(type_id: String, vol: float) -> void:
-	if orbit:  # [orbB] hub materials come with the hub sites; paper still feeds the press
-		if composter:
-			composter.on_salvage(type_id, vol)
-		return
+	# [v5play] The globe pays Parts for scooped metal, plastic and glass too, as the flat game did
+	# (it returned early here since the first globe port, so Parts came only from digs: base 2 and
+	# 3 sat behind a Parts wall, and the "salvage junk" hint was wrong).
 	if composter:
 		composter.on_salvage(type_id, vol)
-	var m: Dictionary = hub.data.get("materials", {}).get(type_id, {})
+	var m: Dictionary = hub.data.get("materials", {}).get(type_id, {}) if hub else {}
 	if m.is_empty():
 		return
-	GameState.add_currency(str(m["id"]), BigNum.from_float(vol * float(m.get("per_unit", 0.1))))
+	var got: float = vol * float(m.get("per_unit", 0.1))
+	GameState.add_currency(str(m["id"]), BigNum.from_float(got))
+	if orbit:
+		GameState.inc_stat("parts_salvaged", got)
 
 
 func add_cube(cube: JunkCube) -> void:

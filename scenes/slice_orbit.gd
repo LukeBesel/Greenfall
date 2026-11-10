@@ -1159,6 +1159,10 @@ func persist_save() -> void:
 	var pd: Dictionary = patch.to_dict()
 	pd.erase("pos")
 	pd.erase("yaw")
+	var keep: Dictionary = {}  # [v5play] the rocket's keys live in the old dict (OrbitSites sets them on a hop)
+	for k: String in ROCKET_KEYS:
+		if GameState.orbit.has(k):
+			keep[k] = GameState.orbit[k]
 	GameState.orbit = {
 		"schema": SCHEMA,
 		"planet_id": str(g.spec.get("id", "verdance")),
@@ -1180,6 +1184,13 @@ func persist_save() -> void:
 		"robots": crews.save_crew(),  # [orbC]
 		"site_state": sites.save_state() if sites else {},  # [orbD] built hubs, levels, growth (main: renamed from "sites", which orbB uses for site geometry)
 	}
+	GameState.orbit.merge(keep)
+
+
+## [v5play] Kept across saves: where the rocket stands, that Lumi owns it, the hubs he has flown to.
+## (save_world rebuilt GameState.orbit without them: after a hop, a save and a reload, Lumi stood
+## at the far hub and the rocket was back on the start pad, or gone below base level 5.)
+const ROCKET_KEYS: Array[String] = ["rocket_site", "rocket_owned", "hubs_flown"]
 
 
 func restore_world() -> void:
