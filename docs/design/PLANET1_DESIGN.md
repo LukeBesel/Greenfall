@@ -237,7 +237,7 @@ Nothing converts one currency into another at the bench. No reward hands out a c
 - What is paced is the climb: 1 robot at about minute 20, a handful in district 1, tens by district 3, 100 to 200 by the launch point. No stretch where the crew doubles in a couple of minutes, and none where it cannot grow for more than a few minutes.
 - **Building at scale: a chain of robots (owner, Nov 10).** Robot creation is automated by robots that build on each other:
   - The **Scrounger** finds parts: it searches cleaned ground and wrecks, digs parts out and carries them to the base.
-  - The **Assembler** builds robots: it stands at the base, takes the parts the Scroungers deliver and assembles new robots, one at a time.
+  - The **Assembler** builds robots. It is a **factory building** at the base (the owner left bot or building open; the lead chose a building, Nov 10): parts go in at a loading bay, robots roll out of the door, one at a time. It is city 3's landmark build and can be upgraded (a faster line, then a second line).
   - The loop closes when the Assembler builds more Scroungers. The crew grows itself.
 - **The player stays in charge of the chain.** Lumi builds the first of each robot type by hand from parts Lumi found. The player sets the Assembler's build mix (shares per robot type) and the areas Scroungers search. Mastery still decides what each type may work.
 - **What keeps the loop from running away** (each is a number in the planet's data):
