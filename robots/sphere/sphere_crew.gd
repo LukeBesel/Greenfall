@@ -408,7 +408,28 @@ func route(from: int, to: int, role: String = "clean") -> PackedInt32Array:
 	var pass_fn: Callable = func(c: int) -> bool: return cells.state[c] != 5 and not blocked.has(c)
 	if role == "skim":
 		pass_fn = func(c: int) -> bool: return not blocked.has(c)  # skimmers float: lakes and shore alike
-	return SpherePath.astar_grid(grid, from, to, pass_fn, 6000)
+	# [v5play] In a town the cells under buildings and street kit cut the cell graph into pockets
+	# (a hex is 17 m, a street 8): a Haul Bug that had walked into one found no way to the Depot
+	# and every hauler stood "idle: no path" for the rest of the game (301 bales waiting at
+	# 144 min). When the strict route fails, route over land through the blocked cells: near
+	# robots still steer round the walls themselves (SphereSwarm), far ones have no bodies.
+	var key: int = from * grid.cell_count() + to
+	if _loose_to.size() > 400:
+		_loose_to.clear()
+	if float(_loose_to.get(key, 0.0)) < _t:
+		var strict: PackedInt32Array = SpherePath.astar_grid(grid, from, to, pass_fn, 6000)
+		if not strict.is_empty():
+			return strict
+		_loose_to[key] = _t + LOOSE_S
+	var loose_fn: Callable = func(c: int) -> bool: return cells.state[c] != 5
+	if role == "skim":
+		loose_fn = func(_c: int) -> bool: return true
+	return SpherePath.astar_grid(grid, from, to, loose_fn, 6000)
+
+
+## [v5play] Targets the strict route failed for: routed loosely until then (no second failing search).
+const LOOSE_S: float = 30.0
+var _loose_to: Dictionary = {}
 
 
 func _real_left(c: int) -> float:
@@ -727,6 +748,15 @@ func _route_to(u: Dictionary, c: int, mode: String) -> bool:
 	var here: int = unit_cell(u)
 	var p: PackedInt32Array = route(here, c, str(u["role"]))
 	if p.is_empty():
+		if DevHooks.has("crew-debug"):  # [v5play]
+			var nb_ok: int = 0
+			for o: int in grid.neighbors(here):
+				nb_ok += 1 if cells.state[o] != 5 and not blocked.has(o) else 0
+			var nb_ok2: int = 0
+			for o2: int in grid.neighbors(c):
+				nb_ok2 += 1 if cells.state[o2] != 5 and not blocked.has(o2) else 0
+			print("[crew] no path: %s %s %s from cell %d (state %d blocked %s, %d open nbrs) to cell %d (state %d blocked %s, %d open nbrs) %.0f m" % [u["name"], u["role"], mode,
+				here, cells.state[here], blocked.has(here), nb_ok, c, cells.state[c], blocked.has(c), nb_ok2, grid.distance_m(here, c)])
 		_skip[c] = _t + SKIP_S
 		if mode == "go":
 			release(c)
@@ -1037,6 +1067,8 @@ func _find_haul(u: Dictionary, here: int) -> bool:
 		for i: int in bales.size():
 			if str(bales[i]["claimed"]) != "":
 				continue
+			if float(_skip.get(int(bales[i]["cell"]), -1.0)) >= _t:
+				continue  # [v5play] no way there just now: the next bale, not the same one for ever
 			var d: float = grid.distance_m(here, int(bales[i]["cell"]))
 			if d < best_d:
 				best_d = d

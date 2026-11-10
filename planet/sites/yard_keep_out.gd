@@ -127,19 +127,25 @@ func add_world(key: Variant, items: Array) -> void:
 		var r: Rect2 = (it[1] as Rect2).grow(FOOT_GROW_M)
 		var inv: Transform3D = fr.affine_inverse()
 		var rad: float = fr.origin.length()
-		var nx: int = maxi(1, int(ceil(r.size.x / (WORLD_M * 0.5))))
-		var nz: int = maxi(1, int(ceil(r.size.y / (WORLD_M * 0.5))))
-		var seen: Dictionary = {}
-		for ix: int in nx + 1:
-			for iz: int in nz + 1:
-				var q := Vector3(r.position.x + r.size.x * ix / nx, 0.0, r.position.y + r.size.y * iz / nz)
-				var k: Vector3i = _wkey((fr * q).normalized(), radius)
-				if seen.has(k):
-					continue
-				seen[k] = true
-				if not _world.has(k):
-					_world[k] = []
-				(_world[k] as Array).append([inv, r, rad])
+		# [v5play] Every bucket the footprint's box touches. (It used to sample the footprint every
+		# 8 m and file it under the samples' buckets: a bucket the footprint only clipped a corner
+		# of got nothing, so junk was laid inside buildings there, where nobody can clean it.)
+		var lo := Vector3.INF
+		var hi := -Vector3.INF
+		for cq: Vector3 in [Vector3(r.position.x, 0.0, r.position.y), Vector3(r.end.x, 0.0, r.position.y), Vector3(r.end.x, 0.0, r.end.y), Vector3(r.position.x, 0.0, r.end.y), Vector3(r.get_center().x, 0.0, r.get_center().y)]:
+			var wp: Vector3 = (fr * cq).normalized() * radius / WORLD_M
+			lo = lo.min(wp)
+			hi = hi.max(wp)
+		var pad := Vector3.ONE * (0.25 / WORLD_M)
+		var k0 := Vector3i((lo - pad).floor())
+		var k1 := Vector3i((hi + pad).floor())
+		for kx: int in range(k0.x, k1.x + 1):
+			for ky: int in range(k0.y, k1.y + 1):
+				for kz: int in range(k0.z, k1.z + 1):
+					var k := Vector3i(kx, ky, kz)
+					if not _world.has(k):
+						_world[k] = []
+					(_world[k] as Array).append([inv, r, rad])
 		_world_n += 1
 	version += 1  # [v4world]
 

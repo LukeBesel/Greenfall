@@ -186,7 +186,62 @@ func _local_max(c: int, rings: int, salt: int) -> bool:
 	return true
 
 
+## [v5play] No wedge spots: a hex's building or prop is dropped when it would stand closer than
+## MIN_GAP_M to a neighbouring hex's bigger one (footprint area; a tie goes to the lower hex id).
+## The big works (18 x 15 m on hexes ~17 m apart) used to leave gaps down to 0.5 m beside a house,
+## or overlap it: Lumi (1.1 m wide) and the robots wedged there.
+const MIN_GAP_M: float = 2.2
+var _cand: Dictionary = {}  # cell -> its own choice, before the neighbours are looked at
+
+
+func _candidate(c: int) -> Array:
+	var v: Variant = _cand.get(c)
+	if v == null:
+		v = _decide_alone(c)
+		_cand[c] = v
+	return v
+
+
 func _decide(c: int) -> Array:
+	var mine: Array = _candidate(c)
+	if mine.is_empty():
+		return mine
+	var e: Array = mine[0]
+	var area: float = (e[2] as Vector2).x * (e[2] as Vector2).y
+	for o: int in grid.neighbors(c):
+		var theirs: Array = _candidate(o)
+		if theirs.is_empty():
+			continue
+		var t: Array = theirs[0]
+		var t_area: float = (t[2] as Vector2).x * (t[2] as Vector2).y
+		if t_area < area or (t_area == area and o > c):
+			continue  # the neighbour is the one that yields
+		if rect_gap(e[1], e[2], t[1], t[2]) < MIN_GAP_M:
+			return []
+	return mine
+
+
+## Gap in metres between two footprints (Transform3D on the ground, size x by z), 0 when they
+## overlap: edge points of each against the other's box.
+static func rect_gap(a_xf: Transform3D, a_size: Vector2, b_xf: Transform3D, b_size: Vector2) -> float:
+	var best: float = INF
+	for pair: Array in [[a_xf, a_size, b_xf, b_size], [b_xf, b_size, a_xf, a_size]]:
+		var pxf: Transform3D = pair[0]
+		var hs: Vector2 = (pair[1] as Vector2) * 0.5
+		var oxf: Transform3D = pair[2]
+		var ohs: Vector2 = (pair[3] as Vector2) * 0.5
+		var ox: Vector3 = oxf.basis.x.normalized()
+		var oz: Vector3 = oxf.basis.z.normalized()
+		for k: int in 44:
+			var t: float = float(k % 11) / 10.0 * 2.0 - 1.0
+			var lp: Vector2 = [Vector2(t * hs.x, -hs.y), Vector2(t * hs.x, hs.y), Vector2(-hs.x, t * hs.y), Vector2(hs.x, t * hs.y)][int(k / 11.0)]
+			var w: Vector3 = pxf.origin + pxf.basis.x.normalized() * lp.x + pxf.basis.z.normalized() * lp.y - oxf.origin
+			var ex := Vector2(maxf(absf(w.dot(ox)) - ohs.x, 0.0), maxf(absf(w.dot(oz)) - ohs.y, 0.0))
+			best = minf(best, ex.length())
+	return best
+
+
+func _decide_alone(c: int) -> Array:
 	var out: Array = []
 	if cells.state[c] == 5 or cells.has_flag(c, SphereCells.F_SITE):
 		return out
@@ -281,6 +336,24 @@ func _process(_delta: float) -> void:
 		_pending_at = 0
 	elif _body_pos == Vector3.INF or pos.distance_to(_body_pos) > 12.0:
 		_colliders(pos)
+
+
+# [v5play] For the walk check (planet/sites/hinter_walk.gd).
+func decided_cells() -> Array:
+	return _decided.keys()
+
+
+func decided(c: int) -> Array:
+	return _decided.get(c, [])
+
+
+## Every hex in view of the focus is decided and drawn.
+func is_settled() -> bool:
+	return _last_pos != Vector3.INF and _pending_at >= _pending.size() and focus != null and focus.global_position.distance_to(_last_pos) <= REBUILD_M
+
+
+func refresh_colliders(pos: Vector3) -> void:
+	_colliders(pos)
 
 
 func _register(c: int, lst: Array) -> void:

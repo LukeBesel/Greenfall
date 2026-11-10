@@ -192,8 +192,7 @@ func free_slot_near(pos: Vector3, fwd: Vector3, reach: float = 2.2) -> int:
 
 func planted_near(pos: Vector3, fwd: Vector3, reach: float = 2.8) -> Array[int]:
 	var out: Array[int] = []
-	var hid: int = world.field.hex_at(pos + fwd * 1.0)
-	for h: int in [hid, world.field.hex_at(pos)]:
+	for h: int in _hexes_near(pos, fwd, reach):
 		ensure_hex(h)  # [orbB]
 		if not hex_slots.has(h):
 			continue
@@ -203,10 +202,29 @@ func planted_near(pos: Vector3, fwd: Vector3, reach: float = 2.8) -> Array[int]:
 	return out
 
 
+## [v5play] Every hex the reach circle (round the point 1.2 m ahead) touches, each once. It was
+## only Lumi's hex and the one 1 m ahead: a plant just over a hex border (or over the pad's edge)
+## got no water and a free spot there took no seed, though the ring showed it in reach.
+func _hexes_near(pos: Vector3, fwd: Vector3, reach: float) -> Array[int]:
+	var f: HexField = world.field
+	var out: Array[int] = []
+	var c: Vector3 = pos + fwd * 1.2
+	var side: Vector3 = fwd.cross(pos.normalized() if JunkCube.planet_radius > 0.0 else Vector3.UP)
+	var pts: Array[Vector3] = [pos + fwd * 1.0, pos, c]
+	for k: int in 8:
+		var a: float = TAU * k / 8.0
+		pts.append(c + (fwd * cos(a) + side * sin(a)) * reach * 0.9)
+	for q: Vector3 in pts:
+		var h: int = f.hex_at(q)
+		if h >= 0 and not out.has(h):
+			out.append(h)
+	return out
+
+
 func _slot_near(pos: Vector3, fwd: Vector3, reach: float, empty: bool) -> int:
 	var best: int = -1
 	var best_d: float = INF
-	for h: int in [world.field.hex_at(pos + fwd * 1.0), world.field.hex_at(pos)]:
+	for h: int in _hexes_near(pos, fwd, reach):
 		if world.field.is_clean(h):
 			ensure_hex(h)  # [orbB]
 		if not hex_slots.has(h) or not world.field.is_clean(h):

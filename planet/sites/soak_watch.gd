@@ -63,9 +63,46 @@ func digest() -> String:
 	var sm: SiteManager = g.site_manager
 	var dep: Variant = so.w.get("depot")
 	var cashed: int = int((dep as Object).get("cashed")) if dep else -1
-	return ("cashed=%d " % cashed) + "planet=%s cubes=%s parts=%s seeds=%s cleaned=%d/%d dirty_cells=%d planet%%=%.2f hub_lv=%s upgrades=%d lumi=%s" % [
+	return ("cashed=%d " % cashed) + _extras() + "planet=%s cubes=%s parts=%s seeds=%s cleaned=%d/%d dirty_cells=%d planet%%=%.2f hub_lv=%s upgrades=%d lumi=%s" % [
 		g.planet_id, cubes, parts, seeds, f.cleaned_count, f.junk_hex_count, dirty, (sm.planet_fraction() * 100.0) if sm else -1.0,
 		str(Array(sm.levels)) if sm else "-", GameState.upgrades.size(), _fmt(g.to_dirh(lp)) if lp != Vector3.ZERO else "-"]
+
+
+## [v5play] More of what a save must keep: robots by type, zoned hexes, plants, bales lying about,
+## Glim, Hover Jets, the story step, goals done, once-per-save flags, where the rocket stands.
+func _extras() -> String:
+	var w: Node = so.w
+	var fl: Variant = w.get("fleet")
+	var bots: PackedStringArray = []
+	if fl != null:
+		for t: String in Economy.robot_order:
+			var n: int = int((fl as Object).call("count", t))
+			if n > 0:
+				bots.append("%s:%d" % [t, n])
+	var gdn: Variant = w.get("garden")
+	var plants: int = (gdn as Garden).planted_slots().size() if gdn is Garden else -1
+	var root: Variant = w.get("_cubes_root")
+	var bales: int = (root as Node).get_child_count() if root is Node else -1
+	if DevHooks.has("soak-bales") and root is Node:  # where the loose bales lie (start-site metres)
+		var inv: Transform3D = (so.globe.sites[0]["transform"] as Transform3D).affine_inverse()
+		var at: PackedStringArray = []
+		for c: Node in (root as Node).get_children():
+			if c is Node3D:
+				var lp: Vector3 = inv * (c as Node3D).global_position
+				at.append("(%.0f,%.0f%s)" % [lp.x, lp.z, " carried" if bool(c.get("carried")) else ""])
+		print("[soak] bales at %s" % " ".join(at))
+	var ob: Variant = w.get("objectives")
+	var step: String = str((ob as Objectives).current().get("id", "-")) if ob is Objectives else "-"
+	var gl: Variant = w.get("goals")
+	var once: PackedStringArray = []
+	for k: String in ["shore_hint", "seed_signal", "seeds_unlocked", "first_sprout", "haul_rig", "skimmer_rig", "glim_repaired"]:
+		if bool(GameState.flags.get(k, false)):
+			once.append(k)
+	var crew: Variant = SphereCrew.active
+	var zones: int = (crew as SphereCrew).zone_cells().size() if crew is SphereCrew else -1
+	return ("crew_bales=%d " % ((crew as SphereCrew).bales.size() if crew is SphereCrew else -1)) + "bots=[%s] zones=%d plants=%d bales=%d hover=%d step=%s goals=%d flags=[%s] rocket=%s " % [",".join(bots), zones, plants, bales,
+		GameState.level_of("hover_jets"), step, (gl as Goals).done_count() if gl is Goals else -1, ",".join(once),
+		str(GameState.orbit.get("rocket_site", "-"))]
 
 
 static func _fmt(a: Array) -> String:
