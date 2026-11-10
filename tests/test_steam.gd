@@ -166,6 +166,58 @@ func test_cloud_sync_newest_wins() -> void:
 	assert_almost_eq(SteamCloud.saved_unix_of_bytes(_fake.files["slot_0.save"]), 3000.0, 0.01)
 
 
+## [v5load] The round world's saves (user://saves_round/pN) sync under their own cloud prefix.
+func test_cloud_names_for_round_saves() -> void:
+	assert_eq(SteamCloud.cloud_name("user://saves/p2/slot_0.save"), "p2_slot_0.save")
+	assert_eq(SteamCloud.cloud_name("user://saves_round/p2/slot_0.save"), "r_p2_slot_0.save")
+	assert_eq(SteamCloud.cloud_name("user://saves_round/p1/profile.save"), "r_p1_profile.save")
+	assert_eq(SteamCloud.cloud_name("user://saves_demo_round/p3/slot_4.save"), "r_p3_slot_4.save")
+	assert_eq(SteamCloud.profile_prefix(2, true), "r_p2_")
+	assert_eq(SteamCloud.profile_prefix(2, false), "p2_")
+
+
+func test_round_and_flat_saves_sync_apart() -> void:
+	_fake.cloud_on = true
+	var cloud := SteamCloud.new(_fake)
+	var flat: String = TMP_DIR.path_join("p1")
+	var rnd: String = TMP_DIR + SaveManager.ROUND_SUFFIX
+	var rnd_p1: String = rnd.path_join("p1")
+	DirAccess.make_dir_recursive_absolute(flat)
+	DirAccess.make_dir_recursive_absolute(rnd_p1)
+	_write_save(flat.path_join("slot_0.save"), 1000.0, "flat")
+	_write_save(rnd_p1.path_join("slot_0.save"), 2000.0, "round")
+	# What SaveManager.save_game does through SteamService.on_saved: each lands under its own name.
+	assert_true(cloud.push(flat.path_join("slot_0.save")))
+	assert_true(cloud.push(rnd_p1.path_join("slot_0.save")))
+	assert_true(_fake.files.has("p1_slot_0.save"))
+	assert_true(_fake.files.has("r_p1_slot_0.save"))
+	assert_almost_eq(SteamCloud.saved_unix_of_bytes(_fake.files["p1_slot_0.save"]), 1000.0, 0.01, "the round save did not overwrite the flat one")
+	# A new install: the round save comes down into the round tree, the flat one into the flat tree.
+	DirAccess.remove_absolute(flat.path_join("slot_0.save"))
+	DirAccess.remove_absolute(rnd_p1.path_join("slot_0.save"))
+	assert_eq(cloud.sync_dir(rnd_p1, SteamCloud.profile_prefix(1, true)).get("slot_0.save"), "cloud")
+	assert_eq(cloud.sync_dir(flat, SteamCloud.profile_prefix(1, false)).get("slot_0.save"), "cloud")
+	assert_eq(str(SaveManager.read_dict(rnd_p1.path_join("slot_0.save"))["flags"]["m"]), "round")
+	assert_eq(str(SaveManager.read_dict(flat.path_join("slot_0.save"))["flags"]["m"]), "flat")
+	# Round saves are never mistaken for pre-profile flat saves.
+	assert_eq(cloud.adopt_legacy("p1_"), 0)
+	assert_false(_fake.files.has("p1_r_p1_slot_0.save"))
+	# The service uploads a round save when it is written, and deletes it with the slot.
+	_fake.cloud_on = false  # attach must not sync the real save folder
+	SteamService.attach(_fake, false)
+	_fake.cloud_on = true
+	_fake.files.clear()
+	SteamService.on_saved(rnd_p1.path_join("slot_0.save"))
+	assert_true(_fake.files.has("r_p1_slot_0.save"), "round saves reach the cloud")
+	SteamService.on_deleted(rnd_p1.path_join("slot_0.save"))
+	assert_false(_fake.files.has("r_p1_slot_0.save"))
+	for d: String in [flat, rnd_p1]:
+		for f: String in DirAccess.get_files_at(d):
+			DirAccess.remove_absolute(d.path_join(f))
+		DirAccess.remove_absolute(d)
+	DirAccess.remove_absolute(rnd)
+
+
 func test_cloud_disabled_does_nothing() -> void:
 	var cloud := SteamCloud.new(_fake)
 	assert_false(cloud.enabled())

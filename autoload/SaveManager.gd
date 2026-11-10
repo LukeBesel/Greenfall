@@ -48,8 +48,8 @@ func root_dir(flat: bool = false) -> String:
 
 ## [orbB] The round world (Settings.round_planets): New Game and Continue start on the globe
 ## (SliceOrbit.wanted), saving under user://saves_round (profiles, worlds, album and all), so the
-## flat game's saves are never read or written. Steam Cloud stays the flat game's (SteamService
-## skips the round tree's files). [v1menu] The default since the 2026-11-08 playtest, the demo
+## flat game's saves are never read or written. Steam Cloud covers both trees, the round one
+## under its own prefix (SteamCloud.ROUND_PREFIX). [v1menu] The default since the 2026-11-08 playtest, the demo
 ## included (user://saves_demo_round); `--flat` (dev) reaches the dormant flat game.
 const ROUND_SUFFIX: String = "_round"
 
@@ -135,15 +135,25 @@ func delete_profile(n: int) -> void:
 
 ## [steam] Full game, first run after the demo: carry the demo's slots over (never overwrites).
 func import_demo_save() -> void:
-	if Demo.is_demo() or not DirAccess.dir_exists_absolute(Demo.SAVE_DIR):
+	if Demo.is_demo():
 		return
-	migrate_to_profiles(Demo.SAVE_DIR)  # [worlds2] the demo's saves are in its own p1 too
-	var src_dir: String = Demo.SAVE_DIR.path_join("p1")
+	# [v5load] The round world is the game now, and the demo saves under saves_demo_round: its
+	# progress carries over into saves_round the same way (the flat trees as before).
+	import_demo_tree(Demo.SAVE_DIR, SAVE_DIR)
+	import_demo_tree(Demo.SAVE_DIR + ROUND_SUFFIX, SAVE_DIR + ROUND_SUFFIX)
+
+
+## Copies a demo save tree's first profile into `dst_root`/p1, each file once and never over a save.
+static func import_demo_tree(src_root: String, dst_root: String) -> void:
+	if not DirAccess.dir_exists_absolute(src_root):
+		return
+	migrate_to_profiles(src_root)  # [worlds2] the demo's saves are in its own p1 too
+	var src_dir: String = src_root.path_join("p1")
 	if not DirAccess.dir_exists_absolute(src_dir):
 		return
-	DirAccess.make_dir_recursive_absolute(SAVE_DIR.path_join("p1"))
+	DirAccess.make_dir_recursive_absolute(dst_root.path_join("p1"))
 	for nm: String in DirAccess.get_files_at(src_dir):
-		var dst: String = SAVE_DIR.path_join("p1").path_join(nm)  # [worlds2] into the first profile
+		var dst: String = dst_root.path_join("p1").path_join(nm)  # [worlds2] into the first profile
 		if nm.ends_with(".save") and not FileAccess.file_exists(dst) and not FileAccess.file_exists(dst + ".demo_imported"):
 			DirAccess.copy_absolute(src_dir.path_join(nm), dst)
 			FileAccess.open(dst + ".demo_imported", FileAccess.WRITE)

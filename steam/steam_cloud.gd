@@ -74,11 +74,23 @@ func read(name: String) -> PackedByteArray:
 
 ## [worlds2] The cloud name of a local save: save profiles (user://saves/p2/slot_0.save) share one flat
 ## cloud namespace, so their files carry the profile as a prefix ("p2_slot_0.save"). Pure.
+## [v5load] The round world's saves (user://saves_round/p2/slot_0.save, SaveManager.ROUND_SUFFIX)
+## carry ROUND_PREFIX in front ("r_p2_slot_0.save"), so they never collide with a flat-game save
+## of the same profile and slot that an older build uploaded.
+const ROUND_PREFIX: String = "r_"
+
+
 static func cloud_name(local_path: String) -> String:
 	var parent: String = local_path.get_base_dir().get_file()
 	if parent.length() >= 2 and parent.begins_with("p") and parent.substr(1).is_valid_int():
-		return parent + "_" + local_path.get_file()
+		var root: String = local_path.get_base_dir().get_base_dir().get_file()
+		return (ROUND_PREFIX if root.ends_with(SaveManager.ROUND_SUFFIX) else "") + parent + "_" + local_path.get_file()
 	return local_path.get_file()
+
+
+## [v5load] The cloud prefix of save profile n in the flat or the round save tree.
+static func profile_prefix(n: int, round_world: bool) -> String:
+	return (ROUND_PREFIX if round_world else "") + "p%d_" % n
 
 
 ## Upload a local file. Returns true when Steam accepted it.
@@ -101,6 +113,8 @@ func adopt_legacy(prefix: String = "p1_") -> int:
 	for nm: String in have:
 		if nm.begins_with("p") and nm.contains("_") and nm.get_slice("_", 0).substr(1).is_valid_int():
 			continue  # already a profile file
+		if nm.begins_with(ROUND_PREFIX):
+			continue  # [v5load] a round-world save: never a pre-profile flat save
 		if (prefix + nm) in have:
 			continue
 		var bytes: PackedByteArray = read(nm)

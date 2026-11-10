@@ -87,9 +87,16 @@ by a newer cloud copy is kept as `<name>.save.local_bak`. Cloud files from befor
 are adopted into profile 1 once (`SteamCloud.adopt_legacy`). Locally, saves from before profiles move
 into `p1` on the first start (`SaveManager.migrate_to_profiles`). The sync runs in the SteamService
 autoload, before CradleBoot reads the profile. Which profile was used last (`profiles.cfg`) stays per
-machine. Steamworks: App Admin > *Steam Cloud* > *Byte quota per user* **50 MB**,
-*Number of files per user* **60** (three profiles, each with a `profile.save` and one slot file per
-world; 60 leaves room for about 19 worlds per profile), then Publish.
+machine.
+
+The game is the round world now, and it saves under `user://saves_round/p1..p3`. That tree syncs the same
+way, under its own cloud prefix (`r_p2_slot_0.save`, `r_p1_profile.save`; `SteamCloud.ROUND_PREFIX`), so a
+round save never overwrites a flat save that an older build uploaded for the same profile and slot. The
+flat tree (`user://saves`) still syncs, so old cloud saves keep reaching new installs.
+
+Steamworks: App Admin > *Steam Cloud* > *Byte quota per user* **100 MB**,
+*Number of files per user* **120** (two save trees of three profiles, each profile with a `profile.save`
+and one slot file per world; 120 leaves room for about 19 worlds per profile in each tree), then Publish.
 
 **B. `auto_cloud` (no code; Steam syncs the folder).** Set `cloud_mode="auto_cloud"`, then in *Steam Cloud* >
 *Root paths* add one entry per save profile (pattern `*.save`, not recursive), with the Subdirectory below
@@ -103,7 +110,10 @@ builds kept saves directly in the Subdirectory; the game moves them into `p1` it
 | macOS | `MacAppSupport` | `Godot/app_userdata/Greenfall/saves` |
 | Linux / Steam Deck | `LinuxXdgDataHome` | `godot/app_userdata/Greenfall/saves` |
 
-For the demo app use the same roots with `saves_demo` in place of `saves` (the demo's saves are in `saves_demo/p1`; the full game imports them into `saves/p1`). Auto-Cloud resolves conflicts
+Add the same three rows per OS again with `saves_round` in place of `saves`: the round world, which is
+the game now, saves there (`saves_round/p1`, `/p2`, `/p3`).
+
+For the demo app use the same roots with `saves_demo` and `saves_demo_round` in place of `saves` and `saves_round` (the demo's saves are in `saves_demo_round/p1`; the full game imports them into `saves_round/p1`, and an old flat demo save from `saves_demo/p1` into `saves/p1`). Auto-Cloud resolves conflicts
 with Steam's own "which copy do you want" dialog.
 
 Either way the save files are Cloud friendly already: one compressed, platform-neutral file per slot, so
