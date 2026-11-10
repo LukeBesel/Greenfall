@@ -486,7 +486,10 @@ What changed:
 - **`data/orbit_preload.json`** (`OrbitPreload.warm`): every model, model part, texture and "lite"
   (simplified) mesh the build used to load or make on the main thread. Files load on the loader
   threads from the start of the build; one worker task meshes and simplifies them (mesh
-  simplification is 50-150 ms a model and can't be split). Refresh after changing what the build
+  simplification is 50-150 ms a model and can't be split). The main thread first copies each
+  model's surfaces (`AssetLib.snapshot`), because a worker thread reading a mesh back from the
+  rendering server waits for the main thread's next flush (about one read a frame): without the
+  copies the same task took 14 s longer in a rendered run than the old main-thread path. Refresh after changing what the build
   uses: `godot --headless --path . -- --fresh --orbit --record-preload --quit-after=30`. A stale
   list is safe: a missing model just loads where it is used.
 - **The near ring's junk** fills in slices (`OrbitPlanet.refresh_junk_async`): cells materialize
@@ -508,3 +511,92 @@ ground patch, one detailed building, the outposts plan. Anvil's own yard builder
 Tools: `--load-report` prints `[budget] N ms (cpu M)` per long slice, `[lap]` lines for the
 steps between yields, `[model]` for any blocking model or texture load, the models still loaded
 on the main thread, and the longest frame by CPU time.
+
+One rendered check (software GL, 960x540 Low, same box): the build took 20.6 s before and 18.0 s
+after, over 440 frames instead of 203, longest build slice 4.1 s before and 0.2 s after. What is
+left there is the frame in which the 3D scene first draws (the warm-up stage: 6.9 s in software
+GL, all shader compiles and uploads at once). It needs a look on real hardware; spreading it
+means showing the scene's materials in batches before the world is drawn.
+
+### Perf pass 7 (Nov 10, v5load, headless): hitches in play
+
+`--hitch[=ms]` (systems/hitch.gd, default 30) prints every frame whose main-thread CPU time is over
+the limit, with what ran in it (`Hitch.mark` in the streamer, the junk ring, the hinterland, the
+site manager, litter, water, fauna, the autosave), a summary every 20 s, and every 10 s a check
+that each live piece of the near ring is in a draw buffer. Walks: `--orbit-walk=boost` from
+`--orbit-spawn=x,z` (town 0,0; outskirts 0,-260; hinterland and lake 400,300 and -300,500); a
+rocket hop: `--orbit-hop=1`.
+
+| 75 s boost walk, frames over 30 ms (CPU) | Before | After |
+|---|---|---|
+| Start town (0,0) | 6, worst 100-200 ms | 1, worst 33 ms |
+| Outskirts (0,-260) | 5-6, worst 68-83 ms | 0-1, worst 27-30 ms |
+| Hinterland and lake (400,300) | 3-4, worst 43 ms | 1, worst 33 ms |
+| Rocket hop, after the veil lifts | 1.33 s (hub systems), then 40-150 ms spawns | 31 ms |
+
+What was found and changed:
+- **A fifth of the near ring's junk was never drawn.** Cells whose pieces are laid a little later
+  (the deferred fill) were marked shown while still empty, so their pieces never reached a draw
+  buffer: after a short walk 376 of 1,698 live pieces were scoopable and solid but invisible.
+  `SphereJunkView._queue_ring` now leaves a cell out until its pieces exist.
+- **Laying a cell's pieces** was 12-40 ms in one frame every few metres. `SphereField.
+  materialize_step` lays a cell (land or lake) across frames under the fill's 3 ms budget;
+  `materialize()` is the same work in one call.
+- **The ring's heaps and wrecks** are made when their cell's turn comes in the junk pump (2.5 ms a
+  frame), not all at once when the ring moves (30-50 ms).
+- **Junk and landmark meshes** for every model are made at load. A model first met while walking
+  cost a lite mesh in that frame and a far mesh in the next (30-150 ms each).
+- **Wildlife:** the 2.5 s replan runs a part a frame (it was 35-45 ms, 100-200 ms on the first
+  frame); the animals' procedural meshes are built at load; the prop scan that birds and spawns
+  use walked every MultiMesh instance in the world each time Lumi moved 30 m (30-150 ms) and
+  now runs 1.5 ms a frame while the last scan keeps serving.
+- **Hub systems** (wildlife, outposts, eggs, the Ledger, decor) were all built in the frame Lumi
+  came within 220 m of another hub: 1.3 s, in the last seconds of a rocket hop's landing. A hop
+  now switches them behind its veil; a walk-in builds one system a frame.
+- **Autosave:** the file is written on a worker thread (`SaveManager.save_game(true, true)`), so
+  the frame only gathers the state (24-26 ms on a new game, was 55-75 ms). Every other save is
+  synchronous as before and waits for a write in flight.
+
+Left: one animal spawn can still take about 30 ms (finding a free spot); a hub town building as
+Lumi walks to it (not hops) keeps frames at 25-45 ms for about 3 s with a few 90-140 ms steps
+(the play budget is 6 ms plus the longest step in the town builders); a walk-in hub switch is
+five frames of 100-400 ms instead of one of 1.3 s.
+
+### Perf pass 8 (Nov 10, v5load): draw cost with the towns, litter and lakes
+
+Census (`--scene-stats=22`, headless, start site, whole scene, one shadow split counted). The
+census now leaves out instances past their `visibility_range_end` from the camera (it used to
+count them; `STATS_NO_RANGE=1` gives the old numbers) and names unnamed meshes by their parents
+when a group is split (`STATS_SPLIT=Globe`). A/B switches: `--no-shadow-trim`,
+`--no-litter-range`, `--water-ripple-far=100000`.
+
+| Start site | Est. draws before | after | Shadow-casting surfaces | Triangles before | after |
+|---|---|---|---|---|---|
+| Medium | 4,206 | **3,794** (-10%) | 688 -> 564 (-18%) | 7.03 M | 6.54 M (-7%) |
+| Low | 4,206 | **3,322** (-21%) | 688 -> 564 | 4.48 M | 3.85 M (-14%) |
+
+Where the scene's draws are now (Medium): ground litter 1,248 (428 MultiMeshes: one per cell and
+item kind, 3.1 M triangles), the start town about 1,400, the hub's outposts and eggs 543, Lumi
+217, the crash site 164, the hinterland 144.
+
+What changed:
+- **Shadows off where none showed.** Facade kit pieces that lie flat on the wall (under 30 cm
+  deep: windows, doors, panels, trims; the building body behind them casts), street props under
+  12 cm tall (manhole covers), and the outposts' and easter eggs' paint lines, shards, thin plates
+  and bits under 12 cm. 124 fewer shadow surfaces, each a draw per shadow split (Medium has two).
+- **Litter distance by preset.** Tiny items (5-15 cm, about a pixel at 50 m) stop at 50 m on
+  Medium (60 m before) and 35 m on Low; the paper carpet keeps 90 m on Medium, 60 m on Low.
+  High and Ultra are unchanged.
+- **Lake shader.** The wave numbers and speeds are constants (a division and a square root per
+  wave per pixel before); the scum noise is skipped on clean water; the three shortest waves
+  (1.3 m and under) and the value-noise chop fade out by `ripple_far` (Low 60 m, Medium 250 m,
+  High and Ultra 400 m) and are not computed past it. Per pixel: 7 waves and 5 noise lookups (40
+  hashes) before; past the fade 4 waves and 1-2 lookups (8-16 hashes). Checked with a rendered
+  pair at Medium from the start town's shore (ripple_far 250 against 100000): no visible
+  difference; the far band differs by under 1/255 on average.
+
+Not done, and why: the outposts' ruin pieces (90 meshes) only merge to 75 surfaces because every
+piece has its own worn-paint material, and merging breaks the scatter when an outpost is repaired.
+The litter is the next real win: 428 MultiMeshes for one ring. One MultiMesh per item kind for
+the whole ring would be about 12 draws, but every ring move would re-upload the buffer; a mesh
+merged per cell would lose the per-piece sweep.

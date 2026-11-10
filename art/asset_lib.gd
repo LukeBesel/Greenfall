@@ -37,6 +37,72 @@ static func model_mesh_lite(id: String, max_tris: int = 1500) -> Mesh:
 static var _lite_by_rid: Dictionary = {}
 
 
+# [v5load] Surface data for worker threads. Reading a mesh back from the rendering server
+# (surface_get_arrays, mesh_get_surface) from a worker thread waits for the main thread's next
+# flush: about one read per frame, so a worker task that meshes and simplifies a hundred models
+# took ten seconds longer under a real renderer than on the main thread (and such reads are not
+# reliable on the dummy renderer). So the main thread snapshots the surfaces first
+# (snapshot_model), meshes made on a worker register theirs (surf_note), and every reader below
+# goes through surf_arrays / surf_lods, which only ask the server when nothing is cached.
+# surf_clear() drops the copies once the loader is done.
+static var _surf: Dictionary = {}  # mesh RID id -> Array (per surface) of [arrays, lods]
+
+
+static func surf_arrays(m: Mesh, s: int) -> Array:
+	var e: Variant = _surf.get(m.get_rid().get_id())
+	if e != null and s < (e as Array).size():
+		return ((e as Array)[s][0] as Array).duplicate(true)  # a deep copy: callers transform the packed arrays in place
+	return m.surface_get_arrays(s)
+
+
+static func surf_lods(m: Mesh, s: int) -> Array:
+	var e: Variant = _surf.get(m.get_rid().get_id())
+	if e != null and s < (e as Array).size():
+		return (e as Array)[s][1]
+	return RenderingServer.mesh_get_surface(m.get_rid(), s).get("lods", [])
+
+
+## Main thread: copy a mesh's surfaces (and importer LODs) for later readers.
+static func snapshot(m: Mesh) -> void:
+	if m == null or _surf.has(m.get_rid().get_id()):
+		return
+	var list: Array = []
+	for s: int in m.get_surface_count():
+		list.append([m.surface_get_arrays(s), RenderingServer.mesh_get_surface(m.get_rid(), s).get("lods", [])])
+	_surf[m.get_rid().get_id()] = list
+
+
+## Main thread: snapshot every mesh of a model's file (it must be loaded or loading).
+static func snapshot_model(id: String) -> void:
+	if _meshes.has(id):
+		snapshot(_meshes[id])
+		return
+	var ps: PackedScene = load(MODEL_DIR % [id, id])
+	if ps == null:
+		return
+	var root: Node = ps.instantiate()
+	var found: Array = []
+	_collect(root, Transform3D.IDENTITY, found)
+	for f: Dictionary in found:
+		snapshot((f["mi"] as MeshInstance3D).mesh)
+	root.free()
+
+
+## A mesh just built from `surfaces` (one arrays Array per surface, no LODs): later readers get
+## these instead of asking the server. Only while snapshots are in use (the loader).
+static func surf_note(m: Mesh, surfaces: Array) -> void:
+	if _surf.is_empty() or m == null:
+		return
+	var list: Array = []
+	for a: Variant in surfaces:
+		list.append([a, []])
+	_surf[m.get_rid().get_id()] = list
+
+
+static func surf_clear() -> void:
+	_surf.clear()
+
+
 ## Lighter version of any mesh (see model_mesh_lite).
 static func lite(full: Mesh, max_tris: int) -> Mesh:
 	var key: String = "%d@%d" % [full.get_rid().get_id(), max_tris]
@@ -45,17 +111,17 @@ static func lite(full: Mesh, max_tris: int) -> Mesh:
 	var out := ArrayMesh.new()
 	var total_full: int = 0
 	var total_lite: int = 0
+	var made: Array = []
 	for s: int in full.get_surface_count():
-		var arrays: Array = full.surface_get_arrays(s)
+		var arrays: Array = surf_arrays(full, s)
 		var idx_full: PackedInt32Array = arrays[Mesh.ARRAY_INDEX] if arrays[Mesh.ARRAY_INDEX] != null else PackedInt32Array()
 		@warning_ignore("integer_division")
 		total_full += idx_full.size() / 3
 		var best: PackedInt32Array = idx_full
-		var surf: Dictionary = RenderingServer.mesh_get_surface(full.get_rid(), s)
 		var vcount: int = (arrays[Mesh.ARRAY_VERTEX] as PackedVector3Array).size()
 		@warning_ignore("integer_division")
 		var budget: int = max_tris * 3 / maxi(full.get_surface_count(), 1)
-		var lods: Array = surf.get("lods", [])
+		var lods: Array = surf_lods(full, s)
 		if best.size() > budget and lods.is_empty():
 			# No importer LODs (merged or odd meshes): generate them now.
 			var im := ImporterMesh.new()
@@ -88,9 +154,11 @@ static func lite(full: Mesh, max_tris: int) -> Mesh:
 		total_lite += best.size() / 3
 		out.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 		out.surface_set_material(s, full.surface_get_material(s))
+		made.append(arrays)
 	if total_lite >= total_full:
 		_lite_by_rid[key] = full
 		return full
+	surf_note(out, made)
 	_lite_by_rid[key] = out
 	return out
 
@@ -223,12 +291,13 @@ static func _apply_overrides(mi: MeshInstance3D, mesh: Mesh) -> void:
 
 static func _merge(found: Array) -> ArrayMesh:
 	var out := ArrayMesh.new()
+	var made: Array = []
 	for f: Dictionary in found:
 		var mi: MeshInstance3D = f["mi"]
 		var xf: Transform3D = f["xform"]
 		var nb: Basis = xf.basis.inverse().transposed()
 		for s: int in mi.mesh.get_surface_count():
-			var arr: Array = mi.mesh.surface_get_arrays(s)
+			var arr: Array = surf_arrays(mi.mesh, s)
 			if arr.size() <= Mesh.ARRAY_VERTEX or arr[Mesh.ARRAY_VERTEX] == null:
 				continue  # [main] unreadable surface (intermittent on the dummy renderer): skip it
 			var v: PackedVector3Array = arr[Mesh.ARRAY_VERTEX]
@@ -252,10 +321,12 @@ static func _merge(found: Array) -> ArrayMesh:
 			arr[Mesh.ARRAY_BONES] = null
 			arr[Mesh.ARRAY_WEIGHTS] = null
 			out.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
+			made.append(arr)
 			var mat: Material = mi.get_surface_override_material(s)
 			if mat == null:
 				mat = mi.mesh.surface_get_material(s)
 			out.surface_set_material(out.get_surface_count() - 1, mat)
+	surf_note(out, made)
 	return out
 
 

@@ -161,10 +161,36 @@ static func import_demo_tree(src_root: String, dst_root: String) -> void:
 
 
 func _process(delta: float) -> void:
+	if _write_task >= 0 and WorkerThreadPool.is_task_completed(_write_task):
+		finish_write()
 	_timer += delta
 	if _timer >= AUTOSAVE_INTERVAL:
 		_timer = 0.0
-		save_game()
+		save_game(true, true)  # [v5load] the autosave writes its file on a worker thread
+
+
+# [v5load] The autosave in play: gathering the state stays on the main thread, but turning it
+# into JSON, compressing it and writing the file (most of a 55 ms frame once a minute, more on a
+# late save) runs on a worker thread. Every other save (quit, focus loss, travel, the menu) is
+# synchronous as before, and first waits for a background write still in flight.
+var _write_task: int = -1
+var _write_box: Array = [false]
+var _write_path: String = ""
+
+
+## Waits for a background autosave's file (if any) and announces it. Safe to call any time.
+func finish_write() -> void:
+	if _write_task < 0:
+		return
+	WorkerThreadPool.wait_for_task_completion(_write_task)
+	_write_task = -1
+	if bool(_write_box[0]):
+		SteamService.on_saved(_write_path)  # [steam] Steam Cloud upload (no-op without Steam)
+		EventBus.game_saved.emit()
+
+
+func _exit_tree() -> void:
+	finish_write()
 
 
 func _notification(what: int) -> void:
@@ -182,9 +208,13 @@ func has_save(s: int = -1) -> bool:
 	return FileAccess.file_exists(slot_path(s)) or FileAccess.file_exists(slot_path(s) + ".tmp")
 
 
-func save_game(gather: bool = true) -> bool:
+## background [v5load]: write the file on a worker thread (the autosave); the result is announced
+## (Steam Cloud, EventBus.game_saved) when the file is on disk.
+func save_game(gather: bool = true, background: bool = false) -> bool:
 	if not (enabled or dev_dir != "") or not is_inside_tree():  # [beat] --save-dir saves even with --fresh
 		return false
+	finish_write()
+	var h: int = Hitch.t()
 	if gather:
 		# [beat] Not mid-launch: Lumi is on the lift with the cells already spent; the last autosave
 		# (or the save travel_to writes on arrival) is the consistent one.
@@ -192,7 +222,17 @@ func save_game(gather: bool = true) -> bool:
 		if sc and sc.get("launching") == true:
 			return false
 		get_tree().call_group("persist", "persist_save")
+	if background:
+		var d: Dictionary = GameState.to_dict()
+		var path: String = slot_path()
+		var box: Array = [false]
+		_write_box = box
+		_write_path = path
+		_write_task = WorkerThreadPool.add_task(func() -> void: box[0] = SaveManager.write_dict(path, d), false, "autosave")
+		Hitch.mark("autosave gather", h)
+		return true
 	var ok: bool = write_dict(slot_path(), GameState.to_dict())
+	Hitch.mark("save", h)
 	if ok:
 		SteamService.on_saved(slot_path())  # [steam] Steam Cloud upload (no-op without Steam)
 		EventBus.game_saved.emit()
@@ -200,6 +240,7 @@ func save_game(gather: bool = true) -> bool:
 
 
 func load_game() -> bool:
+	finish_write()  # [v5load]
 	if not has_save():
 		return false
 	var d: Dictionary = read_dict(slot_path())
@@ -215,6 +256,7 @@ func load_game() -> bool:
 
 
 func delete_save(s: int = -1) -> void:
+	finish_write()  # [v5load]
 	if has_save(s):
 		DirAccess.remove_absolute(slot_path(s))
 		SteamService.on_deleted(slot_path(s))  # [steam]

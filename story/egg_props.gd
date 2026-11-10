@@ -25,6 +25,12 @@ static func mesh(m: Mesh, mat: Material, pos: Vector3 = Vector3.ZERO, rot_deg: V
 	mi.mesh = m
 	mi.material_override = mat
 	mi.transform = ProcMesh.xf(pos, rot_deg, scl)
+	# [v5load] Draw cost: paint lines, glass shards, plates under 3 cm thick and bits under 12 cm
+	# cast no shadow (none was visible at the sun's shadow resolution; each was a shadow draw).
+	if m and not DevHooks.has("no-shadow-trim"):
+		var bb: Vector3 = m.get_aabb().size * scl.abs()
+		if minf(bb.x, minf(bb.y, bb.z)) < 0.03 or maxf(bb.x, maxf(bb.y, bb.z)) < 0.12:
+			mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	return mi
 
 

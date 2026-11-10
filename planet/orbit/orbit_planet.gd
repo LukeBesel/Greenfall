@@ -288,6 +288,7 @@ func _on_near_changed(added: PackedInt32Array, _removed: PackedInt32Array) -> vo
 			_fill_set[c] = true
 			_fill_q.append(c)
 	_junk_dirty = true
+	Hitch.mark("near ring fill", t0 if Hitch.on else 0)
 	if _live and not added.is_empty():
 		stats["near_fill_max_ms"] = maxf(float(stats.get("near_fill_max_ms", 0.0)), (Time.get_ticks_usec() - t0) / 1000.0)
 
@@ -304,11 +305,15 @@ func _drain_fill(flush: bool) -> void:
 	var t0: int = Time.get_ticks_usec()
 	var did: bool = false
 	while not _fill_q.is_empty():
-		var c: int = _fill_q.pop_front()
-		_fill_set.erase(c)
+		var c: int = _fill_q[0]
 		if field.materialized[c] == 0 and streamer.is_near(c):
-			field.materialize(c)
+			if flush:
+				field.materialize(c)
+			elif not field.materialize_step(c, maxi(FILL_BUDGET_US - (Time.get_ticks_usec() - t0), 500)):
+				break  # [v5load] a cell is laid across frames now (it was 12-40 ms in one)
 			did = true
+		_fill_q.pop_front()
+		_fill_set.erase(c)
 		if not flush and Time.get_ticks_usec() - t0 > FILL_BUDGET_US:
 			break
 	if did:
@@ -400,11 +405,15 @@ func _process(_delta: float) -> void:
 		return
 	_live = true  # [v1world]
 	update_centres()
+	var h: int = Hitch.t()
 	if not _fill_q.is_empty():  # [v1world]
 		_drain_fill(false)
+	Hitch.mark("junk fill", h)
+	h = Hitch.t()
 	if _junk_dirty:
 		_junk_dirty = false
 		junk_view.rebuild(streamer.near_cells())
+		Hitch.mark("junk rebuild", h)
 		stats["junk"] = int(junk_view.stats.get("pieces", 0))
 		stats["junk_ms"] = int(float(junk_view.stats.get("rebuild_us", 0)) / 1000.0)
 

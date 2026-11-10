@@ -945,7 +945,16 @@ Superseded by "Current state of round Verdance" at the top. Most of its open lis
 - QA fixes: the yard pad is now real bevelled slabs with 12 cm joints (it had 5 cm hairline seams). Open water past the near ring reads as water (murky olive to clear teal, ripple mottle, sheen), and the near lake surface is murky green, not grey.
 - Done (round 2): every hub is a town with its own character (VerdanceSite.KINDS: downtown, old town, industrial, suburb, harbour where the lake reaches in) on a 120 m pad, with furniture and outskirts. The outskirts keep junk off per piece (YardKeepOut.add_world) rather than clearing cells, and outposts and eggs avoid the buildings. Hub towns build 6 ms a frame in play (BuildBudget.begin_play). Lake waterfronts: quay, railings with gaps, lamps, piers, boats, an old ship on the start lake. Furniture is batched (144 m cells, 3 surfaces, no small-prop shadows).
 - Done: the land between hubs (`planet/sites/hinterland.gd`): open junk fields, suburbs and industrial edges decided per hex past 345 m from any hub. Buildings and props are MultiMeshes over the ring round Lumi (near/far split per instance), with colliders within 70 m and footprints in the junk keep-out. `--hinter-report`, `--no-hinterland`.
-- Open: pitched roofs for the suburb houses; road strips between the hinterland's houses; a hinterland walk check.
+- Open: a hinterland walk check.
+- [v5look] Done on the hinterland:
+  - Houses have pitched tile roofs with chimneys, works sheds have sheet roofs; every building gets its own tint and height (MultiMesh instance colour and scale); 4 looks per archetype.
+  - Yards: a garden shed, picket fences, sometimes a wreck in the drive.
+  - Roads: continuous hex chains (the edge of a noise region) laid on the ground mesh as dusty asphalt strips. Hexes beside a road get more houses, facing it, and power poles. The lane keeps junk off (a soft keep-out: `YardKeepOut.add_world(..., true)`, not a building for TargetReach) and road hexes get no junk mounds (`SphereField.pile_block`).
+  - Dev: `--hinter-goto=track|house|works[,back_m[,side_m]]` stands Lumi there for a render; `--hinter-report` also prints decide time and the nearest house/track.
+  - Open: junk materialised before a road was decided (a dev spawn, or a save made right there) stays on the lane; roads end at the hub clearance (345 m), they don't join the town's streets.
+- [v5look] Light on round Verdance (`planet/sky_director.gd` sphere mode, `planet/orbit/orbit_sky.gdshader`, `planet/orbit/orbit_day.gd`): warm noon sun in dusty air, warm day fill, golden depth haze whose colour the sky's horizon band shares (`fog_col`), sun discs kept out of the radiance map, the flat game's thin glow settings. The start pad is matte concrete. Open: not seen on Forward+ (glow, SSAO), only opengl3.
+- [v5look] Glim on the pod (`systems/glim/glim_bot.gd`): scorched dark, 1.4x while stuck, head hanging, half-shut glowing eyes, a lantern stutter every 2.9 s with sparks; `GlimBot.flare()`. The intro glances at him after the crash (`Intro._glim_beat`, ~2.2 s).
+- [v5look] Street corners (`planet/street_furniture.gd`): every corner of a junction is tried for its pole, the yard block counts toward four-way; the start town went from 14 corner poles (3 lights) to 26 (6 lights).
 
 ## Update: Verdance clarity pass (wt/v3clear, owner item 41)
 - **Texts:** objectives, checklist, prompts, toasts and WREN briefs use short, plain words, start with a verb and show the key glyph. "Compartment Size" is now "Chest Size". Codex toasts stay quiet until the tower is up.
@@ -993,3 +1002,12 @@ Superseded by "Current state of round Verdance" at the top. Most of its open lis
   - Orbit autoplay (8x): first robot 20.9 min, base 2 34.9, Haul Bug 41.1, Hover Jets 49.2, Skimmer 56.0, no script errors, no shore stalls.
 - **Open:** the bot's stuck escapes climb in the garden phase (13 at 47 min, 77 at 107 min, all after Hover Jets). This looks unrelated to the shore block and is worth a look.
 - Tests: `tests/test_v4bots.gd` (unlock order and timing, objective order, adoption and pads, the shore clamp, the upgrade).
+
+## 2026-11-10: v5load (loading, hitches, draw cost, cloud saves)
+Details and numbers in docs/PERFORMANCE.md (perf passes 6-8).
+- Done: no long loading frames on Verdance (longest about 0.12 s of CPU, was 1.2-2.3 s); the build is no slower, rendered or headless.
+- Done: hitches in play (junk ring, wildlife, hub switch on a rocket hop, autosave); a fifth of the ring's junk was never drawn, fixed.
+- Done: draw cost down 10% on Medium and 21% on Low at the start site; cheaper far water.
+- Done: Steam Cloud covers the round world's saves; demo saves carry over into the round tree.
+- Open: the frame where the 3D scene first draws at the end of loading (shader warm-up) is one long frame; needs a check on real hardware.
+- Open: a hub town building as Lumi walks to it (25-45 ms frames for about 3 s); Anvil's yard builder (0.45 s slice); litter batching (428 MultiMeshes a ring).

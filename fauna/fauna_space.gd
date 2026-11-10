@@ -112,11 +112,33 @@ static func prop_sized(bb: AABB, ground: float = 0.0) -> bool:
 ## Stamps every prop-sized mesh / multimesh instance under root (skipping `skip` subtrees and
 ## ground-cover names). Returns the number of props stamped.
 func scan(root: Node, skip: Array = []) -> int:
-	var n: int = 0
-	var stack: Array[Node] = [root]
-	while not stack.is_empty():
-		var node: Node = stack.pop_back()
-		if node in skip:
+	scan_begin(root, skip)
+	scan_step(0)
+	return _n
+
+
+# [v5load] The same scan in steps: on the globe Fauna rescans every 30 m Lumi walks, and one pass
+# over the whole world (every MultiMesh instance of the town, the hinterland and the junk) was a
+# 30-150 ms frame. scan_begin + scan_step(budget) spread it; scan() is both in one call.
+var _stack: Array[Node] = []
+var _skip: Array = []
+var _n: int = 0
+
+
+func scan_begin(root: Node, skip: Array = []) -> void:
+	_stack = [root]
+	_skip = skip
+	_n = 0
+
+
+## Continues the scan for about budget_us (0: to the end). True when it is done.
+func scan_step(budget_us: int) -> bool:
+	var t0: int = Time.get_ticks_usec()
+	while not _stack.is_empty():
+		if budget_us > 0 and Time.get_ticks_usec() - t0 > budget_us:
+			return false
+		var node: Node = _stack.pop_back()
+		if not is_instance_valid(node) or node in _skip:
 			continue
 		if node is Node3D and not (node as Node3D).visible:
 			continue
@@ -146,7 +168,7 @@ func scan(root: Node, skip: Array = []) -> int:
 						perches.append(ixf * top_point(mm.mesh))
 					if prop_sized(bb):
 						_stamp_bb(bb)
-						n += 1
+						_n += 1
 						by_node[str(node.get_parent().name) + "/" + nm.left(18)] = int(by_node.get(str(node.get_parent().name) + "/" + nm.left(18), 0)) + 1
 		elif node is MeshInstance3D:
 			var mi := node as MeshInstance3D
@@ -157,11 +179,12 @@ func scan(root: Node, skip: Array = []) -> int:
 					perches.append(mxf * top_point(mi.mesh))
 				if prop_sized(bb2):
 					_stamp_bb(bb2)
-					n += 1
+					_n += 1
 					by_node[str(node.get_parent().name) + "/" + nm.left(18)] = int(by_node.get(str(node.get_parent().name) + "/" + nm.left(18), 0)) + 1
 		for c: Node in node.get_children():
-			stack.append(c)
-	return n
+			_stack.append(c)
+	_skip = []
+	return true
 
 
 ## Something a small bird could sit on top of: tall and slim, or a roof crown up high.

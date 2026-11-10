@@ -12,10 +12,19 @@ static func census(root: Node, shadow_splits: int = 1) -> Dictionary:
 	var groups: Dictionary = {}
 	var mats: Dictionary = {}
 	var total: Dictionary = _blank()
+	# [v5load] Distance culling counts too: an instance past its visibility_range_end (measured, as
+	# the renderer does, from the camera to its bounds' centre) is left out and counted in
+	# `range_culled`. STATS_NO_RANGE=1 gives the old whole-scene numbers.
+	var cam: Camera3D = root.get_viewport().get_camera_3d() if root.is_inside_tree() and OS.get_environment("STATS_NO_RANGE") == "" else null
 	for n: Node in root.find_children("*", "GeometryInstance3D", true, false):
 		var g: GeometryInstance3D = n as GeometryInstance3D
 		if not g.is_visible_in_tree():
 			continue
+		if cam and g.visibility_range_end > 0.0:
+			var ctr: Vector3 = g.global_transform * g.get_aabb().get_center()
+			if cam.global_position.distance_to(ctr) > g.visibility_range_end + g.visibility_range_end_margin:
+				total["range_culled"] = int(total.get("range_culled", 0)) + 1
+				continue
 		var top: Node = g
 		while top.get_parent() and top.get_parent() != root:
 			top = top.get_parent()
@@ -26,6 +35,9 @@ static func census(root: Node, shadow_splits: int = 1) -> Dictionary:
 			key = "%s>%s" % [key.get_slice("@", 1), str(g.get_parent().name) if g.get_parent() != top else str(g.name)]
 		if OS.get_environment("STATS_SPLIT") == key:  # e.g. STATS_SPLIT=City: break one group down
 			var sub: String = str(g.name).rstrip("0123456789_-").replace("@", "")
+			if str(g.name).begins_with("@") or sub in ["MultiMeshInstance3D", "MeshInstance3D"]:  # [v5load] unnamed: say whose it is
+				var par: Node = g.get_parent()
+				sub = "%s<%s<%s" % [sub.left(9), str(par.name).rstrip("0123456789_-").replace("@", ""), str(par.get_parent().name).rstrip("0123456789_-").replace("@", "") if par.get_parent() else ""]
 			key = "%s/%s" % [key, (g.mesh.resource_name if g is MeshInstance3D and g.mesh and g.mesh.resource_name != "" else sub)]
 		var row: Dictionary = groups.get(key, _blank())
 		var surf: int = 1
@@ -59,7 +71,7 @@ static func census(root: Node, shadow_splits: int = 1) -> Dictionary:
 		row["est_draws"] += surf * 2 + (surf * shadow_splits if casts else 0)
 		groups[key] = row
 	for key: String in groups:
-		for f: String in total:
+		for f: String in groups[key]:
 			total[f] += groups[key][f]
 	total["materials"] = mats.size()
 	return {"total": total, "groups": groups}
@@ -108,6 +120,8 @@ static func print_census(root: Node, shadow_splits: int = 1) -> void:
 	var t: Dictionary = c["total"]
 	print("[stats] TOTAL nodes=%d meshes=%d multimeshes=%d mm_instances=%d labels=%d surfaces=%d shadow_surfaces=%d materials=%d est_draws=%d tris=%d" % [
 		t["nodes"], t["meshes"], t["multimeshes"], t["mm_instances"], t["labels"], t["surfaces"], t["shadow_surfaces"], t["materials"], t["est_draws"], t["tris"]])
+	if int(t.get("range_culled", 0)) > 0:
+		print("[stats] %d instances past their visibility range from the camera are not counted (STATS_NO_RANGE=1 counts them)" % int(t["range_culled"]))
 
 
 ## [vqa2] What sits right in front of the play camera: casts rays through the bottom band and the

@@ -174,20 +174,55 @@ func pieces_in(cell: int) -> PackedInt32Array:
 ## Count follows the cell's junk left, so a hex the crews half cleaned shows half its junk.
 ## Returns the new piece ids.
 func materialize(cell: int) -> PackedInt32Array:
+	if _mz_cell == cell:  # [v5load] half made by materialize_step: finish it now
+		return _mz_run(0)
+	if _mz_cell >= 0:
+		_mz_run(0)
+	if not _mz_begin(cell):
+		return _mz_done
+	return _mz_run(0)
+
+
+# [v5load] A cell's pieces in steps. Laying ~70 pieces (keep-out tests, heights, bases) is 12-40 ms,
+# and the near ring's deferred fill (OrbitPlanet._drain_fill) did a whole cell at a time: a long
+# frame every few metres walked. materialize_step lays one cell across frames under a time budget;
+# materialize() is the same work in one call (and finishes a half-made cell). One cell at a time is
+# in progress; until it is done its pieces are not in hex_pieces, so nothing sees half a cell.
+var _mz_cell: int = -1
+var _mz: Dictionary = {}
+var _mz_done := PackedInt32Array()
+
+
+## Lays cell's pieces for at most budget_us this call. True once the cell is made.
+func materialize_step(cell: int, budget_us: int) -> bool:
+	if _mz_cell != cell:
+		if materialized[cell] == 1:
+			return true
+		if _mz_cell >= 0:
+			_mz_run(0)
+		if not _mz_begin(cell):
+			return true
+	_mz_run(budget_us)
+	return _mz_cell != cell
+
+
+## The part before the pieces. False when the cell needs none (made already, water, clean).
+func _mz_begin(cell: int) -> bool:
 	var out := PackedInt32Array()
+	_mz_done = out
 	if materialized[cell] == 1:
-		return out
+		return false
 	materialized[cell] = 1
 	if locked_biomes.has(int(cells.biome[cell])) and not _saved_unlocked.has(cell):
 		locked[cell] = true
 	if hex_water[cell] == 1:
-		return _materialize_floating(cell)
+		return _float_begin(cell)
 	if hex_hub[cell] == 0:
 		_roll_parts(cell)
 		if not cells.has_flag(cell, SphereCells.F_SITE):  # [orbD] no wreck landmarks in a hub site's streets
 			_roll_landmark(cell)
 	if not cells.is_dirty(cell):
-		return out
+		return false
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash([seed_value, cell, 911])
 	var left: float = cells.junk[cell]
@@ -199,8 +234,37 @@ func materialize(cell: int) -> PackedInt32Array:
 	var lm: Dictionary = landmarks[_cell_landmark[cell]] if _cell_landmark.has(cell) else {}
 	var lm_at: Vector2 = cell_local(cell, lm["pos"]) if not lm.is_empty() else Vector2.ZERO
 	var lm_clear: float = float(lm.get("clear", 2.2)) + 0.3
-	var vol_sum: float = 0.0
-	for k: int in count:
+	materialized[cell] = 0  # until its pieces are all laid (_mz_run), the cell counts as not made
+	_mz_cell = cell
+	_mz = {"rng": rng, "left": left, "count": count, "ctr": ctr, "f": f, "piles": piles, "lm": lm, "lm_at": lm_at, "lm_clear": lm_clear,
+		"vol_sum": 0.0, "k": 0, "out": out}
+	return true
+
+
+func _mz_run(budget_us: int) -> PackedInt32Array:
+	if _mz.has("float"):
+		return _float_run(budget_us)
+	var t0: int = Time.get_ticks_usec()
+	var cell: int = _mz_cell
+	var rng: RandomNumberGenerator = _mz["rng"]
+	var left: float = _mz["left"]
+	var count: int = _mz["count"]
+	var ctr: Vector3 = _mz["ctr"]
+	var f: Basis = _mz["f"]
+	var piles: Array = _mz["piles"]
+	var lm: Dictionary = _mz["lm"]
+	var lm_at: Vector2 = _mz["lm_at"]
+	var lm_clear: float = _mz["lm_clear"]
+	var vol_sum: float = _mz["vol_sum"]
+	var out: PackedInt32Array = _mz["out"]
+	var k: int = int(_mz["k"]) - 1
+	while k + 1 < count:
+		k += 1
+		if budget_us > 0 and (k & 3) == 0 and Time.get_ticks_usec() - t0 > budget_us:
+			_mz["k"] = k
+			_mz["vol_sum"] = vol_sum
+			_mz["out"] = out
+			return out
 		var r: float = sqrt(rng.randf()) * hex_size * 0.92
 		var a: float = rng.randf() * TAU
 		var lx: float = cos(a) * r
@@ -258,6 +322,10 @@ func materialize(cell: int) -> PackedInt32Array:
 	_scale_cell(out, vol_sum, FLAT_HEX_VOL * left)
 	hex_left[cell] = FLAT_HEX_VOL * left
 	hex_total[cell] = FLAT_HEX_VOL
+	materialized[cell] = 1
+	_mz_cell = -1
+	_mz = {}
+	_mz_done = out
 	return out
 
 
@@ -533,20 +601,49 @@ func _roll_landmark(cell: int) -> void:
 # --- [orbB] Floating junk ----------------------------------------------------------------------
 
 func _materialize_floating(cell: int) -> PackedInt32Array:
+	if not _float_begin(cell):
+		return _mz_done
+	return _float_run(0)
+
+
+## [v5load] A lake cell's floating junk through the same stepper as land cells (_mz_run).
+func _float_begin(cell: int) -> bool:
 	var out := PackedInt32Array()
+	_mz_done = out
 	if not water_dirty(cell):
-		return out
+		return false
 	var by_id: Dictionary = {}
 	for i: int in Economy.junk_ids.size():
 		by_id[Economy.junk_ids[i]] = i
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash([seed_value, cell, 913])
 	var left: float = cells.junk[cell]
-	var count: int = int(round(FLOAT_PIECES * float_mult * left))
+	materialized[cell] = 0  # until its pieces are all laid
+	_mz_cell = cell
+	_mz = {"float": true, "rng": rng, "left": left, "count": int(round(FLOAT_PIECES * float_mult * left)), "by_id": by_id,
+		"vol_sum": 0.0, "k": 0, "out": out}
+	return true
+
+
+func _float_run(budget_us: int) -> PackedInt32Array:
+	var t0: int = Time.get_ticks_usec()
+	var cell: int = _mz_cell
+	var rng: RandomNumberGenerator = _mz["rng"]
+	var left: float = _mz["left"]
+	var count: int = _mz["count"]
+	var by_id: Dictionary = _mz["by_id"]
+	var vol_sum: float = _mz["vol_sum"]
+	var out: PackedInt32Array = _mz["out"]
 	var ctr: Vector3 = grid.centers[cell]
 	var f: Basis = SphereGrid.frame(ctr)
-	var vol_sum: float = 0.0
-	for k: int in count:
+	var k: int = int(_mz["k"]) - 1
+	while k + 1 < count:
+		k += 1
+		if budget_us > 0 and (k & 3) == 0 and Time.get_ticks_usec() - t0 > budget_us:
+			_mz["k"] = k
+			_mz["vol_sum"] = vol_sum
+			_mz["out"] = out
+			return out
 		var r: float = sqrt(rng.randf()) * hex_size * 0.92
 		var a: float = rng.randf() * TAU
 		var d: Vector3 = (ctr + (f.x * cos(a) + f.z * sin(a)) * (r / grid.radius_m)).normalized()
@@ -570,6 +667,10 @@ func _materialize_floating(cell: int) -> PackedInt32Array:
 	_scale_cell(out, vol_sum, FLAT_LAKE_VOL * float_mult * left)
 	hex_left[cell] = FLAT_LAKE_VOL * float_mult * left
 	hex_total[cell] = FLAT_LAKE_VOL * float_mult
+	materialized[cell] = 1
+	_mz_cell = -1
+	_mz = {}
+	_mz_done = out
 	return out
 
 

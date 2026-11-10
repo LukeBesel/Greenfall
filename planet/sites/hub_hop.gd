@@ -87,6 +87,8 @@ func hop_with(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTerra
 	var p: SitePrefab = sm.build_hub(to_i)
 	if not p.is_built:
 		await p.rebuilt
+	for hf: Node in get_tree().get_nodes_in_group("hub_frame"):  # [v5load] the hub's systems too, while the veil hides the frame
+		(hf as HubFrame).switch_to(to_i)
 	b0 = sm.pad_xf(to_i)
 	await _fade(0.0, true)
 	# In leg: approach low and land on the pad.

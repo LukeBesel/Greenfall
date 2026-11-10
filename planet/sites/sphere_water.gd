@@ -10,6 +10,7 @@ extends Node3D
 ## moment (chime, whoosh, a little shake, Wren's line) and stocks it.
 
 const BELOW_LAND: float = 0.25  # [v1world] was 0.12: the chunk bank (sphere_chunk_job._wetness) crosses this inside the cell
+const RIPPLE_FAR: Array[float] = [60.0, 250.0, 400.0, 400.0]  # [v5load] metres, Low .. Ultra (sphere_water.gdshader)
 const FISH_PER_CELL: int = 3
 const FISH_SPREAD: float = 5.0  # jump starts within this far of the cell centre (10 m cells)
 
@@ -30,6 +31,8 @@ func setup_globe(g: Node) -> void:
 	cells = g.get("cells")
 	_mat = ShaderMaterial.new()
 	_mat.shader = preload("res://planet/sites/sphere_water.gdshader")
+	# [v5load] A cheaper far path on Low and Medium; --water-ripple-far=M overrides (A/B: 100000 = every wave everywhere).
+	_mat.set_shader_parameter("ripple_far", DevHooks.get_f("water-ripple-far", RIPPLE_FAR[clampi(Settings.quality, 0, 3)]))
 	globe_ref = g  # [v4world] its streamer's ground materials get the sky too (far water)
 	var st: SphereStreamer = g.get("streamer")
 	if st:
@@ -51,9 +54,11 @@ func _on_near(added: PackedInt32Array, removed: PackedInt32Array) -> void:
 			(_cell[c] as Node).queue_free()
 			_cell.erase(c)
 			_fish = _fish.filter(func(f: Dictionary) -> bool: return int(f["cell"]) != c)
+	var h: int = Hitch.t()
 	for c: int in added:
 		if cells.state[c] == 5 and not _cell.has(c):
 			_build(c)
+	Hitch.mark("water cells", h)
 
 
 func _build(c: int) -> void:
