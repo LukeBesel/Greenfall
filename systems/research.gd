@@ -342,6 +342,15 @@ static func grant(id: String) -> void:
 		_complete(id)
 
 
+## A project that comes with something else the player bought (the Bot Bay brings Salvage Logic):
+## researched at once, but not a project the player ran, so it is not counted in research_done and
+## not announced as finished research.
+static func gift(id: String) -> void:
+	if exists(id) and not has(id):
+		done_list().append(id)
+		_mods_size = -1
+
+
 static func time_text(s: float) -> String:
 	var n: int = int(ceil(s))
 	if n >= 60:

@@ -320,20 +320,21 @@ func test_b4_bin_step_guides_to_the_scale_once_the_baler_is_fitted() -> void:
 
 ## B4 (new, B26): step 19 "Finish a research project" teaches the Research tab. The Bot Bay (step
 ## 11) comes with Salvage Logic through Research.grant, which counts as a finished project
-## (research_done), so step 19 always holds before its turn and completes by itself: the player is
-## told they finished a research project without having opened the Research tab.
+## (research_done), so step 19 always held before its turn and completed by itself: the player was
+## told they finished a research project without having opened the Research tab. The gift goes
+## through Research.gift now: researched, not counted, not announced.
 func test_b4_research_step_is_not_finished_by_the_bot_bay_gift() -> void:
-	pending("B26 the Bot Bay's Salvage Logic gift finishes the research step (ui/bench_tiers.gd buy -> Research.grant counts research_done)")
-	return
 	var w := StubWorld.new()
 	var o := _objectives(w)
 	GameState.flags["signal_tower"] = 1
 	GameState.stats["hexes_cleaned"] = 3
 	GameState.add_currency("cubes", BigNum.from_float(100000.0))
 	GameState.add_currency("parts", BigNum.from_float(100000.0))
+	var research1: Dictionary = o.chain.filter(func(d: Dictionary) -> bool: return str(d["id"]) == "research1")[0]
+	watch_signals(EventBus)
 	assert_true(BenchTiers.buy(w), "the Bot Bay can be bought")
 	assert_true(Research.has("salvage_logic"), "the Bot Bay brings Salvage Logic")
-	var research1: Dictionary = o.chain.filter(func(d: Dictionary) -> bool: return str(d["id"]) == "research1")[0]
+	assert_signal_not_emitted(EventBus, "research_completed", "a gift is not announced as research the player finished")
 	assert_lt(o.value_of(research1), o.target_of(research1), "no project was run, yet the research step already counts %d / %d" % [
 		int(o.value_of(research1)), int(o.target_of(research1))])
 

@@ -111,7 +111,7 @@ static func buy(w: Node = null) -> bool:
 	GameState.flags["bench_tier"] = t
 	GameState.inc_stat("bench_tiers")
 	for rid: Variant in def(t).get("grants_research", []):  # the Bot Bay brings Salvage Logic: robots right away
-		Research.grant(str(rid))
+		Research.gift(str(rid))
 	var names: Array[String] = []
 	for tab: Variant in def(t).get("tabs", []):
 		for td: Dictionary in UpgradesScreen.TABS:
