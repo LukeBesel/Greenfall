@@ -476,7 +476,7 @@ msgid "Requires hub level %d or research: %s."
 msgstr "基地レベル %d または研究「%s」が必要。"
 
 #: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
-#: systems/camp/camp.gd:402 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:155
+#: systems/camp/camp.gd:414 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:155
 #: systems/camp/hub_builds.gd:165 systems/camp/hub_builds.gd:175 systems/camp/yard_builds.gd:91
 #: ui/telescope_panel.gd:40
 msgid "Not enough materials."
@@ -515,7 +515,7 @@ msgstr "%s 相当のベールが、運ぶ者もなく基地に積まれていた
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "清浄機がずっと空気をろ過していた。少しだけ澄んだ。"
 
-#: core/pace.gd:147 story/objectives.gd:796
+#: core/pace.gd:147 story/objectives.gd:813
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "重すぎる。作業台でリフト力をアップグレードしよう。"
 
@@ -531,31 +531,31 @@ msgstr "ベーラーがまだない。胸のゴミをゴミ箱へ運ぼう。"
 msgid "+%s cubes"
 msgstr "+%s キューブ"
 
-#: fauna/fauna.gd:1555
+#: fauna/fauna.gd:1650
 msgid "E   pet %s"
 msgstr "E   %s をなでる"
 
-#: fauna/fauna.gd:1556
+#: fauna/fauna.gd:1651
 msgid "E   pet the cat"
 msgstr "E   ネコをなでる"
 
-#: fauna/fauna.gd:1614
+#: fauna/fauna.gd:1709
 msgid "E   scatter crumbs for the birds"
 msgstr "E   鳥にパンくずをまく"
 
-#: fauna/fauna.gd:1662
+#: fauna/fauna.gd:1757
 msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
 msgstr "鳥たちはきみを気に入ったみたい。パンくず袋をコレクションに追加した。"
 
-#: fauna/fauna.gd:1718
+#: fauna/fauna.gd:1813
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "このネコはきみを自分のものだと決めたらしい。%s だよ。これからはこの基地で暮らすって。"
 
-#: fauna/fauna.gd:2039 ui/subtitles.gd:455
+#: fauna/fauna.gd:2134 ui/subtitles.gd:455
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "新しく発見：%s。図鑑に追加されたよ。"
 
-#: fauna/fauna.gd:2110
+#: fauna/fauna.gd:2205
 msgid "Snap! A %s for your Collection."
 msgstr "パシャ！%s の写真をコレクションに追加。"
 
@@ -772,7 +772,7 @@ msgstr "WREN：そこが測量ゾーンの端よ、Lumi。外にはもやしか�
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi はふわりと固い地面に戻った。"
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1085 scenes/slice_orbit.gd:364
+#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1085 scenes/slice_orbit.gd:397
 msgid "HEX CLEAN!  +%s"
 msgstr "ヘックス クリーン！  +%s"
 
@@ -784,20 +784,20 @@ msgstr "ロケットホップ：%.1f km"
 msgid "The rocket is in flight."
 msgstr "ロケットは飛行中。"
 
-#: planet/sites/orbit_sites.gd:153
+#: planet/sites/orbit_sites.gd:157
 msgid "E   Rocket: choose a destination"
 msgstr "E   ロケット：行き先を選ぶ"
 
-#: planet/sites/orbit_sites.gd:186
+#: planet/sites/orbit_sites.gd:190
 msgid "%s site"
 msgstr "%sの地点"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: planet/sites/orbit_sites.gd:187 ui/main_menu.gd:476
+#: planet/sites/orbit_sites.gd:191 ui/main_menu.gd:476
 msgid "Hub %d"
 msgstr "基地 %d"
 
-#: planet/sites/sphere_water.gd:258 water/water_view.gd:79
+#: planet/sites/sphere_water.gd:263 water/water_view.gd:79
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
 msgstr "水が……底が見える。Lumi、下で何かが動いてる。"
 
@@ -857,7 +857,7 @@ msgstr ""
 "コンポストプレス  Lv %d\n"
 "ホッパー %d%%  →  種"
 
-#: plants/garden.gd:346
+#: plants/garden.gd:364
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "ヘックスが完全によみがえった。もう小さな何かが住みついている。"
 
@@ -909,47 +909,47 @@ msgstr "Lumi はガタガタと庭に戻ってきた。いまのは何だった�
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi は泳げない。作業台のホバージェットがあれば湖の上を浮いて進める。"
 
-#: player/patch.gd:302
+#: player/patch.gd:318
 msgid "No seeds yet. Keep cleaning."
 msgstr "まだ種がない。片づけを続けよう。"
 
-#: player/patch.gd:337
+#: player/patch.gd:353
 msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 msgstr "種にはきれいで開けた地面が必要。道路、縁石、発着場には植えられない。"
 
-#: player/patch.gd:344
+#: player/patch.gd:360
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "種がなくなった。咲いた植物がまた落としてくれる。"
 
-#: player/patch.gd:351
+#: player/patch.gd:367
 msgid "Watering can is empty. Refill at the hub."
 msgstr "じょうろが空っぽ。基地で補給しよう。"
 
-#: player/patch.gd:553
+#: player/patch.gd:569
 msgid "PERFECT BALE  %s"
 msgstr "パーフェクトベール  %s"
 
-#: player/patch.gd:559
+#: player/patch.gd:575
 msgid "OVERSTUFFED  %s"
 msgstr "詰め込みすぎ  %s"
 
-#: player/patch.gd:563
+#: player/patch.gd:579
 msgid "PURE  %s"
 msgstr "ピュア  %s"
 
-#: player/patch.gd:565
+#: player/patch.gd:581
 msgid "SURGE  %s"
 msgstr "サージ  %s"
 
-#: player/patch.gd:568
+#: player/patch.gd:584
 msgid "  (streak +%d%%)"
 msgstr "  （連続 +%d%%）"
 
-#: player/patch.gd:611
+#: player/patch.gd:627
 msgid "Salvaged: %s"
 msgstr "回収：%s"
 
-#: player/patch.gd:640
+#: player/patch.gd:656
 msgid "Recovered: %s"
 msgstr "発見：%s"
 
@@ -1279,7 +1279,7 @@ msgstr "%s %s 組み立て完了。きょろきょろしてから、仕事に取
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr "ロボットアップリンク接続。B で指揮ビュー：ゾーンを塗って、好きな場所にクルーを送ろう。"
 
-#: scenes/slice.gd:1099 scenes/slice_orbit.gd:380
+#: scenes/slice.gd:1099 scenes/slice_orbit.gd:413
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
@@ -1287,59 +1287,63 @@ msgstr "マイルストーン：きれいなヘックス %d 個！"
 msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
 msgstr "ジャンクヤードがまるごときれいになった。Lumi はとても長くて、とてもうれしそうなビープを鳴らした。"
 
-#: scenes/slice.gd:1108
+#: scenes/slice.gd:1108 ui/rockets_panel.gd:60
+msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
+msgstr "発射台のロケットまで歩いて、Eを押して行き先を選ぼう。"
+
+#: scenes/slice.gd:1111
 msgid "%s is out of range: %s"
 msgstr "%s は範囲外：%s"
 
-#: scenes/slice.gd:1118
+#: scenes/slice.gd:1121
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "ロック中。発射台を建てるには基地をレベル5に上げよう。"
 
-#: scenes/slice.gd:1121 ui/rockets_panel.gd:39
+#: scenes/slice.gd:1124 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "エネルギーセル充電中：%s。ロケットのアップグレードで充電が速くなる。"
 
-#: scenes/slice.gd:1175
+#: scenes/slice.gd:1178
 msgid "Touchdown: %s. Hub %d of %d. %s"
 msgstr "着陸：%s。基地 %d / %d。%s"
 
-#: scenes/slice.gd:1176
+#: scenes/slice.gd:1179
 msgid "The rocket is parked on the lot, ready when its cells refill."
 msgstr "ロケットは空き地に駐機中。セルが満タンになればいつでも行ける。"
 
-#: scenes/slice.gd:1176
+#: scenes/slice.gd:1179
 msgid "Landed on the base pad."
 msgstr "基地のパッドに着陸した。"
 
-#: scenes/slice.gd:1294 scenes/slice_orbit.gd:918
+#: scenes/slice.gd:1299 scenes/slice_orbit.gd:992
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice.gd:1485
+#: scenes/slice.gd:1490
 msgid "Welcome back. The junk waited for you."
 msgstr "おかえり。ガラクタが待っていたよ。"
 
-#: scenes/slice.gd:1502
+#: scenes/slice.gd:1507
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨基地 %d · Lv%d"
 
-#: scenes/slice.gd:1502
+#: scenes/slice.gd:1507
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨基地 %d · 廃墟"
 
-#: scenes/slice_orbit.gd:449 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:575
+#: scenes/slice_orbit.gd:482 systems/camp/camp.gd:188 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   作業台を直す"
 
-#: scenes/slice_orbit.gd:449 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:482 systems/camp/camp.gd:189
 msgid "E   Open the workbench"
 msgstr "E   作業台を開く"
 
-#: scenes/slice_orbit.gd:1018
+#: scenes/slice_orbit.gd:1092
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "作業台を修理した。作業台で E を押すとキューブでアップグレードできる。"
 
-#: scenes/story_preview.gd:156 ui/loading_screen.gd:164
+#: scenes/story_preview.gd:156 ui/loading_screen.gd:166
 msgid "Setting the scene"
 msgstr "舞台を準備中"
 
@@ -1527,47 +1531,47 @@ msgstr "Cradle号の帰還 ・ 方舟の応答"
 msgid "The Cradle is holding orbit. Restore the whole system: the solar map is on the hologram (M). Build the Mk V Orbital drive to reach Ochre and Tidewell."
 msgstr "Cradle は軌道上で待機中。星系をまるごと再生しよう。太陽系マップはホログラム（M）にある。Mk V オービタル推進を造れば Ochre と Tidewell に行ける。"
 
-#: story/egg_props.gd:181
+#: story/egg_props.gd:187
 msgid "SELECT  A1  ·  B4  ·  C7"
 msgstr "セレクト  A1  ·  B4  ·  C7"
 
-#: story/egg_props.gd:206
+#: story/egg_props.gd:212
 msgid "WE'LL BE BACK AFTER LUNCH"
 msgstr "昼休み後に戻ります"
 
-#: story/egg_props.gd:321
+#: story/egg_props.gd:327
 msgid "OPEN IN 100 YEARS"
 msgstr "100年後に開店"
 
-#: story/egg_props.gd:338
+#: story/egg_props.gd:344
 msgid "HI-SCORE"
 msgstr "ハイスコア"
 
-#: story/egg_props.gd:339
+#: story/egg_props.gd:345
 msgid "WREN  999990"
 msgstr "WREN  999990"
 
-#: story/egg_props.gd:340
+#: story/egg_props.gd:346
 msgid "INSERT COIN"
 msgstr "コインを入れてね"
 
-#: story/egg_props.gd:343
+#: story/egg_props.gd:349
 msgid "SWEEP-O-TRON"
 msgstr "スイープ・オ・トロン"
 
-#: story/egg_props.gd:435
+#: story/egg_props.gd:441
 msgid "BISCUIT"
 msgstr "ビスケット"
 
-#: story/egg_props.gd:463
+#: story/egg_props.gd:469
 msgid "FIZZ"
 msgstr "FIZZ"
 
-#: story/egg_props.gd:609
+#: story/egg_props.gd:615
 msgid "(it is not wet)"
 msgstr "（濡れてないよ）"
 
-#: story/egg_props.gd:626
+#: story/egg_props.gd:632
 msgid ""
 "THE LEDGER IS WATCHING\n"
 "(FOR SAVINGS)"
@@ -1575,7 +1579,7 @@ msgstr ""
 "LEDGER が見ています\n"
 "（節約のために）"
 
-#: story/egg_props.gd:704
+#: story/egg_props.gd:710
 msgid ""
 "EMPLOYEE OF\n"
 "THE MONTH\n"
@@ -1585,7 +1589,7 @@ msgstr ""
 "優秀社員\n"
 "— キューブ —"
 
-#: story/egg_props.gd:734
+#: story/egg_props.gd:740
 msgid ""
 "FORECAST\n"
 "ALWAYS RIGHT*"
@@ -1593,19 +1597,19 @@ msgstr ""
 "天気予報\n"
 "いつも的中*"
 
-#: story/egg_props.gd:759
+#: story/egg_props.gd:765
 msgid "SHOW ENTRY"
 msgstr "ショー入口"
 
-#: story/egg_props.gd:801
+#: story/egg_props.gd:807
 msgid "THE BUILDERS · DO NOT TIDY"
 msgstr "ビルダーズ · 片づけ禁止"
 
-#: story/egg_props.gd:889
+#: story/egg_props.gd:895
 msgid "FINE"
 msgstr "罰金"
 
-#: story/egg_props.gd:966
+#: story/egg_props.gd:972
 msgid ""
 "BACK IN\n"
 "5 MINUTES"
@@ -1613,87 +1617,87 @@ msgstr ""
 "5分で\n"
 "戻ります"
 
-#: story/eggs.gd:431
+#: story/eggs.gd:439
 msgid "Something metal surfaced in the cleared ground."
 msgstr "片づいた地面から何か金属のものが出てきた。"
 
-#: story/eggs.gd:644 story/eggs.gd:706
+#: story/eggs.gd:652 story/eggs.gd:714
 msgid "Gnome %d / %d"
 msgstr "ノーム %d / %d"
 
-#: story/eggs.gd:652
+#: story/eggs.gd:660
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr "最後のポスターがすぐ近くを指している。近くでオレンジ色の何かが丸まっている。"
 
-#: story/eggs.gd:707
+#: story/eggs.gd:715
 msgid "%s   ·   added to Lumi's collection"
 msgstr "%s   ·   Lumiのコレクションに追加"
 
-#: story/eggs.gd:723
+#: story/eggs.gd:731
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr "ラジオが小さくザーッと鳴っている。上ではまだ何も目覚めていない。暗くなってからまた来よう。"
 
-#: story/eggs.gd:724
+#: story/eggs.gd:732
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr "望遠鏡をのぞくと：明るくほこりっぽい空だけ。暗くなってからまた来よう。"
 
-#: story/eggs.gd:753
+#: story/eggs.gd:761
 msgid "SOLD OUT"
 msgstr "売り切れ"
 
-#: story/eggs.gd:771
+#: story/eggs.gd:779
 msgid "QUACK!"
 msgstr "グワッ！"
 
-#: story/eggs.gd:789
+#: story/eggs.gd:797
 msgid "NEW CHALLENGER!"
 msgstr "新たな挑戦者！"
 
-#: story/eggs.gd:792
+#: story/eggs.gd:800
 msgid "GAME OVER  ·  SCORE 12"
 msgstr "ゲームオーバー  ·  スコア 12"
 
-#: story/eggs.gd:820
+#: story/eggs.gd:828
 msgid "hi, Gus"
 msgstr "やあ、ガス"
 
-#: story/eggs.gd:865
+#: story/eggs.gd:873
 msgid "CONFETTI"
 msgstr "紙吹雪"
 
-#: story/eggs.gd:865
+#: story/eggs.gd:873
 msgid "LIGHT JAZZ"
 msgstr "ライトジャズ"
 
-#: story/eggs.gd:865
+#: story/eggs.gd:873
 msgid "99% DUCKS"
 msgstr "アヒル率 99%"
 
-#: story/eggs.gd:865
+#: story/eggs.gd:873
 msgid "SUNNY (INDOORS)"
 msgstr "晴れ（屋内）"
 
-#: story/eggs.gd:865
+#: story/eggs.gd:873
 msgid "FOG OF NOODLES"
 msgstr "ヌードルの霧"
 
-#: story/eggs.gd:870
+#: story/eggs.gd:878
 msgid "1ST PLACE"
 msgstr "1位"
 
-#: story/eggs.gd:928
+#: story/eggs.gd:936
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr "アヒルがキュッと秘密をささやく：「%s」で %s デザインが解放される。"
 
-#: story/eggs.gd:929
+#: story/eggs.gd:937
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "アヒルは知っていることを全部教えてくれた。グワッ。"
 
-#: story/eggs.gd:1157
+#: story/eggs.gd:1165
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "珍品発見：%s（%d / %d）   %s"
 
-#: story/eggs.gd:1168
+#: story/eggs.gd:1176
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "リストの珍品をぜんぶ見つけた。Lumi のコレクション室は思い出でいっぱい。"
 
@@ -1822,7 +1826,7 @@ msgstr "Lumi——がんばって——向きを変えられない——がん�
 msgid "The ark could not turn back. The pod fell for days."
 msgstr "アークは引き返せなかった。ポッドは何日も落ち続けた。"
 
-#: story/intro.gd:870
+#: story/intro.gd:895
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr "緑の光  ·  検知なし"
 
@@ -1990,43 +1994,43 @@ msgstr "目標達成  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "目標達成  ·  %s"
 
-#: story/objectives.gd:642
+#: story/objectives.gd:649
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "ベーラーを取り付けた！胸をいっぱいにして、[%s] でベールを作り、はかりまで運ぼう。"
 
-#: story/objectives.gd:664 story/objectives.gd:784
+#: story/objectives.gd:671 story/objectives.gd:801
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "胸がいっぱい。[%s] を押してベールを作ろう。"
 
-#: story/objectives.gd:680
+#: story/objectives.gd:687
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "探知機が近くに埋まったロボットのパーツを見つけたよ。「埋もれたパーツ」の表示を追って。真上に来るとピッと鳴るよ。"
 
-#: story/objectives.gd:682
+#: story/objectives.gd:689
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋もれたパーツ：反応が一番強くなるまで近づいて、掘り出そう。"
 
-#: story/objectives.gd:785
+#: story/objectives.gd:802
 msgid "Your chest is full. Bring it to the bin."
 msgstr "胸がいっぱい。ゴミ箱へ運ぼう。"
 
-#: story/objectives.gd:792
+#: story/objectives.gd:809
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "胸がいっぱい。おうちへ帰ろう。ゴミ箱は高い煙の下だよ。"
 
-#: story/objectives.gd:794
+#: story/objectives.gd:811
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "ベールをおうちへ運ぼう。はかりは高い煙の下だよ。"
 
-#: story/objectives.gd:794
+#: story/objectives.gd:811
 msgid "Carry your bale to the scale by the bin."
 msgstr "ベールをゴミ箱のそばのはかりへ運ぼう。"
 
-#: story/objectives.gd:801
+#: story/objectives.gd:818
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "おうちへ帰ろう。光の柱を追って高い煙のところへ。"
 
-#: story/objectives.gd:811
+#: story/objectives.gd:828
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "ここには拾うものがない。もっとゴミのあるところへ歩こう。"
 
@@ -2961,19 +2965,19 @@ msgstr "月光"
 msgid "New CD: %s by %s, from %s"
 msgstr "新しいCD：%s（%s、%s出身）"
 
-#: systems/camp/camp.gd:224
+#: systems/camp/camp.gd:236
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "作業台が直った！そばで %s を押してアップグレードを買おう。"
 
-#: systems/camp/camp.gd:386
+#: systems/camp/camp.gd:398
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr "E   %s（Lv %d）：アップグレード完了"
 
-#: systems/camp/camp.gd:392
+#: systems/camp/camp.gd:404
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr "E   %s（Lv %d）：%s にアップグレード（%s）"
 
-#: systems/camp/camp.gd:398
+#: systems/camp/camp.gd:410
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "ゴミ箱をアップグレード：%s。ここではベールが %d%% で売れる。"
 
@@ -3053,35 +3057,35 @@ msgstr "早めに引退できるのは Mk I-II のロボットだけ。%s はあ
 msgid "%s retires to the nursery garden. +%d parts, and the flowers get a caretaker."
 msgstr "%s は苗床ガーデンで引退生活へ。+%d パーツ、花には世話係ができた。"
 
-#: systems/extras/nursery.gd:190
+#: systems/extras/nursery.gd:196
 msgid "NURSERY"
 msgstr "苗床"
 
-#: systems/extras/nursery.gd:214
+#: systems/extras/nursery.gd:220
 msgid "E   Say hi to %s"
 msgstr "E   %s にあいさつ"
 
-#: systems/extras/nursery.gd:272
+#: systems/extras/nursery.gd:278
 msgid "CARETAKER · %s"
 msgstr "世話係 · %s"
 
-#: systems/extras/nursery.gd:319
+#: systems/extras/nursery.gd:325
 msgid "%s beeps hello and shows Lumi the marigolds."
 msgstr "%s はピッとあいさつして、Lumi にマリーゴールドを見せる。"
 
-#: systems/extras/nursery.gd:320
+#: systems/extras/nursery.gd:326
 msgid "%s is busy with the watering can, but waves anyway."
 msgstr "%s はじょうろで忙しいけど、それでも手を振る。"
 
-#: systems/extras/nursery.gd:321
+#: systems/extras/nursery.gd:327
 msgid "%s hums to the seedlings. Retirement suits it."
 msgstr "%s は苗に鼻歌を聞かせている。引退生活が似合う。"
 
-#: systems/extras/nursery.gd:322
+#: systems/extras/nursery.gd:328
 msgid "%s points proudly at a new bud."
 msgstr "%s は新しいつぼみを得意げに指さす。"
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:596
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:602
 msgid "E   CD player: %s"
 msgstr "E   CDプレーヤー：%s"
 
@@ -3391,7 +3395,7 @@ msgid "The Cradle has to come home first."
 msgstr "まずは Cradle号が帰ってこないと。"
 
 #: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:355
-#: ui/rockets_panel.gd:81 ui/system_map.gd:738
+#: ui/rockets_panel.gd:88 ui/system_map.gd:738
 msgid "Launch"
 msgstr "発射"
 
@@ -4980,11 +4984,11 @@ msgstr "パーツを掘り出したり、ガラクタを分解したりすると
 msgid "Need %s. %s"
 msgstr "あと %s 必要。%s"
 
-#: ui/loading_screen.gd:163
+#: ui/loading_screen.gd:165
 msgid "Loading"
 msgstr "読み込み中"
 
-#: ui/loading_screen.gd:165
+#: ui/loading_screen.gd:167
 msgid "Warming up"
 msgstr "ウォームアップ中"
 
@@ -5751,11 +5755,11 @@ msgstr "最高ティア"
 msgid "next: x%s work speed"
 msgstr "次：作業速度x%s"
 
-#: ui/robot_card.gd:257 ui/rockets_panel.gd:119 ui/yard_builds_panel.gd:125
+#: ui/robot_card.gd:257 ui/rockets_panel.gd:126 ui/yard_builds_panel.gd:125
 msgid "Upgrade to %s"
 msgstr "%s にアップグレード"
 
-#: ui/rocket_picker.gd:53 ui/rockets_panel.gd:101
+#: ui/rocket_picker.gd:53 ui/rockets_panel.gd:108
 msgid "ROCKET"
 msgstr "ロケット"
 
@@ -5807,23 +5811,27 @@ msgstr "発射台には Lv 5 の基地が必要（いまは Lv %d）。アップ
 msgid "Rockets to the rest of Verdance are in the full game. The demo stays in the first district."
 msgstr "Verdance の各地へのロケットは製品版で。体験版は最初の地区だけです。"
 
-#: ui/rockets_panel.gd:57
+#: ui/rockets_panel.gd:60
+msgid "The rocket lands on the pad when the base reaches level 5."
+msgstr "基地がレベル5になると、ロケットが発射台に着陸する。"
+
+#: ui/rockets_panel.gd:64
 msgid "NEARBY BASES"
 msgstr "近くの基地"
 
-#: ui/rockets_panel.gd:79
+#: ui/rockets_panel.gd:86
 msgid "%d sectors away  ·  %s"
 msgstr "%d セクター先  ·  %s"
 
-#: ui/rockets_panel.gd:106
+#: ui/rockets_panel.gd:113
 msgid "Top tier: warp hops, no recharge."
 msgstr "最高ティア：ワープジャンプ、充電不要。"
 
-#: ui/rockets_panel.gd:136
+#: ui/rockets_panel.gd:143
 msgid "Countdown %ds  ·  Flight %.1fs  ·  Recharge %s  ·  Cargo pods x%.1f every %ds"
 msgstr "カウントダウン %d秒  ·  飛行 %.1f秒  ·  充電 %s  ·  貨物ポッド x%.1f %d秒ごと"
 
-#: ui/rockets_panel.gd:140
+#: ui/rockets_panel.gd:147
 msgid "  ·  WARP"
 msgstr "  ·  ワープ"
 

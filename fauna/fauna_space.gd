@@ -137,8 +137,14 @@ func scan_step(budget_us: int) -> bool:
 	while not _stack.is_empty():
 		if budget_us > 0 and Time.get_ticks_usec() - t0 > budget_us:
 			return false
-		var node: Node = _stack.pop_back()
-		if not is_instance_valid(node) or node in _skip:
+		# [v5play] The stack lives across frames now: a node freed meanwhile (a streamed chunk, a
+		# swept heap) must not be assigned to a typed variable (SCRIPT ERROR "previously freed
+		# instance", 14 times in a 90-minute autoplay; each one cut the scan short).
+		var top: Variant = _stack.pop_back()
+		if not is_instance_valid(top):
+			continue
+		var node: Node = top
+		if node in _skip:
 			continue
 		if node is Node3D and not (node as Node3D).visible:
 			continue

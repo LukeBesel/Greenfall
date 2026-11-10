@@ -60,6 +60,9 @@ One 144-minute orbit autoplay from a fresh save (`--fresh --orbit --autoplay --s
 | P12 | Autoplay | After the Auto-Baler the bot moved it every second at 40 cubes a time (it compared a Stations-local point with a world position), so it never saved a cube again: 4,000 cubes in 8 minutes. It also bumped the bench on every refill. Both fixed; the bot no longer tries the flat launch on the globe. | fixed (tool) | Run 2: cubes near 0 from minute 109 to 170. |
 | P13 | Tools | The ground probe counted junk lying on its heap as floating (300+ a disc in the hinterland). It now takes the heap's height off. | fixed (tool) | `--ground-probe=300 --orbit-spawn=27,401`: `junk=318` before, 0 after. |
 
+| P14 | Goals | A finished story step paid every goal in the whole chain whose condition already held. Finishing "base 3" late paid 31 goals at once (138,100 cubes in rewards) and base 4 and 5 were bought within half a minute. Now a story step folds in at most 3 goals, only the next ones in chain order, stopping at the first that doesn't hold; a goal step pays itself only. Later goals come up one per step on the card. "Fix up the new base to level 3" and "New base to level 4" read the second-best base (`"hub": "second"` in `data/goals.json`), not the first hub's level. | fixed | Run 3 continued: base 3 at 137.2 min, cubes 7.7K to 1.2K after paying, goals stay at 37, the card moves to "Find a memory shard". Tests: `test_absorb_takes_the_next_three_in_order`, `test_new_base_goal_reads_the_second_hub`. |
+| P15 | Wildlife | `FaunaSpace.scan_step` (the stepped prop scan) assigned a node freed between frames to a typed variable: SCRIPT ERROR "Trying to assign invalid previously freed instance", 14 times in 90 minutes, each one cutting the scan short. Checked before the typed assignment now. | fixed | Run 3 first leg; none in the 36 minutes after the fix. |
+
 ### Stuck spots (lead 1)
 - All 31 escapes of run 1 were at two places: the First Seed greenhouse at (11, 12), on the straight line between the bench and the eastern fields (15 escapes), and the nook between the shack and the workbench at (-7.7, 9.3), where the bot pushed at a plant behind the shack with a bale beside it (14 escapes, one trap). Neither is a trap for a player: both are visible obstacles with open ground round them. None at kerbs, quay railings, piers, new town buildings or the shore.
 - Start town walk (`--city-walk`): 70,674 m2 free, all reached, out on every side, no pockets. Hinterland walk: four spots, all free ground reached, no pockets.
@@ -90,3 +93,36 @@ Gaps over 8 minutes: Bot Bay to first Scoopie (8.1), 10 hexes to base 2 (33), ba
 ### Rocket (lead 3)
 - The rocket comes with base level 5 (28,000 cubes and 140 Parts for level 4, then 30,000 and 110): far past the first two hours. The Upgrades tab says so on the base card, the Rockets panel says "The launch pad comes with a level 5 base", and the goal chain leads there (base 4, base 5, "Launch the rocket onward").
 - With `--rocket`: the prompt "E  Rocket: choose a destination" shows at the pad, the list offers the six nearest hubs, the hop to hub 9 (1.6 km) lands Lumi by its pad and the save brings him and the rocket back there (after P7).
+
+### Pacing, run 3 (after the fixes, main merged, 2026-11-10)
+Same command as run 1; 122 bot-minutes, then a continue in a new process to minute 160.
+
+| Step | Run 1 | Run 3 |
+|---|---|---|
+| First story step (3 dumps) | 1.7 | 4.2 |
+| Baler / signal tower / Glim | 2.9 / 3.6 / 3.6 | 5.2 / 6.1 / 6.2 |
+| First hex / 2 hexes / 3 hexes | 7.3 / 14.2 / 19.9 | 10.0 / 15.2 / 21.3 |
+| Bot Bay | 20.1 | 21.7 |
+| First Scoopie, first zone | 28.2 | 28.6 |
+| Seed tin | 30.7 | 31.2 |
+| 10 hexes | 38.4 | 40.0 |
+| Base level 2 | 71.4 | 40.3 |
+| Hover Jets | 71.4 | 47.4 |
+| Haul Bug, tower 2, research, 20 hexes | 71.5 | 50.1 - 50.2 |
+| Skimmer | 91.7 | 70.9 |
+| Base level 3 | not by 144 | 137.2 |
+
+- Gaps over 8 minutes in run 3: 10 hexes after the seed tin (8.8), Haul Bug after base 2 (9.8: the plans come 20 minutes after the first robot), and base 3 after "20 hexes" (87).
+- Base 3 is the long one, and it is the bot's shopping, not a wall: it earned 72,700 cubes by minute 160 and base 3 costs 9,000, but it kept buying research, stations and robot upgrades and hovered at 5-7K for 40 minutes. A player who saves once the card says "Need N more cubes" gets there in roughly 15-20 minutes of income. No cost was changed. Open: teach the bot to save when the card asks for a base level, then measure again.
+- The start is 2.5 minutes slower than run 1 (first step at 4.2 instead of 1.7). That came in with the merge of main between the runs, not with these fixes; not looked into.
+- Stuck escapes: 1 in 160 minutes (run 1: 31). No "no path" from any robot. One Haul Bug stood stuck once, for a minute, at minute 57.
+- Haul Bugs: 321 and 288 bales carried by minute 160 (run 1: about 20 each by 144). 190 bales were still waiting: two haulers for four bale makers.
+- Continue after 122 minutes in a new process: 3 Scoopies, 2 Haul Bugs, 1 Skimmer, 5 zoned hexes, 145 plants, 14 loose and 128 crew bales, Hover Jets, step "base 3", 37 goals, all once-per-save flags: all back, nothing doubled.
+
+### Still open
+- The bot never saves for a base level while research is on offer (above).
+- After the story steps the card shows the first unfinished goal in chain order, and the bot does not go looking for memory shards, so its goal count stops there. A player gets a beam to the shard.
+- An outpost ruin piece floats 0.52 m at (173, -51) (`--ground-probe --orbit-spawn=200,0`).
+- Headless only, seen once on a continue: dummy-renderer RID errors from `ui/loading_screen.gd:369` (`_draw_bar`) while loading.
+- One of five `save_roundtrip --orbit` runs printed 2 SCRIPT ERROR lines and still passed; not caught again.
+- The First Seed greenhouse stands 16 m from the pad's middle, on the way east; fine for a player, the bot walks round it now.

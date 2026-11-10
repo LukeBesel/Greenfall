@@ -223,3 +223,76 @@ func test_route_leaves_a_pocket_of_blocked_cells() -> void:
 	var q: PackedInt32Array = crew.route(from, to, "haul")
 	assert_false(q.is_empty())
 	assert_false(q.has(ring1[0]) and q[q.size() - 1] != ring1[0], "an open route keeps off blocked cells")
+
+
+# --- Goals: no reward flood ----------------------------------------------------------------------
+
+class GoalWorld:
+	extends Node
+	var hub: Variant = null
+
+
+## A finished step folds in at most three goals, only the next ones in chain order, and stops at
+## the first that doesn't hold yet. Goals further on stay for their own step.
+func test_absorb_takes_the_next_three_in_order() -> void:
+	var saved_f: Dictionary = GameState.flags.duplicate(true)
+	var saved_s: Dictionary = GameState.stats.duplicate(true)
+	var saved_c: Dictionary = GameState.currencies.duplicate()
+	GameState.flags = {}
+	GameState.stats = {}
+	var w := GoalWorld.new()
+	add_child_autofree(w)
+	var g := Goals.new()
+	g.world = w
+	w.add_child(g)
+	g.chain = [
+		{"id": "g0", "type": "stat", "key": "v5_a", "target": 1, "reward": {"cubes": 10}},
+		{"id": "g1", "type": "stat", "key": "v5_a", "target": 1, "reward": {"cubes": 10}},
+		{"id": "g2", "type": "stat", "key": "v5_a", "target": 1, "reward": {"cubes": 10}},
+		{"id": "g3", "type": "stat", "key": "v5_a", "target": 1, "reward": {"cubes": 10}},
+		{"id": "g4", "type": "stat", "key": "v5_b", "target": 1, "reward": {"cubes": 10}},
+		{"id": "g5", "type": "stat", "key": "v5_a", "target": 1, "reward": {"cubes": 100000}},
+	]
+	g._done.clear()
+	GameState.stats["v5_a"] = 1.0
+	GameState.currencies["cubes"] = BigNum.zero()
+	var r: Dictionary = g.absorb()
+	assert_eq(float(r.get("cubes", 0.0)), 30.0, "three goals a step, no more")
+	assert_true(g.is_done(0) and g.is_done(1) and g.is_done(2) and not g.is_done(3))
+	r = g.absorb()
+	assert_eq(float(r.get("cubes", 0.0)), 10.0, "stops at the first goal that doesn't hold")
+	assert_true(g.is_done(3) and not g.is_done(4))
+	assert_false(g.is_done(5), "a met goal past an unmet one waits for its own step")
+	assert_true(g.absorb().is_empty())
+	assert_eq(GameState.get_currency("cubes").to_float(), 40.0, "no windfall")
+	GameState.flags = saved_f
+	GameState.stats = saved_s
+	GameState.currencies = saved_c
+
+
+## "Fix up the new base to level 3" reads the second-best base, not the first hub's level.
+func test_new_base_goal_reads_the_second_hub() -> void:
+	var saved_w: Dictionary = GameState.world
+	var saved_d: Dictionary = GameState.districts
+	var saved_h: int = GameState.current_hub
+	var w := GoalWorld.new()
+	add_child_autofree(w)
+	var g := Goals.new()
+	g.world = w
+	w.add_child(g)
+	var gi: int = -1
+	for i: int in g.chain.size():
+		if str(g.chain[i]["id"]) == "base2_3":
+			gi = i
+	assert_gt(gi, 0)
+	GameState.current_hub = 0
+	GameState.world = {"hub_level": 5}
+	GameState.districts = {0: GameState.world}
+	assert_lt(g.value_of(gi), 3.0, "the first base at level 5 is not the new base")
+	GameState.districts = {0: GameState.world, 4: {"hub_level": 2}}
+	assert_eq(g.value_of(gi), 2.0)
+	GameState.districts = {0: GameState.world, 4: {"hub_level": 3}}
+	assert_eq(g.value_of(gi), 3.0, "the second base at level 3 completes it")
+	GameState.world = saved_w
+	GameState.districts = saved_d
+	GameState.current_hub = saved_h

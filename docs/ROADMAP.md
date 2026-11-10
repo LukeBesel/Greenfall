@@ -1011,3 +1011,10 @@ Details and numbers in docs/PERFORMANCE.md (perf passes 6-8).
 - Done: Steam Cloud covers the round world's saves; demo saves carry over into the round tree.
 - Open: the frame where the 3D scene first draws at the end of loading (shader warm-up) is one long frame; needs a check on real hardware.
 - Open: a hub town building as Lumi walks to it (25-45 ms frames for about 3 s); Anvil's yard builder (0.45 s slice); litter batching (428 MultiMeshes a ring).
+
+## Update: play-test of the first 2 hours on round Verdance (wt/v5play, 2026-11-10)
+- Full notes, pacing tables and repro lines: docs/QA_VERDANCE.md, section "Play-test, first 2 hours".
+- **Fixed:** Haul Bugs standing "idle: no path" in the town (routes fall back to land-only); junk inside buildings (keep-out buckets); hinterland buildings at least 2.2 m apart; watering and planting across a hex border; the can fills anywhere on the yard; scooped metal, plastic and glass pay Parts on the globe; the rocket's place survives a save; the workbench no longer starts the flat rocket on the globe; "Launch the rocket onward" counts hub hops; the card says what is missing for base levels and robots; a finished step folds in at most 3 goals; the fauna scan's freed-node error.
+- **Tools:** `--hinter-walk`, `[bot-esc2]` with `--bot-debug`, `--crew-debug`, `--soak-bales`, a fuller soak digest, the reload check covers the rocket.
+- **Result:** base 2 at 40 bot-minutes (was 71), 1 stuck escape in 160 minutes (was 31), haulers carry about 300 bales each (was 20).
+- **Open:** the bot does not save for base 3 (137 min); the start got 2.5 min slower with a merge of main; see "Still open" in QA_VERDANCE.md.

@@ -90,6 +90,8 @@ func value_of(i: int) -> float:
 		"zone":
 			return float(zone_hex_count())
 		"hub_level":
+			if str(g.get("hub", "")) == "second":  # [v5play] "the new base": never the first hub's level
+				return float(second_base_level())
 			return float(GameState.world.get("hub_level", 1))
 		"hex_level":
 			var hl: HexLevels = (world.get("hex_levels") as HexLevels) if world else null
@@ -174,17 +176,50 @@ func check() -> int:
 	return -1
 
 
-## [v1guide] Folds every goal whose condition already holds into the step just finished: completes
-## them quietly and returns their summed rewards (already paid).
-func absorb() -> Dictionary:
+## [v5play] The level of the second-best base: every hub's level (the globe's sites, or the flat
+## districts and the one Lumi is in), highest first, the second of them. 0 with a single hub.
+func second_base_level() -> int:
+	var lv: Array[int] = []
+	var so: Variant = world.get("orbit") if world else null
+	var sm: Variant = (so as Object).get("globe").get("site_manager") if so != null and (so as Object).get("globe") != null else null
+	if sm != null and sm.get("levels") != null:
+		for l: int in sm.get("levels"):
+			lv.append(l)
+	else:
+		var seen: Dictionary = {}
+		for k: Variant in GameState.districts:
+			seen[int(k)] = true
+			var d: Variant = GameState.world if int(k) == GameState.current_hub else GameState.districts[k]
+			lv.append(int((d as Dictionary).get("hub_level", 1)) if d is Dictionary else 1)
+		if not seen.has(GameState.current_hub):
+			lv.append(int(GameState.world.get("hub_level", 1)))
+	if lv.size() < 2:
+		return 0
+	lv.sort()
+	return lv[lv.size() - 2]
+
+
+## [v1guide] Folds goals that already hold into the step just finished: completes them quietly and
+## returns their summed rewards (already paid).
+## [v5play] Only the goals that come next in chain order, stopping at the first that doesn't hold,
+## and at most ABSORB_MAX a step. It used to take every goal in the whole chain whose condition
+## held: finishing "base 3" late paid 31 goals at once (138,100 cubes), and base 4 and 5 were
+## bought within half a minute. Goals further on come up one per step, each on the card.
+const ABSORB_MAX: int = 3
+func absorb(max_n: int = ABSORB_MAX) -> Dictionary:
 	var total: Dictionary = {}
 	quiet = true
+	var n: int = 0
 	for i: int in chain.size():
-		if not is_done(i) and value_of(i) >= target_of(i):
-			var r: Dictionary = reward_of(i)
-			for k: String in r:
-				total[k] = float(total.get(k, 0.0)) + float(r[k])
-			complete(i)
+		if is_done(i):
+			continue
+		if n >= max_n or value_of(i) < target_of(i):
+			break
+		var r: Dictionary = reward_of(i)
+		for k: String in r:
+			total[k] = float(total.get(k, 0.0)) + float(r[k])
+		complete(i)
+		n += 1
 	quiet = false
 	return total
 

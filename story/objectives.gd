@@ -372,7 +372,7 @@ func _complete_goal() -> void:
 	var text: String = tr(str(g.chain[gi].get("text", "")))
 	var rw: String = GoalsPanel.reward_text(g.reward_of(gi), 1.0)
 	g.complete(gi)
-	var folded: String = _fold_goals()
+	var folded: String = ""  # [v5play] a goal step pays itself only: goals that already hold come up next, one per step
 	if DevHooks.has("autoplay"):
 		print("[onboard] goal %s done at %.1f min" % [str(g.chain[gi].get("id", "")), float(GameState.stats.get("time_played", 0.0)) / 60.0])
 	_hold = NEXT_DELAY_S
