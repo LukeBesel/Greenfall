@@ -258,13 +258,16 @@ static func _ko_blocks(ko: Dictionary, dir: Vector3) -> bool:
 
 const _PAL: Array[Color] = [
 	Color(0.84, 0.82, 0.74), Color(0.78, 0.74, 0.62), Color(0.6, 0.46, 0.31), Color(0.5, 0.39, 0.27),
-	Color(0.7, 0.71, 0.7), Color(0.12, 0.12, 0.13), Color(0.32, 0.45, 0.62), Color(0.72, 0.24, 0.18),
-	Color(0.86, 0.7, 0.22), Color(0.28, 0.5, 0.32), Color(0.92, 0.92, 0.9), Color(0.3, 0.6, 0.72),
+	Color(0.7, 0.71, 0.7), Color(0.12, 0.12, 0.13), Color(0.2, 0.42, 0.74), Color(0.82, 0.2, 0.15),
+	Color(0.94, 0.72, 0.16), Color(0.22, 0.56, 0.3), Color(0.92, 0.92, 0.9), Color(0.16, 0.62, 0.7),
 ]
-const _PAL_CUM: Array[float] = [4.0, 7.0, 11.0, 14.0, 16.5, 19.0, 19.8, 20.6, 21.4, 21.9, 23.4, 23.9]
+## Weights (cumulative): packaging colours (blue, red, yellow, green, teal) are about a third of the
+## carpet, so it reads as plastic and print, not as brown paper (style guide 9: junk is colourful).
+const _PAL_CUM: Array[float] = [3.0, 5.0, 7.5, 9.0, 10.5, 12.5, 14.3, 16.1, 17.9, 19.2, 21.2, 22.5]
 
 
-## LitterView._litter_color with a given rng (thread-safe): faded, grimy, dusty trash colours.
+## LitterView._litter_color with a given rng (thread-safe): worn trash colours. The wear is a light
+## fade and a little dust on top of the colour, never in place of it.
 static func _color(rng: RandomNumberGenerator) -> Color:
 	var x: float = rng.randf() * _PAL_CUM[_PAL_CUM.size() - 1]
 	var c: Color = _PAL[0]
@@ -273,9 +276,9 @@ static func _color(rng: RandomNumberGenerator) -> Color:
 			c = _PAL[i]
 			break
 	var l: float = c.get_luminance()
-	c = c.lerp(Color(l, l, l), rng.randf_range(0.1, 0.4))
-	c = c.darkened(rng.randf_range(0.05, 0.4))
-	return c.lerp(Color(0.48, 0.43, 0.37), rng.randf_range(0.0, 0.35))
+	c = c.lerp(Color(l, l, l), rng.randf_range(0.05, 0.2))
+	c = c.darkened(rng.randf_range(0.05, 0.3))
+	return c.lerp(Color(0.48, 0.43, 0.37), rng.randf_range(0.0, 0.17))
 
 
 ## Main thread: the cell's node and MultiMeshes from a computed carpet.
