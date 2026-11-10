@@ -249,9 +249,10 @@ func _demo_prepare(p: Patch) -> void:
 					alive.append(pid)
 			for k: int in alive.size() - mini(6, alive.size()):
 				world.collect_piece(alive[k])
-			world.cam.distance = DevHooks.get_f("demo-dist", 9.0)
-			world.cam.pitch = -0.62
-			world.cam.snap()
+			var cam: SphereCam = world.orbit.cam
+			cam.distance = DevHooks.get_f("demo-dist", 9.0)
+			cam.pitch = -0.62
+			cam.snap()
 
 
 func _freeze_at_peak(peak: float) -> void:

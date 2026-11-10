@@ -14,11 +14,10 @@ var fleet: Fleet
 var planet: PlanetData
 var hub_index: int = 0
 var anchor_cell: int = 0
-var district_name: String = "Old Town"
-var globe: GlobeView
+var district_name: String = ""  # the planet's name on the globe (SliceOrbit.build)
+var globe: GlobeView  # the survey map (planet/orbit_layers.gd)
 var sky_director: SkyDirector
 var hub: Hub
-var rocket: Rocket
 var shards: ShardSystem
 var garden: Garden
 var hex_levels: HexLevels
@@ -55,7 +54,8 @@ var bot: InputSource
 var _cubes_root: Node3D
 ## Shack and yard lamp pieces that sit derelict while a non-starter base is at level 1.
 var _ruin_bits: Dictionary = {}
-## Rocket launch → flight → travel: no modal hotkeys, and closing a modal doesn't hand control back.
+## An interplanet or Homeward launch is running (planet/sites/orbit_sites.gd): no modal hotkeys,
+## and closing a modal doesn't hand control back.
 var launching: bool = false
 ## [leftovers] True while the globe builds across frames behind the loading screen (a BuildBudget
 ## is open: ui/loading_screen.gd). `built` fires once everything exists.
@@ -109,20 +109,9 @@ func piece_bitten(pid: int) -> void:
 	orbit.piece_bitten(pid)
 
 
-func _launch(to_hub: int) -> void:
-	if launching or Demo.block("rocket"):  # [steam] demo: first district only
-		return
-	if not Frontiers.can_launch(planet, to_hub):  # [biomes] frontier destinations unlock late
-		EventBus.toast.emit(tr("%s is out of range: %s") % [Frontiers.kind_name(planet.frontier_kind(to_hub)), "  ".join(Frontiers.unlock_status(planet.frontier_kind(to_hub), planet.frontier_hubs)["lines"])], "info")
-		return
-	if rocket == null:
-		_place_rocket(false)
-	rocket.launch(to_hub)
-
-
-## "" when the rocket can launch, else why not (no pad yet, or the energy cells are recharging).
+## "" when the rocket can fly, else why not (no rocket yet, or the energy cells are recharging).
 func rocket_status() -> String:
-	if not (hub.level >= 5 or DevHooks.has("rocket") or GameState.world.get("rocket_parked", false)):
+	if orbit == null or orbit.sites == null or not orbit.sites.rocket_unlocked():
 		return tr("Locked. Upgrade your base to level 5 to build the launch pad.")
 	var left: float = RocketTiers.recharge_left()
 	if left > 0.0:
@@ -130,40 +119,10 @@ func rocket_status() -> String:
 	return ""
 
 
-## Rebuilds the rocket after an upgrade (new tier look), unless it is mid-sequence.
+## The parked rocket takes its new look after an upgrade or a repaint.
 func refresh_rocket() -> void:
-	if rocket == null or rocket.is_flying():
-		return
-	var had_pad: bool = rocket.pad != null
-	rocket.queue_free()
-	rocket = null
-	_place_rocket(had_pad)
-	Vfx.burst("big_sparkle", Rocket.PAD_POS + Vector3(0, 5.0, 0), Color(0.5, 0.9, 1.0))
-
-
-func _place_rocket(with_pad: bool) -> void:
-	rocket = Rocket.new()
-	rocket.name = "Rocket"
-	rocket.world = self
-	rocket.position = Rocket.PAD_POS
-	add_child(rocket)
-	rocket.setup(with_pad)
-
-
-## Leave this district: persist it, switch the active hub, save without re-gathering, reload.
-func travel_to(to_hub: int) -> void:
-	get_tree().call_group("persist", "persist_save")
-	# Patch's cargo (compartment + carried stack) flies with him; only pos/yaw stay per district.
-	var pd: Dictionary = GameState.world.get("patch", {})
-	GameState.flags["patch_cargo"] = {"compartment": pd.get("compartment", {}), "carried": pd.get("carried", [])}
-	pd.erase("compartment")
-	pd.erase("carried")
-	GameState.switch_hub(to_hub)
-	GameState.flags["arrived_from_rocket"] = true
-	GameState.reload_in_memory = true
-	SaveManager.save_game(false)
-	get_tree().paused = false
-	Loader.reload()  # [intro2] loading screen
+	if orbit and orbit.sites:
+		orbit.sites.refresh_rocket()
 
 
 ## Salvaged materials from scooped junk: hub materials come with the hub sites; paper still feeds the press.
@@ -268,6 +227,20 @@ func persist_save() -> void:
 
 func _restore_world() -> void:
 	orbit.restore_world()
+
+
+## Dev shots: a fixed camera looking at a spot of the start yard (`at`: site-local metres x, z),
+## from `dist` metres behind the heading `yaw` (radians round the site's up) at `pitch`.
+func shot_camera(at: Vector2, yaw: float, dist: float, pitch: float) -> void:
+	var site: Transform3D = orbit.globe.sites[0]["transform"]
+	var anchor := Node3D.new()
+	anchor.name = "ShotAnchor"
+	add_child(anchor)
+	anchor.global_position = site * Vector3(at.x, 0.8, at.y)
+	orbit.cam.target = anchor
+	orbit.cam.distance = dist
+	orbit.cam.pitch = pitch
+	orbit.cam.reset_frame(site.basis * Vector3(sin(yaw), 0.0, cos(yaw)))
 
 
 ## [outposts] Pins for the Command view: grey ruins, green working outposts with their level.

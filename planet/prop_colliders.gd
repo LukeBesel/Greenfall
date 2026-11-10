@@ -107,10 +107,9 @@ static func fit(b: StaticBody3D, root: Node3D, min_h: float = 0.35, max_w: float
 		var xf: Transform3D = mi.global_transform
 		if xf.basis.determinant() == 0.0:
 			continue
-		var wab: AABB = xf * ab
-		if OrbitUp.on_globe():  # [orbB] the globe: measure in root's frame (its +Y is up there)
-			wab = (root.global_transform.affine_inverse() * xf) * ab
-			wab.position.y += base_y
+		# Measured in root's frame: its +Y is up on the globe.
+		var wab: AABB = (root.global_transform.affine_inverse() * xf) * ab
+		wab.position.y += base_y
 		if wab.size.y < min_h or wab.position.y > base_y + 0.6 or maxf(wab.size.x, wab.size.z) < 0.08:
 			continue
 		if wab.size.x > max_w or wab.size.z > max_w or _see_through(mi):

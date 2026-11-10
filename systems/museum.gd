@@ -458,6 +458,5 @@ func _dev_spawn() -> void:
 	var p: Vector3 = global_position + fwd * DevHooks.get_f("museum-dist", 3.5) + global_transform.basis.x * DevHooks.get_f("museum-side", 0.0)
 	world.patch.global_position = Vector3(p.x, global_position.y + 0.3, p.z)
 	world.patch.rotation.y = atan2(fwd.x, fwd.z)
-	world.cam.yaw = world.patch.rotation.y + DevHooks.get_f("museum-yaw", 0.0)
-	world.cam.snap()
+	(world.orbit.cam as SphereCam).reset_frame(fwd.rotated(global_transform.basis.y, DevHooks.get_f("museum-yaw", 0.0)))
 	print("[museum] Lumi at the Museum (%s), %d / %d exhibits full" % [str(global_position), filled(), exhibits().size()])

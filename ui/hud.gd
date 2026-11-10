@@ -161,7 +161,7 @@ func _build_top_right() -> void:
 	_district.add_theme_constant_override("separation", 3)
 	_district.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	vb.add_child(_district)
-	_field_label = UITheme.label(tr("OLD TOWN   0%"), 13, UITheme.CREAM)
+	_field_label = UITheme.label("", 13, UITheme.CREAM)
 	_field_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_district.add_child(_field_label)
 	_field_bar = Control.new()
@@ -281,14 +281,17 @@ func _process(delta: float) -> void:
 	var cc: Variant = world.get("core_charge") if world else null  # [story2] Bloom Core ring by the level bar
 	if cc is CoreCharge:
 		set_core_charge((cc as CoreCharge).shown)
-	if world and world.field:
+	# The planet readout needs the globe's sites: until they exist it shows nothing, not 0%.
+	var sites: OrbitSites = (world.orbit as SliceOrbit).sites if world and world.field else null
+	_field_label.visible = sites != null
+	_field_bar.visible = sites != null
+	if sites:
 		# [orbE] The planet % walks every hub-region cell (Anvil: ~3.5 ms a frame): a few times a
 		# second is plenty for a percentage.
 		_planet_t -= get_process_delta_time()
 		if _planet_t <= 0.0:
 			_planet_t = 0.25
-			var sites: OrbitSites = (world.orbit as SliceOrbit).sites
-			_planet_frac = sites.planet_fraction() if sites else 0.0
+			_planet_frac = sites.planet_fraction()
 		# [orbB] The globe has no district: one planet line (hub regions) and its bar.
 		_planet_label.text = "%s   %s%%" % [str(Economy.planet.get("name", "Verdance")).to_upper(), _fmt_small_pct(_planet_frac * 100.0)]
 		_field_label.text = _planet_label.text

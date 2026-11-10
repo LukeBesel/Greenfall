@@ -160,6 +160,9 @@ Severity: **P1** blocks finishing or loses progress, **P2** hurts the experience
 | B23 | P2 | The magnet on the globe is uncapped and pulls pieces that are buried or too heavy for Lumi to lift (owner rule: capped, never pulls what Lumi cannot lift). The old cap was flat-only. | M1-04 review |
 | B24 | P1 | Confirmed: junk hidden inside building footprints leaves a hex stuck below 100%. | Triage (B3) |
 | B25 | P1 | Confirmed: buying the Baler before finishing "fill the bin 3 times" stalls the first objective. | Triage (B4) |
+| B26 | P2 | The rocket's recharge after a hop never starts. | M1-04b |
+| B27 | P2 | `EventBus.shake_requested` has no listener, so screen shake never happens. | M1-04b |
+| B28 | P3 | `boot.gd` still reads the old `--orbit` flag; the museum and the going-home complex still use flat coordinates (both are parked features). | M1-04b |
 | B22 | P3 | Other-planet issues (hauler paths, finale camera, fauna upright) are out of scope and leave with R10. | Roadmap |
 
 M1 starts with a triage pass that verifies each "verify" row and adds anything new.

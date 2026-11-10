@@ -269,11 +269,5 @@ func _garden_cam() -> void:
 	if not DevHooks.has("garden-cam"):
 		return
 	var v: PackedStringArray = DevHooks.get_s("garden-cam", "0,14,3.14,9,-0.5").split(",")
-	var anchor := Node3D.new()
-	world.add_child(anchor)
-	anchor.global_position = Vector3(float(v[0]), 0.8, float(v[1]))
-	world.cam.target = anchor
-	world.cam.yaw = float(v[2]) if v.size() > 2 else 0.0
-	world.cam.distance = float(v[3]) if v.size() > 3 else 9.0
-	world.cam.pitch = float(v[4]) if v.size() > 4 else -0.5
-	world.cam.snap()
+	world.shot_camera(Vector2(float(v[0]), float(v[1])), float(v[2]) if v.size() > 2 else 0.0,
+		float(v[3]) if v.size() > 3 else 9.0, float(v[4]) if v.size() > 4 else -0.5)

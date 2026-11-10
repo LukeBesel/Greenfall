@@ -155,3 +155,25 @@ func test_hud_mode_setting_persists() -> void:
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(Settings.settings_path))
 	Settings.settings_path = path
 	assert_true(InputMap.has_action("toggle_goals"), "goal tracker toggle is bound")
+
+
+# The planet readout needs the globe's sites: before they exist it shows nothing, not 0%.
+func test_planet_readout_shows_nothing_until_the_sites_exist() -> void:
+	var w: Node3D = (load("res://scenes/slice.gd") as GDScript).new()
+	autofree(w)
+	var so := SliceOrbit.new()
+	autofree(so)
+	w.set("orbit", so)
+	w.set("field", HexField.new())
+	var hud := HUD.new()
+	hud.world = w
+	add_child_autofree(hud)
+	hud._process(0.016)
+	assert_false(hud._field_label.visible, "no planet line before the sites exist")
+	assert_false(hud._field_bar.visible)
+	assert_eq(hud._field_label.text, "", "and no stale text behind it")
+	so.sites = OrbitSites.new()
+	autofree(so.sites)
+	hud._process(0.016)
+	assert_true(hud._field_label.visible)
+	assert_string_contains(hud._field_label.text, "%")

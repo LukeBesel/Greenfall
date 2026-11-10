@@ -1,7 +1,7 @@
 # Handover: sphere-grid (wt/sgrid, Nov 8)
 
 ## Done (committed, tests green)
-- `planet/sphere/` is a standalone module, not wired into the slice. wt/orbit's `--orbit` (planet/orbit/verdance_globe.gd) already uses it.
+- `planet/sphere/` started as a standalone module. It is now the game's ground: the slice builds on it through `planet/orbit/orbit_planet.gd` (`scenes/slice_orbit.gd`); the `--orbit` switch and `planet/orbit/verdance_globe.gd` are gone.
   - `sphere_grid.gd` `SphereGrid`: Goldberg hex globe.
     - Ids are the same as GeoSphere/PlanetData at the same level, and hierarchical (coarse ids are a prefix of the fine ones).
     - CSR-free neighbours (stride 6, counter-clockwise from outside), shared corners (triangle centroids), 12 pentagons (ids 0-11).
@@ -22,7 +22,7 @@
     - Near rings (70 m) for the view and every body: `near_changed(added, removed)`, `near_cells()`, `is_near()`.
     - Also `rebuild(chunks)`, `settle()`, `outlines` (debug hex lines), `lod_debug`, `stats`.
   - `sphere_ground.gdshader`: lifted from the orbit prototype ground, with the new state decode.
-  - `sphere_demo.gd/.tscn`: `--sphere-demo` (hook in scenes/boot.gd). Flags: `--sphere-cam=orbit|high|skim|ground`, `--sphere-alt`, `--sphere-speed`, `--sphere-outlines`, `--sphere-lod-tint`, `--sphere-nohud`. Keys: Tab, WASD, Q/E, O, L. Prints a `[sphere]` perf line every 3 s.
+  - `sphere_demo.gd/.tscn`: `--sphere-demo` (removed with its hook in scenes/boot.gd; kept here as a record). Its flags were: `--sphere-cam=orbit|high|skim|ground`, `--sphere-alt`, `--sphere-speed`, `--sphere-outlines`, `--sphere-lod-tint`, `--sphere-nohud`. Keys: Tab, WASD, Q/E, O, L. Prints a `[sphere]` perf line every 3 s.
 - Tests: tests/test_sphere_grid.gd (14 tests): counts, 12 pentagons, ids match GeoSphere, hierarchy, symmetry/CCW/shared corners, lookup round trip and brute-force check, metrics, rings, chunk partition, cache, site flatness, cells save, LOD border match, streaming budget, elevation layer, body near rings. Full `tools/run_tests.sh`: 501/501 pass, roundtrip PASS.
 
 ## Measured (headless, level 7)
@@ -36,7 +36,7 @@
   - globe from orbit: `--sphere-cam=orbit`
   - ground skim showing the curve: `--sphere-cam=ground` and `--sphere-cam=high`, or `--sphere-cam=skim --sphere-alt=40 --sphere-speed=60`
   - hex outlines: `--sphere-outlines`
-  - Use tools/shot.sh plus `--sphere-demo`, then copy the shots to /home/user/Greenfall/screenshots/sphere/.
+  - This used tools/shot.sh plus `--sphere-demo` (removed: shoot the game itself with tools/shot.sh), then copy the shots to /home/user/Greenfall/screenshots/sphere/.
 - Rendered perf on the Low preset (frame time, draw calls, prims, video memory) comes from the `[sphere]` lines in that log.
 - Ideas:
   - Analytic noise normals (cheaper builds).
