@@ -14,6 +14,7 @@ extends Node3D
 
 const WATER: int = 5
 const START_SITE_M: float = 140.0  # start pad radius (the yard and its blocks)
+const START_CORE_M: float = 22.0  # clean core of a start site without a yard keep-out
 const HUB_SITE_M: float = 82.0  # [orbD] pad radius of the other hubs unless the planet's sites table sets hub_pad_m
 const SITE_BLEND_M: float = 40.0
 
@@ -166,6 +167,8 @@ func _place_hubs(n: int, fresh: bool, saved := PackedInt32Array()) -> void:
 
 func _clear_site(s: Dictionary, hub_cell: int, i: int) -> void:
 	var ko: YardKeepOut = yard_keep_out() if i == 0 else null  # [v1yard] only the pad's own cells go clean
+	# Junk reaches the hub yard: only the site's own clear core starts clean (arrival is into junk).
+	var core_m: float = START_CORE_M if i == 0 else float(SiteBuilders.find(planet_id, SiteBuilders.site_for_hub(planet_id, i)).get("clear_core_m", 12.0))
 	for c: int in s["cells"]:
 		cells.set_flag(c, SphereCells.F_SITE)
 		if ko:
@@ -174,7 +177,7 @@ func _clear_site(s: Dictionary, hub_cell: int, i: int) -> void:
 				cells.junk[c] = 0.0
 				cells.flags[c] |= SphereCells.F_HUB
 			continue
-		if grid.distance_m(c, hub_cell) < (60.0 if i > 0 else 22.0):
+		if grid.distance_m(c, hub_cell) < core_m:
 			cells.state[c] = 1
 			cells.junk[c] = 0.0
 			cells.flags[c] |= SphereCells.F_HUB
