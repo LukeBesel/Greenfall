@@ -21,6 +21,9 @@ var _exit_at: float = 170.0
 var _done: bool = false
 var _away_s: float = -1.0
 var _carry_t: float = 0.0
+## Frames the bale has been carried: at --time-scale=8 one slow frame is a whole game second, and a
+## bale measured before its pick-up tween has stepped reads as lying at Lumi's feet.
+var _carry_frames: int = 0
 
 
 func _ready() -> void:
@@ -51,10 +54,11 @@ func _process(_delta: float) -> void:
 		return
 	if DevHooks.has("exit-carrying"):  # wait for a bale that has sat on Lumi for a second (its pick-up tween is over)
 		_carry_t = _carry_t + _delta if not (_slice.get("patch") as Patch).carried.is_empty() else 0.0
+		_carry_frames = _carry_frames + 1 if _carry_t > 0.0 else 0
 		if _carry_t > 0.0 and DevHooks.has("probe-verbose"):  # the bale's height on the stack, frame by frame
 			var cp: Patch = _slice.get("patch") as Patch
 			print("[b8] carried %.2f s: bale y on the stack %.2f (rest %.2f), frozen=%s" % [_carry_t, cp.carried[0].position.y, cp.carried[0].size * 0.5, str(cp.carried[0].freeze)])
-		if _carry_t < 1.0:
+		if _carry_t < 1.0 or _carry_frames < 12:
 			return
 	_done = true
 	EventBus.game_saved.disconnect(_on_saved)

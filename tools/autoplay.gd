@@ -380,9 +380,12 @@ func _bench_at() -> Vector3:
 	return world.bench_pos()
 
 
-## [v4bots] Where the can refills (anywhere in the hub hex, Patch._handle_tools): by the bench.
+## [v4bots] Where the can refills: on hub ground only (Patch._handle_tools reads hex_hub). On the
+## globe that is the one cell the scale stands on; the bench is in the next cell, where the can
+## stays empty and the bot pushed at the bench until its stuck-escape fired (B7: 85 of 89 escapes).
 func _water_at() -> Vector3:
-	return _bench_at()
+	var d: Variant = world.get("depot")
+	return (d as Node3D).global_position if d is Node3D else _bench_at()
 
 
 # --- Patch tasks -------------------------------------------------------------------------

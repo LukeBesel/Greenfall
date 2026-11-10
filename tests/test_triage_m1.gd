@@ -377,3 +377,36 @@ func test_b23_magnet_pulls_only_a_few_pieces_at_a_time() -> void:
 	var r: Array = _magnet_frame(1, 12)
 	var view: MoveView = r[1]
 	assert_lte(view.moved.size(), 6, "Magnet Arm level 1 pulls a few pieces, not everything in range (12 laid)")
+
+
+# --- B8: the carried bale and Lumi's body --------------------------------------------------------
+
+## Lumi wearing `design` with one full bale picked up and its pick-up tween finished. Returns the
+## probe's measure (tools/exit_probe.gd carry_gap): the bale's bottom against the top of the model.
+func _carry_gap(design: String) -> Dictionary:
+	GameState.flags["patch_skin"] = design
+	var p := Patch.new()
+	add_child_autofree(p)
+	p.set_process(false)
+	p.set_physics_process(false)
+	for c: Node in p.get_children():
+		if c.name != "Stack" and c.name != "Model":
+			c.process_mode = Node.PROCESS_MODE_DISABLED
+	var bale := JunkCube.create(BigNum.from_float(10.0), {"fill": 1.0, "colors": [Color(0.5, 0.45, 0.4)]})
+	add_child(bale)
+	bale.global_position = Vector3(0.0, 0.3, -0.8)
+	p.pick_up(bale)
+	await wait_seconds(0.5)
+	p._update_stack(0.016)
+	var gap: Dictionary = (load("res://tools/exit_probe.gd") as GDScript).call("carry_gap", p)
+	gap["design"] = design
+	return gap
+
+
+## B8: a carried bale rests clear of the body on every design (thin antennae may reach it; anything
+## 12 cm wide or more may not).
+func test_b8_carried_bale_rests_above_the_body_on_every_design() -> void:
+	for id: String in Designs.ids():
+		var gap: Dictionary = await _carry_gap(id)
+		gut.p("[b8] %s" % JSON.stringify(gap))
+		assert_gte(float(gap["gap_solid"]), 0.1, "%s: the bale's bottom is %.2f m from the top of the body" % [id, float(gap["gap_solid"])])
