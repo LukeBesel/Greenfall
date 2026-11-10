@@ -369,14 +369,14 @@ func _handle_scoop(delta: float) -> void:
 			model.shudder(0.12)
 			EventBus.compartment_changed.emit(compartment.fill, cap)  # HUD shakes the meter
 		return
-	# Magnet arm: pull nearby junk toward the scoop.
+	# Magnet arm: a few loose pieces Lumi can lift drift toward the scoop (Pace.magnet_targets).
 	var mag: float = stat("magnet_radius")
 	if mag > 0.0:
 		var field: HexField = world.field  # [orbit] pull along the ground (local up)
-		for pid: int in field.pieces_within(scoop_origin(), stat("scoop_reach") + mag):
+		var pull: float = float(Pace.magnet().get("pull_speed", 0.0)) * delta
+		for pid: int in Pace.magnet_targets(field, field.pieces_within(scoop_origin(), stat("scoop_reach") + mag), scoop_origin(), _tangent):
 			var to_me: Vector3 = _tangent(scoop_origin() - field.piece_pos[pid])
-			if to_me.length() > 0.4:
-				world.view.move_piece(pid, field.piece_pos[pid] + to_me.normalized() * minf(2.5 * delta, to_me.length()))
+			world.view.move_piece(pid, field.piece_pos[pid] + to_me.normalized() * minf(pull, to_me.length()))
 	_scoop_timer -= delta
 	if _scoop_timer > 0.0:
 		return

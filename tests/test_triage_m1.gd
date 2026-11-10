@@ -394,8 +394,6 @@ func test_b23_magnet_pulls_a_loose_piece_lumi_can_lift() -> void:
 ## B23: owner rule "never pulls pieces Lumi can't lift" (data/upgrades.json magnet_arm desc: "Never
 ## heavy ones").
 func test_b23_magnet_leaves_pieces_too_heavy_for_the_lift_tier() -> void:
-	pending("B23 the globe magnet pulls pieces Lumi cannot lift (player/patch.gd _handle_scoop: no Pace.can_lift check)")
-	return
 	var r: Array = _magnet_frame(1, 3, Pace.SIZE_LARGE)
 	var field: SphereField = r[0]
 	var view: MoveView = r[1]
@@ -407,8 +405,6 @@ func test_b23_magnet_leaves_pieces_too_heavy_for_the_lift_tier() -> void:
 ## B23: "never from inside a heap": a piece seated in a heap (piece_embed > 0) is dug out by the
 ## scoop, not dragged out by the magnet.
 func test_b23_magnet_leaves_pieces_embedded_in_a_heap() -> void:
-	pending("B23 the globe magnet pulls pieces embedded in a heap (player/patch.gd _handle_scoop: no piece_embed check)")
-	return
 	var r: Array = _magnet_frame(1, 3, Pace.SIZE_SMALL, 0.5)
 	var view: MoveView = r[1]
 	assert_false(view.moved.has((r[2] as Array[int])[0]), "an embedded piece stays in its heap")
@@ -417,11 +413,12 @@ func test_b23_magnet_leaves_pieces_embedded_in_a_heap() -> void:
 ## B23: "capped": the description says "a few loose pieces". The flat rule this replaced pulled at
 ## most 2 + one per level at a time; with 12 loose pieces in range the globe pulls all 12.
 func test_b23_magnet_pulls_only_a_few_pieces_at_a_time() -> void:
-	pending("B23 the globe magnet has no cap on pieces pulled at once (player/patch.gd _handle_scoop)")
-	return
 	var r: Array = _magnet_frame(1, 12)
 	var view: MoveView = r[1]
-	assert_lte(view.moved.size(), 6, "Magnet Arm level 1 pulls a few pieces, not everything in range (12 laid)")
+	assert_eq(view.moved.size(), 3, "Magnet Arm level 1 pulls 2 pieces plus one per level, not everything in range (12 laid)")
+	r = _magnet_frame(4, 12)
+	view = r[1]
+	assert_eq(view.moved.size(), 6, "one more piece per level")
 
 
 # --- B8: the carried bale and Lumi's body --------------------------------------------------------
