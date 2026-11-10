@@ -483,6 +483,10 @@ var _happy_bias: float = 0.0
 ## The holo panel is light-blue projector light on every design (sheet), not the design's glow.
 const HOLO_COLOR := Color(0.25, 0.66, 1.0)
 const BFLY_SCALE := 2.2
+## The fin's mount on the crown (head space, build_aurora.py FIN_BASE), its sweep to the side and size.
+const FIN_PIVOT := Vector3(0, 0.631, 0.16)
+const FIN_YAW := 0.35
+const FIN_SCALE := 1.25
 ## Shoulder pads hang a little outward-down from the shoulder (radians).
 const PAD_DROOP := 0.22
 ## Fin-less heads carry the detector beacon on the crown itself (head space).
@@ -545,7 +549,16 @@ func _build_accessories(v: Dictionary) -> void:
 				_build_butterfly()
 			_:
 				# Head pieces (fin, ears, wings, panels, lens emblems, radio): fixed to the head.
-				if _parts.has(a):
+				if a == "antenna":
+					# The sheet's fin is a long blade swept back and to his right, so it reads from the
+					# front: the modelled fin is turned and enlarged about its mount.
+					var fin_mount := Node3D.new()
+					fin_mount.position = FIN_PIVOT
+					fin_mount.rotation.y = FIN_YAW
+					fin_mount.scale = Vector3.ONE * FIN_SCALE
+					_head.add_child(fin_mount)
+					_part(fin_mount, a, _pivot(a) - head_p - FIN_PIVOT)
+				elif _parts.has(a):
 					_part(_head, a, _pivot(a) - head_p)
 
 
