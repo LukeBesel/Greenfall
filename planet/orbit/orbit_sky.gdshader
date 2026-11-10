@@ -26,9 +26,10 @@ uniform float cloud_t = 0.0;      // seconds (wind drift)
 uniform float storm = 0.0;        // dust storm 0..1
 uniform float night_lift = 1.0;   // brighter early nights (SkyDirector.night_lift)
 uniform float night_dark = 0.0;   // Long Nights
-uniform vec3 zenith_day : source_color = vec3(0.2, 0.42, 0.82);
+uniform vec3 fog_col : source_color = vec3(0.9, 0.82, 0.7);  // [v5look] the depth fog's colour (SkyDirector)
+uniform vec3 zenith_day : source_color = vec3(0.24, 0.43, 0.78);
 uniform vec3 zenith_clear : source_color = vec3(0.12, 0.38, 0.9);
-uniform vec3 horizon_day : source_color = vec3(0.74, 0.7, 0.6);
+uniform vec3 horizon_day : source_color = vec3(0.93, 0.83, 0.68);
 uniform vec3 horizon_clear : source_color = vec3(0.46, 0.66, 0.95);
 uniform vec3 haze_day : source_color = vec3(0.55, 0.52, 0.48);
 uniform vec3 zenith_night : source_color = vec3(0.03, 0.05, 0.11);
@@ -76,12 +77,16 @@ void sky() {
 	float h = clamp(e, 0.0, 1.0);
 	// Vivid even in Act 1 (owner): the dust only warms the low sky, the zenith stays blue.
 	vec3 zen = mix(zenith_clear, zenith_day, haze * 0.4);
-	vec3 hor = mix(horizon_clear, horizon_day, haze * 0.4);
-	vec3 day_col = mix(hor, zen, pow(h, 0.4));
-	day_col = mix(day_col, horizon_day, haze * 0.35 * (1.0 - smoothstep(0.0, 0.12, h)));  // a thin dust band at the horizon
+	// [v5look] The dust is a warm golden haze over the lower sky (flat Verdance's look); it
+	// thins out as the planet is cleaned.
+	vec3 hor = mix(horizon_clear, horizon_day, haze * 0.7);
+	vec3 day_col = mix(hor, zen, pow(h, 0.4 + 0.25 * haze));
+	day_col = mix(day_col, horizon_day, haze * 0.5 * (1.0 - smoothstep(0.0, 0.3, h)));
 	float lift = 1.0 + 0.7 * night_lift - 0.5 * night_dark;
 	vec3 night_col = mix(horizon_night, zenith_night, pow(h, 0.7)) * lift;
 	vec3 col = mix(night_col, day_col, day);
+	// The horizon takes the depth fog's colour, so distant land melts into the sky.
+	col = mix(col, fog_col, (0.55 + 0.35 * haze) * (1.0 - smoothstep(0.0, 0.1, h)) * (1.0 - space));
 	// Low sun: warm glow toward it along the horizon.
 	float s1e = dot(sun1_dir, up_dir);
 	float low1 = (1.0 - smoothstep(0.0, 0.35, abs(s1e))) * smoothstep(-0.2, 0.0, s1e);
@@ -99,9 +104,12 @@ void sky() {
 	float vis1 = smoothstep(-0.02, 0.02, s1e);
 	float vis2 = smoothstep(-0.02, 0.02, dot(sun2_dir, up_dir));
 	float clear_sky = 1.0 - storm * 0.8;
-	col += sun1_color * (smoothstep(0.9994, 0.9997, c1) * 14.0 + pow(max(c1, 0.0), 220.0) * 1.2 + pow(max(c1, 0.0), 12.0) * 0.12) * vis1 * clear_sky;
+	// [v5look] The discs stay out of the radiance map: the ambient light is the sky's, the suns
+	// are real lights already (with the discs in, sunlit pale ground was lit twice and blew out).
+	float disc_on = AT_CUBEMAP_PASS ? 0.0 : 1.0;
+	col += sun1_color * (smoothstep(0.9994, 0.9997, c1) * 14.0 * disc_on + pow(max(c1, 0.0), 220.0) * 1.2 * disc_on + pow(max(c1, 0.0), 12.0) * 0.12) * vis1 * clear_sky;
 	float r2 = 0.0006 * sun2_size * sun2_size;  // 1 - cos(radius), radius ~ sun2_size of the primary
-	col += sun2_color * (smoothstep(1.0 - r2 * 1.2, 1.0 - r2 * 0.8, c2) * 9.0 * sun2_strength + pow(max(c2, 0.0), 300.0) * 0.8 * sun2_strength) * vis2 * clear_sky;
+	col += sun2_color * (smoothstep(1.0 - r2 * 1.2, 1.0 - r2 * 0.8, c2) * 9.0 * sun2_strength + pow(max(c2, 0.0), 300.0) * 0.8 * sun2_strength) * vis2 * clear_sky * disc_on;
 	// The moon: a pale disc with soft maria, bright at night, a ghost by day.
 	float md = smoothstep(0.99972, 0.99978, cm);
 	if (md > 0.0) {
@@ -143,6 +151,7 @@ void sky() {
 	// Below the horizon: the planet curves away; show haze, never black.
 	vec3 below = mix(horizon_night * 1.2 * lift, mix(horizon_clear * 0.75, haze_day, haze), day);
 	below = mix(below, dust * mix(0.3, 0.8, day), storm * 0.7);
+	below = mix(below, fog_col, 0.8);  // [v5look]
 	col = mix(below, col, smoothstep(-0.06, 0.01, e));
 	if (space > 0.5) {
 		vec3 cell = floor(star_dir(d) * 260.0);
