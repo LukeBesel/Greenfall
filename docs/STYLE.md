@@ -69,12 +69,18 @@ Shared systems never import from `planets/<id>/`. A planet folder may import sha
 - Tests that can run on any planet take the planet id as a parameter and run against both the first planet and the dummy planet.
 - Nothing is done until the full suite, the save round trip and the bot playthrough pass.
 
-## 9. Visual style (art direction: realistic and grounded)
-- Real-world scale, PBR materials, natural light. No toon shading, no candy colours, no squash-and-stretch on the world.
-- The world tells the story through state: polluted ground is grey-brown, dry and littered; restored ground is dark soil, then moss, grass, flowers, shrubs and trees. Every stage must be readable from 30 metres.
-- Machines are salvaged industrial equipment: chipped paint, bare metal edges, stencilled markings, hazard orange and safety yellow as accents. Lumi's cyan is the only "clean energy" colour and marks things Lumi powers.
-- Effects are physical: dust, sparks, steam, falling leaves, pollen, water spray. Glows and beams are reserved for Lumi's tools and for restoration moments, and they scale with the size of the win.
-- Wear matches the reference palette in `docs/HANDOVER_AURORA.md`: warm dark-brown chips, grime in seams, clean stretches between.
+## 9. Visual style (art direction: realistic in detail, bright in mood)
+The owner's rule (Nov 10): "fun to look at still and bright and colorful even with junk. I do not want a gloomy dark brown game all the time." Realism comes from believable shapes, materials and wear. It never comes from draining the colour.
+- **Bright by default.** Sunny daylight, blue sky, clear shadows. Nights are readable and short. Haze and smog belong to specific polluted places and lift as they are cleaned; there is never a brown or grey grade over the whole game.
+- **Junk is colourful.** Real litter is: drink cans, crates, plastic, painted metal, packaging, signs. Keep saturated colours in the junk; make it believable with real shapes, labels, dents and dirt on top of the colour, not instead of it.
+- **Cities have colour of their own.** Painted buildings, murals, shop signs, awnings, street furniture, each city with its own palette and character. Worn, not dead.
+- **Lumi's base keeps strong colours** (teal, orange, safety yellow, cream). Improve materials and detail; do not repaint things grey or brown to look "serious".
+- **Restoration adds more colour:** green, flowers, clear water, wildlife, lights. The world goes from colourful and messy to colourful and alive, never from brown to green.
+- **What "not cartoonish" means:** real-world scale, PBR materials, natural light, no flat toon shading, no outline shaders, no rubbery squash-and-stretch. It does not mean muted.
+- **Readable states:** polluted and restored ground must be told apart from 30 metres by what is on it (litter and bare dry earth against soil, moss, grass, flowers, shrubs, trees), not by a dull colour cast.
+- Machines are salvaged equipment with honest wear: chipped paint, bare metal edges, stencilled markings. Lumi's cyan marks things Lumi powers.
+- Effects are physical: dust, sparks, steam, falling leaves, pollen, water spray. Glows and beams are for Lumi's tools and restoration moments, and they scale with the size of the win.
+- Check every render for mood as well as detail: if a frame reads as gloomy, brown or grey overall, it fails.
 
 ## 10. UI style (identity: a field instrument)
 The interface reads as Lumi's own instrument panel: a rugged, weathered survey tool, not a floating game menu.

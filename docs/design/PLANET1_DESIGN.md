@@ -260,4 +260,5 @@ Owner's rule: full cities around the planet, full of junk, with clear world goal
 - The land between cities is junk fields, outskirts and industrial edges, never empty ground. From the map the whole globe reads as covered.
 - A district's regrowth stage changes the city itself, not only the ground: lights come back, signs are readable, water runs clear, trees line the streets, animals move in.
 - **World goals** are stated in the world's terms and shown on the map: "Old Town: Growing 62%", "Shut down the burst main", "4 of 6 cities restored". The map shows each city's state at a glance.
+- **Bright and colourful, even with the junk** (owner, Nov 10): sunny light, colourful junk, painted buildings and signs; never a gloomy brown world. See `docs/STYLE.md` section 9.
 - Budget: every city must hold the performance budgets on the Low preset; buildings and furniture are batched as today.
