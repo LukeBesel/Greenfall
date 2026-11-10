@@ -53,6 +53,12 @@ func test_data_is_complete() -> void:
 			["held", "none"], ["held", "gear"], ["held", "medkit"], ["held", "toolbox"], ["held", "watering_can"],
 			["companion", "none"], ["companion", "butterfly"], ["companion", "firefly"], ["companion", "drone"]]:
 		assert_false(LumiStyle.option(pair[0], pair[1]).is_empty(), "%s:%s" % pair)
+	# Every distinguishing piece of the six designs is its own wearable option (stable ids).
+	for pair: Array in [["head", "fin"], ["head", "sprout"], ["head", "wings"], ["head", "catears"],
+			["ears", "plain"], ["ears", "heart"], ["ears", "leaf"], ["ears", "nut"], ["ears", "radio"], ["shoulders", "pads"],
+			["held", "gear"], ["held", "bottle"], ["held", "holo"], ["held", "toolbox"], ["hip", "none"], ["hip", "satchel"],
+			["pattern", "plain"], ["pattern", "stripes"], ["pattern", "moss"], ["pattern", "seams"], ["pattern", "twotone"]]:
+		assert_false(LumiStyle.option(pair[0], pair[1]).is_empty(), "%s:%s" % pair)
 	# Every unlock names something real.
 	for slot: String in LumiStyle.PART_SLOTS:
 		for o: Dictionary in LumiStyle.options(slot):

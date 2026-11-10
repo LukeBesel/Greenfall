@@ -18,6 +18,45 @@ func test_parts_and_recycle_icon() -> void:
 	assert_not_null(m._icon_mesh, "Aurora's chest icon is the modelled recycling symbol")
 
 
+func test_every_design_piece_is_modelled() -> void:
+	# Each add-on a design names is either a mesh in the add-on library or one of the animated
+	# held items / the companion, whose meshes must exist too.
+	_model()
+	var animated: Dictionary = {"gear": ["acc_gear"], "bottle": ["acc_bottle"], "case": ["acc_case"], "holo": ["acc_holo"], "butterfly": ["acc_bfly_body", "acc_wing"]}
+	for id: String in PatchModel.VARIANTS:
+		for a: String in PatchModel.VARIANTS[id].get("acc", []):
+			for part: String in animated.get(a, [a]):
+				assert_true(PatchModel._parts.has(part), "%s: %s" % [id, part])
+	for icon: String in ["acc_icon_leaf", "acc_icon_cross", "acc_icon_heart"]:
+		assert_true(PatchModel._parts.has(icon), icon)
+
+
+func test_designs_rest_on_the_sheet_expression() -> void:
+	# Bolt and Pixel rest on smiling arcs with a small smile; the others on crescents. One eye path:
+	# the face shader, never an overlay pass.
+	for id: String in PatchModel.VARIANTS:
+		var m := PatchModel.new()
+		m.preview_variant = id
+		add_child_autofree(m)
+		m._process(0.016)
+		var arcs: bool = id in ["bolt", "pixel"]
+		assert_eq(m._happy_bias > 0.5, arcs, id + " resting arcs")
+		assert_eq(float(m._face_mat.get_shader_parameter("smile")) > 0.5, arcs, id + " smile")
+		assert_eq(int(m._face_mat.get_shader_parameter("eye_shape")), 0, id + " crescent shape")
+		assert_null(m._face_mat.next_pass, id)
+
+
+func test_held_items_follow_the_left_claw() -> void:
+	for pair: Array in [["bolt", "_gear"], ["sprout", "_bottle"], ["nova", "_holo"], ["patch", "_case"]]:
+		var m := PatchModel.new()
+		m.preview_variant = pair[0]
+		add_child_autofree(m)
+		var item: Node3D = m.get(pair[1])
+		assert_not_null(item, "%s %s" % pair)
+		m._process(0.016)
+		assert_lt(item.global_position.distance_to(m.claw_point_l()), 0.45, "%s %s near the claw" % pair)
+
+
 func test_visor_face_material_only_on_front_surface() -> void:
 	# Exactly one surface of the visor carries the face (eyes); its walls/back are plain glass.
 	_model()

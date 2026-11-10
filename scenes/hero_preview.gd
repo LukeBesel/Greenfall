@@ -33,10 +33,10 @@ const BLINK_PHASES := [-1.0, 0.05, 0.09, 0.17]
 ## claw opening]. The left claw holds the design's prop (can beam, gear, bottle, holo, case).
 const POSES := {
 	"aurora": [Vector3(-6, 0, 7), Vector3(0.05, 0.1, 1.05), 0.35, Vector3(0.35, 0.3, -1.1), 0.25, 0.32],
-	"bolt": [Vector3(-6, 0, 6), Vector3(0.05, 0.1, 0.95), 0.4, Vector3(0.15, 0.35, -1.05), 0.45, 0.12],
+	"bolt": [Vector3(-6, 0, 6), Vector3(0.05, 0.1, 0.95), 0.4, Vector3(0.3, 0.35, -1.1), 0.4, 0.12],
 	"sprout": [Vector3(-6, 0, 6), Vector3(0.1, 0.1, 0.95), 0.35, Vector3(0.1, 0.3, -1.15), 0.35, 0.15],
 	"pixel": [Vector3(-4, 0, 4), Vector3(-0.1, 0.0, 1.3), 0.2, Vector3(0.45, 0.3, -1.25), 0.15, 0.4],
-	"nova": [Vector3(-6, 0, 6), Vector3(0.1, 0.1, 0.95), 0.4, Vector3(0.5, 0.3, -0.95), 0.6, 0.2],
+	"nova": [Vector3(-6, 0, 6), Vector3(0.1, 0.1, 0.95), 0.4, Vector3(0.6, 0.3, -1.0), 0.6, 0.2],
 	"patch": [Vector3(-5, 0, 5), Vector3(0.0, 0.1, 0.95), 0.4, Vector3(-0.15, 0.2, -0.75), 0.2, 0.12],
 }
 
@@ -116,7 +116,7 @@ func _ready() -> void:
 	var fill := DirectionalLight3D.new()
 	# Portrait: a near-neutral front fill, so the chest plate and held props read in their own colours.
 	fill.light_color = Color(0.86, 0.88, 0.95) if portrait else Color(0.62, 0.74, 1.0)
-	fill.light_energy = 0.6 if portrait else 0.35
+	fill.light_energy = 0.85 if portrait else 0.35
 	add_child(fill)
 	fill.look_at_from_position(Vector3(-2.5, 0.8, -3.0), Vector3.ZERO, Vector3.UP)
 	# Ground: dusty dirt (portrait) or a dark studio floor (turnaround).
@@ -157,8 +157,8 @@ func _ready() -> void:
 		# [hero v2] The concept looks down on him a little (the crown and fin read against the sky).
 		var a: float = deg_to_rad(31.0)
 		# Far enough back that head pieces (fin, seedling, ears) and the held prop stay in frame.
-		var d: float = 2.9
-		_shots = [[Vector3(sin(a) * d, 1.5, -cos(a) * d), Vector3(-0.2, 0.74, -0.05)]]
+		var d: float = 2.6
+		_shots = [[Vector3(sin(a) * d, 1.35, -cos(a) * d), Vector3(-0.22, 0.76, -0.05)]]
 		for k: int in _variants.size() - 1:
 			_shots.append(_shots[0])
 		var cam_attr := CameraAttributesPractical.new()
@@ -312,6 +312,9 @@ func _switch_variant(id: String) -> void:
 	for m: MeshInstance3D in _lasers:
 		m.visible = id == "aurora"
 	(get_node("ClawLight") as OmniLight3D).light_color = PatchModel.glow_of(id)
+	for m: MeshInstance3D in _lasers:
+		var lc: Color = PatchModel.glow_of(id).lightened(0.25)
+		(m.material_override as StandardMaterial3D).albedo_color = Color(lc.r, lc.g, lc.b, 0.8)
 
 
 func _set_view(i: int) -> void:

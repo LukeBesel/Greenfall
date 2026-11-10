@@ -128,8 +128,8 @@ sp = [
 	torus("sp_socket_rim", 0.04, 0.0048, (0, 0.01, 0), "steel", major=28, minor=6),
 	lathe("sp_soil", [(0.0, 0.017), (0.022, 0.016), (0.036, 0.011), (0.038, 0.006)], "moss", segs=24),
 	tube("sp_stem", [(0, 0.008, 0), (0.007, 0.035, 0.004), (-0.003, 0.065, 0.0), (0.0, 0.092, -0.004)], 0.0095, "leaf", sides=10, r_end=0.0065),
-	leaf("sp_leaf_a", 0.215, 0.118, (0.002, 0.088, -0.004), "leaf", rot=(32, 18, -70), cup=0.2, curl=0.09, thick=0.006, vein="leaf_vein"),
-	leaf("sp_leaf_b", 0.185, 0.104, (-0.002, 0.09, -0.004), "leaf", rot=(26, -22, 38), cup=0.2, curl=0.07, thick=0.006, vein="leaf_vein"),
+	leaf("sp_leaf_a", 0.25, 0.135, (0.002, 0.088, -0.004), "leaf", rot=(32, 18, -70), cup=0.2, curl=0.09, thick=0.006, vein="leaf_vein"),
+	leaf("sp_leaf_b", 0.215, 0.12, (-0.002, 0.09, -0.004), "leaf", rot=(26, -22, 38), cup=0.2, curl=0.07, thick=0.006, vein="leaf_vein"),
 ]
 for k in range(7):
 	a = 2 * math.pi * k / 7 + 0.3
@@ -200,7 +200,7 @@ for k, (y, tilt) in enumerate(((-0.055, 8), (-0.005, -6), (0.045, 10))):
 	xform(r, (0, y, 0), (tilt, 0, tilt * 0.6))
 	bt.append(r)
 bottle = join("acc_bottle", bt)
-bottle.data.transform(Matrix.Translation(Vector((0, 0.07, 0))) @ Matrix.Scale(1.6, 4))
+bottle.data.transform(Matrix.Translation(Vector((0, 0.07, 0))) @ Matrix.Scale(1.9, 4))
 ACC["acc_bottle"] = (bottle, Vector((0, 0, 0)))
 
 
@@ -283,8 +283,8 @@ ACC["acc_holo"] = (join("acc_holo", holo), Vector((0, 0, 0)))
 # Wing fins on the head's upper sides (the sheet's portrait): broad, thick blades that reach out,
 # up a little and back past the head, the tip drooping, red with a cream flash along the top, each
 # on a faired root; and (a separate piece) a cream lower head.
-WING = [(-0.06, -0.068), (0.08, -0.086), (0.2, -0.078), (0.3, -0.042), (0.348, 0.014), (0.325, 0.062), (0.22, 0.082), (0.08, 0.082), (-0.06, 0.07)]
-FLASH = [(0.03, -0.03), (0.19, -0.034), (0.285, -0.01), (0.292, 0.02), (0.2, 0.036), (0.03, 0.03)]
+WING = [(-0.06, -0.08), (0.08, -0.1), (0.2, -0.092), (0.3, -0.05), (0.35, 0.014), (0.325, 0.07), (0.22, 0.094), (0.08, 0.096), (-0.06, 0.082)]
+FLASH = [(0.03, -0.036), (0.19, -0.04), (0.285, -0.012), (0.292, 0.022), (0.2, 0.042), (0.03, 0.036)]
 
 
 def wing_blade(name, pts, thick, material, bevel, sub):
@@ -302,9 +302,10 @@ wings = []
 for s_ in (-1, 1):
 	p, n = crown(s_ * 0.325, 0.03)
 	root = Vector((s_ * 0.325, p.y - 0.04, 0.03))
-	rot = (0, s_ * -32, s_ * 24)
-	blade = wing_blade("wing_fin", WING, 0.056, "paint", 0.016, 1)
-	flash = wing_blade("wing_flash", FLASH, 0.064, "accent", 0.004, 0)
+	# Rolled forward so the broad top face (and its flash) shows from the front, not just an edge.
+	rot = (-42, s_ * -26, s_ * 16)
+	blade = wing_blade("wing_fin", WING, 0.074, "paint", 0.02, 1)
+	flash = wing_blade("wing_flash", FLASH, 0.082, "accent", 0.004, 0)
 	fair = rbox("wing_root", (0.11, 0.075, 0.2), (0.0, -0.005, 0.005), 0.03, "paint", segs=3, sub=1)
 	lip = rbox("wing_root_lip", (0.125, 0.02, 0.215), (0.0, -0.04, 0.005), 0.008, "trim", segs=2, sub=1)
 	for o in (blade, flash, fair, lip):
@@ -428,7 +429,7 @@ def _nut_emblem():
 ACC["acc_ear_nut"] = (ear_emblem("acc_ear_nut", _nut_emblem), HEAD_P)
 
 # Dark panels (hazard pattern): a black plate over the crown and a strip down the back of the head.
-dp = capsule("panels_dark", "dark", nu=56, nv=112)
+dp = capsule("panels_dark", "cable", nu=56, nv=112)   # the matte black rubberised paint of the cable sleeves
 bm = bmesh.new()
 bm.from_mesh(dp.data)
 bm.normal_update()
@@ -466,7 +467,7 @@ gear.data.use_auto_smooth = True
 boolean(gear, cyl("gear_bore", 0.062, 0.08, (0, 0, 0), "rust", axis='Z', verts=40))
 gear = join("acc_gear", [gear, torus("gear_lip", 0.07, 0.008, (0, 0, 0.02), "rust", axis='Z', major=40, minor=6),
 	torus("gear_lip_b", 0.07, 0.008, (0, 0, -0.02), "rust", axis='Z', major=40, minor=6)])
-gear.data.transform(Matrix.Translation(Vector((0, G_R * 0.78, 0))))
+gear.data.transform(Matrix.Scale(1.15, 4) @ Matrix.Translation(Vector((0, G_R * 0.78, 0))))
 ACC["acc_gear"] = (gear, Vector((0, 0, 0)))
 
 

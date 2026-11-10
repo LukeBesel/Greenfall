@@ -30,9 +30,9 @@ const VARIANTS: Dictionary = {
 	# Sprout: olive green with moss on the crown and a seedling instead of the fin.
 	"sprout": {"name": "Sprout", "paint": Color(0.36, 0.45, 0.2), "trim": Color(0.25, 0.29, 0.16), "glow": Color(0.5, 1.0, 0.25), "accent": Color(0.36, 0.42, 0.17), "lamp": Color(1.0, 0.6, 0.16), "latch": Color(0.5, 1.0, 0.25), "plate": Color(0.47, 0.52, 0.24), "icon": "leaf", "claw": Color(0.42, 0.47, 0.3), "grime": 0.6, "dust": 0.2, "moss": 0.6, "eyes": "crescent", "acc": ["acc_sprout", "acc_moss", "acc_ear_leaf", "bottle"]},
 	# Pixel: red over a cream lower head, wing fins, heart lenses; rests on smiling arcs.
-	"pixel": {"name": "Pixel", "paint": Color(0.74, 0.11, 0.1), "trim": Color(0.5, 0.1, 0.1), "glow": Color(1.0, 0.36, 0.56), "accent": Color(0.87, 0.84, 0.79), "lamp": Color(1.0, 0.36, 0.56), "latch": Color(1.0, 0.36, 0.56), "plate": Color(0.8, 0.14, 0.11), "icon": "recycle", "icon_col": Color(0.95, 0.94, 0.92), "icon_lit": 0.6, "claw": Color(0.62, 0.12, 0.11), "chips": Color(0.72, 0.66, 0.62), "dust": 0.15, "eyes": "crescent", "happy": 1.0, "smile": 1.0, "acc": ["acc_pixel", "acc_twotone", "acc_ear_heart", "butterfly"]},
+	"pixel": {"name": "Pixel", "paint": Color(0.74, 0.11, 0.1), "trim": Color(0.5, 0.1, 0.1), "glow": Color(1.0, 0.36, 0.56), "accent": Color(0.93, 0.9, 0.86), "lamp": Color(1.0, 0.36, 0.56), "latch": Color(1.0, 0.36, 0.56), "plate": Color(0.8, 0.14, 0.11), "icon": "recycle", "icon_col": Color(0.95, 0.94, 0.92), "icon_lit": 0.6, "claw": Color(0.62, 0.12, 0.11), "chips": Color(0.72, 0.66, 0.62), "dust": 0.15, "eyes": "crescent", "happy": 1.0, "smile": 1.0, "acc": ["acc_pixel", "acc_twotone", "acc_ear_heart", "butterfly"]},
 	# Nova: dark gunmetal lit violet from its seams, cat-ear fins, a holo data panel.
-	"nova": {"name": "Nova", "paint": Color(0.18, 0.17, 0.23), "trim": Color(0.13, 0.12, 0.17), "glow": Color(0.68, 0.36, 1.0), "accent": Color(0.26, 0.24, 0.31), "lamp": Color(0.7, 0.4, 1.0), "latch": Color(0.68, 0.36, 1.0), "plate": Color(0.21, 0.2, 0.25), "icon": "recycle", "claw": Color(0.25, 0.24, 0.3), "metal": 0.4, "dust": 0.15, "grime": 0.45, "eyes": "crescent", "acc": ["acc_catears", "acc_seams", "holo"]},
+	"nova": {"name": "Nova", "paint": Color(0.19, 0.17, 0.26), "trim": Color(0.13, 0.12, 0.18), "glow": Color(0.68, 0.36, 1.0), "accent": Color(0.26, 0.24, 0.31), "lamp": Color(0.7, 0.4, 1.0), "latch": Color(0.68, 0.36, 1.0), "plate": Color(0.21, 0.2, 0.25), "icon": "recycle", "claw": Color(0.25, 0.24, 0.3), "metal": 0.4, "dust": 0.15, "grime": 0.45, "eyes": "crescent", "acc": ["acc_catears", "acc_seams", "holo"]},
 	# Patch: white with orange panels and arms, a medic cross, satchel, carry case and side radio.
 	"patch": {"name": "Patch", "paint": Color(0.86, 0.84, 0.8), "trim": Color(0.35, 0.36, 0.38), "glow": Color(1.0, 0.68, 0.2), "accent": Color(0.94, 0.45, 0.07), "lamp": Color(1.0, 0.6, 0.15), "paddle": Color(0.98, 0.72, 0.22), "plate": Color(0.94, 0.44, 0.07), "arm": Color(0.93, 0.5, 0.09), "icon": "cross", "icon_col": Color(0.96, 0.95, 0.92), "icon_lit": 0.4, "ear_glow": Color(0.45, 0.95, 0.4), "eyes": "crescent", "acc": ["antenna", "acc_radio", "acc_toolbox", "case"]},
 }
@@ -304,15 +304,15 @@ func _build() -> void:
 		"arm": _paint(v.get("arm", v["paint"]), 43.0, cover, float(v.get("metal", 0.0)), 0.32, 0.6),
 		# Design add-on materials (designs.glb).
 		"rust": _paint(Color(0.5, 0.26, 0.11), 13.0, 0.9, 0.25, 0.75),
-		"decal": _paint(Color(0.93, 0.92, 0.88), 37.0, 0.9, 0.0, 0.45),
+		"decal": _decal_mat(),
 		"case": _paint(Color(0.8, 0.4, 0.1), 41.0, 0.74, 0.15, 0.5),
 		"bottle": _bottle_mat(),
 		"bottle_cap": _cap_mat(),
 		"leaf": _leaf_mat(Color(0.3, 0.6, 0.16)),
 		"leaf_vein": _leaf_mat(Color(0.2, 0.42, 0.1)),
 		"moss": _moss_mat(),
-		"holo": _holo_mat_of(HOLO_COLOR, 2.6, 1.0),
-		"holo_fill": _holo_mat_of(HOLO_COLOR, 0.5, 0.16),
+		"holo": _holo_mat_of(HOLO_COLOR, 1.25, 1.0),  # just under the bloom threshold: crisp lines, no white blur
+		"holo_fill": _holo_mat_of(HOLO_COLOR, 0.6, 0.22),
 		"wing": _wing_mat(glow),
 		"screen": screen,
 		"thruster": _ring_mat,
@@ -479,7 +479,7 @@ var _idle_t: float = 0.0
 var _prop_amt: float = 0.0
 var _happy_bias: float = 0.0
 ## The holo panel is light-blue projector light on every design (sheet), not the design's glow.
-const HOLO_COLOR := Color(0.42, 0.8, 1.0)
+const HOLO_COLOR := Color(0.36, 0.74, 1.0)
 const BFLY_SCALE := 2.2
 ## Fin-less heads carry the detector beacon on the crown itself (head space).
 const BEACON_CROWN := Vector3(0, 0.648, 0.196)
@@ -587,6 +587,14 @@ func _bottle_mat() -> StandardMaterial3D:
 	return m
 
 
+## Painted-on signs (the satchel's cross, the case's recycling mark): clean cream, so they read.
+func _decal_mat() -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	m.albedo_color = Color(0.9, 0.88, 0.82)
+	m.roughness = 0.55
+	return m
+
+
 func _cap_mat() -> StandardMaterial3D:
 	var m := StandardMaterial3D.new()
 	m.albedo_color = Color(0.2, 0.62, 0.6)
@@ -677,7 +685,7 @@ func _update_held() -> void:
 		_gear.global_transform = Transform3D(body.rotated(body.y, -0.4) * Basis(Vector3.BACK, PI * 0.5), wrist.to_global(Vector3(0, 0.0, -0.15)))
 	if _bottle:
 		_bottle.visible = free_hand
-		_bottle.global_transform = Transform3D(body.rotated(body.z, 0.3), wrist.to_global(Vector3(0, -0.01, -0.17)))
+		_bottle.global_transform = Transform3D(body.rotated(body.z, 0.3), wrist.to_global(Vector3(0, -0.01, -0.19)))
 	if _case:
 		_case.visible = _prop_amt > 0.5 and free_hand
 		_case.global_transform = Transform3D(body.rotated(body.y, -0.3), wrist.to_global(Vector3(0, -0.01, -0.1)))
@@ -685,8 +693,8 @@ func _update_held() -> void:
 		_holo.visible = _prop_amt > 0.01
 		if _holo.visible:
 			var e: float = _prop_amt * _prop_amt * (3.0 - 2.0 * _prop_amt)
-			var p: Vector3 = claw_point_l() - body.z * 0.06 - body.x * 0.24 + body.y * (0.1 + sin(_t * 1.4) * 0.008)
-			_holo.global_transform = Transform3D(body.rotated(body.y, -0.35).scaled(Vector3(e, e, 1.0)), p)
+			var p: Vector3 = claw_point_l() - body.z * 0.06 - body.x * 0.27 + body.y * (0.17 + sin(_t * 1.4) * 0.008)
+			_holo.global_transform = Transform3D(body.rotated(body.y, -0.35).scaled(Vector3(e * 1.15, e * 1.15, 1.0)), p)
 
 
 func _build_arm(side: float) -> Node3D:
