@@ -26,6 +26,27 @@ class StubWorld extends Node:
 	var wren: Node
 
 
+class HeldInput extends InputSource:
+	func scoop_held() -> bool:
+		return true
+
+
+## The junk view's part in the magnet pull: records which pieces were moved.
+class MoveView extends RefCounted:
+	var field: SphereField
+	var moved: Dictionary = {}
+
+	func move_piece(pid: int, pos: Vector3) -> void:
+		moved[pid] = true
+		field.piece_pos[pid] = pos
+
+
+class ScoopWorld extends Node:
+	var field: SphereField
+	var view: MoveView
+	var litter: Node
+
+
 var _saved: Dictionary
 
 
@@ -250,3 +271,109 @@ func test_b4_baler_bought_before_the_third_bin_trip_does_not_strand_the_bin_step
 	var can_still_finish: bool = Pace.dump_allowed() or o.step > 0
 	assert_true(can_still_finish, "with the Baler fitted the bin refuses loose loads and step 1 stays at %d / %d for good" % [
 		int(o.value_of(dump3)), int(o.target_of(dump3))])
+
+
+## B4 (new, B26): step 19 "Finish a research project" teaches the Research tab. The Bot Bay (step
+## 11) comes with Salvage Logic through Research.grant, which counts as a finished project
+## (research_done), so step 19 always holds before its turn and completes by itself: the player is
+## told they finished a research project without having opened the Research tab.
+func test_b4_research_step_is_not_finished_by_the_bot_bay_gift() -> void:
+	pending("B26 the Bot Bay's Salvage Logic gift finishes the research step (ui/bench_tiers.gd buy -> Research.grant counts research_done)")
+	return
+	var w := StubWorld.new()
+	var o := _objectives(w)
+	GameState.flags["signal_tower"] = 1
+	GameState.stats["hexes_cleaned"] = 3
+	GameState.add_currency("cubes", BigNum.from_float(100000.0))
+	GameState.add_currency("parts", BigNum.from_float(100000.0))
+	assert_true(BenchTiers.buy(w), "the Bot Bay can be bought")
+	assert_true(Research.has("salvage_logic"), "the Bot Bay brings Salvage Logic")
+	var research1: Dictionary = o.chain.filter(func(d: Dictionary) -> bool: return str(d["id"]) == "research1")[0]
+	assert_lt(o.value_of(research1), o.target_of(research1), "no project was run, yet the research step already counts %d / %d" % [
+		int(o.value_of(research1)), int(o.target_of(research1))])
+
+
+# --- B23: the magnet on the globe ----------------------------------------------------------------
+
+## Lumi holding the scoop on one junk cell of a small globe with Magnet Arm at `level`; `pieces`
+## loose pieces are laid 1.5 m round the scoop, inside the magnet's radius. One scoop frame runs
+## (no pickup: the scoop's own timer is held back). The first piece laid gets `first_size` and
+## `first_embed`. Returns [field, view, the pieces laid].
+func _magnet_frame(level: int, pieces: int, first_size: int = Pace.SIZE_SMALL, first_embed: float = 0.0) -> Array:
+	GameState.upgrades["magnet_arm"] = level
+	var fx := GlobeFixture.new()
+	var cell: int = fx.region()[8]
+	fx.field.materialize(cell)
+	var ids: PackedInt32Array = fx.field.pieces_in(cell)
+	assert_gte(ids.size(), pieces, "the cell holds enough pieces for the test")
+	var w := ScoopWorld.new()
+	w.field = fx.field
+	w.view = MoveView.new()
+	w.view.field = fx.field
+	add_child_autofree(w)
+	var p := Patch.new()
+	p.input = HeldInput.new()
+	p.world = w
+	p.process_mode = Node.PROCESS_MODE_DISABLED
+	w.add_child(p)
+	var centre: Vector3 = fx.field.hex_center(cell)
+	p.global_transform = Transform3D(SphereGrid.frame(centre.normalized()), centre)
+	var origin: Vector3 = p.scoop_origin()
+	var laid: Array[int] = []
+	for k: int in ids.size():
+		var pid: int = ids[k]
+		if k >= pieces:
+			fx.field.piece_pos[pid] = centre + p.global_transform.basis.x * 40.0  # out of the magnet's way
+			continue
+		var a: float = TAU * float(k) / float(pieces)
+		fx.field.piece_pos[pid] = origin + (p.global_transform.basis.x * cos(a) + p.global_transform.basis.z * sin(a)) * 1.5
+		fx.field.piece_embed[pid] = 0.0
+		fx.field.piece_size[pid] = Pace.SIZE_SMALL
+		laid.append(pid)
+	fx.field.piece_size[laid[0]] = first_size
+	fx.field.piece_embed[laid[0]] = first_embed
+	assert_gt(p.stat("scoop_reach") + p.stat("magnet_radius"), 1.5, "the laid pieces are inside the magnet's radius")
+	p._scoop_timer = 5.0
+	p._handle_scoop(0.1)
+	return [fx.field, w.view, laid]
+
+
+## B23: the test's own ground. A loose piece Lumi can lift is pulled (so the two tests below fail
+## for the right reason).
+func test_b23_magnet_pulls_a_loose_piece_lumi_can_lift() -> void:
+	var r: Array = _magnet_frame(1, 3)
+	var view: MoveView = r[1]
+	assert_true(view.moved.has((r[2] as Array[int])[0]), "a loose light piece drifts toward the scoop")
+
+
+## B23: owner rule "never pulls pieces Lumi can't lift" (data/upgrades.json magnet_arm desc: "Never
+## heavy ones").
+func test_b23_magnet_leaves_pieces_too_heavy_for_the_lift_tier() -> void:
+	pending("B23 the globe magnet pulls pieces Lumi cannot lift (player/patch.gd _handle_scoop: no Pace.can_lift check)")
+	return
+	var r: Array = _magnet_frame(1, 3, Pace.SIZE_LARGE)
+	var field: SphereField = r[0]
+	var view: MoveView = r[1]
+	var heavy: int = (r[2] as Array[int])[0]
+	assert_false(Pace.can_lift(field, heavy), "the piece is over Lumi's starting lift tier")
+	assert_false(view.moved.has(heavy), "a piece Lumi cannot lift stays where it is")
+
+
+## B23: "never from inside a heap": a piece seated in a heap (piece_embed > 0) is dug out by the
+## scoop, not dragged out by the magnet.
+func test_b23_magnet_leaves_pieces_embedded_in_a_heap() -> void:
+	pending("B23 the globe magnet pulls pieces embedded in a heap (player/patch.gd _handle_scoop: no piece_embed check)")
+	return
+	var r: Array = _magnet_frame(1, 3, Pace.SIZE_SMALL, 0.5)
+	var view: MoveView = r[1]
+	assert_false(view.moved.has((r[2] as Array[int])[0]), "an embedded piece stays in its heap")
+
+
+## B23: "capped": the description says "a few loose pieces". The flat rule this replaced pulled at
+## most 2 + one per level at a time; with 12 loose pieces in range the globe pulls all 12.
+func test_b23_magnet_pulls_only_a_few_pieces_at_a_time() -> void:
+	pending("B23 the globe magnet has no cap on pieces pulled at once (player/patch.gd _handle_scoop)")
+	return
+	var r: Array = _magnet_frame(1, 12)
+	var view: MoveView = r[1]
+	assert_lte(view.moved.size(), 6, "Magnet Arm level 1 pulls a few pieces, not everything in range (12 laid)")
