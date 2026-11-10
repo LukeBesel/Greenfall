@@ -23,7 +23,7 @@ func test_runs_on_the_first_planet_and_reaches_the_early_beats() -> void:
 	assert_true(result["content"], "the first planet has content to simulate")
 	var model: PaceSimModel = result["model"]
 	for beat: String in ["first_payout", "first_upgrade", "hexes_1", "first_robot"]:
-		assert_true(model.log.beats.has(beat), "beat '%s' happens in the first hour" % beat)
+		assert_true(model.record.beats.has(beat), "beat '%s' happens in the first hour" % beat)
 	assert_gt(model.work.hexes_done, 3, "hexes get cleaned")
 	assert_gt((result["report"]["checks"] as Array).size(), 8, "every cadence rule is checked")
 	assert_gt(PaceSim.summary(result).size(), 10, "the report prints")
@@ -41,15 +41,15 @@ func test_same_seed_gives_the_same_run() -> void:
 	var id: StringName = Planets.first_shipped().id
 	var a: Dictionary = PaceSim.run(id, 45.0, PaceSim.DEFAULT_POLICY, 7)
 	var b: Dictionary = PaceSim.run(id, 45.0, PaceSim.DEFAULT_POLICY, 7)
-	assert_eq((a["model"] as PaceSimModel).log.csv(), (b["model"] as PaceSimModel).log.csv(), "the time series match")
-	assert_eq((a["model"] as PaceSimModel).log.beats, (b["model"] as PaceSimModel).log.beats, "the beats match")
+	assert_eq((a["model"] as PaceSimModel).record.csv(), (b["model"] as PaceSimModel).record.csv(), "the time series match")
+	assert_eq((a["model"] as PaceSimModel).record.beats, (b["model"] as PaceSimModel).record.beats, "the beats match")
 
 
 func test_four_hours_run_in_under_ten_seconds() -> void:
 	var result: Dictionary = PaceSim.run(Planets.first_shipped().id, FOUR_HOURS_MIN)
 	assert_true(result["ok"], str(result["error"]))
 	assert_lt(int(result["real_ms"]), TIME_LIMIT_MS, "a 4-hour game took %d ms" % int(result["real_ms"]))
-	assert_eq((result["model"] as PaceSimModel).log.minutes.size(), int(FOUR_HOURS_MIN), "one time-series row per minute")
+	assert_eq((result["model"] as PaceSimModel).record.minutes.size(), int(FOUR_HOURS_MIN), "one time-series row per minute")
 
 
 func test_the_game_state_is_left_as_it_was() -> void:

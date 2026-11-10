@@ -10,7 +10,7 @@ enum Phase { SCOOP, PRESS, TO_BASE, RETURN }
 ## Bales fill the chest to the middle of the press window (Pace.PRESS_AT to full).
 const FILL_AT: float = (Pace.PRESS_AT + 1.0) * 0.5
 const GARDEN_TOP: int = 5
-## Lumi looks up from her work this often to ask whether the bench is worth a walk.
+## Lumi looks up from his work this often to ask whether the bench is worth a walk.
 const TRIP_CHECK_S: int = 5
 
 var m: PaceSimModel
@@ -213,7 +213,7 @@ func _phase_done() -> void:
 			m.add_stat("cubes_made")
 			if info["perfect"]:
 				m.add_stat("perfect_cubes")
-			m.log.win(m.t, "bale")
+			m.record.win(m.t, "bale")
 			var value: float = (info["value"] as BigNum).to_float() * m.sell_factor()
 			if haulers() > 0:
 				backlog.append(value)
@@ -255,7 +255,7 @@ func hex_cleaned(by_hand: bool) -> void:
 	if by_hand:
 		m.parts += data.parts_per_hex_buried * data.k("buried_find_share")
 		m.add_stat("parts_found", data.finds_per_hex_buried * data.k("buried_find_share"))
-	m.log.hex(m.t, hexes_done)
+	m.record.hex(m.t, hexes_done)
 
 
 ## Cubes one field note of this kind pays (Research.award_data without the side effects). The
@@ -413,8 +413,8 @@ func _wait_for_seeds(dt: float) -> void:
 	if _seed_wait >= data.k("seed_fetch_s"):
 		m.flags["seeds_unlocked"] = true
 		m.seeds += float(first.get("seeds_given", 0.0))
-		m.log.mechanic(m.t, "garden")
-		m.log.beat("garden_open", m.t)
+		m.record.mechanic(m.t, "garden")
+		m.record.beat("garden_open", m.t)
 
 
 func _age(level: int, after_s: float, room: int) -> void:
@@ -428,7 +428,7 @@ func _promote(level: int) -> void:
 	garden[level].pop_front()
 	garden[level + 1].append(m.t)
 	m.pay(_level_reward(level + 1), "hex_level")
-	m.log.beat("hex_level_%d" % (level + 1), m.t)
+	m.record.beat("hex_level_%d" % (level + 1), m.t)
 	if level + 1 >= 4:
 		m.add_stat("hexes_restored")
 		m.pay(field_note("hex_restored"))

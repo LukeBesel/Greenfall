@@ -17,28 +17,28 @@ const LIMITS: Dictionary[String, float] = {
 
 ## {beats: [[name, seconds]], checks: [{id, pass, value, limit, unit, note}], notes: [String]}
 static func build(m: PaceSimModel, run_s: float) -> Dictionary:
-	var log: PaceSimLog = m.log
+	var record: PaceSimLog = m.record
 	var beats: Array[Array] = []
-	for id: String in log.beats:
-		beats.append([id, log.beats[id]])
-	for row: Dictionary in log.objectives:
+	for id: String in record.beats:
+		beats.append([id, record.beats[id]])
+	for row: Dictionary in record.objectives:
 		beats.append(["objective:" + str(row["id"]), row["t"]])
 	beats.sort_custom(func(a: Array, b: Array) -> bool: return float(a[1]) < float(b[1]))
 	var checks: Array[Dictionary] = []
-	checks.append(_at_most("first_payout", log.beats.get("first_payout", -1.0), "s"))
-	checks.append(_at_most("first_upgrade", log.beats.get("first_upgrade", -1.0), "s"))
-	checks.append(_at_most("first_hex", log.beats.get("hexes_1", -1.0), "s"))
-	checks.append(_gap_check("small_win", _floats(log.wins), 0.0, run_s))
-	checks.append(_gap_check("purchase_first_hour", _times(log.purchases), 0.0, minf(run_s, FIRST_HOUR_S)))
+	checks.append(_at_most("first_payout", record.beats.get("first_payout", -1.0), "s"))
+	checks.append(_at_most("first_upgrade", record.beats.get("first_upgrade", -1.0), "s"))
+	checks.append(_at_most("first_hex", record.beats.get("hexes_1", -1.0), "s"))
+	checks.append(_gap_check("small_win", _floats(record.wins), 0.0, run_s))
+	checks.append(_gap_check("purchase_first_hour", _times(record.purchases), 0.0, minf(run_s, FIRST_HOUR_S)))
 	if run_s > FIRST_HOUR_S:
-		checks.append(_gap_check("purchase_later", _times(log.purchases), FIRST_HOUR_S, run_s))
+		checks.append(_gap_check("purchase_later", _times(record.purchases), FIRST_HOUR_S, run_s))
 	var judged_to: float = m.chains.unmodelled_since if m.chains.unmodelled_since >= 0.0 else run_s
-	checks.append(_gap_check("goal_gap", _times(log.goals), 0.0, judged_to))
-	checks.append(_gap_check("mechanic_first_hour", _times(log.mechanics), 0.0, minf(run_s, FIRST_HOUR_S)))
+	checks.append(_gap_check("goal_gap", _times(record.goals), 0.0, judged_to))
+	checks.append(_gap_check("mechanic_first_hour", _times(record.mechanics), 0.0, minf(run_s, FIRST_HOUR_S)))
 	if run_s > FIRST_HOUR_S:
-		checks.append(_gap_check("mechanic_later", _times(log.mechanics), FIRST_HOUR_S, run_s))
-	checks.append(_spike_check(log, run_s))
-	checks.append(_share_check(log))
+		checks.append(_gap_check("mechanic_later", _times(record.mechanics), FIRST_HOUR_S, run_s))
+	checks.append(_spike_check(record, run_s))
+	checks.append(_share_check(record))
 	var notes: PackedStringArray = []
 	for id: String in m.chains.unmodelled:
 		notes.append("not modelled, never completes: %s (the card reached it at minute %.1f; goal gaps are judged up to then)" % [
@@ -114,11 +114,11 @@ static func _gap_check(id: String, times: Array[float], from: float, to: float) 
 
 
 ## Cleaning rate (hexes a minute over the last few minutes) by minute row.
-static func _rates(log: PaceSimLog) -> Array[float]:
+static func _rates(record: PaceSimLog) -> Array[float]:
 	var out: Array[float] = []
-	for i: int in log.minutes.size():
+	for i: int in record.minutes.size():
 		var j: int = maxi(0, i - SPIKE_WINDOW_MIN)
-		var done: float = _output(log.minutes[i]) - _output(log.minutes[j])
+		var done: float = _output(record.minutes[i]) - _output(record.minutes[j])
 		out.append(done / float(maxi(i - j, 1)))
 	return out
 
@@ -129,8 +129,8 @@ static func _output(row: Dictionary) -> float:
 
 ## A power spike is the first minute the cleaning rate reaches spike_factor x the rate at the
 ## previous spike. The rule asks for one at least every spike_gap.
-static func _spike_check(log: PaceSimLog, run_s: float) -> Dictionary:
-	var rates: Array[float] = _rates(log)
+static func _spike_check(record: PaceSimLog, run_s: float) -> Dictionary:
+	var rates: Array[float] = _rates(record)
 	var spikes: Array[float] = []
 	var base: float = 0.0
 	for i: int in rates.size():
@@ -151,12 +151,12 @@ static func _spike_check(log: PaceSimLog, run_s: float) -> Dictionary:
 
 
 ## Lowest share of cleaning done by hand over any window of a few minutes.
-static func _share_check(log: PaceSimLog) -> Dictionary:
+static func _share_check(record: PaceSimLog) -> Dictionary:
 	var worst: float = 1.0
 	var worst_at: int = 0
-	for i: int in range(SHARE_WINDOW_MIN, log.minutes.size()):
-		var a: Dictionary = log.minutes[i - SHARE_WINDOW_MIN]
-		var b: Dictionary = log.minutes[i]
+	for i: int in range(SHARE_WINDOW_MIN, record.minutes.size()):
+		var a: Dictionary = record.minutes[i - SHARE_WINDOW_MIN]
+		var b: Dictionary = record.minutes[i]
 		var total: float = _output(b) - _output(a)
 		if total <= 0.0:
 			continue

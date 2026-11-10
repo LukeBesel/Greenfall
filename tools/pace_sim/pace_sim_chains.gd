@@ -161,7 +161,7 @@ func _objectives() -> void:
 		if v < float(row.get("target", 1)):
 			return
 		if goal_index < 0:
-			m.log.objective(m.t, str(row.get("id", "")))
+			m.record.objective(m.t, str(row.get("id", "")))
 			objective_index += 1
 		_objective_since = m.t
 		_absorb()
@@ -205,7 +205,7 @@ func _absorb() -> void:
 		var reward: Dictionary = row.get("reward", {})
 		m.parts += float(reward.get("parts", 0.0))
 		m.seeds += float(reward.get("seeds", 0.0))
-		m.log.goal(m.t, str(row.get("id", "")))
+		m.record.goal(m.t, str(row.get("id", "")))
 		m.pay(float(reward.get("cubes", 0.0)), "goal")
 
 
@@ -245,7 +245,7 @@ func start_research(id: String) -> bool:
 		return false
 	m.cubes -= research_cost(id)
 	research_spent += research_cost(id)
-	m.log.purchase(m.t, "research", id, research_cost(id))
+	m.record.purchase(m.t, "research", id, research_cost(id))
 	if research_active == "":
 		research_active = id
 		research_left = Research.duration(id)
@@ -273,8 +273,8 @@ func _research(dt: float) -> void:
 	research_active = ""
 	grant_research(id)
 	m.add_stat("research_done")
-	m.log.win(m.t, "research")
-	m.log.beat("first_research", m.t)
+	m.record.win(m.t, "research")
+	m.record.beat("first_research", m.t)
 	if not research_queue.is_empty():
 		research_active = research_queue.pop_front()
 		research_left = Research.duration(research_active)
@@ -294,7 +294,7 @@ func _story_unlocks() -> void:
 			any_ok = any_ok or cond_ok(c as Array)
 		if all_ok or any_ok:
 			grant_research(id)
-			m.log.mechanic(m.t, "story:" + id)
+			m.record.mechanic(m.t, "story:" + id)
 
 
 func _all_researched(ids: Array) -> bool:

@@ -14,7 +14,7 @@ var data: PaceSimData
 var policy: PaceSimPolicy
 var work: PaceSimWork
 var chains: PaceSimChains
-var log: PaceSimLog
+var record: PaceSimLog
 
 var t: float = 0.0
 var cubes: float = 0.0
@@ -44,7 +44,7 @@ func _init(p_policy: PaceSimPolicy, p_seed: int = 0) -> void:
 	policy = p_policy
 	seed_value = p_seed
 	rng.seed = p_seed
-	log = PaceSimLog.new()
+	record = PaceSimLog.new()
 	work = PaceSimWork.new(self)
 	chains = PaceSimChains.new(self)
 	GameState.world["hub_level"] = hub_level
@@ -61,7 +61,7 @@ func run(until_s: float) -> void:
 		t += TICK_S
 		work.step(TICK_S)
 		chains.step(TICK_S)
-		log.sample(self)
+		record.sample(self)
 
 
 ## Call when the run is over: drops the links back to this model so nothing is kept alive in a
@@ -81,8 +81,8 @@ func pay(amount: float, win: String = "") -> void:
 	cubes += amount
 	earned += amount
 	if win != "":
-		log.win(t, win)
-		log.beat("first_payout", t)
+		record.win(t, win)
+		record.beat("first_payout", t)
 
 
 func add_stat(key: String, amount: float = 1.0) -> void:
@@ -105,7 +105,7 @@ func _spend(cost: Dictionary, kind: String, id: String) -> bool:
 	cubes -= float(cost.get("cubes", 0.0))
 	parts -= float(cost.get("parts", 0.0))
 	seeds -= float(cost.get("seeds", 0.0))
-	log.purchase(t, kind, id, float(cost.get("cubes", 0.0)))
+	record.purchase(t, kind, id, float(cost.get("cubes", 0.0)))
 	return true
 
 
@@ -128,9 +128,9 @@ func buy_upgrade(id: String) -> bool:
 		return false
 	GameState.upgrades[id] = level_of(id) + 1
 	add_stat("upgrades_bought")
-	log.beat("first_upgrade", t)
+	record.beat("first_upgrade", t)
 	if Economy.upgrade_max(id) == 1:
-		log.mechanic(t, "upgrade:" + id)
+		record.mechanic(t, "upgrade:" + id)
 	work.refresh_stats()
 	return true
 
@@ -170,7 +170,7 @@ func buy_bench() -> bool:
 	if not bench_ready() or not _spend(next_bench().get("cost", {}), "bench", str(bench_tier + 1)):
 		return false
 	bench_tier += 1
-	log.mechanic(t, "bench_tier:%d" % bench_tier)
+	record.mechanic(t, "bench_tier:%d" % bench_tier)
 	for rid: Variant in BenchTiers.def(bench_tier).get("grants_research", []):
 		chains.grant_research(str(rid))
 	return true
@@ -201,7 +201,7 @@ func raise_hub() -> bool:
 		return false
 	hub_level += 1
 	GameState.world["hub_level"] = hub_level
-	log.beat("base_%d" % hub_level, t)
+	record.beat("base_%d" % hub_level, t)
 	work.refresh_stats()
 	return true
 
@@ -249,7 +249,7 @@ func build_station(id: String) -> bool:
 		return false
 	built[id] = true
 	(GameState.world["stations"] as Dictionary)["baler" if id == "auto_baler" else id] = true
-	log.mechanic(t, "station:" + id)
+	record.mechanic(t, "station:" + id)
 	return true
 
 
@@ -330,9 +330,9 @@ func build_robot(type_id: String) -> bool:
 	add_stat("robots_built")
 	if first_robot_t < 0.0:
 		first_robot_t = t
-		log.beat("first_robot", t)
+		record.beat("first_robot", t)
 	if count(type_id) == 1:
-		log.mechanic(t, "robot:" + type_id)
+		record.mechanic(t, "robot:" + type_id)
 	work.refresh_stats()
 	return true
 
