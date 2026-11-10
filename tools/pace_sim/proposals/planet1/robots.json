@@ -1,0 +1,20 @@
+{
+  "_doc": "PROPOSAL (task M3-01), not game data. Apprentice robots (spec section 3). mastery_speed: a robot works a kind at rate x (base + per_level x Lumi's mastery of that kind), and not at all below min_level. near_bonus: extra speed for crew in the district Lumi is in (the simulator treats the whole current district as 'within 80 m'). types: kinds = pollution kinds the type can work; rate = units a second per robot at speed 1.0; water_rate / plant_rate = hexes a second a tender waters or plants; hauls = carries Lumi's bales to the scale, each covering haul_share of the carrying; cost {cubes, parts} for the first one, then x cost_growth (cubes) and x parts_growth (Parts) per robot owned of that type; requires = id that must be owned; district = index of the district that must be open; cap = most robots of that type at base level 1..6 (the columns add up to the spec's crew sizes 3, 6, 10, 14, 18, 24). tiers: Mk tiers; mult = work speed; cost_mult x the type's first cost x robots owned = price to refit the whole type; requires = id; Planet 1 stops at Mk II. 'sootcap' is a working name for the smog robot.",
+  "mastery_speed": {"base": 0.4, "per_level": 0.12, "min_level": 1},
+  "near_bonus": 0.25,
+  "cost_growth": 1.3,
+  "parts_growth": 1.2,
+  "haul_share": 0.5,
+  "types": {
+    "scoopie": {"name": "Scoopie", "role": "clean", "kinds": ["litter"], "rate": 0.9, "cost": {"cubes": 350, "parts": 15}, "requires": "bot_bay", "district": 0, "cap": [3, 3, 4, 4, 5, 6]},
+    "haulbug": {"name": "Haul Bug", "role": "clean", "kinds": ["wrecks"], "rate": 2.5, "hauls": true, "cost": {"cubes": 1100, "parts": 50}, "requires": "haul_rig", "district": 1, "cap": [0, 2, 3, 3, 3, 4]},
+    "drip": {"name": "Drip", "role": "tend", "kinds": [], "water_rate": 0.25, "plant_rate": 0.0, "cost": {"cubes": 1000, "parts": 40}, "requires": "drip_blueprint", "district": 1, "cap": [0, 1, 1, 2, 2, 3]},
+    "skimmer": {"name": "Skimmer", "role": "clean", "kinds": ["slick"], "rate": 6.0, "cost": {"cubes": 2800, "parts": 110}, "requires": "skimmer_rig", "district": 2, "cap": [0, 0, 2, 3, 3, 4]},
+    "sootcap": {"name": "Sootcap", "role": "clean", "kinds": ["smog"], "rate": 12.0, "cost": {"cubes": 6500, "parts": 220}, "requires": "sootcap_rig", "district": 3, "cap": [0, 0, 0, 2, 3, 4]},
+    "seedling": {"name": "Seedling", "role": "clean", "kinds": ["blight"], "rate": 22.0, "plant_rate": 0.4, "cost": {"cubes": 14000, "parts": 450}, "requires": "seedling_blueprint", "district": 4, "cap": [0, 0, 0, 0, 2, 3]}
+  },
+  "tiers": [
+    {"id": "mk1", "name": "Mk I", "mult": 1.0},
+    {"id": "mk2", "name": "Mk II", "mult": 1.6, "cost_mult": 2.0, "requires": "mk2_frames"}
+  ]
+}

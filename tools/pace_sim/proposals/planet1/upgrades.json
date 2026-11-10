@@ -1,0 +1,39 @@
+{
+  "_doc": "PROPOSAL (task M3-01), not game data. Tracks and one-off unlocks (spec section 7). TIERS: each district opens one tier of every track (tier 0 = district 1). tier_levels = levels a tier holds; tier_ratio = cost ratio from one level to the next inside that tier; tier_cost = what the first level of a tier costs for a track of weight 1 (tier 0 uses the track's own first_cost instead). Cost of a level = (first_cost in tier 0, else weight x tier_cost[tier]) x tier_ratio[tier]^(position inside the tier). TRACKS: stat = the stat it multiplies by (1 + add x level); requires = an id that must be owned; first_tier = the tier it opens in; planet_levels = levels available on this planet (the sum of tier_levels from first_tier); final_levels = where the track ends in the whole game, so later planets have tiers to add. UNLOCKS: one-off buys and grants. cost {cubes, parts}; requires = owned ids; district = index of the district that must be open; when = counters that must be reached (bales, hexes, pieces, mastery_<kind>); auto = owned the moment its conditions hold, at no cost (a find or a grant); gate = the default player saves for it; crew = only useful with robots; mods = stat multipliers; adds = stat additions; set = values set (base_level). Unlocks with no cost and no auto flag are granted by a district's source (districts.json grants).",
+  "tier_levels": [5, 4, 4, 4, 4, 4],
+  "tier_ratio": [1.5, 1.3, 1.3, 1.3, 1.3, 1.3],
+  "tier_cost": [1, 800, 2000, 4600, 10000, 22000],
+  "tracks": {
+    "sweep_speed": {"name": "Sweep Speed", "stat": "hand_rate", "add": 0.25, "first_cost": 20, "weight": 1.0, "first_tier": 0, "planet_levels": 25, "final_levels": 45},
+    "chest_size": {"name": "Chest Size", "stat": "capacity", "add": 1.0, "first_cost": 25, "weight": 0.9, "first_tier": 0, "planet_levels": 25, "final_levels": 45},
+    "sweep_width": {"name": "Sweep Width", "stat": "hand_rate", "add": 0.2, "first_cost": 35, "weight": 1.1, "first_tier": 0, "planet_levels": 25, "final_levels": 45},
+    "press_power": {"name": "Press Power", "stat": "bale_value", "add": 0.08, "first_cost": 110, "weight": 0.8, "first_tier": 0, "requires": "baler", "planet_levels": 25, "final_levels": 45},
+    "crew_tuning": {"name": "Crew Tuning", "stat": "crew_rate", "add": 0.15, "first_cost": 320, "weight": 1.2, "first_tier": 0, "requires": "bot_bay", "planet_levels": 25, "final_levels": 45},
+    "tend_reach": {"name": "Tending Reach", "stat": "tend", "add": 0.35, "first_cost": 380, "weight": 0.9, "first_tier": 0, "requires": "seed_kit", "planet_levels": 25, "final_levels": 45},
+    "core_charge": {"name": "Core Charge", "stat": "surge_rate", "add": 0.12, "first_cost": 0, "weight": 1.0, "first_tier": 3, "requires": "surge_core", "planet_levels": 12, "final_levels": 32}
+  },
+  "unlocks": {
+    "baler": {"name": "Baler", "cost": {"cubes": 140}, "gate": true},
+    "signal_tower": {"name": "Signal Tower", "cost": {"cubes": 300}, "requires": ["baler"], "when": {"bales": 3}, "gate": true},
+    "bot_bay": {"name": "Bot Bay", "cost": {"cubes": 450, "parts": 5}, "requires": ["signal_tower"], "when": {"mastery_litter": 1}, "gate": true, "crew": true},
+    "seed_kit": {"name": "Seed Kit (found)", "when": {"hexes": 45}, "auto": true},
+    "locker": {"name": "Locker", "cost": {"cubes": 250, "parts": 10}, "when": {"pieces": 1}, "gate": true},
+    "lift_2": {"name": "Lift II", "cost": {"cubes": 600}, "district": 1, "gate": true},
+    "skimmer_head": {"name": "Skimmer Head", "cost": {"cubes": 1500, "parts": 40}, "district": 2, "gate": true},
+    "scrubber_units": {"name": "Scrubber Units", "cost": {"cubes": 3500, "parts": 80}, "district": 3, "gate": true},
+    "cleansing_plants": {"name": "Cleansing Plants", "cost": {"cubes": 8000, "parts": 150}, "district": 4, "gate": true},
+    "base_2": {"name": "Base level 2", "cost": {"cubes": 900, "parts": 30}, "district": 1, "requires": ["bot_bay"], "set": {"base_level": 2}, "gate": true, "crew": true},
+    "base_3": {"name": "Base level 3", "cost": {"cubes": 2200, "parts": 80}, "district": 2, "requires": ["base_2"], "set": {"base_level": 3}, "gate": true, "crew": true},
+    "base_4": {"name": "Base level 4", "cost": {"cubes": 5000, "parts": 160}, "district": 3, "requires": ["base_3"], "set": {"base_level": 4}, "gate": true, "crew": true},
+    "base_5": {"name": "Base level 5", "cost": {"cubes": 11000, "parts": 300}, "district": 4, "requires": ["base_4"], "set": {"base_level": 5}, "gate": true, "crew": true},
+    "base_6": {"name": "Base level 6", "cost": {"cubes": 24000, "parts": 600}, "district": 5, "requires": ["base_5"], "set": {"base_level": 6}, "gate": true, "crew": true},
+    "rig_slot_arm": {"name": "Rig slot: arm"},
+    "rig_slot_drive": {"name": "Rig slot: drive"},
+    "rig_slot_chest": {"name": "Rig slot: chest"},
+    "mk2_frames": {"name": "Mk II frames", "crew": true},
+    "lift_3": {"name": "Lift III", "mods": {"hand_rate": 1.4}}
+  },
+  "planet_stops": {"_doc": "Where Planet 1 stops, so later planets have real things to add (DECISIONS: Planet 1 is only the beginning).",
+    "track_levels": "25 of 45 (core_charge 12 of 32)", "base_level": "6 of 9", "robot_tier": "Mk II of Mk IV", "lift": "III of V",
+    "mastery": "cap 10; only litter is expected to reach it", "rig_modules": "9 of a planned 15", "robot_types": "6; the Multibot waits for a later planet"}
+}

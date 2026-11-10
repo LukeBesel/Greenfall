@@ -1,0 +1,17 @@
+{
+  "_doc": "Proposal values the redesign search (--model=redesign --search=N) may change, as dotted paths into the proposal tables, each with the range it may move in. The search is a coordinate hill-climb: it tries one value up and down by a step, keeps a change that lowers the penalty (failed checks, distance from the target ending time, distance from the spec's per-district minutes), and prints the best set as a --set string.",
+  "params": [
+    {"path": "upgrades.tier_ratio.0", "min": 1.2, "max": 1.8},
+    {"path": "upgrades.tier_cost.1", "min": 300, "max": 2000},
+    {"path": "upgrades.tier_cost.2", "min": 800, "max": 6000},
+    {"path": "upgrades.tier_cost.3", "min": 2000, "max": 15000},
+    {"path": "upgrades.tier_cost.4", "min": 4000, "max": 40000},
+    {"path": "upgrades.tier_cost.5", "min": 8000, "max": 90000},
+    {"path": "districts.districts.0.hex_work", "min": 40, "max": 90},
+    {"path": "districts.districts.1.hex_work", "min": 50, "max": 160},
+    {"path": "districts.districts.2.hex_work", "min": 60, "max": 240},
+    {"path": "districts.districts.3.hex_work", "min": 80, "max": 400},
+    {"path": "districts.districts.4.hex_work", "min": 100, "max": 600},
+    {"path": "districts.districts.5.hex_work", "min": 120, "max": 900}
+  ]
+}

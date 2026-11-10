@@ -1,0 +1,15 @@
+{
+  "_doc": "PROPOSAL (task M3-01), not game data. Regrowth stages and tending (spec section 5). Stage numbers: 0 polluted, 1 clean, 2 planted, 3 growing, 4 sustained, 5 thriving. unlock: the id that opens planting and watering. plant_s_per_hex: bot seconds of hand planting to take one clean hex to planted (a few patch actions). water_s and water_hexes: one watering action and the hexes it covers. burst_pts: growth points a watering adds at once. wet_s: seconds a watered hex then grows at full rate (1 point a second, real time); dry_rate: the rate when not watered. rewater_s: seconds before the same hex can take another burst. points_to_leave: growth points a hex needs to leave stages 2, 3 and 4 (index = stage). stage_reward: cubes and field data paid per hex on reaching stages 2 to 5, cubes times the district's stage_reward_mult. district_stage_reward: paid once when the district itself reaches stages 1 to 5 (cubes times the same multiplier).",
+  "stages": ["polluted", "clean", "planted", "growing", "sustained", "thriving"],
+  "unlock": "seed_kit",
+  "plant_s_per_hex": 2.0,
+  "water_s": 2.0,
+  "water_hexes": 3.0,
+  "burst_pts": 30.0,
+  "wet_s": 180.0,
+  "dry_rate": 0.25,
+  "rewater_s": 45.0,
+  "points_to_leave": [0, 0, 60, 150, 300],
+  "stage_reward": {"cubes": [0, 0, 4, 6, 10, 16], "data": [0, 0, 0.2, 0.2, 0.3, 0.4]},
+  "district_stage_reward": {"cubes": [0, 150, 200, 300, 500, 800], "data": [0, 8, 8, 10, 12, 15]}
+}

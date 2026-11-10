@@ -1,0 +1,6 @@
+{
+  "_doc": "PROPOSAL (task M3-01), not game data. Planet restoration and the ending (spec section 9), unchanged from the spec. A district's value is stage_values[its stage] plus the step to the next value times how far it is toward the next stage (share of hexes at the next stage or above, over districts.json stage_share). Planet restoration is the mean over the listed districts. The ending fires once when every district is at ending.stage.",
+  "weights": {"per_district": "equal"},
+  "stage_values": [0, 0.25, 0.45, 0.65, 0.85, 1.0],
+  "ending": {"when": "all_districts_stage", "stage": 5, "sequence": "bloom"}
+}
