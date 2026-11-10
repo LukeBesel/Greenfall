@@ -6,7 +6,7 @@ extends Node
 ##   --nosave           don't write saves (but load if present)
 ##   --shot=PATH        save a viewport PNG (res:// or relative to project) after --shot-delay seconds
 ##   --shots=N          take N screenshots spaced by --shot-every seconds (suffix _0, _1, ...)
-##   --quit-after=S     quit after S seconds (game time)
+##   --quit-after=S     quit after S real seconds (wall clock: --time-scale does not shorten it)
 ##   [l10n] --locale=xx  force a locale (pseudo, de, es, en; not saved); --l10n-audit lists on-screen
 ##                      text that skipped tr() (screenshots/l10n_audit.txt, use with --locale=pseudo)
 ##   --autoplay         let tools/autoplay.gd drive Patch
