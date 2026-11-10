@@ -173,9 +173,9 @@ The six designs are six old robot models that once worked on this planet. Their 
 | Source | What it gives | Rarity |
 |---|---|---|
 | Paint tins and lens chips buried in ordinary hexes (the detector helps) | single colours, glow colours | uncommon: about one per 40 hexes |
-| A robot wreck, one per district, hidden off the main path | 2 pieces of that district's design | rare: needs exploring and hand-clearing |
-| Shutting down a district's source | 1 piece of that district's design | once per district |
-| Secrets and open ground | the last pieces of each set, companions | very rare |
+| A robot wreck, hidden off the main path in some districts | 1-2 pieces of the planet's design | rare: needs exploring and hand-clearing |
+| Shutting down a district's source | 1 piece of the planet's design, in some districts | once per district at most |
+| Secrets and open ground | extra colours, a companion | very rare |
 
 ```json
 {"finds": [
@@ -186,11 +186,13 @@ The six designs are six old robot models that once worked on this planet. Their 
 ```
 
 ### Pace (the simulator and the bot check these)
+The first planet is only the beginning (owner, Nov 10). It must not hand out the collection.
+- The player starts as Aurora. **Exactly one new design can be completed on Planet 1: Sprout**, the restoration-themed set. Its pieces are spread across the districts, and the last one comes from the final district, so the set completes near the ending.
+- **Bolt, Pixel, Nova and Patch belong to later planets, one per planet.** Their pieces are not placed on Planet 1. At most, one wreck of a later design can be seen as a tease that cannot be salvaged yet ("Too far gone. Maybe somewhere else.").
+- Loose finds on Planet 1: about 8 colours and glow tints in total.
 - First piece (a colour): about minute 25. It triggers the "Build a Locker" step.
-- First complete new design: not before about 1 h 30.
-- By the ending a typical player has 2 complete designs and scattered pieces of the others.
-- All six complete: only with full completion (about 8 hours).
 - A found piece is a moment: a short reveal on Lumi, the piece named, and a pointer to the Locker.
+- Which designs a planet offers is that planet's data (`finds` table), so later planets add theirs without code.
 
 ### The Locker
 - A build in the yard (a tall salvaged steel locker with a small turntable), offered after the first piece is found.

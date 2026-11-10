@@ -391,3 +391,7 @@ The owner approved the plan and left the open calls to the lead ("decide what is
 - **Fable 5.2 for everything (owner, Nov 9, replaces the Opus note above).** Every agent definition uses Fable 5.2. The three Opus jobs were stopped and continued by Fable agents from their preserved working copies.
 - **Quality bar (owner): a premier, high-quality game.** When a task can be done quickly or done properly, it is done properly; reviews compare against the concept art and the Definition of Done, and anything short of it is listed, not hidden.
 - **Interim: design unlocks made much harder** (`data/designs.json`: 400 bales, 250 blooms, 20 trinkets, 25 research projects, a Mk III fleet) until found pieces replace the counters (M3-14).
+
+## Planet 1 is only the beginning (owner, Nov 10, 2026)
+- **One new design on Planet 1.** The player starts as Aurora and can complete exactly one more design there: Sprout, finished near the ending. Bolt, Pixel, Nova and Patch are for later planets, one each. This replaces the earlier "two complete designs by the ending".
+- **The same restraint applies to everything else.** Planet 1 stops short of final robot tiers, tools and base levels, so later planets have real things to add. The balance plan (M3-01) sets where each track stops on Planet 1.
