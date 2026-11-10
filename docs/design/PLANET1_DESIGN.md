@@ -249,7 +249,7 @@ Nothing converts one currency into another at the bench. No reward hands out a c
 - Robot tiers on Planet 1: **rusty** and **repaired**. Higher tiers are for later planets.
 - Building and upgrading both cost parts, so the player chooses between a better crew and a bigger one. Upgrades apply per robot type and show on the robots.
 - Mastery still rules what a robot type may work and how fast (section 3), so Lumi's hands set the pace of the whole crew even when robots do most of the volume. The 30% hand-share rule from PLAN section 9 is replaced by: **Lumi's own actions always decide what the crew can do next** (mastery, sources, finds, zones), and hand work is never less than 10% of cleaning by volume before district 4.
-- Unlock order on Planet 1: cleaner (about minute 20), hauler (early district 2), **Scrounger** (district 2, the wreck district, where parts open up), **Assembler** (late district 2: the chain closes and the crew starts to grow by itself, the district's power spike), skimmer (district 3), planter and waterer (districts 3-4).
+- Unlock order on Planet 1: cleaner (about minute 20), hauler (early district 2), **Scrounger** (district 2, the wreck district, where parts open up), **Assembler** (city 3, owner Nov 10: the chain closes and the crew starts to grow by itself, that city's power spike), skimmer (district 3), planter and waterer (districts 3-4). Until the Assembler arrives, Scroungers feed parts to the base and Lumi builds each robot by hand.
 
 ## 15. The world: cities under junk (owner, Nov 10)
 
