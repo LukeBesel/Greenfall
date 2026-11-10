@@ -262,3 +262,22 @@ Owner's rule: full cities around the planet, full of junk, with clear world goal
 - **World goals** are stated in the world's terms and shown on the map: "Old Town: Growing 62%", "Shut down the burst main", "4 of 6 cities restored". The map shows each city's state at a glance.
 - **Bright and colourful, even with the junk** (owner, Nov 10): sunny light, colourful junk, painted buildings and signs; never a gloomy brown world. See `docs/STYLE.md` section 9.
 - Budget: every city must hold the performance budgets on the Low preset; buildings and furniture are batched as today.
+
+## 16. Decisions after the first balance proposal (lead, Nov 10)
+
+`docs/reviews/BALANCE_PROPOSAL_P1.md` tuned sections 1-14 on paper: every required check passes (launch point at 108 bot minutes, crew 183, cities of rings 6/9/12/16/20/26 = 5,052 hexes). Its section 8 lists where the rules fight each other. These decisions settle them; a second tuning run applies them.
+
+1. **Robots do not earn cubes.** Cubes come only from bales Lumi presses and from city stage payouts. Robots restore the city (stage progress) and bring in parts (Scroungers). Income then follows Lumi's own rate, not crew size, so numbers stay small with a crew of 100-200 (the first proposal reached 39,383 for the largest price and 1,739 cubes a second). Haulers carry Lumi's bales to the scale; they do not make money of their own.
+2. **The cadence rules are on the player's clock.** The bot is twice as fast, so the simulator checks each limit at half its stated time.
+3. **City 3 is lightened.** The Assembler stays at city 3 (owner). The watering robot moves to city 4, where it also mists smog, so smog has a robot.
+4. **City 6 is the launch site.** Its capstone is building the rocket to the next world: large rocket parts made by the Assembler from parts, fitted by Lumi. This is the city's new activity, the story reason for the launch point, and the late use for parts. It replaces "everything at once" as the city's identity (all five kinds still appear there).
+5. **Robots slow down with distance from a base** (data: seconds per ring). Inside a city this is small. For the whole planet it means outposts and much larger crews: the long goal takes thousands of robots, as the owner described.
+6. **Parts stay scarce.** The purchase-gap rule reads: something worth buying is affordable within the limit in at least one currency. Parts-only waits are reported, not required.
+7. **Tipping loose trash pays 1.0x; any pressed bale pays more.**
+8. **Rigs must matter with a large crew.** Each slot gets at least one module that acts on the crew (for example a drive module that boosts robots working near Lumi, a chest module that lets haulers load faster from Lumi). The simulator must show a spread of at least 8% in time-to-launch between the best and worst sensible loadouts, with no loadout best in every city.
+9. **Seeds get a second use:** the cleansing plants that clear blight in city 5 cost seeds.
+10. **Field data is banked** when no research is active.
+11. **Finds:** 8 colour pieces on Planet 1, placed by schedule (the first at about hex 40), plus Sprout's set pieces.
+12. **An early district-sized goal:** "Clear the street" (the first ring of hexes round the base) gives a 10-minute goal inside the first quarter of an hour.
+13. **Surge** unlocks with its growth wave in city 4. It is a moment, not a power spike; spikes come from tools, mastery levels, the hauler, the Scrounger, the Assembler and each city's richer ground.
+14. **Upgrade tracks:** no track leads the "best buy" more than half the time at equal prices; adjust effects, not only prices.

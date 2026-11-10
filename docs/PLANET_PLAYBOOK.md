@@ -132,6 +132,55 @@ Targets, to be replaced by measured values as milestones land.
 - Plant slots in a hex = hex area / `slot_spacing`^2 (49). Planted needs `planted_min_frac` of them: 13 seeds.
 - A seed turns up once per `cooldown_s` + 1 / (`chance` x takes a second) of scooping. Bloom takes 4 x `grow_s` (about 5 min) and drops `seed_yield` seeds.
 
+### Formulas proposed for the Planet 1 redesign (M3-01)
+Proposed, not built: the numbers live in `tools/pace_sim/proposals/planet1/` and the results in `docs/reviews/BALANCE_PROPOSAL_P1.md`. Times are bot seconds; a new player is about 2x slower at actions, and growth timers are real time. Every cadence limit above is a player limit, so a bot time is doubled before it is compared.
+
+**Chest against hex (the first ten minutes)**
+- Chest = what a new player fills in about 6 seconds (12 units at 2 units a second). A first hex = 10 chest loads (120 units). The bin is one short walk (2.5 s bot).
+- Rule of thumb: the 20-second payout rule sets the chest, the 3-minute hex rule sets the hex at about 10 loads. Change one and the other rule breaks.
+
+**Lumi's rate on a kind**
+- Sweep rate = base rate x track levels x kind factor x rig module x (1 + 0.08 x mastery level of that kind).
+- With a chest: units a second = chest / (chest / sweep rate + handling), handling = one bin trip loose, or one press plus a share of a carry once the Baler is fitted.
+- A loose load pays 1.0x, a perfect bale 1.5x. Loose must stay under the worst bale a player presses, or tipping wins.
+
+**Track prices: one tier per district**
+- A track adds the same amount every level: stat x (1 + add x level). Sweep Speed adds 20%, Sweep Width 15%, Chest Size one starting chest.
+- Each district opens one tier. Price of a level = tier price x track weight x ratio ^ (position in the tier). Tiers hold 8, 4, 5, 6, 8, 10 levels with ratios 1.6, 1.3, 1.25, 1.2, 1.16, 1.13; tier prices are 1,100, 2,400, 4,100, 7,500 and 10,800 for districts 2-6 (district 1 uses each track's own first price, 40 to 220).
+- Rule of thumb: a tier's whole price should be about what the district earns. Too cheap and the bench is empty before the district ends; too dear only delays the last levels to the next district.
+- Rule of thumb: a track that raises the sweep rate is worth about twice any other per level. Price it 1.5-2x or it is always the best buy.
+
+**Mastery curve**
+- Level L of a kind needs level-1 units x 1.78 ^ (L - 1) units of that kind cleared by Lumi's own hands, in total. Level 1 comes after about a minute of bot work on the kind, level 5 after about ten times that, level 10 after about 180 times.
+- Level-1 units rise with each kind (litter 220, wrecks 1,000, slick 2,200, smog 4,000, blight 7,000) so a new kind takes as long to learn as the first did.
+
+**Robot speed rule**
+- A robot works a kind at: type rate x (0.4 + 0.12 x Lumi's mastery of that kind) x 1.25 in the district Lumi is in x 1.6 once its type is repaired x 1.25 per base level above 1. Below mastery 1 it cannot work the kind at all.
+- Robots clean, tend or carry; only Lumi's hands and the Scroungers bring in Parts.
+- Rule of thumb: buy for the kind that lags. A district is finished when its slowest kind is, so ten more robots on a kind that is already ahead add nothing.
+
+**The chain that builds the crew**
+- Every cleaned hex leaves buried parts (0 in district 1, then 1.5 to 2.6 a hex). A Scrounger carries 4 per round trip of 30 s + 1.5 s per ring of the district, and nothing when the ground is empty.
+- An Assembler builds one robot per 40 s if the Parts are there. Assemblers cost 45, 195, 345, 495 Parts. The crew cap is 8, 28, 70, 110, 160, 200 by base level.
+- Three brakes keep the loop smooth: trip time (Parts a minute per Scrounger), buried parts per cleaned hex (growth follows cleaning), assembly time (robots a minute). The cap should be the last thing the player meets, not the first: when the crew sits at the cap for minutes, raise the cap.
+- Rule of thumb: about 15% of the crew as Scroungers. All Scroungers or none both finish later.
+
+**Regrowth by tending**
+- Planting one hex costs one seed and 1 s. One watering adds 30 growth points at once and 180 s of full growth (1 point a second; 0.25 dry). A hex needs 60, 150 and 300 points to leave planted, growing and sustained. The same hex can be watered again after 15 s.
+- So one planting and one watering take a hex from clean to sustained in 3 minutes with no waiting on the player's side, and watering again is always something to do.
+
+**Surge charge**
+- 120 s of hand work (sweeping, pressing, tending) fills the core; Core Charge levels divide that by (1 + 0.12 x level). Release: 12 s at 3x Lumi's cleaning, plus 60 growth points for 14 hexes.
+- Rule of thumb: that is about +18% on average. The Surge is a moment, not a power spike.
+
+**Payouts**
+- A clean hex pays 0.1 cubes per unit of its work; regrowth pays 2, 2, 3 and 5 cubes per hex per stage, times the district's hex work over 120. A robot's work pays 12% of what the same work pays by hand.
+- Rule of thumb: keep every payout that is not Lumi's own bale under a fifth of the bale income, or robots earn from rewards the player did not work for (the baseline's third problem).
+- No single purchase should raise income more than 3x (the largest here is the Baler, 1.38x); no one-off reward should be worth more than 3 player minutes of income.
+
+**Power spikes**
+- A spike is the cleaning volume (units a second, hand and crew) reaching 2x its value at the last spike. One every 30-40 player minutes over 4 hours means the volume ends 100 to 300 times where it started, and income with it. This is the rule that sets how big the late numbers get.
+
 ## 5. Checklists
 
 **New planet setup**

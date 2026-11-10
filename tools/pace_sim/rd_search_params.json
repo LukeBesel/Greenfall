@@ -1,0 +1,24 @@
+{
+  "_doc": "Proposal values the redesign search (--model=redesign --search=N) may change, as dotted paths into the proposal tables, each with the range it may move in. The search is a coordinate hill-climb: it tries one value up and down by a step, keeps a change that lowers the penalty (failed checks and how far they missed, distance from the target ending time, distance from the spec's per-district minutes, hand share under a district's floor), and prints the best set as a --set string.",
+  "params": [
+    {"path": "upgrades.tier_ratio.0", "min": 1.25, "max": 1.6},
+    {"path": "upgrades.tracks.sweep_speed.weight", "min": 1.0, "max": 3.0},
+    {"path": "upgrades.tracks.sweep_width.weight", "min": 1.0, "max": 3.0},
+    {"path": "districts.districts.0.hex_work", "min": 90, "max": 160},
+    {"path": "districts.districts.1.hex_work", "min": 100, "max": 300},
+    {"path": "districts.districts.2.hex_work", "min": 110, "max": 450},
+    {"path": "districts.districts.3.hex_work", "min": 120, "max": 700},
+    {"path": "districts.districts.4.hex_work", "min": 130, "max": 1000},
+    {"path": "districts.districts.5.hex_work", "min": 140, "max": 1400},
+    {"path": "upgrades.tier_cost.1", "min": 400, "max": 4000},
+    {"path": "upgrades.tier_cost.2", "min": 600, "max": 9000},
+    {"path": "upgrades.tier_cost.3", "min": 1000, "max": 20000},
+    {"path": "upgrades.tier_cost.4", "min": 1500, "max": 45000},
+    {"path": "upgrades.tier_cost.5", "min": 2000, "max": 100000},
+    {"path": "robots.types.scoopie.rate", "min": 0.3, "max": 4.0},
+    {"path": "robots.types.haulbug.rate", "min": 0.3, "max": 6.0},
+    {"path": "robots.types.skimmer.rate", "min": 0.4, "max": 10.0},
+    {"path": "robots.types.drip.rate", "min": 0.4, "max": 12.0},
+    {"path": "robots.types.seedling.rate", "min": 0.5, "max": 16.0}
+  ]
+}

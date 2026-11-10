@@ -8,12 +8,17 @@ extends Node
 
 const POLICY_DIR: String = "res://tools/pace_sim/policies"
 const DEFAULT_POLICY: String = "greedy"
+## --model=current (default) is the game as it is; --model=redesign is PaceSimRedesign.
+const MODEL_CURRENT: String = "current"
 
 
 func _ready() -> void:
 	var args: Dictionary[String, String] = _args()
 	if args.has("planets-dir"):
 		Planets.register_dir(args["planets-dir"])
+	if args.get("model", MODEL_CURRENT) != MODEL_CURRENT:
+		get_tree().quit(PaceSimRedesign.main(args))
+		return
 	for pair: String in args.get("set", "").split(",", false):
 		PaceSimData.overrides[pair.get_slice("=", 0)] = float(pair.get_slice("=", 1))
 	var planet_id: StringName = StringName(args.get("planet", String(Planets.current_id())))
