@@ -47,7 +47,7 @@ func setup() -> void:
 		_letterbox.add_child(r)
 		_bars.append(r)
 	_check.call_deferred()
-	if _globe and DevHooks.has("seed-probe"):  # [v4grow]
+	if DevHooks.has("seed-probe"):  # [v4grow]
 		_probe()
 
 
@@ -116,8 +116,7 @@ func _build_greenhouse() -> void:
 		for x: float in [-2.5, 2.5]:
 			PropColliders.add_cyl(pb, GREENHOUSE_POS + Vector3(x, 0, -4.0 + i * 2.0), 0.08, 2.4)
 	PropColliders.add_box(pb, Transform3D(Basis(), GREENHOUSE_POS + Vector3(-2.5, 1.1, 2.0)), Vector3(0.1, 2.2, 1.9))
-	if _globe:  # [orbB] the shapes are in this node's space (the world on the flat game)
-		pb.global_transform = global_transform
+	pb.global_transform = global_transform  # [orbB] the shapes are in this node's space
 
 
 func ready_to_find() -> bool:
@@ -182,7 +181,7 @@ func _total_time() -> float:
 func _cinematic() -> void:
 	if world.get("music") != null:
 		world.music.set_cinematic(true)
-	var cam: Object = world.cam if world.get("cam") != null else (world.orbit as SliceOrbit).cam  # [orbB] SphereCam on the globe
+	var cam: SphereCam = (world.orbit as SliceOrbit).cam
 	var hud: CanvasLayer = world.hud
 	hud.visible = false
 	cam.set("input_enabled", false)
@@ -196,20 +195,16 @@ func _cinematic() -> void:
 		else:
 			tw.tween_property(r, "offset_top", -90.0, 0.8)
 	Audio.play("fanfare", 0.6, -10.0)
-	var start_yaw: float = float(cam.get("yaw")) if not _globe else 0.0
-	var dist0: float = cam.get("distance")
-	var pitch0: float = cam.get("pitch")
-	cam.set("distance", 3.4)
+	var dist0: float = cam.distance
+	var pitch0: float = cam.pitch
+	cam.distance = 3.4
 	var total: float = _total_time()
 	var tw2 := create_tween()
 	var last := [0.0]
 	tw2.tween_method(func(v: float) -> void:
-		if _globe:  # [orbB] SphereCam turns by increments in Lumi's frame
-			cam.call("add_yaw", (v - float(last[0])) * 1.6)
-			last[0] = v
-		else:
-			cam.set("yaw", start_yaw + v * 1.6)
-		cam.set("pitch", lerpf(-0.18, -0.42, v)), 0.0, 1.0, total)
+		cam.add_yaw((v - float(last[0])) * 1.6)  # [orbB] SphereCam turns by increments in Lumi's frame
+		last[0] = v
+		cam.pitch = lerpf(-0.18, -0.42, v), 0.0, 1.0, total)
 	for l: Array in LINES:
 		world.wren.line_started.emit(str(l[0]), 1)
 		await get_tree().create_timer(float(l[1])).timeout
@@ -220,11 +215,10 @@ func _cinematic() -> void:
 			tw.tween_property(r, "offset_bottom", 0.0, 0.8)
 		else:
 			tw.tween_property(r, "offset_top", 0.0, 0.8)
-	cam.set("distance", dist0)
-	if _globe:
-		cam.set("pitch", pitch0)
+	cam.distance = dist0
+	cam.pitch = pitch0
 	hud.visible = true
-	cam.set("input_enabled", true)
+	cam.input_enabled = true
 	if world.patch.input is PlayerInput:
 		(world.patch.input as PlayerInput).enabled = true
 
@@ -236,7 +230,7 @@ func _sprout_moment(pos: Vector3) -> void:
 	flash.light_energy = 8.0
 	flash.omni_range = 8.0
 	add_child(flash)
-	flash.global_position = pos + OrbitUp.up(pos) * 0.6  # [orbB] (Vector3.UP on the flat game)
+	flash.global_position = pos + OrbitUp.up(pos) * 0.6
 	var tw := create_tween()
 	tw.tween_property(flash, "light_energy", 0.0, 2.5)
 	tw.tween_callback(flash.queue_free)
@@ -253,20 +247,16 @@ func _sprout_moment(pos: Vector3) -> void:
 		world.music.set_cinematic(false)
 
 
-# --- [orbB] The globe: the greenhouse east of the start yard ------------------------------------
+# --- [orbB] The greenhouse east of the start yard -----------------------------------------------
 
-var _globe: bool = false
-
-
-## Where the greenhouse stands (the objective's waypoint): GREENHOUSE_POS on the flat game.
+## Where the greenhouse stands (the objective's waypoint).
 func greenhouse_point() -> Vector3:
 	return to_global(GREENHOUSE_POS)
 
 
-## Seats this node so the flat greenhouse (at GREENHOUSE_POS in this node's space) lands on a free
+## Seats this node so the greenhouse (at GREENHOUSE_POS in this node's space) lands on a free
 ## spot east of the start yard, upright on the ground there. Call before setup().
 func place_on_globe(so: SliceOrbit) -> void:
-	_globe = true
 	var site: Transform3D = so.globe.sites[0]["transform"]
 	var spot: Transform3D = find_spot(so, site)
 	global_transform = spot * Transform3D(Basis.IDENTITY, -GREENHOUSE_POS)
@@ -378,9 +368,7 @@ func give_signal(line: String = "") -> void:
 ## what stands in the way on the straight line from the bench.
 func _probe() -> void:
 	await get_tree().create_timer(DevHooks.get_f("seed-probe", 6.0)).timeout
-	var so: SliceOrbit = world.get("orbit") as SliceOrbit
-	if so == null:
-		return
+	var so: SliceOrbit = world.orbit
 	var site: Transform3D = so.globe.sites[0]["transform"]
 	var gh: Vector3 = greenhouse_point()
 	var loc: Vector3 = site.affine_inverse() * gh

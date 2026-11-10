@@ -186,9 +186,6 @@ func repair_bench() -> void:
 	if p_in is PlayerInput:
 		(p_in as PlayerInput).enabled = false
 	var target: Vector3 = _bench.global_position + OrbitUp.up(_bench.global_position) * 0.9 if _bench else world.BOARD_POS  # [orbB] local up
-	if patch and not OrbitUp.on_globe():  # [orbB] the globe's Patch turns through its SphereMotor
-		var d: Vector3 = target - patch.global_position
-		patch.rotation.y = atan2(-d.x, -d.z)
 	var model: Node = patch.get("model") if patch else null
 	var dur: float = float(cfg().get("bench_repair_s", 2.6))
 	var tw := create_tween()
@@ -322,25 +319,7 @@ func _on_built(id: String) -> void:
 			_apply_builds()  # [camp2] lean-to, generator, lamps, compost press
 			if id == "lamps":
 				_power_on_street_lamp()  # [camp4] world3's flicker-then-on moment
-	var at: Vector3 = YardBuilds.pos(id, Vector3.ZERO)
-	var bits: Dictionary = world.get("_ruin_bits")
-	match id:
-		"nursery":
-			if ex and ex.nursery:
-				at = ex.nursery.global_position
-		"shack":
-			at = world.BOARD_POS
-		"generator", "lamps":
-			var n: Node3D = bits.get("generator" if id == "generator" else "street_lamp") as Node3D
-			if n:
-				at = n.global_position
-		"composter":
-			var c: Node3D = world.get("composter") as Node3D
-			if c:
-				at = c.global_position
-	var so2: Node = world.get("orbit")
-	if so2:  # [orbB] the globe: the build's own anchor on the start site
-		at = so2.call("yard_point", id)
+	var at: Vector3 = (world.orbit as SliceOrbit).yard_point(id)  # [orbB] the build's own anchor on the start site
 	MachineReveal.reveal(world, tr(str(YardBuilds.def(id).get("name", id))), at)
 
 
@@ -368,10 +347,7 @@ func _register_bin() -> void:
 	_bin_anchor = Node3D.new()
 	_bin_anchor.name = "TrashBinReach"
 	world.add_child(_bin_anchor)
-	_bin_anchor.global_position = depot.global_position + (BIN_ANCHOR - Vector3(0, 0, -1.8))
-	var so: Node = world.get("orbit")
-	if so:  # [orbB] the globe: the start site's "bin" anchor (orbD)
-		_bin_anchor.global_position = so.call("yard_point", "bin")
+	_bin_anchor.global_position = (world.orbit as SliceOrbit).yard_point("bin")  # [orbB] the start site's "bin" anchor (orbD)
 	ia.register(_bin_anchor, BIN_REACH, bin_prompt, use_bin)
 
 

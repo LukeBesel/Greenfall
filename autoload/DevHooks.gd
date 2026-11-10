@@ -30,12 +30,8 @@ extends Node
 ##   --ledger-act=N     jump the Ledger arc to act N (1 intercepts, 2 drones, 3 relay, 4 resolved)
 ##   --ledger-drop[=S]  force a Ledger dump drone S seconds after start (ignores jammers)
 ##   --ledger-resolve[=S]  play the relay "rewrite the contract" cinematic (needs act 3)
-##   --spawn-relay      put Patch next to the Ledger relay terminal (act >= 3)
 ##   --demo-scoop       Patch scoops the nearest junk nonstop (pickup animation shots; --demo-yaw, --demo-speed)
-##   --spawn-egg=ID     put Patch next to an easter egg in this district (data/eggs.json ids);
-##                      --egg-dist=M sets the distance, --egg-poke[=S] plays its reaction after S s
-##                      [eggs2] --egg-use[=S] presses E on it after S s; --egg-parts=ID marks a collectible egg's parts
-##                      collected; --tv-frame=N holds the TV broadcast on frame N, --tv-step=S advances it every S wall-clock s
+##   [eggs2] --tv-frame=N holds the TV broadcast on frame N, --tv-step=S advances it every S wall-clock s
 ##   [eggs2] Museum: --museum (unlocked), --museum-here (build site in this district), --museum-built, --museum-sample
 ##                      (a partly filled collection), --spawn-museum (--museum-dist/--museum-side/--museum-yaw)
 ##   --event=ID         [events] force a world event (supply_drop, salvage_surge, rain_shower, robot_hiccup,

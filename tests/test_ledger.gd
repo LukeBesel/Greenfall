@@ -154,13 +154,7 @@ func test_jammer_needs_drones_scales_and_persists_per_district() -> void:
 	assert_string_contains(lg.jammer_text(), "3 / 3")
 
 
-func test_relay_spot_is_deterministic_and_on_open_ground() -> void:
-	var a: Dictionary = LedgerArc.relay_spot(field)
-	var b: Dictionary = LedgerArc.relay_spot(field)
-	assert_eq(a["pos"], b["pos"])
-	var p: Vector3 = a["pos"]
-	assert_ne(field.layout.surface_at(p.x, p.z), CityLayout.Surface.BUILDING)
-	assert_gt(Vector2(p.x, p.z).length(), 15.0, "out in the district, not at the base")
+func test_compass_names_the_frame_directions() -> void:
 	assert_eq(LedgerArc.compass(Vector3(0, 0, -10)), "north")
 	assert_eq(LedgerArc.compass(Vector3(10, 0, 0)), "east")
 
@@ -217,7 +211,7 @@ func test_egg_data_has_enough_original_secrets() -> void:
 		assert_eq((wren[k] as Array).size(), 3, k + " has all three memory stages")
 
 
-func test_egg_placement_deterministic_and_clear_of_buildings() -> void:
+func test_egg_placement_deterministic_and_in_the_hub_region() -> void:
 	var data: Dictionary = Economy.read_json("res://data/eggs.json")
 	var defs: Dictionary = {}
 	var order: Array[String] = []
@@ -227,15 +221,19 @@ func test_egg_placement_deterministic_and_clear_of_buildings() -> void:
 	var ids: Array[String] = EasterEggs.district_eggs(order, defs, 0, field.seed_value, 9)
 	assert_gte(ids.size(), 10, "Old Town has the starter set")
 	var avoid: Array[Vector3] = [Vector3.ZERO]
-	var a: Array[Dictionary] = EasterEggs.plan_spots(field, ids, defs, avoid)
-	var b: Array[Dictionary] = EasterEggs.plan_spots(field, ids, defs, avoid)
+	var g := GlobeFixture.new()
+	var frame := Node3D.new()
+	add_child_autofree(frame)
+	frame.global_transform = g.frame_transform()
+	var a: Array[Dictionary] = EasterEggs.plan_spots_cells(frame, g.field, g.region(), ids, defs, avoid, 9091)
+	var b: Array[Dictionary] = EasterEggs.plan_spots_cells(frame, g.field, g.region(), ids, defs, avoid, 9091)
 	assert_eq(a.size(), b.size())
 	assert_gte(a.size(), ids.size(), "every egg (and every part) got a spot")
 	for i: int in a.size():
 		assert_eq(a[i]["pos"], b[i]["pos"])
-		var p: Vector3 = a[i]["pos"]
-		assert_ne(field.layout.surface_at(p.x, p.z), CityLayout.Surface.BUILDING)
-		assert_eq(field.hex_hub[field.hex_at(p)], 0)
+		var p: Vector3 = frame.to_global(a[i]["pos"])
+		assert_true(g.field.hex_at(p) in g.region(), "inside the hub's region")
+		assert_eq(g.field.hex_hub[g.field.hex_at(p)], 0)
 	var other: Array[String] = EasterEggs.district_eggs(order, defs, 2, 9999, 9)
 	assert_eq(other.size(), 9)
 	assert_eq(other, EasterEggs.district_eggs(order, defs, 2, 9999, 9))
