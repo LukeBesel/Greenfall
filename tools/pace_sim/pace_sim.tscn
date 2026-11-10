@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tools/pace_sim/pace_sim.gd" id="1"]
+
+[node name="PaceSim" type="Node"]
+script = ExtResource("1")

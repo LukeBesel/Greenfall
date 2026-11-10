@@ -1,0 +1,40 @@
+{
+  "_doc": "Numbers the pacing simulator cannot derive from planet data. constants: id -> {value, how}; 'how' says how the value was measured, or says ESTIMATE when it was not. 'Bot run' means the fresh autoplay run of Nov 10 kept in tools/pace_sim/calibration_bot_run.log (godot --headless --path . -- --fresh --autoplay --time-scale=8; 83 game minutes). side_events: stats the model does not simulate but the bot raises on the side; each reaches 1 at first_s and then rises by 1 every every_s (0 = once). build_sets_flag: yard build id -> the flag building it sets (shared code, not planet content). bot_mirror: lists the full-game bot hardcodes (tools/autoplay.gd), kept here so the policy scripts name no content; ids a planet does not have are skipped. Re-measure after any change to the bot, the hand loop or the crew: see tools/pace_sim/README.md.",
+  "constants": {
+    "start_delay_s": {"value": 40.0, "how": "Bot run: the third bin load lands at 84 s, but three modelled loads take 44 s. The difference is the landing (pod, first message, first steps). Inferred, not logged directly."},
+    "hand_duty": {"value": 0.8, "how": "Share of scoop pulses that find a piece. Fitted together with seek_s_per_volume and trip_overhead_s to the bot run's first three hexes (7.5, 14.5, 19.6 min)."},
+    "seek_s_per_volume": {"value": 0.09, "how": "Seconds Lumi spends finding and facing junk per unit of volume, whatever the scoop speed. Fitted to the bot run at minutes 45-60, when Haul Bugs carry the bales and Lumi only scoops: about 2 min a hex by hand."},
+    "beam_exponent": {"value": 0.5, "how": "ESTIMATE. How much a wider or longer beam cuts the seek time: seek / (beam area ratio ^ exponent). Not measured; the bot run cannot separate it."},
+    "trip_overhead_s": {"value": 8.0, "how": "Seconds per bin trip on top of walking (turning, lining up, the bin swallowing). Fitted to the bot run's first three hexes."},
+    "bale_handle_s": {"value": 2.0, "how": "Seconds per bale on top of the 1.7 s press (picking it up or setting it down). Fitted with trip_overhead_s."},
+    "bench_gap_s": {"value": 20.0, "how": "Copied from tools/autoplay.gd _manage: the bot walks back to the bench at most every 20 s."},
+    "yard_offset_m": {"value": 6.0, "how": "Bot run: Lumi's logged positions while working the first hex are 5-8 m from where he delivers."},
+    "yard_parts": {"value": 70.0, "how": "Bot run: 70 Parts on hand at minute 2.0, from buried parts dug up in the start yard."},
+    "yard_finds": {"value": 2.0, "how": "Bot run: the 'find 2 parts' goal is met by minute 2.4."},
+    "yard_finds_s": {"value": 75.0, "how": "Bot run: found before the first upgrade at 86 s (the goal folds into that step). Exact second not logged."},
+    "parts_luck": {"value": 0.5, "how": "Parts found in scooped junk against the expectation from data (drop chance x the rarity table's mean value, about 120 a hex). Bot run: about 415 Parts outside the yard by minute 33 and about 1,060 by minute 83, half of what the tables predict. Parts come in rare big finds, so runs differ a lot: base level 2 came at 33.0 min in this run and 52.6 min on Nov 9."},
+    "buried_find_share": {"value": 0.5, "how": "ESTIMATE. Share of a hex's buried parts the player digs up. Not measured."},
+    "crew_travel_s_per_ring": {"value": 50.0, "how": "Seconds a cleaner robot spends driving per hex, per ring of distance between the frontier and the base. Bot run, cleaner output per robot in four windows (minutes 24-33, 33-44, 45-60, 60-70): 0.35, 0.28, 0.30 and 0.19 hexes a minute, which fits 32-55 s a ring."},
+    "haul_overhead_s": {"value": 8.0, "how": "ESTIMATE. Seconds a hauler spends loading and unloading per trip. Not measured."},
+    "recycle_every": {"value": 4.0, "how": "Copied from tools/autoplay.gd _shop: the bot sends every 4th bale to the recycler."},
+    "robot_cost_growth": {"value": 1.35, "how": "Copied from robots/fleet.gd build_cost, where it is a literal: each robot of a type costs 1.35x the one before. It belongs in the robots table."},
+    "garden_time_share": {"value": 0.37, "how": "Bot run: 21 of the 57 one-minute snapshots from minute 27 on show Lumi watering instead of cleaning."},
+    "seed_fetch_s": {"value": 90.0, "how": "Bot run: the seed tin is picked up about 2 min after the seed step appears (signal after 75 s, then the walk)."},
+    "plant_seed_s": {"value": 6.0, "how": "ESTIMATE. Seconds of garden time to plant one seed. Not measured."},
+    "robot_plant_seed_s": {"value": 8.0, "how": "ESTIMATE. Seconds a planter robot needs per seed, driving included. Not measured."},
+    "drip_hexes": {"value": 3.0, "how": "ESTIMATE. Hexes one watering robot keeps watered. Not measured."},
+    "bot_to_player": {"value": 2.0, "how": "docs/PLAN.md section 3: the bot plays about twice as fast as a new player."}
+  },
+  "side_events": {
+    "shards_found": {"first_s": 900, "every_s": 1200, "how": "ESTIMATE: the bot run does not log shard reads."},
+    "cats_petted": {"first_s": 1800, "every_s": 0, "how": "ESTIMATE: the bot run does not log it."}
+  },
+  "build_sets_flag": {"glim": "glim_repaired"},
+  "bot_mirror": {
+    "buddy_tracks": ["light", "scan"],
+    "research_first": ["salvage_logic", "conveyor", "auto_baler"],
+    "research_garden_chain": ["soil_survey", "hardy_weeds", "wild_mint", "pollinator_survey"],
+    "garden_chain_base_level": 3,
+    "research_priority": ["salvage_logic", "soil_survey", "water_testing", "field_notebook", "scoop_beam", "hardy_weeds", "seedling_blueprint", "big_tanks", "drip_blueprint", "wild_mint", "pollinator_survey", "conveyor", "wide_beam", "auto_baler", "recycler", "bigger_hopper", "auto_sort", "haul_routes", "spray_heads", "bale_tuning", "multibot_blueprint", "rocket_cargo", "silt_filters", "pump_lines", "irrigation", "dune_charts", "field_magnet", "tractor_beam", "dew_condensers", "thermal_lance", "pump_works", "ark_beacon", "hedgerows", "evergreens", "dune_fences", "cold_hardy_seeds", "heat_pumps"]
+  }
+}

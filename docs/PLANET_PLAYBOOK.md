@@ -58,7 +58,60 @@ Targets, to be replaced by measured values as milestones land.
 | Hand share of output | 30% or more at all times |
 | Offline bonus | capped; never more than a few minutes of active play |
 
-**Cost curves:** inside a district, a track's cost grows by a fixed ratio per level, tuned so the time to the next level rises about 10-15% each step. A new district starts a new tier: income jumps, the first purchases are quick, then the curve climbs again. *(Exact formulas and ratios are documented here in M3-01 and M3-12.)*
+**Cost curves (target):** inside a district, a track's cost grows by a fixed ratio per level, tuned so the time to the next level rises about 10-15% each step. A new district starts a new tier: income jumps, the first purchases are quick, then the curve climbs again. *(Target ratios are set in M3-01 and M3-12.)*
+
+### Formulas the simulator uses (current game, M1-12)
+`tools/pace_sim` computes these from the planet's tables. Names in `code` are table fields or calibration constants (`tools/pace_sim/calibration.json`). Example numbers are Planet 1 today.
+
+**Junk in a hex**
+- A hex holds a fixed volume of junk (407 units) and counts as clean when 95% is gone: 387 units to scoop.
+- One scoop lock takes up to 1.22 units of a piece. Averaged over the junk table that is 1.04 units a take, 372 takes a hex.
+- Average value: the junk types' `value`, weighted by their share of the volume. 0.81 cubes a unit.
+
+**Hand rate (units of junk a second)**
+- Seconds per unit = 1 / (`scoop_rate` x `pickup_count` x mean take x `hand_duty`) + `seek_s_per_volume` / beam gain.
+- Beam gain = (scoop width x reach, over their base values) ^ `beam_exponent`.
+- The second term does not shrink with scoop speed. Rule of thumb: past about 3 levels of Scoop Speed and Scoop Size, finding junk is the limit, not the pulse.
+
+**Time for one chest load**
+- Fill: 0.95 x `capacity` / hand rate.
+- Before the Baler: one bin trip per load = 2 x distance / `move_speed` + `trip_overhead_s`.
+- With the Baler: 1.7 s press + `bale_handle_s` per load, and one bin trip per `carry_stack` bales. With a Haul Bug: no trips.
+- Distance to the n-th hex = `yard_offset_m` + ring x 17.3 m. Ring 1 is hexes 2 to 7, ring 2 hexes 8 to 19, ring r ends at hex 1 + 3r(r+1).
+- Rule of thumb: loads per hex = 387 / (0.95 x capacity). At the starting chest of 12 that is 34 trips for one hex, which is why the first hex takes 7 minutes.
+
+**What a load pays**
+- Loose in the bin: volume x average value x `dump.mult` x `cube_value_mult`.
+- As a bale: volume x average value x `cube_value_mult` x 1.5 for a full chest (`perfect_mult`) x sell factor.
+- Sell factor = the bin level's `value_mult` + the base level's `sell_mult` bonus.
+
+**What a clean hex pays** (whoever cleaned it)
+- `bonus_base` + `bonus_per_volume` x hex volume, plus one field note (`data_rewards.hex_cleaned` x `note_cubes`), plus the regrowth table's level 1 reward. Today: 122 + 100 + 25 = 247 cubes.
+- For comparison, the junk in that hex is worth about 470 cubes baled by hand and about 27 cubes baled by a Scoopie. Rule of thumb: a robot's income is the hex bonus, not its bales.
+
+**Parts**
+- Expected Parts per take = sum over junk types of (share of takes x `part_drop` chance) x the rarity table's mean value (38.4). Buried parts add `chance_per_hex` x 38.4 a hex.
+- That gives about 130 Parts per hand-cleaned hex; the bot measured half (`parts_luck`). Robots find none.
+
+**Robots**
+- A cleaner takes `scoop_rate` x 0.315 units a second; a hex is 63 x 0.95 = 60 of its units. Seconds per hex = 60 / rate + `crew_travel_s_per_ring` x ring. A first Scoopie: 136 s of work plus 50 s per ring.
+- A bale is one hopper (`capacity` units) and pays capacity x 0.75 x `efficiency`.
+- A hauler moves `carry` bales per trip of 2 x distance / speed + `haul_overhead_s`.
+- Crew cap per role = `crew_cap.base` + `crew_cap.per_level` x base level.
+
+**Cost growth**
+- Upgrade: `base_cost` x `growth` ^ level.
+- Robot: `cost` x 1.35 ^ owned of that type in cubes, `parts` x 1.2 ^ owned in Parts. Mk tier: `cost` x the tier's `cost_mult`, plus 200 / 700 / 2,000 Parts.
+- Base levels, workbench tiers, tower tiers, stations: flat costs from their tables.
+
+**Time to next**
+- Time to next purchase = (cost + reserve - cubes on hand) / income rate, and for Parts the same with the Parts rate. The slower of the two decides.
+- The reserve is what the buyer is saving for: the next robot, then the next base level once its Parts are in.
+- Rule of thumb for a geometric track: with ratio g and steady income, each level takes g times as long as the one before. A track only stays inside the 3-minute purchase rule if income grows by g between its levels.
+
+**Garden**
+- Plant slots in a hex = hex area / `slot_spacing`^2 (49). Planted needs `planted_min_frac` of them: 13 seeds.
+- A seed turns up once per `cooldown_s` + 1 / (`chance` x takes a second) of scooping. Bloom takes 4 x `grow_s` (about 5 min) and drops `seed_yield` seeds.
 
 ## 5. Checklists
 

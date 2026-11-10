@@ -172,6 +172,7 @@ Severity: **P1** blocks finishing or loses progress, **P2** hurts the experience
 **Fixed and merged (Nov 10):** B8, B21, B23, B24, B25, B26, B27, B29, B30, B31, B32, each with a regression test. Still open: B1 (the ending, task M1-10), B5 and B28 (pacing, M3), B9 and B11-B13, B18, B19 (visual, M5), B14 (design polish, M5-13), B15-B17, B20 (performance and translation, M7-M8), and B33 below.
 
 | B33 | P2 | Nothing asks the player to buy the Research Desk, so "Finish a research project" can sit open for a long time. | Bug-fix pass |
+| B34 | P2 | A long bot run printed NaN transform errors and the crew stalled from minute 73 to 80; `--quit-after` did not stop that run. Needs triage. | Simulator calibration run |
 
 Triage is done: `docs/reviews/TRIAGE_M1.md` has the evidence, causes and suggested fixes. B2 was already fixed; B6 and B10 did not reproduce; B7 and B21 were faults in the bot and are fixed there; B9 needs a rendered check.
 
