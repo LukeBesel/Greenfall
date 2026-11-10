@@ -223,6 +223,8 @@ func _water(only_dry: bool) -> bool:
 	var regrowth: Dictionary = _d.tables["regrowth"]
 	var used: float = zone().water(_m.rates.water_rate() * PaceSimRdModel.TICK_S, _m.t, float(regrowth["burst_pts"]),
 		float(regrowth["wet_s"]), float(regrowth["rewater_s"]), only_dry)
+	if used > 0.0:
+		_m.record.win(_m.t)
 	return used > 0.0
 
 

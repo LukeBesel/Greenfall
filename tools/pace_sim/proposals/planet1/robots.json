@@ -10,11 +10,11 @@
     "haulbug": {"name": "Haul Bug", "role": "clean", "kinds": ["wrecks"], "rate": 2.0, "hauls": true, "cost": {"cubes": 1100, "parts": 50}, "requires": "haul_rig", "district": 1, "cap": [0, 2, 3, 3, 3, 4]},
     "drip": {"name": "Drip", "role": "tend", "kinds": [], "water_rate": 0.25, "plant_rate": 0.0, "cost": {"cubes": 1000, "parts": 40}, "requires": "drip_blueprint", "district": 1, "cap": [0, 1, 1, 2, 2, 3]},
     "skimmer": {"name": "Skimmer", "role": "clean", "kinds": ["slick"], "rate": 3.5, "cost": {"cubes": 2800, "parts": 110}, "requires": "skimmer_rig", "district": 2, "cap": [0, 0, 2, 3, 3, 4]},
-    "sootcap": {"name": "Sootcap", "role": "clean", "kinds": ["smog"], "rate": 6.0, "cost": {"cubes": 6500, "parts": 220}, "requires": "sootcap_rig", "district": 3, "cap": [0, 0, 0, 2, 3, 4]},
-    "seedling": {"name": "Seedling", "role": "clean", "kinds": ["blight"], "rate": 9.0, "plant_rate": 0.4, "cost": {"cubes": 14000, "parts": 300}, "requires": "seedling_blueprint", "district": 4, "cap": [0, 0, 0, 0, 2, 3]}
+    "sootcap": {"name": "Sootcap", "role": "clean", "kinds": ["smog"], "rate": 6.0, "cost": {"cubes": 6500, "parts": 350}, "requires": "sootcap_rig", "district": 3, "cap": [0, 0, 0, 2, 3, 4]},
+    "seedling": {"name": "Seedling", "role": "clean", "kinds": ["blight"], "rate": 14.0, "plant_rate": 0.4, "cost": {"cubes": 14000, "parts": 700}, "requires": "seedling_blueprint", "district": 4, "cap": [0, 0, 0, 0, 2, 3]}
   },
   "tiers": [
     {"id": "mk1", "name": "Mk I", "mult": 1.0},
-    {"id": "mk2", "name": "Mk II", "mult": 1.6, "cost_mult": 1.5, "parts_mult": 0.5, "requires": "mk2_frames"}
+    {"id": "mk2", "name": "Mk II", "mult": 1.6, "cost_mult": 1.5, "parts_mult": 1.0, "requires": "mk2_frames"}
   ]
 }

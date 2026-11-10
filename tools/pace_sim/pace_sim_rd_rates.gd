@@ -6,6 +6,8 @@ extends RefCounted
 
 ## Rate used for a kind Lumi has no tool for, so that "cannot work it" still compares as a number.
 const NO_TOOL_RATE: float = 0.02
+## Bisection steps when solving how long a district still takes.
+const SOLVE_STEPS: int = 24
 
 ## Set whenever something that feeds a stat changes; the cache is rebuilt on the next read.
 var dirty: bool = true
@@ -147,6 +149,44 @@ func crew_power(z: PaceSimRdDistrict) -> float:
 				best = maxf(best, robot_rate(type, str(kind), true))
 		total += best * float(_m.robots[type])
 	return total
+
+
+## How fast Lumi and the crew together finish what is left of a district, in units a second.
+## The crew can only work the kinds it has robots and mastery for, so Lumi fills in where the
+## crew falls short: the time T to finish solves sum over kinds of max(0, left - crew x T) / hand = T.
+func district_power(z: PaceSimRdDistrict) -> float:
+	var left: Dictionary[String, float] = {}
+	var crew: Dictionary[String, float] = {}
+	var total: float = 0.0
+	var slowest: float = 0.0
+	for kind: String in z.mix:
+		left[kind] = maxf(z.remaining(kind), 0.0)
+		crew[kind] = 0.0
+		total += left[kind]
+		slowest += left[kind] / throughput(kind)
+	if total <= 0.0:
+		return hand_power(z) + crew_power(z)
+	for type: String in _m.robots:
+		var best: String = ""
+		var best_rate: float = 0.0
+		for kind: Variant in _d.robot_types[type].get("kinds", []):
+			if z.mix.has(str(kind)) and robot_rate(type, str(kind), true) > best_rate:
+				best_rate = robot_rate(type, str(kind), true)
+				best = str(kind)
+		if best != "":
+			crew[best] += best_rate * float(_m.robots[type])
+	var low: float = 0.0
+	var high: float = slowest
+	for i: int in SOLVE_STEPS:
+		var mid: float = (low + high) * 0.5
+		var hand_s: float = 0.0
+		for kind: String in left:
+			hand_s += maxf(0.0, left[kind] - crew[kind] * mid) / throughput(kind)
+		if hand_s > mid:
+			low = mid
+		else:
+			high = mid
+	return total / maxf(high, 0.0001)
 
 
 ## Hexes a second Lumi plants, and hexes a second Lumi waters.

@@ -13,14 +13,15 @@
     "skimmer_rig": {"name": "Skimmer Rig", "district": 2, "requires": ["bot_bay", "skimmer_head"], "cost": {"cubes": 2500, "parts": 100, "data": 120}, "crew": true},
     "skim_boom": {"name": "Skim Boom", "district": 2, "requires": ["skimmer_head"], "cost": {"cubes": 3500, "parts": 120, "data": 200}, "mods": {"kind_slick": 1.5}},
     "sprinkler_heads": {"name": "Sprinkler Heads", "district": 2, "cost": {"cubes": 3000, "parts": 80, "data": 180}, "mods": {"water_hexes": 2.0}},
-    "surge_core": {"name": "Surge Core", "district": 3, "cost": {"cubes": 4000, "parts": 150, "data": 80}},
-    "sootcap_rig": {"name": "Sootcap Rig", "district": 3, "requires": ["bot_bay", "scrubber_units"], "cost": {"cubes": 6000, "parts": 200, "data": 250}, "crew": true},
-    "filter_stacks": {"name": "Filter Stacks", "district": 3, "requires": ["scrubber_units"], "cost": {"cubes": 8000, "parts": 250, "data": 350}, "mods": {"kind_smog": 1.5}},
-    "seedling_blueprint": {"name": "Seedling Blueprint", "district": 4, "requires": ["bot_bay", "cleansing_plants"], "cost": {"cubes": 13000, "parts": 200, "data": 300}, "crew": true},
-    "root_mats": {"name": "Root Mats", "district": 4, "requires": ["cleansing_plants"], "cost": {"cubes": 17000, "parts": 250, "data": 450}, "mods": {"kind_blight": 1.5}},
-    "fast_coupling": {"name": "Fast Coupling", "district": 4, "cost": {"cubes": 15000, "parts": 200, "data": 500}, "mods": {"handle": 0.7}},
-    "linked_surge": {"name": "Linked Surge", "district": 5, "requires": ["surge_core"], "cost": {"cubes": 30000, "parts": 800, "data": 600}},
-    "crew_dispatch": {"name": "Crew Dispatch", "district": 5, "requires": ["bot_bay"], "cost": {"cubes": 35000, "parts": 900, "data": 700}, "mods": {"crew_rate": 1.25}, "crew": true},
-    "deep_roots": {"name": "Deep Roots", "district": 5, "cost": {"cubes": 32000, "parts": 700, "data": 800}, "mods": {"tend": 1.5}}
+    "surge_core": {"name": "Surge Core", "district": 3, "cost": {"cubes": 4000, "parts": 250, "data": 80}},
+    "sootcap_rig": {"name": "Sootcap Rig", "district": 3, "requires": ["bot_bay", "scrubber_units"], "cost": {"cubes": 6000, "parts": 350, "data": 250}, "crew": true},
+    "filter_stacks": {"name": "Filter Stacks", "district": 3, "requires": ["scrubber_units"], "cost": {"cubes": 8000, "parts": 450, "data": 350}, "mods": {"kind_smog": 1.5}},
+    "mk2_frames": {"name": "Mk II Frames", "district": 4, "requires": ["bot_bay"], "cost": {"cubes": 12000, "parts": 500, "data": 350}, "crew": true},
+    "seedling_blueprint": {"name": "Seedling Blueprint", "district": 4, "requires": ["bot_bay", "cleansing_plants"], "cost": {"cubes": 13000, "parts": 600, "data": 300}, "crew": true},
+    "root_mats": {"name": "Root Mats", "district": 4, "requires": ["cleansing_plants"], "cost": {"cubes": 17000, "parts": 800, "data": 450}, "mods": {"kind_blight": 1.5}},
+    "fast_coupling": {"name": "Fast Coupling", "district": 4, "cost": {"cubes": 15000, "parts": 700, "data": 500}, "mods": {"handle": 0.7}},
+    "linked_surge": {"name": "Linked Surge", "district": 5, "requires": ["surge_core"], "cost": {"cubes": 30000, "parts": 2500, "data": 600}},
+    "crew_dispatch": {"name": "Crew Dispatch", "district": 5, "requires": ["bot_bay"], "cost": {"cubes": 35000, "parts": 3000, "data": 700}, "mods": {"crew_rate": 1.25}, "crew": true},
+    "deep_roots": {"name": "Deep Roots", "district": 5, "cost": {"cubes": 32000, "parts": 2500, "data": 800}, "mods": {"tend": 1.5}}
   }
 }

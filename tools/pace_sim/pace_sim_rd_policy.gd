@@ -13,9 +13,10 @@ const W_HAND: float = 0.5
 const W_INCOME: float = 0.7
 const W_TEND: float = 0.5
 ## Parts are counted in cubes at the player's lifetime cubes-per-Part rate times this share
-## (Parts buy about this share of what matters), inside the two limits.
+## (Parts buy about this share of what matters), scaled down when more Parts are on hand than
+## everything on offer asks for, and kept inside the two limits.
 const PARTS_SHARE: float = 0.25
-const PARTS_WEIGHT_MIN: float = 2.0
+const PARTS_WEIGHT_MIN: float = 0.5
 const PARTS_WEIGHT_MAX: float = 400.0
 ## While saving for a gate, other things are bought only up to this share of the gate's cost.
 const SIDE_BUY_SHARE: float = 0.35
@@ -23,6 +24,8 @@ const SIDE_BUY_SHARE: float = 0.35
 const TEND_BATCH_HEXES: float = 6.0
 ## Lumi hops back to an older district when this share of its hexes can take a watering.
 const RETURN_SHARE: float = 0.3
+## Added to a research node's field-data cost when ranking a node that only adds to a stat.
+const AMPLIFIER_NODE_RANK: float = 100000.0
 ## Seconds before the offers are weighed again after a look that bought nothing.
 const LOOK_AGAIN_S: float = 5.0
 
@@ -96,13 +99,13 @@ func releases_surge(_m: PaceSimRdModel, action: String) -> bool:
 	return action == "clean" or action == "source"
 
 
-## How good the player's position is: the weighted logs of cleaning power, Lumi's own power,
-## income and tending speed in the district Lumi is in.
+## How good the player's position is: the weighted logs of how fast the district gets finished
+## (Lumi and crew together, the lagging kind counted), Lumi's own power, income and tending speed.
 func value(m: PaceSimRdModel, z: PaceSimRdDistrict) -> float:
 	var r: PaceSimRdRates = m.rates
 	var hand: float = r.hand_power(z) * r.surge_factor()
 	var crew: float = r.crew_power(z)
-	var v: float = W_POWER * log(hand + crew) + W_HAND * log(hand) + W_INCOME * log(r.hand_income(z, parts_weight(m)) * r.surge_factor() + crew)
+	var v: float = W_POWER * log(r.district_power(z)) + W_HAND * log(hand) + W_INCOME * log(r.hand_income(z, parts_weight(m)) * r.surge_factor() + crew)
 	if m.work.tending_open():
 		var plant: float = r.plant_rate() + r.crew_tend_rate("plant_rate")
 		var water: float = r.water_rate() + r.crew_tend_rate("water_rate")
@@ -153,7 +156,11 @@ func best_modules(m: PaceSimRdModel, z: PaceSimRdDistrict) -> Dictionary:
 
 ## Cubes one Part is worth to this player right now.
 func parts_weight(m: PaceSimRdModel) -> float:
-	return clampf(PARTS_SHARE * m.earned / maxf(m.parts_earned, 1.0), PARTS_WEIGHT_MIN, PARTS_WEIGHT_MAX)
+	var wanted: float = 0.0
+	for item: Dictionary in m.items():
+		wanted += float(item["parts"])
+	var scarcity: float = clampf(wanted / maxf(m.parts, 1.0), 0.0, 1.0)
+	return clampf(PARTS_SHARE * scarcity * m.earned / maxf(m.parts_earned, 1.0), PARTS_WEIGHT_MIN, PARTS_WEIGHT_MAX)
 
 
 ## While saving for a gate, a side purchase must be cheap in cubes and leave the gate's Parts alone.
@@ -175,10 +182,18 @@ func _is_gate(item: Dictionary) -> bool:
 	return bool(item["gate"]) or (rushes_robots and str(item["type"]) == "robot")
 
 
+## The research node to start: one that opens something new (no stat of its own) before one that
+## only adds to a stat, and the least field data first within each group.
 func _cheapest_research(m: PaceSimRdModel, offers: Array[Dictionary]) -> Dictionary:
 	var best: Dictionary = {}
+	var best_rank: float = INF
 	for item: Dictionary in offers:
-		if str(item["type"]) == "research" and m.can_afford(item) and (best.is_empty() or float(item["data"]) < float(best["data"])):
+		if str(item["type"]) != "research" or not m.can_afford(item):
+			continue
+		var opens: bool = (m.data.nodes[str(item["id"])].get("mods", {}) as Dictionary).is_empty()
+		var rank: float = float(item["data"]) + (0.0 if opens else AMPLIFIER_NODE_RANK)
+		if rank < best_rank:
+			best_rank = rank
 			best = item
 	return best
 

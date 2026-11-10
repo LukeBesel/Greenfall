@@ -13,6 +13,10 @@ const W_FAIL: float = 10.0
 const W_END_MIN: float = 0.5
 const W_DISTRICT: float = 4.0
 const W_NO_ENDING: float = 200.0
+## A failed check also costs by how far it missed (its value over its limit), a district by how
+## far its hand share sits under the spec's target, and the worst hand-share window likewise.
+const W_MISS: float = 6.0
+const W_SHARE: float = 60.0
 
 
 ## How far a run is from what the plan asks for: 0 is perfect.
@@ -24,13 +28,24 @@ static func penalty(result: Dictionary) -> float:
 	var p: float = 0.0
 	for c: Dictionary in report["checks"]:
 		if not c["pass"]:
-			p += W_FAIL
+			p += W_FAIL + W_MISS * _miss(c)
 	if not report["ended"]:
 		return p + W_NO_ENDING * (1.5 - m.restoration())
 	p += absf(float(report["end_min"]) - m.data.num("balance.target_bot_min.aim")) * W_END_MIN
 	for d: Dictionary in report["districts"]:
 		p += absf(float(d["player_min"]) - float(d["target_min"])) / float(d["target_min"]) * W_DISTRICT
+		p += maxf(0.0, float(d["target_share"]) - float(d["hand_share"])) * W_SHARE
 	return p
+
+
+## How far a failed check missed, as a share of its limit (0 when it has no simple limit).
+static func _miss(c: Dictionary) -> float:
+	var limit: float = PaceSimRdReport.LIMITS.get(str(c["id"]), 0.0)
+	if limit <= 0.0 or float(c["value"]) < 0.0:
+		return 0.0
+	if str(c["id"]) == "hand_share":
+		return (limit - float(c["value"])) / limit
+	return minf(3.0, float(c["value"]) / limit - 1.0)
 
 
 static func run(proposal: String, tries: int, base: Dictionary) -> PackedStringArray:
