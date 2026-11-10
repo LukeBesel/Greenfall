@@ -13,5 +13,4 @@ Short notes only. Nothing here is designed or scheduled. Planet 1 is the only pl
 - Each planet should bring one pollution family Planet 1 does not have (for example: drifting sand that re-buries cleared ground, tides that move floating waste, ice that locks waste until thawed).
 - Returning to an earlier planet with a later tool could open optional extra ground. It must never be required for a planet's own ending.
 - Touch controls and a mobile layout.
-- A fuller parts-finding robot for later planets: digs up and carries what it finds, works far from the player.
 - Higher robot tiers and larger crews; bigger currency numbers as planets get harder.

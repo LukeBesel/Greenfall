@@ -235,13 +235,21 @@ Nothing converts one currency into another at the bench. No reward hands out a c
 ### The crew: paced growth to a large crew (corrected Nov 10: the owner never asked for fewer robots)
 - By the launch point (section 9) the crew is **about 100 to 200 robots**. Cleaning the whole planet takes **thousands**; that is the long goal, not the requirement to move on.
 - What is paced is the climb: 1 robot at about minute 20, a handful in district 1, tens by district 3, 100 to 200 by the launch point. No stretch where the crew doubles in a couple of minutes, and none where it cannot grow for more than a few minutes.
-- **Building at scale.** Single robots are built by hand at first. From district 2 a **production queue** at the base builds robots in batches over time from parts (orders, not clicks). It is a simpler form of the parked robot-building station, brought back for Planet 1.
+- **Building at scale: a chain of robots (owner, Nov 10).** Robot creation is automated by robots that build on each other:
+  - The **Scrounger** finds parts: it searches cleaned ground and wrecks, digs parts out and carries them to the base.
+  - The **Assembler** builds robots: it stands at the base, takes the parts the Scroungers deliver and assembles new robots, one at a time.
+  - The loop closes when the Assembler builds more Scroungers. The crew grows itself.
+- **The player stays in charge of the chain.** Lumi builds the first of each robot type by hand from parts Lumi found. The player sets the Assembler's build mix (shares per robot type) and the areas Scroungers search. Mastery still decides what each type may work.
+- **What keeps the loop from running away** (each is a number in the planet's data):
+  - a Scrounger's round trip takes time, so parts per Scrounger per minute is capped by distance;
+  - buried parts in an area run out, so Scroungers need newly cleaned ground: crew growth is tied to cleaning, not to itself;
+  - the Assembler builds one robot at a time and assembly takes time; more Assemblers are costly;
+  - the crew cap rises with base level.
 - **Zones at scale.** Crews are given areas and priorities, not individual orders; far crews are simulated cheaply (as today).
 - Robot tiers on Planet 1: **rusty** and **repaired**. Higher tiers are for later planets.
 - Building and upgrading both cost parts, so the player chooses between a better crew and a bigger one. Upgrades apply per robot type and show on the robots.
 - Mastery still rules what a robot type may work and how fast (section 3), so Lumi's hands set the pace of the whole crew even when robots do most of the volume. The 30% hand-share rule from PLAN section 9 is replaced by: **Lumi's own actions always decide what the crew can do next** (mastery, sources, finds, zones), and hand work is never less than 10% of cleaning by volume before district 4.
-- Unlock order on Planet 1: cleaner (about minute 20), hauler (district 2), the production queue (district 2), skimmer (district 3), planter and waterer (districts 3-4), and late in district 5 the **Scrounger**.
-- **Scrounger (parts-finding robot).** It roams cleaned ground, sniffs out buried parts and plants a marker; Lumi (and later haulers) collect them. A later-planet version that digs and carries by itself is noted in `docs/FUTURE.md`.
+- Unlock order on Planet 1: cleaner (about minute 20), hauler (early district 2), **Scrounger** (district 2, the wreck district, where parts open up), **Assembler** (late district 2: the chain closes and the crew starts to grow by itself, the district's power spike), skimmer (district 3), planter and waterer (districts 3-4).
 
 ## 15. The world: cities under junk (owner, Nov 10)
 
