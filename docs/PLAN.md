@@ -157,6 +157,9 @@ Severity: **P1** blocks finishing or loses progress, **P2** hurts the experience
 | B19 | P3 | Three workbench meshes sit under the ground. | QA 3 |
 | B20 | P3 | Objects leak at exit (ObjectDB warnings). | QA 35 |
 | B21 | P3 | The bot's report shows no robots on the globe (tool bug). | Bot run |
+| B23 | P2 | The magnet on the globe is uncapped and pulls pieces that are buried or too heavy for Lumi to lift (owner rule: capped, never pulls what Lumi cannot lift). The old cap was flat-only. | M1-04 review |
+| B24 | P1 | Confirmed: junk hidden inside building footprints leaves a hex stuck below 100%. | Triage (B3) |
+| B25 | P1 | Confirmed: buying the Baler before finishing "fill the bin 3 times" stalls the first objective. | Triage (B4) |
 | B22 | P3 | Other-planet issues (hauler paths, finale camera, fauna upright) are out of scope and leave with R10. | Roadmap |
 
 M1 starts with a triage pass that verifies each "verify" row and adds anything new.
