@@ -1644,12 +1644,22 @@ func _robot_health() -> Dictionary:
 	return counts
 
 
-func _snapshot() -> void:
+## Robots owned, by type. On the globe they live in the crew, not in Fleet.robots() (B21: the
+## report showed none), so this asks the fleet's own count.
+func _robot_counts() -> Dictionary:
+	var out: Dictionary = {}
 	var fl: Fleet = world.fleet
-	var types: Dictionary = {}
-	if fl:
-		for r: Robot in fl.robots():
-			types[r.type_id] = int(types.get(r.type_id, 0)) + 1
+	if fl == null:
+		return out
+	for id: String in Economy.robot_order:
+		var n: int = fl.count(id)
+		if n > 0:
+			out[id] = n
+	return out
+
+
+func _snapshot() -> void:
+	var types: Dictionary = _robot_counts()
 	var hl: HexLevels = world.get("hex_levels")
 	var lv: Array = []
 	if hl:
@@ -1734,10 +1744,7 @@ func write_report() -> void:
 	_report["remote_shops"] = _remote_shops
 	_report["parts_found"] = GameState.stats.get("parts_found", 0)
 	_report["hub_level"] = int(world.hub.level)
-	var types: Dictionary = {}
-	if world.fleet:
-		for r: Robot in world.fleet.robots():
-			types[r.type_id] = int(types.get(r.type_id, 0)) + 1
+	var types: Dictionary = _robot_counts()
 	_report["robots"] = types
 	# Gaps: stretches > 3 min with no goal completed; and with no goal and nothing new bought.
 	_report["goal_gaps_min"] = _gaps(_goal_times, end_t)
