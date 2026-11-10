@@ -406,3 +406,10 @@ Moved to `parked/` (ignored by the engine; `parked/README.md` lists each feature
 - Story text that still promises parked things (the finale and credits say the seed ark opens; 11 radio hints) is left for the story pass in M5.
 - Stopgaps to clear in M1-07: `data/parked.json` skips 17 goals that belong to parked features; the `observatory` research node unlocks nothing.
 - **Bug-fix pass (M1-11).** The Baler stall is fixed by counting a sold bale toward the first bin step, not by keeping the bin open: an always-open bin would pay 1.3x against 1.0x for a plain mixed bale and empty the chest by itself, which would make it better than baling. That 1.3x figure is noted for the balance work (M3-01): tipping loose trash should never beat pressing a bale. The magnet's cap and filters and the refill radius (24 m) are now data.
+
+## World, crew and currency direction (owner, Nov 10, 2026)
+The owner asked for more attention on the world's goals and look (full cities round the planet, full of junk), on robot design and the pacing of building and upgrading robots, and on currency pacing that makes sense: parts hard to get early, numbers that do not climb fast, and in the long term a robot that finds parts. Design sections 14 and 15 hold the rules; tasks M3-17 to M3-20.
+- **Small numbers on Planet 1.** The biggest purchase stays under 50,000 cubes; no reward bursts; no income jump over 3x. This replaces the current curve, where one objective paid 68,000 cubes at once.
+- **A crew of 10 to 12 by the ending**, two robot tiers. This replaces the earlier figure of 24.
+- **The Scrounger**, a parts-finding robot, unlocks late on Planet 1 as one unit that marks buried parts for Lumi to dig. The self-sufficient version is for later planets.
+- **One job per currency, no conversions.**

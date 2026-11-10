@@ -201,3 +201,47 @@ The first planet is only the beginning (owner, Nov 10). It must not hand out the
 - Saved looks: three presets.
 
 Events: `piece_found(piece_id, source)`, `set_completed(design_id)`, `look_changed()`.
+
+## 14. Economy scale, parts and the crew (owner, Nov 10)
+
+Owner's rules: pacing is the most important thing. Currency numbers must not get high quickly. Currency must make sense. Parts are hard to get at the start. Robot building and upgrading must be paced. Long term, a robot type that finds parts.
+
+### Scale: small numbers that mean something
+- Planet 1 is the beginning, so it stays in small numbers. Later planets go higher.
+- A plain bale sells for **tens of cubes**. First upgrades cost tens; district 1 tops out in the low thousands; the most expensive single purchase on Planet 1 is **under 50,000 cubes**.
+- Income never jumps by more than about 3x from one purchase or unlock, and goal rewards never arrive in bursts: a goal pays when it completes, and a reward is never worth more than about 3 minutes of current income.
+- Prices rise because the player moved to a harder district with richer waste, not because of compounding multipliers. Multipliers are few and additive where possible.
+- All numbers shown to the player are whole and under 6 digits on Planet 1. No "k/M" abbreviations should be needed before the last district.
+- Tipping loose trash in the bin never out-earns pressing a bale.
+
+### One job per currency
+| Currency | Comes from | Pays for |
+|---|---|---|
+| Cubes | selling bales at the scale; stage payouts | Lumi's upgrade tracks, base levels, builds |
+| Parts | salvage: buried parts, stripped wrecks, sources | robots, robot upgrades, machines, rig modules |
+| Seeds | plants that bloom | planting |
+Nothing converts one currency into another at the bench. No reward hands out a currency that did not come from a matching action.
+
+### Parts are scarce at the start
+- In district 1 parts come only from Lumi's own hands: buried parts found with the detector (about one per 3 hexes) and the occasional piece worth stripping. A hex yields **0 to 3 parts**.
+- The first robot costs parts the player has gathered over about 20 minutes: it is a real achievement, not a purchase.
+- District 2 (wrecks) is where parts open up: stripping a wreck by hand yields parts, and wreck mastery lets a robot do it slowly.
+- Parts are never the reason nothing can be bought for more than 4 minutes: the simulator checks parts waits as well as cube waits.
+
+### The crew: few robots, each one a decision
+- Planet 1 ends with a crew of **about 10 to 12 robots**, not dozens. The crew cap rises with base level.
+- Robot tiers on Planet 1: **rusty** (as salvaged) and **repaired**. Higher tiers are for later planets.
+- Building and upgrading both cost parts, so the player chooses: one better robot or one more robot. Upgrades show on the robot.
+- Unlock order on Planet 1: cleaner (about minute 20), hauler (district 2), skimmer (district 3), planter and waterer (districts 3-4), and late in district 5 the **Scrounger**.
+- **Scrounger (parts-finding robot).** One unit on Planet 1. It roams cleaned ground near Lumi, sniffs out buried parts and plants a marker; Lumi digs them up. It finds, the player collects, so hands stay the engine. A later-planet version that digs and carries is noted in `docs/FUTURE.md`.
+
+## 15. The world: cities under junk (owner, Nov 10)
+
+Owner's rule: full cities around the planet, full of junk, with clear world goals.
+
+- Each of the six districts is a **full city of its own character** (the existing kinds: old town, downtown, industrial, harbour, suburb, plus one more), not a few buildings: streets, blocks, signs, landmarks and a skyline, all buried in junk at the start.
+- Each city has a **landmark tied to its source** (for example a leaking treatment works, a smoking stack, a crusher yard) that is visible from across the district and changes when the source is shut down.
+- The land between cities is junk fields, outskirts and industrial edges, never empty ground. From the map the whole globe reads as covered.
+- A district's regrowth stage changes the city itself, not only the ground: lights come back, signs are readable, water runs clear, trees line the streets, animals move in.
+- **World goals** are stated in the world's terms and shown on the map: "Old Town: Growing 62%", "Shut down the burst main", "4 of 6 cities restored". The map shows each city's state at a glance.
+- Budget: every city must hold the performance budgets on the Low preset; buildings and furniture are batched as today.
