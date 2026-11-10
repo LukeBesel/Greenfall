@@ -23,6 +23,8 @@ var _accent_mat: StandardMaterial3D
 var _core_mat: StandardMaterial3D
 var _glass_mat: StandardMaterial3D
 var _eye_mat: StandardMaterial3D
+var _shell_base := Color(0.92, 0.9, 0.87)
+var _accent_base := Color(1.0, 0.55, 0.18)
 var _eyes: Array[MeshInstance3D] = []
 var _top: Node3D
 var _top_id: String = ""
@@ -110,7 +112,8 @@ func _build() -> void:
 func apply_look() -> void:
 	if _shell_mat == null:
 		return
-	_shell_mat.albedo_color = Glim.worn_color("shells")
+	_shell_base = Glim.worn_color("shells")  # [v5look] the clean colours (the stuck Glim is scorched)
+	_shell_mat.albedo_color = _shell_base
 	_shell_mat.emission = Glim.worn_color("shells")
 	var g: Color = Glim.worn_color("glows")
 	_core_mat.albedo_color = g
@@ -222,21 +225,58 @@ func _sphere_up() -> Vector3:
 
 ## [v4calm] Stuck to the pod: slumped, eyes shut, the lantern a dying ember that flickers now and
 ## then. While waking (wake 0..1): the flicker steadies, he straightens and his eyes open.
+## [v5look] He has to be noticed on the white pod (owner item 43: a story character): a little
+## larger while he hangs there, his shell scorched dark, eyes half shut and glowing faintly, and
+## every few seconds the lantern stutters (two quick flashes that light the pod's shell beside
+## him, sometimes with a spark). flare() makes him stutter at once (the intro's glance at him).
+const SOOT := Color(0.13, 0.12, 0.12)
+const STUCK_SCALE: float = 1.4
+var _flare: float = 0.0
+var _spark_t: float = 3.0
+var _was_flash: bool = false
+
+
+func flare(seconds: float = 1.5) -> void:
+	_flare = maxf(_flare, seconds)
+
+
 func _broken_pose() -> void:
 	var w: float = clampf(wake, 0.0, 1.0) if not broken else 0.0
+	var dt: float = get_process_delta_time()
+	_flare = maxf(0.0, _flare - dt)
 	var twitch: float = sin(_t * 23.0) * 0.03 if fmod(_t, 4.7) < 0.25 else 0.0
 	_root.position = Vector3.ZERO
-	_root.rotation = Vector3(lerpf(0.55, 0.0, w) + twitch, 0.0, lerpf(0.4, 0.0, w))
-	var ember: float = 0.12 + (0.9 if fmod(_t * 1.7, 3.3) < 0.08 else 0.0)
+	_root.rotation = Vector3(lerpf(-0.5, 0.0, w) + twitch, 0.0, lerpf(0.4, 0.0, w))  # [v5look] head hanging (it tipped back, belly out)
+	_root.scale = Vector3.ONE * lerpf(STUCK_SCALE, 1.0, w)
+	# The stutter: two quick flashes every 2.9 s; a fast uneven flicker while flaring.
+	var ph: float = fmod(_t, 2.9)
+	var flash: bool = ph < 0.07 or (ph > 0.17 and ph < 0.27)
+	if _flare > 0.0:
+		flash = fmod(_t * 9.0, 1.0) < 0.45 or fmod(_t * 5.3, 1.0) < 0.2
+	var ember: float = 0.3 + (2.4 if flash else 0.0)
 	var flick: float = (1.0 if fmod(_t * 13.0, 1.0) < 0.6 else 0.3) if w > 0.0 and w < 0.7 else 1.0
 	_core_mat.emission_energy_multiplier = lerpf(ember, 3.6, w) * flick
+	_glass_mat.emission_energy_multiplier = lerpf(0.15 + (0.9 if flash else 0.0), 0.8, w)
+	_eye_mat.emission_energy_multiplier = lerpf(0.7 + (1.6 if flash else 0.0), 1.6, w)
+	_shell_mat.albedo_color = SOOT.lerp(_shell_base, smoothstep(0.2, 1.0, w))
+	_shell_mat.emission_energy_multiplier = lerpf(0.0, 0.12, w)
+	_shell_mat.clearcoat = lerpf(0.0, 0.6, w)
+	_shell_mat.roughness = lerpf(0.85, 0.28, w)
+	_accent_mat.albedo_color = _accent_base.darkened(0.55 * (1.0 - w))
 	for e: MeshInstance3D in _eyes:
-		e.scale = Vector3(1.0, lerpf(0.12, 1.0, smoothstep(0.4, 0.8, w)), 1.0)
-	light.visible = w > 0.3
-	light.omni_range = lerpf(0.5, 2.5, w)
-	light.light_energy = w * 0.9 * flick
+		e.scale = Vector3(1.25, lerpf(0.34, 1.0, smoothstep(0.4, 0.8, w)), 1.0).lerp(Vector3.ONE, w)
+	light.visible = w > 0.3 or flash
+	light.omni_range = lerpf(1.7, 2.5, w)
+	light.light_energy = w * 0.9 * flick if w > 0.3 else 0.9
+	if broken and is_visible_in_tree():
+		_spark_t -= dt
+		if flash and not _was_flash and (_spark_t <= 0.0 or _flare > 0.0):
+			_spark_t = randf_range(5.0, 9.0)
+			Vfx.burst("sparkle", global_position, Color(1.0, 0.7, 0.3), 0.3)
+	_was_flash = flash
 	if not broken and w >= 1.0:
 		_root.rotation = Vector3.ZERO
+		_root.scale = Vector3.ONE
 
 
 ## How bright the lantern should be: full at night, a faint glow by day.

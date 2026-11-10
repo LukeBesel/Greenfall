@@ -687,6 +687,8 @@ func _phase_landing() -> void:
 	_shot(land + Vector3(-11, 3, 13), land + Vector3(0, 1.5, 0), land + Vector3(-9, 2.4, 11), land + Vector3(0, 1.2, 0), 3.0)
 	if await _hold(2.4):
 		return
+	if await _glim_beat():
+		return
 	# Close on the door: a hiss of steam, the seal pops, it drops into a ramp, warm light spills
 	# out and Lumi drifts out nearly powerless.
 	var front: Vector3 = _v(_pod.global_transform * Vector3(1.1, 1.05, -4.9))  # [orbE] intro coordinates
@@ -715,6 +717,29 @@ func _phase_landing() -> void:
 	if await _hold(3.0):
 		return
 	await _wake(out_from, out_to)
+
+
+## [v5look] Owner item 43: a short glance at Glim, who clung to the pod all the way down. A slow
+## push in on him, dark and slumped on the shell; his lantern stutters and a spark jumps.
+func _glim_beat() -> bool:
+	var g: GlimBot = _pod.get_node_or_null(GlimDirector.STUCK_NAME) as GlimBot if _pod else null
+	if g == null:
+		return false
+	var at: Vector3 = _v(g.global_position)
+	var out: Vector3 = _v(g.global_position - g.global_basis.z) - at  # his face looks out from the shell
+	out.y = 0.0
+	out = out.normalized()
+	var side: Vector3 = out.cross(Vector3.UP)
+	_shot(at + out * 2.3 + side * 0.9 + Vector3(0, 0.5, 0), at + Vector3(0, 0.05, 0), at + out * 1.45 + side * 0.45 + Vector3(0, 0.3, 0), at, 2.6)
+	_cam.fov = 42.0
+	if await _hold(0.5):
+		return true
+	g.flare(1.5)
+	Audio.play("buzz" if Audio.has_sound("buzz") else "blip", 1.9, -16.0)
+	if await _hold(1.7):
+		return true
+	_cam.fov = 55.0
+	return false
 
 
 ## The low-battery wake: a quick, natural blink-awake, the battery readout, WREN explains the plan.

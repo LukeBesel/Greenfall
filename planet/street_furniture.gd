@@ -343,21 +343,37 @@ func _corners() -> void:
 			var ic := Vector2((i + 0.5) * CityLayout.PITCH, (j + 0.5) * CityLayout.PITCH)
 			var around: Array[Vector2i] = [Vector2i(i, j), Vector2i(i + 1, j), Vector2i(i, j + 1), Vector2i(i + 1, j + 1)]
 			var have: Array[Vector2i] = []
+			var n_blocks: int = 0  # [v5look] the yard block counts for "four-way", it just carries no pole
 			for k: Vector2i in around:
-				if _has(k) and k != Vector2i.ZERO:
-					have.append(k)
+				if _has(k):
+					n_blocks += 1
+					if k != Vector2i.ZERO:
+						have.append(k)
 			if have.is_empty():
 				continue
-			var blk: Vector2i = have[_rng.randi() % have.size()]
-			var bc := Vector2(blk) * CityLayout.PITCH
-			var to_ic: Vector2 = (ic - bc).sign()
-			var p: Vector2 = bc + to_ic * 12.85
-			if not _ok(p) or not _clear_of(p, 1.4):
+			# [v5look] Try every corner of the junction, not just one: most junctions lost their pole
+			# to a bench or a bin on the corner first picked (14 poles in a 22-block town, 3 lights).
+			var first: int = _rng.randi() % have.size()
+			var p := Vector2.ZERO
+			var to_ic := Vector2.ZERO
+			var found: bool = false
+			for t: int in have.size():
+				var blk: Vector2i = have[(first + t) % have.size()]
+				var bc := Vector2(blk) * CityLayout.PITCH
+				to_ic = (ic - bc).sign()
+				p = bc + to_ic * 12.85
+				if _ok(p) and _clear_of(p, 1.4):
+					found = true
+					break
+			if not found:
 				continue
 			var r: float = _rng.randf()
-			if have.size() == 4 and r < 0.45:
+			# Lights on the four-way junctions: always at the yard's own corners (the first streets
+			# the player sees), on most of the others.
+			var by_yard: bool = Vector2i.ZERO in around
+			if n_blocks == 4 and (by_yard or r < 0.6):
 				_traffic_light(p, ic)
-			elif r < 0.7:
+			elif r < 0.75:
 				_name_post(p)
 			else:
 				_stop_sign(p, ic, to_ic)
