@@ -3,9 +3,9 @@ extends Node3D
 ## prefabs on a plain ground disc, under a sun and sky, and prints a [site] line per prefab.
 ##   godot --headless --path . res://planet/sites/site_preview.tscn -- --sites=all --quit-after=1
 ##   xvfb-run ... godot --path . --rendering-driver opengl3 --resolution 960x540 \
-##     res://planet/sites/site_preview.tscn -- --site=verdance/ruin_block --stage=1 \
+##     res://planet/sites/site_preview.tscn -- --site=<planet id>/<site id> --stage=1 \
 ##     --site-cam=dist,pitch,yaw --shot=screenshots/orbD/x.png --shot-delay=20 --quit-after=24
-## --site=planet/id (default verdance/start_yard), --sites=all (every planet's hub sites side by
+## --site=planet/id (default: the current planet's start site), --sites=all (every planet's hub sites side by
 ## side, report only), --stage=1..5, --restore=0..1, --hub=N (hub index: seeds the ruin blocks),
 ## --tilt (build the site on a tilted frame, like a site far round the globe: checks site_inv).
 

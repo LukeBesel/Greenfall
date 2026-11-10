@@ -26,7 +26,7 @@ var hubs: Array[int] = []           # hub site cells (first = Junkyard Hub / sta
 var frontier_hubs: Dictionary = {}  # [biomes] frontier kind id -> hub index
 var base_hub_count: int = 0         # [biomes] hubs before the frontier ones
 ## [late] Cradle Mode worlds (systems/world_gen.gd): biome thresholds, water share, city count and
-## city names. Empty = Verdance exactly as before.
+## city names. Empty = the first planet exactly as before.
 var mix: Dictionary = {}
 var _land: int = 0
 var _done: int = 0

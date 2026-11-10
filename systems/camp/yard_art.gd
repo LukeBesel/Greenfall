@@ -874,7 +874,7 @@ static func depot_scale() -> MeshInstance3D:
 ## footing under the lean-to/bench, and grit and tufts drifted round the feet of things.
 ## The patch follows the hub level (YardArt.ground_for_level): repaired, then restored from L3.
 const GROUND_SINK: float = 0.055
-const GROUND_PALETTE: Dictionary = {"main": "cream", "accent": "teal"}  # Verdance (docs/ART_KIT.md)
+const GROUND_PALETTE: Dictionary = {"main": "cream", "accent": "teal"}  # the yard's palette (docs/ART_KIT.md)
 
 
 static func dress_ground(world: Node3D, shack: Node3D, half: float = 8.5, feet: Array = []) -> Node3D:

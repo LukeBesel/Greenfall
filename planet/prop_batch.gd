@@ -2,7 +2,7 @@ class_name PropBatch
 extends RefCounted
 ## [orbE] Draw-call batching for static loose props (docs/PERFORMANCE.md, perf pass 3): the
 ## direct mesh children of a container that never changes after it is built (the crash site's
-## furrow clods and shards, an Anvil site's loose pieces) merge into one mesh per material and
+## furrow clods and shards, a site's loose pieces) merge into one mesh per material and
 ## shadow mode. Conservative on purpose: only auto-named (never looked up by name), script-less,
 ## childless, visible MeshInstance3D children with no per-node overlay; everything else is left
 ## alone, and nothing that animates or is found by name is touched. The originals are hidden

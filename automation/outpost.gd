@@ -119,7 +119,7 @@ func set_level(new_level: int, animate: bool, done: Callable = Callable()) -> vo
 
 
 ## [v3qa] The outpost stands on one tangent plane at its centre, so on a slope the wreck's far
-## pieces floated up to ~0.6 m (QA_VERDANCE #5). Each top-level piece rides up or down to the
+## pieces floated up to ~0.6 m (globe QA #5). Each top-level piece rides up or down to the
 ## terrain under its own footprint.
 func _conform(root: Node3D) -> void:
 	if world == null or not is_inside_tree():

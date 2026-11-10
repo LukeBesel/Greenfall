@@ -12,7 +12,7 @@ extends RefCounted
 const UNITS_PER_CELL: float = SphereField.FULL_PIECES * 0.9
 ## A lake hex's floating junk (SphereField.FLOAT_PIECES floaters): Skimmers' work.
 const UNITS_PER_WATER_CELL: float = SphereField.FLOAT_PIECES * 0.9
-## Hub region on Verdance (163,842 cells, 10 hubs): 16 rings, ~820 cells, ~280 m across. Other
+## Hub region on the reference globe (163,842 cells, 10 hubs): 16 rings, ~820 cells, ~280 m across. Other
 ## planets scale it with their area per hub (region_rings), since planets differ in size and hub
 ## count (docs/DECISIONS.md "Planets differ in size"). Hex size stays 10 m everywhere, so
 ## UNITS_PER_CELL and the per-robot rates do not change; bigger planets go faster only through
@@ -26,7 +26,7 @@ static func hub_count(planet_id: String = "") -> int:
 
 
 ## Rings of a hub region on a planet of `cell_count` cells with `hubs` hubs: the region keeps the
-## same share of each hub's ground as on Verdance, so its radius grows with sqrt(area per hub).
+## same share of each hub's ground as on the reference globe, so its radius grows with sqrt(area per hub).
 static func region_rings(cell_count: int, hubs: int) -> int:
 	var per_hub: float = float(cell_count) / float(maxi(hubs, 1))
 	return maxi(4, roundi(REGION_RINGS * sqrt(per_hub / REF_CELLS_PER_HUB)))

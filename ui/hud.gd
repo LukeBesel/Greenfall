@@ -286,7 +286,7 @@ func _process(delta: float) -> void:
 	_field_label.visible = sites != null
 	_field_bar.visible = sites != null
 	if sites:
-		# [orbE] The planet % walks every hub-region cell (Anvil: ~3.5 ms a frame): a few times a
+		# [orbE] The planet % walks every hub-region cell (~3.5 ms a frame on the largest globe): a few times a
 		# second is plenty for a percentage.
 		_planet_t -= get_process_delta_time()
 		if _planet_t <= 0.0:

@@ -88,7 +88,7 @@ func _init(p_grid: SphereGrid, p_terrain: SphereTerrain, p_cells: SphereCells, p
 			hub_flags = true
 			break
 	# [orbE] Load time: the per-cell pass inlines is_dirty / has_flag / water_dirty over local packed
-	# arrays (8 method calls per cell were ~3 s on Anvil's 655k cells). Same rules as before:
+	# arrays (8 method calls per cell were ~3 s on the largest globe's 655k cells). Same rules as before:
 	# dirty = JUNK state with junk > SphereCells.CLEAN_LEFT; a lake with floating junk is a junk hex.
 	var st: PackedByteArray = cells.state
 	var jk: PackedFloat32Array = cells.junk

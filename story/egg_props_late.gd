@@ -325,7 +325,7 @@ static func old_pod() -> Node3D:
 	return n
 
 
-## Lumi's own seed tin from Verdance, spilled on new ground, a sprout already up.
+## Lumi's own seed tin from home, spilled on new ground, a sprout already up.
 static func heir_tin() -> Node3D:
 	var n := Node3D.new()
 	var tin: StandardMaterial3D = DecorProps.paint(Color(0.3, 0.5, 0.36), 0.35, 0.6)

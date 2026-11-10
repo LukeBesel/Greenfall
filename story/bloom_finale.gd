@@ -1,6 +1,6 @@
 class_name BloomFinale
 extends Node3D
-## Post-game story beat: "Verdance Bloom". Lumi's Bloom Core is full (story/core_charge.gd) and the
+## Post-game story beat: the finale Bloom milestone. Lumi's Bloom Core is full (story/core_charge.gd) and the
 ## planet is green enough: the ark Cradle comes home. A letterboxed cinematic: the ark descends out
 ## of the sky over Lumi, opens its seed bays and lowers a beam of light; Lumi waves; glowing seed
 ## pods fall and burst into petals; WREN and the Cradle speak; the Seed Ark loop opens. The ark

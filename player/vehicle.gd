@@ -6,7 +6,7 @@ extends Node3D
 ## (lower accel / decel, slower turns), a softer boost on top (Shift / LS, the Settings "boost"
 ## action). Interact (E / A) by the parked sled to get on; interact again to get off where you are.
 ## Tiers keep the big later planets quick (owner, Nov 8): tier 1 cruises ~14 m/s and boosts to
-## ~30 m/s (a 1.7 km Verdance hop in about a minute), tier 3 ~20 / ~48 m/s for Anvil's 2.5 km.
+## ~30 m/s (a 1.7 km hop in about a minute), tier 3 ~20 / ~48 m/s for the largest globe's 2.5 km.
 ## Dev: --orbit-sled[=TIER] (owned and mounted at the start), --orbit-sled-lap (drive a lap).
 
 signal mounted_changed(on: bool)

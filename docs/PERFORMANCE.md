@@ -213,7 +213,7 @@ and `[orbit-perf]`.
 | Future layer range | 220 m | 320 m | 380 m | 420 m |
 | Moon shadows | off | on | on | on |
 
-"x size" = globe radius / 1,840 m, clamped 0.85..1.4 (planets differ in size; `GlobeSize`).
+"x size" = globe radius / 1,840 m, clamped 0.85..1.4 (planets differ in size; `PlanetDefinition.radius_m()`, `OrbitQuality.REFERENCE_R`).
 Medium keeps phase A's radii. Junk density is a design value (~70 pieces per 10 m hex) and is
 not cut per preset; the junk ring is the streamer's 70 m near ring on every preset.
 

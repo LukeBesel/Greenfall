@@ -68,7 +68,7 @@ static func _buf(seconds: float) -> PackedFloat32Array:
 	return b
 
 
-## Ochre: a dry, plucked lute at A4 (bright partials that die fast, a woody body, a pick tick).
+## desert_heat: a dry, plucked lute at A4 (bright partials that die fast, a woody body, a pick tick).
 static func _pluck(rng: RandomNumberGenerator) -> PackedFloat32Array:
 	var b := _buf(1.6)
 	for n: int in 8:
@@ -86,7 +86,7 @@ static func _pluck(rng: RandomNumberGenerator) -> PackedFloat32Array:
 	return MusicSynth._declick(MusicSynth._normalize(b, 0.9), 0.0015, 0.15)
 
 
-## Ochre: a frame drum (low skin, pitch drop, a little slap).
+## desert_heat: a frame drum (low skin, pitch drop, a little slap).
 static func _frame(rng: RandomNumberGenerator) -> PackedFloat32Array:
 	var b := _buf(0.45)
 	var ph: float = 0.0
@@ -99,7 +99,7 @@ static func _frame(rng: RandomNumberGenerator) -> PackedFloat32Array:
 	return MusicSynth._declick(MusicSynth._normalize(b, 0.9), 0.002, 0.08)
 
 
-## Tidewell: a soft harp / glass-marimba at A4 for the flowing arpeggios.
+## ocean_swell: a soft harp / glass-marimba at A4 for the flowing arpeggios.
 static func _harp() -> PackedFloat32Array:
 	var b := _buf(2.0)
 	for i: int in b.size():
@@ -111,7 +111,7 @@ static func _harp() -> PackedFloat32Array:
 	return MusicSynth._declick(MusicSynth._normalize(b, 0.9), 0.003, 0.25)
 
 
-## Rime: a crystalline bell at A5 (inharmonic partials, long shimmering tail).
+## glass_ice: a crystalline bell at A5 (inharmonic partials, long shimmering tail).
 static func _glass() -> PackedFloat32Array:
 	var b := _buf(3.6)
 	var parts: Array[Vector3] = [Vector3(1.0, 1.0, 0.7), Vector3(1.0013, 0.45, 0.8), Vector3(2.32, 0.3, 1.6),
@@ -124,7 +124,7 @@ static func _glass() -> PackedFloat32Array:
 	return MusicSynth._declick(MusicSynth._normalize(b, 0.9), 0.004, 0.3)
 
 
-## Anvil: the low industrial pulse at A2 (a muffled thump with a faint metallic tick).
+## foundry: the low industrial pulse at A2 (a muffled thump with a faint metallic tick).
 static func _pulse(rng: RandomNumberGenerator) -> PackedFloat32Array:
 	var b := _buf(0.4)
 	var lp: float = 0.0
@@ -137,7 +137,7 @@ static func _pulse(rng: RandomNumberGenerator) -> PackedFloat32Array:
 	return MusicSynth._declick(MusicSynth._normalize(b, 0.9), 0.002, 0.06)
 
 
-## Anvil: a distant hammer-on-metal clank at A3 (inharmonic, fast highs).
+## foundry: a distant hammer-on-metal clank at A3 (inharmonic, fast highs).
 static func _forge_strike(rng: RandomNumberGenerator) -> PackedFloat32Array:
 	var b := _buf(1.4)
 	var parts: Array[Vector3] = [Vector3(1.0, 1.0, 3.0), Vector3(2.76, 0.6, 5.0), Vector3(5.4, 0.35, 9.0), Vector3(8.93, 0.2, 14.0)]
@@ -241,7 +241,7 @@ static func _bass_short() -> PackedFloat32Array:
 	return MusicSynth._declick(MusicSynth._normalize(b, 0.9), 0.004, 0.15)
 
 
-## Anvil: a deep, slightly gritty sub bass at A2 that throbs.
+## foundry: a deep, slightly gritty sub bass at A2 that throbs.
 static func _sub() -> PackedFloat32Array:
 	var b := _buf(1.2)
 	for i: int in b.size():
@@ -251,7 +251,7 @@ static func _sub() -> PackedFloat32Array:
 	return MusicSynth._declick(MusicSynth._normalize(b, 0.9), 0.004, 0.2)
 
 
-## Anvil: an ominous detuned synth lead at A4 (two band-limited saws a few cents apart, dark).
+## foundry: an ominous detuned synth lead at A4 (two band-limited saws a few cents apart, dark).
 static func _synth() -> PackedFloat32Array:
 	var b := _buf(1.4)
 	for k: int in range(1, 9):
@@ -267,7 +267,7 @@ static func _synth() -> PackedFloat32Array:
 	return MusicSynth._declick(MusicSynth._normalize(b, 0.9), 0.003, 0.25)
 
 
-## Anvil: a reverb-drenched metallic hit at A3 (inharmonic, long ringing tail).
+## foundry: a reverb-drenched metallic hit at A3 (inharmonic, long ringing tail).
 static func _metal(rng: RandomNumberGenerator) -> PackedFloat32Array:
 	var b := _buf(3.2)
 	var parts: Array[Vector3] = [Vector3(1.0, 1.0, 1.2), Vector3(1.47, 0.6, 1.5), Vector3(2.09, 0.5, 2.0),

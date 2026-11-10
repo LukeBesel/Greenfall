@@ -69,7 +69,7 @@ func _init(p_fine: SphereGrid, p_cells: SphereCells, p_terrain: SphereTerrain, p
 func _map_cells() -> void:
 	var nf: int = fine.cell_count()
 	var nc: int = coarse.cell_count()
-	# [orbE] The map only depends on the two grids: cache it like the grid (655k cells on Anvil
+	# [orbE] The map only depends on the two grids: cache it like the grid (655k cells on the largest globe
 	# took seconds of GDScript walking on every load).
 	var path: String = "user://sphere_shell_map_%d_%d.bin" % [nf, nc]
 	if _load_map(path, nf, nc):
@@ -126,7 +126,7 @@ func owner_of(fine_cell: int) -> int:
 
 func _aggregate(c: int) -> void:
 	# [orbE] Load time: local packed arrays and a fixed vote array (no Dictionary, no per-cell
-	# property lookups): the first pass over Anvil's 655k cells was ~2 s. Same results.
+	# property lookups): the first pass over the largest globe's 655k cells was ~2 s. Same results.
 	var a: int = _start[c]
 	var b: int = _start[c + 1]
 	var cnt: float = maxf(b - a, 1)
