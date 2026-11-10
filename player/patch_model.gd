@@ -26,13 +26,13 @@ extends Node3D
 const VARIANTS: Dictionary = {
 	"aurora": {"name": "Aurora", "paint": Color(0.78, 0.74, 0.725), "trim": Color(0.412, 0.435, 0.471), "glow": Color(0.25, 0.886, 0.94), "accent": Color(0.945, 0.42, 0.012), "lamp": Color(0.973, 0.686, 0.035), "paddle": Color(0.953, 0.753, 0.251), "icon": "recycle", "grime": 0.75, "eyes": "crescent", "acc": ["antenna"]},  # eyes: owner (Nov 9): the concept sheet's crescent eyes, never solid discs
 	# Bolt: hazard yellow with black chips and dark panels; rests on smiling arcs with a small smile.
-	"bolt": {"name": "Bolt", "paint": Color(0.94, 0.65, 0.05), "trim": Color(0.2, 0.19, 0.17), "glow": Color(1.0, 0.66, 0.14), "accent": Color(0.94, 0.6, 0.05), "lamp": Color(1.0, 0.62, 0.1), "paddle": Color(0.97, 0.7, 0.12), "plate": Color(0.96, 0.69, 0.08), "icon": "recycle", "icon_col": Color(0.05, 0.045, 0.04), "icon_lit": 0.0, "chips": Color(0.05, 0.045, 0.04), "claw": Color(0.8, 0.56, 0.08), "coverage": 0.84, "grime": 0.6, "specks": 1.0, "dust": 0.12, "stripes": 1.0, "eyes": "crescent", "happy": 1.0, "smile": 1.0, "acc": ["antenna", "acc_panels", "acc_ear_nut", "acc_pad_r", "acc_pad_l", "gear"]},
+	"bolt": {"name": "Bolt", "paint": Color(0.95, 0.72, 0.06), "trim": Color(0.2, 0.19, 0.17), "glow": Color(1.0, 0.66, 0.14), "accent": Color(0.95, 0.7, 0.06), "lamp": Color(1.0, 0.62, 0.1), "paddle": Color(0.97, 0.7, 0.12), "plate": Color(0.96, 0.75, 0.1), "icon": "recycle", "icon_col": Color(0.05, 0.045, 0.04), "icon_lit": 0.0, "chips": Color(0.05, 0.045, 0.04), "claw": Color(0.84, 0.63, 0.1), "coverage": 0.8, "grime": 0.6, "specks": 1.0, "dust": 0.12, "stripes": 1.0, "eyes": "crescent", "happy": 1.0, "smile": 1.0, "acc": ["antenna", "acc_panels", "acc_ear_nut", "acc_pad_r", "acc_pad_l", "gear"]},
 	# Sprout: olive green with moss on the crown and a seedling instead of the fin.
-	"sprout": {"name": "Sprout", "paint": Color(0.36, 0.45, 0.2), "trim": Color(0.25, 0.29, 0.16), "glow": Color(0.5, 1.0, 0.25), "accent": Color(0.36, 0.42, 0.17), "lamp": Color(1.0, 0.6, 0.16), "latch": Color(0.5, 1.0, 0.25), "plate": Color(0.47, 0.52, 0.24), "icon": "leaf", "claw": Color(0.42, 0.47, 0.3), "grime": 0.6, "dust": 0.2, "moss": 0.6, "eyes": "crescent", "acc": ["acc_sprout", "acc_moss", "acc_ear_leaf", "bottle"]},
+	"sprout": {"name": "Sprout", "paint": Color(0.42, 0.48, 0.16), "trim": Color(0.25, 0.29, 0.16), "glow": Color(0.42, 1.0, 0.15), "accent": Color(0.36, 0.42, 0.17), "lamp": Color(1.0, 0.6, 0.16), "latch": Color(0.42, 1.0, 0.15), "plate": Color(0.5, 0.52, 0.22), "icon": "leaf", "claw": Color(0.42, 0.47, 0.3), "grime": 0.6, "dust": 0.2, "moss": 0.6, "eyes": "crescent", "acc": ["acc_sprout", "acc_moss", "acc_ear_leaf", "bottle"]},
 	# Pixel: red over a cream lower head, wing fins, heart lenses; rests on smiling arcs.
-	"pixel": {"name": "Pixel", "paint": Color(0.74, 0.11, 0.1), "trim": Color(0.5, 0.1, 0.1), "glow": Color(1.0, 0.36, 0.56), "accent": Color(0.93, 0.9, 0.86), "lamp": Color(1.0, 0.36, 0.56), "latch": Color(1.0, 0.36, 0.56), "plate": Color(0.8, 0.14, 0.11), "icon": "recycle", "icon_col": Color(0.95, 0.94, 0.92), "icon_lit": 0.6, "claw": Color(0.62, 0.12, 0.11), "chips": Color(0.72, 0.66, 0.62), "dust": 0.15, "eyes": "crescent", "happy": 1.0, "smile": 1.0, "acc": ["acc_pixel", "acc_twotone", "acc_ear_heart", "butterfly"]},
+	"pixel": {"name": "Pixel", "paint": Color(0.74, 0.11, 0.1), "trim": Color(0.5, 0.1, 0.1), "glow": Color(1.0, 0.2, 0.42), "accent": Color(0.93, 0.9, 0.86), "lamp": Color(1.0, 0.2, 0.42), "latch": Color(1.0, 0.2, 0.42), "plate": Color(0.8, 0.14, 0.11), "icon": "recycle", "icon_col": Color(0.95, 0.94, 0.92), "icon_lit": 0.6, "claw": Color(0.62, 0.12, 0.11), "chips": Color(0.72, 0.66, 0.62), "dust": 0.15, "eyes": "crescent", "happy": 1.0, "smile": 1.0, "acc": ["acc_pixel", "acc_twotone", "acc_ear_heart", "butterfly"]},
 	# Nova: dark gunmetal lit violet from its seams, cat-ear fins, a holo data panel.
-	"nova": {"name": "Nova", "paint": Color(0.19, 0.17, 0.26), "trim": Color(0.13, 0.12, 0.18), "glow": Color(0.68, 0.36, 1.0), "accent": Color(0.26, 0.24, 0.31), "lamp": Color(0.7, 0.4, 1.0), "latch": Color(0.68, 0.36, 1.0), "plate": Color(0.21, 0.2, 0.25), "icon": "recycle", "claw": Color(0.25, 0.24, 0.3), "metal": 0.4, "dust": 0.15, "grime": 0.45, "eyes": "crescent", "acc": ["acc_catears", "acc_seams", "holo"]},
+	"nova": {"name": "Nova", "paint": Color(0.34, 0.33, 0.4), "trim": Color(0.15, 0.14, 0.2), "glow": Color(0.58, 0.22, 1.0), "accent": Color(0.26, 0.24, 0.31), "lamp": Color(0.6, 0.25, 1.0), "latch": Color(0.58, 0.22, 1.0), "plate": Color(0.3, 0.29, 0.34), "icon": "recycle", "claw": Color(0.3, 0.29, 0.36), "metal": 0.15, "dust": 0.15, "grime": 0.45, "eyes": "crescent", "acc": ["acc_catears", "acc_seams", "holo"]},
 	# Patch: white with orange panels and arms, a medic cross, satchel, carry case and side radio.
 	"patch": {"name": "Patch", "paint": Color(0.86, 0.84, 0.8), "trim": Color(0.35, 0.36, 0.38), "glow": Color(1.0, 0.68, 0.2), "accent": Color(0.94, 0.45, 0.07), "lamp": Color(1.0, 0.6, 0.15), "paddle": Color(0.98, 0.72, 0.22), "plate": Color(0.94, 0.44, 0.07), "arm": Color(0.93, 0.5, 0.09), "icon": "cross", "icon_col": Color(0.96, 0.95, 0.92), "icon_lit": 0.4, "ear_glow": Color(0.45, 0.95, 0.4), "eyes": "crescent", "acc": ["antenna", "acc_radio", "acc_toolbox", "case"]},
 }
@@ -305,6 +305,8 @@ func _build() -> void:
 		# Design add-on materials (designs.glb).
 		"rust": _paint(Color(0.5, 0.26, 0.11), 13.0, 0.9, 0.25, 0.75),
 		"decal": _decal_mat(),
+		"sign": _sign_mat(accent_c),
+		"glow_dim": Mats.lamp(glow, 0.9),  # lit inner faces (cat ears): coloured, under the bloom threshold
 		"case": _paint(Color(0.8, 0.4, 0.1), 41.0, 0.74, 0.15, 0.5),
 		"bottle": _bottle_mat(),
 		"bottle_cap": _cap_mat(),
@@ -479,8 +481,10 @@ var _idle_t: float = 0.0
 var _prop_amt: float = 0.0
 var _happy_bias: float = 0.0
 ## The holo panel is light-blue projector light on every design (sheet), not the design's glow.
-const HOLO_COLOR := Color(0.36, 0.74, 1.0)
+const HOLO_COLOR := Color(0.25, 0.66, 1.0)
 const BFLY_SCALE := 2.2
+## Shoulder pads hang a little outward-down from the shoulder (radians).
+const PAD_DROOP := 0.22
 ## Fin-less heads carry the detector beacon on the crown itself (head space).
 const BEACON_CROWN := Vector3(0, 0.648, 0.196)
 
@@ -514,9 +518,17 @@ func _build_accessories(v: Dictionary) -> void:
 				_head.add_child(_sprout)
 				_part(_sprout, a)
 			"acc_pad_r", "acc_pad_l":
-				_part(_arm_r if a.ends_with("_r") else _arm_l, a)
-				# Heavier stance: the padded shoulders sit a touch wider.
-				(_arm_r if a.ends_with("_r") else _arm_l).position.x += 0.012 * (1.0 if a.ends_with("_r") else -1.0)
+				# Heavier stance: the padded shoulders sit a touch wider. The pad is bolted to the body
+				# over the shoulder (the sheet's armour box) and the arm swings out from under it.
+				var side_s: float = 1.0 if a.ends_with("_r") else -1.0
+				var arm_n: Node3D = _arm_r if side_s > 0.0 else _arm_l
+				arm_n.position.x += 0.012 * side_s
+				var mount := Node3D.new()
+				mount.position = arm_n.position
+				mount.scale = Vector3.ONE * ARM_SCALE
+				mount.rotation.z = -PAD_DROOP * side_s
+				_float.add_child(mount)
+				_part(mount, a)
 			"acc_toolbox":
 				_part(_float, a, _pivot(a))
 			"gear":
@@ -572,12 +584,13 @@ func _holo_mat_of(c: Color, energy: float, alpha: float) -> StandardMaterial3D:
 	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	m.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
 	m.cull_mode = BaseMaterial3D.CULL_DISABLED
+	m.depth_draw_mode = BaseMaterial3D.DEPTH_DRAW_ALWAYS  # depth of field then treats the panel as near, not as the far ground
 	return m
 
 
 func _bottle_mat() -> StandardMaterial3D:
 	var m := StandardMaterial3D.new()
-	m.albedo_color = Color(0.82, 0.9, 0.92, 0.3)
+	m.albedo_color = Color(0.8, 0.9, 0.92, 0.5)
 	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	m.roughness = 0.12
 	m.metallic_specular = 0.8
@@ -592,6 +605,17 @@ func _decal_mat() -> StandardMaterial3D:
 	var m := StandardMaterial3D.new()
 	m.albedo_color = Color(0.9, 0.88, 0.82)
 	m.roughness = 0.55
+	return m
+
+
+## The satchel's cross: fresh paint in the design's accent colour.
+func _sign_mat(c: Color) -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	m.albedo_color = c
+	m.roughness = 0.5
+	m.emission_enabled = true
+	m.emission = c
+	m.emission_energy_multiplier = 0.25
 	return m
 
 
@@ -690,11 +714,11 @@ func _update_held() -> void:
 		_case.visible = _prop_amt > 0.5 and free_hand
 		_case.global_transform = Transform3D(body.rotated(body.y, -0.3), wrist.to_global(Vector3(0, -0.01, -0.1)))
 	if _holo:
+		# Placed even while hidden, so it opens from the fingertip, never from the world origin.
 		_holo.visible = _prop_amt > 0.01
-		if _holo.visible:
-			var e: float = _prop_amt * _prop_amt * (3.0 - 2.0 * _prop_amt)
-			var p: Vector3 = claw_point_l() - body.z * 0.06 - body.x * 0.27 + body.y * (0.17 + sin(_t * 1.4) * 0.008)
-			_holo.global_transform = Transform3D(body.rotated(body.y, -0.35).scaled(Vector3(e * 1.15, e * 1.15, 1.0)), p)
+		var e: float = maxf(_prop_amt * _prop_amt * (3.0 - 2.0 * _prop_amt), 0.01)
+		var p: Vector3 = claw_point_l() - body.z * 0.06 - body.x * 0.27 + body.y * (0.17 + sin(_t * 1.4) * 0.008)
+		_holo.global_transform = Transform3D(body.rotated(body.y, -0.35).scaled(Vector3(e * 1.15, e * 1.15, 1.0)), p)
 
 
 func _build_arm(side: float) -> Node3D:

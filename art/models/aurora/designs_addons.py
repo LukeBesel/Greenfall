@@ -216,10 +216,10 @@ for s_ in (-1, 1):
 	ax = s_ * -0.1
 	# Modelled upright at the origin (front face at z = -0.035), then turned and moved as one.
 	ear = [
-		prism("cat_ear", rounded_tri(0.29, 0.34, 0.05, apex_x=ax), 0.074, (0, 0, 0), "paint", bevel=0.019, segs=3, sub=1),
-		prism("cat_ear_rim", rounded_tri(0.215, 0.26, 0.036, apex_x=ax), 0.01, (0, 0.016, -0.036), "dark", bevel=0.003, segs=2, sub=1),
-		prism("cat_ear_in", rounded_tri(0.175, 0.215, 0.03, apex_x=ax), 0.01, (0, 0.032, -0.041), "glow", bevel=0.003, segs=2, sub=1),
-		prism("cat_ear_core", rounded_tri(0.118, 0.15, 0.022, apex_x=ax), 0.01, (0, 0.05, -0.0445), "trim", bevel=0.003, segs=2, sub=1),
+		prism("cat_ear", rounded_tri(0.3, 0.29, 0.05, apex_x=ax), 0.074, (0, 0, 0), "paint", bevel=0.019, segs=3, sub=1),
+		prism("cat_ear_rim", rounded_tri(0.225, 0.222, 0.036, apex_x=ax), 0.01, (0, 0.016, -0.036), "dark", bevel=0.003, segs=2, sub=1),
+		prism("cat_ear_in", rounded_tri(0.185, 0.184, 0.03, apex_x=ax), 0.01, (0, 0.032, -0.041), "glow", bevel=0.003, segs=2, sub=1),
+		prism("cat_ear_core", rounded_tri(0.135, 0.134, 0.022, apex_x=ax), 0.01, (0, 0.046, -0.0445), "glow_dim", bevel=0.003, segs=2, sub=1),
 	]
 	for o in ear:
 		xform(o, c, rot)
@@ -283,15 +283,15 @@ ACC["acc_holo"] = (join("acc_holo", holo), Vector((0, 0, 0)))
 # Wing fins on the head's upper sides (the sheet's portrait): broad, thick blades that reach out,
 # up a little and back past the head, the tip drooping, red with a cream flash along the top, each
 # on a faired root; and (a separate piece) a cream lower head.
-WING = [(-0.06, -0.08), (0.08, -0.1), (0.2, -0.092), (0.3, -0.05), (0.35, 0.014), (0.325, 0.07), (0.22, 0.094), (0.08, 0.096), (-0.06, 0.082)]
-FLASH = [(0.03, -0.036), (0.19, -0.04), (0.285, -0.012), (0.292, 0.022), (0.2, 0.042), (0.03, 0.036)]
+WING = [(-0.05, -0.08), (0.065, -0.1), (0.16, -0.092), (0.24, -0.05), (0.28, 0.014), (0.26, 0.07), (0.176, 0.094), (0.065, 0.096), (-0.05, 0.082)]
+FLASH = [(0.024, -0.036), (0.152, -0.04), (0.228, -0.012), (0.234, 0.022), (0.16, 0.042), (0.024, 0.036)]
 
 
 def wing_blade(name, pts, thick, material, bevel, sub):
 	"""Outline in (out, back) with the thickness up; thinner and drooping toward the tip."""
-	o = prism(name, pts, thick, (0, 0, 0), material, bevel=bevel, segs=3, sub=sub)
+	o = prism(name, [(x, y * 1.3) for (x, y) in pts], thick, (0, 0, 0), material, bevel=bevel, segs=3, sub=sub)
 	for v in o.data.vertices:
-		t = min(max(v.co.x / 0.34, 0.0), 1.0)
+		t = min(max(v.co.x / 0.275, 0.0), 1.0)
 		v.co.z *= 1.0 - 0.5 * t
 		v.co.z += 0.05 * t * t
 	o.data.transform(Matrix.Rotation(math.radians(90), 4, 'X'))
@@ -300,14 +300,15 @@ def wing_blade(name, pts, thick, material, bevel, sub):
 
 wings = []
 for s_ in (-1, 1):
-	p, n = crown(s_ * 0.325, 0.03)
-	root = Vector((s_ * 0.325, p.y - 0.04, 0.03))
-	# Rolled forward so the broad top face (and its flash) shows from the front, not just an edge.
-	rot = (-42, s_ * -26, s_ * 16)
+	# Rooted on the crown's shoulder, inboard of the side module: the blade rises out and back and
+	# its tip ends just past the module (the sheet's crest), rolled forward a little so the top shows.
+	p, n = crown(s_ * 0.27, 0.03)
+	root = Vector((s_ * 0.27, p.y - 0.03, 0.03))
+	rot = (-24, s_ * -30, s_ * 13)
 	blade = wing_blade("wing_fin", WING, 0.074, "paint", 0.02, 1)
 	flash = wing_blade("wing_flash", FLASH, 0.082, "accent", 0.004, 0)
-	fair = rbox("wing_root", (0.11, 0.075, 0.2), (0.0, -0.005, 0.005), 0.03, "paint", segs=3, sub=1)
-	lip = rbox("wing_root_lip", (0.125, 0.02, 0.215), (0.0, -0.04, 0.005), 0.008, "trim", segs=2, sub=1)
+	fair = rbox("wing_root", (0.1, 0.07, 0.18), (0.0, -0.005, 0.005), 0.03, "paint", segs=3, sub=1)
+	lip = rbox("wing_root_lip", (0.112, 0.02, 0.192), (0.0, -0.04, 0.005), 0.008, "trim", segs=2, sub=1)
 	for o in (blade, flash, fair, lip):
 		if s_ < 0:
 			o.data.transform(Matrix.Scale(-1, 4, Vector((1, 0, 0))))
@@ -315,12 +316,13 @@ for s_ in (-1, 1):
 		xform(o, root, rot)
 	wings += [blade, flash, fair, lip]
 	for dz in (-0.1, 0.14):
-		q, qn = crown(s_ * 0.24, dz)
+		q, qn = crown(s_ * 0.17, dz)
 		if q is not None:
 			wings.append(screw(q, qn, r=0.006))
 ACC["acc_pixel"] = (join("acc_pixel", wings), HEAD_P)
 
-# Cream lower head: the shell below the cap, pushed out 4 mm and given a 3 mm thickness.
+# Cream face and jaw (the sheet): the shell round the visor and the whole lower head are cream; the
+# crown stripe, the back and the band the side modules sit in stay red. Pushed out 4 mm, 3 mm thick.
 band = capsule("pixel_band", "accent", nu=56, nv=112)
 CAP_Y = HC + 0.11
 bm = bmesh.new()
@@ -329,7 +331,9 @@ bm.normal_update()
 kill = []
 for f in bm.faces:
 	c = f.calc_center_median()
-	if c.y > CAP_Y + 0.02 * math.cos(math.atan2(c.x, -c.z)):
+	low = c.y < HC - 0.15
+	front = c.z < -0.045 and c.y < HC + 0.215 and not (abs(c.x) < 0.17 and c.y > HC + 0.1)
+	if not (low or front):
 		kill.append(f)
 		continue
 	if c.z < 0:
@@ -393,7 +397,7 @@ def pad(name):
 		rbox("pad_top", (0.12, 0.012, 0.19), c + Vector((-0.018, 0.106, 0)), 0.005, "trim", segs=2, sub=1, rot=rot),
 	]
 	fx = c + Vector((0.096, 0.012, 0.0))
-	parts.append(rbox("pad_face", (0.012, 0.15, 0.2), fx + Vector((-0.002, 0.004, 0.0)), 0.014, "trim", segs=2, sub=1, rot=rot))
+	parts.append(rbox("pad_face", (0.012, 0.115, 0.15), fx + Vector((-0.002, 0.004, 0.0)), 0.014, "trim", segs=2, sub=1, rot=rot))
 	parts.append(rbox("pad_badge", (0.012, 0.09, 0.09), fx + Vector((0.003, 0.004, 0.0)), 0.014, "dark", segs=2, sub=1, rot=rot))
 	nut = prism("pad_nut", ngon(0.03, 6, math.pi / 6), 0.008, (0, 0, 0), "lamp_accent", bevel=0.002, segs=1, sub=0)
 	boolean(nut, cyl("nut_hole", 0.013, 0.04, (0, 0, 0), "lamp_accent", axis='Z', verts=20))
@@ -401,11 +405,11 @@ def pad(name):
 	xform(nut, fx + Vector((0.01, 0.004, 0.0)), rot)
 	parts.append(nut)
 	for y in (0.066, -0.058):
-		for z in (-0.085, 0.085):
+		for z in (-0.1, 0.1):
 			parts.append(cyl("pad_bolt", 0.009, 0.012, fx + Vector((0.004, y + 0.004, z)), "steel", axis='X', verts=12, bevel=0.003, rot=(0, 90, rot[2])))
 	# Front face: a dark inset with two steel bolts (the face the player sees most).
 	ff = c + Vector((0.0, 0.008, -0.136))
-	parts.append(rbox("pad_front", (0.13, 0.14, 0.012), ff, 0.012, "trim", segs=2, sub=1, rot=rot))
+	parts.append(rbox("pad_front", (0.11, 0.05, 0.012), ff + Vector((0, 0.03, 0)), 0.012, "trim", segs=2, sub=1, rot=rot))
 	parts.append(rbox("pad_front_slot", (0.085, 0.022, 0.012), ff + Vector((0, 0.03, -0.003)), 0.006, "dark", segs=2, sub=0, rot=rot))
 	parts.append(rbox("pad_front_lamp", (0.05, 0.014, 0.012), ff + Vector((0, -0.03, -0.003)), 0.005, "lamp_accent", segs=2, sub=0, rot=rot))
 	return join(name, parts)
@@ -481,8 +485,9 @@ tb = [
 	rbox("tb_flap", (0.148, 0.07, 0.236), (0.002, 0.095, 0), 0.024, "accent", segs=3, sub=1),
 	rbox("tb_band", (0.15, 0.03, 0.238), (0.002, 0.052, 0), 0.008, "trim", sub=1, segs=2),
 	rbox("tb_pocket", (0.05, 0.11, 0.1), (0.0, -0.04, 0.125), 0.016, "accent", segs=2, sub=1),
-	rbox("tb_cross_h", (0.014, 0.032, 0.1), (0.068, -0.035, 0), 0.004, "decal", sub=0, segs=1),
-	rbox("tb_cross_v", (0.014, 0.1, 0.032), (0.068, -0.035, 0), 0.004, "decal", sub=0, segs=1),
+	cyl("tb_patch", 0.07, 0.012, (0.066, -0.035, 0), "decal", axis='X', verts=32, bevel=0.003),
+	rbox("tb_cross_h", (0.014, 0.03, 0.094), (0.07, -0.035, 0), 0.004, "sign", sub=0, segs=1),
+	rbox("tb_cross_v", (0.014, 0.094, 0.03), (0.07, -0.035, 0), 0.004, "sign", sub=0, segs=1),
 	rbox("tb_bracket", (0.07, 0.03, 0.13), (0.0, 0.14, 0), 0.01, "trim", sub=1, segs=2),
 	cyl("tb_pin", 0.012, 0.16, (0.0, 0.15, 0), "steel", axis='Z', verts=12, bevel=0.003),
 ]

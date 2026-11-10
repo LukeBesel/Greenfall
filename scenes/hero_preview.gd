@@ -157,8 +157,8 @@ func _ready() -> void:
 		# [hero v2] The concept looks down on him a little (the crown and fin read against the sky).
 		var a: float = deg_to_rad(31.0)
 		# Far enough back that head pieces (fin, seedling, ears) and the held prop stay in frame.
-		var d: float = 2.6
-		_shots = [[Vector3(sin(a) * d, 1.35, -cos(a) * d), Vector3(-0.22, 0.76, -0.05)]]
+		var d: float = 2.85
+		_shots = [[Vector3(sin(a) * d, 1.15, -cos(a) * d), Vector3(-0.22, 0.82, -0.05)]]
 		for k: int in _variants.size() - 1:
 			_shots.append(_shots[0])
 		var cam_attr := CameraAttributesPractical.new()

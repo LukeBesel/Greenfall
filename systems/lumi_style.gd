@@ -551,6 +551,7 @@ static func variant_dict(style: Dictionary, base: Dictionary = {}) -> Dictionary
 	# One eye path: the face shader's shapes. "happy" rests the crescent on smiling arcs.
 	var shape: String = str(s["eye_shape"])
 	v["happy"] = 1.0 if shape == "happy" else 0.5
+	v["smile"] = 1.0 if shape == "happy" else 0.0  # the small visor smile belongs to the smiling arcs
 	v["eyes"] = "crescent" if shape == "happy" or not (shape in PatchModel.EYE_SHAPES) else shape
 	var ic: String = str(s["chest"])
 	v["icon"] = ic if ic in ["recycle", "leaf", "cross"] else "recycle"
