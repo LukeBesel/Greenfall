@@ -39,8 +39,8 @@ func build(root: Node3D, home: Vector3) -> void:
 	env.tonemap_mode = Environment.TONE_MAPPER_AGX
 	env.tonemap_exposure = 1.25
 	env.fog_enabled = true
-	env.fog_light_color = Color(0.62, 0.62, 0.66)
-	env.fog_density = 0.0011
+	env.fog_light_color = Color(0.68, 0.78, 0.92)
+	env.fog_density = 0.0005
 	env.fog_sky_affect = 0.0
 	env.fog_aerial_perspective = 0.4
 	var we := WorldEnvironment.new()
@@ -78,7 +78,7 @@ func add_lamp(on: Node3D) -> void:
 
 ## The quality pass sets the flat-world fog density; on the globe that is several times too thick.
 func after_quality(command_view: bool) -> void:
-	env.fog_density = 0.0003 if command_view else 0.0011
+	env.fog_density = 0.00014 if command_view else 0.0005
 
 
 ## World direction toward a sun at rotation phase phi (the planet's spin axis is world +Y).

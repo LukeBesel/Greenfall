@@ -442,12 +442,12 @@ func _apply_sphere() -> void:
 	# Medium+ with Godot's default density (0.05), which washed the globe and its sky flat grey
 	# (owner: vivid blue sky with the two suns, not haze). Plain depth fog does the aerial haze.
 	env.volumetric_fog_enabled = false
-	env.fog_density = lerpf(0.0005, 0.001, haze) * fog_scale
+	env.fog_density = lerpf(0.0003, 0.0005, haze) * fog_scale  # thin: distant towers and ground keep their colour
 	env.fog_sky_affect = 0.0
 	env.adjustment_enabled = true
 	env.adjustment_saturation = lerpf(1.12, 1.2, day)
 	env.adjustment_contrast = 1.06
-	var fog_day: Color = Color(0.62, 0.75, 0.94).lerp(Color(0.78, 0.76, 0.72), haze * 0.5)
+	var fog_day: Color = Color(0.62, 0.75, 0.94).lerp(Color(0.72, 0.8, 0.92), haze * 0.5)  # pale blue air, also while dusty
 	var fog_night: Color = Color(0.11, 0.14, 0.22) * (1.0 + 0.6 * lift)
 	if night_tint.a > 0.0:
 		fog_night = fog_night.lerp(Color(night_tint.r, night_tint.g, night_tint.b) * 0.4, night_tint.a)
