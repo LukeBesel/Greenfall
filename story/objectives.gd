@@ -518,6 +518,13 @@ func step_target(def: Dictionary) -> Dictionary:
 			out = {"to": "bench", "row": ["research", key]}
 		"hub_level", "bases_l5", "frontier_base":
 			out = {"to": "bench", "row": ["patch", "hub_level"]}
+		"districts":  # [v5play] "Launch the rocket onward": the beam stands on the rocket (base level 5 builds it)
+			var so: Variant = world.get("orbit")
+			var spot: Variant = (so as SliceOrbit).sites.rocket_spot if so is SliceOrbit and (so as SliceOrbit).sites != null else null
+			if spot is Node3D and (spot as Node3D).visible:
+				out = {"to": "place", "pos": (spot as Node3D).global_position, "row": []}
+			else:
+				out = {"to": "bench", "row": ["patch", "hub_level"]}
 		"earned":
 			out["to"] = "depot" if p and not p.carried.is_empty() else "hex"
 		"hex_level", "zone", "frontier_growing":
@@ -770,6 +777,16 @@ func _step_price() -> Dictionary:
 		return BenchTiers.next_cost()
 	if typ == "tower" and SignalTower.tier() < int(def.get("target", 1)):
 		return SignalTower.next_cost()
+	# [v5play] Base levels and robots cost cubes and parts: say what is still missing for them too
+	# (the "Rebuild the base" steps gave no hint while the parts were short).
+	if typ == "hub_level" and world != null and world.get("hub") is Hub:
+		var hub: Hub = world.get("hub")
+		if hub.level < int(def.get("target", 2)):
+			return (hub.level_def(hub.level + 1).get("cost", {}) as Dictionary).duplicate()
+	if typ == "robot" and world != null and world.get("fleet") is Fleet and Economy.robots.has(key) and Research.robot_unlocked(key):
+		var fl: Fleet = world.get("fleet")
+		if fl.count(key) < int(def.get("target", 1)):
+			return {"cubes": fl.build_cost(key).to_float(), "parts": fl.build_parts(key).to_float()}
 	return {}
 
 

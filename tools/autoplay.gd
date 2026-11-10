@@ -228,7 +228,37 @@ func _go(p: Patch, target: Vector3, stop_dist: float = 0.3) -> float:
 		if via.distance_to(target) > 0.5:
 			_go_raw(p, via, 1.0)
 			return maxf(target.distance_to(p.global_position), stop_dist + 1.0)
+	var round_gh: Vector3 = _round_greenhouse(p, target)  # [v5play]
+	if round_gh != Vector3.ZERO:
+		_go_raw(p, round_gh, 1.0)
+		return maxf(target.distance_to(p.global_position), stop_dist + 1.0)
 	return _go_raw(p, target, stop_dist)
+
+
+## [v5play] The First Seed greenhouse stands by the yard's south-east corner, on the bot's way
+## between the bench and the fields: every "stuck escape" of a 105-minute run was against it. A
+## player walks round what he sees; so does the bot now: a point beside the greenhouse when the
+## straight line to the target crosses it (ZERO when it doesn't, or the target is inside).
+const GH_AVOID_M: float = 7.0
+func _round_greenhouse(p: Patch, target: Vector3) -> Vector3:
+	var fs: Variant = world.get("first_seed")
+	if not world_space or not (fs is FirstSeed):
+		return Vector3.ZERO
+	var c: Vector3 = (fs as FirstSeed).greenhouse_point()
+	var a: Vector3 = p.global_position
+	if target.distance_to(c) < GH_AVOID_M + 0.5:
+		return Vector3.ZERO
+	var ab: Vector3 = target - a
+	var t: float = clampf((c - a).dot(ab) / maxf(ab.length_squared(), 0.0001), 0.0, 1.0)
+	var near: Vector3 = a + ab * t
+	if near.distance_to(c) >= GH_AVOID_M or t <= 0.0:
+		return Vector3.ZERO
+	var out: Vector3 = near - c
+	var u: Vector3 = c.normalized()
+	out -= u * out.dot(u)
+	if out.length() < 0.05:
+		out = ab.cross(u)
+	return c + out.normalized() * (GH_AVOID_M + 1.5)
 
 
 func _go_raw(p: Patch, target: Vector3, stop_dist: float = 0.3) -> float:
@@ -342,6 +372,8 @@ func _watch_stuck(p: Patch, delta: float) -> void:
 	elif _watch_t > 6.0:
 		_watch_t = 0.0
 		_escapes += 1
+		if DevHooks.has("bot-debug"):  # [v5play] every escape: where (start-site metres) and against what
+			print("[bot-esc2] t=%.1f task=%s local=%s what=%s" % [_now() / 60.0, _task, str(_local_m(p.global_position)), _blocker(p)])
 		if _target_piece >= 0 and DevHooks.has("bot-debug"):
 			var f: HexField = world.field
 			print("[bot-esc] t=%.1f task=%s pos=%s piece=%d at %s size=%d embed=%.2f" % [_now() / 60.0, _task, str(p.global_position), _target_piece, str(f.piece_pos[_target_piece]), Pace.piece_size(f, _target_piece), f.piece_embed[_target_piece] if _target_piece < f.piece_embed.size() else -1.0])
@@ -357,10 +389,52 @@ func _watch_stuck(p: Patch, delta: float) -> void:
 		var head: Vector3 = Vector3(_move.x, 0, _move.z).normalized()
 		_escape_side = -_escape_side
 		_escape_dir = (Vector3(head.z, 0, -head.x) * _escape_side - head * 0.35).normalized()
+		if world_space:  # [v5play] on the globe "sideways" is along the ground, not world XZ
+			head = (_move - p.up() * _move.dot(p.up())).normalized()
+			_escape_dir = (head.cross(p.up()) * _escape_side - head * 0.35).normalized()
 		_escape_t = 1.6 + 0.4 * float(_escapes % 3)
 		if _target_piece >= 0 and _escapes % 2 == 0:
 			_ignore_piece[_target_piece] = true
 		_target_piece = -1
+
+
+## [v5play] Start-site metres (x east, z south; the same as --orbit-spawn=x,z) of a world point.
+func _local_m(pos: Vector3) -> Vector2:
+	var so: Variant = world.get("orbit")
+	if not (so is SliceOrbit):
+		return Vector2(pos.x, pos.z)
+	var g: OrbitPlanet = (so as SliceOrbit).globe
+	var u: Vector3 = g.grid.centers[g.start_cell()]
+	var east: Vector3 = Vector3.UP.cross(u).normalized()
+	var south: Vector3 = u.cross(east).normalized() * -1.0
+	var d: Vector3 = pos.normalized()
+	var a: float = acos(clampf(d.dot(u), -1.0, 1.0))
+	var t: Vector3 = d - u * d.dot(u)
+	if t.length() < 0.000001:
+		return Vector2.ZERO
+	t = t.normalized() * a * g.grid.radius_m
+	return Vector2(t.dot(east), t.dot(south)).snappedf(0.1)
+
+
+## [v5play] What Lumi is pushing against: the solids his box touches a little way ahead.
+func _blocker(p: Patch) -> String:
+	var space: PhysicsDirectSpaceState3D = p.get_world_3d().direct_space_state
+	var shape := BoxShape3D.new()
+	shape.size = Vector3(1.3, 0.9, 1.3)
+	var q := PhysicsShapeQueryParameters3D.new()
+	q.shape = shape
+	q.collision_mask = 0xFFFFFFFF
+	q.exclude = [p.get_rid()]
+	var fwd: Vector3 = (_move - p.up() * _move.dot(p.up())).normalized()
+	q.transform = Transform3D(p.global_basis, p.global_position + p.up() * 0.6 + fwd * 0.5)
+	var names: PackedStringArray = []
+	for hit: Dictionary in space.intersect_shape(q, 6):
+		var co: Object = hit.get("collider")
+		if co is Node:
+			var path: String = str((co as Node).get_path())
+			names.append(path.right(90))
+	var here: int = world.field.hex_at(p.global_position)
+	return "%s water=%s/%s hex=%d" % [str(names), str(world.field.is_water(here)) if here >= 0 else "?", str(p.call("_water_at", p.global_position + fwd * 1.5)) if p.has_method("_water_at") else "?", here]
 
 
 func _hook_goals() -> void:

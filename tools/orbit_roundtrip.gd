@@ -415,6 +415,9 @@ static func run(rt: Node, check: Callable) -> void:
 	var packed: PackedScene = load("res://scenes/slice.tscn")
 	var s1: Node = packed.instantiate()
 	tree.root.add_child(s1)
+	var pw := PauseWatch.new()  # [main] a choice that pauses the tree (a scratched CD, a reading) is answered and logged, as in autoplay
+	pw.world = s1
+	s1.add_child(pw)
 	for i: int in 5:
 		await tree.process_frame
 	var so: SliceOrbit = s1.get("orbit")
@@ -553,10 +556,13 @@ static func run(rt: Node, check: Callable) -> void:
 		check.call("orbit_outline_cell_sized", true, aabb.size.x > 12.0 and aabb.size.x < 24.0 and absf(aabb.size.y) < 3.0)
 		ob.set_process(true)
 	check.call("orbit_first_hex_milestone", true, GameState.flags.get("hexm_1", false))
-	for i: int in 30:  # [main] HexLevels samples once a second; on slow runners (CI) one 1.4 s wait can miss it, so poll up to 6 s
+	for i: int in 75:  # [main] HexLevels samples once a second; poll up to 15 s (a paused tree is answered by PauseWatch after 3 s)
 		await tree.create_timer(0.2).timeout
 		if i >= 6 and (s1.get("hex_levels") as HexLevels).level_of(target) >= 1:
 			break
+	if (s1.get("hex_levels") as HexLevels).level_of(target) < 1:  # [main] say why, for CI logs
+		var hl: HexLevels = s1.get("hex_levels")
+		print("[roundtrip] FAIL-INFO hex_level: paused=%s tracked=%s clean=%s hub=%d water=%s processing=%s" % [tree.paused, hl.levels.has(target), g.field.is_clean(target), int(g.field.hex_hub[target]), g.field.is_water(target), hl.is_processing()])
 	check.call("orbit_hex_level_1", 1, (s1.get("hex_levels") as HexLevels).level_of(target))
 	s1.set_meta("rt_target", target)
 	# Half-clean a second one and set a level on a third (the far shell / future layer read these).

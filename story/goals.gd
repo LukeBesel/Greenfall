@@ -97,7 +97,13 @@ func value_of(i: int) -> float:
 		"flag":
 			return 1.0 if GameState.flags.get(key, false) else 0.0
 		"districts":
-			return float(GameState.districts.size())
+			# [v5play] On the globe a district is a hub: the start hub plus every hub flown to
+			# (GameState.districts stays empty there, so "Launch the rocket onward" never completed).
+			var flown: Array = GameState.orbit.get("hubs_flown", [])
+			var hubs: float = 0.0
+			if not GameState.orbit.is_empty():
+				hubs = 1.0 + float(flown.filter(func(h: Variant) -> bool: return int(h) != 0).size())
+			return maxf(float(GameState.districts.size()), hubs)
 		# [beat] late-game goals (frontiers, the Cradle)
 		"research":
 			return 1.0 if Research.has(key) else 0.0

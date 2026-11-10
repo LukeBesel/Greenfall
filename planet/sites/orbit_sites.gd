@@ -118,7 +118,11 @@ func _wire_survey() -> void:
 		(ia as Interactables).register(rocket_spot, 6.5, rocket_prompt, open_rocket, func() -> bool: return rocket_spot.visible and not hop.flying)
 	hop.hopped.connect(func(to_i: int) -> void:
 		GameState.orbit["rocket_site"] = to_i
-		GameState.orbit["rocket_owned"] = true)
+		GameState.orbit["rocket_owned"] = true
+		var flown: Array = GameState.orbit.get("hubs_flown", [])  # [v5play] the "Launch the rocket onward" goal counts these
+		if not flown.has(to_i):
+			flown.append(to_i)
+		GameState.orbit["hubs_flown"] = flown)
 	_sync_rocket()
 	if DevHooks.has("orbit-rocket-open"):  # dev: open the rocket's list after T s; prints its rows
 		get_tree().create_timer(DevHooks.get_f("orbit-rocket-open", 3.0)).timeout.connect(func() -> void:
@@ -314,9 +318,24 @@ func _build_hinterland() -> void:
 	hinterland.setup(sm.grid, sm.terrain, sm.cells, hubs, int(so.globe.get("seed_value")) if so.globe.get("seed_value") != null else 4471,
 		so.globe.call("yard_keep_out") as YardKeepOut if so.globe.has_method("yard_keep_out") else null)
 	hinterland.focus = so.w.get("patch")
+	if DevHooks.has("hinter-walk") or DevHooks.has("hinter-walk-at"):  # [v5play] dev: walk check of the hinterland (planet/sites/hinter_walk.gd)
+		HinterWalk.run_dev(so, hinterland)
+	var fld: Variant = so.globe.get("field")  # [v5look] no junk mounds on the hinterland's roads
+	if fld is SphereField:
+		(fld as SphereField).pile_block = hinterland.is_track_cell
+	if DevHooks.has("hinter-goto"):  # [v5look] dev: stand Lumi by the nearest track / house / works (renders)
+		hinterland.rebuilt.connect(func() -> void:
+			var a: PackedStringArray = DevHooks.get_s("hinter-goto", "track").split(",")
+			var lumi: Node3D = so.w.get("patch")
+			var spot: Array = hinterland.dev_spot(a[0], lumi.global_position, float(a[1]) if a.size() > 1 else 14.0, float(a[2]) if a.size() > 2 else 0.0)
+			if spot.size() == 2:
+				var at: Vector3 = spot[0]
+				(lumi as Patch).place_on_sphere(at.normalized() * (sm.terrain.R + sm.terrain.height(at.normalized()) + 0.6), spot[1])
+				so.cam.reset_frame(spot[1])
+				so.cam.snap(), CONNECT_ONE_SHOT)
 	if DevHooks.has("hinter-report"):
 		get_tree().create_timer(DevHooks.get_f("hinter-report", 20.0)).timeout.connect(func() -> void:
-			print("[hinter] %s" % str(hinterland.stats)))
+			print("[hinter] %s nearest %s" % [str(hinterland.stats), hinterland.debug_nearest(sm.grid.cell_at((so.w.get("patch") as Node3D).global_position))]))  # [v5look]
 
 
 func _build_litter() -> void:

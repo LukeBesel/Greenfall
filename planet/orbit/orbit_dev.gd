@@ -209,6 +209,9 @@ func _reload_check() -> void:
 		var d: Vector3 = g.terrain.local_to_dir(g.start_cell(), 28.0, -21.0)
 		lumi.place_on_sphere(g.terrain.ground(d), -SphereGrid.frame(d).z)
 		GameState.add_currency("cubes", BigNum.from_float(321))
+		GameState.orbit["rocket_site"] = 3  # [v5play] the rocket's keys ride through a save too
+		GameState.orbit["rocket_owned"] = true
+		GameState.orbit["hubs_flown"] = [3]
 		await get_tree().create_timer(0.5).timeout
 		var ok: bool = SaveManager.save_game()
 		print("[reload] wrote lumi=%s cubes=%.0f saved=%s" % [str(g.to_dirh(lumi.global_position)), GameState.get_currency("cubes").to_float(), str(ok)])
@@ -218,7 +221,10 @@ func _reload_check() -> void:
 	var want: Array = (GameState.orbit.get("lumi", {}) as Dictionary).get("at", [])
 	var got: Array = g.to_dirh(lumi.global_position)
 	var ok2: bool = want.size() == 4 and Vector3(float(want[0]), float(want[1]), float(want[2])).distance_to(Vector3(float(got[0]), float(got[1]), float(got[2]))) * g.grid.radius_m < 0.5
-	print("[reload] read lumi=%s saved=%s cubes=%.0f %s" % [str(got), str(want), GameState.get_currency("cubes").to_float(), "PASS" if ok2 else "FAIL"])
+	var flown: Array = GameState.orbit.get("hubs_flown", [])
+	var rocket_ok: bool = int(GameState.orbit.get("rocket_site", -1)) == 3 and bool(GameState.orbit.get("rocket_owned", false)) and flown.size() == 1 and int(flown[0]) == 3  # [v5play]
+	ok2 = ok2 and rocket_ok
+	print("[reload] read lumi=%s saved=%s cubes=%.0f rocket=%s %s" % [str(got), str(want), GameState.get_currency("cubes").to_float(), "kept" if rocket_ok else "LOST", "PASS" if ok2 else "FAIL"])
 	get_tree().quit(0 if ok2 else 1)
 
 

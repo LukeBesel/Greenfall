@@ -101,7 +101,7 @@ func in_building(dir: Vector3) -> bool:
 			for r2: Rect2 in bin:
 				if r2.has_point(q):
 					return true
-	return _world_n > 0 and _blocks_world(dir)
+	return _world_n > 0 and _blocks_world(dir, true)
 
 
 ## [v4world] Bumped whenever footprints are added: spots checked before can be checked again.
@@ -118,7 +118,9 @@ var _world_keys: Dictionary = {}  # who added (hub index): added once
 
 ## Footprints of buildings standing in ground frames on the sphere: [[frame: Transform3D, rect: Rect2]].
 ## Pieces keep off them on every hub's outskirts (junk never lies inside a building there).
-func add_world(key: Variant, items: Array) -> void:
+## [v5look] soft = true: pieces keep off (blocks) but it is no building (in_building stays false,
+## so TargetReach still walks across): the hinterland's road lanes.
+func add_world(key: Variant, items: Array, soft: bool = false) -> void:
 	if _world_keys.has(key):
 		return
 	_world_keys[key] = true
@@ -127,19 +129,25 @@ func add_world(key: Variant, items: Array) -> void:
 		var r: Rect2 = (it[1] as Rect2).grow(FOOT_GROW_M)
 		var inv: Transform3D = fr.affine_inverse()
 		var rad: float = fr.origin.length()
-		var nx: int = maxi(1, int(ceil(r.size.x / (WORLD_M * 0.5))))
-		var nz: int = maxi(1, int(ceil(r.size.y / (WORLD_M * 0.5))))
-		var seen: Dictionary = {}
-		for ix: int in nx + 1:
-			for iz: int in nz + 1:
-				var q := Vector3(r.position.x + r.size.x * ix / nx, 0.0, r.position.y + r.size.y * iz / nz)
-				var k: Vector3i = _wkey((fr * q).normalized(), radius)
-				if seen.has(k):
-					continue
-				seen[k] = true
-				if not _world.has(k):
-					_world[k] = []
-				(_world[k] as Array).append([inv, r, rad])
+		# [v5play] Every bucket the footprint's box touches. (It used to sample the footprint every
+		# 8 m and file it under the samples' buckets: a bucket the footprint only clipped a corner
+		# of got nothing, so junk was laid inside buildings there, where nobody can clean it.)
+		var lo := Vector3.INF
+		var hi := -Vector3.INF
+		for cq: Vector3 in [Vector3(r.position.x, 0.0, r.position.y), Vector3(r.end.x, 0.0, r.position.y), Vector3(r.end.x, 0.0, r.end.y), Vector3(r.position.x, 0.0, r.end.y), Vector3(r.get_center().x, 0.0, r.get_center().y)]:
+			var wp: Vector3 = (fr * cq).normalized() * radius / WORLD_M
+			lo = lo.min(wp)
+			hi = hi.max(wp)
+		var pad := Vector3.ONE * (0.25 / WORLD_M)
+		var k0 := Vector3i((lo - pad).floor())
+		var k1 := Vector3i((hi + pad).floor())
+		for kx: int in range(k0.x, k1.x + 1):
+			for ky: int in range(k0.y, k1.y + 1):
+				for kz: int in range(k0.z, k1.z + 1):
+					var k := Vector3i(kx, ky, kz)
+					if not _world.has(k):
+						_world[k] = []
+					(_world[k] as Array).append([inv, r, rad, soft])
 		_world_n += 1
 	version += 1  # [v4world]
 
@@ -149,7 +157,7 @@ func _wkey(d: Vector3, rad: float) -> Vector3i:
 	return Vector3i(floori(p.x), floori(p.y), floori(p.z))
 
 
-func _blocks_world(dir: Vector3) -> bool:
+func _blocks_world(dir: Vector3, hard_only: bool = false) -> bool:
 	var d: Vector3 = dir.normalized()
 	var base: Vector3 = d * radius / WORLD_M
 	var b0 := Vector3i(floori(base.x), floori(base.y), floori(base.z))
@@ -158,6 +166,8 @@ func _blocks_world(dir: Vector3) -> bool:
 		if lst == null:
 			continue
 		for e: Array in lst:
+			if hard_only and e[3]:  # [v5look]
+				continue
 			var lp: Vector3 = (e[0] as Transform3D) * (d * float(e[2]))
 			if (e[1] as Rect2).has_point(Vector2(lp.x, lp.z)):
 				return true
