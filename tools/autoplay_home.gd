@@ -98,7 +98,7 @@ static func step(world: Node) -> String:
 			_ff_rocket()
 		if world.rocket_status() != "":
 			return "wait"
-		world._launch(int(pl.frontier_hubs["cradle_returns"]))
+		OrbitSites.of(world).hop_to_hub(int(pl.frontier_hubs["cradle_returns"]))
 		return "hop to Cradle Returns"
 	AutoplayLate.mark("home_site_s")
 	if Homeward.drive() < 7:

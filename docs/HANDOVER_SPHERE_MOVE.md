@@ -1,9 +1,9 @@
 # Handover: sphere-move (wt/smove)
 
 Movement on a round, true-scale planet: Lumi, the camera, robots and junk. Everything is in
-`planet/sphere/` and is standalone, using a stand-in sphere through SphereSurface. The orbit lead has
-adopted it: wt/orbit merges wt/smove, and the integrated prototype is
-`planet/orbit/verdance_globe.gd` (`--orbit`).
+`planet/sphere/` and started standalone, using a stand-in sphere through SphereSurface. It is now the
+game's movement: the slice builds on it through `scenes/slice_orbit.gd` and
+`planet/orbit/orbit_planet.gd` (the `--orbit` switch and `planet/orbit/verdance_globe.gd` are gone).
 
 ## Done (all verified)
 - `tests/test_sphere_move.gd`: 11 tests, all passing.
@@ -17,7 +17,7 @@ adopted it: wt/orbit merges wt/smove, and the integrated prototype is
   - The crew sim travels the exact distance.
   - A* on GeoSphere(4) works, including with blocked cells.
   - Placement is orthonormal and on the ground. The curved scoop cone takes pieces ahead and rejects pieces behind. The magnet pull stays on the ground.
-- Demo `--sphere-walk[=boost|play]` (hook in `scenes/slice.gd`, tagged `[smove]`) on a true-scale planet, R 1840 m:
+- Demo `--sphere-walk[=boost|play]` (removed with its hook in `scenes/slice.gd`; results kept as a record) on a true-scale planet, R 1840 m:
   - Headless boost lap: **PASS**, 11.56 km, closest approach to the start 0.46 m.
   - 470 junk pieces scooped along the way.
   - Bots stream out to SphereCrewSim records and back in.

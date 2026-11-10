@@ -1,6 +1,6 @@
 # Round planets: parity with the flat game
 
-What the flat game has, and where each piece stands on the walkable globe (`--orbit`, or the title screen's **Round planets (preview)**). Last checked Nov 9 on `wt/orbB` (orbB); First Seed, compost press, seed finds and memory shards turned green in the wrap-up.
+What the flat game has, and where each piece stands on the walkable globe. Since M1-04 the globe is the only mode: the `--orbit` and `--flat` switches and the title screen's preview toggle are gone. Last checked Nov 9 on `wt/orbB` (orbB); First Seed, compost press, seed finds and memory shards turned green in the wrap-up.
 
 **Status**
 - **works**: built on the globe and exercised by a check.
@@ -18,11 +18,11 @@ What the flat game has, and where each piece stands on the walkable globe (`--or
 
 | Check | Command | What it shows |
 |---|---|---|
-| System audit | `godot --headless --path . res://tools/system_audit.tscn -- --fresh [--orbit]` | The slice's named systems (set or null) and every script class in its tree, flat vs globe. |
-| Orbit round trip | `godot --headless --path . res://tools/save_roundtrip.tscn -- --fresh --orbit` | About 90 checks (`orbit_*`), plus a save/load comparison of about 35 state keys. |
+| System audit | `godot --headless --path . res://tools/system_audit.tscn -- --fresh` | The slice's named systems (set or null) and every script class in its tree. |
+| Orbit round trip | `godot --headless --path . res://tools/save_roundtrip.tscn -- --fresh` | About 90 checks (`orbit_*`), plus a save/load comparison of about 35 state keys. |
 | Fresh-process reload | `tools/orbit_reload_check.sh` (run by `tools/check_exit.sh`) | Lumi's position, cubes and cells survive a quit and restart. |
-| Autoplay | `-- --fresh [--orbit] --autoplay --time-scale=4 --quit-after=200` | Early game in about 13 game minutes, flat vs globe. |
-| Robots | `-- --fresh --orbit --robots=scoopie:3,haulbug:2 --time-scale=4 --quit-after=90` | The `[bots]` table. |
+| Autoplay | `-- --fresh --autoplay --time-scale=4 --quit-after=200` | Early game in about 13 game minutes. |
+| Robots | `-- --fresh --robots=scoopie:3,haulbug:2 --time-scale=4 --quit-after=90` | The `[bots]` table. |
 | Exported build | `--export-pack "macOS"`, then `--main-pack` with `--menu=round-new` / `round-continue` | The preview works from an exported pack. |
 
 **Autoplay, 200 s at x4 (Nov 9):**
@@ -66,7 +66,7 @@ Same upgrades bought, no errors.
 | Research, Achievements, Codex | works | | Built through slice.gd's `_setup_research_codex`. Research isn't reached in a 13-minute autoplay on either game. |
 | Goals, Tutorial, Objectives, cell outline | works | | `orbit_outline_*`; autoplay goals 9/9. |
 | Contracts board | partial | orbB | Built; not exercised on the globe. |
-| World events (+ streak HUD) | partial | orbB | Built; `tools/events_check.tscn` is flat-only. Port it to `--orbit`. |
+| World events (+ streak HUD) | partial | orbB | Built; `tools/events_check.tscn` was written for the flat game. Port it to the globe. |
 | Camp: broken bench, trash bin, yard builds | works | | On orbD's anchors; `orbit_bin_prompt`, `yard_built` in the save comparison. |
 | Stations (conveyor, auto baler, recycler) | partial | orbD / orbC | The machines stand in the yard, idle. The flat `Stations` node (their feeding logic) isn't built on the globe. |
 | Composter (organic junk to seeds) | works | | On the start yard's `composter` anchor (YardSite's stand-in steps aside). Paper feeds it and it presses seeds. Checks: `orbit_composter_*`. |
@@ -114,13 +114,13 @@ Same upgrades bought, no errors.
 | System | Status | Owner | Evidence and notes |
 |---|---|---|---|
 | WREN, subtitles, uplink | works | | Built; the Ledger's uplink lines run. |
-| Intro cinematic | works | orbE | A new game plays the whole intro on the globe (ark, storm, fall, landing, wake). The landing and wake shots run in the start site's "pod" anchor frame (`Intro.site_xf`, level on the local up), the crash site lies on the pad, and the end places the pod the globe's way. Lumi stands on the ground beside it. Saves, tools and headless runs place the pod at once. Headless check: `--orbit --intro` (finishes, input restored, Lumi 0.0 m above ground, 3.4 m from the pod). |
+| Intro cinematic | works | orbE | A new game plays the whole intro on the globe (ark, storm, fall, landing, wake). The landing and wake shots run in the start site's "pod" anchor frame (`Intro.site_xf`, level on the local up), the crash site lies on the pad, and the end places the pod the globe's way. Lumi stands on the ground beside it. Saves, tools and headless runs place the pod at once. Headless check: `--intro` (finishes, input restored, Lumi 0.0 m above ground, 3.4 m from the pod). |
 | Crashed pod | works | | `orbit_pod_out_of_view`, `orbit_camera_clear_of_pod`. |
 | Core charge | works | | Built. |
 | Memory shards + document view | works | | In the start hub's region; they surface on the ground when their cell is clean. The paper view also opens the Ledger's contract and the eggs' notes. Checks: `orbit_shard*`. |
 | Easter eggs, collectibles, museum | works | | Per hub; `orbit_eggs_*`, `orbit_egg_prompt`. |
 | Ledger arc (drones, jammers, relay, resolve) | works | | Per hub; `orbit_ledger_*`. The resolve cinematic runs in the frame; I didn't take a picture of it. |
-| Bloom (milestones, Seed Ark, finale) | works | orbE | Headless framing check (`--orbit --bloom-finale`, all planets): camera 1.3 m up, no roll, ark 40 deg up, same as the flat game. On a globe the orbit picks its clearest start yaw and a two-way spring arm keeps site geometry from blocking the view. Verdance, Anvil, Tidewell and Rime are clear. Open: on Ochre, Lumi's spawn spot is under or against the start site's geometry, so the camera can't see her from any side. That needs a site or spawn fix (orbD / p_ochre). |
+| Bloom (milestones, Seed Ark, finale) | works | orbE | Headless framing check (`--bloom-finale`, all planets): camera 1.3 m up, no roll, ark 40 deg up, same as the flat game. On a globe the orbit picks its clearest start yaw and a two-way spring arm keeps site geometry from blocking the view. Verdance, Anvil, Tidewell and Rime are clear. Open: on Ochre, Lumi's spawn spot is under or against the start site's geometry, so the camera can't see her from any side. That needs a site or spawn fix (orbD / p_ochre). |
 | Late game: Ark Bridge, Cradle Mode worlds, Homeward | partial | orbB / orbE | Built (`LateDirector`, `HomewardDirector`, `ArkBridge`). Launching a new Cradle world onto a globe is unchecked. |
 
 ## Sky, maps, camera, UI
@@ -134,7 +134,7 @@ Same upgrades bought, no errors.
 | Photo mode | works | | OrbitLayers (orbE). |
 | Lens view overlay | works | orbE | SphereCam has the lens view (V / R3, `--lens`): the eye at Lumi's lens, level on the local up. `LensOverlay` is built on the globe. Tested in `tests/test_sphere_lens.gd`. |
 | HUD, pause menu, settings, music | works | | Built; one planet line on the globe. |
-| Camera | works | | `SphereCam` replaces `CameraRig` (`world.cam` is null on the globe). |
+| Camera | works | | `SphereCam` (`world.orbit.cam`). The flat `CameraRig` and `world.cam` are removed. |
 
 ## Saves and builds
 
@@ -142,7 +142,7 @@ Same upgrades bought, no errors.
 |---|---|---|---|
 | Save / load (all systems) | works | | Orbit round trip (35 keys equal after reload); the fresh-process reload. |
 | Old flat save migration | works | | `orbit_old_*` (fixtures). |
-| Separate preview saves (`user://saves_round`) | works | | `tests/test_round_planets.gd`; a flat sentinel save stays byte-identical. |
+| One save tree (`user://saves_round`, the game's only one) | works | | `tests/test_round_planets.gd`; the pre-globe tree is only read for Steam Cloud sync. |
 | Steam Cloud | works | | Flat saves only; preview files never upload. |
 | Exported build (macOS preset) | works | | `--export-pack "macOS"`, run with `--main-pack`: preview on, New Game on the globe, saved, Continue loaded it, no errors. This is a pack run on Linux, not a Mac binary. |
 | Performance | partial | orbE | Fauna about 1.6 ms. orbE's pass and the Mac numbers are in docs/PERFORMANCE.md. |
@@ -151,7 +151,7 @@ Same upgrades bought, no errors.
 
 | Owner | Gaps |
 |---|---|
-| orbB | Wildlife and Meadow (re-land cf2ca15); Feel FX (stash); an `--orbit` events check and a contracts check; Cradle-world launch onto a globe (with orbE). |
+| orbB | Wildlife and Meadow (re-land cf2ca15); Feel FX (stash); a globe events check and a contracts check; Cradle-world launch onto a globe (with orbE). |
 | orbC | Fleet / robot builder on the globe; water net (Drip refills); haulers delivering to outposts. |
 | orbD | Ground litter; water surface; street power; Stations' feeding logic in the yard (with orbC); other planets' end-to-end check. |
 | orbE | Intro cinematic; binary sun; lens overlay; Bloom finale on the globe; perf on the Mac. |

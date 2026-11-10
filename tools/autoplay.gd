@@ -957,7 +957,7 @@ func _campaign(_p: Patch) -> void:
 	if to >= 0 and world.rocket_status() == "" and p_ok(_p):
 		_event("launch", {"from": int(world.hub_index), "to": to, "kind": world.planet.frontier_kind(to)})
 		AutoplayCampaign.mark("launch_%d_s" % GameState.districts.size(), _now())
-		world._launch(to)
+		OrbitSites.of(world).hop_to_hub(to)
 
 
 ## Not carrying, not pressing a bale: a calm moment to board.

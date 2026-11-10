@@ -198,45 +198,6 @@ func test_notify_short_rows_stack_three() -> void:
 	assert_eq(ns.live_count(), 3)
 
 
-func test_camera_pulls_in_when_a_roof_fills_the_view_edge() -> void:
-	var focus := Vector3(5000, 1.1, 0)
-	var b: Basis = CameraRig.view_basis(0.0, -0.75)
-	var space: PhysicsDirectSpaceState3D = get_viewport().world_3d.direct_space_state
-	assert_eq(CameraRig.clear_length(space, focus, b, 22.0, 3.5, 70.0, 16.0 / 9.0), 22.0, "open sky: full length")
-	# A building roof under the camera's lower-left view edge, close to where the camera would sit.
-	var cam_pos: Vector3 = focus + b * Vector3(0, 0, 22.0)
-	var body := StaticBody3D.new()
-	body.collision_layer = PhysLayers.WORLD
-	var cs := CollisionShape3D.new()
-	var box := BoxShape3D.new()
-	box.size = Vector3(8, 1, 8)
-	cs.shape = box
-	body.add_child(cs)
-	add_child_autofree(body)
-	body.global_position = cam_pos + Vector3(-3.0, -5.0, 0.0)
-	await wait_physics_frames(2)
-	var l: float = CameraRig.clear_length(space, focus, b, 22.0, 3.5, 70.0, 16.0 / 9.0)
-	assert_lt(l, 22.0, "pulled in past the roof edge")
-	assert_gte(l, 3.5)
-
-
-func test_camera_ignores_the_ground() -> void:
-	var focus := Vector3(-5000, 1.1, 0)
-	var body := StaticBody3D.new()
-	body.collision_layer = PhysLayers.WORLD
-	var cs := CollisionShape3D.new()
-	var box := BoxShape3D.new()
-	box.size = Vector3(200, 1, 200)
-	cs.shape = box
-	body.add_child(cs)
-	add_child_autofree(body)
-	body.global_position = Vector3(-5000, -0.5, 0)
-	await wait_physics_frames(2)
-	var space: PhysicsDirectSpaceState3D = get_viewport().world_3d.direct_space_state
-	var b: Basis = CameraRig.view_basis(0.0, -0.3)
-	assert_eq(CameraRig.clear_length(space, focus, b, 6.2, 3.5, 70.0, 16.0 / 9.0), 6.2, "the ground under Lumi doesn't pull the camera in")
-
-
 func test_waypoint_edge_point_stays_on_the_border() -> void:
 	var r := Rect2(14, 14, 1252, 692)
 	assert_eq(Waypoint.edge_point(r, Vector2(1, 0)), Vector2(1266, 360))
@@ -362,23 +323,3 @@ func test_no_bale_key_before_the_baler() -> void:  # [onboard2] QA P2
 	assert_false("cube" in names)
 	names = KeyHints.items_for(true, true).map(func(it: Array) -> String: return str(it[0]))
 	assert_true("cube" in names)
-
-
-func test_hand_off_turns_away_from_a_wall_behind_lumi() -> void:  # [onboard2] QA P2
-	var focus := Vector3(0, 1.1, 5000)
-	var body := StaticBody3D.new()
-	body.collision_layer = PhysLayers.WORLD
-	var cs := CollisionShape3D.new()
-	var box := BoxShape3D.new()
-	box.size = Vector3(4, 4, 1)
-	cs.shape = box
-	body.add_child(cs)
-	add_child_autofree(body)
-	body.global_position = focus + Vector3(0, 0, 2.0)  # right behind, on the arm at yaw 0
-	await wait_physics_frames(2)
-	var space: PhysicsDirectSpaceState3D = get_viewport().world_3d.direct_space_state
-	var y: float = CameraRig.clear_yaw(space, focus, 0.0, CameraRig.FOLLOW_PITCH, CameraRig.FOLLOW_DISTANCE, 70.0)
-	assert_ne(y, 0.0, "picked a clear side")
-	assert_lt(absf(y), PI, "the nearest clear yaw")
-	var open: float = CameraRig.clear_yaw(space, focus + Vector3(500, 0, 0), 0.3, CameraRig.FOLLOW_PITCH, CameraRig.FOLLOW_DISTANCE, 70.0)
-	assert_almost_eq(open, 0.3, 0.001, "open ground: keeps Lumi's own facing")

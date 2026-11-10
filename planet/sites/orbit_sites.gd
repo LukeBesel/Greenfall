@@ -76,7 +76,7 @@ static func of(world: Node) -> OrbitSites:
 
 
 ## [v2map] Owner note 40: the survey map (M) is only a map. Travel is at the rocket: it stands on
-## the pad of the hub Lumi last landed at (from base level 5, as on the flat game, or once Lumi
+## the pad of the hub Lumi last landed at (from base level 5, or once Lumi
 ## has flown), and E there opens the destination list (ui/rocket_picker.gd): the other hubs on
 ## this globe (a rocket hop), other planets once the system is open, and the Homeward launch.
 ## Dev: --orbit-survey-launch=N still flies to the Nth hub in that list; --rocket parks it at once.
@@ -220,6 +220,18 @@ func _sync_rocket() -> void:
 	ship.visible = true
 	if ship.global_position.distance_to(xf.origin) > 0.5:
 		ship.global_transform = xf
+
+
+## The parked rocket rebuilt with its current tier and paint (after an upgrade or a new look).
+func refresh_rocket() -> void:
+	var ship: ShipModel = hop.parked()
+	if ship == null or hop.flying:
+		return
+	hop.remove_child(ship)
+	ship.queue_free()
+	_sync_rocket()
+	if rocket_spot and rocket_spot.visible:
+		Vfx.burst("big_sparkle", rocket_spot.global_position + rocket_spot.global_basis.y * 5.0, Color(0.5, 0.9, 1.0))
 
 
 var _rocket_t: float = 0.0
@@ -386,6 +398,21 @@ func hop_to(i: int) -> bool:
 	var ok: bool = await hop.hop_with(sm, so.w.get("patch"), so.cam, so.globe.terrain, from_i, to_i)
 	print("[hop] hub %d -> %d: %s" % [from_i, to_i, "ok" if ok else "refused"])
 	return ok
+
+
+## The site built on planet hub `hub_i` (PlanetData.hubs index), or -1.
+func site_of_hub(hub_i: int) -> int:
+	var site: Variant = _site_hub.find_key(hub_i)
+	return int(site) if site != null else -1
+
+
+## Rocket hop to the site on planet hub `hub_i`, for callers that think in hubs (the play bot).
+## False when the rocket is not there to fly, is in flight, or already stands on that hub.
+func hop_to_hub(hub_i: int) -> bool:
+	var site: int = site_of_hub(hub_i)
+	if site < 0 or site == rocket_site() or hop.flying or not rocket_unlocked():
+		return false
+	return await hop_to(site)
 
 
 func save_state() -> Dictionary:
