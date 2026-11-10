@@ -480,3 +480,52 @@ func test_b8_carried_bale_rises_onto_the_stack_while_lumi_carries_it() -> void:
 	bale.queue_free()
 	assert_gte(float(gap["gap_solid"]), 0.1, "the carried bale's bottom is %.2f m above Lumi's feet, the top of his body is at %.2f m" % [
 		float(gap["bale_bottom"]), float(gap["model_top_solid"])])
+
+
+# --- B27: where the watering can refills -----------------------------------------------------------
+
+## Lumi on a small globe whose only base ground is one cell, standing `away_m` from its centre.
+func _lumi_near_base(away_m: float) -> Patch:
+	var fx := GlobeFixture.new()
+	var base: int = fx.region()[0]
+	fx.field.hex_hub[base] = 1
+	var w := ScoopWorld.new()
+	w.field = fx.field
+	add_child_autofree(w)
+	var p := Patch.new()
+	p.world = w
+	p.process_mode = Node.PROCESS_MODE_DISABLED
+	w.add_child(p)
+	var centre: Vector3 = fx.field.hex_center(base)
+	var fr: Basis = SphereGrid.frame(centre.normalized())
+	var at: Vector3 = fx.terrain.ground((centre + fr.x * away_m).normalized())
+	p.global_transform = Transform3D(SphereGrid.frame(at.normalized()), at)
+	return p
+
+
+## B27: the can refilled only inside the one 10 m cell marked as base ground, with nothing marking
+## it; the bench and the greenhouse, 16 m away, were outside. It refills anywhere in the base yard.
+func test_b27_watering_can_refills_anywhere_in_the_base_yard() -> void:
+	var p: Patch = _lumi_near_base(16.0)
+	assert_ne(p.world.field.hex_at(p.global_position), GlobeFixture.new().region()[0], "Lumi stands outside the base cell itself")
+	p.water = 0.0
+	p._handle_tools(1.0)
+	assert_gt(p.water, 0.0, "16 m from the middle of the base (the bench, the greenhouse) the can fills")
+	assert_eq(p.refill_prompt(), "refill", "and the prompt says so while it fills")
+	p.water = p.water_cap()
+	assert_eq(p.refill_prompt(), "", "a full can says nothing")
+
+
+## B27: out in the junk the can stays empty, and with the can in hand the prompt names the place.
+func test_b27_empty_can_away_from_base_points_home() -> void:
+	var p: Patch = _lumi_near_base(60.0)
+	p.water = 0.0
+	p._handle_tools(1.0)
+	assert_eq(p.water, 0.0, "no refill 60 m out")
+	assert_eq(p.refill_prompt(), "", "scooping: no word about the can")
+	p.tool = Patch.Tool.WATER
+	assert_eq(p.refill_prompt(), "refill_go", "watering with an empty can: go to the base yard")
+	var hud := HUD.new()
+	autofree(hud)
+	for kind: String in ["refill", "refill_go"]:
+		assert_ne(hud._prompt_text(kind), "", "the HUD has words for the %s prompt" % kind)

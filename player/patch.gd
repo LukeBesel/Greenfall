@@ -273,7 +273,35 @@ func water_cap() -> float:
 	return float(Economy.planet_table("plants").get("water_tank", 30)) if _water_cap < 0.0 else _water_cap
 
 var _water_cap: float = -1.0
+var _in_yard: bool = false  # the can is filling this frame
 var _no_slot_ms: int = -100000  # [v4grow]
+
+
+## Whether Lumi stands in a base yard: on base ground, or within the can's refill radius (the
+## planet's "plants" table) of the middle of a base cell. On the globe base ground is one 10 m cell
+## in the middle of the yard; the bench, bin, scale and greenhouse stand round it.
+func in_base_yard() -> bool:
+	var f: HexField = world.field if world else null
+	if f == null:
+		return false
+	var here: int = f.hex_at(global_position)
+	if here < 0:
+		return false
+	if f.hex_hub[here] == 1:
+		return true
+	var r: float = float(Economy.planet_table("plants").get("refill_radius_m", 0.0))
+	for c: int in f.hexes_near(global_position, int(ceil(r / f.hex_size))):
+		if f.hex_hub[c] == 1 and f.hex_center(c).distance_to(global_position) <= r:
+			return true
+	return false
+
+
+## The prompt about the watering can: "refill" while it fills in the base yard, "refill_go" when
+## Lumi holds it empty anywhere else, "" otherwise.
+func refill_prompt() -> String:
+	if _in_yard and water < water_cap():
+		return "refill"
+	return "refill_go" if tool == Tool.WATER and water <= 0.0 else ""
 
 
 func set_tool(t: int) -> void:
@@ -297,10 +325,10 @@ func _handle_tools(delta: float) -> void:
 			set_tool(Tool.WATER)
 	if _water_cap < 0.0:
 		_water_cap = float(Economy.planet_table("plants").get("water_tank", 30))
-	# Refill at the hub's water barrel (anywhere in the yard).
-	if world and world.field and world.field.hex_at(global_position) >= 0 and world.field.hex_hub[world.field.hex_at(global_position)] == 1:
-		if water < _water_cap:
-			water = minf(_water_cap, water + delta * 8.0)
+	# The can fills anywhere in the base yard (in_base_yard), and the prompt says so (refill_prompt).
+	_in_yard = water < _water_cap and in_base_yard()
+	if _in_yard:
+		water = minf(_water_cap, water + delta * 8.0)
 	if world == null or world.get("garden") == null or _cubing > 0.0:
 		return
 	var g: Garden = world.garden
@@ -327,7 +355,7 @@ func _handle_tools(delta: float) -> void:
 		if water <= 0.0:
 			Audio.play("buzz", 1.0, -12.0)
 			_water_t = 1.5
-			EventBus.toast.emit(tr("Watering can is empty. Refill at the hub."), "info")
+			EventBus.toast.emit(tr("Watering can is empty. It fills in the base yard, by the bin."), "info")
 			return
 		# The old can leaks: a bit is lost with every pour (an upgrade fixes it).
 		water = maxf(0.0, water - (1.0 if GameState.level_of("fix_can") > 0 else 1.3))
@@ -738,6 +766,8 @@ func _update_hints(delta: float) -> void:
 		prompt = "dig"
 	if world and world.has_method("interact_prompt") and prompt == "":
 		prompt = world.interact_prompt(self)
+	if prompt == "":
+		prompt = refill_prompt()
 	model.look_toward(look)
 	# Idle: after a while Patch shakes off rust flakes; much later he dozes off.
 	model.sleeping = _idle_time > 45.0
