@@ -4,12 +4,12 @@ extends Node
 ## Prints the slice's named members (set or null) and every script class in the slice's tree,
 ## then quits. Compare the flat and --orbit outputs.
 
-const MEMBERS: Array[String] = ["field", "layout", "city", "litter", "tutorial", "wren", "fleet", "planet", "globe",
-	"sky_director", "hub", "rocket", "shards", "garden", "hex_levels", "goals", "first_seed", "wildlife", "water",
+const MEMBERS: Array[String] = ["field", "litter", "tutorial", "wren", "fleet", "planet", "globe",
+	"sky_director", "hub", "rocket", "shards", "garden", "hex_levels", "goals", "first_seed", "water",
 	"doc_view", "interactables", "camp", "eggs", "ledger", "outposts", "events", "lumi_level", "contracts", "photo",
-	"fauna", "orbit", "view", "depot", "patch", "cam", "hud", "upgrades",
-	"command", "music", "intro", "objectives", "core_charge", "composter", "pause_menu", "research", "achievements",
-	"codex", "dressing", "street_power"]
+	"fauna", "orbit", "view", "depot", "patch", "hud", "upgrades",
+	"music", "intro", "objectives", "core_charge", "composter", "pause_menu", "research", "achievements",
+	"codex"]
 
 
 func _ready() -> void:

@@ -881,7 +881,6 @@ static func dress_ground(world: Node3D, shack: Node3D, half: float = 8.5, feet: 
 	var root := Node3D.new()
 	root.name = "YardGround"
 	world.add_child(root)
-	_hide_slab(world)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 7151
 	var k := Kit.new()
@@ -925,14 +924,6 @@ static func ground_for_level(world: Node, level: int, half: float = 8.5) -> void
 			if (plates.mesh as ArrayMesh).surface_get_name(i) == "dark_steel":
 				plates.set_surface_override_material(i, KitMat.steel(st, false))
 	root.add_child(patch)
-	_hide_slab(world)
-
-
-static func _hide_slab(world: Node) -> void:
-	var dressing: Node = world.get("dressing") as Node if world else null
-	if dressing:
-		for n: Node in dressing.find_children("YardSlab", "", true, false):
-			(n as Node3D).visible = false
 
 
 ## Pebbles and grit: drifted along the kerb and round the feet of things, a light sprinkle elsewhere.

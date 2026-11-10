@@ -248,15 +248,6 @@ func _render() -> Image:
 	var cam := Camera3D.new()
 	cam.fov = 58.0
 	cam.far = 900.0
-	var env: Environment = world.get("_env") as Environment
-	if env:
-		var e2: Environment = env.duplicate()
-		e2.sdfgi_enabled = false
-		e2.ssr_enabled = false
-		e2.ssil_enabled = false
-		e2.volumetric_fog_enabled = false
-		e2.ssao_enabled = false
-		cam.environment = e2
 	vp.add_child(cam)
 	add_child(vp)
 	cam.look_at_from_position(CAM_POS, CAM_AT, Vector3.UP)

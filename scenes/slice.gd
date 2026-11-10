@@ -7,8 +7,6 @@ const BOARD_POS := Vector3(-3.6, 0, 2.2)  # the yard frame's workbench (site-loc
 const FLOWER_POS := Vector3(2.9, 0, 1.4)  # the yard frame's first flower (site-local metres)
 
 var field: HexField
-var layout: CityLayout
-var city: CityView
 var litter: LitterView
 var tutorial: Tutorial
 var wren: Wren
@@ -26,7 +24,6 @@ var garden: Garden
 var hex_levels: HexLevels
 var goals: Goals
 var first_seed: FirstSeed
-var wildlife: Wildlife
 var water: WaterView
 var doc_view: DocumentView
 var interactables: Interactables
@@ -43,10 +40,8 @@ var orbit: SliceOrbit  # [orbB] the globe build (scenes/slice_orbit.gd)
 var view: FieldView
 var depot: Depot
 var patch: Patch
-var cam: CameraRig
 var hud: HUD
 var upgrades: UpgradesScreen
-var command: CommandView
 var music: MusicHooks
 var intro: Intro
 var objectives: Objectives  # [onboard] first-minutes story objectives (story/objectives.gd)
@@ -58,10 +53,6 @@ var achievements: Achievements
 var codex: CodexScreen
 var bot: InputSource
 var _cubes_root: Node3D
-var _sun: DirectionalLight3D
-var _env: Environment
-var dressing: StreetDressing
-var street_power: StreetPower  # [world3] the district's dead street lights (planet/street_power.gd)
 ## Shack and yard lamp pieces that sit derelict while a non-starter base is at level 1.
 var _ruin_bits: Dictionary = {}
 ## Rocket launch → flight → travel: no modal hotkeys, and closing a modal doesn't hand control back.

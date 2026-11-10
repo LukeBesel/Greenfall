@@ -124,8 +124,6 @@ func open_view(pick: int = -1) -> void:
 	_open_target = 1.0
 	if world and world.get("patch") != null and world.patch.input is PlayerInput:
 		(world.patch.input as PlayerInput).enabled = false
-	if world and world.get("cam") != null:
-		world.cam.input_enabled = false
 	Audio.play("whoosh", 0.7, -10.0)
 	used.emit()
 	GameState.inc_stat("telescope_uses")

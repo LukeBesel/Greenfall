@@ -284,10 +284,6 @@ func _apply_builds() -> void:
 		gen.visible = YardBuilds.built("generator")
 		_set_solid(gen, gen.visible)  # [pace2]
 	YardArt.ground_for_level(world, hub_level())  # [yard] kit ground patch: repaired, restored from L3
-	var dressing: Node = world.get("dressing")
-	if dressing and dressing.has_method("set_level"):
-		var hub: Hub = world.get("hub") as Hub
-		dressing.call("set_level", hub.level if hub else 1, false)  # its "Lamps" layer reads YardBuilds
 	var comp: Node3D = world.get("composter") as Node3D
 	if comp:
 		comp.visible = YardBuilds.built("composter")
@@ -424,10 +420,6 @@ func standing() -> Array[String]:
 		var n: Node3D = checks[k] as Node3D
 		if n and n.is_inside_tree() and n.is_visible_in_tree():
 			out.append(k)
-	var dressing: Node = world.get("dressing")
-	var lay: Node3D = dressing.get_node_or_null("Lamps") as Node3D if dressing else null
-	if lay and lay.is_visible_in_tree() and not ("lamps" in out):
-		out.append("lamps")
 	var scope: Telescope = Telescope.of(world)
 	if scope and scope.built():
 		out.append("telescope")

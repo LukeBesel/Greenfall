@@ -72,8 +72,7 @@ func _apply_env() -> void:
 	if sc == null:
 		push_warning("[worlds2] planet env script failed to load: %s" % env_script)
 		return
-	var lay: Variant = world.get("layout")
-	var kind: String = "wild" if lay is CityLayout and (lay as CityLayout).wild else "city"
+	var kind: String = "city"
 	# [main] Planet envs (planet/planets/*/env.gd) use a STATIC apply(world, field, kind_def: Dictionary)
 	# that builds its own node. Call that once (HomewardDirector may already have) instead of
 	# instancing the script: a bare instance has no field and errors every frame.

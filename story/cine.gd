@@ -212,5 +212,3 @@ func _set_player_enabled(on: bool) -> void:
 	var patch: Node = world.patch
 	if patch.get("input") is PlayerInput:
 		(patch.input as PlayerInput).enabled = on
-	if world.get("cam") != null:
-		world.cam.input_enabled = on
