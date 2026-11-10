@@ -204,6 +204,8 @@ func build(p_world: Node3D) -> void:
 	BuildBudget.lap("orbit codex")
 	await BuildBudget.check("orbit codex")  # [orbE]
 	await BuildBudget.join(ck_task)  # [v5load]
+	if BuildBudget.active():
+		await FaunaModels.prewarm()  # [v5load] the animals' procedural meshes, before the hub frame makes the wildlife
 	_build_story()
 	BuildBudget.lap("orbit story")
 	await _build_yard_systems()
@@ -232,6 +234,7 @@ func build(p_world: Node3D) -> void:
 	globe.stats["settle_ms"] = Time.get_ticks_msec() - t2
 	var t3: int = Time.get_ticks_msec()
 	await globe.refresh_junk_async()
+	OrbitPreload.done()  # [v5load] the surface copies the worker mesh tasks read
 	globe.stats["junk_fill_ms"] = Time.get_ticks_msec() - t3
 	BuildBudget.lap("orbit junk fill")
 	await BuildBudget.check("orbit junk")  # [orbE]

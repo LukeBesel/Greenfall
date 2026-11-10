@@ -82,6 +82,7 @@ func _process(_delta: float) -> void:
 				_apply_cell(c, _job_out[c])
 				refresh_hex(c)  # it may have been cleaned while its litter was laid
 		build_max_ms = maxf(build_max_ms, (Time.get_ticks_usec() - t0) / 1000.0)
+		Hitch.mark("litter apply", t0 if Hitch.on else 0)
 		_job_out = {}
 	if _pending.is_empty():
 		return

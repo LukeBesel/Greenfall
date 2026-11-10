@@ -22,6 +22,9 @@ var _scoop_t: float = 0.0
 
 
 func _ready() -> void:
+	if DevHooks.has("hitch"):  # [v5load] long frames in play, with what ran in them (systems/hitch.gd)
+		Hitch.start(DevHooks.get_f("hitch", 30.0) if DevHooks.get_f("hitch", 30.0) > 1.0 else 30.0)
+		_hitch_from = _lumi().global_position
 	if DevHooks.has("orbit-walk") and not DevHooks.has("orbit-scoop"):
 		_lap_on = true
 		_lap_start = _lumi().global_position
@@ -58,7 +61,32 @@ func _physics_process(delta: float) -> void:
 	_scoop_log(delta)
 
 
+var _hitch_from := Vector3.ZERO
+var _ring_t: float = 5.0
+
+
+func _exit_tree() -> void:
+	if Hitch.on:
+		print("[hitch] run: " + Hitch.summary())
+
+
 func _process(delta: float) -> void:
+	if Hitch.on:
+		Hitch.frame("at %.0f m from start" % so.globe.grid.great_circle_m(_lumi().global_position, _hitch_from))
+		_ring_t -= delta
+		if _ring_t <= 0.0:  # the near ring's junk: every live piece of a near cell should be in a buffer
+			_ring_t = 10.0
+			var g: OrbitPlanet = so.globe
+			var alive: int = 0
+			var unmade: int = 0
+			var near: PackedInt32Array = g.streamer.near_cells()
+			for c: int in near:
+				if g.field.materialized[c] == 0:
+					unmade += 1
+				for pid: int in g.field.pieces_in(c):
+					alive += 1 if g.field.piece_alive[pid] == 1 else 0
+			var shown: Vector2i = g.junk_view.counts()
+			print("[hitch] ring: %d near cells (%d not made yet), %d live pieces, %d drawn (near %d far %d)" % [near.size(), unmade, alive, shown.x + shown.y, shown.x, shown.y])
 	_fauna_perf_tick(delta)
 	_perf[0] += Performance.get_monitor(Performance.TIME_PROCESS) * 1000.0
 	_perf[1] += Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS) * 1000.0

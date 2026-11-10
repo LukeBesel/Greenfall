@@ -486,7 +486,10 @@ What changed:
 - **`data/orbit_preload.json`** (`OrbitPreload.warm`): every model, model part, texture and "lite"
   (simplified) mesh the build used to load or make on the main thread. Files load on the loader
   threads from the start of the build; one worker task meshes and simplifies them (mesh
-  simplification is 50-150 ms a model and can't be split). Refresh after changing what the build
+  simplification is 50-150 ms a model and can't be split). The main thread first copies each
+  model's surfaces (`AssetLib.snapshot`), because a worker thread reading a mesh back from the
+  rendering server waits for the main thread's next flush (about one read a frame): without the
+  copies the same task took 14 s longer in a rendered run than the old main-thread path. Refresh after changing what the build
   uses: `godot --headless --path . -- --fresh --orbit --record-preload --quit-after=30`. A stale
   list is safe: a missing model just loads where it is used.
 - **The near ring's junk** fills in slices (`OrbitPlanet.refresh_junk_async`): cells materialize
@@ -508,3 +511,53 @@ ground patch, one detailed building, the outposts plan. Anvil's own yard builder
 Tools: `--load-report` prints `[budget] N ms (cpu M)` per long slice, `[lap]` lines for the
 steps between yields, `[model]` for any blocking model or texture load, the models still loaded
 on the main thread, and the longest frame by CPU time.
+
+One rendered check (software GL, 960x540 Low, same box): the build took 20.6 s before and 18.0 s
+after, over 440 frames instead of 203, longest build slice 4.1 s before and 0.2 s after. What is
+left there is the frame in which the 3D scene first draws (the warm-up stage: 6.9 s in software
+GL, all shader compiles and uploads at once). It needs a look on real hardware; spreading it
+means showing the scene's materials in batches before the world is drawn.
+
+### Perf pass 7 (Nov 10, v5load, headless): hitches in play
+
+`--hitch[=ms]` (systems/hitch.gd, default 30) prints every frame whose main-thread CPU time is over
+the limit, with what ran in it (`Hitch.mark` in the streamer, the junk ring, the hinterland, the
+site manager, litter, water, fauna, the autosave), a summary every 20 s, and every 10 s a check
+that each live piece of the near ring is in a draw buffer. Walks: `--orbit-walk=boost` from
+`--orbit-spawn=x,z` (town 0,0; outskirts 0,-260; hinterland and lake 400,300 and -300,500); a
+rocket hop: `--orbit-hop=1`.
+
+| 75 s boost walk, frames over 30 ms (CPU) | Before | After |
+|---|---|---|
+| Start town (0,0) | 6, worst 100-200 ms | 1, worst 33 ms |
+| Outskirts (0,-260) | 5-6, worst 68-83 ms | 0-1, worst 27-30 ms |
+| Hinterland and lake (400,300) | 3-4, worst 43 ms | 1, worst 33 ms |
+| Rocket hop, after the veil lifts | 1.33 s (hub systems), then 40-150 ms spawns | 31 ms |
+
+What was found and changed:
+- **A fifth of the near ring's junk was never drawn.** Cells whose pieces are laid a little later
+  (the deferred fill) were marked shown while still empty, so their pieces never reached a draw
+  buffer: after a short walk 376 of 1,698 live pieces were scoopable and solid but invisible.
+  `SphereJunkView._queue_ring` now leaves a cell out until its pieces exist.
+- **Laying a cell's pieces** was 12-40 ms in one frame every few metres. `SphereField.
+  materialize_step` lays a cell (land or lake) across frames under the fill's 3 ms budget;
+  `materialize()` is the same work in one call.
+- **The ring's heaps and wrecks** are made when their cell's turn comes in the junk pump (2.5 ms a
+  frame), not all at once when the ring moves (30-50 ms).
+- **Junk and landmark meshes** for every model are made at load. A model first met while walking
+  cost a lite mesh in that frame and a far mesh in the next (30-150 ms each).
+- **Wildlife:** the 2.5 s replan runs a part a frame (it was 35-45 ms, 100-200 ms on the first
+  frame); the animals' procedural meshes are built at load; the prop scan that birds and spawns
+  use walked every MultiMesh instance in the world each time Lumi moved 30 m (30-150 ms) and
+  now runs 1.5 ms a frame while the last scan keeps serving.
+- **Hub systems** (wildlife, outposts, eggs, the Ledger, decor) were all built in the frame Lumi
+  came within 220 m of another hub: 1.3 s, in the last seconds of a rocket hop's landing. A hop
+  now switches them behind its veil; a walk-in builds one system a frame.
+- **Autosave:** the file is written on a worker thread (`SaveManager.save_game(true, true)`), so
+  the frame only gathers the state (24-26 ms on a new game, was 55-75 ms). Every other save is
+  synchronous as before and waits for a write in flight.
+
+Left: one animal spawn can still take about 30 ms (finding a free spot); a hub town building as
+Lumi walks to it (not hops) keeps frames at 25-45 ms for about 3 s with a few 90-140 ms steps
+(the play budget is 6 ms plus the longest step in the town builders); a walk-in hub switch is
+five frames of 100-400 ms instead of one of 1.3 s.
