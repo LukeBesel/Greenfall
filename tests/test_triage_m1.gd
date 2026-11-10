@@ -281,12 +281,11 @@ func test_b3_a_saved_stuck_cell_lays_its_pieces_outside_the_building_on_load() -
 # --- B4: a later step's purchase closes an earlier step ------------------------------------------
 
 ## B4: the Baler (step 4) has no prerequisite, and once it is fitted the bin takes no loose loads
-## (Pace.dump_allowed, data/patch.json dump.after_baler = false). junk_dumps then never grows, so a
-## player who buys the Baler before the third bin trip can never finish step 1, "Fill the trash bin
-## 3 times": the whole chain stops on its first card.
+## (Pace.dump_allowed, the player table's dump.after_baler = false). junk_dumps then never grows, so
+## a player who buys the Baler before the third bin trip could never finish step 1, "Fill the trash
+## bin 3 times": the whole chain stopped on its first card. A bale sold at the scale is a trip home
+## with a full chest too, so the step counts it (objectives "also").
 func test_b4_baler_bought_before_the_third_bin_trip_does_not_strand_the_bin_step() -> void:
-	pending("B4 the Baler bought before the third bin trip strands step 1 (core/pace.gd dump_allowed, data/objectives.json dump3)")
-	return
 	var w := StubWorld.new()
 	var o := _objectives(w)
 	var dump3: Dictionary = o.chain[0]
@@ -295,9 +294,28 @@ func test_b4_baler_bought_before_the_third_bin_trip_does_not_strand_the_bin_step
 	GameState.add_currency("cubes", Economy.upgrade_cost(Pace.UP_BALER))
 	assert_eq(Economy.buy_upgrade(Pace.UP_BALER), 1, "the Baler can be bought while step 1 is on the card")
 	_tick(o)
-	var can_still_finish: bool = Pace.dump_allowed() or o.step > 0
-	assert_true(can_still_finish, "with the Baler fitted the bin refuses loose loads and step 1 stays at %d / %d for good" % [
-		int(o.value_of(dump3)), int(o.target_of(dump3))])
+	assert_eq(o.step, 0, "one trip is still owed")
+	GameState.inc_stat("cubes_cashed")  # Depot._cash: a bale sold at the scale
+	_tick(o)
+	assert_eq(o.step, 1, "with the Baler fitted a sold bale finishes the step: %d / %d" % [int(o.value_of(dump3)), int(o.target_of(dump3))])
+
+
+## B4: with the Baler fitted the step's beam never points at the bin, which takes no loose loads
+## then: it points at the scale while Lumi carries a bale, else at junk to scoop.
+func test_b4_bin_step_guides_to_the_scale_once_the_baler_is_fitted() -> void:
+	var w := StubWorld.new()
+	var o := _objectives(w)
+	w.patch = Patch.new()
+	w.patch.process_mode = Node.PROCESS_MODE_DISABLED
+	w.add_child(w.patch)
+	w.patch.compartment.add("metal", w.patch.capacity() * 0.75)
+	assert_eq(str(o.step_target(o.chain[0])["to"]), "bin", "no Baler: a loaded chest goes to the bin")
+	GameState.upgrades[Pace.UP_BALER] = 1
+	assert_eq(str(o.step_target(o.chain[0])["to"]), "hex", "Baler fitted, nothing to sell yet: keep scooping")
+	var bale := JunkCube.create(BigNum.from_float(10.0), {"fill": 1.0, "colors": [Color(0.5, 0.45, 0.4)]})
+	add_child(bale)
+	w.patch.pick_up(bale)
+	assert_eq(str(o.step_target(o.chain[0])["to"]), "depot", "a carried bale goes to the scale")
 
 
 ## B4 (new, B26): step 19 "Finish a research project" teaches the Research tab. The Bot Bay (step

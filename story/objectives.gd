@@ -216,9 +216,11 @@ func value_of(def: Dictionary) -> float:
 		return goals().value_of(int(def["_goal"]))
 	var key: String = str(def.get("key", ""))
 	match str(def.get("type", "stat")):
-		"stat":
-			var v: Variant = GameState.stats.get(key, 0.0)
-			return float(v) if (v is float or v is int) else 0.0
+		"stat":  # "also": more lifetime stats that count toward the step (no purchase closes it off)
+			var total: float = _stat(key)
+			for k: Variant in def.get("also", []):
+				total += _stat(str(k))
+			return total
 		"robot":
 			var fl: Node = world.get("fleet") if world else null
 			if fl == null:
@@ -239,6 +241,11 @@ func value_of(def: Dictionary) -> float:
 		"bench":  # [v1guide] the workbench's tier (ui/bench_tiers.gd)
 			return float(BenchTiers.tier())
 	return 0.0
+
+
+static func _stat(key: String) -> float:
+	var v: Variant = GameState.stats.get(key, 0.0)
+	return float(v) if (v is float or v is int) else 0.0
 
 
 ## Card text for an objective: [title, why]. The why is the "hint" until its wait_flag is set.
@@ -474,7 +481,10 @@ func step_target(def: Dictionary) -> Dictionary:
 	if not def.has("_goal"):  # the story objectives
 		match str(def.get("id", "")):
 			"dump3":  # a full-ish chest: to the bin; else out to the junk
-				out["to"] = "bin" if p and p.compartment.fill >= p.capacity() * 0.5 else "hex"
+				if Pace.dump_allowed():
+					out["to"] = "bin" if p and p.compartment.fill >= p.capacity() * 0.5 else "hex"
+				else:  # the Baler is fitted: the bin takes no loose loads, a sold bale counts
+					out["to"] = "depot" if p and not p.carried.is_empty() else "hex"
 			"compartment", "scoop_size", "baler":  # to the bench once affordable; else earn
 				var aff: bool = GameState.can_afford("cubes", Economy.upgrade_cost(key))
 				out = {"to": "bench" if aff else "hex", "row": ["patch", key]}
