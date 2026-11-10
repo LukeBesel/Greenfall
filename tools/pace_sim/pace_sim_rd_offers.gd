@@ -76,9 +76,11 @@ static func _robots(m: PaceSimRdModel, out: Array[Dictionary]) -> void:
 		# Lumi builds by hand until an Assembler stands; after that only the first of a type,
 		# and further Assemblers.
 		var building: bool = m.is_building(id)
-		if (room or building) and have < int(row.get("max", have + 1)) and (by_hand or have == 0 or building):
+		# A type may hold back its second and later copies until a later district is open.
+		var more_ok: bool = have == 0 or int(row.get("more_from_district", 0)) < m.unlocked
+		if (room or building) and more_ok and have < int(row.get("max", have + 1)) and (by_hand or have == 0 or building):
 			out.append(_offer("robot", id, 0.0, m.robot_parts(id), first_factory if building and have == 0 else crew_row))
-		if have > 0 and not is_repaired and m.owned.has(str(cfg["repair_requires"])):
+		if have > 0 and not is_repaired and not bool(row.get("no_repair", false)) and m.owned.has(str(cfg["repair_requires"])):
 			out.append(_offer("repair", id, 0.0, float(row["repair_parts"]) + float(row["parts"]) * float(cfg["repair_per_robot"]) * float(have), crew_row))
 
 

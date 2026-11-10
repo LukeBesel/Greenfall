@@ -26,8 +26,10 @@ static func _ending(m: PaceSimRdModel, end_s: float) -> Dictionary:
 	var target: Dictionary = m.data.tables["balance"]["target_bot_min"]
 	var minutes: float = end_s / 60.0
 	var passed: bool = m.ended_at >= 0.0 and minutes >= float(target["min"]) and minutes <= float(target["max"])
-	return _check("ending_bot_minutes", passed, minutes, "%.1f min" % minutes if m.ended_at >= 0.0 else "not reached",
-		"%.0f-%.0f min" % [target["min"], target["max"]], "aim %.0f bot minutes; restoration %.0f%%" % [target["aim"], m.restoration() * 100.0])
+	var aim: float = float(target["aim"])
+	var off: float = (aim - minutes) / (aim - float(target["min"])) if minutes < aim else (minutes - aim) / (float(target["max"]) - aim)
+	return PaceSimRdReport.used(_check("ending_bot_minutes", passed, minutes, "%.1f min" % minutes if m.ended_at >= 0.0 else "not reached",
+		"%.0f-%.0f min" % [target["min"], target["max"]], "aim %.0f bot minutes; restoration %.0f%%" % [target["aim"], m.restoration() * 100.0]), off)
 
 
 ## Fails when one module of a slot is the best fit in every district that was judged.
@@ -51,8 +53,8 @@ static func _rigs(m: PaceSimRdModel) -> Dictionary:
 
 static func _bale(m: PaceSimRdModel) -> Dictionary:
 	var worst: float = m.record.loose_over_bale
-	return _check("bale_beats_tipping", worst <= 1.0, worst, "%.2f" % worst, "at most 1.00",
-		"highest tipping income over pressing income, at bot minute %.0f" % (m.record.loose_over_bale_at / 60.0))
+	return PaceSimRdReport.used(_check("bale_beats_tipping", worst <= 1.0, worst, "%.2f" % worst, "at most 1.00",
+		"highest tipping income over pressing income, at bot minute %.0f" % (m.record.loose_over_bale_at / 60.0)), worst)
 
 
 ## Any pressed bale, the worst a player makes included, pays more than tipping the same load loose.
@@ -79,8 +81,9 @@ static func _tracks(m: PaceSimRdModel) -> Dictionary:
 			unbought += 1
 		shares.append("%s %.0f%% (at its real price %.0f%%, %d bought)" % [id, share * 100.0,
 			float(m.record.track_tops.get(id, 0)) / float(maxi(total, 1)) * 100.0, m.record.track_buys.get(id, 0)])
-	return _check("no_dominant_track", total > 0 and unbought == 0 and worst <= PaceSimRdReport.DOMINANT_TRACK_SHARE, worst, "%.0f%%" % (worst * 100.0),
-		"at most %.0f%%" % (PaceSimRdReport.DOMINANT_TRACK_SHARE * 100.0), "share of track purchases each track led at equal prices: " + ", ".join(shares))
+	return PaceSimRdReport.used(_check("no_dominant_track", total > 0 and unbought == 0 and worst <= PaceSimRdReport.DOMINANT_TRACK_SHARE, worst, "%.0f%%" % (worst * 100.0),
+		"at most %.0f%%" % (PaceSimRdReport.DOMINANT_TRACK_SHARE * 100.0), "share of track purchases each track led at equal prices: " + ", ".join(shares)),
+		worst / PaceSimRdReport.DOMINANT_TRACK_SHARE)
 
 
 ## One check per authored district-sized goal (goals.json district_goals): done by its minute.
@@ -90,9 +93,9 @@ static func _authored_goals(m: PaceSimRdModel, k: float) -> Array[Dictionary]:
 		var goal: Dictionary = row
 		var at: float = m.record.events.get(str(goal["event"]), -1.0)
 		var minute: float = at / 60.0 * k
-		out.append(_check("goal_" + str(goal["id"]), at >= 0.0 and minute <= float(goal["max_player_min"]), minute,
+		out.append(PaceSimRdReport.used(_check("goal_" + str(goal["id"]), at >= 0.0 and minute <= float(goal["max_player_min"]), minute,
 			"%.1f min" % minute if at >= 0.0 else "never", "by minute %.0f" % float(goal["max_player_min"]),
-			"player minute the district-sized goal '%s' is done" % str(goal["label"])))
+			"player minute the district-sized goal '%s' is done" % str(goal["label"])), minute / float(goal["max_player_min"])))
 	return out
 
 
@@ -108,17 +111,18 @@ static func _rocket(m: PaceSimRdModel, end_s: float, k: float) -> Dictionary:
 		parts_cost += float(m.rocket_parts()[i]["parts"])
 		var at: float = m.record.events.get("rocket_fit:%d" % (i + 1), -1.0)
 		steps.append("-" if at < 0.0 else "%.0f" % (at / 60.0 * k))
-	return _check("rocket_is_a_ladder", done >= 0.0 and wait <= ROCKET_WAIT_MAX_S, wait, "%.0f s" % wait if done >= 0.0 else "not built",
+	return PaceSimRdReport.used(_check("rocket_is_a_ladder", done >= 0.0 and wait <= ROCKET_WAIT_MAX_S, wait, "%.0f s" % wait if done >= 0.0 else "not built",
 		"at most %.0f s" % ROCKET_WAIT_MAX_S, "player seconds the launch waits on the rocket after the last city thrives; parts fitted at player minutes [%s]; the rocket costs %.0f Parts of %.0f earned (%.0f%%); run ends at %.1f" % [
-			", ".join(steps), parts_cost, m.parts_earned, parts_cost / maxf(m.parts_earned, 1.0) * 100.0, end_s / 60.0 * k])
+			", ".join(steps), parts_cost, m.parts_earned, parts_cost / maxf(m.parts_earned, 1.0) * 100.0, end_s / 60.0 * k]), wait / ROCKET_WAIT_MAX_S)
 
 
 static func _first_piece(m: PaceSimRdModel, k: float) -> Dictionary:
 	var at: float = m.record.events.get("first_piece", -1.0)
 	var minute: float = at / 60.0 * k
 	var passed: bool = at >= 0.0 and absf(minute - PaceSimRdReport.FIRST_PIECE_MIN) <= PaceSimRdReport.FIRST_PIECE_SLACK_MIN
-	return _check("first_piece", passed, minute, "%.1f min" % minute if at >= 0.0 else "never",
-		"%.0f +/- %.0f min" % [PaceSimRdReport.FIRST_PIECE_MIN, PaceSimRdReport.FIRST_PIECE_SLACK_MIN], "player minute of the first found look piece")
+	return PaceSimRdReport.used(_check("first_piece", passed, minute, "%.1f min" % minute if at >= 0.0 else "never",
+		"%.0f +/- %.0f min" % [PaceSimRdReport.FIRST_PIECE_MIN, PaceSimRdReport.FIRST_PIECE_SLACK_MIN], "player minute of the first found look piece"),
+		absf(minute - PaceSimRdReport.FIRST_PIECE_MIN) / PaceSimRdReport.FIRST_PIECE_SLACK_MIN)
 
 
 static func _design_set(m: PaceSimRdModel, end_s: float) -> Dictionary:

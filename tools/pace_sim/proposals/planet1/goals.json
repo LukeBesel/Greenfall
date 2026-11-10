@@ -39,6 +39,7 @@
     {"id": "district_6", "event": "enter:the_works", "label": "District 6: the launch site", "mechanic": true, "player_min": 180},
     {"id": "rocket_order", "event": "first_rocket_order", "label": "First rocket part ordered at the Assembler", "mechanic": true},
     {"id": "rocket_fit", "event": "first_rocket_part", "label": "First rocket part fitted by hand"},
+    {"id": "overhaul", "event": "own:crew_overhaul", "label": "Crew Overhaul: every robot type tuned (spike)", "spike": true},
     {"id": "rocket_done", "event": "rocket_complete", "label": "Rocket complete"},
     {"id": "source_6", "event": "source_shut:the_works", "label": "Last source shut", "player_min": 225},
     {"id": "set", "event": "set_complete", "label": "Sprout set complete"},

@@ -3,20 +3,20 @@
   "mastery_speed": {"base": 0.4, "per_level": 0.12, "min_level": 1},
   "near_bonus": 0.25,
   "distance": {"shift_s": 300.0, "s_per_ring": 2.0},
-  "crew_cap": [8, 40, 80, 120, 160, 200],
-  "chain": {"scrounger": "scrounger", "assembler": "assembler", "carry": 5.5, "trip_s": 30.0, "trip_s_per_ring": 1.5, "assembly_s": 45.0},
+  "crew_cap": [8, 56, 90, 120, 160, 200],
+  "chain": {"scrounger": "scrounger", "assembler": "assembler", "carry": 8.0, "trip_s": 30.0, "trip_s_per_ring": 1.5, "assembly_s": 40.0, "hand_dig_s": 4.0},
   "haul_share": 0.5,
   "repaired_mult": 1.6,
   "repaired_build_mult": 1.5,
-  "repair_per_robot": 0.5,
+  "repair_per_robot": 0.9,
   "repair_requires": "repair_bench",
   "types": {
     "scoopie": {"name": "Scoopie", "role": "clean", "kinds": ["litter"], "rate": 1.2, "parts": 10, "repair_parts": 30, "requires": "bot_bay", "district": 0},
-    "haulbug": {"name": "Haul Bug", "role": "clean", "kinds": ["wrecks"], "rate": 1.5, "hauls": true, "parts": 16, "repair_parts": 40, "requires": "haul_rig", "district": 1},
-    "skimmer": {"name": "Skimmer", "role": "clean", "kinds": ["slick"], "rate": 2.3, "parts": 22, "repair_parts": 60, "requires": "skimmer_rig", "district": 2},
-    "drip": {"name": "Drip", "role": "tend", "kinds": ["smog"], "rate": 2.0, "water_rate": 0.12, "parts": 22, "repair_parts": 60, "requires": "drip_blueprint", "district": 3},
-    "seedling": {"name": "Seedling", "role": "tend", "kinds": ["blight"], "rate": 1.75, "plant_rate": 0.15, "parts": 30, "repair_parts": 80, "requires": "seedling_blueprint", "district": 4},
+    "haulbug": {"name": "Haul Bug", "role": "clean", "kinds": ["wrecks"], "rate": 1.25, "hauls": true, "parts": 16, "repair_parts": 40, "requires": "haul_rig", "district": 1},
+    "skimmer": {"name": "Skimmer", "role": "clean", "kinds": ["slick"], "rate": 1.9, "parts": 22, "repair_parts": 60, "requires": "skimmer_rig", "district": 2},
+    "drip": {"name": "Drip", "role": "tend", "kinds": ["smog"], "rate": 1.65, "water_rate": 0.12, "parts": 22, "repair_parts": 60, "requires": "drip_blueprint", "district": 3},
+    "seedling": {"name": "Seedling", "role": "tend", "kinds": ["blight"], "rate": 1.6, "plant_rate": 0.15, "parts": 30, "repair_parts": 80, "requires": "seedling_blueprint", "district": 4},
     "scrounger": {"name": "Scrounger", "role": "find", "kinds": [], "parts": 18, "repair_parts": 50, "requires": "scrounger_blueprint", "district": 1},
-    "assembler": {"name": "Assembler", "role": "build", "building": true, "kinds": [], "parts": 45, "parts_step": 150, "repair_parts": 200, "max": 4, "requires": "assembler_blueprint", "district": 2}
+    "assembler": {"name": "Assembler", "role": "build", "building": true, "kinds": [], "parts": 45, "repair_parts": 0, "no_repair": true, "max": 1, "requires": "assembler_blueprint", "district": 2}
   }
 }

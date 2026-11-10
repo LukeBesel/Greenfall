@@ -102,16 +102,30 @@ func choose(m: PaceSimRdModel) -> String:
 	var back: int = _district_to_water(m)
 	if back >= 0 and moving_on:
 		return "travel:%d" % back
-	return "clean" if can_clean else "idle"
+	if can_clean:
+		return "clean"
+	return "dig" if w.can_dig() else "idle"
 
 
 ## The robot type the Assemblers build next ("" = nothing now). Only types Lumi has built once
-## by hand can be assembled. While a rocket part can be ordered, its Parts are kept back first.
+## by hand can be assembled. The line never stops for the rocket (rocket parts are paid from what
+## the line leaves over); it does leave alone the Parts for something new at the bench.
 func next_build(m: PaceSimRdModel) -> String:
 	var type: String = _pick_build(m)
-	if type != "" and m.parts - m.robot_parts(type) < float(m.rocket_next().get("parts", 0.0)):
+	if type != "" and m.parts - m.robot_parts(type) < _parts_kept_back(m):
 		return ""
 	return type
+
+
+## Parts the Assembler leaves alone: the dearest research node priced in Parts, or first robot of
+## a type, that is on offer. These are small and open something new.
+func _parts_kept_back(m: PaceSimRdModel) -> float:
+	var keep: float = 0.0
+	for item: Dictionary in m.items():
+		var first_of_type: bool = str(item["type"]) == "robot" and m.robots.get(str(item["id"]), 0) == 0 and not m.is_building(str(item["id"]))
+		if str(item["type"]) == "research" or first_of_type:
+			keep = maxf(keep, float(item["parts"]))
+	return keep
 
 
 func _pick_build(m: PaceSimRdModel) -> String:
@@ -292,7 +306,7 @@ func _saving_parts(m: PaceSimRdModel, offers: Array[Dictionary]) -> bool:
 		var id: String = str(item["id"])
 		if str(item["type"]) == "rocket":
 			return true
-		if str(item["type"]) == "research" and (m.data.nodes[id].get("mods", {}) as Dictionary).is_empty():
+		if str(item["type"]) == "research":
 			return true
 		if str(item["type"]) == "robot" and m.robots.get(id, 0) == 0:
 			return true

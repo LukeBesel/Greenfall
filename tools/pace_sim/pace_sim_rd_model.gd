@@ -19,6 +19,9 @@ var t: float = 0.0
 var cubes: float = 0.0
 var parts: float = 0.0
 var earned: float = 0.0
+## Of that: paid for Lumi's own loads and bales, and paid as city stage payouts. Nothing else pays cubes.
+var earned_by_hand: float = 0.0
+var earned_by_stages: float = 0.0
 var parts_earned: float = 0.0
 var seeds: float = 0.0
 ## Seeds gained (the kit and blooming plants), spent on planting and spent on cleansing plants
@@ -29,6 +32,8 @@ var seeds_cleansing: float = 0.0
 var seed_short_s: float = 0.0
 ## Parts the Scroungers carried in, and robots the Assemblers built.
 var scrounged: float = 0.0
+## Buried parts Lumi dug up herself when there was nothing else to do.
+var dug_by_hand: float = 0.0
 ## Parts spent on new robots and on robot type upgrades.
 var parts_on_robots: float = 0.0
 var parts_on_repairs: float = 0.0
@@ -232,9 +237,10 @@ func crew_cap() -> int:
 	return int((data.tables["robots"]["crew_cap"] as Array)[base_level - 1])
 
 
-## A one-off reward (a district stage, a source): paid at once and measured against income.
+## A city stage payout: paid at once and measured against income.
 func reward(amount: float) -> void:
 	record.lump(self, amount)
+	earned_by_stages += amount
 	pay(amount)
 
 

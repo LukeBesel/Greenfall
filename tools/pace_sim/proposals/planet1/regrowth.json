@@ -12,5 +12,5 @@
   "rewater_s": 15.0,
   "points_to_leave": [0, 0, 60, 150, 300],
   "stage_reward": {"data": [0, 0, 0.2, 0.2, 0.3, 0.4]},
-  "district_stage_reward": {"cubes": [0, 60, 80, 120, 200, 300], "data": [0, 8, 8, 10, 12, 15]}
+  "district_stage_reward": {"cubes": [0, 100, 150, 300, 1000, 1200], "data": [0, 8, 8, 10, 12, 15]}
 }

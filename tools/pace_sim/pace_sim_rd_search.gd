@@ -17,6 +17,10 @@ const W_NO_ENDING: float = 200.0
 ## far its hand share sits under the spec's target, and the worst hand-share window likewise.
 const W_MISS: float = 6.0
 const W_SHARE: float = 60.0
+## A passing check that has used more than this share of its allowance costs up to W_TIGHT, so
+## the search leaves room for the numbers to move.
+const ROOM_FROM: float = 0.8
+const W_TIGHT: float = 6.0
 
 
 ## How far a run is from what the plan asks for: 0 is perfect.
@@ -27,8 +31,12 @@ static func penalty(result: Dictionary) -> float:
 	var m: PaceSimRdModel = result["model"]
 	var p: float = 0.0
 	for c: Dictionary in report["checks"]:
+		if bool(c.get("advisory", false)):
+			continue
 		if not c["pass"]:
 			p += W_FAIL + W_MISS * _miss(c)
+		elif float(c.get("use", 0.0)) > ROOM_FROM:
+			p += W_TIGHT * minf(1.0, (float(c["use"]) - ROOM_FROM) / (1.0 - ROOM_FROM))
 	if not report["ended"]:
 		return p + W_NO_ENDING * (1.5 - m.restoration())
 	p += absf(float(report["end_min"]) - m.data.num("balance.target_bot_min.aim")) * W_END_MIN
@@ -40,6 +48,8 @@ static func penalty(result: Dictionary) -> float:
 
 ## How far a failed check missed, as a share of its limit (0 when it has no simple limit).
 static func _miss(c: Dictionary) -> float:
+	if c.has("use"):
+		return clampf(float(c["use"]) - 1.0, 0.0, 3.0)
 	var limit: float = PaceSimRdReport.LIMITS.get(str(c["id"]), 0.0)
 	if limit <= 0.0 or float(c["value"]) < 0.0:
 		return 0.0

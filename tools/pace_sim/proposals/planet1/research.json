@@ -9,18 +9,19 @@
     "haul_rig": {"name": "Haul Rig", "district": 1, "requires": ["bot_bay"], "cost": {"parts": 12, "data": 30}, "crew": true},
     "scrounger_blueprint": {"name": "Scrounger Blueprint", "district": 1, "requires": ["haul_rig"], "cost": {"parts": 12, "data": 50}, "crew": true},
     "assembler_blueprint": {"name": "Assembler Blueprint", "district": 2, "requires": ["signal_tower"], "cost": {"parts": 25, "data": 80}, "crew": true, "launch": true},
-    "repair_bench": {"name": "Repair Bench", "district": 2, "requires": ["bot_bay"], "cost": {"parts": 40, "data": 120}, "crew": true},
+    "repair_bench": {"name": "Repair Bench", "district": 2, "requires": ["bot_bay"], "when": {"hexes": 600}, "cost": {"parts": 40, "data": 120}, "crew": true},
     "cutting_torch": {"name": "Cutting Torch", "district": 1, "requires": ["lift_2"], "cost": {"cubes": 900, "data": 100}, "mods": {"kind_wrecks": 1.5}},
     "compactor": {"name": "Compactor", "district": 1, "cost": {"cubes": 1000, "data": 120}, "mods": {"capacity": 1.4}},
     "skimmer_rig": {"name": "Skimmer Rig", "district": 2, "requires": ["bot_bay", "skimmer_head"], "cost": {"parts": 20, "data": 150}, "crew": true},
-    "drip_blueprint": {"name": "Drip Blueprint", "district": 3, "requires": ["bot_bay"], "cost": {"parts": 25, "data": 200}, "crew": true},
+    "drip_blueprint": {"name": "Drip Blueprint", "district": 3, "requires": ["bot_bay"], "when": {"mastery_smog": 1}, "cost": {"parts": 25, "data": 200}, "crew": true},
     "skim_boom": {"name": "Skim Boom", "district": 2, "requires": ["skimmer_head"], "cost": {"cubes": 1200, "data": 300}, "mods": {"kind_slick": 1.5}},
     "sprinkler_heads": {"name": "Sprinkler Heads", "district": 2, "cost": {"cubes": 1100, "data": 300}, "mods": {"water_hexes": 2.0}},
     "surge_core": {"name": "Surge Core", "district": 3, "cost": {"cubes": 1300, "data": 200}},
-    "seedling_blueprint": {"name": "Seedling Blueprint", "district": 4, "requires": ["bot_bay"], "cost": {"parts": 90, "data": 400}, "crew": true},
+    "seedling_blueprint": {"name": "Seedling Blueprint", "district": 4, "requires": ["bot_bay"], "when": {"mastery_blight": 2}, "cost": {"parts": 90, "data": 400}, "crew": true},
     "filter_stacks": {"name": "Filter Stacks", "district": 3, "requires": ["scrubber_units"], "cost": {"cubes": 1500, "data": 600}, "mods": {"kind_smog": 1.5}},
     "root_mats": {"name": "Root Mats", "district": 4, "requires": ["cleansing_plants"], "cost": {"cubes": 2000, "data": 800}, "mods": {"kind_blight": 1.5}},
     "fast_coupling": {"name": "Fast Coupling", "district": 4, "cost": {"cubes": 2200, "data": 1000}, "mods": {"handle": 0.7}},
+    "crew_overhaul": {"name": "Crew Overhaul", "district": 5, "requires": ["repair_bench"], "when": {"hexes": 3600}, "cost": {"parts": 200, "data": 2500}, "mods": {"crew_rate": 1.5}, "crew": true},
     "deep_roots": {"name": "Deep Roots", "district": 5, "cost": {"cubes": 2800, "data": 1500}, "mods": {"tend": 1.5}}
   }
 }

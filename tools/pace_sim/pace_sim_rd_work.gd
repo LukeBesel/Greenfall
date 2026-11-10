@@ -3,7 +3,8 @@ extends RefCounted
 ## One tick of work in the redesign model: what Lumi does (sweep, plant, water, the source job, a
 ## hop, a wreck), what the crew does, how hexes grow, and the Surge.
 ## Lumi's choices come from the policy as plain strings: clean, plant, water (dry hexes), boost
-## (water again for another burst), source, explore, fit (a rocket part), travel:<district index>, idle.
+## (water again for another burst), source, explore, fit (a rocket part), dig (buried parts, by
+## hand), travel:<district index>, idle.
 
 const MERGE_EVERY_S: float = 5.0
 
@@ -106,6 +107,8 @@ func act(choice: String) -> void:
 		"fit":
 			_m.fit_rocket_part()
 			worked = true
+		"dig":
+			worked = _dig()
 		"travel":
 			_travel(int(choice.get_slice(":", 1)))
 	seconds[key] = seconds.get(key, 0.0) + PaceSimRdModel.TICK_S
@@ -162,6 +165,24 @@ func chain_tick() -> void:
 		if type == "" or not _m.assemble(type):
 			break
 		_assembly -= 1.0
+
+
+## True when cleaned ground still holds buried parts Lumi could dig up herself.
+func can_dig() -> bool:
+	return _richest_ground() != null and _d.num("robots.chain.hand_dig_s") > 0.0
+
+
+## Lumi digs buried parts out of cleaned ground by hand: slow, but it never runs dry before the
+## ground does, so Parts cannot lock up a player with few Scroungers.
+func _dig() -> bool:
+	var z: PaceSimRdDistrict = _richest_ground()
+	if z == null:
+		return false
+	var dug: float = minf(z.buried_parts, PaceSimRdModel.TICK_S / _d.num("robots.chain.hand_dig_s"))
+	z.buried_parts -= dug
+	_m.gain_parts(dug)
+	_m.dug_by_hand += dug
+	return true
 
 
 ## The open district with the most buried parts waiting, or null.
@@ -244,6 +265,7 @@ func _clean() -> bool:
 ## Pays for and records `units` of a kind cleared by Lumi's own hands.
 func _hand_output(z: PaceSimRdDistrict, kind: String, units: float) -> void:
 	var row: Dictionary = _d.kinds[kind]
+	_m.earned_by_hand += units * _m.rates.unit_value(kind)
 	_m.pay(units * _m.rates.unit_value(kind))
 	_m.gain_parts(units * _m.rates.unit_parts(kind))
 	_m.hand_units += units
@@ -381,6 +403,8 @@ func _travel(to: int) -> void:
 			_m.record.d1_parts = _m.parts_earned
 			_m.record.d1_hand_hexes = _m.hand_hexes
 		_m.busy_s += float(z.row["arrival_s"])
+		# Salvage waiting at the new city (an old factory shell, say): Parts on first arrival.
+		_m.gain_parts(float(z.row.get("arrival_parts", 0.0)))
 		_m.emit("enter:" + z.id)
 		_m.record.win(_m.t)
 	else:
