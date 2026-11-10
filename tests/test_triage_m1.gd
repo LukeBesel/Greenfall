@@ -423,7 +423,7 @@ func test_b23_magnet_pulls_only_a_few_pieces_at_a_time() -> void:
 
 # --- B8: the carried bale and Lumi's body --------------------------------------------------------
 
-## Lumi wearing `design` with one full bale picked up and its pick-up tween finished. Returns the
+## Lumi wearing `design` with one full bale picked up and risen onto the stack. Returns the
 ## probe's measure (tools/exit_probe.gd carry_gap): the bale's bottom against the top of the model.
 func _carry_gap(design: String) -> Dictionary:
 	GameState.flags["patch_skin"] = design
@@ -438,8 +438,9 @@ func _carry_gap(design: String) -> Dictionary:
 	add_child(bale)
 	bale.global_position = Vector3(0.0, 0.3, -0.8)
 	p.pick_up(bale)
-	await wait_seconds(0.5)
-	p._update_stack(0.016)
+	for i: int in 60:  # the stack update lifts the bale into place (about 0.2 s)
+		p._update_stack(1.0 / 60.0)
+	await wait_physics_frames(2)
 	var gap: Dictionary = (load("res://tools/exit_probe.gd") as GDScript).call("carry_gap", p)
 	gap["design"] = design
 	return gap
@@ -454,13 +455,12 @@ func test_b8_carry_point_is_clear_of_the_body_on_every_design() -> void:
 		assert_gte(float(gap["gap_solid"]), 0.1, "%s: the bale's bottom is %.2f m from the top of the body" % [id, float(gap["gap_solid"])])
 
 
-## B8: in play the bale never gets there. Patch._physics_process runs _update_stack every physics
-## frame; with it running, the pick-up tween (an idle-frame tween on a frozen RigidBody3D) is undone
-## each frame and the bale stays at the height it was picked up at: on the ground, inside Lumi.
-## The running game shows the same (tools/exit_probe.tscn --exit-carrying --probe-verbose).
+## B8: in play the bale never got there. Patch._physics_process runs _update_stack every physics
+## frame; with it running, the pick-up tween (an idle-frame tween on a frozen RigidBody3D) was undone
+## each frame and the bale stayed at the height it was picked up at: on the ground, inside Lumi.
+## The stack update lifts the bale itself now (tools/exit_probe.tscn --exit-carrying --probe-verbose
+## shows it in the running game).
 func test_b8_carried_bale_rises_onto_the_stack_while_lumi_carries_it() -> void:
-	pending("B8 the carried bale stays at pick-up height inside Lumi (player/patch.gd pick_up tween undone by _update_stack on a frozen RigidBody3D)")
-	return
 	var p := Patch.new()
 	add_child_autofree(p)
 	p.set_process(false)

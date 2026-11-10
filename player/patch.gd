@@ -8,6 +8,8 @@ const PICKUP_RANGE: float = 1.9
 const CUBE_TIME: float = 1.7
 ## Pieces at least this big get the heavy pickup animation.
 const BIG_PIECE_VOL: float = 1.5
+## How fast a picked-up bale rises onto the stack (1/s): there in about a fifth of a second.
+const CARRY_RISE_RATE: float = 18.0
 
 var input: InputSource
 var world: Node  # the slice scene: field, view, collect_piece(), depot
@@ -33,6 +35,9 @@ var _idle_time: float = 0.0
 var _stack_root: Node3D
 var _stack_sway := Vector2.ZERO
 var _stack_sway_v := Vector2.ZERO
+## Height of each carried bale on the stack (same order as `carried`), easing up from where it was
+## picked up to its place.
+var _carry_rise: Array[float] = []
 var _distance_accum: float = 0.0
 var _dust_timer: float = 0.0
 var _focus_hex: int = -1
@@ -632,10 +637,10 @@ func pick_up(c: JunkCube) -> void:
 	c.set_carried(true)
 	c.reparent(_stack_root, true)
 	carried.append(c)
-	var target_y: float = _stack_height(carried.size() - 1)
-	var tw := c.create_tween().set_parallel(true)
-	tw.tween_property(c, "position", Vector3(0, target_y, 0), 0.22).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	tw.tween_property(c, "rotation", Vector3(0, randf_range(-0.15, 0.15), 0), 0.22)
+	# The lift itself is in _update_stack: a carried bale is a frozen body, and a tween's idle-frame
+	# height was thrown away by the next physics frame's write, leaving the bale inside Lumi.
+	_carry_rise.append(c.position.y)
+	c.rotation = Vector3(0, randf_range(-0.15, 0.15), 0)
 	Audio.play("pop", 0.8, -6.0)
 	model.squash(-0.2)
 	c.squish(0.2)
@@ -653,6 +658,7 @@ func pop_carried_cube() -> JunkCube:
 	if carried.is_empty():
 		return null
 	var c: JunkCube = carried.pop_back()
+	_carry_rise.resize(carried.size())
 	# Hand it back to the world's Cubes node so it persists (Depot/stations reparent it again).
 	var root: Node = world.get_node_or_null("Cubes") if world else null
 	c.reparent(root if root else get_tree().current_scene, true)
@@ -704,8 +710,8 @@ func _update_stack(delta: float) -> void:
 	for i: int in carried.size():
 		var c: JunkCube = carried[i]
 		var k: float = float(i + 1) / maxf(carried.size(), 1.0)
-		c.position.x = -_stack_sway.y * k * 0.6 * (i + 1) * 0.5
-		c.position.z = _stack_sway.x * k * 0.6 * (i + 1) * 0.5
+		_carry_rise[i] = lerpf(_carry_rise[i], _stack_height(i), 1.0 - exp(-CARRY_RISE_RATE * delta))
+		c.position = Vector3(-_stack_sway.y * k * 0.6 * (i + 1) * 0.5, _carry_rise[i], _stack_sway.x * k * 0.6 * (i + 1) * 0.5)
 		c.rotation.x = _stack_sway.x * 0.5 * k
 		c.rotation.z = _stack_sway.y * 0.5 * k
 
