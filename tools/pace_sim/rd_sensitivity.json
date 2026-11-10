@@ -1,7 +1,16 @@
 {
-  "_doc": "The sensitivity study of the redesign model (--model=redesign --sensitivity=top|all). Each listed proposal value (a dotted path into the proposal tables) is moved down and up by `swing`, one at a time, and the default player is run on it. candidates: the wider list the study ranks. top: the eight that move the result most; the proposal must pass every required check with each of them moved either way (tests/test_pace_sim.gd runs this).",
+  "_doc": "The sensitivity study of the redesign model (--model=redesign --sensitivity=top|all). Each listed proposal value (a dotted path into the proposal tables) is moved down and up by `swing`, one at a time, and the default player is run on it. candidates: the wider list the study ranks. top: the eight that move the result most (largest relative change in the time to the launch point or in the crew at the launch point, from the scan of the candidates); the proposal must pass every required check with each of them moved either way (tests/test_pace_sim.gd runs this).",
   "swing": 0.1,
-  "top": [],
+  "top": [
+    "robots.chain.assembly_s",
+    "balance.hand.base_rate",
+    "balance.mastery.growth",
+    "pollution.kinds.litter.yield.parts",
+    "districts.districts.0.hex_work",
+    "upgrades.tracks.sweep_speed.add",
+    "robots.types.scoopie.parts",
+    "balance.hand.capacity"
+  ],
   "candidates": [
     "balance.hand.base_rate",
     "balance.hand.capacity",
