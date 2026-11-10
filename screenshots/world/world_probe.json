@@ -1197,6 +1197,23 @@
       "suburb": 57385
     }
   },
+  "render_points": {
+    "industrial": {
+      "from_start_m": 1385.0,
+      "land_buildings_100m": 71,
+      "spawn": "-341,-1342"
+    },
+    "open": {
+      "from_start_m": 1545.0,
+      "land_buildings_100m": 0,
+      "spawn": "282,-1519"
+    },
+    "suburb": {
+      "from_start_m": 1392.0,
+      "land_buildings_100m": 84,
+      "spawn": "811,1130"
+    }
+  },
   "walks": {
     "east": [
       {

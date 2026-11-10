@@ -397,6 +397,7 @@ func _walks() -> void:
 			rows.append(row)
 		res[nm] = rows
 	out["walks"] = res
+	out["render_points"] = _render_points()
 	print("[world-probe] walks: %s" % str(res))
 
 
@@ -406,3 +407,37 @@ static func _within(pts: Array, pos: Vector3, r: float) -> int:
 		if p.distance_to(pos) <= r:
 			k += 1
 	return k
+
+
+## Spots within 1.6 km of the start for renders of the land between: per zone, the cell with the
+## most buildings within 100 m (open: the fewest) and no water within 150 m, as --orbit-spawn x,z.
+func _render_points() -> Dictionary:
+	var res: Dictionary = {}
+	var up: Vector3 = g.grid.centers[g.start_cell()]
+	var best: Dictionary = {}
+	var k: int = 0
+	for c: int in _zone_of:
+		k += 1
+		if k % 7 != 0:
+			continue
+		var dir: Vector3 = g.grid.centers[c]
+		var m: float = up.angle_to(dir) * g.grid.radius_m
+		if m > 1600.0 or m < 500.0:
+			continue
+		var dry: bool = true
+		for o: int in g.grid.cells_within(dir, 150.0, c):
+			if g.cells.state[o] == OrbitPlanet.WATER:
+				dry = false
+				break
+		if not dry:
+			continue
+		var zn: String = _zone_of[c]
+		var nb: int = _within(_land_buildings, dir * g.terrain.R, 100.0)
+		var score: int = -nb if zn == "open" else nb
+		if not best.has(zn) or score > int(best[zn][0]):
+			var xz: Vector2 = _local_from_start(dir)
+			best[zn] = [score, {"spawn": "%d,%d" % [int(xz.x), int(xz.y)], "from_start_m": snappedf(m, 1.0), "land_buildings_100m": nb}]
+	for zn: String in best:
+		res[zn] = best[zn][1]
+	print("[world-probe] render points: %s" % str(res))
+	return res
