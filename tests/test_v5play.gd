@@ -102,15 +102,19 @@ func test_hinterland_leaves_no_wedge_gaps() -> void:
 			if mine.is_empty():
 				dropped += 0 if h._candidate(c).is_empty() else 1
 				continue
+			mine = mine.filter(func(e: Array) -> bool: return int(e[0]) != Hinterland.K_TRACK)
+			if mine.is_empty():
+				continue
 			total += 1
 			for o: int in grid.neighbors(c):
-				var theirs: Array = h._decide(o)
-				if theirs.is_empty():
-					continue
-				var g: float = Hinterland.rect_gap(mine[0][1], mine[0][2], theirs[0][1], theirs[0][2])
-				worst = minf(worst, g)
-				if g < Hinterland.MIN_GAP_M:
-					tight += 1
+				for t: Array in h._decide(o):
+					if int(t[0]) == Hinterland.K_TRACK:
+						continue
+					for e: Array in mine:
+						var g: float = Hinterland.rect_gap(e[1], e[2], t[1], t[2])
+						worst = minf(worst, g)
+						if g < Hinterland.MIN_GAP_M:
+							tight += 1
 	h.free()
 	assert_gt(total, 100, "the sample regions hold buildings and props")
 	assert_eq(tight, 0, "pairs closer than %.1f m (worst %.2f m)" % [Hinterland.MIN_GAP_M, worst])

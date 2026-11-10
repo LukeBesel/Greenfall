@@ -101,12 +101,15 @@ static func run(h: Hinterland, terrain: SphereTerrain, field: SphereField, centr
 		reached = _flood(state, seen, n, s0, Vector2.ZERO)[0]
 	var pockets: Array = []  # [area m2, centre]
 	var mark := seen.duplicate()
+	var ok_map := seen.duplicate()  # reached, or part of a patch the disc's rim cuts off (open beyond it)
 	for i4: int in n * n:
 		if state[i4] != 1 or mark[i4] == 1:
 			continue
 		var res: Array = _flood(state, mark, n, i4, Vector2(-half_m, -half_m))
 		var area: float = int(res[0]) * STEP * STEP
 		# A patch cut off by the disc's rim (or a lake's far side) isn't walled in by the hinterland.
+		if bool(res[2]):
+			_flood(state, ok_map, n, i4, Vector2.ZERO)
 		if area >= POCKET_M2 and not bool(res[2]):
 			pockets.append([area, res[1]])
 	pockets.sort_custom(func(a: Array, b: Array) -> bool: return float(a[0]) > float(b[0]))
@@ -149,12 +152,21 @@ static func run(h: Hinterland, terrain: SphereTerrain, field: SphereField, centr
 			for dz: int in range(-2, 3):
 				for dx: int in range(-2, 3):
 					var j2: int = idx.call(lp.x + dx * STEP, lp.y + dz * STEP)
-					if j2 >= 0 and seen[j2] == 1:
+					if j2 >= 0 and ok_map[j2] == 1:
 						ok3 = true
 			if not ok3:
 				bad_pieces += 1
 				if bad_at.size() < 6:
 					bad_at.append(lp.snappedf(0.1))
+					if DevHooks.has("walk-debug"):
+						var tally: Array[int] = [0, 0, 0, 0]
+						for dz2: int in range(-6, 7):
+							for dx2: int in range(-6, 7):
+								var j3: int = idx.call(lp.x + dx2 * STEP, lp.y + dz2 * STEP)
+								if j3 >= 0:
+									tally[state[j3]] += 1
+						print("[hwalk] piece %d at %s: within 3 m %d cells off the disc or wet, %d free, %d solid, %d steep; keep-out %s" % [pid, str(lp.snappedf(0.1)), tally[0], tally[1], tally[2], tally[3],
+							str(field.keep_out.call(field.piece_xf[pid].origin.normalized())) if field.keep_out.is_valid() else "-"])
 	out["free_m2"] = free_n * STEP * STEP
 	out["reached_m2"] = reached * STEP * STEP
 	out["pockets"] = pockets
@@ -204,7 +216,9 @@ static func tightest_gap(h: Hinterland) -> Array:
 	for c: int in h.decided_cells():
 		for e: Array in h.decided(c):
 			var xf: Transform3D = e[1]
-			items.append([xf.origin, xf, e[2], 0, int(e[0])])
+			if int(e[0]) == Hinterland.K_TRACK:
+				continue  # a road strip: flat, nothing to wedge against
+			items.append([xf.origin, xf, e[2], c, int(e[0])])
 	var best: float = INF
 	var at := Vector3.ZERO
 	var kinds: String = ""
@@ -214,8 +228,8 @@ static func tightest_gap(h: Hinterland) -> Array:
 		for j: int in range(i + 1, items.size()):
 			var b: Array = items[j]
 			var dv: Vector3 = (b[0] as Vector3) - (a[0] as Vector3)
-			if dv.length_squared() > 40.0 * 40.0:
-				continue
+			if dv.length_squared() > 40.0 * 40.0 or int(a[3]) == int(b[3]):
+				continue  # one hex's own yard (house, shed, fences) is laid out on purpose
 			var g: float = Hinterland.rect_gap(a[1], a[2], b[1], b[2])
 			if g < MIN_GAP_M:
 				tight += 1
