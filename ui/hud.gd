@@ -400,6 +400,8 @@ func _prompt_text(kind: String) -> String:
 		"seed": return tr("%s   pick up the seed tin") % g
 		"place": return tr("%s   set bale down") % g
 		"upgrades": return tr("%s   workbench") % g
+		"refill": return tr("Filling the watering can")
+		"refill_go": return tr("Can empty. It fills in the base yard, by the bin.")
 	if kind.begins_with("E "):
 		return g + kind.substr(1)
 	return ""

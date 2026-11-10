@@ -405,3 +405,4 @@ Moved to `parked/` (ignored by the engine; `parked/README.md` lists each feature
 - The title screen is Continue, New Game, Settings, Quit.
 - Story text that still promises parked things (the finale and credits say the seed ark opens; 11 radio hints) is left for the story pass in M5.
 - Stopgaps to clear in M1-07: `data/parked.json` skips 17 goals that belong to parked features; the `observatory` research node unlocks nothing.
+- **Bug-fix pass (M1-11).** The Baler stall is fixed by counting a sold bale toward the first bin step, not by keeping the bin open: an always-open bin would pay 1.3x against 1.0x for a plain mixed bale and empty the chest by itself, which would make it better than baling. That 1.3x figure is noted for the balance work (M3-01): tipping loose trash should never beat pressing a bale. The magnet's cap and filters and the refill radius (24 m) are now data.

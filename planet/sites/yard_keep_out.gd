@@ -125,42 +125,56 @@ func add_world(key: Variant, items: Array) -> void:
 	for it: Array in items:
 		var fr: Transform3D = it[0]
 		var r: Rect2 = (it[1] as Rect2).grow(FOOT_GROW_M)
-		var inv: Transform3D = fr.affine_inverse()
-		var rad: float = fr.origin.length()
-		var nx: int = maxi(1, int(ceil(r.size.x / (WORLD_M * 0.5))))
-		var nz: int = maxi(1, int(ceil(r.size.y / (WORLD_M * 0.5))))
-		var seen: Dictionary = {}
-		for ix: int in nx + 1:
-			for iz: int in nz + 1:
-				var q := Vector3(r.position.x + r.size.x * ix / nx, 0.0, r.position.y + r.size.y * iz / nz)
-				var k: Vector3i = _wkey((fr * q).normalized(), radius)
-				if seen.has(k):
-					continue
-				seen[k] = true
-				if not _world.has(k):
-					_world[k] = []
-				(_world[k] as Array).append([inv, r, rad])
+		var entry: Array = [fr.affine_inverse(), r, fr.origin.length()]
+		for k: Vector3i in _world_boxes(fr, r):
+			if not _world.has(k):
+				_world[k] = []
+			(_world[k] as Array).append(entry)
 		_world_n += 1
 	version += 1  # [v4world]
 
 
-func _wkey(d: Vector3, rad: float) -> Vector3i:
-	var p: Vector3 = d * rad / WORLD_M
-	return Vector3i(floori(p.x), floori(p.y), floori(p.z))
+## Every WORLD_M box a footprint touches, whatever its tilt: the boxes of its bounds on the sphere
+## that its ground plane passes through. (Boxes found from sample points missed the ones a tilted
+## footprint only clips, and junk was laid there, inside the building.)
+func _world_boxes(fr: Transform3D, r: Rect2) -> Array[Vector3i]:
+	var mid: Vector3 = (fr * Vector3(r.get_center().x, 0.0, r.get_center().y)).normalized()
+	var bounds := AABB(mid * radius, Vector3.ZERO)
+	for corner: Vector2 in [r.position, Vector2(r.end.x, r.position.y), r.end, Vector2(r.position.x, r.end.y)]:
+		bounds = bounds.expand((fr * Vector3(corner.x, 0.0, corner.y)).normalized() * radius)
+	# The ground bulges out of the flat quad through the corners by at most its sagitta.
+	var slack: float = r.size.length_squared() / (8.0 * radius) + WORLD_EDGE_M
+	bounds = bounds.grow(slack)
+	var lo: Vector3i = _wbox(bounds.position)
+	var hi: Vector3i = _wbox(bounds.end)
+	var reach: float = WORLD_M * 0.5 * sqrt(3.0) + slack  # a box's half diagonal
+	var out: Array[Vector3i] = []
+	for bx: int in range(lo.x, hi.x + 1):
+		for by: int in range(lo.y, hi.y + 1):
+			for bz: int in range(lo.z, hi.z + 1):
+				var centre: Vector3 = (Vector3(bx, by, bz) + Vector3.ONE * 0.5) * WORLD_M
+				if absf((centre - mid * radius).dot(mid)) <= reach:
+					out.append(Vector3i(bx, by, bz))
+	return out
+
+
+## Slack (m) on a footprint's bounds: a point on its very edge still finds it.
+const WORLD_EDGE_M: float = 0.5
+
+
+func _wbox(p: Vector3) -> Vector3i:
+	return Vector3i(floori(p.x / WORLD_M), floori(p.y / WORLD_M), floori(p.z / WORLD_M))
 
 
 func _blocks_world(dir: Vector3) -> bool:
 	var d: Vector3 = dir.normalized()
-	var base: Vector3 = d * radius / WORLD_M
-	var b0 := Vector3i(floori(base.x), floori(base.y), floori(base.z))
-	for k: Vector3i in [b0]:
-		var lst: Variant = _world.get(k)
-		if lst == null:
-			continue
-		for e: Array in lst:
-			var lp: Vector3 = (e[0] as Transform3D) * (d * float(e[2]))
-			if (e[1] as Rect2).has_point(Vector2(lp.x, lp.z)):
-				return true
+	var lst: Variant = _world.get(_wbox(d * radius))
+	if lst == null:
+		return false
+	for e: Array in lst:
+		var lp: Vector3 = (e[0] as Transform3D) * (d * float(e[2]))
+		if (e[1] as Rect2).has_point(Vector2(lp.x, lp.z)):
+			return true
 	return false
 
 

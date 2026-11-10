@@ -13,6 +13,7 @@ extends RefCounted
 const UP_BALER: String = "baler"
 const UP_LIFT: String = "lift_strength"
 const UP_SCOOP_SIZE: String = "multi_lock"
+const UP_MAGNET: String = "magnet_arm"
 const SIZE_SMALL: int = 0
 const SIZE_MEDIUM: int = 1
 const SIZE_LARGE: int = 2
@@ -205,6 +206,44 @@ static func baler_hint(patch: Node3D) -> void:
 	Vfx.float_text(patch.global_position + OrbitUp.up(patch.global_position) * 1.9, TranslationServer.translate("No Baler yet. Bring your chest to the bin."), Color(1.0, 0.85, 0.5), 0.4, 0.7)
 
 
+# --- The Magnet Arm ------------------------------------------------------------------------
+
+static var _magnet_cfg: Dictionary = {}
+
+
+## The magnet's rules from the planet's "player" table, kept until the planet changes.
+static func magnet() -> Dictionary:
+	if _magnet_cfg.is_empty():
+		_magnet_cfg = Economy.planet_table("player").get("magnet", {})
+		Economy.drop_on_planet_change(_drop_planet_cache)
+	return _magnet_cfg
+
+
+## How many pieces the magnet pulls at a time: a few, one more per Magnet Arm level.
+static func magnet_pull_count() -> int:
+	var cfg: Dictionary = magnet()
+	return int(cfg.get("pull_base", 0)) + int(cfg.get("pull_per_level", 0)) * GameState.level_of(UP_MAGNET)
+
+
+## The pieces the magnet pulls this frame toward `origin`, nearest first: loose (not seated in a
+## heap), light enough for Lift Strength, and no more than the cap. `in_range` is what lies inside
+## the magnet's radius; `flat` gives a vector's part along the ground.
+static func magnet_targets(field: HexField, in_range: PackedInt32Array, origin: Vector3, flat: Callable) -> Array[int]:
+	var stop: float = float(magnet().get("stop_m", 0.0))
+	var by_dist: Array = []
+	for pid: int in in_range:
+		if field.piece_embed[pid] > 0.0 or not can_lift(field, pid):
+			continue
+		var d: float = (flat.call(origin - field.piece_pos[pid]) as Vector3).length()
+		if d > stop:
+			by_dist.append([d, pid])
+	by_dist.sort()
+	var out: Array[int] = []
+	for e: Array in by_dist.slice(0, magnet_pull_count()):
+		out.append(int(e[1]))
+	return out
+
+
 # --- Emptying the chest (before the Baler) -------------------------------------------------
 
 ## Cubes paid for dumping `contents` (type -> volume) loose, without the trash bin's own rate.
@@ -336,3 +375,4 @@ static func signal_finder() -> bool:
 static func _drop_planet_cache() -> void:
 	_model_vol = {}
 	_dump_cfg = {}
+	_magnet_cfg = {}

@@ -1,5 +1,5 @@
 {
-  "_doc": "Lumi's base stats before upgrades. plant_growth / seed_yield: garden-wide multipliers on plant growth speed and seeds per bloom (research raises them: the ~1 h garden ramp, docs/BALANCE.md). [pace] Slow start: small chest, slow scoop; baler_unlocked / lift_class / signal_finder come from the Baler, Lift Strength and Signal Finder upgrades. [v4bots] hover_water: Hover Jets (owner item 54): without them Lumi stops at the shore. dump: loose junk emptied before the Baler pays mult x junk value (the camp trash bin pays its own rate). old_save_grant: levels added to saves from before the slow start.",
+  "_doc": "Lumi's base stats before upgrades. plant_growth / seed_yield: garden-wide multipliers on plant growth speed and seeds per bloom (research raises them: the ~1 h garden ramp, docs/BALANCE.md). [pace] Slow start: small chest, slow scoop; baler_unlocked / lift_class / signal_finder come from the Baler, Lift Strength and Signal Finder upgrades. [v4bots] hover_water: Hover Jets (owner item 54): without them Lumi stops at the shore. dump: loose junk emptied before the Baler pays mult x junk value (the camp trash bin pays its own rate). magnet: the Magnet Arm pulls at most pull_base + pull_per_level x its level loose pieces at a time (nearest first; never a piece seated in a heap or too heavy for Lift Strength), at pull_speed m/s, until they are stop_m from the scoop. old_save_grant: levels added to saves from before the slow start.",
   "stats": {
     "capacity": 12.0,
     "scoop_width": 1.4,
@@ -34,6 +34,12 @@
   "dump": {
     "mult": 1.3,
     "after_baler": false
+  },
+  "magnet": {
+    "pull_base": 2,
+    "pull_per_level": 1,
+    "pull_speed": 2.5,
+    "stop_m": 0.4
   },
   "old_save_grant": {
     "compartment_size": 4,

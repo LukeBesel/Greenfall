@@ -1,10 +1,8 @@
 extends Node
 ## [intro2] Startup: the first frame is the loading screen (ui/loading_screen.gd), which loads the
-## title screen on a thread and warms its shaders before showing it.
+## title screen on a thread and warms its shaders before showing it. Dev runs (any DevHooks flag)
+## go on to the game from there (ui/main_menu.gd).
 
 
 func _ready() -> void:
-	if DevHooks.has("orbit"):  # [orbB] dev: straight into the game, past the title screen
-		Loader.goto("res://scenes/slice.tscn")
-		return
 	Loader.goto("res://scenes/main_menu.tscn")

@@ -8,6 +8,8 @@ const PICKUP_RANGE: float = 1.9
 const CUBE_TIME: float = 1.7
 ## Pieces at least this big get the heavy pickup animation.
 const BIG_PIECE_VOL: float = 1.5
+## How fast a picked-up bale rises onto the stack (1/s): there in about a fifth of a second.
+const CARRY_RISE_RATE: float = 18.0
 
 var input: InputSource
 var world: Node  # the slice scene: field, view, collect_piece(), depot
@@ -33,6 +35,9 @@ var _idle_time: float = 0.0
 var _stack_root: Node3D
 var _stack_sway := Vector2.ZERO
 var _stack_sway_v := Vector2.ZERO
+## Height of each carried bale on the stack (same order as `carried`), easing up from where it was
+## picked up to its place.
+var _carry_rise: Array[float] = []
 var _distance_accum: float = 0.0
 var _dust_timer: float = 0.0
 var _focus_hex: int = -1
@@ -268,7 +273,35 @@ func water_cap() -> float:
 	return float(Economy.planet_table("plants").get("water_tank", 30)) if _water_cap < 0.0 else _water_cap
 
 var _water_cap: float = -1.0
+var _in_yard: bool = false  # the can is filling this frame
 var _no_slot_ms: int = -100000  # [v4grow]
+
+
+## Whether Lumi stands in a base yard: on base ground, or within the can's refill radius (the
+## planet's "plants" table) of the middle of a base cell. On the globe base ground is one 10 m cell
+## in the middle of the yard; the bench, bin, scale and greenhouse stand round it.
+func in_base_yard() -> bool:
+	var f: HexField = world.field if world else null
+	if f == null:
+		return false
+	var here: int = f.hex_at(global_position)
+	if here < 0:
+		return false
+	if f.hex_hub[here] == 1:
+		return true
+	var r: float = float(Economy.planet_table("plants").get("refill_radius_m", 0.0))
+	for c: int in f.hexes_near(global_position, int(ceil(r / f.hex_size))):
+		if f.hex_hub[c] == 1 and f.hex_center(c).distance_to(global_position) <= r:
+			return true
+	return false
+
+
+## The prompt about the watering can: "refill" while it fills in the base yard, "refill_go" when
+## Lumi holds it empty anywhere else, "" otherwise.
+func refill_prompt() -> String:
+	if _in_yard and water < water_cap():
+		return "refill"
+	return "refill_go" if tool == Tool.WATER and water <= 0.0 else ""
 
 
 func set_tool(t: int) -> void:
@@ -292,10 +325,10 @@ func _handle_tools(delta: float) -> void:
 			set_tool(Tool.WATER)
 	if _water_cap < 0.0:
 		_water_cap = float(Economy.planet_table("plants").get("water_tank", 30))
-	# Refill at the hub's water barrel (anywhere in the yard).
-	if world and world.field and world.field.hex_at(global_position) >= 0 and world.field.hex_hub[world.field.hex_at(global_position)] == 1:
-		if water < _water_cap:
-			water = minf(_water_cap, water + delta * 8.0)
+	# The can fills anywhere in the base yard (in_base_yard), and the prompt says so (refill_prompt).
+	_in_yard = water < _water_cap and in_base_yard()
+	if _in_yard:
+		water = minf(_water_cap, water + delta * 8.0)
 	if world == null or world.get("garden") == null or _cubing > 0.0:
 		return
 	var g: Garden = world.garden
@@ -322,7 +355,7 @@ func _handle_tools(delta: float) -> void:
 		if water <= 0.0:
 			Audio.play("buzz", 1.0, -12.0)
 			_water_t = 1.5
-			EventBus.toast.emit(tr("Watering can is empty. Refill at the hub."), "info")
+			EventBus.toast.emit(tr("Watering can is empty. It fills in the base yard, by the bin."), "info")
 			return
 		# The old can leaks: a bit is lost with every pour (an upgrade fixes it).
 		water = maxf(0.0, water - (1.0 if GameState.level_of("fix_can") > 0 else 1.3))
@@ -369,14 +402,14 @@ func _handle_scoop(delta: float) -> void:
 			model.shudder(0.12)
 			EventBus.compartment_changed.emit(compartment.fill, cap)  # HUD shakes the meter
 		return
-	# Magnet arm: pull nearby junk toward the scoop.
+	# Magnet arm: a few loose pieces Lumi can lift drift toward the scoop (Pace.magnet_targets).
 	var mag: float = stat("magnet_radius")
 	if mag > 0.0:
 		var field: HexField = world.field  # [orbit] pull along the ground (local up)
-		for pid: int in field.pieces_within(scoop_origin(), stat("scoop_reach") + mag):
+		var pull: float = float(Pace.magnet().get("pull_speed", 0.0)) * delta
+		for pid: int in Pace.magnet_targets(field, field.pieces_within(scoop_origin(), stat("scoop_reach") + mag), scoop_origin(), _tangent):
 			var to_me: Vector3 = _tangent(scoop_origin() - field.piece_pos[pid])
-			if to_me.length() > 0.4:
-				world.view.move_piece(pid, field.piece_pos[pid] + to_me.normalized() * minf(2.5 * delta, to_me.length()))
+			world.view.move_piece(pid, field.piece_pos[pid] + to_me.normalized() * minf(pull, to_me.length()))
 	_scoop_timer -= delta
 	if _scoop_timer > 0.0:
 		return
@@ -632,10 +665,10 @@ func pick_up(c: JunkCube) -> void:
 	c.set_carried(true)
 	c.reparent(_stack_root, true)
 	carried.append(c)
-	var target_y: float = _stack_height(carried.size() - 1)
-	var tw := c.create_tween().set_parallel(true)
-	tw.tween_property(c, "position", Vector3(0, target_y, 0), 0.22).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	tw.tween_property(c, "rotation", Vector3(0, randf_range(-0.15, 0.15), 0), 0.22)
+	# The lift itself is in _update_stack: a carried bale is a frozen body, and a tween's idle-frame
+	# height was thrown away by the next physics frame's write, leaving the bale inside Lumi.
+	_carry_rise.append(c.position.y)
+	c.rotation = Vector3(0, randf_range(-0.15, 0.15), 0)
 	Audio.play("pop", 0.8, -6.0)
 	model.squash(-0.2)
 	c.squish(0.2)
@@ -653,6 +686,7 @@ func pop_carried_cube() -> JunkCube:
 	if carried.is_empty():
 		return null
 	var c: JunkCube = carried.pop_back()
+	_carry_rise.resize(carried.size())
 	# Hand it back to the world's Cubes node so it persists (Depot/stations reparent it again).
 	var root: Node = world.get_node_or_null("Cubes") if world else null
 	c.reparent(root if root else get_tree().current_scene, true)
@@ -704,8 +738,8 @@ func _update_stack(delta: float) -> void:
 	for i: int in carried.size():
 		var c: JunkCube = carried[i]
 		var k: float = float(i + 1) / maxf(carried.size(), 1.0)
-		c.position.x = -_stack_sway.y * k * 0.6 * (i + 1) * 0.5
-		c.position.z = _stack_sway.x * k * 0.6 * (i + 1) * 0.5
+		_carry_rise[i] = lerpf(_carry_rise[i], _stack_height(i), 1.0 - exp(-CARRY_RISE_RATE * delta))
+		c.position = Vector3(-_stack_sway.y * k * 0.6 * (i + 1) * 0.5, _carry_rise[i], _stack_sway.x * k * 0.6 * (i + 1) * 0.5)
 		c.rotation.x = _stack_sway.x * 0.5 * k
 		c.rotation.z = _stack_sway.y * 0.5 * k
 
@@ -732,6 +766,8 @@ func _update_hints(delta: float) -> void:
 		prompt = "dig"
 	if world and world.has_method("interact_prompt") and prompt == "":
 		prompt = world.interact_prompt(self)
+	if prompt == "":
+		prompt = refill_prompt()
 	model.look_toward(look)
 	# Idle: after a while Patch shakes off rust flakes; much later he dozes off.
 	model.sleeping = _idle_time > 45.0

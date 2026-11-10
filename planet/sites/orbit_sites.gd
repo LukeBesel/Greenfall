@@ -91,7 +91,7 @@ func _wire_survey() -> void:
 	picker.name = "RocketPicker"
 	so.w.add_child(picker)
 	picker.entries_fn = destinations
-	picker.blocker_fn = func() -> String: return tr("The rocket is in flight.") if hop.flying or bool(so.w.get("launching")) else ""
+	picker.blocker_fn = hop_blocker
 	picker.picked.connect(func(site: int) -> void: hop_to(site))
 	picker.closed.connect(func() -> void:
 		if not hop.flying:
@@ -133,6 +133,17 @@ func rocket_unlocked() -> bool:
 ## The hub whose pad the rocket stands on (the last landing, else the start site).
 func rocket_site() -> int:
 	return clampi(int(GameState.orbit.get("rocket_site", 0)), 0, maxi(sm.sites.size() - 1, 0)) if sm else 0
+
+
+## "" when the rocket can fly now, else why not: it is in flight, or its energy cells are still
+## recharging from the last hop (RocketTiers; rocket upgrades shorten it).
+func hop_blocker() -> String:
+	if hop.flying or bool(so.w.get("launching")):
+		return tr("The rocket is in flight.")
+	var left: float = RocketTiers.recharge_left()
+	if left > 0.0:
+		return tr("Energy cells recharging: %s. Rocket upgrades refill them faster.") % RocketTiers.fmt_time(left)
+	return ""
 
 
 func rocket_prompt() -> String:
@@ -324,6 +335,8 @@ func hop_to(i: int) -> bool:
 	var from_i: int = sm.nearest if sm.nearest >= 0 else 0
 	var to_i: int = clampi(i, 0, sm.sites.size() - 1)
 	var ok: bool = await hop.hop_with(sm, so.w.get("patch"), so.cam, so.globe.terrain, from_i, to_i)
+	if ok:
+		RocketTiers.mark_launched()  # the hop drained the energy cells: they recharge before the next one
 	print("[hop] hub %d -> %d: %s" % [from_i, to_i, "ok" if ok else "refused"])
 	return ok
 
@@ -335,10 +348,10 @@ func site_of_hub(hub_i: int) -> int:
 
 
 ## Whether the rocket can hop to planet hub `hub_i` now: the hub has a site, the rocket is owned,
-## on the ground and not already standing there.
+## on the ground with full cells and not already standing there.
 func can_hop_to_hub(hub_i: int) -> bool:
 	var site: int = site_of_hub(hub_i)
-	return site >= 0 and site != rocket_site() and not hop.flying and rocket_unlocked()
+	return site >= 0 and site != rocket_site() and hop_blocker() == "" and rocket_unlocked()
 
 
 ## Rocket hop to the site on planet hub `hub_i`, for callers that think in hubs (the play bot).
