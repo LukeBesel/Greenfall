@@ -193,3 +193,38 @@ func test_b4_bench_tiers_wait_only_on_earlier_steps() -> void:
 		assert_eq(str(c[0]), "hub_level", "the Research Desk waits on the base level only")
 		assert_lte(int(c[1]), 2)
 	assert_lt(ids.find("base2"), ids.find("research1"), "base level 2 (the Research Desk's gate) is asked before research")
+
+
+# --- B3: junk laid inside buildings ------------------------------------------------------------
+
+## Points (0.25 m apart) inside a building footprint that the junk keep-out does not block. The
+## footprint stands in its own ground frame at `at`, as the town outskirts add theirs.
+func _keep_out_holes(at: Vector3, half_m: float) -> int:
+	var radius: float = 1840.0
+	var k := YardKeepOut.new()
+	k.radius = radius
+	k.xf_inv = Transform3D(SphereGrid.frame(Vector3.UP), Vector3.UP * radius).affine_inverse()  # a start site far away
+	var fr := Transform3D(SphereGrid.frame(at), at.normalized() * radius)
+	var rect := Rect2(-half_m, -half_m, half_m * 2.0, half_m * 2.0)
+	k.add_world("test", [[fr, rect]])
+	var holes: int = 0
+	var x: float = -half_m + 0.125
+	while x < half_m:
+		var z: float = -half_m + 0.125
+		while z < half_m:
+			if not k.blocks((fr * Vector3(x, 0.0, z)).normalized()):
+				holes += 1
+			z += 0.25
+		x += 0.25
+	return holes
+
+
+## B3: every spot inside a building's footprint keeps junk out. Where it does not, pieces are laid
+## inside the building's collider, out of Lumi's reach, and the hex cannot reach the clean rule
+## (tools/hex_stick_probe.tscn: cell 153095, 5.04% of its junk inside Outskirts/Tile_1_2).
+func test_b3_keep_out_covers_a_whole_building_footprint() -> void:
+	pending("B3 junk keep-out has holes inside building footprints (planet/sites/yard_keep_out.gd add_world / _blocks_world)")
+	return
+	# The outskirts building of the stuck cell, and three more spots round the sphere.
+	for at: Vector3 in [Vector3(1299.2, 155.0, -1299.3), Vector3(1203.4, 310.4, -1362.9), Vector3(700.0, 900.0, 1400.0), Vector3(-1000.0, 20.0, 1500.0)]:
+		assert_eq(_keep_out_holes(at, 12.0), 0, "unblocked spots inside a 24 m footprint at %s" % str(at))

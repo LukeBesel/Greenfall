@@ -67,7 +67,8 @@ func _run() -> void:
 				blocked_vol += f.piece_vol[pid]
 				stats["blocked_pieces"] += 1
 				if DevHooks.has("probe-verbose"):
-					print("[b3]   blocked piece %d (%s, vol %.1f) in cell %d at %s: %s" % [pid, f.piece_model[pid], f.piece_vol[pid], c, str(f.piece_pos[pid].snappedf(0.1)), _what_blocks(f, space, q, f.piece_pos[pid])])
+					print("[b3]   blocked piece %d (%s, vol %.1f) in cell %d at %s: inside_solid=%s nearest_free_spot=%.2f m; %s" % [pid, f.piece_model[pid], f.piece_vol[pid], c,
+							str(f.piece_pos[pid].snappedf(0.1)), str(_inside_solid(space, f.piece_pos[pid])), _nearest_free_m(f, space, q, f.piece_pos[pid]), _what_blocks(f, space, q, f.piece_pos[pid])])
 		stats["pieces"] += n_alive
 		var total: float = f.hex_total[c]
 		var share: float = blocked_vol / total
@@ -118,3 +119,27 @@ func _what_blocks(f: SphereField, space: PhysicsDirectSpaceState3D, q: PhysicsSh
 			var n: Node = hit["collider"] as Node
 			seen[str(n.get_path()).right(70) if n else "?"] = true
 	return ", ".join(seen.keys())
+
+
+## Whether the piece's own spot is inside a solid collider (junk laid under a building or a prop).
+func _inside_solid(space: PhysicsDirectSpaceState3D, pos: Vector3) -> bool:
+	var pq := PhysicsPointQueryParameters3D.new()
+	pq.position = pos + pos.normalized() * 0.3
+	pq.collision_mask = PhysLayers.WORLD | PhysLayers.PROP
+	return not space.intersect_point(pq, 1).is_empty()
+
+
+## Ground distance (m) from `pos` to the nearest spot Lumi's body fits, searched out to 12 m (-1: none).
+func _nearest_free_m(f: SphereField, space: PhysicsDirectSpaceState3D, q: PhysicsShapeQueryParameters3D, pos: Vector3) -> float:
+	var b: Basis = SphereGrid.frame(pos.normalized())
+	for step: int in range(1, 49):
+		var r: float = 0.25 * float(step)
+		for k: int in 24:
+			var a: float = TAU * float(k) / 24.0
+			var d: Vector3 = (pos + (b.x * cos(a) + b.z * sin(a)) * r).normalized()
+			if f.is_water(f.hex_at(d)):
+				continue
+			q.transform = Transform3D(Basis.IDENTITY, f.terrain.ground(d) + d * BODY_UP)
+			if space.intersect_shape(q, 1).is_empty():
+				return r
+	return -1.0
