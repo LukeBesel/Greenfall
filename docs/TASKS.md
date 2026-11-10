@@ -1,6 +1,6 @@
 # Greenfall: Planet 1 tasks
 
-The work list for `docs/PLAN.md`. One row per task. **Kind** is LEAD (the lead does it) or DELEGATE (a subagent does it). A task is done only when its acceptance criteria pass, the code reviewer has approved it and the QA tester has run the suite. Status values: todo, doing, review, done. In progress now (Nov 10): M1-04b, M1-13. Paused, half done: M1-01.
+The work list for `docs/PLAN.md`. One row per task. **Kind** is LEAD (the lead does it) or DELEGATE (a subagent does it). A task is done only when its acceptance criteria pass, the code reviewer has approved it and the QA tester has run the suite. Status values: todo, doing, review, done. In progress now (Nov 10): M1-04b, M1-01.
 
 Every milestone ends with the same gate (not repeated below): full test suite, save round trip, exit check, bot playthrough, engagement review, the dummy-planet reusability test, docs updated, a commit, and a short report to the owner.
 
@@ -24,7 +24,7 @@ Agents: architect (systems-architect-assistant), builder (systems-builder), save
 | M1-10 | Restoration model and ending hook (R1), logic only | builder | DELEGATE | `systems/restoration.gd`, `systems/bloom.gd`, `planets/verdance/data/restoration.json` | M1-02, M1-07 | Planet restoration is computed from district states by a data rule; reaching 100% emits `planet_restored`; no cap from other planets; unit tests |
 | M1-11 | Fix confirmed P1 bugs (B2, B3, B4 and any found in triage) | fixer | DELEGATE | per bug | M1-01 | Each fix has a regression test that failed before it |
 | M1-12 | Fast balance simulator, first version (R12) | balance | DELEGATE | `tools/pace_sim/*`, `docs/PLANET_PLAYBOOK.md` | M1-06 | Runs a full planet model in under 10 s from the planet's data; prints the cadence table from PLAN section 9; reproduces the Nov 9 bot beats within 20% |
-| M1-13 | All six designs match the owner's concept sheet (crescent or smiling eyes, never solid); one eye system; add-ons refitted to the new head. Animation polish is a later task | world | DELEGATE | `player/patch_model.gd`, `player/lumi_style_rig.gd`, `art/shaders/bot_face.gdshader`, `art/models/aurora/designs_addons.py` | - | One eye-shape path; all six designs render with add-ons seated on the head; hero tests pass |
+| M1-13 | All six designs match the owner's concept sheet (crescent or smiling eyes, never solid); one eye system; add-ons refitted to the new head. Animation polish is a later task | world | DELEGATE | `player/patch_model.gd`, `player/lumi_style_rig.gd`, `art/shaders/bot_face.gdshader`, `art/models/aurora/designs_addons.py` | - | **Parked at "pretty close" (owner, Nov 10), merged.** All six designs have their pieces, colours and eyes; add-ons refitted; one eye system; each piece separately wearable. Remaining differences are task M5-13 |
 | M1-14 | Originality audit, pass 1 | review | DELEGATE | whole repo, `docs/ORIGINALITY.md` | - | Every mention of another game removed from code and data; a checklist of elements built "after" a reference (map, workbench, hub hall, terms) with a proposed change for each |
 | M1-15 | Architecture doc rewrite | docs | DELEGATE | `docs/ARCHITECTURE.md` | M1-08 | Describes the target layout as built; old split plan removed |
 
@@ -87,6 +87,7 @@ Agents: architect (systems-architect-assistant), builder (systems-builder), save
 | M5-09 | World art pass on the six districts | world | DELEGATE | `planets/verdance/*`, `art/kit/*` | M3-03 | Each district has its own look for polluted and restored states; open visual bugs B11, B13, B18, B19 closed |
 | M5-10 | Lumi's visible repair stages and rig models | world | DELEGATE | `art/models/aurora/*`, `player/patch_model.gd` | M3-08 | Lumi's wear steps from wrecked to restored with progress; each rig module has a model |
 | M5-11 | Sound replacement plan and hooks | feel | DELEGATE | `docs/AUDIO.md`, `autoload/Audio.gd` | M5-06 | Every event has a named hook; list of sounds that need recorded or licensed replacements |
+| M5-13 | Design polish pass 2 (when the owner returns to character design): wide low pill head and wide visor as in the six portraits, slim crescent-ring eyes, chunkier torso with longer arms and bigger claws, heavier chips and grime, Pixel's crest shape, Nova's glowing torso seams, Patch's satchel at the hip, bigger Sprout leaves; then animation that makes sense | world | DELEGATE | `art/models/aurora/*`, `player/patch_model.gd`, `art/shaders/*` | M1-13 | Side-by-side sheet against `art/concept/lumi_concept.png` with every listed difference closed or explained |
 | M5-12 | Originality audit, pass 2 | review | DELEGATE | `docs/ORIGINALITY.md` | M5-02 to M5-05 | Checklist passes for all rebuilt UI |
 
 ## M6 Engagement pass

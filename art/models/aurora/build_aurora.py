@@ -4,8 +4,9 @@
 # recycling plate and orange latches, short chunky arms with curved claws, a rounded underside with one
 # recessed hover ring; real panel grooves, screws and joint gaps).
 #   blender -b --python art/models/aurora/build_aurora.py
-# DESIGNS=1 also rebuilds designs.glb from designs_addons.py (the unlockable designs' add-ons, still
-# placed for the previous head).
+# DESIGNS=1 also rebuilds designs.glb from designs_addons.py (the unlockable designs' add-ons, placed
+# from this hero's live constants and shell ray-casts). DESIGNS_ONLY=1 (with DESIGNS=1) writes only
+# designs.glb and leaves aurora.glb and its baked mask atlas untouched (no re-bake needed).
 # Everything is modelled in Godot coordinates (Y up, the bot faces -Z) and rotated into Blender's
 # Z-up frame just before export, so the glTF comes out in the same space PatchModel uses.
 # Each exported object is one animated part of PatchModel; its origin is the part's pivot
@@ -840,10 +841,8 @@ print("anchors: head_top", tuple(FIN_BASE), "beacon(head space)", tuple(BEACON -
 
 # ---------------------------------------------------------------- DESIGN ADD-ONS (designs.glb), opt-in
 ACC = {}
-if os.environ.get("DESIGNS"):
-	# Frozen previous-hero constants: designs.glb stays exactly as it was.
-	HC = 0.80
-	S = Vector((0.27, 0.46, -0.01))
+DESIGNS_ONLY = bool(os.environ.get("DESIGNS_ONLY"))
+if os.environ.get("DESIGNS") or DESIGNS_ONLY:
 	exec(open(os.path.join(os.path.dirname(OUT), "designs_addons.py")).read())
 ACC_OBJS = [o for (o, _p) in ACC.values()]
 for name, (o, piv) in ACC.items():
@@ -926,13 +925,14 @@ def bake_ao(targets, hidden):
 
 
 # The hero bakes without any design add-on in the way; each add-on bakes against the hero alone.
-bake_ao([o for o in HERO_OBJS if o.name not in ("finger", "finger_tip")], ACC_OBJS)
+if not DESIGNS_ONLY:
+	bake_ao([o for o in HERO_OBJS if o.name not in ("finger", "finger_tip")], ACC_OBJS)
 for o in ACC_OBJS:
-	if o.name in ("acc_wing", "acc_bfly_body", "acc_gear", "acc_case"):
+	if o.name in ("acc_wing", "acc_bfly_body", "acc_gear", "acc_case", "acc_bottle", "acc_holo"):
 		continue
 	bake_ao([o], [x for x in ACC_OBJS if x is not o])
 
-for o in objs:
+for o in (ACC_OBJS if DESIGNS_ONLY else objs):
 	cur = curvature(o)
 	a = ao.get(o.name)
 	data = o.data.color_attributes["Col"].data
@@ -989,7 +989,8 @@ def unwrap_atlas(group, margin=0.003):
 	bpy.ops.object.mode_set(mode='OBJECT')
 
 
-unwrap_atlas(HERO_OBJS)
+if not DESIGNS_ONLY:
+	unwrap_atlas(HERO_OBJS)
 for o in ACC_OBJS:
 	unwrap(o)
 
@@ -1096,8 +1097,9 @@ def write_glb(path, objects):
 		f.write(bin_data)
 
 
-write_glb(OUT, sorted(HERO_OBJS, key=lambda o: o.name))
-print("exported", OUT)
+if not DESIGNS_ONLY:
+	write_glb(OUT, sorted(HERO_OBJS, key=lambda o: o.name))
+	print("exported", OUT)
 if ACC_OBJS:
 	OUT_DESIGNS = os.path.join(os.path.dirname(OUT), "designs.glb")
 	write_glb(OUT_DESIGNS, sorted(ACC_OBJS, key=lambda o: o.name))
@@ -1109,7 +1111,8 @@ print("hero tris (fingers/tips once):", tris, sorted(((len(o.data.loop_triangles
 if os.environ.get("PREVIEW"):
 	cols = {"paint": (0.8, 0.78, 0.74), "trim": (0.08, 0.085, 0.095), "accent": (0.9, 0.4, 0.08), "dark": (0.05, 0.05, 0.055),
 		"steel": (0.5, 0.5, 0.5), "glow": (0.3, 0.9, 1.0), "lamp_accent": (1.0, 0.6, 0.2), "screen": (0.01, 0.01, 0.01),
-		"face": (0.01, 0.01, 0.012), "paddle": (0.95, 0.66, 0.2), "paddle_edge": (1.0, 0.8, 0.45), "latch": (0.95, 0.42, 0.02), "cable": (0.12, 0.12, 0.13), "plate": (0.85, 0.83, 0.78), "fin": (0.55, 0.57, 0.6), "claw": (0.3, 0.31, 0.33), "glow_soft": (0.3, 0.9, 1.0), "thruster": (0.3, 0.9, 1.0), "thruster_core": (0.6, 1.0, 1.0)}
+		"face": (0.01, 0.01, 0.012), "paddle": (0.95, 0.66, 0.2), "paddle_edge": (1.0, 0.8, 0.45), "latch": (0.95, 0.42, 0.02), "cable": (0.12, 0.12, 0.13), "plate": (0.85, 0.83, 0.78), "fin": (0.55, 0.57, 0.6), "claw": (0.3, 0.31, 0.33), "glow_soft": (0.3, 0.9, 1.0), "thruster": (0.3, 0.9, 1.0), "thruster_core": (0.6, 1.0, 1.0),
+		"leaf": (0.3, 0.6, 0.15), "leaf_vein": (0.2, 0.4, 0.1), "moss": (0.22, 0.33, 0.1), "decal": (0.9, 0.9, 0.85), "case": (0.6, 0.3, 0.1)}
 	for name, m in MATS.items():
 		b = m.node_tree.nodes["Principled BSDF"]
 		b.inputs["Base Color"].default_value = (*cols.get(name, (0.5, 0.5, 0.5)), 1)
@@ -1117,7 +1120,19 @@ if os.environ.get("PREVIEW"):
 		if name in ("glow", "glow_soft", "lamp_accent", "thruster", "thruster_core", "paddle_edge", "latch"):
 			b.inputs["Emission Color"].default_value = (*cols[name], 1)
 			b.inputs["Emission Strength"].default_value = 4.0
-	# Instance fingers onto the right wrist only (rough) for the preview.
+	# PREVIEW_DESIGN=<id> shows only that design's head/body add-ons (held props sit at the origin,
+	# so they stay hidden), and hides the fin where the design has none.
+	pd = os.environ.get("PREVIEW_DESIGN", "")
+	if pd:
+		keep = {"bolt": ["acc_pad_r", "acc_pad_l", "acc_ear_nut", "acc_panels"], "sprout": ["acc_sprout", "acc_moss", "acc_ear_leaf", "acc_icon_leaf"],
+			"pixel": ["acc_pixel", "acc_twotone", "acc_ear_heart"], "nova": ["acc_catears", "acc_seams"], "patch": ["acc_toolbox", "acc_radio", "acc_icon_cross"]}.get(pd, [])
+		for o in objs:
+			if o.name.startswith("acc_") and o.name not in keep:
+				o.hide_render = True
+			if o.name in ("finger", "finger_tip") or (o.name == "antenna" and pd in ("sprout", "pixel", "nova")):
+				o.hide_render = True
+			if o.name == "icon_recycle" and pd in ("sprout", "patch"):
+				o.hide_render = True
 	scene.cycles.samples = 24
 	scene.cycles.use_denoising = False
 	scene.render.resolution_x = 640

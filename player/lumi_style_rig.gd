@@ -1,9 +1,9 @@
 class_name LumiStyleRig
 extends Node3D
 ## [style] The Character Builder layer on a PatchModel (added by LumiStyle.after_build, freed with
-## the model's other children on every rebuild). Draws what the hero model does not have natively:
-##   - eye shapes round / visor bar / hearts: a next_pass (art/shaders/lumi_eyes.gdshader) on the
-##     visor's face material, with bot_face's own eyes hidden; look/blink/happy copied each frame
+## the model's other children on every rebuild). Draws what the hero model does not have natively
+## (eye shapes are NOT here: every shape is drawn by the face shader, art/shaders/bot_face.gdshader,
+## which PatchModel sets from the style's eye_shape):
 ##   - the heart chest icon (acc_icon_heart from the add-on library, else a glowing quad)
 ##   - head pieces, held items and companions that are not PatchModel acc ids: the first mesh
 ##     named in the option's "parts" found in aurora.glb / designs.glb, else a small procedural
@@ -12,8 +12,6 @@ extends Node3D
 
 var model: Node3D
 var style: Dictionary = {}
-var _face: ShaderMaterial
-var _eyes: ShaderMaterial
 var _icon_mat: ShaderMaterial
 var _halo: Node3D
 var _comp: Node3D
@@ -29,22 +27,6 @@ func setup(m: Node3D, s: Dictionary) -> void:
 	model = m
 	style = s
 	_seed = randf() * 10.0
-	_face = model.get("_face_mat") as ShaderMaterial
-	var shape: String = str(s.get("eye_shape", "crescent"))
-	if _face and LumiStyle.OVERLAY_SHAPES.has(shape):
-		_eyes = ShaderMaterial.new()
-		_eyes.shader = preload("res://art/shaders/lumi_eyes.gdshader")
-		_eyes.set_shader_parameter("shape", int(LumiStyle.OVERLAY_SHAPES[shape]))
-		for k: String in ["half_height", "eye_spacing"]:
-			var v: Variant = _face.get_shader_parameter(k)
-			if v != null:
-				_eyes.set_shader_parameter(k, v)
-		var r: Variant = _face.get_shader_parameter("eye_radius")
-		if r != null and float(r) > 0.0:
-			_eyes.set_shader_parameter("eye_radius", r)
-		_face.next_pass = _eyes
-		_face.set_shader_parameter("eye_radius", -1.0)  # hides bot_face's own C eyes
-		_sync_face()
 	if str(s.get("chest", "")) == "heart":
 		_build_heart_icon()
 	for slot: String in ["head", "held", "companion"]:
@@ -57,8 +39,6 @@ func setup(m: Node3D, s: Dictionary) -> void:
 
 func restyle(s: Dictionary) -> void:
 	style = s
-	if _eyes:
-		_eyes.set_shader_parameter("eye_color", LumiStyle.col(s, "eyes"))
 	if _icon_mat:
 		_icon_mat.set_shader_parameter("col", LumiStyle.col(s, "glow"))
 	if _drone_eye:
@@ -343,22 +323,8 @@ func _build_drone(d: Node3D) -> void:
 
 # --- Per frame --------------------------------------------------------------------------------
 
-func _sync_face() -> void:
-	if _eyes == null or _face == null:
-		return
-	for k: String in ["look", "happy", "blink", "wink", "energy"]:
-		var v: Variant = _face.get_shader_parameter(k)
-		if v != null:
-			_eyes.set_shader_parameter(k, v)
-	# Photo mode tints the eyes (dim / sleepy) through eye_color on the face material.
-	var ec: Variant = _face.get_shader_parameter("eye_color")
-	if ec is Color:
-		_eyes.set_shader_parameter("eye_color", ec)
-
-
 func _process(delta: float) -> void:
 	_t += delta
-	_sync_face()
 	if _halo:
 		_halo.rotation.y = _t * 0.6
 		_halo.position.y = 0.6 + sin(_t * 1.7) * 0.008
