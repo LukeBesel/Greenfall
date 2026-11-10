@@ -1329,7 +1329,7 @@ msgstr "AVANT-POSTE %d · Niv%d"
 msgid "OUTPOST %d · RUIN"
 msgstr "AVANT-POSTE %d · RUINE"
 
-#: scenes/slice_orbit.gd:449 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:572
+#: scenes/slice_orbit.gd:449 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:575
 msgid "E   Fix the workbench"
 msgstr "E   Réparer l'établi"
 
@@ -3089,7 +3089,7 @@ msgstr "%s fredonne pour les semis. La retraite lui va bien."
 msgid "%s points proudly at a new bud."
 msgstr "%s montre fièrement un nouveau bourgeon."
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:593
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:596
 msgid "E   CD player: %s"
 msgstr "E   Lecteur CD : %s"
 

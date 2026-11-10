@@ -1327,7 +1327,7 @@ msgstr "前哨 %d · %d级"
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨 %d · 废墟"
 
-#: scenes/slice_orbit.gd:449 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:572
+#: scenes/slice_orbit.gd:449 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:575
 msgid "E   Fix the workbench"
 msgstr "E   修理工作台"
 
@@ -3081,7 +3081,7 @@ msgstr "%s 对着幼苗哼歌。退休生活很适合它。"
 msgid "%s points proudly at a new bud."
 msgstr "%s 骄傲地指着一个新花苞。"
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:593
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:596
 msgid "E   CD player: %s"
 msgstr "E   CD 播放机：%s"
 

@@ -1324,7 +1324,7 @@ msgstr ""
 msgid "OUTPOST %d · RUIN"
 msgstr ""
 
-#: scenes/slice_orbit.gd:449 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:572
+#: scenes/slice_orbit.gd:449 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:575
 msgid "E   Fix the workbench"
 msgstr ""
 
@@ -3063,7 +3063,7 @@ msgstr ""
 msgid "%s points proudly at a new bud."
 msgstr ""
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:593
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:596
 msgid "E   CD player: %s"
 msgstr ""
 
