@@ -1,0 +1,1369 @@
+{
+  "globe": {
+    "area_km2": 42.5673967992,
+    "biomes_land": {
+      "cradle_landing": 19,
+      "dust_dunes": 14625,
+      "dust_flats": 19,
+      "frostcap": 6549,
+      "frozen_port": 19,
+      "fungal_marsh": 12210,
+      "lake": 18,
+      "neon_coast": 4769,
+      "old_capital": 631,
+      "rustlands": 80817,
+      "sprawl": 3214,
+      "sunken_city": 10
+    },
+    "cells": 163842,
+    "hex_metrics": {
+      "corner_m": 10.0338512607015,
+      "spacing_m": 17.3480580309053
+    },
+    "hub_mean_spacing_m": 1706.04839963141,
+    "hub_min_spacing_m": 1594.00717405945,
+    "land": 122900,
+    "mean_junk_land": 0.996859235150529,
+    "radius_m": 1840.49064316377,
+    "survey_cities": 24,
+    "survey_city_cells": 3941,
+    "water": 40942
+  },
+  "hubs": [
+    {
+      "bands": [
+        {
+          "cells": 126,
+          "hub_ground_share": 0.00793650793650794,
+          "junk_cells_sampled": 73,
+          "pieces_max": 200,
+          "pieces_min": 78,
+          "pieces_per_cell": 195.328767123288,
+          "rings": [
+            1,
+            6
+          ],
+          "water_share": 0.412698412698413
+        },
+        {
+          "cells": 342,
+          "hub_ground_share": 0.0116959064327485,
+          "junk_cells_sampled": 70,
+          "pieces_max": 200,
+          "pieces_min": 65,
+          "pieces_per_cell": 193.971428571429,
+          "rings": [
+            7,
+            12
+          ],
+          "water_share": 0.611111111111111
+        },
+        {
+          "cells": 558,
+          "hub_ground_share": 0.0,
+          "junk_cells_sampled": 70,
+          "pieces_max": 200,
+          "pieces_min": 0,
+          "pieces_per_cell": 190.585714285714,
+          "rings": [
+            13,
+            18
+          ],
+          "water_share": 0.67741935483871
+        }
+      ],
+      "biome": "neon_coast",
+      "block_count": 22,
+      "blocks": {
+        "BUILDINGS": 17,
+        "HUB": 1,
+        "LANDFILL": 3,
+        "PARKING": 1
+      },
+      "district_name": "",
+      "from_start_m": 0.0,
+      "from_start_xz": [
+        0.0,
+        0.0
+      ],
+      "furniture": {
+        "benches": 63,
+        "bins": 56,
+        "boats": 6,
+        "bollards": 6,
+        "bus_stops": 6,
+        "crossings": 86,
+        "name_posts": 8,
+        "piers": 4,
+        "post_boxes": 23,
+        "quay": 183,
+        "quay_lamps": 29,
+        "ship": 1,
+        "stop_signs": 3,
+        "traffic_lights": 3,
+        "wrecks": 46
+      },
+      "furniture_total": 523,
+      "index": 0,
+      "kind": "start",
+      "labels": 8,
+      "landmark_prop": "water_tower",
+      "lights": 8,
+      "mesh_instances": 161,
+      "multimeshes": 119,
+      "nearest_hub_m": 1594.0,
+      "outskirts": {
+        "buildings": 211,
+        "footprints": 211,
+        "lots": 51,
+        "skipped_slope": 0,
+        "skipped_wet": 666,
+        "tallest": 29,
+        "tiles": 23
+      },
+      "pad_blend_m": 40.0,
+      "pad_buildings": 79,
+      "pad_factory_style": 19,
+      "pad_flat_m": 140.0,
+      "pad_floors": {
+        "max": 26,
+        "median": 6,
+        "min": 3
+      },
+      "pad_ruined": 15,
+      "site_id": "start_yard",
+      "street_grid_reach_m": 119.0,
+      "town_r_m": 136.0,
+      "wreck_landmarks_in_sampled_cells": {
+        "Barrel_01": 7,
+        "concrete_road_barrier": 7,
+        "covered_car": 4,
+        "dead_tree_trunk": 7,
+        "electric_stove": 11,
+        "exterior_aircon_unit": 3,
+        "metal_trash_can": 5,
+        "plastic_monobloc_chair_01": 8,
+        "propane_tank": 2
+      }
+    },
+    {
+      "bands": [
+        {
+          "cells": 126,
+          "hub_ground_share": 0.587301587301587,
+          "junk_cells_sampled": 52,
+          "pieces_max": 200,
+          "pieces_min": 193,
+          "pieces_per_cell": 199.865384615385,
+          "rings": [
+            1,
+            6
+          ],
+          "water_share": 0.0
+        },
+        {
+          "cells": 342,
+          "hub_ground_share": 0.00292397660818713,
+          "junk_cells_sampled": 70,
+          "pieces_max": 200,
+          "pieces_min": 0,
+          "pieces_per_cell": 190.714285714286,
+          "rings": [
+            7,
+            12
+          ],
+          "water_share": 0.0
+        },
+        {
+          "cells": 558,
+          "hub_ground_share": 0.0,
+          "junk_cells_sampled": 70,
+          "pieces_max": 200,
+          "pieces_min": 0,
+          "pieces_per_cell": 188.385714285714,
+          "rings": [
+            13,
+            18
+          ],
+          "water_share": 0.0
+        }
+      ],
+      "biome": "sprawl",
+      "block_count": 21,
+      "blocks": {
+        "BUILDINGS": 20,
+        "HUB": 1
+      },
+      "district_name": "",
+      "from_start_m": 5560.0,
+      "from_start_xz": [
+        -4063.0,
+        3796.0
+      ],
+      "furniture": {
+        "benches": 48,
+        "bins": 64,
+        "bus_stops": 13,
+        "crossings": 88,
+        "name_posts": 12,
+        "post_boxes": 20,
+        "stop_signs": 8,
+        "wrecks": 58
+      },
+      "furniture_total": 311,
+      "index": 1,
+      "kind": "downtown",
+      "labels": 15,
+      "landmark_prop": "crane",
+      "lights": 8,
+      "mesh_instances": 249,
+      "multimeshes": 112,
+      "nearest_hub_m": 1860.0,
+      "outskirts": {
+        "buildings": 873,
+        "footprints": 873,
+        "lots": 35,
+        "skipped_slope": 1,
+        "skipped_wet": 0,
+        "tallest": 34,
+        "tiles": 64
+      },
+      "pad_blend_m": 40.0,
+      "pad_buildings": 129,
+      "pad_factory_style": 0,
+      "pad_flat_m": 120.0,
+      "pad_floors": {
+        "max": 30,
+        "median": 10,
+        "min": 3
+      },
+      "pad_ruined": 43,
+      "site_id": "ruin_block",
+      "street_grid_reach_m": 83.0,
+      "town_r_m": 116.0,
+      "wreck_landmarks_in_sampled_cells": {
+        "Barrel_01": 11,
+        "concrete_road_barrier": 9,
+        "covered_car": 5,
+        "dead_tree_trunk": 6,
+        "electric_stove": 4,
+        "exterior_aircon_unit": 7,
+        "metal_trash_can": 6,
+        "plastic_monobloc_chair_01": 11,
+        "propane_tank": 5
+      }
+    },
+    {
+      "bands": [
+        {
+          "cells": 126,
+          "hub_ground_share": 0.333333333333333,
+          "junk_cells_sampled": 37,
+          "pieces_max": 200,
+          "pieces_min": 200,
+          "pieces_per_cell": 200.0,
+          "rings": [
+            1,
+            6
+          ],
+          "water_share": 0.373015873015873
+        },
+        {
+          "cells": 342,
+          "hub_ground_share": 0.0,
+          "junk_cells_sampled": 70,
+          "pieces_max": 200,
+          "pieces_min": 0,
+          "pieces_per_cell": 189.585714285714,
+          "rings": [
+            7,
+            12
+          ],
+          "water_share": 0.494152046783626
+        },
+        {
+          "cells": 558,
+          "hub_ground_share": 0.0,
+          "junk_cells_sampled": 70,
+          "pieces_max": 200,
+          "pieces_min": 0,
+          "pieces_per_cell": 184.342857142857,
+          "rings": [
+            13,
+            18
+          ],
+          "water_share": 0.419354838709677
+        }
+      ],
+      "biome": "rustlands",
+      "block_count": 15,
+      "blocks": {
+        "BUILDINGS": 10,
+        "HUB": 1,
+        "LANDFILL": 2,
+        "VACANT": 2
+      },
+      "district_name": "",
+      "from_start_m": 2879.0,
+      "from_start_xz": [
+        -2398.0,
+        -1593.0
+      ],
+      "furniture": {
+        "benches": 39,
+        "bins": 34,
+        "boats": 10,
+        "bollards": 11,
+        "bus_stops": 6,
+        "crossings": 60,
+        "name_posts": 9,
+        "piers": 4,
+        "post_boxes": 18,
+        "quay": 107,
+        "quay_lamps": 16,
+        "stop_signs": 2,
+        "traffic_lights": 4,
+        "wrecks": 38
+      },
+      "furniture_total": 358,
+      "index": 2,
+      "kind": "harbour",
+      "labels": 15,
+      "landmark_prop": "ferris_wheel",
+      "lights": 8,
+      "mesh_instances": 185,
+      "multimeshes": 187,
+      "nearest_hub_m": 1602.0,
+      "outskirts": {
+        "buildings": 434,
+        "footprints": 434,
+        "lots": 45,
+        "skipped_slope": 0,
+        "skipped_wet": 388,
+        "tallest": 16,
+        "tiles": 42
+      },
+      "pad_blend_m": 40.0,
+      "pad_buildings": 54,
+      "pad_factory_style": 22,
+      "pad_flat_m": 120.0,
+      "pad_floors": {
+        "max": 8,
+        "median": 4,
+        "min": 2
+      },
+      "pad_ruined": 21,
+      "site_id": "ruin_block",
+      "street_grid_reach_m": 83.0,
+      "town_r_m": 116.0,
+      "wreck_landmarks_in_sampled_cells": {
+        "Barrel_01": 9,
+        "concrete_road_barrier": 17,
+        "covered_car": 8,
+        "dead_tree_trunk": 12,
+        "electric_stove": 3,
+        "exterior_aircon_unit": 1,
+        "metal_trash_can": 8,
+        "plastic_monobloc_chair_01": 7,
+        "propane_tank": 5
+      }
+    },
+    {
+      "bands": [
+        {
+          "cells": 126,
+          "hub_ground_share": 0.531746031746032,
+          "junk_cells_sampled": 45,
+          "pieces_max": 200,
+          "pieces_min": 196,
+          "pieces_per_cell": 199.888888888889,
+          "rings": [
+            1,
+            6
+          ],
+          "water_share": 0.111111111111111
+        },
+        {
+          "cells": 342,
+          "hub_ground_share": 0.0,
+          "junk_cells_sampled": 70,
+          "pieces_max": 200,
+          "pieces_min": 32,
+          "pieces_per_cell": 187.9,
+          "rings": [
+            7,
+            12
+          ],
+          "water_share": 0.225146198830409
+        },
+        {
+          "cells": 537,
+          "hub_ground_share": 0.0,
+          "junk_cells_sampled": 70,
+          "pieces_max": 200,
+          "pieces_min": 0,
+          "pieces_per_cell": 191.7,
+          "rings": [
+            13,
+            18
+          ],
+          "water_share": 0.206703910614525
+        }
+      ],
+      "biome": "rustlands",
+      "block_count": 18,
+      "blocks": {
+        "BUILDINGS": 16,
+        "HUB": 1,
+        "VACANT": 1
+      },
+      "district_name": "",
+      "from_start_m": 3203.0,
+      "from_start_xz": [
+        3202.0,
+        76.0
+      ],
+      "furniture": {
+        "benches": 44,
+        "bins": 51,
+        "boats": 10,
+        "bollards": 6,
+        "bus_stops": 9,
+        "crossings": 75,
+        "name_posts": 13,
+        "piers": 4,
+        "post_boxes": 13,
+        "quay": 73,
+        "quay_lamps": 11,
+        "stop_signs": 5,
+        "traffic_lights": 1,
+        "wrecks": 38
+      },
+      "furniture_total": 353,
+      "index": 3,
+      "kind": "harbour",
+      "labels": 15,
+      "landmark_prop": "radio_mast",
+      "lights": 8,
+      "mesh_instances": 222,
+      "multimeshes": 188,
+      "nearest_hub_m": 1691.0,
+      "outskirts": {
+        "buildings": 609,
+        "footprints": 609,
+        "lots": 47,
+        "skipped_slope": 1,
+        "skipped_wet": 225,
+        "tallest": 15,
+        "tiles": 54
+      },
+      "pad_blend_m": 40.0,
+      "pad_buildings": 104,
+      "pad_factory_style": 44,
+      "pad_flat_m": 120.0,
+      "pad_floors": {
+        "max": 14,
+        "median": 4,
+        "min": 2
+      },
+      "pad_ruined": 36,
+      "site_id": "ruin_block",
+      "street_grid_reach_m": 83.0,
+      "town_r_m": 116.0,
+      "wreck_landmarks_in_sampled_cells": {
+        "Barrel_01": 6,
+        "concrete_road_barrier": 8,
+        "covered_car": 3,
+        "dead_tree_trunk": 5,
+        "electric_stove": 2,
+        "exterior_aircon_unit": 4,
+        "metal_trash_can": 9,
+        "plastic_monobloc_chair_01": 3,
+        "propane_tank": 8
+      }
+    },
+    {
+      "bands": [
+        {
+          "cells": 126,
+          "hub_ground_share": 0.5,
+          "junk_cells_sampled": 63,
+          "pieces_max": 200,
+          "pieces_min": 196,
+          "pieces_per_cell": 199.904761904762,
+          "rings": [
+            1,
+            6
+          ],
+          "water_share": 0.0
+        },
+        {
+          "cells": 342,
+          "hub_ground_share": 0.0,
+          "junk_cells_sampled": 70,
+          "pieces_max": 200,
+          "pieces_min": 0,
+          "pieces_per_cell": 193.528571428571,
+          "rings": [
+            7,
+            12
+          ],
+          "water_share": 0.0
+        },
+        {
+          "cells": 558,
+          "hub_ground_share": 0.0,
+          "junk_cells_sampled": 70,
+          "pieces_max": 200,
+          "pieces_min": 0,
+          "pieces_per_cell": 192.685714285714,
+          "rings": [
+            13,
+            18
+          ],
+          "water_share": 0.0
+        }
+      ],
+      "biome": "frostcap",
+      "block_count": 21,
+      "blocks": {
+        "BUILDINGS": 14,
+        "HUB": 1,
+        "PARKING": 3,
+        "VACANT": 3
+      },
+      "district_name": "",
+      "from_start_m": 2655.0,
+      "from_start_xz": [
+        -435.0,
+        2620.0
+      ],
+      "furniture": {
+        "benches": 55,
+        "bins": 65,
+        "bollards": 24,
+        "bus_stops": 8,
+        "crossings": 88,
+        "name_posts": 14,
+        "post_boxes": 28,
+        "stop_signs": 3,
+        "traffic_lights": 5,
+        "wrecks": 58
+      },
+      "furniture_total": 348,
+      "index": 4,
+      "kind": "industrial",
+      "labels": 15,
+      "landmark_prop": "smokestack",
+      "lights": 8,
+      "mesh_instances": 239,
+      "multimeshes": 176,
+      "nearest_hub_m": 2101.0,
+      "outskirts": {
+        "buildings": 568,
+        "footprints": 568,
+        "lots": 69,
+        "skipped_slope": 2,
+        "skipped_wet": 0,
+        "tallest": 5,
+        "tiles": 62
+      },
+      "pad_blend_m": 40.0,
+      "pad_buildings": 88,
+      "pad_factory_style": 81,
+      "pad_flat_m": 120.0,
+      "pad_floors": {
+        "max": 5,
+        "median": 3,
+        "min": 2
+      },
+      "pad_ruined": 38,
+      "site_id": "ruin_block",
+      "street_grid_reach_m": 83.0,
+      "town_r_m": 116.0,
+      "wreck_landmarks_in_sampled_cells": {
+        "Barrel_01": 10,
+        "concrete_road_barrier": 4,
+        "covered_car": 4,
+        "dead_tree_trunk": 10,
+        "electric_stove": 6,
+        "exterior_aircon_unit": 8,
+        "metal_trash_can": 4,
+        "plastic_monobloc_chair_01": 9,
+        "propane_tank": 8
+      }
+    },
+    {
+      "bands": [
+        {
+          "cells": 126,
+          "hub_ground_share": 0.492063492063492,
+          "junk_cells_sampled": 64,
+          "pieces_max": 200,
+          "pieces_min": 198,
+          "pieces_per_cell": 199.953125,
+          "rings": [
+            1,
+            6
+          ],
+          "water_share": 0.0
+        },
+        {
+          "cells": 342,
+          "hub_ground_share": 0.0,
+          "junk_cells_sampled": 70,
+          "pieces_max": 200,
+          "pieces_min": 6,
+          "pieces_per_cell": 189.457142857143,
+          "rings": [
+            7,
+            12
+          ],
+          "water_share": 0.0233918128654971
+        },
+        {
+          "cells": 558,
+          "hub_ground_share": 0.0,
+          "junk_cells_sampled": 70,
+          "pieces_max": 200,
+          "pieces_min": 52,
+          "pieces_per_cell": 190.785714285714,
+          "rings": [
+            13,
+            18
+          ],
+          "water_share": 0.197132616487455
+        }
+      ],
+      "biome": "sprawl",
+      "block_count": 21,
+      "blocks": {
+        "BUILDINGS": 20,
+        "HUB": 1
+      },
+      "district_name": "",
+      "from_start_m": 2359.0,
+      "from_start_xz": [
+        189.0,
+        -2351.0
+      ],
+      "furniture": {
+        "benches": 49,
+        "bins": 61,
+        "bus_stops": 11,
+        "crossings": 88,
+        "name_posts": 13,
+        "post_boxes": 20,
+        "stop_signs": 4,
+        "traffic_lights": 3,
+        "wrecks": 44
+      },
+      "furniture_total": 293,
+      "index": 5,
+      "kind": "oldtown",
+      "labels": 16,
+      "landmark_prop": "old_bus",
+      "lights": 8,
+      "mesh_instances": 240,
+      "multimeshes": 161,
+      "nearest_hub_m": 1614.0,
+      "outskirts": {
+        "buildings": 823,
+        "footprints": 823,
+        "lots": 50,
+        "skipped_slope": 0,
+        "skipped_wet": 237,
+        "tallest": 7,
+        "tiles": 60
+      },
+      "pad_blend_m": 40.0,
+      "pad_buildings": 124,
+      "pad_factory_style": 13,
+      "pad_flat_m": 120.0,
+      "pad_floors": {
+        "max": 6,
+        "median": 3,
+        "min": 2
+      },
+      "pad_ruined": 51,
+      "site_id": "ruin_block",
+      "street_grid_reach_m": 83.0,
+      "town_r_m": 116.0,
+      "wreck_landmarks_in_sampled_cells": {
+        "Barrel_01": 5,
+        "concrete_road_barrier": 10,
+        "covered_car": 6,
+        "dead_tree_trunk": 4,
+        "electric_stove": 6,
+        "exterior_aircon_unit": 4,
+        "metal_trash_can": 7,
+        "plastic_monobloc_chair_01": 12,
+        "propane_tank": 8
+      }
+    },
+    {
+      "bands": [
+        {
+          "cells": 126,
+          "hub_ground_share": 0.484126984126984,
+          "junk_cells_sampled": 44,
+          "pieces_max": 200,
+          "pieces_min": 199,
+          "pieces_per_cell": 199.977272727273,
+          "rings": [
+            1,
+            6
+          ],
+          "water_share": 0.166666666666667
+        },
+        {
+          "cells": 342,
+          "hub_ground_share": 0.0,
+          "junk_cells_sampled": 70,
+          "pieces_max": 200,
+          "pieces_min": 88,
+          "pieces_per_cell": 197.657142857143,
+          "rings": [
+            7,
+            12
+          ],
+          "water_share": 0.371345029239766
+        },
+        {
+          "cells": 558,
+          "hub_ground_share": 0.0,
+          "junk_cells_sampled": 70,
+          "pieces_max": 200,
+          "pieces_min": 0,
+          "pieces_per_cell": 182.942857142857,
+          "rings": [
+            13,
+            18
+          ],
+          "water_share": 0.473118279569892
+        }
+      ],
+      "biome": "sprawl",
+      "block_count": 18,
+      "blocks": {
+        "BUILDINGS": 14,
+        "HUB": 1,
+        "LANDFILL": 3
+      },
+      "district_name": "",
+      "from_start_m": 4114.0,
+      "from_start_xz": [
+        1122.0,
+        -3958.0
+      ],
+      "furniture": {
+        "benches": 46,
+        "bins": 57,
+        "boats": 7,
+        "bollards": 3,
+        "bus_stops": 9,
+        "crossings": 75,
+        "name_posts": 12,
+        "piers": 4,
+        "post_boxes": 16,
+        "quay": 74,
+        "quay_lamps": 11,
+        "stop_signs": 5,
+        "traffic_lights": 1,
+        "wrecks": 50
+      },
+      "furniture_total": 370,
+      "index": 6,
+      "kind": "harbour",
+      "labels": 16,
+      "landmark_prop": "water_tower",
+      "lights": 8,
+      "mesh_instances": 180,
+      "multimeshes": 187,
+      "nearest_hub_m": 1788.0,
+      "outskirts": {
+        "buildings": 326,
+        "footprints": 326,
+        "lots": 52,
+        "skipped_slope": 0,
+        "skipped_wet": 402,
+        "tallest": 15,
+        "tiles": 35
+      },
+      "pad_blend_m": 40.0,
+      "pad_buildings": 84,
+      "pad_factory_style": 37,
+      "pad_flat_m": 120.0,
+      "pad_floors": {
+        "max": 10,
+        "median": 4,
+        "min": 2
+      },
+      "pad_ruined": 36,
+      "site_id": "ruin_block",
+      "street_grid_reach_m": 83.0,
+      "town_r_m": 116.0,
+      "wreck_landmarks_in_sampled_cells": {
+        "Barrel_01": 14,
+        "concrete_road_barrier": 9,
+        "covered_car": 4,
+        "dead_tree_trunk": 7,
+        "electric_stove": 2,
+        "exterior_aircon_unit": 7,
+        "metal_trash_can": 5,
+        "plastic_monobloc_chair_01": 5,
+        "propane_tank": 3
+      }
+    },
+    {
+      "bands": [
+        {
+          "cells": 126,
+          "hub_ground_share": 0.5,
+          "junk_cells_sampled": 63,
+          "pieces_max": 200,
+          "pieces_min": 194,
+          "pieces_per_cell": 199.873015873016,
+          "rings": [
+            1,
+            6
+          ],
+          "water_share": 0.0
+        },
+        {
+          "cells": 342,
+          "hub_ground_share": 0.0,
+          "junk_cells_sampled": 70,
+          "pieces_max": 200,
+          "pieces_min": 0,
+          "pieces_per_cell": 186.7,
+          "rings": [
+            7,
+            12
+          ],
+          "water_share": 0.0
+        },
+        {
+          "cells": 558,
+          "hub_ground_share": 0.0,
+          "junk_cells_sampled": 70,
+          "pieces_max": 200,
+          "pieces_min": 46,
+          "pieces_per_cell": 188.5,
+          "rings": [
+            13,
+            18
+          ],
+          "water_share": 0.0
+        }
+      ],
+      "biome": "sprawl",
+      "block_count": 21,
+      "blocks": {
+        "BUILDINGS": 15,
+        "HUB": 1,
+        "PARKING": 3,
+        "VACANT": 2
+      },
+      "district_name": "",
+      "from_start_m": 1865.0,
+      "from_start_xz": [
+        1575.0,
+        -997.0
+      ],
+      "furniture": {
+        "benches": 51,
+        "bins": 56,
+        "bollards": 24,
+        "bus_stops": 9,
+        "crossings": 88,
+        "name_posts": 5,
+        "post_boxes": 27,
+        "stop_signs": 8,
+        "traffic_lights": 4,
+        "wrecks": 57
+      },
+      "furniture_total": 329,
+      "index": 7,
+      "kind": "industrial",
+      "labels": 15,
+      "landmark_prop": "crane",
+      "lights": 8,
+      "mesh_instances": 251,
+      "multimeshes": 192,
+      "nearest_hub_m": 1614.0,
+      "outskirts": {
+        "buildings": 544,
+        "footprints": 544,
+        "lots": 71,
+        "skipped_slope": 2,
+        "skipped_wet": 0,
+        "tallest": 5,
+        "tiles": 65
+      },
+      "pad_blend_m": 40.0,
+      "pad_buildings": 92,
+      "pad_factory_style": 77,
+      "pad_flat_m": 120.0,
+      "pad_floors": {
+        "max": 5,
+        "median": 3,
+        "min": 2
+      },
+      "pad_ruined": 50,
+      "site_id": "ruin_block",
+      "street_grid_reach_m": 83.0,
+      "town_r_m": 116.0,
+      "wreck_landmarks_in_sampled_cells": {
+        "Barrel_01": 11,
+        "concrete_road_barrier": 13,
+        "covered_car": 10,
+        "dead_tree_trunk": 6,
+        "electric_stove": 5,
+        "exterior_aircon_unit": 7,
+        "metal_trash_can": 3,
+        "plastic_monobloc_chair_01": 8,
+        "propane_tank": 4
+      }
+    },
+    {
+      "bands": [
+        {
+          "cells": 126,
+          "hub_ground_share": 0.611111111111111,
+          "junk_cells_sampled": 49,
+          "pieces_max": 200,
+          "pieces_min": 190,
+          "pieces_per_cell": 199.775510204082,
+          "rings": [
+            1,
+            6
+          ],
+          "water_share": 0.0
+        },
+        {
+          "cells": 342,
+          "hub_ground_share": 0.0,
+          "junk_cells_sampled": 70,
+          "pieces_max": 200,
+          "pieces_min": 82,
+          "pieces_per_cell": 196.714285714286,
+          "rings": [
+            7,
+            12
+          ],
+          "water_share": 0.0
+        },
+        {
+          "cells": 558,
+          "hub_ground_share": 0.0,
+          "junk_cells_sampled": 70,
+          "pieces_max": 200,
+          "pieces_min": 0,
+          "pieces_per_cell": 184.757142857143,
+          "rings": [
+            13,
+            18
+          ],
+          "water_share": 0.0
+        }
+      ],
+      "biome": "sprawl",
+      "block_count": 21,
+      "blocks": {
+        "BUILDINGS": 18,
+        "HUB": 1,
+        "LANDFILL": 2
+      },
+      "district_name": "",
+      "from_start_m": 3035.0,
+      "from_start_xz": [
+        -2916.0,
+        841.0
+      ],
+      "furniture": {
+        "benches": 60,
+        "bins": 44,
+        "bollards": 11,
+        "bus_stops": 14,
+        "crossings": 88,
+        "name_posts": 9,
+        "post_boxes": 19,
+        "stop_signs": 6,
+        "traffic_lights": 2,
+        "wrecks": 55
+      },
+      "furniture_total": 308,
+      "index": 8,
+      "kind": "downtown",
+      "labels": 15,
+      "landmark_prop": "ferris_wheel",
+      "lights": 8,
+      "mesh_instances": 253,
+      "multimeshes": 158,
+      "nearest_hub_m": 1602.0,
+      "outskirts": {
+        "buildings": 901,
+        "footprints": 901,
+        "lots": 27,
+        "skipped_slope": 1,
+        "skipped_wet": 0,
+        "tallest": 34,
+        "tiles": 68
+      },
+      "pad_blend_m": 40.0,
+      "pad_buildings": 113,
+      "pad_factory_style": 2,
+      "pad_flat_m": 120.0,
+      "pad_floors": {
+        "max": 30,
+        "median": 10,
+        "min": 3
+      },
+      "pad_ruined": 35,
+      "site_id": "ruin_block",
+      "street_grid_reach_m": 83.0,
+      "town_r_m": 116.0,
+      "wreck_landmarks_in_sampled_cells": {
+        "Barrel_01": 14,
+        "concrete_road_barrier": 9,
+        "covered_car": 3,
+        "dead_tree_trunk": 5,
+        "electric_stove": 5,
+        "exterior_aircon_unit": 4,
+        "metal_trash_can": 7,
+        "plastic_monobloc_chair_01": 7,
+        "propane_tank": 4
+      }
+    },
+    {
+      "bands": [
+        {
+          "cells": 126,
+          "hub_ground_share": 0.468253968253968,
+          "junk_cells_sampled": 66,
+          "pieces_max": 200,
+          "pieces_min": 200,
+          "pieces_per_cell": 200.0,
+          "rings": [
+            1,
+            6
+          ],
+          "water_share": 0.00793650793650794
+        },
+        {
+          "cells": 342,
+          "hub_ground_share": 0.00292397660818713,
+          "junk_cells_sampled": 70,
+          "pieces_max": 200,
+          "pieces_min": 132,
+          "pieces_per_cell": 198.228571428571,
+          "rings": [
+            7,
+            12
+          ],
+          "water_share": 0.0935672514619883
+        },
+        {
+          "cells": 558,
+          "hub_ground_share": 0.0,
+          "junk_cells_sampled": 70,
+          "pieces_max": 200,
+          "pieces_min": 175,
+          "pieces_per_cell": 198.971428571429,
+          "rings": [
+            13,
+            18
+          ],
+          "water_share": 0.112903225806452
+        }
+      ],
+      "biome": "rustlands",
+      "block_count": 21,
+      "blocks": {
+        "BUILDINGS": 16,
+        "HUB": 1,
+        "LANDFILL": 4
+      },
+      "district_name": "",
+      "from_start_m": 1594.0,
+      "from_start_xz": [
+        1349.0,
+        849.0
+      ],
+      "furniture": {
+        "benches": 61,
+        "bins": 50,
+        "boats": 8,
+        "bollards": 12,
+        "bus_stops": 14,
+        "crossings": 88,
+        "name_posts": 12,
+        "piers": 4,
+        "post_boxes": 22,
+        "quay": 58,
+        "quay_lamps": 9,
+        "stop_signs": 9,
+        "wrecks": 52
+      },
+      "furniture_total": 399,
+      "index": 9,
+      "kind": "suburb",
+      "labels": 15,
+      "landmark_prop": "radio_mast",
+      "lights": 6,
+      "mesh_instances": 224,
+      "multimeshes": 106,
+      "nearest_hub_m": 1594.0,
+      "outskirts": {
+        "buildings": 379,
+        "footprints": 379,
+        "lots": 45,
+        "skipped_slope": 0,
+        "skipped_wet": 74,
+        "tallest": 2,
+        "tiles": 58
+      },
+      "pad_blend_m": 40.0,
+      "pad_buildings": 41,
+      "pad_factory_style": 1,
+      "pad_flat_m": 120.0,
+      "pad_floors": {
+        "max": 3,
+        "median": 2,
+        "min": 1
+      },
+      "pad_ruined": 11,
+      "site_id": "ruin_block",
+      "street_grid_reach_m": 83.0,
+      "town_r_m": 116.0,
+      "wreck_landmarks_in_sampled_cells": {
+        "Barrel_01": 10,
+        "concrete_road_barrier": 10,
+        "covered_car": 7,
+        "dead_tree_trunk": 7,
+        "electric_stove": 4,
+        "exterior_aircon_unit": 11,
+        "metal_trash_can": 5,
+        "plastic_monobloc_chair_01": 8,
+        "propane_tank": 2
+      }
+    }
+  ],
+  "land": {
+    "archetypes": {
+      "block": 466,
+      "house_a": 20449,
+      "house_b": 11239,
+      "shed": 858,
+      "warehouse": 660,
+      "works": 436
+    },
+    "between_cells_with_nothing": 73185,
+    "between_empty_shore_cells": 6412,
+    "cells": {
+      "between": 111216,
+      "site_pad": 2718,
+      "town_outskirts": 8966,
+      "water": 40942
+    },
+    "cells_materialized": 2406,
+    "has_surroundings": true,
+    "junk_pieces_per_cell": {
+      "industrial": 195.86,
+      "open": 200.0,
+      "suburb": 199.92
+    },
+    "props": {
+      "car": 2127,
+      "fence": 402,
+      "pole": 1066,
+      "tank": 328
+    },
+    "wreck_landmarks_total_materialized": 888,
+    "zone_buildings": {
+      "industrial": 1464,
+      "open": 0,
+      "suburb": 32644
+    },
+    "zone_props": {
+      "industrial": 1059,
+      "open": 1345,
+      "suburb": 1519
+    },
+    "zones": {
+      "industrial": 13332,
+      "open": 40499,
+      "suburb": 57385
+    }
+  },
+  "render_points": {
+    "industrial": {
+      "from_start_m": 1385.0,
+      "land_buildings_100m": 71,
+      "spawn": "-341,-1342"
+    },
+    "open": {
+      "from_start_m": 1545.0,
+      "land_buildings_100m": 0,
+      "spawn": "282,-1519"
+    },
+    "suburb": {
+      "from_start_m": 1392.0,
+      "land_buildings_100m": 84,
+      "spawn": "811,1130"
+    }
+  },
+  "walks": {
+    "east": [
+      {
+        "land_buildings_150m": 0,
+        "land_buildings_60m": 0,
+        "m": 150.0,
+        "on_pad": true,
+        "spawn": "150,0",
+        "town_buildings_150m": 86,
+        "town_buildings_60m": 11,
+        "water": false,
+        "water_share_150m": 0.412587412587413,
+        "zone": "town"
+      },
+      {
+        "land_buildings_150m": 11,
+        "land_buildings_60m": 0,
+        "m": 300.0,
+        "on_pad": false,
+        "spawn": "300,0",
+        "town_buildings_150m": 2,
+        "town_buildings_60m": 0,
+        "water": true,
+        "water_share_150m": 0.741258741258741,
+        "zone": "town"
+      },
+      {
+        "land_buildings_150m": 109,
+        "land_buildings_60m": 23,
+        "m": 600.0,
+        "on_pad": false,
+        "spawn": "600,0",
+        "town_buildings_150m": 0,
+        "town_buildings_60m": 0,
+        "water": false,
+        "water_share_150m": 0.00416666666666667,
+        "zone": "suburb"
+      },
+      {
+        "land_buildings_150m": 107,
+        "land_buildings_60m": 21,
+        "m": 1000.0,
+        "on_pad": false,
+        "spawn": "1000,0",
+        "town_buildings_150m": 0,
+        "town_buildings_60m": 0,
+        "water": false,
+        "water_share_150m": 0.0,
+        "zone": "suburb"
+      }
+    ],
+    "north": [
+      {
+        "land_buildings_150m": 0,
+        "land_buildings_60m": 0,
+        "m": 150.0,
+        "on_pad": true,
+        "spawn": "0,-150",
+        "town_buildings_150m": 62,
+        "town_buildings_60m": 11,
+        "water": true,
+        "water_share_150m": 0.566901408450704,
+        "zone": "town"
+      },
+      {
+        "land_buildings_150m": 0,
+        "land_buildings_60m": 0,
+        "m": 300.0,
+        "on_pad": false,
+        "spawn": "0,-300",
+        "town_buildings_150m": 20,
+        "town_buildings_60m": 0,
+        "water": true,
+        "water_share_150m": 0.823321554770318,
+        "zone": "town"
+      },
+      {
+        "land_buildings_150m": 35,
+        "land_buildings_60m": 4,
+        "m": 600.0,
+        "on_pad": false,
+        "spawn": "0,-600",
+        "town_buildings_150m": 0,
+        "town_buildings_60m": 0,
+        "water": false,
+        "water_share_150m": 0.531914893617021,
+        "zone": "open"
+      },
+      {
+        "land_buildings_150m": 66,
+        "land_buildings_60m": 16,
+        "m": 1000.0,
+        "on_pad": false,
+        "spawn": "0,-1000",
+        "town_buildings_150m": 0,
+        "town_buildings_60m": 0,
+        "water": false,
+        "water_share_150m": 0.213973799126638,
+        "zone": "suburb"
+      }
+    ],
+    "south_west": [
+      {
+        "land_buildings_150m": 0,
+        "land_buildings_60m": 0,
+        "m": 150.0,
+        "on_pad": true,
+        "spawn": "-106,106",
+        "town_buildings_150m": 25,
+        "town_buildings_60m": 0,
+        "water": true,
+        "water_share_150m": 0.792387543252595,
+        "zone": "town"
+      },
+      {
+        "land_buildings_150m": 0,
+        "land_buildings_60m": 0,
+        "m": 300.0,
+        "on_pad": false,
+        "spawn": "-212,212",
+        "town_buildings_150m": 0,
+        "town_buildings_60m": 0,
+        "water": true,
+        "water_share_150m": 1.0,
+        "zone": "town"
+      },
+      {
+        "land_buildings_150m": 34,
+        "land_buildings_60m": 1,
+        "m": 600.0,
+        "on_pad": false,
+        "spawn": "-424,424",
+        "town_buildings_150m": 0,
+        "town_buildings_60m": 0,
+        "water": true,
+        "water_share_150m": 0.597938144329897,
+        "zone": "town"
+      },
+      {
+        "land_buildings_150m": 104,
+        "land_buildings_60m": 21,
+        "m": 1000.0,
+        "on_pad": false,
+        "spawn": "-707,707",
+        "town_buildings_150m": 0,
+        "town_buildings_60m": 0,
+        "water": false,
+        "water_share_150m": 0.0,
+        "zone": "suburb"
+      }
+    ]
+  }
+}
