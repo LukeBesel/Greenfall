@@ -14,6 +14,12 @@ global uniform mat4 site_inv;
 // [v3city] Town outskirts on the globe (planet/sites/town_outskirts.gd): each tile's mesh is built
 // in its own ground frame (y up there), so the maths run in object space instead.
 uniform bool local_space = false;
+// A town coming back to life (a planet's own town material; 0 everywhere else): `lit` 0..1 lights
+// shop windows first, then more and more rooms; `sign_clean` 0..1 washes the shop signs back to
+// their paint and lifts the shutters.
+uniform float lit = 0.0;
+uniform float sign_clean = 0.0;
+uniform vec3 lit_color : source_color = vec3(1.0, 0.78, 0.5);
 
 uniform sampler2D tex_red_brick : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D tex_brick : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
@@ -102,6 +108,7 @@ void fragment() {
 	float rough = 0.9;
 	float metal = 0.0;
 	float spec = 0.4;
+	vec3 emit = vec3(0.0);
 
 	if (kind == 0 || kind == 1) {
 		// Facade (with windows) or plain wall.
@@ -121,12 +128,23 @@ void fragment() {
 				float sign_b = band(f.x, 0.03, 0.97, aa.x) * band(f.y, 0.76, 0.93, aa.y);
 				vec3 sign_c = mix(vec3(0.16, 0.2, 0.26), vec3(0.62, 0.22, 0.16), step(0.5, h21(id + 3.1)));
 				sign_c = mix(sign_c, vec3(0.86, 0.8, 0.66), step(0.75, h21(id + 5.7)));
+				if (sign_clean > 0.0) {
+					// Fresh sign paint: each shop its own strong colour, with a cream lettering band.
+					float sh = h21(id + 3.1);
+					vec3 fresh = sh < 0.25 ? vec3(0.05, 0.42, 0.45) : (sh < 0.5 ? vec3(0.78, 0.14, 0.1) : (sh < 0.75 ? vec3(0.9, 0.6, 0.06) : vec3(0.1, 0.25, 0.55)));
+					float letter = band(f.y, 0.81, 0.88, aa.y) * step(0.35, h21(vec2(floor(f.x * 14.0), id.x + id.y * 3.0))) * band(f.x, 0.14, 0.86, aa.x);
+					fresh = mix(fresh, vec3(0.95, 0.9, 0.78), letter);
+					sign_c = mix(sign_c, fresh, sign_clean);
+				}
 				vec3 g = vec3(0.02, 0.025, 0.03);
-				float shutter = step(0.7, r);
+				float shutter = step(0.7 + sign_clean * 0.22, r);
+				float shop_on = step(1.0 - lit * 1.6, h21(id + 12.7)) * (1.0 - shutter);
+				g = mix(g, lit_color * (0.55 + 0.35 * vnoise(fp * vec2(2.0, 5.0))), shop_on);
 				g = mix(g, vec3(0.42, 0.42, 0.4) * (0.8 + 0.2 * step(0.5, fract(f.y * 18.0))), shutter);
 				alb = mix(alb, frame * 0.7, band(f.x, 0.05, 0.95, aa.x) * band(f.y, 0.02, 0.72, aa.y));
 				alb = mix(alb, g, glass);
 				alb = mix(alb, sign_c, sign_b);
+				emit = lit_color * glass * shop_on * 1.6;
 				rough = mix(rough, mix(0.08, 0.6, shutter), glass);
 				spec = mix(spec, 0.6, glass * (1.0 - shutter));
 			} else {
@@ -160,6 +178,9 @@ void fragment() {
 				}
 				// Reveal shadow under the lintel.
 				g *= mix(0.5, 1.0, smoothstep(0.0, 0.12, wy1 - f.y));
+				float room_on = step(1.0 - max(lit - 0.35, 0.0) * 0.9, h21(id + 21.3)) * step(0.13, r) * step(r, 0.8);
+				g = mix(g, lit_color * 0.8, room_on);
+				emit = lit_color * win * room_on * 1.2;
 				alb = mix(alb, g, win);
 				rough = mix(rough, gr, win);
 				spec = mix(spec, 0.65, win * step(gr, 0.2));
@@ -242,6 +263,13 @@ void fragment() {
 	} else if (kind == 8) {
 		alb = tint;
 		rough = 0.8;
+		// The dark rooms behind a kit facade's windows: some come on with the town's lights.
+		if (!top && lit > 0.0 && tint.r < 0.1) {
+			vec2 rid = floor(vec2(fp.x / BAY, fp.y / FLOOR_H));
+			float on = step(1.0 - lit * (rid.y < 0.5 ? 1.6 : 0.55), h21(rid + 31.9));
+			alb = mix(alb, lit_color * 0.7, on);
+			emit = lit_color * on * 1.3;
+		}
 	} else {
 		// Skylight glass.
 		alb = vec3(0.1, 0.13, 0.16) + tint * 0.05;
@@ -254,4 +282,5 @@ void fragment() {
 	ROUGHNESS = rough;
 	METALLIC = metal;
 	SPECULAR = spec;
+	EMISSION = emit;
 }

@@ -11,3 +11,10 @@ extends Node3D
 var layout: CityLayout
 ## How far the town reaches from the site centre on its pad (m).
 var town_r: float = 0.0
+## The regrowth stage (0-5) of the district this town stands in (systems/districts.gd), 0 on open
+## ground. A planet's site script overrides set_district_stage to change the town with it.
+var district_stage: int = 0
+
+
+func set_district_stage(stage: int) -> void:
+	district_stage = clampi(stage, 0, Districts.MAX_STAGE)

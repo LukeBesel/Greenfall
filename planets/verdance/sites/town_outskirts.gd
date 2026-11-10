@@ -38,13 +38,25 @@ var kind: String = "start"  # VerdanceSite.KINDS: the outskirts follow the town'
 ## Per kind: open-lot share [near, far], tower-block share near (tower_f floors), floors of the
 ## other blocks near/far, works share near/far, warehouse-block share, detached houses.
 const PROFILES: Dictionary = {
-	"start": {"lots": [0.05, 0.15], "tower": 0.55, "tower_f": [14, 30], "mid": [6, 12], "far": [2, 7], "factory": [0.0, 0.3], "warehouse": 0.0},
+	"start": {"lots": [0.02, 0.06], "tower": 0.22, "tower_f": [9, 16], "mid": [4, 7], "far": [3, 6], "factory": [0.05, 0.2], "warehouse": 0.0, "streets": true},
 	"downtown": {"lots": [0.06, 0.18], "tower": 0.7, "tower_f": [16, 34], "mid": [8, 14], "far": [3, 9], "factory": [0.0, 0.25], "warehouse": 0.0},
 	"oldtown": {"lots": [0.12, 0.3], "tower": 0.0, "tower_f": [0, 0], "mid": [3, 7], "far": [2, 5], "factory": [0.15, 0.3], "warehouse": 0.05},
 	"industrial": {"lots": [0.28, 0.4], "tower": 0.0, "tower_f": [0, 0], "mid": [2, 5], "far": [2, 4], "factory": [0.85, 0.9], "warehouse": 0.5},
 	"suburb": {"lots": [0.12, 0.3], "tower": 0.0, "tower_f": [0, 0], "mid": [1, 2], "far": [1, 2], "factory": [0.05, 0.1], "warehouse": 0.0, "houses": true},
 	"harbour": {"lots": [0.15, 0.3], "tower": 0.1, "tower_f": [10, 16], "mid": [3, 7], "far": [2, 5], "factory": [0.5, 0.5], "warehouse": 0.3},
 }
+
+## A town's own look (the planet's city script sets these before build()):
+##   painter       func(bd: Dictionary, rng: RandomNumberGenerator, dist_m: float) -> void, called for every
+##                 planned building: may set "tint", "wall_tex", "roof_tint", "awning" (BuildingDetail)
+##   town_material the buildings' material (a copy of material() with its own parameters)
+var painter: Callable
+var town_material: ShaderMaterial
+## Every building's roof, for a town that dresses them: [frame in the site's space, Rect2 in that
+## frame, roof height in that frame, the building's plan dictionary].
+var roofs: Array = []
+## The street strips between the blocks (PROFILES "streets"), or null.
+var streets: MeshInstance3D
 
 var _detail := BuildingDetail.new()
 var _lay := CityLayout.new(1, 1.0)  # only for its perimeter-building generator
@@ -131,6 +143,9 @@ func build() -> void:
 					bd["floors"] = rng.randi_range(int(fr[0]), int(fr[1]))
 					bd["ruined"] = rng.randf() < 0.2
 					bd["style"] = "factory" if rng.randf() < float(pf["factory"][ni]) else "apartments"
+			if painter.is_valid():
+				for bd2: Dictionary in blds:
+					painter.call(bd2, rng, dist)
 			var tk := Vector2i(floori((c.x + TILE_M * 0.5) / TILE_M), floori((c.y + TILE_M * 0.5) / TILE_M))
 			if not tiles.has(tk):
 				tiles[tk] = []
@@ -141,6 +156,9 @@ func build() -> void:
 		await BuildBudget.check("town:outskirts")
 		_build_tile(tk, tiles[tk], cleared)
 	stats["footprints"] = foot.size()
+	if bool((PROFILES.get(kind, PROFILES["start"]) as Dictionary).get("streets", false)):
+		await BuildBudget.check("town:streets")
+		_build_streets()
 
 
 ## A tower block: one tower (podium plus setbacks via the proxy's tiers) on the side facing the
@@ -252,6 +270,7 @@ func _build_tile(tk: Vector2i, blds: Array, cleared: Dictionary) -> void:
 		# Junk keeps off its footprint, piece by piece (the cell keeps its trash look and the rest of
 		# its junk): world footprints in the tile's ground frame (YardKeepOut.add_world).
 		foot.append([fr, Rect2(lr.position - Vector2(0.3, 0.3), lr.size + Vector2(0.6, 0.6))])
+		roofs.append([site_xf.affine_inverse() * fr, lr, top, bd])
 	if placed == 0:
 		sb.free()
 		return
@@ -264,17 +283,84 @@ func _build_tile(tk: Vector2i, blds: Array, cleared: Dictionary) -> void:
 	var mi := MeshInstance3D.new()
 	mi.name = "Buildings"
 	mi.mesh = body.mesh()
-	mi.material_override = material()
+	mi.material_override = town_material if town_material else material()
 	mi.set_meta("no_collide", true)
 	node.add_child(mi)
 	if not det.empty():
 		var dm := MeshInstance3D.new()
 		dm.name = "Detail"
 		dm.mesh = det.mesh()
-		dm.material_override = material()
+		dm.material_override = town_material if town_material else material()
 		dm.visibility_range_end = DETAIL_RANGE
 		dm.visibility_range_end_margin = 20.0
 		dm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		dm.set_meta("no_collide", true)
 		node.add_child(dm)
 	node.add_child(sb)
+
+
+## The town's streets carried on past the pad: asphalt strips along the block grid's road lines,
+## laid on the real ground (three points across, a step along), stopping at the lake and fading in
+## from the pad's own roads and out at the town's edge. One mesh; the junk lies on it as on the pad.
+func _build_streets() -> void:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var inv: Transform3D = site_xf.affine_inverse()
+	var hw: float = CityLayout.ROAD_W * 0.5 + 0.2
+	var step: float = 4.0
+	var n: int = int(ceil(R_OUT / CityLayout.PITCH))
+	var quads: int = 0
+	for axis: int in 2:
+		for k: int in range(-n - 1, n + 1):
+			var c: float = (float(k) + 0.5) * CityLayout.PITCH
+			var t: float = -R_OUT
+			while t < R_OUT - 0.01:
+				var t1: float = t + step
+				var mid: float = (t + t1) * 0.5
+				var r: float = Vector2(c, mid).length()
+				# The second axis leaves the junction squares to the first (no two strips in one plane).
+				var in_junction: bool = axis == 1 and absf(fposmod(mid, CityLayout.PITCH) - CityLayout.PITCH * 0.5) < hw
+				if r > town_r - 8.0 and r < R_OUT - 4.0 and not in_junction:
+					quads += _street_piece(st, inv, axis, c, t, t1, hw)
+				t = t1
+	if quads == 0:
+		return
+	streets = MeshInstance3D.new()
+	streets.name = "Streets"
+	streets.mesh = st.commit()
+	var m: StandardMaterial3D = AssetLib.pbr_material("asphalt_02", 0.22, Color(0.72, 0.7, 0.68), true)
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_DEPTH_PRE_PASS
+	m.vertex_color_is_srgb = false
+	m.vertex_color_use_as_albedo = true
+	m.cull_mode = BaseMaterial3D.CULL_DISABLED
+	streets.material_override = m
+	streets.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	streets.set_meta("no_collide", true)
+	add_child(streets)
+	stats["street_quads"] = quads
+
+
+func _street_piece(st: SurfaceTool, inv: Transform3D, axis: int, c: float, t0: float, t1: float, hw: float) -> int:
+	var pts: Array[Vector3] = []
+	var cols: Array[Color] = []
+	var nrm: Array[Vector3] = []
+	var uvs: Array[Vector2] = []
+	for tt: float in [t0, t1]:
+		for s: float in [-hw, 0.0, hw]:
+			var q := Vector2(c + s, tt) if axis == 0 else Vector2(tt, c + s)
+			if _wet(q.x, q.y):
+				return 0
+			var d: Vector3 = _dir(q.x, q.y)
+			pts.append(inv * (terrain.ground(d) + d * 0.08))
+			nrm.append((inv.basis * d).normalized())
+			var r: float = q.length()
+			var a: float = clampf((r - (town_r - 8.0)) / 6.0, 0.0, 1.0) * clampf((R_OUT - 6.0 - r) / 14.0, 0.0, 1.0)
+			var g: float = 0.9 + 0.1 * sin(tt * 1.7 + c)
+			cols.append(Color(g, g, g, a))
+			uvs.append(q * 0.25)
+	for i: int in [0, 1, 3, 1, 4, 3, 1, 2, 4, 2, 5, 4]:
+		st.set_color(cols[i])
+		st.set_normal(nrm[i])
+		st.set_uv(uvs[i])
+		st.add_vertex(pts[i])
+	return 1
