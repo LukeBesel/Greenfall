@@ -529,3 +529,56 @@ func test_b27_empty_can_away_from_base_points_home() -> void:
 	autofree(hud)
 	for kind: String in ["refill", "refill_go"]:
 		assert_ne(hud._prompt_text(kind), "", "the HUD has words for the %s prompt" % kind)
+
+
+# --- B30: the rocket's recharge after a hub hop ---------------------------------------------------
+
+## A hop that lands at once (the flight itself is planet/sites/hub_hop.gd's own business).
+class LandedHop extends HubHop:
+	func hop_with(_sm: SiteManager, _lumi: Patch, _cam: SphereCam, _terrain: SphereTerrain, from_i: int, to_i: int) -> bool:
+		return from_i != to_i
+
+
+## The slice as the rocket desk reads it.
+class RocketWorld extends Node3D:
+	var launching: bool = false
+
+
+## The globe's rocket desk (OrbitSites) over two hub sites, with the rocket parked on site 0.
+func _rocket_desk() -> OrbitSites:
+	var so := SliceOrbit.new()
+	add_child_autofree(so)
+	so.set_process(false)
+	so.w = RocketWorld.new()
+	so.add_child(so.w)
+	so.globe = OrbitPlanet.new()
+	autofree(so.globe)
+	var sites := OrbitSites.new()
+	sites.set_process(false)
+	sites.so = so
+	sites.sm = SiteManager.new()
+	autofree(sites.sm)
+	sites.sm.sites = [{}, {}]
+	sites.sm.nearest = 0
+	sites.hop = LandedHop.new()
+	sites.add_child(sites.hop)
+	so.add_child(sites)
+	return sites
+
+
+## B30: a hub hop drains the rocket's energy cells (data/rockets.json recharge_s; the workbench
+## sells faster recharges). The only call that started the recharge went with the flat launch
+## path, so on the globe the cells never drained and the rocket could hop again at once.
+func test_b30_a_hub_hop_starts_the_rockets_recharge() -> void:
+	var flags: Dictionary = GameState.flags.duplicate(true)
+	GameState.flags["rocket_tier"] = 1
+	var sites: OrbitSites = _rocket_desk()
+	assert_eq(RocketTiers.recharge_left(), 0.0, "a rocket that has not flown is ready")
+	assert_eq(sites.hop_blocker(), "", "and the destination list lets it fly")
+	assert_true(await sites.hop_to(1), "the hop lands")
+	assert_almost_eq(RocketTiers.recharge_left(), float(RocketTiers.def(1)["recharge_s"]), 2.0, "the cells start to recharge")
+	assert_ne(sites.hop_blocker(), "", "the destination list says why it cannot fly yet")
+	RocketTiers.now_override = Time.get_unix_time_from_system() + float(RocketTiers.def(1)["recharge_s"]) + 1.0
+	assert_eq(sites.hop_blocker(), "", "once the cells are full it flies again")
+	RocketTiers.now_override = -1.0
+	GameState.flags = flags
