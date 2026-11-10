@@ -33,5 +33,5 @@
   },
   "planet_stops": {"_doc": "Where Planet 1 stops, so later planets have real things to add (DECISIONS: Planet 1 is only the beginning).",
     "track_levels": "41 of 75 (core_charge 24 of 58)", "base_level": "6 of 9", "robot_tier": "repaired, the second of four", "lift": "II of IV", "power_cell": "III of VI",
-    "mastery": "cap 10; only litter is expected to reach it", "rig_modules": "9 of a planned 15", "robot_types": "6, one Scrounger; the Multibot and a Scrounger that digs wait for later planets", "crew": "12 of a later 30 or more"}
+    "mastery": "cap 10; only litter is expected to reach it", "rig_modules": "9 of a planned 15", "robot_types": "6; the Multibot and a Scrounger that digs wait for later planets", "crew": "about 180; the whole planet takes thousands"}
 }

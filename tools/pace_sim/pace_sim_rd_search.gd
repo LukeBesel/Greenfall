@@ -43,8 +43,6 @@ static func _miss(c: Dictionary) -> float:
 	var limit: float = PaceSimRdReport.LIMITS.get(str(c["id"]), 0.0)
 	if limit <= 0.0 or float(c["value"]) < 0.0:
 		return 0.0
-	if str(c["id"]) == "hand_share":
-		return (limit - float(c["value"])) / limit
 	return minf(3.0, float(c["value"]) / limit - 1.0)
 
 

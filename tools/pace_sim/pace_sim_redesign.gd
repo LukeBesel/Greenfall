@@ -11,7 +11,7 @@ const DEFAULT_POLICY: String = "default"
 const DEFAULT_PROPOSAL: String = "planet1"
 ## A run stops here if the ending has not come (bot minutes).
 const MAX_MINUTES: float = 300.0
-const COMPARE_POLICIES: PackedStringArray = ["default", "rush_robots", "no_robots"]
+const COMPARE_POLICIES: PackedStringArray = ["default", "rush_robots", "no_robots", "all_scroungers", "no_scroungers"]
 
 
 ## A policy by name (one script per policy in tools/pace_sim/rd_policies/), or null.

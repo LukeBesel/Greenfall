@@ -21,6 +21,9 @@ var parts: float = 0.0
 var earned: float = 0.0
 var parts_earned: float = 0.0
 var seeds: float = 0.0
+## Parts the Scroungers carried in, and robots the Assemblers built.
+var scrounged: float = 0.0
+var assembled: int = 0
 ## Ids owned: unlocks, finished research nodes, grants, rig modules.
 var owned: Dictionary[String, bool] = {}
 var levels: Dictionary[String, int] = {}
@@ -113,6 +116,34 @@ func robot_total() -> int:
 	for type: String in robots:
 		n += robots[type]
 	return n
+
+
+## Robots of the type that builds robots.
+func assemblers() -> int:
+	return robots.get(str(data.tables["robots"]["chain"]["assembler"]), 0)
+
+
+## Parts one robot of a type costs now (a repaired type costs more to build).
+func robot_parts(type: String) -> float:
+	var cfg: Dictionary = data.tables["robots"]
+	var row: Dictionary = data.robot_types[type]
+	var price: float = float(row["parts"]) + float(row.get("parts_step", 0.0)) * float(robots.get(type, 0))
+	return price * (float(cfg["repaired_build_mult"]) if repaired.get(type, 0) > 0 else 1.0)
+
+
+## An Assembler finishes a robot of `type`: Parts are spent, no bench visit. False when it cannot.
+func assemble(type: String) -> bool:
+	if robot_total() >= crew_cap() or parts < robot_parts(type) or not conditions_met(data.robot_types[type]):
+		return false
+	parts -= robot_parts(type)
+	robots[type] = robots.get(type, 0) + 1
+	assembled += 1
+	emit("robot:" + type)
+	record.builds.append(t)
+	record.win(t)
+	rates.dirty = true
+	items_dirty = true
+	return true
 
 
 ## The most robots the base can run at its level.
@@ -257,6 +288,7 @@ func buy(item: Dictionary) -> bool:
 		"robot":
 			emit("first_robot")
 			emit("robot:" + id)
+			record.builds.append(t)
 		"repair":
 			emit("first_repair")
 	busy_s += data.num("balance.hand.shop_s")
@@ -300,6 +332,7 @@ func _tick() -> void:
 		if busy_s <= 0.0:
 			work.act(policy.choose(self))
 	work.crew_tick()
+	work.chain_tick()
 	work.grow_tick()
 	_after_work()
 	record.offers(self)
@@ -327,13 +360,14 @@ func _after_work() -> void:
 		if z.update_stage(t):
 			for s: int in range(before + 1, z.stage + 1):
 				_district_stage(z, s)
-	if ended_at < 0.0 and _all_at(int(data.num("restoration.ending.stage"))):
+	if ended_at < 0.0 and _all_at(int(data.num("restoration.launch.stage"))):
 		ended_at = t
-		emit("planet_restored")
+		emit("launch_ready")
 
 
 func _hex_cleaned(z: PaceSimRdDistrict) -> void:
 	hexes_clean += 1
+	z.buried_parts += float(z.row.get("buried_parts_per_hex", 0.0))
 	bump("hexes")
 	pay(z.hex_bonus)
 	add_data(data.num("districts.hex_bonus.data"))

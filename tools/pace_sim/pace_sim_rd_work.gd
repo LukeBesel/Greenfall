@@ -20,6 +20,7 @@ var _batch_acc: Dictionary[String, float] = {}
 var _promoted_acc: float = 0.0
 var _tend_acc: Dictionary[String, float] = {}
 var _next_merge: float = 0.0
+var _assembly: float = 0.0
 
 
 func _init(model: PaceSimRdModel) -> void:
@@ -103,6 +104,40 @@ func trickle() -> void:
 			z.source_extra += add
 			if z.source_step == 1:
 				z.source_left += add
+
+
+## The chain: Scroungers carry buried parts from cleaned ground to the base, Assemblers turn
+## Parts into robots one at a time, in the mix the policy sets.
+func chain_tick() -> void:
+	var chain: Dictionary = _d.tables["robots"]["chain"]
+	var finder: String = str(chain["scrounger"])
+	var n: float = float(_m.robots.get(finder, 0))
+	if n > 0.0:
+		var z: PaceSimRdDistrict = _richest_ground()
+		if z != null:
+			var trip_s: float = float(chain["trip_s"]) + float(chain["trip_s_per_ring"]) * float(z.row["rings"])
+			var carried: float = minf(z.buried_parts, n * float(chain["carry"]) * _m.rates.tier_mult(finder) / trip_s * PaceSimRdModel.TICK_S)
+			z.buried_parts -= carried
+			_m.gain_parts(carried)
+			_m.scrounged += carried
+	var builders: float = float(_m.assemblers())
+	if builders <= 0.0:
+		return
+	_assembly = minf(_assembly + builders * _m.rates.tier_mult(str(chain["assembler"])) / float(chain["assembly_s"]) * PaceSimRdModel.TICK_S, maxf(1.0, builders))
+	while _assembly >= 1.0:
+		var type: String = _m.policy.next_build(_m)
+		if type == "" or not _m.assemble(type):
+			break
+		_assembly -= 1.0
+
+
+## The open district with the most buried parts waiting, or null.
+func _richest_ground() -> PaceSimRdDistrict:
+	var best: PaceSimRdDistrict = null
+	for z: PaceSimRdDistrict in _m.zones:
+		if z.index < _m.unlocked and z.buried_parts > 0.01 and (best == null or z.buried_parts > best.buried_parts):
+			best = z
+	return best
 
 
 func crew_tick() -> void:
@@ -335,7 +370,6 @@ func _crew_clean(type: String, row: Dictionary, n: float, linked: float) -> void
 	var rate: float = _m.rates.robot_rate(type, kind, near) * (linked if near else 1.0)
 	var units: float = z.add_units(kind, n * rate * PaceSimRdModel.TICK_S)
 	_m.pay(units * float(_d.kinds[kind]["yield"]["cubes"]) * float(_d.kinds[kind]["crew_value"]))
-	_m.gain_parts(units * float(_d.kinds[kind]["yield"].get("parts", 0.0)) * float(_d.kinds[kind].get("crew_parts", 0.0)))
 	_m.crew_units += units
 	_m.crew_hexes += units / z.hex_work
 	z.crew_units += units

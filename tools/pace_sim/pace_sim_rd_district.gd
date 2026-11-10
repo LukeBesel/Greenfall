@@ -24,6 +24,8 @@ var hex_work: float = 0.0
 ## Cubes paid when one of its hexes is clean, and the multiplier on regrowth rewards.
 var hex_bonus: float = 0.0
 var reward_mult: float = 1.0
+## Buried parts in its cleaned ground that no Scrounger has dug up yet.
+var buried_parts: float = 0.0
 var mix: Dictionary[String, float] = {}
 ## Units cleared per kind, and hexes that have every kind cleared.
 var done: Dictionary[String, float] = {}

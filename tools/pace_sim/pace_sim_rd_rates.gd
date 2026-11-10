@@ -138,12 +138,12 @@ func robot_rate(type: String, kind: String, near: bool) -> float:
 	return rate * (1.0 + _d.num("robots.near_bonus")) if near else rate
 
 
-## Average speed multiplier of a robot type from its repaired robots (rusty ones count 1.0).
+## Speed multiplier of a robot type: 1.0 while rusty, repaired_mult once the type is repaired.
 func tier_mult(type: String) -> float:
 	var n: int = _m.robots.get(type, 0)
 	if n <= 0:
 		return 1.0
-	return 1.0 + (_d.num("robots.repaired_mult") - 1.0) * float(_m.repaired.get(type, 0)) / float(n)
+	return _d.num("robots.repaired_mult") if _m.repaired.get(type, 0) > 0 else 1.0
 
 
 ## Cubes a second right now: Lumi on the best-paying kind she can work here, plus the crew's bales.

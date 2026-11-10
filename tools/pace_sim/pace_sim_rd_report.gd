@@ -8,12 +8,11 @@ extends RefCounted
 const LIMITS: Dictionary[String, float] = {
 	"first_payout": 20.0, "first_upgrade": 90.0, "first_hex": 180.0, "small_win": 40.0,
 	"purchase_first_hour": 180.0, "purchase_later": 240.0, "goal_gap": 240.0,
-	"mechanic_first_hour": 900.0, "mechanic_later": 2400.0, "spike_gap": 2400.0, "spike_factor": 2.0, "hand_share": 0.3,
+	"mechanic_first_hour": 900.0, "mechanic_later": 2400.0, "spike_gap": 2400.0, "spike_factor": 2.0,
 }
 const FIRST_HOUR_S: float = 3600.0
-## Player minutes the cleaning rate is averaged over for the spike rule, and the hand-share window.
+## Player minutes the cleaning rate is averaged over for the spike rule.
 const SPIKE_WINDOW_MIN: float = 6.0
-const SHARE_WINDOW_MIN: float = 10.0
 ## A track is called dominant when it leads the ranking in more than this share of track purchases.
 const DOMINANT_TRACK_SHARE: float = 0.5
 ## The first found piece should land within this many player minutes of the spec's minute 25.
@@ -49,7 +48,6 @@ static func build(m: PaceSimRdModel) -> Dictionary:
 		checks.append(_gap("mechanic_later", mechanics, hour, end_s, k, LIMITS["mechanic_later"]))
 	var spikes: Dictionary = _spikes(rec, "hand_units", "crew_units", k)
 	checks.append(_spike_check(spikes, end_s, k))
-	checks.append(_share_check(rec, k))
 	checks.append_array(PaceSimRdDesignChecks.build(m, end_s, k))
 	checks.append_array(PaceSimRdEconomyChecks.build(m, end_s, k))
 	return {"beats": _beats(m, k), "checks": checks, "districts": _districts(m, end_s, k), "spikes": spikes,
@@ -188,22 +186,6 @@ static func _spike_check(spikes: Dictionary, end_s: float, k: float) -> Dictiona
 		"cleaning power (work units a second) doubled at player minutes [%s]" % ", ".join(at))
 
 
-static func _share_check(rec: PaceSimRdLog, k: float) -> Dictionary:
-	var window: int = maxi(1, int(round(SHARE_WINDOW_MIN / k)))
-	var worst: float = 1.0
-	var worst_at: int = 0
-	for i: int in range(window, rec.minutes.size()):
-		var a: Dictionary = rec.minutes[i - window]
-		var b: Dictionary = rec.minutes[i]
-		var hand: float = float(b["hand_units"]) - float(a["hand_units"])
-		var total: float = hand + float(b["crew_units"]) - float(a["crew_units"])
-		if total > 0.0 and hand / total < worst:
-			worst = hand / total
-			worst_at = int(b["minute"])
-	return _check("hand_share", worst >= LIMITS["hand_share"], worst, "%.0f%%" % (worst * 100.0), "at least %.0f%%" % (LIMITS["hand_share"] * 100.0),
-		"lowest %.0f-player-minute window ends at bot minute %d" % [SHARE_WINDOW_MIN, worst_at])
-
-
 static func _notes(m: PaceSimRdModel, end_s: float, k: float) -> PackedStringArray:
 	var notes: PackedStringArray = []
 	if m.ended_at < 0.0:
@@ -216,12 +198,13 @@ static func _notes(m: PaceSimRdModel, end_s: float, k: float) -> PackedStringArr
 	notes.append("mastery at the end: " + ", ".join(levels))
 	var crew: PackedStringArray = []
 	for type: String in m.robots:
-		crew.append("%s x%d (%d repaired)" % [type, m.robots[type], m.repaired.get(type, 0)])
+		crew.append("%s x%d%s" % [type, m.robots[type], " repaired" if m.repaired.get(type, 0) > 0 else ""])
 	notes.append("crew at the end: %d (%s), base level %d" % [m.robot_total(), ", ".join(crew), m.base_level])
 	var spent: PackedStringArray = []
 	for key: String in m.work.seconds:
 		spent.append("%s %.0f%%" % [key, m.work.seconds[key] / end_s * 100.0])
 	notes.append("Lumi's time: " + ", ".join(spent))
+	notes.append_array(PaceSimRdEconomyChecks.figures(m, end_s))
 	notes.append("field data lost with no research active: %.0f; pieces found: %d; cubes left %.0f, Parts left %.0f of %.0f earned, seeds left %.0f" % [
 		m.record.data_lost, m.pieces.size(), m.cubes, m.parts, m.parts_earned, m.seeds])
 	return notes

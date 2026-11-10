@@ -32,6 +32,8 @@ var data_lost: float = 0.0
 var parts_ok: PackedFloat64Array = []
 ## Times a robot build or a robot repair was chosen when both could be afforded.
 var crew_choices: Dictionary[String, int] = {}
+## Time of every robot build.
+var builds: PackedFloat64Array = []
 ## Largest income jump from one purchase {ratio, id, t}, largest one-off reward against three
 ## player minutes of income {ratio, t}, and the scale records.
 var jump: Dictionary = {"ratio": 1.0, "id": "", "t": 0.0}
@@ -45,6 +47,8 @@ var mixed_cost_offer: String = ""
 var first_bale_value: float = 0.0
 var d1_parts: float = 0.0
 var d1_hand_hexes: float = 0.0
+## Most cubes held before the third district was entered.
+var held_before_third: float = 0.0
 
 var _next_sample: float = SAMPLE_S
 var _earned_at_sample: float = 0.0
@@ -84,6 +88,8 @@ func offers(m: PaceSimRdModel) -> void:
 	if parts_can or not parts_offer:
 		parts_ok.append(m.t)
 	max_cubes_on_hand = maxf(max_cubes_on_hand, m.cubes)
+	if m.zones.size() > 2 and m.zones[2].entered_at < 0.0:
+		held_before_third = maxf(held_before_third, m.cubes)
 	max_parts_on_hand = maxf(max_parts_on_hand, m.parts)
 
 
@@ -141,6 +147,6 @@ func sample(m: PaceSimRdModel) -> void:
 func csv() -> String:
 	var lines: PackedStringArray = ["minute,cubes,parts,income_rate,hexes,robots,purchases,hand_units,crew_units,district,restoration"]
 	for row: Dictionary in minutes:
-		lines.append("%d,%.0f,%.0f,%.2f,%d,%d,%d,%.0f,%.0f,%d,%.3f" % [row["minute"], row["cubes"], row["parts"], row["income_rate"], row["hexes"],
+		lines.append("%d,%.0f,%.1f,%.2f,%d,%d,%d,%.0f,%.0f,%d,%.3f" % [row["minute"], row["cubes"], row["parts"], row["income_rate"], row["hexes"],
 			row["robots"], row["purchases"], row["hand_units"], row["crew_units"], row["here"], row["restoration"]])
 	return "\n".join(lines) + "\n"

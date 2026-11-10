@@ -24,6 +24,8 @@ var beats: Array[Dictionary] = []
 ## Average cubes per unit of litter and the perfect-press multiplier, from the planet's own tables.
 var kept_litter_value: float = 0.0
 var kept_bale_mult: float = 1.0
+## Cells on the planet's globe (10 f f + 2 for grid frequency f), from the planet's definition.
+var planet_cells: int = 0
 
 var _num_cache: Dictionary[String, float] = {}
 
@@ -122,6 +124,8 @@ func _read_kept() -> void:
 	var junk := PaceSimData.new()
 	kept_litter_value = junk.avg_value
 	kept_bale_mult = float((Economy.planet_table("player").get("cube", {}) as Dictionary).get("perfect_mult", 1.0))
+	var frequency: int = Planets.current().globe_frequency
+	planet_cells = 10 * frequency * frequency + 2
 	if kept_litter_value <= 0.0:
 		ok = false
 		error = "the planet's pollution table has no junk values to keep"

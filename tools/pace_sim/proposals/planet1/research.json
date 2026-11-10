@@ -7,7 +7,9 @@
     "quick_latch": {"name": "Quick Latch", "district": 0, "requires": ["signal_tower"], "cost": {"cubes": 800, "data": 22}, "mods": {"handle": 0.8}},
     "seed_spreader": {"name": "Seed Spreader", "district": 0, "requires": ["seed_kit"], "cost": {"cubes": 900, "data": 25}, "mods": {"tend": 1.4}},
     "haul_rig": {"name": "Haul Rig", "district": 1, "requires": ["bot_bay"], "cost": {"parts": 20, "data": 30}, "crew": true},
-    "repair_bench": {"name": "Repair Bench", "district": 1, "requires": ["bot_bay"], "cost": {"parts": 25, "data": 45}, "crew": true},
+    "scrounger_blueprint": {"name": "Scrounger Blueprint", "district": 1, "requires": ["haul_rig"], "cost": {"parts": 15, "data": 50}, "crew": true},
+    "assembler_blueprint": {"name": "Assembler Blueprint", "district": 2, "requires": ["scrounger_blueprint"], "cost": {"parts": 40, "data": 60}, "crew": true},
+    "repair_bench": {"name": "Repair Bench", "district": 1, "requires": ["bot_bay"], "cost": {"parts": 40, "data": 120}, "crew": true},
     "cutting_torch": {"name": "Cutting Torch", "district": 1, "requires": ["lift_2"], "cost": {"cubes": 1800, "data": 50}, "mods": {"kind_wrecks": 1.5}},
     "compactor": {"name": "Compactor", "district": 1, "cost": {"cubes": 2200, "data": 60}, "mods": {"capacity": 1.4}},
     "skimmer_rig": {"name": "Skimmer Rig", "district": 2, "requires": ["bot_bay", "skimmer_head"], "cost": {"parts": 30, "data": 100}, "crew": true},
@@ -18,7 +20,6 @@
     "seedling_blueprint": {"name": "Seedling Blueprint", "district": 3, "requires": ["bot_bay"], "cost": {"parts": 90, "data": 220}, "crew": true},
     "filter_stacks": {"name": "Filter Stacks", "district": 3, "requires": ["scrubber_units"], "cost": {"cubes": 7500, "data": 350}, "mods": {"kind_smog": 1.5}},
     "root_mats": {"name": "Root Mats", "district": 4, "requires": ["cleansing_plants"], "cost": {"cubes": 11000, "data": 300}, "mods": {"kind_blight": 1.5}},
-    "scrounger_blueprint": {"name": "Scrounger Blueprint", "district": 4, "requires": ["bot_bay"], "cost": {"parts": 180, "data": 420}, "crew": true},
     "fast_coupling": {"name": "Fast Coupling", "district": 4, "cost": {"cubes": 12000, "data": 500}, "mods": {"handle": 0.7}},
     "linked_surge": {"name": "Linked Surge", "district": 5, "requires": ["surge_core"], "cost": {"cubes": 18000, "data": 600}},
     "deep_roots": {"name": "Deep Roots", "district": 5, "cost": {"cubes": 16000, "data": 800}, "mods": {"tend": 1.5}}

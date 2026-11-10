@@ -54,16 +54,21 @@ static func _research(m: PaceSimRdModel, out: Array[Dictionary]) -> void:
 
 static func _robots(m: PaceSimRdModel, out: Array[Dictionary]) -> void:
 	var crew_row: Dictionary = {"crew": true}
+	var cfg: Dictionary = m.data.tables["robots"]
 	var room: bool = m.robot_total() < m.crew_cap()
+	var by_hand: bool = m.assemblers() == 0
 	for id: String in m.data.robot_types:
 		var row: Dictionary = m.data.robot_types[id]
 		if not m.conditions_met(row):
 			continue
 		var have: int = m.robots.get(id, 0)
-		if room and have < int(row["max"]):
-			out.append(_offer("robot", id, 0.0, float(row["parts"]) + float(row["parts_step"]) * float(have), crew_row))
-		if m.repaired.get(id, 0) < have and m.owned.has(str(m.data.tables["robots"]["repair_requires"])):
-			out.append(_offer("repair", id, 0.0, float(row["repair_parts"]), crew_row))
+		var is_repaired: bool = m.repaired.get(id, 0) > 0
+		# Lumi builds by hand until an Assembler stands; after that only the first of a type,
+		# and further Assemblers.
+		if room and have < int(row.get("max", have + 1)) and (by_hand or have == 0 or id == str(cfg["chain"]["assembler"])):
+			out.append(_offer("robot", id, 0.0, m.robot_parts(id), crew_row))
+		if have > 0 and not is_repaired and m.owned.has(str(cfg["repair_requires"])):
+			out.append(_offer("repair", id, 0.0, float(row["repair_parts"]) + float(row["parts"]) * float(cfg["repair_per_robot"]) * float(have), crew_row))
 
 
 static func _modules(m: PaceSimRdModel, out: Array[Dictionary]) -> void:
