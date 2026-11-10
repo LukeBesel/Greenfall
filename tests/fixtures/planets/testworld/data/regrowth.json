@@ -1,0 +1,67 @@
+{
+  "_doc": "Dummy planet: the six hex levels with small rewards. Same fields as a real regrowth table.",
+  "planted_min_frac": 0.25,
+  "growing_life": 0.35,
+  "thriving_life": 0.8,
+  "sustain_window_s": 60,
+  "sustain_ratio": 0.8,
+  "sample_s": 1.0,
+  "bonus_caps": {
+    "grow_pct": 1.0,
+    "seed_pct": 1.0,
+    "cubes_per_min": 10,
+    "wildlife_cubes_per_min": 10
+  },
+  "levels": [
+    {
+      "level": 0,
+      "name": "Test Junk",
+      "hint": "Clear it"
+    },
+    {
+      "level": 1,
+      "name": "Test Clean",
+      "hint": "Plant it",
+      "reward": {
+        "cubes": 1
+      },
+      "bonus": {}
+    },
+    {
+      "level": 2,
+      "name": "Test Planted",
+      "hint": "Water it",
+      "reward": {
+        "cubes": 2
+      },
+      "bonus": {}
+    },
+    {
+      "level": 3,
+      "name": "Test Growing",
+      "hint": "Keep watering",
+      "reward": {
+        "cubes": 3
+      },
+      "bonus": {}
+    },
+    {
+      "level": 4,
+      "name": "Test Sustained",
+      "hint": "Let it bloom",
+      "reward": {
+        "cubes": 4
+      },
+      "bonus": {}
+    },
+    {
+      "level": 5,
+      "name": "Test Thriving",
+      "hint": "Done",
+      "reward": {
+        "cubes": 5
+      },
+      "bonus": {}
+    }
+  ]
+}

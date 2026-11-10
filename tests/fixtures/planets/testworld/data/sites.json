@@ -1,0 +1,6 @@
+{
+  "_doc": "Dummy planet: one hub site, built by the fixture's sites.gd. Same fields as a real sites table.",
+  "sites": [
+    {"id": "test_pad", "kind": "hub", "name": "Test Pad", "size_m": 60, "clear_core_m": 12}
+  ]
+}

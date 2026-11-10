@@ -4,7 +4,9 @@ extends GutTest
 
 const FIXTURES: String = "res://tests/fixtures/planets"
 ## Top-level folders that may name a planet's files: tests, tools and the planets themselves.
-const NOT_SHARED_DIRS: Array[String] = ["tests", "tools", "planets", "addons"]
+const NOT_SHARED_DIRS: Array[String] = ["tests", "tools", "planets", "addons", "parked"]
+## Campaign order of the planets this build registers. Only the first one ships.
+const CAMPAIGN: Array[StringName] = [&"verdance", &"ochre", &"tidewell", &"rime", &"anvil"]
 
 
 func after_each() -> void:
@@ -17,6 +19,80 @@ func test_first_planet_is_registered_and_current() -> void:
 	assert_not_null(first, "a shipped planet exists")
 	assert_eq(Planets.current(), first)
 	assert_eq(first.validate().size(), 0, "the first planet validates: %s" % "; ".join(first.validate()))
+
+
+func test_all_planets_register_and_validate_and_only_the_first_ships() -> void:
+	var ids: Array[StringName] = []
+	for def: PlanetDefinition in Planets.all():
+		ids.append(def.id)
+		assert_eq(def.validate().size(), 0, "%s validates: %s" % [def.id, "; ".join(def.validate())])
+		assert_eq(def.resource_path, "%s/%s/%s" % [Planets.PLANETS_DIR, def.id, Planets.DEFINITION_FILE], "%s lives in its own folder" % def.id)
+		assert_eq(def.order, CAMPAIGN.find(def.id), "%s: campaign order" % def.id)
+		assert_eq(def.shipped, def.order == 0, "%s: only the first planet ships" % def.id)
+		assert_ne(def.display_name, "")
+		assert_gt(def.hub_count, 0)
+		for table_name: String in def.tables:
+			assert_false(def.table(table_name).is_empty(), "%s: table %s parses and has content" % [def.id, table_name])
+	assert_eq(ids, CAMPAIGN, "five planets, in campaign order")
+	assert_eq(Planets.first_shipped().id, CAMPAIGN[0])
+	assert_eq(Planets.current_id(), CAMPAIGN[0], "the game starts on the shipped planet")
+
+
+func test_parked_planets_keep_their_own_look_sites_and_scripts() -> void:
+	for def: PlanetDefinition in Planets.all():
+		if def.shipped:
+			continue
+		var folder: String = def.resource_path.get_base_dir()
+		for table_name: String in ["look", "sites"]:
+			assert_true(def.tables.get(table_name, "").begins_with(folder), "%s: its own %s table" % [def.id, table_name])
+		assert_not_null(def.env_script, "%s names its env script" % def.id)
+		assert_not_null(def.sites_script, "%s names its sites script" % def.id)
+		assert_true(def.env_script.resource_path.begins_with(folder), "%s: the env script is in its folder" % def.id)
+		assert_true(def.sites_script.resource_path.begins_with(folder), "%s: the sites script is in its folder" % def.id)
+		assert_true(PlanetDefinition.has_hook(def.env_script, "apply"), "%s: the env script has the apply hook" % def.id)
+		assert_gt(SiteBuilders.sites_of(String(def.id)).size(), 0, "%s lists its sites" % def.id)
+		assert_ne(SiteBuilders.site_for_hub(String(def.id), 0), "", "%s has a start site" % def.id)
+		assert_eq(def.look()["id"], String(def.id))
+		assert_true(FileAccess.file_exists(folder + "/README.md"), "%s documents what it inherits" % def.id)
+		# Until its own are written, a parked planet's required tables are the first planet's.
+		for table_name: String in PlanetDefinition.REQUIRED_TABLES:
+			assert_eq(def.tables[table_name], Planets.first_shipped().tables[table_name], "%s inherits %s" % [def.id, table_name])
+
+
+func test_globe_spec_and_names_come_from_the_definition() -> void:
+	var first: PlanetDefinition = Planets.first_shipped()
+	var spec: Dictionary = first.globe_spec()
+	assert_eq(spec, {"id": String(first.id), "frequency": first.globe_frequency, "hub_count": first.hub_count, "seed": first.world_seed})
+	assert_eq(first.cell_count(), PlanetDefinition.cells_for(first.globe_frequency))
+	assert_almost_eq(first.radius_m(), PlanetDefinition.RADIUS_M_PER_FREQUENCY * first.globe_frequency, 0.001)
+	assert_eq(first.name_in("On {planet}. ON {PLANET}. {other}"), "On %s. ON %s. {other}" % [first.display_name, first.display_name.to_upper()])
+	assert_null(first.call_env("no_such_hook"), "a missing env hook is skipped")
+	assert_false(PlanetDefinition.has_hook(null, "apply"))
+
+
+## Shared code never names a planet: no planet id as a quoted string (lowercase or capitalised) and
+## no path into a planet's folder, in any script outside the planets, tests and tools.
+func test_shared_code_never_names_a_planet() -> void:
+	var needles: Array[String] = []
+	for def: PlanetDefinition in Planets.all():
+		var id_text: String = String(def.id)
+		for quote: String in ['"', "'"]:
+			needles.append(quote + id_text + quote)
+			needles.append(quote + id_text.capitalize() + quote)
+			needles.append(quote + def.display_name + quote)
+		needles.append("%s/%s" % [Planets.PLANETS_DIR, id_text])
+	assert_eq(Planets.all().size(), CAMPAIGN.size(), "every planet was listed")
+	var hits: Array[String] = []
+	_scan_scripts("res://", needles, hits)
+	assert_eq(hits, [] as Array[String], "planet names in shared code:\n%s" % "\n".join(hits))
+
+
+func test_the_name_scan_finds_a_planted_literal() -> void:
+	var hits: Array[String] = []
+	_scan_scripts("res://tests/fixtures/planets", ['"test_pad"'], hits, true)
+	assert_eq(hits.size(), 0, "the fixture's script does not quote its site id")
+	_scan_scripts("res://tests/fixtures/planets", ["TestPadMarker"], hits, true)
+	assert_gt(hits.size(), 0, "the scanner reads scripts and reports a match")
 
 
 func test_every_required_table_of_the_first_planet_parses() -> void:
@@ -130,11 +206,11 @@ func _data_files(def: PlanetDefinition) -> Array[String]:
 	return out
 
 
-func _scan_scripts(dir_path: String, needles: Array[String], hits: Array[String]) -> void:
+func _scan_scripts(dir_path: String, needles: Array[String], hits: Array[String], every_dir: bool = false) -> void:
 	for folder: String in DirAccess.get_directories_at(dir_path):
-		if dir_path == "res://" and folder in NOT_SHARED_DIRS:
+		if folder.begins_with(".") or (dir_path == "res://" and not every_dir and folder in NOT_SHARED_DIRS):
 			continue
-		_scan_scripts(dir_path.path_join(folder), needles, hits)
+		_scan_scripts(dir_path.path_join(folder), needles, hits, every_dir)
 	for file: String in DirAccess.get_files_at(dir_path):
 		if file.get_extension() != "gd":
 			continue

@@ -1,0 +1,26 @@
+{
+  "_doc": "Dummy planet: two goals. Same fields as a real goals table.",
+  "visible": 2,
+  "goals": [
+    {
+      "id": "test_scoop_5",
+      "text": "Pick up 5 pieces of trash",
+      "type": "stat",
+      "key": "junk_scooped",
+      "target": 5,
+      "reward": {
+        "cubes": 1
+      }
+    },
+    {
+      "id": "test_earn_10",
+      "text": "Earn 10 cubes",
+      "type": "earned",
+      "key": "cubes",
+      "target": 10,
+      "reward": {
+        "cubes": 2
+      }
+    }
+  ]
+}

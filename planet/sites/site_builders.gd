@@ -117,8 +117,8 @@ static func build_site(site_root: Node3D, site: Dictionary, stage: int, restorat
 		opts["flat"] = float(site["flat"])  # [v3city] the site fills its pad
 	if site.get("globe_ctx") is Dictionary:
 		opts["globe"] = site["globe_ctx"]
-	if configure(p, opts):
-		p.build()
+	configure(p, opts)  # a planet without this site or a sites script gets a bare pad with the default anchors
+	p.build()
 	return p
 
 

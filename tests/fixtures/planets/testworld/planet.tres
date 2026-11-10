@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="PlanetDefinition" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="PlanetDefinition" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://core/planet_definition.gd" id="1"]
+[ext_resource type="Script" path="res://tests/fixtures/planets/testworld/sites.gd" id="2"]
 
 [resource]
 script = ExtResource("1")
@@ -14,11 +15,13 @@ hub_count = 2
 world_seed = 7
 target_playtime_min = 10.0
 tables = Dictionary[String, String]({
-"pollution": "res://tests/fixtures/planets/testworld/data/minimal.json",
-"upgrades": "res://tests/fixtures/planets/testworld/data/minimal.json",
-"regrowth": "res://tests/fixtures/planets/testworld/data/minimal.json",
-"tutorial": "res://tests/fixtures/planets/testworld/data/minimal.json",
-"goals": "res://tests/fixtures/planets/testworld/data/minimal.json"
+"pollution": "res://tests/fixtures/planets/testworld/data/pollution.json",
+"upgrades": "res://tests/fixtures/planets/testworld/data/upgrades.json",
+"regrowth": "res://tests/fixtures/planets/testworld/data/regrowth.json",
+"tutorial": "res://tests/fixtures/planets/testworld/data/tutorial.json",
+"goals": "res://tests/fixtures/planets/testworld/data/goals.json",
+"sites": "res://tests/fixtures/planets/testworld/data/sites.json"
 })
+sites_script = ExtResource("2")
 palette = Dictionary[String, Color]({})
 music_set = ""
