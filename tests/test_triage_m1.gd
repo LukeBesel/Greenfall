@@ -244,11 +244,38 @@ func _keep_out_holes(at: Vector3, half_m: float) -> int:
 ## inside the building's collider, out of Lumi's reach, and the hex cannot reach the clean rule
 ## (tools/hex_stick_probe.tscn: cell 153095, 5.04% of its junk inside Outskirts/Tile_1_2).
 func test_b3_keep_out_covers_a_whole_building_footprint() -> void:
-	pending("B3 junk keep-out has holes inside building footprints (planet/sites/yard_keep_out.gd add_world / _blocks_world)")
-	return
 	# The outskirts building of the stuck cell, and three more spots round the sphere.
 	for at: Vector3 in [Vector3(1299.2, 155.0, -1299.3), Vector3(1203.4, 310.4, -1362.9), Vector3(700.0, 900.0, 1400.0), Vector3(-1000.0, 20.0, 1500.0)]:
 		assert_eq(_keep_out_holes(at, 12.0), 0, "unblocked spots inside a 24 m footprint at %s" % str(at))
+	assert_eq(_keep_out_holes(Vector3(900.0, -1100.0, 1150.0), 40.0), 0, "a footprint several hash boxes wide")
+
+
+## B3: a save made while the keep-out had holes holds a cell stuck just above the clean rule, its
+## last junk inside a building. Pieces are not saved: the cell's junk fraction is, and the pieces
+## are laid again on load. With the whole footprint kept clear they all lie where Lumi can scoop
+## them, so the stuck cell cleans.
+func test_b3_a_saved_stuck_cell_lays_its_pieces_outside_the_building_on_load() -> void:
+	var fx := GlobeFixture.new()
+	var cell: int = fx.region()[8]
+	var centre: Vector3 = fx.grid.centers[cell]
+	var k := YardKeepOut.new()
+	k.radius = fx.grid.radius_m
+	k.xf_inv = Transform3D(SphereGrid.frame(-centre), -centre * fx.grid.radius_m).affine_inverse()  # the start site, far away
+	var fr := Transform3D(SphereGrid.frame(centre), centre * fx.grid.radius_m)
+	k.add_world("test", [[fr, Rect2(0.5, -30.0, 30.0, 60.0)]])  # a building over about half the cell
+	fx.field.keep_out = k.blocks
+	fx.cells.junk[cell] = 0.06  # as saved: just above the 5% the clean rule sweeps
+	var pids: PackedInt32Array = fx.field.materialize(cell)
+	assert_gt(pids.size(), 0, "the cell's last junk is laid")
+	var inside: int = 0
+	for pid: int in pids:
+		if k.in_building(fx.field.piece_pos[pid].normalized()):
+			inside += 1
+	assert_eq(inside, 0, "pieces laid inside the building")
+	for pid: int in pids:
+		if fx.field.piece_alive[pid] == 1:
+			fx.field.remove_piece(pid)
+	assert_true(fx.field.is_clean(cell), "scooping what is laid cleans the cell")
 
 
 # --- B4: a later step's purchase closes an earlier step ------------------------------------------
