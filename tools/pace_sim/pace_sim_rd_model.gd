@@ -21,8 +21,17 @@ var parts: float = 0.0
 var earned: float = 0.0
 var parts_earned: float = 0.0
 var seeds: float = 0.0
+## Seeds gained (the kit and blooming plants), spent on planting and spent on cleansing plants
+## (blight), and seconds blight work stood still for want of seeds.
+var seeds_earned: float = 0.0
+var seeds_planted: float = 0.0
+var seeds_cleansing: float = 0.0
+var seed_short_s: float = 0.0
 ## Parts the Scroungers carried in, and robots the Assemblers built.
 var scrounged: float = 0.0
+## Parts spent on new robots and on robot type upgrades.
+var parts_on_robots: float = 0.0
+var parts_on_repairs: float = 0.0
 var assembled: int = 0
 ## Ids owned: unlocks, finished research nodes, grants, rig modules.
 var owned: Dictionary[String, bool] = {}
@@ -44,7 +53,14 @@ var base_level: int = 1
 var busy_s: float = 0.0
 var ended_at: float = -1.0
 var research_active: String = ""
-var research_data: float = 0.0
+## Field data not yet spent: it banks while no node is active and fills the active node's bar.
+var data_bank: float = 0.0
+var data_earned: float = 0.0
+## The launch capstone: parts of the rocket fitted so far, seconds of assembly left on the part
+## being made (0 = none), and whether a finished part waits for Lumi to fit it.
+var rocket_fitted: int = 0
+var rocket_left_s: float = 0.0
+var rocket_ready: bool = false
 var pieces: PackedStringArray = []
 ## Cleaning output so far, in work units and in hexes' worth, by hand and by crew.
 var hand_units: float = 0.0
@@ -69,8 +85,12 @@ func _init(model_data: PaceSimRdData, player: PaceSimRdPolicy) -> void:
 	var need: Array = data.tables["regrowth"]["points_to_leave"]
 	for i: int in data.districts.size():
 		var z := PaceSimRdDistrict.new(data.districts[i], i, data.num("districts.stage_share"), need, int(data.num("districts.source_caps_stage")))
-		z.hex_bonus = z.hex_work * data.num("districts.hex_bonus.cubes_per_work")
-		z.reward_mult = z.hex_work / data.num("districts.stage_reward_ref_work")
+		var loose: float = 0.0
+		for kind: String in z.mix:
+			loose += z.mix[kind] * float(data.kinds[kind]["yield"]["cubes"]) * z.hex_work
+		z.cube_scale = data.hex_cubes(i, loose) / loose
+		z.reward_mult = data.hex_cubes(i, loose) / data.num("districts.stage_reward_ref_cubes")
+		z.crew_reach = rates.reach_over(int(z.row["rings"]))
 		zones.append(z)
 	for kind: String in data.kinds:
 		mastery[kind] = 0
@@ -97,7 +117,14 @@ func seal() -> void:
 	policy = null
 
 
+## Records an event. The first time an event named by an authored district-sized goal happens
+## (goals.json district_goals), that goal is done.
 func emit(event: String) -> void:
+	if not record.events.has(event):
+		for row: Variant in data.tables["goals"].get("district_goals", []):
+			if str((row as Dictionary)["event"]) == event:
+				record.district_goal(t, "goal:" + str((row as Dictionary)["id"]))
+				record.win(t)
 	record.event(event, t)
 
 
@@ -111,11 +138,64 @@ func gain_parts(amount: float) -> void:
 	parts_earned += amount
 
 
+## The crew: every robot. A building that builds robots (the Assembler) is not one of them.
 func robot_total() -> int:
 	var n: int = 0
 	for type: String in robots:
-		n += robots[type]
+		if not bool(data.robot_types[type].get("building", false)):
+			n += robots[type]
 	return n
+
+
+func is_building(type: String) -> bool:
+	return bool(data.robot_types[type].get("building", false))
+
+
+## The rocket's parts in build order (restoration.json launch.rocket.parts), or [] with no capstone.
+func rocket_parts() -> Array:
+	return (data.tables["restoration"]["launch"].get("rocket", {}) as Dictionary).get("parts", [])
+
+
+func rocket_done() -> bool:
+	return rocket_fitted >= rocket_parts().size()
+
+
+## Index of the district the rocket stands in, or -1.
+func rocket_district() -> int:
+	var rocket: Dictionary = data.tables["restoration"]["launch"].get("rocket", {})
+	return data.district_index(str(rocket.get("district", "")))
+
+
+## The rocket part that can be ordered now, or {}: one at a time, in order, each once that
+## share of the launch city is clean (and its source shut where the part says so).
+func rocket_next() -> Dictionary:
+	if rocket_done() or rocket_left_s > 0.0 or rocket_ready or assemblers() <= 0:
+		return {}
+	var at: int = rocket_district()
+	if at < 0 or at >= unlocked or zones[at].entered_at < 0.0:
+		return {}
+	var part: Dictionary = rocket_parts()[rocket_fitted]
+	if zones[at].clean_share() + 0.0001 < float(part.get("at_clean_share", 0.0)) or (bool(part.get("after_source", false)) and not zones[at].source_shut()):
+		return {}
+	return part
+
+
+## Lumi fits the finished rocket part by hand.
+func fit_rocket_part() -> void:
+	if not rocket_ready:
+		return
+	var part: Dictionary = rocket_parts()[rocket_fitted]
+	rocket_ready = false
+	rocket_fitted += 1
+	busy_s += float(part["fit_s"])
+	emit("first_rocket_part")
+	emit("rocket_fit:%d" % rocket_fitted)
+	record.district_goal(t, "rocket:%s" % str(part["id"]))
+	record.now_goal(t)
+	record.win(t)
+	if rocket_done():
+		emit("rocket_complete")
+	items_dirty = true
 
 
 ## Robots of the type that builds robots.
@@ -133,9 +213,10 @@ func robot_parts(type: String) -> float:
 
 ## An Assembler finishes a robot of `type`: Parts are spent, no bench visit. False when it cannot.
 func assemble(type: String) -> bool:
-	if robot_total() >= crew_cap() or parts < robot_parts(type) or not conditions_met(data.robot_types[type]):
+	if is_building(type) or robot_total() >= crew_cap() or parts < robot_parts(type) or not conditions_met(data.robot_types[type]):
 		return false
 	parts -= robot_parts(type)
+	parts_on_robots += robot_parts(type)
 	robots[type] = robots.get(type, 0) + 1
 	assembled += 1
 	emit("robot:" + type)
@@ -173,18 +254,25 @@ func restoration() -> float:
 	return total / float(zones.size())
 
 
-## Field data from play goes to the active research node; with none active it is lost.
+## Field data from play is banked. The active research node is done as soon as the bank holds
+## its field-data cost, which is then spent; with no node active the bank just grows.
 func add_data(amount: float) -> void:
+	data_bank += amount
+	data_earned += amount
 	if research_active == "":
-		record.data_lost += amount
 		return
-	research_data += amount
-	if research_data >= float(data.nodes[research_active]["cost"]["data"]):
+	var cost: float = float(data.nodes[research_active]["cost"]["data"])
+	if data_bank >= cost:
 		var id: String = research_active
 		research_active = ""
-		research_data = 0.0
+		data_bank -= cost
 		grant(id)
 		record.win(t)
+
+
+func gain_seeds(amount: float) -> void:
+	seeds += amount
+	seeds_earned += amount
 
 
 ## Makes an id owned (an unlock, a finished node, a source's grant, a module).
@@ -198,7 +286,7 @@ func grant(id: String) -> void:
 	if data.modules.has(id):
 		rig_dirty = true
 	if id == str(data.tables["regrowth"]["unlock"]):
-		seeds += data.num("regrowth.seeds.kit")
+		gain_seeds(data.num("regrowth.seeds.kit"))
 	emit("own:" + id)
 	rates.dirty = true
 	items_dirty = true
@@ -283,14 +371,20 @@ func buy(item: Dictionary) -> bool:
 			grant(id)
 		"research":
 			research_active = id
-			research_data = 0.0
 			emit("first_research")
+			add_data(0.0)
 		"robot":
-			emit("first_robot")
 			emit("robot:" + id)
-			record.builds.append(t)
+			if not is_building(id):
+				emit("first_robot")
+				record.builds.append(t)
+				parts_on_robots += float(item["parts"])
 		"repair":
 			emit("first_repair")
+			parts_on_repairs += float(item["parts"])
+		"rocket":
+			rocket_left_s = float(rocket_parts()[rocket_fitted]["assembly_s"])
+			emit("first_rocket_order")
 	busy_s += data.num("balance.hand.shop_s")
 	record.purchase(t, str(item["type"]), id, float(item["cubes"]), float(item["parts"]))
 	rates.dirty = true
@@ -361,15 +455,31 @@ func _after_work() -> void:
 			for s: int in range(before + 1, z.stage + 1):
 				_district_stage(z, s)
 	if ended_at < 0.0 and _all_at(int(data.num("restoration.launch.stage"))):
-		ended_at = t
-		emit("launch_ready")
+		emit("all_cities_thriving")
+		if rocket_done():
+			ended_at = t
+			emit("launch_ready")
+	_seed_watch()
 
 
+## Counts the seconds a kind that costs seeds had work left in an open district and no seeds.
+func _seed_watch() -> void:
+	if seeds >= 0.01:
+		return
+	for z: PaceSimRdDistrict in zones:
+		if z.index >= unlocked or z.entered_at < 0.0:
+			continue
+		for kind: String in z.mix:
+			if float(data.kinds[kind].get("seeds_per_hex", 0.0)) > 0.0 and z.remaining(kind) > 0.001 and rates.kind_usable(kind):
+				seed_short_s += TICK_S
+				return
+
+
+## A hex is clean: field data and buried parts, no cubes (cubes come from Lumi's bales).
 func _hex_cleaned(z: PaceSimRdDistrict) -> void:
 	hexes_clean += 1
 	z.buried_parts += float(z.row.get("buried_parts_per_hex", 0.0))
 	bump("hexes")
-	pay(z.hex_bonus)
 	add_data(data.num("districts.hex_bonus.data"))
 	record.hex(t)
 	record.win(t)

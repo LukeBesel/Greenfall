@@ -13,11 +13,20 @@ static func build(m: PaceSimRdModel) -> Array[Dictionary]:
 	_research(m, out)
 	_robots(m, out)
 	_modules(m, out)
+	_rocket(m, out)
 	return out
 
 
 static func _offer(type: String, id: String, cubes: float, parts: float, row: Dictionary) -> Dictionary:
-	return {"type": type, "id": id, "cubes": cubes, "parts": parts, "gate": bool(row.get("gate", false)), "crew": bool(row.get("crew", false))}
+	return {"type": type, "id": id, "cubes": cubes, "parts": parts, "gate": bool(row.get("gate", false)), "crew": bool(row.get("crew", false)),
+		"launch": bool(row.get("launch", false))}
+
+
+## The next large rocket part, made by the Assembler from Parts: the launch capstone.
+static func _rocket(m: PaceSimRdModel, out: Array[Dictionary]) -> void:
+	var part: Dictionary = m.rocket_next()
+	if not part.is_empty():
+		out.append(_offer("rocket", str(part["id"]), 0.0, float(part["parts"]), {"gate": true, "launch": true}))
 
 
 static func _tracks(m: PaceSimRdModel, out: Array[Dictionary]) -> void:
@@ -54,6 +63,7 @@ static func _research(m: PaceSimRdModel, out: Array[Dictionary]) -> void:
 
 static func _robots(m: PaceSimRdModel, out: Array[Dictionary]) -> void:
 	var crew_row: Dictionary = {"crew": true}
+	var first_factory: Dictionary = {"crew": true, "launch": true}
 	var cfg: Dictionary = m.data.tables["robots"]
 	var room: bool = m.robot_total() < m.crew_cap()
 	var by_hand: bool = m.assemblers() == 0
@@ -65,8 +75,9 @@ static func _robots(m: PaceSimRdModel, out: Array[Dictionary]) -> void:
 		var is_repaired: bool = m.repaired.get(id, 0) > 0
 		# Lumi builds by hand until an Assembler stands; after that only the first of a type,
 		# and further Assemblers.
-		if room and have < int(row.get("max", have + 1)) and (by_hand or have == 0 or id == str(cfg["chain"]["assembler"])):
-			out.append(_offer("robot", id, 0.0, m.robot_parts(id), crew_row))
+		var building: bool = m.is_building(id)
+		if (room or building) and have < int(row.get("max", have + 1)) and (by_hand or have == 0 or building):
+			out.append(_offer("robot", id, 0.0, m.robot_parts(id), first_factory if building and have == 0 else crew_row))
 		if have > 0 and not is_repaired and m.owned.has(str(cfg["repair_requires"])):
 			out.append(_offer("repair", id, 0.0, float(row["repair_parts"]) + float(row["parts"]) * float(cfg["repair_per_robot"]) * float(have), crew_row))
 

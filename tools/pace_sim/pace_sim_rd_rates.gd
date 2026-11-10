@@ -89,17 +89,21 @@ func throughput(kind: String) -> float:
 	return _loaded(rate, has_baler())
 
 
-## Cubes one unit of a kind pays when Lumi clears it.
+## Cubes one unit of a kind pays when Lumi clears it in the district she is in. Only Lumi's own
+## work pays cubes: robots earn none.
 func unit_value(kind: String) -> float:
 	var row: Dictionary = _d.kinds[kind]
-	var value: float = float(row["yield"]["cubes"]) * stat("value")
+	var value: float = float(row["yield"]["cubes"]) * _m.zones[_m.here].cube_scale * stat("value")
 	if bool(row.get("loads", false)):
 		value *= _d.kept_bale_mult * stat("bale_value") if has_baler() else _d.num("balance.hand.loose_mult")
 	return value
 
 
+## Parts one unit of a kind gives Lumi's hands in the district she is in. The table's yield is per
+## unit of a hex of the reference weight: a heavier hex holds the same Parts, spread thinner.
 func unit_parts(kind: String) -> float:
-	return float(_d.kinds[kind]["yield"].get("parts", 0.0)) * stat("parts_yield")
+	var thin: float = _d.num("districts.parts_ref_work") / _m.zones[_m.here].hex_work
+	return float(_d.kinds[kind]["yield"].get("parts", 0.0)) * thin * stat("parts_yield")
 
 
 ## Cubes a second from tipping loose over cubes a second from pressing bales, for a chest kind.
@@ -124,18 +128,34 @@ func hand_income(z: PaceSimRdDistrict, parts_weight: float) -> float:
 	var per_unit: float = 0.0
 	for kind: String in z.mix:
 		per_unit += z.mix[kind] * (unit_value(kind) + unit_parts(kind) * parts_weight)
-	return per_unit * hand_power(z) + z.hex_bonus * hand_power(z) / z.hex_work
+	return per_unit * hand_power(z)
 
 
-## Units a second one robot of a type clears of a kind; 0 below the mastery it needs.
-func robot_rate(type: String, kind: String, near: bool) -> float:
+## Units a second one robot of a type clears of a kind in district `z`; 0 below the mastery it
+## needs. `near` = Lumi is in that district.
+func robot_rate(type: String, kind: String, z: PaceSimRdDistrict, near: bool) -> float:
 	var speed: Dictionary = _d.tables["robots"]["mastery_speed"]
 	var level: int = _m.mastery.get(kind, 0)
 	if level < int(speed["min_level"]):
 		return 0.0
 	var rate: float = float(_d.robot_types[type]["rate"]) * (float(speed["base"]) + float(speed["per_level"]) * float(level))
-	rate *= tier_mult(type) * stat("crew_rate")
-	return rate * (1.0 + _d.num("robots.near_bonus")) if near else rate
+	rate *= tier_mult(type) * stat("crew_rate") * z.crew_reach
+	return rate * (1.0 + _d.num("robots.near_bonus")) * stat("crew_near") if near else rate
+
+
+## Share of a robot's speed left when it works `rings` rings from a base: it works shift_s seconds
+## between trips, and a trip costs s_per_ring seconds for every ring out.
+func reach_at(rings: float) -> float:
+	var shift_s: float = _d.num("robots.distance.shift_s")
+	return shift_s / (shift_s + _d.num("robots.distance.s_per_ring") * rings)
+
+
+## The same share averaged over every hex of a patch `rings` rings wide round its base.
+func reach_over(rings: int) -> float:
+	var total: float = 1.0
+	for r: int in range(1, rings + 1):
+		total += 6.0 * float(r) * reach_at(float(r))
+	return total / float(PaceSimRdData.hexes_in(rings))
 
 
 ## Speed multiplier of a robot type: 1.0 while rusty, repaired_mult once the type is repaired.
@@ -146,19 +166,14 @@ func tier_mult(type: String) -> float:
 	return _d.num("robots.repaired_mult") if _m.repaired.get(type, 0) > 0 else 1.0
 
 
-## Cubes a second right now: Lumi on the best-paying kind she can work here, plus the crew's bales.
+## Cubes a second right now: Lumi on the best-paying kind she can work here. The crew adds none.
 func income_now() -> float:
 	var z: PaceSimRdDistrict = _m.zones[_m.here]
 	var best: float = 0.0
 	for kind: String in z.mix:
 		if kind_usable(kind):
 			best = maxf(best, throughput(kind) * unit_value(kind))
-	var crew: float = 0.0
-	for type: String in _m.robots:
-		for kind: Variant in _d.robot_types[type].get("kinds", []):
-			if z.mix.has(str(kind)):
-				crew += robot_rate(type, str(kind), true) * float(_m.robots[type]) * float(_d.kinds[str(kind)]["yield"]["cubes"]) * float(_d.kinds[str(kind)]["crew_value"])
-	return best * surge_factor() + crew
+	return best * surge_factor()
 
 
 ## Units a second the whole crew would clear in a district with Lumi there.
@@ -168,7 +183,7 @@ func crew_power(z: PaceSimRdDistrict) -> float:
 		var best: float = 0.0
 		for kind: Variant in _d.robot_types[type].get("kinds", []):
 			if z.mix.has(str(kind)):
-				best = maxf(best, robot_rate(type, str(kind), true))
+				best = maxf(best, robot_rate(type, str(kind), z, true))
 		total += best * float(_m.robots[type])
 	return total
 
@@ -192,8 +207,8 @@ func district_power(z: PaceSimRdDistrict) -> float:
 		var best: String = ""
 		var best_rate: float = 0.0
 		for kind: Variant in _d.robot_types[type].get("kinds", []):
-			if z.mix.has(str(kind)) and robot_rate(type, str(kind), true) > best_rate:
-				best_rate = robot_rate(type, str(kind), true)
+			if z.mix.has(str(kind)) and robot_rate(type, str(kind), z, true) > best_rate:
+				best_rate = robot_rate(type, str(kind), z, true)
 				best = str(kind)
 		if best != "":
 			crew[best] += best_rate * float(_m.robots[type])
@@ -225,6 +240,21 @@ func crew_tend_rate(field: String) -> float:
 	var total: float = 0.0
 	for type: String in _m.robots:
 		total += float(_d.robot_types[type].get(field, 0.0)) * float(_m.robots[type]) * tier_mult(type) * stat("crew_rate")
+	return total
+
+
+## Units a second the crew as it stands would clear on open ground at full reach, with Lumi away:
+## each working type on the kind it is best at.
+func crew_far_power() -> float:
+	var total: float = 0.0
+	for type: String in _m.robots:
+		var best: float = 0.0
+		for kind: Variant in _d.robot_types[type].get("kinds", []):
+			var speed: Dictionary = _d.tables["robots"]["mastery_speed"]
+			var level: int = _m.mastery.get(str(kind), 0)
+			if level >= int(speed["min_level"]):
+				best = maxf(best, float(_d.robot_types[type]["rate"]) * (float(speed["base"]) + float(speed["per_level"]) * float(level)))
+		total += best * tier_mult(type) * stat("crew_rate") * float(_m.robots[type])
 	return total
 
 

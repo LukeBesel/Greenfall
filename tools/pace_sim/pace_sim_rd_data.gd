@@ -107,6 +107,13 @@ func track_tier(id: String, level: int) -> int:
 	return tier
 
 
+## Cubes the waste of one hex of district `index` is worth tipped loose by hand. `at_kind_yields`
+## is what the kinds' own yields would give; a district marked KEPT_POLLUTION keeps that.
+func hex_cubes(index: int, at_kind_yields: float) -> float:
+	var value: Variant = districts[index].get("hex_cubes", KEPT_POLLUTION)
+	return at_kind_yields if str(value) == KEPT_POLLUTION else float(value)
+
+
 ## Units of a kind Lumi must clear by hand in total to hold mastery `level`.
 func mastery_units(kind: String, level: int) -> float:
 	return float(kinds[kind]["mastery_level1_units"]) * pow(num("balance.mastery.growth"), float(level - 1))

@@ -2,8 +2,9 @@
   "_doc": "PROPOSAL (task M3-01), not game data. Apprentice robots and the chain that builds them (spec sections 3 and 14): the crew climbs from 1 robot at about player minute 20 to 100-200 at the launch point. Robots and their upgrades cost PARTS only. mastery_speed: a robot works a kind at rate x (base + per_level x Lumi's mastery of that kind), and not at all below min_level, so Lumi's hands set the pace of the whole crew. near_bonus: extra speed for crew in the district Lumi is in (the simulator treats the whole current district as 'within 80 m'). crew_cap: most robots in all at base level 1..6. chain: scrounger and assembler name the two robot types of the chain. Every hex that gets cleaned leaves buried parts in the ground (districts.json buried_parts_per_hex); a Scrounger carries `carry` of them to the base per round trip of trip_s + trip_s_per_ring x the district's rings seconds, from the open district with the most left, and when the ground is empty it carries nothing: crew growth follows cleaning. An Assembler turns Parts into one robot every assembly_s seconds, in the mix the player sets. Through cities 1 and 2 Lumi builds every robot by hand at the bench (the Scrounger of city 2 only supplies Parts); the Assembler arrives in city 3 and closes the chain; after that only the first robot of a type and further Assemblers are hand-built. haul_share: share of Lumi's bale carrying one hauler takes over. Tiers on Planet 1: rusty and repaired, per robot TYPE: repaired_mult = a repaired type's speed (work, carrying or assembling); the upgrade costs the type's repair_parts plus repair_per_robot x its build price for each robot already owned; robots of a repaired type cost repaired_build_mult x as much to build; repair_requires = the id that opens upgrades. types: kinds = pollution kinds the type can work; rate = units a second per rusty robot at speed 1.0; water_rate / plant_rate = hexes a second a tender waters or plants (planting uses seeds); hauls = carries Lumi's bales; parts = Parts to build one; parts_step = Parts added for each one already owned (only the Assembler: more Assemblers are costly); max = most of that type (absent = no limit but the crew cap); requires = id that must be owned; district = index of the district that must be open. Base levels also raise crew speed (upgrades.json base_N mods). The Drip working smog (misting the air) is this proposal's answer to the spec naming no smog robot.",
   "mastery_speed": {"base": 0.4, "per_level": 0.12, "min_level": 1},
   "near_bonus": 0.25,
-  "crew_cap": [8, 28, 70, 110, 160, 200],
-  "chain": {"scrounger": "scrounger", "assembler": "assembler", "carry": 4.0, "trip_s": 30.0, "trip_s_per_ring": 1.5, "assembly_s": 40.0},
+  "distance": {"shift_s": 300.0, "s_per_ring": 2.0},
+  "crew_cap": [8, 40, 80, 120, 160, 200],
+  "chain": {"scrounger": "scrounger", "assembler": "assembler", "carry": 5.5, "trip_s": 30.0, "trip_s_per_ring": 1.5, "assembly_s": 45.0},
   "haul_share": 0.5,
   "repaired_mult": 1.6,
   "repaired_build_mult": 1.5,
@@ -12,10 +13,10 @@
   "types": {
     "scoopie": {"name": "Scoopie", "role": "clean", "kinds": ["litter"], "rate": 1.2, "parts": 10, "repair_parts": 30, "requires": "bot_bay", "district": 0},
     "haulbug": {"name": "Haul Bug", "role": "clean", "kinds": ["wrecks"], "rate": 1.5, "hauls": true, "parts": 16, "repair_parts": 40, "requires": "haul_rig", "district": 1},
-    "skimmer": {"name": "Skimmer", "role": "clean", "kinds": ["slick"], "rate": 1.65, "parts": 22, "repair_parts": 60, "requires": "skimmer_rig", "district": 2},
-    "drip": {"name": "Drip", "role": "tend", "kinds": ["smog"], "rate": 2.0, "water_rate": 0.12, "parts": 22, "repair_parts": 60, "requires": "drip_blueprint", "district": 2},
-    "seedling": {"name": "Seedling", "role": "tend", "kinds": ["blight"], "rate": 1.75, "plant_rate": 0.15, "parts": 30, "repair_parts": 80, "requires": "seedling_blueprint", "district": 3},
+    "skimmer": {"name": "Skimmer", "role": "clean", "kinds": ["slick"], "rate": 2.3, "parts": 22, "repair_parts": 60, "requires": "skimmer_rig", "district": 2},
+    "drip": {"name": "Drip", "role": "tend", "kinds": ["smog"], "rate": 2.0, "water_rate": 0.12, "parts": 22, "repair_parts": 60, "requires": "drip_blueprint", "district": 3},
+    "seedling": {"name": "Seedling", "role": "tend", "kinds": ["blight"], "rate": 1.75, "plant_rate": 0.15, "parts": 30, "repair_parts": 80, "requires": "seedling_blueprint", "district": 4},
     "scrounger": {"name": "Scrounger", "role": "find", "kinds": [], "parts": 18, "repair_parts": 50, "requires": "scrounger_blueprint", "district": 1},
-    "assembler": {"name": "Assembler", "role": "build", "kinds": [], "parts": 45, "parts_step": 150, "repair_parts": 200, "max": 4, "requires": "assembler_blueprint", "district": 2}
+    "assembler": {"name": "Assembler", "role": "build", "building": true, "kinds": [], "parts": 45, "parts_step": 150, "repair_parts": 200, "max": 4, "requires": "assembler_blueprint", "district": 2}
   }
 }

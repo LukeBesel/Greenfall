@@ -21,9 +21,12 @@ var index: int = 0
 var id: String = ""
 var hexes: int = 0
 var hex_work: float = 0.0
-## Cubes paid when one of its hexes is clean, and the multiplier on regrowth rewards.
-var hex_bonus: float = 0.0
+## Multiplier on the kinds' cube yields here (so one hex's waste is worth the district's hex_cubes
+## by hand), the multiplier on the city's stage payouts, and the share of a robot's speed left
+## after its trips to this city's base (robots.json distance).
+var cube_scale: float = 1.0
 var reward_mult: float = 1.0
+var crew_reach: float = 1.0
 ## Buried parts in its cleaned ground that no Scrounger has dug up yet.
 var buried_parts: float = 0.0
 var mix: Dictionary[String, float] = {}

@@ -3,7 +3,7 @@ extends RefCounted
 ## One tick of work in the redesign model: what Lumi does (sweep, plant, water, the source job, a
 ## hop, a wreck), what the crew does, how hexes grow, and the Surge.
 ## Lumi's choices come from the policy as plain strings: clean, plant, water (dry hexes), boost
-## (water again for another burst), source, explore, travel:<district index>, idle.
+## (water again for another burst), source, explore, fit (a rocket part), travel:<district index>, idle.
 
 const MERGE_EVERY_S: float = 5.0
 
@@ -36,13 +36,33 @@ func tending_open() -> bool:
 	return _m.owned.has(str(_d.tables["regrowth"]["unlock"]))
 
 
-## Kinds of the district Lumi has the tool for.
+## Kinds of the district Lumi has the tool for (and, for a kind cleared with plants, seeds).
 func usable_kinds(z: PaceSimRdDistrict) -> Array[String]:
 	var out: Array[String] = []
 	for kind: String in z.mix:
-		if _m.rates.kind_usable(kind):
+		if _m.rates.kind_usable(kind) and _has_seeds_for(kind):
 			out.append(kind)
 	return out
+
+
+## Seeds one unit of `kind` costs to clear in `z` (cleansing plants), 0 for most kinds.
+func seeds_per_unit(z: PaceSimRdDistrict, kind: String) -> float:
+	var per_hex: float = float(_d.kinds[kind].get("seeds_per_hex", 0.0))
+	return per_hex / (z.hex_work * z.mix[kind]) if per_hex > 0.0 else 0.0
+
+
+func _has_seeds_for(kind: String) -> bool:
+	return float(_d.kinds[kind].get("seeds_per_hex", 0.0)) <= 0.0 or _m.seeds >= 0.01
+
+
+## Clears up to `units` of a kind in `z`, paying seeds where the kind costs them; returns units cleared.
+func _clear(z: PaceSimRdDistrict, kind: String, units: float) -> float:
+	var cost: float = seeds_per_unit(z, kind)
+	var used: float = z.add_units(kind, units if cost <= 0.0 else minf(units, _m.seeds / cost))
+	if cost > 0.0:
+		_m.seeds -= used * cost
+		_m.seeds_cleansing += used * cost
+	return used
 
 
 func can_clean(z: PaceSimRdDistrict) -> bool:
@@ -83,6 +103,9 @@ func act(choice: String) -> void:
 			worked = _source()
 		"explore":
 			_explore()
+		"fit":
+			_m.fit_rocket_part()
+			worked = true
 		"travel":
 			_travel(int(choice.get_slice(":", 1)))
 	seconds[key] = seconds.get(key, 0.0) + PaceSimRdModel.TICK_S
@@ -116,14 +139,24 @@ func chain_tick() -> void:
 		var z: PaceSimRdDistrict = _richest_ground()
 		if z != null:
 			var trip_s: float = float(chain["trip_s"]) + float(chain["trip_s_per_ring"]) * float(z.row["rings"])
-			var carried: float = minf(z.buried_parts, n * float(chain["carry"]) * _m.rates.tier_mult(finder) / trip_s * PaceSimRdModel.TICK_S)
+			var carried: float = minf(z.buried_parts, n * float(chain["carry"]) * _m.rates.tier_mult(finder) * _m.rates.stat("scrounge") / trip_s * PaceSimRdModel.TICK_S)
 			z.buried_parts -= carried
 			_m.gain_parts(carried)
 			_m.scrounged += carried
 	var builders: float = float(_m.assemblers())
 	if builders <= 0.0:
 		return
-	_assembly = minf(_assembly + builders * _m.rates.tier_mult(str(chain["assembler"])) / float(chain["assembly_s"]) * PaceSimRdModel.TICK_S, maxf(1.0, builders))
+	var line_speed: float = _m.rates.tier_mult(str(chain["assembler"]))
+	# A rocket part on the line takes one Assembler until it is done.
+	if _m.rocket_left_s > 0.0:
+		builders -= 1.0
+		_m.rocket_left_s -= line_speed * PaceSimRdModel.TICK_S
+		if _m.rocket_left_s <= 0.0:
+			_m.rocket_left_s = 0.0
+			_m.rocket_ready = true
+			_m.emit("rocket_part_made")
+			_m.record.win(_m.t)
+	_assembly = minf(_assembly + builders * line_speed / float(chain["assembly_s"]) * PaceSimRdModel.TICK_S, maxf(1.0, builders))
 	while _assembly >= 1.0:
 		var type: String = _m.policy.next_build(_m)
 		if type == "" or not _m.assemble(type):
@@ -141,15 +174,12 @@ func _richest_ground() -> PaceSimRdDistrict:
 
 
 func crew_tick() -> void:
-	var linked: float = 1.0
-	if surge_active() and _m.owned.has(str(_d.tables["balance"]["surge"]["linked"]["unlock"])):
-		linked = _d.num("balance.surge.linked.crew_mult")
 	for type: String in _m.robots:
 		var n: float = float(_m.robots[type])
 		if n <= 0.0:
 			continue
 		var row: Dictionary = _d.robot_types[type]
-		_crew_clean(type, row, n, linked)
+		_crew_clean(type, row, n)
 		for field: String in ["plant_rate", "water_rate"]:
 			if float(row.get(field, 0.0)) > 0.0:
 				_crew_tend(type, field, n)
@@ -160,7 +190,11 @@ func grow_tick() -> void:
 	var merge: bool = _m.t >= _next_merge
 	if merge:
 		_next_merge = _m.t + MERGE_EVERY_S
+	var bloom: float = float(regrowth["seeds"].get("bloom_per_hex_min", 0.0)) / 60.0 * PaceSimRdModel.TICK_S
 	for z: PaceSimRdDistrict in _m.zones:
+		# Thriving ground keeps blooming: a slow, steady source of seeds that cannot run dry.
+		if bloom > 0.0 and z.count[PaceSimRdDistrict.TOP_STAGE] > 0.0:
+			_m.gain_seeds(z.count[PaceSimRdDistrict.TOP_STAGE] * bloom)
 		if z.batches.is_empty():
 			continue
 		var promoted: PackedFloat64Array = z.grow(PaceSimRdModel.TICK_S, _m.t, float(regrowth["dry_rate"]))
@@ -173,8 +207,7 @@ func grow_tick() -> void:
 
 func _stage_reward(z: PaceSimRdDistrict, s: int, n: float) -> void:
 	var reward: Dictionary = _d.tables["regrowth"]["stage_reward"]
-	_m.pay(n * float((reward["cubes"] as Array)[s]) * z.reward_mult)
-	_m.seeds += n * float((_d.tables["regrowth"]["seeds"]["from_stage"] as Array)[s])
+	_m.gain_seeds(n * float((_d.tables["regrowth"]["seeds"]["from_stage"] as Array)[s]))
 	_m.add_data(n * float((reward["data"] as Array)[s]))
 	_m.record.win(_m.t)
 	if z.index == _m.here:
@@ -203,7 +236,7 @@ func _clean() -> bool:
 	var kind: String = z.bottleneck(usable_kinds(z))
 	if kind == "":
 		return false
-	var units: float = z.add_units(kind, _m.rates.throughput(kind) * _surge_mult() * PaceSimRdModel.TICK_S)
+	var units: float = _clear(z, kind, _m.rates.throughput(kind) * _surge_mult() * PaceSimRdModel.TICK_S)
 	_hand_output(z, kind, units)
 	return true
 
@@ -271,6 +304,7 @@ func _plant_in(z: PaceSimRdDistrict, n: float) -> float:
 	var per_hex: float = _d.num("regrowth.seeds.per_hex")
 	var used: float = z.plant(minf(n, _m.seeds / per_hex))
 	_m.seeds -= used * per_hex
+	_m.seeds_planted += used * per_hex
 	return used
 
 
@@ -355,10 +389,11 @@ func _travel(to: int) -> void:
 	_m.rates.dirty = true
 
 
-func _crew_clean(type: String, row: Dictionary, n: float, linked: float) -> void:
+## Robots clear waste and earn nothing: no cubes, no Parts.
+func _crew_clean(type: String, row: Dictionary, n: float) -> void:
 	var allowed: Array[String] = []
 	for kind: Variant in row.get("kinds", []):
-		if _m.mastery.get(str(kind), 0) >= int(_d.num("robots.mastery_speed.min_level")):
+		if _m.mastery.get(str(kind), 0) >= int(_d.num("robots.mastery_speed.min_level")) and _has_seeds_for(str(kind)):
 			allowed.append(str(kind))
 	if allowed.is_empty():
 		return
@@ -367,9 +402,7 @@ func _crew_clean(type: String, row: Dictionary, n: float, linked: float) -> void
 		return
 	var kind: String = z.bottleneck(allowed)
 	var near: bool = z.index == _m.here
-	var rate: float = _m.rates.robot_rate(type, kind, near) * (linked if near else 1.0)
-	var units: float = z.add_units(kind, n * rate * PaceSimRdModel.TICK_S)
-	_m.pay(units * float(_d.kinds[kind]["yield"]["cubes"]) * float(_d.kinds[kind]["crew_value"]))
+	var units: float = _clear(z, kind, n * _m.rates.robot_rate(type, kind, z, near) * PaceSimRdModel.TICK_S)
 	_m.crew_units += units
 	_m.crew_hexes += units / z.hex_work
 	z.crew_units += units

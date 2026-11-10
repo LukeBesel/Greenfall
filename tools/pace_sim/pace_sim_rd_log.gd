@@ -5,10 +5,12 @@ extends RefCounted
 ## minute, and the design checks sampled along the way.
 
 const SAMPLE_S: float = 60.0
-## A one-off reward is compared with this many player seconds of income, measured over the last
-## few bot minutes.
+## A one-off reward is compared with this many player seconds of income. Only Lumi's own bales
+## pay, so income stops whenever she tends, travels or fits a rocket part: "current income" is
+## taken as the best run of LUMP_WINDOW_MIN bot minutes in the last LUMP_LOOKBACK_MIN.
 const LUMP_PLAYER_S: float = 180.0
 const LUMP_WINDOW_MIN: int = 3
+const LUMP_LOOKBACK_MIN: int = 12
 
 ## Event id -> first time it happened.
 var events: Dictionary[String, float] = {}
@@ -22,14 +24,16 @@ var minutes: Array[Dictionary] = []
 ## Track id -> times it was bought, and times it was the best-scoring open track when one was bought.
 var track_buys: Dictionary[String, int] = {}
 var track_tops: Dictionary[String, int] = {}
+## The same count with every open track priced the same (the track with the largest gain).
+var track_tops_equal: Dictionary[String, int] = {}
 ## District id -> {slot: best module there}.
 var rig_best: Dictionary[String, Dictionary] = {}
 ## Highest ratio seen of tipping income over pressing income, and when.
 var loose_over_bale: float = 0.0
 var loose_over_bale_at: float = 0.0
-var data_lost: float = 0.0
-## Moments a Parts-priced offer could be bought (or none was on the table).
+## Moments a Parts-priced offer could be bought (or none was on the table), and the same for cubes.
 var parts_ok: PackedFloat64Array = []
+var cubes_ok: PackedFloat64Array = []
 ## Times a robot build or a robot repair was chosen when both could be afforded.
 var crew_choices: Dictionary[String, int] = {}
 ## Time of every robot build.
@@ -75,9 +79,11 @@ func offers(m: PaceSimRdModel) -> void:
 	var any: bool = false
 	var parts_offer: bool = false
 	var parts_can: bool = false
+	var cubes_can: bool = false
 	for item: Dictionary in m.items():
 		var can: bool = m.can_afford(item)
 		any = any or can
+		cubes_can = cubes_can or (can and float(item["cubes"]) > 0.0)
 		if float(item["parts"]) > 0.0:
 			parts_offer = true
 			parts_can = parts_can or can
@@ -87,6 +93,8 @@ func offers(m: PaceSimRdModel) -> void:
 		affordable.append(m.t)
 	if parts_can or not parts_offer:
 		parts_ok.append(m.t)
+	if cubes_can:
+		cubes_ok.append(m.t)
 	max_cubes_on_hand = maxf(max_cubes_on_hand, m.cubes)
 	if m.zones.size() > 2 and m.zones[2].entered_at < 0.0:
 		held_before_third = maxf(held_before_third, m.cubes)
@@ -102,8 +110,12 @@ func income_jump(m: PaceSimRdModel, id: String, before: float, after: float) -> 
 func lump(m: PaceSimRdModel, amount: float) -> void:
 	if minutes.size() < LUMP_WINDOW_MIN:
 		return
-	var from: Dictionary = minutes[minutes.size() - LUMP_WINDOW_MIN]
-	var rate: float = (m.earned - float(from["earned"])) / maxf(m.t - float(from["minute"]) * SAMPLE_S, 1.0)
+	var rate: float = 0.0
+	for i: int in range(maxi(LUMP_WINDOW_MIN, minutes.size() - LUMP_LOOKBACK_MIN), minutes.size() + 1):
+		var to_earned: float = float(minutes[i]["earned"]) if i < minutes.size() else m.earned
+		var to_t: float = float(minutes[i]["minute"]) * SAMPLE_S if i < minutes.size() else m.t
+		var from: Dictionary = minutes[i - LUMP_WINDOW_MIN]
+		rate = maxf(rate, (to_earned - float(from["earned"])) / maxf(to_t - float(from["minute"]) * SAMPLE_S, 1.0))
 	var allowed: float = rate * LUMP_PLAYER_S / m.data.num("balance.bot_to_player")
 	if allowed > 0.0 and amount / allowed > float(lump_worst["ratio"]):
 		lump_worst = {"ratio": amount / allowed, "t": m.t}

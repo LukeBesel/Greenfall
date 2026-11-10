@@ -32,7 +32,8 @@ const CHAIN_ROBOT_GAIN: float = 1.0
 ## Another robot builder is bought once this many times its price in Parts is lying unused.
 const PARTS_PILE_FACTOR: float = 2.0
 
-## False: never builds robots or anything only robots need.
+## False: never builds robots or anything only robots need. The one factory the rocket's parts
+## are made in is still built (offers marked "launch"), or the launch point could not be reached.
 var buys_robots: bool = true
 ## True: every robot on offer is bought before any other Parts purchase.
 var rushes_robots: bool = false
@@ -57,7 +58,7 @@ func shop(m: PaceSimRdModel) -> void:
 	_next_look = m.t + LOOK_AGAIN_S
 	var offers: Array[Dictionary] = []
 	for item: Dictionary in m.items():
-		if buys_robots or not bool(item["crew"]):
+		if buys_robots or not bool(item["crew"]) or bool(item["launch"]):
 			offers.append(item)
 	var gate: Dictionary = {}
 	for item: Dictionary in offers:
@@ -81,6 +82,8 @@ func choose(m: PaceSimRdModel) -> String:
 	var z: PaceSimRdDistrict = w.zone()
 	if w.source_open(z):
 		return "source"
+	if m.rocket_ready:
+		return "fit" if m.here == m.rocket_district() else "travel:%d" % m.rocket_district()
 	var can_clean: bool = w.can_clean(z)
 	if w.tending_open():
 		var batch: float = TEND_BATCH_HEXES if can_clean else 0.0001
@@ -103,8 +106,15 @@ func choose(m: PaceSimRdModel) -> String:
 
 
 ## The robot type the Assemblers build next ("" = nothing now). Only types Lumi has built once
-## by hand can be assembled.
+## by hand can be assembled. While a rocket part can be ordered, its Parts are kept back first.
 func next_build(m: PaceSimRdModel) -> String:
+	var type: String = _pick_build(m)
+	if type != "" and m.parts - m.robot_parts(type) < float(m.rocket_next().get("parts", 0.0)):
+		return ""
+	return type
+
+
+func _pick_build(m: PaceSimRdModel) -> String:
 	var chain: Dictionary = m.data.tables["robots"]["chain"]
 	var finder: String = str(chain["scrounger"])
 	if not buys_robots:
@@ -140,7 +150,7 @@ func value(m: PaceSimRdModel, z: PaceSimRdDistrict) -> float:
 	var r: PaceSimRdRates = m.rates
 	var hand: float = r.hand_power(z) * r.surge_factor()
 	var v: float = W_POWER * log(r.district_power(z)) + W_HAND * log(hand)
-	v += W_INCOME * log(r.hand_income(z, PARTS_AS_CUBES) * r.surge_factor() + r.crew_power(z))
+	v += W_INCOME * log(r.hand_income(z, PARTS_AS_CUBES) * r.surge_factor())
 	if m.work.tending_open():
 		var plant: float = r.plant_rate() + r.crew_tend_rate("plant_rate")
 		var water: float = r.water_rate() + r.crew_tend_rate("water_rate")
@@ -234,6 +244,8 @@ func _buy_best(m: PaceSimRdModel, offers: Array[Dictionary], gate: Dictionary) -
 	var best_score: Dictionary[String, float] = {"parts": 0.0, "cubes": 0.0}
 	var top_track: String = ""
 	var top_track_score: float = 0.0
+	var top_equal: String = ""
+	var top_equal_gain: float = 0.0
 	var seen: Dictionary[String, bool] = {}
 	var saving_parts: bool = _saving_parts(m, offers)
 	for item: Dictionary in offers:
@@ -243,10 +255,14 @@ func _buy_best(m: PaceSimRdModel, offers: Array[Dictionary], gate: Dictionary) -
 		var pool: String = "parts" if float(item["parts"]) > 0.0 else "cubes"
 		if pool == "parts" and saving_parts:
 			continue
-		var score: float = _gain(m, z, item, before) / maxf(float(item[pool]), 1.0)
+		var gain: float = _gain(m, z, item, before)
+		var score: float = gain / maxf(float(item[pool]), 1.0)
 		if type == "track" and score > top_track_score:
 			top_track_score = score
 			top_track = str(item["id"])
+		if type == "track" and gain > top_equal_gain:
+			top_equal_gain = gain
+			top_equal = str(item["id"])
 		if not m.can_afford(item) or not _fits_beside(item, gate):
 			continue
 		seen[type] = true
@@ -262,16 +278,20 @@ func _buy_best(m: PaceSimRdModel, offers: Array[Dictionary], gate: Dictionary) -
 	if str(pick["type"]) == "track":
 		m.record.track_buys[str(pick["id"])] = m.record.track_buys.get(str(pick["id"]), 0) + 1
 		m.record.track_tops[top_track] = m.record.track_tops.get(top_track, 0) + 1
+		m.record.track_tops_equal[top_equal] = m.record.track_tops_equal.get(top_equal, 0) + 1
 	m.rig_dirty = m.rig_dirty or str(pick["type"]) == "module"
 
 
 ## True while something new costs Parts the player does not have yet: a research node that opens
-## a robot type, or the first robot of a type. Until it is bought no Parts go to anything else.
+## a robot type, the first robot of a type, or the next rocket part. Until it is bought no Parts
+## go to anything else.
 func _saving_parts(m: PaceSimRdModel, offers: Array[Dictionary]) -> bool:
 	for item: Dictionary in offers:
 		if float(item["parts"]) <= 0.0 or m.can_afford(item):
 			continue
 		var id: String = str(item["id"])
+		if str(item["type"]) == "rocket":
+			return true
 		if str(item["type"]) == "research" and (m.data.nodes[id].get("mods", {}) as Dictionary).is_empty():
 			return true
 		if str(item["type"]) == "robot" and m.robots.get(id, 0) == 0:

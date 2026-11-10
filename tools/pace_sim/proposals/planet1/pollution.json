@@ -2,14 +2,14 @@
   "_doc": "PROPOSAL (task M3-01), not game data. The five pollution kinds (spec section 2). tool: the id Lumi must own to work the kind at all ('' = none). needs_module and without_module_factor: a rig module the kind wants; without it fitted Lumi works the kind at that factor (slick without the Hover Skirt is shoreline work only). hand_factor: Lumi's rate on the kind against litter. loads: true = the work goes through the chest (tip or press, then paid per load); false = paid as it is done, with a small win every `batch` units. yield: cubes and Parts per unit cleared by hand; cubes 'kept:pollution' means the average value of the planet's current junk table, read through Planets, because the redesign keeps that table. Parts: litter in district 1 gives about 0.7 Parts a hex (one buried part per 3 hexes plus the odd piece worth stripping); wrecks are where Parts open up. crew_value: share of the cube yield a robot's work pays. Robots' cleaning finds no Parts: the crew's Parts come from Scroungers digging the cleaned ground (robots.json chain). mastery_per_unit and mastery_level1_units: level L needs mastery_level1_units x balance.mastery.growth^(L-1) units cleared by hand.",
   "kinds": {
     "litter": {"name": "Litter", "tool": "", "hand_factor": 1.0, "loads": true, "yield": {"cubes": "kept:pollution", "parts": 0.007},
-               "crew_value": 0.12, "mastery_per_unit": 1.0, "mastery_level1_units": 220.0},
-    "wrecks": {"name": "Wrecks", "tool": "lift_2", "hand_factor": 0.8, "loads": false, "batch": 60.0, "yield": {"cubes": 0.9, "parts": 0.012},
-               "crew_value": 0.12, "mastery_per_unit": 1.0, "mastery_level1_units": 1000.0},
+               "mastery_per_unit": 1.0, "mastery_level1_units": 220.0},
+    "wrecks": {"name": "Wrecks", "tool": "lift_2", "hand_factor": 0.8, "loads": false, "batch": 60.0, "yield": {"cubes": 0.9, "parts": 0.018},
+               "mastery_per_unit": 1.0, "mastery_level1_units": 1000.0},
     "slick": {"name": "Slick", "tool": "skimmer_head", "needs_module": "hover_skirt", "without_module_factor": 0.3, "hand_factor": 0.9, "loads": true,
-              "yield": {"cubes": 1.0, "parts": 0.002}, "crew_value": 0.12, "mastery_per_unit": 1.0, "mastery_level1_units": 2200.0},
+              "yield": {"cubes": 1.0, "parts": 0.002}, "mastery_per_unit": 1.0, "mastery_level1_units": 2200.0},
     "smog": {"name": "Smog", "tool": "scrubber_units", "hand_factor": 0.9, "loads": false, "batch": 240.0, "yield": {"cubes": 1.0, "parts": 0.004},
-             "crew_value": 0.12, "mastery_per_unit": 1.0, "mastery_level1_units": 4000.0},
-    "blight": {"name": "Blight", "tool": "cleansing_plants", "hand_factor": 0.9, "loads": false, "batch": 400.0, "yield": {"cubes": 1.1, "parts": 0.001},
-               "crew_value": 0.12, "mastery_per_unit": 1.0, "mastery_level1_units": 7000.0}
+             "mastery_per_unit": 1.0, "mastery_level1_units": 4000.0},
+    "blight": {"name": "Blight", "tool": "cleansing_plants", "hand_factor": 0.9, "loads": false, "batch": 400.0, "yield": {"cubes": 1.1, "parts": 0.001}, "seeds_per_hex": 0.35,
+               "mastery_per_unit": 1.0, "mastery_level1_units": 7000.0}
   }
 }

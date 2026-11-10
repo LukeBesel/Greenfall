@@ -4,9 +4,8 @@
   "bot_to_player": 2.0,
   "target_bot_min": {"aim": 120.0, "min": 105.0, "max": 150.0},
   "start": {"delay_s": 2.0},
-  "hand": {"baler_unlock": "baler", "base_rate": 4.0, "capacity": 12.0, "tip_s": 2.5, "press_s": 1.7, "carry_s": 3.0, "carry_stack": 2.0, "loose_mult": 1.0, "shop_s": 1.5},
+  "hand": {"baler_unlock": "baler", "base_rate": 4.0, "capacity": 12.0, "tip_s": 2.5, "press_s": 1.7, "carry_s": 3.0, "carry_stack": 2.0, "loose_mult": 1.0, "bale_mult_worst": 1.15, "shop_s": 1.5},
   "mastery": {"max_level": 10, "hand_bonus_per_level": 0.08, "growth": 1.78, "unlock": "signal_tower"},
   "surge": {"unlock": "surge_core", "charge_s": 120.0, "duration_s": 12.0, "mult": 3.0,
-            "wave": {"unlock": "surge_core", "hexes": 14.0, "burst_pts": 60.0},
-            "linked": {"unlock": "linked_surge", "crew_mult": 2.0}}
+            "wave": {"unlock": "surge_core", "hexes": 14.0, "burst_pts": 60.0}}
 }
