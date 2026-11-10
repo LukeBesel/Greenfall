@@ -51,9 +51,11 @@ func _on_near(added: PackedInt32Array, removed: PackedInt32Array) -> void:
 			(_cell[c] as Node).queue_free()
 			_cell.erase(c)
 			_fish = _fish.filter(func(f: Dictionary) -> bool: return int(f["cell"]) != c)
+	var h: int = Hitch.t()
 	for c: int in added:
 		if cells.state[c] == 5 and not _cell.has(c):
 			_build(c)
+	Hitch.mark("water cells", h)
 
 
 func _build(c: int) -> void:

@@ -64,7 +64,18 @@ static func warm() -> void:
 	# Meshing a model (merging its parts) and simplifying it (the "lite" meshes) are 50-150 ms
 	# each and can't be split, so one worker task does them all while the loader keeps drawing.
 	# Nothing else builds meanwhile (the build awaits this), so AssetLib's caches have one writer.
+	# First, here on the main thread, a copy of every listed model's surfaces (AssetLib.snapshot):
+	# the worker must not read meshes back from the rendering server.
 	var todo: Array = listed()
+	for e: Variant in todo:
+		var sid: String = str(e)
+		if sid.begins_with("tex:"):
+			continue
+		if sid.begins_with("lite:"):
+			sid = sid.substr(5).get_slice("@", 0)
+		elif sid.begins_with("part:"):
+			sid = sid.substr(5).get_slice("::", 0)
+		await snapshot(sid)
 	var work := func() -> void:
 		for e: Variant in todo:
 			var id: String = str(e)
@@ -82,6 +93,27 @@ static func warm() -> void:
 	AssetLib.tracing = false  # fetched: not blocking loads
 	await BuildBudget.join(BuildBudget.add_task(work, "preload meshes"))
 	AssetLib.tracing = was
+
+
+## Main thread: waits (yielding) for a model's file, then copies its surfaces for worker use.
+static var _snapped: Dictionary = {}
+
+
+static func snapshot(id: String) -> void:
+	if _snapped.has(id) or not AssetLib.has_model(id):
+		return
+	_snapped[id] = true
+	var path: String = AssetLib.MODEL_DIR % [id, id]
+	while BuildBudget.active() and _paths.has(path) and ResourceLoader.load_threaded_get_status(path) == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
+		await BuildBudget.pause("preload " + id)
+	AssetLib.snapshot_model(id)
+	await BuildBudget.check("preload snapshot")
+
+
+## The loader is done with its worker mesh tasks: drop the surface copies.
+static func done() -> void:
+	_snapped.clear()
+	AssetLib.surf_clear()
 
 
 static func start() -> int:

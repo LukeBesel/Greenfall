@@ -185,6 +185,23 @@ func clarity() -> float:
 
 ## Re-make the plan and start/stop animals to match it.
 func replan() -> void:
+	_rp_contexts()
+	_rp_make_plan()
+	_rp_apply()
+	_rp_spawn(0)
+
+
+# [v5load] replan() in four parts, so that in play on the globe it can run a part a frame
+# (_replan_step): in one go it was a 35-45 ms frame every 2.5 s, and 200 ms on the first one.
+var _rp_phase: int = 0
+var _rp_ctxs: Array = []
+var _rp_fd: Dictionary = {}
+var _rp_plan: Array = []
+var _rp_keys: Array = []
+var _rp_spawned: int = 0
+
+
+func _rp_contexts() -> void:
 	var f: HexField = world.field
 	var ctxs: Array = FaunaRules.contexts(f, _level_of, _near_cells())  # [orbB] the hub region near Lumi on the globe
 	var fd: Dictionary = {}
@@ -200,7 +217,18 @@ func replan() -> void:
 			if int(c["level"]) >= 3:
 				green += 1
 	_green_share = float(green) / maxf(1.0, float(land))
-	var plan: Array = FaunaRules.plan(ctxs, regs, _night > 0.5, district_seed + (0 if not dense else 1), fd, clarity()) if not dense else _dense_plan(ctxs, fd)
+	_rp_ctxs = ctxs
+	_rp_fd = fd
+
+
+func _rp_make_plan() -> void:
+	_rp_plan = FaunaRules.plan(_rp_ctxs, regs, _night > 0.5, district_seed + (0 if not dense else 1), _rp_fd, clarity()) if not dense else _dense_plan(_rp_ctxs, _rp_fd)
+
+
+func _rp_apply() -> void:
+	var ctxs: Array = _rp_ctxs
+	var fd: Dictionary = _rp_fd
+	var plan: Array = _rp_plan
 	_desired.clear()
 	var spawn_r: float = float(_cfg.get("spawn_radius", 55.0))
 	for e: Dictionary in plan:
@@ -231,15 +259,51 @@ func replan() -> void:
 		have[a.key] = true
 		if not _desired.has(a.key) and a.state != St.LEAVE:
 			_leave(a)
-	var spawned: int = 0
+	_rp_keys = []
 	for key: String in _desired:
-		if have.has(key) or float(_cooldown.get(key, 0.0)) > 0.0:
+		if not have.has(key):
+			_rp_keys.append(key)
+	_rp_spawned = 0
+	_rp_ctxs = []
+	_rp_fd = {}
+	_rp_plan = []
+
+
+## Spawns the planned animals that are missing, in plan order. budget_us > 0: stop after that much
+## time this call (true is returned when all are done or the round's cap is reached).
+func _rp_spawn(budget_us: int) -> bool:
+	var t0: int = Time.get_ticks_usec()
+	while not _rp_keys.is_empty():
+		var key: String = _rp_keys.pop_front()
+		if not _desired.has(key) or float(_cooldown.get(key, 0.0)) > 0.0:
 			continue
 		if DevHooks.has("fauna-debug"): print("[fauna] spawn ", key)
 		if _spawn(key, _desired[key]):
-			spawned += 1
-		if spawned >= (40 if age < 4.0 else 12) and not dense and not DevHooks.has("fauna-look"):
+			_rp_spawned += 1
+		if _rp_spawned >= (40 if age < 4.0 else 12) and not dense and not DevHooks.has("fauna-look"):
+			_rp_keys = []
 			break
+		if budget_us > 0 and Time.get_ticks_usec() - t0 > budget_us:
+			return false
+	return true
+
+
+func _replan_step() -> void:
+	var h: int = Hitch.t()
+	match _rp_phase:
+		1:
+			_rp_contexts()
+			_rp_phase = 2
+		2:
+			_rp_make_plan()
+			_rp_phase = 3
+		3:
+			_rp_apply()
+			_rp_phase = 4
+		4:
+			if _rp_spawn(3000):
+				_rp_phase = 0
+	Hitch.mark("fauna replan %d" % _rp_phase, h)
 
 
 ## --fauna-dense: every qualifying hex gets the species (screenshots).
@@ -449,14 +513,16 @@ func _props_blocked(p: Vector3, r: float) -> bool:
 
 
 func _ensure_space() -> void:
-	if _space_t > 0.0 and not space.cells.is_empty() and (not _globe or space.center.distance_to(Vector2(_lumi_pos.x, _lumi_pos.z)) < 30.0):  # [orbB] rescan as Lumi walks on
+	if _space_t > 0.0 and (_space_done or not space.cells.is_empty()) and (not _globe or space.center.distance_to(Vector2(_lumi_pos.x, _lumi_pos.z)) < 30.0):  # [orbB] rescan as Lumi walks on
 		return
+	if _space_next != null:
+		return  # [v5load] a rescan is under way; the last scan serves until it is done
 	_space_t = 90.0
-	space = FaunaSpace.new()
+	var sp := FaunaSpace.new()
 	if _globe:  # [orbB] props in this hub frame, near Lumi only
-		space.frame = global_transform.affine_inverse()
-		space.reach = float(_cfg.get("despawn_radius", 70.0)) + 12.0
-		space.center = Vector2(_lumi_pos.x, _lumi_pos.z)
+		sp.frame = global_transform.affine_inverse()
+		sp.reach = float(_cfg.get("despawn_radius", 70.0)) + 12.0
+		sp.center = Vector2(_lumi_pos.x, _lumi_pos.z)
 	var skip: Array = [self]
 	for nm: String in ["patch", "garden", "hud", "photo", "intro", "globe", "command", "pause_menu", "codex", "upgrades"]:
 		var nd: Variant = world.get(nm)
@@ -465,8 +531,16 @@ func _ensure_space() -> void:
 	var cr: Variant = world.get("_cubes_root")
 	if cr is Node:
 		skip.append(cr)
+	# [v5load] In play on the globe, with a scan to fall back on: rescan a little a frame
+	# (_space_step). The first scan, the flat game and tools scan in one go, as before.
+	if _globe and _frame > 0 and space != null and (_space_done or not space.cells.is_empty()):
+		sp.scan_begin(world, skip)
+		_space_next = sp
+		return
+	space = sp
 	var t0: int = Time.get_ticks_usec()
 	var n: int = space.scan(world, skip)
+	_space_done = _globe  # an empty result is a result too (it rescanned on every call)
 	if DevHooks.has("fauna-debug") or DevHooks.has("fauna-report"):
 		print("[fauna] space: %d props, %d cells, %d perches, %.1f ms" % [n, space.cells.size(), space.perches.size(), (Time.get_ticks_usec() - t0) / 1000.0])
 		if DevHooks.has("fauna-debug"):
@@ -474,6 +548,20 @@ func _ensure_space() -> void:
 			ks.sort_custom(func(x: String, y: String) -> bool: return int(space.by_node[x]) > int(space.by_node[y]))
 			for k: String in ks.slice(0, 40):
 				print("[fauna]   ", k, " ", space.by_node[k])
+
+
+var _space_next: FaunaSpace = null  # [v5load] the rescan in progress
+var _space_done: bool = false
+
+
+func _space_step() -> void:
+	if _space_next == null:
+		return
+	var h: int = Hitch.t()
+	if _space_next.scan_step(1500):
+		space = _space_next
+		_space_next = null
+	Hitch.mark("fauna space scan", h)
 
 
 ## Physics: nothing on the static layer (buildings, hydrants, boxes, fences with colliders,
@@ -806,7 +894,14 @@ func _process(delta: float) -> void:
 	_plan_t -= delta
 	if _plan_t <= 0.0:
 		_plan_t = 2.5
-		replan()
+		if _globe and not dense and not DevHooks.has("fauna-look"):
+			if _rp_phase == 0:
+				_rp_phase = 1  # [v5load] a part a frame
+		else:
+			replan()
+	if _rp_phase > 0:
+		_replan_step()
+	_space_step()
 	var despawn_r: float = float(_cfg.get("despawn_radius", 70.0))
 	var cam_p: Vector3 = _l(_cam.global_position) if _cam else _lumi_pos
 	for i: int in range(animals.size() - 1, -1, -1):

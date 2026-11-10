@@ -255,8 +255,9 @@ static func far_mesh(id: String, max_tris: int) -> Mesh:
 	var out := ArrayMesh.new()
 	var ns: int = full.get_surface_count()
 	var total_full: int = _tris(full)
+	var made: Array = []
 	for s: int in ns:
-		var arrays: Array = full.surface_get_arrays(s)
+		var arrays: Array = AssetLib.surf_arrays(full, s)  # [v5load] no server read-back on a worker thread
 		var idx: PackedInt32Array = arrays[Mesh.ARRAY_INDEX] if arrays[Mesh.ARRAY_INDEX] != null else PackedInt32Array()
 		@warning_ignore("integer_division")
 		var share: float = float(idx.size() / 3) / maxf(float(total_full), 1.0)
@@ -279,7 +280,9 @@ static func far_mesh(id: String, max_tris: int) -> Mesh:
 			continue
 		welded[Mesh.ARRAY_INDEX] = best
 		out.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, welded)
+		made.append(welded)
 		out.surface_set_material(out.get_surface_count() - 1, full.surface_get_material(s))
+	AssetLib.surf_note(out, made)
 	if out.get_surface_count() == 0 or _tris(out) >= _tris(lite):
 		_far[key] = lite
 		return lite
@@ -401,7 +404,7 @@ static func _cluster(verts: PackedVector3Array, idx: PackedInt32Array, budget: i
 static func _tris(m: Mesh) -> int:
 	var t: int = 0
 	for s: int in m.get_surface_count():
-		var a: Array = m.surface_get_arrays(s)
+		var a: Array = AssetLib.surf_arrays(m, s)
 		if a[Mesh.ARRAY_INDEX] != null:
 			@warning_ignore("integer_division")
 			t += (a[Mesh.ARRAY_INDEX] as PackedInt32Array).size() / 3

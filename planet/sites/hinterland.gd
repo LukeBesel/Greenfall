@@ -584,17 +584,22 @@ func _process(_delta: float) -> void:
 				end = i + 1
 				break
 		_pending_at = end
+		Hitch.mark("hinterland decide", t0 if Hitch.on else 0)
 		stats["decide_ms"] = float(stats.get("decide_ms", 0.0)) + float(Time.get_ticks_usec() - t0) / 1000.0
 		stats["frames"] = int(stats.get("frames", 0)) + 1
 		if _pending_at >= _pending.size():
+			var h: int = Hitch.t()
 			_rebuild(pos)
+			Hitch.mark("hinterland rebuild", h)
 		return
 	if _last_pos == Vector3.INF or pos.distance_to(_last_pos) > REBUILD_M:
 		_last_pos = pos
 		_pending = grid.cells_within(pos.normalized(), VIEW_M)
 		_pending_at = 0
 	elif _body_pos == Vector3.INF or pos.distance_to(_body_pos) > 12.0:
+		var h2: int = Hitch.t()
 		_colliders(pos)
+		Hitch.mark("hinterland colliders", h2)
 
 
 # [v5play] For the walk check (planet/sites/hinter_walk.gd).

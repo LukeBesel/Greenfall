@@ -13,6 +13,7 @@ var quality: int = 1
 var near_radius: float = 32.0   # full meshes inside this (metres to the cell centre), JunkLod's presets
 var heavy_radius: float = 16.0  # heavy models (stalled importer LODs) switch closer
 var budget: int = 600           # [orbB] pieces shown/hidden per frame when the ring moves
+const PUMP_US: int = 2500       # [v5load] and at most this much time a frame
 var _hidden_xf := Transform3D(Basis(Vector3.ZERO, Vector3.ZERO, Vector3.ZERO), Vector3.ZERO)
 var _mound_mesh_res: ArrayMesh
 var _cell_mounds: Dictionary = {}  # [orbB] cell -> Array of [MeshInstance3D, StaticBody3D, Vector4]
@@ -53,9 +54,13 @@ func setup(p_field: HexField) -> void:
 
 
 func _process(delta: float) -> void:
-	_pump(budget)
+	var h: int = Hitch.t()
+	_pump(budget, PUMP_US)
+	Hitch.mark("junk pump", h)
 	if not _far_todo.is_empty():
+		h = Hitch.t()
 		_build_far(_far_todo.pop_front())
+		Hitch.mark("junk far mesh", h)
 	_t -= delta
 	if _t <= 0.0:
 		_t = JunkLod.UPDATE_EVERY
@@ -160,17 +165,34 @@ func _remove(pid: int) -> void:
 ## pieces per frame at a time (flush() does it all at once, e.g. after loading).
 func rebuild(near: PackedInt32Array) -> void:
 	var t0: int = Time.get_ticks_usec()
+	_queue_ring(near)
+	stats["rebuild_us"] = Time.get_ticks_usec() - t0
+
+
+## [v5load] Queues the ring's changes; _pump does the work under a budget. Two fixes:
+## - A cell whose pieces are not laid yet (the planet's deferred fill) is left out until they are.
+##   It used to be marked shown while still empty, and its junk was then never drawn (about a fifth
+##   of the ring's pieces after a short walk: scoopable, solid for robots, invisible).
+## - A cell's heaps and wreck (_ensure_extras) are made when its turn comes in _pump, not all at
+##   once here (30-50 ms frames when the ring moved).
+func _queue_ring(near: PackedInt32Array) -> void:
 	var want: Dictionary = {}
+	var last: Dictionary = {}  # cell -> its latest queued op (show?)
+	for op: Array in _queue:
+		last[op[0]] = op[1]
 	for c: int in near:
 		want[c] = true
-		if not _shown_cells.has(c):
+		if sfield and sfield.materialized[c] == 0:
+			continue
+		if not bool(last.get(c, _shown_cells.has(c))):
 			_queue.append([c, true])
-		_ensure_extras(c)  # [orbB] heaps and wrecks of the near ring (made once, kept)
 	for c: int in _shown_cells:
-		if not want.has(c):
+		if not want.has(c) and bool(last.get(c, true)):
+			_queue.append([c, false])
+	for c: int in last:  # queued to show, never shown, and out of the ring again
+		if bool(last[c]) and not want.has(c) and not _shown_cells.has(c):
 			_queue.append([c, false])
 	_near = near
-	stats["rebuild_us"] = Time.get_ticks_usec() - t0
 
 
 func flush() -> void:
@@ -180,40 +202,57 @@ func flush() -> void:
 ## [v5load] rebuild() + flush() behind the loading screen, yielding between cells, plus the far
 ## meshes the first live frames would otherwise build one a frame (JunkLod.far_mesh is slow).
 func rebuild_async(near: PackedInt32Array) -> void:
-	var want: Dictionary = {}
-	for c: int in near:
-		want[c] = true
-		if not _shown_cells.has(c):
-			_queue.append([c, true])
-		_ensure_extras(c)
-		await BuildBudget.check("junk extras")
-	for c: int in _shown_cells:
-		if not want.has(c):
-			_queue.append([c, false])
-	_near = near
+	_queue_ring(near)
 	# The ring's models: their near (lite) and far meshes are mesh simplification, 50-200 ms each
 	# and not divisible. One worker task makes them all while the loader keeps drawing (nothing
 	# else builds meanwhile: the caller awaits this); the groups and _build_far below then find
 	# them cached.
 	if BuildBudget.active():
-		var models: Dictionary = {}
-		for op: Array in _queue:
-			if op[1]:
-				for pid: int in sfield.pieces_in(int(op[0])):
-					if sfield.piece_alive[pid] == 1:
-						models[sfield.piece_model[pid]] = true
+		# Every junk model, not only the first ring's: a model first met while walking made its
+		# lite mesh in that frame and its far mesh in the next (30-150 ms each). Landmarks too.
 		var todo: Array[String] = []
-		for m: String in models:
-			if m != "" and not _groups.has(m) and AssetLib.has_model(m):
-				todo.append(m)
+		var marks: Array[String] = []
+		for tid: Variant in Economy.junk_types:
+			for md: Variant in (Economy.junk_types[tid] as Dictionary).get("models", []):
+				var m: String = str((md as Dictionary).get("id", "")) if md is Dictionary else str(md)
+				if m != "" and not todo.has(m) and not _groups.has(m) and AssetLib.has_model(m):
+					todo.append(m)
+		if not todo.has("trashbag") and AssetLib.has_model("trashbag"):
+			todo.append("trashbag")
+		for fl: Array in SphereField.FLOATERS:  # the lakes' floating junk
+			if not todo.has(str(fl[1])) and not _groups.has(str(fl[1])) and AssetLib.has_model(str(fl[1])):
+				todo.append(str(fl[1]))
+		var sets: Array = [Economy.landmarks]
+		for bk: Variant in Economy.biome_sets:
+			sets.append((Economy.biome_sets[bk] as Dictionary).get("landmarks", []))
+		for lst: Variant in sets:
+			for d: Variant in (lst as Array):
+				var lid: String = str((d as Dictionary).get("id", "")) if d is Dictionary else ""
+				if lid != "" and not marks.has(lid) and AssetLib.has_model(lid):
+					marks.append(lid)
+		# Main thread first: the models' surfaces and their materials' average colours (texture
+		# reads), so the worker below never asks the rendering server for anything.
+		var was_tracing: bool = AssetLib.tracing
+		AssetLib.tracing = false  # warmed here, not blocking loads
+		for m: String in todo + marks:
+			await OrbitPreload.snapshot(m)
+		for m: String in todo:
+			var fm0: Mesh = AssetLib.model_mesh(m)  # a cache hit for every model on the preload list
+			for s: int in fm0.get_surface_count():
+				JunkFarSingle.average_color(fm0.surface_get_material(s))
+			await BuildBudget.check("junk colours")
 		var q: int = quality
+		var lm_tris: int = LANDMARK_TRIS[clampi(Settings.quality, 0, 3)]
 		var warm := func() -> void:
 			for m: String in todo:
 				var nm: Mesh = AssetLib.model_mesh_lite(m, [320, 500, 700, 700][q])
 				var fm: Mesh = JunkLod.far_mesh(m, JunkLod.FAR_TRIS[q] * (4 if JunkLod._tris(nm) > JunkLod.HEAVY_TRIS else 1))
 				if not DevHooks.has("no-far-single"):
 					JunkFarSingle.single(fm)
+			for m: String in marks:
+				AssetLib.model_mesh_lite(m, lm_tris)
 		await BuildBudget.join(BuildBudget.add_task(warm, "junk meshes"))
+		AssetLib.tracing = was_tracing
 	while not _queue.is_empty():
 		_pump(40)
 		await BuildBudget.check("junk pieces")
@@ -227,7 +266,8 @@ func _build_far(g: int) -> void:
 	_g_mm[g * 2 + 1].mesh = fm if DevHooks.has("no-far-single") else JunkFarSingle.single(fm)  # [orbE] one draw per far model
 
 
-func _pump(max_pieces: int) -> void:
+## budget_us > 0 [v5load]: also stop once this call has used that much time (play: 2.5 ms a frame).
+func _pump(max_pieces: int, budget_us: int = 0) -> void:
 	if _queue.is_empty():
 		return
 	var t0: int = Time.get_ticks_usec()
@@ -235,12 +275,15 @@ func _pump(max_pieces: int) -> void:
 	var done: int = 0
 	var cam: Camera3D = get_viewport().get_camera_3d() if is_inside_tree() else null
 	while not _queue.is_empty() and done < max_pieces:
+		if budget_us > 0 and Time.get_ticks_usec() - t0 > budget_us:
+			break
 		var op: Array = _queue.pop_front()
 		var c: int = op[0]
 		if op[1]:
 			if _shown_cells.has(c):
 				continue
 			_shown_cells[c] = true
+			_ensure_extras(c)  # [orbB] heaps and wrecks of the near ring (made once, kept)
 			var band: int = _band_for(c, cam.global_position, 0) if cam else 2
 			_band[c] = band
 			for pid: int in sfield.pieces_in(c):

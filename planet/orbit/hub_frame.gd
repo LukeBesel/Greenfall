@@ -24,6 +24,7 @@ var _t: float = 0.0
 func setup(p_so: SliceOrbit) -> void:
 	so = p_so
 	name = "HubFrame"
+	add_to_group("hub_frame")
 	check_now()
 
 
@@ -51,10 +52,12 @@ func _process(delta: float) -> void:
 	if _t > 0.0:
 		return
 	_t = POLL_S
-	check_now()
+	check_now(true)
 
 
-func check_now() -> void:
+## spread [v5load]: build a new hub's systems one a frame (the play poll); tools and the build call
+## it without and get everything at once.
+func check_now(spread: bool = false) -> void:
 	var patch: Node3D = so.w.get("patch") if so else null
 	if patch == null or so.globe == null or so.globe.sites.is_empty():
 		return
@@ -67,10 +70,19 @@ func check_now() -> void:
 			best_m = m
 			best = int(s["index"])
 	var cur_m: float = g.grid.great_circle_m(patch.global_position, g.grid.centers[int(g.sites[hub]["cell"])]) if hub >= 0 else INF
+	if _switching:
+		return
+	if _pinned:  # [v5load] switched early (a rocket hop's veil): stay until Lumi has arrived
+		if cur_m < WAKE_M:
+			_pinned = false
+		return
 	if hub >= 0 and cur_m > SLEEP_M:
 		_set_hub(-1)
 	if best >= 0 and best != hub and best_m < WAKE_M and _site_ready(best):
-		_set_hub(best)
+		if spread and is_inside_tree():
+			_set_hub_spread(best)  # [v5load] in play: a system a frame
+		else:
+			_set_hub(best)
 
 
 ## [v4world] Owner playtest 3 #55: a hub's outposts, eggs and relay are placed only once its town
@@ -81,6 +93,47 @@ func _site_ready(i: int) -> bool:
 		return true
 	var p: SitePrefab = (sm as SiteManager).prefab(i)
 	return p != null and p.is_built
+
+
+# [v5load] Building a hub's five systems in one frame was a 1.3 s freeze each time Lumi came
+# within WAKE_M of another hub (a walk, the sled, or the last seconds of a rocket hop's landing).
+var _switching: bool = false
+var _pinned: bool = false
+
+
+## A rocket hop calls this behind its veil, once the target's town is built: the frame moves there
+## now (hidden) and stays until Lumi has landed.
+func switch_to(i: int) -> void:
+	if i == hub or _switching or not _site_ready(i):
+		return
+	_set_hub(i)
+	_pinned = true
+
+
+## _set_hub in play: the old systems go at once, the new ones are built one a frame.
+func _set_hub_spread(i: int) -> void:
+	_switching = true
+	for key: String in _hosts:
+		var old: Node = node(key)
+		if old:
+			if old.has_method("persist_save"):
+				old.call("persist_save")
+			remove_child(old)
+			old.queue_free()
+	hub = i
+	global_transform = so.globe.sites[i]["transform"]
+	hub_changed.emit(i)  # the old systems are gone: nobody keeps a freed node
+	for key: String in _hosts:
+		await get_tree().process_frame
+		if not is_inside_tree() or hub != i:
+			_switching = false
+			return
+		var h: int = Hitch.t()
+		_build(key)
+		Hitch.mark("hub frame " + key, h)
+	_switching = false
+	hub_changed.emit(i)
+	print("[hubframe] hub %d" % i)
 
 
 func _set_hub(i: int) -> void:

@@ -14,6 +14,22 @@ const EYE_DARK := Color(0.03, 0.025, 0.02)
 const NOSE := Color(0.08, 0.06, 0.06)
 
 
+## [v5load] Every id mesh() builds. Each is 30-80 ms of procedural modelling the first time an
+## animal of that kind is drawn (a long frame in play), so the loader builds them all, one per
+## build slice (prewarm, from scenes/slice_orbit.gd). Main thread only: the builders read primitive
+## meshes back from the rendering server, which is not reliable from a worker thread.
+const IDS: Array[String] = ["cat", "cat_sit", "cat_curl", "rat", "rabbit", "deer", "deer_stag", "fox", "fennec", "arctic_fox",
+	"lizard", "frog", "seal", "turtle", "fish", "bee", "firefly",
+	"pigeon", "sparrow", "songbird", "gull", "heron", "crane", "duck",
+	"pigeon_fly", "sparrow_fly", "songbird_fly", "gull_fly", "heron_fly", "crane_fly", "duck_fly"]
+
+
+static func prewarm() -> void:
+	for id: String in IDS:
+		mesh(id)
+		await BuildBudget.check("fauna model")
+
+
 static func mesh(id: String) -> Mesh:
 	if _cache.has(id):
 		return _cache[id]

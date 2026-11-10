@@ -202,10 +202,14 @@ func _process(delta: float) -> void:
 	if grid == null:
 		return
 	_t += delta
+	var h: int = Hitch.t()
 	if _t >= update_every:
 		_t = 0.0
 		_update_wants()
+		Hitch.mark("chunk wants (near ring)", h)
+	h = Hitch.t()
 	_pump(apply_per_frame)
+	Hitch.mark("chunk apply", h)
 	if _rebuild_shell_later and _jobs.is_empty():
 		_rebuild_shell_later = false
 		_build_shell()

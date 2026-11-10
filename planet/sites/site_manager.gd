@@ -307,7 +307,9 @@ func tick(delta: float) -> void:
 	_poll -= delta
 	if _poll <= 0.0:
 		_poll = 0.5
+		var h: int = Hitch.t()
 		_stream()
+		Hitch.mark("site stream", h)
 	_grow_acc += delta
 	if _grow_acc >= 2.0:
 		grow(_grow_acc)

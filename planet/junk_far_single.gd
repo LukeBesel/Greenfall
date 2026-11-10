@@ -20,7 +20,7 @@ static func single(mesh: Mesh) -> Mesh:
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	for s: int in mesh.get_surface_count():
-		var arrays: Array = mesh.surface_get_arrays(s)
+		var arrays: Array = AssetLib.surf_arrays(mesh, s)  # [v5load]
 		var verts: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
 		var norms: PackedVector3Array = arrays[Mesh.ARRAY_NORMAL] if arrays[Mesh.ARRAY_NORMAL] != null else PackedVector3Array()
 		var idx: PackedInt32Array = arrays[Mesh.ARRAY_INDEX] if arrays[Mesh.ARRAY_INDEX] != null else PackedInt32Array()
