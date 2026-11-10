@@ -72,6 +72,7 @@ func _run() -> void:
 		if not ok:
 			bad += 1
 		print("[b6] %s %s: cell %d, %.0f m from the start cell, %s" % ["OK" if ok else "CUT_OFF", k, c, g.grid.distance_m(c, c0), "water" if f.is_water(c) else "land"])
+	_list_eggs(g, f, c0, group)
 	print("[b6] %s (%d required places cut off)" % ["PASS" if bad == 0 else "FAIL", bad])
 	get_tree().quit(1 if bad > 0 else 0)
 
@@ -89,3 +90,22 @@ func _land_group(g: OrbitPlanet, f: SphereField, from: int) -> Dictionary:
 				seen[n] = true
 				queue.append(n)
 	return seen
+
+
+## The start hub's easter eggs: how far each is from the start, what it pays and whether Lumi can
+## walk to it (B4: cubes that can arrive before the third bin trip).
+func _list_eggs(g: OrbitPlanet, f: SphereField, c0: int, group: Dictionary) -> void:
+	var eggs: EasterEggs = _slice.get("eggs") as EasterEggs
+	if eggs == null:
+		print("[eggs] none on this world")
+		return
+	var baler: float = Economy.upgrade_cost(Pace.UP_BALER).to_float()
+	for e: Dictionary in eggs.placed:
+		var n: Node3D = e.get("node") as Node3D
+		if n == null:
+			continue
+		var c: int = f.hex_at(n.global_position)
+		var d: Dictionary = e.get("def", {})
+		var cubes: float = float((d.get("reward", {}) as Dictionary).get("cubes", 0.0))
+		print("[eggs] %s part %s: %.0f m from the start, trigger %s, pays %.0f cubes (Baler costs %.0f), %s" % [str(e.get("id", "")), str(e.get("part", 0)),
+			g.grid.distance_m(c, c0), str(d.get("trigger", "")), cubes, baler, "walkable" if group.has(c) else "across water"])

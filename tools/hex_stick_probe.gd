@@ -71,6 +71,12 @@ func _run() -> void:
 							str(f.piece_pos[pid].snappedf(0.1)), str(_inside_solid(space, f.piece_pos[pid])), _nearest_free_m(f, space, q, f.piece_pos[pid]), _what_blocks(f, space, q, f.piece_pos[pid])])
 		stats["pieces"] += n_alive
 		var total: float = f.hex_total[c]
+		# The least work that flips a cell clean (B4: a hex bonus before the third bin trip).
+		var to_clean: float = f.hex_left[c] - allowed * total
+		if to_clean < float(stats.get("least_vol_to_clean", INF)):
+			stats["least_vol_to_clean"] = to_clean
+			stats["least_vol_cell"] = c
+			stats["least_vol_cell_m"] = g.grid.distance_m(c, c0)
 		var share: float = blocked_vol / total
 		stats["worst_blocked_share"] = maxf(float(stats["worst_blocked_share"]), share)
 		var dist: float = g.grid.distance_m(c, c0)

@@ -228,3 +228,25 @@ func test_b3_keep_out_covers_a_whole_building_footprint() -> void:
 	# The outskirts building of the stuck cell, and three more spots round the sphere.
 	for at: Vector3 in [Vector3(1299.2, 155.0, -1299.3), Vector3(1203.4, 310.4, -1362.9), Vector3(700.0, 900.0, 1400.0), Vector3(-1000.0, 20.0, 1500.0)]:
 		assert_eq(_keep_out_holes(at, 12.0), 0, "unblocked spots inside a 24 m footprint at %s" % str(at))
+
+
+# --- B4: a later step's purchase closes an earlier step ------------------------------------------
+
+## B4: the Baler (step 4) has no prerequisite, and once it is fitted the bin takes no loose loads
+## (Pace.dump_allowed, data/patch.json dump.after_baler = false). junk_dumps then never grows, so a
+## player who buys the Baler before the third bin trip can never finish step 1, "Fill the trash bin
+## 3 times": the whole chain stops on its first card.
+func test_b4_baler_bought_before_the_third_bin_trip_does_not_strand_the_bin_step() -> void:
+	pending("B4 the Baler bought before the third bin trip strands step 1 (core/pace.gd dump_allowed, data/objectives.json dump3)")
+	return
+	var w := StubWorld.new()
+	var o := _objectives(w)
+	var dump3: Dictionary = o.chain[0]
+	assert_eq(str(dump3["key"]), "junk_dumps", "step 1 counts bin trips")
+	GameState.stats["junk_dumps"] = int(dump3["target"]) - 1
+	GameState.add_currency("cubes", Economy.upgrade_cost(Pace.UP_BALER))
+	assert_eq(Economy.buy_upgrade(Pace.UP_BALER), 1, "the Baler can be bought while step 1 is on the card")
+	_tick(o)
+	var can_still_finish: bool = Pace.dump_allowed() or o.step > 0
+	assert_true(can_still_finish, "with the Baler fitted the bin refuses loose loads and step 1 stays at %d / %d for good" % [
+		int(o.value_of(dump3)), int(o.target_of(dump3))])
