@@ -142,11 +142,8 @@ func _process(delta: float) -> void:
 	_ring.visible = r > 0.0
 	if r > 0.0:
 		var pulse: float = 1.0 if calm else 1.0 + 0.06 * sin(_t * 3.2)
-		if OrbitUp.on_globe():  # [orbB] the ring lies on the local ground at the target
-			_ring.global_transform = Transform3D(SphereGrid.frame(_pos.normalized()).scaled(Vector3(r * pulse, 0.25, r * pulse)), _pos + _pos.normalized() * 0.04)
-		else:
-			_ring.global_position = Vector3(_pos.x, _ground_y(_pos) + 0.04, _pos.z)
-			_ring.scale = Vector3(r * pulse, 0.25, r * pulse)
+		var up: Vector3 = OrbitUp.up(_pos)  # [orbB] the ring lies on the local ground at the target
+		_ring.global_transform = Transform3D(SphereGrid.frame(up).scaled(Vector3(r * pulse, 0.25, r * pulse)), _pos + up * 0.04)
 	# Near the target the chevron steps back so it never sits in Lumi's face.
 	var near: float = 1.0
 	var patch: Node3D = world.get("patch") as Node3D if world else null
@@ -155,10 +152,6 @@ func _process(delta: float) -> void:
 	_chev_mat.albedo_color = Color(COLOR, 0.9 * _alpha * near)
 	_ring_mat.albedo_color = Color(COLOR, 0.5 * _alpha)
 	_edge.queue_redraw()
-
-
-func _ground_y(p: Vector3) -> float:
-	return 0.0 if _kind != "pad" and _kind != "bench" else maxf(0.0, p.y)
 
 
 ## Off-screen: a small chevron at the screen edge pointing the way.

@@ -71,9 +71,6 @@ static func migrate(world_: Node) -> void:
 
 func _ready() -> void:
 	position = pos()
-	if world and world.get("layout") != null:
-		var lay: CityLayout = world.layout
-		position.y = clampf(lay.height_at(position.x, position.z), 0.0, 0.3)
 	var dev: float = DevHooks.get_f("signal-tower", -1.0)
 	if dev >= 0.0:
 		GameState.flags["signal_tower"] = clampi(int(dev), 0, max_tier())

@@ -140,7 +140,7 @@ func _ready() -> void:
 ## the nearest open ground (TargetReach.beacon_point). Re-checked every RECHECK_S (colliders and
 ## footprints stream in as Lumi nears) or when the target moves.
 func set_target(p: Variant) -> void:
-	if not (p is Vector3) or world == null or not (world.get("field") is SphereField):
+	if not (p is Vector3) or world == null or world.get("field") == null:
 		_target = p
 		_raw = null
 		return

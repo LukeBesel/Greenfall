@@ -72,8 +72,7 @@ func _setup() -> void:
 
 
 static func of(world: Node) -> OrbitSites:
-	var o: Variant = world.get("orbit") if world else null
-	return (o as SliceOrbit).sites if o is SliceOrbit else null
+	return (world.orbit as SliceOrbit).sites
 
 
 ## [v2map] Owner note 40: the survey map (M) is only a map. Travel is at the rocket: it stands on

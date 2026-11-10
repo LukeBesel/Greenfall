@@ -182,16 +182,12 @@ func _dev_hooks() -> void:
 ## --event-look[=M]: screenshot helper, puts Patch M metres from the event, facing it.
 func _dev_look(at: Vector3, dist: float) -> void:
 	var p: Patch = world.patch
-	# Stand between the base and the event, looking outward (the base's sheds stay behind the camera).
-	var d: Vector3 = at
-	d.y = 0.0
-	d = d.normalized() if d.length() > 0.1 else Vector3.FORWARD
-	var spot: Vector3 = at - d * dist
-	p.global_position = Vector3(spot.x, _ground(spot.x, spot.z) + 0.2, spot.z)
-	p.rotation.y = atan2(-d.x, -d.z)
-	if world.get("cam") != null:
-		world.cam.yaw = p.rotation.y
-		world.cam.snap()
+	# Stand between Lumi (at the base) and the event, looking outward (the sheds stay behind the camera).
+	var up: Vector3 = at.normalized()
+	var d: Vector3 = at - p.global_position
+	d -= up * d.dot(up)
+	d = d.normalized() if d.length() > 0.1 else SphereGrid.frame(up).z
+	p.place_on_sphere(_gp(at - d * dist) + up * 0.2, d)
 
 
 func _paused() -> bool:
@@ -367,23 +363,16 @@ func _keep(n: Node) -> Node:
 	return n
 
 
-func _ground(x: float, z: float) -> float:
-	var layout: CityLayout = world.field.layout
-	return clampf(layout.height_at(x, z), 0.0, 0.3) if layout else 0.0
-
-
+## The ground under p.
 func _gp(p: Vector3) -> Vector3:
-	if world.field is SphereField:  # [orbB] the globe's ground under p
-		return (world.field as SphereField).terrain.ground(p.normalized())
-	return Vector3(p.x, _ground(p.x, p.z), p.z)
+	return (world.field as SphereField).terrain.ground(p.normalized())
 
 
-## [orbB] Stand a placed prop upright on the local ground (keeps its yaw); no-op on the flat game.
+## Stand a placed prop upright on the local ground (keeps its yaw).
 func _upright(n: Node3D) -> void:
-	if OrbitUp.on_globe():
-		var sc: Vector3 = n.scale
-		n.global_basis = SphereGrid.frame(n.global_position.normalized()) * Basis(Vector3.UP, n.rotation.y)
-		n.scale = sc
+	var sc: Vector3 = n.scale
+	n.global_basis = SphereGrid.frame(n.global_position.normalized()) * Basis(Vector3.UP, n.rotation.y)
+	n.scale = sc
 
 
 func _update_active(delta: float) -> void:
@@ -905,24 +894,17 @@ func _update_wildlife(delta: float) -> void:
 		return
 	var goal: Vector3 = active["goal"]
 	var to: Vector3 = goal - an.global_position
-	if OrbitUp.on_globe():  # [orbB] along the ground
-		var u: Vector3 = an.global_position.normalized()
-		to -= u * to.dot(u)
-	else:
-		to.y = 0.0
+	var u: Vector3 = an.global_position.normalized()
+	to -= u * to.dot(u)  # along the ground
 	var body: Node3D = an.get_node("Body")
 	var hop: bool = str(active["animal_body"]) in ["hare", "hedgehog"]
 	if to.length() > 0.25:
 		var spd: float = 1.3 if hop else 0.8
 		an.global_position += to.normalized() * minf(spd * delta, to.length())
-		if OrbitUp.on_globe():  # [orbB] on the ground, facing where it walks
-			an.global_position = _gp(an.global_position)
-			var sc: Vector3 = an.scale
-			an.global_basis = an.global_basis.orthonormalized().slerp(Basis.looking_at(-to.normalized(), an.global_position.normalized()), minf(delta * 4.0, 1.0)).orthonormalized()
-			an.scale = sc
-		else:
-			an.global_position.y = _ground(an.global_position.x, an.global_position.z)
-			an.rotation.y = lerp_angle(an.rotation.y, atan2(-to.x, -to.z), minf(delta * 4.0, 1.0))
+		an.global_position = _gp(an.global_position)  # on the ground, facing where it walks
+		var sc: Vector3 = an.scale
+		an.global_basis = an.global_basis.orthonormalized().slerp(Basis.looking_at(-to.normalized(), an.global_position.normalized()), minf(delta * 4.0, 1.0)).orthonormalized()
+		an.scale = sc
 		body.position.y = absf(sin(_anim_t * (9.0 if hop else 6.0))) * (0.12 if hop else 0.03)
 	else:
 		body.position.y = lerpf(body.position.y, 0.0, minf(delta * 6.0, 1.0))
@@ -1068,12 +1050,10 @@ func _start_audit(d: Dictionary, force: bool) -> bool:
 	active["board"] = board
 	var drone := LedgerDrone.new()
 	drone.friendly = true
-	drone.ground_y = _ground
 	add_child(drone)
 	_keep(drone)
 	var dir := Vector3(rng.randf_range(-1, 1), 0, rng.randf_range(-1, 1)).normalized()
-	if OrbitUp.on_globe():  # [orbB] a ground direction
-		dir = (dir - OrbitUp.up(pos) * dir.dot(OrbitUp.up(pos))).normalized()
+	dir = (dir - OrbitUp.up(pos) * dir.dot(OrbitUp.up(pos))).normalized()  # a ground direction
 	drone.global_position = pos + dir * 50.0 + OrbitUp.up(pos) * 18.0
 	active["drone"] = drone
 	var tw := drone.create_tween()
@@ -1126,8 +1106,7 @@ func _update_audit(_delta: float) -> void:
 			_props.erase(drone)
 			drone.set_beam(0.0)
 			var dir := Vector3(rng.randf_range(-1, 1), 0, rng.randf_range(-1, 1)).normalized()
-			if OrbitUp.on_globe():  # [orbB]
-				dir = (dir - OrbitUp.up(drone.global_position) * dir.dot(OrbitUp.up(drone.global_position))).normalized()
+			dir = (dir - OrbitUp.up(drone.global_position) * dir.dot(OrbitUp.up(drone.global_position))).normalized()
 			var tw := drone.create_tween()
 			tw.tween_property(drone, "global_position", drone.global_position + dir * 60.0 + OrbitUp.up(drone.global_position) * 22.0, 6.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 			tw.tween_callback(drone.queue_free)

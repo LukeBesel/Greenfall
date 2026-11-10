@@ -1,57 +1,22 @@
 extends GutTest
-## [orbB] The round world: its own save tree, the globe on New Game / Continue, and nothing of it
-## reaches the flat game's saves or Steam Cloud. [v1menu] It is the default now (no title toggle).
-
-var _was: bool
+## [orbB] The globe's save tree: the game's only one, and none of it reaches Steam Cloud.
 
 
-func before_each() -> void:
-	_was = Settings.round_planets
+func test_one_save_tree() -> void:
+	var legacy: String = SaveManager.legacy_flat_root()
+	assert_eq(SaveManager.root_dir(), legacy + SaveManager.ROUND_SUFFIX, "the globe's tree (existing saves keep loading)")
+	assert_true(SaveManager.slot_path().begins_with(legacy + SaveManager.ROUND_SUFFIX + "/"))
+	assert_true(CradleMode.profile_path().begins_with(legacy + SaveManager.ROUND_SUFFIX + "/"), "the Cradle profile too")
+	assert_eq(SaveManager.legacy_flat_profile_dir(1), legacy.path_join("p1"), "the pre-globe tree is still reachable (Steam Cloud sync)")
 
 
-func after_each() -> void:
-	Settings.round_planets = _was  # (never saved: the setting file stays as it was)
-
-
-func test_preview_saves_live_apart() -> void:
-	Settings.round_planets = false
-	var flat_root: String = SaveManager.root_dir()
-	var flat_slot: String = SaveManager.slot_path()
-	Settings.round_planets = true
-	assert_eq(SaveManager.root_dir(), flat_root + SaveManager.ROUND_SUFFIX, "its own tree")
-	assert_ne(SaveManager.slot_path(), flat_slot, "never the flat slot")
-	assert_true(SaveManager.slot_path().begins_with(flat_root + SaveManager.ROUND_SUFFIX + "/"))
-	assert_true(CradleMode.profile_path().begins_with(flat_root + SaveManager.ROUND_SUFFIX + "/"), "the Cradle profile too")
-	assert_eq(SaveManager.root_dir(true), flat_root, "the flat tree is still reachable (Steam Cloud sync)")
-	assert_eq(SaveManager.profile_dir(1, true), flat_root.path_join("p1"))
-
-
-func test_round_is_the_default() -> void:
-	var fresh: Node = load("res://autoload/Settings.gd").new()
-	assert_true(fresh.round_planets, "a first run starts round")
-	fresh.free()
-	if not "--flat" in OS.get_cmdline_user_args():
-		assert_true(SaveManager.round_planets(), "no toggle: round unless the dev hook --flat")
-		assert_true(SaveManager.root_dir().ends_with(SaveManager.ROUND_SUFFIX), "saves go to the round tree")
-
-
-func test_old_preview_off_setting_is_ignored() -> void:
+func test_no_round_planets_switch_left() -> void:
 	var src: String = FileAccess.get_file_as_string("res://autoload/Settings.gd")
-	assert_false(src.contains("get_value(\"preview\", \"round_planets\""), "an old settings file's round_planets=false is never read back")
+	assert_false(src.contains("round_planets"), "no flat/round toggle in the settings")
+	assert_false(SaveManager.has_method("round_planets"), "no flat/round switch in the save manager")
 
 
-func test_preview_starts_on_the_globe() -> void:
-	Settings.round_planets = false
-	assert_eq(SliceOrbit.wanted(), DevHooks.has("orbit") and not DevHooks.get_s("orbit", "") in ["v1", "globe"])
-	if DevHooks.has("orbit"):
-		return
-	Settings.round_planets = true
-	assert_true(SliceOrbit.wanted(), "New Game / Continue build the slice on the globe")
-
-
-func test_preview_never_reaches_steam_cloud() -> void:
-	Settings.round_planets = true
+func test_globe_saves_never_reach_steam_cloud() -> void:
 	assert_true(SteamService._round_preview(SaveManager.slot_path()))
 	assert_true(SteamService._round_preview(CradleMode.profile_path()))
-	Settings.round_planets = false
-	assert_false(SteamService._round_preview(SaveManager.slot_path()), "flat saves sync as before")
+	assert_false(SteamService._round_preview(SaveManager.legacy_flat_profile_dir(1).path_join("slot_1.save")), "the pre-globe tree syncs as before")

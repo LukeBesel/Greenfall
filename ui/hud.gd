@@ -282,28 +282,18 @@ func _process(delta: float) -> void:
 	if cc is CoreCharge:
 		set_core_charge((cc as CoreCharge).shown)
 	if world and world.field:
-		var f: HexField = world.field
-		var pct: float = float(f.cleaned_count) / maxf(f.junk_hex_count, 1)
-		_field_frac = pct
-		_field_label.text = "%s   %d%%" % [str(world.district_name).to_upper(), int(floor(pct * 100.0))]
-		# [orbE] The planet % walks every hub-region cell on a globe (Anvil: ~3.5 ms a frame): a few
-		# times a second is plenty for a percentage.
+		# [orbE] The planet % walks every hub-region cell (Anvil: ~3.5 ms a frame): a few times a
+		# second is plenty for a percentage.
 		_planet_t -= get_process_delta_time()
 		if _planet_t <= 0.0:
 			_planet_t = 0.25
-			var pl: PlanetData = world.planet if world.get("planet") != null else null
-			_planet_frac = pl.restored_fraction() if pl else 0.0
-			var orb: Variant = world.get("orbit")  # [orbD] globe: planet % over the hub regions
-			if orb is SliceOrbit and (orb as SliceOrbit).sites:
-				_planet_frac = (orb as SliceOrbit).sites.planet_fraction()
-			elif world.has_method("planet_fraction"):
-				_planet_frac = world.planet_fraction()
-		var frac: float = _planet_frac
-		_planet_label.text = "%s   %s%%" % [str(Economy.planet.get("name", "Verdance")).to_upper(), _fmt_small_pct(frac * 100.0)]
-		if world.get("orbit") is SliceOrbit:  # [orbB] the globe has no district: one planet line (hub regions), its bar
-			_field_label.text = _planet_label.text
-			_field_frac = frac
-			_planet_label.visible = false
+			var sites: OrbitSites = (world.orbit as SliceOrbit).sites
+			_planet_frac = sites.planet_fraction() if sites else 0.0
+		# [orbB] The globe has no district: one planet line (hub regions) and its bar.
+		_planet_label.text = "%s   %s%%" % [str(Economy.planet.get("name", "Verdance")).to_upper(), _fmt_small_pct(_planet_frac * 100.0)]
+		_field_label.text = _planet_label.text
+		_field_frac = _planet_frac
+		_planet_label.visible = false
 		_field_bar.queue_redraw()
 		_relay_label.text = tr("WREN SIGNAL   %d%%") % SignalTower.signal_pct()
 		_relay_label.visible = SignalTower.tier() > 0  # [v3clear] hide what isn't relevant yet: no 0% before the tower

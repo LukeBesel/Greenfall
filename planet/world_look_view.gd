@@ -17,7 +17,7 @@ var progress: float = 0.0
 ## [worlds2] A planet's own environment (data/planets.json -> planet/planets/<id>/env.gd): when it
 ## exists it owns the planet's art (landmarks, sky bodies, props) and this view keeps only the
 ## data-driven sky grade, Long Nights, the city tint and weathering. Its entry point is
-## `apply(world, field, kind)` with kind "city" | "wild" | "frontier".
+## `apply(world, field, kind)` with kind "city" | "wild".
 var env_script: String = ""
 var env: Object
 var _t: float = 99.0
@@ -40,19 +40,15 @@ static func attach(slice: Node) -> WorldLookView:
 
 
 func _setup() -> void:
-	var frontier: bool = world.get("frontier") != null
 	if env_script != "":
-		_apply_env(frontier)
+		_apply_env()
 	var sd: SkyDirector = world.get("sky_director")
 	if sd:
 		sd.night_dark = float(look.get("night_dark", 0.0))
-		if not frontier:
-			sd.grade = look.get("grade", {})
+		sd.grade = look.get("grade", {})
 	if look.has("sky_body") and sd and (env == null or bool(look.get("keep_sky_body", false))):
 		sky_body = SkyBody.make(look["sky_body"], sd)
 		world.add_child(sky_body)
-	if frontier:
-		return
 	var wc: Dictionary = (look.get("city", {}) as Dictionary).get("weather", {})
 	if not wc.is_empty():
 		weather = make_weather(wc)
@@ -71,13 +67,12 @@ func _setup() -> void:
 
 
 ## Runs the planet's env script: an instance (a Node joins the district) with apply(world, field, kind).
-func _apply_env(frontier: bool) -> void:
+func _apply_env() -> void:
 	var sc: Script = load(env_script) as Script
 	if sc == null:
 		push_warning("[worlds2] planet env script failed to load: %s" % env_script)
 		return
-	var lay: Variant = world.get("layout")
-	var kind: String = "frontier" if frontier else ("wild" if lay is CityLayout and (lay as CityLayout).wild else "city")
+	var kind: String = "city"
 	# [main] Planet envs (planet/planets/*/env.gd) use a STATIC apply(world, field, kind_def: Dictionary)
 	# that builds its own node. Call that once (HomewardDirector may already have) instead of
 	# instancing the script: a bare instance has no field and errors every frame.
@@ -158,7 +153,7 @@ func _update() -> void:
 	var lv: int = _hub_level()
 	progress = WorldLook.progress(lv, frac)
 	var sd: SkyDirector = world.get("sky_director")
-	if sd and world.get("frontier") == null:
+	if sd:
 		sd.grade_amt = WorldLook.grade_amount(look, progress)
 		sd.storm = float(look.get("dust", 0.0)) * (1.0 - progress)
 	if weather:

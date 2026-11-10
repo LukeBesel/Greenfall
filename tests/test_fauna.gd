@@ -3,8 +3,8 @@ extends GutTest
 ## and the persisted bits of fauna/fauna.gd (sightings, photos, the adopted cat).
 
 class FakeWorld:
-	extends Node
-	var field: HexField
+	extends Node3D
+	var field: SphereField
 	var hub_index: int = 0
 
 var _flags: Dictionary
@@ -146,24 +146,29 @@ func test_plan_respects_caps_and_is_stable() -> void:
 
 
 func test_spots_keep_clear_of_junk() -> void:
-	var types: Array = []
-	for id: String in Economy.junk_ids:
-		types.append(Economy.junk_types[id])
-	var f := HexField.new(2, 10.0, 5)
-	f.generate(types, Vector2i(40, 60))
-	var h: int = f.hex_count() - 1
-	var pid: int = f.hex_pieces[h][0]
+	var g := GlobeFixture.new(5)
+	var f: SphereField = g.field
+	var cells: PackedInt32Array = g.region()
+	var h: int = -1
+	for c: int in cells:
+		if f.hex_hub[c] == 0 and not f.is_water(c):
+			f.materialize(c)
+			if not f.pieces_in(c).is_empty():
+				h = c
+				break
+	assert_gt(h, -1, "a junk cell in the region")
+	var pid: int = f.pieces_in(h)[0]
 	var p: Vector3 = f.piece_pos[pid]
 	assert_false(FaunaRules.spot_ok(f, p, 0.4, true), "never on a junk piece")
-	assert_false(FaunaRules.spot_ok(f, f.hex_center(h) + Vector3(1, 0, 1), 0.3, false), "junk hex is off limits for clean-ground animals")
-	for q: int in f.hex_pieces[h].duplicate():
-		f.remove_piece(q)
+	assert_false(FaunaRules.spot_ok(f, f.hex_center(h), 0.3, false), "junk hex is off limits for clean-ground animals")
+	g.clean(h)
 	assert_true(f.is_clean(h))
 	assert_true(FaunaRules.spot_ok(f, p, 0.05, false), "free once the pieces are gone")
-	assert_false(FaunaRules.spot_ok(f, Vector3(500, 0, 500), 0.3, true), "off the field")
-	var ctxs: Array = FaunaRules.contexts(f, func(hid: int) -> int: return 1 if f.is_clean(hid) else 0)
-	assert_eq(ctxs.size(), f.hex_count())
-	assert_true(bool(ctxs[h]["clean"]))
+	var ctxs: Array = FaunaRules.contexts(f, func(hid: int) -> int: return 1 if f.is_clean(hid) else 0, cells)
+	assert_eq(ctxs.size(), cells.size())
+	for c: Dictionary in ctxs:
+		if int(c["hex"]) == h:
+			assert_true(bool(c["clean"]))
 
 
 func test_every_model_builds_with_a_rig() -> void:
@@ -196,7 +201,7 @@ func test_sightings_photos_and_adoption_persist_in_flags() -> void:
 	GameState.flags.erase("fauna_photos")
 	GameState.flags.erase("fauna_cat")
 	var w := FakeWorld.new()
-	w.field = HexField.new(1, 10.0, 3)
+	w.field = GlobeFixture.new().field
 	add_child_autofree(w)
 	var fa := Fauna.new()
 	fa.world = w

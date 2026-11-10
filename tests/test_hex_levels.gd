@@ -1,22 +1,9 @@
 extends GutTest
 
-class FakeView:
-	extends RefCounted
-	var lives: Dictionary = {}
-	func set_life(id: int, life: float) -> void:
-		lives[id] = life
-
-class FakeWorld:
-	extends Node
-	var field: HexField
-	var view := FakeView.new()
-	var planet: PlanetData
-	var slice_cells := PackedInt32Array()
-	var garden: Garden
-	var hex_levels: HexLevels
 
 var _cur: Dictionary
 var _world_state: Dictionary
+var _orbit: Dictionary
 var _stats: Dictionary
 var _events: Array = []
 
@@ -26,6 +13,8 @@ func before_each() -> void:
 	_stats = GameState.stats.duplicate(true)
 	_world_state = GameState.world.duplicate(true)
 	GameState.world = {}
+	_orbit = GameState.orbit
+	GameState.orbit = {}
 	_events.clear()
 	EventBus.hex_level_changed.connect(_on_level)
 
@@ -35,46 +24,27 @@ func after_each() -> void:
 	GameState.currencies = _cur
 	GameState.stats = _stats
 	GameState.world = _world_state
+	GameState.orbit = _orbit
 
 
 func _on_level(hid: int, level: int) -> void:
 	_events.append([hid, level])
 
 
-func _make() -> FakeWorld:
-	var w := FakeWorld.new()
-	var types: Array = []
-	for id: String in Economy.junk_ids:
-		types.append(Economy.junk_types[id])
-	w.field = HexField.new(2, 10.0, 5)
-	w.field.generate(types, Vector2i(5, 8))
-	w.planet = PlanetData.new(5, 3, 10.0)
-	w.planet.generate()
-	w.slice_cells.resize(w.field.hex_count())
-	for i: int in w.field.hex_count():
-		w.slice_cells[i] = i
+func _make() -> GlobeWorld:
+	var w := GlobeWorld.new(5)
 	add_child_autofree(w)
-	w.garden = Garden.new()
-	w.garden.world = w
-	w.add_child(w.garden)
-	w.garden.setup()
-	w.garden.set_process(false)
-	w.hex_levels = HexLevels.new()
-	w.hex_levels.world = w
-	w.hex_levels.celebrate = false
-	w.add_child(w.hex_levels)
-	w.hex_levels.setup()
-	w.hex_levels.set_process(false)
+	w.add_garden().set_process(false)
+	w.add_hex_levels().set_process(false)
 	return w
 
 
-func _clean(w: FakeWorld, hid: int) -> void:
-	for pid: int in w.field.hex_pieces[hid].duplicate():
-		w.field.remove_piece(pid)
+func _clean(w: GlobeWorld, hid: int) -> void:
+	w.clean(hid)
 
 
 ## Plants every slot of a hex and sets each to `stage` with `water` seconds left.
-func _plant_all(w: FakeWorld, hid: int, stage: int, water_s: float) -> void:
+func _plant_all(w: GlobeWorld, hid: int, stage: int, water_s: float) -> void:
 	var g: Garden = w.garden
 	GameState.currencies["seeds"] = BigNum.from_float(1000)
 	for s: int in g.hex_slots[hid]:
@@ -86,15 +56,16 @@ func _plant_all(w: FakeWorld, hid: int, stage: int, water_s: float) -> void:
 
 
 func test_hub_hex_untracked_and_junk_is_zero() -> void:
-	var w: FakeWorld = _make()
-	assert_eq(w.hex_levels.level_of(0), -1, "hub hex has no level")
-	assert_eq(w.hex_levels.level_of(10), 0)
+	var w: GlobeWorld = _make()
+	w.field.hex_hub[GlobeFixture.HUB_CELL] = 1
+	assert_eq(w.hex_levels.level_of(GlobeFixture.HUB_CELL), -1, "hub hex has no level")
+	assert_eq(w.hex_levels.level_of(w.land_cell()), 0, "untracked land reads level 0")
 
 
 func test_clean_then_planted_then_growing() -> void:
-	var w: FakeWorld = _make()
+	var w: GlobeWorld = _make()
 	var hl: HexLevels = w.hex_levels
-	var hid: int = 10
+	var hid: int = w.land_cell()
 	_clean(w, hid)
 	var c0: float = GameState.get_currency("cubes").to_float()
 	hl.step(1.0)
@@ -112,9 +83,9 @@ func test_clean_then_planted_then_growing() -> void:
 
 
 func test_sustained_needs_continuous_water() -> void:
-	var w: FakeWorld = _make()
+	var w: GlobeWorld = _make()
 	var hl: HexLevels = w.hex_levels
-	var hid: int = 10
+	var hid: int = w.land_cell()
 	_clean(w, hid)
 	_plant_all(w, hid, 2, 1000.0)
 	var win: int = int(hl.cfg["sustain_window_s"])
@@ -141,9 +112,9 @@ func test_sustained_needs_continuous_water() -> void:
 
 
 func test_thriving_when_bloomed_and_sustained() -> void:
-	var w: FakeWorld = _make()
+	var w: GlobeWorld = _make()
 	var hl: HexLevels = w.hex_levels
-	var hid: int = 10
+	var hid: int = w.land_cell()
 	_clean(w, hid)
 	_plant_all(w, hid, 4, 1000.0)
 	for i: int in int(hl.cfg["sustain_window_s"]) + 1:
@@ -160,15 +131,14 @@ func test_thriving_when_bloomed_and_sustained() -> void:
 
 
 func test_persist_roundtrip() -> void:
-	var w: FakeWorld = _make()
-	var hid: int = 10
+	var w: GlobeWorld = _make()
+	var hid: int = w.land_cell()
 	_clean(w, hid)
 	_plant_all(w, hid, 2, 1000.0)
 	for i: int in 30:
 		w.hex_levels.step(1.0)
 	assert_eq(w.hex_levels.level_of(hid), 3)
-	w.hex_levels.persist_save()
-	assert_true(GameState.world.has("hex_levels"))
+	GameState.orbit["hex_levels"] = w.hex_levels.persist()  # where the slice saves it
 	var hl2 := HexLevels.new()
 	hl2.world = w
 	hl2.celebrate = false

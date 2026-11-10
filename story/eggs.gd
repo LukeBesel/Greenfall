@@ -6,6 +6,8 @@ extends Node3D
 ## they stay in the world afterwards as little landmarks you can still poke.
 
 var world: Node
+var hub_index: int = 0  # the hub whose eggs these are (set by the frame host)
+var frame_cells := PackedInt32Array()  # that hub's region
 var defs: Dictionary = {}
 var order: Array[String] = []
 var placed: Array[Dictionary] = []  # {id, part, node, def, hex, final}
@@ -19,13 +21,10 @@ var _note_t: float = 0.0
 var _watch: Dictionary = {}  # id -> seconds watched
 var _ring_cd: float = 0.0
 var _scoop_cd: Dictionary = {}
-## [eggs2] Where Lumi starts (scenes/slice.gd SPAWN): far-out eggs measure from here.
-const SPAWN_Z: float = 3.0
 ## [eggs2] Where WREN's constellation hangs in the sky (the telescope aims here).
 const STAR_POS := Vector3(80, 260, -140)  # high (~58 deg) so streets and towers rarely hide it
 var _peek: Node  # [eggs2] StarPeek while looking through the telescope
 var _tv: Node  # [eggs2] TvBroadcast while it plays
-var _dev_use: Dictionary = {}  # [eggs2] dev --egg-use target
 const JUKEBOX_LEAVE_M: float = 12.0  # [eggs2]
 var _jukebox_on: bool = false  # [eggs2] the waltz is playing (the score is hushed)
 
@@ -36,54 +35,13 @@ func setup() -> void:
 		defs[str(e["id"])] = e
 		order.append(str(e["id"]))
 	StorySfx.ensure()
-	if world.field is SphereField:  # [orbB] the globe: this hub's eggs, planned in the hub frame
-		_setup_globe(data)
-		return
-	var wild: bool = world.field.layout != null and world.field.layout.wild
-	var ids: Array[String] = district_eggs(order, defs, GameState.current_hub, world.field.seed_value, int(data.get("per_district", 9)),
-		wild, world.field.biome, int(data.get("wild_per_district", 4)))
-	var avoid: Array[Vector3] = [Vector3.ZERO, FirstSeed.GREENHOUSE_POS, Intro.POD_POS]
-	avoid.append((LedgerArc.relay_spot(world.field)["pos"] as Vector3))
-	for s: Dictionary in Outposts.plan(world.field):  # [outposts] keep eggs off the outpost slabs
-		avoid.append(s["pos"] as Vector3)
-	if DevHooks.has("museum-sample"):  # [eggs2] dev: a partly filled collection
-		Museum.dev_sample()
-	if DevHooks.has("egg-parts"):  # [eggs2] dev: --egg-parts=ID marks every part of a collectible egg as collected
-		var pid: String = DevHooks.get_s("egg-parts", "gnomes")
-		if defs.has(pid):
-			for i: int in int(defs[pid].get("parts", 1)):
-				EggCollect.add(pid, i)
-	var plan: Array[Dictionary] = plan_spots(world.field, ids, defs, avoid)
-	for p: Dictionary in plan:
-		_spawn(p)
-	print("[eggs] district %d: %d eggs, %d props placed" % [GameState.current_hub, ids.size(), placed.size()])
-	if _jukebox_node:
-		StorySfx.prewarm_music_box()
-	_build_stars()
-	_migrate_collected()  # [eggs2]
-	Museum.attach.call_deferred(world)  # [eggs2] the late Museum build (Cradle Returns, after the Cradle answers)
-	EventBus.junk_scooped.connect(_on_scooped)
-	EventBus.hex_cleaned.connect(func(_h: int, _p: Vector3, _b: BigNum) -> void: _refresh_visibility())
-	_refresh_visibility()
-	if DevHooks.has("spawn-egg"):
-		_dev_spawn.call_deferred(DevHooks.get_s("spawn-egg", "duck"))
-
-
-# --- [orbB] The globe: eggs per hub, in the hub frame (planet/orbit/hub_frame.gd) -----------
-
-var hub_index: int = 0  # the hub whose eggs these are (set by the frame host)
-var frame_cells := PackedInt32Array()  # that hub's region
-
-
-func _setup_globe(data: Dictionary) -> void:
 	var f: SphereField = world.field
 	var ids: Array[String] = district_eggs(order, defs, hub_index, f.seed_value + hub_index * 977, int(data.get("per_district", 9)),
 		hub_index != 0, "", int(data.get("wild_per_district", 4)))
 	var avoid: Array[Vector3] = [Vector3.ZERO]
-	var so: Node = world.get("orbit")
-	if so:  # the yard's anchors (bench, bin, pod, tower, ...) stay clear
-		for nm: String in ["bench", "depot", "bin", "pod", "signal_tower", "telescope", "radio", "locker", "nursery", "rocket_pad", "stations"]:
-			avoid.append(to_local(so.call("yard_point", nm)))
+	var so: SliceOrbit = world.orbit
+	for nm: String in LedgerArc.YARD_ANCHORS:  # the yard's anchors (bench, bin, pod, tower, ...) stay clear
+		avoid.append(to_local(so.yard_point(nm)))
 	for s: Dictionary in Outposts.plan_cells(self, f, frame_cells, {}, hub_index):  # keep off the outpost slabs
 		avoid.append(s["pos"] as Vector3)
 	avoid.append(LedgerArc.relay_spot_cells(self, f, frame_cells, hub_index)["pos"] as Vector3)  # and the Ledger's relay
@@ -99,7 +57,7 @@ func _setup_globe(data: Dictionary) -> void:
 	_refresh_visibility()
 
 
-## plan_spots for a globe hub region, in `frame`'s local metres (+Y up): open, clean-able land away
+## Spots for every part of every egg in a hub region, in `frame`'s local metres (+Y up): open, clean-able land away
 ## from the yard, wrecks, heaps, water and each other. Deterministic per hub.
 static func plan_spots_cells(frame: Node3D, f: SphereField, cells: PackedInt32Array, ids: Array[String], all_defs: Dictionary, avoid: Array[Vector3], seed_v: int) -> Array[Dictionary]:
 	var r := RandomNumberGenerator.new()
@@ -207,141 +165,6 @@ static func _shuffle(pool: Array[String], r: RandomNumberGenerator) -> void:
 		pool[j] = tmp
 
 
-## Deterministic spots for every part of every egg. Open ground (lots, sidewalks; roads only as
-## a fallback), away from the hub yard, buildings, junk mounds, water, landmarks and each other.
-static func plan_spots(field: HexField, ids: Array[String], all_defs: Dictionary, avoid: Array[Vector3]) -> Array[Dictionary]:
-	var r := RandomNumberGenerator.new()
-	r.seed = field.seed_value + 9091
-	var used: Array[Vector3] = avoid.duplicate()
-	var out: Array[Dictionary] = []
-	var hexes: Array[int] = []
-	for id: int in field.hex_count():
-		if field.hex_hub[id] == 0 and not field.is_water(id):
-			hexes.append(id)
-	if hexes.is_empty():
-		return out
-	for egg_id: String in ids:
-		var d: Dictionary = all_defs[egg_id]
-		var n_parts: int = int(d.get("parts", 1))
-		var has_final: bool = d.has("final")
-		var wide: float = 2.8 if str(d.get("kind", "")) in ["mural", "bench_bots"] else 0.8
-		for part: int in n_parts + (1 if has_final else 0):
-			var best := Vector3.INF
-			var best_hex: int = -1
-			for attempt: int in 90:
-				var hid: int = hexes[r.randi() % hexes.size()]
-				var p: Vector3 = field.hex_center(hid) + Vector3(r.randf_range(-1, 1), 0, r.randf_range(-1, 1)) * field.hex_size * 0.7
-				if field.hex_at(p) != hid or Vector2(p.x, p.z).length() < 15.0:
-					continue
-				if not _open_ground(field, p, wide, attempt > 60):
-					continue
-				var min_d: float = 9.0 if attempt < 50 else 5.0
-				var clash: bool = false
-				for u: Vector3 in used:
-					if Vector2(u.x - p.x, u.z - p.z).length() < min_d:
-						clash = true
-						break
-				if not clash:
-					for lm: Dictionary in field.landmarks:
-						if (lm["pos"] as Vector3).distance_to(Vector3(p.x, (lm["pos"] as Vector3).y, p.z)) < 3.5:
-							clash = true
-							break
-				if not clash:
-					for pile: Vector4 in field.hex_piles[hid]:
-						if Vector2(p.x - pile.x, p.z - pile.y).length() < pile.z + 1.0:
-							clash = true
-							break
-				if clash:
-					continue
-				best = p
-				best_hex = hid
-				break
-			if best == Vector3.INF:
-				continue
-			best.y = clampf(field.layout.height_at(best.x, best.z), 0.0, 0.3) if field.layout else 0.0
-			used.append(best)
-			# Face back toward the hub (where Patch usually comes from), with a little wobble.
-			var yaw: float = atan2(-best.x, -best.z) + r.randf_range(-0.35, 0.35)
-			out.append({"id": egg_id, "part": part, "final": has_final and part == n_parts, "pos": best, "yaw": yaw, "hex": best_hex})
-	# [eggs2] Eggs that must stand away from the spawn move out in a second pass: their first spot
-	# stays reserved, so every other egg lands exactly where it always did.
-	for o: Dictionary in out:
-		var od: Dictionary = all_defs[o["id"]]
-		if float(od.get("min_spawn_dist", 0.0)) > 0.0:
-			var far: Vector3 = _far_spot(field, od, used, hexes)
-			if far != Vector3.INF:
-				used.append(far)
-				o["pos"] = far
-				o["hex"] = field.hex_at(far)
-				o["yaw"] = atan2(-far.x, -far.z)
-	return out
-
-
-## [eggs2] A spot at least min_spawn_dist from the spawn (and not much further), on open ground
-## clear of the other eggs; spot "corner" prefers a sidewalk corner with roads on two sides.
-## Its own RNG, so moving one egg never reshuffles the others.
-static func _far_spot(field: HexField, d: Dictionary, used: Array[Vector3], hexes: Array[int]) -> Vector3:
-	var r := RandomNumberGenerator.new()
-	r.seed = field.seed_value + 7177
-	var min_r: float = float(d.get("min_spawn_dist", 0.0))
-	var corner: bool = str(d.get("spot", "")) == "corner" and field.layout != null
-	for attempt: int in 600:
-		var hid: int = hexes[r.randi() % hexes.size()]
-		var p: Vector3 = field.hex_center(hid) + Vector3(r.randf_range(-1, 1), 0, r.randf_range(-1, 1)) * field.hex_size * 0.7
-		var rad: float = Vector2(p.x, p.z - SPAWN_Z).length()
-		if field.hex_at(p) != hid or rad < min_r or rad > min_r + 22.0:
-			continue
-		if not _open_ground(field, p, 0.8, attempt > 450):
-			continue
-		if corner and attempt < 400 and not is_corner(field, p):
-			continue
-		var clash: bool = false
-		for u: Vector3 in used:
-			if Vector2(u.x - p.x, u.z - p.z).length() < 7.0:
-				clash = true
-				break
-		for lm: Dictionary in field.landmarks:
-			if not clash and (lm["pos"] as Vector3).distance_to(Vector3(p.x, (lm["pos"] as Vector3).y, p.z)) < 3.5:
-				clash = true
-		for pile: Vector4 in field.hex_piles[hid]:
-			if not clash and Vector2(p.x - pile.x, p.z - pile.y).length() < pile.z + 1.5:
-				clash = true
-		if clash:
-			continue
-		p.y = clampf(field.layout.height_at(p.x, p.z), 0.0, 0.3) if field.layout else 0.0
-		return p
-	return Vector3.INF
-
-
-## [eggs2] Sidewalk with road a few metres off along both a street and a cross street.
-static func is_corner(field: HexField, p: Vector3) -> bool:
-	if field.layout == null or field.layout.surface_at(p.x, p.z) != CityLayout.Surface.SIDEWALK:
-		return false
-	var road_x: bool = false
-	var road_z: bool = false
-	for dd: float in [1.5, 3.0, 4.5]:
-		for sg: float in [-1.0, 1.0]:
-			road_x = road_x or field.layout.surface_at(p.x + sg * dd, p.z) == CityLayout.Surface.ROAD
-			road_z = road_z or field.layout.surface_at(p.x, p.z + sg * dd) == CityLayout.Surface.ROAD
-	return road_x and road_z
-
-
-static func _open_ground(field: HexField, p: Vector3, wide: float, allow_road: bool) -> bool:
-	if field.layout == null:
-		return true
-	var probes: Array[Vector3] = [Vector3.ZERO, Vector3(wide, 0, 0), Vector3(-wide, 0, 0), Vector3(0, 0, wide), Vector3(0, 0, -wide)]
-	# Keep clear of facades too (gaps between buildings read as doorways): a ring at 2.4 m.
-	for k: int in 8:
-		probes.append(Vector3(cos(TAU * k / 8.0), 0, sin(TAU * k / 8.0)) * maxf(2.4, wide + 0.8))
-	for o: Vector3 in probes:
-		var s: int = field.layout.surface_at(p.x + o.x, p.z + o.z)
-		if s == CityLayout.Surface.BUILDING or s == CityLayout.Surface.YARD:
-			return false
-		if s == CityLayout.Surface.ROAD and not allow_road and o == Vector3.ZERO:
-			return false
-	return true
-
-
 # --- Spawning ------------------------------------------------------------------------
 
 static func is_found(id: String) -> bool:
@@ -362,12 +185,9 @@ func _spawn(p: Dictionary) -> void:
 	var node: Node3D = EggProps.build(kind, int(p["part"]))
 	node.name = "Egg_%s_%d" % [p["id"], p["part"]]
 	add_child(node)
-	node.position = p["pos"]  # [orbB] (this node sits at the origin on the flat game; in the hub frame on the globe)
+	node.position = p["pos"]  # [orbB] in the hub frame
 	node.rotation.y = float(p["yaw"])
-	if world.field is SphereField:  # [orbB] solid on the globe: a box from its own bounds
-		OrbitUp.fit_box(node)
-	else:
-		PropColliders.fit(PropColliders.body(node, "Props"), node)  # [world2] egg props are solid (off while hidden)
+	OrbitUp.fit_box(node)  # [orbB] solid (off while hidden): a box from its own bounds
 	var e: Dictionary = p.duplicate()
 	e["node"] = node
 	e["def"] = d
@@ -432,29 +252,6 @@ func _refresh_visibility() -> void:
 		elif bool(e["final"]):
 			n.visible = is_found(id) or _parts_seen(id).size() >= int(e["def"].get("parts", 1))
 			PropColliders.set_active(n, n.visible)  # [world2]
-
-
-func _dev_spawn(id: String) -> void:
-	for e: Dictionary in placed:
-		if e["id"] == id and (not bool(e["final"]) or id != "lost_cat"):
-			var n: Node3D = e["node"]
-			n.visible = true
-			var fwd: Vector3 = n.global_transform.basis.z
-			var p: Vector3 = n.global_position + fwd * float(DevHooks.get_f("egg-dist", 2.4)) + n.global_transform.basis.x * 1.5
-			world.patch.global_position = Vector3(p.x, n.global_position.y + 0.2, p.z)
-			world.patch.rotation.y = atan2(p.x - n.global_position.x, p.z - n.global_position.z)  # -Z (forward) toward the egg
-			world.cam.yaw = world.patch.rotation.y + DevHooks.get_f("egg-yaw", 0.4)
-			world.cam.snap()
-			if DevHooks.has("egg-use"):  # [eggs2] dev: --egg-use[=S] presses E on it S wall-clock s after start
-				_dev_use = e
-			if DevHooks.has("egg-cam"):  # [eggs2] dev: camera distance for egg shots
-				world.cam.distance = DevHooks.get_f("egg-cam", 4.0)
-				world.cam.snap()
-			if DevHooks.has("egg-poke"):
-				get_tree().create_timer(DevHooks.get_f("egg-poke", 0.5), false).timeout.connect(func() -> void: _effect(e))
-			print("[eggs] spawned next to %s at %s (patch %s, yaw %.2f)" % [id, str(n.global_position), str(world.patch.global_position), world.patch.rotation.y])
-			return
-	print("[eggs] egg '%s' is not placed in this district (placed: %s)" % [id, str(placed.map(func(e: Dictionary) -> String: return e["id"]))])
 
 
 # --- Stars (the WREN constellation) -----------------------------------------------------
@@ -553,11 +350,6 @@ func _process(delta: float) -> void:
 		_star_mat.albedo_color = Color(0.85 * k, 0.92 * k, 1.0 * k, 1.0 if is_instance_valid(_peek) else _star_mat.albedo_color.a)
 	_animate(delta)
 	_glint(delta)
-	if not _dev_use.is_empty() and DevHooks._elapsed >= DevHooks.get_f("egg-use", 0.5):  # [eggs2] wall clock (slow renders)
-		var du: Dictionary = _dev_use
-		_dev_use = {}
-		print("[eggs] dev use %s at %.1fs" % [du["id"], DevHooks._elapsed])
-		_use(du)
 	_tick += delta
 	if _tick < 0.15 or world == null or world.patch == null:
 		return
@@ -1002,7 +794,7 @@ func _dispense_can(n: Node3D) -> void:
 
 
 func _look_up() -> void:
-	var cam: CameraRig = world.cam
+	var cam: SphereCam = (world.orbit as SliceOrbit).cam
 	var p0: float = cam.pitch
 	var was: bool = cam.lens_view
 	# Lens view allows looking up; peek at the constellation for a few seconds.

@@ -6,7 +6,7 @@ extends RefCounted
 
 
 static func _snap(s: Node) -> Dictionary:
-	var g: OrbitPlanet = (s.get("orbit") as SliceOrbit).globe
+	var g: OrbitPlanet = (s.orbit as SliceOrbit).globe
 	var p: Patch = s.get("patch")
 	var cd: Dictionary = g.cells.to_dict()
 	var at: Array = g.to_dirh(p.global_position)
@@ -18,7 +18,7 @@ static func _snap(s: Node) -> Dictionary:
 			cubes.append("%s %.4f,%.4f,%.4f" % [c.dominant_type() if c.has_method("dominant_type") else "", a[0], a[1], a[2]])
 	cubes.sort()
 	var bots: Array = []  # [orbC] the crew: type, tier, cargo (positions are checked with a tolerance)
-	var crew: SphereCrew = (s.get("orbit") as SliceOrbit).crews.crew
+	var crew: SphereCrew = (s.orbit as SliceOrbit).crews.crew
 	if crew:
 		for u: Dictionary in crew.robots():
 			bots.append("%s %s t%d hopper %.0f carry %d junk %.0f" % [u["name"], u["type"], int(u["tier"]), float(u["hopper"]), (u["carry"] as Array).size(), float(u["log"]["junk"])])
@@ -37,7 +37,7 @@ static func _snap(s: Node) -> Dictionary:
 		"lumi_fill": snappedf(p.compartment.fill, 0.01),
 		"parts_found": s.field.part_found.count(1),
 		"sites": str(OrbitSave.site_cells(GameState.orbit)),
-		"sites_built": str(OrbitSave.sites_to_array((s.get("orbit") as SliceOrbit).globe.sites)),
+		"sites_built": str(OrbitSave.sites_to_array((s.orbit as SliceOrbit).globe.sites)),
 		"hexes_paid": (GameState.orbit.get("hexes_paid", {}) as Dictionary).size(),
 		"hex_level_target": (s.get("hex_levels") as HexLevels).level_of(int(s.get_meta("rt_target", -1))),
 		"cells_level_target": g.cells.level[int(s.get_meta("rt_target", 0))],
@@ -99,7 +99,7 @@ static func _outpost_levels(s: Node) -> Array:
 
 ## [orbC] Stops a slice's robot crew (the brain and every real robot) so state compares as saved.
 static func _freeze_crew(s: Node) -> void:
-	var so: SliceOrbit = s.get("orbit")
+	var so: SliceOrbit = s.orbit
 	var crew: SphereCrew = so.crews.crew if so and so.crews else null
 	if crew == null:
 		return
@@ -113,7 +113,7 @@ static func _garden_sig(s: Node) -> String:
 	var gdn: Garden = s.get("garden")
 	if gdn == null:
 		return "-"
-	var cells: Dictionary = gdn.persist_sparse().get("cells", {})
+	var cells: Dictionary = gdn.persist().get("cells", {})
 	var keys: Array = cells.keys()
 	keys.sort()
 	var parts: Array = []
@@ -417,7 +417,7 @@ static func run(rt: Node, check: Callable) -> void:
 	tree.root.add_child(s1)
 	for i: int in 5:
 		await tree.process_frame
-	var so: SliceOrbit = s1.get("orbit")
+	var so: SliceOrbit = s1.orbit
 	check.call("orbit_slice_built", true, so != null and so.globe != null)
 	if so == null:
 		return
@@ -631,7 +631,7 @@ static func run(rt: Node, check: Callable) -> void:
 			check.call("orbit_sky_spin_within_0.05", true, absf(angle_difference(float(a[k]), float(b[k]))) <= 0.05)
 			continue
 		check.call("orbit_" + k, a[k], b[k])
-	var crew2: SphereCrew = (s2.get("orbit") as SliceOrbit).crews.crew  # [orbC] robots back where they were
+	var crew2: SphereCrew = (s2.orbit as SliceOrbit).crews.crew  # [orbC] robots back where they were
 	var worst: float = INF if crew2 == null or crew2.robots().size() != 2 else 0.0
 	if worst == 0.0:
 		for i: int in 2:
@@ -640,7 +640,7 @@ static func run(rt: Node, check: Callable) -> void:
 	# [orbC] Reopened from disk 2 h later: the offline jump pays what the flat game would (10%).
 	if crew2 != null:
 		GameState.saved_unix = Time.get_unix_time_from_system() - 7200.0
-		var so2: SliceOrbit = s2.get("orbit")
+		var so2: SliceOrbit = s2.orbit
 		var res: Dictionary = so2.crews.restore_crew(so2, GameState.orbit, true)
 		var flat: Dictionary = Offline.compute([{"type": "scoopie", "tier": 1}, {"type": "haulbug", "tier": 0}], 0, 1.0, 7200.0, INF)
 		var fc: float = float(flat["cubes"]) + float(flat["waiting_value"])
@@ -666,7 +666,7 @@ static func _old_save(tree: SceneTree, packed: PackedScene, check: Callable) -> 
 	tree.root.add_child(s)
 	for i: int in 5:
 		await tree.process_frame
-	var so: SliceOrbit = s.get("orbit")
+	var so: SliceOrbit = s.orbit
 	var g: OrbitPlanet = so.globe
 	check.call("orbit_old_migrated", "flat_v%d" % GameState.SAVE_VERSION, str(GameState.orbit.get("migrated", "")))
 	check.call("orbit_old_base_level", 2, OrbitSave.hub_level({"hubs": so.hub_states}, 0))
@@ -690,9 +690,9 @@ static func _old_save(tree: SceneTree, packed: PackedScene, check: Callable) -> 
 	tree.root.add_child(s2)
 	for i: int in 5:
 		await tree.process_frame
-	var g2: OrbitPlanet = (s2.get("orbit") as SliceOrbit).globe
+	var g2: OrbitPlanet = (s2.orbit as SliceOrbit).globe
 	check.call("orbit_old_reload_cells", hash(cd["state"]), hash(g2.cells.to_dict()["state"]))
-	check.call("orbit_old_reload_base_level", 2, OrbitSave.hub_level({"hubs": (s2.get("orbit") as SliceOrbit).hub_states}, 0))
+	check.call("orbit_old_reload_base_level", 2, OrbitSave.hub_level({"hubs": (s2.orbit as SliceOrbit).hub_states}, 0))
 	check.call("orbit_old_reload_cubes", cubes0, GameState.get_currency("cubes").to_float())
 	s2.queue_free()
 	await tree.process_frame

@@ -98,13 +98,13 @@ func _setup() -> void:
 ## Saved with the district: what junk is left, so Offline.simulate can cap a district that
 ## isn't loaded (remote progress) without its field.
 func persist_save() -> void:
-	var f: HexField = world.get("field") as HexField
+	var f: SphereField = world.get("field") as SphereField
 	if f == null:
 		return
 	var left: float = 0.0
-	for h: int in OrbitUp.hexes(f, world.call("bench_pos") if world.has_method("bench_pos") else Vector3.ZERO):  # [orbB] the hub region on a globe
+	for h: int in OrbitUp.hexes(f, world.bench_pos()):  # the hub region
 		if not f.is_clean(h):
-			left += f.hex_left[h] if not (f is SphereField) else (1.0 - f.removed_fraction(h)) * SphereField.FLAT_HEX_VOL  # [orbB] volume, materialized or not
+			left += (1.0 - f.removed_fraction(h)) * SphereField.FLAT_HEX_VOL  # volume, materialized or not
 	GameState.world["junk_left"] = left
 
 

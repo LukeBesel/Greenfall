@@ -128,9 +128,6 @@ func block_reason(from_menu: bool = false) -> String:
 	if not from_menu:
 		if world.has_method("any_modal_open") and bool(world.call("any_modal_open")):
 			return "modal"
-		var cam: Variant = world.get("cam")
-		if cam is Object and not bool((cam as Object).get("input_enabled")):
-			return tr("Photo mode isn't available during a cinematic.")
 	return ""
 
 
@@ -164,14 +161,6 @@ func open(_from_menu: bool = false) -> void:
 		_snap["model_yaw"] = model.rotation.y
 	_build_view()
 	_build_ui()
-	# Start from the game camera's framing so the switch is seamless.
-	var rig: Variant = world.get("cam")
-	if rig is CameraRig:
-		var r: CameraRig = rig
-		_t_yaw = r.yaw
-		_t_pitch = clampf(r.pitch, -1.4, 0.4)
-		values["distance"] = clampf(r.distance * 0.6, 1.2, 12.0)
-		values["fov"] = clampf(r.camera.fov - 8.0, 20.0, 100.0)
 	_c_yaw = _t_yaw
 	_c_pitch = _t_pitch
 	_c_dist = values["distance"]
@@ -241,9 +230,7 @@ func _sky() -> SkyDirector:
 
 func _env() -> Environment:
 	var sky: SkyDirector = _sky()
-	if sky and sky.env:
-		return sky.env
-	return world.get("_env") as Environment if world else null
+	return sky.env if sky else null
 
 
 func _snapshot_world() -> void:

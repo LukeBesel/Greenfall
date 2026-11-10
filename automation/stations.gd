@@ -172,42 +172,44 @@ func relocate_baler() -> bool:
 	return true
 
 
-## A clean, open spot next to the most junk: the clean (or yard) hex closest to the centroid of
-## what is left, weighted by remaining junk.
+## A clean, open spot next to the most junk: the clean cell of the start hub's region closest to
+## the centroid of what is left, weighted by remaining junk. In this node's local frame; only the
+## region is searched (164k cells would take seconds to scan).
 func frontier_pos() -> Vector3:
 	if world == null or world.get("field") == null:
 		return DEMO_BALER_POS
-	if world.get("field") is SphereField:  # [orbD] the globe: the start hub's region only (Stations-local)
-		return _frontier_on_globe()
-	var field: HexField = world.field
+	var sm: SiteManager = (world.orbit as SliceOrbit).globe.site_manager
+	var field: SphereField = world.field
+	if sm == null or sm.regions.is_empty():
+		return DEMO_BALER_POS
+	var reg: PackedInt32Array = sm.regions[0]
 	var c := Vector3.ZERO
 	var wsum: float = 0.0
-	for id: int in field.hex_count():
+	for id: int in reg:
 		if field.hex_hub[id] != 0 or field.is_clean(id) or field.is_water(id):
 			continue
 		var w: float = 1.0 - field.removed_fraction(id)
-		c += field.hex_center(id) * w
+		c += to_local(field.hex_center(id)) * w
 		wsum += w
 	if wsum <= 0.0:
 		return DEMO_BALER_POS
 	c /= wsum
-	var best: int = -1
+	var best := Vector3.INF
 	var best_d: float = INF
-	for id: int in field.hex_count():
-		if field.hex_hub[id] == 2 or field.is_water(id) or not field.is_clean(id):
+	for id: int in reg:
+		if field.is_water(id) or not field.is_clean(id) or field.hex_hub[id] == 2:
 			continue
-		var hc: Vector3 = field.hex_center(id)
-		if hc.length() < 9.0:
+		var lp: Vector3 = to_local(field.hex_center(id))
+		if Vector2(lp.x, lp.z).length() < 14.0:
 			continue  # keep the base yard free
-		var d: float = hc.distance_squared_to(c)
+		var d: float = lp.distance_squared_to(c)
 		if d < best_d:
 			best_d = d
-			best = id
-	if best < 0:
+			best = lp
+	if best == Vector3.INF:
 		var dir: Vector3 = Vector3(c.x, 0, c.z).normalized()
-		return dir * 10.0 if dir != Vector3.ZERO else DEMO_BALER_POS
-	var p: Vector3 = field.hex_center(best)
-	return Vector3(p.x, 0.0, p.z)
+		return dir * 16.0 if dir != Vector3.ZERO else DEMO_BALER_POS
+	return Vector3(best.x, 0.0, best.z)
 
 
 func _spawn_conveyor() -> void:
@@ -239,11 +241,8 @@ func _spawn_baler(pos: Vector3, animate: bool) -> void:
 		baler.name = "AutoBaler"
 		baler.stations = self
 		add_child(baler)
-	if animate and not (world and world.get("field") is SphereField):
-		baler.drop_at(pos)
-	else:
-		baler.place(pos)
-		_seat_on_globe(baler)  # [orbD]
+	baler.place(pos)
+	_seat_on_globe(baler)
 
 
 # --- Routing -----------------------------------------------------------------------
@@ -414,56 +413,17 @@ func _demo_feed() -> void:
 			baler.set_physics_process(false)
 
 
-## [orbD] Local up of whatever stands at node n (a planet's radial up, else +Y).
+## Local up of whatever stands at node n (the planet's radial up).
 static func s_up(n: Node3D) -> Vector3:
-	return n.global_position.normalized() if JunkCube.planet_radius > 0.0 else Vector3.UP
-
-
-## [orbD] frontier_pos on a globe: the clean cell nearest the junk front of the start hub's region,
-## in this node's local frame (164k cells would take seconds to scan).
-func _frontier_on_globe() -> Vector3:
-	var so: Variant = world.get("orbit")
-	var sm: SiteManager = (so as SliceOrbit).globe.site_manager if so is SliceOrbit else null
-	var field: SphereField = world.get("field")
-	if sm == null or sm.regions.is_empty():
-		return DEMO_BALER_POS
-	var reg: PackedInt32Array = sm.regions[0]
-	var c := Vector3.ZERO
-	var wsum: float = 0.0
-	for id: int in reg:
-		if field.hex_hub[id] != 0 or field.is_clean(id) or field.is_water(id):
-			continue
-		var w: float = 1.0 - field.removed_fraction(id)
-		c += to_local(field.hex_center(id)) * w
-		wsum += w
-	if wsum <= 0.0:
-		return DEMO_BALER_POS
-	c /= wsum
-	var best := Vector3.INF
-	var best_d: float = INF
-	for id: int in reg:
-		if field.is_water(id) or not field.is_clean(id) or field.hex_hub[id] == 2:
-			continue
-		var lp: Vector3 = to_local(field.hex_center(id))
-		if Vector2(lp.x, lp.z).length() < 14.0:
-			continue  # keep the base yard free
-		var d: float = lp.distance_squared_to(c)
-		if d < best_d:
-			best_d = d
-			best = lp
-	if best == Vector3.INF:
-		var dir: Vector3 = Vector3(c.x, 0, c.z).normalized()
-		return dir * 16.0 if dir != Vector3.ZERO else DEMO_BALER_POS
-	return Vector3(best.x, 0.0, best.z)
+	return OrbitUp.up(n.global_position)
 
 
 ## [orbD] On a globe a machine placed far out in this node's tangent plane floats or sinks (the
 ## planet curves away): put it on the real ground under it, upright on the local up, same heading.
 func _seat_on_globe(n: Node3D) -> void:
-	var so: Variant = world.get("orbit") if world else null
-	if not (so is SliceOrbit) or not n.is_inside_tree():
+	if world == null or not n.is_inside_tree():
 		return
-	var terrain: SphereTerrain = (so as SliceOrbit).globe.terrain
+	var terrain: SphereTerrain = (world.orbit as SliceOrbit).globe.terrain
 	var up: Vector3 = n.global_position.normalized()
 	var fwd: Vector3 = n.global_basis.z
 	fwd = (fwd - up * fwd.dot(up)).normalized()

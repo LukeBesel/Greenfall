@@ -47,26 +47,17 @@ func _setup() -> void:
 		CradleMode.profile["current"] = 0
 	CradleMode.mirror_stats()
 	GameState.flags["last_district"] = str(world.get("district_name"))  # [worlds2] save profile summary
-	if world.get("orbit") == null:  # [orbB] Garden Mode's decor grid is flat yard metres: the globe gets it with the yard frame
-		decor = Decor.new()
-		world.add_child(decor)
-		decor.setup(world)
-		placer = GardenPlacer.new()
-		placer.name = "GardenPlacer"
-		placer.world = world
-		placer.decor = decor
-		world.add_child(placer)
-	else:  # [orbB] the globe: each hub's Decor lives in the orbit's HubFrame; the placer follows it
-		var hf: HubFrame = (world.orbit as SliceOrbit).hub_frame
+	# [orbB] Each hub's Decor lives in the orbit's HubFrame; the placer follows it.
+	var hf: HubFrame = (world.orbit as SliceOrbit).hub_frame
+	decor = hf.node("Decor") as Decor
+	placer = GardenPlacer.new()
+	placer.name = "GardenPlacer"
+	placer.world = world
+	placer.decor = decor
+	world.add_child(placer)
+	hf.hub_changed.connect(func(_h: int) -> void:
 		decor = hf.node("Decor") as Decor
-		placer = GardenPlacer.new()
-		placer.name = "GardenPlacer"
-		placer.world = world
-		placer.decor = decor
-		world.add_child(placer)
-		hf.hub_changed.connect(func(_h: int) -> void:
-			decor = hf.node("Decor") as Decor
-			placer.set_decor(decor))
+		placer.set_decor(decor))
 	HomewardDirector.attach(world)  # [home] the system campaign (systems/homeward_director.gd)
 	bridge = ArkBridge.new()
 	bridge.name = "ArkBridge"
@@ -108,10 +99,7 @@ func open_bridge() -> bool:
 		return false
 	if world.patch.input is PlayerInput:
 		(world.patch.input as PlayerInput).enabled = false
-	if world.get("cam") != null:  # [orbB] the globe's camera is the SphereCam (SliceOrbit.set_input)
-		world.cam.input_enabled = false
-	elif world.get("orbit") != null:
-		world.orbit.set_input(false)
+	world.orbit.set_input(false)  # [orbB] the globe's camera is the SphereCam
 	bridge.open_bridge()
 	return true
 
@@ -218,7 +206,7 @@ func _arrive_new_world() -> void:
 ## A new world's look: its type (frost on an ice moon, sand on a desert world) and a wet sheen
 ## under Heavy Rain, as a coat over the junk.
 func _world_look() -> void:
-	if CradleMode.current_index() <= 0 or world.get("frontier") != null or world.get("view") == null:
+	if CradleMode.current_index() <= 0 or world.get("view") == null:
 		return
 	# [worlds2] The world type's coat, made wetter by Heavy Rain and shinier by Rich Salvage (systems/world_look.gd).
 	var rain_coat: Array = []

@@ -2,8 +2,8 @@ class_name BuildBudget
 extends RefCounted
 ## [leftovers] Time-sliced building behind the loading screen.
 ## The Loader (ui/loading_screen.gd) opens a budget before it switches scenes; scenes/slice.gd then
-## builds the district as a coroutine and the heavy builders (FieldView, LitterView, FarJunk,
-## CityView, StreetDressing) check in from their loops:
+## builds the globe as a coroutine and the heavy builders (FieldView, LitterView, CityView,
+## StreetDressing) check in from their loops:
 ##     if BuildBudget.due():
 ##         await BuildBudget.pause()
 ## With no budget open (tests, tools, the save round trip) due() is always false, nothing awaits
