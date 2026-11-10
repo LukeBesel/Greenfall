@@ -243,7 +243,7 @@ Data-driven steps in the planet's folder. Each step has a trigger, a one-line in
   - no gap between goals longer than 4 min
   - a new mechanic every 10-15 min in the first hour, every 30-40 min after
   - a power spike every 30-40 min, each at least doubling the player's cleaning rate
-  - hand work stays at least 30% of total cleaning output at every point
+  - Lumi's own actions always decide what the crew can do next (mastery, sources, zones); hand work is at least 10% of cleaning volume before district 4 (the earlier 30% rule was dropped with the owner's 100-200 robot crew)
 - **Method:** `tools/pace_sim` models income, costs, mastery and crew from the planet's data and prints the beats above in seconds. The full-game bot confirms each milestone build. Numbers change only with simulator output attached.
 - **Curves:** track costs grow geometrically within a tier and reset at each district's new tier, so time-to-next rises gently inside a district and drops at each spike. Formulas are documented in the playbook.
 

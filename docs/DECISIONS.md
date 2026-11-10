@@ -413,3 +413,9 @@ The owner asked for more attention on the world's goals and look (full cities ro
 - **A crew of 10 to 12 by the ending**, two robot tiers. This replaces the earlier figure of 24.
 - **The Scrounger**, a parts-finding robot, unlocks late on Planet 1 as one unit that marks buried parts for Lumi to dig. The self-sufficient version is for later planets.
 - **One job per currency, no conversions.**
+
+## Correction: crew size and the two goals (owner, Nov 10, 2026)
+- **The lead was wrong about "fewer robots".** The owner asked to look at the pacing of building and upgrading robots, not to reduce their number. The crew reaches about **100 to 200 robots** by the point where the player can move on; cleaning the whole planet takes thousands.
+- **Moving on does not require finishing the planet.** Planet 1 has a launch point (six cities thriving: the big moment, the end of the demo, the hook) and a separate long goal (the whole globe). This replaces "Planet 1 is fully restorable in about 4 hours" (R1): the 4-hour target now applies to the launch point.
+- **A production queue for batch building comes back to Planet 1** (a simpler form of the parked robot-building station), because nobody should build 150 robots one click at a time.
+- **The fixed 50,000-cube cap and the 30% hand-share rule are dropped**; both were the lead's numbers and do not fit a crew of 100 to 200. The owner's rule that currency must not climb fast stays, and the simulator reports the largest prices and incomes for the owner to judge.

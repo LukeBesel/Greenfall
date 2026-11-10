@@ -114,18 +114,22 @@ No module may be best in every district; the simulator checks this.
 - Charge time is about 4 minutes of steady play; upgrades shorten it.
 - The existing Bloom Core meter is its gauge.
 
-## 9. Restoration and the ending (table `restoration`)
+## 9. Two goals: the launch point and the whole planet (table `restoration`; corrected Nov 10)
+
+Owner: you do not need to finish Planet 1 to move on to planet two. Finishing the whole planet may take thousands of robots; reaching the end of Planet 1's story takes about 100 to 200.
 
 ```json
-{"weights": {"per_district": "equal"}, "stage_values": [0, 0.25, 0.45, 0.65, 0.85, 1.0],
- "ending": {"when": "all_districts_stage", "stage": 5, "sequence": "bloom"}}
+{"launch": {"when": "all_districts_stage", "stage": 5, "sequence": "bloom"},
+ "planet": {"measure": "cell_share_restored", "stages": [0.01, 0.05, 0.25, 0.5, 1.0]},
+ "stage_values": [0, 0.25, 0.45, 0.65, 0.85, 1.0]}
 ```
 
-- Planet restoration is the mean of its districts' values, where a district's value comes from its stage and share. Nothing outside the planet affects it.
-- When the last district reaches stage 5 (thriving), `planet_restored` fires once. The planet's ending sequence plays (Planet 1: the Bloom, where green spreads from every district over the whole globe), then the end screen with session stats and the hook.
-- After the ending the player keeps playing: open ground, finds and full completion.
+- **The launch point (Planet 1's ending, and the end of the demo).** When all six cities are thriving, `launch_ready` fires once: the big moment plays (Planet 1: the Bloom, where green pushes out from every city and the rocket to the next world is ready), then the end screen with session stats and the hook. Target: about 4 hours for a first-time player, with a crew of about 100 to 200.
+- **The whole planet (the long goal).** The six cities are a small share of the globe. After the launch point the player can leave, or keep going: the regrowth front spreads from thriving cities by itself, slowly, and far faster with crews working the land between. Whole-planet restoration is tracked on the map in a few named steps and is expected to take thousands of robots; it must never be required to move on. `planet_restored` fires if it is ever reached.
+- Nothing outside the planet is needed for the launch point. Tools from later planets may make the long goal faster, never possible.
+- The HUD shows the city goal ("4 of 6 cities restored") as the main planet readout; the whole-planet share appears on the map only.
 
-Events: `planet_restoration_changed(value)`, `planet_restored(id)`.
+Events: `planet_restoration_changed(value)`, `launch_ready(id)`, `planet_restored(id)`.
 
 ## 10. Goals (table `goals`)
 
@@ -146,12 +150,12 @@ Decided in task M3-13 after the loop is rebuilt; current leaning:
 
 | District | Hexes | Player time in district | Crew at the end | Hand share |
 |---|---|---|---|---|
-| 1 | 127 | 50 min | 3 | 70% |
-| 2 | 217 | 30 min | 6 | 50% |
-| 3 | 331 | 30 min | 10 | 45% |
-| 4 | 469 | 35 min | 14 | 40% |
-| 5 | 631 | 35 min | 18 | 35% |
-| 6 | 817 | 45 min | 24 | 30% |
+| 1 | 127 | 50 min | 5 | 60% |
+| 2 | 217 | 30 min | 15 | 35% |
+| 3 | 331 | 30 min | 35 | 20% |
+| 4 | 469 | 35 min | 70 | 12% |
+| 5 | 631 | 35 min | 110 | 8% |
+| 6 | 817 | 45 min | 150 | 5% |
 
 Lumi's hand rate grows from about 1 hex per 2.5 minutes at the start to about 4 hexes a minute by district 6 (tracks, rigs, mastery, Surge).
 
@@ -208,10 +212,10 @@ Owner's rules: pacing is the most important thing. Currency numbers must not get
 
 ### Scale: small numbers that mean something
 - Planet 1 is the beginning, so it stays in small numbers. Later planets go higher.
-- A plain bale sells for **tens of cubes**. First upgrades cost tens; district 1 tops out in the low thousands; the most expensive single purchase on Planet 1 is **under 50,000 cubes**.
+- A plain bale sells for **tens of cubes**. First upgrades cost tens; district 1 tops out in the low thousands. With a crew of 100 to 200 by the launch point, later numbers are larger, but the curve is the slowest-growing one that still reaches the launch point on time; the simulator reports the largest price and income so the owner can judge them.
 - Income never jumps by more than about 3x from one purchase or unlock, and goal rewards never arrive in bursts: a goal pays when it completes, and a reward is never worth more than about 3 minutes of current income.
 - Prices rise because the player moved to a harder district with richer waste, not because of compounding multipliers. Multipliers are few and additive where possible.
-- All numbers shown to the player are whole and under 6 digits on Planet 1. No "k/M" abbreviations should be needed before the last district.
+- Numbers shown to the player are whole. No "k/M" abbreviation is needed in the first two districts.
 - Tipping loose trash in the bin never out-earns pressing a bale.
 
 ### One job per currency
@@ -228,12 +232,16 @@ Nothing converts one currency into another at the bench. No reward hands out a c
 - District 2 (wrecks) is where parts open up: stripping a wreck by hand yields parts, and wreck mastery lets a robot do it slowly.
 - Parts are never the reason nothing can be bought for more than 4 minutes: the simulator checks parts waits as well as cube waits.
 
-### The crew: few robots, each one a decision
-- Planet 1 ends with a crew of **about 10 to 12 robots**, not dozens. The crew cap rises with base level.
-- Robot tiers on Planet 1: **rusty** (as salvaged) and **repaired**. Higher tiers are for later planets.
-- Building and upgrading both cost parts, so the player chooses: one better robot or one more robot. Upgrades show on the robot.
-- Unlock order on Planet 1: cleaner (about minute 20), hauler (district 2), skimmer (district 3), planter and waterer (districts 3-4), and late in district 5 the **Scrounger**.
-- **Scrounger (parts-finding robot).** One unit on Planet 1. It roams cleaned ground near Lumi, sniffs out buried parts and plants a marker; Lumi digs them up. It finds, the player collects, so hands stay the engine. A later-planet version that digs and carries is noted in `docs/FUTURE.md`.
+### The crew: paced growth to a large crew (corrected Nov 10: the owner never asked for fewer robots)
+- By the launch point (section 9) the crew is **about 100 to 200 robots**. Cleaning the whole planet takes **thousands**; that is the long goal, not the requirement to move on.
+- What is paced is the climb: 1 robot at about minute 20, a handful in district 1, tens by district 3, 100 to 200 by the launch point. No stretch where the crew doubles in a couple of minutes, and none where it cannot grow for more than a few minutes.
+- **Building at scale.** Single robots are built by hand at first. From district 2 a **production queue** at the base builds robots in batches over time from parts (orders, not clicks). It is a simpler form of the parked robot-building station, brought back for Planet 1.
+- **Zones at scale.** Crews are given areas and priorities, not individual orders; far crews are simulated cheaply (as today).
+- Robot tiers on Planet 1: **rusty** and **repaired**. Higher tiers are for later planets.
+- Building and upgrading both cost parts, so the player chooses between a better crew and a bigger one. Upgrades apply per robot type and show on the robots.
+- Mastery still rules what a robot type may work and how fast (section 3), so Lumi's hands set the pace of the whole crew even when robots do most of the volume. The 30% hand-share rule from PLAN section 9 is replaced by: **Lumi's own actions always decide what the crew can do next** (mastery, sources, finds, zones), and hand work is never less than 10% of cleaning by volume before district 4.
+- Unlock order on Planet 1: cleaner (about minute 20), hauler (district 2), the production queue (district 2), skimmer (district 3), planter and waterer (districts 3-4), and late in district 5 the **Scrounger**.
+- **Scrounger (parts-finding robot).** It roams cleaned ground, sniffs out buried parts and plants a marker; Lumi (and later haulers) collect them. A later-planet version that digs and carries by itself is noted in `docs/FUTURE.md`.
 
 ## 15. The world: cities under junk (owner, Nov 10)
 
