@@ -162,24 +162,18 @@ func _crash_pose() -> void:
 	var fire: Node = _pod.get_node_or_null("ReentryFire")
 	if fire:
 		fire.queue_free()
-	_site = CrashSite.attach(world, _pod, _w(POD_POS + Vector3(0, _ground(POD_POS), 0)), 0.5)  # [orbE]
-	if site_xf != Transform3D.IDENTITY:  # [orbE] lie on the globe's pad, not the world's flat plane
-		_site.global_basis = site_xf.basis.orthonormalized()
-
-
-func _ground(p: Vector3) -> float:
-	var layout: CityLayout = world.field.get("layout") as CityLayout  # [orbE] the globe's field has none
-	return clampf(layout.height_at(p.x, p.z), 0.0, 0.3) if layout else 0.0
+	_site = CrashSite.attach(world, _pod, _w(POD_POS), 0.5)  # [orbE]
+	_site.global_basis = site_xf.basis.orthonormalized()  # [orbE] lie on the pad's own plane
 
 
 # --- [orbE] Round planet: the in-world shots in the pod site's frame -----------------------
-## The landing and wake shots are written in flat coordinates around POD_POS (+Y up). On a
-## globe, site_xf maps them onto the pod anchor's frame (origin on the pad, +Y the local up), so
-## every shot, the chase camera and Lumi's drift stay level on the curve. Identity on the flat
-## game: nothing there changes. The globe slice sets it with site_for_anchor(pod anchor).
+## The landing and wake shots are written in site-local coordinates around POD_POS (+Y up).
+## site_xf maps them onto the pod anchor's frame (origin on the pad, +Y the local up), so every
+## shot, the chase camera and Lumi's drift stay level on the curve. The slice sets it with
+## site_for_anchor(pod anchor).
 var site_xf := Transform3D.IDENTITY
-## [orbE] On the globe: the pod anchor's frame when the intro starts (anchors settle while
-## loading), the globe's own pod placement at the end, and the globe camera's hand-off.
+## [orbE] The pod anchor's frame when the intro starts (anchors settle while loading), the
+## slice's own pod placement at the end, and the SphereCam's hand-off.
 var site_fn: Callable  # () -> Transform3D
 var place_pod_fn: Callable  # () -> void
 var cam_reset_fn: Callable  # () -> void
@@ -189,7 +183,7 @@ static func site_for_anchor(anchor: Transform3D) -> Transform3D:
 	return anchor * Transform3D(Basis(), -POD_POS)
 
 
-func _w(v: Vector3) -> Vector3:  # intro (flat) coordinates -> world
+func _w(v: Vector3) -> Vector3:  # intro (site-local) coordinates -> world
 	return site_xf * v
 
 
@@ -619,7 +613,7 @@ func _phase_fall() -> void:
 func _phase_landing() -> void:
 	var patch: Node3D = world.patch
 	var model: PatchModel = _model()
-	var land: Vector3 = POD_POS + Vector3(0, _ground(POD_POS), 0)
+	var land: Vector3 = POD_POS
 	_pod.visible = true
 	var start: Vector3 = land + Vector3(-120, 95, 80)
 	_pod.global_position = _w(start)  # [orbE]
@@ -666,7 +660,7 @@ func _phase_landing() -> void:
 		EscapePod.set_open(_pod, true, CrashSite.LEAN.x)
 		var o_from: Vector3 = _v(_pod.global_transform * Vector3(0, 0.3, -0.3))  # [orbE] intro coordinates
 		var o_to: Vector3 = _v(_pod.global_transform * Vector3(0, 0.05, -2.2))
-		o_to.y = _ground(o_to) + 0.05
+		o_to.y = 0.05
 		patch.visible = true
 		patch.global_position = _w(o_to)
 		patch.look_at(_w(o_to + (o_to - o_from) * Vector3(1, 0, 1)), _up())
@@ -704,7 +698,7 @@ func _phase_landing() -> void:
 		return
 	var out_from: Vector3 = _v(_pod.global_transform * Vector3(0, 0.3, -0.3))  # [orbE] intro coordinates
 	var out_to: Vector3 = _v(_pod.global_transform * Vector3(0, 0.05, -2.2))
-	out_to.y = _ground(out_to) + 0.05
+	out_to.y = 0.05
 	patch.visible = true
 	patch.global_position = _w(out_from)
 	# Patch faces -Z: look along the drift so Lumi floats out face first.
@@ -983,9 +977,9 @@ func _finish() -> void:
 	var model: PatchModel = _model()
 	if not _replay:
 		place_pod()
-		if _v(patch.global_position).distance_to(POD_POS) > 6.0 or _skipped or not patch.visible:  # [orbE] _v/_w: identity on flat
+		if _v(patch.global_position).distance_to(POD_POS) > 6.0 or _skipped or not patch.visible:
 			patch.global_position = _w(Vector3(0, 0.05, 3.0))
-		if site_xf != Transform3D.IDENTITY and patch.has_method("place_on_sphere"):  # [orbE] stand on the globe
+		if patch.has_method("place_on_sphere"):  # [orbE] stand on the ground (test stand-ins have no motor)
 			var fwd: Vector3 = -patch.global_basis.z
 			fwd -= _up() * fwd.dot(_up())
 			patch.call("place_on_sphere", patch.global_position, fwd.normalized() if fwd.length() > 0.01 else -site_xf.basis.z)
@@ -1012,12 +1006,7 @@ func _finish() -> void:
 			model.core_glow = CoreCharge.glow_for_flags()
 		# [first] Behind the black: put the gameplay camera right behind Lumi so the first frame
 		# doesn't glide in from wherever the rig was parked during the cinematic.
-		if world.get("cam") != null and world.cam.has_method("hand_off"):  # [onboard2] normal framing, clear arm
-			world.cam.hand_off(patch.rotation.y)
-		elif world.get("cam") != null and world.cam.has_method("snap"):
-			world.cam.yaw = patch.rotation.y
-			world.cam.snap()
-		elif cam_reset_fn.is_valid():  # [orbE] the globe's SphereCam behind Lumi
+		if cam_reset_fn.is_valid():  # [orbE] the SphereCam behind Lumi
 			cam_reset_fn.call()
 		var modal: bool = world.has_method("any_modal_open") and world.any_modal_open()
 		if _prev_cam and is_instance_valid(_prev_cam) and not modal:
@@ -1085,10 +1074,4 @@ func busy() -> bool:
 
 
 func _set_player_enabled(on: bool) -> void:
-	var patch: Node = world.patch
-	if patch.get("input") is PlayerInput:
-		(patch.input as PlayerInput).enabled = on
-	if world.get("cam") != null:
-		world.cam.input_enabled = on
-	elif world.get("orbit") != null and world.get("orbit").has_method("set_input"):  # [orbE] the globe
-		world.get("orbit").call("set_input", on)
+	(world.orbit as SliceOrbit).set_input(on)  # [orbE] Lumi's input and the SphereCam

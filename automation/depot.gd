@@ -134,7 +134,7 @@ func _physics_process(delta: float) -> void:
 		var c: JunkCube = n
 		if c.carried or c.claimed:
 			continue
-		var low: bool = c.global_position.y < 3.0 if JunkCube.planet_radius <= 0.0 else _local(c.global_position).y < 3.0  # [orbit]
+		var low: bool = _local(c.global_position).y < 3.0  # [orbit] the pad's own up
 		if pad_contains(c.global_position) and low:
 			_swallow(c)
 

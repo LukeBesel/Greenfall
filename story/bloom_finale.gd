@@ -128,8 +128,6 @@ func play() -> void:
 		world.music.set_cinematic(true)
 	if world.get("hud"):  # [orbD] the globe slice may run without these
 		world.hud.visible = false
-	if world.get("cam"):
-		world.cam.input_enabled = false
 	if world.patch.input is PlayerInput:
 		(world.patch.input as PlayerInput).enabled = false
 	_set_bars(90.0)
@@ -248,8 +246,6 @@ func _restore() -> void:
 	_cam = null
 	if world.get("hud"):  # [orbD]
 		world.hud.visible = true
-	if world.get("cam"):
-		world.cam.input_enabled = true
 	if world.patch.input is PlayerInput:
 		(world.patch.input as PlayerInput).enabled = true
 	if world.get("music") != null:

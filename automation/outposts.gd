@@ -1,13 +1,13 @@
 class_name Outposts
 extends Node3D
 ## Ruined frontier outposts that Patch repairs into extra depots (data/outposts.json).
-## Each district has 3-4 at fixed, seeded spots on the outer hex rings (plan()). A ruin can be
+## Each hub has 3-4 at fixed, seeded spots just outside its site (plan_cells()). A ruin can be
 ## repaired (E at its kiosk) once its hex is mostly clean; repair costs cubes + building stock
 ## (Hub.pay) and plays a fast-build. A repaired outpost is a working scale (Depot in bare mode:
 ## same value logic + its level bonus), a Drip refill point (robots/water_net.gd) and a parking
 ## spot for idle robots; Haul Bugs deliver to the nearest working scale (robots/robot.gd, marked
 ## [outposts]). Upgrades: 2 = Big Skip, 3 = Recharge Pad (robots passing over run faster).
-## State: GameState.world["outposts"] = {"levels": [lv per outpost]} (per district).
+## State: GameState.world["orbit_outposts"][hub] = {"levels": [lv per outpost]}.
 ## Dev hooks: --outposts=repaired|all:L|I:L[+I:L]  pre-set levels (+ --outpost-clean clears their hexes); --outpost-spawn=N  put Patch
 ## in front of outpost N; --outpost-repair=N  play the repair sequence on N shortly after start.
 
@@ -45,8 +45,7 @@ func _ready() -> void:
 
 func setup() -> void:
 	cfg = load_cfg()
-	_globe = world.field is SphereField  # [orbB]
-	spots = plan_cells(self, world.field, frame_cells, cfg, hub_index) if _globe else plan(world.field, cfg)
+	spots = plan_cells(self, world.field, frame_cells, cfg, hub_index)
 	var lv: Array = levels()
 	while lv.size() < spots.size():
 		lv.append(0)
@@ -54,11 +53,7 @@ func setup() -> void:
 	for i: int in spots.size():
 		var o := Outpost.new()
 		add_child(o)
-		if _globe:  # [orbB] frame-local, standing on the ground's own up
-			o.transform = spots[i]["xf"]
-		else:
-			o.global_position = spots[i]["pos"]
-			o.rotation.y = float(spots[i]["yaw"])
+		o.transform = spots[i]["xf"]  # [orbB] frame-local, standing on the ground's own up
 		o.setup(i, int(lv[i]), world)
 		items.append(o)
 		if world.get("interactables") != null:
@@ -66,16 +61,13 @@ func setup() -> void:
 	var where: Array[String] = []
 	for sp: Dictionary in spots:
 		where.append("hex%d@(%.0f,%.0f)" % [int(sp["hex"]), (sp["pos"] as Vector3).x, (sp["pos"] as Vector3).z])
-	print("[outposts] %s %d: %d outposts %s levels %s" % ["hub" if _globe else "district", hub_index if _globe else GameState.current_hub, items.size(), " ".join(where), str(levels())])
+	print("[outposts] %s %d: %d outposts %s levels %s" % ["hub", hub_index, items.size(), " ".join(where), str(levels())])
 	if DevHooks.has("outpost-spawn"):
 		var k: int = clampi(int(DevHooks.get_f("outpost-spawn", 0.0)), 0, maxi(items.size() - 1, 0))
 		if k < items.size() and world.get("patch") != null:
 			var o: Outpost = items[k]
 			world.patch.global_position = o.to_global(Vector3(DevHooks.get_f("outpost-dx", 1.2), 0.25, DevHooks.get_f("outpost-dist", 8.5)))
 			world.patch.rotation.y = o.rotation.y + DevHooks.get_f("outpost-yaw", 0.0)
-			if world.get("cam") != null:
-				world.cam.yaw = world.patch.rotation.y
-				world.cam.snap()
 	if DevHooks.has("outpost-repair"):
 		var r: int = int(DevHooks.get_f("outpost-repair", 0.0))
 		get_tree().create_timer(DevHooks.get_f("outpost-repair-at", 3.0)).timeout.connect(func() -> void: repair(r, true, true))
@@ -142,16 +134,13 @@ static func _mgr(w: Node) -> Outposts:
 
 
 func state() -> Dictionary:
-	if _globe:  # [orbB] per hub: GameState.world["orbit_outposts"][hub] (the start site's dict)
-		if not GameState.world.get("orbit_outposts") is Dictionary:
-			GameState.world["orbit_outposts"] = {}
-		var by_hub: Dictionary = GameState.world["orbit_outposts"]
-		if not by_hub.get(str(hub_index)) is Dictionary:
-			by_hub[str(hub_index)] = {}
-		return by_hub[str(hub_index)]
-	if not GameState.world.has("outposts") or not GameState.world["outposts"] is Dictionary:
-		GameState.world["outposts"] = {}
-	return GameState.world["outposts"]
+	# [orbB] Per hub: GameState.world["orbit_outposts"][hub] (the start site's dict).
+	if not GameState.world.get("orbit_outposts") is Dictionary:
+		GameState.world["orbit_outposts"] = {}
+	var by_hub: Dictionary = GameState.world["orbit_outposts"]
+	if not by_hub.get(str(hub_index)) is Dictionary:
+		by_hub[str(hub_index)] = {}
+	return by_hub[str(hub_index)]
 
 
 func levels() -> Array:
@@ -180,113 +169,6 @@ func repaired_count() -> int:
 		if v >= 1:
 			n += 1
 	return n
-
-
-# --- Placement (pure, deterministic) -------------------------------------------------
-
-## The district's outpost sites: [{pos, yaw, hex}]. Spread around the outer hex rings in
-## seeded sectors, on open ground (no buildings, yard, water or road under the footprint).
-static func plan(field: HexField, c: Dictionary = {}) -> Array[Dictionary]:
-	if c.is_empty():
-		c = load_cfg()
-	var r := RandomNumberGenerator.new()
-	r.seed = field.seed_value + 4242
-	var cnt: Array = c.get("count", [3, 4])
-	var n: int = r.randi_range(int(cnt[0]), int(cnt[1]))
-	var foot: float = float(c.get("footprint", 3.6))
-	var outer: int = field.radius
-	var min_ring: int = maxi(1, outer - 1)
-	var relay: Vector3 = LedgerArc.relay_spot(field)["pos"]
-	# Best site in every frontier hex (seeded per hex, so it doesn't depend on the order).
-	var sites: Array[Dictionary] = []
-	for id: int in field.hex_count():
-		var ring: int = Hex.distance(field.hex_axial[id], Vector2i.ZERO)
-		if ring < min_ring or field.hex_hub[id] != 0 or field.is_water(id):
-			continue
-		var site: Dictionary = _site_in(field, id, foot, field.seed_value + 4242 + id * 31)
-		if site.is_empty():
-			continue
-		if Vector2(site["pos"].x - relay.x, site["pos"].z - relay.z).length() < foot + 4.0:
-			continue
-		site["ring"] = ring
-		sites.append(site)
-	var out: Array[Dictionary] = []
-	if sites.is_empty():
-		return out
-	var a0: float = r.randf() * TAU
-	var used: Dictionary = {}
-	for k: int in n:
-		var want: float = a0 + TAU * float(k) / float(n)
-		var best: int = -1
-		var best_s: float = INF
-		for si: int in sites.size():
-			var s: Dictionary = sites[si]
-			if used.has(si):
-				continue
-			var p: Vector3 = s["pos"]
-			var clash: bool = false
-			for o: Dictionary in out:
-				if Vector2(p.x - o["pos"].x, p.z - o["pos"].z).length() < foot * 4.0:
-					clash = true
-					break
-			if clash:
-				continue
-			var da: float = absf(angle_difference(atan2(p.z, p.x), want))
-			var score: float = da + (0.35 if int(s["ring"]) < outer else 0.0) + (0.25 if s.get("relaxed", false) else 0.0)
-			if score < best_s:
-				best_s = score
-				best = si
-		if best < 0:
-			continue
-		used[best] = true
-		var pick: Dictionary = sites[best]
-		var pp: Vector3 = pick["pos"]
-		out.append({"pos": pp, "yaw": atan2(-pp.x, -pp.z), "hex": int(pick["hex"])})
-	return out
-
-
-static func _site_in(field: HexField, id: int, foot: float, seed_v: int) -> Dictionary:
-	var r := RandomNumberGenerator.new()
-	r.seed = seed_v
-	var c: Vector3 = field.hex_center(id)
-	for pass_i: int in 2:
-		var relaxed: bool = pass_i == 1
-		for attempt: int in 28:
-			var off := Vector3(r.randf_range(-1, 1), 0, r.randf_range(-1, 1)) * field.hex_size * 0.42
-			if attempt == 0:
-				off = Vector3.ZERO
-			var p: Vector3 = c + off
-			if field.hex_at(p) != id:
-				continue
-			if _open(field, p, foot * (0.8 if relaxed else 1.0), relaxed):
-				var y: float = clampf(field.layout.height_at(p.x, p.z), 0.0, 0.3) if field.layout else 0.0
-				return {"pos": Vector3(p.x, y, p.z), "hex": id, "relaxed": relaxed}
-	return {}
-
-
-static func _open(field: HexField, p: Vector3, foot: float, relaxed: bool) -> bool:
-	var probes: Array[Vector3] = [Vector3.ZERO]
-	for k: int in 8:
-		var a: float = TAU * k / 8.0
-		probes.append(Vector3(cos(a), 0, sin(a)) * foot)
-		probes.append(Vector3(cos(a), 0, sin(a)) * foot * 0.5)
-	for o: Vector3 in probes:
-		var q: Vector3 = p + o
-		var h: int = field.hex_at(q)
-		if h < 0 or field.is_water(h) or field.hex_hub[h] == HexField.HEX_HUB:
-			return false
-		for lm: Dictionary in field.landmarks:
-			if Vector2((lm["pos"] as Vector3).x - q.x, (lm["pos"] as Vector3).z - q.z).length() < 1.6:
-				return false
-		if field.layout == null:
-			continue
-		var s: int = field.layout.surface_at(q.x, q.z)
-		if s == CityLayout.Surface.BUILDING or s == CityLayout.Surface.YARD:
-			return false
-		# Never block a road: the centre and the inner ring stay off the carriageway always.
-		if s == CityLayout.Surface.ROAD and (not relaxed or o.length() < foot * 0.6):
-			return false
-	return true
 
 
 # --- Repair / upgrade ------------------------------------------------------------------
@@ -392,7 +274,7 @@ func _sweep(i: int) -> void:
 	if world == null or world.get("field") == null or i >= spots.size():
 		return
 	var f: HexField = world.field
-	var p: Vector3 = to_global(spots[i]["pos"]) if _globe else spots[i]["pos"]  # [orbB]
+	var p: Vector3 = to_global(spots[i]["pos"])
 	var foot: float = float(cfg.get("footprint", 3.6)) + 0.6
 	for pid: int in f.pieces_within(p, foot):
 		if f.piece_alive[pid] == 1 and not f.is_water(f.piece_hex[pid]):
@@ -541,14 +423,13 @@ func hex_note(h: int) -> String:
 	return tr("OUTPOST %d  %s") % [i + 1, tr(str(level_def(lv).get("name", ""))).to_upper()]
 
 
-# --- [orbB] The globe: outposts per hub, in the hub frame (planet/orbit/hub_frame.gd) ------------
+# --- Placement: outposts per hub, in the hub frame (planet/orbit/hub_frame.gd) -------------------
 
 var hub_index: int = 0  # the hub whose outposts these are (set by the frame host)
 var frame_cells := PackedInt32Array()  # that hub's region
-var _globe: bool = false
 
 
-## The hub's outpost sites, frame-local: [{pos, yaw, hex, xf}]. Like plan(): 3-4 ruins spread
+## The hub's outpost sites, frame-local: [{pos, yaw, hex, xf}]: 3-4 ruins spread
 ## round the hub, on open cells just outside the hub site (its frontier), standing on the ground's
 ## up. Deterministic per planet seed and hub; the eggs avoid them (story/eggs.gd).
 static func plan_cells(frame: Node3D, f: SphereField, cells: PackedInt32Array, c: Dictionary, hub: int) -> Array[Dictionary]:

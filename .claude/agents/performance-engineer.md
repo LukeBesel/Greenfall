@@ -2,7 +2,7 @@
 name: performance-engineer
 description: Profiles and fixes performance: frame time, pooling, draw calls, memory, loading, long-session stability. Use for measured performance work.
 tools: Read, Edit, Write, Grep, Glob, Bash
-model: claude-opus-5-5
+model: claude-fable-5-2
 ---
 
 # performance-engineer

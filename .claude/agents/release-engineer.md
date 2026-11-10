@@ -2,7 +2,7 @@
 name: release-engineer
 description: Owns export presets, the Steam demo build configuration, CI builds, settings persistence, credits and version display. Use for build and release work.
 tools: Read, Edit, Write, Grep, Glob, Bash
-model: claude-opus-5-5
+model: claude-fable-5-2
 ---
 
 # release-engineer

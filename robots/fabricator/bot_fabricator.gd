@@ -55,13 +55,11 @@ static func state(pid: String) -> Dictionary:
 	return all[pid]
 
 
-## The planet a world is on: the globe's planet on the round planet, else the campaign planet.
+## The planet a world is on: its globe's planet (the campaign planet while no globe is built).
 static func planet_of(w: Node) -> String:
-	var so: Object = w.get("orbit") if w != null else null
-	if so != null and so.get("globe") != null:
-		var sp: Variant = (so.get("globe") as Object).get("spec")
-		if sp is Dictionary:
-			return str((sp as Dictionary).get("id", "verdance"))
+	var so: SliceOrbit = w.get("orbit") if w != null else null
+	if so != null and so.globe != null and so.globe.spec.has("id"):
+		return str(so.globe.spec["id"])
 	var k: int = Homeward.current_planet()
 	var d: Dictionary = Homeward.planet_def(k)
 	return str(d.get("id", "verdance")) if not d.is_empty() else "verdance"
@@ -169,14 +167,12 @@ func _place_model() -> void:
 		return
 	model = FabricatorModel.new()
 	model.name = "FabricatorModel"
-	# Same parent as the Depot (the yard, or the start site's prefab on the globe), so the model
-	# sits on that ground in its local frame (+Y up).
+	# Same parent as the Depot (the start site's prefab), so the model sits on that ground in its
+	# local frame (+Y up).
 	dp.get_parent().add_child(model)
 	model.transform = dp.transform * Transform3D(Basis(), MODEL_OFFSET)
-	var so: Object = world.get("orbit")
-	if so != null and so.get("crews") != null and (so.get("crews") as Object).get("crew") != null:
-		var crew: SphereCrew = (so.get("crews") as Object).get("crew")
-		crew.set_obstacles("fabricator", [[crew.surface.up_at(model.global_position), 2.8]])
+	var crew: SphereCrew = (world.orbit as SliceOrbit).crews.crew
+	crew.set_obstacles("fabricator", [[crew.surface.up_at(model.global_position), 2.8]])
 	_model_on = false
 	model.call("set_building", false)
 	if DevHooks.has("fabricator-build"):
@@ -201,28 +197,14 @@ static func of(w: Node) -> BotFabricator:
 	return w.get_node_or_null("BotFabricator") as BotFabricator if w != null else null
 
 
-## Connects to the world's robots: the SphereCrew on the round planet, the Fleet on a flat district.
+## Connects to the world's robots (the SphereCrew); the cap scales with the planet's size.
 func _wire() -> void:
-	var so: Object = world.get("orbit")
-	if so != null and so.get("crews") != null and (so.get("crews") as Object).get("crew") != null:
-		var crew: SphereCrew = (so.get("crews") as Object).get("crew")
-		var g: Object = so.get("globe")
-		cap = cap_for_cells((g.get("grid") as SphereGrid).cell_count())
-		count_fn = func() -> int: return crew.robots().size()
-		spawn_fn = func(type_id: String, tier: int) -> bool: return spawn_on_globe(crew, g.get("sites"), type_id, tier)
-		return
-	var fl: Fleet = world.get("fleet") as Fleet
-	if fl != null:
-		cap = fl.crew_cap() * int(cfg().get("flat_cap_crews", 3))
-		count_fn = func() -> int: return fl.robots().size()
-		spawn_fn = func(type_id: String, tier: int) -> bool:
-			var dp: Node3D = world.get("depot") as Node3D
-			var at: Vector3 = (dp.global_position if dp else Vector3.ZERO) + Vector3(randf_range(-2.0, 2.0), 0.3, randf_range(1.5, 3.0))
-			var r: Robot = fl.spawn(type_id, tier, at, 0.0, Fleet.NAMES[randi() % Fleet.NAMES.size()] + "-%02d" % (randi() % 100))
-			if str(Economy.robots[type_id].get("role", "")) == "any":
-				var j: String = fl.join_crew(type_id)
-				r.job = j if j != "" else "clean"
-			return r != null
+	var so: SliceOrbit = world.orbit
+	var crew: SphereCrew = so.crews.crew
+	var sites: Array = so.globe.sites
+	cap = cap_for_cells(so.globe.grid.cell_count())
+	count_fn = func() -> int: return crew.robots().size()
+	spawn_fn = func(type_id: String, tier: int) -> bool: return spawn_on_globe(crew, sites, type_id, tier)
 
 
 ## A new globe robot: assigned to the hub with the fewest robots (so the crew spreads over the

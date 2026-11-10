@@ -7,7 +7,6 @@ var world: Node
 var docs: Array = []
 var _placed: Dictionary = {}  # hex id -> shard index
 var _visible: Dictionary = {}  # hex id -> Node3D
-var _globe: bool = false  # [orbB] on the walkable globe: the start hub's region (slice_orbit.gd)
 
 
 func setup() -> void:
@@ -15,14 +14,13 @@ func setup() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = world.field.seed_value + 77
 	var candidates: Array[int] = []
-	var so: Node = world.get("orbit")
-	_globe = so != null  # [orbB] the globe: the start hub's region, nearest the hub first
-	var cells: Variant = (so.get("globe") as OrbitPlanet).grid.cells_around((so.get("globe") as OrbitPlanet).start_cell(), SiteManager.REGION_RINGS) if _globe else range(world.field.hex_count())
-	var f: HexField = world.field
-	for id: int in cells:
-		if f.hex_hub[id] == 0 and not f.is_water(id) and not (_globe and (f as SphereField).cells.has_flag(id, SphereCells.F_SITE)):
+	# [orbB] The start hub's region, nearest the hub first.
+	var globe: OrbitPlanet = (world.orbit as SliceOrbit).globe
+	var f: SphereField = world.field
+	for id: int in globe.grid.cells_around(globe.start_cell(), SiteManager.REGION_RINGS):
+		if f.hex_hub[id] == 0 and not f.is_water(id) and not f.cells.has_flag(id, SphereCells.F_SITE):
 			candidates.append(id)
-	var hub_c: Vector3 = (so.get("globe") as OrbitPlanet).field.hex_center((so.get("globe") as OrbitPlanet).start_cell()) if _globe else Vector3.ZERO
+	var hub_c: Vector3 = globe.field.hex_center(globe.start_cell())
 	# Act 1 shards near the hub first; deterministic shuffle by distance + noise.
 	candidates.sort_custom(func(a: int, b: int) -> bool:
 		return f.hex_center(a).distance_to(hub_c) + rng.randf() * 0.0 < f.hex_center(b).distance_to(hub_c))
@@ -43,8 +41,6 @@ var _spots: Dictionary = {}  # hex id -> [keep-out version, Vector3]
 
 
 func spot(hid: int) -> Vector3:
-	if not _globe:
-		return world.field.hex_center(hid) + Vector3(1.2, 0.0, 0.8)
 	var t: TargetReach = TargetReach.for_world(world, true)
 	var ver: int = t.keep_out.version if t.keep_out else 0
 	var c: Variant = _spots.get(hid)
@@ -64,7 +60,7 @@ var _ko_t: float = 0.0
 
 func _process(delta: float) -> void:
 	_ko_t -= delta
-	if not _globe or _ko_t > 0.0 or _visible.is_empty():
+	if _ko_t > 0.0 or _visible.is_empty():
 		return
 	_ko_t = 2.0
 	var t: TargetReach = TargetReach.for_world(world)
@@ -87,9 +83,7 @@ func _reveal(hid: int, fresh: bool) -> void:
 	var pos: Vector3 = spot(hid)
 	var node := Node3D.new()
 	add_child(node)
-	node.global_position = pos
-	if _globe:  # [orbB] the same offset in the cell's own frame, on the ground, upright
-		node.global_transform = Transform3D(SphereGrid.frame(pos.normalized()), pos)
+	node.global_transform = Transform3D(SphereGrid.frame(pos.normalized()), pos)  # [orbB] on the ground, upright
 	var mi := MeshInstance3D.new()
 	mi.mesh = AssetLib.model_mesh_lite("portable_cassette_player" if AssetLib.has_model("portable_cassette_player") else "boombox", 2000)
 	mi.scale = Vector3.ONE * 0.6
@@ -126,7 +120,7 @@ func waypoint(from: Vector3) -> Dictionary:
 		var d2: float = c.distance_to(from)
 		if d2 < bd:
 			bd = d2
-			best = {"pos": spot(hid) if _globe else c, "surfaced": false, "hex": hid}  # [v4world] #55: where it will surface, on open ground
+			best = {"pos": spot(hid), "surfaced": false, "hex": hid}  # [v4world] #55: where it will surface, on open ground
 	return best
 
 

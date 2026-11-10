@@ -8,6 +8,9 @@ shader_type spatial;
 // shapes never show at the same time (a crossfade at happy ~0.75 drew both = "two sets of eyes").
 // Blink / sleep squash vertically. Drawn only on the front of the visor (object-space normal
 // facing -Z); the visor's back and side walls carry another material.
+// This is the ONLY eye drawing path: the character builder (systems/lumi_style.gd) picks a shape by
+// setting eye_shape through PatchModel; there is no overlay pass. No shape is a solid disc (owner):
+// every eye has a dark centre or is a line / heart, with a catchlight.
 render_mode diffuse_burley, specular_schlick_ggx;
 
 uniform vec4 eye_color : source_color = vec4(0.3, 0.9, 1.0, 1.0);
@@ -20,9 +23,11 @@ uniform float half_width = 0.29;
 uniform float half_height = 0.17;
 uniform float eye_spacing = 0.7;    // eye centre offset from the middle (in half-heights)
 uniform float eye_radius = 0.52;
-// [hero] Eye shape for the character builder: 0 crescent C (Aurora), 1 round, 2 happy arcs,
-// 3 visor bar (one rounded bar across both eyes), 4 heart. Blink/happy/wink work on every shape.
+// [hero] Eye shape for the character builder: 0 crescent C (Aurora), 1 round (a ring round a centred
+// dark pupil, the sheet's front-view look), 2 happy arcs, 3 visor bar (one rounded bar across both
+// eyes), 4 heart. Blink/happy/wink work on every shape.
 uniform int eye_shape = 0;
+uniform float smile = 0.0;          // small glowing smile under the eyes (Bolt, Pixel); stronger when happy
 uniform float pupil_radius = 0.7;   // dark centre radius (in eye radii)
 uniform vec2 pupil_offset = vec2(-0.25, 0.245); // reaches just past the rim: the C opens at the upper right // dark centre offset (in eye radii; -x = viewer's right)
 
@@ -49,14 +54,12 @@ vec4 eye(vec2 p, vec2 c, float R, float bl, float hp) {
 	d.y /= max(c_open, 0.04);
 	float r = length(d);
 	float disc = 1.0 - smoothstep(R - aa, R + aa, r);
-	vec2 pc = pupil_offset * R;
-	float Rp = pupil_radius * R;
+	vec2 pc = (eye_shape == 1 ? vec2(0.0) : pupil_offset) * R;
+	float Rp = (eye_shape == 1 ? 0.62 : pupil_radius) * R;
 	float rp = length(d - pc);
 	float pupil = 1.0 - smoothstep(Rp - aa, Rp + aa, rp);
 	pupil *= smoothstep(0.12, 0.35, c_open);  // nearly shut: one clean lid line, no dark core
-	if (eye_shape == 1) {
-		pupil = 0.0;  // round: one solid disc
-	} else if (eye_shape == 4) {
+	if (eye_shape == 4) {
 		float sd = sd_heart(d / (R * 1.75) + vec2(0.0, 0.55)) * R * 1.75;
 		disc = 1.0 - smoothstep(-aa, aa, sd);
 		r = R + max(sd, 0.0);
@@ -68,9 +71,9 @@ vec4 eye(vec2 p, vec2 c, float R, float bl, float hp) {
 	// Soft glow just outside the crescent only (never inside the dark centre or across the C's opening).
 	float halo = exp(-max(r - R, 0.0) * max(r - R, 0.0) * 160.0) * (1.0 - disc) * (1.0 - pupil) * 0.5 * on_c;
 	float glint = 1.0 - smoothstep(0.085 * R, 0.13 * R, length(d - pc - vec2(-0.3, 0.34) * Rp));
-	glint *= (eye_shape == 0 ? pupil * disc : 0.0) * step(0.3, c_open);
-	if (eye_shape == 1 || eye_shape == 4) {
-		// Catchlight on the solid shapes: a small dark-edged white dot at the upper right.
+	glint *= (eye_shape <= 1 ? pupil * disc : 0.0) * step(0.3, c_open);
+	if (eye_shape == 4) {
+		// Catchlight on the heart: a small white dot at the upper right.
 		glint = (1.0 - smoothstep(0.1 * R, 0.15 * R, length(d - vec2(-0.38, 0.36) * R))) * disc * step(0.3, c_open);
 	}
 	// Happy: an upper arc (^) that opens over the second half of the morph.
@@ -112,6 +115,12 @@ void fragment() {
 		a = vec4(max(bar, arcs_a.x), mix(shade_b, arcs_a.y, arcs_a.x), max(bar_halo, arcs_a.z), 0.0);
 		b = arcs_b;
 	}
+	// Smile: a short thin arc centred under the eyes, dimmer than the eyes, squashed by blink.
+	vec2 sm = p - vec2(0.0, -0.36) - off;
+	float sm_r = 0.34;
+	float sd_sm = abs(length(sm - vec2(0.0, sm_r)) - sm_r) - 0.028;
+	float sm_mask = step(sm.y, 0.15) * (1.0 - smoothstep(0.15, 0.19, abs(sm.x)));
+	float smile_l = (1.0 - smoothstep(-0.012, 0.012, sd_sm)) * sm_mask * smile * mix(0.65, 1.0, hp) * (1.0 - blink * 0.6);
 	float front = smoothstep(0.55, 0.8, -ln.z);
 	float core = clamp(a.x + b.x, 0.0, 1.0) * front;
 	float shade = clamp(a.y * a.x + b.y * b.x, 0.0, 1.0);
@@ -135,6 +144,7 @@ void fragment() {
 	EMISSION = eye_e * energy * 0.6
 		+ cyan * halo * energy * 0.1
 		+ vec3(1.0) * glint * energy * 0.7
+		+ cyan * smile_l * front * energy * 0.32
 		+ vec3(1.0, 0.72, 0.5) * streak * 0.16 + vec3(0.5, 0.7, 0.8) * streak2 * 0.06
 		+ vec3(0.35, 0.45, 0.55) * fres * 0.1;
 }

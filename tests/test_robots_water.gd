@@ -1,18 +1,16 @@
 extends GutTest
 ## Watering robots, refill points (barrel / Water Tank / clean lake), Skimmer, crew caps.
 
-class FakeView:
-	extends RefCounted
-	func set_life(_id: int, _life: float) -> void:
-		pass
-
 class FakeWorld:
 	extends Node3D
 	var field: HexField
-	var view := FakeView.new()
-	var planet: PlanetData
-	var slice_cells := PackedInt32Array()
-	var garden: Garden
+	var depot: Node3D
+	var patch: Node3D
+
+
+## The planted globe (tests/support/globe_world.gd) with the yard nodes robots look for.
+class GardenWorld:
+	extends GlobeWorld
 	var depot: Node3D
 	var patch: Node3D
 
@@ -44,20 +42,22 @@ func _make() -> FakeWorld:
 	w.field = HexField.new(2, 6.0, 5)
 	w.field.water_ids[LAKE] = true
 	w.field.generate(types, Vector2i(5, 8))
-	w.planet = PlanetData.new(5, 3, 10.0)
-	w.planet.generate()
-	w.slice_cells.resize(w.field.hex_count())
-	for i: int in w.field.hex_count():
-		w.slice_cells[i] = i
 	add_child_autofree(w)
 	w.depot = Node3D.new()
 	w.add_child(w.depot)
 	w.patch = Node3D.new()
 	w.add_child(w.patch)
-	w.garden = Garden.new()
-	w.garden.world = w
-	w.add_child(w.garden)
-	w.garden.setup()
+	return w
+
+
+func _make_garden() -> GardenWorld:
+	var w := GardenWorld.new(5)
+	add_child_autofree(w)
+	w.depot = Node3D.new()
+	w.add_child(w.depot)
+	w.patch = Node3D.new()
+	w.add_child(w.patch)
+	w.add_garden()
 	return w
 
 
@@ -66,7 +66,7 @@ func _clean(w: FakeWorld, hid: int) -> void:
 		w.field.remove_piece(pid)
 
 
-func _fleet(w: FakeWorld) -> Fleet:
+func _fleet(w: Node) -> Fleet:
 	var f := Fleet.new()
 	f.world = w
 	w.add_child(f)
@@ -139,10 +139,10 @@ func test_tier_scales_water_gear() -> void:
 
 
 func test_waterer_picks_thirstiest_and_skips_taken() -> void:
-	var w := _make()
+	var w := _make_garden()
 	var f := _fleet(w)
-	var hid: int = 10
-	_clean(w, hid)
+	var hid: int = w.land_cell()
+	w.clean(hid)
 	GameState.currencies["seeds"] = BigNum.from_float(10)
 	var slots: PackedInt32Array = w.garden.hex_slots[hid]
 	var near: int = slots[0]
@@ -163,28 +163,30 @@ func test_waterer_picks_thirstiest_and_skips_taken() -> void:
 
 
 func test_zone_first_for_waterers() -> void:
-	var w := _make()
+	var w := _make_garden()
 	var f := _fleet(w)
-	_clean(w, 10)
-	_clean(w, 12)
+	var ha: int = w.land_cell(0)
+	var hb: int = w.land_cell(1)
+	w.clean(ha)
+	w.clean(hb)
 	GameState.currencies["seeds"] = BigNum.from_float(10)
-	var a: int = (w.garden.hex_slots[10] as PackedInt32Array)[0]
-	var b: int = (w.garden.hex_slots[12] as PackedInt32Array)[0]
+	var a: int = (w.garden.hex_slots[ha] as PackedInt32Array)[0]
+	var b: int = (w.garden.hex_slots[hb] as PackedInt32Array)[0]
 	w.garden.plant(a)
 	w.garden.plant(b)
 	w.garden.slot_water[a] = 0.0
 	w.garden.slot_water[b] = 1.0
 	var r := _bot(f, "drip", "A")
 	assert_eq(r._find_thirsty(w.garden), a)
-	f.toggle_zone_hex("water", false, 12, true)
+	f.toggle_zone_hex("water", false, hb, true)
 	assert_eq(r._find_thirsty(w.garden), b, "zone plants come first")
 
 
 func test_spray_waters_several_plants_in_radius() -> void:
-	var w := _make()
+	var w := _make_garden()
 	var f := _fleet(w)
-	var hid: int = 10
-	_clean(w, hid)
+	var hid: int = w.land_cell()
+	w.clean(hid)
 	GameState.currencies["seeds"] = BigNum.from_float(50)
 	var slots: PackedInt32Array = w.garden.hex_slots[hid]
 	for s: int in slots:

@@ -3,9 +3,16 @@ extends GutTest
 ## rules, paying and refunds (so moving is free), charm and its growth bonus, persistence through
 ## GameState.world["decor"], and the "decor" group hook wildlife can use.
 
+class FakeOrbit extends Node:
+	var yard: Vector3
+
+	func yard_point(_anchor: String) -> Vector3:
+		return yard
+
+
 class FakeWorld extends Node3D:
-	var field: HexField
-	var layout: CityLayout
+	var field: SphereField
+	var orbit: FakeOrbit
 
 
 var _cur: Dictionary
@@ -13,6 +20,7 @@ var _flags: Dictionary
 var _stats: Dictionary
 var _world: Dictionary
 var w: FakeWorld
+var _globe: GlobeFixture
 
 
 func before_each() -> void:
@@ -24,13 +32,12 @@ func before_each() -> void:
 	GameState.flags = {}
 	GameState.stats = {}
 	GameState.world = {}
-	var types: Array = []
-	for id: String in Economy.junk_ids:
-		types.append(Economy.junk_types[id])
+	_globe = GlobeFixture.new()
 	w = FakeWorld.new()
-	w.layout = null
-	w.field = HexField.new(3, 10.0, 4471, null)
-	w.field.generate(types, Vector2i(4, 6))
+	w.field = _globe.field
+	w.orbit = FakeOrbit.new()
+	w.orbit.yard = _globe.frame_transform().origin  # every base machine stands at the hub's centre
+	w.add_child(w.orbit)
 	add_child_autofree(w)
 
 
@@ -42,15 +49,14 @@ func after_each() -> void:
 
 
 func _clean_all() -> void:
-	for h: int in w.field.hex_count():
-		for pid: int in w.field.hex_pieces[h]:
-			w.field.remove_piece(pid)
-		w.field.hex_clean[h] = 1
+	for h: int in _globe.region():
+		_globe.clean(h)
 
 
 func _decor() -> Decor:
 	var d := Decor.new()
 	w.add_child(d)
+	d.global_transform = _globe.frame_transform()  # the hub frame the slice hosts it in
 	d.setup(w)
 	return d
 
@@ -87,7 +93,6 @@ func test_placement_rules() -> void:
 	_clean_all()
 	assert_eq(d.place_block_reason("bench", _open_cell(), 0), "")
 	assert_ne(d.place_block_reason("bench", Vector2i(0, 1), 0), "", "not on top of the base machines")
-	assert_ne(d.place_block_reason("path", Vector2i(400, 400), 0), "", "not outside the district")
 	assert_true(d.place("fountain", _open_cell(), 0, false))
 	assert_ne(d.place_block_reason("path", _open_cell() + Vector2i(1, 1), 0), "", "cells are taken")
 	assert_eq(d.place_block_reason("path", _open_cell() + Vector2i(2, 0), 0), "")

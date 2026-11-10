@@ -2,17 +2,6 @@ extends GutTest
 ## [v4grow] Owner playtest 3 #51: plants you can see. Globe plant sizes per stage, and the
 ## GardenMarks layer: soil mounds (wet / dry), sprouts, thirsty drops, perk-up on watering.
 
-class FakeView:
-	extends RefCounted
-	func set_life(_id: int, _life: float) -> void:
-		pass
-
-class FakeWorld:
-	extends Node
-	var field: HexField
-	var view := FakeView.new()
-	var planet: PlanetData
-	var slice_cells := PackedInt32Array()
 
 var _cur: Dictionary
 var _world_state: Dictionary
@@ -30,23 +19,9 @@ func after_each() -> void:
 
 
 func _make() -> Array:
-	var w := FakeWorld.new()
-	var types: Array = []
-	for id: String in Economy.junk_ids:
-		types.append(Economy.junk_types[id])
-	w.field = HexField.new(2, 10.0, 5)
-	w.field.generate(types, Vector2i(5, 8))
-	w.planet = PlanetData.new(5, 3, 10.0)
-	w.planet.generate()
-	w.slice_cells.resize(w.field.hex_count())
-	for i: int in w.field.hex_count():
-		w.slice_cells[i] = i
+	var w := GlobeWorld.new(5)
 	add_child_autofree(w)
-	var g := Garden.new()
-	g.world = w
-	w.add_child(g)
-	g.setup()
-	w.set("garden", g)
+	var g: Garden = w.add_garden()
 	var m: GardenMarks = GardenMarks.new()
 	m.world = w
 	m.garden = g
@@ -54,10 +29,9 @@ func _make() -> Array:
 	return [w, g, m]
 
 
-func _plant3(w: FakeWorld, g: Garden) -> PackedInt32Array:
-	var hid: int = 10
-	for pid: int in w.field.hex_pieces[hid]:
-		w.field.remove_piece(pid)
+func _plant3(w: GlobeWorld, g: Garden) -> PackedInt32Array:
+	var hid: int = w.land_cell()
+	w.clean(hid)
 	GameState.currencies["seeds"] = BigNum.from_float(5)
 	var ids: PackedInt32Array = g.hex_slots[hid]
 	var out := PackedInt32Array()

@@ -179,8 +179,6 @@ func _lock(on: bool) -> void:
 		return
 	if world.get("patch") != null and world.patch and world.patch.input is PlayerInput:
 		(world.patch.input as PlayerInput).enabled = not on
-	if world.get("cam") != null and world.cam:
-		world.cam.input_enabled = not on
 
 
 ## The picture: stylised shapes, scanlines, a little snow; a burst of static between frames.

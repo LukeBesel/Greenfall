@@ -54,9 +54,8 @@ func _ready() -> void:
 ## The trash bin's body against its "bin" anchor (the bay is drawn round it): should be ~0 m.
 func _bin_check() -> void:
 	var d: Variant = world.get("depot") if world else null
-	var so: Variant = world.get("orbit") if world else null
-	if d is Depot and so is SliceOrbit:
-		var a: Vector3 = (so as SliceOrbit).yard_point("bin")
+	if d is Depot:
+		var a: Vector3 = (world.orbit as SliceOrbit).yard_point("bin")
 		_say("bin body %.2f m from its bay anchor" % OrbitUp.ground_dist((d as Depot).bin_world(), a))
 
 

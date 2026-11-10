@@ -132,8 +132,6 @@ func _process(delta: float) -> void:
 
 func _finish() -> void:
 	_done = true
-	if world and world.get("cam") != null and (world.cam as CameraRig).camera:
-		(world.cam as CameraRig).camera.current = true
 	_show_head(true)
 	_lock(false)
 	finished.emit()
@@ -162,5 +160,3 @@ func _lock(on: bool) -> void:
 		world.hud.visible = true
 	if world.get("patch") != null and world.patch and world.patch.input is PlayerInput:
 		(world.patch.input as PlayerInput).enabled = not on
-	if world.get("cam") != null and world.cam:
-		world.cam.input_enabled = not on

@@ -1,15 +1,15 @@
 extends Node
-## [orbB] Which of the slice's systems a run builds, flat or on the globe (docs/ORBIT_PARITY.md):
-##   godot --headless --path . res://tools/system_audit.tscn -- --fresh [--orbit]
+## [orbB] Which of the slice's systems a run builds:
+##   godot --headless --path . res://tools/system_audit.tscn -- --fresh
 ## Prints the slice's named members (set or null) and every script class in the slice's tree,
-## then quits. Compare the flat and --orbit outputs.
+## then quits.
 
-const MEMBERS: Array[String] = ["field", "layout", "city", "litter", "tutorial", "wren", "fleet", "planet", "globe",
-	"sky_director", "hub", "rocket", "shards", "garden", "hex_levels", "goals", "first_seed", "wildlife", "water",
+const MEMBERS: Array[String] = ["field", "litter", "tutorial", "wren", "fleet", "planet", "globe",
+	"sky_director", "hub", "rocket", "shards", "garden", "hex_levels", "goals", "first_seed", "water",
 	"doc_view", "interactables", "camp", "eggs", "ledger", "outposts", "events", "lumi_level", "contracts", "photo",
-	"fauna", "frontier", "planet_env", "bounds", "orbit", "view", "depot", "patch", "cam", "hud", "upgrades",
-	"command", "music", "intro", "objectives", "core_charge", "composter", "pause_menu", "research", "achievements",
-	"codex", "dressing", "street_power"]
+	"fauna", "orbit", "view", "depot", "patch", "hud", "upgrades",
+	"music", "intro", "objectives", "core_charge", "composter", "pause_menu", "research", "achievements",
+	"codex"]
 
 
 func _ready() -> void:
@@ -26,7 +26,6 @@ func _ready() -> void:
 	for m: String in MEMBERS:
 		var v: Variant = s.get(m)
 		(set_ if v != null and (not v is Object or is_instance_valid(v)) else unset).append(m)
-	print("[audit] mode=%s" % ("orbit" if s.get("orbit") != null else "flat"))
 	print("[audit] members set: ", " ".join(set_))
 	print("[audit] members null: ", " ".join(unset))
 	var classes: Dictionary = {}

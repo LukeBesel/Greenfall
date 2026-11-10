@@ -2,7 +2,7 @@
 name: code-reviewer
 description: Reviews every change against STYLE.md, the task's acceptance criteria, the no-hardcoding rule and the originality rules. Use after any agent finishes a task and before QA. Does not change code.
 tools: Read, Grep, Glob, Bash
-model: claude-opus-5-5
+model: claude-fable-5-2
 ---
 
 # code-reviewer

@@ -10,8 +10,8 @@ var info: Dictionary = {}
 var size: float = 0.55
 var carried: bool = false
 var claimed: bool = false  # being sucked into a depot
-## [orbit] Radius of the round planet the cubes live on (0 = a flat district). Gravity there is
-## radial (a point-gravity Area3D set up by the planet scene).
+## [orbit] Radius of the planet the cubes live on (0 until one is built). Gravity there is radial
+## (a point-gravity Area3D set up by the planet scene).
 static var planet_radius: float = 0.0
 
 var _visual: MeshInstance3D
@@ -98,16 +98,11 @@ func _physics_process(delta: float) -> void:
 	if _unstick_frames > 0 and not carried and not freeze:
 		_unstick_frames -= 1
 		unstick()
-	if planet_radius > 0.0:  # [orbit] round planet: fell into it (radial gravity, planet/orbit/)
-		if not carried and global_position.length() < planet_radius - 40.0:
-			var lumi: Node3D = get_tree().get_first_node_in_group("patch") as Node3D
-			var u: Vector3 = (lumi.global_position if lumi else global_position).normalized()
-			global_position = (lumi.global_position if lumi else u * planet_radius) + u * 2.0
-			linear_velocity = Vector3.ZERO
-			GameState.inc_stat("cubes_fell")
-	elif global_position.y < -20.0 and not carried:
-		# Fell out of the world: put it back near the hub.
-		global_position = Vector3(randf_range(-1, 1), 2.0, randf_range(2, 4))
+	# [orbit] Fell into the planet (radial gravity, planet/orbit/): back up next to Lumi.
+	if not carried and global_position.length() < planet_radius - 40.0:
+		var lumi: Node3D = get_tree().get_first_node_in_group("patch") as Node3D
+		var u: Vector3 = (lumi.global_position if lumi else global_position).normalized()
+		global_position = (lumi.global_position if lumi else u * planet_radius) + u * 2.0
 		linear_velocity = Vector3.ZERO
 		GameState.inc_stat("cubes_fell")  # [beat] counted so long autoplay runs report it
 
@@ -135,7 +130,7 @@ func unstick() -> float:
 	q.collision_mask = STICK_MASK
 	q.exclude = [get_rid()]
 	var start: Vector3 = global_position
-	var up_v: Vector3 = global_position.normalized() if planet_radius > 0.0 else Vector3.UP  # [orbit] local up on a planet
+	var up_v: Vector3 = OrbitUp.up(global_position)  # [orbit] local up on the planet
 	for k: int in 31:
 		q.transform = Transform3D(global_basis * _shape.basis, start + up_v * (k * 0.05))
 		if space.intersect_shape(q, 1).is_empty():
@@ -146,23 +141,6 @@ func unstick() -> float:
 					linear_velocity -= up_v * vu
 			return k * 0.05
 	return 0.0
-
-
-## [world2] Where to put a bale down in front of `from` (facing `fwd`): 1.25 m ahead, or closer if
-## a wall, prop or building is there; at worst right where the carrier stands. Ground-level point.
-static func free_spot(space: PhysicsDirectSpaceState3D, from: Vector3, fwd: Vector3, size: float) -> Vector3:
-	var q := PhysicsShapeQueryParameters3D.new()
-	var probe := BoxShape3D.new()
-	probe.size = Vector3.ONE * size * 0.95
-	q.shape = probe
-	q.collision_mask = PhysLayers.WORLD | PhysLayers.PROP  # PROP includes junk heaps: never into a heap
-	var f := Vector3(fwd.x, 0, fwd.z).normalized()
-	for d: float in [1.25, 0.95, 0.7]:
-		var p: Vector3 = from + f * d
-		q.transform = Transform3D(Basis.IDENTITY, Vector3(p.x, from.y + size * 0.5 + 0.2, p.z))
-		if space.intersect_shape(q, 1).is_empty():
-			return Vector3(p.x, from.y, p.z)
-	return Vector3(from.x, from.y, from.z)
 
 
 ## [world2] A pressed bale: a unit block whose faces bulge a little between the straps (pillowed by

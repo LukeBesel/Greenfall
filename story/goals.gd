@@ -112,9 +112,6 @@ func value_of(i: int) -> float:
 			for fid: String in ["dust_flats", "frozen_port", "sunken_city"]:
 				var hi: int = int(fh2.get(fid, -1))
 				var gf: float = Frontiers.growing_frac(hi) if hi >= 0 else 0.0
-				var fr: Variant = world.get("frontier") if world else null
-				if hi == GameState.current_hub and fr is FrontierDistrict:
-					gf = (fr as FrontierDistrict).growing_frac
 				worst = minf(worst, gf)
 			return worst
 	return 0.0

@@ -115,7 +115,6 @@ func setup(p_world: Node) -> void:
 	_cfg = FaunaRules.cfg()
 	_rng.seed = hash([int(world.get("hub_index") if world.get("hub_index") != null else 0), 1717])
 	var f: HexField = world.field
-	_globe = f is SphereField  # [orbB]
 	district_seed = f.seed_value
 	regs = FaunaRules.regions(f.biome)
 	dense = DevHooks.has("fauna-dense")
@@ -186,7 +185,7 @@ func clarity() -> float:
 ## Re-make the plan and start/stop animals to match it.
 func replan() -> void:
 	var f: HexField = world.field
-	var ctxs: Array = FaunaRules.contexts(f, _level_of, _near_cells())  # [orbB] the hub region near Lumi on the globe
+	var ctxs: Array = FaunaRules.contexts(f, _level_of, _near_cells())  # the hub region near Lumi
 	var fd: Dictionary = {}
 	var green: int = 0
 	var land: int = 0
@@ -270,48 +269,41 @@ func _dense_plan(ctxs: Array, fd: Dictionary) -> Array:
 # --- Spawning ----------------------------------------------------------------------------------
 
 func _ground_y(p: Vector3) -> float:
-	if _globe:  # [orbB] the globe's ground in this hub frame
-		return to_local((world.field as SphereField).terrain.ground(to_global(p).normalized())).y
-	var lay: CityLayout = world.field.layout
-	return clampf(lay.height_at(p.x, p.z), 0.0, 0.3) if lay else 0.0
+	return to_local((world.field as SphereField).terrain.ground(to_global(p).normalized())).y
 
 
-# --- [orbB] The globe: Fauna sits under its hub's frame (HubFrame: site-local metres, +Y up), so
-# its own positions are local; these convert at the edges. On the flat game they are identities.
-var _globe: bool = false
-var frame_cells := PackedInt32Array()  # the hub region's cells (globe)
+# --- Fauna sits under its hub's frame (HubFrame: site-local metres, +Y up), so its own positions
+# are local; these convert at the edges.
+var frame_cells := PackedInt32Array()  # the hub region's cells
 
 
 func _hex_at(p: Vector3) -> int:
-	return world.field.hex_at(to_global(p)) if _globe else world.field.hex_at(p)
+	return world.field.hex_at(to_global(p))
 
 
 func _hex_c(h: int) -> Vector3:
-	return to_local(world.field.hex_center(h)) if _globe else world.field.hex_center(h)
+	return to_local(world.field.hex_center(h))
 
 
-## The lake surface (flat: HexField.WATER_Y).
+## The lake surface.
 func _water_y(p: Vector3) -> float:
-	return _ground_y(p) + (HexField.WATER_Y - 0.06) if _globe else HexField.WATER_Y
+	return _ground_y(p) + (HexField.WATER_Y - 0.06)
 
 
 func _w(p: Vector3) -> Vector3:
-	return to_global(p) if _globe else p
+	return to_global(p)
 
 
 func _l(p: Vector3) -> Vector3:
-	return to_local(p) if _globe else p
+	return to_local(p)
 
 
-## [orbB] The globe: the frame's cells within spawning reach of Lumi (a flat district's worth),
-## so replan's contexts skip the rest of the hub region. Recomputed as Lumi walks on.
+## The frame's cells within spawning reach of Lumi, so replan's contexts skip the rest of the hub region. Recomputed as Lumi walks on.
 var _near := PackedInt32Array()
 var _near_at := Vector3.INF
 
 
 func _near_cells() -> PackedInt32Array:
-	if not _globe:
-		return frame_cells
 	if _near_at != Vector3.INF and _near_at.distance_to(_lumi_pos) < 8.0:
 		return _near
 	_near_at = _lumi_pos
@@ -323,24 +315,11 @@ func _near_cells() -> PackedInt32Array:
 	return _near
 
 
-## [orbB] The globe: rotates the hub frame's +Y onto the ground's own up at p (the frame is a
-## tangent plane at the hub, about 5 degrees off at 100 m). Identity on the flat game.
+## Rotates the hub frame's +Y onto the ground's own up at p (the frame is a tangent plane at the
+## hub, about 5 degrees off at 100 m).
 func _tilt(p: Vector3) -> Basis:
-	if not _globe:
-		return Basis.IDENTITY
 	var up: Vector3 = (global_basis.inverse() * to_global(p).normalized()).normalized()
 	return Basis(Quaternion(Vector3.UP, up))
-
-
-func _hexes() -> Variant:
-	return frame_cells if _globe else world.field.hex_count()
-
-
-## Visible lake surface: in city districts a lake hex's kerbs and lots sit above the water line,
-## so only its road area shows open water.
-func open_water(p: Vector3) -> bool:
-	var lay: CityLayout = world.field.layout
-	return lay == null or lay.wild or lay.surface_at(p.x, p.z) == CityLayout.Surface.ROAD
 
 
 func _in_view(p: Vector3) -> bool:
@@ -368,12 +347,9 @@ func find_spot(sid: String, h: int, near: Vector3 = Vector3.INF, spread: float =
 		if ph < 0:
 			continue
 		if where == "water":
-			# Open water only: kerbs and lots in a city lake hex sit above the water line.
 			if f.is_water(ph) and f.is_clean(ph) and _hex_at(p + Vector3(0.6, 0, 0)) == ph and _hex_at(p - Vector3(0.6, 0, 0)) == ph \
-					and open_water(p) and open_water(p + Vector3(0.8, 0, 0)) and open_water(p - Vector3(0.8, 0, 0)) \
-					and open_water(p + Vector3(0, 0, 0.8)) and open_water(p - Vector3(0, 0, 0.8)) \
 					and FaunaSpace.spaced_ok(p, FaunaSpace.radius_of(sid, str(d.get("kind", ""))), _others(null)):
-				return Vector3(p.x, _water_y(p), p.z)  # [orbB]
+				return Vector3(p.x, _water_y(p), p.z)
 			continue
 		if f.is_water(ph):
 			continue
@@ -428,13 +404,11 @@ func near_outpost(p: Vector3) -> bool:
 
 # --- [fauna2] Spacing: animals never overlap each other or the street furniture ----------------
 
-## Is p free for this animal: off fences / the yard (cats may use it), clear of props (the
+## Is p free for this animal: clear of props (the
 ## occupancy grid and anything with a collider) and of every other grounded animal?
 ## me: the animal asking (skipped), or null for a new one.
 func spot_free(p: Vector3, sid: String, kind: String, me: Animal = null, size: float = 1.0) -> bool:
 	var r: float = FaunaSpace.radius_of(sid, kind) * size
-	if world.field.layout and not FaunaSpace.layout_ok(world.field.layout, p, 0.6, kind == "cat"):
-		return false
 	if _props_blocked(p, r):
 		return false
 	return FaunaSpace.spaced_ok(p, r, _others(me))
@@ -449,14 +423,13 @@ func _props_blocked(p: Vector3, r: float) -> bool:
 
 
 func _ensure_space() -> void:
-	if _space_t > 0.0 and not space.cells.is_empty() and (not _globe or space.center.distance_to(Vector2(_lumi_pos.x, _lumi_pos.z)) < 30.0):  # [orbB] rescan as Lumi walks on
+	if _space_t > 0.0 and not space.cells.is_empty() and space.center.distance_to(Vector2(_lumi_pos.x, _lumi_pos.z)) < 30.0:  # rescan as Lumi walks on
 		return
 	_space_t = 90.0
 	space = FaunaSpace.new()
-	if _globe:  # [orbB] props in this hub frame, near Lumi only
-		space.frame = global_transform.affine_inverse()
-		space.reach = float(_cfg.get("despawn_radius", 70.0)) + 12.0
-		space.center = Vector2(_lumi_pos.x, _lumi_pos.z)
+	space.frame = global_transform.affine_inverse()  # props in this hub frame, near Lumi only
+	space.reach = float(_cfg.get("despawn_radius", 70.0)) + 12.0
+	space.center = Vector2(_lumi_pos.x, _lumi_pos.z)
 	var skip: Array = [self]
 	for nm: String in ["patch", "garden", "hud", "photo", "intro", "globe", "command", "pause_menu", "codex", "upgrades"]:
 		var nd: Variant = world.get(nm)
@@ -488,10 +461,8 @@ func _phys_clear(p: Vector3, r: float) -> bool:
 	_cyl.height = 1.0
 	var q := PhysicsShapeQueryParameters3D.new()
 	q.shape = _cyl
-	q.transform = Transform3D(Basis.IDENTITY, Vector3(p.x, p.y + 0.8, p.z))
-	if _globe:  # [orbB] frame-local -> world, upright in the hub frame
-		q.transform = Transform3D(global_basis.orthonormalized(), to_global(Vector3(p.x, p.y + 0.8, p.z)))
-	q.collision_mask = 1 | (PhysLayers.PROP if _globe else 0)  # [orbB] the site prefabs build with prop colliders
+	q.transform = Transform3D(global_basis.orthonormalized(), to_global(Vector3(p.x, p.y + 0.8, p.z)))  # upright in the hub frame
+	q.collision_mask = 1 | PhysLayers.PROP  # the site prefabs build with prop colliders
 	return w3.direct_space_state.intersect_shape(q, 1).is_empty()
 
 
@@ -588,7 +559,7 @@ func _spawn(key: String, e: Dictionary) -> bool:
 		"school":
 			for k: int in int(e["n"]):
 				a.members.append([Vector3(_rng.randf_range(-0.7, 0.7), _rng.randf_range(-0.01, 0.01), _rng.randf_range(-0.9, 0.9)), _rng.randf() * TAU])
-			a.pos.y = _water_y(a.pos) - (HexField.WATER_Y - 0.055)  # [orbB] (0.055 on the flat game)
+			a.pos.y = _water_y(a.pos) - (HexField.WATER_Y - 0.055)
 			a.state = St.SWIM
 		"swarm":
 			for k: int in int(e["n"]):
@@ -626,7 +597,7 @@ func _spawn(key: String, e: Dictionary) -> bool:
 			a.anchor = Node3D.new()
 			a.anchor.name = "CatAnchor"
 			add_child(a.anchor)
-			a.anchor.position = a.pos  # [orbB] (identical on the flat game)
+			a.anchor.position = a.pos
 			var ints: Node = world.get("interactables")
 			if ints:
 				var aa: Animal = a
@@ -753,7 +724,7 @@ func _toward_junk(p: Vector3) -> Vector3:
 	var f: HexField = world.field
 	var best: Vector3 = p + Vector3(6, 0, 0)
 	var bd: float = INF
-	for h: int in _hexes():
+	for h: int in frame_cells:
 		if not f.is_clean(h) and not f.is_water(h) and f.hex_hub[h] == 0:
 			var d: float = _hex_c(h).distance_to(p)
 			if d < bd:
@@ -771,7 +742,7 @@ func _build_warm_spots() -> void:
 	var dep: Node3D = world.get("depot") as Node3D
 	if dep:
 		_warm.append(_l(dep.global_position) + Vector3(-1.4, 0, 1.0))
-	for h: int in _hexes():
+	for h: int in frame_cells:
 		if f.hex_hub[h] != 0:
 			_warm.append(_hex_c(h) + Vector3(_rng.randf_range(-3, 3), 0, _rng.randf_range(-3, 3)))
 	for i: int in range(_warm.size() - 1, -1, -1):
@@ -818,14 +789,14 @@ func _process(delta: float) -> void:
 		a.acc += delta
 		if far and (_frame + i) % 3 != 0:
 			continue
-		if _globe and (_frame + i) % (6 if far else 3) != 0 and a.pos.distance_to(_lumi_pos) > 10.0 and not _in_view(a.pos):
+		if (_frame + i) % (6 if far else 3) != 0 and a.pos.distance_to(_lumi_pos) > 10.0 and not _in_view(a.pos):
 			continue  # [orbB] offscreen and not by Lumi: every 3rd frame (far: every 6th)
 		var dt: float = minf(a.acc, 0.25)
 		a.acc = 0.0
 		a.fade = minf(a.fade + dt * 1.6, 1.0)
 		_update(a, dt)
 		if a.anchor:
-			a.anchor.position = a.pos  # [orbB] (identical on the flat game)
+			a.anchor.position = a.pos
 	_draw_all()
 	_sight_t -= delta
 	if _sight_t <= 0.0:
@@ -1339,7 +1310,7 @@ func _update_school(a: Animal, dt: float) -> void:
 		var nt: Vector3 = find_spot(a.sp, a.hex) if a.hex >= 0 else a.pos
 		a.target = nt if nt != Vector3.INF else a.home
 	var ahead: Vector3 = a.pos + to.normalized() * 0.8
-	if not f.is_water(_hex_at(ahead)) or not open_water(ahead):
+	if not f.is_water(_hex_at(ahead)):
 		a.target = a.home
 		to = a.target - a.pos
 		to.y = 0.0
@@ -1398,8 +1369,8 @@ func _update_swim(a: Animal, dt: float) -> void:
 		a.target = a.pos + away.normalized() * 3.5
 	var to: Vector3 = a.target - a.pos
 	to.y = 0.0
-	var at_crumbs: bool = a.fed_t > 0.0 and f.is_water(_hex_at(a.target)) and open_water(a.target)  # [fauna2]
-	if not at_crumbs and (not f.is_water(_hex_at(a.target)) or not open_water(a.target) or to.length() < 0.3 or a.t < -10.0):
+	var at_crumbs: bool = a.fed_t > 0.0 and f.is_water(_hex_at(a.target))  # [fauna2]
+	if not at_crumbs and (not f.is_water(_hex_at(a.target)) or to.length() < 0.3 or a.t < -10.0):
 		var nt: Vector3 = find_spot(a.sp, a.hex) if a.hex >= 0 else a.pos
 		a.target = nt if nt != Vector3.INF else a.pos
 		a.t = 0.0
@@ -1891,7 +1862,7 @@ func _draw_all() -> void:
 					var wob := Vector3(sin(now * 0.9 + ph) * 0.25, 0, cos(now * 0.7 + ph * 1.3) * 0.2)
 					var fy: float = a.yaw + sin(now * 1.3 + ph) * 0.25
 					var p: Vector3 = a.pos + b * (off + wob)
-					if not world.field.is_water(_hex_at(p)) or not open_water(p):
+					if not world.field.is_water(_hex_at(p)):
 						continue
 					_put("fish", Transform3D(Basis(Vector3.UP, fy).scaled(Vector3.ONE * s * (0.8 + 0.25 * fmod(ph, 1.0))), p), pack_custom(a.phase + ph, a.gait, 0.0, 0.0, a.coat, 0.0))
 			"swarm":
@@ -1906,7 +1877,7 @@ func _draw_all() -> void:
 						var blink: float = clampf(sin(now * (1.3 + fmod(ph2, 0.7)) + ph2 * 5.0) * 2.0 - 0.6, 0.0, 1.0) * clampf(_night * 1.5 - 0.3, 0.0, 1.0) * a.fade
 						_put_glow(p2 + Vector3(0, 0.3, 0), blink)
 			_:
-				var tb: Basis = _tilt(a.pos)  # [orbB] the ground's own up (identity on the flat game)
+				var tb: Basis = _tilt(a.pos)  # the ground's own up
 				var b2 := tb * Basis(Vector3.UP, a.yaw)
 				if a.roll != 0.0:
 					b2 = b2 * Basis(Vector3.BACK, a.roll)
@@ -1915,7 +1886,7 @@ func _draw_all() -> void:
 				var breathe: float = 1.0
 				if a.kind == "cat" and a.state == St.SLEEP:
 					breathe = 1.0 + sin(now * 1.6 + a.phase) * 0.025
-				var xf := Transform3D((b2 * Basis.from_scale(Vector3(s, s * breathe, s))) if _globe else b2.scaled(Vector3(s, s * breathe, s)), a.pos + tb * Vector3(0, a.bob, 0))
+				var xf := Transform3D(b2 * Basis.from_scale(Vector3(s, s * breathe, s)), a.pos + tb * Vector3(0, a.bob, 0))
 				if a.rig:
 					a.rig.visible = true
 					_drive_rig(a, Transform3D(tb * Basis(Vector3.UP, a.yaw).scaled(Vector3.ONE * s), a.pos + tb * Vector3(0, a.bob, 0)), _frame_dt)
@@ -2221,16 +2192,9 @@ func _shot_eye(focus: Vector3, yaw: float, dist: float, pitch: float) -> Vector3
 	return focus + dir * maxf(best_d - 0.6 / maxf(dir.length(), 0.01), 0.15)
 
 
-## Share (0..1) of the segment focus -> eye that is clear of colliders and building footprints.
+## Share (0..1) of the segment focus -> eye that is clear of colliders.
 func _view_clear(focus: Vector3, eye: Vector3) -> float:
 	var frac: float = 1.0
-	var lay: CityLayout = world.field.layout
-	if lay and not lay.wild:
-		for t: int in 24:
-			var q: Vector3 = focus.lerp(eye, (t + 1) / 24.0)
-			if q.y < 40.0 and lay.surface_at(q.x, q.z) == CityLayout.Surface.BUILDING:
-				frac = minf(frac, t / 24.0)
-				break
 	var w3: World3D = get_world_3d()
 	if w3 and w3.direct_space_state:
 		var ss: PhysicsDirectSpaceState3D = w3.direct_space_state

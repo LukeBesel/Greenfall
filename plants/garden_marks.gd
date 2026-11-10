@@ -243,7 +243,7 @@ func _refresh() -> void:
 			continue
 		if n >= MAX_N:
 			break
-		var fr: Basis = SphereGrid.frame(sp.normalized()) if OrbitUp.on_globe() else Basis()
+		var fr: Basis = SphereGrid.frame(OrbitUp.up(sp))
 		var up: Vector3 = fr.y
 		var wet: float = wetness(s)
 		sp += up * garden.lift_of(s)  # on a lot's plates: on top of them
@@ -297,15 +297,12 @@ func _preview() -> void:
 
 func _place_ring(mi: MeshInstance3D, c: Vector3, r: float) -> void:
 	var g: Vector3 = _ground(c)
-	var fr: Basis = SphereGrid.frame(g.normalized()) if OrbitUp.on_globe() else Basis()
+	var fr: Basis = SphereGrid.frame(g.normalized())
 	mi.global_transform = Transform3D(fr.scaled(Vector3(r / 0.85, 1.0, r / 0.85)), g + fr.y * 0.16)
 
 
 func _ground(p: Vector3) -> Vector3:
-	var f: Variant = world.get("field")
-	if f is SphereField:
-		return (f as SphereField).terrain.ground(p.normalized())
-	return Vector3(p.x, 0.0, p.z)
+	return (world.field as SphereField).terrain.ground(p.normalized())
 
 
 ## A thin soft-green ring along each planted cell's corners (hugging the ground).
@@ -314,12 +311,9 @@ func _sync_hex_rings(cells: Dictionary) -> void:
 		if not cells.has(h):
 			(_hex_rings[h] as Node).queue_free()
 			_hex_rings.erase(h)
-	var f: Variant = world.get("field")
-	if not f is SphereField:
-		return
 	for h: int in cells:
 		if not _hex_rings.has(h):
-			_hex_rings[h] = _hex_ring(f as SphereField, h)
+			_hex_rings[h] = _hex_ring(world.field as SphereField, h)
 
 
 func _hex_ring(f: SphereField, h: int) -> MeshInstance3D:
@@ -373,19 +367,18 @@ func _dev_garden(delay: float) -> void:
 	print("[garden-marks] demo bed in %.0f s" % delay)
 	await get_tree().create_timer(delay, true, false, true).timeout
 	var p: Patch = _patch()
-	var so: Variant = world.get("orbit")
-	var f: Variant = world.get("field")
-	if p == null or so == null or not f is SphereField:
-		print("[garden-marks] demo bed: no patch / globe")
+	if p == null:
+		print("[garden-marks] demo bed: no patch")
 		return
-	var sf: SphereField = f
+	var so: SliceOrbit = world.orbit
+	var sf: SphereField = world.field
 	var c: Vector3 = p.global_position + p.forward() * 7.0
 	GameState.flags["seeds_unlocked"] = true
 	var k: int = 0
 	for h: int in sf.hexes_near(c, 1):
 		if sf.hex_hub[h] != 0 or sf.is_water(h):
 			continue
-		((so as Object).get("crews") as OrbitCrews).work_cell(h, 0.0)
+		so.crews.work_cell(h, 0.0)
 		garden.ensure_hex(h)
 		for sl: int in garden.hex_slots.get(h, PackedInt32Array()):
 			if garden.slot_pos[sl].distance_to(c) > 9.0 or not garden.plantable(sl):

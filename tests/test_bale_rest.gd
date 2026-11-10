@@ -91,22 +91,6 @@ func test_bale_rests_on_a_junk_mound_and_settles_as_it_shrinks() -> void:
 	assert_almost_eq(c.global_position.y, _half_h(c), 0.05)
 
 
-func test_free_spot_avoids_a_wall() -> void:
-	var wall := StaticBody3D.new()
-	wall.collision_layer = PhysLayers.PROP
-	var cs := CollisionShape3D.new()
-	cs.shape = PropColliders.box_shape(Vector3(4, 2, 0.4))
-	cs.position = Vector3(10, 1, -1.2)
-	wall.add_child(cs)
-	root.add_child(wall)
-	await wait_physics_frames(2)
-	var space: PhysicsDirectSpaceState3D = root.get_world_3d().direct_space_state
-	var p: Vector3 = JunkCube.free_spot(space, Vector3(10, 0.05, 0), Vector3(0, 0, -1), 0.55)
-	assert_gt(p.z, -0.95, "puts the bale down short of the wall, not in it")
-	var open: Vector3 = JunkCube.free_spot(space, Vector3(10, 0.05, 0), Vector3(0, 0, 1), 0.55)
-	assert_almost_eq(open.z, 1.25, 0.01)
-
-
 func test_heaps_are_solid_for_lumi_and_bots_and_shrink_as_cleared() -> void:
 	# [world2] Playtest #2: Lumi stood inside heaps and vacuumed the whole pile.
 	var pile := Vector4(12, -6, 2.0, 1.2)

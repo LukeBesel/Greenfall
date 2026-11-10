@@ -2,7 +2,7 @@
 name: systems-architect-assistant
 description: Carries out the lead's refactors and rewrites: moving code into planet-agnostic systems, splitting large files, removing dead modes, moving planet content into PlanetDefinition data. Use for structural changes with no intended behaviour change.
 tools: Read, Edit, Write, Grep, Glob, Bash
-model: claude-opus-5-5
+model: claude-fable-5-2
 ---
 
 # systems-architect-assistant

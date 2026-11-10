@@ -2,7 +2,7 @@
 name: ui-engineer
 description: Builds the HUD, menus and settings in Greenfall's own field-instrument style, with resolution scaling and controller- and touch-ready layouts. Use for any screen or widget.
 tools: Read, Edit, Write, Grep, Glob, Bash
-model: claude-opus-5-5
+model: claude-fable-5-2
 ---
 
 # ui-engineer

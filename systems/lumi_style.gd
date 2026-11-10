@@ -15,8 +15,9 @@ extends RefCounted
 ##   var v: Dictionary = LumiStyle.variant_for(self, VARIANTS[variant])   (first line)
 ##   LumiStyle.after_build(self)                                          (last line)
 ## variant_for turns the style into a VARIANTS-shaped dict, so PatchModel builds its own native
-## add-ons (acc ids) and colours; after_build recolours what VARIANTS has no key for (eyes, side
-## modules, hover ring), adds the eye-shape overlay and the add-ons PatchModel does not know
+## add-ons (acc ids), colours and eye shape (the face shader draws every eye_shape; "happy" is the
+## crescent resting on smiling arcs); after_build recolours what VARIANTS has no key for (eyes, side
+## modules, hover ring), and adds the add-ons PatchModel does not know
 ## (library meshes from aurora.glb / designs.glb by name, procedural fallbacks otherwise), and
 ## leaves the laser colour as model meta "lumi_laser" for PickupFx. Every access is defensive
 ## (get / has_method / null checks), so the hero model can be rebuilt underneath.
@@ -34,10 +35,10 @@ const PATH: String = "res://data/style_parts.json"
 const MAX_LOOKS: int = 5
 const VERSION: int = 1
 const COLOR_SLOTS: Array[String] = ["paint", "trim", "accent", "side", "eyes", "glow", "hover", "laser"]
-const PART_SLOTS: Array[String] = ["pattern", "eye_shape", "head", "chest", "shoulders", "held", "companion"]
-## Native (PatchModel) eye looks; any other shape is drawn by the overlay (art/shaders/lumi_eyes).
-const NATIVE_EYES: Array[String] = ["crescent", "happy"]
-const OVERLAY_SHAPES: Dictionary = {"round": 1, "bar": 2, "heart": 3}
+const PART_SLOTS: Array[String] = ["pattern", "eye_shape", "head", "ears", "chest", "shoulders", "held", "hip", "companion"]
+## Part slots whose options carry PatchModel add-on ids ("acc"): a preset fills them from the
+## design's acc list, and variant_dict turns them back into one.
+const ACC_SLOTS: Array[String] = ["pattern", "head", "ears", "shoulders", "held", "hip", "companion"]
 ## Owner: locked designs and parts are never shown, only "???" and a hint of how to unlock them.
 const LOCKED_NAME: String = "???"
 
@@ -167,23 +168,24 @@ static func preset(id: String) -> Dictionary:
 		"wear": float(v.get("grime", 0.6)),
 		"coverage": float(v.get("coverage", 0.9)),
 		"metal": float(v.get("metal", 0.0)),
-		"pattern": "stripes" if float(v.get("stripes", 0.0)) > 0.0 else ("moss" if float(v.get("moss", 0.0)) > 0.0 else "plain"),
 		"eye_shape": "happy" if float(v.get("happy", 0.5)) >= 0.99 else "crescent",
 		"chest": str(v.get("icon", "recycle")),
 	}
 	var acc: Array = v.get("acc", [])
-	for slot: String in ["head", "shoulders", "held", "companion"]:
-		s[slot] = "none"
-		for o: Dictionary in options(slot):
+	for slot: String in ACC_SLOTS:
+		# The slot's first option is its empty one (none / plain); else the option whose pieces are
+		# all on the design, the one with the most pieces winning.
+		var opts: Array = options(slot)
+		s[slot] = str((opts[0] as Dictionary)["id"]) if not opts.is_empty() else "none"
+		var best: int = 0
+		for o: Dictionary in opts:
 			var need: Array = o.get("acc", [])
-			if need.is_empty():
-				continue
-			var all_in: bool = true
+			var all_in: bool = need.size() > best
 			for a: Variant in need:
 				all_in = all_in and (a in acc)
 			if all_in:
 				s[slot] = str(o["id"])
-				break
+				best = need.size()
 	return s
 
 
@@ -546,7 +548,11 @@ static func variant_dict(style: Dictionary, base: Dictionary = {}) -> Dictionary
 	v["metal"] = float(s["metal"])
 	v["moss"] = 0.6 if s["pattern"] == "moss" else 0.0
 	v["stripes"] = 1.0 if s["pattern"] == "stripes" else 0.0
-	v["happy"] = 1.0 if s["eye_shape"] == "happy" else 0.5
+	# One eye path: the face shader's shapes. "happy" rests the crescent on smiling arcs.
+	var shape: String = str(s["eye_shape"])
+	v["happy"] = 1.0 if shape == "happy" else 0.5
+	v["smile"] = 1.0 if shape == "happy" else 0.0  # the small visor smile belongs to the smiling arcs
+	v["eyes"] = "crescent" if shape == "happy" or not (shape in PatchModel.EYE_SHAPES) else shape
 	var ic: String = str(s["chest"])
 	v["icon"] = ic if ic in ["recycle", "leaf", "cross"] else "recycle"
 	var known: Array = []
@@ -557,7 +563,7 @@ static func variant_dict(style: Dictionary, base: Dictionary = {}) -> Dictionary
 	for a: Variant in base.get("acc", []):
 		if not (a in known):
 			acc.append(a)
-	for slot: String in ["head", "shoulders", "held", "companion"]:
+	for slot: String in ACC_SLOTS:
 		for a: Variant in option(slot, str(s[slot])).get("acc", []):
 			if not (a in acc):
 				acc.append(a)

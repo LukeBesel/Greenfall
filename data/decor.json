@@ -1,7 +1,6 @@
 {
   "_doc": "[late] Garden Mode decorations (systems/decor.gd, art/decor_props.gd, ui/garden_placer.gd). Placed on a 1 m grid on clean ground in a district (not on buildings, water or the base yard machinery). size: footprint in grid cells [w, d] before rotation. cost: currencies spent (cubes, seeds; [money] trinkets are Collection finds, not a currency); needs_finds: Collection finds needed before it can be bought. charm: each district's charm is the sum of its decorations; charm raises that district's plant growth by charm_growth per point, up to charm_cap. wildlife: kinds of animals that like it (the decor group hook for wildlife: nodes in group 'decor' with meta decor_type / decor_wildlife). Removing a decoration gives everything back, so moving one costs nothing.",
   "grid": 1.0,
-  "yard_radius": 9.0,
   "charm_growth": 0.004,
   "charm_cap": 0.08,
   "unlock_hub_level": 5,

@@ -389,10 +389,8 @@ func _build_ui() -> void:
 			_settings.select_tab(int(DevHooks.get_f("tab", 0.0)))
 		"credits": _open_credits.call_deferred()
 		"confirm": _on_new_game.call_deferred()
-		"round-new", "round-continue":  # [orbB] dev / export checks: the preview on, then New Game or Continue
+		"round-new", "round-continue":  # [orbB] dev / export checks: New Game or Continue
 			(func() -> void:
-				if not SaveManager.round_planets():
-					SaveManager.set_round_planets(true)
 				if DevHooks.get_s("menu", "") == "round-new" or not SaveManager.has_save():
 					_start_new()
 				else:
@@ -700,8 +698,3 @@ func _build_confirm() -> void:
 	for b: Button in [_confirm_no, yes]:
 		b.focus_neighbor_top = b.get_path_to(b)
 		b.focus_neighbor_bottom = b.get_path_to(b)
-
-
-
-# [v1menu] The "Round planets (preview)" toggle is gone: the round world is the game
-# (SaveManager.round_planets).

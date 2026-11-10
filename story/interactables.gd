@@ -40,11 +40,7 @@ func nearest(pos: Vector3) -> Dictionary:
 		var en: Callable = e["enabled"]
 		if en.is_valid() and not bool(en.call()):
 			continue
-		var d: float = Vector2(n.global_position.x - pos.x, n.global_position.z - pos.z).length()
-		if JunkCube.planet_radius > 0.0:  # [orbB] round planet: distance along the ground
-			var dv: Vector3 = n.global_position - pos
-			var u: Vector3 = pos.normalized()
-			d = (dv - u * dv.dot(u)).length()
+		var d: float = OrbitUp.ground_dist(pos, n.global_position)
 		if d < float(e["r"]) and d < best_d:
 			best_d = d
 			best = e

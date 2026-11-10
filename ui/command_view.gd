@@ -872,8 +872,6 @@ func _build_overlay() -> void:
 	# Clear air and a cool, desaturated tactical grade so the overlay pops.
 	var we: WorldEnvironment = world.get_node_or_null("WorldEnvironment")
 	var src: Environment = we.environment if we else null
-	if src == null and world.get("_env") != null:
-		src = world._env
 	if src:
 		var env: Environment = src.duplicate()
 		env.fog_enabled = false

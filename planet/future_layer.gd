@@ -1003,39 +1003,3 @@ static func band_mesh(radius: float, y0: float, y1: float, a0: float, a1: float,
 			st.add_vertex(v[0])
 	return st.commit()
 
-
-# --- Dev preview --------------------------------------------------------------------------------
-
-## --future=N: quietly clean every land hex, plant them to match, set every hex to level N
-## (and the hub to N, set by slice.gd before the hub is built) so the layer can be previewed.
-static func apply_preview(w: Node, n: int) -> void:
-	n = clampi(n, 0, HexLevels.MAX_LEVEL)
-	var fld: HexField = w.field
-	var hl: HexLevels = w.hex_levels
-	var g: Garden = w.garden
-	var planet: PlanetData = w.planet
-	if n >= 1:
-		for pid: int in fld.piece_count():
-			if fld.piece_alive[pid] == 1 and fld.hex_hub[fld.piece_hex[pid]] == 0 and not fld.is_water(fld.piece_hex[pid]):
-				fld.remove_piece(pid)
-				w.view.hide_piece(pid)
-		for hid: int in hl.levels:
-			if not fld.is_clean(hid):
-				fld.hex_clean[hid] = 1
-				fld.cleaned_count += 1
-			w.view.refresh_hex(hid, false)
-			w.litter.refresh_hex(hid)
-			planet.set_junk(w.slice_cells[hid], 0.0)
-			planet.mark_clean(w.slice_cells[hid])
-	if n >= 2 and g:  # [green] real planted slots at a stage mix for the level (plants/garden_dev.gd)
-		for hid: int in hl.levels:
-			GardenDev.grow_hex(w, hid, n)
-	for hid: int in hl.levels:
-		hl.levels[hid] = maxi(int(hl.levels[hid]), n)
-	hl._recalc_bonus()
-	if n >= 2 and g:
-		# Re-push the plant transforms once the scene is up so their MultiMesh bounds are fresh.
-		w.get_tree().create_timer(1.0).timeout.connect(func() -> void:
-			for s: int in g.slot_species.size():
-				if g.slot_species[s] >= 0:
-					g._update_inst(s))

@@ -2,7 +2,7 @@
 name: docs-keeper
 description: Keeps docs current and concise after each task or milestone: PLAN, TASKS, DECISIONS, PLANET_PLAYBOOK, ARCHITECTURE, PROGRESS. Use to record what changed.
 tools: Read, Edit, Write, Grep, Glob
-model: claude-opus-5-5
+model: claude-fable-5-2
 ---
 
 # docs-keeper

@@ -1,7 +1,9 @@
 class_name Garden
 extends Node3D
 ## Planting, watering and growth on clean hexes. Each clean hex has plant slots on a jittered
-## grid. Plants grow one stage per grow_s while watered; thirsty plants droop and pause (never
+## grid in the cell's own frame on the globe ground, made when Lumi plants or waters near it (a
+## 164k-cell globe can't hold every slot) and seeded by the cell, so a cell always gets the same
+## slots; they are saved per cell, not by slot index. Plants grow one stage per grow_s while watered; thirsty plants droop and pause (never
 ## die). Blooms drop seeds. Hex life = mean stage / 4 drives the ground turning green and the
 ## planet cell state (Planted -> Growing -> Restored).
 
@@ -10,6 +12,9 @@ signal planted(slot: int)
 signal watered(slot: int, was_dry: bool)
 
 var world: Node
+## The globe's per-cell state (far shell, planet %) and its sites (town paving): set by the slice.
+var cells: SphereCells
+var site_manager: SiteManager
 var cfg: Dictionary
 var species: Array = []
 var _sp_weight_sum: float = 0.0
@@ -26,24 +31,15 @@ var hex_slots: Dictionary = {}  # hex id -> PackedInt32Array of slot ids
 var hex_life: Dictionary = {}   # hex id -> float 0..1
 
 var _mms: Dictionary = {}  # "chunk|species" -> MultiMeshInstance3D
-## [deck] Plants batch per CHUNK-metre ground square and species (was per hex: ~2 plants per
-## draw). chunk key -> slot count (instance capacity of each species' MultiMesh there).
-const CHUNK: float = 72.0
+## [deck] Plants batch per globe chunk and species (was per hex: ~2 plants per draw). chunk key
+## -> slot count (instance capacity of each species' MultiMesh there).
 var _chunk_cap: Dictionary = {}
-## [biomes] Frontier hooks (planet/frontier_district.gd): hexes whose slots are made after the
-## others, in this order (Sunken City streets revealed by draining: keeps slot ids stable across
-## saves), and a per-hex growth bonus (Frozen Port greenhouses).
-var late_hexes: Array = []
+## [biomes] A per-hex growth bonus (greenhouses).
 var hex_grow_bonus: Dictionary = {}
 var _slot_inst: Dictionary = {}  # slot -> [key, index]
 var _tick: float = 0.0
 const VARIANT_TRIS: int = 3000  # [green]
 const MAX_VARIANTS: int = 3  # [green] caps the batch count (chunk x species x variant)
-var meadow: Meadow  # [green] living ground cover driven by hex life (plants/meadow.gd)
-## [orbB] Sparse (the globe): a cell's slots are made when Lumi plants or waters near it (a 164k-cell
-## globe can't hold every slot), laid out in the cell's own frame on the globe ground and seeded by
-## the cell, so a cell always gets the same slots; saved per cell, not by slot index.
-var sparse: bool = false
 var _saved_cells: Dictionary = {}  # cell -> [species bytes, stage bytes, water floats] not made yet
 
 
@@ -52,55 +48,21 @@ func setup() -> void:
 	species = cfg.get("species", [])
 	for s: Dictionary in species:
 		_sp_weight_sum += float(s.get("weight", 1.0))
-	var field: HexField = world.field
-	if sparse:  # [orbB] slots come per cell, on demand (ensure_hex)
-		_load_sparse()
-		return
-	for id: int in field.hex_count():
-		if field.hex_hub[id] == 0 and not field.is_water(id) and not (id in late_hexes):
-			_make_slots(id)
-	for id: Variant in late_hexes:  # [biomes]
-		if not hex_slots.has(int(id)):
-			_make_slots(int(id))
-	for i: int in slot_pos.size():
-		var ck: Vector2i = _chunk_of(i)
-		_chunk_cap[ck] = int(_chunk_cap.get(ck, 0)) + 1
-	_load()
-	if world.get("view") is FieldView and not DevHooks.has("no-meadow"):  # [green]
-		meadow = Meadow.new()
-		meadow.setup(world)
-		add_child(meadow)
+	_load()  # slots come per cell, on demand (ensure_hex)
 
 
-## [biomes] Slots for a hex that became land mid-game (a drained Sunken City street).
-func add_hex(hid: int) -> void:
-	if hex_slots.has(hid):
-		return
-	late_hexes.append(hid)
-	var first: int = slot_pos.size()
-	_make_slots(hid)
-	for i: int in range(first, slot_pos.size()):  # [deck] grow the chunk capacity for the new slots
-		var ck: Vector2i = _chunk_of(i)
-		_chunk_cap[ck] = int(_chunk_cap.get(ck, 0)) + 1
-
-
-## [biomes] Can this empty slot take a seed here? (not under water; frontier rules: cold, greenhouses)
+## [biomes] Can this empty slot take a seed here? (not under water, not on paving)
 func plantable(s: int) -> bool:
 	if world == null or world.field.is_water(slot_hex[s]):
 		return false
-	if sparse and on_paving(s):  # [v4grow] streets, sidewalks and kerbs, the pad, buildings
-		return false
-	var fr: Variant = world.get("frontier")
-	if fr is FrontierDistrict:
-		return (fr as FrontierDistrict).slot_plantable(slot_hex[s])
-	return true
+	return not on_paving(s)  # [v4grow] streets, sidewalks and kerbs, the pad, buildings
 
 
-## [orbB] Sparse mode: make a land cell's slots (once) and restore what a save had planted there.
+## Makes a land cell's slots (once) and restores what a save had planted there.
 func ensure_hex(hid: int) -> void:
-	if not sparse or hid < 0 or hex_slots.has(hid):
+	if hid < 0 or hex_slots.has(hid):
 		return
-	var field: HexField = world.field
+	var field: SphereField = world.field
 	if field.hex_hub[hid] != 0 or field.is_water(hid):
 		return
 	var first: int = slot_pos.size()
@@ -126,36 +88,7 @@ func ensure_hex(hid: int) -> void:
 
 
 func _make_slots(hid: int) -> void:
-	var field: HexField = world.field
-	if field is SphereField:  # [orbB] the cell's own frame on the globe ground
-		_make_slots_sphere(field as SphereField, hid)
-		return
-	var spacing: float = float(cfg.get("slot_spacing", 2.3))
-	var c: Vector3 = field.hex_center(hid)
-	var rng := RandomNumberGenerator.new()
-	rng.seed = field.seed_value * 31 + hid
-	var ids := PackedInt32Array()
-	var r: int = int(ceil(field.hex_size / spacing)) + 1
-	for gx: int in range(-r, r + 1):
-		for gz: int in range(-r, r + 1):
-			var p := c + Vector3(gx * spacing + rng.randf_range(-0.5, 0.5), 0, gz * spacing + rng.randf_range(-0.5, 0.5))
-			if field.hex_at(p) != hid:
-				continue
-			if field.layout and field.layout.surface_at(p.x, p.z) in [CityLayout.Surface.BUILDING, CityLayout.Surface.ROAD]:
-				continue  # roads stay roads; planting goes in lots, verges and sidewalks' edges
-			p.y = field.layout.height_at(p.x, p.z) if field.layout else 0.0
-			ids.append(slot_pos.size())
-			slot_pos.append(p)
-			slot_hex.append(hid)
-			slot_species.append(-1)
-			slot_stage.append(0)
-			slot_progress.append(0.0)
-			slot_water.append(0.0)
-			slot_yaw.append(rng.randf() * TAU)
-	hex_slots[hid] = ids
-
-
-func _make_slots_sphere(f: SphereField, hid: int) -> void:
+	var f: SphereField = world.field
 	var spacing: float = float(cfg.get("slot_spacing", 2.3))
 	var ctr: Vector3 = f.grid.centers[hid]
 	var fr: Basis = SphereGrid.frame(ctr)
@@ -330,7 +263,7 @@ func _recount(hid: int) -> void:
 	hex_life[hid] = life
 	world.view.set_life(hid, life)
 	var planet: PlanetData = world.planet
-	var cell: int = hid if sparse else world.slice_cells[hid]  # [orbB] cell ids are planet ids on the globe
+	var cell: int = hid  # cell ids are the planet's ids
 	var before: int = planet.state[cell]
 	if life >= float(cfg.get("restored_life", 0.8)):
 		planet.state[cell] = PlanetData.State.RESTORED
@@ -338,10 +271,8 @@ func _recount(hid: int) -> void:
 		planet.state[cell] = PlanetData.State.GROWING
 	elif planted > 0:
 		planet.state[cell] = PlanetData.State.PLANTED
-	if sparse and before != planet.state[cell]:  # [orbB] the globe's cells (far shell, planet %) follow
-		var so: Node = world.get("orbit")
-		if so:
-			(so.get("globe") as OrbitPlanet).cells.set_state(cell, planet.state[cell])
+	if before != planet.state[cell]:  # the globe's cells (far shell, planet %) follow
+		cells.set_state(cell, planet.state[cell])
 	if before != planet.state[cell] and planet.state[cell] == PlanetData.State.RESTORED:
 		EventBus.toast.emit(tr("A hex is fully restored. Something small is already living in it."), "story")
 		Audio.play("chime", 0.8, -4.0)
@@ -350,24 +281,21 @@ func _recount(hid: int) -> void:
 
 # --- Visuals -------------------------------------------------------------------------
 
+## Each species is sized to a real height per stage (data/plants.json globe_heights, capped in
+## width); the seed and sprout stages are the GardenMarks sprout on its soil mound, a thirsty
+## plant droops hard, and a watered one perks up.
 func _slot_xf(s: int) -> Transform3D:
-	if sparse:  # [v4grow]
-		return _slot_xf_globe(s)
-	var sp: Dictionary = species[slot_species[s]]
-	var stages: Array = cfg.get("stage_scale", [0.1, 0.3, 0.5, 0.8, 1.0])
-	var sc: float = float(stages[slot_stage[s]]) * float(sp.get("scale", 1.0)) * float(cfg.get("plant_scale", 1.0))  # [green]
+	var sc: float = globe_scale(s) * (1.0 + 0.18 * perk_of(s))
+	if sc <= 0.0:
+		return Transform3D(Basis().scaled(Vector3.ONE * 0.0001), slot_pos[s])
 	var b := Basis(Vector3.UP, slot_yaw[s]).scaled(Vector3.ONE * sc)
-	if slot_water[s] <= 0.0 and slot_stage[s] > 0:
-		b = Basis(Vector3.RIGHT, 0.35) * b  # droop when thirsty
-	if sparse:  # [orbB] stand on the local ground
-		b = SphereGrid.frame(slot_pos[s].normalized()) * b
-	return Transform3D(b, slot_pos[s])
+	if slot_water[s] <= 0.0:  # thirsty: a hard droop, squat and leaning
+		b = Basis(Vector3.RIGHT, 0.55) * b.scaled(Vector3(1.1, 0.72, 1.1))
+	return Transform3D(SphereGrid.frame(slot_pos[s].normalized()) * b, slot_pos[s] + slot_pos[s].normalized() * lift_of(s))
 
 
 func _chunk_of(s: int) -> Vector2i:
-	if sparse:  # [orbB] batch by the globe's chunks
-		return Vector2i((world.field as SphereField).grid.cell_chunk[slot_hex[s]], -1)
-	return Vector2i(floori(slot_pos[s].x / CHUNK), floori(slot_pos[s].z / CHUNK))
+	return Vector2i((world.field as SphereField).grid.cell_chunk[slot_hex[s]], -1)
 
 
 ## [green] Which single variant of the species' plant file this slot shows (PlantParts).
@@ -385,8 +313,7 @@ func _update_inst(s: int) -> void:
 			var mm := MultiMesh.new()
 			mm.transform_format = MultiMesh.TRANSFORM_3D
 			mm.mesh = PlantParts.variants(str(species[slot_species[s]]["model"]), VARIANT_TRIS)[vi]
-			if sparse:  # [v4grow] a touch brighter and greener on the globe (they read pale)
-				mm.mesh = _vivid(mm.mesh)
+			mm.mesh = _vivid(mm.mesh)  # [v4grow] a touch brighter and greener (they read pale)
 			mm.instance_count = int(_chunk_cap.get(ck, 1))
 			mm.visible_instance_count = 0
 			var mmi := MultiMeshInstance3D.new()
@@ -412,8 +339,8 @@ func _update_inst(s: int) -> void:
 
 # --- Persistence -----------------------------------------------------------------------
 
-## [orbB] Sparse save: per planted cell, its slots' species / stage / water.
-func persist_sparse() -> Dictionary:
+## The save: per planted cell, its slots' species / stage / water.
+func persist() -> Dictionary:
 	var out: Dictionary = {}
 	for h: int in hex_slots:
 		var ids: PackedInt32Array = hex_slots[h]
@@ -434,7 +361,7 @@ func persist_sparse() -> Dictionary:
 	return {"cells": out}
 
 
-func _load_sparse() -> void:
+func _load() -> void:
 	var d: Dictionary = GameState.world.get("garden", {})
 	var cells: Dictionary = d.get("cells", {})
 	for k: Variant in cells:
@@ -446,42 +373,9 @@ func _load_sparse() -> void:
 		ensure_hex(h)
 
 
-func persist() -> Dictionary:
-	if sparse:  # [orbB]
-		return persist_sparse()
-	var sp := PackedByteArray()
-	sp.resize(slot_species.size())
-	for i: int in slot_species.size():
-		sp[i] = slot_species[i] + 1
-	return {"species": Marshalls.raw_to_base64(sp) if not sp.is_empty() else "",
-		"stage": Marshalls.raw_to_base64(slot_stage) if not slot_stage.is_empty() else "",
-		"water": Marshalls.raw_to_base64(slot_water.to_byte_array()) if not slot_water.is_empty() else ""}
-
-
-func _load() -> void:
-	var d: Dictionary = GameState.world.get("garden", {})
-	if d.is_empty():
-		return
-	var sp: PackedByteArray = Marshalls.base64_to_raw(str(d.get("species", "")))
-	var st: PackedByteArray = Marshalls.base64_to_raw(str(d.get("stage", "")))
-	var wa: PackedFloat32Array = Marshalls.base64_to_raw(str(d.get("water", ""))).to_float32_array()
-	if sp.size() != slot_species.size():
-		return
-	for i: int in sp.size():
-		slot_species[i] = int(sp[i]) - 1
-		slot_stage[i] = st[i]
-		slot_water[i] = wa[i] if i < wa.size() else 0.0
-		if slot_species[i] >= 0:
-			_update_inst(i)
-	for h: int in hex_slots:
-		_recount(h)
-
-
-# --- [v4grow] Owner playtest 3 #51: plants you can see on the globe ------------------------------
-# The Poly Haven clumps are 7-40 cm tall: at the flat game's scale a fresh seed was 2 cm and a
-# bloom 18 cm, invisible from Lumi's camera. On the globe each species is sized to a real height
-# per stage (data/plants.json globe_heights, capped in width), the seed and sprout stages are the
-# GardenMarks sprout on its soil mound, a thirsty plant droops hard, and a watered one perks up.
+# --- [v4grow] Owner playtest 3 #51: plants you can see -------------------------------------------
+# The Poly Haven clumps are 7-40 cm tall: at their own scale a fresh seed was 2 cm and a bloom
+# 18 cm, invisible from Lumi's camera, so each stage has a real height (_slot_xf).
 
 const PERK_S: float = 0.7
 var _perk: Dictionary = {}  # slot -> seconds of the perk-up bounce left
@@ -525,16 +419,6 @@ func globe_scale(s: int) -> float:
 	return minf(sc, float(cfg.get("globe_max_width", 1.6)) / maxf(maxf(sz.x, sz.z), 0.05))
 
 
-func _slot_xf_globe(s: int) -> Transform3D:
-	var sc: float = globe_scale(s) * (1.0 + 0.18 * perk_of(s))
-	if sc <= 0.0:
-		return Transform3D(Basis().scaled(Vector3.ONE * 0.0001), slot_pos[s])
-	var b := Basis(Vector3.UP, slot_yaw[s]).scaled(Vector3.ONE * sc)
-	if slot_water[s] <= 0.0:  # thirsty: a hard droop, squat and leaning
-		b = Basis(Vector3.RIGHT, 0.55) * b.scaled(Vector3(1.1, 0.72, 1.1))
-	return Transform3D(SphereGrid.frame(slot_pos[s].normalized()) * b, slot_pos[s] + slot_pos[s].normalized() * lift_of(s))
-
-
 ## Planted slots on the cells made so far (sparse: the cells Lumi has been near).
 func planted_slots() -> PackedInt32Array:
 	var out := PackedInt32Array()
@@ -545,12 +429,11 @@ func planted_slots() -> PackedInt32Array:
 	return out
 
 
-# --- [v4grow] Planting stays off the paving on the globe -----------------------------------------
-# The flat game made no slots on roads or buildings (CityLayout surfaces). On the globe a cell's
-# slots are kept as they were (their order is what the save holds), and a slot on a town's street,
+# --- [v4grow] Planting stays off the paving ------------------------------------------------------
+# A cell's slots are kept as they were (their order is what the save holds), and a slot on a town's street,
 # sidewalk and kerb, the yard pad or a building can't take a seed (its soil mound would sit half
 # under the tiles). Checked at the slot and MOUND_R round it. The lots' kit ground patches (8 cm
-# concrete plates on sand) stay plantable as on the flat game, but the mound and the plant stand on
+# concrete plates on sand) stay plantable, but the mound and the plant stand on
 # top of the plates (lift_of), and the patch's kerb band is kept clear. Cached once the town is in.
 
 const PAVED: Array[int] = [CityLayout.Surface.ROAD, CityLayout.Surface.SIDEWALK, CityLayout.Surface.BUILDING, CityLayout.Surface.YARD]
@@ -568,7 +451,7 @@ func on_paving(s: int) -> bool:
 
 ## How far above the terrain slot s's ground is (the top of a lot's plates, else 0).
 func lift_of(s: int) -> float:
-	return float(_ground_info(s)[1]) if sparse else 0.0
+	return float(_ground_info(s)[1])
 
 
 func _ground_info(s: int) -> Array:
@@ -614,11 +497,9 @@ static func paved(lay: CityLayout, x: float, z: float) -> bool:
 ## [VerdanceSite, inverse of its transform] for every loaded town on the globe.
 func _towns() -> Array:
 	var out: Array = []
-	var so: Variant = world.get("orbit") if world else null
-	var sm: SiteManager = (so as Object).get("globe").get("site_manager") as SiteManager if so is Object else null
-	if sm == null:
+	if site_manager == null:
 		return out
-	for pf: Variant in sm.prefabs:
+	for pf: Variant in site_manager.prefabs:
 		if not (pf is SitePrefab) or not is_instance_valid(pf) or (pf as SitePrefab).content == null:
 			continue
 		for c: Node in (pf as SitePrefab).content.get_children():
@@ -627,7 +508,7 @@ func _towns() -> Array:
 	return out
 
 
-# --- [v4grow] Grown plants read pale on the globe: a richer copy of each clump's materials -------
+# --- [v4grow] Grown plants read pale: a richer copy of each clump's materials -------
 
 const VIVID_TINT := Color(1.08, 1.22, 0.98)
 static var _vivid_cache: Dictionary = {}  # mesh rid -> Mesh

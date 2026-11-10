@@ -23,15 +23,6 @@ func after_each() -> void:
 	Audio.step_hush(10.0)
 
 
-func _field(seed_v: int) -> HexField:
-	var types: Array = []
-	for id: String in Economy.junk_ids:
-		types.append(Economy.junk_types[id])
-	var f := HexField.new(9, 3.2, seed_v, CityLayout.new(seed_v, 150.0, false))
-	f.generate(types, Vector2i(6, 12))
-	return f
-
-
 func _defs() -> Dictionary:
 	var out: Dictionary = {}
 	for e: Dictionary in Economy.read_json("res://data/eggs.json").get("eggs", []):
@@ -194,30 +185,19 @@ func test_telescope_is_far_from_spawn() -> void:
 		if bool(defs[id].get("starter", false)):
 			ids.append(id)
 	for seed_v: int in [7, 1234, 98765]:
-		var field: HexField = _field(seed_v)
-		var plan: Array[Dictionary] = EasterEggs.plan_spots(field, ids, defs, [Vector3.ZERO])
+		var g := GlobeFixture.new(seed_v)
+		var frame := Node3D.new()
+		add_child_autofree(frame)
+		frame.global_transform = g.frame_transform()
+		var plan: Array[Dictionary] = EasterEggs.plan_spots_cells(frame, g.field, g.region(), ids, defs, [Vector3.ZERO], seed_v)
 		var found_it: bool = false
 		for p: Dictionary in plan:
 			if p["id"] == "stars":
 				found_it = true
 				var pos: Vector3 = p["pos"]
-				assert_gt(Vector2(pos.x, pos.z - EasterEggs.SPAWN_Z).length(), 25.0, "seed %d: telescope out of the start area" % seed_v)
-				assert_false(field.is_water(field.hex_at(pos)))
+				assert_gt(Vector2(pos.x, pos.z).length(), 25.0, "seed %d: telescope out of the start area" % seed_v)
+				assert_false(g.field.is_water(g.field.hex_at(frame.to_global(pos))))
 		assert_true(found_it, "seed %d: telescope placed" % seed_v)
-
-
-func test_telescope_move_keeps_other_eggs_in_place() -> void:
-	var defs: Dictionary = _defs()
-	var ids: Array[String] = ["duck", "stars", "tv"]
-	var field: HexField = _field(4242)
-	var a: Array[Dictionary] = EasterEggs.plan_spots(field, ids, defs, [])
-	var near: Dictionary = defs.duplicate(true)
-	near["stars"].erase("min_spawn_dist")
-	var b: Array[Dictionary] = EasterEggs.plan_spots(field, ids, near, [])
-	assert_eq(a.size(), 3)
-	for i: int in a.size():
-		if a[i]["id"] != "stars":
-			assert_eq(a[i]["pos"], b[i]["pos"], "%s stays put" % a[i]["id"])
 
 
 func test_tv_broadcast_tells_the_story() -> void:

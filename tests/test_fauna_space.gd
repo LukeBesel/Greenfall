@@ -61,42 +61,29 @@ func test_scan_stamps_props_and_skips_ground_cover() -> void:
 	assert_false(s.blocked(Vector3(-10, 0, -10), 0.2), "weeds don't")
 
 
-func test_fences_and_the_yard() -> void:
-	var lay := CityLayout.new(4471, 150.0, false)
-	# The hub yard is for cats only.
-	assert_false(FaunaSpace.layout_ok(lay, Vector3(2, 0, 2), 0.6), "no deer in the yard")
-	assert_true(FaunaSpace.layout_ok(lay, Vector3(2, 0, 2), 0.6, true), "cats may sit by the base")
-	assert_false(FaunaSpace.layout_ok(lay, Vector3(CityLayout.YARD_HALF + 0.3, 0, 0), 0.6), "nor on the yard fence")
-	# Parking lots are fenced: keep off the fence line, the middle of the lot is fine.
-	var key := Vector2i(0, -1)
-	assert_eq(int(lay.blocks[key]["type"]), CityLayout.Block.PARKING)
-	var r: Rect2 = lay.blocks[key]["rect"]
-	var mid: Vector2 = r.get_center()
-	assert_true(FaunaSpace.layout_ok(lay, Vector3(mid.x, 0, mid.y), 0.6))
-	assert_false(FaunaSpace.layout_ok(lay, Vector3(r.position.x + 0.2, 0, mid.y), 0.6), "on the fence")
-	assert_false(FaunaSpace.layout_ok(lay, Vector3(mid.x, 0, r.end.y - 0.3), 0.6), "on the other fence")
-	# Buildings are never a spot.
-	var bkey := Vector2i(1, 0)
-	var bd: Dictionary = (lay.blocks[bkey]["buildings"] as Array)[0]
-	var bc: Vector2 = (bd["rect"] as Rect2).get_center()
-	assert_false(FaunaSpace.layout_ok(lay, Vector3(bc.x, 0, bc.y), 0.6, true), "inside a building")
-	assert_true(FaunaSpace.layout_ok(null, Vector3.ZERO, 0.6), "no layout, no limits")
-
-
 class FakeWorld:
 	extends Node3D
-	var field: HexField
+	var field: SphereField
 	var hub_index: int = 0
 
 
-func test_live_fauna_refuses_overlapping_spots() -> void:
+## A Fauna in its hub frame on a small globe (positions in the tests are frame-local metres).
+func _fauna() -> Fauna:
+	var g := GlobeFixture.new()
 	var w := FakeWorld.new()
-	w.field = HexField.new(1, 10.0, 3)
+	w.field = g.field
 	add_child_autofree(w)
 	var fa := Fauna.new()
 	fa.world = w
+	fa.frame_cells = g.region()
 	w.add_child(fa)
+	fa.global_transform = g.frame_transform()
 	fa.set_process(false)
+	return fa
+
+
+func test_live_fauna_refuses_overlapping_spots() -> void:
+	var fa: Fauna = _fauna()
 	var deer := Fauna.Animal.new()
 	deer.sp = "deer"
 	deer.kind = "deer"
@@ -115,8 +102,8 @@ func test_live_fauna_refuses_overlapping_spots() -> void:
 	cyl.bottom_radius = 0.12
 	cyl.height = 4.0
 	post.mesh = cyl
-	w.add_child(post)
-	post.global_position = Vector3(-3, 2.0, -2)
+	fa.world.add_child(post)
+	post.global_transform = fa.global_transform * Transform3D(Basis(), Vector3(-3, 2.0, -2))  # standing in the hub frame
 	fa._space_t = 0.0
 	assert_false(fa.spot_free(Vector3(-3.1, 0, -2), "cat", "cat"), "never inside a lamp post")
 	assert_true(fa.spot_free(Vector3(-1.5, 0, -2), "cat", "cat"))
@@ -210,13 +197,7 @@ func test_bird_sounds_are_occasional() -> void:
 
 
 func test_feeding_brings_the_flock() -> void:
-	var w := FakeWorld.new()
-	w.field = HexField.new(1, 10.0, 3)
-	add_child_autofree(w)
-	var fa := Fauna.new()
-	fa.world = w
-	w.add_child(fa)
-	fa.set_process(false)
+	var fa: Fauna = _fauna()
 	var birds: Array = []
 	for k: int in 4:
 		var b := Fauna.Animal.new()

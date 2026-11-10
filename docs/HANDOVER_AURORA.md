@@ -146,3 +146,45 @@ Final comparison sheets are committed: `screenshots/hero/compare_{portrait,head,
 - **Hover pod.** Still bulkier than the concept's slim dark disc, and the concept's underside shows concentric glowing rings that read more strongly than our inner ring and core.
 - **Turnaround floor.** The plain studio floor shows bright reflection patches behind the 3/4 and back views; that's the preview scene, not the model.
 - **Not re-rendered this session:** the in-game Old Town shot and the title-screen shot.
+
+## Six designs (task M1-13)
+All six designs are built from the Aurora base plus add-ons in `designs.glb` (`art/models/aurora/designs_addons.py`, placed from the live head and torso constants). Comparison sheet: `screenshots/hero/compare_designs_v2.png` (concept left, game right).
+
+### Commands
+```
+DESIGNS=1 DESIGNS_ONLY=1 blender -b --python art/models/aurora/build_aurora.py   # add-ons only (~50 s); aurora.glb untouched, no re-bake needed
+DESIGNS=1 DESIGNS_ONLY=1 PREVIEW=/tmp/p PREVIEW_DESIGN=pixel blender -b --python art/models/aurora/build_aurora.py   # plus a 4-view shape preview
+godot --headless --import --path .
+GATE_TRIES=1 tools/hero/render.sh 1120x700 --view=portrait --variants=bolt,sprout,pixel,nova,patch,aurora --settle=3 --out=screenshots/hero/v6   # all six in one run (~7 min)
+python3 tools/hero/compose_designs.py screenshots/hero/v6 screenshots/hero/compare_designs_v2.png
+```
+`--variant=ID` renders one design. `DRIVER=opengl3 tools/hero/render.sh ...` is faster but drops SSAO.
+
+### Piece ids (builder slot : option id -> PatchModel `acc` id / key)
+| Design | Pieces |
+|---|---|
+| Aurora | head:`fin` -> `antenna`; ears:`plain`; chest:`recycle`; pattern:`plain`; eyes `crescent` |
+| Bolt | head:`fin`; ears:`nut` -> `acc_ear_nut`; shoulders:`pads` -> `acc_pad_r`, `acc_pad_l`; pattern:`stripes` -> `acc_panels` (+ `stripes` paint); held:`gear` -> `gear` (`acc_gear`); chest:`recycle` (printed black); eyes `happy` (smiling arcs + smile) |
+| Sprout | head:`sprout` -> `acc_sprout`; ears:`leaf` -> `acc_ear_leaf`; pattern:`moss` -> `acc_moss` (+ `moss` paint); held:`bottle` -> `bottle` (`acc_bottle`); chest:`leaf` (`acc_icon_leaf`); eyes `crescent` |
+| Pixel | head:`wings` -> `acc_pixel`; ears:`heart` -> `acc_ear_heart`; pattern:`twotone` -> `acc_twotone`; companion:`butterfly` -> `butterfly` (`acc_bfly_body`, `acc_wing`); chest:`recycle` (white) or `heart` (`acc_icon_heart`); eyes `happy` |
+| Nova | head:`catears` -> `acc_catears`; pattern:`seams` -> `acc_seams`; held:`holo` -> `holo` (`acc_holo`); chest:`recycle`; eyes `crescent` |
+| Patch | head:`fin`; ears:`radio` -> `acc_radio`; hip:`satchel` -> `acc_toolbox`; held:`toolbox` -> `case` (`acc_case`); chest:`cross` (`acc_icon_cross`); eyes `crescent` |
+
+Paint sets, glow and latch colours per design are in `PatchModel.VARIANTS`. Eyes have one path: the face shader's `eye_shape` (`art/shaders/bot_face.gdshader`); the builder's `happy` option rests the crescent on smiling arcs and turns on the small smile.
+
+### Changed in the last session
+- **Fin (all fin designs, Aurora included):** turned 0.35 rad to his right and scaled 1.25 about its mount at runtime (`FIN_PIVOT`, `FIN_YAW`, `FIN_SCALE` in `player/patch_model.gd`), so the paddle reads as a blade from the front as on the portraits. Set both back to 0 / 1 to undo.
+- **Bolt:** pads are bolted to the body over the shoulders (they used to swing with the arm and read as flaps); yellower hazard paint, more chips.
+- **Pixel:** cream face and jaw with a red crown stripe, back and module band; smaller, broader wing crests rooted on the crown; hot-pink glow.
+- **Nova:** shorter, wider ears with a lit inner face (`glow_dim`); lighter gunmetal, saturated violet; holo panel writes depth (no more blur) and opens from the fingertip.
+- **Sprout:** yellower olive, saturated green glow, a more visible bottle.
+- **Patch:** satchel sign is an orange cross on a cream round patch.
+
+### Remaining differences (honest)
+- **All six (base model):** the head is taller and rounder than the portraits' wide pill, the visor is taller, the torso and arms are smaller against the head, and the crescent eyes are fatter with a smaller dark centre. Paint wear is much lighter than the sheet's heavy chipping and scratches. The preview has no ruins backdrop or dust.
+- **Aurora:** as listed above; the fin is now swept to the side (new, flag to the owner).
+- **Bolt:** the sheet has one boxy pad with an amber nut emblem; ours are plainer boxes on both shoulders, larger than the sheet's. Black chipping is sparser. The ear bezel is flatter and its nut is smaller. The gear is smaller and thinner-toothed.
+- **Sprout:** leaves stand more upright and are smaller than the sheet's broad spread pair. The bottle is thinner and its ribs do not read; the beam rings sit loose. The lens leaf is a filled shape, not an outlined leaf. Moss covers less of the crown.
+- **Pixel:** the wing crest is a simple blade, not the sheet's layered scoop with a cream underside. The torso and arms are plain red, without the sheet's cream chipping and dark panels. The butterfly is a pale flat shape with no wing pattern.
+- **Nova:** ears are flat plates with a lit inset, not folded sheet metal with a deep lit pocket. No violet seam lines on the torso and arms (head only). The shell reads warmer and less blue than the sheet. The holo panel is flatter and less detailed, with no glow fringe.
+- **Patch:** the fin paddle is not the sheet's large glowing orange blade. The satchel sits tight behind the arm, not hanging at the hip on a strap. The arms are fully orange; the sheet has white arms with an orange-yellow upper guard. The case is cleaner and more orange than the sheet's rusty brown one. The radio is smaller.

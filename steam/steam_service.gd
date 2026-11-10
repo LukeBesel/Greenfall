@@ -99,7 +99,7 @@ func attach(s: Object, init: bool = true) -> bool:
 		if legacy > 0:
 			print("[steam] cloud: %d pre-profile saves adopted into profile 1" % legacy)
 		for n: int in range(1, SaveManager.PROFILES + 1):
-			var res: Dictionary = cloud.sync_dir(SaveManager.profile_dir(n, true), "p%d_" % n)  # [orbB] the flat game's saves only
+			var res: Dictionary = cloud.sync_dir(SaveManager.legacy_flat_profile_dir(n), "p%d_" % n)  # [orbB] the pre-globe tree only
 			if not res.is_empty():
 				print("[steam] cloud sync p%d: " % n, res)
 	sync_achievements()
@@ -240,7 +240,7 @@ func open_store_page() -> void:
 		OS.shell_open(store_url())
 
 
-## [orbB] Round-planets preview saves (SaveManager.ROUND_SUFFIX) never reach Steam Cloud: their
-## cloud names would be the flat game's.
+## [orbB] The globe's saves (SaveManager.ROUND_SUFFIX) never reach Steam Cloud: their cloud names
+## would be the pre-globe tree's.
 func _round_preview(path: String) -> bool:
 	return path.contains(SaveManager.ROUND_SUFFIX + "/")

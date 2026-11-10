@@ -183,29 +183,22 @@ func _thriving_share() -> float:
 		return 0.0
 	var land: int = 0
 	var thr: int = 0
-	if hl.sparse:  # [orbE] the globe: only tracked cells have levels, so count those (same result;
-		# the full pass walked all 164k-655k cells every 3 s, a ~270 ms hitch on Anvil). The land
-		# count changes only with hub ground: refreshed every 30 s over the packed arrays.
-		var now: int = Time.get_ticks_msec()
-		if now >= _land_next_ms:
-			_land_next_ms = now + 30000
-			_land_n = 0
-			var wat: PackedByteArray = f.hex_water
-			var hub: PackedByteArray = f.hex_hub
-			for h: int in f.hex_count():
-				if wat[h] == 0 and hub[h] == 0:
-					_land_n += 1
-		land = _land_n
-		for h: Variant in hl.levels:
-			var hi: int = int(h)
-			if int(hl.levels[h]) >= HexLevels.MAX_LEVEL and not f.is_water(hi) and f.hex_hub[hi] == 0:
-				thr += 1
-		return float(thr) / float(land) if land > 0 else 0.0
-	for h: int in f.hex_count():
-		if f.is_water(h) or f.hex_hub[h] != 0:
-			continue
-		land += 1
-		if hl.level_of(h) >= HexLevels.MAX_LEVEL:
+	# Only tracked cells have levels, so count those (a full pass walked all 164k-655k cells
+	# every 3 s, a ~270 ms hitch on the largest globes). The land
+	# count changes only with hub ground: refreshed every 30 s over the packed arrays.
+	var now: int = Time.get_ticks_msec()
+	if now >= _land_next_ms:
+		_land_next_ms = now + 30000
+		_land_n = 0
+		var wat: PackedByteArray = f.hex_water
+		var hub: PackedByteArray = f.hex_hub
+		for h: int in f.hex_count():
+			if wat[h] == 0 and hub[h] == 0:
+				_land_n += 1
+	land = _land_n
+	for h: Variant in hl.levels:
+		var hi: int = int(h)
+		if int(hl.levels[h]) >= HexLevels.MAX_LEVEL and not f.is_water(hi) and f.hex_hub[hi] == 0:
 			thr += 1
 	return float(thr) / float(land) if land > 0 else 0.0
 
@@ -255,15 +248,6 @@ func _render() -> Image:
 	var cam := Camera3D.new()
 	cam.fov = 58.0
 	cam.far = 900.0
-	var env: Environment = world.get("_env") as Environment
-	if env:
-		var e2: Environment = env.duplicate()
-		e2.sdfgi_enabled = false
-		e2.ssr_enabled = false
-		e2.ssil_enabled = false
-		e2.volumetric_fog_enabled = false
-		e2.ssao_enabled = false
-		cam.environment = e2
 	vp.add_child(cam)
 	add_child(vp)
 	cam.look_at_from_position(CAM_POS, CAM_AT, Vector3.UP)

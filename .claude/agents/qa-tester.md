@@ -2,7 +2,7 @@
 name: qa-tester
 description: Writes and runs GUT unit and integration tests and the automated bot that plays Planet 1 start to finish; reports errors, softlocks and stalls. Use to verify any change and to triage bugs.
 tools: Read, Edit, Write, Grep, Glob, Bash
-model: claude-opus-5-5
+model: claude-fable-5-2
 ---
 
 # qa-tester

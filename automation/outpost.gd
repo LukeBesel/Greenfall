@@ -118,14 +118,13 @@ func set_level(new_level: int, animate: bool, done: Callable = Callable()) -> vo
 			done.call())
 
 
-## [v3qa] On a round planet the outpost stands on one tangent plane at its centre, so on a slope
-## the wreck's far pieces floated up to ~0.6 m (QA_VERDANCE #5). Each top-level piece rides up or
-## down to the terrain under its own footprint; the flat game is untouched.
+## [v3qa] The outpost stands on one tangent plane at its centre, so on a slope the wreck's far
+## pieces floated up to ~0.6 m (QA_VERDANCE #5). Each top-level piece rides up or down to the
+## terrain under its own footprint.
 func _conform(root: Node3D) -> void:
-	var f: Variant = world.get("field") if world else null
-	if not f is SphereField or not is_inside_tree():
+	if world == null or not is_inside_tree():
 		return
-	var terrain: SphereTerrain = (f as SphereField).terrain
+	var terrain: SphereTerrain = (world.field as SphereField).terrain
 	for c: Node in root.get_children():
 		if not c is Node3D or c is CollisionObject3D:
 			continue

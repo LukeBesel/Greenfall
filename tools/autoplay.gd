@@ -15,9 +15,6 @@ extends InputSource
 ## Research runs on wall-clock time in the real game; the bot drives Research.now_override from the
 ## game clock so a time-scaled run sees research at the same pace a player would.
 
-const BENCH_POS := Vector3(-3.6, 0, 2.2)
-const BENCH_STAND := Vector3(-1.4, 0, 2.2)
-const WATER_STAND := Vector3(2.0, 0, 3.0)
 const AT_BASE_R: float = 7.5
 const GAP_S: float = 180.0
 const SNAPSHOT_S: float = 60.0
@@ -207,24 +204,19 @@ var world_space: bool = false
 var _play_area := PackedInt32Array()
 
 
-## [orbB] The hexes the bot plays: the whole field on the flat game; on the globe (164k+ cells) the
-## start hub's region, the cells that count for planet % (SiteManager.REGION_RINGS rings).
-func _hexes() -> Variant:
-	var f: HexField = world.field
-	if not (f is SphereField):
-		return f.hex_count()
+## The hexes the bot plays: the start hub's region (of the globe's 164k+ cells), the cells that
+## count for planet % (SiteManager.REGION_RINGS rings).
+func _hexes() -> PackedInt32Array:
 	if _play_area.is_empty():
-		var sf: SphereField = f
-		var so: Variant = world.get("orbit")
-		var hub: int = (so as SliceOrbit).globe.start_cell() if so else sf.grid.cell_at(world.patch.global_position)
-		_play_area = sf.grid.cells_around(hub, SiteManager.REGION_RINGS)
+		var sf: SphereField = world.field
+		_play_area = sf.grid.cells_around((world.orbit as SliceOrbit).globe.start_cell(), SiteManager.REGION_RINGS)
 	return _play_area
 
 
 func _go(p: Patch, target: Vector3, stop_dist: float = 0.3) -> float:
-	var orb: Variant = world.get("orbit")  # [orbD] on a globe hub site: round its buildings along the streets
-	if orb is SliceOrbit and (orb as SliceOrbit).globe.site_manager:
-		var via: Vector3 = (orb as SliceOrbit).globe.site_manager.detour(p.global_position, target)
+	var sm: SiteManager = (world.orbit as SliceOrbit).globe.site_manager  # on a hub site: round its buildings along the streets
+	if sm:
+		var via: Vector3 = sm.detour(p.global_position, target)
 		if via.distance_to(target) > 0.5:
 			_go_raw(p, via, 1.0)
 			return maxf(target.distance_to(p.global_position), stop_dist + 1.0)
@@ -233,11 +225,8 @@ func _go(p: Patch, target: Vector3, stop_dist: float = 0.3) -> float:
 
 func _go_raw(p: Patch, target: Vector3, stop_dist: float = 0.3) -> float:
 	var d: Vector3 = target - p.global_position
-	if JunkCube.planet_radius > 0.0:  # [orbB] round planet: drop the local-up part
-		var u: Vector3 = p.global_position.normalized()
-		d -= u * d.dot(u)
-	else:
-		d.y = 0.0
+	var u: Vector3 = p.global_position.normalized()  # [orbB] along the ground: drop the local-up part
+	d -= u * d.dot(u)
 	var dist: float = d.length()
 	_move = d.normalized() * clampf(dist / 1.5, 0.35, 1.0) if dist > stop_dist else Vector3.ZERO
 	# Obstacle unstick: no progress for a while -> sidestep around it.
@@ -248,7 +237,7 @@ func _go_raw(p: Patch, target: Vector3, stop_dist: float = 0.3) -> float:
 			_progress_pos = p.global_position
 			_progress_t = 0.0
 		elif _progress_t > 1.2:
-			var side := (Vector3(d.z, 0, -d.x) if JunkCube.planet_radius <= 0.0 else d.cross(p.global_position.normalized())).normalized() * (1.0 if randf() < 0.5 else -1.0)  # [orbB]
+			var side := d.cross(u).normalized() * (1.0 if randf() < 0.5 else -1.0)  # [orbB]
 			_detour = side
 			_detour_t = 1.4
 			_progress_t = 0.0
@@ -323,10 +312,7 @@ func _watch_stuck(p: Patch, delta: float) -> void:
 				_traps += 1
 				_report["bot_traps"] = _report.get("bot_traps", []) + [[snappedf(_now() / 60.0, 0.1), str(p.global_position.snapped(Vector3.ONE * 0.1)), _task]]
 				print("[bot-trap] t=%.1f task=%s pos=%s: back to the yard" % [_now() / 60.0, _task, str(p.global_position)])
-				if world.get("orbit") != null and p.has_method("place_on_sphere"):  # [v1guide] the globe's yard
-					p.place_on_sphere(_bench_at() + _bench_at().normalized() * 0.3, p.forward())
-				else:
-					p.global_position = BENCH_STAND + Vector3(0, 0.3, 1.5)
+				p.place_on_sphere(_bench_at() + _bench_at().normalized() * 0.3, p.forward())
 				p.velocity = Vector3.ZERO
 				_target_piece = -1
 				_set_task("")
@@ -389,17 +375,14 @@ func _at_base(p: Patch) -> bool:
 	return p.global_position.distance_to(_bench_at()) < AT_BASE_R
 
 
-## [v1guide] The workbench: the flat BENCH_POS, or the globe's bench anchor (the bot used to walk to
-## the flat spot on the globe for 60 s and then shop "remotely", which slowed every globe run).
+## The workbench: the start site's bench anchor.
 func _bench_at() -> Vector3:
-	return world.call("bench_pos") if world.get("orbit") != null and world.has_method("bench_pos") else BENCH_POS
+	return world.bench_pos()
 
 
-## [v4bots] Where the can refills (anywhere in the hub hex, Patch._handle_tools): the flat
-## WATER_STAND, or by the globe's bench. The globe used the flat point, a spot near the planet's
-## centre: the bot walked off in a fixed direction (it waded through lakes until item 54).
+## [v4bots] Where the can refills (anywhere in the hub hex, Patch._handle_tools): by the bench.
 func _water_at() -> Vector3:
-	return _bench_at() if world.get("orbit") != null and world.has_method("bench_pos") else WATER_STAND
+	return _bench_at()
 
 
 # --- Patch tasks -------------------------------------------------------------------------
@@ -432,10 +415,7 @@ func _do_bench(p: Patch) -> bool:
 		_manage(p)
 		return false
 	_set_task("bench")
-	if world.get("orbit") != null:  # [v1guide] the globe's bench: walk up to it
-		_go(p, _bench_at(), 2.2)
-	else:
-		_go(p, BENCH_STAND, 0.4)
+	_go(p, _bench_at(), 2.2)  # [v1guide] walk up to the bench
 	if _task_t > 60.0:
 		# Can't get there: count it, and shop anyway (the sim must not stall on pathing).
 		_bench_trip = false
@@ -640,7 +620,7 @@ func _do_dig(p: Patch) -> bool:
 		if det.target < 0 or _skip_hex.has(-100 - det.target):
 			return false
 		var pp: Vector3 = world.field.part_pos[det.target]
-		if (Vector2(pp.x - p.global_position.x, pp.z - p.global_position.z).length() if JunkCube.planet_radius <= 0.0 else pp.distance_to(p.global_position)) > 14.0:  # [orbB]
+		if pp.distance_to(p.global_position) > 14.0:
 			return false
 		_dig_target = det.target
 	_set_task("dig")
@@ -663,7 +643,7 @@ func _land(h: int) -> bool:
 
 
 func _hex_planted(g: Garden, h: int) -> Vector2i:
-	if g.sparse and world.field.is_clean(h):
+	if world.field.is_clean(h):
 		g.ensure_hex(h)  # [v3clear] the globe's garden makes a clean cell's slots on demand
 	var planted: int = 0
 	var ids: PackedInt32Array = g.hex_slots.get(h, PackedInt32Array())
@@ -685,14 +665,13 @@ func _pick_plant_hex(g: Garden) -> int:
 			return _plant_hex
 	var best: int = -1
 	var best_s: float = INF
-	var pad: Array[int] = AutoplayCampaign.pad_hexes(world)
 	for h: int in _hexes():
 		if not _land(h) or not world.field.is_clean(h):
 			continue
 		var pc: Vector2i = _hex_planted(g, h)
 		if pc.y == 0 or pc.x >= pc.y:
 			continue
-		var s: float = world.field.hex_center(h).length() - (100.0 if pc.x > 0 else 0.0) - (500.0 if h in pad else 0.0)
+		var s: float = world.field.hex_center(h).length() - (100.0 if pc.x > 0 else 0.0)
 		if s < best_s:
 			best_s = s
 			best = h
@@ -951,22 +930,10 @@ func _manage(p: Patch) -> void:
 	_shop(want)
 
 
-## [beat] The whole-game layer: frontier chores and rocket trips (tools/autoplay_campaign.gd).
+## [beat] The whole-game layer: campaign milestones and rocket trips (tools/autoplay_campaign.gd).
 func _campaign(_p: Patch) -> void:
 	if bool(world.get("launching")):
 		return
-	var chore: String = AutoplayCampaign.frontier_chores(world)
-	if chore != "":
-		_progress()
-		_event("frontier", {"what": chore})
-	var kid: String = AutoplayCampaign.frontier_kid(world)
-	if kid != "":
-		_mark("arrive_%s_s" % kid)
-		var fr: FrontierDistrict = world.get("frontier")
-		if fr and fr.growing_frac >= 0.5:
-			_mark("%s_growing50_s" % kid)
-		if int(world.hub.level) >= 5:
-			_mark("%s_base5_s" % kid)
 	for b: Variant in CoreCharge.beats_done():
 		_mark("core_%d_s" % int(b))
 	if GameState.flags.get("seeds_unlocked", false):
@@ -1121,7 +1088,7 @@ func _shop(want: Dictionary) -> void:
 		var ok: bool = hub_save <= 0.0 or spare >= hub_save or must
 		ok = ok and (must or hub_save <= 0.0 or _mats_spare({"parts": fleet.build_parts(robot).to_float()}, false))
 		if ok and robot != "" and fleet.can_build(robot):
-			var at: Vector3 = world.upgrades.build_at.call() if world.upgrades.build_at.is_valid() else BENCH_STAND
+			var at: Vector3 = world.upgrades.build_at.call()
 			fleet.build(robot, at)
 	for t: String in (Economy.robot_order if fleet != null and BenchTiers.tab_open("bots") else []):  # [orbB] [v1guide]
 		var treq: Dictionary = fleet.tier_requirements(t)
@@ -1553,7 +1520,7 @@ func _paint_zones() -> void:
 	for h: int in _hexes():
 		if _land(h) and not f.is_clean(h) and h != _focus_hex:
 			cand.append(h)
-	var o: Vector3 = world.depot.global_position if f is SphereField and world.get("depot") != null else Vector3.ZERO  # [v3qa] the globe's centre is the planet's
+	var o: Vector3 = world.depot.global_position  # [v3qa] nearest the base first
 	cand.sort_custom(func(a: int, b: int) -> bool: return f.hex_center(a).distance_to(o) - 8.0 * f.removed_fraction(a) < f.hex_center(b).distance_to(o) - 8.0 * f.removed_fraction(b))
 	_set_zone("clean", cand.slice(0, want_n))
 	var g: Garden = world.garden

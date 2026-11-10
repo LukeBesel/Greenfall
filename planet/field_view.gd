@@ -353,10 +353,28 @@ func _write_hex(id: int, flip_time: float) -> void:
 	var ft: float = prev.g if flip_time == -1.0 else flip_time
 	var flag: float = 1.0 if field.hex_hub[id] == 1 else (0.5 if field.is_water(id) else 0.0)
 	if field.junk_gen >= 2 and field.hex_hub[id] != 0:  # [world2] only the yard slab is clean ground
-		var nb: Vector2 = FarJunk.owner_state(field, id)
+		var nb: Vector2 = _owner_state(field, id)
 		_state_img.set_pixel(x, y, Color(nb.x, ft, nb.y, 0.0))
 		return
 	_state_img.set_pixel(x, y, Color(field.removed_fraction(id), ft, float(field.hex_clean[id]), flag))
+
+
+## [world2] A yard/street hex's junk state is its land neighbours': x = their mean removed
+## fraction, y = 1 when they are all clean.
+static func _owner_state(f: HexField, id: int) -> Vector2:
+	var rem: float = 0.0
+	var n: int = 0
+	var all_clean: bool = true
+	for o: Vector2i in Hex.DIRECTIONS:
+		var nb: int = int(f.axial_to_id.get(f.hex_axial[id] + o, -1))
+		if nb < 0 or f.hex_hub[nb] != 0 or f.is_water(nb):
+			continue
+		rem += f.removed_fraction(nb)
+		n += 1
+		all_clean = all_clean and f.is_clean(nb)
+	if n == 0:
+		return Vector2(1.0, 1.0)
+	return Vector2(rem / n, 1.0 if all_clean else 0.0)
 
 
 func _flush() -> void:

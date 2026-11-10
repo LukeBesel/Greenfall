@@ -30,12 +30,8 @@ extends Node
 ##   --ledger-act=N     jump the Ledger arc to act N (1 intercepts, 2 drones, 3 relay, 4 resolved)
 ##   --ledger-drop[=S]  force a Ledger dump drone S seconds after start (ignores jammers)
 ##   --ledger-resolve[=S]  play the relay "rewrite the contract" cinematic (needs act 3)
-##   --spawn-relay      put Patch next to the Ledger relay terminal (act >= 3)
 ##   --demo-scoop       Patch scoops the nearest junk nonstop (pickup animation shots; --demo-yaw, --demo-speed)
-##   --spawn-egg=ID     put Patch next to an easter egg in this district (data/eggs.json ids);
-##                      --egg-dist=M sets the distance, --egg-poke[=S] plays its reaction after S s
-##                      [eggs2] --egg-use[=S] presses E on it after S s; --egg-parts=ID marks a collectible egg's parts
-##                      collected; --tv-frame=N holds the TV broadcast on frame N, --tv-step=S advances it every S wall-clock s
+##   [eggs2] --tv-frame=N holds the TV broadcast on frame N, --tv-step=S advances it every S wall-clock s
 ##   [eggs2] Museum: --museum (unlocked), --museum-here (build site in this district), --museum-built, --museum-sample
 ##                      (a partly filled collection), --spawn-museum (--museum-dist/--museum-side/--museum-yaw)
 ##   --event=ID         [events] force a world event (supply_drop, salvage_surge, rain_shower, robot_hiccup,
@@ -84,7 +80,6 @@ var _frames: int = 0
 var _perf_frames: int = 0
 var _perf_wall: float = 0.0
 var _stats_done: bool = false  # [deck]
-var _garden_done: bool = false  # [green]
 
 
 func _ready() -> void:
@@ -165,10 +160,6 @@ func _process(delta: float) -> void:
 	if has("scene-stats") and _elapsed >= get_f("scene-stats", 4.0) and not _stats_done:  # [deck] geometry census
 		_stats_done = true
 		SceneStats.print_census(get_tree().current_scene)
-	if has("garden-report") and _elapsed >= get_f("garden-report", 4.0) and not _garden_done:  # [green]
-		_garden_done = true
-		if get_tree().current_scene and get_tree().current_scene.get("garden") != null:
-			GardenDev.report(get_tree().current_scene)
 	if has("quit-after") and _elapsed >= get_f("quit-after", 5.0):
 		print("[DevHooks] quitting after %.1fs" % _elapsed)
 		if has("report"):

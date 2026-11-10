@@ -1,17 +1,5 @@
 extends GutTest
 
-class FakeView:
-	extends RefCounted
-	var lives: Dictionary = {}
-	func set_life(id: int, life: float) -> void:
-		lives[id] = life
-
-class FakeWorld:
-	extends Node
-	var field: HexField
-	var view := FakeView.new()
-	var planet: PlanetData
-	var slice_cells := PackedInt32Array()
 
 var _cur: Dictionary
 var _world_state: Dictionary
@@ -29,38 +17,24 @@ func after_each() -> void:
 
 
 func _make() -> Array:
-	var w := FakeWorld.new()
-	var types: Array = []
-	for id: String in Economy.junk_ids:
-		types.append(Economy.junk_types[id])
-	w.field = HexField.new(2, 10.0, 5)
-	w.field.generate(types, Vector2i(5, 8))
-	w.planet = PlanetData.new(5, 3, 10.0)
-	w.planet.generate()
-	w.slice_cells.resize(w.field.hex_count())
-	for i: int in w.field.hex_count():
-		w.slice_cells[i] = i
+	var w := GlobeWorld.new(5)
 	add_child_autofree(w)
-	var g := Garden.new()
-	g.world = w
-	w.add_child(g)
-	g.setup()
-	return [w, g]
+	return [w, w.add_garden()]
 
 
 func test_plant_water_grow() -> void:
 	var made: Array = _make()
-	var w: FakeWorld = made[0]
+	var w: GlobeWorld = made[0]
 	var g: Garden = made[1]
-	var hid: int = 10
-	for pid: int in w.field.hex_pieces[hid]:
-		w.field.remove_piece(pid)
+	var hid: int = w.land_cell()
+	w.clean(hid)
 	assert_true(w.field.is_clean(hid))
 	GameState.currencies["seeds"] = BigNum.from_float(5)
 	var slot: int = (g.hex_slots[hid] as PackedInt32Array)[0]
 	assert_true(g.plant(slot))
 	assert_eq(int(GameState.get_currency("seeds").to_float()), 4)
-	assert_eq(w.planet.state[w.slice_cells[hid]], PlanetData.State.PLANTED)
+	assert_eq(w.planet.state[hid], PlanetData.State.PLANTED)
+	assert_eq(w.fixture.cells.state[hid], PlanetData.State.PLANTED, "the globe's cells follow")
 	# Without water it doesn't grow.
 	g._tick = 100.0
 	g._process(0.0)
@@ -79,7 +53,24 @@ func test_plant_water_grow() -> void:
 
 func test_no_seeds_no_planting() -> void:
 	var made: Array = _make()
+	var w: GlobeWorld = made[0]
 	var g: Garden = made[1]
+	var hid: int = w.land_cell()
+	w.clean(hid)
 	GameState.currencies["seeds"] = BigNum.zero()
-	var slot: int = (g.hex_slots[10] as PackedInt32Array)[0]
+	var slot: int = (g.hex_slots[hid] as PackedInt32Array)[0]
 	assert_false(g.plant(slot))
+
+
+func test_plant_parts_split_variants() -> void:
+	var parts: Array[Mesh] = PlantParts.variants("celandine_01")
+	assert_eq(parts.size(), 5, "five LOD0 clumps, LOD copies skipped")
+	var whole: AABB = AssetLib.model_aabb("celandine_01")
+	for m: Mesh in parts:
+		assert_lt(m.get_aabb().size.x, whole.size.x * 0.5, "a single clump, not the file's whole row")
+
+
+func test_meadow_meshes_build() -> void:
+	for m: ArrayMesh in [Meadow._tuft_mesh(), Meadow._flower_mesh()]:
+		assert_eq(m.get_surface_count(), 1)
+		assert_almost_eq(m.get_aabb().end.y, 1.0, 0.25, "unit height (the shader scales it)")
