@@ -43,6 +43,16 @@ func build(root: Node3D, home: Vector3) -> void:
 	env.fog_density = 0.0011
 	env.fog_sky_affect = 0.0
 	env.fog_aerial_perspective = 0.4
+	# [v5look] The flat game's thin glow (scenes/slice.gd): Medium+ turns glow on, and Godot's
+	# default settings bloomed every sunlit pale surface (the washed-out pad at noon).
+	env.glow_intensity = 0.5
+	env.glow_bloom = 0.015
+	env.glow_hdr_threshold = 1.15
+	for gl: int in 7:
+		env.set_glow_level(gl, [0.0, 0.6, 0.8, 0.5, 0.0, 0.0, 0.0][gl])
+	env.ssao_radius = 1.0
+	env.ssao_intensity = 1.6
+	env.adjustment_enabled = true
 	var we := WorldEnvironment.new()
 	we.name = "OrbitEnvironment"
 	we.environment = env

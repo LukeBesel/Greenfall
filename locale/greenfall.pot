@@ -39,7 +39,7 @@ msgstr ""
 msgid "Needs research: %s"
 msgstr ""
 
-#: autoload/Economy.gd:194 systems/research.gd:196
+#: autoload/Economy.gd:194 systems/research.gd:206
 msgid "Needs base level %d"
 msgstr ""
 
@@ -255,20 +255,8 @@ msgstr ""
 msgid "hold %s"
 msgstr ""
 
-#: autoload/Story.gd:23
-msgid "Perfect bale: filled right to the gold line."
-msgstr ""
-
-#: autoload/Story.gd:25
-msgid "Pure bale: one kind of junk is worth double."
-msgstr ""
-
-#: autoload/Story.gd:29
+#: autoload/Story.gd:27
 msgid "Hex clean! Green can grow here now."
-msgstr ""
-
-#: autoload/Story.gd:33
-msgid "Upgraded! Lumi is a little stronger now."
 msgstr ""
 
 #: automation/auto_baler.gd:478
@@ -487,7 +475,7 @@ msgid "Requires hub level %d or research: %s."
 msgstr ""
 
 #: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
-#: systems/camp/camp.gd:400 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:155
+#: systems/camp/camp.gd:402 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:155
 #: systems/camp/hub_builds.gd:165 systems/camp/hub_builds.gd:175 systems/camp/yard_builds.gd:91
 #: ui/telescope_panel.gd:40
 msgid "Not enough materials."
@@ -526,7 +514,7 @@ msgstr ""
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr ""
 
-#: core/pace.gd:147 story/objectives.gd:789
+#: core/pace.gd:147 story/objectives.gd:796
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr ""
 
@@ -562,7 +550,7 @@ msgstr ""
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr ""
 
-#: fauna/fauna.gd:2039 ui/subtitles.gd:415
+#: fauna/fauna.gd:2039 ui/subtitles.gd:455
 msgid "New sighting: %s. It's in the Codex now."
 msgstr ""
 
@@ -570,15 +558,15 @@ msgstr ""
 msgid "Snap! A %s for your Collection."
 msgstr ""
 
-#: planet/cd_finds.gd:172
+#: planet/cd_finds.gd:190
 msgid "A scratched CD turned up in the rubble."
 msgstr ""
 
-#: planet/cd_finds.gd:172
+#: planet/cd_finds.gd:190
 msgid "Something shiny turned up in the cleared rubble. An old CD!"
 msgstr ""
 
-#: planet/cd_finds.gd:212
+#: planet/cd_finds.gd:230
 msgid "Your CD case is full."
 msgstr ""
 
@@ -784,7 +772,7 @@ msgstr ""
 msgid "Lumi hovers back onto solid ground."
 msgstr ""
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1085 scenes/slice_orbit.gd:363
+#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1085 scenes/slice_orbit.gd:364
 msgid "HEX CLEAN!  +%s"
 msgstr ""
 
@@ -792,24 +780,24 @@ msgstr ""
 msgid "Rocket hop: %.1f km"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:101
+#: planet/sites/orbit_sites.gd:104
 msgid "The rocket is in flight."
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:150
+#: planet/sites/orbit_sites.gd:153
 msgid "E   Rocket: choose a destination"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:183
+#: planet/sites/orbit_sites.gd:186
 msgid "%s site"
 msgstr ""
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: planet/sites/orbit_sites.gd:184 ui/main_menu.gd:476
+#: planet/sites/orbit_sites.gd:187 ui/main_menu.gd:476
 msgid "Hub %d"
 msgstr ""
 
-#: planet/sites/sphere_water.gd:121 water/water_view.gd:78
+#: planet/sites/sphere_water.gd:258 water/water_view.gd:79
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
 msgstr ""
 
@@ -865,7 +853,7 @@ msgid ""
 "hopper %d%%  →  seeds"
 msgstr ""
 
-#: plants/garden.gd:336
+#: plants/garden.gd:346
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr ""
 
@@ -901,11 +889,11 @@ msgstr ""
 msgid "A dry old seed, still sealed in its husk. Junk hides a few of these."
 msgstr ""
 
-#: player/detector.gd:91
+#: player/detector.gd:94
 msgid "BURIED PART  %s  ·  %.1f m"
 msgstr ""
 
-#: player/detector.gd:94
+#: player/detector.gd:97
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr ""
 
@@ -913,43 +901,51 @@ msgstr ""
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr ""
 
-#: player/patch.gd:243
+#: player/patch.gd:200
+msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
+msgstr ""
+
+#: player/patch.gd:302
 msgid "No seeds yet. Keep cleaning."
 msgstr ""
 
-#: player/patch.gd:282
+#: player/patch.gd:337
+msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
+msgstr ""
+
+#: player/patch.gd:344
 msgid "Out of seeds. Blooming plants drop more."
 msgstr ""
 
-#: player/patch.gd:289
+#: player/patch.gd:351
 msgid "Watering can is empty. Refill at the hub."
 msgstr ""
 
-#: player/patch.gd:491
+#: player/patch.gd:553
 msgid "PERFECT BALE  %s"
 msgstr ""
 
-#: player/patch.gd:497
+#: player/patch.gd:559
 msgid "OVERSTUFFED  %s"
 msgstr ""
 
-#: player/patch.gd:501
+#: player/patch.gd:563
 msgid "PURE  %s"
 msgstr ""
 
-#: player/patch.gd:503
+#: player/patch.gd:565
 msgid "SURGE  %s"
 msgstr ""
 
-#: player/patch.gd:506
+#: player/patch.gd:568
 msgid "  (streak +%d%%)"
 msgstr ""
 
-#: player/patch.gd:549
+#: player/patch.gd:611
 msgid "Salvaged: %s"
 msgstr ""
 
-#: player/patch.gd:578
+#: player/patch.gd:640
 msgid "Recovered: %s"
 msgstr ""
 
@@ -1069,32 +1065,32 @@ msgstr ""
 msgid "Ride the hover-sled"
 msgstr ""
 
-#: robots/fleet.gd:145
+#: robots/fleet.gd:147
 msgid "Locked · research %s"
 msgstr ""
 
-#: robots/fleet.gd:147
+#: robots/fleet.gd:149
 msgid "Crew full (%d/%d): upgrade the hub"
 msgstr ""
 
-#: robots/fleet.gd:149 robots/fleet.gd:225
+#: robots/fleet.gd:151 robots/fleet.gd:227
 msgid "Not enough parts"
 msgstr ""
 
-#: robots/fleet.gd:151 robots/fleet.gd:227 robots/water_net.gd:149
-#: systems/research.gd:200 systems/robot_builder.gd:350 systems/robot_builder.gd:402
+#: robots/fleet.gd:153 robots/fleet.gd:229 robots/water_net.gd:149
+#: systems/research.gd:210 systems/robot_builder.gd:350 systems/robot_builder.gd:402
 msgid "Not enough cubes"
 msgstr ""
 
-#: robots/fleet.gd:189
+#: robots/fleet.gd:191
 msgid "%s %s assembled. It looks around, then gets to work.%s"
 msgstr ""
 
-#: robots/fleet.gd:189
+#: robots/fleet.gd:191
 msgid " Seems %s."
 msgstr ""
 
-#: robots/fleet.gd:246
+#: robots/fleet.gd:248
 msgid "%s fleet upgraded to %s."
 msgstr ""
 
@@ -1148,7 +1144,7 @@ msgstr ""
 msgid "base barrel"
 msgstr ""
 
-#: robots/robot.gd:263 systems/research.gd:390
+#: robots/robot.gd:263 systems/research.gd:400
 msgid "tank"
 msgstr ""
 
@@ -1280,7 +1276,7 @@ msgstr ""
 msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 msgstr ""
 
-#: scenes/slice.gd:1099 scenes/slice_orbit.gd:379
+#: scenes/slice.gd:1099 scenes/slice_orbit.gd:380
 msgid "Milestone: %d hexes clean!"
 msgstr ""
 
@@ -1312,7 +1308,7 @@ msgstr ""
 msgid "Landed on the base pad."
 msgstr ""
 
-#: scenes/slice.gd:1294 scenes/slice_orbit.gd:917
+#: scenes/slice.gd:1294 scenes/slice_orbit.gd:918
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr ""
 
@@ -1328,15 +1324,15 @@ msgstr ""
 msgid "OUTPOST %d · RUIN"
 msgstr ""
 
-#: scenes/slice_orbit.gd:448 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:515
+#: scenes/slice_orbit.gd:449 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:563
 msgid "E   Fix the workbench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:448 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:449 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:1017
+#: scenes/slice_orbit.gd:1018
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr ""
 
@@ -1605,87 +1601,87 @@ msgid ""
 "5 MINUTES"
 msgstr ""
 
-#: story/eggs.gd:426
+#: story/eggs.gd:431
 msgid "Something metal surfaced in the cleared ground."
 msgstr ""
 
-#: story/eggs.gd:639 story/eggs.gd:701
+#: story/eggs.gd:644 story/eggs.gd:706
 msgid "Gnome %d / %d"
 msgstr ""
 
-#: story/eggs.gd:647
+#: story/eggs.gd:652
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr ""
 
-#: story/eggs.gd:702
+#: story/eggs.gd:707
 msgid "%s   ·   added to Lumi's collection"
 msgstr ""
 
-#: story/eggs.gd:718
+#: story/eggs.gd:723
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr ""
 
-#: story/eggs.gd:719
+#: story/eggs.gd:724
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr ""
 
-#: story/eggs.gd:748
+#: story/eggs.gd:753
 msgid "SOLD OUT"
 msgstr ""
 
-#: story/eggs.gd:766
+#: story/eggs.gd:771
 msgid "QUACK!"
 msgstr ""
 
-#: story/eggs.gd:784
+#: story/eggs.gd:789
 msgid "NEW CHALLENGER!"
 msgstr ""
 
-#: story/eggs.gd:787
+#: story/eggs.gd:792
 msgid "GAME OVER  ·  SCORE 12"
 msgstr ""
 
-#: story/eggs.gd:815
+#: story/eggs.gd:820
 msgid "hi, Gus"
 msgstr ""
 
-#: story/eggs.gd:860
+#: story/eggs.gd:865
 msgid "CONFETTI"
 msgstr ""
 
-#: story/eggs.gd:860
+#: story/eggs.gd:865
 msgid "LIGHT JAZZ"
 msgstr ""
 
-#: story/eggs.gd:860
+#: story/eggs.gd:865
 msgid "99% DUCKS"
 msgstr ""
 
-#: story/eggs.gd:860
+#: story/eggs.gd:865
 msgid "SUNNY (INDOORS)"
 msgstr ""
 
-#: story/eggs.gd:860
+#: story/eggs.gd:865
 msgid "FOG OF NOODLES"
 msgstr ""
 
-#: story/eggs.gd:865
+#: story/eggs.gd:870
 msgid "1ST PLACE"
 msgstr ""
 
-#: story/eggs.gd:923
+#: story/eggs.gd:928
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr ""
 
-#: story/eggs.gd:924
+#: story/eggs.gd:929
 msgid "The duck has taught you everything it knows. Quack."
 msgstr ""
 
-#: story/eggs.gd:1152
+#: story/eggs.gd:1157
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr ""
 
-#: story/eggs.gd:1163
+#: story/eggs.gd:1168
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr ""
 
@@ -1721,24 +1717,28 @@ msgstr ""
 msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
 msgstr ""
 
-#: story/first_seed.gd:128
-msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
-msgstr ""
-
-#: story/first_seed.gd:138
+#: story/first_seed.gd:143
 msgid "{tool_water}  then hold  {scoop}  to water it"
 msgstr ""
 
-#: story/first_seed.gd:164
+#: story/first_seed.gd:169
 msgid "Hold  {scoop}  on clean ground to plant the seed"
 msgstr ""
 
-#: story/first_seed.gd:241
+#: story/first_seed.gd:246
 msgid "...It's green. Lumi, it's actually green."
 msgstr ""
 
-#: story/first_seed.gd:243
+#: story/first_seed.gd:248
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
+msgstr ""
+
+#: story/first_seed.gd:361
+msgid "Lumi, that green signal is back, stronger now. Follow the beam: the old greenhouse."
+msgstr ""
+
+#: story/first_seed.gd:370
+msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr ""
 
 #: story/homecoming.gd:18
@@ -1782,35 +1782,35 @@ msgstr ""
 msgid "Homecoming"
 msgstr ""
 
-#: story/intro.gd:237
+#: story/intro.gd:239
 msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
 msgstr ""
 
-#: story/intro.gd:238
+#: story/intro.gd:240
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
 msgstr ""
 
-#: story/intro.gd:239
+#: story/intro.gd:241
 msgid "Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."
 msgstr ""
 
-#: story/intro.gd:240
+#: story/intro.gd:242
 msgid "Then, one night, the sky came apart."
 msgstr ""
 
-#: story/intro.gd:241
+#: story/intro.gd:243
 msgid "Hull breach in the vault bay! Lumi, leave the trays, get clear!"
 msgstr ""
 
-#: story/intro.gd:242
+#: story/intro.gd:244
 msgid "Lumi— hold on— I can't turn her around— hold on—"
 msgstr ""
 
-#: story/intro.gd:243
+#: story/intro.gd:245
 msgid "The ark could not turn back. The pod fell for days."
 msgstr ""
 
-#: story/intro.gd:868
+#: story/intro.gd:870
 msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr ""
 
@@ -1882,7 +1882,7 @@ msgid ""
 "The Ledger is on our side now. The jammers just hum along to the music."
 msgstr ""
 
-#: story/ledger.gd:329 systems/decor.gd:122 systems/research.gd:192
+#: story/ledger.gd:329 systems/decor.gd:122 systems/research.gd:202
 #: systems/robot_builder.gd:348 systems/robot_builder.gd:404 ui/stations_panel.gd:100
 #: ui/telescope_panel.gd:43
 msgid "Needs %s"
@@ -1896,57 +1896,57 @@ msgstr ""
 msgid "A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground."
 msgstr ""
 
-#: story/ledger.gd:534
+#: story/ledger.gd:535
 msgid "SIGNAL JAMMED"
 msgstr ""
 
-#: story/ledger.gd:564
+#: story/ledger.gd:565
 msgid "Target re-classified as ASSET. Aborting. ...Interesting."
 msgstr ""
 
-#: story/ledger.gd:635
+#: story/ledger.gd:636
 msgid "The drone dumped a little junk back. Scoop it up, or let your helpers tidy it. A Signal Jammer at the base keeps drones away."
 msgstr ""
 
-#: story/ledger.gd:691
+#: story/ledger.gd:692
 msgid "SEEDS · PAID IN FULL"
 msgstr ""
 
-#: story/ledger.gd:708 systems/events.gd:500 systems/lumi_level.gd:218
+#: story/ledger.gd:709 systems/events.gd:500 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr ""
 
-#: story/ledger.gd:780
+#: story/ledger.gd:781
 msgid "E   jack in: rewrite the Ledger's contract"
 msgstr ""
 
-#: story/ledger.gd:780
+#: story/ledger.gd:781
 msgid "E   read the amended contract"
 msgstr ""
 
-#: story/ledger.gd:805 story/ledger.gd:859
+#: story/ledger.gd:806 story/ledger.gd:860
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: ACTIVE\n"
 "WASTE IS A LINE ITEM"
 msgstr ""
 
-#: story/ledger.gd:820
+#: story/ledger.gd:821
 msgid "RELAY 07  ·  PROPERTY OF THE LEDGER  ·  NO UNSCHEDULED ACCESS"
 msgstr ""
 
-#: story/ledger.gd:859
+#: story/ledger.gd:860
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: AMENDED\n"
 "RESTORATION = ASSET"
 msgstr ""
 
-#: story/ledger.gd:979
+#: story/ledger.gd:980
 msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
 msgstr ""
 
-#: story/ledger.gd:987
+#: story/ledger.gd:988
 msgid "<< LEDGER // OFF THE RECORD >>"
 msgstr ""
 
@@ -1966,47 +1966,47 @@ msgstr ""
 msgid "Goal complete  ·  %s"
 msgstr ""
 
-#: story/objectives.gd:635
+#: story/objectives.gd:642
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr ""
 
-#: story/objectives.gd:657 story/objectives.gd:777
+#: story/objectives.gd:664 story/objectives.gd:784
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr ""
 
-#: story/objectives.gd:673
-msgid "Hear that beeping? Your detector's found a robot part buried nearby. The faster it beeps, the closer you are."
+#: story/objectives.gd:680
+msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr ""
 
-#: story/objectives.gd:675
+#: story/objectives.gd:682
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr ""
 
-#: story/objectives.gd:778
+#: story/objectives.gd:785
 msgid "Your chest is full. Bring it to the bin."
 msgstr ""
 
-#: story/objectives.gd:785
+#: story/objectives.gd:792
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:787
+#: story/objectives.gd:794
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:787
+#: story/objectives.gd:794
 msgid "Carry your bale to the scale by the bin."
 msgstr ""
 
-#: story/objectives.gd:794
+#: story/objectives.gd:801
 msgid "Head home: follow the beam to the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:804
+#: story/objectives.gd:811
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr ""
 
-#: story/shards.gd:66
+#: story/shards.gd:106
 msgid "Something surfaced in the cleared ground. A memory shard."
 msgstr ""
 
@@ -2126,7 +2126,7 @@ msgstr ""
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr ""
 
-#: systems/achievements.gd:147 ui/notify_stack.gd:27 ui/subtitles.gd:413
+#: systems/achievements.gd:147 ui/notify_stack.gd:27 ui/subtitles.gd:453
 msgid "Achievement: %s. %s"
 msgstr ""
 
@@ -2733,116 +2733,120 @@ msgstr ""
 msgid "Needs %s cubes."
 msgstr ""
 
-#: systems/research.gd:176
+#: systems/research.gd:184
 msgid "Unknown research"
 msgstr ""
 
-#: systems/research.gd:182
+#: systems/research.gd:192
 msgid "Already researched"
 msgstr ""
 
-#: systems/research.gd:184
+#: systems/research.gd:194
 msgid "Researching now"
 msgstr ""
 
-#: systems/research.gd:186
+#: systems/research.gd:196
 msgid "Already queued"
 msgstr ""
 
-#: systems/research.gd:198
+#: systems/research.gd:208
 msgid "Queue is full"
 msgstr ""
 
-#: systems/research.gd:330 ui/codex_screen.gd:861
+#: systems/research.gd:340 ui/codex_screen.gd:861
 msgid "%ds"
 msgstr ""
 
-#: systems/research.gd:377
+#: systems/research.gd:387 systems/research.gd:448
 msgid "Research: %s"
 msgstr ""
 
-#: systems/research.gd:387
+#: systems/research.gd:397
 msgid "scoop reach"
 msgstr ""
 
-#: systems/research.gd:387
+#: systems/research.gd:397
 msgid "scoop width"
 msgstr ""
 
-#: systems/research.gd:387
+#: systems/research.gd:397
 msgid "compartment size"
 msgstr ""
 
-#: systems/research.gd:388
+#: systems/research.gd:398
 msgid "bale value"
 msgstr ""
 
-#: systems/research.gd:388
+#: systems/research.gd:398
 msgid "magnet radius"
 msgstr ""
 
-#: systems/research.gd:388
+#: systems/research.gd:398
 msgid "scoop speed"
 msgstr ""
 
-#: systems/research.gd:389
+#: systems/research.gd:399
 msgid "field-note cubes"
 msgstr ""
 
-#: systems/research.gd:389
+#: systems/research.gd:399
 msgid "research speed"
 msgstr ""
 
-#: systems/research.gd:389
+#: systems/research.gd:399
 msgid "lake clarity"
 msgstr ""
 
-#: systems/research.gd:390
+#: systems/research.gd:400
 msgid "speed"
 msgstr ""
 
-#: systems/research.gd:390
+#: systems/research.gd:400
 msgid "work rate"
 msgstr ""
 
-#: systems/research.gd:390
+#: systems/research.gd:400
 msgid "range"
 msgstr ""
 
-#: systems/research.gd:391
+#: systems/research.gd:401
 msgid "bale quality"
 msgstr ""
 
-#: systems/research.gd:391
+#: systems/research.gd:401
 msgid "carry"
 msgstr ""
 
-#: systems/research.gd:392
+#: systems/research.gd:402
 msgid "plant growth"
 msgstr ""
 
-#: systems/research.gd:392
+#: systems/research.gd:402
 msgid "seeds per bloom"
 msgstr ""
 
-#: systems/research.gd:413
+#: systems/research.gd:423
 msgid "Unlocks the %s robot"
 msgstr ""
 
-#: systems/research.gd:415
+#: systems/research.gd:425
 msgid "Unlocks %s seeds"
 msgstr ""
 
-#: systems/research.gd:417
+#: systems/research.gd:427
 msgid "Unlocks: %s"
 msgstr ""
 
-#: systems/research.gd:487
+#: systems/research.gd:571
 msgid "While you were away, research finished: %s."
 msgstr ""
 
-#: systems/research.gd:510
-msgid "Research complete: %s. %s"
+#: systems/research.gd:602
+msgid "New robot plans: %s. %s"
+msgstr ""
+
+#: systems/research.gd:607
+msgid "Research complete: %s."
 msgstr ""
 
 #: systems/robot_builder.gd:262 systems/robot_design.gd:60
@@ -2943,15 +2947,15 @@ msgstr ""
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr ""
 
-#: systems/camp/camp.gd:384
+#: systems/camp/camp.gd:386
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr ""
 
-#: systems/camp/camp.gd:390
+#: systems/camp/camp.gd:392
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr ""
 
-#: systems/camp/camp.gd:396
+#: systems/camp/camp.gd:398
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr ""
 
@@ -3031,6 +3035,10 @@ msgstr ""
 msgid "%s retires to the nursery garden. +%d parts, and the flowers get a caretaker."
 msgstr ""
 
+#: systems/extras/nursery.gd:190
+msgid "NURSERY"
+msgstr ""
+
 #: systems/extras/nursery.gd:214
 msgid "E   Say hi to %s"
 msgstr ""
@@ -3055,7 +3063,7 @@ msgstr ""
 msgid "%s points proudly at a new bud."
 msgstr ""
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:536
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:584
 msgid "E   CD player: %s"
 msgstr ""
 
@@ -3236,23 +3244,31 @@ msgstr ""
 msgid "Find the little lantern bot in the junk"
 msgstr ""
 
-#: systems/glim/glim_director.gd:156
-msgid "A little lantern bot flickers awake in the junk beside you: Glim! He'll light the way at night."
+#: systems/glim/glim_director.gd:248
+msgid "Glim! He held on to your pod the whole way down, just to stay with you. Welcome back, little light."
 msgstr ""
 
-#: systems/glim/glim_director.gd:158
-msgid "Something in the junk blinks back at you: Glim, a little lantern bot! He'll light the way at night."
+#: systems/glim/glim_director.gd:252
+msgid "Glim blinks awake. He held on to the pod the whole way down, just to stay with Lumi."
 msgstr ""
 
-#: systems/glim/glim_director.gd:160
+#: systems/glim/glim_director.gd:268 systems/glim/glim_director.gd:292
 msgid "Tap %s: Glim scans your hex for junk you missed. Hold %s for his upgrades."
 msgstr ""
 
-#: systems/glim/glim_director.gd:216
+#: systems/glim/glim_director.gd:288
+msgid "A little lantern bot flickers awake in the junk beside you: Glim! He'll light the way at night."
+msgstr ""
+
+#: systems/glim/glim_director.gd:290
+msgid "Something in the junk blinks back at you: Glim, a little lantern bot! He'll light the way at night."
+msgstr ""
+
+#: systems/glim/glim_director.gd:347
 msgid "All clear here!"
 msgstr ""
 
-#: systems/glim/glim_director.gd:218
+#: systems/glim/glim_director.gd:349
 msgid "Only big pieces left"
 msgstr ""
 
@@ -4756,60 +4772,60 @@ msgstr ""
 msgid "OLD TOWN   0%"
 msgstr ""
 
-#: ui/hud.gd:306
+#: ui/hud.gd:308
 msgid "WREN SIGNAL   %d%%"
 msgstr ""
 
-#: ui/hud.gd:335
+#: ui/hud.gd:337
 msgid "HEX  %d%% CLEAR"
 msgstr ""
 
-#: ui/hud.gd:339
+#: ui/hud.gd:341
 msgid "%s  BASE"
 msgstr ""
 
-#: ui/hud.gd:342
+#: ui/hud.gd:344
 msgid "CARRYING %d/%d"
 msgstr ""
 
-#: ui/hud.gd:368
+#: ui/hud.gd:370
 msgid "HEX  CLEAR"
 msgstr ""
 
-#: ui/hud.gd:372
+#: ui/hud.gd:374
 msgid "HEX  %s"
 msgstr ""
 
-#: ui/hud.gd:375
+#: ui/hud.gd:377
 msgid "  SUSTAIN %d%%"
 msgstr ""
 
-#: ui/hud.gd:377
+#: ui/hud.gd:379
 msgid "  THIRSTY"
 msgstr ""
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:402
+#: ui/hud.gd:404
 msgid "%s   pick up bale"
 msgstr ""
 
-#: ui/hud.gd:403
+#: ui/hud.gd:405
 msgid "%s   dig up part"
 msgstr ""
 
-#: ui/hud.gd:404
+#: ui/hud.gd:406
 msgid "%s   read memory shard"
 msgstr ""
 
-#: ui/hud.gd:405
+#: ui/hud.gd:407
 msgid "%s   pick up the seed tin"
 msgstr ""
 
-#: ui/hud.gd:406
+#: ui/hud.gd:408
 msgid "%s   set bale down"
 msgstr ""
 
-#: ui/hud.gd:407
+#: ui/hud.gd:409
 msgid "%s   workbench"
 msgstr ""
 
@@ -4817,7 +4833,43 @@ msgstr ""
 msgid "press bale"
 msgstr ""
 
-#: ui/key_hints.gd:114
+#: ui/key_hints.gd:30
+msgid "map"
+msgstr ""
+
+#: ui/key_hints.gd:30
+msgid "command"
+msgstr ""
+
+#: ui/key_hints.gd:30
+msgid "lens"
+msgstr ""
+
+#: ui/key_hints.gd:30
+msgid "goals"
+msgstr ""
+
+#: ui/key_hints.gd:30
+msgid "scoop"
+msgstr ""
+
+#: ui/key_hints.gd:30
+msgid "use"
+msgstr ""
+
+#: ui/key_hints.gd:30
+msgid "drop"
+msgstr ""
+
+#: ui/key_hints.gd:31
+msgid "workbench"
+msgstr ""
+
+#: ui/key_hints.gd:31
+msgid "photo"
+msgstr ""
+
+#: ui/key_hints.gd:121
 msgid "tools"
 msgstr ""
 
@@ -7378,6 +7430,14 @@ msgstr ""
 
 #: data/camp.json:builds.nursery.desc
 msgid "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand."
+msgstr ""
+
+#: data/camp.json:builds.glim.name data/objectives.json:objectives[glim].text
+msgid "Repair Glim"
+msgstr ""
+
+#: data/camp.json:builds.glim.desc
+msgid "The little lantern bot who held on to your pod all the way down. Patch him up and he'll follow you and light the way."
 msgstr ""
 
 #: data/camp.json:builds.camera_bot.name
@@ -12049,6 +12109,14 @@ msgstr ""
 msgid "Build the tower, Lumi. Then I can stay with you."
 msgstr ""
 
+#: data/objectives.json:objectives[glim].desc
+msgid "Workbench, Build tab. The little bot stuck to your pod."
+msgstr ""
+
+#: data/objectives.json:objectives[glim].lines
+msgid "Lumi... something's still holding on to your pod. Small. Lantern-shaped. Patch him up at the bench."
+msgstr ""
+
 #: data/objectives.json:objectives[hex].text
 msgid "Clean the glowing hex"
 msgstr ""
@@ -12117,14 +12185,6 @@ msgstr ""
 msgid "Give your robot a hex to work on. It wants a job."
 msgstr ""
 
-#: data/objectives.json:objectives[haul].desc
-msgid "It carries bales to the scale for you."
-msgstr ""
-
-#: data/objectives.json:objectives[haul].lines
-msgid "A Haul Bug carries bales for you. Build one at the bench."
-msgstr ""
-
 #: data/objectives.json:objectives[seed].text
 msgid "Plant the first seed"
 msgstr ""
@@ -12159,6 +12219,18 @@ msgstr ""
 
 #: data/objectives.json:objectives[base2].lines
 msgid "The base can grow now. Rebuild it from the Upgrades tab at the workbench."
+msgstr ""
+
+#: data/objectives.json:objectives[haul].desc
+msgid "Workbench, Bots tab. It carries bales to the scale for you."
+msgstr ""
+
+#: data/objectives.json:objectives[haul].hint
+msgid "Keep cleaning. WREN is looking for Haul Bug plans."
+msgstr ""
+
+#: data/objectives.json:objectives[haul].lines
+msgid "A Haul Bug carries bales for you. Build one at the bench."
 msgstr ""
 
 #: data/objectives.json:objectives[tower2].text
@@ -12565,6 +12637,22 @@ msgstr ""
 msgid "Bring the Cradle home"
 msgstr ""
 
+#: data/research.json:story_unlocks[haul_rig].name
+msgid "Haul Bug Plans"
+msgstr ""
+
+#: data/research.json:story_unlocks[haul_rig].hint
+msgid "WREN is looking for Haul Bug plans. Keep your Scoopie busy."
+msgstr ""
+
+#: data/research.json:story_unlocks[skimmer_rig].name
+msgid "Skimmer Plans"
+msgstr ""
+
+#: data/research.json:story_unlocks[skimmer_rig].hint
+msgid "Comes later: WREN will send Skimmer plans once the land is greening."
+msgstr ""
+
 #: data/research.json:branches[robotics].name
 msgid "Robotics"
 msgstr ""
@@ -12634,7 +12722,7 @@ msgid "Salvage Logic"
 msgstr ""
 
 #: data/research.json:nodes[salvage_logic].desc
-msgid "Lumi rewrites the base's old assembly logic. The base can build helpers again: Scoopies, Haul Bugs and Skimmers."
+msgid "Lumi rewrites the base's old assembly logic. The base can build a helper again: the Scoopie."
 msgstr ""
 
 #: data/research.json:nodes[seedling_blueprint].name
@@ -14542,6 +14630,14 @@ msgstr ""
 
 #: data/upgrades.json:upgrades[signal_finder].desc
 msgid "Tunes the detector to strong pings: rare part signals show as a violet beam."
+msgstr ""
+
+#: data/upgrades.json:upgrades[hover_jets].name
+msgid "Hover Jets"
+msgstr ""
+
+#: data/upgrades.json:upgrades[hover_jets].desc
+msgid "Little jets under the treads. Lumi floats over lakes instead of stopping at the shore."
 msgstr ""
 
 #: data/weekly.json:twists[scoopies_only].name

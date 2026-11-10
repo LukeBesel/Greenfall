@@ -23,6 +23,13 @@ const FULL: Array = [
 ]
 # l10n:end
 
+
+## [v5text] One-word lowercase names look like ids to tools/extract_strings.py and were skipped,
+## so the HUD key strip stayed English. Naming them in tr() calls puts them in the catalog.
+func _catalog_names() -> Array:
+	return [tr("map"), tr("command"), tr("lens"), tr("goals"), tr("scoop"), tr("use"), tr("drop"),
+		tr("workbench"), tr("photo")]
+
 var mode: int = Mode.HUD
 var world: Node
 var _flow: HFlowContainer
