@@ -1,11 +1,15 @@
 class_name BloomFinale
 extends Node3D
-## Post-game story beat: the finale Bloom milestone. Lumi's Bloom Core is full (story/core_charge.gd) and the
-## planet is green enough: the ark Cradle comes home. A letterboxed cinematic: the ark descends out
+## The ending cinematic of a planet whose launch rule names the "bloom" sequence
+## (story/planet_ending.gd plays it on launch_ready, then shows the end screen; `finished` hands
+## over). The planet is green enough: the ark Cradle comes home. A letterboxed cinematic: the ark descends out
 ## of the sky over Lumi, opens its seed bays and lowers a beam of light; Lumi waves; glowing seed
 ## pods fall and burst into petals; WREN and the Cradle speak; the Seed Ark loop opens. The ark
 ## stays parked over the district (CoreCharge re-places it on later loads). Always hands the
 ## camera, HUD and controls back.
+
+## The cinematic has played through and handed the camera, HUD and controls back.
+signal finished
 
 ## True while the finale owns the screen (CoreCharge waits for it).
 static var playing: bool = false
@@ -25,6 +29,8 @@ const LINES: Array[Array] = [
 ## Where the ark parks, relative to the district spawn.
 const PARK := Vector3(-6.0, 62.0, -70.0)
 
+## Speed of the lines and the camera move (1 = as written). Dev runs raise it to fit a short test.
+var pace: float = 1.0
 var _yaw0: float = 0.6  # [orbE] the orbit's start yaw
 var _framing_logged: bool = false  # [orbE]
 var world: Node
@@ -41,7 +47,7 @@ func _total_time() -> float:
 	var t: float = 0.0
 	for l: Array in LINES:
 		t += float(l[1])
-	return t
+	return t / maxf(pace, 0.01)
 
 
 ## [orbE] The orbit's start yaw with the clearest view of Lumi along the whole move (globe sites
@@ -178,7 +184,7 @@ func play() -> void:
 				_seed_rain(8 if line_i != 6 else 14)
 			if line_i == 4:
 				_open_beam(c)
-			next_line += float(l[1])
+			next_line += float(l[1]) / maxf(pace, 0.01)
 			line_i += 1
 		var k: float = t / total
 		var yaw: float = _yaw0 + k * 1.6  # [orbE] _yaw0: 0.6 on the flat game
@@ -214,14 +220,7 @@ func play() -> void:
 	_restore()
 	GameState.flags["bloom_finale_seen"] = true  # [beat] only once it has played through
 	Audio.music_sting("level_up")
-	# [beat] The end credits roll once, after the first finale; then the game simply carries on.
-	if not GameState.flags.get("credits_seen", false):
-		GameState.flags["credits_seen"] = true
-		await get_tree().create_timer(1.5).timeout
-		var roll: CreditsRoll = CreditsRoll.play(world)
-		print("[finale] credits rolling")
-		await roll.finished
-		print("[finale] credits done; the game goes on")
+	finished.emit()
 	EventBus.toast.emit(Planets.current().name_in(tr("The Cradle is home. The Seed Ark is open: every bloom on {planet} counts toward the next wave. Progress shows on the hologram (M).")), "story")
 	await get_tree().create_timer(1.0).timeout
 	queue_free()

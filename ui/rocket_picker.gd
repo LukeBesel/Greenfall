@@ -13,6 +13,8 @@ var is_open: bool = false
 var entries_fn: Callable = func() -> Array: return []
 ## "" when the rocket can fly now, else why not (shown instead of the buttons).
 var blocker_fn: Callable = func() -> String: return ""
+## What to show when there is nowhere to fly yet ("" = the plain line).
+var empty_fn: Callable = func() -> String: return ""
 
 var _root: Control
 var _list: VBoxContainer
@@ -101,7 +103,10 @@ func _rebuild() -> void:
 		_list.add_child(l)
 	var entries: Array = entries_fn.call()
 	if entries.is_empty():
-		_list.add_child(UITheme.label(tr("No other hubs found yet."), 13, UITheme.MUTED))
+		var empty: String = str(empty_fn.call())
+		var none := UITheme.label(empty if empty != "" else tr("No other hubs found yet."), 13, UITheme.MUTED)
+		none.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_list.add_child(none)
 	for e: Dictionary in entries:
 		var row := PanelContainer.new()
 		row.add_theme_stylebox_override("panel", UITheme.box(Color(INK, 0.07), Color(INK, 0.22), 1, 8, 8))

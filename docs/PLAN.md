@@ -136,7 +136,7 @@ Severity: **P1** blocks finishing or loses progress, **P2** hurts the experience
 
 | # | Sev | Bug | Source |
 |---|---|---|---|
-| B1 | P1 | Planet 1 has no reachable ending on the globe (nothing sets the restored state; 68% cap). | Audit |
+| B1 | P1 | Planet 1 has no reachable ending on the globe. **Fixed (Nov 10):** the launch point fires the finale and the end screen; proven by a forced run, not yet by a full playthrough. | Audit |
 | B2 | P1 | A reload resumes from the last autosave, not the state at exit. | Roadmap, open |
 | B3 | P1 | A hex can stick at 96% with no findable pieces (the 95% auto-clear rule). Verify. | Owner item 36/39 |
 | B4 | P1 | Objective chain is strictly ordered; doing steps out of order may stall it. Verify each step. | Audit |

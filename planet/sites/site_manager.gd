@@ -4,8 +4,10 @@ extends Node3D
 ## when Lumi comes within BUILD_R of it and frees it past FREE_R (only the near site is 3D, the
 ## rest is the far shell), clears junk under building footprints, keeps the `site_inv` shader
 ## global on the nearest site, and owns the hub-region bookkeeping:
-## - planet % (owner decision Nov 8) = clean share of the cells within REGION_RINGS rings of each
-##   BUILT hub (the start hub always counts). planet_fraction() is what the HUD shows.
+## - regions: the cells within rings_of(i) rings of hub i. A hub that is a district's site gets the
+##   district's size, any other the planet's open-ground size (systems/districts.gd reads both from
+##   the planet's "districts" table). planet_fraction() is the clean share of the built hubs'
+##   regions (the soak watch prints it); the planet readouts read Districts and Restoration.
 ## - growth: the rest of the globe greens slowly as hubs thrive. Each hub has a growth radius
 ##   (m) on top of its region that grows with the region's clean share; tick(dt) turns the junk
 ##   cells inside it into restored ground, a few per second, so the far shell and the survey
@@ -19,9 +21,8 @@ signal anchors_fixed(i: int, prefab: SitePrefab)
 
 const BUILD_R: float = 420.0
 const FREE_R: float = 650.0
-## Hub region: cells within this many rings of a hub count for planet % (10 m hexes: ~17 m a
-## ring, so 18 rings ~ 310 m, ~1000 cells a hub).
-const REGION_RINGS: int = 18
+## Metres from one ring of 10 m hexes to the next.
+const RING_M: float = 17.3
 ## Growth beyond the region: metres per unit of thriving per minute, and its cap.
 const GROW_M_PER_MIN: float = 6.0
 const GROW_MAX_M: float = 900.0
@@ -42,6 +43,7 @@ var built: PackedByteArray        # hub built (counts for planet %); hub 0 alway
 var levels: PackedInt32Array      # base level per hub (1..5)
 var growth_m: PackedFloat32Array  # growth radius past the region, per hub
 var regions: Array[PackedInt32Array] = []
+var region_rings := PackedInt32Array()  # region size per hub, in rings (from the planet's districts table)
 var nearest: int = -1
 ## Whose position streams the sites (Lumi); else globe.lumi, else the camera.
 var focus_node: Node3D
@@ -70,17 +72,30 @@ func setup(p_globe: Node3D, p_planet: String, p_sites: Array[Dictionary], p_seed
 	growth_m.resize(sites.size())
 	if sites.size() > 0:
 		built[0] = 1
+	var def: PlanetDefinition = _definition()
 	for i: int in sites.size():
 		var r := Node3D.new()
 		r.name = "HubSite%d" % i
 		add_child(r)
 		roots.append(r)
 		var c: int = int(sites[i]["cell"])
-		var reg: PackedInt32Array = grid.cells_around(c, REGION_RINGS) if grid else PackedInt32Array()
+		region_rings.append(Districts.rings_for_site(def, i))
+		var reg: PackedInt32Array = Districts.region_cells(grid, c, region_rings[i])
 		regions.append(reg)
 		for k: int in reg:
 			if not _region_of.has(k):
 				_region_of[k] = i
+
+
+## The planet this manager's globe belongs to ("" = the one being played).
+func _definition() -> PlanetDefinition:
+	var def: PlanetDefinition = Planets.by_id(StringName(planet_id)) if planet_id != "" else null
+	return def if def else Planets.current()
+
+
+## Size of hub i's region, in rings.
+func rings_of(i: int) -> int:
+	return region_rings[i] if i >= 0 and i < region_rings.size() else 0
 
 
 ## Builds hub i's prefab now (normally done by distance). Returns it (await .rebuilt if not built).
@@ -484,7 +499,7 @@ func grow(dt: float) -> int:
 		if int(g / 8.0) == int(old / 8.0):
 			continue
 		var c0: int = int(sites[i]["cell"])
-		var r_in: float = float(REGION_RINGS) * 17.3
+		var r_in: float = float(rings_of(i)) * RING_M
 		for c: int in grid.cells_within(grid.centers[c0], r_in + g, c0):
 			if _region_of.has(c) or cells.state[c] == 5 or not cells.is_dirty(c):
 				continue

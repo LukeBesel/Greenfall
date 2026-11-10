@@ -14,6 +14,9 @@ signal hub_changed(hub: int)  # -1: asleep
 const WAKE_M: float = 220.0
 const SLEEP_M: float = 320.0
 const POLL_S: float = 0.5
+## The ground round a hub that the frame's systems place things on, in rings of hexes (about
+## SLEEP_M). A placement area, not a district: districts have their own sizes (systems/districts.gd).
+const AREA_RINGS: int = 18
 
 var so: SliceOrbit
 var hub: int = -1
@@ -38,12 +41,12 @@ func node(key: String) -> Node:
 	return get_node_or_null(NodePath(key))
 
 
-## The hub region's cells (the cells that count for planet %).
+## The cells round the hub that the frame's systems place things on (AREA_RINGS rings).
 func region() -> PackedInt32Array:
 	if hub < 0:
 		return PackedInt32Array()
 	var g: OrbitPlanet = so.globe
-	return g.grid.cells_around(int(g.sites[hub]["cell"]), SiteManager.REGION_RINGS)
+	return g.grid.cells_around(int(g.sites[hub]["cell"]), AREA_RINGS)
 
 
 func _process(delta: float) -> void:

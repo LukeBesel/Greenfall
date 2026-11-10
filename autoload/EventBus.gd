@@ -52,3 +52,18 @@ signal codex_unlocked(entry_key: String)
 @warning_ignore_start("unused_signal")
 signal cradle_district_complete(hub_index: int)
 @warning_ignore_restore("unused_signal")
+
+# Districts (cities) and the planet's two goals (systems/districts.gd, systems/restoration.gd).
+# district_entered fires once per save, the first time the player stands in an unlocked district.
+# planet_restoration_changed carries launch progress, 0..1. launch_ready fires once per save when
+# the planet's launch rule is met; planet_restored if the whole planet is ever restored.
+@warning_ignore_start("unused_signal")
+signal district_unlocked(district_id: String)
+signal district_stage_changed(district_id: String, stage: int)
+signal district_entered(district_id: String)
+signal planet_restoration_changed(value: float)
+signal planet_step_reached(planet_id: String, step_id: String)
+signal launch_ready(planet_id: String)
+signal planet_restored(planet_id: String)
+signal ending_shown(planet_id: String)
+@warning_ignore_restore("unused_signal")

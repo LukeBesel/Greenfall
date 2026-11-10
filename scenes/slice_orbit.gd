@@ -24,6 +24,7 @@ extends Node
 ## --orbit-bots=N (stand-in SphereBots, default 4).
 
 const SCHEMA: int = OrbitSave.SCHEMA  # GameState.orbit layout: core/save_orbit.gd
+const BOT_END_SCREEN_S: float = 3.0  # how long the bot leaves the end screen up before "Keep playing"
 const HEX_MILESTONES: Array[int] = [1, 5, 10, 25, 50, 100, 150, 200, 264]  # slice.gd's, by cell id here
 
 var w: Node3D  # the slice (scenes/slice.gd)
@@ -36,6 +37,9 @@ var from_memory: bool = false  # [orbC] reloaded by rocket travel: no offline pa
 var layers: OrbitLayers  # [orbE]
 var view_mode: String = "follow"
 var sites: OrbitSites  # [orbD]
+var districts: Districts  # the cities and their regrowth stages (systems/districts.gd)
+var restoration: Restoration  # launch progress, the launch point, the whole-planet share
+var ending: PlanetEnding  # the launch cinematic and the end screen
 var hub_states: Dictionary = {}  # site index (str) -> {level} (core/save_orbit.gd); the Hub port fills it
 
 
@@ -157,6 +161,7 @@ func build(p_world: Node3D) -> void:
 	w.add_child(hl)
 	hl.setup()
 	EventBus.hex_level_changed.connect(_on_hex_level)
+	_build_districts(hl)
 	var lumi_level := LumiLevel.new()
 	lumi_level.name = "LumiLevel"
 	lumi_level.world = w
@@ -383,6 +388,41 @@ func _on_hex_level(hid: int, lvl: int) -> void:
 
 func cell_at(pos: Vector3) -> int:
 	return globe.cell_at(pos)
+
+
+## The districts, the planet's two goals and its ending, restored from the planet's save section
+## (a save from before districts has none: they derive their state from the globe's hexes).
+func _build_districts(levels: HexLevels) -> void:
+	var def: PlanetDefinition = Planets.current()
+	var site_cells := PackedInt32Array()
+	for s: Dictionary in globe.sites:
+		site_cells.append(int(s["cell"]))
+	districts = Districts.new()
+	districts.name = "Districts"
+	w.add_child(districts)
+	districts.setup(def, globe.grid, globe.cells, site_cells)
+	districts.load_state(GameState.orbit.get("districts", {}))
+	districts.player_cell_fn = _player_cell
+	restoration = Restoration.new()
+	restoration.name = "Restoration"
+	w.add_child(restoration)
+	restoration.setup(def, districts, globe.cells)
+	restoration.load_state(GameState.orbit.get("restoration", {}))
+	ending = PlanetEnding.new()
+	ending.name = "PlanetEnding"
+	ending.setup(w, restoration)
+	ending.kept_playing.connect(on_modal_closed)
+	if DevHooks.has("autoplay"):  # an unattended run reads the end screen and plays on
+		ending.skip_credits = true
+		ending.auto_keep_s = BOT_END_SCREEN_S
+	w.add_child(ending)
+	DistrictsDev.attach(w, districts, restoration, ending, crews, globe.cells, levels)
+
+
+## The hex Lumi stands on (-1 before Lumi exists).
+func _player_cell() -> int:
+	var patch: Patch = w.get("patch")
+	return globe.cell_at(patch.global_position) if patch and patch.is_inside_tree() else -1
 
 
 func try_interact(p: Patch) -> void:
@@ -1085,6 +1125,8 @@ func persist_save() -> void:
 		"lumi": {"at": g.to_dirh(patch.global_position), "fwd": _v_arr(patch.forward()), "cargo": pd},
 		"cubes": cubes,
 		"robots": crews.save_crew(),  # [orbC]
+		"districts": districts.save_state() if districts else {},
+		"restoration": restoration.save_state() if restoration else {},
 		"site_state": sites.save_state() if sites else {},  # [orbD] built hubs, levels, growth (main: renamed from "sites", which orbB uses for site geometry)
 	}
 

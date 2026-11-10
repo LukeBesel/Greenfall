@@ -1,0 +1,16 @@
+{
+  "_doc": "The two goals of this planet (design spec section 9; systems/restoration.gd). stage_values: what a city at each regrowth stage (0 polluted .. 5 thriving) is worth toward the launch point, 0..1; a city's value is stage_values[its stage] plus the step to the next value times its share toward the next stage, and launch progress is the mean over the cities. launch: the launch point, this planet's ending. when: 'all_districts_stage' = every city has reached `stage`. sequence: the cinematic that plays before the end screen (story/planet_ending.gd knows the ids; '' = none). planet: the long goal, never needed to move on. measure: 'cell_share_restored' = land hexes with their pollution gone over all land hexes of the globe. check_s: seconds between checks of the whole-planet share. steps[]: named marks along the way, in rising order: id (saved), name (shown on the map, translated where shown), share (0..1). A step at share 1.0 is the whole planet restored.",
+  "stage_values": [0, 0.25, 0.45, 0.65, 0.85, 1.0],
+  "launch": {"when": "all_districts_stage", "stage": 5, "sequence": "bloom"},
+  "planet": {
+    "measure": "cell_share_restored",
+    "check_s": 2.0,
+    "steps": [
+      {"id": "first_green", "name": "First green", "share": 0.01},
+      {"id": "green_belt", "name": "Green belt", "share": 0.05},
+      {"id": "quarter_alive", "name": "A quarter alive", "share": 0.25},
+      {"id": "half_alive", "name": "Half the world", "share": 0.5},
+      {"id": "whole_planet", "name": "The whole planet", "share": 1.0}
+    ]
+  }
+}

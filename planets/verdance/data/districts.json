@@ -1,0 +1,20 @@
+{
+  "_doc": "The cities of this planet in play order (design spec section 1; systems/districts.gd). Each one is a chapter. stage_share: the share of a city's land hexes that must have reached a regrowth stage for the city to be at that stage. open_ground_rings: region size of a hub site that is not a city (open ground: optional, counted only for the whole planet). open_ground_travel: when the rocket offers open-ground sites: 'all_unlocked' = once every city is unlocked, 'always', 'never'. districts[]: id (never changes once shipped: saves use it), name (shown to the player, translated where shown), site (index of the hub site the city stands on), rings (size: the hexes within this many rings of the site's hex, 1 + 3r(r+1) of them away from the grid's twelve five-sided cells), pollution (the pollution kinds its hexes hold; read by the pollution system, not by districts.gd), unlock (the rule that opens the city: {type: 'start'} = open from a new game; {type: 'district_stage', district, stage} = when that city reaches that stage). Sizes and the unlock stage are the accepted balance numbers (design spec section 17).",
+  "stage_share": 0.8,
+  "open_ground_rings": 18,
+  "open_ground_travel": "all_unlocked",
+  "districts": [
+    {"id": "old_town", "name": "Old Town", "site": 0, "rings": 6, "pollution": ["litter"],
+     "unlock": {"type": "start"}},
+    {"id": "scrapyard", "name": "Ironside", "site": 7, "rings": 9, "pollution": ["litter", "wrecks"],
+     "unlock": {"type": "district_stage", "district": "old_town", "stage": 4}},
+    {"id": "kettle_bay", "name": "Kettle Bay", "site": 3, "rings": 12, "pollution": ["litter", "wrecks", "slick"],
+     "unlock": {"type": "district_stage", "district": "scrapyard", "stage": 4}},
+    {"id": "highreach", "name": "Highreach", "site": 8, "rings": 16, "pollution": ["litter", "wrecks", "slick", "smog"],
+     "unlock": {"type": "district_stage", "district": "kettle_bay", "stage": 4}},
+    {"id": "lowmeadow", "name": "Lowmeadow", "site": 9, "rings": 20, "pollution": ["litter", "wrecks", "smog", "blight"],
+     "unlock": {"type": "district_stage", "district": "highreach", "stage": 4}},
+    {"id": "old_capital", "name": "Old Capital", "site": 1, "rings": 26, "pollution": ["litter", "wrecks", "slick", "smog", "blight"],
+     "unlock": {"type": "district_stage", "district": "lowmeadow", "stage": 4}}
+  ]
+}

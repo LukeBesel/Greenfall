@@ -68,6 +68,9 @@ func target_of(i: int) -> float:
 func value_of(i: int) -> float:
 	var g: Dictionary = chain[i]
 	var key: String = str(g.get("key", ""))
+	var planet_measure: float = Restoration.measure(str(g.get("type", "stat")), key)  # launch, city_stage, cities_restored
+	if planet_measure >= 0.0:
+		return planet_measure
 	match str(g.get("type", "stat")):
 		"stat":
 			var v: Variant = GameState.stats.get(key, 0.0)

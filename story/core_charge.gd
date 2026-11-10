@@ -3,13 +3,14 @@ extends Node
 ## Lumi's Bloom Core: the charge (0..1) its green-light core gets back from the life it grows.
 ## Fed by blooms (stats.plants_bloomed), this district's hex levels (plants/hex_levels.gd) and
 ## progress toward the finale Bloom milestone (systems/bloom.gd: Thriving hexes / districts /
-## planet fraction). It never drops. 100% is exactly the finale milestone, which plays the finale
-## (story/bloom_finale.gd: the ark comes home). Milestone beats, each once:
+## planet fraction). It never drops. 100% is exactly the finale milestone. It is Lumi's own story
+## thread, not the planet's measure: the planet's ending is the launch point
+## (systems/restoration.gd). Milestone beats, each once:
 ##   25%  WREN's signal clears; a memory of the ark's garden deck (off-world flashback).
 ##   50%  Lumi's glow brightens for good (PatchModel.core_glow).
 ##   75%  That night the ark is seen as a moving star crossing the sky; afterwards it crosses
 ##        every night.
-##  100%  The core is full (the Bloom finale).
+##  100%  The core is full (a line; the ending cinematic belongs to the launch point).
 ## State: flags.core_charge (float, max so far), flags.core_beats (Array of reached milestones).
 ## Dev: --core-charge=0.6 sets the stored charge; --core-beat=25|50|75|100 plays that beat.
 
@@ -203,7 +204,7 @@ func _play(beat: int) -> void:
 			EventBus.toast.emit(tr("Bloom Core 100%. Lumi's core is full of green light."), "story")
 			var bl: Node = world.get_node_or_null("Bloom")
 			if DevHooks.get_f("core-beat", 0.0) == 100.0 and bl is Bloom:
-				(bl as Bloom).play_finale(true)
+				(bl as Bloom).play_finale()
 	_busy = false
 
 
