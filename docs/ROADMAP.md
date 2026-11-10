@@ -18,12 +18,12 @@ The round world is the game, and the work is on its first planet, Verdance. The 
 - **Glim:** a story build, the lantern bot who held on to the pod.
 - **Reach:** every collectible and objective target stands on reachable ground (`--target-reach`).
 - **Map:** our own survey style with sprout, Lumi and plume glyphs. Travel is at the rocket (press E), not in the map. Glyphs no longer cover each other on the start hub, the map shows the HUD's planet %, and the round game has one system map.
-- **Text:** all 3,991 strings are translated into German, French, Spanish, Brazilian Portuguese, Simplified Chinese and Japanese. A test fails when an early-game string has no translation.
-- **Checks:** 960 unit tests, the save round trips (flat and `--orbit`) and the two-process orbit reload. The dev checks are listed in CLAUDE.md.
+- **Text:** all 3,992 strings are translated into German, French, Spanish, Brazilian Portuguese, Simplified Chinese and Japanese. A test fails when an early-game string has no translation.
+- **Checks:** 967 unit tests, the save round trips (flat and `--orbit`) and the two-process orbit reload. The dev checks are listed in CLAUDE.md.
 
 **Open**
 - **Renderers:** every render so far used opengl3 (Compatibility). Nobody has looked at Verdance on Forward+ or Metal, and the owner's Mac perf run (`--quality=1 --perf`) is still to do.
-- **Look:** the globe's light is harsher than the flat world's, and the pad can look pale at noon. A flat grey sea on the horizon and a thin straight line across the junk field were reported and not rechecked since the water fix (docs/QA_VERDANCE.md, 12 and 13).
+- **Look:** the globe's light was harsher than the flat world's and the pad looked pale at noon. v5look's warm-light and matte-pad pass is merged, but the owner has not seen it yet. A flat grey sea on the horizon and a thin straight line across the junk field were reported and not rechecked since the water fix (docs/QA_VERDANCE.md, 12 and 13).
 - **Hinterland:** the suburb houses have no pitched roofs, there are no road strips between houses, and there is no walk check there.
 - **Autoplay:** the bot's stuck escapes climb in the garden phase (13 at 47 min, 77 at 107 min).
 - **Bale clipping** into Lumi's body (item 22) has not been reproduced.
