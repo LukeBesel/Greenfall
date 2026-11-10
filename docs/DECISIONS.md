@@ -432,3 +432,5 @@ The owner asked for more attention on the world's goals and look (full cities ro
 - **"The entire world is trashed, no cleared spots" is the wanted start state**, so junk now reaches the town centres.
 - **A changed fresh world does not have to match old saves' worlds.** Old saves keep loading with their own world; new games get the improved one.
 - Quick wins Q1-Q14 are applied first (task M3-17b), each kept only after a before-and-after render.
+- **Second balance proposal accepted (design section 17).** Largest price 4,200 cubes (was 39,383), peak income 103 a second (was 1,739), launch at about 3 h 45 with 149 robots. The lead confirmed the rule that a hex, not a unit of waste, has a cube value.
+- **Open for the owner:** on these numbers the whole planet needs hundreds of robots (about 115 to 460 depending on how many hours it should take), not thousands. Making "thousands" true means slower robots far from a base or a much shorter target time; the lead has not changed anything for this.

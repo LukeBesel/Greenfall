@@ -1,6 +1,6 @@
 # Greenfall: Planet 1 tasks
 
-The work list for `docs/PLAN.md`. One row per task. **Kind** is LEAD (the lead does it) or DELEGATE (a subagent does it). A task is done only when its acceptance criteria pass, the code reviewer has approved it and the QA tester has run the suite. Status values: todo, doing, review, done. In progress now (Nov 10): M3-01 second run, M3-17b. Next: M1-10, M1-05.
+The work list for `docs/PLAN.md`. One row per task. **Kind** is LEAD (the lead does it) or DELEGATE (a subagent does it). A task is done only when its acceptance criteria pass, the code reviewer has approved it and the QA tester has run the suite. Status values: todo, doing, review, done. In progress now (Nov 10): M3-17b. Next: M1-10 with M3-03 (cities and the launch point), then M3-19, M3-20.
 
 Every milestone ends with the same gate (not repeated below): full test suite, save round trip, exit check, bot playthrough, engagement review, the dummy-planet reusability test, docs updated, a commit, and a short report to the owner.
 
@@ -44,7 +44,7 @@ Agents: architect (systems-architect-assistant), builder (systems-builder), save
 
 | ID | Title | Owner | Kind | Files | Depends | Acceptance |
 |---|---|---|---|---|---|---|
-| M3-01 | Balance targets and curves for all six districts | lead | LEAD | `planets/verdance/data/balance.json`, `docs/design/PLANET1_DESIGN.md` | M1-12 | **First proposal done (Nov 10), merged:** `docs/reviews/BALANCE_PROPOSAL_P1.md` and `tools/pace_sim/proposals/planet1/`; all 33 required checks pass on paper. Second run in progress with the decisions in design section 16 |
+| M3-01 | Balance targets and curves for all six districts | lead | LEAD | `planets/verdance/data/balance.json`, `docs/design/PLANET1_DESIGN.md` | M1-12 | **First proposal done (Nov 10), merged:** `docs/reviews/BALANCE_PROPOSAL_P1.md` and `tools/pace_sim/proposals/planet1/`; all 33 required checks pass on paper. **Second run done and accepted (Nov 10):** `docs/reviews/BALANCE_PROPOSAL_P1_V2.md`; launch at 113 bot minutes, crew 149, largest price 4,200 cubes; design section 17 |
 | M3-02 | Faster hands (R3): start layout, hex sizes, first upgrades | builder | DELEGATE | `player/patch.gd`, `planets/verdance/data/*`, `planet/sites/yard_site.gd` | M3-01 | Bot: first clean hex under 2 min, then a hex at least every 2 min in the first 15; walking share of the first 10 minutes under 35% |
 | M3-03 | Districts as chapters (R2): district state, order, unlock, travel | builder | DELEGATE | `systems/districts.gd`, `planet/sites/site_manager.gd`, `planets/verdance/data/districts.json` | M1-10 | Six districts unlock in order from data; each tracks its regrowth stage; the planet readout shows district progress, not a 4-decimal planet figure |
 | M3-04 | Pollution kinds 2-5 as data-driven types with their tools | builder | DELEGATE | `systems/pollution.gd`, `planets/verdance/data/pollution.json`, existing lift, skimmer, recycler and planting code | M3-03 | Each kind has spawn rules, a tool gate, a payout and events; adding a kind needs data only (proved on the dummy planet) |

@@ -30,7 +30,7 @@ const CREW_DISTRICT_3: Vector2i = Vector2i(20, 99)
 const CREW_DOUBLE_MIN_S: float = 180.0
 const CREW_DOUBLE_FROM: int = 4
 const CREW_STALL_MAX_S: float = 360.0
-## Building and upgrading: each must be the choice at least this share of the times both were affordable.
+## Building and upgrading: each must take at least this share of the Parts spent on the crew.
 const CHOICE_MIN_SHARE: float = 0.15
 ## Hand work is at least this share of cleaning volume in each of the first districts.
 const HAND_SHARE_MIN: float = 0.1
@@ -39,7 +39,9 @@ const HAND_SHARE_DISTRICTS: int = 3
 const PARTS_WAIT_MAX_S: float = 240.0
 ## Which currency each kind of offer must cost.
 const CUBE_TYPES: PackedStringArray = ["track", "unlock"]
-const PARTS_TYPES: PackedStringArray = ["robot", "repair", "module"]
+const PARTS_TYPES: PackedStringArray = ["robot", "repair", "module", "rocket"]
+## Robots beyond this count are called "thousands".
+const THOUSANDS: float = 1000.0
 
 
 static func build(m: PaceSimRdModel, end_s: float, k: float) -> Array[Dictionary]:
@@ -71,26 +73,87 @@ static func build(m: PaceSimRdModel, end_s: float, k: float) -> Array[Dictionary
 static func figures(m: PaceSimRdModel, end_s: float) -> PackedStringArray:
 	var rec: PaceSimRdLog = m.record
 	var peak_income: float = 0.0
-	var peak_units: float = 0.0
-	for i: int in rec.minutes.size():
-		peak_income = maxf(peak_income, float(rec.minutes[i]["income_rate"]))
-		if i > 0:
-			peak_units = maxf(peak_units, (float(rec.minutes[i]["hand_units"]) + float(rec.minutes[i]["crew_units"])
-				- float(rec.minutes[i - 1]["hand_units"]) - float(rec.minutes[i - 1]["crew_units"])) / PaceSimRdLog.SAMPLE_S)
-	var out: PackedStringArray = ["numbers to judge: largest price %.0f cubes, peak income %.0f cubes a second (bot speed), most cubes held %.0f, cubes held at the launch point %.0f, cubes earned in all %.0f" % [
+	for row: Dictionary in rec.minutes:
+		peak_income = maxf(peak_income, float(row["income_rate"]))
+	var out: PackedStringArray = ["numbers to judge: largest price %.0f cubes, peak income %.1f cubes a second (bot speed), most cubes held %.0f, cubes held at the launch point %.0f, cubes earned in all %.0f" % [
 		_dearest(rec, 0.0, end_s), peak_income, rec.max_cubes_on_hand, m.cubes, m.earned]]
+	out.append_array(planet_figures(m))
+	return out
+
+
+## The long goal, cleaning only: how long the launch crew takes on the rest of the planet, and
+## the crew needed to do it in the listed hours, from the city bases alone and with outposts.
+## Robots work in real time, so these are player hours.
+static func planet_figures(m: PaceSimRdModel) -> PackedStringArray:
+	var p: Dictionary = planet(m)
+	var out: PackedStringArray = ["the whole planet: the six cities are %d of %d cells (%.1f%%); the launch crew of %d clears %.0f units a second at full reach; open ground is taken at %.0f units a hex" % [
+		p["city_hexes"], p["cells"], float(p["city_hexes"]) / float(p["cells"]) * 100.0, p["crew"], p["crew_power"], p["hex_work"]]]
+	out.append("the whole planet from the %d city bases only (each serves %.0f rings, robots keep %.0f%% of their speed): the launch crew takes %.0f hours; %s" % [
+		p["bases"], p["base_rings"], float(p["base_reach"]) * 100.0, p["hours_no_outposts"], _needs(p, "robots_no_outposts")])
+	out.append("the whole planet with %d outposts (each serves %d rings like the largest city, robots keep %.0f%%): the launch crew takes %.0f hours; %s" % [
+		p["outposts"], p["outpost_rings"], float(p["outpost_reach"]) * 100.0, p["hours_outposts"], _needs(p, "robots_outposts")])
+	out.append("'thousands of robots' (%.0f or more) holds only when the planet is to be finished in under %.0f hours without outposts, or under %.0f hours with them" % [
+		THOUSANDS, float(p["hours_no_outposts"]) * float(p["crew"]) / THOUSANDS, float(p["hours_outposts"]) * float(p["crew"]) / THOUSANDS])
+	return out
+
+
+## The whole-planet numbers as a dictionary (see planet_figures).
+static func planet(m: PaceSimRdModel) -> Dictionary:
+	var cfg: Dictionary = m.data.tables["restoration"]["planet"]
 	var city_hexes: int = 0
 	for z: PaceSimRdDistrict in m.zones:
 		city_hexes += z.hexes
-	var cells: int = m.data.planet_cells
-	var left_work: float = float(cells - city_hexes) * m.data.num("restoration.planet.open_ground_hex_work")
-	var hours: float = left_work / maxf(peak_units, 0.001) / 3600.0
-	var examples: PackedStringArray = []
-	for n: Variant in m.data.tables["restoration"]["planet"]["finish_in_hours"]:
-		examples.append("%.0f more bot hours needs about %.0f robots" % [float(n), float(m.robot_total()) * hours / float(n)])
-	out.append("the whole planet: the six cities are %d of %d cells (%.1f%%); cleaning the rest at the launch-point rate (%.0f units a second, %d robots) takes about %.0f bot hours; %s" % [
-		city_hexes, cells, float(city_hexes) / float(cells) * 100.0, peak_units, m.robot_total(), hours, "; ".join(examples)])
+	var left: float = float(m.data.planet_cells - city_hexes)
+	var work: float = left * float(cfg["open_ground_hex_work"])
+	var power: float = maxf(m.rates.crew_far_power(), 0.001)
+	var bases: int = m.zones.size()
+	var base_rings: float = sqrt(left / float(bases) / 3.0)
+	var base_reach: float = m.rates.reach_over(int(round(base_rings)))
+	var outpost_rings: int = int(cfg["outpost_rings"])
+	var outposts: int = int(ceil(left / float(PaceSimRdData.hexes_in(outpost_rings))))
+	var outpost_reach: float = m.rates.reach_over(outpost_rings)
+	var out: Dictionary = {"city_hexes": city_hexes, "cells": m.data.planet_cells, "crew": m.robot_total(), "crew_power": power,
+		"hex_work": float(cfg["open_ground_hex_work"]), "bases": bases, "base_rings": base_rings, "base_reach": base_reach,
+		"outposts": outposts, "outpost_rings": outpost_rings, "outpost_reach": outpost_reach,
+		"hours_no_outposts": work / (power * base_reach) / 3600.0, "hours_outposts": work / (power * outpost_reach) / 3600.0,
+		"hours": cfg["finish_in_hours"], "robots_no_outposts": [], "robots_outposts": []}
+	for n: Variant in cfg["finish_in_hours"]:
+		(out["robots_no_outposts"] as Array).append(float(out["crew"]) * float(out["hours_no_outposts"]) / float(n))
+		(out["robots_outposts"] as Array).append(float(out["crew"]) * float(out["hours_outposts"]) / float(n))
 	return out
+
+
+static func _needs(p: Dictionary, key: String) -> String:
+	var examples: PackedStringArray = []
+	for i: int in (p["hours"] as Array).size():
+		examples.append("%.0f more hours needs about %.0f robots" % [float(p["hours"][i]), float(p[key][i])])
+	return "; ".join(examples)
+
+
+## Per city: crew when it reached stage 4, the longest wait for a new robot while Lumi was based
+## there (player seconds) and the cubes a second earned there (bot speed).
+static func city_rows(m: PaceSimRdModel, end_s: float, k: float) -> PackedStringArray:
+	var out: PackedStringArray = []
+	for z: PaceSimRdDistrict in m.zones:
+		if z.entered_at < 0.0:
+			continue
+		var until: float = _entered(m, z.index + 1, end_s)
+		var from: float = z.entered_at if z.index > 0 else m.record.events.get("first_robot", z.entered_at)
+		var stall: Vector2 = PaceSimReport.longest_gap(_floats(m.record.builds), from, until)
+		var earned_from: float = _earned_at(m.record, z.entered_at)
+		var income: float = (_earned_at(m.record, until) - earned_from) / maxf(until - z.entered_at, 1.0)
+		out.append("%s: crew %d at stage 4, longest wait for a new robot %.0f player s (from bot minute %.1f), income %.1f cubes a second" % [
+			z.id, z.crew_at_stage4, stall.x * k, stall.y / 60.0, income])
+	return out
+
+
+## Cubes earned in all by time `t`, read from the per-minute rows.
+static func _earned_at(rec: PaceSimRdLog, t: float) -> float:
+	var best: float = 0.0
+	for row: Dictionary in rec.minutes:
+		if float(row["minute"]) * PaceSimRdLog.SAMPLE_S <= t + 0.5 * PaceSimRdLog.SAMPLE_S:
+			best = float(row["earned"])
+	return best
 
 
 static func _check(id: String, passed: bool, value: float, shown: String, limit_shown: String, note: String) -> Dictionary:
@@ -132,13 +195,19 @@ static func _parts(m: PaceSimRdModel, end_s: float, k: float) -> Array[Dictionar
 		"at most %.0f" % D1_PARTS_PER_HEX_MAX, "Parts per hex Lumi cleaned in district 1 (%.0f Parts in all, the source's included)" % rec.d1_parts))
 	var robot_at: float = rec.events.get("first_robot", -1.0)
 	var robot_min: float = robot_at / 60.0 * k
-	out.append(_check("first_robot", robot_at >= 0.0 and absf(robot_min - FIRST_ROBOT_MIN) <= FIRST_ROBOT_SLACK_MIN, robot_min,
-		"%.1f min" % robot_min if robot_at >= 0.0 else "never", "%.0f +/- %.0f min" % [FIRST_ROBOT_MIN, FIRST_ROBOT_SLACK_MIN], "player minute of the first robot"))
+	out.append(PaceSimRdReport.used(_check("first_robot", robot_at >= 0.0 and absf(robot_min - FIRST_ROBOT_MIN) <= FIRST_ROBOT_SLACK_MIN, robot_min,
+		"%.1f min" % robot_min if robot_at >= 0.0 else "never", "%.0f +/- %.0f min" % [FIRST_ROBOT_MIN, FIRST_ROBOT_SLACK_MIN], "player minute of the first robot"),
+		absf(robot_min - FIRST_ROBOT_MIN) / FIRST_ROBOT_SLACK_MIN))
 	var gap: Vector2 = PaceSimReport.longest_gap(_floats(rec.parts_ok), 0.0, end_s)
 	var wait: Dictionary = _check("parts_wait", gap.x * k <= PARTS_WAIT_MAX_S, gap.x * k, "%.0f s" % (gap.x * k), "%.0f s" % PARTS_WAIT_MAX_S,
 		"longest time a Parts-priced offer was on the table with none affordable, from bot minute %.1f" % (gap.y / 60.0))
 	wait["advisory"] = true
 	out.append(wait)
+	var cube_gap: Vector2 = PaceSimReport.longest_gap(_floats(rec.cubes_ok), 0.0, end_s)
+	var cube_wait: Dictionary = _check("cubes_wait", cube_gap.x * k <= PARTS_WAIT_MAX_S, cube_gap.x * k, "%.0f s" % (cube_gap.x * k), "%.0f s" % PARTS_WAIT_MAX_S,
+		"longest time with no cube-priced offer affordable, from bot minute %.1f" % (cube_gap.y / 60.0))
+	cube_wait["advisory"] = true
+	out.append(cube_wait)
 	return out
 
 
@@ -146,34 +215,39 @@ static func _crew(m: PaceSimRdModel, end_s: float, k: float) -> Array[Dictionary
 	var rec: PaceSimRdLog = m.record
 	var out: Array[Dictionary] = []
 	var crew: int = m.robot_total()
-	out.append(_check("crew_at_launch", crew >= CREW_LAUNCH.x and crew <= CREW_LAUNCH.y, float(crew), "%d robots" % crew,
-		"%d-%d" % [CREW_LAUNCH.x, CREW_LAUNCH.y], "robots when all six cities thrive"))
+	var crew_mid: float = float(CREW_LAUNCH.x + CREW_LAUNCH.y) * 0.5
+	out.append(PaceSimRdReport.used(_check("crew_at_launch", crew >= CREW_LAUNCH.x and crew <= CREW_LAUNCH.y, float(crew), "%d robots" % crew,
+		"%d-%d" % [CREW_LAUNCH.x, CREW_LAUNCH.y], "robots at the launch point"), absf(float(crew) - crew_mid) / (float(CREW_LAUNCH.y) - crew_mid)))
 	var first: int = m.zones[0].crew_at_stage4
 	var third: int = m.zones[mini(2, m.zones.size() - 1)].crew_at_stage4
 	var climb_ok: bool = first >= CREW_DISTRICT_1.x and first <= CREW_DISTRICT_1.y and third >= CREW_DISTRICT_3.x and third <= CREW_DISTRICT_3.y
 	out.append(_check("crew_climb", climb_ok, float(third), "%d then %d" % [first, third],
 		"%d-%d then %d-%d" % [CREW_DISTRICT_1.x, CREW_DISTRICT_1.y, CREW_DISTRICT_3.x, CREW_DISTRICT_3.y], "robots when district 1 and district 3 reach stage 4"))
+	var third_mid: float = float(CREW_DISTRICT_3.x + CREW_DISTRICT_3.y) * 0.5
+	PaceSimRdReport.used(out[out.size() - 1], absf(float(third) - third_mid) / (float(CREW_DISTRICT_3.y) - third_mid))
 	var fastest: float = INF
 	for i: int in range(CREW_DOUBLE_FROM - 1, rec.builds.size()):
 		var doubled: int = (i + 1) * 2 - 1
 		if doubled < rec.builds.size():
 			fastest = minf(fastest, rec.builds[doubled] - rec.builds[i])
-	out.append(_check("crew_doubling", fastest * k >= CREW_DOUBLE_MIN_S, fastest * k, "%.0f s" % (fastest * k), "at least %.0f s" % CREW_DOUBLE_MIN_S,
-		"fastest the crew ever doubled, from %d robots up (player seconds)" % CREW_DOUBLE_FROM))
+	out.append(PaceSimRdReport.used(_check("crew_doubling", fastest * k >= CREW_DOUBLE_MIN_S, fastest * k, "%.0f s" % (fastest * k), "at least %.0f s" % CREW_DOUBLE_MIN_S,
+		"fastest the crew ever doubled, from %d robots up (player seconds)" % CREW_DOUBLE_FROM), CREW_DOUBLE_MIN_S / maxf(fastest * k, 1.0)))
 	var second_city: float = _entered(m, 1, end_s)
 	var stall: Vector2 = PaceSimReport.longest_gap(_floats(rec.builds), second_city, end_s)
-	out.append(_check("crew_stall", stall.x * k <= CREW_STALL_MAX_S, stall.x * k, "%.0f s" % (stall.x * k), "%.0f s" % CREW_STALL_MAX_S,
-		"longest time without a new robot from district 2 on, from bot minute %.1f" % (stall.y / 60.0)))
+	out.append(PaceSimRdReport.used(_check("crew_stall", stall.x * k <= CREW_STALL_MAX_S, stall.x * k, "%.0f s" % (stall.x * k), "%.0f s" % CREW_STALL_MAX_S,
+		"longest time without a new robot from district 2 on, from bot minute %.1f" % (stall.y / 60.0)), stall.x * k / CREW_STALL_MAX_S))
 	var early: Vector2 = PaceSimReport.longest_gap(_floats(rec.builds), rec.events.get("first_robot", second_city), second_city)
 	var early_check: Dictionary = _check("crew_stall_district_1", early.x * k <= CREW_STALL_MAX_S, early.x * k, "%.0f s" % (early.x * k),
 		"%.0f s" % CREW_STALL_MAX_S, "longest time without a new robot in district 1 after the first (Parts are scarce there by rule), from bot minute %.1f" % (early.y / 60.0))
 	early_check["advisory"] = true
 	out.append(early_check)
-	var builds: int = rec.crew_choices.get("robot", 0)
-	var upgrades: int = rec.crew_choices.get("repair", 0)
-	var low: float = float(mini(builds, upgrades)) / float(maxi(builds + upgrades, 1))
-	out.append(_check("build_or_upgrade_choice", builds + upgrades > 0 and low >= CHOICE_MIN_SHARE, low, "%d build / %d upgrade" % [builds, upgrades],
-		"each at least %.0f%%" % (CHOICE_MIN_SHARE * 100.0), "what was chosen when one more robot and a better robot type were both affordable"))
+	var built: float = m.parts_on_robots
+	var upgraded: float = m.parts_on_repairs
+	var low: float = minf(built, upgraded) / maxf(built + upgraded, 1.0)
+	out.append(_check("build_or_upgrade_choice", built + upgraded > 0.0 and low >= CHOICE_MIN_SHARE, low, "%.0f%% upgrades" % (upgraded / maxf(built + upgraded, 1.0) * 100.0),
+		"each at least %.0f%%" % (CHOICE_MIN_SHARE * 100.0), "Parts spent on a better crew (type upgrades, %.0f) against a bigger one (new robots, %.0f); at the bench with both affordable the player chose %d builds and %d upgrades" % [
+			upgraded, built, rec.crew_choices.get("robot", 0), rec.crew_choices.get("repair", 0)]))
+	PaceSimRdReport.used(out[out.size() - 1], CHOICE_MIN_SHARE / maxf(low, 0.001))
 	var worst: float = 1.0
 	var shares: PackedStringArray = []
 	for z: PaceSimRdDistrict in m.zones:
@@ -184,6 +258,7 @@ static func _crew(m: PaceSimRdModel, end_s: float, k: float) -> Array[Dictionary
 			worst = minf(worst, share)
 	out.append(_check("hand_share_early", worst >= HAND_SHARE_MIN, worst, "%.0f%%" % (worst * 100.0), "at least %.0f%%" % (HAND_SHARE_MIN * 100.0),
 		"lowest hand share of cleaning volume in districts 1-%d; by district: %s" % [HAND_SHARE_DISTRICTS, ", ".join(shares)]))
+	PaceSimRdReport.used(out[out.size() - 1], HAND_SHARE_MIN / maxf(worst, 0.001))
 	return out
 
 

@@ -22,6 +22,8 @@ const FIRST_PIECE_MIN: float = 25.0
 const FIRST_PIECE_SLACK_MIN: float = 5.0
 ## The design set should complete in the last part of the run.
 const SET_NEAR_END_SHARE: float = 0.85
+## The report lists passing checks that used at least this share of their allowance.
+const TIGHT_FROM: float = 0.75
 
 
 ## {beats, checks, districts, spikes, notes}.
@@ -79,10 +81,15 @@ static func lines(report: Dictionary) -> PackedStringArray:
 			_min(d["enter"]), _min(d["stage_at"][1]), _min(d["stage_at"][2]), _min(d["stage_at"][3]), _min(d["source"]), _min(d["stage_at"][4]), _min(d["stage_at"][5]),
 			d["player_min"], d["target_min"], d["crew"], d["target_crew"], float(d["hand_share"]) * 100.0, float(d["target_share"]) * 100.0])
 	out.append("")
-	out.append("checks (limits are player time; measured bot time x bot_to_player):")
+	out.append("checks (every limit is on the PLAYER's clock; measured bot time x bot_to_player):")
 	for c: Dictionary in report["checks"]:
 		var mark: String = "PASS" if c["pass"] else ("NOTE" if bool(c.get("advisory", false)) else "FAIL")
 		out.append("%s  %-26s %10s  (limit %s)  %s" % [mark, c["id"], c["shown"], c["limit_shown"], c["note"]])
+	var tight: PackedStringArray = []
+	for c: Dictionary in report["checks"]:
+		if c["pass"] and not bool(c.get("advisory", false)) and float(c.get("use", 0.0)) >= TIGHT_FROM:
+			tight.append("%s %.0f%%" % [c["id"], float(c["use"]) * 100.0])
+	out.append("note: passing checks that used %.0f%% or more of their allowance: %s" % [TIGHT_FROM * 100.0, ", ".join(tight) if not tight.is_empty() else "none"])
 	for n: String in report["notes"]:
 		out.append("note: " + n)
 	return out
@@ -96,17 +103,24 @@ static func _check(id: String, passed: bool, value: float, shown: String, limit_
 	return {"id": id, "pass": passed, "value": value, "shown": shown, "limit_shown": limit_shown, "note": note}
 
 
+## Adds to a check the share of its allowance it used: under 1.0 passes, 1.0 is the limit. The
+## number search and the sensitivity study use it to see how much room a passing check has.
+static func used(check: Dictionary, use: float) -> Dictionary:
+	check["use"] = use
+	return check
+
+
 static func _at_most(id: String, bot_s: float, k: float) -> Dictionary:
 	var limit: float = LIMITS[id]
 	if bot_s < 0.0:
 		return _check(id, false, -1.0, "never", "%.0f s" % limit, "")
-	return _check(id, bot_s * k <= limit, bot_s * k, "%.0f s" % (bot_s * k), "%.0f s" % limit, "bot %.0f s" % bot_s)
+	return used(_check(id, bot_s * k <= limit, bot_s * k, "%.0f s" % (bot_s * k), "%.0f s" % limit, "bot %.0f s" % bot_s), bot_s * k / limit)
 
 
 static func _gap(id: String, times: Array[float], from: float, to: float, k: float, limit: float) -> Dictionary:
 	var gap: Vector2 = PaceSimReport.longest_gap(times, from, to)
-	return _check(id, gap.x * k <= limit, gap.x * k, "%.0f s" % (gap.x * k), "%.0f s" % limit,
-		"longest gap starts at bot minute %.1f (player %.1f)" % [gap.y / 60.0, gap.y / 60.0 * k])
+	return used(_check(id, gap.x * k <= limit, gap.x * k, "%.0f s" % (gap.x * k), "%.0f s" % limit,
+		"longest gap starts at bot minute %.1f (player %.1f)" % [gap.y / 60.0, gap.y / 60.0 * k]), gap.x * k / limit)
 
 
 static func _floats(a: PackedFloat64Array) -> Array[float]:
@@ -184,8 +198,8 @@ static func _spike_check(spikes: Dictionary, end_s: float, k: float) -> Dictiona
 	var at: PackedStringArray = []
 	for s: float in spikes["times"]:
 		at.append("%.0f" % (s / 60.0 * k))
-	return _check("spike_gap", gap.x * k <= LIMITS["spike_gap"], gap.x * k, "%.0f s" % (gap.x * k), "%.0f s" % LIMITS["spike_gap"],
-		"cleaning power (work units a second) doubled at player minutes [%s]" % ", ".join(at))
+	return used(_check("spike_gap", gap.x * k <= LIMITS["spike_gap"], gap.x * k, "%.0f s" % (gap.x * k), "%.0f s" % LIMITS["spike_gap"],
+		"cleaning power (work units a second) doubled at player minutes [%s]" % ", ".join(at)), gap.x * k / LIMITS["spike_gap"])
 
 
 static func _notes(m: PaceSimRdModel, end_s: float, k: float) -> PackedStringArray:
@@ -201,7 +215,7 @@ static func _notes(m: PaceSimRdModel, end_s: float, k: float) -> PackedStringArr
 	var crew: PackedStringArray = []
 	for type: String in m.robots:
 		crew.append("%s x%d%s" % [type, m.robots[type], " repaired" if m.repaired.get(type, 0) > 0 else ""])
-	notes.append("crew at the end: %d (%s), base level %d" % [m.robot_total(), ", ".join(crew), m.base_level])
+	notes.append("crew at the end: %d robots (listed with the factory buildings: %s), base level %d" % [m.robot_total(), ", ".join(crew), m.base_level])
 	var curve: PackedStringArray = []
 	for i: int in range(CREW_CURVE_STEP_MIN - 1, m.record.minutes.size(), CREW_CURVE_STEP_MIN):
 		curve.append("%d: %d" % [m.record.minutes[i]["minute"], m.record.minutes[i]["robots"]])
@@ -209,13 +223,17 @@ static func _notes(m: PaceSimRdModel, end_s: float, k: float) -> PackedStringArr
 	var by_city: PackedStringArray = []
 	for z: PaceSimRdDistrict in m.zones:
 		by_city.append("%s %d" % [z.id, z.crew_at_stage4])
-	notes.append("crew when each city reached stage 4: %s; Parts the Scroungers carried in: %.0f of %.0f earned; robots the Assemblers built: %d" % [
-		", ".join(by_city), m.scrounged, m.parts_earned, m.assembled])
+	notes.append("crew when each city reached stage 4: %s; Parts the Scroungers carried in: %.0f of %.0f earned (Lumi dug %.0f by hand with nothing else to do); robots the Assemblers built: %d" % [
+		", ".join(by_city), m.scrounged, m.parts_earned, m.dug_by_hand, m.assembled])
 	var spent: PackedStringArray = []
 	for key: String in m.work.seconds:
 		spent.append("%s %.0f%%" % [key, m.work.seconds[key] / end_s * 100.0])
 	notes.append("Lumi's time: " + ", ".join(spent))
 	notes.append_array(PaceSimRdEconomyChecks.figures(m, end_s))
-	notes.append("field data lost with no research active: %.0f; pieces found: %d; cubes left %.0f, Parts left %.0f of %.0f earned, seeds left %.0f" % [
-		m.record.data_lost, m.pieces.size(), m.cubes, m.parts, m.parts_earned, m.seeds])
+	for line: String in PaceSimRdEconomyChecks.city_rows(m, end_s, k):
+		notes.append("city " + line)
+	notes.append("seeds: earned %.0f, spent on planting %.0f, spent on cleansing plants (blight) %.0f, left %.0f; blight work waited on seeds for %.0f bot s" % [
+		m.seeds_earned, m.seeds_planted, m.seeds_cleansing, m.seeds, m.seed_short_s])
+	notes.append("field data: earned %.0f, unspent in the bank at the end %.0f; pieces found: %d; cubes left %.0f, Parts left %.0f of %.0f earned" % [
+		m.data_earned, m.data_bank, m.pieces.size(), m.cubes, m.parts, m.parts_earned])
 	return notes

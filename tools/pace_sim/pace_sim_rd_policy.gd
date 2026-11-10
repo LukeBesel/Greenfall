@@ -24,6 +24,9 @@ const RETURN_SHARE: float = 0.3
 const MIX_HOLD_S: float = 10.0
 ## Added to a research node's field-data cost when ranking a node that only adds to a stat.
 const AMPLIFIER_NODE_RANK: float = 100000.0
+## A track "leads" at equal prices only when it is clearly the best buy: tracks whose gain is
+## within this share of the best gain share the lead.
+const TIE_SHARE: float = 0.1
 ## Seconds before the offers are weighed again after a look that bought nothing.
 const LOOK_AGAIN_S: float = 5.0
 ## What the first parts finder or robot builder is worth to the player's ranking: they add no
@@ -31,8 +34,12 @@ const LOOK_AGAIN_S: float = 5.0
 const CHAIN_ROBOT_GAIN: float = 1.0
 ## Another robot builder is bought once this many times its price in Parts is lying unused.
 const PARTS_PILE_FACTOR: float = 2.0
+## The Assembler's line is paused for the rocket once a rocket part has been on offer, and out
+## of reach, for this many seconds: a player short of Parts stops building robots to launch.
+const ROCKET_PATIENCE_S: float = 90.0
 
-## False: never builds robots or anything only robots need.
+## False: never builds robots or anything only robots need. The one factory the rocket's parts
+## are made in is still built (offers marked "launch"), or the launch point could not be reached.
 var buys_robots: bool = true
 ## True: every robot on offer is bought before any other Parts purchase.
 var rushes_robots: bool = false
@@ -41,10 +48,14 @@ var rushes_robots: bool = false
 var scrounger_share: float = 0.15
 ## Slot -> module to keep fitted whenever it is owned (empty = fit the best for the district).
 var fixed_rig: Dictionary[String, String] = {}
+## Slot -> module worn in that slot until the fixed one is owned (a loadout built late in the run).
+var fallback_rig: Dictionary[String, String] = {}
 
 var _next_look: float = 0.0
 var _mix_type: String = ""
 var _mix_until: float = 0.0
+var _rocket_part: String = ""
+var _rocket_since: float = 0.0
 
 
 ## Called when Lumi is free: buy at most one thing.
@@ -57,7 +68,7 @@ func shop(m: PaceSimRdModel) -> void:
 	_next_look = m.t + LOOK_AGAIN_S
 	var offers: Array[Dictionary] = []
 	for item: Dictionary in m.items():
-		if buys_robots or not bool(item["crew"]):
+		if buys_robots or not bool(item["crew"]) or bool(item["launch"]):
 			offers.append(item)
 	var gate: Dictionary = {}
 	for item: Dictionary in offers:
@@ -81,6 +92,8 @@ func choose(m: PaceSimRdModel) -> String:
 	var z: PaceSimRdDistrict = w.zone()
 	if w.source_open(z):
 		return "source"
+	if m.rocket_ready:
+		return "fit" if m.here == m.rocket_district() else "travel:%d" % m.rocket_district()
 	var can_clean: bool = w.can_clean(z)
 	if w.tending_open():
 		var batch: float = TEND_BATCH_HEXES if can_clean else 0.0001
@@ -99,12 +112,39 @@ func choose(m: PaceSimRdModel) -> String:
 	var back: int = _district_to_water(m)
 	if back >= 0 and moving_on:
 		return "travel:%d" % back
-	return "clean" if can_clean else "idle"
+	if can_clean:
+		return "clean"
+	return "dig" if w.can_dig() else "idle"
 
 
 ## The robot type the Assemblers build next ("" = nothing now). Only types Lumi has built once
-## by hand can be assembled.
+## by hand can be assembled. The line never stops for the rocket (rocket parts are paid from what
+## the line leaves over); it does leave alone the Parts for something new at the bench.
 func next_build(m: PaceSimRdModel) -> String:
+	var type: String = _pick_build(m)
+	if type != "" and m.parts - m.robot_parts(type) < _parts_kept_back(m):
+		return ""
+	return type
+
+
+## Parts the Assembler leaves alone: the dearest research node priced in Parts, or first robot of
+## a type, that is on offer. These are small and open something new.
+func _parts_kept_back(m: PaceSimRdModel) -> float:
+	var keep: float = 0.0
+	var part: Dictionary = m.rocket_next()
+	if part.is_empty() or str(part["id"]) != _rocket_part:
+		_rocket_part = str(part.get("id", ""))
+		_rocket_since = m.t
+	elif m.t - _rocket_since > ROCKET_PATIENCE_S:
+		keep = float(part["parts"])
+	for item: Dictionary in m.items():
+		var first_of_type: bool = str(item["type"]) == "robot" and m.robots.get(str(item["id"]), 0) == 0 and not m.is_building(str(item["id"]))
+		if str(item["type"]) == "research" or first_of_type:
+			keep = maxf(keep, float(item["parts"]))
+	return keep
+
+
+func _pick_build(m: PaceSimRdModel) -> String:
 	var chain: Dictionary = m.data.tables["robots"]["chain"]
 	var finder: String = str(chain["scrounger"])
 	if not buys_robots:
@@ -140,7 +180,7 @@ func value(m: PaceSimRdModel, z: PaceSimRdDistrict) -> float:
 	var r: PaceSimRdRates = m.rates
 	var hand: float = r.hand_power(z) * r.surge_factor()
 	var v: float = W_POWER * log(r.district_power(z)) + W_HAND * log(hand)
-	v += W_INCOME * log(r.hand_income(z, PARTS_AS_CUBES) * r.surge_factor() + r.crew_power(z))
+	v += W_INCOME * log(r.hand_income(z, PARTS_AS_CUBES) * r.surge_factor())
 	if m.work.tending_open():
 		var plant: float = r.plant_rate() + r.crew_tend_rate("plant_rate")
 		var water: float = r.water_rate() + r.crew_tend_rate("water_rate")
@@ -154,6 +194,9 @@ func refit(m: PaceSimRdModel) -> void:
 	for slot: Variant in m.data.tables["rigs"]["slots"]:
 		var want: String = fixed_rig.get(str(slot), "")
 		if want != "" and m.fit(want):
+			continue
+		var until_then: String = fallback_rig.get(str(slot), "")
+		if until_then != "" and m.fit(until_then):
 			continue
 		var best: String = ""
 		var best_v: float = -INF
@@ -209,12 +252,13 @@ func _is_gate(item: Dictionary) -> bool:
 
 
 ## The research node to start: one that opens something new (no stat of its own) before one that
-## only adds to a stat, and the least field data first within each group.
+## only adds to a stat, and the least field data first within each group. A node is started only
+## when the bank already holds its field data, so one slow node never blocks the bench.
 func _cheapest_research(m: PaceSimRdModel, offers: Array[Dictionary]) -> Dictionary:
 	var best: Dictionary = {}
 	var best_rank: float = INF
 	for item: Dictionary in offers:
-		if str(item["type"]) != "research" or not m.can_afford(item):
+		if str(item["type"]) != "research" or not m.can_afford(item) or float(item["data"]) > m.data_bank:
 			continue
 		var opens: bool = (m.data.nodes[str(item["id"])].get("mods", {}) as Dictionary).is_empty()
 		var rank: float = float(item["data"]) + (0.0 if opens else AMPLIFIER_NODE_RANK)
@@ -234,6 +278,7 @@ func _buy_best(m: PaceSimRdModel, offers: Array[Dictionary], gate: Dictionary) -
 	var best_score: Dictionary[String, float] = {"parts": 0.0, "cubes": 0.0}
 	var top_track: String = ""
 	var top_track_score: float = 0.0
+	var track_gains: Dictionary[String, float] = {}
 	var seen: Dictionary[String, bool] = {}
 	var saving_parts: bool = _saving_parts(m, offers)
 	for item: Dictionary in offers:
@@ -243,10 +288,13 @@ func _buy_best(m: PaceSimRdModel, offers: Array[Dictionary], gate: Dictionary) -
 		var pool: String = "parts" if float(item["parts"]) > 0.0 else "cubes"
 		if pool == "parts" and saving_parts:
 			continue
-		var score: float = _gain(m, z, item, before) / maxf(float(item[pool]), 1.0)
+		var gain: float = _gain(m, z, item, before)
+		var score: float = gain / maxf(float(item[pool]), 1.0)
 		if type == "track" and score > top_track_score:
 			top_track_score = score
 			top_track = str(item["id"])
+		if type == "track":
+			track_gains[str(item["id"])] = gain
 		if not m.can_afford(item) or not _fits_beside(item, gate):
 			continue
 		seen[type] = true
@@ -262,17 +310,38 @@ func _buy_best(m: PaceSimRdModel, offers: Array[Dictionary], gate: Dictionary) -
 	if str(pick["type"]) == "track":
 		m.record.track_buys[str(pick["id"])] = m.record.track_buys.get(str(pick["id"]), 0) + 1
 		m.record.track_tops[top_track] = m.record.track_tops.get(top_track, 0) + 1
+		_record_equal_price_lead(m, track_gains)
 	m.rig_dirty = m.rig_dirty or str(pick["type"]) == "module"
 
 
+## Which track would be the best buy if every open track cost the same: the largest gain. Tracks
+## within TIE_SHARE of it share the lead, so two tracks with the same effect do not each "lead"
+## by the order they are listed in.
+func _record_equal_price_lead(m: PaceSimRdModel, gains: Dictionary[String, float]) -> void:
+	var best: float = 0.0
+	for id: String in gains:
+		best = maxf(best, gains[id])
+	if best <= 0.0:
+		return
+	var leaders: PackedStringArray = []
+	for id: String in gains:
+		if gains[id] >= best * (1.0 - TIE_SHARE):
+			leaders.append(id)
+	for id: String in leaders:
+		m.record.track_tops_equal[id] = m.record.track_tops_equal.get(id, 0.0) + 1.0 / float(leaders.size())
+
+
 ## True while something new costs Parts the player does not have yet: a research node that opens
-## a robot type, or the first robot of a type. Until it is bought no Parts go to anything else.
+## a robot type, the first robot of a type, or the next rocket part. Until it is bought no Parts
+## go to anything else.
 func _saving_parts(m: PaceSimRdModel, offers: Array[Dictionary]) -> bool:
 	for item: Dictionary in offers:
 		if float(item["parts"]) <= 0.0 or m.can_afford(item):
 			continue
 		var id: String = str(item["id"])
-		if str(item["type"]) == "research" and (m.data.nodes[id].get("mods", {}) as Dictionary).is_empty():
+		if str(item["type"]) == "rocket":
+			return true
+		if str(item["type"]) == "research":
 			return true
 		if str(item["type"]) == "robot" and m.robots.get(id, 0) == 0:
 			return true

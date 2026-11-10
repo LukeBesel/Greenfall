@@ -4,7 +4,8 @@ extends RefCounted
 ## describes it, played from a PROPOSAL data set in tools/pace_sim/proposals/<name>/.
 ##   godot --headless --path . res://tools/pace_sim/pace_sim.tscn -- --model=redesign
 ##       [--proposal=NAME] [--minutes=N] [--policy=default|rush_robots|no_robots] [--rig=mod,mod,mod]
-##       [--set=path=value,...] [--purchases=1] [--csv=PATH] [--compare=1] [--search=N]
+##       [--set=path=value,...] [--purchases=1] [--csv=PATH] [--compare=1] [--rigs=1]
+##       [--sensitivity=top|all] [--search=N]
 
 const POLICY_DIR: String = "res://tools/pace_sim/rd_policies"
 const DEFAULT_POLICY: String = "default"
@@ -24,7 +25,7 @@ static func load_policy(policy_name: String) -> PaceSimRdPolicy:
 
 ## Plays proposal `proposal` to the ending (or `max_minutes`) and returns {ok, error, proposal,
 ## policy, model, report, real_ms}. opts: "set" = {dotted path: number} overrides of proposal
-## values, "rig" = {slot: module} to keep fitted. The game's progress state is put aside for the
+## values, "rig" = {slot: module} to keep fitted, "rig_before" = {slot: module} worn until then. The game's progress state is put aside for the
 ## run and put back after.
 static func run(proposal: String = DEFAULT_PROPOSAL, max_minutes: float = MAX_MINUTES, policy_name: String = DEFAULT_POLICY,
 		opts: Dictionary = {}) -> Dictionary:
@@ -35,6 +36,7 @@ static func run(proposal: String = DEFAULT_PROPOSAL, max_minutes: float = MAX_MI
 	if policy == null:
 		return {"ok": false, "error": "unknown policy '%s' (no %s/%s.gd)" % [policy_name, POLICY_DIR, policy_name]}
 	policy.fixed_rig.assign(opts.get("rig", {}))
+	policy.fallback_rig.assign(opts.get("rig_before", {}))
 	var started: int = Time.get_ticks_msec()
 	var planet_before: StringName = Planets.current_id()
 	var kept: Array = [GameState.upgrades, GameState.flags, GameState.world, GameState.stats, GameState.currencies]
@@ -78,24 +80,7 @@ static func summary(result: Dictionary) -> PackedStringArray:
 
 ## One line per policy: how the same numbers play for different players.
 static func compare(proposal: String, opts: Dictionary) -> PackedStringArray:
-	var out: PackedStringArray = ["policy          launch(bot min)  hexes  robots  scroungers  purchases  crew when each city reached stage 4   failed checks"]
-	for policy_name: String in COMPARE_POLICIES:
-		var result: Dictionary = run(proposal, MAX_MINUTES, policy_name, opts)
-		if not result["ok"]:
-			out.append("%s: %s" % [policy_name, result["error"]])
-			continue
-		var m: PaceSimRdModel = result["model"]
-		var failed: PackedStringArray = []
-		for c: Dictionary in result["report"]["checks"]:
-			if not c["pass"] and not bool(c.get("advisory", false)):
-				failed.append(str(c["id"]))
-		var crew: PackedStringArray = []
-		for z: PaceSimRdDistrict in m.zones:
-			crew.append(str(z.crew_at_stage4))
-		out.append("%-15s %-16s %5d  %6d  %10d  %9d  %-36s %s" % [policy_name, "%.1f" % float(result["report"]["end_min"]) if result["report"]["ended"] else "none",
-			m.hexes_clean, m.robot_total(), m.robots.get(str(m.data.tables["robots"]["chain"]["scrounger"]), 0), m.record.purchases.size(),
-			", ".join(crew), ", ".join(failed) if not failed.is_empty() else "none"])
-	return out
+	return PaceSimRdStudies.players_lines(PaceSimRdStudies.players(proposal, opts))
 
 
 ## Command line: called by PaceSim when --model=redesign. Returns the process exit code.
@@ -110,6 +95,15 @@ static func main(args: Dictionary[String, String]) -> int:
 		return 0
 	if args.has("compare"):
 		for line: String in compare(proposal, opts):
+			print(line)
+		return 0
+	if args.has("rigs"):
+		for line: String in PaceSimRdStudies.rigs_lines(PaceSimRdStudies.rigs(proposal, opts)):
+			print(line)
+		return 0
+	if args.has("sensitivity"):
+		var which: String = "candidates" if args["sensitivity"] == "all" else "top"
+		for line: String in PaceSimRdStudies.sensitivity_lines(PaceSimRdStudies.sensitivity(proposal, which, opts)):
 			print(line)
 		return 0
 	var result: Dictionary = run(proposal, float(args.get("minutes", str(MAX_MINUTES))), args.get("policy", DEFAULT_POLICY), _with_rig(opts, proposal, args.get("rig", "")))

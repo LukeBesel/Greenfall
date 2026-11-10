@@ -281,3 +281,14 @@ Owner's rule: full cities around the planet, full of junk, with clear world goal
 12. **An early district-sized goal:** "Clear the street" (the first ring of hexes round the base) gives a 10-minute goal inside the first quarter of an hour.
 13. **Surge** unlocks with its growth wave in city 4. It is a moment, not a power spike; spikes come from tools, mastery levels, the hauler, the Scrounger, the Assembler and each city's richer ground.
 14. **Upgrade tracks:** no track leads the "best buy" more than half the time at equal prices; adjust effects, not only prices.
+
+## 17. Accepted numbers (second balance proposal, Nov 10)
+
+`docs/reviews/BALANCE_PROPOSAL_P1_V2.md` and `tools/pace_sim/proposals/planet1/` are the numbers Milestone 3 builds. All 36 single-run and 5 multi-run required checks pass, the numbers survive plus or minus 10% on 30 constants (0 of 60 runs fail), and the suite re-checks them on every run.
+
+- **Launch point:** about 3 h 45 for a new player (113 bot minutes). Crew after each city: 8, 50, 72, 94, 119, 147; 149 robots at launch.
+- **Currency:** largest price 4,200 cubes, peak income 103 cubes a second, 250,140 earned in total, 3,970 held at launch.
+- **A hex has a cube value; a unit of waste does not (confirmed by the lead).** Each city states what one cleaned hex is worth, and Lumi's bales pay their share of it. Heavier hexes in later cities do not pay more per hex beyond the city's own rate, so a power spike is felt in speed and in the city, not in the wallet. This rule, with "robots earn no cubes", is what keeps the numbers small.
+- **Accepted additions from the proposal:** Crew Overhaul (a city 6 research that doubles crew speed: the late spike and a late use for parts and field data); one Assembler on Planet 1 with no extra lines (more lines made crew size unstable; faster lines are for later planets); the shell of an old factory in city 3 gives the parts to stand the Assembler up at once; Lumi can dig buried parts by hand; thriving ground keeps giving a trickle of seeds; robot blueprints wait on the matching mastery; research starts only when its field data is banked; deeper last tiers on the upgrade tracks for players who clean by hand.
+- **The whole planet takes hundreds of robots, not thousands, on these numbers:** the launch crew would need 25 to 31 more hours; finishing in 10, 20 or 40 hours needs about 460, 230 or 115 robots (fewer with outposts). "Thousands" is true only for finishing in under about 5 hours. This is a question for the owner (see DECISIONS).
+- Weak spot to watch when building: the spread between rig loadouts passes narrowly (8.4% against the 8% rule).

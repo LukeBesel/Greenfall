@@ -1,7 +1,15 @@
 {
-  "_doc": "PROPOSAL (task M3-01), not game data. The two goals (spec section 9). launch: the launch point, Planet 1's ending: every listed district at `stage`. A district's value is stage_values[its stage] plus the step to the next value times how far it is toward the next stage (share of hexes at the next stage or above, over districts.json stage_share); the city readout is the mean over the districts. planet: the long goal after the launch point, never required: measure and named steps as in the spec; open_ground_hex_work = units of work the simulator assumes for a hex outside the cities; finish_in_hours = for each number of further bot hours, the report says how many robots finishing the whole planet in that time would take (cleaning only, at the launch-point rate per robot).",
+  "_doc": "PROPOSAL (task M3-01, second run), not game data. The two goals (spec section 9). launch: the launch point, Planet 1's ending: every listed district at `stage` AND the rocket complete. rocket (decision 16.4): the capstone of the launch city `district`. parts are built in order, one at a time: each is ordered at the bench for `parts` Parts once at_progress of the launch city's cleaning work is done (after_source: and its source is shut), takes the Assembler's line for assembly_s (no robot is built meanwhile), then Lumi fits it by hand in fit_s. A district's value is stage_values[its stage] plus the step to the next value times how far it is toward the next stage (share of hexes at the next stage or above, over districts.json stage_share); the city readout is the mean over the districts. planet: the long goal after the launch point, never required: measure and named steps as in the spec; open_ground_hex_work = units of work the simulator assumes for a hex outside the cities (the last city's weight); outpost_rings = the patch one outpost serves; finish_in_hours = for each number of further hours (robots work in real time, so these are player hours), the report says how many robots finishing the whole planet in that time would take, from the city bases alone and with outposts (cleaning only, robots slowed by distance: robots.json distance).",
   "weights": {"per_district": "equal"},
   "stage_values": [0, 0.25, 0.45, 0.65, 0.85, 1.0],
-  "launch": {"when": "all_districts_stage", "stage": 5, "sequence": "bloom"},
-  "planet": {"measure": "cell_share_restored", "stages": [0.01, 0.05, 0.25, 0.5, 1.0], "open_ground_hex_work": 880.0, "finish_in_hours": [10, 40]}
+  "launch": {"when": "all_districts_stage", "stage": 5, "sequence": "bloom",
+    "rocket": {"district": "the_works", "parts": [
+      {"id": "launch_frame", "name": "Launch frame", "parts": 300, "assembly_s": 45.0, "fit_s": 20.0, "at_progress": 0.35},
+      {"id": "fuel_tanks", "name": "Fuel tanks", "parts": 350, "assembly_s": 45.0, "fit_s": 20.0, "at_progress": 0.45},
+      {"id": "engine_cluster", "name": "Engine cluster", "parts": 400, "assembly_s": 45.0, "fit_s": 20.0, "at_progress": 0.55},
+      {"id": "guidance_core", "name": "Guidance core", "parts": 450, "assembly_s": 45.0, "fit_s": 20.0, "at_progress": 0.65},
+      {"id": "hull_plates", "name": "Hull plates", "parts": 500, "assembly_s": 45.0, "fit_s": 20.0, "at_progress": 0.75},
+      {"id": "nose_cone", "name": "Nose cone", "parts": 600, "assembly_s": 45.0, "fit_s": 20.0, "at_progress": 0.85, "after_source": true}
+    ]}},
+  "planet": {"measure": "cell_share_restored", "stages": [0.01, 0.05, 0.25, 0.5, 1.0], "open_ground_hex_work": 4600.0, "outpost_rings": 26, "finish_in_hours": [10, 20, 40]}
 }
