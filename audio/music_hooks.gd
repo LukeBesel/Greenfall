@@ -34,9 +34,9 @@ func _ready() -> void:
 			Audio.music_sting("hex_clean"))
 	Audio.set_music_mood("explore")
 	_tunes_setup()  # [tunes]
-	# [sound] Dev: --planet-theme=ochre|tidewell|rime|anvil and --restoration=0..1 (pins it).
+	# [sound] Dev: --planet-theme=<planet id> and --restoration=0..1 (pins it).
 	if DevHooks.has("planet-theme"):
-		var ok: bool = Audio.set_planet_theme(DevHooks.get_s("planet-theme", "verdance"))
+		var ok: bool = Audio.set_planet_theme(DevHooks.get_s("planet-theme", String(Planets.current_id())))
 		print("[sound] planet theme %s (%s)" % [Audio.get_planet_theme(), "ok" if ok else "unknown id ignored"])
 	if DevHooks.has("restoration"):
 		_pinned_resto = clampf(DevHooks.get_f("restoration", 0.0), 0.0, 1.0)

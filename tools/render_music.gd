@@ -18,7 +18,7 @@ var scenarios: Dictionary = {
 	"menu": [[0.0, "mood", "menu"], [12.0, "sting", "first_sprout"]],
 	"transitions": [[0.0, "mood", "explore"], [0.0, "int", 0.7], [15.0, "mood", "night"], [30.0, "mood", "cinematic"], [45.0, "mood", "base"], [50.0, "sting", "hex_clean"]],
 	# [sound] Composed tracks are added in _init() (one scenario per track, plus restored ones).
-	"rotation": [[0.0, "theme", "verdance"], [0.0, "int", 0.6], [0.0, "activity", 0.8], [0.0, "gaps", true]],
+	"rotation": [[0.0, "theme", "regrowth"], [0.0, "int", 0.6], [0.0, "activity", 0.8], [0.0, "gaps", true]],
 }
 
 

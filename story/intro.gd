@@ -230,7 +230,7 @@ func _drop_cover() -> void:
 ## Kept in one place so tests can check the subtitle timing rule against all of them.
 static func lines() -> Dictionary:
 	var out: Dictionary = {
-		"title": [TranslationServer.translate("Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."), ""],
+		"title": [Planets.current().name_in(TranslationServer.translate("Three hundred years ago, the last seeds left {planet} aboard the ark Cradle.")), ""],
 		"vault": [TranslationServer.translate("Lumi, the ark's little seed-keeper, sang to the seedlings every night."), ""],
 		"hum": [TranslationServer.translate("Humming again, Lumi? They can't hear you, you know. ...They do grow faster when you do."), "wren"],
 		"storm": [TranslationServer.translate("Then, one night, the sky came apart."), ""],

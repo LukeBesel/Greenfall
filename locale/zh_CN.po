@@ -1348,16 +1348,16 @@ msgid "Setting the scene"
 msgstr "正在布置场景"
 
 #: steam/demo.gd:73
-msgid "Base level %d is the top of the demo. The full game goes all the way to level 5, then launches rockets to the rest of Verdance."
-msgstr "基地 %d 级是试玩版的上限。完整版可以一路升到 5 级，然后发射火箭前往 Verdance 的其他地方。"
+msgid "Base level %d is the top of the demo. The full game goes all the way to level 5, then launches rockets to the rest of {planet}."
+msgstr "基地 %d 级是试玩版的上限。完整版可以一路升到 5 级，然后发射火箭前往 {planet} 的其他地方。"
 
 #: steam/demo_end_screen.gd:36
 msgid "END OF THE DEMO"
 msgstr "试玩版结束"
 
 #: steam/demo_end_screen.gd:46
-msgid "The launch pad is waiting, but the rest of Verdance is in the full game."
-msgstr "发射台已就绪，但 Verdance 的其余部分在完整版里。"
+msgid "The launch pad is waiting, but the rest of {planet} is in the full game."
+msgstr "发射台已就绪，但 {planet} 的其余部分在完整版里。"
 
 #: steam/demo_end_screen.gd:47
 msgid "Your base has grown as far as the demo goes."
@@ -1408,8 +1408,8 @@ msgid "Lumi. Stop for a second. Look up."
 msgstr "Lumi。停一下。抬头看。"
 
 #: story/bloom_finale.gd:16
-msgid "Your core just hit full. Every bloom on Verdance is shining green, and the Cradle can see all of it."
-msgstr "你的核心刚刚充满了。Verdance 上的每一朵花都在闪着绿光，Cradle号全都看得见。"
+msgid "Your core just hit full. Every bloom on {planet} is shining green, and the Cradle can see all of it."
+msgstr "你的核心刚刚充满了。{planet} 上的每一朵花都在闪着绿光，Cradle号全都看得见。"
 
 #: story/bloom_finale.gd:17
 msgid "CRADLE:  GREEN DETECTED.  SEED-KEEPER LM-1 LOCATED.  BEGINNING DESCENT."
@@ -1420,24 +1420,24 @@ msgid "Three hundred years we waited up there for proof the soil remembered how.
 msgstr "我们在上面等了三百年，等一个证明，证明土地还记得怎么生长。你就是那个证明。"
 
 #: story/bloom_finale.gd:19
-msgid "CRADLE:  WELCOME HOME, SMALL ROBOT.  ...WELCOME HOME, VERDANCE."
-msgstr "CRADLE号：欢迎回家，小机器人。……欢迎回家，VERDANCE。"
+msgid "CRADLE:  WELCOME HOME, SMALL ROBOT.  ...WELCOME HOME, {PLANET}."
+msgstr "CRADLE号：欢迎回家，小机器人。……欢迎回家，{PLANET}。"
 
 #: story/bloom_finale.gd:20
 msgid "It called you small. From the Cradle, that's a compliment. I checked."
 msgstr "它说你小。从 Cradle号嘴里说出来，这是夸奖。我查过了。"
 
 #: story/bloom_finale.gd:21
-msgid "The seed bays are open. From now on every bloom, anywhere on Verdance, fills the next Seed Ark wave."
-msgstr "种子舱打开了。从现在起，Verdance 上任何地方的每一朵花，都会填充下一波种子方舟。"
+msgid "The seed bays are open. From now on every bloom, anywhere on {planet}, fills the next Seed Ark wave."
+msgstr "种子舱打开了。从现在起，{planet} 上任何地方的每一朵花，都会填充下一波种子方舟。"
 
 #: story/bloom_finale.gd:22
 msgid "Nothing is waiting to end, {name}. Nobody is keeping score. We're home. We just keep planting."
 msgstr "没有什么在等着结束，{name}。没有人在计分。我们到家了。我们只是继续种下去。"
 
 #: story/bloom_finale.gd:227
-msgid "The Cradle is home. The Seed Ark is open: every bloom on Verdance counts toward the next wave. Progress shows on the hologram (M)."
-msgstr "Cradle号到家了。种子方舟已开启：Verdance 上的每一朵花都计入下一波。进度显示在全息图上（M）。"
+msgid "The Cradle is home. The Seed Ark is open: every bloom on {planet} counts toward the next wave. Progress shows on the hologram (M)."
+msgstr "Cradle号到家了。种子方舟已开启：{planet} 上的每一朵花都计入下一波。进度显示在全息图上（M）。"
 
 #: story/core_charge.gd:206
 msgid "Bloom Core 100%. Lumi's core is full of green light."
@@ -1795,8 +1795,8 @@ msgid "Homecoming"
 msgstr "归乡"
 
 #: story/intro.gd:237
-msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
-msgstr "三百年前，最后的种子乘着方舟 Cradle号离开了 Verdance。"
+msgid "Three hundred years ago, the last seeds left {planet} aboard the ark Cradle."
+msgstr "三百年前，最后的种子乘着方舟 Cradle号离开了 {planet}。"
 
 #: story/intro.gd:238
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
@@ -2163,8 +2163,8 @@ msgid "Codex entry: %s"
 msgstr "图鉴条目：%s"
 
 #: systems/bloom.gd:169
-msgid "Verdance Bloom %d / %d  ·  next: %s"
-msgstr "Verdance 绽放 %d / %d  ·  下一个：%s"
+msgid "{planet} Bloom %d / %d  ·  next: %s"
+msgstr "{planet} 绽放 %d / %d  ·  下一个：%s"
 
 #: systems/bloom.gd:171
 msgid "Seed Ark wave %d  ·  %d / %d blooms planet-wide"
@@ -2179,8 +2179,8 @@ msgid "Seed Ark wave %d planted across Verdance. The Cradle drops a gift. Next w
 msgstr "种子方舟第 %d 波已在 Verdance 各地种下。Cradle号投下了一份礼物。下一波：%d 朵花。"
 
 #: systems/bloom.gd:268
-msgid "Verdance Bloom: %s. %s"
-msgstr "Verdance 绽放：%s。%s"
+msgid "{planet} Bloom: %s. %s"
+msgstr "{planet} 绽放：%s。%s"
 
 #: systems/codex.gd:40
 msgid "Somewhere under the junk."
@@ -4582,7 +4582,7 @@ msgid "Survey"
 msgstr "勘测"
 
 #: ui/globe_view.gd:139
-msgid "Verdance  ·  seed-keeper's survey"
+msgid "{planet}  ·  seed-keeper's survey"
 msgstr ""
 
 #: ui/globe_view.gd:155
@@ -5748,8 +5748,8 @@ msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the
 msgstr "发射台需要 5 级基地（你的是 %d 级）。请在升级页签中升级基地。"
 
 #: ui/rockets_panel.gd:48
-msgid "Rockets to the rest of Verdance are in the full game. The demo stays in the first district."
-msgstr "飞往 Verdance 其他地方的火箭在完整版中。试玩版只在第一个街区。"
+msgid "Rockets to the rest of {planet} are in the full game. The demo stays in the first district."
+msgstr "飞往 {planet} 其他地方的火箭在完整版中。试玩版只在第一个街区。"
 
 #: ui/rockets_panel.gd:57
 msgid "NEARBY BASES"

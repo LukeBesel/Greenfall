@@ -1347,16 +1347,16 @@ msgid "Setting the scene"
 msgstr "[Šéţţîñĝ ţĥé šçéñé ~~~]"
 
 #: steam/demo.gd:73
-msgid "Base level %d is the top of the demo. The full game goes all the way to level 5, then launches rockets to the rest of Verdance."
-msgstr "[Bàšé ļévéļ %d îš ţĥé ţôþ ôƒ ţĥé ðémô. Ţĥé ƒûļļ ĝàmé ĝôéš àļļ ţĥé ŵàý ţô ļévéļ 5, ţĥéñ ļàûñçĥéš ŕôçķéţš ţô ţĥé ŕéšţ ôƒ Véŕðàñçé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Base level %d is the top of the demo. The full game goes all the way to level 5, then launches rockets to the rest of {planet}."
+msgstr "[Bàšé ļévéļ %d îš ţĥé ţôþ ôƒ ţĥé ðémô. Ţĥé ƒûļļ ĝàmé ĝôéš àļļ ţĥé ŵàý ţô ļévéļ 5, ţĥéñ ļàûñçĥéš ŕôçķéţš ţô ţĥé ŕéšţ ôƒ {planet}. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: steam/demo_end_screen.gd:36
 msgid "END OF THE DEMO"
 msgstr "[ÉÑÐ ÔF ŢĤÉ ÐÉMÔ ~~]"
 
 #: steam/demo_end_screen.gd:46
-msgid "The launch pad is waiting, but the rest of Verdance is in the full game."
-msgstr "[Ţĥé ļàûñçĥ þàð îš ŵàîţîñĝ, bûţ ţĥé ŕéšţ ôƒ Véŕðàñçé îš îñ ţĥé ƒûļļ ĝàmé. ~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "The launch pad is waiting, but the rest of {planet} is in the full game."
+msgstr "[Ţĥé ļàûñçĥ þàð îš ŵàîţîñĝ, bûţ ţĥé ŕéšţ ôƒ {planet} îš îñ ţĥé ƒûļļ ĝàmé. ~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: steam/demo_end_screen.gd:47
 msgid "Your base has grown as far as the demo goes."
@@ -1407,8 +1407,8 @@ msgid "Lumi. Stop for a second. Look up."
 msgstr "[Ļûmî. Šţôþ ƒôŕ à šéçôñð. Ļôôķ ûþ. ~~~~~~~~~]"
 
 #: story/bloom_finale.gd:16
-msgid "Your core just hit full. Every bloom on Verdance is shining green, and the Cradle can see all of it."
-msgstr "[Ýôûŕ çôŕé ĵûšţ ĥîţ ƒûļļ. Évéŕý bļôôm ôñ Véŕðàñçé îš šĥîñîñĝ ĝŕééñ, àñð ţĥé Çŕàðļé çàñ šéé àļļ ôƒ îţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Your core just hit full. Every bloom on {planet} is shining green, and the Cradle can see all of it."
+msgstr "[Ýôûŕ çôŕé ĵûšţ ĥîţ ƒûļļ. Évéŕý bļôôm ôñ {planet} îš šĥîñîñĝ ĝŕééñ, àñð ţĥé Çŕàðļé çàñ šéé àļļ ôƒ îţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: story/bloom_finale.gd:17
 msgid "CRADLE:  GREEN DETECTED.  SEED-KEEPER LM-1 LOCATED.  BEGINNING DESCENT."
@@ -1419,24 +1419,24 @@ msgid "Three hundred years we waited up there for proof the soil remembered how.
 msgstr "[Ţĥŕéé ĥûñðŕéð ýéàŕš ŵé ŵàîţéð ûþ ţĥéŕé ƒôŕ þŕôôƒ ţĥé šôîļ ŕémémbéŕéð ĥôŵ. Ýôû ŵéŕé ţĥé þŕôôƒ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: story/bloom_finale.gd:19
-msgid "CRADLE:  WELCOME HOME, SMALL ROBOT.  ...WELCOME HOME, VERDANCE."
-msgstr "[ÇŔÀÐĻÉ:  ŴÉĻÇÔMÉ ĤÔMÉ, ŠMÀĻĻ ŔÔBÔŢ.  ...ŴÉĻÇÔMÉ ĤÔMÉ, VÉŔÐÀÑÇÉ. ~~~~~~~~~~~~~~~~~~~]"
+msgid "CRADLE:  WELCOME HOME, SMALL ROBOT.  ...WELCOME HOME, {PLANET}."
+msgstr "[ÇŔÀÐĻÉ:  ŴÉĻÇÔMÉ ĤÔMÉ, ŠMÀĻĻ ŔÔBÔŢ.  ...ŴÉĻÇÔMÉ ĤÔMÉ, {PLANET}. ~~~~~~~~~~~~~~~~~~~]"
 
 #: story/bloom_finale.gd:20
 msgid "It called you small. From the Cradle, that's a compliment. I checked."
 msgstr "[Îţ çàļļéð ýôû šmàļļ. Fŕôm ţĥé Çŕàðļé, ţĥàţ'š à çômþļîméñţ. Î çĥéçķéð. ~~~~~~~~~~~~~~~~~~~~~]"
 
 #: story/bloom_finale.gd:21
-msgid "The seed bays are open. From now on every bloom, anywhere on Verdance, fills the next Seed Ark wave."
-msgstr "[Ţĥé šééð bàýš àŕé ôþéñ. Fŕôm ñôŵ ôñ évéŕý bļôôm, àñýŵĥéŕé ôñ Véŕðàñçé, ƒîļļš ţĥé ñéxţ Šééð Àŕķ ŵàvé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "The seed bays are open. From now on every bloom, anywhere on {planet}, fills the next Seed Ark wave."
+msgstr "[Ţĥé šééð bàýš àŕé ôþéñ. Fŕôm ñôŵ ôñ évéŕý bļôôm, àñýŵĥéŕé ôñ {planet}, ƒîļļš ţĥé ñéxţ Šééð Àŕķ ŵàvé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: story/bloom_finale.gd:22
 msgid "Nothing is waiting to end, {name}. Nobody is keeping score. We're home. We just keep planting."
 msgstr "[Ñôţĥîñĝ îš ŵàîţîñĝ ţô éñð, {name}. Ñôbôðý îš ķééþîñĝ šçôŕé. Ŵé'ŕé ĥômé. Ŵé ĵûšţ ķééþ þļàñţîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: story/bloom_finale.gd:227
-msgid "The Cradle is home. The Seed Ark is open: every bloom on Verdance counts toward the next wave. Progress shows on the hologram (M)."
-msgstr "[Ţĥé Çŕàðļé îš ĥômé. Ţĥé Šééð Àŕķ îš ôþéñ: évéŕý bļôôm ôñ Véŕðàñçé çôûñţš ţôŵàŕð ţĥé ñéxţ ŵàvé. Þŕôĝŕéšš šĥôŵš ôñ ţĥé ĥôļôĝŕàm (M). ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "The Cradle is home. The Seed Ark is open: every bloom on {planet} counts toward the next wave. Progress shows on the hologram (M)."
+msgstr "[Ţĥé Çŕàðļé îš ĥômé. Ţĥé Šééð Àŕķ îš ôþéñ: évéŕý bļôôm ôñ {planet} çôûñţš ţôŵàŕð ţĥé ñéxţ ŵàvé. Þŕôĝŕéšš šĥôŵš ôñ ţĥé ĥôļôĝŕàm (M). ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: story/core_charge.gd:206
 msgid "Bloom Core 100%. Lumi's core is full of green light."
@@ -1794,8 +1794,8 @@ msgid "Homecoming"
 msgstr "[Ĥôméçômîñĝ ~]"
 
 #: story/intro.gd:237
-msgid "Three hundred years ago, the last seeds left Verdance aboard the ark Cradle."
-msgstr "[Ţĥŕéé ĥûñðŕéð ýéàŕš àĝô, ţĥé ļàšţ šééðš ļéƒţ Véŕðàñçé àbôàŕð ţĥé àŕķ Çŕàðļé. ~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Three hundred years ago, the last seeds left {planet} aboard the ark Cradle."
+msgstr "[Ţĥŕéé ĥûñðŕéð ýéàŕš àĝô, ţĥé ļàšţ šééðš ļéƒţ {planet} àbôàŕð ţĥé àŕķ Çŕàðļé. ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: story/intro.gd:238
 msgid "Lumi, the ark's little seed-keeper, sang to the seedlings every night."
@@ -2162,8 +2162,8 @@ msgid "Codex entry: %s"
 msgstr "[Çôðéx éñţŕý: %s ~~]"
 
 #: systems/bloom.gd:169
-msgid "Verdance Bloom %d / %d  ·  next: %s"
-msgstr "[Véŕðàñçé Bļôôm %d / %d  ·  ñéxţ: %s ~~~~~~~~~]"
+msgid "{planet} Bloom %d / %d  ·  next: %s"
+msgstr "[{planet} Bļôôm %d / %d  ·  ñéxţ: %s ~~~~~~~~~]"
 
 #: systems/bloom.gd:171
 msgid "Seed Ark wave %d  ·  %d / %d blooms planet-wide"
@@ -2178,8 +2178,8 @@ msgid "Seed Ark wave %d planted across Verdance. The Cradle drops a gift. Next w
 msgstr "[Šééð Àŕķ ŵàvé %d þļàñţéð àçŕôšš Véŕðàñçé. Ţĥé Çŕàðļé ðŕôþš à ĝîƒţ. Ñéxţ ŵàvé: %d bļôômš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: systems/bloom.gd:268
-msgid "Verdance Bloom: %s. %s"
-msgstr "[Véŕðàñçé Bļôôm: %s. %s ~~~~~]"
+msgid "{planet} Bloom: %s. %s"
+msgstr "[{planet} Bļôôm: %s. %s ~~~~~]"
 
 #: systems/codex.gd:40
 msgid "Somewhere under the junk."
@@ -4591,8 +4591,8 @@ msgid "Survey"
 msgstr "[Šûŕvéý ~]"
 
 #: ui/globe_view.gd:139
-msgid "Verdance  ·  seed-keeper's survey"
-msgstr "[Véŕðàñçé  ·  šééð-ķééþéŕ'š šûŕvéý ~~~~~~~~~]"
+msgid "{planet}  ·  seed-keeper's survey"
+msgstr "[{planet}  ·  šééð-ķééþéŕ'š šûŕvéý ~~~~~~~~~]"
 
 #: ui/globe_view.gd:155
 msgid "Not cleaned yet"
@@ -5758,8 +5758,8 @@ msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the
 msgstr "[Ţĥé ļàûñçĥ þàð çôméš ŵîţĥ à ļévéļ 5 bàšé (ýôûŕš îš ļévéļ %d). Ûþĝŕàðé ţĥé bàšé îñ ţĥé Ûþĝŕàðéš ţàb. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: ui/rockets_panel.gd:48
-msgid "Rockets to the rest of Verdance are in the full game. The demo stays in the first district."
-msgstr "[Ŕôçķéţš ţô ţĥé ŕéšţ ôƒ Véŕðàñçé àŕé îñ ţĥé ƒûļļ ĝàmé. Ţĥé ðémô šţàýš îñ ţĥé ƒîŕšţ ðîšţŕîçţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Rockets to the rest of {planet} are in the full game. The demo stays in the first district."
+msgstr "[Ŕôçķéţš ţô ţĥé ŕéšţ ôƒ {planet} àŕé îñ ţĥé ƒûļļ ĝàmé. Ţĥé ðémô šţàýš îñ ţĥé ƒîŕšţ ðîšţŕîçţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: ui/rockets_panel.gd:57
 msgid "NEARBY BASES"

@@ -1,14 +1,16 @@
 extends Node
 ## [sound] Planet ambience beds on the "Ambience" bus (which sends to "SFX", so the SFX slider
-## governs it). Each planet has a few seamless loops plus random one-shot events; every entry has
-## a ruined and a restored weight, so restoration crossfades the dead world (wind, groans, creaks)
-## into a living one (birds, insects, water). Verdance has no bed here: its wildlife ambience is
-## fauna/fauna.gd. Driven by Audio.set_planet_theme() / Audio.set_restoration().
+## governs it). A bed belongs to a music set (PlanetDefinition.music_set) and has a few seamless
+## loops plus random one-shot events; every entry has a ruined and a restored weight, so
+## restoration crossfades the dead world (wind, groans, creaks) into a living one (birds, insects,
+## water). A set without a bed is silent here (the regrowth set: its wildlife ambience is
+## fauna/fauna.gd). Driven by Audio.set_planet_theme() / Audio.set_restoration().
 ##
-## Loops and one-shots are synthesized once per planet, the first time it is chosen
+## Loops and one-shots are synthesized once per bed, the first time it is chosen
 ## (audio/ambience_synth.gd, plus FaunaSounds' birds / gulls / crickets and Audio's own SFX).
 
 const Synth := preload("res://audio/ambience_synth.gd")
+const Tracks := preload("res://audio/music_tracks.gd")
 const BUS: String = "Ambience"
 const LOOP_DB: float = -14.0  # a loop at weight 1.0 (loops are levelled to -20 dBFS RMS)
 const FADE_S: float = 3.0  # crossfade time for planet / restoration changes
@@ -16,22 +18,22 @@ const FADE_S: float = 3.0  # crossfade time for planet / restoration changes
 ## loops: id -> [ruined, restored] weight. events: [sound, min_s, max_s, db, pitch_lo, pitch_hi,
 ## ruined, restored] (the weight is the chance an event fires when its timer comes up).
 const BEDS: Dictionary = {
-	"ochre": {
+	"desert_heat": {
 		"loops": {"wind_warm": [1.0, 0.55], "heat_buzz": [0.3, 0.12], "cicadas": [0.0, 0.5]},
 		"events": [["whoosh", 8.0, 18.0, -15.0, 0.35, 0.5, 1.0, 0.4], ["song", 5.0, 12.0, -19.0, 0.9, 1.1, 0.0, 1.0],
 			["chirp", 4.0, 9.0, -21.0, 0.9, 1.15, 0.0, 0.8]],
 	},
-	"tidewell": {
+	"ocean_swell": {
 		"loops": {"waves": [1.0, 0.85], "wind_sea": [0.45, 0.25], "crickets": [0.0, 0.4], "water": [0.0, 0.35]},
 		"events": [["gull", 5.0, 12.0, -13.0, 0.9, 1.1, 1.0, 1.0], ["amb_buoy", 9.0, 20.0, -17.0, 0.95, 1.05, 1.0, 0.6],
 			["song", 6.0, 13.0, -20.0, 0.9, 1.1, 0.0, 0.9], ["frog", 7.0, 15.0, -20.0, 0.9, 1.1, 0.0, 0.6]],
 	},
-	"rime": {
+	"glass_ice": {
 		"loops": {"wind_eerie": [1.0, 0.5], "water": [0.0, 0.65]},
 		"events": [["amb_creak", 4.0, 11.0, -13.0, 0.8, 1.2, 1.0, 0.35], ["amb_geyser", 14.0, 30.0, -12.0, 0.9, 1.1, 1.0, 0.6],
 			["song", 6.0, 14.0, -21.0, 1.0, 1.2, 0.0, 0.7], ["chirp", 5.0, 11.0, -22.0, 1.0, 1.2, 0.0, 0.6]],
 	},
-	"anvil": {
+	"foundry": {
 		"loops": {"wind_dust": [1.0, 0.5], "water": [0.0, 0.55], "crickets": [0.0, 0.45]},
 		"events": [["groan", 7.0, 16.0, -13.0, 0.45, 0.65, 1.0, 0.2], ["clunk", 10.0, 22.0, -21.0, 0.5, 0.7, 1.0, 0.2],
 			["amb_devil", 15.0, 35.0, -11.0, 0.9, 1.1, 1.0, 0.3], ["song", 5.0, 12.0, -19.0, 0.9, 1.1, 0.0, 1.0],
@@ -61,12 +63,13 @@ func _ready() -> void:
 		_shots.append(p)
 
 
-## Switches the bed ("" or "verdance" clears it). Unknown ids are ignored (returns false).
+## Switches the bed to a music set's ("" or a set without a bed clears it). Unknown names are
+## ignored (returns false).
 func set_planet(id: String) -> bool:
-	if id == "verdance":
-		id = ""
 	if id != "" and not BEDS.has(id):
-		return false
+		if not Tracks.has_set(id):
+			return false
+		id = ""
 	if id == planet:
 		return true
 	planet = id

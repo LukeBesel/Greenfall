@@ -50,4 +50,4 @@ tables = Dictionary[String, String]({
 sites_script = ExtResource("2")
 globe_shader = ExtResource("3")
 palette = Dictionary[String, Color]({})
-music_set = "verdance"
+music_set = "regrowth"

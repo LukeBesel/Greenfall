@@ -43,7 +43,7 @@ func _ready() -> void:
 	bar.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	col.add_child(bar)
 	var lead: String = {
-		"rocket": tr("The launch pad is waiting, but the rest of Verdance is in the full game."),
+		"rocket": Planets.current().name_in(tr("The launch pad is waiting, but the rest of {planet} is in the full game.")),
 		"base": tr("Your base has grown as far as the demo goes."),
 	}.get(reason, "You've earned the next base level. That's where the demo ends.")
 	var head := UITheme.label(lead, 20, UITheme.CREAM)

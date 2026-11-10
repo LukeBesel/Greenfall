@@ -1,6 +1,6 @@
 class_name Bloom
 extends Node
-## Post-game (M11): planet-scale "Verdance Bloom" milestones (the planet's "postgame" table). Pure
+## Post-game (M11): planet-scale Bloom milestones (the planet's "postgame" table). Pure
 ## helpers are static (tests use them); the live node (added by the slice) keeps this district's
 ## summary fresh, checks milestones and plays the Cradle finale once.
 ## State: flags.bloom_done (Array of ids), flags.bloom_<id> (for achievements),
@@ -29,6 +29,14 @@ static func _drop_planet_cache() -> void:
 
 static func milestones() -> Array:
 	return cfg().get("milestones", [])
+
+
+## The id of the milestone that plays the finale ("finale": true), or "" when the planet has none.
+static func finale_id() -> String:
+	for ms: Dictionary in milestones():
+		if bool(ms.get("finale", false)):
+			return str(ms["id"])
+	return ""
 
 
 static func done_list() -> Array:
@@ -127,7 +135,7 @@ static func globe_line() -> String:
 			break
 	if done_list().is_empty() or next.is_empty():
 		return ""
-	return TranslationServer.translate("Verdance Bloom %d / %d  ·  next: %s") % [done_list().size(), milestones().size(), TranslationServer.translate(str(next.get("name", "")))]
+	return Planets.current().name_in(TranslationServer.translate("{planet} Bloom %d / %d  ·  next: %s")) % [done_list().size(), milestones().size(), TranslationServer.translate(str(next.get("name", "")))]
 
 
 # --- Live node -----------------------------------------------------------------------
@@ -138,9 +146,9 @@ func _ready() -> void:
 	# and fired into freed districts after rocket trips).
 	EventBus.cradle_district_complete.connect(_on_cradle_complete)
 	_visit_biome.call_deferred()
-	# [beat] The Verdance Bloom is done but the finale never finished (quit mid-cinematic, or an
+	# [beat] The finale milestone is done but the finale never finished (quit mid-cinematic, or an
 	# older save): play it again at the next quiet moment.
-	if is_done("verdance_bloom") and not GameState.flags.get("bloom_finale_seen", false):
+	if is_done(finale_id()) and not GameState.flags.get("bloom_finale_seen", false):
 		_finale_pending = true
 	if DevHooks.has("credits"):  # [beat] --credits[=S]: roll the end credits S seconds in
 		get_tree().create_timer(DevHooks.get_f("credits", 3.0)).timeout.connect(func() -> void: CreditsRoll.play(world))
@@ -215,7 +223,7 @@ func _celebrate(id: String) -> void:
 	for m: Dictionary in milestones():
 		if str(m["id"]) == id:
 			ms = m
-	EventBus.toast.emit(tr("Verdance Bloom: %s. %s") % [tr(str(ms.get("name", id))), tr(str(ms.get("desc", "")))], "story")
+	EventBus.toast.emit(Planets.current().name_in(tr("{planet} Bloom: %s. %s")) % [tr(str(ms.get("name", id))), tr(str(ms.get("desc", "")))], "story")
 	EventBus.toast.emit(_reward_text(ms.get("reward", {})), "hint")
 	Audio.play("fanfare", 0.9, -4.0)
 	if world and world.get("patch") != null:

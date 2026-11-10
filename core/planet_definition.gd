@@ -112,6 +112,12 @@ func look() -> Dictionary:
 	return out
 
 
+## Fills this planet's name into a line of text: "{planet}" becomes the display name and
+## "{PLANET}" its upper case. Other {tokens} are left for the caller.
+func name_in(text: String) -> String:
+	return text.format({"planet": display_name, "PLANET": display_name.to_upper()})
+
+
 ## Calls a static hook of `env_script`. Returns its result, or null when the planet has no env
 ## script or the script has no such hook.
 func call_env(hook: String, args: Array = []) -> Variant:

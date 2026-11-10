@@ -293,7 +293,7 @@ func _process(delta: float) -> void:
 			_planet_t = 0.25
 			_planet_frac = sites.planet_fraction()
 		# [orbB] The globe has no district: one planet line (hub regions) and its bar.
-		_planet_label.text = "%s   %s%%" % [str(Economy.planet.get("name", "Verdance")).to_upper(), _fmt_small_pct(_planet_frac * 100.0)]
+		_planet_label.text = "%s   %s%%" % [Planets.current().display_name.to_upper(), _fmt_small_pct(_planet_frac * 100.0)]
 		_field_label.text = _planet_label.text
 		_field_frac = _planet_frac
 		_planet_label.visible = false

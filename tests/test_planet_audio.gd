@@ -12,6 +12,12 @@ const Tracks := preload("res://audio/music_tracks.gd")
 static var _samples: Dictionary = {}
 
 
+
+## The music set a planet's definition names.
+func _music_set(planet_id: String) -> String:
+	return Planets.by_id(planet_id).music_set
+
+
 func _all_samples() -> Dictionary:
 	if _samples.is_empty():
 		_samples = Synth.build_all()
@@ -114,14 +120,17 @@ func test_every_track_is_well_formed() -> void:
 
 func test_planet_pools_have_calm_and_active_tracks() -> void:
 	for planet: String in ["ochre", "tidewell", "rime", "anvil"]:
-		var ids: Array[String] = Tracks.for_planet(planet)
+		var ids: Array[String] = Tracks.for_set(_music_set(planet))
 		assert_between(ids.size(), 2, 3, "%s: 2-3 tracks" % planet)
 		var energies: Dictionary = {}
 		for id: String in ids:
 			energies[Tracks.TRACKS[id]["energy"]] = true
 		assert_true(energies.has("calm") and energies.has("active"), "%s: calm and active" % planet)
-	assert_eq(Tracks.for_planet("verdance").size(), 2, "Verdance: two upbeat cleaning tracks")
+	assert_eq(Tracks.for_set(_music_set("verdance")).size(), 2, "Verdance: two upbeat cleaning tracks")
 	assert_eq(Audio.music_track_ids("anvil").size(), 3)
+	assert_eq(Audio.music_track_ids("no_such_planet").size(), 0)
+	assert_eq(Audio.music_track_ids().size(), Tracks.TRACKS.size())
+	assert_eq(Audio.planet_theme_ids(), ["verdance", "ochre", "tidewell", "rime", "anvil"] as Array[String], "every registered planet names a known music set")
 	assert_eq(Audio.music_track_title("anvil_foundry"), "Foundry Heart")
 	assert_eq(Audio.music_track_title("nope"), "")
 
@@ -131,11 +140,11 @@ func test_director_switches_planet_on_a_bar_line() -> void:
 	var d := Director.new(_all_samples(), mixer, 7)
 	_run(d, mixer, 1.0)
 	assert_eq(d.current_track(), "", "Verdance starts on its generative piece")
-	assert_true(d.set_theme("rime"))
+	assert_true(d.set_theme(_music_set("rime")))
 	assert_false(d.set_theme("bogus"))
 	d.pulse_activity(1.0)
 	_run(d, mixer, 8.0)
-	assert_eq(d._active_theme, "rime")
+	assert_eq(d._active_theme, _music_set("rime"))
 	assert_eq(d.current_track(), "rime_aurora", "busy play picks the active track")
 	assert_eq(int(d._cur["key"]), 47)
 	d.set_restoration(1.0)
@@ -148,10 +157,10 @@ func test_director_switches_planet_on_a_bar_line() -> void:
 func test_silence_gap_between_tracks() -> void:
 	var mixer := Mixer.new(_all_samples())
 	var d := Director.new(_all_samples(), mixer, 11)
-	d.set_theme("ochre")
+	d.set_theme(_music_set("ochre"))
 	_run(d, mixer, 3.0)
 	var first: String = d.current_track()
-	assert_true(Tracks.for_planet("ochre").has(first))
+	assert_true(Tracks.for_set(_music_set("ochre")).has(first))
 	d._cycles_left = 1
 	d._chord_i = 7
 	var saw_gap: bool = false
@@ -213,7 +222,7 @@ func test_ambience_beds() -> void:
 	var amb: Node = Audio._ambience
 	assert_not_null(amb)
 	Audio.set_planet_theme("tidewell")
-	assert_eq(amb.planet, "tidewell")
+	assert_eq(amb.planet, _music_set("tidewell"))
 	var ruined: Array[String] = amb.active_loops()
 	assert_true(ruined.has("waves"))
 	assert_false(ruined.has("water"), "no restored layer while ruined")
@@ -221,7 +230,7 @@ func test_ambience_beds() -> void:
 	assert_true(amb.active_loops().has("water"), "restored adds water")
 	assert_true(amb.active_loops().has("crickets"), "restored adds insects")
 	assert_false(amb.set_planet("mars"), "unknown bed ignored")
-	assert_eq(amb.planet, "tidewell")
+	assert_eq(amb.planet, _music_set("tidewell"))
 	Audio.set_planet_theme("verdance")
 	assert_eq(amb.planet, "")
 	assert_eq(amb.active_loops().size(), 0, "Verdance has no planet bed")

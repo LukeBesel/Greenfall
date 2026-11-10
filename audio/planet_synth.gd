@@ -1,19 +1,19 @@
 extends RefCounted
-## [sound] Instrument samples for the planet music themes (audio/planet_themes.gd). Built lazily,
-## once per planet, the first time Audio.set_planet_theme() picks that planet, and merged into the
+## [sound] Instrument samples for the music sets (audio/music_tracks.gd SETS). Built lazily,
+## once per set, the first time Audio.set_planet_theme() picks a planet that uses it, and merged into the
 ## music director's sample table. Reuses audio/music_synth.gd's pad / normalize / declick helpers.
 
 const MusicSynth := preload("res://audio/music_synth.gd")
 const RATE: int = 22050
 
-## Which samples each theme needs (Verdance uses only the base set from MusicSynth).
+## Which samples each music set needs (regrowth uses only the base set from MusicSynth).
 const NEEDS: Dictionary = {
 	"groove": ["marimba", "rim", "hat", "conga_hi", "conga_lo", "clap", "bass_short"],  # built at startup
-	"verdance": [],
-	"ochre": ["pluck", "pad_reed", "frame"],
-	"tidewell": ["harp", "pad_ocean", "steelpan"],
-	"rime": ["glass", "pad_ice", "choir"],
-	"anvil": ["pulse", "anvil", "pad_brass", "choir", "synth", "metal", "sub"],
+	"regrowth": [],
+	"desert_heat": ["pluck", "pad_reed", "frame"],
+	"ocean_swell": ["harp", "pad_ocean", "steelpan"],
+	"glass_ice": ["glass", "pad_ice", "choir"],
+	"foundry": ["pulse", "forge_strike", "pad_brass", "choir", "synth", "metal", "sub"],
 	"homecoming": ["choir"],
 }
 
@@ -35,7 +35,7 @@ static func build(theme: String, have: Dictionary) -> Dictionary:
 			"glass": out[n] = MusicSynth._entry(_glass(), 81, false)
 			"pad_ice": out[n] = MusicSynth._entry(MusicSynth._pad([1.0, 0.06, 0.2, 0.32, 0.0, 0.08, 0.0, 0.05], rng), 57, true)
 			"pulse": out[n] = MusicSynth._entry(_pulse(rng), 45, false)
-			"anvil": out[n] = MusicSynth._entry(_anvil(rng), 57, false)
+			"forge_strike": out[n] = MusicSynth._entry(_forge_strike(rng), 57, false)
 			"marimba": out[n] = MusicSynth._entry(_marimba(), 69, false)
 			"steelpan": out[n] = MusicSynth._entry(_steelpan(), 69, false)
 			"rim": out[n] = MusicSynth._entry(_rim(rng), 69, false)
@@ -138,7 +138,7 @@ static func _pulse(rng: RandomNumberGenerator) -> PackedFloat32Array:
 
 
 ## Anvil: a distant hammer-on-metal clank at A3 (inharmonic, fast highs).
-static func _anvil(rng: RandomNumberGenerator) -> PackedFloat32Array:
+static func _forge_strike(rng: RandomNumberGenerator) -> PackedFloat32Array:
 	var b := _buf(1.4)
 	var parts: Array[Vector3] = [Vector3(1.0, 1.0, 3.0), Vector3(2.76, 0.6, 5.0), Vector3(5.4, 0.35, 9.0), Vector3(8.93, 0.2, 14.0)]
 	for p: Vector3 in parts:

@@ -1,12 +1,13 @@
 extends RefCounted
-## [sound] Composed tracks for the generative score (audio/music_director.gd). Each planet has a
-## rotating pool of 2-3 tracks, calm and active, played with silence gaps between them; Verdance
-## adds two upbeat cleaning tracks to its generative pieces. A track is an original piece with a
+## [sound] Composed tracks for the generative score (audio/music_director.gd). Tracks belong to a
+## music set (SETS); a planet picks one with PlanetDefinition.music_set. Each set is a rotating
+## pool of 2-3 tracks, calm and active, played with silence gaps between them; the sets in
+## GENERATIVE_CALM add upbeat tracks to the generative pieces instead. A track is an original piece with a
 ## fixed motif (its hook), an 8-chord progression, a groove and a form; the director re-fits the
 ## motif to each chord, so a repeat over different harmony still reads as the same tune.
 ##
 ## Fields (anything left out takes the default in MusicDirector.resolve_track()):
-##   planet, title, energy ("active" | "calm"), key (MIDI root), tonic (MIDI of motif degree 0),
+##   set (the music set; "" for a story piece), title, energy ("active" | "calm"), key (MIDI root), tonic (MIDI of motif degree 0),
 ##   mode, bpm, swing (0..0.35, delays the off-beat eighths), cycles (times through the 8 chords),
 ##   prog: 8 x [root offset from key, chord intervals]; 16 eighth-note steps per chord,
 ##   motif / motif2: [[step 0..31, scale degree]] (32 steps = one 2-chord phrase),
@@ -19,14 +20,22 @@ extends RefCounted
 ##   texture: "twinkle" (glass sparkles), build: true for slow warm build-ups (layers per cycle),
 ##   fit: false keeps the motif as written (pre-harmonized), mix: layer gains,
 ##   restored: overrides once the planet is restored (choice keys switch past the midpoint,
-##     numbers lerp with restoration). Anvil's tracks keep their motifs and turn major.
+##     numbers lerp with restoration). The foundry tracks keep their motifs and turn major.
 
 const P := preload("res://audio/planet_themes.gd")
 
+## The music sets a planet can pick (PlanetDefinition.music_set).
+const SETS: Array[String] = ["regrowth", "desert_heat", "ocean_swell", "glass_ice", "foundry"]
+## The set a planet without a known music set gets.
+const DEFAULT_SET: String = "regrowth"
+## Sets whose calm pieces are the generative moods rather than composed tracks.
+const GENERATIVE_CALM: Array[String] = ["regrowth"]
+
+## Track ids are stable (saves hold the radio's unlocked ids), so they keep their first names.
 const TRACKS: Dictionary = {
-	# --- Verdance: two bright cleaning tracks next to the generative pieces --------------------
+	# --- regrowth: two bright cleaning tracks next to the generative pieces --------------------
 	"verdance_sprout": {
-		"planet": "verdance", "title": "Sprout Step", "energy": "active",
+		"set": "regrowth", "title": "Sprout Step", "energy": "active",
 		"key": 50, "tonic": 62, "mode": P.IONIAN, "bpm": 104.0, "swing": 0.08, "cycles": 3,
 		"prog": [[0, [0, 4, 7]], [9, [0, 3, 7]], [5, [0, 4, 7, 11]], [7, [0, 4, 7]],
 			[0, [0, 4, 7, 14]], [4, [0, 3, 7]], [5, [0, 4, 7]], [7, [0, 5, 7, 10]]],
@@ -39,7 +48,7 @@ const TRACKS: Dictionary = {
 		"mix": {"pad": 0.75, "air": 0.3, "bass": 1.0, "melody": 1.05, "bell": 0.5, "shaker": 0.9, "kick": 0.9, "texture": 0.0},
 	},
 	"verdance_sweep": {
-		"planet": "verdance", "title": "Clean Sweep", "energy": "active",
+		"set": "regrowth", "title": "Clean Sweep", "energy": "active",
 		"key": 55, "tonic": 67, "mode": P.IONIAN, "bpm": 112.0, "swing": 0.1, "cycles": 3,
 		"prog": [[0, [0, 4, 7]], [5, [0, 4, 7]], [9, [0, 3, 7]], [7, [0, 4, 7]],
 			[0, [0, 4, 7, 11]], [5, [0, 4, 7, 14]], [2, [0, 3, 7, 10]], [7, [0, 5, 7]]],
@@ -52,9 +61,9 @@ const TRACKS: Dictionary = {
 		"arp": "x.x.x.x.x.x.x.x.", "arp_sample": "harp",
 		"mix": {"pad": 0.7, "air": 0.25, "bass": 1.0, "melody": 1.0, "bell": 0.5, "shaker": 0.9, "kick": 0.95, "texture": 0.35},
 	},
-	# --- Ochre: sunny, plucky, hand percussion -------------------------------------------------
+	# --- desert_heat: sunny, plucky, hand percussion -------------------------------------------
 	"ochre_sunbaked": {
-		"planet": "ochre", "title": "Sunbaked", "energy": "active",
+		"set": "desert_heat", "title": "Sunbaked", "energy": "active",
 		"key": 52, "tonic": 64, "mode": P.MIXOLYDIAN, "bpm": 100.0, "swing": 0.14, "cycles": 3,
 		"prog": [[0, [0, 4, 7]], [10, [0, 4, 7]], [5, [0, 4, 7]], [0, [0, 4, 7, 10]],
 			[0, [0, 4, 7]], [10, [0, 4, 7, 14]], [7, [0, 3, 7]], [0, [0, 5, 7]]],
@@ -72,7 +81,7 @@ const TRACKS: Dictionary = {
 			"mix": {"pad": 0.85, "air": 0.2, "bass": 1.0, "melody": 1.05, "bell": 0.8, "shaker": 1.05, "kick": 0.95, "texture": 0.75}},
 	},
 	"ochre_caravan": {
-		"planet": "ochre", "title": "Dune Caravan", "energy": "active",
+		"set": "desert_heat", "title": "Dune Caravan", "energy": "active",
 		"key": 52, "tonic": 64, "mode": P.PHRYG_DOM, "bpm": 92.0, "swing": 0.1, "cycles": 3,
 		"prog": [[0, [0, 4, 7]], [1, [0, 4, 7]], [0, [0, 4, 7]], [5, [0, 3, 7]],
 			[0, [0, 4, 7, 10]], [1, [0, 4, 7, 11]], [10, [0, 3, 7]], [0, [0, 4, 7]]],
@@ -90,7 +99,7 @@ const TRACKS: Dictionary = {
 				[0, [0, 4, 7, 10]], [10, [0, 4, 7, 14]], [2, [0, 3, 7]], [0, [0, 4, 7]]]},
 	},
 	"ochre_mirage": {
-		"planet": "ochre", "title": "Mirage", "energy": "calm",
+		"set": "desert_heat", "title": "Mirage", "energy": "calm",
 		"key": 52, "tonic": 64, "mode": P.MIXOLYDIAN, "bpm": 76.0, "cycles": 2,
 		"prog": [[0, [0, 4, 7, 14]], [7, [0, 3, 7, 10]], [5, [0, 4, 7, 11]], [0, [0, 4, 7]],
 			[9, [0, 3, 7]], [5, [0, 4, 7]], [10, [0, 4, 7]], [0, [0, 5, 7]]],
@@ -103,9 +112,9 @@ const TRACKS: Dictionary = {
 		"mix": {"pad": 0.95, "air": 0.9, "bass": 0.8, "melody": 0.95, "bell": 0.8, "shaker": 0.6, "kick": 0.0, "texture": 0.0},
 		"restored": {"lpf": 6500.0, "bright": 0.6, "bloom": 1.0},
 	},
-	# --- Tidewell: bouncy, breezy, steel pans and a light shuffle ----------------------------
+	# --- ocean_swell: bouncy, breezy, steel pans and a light shuffle -------------------------
 	"tidewell_tradewinds": {
-		"planet": "tidewell", "title": "Tradewinds", "energy": "active",
+		"set": "ocean_swell", "title": "Tradewinds", "energy": "active",
 		"key": 53, "tonic": 65, "mode": P.IONIAN, "bpm": 108.0, "swing": 0.28, "cycles": 3,
 		"prog": [[0, [0, 4, 7, 14]], [7, [0, 4, 7]], [9, [0, 3, 7]], [5, [0, 4, 7]],
 			[0, [0, 4, 7]], [4, [0, 3, 7]], [5, [0, 4, 7, 11]], [7, [0, 5, 7]]],
@@ -123,7 +132,7 @@ const TRACKS: Dictionary = {
 			"mix": {"pad": 0.85, "air": 0.25, "bass": 1.0, "melody": 1.05, "bell": 0.7, "shaker": 1.0, "kick": 0.95, "texture": 0.5}},
 	},
 	"tidewell_tidepools": {
-		"planet": "tidewell", "title": "Tidepools", "energy": "calm",
+		"set": "ocean_swell", "title": "Tidepools", "energy": "calm",
 		"key": 53, "tonic": 65, "mode": P.LYDIAN, "bpm": 80.0, "swing": 0.15, "cycles": 2,
 		"prog": [[0, [0, 4, 7, 11]], [2, [0, 4, 7]], [0, [0, 4, 7, 14]], [9, [0, 3, 7, 10]],
 			[4, [0, 3, 7]], [2, [0, 4, 7, 14]], [7, [0, 4, 7]], [0, [0, 4, 7, 11]]],
@@ -139,7 +148,7 @@ const TRACKS: Dictionary = {
 		"restored": {"lpf": 7000.0, "bright": 0.7, "bloom": 0.8},
 	},
 	"tidewell_skipper": {
-		"planet": "tidewell", "title": "Skipping Stones", "energy": "active",
+		"set": "ocean_swell", "title": "Skipping Stones", "energy": "active",
 		"key": 53, "tonic": 65, "mode": P.MIXOLYDIAN, "bpm": 116.0, "swing": 0.25, "cycles": 3,
 		"prog": [[0, [0, 4, 7]], [10, [0, 4, 7]], [5, [0, 4, 7]], [0, [0, 4, 7]],
 			[7, [0, 3, 7]], [10, [0, 4, 7]], [5, [0, 4, 7, 14]], [0, [0, 5, 7, 10]]],
@@ -154,9 +163,9 @@ const TRACKS: Dictionary = {
 		"mix": {"pad": 0.65, "air": 0.3, "bass": 1.0, "melody": 1.0, "bell": 0.4, "shaker": 0.85, "kick": 0.9, "texture": 0.3},
 		"restored": {"lpf": 7800.0, "bright": 0.75, "bloom": 0.8},
 	},
-	# --- Rime: crystalline, a gentle melody, slow warm build-ups -------------------------------
+	# --- glass_ice: crystalline, a gentle melody, slow warm build-ups --------------------------
 	"rime_hoarfrost": {
-		"planet": "rime", "title": "Hoarfrost", "energy": "calm",
+		"set": "glass_ice", "title": "Hoarfrost", "energy": "calm",
 		"key": 47, "tonic": 71, "mode": P.AEOLIAN, "bpm": 64.0, "cycles": 3, "build": true,
 		"prog": [[0, [0, 7, 14]], [8, [0, 4, 7, 11]], [3, [0, 4, 7, 14]], [10, [0, 5, 7]],
 			[0, [0, 3, 7, 10]], [5, [0, 3, 7]], [8, [0, 4, 7]], [10, [0, 4, 7]]],
@@ -174,7 +183,7 @@ const TRACKS: Dictionary = {
 				[0, [0, 4, 7, 14]], [9, [0, 3, 7]], [2, [0, 4, 7]], [7, [0, 4, 7]]]},
 	},
 	"rime_aurora": {
-		"planet": "rime", "title": "Aurora", "energy": "active",
+		"set": "glass_ice", "title": "Aurora", "energy": "active",
 		"key": 47, "tonic": 66, "mode": P.AEOLIAN, "bpm": 76.0, "cycles": 3, "build": true,
 		"prog": [[0, [0, 3, 7]], [8, [0, 4, 7]], [3, [0, 4, 7]], [10, [0, 4, 7]],
 			[0, [0, 3, 7]], [8, [0, 4, 7, 11]], [5, [0, 3, 7]], [10, [0, 5, 7]]],
@@ -192,9 +201,9 @@ const TRACKS: Dictionary = {
 			"prog": [[0, [0, 4, 7]], [9, [0, 3, 7]], [5, [0, 4, 7]], [7, [0, 4, 7]],
 				[0, [0, 4, 7, 11]], [9, [0, 3, 7, 10]], [2, [0, 3, 7]], [7, [0, 5, 7]]]},
 	},
-	# --- Anvil: a Nether-like foundry; restored, the same motifs turn hopeful and warm ---------
+	# --- foundry: heavy and molten; restored, the same motifs turn hopeful and warm ------------
 	"anvil_foundry": {
-		"planet": "anvil", "title": "Foundry Heart", "energy": "active",
+		"set": "foundry", "title": "Foundry Heart", "energy": "active",
 		"key": 48, "tonic": 60, "mode": P.PHRYGIAN, "bpm": 90.0, "swing": 0.06, "cycles": 3,
 		"prog": [[0, [0, 3, 7]], [1, [0, 4, 7]], [0, [0, 3, 7, 10]], [10, [0, 3, 7]],
 			[0, [0, 3, 7]], [8, [0, 4, 7]], [1, [0, 4, 7, 11]], [0, [0, 7]]],
@@ -214,7 +223,7 @@ const TRACKS: Dictionary = {
 			"mix": {"pad": 0.85, "air": 0.3, "bass": 0.85, "melody": 1.05, "bell": 0.7, "shaker": 0.8, "kick": 0.7, "texture": 0.0}},
 	},
 	"anvil_ash": {
-		"planet": "anvil", "title": "Ash Choir", "energy": "calm",
+		"set": "foundry", "title": "Ash Choir", "energy": "calm",
 		"key": 48, "tonic": 60, "mode": P.PHRYGIAN, "bpm": 70.0, "cycles": 2,
 		"prog": [[0, [0, 3, 7]], [8, [0, 4, 7]], [1, [0, 4, 7]], [0, [0, 3, 7]],
 			[5, [0, 3, 7]], [1, [0, 4, 7, 11]], [10, [0, 3, 7]], [0, [0, 7, 14]]],
@@ -231,14 +240,14 @@ const TRACKS: Dictionary = {
 				[2, [0, 3, 7]], [5, [0, 4, 7, 11]], [7, [0, 4, 7]], [0, [0, 4, 7, 14]]]},
 	},
 	"anvil_engine": {
-		"planet": "anvil", "title": "Red Engine", "energy": "active",
+		"set": "foundry", "title": "Red Engine", "energy": "active",
 		"key": 48, "tonic": 60, "mode": P.PHRYGIAN, "bpm": 104.0, "cycles": 3,
 		"prog": [[0, [0, 3, 7]], [0, [0, 3, 7]], [1, [0, 4, 7]], [10, [0, 3, 7]],
 			[0, [0, 3, 7]], [8, [0, 4, 7]], [10, [0, 3, 7]], [1, [0, 4, 7]]],
 		"motif": [[0, 0], [2, 0], [3, 3], [4, 2], [6, 1], [8, 0], [10, -1], [11, 0], [12, 1],
 			[16, 0], [18, 0], [19, 3], [20, 4], [22, 3], [24, 1], [28, 0]],
 		"form": ["A", "A", "B", "E"],
-		"lead": "synth", "lead2": "anvil", "pad": ["pad_brass", "choir"], "bass": "pulse", "bell": "metal",
+		"lead": "synth", "lead2": "forge_strike", "pad": ["pad_brass", "choir"], "bass": "pulse", "bell": "metal",
 		"bassline": "r.r.r.r.r.r.r.o.",
 		"drums": {"kick": "X...x...X...x...", "snare": "....x.......x...", "hat": "..x...x...x...x.", "hit": ".......x.......x"},
 		"kit": {"snare": "clap"},
@@ -251,7 +260,7 @@ const TRACKS: Dictionary = {
 	},
 	# --- The ending: the Greenfall motif (the intro's opening sting), built up over four passes --
 	"homecoming": {
-		"planet": "", "title": "Homecoming", "energy": "calm",
+		"set": "", "title": "Homecoming", "energy": "calm",
 		"key": 50, "tonic": 62, "mode": P.IONIAN, "bpm": 60.0, "cycles": 4, "build": true, "fit": false,
 		"prog": [[0, [0, 4, 7, 14]], [9, [0, 3, 7, 10]], [5, [0, 4, 7, 11]], [7, [0, 4, 7, 10]],
 			[0, [0, 4, 7, 14]], [9, [0, 3, 7, 10]], [5, [0, 4, 7, 11]], [7, [0, 5, 7, 10]]],
@@ -268,10 +277,14 @@ const TRACKS: Dictionary = {
 }
 
 
-## Track ids for `planet`; Verdance's list also stands for its generative pieces.
-static func for_planet(planet: String) -> Array[String]:
+static func has_set(music_set: String) -> bool:
+	return SETS.has(music_set)
+
+
+## Track ids of a music set; a GENERATIVE_CALM set's list also stands for its generative pieces.
+static func for_set(music_set: String) -> Array[String]:
 	var out: Array[String] = []
 	for id: String in TRACKS:
-		if str(TRACKS[id]["planet"]) == planet:
+		if str(TRACKS[id]["set"]) == music_set:
 			out.append(id)
 	return out
