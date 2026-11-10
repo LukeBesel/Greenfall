@@ -2,7 +2,7 @@ class_name EggPropsLate
 extends RefCounted
 ## [late] The newer curiosities (data/eggs.json, the last dozen): their props, little reactions and
 ## where they may appear. Frontier eggs ("where": "frontier") only turn up in the frontier whose
-## biome matches; "new_world" eggs only in the start district of a Cradle Mode world.
+## biome matches.
 
 
 ## Frontier-only eggs for a district of this biome (data order).
@@ -12,17 +12,6 @@ static func frontier_eggs(all_ids: Array[String], all_defs: Dictionary, biome: S
 		return out
 	for id: String in all_ids:
 		if str(all_defs[id].get("where", "")) == "frontier" and str(all_defs[id].get("biome", "")) == biome:
-			out.append(id)
-	return out
-
-
-## Eggs that wait in the start district of world 2 and later.
-static func new_world_eggs(all_ids: Array[String], all_defs: Dictionary) -> Array[String]:
-	var out: Array[String] = []
-	if CradleMode.current_index() <= 0:
-		return out
-	for id: String in all_ids:
-		if str(all_defs[id].get("where", "")) == "new_world":
 			out.append(id)
 	return out
 

@@ -9,10 +9,10 @@ extends Node3D
 ##   - a faceted cyan bridge canopy, and Lumi's C eyes on the nose sensor
 ##   - the seed vault at its heart: a faceted glass greenhouse dome with the garden glowing inside
 ##   - a fold ring around the aft hull (like the Mk VI-VII glider), four nacelles and a core engine
-##   - a ventral bay (the Homecoming ship docks there) and the keel with the escape-pod rack
-## Flies toward -Z. API kept for the intro, the core-charge memories, the Bloom finale and the
-## Homecoming: alarm, thrust, ring_speed, dome_world(), pod_world(k), pod_xform(k), release_pod(k),
-## CYAN, ALARM, PEARL, TANGERINE; new: wake_points() (flank light spots for the Homecoming).
+##   - a ventral bay (Lumi's ship docks there) and the keel with the escape-pod rack
+## Flies toward -Z. API kept for the intro, the core-charge memories and the Bloom finale:
+## alarm, thrust, ring_speed, dome_world(), pod_world(k), pod_xform(k), release_pod(k),
+## CYAN, ALARM, PEARL, TANGERINE; new: wake_points() (flank light spots).
 
 const MODEL_PATH := "res://art/models/ship/ark.glb"
 const POINTS_PATH := "res://art/models/ship/ark_points.json"
@@ -233,7 +233,7 @@ func _build_running_lights() -> void:
 	add_child(_lights)
 
 
-## Spots along the flanks (local) where the Homecoming's waking lights can sit.
+## Spots along the flanks (local) where waking lights can sit.
 func wake_points() -> Array[Vector3]:
 	var out: Array[Vector3] = []
 	for p: Array in _pts.get("flank", []):

@@ -29,7 +29,7 @@ POT_PATH = os.path.join(LOCALE_DIR, "greenfall.pot")
 PSEUDO_PATH = os.path.join(LOCALE_DIR, "pseudo.po")
 
 # Folders never scanned (dev tools, tests, vendored addons, store-art renderers).
-SKIP_DIRS = {".godot", "addons", "tests", "website", "builds", "build", "screenshots", ".git"}
+SKIP_DIRS = {".godot", "addons", "tests", "website", "builds", "build", "screenshots", ".git", "parked"}
 SKIP_FILES = {"tools/steam", "steam/store_art.gd", "steam/store_shots.gd"}
 
 # --- JSON rules --------------------------------------------------------------------------------
@@ -53,7 +53,7 @@ JSON_RULES: dict[str, dict] = {
     "patch.json": {"skip": True},
     "planet.json": {"skip": True},
     "lumi_level.json": {"skip": True},
-    "world_looks.json": {"skip": True},  # [worlds2] look tuning only
+    "parked.json": {"skip": True},
 }
 # Strings that look like ids, colours, paths or speaker tags are never extracted from pools.
 ID_KEYS = {"id", "icon", "ears", "shape", "style", "pattern", "action", "mode", "kind", "type", "body", "anim", "set", "source", "stat", "look"}

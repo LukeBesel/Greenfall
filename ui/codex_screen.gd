@@ -496,7 +496,7 @@ func _build_collection() -> Control:
 	bar.custom_minimum_size = Vector2(160, 6)
 	bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	head.add_child(bar)
-	var first: Control = _build_museum_list(list)  # [eggs2] Lumi's collection (every collectible, all planets)
+	var first: Control = _build_exhibit_list(list)  # [eggs2] Lumi's collection (every collectible)
 	var pick: Dictionary = {}
 	for src: String in Collection.sources():
 		var items: Array = Collection.defs().filter(func(t: Dictionary) -> bool: return str(t.get("source", "")) == src)
@@ -552,8 +552,8 @@ func _build_collection() -> Control:
 	_c_reward.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_c_reward.custom_minimum_size = Vector2(280, 0)
 	dv.add_child(_c_reward)
-	if not Museum.exhibits().is_empty():  # [eggs2]
-		_show_exhibit(Museum.exhibits()[0])
+	if not Exhibits.exhibits().is_empty():  # [eggs2]
+		_show_exhibit(Exhibits.exhibits()[0])
 	else:
 		if pick.is_empty() and not Collection.defs().is_empty():
 			pick = Collection.defs()[0]
@@ -562,24 +562,24 @@ func _build_collection() -> Control:
 	return first
 
 
-# [eggs2] Lumi's collection: every collectible in the game (data/museum.json) with counts and a
-# silhouette while missing; the same list fills the Museum's plinths.
-func _build_museum_list(list: VBoxContainer) -> Control:
-	var xs: Array = Museum.exhibits()
+# [eggs2] Lumi's collection: every collectible (systems/exhibits.gd) with counts and a
+# silhouette while missing.
+func _build_exhibit_list(list: VBoxContainer) -> Control:
+	var xs: Array = Exhibits.exhibits()
 	if xs.is_empty():
 		return null
 	var head := HBoxContainer.new()
 	head.add_theme_constant_override("separation", 8)
 	list.add_child(head)
 	head.add_child(UITheme.label(tr("LUMI'S COLLECTION"), 15, COLLECT_COLOR))
-	head.add_child(UITheme.label(tr("%d / %d complete") % [Museum.filled(), xs.size()], 13, UITheme.MUTED))
+	head.add_child(UITheme.label(tr("%d / %d complete") % [Exhibits.filled(), xs.size()], 13, UITheme.MUTED))
 	var flow := HFlowContainer.new()
 	flow.add_theme_constant_override("h_separation", 8)
 	flow.add_theme_constant_override("v_separation", 8)
 	list.add_child(flow)
 	var first: Control = null
 	for x: Dictionary in xs:
-		var p: Vector2i = Museum.progress(x)
+		var p: Vector2i = Exhibits.progress(x)
 		var got: bool = p.x > 0
 		var b := Button.new()
 		b.custom_minimum_size = Vector2(236, 48)
@@ -617,7 +617,7 @@ func _build_museum_list(list: VBoxContainer) -> Control:
 func _show_exhibit(x: Dictionary) -> void:  # [eggs2]
 	if _c_icon == null:
 		return
-	var p: Vector2i = Museum.progress(x)
+	var p: Vector2i = Exhibits.progress(x)
 	var got: bool = p.x > 0
 	_c_icon.text = "◆" if p.x >= p.y else ("◇" if got else "?")
 	_c_icon.add_theme_color_override("font_color", COLLECT_COLOR if got else Color(UITheme.MUTED, 0.6))
@@ -625,11 +625,11 @@ func _show_exhibit(x: Dictionary) -> void:  # [eggs2]
 	_c_where.text = (tr("EVERY PLANET") if planet == "all" else tr(planet.capitalize()).to_upper()) + ("   ·   %d / %d" % [p.x, p.y] if p.y > 1 else "")
 	_c_name.text = tr(str(x["name"])) if got else tr("Not found yet")
 	if p.x >= p.y:
-		_c_text.text = tr("In Lumi's collection. It has a plinth in the Museum.")
+		_c_text.text = tr("In your collection")
 	else:
-		_c_text.text = tr("Hint: %s") % tr(Museum.hint(x)) if Museum.hint(x) != "" else ""
+		_c_text.text = tr("Hint: %s") % tr(Exhibits.hint(x)) if Exhibits.hint(x) != "" else ""
 	_c_text.add_theme_color_override("font_color", UITheme.CREAM if got else UITheme.MUTED)
-	_c_reward.text = tr("The Museum: built") if Museum.built() else tr("The Museum is built at Cradle Returns, near the end of the journey.")
+	_c_reward.text = ""
 
 
 func _show_trinket(t: Dictionary) -> void:

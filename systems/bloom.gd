@@ -1,12 +1,10 @@
 class_name Bloom
 extends Node
-## Post-game (M11): planet-scale "Verdance Bloom" milestones and the endless Seed Ark loop
-## (data/bloom.json). Pure helpers are static (tests use them); the live node (added by the
-## slice) keeps this district's summary fresh, checks milestones, plays the Cradle finale once
-## and counts Seed Ark waves. Nothing ever resets: the loop only adds.
+## Post-game (M11): planet-scale "Verdance Bloom" milestones (the planet's "postgame" table). Pure
+## helpers are static (tests use them); the live node (added by the slice) keeps this district's
+## summary fresh, checks milestones and plays the Cradle finale once.
 ## State: flags.bloom_done (Array of ids), flags.bloom_<id> (for achievements),
-## flags.seed_ark {wave, start}, flags.bloom_finale_seen, flags.biomes_visited,
-## world.bloom_summary {thriving, land} per district, stats.ark_waves.
+## flags.bloom_finale_seen, flags.biomes_visited, world.bloom_summary {thriving, land} per district.
 
 const TABLE: String = "postgame"
 const CHECK_S: float = 2.0
@@ -23,7 +21,6 @@ static func cfg() -> Dictionary:
 		_cfg = Economy.planet_table(TABLE)
 		Economy.drop_on_planet_change(_drop_planet_cache)
 	return _cfg
-
 
 
 static func _drop_planet_cache() -> void:
@@ -121,60 +118,16 @@ static func _pay(reward: Dictionary, mult: float) -> String:
 	return "  ".join(bits)
 
 
-# --- Seed Ark (endless, cozy) ---------------------------------------------------------
-
-static func ark_unlocked() -> bool:
-	return is_done(str(cfg().get("seed_ark", {}).get("unlock", "verdance_bloom")))
-
-
-static func ark_state() -> Dictionary:
-	var v: Variant = GameState.flags.get("seed_ark")
-	if not (v is Dictionary):
-		v = {"wave": 0, "start": float(GameState.stats.get("plants_bloomed", 0.0))}
-		GameState.flags["seed_ark"] = v
-	(v as Dictionary)["wave"] = int((v as Dictionary).get("wave", 0))  # [beat] JSON brings it back as a float
-	return v
-
-
-static func ark_target(wave: int) -> int:
-	var a: Dictionary = cfg().get("seed_ark", {})
-	return int(round(float(a.get("base", 120)) * pow(float(a.get("growth", 1.5)), wave)))
-
-
-static func ark_progress() -> int:
-	return maxi(0, int(float(GameState.stats.get("plants_bloomed", 0.0)) - float(ark_state().get("start", 0.0))))
-
-
-## Completes as many waves as the blooms cover. Returns how many finished (rewards paid).
-static func ark_step() -> int:
-	if not ark_unlocked():
-		return 0
-	var st: Dictionary = ark_state()
-	var n: int = 0
-	while ark_progress() >= ark_target(int(st["wave"])) and n < 20:
-		var w: int = int(st["wave"])
-		st["start"] = float(st["start"]) + ark_target(w)
-		st["wave"] = w + 1
-		var a: Dictionary = cfg().get("seed_ark", {})
-		_pay(a.get("reward", {}), pow(float(a.get("reward_growth", 1.35)), w))
-		GameState.inc_stat("ark_waves")
-		n += 1
-	return n
-
-
-## One short line for the hologram ("" until the Seed Ark opens).
+## One short line for the hologram: the next milestone ("" before the first and after the last).
 static func globe_line() -> String:
-	if not ark_unlocked():
-		var next: Dictionary = {}
-		for ms: Dictionary in milestones():
-			if not is_done(str(ms["id"])):
-				next = ms
-				break
-		if done_list().is_empty() or next.is_empty():
-			return ""
-		return TranslationServer.translate("Verdance Bloom %d / %d  ·  next: %s") % [done_list().size(), milestones().size(), TranslationServer.translate(str(next.get("name", "")))]
-	var w: int = int(ark_state()["wave"])
-	return TranslationServer.translate("Seed Ark wave %d  ·  %d / %d blooms planet-wide") % [w + 1, mini(ark_progress(), ark_target(w)), ark_target(w)]
+	var next: Dictionary = {}
+	for ms: Dictionary in milestones():
+		if not is_done(str(ms["id"])):
+			next = ms
+			break
+	if done_list().is_empty() or next.is_empty():
+		return ""
+	return TranslationServer.translate("Verdance Bloom %d / %d  ·  next: %s") % [done_list().size(), milestones().size(), TranslationServer.translate(str(next.get("name", "")))]
 
 
 # --- Live node -----------------------------------------------------------------------
@@ -255,13 +208,6 @@ func _process(delta: float) -> void:
 	var got: Array[String] = check(measure_now())
 	for id: String in got:
 		_celebrate(id)
-	var waves: int = ark_step()
-	if waves > 0:
-		var w: int = int(ark_state()["wave"])
-		EventBus.toast.emit(tr("Seed Ark wave %d planted across Verdance. The Cradle drops a gift. Next wave: %d blooms.") % [w, ark_target(w)], "story")
-		Audio.play("fanfare", 1.1, -8.0)
-		if world and world.get("wren") != null:
-			world.wren.say("ark_wave", 1.0, true)
 
 
 func _celebrate(id: String) -> void:
@@ -304,8 +250,6 @@ func play_finale(force: bool = false) -> void:
 		_finale_pending = true
 		return
 	_finale_pending = false
-	if Homeward.redirect_finale(world, force):  # [home] before the home launch: "The Cradle Answers"
-		return
 	# [beat] bloom_finale_seen is set when the cinematic ends (BloomFinale), so quitting halfway
 	# replays it on the next load instead of losing the ending.
 	var f := BloomFinale.new()

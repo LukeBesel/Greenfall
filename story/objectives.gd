@@ -458,7 +458,7 @@ func _update_focus() -> void:
 ## which workbench row opens. {"to": "bench" | "depot" | "hex" | "place" | "", "pos": Vector3 or
 ## null, "row": [tab, row id] or []}. "hex" = the nearest dirty hex (outlined too).
 const BENCH_STATS: Array[String] = ["upgrades_bought", "robots_built", "research_done", "builder_full_custom", "builder_parts_fitted",
-	"decor_placed", "decor_kinds", "decor_charm_best", "greenhouses_built", "water_tanks", "heaters_placed", "drive_tier", "robots_retired", "radio_plays"]
+	"decor_placed", "decor_kinds", "decor_charm_best", "greenhouses_built", "water_tanks", "heaters_placed", "robots_retired", "radio_plays"]
 const DEPOT_STATS: Array[String] = ["cubes_cashed", "junk_dumps", "robot_bales", "bales_recycled"]
 const HEX_STATS: Array[String] = ["hexes_cleaned", "junk_scooped", "cubes_made", "perfect_cubes", "hexes_restored", "hexes_thawed",
 	"plants_planted", "plants_bloomed", "garden_stipend", "eggs_found", "cats_petted"]

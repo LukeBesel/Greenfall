@@ -85,8 +85,8 @@ func test_no_locker_tab() -> void:
 	assert_lte(UpgradesScreen.TABS.size(), 5)
 
 
-## [ui7] The Bots tab in the list pattern, with a hidden Fabricator slot for orbC.
-func test_bots_rows_and_fabricator_slot() -> void:
+## [ui7] The Bots tab in the list pattern.
+func test_bots_rows() -> void:
 	Research.grant("salvage_logic")
 	Research.unlock_story("haul_rig")  # [v4bots]
 	var f := Fleet.new()
@@ -94,11 +94,6 @@ func test_bots_rows_and_fabricator_slot() -> void:
 	var rows: Array = BenchBots.rows(f, Callable())
 	var builds: Array = rows.filter(func(r: Dictionary) -> bool: return str(r["cat"]) == "build")
 	assert_eq(builds.size(), Economy.robot_order.size(), "one build row per robot type")
-	assert_true(rows.filter(func(r: Dictionary) -> bool: return str(r["cat"]) == "fabricator").is_empty(), "no Fabricator until it plugs in")
-	BenchBots.set_fabricator(func(_w: Node) -> Array: return [{"id": "fab_1", "cat": "fabricator", "name": "Queue", "state": "busy"}])
-	rows = BenchBots.rows(f, Callable())
-	assert_eq(rows.filter(func(r: Dictionary) -> bool: return str(r["cat"]) == "fabricator").size(), 1)
-	BenchBots.set_fabricator(Callable())
 	GameState.currencies["cubes"] = BigNum.from_float(1.0e6)
 	GameState.currencies["parts"] = BigNum.from_float(1.0e4)
 	rows = BenchBots.rows(f, Callable())
@@ -178,7 +173,7 @@ func test_locker_bot_rows_hide_locked_parts() -> void:
 	assert_gt(rows.filter(func(r: Dictionary) -> bool: return str(r["cat"]) == "glow").size(), 5)
 
 
-## [ui7] The Fabricator is a Bots category, and globe robots wear the type design too.
+## [ui7] Globe robots wear the type design too.
 func test_globe_robots_get_the_type_design_hook() -> void:
 	RobotDesign.register_hooks()
 	assert_true(SphereCrew.dress_hooks.has(Callable(RobotDesign.dress_sphere)) or SphereCrew.dress_hooks.size() > 0)

@@ -244,7 +244,7 @@ static func _fauna_check(tree: SceneTree, s: Node, so: SliceOrbit, check: Callab
 	# Garden Mode: this hub's decor sits in the frame on the ground; the yard's machines and its
 	# buildings block a spot; the placer opens on it with the SphereCam following its cursor.
 	var dc: Decor = hf.node("Decor") as Decor
-	var lt: LateDirector = LateDirector.of(s)
+	var lt: GardenDirector = GardenDirector.of(s)
 	check.call("orbit_decor_at_hub", true, dc != null and lt != null and lt.decor == dc and lt.placer.decor == dc)
 	var t0: String = Decor.type_ids()[0]
 	var c0: Vector2i = _free_decor_cell(dc, t0, back)
@@ -572,8 +572,6 @@ static func run(rt: Node, check: Callable) -> void:
 	await tree.physics_frame
 	check.call("orbit_bin_prompt", true, s1.interact_prompt(p) != "")
 	YardBuilds.mark_built("radio")
-	var scope: Telescope = Telescope.of(s1)
-	check.call("orbit_telescope_at_anchor", true, scope != null and scope.door_point().distance_to(so1.yard_point("telescope")) < 3.0)
 	var ex: ExtrasDirector = ExtrasDirector.of(s1)
 	check.call("orbit_radio_on_anchor", true, ex != null and ex.radio != null and ex.radio.global_position.distance_to(so1.yard_point("radio")) < 0.1)
 	if ex and ex.radio:

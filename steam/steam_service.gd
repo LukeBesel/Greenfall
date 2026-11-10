@@ -168,6 +168,8 @@ func sync_achievements() -> void:
 		return
 	var n: int = 0
 	for id: Variant in Achievements.unlocked_map():
+		if Achievements.def(str(id)).is_empty():
+			continue  # an id from an older build that is no longer an achievement
 		var nm: String = api_name(str(id))
 		var have: Variant = api.call("getAchievement", nm) if api.has_method("getAchievement") else {}
 		if have is Dictionary and bool((have as Dictionary).get("achieved", false)):

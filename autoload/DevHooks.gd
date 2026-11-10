@@ -25,15 +25,12 @@ extends Node
 ##   --clean-hexes=N    pre-clean the N land hexes nearest the base
 ##   --bot-report       print the [bots] robot report before --quit-after
 ##   --orbit-far-crew[=N] --offline-jump[=S]  [orbC] round-planet crew checks (robots/sphere/sphere_crew_dev.gd)
-##   --fabricator [--fabricator-build]  [orbC] unlock (and, on --orbit, build and fund) the Bot Fabricator
 ##   --trace-bot=NAME   print one robot's state every 2 s (target, hopper, stall timer, status)
 ##   --ledger-act=N     jump the Ledger arc to act N (1 intercepts, 2 drones, 3 relay, 4 resolved)
 ##   --ledger-drop[=S]  force a Ledger dump drone S seconds after start (ignores jammers)
 ##   --ledger-resolve[=S]  play the relay "rewrite the contract" cinematic (needs act 3)
 ##   --demo-scoop       Patch scoops the nearest junk nonstop (pickup animation shots; --demo-yaw, --demo-speed)
 ##   [eggs2] --tv-frame=N holds the TV broadcast on frame N, --tv-step=S advances it every S wall-clock s
-##   [eggs2] Museum: --museum (unlocked), --museum-here (build site in this district), --museum-built, --museum-sample
-##                      (a partly filled collection), --spawn-museum (--museum-dist/--museum-side/--museum-yaw)
 ##   --event=ID         [events] force a world event (supply_drop, salvage_surge, rain_shower, robot_hiccup,
 ##                      wildlife_visit, rare_part_signal, ledger_audit) --event-at=S wall-clock seconds after start (default 3);
 ##                      --event-land drops the supply crate from just above the junk, slowly (screenshots)
@@ -67,8 +64,7 @@ extends Node
 ##   --demo             [steam] run as the Steam demo build (Demo.is_demo()); --no-steam skips Steam init
 ##   --no-hud           [steam] hide HUD, toasts, subtitles and event banners (store screenshots, trailer)
 ##   --demo-end[=S]     [steam] show the end-of-demo screen after S seconds
-##   [late] --post-finale (Verdance won), --world=N, --heirlooms=id:lv+.., --starseeds=N, --open=ark|garden,
-##          --decor-sample, --new-world[=S], --no-banner; full list in systems/late_director.gd
+##   [garden] --open=garden, --garden, --decor-sample, --garden-cam; full list in systems/garden_director.gd
 ##   [kit] --kit-lineup  art kit lineup (docs/ART_KIT.md); with --out=PREFIX it renders every piece and quits
 
 var args: Dictionary = {}

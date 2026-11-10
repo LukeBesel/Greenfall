@@ -49,13 +49,9 @@ func setup(p_env: Environment, p_sun: DirectionalLight3D) -> void:
 	time_of_day = float(GameState.flags.get("time_of_day", 0.32))
 
 
-## [worlds2] The planet this sky belongs to (data/solar_system.json ids): Verdance, or the current
-## world's planet / world type.
+## The planet this sky belongs to (data/solar_system.json ids): the current planet.
 static func current_planet_id() -> String:
-	if CradleMode.profile.is_empty() or CradleMode.current_index() <= 0:
-		return "verdance"
-	var pid: String = WorldLook.planet_id()
-	return pid if pid != "" else str(CradleMode.current_world().get("type", "verdance"))
+	return String(Planets.current_id())
 
 
 ## [vqa2] Night sky: sparse stars on a near-black sky. PhysicalSkyMaterial adds `night_sky`
@@ -112,8 +108,8 @@ func _process(delta: float) -> void:
 		_process_sphere(delta)
 		return
 	if not frozen:
-		# [late] Long Nights; [buddy] longer days and quicker nights until Glim is found
-		time_of_day = fmod(time_of_day + delta / DAY_LENGTH_S * CradleMode.day_speed(time_of_day) * Glim.clock_mult(time_of_day), 1.0)
+		# [buddy] longer days and quicker nights until Glim is found
+		time_of_day = fmod(time_of_day + delta / DAY_LENGTH_S * Glim.clock_mult(time_of_day), 1.0)
 		GameState.flags["time_of_day"] = time_of_day
 	if world and world.get("planet") != null:
 		var target: float = 1.0 - clampf(world.planet.restored_fraction() * 8.0 + float(GameState.stats.get("air_filtered", 0.0)) * 0.0005 + clear_bonus, 0.0, 0.85)
@@ -363,7 +359,7 @@ func _process_sphere(delta: float) -> void:
 	if _tod_out >= 0.0 and absf(time_of_day - _tod_out) > 0.0005:  # someone set the clock
 		spin = spin_for_local_time(time_of_day, _player_pos())
 	if not frozen:
-		spin = fposmod(spin + TAU * delta / day_period_s * CradleMode.day_speed(time_of_day) * Glim.clock_mult(time_of_day), TAU)
+		spin = fposmod(spin + TAU * delta / day_period_s * Glim.clock_mult(time_of_day), TAU)
 		GameState.flags["orbit_spin"] = spin
 	_clean_t -= delta  # clean_fn walks every cell (164k+): ask every few seconds, haze eases anyway
 	if _clean_t <= 0.0:

@@ -18,15 +18,19 @@ static func cfg() -> Dictionary:
 	return _cfg
 
 
-
 static func _drop_planet_cache() -> void:
 	_cfg = {}
 	_entries = []
 	_eggs = []
 
 
+## The table's categories that have entries, in table order. A category whose entries no system
+## here supplies (a parked feature's) is left out, so the Codex never shows an empty tab.
 static func categories() -> Array:
-	return cfg().get("categories", [])
+	var used: Dictionary = {}
+	for e: Dictionary in entries():
+		used[e["cat"]] = true
+	return (cfg().get("categories", []) as Array).filter(func(c: Dictionary) -> bool: return used.has(str(c.get("id", ""))))
 
 
 ## All entries in display order: {key, cat, id, name, desc, hint}.
@@ -62,22 +66,10 @@ static func entries() -> Array[Dictionary]:
 	var fr: Dictionary = c.get("frontiers", {})
 	for fid: String in fr:
 		_add("frontiers", fid, TranslationServer.translate(str(fr[fid].get("name", fid.capitalize()))), fr[fid])
-	# [home] Homeward: the system campaign (unlocked by story/cradle_answers.gd, systems/homeward_director.gd).
-	var hw: Dictionary = c.get("homeward", {})
-	for hid: String in hw:
-		_add("homeward", hid, TranslationServer.translate(str(hw[hid].get("name", hid.capitalize()))), hw[hid])
-	var hdocs: Dictionary = Homeward.cfg().get("docs", {})  # the planet memos and intercepts, read again here
-	for dk: String in hdocs:
-		var de: Dictionary = {"desc": hdocs[dk].get("body", ""), "hint": TranslationServer.translate("Found on the planet it belongs to.")}
-		_add("homeward", dk, TranslationServer.translate(str(hdocs[dk].get("title", dk))), de)
 	# [wild] Animals (unlocked on first sighting by fauna/fauna.gd).
 	var an: Dictionary = c.get("animals", {})
 	for aid: String in an:
 		_add("animals", aid, TranslationServer.translate(str(an[aid].get("name", aid.capitalize()))), an[aid])
-	# [scope] Seen through the Telescope (ui/telescope_view.gd).
-	var si: Dictionary = c.get("sightings", {})
-	for sid: String in si:
-		_add("sightings", sid, TranslationServer.translate(str(si[sid].get("name", sid.capitalize()))), si[sid])
 	return _entries
 
 
@@ -115,10 +107,12 @@ static func unlock(key: String) -> bool:
 	return true
 
 
+## Unlocked entries (of one category, or all). Keys in a save that are no longer entries (a parked
+## feature's) are not counted.
 static func count(cat: String = "*") -> int:
 	var n: int = 0
-	for k: Variant in unlocked_list():
-		if cat == "*" or str(k).begins_with(cat + ":"):
+	for e: Dictionary in entries():
+		if (cat == "*" or e["cat"] == cat) and is_unlocked(e["key"]):
 			n += 1
 	return n
 
@@ -196,9 +190,12 @@ static func scan(world: Node = null) -> Array[String]:
 static var _eggs: Array = []
 
 
+## The curiosities that can be found in this game, in table order. Eggs that wait on another world
+## ("where": "new_world") are left out: there is no such world to find them on.
 static func egg_defs() -> Array:
 	if _eggs.is_empty():
-		_eggs = Economy.planet_table("eggs").get("eggs", [])
+		_eggs = (Economy.planet_table("eggs").get("eggs", []) as Array).filter(
+			func(e: Dictionary) -> bool: return str(e.get("where", "")) != "new_world")
 		Economy.drop_on_planet_change(_drop_planet_cache)
 	return _eggs
 
@@ -214,8 +211,6 @@ static func egg_where(e: Dictionary) -> String:
 	if str(e.get("where", "")) == "frontier":  # [late]
 		var fb: String = str(e.get("biome", ""))
 		return TranslationServer.translate("Frontiers") + TranslationServer.translate(" · %s") % TranslationServer.translate(str(Economy.biome_set(fb).get("name", fb.capitalize().replace("_", " "))))
-	if str(e.get("where", "")) == "new_world":  # [late]
-		return TranslationServer.translate("Other worlds")
 	return TranslationServer.translate("Any district")
 
 

@@ -319,8 +319,6 @@ func _on_built(id: String) -> void:
 	MachineReveal.reveal(world, tr(str(YardBuilds.def(id).get("name", id))), at)
 
 
-
-
 ## [camp4] The yard street lamp comes on with world3's flicker-then-on moment
 ## (planet/power_fx.gd PowerFx.flicker_on). Loaded by path so this file doesn't depend on
 ## world3 having landed: without it the lamp just turns on.
@@ -391,9 +389,6 @@ func points() -> Array:
 	if ex and ex.radio:
 		var ra: Node3D = world.get_node_or_null("RadioReach") as Node3D
 		out.append(["radio", ra.global_position if ra else ex.radio.global_position, ex.radio.visible])
-	var scope: Telescope = Telescope.of(world)
-	if scope:
-		out.append(["telescope", scope.door_point(), scope.built()])
 	var tower: Node3D = world.get_node_or_null("SignalTower") as Node3D
 	if tower:  # [camp2]
 		out.append(["signal_tower", tower.global_position, tower.visible])
@@ -420,11 +415,6 @@ func standing() -> Array[String]:
 		var n: Node3D = checks[k] as Node3D
 		if n and n.is_inside_tree() and n.is_visible_in_tree():
 			out.append(k)
-	var scope: Telescope = Telescope.of(world)
-	if scope and scope.built():
-		out.append("telescope")
-	if world.get_node_or_null("Museum") and Museum.built():
-		out.append("museum")
 	return out
 
 

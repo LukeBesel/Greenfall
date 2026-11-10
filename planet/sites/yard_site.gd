@@ -2,14 +2,13 @@ class_name YardSite
 extends Node3D
 ## [orbD] The start yard's models on the walkable globe, on the hub-0 site prefab's anchors
 ## (VerdanceSite.START_YARD_ANCHORS). Every model is the yard helper's own (YardArt, the build
-## scripts, FabricatorModel, the intro's pod); nothing is redrawn here. Who shows what:
+## scripts, the intro's pod); nothing is redrawn here. Who shows what:
 ##   Camp (systems/camp/camp.gd) drives the parts it drives on the flat game, through the slice's
 ##   `_ruin_bits`: the lean-to (frame, roof, back, side, work lamp, bulb, posts), the bench
 ##   (broken -> repaired), the yard street lamp and the generator.
 ##   This node follows the same saved state for the rest, the way their flat systems decide:
-##   extra yard lamps and compost press, radio and nursery (YardBuilds.built), telescope
-##   (GameState.world.telescope.built), stations (Stations.built_in_state), Bot Fabricator
-##   (BotFabricator.built), and the escape pod in its crash site (always there).
+##   extra yard lamps and compost press, radio and nursery (YardBuilds.built), stations
+##   (Stations.built_in_state), and the escape pod in its crash site (always there).
 ## Already on the globe with their own models: the depot and its bin tiers, the signal tower
 ## tiers, the locker, Blink (camera_bot).
 ## Use (scenes/slice_orbit.gd, before Camp.attach): var bits := YardSite.build(slice, prefab, bench)
@@ -23,9 +22,7 @@ var _extra_lamps: Array[Node3D] = []
 var _composter: Node3D
 var _radio: Node3D
 var _nursery: Node3D
-var _telescope: Node3D
 var _stations: Dictionary = {}  # id -> Node3D
-var _fabricator: FabricatorModel
 var _pod: Node3D
 var _poll: float = 0.0
 
@@ -154,17 +151,6 @@ func _build(bench: Node3D) -> void:
 	_nursery = _slot("nursery")
 	_nursery.add_child(YardArt.nursery(Vector2(5.0, 3.4)).mi(0.15, "Garden"))
 	_nursery.add_child(YardArt.nursery_grass(Vector2(5.0, 3.4)))
-	# The telescope's own model (automation/telescope.gd), without its view or remote progress.
-	_telescope = _slot("telescope")
-	var sc := Telescope.new()
-	sc.data = RemoteProgress.cfg()
-	sc.call("_spawn", false)
-	var model: Node3D = sc.get("_model")
-	if model:
-		sc.remove_child(model)
-		model.transform = Transform3D.IDENTITY
-		_telescope.add_child(model)
-	sc.free()
 	# Stations: the real machine nodes, idle (their logic is the flat game's Stations), in a row.
 	var st_root: Node3D = _slot("stations")
 	var row: Array = [["conveyor", Conveyor.new(), Vector3(0, 0, 0)], ["auto_baler", AutoBaler.new(), Vector3(0, 0, -3.2)], ["recycler", Recycler.new(), Vector3(0, 0, 3.2)]]
@@ -174,19 +160,13 @@ func _build(bench: Node3D) -> void:
 		n.process_mode = Node.PROCESS_MODE_DISABLED
 		st_root.add_child(n)
 		_stations[e[0]] = n
-	# The Bot Fabricator (systems/camp/fabricator_model.gd; logic: robots/fabricator, orbC).
-	var fab_slot: Node3D = _slot("fabricator")
-	_fabricator = FabricatorModel.new()
-	fab_slot.add_child(_fabricator)
 	# The escape pod in its crash site (story/intro.gd's pod, story/crash_site.gd), hatch open.
 	var pod_slot: Node3D = _slot("pod")
 	_pod = Intro.build_pod()
 	CrashSite.attach(pod_slot, _pod, pod_slot.global_position if pod_slot.is_inside_tree() else Vector3.ZERO, 0.5)
 	EscapePod.set_open(_pod, true, CrashSite.LEAN.x)
-	if DevHooks.has("yard-all"):  # dev: the telescope, stations and Fabricator as built (their systems aren't on the globe yet)
-		GameState.world["telescope"] = {"built": true}
+	if DevHooks.has("yard-all"):  # dev: the stations as built
 		GameState.world["stations"] = {"conveyor": true, "recycler": true, "baler": {"pos": [0.0, 0.0]}}
-		BotFabricator.state(BotFabricator.planet_of(world))["built"] = true
 	_apply()
 	YardBuilds.events.built.connect(func(_id: String) -> void: _apply())
 	EventBus.upgrade_bought.connect(func(_a: Variant = null, _b: Variant = null) -> void: _apply())
@@ -215,22 +195,14 @@ func _apply() -> void:
 	var nursery: bool = YardBuilds.built("nursery")
 	_show(_nursery, nursery)
 	YardArt.set_powered(_nursery, nursery)
-	var tel: Variant = GameState.world.get("telescope")
-	_show(_telescope, tel is Dictionary and bool((tel as Dictionary).get("built", false)))
 	for id: String in _stations:
 		_show(_stations[id], Stations.built_in_state(id))
-	_show(_fabricator, BotFabricator.built(world))
 
 
-## When orbB attaches a yard system with its own model (the real Telescope, the intro's pod and
+## When orbB attaches a yard system with its own model (the intro's pod and
 ## crash site, the extras' radio and nursery), its model is the one that stands: this node's
 ## stand-in for it goes away, so nothing is drawn twice.
 func _yield_to_real_systems() -> void:
-	# The real Telescope draws its model only once built: keep the stand-in until then.
-	var tel: Telescope = Telescope.of(world) if world.is_inside_tree() else null
-	if _telescope and tel and tel.built():
-		_telescope.queue_free()
-		_telescope = null
 	# The crashed pod: orbB's CrashSite on the slice (meta "orbit_pod", or a child named CrashSite).
 	if _pod and (world.has_meta("orbit_pod") or world.get_node_or_null("CrashSite") != null):
 		_pod.get_parent().queue_free()  # this node's crash site holder
@@ -315,7 +287,7 @@ func report() -> String:
 		if n:
 			parts.append("%s:%s" % [k, "on" if n.is_visible_in_tree() else "off"])
 	var mine: Dictionary = {"lamps+": _extra_lamps[0] if not _extra_lamps.is_empty() else null, "composter": _composter, "radio": _radio,
-		"nursery": _nursery, "telescope": _telescope, "fabricator": _fabricator, "pod": _pod}
+		"nursery": _nursery, "pod": _pod}
 	for id: String in _stations:
 		mine[id] = _stations[id]
 	for k: String in mine:

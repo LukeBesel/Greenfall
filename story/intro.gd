@@ -305,7 +305,7 @@ func play() -> void:
 	if world.get("music") != null:
 		world.music.set_cinematic(true)
 	_tunes_start()  # [tunes] The Fall of LM-1 from the first frame (before the motif, which it replaces)
-	Audio.music_sting("motif")  # [sound] the Greenfall motif; the Homecoming ending quotes it
+	Audio.music_sting("motif")  # [sound] the Greenfall motif
 	_build_overlay()
 	_drop_cover()  # [first]
 	_prev_cam = get_viewport().get_camera_3d()

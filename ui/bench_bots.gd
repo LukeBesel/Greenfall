@@ -7,21 +7,11 @@ extends RefCounted
 ##   Tiers      - the next Mk step of each robot type you have.
 ##   Fleet      - the fleet upgrades (speed, hopper, ...): the cheapest few you can buy soon plus
 ##                at most two locked rows.
-##   Fabricator - placeholder for orbC's Bot Fabricator (Tidewell). Hidden until something plugs
-##                in: BenchBots.set_fabricator(func(world: Node) -> Array) returning rows in the
-##                ListDetail row format with cat "fabricator". An empty result keeps it hidden.
 
 # l10n:begin
-const CATS: Array = [["build", "Build"], ["tiers", "Tiers"], ["fleet", "Fleet"], ["fabricator", "Fabricator"]]
+const CATS: Array = [["build", "Build"], ["tiers", "Tiers"], ["fleet", "Fleet"]]
 # l10n:end
 const ROLE_ICON: Dictionary = {"clean": "scoop", "haul": "cube", "plant": "plant", "water": "water", "skim": "water", "any": "star"}
-
-static var _fabricator: Callable
-
-
-## orbC: register the Fabricator's rows (its build queue). Pass an invalid Callable to remove.
-static func set_fabricator(provider: Callable) -> void:
-	_fabricator = provider
 
 
 static func _tr(s: String) -> String:
@@ -94,20 +84,6 @@ static func rows(fleet: Fleet, build_at: Callable) -> Array:
 		it["icon_set"] = "hud"
 		fleet_rows.append(it)
 	out.append_array(BenchLists._trim(fleet_rows))
-	# The Bot Fabricator (orbC, robots/fabricator/): one row whose detail is its panel (mix, pause).
-	var fab: BotFabricator = BotFabricator.of(world) if world else null
-	if fab:
-		out.append({"id": "fabricator", "cat": "fabricator", "icon": "auto", "icon_set": "ui", "name": _tr("Bot Fabricator"),
-			"desc": fab.status_line(), "state": "busy", "tag": _tr("PAUSED") if fab.paused() else _tr("ACTIVE"),
-			"table": [], "action": "", "custom": func(_w: Node) -> Control:
-				var fp := FabricatorPanel.new()
-				fp.fab = fab
-				return fp})
-	# Anything else plugged in through set_fabricator().
-	if _fabricator.is_valid():
-		var fr: Variant = _fabricator.call(world)
-		if fr is Array:
-			out.append_array(fr)
 	return out
 
 

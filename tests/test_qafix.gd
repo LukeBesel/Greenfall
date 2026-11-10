@@ -68,8 +68,7 @@ func test_title_song_tag_has_room_for_its_text() -> void:
 func test_keepsakes_tabs_wait_for_their_builds() -> void:
 	assert_false(ExtrasPanel.tab_open("radio"), "no CD player on a fresh yard")
 	assert_false(ExtrasPanel.tab_open("nursery"), "no nursery at the start")
-	assert_true(ExtrasPanel.tab_open("weekly"))
-	assert_eq(ExtrasPanel.open_tabs()[0], "album" if ExtrasPanel.tab_open("album") else "weekly")
+	assert_false(ExtrasPanel.tab_open("weekly"), "a tab nobody owns is never open")
 	YardBuilds.mark_built("radio")
 	assert_true(ExtrasPanel.tab_open("radio"), "the CD player tab comes with the build")
 

@@ -4,7 +4,7 @@ extends VBoxContainer
 ## separate tab"). The list is camp2's single source, HubBuilds.available(world, "one_time")
 ## (data/builds.json): only unlocked, not-yet-built things, in order; a building drops off once it
 ## stands and joins the small "Built" line. Building goes through HubBuilds.build (pay, place,
-## reveal; the first Signal Jammer is one of them). Also the controls of machines that already stand (bale stations' route / move, the telescope).
+## reveal; the first Signal Jammer is one of them). Also the controls of machines that already stand (bale stations' route / move).
 
 var world: Node
 var _list: VBoxContainer
@@ -12,7 +12,6 @@ var _rows: Dictionary = {}  # id -> BenchRow
 var _empty: Label
 var _built: Label
 var _stations: StationsPanel
-var _scope: TelescopePanel
 var _ops: VBoxContainer
 var _t: float = 0.0
 
@@ -27,7 +26,7 @@ func _ready() -> void:
 	add_child(_empty)
 	_built = BenchKit.body("", UITheme.MUTED, BenchKit.SMALL_SIZE)
 	add_child(_built)
-	# Machines that stand: their few controls (route, move, open the telescope).
+	# Machines that stand: their few controls (route, move).
 	_ops = VBoxContainer.new()
 	_ops.add_theme_constant_override("separation", 10)
 	add_child(_ops)
@@ -35,8 +34,6 @@ func _ready() -> void:
 	_ops.add_child(_stations)
 	for g: Node in _stations.find_children("*", "GridContainer", true, false):
 		(g as Control).visible = false  # machine upgrades are in the Upgrades tab
-	_scope = TelescopePanel.new()
-	_ops.add_child(_scope)
 	refresh()
 
 
@@ -110,4 +107,3 @@ func refresh() -> void:
 	_built.text = (tr("Built:  %s") % "  ·  ".join(names)) if not names.is_empty() else ""
 	_built.visible = not names.is_empty()
 	_stations.refresh()
-	_scope.refresh()

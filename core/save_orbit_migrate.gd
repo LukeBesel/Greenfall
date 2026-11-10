@@ -50,10 +50,8 @@ static func apply(globe: OrbitPlanet) -> Dictionary:
 	var ps: Dictionary = GameState.planet_state
 	var seed6: int = int(ps.get("seed", globe.seed_value))
 	var base := PlanetData.new(seed6, FROM_LEVEL, 10.0)  # what the flat survey started from
-	base.mix = CradleMode.planet_mix()
 	base.generate()
 	var was := PlanetData.new(seed6, FROM_LEVEL, 10.0)
-	was.mix = base.mix
 	was.generate()
 	var ok: bool = was.apply_dict(ps)
 	var report: Dictionary = {"ok": ok, "changed6": 0, "cells": 0, "cleaned": 0, "hubs": {}}

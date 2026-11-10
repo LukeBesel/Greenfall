@@ -397,3 +397,11 @@ The owner approved the plan and left the open calls to the lead ("decide what is
 - **The same restraint applies to everything else.** Planet 1 stops short of final robot tiers, tools and base levels, so later planets have real things to add. The balance plan (M3-01) sets where each track stops on Planet 1.
 - **Character design is parked (owner, Nov 10): "pretty close for now".** The six designs as merged are the working versions. The lead's own review found shared gaps against the portraits (head too tall, eyes too fat, body and arms too small, wear too light); they are listed in task M5-13 and wait until the owner returns to character design. The lead sized the head from the turnaround row earlier; the portraits are the better guide and M5-13 follows them.
 - **The magnet cap was flat-only** and went with the flat world. The owner's rule (capped; never pulls what Lumi cannot lift) is restored as bug B23.
+
+## Parked features (M1-08, Nov 10, 2026)
+Moved to `parked/` (ignored by the engine; `parked/README.md` lists each feature and its dependencies): the multi-planet campaign and solar-system travel, the telescope, the prestige mode with heirlooms and the endless seed-delivery loop, the weekly seed, the museum building, the robot-building station, the profiles screen, and their tests. Twenty achievements that could no longer be earned went with them.
+- Planet restoration is read through `Restoration.value()`; task M1-10 gives it a data rule.
+- The 68% cap on Verdance and the research locks that waited on later planets are gone.
+- The title screen is Continue, New Game, Settings, Quit.
+- Story text that still promises parked things (the finale and credits say the seed ark opens; 11 radio hints) is left for the story pass in M5.
+- Stopgaps to clear in M1-07: `data/parked.json` skips 17 goals that belong to parked features; the `observatory` research node unlocks nothing.

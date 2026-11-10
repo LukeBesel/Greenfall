@@ -5,8 +5,6 @@ extends Node3D
 ## (scenes/rocket_preview.gd, scenes/ship_preview.gd). In the game the rocket is the parked
 ## ShipModel that planet/sites/hub_hop.gd flies between hub pads.
 
-## The pad's spot in the yard frame, still read by systems/homeward_director.gd.
-const PAD_POS := Vector3(-2.0, 0, -13.0)
 ## [ship] The ship parks nose-out along the take-off heading.
 const PARK_YAW: float = 2.2143
 

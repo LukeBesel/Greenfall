@@ -59,10 +59,12 @@ func _ready() -> void:
 		photo_requested.emit())
 	photo_btn.name = "PhotoBtn"  # [camp3] hidden until Blink, the camera bot, is built
 	buttons.append(photo_btn)
-	buttons.append_array(LateMenu.add_buttons(self, vb, _button))  # [late] Garden Mode, Ark Bridge
-	buttons.append(_button(vb, tr("Keepsakes"), func() -> void:  # [extras] radio, album, nursery, Seed of the Week
+	buttons.append_array(LateMenu.add_buttons(self, vb, _button))  # Garden Mode
+	var keepsakes: Button = _button(vb, tr("Keepsakes"), func() -> void:  # [extras] radio, album, nursery
 		close_menu()
-		ExtrasPanel.open_for(get_parent(), "")))
+		ExtrasPanel.open_for(get_parent(), ""))
+	keepsakes.name = "KeepsakesBtn"  # hidden until there is a keepsake to show
+	buttons.append(keepsakes)
 	_settings_btn = _button(vb, tr("Settings"), _open_settings)
 	buttons.append(_settings_btn)
 	# [ui2] No Save button: the game autosaves every minute and on quit. Quit saves and goes to
@@ -137,7 +139,10 @@ func open_menu() -> void:
 	var pb: Button = _menu.find_child("PhotoBtn", true, false) as Button  # [camp3]
 	if pb:
 		pb.visible = CameraBot.available()
-	LateMenu.refresh(self)  # [late] show Garden Mode / Ark Bridge once they are open
+	var kb: Button = _menu.find_child("KeepsakesBtn", true, false) as Button
+	if kb:
+		kb.visible = not ExtrasPanel.open_tabs().is_empty()
+	LateMenu.refresh(self)  # show Garden Mode once it is open
 	_fit_keys()
 	_first.call_deferred("grab_focus")
 

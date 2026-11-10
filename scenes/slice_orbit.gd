@@ -9,7 +9,7 @@ extends Node
 ## Depot on the start pad, Lumi Level, the pause menu, hex levels (sparse), the Hub (logic; the
 ## site prefab shows its stage), the workbench + Upgrades, Research/Achievements/Codex, music,
 ## WREN + subtitles, Goals, Tutorial, Requests, Interactables, WorldEvents, the Signal Tower,
-## Extras (CD player, nursery, album, welcome back, Seed of the Week), the Telescope, Camp (broken
+## Extras (CD player, nursery, album, welcome back, Seed of the Week), Camp (broken
 ## bench, trash bin, yard builds), Glim, the crashed pod, CoreCharge, Objectives (+ the cell
 ## outline), the garden (sparse, per cell). Yard systems stand on orbD's hub-0 anchors (yard_slot).
 ## GameState.world is the start site's own dict (GameState.use_orbit_world).
@@ -55,9 +55,8 @@ func build(p_world: Node3D) -> void:
 		loaded = SaveManager.load_game()
 	var od: Dictionary = OrbitSave.migrate(GameState.orbit) if loaded else {}
 	var preload_n: int = OrbitPreload.start()  # [orbE] junk models load on threads while the planet builds
-	# The planet: --orbit-planet=<id>, else the saved one, else Verdance. Its size is data (GlobeSpec).
-	var home_pid: String = str(Homeward.planet_def(maxi(Homeward.current_planet(), 0)).get("id", "verdance"))  # [orbD] a new world after an interplanet flight
-	var pid: String = GlobeSpec.current_id() if DevHooks.has("orbit-planet") else str(od.get("planet_id", home_pid))
+	# The planet: --orbit-planet=<id>, else the saved one, else the current planet. Its size is data (GlobeSpec).
+	var pid: String = GlobeSpec.current_id() if DevHooks.has("orbit-planet") else str(od.get("planet_id", String(Planets.current_id())))
 	var spec: Dictionary = GlobeSpec.of(pid)
 	if int(od.get("freq", spec["frequency"])) != int(spec["frequency"]) or str(od.get("planet_id", pid)) != pid:
 		push_warning("[orbit] saved globe is %s f=%d, building %s f=%d fresh" % [od.get("planet_id", "?"), int(od.get("freq", 0)), pid, int(spec["frequency"])])
@@ -513,13 +512,6 @@ func _build_yard_systems() -> void:
 		w.add_child(tower)  # a child of the slice, as on the flat game (HubBuilds and the bot look it up)
 		tower.global_transform = (slot[0] as Node3D).global_transform * (slot[1] as Transform3D)  # after its _ready
 	_attach_extras()
-	var scope := Telescope.new()  # the Telescope + remote progress (automation/telescope.gd)
-	scope.name = "Telescope"
-	scope.world = w
-	w.add_child(scope)
-	# Its model sits at _pos() in its own frame: put that point on the "telescope" anchor.
-	var tslot: Array = yard_slot("telescope", scope.call("_pos"))
-	scope.global_transform = (tslot[0] as Node3D).global_transform * (tslot[1] as Transform3D) * Transform3D(Basis(), -(scope.call("_pos") as Vector3))
 	_attach_camp()
 	GlimDirector.attach(w)  # Glim the lantern bot: light, hex scanner, upgrades, looks (systems/glim/)
 	_start_intro_or_place_pod()  # [orbE] the intro cinematic on the globe (new games); else the pod as before
@@ -536,11 +528,11 @@ func _build_yard_systems() -> void:
 	_attach_first_seed.call_deferred()
 	_attach_seed_economy()
 	_attach_shards()
-	var bloom := Bloom.new()  # post-game milestones + Seed Ark (systems/bloom.gd)
+	var bloom := Bloom.new()  # the Bloom milestones and the finale (systems/bloom.gd)
 	bloom.name = "Bloom"
 	bloom.world = w
 	w.add_child(bloom)
-	LateDirector.attach(w)  # Homeward, the Ark Bridge, world look/story, Garden Mode (its decor per hub in the frame)
+	GardenDirector.attach(w)  # Garden Mode (its decor per hub in the frame)
 
 
 ## A yard spot in world space (the anchor's origin, or the flat yard spot on the pad).
@@ -819,7 +811,7 @@ func reseat_yard() -> void:
 	if cmp:
 		var cs: Array = yard_slot("composter", Composter.POS)
 		cmp.global_transform = (cs[0] as Node3D).global_transform * (cs[1] as Transform3D)
-	# [orbB] the CD player, the nursery, the Telescope and the crashed pod follow their anchors too
+	# [orbB] the CD player, the nursery and the crashed pod follow their anchors too
 	var ex: ExtrasDirector = ExtrasDirector.of(w)
 	if ex and ex.radio:
 		var rs: Array = yard_slot("radio", Radio.POS)
@@ -831,11 +823,6 @@ func reseat_yard() -> void:
 		var ns: Array = yard_slot("nursery", ex.nursery.position)
 		ex.nursery.global_transform = (ns[0] as Node3D).global_transform * (ns[1] as Transform3D)
 		ex.nursery.set("center", ex.nursery.global_position)
-	var scope: Telescope = Telescope.of(w)
-	if scope:
-		var tp: Vector3 = scope.call("_pos")
-		var tsl: Array = yard_slot("telescope", tp)
-		scope.global_transform = (tsl[0] as Node3D).global_transform * (tsl[1] as Transform3D) * Transform3D(Basis(), -tp)
 	var pod_site: Node3D = w.get_meta("orbit_pod", null) as Node3D
 	if pod_site:
 		var at: Vector3 = yard_point("pod")

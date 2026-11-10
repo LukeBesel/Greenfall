@@ -15,7 +15,6 @@ const SHOTS: Dictionary = {
 	"builds": [Vector3(40.5, 3.6, 6.8), Vector3(40.5, 0.6, 0.0)],
 	"stations": [Vector3(66.0, 6.0, 13.0), Vector3(66.0, 0.8, 0.0)],
 	"tower": [Vector3(90.0, 4.5, 15.0), Vector3(90.0, 3.0, 0.0)],
-	"fabricator": [Vector3(115.5, 3.6, 6.5), Vector3(114.0, 1.1, -0.3)],
 	"bins": [Vector3(0.0, 4.4, -18.0), Vector3(0.0, 0.8, -26.5)],
 }
 const BOARD_POS := Vector3(-3.6, 0, 2.2)  # scenes/slice.gd
@@ -29,7 +28,7 @@ var _cam: Camera3D
 
 func _ready() -> void:
 	_out = DevHooks.get_s("out", "screenshots/yard/lineup")
-	_shots = DevHooks.get_s("shots", "yard,shack,bench,locker,builds,stations,tower,fabricator,bins").split(",")
+	_shots = DevHooks.get_s("shots", "yard,shack,bench,locker,builds,stations,tower,bins").split(",")
 	var night: bool = DevHooks.has("night")
 	var env := Environment.new()
 	env.background_mode = Environment.BG_SKY
@@ -210,14 +209,6 @@ func _build_stations() -> void:
 	rc.position = Vector3(72.0, 0, 0)
 	add_child(rc)
 	rc.process_mode = Node.PROCESS_MODE_DISABLED
-	var sc := Telescope.new()
-	sc.data = RemoteProgress.cfg()
-	sc.call("_spawn", false)
-	var model: Node3D = sc.get("_model")
-	sc.remove_child(model)
-	add_child(model)
-	model.position = Vector3(66.0, 0, -9.0)
-	sc.free()
 
 
 ## Signal tower tiers 1-4, an air scrubber, a signal jammer.
@@ -232,11 +223,6 @@ func _build_towers() -> void:
 	su.position = Vector3(95.5, 0, 0.5)
 	add_child(su)
 	YardArt.set_powered(su, true)
-	var fab := FabricatorModel.new()  # building: bay lit, arm posed mid-work
-	fab.position = Vector3(114.0, 0, 0)
-	add_child(fab)
-	fab.set_building(true)
-	fab.call("_pose", 1.3)
 	var jb: MeshInstance3D = YardArt.jammer_base().mi(0.15)
 	jb.position = Vector3(98.0, 0, 0.5)
 	add_child(jb)

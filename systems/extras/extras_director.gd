@@ -2,14 +2,14 @@ class_name ExtrasDirector
 extends Node
 ## [extras] Wires the keepsake features into a district (one call from scenes/slice.gd): the base
 ## radio (radio.gd), the robot nursery (nursery.gd), the photo album (album.gd), the welcome-back
-## card (welcome_back.gd), the Seed of the Week run (weekly.gd / weekly_run.gd) and the Keepsakes
+## card (welcome_back.gd) and the Keepsakes
 ## panel (ui/extras_panel.gd, Pause > Keepsakes). Dev hooks:
-##   --extras=radio|album|nursery|weekly   open the Keepsakes panel on that tab (after --extras-at=S s)
+##   --extras=radio|album|nursery   open the Keepsakes panel on that tab (after --extras-at=S s)
 ##   --extras-welcome[=H]   fake an H-hour break (default 3) and show the welcome-back card
 ##   --album-snap=before+m50+thriving+base5   take those album pictures now (after --album-at=S s)
 ##   --album-adopt          list album pictures already on disk for this slot (staged shots with --save-dir)
 ##   --nursery-sample=N     N retired caretakers in the nursery;  --radio-all unlocks every song
-##   --radio-play=ID        play a song;  --weekly starts this week's challenge
+##   --radio-play=ID        play a song
 ##   --extras-cam=x,z,yaw,dist,pitch   fixed camera (shots); --extras-nohud hides the HUD
 
 var world: Node
@@ -17,7 +17,6 @@ var radio: Radio
 var nursery: Nursery
 var album: PhotoAlbum
 var panel: ExtrasPanel
-var run: WeeklyRun
 var _wall_jobs: Array = []  # dev: [msec, Callable] run by the wall clock (slow software renders)
 
 
@@ -45,7 +44,6 @@ func _process(_delta: float) -> void:
 func _setup() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	add_to_group("persist")
-	GameState.stats["weekly_chips"] = float(WeeklyChallenge.chip_count())  # profile-wide, mirrored for achievements
 	radio = Radio.new()
 	world.add_child(radio)
 	radio.setup(world)
@@ -63,11 +61,6 @@ func _setup() -> void:
 	panel.name = "ExtrasPanel"
 	panel.world = world
 	world.add_child(panel)
-	if WeeklyChallenge.active:
-		run = WeeklyRun.new()
-		run.name = "WeeklyRun"
-		run.world = world
-		world.add_child(run)
 	if DevHooks.has("radio-all"):
 		for s: Dictionary in Radio.songs():
 			if s.has("cond") and not (str(s["id"]) in (Radio.st()["unlocked"] as Array)):
@@ -81,8 +74,6 @@ func _setup() -> void:
 			bots = [{"type": "scoopie", "tier": 1}, {"type": "scoopie", "tier": 1}, {"type": "haulbug", "tier": 0}, {"type": "drip", "tier": 0}]
 		WelcomeBack.offer(Offline.simulate({"robots": bots}, h * 3600.0, 400.0, 1), h * 3600.0, bots)
 	(func() -> void: WelcomeBack.resolve(world)).call_deferred()
-	if DevHooks.has("weekly") and not WeeklyChallenge.active:
-		get_tree().create_timer(0.5).timeout.connect(func() -> void: WeeklyChallenge.start(get_tree()))
 	if DevHooks.has("album-snap"):
 		_wall_jobs.append([Time.get_ticks_msec() + int(DevHooks.get_f("album-at", 8.0) * 1000.0), func() -> void:
 			album.dev_snap(Array(DevHooks.get_s("album-snap", "before").split("+", false)))])

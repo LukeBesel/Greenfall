@@ -5,7 +5,7 @@ extends GutTest
 
 const SLICE: String = "res://scenes/slice.gd"
 ## Folders whose scripts are not game or tool code that talks to the slice.
-const SKIP_DIRS: Array[String] = ["res://addons", "res://tests", "res://.godot"]
+const SKIP_DIRS: Array[String] = ["res://addons", "res://tests", "res://.godot", "res://parked"]
 ## `world.<name>` reads that are not the slice's members, each with why it is safe.
 const ALLOWED: Dictionary = {
 	"res://planet/hex_field.gd": ["x", "z"],  # `world` is a Vector3 parameter there
@@ -123,7 +123,7 @@ func test_picker_fly_hands_the_site_to_the_globe_hop() -> void:
 	# What the slice wires that signal to exists (planet/sites/orbit_sites.gd).
 	var os := OrbitSites.new()
 	autofree(os)
-	assert_true(os.has_method("hop_to") and os.has_method("launch_planet"))
+	assert_true(os.has_method("hop_to"))
 	assert_eq(os.site_of_hub(0), -1, "no hub has a site before the survey is wired")
 	assert_false(os.can_hop_to_hub(0), "so the bot's hub hop has nowhere to go yet")
 

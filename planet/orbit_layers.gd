@@ -12,7 +12,6 @@ var sky: SkyDirector
 var glim: GlimBot
 var future: FutureLayerSphere
 var survey: GlobeView
-var system_map: SystemMap
 var lumi_lod: LumiLod
 
 
@@ -94,11 +93,6 @@ func _build() -> void:
 	w.add_child(survey)
 	survey.closed.connect(so.on_modal_closed)
 	w.set("globe", survey)
-	system_map = SystemMap.new()
-	system_map.name = "SystemMap"
-	system_map.world = w
-	w.add_child(system_map)
-	survey.open_system = func() -> void: system_map.open_map(true)
 	var lens := LensOverlay.new()  # [orbE] the lens view's dressing (SphereCam.lens_view)
 	lens.name = "LensOverlay"
 	lens.cam = so.cam
@@ -113,8 +107,6 @@ func _build() -> void:
 	OrbitQuality.apply_world(sky, future, Settings.quality)
 	if DevHooks.has("orbit-survey"):
 		get_tree().create_timer(DevHooks.get_f("orbit-survey", 3.0)).timeout.connect(open_survey)
-	if DevHooks.has("orbit-sysmap"):
-		get_tree().create_timer(DevHooks.get_f("orbit-sysmap", 3.0)).timeout.connect(func() -> void: system_map.open_map(true))
 	# Lumi far away (Command view): one merged proxy without shadows instead of the 27-mesh rig.
 	var model: Node3D = patch.get("model") as Node3D
 	if model:
@@ -145,7 +137,7 @@ func place_intro() -> bool:
 
 
 func open_survey() -> void:
-	if survey.is_open or system_map.is_open or so.any_modal_open():
+	if survey.is_open or so.any_modal_open():
 		return
 	if so.sites and so.sites.picker and so.sites.picker.is_open:  # [v2map] the rocket's list is up
 		return

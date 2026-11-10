@@ -42,7 +42,7 @@ RESEARCH_10,Lab Coat,Finish 10 research projects.,no,Client,,,,research_10,data
 RESEARCH_ALL,Know-It-All,Finish every research project.,no,Client,,,,research_all,trophy
 TRACTOR,Beam Me Up,Research the Tractor Beam.,no,Client,,,,tractor,tractor
 ROCKET_CARGO,Special Delivery,Research Rocket Cargo.,no,Client,,,,rocket_cargo,rocket
-DATA_500,Data Hoarder,Collect 500 field data.,no,Client,,,,data_500,data
+DATA_500,Data Hoarder,Log 500 field notes.,no,Client,,,,data_500,data
 DISTANCE_1K,Long Way Round,Roll 1 km.,no,Client,DISTANCE_M,0,1000,distance_1k,map
 DISTANCE_10K,Marathon Treads,Roll 10 km.,no,Client,DISTANCE_M,0,10000,distance_10k,map
 TIME_1H,Settling In,Spend an hour on the planet.,no,Client,MINUTES_PLAYED,0,60,time_1h,star
@@ -63,10 +63,27 @@ BIOME_3,Postcards From Verdance,Visit wilderness bases in three different biomes
 CAMPFIRE,Sit a While,Rekindle the last campfire.,yes,Client,,,,campfire,flower
 BLOOM_MEADOW,First Meadow,Reach 25 Thriving hexes across Verdance.,no,Client,,,,bloom_meadow,flower
 BLOOM_DISTRICT,A District in Bloom,Bring one district to 60% Thriving.,no,Client,,,,bloom_district,tree
-BLOOM_VERDANCE,Verdance Bloom,"Wake the Cradle: three districts in bloom, or 1% of the planet reclaimed.",no,Client,,,,bloom_verdance,tree
+BLOOM_VERDANCE,Verdance Bloom,"Bring the Cradle home: three districts in bloom, or 1% of the planet reclaimed.",no,Client,,,,bloom_verdance,tree
 BLOOM_EVERGREEN,Evergreen,"Twelve districts in bloom, or 3% of the planet reclaimed.",no,Client,,,,bloom_evergreen,leaf
-ARK_1,Seed Ark,Complete a Seed Ark wave.,no,Client,,,,ark_1,sprout
-ARK_10,Tender of Worlds,Complete 10 Seed Ark waves.,no,Client,ARK_WAVES,0,10,ark_10,sprout
 OUTPOST_1,Frontier Scale,Repair a ruined outpost.,no,Client,,,,outpost_1,map
 OUTPOST_3,Outpost Network,Repair 3 outposts.,no,Client,OUTPOSTS_REPAIRED,0,3,outpost_3,map
 OUTPOST_CHARGE,Pit Stop,Build a recharge pad at an outpost.,no,Client,,,,outpost_charge,gear
+BUILDER_MIX,Mix and Match,Style a robot with all five custom parts in the Locker.,no,Client,,,,builder_mix,bot
+BUILDER_MAKER,As the Makers Made It,"Fit the full Maker set (shell, optic and glider) on one robot.",no,Client,,,,builder_maker,star
+BUILDER_HATS,Hat Rack,Collect 5 different robot toppers.,no,Client,,,,builder_hats,trophy
+PET_CAT,A Friend in Old Town,Pet a stray cat.,no,Client,,,,pet_cat,leaf
+ADOPT_CAT,Best Friends,Pet the same cat until she adopts you.,no,Client,,,,adopt_cat,star
+SPOT_DEER,"Oh, Deer",Spot a deer at the edge of the green.,no,Client,,,,spot_deer,leaf
+LAKE_FISH,Clear as Day,See fish in a clean lake.,no,Client,,,,lake_fish,drop
+NATURALIST,Naturalist,Spot 10 different animals.,no,Client,,,,naturalist,book
+WILD_PHOTOS,Wildlife Photographer,Photograph 6 different animals in photo mode.,no,Client,,,,wild_photos,trophy
+LATE_DECOR_1,Home Touches,Place a decoration in Garden Mode.,no,Client,,,,late_decor_1,flower
+LATE_DECOR_25,Landscaper,Place 25 decorations.,no,Client,,,,late_decor_25,tree
+LATE_DECOR_ALL,Full Catalogue,Place every kind of decoration at least once.,no,Client,,,,late_decor_all,check
+LATE_CHARM_25,Picture Perfect,Reach 25 charm in one district.,no,Client,,,,late_charm_25,leaf
+HOME_ANSWERED,The Cradle Answers,Light the Cradle Returns beacon and hear from the ark.,no,Client,,,,home_answered,rocket
+EXTRAS_RADIO_6,Pirate Radio,Unlock 6 songs on the base radio.,no,Client,,,,extras_radio_6,wave
+EXTRAS_RADIO_ALL,Full Rotation,Unlock every song on the base radio.,no,Client,,,,extras_radio_all,star
+EXTRAS_ALBUM_4,Then and Now,Collect 4 pictures in the photo album.,no,Client,,,,extras_album_4,map
+EXTRAS_RETIRE_1,Happy Retirement,Retire a robot to the nursery garden.,no,Client,,,,extras_retire_1,bot
+EXTRAS_VISITS_5,Garden Party,Say hi to the nursery caretakers 5 times.,no,Client,,,,extras_visits_5,flower

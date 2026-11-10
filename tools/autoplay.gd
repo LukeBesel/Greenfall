@@ -947,20 +947,6 @@ func _campaign(_p: Patch) -> void:
 		_mark("cradle_complete_s")
 	if GameState.flags.get("bloom_finale_seen", false):
 		_mark("finale_done_s")
-	if int(GameState.stats.get("ark_waves", 0)) > 0:
-		_mark("ark_wave_1_s")
-	var home: String = AutoplayHome.step(world)  # [home] the system campaign: planets, Homeward rocket, the ending
-	if home != "":
-		if home != "wait" and home != "ending":
-			_event("home", {"what": home})
-		return
-	if not Homeward.done() and Homeward.current_planet() > 0 and DevHooks.has("home-ff"):
-		return  # [home] fast-forwarded planets: no district hops
-	var late: String = AutoplayLate.step(world)  # [late] post-game: decorate, Heirlooms, seed a new world
-	if late != "":
-		_event("late", {"what": late})
-		if late == "seed new world":
-			return
 	if _now() < 30.0 or DevHooks.has("no-travel"):
 		return  # settle in after landing
 	var to: int = AutoplayCampaign.next_hub(world)
@@ -1069,25 +1055,12 @@ func _shop(want: Dictionary) -> void:
 			if gd:
 				gd.refresh()
 			_event("glim_" + gid, {"tier": Glim.tier(gid)})
-	# 2d) [orbC] The Bot Fabricator (3rd planet on): built as soon as it is paid for; until then
-	# ordinary robot builds wait (it builds them cheaper), and the upgrade loop saves for it.
-	var fab_wait: bool = false
-	if HubBuilds.listed(world, "bot_fabricator") and not BotFabricator.built(world):
-		if str(HubBuilds.entry(world, "bot_fabricator")["reason"]) == "" and HubBuilds.build(world, "bot_fabricator"):
-			_event("build", {"id": "bot_fabricator"})
-			_mark("fabricator_s")
-			_progress()
-		else:
-			fab_wait = true
-	_fabricator_mix(world)
 	# 3) Robots ([ui2] Parts + cubes; keep the next base level's Parts unless the robot can't wait).
 	var robot: String = str(want.get("robot", "")) if fleet != null and BenchTiers.tab_open("bots") else ""  # [orbB] no Fleet on the globe yet (orbC)  # [v1guide] the Bots tab is open
 	if robot != "":
 		var hub_save: float = float(want.get("hub_save", 0.0))
 		var spare: float = GameState.get_currency("cubes").to_float() - float(want.get("robot_cost", 0.0))
 		var must: bool = _robot_goal(robot) or _essential(robot)
-		if fab_wait and not must:
-			robot = ""  # [orbC] saving for the Fabricator
 		var ok: bool = hub_save <= 0.0 or spare >= hub_save or must
 		ok = ok and (must or hub_save <= 0.0 or _mats_spare({"parts": fleet.build_parts(robot).to_float()}, false))
 		if ok and robot != "" and fleet.can_build(robot):
@@ -1146,11 +1119,6 @@ func _shop(want: Dictionary) -> void:
 		reserve = maxf(reserve, Economy.upgrade_cost(Pace.UP_BALER).to_float())  # [pace] a person saves for the Baler
 	if not BenchTiers.next_def().is_empty() and BenchTiers.block_reason(world) == "":
 		reserve = maxf(reserve, float(BenchTiers.next_cost().get("cubes", 0.0)))  # [v1guide] a person saves for the next bench tier
-	if HubBuilds.listed(world, "bot_fabricator") and not BotFabricator.built(world):
-		reserve = maxf(reserve, float(BotFabricator.cost().get("cubes", 0)))  # [orbC] a person saves for the Fabricator
-	var fab_now: BotFabricator = BotFabricator.of(world)
-	if fab_now != null and fab_now.fleet_size() < fab_now.cap_now():
-		reserve = maxf(reserve, float(BotFabricator.robot_cost("scoopie")["cubes"]))  # [orbC] keep the line running
 	guard = 0
 	while guard < 20:
 		guard += 1
@@ -1175,25 +1143,6 @@ func _shop(want: Dictionary) -> void:
 			cp.interact()
 			_progress()
 			_event("composter", {"level": cp.level})
-
-
-## [orbC] The Fabricator's mix: cleaners and haulers, plus planters and waterers once researched
-## (Thriving hexes are half of a planet's restoration).
-func _fabricator_mix(world: Node) -> void:
-	var fab: BotFabricator = BotFabricator.of(world)
-	if fab == null:
-		return
-	var want: Dictionary = {"scoopie": 3, "haulbug": 1}
-	var ok: Array[String] = BotFabricator.types()
-	var seeds: float = GameState.get_currency("seeds").to_float()
-	if ok.has("seedling"):
-		want["seedling"] = 3 if seeds > 100.0 else 1  # seeds piling up: more planters
-	if ok.has("drip"):
-		want["drip"] = 2
-	if seeds > 100.0:
-		want["scoopie"] = 2
-	if fab.mix() != want:
-		fab.set_mix(want)
 
 
 ## Materials the next base level still needs (cubes ignored).
@@ -1672,22 +1621,20 @@ func _snapshot() -> void:
 		"hexes": world.field.cleaned_count, "hex_levels": lv, "robots": types, "hub": int(world.hub.level),
 		"task": _task, "research": Research.active_id(), "upgrades": int(GameState.stats.get("upgrades_bought", 0)),
 		"bots": _robot_health(), "goals": ngoals, "stats": _stat_pick(["research_done", "plants_bloomed", "garden_stipend", "air_filtered", "robots_built", "robot_bales", "bales_recycled", "plants_planted"]),
-		"planet": str(Homeward.planet_def(Homeward.current_planet()).get("id", "")), "pct": snappedf(Homeward.measure_current(), 0.001)})  # [orbC] planet restoration
-	var pk: int = Homeward.current_planet()  # [orbC] pacing marks: 25% / 50% of each planet
-	if pk >= 0:
-		var pid: String = str(Homeward.planet_def(pk).get("id", ""))
-		var pct: float = Homeward.measure_current()
-		for th: int in [25, 50, 75]:
-			if pct * 100.0 >= th:
-				AutoplayCampaign.mark("pct%d_%s_s" % [th, pid], _now())
-		# Staged pacing runs: --quit-at-pct=50 saves and stops once this planet is that restored.
-		if DevHooks.has("quit-at-pct") and pct * 100.0 >= DevHooks.get_f("quit-at-pct", 50.0) and not _pct_quit:
-			_pct_quit = true
-			print("[autoplay] %s at %.0f%% after %.1f game min (campaign %.1f min): saving and quitting" % [pid, pct * 100.0, _now() / 60.0,
-				float(GameState.stats.get("time_played", 0.0)) / 60.0])
-			write_report()
-			SaveManager.save_game()
-			world.get_tree().quit()
+		"planet": String(Planets.current_id()), "pct": snappedf(Restoration.value(), 0.001)})  # [orbC] planet restoration
+	var pid: String = String(Planets.current_id())  # [orbC] pacing marks: 25% / 50% / 75% of the planet
+	var pct: float = Restoration.value()
+	for th: int in [25, 50, 75]:
+		if pct * 100.0 >= th:
+			AutoplayCampaign.mark("pct%d_%s_s" % [th, pid], _now())
+	# Staged pacing runs: --quit-at-pct=50 saves and stops once this planet is that restored.
+	if DevHooks.has("quit-at-pct") and pct * 100.0 >= DevHooks.get_f("quit-at-pct", 50.0) and not _pct_quit:
+		_pct_quit = true
+		print("[autoplay] %s at %.0f%% after %.1f game min (campaign %.1f min): saving and quitting" % [pid, pct * 100.0, _now() / 60.0,
+			float(GameState.stats.get("time_played", 0.0)) / 60.0])
+		write_report()
+		SaveManager.save_game()
+		world.get_tree().quit()
 	print("[Autoplay] %5.1f min cubes=%d rate=%.2f/s partscur=%.0f seeds=%.0f parts=%d hexes=%d lv=%s robots=%s hub=%d task=%s goals=%d research=%s pos=%s esc=%d" % [_now() / 60.0,  # [money]
 		int(GameState.get_currency("cubes").to_float()), GameState.income_rate(), GameState.get_currency("parts").to_float(),
 		GameState.get_currency("seeds").to_float(), GameState.parts.size(),

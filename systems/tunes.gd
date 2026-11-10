@@ -273,8 +273,7 @@ static func found_on(id: String) -> String:
 
 
 static func planet_name(planet: String) -> String:
-	var k: int = Homeward.planet_index(planet)
-	return Homeward.planet_name(k) if k >= 0 else TranslationServer.translate(planet.capitalize())
+	return TranslationServer.translate(planet.capitalize())
 
 
 ## Artists with at least one owned song (data order). The Codex lists only these.

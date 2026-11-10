@@ -30,7 +30,7 @@ func _init() -> void:
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	migrate_to_profiles(root_dir())  # [worlds2] before anything reads a save (CradleBoot, Steam Cloud)
+	migrate_to_profiles(root_dir())  # [worlds2] before anything reads a save (Steam Cloud)
 	profile_slot = read_profile_choice()
 	DirAccess.make_dir_recursive_absolute(save_dir())
 	import_demo_save()  # [steam]

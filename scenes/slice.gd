@@ -54,8 +54,8 @@ var bot: InputSource
 var _cubes_root: Node3D
 ## Shack and yard lamp pieces that sit derelict while a non-starter base is at level 1.
 var _ruin_bits: Dictionary = {}
-## An interplanet or Homeward launch is running (planet/sites/orbit_sites.gd): no modal hotkeys,
-## and closing a modal doesn't hand control back.
+## A launch that leaves this world is running: no modal hotkeys, and closing a modal doesn't hand
+## control back. Nothing sets it while the travel layer is parked (parked/README.md).
 var launching: bool = false
 ## [leftovers] True while the globe builds across frames behind the loading screen (a BuildBudget
 ## is open: ui/loading_screen.gd). `built` fires once everything exists.
