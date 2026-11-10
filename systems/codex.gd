@@ -3,7 +3,7 @@ extends RefCounted
 ## Codex entries (data/codex.json): junk, plants, robots, memory shards and landmarks.
 ## Unlocked keys ("junk:metal") persist in GameState.flags["codex"] (an Array).
 
-const PATH: String = "res://data/codex.json"
+const TABLE: String = "codex"
 ## Landmarks count as found when Patch is this close (m).
 const LANDMARK_RANGE: float = 7.0
 
@@ -13,8 +13,16 @@ static var _entries: Array[Dictionary] = []
 
 static func cfg() -> Dictionary:
 	if _cfg.is_empty():
-		_cfg = Economy.read_json(PATH)
+		_cfg = Economy.planet_table(TABLE)
+		Economy.drop_on_planet_change(_drop_planet_cache)
 	return _cfg
+
+
+
+static func _drop_planet_cache() -> void:
+	_cfg = {}
+	_entries = []
+	_eggs = []
 
 
 static func categories() -> Array:
@@ -29,13 +37,13 @@ static func entries() -> Array[Dictionary]:
 	for id: String in Economy.junk_ids:
 		var e: Dictionary = c.get("junk", {}).get(id, {})
 		_add("junk", id, TranslationServer.translate(str(Economy.junk_types[id].get("name", id))), e)
-	var plants: Array = Economy.read_json("res://data/plants.json").get("species", [])
+	var plants: Array = Economy.planet_table("plants").get("species", [])
 	for sp: Dictionary in plants:
 		var e: Dictionary = c.get("plants", {}).get(str(sp["id"]), {})
 		_add("plants", str(sp["id"]), TranslationServer.translate(str(e.get("name", str(sp["id"]).capitalize()))), e)
 	for id: String in Economy.robot_order:
 		_add("robots", id, TranslationServer.translate(str(Economy.robots[id].get("name", id))), c.get("robots", {}).get(id, {}))
-	for s: Dictionary in Economy.read_json("res://data/shards.json").get("shards", []):
+	for s: Dictionary in Economy.planet_table("shards").get("shards", []):
 		var e: Dictionary = (c.get("shards", {}).get(str(s["id"]), {}) as Dictionary).duplicate()
 		e["hint"] = TranslationServer.translate("Somewhere under the junk.")
 		_add("shards", str(s["id"]), TranslationServer.translate(str(s.get("title", s["id"]))), e)
@@ -183,14 +191,15 @@ static func scan(world: Node = null) -> Array[String]:
 	return out
 
 
-# --- Curiosities (easter eggs, data/eggs.json) ------------------------------------------
+# --- Curiosities (easter eggs, the "eggs" table) ------------------------------------------
 
 static var _eggs: Array = []
 
 
 static func egg_defs() -> Array:
 	if _eggs.is_empty():
-		_eggs = Economy.read_json("res://data/eggs.json").get("eggs", [])
+		_eggs = Economy.planet_table("eggs").get("eggs", [])
+		Economy.drop_on_planet_change(_drop_planet_cache)
 	return _eggs
 
 

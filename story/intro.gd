@@ -247,15 +247,9 @@ static func lines() -> Dictionary:
 	return out
 
 
-## The brief's raw lines from data/objectives.json (translated when shown).
+## The brief's raw lines from the planet's "tutorial" table (translated when shown).
 static func brief_lines() -> Array:
-	var f := FileAccess.open("res://data/objectives.json", FileAccess.READ)
-	if f == null:
-		return []
-	var d: Variant = JSON.parse_string(f.get_as_text())
-	if not (d is Dictionary):
-		return []
-	return ((d as Dictionary).get("brief", {}) as Dictionary).get("lines", [])
+	return (Economy.planet_table("tutorial").get("brief", {}) as Dictionary).get("lines", [])
 
 
 ## Rewatch the whole intro from the Codex. A temporary pod plays the landing; afterwards Lumi, the

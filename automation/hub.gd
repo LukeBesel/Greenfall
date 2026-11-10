@@ -19,7 +19,7 @@ var visuals: bool = true
 
 
 func _ready() -> void:
-	data = Economy.read_json("res://data/hub.json")
+	data = Economy.planet_table("hub")
 	level = int(GameState.world.get("hub_level", 1))
 	if DevHooks.has("hub-level"):  # screenshots: --hub-level=5 builds the base up to that level
 		level = maxi(level, int(DevHooks.get_f("hub-level", 1.0)))

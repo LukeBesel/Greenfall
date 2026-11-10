@@ -14,7 +14,7 @@ extends Node
 signal changed(index: int)
 signal completed(index: int)
 
-const PATH: String = "res://data/objectives.json"
+const TABLE: String = "tutorial"
 const REFRESH_S: float = 0.25
 ## The card waits this long after a completion before the next objective slides in.
 const NEXT_DELAY_S: float = 1.5
@@ -43,7 +43,7 @@ const EARLY_ADDED: int = 4
 
 func _ready() -> void:
 	EventBus.upgrade_bought.connect(_on_upgrade_bought)  # [v1guide] the bale how-to
-	var cfg: Dictionary = Economy.read_json(PATH)
+	var cfg: Dictionary = Economy.planet_table(TABLE)
 	chain = cfg.get("objectives", [])
 	brief_lines = (cfg.get("brief", {}) as Dictionary).get("lines", [])
 	wren_brief = (cfg.get("wren_brief", {}) as Dictionary).get("lines", [])  # [v2guide]

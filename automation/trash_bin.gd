@@ -17,7 +17,7 @@ extends RefCounted
 ##   TrashBin.feed_interval() -> float        seconds between bales hopping into the bin
 ##   TrashBin.changed (Signal on TrashBin.events)   (level: int) after an upgrade or a set_level
 
-const PATH: String = "res://data/trash_bin.json"
+const TABLE: String = "trash_bin"
 
 static var _cfg: Dictionary = {}
 ## Static signal holder: TrashBin.events.changed.connect(...)
@@ -32,8 +32,14 @@ class TrashBinEvents:
 
 static func cfg() -> Dictionary:
 	if _cfg.is_empty():
-		_cfg = Economy.read_json(PATH)
+		_cfg = Economy.planet_table(TABLE)
+		Economy.drop_on_planet_change(_drop_planet_cache)
 	return _cfg
+
+
+
+static func _drop_planet_cache() -> void:
+	_cfg = {}
 
 
 static func levels() -> Array:

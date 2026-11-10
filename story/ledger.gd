@@ -36,7 +36,7 @@ var _bars: Array[ColorRect] = []
 
 func setup() -> void:
 	add_to_group("ledger")
-	cfg = Economy.read_json("res://data/ledger.json")
+	cfg = Economy.planet_table("ledger")
 	StorySfx.ensure()
 	rng.randomize()
 	uplink = LedgerUplink.new()

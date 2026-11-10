@@ -8,7 +8,7 @@ extends Node3D
 ## plinth is the 100% goal: flags.museum_complete, the "museum_complete" achievement and a small
 ## moment (the gnomes salute). Other planets plug in by adding exhibits (kind relic / flag / egg).
 
-const PATH: String = "res://data/museum.json"
+const TABLE: String = "museum"
 const PLINTH_GAP: float = 1.75
 
 static var _cfg: Dictionary = {}
@@ -21,8 +21,14 @@ var _site: Node3D  # the plot sign before it is built
 
 static func cfg() -> Dictionary:
 	if _cfg.is_empty():
-		_cfg = Economy.read_json(PATH)
+		_cfg = Economy.planet_table(TABLE)
+		Economy.drop_on_planet_change(_drop_planet_cache)
 	return _cfg
+
+
+
+static func _drop_planet_cache() -> void:
+	_cfg = {}
 
 
 static func exhibits() -> Array:
@@ -62,7 +68,7 @@ static func progress(x: Dictionary) -> Vector2i:
 				n += 1 if EasterEggs.is_found(str(e["id"])) else 0
 			return Vector2i(n, t)
 		"shards":
-			var all: Array = Economy.read_json("res://data/shards.json").get("shards", [])
+			var all: Array = Economy.planet_table("shards").get("shards", [])
 			return Vector2i(mini((GameState.flags.get("shards_found", []) as Array).size(), all.size()), all.size())
 		"trinkets":
 			return Vector2i(Collection.count(), Collection.total())
@@ -135,7 +141,7 @@ static func dev_sample() -> void:
 	for i: int in 3:
 		EggCollect.add("gnomes", i)
 	var sh: Array = []
-	for d: Dictionary in Economy.read_json("res://data/shards.json").get("shards", []).slice(0, 3):
+	for d: Dictionary in Economy.planet_table("shards").get("shards", []).slice(0, 3):
 		sh.append(str(d["id"]))
 	GameState.flags["shards_found"] = sh
 	var rl: Variant = Homeward.state().get("relics", [])

@@ -183,6 +183,6 @@ func test_outpost_achievements_and_wren_lines_exist() -> void:
 	for a: Dictionary in ach["achievements"]:
 		ids.append(a["id"])
 	assert_has(ids, "outpost_1")
-	var lines: Dictionary = Economy.read_json("res://data/wren_lines.json")
+	var lines: Dictionary = Economy.planet_table("guide_lines")
 	assert_true(lines.has("outpost_repaired"))
 	assert_eq((lines["outpost_repaired"] as Array).size(), 3, "one pool per WREN stage")

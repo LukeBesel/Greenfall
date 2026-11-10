@@ -47,7 +47,7 @@ func _first_junk_hex() -> int:
 
 func _new_ledger() -> LedgerArc:
 	var lg := LedgerArc.new()
-	lg.cfg = Economy.read_json("res://data/ledger.json")
+	lg.cfg = Economy.planet_table("ledger")
 	add_child_autofree(lg)
 	return lg
 
@@ -194,10 +194,10 @@ func test_flags_survive_gamestate_roundtrip() -> void:
 
 
 func test_egg_data_has_enough_original_secrets() -> void:
-	var data: Dictionary = Economy.read_json("res://data/eggs.json")
+	var data: Dictionary = Economy.planet_table("eggs")
 	var eggs: Array = data.get("eggs", [])
 	assert_gte(eggs.size(), 15)
-	var wren: Dictionary = Economy.read_json("res://data/wren_lines.json")
+	var wren: Dictionary = Economy.planet_table("guide_lines")
 	var seen: Dictionary = {}
 	for e: Dictionary in eggs:
 		var id: String = str(e["id"])
@@ -212,7 +212,7 @@ func test_egg_data_has_enough_original_secrets() -> void:
 
 
 func test_egg_placement_deterministic_and_in_the_hub_region() -> void:
-	var data: Dictionary = Economy.read_json("res://data/eggs.json")
+	var data: Dictionary = Economy.planet_table("eggs")
 	var defs: Dictionary = {}
 	var order: Array[String] = []
 	for e: Dictionary in data["eggs"]:
@@ -241,7 +241,7 @@ func test_egg_placement_deterministic_and_in_the_hub_region() -> void:
 
 func test_finding_an_egg_rewards_once() -> void:
 	var eggs := EasterEggs.new()
-	var data: Dictionary = Economy.read_json("res://data/eggs.json")
+	var data: Dictionary = Economy.planet_table("eggs")
 	for e: Dictionary in data["eggs"]:
 		eggs.defs[str(e["id"])] = e
 	add_child_autofree(eggs)
@@ -280,7 +280,7 @@ func test_interactables_pick_nearest_enabled() -> void:
 
 
 func test_every_egg_prop_and_the_drone_build() -> void:
-	var data: Dictionary = Economy.read_json("res://data/eggs.json")
+	var data: Dictionary = Economy.planet_table("eggs")
 	for e: Dictionary in data["eggs"]:
 		for kind: String in [str(e.get("kind", "")), str(e.get("final", ""))]:
 			if kind == "":

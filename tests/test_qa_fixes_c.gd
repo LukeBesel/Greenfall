@@ -45,7 +45,7 @@ func test_detector_range_is_a_real_stat() -> void:
 func test_goal_titles_fit_goals_card() -> void:
 	var font: Font = UITheme.font()
 	var max_w: float = GoalsPanel.ROW_W - 22.0
-	var goals: Dictionary = Economy.read_json("res://data/goals.json")
+	var goals: Dictionary = Economy.planet_table("goals")
 	var list: Array = goals.get("goals", [])
 	assert_gt(list.size(), 0)
 	for g: Dictionary in list:

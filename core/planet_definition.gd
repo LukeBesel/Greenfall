@@ -12,6 +12,8 @@ const REQUIRED_TABLES: Array[String] = ["pollution", "upgrades", "regrowth", "tu
 ## Table names a planet may provide. Systems that use one must cope with it being absent.
 const OPTIONAL_TABLES: Array[String] = [
 	"districts", "restoration", "rigs", "research", "robots", "balance", "sites", "hub", "stations", "plants", "fauna", "events", "story",
+	"player", "robot_level", "field", "builds", "yard", "trash_bin", "outposts", "frontiers", "signal_tower",
+	"guide_lines", "shards", "eggs", "ledger", "codex", "museum", "postgame",
 ]
 
 ## Stable id: lowercase, one word. Saves are keyed by it, so it never changes after release.

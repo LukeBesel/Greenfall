@@ -12,7 +12,7 @@ extends Node
 ## Timers count play time (they only tick while the game runs). The static helpers are pure on
 ## the state dictionary so the tests can drive them.
 
-const PATH: String = "res://data/events.json"
+const TABLE: String = "events"
 
 static var _cfg: Dictionary = {}
 ## [ui2] Simple board: a new request starts right away (no Accept / Pass) and never runs out of
@@ -27,15 +27,23 @@ var _t: float = 0.0
 
 static func cfg() -> Dictionary:
 	if _cfg.is_empty():
-		_cfg = Economy.read_json(PATH).get("contracts", {})
+		_cfg = Economy.planet_table(TABLE).get("contracts", {})
+		Economy.drop_on_planet_change(_drop_planet_cache)
 	return _cfg
 
 
 ## Fleet liveries (data/events.json "liveries"; unlocked by the reward track).
 static func shop() -> Array:
 	if _shop.is_empty():
-		_shop = Economy.read_json(PATH).get("liveries", [])
+		_shop = Economy.planet_table(TABLE).get("liveries", [])
+		Economy.drop_on_planet_change(_drop_planet_cache)
 	return _shop
+
+
+
+static func _drop_planet_cache() -> void:
+	_cfg = {}
+	_shop = []
 
 
 static func track() -> Array:

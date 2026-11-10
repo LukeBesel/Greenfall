@@ -17,7 +17,7 @@ func after_each() -> void:
 
 
 func _cfg() -> Dictionary:
-	return JSON.parse_string(FileAccess.get_file_as_string("res://data/objectives.json"))
+	return Economy.planet_table("tutorial")
 
 
 func test_brief_is_short() -> void:
@@ -135,7 +135,7 @@ func test_waypoint_quiet_during_checklist_and_builds() -> void:
 
 
 func test_shard_goal_wording_is_plain() -> void:
-	var g: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/goals.json"))
+	var g: Dictionary = Economy.planet_table("goals")
 	for d: Dictionary in g["goals"]:
 		assert_ne(str(d["text"]), "Read a memory shard", "says what to do: find one (purple marker)")
 

@@ -25,7 +25,7 @@ func after_each() -> void:
 
 func _defs() -> Dictionary:
 	var out: Dictionary = {}
-	for e: Dictionary in Economy.read_json("res://data/eggs.json").get("eggs", []):
+	for e: Dictionary in Economy.planet_table("eggs").get("eggs", []):
 		out[str(e["id"])] = e
 	return out
 

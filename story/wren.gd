@@ -30,7 +30,7 @@ var _chatter_t: float = 0.0
 
 
 func _ready() -> void:
-	lines = Economy.read_json("res://data/wren_lines.json")
+	lines = Economy.planet_table("guide_lines")
 	line_started.connect(_gate)  # [onboard]
 	EventBus.hex_cleaned.connect(_on_hex)
 	EventBus.milestone_reached.connect(func(_id: String) -> void: say("milestone", 0.0, true))

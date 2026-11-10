@@ -4,7 +4,7 @@ extends RefCounted
 ## generator, yard lamps, compost press, CD player and robot nursery. Nothing here exists on a fresh base. Data: data/camp.json "builds".
 ## State (per district): GameState.world["camp"] = {"bench": bool (repaired), "built": {id: true}}.
 
-const PATH: String = "res://data/camp.json"
+const TABLE: String = "yard"
 const IDS: Array[String] = ["shack", "generator", "lamps", "composter", "radio", "locker", "camera_bot", "nursery"]  # [camp2] [ui6] [camp3]
 
 static var _cfg: Dictionary = {}
@@ -19,8 +19,14 @@ class YardEvents:
 
 static func cfg() -> Dictionary:
 	if _cfg.is_empty():
-		_cfg = Economy.read_json(PATH)
+		_cfg = Economy.planet_table(TABLE)
+		Economy.drop_on_planet_change(_drop_planet_cache)
 	return _cfg
+
+
+
+static func _drop_planet_cache() -> void:
+	_cfg = {}
 
 
 static func def(id: String) -> Dictionary:

@@ -13,8 +13,7 @@ var rng := RandomNumberGenerator.new()
 
 func _ready() -> void:
 	rng.randomize()
-	var d: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/plants.json"))
-	_cfg = (d as Dictionary).get("seed_finds", {}) if d is Dictionary else {}
+	_cfg = Economy.planet_table("plants").get("seed_finds", {})
 	EventBus.junk_scooped.connect(_on_scooped)
 
 

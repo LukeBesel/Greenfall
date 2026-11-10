@@ -64,7 +64,7 @@ func test_pseudo_translates_code_and_data_strings() -> void:
 	assert_ne(s, "Resume")
 	assert_true(s.length() > "Resume".length(), "longer")
 	# A data string (first goal in data/goals.json) translates at the point of display.
-	var goals: Dictionary = Economy.read_json("res://data/goals.json")
+	var goals: Dictionary = Economy.planet_table("goals")
 	var first: String = str((goals["goals"] as Array)[0]["text"])
 	assert_true(tr(first).begins_with("["), "goal text translated: %s" % tr(first))
 	# Formatted strings keep working.
@@ -72,7 +72,7 @@ func test_pseudo_translates_code_and_data_strings() -> void:
 	var many: String = tr_n("+%d part", "+%d parts", 5) % 5  # [money] tokens are gone
 	assert_true(many.begins_with("[") and many.contains("5"), many)
 	# A WREN line keeps its {name} placeholder.
-	var wl: Dictionary = Economy.read_json("res://data/wren_lines.json")
+	var wl: Dictionary = Economy.planet_table("guide_lines")
 	var line: String = str(wl["wake"][0][0])
 	assert_eq(_placeholders(tr(line)), _placeholders(line))
 

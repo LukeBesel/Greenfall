@@ -198,7 +198,7 @@ func test_story_beats_in_order() -> void:
 
 
 func test_every_world_type_has_wren_lines_for_every_beat() -> void:
-	var lines: Dictionary = Economy.read_json("res://data/wren_lines.json")
+	var lines: Dictionary = Economy.planet_table("guide_lines")
 	for t: Dictionary in WorldGen.cfg()["world_types"]:
 		for b: String in WorldStory.BEATS:
 			var pools: Array = lines.get(WorldStory.trigger(str(t["id"]), b), [])

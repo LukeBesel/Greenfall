@@ -28,7 +28,7 @@ var celebrate: bool = true
 
 
 func setup() -> void:
-	cfg = Economy.read_json("res://data/hex_levels.json")
+	cfg = Economy.planet_table("regrowth")
 	_window = maxi(1, int(round(float(cfg.get("sustain_window_s", 180)) / float(cfg.get("sample_s", 1.0)))))
 	# Only cells that were cleaned are tracked (a 164k-cell globe would be sampled every second
 	# otherwise); untracked land cells read level 0.

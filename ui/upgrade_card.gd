@@ -181,7 +181,7 @@ func refresh() -> void:
 	var before: float = Economy.stat_with_upgrade_level(upgrade_id, lv)
 	var after: float = Economy.stat_with_upgrade_level(upgrade_id, lv + 1)
 	if not unlocked and def.has("requires_station") and not Stations.built_in_state(str(def["requires_station"])):
-		_change.text = tr("Build the %s first (Build tab)") % tr(str(Economy.read_json("res://data/stations.json").get(str(def["requires_station"]), {}).get("name", def["requires_station"])))  # [camp]
+		_change.text = tr("Build the %s first (Build tab)") % tr(str(Economy.planet_table("stations").get(str(def["requires_station"]), {}).get("name", def["requires_station"])))  # [camp]
 		_change.add_theme_color_override("font_color", UITheme.MUTED)
 	elif not unlocked:
 		var req: Dictionary = def.get("requires", {})

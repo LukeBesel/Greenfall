@@ -44,7 +44,8 @@ static func lift_class() -> int:
 
 static func _model_base_vol(model_id: String) -> float:
 	if _model_vol.is_empty():
-		var jd: Dictionary = Economy.read_json("res://data/junk.json")
+		Economy.drop_on_planet_change(_drop_planet_cache)
+		var jd: Dictionary = Economy.planet_table("pollution")
 		for t: Dictionary in jd.get("types", []):
 			for m: Variant in t.get("models", []):
 				if m is Dictionary:
@@ -208,8 +209,7 @@ static func baler_hint(patch: Node3D) -> void:
 
 ## Cubes paid for dumping `contents` (type -> volume) loose, without the trash bin's own rate.
 static func dump_value(contents: Dictionary) -> float:
-	var cfg: Dictionary = Economy.read_json("res://data/patch.json").get("dump", {}) if _dump_cfg.is_empty() else _dump_cfg
-	_dump_cfg = cfg
+	var cfg: Dictionary = _dump()
 	var v: float = 0.0
 	for t: String in contents:
 		v += float(contents[t]) * float(Economy.junk_types.get(t, {}).get("value", 1.0))
@@ -222,9 +222,15 @@ static var _dump_cfg: Dictionary = {}
 static func dump_allowed() -> bool:
 	if not baler_unlocked():
 		return true
+	return bool(_dump().get("after_baler", false))
+
+
+## The loose-dump rules from the planet's "player" table, kept until the planet changes.
+static func _dump() -> Dictionary:
 	if _dump_cfg.is_empty():
-		_dump_cfg = Economy.read_json("res://data/patch.json").get("dump", {})
-	return bool(_dump_cfg.get("after_baler", false))
+		_dump_cfg = Economy.planet_table("player").get("dump", {})
+		Economy.drop_on_planet_change(_drop_planet_cache)
+	return _dump_cfg
 
 
 ## Empties Lumi's chest into `into` (a TrashBin with deposit(volume), else pays dump_value) and
@@ -293,7 +299,7 @@ static func migrate_save(d: Dictionary) -> Dictionary:
 	var ups: Dictionary = d.get("upgrades", {})
 	ups[UP_BALER] = maxi(1, int(ups.get(UP_BALER, 0)))
 	ups[UP_LIFT] = maxi(2, int(ups.get(UP_LIFT, 0)))
-	var grant: Dictionary = Economy.read_json("res://data/patch.json").get("old_save_grant", {})
+	var grant: Dictionary = Economy.planet_table("player").get("old_save_grant", {})
 	for id: String in grant:
 		ups[id] = int(ups.get(id, 0)) + int(grant[id])
 	d["upgrades"] = ups
@@ -325,3 +331,8 @@ static func sync_flags() -> void:
 ## Signal event). The buddy's scanner tiers may take this over later (same flag).
 static func signal_finder() -> bool:
 	return Economy.stat("signal_finder") >= 0.5
+
+
+static func _drop_planet_cache() -> void:
+	_model_vol = {}
+	_dump_cfg = {}

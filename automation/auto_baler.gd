@@ -42,7 +42,7 @@ func _ready() -> void:
 
 
 func cfg() -> Dictionary:
-	return stations.def("auto_baler") if stations else Economy.read_json("res://data/stations.json").get("auto_baler", {})
+	return stations.def("auto_baler") if stations else Economy.planet_table("stations").get("auto_baler", {})
 
 
 func bale_cap() -> float:

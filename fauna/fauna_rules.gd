@@ -8,7 +8,7 @@ extends RefCounted
 ## for the district. Counts are stable (seeded by district, hex and species), so animals don't
 ## flicker as the plan is re-made.
 
-const PATH: String = "res://data/fauna.json"
+const TABLE: String = "fauna"
 
 static var _cfg: Dictionary = {}
 static var _by_id: Dictionary = {}
@@ -16,10 +16,17 @@ static var _by_id: Dictionary = {}
 
 static func cfg() -> Dictionary:
 	if _cfg.is_empty():
-		_cfg = Economy.read_json(PATH)
+		_cfg = Economy.planet_table(TABLE)
+		Economy.drop_on_planet_change(_drop_planet_cache)
 		for d: Dictionary in _cfg.get("species", []):
 			_by_id[str(d["id"])] = d
 	return _cfg
+
+
+
+static func _drop_planet_cache() -> void:
+	_cfg = {}
+	_by_id = {}
 
 
 static func defs() -> Array:

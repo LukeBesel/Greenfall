@@ -10,7 +10,7 @@ var _visible: Dictionary = {}  # hex id -> Node3D
 
 
 func setup() -> void:
-	docs = Economy.read_json("res://data/shards.json").get("shards", [])
+	docs = Economy.planet_table("shards").get("shards", [])
 	var rng := RandomNumberGenerator.new()
 	rng.seed = world.field.seed_value + 77
 	var candidates: Array[int] = []

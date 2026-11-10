@@ -11,7 +11,7 @@ extends Node3D
 ## Dev hooks: --outposts=repaired|all:L|I:L[+I:L]  pre-set levels (+ --outpost-clean clears their hexes); --outpost-spawn=N  put Patch
 ## in front of outpost N; --outpost-repair=N  play the repair sequence on N shortly after start.
 
-const CFG_PATH: String = "res://data/outposts.json"
+const TABLE: String = "outposts"
 
 var world: Node
 var cfg: Dictionary = {}
@@ -24,8 +24,14 @@ static var _cfg_cache: Dictionary = {}
 
 static func load_cfg() -> Dictionary:
 	if _cfg_cache.is_empty():
-		_cfg_cache = Economy.read_json(CFG_PATH)
+		_cfg_cache = Economy.planet_table(TABLE)
+		Economy.drop_on_planet_change(_drop_planet_cache)
 	return _cfg_cache
+
+
+
+static func _drop_planet_cache() -> void:
+	_cfg_cache = {}
 
 
 static func level_def(lv: int) -> Dictionary:

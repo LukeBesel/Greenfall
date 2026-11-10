@@ -106,7 +106,7 @@ func test_wren_briefs_then_narrates_each_step_once() -> void:
 	wren.set_process(false)
 	var ob := Objectives.new()
 	ob.world = w
-	var cfg: Dictionary = Economy.read_json(Objectives.PATH)
+	var cfg: Dictionary = Economy.planet_table(Objectives.TABLE)
 	ob.chain = cfg["objectives"]
 	ob.wren_brief = (cfg["wren_brief"] as Dictionary)["lines"]
 	for i: int in ob.chain.size():

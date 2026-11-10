@@ -90,14 +90,15 @@ func feed(cube: JunkCube) -> void:
 ## [money] Bolts and the three building stocks are one currency now: Parts. A bale gives a flat
 ## parts_per_bale plus its volume's worth of stock (metal-heavy bales give the most).
 func recycle(cube: JunkCube) -> Dictionary:
-	var d: Dictionary = stations.def("recycler") if stations else Economy.read_json("res://data/stations.json").get("recycler", {})
+	var d: Dictionary = stations.def("recycler") if stations else Economy.planet_table("stations").get("recycler", {})
 	var y: float = Stations.yield_mult()
 	var fill: float = clampf(float(cube.info.get("fill", 1.0)), 0.25, 1.2)
 	var vol: float = float(cube.info.get("volume", fill * 12.0))
 	var parts: float = maxf(1.0, round(float(d.get("parts_per_bale", 10.0)) * (0.5 + fill) * y))
 	var cubes: BigNum = cube.value.mul_f(float(d.get("cube_mult", 0.25)))
 	if _hub_data.is_empty():
-		_hub_data = Economy.read_json("res://data/hub.json")
+		_hub_data = Economy.planet_table("hub")
+		Economy.drop_on_planet_change(_drop_planet_cache)
 	var mdefs: Dictionary = _hub_data.get("materials", {})
 	var dom: String = str(cube.info.get("dominant", ""))
 	var per: float = vol * float(d.get("material_mult", 4.0)) * y
@@ -476,3 +477,7 @@ func _gd(v: Vector3) -> Vector3:
 
 func _l(p: Vector3) -> Vector3:
 	return to_local(p) if is_inside_tree() else p
+
+
+static func _drop_planet_cache() -> void:
+	_hub_data = {}

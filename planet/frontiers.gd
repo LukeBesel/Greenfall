@@ -5,7 +5,7 @@ extends RefCounted
 ## their saved base levels, unlock gates and plant rules. The flat frontier districts themselves
 ## are gone (the globe retired them); goals, research and the campaign still read these rules.
 
-const PATH: String = "res://data/frontiers.json"
+const TABLE: String = "frontiers"
 
 static var _cfg: Dictionary = {}
 static var _by_id: Dictionary = {}
@@ -13,11 +13,18 @@ static var _by_id: Dictionary = {}
 
 static func cfg() -> Dictionary:
 	if _cfg.is_empty():
-		_cfg = Economy.read_json(PATH)
+		_cfg = Economy.planet_table(TABLE)
+		Economy.drop_on_planet_change(_drop_planet_cache)
 		_by_id.clear()
 		for k: Dictionary in _cfg.get("kinds", []):
 			_by_id[str(k["id"])] = k
 	return _cfg
+
+
+
+static func _drop_planet_cache() -> void:
+	_cfg = {}
+	_by_id = {}
 
 
 static func kinds() -> Array:

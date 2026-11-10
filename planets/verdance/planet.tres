@@ -14,18 +14,34 @@ hub_count = 10
 world_seed = 4471
 target_playtime_min = 240.0
 tables = Dictionary[String, String]({
-"pollution": "res://data/junk.json",
-"upgrades": "res://data/upgrades.json",
-"regrowth": "res://data/hex_levels.json",
-"tutorial": "res://data/objectives.json",
-"goals": "res://data/goals.json",
-"research": "res://data/research.json",
-"robots": "res://data/robots.json",
-"hub": "res://data/hub.json",
-"stations": "res://data/stations.json",
-"plants": "res://data/plants.json",
-"fauna": "res://data/fauna.json",
-"events": "res://data/events.json"
+"pollution": "res://planets/verdance/data/junk.json",
+"upgrades": "res://planets/verdance/data/upgrades.json",
+"regrowth": "res://planets/verdance/data/hex_levels.json",
+"tutorial": "res://planets/verdance/data/objectives.json",
+"goals": "res://planets/verdance/data/goals.json",
+"research": "res://planets/verdance/data/research.json",
+"robots": "res://planets/verdance/data/robots.json",
+"hub": "res://planets/verdance/data/hub.json",
+"stations": "res://planets/verdance/data/stations.json",
+"plants": "res://planets/verdance/data/plants.json",
+"fauna": "res://planets/verdance/data/fauna.json",
+"events": "res://planets/verdance/data/events.json",
+"player": "res://planets/verdance/data/patch.json",
+"robot_level": "res://planets/verdance/data/lumi_level.json",
+"field": "res://planets/verdance/data/planet.json",
+"builds": "res://planets/verdance/data/builds.json",
+"yard": "res://planets/verdance/data/camp.json",
+"trash_bin": "res://planets/verdance/data/trash_bin.json",
+"outposts": "res://planets/verdance/data/outposts.json",
+"frontiers": "res://planets/verdance/data/frontiers.json",
+"signal_tower": "res://planets/verdance/data/signal_tower.json",
+"guide_lines": "res://planets/verdance/data/wren_lines.json",
+"shards": "res://planets/verdance/data/shards.json",
+"eggs": "res://planets/verdance/data/eggs.json",
+"ledger": "res://planets/verdance/data/ledger.json",
+"codex": "res://planets/verdance/data/codex.json",
+"museum": "res://planets/verdance/data/museum.json",
+"postgame": "res://planets/verdance/data/bloom.json"
 })
 palette = Dictionary[String, Color]({})
 music_set = "verdance"

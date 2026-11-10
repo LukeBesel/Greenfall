@@ -24,7 +24,7 @@ func after_each() -> void:
 func _egg_data() -> Array:
 	var defs: Dictionary = {}
 	var order: Array[String] = []
-	for e: Dictionary in Economy.read_json("res://data/eggs.json")["eggs"]:
+	for e: Dictionary in Economy.planet_table("eggs")["eggs"]:
 		defs[str(e["id"])] = e
 		order.append(str(e["id"]))
 	return [order, defs]
@@ -56,7 +56,7 @@ func test_chain_eggs_report_parts_progress() -> void:
 
 
 func test_new_eggs_have_props_and_wren_lines() -> void:
-	var wren: Dictionary = Economy.read_json("res://data/wren_lines.json")
+	var wren: Dictionary = Economy.planet_table("guide_lines")
 	var wild: int = 0
 	for e: Dictionary in Codex.egg_defs():
 		var id: String = str(e["id"])

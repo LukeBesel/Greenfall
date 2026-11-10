@@ -34,7 +34,7 @@ func test_every_goal_type_is_known_and_its_key_exists() -> void:
 		"research", "bases_l5", "frontier_base", "frontier_growing"]
 	var code: String = _all_code()
 	var ids: Dictionary = {}
-	for g: Dictionary in Economy.read_json("res://data/goals.json")["goals"]:
+	for g: Dictionary in Economy.planet_table("goals")["goals"]:
 		var id: String = str(g["id"])
 		assert_false(ids.has(id), "goal id %s is unique" % id)
 		ids[id] = true
@@ -58,7 +58,7 @@ func test_every_goal_type_is_known_and_its_key_exists() -> void:
 
 
 func test_the_chain_ends_on_the_cradle_and_the_seed_ark() -> void:
-	var chain: Array = Economy.read_json("res://data/goals.json")["goals"]
+	var chain: Array = Economy.planet_table("goals")["goals"]
 	var order: Array[String] = []
 	for g: Dictionary in chain:
 		order.append(str(g["id"]))
