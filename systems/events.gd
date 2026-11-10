@@ -19,7 +19,7 @@ signal event_started(id: String)
 signal event_ended(id: String, handled: bool)
 signal streak_tier_up(tier: int)
 
-const PATH: String = "res://data/events.json"
+const TABLE: String = "events"
 
 static var _cfg: Dictionary = {}
 
@@ -40,8 +40,14 @@ var _dev_event_t: float = -1.0
 
 static func cfg() -> Dictionary:
 	if _cfg.is_empty():
-		_cfg = Economy.read_json(PATH)
+		_cfg = Economy.planet_table(TABLE)
+		Economy.drop_on_planet_change(_drop_planet_cache)
 	return _cfg
+
+
+
+static func _drop_planet_cache() -> void:
+	_cfg = {}
 
 
 static func defs() -> Array:

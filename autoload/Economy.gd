@@ -10,7 +10,7 @@ var patch_base: Dictionary = {}
 var cube_rules: Dictionary = {}
 var planet: Dictionary = {}
 var landmarks: Array = []
-## Wilderness biome junk sets (data/junk.json "biomes"), keyed by PlanetData biome name.
+## Wilderness biome junk sets (the planet's "pollution" table, key "biomes"), keyed by PlanetData biome name.
 var biome_sets: Dictionary = {}
 var parts: Dictionary = {}
 var robots: Dictionary = {}  # type id -> def
@@ -18,8 +18,11 @@ var robot_order: Array[String] = []
 var robot_tiers: Array = []
 var robot_cfg: Dictionary = {}
 
+var _planet_cache_drops: Array[Callable] = []
+
 
 func _ready() -> void:
+	Planets.current_changed.connect(_on_planet_changed)
 	load_data()
 
 
@@ -35,10 +38,35 @@ static func read_json(path: String) -> Dictionary:
 	return {}
 
 
+## One of the current planet's content tables (PlanetDefinition.tables), as a private copy the
+## caller may keep and edit. Empty when the planet does not have that table.
+func planet_table(table_name: String) -> Dictionary:
+	var def: PlanetDefinition = Planets.current()
+	if def == null:
+		push_error("No current planet: cannot read table '%s'" % table_name)
+		return {}
+	return def.table(table_name).duplicate(true)
+
+
+## Static loaders that keep a planet table call this with the function that forgets it. It runs
+## once, the next time the current planet changes; the loader registers again when it reloads.
+func drop_on_planet_change(drop: Callable) -> void:
+	if not drop in _planet_cache_drops:
+		_planet_cache_drops.append(drop)
+
+
+func _on_planet_changed(_planet: PlanetDefinition) -> void:
+	var drops: Array[Callable] = _planet_cache_drops.duplicate()
+	_planet_cache_drops.clear()
+	for drop: Callable in drops:
+		drop.call()
+	load_data()
+
+
 func load_data() -> void:
 	junk_types.clear()
 	junk_ids.clear()
-	var jd: Dictionary = read_json("res://data/junk.json")
+	var jd: Dictionary = planet_table("pollution")
 	landmarks = jd.get("landmarks", [])
 	biome_sets = jd.get("biomes", {})
 	for t: Dictionary in jd.get("types", []):
@@ -46,7 +74,7 @@ func load_data() -> void:
 		junk_ids.append(t["id"])
 	upgrade_defs.clear()
 	upgrade_order.clear()
-	for u: Dictionary in read_json("res://data/upgrades.json").get("upgrades", []):
+	for u: Dictionary in planet_table("upgrades").get("upgrades", []):
 		upgrade_defs[u["id"]] = u
 		upgrade_order.append(u["id"])
 	var pd: Dictionary = read_json("res://data/patch.json")
@@ -54,7 +82,7 @@ func load_data() -> void:
 	cube_rules = pd.get("cube", {})
 	planet = read_json("res://data/planet.json")
 	parts = read_json("res://data/parts.json")
-	robot_cfg = read_json("res://data/robots.json")
+	robot_cfg = planet_table("robots")
 	robots.clear()
 	robot_order.clear()
 	robot_tiers = robot_cfg.get("tiers", [])
@@ -114,8 +142,8 @@ func stat(stat_id: String, levels: Variant = null) -> float:
 	return Designs.apply(stat_id, CradleMode.stat_mod(stat_id, Research.stat_mod(stat_id, value * mul)))
 
 
-## Base value of a stat before upgrades: Patch stats come from data/patch.json, dotted robot
-## stats ("<type>.<stat>") from data/robots.json (Mk I, before tier and rarity multipliers).
+## Base value of a stat before upgrades: Lumi's stats come from the planet's "player" table, dotted
+## robot stats ("<type>.<stat>") from its "robots" table (Mk I, before tier and rarity multipliers).
 func base_stat(stat_id: String) -> float:
 	if "." in stat_id:
 		var parts_id: PackedStringArray = stat_id.split(".")

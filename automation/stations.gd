@@ -27,7 +27,7 @@ var route_count: int = 0
 func _ready() -> void:
 	add_to_group("stations")
 	add_to_group("persist")
-	data = Economy.read_json("res://data/stations.json")
+	data = Economy.planet_table("stations")
 	var st: Dictionary = state()
 	route_n = int(st.get("route_n", 0))
 	route_count = int(st.get("route_count", 0))

@@ -44,7 +44,8 @@ static func lift_class() -> int:
 
 static func _model_base_vol(model_id: String) -> float:
 	if _model_vol.is_empty():
-		var jd: Dictionary = Economy.read_json("res://data/junk.json")
+		Economy.drop_on_planet_change(_drop_planet_cache)
+		var jd: Dictionary = Economy.planet_table("pollution")
 		for t: Dictionary in jd.get("types", []):
 			for m: Variant in t.get("models", []):
 				if m is Dictionary:
@@ -325,3 +326,8 @@ static func sync_flags() -> void:
 ## Signal event). The buddy's scanner tiers may take this over later (same flag).
 static func signal_finder() -> bool:
 	return Economy.stat("signal_finder") >= 0.5
+
+
+static func _drop_planet_cache() -> void:
+	_model_vol = {}
+	_dump_cfg = {}

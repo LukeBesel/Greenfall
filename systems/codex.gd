@@ -29,7 +29,7 @@ static func entries() -> Array[Dictionary]:
 	for id: String in Economy.junk_ids:
 		var e: Dictionary = c.get("junk", {}).get(id, {})
 		_add("junk", id, TranslationServer.translate(str(Economy.junk_types[id].get("name", id))), e)
-	var plants: Array = Economy.read_json("res://data/plants.json").get("species", [])
+	var plants: Array = Economy.planet_table("plants").get("species", [])
 	for sp: Dictionary in plants:
 		var e: Dictionary = c.get("plants", {}).get(str(sp["id"]), {})
 		_add("plants", str(sp["id"]), TranslationServer.translate(str(e.get("name", str(sp["id"]).capitalize()))), e)

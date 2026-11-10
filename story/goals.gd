@@ -30,7 +30,7 @@ func _ready() -> void:
 
 
 func load_chain() -> void:
-	cfg = Economy.read_json("res://data/goals.json")
+	cfg = Economy.planet_table("goals")
 	chain = cfg.get("goals", [])
 	visible_count = int(cfg.get("visible", 3))
 	_done.clear()

@@ -55,6 +55,7 @@ func unregister(planet_id: StringName) -> void:
 	_defs.erase(planet_id)
 	if _current and _current.id == planet_id:
 		_current = first_shipped()
+		current_changed.emit(_current)
 
 
 func has(planet_id: StringName) -> bool:

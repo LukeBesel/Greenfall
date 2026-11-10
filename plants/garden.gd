@@ -44,7 +44,7 @@ var _saved_cells: Dictionary = {}  # cell -> [species bytes, stage bytes, water 
 
 
 func setup() -> void:
-	cfg = Economy.read_json("res://data/plants.json")
+	cfg = Economy.planet_table("plants")
 	species = cfg.get("species", [])
 	for s: Dictionary in species:
 		_sp_weight_sum += float(s.get("weight", 1.0))

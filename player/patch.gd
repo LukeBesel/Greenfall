@@ -265,7 +265,7 @@ func _tangent(v: Vector3) -> Vector3:
 # --- Tools: plant and water ---------------------------------------------------------
 
 func water_cap() -> float:
-	return float(Economy.read_json("res://data/plants.json").get("water_tank", 30)) if _water_cap < 0.0 else _water_cap
+	return float(Economy.planet_table("plants").get("water_tank", 30)) if _water_cap < 0.0 else _water_cap
 
 var _water_cap: float = -1.0
 var _no_slot_ms: int = -100000  # [v4grow]
@@ -291,7 +291,7 @@ func _handle_tools(delta: float) -> void:
 		elif Input.is_action_just_pressed("tool_water"):
 			set_tool(Tool.WATER)
 	if _water_cap < 0.0:
-		_water_cap = float(Economy.read_json("res://data/plants.json").get("water_tank", 30))
+		_water_cap = float(Economy.planet_table("plants").get("water_tank", 30))
 	# Refill at the hub's water barrel (anywhere in the yard).
 	if world and world.field and world.field.hex_at(global_position) >= 0 and world.field.hex_hub[world.field.hex_at(global_position)] == 1:
 		if water < _water_cap:

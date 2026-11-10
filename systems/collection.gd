@@ -4,15 +4,21 @@ extends RefCounted
 ## contracts, streaks and Curio Capsules from the token shop. Found ids persist in
 ## GameState.flags["trinkets"] (an Array, in the order found). Shown in the Codex "Collection" tab.
 
-const PATH: String = "res://data/events.json"
+const TABLE: String = "events"
 
 static var _defs: Array = []
 
 
 static func defs() -> Array:
 	if _defs.is_empty():
-		_defs = Economy.read_json(PATH).get("trinkets", [])
+		_defs = Economy.planet_table(TABLE).get("trinkets", [])
+		Economy.drop_on_planet_change(_drop_planet_cache)
 	return _defs
+
+
+
+static func _drop_planet_cache() -> void:
+	_defs = []
 
 
 static func def(id: String) -> Dictionary:

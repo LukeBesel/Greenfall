@@ -7,7 +7,7 @@ extends Node
 ## (see `stat_mod`). An instance of this node (added by the slice) awards Data and finishes
 ## research while playing.
 
-const PATH: String = "res://data/research.json"
+const TABLE: String = "research"
 const CURRENCY: String = "cubes"  # [money] research costs cubes (was Data) plus real time
 
 static var _cfg: Dictionary = {}
@@ -31,7 +31,8 @@ var _garden_applied: int = -1
 static func _ensure() -> void:
 	if not _defs.is_empty():
 		return
-	_cfg = Economy.read_json(PATH)
+	_cfg = Economy.planet_table(TABLE)
+	Economy.drop_on_planet_change(_drop_planet_cache)
 	for n: Dictionary in _cfg.get("nodes", []):
 		_defs[str(n["id"])] = n
 		_order.append(str(n["id"]))
@@ -47,6 +48,15 @@ static func reload() -> void:
 	_story.clear()
 	_mods_size = -1
 	_ensure()
+
+
+## Forgets the tree without reloading it: the next reader loads the new planet's table.
+static func _drop_planet_cache() -> void:
+	_cfg = {}
+	_defs.clear()
+	_order.clear()
+	_story.clear()
+	_mods_size = -1
 
 
 static func ids() -> Array[String]:
