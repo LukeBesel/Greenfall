@@ -57,7 +57,12 @@ func _process(_delta: float) -> void:
 		_carry_frames = _carry_frames + 1 if _carry_t > 0.0 else 0
 		if _carry_t > 0.0 and DevHooks.has("probe-verbose"):  # the bale's height on the stack, frame by frame
 			var cp: Patch = _slice.get("patch") as Patch
-			print("[b8] carried %.2f s: bale y on the stack %.2f (rest %.2f), frozen=%s" % [_carry_t, cp.carried[0].position.y, cp.carried[0].size * 0.5, str(cp.carried[0].freeze)])
+			var b: JunkCube = cp.carried[0]
+			print("[b8] carried %.2f s: bale y on the stack %.2f (rest %.2f), frozen=%s can_process=%s paused=%s tweens=%d lumi_speed=%.2f" % [_carry_t, b.position.y, b.size * 0.5,
+				str(b.freeze), str(b.can_process()), str(get_tree().paused), get_tree().get_processed_tweens().size(), cp.velocity.length()])
+			if _carry_frames == 6:  # is the height held by something? lift it by hand once and watch the next frames
+				b.position.y = 2.0
+				print("[b8] bale set to y 2.00 by the probe")
 		if _carry_t < 1.0 or _carry_frames < 12:
 			return
 	_done = true

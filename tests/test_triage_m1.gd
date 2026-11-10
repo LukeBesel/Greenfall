@@ -403,10 +403,37 @@ func _carry_gap(design: String) -> Dictionary:
 	return gap
 
 
-## B8: a carried bale rests clear of the body on every design (thin antennae may reach it; anything
-## 12 cm wide or more may not).
-func test_b8_carried_bale_rests_above_the_body_on_every_design() -> void:
+## B8: where the bale is meant to rest is right on every design: 0.2 m clear of the body (thin
+## antennae may reach it; anything 12 cm wide or more may not). Measured with nothing else running.
+func test_b8_carry_point_is_clear_of_the_body_on_every_design() -> void:
 	for id: String in Designs.ids():
 		var gap: Dictionary = await _carry_gap(id)
 		gut.p("[b8] %s" % JSON.stringify(gap))
 		assert_gte(float(gap["gap_solid"]), 0.1, "%s: the bale's bottom is %.2f m from the top of the body" % [id, float(gap["gap_solid"])])
+
+
+## B8: in play the bale never gets there. Patch._physics_process runs _update_stack every physics
+## frame; with it running, the pick-up tween (an idle-frame tween on a frozen RigidBody3D) is undone
+## each frame and the bale stays at the height it was picked up at: on the ground, inside Lumi.
+## The running game shows the same (tools/exit_probe.tscn --exit-carrying --probe-verbose).
+func test_b8_carried_bale_rises_onto_the_stack_while_lumi_carries_it() -> void:
+	pending("B8 the carried bale stays at pick-up height inside Lumi (player/patch.gd pick_up tween undone by _update_stack on a frozen RigidBody3D)")
+	return
+	var p := Patch.new()
+	add_child_autofree(p)
+	p.set_process(false)
+	p.set_physics_process(false)
+	for c: Node in p.get_children():
+		if c.name != "Stack" and c.name != "Model":
+			c.process_mode = Node.PROCESS_MODE_DISABLED
+	var bale := JunkCube.create(BigNum.from_float(10.0), {"fill": 1.0, "colors": [Color(0.5, 0.45, 0.4)]})
+	add_child(bale)
+	bale.global_position = Vector3(0.0, 0.3, -0.8)  # lying on the ground in front of Lumi
+	p.pick_up(bale)
+	for i: int in 40:  # two thirds of a second; the tween takes 0.22 s
+		await get_tree().physics_frame
+		p._update_stack(1.0 / 60.0)
+	var gap: Dictionary = (load("res://tools/exit_probe.gd") as GDScript).call("carry_gap", p)
+	bale.queue_free()
+	assert_gte(float(gap["gap_solid"]), 0.1, "the carried bale's bottom is %.2f m above Lumi's feet, the top of his body is at %.2f m" % [
+		float(gap["bale_bottom"]), float(gap["model_top_solid"])])
