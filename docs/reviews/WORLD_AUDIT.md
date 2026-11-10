@@ -323,6 +323,16 @@ Each is data or a few lines. Effects are what I expect from the code and the ren
 | Q7 | A few lights in a ruined town: keep the landmark's beacon and one lamp in four lit at level 1 | `planets/verdance/sites/verdance_site.gd` `set_level` (`set_powered(level >= 2)`), `planet/street_furniture.gd` | Dusk and night in hubs 1-9 get warm pools of light and stop reading as dead. Needs a light cap near Lumi. |
 | Q8 | Lake murk a clearer green-blue: lift the "murky olive" (0.05, 0.058, 0.032) toward teal | `planet/sphere/sphere_ground.gdshader` line 90, `planet/sites/sphere_water.gdshader` | The start and harbour frames lose their grey-green half. Still reads as dirty through the floating junk and scum. |
 
+Outcomes (task M3-17b, Nov 10; values, renders and counts in `docs/reviews/WORLD_QUICK_WINS.md`):
+- **Q1: kept.** `haze_day` is now (0.68, 0.77, 0.9). The brown backdrop and the dark horizon band are gone.
+- **Q2: kept, in a different file.** The live values are in `planet/sky_director.gd` (`_apply_sphere`), not `orbit_day.gd`: fog density 0.0003-0.0005 (was 0.0005-0.001), fog colour pale blue while dusty too. Tuned: the fog also thins with camera height above 300 m.
+- **Q3: kept, tuned twice.** Six junk colours as flecks at three sizes in the far ground and the far shell. The first try (patches up to 150 m) read as giant squares and was cut down.
+- **Q4: kept.** Packaging colours are 36% of litter draws (was 14%); the pull to grey and brown is halved.
+- **Q5: kept, tuned.** Day exposure 1.25 to 1.1, sun 2.2 to 1.95, sky fill 1.1 to 1.2, saturation 1.2 to 1.26 (1.32 turned the pad pink).
+- **Q6: kept.** Five wreck colours (the old red-brown, teal, yellow, cream, red).
+- **Q7: kept, changed.** Not street power: 40% of the standing lamp heads in hubs 1-9 glow warm after dark, with six real lights at most near the camera (`planet/sites/ruin_lights.gd`). The start town is left dark. See the open question in the quick-wins report.
+- **Q8: kept, tuned.** Dirty water is a cloudy algae green-teal (first try was a turquoise brighter than clean water).
+
 **Fuller and more junk now**
 
 | # | Change | Where | Expected effect |
@@ -333,6 +343,15 @@ Each is data or a few lines. Effects are what I expect from the code and the ren
 | Q12 | Props on the open junk field from 3.5% to about 12% of cells, with tanks and fences allowed there | `planets/verdance/sites/hinterland.gd` line 217 | 3,500 more wrecks and shapes on the 36% of the land that has none. MultiMesh instances only. |
 | Q13 | Two more hinterland building variants per archetype (`VARIANTS` 3 to 5) with stronger palette spread | `planets/verdance/sites/hinterland.gd` line 35 | 31,688 houses stop being six looks. 24 more MultiMeshes over the ring: check the draw count. |
 | Q14 | Landmark prop by kind, not by hub number (crane for industrial, lighthouse for harbour, water tower for old town, radio mast for downtown, ferris wheel for the suburb) | `planet/street_dressing.gd` `_build_landmark` | Each town's one tall prop at least fits its kind until the source landmarks exist. |
+
+Outcomes (task M3-17b):
+- **Q9: kept, over the performance limit at hub centres.** Junk now starts 12 m from the centre of hubs 1-9. Reach audit: 5,680 targets, 0 unreachable. Cost at the downtown centre on Medium: 1,100 to 1,482 draw calls, 4.5 M to 8.6 M triangles (Low: 1,276 and 5.1 M). The lead must confirm or revert this one.
+- **Q10: dropped.** With the 30% rule hub 3 became a low suburb of 1-3 floor boxes and lost its mid-rise town, and the accepted plan makes site 3 the harbour city anyway. Kinds stay as they were until the sites table (W2).
+- **Q11: kept.** The start outskirts went from 211 to 275 buildings (51 to 28 open lots).
+- **Q12: kept.** Props on 12% of open junk-field hexes (wrecks, some tanks and fence runs).
+- **Q13: kept.** Five looks per hinterland archetype, four of them painted (walls and roofs).
+- **Q14: kept.** The tall prop follows the kind; harbours get the lighthouse.
+- **The `_attach_power` error: fixed**, with a regression test (`tests/test_site_power_freed.gd`).
 
 Best three if only three are done: **Q1 + Q2** (one render, sky and fog together), **Q9**, **Q3**.
 
