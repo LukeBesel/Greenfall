@@ -91,6 +91,20 @@ var _ov_xf := Transform3D()
 var _ov_off := Vector2.ZERO
 
 
+## [v5text] The one system map of a world. The orbit set-up (planet/orbit_layers.gd) and the Homeward
+## campaign (systems/homeward_director.gd) each used to add their own, so the round game carried
+## two; both now ask here and get the same node.
+static func shared(w: Node) -> SystemMap:
+	for c: Node in w.get_children():
+		if c is SystemMap:
+			return c as SystemMap
+	var m := SystemMap.new()
+	m.name = "SystemMap"
+	m.world = w
+	w.add_child(m)
+	return m
+
+
 func _ready() -> void:
 	layer = 19
 	process_mode = Node.PROCESS_MODE_ALWAYS
