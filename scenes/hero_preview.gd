@@ -7,6 +7,11 @@ extends Node3D
 ##   --view=hands    : both claws in the portrait pose, framed between them.
 ##   --view=blink    : head close-up, a blink at phase 0 (open), 50 ms (closing), 90 ms (shut), 170 ms (opening).
 ##   --out=screenshots/hero/x  (writes <out>.png or <out>_N.png), --eyes=crescent|round|happy|bar|heart
+##   --variant=aurora|bolt|sprout|pixel|nova|patch : which design (PatchModel.VARIANTS). The portrait
+##                     pose follows that design's concept-sheet portrait (held prop in the left claw);
+##                     only Aurora reaches for the can with the pickup lasers.
+##   --variants=bolt,sprout,... (portrait): every listed design in ONE run (the slow part of a render
+##                     here is start-up), written as <out>_<id>.png.
 ## Run (software Vulkan is slow, keep the settle time):
 ##   xvfb-run -a -s "-screen 0 1280x800x24" godot --path . --rendering-driver vulkan --resolution 1280x800 \
 ##     res://scenes/hero_preview.tscn -- --fresh --view=portrait --out=screenshots/hero/portrait
@@ -21,7 +26,19 @@ var _t: float = 0.0
 var _can: Node3D
 var _lasers: Array[MeshInstance3D] = []
 var _settle: float = 8.0
+var _variant: String = "aurora"
+var _variants: PackedStringArray = []
 const BLINK_PHASES := [-1.0, 0.05, 0.09, 0.17]
+## Portrait poses per design: [body rotation (deg), right arm, right elbow, left arm, left elbow,
+## claw opening]. The left claw holds the design's prop (can beam, gear, bottle, holo, case).
+const POSES := {
+	"aurora": [Vector3(-6, 0, 7), Vector3(0.05, 0.1, 1.05), 0.35, Vector3(0.35, 0.3, -1.1), 0.25, 0.32],
+	"bolt": [Vector3(-6, 0, 6), Vector3(0.05, 0.1, 0.95), 0.4, Vector3(0.15, 0.35, -1.05), 0.45, 0.12],
+	"sprout": [Vector3(-6, 0, 6), Vector3(0.1, 0.1, 0.95), 0.35, Vector3(0.1, 0.3, -1.15), 0.35, 0.15],
+	"pixel": [Vector3(-4, 0, 4), Vector3(-0.1, 0.0, 1.3), 0.2, Vector3(0.45, 0.3, -1.25), 0.15, 0.4],
+	"nova": [Vector3(-6, 0, 6), Vector3(0.1, 0.1, 0.95), 0.4, Vector3(0.5, 0.3, -0.95), 0.6, 0.2],
+	"patch": [Vector3(-5, 0, 5), Vector3(0.0, 0.1, 0.95), 0.4, Vector3(-0.15, 0.2, -0.75), 0.2, 0.12],
+}
 
 
 func _ready() -> void:
@@ -29,6 +46,16 @@ func _ready() -> void:
 	_view = DevHooks.get_s("view", "portrait")
 	_out = DevHooks.get_s("out", "screenshots/hero/" + _view)
 	_settle = DevHooks.get_f("settle", 8.0)
+	_variant = DevHooks.get_s("variant", "aurora")
+	for id: String in DevHooks.get_s("variants", "").split(",", false):
+		if PatchModel.VARIANTS.has(id):
+			_variants.append(id)
+	if _view == "portrait" and not _variants.is_empty():
+		_variant = _variants[0]
+	else:
+		_variants.clear()
+	if not PatchModel.VARIANTS.has(_variant):
+		_variant = "aurora"
 	get_viewport().msaa_3d = Viewport.MSAA_4X
 	get_viewport().screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA
 	# Close-ups use the portrait's warm set too.
@@ -75,14 +102,14 @@ func _ready() -> void:
 	# Warm side key (from the viewer's left, a little behind), a warm back rim and a cool soft fill.
 	var key := DirectionalLight3D.new()
 	key.light_color = Color(1.0, 0.68, 0.42) if portrait else Color(1.0, 0.86, 0.74)
-	key.light_energy = 2.6 if portrait else 1.7
+	key.light_energy = 2.0 if portrait else 1.7  # saturated paints (yellow, red) wash out above this
 	key.shadow_enabled = true
 	key.directional_shadow_max_distance = 12.0
 	add_child(key)
 	key.look_at_from_position(Vector3(3.0, 2.2, 0.7), Vector3.ZERO, Vector3.UP)
 	var rim := DirectionalLight3D.new()
 	rim.light_color = Color(1.0, 0.6, 0.32) if portrait else Color(0.7, 0.85, 1.0)
-	rim.light_energy = 2.6 if portrait else 0.8
+	rim.light_energy = 2.2 if portrait else 0.8
 	rim.light_specular = 1.2
 	add_child(rim)
 	rim.look_at_from_position(Vector3(-1.5, 2.6, 3.0), Vector3.ZERO, Vector3.UP)  # [hero v2] sun behind and above (concept)
@@ -115,7 +142,7 @@ func _ready() -> void:
 				mi.rotation_degrees = Vector3(90, 20, 0)
 			add_child(mi)
 	_model = PatchModel.new()
-	_model.preview_variant = "aurora"
+	_model.preview_variant = _variant
 	add_child(_model)
 	_model.set_happy(0.5)
 	var eyes: String = DevHooks.get_s("eyes", "")
@@ -128,8 +155,11 @@ func _ready() -> void:
 		_cam.fov = 30.0
 		# [hero v2] The concept looks down on him a little (the crown and fin read against the sky).
 		var a: float = deg_to_rad(31.0)
-		var d: float = 2.6
-		_shots = [[Vector3(sin(a) * d, 1.5, -cos(a) * d), Vector3(-0.14, 0.72, -0.05)]]
+		# Far enough back that head pieces (fin, seedling, ears) and the held prop stay in frame.
+		var d: float = 3.05
+		_shots = [[Vector3(sin(a) * d, 1.6, -cos(a) * d), Vector3(-0.2, 0.8, -0.05)]]
+		for k: int in _variants.size() - 1:
+			_shots.append(_shots[0])
 		var cam_attr := CameraAttributesPractical.new()
 		cam_attr.dof_blur_far_enabled = true
 		cam_attr.dof_blur_far_distance = 4.0
@@ -175,7 +205,9 @@ func _build_can_and_lasers() -> void:
 		mi.rotation_degrees = Vector3(-35, 30, 60)
 		_can.add_child(mi)
 	_can.position = Vector3(-0.95, 0.95, -0.72)
-	var glow: Color = PatchModel.glow_of("aurora")
+	var glow: Color = PatchModel.glow_of(_variant)
+	if _variant != "aurora":
+		_can.visible = false  # the other designs hold their own prop instead
 	for k: int in 3:
 		var m := MeshInstance3D.new()
 		var c := CylinderMesh.new()
@@ -193,6 +225,7 @@ func _build_can_and_lasers() -> void:
 		m.material_override = mat
 		m.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		add_child(m)
+		m.visible = _variant == "aurora"
 		_lasers.append(m)
 	var l := OmniLight3D.new()
 	l.light_color = glow
@@ -212,19 +245,19 @@ func _pose() -> void:
 		return
 	_model._blink_timer = 100.0  # no random blink in a review shot
 	_model._blink_t = -1.0
-	# [hero v2] Flying pose of the portrait: pitched forward and leaning toward the can.
-	_model.rotation_degrees = Vector3(-6.0, 0.0, 7.0)
+	# [hero v2] Flying pose of the portrait: pitched forward and leaning toward the can (Aurora);
+	# the other designs as on their concept-sheet portraits.
+	var pose: Array = POSES.get(_variant, POSES["aurora"])
+	_model.rotation_degrees = pose[0]
 	var arm_r: Node3D = _model.get("_arm_r")
-	arm_r.rotation = Vector3(0.05, 0.1, 1.05)
-	(arm_r.get_meta("elbow") as Node3D).rotation = Vector3(0.35, 0.0, 0.0)
-	# Left arm raised and reaching toward the can (the portrait's beam arm), claws open.
+	arm_r.rotation = pose[1]
+	(arm_r.get_meta("elbow") as Node3D).rotation = Vector3(pose[2], 0.0, 0.0)
 	var arm: Node3D = _model.get("_arm_l")
-	arm.rotation = Vector3(0.35, 0.3, -1.1)
-	var el: Node3D = arm.get_meta("elbow")
-	el.rotation = Vector3(0.25, 0.0, 0.0)
+	arm.rotation = pose[3]
+	(arm.get_meta("elbow") as Node3D).rotation = Vector3(pose[4], 0.0, 0.0)
 	for f: Node3D in _model.get("_claws"):
 		var dir: Vector2 = f.get_meta("dir")
-		f.rotation = Vector3(-dir.y, dir.x, 0) * 0.32
+		f.rotation = Vector3(-dir.y, dir.x, 0) * float(pose[5])
 	var a: Vector3 = _model.claw_point_l()
 	(get_node("ClawLight") as OmniLight3D).global_position = a
 	for k: int in _lasers.size():
@@ -249,11 +282,26 @@ func _process(delta: float) -> void:
 		get_tree().quit()
 		return
 	_set_view(_i)
-	if _t > 1.5:
+	if _t > (1.5 if _variants.is_empty() else 3.0):
 		var path: String = "%s.png" % _out if _shots.size() == 1 else "%s_%d.png" % [_out, _i]
+		if not _variants.is_empty():
+			path = "%s_%s.png" % [_out, _variants[_i]]
 		DevHooks.save_viewport(path)
 		_i += 1
 		_t = 0.0
+		if _i < _variants.size():
+			_switch_variant(_variants[_i])
+
+
+## Next design in a --variants run: rebuild the model and re-tint the props that follow its glow.
+func _switch_variant(id: String) -> void:
+	_variant = id
+	_model.set_variant(id)
+	_model.set_happy(0.5)
+	_can.visible = id == "aurora"
+	for m: MeshInstance3D in _lasers:
+		m.visible = id == "aurora"
+	(get_node("ClawLight") as OmniLight3D).light_color = PatchModel.glow_of(id)
 
 
 func _set_view(i: int) -> void:

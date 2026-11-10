@@ -15,8 +15,9 @@ extends RefCounted
 ##   var v: Dictionary = LumiStyle.variant_for(self, VARIANTS[variant])   (first line)
 ##   LumiStyle.after_build(self)                                          (last line)
 ## variant_for turns the style into a VARIANTS-shaped dict, so PatchModel builds its own native
-## add-ons (acc ids) and colours; after_build recolours what VARIANTS has no key for (eyes, side
-## modules, hover ring), adds the eye-shape overlay and the add-ons PatchModel does not know
+## add-ons (acc ids), colours and eye shape (the face shader draws every eye_shape; "happy" is the
+## crescent resting on smiling arcs); after_build recolours what VARIANTS has no key for (eyes, side
+## modules, hover ring), and adds the add-ons PatchModel does not know
 ## (library meshes from aurora.glb / designs.glb by name, procedural fallbacks otherwise), and
 ## leaves the laser colour as model meta "lumi_laser" for PickupFx. Every access is defensive
 ## (get / has_method / null checks), so the hero model can be rebuilt underneath.
@@ -35,9 +36,9 @@ const MAX_LOOKS: int = 5
 const VERSION: int = 1
 const COLOR_SLOTS: Array[String] = ["paint", "trim", "accent", "side", "eyes", "glow", "hover", "laser"]
 const PART_SLOTS: Array[String] = ["pattern", "eye_shape", "head", "chest", "shoulders", "held", "companion"]
-## Native (PatchModel) eye looks; any other shape is drawn by the overlay (art/shaders/lumi_eyes).
-const NATIVE_EYES: Array[String] = ["crescent", "happy"]
-const OVERLAY_SHAPES: Dictionary = {"round": 1, "bar": 2, "heart": 3}
+## Design-only extras in PatchModel.VARIANTS (the sheet's signature props): shown with the design's
+## own preset look, dropped from any custom look (whose held item / companion come from its slots).
+const SIGNATURE_KEYS: Array[String] = ["props"]
 ## Owner: locked designs and parts are never shown, only "???" and a hint of how to unlock them.
 const LOCKED_NAME: String = "???"
 
@@ -546,7 +547,13 @@ static func variant_dict(style: Dictionary, base: Dictionary = {}) -> Dictionary
 	v["metal"] = float(s["metal"])
 	v["moss"] = 0.6 if s["pattern"] == "moss" else 0.0
 	v["stripes"] = 1.0 if s["pattern"] == "stripes" else 0.0
-	v["happy"] = 1.0 if s["eye_shape"] == "happy" else 0.5
+	# One eye path: the face shader's shapes. "happy" rests the crescent on smiling arcs.
+	var shape: String = str(s["eye_shape"])
+	v["happy"] = 1.0 if shape == "happy" else 0.5
+	v["eyes"] = "crescent" if shape == "happy" or not (shape in PatchModel.EYE_SHAPES) else shape
+	if not is_preset(s):
+		for k: String in SIGNATURE_KEYS:
+			v.erase(k)
 	var ic: String = str(s["chest"])
 	v["icon"] = ic if ic in ["recycle", "leaf", "cross"] else "recycle"
 	var known: Array = []
