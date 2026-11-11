@@ -1267,6 +1267,8 @@ func persist_save() -> void:
 		"hub_worlds": {"0": GameState.world},
 		"migrated": str(GameState.orbit.get("migrated", "")),
 		"hexes_paid": GameState.orbit.get("hexes_paid", {}),
+		"rocket_site": int(GameState.orbit.get("rocket_site", 0)),  # where the rocket stands (OrbitSites)
+		"rocket_owned": bool(GameState.orbit.get("rocket_owned", false)),
 		"hex_levels": (w.get("hex_levels") as HexLevels).persist(),
 		"day_t": day.elapsed(),
 		"lumi": {"at": g.to_dirh(patch.global_position), "fwd": _v_arr(patch.forward()), "cargo": pd},

@@ -2269,7 +2269,7 @@ func _do_travel(p: Patch) -> bool:
 		return true
 	var here: int = os.rocket_site()
 	var want: int = _travel.want_site(d, _sources())
-	if want < 0 or want == here or not os.site_offered(want) or os.hop_blocker() != "" or p._cubing > 0.0:
+	if want < 0 or want == here or not os.site_offered(want) or os.hop_blocker() != "" or p._cubing > 0.0 or _now() < _hop_retry_at:
 		return false
 	if here == 0 and _now() - _last_bench_t > 60.0 and (not _rig_tools().is_empty() or bool(_shopping_list().get("trip", false))):
 		_bench_trip = true  # leaving the start yard: the bench first (a city's tool may be waiting there)
@@ -2282,6 +2282,8 @@ func _do_travel(p: Patch) -> bool:
 	if _go(p, os.rocket_spot.global_position, 1.5) > AutoplayTravel.BOARD_M and _task_t < AutoplayTravel.WALK_GIVE_UP_S:
 		return true
 	_travel.hops += 1
+	if here == 0:
+		_travel.last_home_s = _now()  # the bench was just visited on the way out
 	_event("hop", {"from": here, "to": want, "city": d.district_of_site(want), "home_trip": _travel.home_trip, "why": _travel.why,
 		"walk_s": snappedf(_task_t, 0.1)})
 	_area_city = "?"
@@ -2291,7 +2293,15 @@ func _do_travel(p: Patch) -> bool:
 	_water_target = -1
 	_target_piece = -1
 	os.hop_to(want)
+	if not os.hop.flying:  # refused (the flight starts at once when it goes): try again later
+		_hop_retry_at = _now() + HOP_RETRY_S
+		_event("hop_refused", {"from": here, "to": want})
 	return true
+
+
+## A refused hop is tried again after this many game seconds.
+const HOP_RETRY_S: float = 30.0
+var _hop_retry_at: float = 0.0
 
 
 ## Away from the start yard: whether to fly home for the bench (checked once a second).

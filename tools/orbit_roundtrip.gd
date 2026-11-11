@@ -708,8 +708,14 @@ static func run(rt: Node, check: Callable) -> void:
 	check.call("orbit_fouled_hex_is_dirty", true, fouled_hex >= 0 and g.cells.is_dirty(fouled_hex) and so.pollution.is_soiled(fouled_hex))
 	for i: int in 3:
 		await tree.physics_frame
+	# B42: where the rocket stands and that Lumi owns it are kept by every save (a save dropped
+	# both, so the rocket went back to the start pad while Lumi worked in another city).
+	GameState.orbit["rocket_site"] = 0
+	GameState.orbit["rocket_owned"] = true
 	var ok: bool = SaveManager.save_game()
 	check.call("orbit_saved", true, ok)
+	check.call("orbit_save_keeps_the_rocket", "site 0 owned true", "site %s owned %s" % [str(GameState.orbit.get("rocket_site", "none")),
+		str(GameState.orbit.get("rocket_owned", "none"))])
 	var a: Dictionary = _snap(s1)
 	var disk: Dictionary = SaveManager.read_dict(SaveManager.slot_path())
 	check.call("orbit_flat_world_untouched", false, (disk.get("world", {}) as Dictionary).has("hub_level"))
