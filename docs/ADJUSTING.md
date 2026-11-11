@@ -118,3 +118,6 @@ prints a `[card]` line per objective step and an `[arc]` line per hub, rocket ti
 | Order of the card's steps | `data/objectives.json` (story), then `data/goals.json` `goals` in file order | | The card shows the first unfinished one. Move a line to move the step. |
 | A goal's own "why" line | `data/goals.json` goal `desc` | only on "Fly to another planet" | Shown instead of "Reward: ...". |
 | Goal rewards | `data/goals.json` goal `reward` | | Paid when the step completes. |
+
+## How Lumi moves (v6feel)
+`data/patch.json` `move` controls how Lumi meets things on a round planet: `max_step` (0.45 m) is the tallest kerb, step or low planter he hovers over instead of stopping, and `round_keep` (0.6) is how much of his speed he keeps while rounding a post, bin or heap he clipped nearly head-on (0 = a plain slide, which nearly stops him). Check a change with `--feel=walk` (tools/feel_probe.gd).

@@ -115,7 +115,9 @@ func _build_greenhouse() -> void:
 	for i: int in 5:
 		for x: float in [-2.5, 2.5]:
 			PropColliders.add_cyl(pb, GREENHOUSE_POS + Vector3(x, 0, -4.0 + i * 2.0), 0.08, 2.4)
-	PropColliders.add_box(pb, Transform3D(Basis(), GREENHOUSE_POS + Vector3(-2.5, 1.1, 2.0)), Vector3(0.1, 2.2, 1.9))
+	# [v6feel] The glass side's collider runs post to post (z 0..4): its ends left 0.97 m gaps to the
+	# next posts, narrower than Lumi, and he wedged in the V between glass and post.
+	PropColliders.add_box(pb, Transform3D(Basis(), GREENHOUSE_POS + Vector3(-2.5, 1.1, 2.0)), Vector3(0.1, 2.2, 4.0))
 	if _globe:  # [orbB] the shapes are in this node's space (the world on the flat game)
 		pb.global_transform = global_transform
 

@@ -27,7 +27,28 @@ static func body(parent: Node, nm: String = "PropBody") -> StaticBody3D:
 	parent.add_child(b)
 	b.top_level = true
 	b.global_transform = Transform3D.IDENTITY
+	# [v6feel] Inside a site prefab's Content the builders give site-local coordinates (the city,
+	# street furniture, dressing layers, future posts). On the globe the site's frame is not the
+	# world's: at identity these bodies sat near the planet's centre and Lumi walked through every
+	# bench, bin, fence and bollard in town. Put the body in the site's frame.
+	var holder: Node3D = _site_content(parent)
+	if holder:
+		if holder.is_inside_tree():
+			b.global_transform = Transform3D(holder.global_basis.orthonormalized(), holder.global_position)
+		else:
+			b.tree_entered.connect(func() -> void:
+				b.global_transform = Transform3D(holder.global_basis.orthonormalized(), holder.global_position), CONNECT_ONE_SHOT)
 	return b
+
+
+## [v6feel] The site prefab's Content holder above `n` (site-local space), or null.
+static func _site_content(n: Node) -> Node3D:
+	var c: Node = n
+	while c:
+		if c.name == &"Content" and c.get_parent() is SitePrefab and c is Node3D:
+			return c as Node3D
+		c = c.get_parent()
+	return null
 
 
 static func box_shape(size: Vector3) -> BoxShape3D:
@@ -66,6 +87,16 @@ static func add_cyl(b: StaticBody3D, base: Vector3, radius: float, height: float
 	cs.position = base + Vector3(0, height * 0.5, 0)
 	b.add_child(cs)
 	cs.set_meta("foot", Vector3(base.x, base.z, radius))
+	return cs
+
+
+## [v6feel] Cylinder centred at xf.origin along xf.basis.y (any frame: upright on the globe too).
+static func add_cyl_at(b: StaticBody3D, xf: Transform3D, radius: float, height: float) -> CollisionShape3D:
+	var cs := CollisionShape3D.new()
+	cs.shape = cyl_shape(radius, height)
+	cs.transform = Transform3D(xf.basis.orthonormalized(), xf.origin)
+	b.add_child(cs)
+	cs.set_meta("foot", Vector3(xf.origin.x, xf.origin.z, radius))
 	return cs
 
 
@@ -117,6 +148,11 @@ static func fit(b: StaticBody3D, root: Node3D, min_h: float = 0.35, max_w: float
 			continue
 		var sc: Vector3 = xf.basis.get_scale().abs()
 		var size: Vector3 = (ab.size * sc * 0.92).max(Vector3(0.08, 0.08, 0.08))
+		# [v6feel] An upright post is round: a box's corners stop Lumi dead where a pole lets him slide.
+		if size.x <= 0.25 and size.z <= 0.25 and size.y > 0.5 and xf.basis.y.normalized().dot(root.global_basis.y.normalized()) > 0.95:
+			add_cyl_at(b, Transform3D(xf.basis.orthonormalized(), xf * ab.get_center()), maxf(size.x, size.z) * 0.5, size.y)
+			n += 1
+			continue
 		add_box(b, Transform3D(xf.basis.orthonormalized(), xf * ab.get_center()), size)
 		n += 1
 	return n

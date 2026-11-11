@@ -105,6 +105,9 @@ static func _at(p: Vector2, yaw: float, y: float = 0.0) -> Transform3D:
 
 
 func _collide(xf: Transform3D, size: Vector3) -> void:
+	if size.x <= 0.3 and is_equal_approx(size.x, size.z) and size.y > 1.0:  # [v6feel] poles are round: Lumi slides off them
+		PropColliders.add_cyl(_body, xf.origin, size.x * 0.5, size.y)
+		return
 	PropColliders.add_box(_body, xf * Transform3D(Basis(), Vector3(0, size.y * 0.5, 0)), size)
 
 

@@ -48,6 +48,9 @@ var flat_slide: bool = false
 ## over with a quick lift instead of stopping him. Junk heaps (PhysLayers.MOUND) and bales never are.
 var max_step: float = 0.45
 var step_mask: int = 1
+## [v6feel] With flat_slide: the share of his speed kept while rounding a prop he clipped nearly
+## head-on (0 = plain slide, which lost nearly all of it).
+var round_keep: float = 0.6
 var hits: Array[KinematicCollision3D] = []
 var _climb: float = 0.0   # extra ride height while crossing a low obstacle
 var _climb_t: float = 0.0
@@ -254,9 +257,24 @@ func _level_slide(body: CharacterBody3D, u: Vector3, delta: float) -> void:
 				_climb_t = 0.2
 			break
 		n = n.normalized()
+		# [v6feel] His body is round: on its side the true contact normal points from the contact
+		# to his axis. The engine gives a box post's face normal for a hit on its edge, which squares
+		# him up against a thin post he only clipped (he stalled a second on near dead-on pushes).
+		var radial: Vector3 = SphereMath.tangent(body.global_position - col.get_position(), u)
+		if radial.length() > 0.3 and radial.normalized().dot(n) > 0.2:
+			n = radial.normalized()
 		motion = SphereMath.tangent(col.get_remainder().slide(n), u)
 		if hv.dot(n) < 0.0:
+			var hs0: float = hv.length()
 			hv = hv.slide(n)
+			# [v6feel] Rounding a post, a bin or a heap he clipped nearly head-on: keep some of his
+			# speed along the way round (he dropped to a crawl for half a second on a lamp post).
+			# Not on walls (WORLD only), and not on a square hit, where the way round is noise.
+			var co: Object = col.get_collider()
+			if round_keep > 0.0 and co is CollisionObject3D and ((co as CollisionObject3D).collision_layer & PhysLayers.PROP) != 0:
+				var hs1: float = hv.length()
+				if hs1 > hs0 * 0.15 and hs1 < hs0 * round_keep:
+					hv *= hs0 * round_keep / hs1
 	var vc: KinematicCollision3D = body.move_and_collide(u * vv * delta, false, 0.001, false)
 	if vc != null:
 		hits.append(vc)

@@ -118,6 +118,9 @@ func enable_sphere(surface: SphereSurface, cam_node: Node3D) -> void:
 	sphere_motor.ray_mask = PhysLayers.WORLD | PhysLayers.PROP
 	sphere_motor.step_mask = PhysLayers.WORLD | PhysLayers.PROP
 	sphere_motor.ray_top = 0.9
+	var mv: Dictionary = Economy.read_json("res://data/patch.json").get("move", {})  # [v6feel] tunables
+	sphere_motor.max_step = float(mv.get("max_step", sphere_motor.max_step))
+	sphere_motor.round_keep = float(mv.get("round_keep", sphere_motor.round_keep))
 	_fit_shape()
 
 
