@@ -38,36 +38,26 @@ func _ready() -> void:
 
 ## [steam] The demo keeps its saves apart (Demo.SAVE_DIR) so a full-game save never opens in it.
 ## [worlds2] The folder that holds the profile folders.
-func root_dir(flat: bool = false) -> String:
-	if round_planets() and not flat:  # [orbB] the round world keeps its saves apart
-		return ("user://saves_" + dev_dir if dev_dir != "" else (Demo.SAVE_DIR if Demo.is_demo() else SAVE_DIR)) + ROUND_SUFFIX
+func root_dir() -> String:
+	return old_flat_root() + ROUND_SUFFIX
+
+
+## [orbB] The game (the round world) saves under user://saves_round (profiles, worlds, album and
+## all; the demo under user://saves_demo_round), and Steam Cloud names carry SteamCloud.ROUND_PREFIX.
+## The suffix dates from when the flat game had user://saves: that tree is never written now.
+const ROUND_SUFFIX: String = "_round"
+
+
+## [v6flat] Where the removed flat game kept its saves (user://saves, or the demo's / a dev
+## folder's). Read-only: Steam Cloud still syncs old flat saves down into it.
+func old_flat_root() -> String:
 	if dev_dir != "":  # [beat]
 		return "user://saves_" + dev_dir
 	return Demo.SAVE_DIR if Demo.is_demo() else SAVE_DIR
 
 
-## [orbB] The round world (Settings.round_planets): New Game and Continue start on the globe
-## (SliceOrbit.wanted), saving under user://saves_round (profiles, worlds, album and all), so the
-## flat game's saves are never read or written. Steam Cloud covers both trees, the round one
-## under its own prefix (SteamCloud.ROUND_PREFIX). [v1menu] The default since the 2026-11-08 playtest, the demo
-## included (user://saves_demo_round); `--flat` (dev) reaches the dormant flat game.
-const ROUND_SUFFIX: String = "_round"
-
-
-func round_planets() -> bool:
-	return Settings.round_planets and not "--flat" in OS.get_cmdline_user_args()  # [v1menu]
-
-
-## Turns the preview on or off (title screen): saves the setting, then points at that save tree's
-## remembered profile and reloads its Cradle profile. The caller rebuilds the menu.
-func set_round_planets(on: bool) -> void:
-	Settings.round_planets = on
-	Settings.save_settings()
-	migrate_to_profiles(root_dir())
-	profile_slot = read_profile_choice()
-	DirAccess.make_dir_recursive_absolute(save_dir())
-	CradleMode.boot()
-	print("[save] round planets %s: %s" % ["on" if on else "off", save_dir()])
+func old_flat_profile_dir(n: int) -> String:
+	return old_flat_root().path_join("p%d" % clampi(n, 1, PROFILES))
 
 
 ## [worlds2] The current save profile's folder: world slots and profile.save live here.
@@ -75,8 +65,8 @@ func save_dir() -> String:
 	return profile_dir(profile_slot)
 
 
-func profile_dir(n: int, flat: bool = false) -> String:  # [orbB] flat: the flat game's tree whatever the preview
-	return root_dir(flat).path_join("p%d" % clampi(n, 1, PROFILES))
+func profile_dir(n: int) -> String:
+	return root_dir().path_join("p%d" % clampi(n, 1, PROFILES))
 
 
 ## [worlds2] Moves pre-profile saves (slot_N.save, profile.save in `root`) into root/p1, unless p1

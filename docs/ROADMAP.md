@@ -24,7 +24,8 @@ The round world is the game, and the work is on its first planet, Verdance. The 
 **Open**
 - **Renderers:** every render so far used opengl3 (Compatibility). Nobody has looked at Verdance on Forward+ or Metal, and the owner's Mac perf run (`--quality=1 --perf`) is still to do.
 - **Look:** the globe's light was harsher than the flat world's and the pad looked pale at noon. v5look's warm-light and matte-pad pass is merged, but the owner has not seen it yet. A flat grey sea on the horizon and a thin straight line across the junk field were reported and not rechecked since the water fix (docs/QA_VERDANCE.md, 12 and 13).
-- **Hinterland:** the suburb houses have no pitched roofs, there are no road strips between houses, and there is no walk check there.
+- **Hinterland:** roads stop at a hub's 345 m clearance instead of joining the town streets (v6qa list, item 4).
+- **Known glitches (v6qa, docs/QA_VERDANCE.md "Known-glitch list"):** still open: SCRIPT ERRORs seen once in a `--orbit` round trip, loading-screen RID errors on a headless continue, walk-in hub town build frames (25-45 ms for 3 s), the shader warm-up frame at the end of loading.
 - **Autoplay:** the bot's stuck escapes climb in the garden phase (13 at 47 min, 77 at 107 min).
 - **Bale clipping** into Lumi's body (item 22) has not been reproduced.
 - **Translations** are machine drafts. No native speaker has reviewed them. In-world shop signs (PAWN, SHOE REPAIR, OLD TOWN) stay English in every language.

@@ -134,6 +134,12 @@ func _setup() -> void:
 				var i: int = _tools.size()
 				var broken := Transform3D(Basis.from_euler(Vector3(randf_range(-1.2, 1.2), i * 1.7, randf_range(-1.4, 1.4))),
 					Vector3(-0.9 + i * 0.42, -0.62 + (0.06 if i % 2 == 0 else 0.0), 0.55 + (i % 3) * 0.12))
+				if world.get("orbit") != null:  # [v6qa] the globe's bench stands on its anchor (origin on the ground): the tools
+					# lie on the ground by its feet, not 0.6 m under it (the flat bench's origin was higher). In the bench's
+					# broken frame: BROKEN_DELTA^-1 * a pose on the ground of the upright bench.
+					var rest := Transform3D(Basis.from_euler(Vector3(PI * 0.5 if i % 2 == 0 else 0.0, i * 1.7, 0.25 - i * 0.2)),
+						Vector3(-0.9 + i * 0.55, 0.08 if i % 2 == 0 else 0.05, 0.75 + (i % 2) * 0.15))
+					broken = BROKEN_DELTA.affine_inverse() * rest
 				_tools.append([n, n.transform, broken])
 	_apply_bench(bench_ok(), false)
 	var hub: Hub = world.get("hub") as Hub
@@ -197,7 +203,7 @@ func repair_bench() -> void:
 	var p_in: Variant = patch.get("input") if patch else null
 	if p_in is PlayerInput:
 		(p_in as PlayerInput).enabled = false
-	var target: Vector3 = _bench.global_position + OrbitUp.up(_bench.global_position) * 0.9 if _bench else world.BOARD_POS  # [orbB] local up
+	var target: Vector3 = _bench.global_position + OrbitUp.up(_bench.global_position) * 0.9 if _bench else (world.call("bench_pos") as Vector3)  # [orbB] local up
 	if patch and not OrbitUp.on_globe():  # [orbB] the globe's Patch turns through its SphereMotor
 		var d: Vector3 = target - patch.global_position
 		patch.rotation.y = atan2(-d.x, -d.z)
@@ -242,10 +248,14 @@ func repair_now() -> void:
 	_apply_bench(true, false)
 
 
+## The broken bench's pose against its upright one (tilted on a buckled leg).
+static var BROKEN_DELTA := Transform3D(Basis.from_euler(Vector3(0.06, 0.1, -0.2)), Vector3(0.15, -0.16, 0.05))
+
+
 func _apply_bench(ok: bool, animate: bool) -> void:
 	if _bench == null:
 		return
-	var bxf: Transform3D = _bench_xf if ok else _bench_xf * Transform3D(Basis.from_euler(Vector3(0.06, 0.1, -0.2)), Vector3(0.15, -0.16, 0.05))
+	var bxf: Transform3D = _bench_xf if ok else _bench_xf * BROKEN_DELTA
 	if not animate:
 		_bench.transform = bxf
 	else:
@@ -341,7 +351,7 @@ func _on_built(id: String) -> void:
 			if ex and ex.nursery:
 				at = ex.nursery.global_position
 		"shack":
-			at = world.BOARD_POS
+			at = world.call("bench_pos")
 		"generator", "lamps":
 			var n: Node3D = bits.get("generator" if id == "generator" else "street_lamp") as Node3D
 			if n:
@@ -420,13 +430,12 @@ func use_bin() -> void:
 ## (caretakers, robots, events) are left out.
 func points() -> Array:
 	var out: Array = []
-	out.append(["workbench", world.BOARD_POS, true])
+	out.append(["workbench", world.call("bench_pos"), true])
 	if _bin_anchor:
 		out.append(["trash_bin", _bin_anchor.global_position, true])
 	var comp: Node3D = world.get("composter") as Node3D
 	if comp:
 		out.append(["composter", comp.global_position, comp.visible])
-	out.append(["flower", world.FLOWER_POS, true])
 	var ex: ExtrasDirector = ExtrasDirector.of(world)
 	if ex and ex.radio:
 		var ra: Node3D = world.get_node_or_null("RadioReach") as Node3D

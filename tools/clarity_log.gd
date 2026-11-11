@@ -132,6 +132,9 @@ static func card_text(w: Node, with_count: bool = true) -> String:
 		parts.append(tl.text if tl else "")
 		if wl and wl.visible and wl.text != "":
 			parts.append(wl.text)
+		var hl: Variant = oc.get("_hint")  # [v6story] the situation line under the reason
+		if hl is Label and (hl as Label).visible and (hl as Label).text != "":
+			parts.append("> " + (hl as Label).text)
 		if with_count and cl and cl.text != "":
 			parts.append("[" + cl.text + "]")
 	var ck: ChecklistCard = gp.checklist

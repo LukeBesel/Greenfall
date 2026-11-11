@@ -265,6 +265,8 @@ var _rocket_t: float = 0.0
 
 
 func _process(delta: float) -> void:
+	if not _late_q.is_empty():  # [v6qa]
+		_sweep_late_step()
 	_rocket_t += delta
 	if _rocket_t >= 0.5:
 		_rocket_t = 0.0
@@ -352,11 +354,13 @@ func _build_hinterland() -> void:
 	hinterland.setup(sm.grid, sm.terrain, sm.cells, hubs, int(so.globe.get("seed_value")) if so.globe.get("seed_value") != null else 4471,
 		so.globe.call("yard_keep_out") as YardKeepOut if so.globe.has_method("yard_keep_out") else null)
 	hinterland.focus = so.w.get("patch")
+	hinterland.keep_out_late.connect(_sweep_late_keep_out)  # [v6qa]
 	if DevHooks.has("hinter-walk") or DevHooks.has("hinter-walk-at"):  # [v5play] dev: walk check of the hinterland (planet/sites/hinter_walk.gd)
 		HinterWalk.run_dev(so, hinterland)
 	var fld: Variant = so.globe.get("field")  # [v5look] no junk mounds on the hinterland's roads
 	if fld is SphereField:
 		(fld as SphereField).pile_block = hinterland.is_track_cell
+		(fld as SphereField).before_lay = hinterland.ensure_decided  # [v6qa] roads and buildings decided before junk is laid there
 	if DevHooks.has("hinter-goto"):  # [v5look] dev: stand Lumi by the nearest track / house / works (renders)
 		hinterland.rebuilt.connect(func() -> void:
 			var a: PackedStringArray = DevHooks.get_s("hinter-goto", "track").split(",")
@@ -370,6 +374,67 @@ func _build_hinterland() -> void:
 	if DevHooks.has("hinter-report"):
 		get_tree().create_timer(DevHooks.get_f("hinter-report", 20.0)).timeout.connect(func() -> void:
 			print("[hinter] %s nearest %s" % [str(hinterland.stats), hinterland.debug_nearest(sm.grid.cell_at((so.w.get("patch") as Node3D).global_position))]))  # [v5look]
+	if DevHooks.has("keepout-junk"):  # [v6qa] dev: live junk lying in the keep-out (roads, footprints) round Lumi
+		get_tree().create_timer(DevHooks.get_f("keepout-junk", 20.0)).timeout.connect(func() -> void:
+			print("[keepout] %d live pieces in the keep-out within 120 m, %d moved off late" % [keep_out_junk(120.0), moved_off_roads]))
+
+
+## [v6qa] Live pieces of made cells within r_m of Lumi whose spot is in the junk keep-out.
+func keep_out_junk(r_m: float) -> int:
+	var fld: SphereField = so.globe.get("field") as SphereField
+	var lumi: Node3D = so.w.get("patch")
+	if fld == null or lumi == null or not fld.keep_out.is_valid():
+		return -1
+	var n: int = 0
+	for c: int in sm.grid.cells_within(lumi.global_position.normalized(), r_m):
+		if fld.materialized[c] == 0:
+			continue
+		for pid: int in fld.pieces_in(c):
+			if fld.piece_alive[pid] == 1 and bool(fld.keep_out.call(fld.piece_pos[pid].normalized())):
+				n += 1
+	return n
+
+
+## [v6qa] The hinterland decided roads or buildings over cells whose junk was already made (made
+## before the hinterland existed, during the load): that junk moves off them
+## (SphereField.relocate_blocked), a few cells a frame (LATE_SWEEP_US).
+func _sweep_late_keep_out(late: PackedInt32Array) -> void:
+	var fld: SphereField = so.globe.get("field") as SphereField
+	if fld == null:
+		return
+	for c: int in late:
+		for c2: int in sm.grid.cells_around(c, 1):
+			if fld.materialized[c2] == 1 and not _late_seen.has(c2):
+				_late_seen[c2] = true
+				_late_q.append(c2)
+
+
+const LATE_SWEEP_US: int = 1500
+var _late_q: Array[int] = []
+var _late_seen: Dictionary = {}
+
+
+func _sweep_late_step() -> void:
+	var fld: SphereField = so.globe.get("field") as SphereField
+	var jv: SphereJunkView = so.globe.get("junk_view") as SphereJunkView
+	var t0: int = Time.get_ticks_usec()
+	while not _late_q.is_empty() and Time.get_ticks_usec() - t0 < LATE_SWEEP_US:
+		var c: int = _late_q.pop_back()
+		_late_seen.erase(c)
+		var r: Array = fld.relocate_blocked(c)
+		if (r[0] as PackedInt32Array).is_empty() and (r[1] as PackedInt32Array).is_empty():
+			continue
+		if jv:
+			for pid: int in r[0]:
+				jv.move_piece(pid, fld.piece_pos[pid])
+			for pid: int in r[1]:
+				jv.hide_piece(pid)
+		so.globe.call("write_cell", c)
+		moved_off_roads += (r[0] as PackedInt32Array).size() + (r[1] as PackedInt32Array).size()
+	Hitch.mark("late keep-out sweep", t0 if Hitch.on else 0)
+
+
+var moved_off_roads: int = 0  # [v6qa] (for checks)
 
 
 func _build_litter() -> void:

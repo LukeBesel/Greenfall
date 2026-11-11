@@ -19,6 +19,7 @@ var _cap: Label
 var _count: Label
 var _title: Label
 var _why: Label
+var _hint: Label
 var _bar: Control
 var _shown: float = 0.0
 var _progress: float = -1.0
@@ -61,6 +62,11 @@ func _ready() -> void:
 	_why.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_why.custom_minimum_size = Vector2(W - 28.0, 0)
 	vb.add_child(_why)
+	_hint = UITheme.label("", 14, HINT)  # [v6story] the situation line, under the reason
+	_hint.autowrap_mode = TextServer.AUTOWRAP_WORD
+	_hint.custom_minimum_size = Vector2(W - 28.0, 0)
+	_hint.visible = false
+	vb.add_child(_hint)
 	_bar = Control.new()
 	_bar.custom_minimum_size = Vector2(0, 8)
 	_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -109,6 +115,7 @@ func _set_texts(def: Dictionary) -> void:
 	# takes the why line, in amber, so the card always says the one next thing.
 	var hint: String = objectives.situation if objectives else ""
 	_why.add_theme_color_override("font_color", HINT if hint != "" else WHY)
+	_hint.visible = false  # [v6story]
 	if substep != "":  # [v2guide]
 		_title.text = substep
 		_why.text = hint
@@ -116,7 +123,12 @@ func _set_texts(def: Dictionary) -> void:
 		return
 	var t: Array[String] = Objectives.texts(def)
 	_title.text = t[0]
-	_why.text = hint if hint != "" else t[1]
+	# [v6story] Owner item 60: the reason stays on the card; the situation line goes under it (it
+	# used to replace the reason, so a save-up step only showed its why once it was done).
+	_why.add_theme_color_override("font_color", WHY)
+	_why.text = t[1]
+	_hint.text = hint
+	_hint.visible = hint != ""
 	_why.visible = _why.text != ""
 
 

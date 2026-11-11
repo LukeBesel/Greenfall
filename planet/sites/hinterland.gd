@@ -56,6 +56,11 @@ var hub_dirs: Array[Vector3] = []
 var seed_value: int = 4471
 var focus: Node3D
 signal rebuilt  # [v5look] after each rebuild of the ring (dev hooks)
+## [v6qa] Footprints or road lanes went into the keep-out for these hexes near Lumi (within
+## LATE_KEEP_M): junk made there before they were decided moves off them (OrbitSites).
+signal keep_out_late(cells: PackedInt32Array)
+const LATE_KEEP_M: float = 110.0
+var _late := PackedInt32Array()
 
 var stats: Dictionary = {"cells": 0, "buildings": 0, "props": 0, "rebuilds": 0, "last_ms": 0}
 
@@ -584,6 +589,10 @@ func _process(_delta: float) -> void:
 				end = i + 1
 				break
 		_pending_at = end
+		if not _late.is_empty():  # [v6qa]
+			var late: PackedInt32Array = _late
+			_late = PackedInt32Array()
+			keep_out_late.emit(late)
 		Hitch.mark("hinterland decide", t0 if Hitch.on else 0)
 		stats["decide_ms"] = float(stats.get("decide_ms", 0.0)) + float(Time.get_ticks_usec() - t0) / 1000.0
 		stats["frames"] = int(stats.get("frames", 0)) + 1
@@ -600,6 +609,26 @@ func _process(_delta: float) -> void:
 		var h2: int = Hitch.t()
 		_colliders(pos)
 		Hitch.mark("hinterland colliders", h2)
+
+
+## [v6qa] Decides (and puts in the junk keep-out) cell c and its neighbours now, if the ring has
+## not got to them yet: SphereField asks before it lays a cell's junk (before_lay), so no piece is
+## laid on a road or in a building that is decided a moment later (a dev spawn, a save loaded out
+## here: the near ring is made before the ring of 520 m is decided).
+func ensure_decided(c: int) -> void:
+	if grid == null:
+		return
+	for o: int in grid.cells_around(c, 1):
+		if not _decided.has(o):
+			var lst: Array = _decide(o)
+			_decided[o] = lst
+			stats["cells"] += 1
+			_ensuring = true
+			_register(o, lst)
+			_ensuring = false
+
+
+var _ensuring: bool = false
 
 
 # [v5play] For the walk check (planet/sites/hinter_walk.gd).
@@ -640,6 +669,8 @@ func _register(c: int, lst: Array) -> void:
 		keep_out.add_world("hinter%d" % c, items)
 	if not lanes.is_empty():
 		keep_out.add_world("lane%d" % c, lanes, true)
+	if not _ensuring and focus != null and is_instance_valid(focus) and (grid.centers[c] * focus.global_position.length()).distance_to(focus.global_position) < LATE_KEEP_M:
+		_late.append(c)  # [v6qa]
 
 
 func _rebuild(pos: Vector3) -> void:

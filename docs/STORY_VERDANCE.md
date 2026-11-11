@@ -102,7 +102,7 @@ They are how the player learns what happened: found when the hex that holds them
 | 18 | Boosts the signal tower | A stronger tower lets WREN see further: she can find plans and the next station | card `tower2` | **fixed** ("WREN will sound clearer" is nice but not a reason) |
 | 19 | Finishes a research project | The bench studies what Lumi digs up and learns to build it | card `research1` | ok |
 | 20 | Cleans 20 hexes | Green light for the core | card `hex20` | **fixed** |
-| 21 | Rebuilds the base to level 3 | Power for the rocket pad: the way to the next station | card `base3` | **fixed**: "the Cradle is watching" and "opens the Request Board" were not reasons. Depends on v6pace's gate |
+| 21 | Rebuilds the base to level 3 | A stronger base runs bigger machines | card `base3` | **fixed**: "the Cradle is watching" and "opens the Request Board" were not reasons |
 
 ### C. Six stations (v6hubs builds the steps, v6pace times them)
 
@@ -118,6 +118,16 @@ station kept one piece of the last launch kit, and each one woken keeps cleaning
 | 5 | Fairground (ferris wheel) | cleans, wakes the wheel | A long flight needs power that lasts; the wheel ran on a big power cell | a power cell (rocket tier) | planned |
 | 6 | Stack Works (smokestack) | cleans, wakes the stack | The tanks are empty; the stack works made fuel | fuel (rocket tier): the rocket can leave | planned |
 
+Two rules of the economy get a reason here too (v6pace's numbers):
+
+- **Each woken station multiplies what trash is worth (x2.5).** The stations were built as one
+  recycling network. One recycler alone can only make plain cubes; every station that joins shares
+  its sorting machines with the others, so the same trash gives more cubes everywhere.
+- **The rocket is upgraded in tiers (Mk II, Mk III) before it can leave.** Every station Lumi wakes
+  needs supplies and news carried to it. A small rocket can keep two stations going; a bigger one
+  keeps more. The pieces from the stations (hull plates, power cell, fuel) are what each tier is made
+  of, plus a great many cubes.
+
 At each station, the same three plain reasons, said once each: *clean a few hexes* ("the landmark is
 buried; dig it out"), *wake it* ("it costs cubes: the bench rebuilds what rusted away"), and *leave a
 crew* ("these robots keep cleaning here when you fly on").
@@ -126,6 +136,7 @@ crew* ("these robots keep cleaning here when you fly on").
 
 | # | What the player does | In-world reason | Where the game says it | Status |
 |---|---|---|---|---|
+| E0 | Has six stations restored to level 2 | Six crews are enough to keep Verdance going without Lumi; the launch kit is complete | v6pace's `leave` gate: card line and toast | planned (text ready when the strings land) |
 | E1 | Sees the solar map open | The star chart shows five worlds the Ledger buried; the Cradle waits for all of them | WREN `home_system_open` (new pool), spoken once when the system opens | **fixed** (there was no line at all: the map button just appeared) |
 | E2 | Builds the Mk V Orbital drive | It is the hop rocket made space-proof, out of the six pieces and a mountain of cubes | homeward.json drive desc | **fixed** (the desc was a spec sheet) |
 | E3 | Launches to Ochre | Verdance's robots carry on; Ochre has the Deep Drill that Verdance needs; Lumi will be back | WREN `home_drive_built` (new pool) + the Verdance `twist` line on the map | **fixed** |
