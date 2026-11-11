@@ -26,7 +26,8 @@ var _confirm: String = ""
 
 
 ## [qafix] QA #22: a tab shows only once its thing exists (owner: "the radio is built later at
-## the hub", "there is no nursery at the start"). The Seed of the Week is always there.
+## the hub", "there is no nursery at the start"). [v6screens] The Seed of the Week shows only
+## when data/weekly.json "enabled" is true (it does not work on the round world yet).
 static func tab_open(t: String) -> bool:
 	match t:
 		"radio":
@@ -35,6 +36,8 @@ static func tab_open(t: String) -> bool:
 			return CameraBot.available() or not PhotoAlbum.districts().is_empty()
 		"nursery":
 			return YardBuilds.built("nursery") or Nursery.count() > 0
+		"weekly":
+			return WeeklyChallenge.enabled() or WeeklyChallenge.active  # [v6screens] data/weekly.json "enabled"
 	return true
 
 
@@ -101,6 +104,8 @@ func open_panel(p_tab: String = "") -> void:
 	if p_tab in TABS:
 		tab = p_tab
 	var tabs: Array[String] = open_tabs()  # [qafix]
+	if tabs.is_empty():  # [v6screens] nothing to show yet (Pause hides the button too)
+		return
 	if not (tab in tabs):
 		tab = tabs[0]
 	for k: String in _tab_btns:

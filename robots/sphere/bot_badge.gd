@@ -46,13 +46,36 @@ static func look(p_state: int, p_role: String) -> Array:
 	return [GREY, "z", 0.0]
 
 
-func setup(p_role: String, height: float = 1.5) -> void:
+## Height of the top of a robot's model above its origin (the lamp sits just over it).
+static func top_of(root: Node3D) -> float:
+	var top: float = 0.0
+	if root == null:
+		return 0.9
+	var stack: Array[Node] = [root]
+	while not stack.is_empty():
+		var n: Node = stack.pop_back()
+		stack.append_array(n.get_children())
+		var mi: MeshInstance3D = n as MeshInstance3D
+		if mi == null or mi.mesh == null or not mi.visible:
+			continue
+		var xf: Transform3D = Transform3D.IDENTITY
+		var cur: Node3D = mi
+		while cur != null and cur != root:
+			xf = cur.transform * xf
+			cur = cur.get_parent() as Node3D
+		var bb: AABB = xf * mi.mesh.get_aabb()
+		if bb.size.y < 2.5:  # beams and tractor fields are not the body
+			top = maxf(top, bb.end.y)
+	return clampf(top, 0.5, 2.2) if top > 0.0 else 0.9
+
+
+func setup(p_role: String, height: float = 1.2) -> void:
 	role = p_role
 	position = Vector3(0, height, 0)
 	if _mesh == null:
 		_mesh = SphereMesh.new()
-		_mesh.radius = 0.1
-		_mesh.height = 0.2
+		_mesh.radius = 0.085
+		_mesh.height = 0.17
 		_mesh.radial_segments = 10
 		_mesh.rings = 5
 	_mat = StandardMaterial3D.new()
@@ -69,7 +92,7 @@ func setup(p_role: String, height: float = 1.5) -> void:
 	_glyph.pixel_size = 0.0045
 	_glyph.outline_size = 24
 	_glyph.outline_modulate = Color(0.05, 0.05, 0.06, 0.9)
-	_glyph.position = Vector3(0, 0.34, 0)
+	_glyph.position = Vector3(0, 0.3, 0)
 	_glyph.visibility_range_end = FAR_M * 0.6
 	_glyph.visible = false
 	add_child(_glyph)
@@ -126,4 +149,4 @@ func _process(delta: float) -> void:
 		if state == CrewTalk.HELLO:
 			_mat.albedo_color = Color(1, 1, 1).lerp(role_color(role), k)
 	if _glyph.visible:
-		_glyph.position.y = 0.34 + 0.04 * sin(_t * 2.0)
+		_glyph.position.y = 0.3 + 0.04 * sin(_t * 2.0)

@@ -312,80 +312,80 @@ msgstr "前哨基地 %d  ·  稼働中"
 msgid "RECHARGE"
 msgstr "リチャージ"
 
-#: automation/outposts.gd:321 automation/outposts.gd:335
+#: automation/outposts.gd:332 automation/outposts.gd:346
 msgid "No outpost."
 msgstr "前哨基地がありません。"
 
-#: automation/outposts.gd:323
+#: automation/outposts.gd:334
 msgid "Already repaired."
 msgstr "修理済みです。"
 
-#: automation/outposts.gd:327
+#: automation/outposts.gd:338
 msgid "Clear the junk around it first (%d%% of %d%%)."
 msgstr "まず周りのガラクタを片づけよう（%d%% / %d%%）。"
 
-#: automation/outposts.gd:329 automation/outposts.gd:344 automation/stations.gd:131
+#: automation/outposts.gd:340 automation/outposts.gd:355 automation/stations.gd:131
 #: systems/camp/hub_builds.gd:79
 msgid "Not enough cubes or parts."
 msgstr "キューブかパーツが足りない。"
 
-#: automation/outposts.gd:338
+#: automation/outposts.gd:349
 msgid "Repair it first."
 msgstr "先に修理しよう。"
 
-#: automation/outposts.gd:340 automation/trash_bin.gd:82 ui/bench_tiers.gd:83
+#: automation/outposts.gd:351 automation/trash_bin.gd:82 ui/bench_tiers.gd:83
 msgid "Fully upgraded."
 msgstr "アップグレード完了済み。"
 
-#: automation/outposts.gd:361
+#: automation/outposts.gd:372
 msgid "Outpost %d repaired: a working scale on the frontier. Haul Bugs deliver to the nearest scale now."
 msgstr "前哨基地 %d を修理：辺境に使えるはかりができた。Haul Bug はいちばん近いはかりに運ぶようになる。"
 
-#: automation/outposts.gd:362
+#: automation/outposts.gd:373
 msgid "OUTPOST ONLINE"
 msgstr "前哨基地 稼働"
 
-#: automation/outposts.gd:384
+#: automation/outposts.gd:395
 msgid "Outpost %d upgraded: %s. %s"
 msgstr "前哨基地 %d をアップグレード：%s。%s"
 
-#: automation/outposts.gd:413
+#: automation/outposts.gd:424
 msgid "E   Ruined outpost · clear its hex first (%d%% / %d%%)"
 msgstr "E   廃墟の前哨基地 · 先にヘックスを片づけよう（%d%% / %d%%）"
 
-#: automation/outposts.gd:414
+#: automation/outposts.gd:425
 msgid "E   Repair outpost · %s%s"
 msgstr "E   前哨基地を修理 · %s%s"
 
-#: automation/outposts.gd:414 automation/outposts.gd:417
+#: automation/outposts.gd:425 automation/outposts.gd:428
 msgid "  (need more)"
 msgstr "  （まだ足りない）"
 
-#: automation/outposts.gd:416
+#: automation/outposts.gd:427
 msgid "E   Outpost %d · %s · bales +%d%%"
 msgstr "E   前哨基地 %d · %s · ベール +%d%%"
 
-#: automation/outposts.gd:417
+#: automation/outposts.gd:428
 msgid "E   Upgrade outpost: %s · %s%s"
 msgstr "E   前哨基地をアップグレード：%s · %s%s"
 
-#: automation/outposts.gd:427
+#: automation/outposts.gd:438
 msgid "Outpost %d: %s"
 msgstr "前哨基地 %d：%s"
 
-#: automation/outposts.gd:434
+#: automation/outposts.gd:445
 msgid "Outpost %d upgrade: %s"
 msgstr "前哨基地 %d のアップグレード：%s"
 
-#: automation/outposts.gd:437
+#: automation/outposts.gd:448
 msgid "Outpost %d: %s. Bales sell for +%d%% here; robots crossing the pad get a speed charge."
 msgstr "前哨基地 %d：%s。ここではベールが +%d%% で売れる。パッドを通るロボットはスピードがチャージされる。"
 
-#: automation/outposts.gd:540
+#: automation/outposts.gd:551
 msgid "OUTPOST %d  RUINED · repair at %d%% clear"
 msgstr "前哨基地 %d  廃墟 · きれいさ %d%% で修理可能"
 
-#: automation/outposts.gd:541
+#: automation/outposts.gd:552
 msgid "OUTPOST %d  %s"
 msgstr "前哨基地 %d  %s"
 
@@ -945,55 +945,55 @@ msgstr "埋もれたパーツ  %s  ·  %.1f m"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "埋もれたパーツ  ·  シグナル %d%%"
 
-#: player/patch.gd:170
+#: player/patch.gd:171
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi はガタガタと庭に戻ってきた。いまのは何だったんだろう。"
 
-#: player/patch.gd:224
+#: player/patch.gd:225
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi は泳げない。作業台のホバージェットがあれば湖の上を浮いて進める。"
 
-#: player/patch.gd:348
+#: player/patch.gd:349
 msgid "No seeds yet. Keep cleaning."
 msgstr "まだ種がない。片づけを続けよう。"
 
-#: player/patch.gd:383
+#: player/patch.gd:384
 msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 msgstr "種にはきれいで開けた地面が必要。道路、縁石、発着場には植えられない。"
 
-#: player/patch.gd:390
+#: player/patch.gd:391
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "種がなくなった。咲いた植物がまた落としてくれる。"
 
-#: player/patch.gd:397
+#: player/patch.gd:398
 msgid "Watering can is empty. Refill at the hub."
 msgstr "じょうろが空っぽ。基地で補給しよう。"
 
-#: player/patch.gd:599
+#: player/patch.gd:603
 msgid "PERFECT BALE  %s"
 msgstr "パーフェクトベール  %s"
 
-#: player/patch.gd:605
+#: player/patch.gd:609
 msgid "OVERSTUFFED  %s"
 msgstr "詰め込みすぎ  %s"
 
-#: player/patch.gd:609
+#: player/patch.gd:613
 msgid "PURE  %s"
 msgstr "ピュア  %s"
 
-#: player/patch.gd:611
+#: player/patch.gd:615
 msgid "SURGE  %s"
 msgstr "サージ  %s"
 
-#: player/patch.gd:614
+#: player/patch.gd:618
 msgid "  (streak +%d%%)"
 msgstr "  （連続 +%d%%）"
 
-#: player/patch.gd:657
+#: player/patch.gd:661
 msgid "Salvaged: %s"
 msgstr "回収：%s"
 
-#: player/patch.gd:686
+#: player/patch.gd:692
 msgid "Recovered: %s"
 msgstr "発見：%s"
 
@@ -1351,48 +1351,56 @@ msgstr "ここにはまだロボットがいない。"
 msgid "Build one at the workbench."
 msgstr "作業台で作ろう。"
 
-#: robots/sphere/command_overlay.gd:105
+#: robots/sphere/command_overlay.gd:106 robots/sphere/command_overlay.gd:158
 msgid "%d robot"
 msgid_plural "%d robots"
 msgstr[0] "ロボット%d台"
 
-#: robots/sphere/command_overlay.gd:107
+#: robots/sphere/command_overlay.gd:108
 msgid "About %d hexes an hour"
 msgstr "1時間に約%dヘックス"
 
-#: robots/sphere/command_overlay.gd:121
+#: robots/sphere/command_overlay.gd:122 robots/sphere/command_overlay.gd:159
 msgid "%d working"
 msgstr "%d台が作業中"
 
-#: robots/sphere/command_overlay.gd:123
+#: robots/sphere/command_overlay.gd:124
 msgid "%d working, %d waiting"
 msgstr "%d台が作業中、%d台が待機中"
 
-#: robots/sphere/command_overlay.gd:125
+#: robots/sphere/command_overlay.gd:126
 msgid "%d waiting"
 msgstr "%d台が待機中"
 
-#: robots/sphere/command_overlay.gd:129 robots/sphere/crew_talk.gd:71 robots/sphere/crew_talk.gd:75
+#: robots/sphere/command_overlay.gd:130 robots/sphere/crew_talk.gd:71 robots/sphere/crew_talk.gd:75
 msgid "Bales are piling up. Build a Haul Bug."
 msgstr "ベールがたまっている。Haul Bug を作ろう。"
 
-#: robots/sphere/command_overlay.gd:138
+#: robots/sphere/command_overlay.gd:152
+msgid "OTHER BASES"
+msgstr "ほかの基地"
+
+#: robots/sphere/command_overlay.gd:156
+msgid "Base %d"
+msgstr "基地 %d"
+
+#: robots/sphere/command_overlay.gd:168
 msgid "Good! Your robots will work here first."
 msgstr "いいね！ロボットはまずここで働くよ。"
 
-#: robots/sphere/command_overlay.gd:139
+#: robots/sphere/command_overlay.gd:169
 msgid "Hold A: paint   Hold X: erase   %s: back"
 msgstr "A長押し：ぬる   X長押し：消す   %s：もどる"
 
-#: robots/sphere/command_overlay.gd:140
+#: robots/sphere/command_overlay.gd:170
 msgid "Left mouse: paint   Right mouse: erase   %s: back"
 msgstr "左クリック：ぬる   右クリック：消す   %s：もどる"
 
-#: robots/sphere/command_overlay.gd:142
+#: robots/sphere/command_overlay.gd:172
 msgid "Y: next job"
 msgstr "Y：次の仕事"
 
-#: robots/sphere/command_overlay.gd:142
+#: robots/sphere/command_overlay.gd:172
 msgid "Tab: next job"
 msgstr "Tab：次の仕事"
 
@@ -1535,11 +1543,11 @@ msgstr "E   作業台を直す"
 msgid "E   Open the workbench"
 msgstr "E   作業台を開く"
 
-#: scenes/slice_orbit.gd:1002
+#: scenes/slice_orbit.gd:1005
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice_orbit.gd:1102
+#: scenes/slice_orbit.gd:1105
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "作業台を修理した。作業台で E を押すとキューブでアップグレードできる。"
 
