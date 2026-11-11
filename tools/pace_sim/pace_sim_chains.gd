@@ -1,7 +1,7 @@
 class_name PaceSimChains
 extends RefCounted
 ## The chains that give the player something to aim for: the story objectives (one at a time), the
-## goal chain (a few on screen), research (cubes plus real time, a short queue) and the unlocks
+## goals (one per tier on screen), research (cubes plus real time, a short queue) and the unlocks
 ## that arrive by themselves. Conditions are read from the planet's tables.
 
 const SEED_FLAG: String = "seed_signal"
@@ -22,6 +22,11 @@ var unmodelled: Dictionary[String, bool] = {}
 var unmodelled_since: float = -1.0
 
 var _objective_since: float = 0.0
+## current_goals() as of model time _goals_at with _goals_n goals done: the policy asks many times
+## a step, and the report asks once the model is let go.
+var _goals_now: Array[int] = []
+var _goals_at: float = -1.0
+var _goals_n: int = -1
 
 
 func _init(model: PaceSimModel) -> void:
@@ -184,24 +189,53 @@ func _open_the_way(row: Dictionary) -> void:
 				m.flags[need] = true
 
 
-## Indexes of the goals on screen: the first few not done yet, in order.
+## Indexes of the goals on screen, one per tier in row order (story/goals.gd): the tier's first
+## goal on offer and not done, a goal with an after_flag first. The first is the card's.
 func current_goals() -> Array[int]:
+	if m == null or (m.t == _goals_at and goals_done.size() == _goals_n):
+		return _goals_now
+	_goals_at = m.t
+	_goals_n = goals_done.size()
+	_goals_now = _pick_goals()
+	return _goals_now
+
+
+func _pick_goals() -> Array[int]:
 	var out: Array[int] = []
-	for i: int in data.goals.size():
-		if out.size() >= data.goals_visible:
-			break
-		if not goals_done.has(i):
-			out.append(i)
+	for tier: String in data.goal_tiers:
+		var pick: int = _first_offered(tier, true)
+		if pick < 0:
+			pick = _first_offered(tier, false)
+		if pick >= 0:
+			out.append(pick)
 	return out
 
 
-## Every goal pays the moment its condition holds, wherever it stands in the chain (Goals.check).
+func _first_offered(tier: String, flagged: bool) -> int:
+	for i: int in data.goals.size():
+		var row: Dictionary = data.goals[i]
+		if str(row.get("tier", data.goal_tiers[0])) == tier and row.has("after_flag") == flagged and not goals_done.has(i) and _offered(row):
+			return i
+	return -1
+
+
+## A goal is on offer when its after_flag is set and its `when` holds. A condition the model does
+## not follow keeps it off the screen.
+func _offered(row: Dictionary) -> bool:
+	var flag: String = str(row.get("after_flag", ""))
+	if flag != "" and not bool(m.flags.get(flag, false)):
+		return false
+	var when: Variant = row.get("when", null)
+	return not when is Dictionary or value_of(when) >= float((when as Dictionary).get("target", 1))
+
+
+## Every goal on offer pays the moment its condition holds, wherever it stands in its tier (Goals.check).
 func pay_goals() -> void:
 	for i: int in data.goals.size():
 		if goals_done.has(i):
 			continue
 		var row: Dictionary = data.goals[i]
-		if value_of(row) < float(row.get("target", 1)):
+		if value_of(row) < float(row.get("target", 1)) or not _offered(row):
 			continue
 		goals_done[i] = true
 		var reward: Dictionary = row.get("reward", {})

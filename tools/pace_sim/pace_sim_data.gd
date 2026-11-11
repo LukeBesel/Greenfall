@@ -53,7 +53,8 @@ var bloom_s: float = 0.0
 var seed_yield: float = 0.0
 var objectives: Array[Dictionary] = []
 var goals: Array[Dictionary] = []
-var goals_visible: int = 3
+## The planet's goal tiers in row order; one goal of each is on screen (story/goals.gd).
+var goal_tiers: Array[String] = []
 var hub_levels: Array[Dictionary] = []
 var tower_tiers: Array[Dictionary] = []
 var bin_levels: Array[Dictionary] = []
@@ -319,9 +320,12 @@ func regrowth_table() -> Dictionary:
 func _load_chains() -> void:
 	objectives = _rows("tutorial", "objectives")
 	# The authored goals only: a repeating goal counts from the moment it comes up, which the model
-	# does not follow. One goal per tier is on screen.
+	# does not follow.
 	goals.assign(_rows("goals", "goals").filter(func(row: Dictionary) -> bool: return not row.has("repeat")))
-	goals_visible = maxi((Economy.planet_table("goals").get("tiers", []) as Array).size(), 1)
+	goal_tiers.clear()
+	for t: Variant in Economy.planet_table("goals").get("tiers", []):
+		if t is Dictionary:
+			goal_tiers.append(str((t as Dictionary).get("id", "")))
 	hub_levels = _rows("hub", "levels")
 	tower_tiers = _rows("signal_tower", "tiers")
 	bin_levels = _rows("trash_bin", "levels")

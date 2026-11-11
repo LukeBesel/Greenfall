@@ -235,6 +235,7 @@ The rules are `story/goals.gd`; what a goal can count is `story/goal_measures.gd
 - Rule of thumb: the short tier should turn over every 1 to 3 minutes, the medium every 5 to 15. If the bot's gap table shows a longer gap, add a goal there or lower a target; do not raise a reward.
 - Rule of thumb: do not repeat the story card. A short goal is a smaller step of what the card asks (a first bale while the card says "Sell 3 bales") or a skill beside it (a perfect bale).
 - Rewards: the currency of the action, small (under 3 minutes of the first city's income), nothing for crew, rig, find and Locker goals.
+- **A city-stage goal's gauge fills with the city's share of the way to the next stage** (value = stage + share, held under the next whole stage), so a long goal such as "Restore Old Town" moves as hexes come clean. The count still reads in whole stages.
 
 ### The crew and the robot chain (M3-20)
 Every number is in the planet's robots table. The rules are `core/crew_rules.gd` (cap, prices) and `core/crew_chain.gd` (the ground, the Assembler's line); `tools/crew_sim` plays a whole planet on them. Measured values are in `docs/reviews/M3-20_CREW.md`.
