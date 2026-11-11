@@ -727,7 +727,7 @@ msgstr "Améliore la fusée, puis réveille : %s"
 msgid "Wake the %s (%s)"
 msgstr "Réveille : %s (%s)"
 
-#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:491
+#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:558
 msgid "E   Wake the %s  (%s)"
 msgstr "E   Réveiller : %s  (%s)"
 
@@ -793,7 +793,7 @@ msgstr "Restauré. Ensuite : prends la fusée pour %s."
 msgid "All %d bases stand. Fly home and make the rocket ready to leave."
 msgstr "Les %d bases sont debout. Rentre à la maison et prépare la fusée au départ."
 
-#: planet/sites/hub_purpose.gd:666
+#: planet/sites/hub_purpose.gd:671
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
@@ -3511,7 +3511,7 @@ msgstr "Tout est propre ici !"
 msgid "Only big pieces left"
 msgstr "Il ne reste que les grosses pièces"
 
-#: tools/ui_audit_run.gd:316 ui/locker_panel.gd:84 ui/telescope_view.gd:379
+#: tools/ui_audit_run.gd:318 ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"
 msgstr "Fermer"
 
@@ -4851,68 +4851,68 @@ msgstr ""
 msgid "All built"
 msgstr "Tous construits"
 
-#: ui/hud.gd:79
+#: ui/hud.gd:82
 msgid "Lumi reached level %d%s"
 msgstr "Lumi a atteint le niveau %d%s"
 
-#: ui/hud.gd:164
+#: ui/hud.gd:179
 msgid "OLD TOWN   0%"
 msgstr "VIEILLE VILLE   0%"
 
-#: ui/hud.gd:315
+#: ui/hud.gd:358
 msgid "WREN SIGNAL   %d%%"
 msgstr "SIGNAL WREN   %d%%"
 
-#: ui/hud.gd:344
+#: ui/hud.gd:401
 msgid "HEX  %d%% CLEAR"
 msgstr "HEX  %d%% PROPRE"
 
-#: ui/hud.gd:348
+#: ui/hud.gd:405
 msgid "%s  BASE"
 msgstr "BASE %s"
 
-#: ui/hud.gd:351
+#: ui/hud.gd:408
 msgid "CARRYING %d/%d"
 msgstr "CHARGE %d/%d"
 
-#: ui/hud.gd:383
+#: ui/hud.gd:440
 msgid "HEX  CLEAR"
 msgstr "HEX  PROPRE"
 
-#: ui/hud.gd:387
+#: ui/hud.gd:444
 msgid "HEX  %s"
 msgstr "HEX  %s"
 
-#: ui/hud.gd:390
+#: ui/hud.gd:447
 msgid "  SUSTAIN %d%%"
 msgstr "  DURABLE %d%%"
 
-#: ui/hud.gd:392
+#: ui/hud.gd:449
 msgid "  THIRSTY"
 msgstr "  ASSOIFFÉ"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:422
+#: ui/hud.gd:479
 msgid "%s   pick up bale"
 msgstr "%s   ramasser la balle"
 
-#: ui/hud.gd:423
+#: ui/hud.gd:480
 msgid "%s   dig up part"
 msgstr "%s   déterrer la pièce"
 
-#: ui/hud.gd:424
+#: ui/hud.gd:481
 msgid "%s   read memory shard"
 msgstr "%s   lire l'éclat de mémoire"
 
-#: ui/hud.gd:425
+#: ui/hud.gd:482
 msgid "%s   pick up the seed tin"
 msgstr "%s   ramasser la boîte à graines"
 
-#: ui/hud.gd:426
+#: ui/hud.gd:483
 msgid "%s   set bale down"
 msgstr "%s   poser la balle"
 
-#: ui/hud.gd:427
+#: ui/hud.gd:484
 msgid "%s   workbench"
 msgstr "%s   établi"
 

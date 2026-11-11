@@ -647,25 +647,31 @@ func show_title(i: int, first: bool = false) -> void:
 		return
 	if _title and is_instance_valid(_title):
 		_title.queue_free()
+	# [v7look] Top centre, in a column narrower than the screen (the lines wrap), while the HUD's
+	# top-right cards step aside (HUD.hold_corner): it used to sit 120 px above the middle at full
+	# width and ran under the goal card. Below it, the subtitle bar keeps its own place.
 	var vb := VBoxContainer.new()
 	vb.name = "HubTitle"
 	vb.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	vb.set_anchors_preset(Control.PRESET_CENTER)
+	vb.anchor_left = 0.5
+	vb.anchor_right = 0.5
+	vb.anchor_top = TITLE_TOP
+	vb.anchor_bottom = TITLE_TOP
 	vb.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	vb.grow_vertical = Control.GROW_DIRECTION_BOTH
-	vb.offset_top = -120.0
-	vb.offset_bottom = -120.0
-	vb.add_theme_constant_override("separation", 2)
+	vb.grow_vertical = Control.GROW_DIRECTION_END
+	vb.add_theme_constant_override("separation", 4)
 	var big: Label = UITheme.label(nm.to_upper(), 40, CREAM)
 	big.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	big.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	big.add_theme_constant_override("outline_size", 8)
 	big.add_theme_color_override("font_outline_color", Color(0.03, 0.06, 0.05, 0.85))
 	vb.add_child(big)
 	var sub_t: String = town_name(i)
 	if not HubPlan.is_home(planet, i):
 		sub_t = tr("%s  ·  the %s") % [sub_t, HubPlan.landmark_name(planet, i)]
-	var sub: Label = UITheme.label(sub_t, 16, TEAL)
+	var sub: Label = UITheme.label(sub_t, 17, TEAL)
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	sub.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	sub.add_theme_constant_override("outline_size", 5)
 	sub.add_theme_color_override("font_outline_color", Color(0.03, 0.06, 0.05, 0.85))
 	vb.add_child(sub)
@@ -673,11 +679,17 @@ func show_title(i: int, first: bool = false) -> void:
 	if title_reason != "":
 		var why: Label = UITheme.label(title_reason, 15, CREAM)
 		why.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		why.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		why.add_theme_constant_override("outline_size", 5)
 		why.add_theme_color_override("font_outline_color", Color(0.03, 0.06, 0.05, 0.85))
 		why.modulate.a = 0.92
 		vb.add_child(why)
 	_layer.get_child(0).add_child(vb)
+	_title = vb
+	fit_title()
+	var hud: Variant = so.w.get("hud") if so and so.w else null
+	if hud is HUD:  # the goal stack steps aside while the name is up, then comes back
+		(hud as HUD).hold_corner(float(HubPlan.hop_cfg("title_in_s", 0.5)) + float(HubPlan.hop_cfg("title_hold_s", 3.0)) + float(HubPlan.hop_cfg("title_out_s", 0.9)) * 0.5)
 	var sting: String = str(HubPlan.hop_cfg("arrive_sting", "motif"))
 	if first and sting != "" and not HubPlan.is_home(planet, i):
 		Audio.music_sting(sting)
@@ -701,6 +713,32 @@ func show_title(i: int, first: bool = false) -> void:
 					await RenderingServer.frame_post_draw
 					DevHooks.save_viewport("%s_picker.png" % DevHooks.get_s("hop-shots", "screenshots/hop"))
 					print("[hubs] dev: shots done"))
+
+
+## [v7look] Where the arrival title's top edge sits (a share of the screen height), and the widest
+## its column gets (canvas px; also never more than TITLE_W_SHARE of the screen).
+const TITLE_TOP: float = 0.1
+const TITLE_MAX_W: float = 640.0
+const TITLE_W_SHARE: float = 0.62
+
+
+## [v7look] Sizes the arrival title's column to the screen (again whenever the screen changes size).
+func fit_title() -> void:
+	if _title == null or not is_instance_valid(_title):
+		return
+	var root: Control = _title.get_parent() as Control
+	var vw: float = root.size.x if root and root.size.x > 1.0 else get_viewport().get_visible_rect().size.x
+	var w: float = minf(TITLE_MAX_W, vw * TITLE_W_SHARE)
+	_title.custom_minimum_size.x = w
+	_title.offset_left = -w * 0.5
+	_title.offset_right = w * 0.5
+	if root and not root.resized.is_connected(fit_title):
+		root.resized.connect(fit_title)
+
+
+## The arrival title while it is up (tools/ui_audit_run.gd), else null.
+func title_node() -> Control:
+	return _title if _title != null and is_instance_valid(_title) and not _title.is_queued_for_deletion() else null
 
 
 ## Dev (--hub-dev-chain[=T]): T s after each arrival at a far hub, cleans the hexes its chain asks

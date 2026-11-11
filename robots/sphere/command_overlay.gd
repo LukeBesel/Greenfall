@@ -20,7 +20,7 @@ const PAINT_WHAT: Dictionary = {"clean": "Paint the ground you want cleaned firs
 # l10n:end
 const LEGEND_ORDER: Array[String] = ["clean", "haul", "plant", "water", "skim"]
 const CLUSTER_PX: float = 26.0
-const PIP_R: float = 6.0
+const PIP_R: float = 8.0  # [v7look] was 6: robots read as specks on the pale ground
 
 var cmd: SphereCommand
 var _font: Font
@@ -203,6 +203,9 @@ func _draw() -> void:
 	var crew: SphereCrew = cmd.crew
 	panels.clear()  # [v6screens]
 	var surf: SphereSurface = cmd.surface
+	# [v7look] A light shade over the world: from Command height the dusty ground and paper litter
+	# wash out to pale cream, and the painted hexes and robot marks drowned in it.
+	draw_rect(Rect2(Vector2.ZERO, size), Color(0.02, 0.03, 0.05, 0.24))
 	# Painted zones, every job: filled hexes (the job being painted on top and brighter).
 	var drawn: int = 0
 	var order: Array = crew.zones.keys()
@@ -273,7 +276,7 @@ func _draw() -> void:
 		var pos: Vector2 = cl["pos"]
 		var worst: int = int(cl["worst"])
 		if int(cl["n"]) == 1:
-			draw_circle(pos, PIP_R + 2.0, Color(0, 0, 0, 0.6))
+			draw_circle(pos, PIP_R + 2.5, Color(0, 0, 0, 0.7))
 			draw_circle(pos, PIP_R, BotBadge.GREY if worst == 1 else col)
 			if worst == 0:
 				draw_arc(pos, PIP_R + 3.0 + pulse * 2.5, 0.0, TAU, 20, Color(col, 0.75 - pulse * 0.4), 1.6, true)

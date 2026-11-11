@@ -6,7 +6,7 @@ extends Node3D
 ## do and amber with a "!" when it needs the player (out of seeds, zone done, bales piling up).
 ## A new robot's lamp flashes white while it says hello. Drips spray water while they water.
 ## Hidden past FAR_M so hundreds of robots stay cheap.
-## Rank: a robot's Mk tier shows as small gold diamonds circling the lamp (Mk II two, Mk III
+## Rank: a robot's Mk tier shows as a row of gold diamonds under the lamp (facing the camera) (Mk II two, Mk III
 ## three, Mk IV four; Mk I none), on top of the tier's own model look, so growth reads from afar.
 
 const FAR_M: float = 70.0
@@ -27,10 +27,9 @@ var _t: float = 0.0
 var tier: int = 0
 var _ranks: Node3D
 static var _mesh: SphereMesh
-static var _pip_mesh: SphereMesh
-static var _pip_mat: StandardMaterial3D
-const RANK_R: float = 0.17
-const RANK_SPIN: float = 1.1  # rad/s
+static var _pip_tex: ImageTexture
+const RANK_GAP: float = 0.17  # [v7look] metres between pips in the row
+const PIP_PX: float = 0.0048  # [v7look] a 32 px diamond is about 15 cm
 
 
 static func role_color(p_role: String) -> Color:
@@ -87,8 +86,8 @@ func setup(p_role: String, height: float = 1.2, p_tier: int = 0) -> void:
 	position = Vector3(0, height, 0)
 	if _mesh == null:
 		_mesh = SphereMesh.new()
-		_mesh.radius = 0.085
-		_mesh.height = 0.17
+		_mesh.radius = 0.11  # [v7look] was 0.085
+		_mesh.height = 0.22
 		_mesh.radial_segments = 10
 		_mesh.rings = 5
 	_mat = StandardMaterial3D.new()
@@ -123,27 +122,39 @@ func set_tier(p_tier: int) -> void:
 	var n: int = pips_for(tier)
 	if n == 0:
 		return
-	if _pip_mesh == null:
-		_pip_mesh = SphereMesh.new()  # 4 segments, 2 rings: a little diamond
-		_pip_mesh.radius = 0.04
-		_pip_mesh.height = 0.1
-		_pip_mesh.radial_segments = 4
-		_pip_mesh.rings = 2
-		_pip_mat = StandardMaterial3D.new()
-		_pip_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-		_pip_mat.albedo_color = UITheme.GOLD
+	# [v7look] A row of gold diamonds between the head and the lamp, turned to face the camera
+	# (_process). The old 4 cm diamonds circling the lamp could not be seen in a close-up render,
+	# and bigger ones smeared into the orange lamp as they spun.
+	if _pip_tex == null:
+		_pip_tex = ImageTexture.create_from_image(_diamond_image(32))
 	_ranks = Node3D.new()
 	_ranks.name = "Ranks"
+	_ranks.position = Vector3(0, -0.15, 0)
 	add_child(_ranks)
 	for i: int in n:
-		var a: float = TAU * float(i) / float(n)
-		var mi := MeshInstance3D.new()
-		mi.mesh = _pip_mesh
-		mi.material_override = _pip_mat
-		mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		mi.visibility_range_end = FAR_M
-		mi.position = Vector3(cos(a) * RANK_R, -0.02, sin(a) * RANK_R)
-		_ranks.add_child(mi)
+		var sp := Sprite3D.new()
+		sp.texture = _pip_tex
+		sp.pixel_size = PIP_PX
+		sp.shaded = false
+		sp.alpha_cut = SpriteBase3D.ALPHA_CUT_DISCARD
+		sp.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		sp.visibility_range_end = FAR_M
+		sp.position = Vector3((float(i) - float(n - 1) * 0.5) * RANK_GAP, 0, 0)
+		_ranks.add_child(sp)
+
+
+## [v7look] A gold diamond with a dark rim on a clear square (the rank pip's picture).
+static func _diamond_image(px: int) -> Image:
+	var img := Image.create(px, px, false, Image.FORMAT_RGBA8)
+	var c: float = (px - 1) * 0.5
+	for y: int in px:
+		for x: int in px:
+			var d: float = (absf(x - c) + absf(y - c)) / c  # 1 at the diamond's edge
+			if d <= 0.78:
+				img.set_pixel(x, y, UITheme.GOLD.lightened(0.15 * (1.0 - d)))
+			elif d <= 1.0:
+				img.set_pixel(x, y, Color(0.12, 0.08, 0.03))
+	return img
 
 
 func set_state(p_state: int) -> void:
@@ -197,5 +208,12 @@ func _process(delta: float) -> void:
 			_mat.albedo_color = Color(1, 1, 1).lerp(role_color(role), k)
 	if _glyph.visible:
 		_glyph.position.y = 0.3 + 0.04 * sin(_t * 2.0)
-	if _ranks != null:
-		_ranks.rotation.y = _t * RANK_SPIN
+	if _ranks != null:  # [v7look] the row faces the camera, turning about the robot's up
+		var cam: Camera3D = get_viewport().get_camera_3d()
+		if cam:
+			var up: Vector3 = global_basis.y.normalized()
+			var to: Vector3 = cam.global_position - _ranks.global_position
+			to -= up * to.dot(up)
+			if to.length() > 0.01:
+				var z: Vector3 = to.normalized()
+				_ranks.global_basis = Basis(up.cross(z).normalized(), up, z)

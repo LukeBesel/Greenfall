@@ -110,7 +110,7 @@ static func install(src: Object, parent: Node, lumi: Node3D, cam: SphereCam, wri
 		parent.add_child(cc)
 	if DevHooks.has("crew-command"):  # [v6crew]
 		var open_cmd: Callable = func() -> void:
-			await parent.get_tree().create_timer(DevHooks.get_f("crew-command", 20.0), false).timeout
+			await DevHooks.wait_wall(DevHooks.get_f("crew-command", 20.0))  # [v7look] wall clock, as --shot-delay
 			var ev := InputEventAction.new()
 			ev.action = "open_command"
 			ev.pressed = true

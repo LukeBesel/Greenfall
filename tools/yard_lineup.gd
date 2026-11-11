@@ -34,6 +34,17 @@ const SHOTS: Dictionary = {
 	"lm_old_bus": [Vector3(427.0, 4.5, 213.0), Vector3(420.0, 1.6, 200.5)],
 	"lm_lighthouse": [Vector3(492.0, 7.0, 226.0), Vector3(480.0, 9.5, 200.0)],
 	"recycler": [Vector3(75.5, 3.6, 6.5), Vector3(71.3, 1.2, 0.0)],
+	# [v7pod] the crashed pod at each repair stage, in its crash pose (CrashSite), door toward +Z:
+	# pod_in<N> looks straight into the open hatch, pod_q<N> from a three-quarter angle.
+	"pod_in0": [Vector3(200.0, 1.25, 3.3), Vector3(200.0, 0.85, 0.0)],
+	"pod_in1": [Vector3(212.0, 1.25, 3.3), Vector3(212.0, 0.85, 0.0)],
+	"pod_in2": [Vector3(224.0, 1.25, 3.3), Vector3(224.0, 0.85, 0.0)],
+	"pod_in3": [Vector3(236.0, 1.25, 3.3), Vector3(236.0, 0.85, 0.0)],
+	"pod_q0": [Vector3(197.6, 2.0, 3.0), Vector3(200.0, 0.9, 0.0)],
+	"pod_q1": [Vector3(209.6, 2.0, 3.0), Vector3(212.0, 0.9, 0.0)],
+	"pod_q2": [Vector3(221.6, 2.0, 3.0), Vector3(224.0, 0.9, 0.0)],
+	"pod_q3": [Vector3(233.6, 2.0, 3.0), Vector3(236.0, 0.9, 0.0)],
+	"pod_close": [Vector3(224.0, 1.05, 1.9), Vector3(224.0, 0.75, 0.0)],
 }
 const BOARD_POS := Vector3(-3.6, 0, 2.2)  # scenes/slice.gd
 
@@ -47,6 +58,8 @@ var _cam: Camera3D
 func _ready() -> void:
 	_out = DevHooks.get_s("out", "screenshots/yard/lineup")
 	_shots = DevHooks.get_s("shots", "yard,shack,bench,locker,builds,stations,tower,fabricator,bins").split(",")
+	if _shots.size() == 1 and _shots[0] == "pods":  # [v7pod] the pod's cabin at every repair stage
+		_shots = PackedStringArray(["pod_in0", "pod_in1", "pod_in2", "pod_in3", "pod_q0", "pod_q1", "pod_q2", "pod_q3", "pod_close", "pod"])
 	if _shots.size() == 1 and _shots[0] == "v6":  # [v6yard] everything this wave rebuilt
 		_shots = PackedStringArray(["baler", "baler_back", "belt", "signs", "pod", "lm_water_tower", "lm_windpump", "lm_crane", "lm_radio_mast", "lm_ferris_wheel", "lm_smokestack", "lm_kiosk", "lm_tower_crane", "lm_old_bus", "lm_lighthouse", "recycler"])
 	var night: bool = DevHooks.has("night")
@@ -288,6 +301,11 @@ func _build_v6() -> void:
 	add_child(pod)
 	EscapePod.set_condition(pod, int(DevHooks.get_f("pod-condition", 0.0)))
 	EscapePod.set_open(pod, true, 0.0)
+	for k: int in 4:  # [v7pod] the crash site's pod at stages 0..3 (shots pod_in<k>, pod_q<k>)
+		var site: CrashSite = CrashSite.attach(self, EscapePod.build(), Vector3(200.0 + k * 12.0, 0, 0), PI)
+		site.name = "PodStage%d" % k
+		site.set_stage(k)
+		EscapePod.set_open(site.pod, true, CrashSite.LEAN.x)
 	var st: String = DevHooks.get_s("lm-state", "restored")
 	var kinds: Array[String] = HubLandmarks.kinds()
 	for i: int in kinds.size():

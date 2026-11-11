@@ -196,6 +196,7 @@ sign with one pictogram and no words, so a small child can tell what it does.
 | The belt drive's paint (frame, motor) | `belt.frame`, `belt.motor` |
 | The recycler's paint (housing, hopper, smelter) | `recycler.body`, `recycler.hopper`, `recycler.kiln` |
 | The repair cart by the crashed pod (shown from the first upgrade until the planter stage) | `pod.service: false` removes it; `pod.cart`, `pod.cart_trim`, `pod.cone` colour it |
+| The pod's cabin seen through the open hatch (inner wall, wall pads, cradle, frame, console, floor, screen, lamps) | `pod.cabin_wall`, `cabin_pad`, `cabin_seat`, `cabin_frame`, `cabin_console`, `cabin_floor`, `cabin_screen`, `cabin_lamp`; how bright the light out of the door is per repair stage: `EscapePod.CABIN_LIGHT` in story/escape_pod.gd. Look: `res://tools/yard_lineup.tscn -- --shots=pods [--night]` |
 
 Machines: `workbench`, `trash_bin`, `baler`, `belt`, `composter`, `signal_tower`, `fabricator`, `recycler`.
 Code: `systems/camp/machine_art.gd` (signs, baler, belt drive, pod cart), `systems/camp/yard_art.gd`
