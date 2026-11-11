@@ -209,6 +209,10 @@ static func finish_pending() -> void:
 	_groups.clear()
 	_task_refs.clear()
 	_group_refs.clear()
+	for path: String in _fetching:  # [v6qa]
+		if ResourceLoader.load_threaded_get_status(path) != ResourceLoader.THREAD_LOAD_INVALID_RESOURCE:
+			ResourceLoader.load_threaded_get(path)
+	_fetching.clear()
 
 
 ## Loads a resource file on a loader thread while the loading screen keeps drawing, and returns
@@ -219,9 +223,18 @@ static func fetch(path: String) -> Resource:
 		return null
 	if ResourceLoader.load_threaded_request(path) != OK:
 		return null
+	_fetching[path] = true  # [v6qa]
 	while current != null and ResourceLoader.load_threaded_get_status(path) == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
 		await pause("load " + path.get_file())
+	_fetching.erase(path)
 	return ResourceLoader.load_threaded_get(path)
+
+
+## [v6qa] Threaded loads whose fetch() has not collected them yet. Quitting while a hub town built
+## left one in flight (its coroutine dies with the town) and the engine's exit freed it twice:
+## "corrupted size vs. prev_size in fastbins", exit 134 (repro: --orbit-walk-in=1,380
+## --quit-mid-build=30). finish_pending() collects them first.
+static var _fetching: Dictionary = {}
 
 
 ## [v5load] Profiling aid for --load-report: prints the main-thread time since the last lap (or
