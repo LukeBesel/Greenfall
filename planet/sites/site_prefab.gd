@@ -28,9 +28,12 @@ const MIN_COLLIDE_H: float = 0.9
 const START_YARD_ANCHORS: Dictionary = {
 	"pod": [Vector3(0, 0, 9.8), 0.0],
 	# [v1yard] The trash bin (the depot and its bin's reach) on the west side, 5.5 m from the bench,
-	# in a marked, lit bay on the pad's edge: trash, bin and bench a few steps apart.
-	"depot": [Vector3(-8.0, 0, 2.0), PI * 0.5],
-	"bin": [Vector3(-8.0, 0, -1.3), PI * 0.5],
+	# in a marked, lit bay on the pad's edge: trash, bin and bench a few steps apart. The bin stands
+	# at the bay's bench end and the scale at the other (task M3-21): the lake lies west of the yard,
+	# so the first hex Lumi cleans is the one to the south-west, and its middle must be within 8 m
+	# of the bin (tests/test_pacing_fit.gd).
+	"depot": [Vector3(-8.0, 0, -0.2), PI * 0.5],
+	"bin": [Vector3(-8.0, 0, 3.1), PI * 0.5],
 	"stations": [Vector3(16.5, 0, 1.5), 0.0],  # out on the street east of the yard (flat: "keep the base yard free")
 	"radio": [Vector3(5.0, 0, -1.5), -PI * 0.5],
 	"signal_tower": [Vector3(8.0, 0, -7.5), -PI * 0.5],
