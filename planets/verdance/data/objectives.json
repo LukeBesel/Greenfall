@@ -97,17 +97,6 @@
       ]
     },
     {
-      "id": "street",
-      "text": "Clear the street",
-      "desc": "Clean the 7 hexes round the base.",
-      "type": "stat",
-      "key": "hexes_cleaned",
-      "target": 7,
-      "lines": [
-        "Clear the whole street, Lumi. Seven hexes round the base."
-      ]
-    },
-    {
       "id": "tower",
       "text": "Build the signal tower",
       "desc": "Workbench, Build tab. Then WREN can talk to you.",
@@ -129,6 +118,17 @@
       ]
     },
     {
+      "id": "street",
+      "text": "Clear the street",
+      "desc": "Clean the 7 hexes round the base.",
+      "type": "stat",
+      "key": "hexes_cleaned",
+      "target": 7,
+      "lines": [
+        "Clear the whole street, Lumi. Seven hexes round the base."
+      ]
+    },
+    {
       "id": "bench2",
       "text": "Add a Bot Bay to the bench",
       "desc": "Workbench, Upgrades tab: Bot Bay.",
@@ -141,12 +141,12 @@
     {
       "id": "robot",
       "text": "Build your first robot",
-      "desc": "Workbench, Bots tab. A Haul Bug carries your bales to the scale.",
+      "desc": "Bots tab: a Haul Bug carries your bales to the scale.",
       "type": "robot",
       "key": "any",
       "target": 1,
       "lines": [
-        "The base has power! Enough to build you a helper. A Haul Bug will carry your bales. Try the Bots tab."
+        "The base has power! Build a helper: a Haul Bug will carry your bales. Try the Bots tab."
       ]
     },
     {

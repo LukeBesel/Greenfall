@@ -205,5 +205,6 @@ func test_demo_caps_the_base() -> void:
 	assert_eq(hub.level, Demo.MAX_BASE_LEVEL)
 	assert_true(GameState.flags.get("demo_end_seen", false), "end-of-demo shown")
 	Demo.override = 0
+	GameState.stats["hexes_cleaned"] = 24.0  # task M3-21: base level 3 waits for 24 clean hexes
 	assert_true(hub.upgrade(), "full game keeps going")
 	assert_eq(hub.level, 3)

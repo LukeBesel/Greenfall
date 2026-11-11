@@ -172,7 +172,7 @@ func test_the_first_planet_states_each_citys_hex_value_and_first_hexes() -> void
 	var first: Dictionary = (rows[0] as Dictionary)["first_hexes"]
 	var near: Array[PackedInt32Array] = HexWorth.rings_around(_fx.grid, _fx.site_cells[0], 3)
 	assert_almost_eq(worth.work(near[1][0]), float(first["work"]), 0.001, "the first ring is light")
-	assert_almost_eq(worth.work(near[1][0]) / 12.0, 10.0, 0.5, "about ten loads of the starting chest")
+	assert_almost_eq(worth.work(near[1][0]) / 12.0, 9.0, 0.5, "nine loads of the starting chest (task M3-21: the first hex in about a minute for the bot)")
 	assert_gt(worth.work(near[2][0]), worth.work(near[1][0]), "then hexes grow")
 	assert_almost_eq(worth.work(near[3][0]), float((rows[0] as Dictionary)["hex_work"]), 0.001, "to the city's full weight")
 
@@ -334,10 +334,18 @@ func test_no_reward_exceeds_three_minutes_of_city_one_income() -> void:
 	assert_lte(float(lumi["cube_secs"]), float(table["income_ref_s"]), "a Lumi level pays seconds of income, under the limit")
 	assert_eq(int(lumi["part_every"]), 0, "and no Parts: those come from salvage alone")
 	assert_eq(int(lumi["bonus_parts_every"]), 0)
+	# A level pays cube_secs of current income, between a floor and a cap that both grow with the
+	# level. At the first city's measured income (task M3-21: 5 cubes a second, not the proposal's
+	# 14) every level stays under the limit; the cap alone passes it only from level 24 (940), and
+	# is paid only where 30 s of income is that large, which is 3 minutes of 5,600.
+	var income_now: float = float(lumi["cube_secs"]) * float(city["income_ref"])
 	for lv: int in [2, 5, 10, 20, 30]:
-		var plan: Dictionary = LumiLevel.reward_plan(lv, 1.0e9, 20000.0, true)
-		assert_lte(float(plan["cubes"]), limit, "Lumi level %d at its cap" % lv)
+		var plan: Dictionary = LumiLevel.reward_plan(lv, income_now, 20000.0, true)
+		assert_lte(float(plan["cubes"]), limit, "Lumi level %d at the city's income" % lv)
 		assert_eq(int(plan["parts"]) + int(plan["bonus_parts"]), 0)
+		var rich: Dictionary = LumiLevel.reward_plan(lv, 1.0e9, 20000.0, true)
+		if lv <= 20:
+			assert_lte(float(rich["cubes"]), limit, "Lumi level %d at its cap" % lv)
 	assert_eq(Research.note_pay(), 0.0, "field notes pay no cubes")
 	gut.p("largest one-off cube reward in city 1: %d (limit %d)" % [int(largest), int(limit)])
 
@@ -371,7 +379,8 @@ func test_city_one_tracks_follow_the_accepted_prices() -> void:
 	assert_almost_eq(Economy.stat("capacity", {"compartment_size": 1}), 24.0, 0.001, "a chest level adds a starting chest")
 	assert_almost_eq(Economy.stat("scoop_rate", {"scoop_speed": 1}) / Economy.base_stat("scoop_rate"), 1.18, 0.001)
 	assert_almost_eq(Economy.stat("pickup_count", {"multi_lock": 1}) / Economy.base_stat("pickup_count"), 1.18, 0.001, "the two scoop tracks match")
-	assert_almost_eq(Economy.upgrade_cost("baler", 0).to_float(), 250.0, 0.5)
+	# Task M3-21: the Baler is priced from the game's real income, so the wait for it stays short.
+	assert_almost_eq(Economy.upgrade_cost("baler", 0).to_float(), 130.0, 0.5)
 
 
 func test_a_new_city_opens_the_next_tier_of_every_track() -> void:
@@ -411,8 +420,26 @@ func test_nothing_in_city_one_costs_more_than_the_low_thousands() -> void:
 			if float(cost.get("cubes", 0.0)) > largest:
 				largest = float(cost["cubes"])
 				what = "%s %s" % [table[0], str((row as Dictionary).get("name", ""))]
-	assert_lte(largest, 5000.0, "the dearest cube price reachable in city 1 (%s)" % what)
+	for row: Variant in BenchTiers.tiers():
+		var bench: float = float(((row as Dictionary).get("cost", {}) as Dictionary).get("cubes", 0.0))
+		if bench > largest:
+			largest = bench
+			what = str((row as Dictionary).get("name", ""))
+	# Research counts too (docs/DECISIONS.md, Nov 11). The first city's research is tiers 0 to 5;
+	# tiers 6 and 7 are the frontier nodes of later cities (the research table's _doc).
+	for id: String in Research.ids():
+		if int(Research.def(id).get("tier", 0)) > CITY_ONE_RESEARCH_TIERS:
+			continue
+		var price: float = Research.cost(id).to_float()
+		if price > largest:
+			largest = price
+			what = "research %s" % id
+	assert_lt(largest, 4200.0, "the dearest cube price reachable in city 1 (%s) stays under the accepted 4,200" % what)
 	gut.p("largest cube price in city 1: %d (%s)" % [int(largest), what])
+
+
+## The last research tier that belongs to the first city.
+const CITY_ONE_RESEARCH_TIERS: int = 5
 
 
 func test_the_first_robot_costs_parts_only_and_parts_are_scarce() -> void:

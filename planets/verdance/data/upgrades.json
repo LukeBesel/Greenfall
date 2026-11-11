@@ -1,5 +1,5 @@
 {
-  "_doc": "Lumi upgrades, all paid in cubes. Effect per level: mode add => stat += amount*level; mode mul_pct => stat *= (1 + amount*level). TRACKS (\"track\": true) are priced by tier (Economy.track_cost): each open city opens one tier of every track. tiers.levels = levels a tier holds (a row's own tier_levels replaces it; 0 = the track has nothing in that tier); tiers.ratio = cost ratio from one level to the next inside a tier; tiers.cost = what a tier's first level costs for a track of weight 1. A track's first tier starts at its base_cost, every later tier at weight x tiers.cost[tier]. Levels beyond the open cities' tiers wait for the next city. Scoop Speed, Scoop Size and Chest Size are the accepted proposal's Sweep Speed, Sweep Width and Chest Size (docs/reviews/BALANCE_PROPOSAL_P1_V2.md: first costs 40, 40, 50; ratio 1.6; 8 levels in the first city); the two scoop tracks have the same effect and price so neither leads. The other tracks are side tracks at a lower weight with fewer levels. ONE-OFFS (no track flag): cost = base_cost * growth^level up to max_level. min_district: the index of the city that must be open. requires: other upgrade levels; requires_research / min_base_level: research node / base level; requires_station: the machine must stand.",
+  "_doc": "Lumi upgrades, all paid in cubes. Effect per level: mode add => stat += amount*level; mode mul_pct => stat *= (1 + amount*level). TRACKS (\"track\": true) are priced by tier (Economy.track_cost): each open city opens one tier of every track. tiers.levels = levels a tier holds (a row's own tier_levels replaces it; 0 = the track has nothing in that tier); tiers.ratio = cost ratio from one level to the next inside a tier; tiers.cost = what a tier's first level costs for a track of weight 1. A track's first tier starts at its base_cost, every later tier at weight x tiers.cost[tier]. Levels beyond the open cities' tiers wait for the next city. Scoop Speed, Scoop Size and Chest Size are the accepted proposal's Sweep Speed, Sweep Width and Chest Size (docs/reviews/BALANCE_PROPOSAL_P1_V2.md: first costs 40, 40, 50; ratio 1.6; 8 levels in the first city); the two scoop tracks have the same effect and price so neither leads. The other tracks are side tracks at a lower weight with fewer levels. ONE-OFFS (no track flag): cost = base_cost * growth^level up to max_level. [M3-21] The Baler costs 130 (at 180 one bot run still waited 152 s for it, the proposal's price was 250: before the Baler most of the second hex is walking) and Lift Strength grows x2.5 (120, 300; was x4: saving 480 for the second level was a wait of two to three minutes) (docs/reviews/M3-21_PACING_FIT.md). min_district: the index of the city that must be open. requires: other upgrade levels; requires_research / min_base_level: research node / base level; requires_station: the machine must stand.",
   "tiers": {
     "levels": [
       8,
@@ -37,7 +37,7 @@
       "mode": "add",
       "amount": 1.0,
       "unit": "",
-      "base_cost": 180,
+      "base_cost": 130,
       "growth": 1.0,
       "max_level": 1
     },

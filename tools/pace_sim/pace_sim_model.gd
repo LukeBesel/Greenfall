@@ -84,7 +84,9 @@ func pay(amount: float, win: String = "") -> void:
 	if amount <= 0.0:
 		return
 	if win in HAND_WINS:
-		amount *= 1.0 + data.k("side_income_share")  # level rewards and weather, spread over the loads
+		# Level rewards, salvage surges and weather, spread over the loads. They start small and grow
+		# through the first minutes (a Lumi level pays 23 cubes at minute 1 and 89 at minute 10).
+		amount *= 1.0 + data.k("side_income_share") * clampf(t / maxf(data.k("side_income_ramp_s"), 1.0), 0.0, 1.0)
 	cubes += amount
 	earned += amount
 	most_held = maxf(most_held, cubes)
@@ -181,6 +183,7 @@ func buy_bench() -> bool:
 	record.mechanic(t, "bench_tier:%d" % bench_tier)
 	for rid: Variant in BenchTiers.def(bench_tier).get("grants_research", []):
 		chains.grant_research(str(rid))
+	chains.check_story()
 	return true
 
 
@@ -203,21 +206,12 @@ func next_hub() -> Dictionary:
 	return {}
 
 
-## Whether the next base level's own conditions hold (the hub table's "requires": the model knows
-## the workbench tier, the tower and the base level; Hub.block_reason in the game).
+## Whether the next base level's own conditions hold (the hub table's "requires", the same
+## workbench conditions the game reads in Hub.block_reason).
 func hub_ready() -> bool:
 	for c: Variant in next_hub().get("requires", []):
-		var cond: Array = c
-		match str(cond[0]):
-			"bench_tier":
-				if bench_tier < int(cond[1]):
-					return false
-			"tower":
-				if tower_tier < int(cond[1]):
-					return false
-			"hub_level":
-				if hub_level < int(cond[1]):
-					return false
+		if not chains.cond_ok(c as Array):
+			return false
 	return not next_hub().is_empty()
 
 

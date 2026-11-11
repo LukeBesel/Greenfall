@@ -204,15 +204,23 @@ func test_b4_bench_tiers_wait_only_on_earlier_steps() -> void:
 				assert_lt(ids.find("tower"), bench2, "the Bot Bay waits for the tower, an earlier step")
 			"stat":
 				assert_eq(str(c[1]), "hexes_cleaned")
-				assert_lte(int(c[2]), 3, "the Bot Bay waits for 3 clean hexes, the step before it")
-				assert_lt(ids.find("hex3"), bench2)
+				# Task M3-21: six hexes, and the step before the Bot Bay asks for the street's seven.
+				var street: Dictionary = chain[ids.find("street")]
+				assert_lt(ids.find("street"), bench2, "the street step comes before the Bot Bay")
+				assert_lte(int(c[2]), int(street["target"]), "the Bot Bay waits for clean hexes an earlier step already asks for")
 			_:
 				fail_test("unchecked Bot Bay condition %s" % str(c))
 	assert_lt(bench2, ids.find("robot"), "the Bots tab opens before the first robot is asked for")
 	assert_true("salvage_logic" in BenchTiers.def(2).get("grants_research", []), "the Bot Bay brings the Scoopie's research")
 	for c: Variant in BenchTiers.def(3).get("requires", []):
-		assert_eq(str(c[0]), "hub_level", "the Research Desk waits on the base level only")
-		assert_lte(int(c[1]), 2)
+		match str(c[0]):
+			"hub_level":
+				assert_lte(int(c[1]), 2)
+			"flag":  # task M3-21: the Desk is offered once the seed tin is found, an earlier step
+				assert_eq(str(c[1]), "seeds_unlocked")
+				assert_lt(ids.find("seed"), ids.find("research1"), "the seed step is asked before research")
+			_:
+				fail_test("unchecked Research Desk condition %s" % str(c))
 	assert_lt(ids.find("base2"), ids.find("research1"), "base level 2 (the Research Desk's gate) is asked before research")
 
 
@@ -327,7 +335,7 @@ func test_b4_research_step_is_not_finished_by_the_bot_bay_gift() -> void:
 	var w := StubWorld.new()
 	var o := _objectives(w)
 	GameState.flags["signal_tower"] = 1
-	GameState.stats["hexes_cleaned"] = 3
+	GameState.stats["hexes_cleaned"] = 6
 	GameState.add_currency("cubes", BigNum.from_float(100000.0))
 	GameState.add_currency("parts", BigNum.from_float(100000.0))
 	var research1: Dictionary = o.chain.filter(func(d: Dictionary) -> bool: return str(d["id"]) == "research1")[0]

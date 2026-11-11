@@ -188,11 +188,15 @@ func _print_pacing(tag: String) -> void:
 		if _report.has(key):
 			beats.append("%s=%.0f" % [key.trim_suffix("_s"), _since_control(float(_report[key]))])
 	var hexes: Array[String] = []
-	for i: int in mini(_hex_times.size(), 12):
+	for i: int in mini(_hex_times.size(), 24):
 		hexes.append("%.0f" % _since_control(_hex_times[i]))
-	print("[Autoplay] pacing %s (s from control at %.0f s): %s | hexes at %s | purchases=%d longest gap in first %d min=%.0f s | most cubes held=%.0f" % [
+	var buys: Array[String] = []
+	for t: float in _spend_times:
+		if _since_control(t) <= PACING_WINDOW_S:
+			buys.append("%.0f" % _since_control(t))
+	print("[Autoplay] pacing %s (s from control at %.0f s): %s | hexes at %s | purchases=%d longest gap in first %d min=%.0f s | most cubes held=%.0f | purchases at %s" % [
 		tag, float(_report.get("control_s", _start_t)), " ".join(beats), ",".join(hexes), _spend_times.size(), int(PACING_WINDOW_S / 60.0),
-		_longest_purchase_gap(PACING_WINDOW_S), _max_cubes])
+		_longest_purchase_gap(PACING_WINDOW_S), _max_cubes, ",".join(buys)])
 
 
 func _hook(sig: Signal, f: Callable) -> void:
@@ -284,12 +288,62 @@ func _hexes() -> PackedInt32Array:
 
 func _go(p: Patch, target: Vector3, stop_dist: float = 0.3) -> float:
 	var sm: SiteManager = (world.orbit as SliceOrbit).globe.site_manager  # on a hub site: round its buildings along the streets
+	var aim: Vector3 = target
 	if sm:
-		var via: Vector3 = sm.detour(p.global_position, target)
-		if via.distance_to(target) > 0.5:
-			_go_raw(p, via, 1.0)
-			return maxf(target.distance_to(p.global_position), stop_dist + 1.0)
+		aim = sm.detour(p.global_position, target)
+	var dry: Vector3 = _round_lake(p, aim)
+	if dry.distance_to(target) > 0.5:
+		_go_raw(p, dry, 1.0)
+		return maxf(target.distance_to(p.global_position), stop_dist + 1.0)
 	return _go_raw(p, target, stop_dist)
+
+
+## How far ahead Lumi looks for a lake on his way, the spacing of the looks, how far past the
+## shore the way round is aimed, and the turns he tries (degrees, nearest first; the side that
+## worked last is tried first).
+const LAKE_LOOK_M: float = 36.0
+const LAKE_STEP_M: float = 2.0
+const LAKE_PAST_M: float = 6.0
+const LAKE_TURNS_DEG: Array[float] = [20.0, 40.0, 60.0, 80.0, 100.0, 120.0]
+var _lake_side: float = 1.0
+
+
+## Metres of dry ground from `from` along `dir` (unit, along the ground), looking up to `reach`.
+func _dry_run(p: Patch, from: Vector3, dir: Vector3, reach: float) -> float:
+	var at: float = LAKE_STEP_M
+	while at < reach:
+		if bool(p.call("_water_at", from + dir * at)):
+			return at - LAKE_STEP_M
+		at += LAKE_STEP_M
+	return reach
+
+
+## Lakes are whole hexes and Lumi cannot cross one without Hover Jets: when the straight line to
+## `target` runs into water, the point to walk to instead (a person walks round a pond; the bot used
+## to push at the shore until its stuck timer fired). `target` itself when the way is dry.
+func _round_lake(p: Patch, target: Vector3) -> Vector3:
+	if not p.has_method("can_hover_water") or p.can_hover_water():
+		return target
+	var from: Vector3 = p.global_position
+	var u: Vector3 = from.normalized()
+	var d: Vector3 = target - from
+	d -= u * d.dot(u)
+	var dist: float = d.length()
+	if dist < LAKE_STEP_M * 2.0:
+		return target
+	var dir: Vector3 = d / dist
+	var reach: float = minf(dist - 1.0, LAKE_LOOK_M)
+	var dry: float = _dry_run(p, from, dir, reach)
+	if dry >= reach:
+		return target
+	var want: float = dry + LAKE_PAST_M
+	for deg: float in LAKE_TURNS_DEG:
+		for side: float in [_lake_side, -_lake_side]:
+			var turned: Vector3 = dir.rotated(u, deg_to_rad(deg) * side)
+			if _dry_run(p, from, turned, want) >= want:
+				_lake_side = side
+				return from + turned * want
+	return target
 
 
 func _go_raw(p: Patch, target: Vector3, stop_dist: float = 0.3) -> float:
@@ -369,9 +423,27 @@ func update(delta: float) -> void:
 		_escape_t -= delta
 		_move = _escape_dir
 		return
-	if not (_do_tin(p) or _do_bench(p) or _do_shard(p) or _do_dump(p) or _do_deliver(p) or _do_pickup(p) or _do_dig(p) or _do_pet(p) or _do_garden(p)):
+	if not (_do_bench(p) or _do_tin(p) or _do_shard(p) or _do_dump(p) or _do_deliver(p) or _do_pickup(p) or _do_dig(p) or _do_pet(p) or _do_garden(p)):
 		_do_clean(p)
 	_watch_stuck(p, delta)
+
+
+## Blocks at a shore in a row, the side Lumi is walking round the lake on, how long one walk along
+## the shore lasts and how many blocks before he tries the other way round.
+var _shore_run: int = 0
+var _shore_side: float = 1.0
+const SHORE_WALK_S: float = 3.5
+## Once Lumi is walking round a lake, the shore ahead is seen this fast (6 s for anything else).
+const SHORE_SEEN_S: float = 1.5
+const SHORE_TURN_AFTER: int = 5
+
+
+## No Hover Jets and water straight ahead of where Lumi is trying to go.
+func _at_shore(p: Patch) -> bool:
+	if not p.has_method("can_hover_water") or p.can_hover_water():
+		return false
+	var ahead: Vector3 = p.global_position + (_move - p.up() * _move.dot(p.up())).normalized() * 1.5
+	return bool(p.call("_water_at", ahead))
 
 
 ## Wedged against something for a long time while trying to move: back off in a random direction.
@@ -402,7 +474,7 @@ func _watch_stuck(p: Patch, delta: float) -> void:
 	if p.global_position.distance_to(_watch_pos) > 1.0:
 		_watch_t = 0.0
 		_watch_pos = p.global_position
-	elif _watch_t > 6.0:
+	elif _watch_t > (SHORE_SEEN_S if _shore_run > 0 and _at_shore(p) else 6.0):
 		_watch_t = 0.0
 		_escapes += 1
 		if _target_piece >= 0 and DevHooks.has("bot-debug"):
@@ -428,6 +500,19 @@ func _watch_stuck(p: Patch, delta: float) -> void:
 		_escape_side = -_escape_side
 		_escape_dir = (Vector3(head.z, 0, -head.x) * _escape_side - head * 0.35).normalized()
 		_escape_t = 1.6 + 0.4 * float(_escapes % 3)
+		if _at_shore(p):
+			# A lake is walked round, not bounced off: keep to one side along the shore, and try the
+			# other side only after several blocks in a row (a person sees the way round at once).
+			_shore_run += 1
+			if _shore_run == 1:
+				_shore_side = _escape_side
+			elif _shore_run % SHORE_TURN_AFTER == 0:
+				_shore_side = -_shore_side
+			var flat: Vector3 = (_move - p.up() * _move.dot(p.up())).normalized()
+			_escape_dir = (flat.cross(p.up()) * _shore_side - flat * 0.2).normalized()
+			_escape_t = SHORE_WALK_S
+		else:
+			_shore_run = 0
 		if _target_piece >= 0 and _escapes % 2 == 0:
 			_ignore_piece[_target_piece] = true
 		_target_piece = -1
@@ -468,6 +553,10 @@ func _water_at() -> Vector3:
 # --- Patch tasks -------------------------------------------------------------------------
 
 ## The Maker seed tin in the greenhouse, once enough hexes are clean.
+## How close to the seed tin Lumi stops (FirstSeed.near_tin reaches 2.2 m).
+const TIN_STOP_M: float = 1.5
+
+
 func _do_tin(p: Patch) -> bool:
 	var fs: FirstSeed = world.first_seed
 	if fs == null or not fs.ready_to_find() or fs._tin == null or not fs._tin.visible:
@@ -475,9 +564,9 @@ func _do_tin(p: Patch) -> bool:
 	if not p.carried.is_empty():
 		return false  # deliver first (interact would drop the bale)
 	_set_task("tin")
-	var tin: Vector3 = fs._tin.global_position
-	var stand: Vector3 = tin + Vector3(1.3, 0, 0)
-	_go(p, stand, 0.25)
+	# Straight to the tin, stopping inside its reach. (The old stand point was a flat-world offset,
+	# which on the globe can lie inside the greenhouse wall: the bot pushed at it for a minute.)
+	_go(p, fs._tin.global_position, TIN_STOP_M)
 	if fs.near_tin(p.global_position) and _cooldown <= 0.0:
 		_interact = true
 		_cooldown = 1.0
@@ -1115,6 +1204,8 @@ func _shopping_list() -> Dictionary:
 			out["reserve"] = maxf(float(out["reserve"]), hc)
 			if Hub.can_pay(c):
 				out["trip"] = true
+	if BenchTiers.can_buy(world):
+		out["trip"] = true  # a new bench tab is on offer and paid for: nobody leaves that waiting
 	if _research_pick() != "":
 		out["trip"] = true
 	var st: Stations = Stations.of(world)

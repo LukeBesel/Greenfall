@@ -85,3 +85,81 @@ func test_first_junk_is_beside_the_bin_and_the_first_hex_a_few_steps_away() -> v
 	# The simulator's measured middles are this yard's: the nearest one agrees with the globe.
 	assert_almost_eq(PaceSimData.new().hex_distance(0), float(first["bin_m"]), 0.3, "calibration yard_hexes matches the globe")
 	globe.free()
+
+
+# --- The first robot: a hauler, early ----------------------------------------------------------
+
+func _objective_ids() -> Array[String]:
+	var ids: Array[String] = []
+	for o: Variant in Economy.planet_table("tutorial").get("objectives", []):
+		ids.append(str((o as Dictionary)["id"]))
+	return ids
+
+
+func test_first_robot_is_a_hauler_that_costs_parts_only() -> void:
+	var haul: Dictionary = Economy.robots["haulbug"]
+	assert_eq(str(haul["role"]), "haul", "it carries bales to the scale")
+	assert_eq(float(haul["cost"]), 0.0, "robots cost no cubes")
+	assert_eq(float(haul["parts"]), 6.0, "Parts the bot has found by about minute 6")
+	assert_lt(float(haul["parts"]), float(Economy.robots["scoopie"]["parts"]), "the first helper is the cheaper one")
+	assert_eq(Research.robot_requirement("haulbug"), "haul_rig")
+	var plans: Dictionary = Research.def("haul_rig")
+	assert_has(plans.get("when", []), ["bench_tier", 2.0], "its plans come with the Bot Bay")
+	assert_eq(Research.robot_requirement("scoopie"), "scoopie_rig", "the cleaner's plans come later")
+
+
+## The tower is asked for as soon as the base has power (while the card asked for 7 hexes first,
+## nobody saved for it and it came anywhere from minute 6.7 to minute 11), and the first robot
+## follows the Bot Bay at once.
+func test_card_asks_for_the_tower_first_and_the_robot_right_after_the_bot_bay() -> void:
+	var ids: Array[String] = _objective_ids()
+	for pair: Array in [["power", "tower"], ["tower", "glim"], ["glim", "street"], ["street", "bench2"], ["bench2", "robot"]]:
+		assert_eq(ids.find(pair[1]), ids.find(pair[0]) + 1, "%s is the step after %s" % [pair[1], pair[0]])
+
+
+func test_bot_bay_waits_for_the_tower_and_six_hexes() -> void:
+	var bay: Dictionary = BenchTiers.def(2)
+	assert_has(bay.get("requires", []), ["tower", 1.0])
+	assert_has(bay.get("requires", []), ["stat", "hexes_cleaned", 6.0], "six clean hexes: about minute 7 to 9 for the bot")
+	assert_has(bay.get("grants_research", []), "salvage_logic")
+	assert_lte(float((bay["cost"] as Dictionary)["cubes"]), 340.0, "under 100 s of the bot's income at minute 8, so the wait stays short")
+	var tower: Dictionary = (Economy.planet_table("signal_tower")["tiers"] as Array)[0]
+	assert_lte(float((tower["cost"] as Dictionary)["cubes"]), 120.0, "the tower is asked for near minute 3, at 1 to 2 cubes a second")
+
+
+## Fetching the seed tin takes Lumi off the work; a purchase saved for at the same time was a
+## wait of 144 to 190 s in four bot runs. The Research Desk is offered once the tin is found.
+func test_research_desk_waits_for_base_two_and_the_seed_tin() -> void:
+	var desk: Dictionary = BenchTiers.def(3)
+	assert_has(desk.get("requires", []), ["hub_level", 2.0])
+	assert_has(desk.get("requires", []), ["flag", "seeds_unlocked"])
+	var ids: Array[String] = _objective_ids()
+	assert_lt(ids.find("seed"), ids.find("research1"), "the card asks for the seed before it asks for research")
+
+
+func test_base_level_three_waits_for_the_research_desk_and_24_hexes() -> void:
+	var level: Dictionary = {}
+	for row: Variant in Economy.planet_table("hub").get("levels", []):
+		if int((row as Dictionary)["level"]) == 3:
+			level = row
+	assert_has(level.get("requires", []), ["bench_tier", 3.0])
+	assert_has(level.get("requires", []), ["stat", "hexes_cleaned", 24.0], "not on offer in the first 20 minutes: saving 1,100 for it stopped every other purchase")
+
+
+# --- The targets, on the simulator (the bot confirms them: docs/reviews/M3-21_PACING_FIT.md) ----
+
+func test_simulator_meets_the_first_city_targets() -> void:
+	var result: Dictionary = PaceSim.run(Planets.first_shipped().id, 22.0)
+	assert_true(result["ok"], str(result["error"]))
+	var fit: Dictionary = PaceSimReport.city_fit(result["model"] as PaceSimModel)
+	assert_between(float(fit["first_hex_s"]), 1.0, 90.0, "first clean hex under 90 s")
+	assert_between(float(fit["first_robot_s"]), 420.0, 720.0, "first robot by minute 12, and not before minute 7")
+	assert_lte(float(fit["purchase_gap_s"]), 120.0, "no wait between purchases over 120 s in the first 20 minutes")
+	assert_lt(float(fit["most_held"]), 5000.0, "most cubes held")
+	assert_lt(float(fit["largest_price"]), 4200.0, "largest price paid")
+	var gaps: Array = fit["hex_gaps_s"]
+	assert_gt(gaps.size(), 8, "hexes through minute 15")
+	var total: float = 0.0
+	for g: Variant in gaps:
+		total += float(g)
+	assert_between(total / float(gaps.size()), 60.0, 90.0, "a hex about every 60 to 90 s through minute 15")

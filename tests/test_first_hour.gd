@@ -94,7 +94,7 @@ func test_first_seed_is_one_early_seed() -> void:
 	var f: Dictionary = Economy.planet_table("plants")
 	var fs: Dictionary = f["first_seed"]
 	assert_eq(int(fs["seeds_given"]), 1, "one special Maker seed")
-	assert_lte(int(fs["hexes_needed"]), 10, "found around minute 10-15")
+	assert_lte(int(fs["hexes_needed"]), 13, "found around minute 10-15 (a hex takes the bot about a minute now: task M3-21)")
 	var hl: Dictionary = Economy.planet_table("regrowth")
 	var planted: Dictionary = hl["levels"][2]["reward"]
 	assert_lte(int(planted.get("seeds", 0)), 1, "planting a hex must not refund its own seeds")

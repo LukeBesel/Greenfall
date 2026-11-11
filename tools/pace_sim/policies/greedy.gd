@@ -29,9 +29,14 @@ func wants_trip(m: PaceSimModel) -> bool:
 
 func shop(m: PaceSimModel) -> void:
 	var plan: Dictionary = _plan(m)
-	if m.tower_tier < mini(m.data.tower_tiers.size(), maxi(1, m.hub_level)):
-		m.buy_tower(1.0 if str(m.chains.current_objective().get("type", "")) == "tower" else TOWER_MARGIN)
-	m.buy_bench()
+	var tower_asked: bool = str(m.chains.current_objective().get("type", "")) == "tower"
+	# The bot is at the bench every second it stands in the yard, so the Baler is bought the moment
+	# it is paid for and a spare tower never comes first. Here the purse jumps a whole load between
+	# visits: without this the model bought a cheap tower at minute 2, ahead of the Baler.
+	if m.tower_tier < mini(m.data.tower_tiers.size(), maxi(1, m.hub_level)) and (tower_asked or not m.upgrade_open(Pace.UP_BALER)):
+		m.buy_tower(1.0 if tower_asked else TOWER_MARGIN)
+	if m.buy_bench():
+		plan = _plan(m)  # a new tab: what it offers (the Bot Bay's first robot) is bought on the same visit
 	var obj: Dictionary = m.chains.current_objective()
 	if str(obj.get("type", "")) == "upgrade":
 		m.buy_upgrade(str(obj.get("key", "")))

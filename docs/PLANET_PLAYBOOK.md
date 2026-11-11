@@ -132,6 +132,33 @@ Targets, to be replaced by measured values as milestones land.
 - Plant slots in a hex = hex area / `slot_spacing`^2 (49). Planted needs `planted_min_frac` of them: 13 seeds.
 - A seed turns up once per `cooldown_s` + 1 / (`chance` x takes a second) of scooping. Bloom takes 4 x `grow_s` (about 5 min) and drops `seed_yield` seeds.
 
+### Walking, and fitting a first city to it (M3-21)
+The accepted proposal had no distance in it, and the real game ran 1.5 to 2.5 times slower. These replace the "Time for one chest load" lines above for the current game. Measured values are in `docs/reviews/M3-21_PACING_FIT.md`.
+
+**Distance**
+- The simulator walks the real yard: `yard_hexes.middles` are the measured middles of the hexes round the start yard, each measured against the yard's bin and scale anchors. Hexes are worked nearest the bin first. Past the measured hexes: `yard_offset_m` + ring x 17.3 m.
+- Inside one hex the walk grows as it is cleaned: middle distance + (share cleaned - 0.5) x `hex_span_m` (16 m).
+- One way = metres x `path_factor` / `move_speed` + half of `trip_overhead_s`. `path_factor` (2.1) is the route against the straight line: round the fence, along streets, turning. Within the bin's reach (4 m) a loose load tips with no walk at all.
+- Rule of thumb: at 5 m/s a load from 20 m costs about 21 s there and back. A 24-unit chest fills in 6 s, so before the Baler **three quarters of the second hex is walking**. Hexes 2 to 4 are the slowest of the first ten minutes (100 to 125 s each for the bot); price the Baler at about 60 s of income, not more.
+
+**Yard layout**
+- Junk must start within 4 m of the bin and the first hex's middle within 8 m of it, the scale within 12 m. `tests/test_pacing_fit.gd` measures this on the real globe. The second-nearest hex is a hex spacing further (17 m) whatever the layout: a layout fixes the first minute only.
+
+**The first robot is a hauler**
+- With a hauler Lumi makes no trips: a hex drops from about 100 s to about 50 s near minute 9. That is the first power spike, and it must come before the walk grows past ring 1.
+- A hauler moves `carry` bales per trip of 2 x distance / speed + `haul_overhead_s`. Whether one Haul Bug (2 bales, 2.8 m/s) still keeps up past ring 2 was not measured.
+
+**Side income**
+- Level rewards, salvage surges and weather add `side_income_share` (0.4) on top of Lumi's loads, growing from nothing over `side_income_ramp_s` (10 minutes). Rule of thumb: the bot earns about 260 cubes per clean hex in the first 20 minutes, where the hex itself pays 116 x 1.5 for perfect bales.
+- The bot's income: about 2 cubes a second before the Baler, 1 to 2.5 while the first bales are carried to the scale (minutes 2 to 5), 4 to 5 after that, 5 to 7 with the Haul Bug.
+
+**Pricing rules that came out of the fit**
+- **A price is a wait.** The bot saves for what the card asks and buys nothing dearer than a fifth of it meanwhile, so the longest wait is price / income. For "no wait over 120 s" with a margin for a slow run, a card purchase costs at most about 60 to 75 s of income at the time it is asked for: 130 at minute 1, 100 at minute 3 (income dips to 1 to 2 a second while every bale is carried), 260 to 350 from minute 8.
+- **Gate by hexes, not by price, when a step must not come early.** The Bot Bay waits for 6 clean hexes; base level 3 waits for the Research Desk and 24 hexes. A gate adds no saving time, so nothing else stops being bought. A dear price does the opposite: with the base's 1,100 on offer the bot bought nothing for 4 minutes 40 s.
+- **Put a purchase on the card as soon as it is on offer.** While the card asked for 7 clean hexes the tower was nobody's goal and arrived anywhere from minute 6.7 to minute 11. The card now asks for the tower as soon as the base has power, before the 7 hexes.
+- **A story sequence is a wait too.** The first seed takes Lumi off the work for about 110 s. Nothing dear may be on offer when it comes (the Research Desk now waits for the tin), and by itself it is nearly the whole 120 s allowance.
+- **Run-to-run spread is about 25%.** The same build gave the first robot at 8.0 and at 12.0 minutes: digs, a salvage surge and the order hexes are finished in move it. Aim the median at least 20% inside a limit, and judge a number on two runs, never one.
+
 ### Formulas proposed for the Planet 1 redesign (M3-01, second run)
 Proposed, not built: the numbers live in `tools/pace_sim/proposals/planet1/` and the results in `docs/reviews/BALANCE_PROPOSAL_P1_V2.md` (the first run: `BALANCE_PROPOSAL_P1.md`). They follow the lead's decisions in `docs/design/PLANET1_DESIGN.md` section 16. Times are bot seconds; a new player is about 2x slower at actions, and growth timers are real time. Every cadence limit above is a player limit, so a bot time is doubled before it is compared.
 
