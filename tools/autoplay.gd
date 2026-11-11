@@ -1031,8 +1031,9 @@ func _planet_line() -> String:
 		hubs = 0
 		for b: int in os_.sm.built:
 			hubs += 1 if b != 0 else 0
-	return "planet %.1f%% hubs %d hexes %d plants %d base %d" % [pct, hubs, int(world.field.cleaned_count),
-		int(GameState.stats.get("plants_planted", 0)), int(GameState.world.get("hub_level", 1))]
+	return "planet %.1f%% hubs %d hexes %d plants %d base %d income %.0f/min robots %d" % [pct, hubs, int(world.field.cleaned_count),
+		int(GameState.stats.get("plants_planted", 0)), int(GameState.world.get("hub_level", 1)), GameState.income_rate() * 60.0,
+		int(world.fleet.robot_total()) if world.get("fleet") != null else 0]
 
 
 var _hop_state: int = 0  # 0 home, 1 flying out, 2 at the far hub, 3 flying back
@@ -1065,19 +1066,27 @@ func _arc(p: Patch) -> bool:
 				return true
 			_hop_state = 2
 			_hop_t = _now()
-			# Stand-in for v6hubs' far-hub restore: pay Hub.far_cost and raise the hub on arrival.
-			var n0: int = _far_restored(os_)
-			if _hop_to > 0 and os_.sm.built[_hop_to] == 0 and Hub.pay(Hub.far_cost(n0)):
-				os_.sm.set_level(_hop_to, Hub.far_level())
-				os_.sm.set_built(_hop_to)
-				_progress()
-				_mark("hub_%d_s" % (n0 + 2))
-			print("[arc] %.1f min  hub %d restored (site %d)  %s  cubes=%.0f earned=%.0f" % [_now() / 60.0, _far_restored(os_) + 1, _hop_to, _planet_line(),
-				GameState.get_currency("cubes").to_float(), BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float()])
+			print("[arc] %.1f min  landed at site %d" % [_now() / 60.0, _hop_to])
 			return true
 		2:
-			if _now() - _hop_t < DevHooks.get_f("far-dwell", 180.0):
-				return true  # the new hub's local work (stand-in: v6hubs' chain is not in yet)
+			# The hub's local steps (clean N hexes there, v6hubs' chain): the bot does not clean
+			# away from its yard yet, so it stands in for them with --far-dwell game seconds
+			# (default 240), then wakes the landmark the real way (HubPurpose.wake pays the price).
+			if _now() - _hop_t < DevHooks.get_f("far-dwell", 240.0):
+				return true
+			var n0: int = _far_restored(os_)
+			var ok: bool = false
+			if os_.purpose != null:
+				ok = os_.purpose.wake(_hop_to)
+			elif _hop_to > 0 and os_.sm.built[_hop_to] == 0 and Hub.pay(Hub.far_cost(n0)):
+				os_.sm.set_level(_hop_to, Hub.far_level())
+				os_.sm.set_built(_hop_to)
+				ok = true
+			if ok:
+				_progress()
+				_mark("hub_%d_s" % (n0 + 2))
+			print("[arc] %.1f min  hub %d %s (site %d)  x%.1f sales  %s  cubes=%.0f earned=%.0f" % [_now() / 60.0, n0 + 2, "restored" if ok else "NOT restored", _hop_to, Hub.trade_mult(), _planet_line(),
+				GameState.get_currency("cubes").to_float(), BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float()])
 			_hop_state = 3
 			_hop_t = _now()
 			os_.hop_to(0)
@@ -1106,12 +1115,16 @@ func _arc(p: Patch) -> bool:
 		return false
 	if want_hub and os_.rocket_unlocked() and p_ok(p) and _at_base(p) and Hub.can_pay(fc) \
 			and (arc_turn or float(fc.get("cubes", 0.0)) <= float(cc.get("cubes", 0.0))):
-		for e: Dictionary in os_.destinations():
-			if os_.sm.built[int(e["site"])] != 0:
-				continue
+		var to: int = HubPlan.next_site(os_.sm.planet_id) if os_.purpose != null else -1
+		if to < 0:
+			for e: Dictionary in os_.destinations():
+				if os_.sm.built[int(e["site"])] == 0:
+					to = int(e["site"])
+					break
+		if to > 0:
 			_hop_state = 1
 			_hop_t = _now()
-			_hop_to = int(e["site"])
+			_hop_to = to
 			_event("launch", {"to": _hop_to})
 			os_.hop_to(_hop_to)
 			return true
