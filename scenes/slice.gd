@@ -25,8 +25,6 @@ var garden: Garden
 var hex_levels: HexLevels
 var goals: Goals
 var first_seed: FirstSeed
-var wildlife: Wildlife
-var water: WaterView
 var doc_view: DocumentView
 var interactables: Interactables
 var scope_from_memory: bool = false  # [scope]
@@ -39,18 +37,14 @@ var lumi_level: LumiLevel  # [hud] Lumi Level / XP (systems/lumi_level.gd), draw
 var contracts: Contracts  # [events] contracts board + token shop (systems/contracts.gd)
 var photo: PhotoMode  # [photo] photo mode (ui/photo_mode.gd)
 var fauna: Fauna  # [wild] ambient animals (fauna/fauna.gd)
-var frontier: FrontierDistrict  # [biomes] late-game frontier districts (planet/frontier_district.gd)
 var planet_env: Dictionary = {}  # [planet-rime] dev: --planet-env=<id> dresses a district with a planet env (data/planets.json)
-var bounds: WorldBounds  # [orbit] soft edge + fall rescue (planet/world_bounds.gd)
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var orbit: SliceOrbit  # [orbB] --orbit: the slice on the walkable globe (scenes/slice_orbit.gd); null on the flat game
 var view: FieldView
 var depot: Depot
 var patch: Patch
-var cam: CameraRig
 var hud: HUD
 var upgrades: UpgradesScreen
-var command: CommandView
 var music: MusicHooks
 var intro: Intro
 var objectives: Objectives  # [onboard] first-minutes story objectives (story/objectives.gd)
@@ -81,9 +75,6 @@ signal built
 
 
 func _ready() -> void:
-	if not SliceOrbit.wanted():  # [orbit] phase A prototypes: --orbit=globe (verdance_globe), --orbit=v1 (orbit_world)
-		get_tree().change_scene_to_file.call_deferred("res://planet/orbit/%s.tscn" % ("orbit_world" if DevHooks.get_s("orbit", "") == "v1" else "verdance_globe"))
-		return
 	orbit = SliceOrbit.new()
 	orbit.name = "Orbit"
 	add_child(orbit)
@@ -141,8 +132,9 @@ func _launch(_to_hub: int) -> void:
 
 ## "" when the rocket can launch, else why not (no pad yet, or the energy cells are recharging).
 func rocket_status() -> String:
-	if not (hub.level >= 5 or DevHooks.has("rocket") or GameState.world.get("rocket_parked", false)):
-		return tr("Locked. Upgrade your base to level 5 to build the launch pad.")
+	var os_: OrbitSites = OrbitSites.of(self)  # [v6pace] the rocket's gate is data (Hub.rocket_open); once owned it travels with Lumi
+	if not (Hub.rocket_open(hub.level) or DevHooks.has("rocket") or GameState.world.get("rocket_parked", false) or (os_ != null and os_.rocket_unlocked())):
+		return Hub.rocket_lock_text(hub.level)
 	var left: float = RocketTiers.recharge_left()
 	if left > 0.0:
 		return tr("Energy cells recharging: %s. Rocket upgrades refill them faster.") % RocketTiers.fmt_time(left)

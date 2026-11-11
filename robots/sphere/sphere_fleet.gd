@@ -45,9 +45,13 @@ func build(type_id: String, at: Vector3) -> Robot:
 	GameState.spend("cubes", build_cost(type_id))
 	var cell: int = crew.grid.cell_at(at) if at != Vector3.ZERO else crew.depot_of(crew.hub_cell)
 	var rname: String = NAMES[randi() % NAMES.size()] + "-%02d" % (randi() % 100)
-	var u: Dictionary = crew.spawn(type_id, tier_of(type_id), cell, crew.hub_cell, rname)
+	# [v6crew] It belongs to the hub it is built at, rolls out and starts by itself.
+	var u: Dictionary = crew.spawn(type_id, tier_of(type_id), cell, crew.nearest_hub(crew.grid.centers[cell]), rname)
+	crew.greet(u)
 	if str(Economy.robots[type_id].get("role", "")) == "any":
 		u["role"] = join_crew(type_id) if join_crew(type_id) != "" else "clean"
+	if Once.take("first_robot_rollout") and world != null and world.get("upgrades") != null and world.get("upgrades").has_method("close_screen"):
+		(world.get("upgrades") as Node).call_deferred("close_screen")  # [v6crew] the first one: watch it roll out
 	GameState.inc_stat("robots_built")
 	EventBus.robot_built.emit(rname)
 	EventBus.toast.emit(tr("%s %s assembled. It looks around, then gets to work.") % [tr(str(Economy.robots[type_id]["name"])), rname], "story" if Once.take("toast_first_robot") else "reward")  # [v4calm] only the first

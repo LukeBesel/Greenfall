@@ -132,8 +132,7 @@ static func district_done(world: Node) -> bool:
 		return true
 	if kid == "cradle_returns":
 		return GameState.flags.get("cradle_returned", false)
-	var fr: FrontierDistrict = world.get("frontier")
-	return fr != null and fr.growing_frac >= 0.5
+	return false  # [v6flat] a live frontier district (gone with the flat world) was done at 50% Growing
 
 
 ## The hub to fly to now, or -1 (stay). Frontiers in unlock order first; else the next ordinary
@@ -160,43 +159,6 @@ static func next_hub(world: Node) -> int:
 	return -1
 
 
-# --- Frontier chores (called every second from AutoplayBot._manage) -------------------------
-
-## Heaters on the ice nearest the base (spread out so their warmth covers more), a few early
-## greenhouses until Cold-Hardy Seeds. Returns an event line or "".
-static func frontier_chores(world: Node) -> String:
-	var fr: FrontierDistrict = world.get("frontier")
-	if fr == null:
-		return ""
-	var f: HexField = world.field
-	var cubes: float = GameState.get_currency("cubes").to_float()
-	if fr.kid == "frozen_port":
-		var ice_cfg: Dictionary = fr.kind.get("ice", {})
-		if fr.heaters.size() < int(ice_cfg.get("heater_max", 16)) and cubes > fr.heater_cost().to_float() * 1.5:
-			var best: int = -1
-			var best_s: float = INF
-			for h: int in fr.ice.size():
-				if fr.ice[h] <= 0.0 or h in fr.heaters or f.hex_hub[h] != 0:
-					continue
-				var s: float = f.hex_center(h).length()
-				for hh: Variant in fr.heaters:
-					if Hex.distance(f.hex_axial[int(hh)], f.hex_axial[h]) <= 1:
-						s += 60.0  # next to a heater already: it gets the spread
-				if s < best_s:
-					best_s = s
-					best = h
-			if best >= 0 and fr._place_heater(best, true):
-				return "heater hex %d (%d)" % [best, fr.heaters.size()]
-		if not Research.has("cold_hardy_seeds") and GameState.flags.get("seeds_unlocked", false) and fr.greenhouses.size() < 8 \
-				and cubes > fr.greenhouse_cost().to_float() * 2.0:
-			for h: int in f.hex_count():
-				if f.hex_hub[h] == 0 and not f.is_water(h) and f.is_clean(h) and fr.ice[h] <= 0.0 and not (h in fr.greenhouses):
-					if fr._build_greenhouse(h, true):
-						return "greenhouse hex %d (%d)" % [h, fr.greenhouses.size()]
-					break
-	return ""
-
-
 ## Research to pull forward in this district (frontier needs).
 static func research_first(world: Node) -> Array[String]:
 	match frontier_kid(world):
@@ -207,9 +169,7 @@ static func research_first(world: Node) -> Array[String]:
 	return []
 
 
-## Cradle pad hexes (plant and sustain these first), else [].
-static func pad_hexes(world: Node) -> Array[int]:
-	var fr: FrontierDistrict = world.get("frontier")
-	if fr == null or fr.kid != "cradle_returns":
-		return []
-	return Frontiers.pad_hexes(world.field, fr.kind.get("pad", {}))
+## Cradle pad hexes (plant and sustain these first), else []. [v6flat] Only the flat Cradle
+## Returns district had a pad: none on the globe.
+static func pad_hexes(_world: Node) -> Array[int]:
+	return []

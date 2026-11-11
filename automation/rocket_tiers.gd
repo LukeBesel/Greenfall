@@ -40,6 +40,11 @@ static func def(t: int = -1) -> Dictionary:
 	return {}
 
 
+## [v6pace] Hubs of a round planet this rocket can keep restored, the start hub included.
+static func hub_limit(t: int = -1) -> int:
+	return int(def(t).get("hubs", 99))
+
+
 static func next_def() -> Dictionary:
 	return def(tier() + 1) if tier() < max_tier() else {}
 

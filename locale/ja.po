@@ -192,67 +192,67 @@ msgstr "タッチパッド"
 msgid "Paddle 1"
 msgstr "パドル 1"
 
-#: autoload/Settings.gd:522
+#: autoload/Settings.gd:535
 msgid "LMB"
 msgstr "左クリック"
 
-#: autoload/Settings.gd:523
+#: autoload/Settings.gd:536
 msgid "RMB"
 msgstr "右クリック"
 
-#: autoload/Settings.gd:524
+#: autoload/Settings.gd:537
 msgid "MMB"
 msgstr "中クリック"
 
-#: autoload/Settings.gd:525
+#: autoload/Settings.gd:538
 msgid "Wheel up"
 msgstr "ホイール上"
 
-#: autoload/Settings.gd:526
+#: autoload/Settings.gd:539
 msgid "Wheel down"
 msgstr "ホイール下"
 
-#: autoload/Settings.gd:527
+#: autoload/Settings.gd:540
 msgid "Mouse %d"
 msgstr "マウス %d"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:542
 msgid "Button %d"
 msgstr "ボタン %d"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:547
 msgid "LS left"
 msgstr "Lスティック左"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:547
 msgid "LS right"
 msgstr "Lスティック右"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:548
 msgid "LS up"
 msgstr "Lスティック上"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:548
 msgid "LS down"
 msgstr "Lスティック下"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:549
 msgid "RS left"
 msgstr "Rスティック左"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:549
 msgid "RS right"
 msgstr "Rスティック右"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:550
 msgid "RS up"
 msgstr "Rスティック上"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:550
 msgid "RS down"
 msgstr "Rスティック下"
 
-#: autoload/Settings.gd:548
+#: autoload/Settings.gd:561
 msgid "hold %s"
 msgstr "%s 長押し"
 
@@ -268,10 +268,6 @@ msgstr "オートベーラー"
 msgid "KEEP CLEAR · 40 T"
 msgstr "立入禁止 · 40 T"
 
-#: automation/cargo.gd:37
-msgid "Cargo pod landed: %s cubes from %d robots in other districts."
-msgstr "貨物ポッド着陸：%s キューブ、ほかの地区のロボット %d 台から。"
-
 #: automation/conveyor.gd:71
 msgid "TO  SCALE  ◀"
 msgstr "はかり  へ  ◀"
@@ -280,11 +276,19 @@ msgstr "はかり  へ  ◀"
 msgid "BALE  FEED"
 msgstr "ベール投入口"
 
-#: automation/hub.gd:72
+#: automation/hub.gd:89
+msgid "Locked. Upgrade your base to level %d to build the launch pad."
+msgstr "ロック中。発射台を建てるには基地をレベル%dに上げよう。"
+
+#: automation/hub.gd:90
+msgid "The rocket isn't ready yet. Keep following WREN's steps."
+msgstr "ロケットはまだ準備中。WRENのステップを続けよう。"
+
+#: automation/hub.gd:170
 msgid "Hub upgraded: %s."
 msgstr "基地をアップグレード：%s。"
 
-#: automation/hub.gd:103
+#: automation/hub.gd:201
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr "空気清浄機が稼働。ファンが長い、ほこりっぽいため息とともに回りだした。"
 
@@ -401,27 +405,27 @@ msgstr "粉砕  ·  溶解  ·  完全処分"
 msgid "HAND FEED"
 msgstr "手動投入"
 
-#: automation/rocket.gd:315
+#: automation/rocket.gd:316
 msgid "LIFT OFF"
 msgstr "リフトオフ"
 
-#: automation/rocket.gd:861
+#: automation/rocket.gd:862
 msgid "Space / Esc  skip"
 msgstr "Space / Esc  スキップ"
 
-#: automation/rocket_tiers.gd:51 ui/robot_card.gd:251
+#: automation/rocket_tiers.gd:56 ui/robot_card.gd:251
 msgid "Top tier"
 msgstr "最高ティア"
 
-#: automation/rocket_tiers.gd:54
+#: automation/rocket_tiers.gd:59
 msgid "Needs the Rocket Cargo research"
 msgstr "研究「ロケット貨物」が必要"
 
-#: automation/rocket_tiers.gd:56 systems/homeward.gd:508
+#: automation/rocket_tiers.gd:61 systems/homeward.gd:547
 msgid "Not enough cubes or parts"
 msgstr "キューブかパーツが足りない"
 
-#: automation/rocket_tiers.gd:69
+#: automation/rocket_tiers.gd:74
 msgid "Rocket upgraded: %s."
 msgstr "ロケットをアップグレード：%s。"
 
@@ -515,7 +519,7 @@ msgstr "%s 相当のベールが、運ぶ者もなく基地に積まれていた
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "清浄機がずっと空気をろ過していた。少しだけ澄んだ。"
 
-#: core/pace.gd:147 story/objectives.gd:834
+#: core/pace.gd:147 story/objectives.gd:836
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "重すぎる。作業台でリフト力をアップグレードしよう。"
 
@@ -764,18 +768,6 @@ msgstr "いっしょに咲こう"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  いのち"
 
-#: planet/world_bounds.gd:105
-msgid "WREN: That's the edge of the survey zone, Lumi. Nothing out there but haze."
-msgstr "WREN：そこが測量ゾーンの端よ、Lumi。外にはもやしかない。"
-
-#: planet/world_bounds.gd:166
-msgid "Lumi hovers back onto solid ground."
-msgstr "Lumi はふわりと固い地面に戻った。"
-
-#: planet/orbit/verdance_globe.gd:567 scenes/slice_orbit.gd:396
-msgid "HEX CLEAN!  +%s"
-msgstr "ヘックス クリーン！  +%s"
-
 #: planet/sites/hub_hop.gd:48
 msgid "{interact}  skip"
 msgstr "{interact}  スキップ"
@@ -804,124 +796,128 @@ msgstr "港町"
 msgid "landmark"
 msgstr "ランドマーク"
 
-#: planet/sites/hub_plan.gd:254
-msgid "Everything sells for x%s now."
-msgstr "すべての売値が x%s になった。"
+#: planet/sites/hub_plan.gd:258
+msgid "The recycling network grew: everything sells for x%s now."
+msgstr "リサイクル網が広がった：すべての売値が x%s になった。"
 
-#: planet/sites/hub_plan.gd:273
+#: planet/sites/hub_plan.gd:277
 msgid "Rocket piece: %s"
 msgstr "ロケットの部品：%s"
 
-#: planet/sites/hub_plan.gd:295
+#: planet/sites/hub_plan.gd:299
 msgid "+%s Cubes"
 msgstr "+%s キューブ"
 
-#: planet/sites/hub_plan.gd:297
+#: planet/sites/hub_plan.gd:301
 msgid "+%d Parts"
 msgstr "+%d パーツ"
 
-#: planet/sites/hub_plan.gd:299
+#: planet/sites/hub_plan.gd:303
 msgid "+%d Seeds"
 msgstr "+%d 種"
 
-#: planet/sites/hub_plan.gd:303
+#: planet/sites/hub_plan.gd:307
 msgid "New: %s"
 msgstr "新しい：%s"
 
-#: planet/sites/hub_plan.gd:307
+#: planet/sites/hub_plan.gd:311
 msgid "New Lumi design: %s"
 msgstr "Lumi の新デザイン：%s"
 
-#: planet/sites/hub_purpose.gd:143
+#: planet/sites/hub_purpose.gd:145
 msgid "Home. The workbench is by the pod."
 msgstr "ホームだ。作業台はポッドのそばにある。"
 
-#: planet/sites/hub_purpose.gd:149
+#: planet/sites/hub_purpose.gd:151
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "ロケットは発着場で待っている。リストの一番上がホームだ。"
 
-#: planet/sites/hub_purpose.gd:155
+#: planet/sites/hub_purpose.gd:157
 msgid "%s: %d%% clean, up %d%% while you were away."
 msgstr "%s：%d%% きれい。留守のあいだに +%d%%。"
 
-#: planet/sites/hub_purpose.gd:233
-msgid "Clean hexes here: %d / %d"
-msgstr "ここのマスをきれいに：%d / %d"
-
 #: planet/sites/hub_purpose.gd:235
+msgid "Dig the landmark out. Clean hexes here: %d / %d"
+msgstr "目印を掘り出そう。ここのマスをきれいに：%d / %d"
+
+#: planet/sites/hub_purpose.gd:237
 msgid "Repair an outpost here: %d / %d"
 msgstr "ここの前哨基地を修理：%d / %d"
 
-#: planet/sites/hub_purpose.gd:238
+#: planet/sites/hub_purpose.gd:240
 msgid "Upgrade the rocket, then wake the %s"
 msgstr "ロケットを強化してから起こそう：%s"
 
-#: planet/sites/hub_purpose.gd:239
+#: planet/sites/hub_purpose.gd:241
 msgid "Wake the %s (%s)"
 msgstr "起こそう：%s（%s）"
 
-#: planet/sites/hub_purpose.gd:273
+#: planet/sites/hub_purpose.gd:275
 msgid "E   Wake the %s  (%s)"
 msgstr "E   起こす：%s  （%s）"
 
-#: planet/sites/hub_purpose.gd:274
+#: planet/sites/hub_purpose.gd:276
 msgid "%s: asleep. %s"
 msgstr "%s：眠っている。%s"
 
-#: planet/sites/hub_purpose.gd:279
-msgid "The rocket can keep %d bases going. Upgrade the rocket at the workbench."
-msgstr "ロケットが支えられる基地は %d つまで。作業台でロケットを強化しよう。"
+#: planet/sites/hub_purpose.gd:281
+msgid "The rocket can carry supplies to %d bases. Upgrade it at the workbench."
+msgstr "ロケットが物資を届けられる基地は %d つまで。作業台でロケットを強化しよう。"
 
-#: planet/sites/hub_purpose.gd:295
+#: planet/sites/hub_purpose.gd:297
 msgid "Waking the %s needs %s."
 msgstr "起こすには（%s）%s が必要。"
 
-#: planet/sites/hub_purpose.gd:319
-msgid "%s is awake. %s restored."
-msgstr "%s が目を覚ました。%s が復旧した。"
+#: planet/sites/hub_purpose.gd:321
+msgid "%s is awake. %s keeps cleaning when you fly on."
+msgstr "%s が目を覚ました。旅立ったあとも、%s は掃除を続ける。"
 
-#: planet/sites/hub_purpose.gd:346
+#: planet/sites/hub_purpose.gd:348
 msgid "%s grows: level %d."
 msgstr "%s が成長：レベル %d。"
 
-#: planet/sites/hub_purpose.gd:374
+#: planet/sites/hub_purpose.gd:376
 msgid "%d robot working"
 msgid_plural "%d robots working"
 msgstr[0] "ロボット %d 台が作業中"
 
-#: planet/sites/hub_purpose.gd:382
+#: planet/sites/hub_purpose.gd:384
 msgid "Home: %d%% clean"
 msgstr "ホーム：%d%% きれい"
 
-#: planet/sites/hub_purpose.gd:384
+#: planet/sites/hub_purpose.gd:386
 msgid "Restored: %d%% clean"
 msgstr "復旧済み：%d%% きれい"
 
-#: planet/sites/hub_purpose.gd:386 ui/profile_picker.gd:111
+#: planet/sites/hub_purpose.gd:388 ui/profile_picker.gd:111
 msgid "New"
 msgstr "新規"
 
-#: planet/sites/hub_purpose.gd:389
+#: planet/sites/hub_purpose.gd:391
 msgid "Ready to wake"
 msgstr "起こせる"
 
-#: planet/sites/hub_purpose.gd:390
+#: planet/sites/hub_purpose.gd:392
 msgid "Asleep: %d / %d"
 msgstr "眠っている：%d / %d"
 
-#: planet/sites/hub_purpose.gd:401
+#: planet/sites/hub_purpose.gd:403
 msgid "%s   %d%% CLEAN"
 msgstr "%s   %d%% きれい"
 
-#: planet/sites/hub_purpose.gd:403
+#: planet/sites/hub_purpose.gd:405
 msgid "%s   BASES %d/%d"
 msgstr "%s   基地 %d/%d"
 
-#: planet/sites/hub_purpose.gd:450
+#: planet/sites/hub_purpose.gd:452
 msgid "Restored. Next: take the rocket to %s."
 msgstr "復旧完了。次はロケットで %s へ。"
 
-#: planet/sites/hub_purpose.gd:624
+#: planet/sites/hub_purpose.gd:454
+msgid "All %d bases stand. Fly home and make the rocket ready to leave."
+msgstr "%d つの基地がそろった。ホームに戻ってロケットの出発準備をしよう。"
+
+#: planet/sites/hub_purpose.gd:626
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
@@ -961,22 +957,6 @@ msgstr "基地 %d"
 #: planet/sites/sphere_water.gd:263 water/water_view.gd:79
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
 msgstr "水が……底が見える。Lumi、下で何かが動いてる。"
-
-#: planet/sphere/sphere_walk.gd:431
-msgid "Planet %d m around"
-msgstr "惑星一周 %d m"
-
-#: planet/sphere/sphere_walk.gd:431
-msgid "Walked %d m (%d%%)"
-msgstr "歩いた距離 %d m（%d%%）"
-
-#: planet/sphere/sphere_walk.gd:432
-msgid "Speed %.1f m/s"
-msgstr "速度 %.1f m/s"
-
-#: planet/sphere/sphere_walk.gd:432
-msgid "Bots near %d, far %d"
-msgstr "ボット 近く %d、遠く %d"
 
 #: plants/composter.gd:77
 msgid "E   compost press  ·  dormant until something grows"
@@ -1018,7 +998,7 @@ msgstr ""
 "コンポストプレス  Lv %d\n"
 "ホッパー %d%%  →  種"
 
-#: plants/garden.gd:364
+#: plants/garden.gd:361
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "ヘックスが完全によみがえった。もう小さな何かが住みついている。"
 
@@ -1042,7 +1022,7 @@ msgstr "      次：%s"
 msgid "HEX LV %d  %s"
 msgstr "ヘックス Lv %d  %s"
 
-#: plants/hex_levels.gd:282
+#: plants/hex_levels.gd:279
 msgid "Hex Lv %d  %s.   %s"
 msgstr "ヘックス Lv %d  %s。   %s"
 
@@ -1062,55 +1042,55 @@ msgstr "埋もれたパーツ  %s  ·  %.1f m"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "埋もれたパーツ  ·  シグナル %d%%"
 
-#: player/patch.gd:146
+#: player/patch.gd:170
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi はガタガタと庭に戻ってきた。いまのは何だったんだろう。"
 
-#: player/patch.gd:200
+#: player/patch.gd:224
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi は泳げない。作業台のホバージェットがあれば湖の上を浮いて進める。"
 
-#: player/patch.gd:318
+#: player/patch.gd:348
 msgid "No seeds yet. Keep cleaning."
 msgstr "まだ種がない。片づけを続けよう。"
 
-#: player/patch.gd:353
+#: player/patch.gd:383
 msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 msgstr "種にはきれいで開けた地面が必要。道路、縁石、発着場には植えられない。"
 
-#: player/patch.gd:360
+#: player/patch.gd:390
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "種がなくなった。咲いた植物がまた落としてくれる。"
 
-#: player/patch.gd:367
+#: player/patch.gd:397
 msgid "Watering can is empty. Refill at the hub."
 msgstr "じょうろが空っぽ。基地で補給しよう。"
 
-#: player/patch.gd:569
+#: player/patch.gd:599
 msgid "PERFECT BALE  %s"
 msgstr "パーフェクトベール  %s"
 
-#: player/patch.gd:575
+#: player/patch.gd:605
 msgid "OVERSTUFFED  %s"
 msgstr "詰め込みすぎ  %s"
 
-#: player/patch.gd:579
+#: player/patch.gd:609
 msgid "PURE  %s"
 msgstr "ピュア  %s"
 
-#: player/patch.gd:581
+#: player/patch.gd:611
 msgid "SURGE  %s"
 msgstr "サージ  %s"
 
-#: player/patch.gd:584
+#: player/patch.gd:614
 msgid "  (streak +%d%%)"
 msgstr "  （連続 +%d%%）"
 
-#: player/patch.gd:627
+#: player/patch.gd:657
 msgid "Salvaged: %s"
 msgstr "回収：%s"
 
-#: player/patch.gd:656
+#: player/patch.gd:686
 msgid "Recovered: %s"
 msgstr "発見：%s"
 
@@ -1284,11 +1264,11 @@ msgstr[0] "ベール %d 個を運搬中"
 msgid "fetching a bale"
 msgstr "ベールを取りに行く"
 
-#: robots/robot.gd:256 robots/robot.gd:912
+#: robots/robot.gd:256 robots/robot.gd:907
 msgid "waiting for bales"
 msgstr "ベール待ち"
 
-#: robots/robot.gd:259 robots/robot.gd:582
+#: robots/robot.gd:259 robots/robot.gd:577
 msgid "out of seeds"
 msgstr "種切れ"
 
@@ -1332,7 +1312,7 @@ msgstr "ベールを岸へ運搬中"
 msgid "skimming lake hex %d (%d%%)"
 msgstr "湖のヘックス %d をすくっている（%d%%）"
 
-#: robots/robot.gd:270 robots/robot.gd:775
+#: robots/robot.gd:270 robots/robot.gd:770
 msgid "lake is clean"
 msgstr "湖はきれい"
 
@@ -1348,27 +1328,27 @@ msgstr "ゾーン清掃済み、待機中"
 msgid "nothing left to clean"
 msgstr "片づけるものがもうない"
 
-#: robots/robot.gd:427 robots/robot.gd:775
+#: robots/robot.gd:427 robots/robot.gd:770
 msgid "zone clean"
 msgstr "ゾーン清掃済み"
 
-#: robots/robot.gd:580
+#: robots/robot.gd:575
 msgid "seeds locked"
 msgstr "種がロック中"
 
-#: robots/robot.gd:586 robots/robot.gd:590
+#: robots/robot.gd:581 robots/robot.gd:585
 msgid "no empty soil"
 msgstr "空いている土がない"
 
-#: robots/robot.gd:619
+#: robots/robot.gd:614
 msgid "no garden"
 msgstr "菜園がない"
 
-#: robots/robot.gd:633
+#: robots/robot.gd:628
 msgid "everything watered"
 msgstr "ぜんぶ水やり済み"
 
-#: robots/robot.gd:729
+#: robots/robot.gd:724
 msgid "no water source"
 msgstr "水源がない"
 
@@ -1420,51 +1400,243 @@ msgstr "フリート %d / %d"
 msgid "Building a %s, %d%%"
 msgstr "%s を製造中、%d%%"
 
-#: robots/sphere/command_overlay.gd:39
-msgid "Y: role · Hold A: paint · Hold X: erase · Left stick: move"
-msgstr "Y：役割 · A 長押し：塗る · X 長押し：消す · 左スティック：移動"
+#: robots/sphere/command_overlay.gd:17
+msgid "Cleaners"
+msgstr "清掃係"
 
-#: robots/sphere/command_overlay.gd:40
-msgid "Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi"
-msgstr "Tab：役割 · 左：塗る · 右：消す · 中：ロボットを送る · E：Lumi に戻る"
+#: robots/sphere/command_overlay.gd:17
+msgid "Haulers"
+msgstr "運搬係"
 
-#: robots/sphere/command_overlay.gd:41
-msgid "%s zone"
-msgstr "%s ゾーン"
+#: robots/sphere/command_overlay.gd:17
+msgid "Planters"
+msgstr "植え付け係"
 
-#: robots/sphere/sphere_fleet.gd:53
+#: robots/sphere/command_overlay.gd:17
+msgid "Waterers"
+msgstr "水やり係"
+
+#: robots/sphere/command_overlay.gd:17
+msgid "Skimmers"
+msgstr "すくい係"
+
+#: robots/sphere/command_overlay.gd:18
+msgid "Paint the ground you want cleaned first."
+msgstr "先に片づけたい地面をぬろう。"
+
+#: robots/sphere/command_overlay.gd:18
+msgid "Paint where to plant."
+msgstr "植える場所をぬろう。"
+
+#: robots/sphere/command_overlay.gd:19
+msgid "Paint where to water."
+msgstr "水をやる場所をぬろう。"
+
+#: robots/sphere/command_overlay.gd:19
+msgid "Paint the water to skim first."
+msgstr "先にすくいたい水面をぬろう。"
+
+#: robots/sphere/command_overlay.gd:99
+msgid "ROBOT COMMAND"
+msgstr "ロボット司令"
+
+#: robots/sphere/command_overlay.gd:102
+msgid "No robots here yet."
+msgstr "ここにはまだロボットがいない。"
+
+#: robots/sphere/command_overlay.gd:103 data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
+msgid "Build one at the workbench."
+msgstr "作業台で作ろう。"
+
+#: robots/sphere/command_overlay.gd:105
+msgid "%d robot"
+msgid_plural "%d robots"
+msgstr[0] "ロボット%d台"
+
+#: robots/sphere/command_overlay.gd:107
+msgid "About %d hexes an hour"
+msgstr "1時間に約%dヘックス"
+
+#: robots/sphere/command_overlay.gd:121
+msgid "%d working"
+msgstr "%d台が作業中"
+
+#: robots/sphere/command_overlay.gd:123
+msgid "%d working, %d waiting"
+msgstr "%d台が作業中、%d台が待機中"
+
+#: robots/sphere/command_overlay.gd:125
+msgid "%d waiting"
+msgstr "%d台が待機中"
+
+#: robots/sphere/command_overlay.gd:129 robots/sphere/crew_talk.gd:71 robots/sphere/crew_talk.gd:75
+msgid "Bales are piling up. Build a Haul Bug."
+msgstr "ベールがたまっている。Haul Bug を作ろう。"
+
+#: robots/sphere/command_overlay.gd:138
+msgid "Good! Your robots will work here first."
+msgstr "いいね！ロボットはまずここで働くよ。"
+
+#: robots/sphere/command_overlay.gd:139
+msgid "Hold A: paint   Hold X: erase   %s: back"
+msgstr "A長押し：ぬる   X長押し：消す   %s：もどる"
+
+#: robots/sphere/command_overlay.gd:140
+msgid "Left mouse: paint   Right mouse: erase   %s: back"
+msgstr "左クリック：ぬる   右クリック：消す   %s：もどる"
+
+#: robots/sphere/command_overlay.gd:142
+msgid "Y: next job"
+msgstr "Y：次の仕事"
+
+#: robots/sphere/command_overlay.gd:142
+msgid "Tab: next job"
+msgstr "Tab：次の仕事"
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Cleaning this hex."
+msgstr "このヘックスを片づけ中。"
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Planting here."
+msgstr "ここに植えている。"
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Watering the plants."
+msgstr "植物に水をやっている。"
+
+#: robots/sphere/crew_talk.gd:21
+msgid "Skimming junk off the lake."
+msgstr "湖のゴミをすくっている。"
+
+#: robots/sphere/crew_talk.gd:23
+msgid "No dirty ground left around this base."
+msgstr "この基地のまわりはもうきれい。"
+
+#: robots/sphere/crew_talk.gd:24
+msgid "My zone is done. Paint more ground for me."
+msgstr "ゾーンは終わったよ。もっと地面をぬって。"
+
+#: robots/sphere/crew_talk.gd:25
+msgid "No bales to carry right now."
+msgstr "いまは運ぶベールがない。"
+
+#: robots/sphere/crew_talk.gd:26
+msgid "No clean ground to plant."
+msgstr "植えられるきれいな地面がない。"
+
+#: robots/sphere/crew_talk.gd:27
+msgid "Out of seeds."
+msgstr "タネがなくなった。"
+
+#: robots/sphere/crew_talk.gd:28
+msgid "Nothing to water yet. Plant something first."
+msgstr "まだ水をやるものがない。先に何か植えよう。"
+
+#: robots/sphere/crew_talk.gd:29
+msgid "No water nearby to fill my tank."
+msgstr "タンクに入れる水が近くにない。"
+
+#: robots/sphere/crew_talk.gd:30
+msgid "No junk on the lakes here."
+msgstr "このあたりの湖にゴミはない。"
+
+#: robots/sphere/crew_talk.gd:31
+msgid "I can't find a way there. Trying another spot."
+msgstr "そこへ行く道がない。別の場所をためすよ。"
+
+#: robots/sphere/crew_talk.gd:68
+msgid "Hello! Looking around."
+msgstr "こんにちは！まわりを見ているよ。"
+
+#: robots/sphere/crew_talk.gd:72
+msgid "On my way to work."
+msgstr "仕事に向かっている。"
+
+#: robots/sphere/crew_talk.gd:78
+msgid "Fetching a bale."
+msgstr "ベールを取りに行く。"
+
+#: robots/sphere/crew_talk.gd:80
+msgid "Carrying bales home."
+msgstr "ベールを持ち帰っている。"
+
+#: robots/sphere/crew_talk.gd:82
+msgid "Tipping junk into the baler."
+msgstr "ゴミをベーラーに入れている。"
+
+#: robots/sphere/crew_talk.gd:84
+msgid "Filling my water tank."
+msgstr "水タンクを満たしている。"
+
+#: robots/sphere/crew_talk.gd:88
+msgid "Looking for work."
+msgstr "仕事を探している。"
+
+#: robots/sphere/crew_talk.gd:94
+msgid "%s the %s: %s"
+msgstr "%s（%s）：%s"
+
+#: robots/sphere/crew_talk.gd:120
+msgid "No robots here yet"
+msgstr "ここにはまだロボットがいない"
+
+#: robots/sphere/crew_talk.gd:122
+msgid "%d robot working here"
+msgid_plural "%d robots working here"
+msgstr[0] "ロボット%d台がここで作業中"
+
+#: robots/sphere/crew_talk.gd:124
+msgid "%s, about %d hexes an hour"
+msgstr "%s、1時間に約%dヘックス"
+
+#: robots/sphere/crew_talk.gd:135
+msgid "While you were away, your robots here cleaned %d hex."
+msgid_plural "While you were away, your robots here cleaned %d hexes."
+msgstr[0] "るすの間に、ここのロボットが%dヘックスを片づけた。"
+
+#: robots/sphere/crew_talk.gd:137
+msgid "While you were away, your robots here earned %s cubes."
+msgstr "るすの間に、ここのロボットがキューブを%s個かせいだ。"
+
+#: robots/sphere/crew_talk.gd:138
+msgid "While you were away, your robots here cleaned %d hex and earned %s cubes."
+msgid_plural "While you were away, your robots here cleaned %d hexes and earned %s cubes."
+msgstr[0] "るすの間に、ここのロボットが%dヘックスを片づけ、キューブを%s個かせいだ。"
+
+#: robots/sphere/sphere_fleet.gd:57
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s 組み立て完了。きょろきょろしてから、仕事に取りかかった。"
 
-#: scenes/slice.gd:139 ui/rockets_panel.gd:60
+#: scenes/slice.gd:133 ui/rockets_panel.gd:60
 msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
 msgstr "発射台のロケットまで歩いて、Eを押して行き先を選ぼう。"
 
-#: scenes/slice.gd:145
-msgid "Locked. Upgrade your base to level 5 to build the launch pad."
-msgstr "ロック中。発射台を建てるには基地をレベル5に上げよう。"
-
-#: scenes/slice.gd:148 ui/rockets_panel.gd:39
+#: scenes/slice.gd:143 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "エネルギーセル充電中：%s。ロケットのアップグレードで充電が速くなる。"
 
-#: scenes/slice_orbit.gd:412
+#: scenes/slice_orbit.gd:392
+msgid "HEX CLEAN!  +%s"
+msgstr "ヘックス クリーン！  +%s"
+
+#: scenes/slice_orbit.gd:408
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice_orbit.gd:481 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:477 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   作業台を直す"
 
-#: scenes/slice_orbit.gd:481 systems/camp/camp.gd:195
+#: scenes/slice_orbit.gd:477 systems/camp/camp.gd:195
 msgid "E   Open the workbench"
 msgstr "E   作業台を開く"
 
-#: scenes/slice_orbit.gd:995
+#: scenes/slice_orbit.gd:994
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice_orbit.gd:1095
+#: scenes/slice_orbit.gd:1094
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "作業台を修理した。作業台で E を押すとキューブでアップグレードできる。"
 
@@ -1818,11 +1990,11 @@ msgstr "アヒルがキュッと秘密をささやく：「%s」で %s デザイ
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "アヒルは知っていることを全部教えてくれた。グワッ。"
 
-#: story/eggs.gd:1165
+#: story/eggs.gd:1168
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "珍品発見：%s（%d / %d）   %s"
 
-#: story/eggs.gd:1176
+#: story/eggs.gd:1179
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "リストの珍品をぜんぶ見つけた。Lumi のコレクション室は思い出でいっぱい。"
 
@@ -2119,43 +2291,43 @@ msgstr "目標達成  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "目標達成  ·  %s"
 
-#: story/objectives.gd:670
+#: story/objectives.gd:672
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "ベーラーを取り付けた！胸をいっぱいにして、[%s] でベールを作り、はかりまで運ぼう。"
 
-#: story/objectives.gd:692 story/objectives.gd:822
+#: story/objectives.gd:694 story/objectives.gd:824
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "胸がいっぱい。[%s] を押してベールを作ろう。"
 
-#: story/objectives.gd:708
+#: story/objectives.gd:710
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "探知機が近くに埋まったロボットのパーツを見つけたよ。「埋もれたパーツ」の表示を追って。真上に来るとピッと鳴るよ。"
 
-#: story/objectives.gd:710
+#: story/objectives.gd:712
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋もれたパーツ：反応が一番強くなるまで近づいて、掘り出そう。"
 
-#: story/objectives.gd:823
+#: story/objectives.gd:825
 msgid "Your chest is full. Bring it to the bin."
 msgstr "胸がいっぱい。ゴミ箱へ運ぼう。"
 
-#: story/objectives.gd:830
+#: story/objectives.gd:832
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "胸がいっぱい。おうちへ帰ろう。ゴミ箱は高い煙の下だよ。"
 
-#: story/objectives.gd:832
+#: story/objectives.gd:834
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "ベールをおうちへ運ぼう。はかりは高い煙の下だよ。"
 
-#: story/objectives.gd:832
+#: story/objectives.gd:834
 msgid "Carry your bale to the scale by the bin."
 msgstr "ベールをゴミ箱のそばのはかりへ運ぼう。"
 
-#: story/objectives.gd:839
+#: story/objectives.gd:841
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "おうちへ帰ろう。光の柱を追って高い煙のところへ。"
 
-#: story/objectives.gd:849
+#: story/objectives.gd:851
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "ここには拾うものがない。もっとゴミのあるところへ歩こう。"
 
@@ -2303,11 +2475,11 @@ msgstr "シードアーク 第%d波  ·  星全体で %d / %d の花"
 msgid "Wilderness: %s. New ground, new junk, new colours under it."
 msgstr "荒野：%s。新しい土地、新しいガラクタ、その下に新しい色。"
 
-#: systems/bloom.gd:257
+#: systems/bloom.gd:255
 msgid "Seed Ark wave %d planted across Verdance. The Cradle drops a gift. Next wave: %d blooms."
 msgstr "シードアーク第%d波が Verdance じゅうに植えられた。Cradle号から贈り物が落ちてくる。次の波：花 %d 輪。"
 
-#: systems/bloom.gd:268
+#: systems/bloom.gd:266
 msgid "Verdance Bloom: %s. %s"
 msgstr "Verdance ブルーム：%s。%s"
 
@@ -2627,87 +2799,91 @@ msgstr "監査に勝利、%d 対 %d！Ledger が「承認」のスタンプを�
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "監査はドローンの勝ち、%d 対 %d。それでもチップを置いていった：+%s キューブ。"
 
-#: systems/homeward.gd:147
+#: systems/homeward.gd:153
+msgid "Wake %d old stations on %s to level %d (%d so far)"
+msgstr "古いステーションを%dか所(%s)、レベル%dまで目覚めさせよう(現在%dか所)"
+
+#: systems/homeward.gd:155
 msgid "Restore %s to %d%% (%d%%) or get a base to level %d"
 msgstr "%s を %d%% まで復元（%d%%）するか、基地を Lv %d にする"
 
-#: systems/homeward.gd:148
+#: systems/homeward.gd:156
 msgid "Restore %s to %d%% (%d%%)"
 msgstr "%s を %d%% まで復元（%d%%）"
 
-#: systems/homeward.gd:155
+#: systems/homeward.gd:163
 msgid "Restore another planet to %d%% (best %d%%)"
 msgstr "ほかの惑星を %d%% まで復元（最高 %d%%）"
 
-#: systems/homeward.gd:206
+#: systems/homeward.gd:245
 msgid "Needs %s: found on %s"
 msgstr "%s が必要：%s で見つかる"
 
-#: systems/homeward.gd:351
+#: systems/homeward.gd:390
 msgid "New tech: %s. %s"
 msgstr "新技術：%s。%s"
 
-#: systems/homeward.gd:398
+#: systems/homeward.gd:437
 msgid "Needs the %s drive"
 msgstr "%s 推進が必要"
 
-#: systems/homeward.gd:400
+#: systems/homeward.gd:439
 msgid "No chart yet: restore %s to %d%%"
 msgstr "まだ星図がない：%s を %d%% まで再生しよう"
 
-#: systems/homeward.gd:494
+#: systems/homeward.gd:533
 msgid "The Homeward rocket is built"
 msgstr "帰郷ロケットは完成した"
 
-#: systems/homeward.gd:497 systems/museum.gd:117
+#: systems/homeward.gd:536 systems/museum.gd:117
 msgid "The Cradle has to answer first (Cradle Returns)"
 msgstr "まず Cradle が応答する必要がある（Cradle号の帰還）"
 
-#: systems/homeward.gd:502
+#: systems/homeward.gd:541
 msgid "Needs %d planet relics (%d)"
 msgstr "惑星の遺物が %d 個必要（%d）"
 
-#: systems/homeward.gd:504
+#: systems/homeward.gd:543
 msgid "Restore every planet first (%d%%)"
 msgstr "まずすべての惑星を再生しよう（%d%%）"
 
-#: systems/homeward.gd:506
+#: systems/homeward.gd:545
 msgid "Build it at Verdance's Cradle Returns"
 msgstr "Verdance の Cradle号の帰還で建造しよう"
 
-#: systems/homeward.gd:522
+#: systems/homeward.gd:561
 msgid "Rocket drive built: %s."
 msgstr "ロケット推進を建造：%s。"
 
-#: systems/homeward_director.gd:259
+#: systems/homeward_director.gd:277
 msgid "Intercepted: %s"
 msgstr "傍受：%s"
 
-#: systems/homeward_director.gd:266
+#: systems/homeward_director.gd:284
 msgid "%s: %s"
 msgstr "%s：%s"
 
-#: systems/homeward_director.gd:276
+#: systems/homeward_director.gd:294
 msgid "%s is restored. System: %d%%."
 msgstr "%s が再生した。星系：%d%%。"
 
-#: systems/homeward_director.gd:279
+#: systems/homeward_director.gd:297
 msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
 msgstr "遺物：%s。家宝の選択 +1（アークブリッジ）。"
 
-#: systems/homeward_director.gd:286
+#: systems/homeward_director.gd:304
 msgid "Every planet in the system is alive. Go back to Verdance's Cradle Returns and build the Mk VII Homeward rocket."
 msgstr "星系のすべての惑星が生き返った。Verdance の Cradle号の帰還に戻って、Mk VII 帰郷ロケットを造ろう。"
 
-#: systems/homeward_director.gd:461
+#: systems/homeward_director.gd:479
 msgid "E   launch home"
 msgstr "E   ふるさとへ発射"
 
-#: systems/homeward_director.gd:461
+#: systems/homeward_director.gd:479
 msgid "E   plant the last seed"
 msgstr "E   最後の種を植える"
 
-#: systems/homeward_director.gd:472
+#: systems/homeward_director.gd:490
 msgid "The last seed is in the ground. Everything is ready. Press E again here to launch home."
 msgstr "最後の種が土に入った。準備は全部できた。もう一度ここで E を押すと、ふるさとへ発射する。"
 
@@ -2839,20 +3015,20 @@ msgstr "プロフィール %d"
 msgid "%d:%02d h"
 msgstr "%d:%02d 時間"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "Low"
 msgstr "低"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
-#: ui/settings_panel.gd:594
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
+#: ui/settings_panel.gd:601
 msgid "Medium"
 msgstr "中"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "High"
 msgstr "高"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "Ultra"
 msgstr "最高"
 
@@ -3086,7 +3262,7 @@ msgstr "バイオレット"
 msgid "Moonlight"
 msgstr "月光"
 
-#: systems/tunes.gd:166
+#: systems/tunes.gd:390
 msgid "New CD: %s by %s, from %s"
 msgstr "新しいCD：%s（%s、%s出身）"
 
@@ -3295,7 +3471,7 @@ msgstr "ホームに戻る"
 msgid "The clock is running. Clean %d hexes."
 msgstr "計測中。ヘックスを %d 個片づけよう。"
 
-#: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:391
+#: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:383
 msgid "Time"
 msgstr "時刻"
 
@@ -3544,7 +3720,7 @@ msgstr "スタート装備：Lumi だけ。家宝で増やせる。"
 msgid "Starting kit: %s"
 msgstr "スタート装備：%s"
 
-#: ui/ark_bridge.gd:303 ui/settings_panel.gd:575
+#: ui/ark_bridge.gd:303 ui/settings_panel.gd:582
 msgid "Full"
 msgstr "フル"
 
@@ -3577,7 +3753,7 @@ msgstr "ファブリケーター"
 msgid "need %s"
 msgstr "あと%s"
 
-#: ui/bench_lists.gd:11 ui/photo_mode.gd:396 ui/photo_mode.gd:423
+#: ui/bench_lists.gd:11 ui/photo_mode.gd:388 ui/photo_mode.gd:415
 #: ui/upgrades_panel.gd:32
 msgid "Lumi"
 msgstr "Lumi"
@@ -3681,8 +3857,7 @@ msgstr "散水範囲"
 msgid "Refill"
 msgstr "補給"
 
-#: ui/builder_panel.gd:21 ui/command_view.gd:1244 ui/command_view.gd:1247
-#: data/hex_levels.json:levels[1].name
+#: ui/builder_panel.gd:21 data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr "清掃"
 
@@ -4109,171 +4284,6 @@ msgstr "%.2f km"
 #: ui/codex_screen.gd:860
 msgid "%dm %02ds"
 msgstr "%d分%02d秒"
-
-#: ui/command_view.gd:24
-msgid "Cleaners"
-msgstr "清掃係"
-
-#: ui/command_view.gd:24
-msgid "Haulers"
-msgstr "運搬係"
-
-#: ui/command_view.gd:24
-msgid "Planters"
-msgstr "植え付け係"
-
-#: ui/command_view.gd:24
-msgid "Waterers"
-msgstr "水やり係"
-
-#: ui/command_view.gd:24
-msgid "Skimmers"
-msgstr "すくい係"
-
-#: ui/command_view.gd:25
-msgid "Priority"
-msgstr "優先"
-
-#: ui/command_view.gd:25
-msgid "Stay"
-msgstr "待機"
-
-#: ui/command_view.gd:25
-msgid "Follow me"
-msgstr "ついてきて"
-
-#: ui/command_view.gd:25
-msgid "Recall"
-msgstr "呼び戻す"
-
-#: ui/command_view.gd:28
-msgid "Works the marked hexes first, then the rest of the district."
-msgstr "マークしたヘックスを先に、その後で地区の残りを担当する。"
-
-#: ui/command_view.gd:29
-msgid "Works only the marked hexes, and waits there when they are done."
-msgstr "マークしたヘックスだけを担当し、終わったらそこで待機する。"
-
-#: ui/command_view.gd:30
-msgid "Works the hexes around you, wherever you go."
-msgstr "あなたがどこへ行っても、周りのヘックスを担当する。"
-
-#: ui/command_view.gd:31
-msgid "Comes back and parks at the base."
-msgstr "戻ってきて基地で待機する。"
-
-#: ui/command_view.gd:106
-msgid "[p]{@dpad}  panel      {@move}  move      {pad:#0}  mark      {pad:#2}  unmark      {pad:zoom_out}{pad:zoom_in}  zoom      {pad:ui_cancel}  back[/p][k]Left drag  mark      Right drag  unmark      {@move} / middle drag  move      Wheel  zoom      {kbd:open_command}  back[/k]"
-msgstr "[p]{@dpad}  パネル      {@move}  移動      {pad:#0}  マーク      {pad:#2}  マーク解除      {pad:zoom_out}{pad:zoom_in}  ズーム      {pad:ui_cancel}  戻る[/p][k]左ドラッグ  マーク      右ドラッグ  マーク解除      {@move} / 中ドラッグ  移動      ホイール  ズーム      {kbd:open_command}  戻る[/k]"
-
-#: ui/command_view.gd:231
-msgid "COMMAND"
-msgstr "指揮"
-
-#: ui/command_view.gd:268
-msgid "Mark around me"
-msgstr "自分の周りをマーク"
-
-#: ui/command_view.gd:281 ui/lumi_builder.gd:597 ui/photo_mode.gd:26
-msgid "Clear"
-msgstr "クリア"
-
-#: ui/command_view.gd:306
-msgid "CREWS"
-msgstr "クルー"
-
-#: ui/command_view.gd:598
-msgid "Following the %s orders. Mark hexes or pick a mode to give it its own."
-msgstr "%s の指示に従っている。ヘックスをマークするかモードを選んで、個別に指示しよう。"
-
-#: ui/command_view.gd:607
-msgid "No orders yet: roaming the district. Drag on the ground to mark where to work."
-msgstr "指示なし：地区を巡回中。地面をドラッグして作業場所をマークしよう。"
-
-#: ui/command_view.gd:684
-msgid "No robots yet. Build one at the workbench."
-msgstr "まだロボットがいない。作業台で作ろう。"
-
-#: ui/command_view.gd:815
-msgid "Build %s  %s"
-msgstr "%s を作る  %s"
-
-#: ui/command_view.gd:820
-msgid "Max tier"
-msgstr "最高ティア"
-
-#: ui/command_view.gd:820
-msgid "Upgrade > %s"
-msgstr "アップグレード > %s"
-
-#: ui/command_view.gd:826
-msgid "ready"
-msgstr "準備OK"
-
-#: ui/command_view.gd:826
-msgid "build at the workbench"
-msgstr "作業台で作る"
-
-#: ui/command_view.gd:833
-msgid "Place refill tank here  %s  (%d/%d)"
-msgstr "補給タンクをここに置く  %s  （%d/%d）"
-
-#: ui/command_view.gd:835
-msgid "A Water Tank at your hex. Waterers refill at the nearest one."
-msgstr "いまいるヘックスの給水タンク。水やり係はいちばん近いタンクで補給する。"
-
-#: ui/command_view.gd:1092
-msgid "%s · %d HEX"
-msgid_plural "%s · %d HEXES"
-msgstr[0] "%s · %d ヘックス"
-
-#: ui/command_view.gd:1128
-msgid "BASE"
-msgstr "基地"
-
-#: ui/command_view.gd:1135
-msgid "YOU"
-msgstr "あなた"
-
-#: ui/command_view.gd:1235
-msgid "HEX %d"
-msgstr "ヘックス %d"
-
-#: ui/command_view.gd:1239
-msgid "BASE YARD"
-msgstr "基地の庭"
-
-#: ui/command_view.gd:1240
-msgid "Home ground, always clean"
-msgstr "ホームグラウンド、いつもきれい"
-
-#: ui/command_view.gd:1242
-msgid "LAKE HEX %d"
-msgstr "湖のヘックス %d"
-
-#: ui/command_view.gd:1244
-msgid "Floating junk  %d%% left"
-msgstr "浮かぶガラクタ  残り %d%%"
-
-#: ui/command_view.gd:1250
-msgid "Junk  %d%% left"
-msgstr "ガラクタ  残り %d%%"
-
-#: ui/command_view.gd:1256
-msgid "Level %d · %s"
-msgstr "レベル %d · %s"
-
-#: ui/command_view.gd:1258
-msgid "In %s zone"
-msgstr "%s ゾーン内"
-
-#: ui/command_view.gd:1311
-msgid "%d robots"
-msgstr "ロボット %d 台"
-
-#: ui/command_view.gd:1314
-msgid "%d / %d hexes clean"
-msgstr "きれいなヘックス %d / %d"
 
 #: ui/contracts_panel.gd:75
 msgid "%d done"
@@ -4818,11 +4828,11 @@ msgstr "すくう"
 msgid "PLANT"
 msgstr "植える"
 
-#: ui/hotbar.gd:288
+#: ui/hotbar.gd:281
 msgid "+%d XP"
 msgstr "+%d XP"
 
-#: ui/hotbar.gd:298
+#: ui/hotbar.gd:291
 msgid "CORE %d%%"
 msgstr "コア %d%%"
 
@@ -5230,7 +5240,7 @@ msgstr "詳細（色相・彩度・明るさ）"
 msgid "Hue"
 msgstr "色相"
 
-#: ui/lumi_builder.gd:468 ui/photo_mode.gd:385
+#: ui/lumi_builder.gd:468 ui/photo_mode.gd:377
 msgid "Saturation"
 msgstr "彩度"
 
@@ -5277,6 +5287,10 @@ msgstr "積載"
 #: ui/lumi_builder.gd:589
 msgid "Save here"
 msgstr "ここに保存"
+
+#: ui/lumi_builder.gd:597 ui/photo_mode.gd:26
+msgid "Clear"
+msgstr "クリア"
 
 #: ui/lumi_builder.gd:659
 msgid "Unsaved changes"
@@ -5511,148 +5525,148 @@ msgstr "ロケット飛行中はフォトモードを使えません。"
 msgid "Photo mode isn't available during a cinematic."
 msgstr "ムービー中はフォトモードを使えません。"
 
-#: ui/photo_mode.gd:370 ui/photo_mode.gd:423 ui/settings_panel.gd:383
+#: ui/photo_mode.gd:362 ui/photo_mode.gd:415 ui/settings_panel.gd:390
 msgid "Camera"
 msgstr "カメラ"
 
-#: ui/photo_mode.gd:371
+#: ui/photo_mode.gd:363
 msgid "Mode"
 msgstr "モード"
 
-#: ui/photo_mode.gd:372 ui/settings_panel.gd:391
+#: ui/photo_mode.gd:364 ui/settings_panel.gd:398
 msgid "Field of view"
 msgstr "視野角"
 
-#: ui/photo_mode.gd:373
+#: ui/photo_mode.gd:365
 msgid "Roll"
 msgstr "ロール"
 
-#: ui/photo_mode.gd:374
+#: ui/photo_mode.gd:366
 msgid "Distance"
 msgstr "距離"
 
-#: ui/photo_mode.gd:375
+#: ui/photo_mode.gd:367
 msgid "Height"
 msgstr "高さ"
 
-#: ui/photo_mode.gd:376
+#: ui/photo_mode.gd:368
 msgid "Reset camera"
 msgstr "カメラをリセット"
 
-#: ui/photo_mode.gd:377 ui/photo_mode.gd:423
+#: ui/photo_mode.gd:369 ui/photo_mode.gd:415
 msgid "Lens"
 msgstr "レンズ"
 
-#: ui/photo_mode.gd:378
+#: ui/photo_mode.gd:370
 msgid "Auto-focus Lumi"
 msgstr "Lumi にオートフォーカス"
 
-#: ui/photo_mode.gd:379
+#: ui/photo_mode.gd:371
 msgid "Focus distance"
 msgstr "ピント距離"
 
-#: ui/photo_mode.gd:380
+#: ui/photo_mode.gd:372
 msgid "Blur"
 msgstr "ぼかし"
 
-#: ui/photo_mode.gd:380 ui/photo_panel.gd:240 ui/photo_panel.gd:242
-#: ui/photo_panel.gd:280 ui/settings_panel.gd:681
+#: ui/photo_mode.gd:372 ui/photo_panel.gd:240 ui/photo_panel.gd:242
+#: ui/photo_panel.gd:280 ui/settings_panel.gd:688
 msgid "Off"
 msgstr "オフ"
 
-#: ui/photo_mode.gd:381
+#: ui/photo_mode.gd:373
 msgid "Exposure"
 msgstr "露出"
 
-#: ui/photo_mode.gd:381
+#: ui/photo_mode.gd:373
 msgid "%+.1f EV"
 msgstr "%+.1f EV"
 
-#: ui/photo_mode.gd:382 ui/photo_mode.gd:423
+#: ui/photo_mode.gd:374 ui/photo_mode.gd:415
 msgid "Look"
 msgstr "ルック"
 
-#: ui/photo_mode.gd:383
+#: ui/photo_mode.gd:375
 msgid "Filter"
 msgstr "フィルター"
 
-#: ui/photo_mode.gd:384
+#: ui/photo_mode.gd:376
 msgid "Contrast"
 msgstr "コントラスト"
 
-#: ui/photo_mode.gd:386
+#: ui/photo_mode.gd:378
 msgid "Warmth"
 msgstr "暖かさ"
 
-#: ui/photo_mode.gd:387
+#: ui/photo_mode.gd:379
 msgid "Vignette"
 msgstr "ビネット"
 
-#: ui/photo_mode.gd:388
+#: ui/photo_mode.gd:380
 msgid "Grain"
 msgstr "粒子"
 
-#: ui/photo_mode.gd:389 ui/photo_mode.gd:423
+#: ui/photo_mode.gd:381 ui/photo_mode.gd:415
 msgid "World"
 msgstr "ワールド"
 
-#: ui/photo_mode.gd:390
+#: ui/photo_mode.gd:382
 msgid "Set time of day"
 msgstr "時刻を設定"
 
-#: ui/photo_mode.gd:395
+#: ui/photo_mode.gd:387
 msgid "Weather"
 msgstr "天気"
 
-#: ui/photo_mode.gd:397
+#: ui/photo_mode.gd:389
 msgid "Pose"
 msgstr "ポーズ"
 
-#: ui/photo_mode.gd:398 data/style_parts.json:slots[eye_shape].name
+#: ui/photo_mode.gd:390 data/style_parts.json:slots[eye_shape].name
 msgid "Eyes"
 msgstr "目"
 
-#: ui/photo_mode.gd:399
+#: ui/photo_mode.gd:391
 msgid "Turn"
 msgstr "向き"
 
-#: ui/photo_mode.gd:400
+#: ui/photo_mode.gd:392
 msgid "Show robots"
 msgstr "ロボットを表示"
 
-#: ui/photo_mode.gd:401 ui/photo_mode.gd:423
+#: ui/photo_mode.gd:393 ui/photo_mode.gd:415
 msgid "Frame"
 msgstr "フレーム"
 
-#: ui/photo_mode.gd:402
+#: ui/photo_mode.gd:394
 msgid "Hide HUD"
 msgstr "HUD を隠す"
 
-#: ui/photo_mode.gd:403
+#: ui/photo_mode.gd:395
 msgid "Rule of thirds"
 msgstr "三分割法"
 
-#: ui/photo_mode.gd:404
+#: ui/photo_mode.gd:396
 msgid "Letterbox 2.39:1"
 msgstr "レターボックス 2.39:1"
 
-#: ui/photo_mode.gd:405
+#: ui/photo_mode.gd:397
 msgid "Greenfall stamp"
 msgstr "Greenfall スタンプ"
 
-#: ui/photo_mode.gd:406
+#: ui/photo_mode.gd:398
 msgid "Resolution"
 msgstr "解像度"
 
-#: ui/photo_mode.gd:890
+#: ui/photo_mode.gd:882
 msgid "Couldn't capture the photo."
 msgstr "写真を撮影できませんでした。"
 
-#: ui/photo_mode.gd:899
+#: ui/photo_mode.gd:891
 msgid "Couldn't save the photo (%s)."
 msgstr "写真を保存できませんでした（%s）。"
 
-#: ui/photo_mode.gd:912
+#: ui/photo_mode.gd:904
 msgid "Saved  %s  (%dx%d)"
 msgstr "保存しました  %s  （%dx%d）"
 
@@ -5669,7 +5683,7 @@ msgid "Exit"
 msgstr "終了"
 
 #: ui/photo_panel.gd:240 ui/photo_panel.gd:242 ui/photo_panel.gd:280
-#: ui/settings_panel.gd:681
+#: ui/settings_panel.gd:688
 msgid "On"
 msgstr "オン"
 
@@ -5924,17 +5938,9 @@ msgstr "セル充電完了。飛んでいく基地を選ぼう。"
 msgid "Not built yet"
 msgstr "まだ建てていない"
 
-#: ui/rockets_panel.gd:46
-msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Upgrades tab."
-msgstr "発射台には Lv 5 の基地が必要（いまは Lv %d）。アップグレードタブで基地を強化しよう。"
-
 #: ui/rockets_panel.gd:48
 msgid "Rockets to the rest of Verdance are in the full game. The demo stays in the first district."
 msgstr "Verdance の各地へのロケットは製品版で。体験版は最初の地区だけです。"
-
-#: ui/rockets_panel.gd:60
-msgid "The rocket lands on the pad when the base reaches level 5."
-msgstr "基地がレベル5になると、ロケットが発射台に着陸する。"
 
 #: ui/rockets_panel.gd:64
 msgid "NEARBY BASES"
@@ -6048,23 +6054,23 @@ msgstr "{ui_cancel}  戻る"
 msgid "Changes are saved automatically."
 msgstr "変更は自動で保存されます。"
 
-#: ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "Quality preset"
 msgstr "画質プリセット"
 
-#: ui/settings_panel.gd:243 ui/settings_panel.gd:340
+#: ui/settings_panel.gd:243 ui/settings_panel.gd:347
 msgid "Fullscreen"
 msgstr "フルスクリーン"
 
-#: ui/settings_panel.gd:246 ui/settings_panel.gd:384
+#: ui/settings_panel.gd:246 ui/settings_panel.gd:391
 msgid "Mouse sensitivity"
 msgstr "マウス感度"
 
-#: ui/settings_panel.gd:250 ui/settings_panel.gd:560
+#: ui/settings_panel.gd:250 ui/settings_panel.gd:567
 msgid "System default"
 msgstr "システムの設定"
 
-#: ui/settings_panel.gd:251 ui/settings_panel.gd:558 ui/settings_panel.gd:561
+#: ui/settings_panel.gd:251 ui/settings_panel.gd:565 ui/settings_panel.gd:568
 msgid "Language"
 msgstr "言語"
 
@@ -6081,246 +6087,250 @@ msgid "Volume"
 msgstr "音量"
 
 #: ui/settings_panel.gd:309
+msgid "Ambience"
+msgstr "環境音"
+
+#: ui/settings_panel.gd:312
 msgid "Sound effects"
 msgstr "効果音"
 
-#: ui/settings_panel.gd:316
-msgid "Rendering"
-msgstr "レンダリング"
-
-#: ui/settings_panel.gd:317
-msgid "Low drops GI and fog; Ultra adds reflections."
-msgstr "低はGIと霧をオフ、最高は反射を追加。"
-
-#: ui/settings_panel.gd:318
-msgid "This renderer always uses the Low preset."
-msgstr "このレンダラーは常に「低」プリセットを使います。"
-
-#: ui/settings_panel.gd:320
-msgid "Detected: %s for %s. "
-msgstr "検出：%s（%s 向け）。"
-
-#: ui/settings_panel.gd:321
-msgid "Your choice (hardware: %s). "
-msgstr "あなたの選択（ハードウェア：%s）。"
-
-#: ui/settings_panel.gd:322
-msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
-msgstr "低はGI、霧、影の細部をオフ、最高は反射を追加。"
-
-#: ui/settings_panel.gd:328
-msgid "Renderer"
-msgstr "レンダラー"
-
-#: ui/settings_panel.gd:328
-msgid "Standard (Forward+)"
-msgstr "標準（Forward+）"
-
-#: ui/settings_panel.gd:328
-msgid "Light (Mobile)"
-msgstr "軽量（Mobile）"
-
-#: ui/settings_panel.gd:330
-msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
-msgstr "軽量は古い内蔵グラフィック向け。ゲームの再起動後に反映されます（現在：%s）。"
-
-#: ui/settings_panel.gd:336
-msgid "Render scale"
-msgstr "レンダースケール"
-
-#: ui/settings_panel.gd:338
-msgid "Lower renders 3D at a smaller size; the interface stays sharp."
-msgstr "下げると3Dを小さく描画します。UIはくっきりしたまま。"
-
-#: ui/settings_panel.gd:339
-msgid "Display"
-msgstr "ディスプレイ"
-
-#: ui/settings_panel.gd:343
-msgid "V-Sync"
-msgstr "垂直同期"
-
-#: ui/settings_panel.gd:349 ui/settings_panel.gd:378
-msgid "Bindings"
-msgstr "キー割り当て"
-
-#: ui/settings_panel.gd:352
-msgid "ACTION   (select a binding to rebind it)"
-msgstr "アクション   （割り当てを選んで変更）"
-
-#: ui/settings_panel.gd:355
-msgid "KEYBOARD / MOUSE"
-msgstr "キーボード / マウス"
-
-#: ui/settings_panel.gd:355
-msgid "CONTROLLER"
-msgstr "コントローラー"
-
-#: ui/settings_panel.gd:371
-msgid "Reset to defaults"
-msgstr "初期設定に戻す"
-
-#: ui/settings_panel.gd:378
-msgid "Restore every key and controller binding."
-msgstr "キーとコントローラーの割り当てをすべて元に戻します。"
-
-#: ui/settings_panel.gd:380
-msgid "Button prompts"
-msgstr "ボタン表示"
-
-#: ui/settings_panel.gd:382
-msgid "Controller art: Automatic follows the connected pad."
-msgstr "コントローラー表示：「自動」は接続中のパッドに合わせます。"
-
-#: ui/settings_panel.gd:387
-msgid "Stick look speed"
-msgstr "スティックの視点速度"
-
-#: ui/settings_panel.gd:390
-msgid "Invert look Y"
-msgstr "視点の上下を反転"
-
-#: ui/settings_panel.gd:394
-msgid "Mouse smoothing"
-msgstr "マウススムージング"
-
-#: ui/settings_panel.gd:395
-msgid "Eases mouse look over a few frames."
-msgstr "マウスの視点移動を数フレームかけてなめらかにします。"
-
-#: ui/settings_panel.gd:396
-msgid "Scooping"
-msgstr "すくう操作"
-
-#: ui/settings_panel.gd:397
-msgid "Scoop button"
-msgstr "すくうボタン"
-
-#: ui/settings_panel.gd:397
-msgid "Hold"
-msgstr "長押し"
-
-#: ui/settings_panel.gd:397
-msgid "Toggle"
-msgstr "切り替え"
-
-#: ui/settings_panel.gd:438
-msgid "press a button…"
-msgstr "ボタンを押してください…"
-
-#: ui/settings_panel.gd:438
-msgid "press a key…"
-msgstr "キーを押してください…"
-
-#: ui/settings_panel.gd:470
-msgid "Conflict: %s is used by both %s and %s."
-msgstr "重複：%s が %s と %s の両方に使われています。"
-
-#: ui/settings_panel.gd:564
-msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
-msgstr "メニュー、HUD、字幕、ストーリーのテキスト。Pseudo は翻訳テスト用です。"
-
-#: ui/settings_panel.gd:565
-msgid "Comfort"
-msgstr "快適さ"
-
-#: ui/settings_panel.gd:566
-msgid "Camera shake"
-msgstr "カメラの揺れ"
-
-#: ui/settings_panel.gd:568
-msgid "Reduced motion"
-msgstr "動きを減らす"
-
-#: ui/settings_panel.gd:569
-msgid "Calmer camera and fewer bouncy effects."
-msgstr "カメラを落ち着かせ、弾むエフェクトを減らします。"
-
-#: ui/settings_panel.gd:570 ui/settings_panel.gd:580
+#: ui/settings_panel.gd:316 ui/settings_panel.gd:577 ui/settings_panel.gd:587
 msgid "Interface"
 msgstr "インターフェース"
 
+#: ui/settings_panel.gd:323
+msgid "Rendering"
+msgstr "レンダリング"
+
+#: ui/settings_panel.gd:324
+msgid "Low drops GI and fog; Ultra adds reflections."
+msgstr "低はGIと霧をオフ、最高は反射を追加。"
+
+#: ui/settings_panel.gd:325
+msgid "This renderer always uses the Low preset."
+msgstr "このレンダラーは常に「低」プリセットを使います。"
+
+#: ui/settings_panel.gd:327
+msgid "Detected: %s for %s. "
+msgstr "検出：%s（%s 向け）。"
+
+#: ui/settings_panel.gd:328
+msgid "Your choice (hardware: %s). "
+msgstr "あなたの選択（ハードウェア：%s）。"
+
+#: ui/settings_panel.gd:329
+msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
+msgstr "低はGI、霧、影の細部をオフ、最高は反射を追加。"
+
+#: ui/settings_panel.gd:335
+msgid "Renderer"
+msgstr "レンダラー"
+
+#: ui/settings_panel.gd:335
+msgid "Standard (Forward+)"
+msgstr "標準（Forward+）"
+
+#: ui/settings_panel.gd:335
+msgid "Light (Mobile)"
+msgstr "軽量（Mobile）"
+
+#: ui/settings_panel.gd:337
+msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
+msgstr "軽量は古い内蔵グラフィック向け。ゲームの再起動後に反映されます（現在：%s）。"
+
+#: ui/settings_panel.gd:343
+msgid "Render scale"
+msgstr "レンダースケール"
+
+#: ui/settings_panel.gd:345
+msgid "Lower renders 3D at a smaller size; the interface stays sharp."
+msgstr "下げると3Dを小さく描画します。UIはくっきりしたまま。"
+
+#: ui/settings_panel.gd:346
+msgid "Display"
+msgstr "ディスプレイ"
+
+#: ui/settings_panel.gd:350
+msgid "V-Sync"
+msgstr "垂直同期"
+
+#: ui/settings_panel.gd:356 ui/settings_panel.gd:385
+msgid "Bindings"
+msgstr "キー割り当て"
+
+#: ui/settings_panel.gd:359
+msgid "ACTION   (select a binding to rebind it)"
+msgstr "アクション   （割り当てを選んで変更）"
+
+#: ui/settings_panel.gd:362
+msgid "KEYBOARD / MOUSE"
+msgstr "キーボード / マウス"
+
+#: ui/settings_panel.gd:362
+msgid "CONTROLLER"
+msgstr "コントローラー"
+
+#: ui/settings_panel.gd:378
+msgid "Reset to defaults"
+msgstr "初期設定に戻す"
+
+#: ui/settings_panel.gd:385
+msgid "Restore every key and controller binding."
+msgstr "キーとコントローラーの割り当てをすべて元に戻します。"
+
+#: ui/settings_panel.gd:387
+msgid "Button prompts"
+msgstr "ボタン表示"
+
+#: ui/settings_panel.gd:389
+msgid "Controller art: Automatic follows the connected pad."
+msgstr "コントローラー表示：「自動」は接続中のパッドに合わせます。"
+
+#: ui/settings_panel.gd:394
+msgid "Stick look speed"
+msgstr "スティックの視点速度"
+
+#: ui/settings_panel.gd:397
+msgid "Invert look Y"
+msgstr "視点の上下を反転"
+
+#: ui/settings_panel.gd:401
+msgid "Mouse smoothing"
+msgstr "マウススムージング"
+
+#: ui/settings_panel.gd:402
+msgid "Eases mouse look over a few frames."
+msgstr "マウスの視点移動を数フレームかけてなめらかにします。"
+
+#: ui/settings_panel.gd:403
+msgid "Scooping"
+msgstr "すくう操作"
+
+#: ui/settings_panel.gd:404
+msgid "Scoop button"
+msgstr "すくうボタン"
+
+#: ui/settings_panel.gd:404
+msgid "Hold"
+msgstr "長押し"
+
+#: ui/settings_panel.gd:404
+msgid "Toggle"
+msgstr "切り替え"
+
+#: ui/settings_panel.gd:445
+msgid "press a button…"
+msgstr "ボタンを押してください…"
+
+#: ui/settings_panel.gd:445
+msgid "press a key…"
+msgstr "キーを押してください…"
+
+#: ui/settings_panel.gd:477
+msgid "Conflict: %s is used by both %s and %s."
+msgstr "重複：%s が %s と %s の両方に使われています。"
+
 #: ui/settings_panel.gd:571
+msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
+msgstr "メニュー、HUD、字幕、ストーリーのテキスト。Pseudo は翻訳テスト用です。"
+
+#: ui/settings_panel.gd:572
+msgid "Comfort"
+msgstr "快適さ"
+
+#: ui/settings_panel.gd:573
+msgid "Camera shake"
+msgstr "カメラの揺れ"
+
+#: ui/settings_panel.gd:575
+msgid "Reduced motion"
+msgstr "動きを減らす"
+
+#: ui/settings_panel.gd:576
+msgid "Calmer camera and fewer bouncy effects."
+msgstr "カメラを落ち着かせ、弾むエフェクトを減らします。"
+
+#: ui/settings_panel.gd:578
 msgid "Number format"
 msgstr "数字の表示形式"
 
-#: ui/settings_panel.gd:571
+#: ui/settings_panel.gd:578
 msgid "Short (1.2K)"
 msgstr "短縮（1.2K）"
 
-#: ui/settings_panel.gd:571
+#: ui/settings_panel.gd:578
 msgid "Scientific (1.2e3)"
 msgstr "指数（1.2e3）"
 
-#: ui/settings_panel.gd:571
+#: ui/settings_panel.gd:578
 msgid "Engineering (1.2e3)"
 msgstr "工学（1.2e3）"
 
-#: ui/settings_panel.gd:573
+#: ui/settings_panel.gd:580
 msgid "Best-value tags"
 msgstr "お得タグ"
 
-#: ui/settings_panel.gd:574
+#: ui/settings_panel.gd:581
 msgid "Tag the affordable upgrade that gives the most per cube."
 msgstr "買えるアップグレードのうち、キューブあたりの効果が最も高いものに印をつけます。"
 
-#: ui/settings_panel.gd:575
+#: ui/settings_panel.gd:582
 msgid "HUD"
 msgstr "HUD"
 
-#: ui/settings_panel.gd:575
+#: ui/settings_panel.gd:582
 msgid "Minimal"
 msgstr "最小"
 
-#: ui/settings_panel.gd:575
+#: ui/settings_panel.gd:582
 msgid "Hidden"
 msgstr "非表示"
 
-#: ui/settings_panel.gd:576
+#: ui/settings_panel.gd:583
 msgid "Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."
 msgstr "最小は数秒後に補助表示を消します。非表示はプロンプトとメッセージだけを残します。"
 
-#: ui/settings_panel.gd:586
+#: ui/settings_panel.gd:593
 msgid "Interface scale"
 msgstr "UI の大きさ"
 
-#: ui/settings_panel.gd:588
+#: ui/settings_panel.gd:595
 msgid "Size of menus, HUD and subtitles."
 msgstr "メニュー、HUD、字幕の大きさ。"
 
-#: ui/settings_panel.gd:589
+#: ui/settings_panel.gd:596
 msgid "Colour-blind palette"
 msgstr "色覚サポート配色"
 
-#: ui/settings_panel.gd:590
+#: ui/settings_panel.gd:597
 msgid "Okabe-Ito colours for hex progress, the hopper meter and part rarity."
 msgstr "ヘックスの進行、ホッパーメーター、パーツのレア度に Okabe-Ito 配色を使います。"
 
-#: ui/settings_panel.gd:591 ui/settings_panel.gd:592
+#: ui/settings_panel.gd:598 ui/settings_panel.gd:599
 msgid "Subtitles"
 msgstr "字幕"
 
-#: ui/settings_panel.gd:593
+#: ui/settings_panel.gd:600
 msgid "WREN and Ledger lines."
 msgstr "WREN と Ledger のセリフ。"
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:601
 msgid "Subtitle size"
 msgstr "字幕の大きさ"
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:601
 msgid "Small"
 msgstr "小"
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:601
 msgid "Large"
 msgstr "大"
 
-#: ui/settings_panel.gd:596
+#: ui/settings_panel.gd:603
 msgid "Subtitle background"
 msgstr "字幕の背景"
 
-#: ui/settings_panel.gd:597
+#: ui/settings_panel.gd:604
 msgid "A solid backdrop behind subtitle text."
 msgstr "字幕テキストの後ろに不透明な背景を表示します。"
 
@@ -7917,10 +7927,6 @@ msgstr "水没都市に植えよう。"
 #: data/codex.json:plants.marsh_mint.desc
 msgid "Mint that does not mind wet feet. The drained streets smell of it on warm evenings."
 msgstr "足がぬれても平気なミント。暖かい夕方には、干上がった通りがその香りに包まれる。"
-
-#: data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
-msgid "Build one at the workbench."
-msgstr "作業台で作ろう。"
 
 #: data/codex.json:robots.scoopie.desc
 msgid "A small, earnest cleaner with one scoop arm and a lot of enthusiasm. It hums when it finds a good pile."
@@ -10962,10 +10968,6 @@ msgstr "リフト力 Lv 1"
 msgid "Clean your first hex"
 msgstr "はじめてヘックスを片づける"
 
-#: data/goals.json:goals[perfect_1].text
-msgid "Make a perfect bale"
-msgstr "パーフェクトベールを作る"
-
 #: data/goals.json:goals[upgrades_5].text
 msgid "Buy 5 upgrades"
 msgstr "アップグレードを5個買う"
@@ -10973,6 +10975,110 @@ msgstr "アップグレードを5個買う"
 #: data/goals.json:goals[cash_10].text
 msgid "Sell 10 bales"
 msgstr "ベールを10個売る"
+
+#: data/goals.json:goals[hex_3].text data/objectives.json:objectives[hex3].text
+msgid "Clean 3 hexes"
+msgstr "ヘックスを3個片づける"
+
+#: data/goals.json:goals[earn_1k].text
+msgid "Earn 1,000 cubes"
+msgstr "1,000キューブ稼ぐ"
+
+#: data/goals.json:goals[scoopie_1].text
+msgid "Build a Scoopie"
+msgstr "Scoopie を作る"
+
+#: data/goals.json:goals[zone_1].text
+msgid "Give a robot a work zone"
+msgstr "ロボットに作業ゾーンをあげる"
+
+#: data/goals.json:goals[earn_3k].text
+msgid "Earn 3,000 cubes"
+msgstr "3,000キューブ稼ぐ"
+
+#: data/goals.json:goals[hex_5].text
+msgid "Clean 5 hexes"
+msgstr "ヘックスを5個片づける"
+
+#: data/goals.json:goals[seeds].text
+msgid "Find the seed tin"
+msgstr "種の缶を見つける"
+
+#: data/goals.json:goals[plant_5].text
+msgid "Plant the Maker seed"
+msgstr "メイカーの種を植える"
+
+#: data/goals.json:goals[hex_7].text
+msgid "Clean 7 hexes"
+msgstr "ヘックスを7個片づける"
+
+#: data/goals.json:goals[hex_10].text data/objectives.json:objectives[hex10].text data/radio.json:songs[verdance_sweep].hint
+msgid "Clean 10 hexes"
+msgstr "ヘックスを10個片づける"
+
+#: data/goals.json:goals[base_2].text
+msgid "Upgrade the base to level 2"
+msgstr "基地をレベル2にする"
+
+#: data/goals.json:goals[haulbug_1].text data/objectives.json:objectives[haul].text
+msgid "Build a Haul Bug"
+msgstr "Haul Bug を作る"
+
+#: data/goals.json:goals[research_1].text data/objectives.json:objectives[research1].text
+msgid "Finish a research project"
+msgstr "研究を1件完了する"
+
+#: data/goals.json:goals[bales_20].text
+msgid "Robots press 20 bales"
+msgstr "ロボットがベールを20個圧縮"
+
+#: data/goals.json:goals[hex_12].text
+msgid "Clean 12 hexes"
+msgstr "ヘックスを12個片づける"
+
+#: data/goals.json:goals[hexlv_2].text
+msgid "Get a hex to Planted"
+msgstr "ヘックスを「植え付け済み」にする"
+
+#: data/goals.json:goals[hex_15].text
+msgid "Clean 15 hexes"
+msgstr "ヘックスを15個片づける"
+
+#: data/goals.json:goals[hex_17].text
+msgid "Clean 17 hexes"
+msgstr "ヘックスを17個片づける"
+
+#: data/goals.json:goals[hex_20].text data/objectives.json:objectives[hex20].text
+msgid "Clean 20 hexes"
+msgstr "ヘックスを20個片づける"
+
+#: data/goals.json:goals[base_3].text
+msgid "Upgrade the base to level 3"
+msgstr "基地をレベル3にする"
+
+#: data/goals.json:goals[seedling_1].text
+msgid "Build a Seedling planter"
+msgstr "Seedling の植え付けロボを作る"
+
+#: data/goals.json:goals[plant_25].text
+msgid "Plant 25 seeds"
+msgstr "種を25個植える"
+
+#: data/goals.json:goals[drip_1].text
+msgid "Build a Drip watering robot"
+msgstr "Drip 水やりロボを作る"
+
+#: data/goals.json:goals[home_drive_5].text
+msgid "Build the Mk V Orbital drive"
+msgstr "Mk V オービタル推進を造る"
+
+#: data/goals.json:goals[home_land_1].text
+msgid "Fly to another planet"
+msgstr "別の惑星へ飛ぶ"
+
+#: data/goals.json:goals[perfect_1].text
+msgid "Make a perfect bale"
+msgstr "パーフェクトベールを作る"
 
 #: data/goals.json:goals[compartment_3].text
 msgid "Chest Size level 3"
@@ -10982,25 +11088,9 @@ msgstr "胸のサイズをレベル3に"
 msgid "Find a memory shard"
 msgstr "メモリーの破片を見つける"
 
-#: data/goals.json:goals[hex_3].text data/objectives.json:objectives[hex3].text
-msgid "Clean 3 hexes"
-msgstr "ヘックスを3個片づける"
-
 #: data/goals.json:goals[parts_2].text
 msgid "Dig up 2 robot parts"
 msgstr "ロボットのパーツを2個掘り出す"
-
-#: data/goals.json:goals[earn_1k].text
-msgid "Earn 1,000 cubes"
-msgstr "1,000キューブ稼ぐ"
-
-#: data/goals.json:goals[research_1].text data/objectives.json:objectives[research1].text
-msgid "Finish a research project"
-msgstr "研究を1件完了する"
-
-#: data/goals.json:goals[hex_5].text
-msgid "Clean 5 hexes"
-msgstr "ヘックスを5個片づける"
 
 #: data/goals.json:goals[lift_2].text
 msgid "Lift Strength level 2"
@@ -11009,14 +11099,6 @@ msgstr "リフト力をレベル2に"
 #: data/goals.json:goals[upgrades_12].text
 msgid "Buy 12 upgrades"
 msgstr "アップグレードを12個買う"
-
-#: data/goals.json:goals[earn_3k].text
-msgid "Earn 3,000 cubes"
-msgstr "3,000キューブ稼ぐ"
-
-#: data/goals.json:goals[hex_7].text
-msgid "Clean 7 hexes"
-msgstr "ヘックスを7個片づける"
 
 #: data/goals.json:goals[pet_cat].text
 msgid "Pet a stray cat"
@@ -11030,37 +11112,9 @@ msgstr "研究を4件完了する"
 msgid "Buy 20 upgrades"
 msgstr "アップグレードを20個買う"
 
-#: data/goals.json:goals[hex_10].text data/objectives.json:objectives[hex10].text data/radio.json:songs[verdance_sweep].hint
-msgid "Clean 10 hexes"
-msgstr "ヘックスを10個片づける"
-
-#: data/goals.json:goals[base_2].text
-msgid "Upgrade the base to level 2"
-msgstr "基地をレベル2にする"
-
-#: data/goals.json:goals[scoopie_1].text
-msgid "Build a Scoopie"
-msgstr "Scoopie を作る"
-
-#: data/goals.json:goals[zone_1].text
-msgid "Give a robot a work zone"
-msgstr "ロボットに作業ゾーンをあげる"
-
-#: data/goals.json:goals[haulbug_1].text data/objectives.json:objectives[haul].text
-msgid "Build a Haul Bug"
-msgstr "Haul Bug を作る"
-
-#: data/goals.json:goals[bales_20].text
-msgid "Robots press 20 bales"
-msgstr "ロボットがベールを20個圧縮"
-
 #: data/goals.json:goals[scoopie_2].text
 msgid "Run 2 Scoopies"
 msgstr "Scoopie を2台動かす"
-
-#: data/goals.json:goals[hex_12].text
-msgid "Clean 12 hexes"
-msgstr "ヘックスを12個片づける"
 
 #: data/goals.json:goals[upgrades_25].text
 msgid "Buy 25 upgrades"
@@ -11073,22 +11127,6 @@ msgstr "研究を6件完了する"
 #: data/goals.json:goals[robots_4].text
 msgid "Build 4 robots"
 msgstr "ロボットを4台作る"
-
-#: data/goals.json:goals[hex_15].text
-msgid "Clean 15 hexes"
-msgstr "ヘックスを15個片づける"
-
-#: data/goals.json:goals[seeds].text
-msgid "Find the seed tin"
-msgstr "種の缶を見つける"
-
-#: data/goals.json:goals[plant_5].text
-msgid "Plant the Maker seed"
-msgstr "メイカーの種を植える"
-
-#: data/goals.json:goals[hexlv_2].text
-msgid "Get a hex to Planted"
-msgstr "ヘックスを「植え付け済み」にする"
 
 #: data/goals.json:goals[earn_10k].text
 msgid "Earn 10,000 cubes"
@@ -11106,10 +11144,6 @@ msgstr "メモリーの破片を2つ読む"
 msgid "Zone 6 hexes for your crews"
 msgstr "クルー用にヘックスを6個ゾーン指定する"
 
-#: data/goals.json:goals[hex_17].text
-msgid "Clean 17 hexes"
-msgstr "ヘックスを17個片づける"
-
 #: data/goals.json:goals[research_8].text
 msgid "Finish 8 research projects"
 msgstr "研究を8件完了する"
@@ -11125,10 +11159,6 @@ msgstr "ベールを5個リサイクルする"
 #: data/goals.json:goals[hexlv_3].text
 msgid "Get a hex to Growing"
 msgstr "ヘックスを「成長中」にする"
-
-#: data/goals.json:goals[hex_20].text data/objectives.json:objectives[hex20].text
-msgid "Clean 20 hexes"
-msgstr "ヘックスを20個片づける"
 
 #: data/goals.json:goals[skimmer_1].text
 msgid "Build a Skimmer for the lake"
@@ -11154,17 +11184,9 @@ msgstr "ヘックスを28個片づける"
 msgid "Buy 40 upgrades"
 msgstr "アップグレードを40個買う"
 
-#: data/goals.json:goals[seedling_1].text
-msgid "Build a Seedling planter"
-msgstr "Seedling の植え付けロボを作る"
-
 #: data/goals.json:goals[hex_30].text
 msgid "Clean 30 hexes (lake too)"
 msgstr "ヘックスを30個片づける（湖も）"
-
-#: data/goals.json:goals[base_3].text
-msgid "Upgrade the base to level 3"
-msgstr "基地をレベル3にする"
 
 #: data/goals.json:goals[extras_radio].text
 msgid "Pick a song on the base radio"
@@ -11173,14 +11195,6 @@ msgstr "基地のラジオで曲を選ぶ"
 #: data/goals.json:goals[builder_1].text
 msgid "Style a robot in the Locker"
 msgstr "ロッカーでロボットを飾る"
-
-#: data/goals.json:goals[plant_25].text
-msgid "Plant 25 seeds"
-msgstr "種を25個植える"
-
-#: data/goals.json:goals[drip_1].text
-msgid "Build a Drip watering robot"
-msgstr "Drip 水やりロボを作る"
 
 #: data/goals.json:goals[pollinator].text
 msgid "Research Pollinator Survey"
@@ -11518,14 +11532,6 @@ msgstr "ここでヘックスを25個「成長中」にする"
 msgid "Call the Cradle home"
 msgstr "Cradle号を呼び戻す"
 
-#: data/goals.json:goals[home_drive_5].text
-msgid "Build the Mk V Orbital drive"
-msgstr "Mk V オービタル推進を造る"
-
-#: data/goals.json:goals[home_land_1].text
-msgid "Fly to another planet"
-msgstr "別の惑星へ飛ぶ"
-
 #: data/goals.json:goals[home_restore_2].text
 msgid "Restore a second planet"
 msgstr "2つ目の惑星を再生"
@@ -11637,6 +11643,10 @@ msgstr "生き物が住みついた"
 #: data/homeward.json:planets[verdance].name data/planets.json:verdance.name data/telescope.json:planets_default[verdance].name
 msgid "Verdance"
 msgstr "Verdance"
+
+#: data/homeward.json:planets[verdance].leave.toast
+msgid "Six stations awake, Lumi. Their robots can look after Verdance now."
+msgstr "6つのステーションが目覚めたよ、Lumi。あとはロボットたちがVerdanceを見てくれる。"
 
 #: data/homeward.json:planets[ochre].name data/planets.json:ochre.name data/telescope.json:planets_default[ochre].name
 msgid "Ochre"
@@ -12688,8 +12698,8 @@ msgid "Windpump"
 msgstr "風力ポンプ"
 
 #: data/planets.json:verdance.hubs[garden_row].desc
-msgid "The rocket's seed stock. A new seed type."
-msgstr "ロケットに積む種の蓄え。新しい種類の種。"
+msgid "The Makers' seed store: seeds to take to the next world."
+msgstr "メイカーの種の倉庫。次の世界へ持っていく種がある。"
 
 #: data/planets.json:verdance.hubs[garden_row].piece.name
 msgid "Seed Stock"
@@ -12708,8 +12718,8 @@ msgid "Gantry Crane"
 msgstr "ガントリークレーン"
 
 #: data/planets.json:verdance.hubs[gantry_works].desc
-msgid "Hull plates for the rocket."
-msgstr "ロケット用の船体プレート。"
+msgid "Hull plates, so the rocket can stand the cold of space."
+msgstr "船体プレート。ロケットが宇宙の寒さに耐えられるようになる。"
 
 #: data/planets.json:verdance.hubs[gantry_works].piece.name
 msgid "Hull Plates"
@@ -12728,8 +12738,8 @@ msgid "Signal Mast"
 msgstr "信号マスト"
 
 #: data/planets.json:verdance.hubs[signal_heights].desc
-msgid "The star chart: where the rocket can fly."
-msgstr "星図：ロケットの行き先がわかる。"
+msgid "The Makers' star chart: it shows where the rocket can fly."
+msgstr "メイカーの星図。ロケットの行き先がわかる。"
 
 #: data/planets.json:verdance.hubs[signal_heights].piece.name
 msgid "Star Chart"
@@ -12748,8 +12758,8 @@ msgid "Big Wheel"
 msgstr "観覧車"
 
 #: data/planets.json:verdance.hubs[fairground].desc
-msgid "A power cell for the rocket. A new look for Lumi."
-msgstr "ロケット用のパワーセル。Lumi の新しい見た目。"
+msgid "A power cell that lasts a long flight. A new look for Lumi."
+msgstr "長い旅でも切れないパワーセル。Lumi の新しい見た目。"
 
 #: data/planets.json:verdance.hubs[fairground].piece.name
 msgid "Power Cell"
@@ -12788,8 +12798,8 @@ msgid "Last Bus"
 msgstr "最終バス"
 
 #: data/planets.json:verdance.hubs[bus_depot].desc
-msgid "An extra town. A reward of Parts."
-msgstr "おまけの町。ごほうび：パーツ。"
+msgid "An old station off the route. Wake it for Parts."
+msgstr "ルートから外れた古いステーション。起こすとパーツがもらえる。"
 
 #: data/planets.json:verdance.hubs[crane_court].name
 msgid "Crane Court"
@@ -12800,8 +12810,8 @@ msgid "Tower Crane"
 msgstr "タワークレーン"
 
 #: data/planets.json:verdance.hubs[crane_court].desc data/planets.json:verdance.hubs[lake_light].desc
-msgid "An extra town. A reward of Cubes."
-msgstr "おまけの町。ごほうび：キューブ。"
+msgid "An old station off the route. Wake it for Cubes."
+msgstr "ルートから外れた古いステーション。起こすとキューブがもらえる。"
 
 #: data/planets.json:verdance.hubs[tank_hill].name
 msgid "Tank Hill"
@@ -12812,8 +12822,8 @@ msgid "Hill Tank"
 msgstr "丘のタンク"
 
 #: data/planets.json:verdance.hubs[tank_hill].desc
-msgid "An extra town. A reward of Seeds."
-msgstr "おまけの町。ごほうび：種。"
+msgid "An old station off the route. Wake it for Seeds."
+msgstr "ルートから外れた古いステーション。起こすと種がもらえる。"
 
 #: data/planets.json:verdance.hubs[lake_light].name
 msgid "Lake Light"
@@ -14712,6 +14722,10 @@ msgstr "シュレッダードラムと小さな溶鉱炉。ベールは入った
 #: data/story_reasons.json:goal_reasons
 msgid "One more step toward a green world."
 msgstr "緑の世界へ、また一歩。"
+
+#: data/story_reasons.json:goal_reasons
+msgid "You can fly on now. The rest of Verdance can wait."
+msgstr "もう次へ飛べるよ。Verdanceの残りは後でいい。"
 
 #: data/story_reasons.json:goal_reasons
 msgid "Other old stations are waiting to be woken up."
@@ -17077,6 +17091,183 @@ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "Cargo pod landed: %s cubes from %d robots in other districts."
+#~ msgstr "貨物ポッド着陸：%s キューブ、ほかの地区のロボット %d 台から。"
+
+#~ msgid "WREN: That's the edge of the survey zone, Lumi. Nothing out there but haze."
+#~ msgstr "WREN：そこが測量ゾーンの端よ、Lumi。外にはもやしかない。"
+
+#~ msgid "Lumi hovers back onto solid ground."
+#~ msgstr "Lumi はふわりと固い地面に戻った。"
+
+#~ msgid "Planet %d m around"
+#~ msgstr "惑星一周 %d m"
+
+#~ msgid "Walked %d m (%d%%)"
+#~ msgstr "歩いた距離 %d m（%d%%）"
+
+#~ msgid "Speed %.1f m/s"
+#~ msgstr "速度 %.1f m/s"
+
+#~ msgid "Bots near %d, far %d"
+#~ msgstr "ボット 近く %d、遠く %d"
+
+#~ msgid "Y: role · Hold A: paint · Hold X: erase · Left stick: move"
+#~ msgstr "Y：役割 · A 長押し：塗る · X 長押し：消す · 左スティック：移動"
+
+#~ msgid "Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi"
+#~ msgstr "Tab：役割 · 左：塗る · 右：消す · 中：ロボットを送る · E：Lumi に戻る"
+
+#~ msgid "%s zone"
+#~ msgstr "%s ゾーン"
+
+#~ msgid "Locked. Upgrade your base to level 5 to build the launch pad."
+#~ msgstr "ロック中。発射台を建てるには基地をレベル5に上げよう。"
+
+#~ msgid "Priority"
+#~ msgstr "優先"
+
+#~ msgid "Stay"
+#~ msgstr "待機"
+
+#~ msgid "Follow me"
+#~ msgstr "ついてきて"
+
+#~ msgid "Recall"
+#~ msgstr "呼び戻す"
+
+#~ msgid "Works the marked hexes first, then the rest of the district."
+#~ msgstr "マークしたヘックスを先に、その後で地区の残りを担当する。"
+
+#~ msgid "Works only the marked hexes, and waits there when they are done."
+#~ msgstr "マークしたヘックスだけを担当し、終わったらそこで待機する。"
+
+#~ msgid "Works the hexes around you, wherever you go."
+#~ msgstr "あなたがどこへ行っても、周りのヘックスを担当する。"
+
+#~ msgid "Comes back and parks at the base."
+#~ msgstr "戻ってきて基地で待機する。"
+
+#~ msgid "[p]{@dpad}  panel      {@move}  move      {pad:#0}  mark      {pad:#2}  unmark      {pad:zoom_out}{pad:zoom_in}  zoom      {pad:ui_cancel}  back[/p][k]Left drag  mark      Right drag  unmark      {@move} / middle drag  move      Wheel  zoom      {kbd:open_command}  back[/k]"
+#~ msgstr "[p]{@dpad}  パネル      {@move}  移動      {pad:#0}  マーク      {pad:#2}  マーク解除      {pad:zoom_out}{pad:zoom_in}  ズーム      {pad:ui_cancel}  戻る[/p][k]左ドラッグ  マーク      右ドラッグ  マーク解除      {@move} / 中ドラッグ  移動      ホイール  ズーム      {kbd:open_command}  戻る[/k]"
+
+#~ msgid "COMMAND"
+#~ msgstr "指揮"
+
+#~ msgid "Mark around me"
+#~ msgstr "自分の周りをマーク"
+
+#~ msgid "CREWS"
+#~ msgstr "クルー"
+
+#~ msgid "Following the %s orders. Mark hexes or pick a mode to give it its own."
+#~ msgstr "%s の指示に従っている。ヘックスをマークするかモードを選んで、個別に指示しよう。"
+
+#~ msgid "No orders yet: roaming the district. Drag on the ground to mark where to work."
+#~ msgstr "指示なし：地区を巡回中。地面をドラッグして作業場所をマークしよう。"
+
+#~ msgid "No robots yet. Build one at the workbench."
+#~ msgstr "まだロボットがいない。作業台で作ろう。"
+
+#~ msgid "Build %s  %s"
+#~ msgstr "%s を作る  %s"
+
+#~ msgid "Max tier"
+#~ msgstr "最高ティア"
+
+#~ msgid "Upgrade > %s"
+#~ msgstr "アップグレード > %s"
+
+#~ msgid "ready"
+#~ msgstr "準備OK"
+
+#~ msgid "build at the workbench"
+#~ msgstr "作業台で作る"
+
+#~ msgid "Place refill tank here  %s  (%d/%d)"
+#~ msgstr "補給タンクをここに置く  %s  （%d/%d）"
+
+#~ msgid "A Water Tank at your hex. Waterers refill at the nearest one."
+#~ msgstr "いまいるヘックスの給水タンク。水やり係はいちばん近いタンクで補給する。"
+
+#~ msgid "%s · %d HEX"
+#~ msgstr[0] "%s · %d ヘックス"
+
+#~ msgid "BASE"
+#~ msgstr "基地"
+
+#~ msgid "YOU"
+#~ msgstr "あなた"
+
+#~ msgid "HEX %d"
+#~ msgstr "ヘックス %d"
+
+#~ msgid "BASE YARD"
+#~ msgstr "基地の庭"
+
+#~ msgid "Home ground, always clean"
+#~ msgstr "ホームグラウンド、いつもきれい"
+
+#~ msgid "LAKE HEX %d"
+#~ msgstr "湖のヘックス %d"
+
+#~ msgid "Floating junk  %d%% left"
+#~ msgstr "浮かぶガラクタ  残り %d%%"
+
+#~ msgid "Junk  %d%% left"
+#~ msgstr "ガラクタ  残り %d%%"
+
+#~ msgid "Level %d · %s"
+#~ msgstr "レベル %d · %s"
+
+#~ msgid "In %s zone"
+#~ msgstr "%s ゾーン内"
+
+#~ msgid "%d robots"
+#~ msgstr "ロボット %d 台"
+
+#~ msgid "%d / %d hexes clean"
+#~ msgstr "きれいなヘックス %d / %d"
+
+#~ msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Upgrades tab."
+#~ msgstr "発射台には Lv 5 の基地が必要（いまは Lv %d）。アップグレードタブで基地を強化しよう。"
+
+#~ msgid "The rocket lands on the pad when the base reaches level 5."
+#~ msgstr "基地がレベル5になると、ロケットが発射台に着陸する。"
+
+#~ msgid "Everything sells for x%s now."
+#~ msgstr "すべての売値が x%s になった。"
+
+#~ msgid "Clean hexes here: %d / %d"
+#~ msgstr "ここのマスをきれいに：%d / %d"
+
+#~ msgid "The rocket can keep %d bases going. Upgrade the rocket at the workbench."
+#~ msgstr "ロケットが支えられる基地は %d つまで。作業台でロケットを強化しよう。"
+
+#~ msgid "%s is awake. %s restored."
+#~ msgstr "%s が目を覚ました。%s が復旧した。"
+
+#~ msgid "The rocket's seed stock. A new seed type."
+#~ msgstr "ロケットに積む種の蓄え。新しい種類の種。"
+
+#~ msgid "Hull plates for the rocket."
+#~ msgstr "ロケット用の船体プレート。"
+
+#~ msgid "The star chart: where the rocket can fly."
+#~ msgstr "星図：ロケットの行き先がわかる。"
+
+#~ msgid "A power cell for the rocket. A new look for Lumi."
+#~ msgstr "ロケット用のパワーセル。Lumi の新しい見た目。"
+
+#~ msgid "An extra town. A reward of Parts."
+#~ msgstr "おまけの町。ごほうび：パーツ。"
+
+#~ msgid "An extra town. A reward of Cubes."
+#~ msgstr "おまけの町。ごほうび：キューブ。"
+
+#~ msgid "An extra town. A reward of Seeds."
+#~ msgstr "おまけの町。ごほうび：種。"
 
 #~ msgid "Rocket hop: %.1f km"
 #~ msgstr "ロケットホップ：%.1f km"

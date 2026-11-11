@@ -132,8 +132,9 @@ func _process(delta: float) -> void:
 
 func _finish() -> void:
 	_done = true
-	if world and world.get("cam") != null and (world.cam as CameraRig).camera:
-		(world.cam as CameraRig).camera.current = true
+	var so: SliceOrbit = world.get("orbit") as SliceOrbit if world else null  # [v6flat] back to the globe's camera (was the flat rig's)
+	if so and so.cam and so.cam.camera:
+		so.cam.camera.current = true
 	_show_head(true)
 	_lock(false)
 	finished.emit()

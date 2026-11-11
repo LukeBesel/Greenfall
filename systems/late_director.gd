@@ -218,7 +218,7 @@ func _arrive_new_world() -> void:
 ## A new world's look: its type (frost on an ice moon, sand on a desert world) and a wet sheen
 ## under Heavy Rain, as a coat over the junk.
 func _world_look() -> void:
-	if CradleMode.current_index() <= 0 or world.get("frontier") != null or world.get("view") == null:
+	if CradleMode.current_index() <= 0 or world.get("view") == null:
 		return
 	# [worlds2] The world type's coat, made wetter by Heavy Rain and shinier by Rich Salvage (systems/world_look.gd).
 	var rain_coat: Array = []

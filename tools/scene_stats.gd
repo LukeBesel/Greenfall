@@ -154,10 +154,6 @@ static func probe_camera(root: Node, reach: float = 6.0) -> void:
 			var pw: Vector3 = wp + f.border_warp(wp)
 			var aw: Vector2i = Hex.world_to_axial(Vector2(pw.x, pw.z), f.hex_size)
 			info += " warped_axial=%s ring=%d in_grid=%s warped_id=%d" % [aw, Hex.distance(aw, Vector2i.ZERO), str(f.axial_to_id.has(aw)), int(f.axial_to_id.get(aw, -1))]
-			var wv: Node = sl.get("water")
-			if wv and wv.get("_mat"):
-				var wm: ShaderMaterial = wv.get("_mat")
-				info += " water_mat grid_r=%s warp_amp=%s warp_size=%s" % [wm.get_shader_parameter("grid_radius"), wm.get_shader_parameter("warp_amp"), wm.get_shader_parameter("warp_size")]
 		print("[camprobe] point on y=0.12: %s%s" % [wp, info])
 		var space: PhysicsDirectSpaceState3D = cam.get_world_3d().direct_space_state
 		var q := PhysicsRayQueryParameters3D.create(o0, o0 + d0 * 400.0)

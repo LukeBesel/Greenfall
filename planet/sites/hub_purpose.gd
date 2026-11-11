@@ -128,6 +128,8 @@ func _enter(i: int, by_rocket: bool) -> void:
 	var e: Dictionary = HubPlan.entry(planet, i)
 	if e.is_empty():
 		return
+	if HubPlan.is_home(planet, i) and not by_rocket:
+		return  # the start of the game, or a walk back: nothing to announce
 	var st: Dictionary = HubPlan.state(i)
 	var first: bool = not bool(st.get("seen", false))
 	if first:
@@ -230,7 +232,7 @@ func can_wake(i: int) -> bool:
 func step_text(i: int, d: Dictionary) -> String:
 	match str(d.get("do", "")):
 		"clean":
-			return tr("Clean hexes here: %d / %d") % [int(d["have"]), int(d["need"])]
+			return tr("Dig the landmark out. Clean hexes here: %d / %d") % [int(d["have"]), int(d["need"])]
 		"outposts":
 			return tr("Repair an outpost here: %d / %d") % [int(d["have"]), int(d["need"])]
 		"wake":
@@ -276,7 +278,7 @@ func landmark_prompt() -> String:
 
 ## Why one more base can't be restored yet (the rocket's tier).
 func limit_text() -> String:
-	return tr("The rocket can keep %d bases going. Upgrade the rocket at the workbench.") % HubPlan.rocket_limit()
+	return tr("The rocket can carry supplies to %d bases. Upgrade it at the workbench.") % HubPlan.rocket_limit()
 
 
 func use_landmark() -> void:
@@ -316,7 +318,7 @@ func wake(i: int, free: bool = false) -> bool:
 	Audio.play("thud", 0.8, -4.0)
 	Audio.music_sting("level_up")
 	EventBus.shake_requested.emit(0.25)
-	EventBus.toast.emit(tr("%s is awake. %s restored.") % [HubPlan.landmark_name(planet, i), HubPlan.hub_name(planet, i)], "story")
+	EventBus.toast.emit(tr("%s is awake. %s keeps cleaning when you fly on.") % [HubPlan.landmark_name(planet, i), HubPlan.hub_name(planet, i)], "story")
 	if not lines.is_empty():
 		EventBus.toast.emit(" · ".join(lines), "story")
 	print("[hubs] woke site %d (%s): level %d, bases %d/%d, gave %s" % [i, str(HubPlan.entry(planet, i).get("id", "")), sm.levels[i], HubPlan.restored_main(planet), HubPlan.main_total(planet), str(lines)])
@@ -448,8 +450,8 @@ func _refresh() -> void:
 			var nx: int = HubPlan.next_site(planet)
 			if nx >= 0 and HubPlan.is_main(planet, nx):
 				body = tr("Restored. Next: take the rocket to %s.") % HubPlan.hub_name(planet, nx)
-			else:
-				body = ""
+			elif HubPlan.is_main(planet, site) and HubPlan.restored_main(planet) >= HubPlan.main_total(planet):
+				body = tr("All %d bases stand. Fly home and make the rocket ready to leave.") % HubPlan.main_total(planet)
 	card_text = (title + ": " + body) if body != "" else ""
 	_card.visible = body != "" and not bool(so.w.get("launching")) and not (_title != null and is_instance_valid(_title))  # the name first, then the step
 	if _card.visible:
@@ -668,7 +670,12 @@ func _dev_chain(i: int) -> void:
 			HubPlan.state(i)["outposts"] = int(s.get("count", 1))
 	GameState.add_all(HubPlan.wake_cost(planet))
 	_refresh()
-	print("[hubs] dev: %s | prompt '%s' | landmark %s" % [card_text, landmark_prompt(), "found" if not landmark(i).is_empty() else "MISSING"])
+	var lmd: Dictionary = landmark(i)
+	var reach: String = "MISSING"
+	if not lmd.is_empty():
+		var open_at: Vector3 = TargetReach.beacon_point(so.w, lmd["pos"])
+		reach = "found, %.0f m from the pad, open ground %.1f m from its foot (reach %.0f m)" % [(lmd["pos"] as Vector3).distance_to(sm.pad_xf(i).origin), open_at.distance_to(lmd["pos"]), 11.0]
+	print("[hubs] dev: %s | prompt '%s' | landmark %s" % [card_text, landmark_prompt(), reach])
 	use_landmark()
 	_refresh()
 	print("[hubs] dev: after use: woken %s, level %d, built %d, card '%s', bench %s, hud %s" % [HubPlan.woken(i), sm.levels[i], sm.built[i], card_text, str(bench_point() != null), str(hud_lines())])

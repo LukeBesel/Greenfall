@@ -19,18 +19,18 @@ The round world is the game, and the work is on its first planet, Verdance. The 
 - **Reach:** every collectible and objective target stands on reachable ground (`--target-reach`).
 - **Map:** our own survey style with sprout, Lumi and plume glyphs. Travel is at the rocket (press E), not in the map. Glyphs no longer cover each other on the start hub, the map shows the HUD's planet %, and the round game has one system map.
 - **Text:** all 3,992 strings are translated into German, French, Spanish, Brazilian Portuguese, Simplified Chinese and Japanese. A test fails when an early-game string has no translation.
-- **Checks:** 967 unit tests, the save round trips (flat and `--orbit`) and the two-process orbit reload. The dev checks are listed in CLAUDE.md.
+- **Checks:** the unit tests, the save round trip on the globe (with the shared-state checks of `tools/shared_roundtrip.gd`) and the two-process orbit reload. The dev checks are listed in CLAUDE.md.
 
 **Open**
 - **Renderers:** every render so far used opengl3 (Compatibility). Nobody has looked at Verdance on Forward+ or Metal, and the owner's Mac perf run (`--quality=1 --perf`) is still to do.
 - **Look:** the globe's light was harsher than the flat world's and the pad looked pale at noon. v5look's warm-light and matte-pad pass is merged, but the owner has not seen it yet. A flat grey sea on the horizon and a thin straight line across the junk field were reported and not rechecked since the water fix (docs/QA_VERDANCE.md, 12 and 13).
-- **Hinterland:** roads stop at a hub's 345 m clearance instead of joining the town streets (v6qa list, item 4).
-- **Known glitches (v6qa, docs/QA_VERDANCE.md "Known-glitch list"):** still open: SCRIPT ERRORs seen once in a `--orbit` round trip, loading-screen RID errors on a headless continue, walk-in hub town build frames (25-45 ms for 3 s), the shader warm-up frame at the end of loading.
-- **Autoplay:** the bot's stuck escapes climb in the garden phase (13 at 47 min, 77 at 107 min).
+- **Known glitches (v6qa, docs/QA_VERDANCE.md "Known-glitch list"):** still open: SCRIPT ERRORs seen once in a `--orbit` round trip and loading-screen RID errors on a headless continue (neither reproduced yet), and frames of 25-45 ms for about 3 s while a hub town builds as Lumi walks in. The shader warm-up is now batched but has not been measured on real hardware.
+- **Pacing (items 57, 58, 61, 63, 64):** the gates and the price curve are in (docs/BALANCE.md, "Verdance arc"; knobs in docs/ADJUSTING.md): the rocket comes with the first working robot, far hubs cost 600 / 6K / 24K / 96K / 380K, every restored hub multiplies sales by 2.5, the rocket tiers reach 3 / 5 / all hubs, six hubs at level 2 open the way onward, and the Mk V drive costs 500K. The full-arc measurement uses a stand-in for waking a far hub until v6hubs' hub chain is in; measure again after it lands. Other planets' prices are not rescaled to the new curve yet.
+- **Autoplay:** the bot follows the card now (it saves for a priced step and sees only the card's goal). Its stuck escapes are fixed (1 in 160 minutes, v5play).
 - **Bale clipping** into Lumi's body (item 22) has not been reproduced.
 - **Translations** are machine drafts. No native speaker has reviewed them. In-world shop signs (PAWN, SHOE REPAIR, OLD TOWN) stay English in every language.
 - **Map:** the survey's hex counts are a snapshot (they update on Re-survey), while its planet % is live.
-- **Flat world:** code that only the flat world used is still in the tree.
+- **Flat world:** removed (v6flat, docs/FLAT_REMOVAL.md): no flat mode, no `--flat`, no phase A prototype scenes. Old flat saves are copied into the round tree once at startup and migrate on load. The leftovers kept on purpose are listed at the end of docs/FLAT_REMOVAL.md.
 - **Other planets** on the globe (Ochre, Rime, Anvil, Tidewell) are out of focus: Haul Bugs find no path there, and the Ochre finale camera is blocked.
 - **Polish (item 56):** the v5 wave was still running when this was written (v5play: bugs from play-testing; v5look: light, sky, hinterland; v5load: loader, perf, saves). Add their results here.
 
@@ -1040,3 +1040,13 @@ Details and numbers in docs/PERFORMANCE.md (perf passes 6-8).
 - **Local up:** a dug-up part, the holo screen, the butterfly, the depot's "+N" and the upgrade sparkle used world +Y.
 - **Tool:** `--feel=carry|bale|move|snag|cam|camwall|map|tour` (tools/feel_probe.gd; `--feel-quit`, `--feel-shots=S` for frame sequences, `--feel-at=x,z`, `--feel-walk=x,z;x,z`). Tests: `tests/test_v6feel.gd`, `tests/test_v6feel_slide.gd`.
 - **Numbers:** bale gap to his body +0.19 m in every phase (was -0.30 m); glancing pushes that get past the greenhouse spot 36 of 48 (was 6), the shack nook 39 of 48 (was 28); 0 camera jumps over 0.6 m round a town block; 0 to 90% speed in 0.27 s, stop in 0.22 s.
+
+## 2026-11-11: v6crew (robots as the heart of the mid-game on Verdance)
+- **A robot belongs to one hub** (`u["hub"]`, the hub it is built at: `SphereCrew.nearest_hub`). It cleans that hub's region nearest dirty first, its Haul Bugs fetch only that region's bales and unload at that hub's drop point (`SphereCrew.depot_points[hub_cell]`, default 5 m off the pad; v6hubs can set the exact spot). Painted zones belong to the hub they lie in. `SphereCrew.transfer(u, hub)` / `transfer_some(from, to, n)` move robots (for the rocket).
+- **The first robot is a moment.** `SphereCrew.greet()`: a built robot rolls 3 m out, looks left and right, then starts on the nearest dirty hex with no zone painted. The first build closes the workbench so the player sees it.
+- **Zones are "here first"** for cleaners and skimmers (then they carry on around the hub, so nobody idles while work is in reach); planters and waterers keep to their zone.
+- **Readable robots.** `BotBadge`: a lamp in the job's colour (pulsing at work, grey "z" resting, amber "!" needs you). `CrewTalk.line()` is the one short line per state or reason; it shows as the prompt when Lumi stands by a robot and on hover in Command. Drips spray while watering.
+- **Command view.** Filled zone hexes per job, hover hex, bales as squares, a card with the hub's crew and "About N hexes an hour", a legend row per job, paint hints for mouse or pad, only the jobs you have robots for.
+- **Growth.** `crew.hub_summary(hub_cell)` (also used by the rocket picker), the bench's Bots counter shows the rate, and a hub's crew reports once when Lumi returns after 3 minutes or more away (`OrbitCrews._away_tick`).
+- Tests: `tests/test_crew_v6.gd`. Dev: `--crew-build=type[,s]`, `--crew-cam=i[,dist,height]`.
+- Open: rendered checks of the badge, hello and Command card were blocked by memory on the shared box (see the hand-off notes); Haul Bug reversals in `--bot-motion` (10 a minute); the Drip can be built before any plant exists (it says why it waits).

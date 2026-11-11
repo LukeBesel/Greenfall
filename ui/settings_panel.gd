@@ -306,8 +306,15 @@ func _build_audio(p: VBoxContainer) -> void:
 	_slider(p, "Music", Settings.music_volume, 0.0, 1.0, 0.05, _pct, func(v: float) -> void:
 		Settings.music_volume = v
 		Audio.apply_volumes())
+	_slider(p, tr("Ambience"), Settings.ambience_volume, 0.0, 1.0, 0.05, _pct, func(v: float) -> void:  # [v6sound]
+		Settings.ambience_volume = v
+		Audio.apply_volumes())
 	_slider(p, tr("Sound effects"), Settings.sfx_volume, 0.0, 1.0, 0.05, _pct, func(v: float) -> void:
 		Settings.sfx_volume = v
+		Audio.apply_volumes()
+		Audio.play("pop", 1.0, -6.0))
+	_slider(p, tr("Interface"), Settings.ui_volume, 0.0, 1.0, 0.05, _pct, func(v: float) -> void:  # [v6sound]
+		Settings.ui_volume = v
 		Audio.apply_volumes()
 		Audio.play("click", 1.0, -6.0))
 

@@ -421,4 +421,6 @@ func _prompt_text(kind: String) -> String:
 		"upgrades": return tr("%s   workbench") % g
 	if kind.begins_with("E "):
 		return g + kind.substr(1)
+	if kind.begins_with("~ "):  # [v6crew] a line to read, no key (a robot saying what it is doing)
+		return kind.substr(2)
 	return ""

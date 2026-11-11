@@ -95,6 +95,7 @@ func sell_factor() -> float:
 		m *= TrashBin.value_mult()  # [camp] the bin's level
 	if w and w.get("hub") != null:
 		m += float(w.hub.sell_mult())
+	m *= Hub.trade_mult()  # [v6pace] restored far hubs
 	if w and w.get("field") != null:  # [biomes] frontier junk sells for more (data/frontiers.json value_mult)
 		m *= float(Frontiers.def_for_biome(str(w.field.biome)).get("value_mult", 1.0))
 	return m
