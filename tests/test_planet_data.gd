@@ -96,7 +96,11 @@ func test_testworld_is_data_only_and_dev_only() -> void:
 
 
 func test_unknown_planet_falls_back() -> void:
-	assert_eq(SoundCfg.theme_of("no_such_planet"), "verdance", "planets._default sounds like Verdance")
+	assert_eq(SoundCfg.theme_of("no_such_planet"), "", "an id that is no planet has no sound block (Audio ignores it)")
+	var all: Dictionary = PlanetEnvs.all()
+	all["zz_quiet"] = {"name": "Quiet"}
+	assert_eq(SoundCfg.theme_of("zz_quiet"), "verdance", "a planet with no sound block sounds like Verdance (planets._default)")
+	all.erase("zz_quiet")
 	assert_eq(int(GlobeSpec.of("no_such_planet")["frequency"]), 128)
 	assert_true(PlanetCfg.uses_towns("no_such_planet"))
 

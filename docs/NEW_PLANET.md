@@ -209,7 +209,7 @@ start town. They are worth running, but read their failures as "Verdance-shaped 
 | A planet with no `globe` got a const in code | `_default.globe` in data, plus an optional `globe.seed` |
 | `hub_defaults` with no fallback (`main_path` 6 in code, hop timings only Verdance's) | `_default.hub_defaults`, merged under each planet's |
 | The start town is built before HubPurpose, so it read Verdance's hub plan, and its landmark was always the water tower | `PlanetCfg.use_planet` points the hub plan at the globe's planet before anything builds; the start yard takes its hub's `landmark.kind` (Verdance's is the water tower, as before) |
-| Sound: a planet with no `data/sound.json` block was silently ignored by `Audio.set_planet_theme`, and the score followed the Homeward planet, not the globe | `planets._default` and `"like"`; the globe's planet sets the score and ambience |
+| Sound: a planet (of data/planets.json) with no `data/sound.json` block was silently ignored by `Audio.set_planet_theme`, and the score followed the Homeward planet, not the globe | `planets._default` and `"like"`; the globe's planet sets the score and ambience |
 | The sky's suns were always Verdance's on the globe | `SkyDirector.current_planet_id` is the globe's planet |
 | The ground textures and colours were fixed | `look.ground` (textures and three tint uniforms in `sphere_ground.gdshader`, 1 = unchanged) |
 | The HUD said "VERDANCE" on any globe | the planet's `name` when the globe is not the campaign's planet |

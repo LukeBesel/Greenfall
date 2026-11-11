@@ -64,7 +64,7 @@ static func duck(key: String, fallback: float) -> float:
 	return float(_d("duck").get(key, fallback))
 
 
-## [v7planet] A planet's block. A planet with no block gets planets._default; a block (or the
+## [v7planet] A planet's block. A planet of data/planets.json with no block gets planets._default; a block (or the
 ## default) with "like": "<other id>" starts from that planet's block and changes only the keys it
 ## gives (top level: theme, ambience). Blocks without "like" are used as they are.
 static func planet(id: String) -> Dictionary:
@@ -72,7 +72,8 @@ static func planet(id: String) -> Dictionary:
 	var own: Variant = ps.get(id)
 	if own is Dictionary and not (own as Dictionary).has("like"):
 		return own
-	var src: Variant = own if own is Dictionary else ps.get("_default")
+	# planets._default only for a planet of data/planets.json: an unknown id still has no block (ignored).
+	var src: Variant = own if own is Dictionary else (ps.get("_default") if PlanetCfg.has(id) else null)
 	if not (src is Dictionary):
 		return {}
 	var out: Dictionary = {}
