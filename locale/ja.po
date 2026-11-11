@@ -921,6 +921,10 @@ msgstr "%s   基地 %d/%d"
 msgid "Restored. Next: take the rocket to %s."
 msgstr "復旧完了。次はロケットで %s へ。"
 
+#: planet/sites/hub_purpose.gd:452
+msgid "All %d bases stand. Fly home and make the rocket ready to leave."
+msgstr ""
+
 #: planet/sites/hub_purpose.gd:624
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"

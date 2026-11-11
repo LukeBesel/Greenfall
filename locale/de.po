@@ -923,6 +923,10 @@ msgstr "%s   BASEN %d/%d"
 msgid "Restored. Next: take the rocket to %s."
 msgstr "Wiederhergestellt. Weiter: mit der Rakete nach %s."
 
+#: planet/sites/hub_purpose.gd:452
+msgid "All %d bases stand. Fly home and make the rocket ready to leave."
+msgstr ""
+
 #: planet/sites/hub_purpose.gd:624
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"

@@ -920,6 +920,10 @@ msgstr "[%s   BÀŠÉŠ %d/%d ~~~]"
 msgid "Restored. Next: take the rocket to %s."
 msgstr "[Ŕéšţôŕéð. Ñéxţ: ţàķé ţĥé ŕôçķéţ ţô %s. ~~~~~~~~~~]"
 
+#: planet/sites/hub_purpose.gd:452
+msgid "All %d bases stand. Fly home and make the rocket ready to leave."
+msgstr "[Àļļ %d bàšéš šţàñð. Fļý ĥômé àñð màķé ţĥé ŕôçķéţ ŕéàðý ţô ļéàvé. ~~~~~~~~~~~~~~~~~~~]"
+
 #: planet/sites/hub_purpose.gd:624
 msgid "%s  ·  the %s"
 msgstr "[%s  ·  ţĥé %s ~~]"
