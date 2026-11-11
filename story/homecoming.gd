@@ -6,7 +6,7 @@ extends Node
 ##   1. space: the rocket climbs out of a green Verdance; the four restored worlds glow far off;
 ##   2. the Cradle, holding orbit, wakes (green running lights) and takes the rocket into its bay;
 ##   3. the seed vault: Lumi sets the seedling tray back on its pedestal, three hundred years after
-##      climbing into a pod to save it; the drawers light up; below decks, the Makers wake;
+##      climbing into a pod to save it; the drawers light up; below decks, the Settlers wake;
 ##   4. back on the ground: the ark finale (story/bloom_finale.gd) brings the Cradle down to
 ##      Verdance, "welcome home", then the end credits. The game carries on afterwards.
 ## Dev: --homecoming[=S] plays it S seconds after the district loads.
@@ -70,7 +70,7 @@ func play() -> void:
 	_c = null
 	_land_lumi()
 	playing = false
-	# The ark finale: the Cradle comes down to Verdance with the Makers aboard, then the credits.
+	# The ark finale: the Cradle comes down to Verdance with the Settlers aboard, then the credits.
 	GameState.flags.erase("bloom_finale_seen")
 	GameState.flags.erase("credits_seen")
 	var f := BloomFinale.new()

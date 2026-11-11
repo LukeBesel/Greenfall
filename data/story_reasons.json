@@ -29,7 +29,7 @@
       "stat:hexes_cleaned": "Plants only grow on clean ground.",
       "stat:perfect_cubes": "A perfect bale has no gaps, so nothing is lost.",
       "upgrade:compartment_size": "A bigger chest means fewer walks to the bin.",
-      "stat:shards_found": "The Makers left these behind. They tell what happened here.",
+      "stat:shards_found": "The Settlers left these behind. They tell what happened here.",
       "stat:parts_found": "Old machine parts. Robots are built from them.",
       "earned:": "Big machines are built from a great many cubes.",
       "stat:research_done": "The bench studies what you find and learns to build it.",
@@ -84,7 +84,7 @@
     ],
     "drive_built": [
       "The rocket can leave now. Verdance isn't finished, and that's all right.",
-      "Some of its trash needs tools the Makers left on other worlds. We'll bring them back."
+      "Some of its trash needs tools the Settlers left on other worlds. We'll bring them back."
     ]
   }
 }

@@ -377,18 +377,6 @@ msgstr "前哨 %d  %s"
 msgid "GONE FOR GOOD  -%d kg"
 msgstr "永久清除  -%d 千克"
 
-#: automation/recycler.gd:284
-msgid "RECYCLER"
-msgstr "回收炉"
-
-#: automation/recycler.gd:287
-msgid "SHRED  ·  SMELT  ·  GONE FOR GOOD"
-msgstr "粉碎  ·  熔炼  ·  永久清除"
-
-#: automation/recycler.gd:440
-msgid "HAND FEED"
-msgstr "手动投料"
-
 #: automation/rocket.gd:316
 msgid "LIFT OFF"
 msgstr "升空"
@@ -483,7 +471,7 @@ msgid "E   Telescope: look across the system"
 msgstr "E   望远镜：眺望整个星系"
 
 #: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:520 ui/upgrade_card.gd:258
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:558 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "%d 分钟"
 
@@ -739,7 +727,7 @@ msgstr "先升级火箭，再唤醒：%s"
 msgid "Wake the %s (%s)"
 msgstr "唤醒：%s（%s）"
 
-#: planet/sites/hub_purpose.gd:298
+#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:431
 msgid "E   Wake the %s  (%s)"
 msgstr "E   唤醒：%s  （%s）"
 
@@ -837,7 +825,7 @@ msgid "%s site"
 msgstr "%s地点"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: planet/sites/orbit_sites.gd:225 ui/main_menu.gd:474
+#: planet/sites/orbit_sites.gd:225 ui/main_menu.gd:525
 msgid "Hub %d"
 msgstr "基地 %d"
 
@@ -1564,7 +1552,7 @@ msgstr "你的基地已经成长到试玩版的极限。"
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "在完整版中，Lumi 会把基地建到 5 级，种满整片街区直到繁茂，让它们成长为明亮的未来城市，还会乘火箭飞往星球上的数十座基地。你的试玩进度会被保留。"
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:765
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:787
 msgid "Hexes cleaned"
 msgstr "已清理六角格"
 
@@ -1572,15 +1560,15 @@ msgstr "已清理六角格"
 msgid "Bales made"
 msgstr "已制作捆包"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:780
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:802
 msgid "Robots built"
 msgstr "已建造机器人"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:788
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:810
 msgid "Time played"
 msgstr "游戏时长"
 
-#: steam/demo_end_screen.gd:78 ui/main_menu.gd:355
+#: steam/demo_end_screen.gd:78 ui/main_menu.gd:361
 msgid "Wishlist on Steam"
 msgstr "在 Steam 上加入愿望单"
 
@@ -1596,7 +1584,7 @@ msgstr "标题画面"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "继续游戏：第一个街区仍然开放，基地等级 %d。"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:857 ui/main_menu.gd:468
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:880 ui/main_menu.gd:519
 msgid "%dh %02dm"
 msgstr "%d时%02d分"
 
@@ -1701,8 +1689,8 @@ msgid "CRADLE:  LANDING DENIED.  SYSTEM SURVEY: FIVE WORLDS.  ONE ALIVE.  SLEEPE
 msgstr "CRADLE：拒绝着陆。星系勘测：五个世界。一个存活。沉睡者继续沉睡。"
 
 #: story/cradle_answers.gd:17
-msgid "It's the charter. The Makers sleep in the Cradle's lower decks, and it won't wake them into a dying system."
-msgstr "是宪章。Makers 睡在 Cradle 号的下层甲板里，它不会让他们在一个垂死的星系里醒来。"
+msgid "It's the charter. The Settlers sleep in the Cradle's lower decks, and it won't wake them into a dying system."
+msgstr "是宪章。定居者睡在 Cradle 号的下层甲板里，它不会让他们在一个垂死的星系里醒来。"
 
 #: story/cradle_answers.gd:18
 msgid "And it is dying. The Ledger mined every world out here hollow and left each one under its trash. Verdance was only the first."
@@ -1903,12 +1891,12 @@ msgid "Wait. Hold it up to the light."
 msgstr "等等。对着光举起来看看。"
 
 #: story/first_seed.gd:10
-msgid "That's a Maker seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
-msgstr "那是造物者的种子罐。盖子上有 Cradle号的印章。是我们的，匆忙中落下的。"
+msgid "That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
+msgstr "那是定居者的种子罐。盖子上有 Cradle号的印章。是我们的，匆忙中落下的。"
 
 #: story/first_seed.gd:11
-msgid "When they left, the Makers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi."
-msgstr "离开时，造物者把能带走的每一颗种子都封进了 Cradle号的种子库。你的种子库，Lumi。"
+msgid "When they left, the Settlers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi."
+msgstr "离开时，定居者把能带走的每一颗种子都封进了 Cradle号的种子库。你的种子库，Lumi。"
 
 #: story/first_seed.gd:12
 msgid "The plan was simple. Wait for the dust to settle. Come home. Plant. They called that day the Greenfall."
@@ -2280,8 +2268,8 @@ msgid "Space  pause   ·   Esc  skip"
 msgstr "空格  暂停   ·   Esc  跳过"
 
 #: story/tutorial.gd:10
-msgid "Fix the Makers' old bench: press  {interact}"
-msgstr "修理造物者的旧工作台：按  {interact}"
+msgid "Fix the Settlers' old bench: press  {interact}"
+msgstr "修理定居者的旧工作台：按  {interact}"
 
 #: story/tutorial.gd:11
 msgid "Pick up trash: hold  {scoop}"
@@ -2391,11 +2379,11 @@ msgstr "在废料底下的某个地方。"
 msgid "Found on the planet it belongs to."
 msgstr "在它所属的星球上找到。"
 
-#: systems/codex.gd:200 ui/codex_screen.gd:380
+#: systems/codex.gd:200 ui/codex_screen.gd:384
 msgid "Old Town"
 msgstr "老城区"
 
-#: systems/codex.gd:204 ui/codex_screen.gd:380
+#: systems/codex.gd:204 ui/codex_screen.gd:384
 msgid "Wilderness bases"
 msgstr "荒野基地"
 
@@ -2403,7 +2391,7 @@ msgstr "荒野基地"
 msgid " · often %s"
 msgstr " · 常见于%s"
 
-#: systems/codex.gd:207 ui/codex_screen.gd:380 data/codex.json:categories[frontiers].name
+#: systems/codex.gd:207 ui/codex_screen.gd:384 data/codex.json:categories[frontiers].name
 msgid "Frontiers"
 msgstr "边境"
 
@@ -2411,11 +2399,11 @@ msgstr "边境"
 msgid " · %s"
 msgstr " · %s"
 
-#: systems/codex.gd:209 ui/codex_screen.gd:380
+#: systems/codex.gd:209 ui/codex_screen.gd:384
 msgid "Other worlds"
 msgstr "其他世界"
 
-#: systems/codex.gd:210 ui/codex_screen.gd:380
+#: systems/codex.gd:210 ui/codex_screen.gd:384
 msgid "Any district"
 msgstr "任意街区"
 
@@ -2915,20 +2903,20 @@ msgstr "存档 %d"
 msgid "%d:%02d h"
 msgstr "%d:%02d 小时"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 msgid "Low"
 msgstr "低"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
-#: ui/settings_panel.gd:601
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: ui/settings_panel.gd:621
 msgid "Medium"
 msgstr "中"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 msgid "High"
 msgstr "高"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 msgid "Ultra"
 msgstr "超高"
 
@@ -2976,7 +2964,7 @@ msgstr "已在队列中"
 msgid "Queue is full"
 msgstr "队列已满"
 
-#: systems/research.gd:340 ui/codex_screen.gd:861
+#: systems/research.gd:340 ui/codex_screen.gd:884
 msgid "%ds"
 msgstr "%d秒"
 
@@ -3121,16 +3109,16 @@ msgid "Your first bot came with treads and a bobble plant. Style it in the Locke
 msgstr "你的第一台机器人附带履带和一株弹簧小草。基地达到%d级后可在储物柜里装扮它。"
 
 #: systems/robot_builder.gd:527
-msgid "A Maker Fragment was tucked inside it: +%d parts."
-msgstr "里面藏着一块创造者碎片：+%d 零件。"
+msgid "A Settler Fragment was tucked inside it: +%d parts."
+msgstr "里面藏着一块定居者碎片：+%d 零件。"
 
 #: systems/robot_builder.gd:559
 msgid "%s spotted something green and lucky: a Lucky Clover!"
 msgstr "%s 发现了一样又绿又幸运的东西：幸运草！"
 
 #: systems/robot_builder.gd:562
-msgid "%s spotted a Maker Fragment glinting in the junk: +%d parts."
-msgstr "%s 在垃圾里发现了一块闪光的创造者碎片：+%d 零件。"
+msgid "%s spotted a Settler Fragment glinting in the junk: +%d parts."
+msgstr "%s 在垃圾里发现了一块闪光的定居者碎片：+%d 零件。"
 
 #: systems/robot_builder.gd:569
 msgid "%s spotted a %s: %s."
@@ -3407,7 +3395,7 @@ msgstr "压了大约 %d 个捆包"
 msgid "kept the base tidy"
 msgstr "把基地收拾得整整齐齐"
 
-#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:772
+#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:794
 msgid "Cubes earned"
 msgstr "赚到的方块"
 
@@ -3494,6 +3482,10 @@ msgstr "这里全清干净了！"
 #: systems/glim/glim_director.gd:349
 msgid "Only big pieces left"
 msgstr "只剩大件了"
+
+#: tools/ui_audit_run.gd:316 ui/locker_panel.gd:84 ui/telescope_view.gd:379
+msgid "Close"
+msgstr "关闭"
 
 #: ui/allocation_board.gd:13
 msgid "ALLOCATION BOARD   ·   MULTIBOTS"
@@ -3595,7 +3587,7 @@ msgstr "播种新世界"
 msgid "The Cradle has to come home first."
 msgstr "Cradle号得先回家。"
 
-#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:355
+#: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:393
 #: ui/rockets_panel.gd:88 ui/system_map.gd:739
 msgid "Launch"
 msgstr "发射"
@@ -3620,7 +3612,7 @@ msgstr "初始配置：只有 Lumi。传家宝会添加更多。"
 msgid "Starting kit: %s"
 msgstr "初始配置：%s"
 
-#: ui/ark_bridge.gd:303 ui/settings_panel.gd:582
+#: ui/ark_bridge.gd:303 ui/settings_panel.gd:602
 msgid "Full"
 msgstr "完整"
 
@@ -3830,8 +3822,8 @@ msgid "  ·  press to unlock + fit"
 msgstr "  ·  按下解锁并装上"
 
 #: ui/builder_panel.gd:381
-msgid "  (Maker set)"
-msgstr "  （造物者套装）"
+msgid "  (Settler set)"
+msgstr "  （定居者套装）"
 
 #: ui/builder_panel.gd:401
 msgid "Save as %s preset"
@@ -3898,23 +3890,23 @@ msgstr "艺术家"
 msgid "%d / %d known"
 msgstr "已知 %d / %d"
 
-#: ui/codex_artists.gd:58
+#: ui/codex_artists.gd:63
 msgid "From %s"
 msgstr "来自%s"
 
-#: ui/codex_artists.gd:59
+#: ui/codex_artists.gd:64
 msgid "Not met yet"
 msgstr "尚未发现"
 
-#: ui/codex_artists.gd:60
+#: ui/codex_artists.gd:65
 msgid "Find one of their CDs in the rubble on %s."
 msgstr "在%s的瓦砾中找到他们的一张CD。"
 
-#: ui/codex_artists.gd:67
+#: ui/codex_artists.gd:72
 msgid "Your CDs (%d / %d): %s"
 msgstr "你的CD（%d / %d）：%s"
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:794
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:816
 msgid "Achievements"
 msgstr "成就"
 
@@ -3934,40 +3926,40 @@ msgstr "收藏"
 msgid "Artists"
 msgstr "艺术家"
 
-#: ui/codex_screen.gd:77
+#: ui/codex_screen.gd:81
 msgid "CODEX"
 msgstr "图鉴"
 
-#: ui/codex_screen.gd:89
+#: ui/codex_screen.gd:93
 msgid "Watch the story"
 msgstr "观看剧情"
 
-#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:172
+#: ui/codex_screen.gd:105 ui/upgrades_screen.gd:172
 msgid "Close  [%s]"
 msgstr "关闭  [%s]"
 
-#: ui/codex_screen.gd:205
+#: ui/codex_screen.gd:209
 msgid "%d / %d curiosities"
 msgstr "奇物 %d / %d"
 
-#: ui/codex_screen.gd:207
+#: ui/codex_screen.gd:211
 msgid "%d / %d collectibles"
 msgstr "收藏品 %d / %d"
 
-#: ui/codex_screen.gd:209
+#: ui/codex_screen.gd:213
 msgid "%d / %d achievements"
 msgstr "成就 %d / %d"
 
-#: ui/codex_screen.gd:211
+#: ui/codex_screen.gd:215
 msgid "%d / %d entries"
 msgstr "条目 %d / %d"
 
-#: ui/codex_screen.gd:340 ui/codex_screen.gd:460 ui/codex_screen.gd:626
-#: ui/codex_screen.gd:641
+#: ui/codex_screen.gd:344 ui/codex_screen.gd:464 ui/codex_screen.gd:630
+#: ui/codex_screen.gd:645
 msgid "Not found yet"
 msgstr "尚未发现"
 
-#: ui/codex_screen.gd:344
+#: ui/codex_screen.gd:348
 msgid ""
 "\n"
 "\n"
@@ -3977,211 +3969,211 @@ msgstr ""
 "\n"
 "已清理：%s"
 
-#: ui/codex_screen.gd:369
+#: ui/codex_screen.gd:373
 msgid "CURIOSITIES"
 msgstr "奇物"
 
-#: ui/codex_screen.gd:370 ui/codex_screen.gd:491
+#: ui/codex_screen.gd:374 ui/codex_screen.gd:495
 msgid "%d / %d found"
 msgstr "已找到 %d / %d"
 
-#: ui/codex_screen.gd:464
+#: ui/codex_screen.gd:468
 msgid "Found  ·  %s"
 msgstr "已找到  ·  %s"
 
-#: ui/codex_screen.gd:467
+#: ui/codex_screen.gd:471
 msgid "Parts found: %d / %d"
 msgstr "已找到零件：%d / %d"
 
-#: ui/codex_screen.gd:468
+#: ui/codex_screen.gd:472
 msgid "Reward: a small surprise"
 msgstr "奖励：一个小惊喜"
 
-#: ui/codex_screen.gd:490
+#: ui/codex_screen.gd:494
 msgid "COLLECTION"
 msgstr "收藏"
 
-#: ui/codex_screen.gd:574
+#: ui/codex_screen.gd:578
 msgid "LUMI'S COLLECTION"
 msgstr "Lumi 的收藏"
 
-#: ui/codex_screen.gd:575
+#: ui/codex_screen.gd:579
 msgid "%d / %d complete"
 msgstr "%d / %d 已完成"
 
-#: ui/codex_screen.gd:613
+#: ui/codex_screen.gd:617
 msgid "TRINKETS AND CURIOS"
 msgstr "小玩意与珍奇"
 
-#: ui/codex_screen.gd:625
+#: ui/codex_screen.gd:629
 msgid "EVERY PLANET"
 msgstr "所有星球"
 
-#: ui/codex_screen.gd:628
+#: ui/codex_screen.gd:632
 msgid "In Lumi's collection. It has a plinth in the Museum."
 msgstr "在Lumi 的收藏里。它在博物馆有自己的展台。"
 
-#: ui/codex_screen.gd:630
+#: ui/codex_screen.gd:634
 msgid "Hint: %s"
 msgstr "提示：%s"
 
-#: ui/codex_screen.gd:632
+#: ui/codex_screen.gd:636
 msgid "The Museum: built"
 msgstr "博物馆：已建成"
 
-#: ui/codex_screen.gd:632
+#: ui/codex_screen.gd:636
 msgid "The Museum is built at Cradle Returns, near the end of the journey."
 msgstr "博物馆建在Cradle Returns，接近旅程的终点。"
 
-#: ui/codex_screen.gd:644
+#: ui/codex_screen.gd:648
 msgid "In your collection"
 msgstr "已收藏"
 
-#: ui/codex_screen.gd:649
+#: ui/codex_screen.gd:653
 msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
 msgstr "提示：一位害羞的访客会来到稳定和繁茂的六角格。带上相机。"
 
-#: ui/codex_screen.gd:650
+#: ui/codex_screen.gd:654
 msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
 msgstr "提示：大地恢复后，动物就会回来。用拍照模式（P）给它们拍照吧。"
 
-#: ui/codex_screen.gd:651
+#: ui/codex_screen.gd:655
 msgid "Hint: finish %d requests (Requests tab at the workbench)."
 msgstr "提示：完成 %d 个委托（工作台的委托标签页）。"
 
-#: ui/codex_screen.gd:652
+#: ui/codex_screen.gd:656
 msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
 msgstr "提示：奇物胶囊在工作台委托的奖励轨道上。"
 
-#: ui/codex_screen.gd:653
+#: ui/codex_screen.gd:657
 msgid "Hint: keep scooping without stopping until the streak meter is full."
 msgstr "提示：不停地铲，直到连击条满。"
 
-#: ui/codex_screen.gd:654
+#: ui/codex_screen.gd:658
 msgid "Hint: turns up during %s."
 msgstr "提示：在%s期间出现。"
 
-#: ui/codex_screen.gd:723
+#: ui/codex_screen.gd:739
 msgid "Unlocked  ·  %s"
 msgstr "已解锁  ·  %s"
 
-#: ui/codex_screen.gd:762
+#: ui/codex_screen.gd:784
 msgid "Total"
 msgstr "总计"
 
-#: ui/codex_screen.gd:763
+#: ui/codex_screen.gd:785
 msgid "Junk removed"
 msgstr "清除的废料"
 
-#: ui/codex_screen.gd:763
+#: ui/codex_screen.gd:785
 msgid "by type"
 msgstr "按种类"
 
-#: ui/codex_screen.gd:764 data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:786 data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "清理"
 
-#: ui/codex_screen.gd:766
+#: ui/codex_screen.gd:788
 msgid "Hexes restored"
 msgstr "恢复的六角格"
 
-#: ui/codex_screen.gd:767
+#: ui/codex_screen.gd:789
 msgid "Bales pressed"
 msgstr "压制的捆包"
 
-#: ui/codex_screen.gd:768
+#: ui/codex_screen.gd:790
 msgid "Pure bales"
 msgstr "纯净捆包"
 
-#: ui/codex_screen.gd:769
+#: ui/codex_screen.gd:791
 msgid "Perfect bales"
 msgstr "完美捆包"
 
-#: ui/codex_screen.gd:770
+#: ui/codex_screen.gd:792
 msgid "Lumpy bales"
 msgstr "不平整捆包"
 
-#: ui/codex_screen.gd:771
+#: ui/codex_screen.gd:793
 msgid "Bales cashed in"
 msgstr "兑现的捆包"
 
-#: ui/codex_screen.gd:774 ui/globe_view.gd:156 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:796 ui/globe_view.gd:156 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "种植"
 
-#: ui/codex_screen.gd:775
+#: ui/codex_screen.gd:797
 msgid "Seeds planted"
 msgstr "播下的种子"
 
-#: ui/codex_screen.gd:776
+#: ui/codex_screen.gd:798
 msgid "Plants bloomed"
 msgstr "开花的植物"
 
-#: ui/codex_screen.gd:777
+#: ui/codex_screen.gd:799
 msgid "Air filtered"
 msgstr "过滤的空气"
 
-#: ui/codex_screen.gd:779 data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:801 data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "机器人"
 
-#: ui/codex_screen.gd:781
+#: ui/codex_screen.gd:803
 msgid "Bales by robots"
 msgstr "机器人打的捆包"
 
-#: ui/codex_screen.gd:782
+#: ui/codex_screen.gd:804
 msgid "Parts dug up"
 msgstr "挖出的零件"
 
-#: ui/codex_screen.gd:784
+#: ui/codex_screen.gd:806
 msgid "Exploring"
 msgstr "探索"
 
-#: ui/codex_screen.gd:785
+#: ui/codex_screen.gd:807
 msgid "Distance rolled"
 msgstr "行驶距离"
 
-#: ui/codex_screen.gd:786
+#: ui/codex_screen.gd:808
 msgid "Memory shards read"
 msgstr "读过的记忆碎片"
 
-#: ui/codex_screen.gd:787
+#: ui/codex_screen.gd:809
 msgid "Codex entries"
 msgstr "图鉴条目"
 
-#: ui/codex_screen.gd:790
+#: ui/codex_screen.gd:812
 msgid "Progress"
 msgstr "进度"
 
-#: ui/codex_screen.gd:791
+#: ui/codex_screen.gd:813
 msgid "Upgrades bought"
 msgstr "购买的升级"
 
-#: ui/codex_screen.gd:792
+#: ui/codex_screen.gd:814
 msgid "Field notes logged"
 msgstr "已记录的野外笔记"
 
-#: ui/codex_screen.gd:793
+#: ui/codex_screen.gd:815
 msgid "Research done"
 msgstr "完成的研究"
 
-#: ui/codex_screen.gd:795
+#: ui/codex_screen.gd:817
 msgid "Best hub level"
 msgstr "最高基地等级"
 
-#: ui/codex_screen.gd:845
+#: ui/codex_screen.gd:868
 msgid "%s kg"
 msgstr "%s 千克"
 
-#: ui/codex_screen.gd:846
+#: ui/codex_screen.gd:869
 msgid "%.1f kg"
 msgstr "%.1f 千克"
 
-#: ui/codex_screen.gd:850
+#: ui/codex_screen.gd:873
 msgid "%.2f km"
 msgstr "%.2f 公里"
 
-#: ui/codex_screen.gd:860
+#: ui/codex_screen.gd:883
 msgid "%dm %02ds"
 msgstr "%d分%02d秒"
 
@@ -4280,7 +4272,7 @@ msgstr "用爱与废料制作"
 msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
 msgstr "代码、程序化网格、合成音乐和音效以及文字均为 Greenfall 原创。"
 
-#: ui/credits_roll.gd:148 ui/main_menu.gd:619
+#: ui/credits_roll.gd:148 ui/main_menu.gd:670
 msgid "Music by Lucas"
 msgstr "音乐：Lucas"
 
@@ -4312,7 +4304,7 @@ msgstr "在工作台换上：装扮"
 msgid "{interact}  [k]/ Esc  [/k]close"
 msgstr "{interact}  [k]/ Esc  [/k]关闭"
 
-#: ui/document_view.gd:63
+#: ui/document_view.gd:75
 msgid "M E M O R Y   S H A R D   ·   %s"
 msgstr "记 忆 碎 片   ·   %s"
 
@@ -4676,39 +4668,39 @@ msgstr "在基地间旅行"
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     {@dpad}  launch list     [/p]{open_globe}  close"
 msgstr "[k]拖动旋转   ·   滚轮缩放   ·   [/k][p]{@look}  旋转     {zoom_out}{zoom_in}  缩放     {@dpad}  发射列表     [/p]{open_globe}  关闭"
 
-#: ui/globe_view.gd:297
+#: ui/globe_view.gd:335
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     [/p]{open_globe}  close"
 msgstr "[k]拖动旋转   ·   滚轮缩放   ·   [/k][p]{@look}  旋转     {zoom_out}{zoom_in}  缩放     [/p]{open_globe}  关闭"
 
-#: ui/globe_view.gd:352
+#: ui/globe_view.gd:390
 msgid "%d sectors away"
 msgstr "相隔 %d 个扇区"
 
-#: ui/globe_view.gd:487
+#: ui/globe_view.gd:525
 msgid "%s HEXES CLEAN"
 msgstr "%s 个六角格已清理"
 
-#: ui/globe_view.gd:489
+#: ui/globe_view.gd:527
 msgid "Surveyed %s ago%s"
 msgstr "%s前勘测%s"
 
-#: ui/globe_view.gd:489
+#: ui/globe_view.gd:527
 msgid "   ·   OUTDATED"
 msgstr "   ·   已过时"
 
-#: ui/globe_view.gd:490
+#: ui/globe_view.gd:528
 msgid "Re-survey      %s cubes"
 msgstr "重新勘测      %s 方块"
 
-#: ui/globe_view.gd:502
+#: ui/globe_view.gd:540
 msgid "of the ground around your hubs is clean"
 msgstr "基地周围的土地已清理干净"
 
-#: ui/globe_view.gd:504
+#: ui/globe_view.gd:542
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "的星球已收复  ·  %s / %s 个陆地六角格"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:481 ui/objective_card.gd:149
+#: ui/goals_panel.gd:231 ui/list_detail.gd:496 ui/objective_card.gd:149
 msgid "DONE"
 msgstr "完成"
 
@@ -4967,55 +4959,55 @@ msgstr "捆包就绪"
 msgid "◢ BURIED PART %d%%"
 msgstr "◢ 埋藏零件 %d%%"
 
-#: ui/list_detail.gd:99
+#: ui/list_detail.gd:100
 msgid "Nothing here yet. Keep playing."
 msgstr "这里还什么都没有。继续游戏吧。"
 
-#: ui/list_detail.gd:359 ui/upgrade_card.gd:85
+#: ui/list_detail.gd:373 ui/upgrade_card.gd:85
 msgid "Buy"
 msgstr "购买"
 
-#: ui/list_detail.gd:477
+#: ui/list_detail.gd:492
 msgid "LOCKED"
 msgstr "未解锁"
 
-#: ui/list_detail.gd:485 ui/profile_picker.gd:97
+#: ui/list_detail.gd:500 ui/profile_picker.gd:97
 msgid "ACTIVE"
 msgstr "进行中"
 
-#: ui/list_detail.gd:506
+#: ui/list_detail.gd:521
 msgid "FREE"
 msgstr "免费"
 
-#: ui/list_detail.gd:628
+#: ui/list_detail.gd:660
 msgid "LOCKED.  To unlock: %s"
 msgstr "未解锁。  解锁方法：%s"
 
-#: ui/list_detail.gd:628
+#: ui/list_detail.gd:660
 msgid "Locked. Keep playing to unlock it."
 msgstr "未解锁。继续玩就能解锁。"
 
-#: ui/list_detail.gd:631
+#: ui/list_detail.gd:663
 msgid "REQUIRES   %s"
 msgstr "需要   %s"
 
-#: ui/list_detail.gd:634
+#: ui/list_detail.gd:666
 msgid "You can buy this now!"
 msgstr "现在可以买了！"
 
-#: ui/list_detail.gd:654
+#: ui/list_detail.gd:686
 msgid "%s more %s"
 msgstr "%s %s"
 
-#: ui/list_detail.gd:656
+#: ui/list_detail.gd:688
 msgid "Pick up trash to earn them."
 msgstr "捡垃圾就能赚到。"
 
-#: ui/list_detail.gd:656
+#: ui/list_detail.gd:688
 msgid "Dig up parts and salvage junk to get them."
 msgstr "挖出零件、拆解废料就能得到。"
 
-#: ui/list_detail.gd:659
+#: ui/list_detail.gd:691
 msgid "Need %s. %s"
 msgstr "还差 %s。%s"
 
@@ -5055,10 +5047,6 @@ msgstr "飞船外观：等级外形不变"
 #: ui/locker_panel.gd:80
 msgid "LOCKER"
 msgstr "储物柜"
-
-#: ui/locker_panel.gd:84 ui/telescope_view.gd:379
-msgid "Close"
-msgstr "关闭"
 
 #: ui/locker_panel.gd:205
 msgid "The Locker"
@@ -5200,109 +5188,109 @@ msgstr "有未保存的修改"
 msgid "Part of this look is still locked."
 msgstr "此外观的部分内容尚未解锁。"
 
-#: ui/main_menu.gd:324
+#: ui/main_menu.gd:328
 msgid "One small robot. One very big cleanup."
 msgstr "一个小机器人。一场超大的清扫。"
 
-#: ui/main_menu.gd:326
+#: ui/main_menu.gd:332
 msgid "DEMO  ·  the first district"
 msgstr "试玩版  ·  第一个街区"
 
-#: ui/main_menu.gd:338 ui/profile_picker.gd:110
+#: ui/main_menu.gd:344 ui/profile_picker.gd:110
 msgid "Continue"
 msgstr "继续"
 
-#: ui/main_menu.gd:347 ui/main_menu.gd:352
+#: ui/main_menu.gd:353 ui/main_menu.gd:358
 msgid "New Game"
 msgstr "新游戏"
 
-#: ui/main_menu.gd:349
+#: ui/main_menu.gd:355
 msgid "Profiles"
 msgstr "存档"
 
-#: ui/main_menu.gd:356 ui/main_menu.gd:561 ui/pause_menu.gd:68
+#: ui/main_menu.gd:362 ui/main_menu.gd:612 ui/pause_menu.gd:68
 msgid "Settings"
 msgstr "设置"
 
-#: ui/main_menu.gd:358 ui/pause_menu.gd:72
+#: ui/main_menu.gd:364 ui/pause_menu.gd:72
 msgid "Quit"
 msgstr "退出"
 
-#: ui/main_menu.gd:364
+#: ui/main_menu.gd:371
 msgid "Made with Godot"
 msgstr "使用 Godot 制作"
 
-#: ui/main_menu.gd:468
+#: ui/main_menu.gd:519
 msgid "%dm"
 msgstr "%d分钟"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:474 ui/profile_picker.gd:133
+#: ui/main_menu.gd:525 ui/profile_picker.gd:133
 msgid "%s cubes"
 msgstr "%s 方块"
 
-#: ui/main_menu.gd:480
+#: ui/main_menu.gd:531
 msgid "Jan"
 msgstr "1月"
 
-#: ui/main_menu.gd:480
+#: ui/main_menu.gd:531
 msgid "Feb"
 msgstr "2月"
 
-#: ui/main_menu.gd:480
+#: ui/main_menu.gd:531
 msgid "Mar"
 msgstr "3月"
 
-#: ui/main_menu.gd:480
+#: ui/main_menu.gd:531
 msgid "Apr"
 msgstr "4月"
 
-#: ui/main_menu.gd:480
+#: ui/main_menu.gd:531
 msgid "May"
 msgstr "5月"
 
-#: ui/main_menu.gd:480
+#: ui/main_menu.gd:531
 msgid "Jun"
 msgstr "6月"
 
-#: ui/main_menu.gd:480
+#: ui/main_menu.gd:531
 msgid "Jul"
 msgstr "7月"
 
-#: ui/main_menu.gd:480
+#: ui/main_menu.gd:531
 msgid "Aug"
 msgstr "8月"
 
-#: ui/main_menu.gd:480
+#: ui/main_menu.gd:531
 msgid "Sep"
 msgstr "9月"
 
-#: ui/main_menu.gd:480
+#: ui/main_menu.gd:531
 msgid "Oct"
 msgstr "10月"
 
-#: ui/main_menu.gd:480
+#: ui/main_menu.gd:531
 msgid "Nov"
 msgstr "11月"
 
-#: ui/main_menu.gd:480
+#: ui/main_menu.gd:531
 msgid "Dec"
 msgstr "12月"
 
-#: ui/main_menu.gd:561
+#: ui/main_menu.gd:612
 msgid "Credits"
 msgstr "制作人员"
 
-#: ui/main_menu.gd:590
+#: ui/main_menu.gd:641
 msgid "CREDITS"
 msgstr "制作人员"
 
-#: ui/main_menu.gd:605 ui/profile_picker.gd:49 ui/settings_panel.gd:123
+#: ui/main_menu.gd:656 ui/profile_picker.gd:49 ui/settings_panel.gd:123
 #: ui/settings_panel.gd:148 ui/world_picker.gd:53
 msgid "Back"
 msgstr "返回"
 
-#: ui/main_menu.gd:618
+#: ui/main_menu.gd:669
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -5312,27 +5300,27 @@ msgstr ""
 "代码、程序化网格、合成音频和文字均为 Greenfall 原创。\n"
 "\n"
 
-#: ui/main_menu.gd:622
+#: ui/main_menu.gd:673
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "第三方资源：CC0，Poly Haven（polyhaven.com）。"
 
-#: ui/main_menu.gd:640
+#: ui/main_menu.gd:691
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]作者：%s[/color]"
 
-#: ui/main_menu.gd:674
+#: ui/main_menu.gd:725
 msgid "START A NEW GAME?"
 msgstr "开始新游戏？"
 
-#: ui/main_menu.gd:675
+#: ui/main_menu.gd:726
 msgid "Your current save will be erased. This can't be undone."
 msgstr "你当前的存档将被删除。此操作无法撤销。"
 
-#: ui/main_menu.gd:683
+#: ui/main_menu.gd:734
 msgid "Keep my save"
 msgstr "保留存档"
 
-#: ui/main_menu.gd:689 ui/profile_picker.gd:213
+#: ui/main_menu.gd:740 ui/profile_picker.gd:213
 msgid "Erase and start"
 msgstr "删除并开始"
 
@@ -5425,7 +5413,7 @@ msgstr "火箭飞行期间无法使用拍照模式。"
 msgid "Photo mode isn't available during a cinematic."
 msgstr "过场动画期间无法使用拍照模式。"
 
-#: ui/photo_mode.gd:362 ui/photo_mode.gd:415 ui/settings_panel.gd:390
+#: ui/photo_mode.gd:362 ui/photo_mode.gd:415 ui/settings_panel.gd:411
 msgid "Camera"
 msgstr "相机"
 
@@ -5433,7 +5421,7 @@ msgstr "相机"
 msgid "Mode"
 msgstr "模式"
 
-#: ui/photo_mode.gd:364 ui/settings_panel.gd:398
+#: ui/photo_mode.gd:364 ui/settings_panel.gd:419
 msgid "Field of view"
 msgstr "视野"
 
@@ -5470,7 +5458,7 @@ msgid "Blur"
 msgstr "模糊"
 
 #: ui/photo_mode.gd:372 ui/photo_panel.gd:240 ui/photo_panel.gd:242
-#: ui/photo_panel.gd:280 ui/settings_panel.gd:688
+#: ui/photo_panel.gd:280 ui/settings_panel.gd:711
 msgid "Off"
 msgstr "关"
 
@@ -5583,7 +5571,7 @@ msgid "Exit"
 msgstr "退出"
 
 #: ui/photo_panel.gd:240 ui/photo_panel.gd:242 ui/photo_panel.gd:280
-#: ui/settings_panel.gd:688
+#: ui/settings_panel.gd:711
 msgid "On"
 msgstr "开"
 
@@ -5954,283 +5942,255 @@ msgstr "{ui_cancel}  返回"
 msgid "Changes are saved automatically."
 msgstr "更改会自动保存。"
 
-#: ui/settings_panel.gd:242 ui/settings_panel.gd:330
+#: ui/settings_panel.gd:260 ui/settings_panel.gd:351
 msgid "Quality preset"
 msgstr "画质预设"
 
-#: ui/settings_panel.gd:243 ui/settings_panel.gd:347
+#: ui/settings_panel.gd:261 ui/settings_panel.gd:368
 msgid "Fullscreen"
 msgstr "全屏"
 
-#: ui/settings_panel.gd:246 ui/settings_panel.gd:391
+#: ui/settings_panel.gd:264 ui/settings_panel.gd:412
 msgid "Mouse sensitivity"
 msgstr "鼠标灵敏度"
 
-#: ui/settings_panel.gd:250 ui/settings_panel.gd:567
+#: ui/settings_panel.gd:269 ui/settings_panel.gd:589
 msgid "System default"
 msgstr "跟随系统"
 
-#: ui/settings_panel.gd:251 ui/settings_panel.gd:565 ui/settings_panel.gd:568
+#: ui/settings_panel.gd:270 ui/settings_panel.gd:586 ui/settings_panel.gd:590
 msgid "Language"
 msgstr "语言"
 
-#: ui/settings_panel.gd:256
+#: ui/settings_panel.gd:275
 msgid "More settings  (sound, graphics, controls, accessibility)"
 msgstr "更多设置  （声音、画面、操作、辅助功能）"
 
-#: ui/settings_panel.gd:262
+#: ui/settings_panel.gd:283
 msgid "Everything else"
 msgstr "其他全部"
 
-#: ui/settings_panel.gd:302
+#: ui/settings_panel.gd:323
 msgid "Volume"
 msgstr "音量"
 
-#: ui/settings_panel.gd:309
+#: ui/settings_panel.gd:330
 msgid "Ambience"
 msgstr "环境音"
 
-#: ui/settings_panel.gd:312
+#: ui/settings_panel.gd:333
 msgid "Sound effects"
 msgstr "音效"
 
-#: ui/settings_panel.gd:316 ui/settings_panel.gd:577 ui/settings_panel.gd:587
+#: ui/settings_panel.gd:337 ui/settings_panel.gd:599 ui/settings_panel.gd:607
 msgid "Interface"
 msgstr "界面"
 
-#: ui/settings_panel.gd:323
+#: ui/settings_panel.gd:344
 msgid "Rendering"
 msgstr "渲染"
 
-#: ui/settings_panel.gd:324
+#: ui/settings_panel.gd:345
 msgid "Low drops GI and fog; Ultra adds reflections."
 msgstr "低：关闭全局光照和雾；超高：增加反射。"
 
-#: ui/settings_panel.gd:325
+#: ui/settings_panel.gd:346
 msgid "This renderer always uses the Low preset."
 msgstr "此渲染器始终使用“低”预设。"
 
-#: ui/settings_panel.gd:327
+#: ui/settings_panel.gd:348
 msgid "Detected: %s for %s. "
 msgstr "检测到：%s，适用于 %s。"
 
-#: ui/settings_panel.gd:328
+#: ui/settings_panel.gd:349
 msgid "Your choice (hardware: %s). "
 msgstr "你的选择（硬件：%s）。"
 
-#: ui/settings_panel.gd:329
+#: ui/settings_panel.gd:350
 msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
 msgstr "低：关闭全局光照、雾和阴影细节；超高：增加反射。"
 
-#: ui/settings_panel.gd:335
+#: ui/settings_panel.gd:356
 msgid "Renderer"
 msgstr "渲染器"
 
-#: ui/settings_panel.gd:335
+#: ui/settings_panel.gd:356
 msgid "Standard (Forward+)"
 msgstr "标准（Forward+）"
 
-#: ui/settings_panel.gd:335
+#: ui/settings_panel.gd:356
 msgid "Light (Mobile)"
 msgstr "轻量（Mobile）"
 
-#: ui/settings_panel.gd:337
+#: ui/settings_panel.gd:358
 msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
 msgstr "轻量适合较旧的集成显卡。重启游戏后生效（当前：%s）。"
 
-#: ui/settings_panel.gd:343
+#: ui/settings_panel.gd:364
 msgid "Render scale"
 msgstr "渲染缩放"
 
-#: ui/settings_panel.gd:345
+#: ui/settings_panel.gd:366
 msgid "Lower renders 3D at a smaller size; the interface stays sharp."
 msgstr "调低会以较小尺寸渲染 3D；界面保持清晰。"
 
-#: ui/settings_panel.gd:346
+#: ui/settings_panel.gd:367
 msgid "Display"
 msgstr "显示"
 
-#: ui/settings_panel.gd:350
+#: ui/settings_panel.gd:371
 msgid "V-Sync"
 msgstr "垂直同步"
 
-#: ui/settings_panel.gd:356 ui/settings_panel.gd:385
+#: ui/settings_panel.gd:377 ui/settings_panel.gd:406
 msgid "Bindings"
 msgstr "按键绑定"
 
-#: ui/settings_panel.gd:359
+#: ui/settings_panel.gd:380
 msgid "ACTION   (select a binding to rebind it)"
 msgstr "操作   （选择一个绑定来重新设置）"
 
-#: ui/settings_panel.gd:362
+#: ui/settings_panel.gd:383
 msgid "KEYBOARD / MOUSE"
 msgstr "键盘 / 鼠标"
 
-#: ui/settings_panel.gd:362
+#: ui/settings_panel.gd:383
 msgid "CONTROLLER"
 msgstr "手柄"
 
-#: ui/settings_panel.gd:378
+#: ui/settings_panel.gd:399
 msgid "Reset to defaults"
 msgstr "恢复默认"
 
-#: ui/settings_panel.gd:385
+#: ui/settings_panel.gd:406
 msgid "Restore every key and controller binding."
 msgstr "恢复所有键盘和手柄绑定。"
 
-#: ui/settings_panel.gd:387
+#: ui/settings_panel.gd:408
 msgid "Button prompts"
 msgstr "按键图标"
 
-#: ui/settings_panel.gd:389
+#: ui/settings_panel.gd:410
 msgid "Controller art: Automatic follows the connected pad."
 msgstr "手柄图标：“自动”会跟随已连接的手柄。"
 
-#: ui/settings_panel.gd:394
+#: ui/settings_panel.gd:415
 msgid "Stick look speed"
 msgstr "摇杆视角速度"
 
-#: ui/settings_panel.gd:397
+#: ui/settings_panel.gd:418
 msgid "Invert look Y"
 msgstr "反转 Y 轴视角"
 
-#: ui/settings_panel.gd:401
+#: ui/settings_panel.gd:422
 msgid "Mouse smoothing"
 msgstr "鼠标平滑"
 
-#: ui/settings_panel.gd:402
+#: ui/settings_panel.gd:423
 msgid "Eases mouse look over a few frames."
 msgstr "在几帧内平滑鼠标视角。"
 
-#: ui/settings_panel.gd:403
+#: ui/settings_panel.gd:424
 msgid "Scooping"
 msgstr "铲取"
 
-#: ui/settings_panel.gd:404
+#: ui/settings_panel.gd:425
 msgid "Scoop button"
 msgstr "铲取按键"
 
-#: ui/settings_panel.gd:404
+#: ui/settings_panel.gd:425
 msgid "Hold"
 msgstr "按住"
 
-#: ui/settings_panel.gd:404
+#: ui/settings_panel.gd:425
 msgid "Toggle"
 msgstr "切换"
 
-#: ui/settings_panel.gd:445
+#: ui/settings_panel.gd:466
 msgid "press a button…"
 msgstr "请按一个按钮…"
 
-#: ui/settings_panel.gd:445
+#: ui/settings_panel.gd:466
 msgid "press a key…"
 msgstr "请按一个键…"
 
-#: ui/settings_panel.gd:477
+#: ui/settings_panel.gd:498
 msgid "Conflict: %s is used by both %s and %s."
 msgstr "冲突：%s 同时被 %s 和 %s 使用。"
 
-#: ui/settings_panel.gd:571
-msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
-msgstr "菜单、HUD、字幕和剧情文本。Pseudo 用于测试翻译。"
-
-#: ui/settings_panel.gd:572
+#: ui/settings_panel.gd:594
 msgid "Comfort"
 msgstr "舒适度"
 
-#: ui/settings_panel.gd:573
+#: ui/settings_panel.gd:595
 msgid "Camera shake"
 msgstr "镜头晃动"
 
-#: ui/settings_panel.gd:575
+#: ui/settings_panel.gd:597
 msgid "Reduced motion"
 msgstr "减少动态效果"
 
-#: ui/settings_panel.gd:576
+#: ui/settings_panel.gd:598
 msgid "Calmer camera and fewer bouncy effects."
 msgstr "更平稳的镜头，更少的弹跳效果。"
 
-#: ui/settings_panel.gd:578
-msgid "Number format"
-msgstr "数字格式"
-
-#: ui/settings_panel.gd:578
-msgid "Short (1.2K)"
-msgstr "简写（1.2K）"
-
-#: ui/settings_panel.gd:578
-msgid "Scientific (1.2e3)"
-msgstr "科学计数（1.2e3）"
-
-#: ui/settings_panel.gd:578
-msgid "Engineering (1.2e3)"
-msgstr "工程计数（1.2e3）"
-
-#: ui/settings_panel.gd:580
-msgid "Best-value tags"
-msgstr "性价比标签"
-
-#: ui/settings_panel.gd:581
-msgid "Tag the affordable upgrade that gives the most per cube."
-msgstr "标出买得起且每方块收益最高的升级。"
-
-#: ui/settings_panel.gd:582
+#: ui/settings_panel.gd:602
 msgid "HUD"
 msgstr "HUD"
 
-#: ui/settings_panel.gd:582
+#: ui/settings_panel.gd:602
 msgid "Minimal"
 msgstr "精简"
 
-#: ui/settings_panel.gd:582
+#: ui/settings_panel.gd:602
 msgid "Hidden"
 msgstr "隐藏"
 
-#: ui/settings_panel.gd:583
+#: ui/settings_panel.gd:603
 msgid "Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."
 msgstr "精简：几秒后淡出额外信息。隐藏：只保留提示和消息。"
 
-#: ui/settings_panel.gd:593
+#: ui/settings_panel.gd:613
 msgid "Interface scale"
 msgstr "界面缩放"
 
-#: ui/settings_panel.gd:595
+#: ui/settings_panel.gd:615
 msgid "Size of menus, HUD and subtitles."
 msgstr "菜单、HUD 和字幕的大小。"
 
-#: ui/settings_panel.gd:596
+#: ui/settings_panel.gd:616
 msgid "Colour-blind palette"
 msgstr "色盲配色"
 
-#: ui/settings_panel.gd:597
+#: ui/settings_panel.gd:617
 msgid "Okabe-Ito colours for hex progress, the hopper meter and part rarity."
 msgstr "对六角格进度、料斗计量条和零件稀有度使用 Okabe-Ito 配色。"
 
-#: ui/settings_panel.gd:598 ui/settings_panel.gd:599
+#: ui/settings_panel.gd:618 ui/settings_panel.gd:619
 msgid "Subtitles"
 msgstr "字幕"
 
-#: ui/settings_panel.gd:600
+#: ui/settings_panel.gd:620
 msgid "WREN and Ledger lines."
 msgstr "WREN 和 Ledger 的台词。"
 
-#: ui/settings_panel.gd:601
+#: ui/settings_panel.gd:621
 msgid "Subtitle size"
 msgstr "字幕大小"
 
-#: ui/settings_panel.gd:601
+#: ui/settings_panel.gd:621
 msgid "Small"
 msgstr "小"
 
-#: ui/settings_panel.gd:601
+#: ui/settings_panel.gd:621
 msgid "Large"
 msgstr "大"
 
-#: ui/settings_panel.gd:603
+#: ui/settings_panel.gd:623
 msgid "Subtitle background"
 msgstr "字幕背景"
 
-#: ui/settings_panel.gd:604
+#: ui/settings_panel.gd:624
 msgid "A solid backdrop behind subtitle text."
 msgstr "在字幕文字后加一层实色背景。"
 
@@ -7177,12 +7137,12 @@ msgid "Style a robot with all five custom parts in the Locker."
 msgstr "在储物柜里给一台机器人装满五个自定义部件。"
 
 #: data/achievements.json:achievements[builder_maker].name
-msgid "As the Makers Made It"
-msgstr "如造物者所造"
+msgid "As the Settlers Made It"
+msgstr "如定居者所造"
 
 #: data/achievements.json:achievements[builder_maker].desc
-msgid "Fit the full Maker set (shell, optic and glider) on one robot."
-msgstr "为一台机器人装上完整的造物者套装（外壳、光学镜和滑翔翼）。"
+msgid "Fit the full Settler set (shell, optic and glider) on one robot."
+msgstr "为一台机器人装上完整的定居者套装（外壳、光学镜和滑翔翼）。"
 
 #: data/achievements.json:achievements[builder_hats].name
 msgid "Hat Rack"
@@ -8517,8 +8477,8 @@ msgid "Light the Cradle Returns beacon."
 msgstr "点亮 Cradle号归来的信标。"
 
 #: data/codex.json:homeward.charter.desc
-msgid "When the Makers left Verdance, most of them went into the long sleep in the Cradle's lower decks. Their charter was one line long: wake us when the system can feed us. Not one world. All five. The Cradle has kept that promise for three hundred years, and it will not break it for anybody, even a very persuasive small robot."
-msgstr "Makers 离开 Verdance 时，大多数人在 Cradle 号的下层甲板进入了长眠。他们的宪章只有一行：等星系能养活我们时再叫醒我们。不是一个世界，是全部五个。Cradle 号守了这个承诺三百年，不会为任何人打破它，哪怕是一个很有说服力的小机器人。"
+msgid "When the Settlers left Verdance, most of them went into the long sleep in the Cradle's lower decks. Their charter was one line long: wake us when the system can feed us. Not one world. All five. The Cradle has kept that promise for three hundred years, and it will not break it for anybody, even a very persuasive small robot."
+msgstr "定居者离开 Verdance 时，大多数人在 Cradle 号的下层甲板进入了长眠。他们的宪章只有一行：等星系能养活我们时再叫醒我们。不是一个世界，是全部五个。Cradle 号守了这个承诺三百年，不会为任何人打破它，哪怕是一个很有说服力的小机器人。"
 
 #: data/codex.json:homeward.ledger_system.name
 msgid "The Ledger, Inc."
@@ -8545,8 +8505,8 @@ msgid "Restore every world and launch home."
 msgstr "恢复每一个世界，然后发射回家。"
 
 #: data/codex.json:homeward.homecoming.desc
-msgid "Five worlds alive again. A rocket built from all of them. One seed planted in a bed with a yellow fence. The Cradle opened its bay for a small robot with a seedling tray, and below decks the Makers woke up to a green sky."
-msgstr "五个世界重获生机。一枚用它们全部造成的火箭。一颗种在黄色栅栏花坛里的种子。Cradle 号为一个抱着育苗托盘的小机器人打开了舱门，而在甲板下，Makers 在绿色的天空下醒来。"
+msgid "Five worlds alive again. A rocket built from all of them. One seed planted in a bed with a yellow fence. The Cradle opened its bay for a small robot with a seedling tray, and below decks the Settlers woke up to a green sky."
+msgstr "五个世界重获生机。一枚用它们全部造成的火箭。一颗种在黄色栅栏花坛里的种子。Cradle 号为一个抱着育苗托盘的小机器人打开了舱门，而在甲板下，定居者在绿色的天空下醒来。"
 
 #: data/codex.json:sightings.first_light.name
 msgid "First Light"
@@ -8829,12 +8789,12 @@ msgid "A tiered fountain, running again. Deer come to drink at dawn."
 msgstr "一座重新流淌的多层喷泉。黎明时分，鹿会来这里喝水。"
 
 #: data/decor.json:types[statue].name
-msgid "Maker Statue"
-msgstr "造物者雕像"
+msgid "Settler Statue"
+msgstr "定居者雕像"
 
 #: data/decor.json:types[statue].desc
-msgid "A stone figure of one of the Makers, holding a watering can."
-msgstr "一尊造物者的石像，手里拿着一个洒水壶。"
+msgid "A stone figure of one of the Settlers, holding a watering can."
+msgstr "一尊定居者的石像，手里拿着一个洒水壶。"
 
 #: data/decor.json:types[lumi_sculpture].name
 msgid "Lumi Sculpture"
@@ -9061,8 +9021,8 @@ msgid "E   pick up gnome"
 msgstr "E   捡起地精"
 
 #: data/eggs.json:eggs[gnomes].lore
-msgid "Five garden gnomes, each facing a different street. A Maker kid's sign said they were 'on patrol'. They still are."
-msgstr "五个花园地精，每个都面朝一条不同的街道。一个造物者孩子做的牌子上说它们在“巡逻”。现在也还在巡逻。"
+msgid "Five garden gnomes, each facing a different street. A Settler kid's sign said they were 'on patrol'. They still are."
+msgstr "五个花园地精，每个都面朝一条不同的街道。一个定居者孩子做的牌子上说它们在“巡逻”。现在也还在巡逻。"
 
 #: data/eggs.json:eggs[gnomes].toast
 msgid "All five gnomes found. They turn, very slowly, and salute."
@@ -9085,8 +9045,8 @@ msgid "A school time capsule. Open in 100 years. It has been a little longer tha
 msgstr "一个学校的时间胶囊。100 年后开启。现在比那还久了一点。"
 
 #: data/eggs.json:eggs[time_capsule].toast
-msgid "A time capsule from a Maker school class."
-msgstr "造物者学校某个班级的时间胶囊。"
+msgid "A time capsule from a Settler school class."
+msgstr "定居者学校某个班级的时间胶囊。"
 
 #: data/eggs.json:eggs[time_capsule].doc.title
 msgid "To whoever opens this"
@@ -9221,8 +9181,8 @@ msgid "E   look through the telescope"
 msgstr "E   用望远镜看"
 
 #: data/eggs.json:eggs[stars].lore
-msgid "Old Town's amateur telescope still points at the five stars the Makers called 'the Wren'. The Cradle's AI was named after them."
-msgstr "老城区的业余望远镜依然对着造物者称为“鹪鹩”的五颗星。Cradle号的 AI 就是以它们命名的。"
+msgid "Old Town's amateur telescope still points at the five stars the Settlers called 'the Wren'. The Cradle's AI was named after them."
+msgstr "老城区的业余望远镜依然对着定居者称为“鹪鹩”的五颗星。Cradle号的 AI 就是以它们命名的。"
 
 #: data/eggs.json:eggs[stars].toast
 msgid "Five stars over Old Town line up into a little bird. And next to it, faint, the letters W R E N."
@@ -9631,8 +9591,8 @@ msgid "In the wild: a ring of stones, two stools and a cold kettle."
 msgstr "在荒野里：一圈石头、两张凳子和一把冷掉的水壶。"
 
 #: data/eggs.json:eggs[campfire].lore
-msgid "A ring of stones, two folding stools and a dented kettle: somebody's last camping trip before the Makers left. The ashes are three hundred years cold."
-msgstr "一圈石头、两张折叠凳和一把凹陷的水壶：某人在造物者离开前的最后一次露营。灰烬已经冷了三百年。"
+msgid "A ring of stones, two folding stools and a dented kettle: somebody's last camping trip before the Settlers left. The ashes are three hundred years cold."
+msgstr "一圈石头、两张折叠凳和一把凹陷的水壶：某人在定居者离开前的最后一次露营。灰烬已经冷了三百年。"
 
 #: data/eggs.json:eggs[campfire].toast
 msgid "A small, safe, warm glow. Lumi sits for a moment. Nobody says anything. It's nice."
@@ -10481,8 +10441,8 @@ msgid "A photo from photo mode. White cranes circle high over the landing city o
 msgstr "一张用拍照模式拍下的照片。白鹤扇着缓慢的翅膀，在着陆之城的高空盘旋。"
 
 #: data/events.json:trinkets[maker_badge].name
-msgid "Maker's Badge"
-msgstr "造物者徽章"
+msgid "Settler's Badge"
+msgstr "定居者徽章"
 
 #: data/events.json:trinkets[maker_badge].desc
 msgid "Pinned inside a Legendary part: 'Built to be fixed.'"
@@ -10533,8 +10493,8 @@ msgid "Seed-Keeper Pin"
 msgstr "守种者徽章"
 
 #: data/events.json:trinkets[lumi_seed_pin].desc
-msgid "Lumi Level 20. A little enamel sprout. The ark gave these to its gardeners."
-msgstr "Lumi 等级 20。一个小小的珐琅嫩芽。方舟会把它送给园丁们。"
+msgid "Lumi Level 20. A little enamel sprout. The ark gave these to the Settlers who tended its seeds."
+msgstr "Lumi 等级 20。一个小小的珐琅嫩芽。方舟会把它送给照看种子的定居者们。"
 
 #: data/events.json:trinkets[lumi_tread_charm].name
 msgid "Tread Charm"
@@ -10681,8 +10641,8 @@ msgid "Strong signal. Something old and well made."
 msgstr "强信号。是古老又做工精良的东西。"
 
 #: data/events.json:wren
-msgid "That ping is Maker-grade. Follow the violet light."
-msgstr "那个信号是造物者级的。跟着紫光走。"
+msgid "That ping is Settler-grade. Follow the violet light."
+msgstr "那个信号是定居者级的。跟着紫光走。"
 
 #: data/events.json:wren
 msgid "A rare part, close. I can almost hear it."
@@ -10905,8 +10865,8 @@ msgid "Find the seed tin"
 msgstr "找到种子罐"
 
 #: data/goals.json:goals[plant_5].text
-msgid "Plant the Maker seed"
-msgstr "种下造物者的种子"
+msgid "Plant the Settler seed"
+msgstr "种下定居者的种子"
 
 #: data/goals.json:goals[hex_7].text
 msgid "Clean 7 hexes"
@@ -11732,14 +11692,14 @@ msgstr "董事会纪要，最后一次会议"
 msgid ""
 "ITEM 1: The system is spent. Motion to dissolve: carried.\n"
 "ITEM 2: Clean-up costs. Motion to not: carried.\n"
-"ITEM 3: The Makers' ark keeps asking about a 'charter'. Motion to ignore: carried.\n"
+"ITEM 3: The Settlers' ark keeps asking about a 'charter'. Motion to ignore: carried.\n"
 "ITEM 4: Audit drones to continue indefinitely, for form's sake.\n"
 "\n"
 "Meeting closed. Lights left on."
 msgstr ""
 "议题一：星系已耗尽。解散动议：通过。\n"
 "议题二：清理费用。不清理动议：通过。\n"
-"议题三：Makers 的方舟一直在询问一份“宪章”。忽略动议：通过。\n"
+"议题三：定居者的方舟一直在询问一份“宪章”。忽略动议：通过。\n"
 "议题四：审计无人机为了形式无限期继续运行。\n"
 "\n"
 "散会。灯没关。"
@@ -11787,8 +11747,8 @@ msgstr ""
 "— T. Hale，会计部"
 
 #: data/hub.json:levels[0].desc
-msgid "An old Maker cleanup station: pipe frame, tin roof, a bench."
-msgstr "造物者留下的旧清理站：管架、铁皮屋顶、一张工作台。"
+msgid "An old Settler cleanup station: pipe frame, tin roof, a bench."
+msgstr "定居者留下的旧清理站：管架、铁皮屋顶、一张工作台。"
 
 #: data/hub.json:levels[1].name
 msgid "Workshop"
@@ -12077,10 +12037,6 @@ msgstr ""
 "签署：LEDGER（不情愿地，后来没那么不情愿了）\n"
 "见证人：WREN，Cradle号看护者\n"
 "见证人：LM-1（留下了一小块油渍）"
-
-#: data/machine_art.json:baler.body
-msgid "#33609e"
-msgstr ""
 
 #: data/museum.json:exhibits[gnomes].hint
 msgid "Five garden gnomes guard Old Town's streets. Pick them up."
@@ -12447,8 +12403,8 @@ msgid "Vintage"
 msgstr "复古"
 
 #: data/parts.json:rarities[legendary].name
-msgid "Legendary Maker-Made"
-msgstr "传说·造物者制"
+msgid "Legendary Settler-Made"
+msgstr "传说·定居者制"
 
 #: data/parts.json:types[chassis].name
 msgid "Chassis Frame"
@@ -12503,8 +12459,8 @@ msgid "Windpump"
 msgstr "风力水泵"
 
 #: data/planets.json:verdance.hubs[garden_row].desc
-msgid "The Makers' seed store: seeds to take to the next world."
-msgstr "造物者的种子库：带去下一个世界的种子。"
+msgid "The Settlers' seed store: seeds to take to the next world."
+msgstr "定居者的种子库：带去下一个世界的种子。"
 
 #: data/planets.json:verdance.hubs[garden_row].piece.name
 msgid "Seed Stock"
@@ -12543,8 +12499,8 @@ msgid "Signal Mast"
 msgstr "信号塔"
 
 #: data/planets.json:verdance.hubs[signal_heights].desc
-msgid "The Makers' star chart: it shows where the rocket can fly."
-msgstr "造物者的星图：告诉你火箭能飞往哪里。"
+msgid "The Settlers' star chart: it shows where the rocket can fly."
+msgstr "定居者的星图：告诉你火箭能飞往哪里。"
 
 #: data/planets.json:verdance.hubs[signal_heights].piece.name
 msgid "Star Chart"
@@ -13295,12 +13251,12 @@ msgid "Work rate"
 msgstr "工作效率"
 
 #: data/robot_parts.json:set_bonus.name
-msgid "Maker Resonance"
-msgstr "造物者共鸣"
+msgid "Settler Resonance"
+msgstr "定居者共鸣"
 
 #: data/robot_parts.json:set_bonus.desc
-msgid "All three Maker parts fitted: +5% speed, +6% work."
-msgstr "三件造物者零件全部装上：速度 +5%，工作 +6%。"
+msgid "All three Settler parts fitted: +5% speed, +6% work."
+msgstr "三件定居者零件全部装上：速度 +5%，工作 +6%。"
 
 #: data/robot_parts.json:parts[light_frame].name
 msgid "Light Frame"
@@ -13327,12 +13283,12 @@ msgid "Smooth covers, neat seams, no grit."
 msgstr "光滑外壳，接缝整齐，一尘不染。"
 
 #: data/robot_parts.json:parts[maker_shell].name
-msgid "Maker Shell"
-msgstr "造物者外壳"
+msgid "Settler Shell"
+msgstr "定居者外壳"
 
 #: data/robot_parts.json:parts[maker_shell].desc
-msgid "Pearl fairings with gold trim, as the Makers built them. Part of the Maker set."
-msgstr "珍珠色整流罩配金色饰边，正如造物者当年所造。造物者套装之一。"
+msgid "Pearl fairings with gold trim, as the Settlers built them. Part of the Settler set."
+msgstr "珍珠色整流罩配金色饰边，正如定居者当年所造。定居者套装之一。"
 
 #: data/robot_parts.json:parts[big_eye].name
 msgid "Big-Eye Sensor"
@@ -13367,12 +13323,12 @@ msgid "Glass dome with a little speaker."
 msgstr "带小扬声器的玻璃罩。"
 
 #: data/robot_parts.json:parts[maker_optic].name
-msgid "Maker Optic"
-msgstr "造物者光学镜"
+msgid "Settler Optic"
+msgstr "定居者光学镜"
 
 #: data/robot_parts.json:parts[maker_optic].desc
-msgid "A floating gem lens under a gold brow. Part of the Maker set."
-msgstr "金色眉骨下一枚漂浮的宝石镜头。造物者套装之一。"
+msgid "A floating gem lens under a gold brow. Part of the Settler set."
+msgstr "金色眉骨下一枚漂浮的宝石镜头。定居者套装之一。"
 
 #: data/robot_parts.json:parts[treads].name
 msgid "Treads"
@@ -13407,12 +13363,12 @@ msgid "A cushion of air and a soft glow underneath."
 msgstr "一层气垫，底下透着柔光。"
 
 #: data/robot_parts.json:parts[maker_glider].name
-msgid "Maker Glider"
-msgstr "造物者滑翔翼"
+msgid "Settler Glider"
+msgstr "定居者滑翔翼"
 
 #: data/robot_parts.json:parts[maker_glider].desc
-msgid "Twin levitation pods with a thin light seam. Part of the Maker set."
-msgstr "两个悬浮舱，带一道细细的光缝。造物者套装之一。"
+msgid "Twin levitation pods with a thin light seam. Part of the Settler set."
+msgstr "两个悬浮舱，带一道细细的光缝。定居者套装之一。"
 
 #: data/robot_parts.json:parts[wide_scoop].name
 msgid "Wide Scoop"
@@ -13535,12 +13491,12 @@ msgid "Rare salvage find (robots with a good Scan)"
 msgstr "稀有回收发现（扫描能力强的机器人）"
 
 #: data/robot_parts.json:parts[maker_crest].name
-msgid "Maker Crest"
-msgstr "造物者纹章"
+msgid "Settler Crest"
+msgstr "定居者纹章"
 
 #: data/robot_parts.json:parts[maker_crest].desc
-msgid "A floating gold ring. Purely for show; the Makers loved a show."
-msgstr "一个漂浮的金环。纯属装饰；造物者最爱排场。"
+msgid "A floating gold ring. Purely for show; the Settlers loved a show."
+msgstr "一个漂浮的金环。纯属装饰；定居者最爱排场。"
 
 #: data/robot_parts.json:traits[cautious].name
 msgid "Cautious"
@@ -14185,8 +14141,8 @@ msgid "Greenfall (Main Theme)"
 msgstr "Greenfall (Main Theme)"
 
 #: data/songs.json:songs[greenfall_main].desc
-msgid "The song the Makers hummed on the way to the ark. Hopeful, a little lonely."
-msgstr "创造者们在前往方舟的路上哼的歌。充满希望，又有点孤单。"
+msgid "The song the Settlers hummed on the way to the ark. Hopeful, a little lonely."
+msgstr "定居者们在前往方舟的路上哼的歌。充满希望，又有点孤单。"
 
 #: data/songs.json:songs[fall_of_lm1].title
 msgid "The Fall of LM-1"
@@ -14697,8 +14653,8 @@ msgid "A bigger chest means fewer walks to the bin."
 msgstr "胸舱越大，跑垃圾桶的次数就越少。"
 
 #: data/story_reasons.json:goal_reasons
-msgid "The Makers left these behind. They tell what happened here."
-msgstr "这些是造物者留下的。它们讲述了这里发生过的事。"
+msgid "The Settlers left these behind. They tell what happened here."
+msgstr "这些是定居者留下的。它们讲述了这里发生过的事。"
 
 #: data/story_reasons.json:goal_reasons
 msgid "Old machine parts. Robots are built from them."
@@ -14861,8 +14817,8 @@ msgid "The rocket can leave now. Verdance isn't finished, and that's all right."
 msgstr "火箭现在可以出发了。Verdance 还没清理完，不过没关系。"
 
 #: data/story_reasons.json:exit
-msgid "Some of its trash needs tools the Makers left on other worlds. We'll bring them back."
-msgstr "这里有些垃圾，要用造物者留在别的世界的工具才能清理。我们会把工具带回来。"
+msgid "Some of its trash needs tools the Settlers left on other worlds. We'll bring them back."
+msgstr "这里有些垃圾，要用定居者留在别的世界的工具才能清理。我们会把工具带回来。"
 
 #: data/style_parts.json:slots[accent].name
 msgid "Accent"
@@ -15470,8 +15426,8 @@ msgid "I'm starting to remember lists. Lists of hexes. Mostly unfinished."
 msgstr "我开始想起一些清单了。六角格的清单。大多没完成。"
 
 #: data/wren_lines.json:hex_clean
-msgid "Clean dirt. The Makers would have called that a start. I call it a start, too."
-msgstr "干净的泥土。造物者会把它叫作开始。我也这么叫。"
+msgid "Clean dirt. The Settlers would have called that a start. I call it a start, too."
+msgstr "干净的泥土。定居者会把它叫作开始。我也这么叫。"
 
 #: data/wren_lines.json:hex_clean
 msgid "Hex logged. I've started naming them. That one is 'Not Garbage'."
@@ -15546,16 +15502,16 @@ msgid "{robot} reports for duty. Its first log entry is just the word 'can'. Fai
 msgstr "{robot} 前来报到。它的第一条日志只有一个词：“罐头”。很合理。"
 
 #: data/wren_lines.json:robot_built
-msgid "You're building a crew. The Makers had a word for that. 'Department.' I don't miss it."
-msgstr "你在组建一支队伍。造物者有个词形容这个：“部门”。我不怀念。"
+msgid "You're building a crew. The Settlers had a word for that. 'Department.' I don't miss it."
+msgstr "你在组建一支队伍。定居者有个词形容这个：“部门”。我不怀念。"
 
 #: data/wren_lines.json:part_rare
 msgid "...that... glows. That's old. Older than me?"
 msgstr "……那个……在发光。很古老。比我还老？"
 
 #: data/wren_lines.json:part_rare
-msgid "...Maker-made... I know that mark."
-msgstr "……造物者制造……我认得那个标记。"
+msgid "...Settler-made... I know that mark."
+msgstr "……定居者制造……我认得那个标记。"
 
 #: data/wren_lines.json:part_rare
 msgid "That part is older than most of this city. Treat it nicely."
@@ -15838,8 +15794,8 @@ msgid "A curiosity. I'm adding it to my list. My list is getting longer, which i
 msgstr "一件奇物。我把它加进我的清单了。我的清单越来越长，挺好的。"
 
 #: data/wren_lines.json:egg_found
-msgid "You find the best things, {name}. The Makers were weird. I miss them."
-msgstr "你总能找到最好的东西，{name}。造物者都很古怪。我想念他们。"
+msgid "You find the best things, {name}. The Settlers were weird. I miss them."
+msgstr "你总能找到最好的东西，{name}。定居者都很古怪。我想念他们。"
 
 #: data/wren_lines.json:egg_duck
 msgid "...quack...? ...is that... a word?"
@@ -16134,8 +16090,8 @@ msgid "...one sock... where is... the other one..."
 msgstr "……一只袜子……另一只……在哪……"
 
 #: data/wren_lines.json:egg_odd_sock
-msgid "One sock. There is always one sock. The Makers never solved it either."
-msgstr "一只袜子。总会有一只落单的袜子。造物者也从没解决过这个问题。"
+msgid "One sock. There is always one sock. The Settlers never solved it either."
+msgstr "一只袜子。总会有一只落单的袜子。定居者也从没解决过这个问题。"
 
 #: data/wren_lines.json:egg_odd_sock
 msgid "Keep it. Someday you'll find its partner and it'll be the happiest day of its life."
@@ -16782,8 +16738,8 @@ msgid "A bit of the first garden, already spilled on new ground. That's how it s
 msgstr "第一座花园的一点点，已经撒在新的土地上了。一切就是这样开始的。"
 
 #: data/wren_lines.json:egg_heirloom_tin
-msgid "Verdance soil on another world. The Makers would have liked that."
-msgstr "Verdance 的泥土落在了另一个世界。造物者们一定会喜欢的。"
+msgid "Verdance soil on another world. The Settlers would have liked that."
+msgstr "Verdance 的泥土落在了另一个世界。定居者们一定会喜欢的。"
 
 #: data/wren_lines.json:cradle_mode
 msgid "...the vault... other worlds..."
@@ -17012,6 +16968,183 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
+#~ msgstr "菜单、HUD、字幕和剧情文本。Pseudo 用于测试翻译。"
+
+#~ msgid "Number format"
+#~ msgstr "数字格式"
+
+#~ msgid "Short (1.2K)"
+#~ msgstr "简写（1.2K）"
+
+#~ msgid "Scientific (1.2e3)"
+#~ msgstr "科学计数（1.2e3）"
+
+#~ msgid "Engineering (1.2e3)"
+#~ msgstr "工程计数（1.2e3）"
+
+#~ msgid "Best-value tags"
+#~ msgstr "性价比标签"
+
+#~ msgid "Tag the affordable upgrade that gives the most per cube."
+#~ msgstr "标出买得起且每方块收益最高的升级。"
+
+#~ msgid "RECYCLER"
+#~ msgstr "回收炉"
+
+#~ msgid "SHRED  ·  SMELT  ·  GONE FOR GOOD"
+#~ msgstr "粉碎  ·  熔炼  ·  永久清除"
+
+#~ msgid "HAND FEED"
+#~ msgstr "手动投料"
+
+#~ msgid "It's the charter. The Makers sleep in the Cradle's lower decks, and it won't wake them into a dying system."
+#~ msgstr "是宪章。Makers 睡在 Cradle 号的下层甲板里，它不会让他们在一个垂死的星系里醒来。"
+
+#~ msgid "That's a Maker seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
+#~ msgstr "那是造物者的种子罐。盖子上有 Cradle号的印章。是我们的，匆忙中落下的。"
+
+#~ msgid "When they left, the Makers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi."
+#~ msgstr "离开时，造物者把能带走的每一颗种子都封进了 Cradle号的种子库。你的种子库，Lumi。"
+
+#~ msgid "Fix the Makers' old bench: press  {interact}"
+#~ msgstr "修理造物者的旧工作台：按  {interact}"
+
+#~ msgid "A Maker Fragment was tucked inside it: +%d parts."
+#~ msgstr "里面藏着一块创造者碎片：+%d 零件。"
+
+#~ msgid "%s spotted a Maker Fragment glinting in the junk: +%d parts."
+#~ msgstr "%s 在垃圾里发现了一块闪光的创造者碎片：+%d 零件。"
+
+#~ msgid "  (Maker set)"
+#~ msgstr "  （造物者套装）"
+
+#~ msgid "As the Makers Made It"
+#~ msgstr "如造物者所造"
+
+#~ msgid "Fit the full Maker set (shell, optic and glider) on one robot."
+#~ msgstr "为一台机器人装上完整的造物者套装（外壳、光学镜和滑翔翼）。"
+
+#~ msgid "When the Makers left Verdance, most of them went into the long sleep in the Cradle's lower decks. Their charter was one line long: wake us when the system can feed us. Not one world. All five. The Cradle has kept that promise for three hundred years, and it will not break it for anybody, even a very persuasive small robot."
+#~ msgstr "Makers 离开 Verdance 时，大多数人在 Cradle 号的下层甲板进入了长眠。他们的宪章只有一行：等星系能养活我们时再叫醒我们。不是一个世界，是全部五个。Cradle 号守了这个承诺三百年，不会为任何人打破它，哪怕是一个很有说服力的小机器人。"
+
+#~ msgid "Five worlds alive again. A rocket built from all of them. One seed planted in a bed with a yellow fence. The Cradle opened its bay for a small robot with a seedling tray, and below decks the Makers woke up to a green sky."
+#~ msgstr "五个世界重获生机。一枚用它们全部造成的火箭。一颗种在黄色栅栏花坛里的种子。Cradle 号为一个抱着育苗托盘的小机器人打开了舱门，而在甲板下，Makers 在绿色的天空下醒来。"
+
+#~ msgid "Maker Statue"
+#~ msgstr "造物者雕像"
+
+#~ msgid "A stone figure of one of the Makers, holding a watering can."
+#~ msgstr "一尊造物者的石像，手里拿着一个洒水壶。"
+
+#~ msgid "Five garden gnomes, each facing a different street. A Maker kid's sign said they were 'on patrol'. They still are."
+#~ msgstr "五个花园地精，每个都面朝一条不同的街道。一个造物者孩子做的牌子上说它们在“巡逻”。现在也还在巡逻。"
+
+#~ msgid "A time capsule from a Maker school class."
+#~ msgstr "造物者学校某个班级的时间胶囊。"
+
+#~ msgid "Old Town's amateur telescope still points at the five stars the Makers called 'the Wren'. The Cradle's AI was named after them."
+#~ msgstr "老城区的业余望远镜依然对着造物者称为“鹪鹩”的五颗星。Cradle号的 AI 就是以它们命名的。"
+
+#~ msgid "A ring of stones, two folding stools and a dented kettle: somebody's last camping trip before the Makers left. The ashes are three hundred years cold."
+#~ msgstr "一圈石头、两张折叠凳和一把凹陷的水壶：某人在造物者离开前的最后一次露营。灰烬已经冷了三百年。"
+
+#~ msgid "Maker's Badge"
+#~ msgstr "造物者徽章"
+
+#~ msgid "Lumi Level 20. A little enamel sprout. The ark gave these to its gardeners."
+#~ msgstr "Lumi 等级 20。一个小小的珐琅嫩芽。方舟会把它送给园丁们。"
+
+#~ msgid "That ping is Maker-grade. Follow the violet light."
+#~ msgstr "那个信号是造物者级的。跟着紫光走。"
+
+#~ msgid "Plant the Maker seed"
+#~ msgstr "种下造物者的种子"
+
+#~ msgid ""
+#~ "ITEM 1: The system is spent. Motion to dissolve: carried.\n"
+#~ "ITEM 2: Clean-up costs. Motion to not: carried.\n"
+#~ "ITEM 3: The Makers' ark keeps asking about a 'charter'. Motion to ignore: carried.\n"
+#~ "ITEM 4: Audit drones to continue indefinitely, for form's sake.\n"
+#~ "\n"
+#~ "Meeting closed. Lights left on."
+#~ msgstr ""
+#~ "议题一：星系已耗尽。解散动议：通过。\n"
+#~ "议题二：清理费用。不清理动议：通过。\n"
+#~ "议题三：Makers 的方舟一直在询问一份“宪章”。忽略动议：通过。\n"
+#~ "议题四：审计无人机为了形式无限期继续运行。\n"
+#~ "\n"
+#~ "散会。灯没关。"
+
+#~ msgid "An old Maker cleanup station: pipe frame, tin roof, a bench."
+#~ msgstr "造物者留下的旧清理站：管架、铁皮屋顶、一张工作台。"
+
+#~ msgid "Legendary Maker-Made"
+#~ msgstr "传说·造物者制"
+
+#~ msgid "The Makers' seed store: seeds to take to the next world."
+#~ msgstr "造物者的种子库：带去下一个世界的种子。"
+
+#~ msgid "The Makers' star chart: it shows where the rocket can fly."
+#~ msgstr "造物者的星图：告诉你火箭能飞往哪里。"
+
+#~ msgid "Maker Resonance"
+#~ msgstr "造物者共鸣"
+
+#~ msgid "All three Maker parts fitted: +5% speed, +6% work."
+#~ msgstr "三件造物者零件全部装上：速度 +5%，工作 +6%。"
+
+#~ msgid "Maker Shell"
+#~ msgstr "造物者外壳"
+
+#~ msgid "Pearl fairings with gold trim, as the Makers built them. Part of the Maker set."
+#~ msgstr "珍珠色整流罩配金色饰边，正如造物者当年所造。造物者套装之一。"
+
+#~ msgid "Maker Optic"
+#~ msgstr "造物者光学镜"
+
+#~ msgid "A floating gem lens under a gold brow. Part of the Maker set."
+#~ msgstr "金色眉骨下一枚漂浮的宝石镜头。造物者套装之一。"
+
+#~ msgid "Maker Glider"
+#~ msgstr "造物者滑翔翼"
+
+#~ msgid "Twin levitation pods with a thin light seam. Part of the Maker set."
+#~ msgstr "两个悬浮舱，带一道细细的光缝。造物者套装之一。"
+
+#~ msgid "Maker Crest"
+#~ msgstr "造物者纹章"
+
+#~ msgid "A floating gold ring. Purely for show; the Makers loved a show."
+#~ msgstr "一个漂浮的金环。纯属装饰；造物者最爱排场。"
+
+#~ msgid "The song the Makers hummed on the way to the ark. Hopeful, a little lonely."
+#~ msgstr "创造者们在前往方舟的路上哼的歌。充满希望，又有点孤单。"
+
+#~ msgid "The Makers left these behind. They tell what happened here."
+#~ msgstr "这些是造物者留下的。它们讲述了这里发生过的事。"
+
+#~ msgid "Some of its trash needs tools the Makers left on other worlds. We'll bring them back."
+#~ msgstr "这里有些垃圾，要用造物者留在别的世界的工具才能清理。我们会把工具带回来。"
+
+#~ msgid "Clean dirt. The Makers would have called that a start. I call it a start, too."
+#~ msgstr "干净的泥土。造物者会把它叫作开始。我也这么叫。"
+
+#~ msgid "You're building a crew. The Makers had a word for that. 'Department.' I don't miss it."
+#~ msgstr "你在组建一支队伍。造物者有个词形容这个：“部门”。我不怀念。"
+
+#~ msgid "...Maker-made... I know that mark."
+#~ msgstr "……造物者制造……我认得那个标记。"
+
+#~ msgid "You find the best things, {name}. The Makers were weird. I miss them."
+#~ msgstr "你总能找到最好的东西，{name}。造物者都很古怪。我想念他们。"
+
+#~ msgid "One sock. There is always one sock. The Makers never solved it either."
+#~ msgstr "一只袜子。总会有一只落单的袜子。造物者也从没解决过这个问题。"
+
+#~ msgid "Verdance soil on another world. The Makers would have liked that."
+#~ msgstr "Verdance 的泥土落在了另一个世界。造物者们一定会喜欢的。"
 
 #~ msgid "AUTO-BALER"
 #~ msgstr "自动打包机"

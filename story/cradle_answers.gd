@@ -2,7 +2,7 @@ class_name CradleAnswers
 extends Node
 ## [home] "The Cradle Answers": the Cradle Returns beat before the true ending (docs/DECISIONS.md,
 ## Homeward). The pad is green and the beacon is lit, so the ark comes, but it will not land: its
-## Makers sleep aboard and the charter forbids waking them into a dying system. The whole Verdance
+## Settlers sleep aboard and the charter forbids waking them into a dying system. The whole Verdance
 ## system was strip-mined by the Ledger. So: restore every planet, then build the Homeward rocket.
 ## Plays once per profile (Homeward.answered); a quit midway replays it on the next load.
 ## Off-world shots use the SpaceStage; always hands the screen back (Cine).
@@ -14,7 +14,7 @@ const LINES: Array[Array] = [
 	["Lumi. Look up. That star isn't moving like a star.", 4.0],
 	["CRADLE:  BEACON RECEIVED.  GREEN DETECTED ON VERDANCE.  SEED-KEEPER LM-1 LOCATED.", 5.5],
 	["CRADLE:  LANDING DENIED.  SYSTEM SURVEY: FIVE WORLDS.  ONE ALIVE.  SLEEPERS REMAIN UNDER.", 6.0],
-	["It's the charter. The Makers sleep in the Cradle's lower decks, and it won't wake them into a dying system.", 6.0],
+	["It's the charter. The Settlers sleep in the Cradle's lower decks, and it won't wake them into a dying system.", 6.0],
 	["And it is dying. The Ledger mined every world out here hollow and left each one under its trash. Verdance was only the first.", 6.5],
 	["So we fix all of it. Ochre, Tidewell, Rime, Anvil. One planet at a time.", 5.0],
 	["Then we build a rocket big enough to reach the Cradle, and we carry the last seed up ourselves.", 5.5],

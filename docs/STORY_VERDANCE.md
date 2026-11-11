@@ -12,12 +12,16 @@ Status key in the tables: **ok** (the game says it), **fixed** (v6story changed 
 
 ## The story in one page
 
-**Verdance** was the Makers' home: towns, gardens, a blue sky. A machine company called **the
+**Verdance** was the Settlers' home: towns, gardens, a blue sky. A machine company called **the
 Ledger** dug up every world around the two suns and left its trash behind. When the air went bad,
-the Makers packed the last seeds into a big ship, the ark **Cradle**, and went to sleep on board.
+the Settlers packed the last seeds into a big ship, the ark **Cradle**, and went to sleep on board.
 They left their cleanup robots running, in little **cleanup stations** in every town: a workbench,
 a trash bin with a recycler, a scale and a landing pad. The plan was to come back and plant when the
 world was clean. They called that day the **Greenfall**.
+
+Name: the ark's people are **the Settlers** (one Settler; "Settler tech"). The owner turned down "the
+Makers" and "the Gardeners" (2026-11-11). Ids, flags and save keys still say `maker` (`maker_shell`,
+`builder_maker`, `maker_fragments`, `maker_badge`) so old saves load; only the shown text changed.
 
 It never came. The Ledger did its sums, decided that cleaning "costs more than it earns", and paused
 every robot. Three hundred years went by. The stations fell silent and the trash stayed.
@@ -45,13 +49,13 @@ So the plan, in the order the game teaches it:
    helpers again once it has power, and a bigger station powers more of them. Robots also keep
    working when Lumi is somewhere else.
 5. **Six stations.** Lumi's little rocket can hop from town to town, but it can't leave the planet.
-   When the Makers left they used every big rocket they had. What is left of the last launch kit sits
+   When the Settlers left they used every big rocket they had. What is left of the last launch kit sits
    in the landmarks of six old stations: seeds at **Garden Row**, hull plates at **Gantry Works**,
    the star chart at **Signal Heights**, a power cell at the **Fairground**, fuel at **Stack
    Works**. At each station Lumi cleans a little, wakes the landmark, takes its piece for the rocket,
    and leaves a crew of robots there to carry on.
 6. **Why fly on with Verdance only one fifth clean.** The star chart at Signal Heights shows the
-   truth: the Ledger buried **five** worlds, not one. The Cradle's rule (the Makers' charter) is
+   truth: the Ledger buried **five** worlds, not one. The Cradle's rule (the Settlers' charter) is
    "wake us when the worlds can feed us", and one green town is not enough. Two more things make
    leaving the right call. First, some of Verdance can't be cleaned with what is here: the tools for
    its buried, flooded and frozen parts were left on the other worlds (the Deep Drill is on Ochre).
@@ -64,7 +68,7 @@ asking Lumi to stop, and drones that put a little trash back on clean ground (ne
 ground). Later Lumi and WREN find its relay and show it the sums: clean ground and living plants go
 in the "asset" column. It changes sides and its drones deliver seeds.
 
-**Memory shards** are things the Makers left behind (a shop sign, a child's drawing, a voicemail).
+**Memory shards** are things the Settlers left behind (a shop sign, a child's drawing, a voicemail).
 They are how the player learns what happened: found when the hex that holds them is cleaned.
 
 ## Every step, in order
@@ -76,9 +80,9 @@ They are how the player learns what happened: found when the hex that holds them
 
 | # | What the player does | In-world reason | Where the game says it | Problem / status |
 |---|---|---|---|---|
-| 0 | Watches the intro | The Makers left on the Cradle; Lumi fell | story/intro.gd captions | ok |
+| 0 | Watches the intro | The Settlers left on the Cradle; Lumi fell | story/intro.gd captions | ok |
 | 1 | Hears WREN's crash message | The pod fell by an old cleanup station; its bin makes cubes; a tower lets her talk | objectives.json `brief` | **fixed**: it said "pick up trash, find parts" with no word on what the place is or what cubes are |
-| 2 | Fixes the workbench | It is the Makers' bench, dead for 300 years; everything is built on it | checklist (story/tutorial.gd) | **fixed**: the step now says whose bench it is |
+| 2 | Fixes the workbench | It is the Settlers' bench, dead for 300 years; everything is built on it | checklist (story/tutorial.gd) | **fixed**: the step now says whose bench it is |
 | 3 | Picks up trash, empties the chest in the bin | The bin's recycler turns trash into cubes | checklist + card `dump3` | **fixed**: nobody said why a bin pays cubes |
 | 4 | Buys a bigger chest, a wider scoop | Carry more, grab more: fewer walks to the bin | cards `compartment`, `scoop_size` | ok. **fixed**: the reason was hidden while saving up (the card showed only "Need N more cubes") |
 | 5 | Saves up for the Baler | A tight bale recycles with nothing wasted: more cubes | card `baler` | **fixed**: "bales sell for more" had no why |
@@ -94,7 +98,7 @@ They are how the player learns what happened: found when the hex that holds them
 | 10 | Cleans the glowing hex, then 2, then 3 | Plants only grow on clean ground; three clean hexes round the station give robots room to start | cards `hex`, `hex2`, `hex3` | **fixed**: "3 clean hexes unlock the Bot Bay" was a game rule, not a reason |
 | 11 | Adds a Bot Bay to the bench | A planet is too big for one small robot | card `bench2` + WREN | **fixed** (card gave only where to click) |
 | 12 | Builds the first robot, shows it where to clean first | The robot already cleans by itself; painting hexes only tells it where to start. Robots keep going when Lumi is busy | cards `robot`, `zone` + WREN | **fixed**: WREN said "the base has power!" with no cause; the step read as if the robot did nothing until told |
-| 13 | Finds the Maker seed tin, plants and waters the first seed | Nothing grows by itself any more; every bloom gives green light and a seed back | story/first_seed.gd (WREN's long scene), card `seed` | ok. The best-told beat in the game |
+| 13 | Finds the Settler seed tin, plants and waters the first seed | Nothing grows by itself any more; every bloom gives green light and a seed back | story/first_seed.gd (WREN's long scene), card `seed` | ok. The best-told beat in the game |
 | 14 | Meets the Ledger's drones | The Ledger thinks cleaning costs too much; drones can't touch planted ground, so planting protects clean ground | story/ledger.gd toasts | ok |
 | 15 | Cleans 10 hexes with the robots | More clean ground, more room to plant | card `hex10` | **fixed** (card gave only the key to press) |
 | 16 | Rebuilds the base to level 2 | A bigger station makes more power: more robots can run | card `base2` | **fixed** ("the base can grow now" said nothing about why) |
@@ -112,9 +116,9 @@ station kept one piece of the last launch kit, and each one woken keeps cleaning
 | # | Station (landmark) | What the player does | In-world reason for going | What it gives | Status |
 |---|---|---|---|---|---|
 | 1 | Landing Yard (water tower) | everything in A and B | Lumi fell here | a home, the first crew, the hop rocket | ok |
-| 2 | Garden Row (windpump) | cleans a few hexes, wakes the windpump | The seed tin is nearly empty; the Makers' seed store was at Garden Row | seed stock, so planting never stops | in game (v6hubs; picker line, arrival line and wake toast; card reason `hub_fly_N` in story_reasons.json) |
+| 2 | Garden Row (windpump) | cleans a few hexes, wakes the windpump | The seed tin is nearly empty; the Settlers' seed store was at Garden Row | seed stock, so planting never stops | in game (v6hubs; picker line, arrival line and wake toast; card reason `hub_fly_N` in story_reasons.json) |
 | 3 | Gantry Works (crane) | cleans, wakes the crane | The hop rocket's skin would burn up in space; the works made hull plates | hull plates (rocket tier) | in game (v6hubs; picker line, arrival line and wake toast; card reason `hub_fly_N` in story_reasons.json) |
-| 4 | Signal Heights (radio mast) | cleans, wakes the mast | Nobody knows where to fly; the tall mast kept the Makers' star chart | the star chart: five buried worlds, and Ochre first | in game (v6hubs; picker line, arrival line and wake toast; card reason `hub_fly_N` in story_reasons.json) |
+| 4 | Signal Heights (radio mast) | cleans, wakes the mast | Nobody knows where to fly; the tall mast kept the Settlers' star chart | the star chart: five buried worlds, and Ochre first | in game (v6hubs; picker line, arrival line and wake toast; card reason `hub_fly_N` in story_reasons.json) |
 | 5 | Fairground (ferris wheel) | cleans, wakes the wheel | A long flight needs power that lasts; the wheel ran on a big power cell | a power cell (rocket tier) | in game (v6hubs; picker line, arrival line and wake toast; card reason `hub_fly_N` in story_reasons.json) |
 | 6 | Stack Works (smokestack) | cleans, wakes the stack | The tanks are empty; the stack works made fuel | fuel (rocket tier): the rocket can leave | in game (v6hubs; picker line, arrival line and wake toast; card reason `hub_fly_N` in story_reasons.json) |
 
@@ -159,7 +163,7 @@ a reason first, from `data/goal_reasons.json` (by goal id, else by what the goal
 reward. Examples: clean N hexes ("Plants only grow on clean ground"), buy N upgrades ("Better tools:
 more trash per trip"), earn N cubes ("Big machines are built from many cubes"), plant / bloom
 ("Every bloom gives green light for your core"), Drip robots ("Thirsty plants stop growing"), pet a
-cat ("The animals are coming back. Say hello"), memory shards ("The Makers left these. They tell what
+cat ("The animals are coming back. Say hello"), memory shards ("The Settlers left these. They tell what
 happened here").
 
 ## Holes found, and what was done
@@ -169,7 +173,7 @@ happened here").
 | What cubes are, why a bin pays them | Said in WREN's crash message, on the first card and in the Cubes description: the recycler turns trash into cubes; the bench builds with cubes |
 | Why bale | Card + Baler description: a tight bale recycles with nothing wasted |
 | Why prices climb (owner 63–64) | Cubes description and the drive text: bigger machines are built from more cubes; a rocket takes a mountain |
-| Who built the bench, bin, scale, pad | "An old cleanup station" of the Makers: crash message, checklist, base level 1 text |
+| Who built the bench, bin, scale, pad | "An old cleanup station" of the Settlers: crash message, checklist, base level 1 text |
 | Why "base levels" | Each rebuild gives the station more power: more robots, a better scale, the rocket pad |
 | Why cleaning matters to getting home | Briefing: clean ground → plants → green light → Lumi's core, and the sign the Cradle looks for |
 | Why robots | Bot Bay card and WREN: a planet is too big for one robot; crews carry on when Lumi leaves |
