@@ -417,10 +417,27 @@ func _near_cells() -> PackedInt32Array:
 	_near_at = _lumi_pos
 	_near = PackedInt32Array()
 	var r: float = float(_cfg.get("spawn_radius", 55.0)) + world.field.hex_size * 2.0
+	var sf: SphereField = world.field as SphereField
+	if sf:  # [v6qa] the grid's cells round Lumi that are in the region (it measured every region cell: 20-40 ms at a hub switch)
+		if _frame_set.size() != frame_cells.size():
+			_frame_set.clear()
+			for i0: int in frame_cells.size():
+				_frame_set[frame_cells[i0]] = i0
+		var idx: Array[int] = []
+		for h: int in sf.grid.cells_within(_w(_lumi_pos).normalized(), r + 2.0):
+			if _frame_set.has(h) and _hex_c(h).distance_to(_lumi_pos) < r:
+				idx.append(int(_frame_set[h]))
+		idx.sort()  # the region's own order, as before (the plan's dice follow it)
+		for i1: int in idx:
+			_near.append(frame_cells[i1])
+		return _near
 	for h: int in frame_cells:
 		if _hex_c(h).distance_to(_lumi_pos) < r:
 			_near.append(h)
 	return _near
+
+
+var _frame_set: Dictionary = {}  # [v6qa]
 
 
 ## [orbB] The globe: rotates the hub frame's +Y onto the ground's own up at p (the frame is a
@@ -677,6 +694,7 @@ func _spawn(key: String, e: Dictionary) -> bool:
 		a.cat_name = str(adopted_cat().get("name", "Biscuit"))
 		a.coat = int(adopted_cat().get("coat", 0))
 		a.size = 1.0
+		_warm_done()  # [v6qa]
 		var w: Vector3 = _warm[0] if not _warm.is_empty() else Vector3(2, 0, 2)
 		p = w + Vector3(_rng.randf_range(-1, 1), 0, _rng.randf_range(-1, 1))
 		p.y = _ground_y(p)
@@ -898,17 +916,49 @@ func _build_warm_spots() -> void:
 	for h: int in _hexes():
 		if f.hex_hub[h] != 0:
 			_warm.append(_hex_c(h) + Vector3(_rng.randf_range(-3, 3), 0, _rng.randf_range(-3, 3)))
-	for i: int in range(_warm.size() - 1, -1, -1):
-		var w: Vector3 = _warm[i]
+	# [v6qa] The ground and blocked checks below were 30 ms in a hub switch: in play they run a slice
+	# a frame (_process), and anything that reads the spots first finishes them (_warm_done). The dice
+	# above are thrown here as before, so the spots and every later draw are the same.
+	_warm_pend = _warm.duplicate()
+	_warm.clear()
+	_warm_i = _warm_pend.size() - 1
+	if not (BuildBudget.current != null and BuildBudget.current.play_slice_us > 0):
+		_warm_done()
+
+
+var _warm_pend: Array[Vector3] = []  # [v6qa]
+var _warm_i: int = -1
+
+
+## [v6qa] The warm spots' checks, at most budget_us (0: all). The list is published when all are done.
+func _warm_step(budget_us: int) -> void:
+	if _warm_i < 0 and _warm_pend.is_empty():
+		return
+	var t0: int = Time.get_ticks_usec()
+	var f: HexField = world.field
+	while _warm_i >= 0:
+		if budget_us > 0 and Time.get_ticks_usec() - t0 > budget_us:
+			return
+		var i: int = _warm_i
+		_warm_i -= 1
+		var w: Vector3 = _warm_pend[i]
 		w.y = _ground_y(w)
-		_warm[i] = w
+		_warm_pend[i] = w
 		if not FaunaRules.spot_ok(f, _w(w), 0.4) or (is_inside_tree() and _props_blocked(w, 0.3)):  # [fauna2]
-			_warm.remove_at(i)
+			_warm_pend.remove_at(i)
+	_warm = _warm_pend
+	_warm_pend = []
+
+
+func _warm_done() -> void:
+	_warm_step(0)
 
 
 # --- Frame update ------------------------------------------------------------------------------
 
 func _process(delta: float) -> void:
+	if _warm_i >= 0 or not _warm_pend.is_empty():  # [v6qa]
+		_warm_step(3000)
 	if world == null or world.get("patch") == null:
 		return
 	_frame += 1
@@ -1646,6 +1696,8 @@ func _update_cat(a: Animal, dt: float) -> void:
 			a.tail = 0.25
 			if a.t <= 0.0:
 				var r: float = _rng.randf()
+				if _warm_i >= 0 or not _warm_pend.is_empty():
+					_warm_done()  # [v6qa]
 				if r < 0.25 and not _warm.is_empty() and (_night > 0.5 or _rng.randf() < 0.6):
 					var w: Vector3 = _nearest_warm(a.pos)
 					if w.distance_to(a.pos) < 22.0:

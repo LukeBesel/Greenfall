@@ -57,7 +57,7 @@ func build(p_layout: CityLayout, seed_v: int) -> void:
 	await _lot_wrecks()  # [v6qa] yields inside (a hub town building in play: no step over a few ms)
 	if water_fn.is_valid():
 		await BuildBudget.check("town:waterfront")
-		_waterfront()
+		await _waterfront()  # [v6qa] yields inside
 	await BuildBudget.check("town:flush")
 	await _flush()
 
@@ -589,6 +589,8 @@ func _waterfront() -> void:
 	var wet := PackedByteArray()
 	wet.resize(n * n)
 	for j: int in n:
+		if (j & 7) == 0:
+			await BuildBudget.check("town:quay wet")  # [v6qa]
 		for i: int in n:
 			var p := Vector2(-half + i * QUAY_STEP, -half + j * QUAY_STEP)
 			wet[j * n + i] = 1 if _wet(p) else 0
@@ -596,6 +598,8 @@ func _waterfront() -> void:
 		return 1 if i < 0 or j < 0 or i >= n or j >= n else wet[j * n + i]
 	var shore: Array = []  # [p, normal toward the water, i, j]
 	for j: int in n:
+		if (j & 7) == 0:
+			await BuildBudget.check("town:quay shore")  # [v6qa]
 		for i: int in n:
 			if wet[j * n + i] == 1:
 				continue
@@ -619,6 +623,7 @@ func _waterfront() -> void:
 	var k: int = 0
 	var piers: Array[Vector2] = []
 	for e: Array in shore:
+		await BuildBudget.check("town:quay piece")  # [v6qa]
 		var p: Vector2 = e[0]
 		var nrm: Vector2 = e[1]
 		var b: KitMesh.Builder = _builder(p)
