@@ -526,7 +526,7 @@ msgstr ""
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr ""
 
-#: fauna/fauna.gd:2222 ui/subtitles.gd:452
+#: fauna/fauna.gd:2222 ui/subtitles.gd:453
 msgid "New sighting: %s. It's in the Codex now."
 msgstr ""
 
@@ -726,7 +726,7 @@ msgstr ""
 msgid "Wake the %s (%s)"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:558
+#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:576
 msgid "E   Wake the %s  (%s)"
 msgstr ""
 
@@ -913,55 +913,55 @@ msgstr ""
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr ""
 
-#: player/patch.gd:174
+#: player/patch.gd:175
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr ""
 
-#: player/patch.gd:228
+#: player/patch.gd:229
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr ""
 
-#: player/patch.gd:352
+#: player/patch.gd:353
 msgid "No seeds yet. Keep cleaning."
 msgstr ""
 
-#: player/patch.gd:387
+#: player/patch.gd:388
 msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 msgstr ""
 
-#: player/patch.gd:394
+#: player/patch.gd:395
 msgid "Out of seeds. Blooming plants drop more."
 msgstr ""
 
-#: player/patch.gd:401
+#: player/patch.gd:402
 msgid "Watering can is empty. Refill at the hub."
 msgstr ""
 
-#: player/patch.gd:606
+#: player/patch.gd:607
 msgid "PERFECT BALE  %s"
 msgstr ""
 
-#: player/patch.gd:612
+#: player/patch.gd:613
 msgid "OVERSTUFFED  %s"
 msgstr ""
 
-#: player/patch.gd:616
+#: player/patch.gd:617
 msgid "PURE  %s"
 msgstr ""
 
-#: player/patch.gd:618
+#: player/patch.gd:619
 msgid "SURGE  %s"
 msgstr ""
 
-#: player/patch.gd:621
+#: player/patch.gd:622
 msgid "  (streak +%d%%)"
 msgstr ""
 
-#: player/patch.gd:664
+#: player/patch.gd:665
 msgid "Salvaged: %s"
 msgstr ""
 
-#: player/patch.gd:695
+#: player/patch.gd:696
 msgid "Recovered: %s"
 msgstr ""
 
@@ -2331,7 +2331,7 @@ msgstr ""
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr ""
 
-#: systems/achievements.gd:167 ui/notify_stack.gd:27 ui/subtitles.gd:450
+#: systems/achievements.gd:167 ui/notify_stack.gd:27 ui/subtitles.gd:451
 msgid "Achievement: %s. %s"
 msgstr ""
 
@@ -3485,7 +3485,7 @@ msgstr ""
 msgid "Only big pieces left"
 msgstr ""
 
-#: tools/ui_audit_run.gd:318 ui/locker_panel.gd:84 ui/telescope_view.gd:379
+#: tools/ui_audit_run.gd:330 ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"
 msgstr ""
 
@@ -4818,68 +4818,68 @@ msgstr ""
 msgid "All built"
 msgstr ""
 
-#: ui/hud.gd:82
+#: ui/hud.gd:84
 msgid "Lumi reached level %d%s"
 msgstr ""
 
-#: ui/hud.gd:179
+#: ui/hud.gd:181
 msgid "OLD TOWN   0%"
 msgstr ""
 
-#: ui/hud.gd:358
+#: ui/hud.gd:362
 msgid "WREN SIGNAL   %d%%"
 msgstr ""
 
-#: ui/hud.gd:401
+#: ui/hud.gd:417
 msgid "HEX  %d%% CLEAR"
 msgstr ""
 
-#: ui/hud.gd:405
+#: ui/hud.gd:421
 msgid "%s  BASE"
 msgstr ""
 
-#: ui/hud.gd:408
+#: ui/hud.gd:424
 msgid "CARRYING %d/%d"
 msgstr ""
 
-#: ui/hud.gd:440
+#: ui/hud.gd:456
 msgid "HEX  CLEAR"
 msgstr ""
 
-#: ui/hud.gd:444
+#: ui/hud.gd:460
 msgid "HEX  %s"
 msgstr ""
 
-#: ui/hud.gd:447
+#: ui/hud.gd:463
 msgid "  SUSTAIN %d%%"
 msgstr ""
 
-#: ui/hud.gd:449
+#: ui/hud.gd:465
 msgid "  THIRSTY"
 msgstr ""
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:479
+#: ui/hud.gd:495
 msgid "%s   pick up bale"
 msgstr ""
 
-#: ui/hud.gd:480
+#: ui/hud.gd:496
 msgid "%s   dig up part"
 msgstr ""
 
-#: ui/hud.gd:481
+#: ui/hud.gd:497
 msgid "%s   read memory shard"
 msgstr ""
 
-#: ui/hud.gd:482
+#: ui/hud.gd:498
 msgid "%s   pick up the seed tin"
 msgstr ""
 
-#: ui/hud.gd:483
+#: ui/hud.gd:499
 msgid "%s   set bale down"
 msgstr ""
 
-#: ui/hud.gd:484
+#: ui/hud.gd:500
 msgid "%s   workbench"
 msgstr ""
 
@@ -4923,7 +4923,7 @@ msgstr ""
 msgid "photo"
 msgstr ""
 
-#: ui/key_hints.gd:121
+#: ui/key_hints.gd:129
 msgid "tools"
 msgstr ""
 
@@ -6482,7 +6482,7 @@ msgstr ""
 msgid "WORKBENCH"
 msgstr ""
 
-#: ui/upgrades_screen.gd:273
+#: ui/upgrades_screen.gd:278
 msgid "Not open yet. Keep playing."
 msgstr ""
 

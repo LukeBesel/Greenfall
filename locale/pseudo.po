@@ -524,7 +524,7 @@ msgstr "[Ţĥé bîŕðš ĥàvé ðéçîðéð ýôû'ŕé àļļ ŕîĝĥţ. 
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "[Ţĥé çàţ ĥàš ðéçîðéð ýôû'ŕé ĥéŕš. Mééţ %s. Šĥé ļîvéš àţ ţĥîš bàšé ñôŵ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: fauna/fauna.gd:2222 ui/subtitles.gd:452
+#: fauna/fauna.gd:2222 ui/subtitles.gd:453
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "[Ñéŵ šîĝĥţîñĝ: %s. Îţ'š îñ ţĥé Çôðéx ñôŵ. ~~~~~~~~~~~]"
 
@@ -724,7 +724,7 @@ msgstr "[Ûþĝŕàðé ţĥé ŕôçķéţ, ţĥéñ ŵàķé ţĥé %s ~~~~~~~
 msgid "Wake the %s (%s)"
 msgstr "[Ŵàķé ţĥé %s (%s) ~~~]"
 
-#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:558
+#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:576
 msgid "E   Wake the %s  (%s)"
 msgstr "E   [Ŵàķé ţĥé %s  (%s) ~~~]"
 
@@ -915,55 +915,55 @@ msgstr "[BÛŔÎÉÐ ÞÀŔŢ  %s  ·  %.1f m ~~~~~~]"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "[BÛŔÎÉÐ ÞÀŔŢ  ·  ŠÎĜÑÀĻ %d%% ~~~~~~]"
 
-#: player/patch.gd:174
+#: player/patch.gd:175
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "[Ļûmî ŕàţţļéš bàçķ ûþ îñţô ţĥé ýàŕð. Ţĥàţ ŵàš ôðð. ~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:228
+#: player/patch.gd:229
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "[Ļûmî çàñ'ţ šŵîm. Ĥôvéŕ Ĵéţš àţ ţĥé ŵôŕķbéñçĥ ļéţ ĥîm ƒļôàţ ôvéŕ ļàķéš. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:352
+#: player/patch.gd:353
 msgid "No seeds yet. Keep cleaning."
 msgstr "[Ñô šééðš ýéţ. Ķééþ çļéàñîñĝ. ~~~~~~~]"
 
-#: player/patch.gd:387
+#: player/patch.gd:388
 msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 msgstr "[Šééðš ñééð çļéàñ, ôþéñ ĝŕôûñð: ñôţ šţŕééţš, ķéŕbš ôŕ ţĥé þàð. ~~~~~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:394
+#: player/patch.gd:395
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "[Ôûţ ôƒ šééðš. Bļôômîñĝ þļàñţš ðŕôþ môŕé. ~~~~~~~~~~~]"
 
-#: player/patch.gd:401
+#: player/patch.gd:402
 msgid "Watering can is empty. Refill at the hub."
 msgstr "[Ŵàţéŕîñĝ çàñ îš émþţý. Ŕéƒîļļ àţ ţĥé ĥûb. ~~~~~~~~~~~]"
 
-#: player/patch.gd:606
+#: player/patch.gd:607
 msgid "PERFECT BALE  %s"
 msgstr "[ÞÉŔFÉÇŢ BÀĻÉ  %s ~~~]"
 
-#: player/patch.gd:612
+#: player/patch.gd:613
 msgid "OVERSTUFFED  %s"
 msgstr "[ÔVÉŔŠŢÛFFÉÐ  %s ~~]"
 
-#: player/patch.gd:616
+#: player/patch.gd:617
 msgid "PURE  %s"
 msgstr "[ÞÛŔÉ  %s ~]"
 
-#: player/patch.gd:618
+#: player/patch.gd:619
 msgid "SURGE  %s"
 msgstr "[ŠÛŔĜÉ  %s ~]"
 
-#: player/patch.gd:621
+#: player/patch.gd:622
 msgid "  (streak +%d%%)"
 msgstr "  [(šţŕéàķ +%d%%) ~~~]"
 
-#: player/patch.gd:664
+#: player/patch.gd:665
 msgid "Salvaged: %s"
 msgstr "[Šàļvàĝéð: %s ~]"
 
-#: player/patch.gd:695
+#: player/patch.gd:696
 msgid "Recovered: %s"
 msgstr "[Ŕéçôvéŕéð: %s ~~]"
 
@@ -2354,7 +2354,7 @@ msgstr "[ŴÉ'ĻĻ BÉ BÀÇĶ ~~]"
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr "[%d àçĥîévéméñţš ûñļôçķéð. Šéé ţĥém îñ ţĥé Çôðéx (Ķ). ~~~~~~~~~~~~~~~]"
 
-#: systems/achievements.gd:167 ui/notify_stack.gd:27 ui/subtitles.gd:450
+#: systems/achievements.gd:167 ui/notify_stack.gd:27 ui/subtitles.gd:451
 msgid "Achievement: %s. %s"
 msgstr "[Àçĥîévéméñţ: %s. %s ~~~~]"
 
@@ -3508,7 +3508,7 @@ msgstr "[Àļļ çļéàŕ ĥéŕé! ~~]"
 msgid "Only big pieces left"
 msgstr "[Ôñļý bîĝ þîéçéš ļéƒţ ~~~~]"
 
-#: tools/ui_audit_run.gd:318 ui/locker_panel.gd:84 ui/telescope_view.gd:379
+#: tools/ui_audit_run.gd:330 ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"
 msgstr "[Çļôšé ~]"
 
@@ -4848,68 +4848,68 @@ msgstr ""
 msgid "All built"
 msgstr "[Àļļ bûîļţ ~]"
 
-#: ui/hud.gd:82
+#: ui/hud.gd:84
 msgid "Lumi reached level %d%s"
 msgstr "[Ļûmî ŕéàçĥéð ļévéļ %d%s ~~~~~]"
 
-#: ui/hud.gd:179
+#: ui/hud.gd:181
 msgid "OLD TOWN   0%"
 msgstr "[ÔĻÐ ŢÔŴÑ   0% ~~]"
 
-#: ui/hud.gd:358
+#: ui/hud.gd:362
 msgid "WREN SIGNAL   %d%%"
 msgstr "[ŴŔÉÑ ŠÎĜÑÀĻ   %d%% ~~~]"
 
-#: ui/hud.gd:401
+#: ui/hud.gd:417
 msgid "HEX  %d%% CLEAR"
 msgstr "[ĤÉX  %d%% ÇĻÉÀŔ ~~]"
 
-#: ui/hud.gd:405
+#: ui/hud.gd:421
 msgid "%s  BASE"
 msgstr "[%s  BÀŠÉ ~]"
 
-#: ui/hud.gd:408
+#: ui/hud.gd:424
 msgid "CARRYING %d/%d"
 msgstr "[ÇÀŔŔÝÎÑĜ %d/%d ~~]"
 
-#: ui/hud.gd:440
+#: ui/hud.gd:456
 msgid "HEX  CLEAR"
 msgstr "[ĤÉX  ÇĻÉÀŔ ~]"
 
-#: ui/hud.gd:444
+#: ui/hud.gd:460
 msgid "HEX  %s"
 msgstr "[ĤÉX  %s ~]"
 
-#: ui/hud.gd:447
+#: ui/hud.gd:463
 msgid "  SUSTAIN %d%%"
 msgstr "  [ŠÛŠŢÀÎÑ %d%% ~~]"
 
-#: ui/hud.gd:449
+#: ui/hud.gd:465
 msgid "  THIRSTY"
 msgstr "  [ŢĤÎŔŠŢÝ ~]"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:479
+#: ui/hud.gd:495
 msgid "%s   pick up bale"
 msgstr "[%s   þîçķ ûþ bàļé ~~~]"
 
-#: ui/hud.gd:480
+#: ui/hud.gd:496
 msgid "%s   dig up part"
 msgstr "[%s   ðîĝ ûþ þàŕţ ~~~]"
 
-#: ui/hud.gd:481
+#: ui/hud.gd:497
 msgid "%s   read memory shard"
 msgstr "[%s   ŕéàð mémôŕý šĥàŕð ~~~~~]"
 
-#: ui/hud.gd:482
+#: ui/hud.gd:498
 msgid "%s   pick up the seed tin"
 msgstr "[%s   þîçķ ûþ ţĥé šééð ţîñ ~~~~~~]"
 
-#: ui/hud.gd:483
+#: ui/hud.gd:499
 msgid "%s   set bale down"
 msgstr "[%s   šéţ bàļé ðôŵñ ~~~]"
 
-#: ui/hud.gd:484
+#: ui/hud.gd:500
 msgid "%s   workbench"
 msgstr "[%s   ŵôŕķbéñçĥ ~~]"
 
@@ -4953,7 +4953,7 @@ msgstr "[ŵôŕķbéñçĥ ~]"
 msgid "photo"
 msgstr "[þĥôţô ~]"
 
-#: ui/key_hints.gd:121
+#: ui/key_hints.gd:129
 msgid "tools"
 msgstr "[ţôôļš ~]"
 
@@ -6537,7 +6537,7 @@ msgstr "[Ŕéšéàŕçĥ ~]"
 msgid "WORKBENCH"
 msgstr "[ŴÔŔĶBÉÑÇĤ ~]"
 
-#: ui/upgrades_screen.gd:273
+#: ui/upgrades_screen.gd:278
 msgid "Not open yet. Keep playing."
 msgstr "[Ñôţ ôþéñ ýéţ. Ķééþ þļàýîñĝ. ~~~~~~]"
 
