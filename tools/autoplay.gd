@@ -589,6 +589,9 @@ func _do_pet(p: Patch) -> bool:
 func _do_deliver(p: Patch) -> bool:
 	if p.carried.is_empty():
 		return false
+	if _at_far():
+		_drop_all(p)  # [v6pace] at a far station: put the stack down and keep working
+		return false
 	var full: bool = p.carried.size() >= p.carry_cap()
 	if _haulers() > 0:
 		# Haul Bugs take bales; set the stack down and get back to work.
@@ -604,6 +607,8 @@ func _do_deliver(p: Patch) -> bool:
 ## [pace] Before the Baler: roll to the trash bin (or the scale pad) when the chest is full, or
 ## when there is nothing left to scoop.
 func _do_dump(p: Patch) -> bool:
+	if _at_far():
+		return false  # [v6pace] at a far station: nothing to take home to
 	if not Pace.dump_allowed() or p.compartment.is_empty() or not p.carried.is_empty():
 		return false
 	var full: bool = p.compartment.ratio(p.capacity()) >= 0.85
@@ -696,6 +701,8 @@ func _drop_all(p: Patch) -> void:
 
 
 func _do_pickup(p: Patch) -> bool:
+	if _at_far():
+		return false  # [v6pace] at a far station: nothing to take home to
 	if _haulers() > 0 or p.carried.size() >= p.carry_cap():
 		return false
 	var loose: JunkCube = _nearest_loose(p)
@@ -818,6 +825,8 @@ func _thirsty_slot(g: Garden, p: Patch) -> int:
 
 
 func _do_garden(p: Patch) -> bool:
+	if _at_far():
+		return false  # [v6pace] at a far station: nothing to take home to
 	var g: Garden = world.garden
 	if g == null or not g.unlocked():
 		return false
@@ -1083,11 +1092,30 @@ func _arc(p: Patch) -> bool:
 			_mark("landed_%d_s" % (_far_restored(os_) + 2))  # [v7play] --stop-at=landed_N_s: at a far hub, not woken yet
 			return true
 		2:
-			# The hub's local steps (clean N hexes there, v6hubs' chain): the bot does not clean
-			# away from its yard yet, so it stands in for them with --far-dwell game seconds
-			# (default 240), then wakes the landmark the real way (HubPurpose.wake pays the price).
-			if _now() - _hop_t < DevHooks.get_f("far-dwell", 240.0):
-				return true
+			# [v6pace] The station's own chain (v6hubs: clean N hexes here, repair an outpost, wake the
+			# landmark), done the way a player does it, so the time per station is measured. Capped at
+			# --far-chain-max game seconds (default 1500; a stuck chain is logged and woken anyway).
+			# --far-dwell=S keeps the old stand-in: wait S seconds and wake.
+			if DevHooks.has("far-dwell"):
+				if _now() - _hop_t < DevHooks.get_f("far-dwell", 240.0):
+					return true
+			elif os_.purpose != null and _now() - _hop_t < DevHooks.get_f("far-chain-max", 1500.0):
+				var stp: String = str(os_.purpose.current_step(_hop_to).get("do", ""))
+				if stp == "clean":
+					_set_far_step("clean")
+					return false  # play here: clean the nearest hexes (bales stay where they are pressed)
+				if stp == "outposts":
+					_set_far_step("outposts")
+					return _do_far_outpost(p)
+				if stp == "wake":
+					_set_far_step("wake")
+					var lm: Dictionary = os_.purpose.landmark(_hop_to)
+					if not lm.is_empty() and p.global_position.distance_to(lm["pos"]) > 9.0 and _task_t < 60.0:
+						_set_task("landmark")
+						_go(p, lm["pos"], 2.0)
+						return true
+			elif os_.purpose != null and not HubPlan.woken(_hop_to):
+				print("[arc] %.1f min  station %d chain not done in time (step %s): woken anyway" % [_now() / 60.0, _hop_to, str(os_.purpose.current_step(_hop_to).get("do", ""))])
 			var n0: int = _far_restored(os_)
 			var ok: bool = false
 			if os_.purpose != null:
@@ -1099,6 +1127,8 @@ func _arc(p: Patch) -> bool:
 			if ok:
 				_progress()
 				_mark("hub_%d_s" % (n0 + 2))
+			print("[arc] %.1f min  station chain %s" % [_now() / 60.0, _far_steps_line()])
+			_far_steps = {}
 			print("[arc] %.1f min  hub %d %s (site %d)  x%.1f sales  %s  cubes=%.0f earned=%.0f" % [_now() / 60.0, n0 + 2, "restored" if ok else "NOT restored", _hop_to, Hub.trade_mult(), _planet_line(),
 				GameState.get_currency("cubes").to_float(), BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float()])
 			_hop_state = 3
@@ -1530,6 +1560,59 @@ func _card_goals() -> Array[int]:
 func _card_type() -> String:
 	var ob: Objectives = world.get("objectives") as Objectives
 	return str(ob.current().get("type", "")) if ob else ""
+
+
+## [v6pace] Far-station chain: when each step started (game s), for the [arc] line.
+var _far_steps: Dictionary = {}
+
+
+func _set_far_step(step: String) -> void:
+	if not _far_steps.has(step):
+		_far_steps[step] = _now()
+
+
+func _far_steps_line() -> String:
+	var parts: Array[String] = ["landed %.1f" % (_hop_t / 60.0)]
+	for k: String in ["clean", "outposts", "wake"]:
+		if _far_steps.has(k):
+			parts.append("%s from %.1f" % [k, float(_far_steps[k]) / 60.0])
+	return ", ".join(parts)
+
+
+## True while the bot is at a far station (its tasks that lead home are off there).
+func _at_far() -> bool:
+	return _hop_state == 2
+
+
+## [v6pace] The station's "repair an outpost" step: clear the outpost's hex, walk up, repair (E).
+## Returns true while it is handling it; false lets the normal cleaning run (on the outpost's hex).
+func _do_far_outpost(p: Patch) -> bool:
+	var op: Variant = world.get("outposts")
+	if not (op is Outposts):
+		return true
+	var ops: Outposts = op
+	var best: int = -1
+	var best_d: float = INF
+	for k: int in ops.spots.size():
+		if ops.level_of(k) >= 1:
+			continue
+		var d: float = p.global_position.distance_to(ops.spots[k]["pos"])
+		if d < best_d:
+			best_d = d
+			best = k
+	if best < 0:
+		return true
+	var why: String = ops.repair_block(best)
+	if ops.clean_fraction(best) < ops.clean_needed():
+		_focus_hex = int(ops.spots[best]["hex"])
+		return false
+	if best_d > 4.0:
+		_set_task("outpost")
+		_go(p, ops.spots[best]["pos"], 2.5)
+		return true
+	if why == "":
+		ops.repair(best)
+	return true
 
 
 ## [v6pace] The card's price wants Parts that Lumi doesn't have.

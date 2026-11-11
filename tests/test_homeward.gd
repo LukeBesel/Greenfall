@@ -105,7 +105,10 @@ func test_drive_gates_and_costs() -> void:
 	GameState.districts = {0: GameState.world}
 	GameState.world["hub_level"] = 1
 	assert_false(Homeward.system_open())
-	pct["verdance"] = 0.55  # ... or about half of Verdance; no Cradle answer, no relic
+	pct["verdance"] = 0.55  # [v6pace] half of Verdance's Bloom Core no longer opens it (leave.pct_opens false)
+	assert_false(Homeward.system_open(), "only the six stations open Verdance's way out")
+	for k: int in range(1, 7):
+		GameState.districts[k] = {"hub_level": 2}
 	assert_true(Homeward.system_open(), "the system map opens before 100%")
 	assert_string_contains(Homeward.drive_blocker(), "cubes")
 	GameState.add_currency("cubes", BigNum.from_float(5.0e6))
@@ -216,6 +219,9 @@ func test_leave_each_planet_at_half() -> void:
 		ids.append(str(d["id"]))
 	for k: int in range(1, ids.size()):
 		pct[ids[k - 1]] = 0.55
+		if k == 1:  # [v6pace] Verdance opens on its six stations only (leave.pct_opens false)
+			for h: int in range(1, 7):
+				GameState.districts[h] = {"hub_level": 2}
 		while Homeward.drive() < int(Homeward.planet_def(k).get("nav", 0)):
 			assert_eq(Homeward.drive_blocker(), "", "drive for %s at about half: %s" % [ids[k], Homeward.drive_blocker()])
 			assert_true(Homeward.buy_drive())

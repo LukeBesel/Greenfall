@@ -232,6 +232,19 @@ func test_pace_knob_scales_sales() -> void:
 	assert_almost_eq(Hub.trade_mult(), 1.0 / PACE, 0.0001)
 
 
+## [v6pace] The first robot never waits on lucky salvage: the Bot Bay brings the Parts for it.
+func test_bot_bay_brings_the_first_robots_parts() -> void:
+	var bay: Dictionary = BenchTiers.def(2)
+	assert_gte(float((bay.get("grants", {}) as Dictionary).get("parts", 0.0)), float(Economy.robots["scoopie"].get("parts", 0)), "the Bot Bay's kit covers the first Scoopie's Parts")
+	assert_lte(float((bay["cost"] as Dictionary)["cubes"]), 1000.0, "the Bot Bay is a short save in the first half hour")
+
+
+## [v6pace] Verdance opens on its six stations only, not on half its Bloom Core.
+func test_verdance_leaves_on_stations_only() -> void:
+	assert_false(Homeward.leave_pct_opens(0))
+	assert_eq(Homeward.leave_hubs(0), Vector2i(6, 2))
+
+
 func test_base_prices() -> void:
 	var lv: Array = Economy.read_json("res://data/hub.json")["levels"]
 	assert_eq(float(lv[1]["cost"]["cubes"]), 1500.0, "base 2: the owner's start stays")
@@ -255,7 +268,7 @@ func test_clock_stands_still_behind_the_loader() -> void:
 
 
 # The pinned numbers (cubes).
-const FAR: Array[float] = [600.0, 2400.0, 9600.0, 38000.0, 300000.0]  # hub 6: cost_override "4" (a push before the drive)
+const FAR: Array[float] = [600.0, 2400.0, 9600.0, 38000.0, 200000.0]  # hub 6: cost_override "4" (a push before the drive)
 const MK2: float = 8000.0
 const PACE: float = 1.3
 const MK3: float = 100000.0

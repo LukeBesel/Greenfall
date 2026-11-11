@@ -173,7 +173,10 @@ static func progress_blocker(nd: Dictionary) -> String:
 		var lh: Vector2i = leave_hubs(k)  # [v6pace] or that many hubs restored there (owner note 61)
 		if lh.x > 0:
 			base_ok = current_planet() == k and hubs_at_level(lh.y) >= lh.x
-		if stored_pct(k) < need - 0.0001 and not base_ok:
+		# [v6pace] leave.pct_opens false (Verdance): only the stations open the way (the story gate),
+		# so the drive can't come before the sixth station from the Bloom Core %.
+		var pct_ok: bool = stored_pct(k) >= need - 0.0001 and (lh.x <= 0 or leave_pct_opens(k))
+		if not pct_ok and not base_ok:
 			if lh.x > 0:
 				return TranslationServer.translate("Wake %d old stations on %s to level %d (%d so far)") % [lh.x, planet_name(k), lh.y, hubs_at_level(lh.y) if current_planet() == k else 0]
 			if ob > 0:
@@ -194,6 +197,13 @@ static func progress_blocker(nd: Dictionary) -> String:
 static func leave_base_level(k: int, fallback: int = 0) -> int:
 	var lv: Variant = planet_def(k).get("leave", {})
 	return int((lv as Dictionary).get("base_level", fallback)) if lv is Dictionary else fallback
+
+
+## [v6pace] Whether planet k's drive also opens from its restoration % (requires_planet_pct) when the
+## planet names a stations gate (planets[k].leave.pct_opens, default true).
+static func leave_pct_opens(k: int) -> bool:
+	var lv: Variant = planet_def(k).get("leave", {})
+	return bool((lv as Dictionary).get("pct_opens", true)) if lv is Dictionary else true
 
 
 ## [v6pace] (hubs, level): planet k's leave gate by hubs restored (planets[k].leave.hubs hubs at

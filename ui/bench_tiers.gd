@@ -112,6 +112,10 @@ static func buy(w: Node = null) -> bool:
 	GameState.inc_stat("bench_tiers")
 	for rid: Variant in def(t).get("grants_research", []):  # the Bot Bay brings Salvage Logic: robots right away
 		Research.grant(str(rid))
+	var gr: Variant = def(t).get("grants", {})  # [v6pace] the Bot Bay's robot kit: Parts for the first Scoopie
+	if gr is Dictionary:
+		for cid: Variant in gr:
+			GameState.add_currency(str(cid), BigNum.from_float(float(gr[cid])))
 	var names: Array[String] = []
 	for tab: Variant in def(t).get("tabs", []):
 		for td: Dictionary in UpgradesScreen.TABS:
