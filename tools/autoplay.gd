@@ -1763,8 +1763,8 @@ func _card_spare(cubes_cost: float, parts_cost: float = 0.0) -> bool:
 	var c: Dictionary = _card_cost()
 	if c.is_empty():
 		return true
-	if _saving_arc and cubes_cost <= float(c.get("cubes", 0.0)) * 0.1:
-		return true  # the hub chain: a purchase that is cheap next to the hub's price doesn't wait
+	if _saving_arc and cubes_cost <= float(c.get("cubes", 0.0)) * 0.03:
+		return true  # the hub chain: a purchase that is cheap next to the hub's price doesn't wait ([v6pace] 3%: at 10% a run spent 31 min of 47K/min income on small buys and never saved the 200K)
 	if GameState.get_currency("cubes").to_float() - cubes_cost < float(c.get("cubes", 0.0)):
 		return false
 	return parts_cost <= 0.0 or GameState.get_currency("parts").to_float() - parts_cost >= float(c.get("parts", 0.0))
