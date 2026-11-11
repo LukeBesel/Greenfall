@@ -28,7 +28,11 @@ var card_goal: int = -1
 
 func _ready() -> void:
 	load_chain()
-	EventBus.junk_scooped.connect(func(_t: String, _p: Vector3) -> void: GameState.inc_stat("junk_scooped"))
+	EventBus.junk_scooped.connect(_on_junk_scooped)  # a method: the engine drops it with this node
+
+
+func _on_junk_scooped(_type_id: String, _pos: Vector3) -> void:
+	GameState.inc_stat("junk_scooped")
 
 
 func load_chain() -> void:
