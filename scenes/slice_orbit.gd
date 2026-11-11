@@ -480,7 +480,10 @@ func interact_prompt(p: Patch) -> String:
 		if _repairing:
 			return ""
 		return tr("E   Fix the workbench") if not Camp.bench_ok() else tr("E   Open the workbench")  # [v3clear]
-	return sites.interact_prompt() if sites else ""  # [orbD] the hover-sled
+	var sp: String = sites.interact_prompt() if sites else ""  # [orbD] the hover-sled
+	if sp == "" and crews:  # [v6crew] standing by a robot: what it is doing, or why it can't work
+		sp = crews.robot_prompt(p.global_position)
+	return sp
 
 
 func any_modal_open() -> bool:
