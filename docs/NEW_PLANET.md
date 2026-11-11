@@ -190,7 +190,7 @@ Run them one at a time (one godot process at a time on this box):
 |---|---|---|
 | Data | `godot --headless --path . -s addons/gut/gut_cmdln.gd -gtest=res://tests/test_planet_data.gd -gexit` | Every planet has its blocks (`PlanetCfg.problems`): name, globe, a site kit that builds, hubs that make sense, a known score, a Homeward entry unless dev |
 | Planet smoke | `tools/planet_smoke.sh <id>` | Boots the globe at its size, the start town has the data's landmark, Lumi walks, the rocket hops to hub 1 and its site builds, hub 1 wakes, the game saves, and a new process loads the same planet, Lumi's spot and the woken hub. No script errors |
-| Save round trip | `godot --headless --path . res://tools/save_roundtrip.tscn -- --fresh --orbit-planet=<id>` | Every system's state through a save |
+| Save round trip | `godot --headless --path . res://tools/save_roundtrip.tscn -- --fresh --orbit-planet=<id>` | Every system's state through a save. On Testworld (Nov 11) 215 checks pass. The five `orbit_old_*` checks fail by design, because migrating an old flat save only applies to Verdance's grid. `orbit_seed_controls_back` also fails: the camera's input is not back yet after the first-seed cinematic. That one is not looked into yet |
 | Hub walkthrough | `godot --headless --path . -- --fresh --orbit-planet=<id> --no-intro --hop-skip --hub-walkthrough` | Every main-path hub: town, landmark, reach, wake, gift, bench, HUD |
 | Start town | `... -- --fresh --orbit-planet=<id> --no-intro --city-walk` | Walk area, dead ends, the ways out |
 | Targets | `... -- --fresh --orbit-planet=<id> --no-intro --target-reach` | Every collectible and objective target stands on reachable ground |
