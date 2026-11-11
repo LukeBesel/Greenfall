@@ -1589,16 +1589,25 @@ func _flush() -> void:
 		var items3: Array = []
 		for xf: Transform3D in _props[id]:
 			items3.append([xf, Color.WHITE])
-		_mm("Prop_" + id, AssetLib.model_mesh_lite(id, 1500), items3, null, true, false)
+		var pmesh: Mesh = AssetLib.model_mesh_lite(id, 1500)
+		await BuildBudget.check("dress:prop mesh")  # [v6qa]
+		_mm("Prop_" + id, pmesh, items3, null, true, false)
 		await BuildBudget.check("dress:flush prop")
 	for id: String in _weeds:
-		var items2: Array = []
-		for xf: Transform3D in _weeds[id]:
-			items2.append([xf, Color.WHITE])
-		var mi2: MultiMeshInstance3D = _mm("Weeds_" + id, AssetLib.model_mesh_lite(id, 400), items2, null, false, false)
-		mi2.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		mi2.visibility_range_end = 70.0
-		await BuildBudget.check("dress:flush weeds")
+		var wm: Mesh = AssetLib.model_mesh_lite(id, 400)
+		await BuildBudget.check("dress:weed mesh")  # [v6qa] the lite mesh (made on first use) and the MultiMeshes in separate slices
+		var all: Array = _weeds[id]
+		for c0: int in range(0, all.size(), WEED_CHUNK):  # [v6qa] a few hundred a MultiMesh: one big one was a 50-90 ms step
+			var items2: Array = []
+			for xf: Transform3D in all.slice(c0, c0 + WEED_CHUNK):
+				items2.append([xf, Color.WHITE])
+			var mi2: MultiMeshInstance3D = _mm("Weeds_" + id + ("" if c0 == 0 else "_%d" % (c0 / WEED_CHUNK)), wm, items2, null, false, false)
+			mi2.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			mi2.visibility_range_end = 70.0
+			await BuildBudget.check("dress:flush weeds")
+
+
+const WEED_CHUNK: int = 600  # [v6qa]
 
 
 func _mm(nm: String, mesh: Mesh, items: Array, mat: Material, shadows: bool, colors: bool = true) -> MultiMeshInstance3D:
