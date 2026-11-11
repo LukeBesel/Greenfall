@@ -136,37 +136,67 @@ static func idle() -> void:
 ## holds) until someone waits on it; one left over at quit crashes the exit (see StorySfx).
 static var _tasks: Array[int] = []
 static var _groups: Array[int] = []
+## [v6qa] What each task's callable runs on, held until the task is waited on. A Callable does not
+## keep its RefCounted target alive: a hub town freed mid-build (Lumi walked off, a check hopped on)
+## dropped its CityLayout while the layout bake's group task still ran on it (a use-after-free that
+## showed up as "corrupted size vs. prev_size" at quit, exit 134).
+static var _task_refs: Dictionary = {}
+static var _group_refs: Dictionary = {}
 
 
 static func add_task(c: Callable, label: String) -> int:
+	_prune()
 	var id: int = WorkerThreadPool.add_task(c, true, label)
 	_tasks.append(id)
+	_task_refs[id] = c.get_object()
 	return id
 
 
 static func add_group_task(c: Callable, n: int, label: String) -> int:
+	_prune()
 	var id: int = WorkerThreadPool.add_group_task(c, n, -1, true, label)
 	_groups.append(id)
+	_group_refs[id] = c.get_object()
 	return id
+
+
+## [v6qa] Waits out tasks that finished but whose joiner is gone (its coroutine died with a freed node).
+static func _prune() -> void:
+	for id: int in _tasks.duplicate():
+		if WorkerThreadPool.is_task_completed(id):
+			WorkerThreadPool.wait_for_task_completion(id)
+			_tasks.erase(id)
+			_task_refs.erase(id)
+	for id: int in _groups.duplicate():
+		if WorkerThreadPool.is_group_task_completed(id):
+			WorkerThreadPool.wait_for_group_task_completion(id)
+			_groups.erase(id)
+			_group_refs.erase(id)
 
 
 ## Waits for a task from add_task(), yielding frames meanwhile (blocks when synchronous).
 static func join(task_id: int) -> void:
 	if task_id < 0:
 		return
-	while current != null and not WorkerThreadPool.is_task_completed(task_id):
+	while current != null and _tasks.has(task_id) and not WorkerThreadPool.is_task_completed(task_id):  # [v6qa] _prune may have waited it already
 		await pause("join")
+	if not _tasks.has(task_id):  # [v6qa] waited already (_prune)
+		return
 	WorkerThreadPool.wait_for_task_completion(task_id)
 	_tasks.erase(task_id)
+	_task_refs.erase(task_id)
 
 
 static func join_group(group_id: int) -> void:
 	if group_id < 0:
 		return
-	while current != null and not WorkerThreadPool.is_group_task_completed(group_id):
+	while current != null and _groups.has(group_id) and not WorkerThreadPool.is_group_task_completed(group_id):  # [v6qa]
 		await pause("join")
+	if not _groups.has(group_id):  # [v6qa]
+		return
 	WorkerThreadPool.wait_for_group_task_completion(group_id)
 	_groups.erase(group_id)
+	_group_refs.erase(group_id)
 
 
 ## Quitting mid-build (Audio._exit_tree): wait for whatever is still running.
@@ -177,6 +207,8 @@ static func finish_pending() -> void:
 		WorkerThreadPool.wait_for_group_task_completion(id)
 	_tasks.clear()
 	_groups.clear()
+	_task_refs.clear()
+	_group_refs.clear()
 
 
 ## Loads a resource file on a loader thread while the loading screen keeps drawing, and returns
