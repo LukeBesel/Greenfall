@@ -1,11 +1,22 @@
 {
-  "_doc": "[v6story] Story text that has no other home (docs/STORY_VERDANCE.md). goal_reasons: the one-line in-world reason shown on the objective card above a goal's reward (story/objectives.gd goal_reason): by goal id, else by kind (\"type:key\" of the goals.json entry), else by type, else `default`. Goals can be added, moved or re-priced in data/goals.json without touching this file. exit: WREN's lines when the star map opens on Verdance (system_open) and when the Orbital drive is built (drive_built), each spoken once (systems/homeward_director.gd). Data stays English; tr() at display.",
+  "_doc": "[v6story] Story text that has no other home (docs/STORY_VERDANCE.md). goal_reasons: the one-line in-world reason shown on the objective card above a goal's reward (story/objectives.gd goal_reason): by goal id, else by id prefix (by_prefix), else by kind (\"type:key\" of the goals.json entry), else by type, else `default`. Goals can be added, moved or re-priced in data/goals.json without touching this file. exit: WREN's lines when the star map opens on Verdance (system_open) and when the Orbital drive is built (drive_built), each spoken once (systems/homeward_director.gd). Data stays English; tr() at display.",
   "goal_reasons": {
     "default": "One more step toward a green world.",
     "by_id": {
+      "home_land_1": "You can fly on now. The rest of Verdance can wait.",
       "rocket": "Other old stations are waiting to be woken up.",
+      "hub_fly_2": "The seed tin is nearly empty. Garden Row kept the seed store.",
+      "hub_fly_3": "The rocket's skin is too thin for space. Gantry Works made hulls.",
+      "hub_fly_4": "Nobody knows where to fly. Signal Heights kept the star chart.",
+      "hub_fly_5": "A long flight needs lasting power. The Fairground has a cell.",
+      "hub_fly_6": "The rocket's tanks are empty. Stack Works still has fuel.",
       "base2_3": "A strong second base keeps its side of Verdance clean.",
       "base2_4": "A strong second base keeps its side of Verdance clean."
+    },
+    "by_prefix": {
+      "hub_fly_": "Other old stations are waiting to be woken up.",
+      "hub_wake_": "A woken station keeps cleaning, and gives its rocket piece.",
+      "rocket_tier_": "A bigger rocket carries supplies to more stations."
     },
     "by_kind": {
       "stat:junk_scooped": "Every piece you pick up is one less on Verdance.",
@@ -68,9 +79,8 @@
   },
   "exit": {
     "system_open": [
-      "Lumi, look at the star map. Five worlds, and the Ledger buried every one.",
-      "The Cradle waits until all of them can grow again. Verdance was only the first.",
-      "Your robots will keep cleaning here. Build the Orbital drive, and we'll wake the next world."
+      "Look at the star map. Five worlds, and the Ledger buried every one.",
+      "The Cradle waits for all of them. Build the Orbital drive, and we'll wake the next world."
     ],
     "drive_built": [
       "The rocket can leave now. Verdance isn't finished, and that's all right.",

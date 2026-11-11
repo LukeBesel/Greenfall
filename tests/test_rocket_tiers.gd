@@ -45,12 +45,15 @@ func test_upgrade_pays_and_persists() -> void:
 	assert_false(GameState.get_currency("cubes").gte(BigNum.from_float(1.0)), "cubes spent")
 
 
-func test_mk3_needs_research() -> void:
+func test_mk4_needs_research() -> void:  # [v6pace] Mk III is inside Verdance's arc now: its price is the gate
 	GameState.flags["rocket_tier"] = 2
 	_give(RocketTiers.next_def()["cost"])
-	assert_ne(RocketTiers.blocker(), "")
+	assert_eq(RocketTiers.blocker(), "")
+	assert_true(RocketTiers.upgrade())
+	_give(RocketTiers.next_def()["cost"])
+	assert_ne(RocketTiers.blocker(), "", "the warp tier waits for Rocket Cargo")
 	assert_false(RocketTiers.upgrade())
-	assert_eq(RocketTiers.tier(), 2)
+	assert_eq(RocketTiers.tier(), 3)
 
 
 func test_recharge_follows_tier() -> void:

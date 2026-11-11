@@ -1,6 +1,8 @@
 # Round planets: parity with the flat game
 
-What the flat game has, and where each piece stands on the walkable globe (`--orbit`, or the title screen's **Round planets (preview)**). Last checked Nov 9 on `wt/orbB` (orbB); First Seed, compost press, seed finds and memory shards turned green in the wrap-up.
+**[v6flat] History.** The flat game has been removed (docs/FLAT_REMOVAL.md); the round world is the only game, and `--orbit` only skips the title screen. Rows below marked *retired* are gone with it.
+
+What the flat game had, and where each piece stands on the walkable globe. Last checked Nov 9 on `wt/orbB` (orbB); First Seed, compost press, seed finds and memory shards turned green in the wrap-up.
 
 **Status**
 - **works**: built on the globe and exercised by a check.

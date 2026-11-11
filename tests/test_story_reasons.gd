@@ -46,6 +46,10 @@ func test_goal_reason_lookup_order() -> void:
 	assert_eq(why, "Plants only grow on clean ground.")
 	assert_eq(Objectives.goal_reason({"id": "x", "type": "research", "key": "nope"}), "The bench learns to build something new.")
 	assert_eq(Objectives.goal_reason({"id": "rocket", "type": "districts"}), "Other old stations are waiting to be woken up.")
+	assert_true(Objectives.goal_reason({"id": "hub_fly_4", "type": "flag"}).contains("star chart"))
+	assert_true(Objectives.goal_reason({"id": "hub_wake_3", "type": "flag"}).contains("rocket piece"))
+	assert_true(Objectives.goal_reason({"id": "rocket_tier_2", "type": "stat"}).contains("supplies"))
+	assert_true(Objectives.goal_reason({"id": "hub_fly_9", "type": "flag"}).contains("stations"))
 
 
 func test_exit_beat_lines_exist_and_say_why() -> void:
@@ -55,7 +59,9 @@ func test_exit_beat_lines_exist_and_say_why() -> void:
 		assert_between(ls.size(), 1, 3, "%s: one to three lines" % key)
 		for l: Variant in ls:
 			assert_true(str(l).length() <= 110, "short line: %s" % str(l))
-	var all: String = " ".join(ex["system_open"]) + " " + " ".join(ex["drive_built"])
+	var leave: String = str(((Homeward.planet_def(0).get("leave", {}) as Dictionary)).get("toast", ""))  # said first (v6pace)
+	var all: String = leave + " " + " ".join(ex["system_open"]) + " " + " ".join(ex["drive_built"])
+	assert_lt((ex["system_open"] as Array).size() + (1 if leave != "" else 0), 4, "the exit beat is three lines at most")
 	assert_true(all.contains("robots"), "says who looks after Verdance")
 	assert_true(all.contains("Five worlds") or all.contains("five worlds"), "says why fly on")
 	# WREN speaks them through a real Wren node, in order.

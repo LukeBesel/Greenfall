@@ -23,8 +23,8 @@ extends Node
 ## Dev flags (phase A's, now on the slice): --orbit-walk[=boost] --orbit-lap-quit,
 ## --orbit-scoop, --orbit-cash --orbit-cash-quit, --orbit-view=follow|ground|command,
 ## --orbit-day=MIN, --orbit-time=0..1, --orbit-presim=MIN, --orbit-hubs=N, --orbit-cam=D,P,
-## --orbit-bots=N (stand-in SphereBots, default 4). The phase A scenes stay reachable as
-## --orbit=globe (planet/orbit/verdance_globe.tscn) and --orbit=v1.
+## --orbit-bots=N (stand-in SphereBots, default 4). [v6flat] The phase A prototype scenes
+## (--orbit=globe, --orbit=v1) are gone.
 
 const SCHEMA: int = OrbitSave.SCHEMA  # GameState.orbit layout: core/save_orbit.gd
 const HEX_MILESTONES: Array[int] = [1, 5, 10, 25, 50, 100, 150, 200, 264]  # slice.gd's, by cell id here
@@ -40,12 +40,6 @@ var layers: OrbitLayers  # [orbE]
 var view_mode: String = "follow"
 var sites: OrbitSites  # [orbD]
 var hub_states: Dictionary = {}  # site index (str) -> {level} (core/save_orbit.gd); the Hub port fills it
-
-
-## The slice always builds on the globe, except when a phase A prototype scene is asked for
-## (--orbit=v1 / --orbit=globe).
-static func wanted() -> bool:
-	return not DevHooks.get_s("orbit", "") in ["v1", "globe"]
 
 
 ## Builds the whole orbit slice into `p_world`. [orbE] Behind the loading screen (a BuildBudget is
@@ -268,6 +262,8 @@ func build(p_world: Node3D) -> void:
 		YardProbe.attach(self)
 	if DevHooks.has("ground-probe"):  # [v3qa] floating / sunken props and junk around Lumi
 		GroundProbe.attach(self)
+	if DevHooks.has("feel"):  # [v6feel] scripted feel checks (tools/feel_probe.gd)
+		FeelProbe.attach(self)
 
 
 func _build_patch() -> void:
@@ -283,6 +279,14 @@ func _build_patch() -> void:
 	if DevHooks.has("orbit-spawn") and DevHooks.get_s("orbit-spawn", "").split(",").size() > 2:  # [v1world]
 		var up_s: Vector3 = spawn_dir.normalized()
 		north = north.rotated(up_s, deg_to_rad(float(DevHooks.get_s("orbit-spawn", "").split(",")[2])))
+	if DevHooks.has("orbit-walk-in") and g.sites.size() > 1:  # [v6qa] dev: --orbit-walk-in=HUB[,m]: start m (default 470) short of hub HUB on the way from the start, facing it (with --orbit-walk=boost: a walk into a town as it builds)
+		var wa: PackedStringArray = DevHooks.get_s("orbit-walk-in", "1").split(",")
+		var hd: Vector3 = (g.sites[clampi(int(wa[0]), 1, g.sites.size() - 1)]["transform"] as Transform3D).origin.normalized()
+		var sd: Vector3 = g.grid.centers[hub_cell]
+		var back_a: float = (float(wa[1]) if wa.size() > 1 else 470.0) / g.terrain.R
+		var ax: Vector3 = hd.cross(sd).normalized()
+		spawn_dir = hd.rotated(ax, back_a)
+		north = (hd - spawn_dir * hd.dot(spawn_dir)).normalized()
 	cam = SphereCam.new()
 	cam.name = "SphereCam"
 	cam.surface = g.surface
@@ -742,6 +746,9 @@ func _build_hub_frame() -> void:
 		eg.setup()
 		return eg)
 	await BuildBudget.idle()  # [v5load] the eggs plan and spawn across frames
+	var op0: Node = hub_frame.node("Outposts")
+	while BuildBudget.current != null and is_instance_valid(op0) and op0.get("building") == true:  # [v6qa] the outposts too
+		await BuildBudget.pause("hub frame:outposts")
 	await BuildBudget.check("hub frame:eggs")  # [v5load]
 	w.set("fauna", hub_frame.node("Fauna") as Fauna)
 	hub_frame.host("Ledger", func(f: HubFrame, hub: int) -> Node:  # the Ledger arc: drones, jammers and the relay at this hub

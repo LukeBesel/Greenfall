@@ -9,18 +9,24 @@ extends Node
 
 const MAX_MATERIALS: int = 900
 const FRAMES: int = 5
+## [v6qa] Materials shown a frame: compiling every pipeline in the one frame the rig appeared froze the
+## loading screen for that frame (the warm-up frame). In batches the bar and Lumi keep moving; the
+## total work is the same and the batches overlap the frames the loader shows anyway.
+const BATCH: int = 64
 
 var _rigs: Array[Node3D] = []
 var _frames: int = 0
 var _need: int = FRAMES
 var _count: int = 0
 var _started: bool = false
+var _pending: Array[MeshInstance3D] = []  # [v6qa] made, not yet shown
 
 
 func start(scene: Node) -> void:
 	_started = true
 	# Headless runs and screenshot tooling (software Vulkan, slow frames) need just one pass.
 	_need = 1 if DisplayServer.get_name() == "headless" or DevHooks.has("shot") else FRAMES
+	var batched: bool = _need > 1  # [v6qa] headless and shot runs compile nothing: one pass as before
 	var by_vp: Dictionary = {}  # Viewport -> Array[Material]
 	var seen: Dictionary = {}
 	for n: Node in scene.find_children("*", "GeometryInstance3D", true, false):
@@ -54,11 +60,14 @@ func start(scene: Node) -> void:
 			var mi := MeshInstance3D.new()
 			mi.mesh = quad
 			mi.material_override = mats[i]
-			mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON if batched else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF  # [v6qa] the shadow (depth) pass's pipelines too
 			var gx: float = (float(i % side) / maxf(side - 1, 1) - 0.5) * 0.3
 			var gy: float = (float(i / side) / maxf(side - 1, 1) - 0.5) * 0.2
 			mi.position = Vector3(gx, gy, -maxf(cam.near * 4.0, 0.5))
 			rig.add_child(mi)
+			if batched:
+				mi.visible = false
+				_pending.append(mi)
 		_rigs.append(rig)
 	print("[warmup] %d materials across %d viewports" % [_count, _rigs.size()])
 
@@ -103,6 +112,12 @@ static func _materials_of(gi: GeometryInstance3D) -> Array[Material]:
 func _process(_delta: float) -> void:
 	if not _started:
 		return
+	if not _pending.is_empty():  # [v6qa] the next batch; the frame count starts once all are shown
+		for k: int in mini(BATCH, _pending.size()):
+			var mi: MeshInstance3D = _pending.pop_back()
+			if is_instance_valid(mi):
+				mi.visible = true
+		return
 	_frames += 1
 	if _frames >= _need:
 		for r: Node3D in _rigs:
@@ -112,7 +127,9 @@ func _process(_delta: float) -> void:
 
 
 func progress() -> float:
-	return clampf(float(_frames) / _need, 0.0, 1.0)
+	var batches: int = ceili(float(_count) / BATCH) if _need > 1 else 0
+	var left: int = ceili(float(_pending.size()) / BATCH)
+	return clampf(float(batches - left + _frames) / float(batches + _need), 0.0, 1.0)
 
 
 func finished() -> bool:

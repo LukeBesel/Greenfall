@@ -85,6 +85,13 @@ func _build() -> void:
 			for st: Dictionary in g.site_manager.sites:
 				out.append((st["transform"] as Transform3D).origin.normalized())
 		return out
+	survey.hub_names = func() -> Array:  # [v6hubs] names of the hubs the rocket lists (data/planets.json hubs)
+		var out: Array = []
+		if g.site_manager:
+			var pid: String = g.site_manager.planet_id
+			for i: int in g.site_manager.sites.size():
+				out.append(HubPlan.hub_name(pid, i) if HubPlan.has_plan(pid) and HubPlan.listed(pid, i) else "")
+		return out
 	survey.pod_dir = func() -> Vector3:  # [v2map] the crashed pod's smoke plume
 		var site: Node3D = g.start_site
 		var pod: Node3D = site.find_child("pod", true, false) as Node3D if site else null

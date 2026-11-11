@@ -50,6 +50,104 @@ func sell_mult() -> float:
 	return float(level_def(level).get("bonus", {}).get("sell_mult", 0.0))
 
 
+## [v6pace] The base level that brings the rocket (data/hub.json "rocket_level"). It was level 5
+## in code: on the globe that put the first hop to another hub past the planet's whole arc.
+static var _cfg: Dictionary = {}
+static var _rocket_step: int = -2
+static func _hub_cfg() -> Dictionary:
+	if _cfg.is_empty():
+		_cfg = Economy.read_json("res://data/hub.json")
+	return _cfg
+
+
+static func rocket_level() -> int:
+	return int((_hub_cfg().get("rocket", {}) as Dictionary).get("level", 5))
+
+
+## Whether a base at `level` has its rocket: the level, and the story objective named in the data
+## done (flags.objective_step past it; a save from before the objectives counts as past it).
+static func rocket_open(level: int) -> bool:
+	if level < rocket_level():
+		return false
+	var after: String = str((_hub_cfg().get("rocket", {}) as Dictionary).get("after_objective", ""))
+	if after == "":
+		return true
+	if _rocket_step == -2:
+		_rocket_step = -1
+		var ch: Array = Economy.read_json("res://data/objectives.json").get("objectives", [])
+		for i: int in ch.size():
+			if str((ch[i] as Dictionary).get("id", "")) == after:
+				_rocket_step = i
+	return _rocket_step < 0 or int(GameState.flags.get("objective_step", 0)) > _rocket_step
+
+
+## Why there is no rocket yet (translated), "" when rocket_open(level).
+static func rocket_lock_text(level: int) -> String:
+	if rocket_open(level):
+		return ""
+	if level < rocket_level():
+		return TranslationServer.translate("Locked. Upgrade your base to level %d to build the launch pad.") % rocket_level()
+	return TranslationServer.translate("The launch pad is still buried. Put your first robot to work to clear it.")
+
+
+## The level a restored far hub stands at, and what restoring one costs when `n` far hubs are
+## already restored ({"cubes", "parts"}).
+static func far_cfg() -> Dictionary:
+	var c: Dictionary = (_hub_cfg().get("far_hub", {}) as Dictionary).duplicate()
+	var po: Variant = Homeward.planet_def(Homeward.current_planet()).get("far_hub", {})
+	if po is Dictionary:
+		c.merge(po as Dictionary, true)
+	return c
+
+
+static func far_level() -> int:
+	return int(far_cfg().get("level", 2))
+
+
+## Owner note 63: prices multiply. base x growth^n, kept to two leading digits (1.5K, 6K, 24K...).
+static func far_cost(n: int) -> Dictionary:
+	var c: Dictionary = far_cfg()
+	var ov: Variant = (c.get("cost_override", {}) as Dictionary).get(str(n))
+	if ov is Dictionary:
+		return (ov as Dictionary).duplicate()
+	var out: Dictionary = {}
+	var base: Dictionary = c.get("cost_base", {})
+	var gr: Dictionary = c.get("cost_growth", {})
+	for k: String in base:
+		out[k] = nice(float(base[k]) * pow(float(gr.get(k, 1.0)), float(maxi(n, 0))))
+	return out
+
+
+## v rounded to two leading digits (4056 -> 4100).
+static func nice(v: float) -> float:
+	if v < 100.0:
+		return roundf(v)
+	var mag: float = pow(10.0, floorf(log(v) / log(10.0) + 0.000001) - 1.0)
+	return roundf(v / mag) * mag
+
+
+## Far hubs restored on the round planet Lumi is on (SiteManager.built past the start hub).
+static var _far_n: int = 0
+static var _far_frame: int = -1
+static func far_restored() -> int:
+	var f: int = Engine.get_process_frames()
+	if f == _far_frame:
+		return _far_n
+	_far_frame = f
+	_far_n = 0
+	var tree: SceneTree = Engine.get_main_loop() as SceneTree
+	var os_: OrbitSites = OrbitSites.of(tree.current_scene) if tree and tree.current_scene else null
+	if os_ != null and os_.sm != null:
+		for i: int in range(1, os_.sm.built.size()):
+			_far_n += 1 if os_.sm.built[i] != 0 else 0
+	return _far_n
+
+
+## What every sale is multiplied by: sell_growth for each restored far hub (its trade route).
+static func trade_mult() -> float:
+	return pow(float(far_cfg().get("sell_growth", 1.0)), float(far_restored()))
+
+
 static func can_pay(cost: Dictionary, mult: float = 1.0) -> bool:
 	return GameState.can_afford_all(cost, mult)  # [money] legacy keys folded into the three
 

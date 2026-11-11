@@ -96,8 +96,13 @@ func test_drive_gates_and_costs() -> void:
 	var pct: Dictionary = Homeward.state()["pct"]
 	assert_ne(Homeward.drive_blocker(), "", "Mk V waits for a partly restored Verdance")
 	assert_false(Homeward.system_open())
-	GameState.world["hub_level"] = 3  # [pace2] or a base at level 3 ...
-	assert_true(Homeward.system_open(), "a level 3 base opens the system too")
+	GameState.world["hub_level"] = 5  # [v6pace] one tall base is not the gate any more ...
+	assert_false(Homeward.system_open(), "the leave gate counts hubs, not one base's level")
+	for k: int in range(1, 6):  # ... six hubs at level 2 are (owner note 61; data planets[0].leave)
+		GameState.districts[k] = {"hub_level": 2}
+	assert_true(Homeward.system_open(), "six restored hubs open the system")
+	assert_string_contains(Homeward.drive_blocker(), "cubes")
+	GameState.districts = {0: GameState.world}
 	GameState.world["hub_level"] = 1
 	assert_false(Homeward.system_open())
 	pct["verdance"] = 0.55  # ... or about half of Verdance; no Cradle answer, no relic

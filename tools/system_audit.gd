@@ -5,10 +5,10 @@ extends Node
 ## then quits. Compare the flat and --orbit outputs.
 
 const MEMBERS: Array[String] = ["field", "layout", "city", "litter", "tutorial", "wren", "fleet", "planet", "globe",
-	"sky_director", "hub", "rocket", "shards", "garden", "hex_levels", "goals", "first_seed", "wildlife", "water",
+	"sky_director", "hub", "rocket", "shards", "garden", "hex_levels", "goals", "first_seed",
 	"doc_view", "interactables", "camp", "eggs", "ledger", "outposts", "events", "lumi_level", "contracts", "photo",
-	"fauna", "frontier", "planet_env", "bounds", "orbit", "view", "depot", "patch", "cam", "hud", "upgrades",
-	"command", "music", "intro", "objectives", "core_charge", "composter", "pause_menu", "research", "achievements",
+	"fauna", "planet_env", "orbit", "view", "depot", "patch", "hud", "upgrades",
+	"music", "intro", "objectives", "core_charge", "composter", "pause_menu", "research", "achievements",
 	"codex", "dressing", "street_power"]
 
 

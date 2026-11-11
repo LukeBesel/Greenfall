@@ -192,67 +192,67 @@ msgstr "Touchpad"
 msgid "Paddle 1"
 msgstr "Paddle 1"
 
-#: autoload/Settings.gd:522
+#: autoload/Settings.gd:535
 msgid "LMB"
 msgstr "Botão esq."
 
-#: autoload/Settings.gd:523
+#: autoload/Settings.gd:536
 msgid "RMB"
 msgstr "Botão dir."
 
-#: autoload/Settings.gd:524
+#: autoload/Settings.gd:537
 msgid "MMB"
 msgstr "Botão do meio"
 
-#: autoload/Settings.gd:525
+#: autoload/Settings.gd:538
 msgid "Wheel up"
 msgstr "Roda p/ cima"
 
-#: autoload/Settings.gd:526
+#: autoload/Settings.gd:539
 msgid "Wheel down"
 msgstr "Roda p/ baixo"
 
-#: autoload/Settings.gd:527
+#: autoload/Settings.gd:540
 msgid "Mouse %d"
 msgstr "Mouse %d"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:542
 msgid "Button %d"
 msgstr "Botão %d"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:547
 msgid "LS left"
 msgstr "AE esquerda"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:547
 msgid "LS right"
 msgstr "AE direita"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:548
 msgid "LS up"
 msgstr "AE cima"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:548
 msgid "LS down"
 msgstr "AE baixo"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:549
 msgid "RS left"
 msgstr "AD esquerda"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:549
 msgid "RS right"
 msgstr "AD direita"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:550
 msgid "RS up"
 msgstr "AD cima"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:550
 msgid "RS down"
 msgstr "AD baixo"
 
-#: autoload/Settings.gd:548
+#: autoload/Settings.gd:561
 msgid "hold %s"
 msgstr "segure %s"
 
@@ -268,10 +268,6 @@ msgstr "ENFARDADEIRA AUTO"
 msgid "KEEP CLEAR · 40 T"
 msgstr "MANTENHA DISTÂNCIA · 40 T"
 
-#: automation/cargo.gd:37
-msgid "Cargo pod landed: %s cubes from %d robots in other districts."
-msgstr "Cápsula de carga pousou: %s cubos de %d robôs de outros distritos."
-
 #: automation/conveyor.gd:71
 msgid "TO  SCALE  ◀"
 msgstr "PARA A  BALANÇA  ◀"
@@ -280,11 +276,19 @@ msgstr "PARA A  BALANÇA  ◀"
 msgid "BALE  FEED"
 msgstr "ENTRADA DE FARDOS"
 
-#: automation/hub.gd:72
+#: automation/hub.gd:89
+msgid "Locked. Upgrade your base to level %d to build the launch pad."
+msgstr "Bloqueado. Suba sua base para o nível %d para construir a plataforma de lançamento."
+
+#: automation/hub.gd:90
+msgid "The launch pad is still buried. Put your first robot to work to clear it."
+msgstr "A plataforma de lançamento ainda está soterrada. Ponha seu primeiro robô para trabalhar e liberá-la."
+
+#: automation/hub.gd:170
 msgid "Hub upgraded: %s."
 msgstr "Base melhorada: %s."
 
-#: automation/hub.gd:103
+#: automation/hub.gd:201
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr "Purificador de ar ligado. As ventoinhas giram com um longo suspiro empoeirado."
 
@@ -401,27 +405,27 @@ msgstr "TRITURAR  ·  FUNDIR  ·  SUMIU DE VEZ"
 msgid "HAND FEED"
 msgstr "À MÃO"
 
-#: automation/rocket.gd:315
+#: automation/rocket.gd:316
 msgid "LIFT OFF"
 msgstr "DECOLAGEM"
 
-#: automation/rocket.gd:861
+#: automation/rocket.gd:862
 msgid "Space / Esc  skip"
 msgstr "Espaço / Esc  pular"
 
-#: automation/rocket_tiers.gd:51 ui/robot_card.gd:251
+#: automation/rocket_tiers.gd:56 ui/robot_card.gd:251
 msgid "Top tier"
 msgstr "Nível máximo"
 
-#: automation/rocket_tiers.gd:54
+#: automation/rocket_tiers.gd:59
 msgid "Needs the Rocket Cargo research"
 msgstr "Requer a pesquisa Carga de Foguete"
 
-#: automation/rocket_tiers.gd:56 systems/homeward.gd:508
+#: automation/rocket_tiers.gd:61 systems/homeward.gd:547
 msgid "Not enough cubes or parts"
 msgstr "Cubos ou peças insuficientes"
 
-#: automation/rocket_tiers.gd:69
+#: automation/rocket_tiers.gd:74
 msgid "Rocket upgraded: %s."
 msgstr "Foguete melhorado: %s."
 
@@ -515,7 +519,7 @@ msgstr "Fardos valendo %s se acumularam na base sem ninguém para levá-los. Lum
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Os purificadores filtraram o ar o tempo todo. Está um pouco mais limpo."
 
-#: core/pace.gd:147 story/objectives.gd:836
+#: core/pace.gd:147 story/objectives.gd:840
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "Pesado demais. Melhore a Força de levantamento na bancada."
 
@@ -574,104 +578,6 @@ msgstr "Seu estojo de CDs está cheio."
 #: planet/far_junk.gd:198
 msgid "Past the survey line the junk runs too deep to start on. One district at a time: clean this one, then the rockets take us to the next."
 msgstr "Depois da linha de mapeamento, a sucata é funda demais para começar. Um distrito de cada vez: limpe este e os foguetes nos levam ao próximo."
-
-#: planet/frontier_district.gd:279
-msgid "Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."
-msgstr "Tempestade de areia no horizonte. Chão limpo e descoberto vai ser soterrado; hexágonos plantados e protegidos resistem."
-
-#: planet/frontier_district.gd:343
-msgid "The sandstorm buried %d hex again. Sustained hexes shelter their neighbours."
-msgid_plural "The sandstorm buried %d hexes again. Sustained hexes shelter their neighbours."
-msgstr[0] "A tempestade soterrou %d hexágono de novo. Hexágonos sustentados protegem os vizinhos."
-msgstr[1] "A tempestade soterrou %d hexágonos de novo. Hexágonos sustentados protegem os vizinhos."
-
-#: planet/frontier_district.gd:343
-msgid "The storm blew over. Everything held."
-msgstr "A tempestade passou. Tudo resistiu."
-
-#: planet/frontier_district.gd:391
-msgid "The ice let go. The junk underneath is just junk again."
-msgstr "O gelo soltou. A sucata embaixo voltou a ser só sucata."
-
-#: planet/frontier_district.gd:482
-msgid "E   Light a heater on this ice · %s cubes"
-msgstr "E   Acender um aquecedor neste gelo · %s cubos"
-
-#: planet/frontier_district.gd:484
-msgid "E   Build a greenhouse on this hex · %s cubes"
-msgstr "E   Construir uma estufa neste hexágono · %s cubos"
-
-#: planet/frontier_district.gd:494
-msgid "Not enough cubes for a heater."
-msgstr "Cubos insuficientes para um aquecedor."
-
-#: planet/frontier_district.gd:494
-msgid "Heater limit reached. Move on to the next ice once these have done their work."
-msgstr "Limite de aquecedores atingido. Siga para o próximo gelo quando estes terminarem."
-
-#: planet/frontier_district.gd:498
-msgid "Not enough cubes for a greenhouse."
-msgstr "Cubos insuficientes para uma estufa."
-
-#: planet/frontier_district.gd:530
-msgid "The old pumps are running. The water drops and a ring of streets comes back up, with a lot of stranded junk."
-msgstr "As velhas bombas estão funcionando. A água baixa e um anel de ruas reaparece, cheio de sucata encalhada."
-
-#: planet/frontier_district.gd:551
-msgid "The landing pad is clean. Now plant it and keep it Sustained."
-msgstr "A plataforma de pouso está limpa. Agora plante e mantenha sustentada."
-
-#: planet/frontier_district.gd:567
-msgid "The landing pad is alive and the beacon is lit. The Cradle has answered. It is coming home."
-msgstr "A plataforma está viva e o farol aceso. A Cradle respondeu. Ela está voltando para casa."
-
-#: planet/frontier_district.gd:602
-msgid "Sandstorm blowing"
-msgstr "Tempestade de areia ativa"
-
-#: planet/frontier_district.gd:605
-msgid "Next sandstorm  %d:%02d"
-msgstr "Próxima tempestade  %d:%02d"
-
-#: planet/frontier_district.gd:606
-msgid "Well dry: Drips refill at tanks"
-msgstr "Poço seco: Drips reabastecem nos tanques"
-
-#: planet/frontier_district.gd:612
-msgid "%d hexes iced  ·  %d heaters"
-msgstr "%d hexágonos congelados  ·  %d aquecedores"
-
-#: planet/frontier_district.gd:613
-msgid "Greenhouses %d%s"
-msgstr "Estufas %d%s"
-
-#: planet/frontier_district.gd:613
-msgid "  ·  cold-hardy seeds"
-msgstr "  ·  sementes resistentes ao frio"
-
-#: planet/frontier_district.gd:617
-msgid "Water down: all streets above water"
-msgstr "Água baixou: todas as ruas fora d'água"
-
-#: planet/frontier_district.gd:619
-msgid "Pumps: ring %d skimmed %d%% / %d%%"
-msgstr "Bombas: anel %d limpo %d%% / %d%%"
-
-#: planet/frontier_district.gd:620
-msgid "Water level %d / %d"
-msgstr "Nível da água %d / %d"
-
-#: planet/frontier_district.gd:623
-msgid "The Cradle is coming home"
-msgstr "A Cradle está voltando para casa"
-
-#: planet/frontier_district.gd:625
-msgid "Pad clean %d%%  ·  Sustained %d%%"
-msgstr "Plataforma limpa %d%%  ·  Sustentado %d%%"
-
-#: planet/frontier_district.gd:626
-msgid "District Growing %d%% / %d%%"
-msgstr "Distrito crescendo %d%% / %d%%"
 
 #: planet/frontiers.gd:112
 msgid "%s Research %s"
@@ -765,18 +671,6 @@ msgstr "JUNTOS FLORESCEMOS"
 msgid "LIGHT  WATER  LIFE"
 msgstr "LUZ  ÁGUA  VIDA"
 
-#: planet/world_bounds.gd:105
-msgid "WREN: That's the edge of the survey zone, Lumi. Nothing out there but haze."
-msgstr "WREN: Ali é o limite da zona de mapeamento, Lumi. Lá fora só tem neblina."
-
-#: planet/world_bounds.gd:166
-msgid "Lumi hovers back onto solid ground."
-msgstr "Lumi flutua de volta para o chão firme."
-
-#: planet/orbit/verdance_globe.gd:567 scenes/slice_orbit.gd:396
-msgid "HEX CLEAN!  +%s"
-msgstr "HEXÁGONO LIMPO!  +%s"
-
 #: planet/sites/hub_hop.gd:48
 msgid "{interact}  skip"
 msgstr "{interact}  pular"
@@ -805,125 +699,129 @@ msgstr "Cidade portuária"
 msgid "landmark"
 msgstr "marco"
 
-#: planet/sites/hub_plan.gd:254
+#: planet/sites/hub_plan.gd:258
 msgid "The recycling network grew: everything sells for x%s now."
 msgstr "A rede de reciclagem cresceu: agora tudo vende por x%s."
 
-#: planet/sites/hub_plan.gd:273
+#: planet/sites/hub_plan.gd:277
 msgid "Rocket piece: %s"
 msgstr "Peça do foguete: %s"
 
-#: planet/sites/hub_plan.gd:295
+#: planet/sites/hub_plan.gd:299
 msgid "+%s Cubes"
 msgstr "+%s Cubos"
 
-#: planet/sites/hub_plan.gd:297
+#: planet/sites/hub_plan.gd:301
 msgid "+%d Parts"
 msgstr "+%d Peças"
 
-#: planet/sites/hub_plan.gd:299
+#: planet/sites/hub_plan.gd:303
 msgid "+%d Seeds"
 msgstr "+%d Sementes"
 
-#: planet/sites/hub_plan.gd:303
+#: planet/sites/hub_plan.gd:307
 msgid "New: %s"
 msgstr "Novo: %s"
 
-#: planet/sites/hub_plan.gd:307
+#: planet/sites/hub_plan.gd:311
 msgid "New Lumi design: %s"
 msgstr "Novo visual do Lumi: %s"
 
-#: planet/sites/hub_purpose.gd:143
+#: planet/sites/hub_purpose.gd:145
 msgid "Home. The workbench is by the pod."
 msgstr "Em casa. A bancada fica ao lado da cápsula."
 
-#: planet/sites/hub_purpose.gd:149
+#: planet/sites/hub_purpose.gd:151
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "O foguete espera na plataforma. Casa é o primeiro da lista."
 
-#: planet/sites/hub_purpose.gd:155
+#: planet/sites/hub_purpose.gd:157
 msgid "%s: %d%% clean, up %d%% while you were away."
 msgstr "%s: %d%% limpo, +%d%% enquanto você estava fora."
 
-#: planet/sites/hub_purpose.gd:233
+#: planet/sites/hub_purpose.gd:235
 msgid "Dig the landmark out. Clean hexes here: %d / %d"
 msgstr "Desenterre o marco. Limpe hexágonos aqui: %d / %d"
 
-#: planet/sites/hub_purpose.gd:235
+#: planet/sites/hub_purpose.gd:237
 msgid "Repair an outpost here: %d / %d"
 msgstr "Conserte um posto aqui: %d / %d"
 
-#: planet/sites/hub_purpose.gd:238
+#: planet/sites/hub_purpose.gd:240
 msgid "Upgrade the rocket, then wake the %s"
 msgstr "Melhore o foguete e depois desperte: %s"
 
-#: planet/sites/hub_purpose.gd:239
+#: planet/sites/hub_purpose.gd:241
 msgid "Wake the %s (%s)"
 msgstr "Desperte: %s (%s)"
 
-#: planet/sites/hub_purpose.gd:273
+#: planet/sites/hub_purpose.gd:275
 msgid "E   Wake the %s  (%s)"
 msgstr "E   Despertar: %s  (%s)"
 
-#: planet/sites/hub_purpose.gd:274
+#: planet/sites/hub_purpose.gd:276
 msgid "%s: asleep. %s"
 msgstr "%s: adormecido. %s"
 
-#: planet/sites/hub_purpose.gd:279
+#: planet/sites/hub_purpose.gd:281
 msgid "The rocket can carry supplies to %d bases. Upgrade it at the workbench."
 msgstr "O foguete consegue levar suprimentos a %d bases. Melhore-o na bancada."
 
-#: planet/sites/hub_purpose.gd:295
+#: planet/sites/hub_purpose.gd:297
 msgid "Waking the %s needs %s."
 msgstr "Para despertar (%s) faltam %s."
 
-#: planet/sites/hub_purpose.gd:319
+#: planet/sites/hub_purpose.gd:321
 msgid "%s is awake. %s keeps cleaning when you fly on."
 msgstr "%s despertou. %s continua limpando quando você seguir viagem."
 
-#: planet/sites/hub_purpose.gd:346
+#: planet/sites/hub_purpose.gd:348
 msgid "%s grows: level %d."
 msgstr "%s cresce: nível %d."
 
-#: planet/sites/hub_purpose.gd:374
+#: planet/sites/hub_purpose.gd:376
 msgid "%d robot working"
 msgid_plural "%d robots working"
 msgstr[0] "%d robô trabalhando"
 msgstr[1] "%d robôs trabalhando"
 
-#: planet/sites/hub_purpose.gd:382
+#: planet/sites/hub_purpose.gd:384
 msgid "Home: %d%% clean"
 msgstr "Casa: %d%% limpo"
 
-#: planet/sites/hub_purpose.gd:384
+#: planet/sites/hub_purpose.gd:386
 msgid "Restored: %d%% clean"
 msgstr "Restaurado: %d%% limpo"
 
-#: planet/sites/hub_purpose.gd:386 ui/profile_picker.gd:111
+#: planet/sites/hub_purpose.gd:388 ui/profile_picker.gd:111
 msgid "New"
 msgstr "Novo"
 
-#: planet/sites/hub_purpose.gd:389
+#: planet/sites/hub_purpose.gd:391
 msgid "Ready to wake"
 msgstr "Pronto para despertar"
 
-#: planet/sites/hub_purpose.gd:390
+#: planet/sites/hub_purpose.gd:392
 msgid "Asleep: %d / %d"
 msgstr "Adormecido: %d / %d"
 
-#: planet/sites/hub_purpose.gd:401
+#: planet/sites/hub_purpose.gd:403
 msgid "%s   %d%% CLEAN"
 msgstr "%s   %d%% LIMPO"
 
-#: planet/sites/hub_purpose.gd:403
+#: planet/sites/hub_purpose.gd:405
 msgid "%s   BASES %d/%d"
 msgstr "%s   BASES %d/%d"
 
-#: planet/sites/hub_purpose.gd:450
+#: planet/sites/hub_purpose.gd:452
 msgid "Restored. Next: take the rocket to %s."
 msgstr "Restaurado. A seguir: pegue o foguete para %s."
 
-#: planet/sites/hub_purpose.gd:624
+#: planet/sites/hub_purpose.gd:454
+msgid "All %d bases stand. Fly home and make the rocket ready to leave."
+msgstr "As %d bases estão de pé. Voe para casa e prepare o foguete para partir."
+
+#: planet/sites/hub_purpose.gd:626
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
@@ -960,25 +858,9 @@ msgstr "Local: %s"
 msgid "Hub %d"
 msgstr "Base %d"
 
-#: planet/sites/sphere_water.gd:263 water/water_view.gd:79
+#: planet/sites/sphere_water.gd:263
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
 msgstr "A água... dá para ver o fundo. Lumi, tem algo se mexendo lá embaixo."
-
-#: planet/sphere/sphere_walk.gd:431
-msgid "Planet %d m around"
-msgstr "Planeta: %d m de volta"
-
-#: planet/sphere/sphere_walk.gd:431
-msgid "Walked %d m (%d%%)"
-msgstr "Andou %d m (%d%%)"
-
-#: planet/sphere/sphere_walk.gd:432
-msgid "Speed %.1f m/s"
-msgstr "Velocidade %.1f m/s"
-
-#: planet/sphere/sphere_walk.gd:432
-msgid "Bots near %d, far %d"
-msgstr "Bots perto %d, longe %d"
 
 #: plants/composter.gd:77
 msgid "E   compost press  ·  dormant until something grows"
@@ -1020,7 +902,7 @@ msgstr ""
 "PRENSA DE COMPOSTO  Nv %d\n"
 "funil %d%%  →  sementes"
 
-#: plants/garden.gd:364
+#: plants/garden.gd:361
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "Um hexágono está totalmente restaurado. Algo pequenininho já vive nele."
 
@@ -1044,7 +926,7 @@ msgstr "      próximo: %s"
 msgid "HEX LV %d  %s"
 msgstr "HEX NV %d  %s"
 
-#: plants/hex_levels.gd:282
+#: plants/hex_levels.gd:279
 msgid "Hex Lv %d  %s.   %s"
 msgstr "Hex Nv %d  %s.   %s"
 
@@ -1064,55 +946,55 @@ msgstr "PEÇA ENTERRADA  %s  ·  %.1f m"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "PEÇA ENTERRADA  ·  SINAL %d%%"
 
-#: player/patch.gd:146
+#: player/patch.gd:170
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi volta chacoalhando para o pátio. Que estranho."
 
-#: player/patch.gd:200
+#: player/patch.gd:224
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi não sabe nadar. Com os Jatos flutuantes da bancada ele flutua sobre os lagos."
 
-#: player/patch.gd:318
+#: player/patch.gd:348
 msgid "No seeds yet. Keep cleaning."
 msgstr "Ainda sem sementes. Continue limpando."
 
-#: player/patch.gd:353
+#: player/patch.gd:383
 msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 msgstr "Sementes precisam de chão limpo e aberto: nada de ruas, calçadas ou da plataforma."
 
-#: player/patch.gd:360
+#: player/patch.gd:390
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "Sem sementes. Plantas florindo dão mais."
 
-#: player/patch.gd:367
+#: player/patch.gd:397
 msgid "Watering can is empty. Refill at the hub."
 msgstr "Regador vazio. Reabasteça na base."
 
-#: player/patch.gd:569
+#: player/patch.gd:599
 msgid "PERFECT BALE  %s"
 msgstr "FARDO PERFEITO  %s"
 
-#: player/patch.gd:575
+#: player/patch.gd:605
 msgid "OVERSTUFFED  %s"
 msgstr "ABARROTADO  %s"
 
-#: player/patch.gd:579
+#: player/patch.gd:609
 msgid "PURE  %s"
 msgstr "PURO  %s"
 
-#: player/patch.gd:581
+#: player/patch.gd:611
 msgid "SURGE  %s"
 msgstr "IMPULSO  %s"
 
-#: player/patch.gd:584
+#: player/patch.gd:614
 msgid "  (streak +%d%%)"
 msgstr "  (sequência +%d%%)"
 
-#: player/patch.gd:627
+#: player/patch.gd:657
 msgid "Salvaged: %s"
 msgstr "Resgatado: %s"
 
-#: player/patch.gd:656
+#: player/patch.gd:686
 msgid "Recovered: %s"
 msgstr "Recuperado: %s"
 
@@ -1287,11 +1169,11 @@ msgstr[1] "levando %d fardos"
 msgid "fetching a bale"
 msgstr "buscando um fardo"
 
-#: robots/robot.gd:256 robots/robot.gd:912
+#: robots/robot.gd:256 robots/robot.gd:907
 msgid "waiting for bales"
 msgstr "esperando fardos"
 
-#: robots/robot.gd:259 robots/robot.gd:582
+#: robots/robot.gd:259 robots/robot.gd:577
 msgid "out of seeds"
 msgstr "sem sementes"
 
@@ -1335,7 +1217,7 @@ msgstr "levando um fardo à margem"
 msgid "skimming lake hex %d (%d%%)"
 msgstr "limpando hexágono do lago %d (%d%%)"
 
-#: robots/robot.gd:270 robots/robot.gd:775
+#: robots/robot.gd:270 robots/robot.gd:770
 msgid "lake is clean"
 msgstr "o lago está limpo"
 
@@ -1351,27 +1233,27 @@ msgstr "zona limpa, esperando"
 msgid "nothing left to clean"
 msgstr "nada mais para limpar"
 
-#: robots/robot.gd:427 robots/robot.gd:775
+#: robots/robot.gd:427 robots/robot.gd:770
 msgid "zone clean"
 msgstr "zona limpa"
 
-#: robots/robot.gd:580
+#: robots/robot.gd:575
 msgid "seeds locked"
 msgstr "sementes bloqueadas"
 
-#: robots/robot.gd:586 robots/robot.gd:590
+#: robots/robot.gd:581 robots/robot.gd:585
 msgid "no empty soil"
 msgstr "sem terra livre"
 
-#: robots/robot.gd:619
+#: robots/robot.gd:614
 msgid "no garden"
 msgstr "sem horta"
 
-#: robots/robot.gd:633
+#: robots/robot.gd:628
 msgid "everything watered"
 msgstr "tudo regado"
 
-#: robots/robot.gd:729
+#: robots/robot.gd:724
 msgid "no water source"
 msgstr "sem fonte de água"
 
@@ -1423,23 +1305,23 @@ msgstr "Frota %d / %d"
 msgid "Building a %s, %d%%"
 msgstr "Construindo: %s, %d%%"
 
-#: robots/sphere/command_overlay.gd:17 ui/command_view.gd:24
+#: robots/sphere/command_overlay.gd:17
 msgid "Cleaners"
 msgstr "Limpadores"
 
-#: robots/sphere/command_overlay.gd:17 ui/command_view.gd:24
+#: robots/sphere/command_overlay.gd:17
 msgid "Haulers"
 msgstr "Transportadores"
 
-#: robots/sphere/command_overlay.gd:17 ui/command_view.gd:24
+#: robots/sphere/command_overlay.gd:17
 msgid "Planters"
 msgstr "Plantadores"
 
-#: robots/sphere/command_overlay.gd:17 ui/command_view.gd:24
+#: robots/sphere/command_overlay.gd:17
 msgid "Waterers"
 msgstr "Regadores"
 
-#: robots/sphere/command_overlay.gd:17 ui/command_view.gd:24
+#: robots/sphere/command_overlay.gd:17
 msgid "Skimmers"
 msgstr "Coletores"
 
@@ -1643,35 +1525,35 @@ msgstr[1] "Enquanto você esteve fora, seus robôs daqui limparam %d hexágonos 
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s montado. Ele olha em volta e começa a trabalhar."
 
-#: scenes/slice.gd:139 ui/rockets_panel.gd:60
+#: scenes/slice.gd:130 ui/rockets_panel.gd:60
 msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
 msgstr "Vá até o foguete na plataforma de lançamento e aperte E para escolher para onde voar."
 
-#: scenes/slice.gd:145
-msgid "Locked. Upgrade your base to level 5 to build the launch pad."
-msgstr "Bloqueado. Leve sua base ao nível 5 para construir a plataforma de lançamento."
-
-#: scenes/slice.gd:148 ui/rockets_panel.gd:39
+#: scenes/slice.gd:140 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Células de energia recarregando: %s. Melhorias do foguete recarregam mais rápido."
 
-#: scenes/slice_orbit.gd:412
+#: scenes/slice_orbit.gd:400
+msgid "HEX CLEAN!  +%s"
+msgstr "HEXÁGONO LIMPO!  +%s"
+
+#: scenes/slice_orbit.gd:416
 msgid "Milestone: %d hexes clean!"
 msgstr "Marco: %d hexágonos limpos!"
 
-#: scenes/slice_orbit.gd:481 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:485 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   Consertar a bancada"
 
-#: scenes/slice_orbit.gd:481 systems/camp/camp.gd:195
+#: scenes/slice_orbit.gd:485 systems/camp/camp.gd:195
 msgid "E   Open the workbench"
 msgstr "E   Abrir a bancada"
 
-#: scenes/slice_orbit.gd:998
+#: scenes/slice_orbit.gd:1002
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Melhorias precisam de uma bancada. Volte para a base."
 
-#: scenes/slice_orbit.gd:1098
+#: scenes/slice_orbit.gd:1102
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Bancada consertada. Aperte E nela para gastar cubos em melhorias."
 
@@ -1953,83 +1835,83 @@ msgstr ""
 msgid "Something metal surfaced in the cleared ground."
 msgstr "Algo de metal apareceu no chão limpo."
 
-#: story/eggs.gd:652 story/eggs.gd:714
+#: story/eggs.gd:654 story/eggs.gd:716
 msgid "Gnome %d / %d"
 msgstr "Gnomo %d / %d"
 
-#: story/eggs.gd:660
+#: story/eggs.gd:662
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr "O último pôster aponta para um lugar bem perto. Algo laranja está enroladinho ali."
 
-#: story/eggs.gd:715
+#: story/eggs.gd:717
 msgid "%s   ·   added to Lumi's collection"
 msgstr "%s   ·   adicionado à coleção de Lumi"
 
-#: story/eggs.gd:731
+#: story/eggs.gd:733
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr "O rádio chia baixinho. Nada lá em cima acordou ainda. Volte depois que escurecer."
 
-#: story/eggs.gd:732
+#: story/eggs.gd:734
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr "Pelo telescópio: só um céu claro e empoeirado. Volte depois que escurecer."
 
-#: story/eggs.gd:761
+#: story/eggs.gd:763
 msgid "SOLD OUT"
 msgstr "ESGOTADO"
 
-#: story/eggs.gd:779
+#: story/eggs.gd:781
 msgid "QUACK!"
 msgstr "QUÁ!"
 
-#: story/eggs.gd:797
+#: story/eggs.gd:799
 msgid "NEW CHALLENGER!"
 msgstr "NOVO DESAFIANTE!"
 
-#: story/eggs.gd:800
+#: story/eggs.gd:802
 msgid "GAME OVER  ·  SCORE 12"
 msgstr "FIM DE JOGO  ·  PONTOS 12"
 
-#: story/eggs.gd:828
+#: story/eggs.gd:830
 msgid "hi, Gus"
 msgstr "oi, Gus"
 
-#: story/eggs.gd:873
+#: story/eggs.gd:875
 msgid "CONFETTI"
 msgstr "CONFETE"
 
-#: story/eggs.gd:873
+#: story/eggs.gd:875
 msgid "LIGHT JAZZ"
 msgstr "JAZZ SUAVE"
 
-#: story/eggs.gd:873
+#: story/eggs.gd:875
 msgid "99% DUCKS"
 msgstr "PATOS: 99%"
 
-#: story/eggs.gd:873
+#: story/eggs.gd:875
 msgid "SUNNY (INDOORS)"
 msgstr "ENSOLARADO (LÁ DENTRO)"
 
-#: story/eggs.gd:873
+#: story/eggs.gd:875
 msgid "FOG OF NOODLES"
 msgstr "NÉVOA DE MACARRÃO"
 
-#: story/eggs.gd:878
+#: story/eggs.gd:880
 msgid "1ST PLACE"
 msgstr "1º LUGAR"
 
-#: story/eggs.gd:936
+#: story/eggs.gd:938
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr "O pato grasna um segredo: \"%s\" desbloqueia o design %s."
 
-#: story/eggs.gd:937
+#: story/eggs.gd:939
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "O pato te ensinou tudo o que sabe. Quá."
 
-#: story/eggs.gd:1165
+#: story/eggs.gd:1170
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "Curiosidade encontrada: %s  (%d / %d)   %s"
 
-#: story/eggs.gd:1176
+#: story/eggs.gd:1181
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "Todas as curiosidades da lista, encontradas. O compartimento de coleção de Lumi está lotado de lembranças."
 
@@ -2242,43 +2124,43 @@ msgstr ""
 msgid "Needs %s"
 msgstr "Requer %s"
 
-#: story/ledger.gd:497
+#: story/ledger.gd:499
 msgid "Ledger drone inbound, %s! It's heading for a clean hex."
 msgstr "Drone do Ledger a caminho, %s! Está indo para um hexágono limpo."
 
-#: story/ledger.gd:498
+#: story/ledger.gd:500
 msgid "A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground."
 msgstr "Um drone do Ledger vem despejar sucata num hexágono limpo (%s de você). Ele não pode tocar no chão plantado."
 
-#: story/ledger.gd:535
+#: story/ledger.gd:537
 msgid "SIGNAL JAMMED"
 msgstr "SINAL BLOQUEADO"
 
-#: story/ledger.gd:565
+#: story/ledger.gd:567
 msgid "Target re-classified as ASSET. Aborting. ...Interesting."
 msgstr "Alvo reclassificado como ATIVO. Abortando. ...Interessante."
 
-#: story/ledger.gd:636
+#: story/ledger.gd:638
 msgid "The drone dumped a little junk back. Scoop it up, or let your helpers tidy it. A Signal Jammer at the base keeps drones away."
 msgstr "O drone despejou um pouco de sucata. Recolha, ou deixe seus ajudantes arrumarem. Um Bloqueador de Sinal na base mantém os drones longe."
 
-#: story/ledger.gd:692
+#: story/ledger.gd:694
 msgid "SEEDS · PAID IN FULL"
 msgstr "SEMENTES · PAGO INTEGRALMENTE"
 
-#: story/ledger.gd:709 systems/events.gd:500 systems/lumi_level.gd:218
+#: story/ledger.gd:711 systems/events.gd:500 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "+%d sementes"
 
-#: story/ledger.gd:781
+#: story/ledger.gd:783
 msgid "E   jack in: rewrite the Ledger's contract"
 msgstr "E   conectar: reescrever o contrato do Ledger"
 
-#: story/ledger.gd:781
+#: story/ledger.gd:783
 msgid "E   read the amended contract"
 msgstr "E   ler o contrato alterado"
 
-#: story/ledger.gd:806 story/ledger.gd:860
+#: story/ledger.gd:808 story/ledger.gd:862
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: ACTIVE\n"
@@ -2288,11 +2170,11 @@ msgstr ""
 "CONTRATO 0001: ATIVO\n"
 "RESÍDUO É UM ITEM DE LINHA"
 
-#: story/ledger.gd:821
+#: story/ledger.gd:823
 msgid "RELAY 07  ·  PROPERTY OF THE LEDGER  ·  NO UNSCHEDULED ACCESS"
 msgstr "RELÉ 07  ·  PROPRIEDADE DO LEDGER  ·  PROIBIDO ACESSO NÃO AGENDADO"
 
-#: story/ledger.gd:860
+#: story/ledger.gd:862
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: AMENDED\n"
@@ -2302,11 +2184,11 @@ msgstr ""
 "CONTRATO 0001: ALTERADO\n"
 "RESTAURAÇÃO = ATIVO"
 
-#: story/ledger.gd:980
+#: story/ledger.gd:984
 msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
 msgstr "O contrato do Ledger foi reescrito. Os drones dele entregam sementes agora. (+%d sementes)"
 
-#: story/ledger.gd:988
+#: story/ledger.gd:992
 msgid "<< LEDGER // OFF THE RECORD >>"
 msgstr "<< LEDGER // EXTRAOFICIAL >>"
 
@@ -2318,51 +2200,51 @@ msgstr "LEDGER  WMS-07"
 msgid "Reward: %s"
 msgstr "Recompensa: %s"
 
-#: story/objectives.gd:376
+#: story/objectives.gd:380
 msgid "Objective complete  ·  %s"
 msgstr "Objetivo concluído  ·  %s"
 
-#: story/objectives.gd:403
+#: story/objectives.gd:407
 msgid "Goal complete  ·  %s"
 msgstr "Objetivo concluído  ·  %s"
 
-#: story/objectives.gd:672
+#: story/objectives.gd:676
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "Enfardadeira instalada! Encha seu peito, aperte [%s] para prensar um fardo e leve-o até a balança."
 
-#: story/objectives.gd:694 story/objectives.gd:824
+#: story/objectives.gd:698 story/objectives.gd:828
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Seu peito está cheio. Aperte [%s] para fazer um fardo."
 
-#: story/objectives.gd:710
+#: story/objectives.gd:714
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "Seu detector achou uma peça de robô enterrada aqui perto. Siga a leitura PEÇA ENTERRADA; ele apita quando você está bem em cima."
 
-#: story/objectives.gd:712
+#: story/objectives.gd:716
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "PEÇA ENTERRADA: ande na direção dela até a leitura chegar ao máximo e desenterre."
 
-#: story/objectives.gd:825
+#: story/objectives.gd:829
 msgid "Your chest is full. Bring it to the bin."
 msgstr "Seu peito está cheio. Leve até a lixeira."
 
-#: story/objectives.gd:832
+#: story/objectives.gd:836
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "Seu peito está cheio. Volte para casa: a lixeira fica embaixo da fumaça alta."
 
-#: story/objectives.gd:834
+#: story/objectives.gd:838
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "Leve seu fardo para casa: a balança fica embaixo da fumaça alta."
 
-#: story/objectives.gd:834
+#: story/objectives.gd:838
 msgid "Carry your bale to the scale by the bin."
 msgstr "Leve seu fardo até a balança, ao lado da lixeira."
 
-#: story/objectives.gd:841
+#: story/objectives.gd:845
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "Volte para casa: siga o feixe até a fumaça alta."
 
-#: story/objectives.gd:851
+#: story/objectives.gd:855
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Nada para pegar aqui. Ande até onde tem mais lixo."
 
@@ -2510,11 +2392,11 @@ msgstr "Onda da Arca %d  ·  %d / %d flores no planeta"
 msgid "Wilderness: %s. New ground, new junk, new colours under it."
 msgstr "Natureza selvagem: %s. Chão novo, sucata nova, cores novas por baixo."
 
-#: systems/bloom.gd:257
+#: systems/bloom.gd:255
 msgid "Seed Ark wave %d planted across Verdance. The Cradle drops a gift. Next wave: %d blooms."
 msgstr "Onda %d da Arca de Sementes plantada por Verdance. A Cradle solta um presente. Próxima onda: %d flores."
 
-#: systems/bloom.gd:268
+#: systems/bloom.gd:266
 msgid "Verdance Bloom: %s. %s"
 msgstr "Florada de Verdance: %s. %s"
 
@@ -2834,87 +2716,91 @@ msgstr "Auditoria vencida, %d a %d! O Ledger carimba APROVADO. %s"
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "O drone venceu a auditoria, %d a %d. Mesmo assim deixou uma gorjeta: +%s cubos."
 
-#: systems/homeward.gd:147
+#: systems/homeward.gd:153
+msgid "Wake %d old stations on %s to level %d (%d so far)"
+msgstr "Acorde %d estações antigas em %s até o nível %d (%d até agora)"
+
+#: systems/homeward.gd:155
 msgid "Restore %s to %d%% (%d%%) or get a base to level %d"
 msgstr "Restaure %s a %d%% (%d%%) ou leve uma base ao nível %d"
 
-#: systems/homeward.gd:148
+#: systems/homeward.gd:156
 msgid "Restore %s to %d%% (%d%%)"
 msgstr "Restaure %s a %d%% (%d%%)"
 
-#: systems/homeward.gd:155
+#: systems/homeward.gd:163
 msgid "Restore another planet to %d%% (best %d%%)"
 msgstr "Restaure outro planeta a %d%% (melhor %d%%)"
 
-#: systems/homeward.gd:206
+#: systems/homeward.gd:245
 msgid "Needs %s: found on %s"
 msgstr "Precisa de %s: encontrado em %s"
 
-#: systems/homeward.gd:351
+#: systems/homeward.gd:390
 msgid "New tech: %s. %s"
 msgstr "Nova tecnologia: %s. %s"
 
-#: systems/homeward.gd:398
+#: systems/homeward.gd:437
 msgid "Needs the %s drive"
 msgstr "Precisa do propulsor %s"
 
-#: systems/homeward.gd:400
+#: systems/homeward.gd:439
 msgid "No chart yet: restore %s to %d%%"
 msgstr "Ainda sem carta: restaure %s até %d%%"
 
-#: systems/homeward.gd:494
+#: systems/homeward.gd:533
 msgid "The Homeward rocket is built"
 msgstr "O foguete do Regresso está construído"
 
-#: systems/homeward.gd:497 systems/museum.gd:117
+#: systems/homeward.gd:536 systems/museum.gd:117
 msgid "The Cradle has to answer first (Cradle Returns)"
 msgstr "A Cradle precisa responder primeiro (Retorno da Cradle)"
 
-#: systems/homeward.gd:502
+#: systems/homeward.gd:541
 msgid "Needs %d planet relics (%d)"
 msgstr "Precisa de %d artefatos planetários (%d)"
 
-#: systems/homeward.gd:504
+#: systems/homeward.gd:543
 msgid "Restore every planet first (%d%%)"
 msgstr "Restaure todos os planetas primeiro (%d%%)"
 
-#: systems/homeward.gd:506
+#: systems/homeward.gd:545
 msgid "Build it at Verdance's Cradle Returns"
 msgstr "Construa no Retorno da Cradle, em Verdance"
 
-#: systems/homeward.gd:522
+#: systems/homeward.gd:561
 msgid "Rocket drive built: %s."
 msgstr "Propulsor construído: %s."
 
-#: systems/homeward_director.gd:259
+#: systems/homeward_director.gd:277
 msgid "Intercepted: %s"
 msgstr "Interceptado: %s"
 
-#: systems/homeward_director.gd:266
+#: systems/homeward_director.gd:284
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: systems/homeward_director.gd:276
+#: systems/homeward_director.gd:294
 msgid "%s is restored. System: %d%%."
 msgstr "%s está restaurado. Sistema: %d%%."
 
-#: systems/homeward_director.gd:279
+#: systems/homeward_director.gd:297
 msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
 msgstr "Artefato: %s. Escolha de relíquia +1 (Ponte da Arca)."
 
-#: systems/homeward_director.gd:286
+#: systems/homeward_director.gd:304
 msgid "Every planet in the system is alive. Go back to Verdance's Cradle Returns and build the Mk VII Homeward rocket."
 msgstr "Todos os planetas do sistema estão vivos. Volte ao Retorno da Cradle em Verdance e construa o foguete Mk VII do Regresso."
 
-#: systems/homeward_director.gd:461
+#: systems/homeward_director.gd:479
 msgid "E   launch home"
 msgstr "E   decolar para casa"
 
-#: systems/homeward_director.gd:461
+#: systems/homeward_director.gd:479
 msgid "E   plant the last seed"
 msgstr "E   plantar a última semente"
 
-#: systems/homeward_director.gd:472
+#: systems/homeward_director.gd:490
 msgid "The last seed is in the ground. Everything is ready. Press E again here to launch home."
 msgstr "A última semente está na terra. Está tudo pronto. Aperte E aqui de novo para decolar para casa."
 
@@ -3052,20 +2938,20 @@ msgstr "Perfil %d"
 msgid "%d:%02d h"
 msgstr "%d:%02d h"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "Low"
 msgstr "Baixo"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
-#: ui/settings_panel.gd:594
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
+#: ui/settings_panel.gd:601
 msgid "Medium"
 msgstr "Médio"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "High"
 msgstr "Alto"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "Ultra"
 msgstr "Ultra"
 
@@ -3299,7 +3185,7 @@ msgstr "Violeta"
 msgid "Moonlight"
 msgstr "Luar"
 
-#: systems/tunes.gd:166
+#: systems/tunes.gd:390
 msgid "New CD: %s by %s, from %s"
 msgstr "Novo CD: %s de %s, de %s"
 
@@ -3508,7 +3394,7 @@ msgstr "Voltar para casa"
 msgid "The clock is running. Clean %d hexes."
 msgstr "O relógio está correndo. Limpe %d hexágonos."
 
-#: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:391
+#: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:383
 msgid "Time"
 msgstr "Horário"
 
@@ -3757,7 +3643,7 @@ msgstr "Kit inicial: só Lumi. As relíquias acrescentam mais."
 msgid "Starting kit: %s"
 msgstr "Kit inicial: %s"
 
-#: ui/ark_bridge.gd:303 ui/settings_panel.gd:575
+#: ui/ark_bridge.gd:303 ui/settings_panel.gd:582
 msgid "Full"
 msgstr "Completo"
 
@@ -3790,7 +3676,7 @@ msgstr "Fabricador"
 msgid "need %s"
 msgstr "faltam %s"
 
-#: ui/bench_lists.gd:11 ui/photo_mode.gd:396 ui/photo_mode.gd:423
+#: ui/bench_lists.gd:11 ui/photo_mode.gd:388 ui/photo_mode.gd:415
 #: ui/upgrades_panel.gd:32
 msgid "Lumi"
 msgstr "Lumi"
@@ -3894,8 +3780,7 @@ msgstr "Alcance do jato"
 msgid "Refill"
 msgstr "Reabastecer"
 
-#: ui/builder_panel.gd:21 ui/command_view.gd:1244 ui/command_view.gd:1247
-#: data/hex_levels.json:levels[1].name
+#: ui/builder_panel.gd:21 data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr "Limpar"
 
@@ -4323,152 +4208,6 @@ msgstr "%.2f km"
 #: ui/codex_screen.gd:860
 msgid "%dm %02ds"
 msgstr "%dm %02ds"
-
-#: ui/command_view.gd:25
-msgid "Priority"
-msgstr "Prioridade"
-
-#: ui/command_view.gd:25
-msgid "Stay"
-msgstr "Ficar"
-
-#: ui/command_view.gd:25
-msgid "Follow me"
-msgstr "Siga-me"
-
-#: ui/command_view.gd:25
-msgid "Recall"
-msgstr "Chamar de volta"
-
-#: ui/command_view.gd:28
-msgid "Works the marked hexes first, then the rest of the district."
-msgstr "Trabalha primeiro os hexágonos marcados, depois o resto do distrito."
-
-#: ui/command_view.gd:29
-msgid "Works only the marked hexes, and waits there when they are done."
-msgstr "Trabalha só os hexágonos marcados e espera lá quando termina."
-
-#: ui/command_view.gd:30
-msgid "Works the hexes around you, wherever you go."
-msgstr "Trabalha os hexágonos ao seu redor, aonde você for."
-
-#: ui/command_view.gd:31
-msgid "Comes back and parks at the base."
-msgstr "Volta e estaciona na base."
-
-#: ui/command_view.gd:106
-msgid "[p]{@dpad}  panel      {@move}  move      {pad:#0}  mark      {pad:#2}  unmark      {pad:zoom_out}{pad:zoom_in}  zoom      {pad:ui_cancel}  back[/p][k]Left drag  mark      Right drag  unmark      {@move} / middle drag  move      Wheel  zoom      {kbd:open_command}  back[/k]"
-msgstr "[p]{@dpad}  painel      {@move}  mover      {pad:#0}  marcar      {pad:#2}  desmarcar      {pad:zoom_out}{pad:zoom_in}  zoom      {pad:ui_cancel}  voltar[/p][k]Arrastar esq.  marcar      Arrastar dir.  desmarcar      {@move} / arrastar meio  mover      Roda  zoom      {kbd:open_command}  voltar[/k]"
-
-#: ui/command_view.gd:231
-msgid "COMMAND"
-msgstr "COMANDO"
-
-#: ui/command_view.gd:268
-msgid "Mark around me"
-msgstr "Marcar ao meu redor"
-
-#: ui/command_view.gd:281 ui/lumi_builder.gd:597 ui/photo_mode.gd:26
-msgid "Clear"
-msgstr "Limpar"
-
-#: ui/command_view.gd:306
-msgid "CREWS"
-msgstr "EQUIPES"
-
-#: ui/command_view.gd:598
-msgid "Following the %s orders. Mark hexes or pick a mode to give it its own."
-msgstr "Seguindo as ordens de %s. Marque hexágonos ou escolha um modo para dar ordens próprias."
-
-#: ui/command_view.gd:607
-msgid "No orders yet: roaming the district. Drag on the ground to mark where to work."
-msgstr "Ainda sem ordens: rodando pelo distrito. Arraste no chão para marcar onde trabalhar."
-
-#: ui/command_view.gd:684
-msgid "No robots yet. Build one at the workbench."
-msgstr "Ainda não há robôs. Construa um na bancada."
-
-#: ui/command_view.gd:815
-msgid "Build %s  %s"
-msgstr "Construir %s  %s"
-
-#: ui/command_view.gd:820
-msgid "Max tier"
-msgstr "Nível máximo"
-
-#: ui/command_view.gd:820
-msgid "Upgrade > %s"
-msgstr "Melhorar > %s"
-
-#: ui/command_view.gd:826
-msgid "ready"
-msgstr "pronto"
-
-#: ui/command_view.gd:826
-msgid "build at the workbench"
-msgstr "construir na bancada"
-
-#: ui/command_view.gd:833
-msgid "Place refill tank here  %s  (%d/%d)"
-msgstr "Colocar tanque de recarga aqui  %s  (%d/%d)"
-
-#: ui/command_view.gd:835
-msgid "A Water Tank at your hex. Waterers refill at the nearest one."
-msgstr "Um Tanque de Água no seu hexágono. Regadores reabastecem no mais próximo."
-
-#: ui/command_view.gd:1092
-msgid "%s · %d HEX"
-msgid_plural "%s · %d HEXES"
-msgstr[0] "%s · %d HEX"
-msgstr[1] "%s · %d HEX"
-
-#: ui/command_view.gd:1128
-msgid "BASE"
-msgstr "BASE"
-
-#: ui/command_view.gd:1135
-msgid "YOU"
-msgstr "VOCÊ"
-
-#: ui/command_view.gd:1235
-msgid "HEX %d"
-msgstr "HEX %d"
-
-#: ui/command_view.gd:1239
-msgid "BASE YARD"
-msgstr "PÁTIO DA BASE"
-
-#: ui/command_view.gd:1240
-msgid "Home ground, always clean"
-msgstr "Terreno de casa, sempre limpo"
-
-#: ui/command_view.gd:1242
-msgid "LAKE HEX %d"
-msgstr "HEX DO LAGO %d"
-
-#: ui/command_view.gd:1244
-msgid "Floating junk  %d%% left"
-msgstr "Sucata flutuante  resta %d%%"
-
-#: ui/command_view.gd:1250
-msgid "Junk  %d%% left"
-msgstr "Sucata  resta %d%%"
-
-#: ui/command_view.gd:1256
-msgid "Level %d · %s"
-msgstr "Nível %d · %s"
-
-#: ui/command_view.gd:1258
-msgid "In %s zone"
-msgstr "Na zona %s"
-
-#: ui/command_view.gd:1311
-msgid "%d robots"
-msgstr "%d robôs"
-
-#: ui/command_view.gd:1314
-msgid "%d / %d hexes clean"
-msgstr "%d / %d hexágonos limpos"
 
 #: ui/contracts_panel.gd:75
 msgid "%d done"
@@ -5015,11 +4754,11 @@ msgstr "PÁ"
 msgid "PLANT"
 msgstr "PLANTAR"
 
-#: ui/hotbar.gd:288
+#: ui/hotbar.gd:281
 msgid "+%d XP"
 msgstr "+%d XP"
 
-#: ui/hotbar.gd:298
+#: ui/hotbar.gd:291
 msgid "CORE %d%%"
 msgstr "NÚCLEO %d%%"
 
@@ -5427,7 +5166,7 @@ msgstr "Avançado (matiz, saturação, brilho)"
 msgid "Hue"
 msgstr "Matiz"
 
-#: ui/lumi_builder.gd:468 ui/photo_mode.gd:385
+#: ui/lumi_builder.gd:468 ui/photo_mode.gd:377
 msgid "Saturation"
 msgstr "Saturação"
 
@@ -5474,6 +5213,10 @@ msgstr "Carga"
 #: ui/lumi_builder.gd:589
 msgid "Save here"
 msgstr "Salvar aqui"
+
+#: ui/lumi_builder.gd:597 ui/photo_mode.gd:26
+msgid "Clear"
+msgstr "Limpar"
 
 #: ui/lumi_builder.gd:659
 msgid "Unsaved changes"
@@ -5708,148 +5451,148 @@ msgstr "O modo foto não está disponível durante um voo de foguete."
 msgid "Photo mode isn't available during a cinematic."
 msgstr "O modo foto não está disponível durante uma cena."
 
-#: ui/photo_mode.gd:370 ui/photo_mode.gd:423 ui/settings_panel.gd:383
+#: ui/photo_mode.gd:362 ui/photo_mode.gd:415 ui/settings_panel.gd:390
 msgid "Camera"
 msgstr "Câmera"
 
-#: ui/photo_mode.gd:371
+#: ui/photo_mode.gd:363
 msgid "Mode"
 msgstr "Modo"
 
-#: ui/photo_mode.gd:372 ui/settings_panel.gd:391
+#: ui/photo_mode.gd:364 ui/settings_panel.gd:398
 msgid "Field of view"
 msgstr "Campo de visão"
 
-#: ui/photo_mode.gd:373
+#: ui/photo_mode.gd:365
 msgid "Roll"
 msgstr "Inclinação"
 
-#: ui/photo_mode.gd:374
+#: ui/photo_mode.gd:366
 msgid "Distance"
 msgstr "Distância"
 
-#: ui/photo_mode.gd:375
+#: ui/photo_mode.gd:367
 msgid "Height"
 msgstr "Altura"
 
-#: ui/photo_mode.gd:376
+#: ui/photo_mode.gd:368
 msgid "Reset camera"
 msgstr "Redefinir câmera"
 
-#: ui/photo_mode.gd:377 ui/photo_mode.gd:423
+#: ui/photo_mode.gd:369 ui/photo_mode.gd:415
 msgid "Lens"
 msgstr "Lente"
 
-#: ui/photo_mode.gd:378
+#: ui/photo_mode.gd:370
 msgid "Auto-focus Lumi"
 msgstr "Foco automático em Lumi"
 
-#: ui/photo_mode.gd:379
+#: ui/photo_mode.gd:371
 msgid "Focus distance"
 msgstr "Distância de foco"
 
-#: ui/photo_mode.gd:380
+#: ui/photo_mode.gd:372
 msgid "Blur"
 msgstr "Desfoque"
 
-#: ui/photo_mode.gd:380 ui/photo_panel.gd:240 ui/photo_panel.gd:242
-#: ui/photo_panel.gd:280 ui/settings_panel.gd:681
+#: ui/photo_mode.gd:372 ui/photo_panel.gd:240 ui/photo_panel.gd:242
+#: ui/photo_panel.gd:280 ui/settings_panel.gd:688
 msgid "Off"
 msgstr "Desligado"
 
-#: ui/photo_mode.gd:381
+#: ui/photo_mode.gd:373
 msgid "Exposure"
 msgstr "Exposição"
 
-#: ui/photo_mode.gd:381
+#: ui/photo_mode.gd:373
 msgid "%+.1f EV"
 msgstr "%+.1f EV"
 
-#: ui/photo_mode.gd:382 ui/photo_mode.gd:423
+#: ui/photo_mode.gd:374 ui/photo_mode.gd:415
 msgid "Look"
 msgstr "Estilo"
 
-#: ui/photo_mode.gd:383
+#: ui/photo_mode.gd:375
 msgid "Filter"
 msgstr "Filtro"
 
-#: ui/photo_mode.gd:384
+#: ui/photo_mode.gd:376
 msgid "Contrast"
 msgstr "Contraste"
 
-#: ui/photo_mode.gd:386
+#: ui/photo_mode.gd:378
 msgid "Warmth"
 msgstr "Calor"
 
-#: ui/photo_mode.gd:387
+#: ui/photo_mode.gd:379
 msgid "Vignette"
 msgstr "Vinheta"
 
-#: ui/photo_mode.gd:388
+#: ui/photo_mode.gd:380
 msgid "Grain"
 msgstr "Granulado"
 
-#: ui/photo_mode.gd:389 ui/photo_mode.gd:423
+#: ui/photo_mode.gd:381 ui/photo_mode.gd:415
 msgid "World"
 msgstr "Mundo"
 
-#: ui/photo_mode.gd:390
+#: ui/photo_mode.gd:382
 msgid "Set time of day"
 msgstr "Definir horário"
 
-#: ui/photo_mode.gd:395
+#: ui/photo_mode.gd:387
 msgid "Weather"
 msgstr "Clima"
 
-#: ui/photo_mode.gd:397
+#: ui/photo_mode.gd:389
 msgid "Pose"
 msgstr "Pose"
 
-#: ui/photo_mode.gd:398 data/style_parts.json:slots[eye_shape].name
+#: ui/photo_mode.gd:390 data/style_parts.json:slots[eye_shape].name
 msgid "Eyes"
 msgstr "Olhos"
 
-#: ui/photo_mode.gd:399
+#: ui/photo_mode.gd:391
 msgid "Turn"
 msgstr "Girar"
 
-#: ui/photo_mode.gd:400
+#: ui/photo_mode.gd:392
 msgid "Show robots"
 msgstr "Mostrar robôs"
 
-#: ui/photo_mode.gd:401 ui/photo_mode.gd:423
+#: ui/photo_mode.gd:393 ui/photo_mode.gd:415
 msgid "Frame"
 msgstr "Enquadramento"
 
-#: ui/photo_mode.gd:402
+#: ui/photo_mode.gd:394
 msgid "Hide HUD"
 msgstr "Ocultar HUD"
 
-#: ui/photo_mode.gd:403
+#: ui/photo_mode.gd:395
 msgid "Rule of thirds"
 msgstr "Regra dos terços"
 
-#: ui/photo_mode.gd:404
+#: ui/photo_mode.gd:396
 msgid "Letterbox 2.39:1"
 msgstr "Letterbox 2.39:1"
 
-#: ui/photo_mode.gd:405
+#: ui/photo_mode.gd:397
 msgid "Greenfall stamp"
 msgstr "Selo Greenfall"
 
-#: ui/photo_mode.gd:406
+#: ui/photo_mode.gd:398
 msgid "Resolution"
 msgstr "Resolução"
 
-#: ui/photo_mode.gd:890
+#: ui/photo_mode.gd:882
 msgid "Couldn't capture the photo."
 msgstr "Não foi possível tirar a foto."
 
-#: ui/photo_mode.gd:899
+#: ui/photo_mode.gd:891
 msgid "Couldn't save the photo (%s)."
 msgstr "Não foi possível salvar a foto (%s)."
 
-#: ui/photo_mode.gd:912
+#: ui/photo_mode.gd:904
 msgid "Saved  %s  (%dx%d)"
 msgstr "Salva  %s  (%dx%d)"
 
@@ -5866,7 +5609,7 @@ msgid "Exit"
 msgstr "Sair"
 
 #: ui/photo_panel.gd:240 ui/photo_panel.gd:242 ui/photo_panel.gd:280
-#: ui/settings_panel.gd:681
+#: ui/settings_panel.gd:688
 msgid "On"
 msgstr "Ligado"
 
@@ -6122,17 +5865,9 @@ msgstr "Células carregadas e prontas. Escolha uma base de destino."
 msgid "Not built yet"
 msgstr "Ainda não construído"
 
-#: ui/rockets_panel.gd:46
-msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Upgrades tab."
-msgstr "A plataforma de lançamento exige uma base nível 5 (a sua é nível %d). Melhore a base na aba Melhorias."
-
 #: ui/rockets_panel.gd:48
 msgid "Rockets to the rest of Verdance are in the full game. The demo stays in the first district."
 msgstr "Foguetes para o resto de Verdance estão no jogo completo. A demo fica no primeiro distrito."
-
-#: ui/rockets_panel.gd:60
-msgid "The rocket lands on the pad when the base reaches level 5."
-msgstr "O foguete pousa na plataforma quando a base chega ao nível 5."
 
 #: ui/rockets_panel.gd:64
 msgid "NEARBY BASES"
@@ -6246,23 +5981,23 @@ msgstr "{ui_cancel}  voltar"
 msgid "Changes are saved automatically."
 msgstr "As alterações são salvas automaticamente."
 
-#: ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "Quality preset"
 msgstr "Predefinição de qualidade"
 
-#: ui/settings_panel.gd:243 ui/settings_panel.gd:340
+#: ui/settings_panel.gd:243 ui/settings_panel.gd:347
 msgid "Fullscreen"
 msgstr "Tela cheia"
 
-#: ui/settings_panel.gd:246 ui/settings_panel.gd:384
+#: ui/settings_panel.gd:246 ui/settings_panel.gd:391
 msgid "Mouse sensitivity"
 msgstr "Sensibilidade do mouse"
 
-#: ui/settings_panel.gd:250 ui/settings_panel.gd:560
+#: ui/settings_panel.gd:250 ui/settings_panel.gd:567
 msgid "System default"
 msgstr "Padrão do sistema"
 
-#: ui/settings_panel.gd:251 ui/settings_panel.gd:558 ui/settings_panel.gd:561
+#: ui/settings_panel.gd:251 ui/settings_panel.gd:565 ui/settings_panel.gd:568
 msgid "Language"
 msgstr "Idioma"
 
@@ -6279,246 +6014,250 @@ msgid "Volume"
 msgstr "Volume"
 
 #: ui/settings_panel.gd:309
+msgid "Ambience"
+msgstr "Ambiente"
+
+#: ui/settings_panel.gd:312
 msgid "Sound effects"
 msgstr "Efeitos sonoros"
 
-#: ui/settings_panel.gd:316
-msgid "Rendering"
-msgstr "Renderização"
-
-#: ui/settings_panel.gd:317
-msgid "Low drops GI and fog; Ultra adds reflections."
-msgstr "Baixo remove GI e neblina; Ultra adiciona reflexos."
-
-#: ui/settings_panel.gd:318
-msgid "This renderer always uses the Low preset."
-msgstr "Este renderizador sempre usa a predefinição Baixo."
-
-#: ui/settings_panel.gd:320
-msgid "Detected: %s for %s. "
-msgstr "Detectado: %s para %s."
-
-#: ui/settings_panel.gd:321
-msgid "Your choice (hardware: %s). "
-msgstr "Sua escolha (hardware: %s)."
-
-#: ui/settings_panel.gd:322
-msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
-msgstr "Baixo remove GI, neblina e detalhes de sombra; Ultra adiciona reflexos."
-
-#: ui/settings_panel.gd:328
-msgid "Renderer"
-msgstr "Renderizador"
-
-#: ui/settings_panel.gd:328
-msgid "Standard (Forward+)"
-msgstr "Padrão (Forward+)"
-
-#: ui/settings_panel.gd:328
-msgid "Light (Mobile)"
-msgstr "Leve (Mobile)"
-
-#: ui/settings_panel.gd:330
-msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
-msgstr "Leve combina com gráficos integrados antigos. Vale depois de reiniciar o jogo (agora: %s)."
-
-#: ui/settings_panel.gd:336
-msgid "Render scale"
-msgstr "Escala de renderização"
-
-#: ui/settings_panel.gd:338
-msgid "Lower renders 3D at a smaller size; the interface stays sharp."
-msgstr "Menor renderiza o 3D num tamanho menor; a interface continua nítida."
-
-#: ui/settings_panel.gd:339
-msgid "Display"
-msgstr "Tela"
-
-#: ui/settings_panel.gd:343
-msgid "V-Sync"
-msgstr "V-Sync"
-
-#: ui/settings_panel.gd:349 ui/settings_panel.gd:378
-msgid "Bindings"
-msgstr "Atalhos"
-
-#: ui/settings_panel.gd:352
-msgid "ACTION   (select a binding to rebind it)"
-msgstr "AÇÃO   (selecione um atalho para trocar)"
-
-#: ui/settings_panel.gd:355
-msgid "KEYBOARD / MOUSE"
-msgstr "TECLADO / MOUSE"
-
-#: ui/settings_panel.gd:355
-msgid "CONTROLLER"
-msgstr "CONTROLE"
-
-#: ui/settings_panel.gd:371
-msgid "Reset to defaults"
-msgstr "Restaurar padrões"
-
-#: ui/settings_panel.gd:378
-msgid "Restore every key and controller binding."
-msgstr "Restaura todas as teclas e botões do controle."
-
-#: ui/settings_panel.gd:380
-msgid "Button prompts"
-msgstr "Ícones de botões"
-
-#: ui/settings_panel.gd:382
-msgid "Controller art: Automatic follows the connected pad."
-msgstr "Arte do controle: Automático segue o controle conectado."
-
-#: ui/settings_panel.gd:387
-msgid "Stick look speed"
-msgstr "Velocidade do analógico"
-
-#: ui/settings_panel.gd:390
-msgid "Invert look Y"
-msgstr "Inverter eixo Y"
-
-#: ui/settings_panel.gd:394
-msgid "Mouse smoothing"
-msgstr "Suavização do mouse"
-
-#: ui/settings_panel.gd:395
-msgid "Eases mouse look over a few frames."
-msgstr "Suaviza o olhar com o mouse por alguns quadros."
-
-#: ui/settings_panel.gd:396
-msgid "Scooping"
-msgstr "Recolhimento"
-
-#: ui/settings_panel.gd:397
-msgid "Scoop button"
-msgstr "Botão da pá"
-
-#: ui/settings_panel.gd:397
-msgid "Hold"
-msgstr "Segurar"
-
-#: ui/settings_panel.gd:397
-msgid "Toggle"
-msgstr "Alternar"
-
-#: ui/settings_panel.gd:438
-msgid "press a button…"
-msgstr "aperte um botão…"
-
-#: ui/settings_panel.gd:438
-msgid "press a key…"
-msgstr "aperte uma tecla…"
-
-#: ui/settings_panel.gd:470
-msgid "Conflict: %s is used by both %s and %s."
-msgstr "Conflito: %s é usado por %s e por %s."
-
-#: ui/settings_panel.gd:564
-msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
-msgstr "Menus, HUD, legendas e textos da história. Pseudo serve para testar traduções."
-
-#: ui/settings_panel.gd:565
-msgid "Comfort"
-msgstr "Conforto"
-
-#: ui/settings_panel.gd:566
-msgid "Camera shake"
-msgstr "Tremor da câmera"
-
-#: ui/settings_panel.gd:568
-msgid "Reduced motion"
-msgstr "Movimento reduzido"
-
-#: ui/settings_panel.gd:569
-msgid "Calmer camera and fewer bouncy effects."
-msgstr "Câmera mais calma e menos efeitos saltitantes."
-
-#: ui/settings_panel.gd:570 ui/settings_panel.gd:580
+#: ui/settings_panel.gd:316 ui/settings_panel.gd:577 ui/settings_panel.gd:587
 msgid "Interface"
 msgstr "Interface"
 
+#: ui/settings_panel.gd:323
+msgid "Rendering"
+msgstr "Renderização"
+
+#: ui/settings_panel.gd:324
+msgid "Low drops GI and fog; Ultra adds reflections."
+msgstr "Baixo remove GI e neblina; Ultra adiciona reflexos."
+
+#: ui/settings_panel.gd:325
+msgid "This renderer always uses the Low preset."
+msgstr "Este renderizador sempre usa a predefinição Baixo."
+
+#: ui/settings_panel.gd:327
+msgid "Detected: %s for %s. "
+msgstr "Detectado: %s para %s."
+
+#: ui/settings_panel.gd:328
+msgid "Your choice (hardware: %s). "
+msgstr "Sua escolha (hardware: %s)."
+
+#: ui/settings_panel.gd:329
+msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
+msgstr "Baixo remove GI, neblina e detalhes de sombra; Ultra adiciona reflexos."
+
+#: ui/settings_panel.gd:335
+msgid "Renderer"
+msgstr "Renderizador"
+
+#: ui/settings_panel.gd:335
+msgid "Standard (Forward+)"
+msgstr "Padrão (Forward+)"
+
+#: ui/settings_panel.gd:335
+msgid "Light (Mobile)"
+msgstr "Leve (Mobile)"
+
+#: ui/settings_panel.gd:337
+msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
+msgstr "Leve combina com gráficos integrados antigos. Vale depois de reiniciar o jogo (agora: %s)."
+
+#: ui/settings_panel.gd:343
+msgid "Render scale"
+msgstr "Escala de renderização"
+
+#: ui/settings_panel.gd:345
+msgid "Lower renders 3D at a smaller size; the interface stays sharp."
+msgstr "Menor renderiza o 3D num tamanho menor; a interface continua nítida."
+
+#: ui/settings_panel.gd:346
+msgid "Display"
+msgstr "Tela"
+
+#: ui/settings_panel.gd:350
+msgid "V-Sync"
+msgstr "V-Sync"
+
+#: ui/settings_panel.gd:356 ui/settings_panel.gd:385
+msgid "Bindings"
+msgstr "Atalhos"
+
+#: ui/settings_panel.gd:359
+msgid "ACTION   (select a binding to rebind it)"
+msgstr "AÇÃO   (selecione um atalho para trocar)"
+
+#: ui/settings_panel.gd:362
+msgid "KEYBOARD / MOUSE"
+msgstr "TECLADO / MOUSE"
+
+#: ui/settings_panel.gd:362
+msgid "CONTROLLER"
+msgstr "CONTROLE"
+
+#: ui/settings_panel.gd:378
+msgid "Reset to defaults"
+msgstr "Restaurar padrões"
+
+#: ui/settings_panel.gd:385
+msgid "Restore every key and controller binding."
+msgstr "Restaura todas as teclas e botões do controle."
+
+#: ui/settings_panel.gd:387
+msgid "Button prompts"
+msgstr "Ícones de botões"
+
+#: ui/settings_panel.gd:389
+msgid "Controller art: Automatic follows the connected pad."
+msgstr "Arte do controle: Automático segue o controle conectado."
+
+#: ui/settings_panel.gd:394
+msgid "Stick look speed"
+msgstr "Velocidade do analógico"
+
+#: ui/settings_panel.gd:397
+msgid "Invert look Y"
+msgstr "Inverter eixo Y"
+
+#: ui/settings_panel.gd:401
+msgid "Mouse smoothing"
+msgstr "Suavização do mouse"
+
+#: ui/settings_panel.gd:402
+msgid "Eases mouse look over a few frames."
+msgstr "Suaviza o olhar com o mouse por alguns quadros."
+
+#: ui/settings_panel.gd:403
+msgid "Scooping"
+msgstr "Recolhimento"
+
+#: ui/settings_panel.gd:404
+msgid "Scoop button"
+msgstr "Botão da pá"
+
+#: ui/settings_panel.gd:404
+msgid "Hold"
+msgstr "Segurar"
+
+#: ui/settings_panel.gd:404
+msgid "Toggle"
+msgstr "Alternar"
+
+#: ui/settings_panel.gd:445
+msgid "press a button…"
+msgstr "aperte um botão…"
+
+#: ui/settings_panel.gd:445
+msgid "press a key…"
+msgstr "aperte uma tecla…"
+
+#: ui/settings_panel.gd:477
+msgid "Conflict: %s is used by both %s and %s."
+msgstr "Conflito: %s é usado por %s e por %s."
+
 #: ui/settings_panel.gd:571
+msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
+msgstr "Menus, HUD, legendas e textos da história. Pseudo serve para testar traduções."
+
+#: ui/settings_panel.gd:572
+msgid "Comfort"
+msgstr "Conforto"
+
+#: ui/settings_panel.gd:573
+msgid "Camera shake"
+msgstr "Tremor da câmera"
+
+#: ui/settings_panel.gd:575
+msgid "Reduced motion"
+msgstr "Movimento reduzido"
+
+#: ui/settings_panel.gd:576
+msgid "Calmer camera and fewer bouncy effects."
+msgstr "Câmera mais calma e menos efeitos saltitantes."
+
+#: ui/settings_panel.gd:578
 msgid "Number format"
 msgstr "Formato de números"
 
-#: ui/settings_panel.gd:571
+#: ui/settings_panel.gd:578
 msgid "Short (1.2K)"
 msgstr "Curto (1,2K)"
 
-#: ui/settings_panel.gd:571
+#: ui/settings_panel.gd:578
 msgid "Scientific (1.2e3)"
 msgstr "Científico (1,2e3)"
 
-#: ui/settings_panel.gd:571
+#: ui/settings_panel.gd:578
 msgid "Engineering (1.2e3)"
 msgstr "Engenharia (1,2e3)"
 
-#: ui/settings_panel.gd:573
+#: ui/settings_panel.gd:580
 msgid "Best-value tags"
 msgstr "Etiquetas de melhor valor"
 
-#: ui/settings_panel.gd:574
+#: ui/settings_panel.gd:581
 msgid "Tag the affordable upgrade that gives the most per cube."
 msgstr "Marca a melhoria acessível que dá mais por cubo."
 
-#: ui/settings_panel.gd:575
+#: ui/settings_panel.gd:582
 msgid "HUD"
 msgstr "HUD"
 
-#: ui/settings_panel.gd:575
+#: ui/settings_panel.gd:582
 msgid "Minimal"
 msgstr "Mínimo"
 
-#: ui/settings_panel.gd:575
+#: ui/settings_panel.gd:582
 msgid "Hidden"
 msgstr "Oculto"
 
-#: ui/settings_panel.gd:576
+#: ui/settings_panel.gd:583
 msgid "Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."
 msgstr "Mínimo esmaece os extras depois de alguns segundos. Oculto mantém só avisos e mensagens."
 
-#: ui/settings_panel.gd:586
+#: ui/settings_panel.gd:593
 msgid "Interface scale"
 msgstr "Escala da interface"
 
-#: ui/settings_panel.gd:588
+#: ui/settings_panel.gd:595
 msgid "Size of menus, HUD and subtitles."
 msgstr "Tamanho de menus, HUD e legendas."
 
-#: ui/settings_panel.gd:589
+#: ui/settings_panel.gd:596
 msgid "Colour-blind palette"
 msgstr "Paleta para daltonismo"
 
-#: ui/settings_panel.gd:590
+#: ui/settings_panel.gd:597
 msgid "Okabe-Ito colours for hex progress, the hopper meter and part rarity."
 msgstr "Cores Okabe-Ito para progresso dos hexágonos, medidor da caçamba e raridade das peças."
 
-#: ui/settings_panel.gd:591 ui/settings_panel.gd:592
+#: ui/settings_panel.gd:598 ui/settings_panel.gd:599
 msgid "Subtitles"
 msgstr "Legendas"
 
-#: ui/settings_panel.gd:593
+#: ui/settings_panel.gd:600
 msgid "WREN and Ledger lines."
 msgstr "Falas da WREN e do Ledger."
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:601
 msgid "Subtitle size"
 msgstr "Tamanho das legendas"
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:601
 msgid "Small"
 msgstr "Pequeno"
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:601
 msgid "Large"
 msgstr "Grande"
 
-#: ui/settings_panel.gd:596
+#: ui/settings_panel.gd:603
 msgid "Subtitle background"
 msgstr "Fundo das legendas"
 
-#: ui/settings_panel.gd:597
+#: ui/settings_panel.gd:604
 msgid "A solid backdrop behind subtitle text."
 msgstr "Um fundo sólido atrás do texto das legendas."
 
@@ -11156,10 +10895,6 @@ msgstr "Força de levantamento nível 1"
 msgid "Clean your first hex"
 msgstr "Limpe seu primeiro hexágono"
 
-#: data/goals.json:goals[perfect_1].text
-msgid "Make a perfect bale"
-msgstr "Faça um fardo perfeito"
-
 #: data/goals.json:goals[upgrades_5].text
 msgid "Buy 5 upgrades"
 msgstr "Compre 5 melhorias"
@@ -11167,6 +10902,110 @@ msgstr "Compre 5 melhorias"
 #: data/goals.json:goals[cash_10].text
 msgid "Sell 10 bales"
 msgstr "Venda 10 fardos"
+
+#: data/goals.json:goals[hex_3].text data/objectives.json:objectives[hex3].text
+msgid "Clean 3 hexes"
+msgstr "Limpe 3 hexágonos"
+
+#: data/goals.json:goals[earn_1k].text
+msgid "Earn 1,000 cubes"
+msgstr "Ganhe 1.000 cubos"
+
+#: data/goals.json:goals[scoopie_1].text
+msgid "Build a Scoopie"
+msgstr "Construa um Scoopie"
+
+#: data/goals.json:goals[zone_1].text
+msgid "Give a robot a work zone"
+msgstr "Dê uma zona de trabalho a um robô"
+
+#: data/goals.json:goals[earn_3k].text
+msgid "Earn 3,000 cubes"
+msgstr "Ganhe 3.000 cubos"
+
+#: data/goals.json:goals[hex_5].text
+msgid "Clean 5 hexes"
+msgstr "Limpe 5 hexágonos"
+
+#: data/goals.json:goals[seeds].text
+msgid "Find the seed tin"
+msgstr "Encontre a lata de sementes"
+
+#: data/goals.json:goals[plant_5].text
+msgid "Plant the Maker seed"
+msgstr "Plante a semente dos Criadores"
+
+#: data/goals.json:goals[hex_7].text
+msgid "Clean 7 hexes"
+msgstr "Limpe 7 hexágonos"
+
+#: data/goals.json:goals[hex_10].text data/objectives.json:objectives[hex10].text data/radio.json:songs[verdance_sweep].hint
+msgid "Clean 10 hexes"
+msgstr "Limpe 10 hexágonos"
+
+#: data/goals.json:goals[base_2].text
+msgid "Upgrade the base to level 2"
+msgstr "Melhore a base para o nível 2"
+
+#: data/goals.json:goals[haulbug_1].text data/objectives.json:objectives[haul].text
+msgid "Build a Haul Bug"
+msgstr "Construa um Haul Bug"
+
+#: data/goals.json:goals[research_1].text data/objectives.json:objectives[research1].text
+msgid "Finish a research project"
+msgstr "Conclua um projeto de pesquisa"
+
+#: data/goals.json:goals[bales_20].text
+msgid "Robots press 20 bales"
+msgstr "Robôs prensam 20 fardos"
+
+#: data/goals.json:goals[hex_12].text
+msgid "Clean 12 hexes"
+msgstr "Limpe 12 hexágonos"
+
+#: data/goals.json:goals[hexlv_2].text
+msgid "Get a hex to Planted"
+msgstr "Leve um hexágono a Plantado"
+
+#: data/goals.json:goals[hex_15].text
+msgid "Clean 15 hexes"
+msgstr "Limpe 15 hexágonos"
+
+#: data/goals.json:goals[hex_17].text
+msgid "Clean 17 hexes"
+msgstr "Limpe 17 hexágonos"
+
+#: data/goals.json:goals[hex_20].text data/objectives.json:objectives[hex20].text
+msgid "Clean 20 hexes"
+msgstr "Limpe 20 hexágonos"
+
+#: data/goals.json:goals[base_3].text
+msgid "Upgrade the base to level 3"
+msgstr "Melhore a base para o nível 3"
+
+#: data/goals.json:goals[seedling_1].text
+msgid "Build a Seedling planter"
+msgstr "Construa um plantador Seedling"
+
+#: data/goals.json:goals[plant_25].text
+msgid "Plant 25 seeds"
+msgstr "Plante 25 sementes"
+
+#: data/goals.json:goals[drip_1].text
+msgid "Build a Drip watering robot"
+msgstr "Construa um robô regador Drip"
+
+#: data/goals.json:goals[home_drive_5].text
+msgid "Build the Mk V Orbital drive"
+msgstr "Construa o propulsor Mk V Orbital"
+
+#: data/goals.json:goals[home_land_1].text
+msgid "Fly to another planet"
+msgstr "Voe para outro planeta"
+
+#: data/goals.json:goals[perfect_1].text
+msgid "Make a perfect bale"
+msgstr "Faça um fardo perfeito"
 
 #: data/goals.json:goals[compartment_3].text
 msgid "Chest Size level 3"
@@ -11176,25 +11015,9 @@ msgstr "Tamanho do peito nível 3"
 msgid "Find a memory shard"
 msgstr "Encontre um fragmento de memória"
 
-#: data/goals.json:goals[hex_3].text data/objectives.json:objectives[hex3].text
-msgid "Clean 3 hexes"
-msgstr "Limpe 3 hexágonos"
-
 #: data/goals.json:goals[parts_2].text
 msgid "Dig up 2 robot parts"
 msgstr "Desenterre 2 peças de robô"
-
-#: data/goals.json:goals[earn_1k].text
-msgid "Earn 1,000 cubes"
-msgstr "Ganhe 1.000 cubos"
-
-#: data/goals.json:goals[research_1].text data/objectives.json:objectives[research1].text
-msgid "Finish a research project"
-msgstr "Conclua um projeto de pesquisa"
-
-#: data/goals.json:goals[hex_5].text
-msgid "Clean 5 hexes"
-msgstr "Limpe 5 hexágonos"
 
 #: data/goals.json:goals[lift_2].text
 msgid "Lift Strength level 2"
@@ -11203,14 +11026,6 @@ msgstr "Força de levantamento nível 2"
 #: data/goals.json:goals[upgrades_12].text
 msgid "Buy 12 upgrades"
 msgstr "Compre 12 melhorias"
-
-#: data/goals.json:goals[earn_3k].text
-msgid "Earn 3,000 cubes"
-msgstr "Ganhe 3.000 cubos"
-
-#: data/goals.json:goals[hex_7].text
-msgid "Clean 7 hexes"
-msgstr "Limpe 7 hexágonos"
 
 #: data/goals.json:goals[pet_cat].text
 msgid "Pet a stray cat"
@@ -11224,37 +11039,9 @@ msgstr "Conclua 4 projetos de pesquisa"
 msgid "Buy 20 upgrades"
 msgstr "Compre 20 melhorias"
 
-#: data/goals.json:goals[hex_10].text data/objectives.json:objectives[hex10].text data/radio.json:songs[verdance_sweep].hint
-msgid "Clean 10 hexes"
-msgstr "Limpe 10 hexágonos"
-
-#: data/goals.json:goals[base_2].text
-msgid "Upgrade the base to level 2"
-msgstr "Melhore a base para o nível 2"
-
-#: data/goals.json:goals[scoopie_1].text
-msgid "Build a Scoopie"
-msgstr "Construa um Scoopie"
-
-#: data/goals.json:goals[zone_1].text
-msgid "Give a robot a work zone"
-msgstr "Dê uma zona de trabalho a um robô"
-
-#: data/goals.json:goals[haulbug_1].text data/objectives.json:objectives[haul].text
-msgid "Build a Haul Bug"
-msgstr "Construa um Haul Bug"
-
-#: data/goals.json:goals[bales_20].text
-msgid "Robots press 20 bales"
-msgstr "Robôs prensam 20 fardos"
-
 #: data/goals.json:goals[scoopie_2].text
 msgid "Run 2 Scoopies"
 msgstr "Tenha 2 Scoopies trabalhando"
-
-#: data/goals.json:goals[hex_12].text
-msgid "Clean 12 hexes"
-msgstr "Limpe 12 hexágonos"
 
 #: data/goals.json:goals[upgrades_25].text
 msgid "Buy 25 upgrades"
@@ -11267,22 +11054,6 @@ msgstr "Conclua 6 projetos de pesquisa"
 #: data/goals.json:goals[robots_4].text
 msgid "Build 4 robots"
 msgstr "Construa 4 robôs"
-
-#: data/goals.json:goals[hex_15].text
-msgid "Clean 15 hexes"
-msgstr "Limpe 15 hexágonos"
-
-#: data/goals.json:goals[seeds].text
-msgid "Find the seed tin"
-msgstr "Encontre a lata de sementes"
-
-#: data/goals.json:goals[plant_5].text
-msgid "Plant the Maker seed"
-msgstr "Plante a semente dos Criadores"
-
-#: data/goals.json:goals[hexlv_2].text
-msgid "Get a hex to Planted"
-msgstr "Leve um hexágono a Plantado"
 
 #: data/goals.json:goals[earn_10k].text
 msgid "Earn 10,000 cubes"
@@ -11300,10 +11071,6 @@ msgstr "Leia 2 fragmentos de memória"
 msgid "Zone 6 hexes for your crews"
 msgstr "Defina 6 hexágonos para suas equipes"
 
-#: data/goals.json:goals[hex_17].text
-msgid "Clean 17 hexes"
-msgstr "Limpe 17 hexágonos"
-
 #: data/goals.json:goals[research_8].text
 msgid "Finish 8 research projects"
 msgstr "Conclua 8 projetos de pesquisa"
@@ -11319,10 +11086,6 @@ msgstr "Recicle 5 fardos"
 #: data/goals.json:goals[hexlv_3].text
 msgid "Get a hex to Growing"
 msgstr "Leve um hexágono a Crescendo"
-
-#: data/goals.json:goals[hex_20].text data/objectives.json:objectives[hex20].text
-msgid "Clean 20 hexes"
-msgstr "Limpe 20 hexágonos"
 
 #: data/goals.json:goals[skimmer_1].text
 msgid "Build a Skimmer for the lake"
@@ -11348,17 +11111,9 @@ msgstr "Limpe 28 hexágonos"
 msgid "Buy 40 upgrades"
 msgstr "Compre 40 melhorias"
 
-#: data/goals.json:goals[seedling_1].text
-msgid "Build a Seedling planter"
-msgstr "Construa um plantador Seedling"
-
 #: data/goals.json:goals[hex_30].text
 msgid "Clean 30 hexes (lake too)"
 msgstr "Limpe 30 hexágonos (lago também)"
-
-#: data/goals.json:goals[base_3].text
-msgid "Upgrade the base to level 3"
-msgstr "Melhore a base para o nível 3"
 
 #: data/goals.json:goals[extras_radio].text
 msgid "Pick a song on the base radio"
@@ -11367,14 +11122,6 @@ msgstr "Escolha uma música no rádio da base"
 #: data/goals.json:goals[builder_1].text
 msgid "Style a robot in the Locker"
 msgstr "Personalize um robô no Armário"
-
-#: data/goals.json:goals[plant_25].text
-msgid "Plant 25 seeds"
-msgstr "Plante 25 sementes"
-
-#: data/goals.json:goals[drip_1].text
-msgid "Build a Drip watering robot"
-msgstr "Construa um robô regador Drip"
 
 #: data/goals.json:goals[pollinator].text
 msgid "Research Pollinator Survey"
@@ -11712,14 +11459,6 @@ msgstr "Leve 25 hexágonos a Crescendo aqui"
 msgid "Call the Cradle home"
 msgstr "Chame a Cradle para casa"
 
-#: data/goals.json:goals[home_drive_5].text
-msgid "Build the Mk V Orbital drive"
-msgstr "Construa o propulsor Mk V Orbital"
-
-#: data/goals.json:goals[home_land_1].text
-msgid "Fly to another planet"
-msgstr "Voe para outro planeta"
-
 #: data/goals.json:goals[home_restore_2].text
 msgid "Restore a second planet"
 msgstr "Restaure um 2º planeta"
@@ -11831,6 +11570,10 @@ msgstr "Os animais se mudaram para cá"
 #: data/homeward.json:planets[verdance].name data/planets.json:verdance.name data/telescope.json:planets_default[verdance].name
 msgid "Verdance"
 msgstr "Verdance"
+
+#: data/homeward.json:planets[verdance].leave.toast
+msgid "Six stations awake, Lumi. Their robots can look after Verdance now."
+msgstr "Seis estações acordadas, Lumi. Os robôs delas já podem cuidar de Verdance."
 
 #: data/homeward.json:planets[ochre].name data/planets.json:ochre.name data/telescope.json:planets_default[ochre].name
 msgid "Ochre"
@@ -12654,16 +12397,16 @@ msgid "Clean ground lets plants grow again."
 msgstr "Em chão limpo as plantas crescem de novo."
 
 #: data/objectives.json:objectives[hex2].lines
-msgid "Two clean hexes. Keep going, Lumi."
-msgstr "Dois hexágonos limpos. Continue, Lumi."
+msgid "One hex clean. Now one more, Lumi."
+msgstr "Um hexágono limpo. Agora mais um, Lumi."
 
 #: data/objectives.json:objectives[hex3].desc
 msgid "Clear room around the base, so robots can start work."
 msgstr "Abra espaço em volta da base para os robôs começarem a trabalhar."
 
 #: data/objectives.json:objectives[hex3].lines
-msgid "Three clean hexes. The planet notices, believe me."
-msgstr "Três hexágonos limpos. O planeta percebe, pode acreditar."
+msgid "One more hex, Lumi. The planet notices, believe me."
+msgstr "Mais um hexágono, Lumi. O planeta percebe, pode acreditar."
 
 #: data/objectives.json:objectives[bench2].text
 msgid "Add a Bot Bay to the bench"
@@ -12690,16 +12433,16 @@ msgid "The Bot Bay hums! It can build you a helper. Try the Bots tab at the work
 msgstr "A Baia de robôs está zumbindo! Ela pode construir um ajudante para você. Veja a aba Bots na bancada."
 
 #: data/objectives.json:objectives[zone].text
-msgid "Send your robot to work"
-msgstr "Mande seu robô trabalhar"
+msgid "Show your robot where to clean first"
+msgstr "Mostre ao seu robô onde limpar primeiro"
 
 #: data/objectives.json:objectives[zone].desc
-msgid "Robots clean where you point. Press {open_command}."
-msgstr "Os robôs limpam onde você mandar. Aperte {open_command}."
+msgid "It cleans by itself. {open_command}: show it where first."
+msgstr "Ele limpa sozinho. {open_command}: mostre por onde começar."
 
 #: data/objectives.json:objectives[zone].lines
-msgid "Give your robot a hex to work on. It wants a job."
-msgstr "Dê um hexágono para seu robô trabalhar. Ele quer uma tarefa."
+msgid "Your robot already knows the job. Paint a hex, and it starts there."
+msgstr "Seu robô já sabe o que fazer. Pinte um hexágono e ele começa por ali."
 
 #: data/objectives.json:objectives[seed].text
 msgid "Plant the first seed"
@@ -12722,8 +12465,8 @@ msgid "More clean ground, more room to plant. Robots help."
 msgstr "Mais chão limpo, mais espaço para plantar. Os robôs ajudam."
 
 #: data/objectives.json:objectives[hex10].lines
-msgid "Ten clean hexes. Your robots are learning from you, Lumi."
-msgstr "Dez hexágonos limpos. Seus robôs estão aprendendo com você, Lumi."
+msgid "On to ten clean hexes. Your robots are learning from you, Lumi."
+msgstr "Rumo a dez hexágonos limpos. Seus robôs estão aprendendo com você, Lumi."
 
 #: data/objectives.json:objectives[base2].text
 msgid "Rebuild the base to level 2"
@@ -12774,8 +12517,8 @@ msgid "More clean ground means more room to grow."
 msgstr "Mais chão limpo é mais espaço para crescer."
 
 #: data/objectives.json:objectives[hex20].lines
-msgid "Twenty hexes. The air already smells different."
-msgstr "Vinte hexágonos. O ar já tem outro cheiro."
+msgid "Twenty hexes next. The air already smells different."
+msgstr "Agora, vinte hexágonos. O ar já tem outro cheiro."
 
 #: data/objectives.json:objectives[base3].text
 msgid "Rebuild the base to level 3"
@@ -14908,12 +14651,44 @@ msgid "One more step toward a green world."
 msgstr "Mais um passo rumo a um mundo verde."
 
 #: data/story_reasons.json:goal_reasons
+msgid "You can fly on now. The rest of Verdance can wait."
+msgstr "Você já pode seguir viagem. O resto de Verdance pode esperar."
+
+#: data/story_reasons.json:goal_reasons
 msgid "Other old stations are waiting to be woken up."
 msgstr "Outras velhas estações esperam para ser acordadas."
 
 #: data/story_reasons.json:goal_reasons
+msgid "The seed tin is nearly empty. Garden Row kept the seed store."
+msgstr "A lata de sementes está quase vazia. Garden Row guardava o depósito de sementes."
+
+#: data/story_reasons.json:goal_reasons
+msgid "The rocket's skin is too thin for space. Gantry Works made hulls."
+msgstr "O casco do foguete é fino demais para o espaço. Gantry Works fabricava cascos."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Nobody knows where to fly. Signal Heights kept the star chart."
+msgstr "Ninguém sabe para onde voar. Signal Heights guardava o mapa estelar."
+
+#: data/story_reasons.json:goal_reasons
+msgid "A long flight needs lasting power. The Fairground has a cell."
+msgstr "Um voo longo precisa de energia que dure. O Fairground tem uma célula."
+
+#: data/story_reasons.json:goal_reasons
+msgid "The rocket's tanks are empty. Stack Works still has fuel."
+msgstr "Os tanques do foguete estão vazios. Stack Works ainda tem combustível."
+
+#: data/story_reasons.json:goal_reasons
 msgid "A strong second base keeps its side of Verdance clean."
 msgstr "Uma segunda base forte mantém limpo o lado dela de Verdance."
+
+#: data/story_reasons.json:goal_reasons
+msgid "A woken station keeps cleaning, and gives its rocket piece."
+msgstr "Uma estação acordada continua limpando e entrega sua peça do foguete."
+
+#: data/story_reasons.json:goal_reasons
+msgid "A bigger rocket carries supplies to more stations."
+msgstr "Um foguete maior leva suprimentos a mais estações."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Every piece you pick up is one less on Verdance."
@@ -15104,16 +14879,12 @@ msgid "Robots keep working while you do other things."
 msgstr "Os robôs continuam trabalhando enquanto você faz outras coisas."
 
 #: data/story_reasons.json:exit
-msgid "Lumi, look at the star map. Five worlds, and the Ledger buried every one."
-msgstr "Lumi, olhe o mapa estelar. Cinco mundos, e o Ledger soterrou todos eles."
+msgid "Look at the star map. Five worlds, and the Ledger buried every one."
+msgstr "Olhe o mapa estelar. Cinco mundos, e o Ledger soterrou todos eles."
 
 #: data/story_reasons.json:exit
-msgid "The Cradle waits until all of them can grow again. Verdance was only the first."
-msgstr "A Cradle espera até que todos possam voltar a crescer. Verdance foi só o primeiro."
-
-#: data/story_reasons.json:exit
-msgid "Your robots will keep cleaning here. Build the Orbital drive, and we'll wake the next world."
-msgstr "Seus robôs vão continuar limpando aqui. Construa o propulsor Orbital e vamos acordar o próximo mundo."
+msgid "The Cradle waits for all of them. Build the Orbital drive, and we'll wake the next world."
+msgstr "A Cradle espera por todos eles. Construa o propulsor Orbital e vamos acordar o próximo mundo."
 
 #: data/story_reasons.json:exit
 msgid "The rocket can leave now. Verdance isn't finished, and that's all right."
@@ -17272,6 +17043,136 @@ msgstr "Aquele pórtico desmanchou a frota do Ledger quando o dinheiro acabou. A
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Um mundo de ferrugem, verde. Os velhos guindastes têm flores aos pés. As contas estão fechadas, {name}. Nós as equilibramos."
 
+#~ msgid "Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."
+#~ msgstr "Tempestade de areia no horizonte. Chão limpo e descoberto vai ser soterrado; hexágonos plantados e protegidos resistem."
+
+#~ msgid "The sandstorm buried %d hex again. Sustained hexes shelter their neighbours."
+#~ msgstr[0] "A tempestade soterrou %d hexágono de novo. Hexágonos sustentados protegem os vizinhos."
+#~ msgstr[1] "A tempestade soterrou %d hexágonos de novo. Hexágonos sustentados protegem os vizinhos."
+
+#~ msgid "The storm blew over. Everything held."
+#~ msgstr "A tempestade passou. Tudo resistiu."
+
+#~ msgid "The ice let go. The junk underneath is just junk again."
+#~ msgstr "O gelo soltou. A sucata embaixo voltou a ser só sucata."
+
+#~ msgid "E   Light a heater on this ice · %s cubes"
+#~ msgstr "E   Acender um aquecedor neste gelo · %s cubos"
+
+#~ msgid "E   Build a greenhouse on this hex · %s cubes"
+#~ msgstr "E   Construir uma estufa neste hexágono · %s cubos"
+
+#~ msgid "Not enough cubes for a heater."
+#~ msgstr "Cubos insuficientes para um aquecedor."
+
+#~ msgid "Heater limit reached. Move on to the next ice once these have done their work."
+#~ msgstr "Limite de aquecedores atingido. Siga para o próximo gelo quando estes terminarem."
+
+#~ msgid "Not enough cubes for a greenhouse."
+#~ msgstr "Cubos insuficientes para uma estufa."
+
+#~ msgid "The old pumps are running. The water drops and a ring of streets comes back up, with a lot of stranded junk."
+#~ msgstr "As velhas bombas estão funcionando. A água baixa e um anel de ruas reaparece, cheio de sucata encalhada."
+
+#~ msgid "The landing pad is clean. Now plant it and keep it Sustained."
+#~ msgstr "A plataforma de pouso está limpa. Agora plante e mantenha sustentada."
+
+#~ msgid "The landing pad is alive and the beacon is lit. The Cradle has answered. It is coming home."
+#~ msgstr "A plataforma está viva e o farol aceso. A Cradle respondeu. Ela está voltando para casa."
+
+#~ msgid "Sandstorm blowing"
+#~ msgstr "Tempestade de areia ativa"
+
+#~ msgid "Next sandstorm  %d:%02d"
+#~ msgstr "Próxima tempestade  %d:%02d"
+
+#~ msgid "Well dry: Drips refill at tanks"
+#~ msgstr "Poço seco: Drips reabastecem nos tanques"
+
+#~ msgid "%d hexes iced  ·  %d heaters"
+#~ msgstr "%d hexágonos congelados  ·  %d aquecedores"
+
+#~ msgid "Greenhouses %d%s"
+#~ msgstr "Estufas %d%s"
+
+#~ msgid "  ·  cold-hardy seeds"
+#~ msgstr "  ·  sementes resistentes ao frio"
+
+#~ msgid "Water down: all streets above water"
+#~ msgstr "Água baixou: todas as ruas fora d'água"
+
+#~ msgid "Pumps: ring %d skimmed %d%% / %d%%"
+#~ msgstr "Bombas: anel %d limpo %d%% / %d%%"
+
+#~ msgid "Water level %d / %d"
+#~ msgstr "Nível da água %d / %d"
+
+#~ msgid "The Cradle is coming home"
+#~ msgstr "A Cradle está voltando para casa"
+
+#~ msgid "Pad clean %d%%  ·  Sustained %d%%"
+#~ msgstr "Plataforma limpa %d%%  ·  Sustentado %d%%"
+
+#~ msgid "District Growing %d%% / %d%%"
+#~ msgstr "Distrito crescendo %d%% / %d%%"
+
+#~ msgid "The Cradle waits until all of them can grow again. Verdance was only the first."
+#~ msgstr "A Cradle espera até que todos possam voltar a crescer. Verdance foi só o primeiro."
+
+#~ msgid "Build the Orbital drive, and we'll go and wake the next world."
+#~ msgstr "Construa o propulsor Orbital e vamos acordar o próximo mundo."
+
+#~ msgid "The rocket isn't ready yet. Keep following WREN's steps."
+#~ msgstr "O foguete ainda não está pronto. Continue seguindo os passos da WREN."
+
+#~ msgid "Two clean hexes. Keep going, Lumi."
+#~ msgstr "Dois hexágonos limpos. Continue, Lumi."
+
+#~ msgid "Three clean hexes. The planet notices, believe me."
+#~ msgstr "Três hexágonos limpos. O planeta percebe, pode acreditar."
+
+#~ msgid "Send your robot to work"
+#~ msgstr "Mande seu robô trabalhar"
+
+#~ msgid "Robots clean where you point. Press {open_command}."
+#~ msgstr "Os robôs limpam onde você mandar. Aperte {open_command}."
+
+#~ msgid "Give your robot a hex to work on. It wants a job."
+#~ msgstr "Dê um hexágono para seu robô trabalhar. Ele quer uma tarefa."
+
+#~ msgid "Ten clean hexes. Your robots are learning from you, Lumi."
+#~ msgstr "Dez hexágonos limpos. Seus robôs estão aprendendo com você, Lumi."
+
+#~ msgid "Twenty hexes. The air already smells different."
+#~ msgstr "Vinte hexágonos. O ar já tem outro cheiro."
+
+#~ msgid "Lumi, look at the star map. Five worlds, and the Ledger buried every one."
+#~ msgstr "Lumi, olhe o mapa estelar. Cinco mundos, e o Ledger soterrou todos eles."
+
+#~ msgid "Your robots will keep cleaning here. Build the Orbital drive, and we'll wake the next world."
+#~ msgstr "Seus robôs vão continuar limpando aqui. Construa o propulsor Orbital e vamos acordar o próximo mundo."
+
+#~ msgid "Cargo pod landed: %s cubes from %d robots in other districts."
+#~ msgstr "Cápsula de carga pousou: %s cubos de %d robôs de outros distritos."
+
+#~ msgid "WREN: That's the edge of the survey zone, Lumi. Nothing out there but haze."
+#~ msgstr "WREN: Ali é o limite da zona de mapeamento, Lumi. Lá fora só tem neblina."
+
+#~ msgid "Lumi hovers back onto solid ground."
+#~ msgstr "Lumi flutua de volta para o chão firme."
+
+#~ msgid "Planet %d m around"
+#~ msgstr "Planeta: %d m de volta"
+
+#~ msgid "Walked %d m (%d%%)"
+#~ msgstr "Andou %d m (%d%%)"
+
+#~ msgid "Speed %.1f m/s"
+#~ msgstr "Velocidade %.1f m/s"
+
+#~ msgid "Bots near %d, far %d"
+#~ msgstr "Bots perto %d, longe %d"
+
 #~ msgid "Y: role · Hold A: paint · Hold X: erase · Left stick: move"
 #~ msgstr "Y: função · Segure A: pintar · Segure X: apagar · Analógico esquerdo: mover"
 
@@ -17280,6 +17181,121 @@ msgstr "Um mundo de ferrugem, verde. Os velhos guindastes têm flores aos pés. 
 
 #~ msgid "%s zone"
 #~ msgstr "Zona %s"
+
+#~ msgid "Locked. Upgrade your base to level 5 to build the launch pad."
+#~ msgstr "Bloqueado. Leve sua base ao nível 5 para construir a plataforma de lançamento."
+
+#~ msgid "Priority"
+#~ msgstr "Prioridade"
+
+#~ msgid "Stay"
+#~ msgstr "Ficar"
+
+#~ msgid "Follow me"
+#~ msgstr "Siga-me"
+
+#~ msgid "Recall"
+#~ msgstr "Chamar de volta"
+
+#~ msgid "Works the marked hexes first, then the rest of the district."
+#~ msgstr "Trabalha primeiro os hexágonos marcados, depois o resto do distrito."
+
+#~ msgid "Works only the marked hexes, and waits there when they are done."
+#~ msgstr "Trabalha só os hexágonos marcados e espera lá quando termina."
+
+#~ msgid "Works the hexes around you, wherever you go."
+#~ msgstr "Trabalha os hexágonos ao seu redor, aonde você for."
+
+#~ msgid "Comes back and parks at the base."
+#~ msgstr "Volta e estaciona na base."
+
+#~ msgid "[p]{@dpad}  panel      {@move}  move      {pad:#0}  mark      {pad:#2}  unmark      {pad:zoom_out}{pad:zoom_in}  zoom      {pad:ui_cancel}  back[/p][k]Left drag  mark      Right drag  unmark      {@move} / middle drag  move      Wheel  zoom      {kbd:open_command}  back[/k]"
+#~ msgstr "[p]{@dpad}  painel      {@move}  mover      {pad:#0}  marcar      {pad:#2}  desmarcar      {pad:zoom_out}{pad:zoom_in}  zoom      {pad:ui_cancel}  voltar[/p][k]Arrastar esq.  marcar      Arrastar dir.  desmarcar      {@move} / arrastar meio  mover      Roda  zoom      {kbd:open_command}  voltar[/k]"
+
+#~ msgid "COMMAND"
+#~ msgstr "COMANDO"
+
+#~ msgid "Mark around me"
+#~ msgstr "Marcar ao meu redor"
+
+#~ msgid "CREWS"
+#~ msgstr "EQUIPES"
+
+#~ msgid "Following the %s orders. Mark hexes or pick a mode to give it its own."
+#~ msgstr "Seguindo as ordens de %s. Marque hexágonos ou escolha um modo para dar ordens próprias."
+
+#~ msgid "No orders yet: roaming the district. Drag on the ground to mark where to work."
+#~ msgstr "Ainda sem ordens: rodando pelo distrito. Arraste no chão para marcar onde trabalhar."
+
+#~ msgid "No robots yet. Build one at the workbench."
+#~ msgstr "Ainda não há robôs. Construa um na bancada."
+
+#~ msgid "Build %s  %s"
+#~ msgstr "Construir %s  %s"
+
+#~ msgid "Max tier"
+#~ msgstr "Nível máximo"
+
+#~ msgid "Upgrade > %s"
+#~ msgstr "Melhorar > %s"
+
+#~ msgid "ready"
+#~ msgstr "pronto"
+
+#~ msgid "build at the workbench"
+#~ msgstr "construir na bancada"
+
+#~ msgid "Place refill tank here  %s  (%d/%d)"
+#~ msgstr "Colocar tanque de recarga aqui  %s  (%d/%d)"
+
+#~ msgid "A Water Tank at your hex. Waterers refill at the nearest one."
+#~ msgstr "Um Tanque de Água no seu hexágono. Regadores reabastecem no mais próximo."
+
+#~ msgid "%s · %d HEX"
+#~ msgstr[0] "%s · %d HEX"
+#~ msgstr[1] "%s · %d HEX"
+
+#~ msgid "BASE"
+#~ msgstr "BASE"
+
+#~ msgid "YOU"
+#~ msgstr "VOCÊ"
+
+#~ msgid "HEX %d"
+#~ msgstr "HEX %d"
+
+#~ msgid "BASE YARD"
+#~ msgstr "PÁTIO DA BASE"
+
+#~ msgid "Home ground, always clean"
+#~ msgstr "Terreno de casa, sempre limpo"
+
+#~ msgid "LAKE HEX %d"
+#~ msgstr "HEX DO LAGO %d"
+
+#~ msgid "Floating junk  %d%% left"
+#~ msgstr "Sucata flutuante  resta %d%%"
+
+#~ msgid "Junk  %d%% left"
+#~ msgstr "Sucata  resta %d%%"
+
+#~ msgid "Level %d · %s"
+#~ msgstr "Nível %d · %s"
+
+#~ msgid "In %s zone"
+#~ msgstr "Na zona %s"
+
+#~ msgid "%d robots"
+#~ msgstr "%d robôs"
+
+#~ msgid "%d / %d hexes clean"
+#~ msgstr "%d / %d hexágonos limpos"
+
+#~ msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Upgrades tab."
+#~ msgstr "A plataforma de lançamento exige uma base nível 5 (a sua é nível %d). Melhore a base na aba Melhorias."
+
+#~ msgid "The rocket lands on the pad when the base reaches level 5."
+#~ msgstr "O foguete pousa na plataforma quando a base chega ao nível 5."
 
 #~ msgid "Everything sells for x%s now."
 #~ msgstr "Agora tudo vende por x%s."

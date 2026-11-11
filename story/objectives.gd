@@ -221,6 +221,10 @@ static func goal_reason(g: Dictionary) -> String:
 	var kind: String = "%s:%s" % [typ, str(g.get("key", ""))]
 	if by_id.has(str(g.get("id", ""))):
 		return str(by_id[str(g.get("id", ""))])
+	var by_prefix: Dictionary = _reasons.get("by_prefix", {})
+	for pre: String in by_prefix:
+		if str(g.get("id", "")).begins_with(pre):
+			return str(by_prefix[pre])
 	if by_kind.has(kind):
 		return str(by_kind[kind])
 	return str(by_type.get(typ, _reasons.get("default", "")))

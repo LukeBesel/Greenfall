@@ -12,6 +12,8 @@ const PICKUP_RANGE: float = 1.9
 const CUBE_TIME: float = 1.7
 ## Pieces at least this big get the heavy pickup animation.
 const BIG_PIECE_VOL: float = 1.5
+## [v6feel] Lumi's collision radius on a round planet.
+const BODY_R: float = 0.5
 
 var input: InputSource
 var world: Node  # the slice scene: field, view, collect_piece(), depot
@@ -38,6 +40,10 @@ var _idle_time: float = 0.0
 var _stack_root: Node3D
 var _stack_sway := Vector2.ZERO
 var _stack_sway_v := Vector2.ZERO
+var _stack_acc := Vector3.ZERO
+## [v6feel] Bales on their way up to the stack: cube instance id -> [start in the stack's space, seconds so far].
+var _lifts: Dictionary = {}
+const LIFT_TIME: float = 0.3
 var _distance_accum: float = 0.0
 var _dust_timer: float = 0.0
 var _focus_hex: int = -1
@@ -66,6 +72,7 @@ func _ready() -> void:
 	shape.position = Vector3(0, 0.6, 0)
 	add_child(shape)
 	_shape = shape
+	_fit_shape()
 	model = PatchModel.new()
 	model.name = "Model"
 	add_child(model)
@@ -98,15 +105,33 @@ func enable_sphere(surface: SphereSurface, cam_node: Node3D) -> void:
 	sphere_motor = SphereMotor.new(surface)
 	sphere_motor.landed.connect(func(impact: float) -> void:
 		if impact > 2.0:
+			rumble(0.0, clampf(impact * 0.06, 0.1, 0.4), 0.1)  # [v6feel]
 			model.squash(-clampf(impact * 0.06, 0.1, 0.45)))
 	sphere_motor.jumped.connect(func() -> void:
 		model.squash(0.3)
 		Audio.play("whoosh", 1.3, -12.0))
 	motion_mode = CharacterBody3D.MOTION_MODE_FLOATING
 	wall_min_slide_angle = 0.0
-	if _shape:
-		(_shape.shape as BoxShape3D).size = Vector3(1.1, 0.95, 1.0)
-		_shape.position = Vector3(0, 0.25 + 0.475, 0)
+	# [v6feel] A round body that slides on the level: a box caught on every corner, post and heap
+	# (its flat front met them square on), and turning beside a wall shoved him off it.
+	sphere_motor.flat_slide = true
+	sphere_motor.ray_mask = PhysLayers.WORLD | PhysLayers.PROP
+	sphere_motor.step_mask = PhysLayers.WORLD | PhysLayers.PROP
+	sphere_motor.ray_top = 0.9
+	_fit_shape()
+
+
+## [v6feel] The round planet's body: lifted off the ground (he hovers; only walls and props touch
+## it). enable_sphere runs before _ready in the game, where there was no shape yet: the lift never
+## happened and the flat world's box dragged along the ground.
+func _fit_shape() -> void:
+	if _shape == null or sphere == null:
+		return
+	var cyl := CylinderShape3D.new()
+	cyl.radius = BODY_R
+	cyl.height = 0.95
+	_shape.shape = cyl
+	_shape.position = Vector3(0, 0.25 + 0.475, 0)
 
 
 ## [orbit] Puts Lumi on the planet's ground under `pos`, facing `fwd`.
@@ -252,8 +277,13 @@ func _move(delta: float) -> void:
 		velocity = up() * velocity.dot(up())
 		_shore_hint()
 	# Nudge cubes we bump into.
-	for i: int in get_slide_collision_count():
-		var col: KinematicCollision3D = get_slide_collision(i)
+	var bumps: Array[KinematicCollision3D] = []
+	if sphere_motor and sphere_motor.flat_slide:
+		bumps = sphere_motor.hits  # [v6feel]
+	else:
+		for i: int in get_slide_collision_count():
+			bumps.append(get_slide_collision(i))
+	for col: KinematicCollision3D in bumps:
 		var body: Object = col.get_collider()
 		if body is JunkCube and not (body as JunkCube).carried:
 			(body as JunkCube).apply_central_impulse(-col.get_normal() * 0.6)
@@ -261,6 +291,7 @@ func _move(delta: float) -> void:
 	var accel_w: Vector3 = (velocity - _prev_vel) / maxf(delta, 0.0001)
 	_prev_vel = velocity
 	var local_acc: Vector3 = global_transform.basis.inverse() * accel_w
+	_stack_acc = local_acc.limit_length(30.0)  # [v6feel] the sway read velocity - _prev_vel after this line: always zero
 	model.set_motion(hspeed, hspeed / maxf(stat("move_speed"), 0.1), Vector2(local_acc.x, -local_acc.z), delta)
 	var now_moving: bool = hspeed > 0.6
 	if now_moving != _moving:
@@ -409,6 +440,7 @@ func _handle_scoop(delta: float) -> void:
 			_buzz_cooldown = 0.8
 			Audio.play("buzz", 1.0, -8.0)
 			model.shudder(0.12)
+			rumble(0.35, 0.0, 0.12)  # [v6feel] chest full
 			EventBus.compartment_changed.emit(compartment.fill, cap)  # HUD shakes the meter
 		return
 	# Magnet arm: pull nearby junk toward the scoop.
@@ -467,6 +499,8 @@ func _take_piece(pid: int) -> void:
 	# Tractor beam show (pooled, see PickupFx): lock-on reticle, twin lasers, lift with arcs,
 	# compress to light and stream into the chest hopper. Big pieces get a heavier, slower take.
 	var big: bool = vol >= BIG_PIECE_VOL
+	if big:
+		rumble(0.25, 0.2, 0.12)  # [v6feel] a heavy piece leaves the ground
 	var dur: float = 0.52 if big else 0.4
 	pickup_fx.launch(mesh, start_xf, dur, big, color)
 	# Arrival is timer-driven so a cut-short animation can never leave volume stuck as pending.
@@ -512,7 +546,7 @@ func _handle_cubing(delta: float) -> void:
 			_crunched = true
 			Audio.play("crunch", 0.85, -3.0)
 			FeelFx.bale_press(self)  # [first] squash/stretch, thunk, small shake
-			Input.start_joy_vibration(0, 0.5, 0.7, 0.25)
+			rumble(0.5, 0.7, 0.25)  # [v6feel] was pad 0 always, also for the autoplay bot
 		if not _cube_spawned and t >= 0.68:
 			_cube_spawned = true
 			_spawn_cube()
@@ -642,17 +676,19 @@ func _on_part_found(idx: int) -> void:
 	var mi := MeshInstance3D.new()
 	mi.mesh = AssetLib.model_mesh(str(pt.get("model", "metal_toolbox")))
 	get_tree().current_scene.add_child(mi)
-	mi.global_position = pos - Vector3(0, 0.3, 0)
+	var pu: Vector3 = up()  # [v6feel] local up: on the globe the part rose along world +Y, sideways out of the ground
+	mi.global_basis = global_basis.orthonormalized()
+	mi.global_position = pos - pu * 0.3
 	var tw := mi.create_tween()
-	tw.tween_property(mi, "global_position", pos + Vector3(0, 0.6, 0), 0.5).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tw.tween_property(mi, "global_position", pos + pu * 0.6, 0.5).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tw.tween_interval(0.8)
 	tw.tween_property(mi, "global_position", to_global(model.chest_point), 0.35)
 	tw.tween_callback(mi.queue_free)
-	Vfx.burst("sparkle", pos + Vector3(0, 0.6, 0), col, 0.7)
+	Vfx.burst("sparkle", pos + pu * 0.6, col, 0.7)
 	Audio.play("ding", 1.0 if r < 3 else 0.8, -6.0)
 	if r >= 3:
 		Audio.play("fanfare", 1.0, -8.0)
-	Vfx.float_text(pos + Vector3(0, 1.4, 0), L10nFmt.part_label(tr(str(rar.get("name", ""))), tr(str(pt.get("name", "Part")))), col, 0.55, 0.8)  # [i18n2]
+	Vfx.float_text(pos + pu * 1.4, L10nFmt.part_label(tr(str(rar.get("name", ""))), tr(str(pt.get("name", "Part")))), col, 0.55, 0.8)  # [i18n2]
 	EventBus.toast.emit(tr("Recovered: %s") % L10nFmt.part_label(tr(str(rar.get("name", ""))), tr(str(pt.get("name", "part")))) + "  " + RobotParts.gain_text(r), "reward")  # [v4calm] cut  [i18n2] [qafix] QA #20: name the Parts it paid
 
 
@@ -677,13 +713,30 @@ func pick_up(c: JunkCube) -> void:
 	c.set_carried(true)
 	c.reparent(_stack_root, true)
 	carried.append(c)
-	var target_y: float = _stack_height(carried.size() - 1)
-	var tw := c.create_tween().set_parallel(true)
-	tw.tween_property(c, "position", Vector3(0, target_y, 0), 0.22).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	tw.tween_property(c, "rotation", Vector3(0, randf_range(-0.15, 0.15), 0), 0.22)
+	# [v6feel] No tween: _update_stack places every carried bale each physics tick. A tween lost to
+	# that write whenever Lumi moved during the lift (the physics server hands a moving frozen body
+	# its last transform back before each tick), and the bale stayed at ground height inside him.
+	_seat_stack()
+	_lifts[c.get_instance_id()] = [_stack_root.to_local(c.global_position), 0.0, _stack_root.global_basis.inverse() * c.global_basis, randf_range(-0.15, 0.15)]
 	Audio.play("pop", 0.8, -6.0)
 	model.squash(-0.2)
 	c.squish(0.2)
+	rumble(0.2, 0.35, 0.1)
+
+
+## [v6feel] The way up: out to arm's length from Lumi's middle first, then over his head and down
+## onto the stack, so a bale picked up from right behind him never passes through his body.
+static func lift_point(from: Vector3, rest: Vector3, t: float) -> Vector3:
+	var flat := Vector2(from.x, from.z)
+	var out: Vector2 = (flat.normalized() if flat.length() > 0.05 else Vector2(0, 1)) * maxf(flat.length(), LIFT_CLEAR)
+	var top: float = maxf(rest.y, from.y) + 0.45
+	var p1 := Vector3(out.x, lerpf(from.y, top, 0.75), out.y)
+	var p2 := Vector3(out.x * 0.7, top + 0.25, out.y * 0.7)
+	var e: float = clampf(t, 0.0, 1.0)
+	e = e * e * (3.0 - 2.0 * e)
+	return from.bezier_interpolate(p1, p2, rest, e)
+
+const LIFT_CLEAR: float = 1.15
 
 
 func _stack_height(index: int) -> float:
@@ -734,6 +787,7 @@ func place_top_cube() -> void:
 		c.set_carried(false)
 		c.linear_velocity = Vector3.ZERO
 		Audio.play("thud", 1.0, -6.0)
+		rumble(0.15, 0.3, 0.08)  # [v6feel]
 		c.squish(0.18))
 	model.squash(0.2)
 
@@ -765,25 +819,53 @@ func _place_cube_sphere(c: JunkCube) -> void:
 		c.set_carried(false)
 		c.linear_velocity = Vector3.ZERO
 		Audio.play("thud", 1.0, -6.0)
+		rumble(0.15, 0.3, 0.08)  # [v6feel]
 		c.squish(0.18))
 	model.squash(0.2)
 
 
+## [v6feel] The stack's base rides Lumi's floating body (bob, lean, squash), a fixed gap over his head.
+func _seat_stack() -> void:
+	_stack_root.transform = CarryPoint.frame(model, self) * Transform3D(Basis.IDENTITY, CarryPoint.of(model, self))
+
+
 func _update_stack(delta: float) -> void:
+	model.carrying = not carried.is_empty()
 	if not carried.is_empty():
-		_stack_root.position = CarryPoint.of(model, self)  # [world2] held clearly above Lumi, not inside him
+		_seat_stack()  # [world2] held clearly above Lumi, not inside him
 	# Wobbly spring sway driven by acceleration.
-	var acc: Vector3 = global_transform.basis.inverse() * (velocity - _prev_vel)
-	_stack_sway_v += (Vector2(acc.z, -acc.x) * 0.9 - _stack_sway * 60.0 - _stack_sway_v * 7.0) * delta
+	var acc: Vector3 = _stack_acc
+	_stack_sway_v += (Vector2(acc.z, -acc.x) * 0.45 - _stack_sway * 60.0 - _stack_sway_v * 7.0) * delta
 	_stack_sway += _stack_sway_v * delta
 	_stack_sway = _stack_sway.clamp(Vector2(-0.35, -0.35), Vector2(0.35, 0.35))
 	for i: int in carried.size():
 		var c: JunkCube = carried[i]
 		var k: float = float(i + 1) / maxf(carried.size(), 1.0)
-		c.position.x = -_stack_sway.y * k * 0.6 * (i + 1) * 0.5
-		c.position.z = _stack_sway.x * k * 0.6 * (i + 1) * 0.5
-		c.rotation.x = _stack_sway.x * 0.5 * k
-		c.rotation.z = _stack_sway.y * 0.5 * k
+		# [v6feel] The whole transform, every tick (see pick_up). The stack leans from its base: a
+		# bale's lean also lifts it by what its low edge would drop, so it never dips toward his head.
+		var tilt := Vector2(_stack_sway.x * 0.5 * k, _stack_sway.y * 0.5 * k)
+		var rest := Vector3(-_stack_sway.y * k * 0.6 * (i + 1) * 0.5, _stack_height(i) + c.size * 0.5 * (absf(sin(tilt.x)) + absf(sin(tilt.y))), _stack_sway.x * k * 0.6 * (i + 1) * 0.5)
+		var id: int = c.get_instance_id()
+		var yaw: float = float(c.get_meta("stack_yaw", 0.0))
+		if _lifts.has(id):
+			var l: Array = _lifts[id]
+			l[1] = float(l[1]) + delta
+			var t: float = float(l[1]) / LIFT_TIME
+			if t >= 1.0:
+				_lifts.erase(id)
+				c.set_meta("stack_yaw", float(l[3]))
+				yaw = float(l[3])
+			else:
+				var e: float = t * t * (3.0 - 2.0 * t)
+				c.position = lift_point(l[0], rest, t)
+				c.basis = (l[2] as Basis).orthonormalized().slerp(Basis.from_euler(Vector3(tilt.x, float(l[3]), tilt.y)), e)
+				continue
+		c.position = rest
+		c.rotation = Vector3(tilt.x, yaw, tilt.y)
+	if not _lifts.is_empty() and _lifts.size() > carried.size():  # a bale left the stack mid-lift
+		for id: int in _lifts.keys():
+			if not carried.any(func(c: JunkCube) -> bool: return c.get_instance_id() == id):
+				_lifts.erase(id)
 
 
 # --- Hints / idle ---------------------------------------------------------------
@@ -809,6 +891,7 @@ func _update_hints(delta: float) -> void:
 	if world and world.has_method("interact_prompt") and prompt == "":
 		prompt = world.interact_prompt(self)
 	model.look_toward(look)
+	_update_aim()
 	# Idle: after a while Patch shakes off rust flakes; much later he dozes off.
 	model.sleeping = _idle_time > 45.0
 	if _idle_time > 8.0 and fmod(_idle_time, 9.0) < delta:
@@ -824,6 +907,31 @@ func _update_hints(delta: float) -> void:
 		if h != _focus_hex:
 			_focus_hex = h
 			world.view.set_focus_hex(h if h >= 0 and world.field.hex_hub[h] == 0 else -1)
+
+
+## [v6feel] The dim reticle on the piece the next scoop pulse would take (none while the chest is
+## full, while pressing, with a bale in hand to put down first, or with another tool out).
+func _update_aim() -> void:
+	var pid: int = -1
+	if world and world.get("field") != null and world.get("view") != null and tool == Tool.SCOOP and _cubing <= 0.0 and compartment.can_accept(capacity()):
+		pid = Pace.find_scoop_target(world.field, scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"), Pace.lift_class())
+	if pid < 0:
+		pickup_fx.aim = null
+		return
+	var xf: Transform3D = world.view.piece_transform(pid)
+	var mesh: Mesh = world.view.piece_mesh(pid)
+	var sc: Vector3 = xf.basis.get_scale()
+	pickup_fx.aim = xf.origin
+	pickup_fx.aim_radius = clampf(mesh.get_aabb().size.length() * 0.5 * maxf(sc.x, maxf(sc.y, sc.z)), 0.06, 0.6) if mesh else 0.15
+
+
+## [v6feel] Controller rumble for the things Lumi's body does (weak, strong 0..1; seconds). Only for
+## a real player, scaled by the Shake setting, off with Reduced motion.
+func rumble(weak: float, strong: float, secs: float) -> void:
+	if not (input is PlayerInput) or not (input as PlayerInput).enabled or Settings.reduced_motion or Settings.shake_intensity <= 0.0:
+		return
+	var k: float = Settings.shake_intensity
+	Input.start_joy_vibration(Settings.last_pad_device, clampf(weak * k, 0.0, 1.0), clampf(strong * k, 0.0, 1.0), secs)
 
 
 func focus_hex() -> int:

@@ -1312,6 +1312,7 @@ func depot_of(hub: int) -> int:
 func cash(value: float, hub: int = -1) -> void:
 	if value <= 0.0:
 		return
+	value *= Hub.trade_mult()  # [v6pace] restored far hubs
 	cashed += value
 	var hl: Dictionary = _hub_log(hub if hub >= 0 else hub_cell)  # [v6crew]
 	hl["cubes"] = float(hl["cubes"]) + value
