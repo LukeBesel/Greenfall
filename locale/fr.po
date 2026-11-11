@@ -32,19 +32,19 @@ msgstr "Base"
 msgid "%s Lv %d"
 msgstr "%s Niv %d"
 
-#: autoload/Economy.gd:188
+#: autoload/Economy.gd:189
 msgid "Needs %s Lv %d"
 msgstr "Nécessite %s Niv %d"
 
-#: autoload/Economy.gd:191
+#: autoload/Economy.gd:192
 msgid "Needs research: %s"
 msgstr "Nécessite la recherche : %s"
 
-#: autoload/Economy.gd:194 systems/research.gd:206
+#: autoload/Economy.gd:195 systems/research.gd:206
 msgid "Needs base level %d"
 msgstr "Nécessite base niveau %d"
 
-#: autoload/Economy.gd:330 data/robots.json:tiers[0].name
+#: autoload/Economy.gd:331 data/robots.json:tiers[0].name
 msgid "Mk I"
 msgstr "Mk I"
 
@@ -192,67 +192,67 @@ msgstr "Pavé tactile"
 msgid "Paddle 1"
 msgstr "Palette 1"
 
-#: autoload/Settings.gd:527
+#: autoload/Settings.gd:522
 msgid "LMB"
 msgstr "Clic G"
 
-#: autoload/Settings.gd:528
+#: autoload/Settings.gd:523
 msgid "RMB"
 msgstr "Clic D"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:524
 msgid "MMB"
 msgstr "Clic M"
 
-#: autoload/Settings.gd:530
+#: autoload/Settings.gd:525
 msgid "Wheel up"
 msgstr "Molette haut"
 
-#: autoload/Settings.gd:531
+#: autoload/Settings.gd:526
 msgid "Wheel down"
 msgstr "Molette bas"
 
-#: autoload/Settings.gd:532
+#: autoload/Settings.gd:527
 msgid "Mouse %d"
 msgstr "Souris %d"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:529
 msgid "Button %d"
 msgstr "Bouton %d"
 
-#: autoload/Settings.gd:539
+#: autoload/Settings.gd:534
 msgid "LS left"
 msgstr "JG gauche"
 
-#: autoload/Settings.gd:539
+#: autoload/Settings.gd:534
 msgid "LS right"
 msgstr "JG droite"
 
-#: autoload/Settings.gd:540
+#: autoload/Settings.gd:535
 msgid "LS up"
 msgstr "JG haut"
 
-#: autoload/Settings.gd:540
+#: autoload/Settings.gd:535
 msgid "LS down"
 msgstr "JG bas"
 
-#: autoload/Settings.gd:541
+#: autoload/Settings.gd:536
 msgid "RS left"
 msgstr "JD gauche"
 
-#: autoload/Settings.gd:541
+#: autoload/Settings.gd:536
 msgid "RS right"
 msgstr "JD droite"
 
-#: autoload/Settings.gd:542
+#: autoload/Settings.gd:537
 msgid "RS up"
 msgstr "JD haut"
 
-#: autoload/Settings.gd:542
+#: autoload/Settings.gd:537
 msgid "RS down"
 msgstr "JD bas"
 
-#: autoload/Settings.gd:553
+#: autoload/Settings.gd:548
 msgid "hold %s"
 msgstr "maintenir %s"
 
@@ -476,7 +476,7 @@ msgid "Requires hub level %d or research: %s."
 msgstr "Nécessite la base niveau %d ou la recherche : %s."
 
 #: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
-#: systems/camp/camp.gd:414 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:155
+#: systems/camp/camp.gd:424 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:155
 #: systems/camp/hub_builds.gd:165 systems/camp/hub_builds.gd:175 systems/camp/yard_builds.gd:91
 #: ui/telescope_panel.gd:40
 msgid "Not enough materials."
@@ -515,7 +515,7 @@ msgstr "Des balles d'une valeur de %s s'empilaient à la base sans personne pour
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Les épurateurs ont filtré l'air tout ce temps. Il est un peu plus clair."
 
-#: core/pace.gd:147 story/objectives.gd:813
+#: core/pace.gd:147 story/objectives.gd:834
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "Trop lourd. Améliore la Force de levage à l'établi."
 
@@ -773,28 +773,190 @@ msgstr "WREN : C'est la limite de la zone de relevé, Lumi. Rien là-bas à part
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi revient en planant sur la terre ferme."
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1085 scenes/slice_orbit.gd:397
+#: planet/orbit/verdance_globe.gd:567 scenes/slice_orbit.gd:396
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXAGONE PROPRE !  +%s"
 
-#: planet/sites/hub_hop.gd:73
-msgid "Rocket hop: %.1f km"
-msgstr "Saut en fusée : %.1f km"
+#: planet/sites/hub_hop.gd:48
+msgid "{interact}  skip"
+msgstr "{interact}  passer"
 
-#: planet/sites/orbit_sites.gd:104
+#: planet/sites/hub_plan.gd:13 planet/sites/hub_plan.gd:18
+msgid "Old town"
+msgstr "Vieille ville"
+
+#: planet/sites/hub_plan.gd:14
+msgid "Downtown"
+msgstr "Centre-ville"
+
+#: planet/sites/hub_plan.gd:15
+msgid "Industrial town"
+msgstr "Ville industrielle"
+
+#: planet/sites/hub_plan.gd:16
+msgid "Suburb"
+msgstr "Banlieue"
+
+#: planet/sites/hub_plan.gd:17
+msgid "Harbour town"
+msgstr "Ville portuaire"
+
+#: planet/sites/hub_plan.gd:104
+msgid "landmark"
+msgstr "monument"
+
+#: planet/sites/hub_plan.gd:254
+msgid "Everything sells for x%s now."
+msgstr "Tout se vend x%s maintenant."
+
+#: planet/sites/hub_plan.gd:273
+msgid "Rocket piece: %s"
+msgstr "Pièce de fusée : %s"
+
+#: planet/sites/hub_plan.gd:295
+msgid "+%s Cubes"
+msgstr "+%s Cubes"
+
+#: planet/sites/hub_plan.gd:297
+msgid "+%d Parts"
+msgstr "+%d Pièces"
+
+#: planet/sites/hub_plan.gd:299
+msgid "+%d Seeds"
+msgstr "+%d Graines"
+
+#: planet/sites/hub_plan.gd:303
+msgid "New: %s"
+msgstr "Nouveau : %s"
+
+#: planet/sites/hub_plan.gd:307
+msgid "New Lumi design: %s"
+msgstr "Nouveau design de Lumi : %s"
+
+#: planet/sites/hub_purpose.gd:143
+msgid "Home. The workbench is by the pod."
+msgstr "La maison. L'établi est près de la capsule."
+
+#: planet/sites/hub_purpose.gd:149
+msgid "The rocket waits on the pad. Home is first on its list."
+msgstr "La fusée attend sur l'aire. La maison est en tête de sa liste."
+
+#: planet/sites/hub_purpose.gd:155
+msgid "%s: %d%% clean, up %d%% while you were away."
+msgstr "%s : %d%% propre, +%d%% pendant ton absence."
+
+#: planet/sites/hub_purpose.gd:233
+msgid "Clean hexes here: %d / %d"
+msgstr "Nettoie des cases ici : %d / %d"
+
+#: planet/sites/hub_purpose.gd:235
+msgid "Repair an outpost here: %d / %d"
+msgstr "Répare un avant-poste ici : %d / %d"
+
+#: planet/sites/hub_purpose.gd:238
+msgid "Upgrade the rocket, then wake the %s"
+msgstr "Améliore la fusée, puis réveille : %s"
+
+#: planet/sites/hub_purpose.gd:239
+msgid "Wake the %s (%s)"
+msgstr "Réveille : %s (%s)"
+
+#: planet/sites/hub_purpose.gd:273
+msgid "E   Wake the %s  (%s)"
+msgstr "E   Réveiller : %s  (%s)"
+
+#: planet/sites/hub_purpose.gd:274
+msgid "%s: asleep. %s"
+msgstr "%s : endormi. %s"
+
+#: planet/sites/hub_purpose.gd:279
+msgid "The rocket can keep %d bases going. Upgrade the rocket at the workbench."
+msgstr "La fusée peut desservir %d bases. Améliore-la à l'établi."
+
+#: planet/sites/hub_purpose.gd:295
+msgid "Waking the %s needs %s."
+msgstr "Pour réveiller (%s), il faut %s."
+
+#: planet/sites/hub_purpose.gd:319
+msgid "%s is awake. %s restored."
+msgstr "%s est réveillé. %s est restauré."
+
+#: planet/sites/hub_purpose.gd:346
+msgid "%s grows: level %d."
+msgstr "%s grandit : niveau %d."
+
+#: planet/sites/hub_purpose.gd:374
+msgid "%d robot working"
+msgid_plural "%d robots working"
+msgstr[0] "%d robot au travail"
+msgstr[1] "%d robots au travail"
+
+#: planet/sites/hub_purpose.gd:382
+msgid "Home: %d%% clean"
+msgstr "Maison : %d%% propre"
+
+#: planet/sites/hub_purpose.gd:384
+msgid "Restored: %d%% clean"
+msgstr "Restauré : %d%% propre"
+
+#: planet/sites/hub_purpose.gd:386 ui/profile_picker.gd:111
+msgid "New"
+msgstr "Nouveau"
+
+#: planet/sites/hub_purpose.gd:389
+msgid "Ready to wake"
+msgstr "Prêt à être réveillé"
+
+#: planet/sites/hub_purpose.gd:390
+msgid "Asleep: %d / %d"
+msgstr "Endormi : %d / %d"
+
+#: planet/sites/hub_purpose.gd:401
+msgid "%s   %d%% CLEAN"
+msgstr "%s   %d%% PROPRE"
+
+#: planet/sites/hub_purpose.gd:403
+msgid "%s   BASES %d/%d"
+msgstr "%s   BASES %d/%d"
+
+#: planet/sites/hub_purpose.gd:450
+msgid "Restored. Next: take the rocket to %s."
+msgstr "Restauré. Ensuite : prends la fusée pour %s."
+
+#: planet/sites/hub_purpose.gd:624
+msgid "%s  ·  the %s"
+msgstr "%s  ·  %s"
+
+#: planet/sites/orbit_sites.gd:105
 msgid "The rocket is in flight."
 msgstr "La fusée est en vol."
 
-#: planet/sites/orbit_sites.gd:157
+#: planet/sites/orbit_sites.gd:128
+msgid "Bases restored: %d of %d"
+msgstr "Bases restaurées : %d sur %d"
+
+#: planet/sites/orbit_sites.gd:166
 msgid "E   Rocket: choose a destination"
 msgstr "E   Fusée : choisir une destination"
 
-#: planet/sites/orbit_sites.gd:190
+#: planet/sites/orbit_sites.gd:204
+msgid "HOME"
+msgstr "MAISON"
+
+#: planet/sites/orbit_sites.gd:204
+msgid "NEXT STOP"
+msgstr "PROCHAIN ARRÊT"
+
+#: planet/sites/orbit_sites.gd:206
+msgid "Upgrade the rocket first"
+msgstr "Améliore d'abord la fusée"
+
+#: planet/sites/orbit_sites.gd:224
 msgid "%s site"
 msgstr "Site : %s"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: planet/sites/orbit_sites.gd:191 ui/main_menu.gd:476
+#: planet/sites/orbit_sites.gd:225 ui/main_menu.gd:474
 msgid "Hub %d"
 msgstr "Base %d"
 
@@ -1473,71 +1635,35 @@ msgstr[1] "Pendant ton absence, tes robots ici ont nettoyé %d hexagones et gagn
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s assemblé. Il regarde autour de lui, puis se met au travail."
 
-#: scenes/slice.gd:390
-msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
-msgstr "Liaison robots en ligne. Appuie sur B pour la vue commande : peins des zones et envoie les équipes où tu veux."
-
-#: scenes/slice.gd:1099 scenes/slice_orbit.gd:413
-msgid "Milestone: %d hexes clean!"
-msgstr "Étape : %d hexagones propres !"
-
-#: scenes/slice.gd:1101
-msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
-msgstr "Toute la casse est propre. Lumi émet un très long bip très heureux."
-
-#: scenes/slice.gd:1108 ui/rockets_panel.gd:60
+#: scenes/slice.gd:139 ui/rockets_panel.gd:60
 msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
 msgstr "Va jusqu'à la fusée sur l'aire de lancement et appuie sur E pour choisir ta destination."
 
-#: scenes/slice.gd:1111
-msgid "%s is out of range: %s"
-msgstr "%s est hors de portée : %s"
-
-#: scenes/slice.gd:1121
+#: scenes/slice.gd:145
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Verrouillé. Monte ta base au niveau 5 pour construire le pas de tir."
 
-#: scenes/slice.gd:1124 ui/rockets_panel.gd:39
+#: scenes/slice.gd:148 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Cellules d'énergie en recharge : %s. Les améliorations de fusée les remplissent plus vite."
 
-#: scenes/slice.gd:1178
-msgid "Touchdown: %s. Hub %d of %d. %s"
-msgstr "Atterrissage : %s. Base %d sur %d. %s"
+#: scenes/slice_orbit.gd:412
+msgid "Milestone: %d hexes clean!"
+msgstr "Étape : %d hexagones propres !"
 
-#: scenes/slice.gd:1179
-msgid "The rocket is parked on the lot, ready when its cells refill."
-msgstr "La fusée est garée sur le terrain, prête dès que ses cellules seront pleines."
-
-#: scenes/slice.gd:1179
-msgid "Landed on the base pad."
-msgstr "Posé sur le plot de la base."
-
-#: scenes/slice.gd:1299 scenes/slice_orbit.gd:995
-msgid "Upgrades need a workbench. Head back to the hub."
-msgstr "Les améliorations demandent un établi. Retourne à la base."
-
-#: scenes/slice.gd:1490
-msgid "Welcome back. The junk waited for you."
-msgstr "Bon retour. La ferraille t'a attendu."
-
-#: scenes/slice.gd:1507
-msgid "OUTPOST %d · Lv%d"
-msgstr "AVANT-POSTE %d · Niv%d"
-
-#: scenes/slice.gd:1507
-msgid "OUTPOST %d · RUIN"
-msgstr "AVANT-POSTE %d · RUINE"
-
-#: scenes/slice_orbit.gd:482 systems/camp/camp.gd:188 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:481 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   Réparer l'établi"
 
-#: scenes/slice_orbit.gd:482 systems/camp/camp.gd:189
+#: scenes/slice_orbit.gd:481 systems/camp/camp.gd:195
 msgid "E   Open the workbench"
 msgstr "E   Ouvrir l'établi"
 
-#: scenes/slice_orbit.gd:1095
+#: scenes/slice_orbit.gd:998
+msgid "Upgrades need a workbench. Head back to the hub."
+msgstr "Les améliorations demandent un établi. Retourne à la base."
+
+#: scenes/slice_orbit.gd:1098
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Établi réparé. Appuie sur E devant lui pour dépenser des cubes en améliorations."
 
@@ -1597,7 +1723,7 @@ msgstr "Écran titre"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "Continuer : le premier quartier reste ouvert, base au niveau %d."
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:857 ui/main_menu.gd:470
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:857 ui/main_menu.gd:468
 msgid "%dh %02dm"
 msgstr "%dh %02dm"
 
@@ -2184,51 +2310,51 @@ msgstr "LEDGER  WMS-07"
 msgid "Reward: %s"
 msgstr "Récompense : %s"
 
-#: story/objectives.gd:355
+#: story/objectives.gd:376
 msgid "Objective complete  ·  %s"
 msgstr "Objectif atteint  ·  %s"
 
-#: story/objectives.gd:382
+#: story/objectives.gd:403
 msgid "Goal complete  ·  %s"
 msgstr "Objectif atteint  ·  %s"
 
-#: story/objectives.gd:649
+#: story/objectives.gd:670
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "Presse à balles installée ! Remplis ton coffre, appuie sur [%s] pour presser un ballot, puis porte-le à la balance."
 
-#: story/objectives.gd:671 story/objectives.gd:801
+#: story/objectives.gd:692 story/objectives.gd:822
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Ton coffre est plein. Appuie sur [%s] pour faire un ballot."
 
-#: story/objectives.gd:687
+#: story/objectives.gd:708
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "Ton détecteur a trouvé une pièce de robot enterrée tout près. Suis l'indication PIÈCE ENTERRÉE ; il bipe quand tu es juste au-dessus."
 
-#: story/objectives.gd:689
+#: story/objectives.gd:710
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "PIÈCE ENTERRÉE : avance vers elle jusqu'au signal maximal, puis déterre-la."
 
-#: story/objectives.gd:802
+#: story/objectives.gd:823
 msgid "Your chest is full. Bring it to the bin."
 msgstr "Ton coffre est plein. Apporte-le à la poubelle."
 
-#: story/objectives.gd:809
+#: story/objectives.gd:830
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "Ton coffre est plein. Rentre à la maison : la poubelle est sous la grande fumée."
 
-#: story/objectives.gd:811
+#: story/objectives.gd:832
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "Rapporte ton ballot à la maison : la balance est sous la grande fumée."
 
-#: story/objectives.gd:811
+#: story/objectives.gd:832
 msgid "Carry your bale to the scale by the bin."
 msgstr "Porte ton ballot à la balance, près de la poubelle."
 
-#: story/objectives.gd:818
+#: story/objectives.gd:839
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "Rentre à la maison : suis le faisceau jusqu'à la grande fumée."
 
-#: story/objectives.gd:828
+#: story/objectives.gd:849
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Rien à ramasser ici. Va là où il y a plus de déchets."
 
@@ -2281,8 +2407,8 @@ msgid "Space  pause   ·   Esc  skip"
 msgstr "Espace  pause   ·   Échap  passer"
 
 #: story/tutorial.gd:10
-msgid "Fix the workbench: press  {interact}  at it"
-msgstr "Répare l'établi : appuie sur  {interact}  devant lui"
+msgid "Fix the Makers' old bench: press  {interact}"
+msgstr "Répare le vieil établi des Bâtisseurs : appuie sur  {interact}"
 
 #: story/tutorial.gd:11
 msgid "Pick up trash: hold  {scoop}"
@@ -2752,35 +2878,35 @@ msgstr "Construis-la au Retour du Cradle, sur Verdance"
 msgid "Rocket drive built: %s."
 msgstr "Propulsion construite : %s."
 
-#: systems/homeward_director.gd:250
+#: systems/homeward_director.gd:259
 msgid "Intercepted: %s"
 msgstr "Intercepté : %s"
 
-#: systems/homeward_director.gd:257
+#: systems/homeward_director.gd:266
 msgid "%s: %s"
 msgstr "%s : %s"
 
-#: systems/homeward_director.gd:267
+#: systems/homeward_director.gd:276
 msgid "%s is restored. System: %d%%."
 msgstr "%s est restaurée. Système : %d%%."
 
-#: systems/homeward_director.gd:270
+#: systems/homeward_director.gd:279
 msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
 msgstr "Relique : %s. Choix d'héritage +1 (Pont de l'Arche)."
 
-#: systems/homeward_director.gd:277
+#: systems/homeward_director.gd:286
 msgid "Every planet in the system is alive. Go back to Verdance's Cradle Returns and build the Mk VII Homeward rocket."
 msgstr "Chaque planète du système est vivante. Retourne au Retour du Cradle sur Verdance et construis la fusée Mk VII du Retour."
 
-#: systems/homeward_director.gd:435
+#: systems/homeward_director.gd:461
 msgid "E   launch home"
 msgstr "E   décoller vers la maison"
 
-#: systems/homeward_director.gd:435
+#: systems/homeward_director.gd:461
 msgid "E   plant the last seed"
 msgstr "E   planter la dernière graine"
 
-#: systems/homeward_director.gd:446
+#: systems/homeward_director.gd:472
 msgid "The last seed is in the ground. Everything is ready. Press E again here to launch home."
 msgstr "La dernière graine est en terre. Tout est prêt. Appuie encore sur E ici pour décoller vers la maison."
 
@@ -3169,19 +3295,19 @@ msgstr "Clair de lune"
 msgid "New CD: %s by %s, from %s"
 msgstr "Nouveau CD : %s par %s, de %s"
 
-#: systems/camp/camp.gd:236
+#: systems/camp/camp.gd:242
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "Établi réparé ! Appuie sur %s devant lui pour acheter des améliorations."
 
-#: systems/camp/camp.gd:398
+#: systems/camp/camp.gd:408
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr "E   %s (Niv %d) : entièrement amélioré"
 
-#: systems/camp/camp.gd:404
+#: systems/camp/camp.gd:414
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr "E   %s (Niv %d) : passer à %s pour %s"
 
-#: systems/camp/camp.gd:410
+#: systems/camp/camp.gd:420
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "Poubelle améliorée : %s. Les balles se vendent ici à %d%%."
 
@@ -4433,7 +4559,7 @@ msgstr "FAIT AVEC AMOUR ET FERRAILLE"
 msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
 msgstr "Le code, les maillages procéduraux, la musique et les sons synthétisés et les textes sont des créations originales de Greenfall."
 
-#: ui/credits_roll.gd:148 ui/main_menu.gd:621
+#: ui/credits_roll.gd:148 ui/main_menu.gd:619
 msgid "Music by Lucas"
 msgstr "Musique de Lucas"
 
@@ -4861,7 +4987,7 @@ msgstr "du sol autour de tes bases est propre"
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "de la planète reconquis  ·  %s sur %s hexagones de terre"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:481 ui/objective_card.gd:137
+#: ui/goals_panel.gd:231 ui/list_detail.gd:481 ui/objective_card.gd:149
 msgid "DONE"
 msgstr "FAIT"
 
@@ -4989,60 +5115,60 @@ msgstr "Lumi a atteint le niveau %d%s"
 msgid "OLD TOWN   0%"
 msgstr "VIEILLE VILLE   0%"
 
-#: ui/hud.gd:308
+#: ui/hud.gd:315
 msgid "WREN SIGNAL   %d%%"
 msgstr "SIGNAL WREN   %d%%"
 
-#: ui/hud.gd:337
+#: ui/hud.gd:344
 msgid "HEX  %d%% CLEAR"
 msgstr "HEX  %d%% PROPRE"
 
-#: ui/hud.gd:341
+#: ui/hud.gd:348
 msgid "%s  BASE"
 msgstr "BASE %s"
 
-#: ui/hud.gd:344
+#: ui/hud.gd:351
 msgid "CARRYING %d/%d"
 msgstr "CHARGE %d/%d"
 
-#: ui/hud.gd:370
+#: ui/hud.gd:377
 msgid "HEX  CLEAR"
 msgstr "HEX  PROPRE"
 
-#: ui/hud.gd:374
+#: ui/hud.gd:381
 msgid "HEX  %s"
 msgstr "HEX  %s"
 
-#: ui/hud.gd:377
+#: ui/hud.gd:384
 msgid "  SUSTAIN %d%%"
 msgstr "  DURABLE %d%%"
 
-#: ui/hud.gd:379
+#: ui/hud.gd:386
 msgid "  THIRSTY"
 msgstr "  ASSOIFFÉ"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:409
+#: ui/hud.gd:416
 msgid "%s   pick up bale"
 msgstr "%s   ramasser la balle"
 
-#: ui/hud.gd:410
+#: ui/hud.gd:417
 msgid "%s   dig up part"
 msgstr "%s   déterrer la pièce"
 
-#: ui/hud.gd:411
+#: ui/hud.gd:418
 msgid "%s   read memory shard"
 msgstr "%s   lire l'éclat de mémoire"
 
-#: ui/hud.gd:412
+#: ui/hud.gd:419
 msgid "%s   pick up the seed tin"
 msgstr "%s   ramasser la boîte à graines"
 
-#: ui/hud.gd:413
+#: ui/hud.gd:420
 msgid "%s   set bale down"
 msgstr "%s   poser la balle"
 
-#: ui/hud.gd:414
+#: ui/hud.gd:421
 msgid "%s   workbench"
 msgstr "%s   établi"
 
@@ -5369,7 +5495,7 @@ msgstr "Nouvelle partie"
 msgid "Profiles"
 msgstr "Profils"
 
-#: ui/main_menu.gd:356 ui/main_menu.gd:563 ui/pause_menu.gd:66
+#: ui/main_menu.gd:356 ui/main_menu.gd:561 ui/pause_menu.gd:66
 msgid "Settings"
 msgstr "Paramètres"
 
@@ -5381,77 +5507,77 @@ msgstr "Quitter"
 msgid "Made with Godot"
 msgstr "Fait avec Godot"
 
-#: ui/main_menu.gd:470
+#: ui/main_menu.gd:468
 msgid "%dm"
 msgstr "%d min"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:476 ui/profile_picker.gd:133
+#: ui/main_menu.gd:474 ui/profile_picker.gd:133
 msgid "%s cubes"
 msgstr "%s cubes"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Jan"
 msgstr "janv."
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Feb"
 msgstr "févr."
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Mar"
 msgstr "mars"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Apr"
 msgstr "avr."
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "May"
 msgstr "mai"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Jun"
 msgstr "juin"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Jul"
 msgstr "juil."
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Aug"
 msgstr "août"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Sep"
 msgstr "sept."
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Oct"
 msgstr "oct."
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Nov"
 msgstr "nov."
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Dec"
 msgstr "déc."
 
-#: ui/main_menu.gd:563
+#: ui/main_menu.gd:561
 msgid "Credits"
 msgstr "Crédits"
 
-#: ui/main_menu.gd:592
+#: ui/main_menu.gd:590
 msgid "CREDITS"
 msgstr "CRÉDITS"
 
-#: ui/main_menu.gd:607 ui/profile_picker.gd:49 ui/settings_panel.gd:123
+#: ui/main_menu.gd:605 ui/profile_picker.gd:49 ui/settings_panel.gd:123
 #: ui/settings_panel.gd:148 ui/world_picker.gd:53
 msgid "Back"
 msgstr "Retour"
 
-#: ui/main_menu.gd:620
+#: ui/main_menu.gd:618
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -5461,31 +5587,31 @@ msgstr ""
 "Le code, les maillages procéduraux, l'audio synthétisé et les textes sont des créations originales de Greenfall.\n"
 "\n"
 
-#: ui/main_menu.gd:624
+#: ui/main_menu.gd:622
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "Ressources tierces : CC0, Poly Haven (polyhaven.com)."
 
-#: ui/main_menu.gd:642
+#: ui/main_menu.gd:640
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]par %s[/color]"
 
-#: ui/main_menu.gd:676
+#: ui/main_menu.gd:674
 msgid "START A NEW GAME?"
 msgstr "COMMENCER UNE NOUVELLE PARTIE ?"
 
-#: ui/main_menu.gd:677
+#: ui/main_menu.gd:675
 msgid "Your current save will be erased. This can't be undone."
 msgstr "Ta sauvegarde actuelle sera effacée. C'est irréversible."
 
-#: ui/main_menu.gd:685
+#: ui/main_menu.gd:683
 msgid "Keep my save"
 msgstr "Garder ma sauvegarde"
 
-#: ui/main_menu.gd:691 ui/profile_picker.gd:213
+#: ui/main_menu.gd:689 ui/profile_picker.gd:213
 msgid "Erase and start"
 msgstr "Effacer et commencer"
 
-#: ui/objective_card.gd:51
+#: ui/objective_card.gd:52
 msgid "OBJECTIVE"
 msgstr "OBJECTIF"
 
@@ -5760,10 +5886,6 @@ msgstr "PROFILS DE SAUVEGARDE"
 msgid "Each profile has its own planets and progress. Settings are shared."
 msgstr "Chaque profil a ses propres planètes et sa progression. Les paramètres sont partagés."
 
-#: ui/profile_picker.gd:111
-msgid "New"
-msgstr "Nouveau"
-
 #: ui/profile_picker.gd:112
 msgid "Rename"
 msgstr "Renommer"
@@ -5948,35 +6070,35 @@ msgstr "suivant : vitesse de travail x%s"
 msgid "Upgrade to %s"
 msgstr "Améliorer en %s"
 
-#: ui/rocket_picker.gd:53 ui/rockets_panel.gd:108
+#: ui/rocket_picker.gd:60 ui/rockets_panel.gd:108
 msgid "ROCKET"
 msgstr "FUSÉE"
 
-#: ui/rocket_picker.gd:54
+#: ui/rocket_picker.gd:61
 msgid "Where to?"
 msgstr "On va où ?"
 
-#: ui/rocket_picker.gd:62
+#: ui/rocket_picker.gd:77
 msgid "{ui_cancel}  close"
 msgstr "{ui_cancel}  fermer"
 
-#: ui/rocket_picker.gd:110
+#: ui/rocket_picker.gd:128
 msgid "No other hubs found yet."
 msgstr "Pas encore d'autre base trouvée."
 
-#: ui/rocket_picker.gd:121
+#: ui/rocket_picker.gd:145
 msgid "%.1f km"
 msgstr "%.1f km"
 
-#: ui/rocket_picker.gd:123
+#: ui/rocket_picker.gd:162
 msgid "Fly"
 msgstr "Voler"
 
-#: ui/rocket_picker.gd:134 ui/system_map.gd:729 data/goals.json:goals[home_launch].text
+#: ui/rocket_picker.gd:173 ui/system_map.gd:729 data/goals.json:goals[home_launch].text
 msgid "Launch home"
 msgstr "Décoller vers la maison"
 
-#: ui/rocket_picker.gd:143
+#: ui/rocket_picker.gd:182
 msgid "Other planets"
 msgstr "Autres planètes"
 
@@ -8907,8 +9029,8 @@ msgid "Cubes"
 msgstr "Cubes"
 
 #: data/currencies.json:currencies[cubes].desc
-msgid "The main money. Sell bales at the scale. Pays for upgrades, robots, base levels, research, rockets and decorations."
-msgstr "L'argent principal. Vends des balles à la balance. Paie les améliorations, robots, niveaux de base, recherches, fusées et décorations."
+msgid "Clean building blocks. The bin's recycler makes them from trash and bales. Everything is built from cubes, and bigger machines need many more. Pays for upgrades, robots, base levels, research, rockets and decorations."
+msgstr "Des blocs de construction tout propres. Le recycleur de la poubelle les fabrique avec les déchets et les ballots. Tout se construit en cubes, et les grosses machines en demandent beaucoup plus. Paie les améliorations, robots, niveaux de base, recherches, fusées et décorations."
 
 #: data/currencies.json:currencies[parts].short
 msgid "PARTS"
@@ -11788,8 +11910,8 @@ msgid "Mk V Orbital"
 msgstr "Mk V Orbitale"
 
 #: data/homeward.json:drive[0].desc
-msgid "A vacuum-rated hull and a sun-sail: reaches the near planets, Ochre and Tidewell."
-msgstr "Une coque étanche au vide et une voile solaire : atteint les planètes proches, Ochre et Tidewell."
+msgid "Your hop rocket, rebuilt for space out of a mountain of cubes. It reaches the near planets, Ochre and Tidewell."
+msgstr "Ta petite fusée, reconstruite pour l'espace avec une montagne de cubes. Elle atteint les planètes proches, Ochre et Tidewell."
 
 #: data/homeward.json:drive[1].name
 msgid "Mk VI Interplanetary"
@@ -12056,8 +12178,8 @@ msgstr ""
 "— T. Hale, Comptabilité"
 
 #: data/hub.json:levels[0].desc
-msgid "Pipe frame, tin roof, a bench."
-msgstr "Cadre en tubes, toit en tôle, un banc."
+msgid "An old Maker cleanup station: pipe frame, tin roof, a bench."
+msgstr "Une vieille station de nettoyage des Bâtisseurs : cadre en tubes, toit en tôle, un établi."
 
 #: data/hub.json:levels[1].name
 msgid "Workshop"
@@ -12412,24 +12534,24 @@ msgid "The Cradle can't land on a dead world. Let's make Verdance green again."
 msgstr "Le Cradle ne peut pas se poser sur un monde mort. Rendons Verdance verte à nouveau."
 
 #: data/objectives.json:wren_brief.lines
-msgid "Every plant fills your Bloom Core. When it's full, the Cradle comes down and we go home."
-msgstr "Chaque plante remplit ton Cœur floral. Quand il sera plein, le Cradle descendra et nous rentrerons à la maison."
+msgid "Plants make green light. It fills your Bloom Core, and it shows the Cradle the way home."
+msgstr "Les plantes font de la lumière verte. Elle remplit ton Cœur floral, et elle montre au Cradle le chemin de la maison."
 
 #: data/objectives.json:brief.lines
-msgid "Lumi, it's WREN, up on the Cradle. Your pod crashed, and my signal is weak."
-msgstr "Lumi, c'est WREN, là-haut sur le Cradle. Ta capsule s'est écrasée, et mon signal est faible."
+msgid "Lumi, it's WREN, up on the Cradle. Your pod fell by an old cleanup station, and my signal is weak."
+msgstr "Lumi, c'est WREN, là-haut sur le Cradle. Ta capsule est tombée près d'une vieille station de nettoyage, et mon signal est faible."
 
 #: data/objectives.json:brief.lines
-msgid "Pick up trash, find parts, and build a signal tower so we can talk. I'll be [glitch]listen—[/glitch]"
-msgstr "Ramasse des déchets, trouve des pièces et construis une tour de signal pour qu'on puisse se parler. Je reste à l'[glitch]écou—[/glitch]"
+msgid "Its bin makes cubes from trash. Find parts, build a signal tower and we can talk. I'll be [glitch]listen—[/glitch]"
+msgstr "Sa poubelle change les déchets en cubes. Trouve des pièces, construis une tour de signal, et on pourra se parler. Je reste à l'[glitch]écou—[/glitch]"
 
 #: data/objectives.json:objectives[dump3].text
 msgid "Fill the trash bin 3 times"
 msgstr "Remplis la poubelle 3 fois"
 
 #: data/objectives.json:objectives[dump3].desc
-msgid "Hold {scoop} to pick up trash. Empty it at the bin."
-msgstr "Maintiens {scoop} pour ramasser des déchets. Vide-les dans la poubelle."
+msgid "The bin turns trash into cubes. The bench builds with them."
+msgstr "La poubelle change les déchets en cubes. L'établi construit avec."
 
 #: data/objectives.json:objectives[dump3].lines
 msgid "Start small, Lumi. Every load in the bin earns cubes."
@@ -12463,25 +12585,25 @@ msgstr "Une pelle plus large. Plus de déchets à chaque fois, moins de marche."
 msgid "Save up for the Baler"
 msgstr "Économise pour la Presse à balles"
 
-#: data/objectives.json:objectives[baler].desc
-msgid "The Baler squeezes trash into bales. Bales sell for more."
-msgstr "La presse à balles serre les déchets en ballots. Les ballots se vendent plus cher."
+#: data/objectives.json:objectives[baler].desc data/story_reasons.json:goal_reasons
+msgid "A tight bale wastes nothing, so it makes more cubes."
+msgstr "Un ballot bien tassé ne gaspille rien, alors il donne plus de cubes."
 
 #: data/objectives.json:objectives[baler].lines
-msgid "Save up for the Baler. Bales sell for much more than loose trash."
-msgstr "Économise pour la presse à balles. Les ballots se vendent bien plus cher que les déchets en vrac."
+msgid "Save up for the Baler. A tight bale wastes nothing, so it makes far more cubes."
+msgstr "Économise pour la presse à balles. Un ballot bien tassé ne gaspille rien, alors il donne beaucoup plus de cubes."
 
 #: data/objectives.json:objectives[power].text
 msgid "Sell 3 bales"
 msgstr "Vends 3 ballots"
 
 #: data/objectives.json:objectives[power].desc
-msgid "Full chest? Press {cube} for a bale. Carry it to the scale."
-msgstr "Coffre plein ? Appuie sur {cube} pour faire un ballot. Porte-le à la balance."
+msgid "Press {cube} for a bale. Cubes for the signal tower."
+msgstr "Appuie sur {cube} pour faire un ballot. Des cubes pour la tour de signal."
 
 #: data/objectives.json:objectives[power].lines
-msgid "Carry bales to the scale by the bin. Three of them and the base wakes up."
-msgstr "Porte les ballots à la balance, près de la poubelle. Au troisième, la base se réveille."
+msgid "Carry bales to the scale by the bin. Three of them make plenty of cubes."
+msgstr "Porte des ballots à la balance, près de la poubelle. Trois ballots, ça fait beaucoup de cubes."
 
 #: data/objectives.json:objectives[tower].text
 msgid "Build the signal tower"
@@ -12496,8 +12618,8 @@ msgid "Build the tower, Lumi. Then I can stay with you."
 msgstr "Construis la tour, Lumi. Comme ça, je pourrai rester avec toi."
 
 #: data/objectives.json:objectives[glim].desc
-msgid "Workbench, Build tab. The little bot stuck to your pod."
-msgstr "Établi, onglet Construire. Le petit robot accroché à ta capsule."
+msgid "Build tab. He lights the dark and finds missed trash."
+msgstr "Onglet Construire. Il éclaire la nuit et trouve les déchets oubliés."
 
 #: data/objectives.json:objectives[glim].lines
 msgid "Lumi... something's still holding on to your pod. Small. Lantern-shaped. Patch him up at the bench."
@@ -12508,8 +12630,8 @@ msgid "Clean the glowing hex"
 msgstr "Nettoie l'hexagone lumineux"
 
 #: data/objectives.json:objectives[hex].desc
-msgid "Pick up every piece inside the outline."
-msgstr "Ramasse tout ce qui est dans le contour."
+msgid "Plants only grow on clean ground. Clear the outline."
+msgstr "Les plantes ne poussent que sur un sol propre. Vide le contour."
 
 #: data/objectives.json:objectives[hex].lines
 msgid "First, one clean hex. Clear the outlined one. Green starts on clean ground."
@@ -12528,8 +12650,8 @@ msgid "Two clean hexes. Keep going, Lumi."
 msgstr "Deux hexagones propres. Continue, Lumi."
 
 #: data/objectives.json:objectives[hex3].desc
-msgid "3 clean hexes unlock the Bot Bay."
-msgstr "3 hexagones propres débloquent la Baie à robots."
+msgid "Clear room around the base, so robots can start work."
+msgstr "Fais de la place autour de la base, pour que les robots puissent s'y mettre."
 
 #: data/objectives.json:objectives[hex3].lines
 msgid "Three clean hexes. The planet notices, believe me."
@@ -12540,8 +12662,8 @@ msgid "Add a Bot Bay to the bench"
 msgstr "Ajoute une Baie à robots à l'établi"
 
 #: data/objectives.json:objectives[bench2].desc
-msgid "Workbench, Upgrades tab: Bot Bay."
-msgstr "Établi, onglet Améliorations : Baie à robots."
+msgid "Upgrades tab. A planet is too big for one small robot."
+msgstr "Onglet Améliorations. Une planète, c'est trop grand pour un seul petit robot."
 
 #: data/objectives.json:objectives[bench2].lines
 msgid "Add a Bot Bay to the bench. You shouldn't do this alone."
@@ -12556,16 +12678,16 @@ msgid "Workbench, Bots tab. Robots clean for you."
 msgstr "Établi, onglet Bots. Les robots nettoient pour toi."
 
 #: data/objectives.json:objectives[robot].lines
-msgid "The base has power! Enough to build you a helper. Try the Bots tab at the workbench."
-msgstr "La base a du courant ! Assez pour te construire un assistant. Essaie l'onglet Bots à l'établi."
+msgid "The Bot Bay hums! It can build you a helper. Try the Bots tab at the workbench."
+msgstr "La Baie à robots ronronne ! Elle peut te construire un assistant. Essaie l'onglet Bots de l'établi."
 
 #: data/objectives.json:objectives[zone].text
 msgid "Send your robot to work"
 msgstr "Envoie ton robot au travail"
 
 #: data/objectives.json:objectives[zone].desc
-msgid "Press {open_command}, then paint hexes for it to clean."
-msgstr "Appuie sur {open_command}, puis peins les hexagones qu'il doit nettoyer."
+msgid "Robots clean where you point. Press {open_command}."
+msgstr "Les robots nettoient là où tu leur montres. Appuie sur {open_command}."
 
 #: data/objectives.json:objectives[zone].lines
 msgid "Give your robot a hex to work on. It wants a job."
@@ -12588,8 +12710,8 @@ msgid "Something green is waking out there. Plant the first seed."
 msgstr "Quelque chose de vert se réveille là-bas. Plante la première graine."
 
 #: data/objectives.json:objectives[hex10].desc
-msgid "Robots help. Press {open_command} to give them hexes."
-msgstr "Les robots t'aident. Appuie sur {open_command} pour leur donner des hexagones."
+msgid "More clean ground, more room to plant. Robots help."
+msgstr "Plus de sol propre, plus de place pour planter. Les robots aident."
 
 #: data/objectives.json:objectives[hex10].lines
 msgid "Ten clean hexes. Your robots are learning from you, Lumi."
@@ -12600,12 +12722,12 @@ msgid "Rebuild the base to level 2"
 msgstr "Reconstruis la base au niveau 2"
 
 #: data/objectives.json:objectives[base2].desc
-msgid "Workbench, Upgrades tab. More robots can work."
-msgstr "Établi, onglet Améliorations. Plus de robots peuvent travailler."
+msgid "Workbench, Upgrades tab. A bigger base powers more robots."
+msgstr "Établi, onglet Améliorations. Une base plus grande alimente plus de robots."
 
 #: data/objectives.json:objectives[base2].lines
-msgid "The base can grow now. Rebuild it from the Upgrades tab at the workbench."
-msgstr "La base peut grandir maintenant. Reconstruis-la depuis l'onglet Améliorations de l'établi."
+msgid "A bigger base makes more power, and power runs robots. Rebuild it at the workbench."
+msgstr "Une base plus grande produit plus d'énergie, et l'énergie fait marcher les robots. Reconstruis-la à l'établi."
 
 #: data/objectives.json:objectives[haul].desc
 msgid "Workbench, Bots tab. It carries bales to the scale for you."
@@ -12624,12 +12746,12 @@ msgid "Boost the signal tower"
 msgstr "Renforce la tour radio"
 
 #: data/objectives.json:objectives[tower2].desc
-msgid "Workbench. WREN will sound clearer."
-msgstr "Établi. La voix de WREN sera plus claire."
+msgid "Workbench. A stronger signal lets WREN look further."
+msgstr "Établi. Avec un signal plus fort, WREN peut chercher plus loin."
 
 #: data/objectives.json:objectives[tower2].lines
-msgid "Boost the tower. I want to hear you clearly."
-msgstr "Renforce la tour. Je veux t'entendre clairement."
+msgid "Boost the tower. With a stronger signal I can look further for you."
+msgstr "Renforce la tour. Avec un signal plus fort, je pourrai chercher plus loin pour toi."
 
 #: data/objectives.json:objectives[research1].desc
 msgid "Workbench, Research tab. Research unlocks new robots."
@@ -12652,12 +12774,12 @@ msgid "Rebuild the base to level 3"
 msgstr "Reconstruis la base au niveau 3"
 
 #: data/objectives.json:objectives[base3].desc
-msgid "Workbench, Upgrades tab. It opens the Request Board."
-msgstr "Établi, onglet Améliorations. Cela ouvre le tableau des demandes."
+msgid "Upgrades tab. A stronger base runs bigger machines."
+msgstr "Onglet Améliorations. Une base plus forte fait tourner de plus grosses machines."
 
 #: data/objectives.json:objectives[base3].lines
-msgid "One more base level. The Cradle is watching, Lumi."
-msgstr "Encore un niveau de base. Le Cradle regarde, Lumi."
+msgid "One more base level, Lumi. Bigger machines need a stronger base."
+msgstr "Encore un niveau de base, Lumi. Les grosses machines ont besoin d'une base plus forte."
 
 #: data/outposts.json:levels[0].name
 msgid "Weigh Station"
@@ -12730,6 +12852,162 @@ msgstr "Module capteur"
 #: data/parts.json:types[module].name
 msgid "Special Module"
 msgstr "Module spécial"
+
+#: data/planets.json:verdance.hubs[landing_yard].name
+msgid "Landing Yard"
+msgstr "Cour d'atterrissage"
+
+#: data/planets.json:verdance.hubs[landing_yard].landmark.name
+msgid "Water Tower"
+msgstr "Château d'eau"
+
+#: data/planets.json:verdance.hubs[landing_yard].desc
+msgid "Home. The pod, the workbench and your first robots."
+msgstr "La maison. La capsule, l'établi et tes premiers robots."
+
+#: data/planets.json:verdance.hubs[garden_row].name
+msgid "Garden Row"
+msgstr "Allée des Jardins"
+
+#: data/planets.json:verdance.hubs[garden_row].landmark.name
+msgid "Windpump"
+msgstr "Éolienne de pompage"
+
+#: data/planets.json:verdance.hubs[garden_row].desc
+msgid "The rocket's seed stock. A new seed type."
+msgstr "La réserve de graines de la fusée. Un nouveau type de graine."
+
+#: data/planets.json:verdance.hubs[garden_row].piece.name
+msgid "Seed Stock"
+msgstr "Réserve de graines"
+
+#: data/planets.json:verdance.hubs[garden_row].hint
+msgid "The old gardens. The Windpump still holds a sealed seed store."
+msgstr "Les vieux jardins. L'éolienne garde encore une réserve de graines scellée."
+
+#: data/planets.json:verdance.hubs[gantry_works].name
+msgid "Gantry Works"
+msgstr "Chantier du Portique"
+
+#: data/planets.json:verdance.hubs[gantry_works].landmark.name
+msgid "Gantry Crane"
+msgstr "Grue portique"
+
+#: data/planets.json:verdance.hubs[gantry_works].desc
+msgid "Hull plates for the rocket."
+msgstr "Des plaques de coque pour la fusée."
+
+#: data/planets.json:verdance.hubs[gantry_works].piece.name
+msgid "Hull Plates"
+msgstr "Plaques de coque"
+
+#: data/planets.json:verdance.hubs[gantry_works].hint
+msgid "The shipyard. The Gantry Crane can lift the hull plates the rocket needs."
+msgstr "Le chantier naval. La grue portique peut soulever les plaques de coque dont la fusée a besoin."
+
+#: data/planets.json:verdance.hubs[signal_heights].name
+msgid "Signal Heights"
+msgstr "Hauts du Signal"
+
+#: data/planets.json:verdance.hubs[signal_heights].landmark.name
+msgid "Signal Mast"
+msgstr "Mât de signal"
+
+#: data/planets.json:verdance.hubs[signal_heights].desc
+msgid "The star chart: where the rocket can fly."
+msgstr "La carte des étoiles : où la fusée peut aller."
+
+#: data/planets.json:verdance.hubs[signal_heights].piece.name
+msgid "Star Chart"
+msgstr "Carte des étoiles"
+
+#: data/planets.json:verdance.hubs[signal_heights].hint
+msgid "The city centre. The Signal Mast kept the star chart of every route out."
+msgstr "Le centre-ville. Le mât de signal a gardé la carte des étoiles de toutes les routes."
+
+#: data/planets.json:verdance.hubs[fairground].name
+msgid "Fairground"
+msgstr "Fête foraine"
+
+#: data/planets.json:verdance.hubs[fairground].landmark.name
+msgid "Big Wheel"
+msgstr "Grande roue"
+
+#: data/planets.json:verdance.hubs[fairground].desc
+msgid "A power cell for the rocket. A new look for Lumi."
+msgstr "Une cellule d'énergie pour la fusée. Un nouveau look pour Lumi."
+
+#: data/planets.json:verdance.hubs[fairground].piece.name
+msgid "Power Cell"
+msgstr "Cellule d'énergie"
+
+#: data/planets.json:verdance.hubs[fairground].hint
+msgid "The fairground. The Big Wheel's motor ran on a power cell that never ran down."
+msgstr "La fête foraine. Le moteur de la grande roue tournait grâce à une cellule d'énergie qui ne s'épuisait jamais."
+
+#: data/planets.json:verdance.hubs[stack_works].name
+msgid "Stack Works"
+msgstr "Usine de la Cheminée"
+
+#: data/planets.json:verdance.hubs[stack_works].landmark.name
+msgid "Tall Stack"
+msgstr "Grande cheminée"
+
+#: data/planets.json:verdance.hubs[stack_works].desc
+msgid "Fuel for the rocket: the last piece."
+msgstr "Du carburant pour la fusée : la dernière pièce."
+
+#: data/planets.json:verdance.hubs[stack_works].piece.name
+msgid "Rocket Fuel"
+msgstr "Carburant de fusée"
+
+#: data/planets.json:verdance.hubs[stack_works].hint
+msgid "The fuel works. The tanks under the Tall Stack are still full."
+msgstr "L'usine de carburant. Les cuves sous la grande cheminée sont encore pleines."
+
+#: data/planets.json:verdance.hubs[bus_depot].name
+msgid "Bus Depot"
+msgstr "Dépôt de bus"
+
+#: data/planets.json:verdance.hubs[bus_depot].landmark.name
+msgid "Last Bus"
+msgstr "Dernier bus"
+
+#: data/planets.json:verdance.hubs[bus_depot].desc
+msgid "An extra town. A reward of Parts."
+msgstr "Une ville en plus. Récompense : des Pièces."
+
+#: data/planets.json:verdance.hubs[crane_court].name
+msgid "Crane Court"
+msgstr "Cour de la Grue"
+
+#: data/planets.json:verdance.hubs[crane_court].landmark.name
+msgid "Tower Crane"
+msgstr "Grue à tour"
+
+#: data/planets.json:verdance.hubs[crane_court].desc data/planets.json:verdance.hubs[lake_light].desc
+msgid "An extra town. A reward of Cubes."
+msgstr "Une ville en plus. Récompense : des Cubes."
+
+#: data/planets.json:verdance.hubs[tank_hill].name
+msgid "Tank Hill"
+msgstr "Colline du Réservoir"
+
+#: data/planets.json:verdance.hubs[tank_hill].landmark.name
+msgid "Hill Tank"
+msgstr "Réservoir de la colline"
+
+#: data/planets.json:verdance.hubs[tank_hill].desc
+msgid "An extra town. A reward of Seeds."
+msgstr "Une ville en plus. Récompense : des Graines."
+
+#: data/planets.json:verdance.hubs[lake_light].name
+msgid "Lake Light"
+msgstr "Phare du Lac"
+
+#: data/planets.json:verdance.hubs[lake_light].landmark.name
+msgid "Lighthouse"
+msgstr "Phare"
 
 #: data/planets.json:rime.tagline
 msgid "An ice moon, core-mined until it froze."
@@ -14617,6 +14895,226 @@ msgstr "Une presse à balles hydraulique posée sur le front de nettoyage. Les r
 msgid "Shredder drums and a little smelter. Bales go in and never come back: out come parts and clean building stock. Every bale burnt clean helps the sky."
 msgstr "Des tambours broyeurs et un petit four. Les balles entrent et ne reviennent jamais : il en sort des pièces et des matériaux propres. Chaque balle brûlée proprement aide le ciel."
 
+#: data/story_reasons.json:goal_reasons
+msgid "One more step toward a green world."
+msgstr "Un pas de plus vers un monde vert."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Other old stations are waiting to be woken up."
+msgstr "D'autres vieilles stations attendent qu'on les réveille."
+
+#: data/story_reasons.json:goal_reasons
+msgid "A strong second base keeps its side of Verdance clean."
+msgstr "Une deuxième base solide garde son côté de Verdance propre."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Every piece you pick up is one less on Verdance."
+msgstr "Chaque déchet ramassé, c'est un de moins sur Verdance."
+
+#: data/story_reasons.json:goal_reasons
+msgid "The bin turns trash into cubes."
+msgstr "La poubelle change les déchets en cubes."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Better tools mean more trash in every trip."
+msgstr "De meilleurs outils, c'est plus de déchets à chaque voyage."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Pressed trash recycles better than loose trash."
+msgstr "Les déchets pressés se recyclent mieux que les déchets en vrac."
+
+#: data/story_reasons.json:goal_reasons
+msgid "The scale weighs your bale and recycles it into cubes."
+msgstr "La balance pèse ton ballot et le recycle en cubes."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Big trash holds the most cubes. It takes strong arms."
+msgstr "Les gros déchets contiennent le plus de cubes. Il faut des bras solides."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Plants only grow on clean ground."
+msgstr "Les plantes ne poussent que sur un sol propre."
+
+#: data/story_reasons.json:goal_reasons
+msgid "A perfect bale has no gaps, so nothing is lost."
+msgstr "Un ballot parfait n'a aucun trou, donc rien n'est perdu."
+
+#: data/story_reasons.json:goal_reasons
+msgid "A bigger chest means fewer walks to the bin."
+msgstr "Un coffre plus grand, c'est moins d'allers-retours à la poubelle."
+
+#: data/story_reasons.json:goal_reasons
+msgid "The Makers left these behind. They tell what happened here."
+msgstr "Les Bâtisseurs les ont laissés derrière eux. Ils racontent ce qui s'est passé ici."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Old machine parts. Robots are built from them."
+msgstr "De vieilles pièces de machines. Elles servent à construire les robots."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Big machines are built from a great many cubes."
+msgstr "Les grosses machines sont faites d'un très grand nombre de cubes."
+
+#: data/story_reasons.json:goal_reasons
+msgid "The bench studies what you find and learns to build it."
+msgstr "L'établi étudie ce que tu trouves et apprend à le construire."
+
+#: data/story_reasons.json:goal_reasons
+msgid "The animals are coming back. Say hello."
+msgstr "Les animaux reviennent. Dis-leur bonjour."
+
+#: data/story_reasons.json:goal_reasons
+msgid "A bigger base makes more power for robots and machines."
+msgstr "Une base plus grande produit plus d'énergie pour les robots et les machines."
+
+#: data/story_reasons.json:goal_reasons
+msgid "A planet is too big for one small robot."
+msgstr "Une planète, c'est trop grand pour un seul petit robot."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Robots clean where you point."
+msgstr "Les robots nettoient là où tu leur montres."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Robot bales pile up. A Haul Bug carries them to the scale."
+msgstr "Les ballots des robots s'entassent. Un Haul Bug les porte à la balance."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Your robots turn trash into cubes while you do other things."
+msgstr "Tes robots changent les déchets en cubes pendant que tu fais autre chose."
+
+#: data/story_reasons.json:goal_reasons
+msgid "More robots, more clean ground. They carry on when you fly on."
+msgstr "Plus de robots, plus de sol propre. Ils continuent quand tu repars."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Nothing grows by itself here any more. You need seeds."
+msgstr "Plus rien ne pousse tout seul ici. Il te faut des graines."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Plants give green light for your Bloom Core."
+msgstr "Les plantes donnent de la lumière verte à ton Cœur floral."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Planted ground is safe from the Ledger's drones."
+msgstr "Un sol planté est à l'abri des drones du Ledger."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Every bloom gives green light, and a seed back."
+msgstr "Chaque fleur donne de la lumière verte, et rend une graine."
+
+#: data/story_reasons.json:goal_reasons
+msgid "The Recycler turns bales into parts for robots."
+msgstr "Le Recycleur change les ballots en pièces pour les robots."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Watered plants grow, and growing plants give more green light."
+msgstr "Les plantes arrosées poussent, et les plantes qui poussent donnent plus de lumière verte."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Trash floats on the lakes too. A Skimmer nets it."
+msgstr "Des déchets flottent aussi sur les lacs. Un Skimmer les attrape au filet."
+
+#: data/story_reasons.json:goal_reasons
+msgid "A Seedling plants for you, so green spreads faster."
+msgstr "Un Seedling plante pour toi, alors le vert s'étend plus vite."
+
+#: data/story_reasons.json:goal_reasons
+msgid "A little music makes the base feel like home."
+msgstr "Un peu de musique, et la base ressemble à une maison."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Your robots work hard. Let them look their best."
+msgstr "Tes robots travaillent dur. Fais-les beaux."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Thirsty plants stop growing. A Drip waters them for you."
+msgstr "Les plantes qui ont soif arrêtent de pousser. Un Drip les arrose pour toi."
+
+#: data/story_reasons.json:goal_reasons
+msgid "One helper that can clean, plant or water."
+msgstr "Un assistant qui sait nettoyer, planter ou arroser."
+
+#: data/story_reasons.json:goal_reasons
+msgid "A Mk II robot does the same job faster."
+msgstr "Un robot Mk II fait le même travail plus vite."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Bees carry pollen. With bees, every plant grows faster."
+msgstr "Les abeilles transportent le pollen. Avec elles, toutes les plantes poussent plus vite."
+
+#: data/story_reasons.json:goal_reasons
+msgid "A tank near the plants saves your Drips a long trip."
+msgstr "Un réservoir près des plantes évite un long trajet à tes Drips."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Ground that stays watered can look after itself."
+msgstr "Un sol qui reste arrosé peut se débrouiller tout seul."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Animals come back where the ground is green."
+msgstr "Les animaux reviennent là où le sol est vert."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Thriving ground is a home for animals again."
+msgstr "Un sol florissant redevient une maison pour les animaux."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Healthy gardens pay you back, all by themselves."
+msgstr "Les jardins en bonne santé te remercient tout seuls."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Clean air lets the sun through to the plants."
+msgstr "Un air propre laisse passer le soleil jusqu'aux plantes."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Old robots have earned a rest in the garden."
+msgstr "Les vieux robots ont bien mérité de se reposer au jardin."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Fully restored ground stays green without you."
+msgstr "Un sol entièrement restauré reste vert sans toi."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Every strong base keeps its part of Verdance clean."
+msgstr "Chaque base solide garde son coin de Verdance propre."
+
+#: data/story_reasons.json:goal_reasons
+msgid "The hop rocket can't leave the planet. A drive can."
+msgstr "La petite fusée ne peut pas quitter la planète. Avec un propulseur, si."
+
+#: data/story_reasons.json:goal_reasons
+msgid "The Ledger buried five worlds. The Cradle waits for all of them."
+msgstr "Le Ledger a enseveli cinq mondes. Le Cradle les attend tous."
+
+#: data/story_reasons.json:goal_reasons
+msgid "The bench learns to build something new."
+msgstr "L'établi apprend à construire quelque chose de nouveau."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Robots keep working while you do other things."
+msgstr "Les robots continuent de travailler pendant que tu fais autre chose."
+
+#: data/story_reasons.json:exit
+msgid "Lumi, look at the star map. Five worlds, and the Ledger buried every one."
+msgstr "Lumi, regarde la carte des étoiles. Cinq mondes, et le Ledger les a tous ensevelis."
+
+#: data/story_reasons.json:exit
+msgid "The Cradle waits until all of them can grow again. Verdance was only the first."
+msgstr "Le Cradle attend que tous puissent refleurir. Verdance n'était que le premier."
+
+#: data/story_reasons.json:exit
+msgid "Your robots will keep cleaning here. Build the Orbital drive, and we'll wake the next world."
+msgstr "Tes robots continueront de nettoyer ici. Construis la propulsion Orbitale, et nous réveillerons le monde suivant."
+
+#: data/story_reasons.json:exit
+msgid "The rocket can leave now. Verdance isn't finished, and that's all right."
+msgstr "La fusée peut partir maintenant. Verdance n'est pas terminée, et ce n'est pas grave."
+
+#: data/story_reasons.json:exit
+msgid "Some of its trash needs tools the Makers left on other worlds. We'll bring them back."
+msgstr "Certains de ses déchets demandent des outils que les Bâtisseurs ont laissés sur d'autres mondes. Nous les rapporterons."
+
 #: data/style_parts.json:slots[accent].name
 msgid "Accent"
 msgstr "Accent"
@@ -14911,8 +15409,8 @@ msgid "Dented Bin"
 msgstr "Poubelle cabossée"
 
 #: data/trash_bin.json:levels[0].desc
-msgid "A dented wheelie bin on a rusty weigh plate. It swallows one bale at a time."
-msgstr "Une poubelle à roulettes cabossée sur une plaque de pesée rouillée. Elle avale une balle à la fois."
+msgid "A dented bin on a rusty weigh plate. The recycler under it turns trash into cubes."
+msgstr "Une poubelle cabossée sur un plateau de pesée rouillé. Le recycleur dessous change les déchets en cubes."
 
 #: data/trash_bin.json:levels[1].name
 msgid "Scrap Skip"
@@ -14951,8 +15449,8 @@ msgid "Baler"
 msgstr "Presse à balles"
 
 #: data/upgrades.json:upgrades[baler].desc
-msgid "Fit the bale press in your chest. Press junk into bales: they sell for far more than loose junk."
-msgstr "Installe la presse à balles dans ton coffre. Presse la ferraille en balles : elles se vendent bien plus cher que la ferraille en vrac."
+msgid "Fit the bale press in your chest. A tight bale recycles with nothing wasted: far more cubes than loose trash."
+msgstr "Installe la presse à balles dans ton coffre. Un ballot bien tassé se recycle sans rien perdre : bien plus de cubes que des déchets en vrac."
 
 #: data/upgrades.json:upgrades[lift_strength].name
 msgid "Lift Strength"
@@ -14991,16 +15489,16 @@ msgid "Carry Stack"
 msgstr "Pile de transport"
 
 #: data/upgrades.json:upgrades[carry_stack].desc
-msgid "Balance one more cube on your back."
-msgstr "Garde en équilibre un cube de plus sur ton dos."
+msgid "Balance one more bale on your back."
+msgstr "Garde en équilibre un ballot de plus sur ton dos."
 
 #: data/upgrades.json:upgrades[compactor_pressure].name
 msgid "Compactor Pressure"
 msgstr "Pression du compacteur"
 
 #: data/upgrades.json:upgrades[compactor_pressure].desc
-msgid "Squish harder. Denser cubes are worth more."
-msgstr "Écrase plus fort. Les cubes plus denses valent plus."
+msgid "Squish harder. Denser bales are worth more."
+msgstr "Écrase plus fort. Les ballots plus denses valent plus."
 
 #: data/upgrades.json:upgrades[scoop_speed].name
 msgid "Scoop Speed"
@@ -15015,8 +15513,8 @@ msgid "Auto Compactor"
 msgstr "Compacteur auto"
 
 #: data/upgrades.json:upgrades[auto_compactor].desc
-msgid "Cubes itself when full. Manual Perfect Cubes still pay more."
-msgstr "Fait un cube tout seul quand c'est plein. Les cubes parfaits à la main rapportent toujours plus."
+msgid "Presses a bale by itself when full. Perfect bales you press yourself still pay more."
+msgstr "Presse un ballot tout seul quand c'est plein. Les ballots parfaits faits à la main rapportent toujours plus."
 
 #: data/upgrades.json:upgrades[magnet_arm].name
 msgid "Magnet Arm"
@@ -16774,6 +17272,171 @@ msgstr "Un monde de rouille, vert. Les vieilles grues ont des fleurs à leurs pi
 
 #~ msgid "%s zone"
 #~ msgstr "Zone %s"
+
+#~ msgid "Rocket hop: %.1f km"
+#~ msgstr "Saut en fusée : %.1f km"
+
+#~ msgid "Plants make green light. It fills your Bloom Core, and it's the sign the Cradle looks for."
+#~ msgstr "Les plantes font de la lumière verte. Elle remplit ton Cœur floral, et c'est le signe que le Cradle attend."
+
+#~ msgid "Its bin turns trash into cubes. Find parts and build a signal tower so we can talk. I'll be [glitch]listen—[/glitch]"
+#~ msgstr "Sa poubelle change les déchets en cubes. Trouve des pièces et construis une tour de signal pour qu'on puisse se parler. Je reste à l'[glitch]écou—[/glitch]"
+
+#~ msgid "Fix the old Maker workbench: press  {interact}  at it"
+#~ msgstr "Répare le vieil établi des Bâtisseurs : appuie sur  {interact}  devant lui"
+
+#~ msgid "Its bin turns trash into cubes. Build a signal tower with them so we can talk. I'll be [glitch]listen—[/glitch]"
+#~ msgstr "Sa poubelle change les déchets en cubes. Construis une tour de signal avec, pour qu'on puisse se parler. Je reste à l'[glitch]écou—[/glitch]"
+
+#~ msgid "The bin turns trash into cubes. The bench builds with cubes."
+#~ msgstr "La poubelle change les déchets en cubes. L'établi construit avec des cubes."
+
+#~ msgid "The Baler presses trash into tight bales. Nothing is wasted, so a bale makes more cubes."
+#~ msgstr "La presse à balles serre les déchets en ballots bien tassés. Rien n'est perdu, donc un ballot donne plus de cubes."
+
+#~ msgid "Press {cube} for a bale and carry it to the scale. Cubes for the signal tower."
+#~ msgstr "Appuie sur {cube} pour faire un ballot et porte-le à la balance. Des cubes pour la tour de signal."
+
+#~ msgid "Workbench, Build tab. He lights the dark and finds trash you missed."
+#~ msgstr "Établi, onglet Construire. Il éclaire la nuit et trouve les déchets que tu as oubliés."
+
+#~ msgid "Plants only grow on clean ground. Pick up every piece in the outline."
+#~ msgstr "Les plantes ne poussent que sur un sol propre. Ramasse tout ce qu'il y a dans le contour."
+
+#~ msgid "Clear some room around the base. Then robots can start work."
+#~ msgstr "Fais de la place autour de la base. Ensuite, les robots pourront se mettre au travail."
+
+#~ msgid "Workbench, Upgrades tab. A planet is too big for one small robot."
+#~ msgstr "Établi, onglet Améliorations. Une planète, c'est trop grand pour un seul petit robot."
+
+#~ msgid "Robots clean where you point. Press {open_command} and paint hexes."
+#~ msgstr "Les robots nettoient là où tu leur montres. Appuie sur {open_command} et peins des hexagones."
+
+#~ msgid "More clean ground, more room to plant. Robots help: press {open_command}."
+#~ msgstr "Plus de sol propre, plus de place pour planter. Les robots aident : appuie sur {open_command}."
+
+#~ msgid "Workbench. A stronger signal lets WREN look further for you."
+#~ msgstr "Établi. Avec un signal plus fort, WREN peut chercher plus loin pour toi."
+
+#~ msgid "Workbench, Upgrades tab. A stronger base runs bigger machines."
+#~ msgstr "Établi, onglet Améliorations. Une base plus forte fait tourner de plus grosses machines."
+
+#~ msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
+#~ msgstr "Liaison robots en ligne. Appuie sur B pour la vue commande : peins des zones et envoie les équipes où tu veux."
+
+#~ msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
+#~ msgstr "Toute la casse est propre. Lumi émet un très long bip très heureux."
+
+#~ msgid "%s is out of range: %s"
+#~ msgstr "%s est hors de portée : %s"
+
+#~ msgid "Touchdown: %s. Hub %d of %d. %s"
+#~ msgstr "Atterrissage : %s. Base %d sur %d. %s"
+
+#~ msgid "The rocket is parked on the lot, ready when its cells refill."
+#~ msgstr "La fusée est garée sur le terrain, prête dès que ses cellules seront pleines."
+
+#~ msgid "Landed on the base pad."
+#~ msgstr "Posé sur le plot de la base."
+
+#~ msgid "Welcome back. The junk waited for you."
+#~ msgstr "Bon retour. La ferraille t'a attendu."
+
+#~ msgid "OUTPOST %d · Lv%d"
+#~ msgstr "AVANT-POSTE %d · Niv%d"
+
+#~ msgid "OUTPOST %d · RUIN"
+#~ msgstr "AVANT-POSTE %d · RUINE"
+
+#~ msgid "Fix the workbench: press  {interact}  at it"
+#~ msgstr "Répare l'établi : appuie sur  {interact}  devant lui"
+
+#~ msgid "The main money. Sell bales at the scale. Pays for upgrades, robots, base levels, research, rockets and decorations."
+#~ msgstr "L'argent principal. Vends des balles à la balance. Paie les améliorations, robots, niveaux de base, recherches, fusées et décorations."
+
+#~ msgid "A vacuum-rated hull and a sun-sail: reaches the near planets, Ochre and Tidewell."
+#~ msgstr "Une coque étanche au vide et une voile solaire : atteint les planètes proches, Ochre et Tidewell."
+
+#~ msgid "Pipe frame, tin roof, a bench."
+#~ msgstr "Cadre en tubes, toit en tôle, un banc."
+
+#~ msgid "Every plant fills your Bloom Core. When it's full, the Cradle comes down and we go home."
+#~ msgstr "Chaque plante remplit ton Cœur floral. Quand il sera plein, le Cradle descendra et nous rentrerons à la maison."
+
+#~ msgid "Lumi, it's WREN, up on the Cradle. Your pod crashed, and my signal is weak."
+#~ msgstr "Lumi, c'est WREN, là-haut sur le Cradle. Ta capsule s'est écrasée, et mon signal est faible."
+
+#~ msgid "Pick up trash, find parts, and build a signal tower so we can talk. I'll be [glitch]listen—[/glitch]"
+#~ msgstr "Ramasse des déchets, trouve des pièces et construis une tour de signal pour qu'on puisse se parler. Je reste à l'[glitch]écou—[/glitch]"
+
+#~ msgid "Hold {scoop} to pick up trash. Empty it at the bin."
+#~ msgstr "Maintiens {scoop} pour ramasser des déchets. Vide-les dans la poubelle."
+
+#~ msgid "The Baler squeezes trash into bales. Bales sell for more."
+#~ msgstr "La presse à balles serre les déchets en ballots. Les ballots se vendent plus cher."
+
+#~ msgid "Save up for the Baler. Bales sell for much more than loose trash."
+#~ msgstr "Économise pour la presse à balles. Les ballots se vendent bien plus cher que les déchets en vrac."
+
+#~ msgid "Full chest? Press {cube} for a bale. Carry it to the scale."
+#~ msgstr "Coffre plein ? Appuie sur {cube} pour faire un ballot. Porte-le à la balance."
+
+#~ msgid "Carry bales to the scale by the bin. Three of them and the base wakes up."
+#~ msgstr "Porte les ballots à la balance, près de la poubelle. Au troisième, la base se réveille."
+
+#~ msgid "Workbench, Build tab. The little bot stuck to your pod."
+#~ msgstr "Établi, onglet Construire. Le petit robot accroché à ta capsule."
+
+#~ msgid "Pick up every piece inside the outline."
+#~ msgstr "Ramasse tout ce qui est dans le contour."
+
+#~ msgid "3 clean hexes unlock the Bot Bay."
+#~ msgstr "3 hexagones propres débloquent la Baie à robots."
+
+#~ msgid "Workbench, Upgrades tab: Bot Bay."
+#~ msgstr "Établi, onglet Améliorations : Baie à robots."
+
+#~ msgid "The base has power! Enough to build you a helper. Try the Bots tab at the workbench."
+#~ msgstr "La base a du courant ! Assez pour te construire un assistant. Essaie l'onglet Bots à l'établi."
+
+#~ msgid "Press {open_command}, then paint hexes for it to clean."
+#~ msgstr "Appuie sur {open_command}, puis peins les hexagones qu'il doit nettoyer."
+
+#~ msgid "Robots help. Press {open_command} to give them hexes."
+#~ msgstr "Les robots t'aident. Appuie sur {open_command} pour leur donner des hexagones."
+
+#~ msgid "Workbench, Upgrades tab. More robots can work."
+#~ msgstr "Établi, onglet Améliorations. Plus de robots peuvent travailler."
+
+#~ msgid "The base can grow now. Rebuild it from the Upgrades tab at the workbench."
+#~ msgstr "La base peut grandir maintenant. Reconstruis-la depuis l'onglet Améliorations de l'établi."
+
+#~ msgid "Workbench. WREN will sound clearer."
+#~ msgstr "Établi. La voix de WREN sera plus claire."
+
+#~ msgid "Boost the tower. I want to hear you clearly."
+#~ msgstr "Renforce la tour. Je veux t'entendre clairement."
+
+#~ msgid "Workbench, Upgrades tab. It opens the Request Board."
+#~ msgstr "Établi, onglet Améliorations. Cela ouvre le tableau des demandes."
+
+#~ msgid "One more base level. The Cradle is watching, Lumi."
+#~ msgstr "Encore un niveau de base. Le Cradle regarde, Lumi."
+
+#~ msgid "A dented wheelie bin on a rusty weigh plate. It swallows one bale at a time."
+#~ msgstr "Une poubelle à roulettes cabossée sur une plaque de pesée rouillée. Elle avale une balle à la fois."
+
+#~ msgid "Fit the bale press in your chest. Press junk into bales: they sell for far more than loose junk."
+#~ msgstr "Installe la presse à balles dans ton coffre. Presse la ferraille en balles : elles se vendent bien plus cher que la ferraille en vrac."
+
+#~ msgid "Balance one more cube on your back."
+#~ msgstr "Garde en équilibre un cube de plus sur ton dos."
+
+#~ msgid "Squish harder. Denser cubes are worth more."
+#~ msgstr "Écrase plus fort. Les cubes plus denses valent plus."
+
+#~ msgid "Cubes itself when full. Manual Perfect Cubes still pay more."
+#~ msgstr "Fait un cube tout seul quand c'est plein. Les cubes parfaits à la main rapportent toujours plus."
 
 #~ msgid "Perfect bale: filled right to the gold line."
 #~ msgstr "Balle parfaite : remplie pile jusqu'à la ligne dorée."

@@ -304,6 +304,13 @@ func _process(delta: float) -> void:
 			_field_label.text = _planet_label.text
 			_field_frac = frac
 			_planet_label.visible = false
+			var hp: HubPurpose = (world.get("orbit") as SliceOrbit).sites.purpose if (world.get("orbit") as SliceOrbit).sites else null
+			var hl: Dictionary = hp.hud_lines() if hp and hp.is_processing() else {}
+			if not hl.is_empty():  # [v6hubs] this base's clean %, and the bases restored (the way onward) instead of a planet % that drops at each new base
+				_field_label.text = str(hl["field"])
+				_field_frac = float(hl["frac"])
+				_planet_label.text = str(hl["planet"])
+				_planet_label.visible = true
 		_field_bar.queue_redraw()
 		_relay_label.text = tr("WREN SIGNAL   %d%%") % SignalTower.signal_pct()
 		_relay_label.visible = SignalTower.tier() > 0  # [v3clear] hide what isn't relevant yet: no 0% before the tower
