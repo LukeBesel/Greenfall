@@ -436,3 +436,11 @@ The owner asked for more attention on the world's goals and look (full cities ro
 - **Open for the owner:** on these numbers the whole planet needs hundreds of robots (about 115 to 460 depending on how many hours it should take), not thousands. Making "thousands" true means slower robots far from a base or a much shorter target time; the lead has not changed anything for this.
 - **World quick wins kept (M3-17b).** Two needed a call: junk now reaches town centres although it breaks the 10% performance limit there (the look is what the owner asked for; task M7-07 recovers the cost), and about four in ten street lamps glow at night in the nine other towns (the start town stays dark, as the owner's earlier note asked).
 - **Still wrong after the quick wins:** city roofs read white from above; the start yard's pad is a big empty pale slab; from far away towns are white specks; flat litter sheets look like plain paper up close.
+
+## Economy in the real game (M3-19 + M3-02, Nov 11, 2026)
+`docs/reviews/M3-19_ECONOMY.md`. The accepted rules are in the game. The bot's first minute is fast, then the game runs 1.5 to 2.5 times slower than the proposal (first robot at 23.7 minutes, proposal 9.4) because the proposal's model had no walking.
+- **The game's real walking is the truth; the numbers move to fit it.** The simulator gets distance, then prices, hex weights and rewards for city 1 are refitted so the bot meets the cadence rules (first hex under 90 s, no wait between purchases over 120 s in the first 20 minutes, first robot by minute 12).
+- **The yard is laid out for the first minutes:** junk starts within 4 m of the bin and the first hex's middle is within 8 m.
+- **The first robot is the answer to walking.** A hauling helper arrives early in city 1 and carries bales to the scale, so Lumi stays at the work. No moving drop points.
+- **Research prices in city 1 are capped with everything else** (largest price in city 1 stays under the accepted 4,200).
+- **Old Town look (M3-18a) merged.** Kept as bright and colourful. Tree crowns, the fountain, the crash furrow, a render of the fully restored stage and the street's triangle count go to M3-18b.
