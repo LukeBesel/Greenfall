@@ -16363,3 +16363,59 @@ msgstr ""
 #: M3-20 crew pacing and the robot chain
 msgid "Assembler"
 msgstr ""
+
+#: planets/verdance/data/pollution.json:kinds.litter.name
+msgid "Litter"
+msgstr ""
+
+#: planets/verdance/data/pollution.json:kinds.wrecks.name
+msgid "Wrecks"
+msgstr ""
+
+#: planets/verdance/data/pollution.json:kinds.wrecks.hint
+msgid "WRECKS  LIFT THEM"
+msgstr ""
+
+#: planets/verdance/data/pollution.json:kinds.wrecks.prompt
+msgid "WRECKS  NEED LIFT STRENGTH 2"
+msgstr ""
+
+#: planets/verdance/data/pollution.json:kinds.slick.name
+msgid "Slick"
+msgstr ""
+
+#: planets/verdance/data/pollution.json:kinds.slick.hint
+msgid "SLICK  SKIM IT"
+msgstr ""
+
+#: planets/verdance/data/pollution.json:kinds.slick.prompt
+msgid "SLICK  NEEDS HOVER JETS"
+msgstr ""
+
+#: planets/verdance/data/pollution.json:kinds.smog.name
+msgid "Smog"
+msgstr ""
+
+#: planets/verdance/data/pollution.json:kinds.smog.hint
+msgid "SMOG  MIST IT WITH THE CAN"
+msgstr ""
+
+#: planets/verdance/data/pollution.json:kinds.smog.prompt
+msgid "SMOG  NEEDS THE WATERING CAN"
+msgstr ""
+
+#: planets/verdance/data/pollution.json:kinds.blight.name
+msgid "Blight"
+msgstr ""
+
+#: planets/verdance/data/pollution.json:kinds.blight.hint
+msgid "BLIGHT  PLANT IT CLEAN"
+msgstr ""
+
+#: planets/verdance/data/pollution.json:kinds.blight.prompt
+msgid "BLIGHT  NEEDS THE PLANTER"
+msgstr ""
+
+#: planets/verdance/data/pollution.json:kinds.blight.cost.prompt
+msgid "Blight needs cleansing plants: out of seeds."
+msgstr ""

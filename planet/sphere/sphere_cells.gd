@@ -19,6 +19,9 @@ var state := PackedByteArray()
 var level := PackedByteArray()     # per-hex upgrade / restoration level (0..15)
 var biome := PackedByteArray()
 var flags := PackedByteArray()
+## Share of each hex's waste (0..1) that scooping cannot take: waste of kinds worked with another
+## tool (systems/pollution.gd writes it). Empty on a planet with no such kind.
+var hold := PackedFloat32Array()
 var image: Image
 var texture: ImageTexture
 var _dirty: bool = false
@@ -107,6 +110,8 @@ func has_flag(i: int, f: int) -> bool:
 ## [v2feel] THE "this cell is clean" rule (owner item 36): 95% cleared counts as clean and the
 ## rest sweeps away. Lumi, robots, offline, saves and loads all test junk left against this.
 const CLEAN_LEFT: float = 0.05
+## Junk above a hex's held share that still counts as work for a scoop.
+const WORK_EPS: float = 0.002
 
 
 static func clean_left(left: float) -> bool:
@@ -115,6 +120,23 @@ static func clean_left(left: float) -> bool:
 
 func is_dirty(i: int) -> bool:
 	return state[i] == 0 and junk[i] > CLEAN_LEFT
+
+
+## The junk left a scooping worker cannot go below on this hex (0 when nothing holds it).
+func floor_of(i: int) -> float:
+	return hold[i] if i < hold.size() else 0.0
+
+
+## Drops what is held on a hex, so the next write may clean it outright (dev flags, scripted
+## cleaning: not a worker's path).
+func release_hold(i: int) -> void:
+	if i < hold.size():
+		hold[i] = 0.0
+
+
+## Whether a land hex still has waste a scoop can take (dirty, and more left than what is held).
+func workable(i: int) -> bool:
+	return is_dirty(i) and junk[i] > floor_of(i) + WORK_EPS
 
 
 func _touch(i: int) -> void:

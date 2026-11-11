@@ -36,6 +36,7 @@ var contracts: Contracts  # [events] contracts board + token shop (systems/contr
 var photo: PhotoMode  # [photo] photo mode (ui/photo_mode.gd)
 var fauna: Fauna  # [wild] ambient animals (fauna/fauna.gd)
 var orbit: SliceOrbit  # [orbB] the globe build (scenes/slice_orbit.gd)
+var pollution: Pollution  # the planet's pollution kinds (systems/pollution.gd)
 var view: FieldView
 var depot: Depot
 var patch: Patch

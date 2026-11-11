@@ -68,7 +68,7 @@ static func units_left(cells: SphereCells, list: PackedInt32Array) -> float:
 	var u: float = 0.0
 	for c: int in list:
 		if _dirty(cells, c):
-			u += cells.junk[c] * _upc(cells, c)
+			u += maxf(0.0, cells.junk[c] - cells.floor_of(c)) * _upc(cells, c)
 	return u
 
 
@@ -77,7 +77,8 @@ static func units_left(cells: SphereCells, list: PackedInt32Array) -> float:
 ## removed piece ids (callers with a junk view hide them).
 static func write_cell(cells: SphereCells, field: SphereField, c: int, left: float) -> PackedInt32Array:
 	var gone := PackedInt32Array()
-	left = clampf(left, 0.0, 1.0)
+	# Waste held for another tool (SphereCells.hold) is not a scoop's to take.
+	left = clampf(maxf(left, cells.floor_of(c)), 0.0, 1.0)
 	if SphereCells.clean_left(left):  # [v2feel] the shared clean rule (95% cleared sweeps the rest)
 		left = 0.0  # SphereCells.is_dirty's threshold: a crumb is a clean cell
 	if field != null and field.materialized[c] == 1:
@@ -119,10 +120,11 @@ static func take_units(cells: SphereCells, field: SphereField, list: PackedInt32
 		if not _dirty(cells, c):
 			continue
 		var upc: float = _upc(cells, c)
-		var have: float = cells.junk[c] * upc
+		var held: float = cells.floor_of(c)
+		var have: float = maxf(0.0, cells.junk[c] - held) * upc
 		var take: float = minf(have, budget)
 		budget -= take
-		var left: float = (have - take) / upc
+		var left: float = held + (have - take) / upc
 		(out["pieces"] as PackedInt32Array).append_array(write_cell(cells, field, c, left))
 		(out["touched"] as PackedInt32Array).append(c)
 		if not _dirty(cells, c):

@@ -64,6 +64,13 @@ var small_only: Dictionary = {}
 ## Units of waste and cube value per hex (the planet's districts table). The globe sets the planet's
 ## own once its sites are placed; until then every hex has the default weight.
 var worth: HexWorth
+## The pollution kind of each piece (index into the planet's kinds; 0 = the base kind) and, per
+## kind, 1 while Lumi lacks the tool for it (systems/pollution.gd keeps both).
+var piece_kind := PackedByteArray()
+var kind_blocked := PackedByteArray()
+## func(cell: int) -> Array of {kind, share, pieces, type, models}: the heavy kinds a hex holds
+## beside its loose junk, each with its share of the hex's piece volume. Invalid: loose junk only.
+var heavy_plan: Callable
 const KEEP_OUT_TRIES: int = 8
 
 
@@ -196,7 +203,14 @@ func materialize(cell: int) -> PackedInt32Array:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash([seed_value, cell, 911])
 	var left: float = cells.junk[cell]
-	var count: int = int(round(DRAW_PIECES * left))  # [v1world]
+	# Waste held for another tool is in the hex's ledger but is not pieces.
+	var piece_left: float = maxf(0.0, left - cells.floor_of(cell))
+	var heavy: Array = heavy_plan.call(cell) if heavy_plan.is_valid() else []
+	var heavy_share: float = 0.0
+	for plan: Dictionary in heavy:
+		heavy_share += float(plan["share"])
+	heavy_share = clampf(heavy_share, 0.0, 0.95)
+	var count: int = int(round(DRAW_PIECES * piece_left * (1.0 - heavy_share)))  # [v1world]
 	var ctr: Vector3 = grid.centers[cell]
 	var f: Basis = SphereGrid.frame(ctr)
 	var piles: Array = [] if cells.has_flag(cell, SphereCells.F_SITE) else _roll_piles(cell)  # [orbD] mounds wedged against kerbs and kit walls stalled Lumi; site cells keep loose junk only
@@ -258,13 +272,76 @@ func materialize(cell: int) -> PackedInt32Array:
 		var pid: int = _add_piece(cell, d, b, lift, ti, mid, 1 if lie else 0, vol, sc, rng.randf_range(PILE_EMBED.x, PILE_EMBED.y) if in_pile else 0.0)
 		out.append(pid)
 		vol_sum += vol
-	hex_pieces[cell] = out
 	# The cell's ledger in volume: total so that left / total stays the cell's junk fraction.
 	var work: float = worth.work(cell)
-	_scale_cell(out, vol_sum, work * left)
+	_scale_cell(out, vol_sum, work * piece_left * (1.0 - heavy_share))
+	for plan: Dictionary in heavy:
+		out.append_array(_add_heavy(cell, plan, rng, work * piece_left * float(plan["share"]), piece_left))
+	hex_pieces[cell] = out
 	hex_left[cell] = work * left
 	hex_total[cell] = work
 	return out
+
+
+## The pieces of one heavy kind on a cell: a few big items from the kind's own models, holding
+## `target` units of the hex's ledger between them. Returns their ids.
+func _add_heavy(cell: int, plan: Dictionary, rng: RandomNumberGenerator, target: float, piece_left: float) -> PackedInt32Array:
+	var out := PackedInt32Array()
+	var models: Array = plan.get("models", [])
+	var n: int = maxi(1, int(round(float(plan.get("pieces", 1)) * piece_left)))
+	if target <= 0.0 or models.is_empty():
+		return out
+	var ctr: Vector3 = grid.centers[cell]
+	var f: Basis = SphereGrid.frame(ctr)
+	var vol_sum: float = 0.0
+	for k: int in n:
+		var d: Vector3 = ctr
+		for _try: int in KEEP_OUT_TRIES:
+			var r: float = sqrt(rng.randf()) * hex_size * 0.8
+			var a: float = rng.randf() * TAU
+			d = (ctr + (f.x * cos(a) * r + f.z * sin(a) * r) / grid.radius_m).normalized()
+			if not keep_out.is_valid() or not bool(keep_out.call(d)):
+				break
+		var mdl: Dictionary = _pick_model(rng, models)
+		var mid: String = str(mdl.get("id", ""))
+		var vol: float = float(mdl.get("vol", LARGE_VOL))
+		var lie: bool = rng.randf() < float(mdl.get("lie", 0.0))
+		var sc: float = rng.randf_range(0.95, 1.05)
+		var lf: Basis = SphereGrid.frame(d)
+		var b := Basis(lf.y, rng.randf() * TAU) * lf
+		if lie:
+			b = Basis(b.x, PI * 0.5) * b
+		b = b.scaled(Vector3.ONE * sc)
+		var lift: float = float(_lifts(mid)[1 if lie else 0]) * sc - 0.02
+		var pid: int = _add_piece(cell, d, b, lift, int(plan.get("type", 0)), mid, 1 if lie else 0, vol, sc, 0.0)
+		piece_kind[pid] = int(plan["kind"])
+		out.append(pid)
+		vol_sum += vol
+	_scale_cell(out, vol_sum, target)
+	return out
+
+
+## Takes up to `vol` units of a hex's held waste (the kinds worked with a tool, not scooped) out
+## of its ledger. Returns [units taken, whether the hex just became clean]; a clean hex is swept.
+func take_held(cell: int, vol: float) -> Array:
+	if materialized[cell] == 0:
+		materialize(cell)
+	var took: float = minf(maxf(vol, 0.0), hex_left[cell])
+	hex_left[cell] -= took
+	var flipped: bool = hex_clean[cell] == 0 and removed_fraction(cell) >= clean_threshold
+	if flipped:
+		hex_clean[cell] = 1
+		if hex_hub[cell] == 0 and hex_water[cell] == 0:
+			cleaned_count += 1
+		hex_became_clean.emit(cell)
+		sweep_cell(cell)
+	return [took, flipped]
+
+
+## Whether Lumi may scoop this piece: her tool for its pollution kind is in hand.
+func piece_open(pid: int) -> bool:
+	var kind: int = piece_kind[pid]
+	return kind >= kind_blocked.size() or kind_blocked[kind] == 0
 
 
 ## [v2feel] A small-class model (liftable at Lift Strength 0) of a junk type, else a trash bag.
@@ -359,6 +436,7 @@ func _add_piece(cell: int, d: Vector3, b: Basis, lift: float, ti: int, mid: Stri
 	piece_alive.append(1)
 	piece_lift.append(lift)
 	piece_model_vol.append(vol)
+	piece_kind.append(0)
 	piece_xf.append(Transform3D(b, Vector3.ZERO))
 	_seat(pid, d)
 	return pid
@@ -703,8 +781,9 @@ func find_scoop_target(origin: Vector3, forward: Vector3, reach: float, width: f
 	return find_scoop_target_sized(origin, forward, reach, width, 99)
 
 
-## [orbB] The scoop zone, skipping pieces above a size class (Pace's lift strength).
-func find_scoop_target_sized(origin: Vector3, forward: Vector3, reach: float, width: float, max_size: int) -> int:
+## [orbB] The scoop zone, skipping pieces above a size class (Pace's lift strength) and pieces of a
+## pollution kind Lumi has no tool for. only_blocked: the nearest such piece instead (for the hint).
+func find_scoop_target_sized(origin: Vector3, forward: Vector3, reach: float, width: float, max_size: int, only_blocked: bool = false) -> int:
 	var u: Vector3 = origin.normalized()
 	var fwd: Vector3 = (forward - u * forward.dot(u)).normalized()
 	var right: Vector3 = fwd.cross(u)
@@ -729,7 +808,7 @@ func find_scoop_target_sized(origin: Vector3, forward: Vector3, reach: float, wi
 			if x > width * 0.5 + maxf(z, 0.0) * 0.25:
 				continue
 			var dist: float = z * z + x * x * 1.5
-			if dist < best_d and (max_size >= 99 or piece_size[pid] <= max_size):
+			if dist < best_d and (max_size >= 99 or piece_size[pid] <= max_size) and piece_open(pid) != only_blocked:
 				best_d = dist
 				best = pid
 	return best

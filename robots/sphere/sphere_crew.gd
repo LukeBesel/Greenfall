@@ -77,6 +77,9 @@ var zones: Dictionary = {}
 var cashed: float = 0.0
 ## Buried parts in cleaned ground, for the parts finders (null: nothing to find).
 var chain: CrewChain
+## The planet's pollution kinds (systems/pollution.gd): which hexes hold waste a role's own tool
+## clears (misting, cleansing plants). Null on a planet without kinds: every hex is plain junk.
+var pollution: Pollution
 ## The hub a newly built robot works for (-1 or unset: the crew's own hub). Set by the robot chain
 ## to the base of the city Lumi is in.
 var new_robot_hub_fn: Callable
@@ -511,14 +514,19 @@ func _reachable(hub: int) -> Dictionary:
 func wants(role: String, c: int) -> bool:
 	match role:
 		"plant":
-			return cells.state[c] == 1 and not cells.has_flag(c, SphereCells.F_SITE)
+			return (cells.state[c] == 1 and not cells.has_flag(c, SphereCells.F_SITE)) or _held_work(role, c)
 		"water":
-			return cells.state[c] == 2
+			return cells.state[c] == 2 or _held_work(role, c)
 		"skim":
 			return water_dirty(c)
 		SphereScrounge.ROLE:
 			return chain != null and chain.has_stock(c)
-	return cells.is_dirty(c)
+	return cells.workable(c)
+
+
+## Whether hex `c` holds waste that `role` clears with its own tool (not by scooping).
+func _held_work(role: String, c: int) -> bool:
+	return pollution != null and pollution.robot_wants(role, c)
 
 
 ## Floating junk on a lake hex (SphereField: water cells with junk left).
@@ -572,7 +580,10 @@ func junk_left(c: int) -> float:
 func work_cell(c: int, left: float) -> void:
 	_touched[c] = true
 	var was_dirty: bool = cells.is_dirty(c) or water_dirty(c)
+	var before: float = cells.junk[c]
 	var gone: PackedInt32Array = SphereOffline.write_cell(cells, field, c, left)
+	if pollution != null and was_dirty:
+		pollution.robot_scooped(c, before - cells.junk[c])
 	if left > SphereCells.CLEAN_LEFT and (cells.is_dirty(c) or water_dirty(c)):  # [v2feel]
 		_left[c] = [left, _real_left(c)]
 	else:
@@ -976,7 +987,12 @@ func _work(u: Dictionary, dt: float) -> void:
 		u["work_t"] = float(u["work_t"]) + dt * rate
 		if float(u["work_t"]) < 3.0:
 			return
-		if role == "plant" and cells.state[c] == 1:
+		if _held_work(role, c):
+			if pollution.robot_work(role, c, spend_seeds):
+				cell_cleaned.emit(c)
+			if role == "water":
+				u["water"] = maxf(0.0, float(u.get("water", _tank(u))) - WATER_PER_CELL)
+		elif role == "plant" and cells.state[c] == 1:
 			if not spend_seeds or GameState.spend("seeds", BigNum.from_float(1.0)):
 				cells.set_state(c, 2)
 				u["log"]["planted"] = float(u["log"]["planted"]) + 1.0
@@ -991,14 +1007,15 @@ func _work(u: Dictionary, dt: float) -> void:
 		_work_pieces(u, c, dt)
 		return
 	var upc: float = units_per(c)
-	var have: float = junk_left(c) * upc
+	var held: float = cells.floor_of(c)  # waste another tool clears: not this robot's to take
+	var have: float = maxf(0.0, junk_left(c) - held) * upc
 	var take: float = minf(have, Offline.unit_rate(str(u["type"]), int(u["tier"])) * dt)
-	work_cell(c, (have - take) / upc)
+	work_cell(c, held + (have - take) / upc)
 	u["hopper"] = float(u["hopper"]) + take
 	u["log"]["junk"] = float(u["log"]["junk"]) + take
 	if float(u["hopper"]) >= _capacity(u) and _hopper_full(u):
 		return
-	if not (cells.is_dirty(c) or water_dirty(c)):
+	if not (cells.workable(c) or water_dirty(c)):
 		u["log"]["cells"] = float(u["log"]["cells"]) + 1.0
 		_finish_job(u)
 
@@ -1048,7 +1065,10 @@ func _work_pieces(u: Dictionary, c: int, dt: float) -> void:
 		if junk_view.has_method("refresh_hex"):
 			junk_view.call("refresh_hex", c)
 	var left: float = 1.0 - field.removed_fraction(c) if field.hex_clean[c] == 0 else 0.0
+	var before: float = cells.junk[c]
 	SphereOffline.write_cell(cells, field, c, left)
+	if pollution != null:
+		pollution.robot_scooped(c, before - cells.junk[c])
 	cell_worked.emit(c)
 	u["pid"] = -1
 	u["hopper"] = float(u["hopper"]) + units

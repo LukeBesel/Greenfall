@@ -13,7 +13,7 @@ const REQUIRED_TABLES: Array[String] = ["pollution", "upgrades", "regrowth", "tu
 const OPTIONAL_TABLES: Array[String] = [
 	"districts", "restoration", "rigs", "research", "robots", "balance", "sites", "hub", "stations", "plants", "fauna", "events", "story",
 	"player", "robot_level", "field", "builds", "yard", "trash_bin", "outposts", "frontiers", "signal_tower",
-	"guide_lines", "shards", "eggs", "ledger", "codex", "museum", "postgame", "look", "cities",
+	"guide_lines", "shards", "eggs", "ledger", "codex", "museum", "postgame", "look", "cities", "pollution_kinds",
 ]
 ## Side of one hex cell on every globe, in metres.
 const CELL_M: float = 10.0

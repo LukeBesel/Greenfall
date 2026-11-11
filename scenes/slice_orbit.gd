@@ -39,6 +39,7 @@ var view_mode: String = "follow"
 var sites: OrbitSites  # [orbD]
 var districts: Districts  # the cities and their regrowth stages (systems/districts.gd)
 var restoration: Restoration  # launch progress, the launch point, the whole-planet share
+var pollution: Pollution  # the planet's pollution kinds: which hex holds what, gates, payouts (systems/pollution.gd)
 var city_payouts: CityPayouts  # cubes paid once when a city reaches a regrowth stage
 var chain: RobotChain  # parts finders, the Assembler and its build mix
 var ending: PlanetEnding  # the launch cinematic and the end screen
@@ -94,6 +95,7 @@ func build(p_world: Node3D) -> void:
 		print("[orbit] migrated a flat save: %s" % JSON.stringify(report))
 	if od.has("field"):
 		globe.field.apply_dict(od["field"])
+	_build_pollution(od.get("pollution", {}))
 	w.set("planet", globe.planet)
 	w.set("field", globe.field)
 	w.set("view", globe.junk_view)
@@ -393,6 +395,32 @@ func cell_at(pos: Vector3) -> int:
 	return globe.cell_at(pos)
 
 
+## The planet's pollution kinds, before any hex is laid out: they decide what a hex's pieces are
+## and how much of its waste a scoop cannot take.
+func _build_pollution(saved: Dictionary) -> void:
+	var site_cells := PackedInt32Array()
+	for s: Dictionary in globe.sites:
+		site_cells.append(int(s["cell"]))
+	pollution = Pollution.new()
+	pollution.name = "Pollution"
+	w.add_child(pollution)
+	pollution.setup(Planets.current(), globe.grid, globe.cells, globe.field, site_cells, saved)
+	pollution.cell_written = _on_pollution_written
+	w.set("pollution", pollution)
+	if DevHooks.has(DistrictsDev.FLAG_STAGE):
+		for line: String in pollution.report():
+			print(line)
+
+
+## Waste taken with a tool (not a piece): the hex's numbers and heaps follow, and Lumi's own work
+## that cleans the hex goes through the clean-hex flow. A robot's goes through the crew's.
+func _on_pollution_written(cell: int, became_clean: bool, by_player: bool) -> void:
+	globe.write_cell(cell)
+	globe.junk_view.refresh_hex(cell, became_clean)
+	if became_clean and by_player:
+		on_hex_clean(cell)
+
+
 ## The districts, the planet's two goals and its ending, restored from the planet's save section
 ## (a save from before districts has none: they derive their state from the globe's hexes).
 func _build_districts(levels: HexLevels) -> void:
@@ -425,6 +453,8 @@ func _build_districts(levels: HexLevels) -> void:
 		ending.auto_keep_s = BOT_END_SCREEN_S
 	w.add_child(ending)
 	DistrictsDev.attach(w, districts, restoration, ending, crews, globe.cells, levels)
+	if crews.crew != null:
+		crews.crew.pollution = pollution
 	if crews.crew != null:  # Scroungers, the Assembler, where new robots go (systems/crew/robot_chain.gd)
 		chain = RobotChain.new()
 		w.add_child(chain)
@@ -1142,6 +1172,7 @@ func persist_save() -> void:
 		"robots": crews.save_crew(),  # [orbC]
 		"districts": districts.save_state() if districts else {},
 		"city_payouts": city_payouts.save_state() if city_payouts else {},
+		"pollution": pollution.save_state() if pollution else {},
 		"chain": chain.save_state() if chain else {},
 		"restoration": restoration.save_state() if restoration else {},
 		"site_state": sites.save_state() if sites else {},  # [orbD] built hubs, levels, growth (main: renamed from "sites", which orbB uses for site geometry)

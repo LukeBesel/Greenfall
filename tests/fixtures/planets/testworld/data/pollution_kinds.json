@@ -1,0 +1,25 @@
+{
+  "_doc": "Dummy planet: its pollution kinds (same fields as a real pollution kinds table, see planets/verdance/data/pollution.json). 'dross' is the base kind. 'spores' is a kind no shipped planet has: it exists only in this file, to prove that a new kind needs data and no code. It is held waste on about half the land hexes from ring 3 out, cleared with the watering can once the flag test_spore_mask is set, or by watering robots, and each hex of it costs half a seed.",
+  "base": "dross",
+  "default_kinds": ["dross", "spores"],
+  "kinds": {
+    "dross": {"name": "Dross", "work": "pieces", "robot_roles": ["clean"], "yield": {"cubes": 1.0, "parts": 1.0}},
+    "spores": {
+      "name": "Spores",
+      "work": "held",
+      "junk_type": "wrap",
+      "color": "#c9b458",
+      "gate": {"flag": "test_spore_mask"},
+      "tool": "water",
+      "hand_factor": 0.5,
+      "tool_use_per_unit": 0.1,
+      "cost": {"currency": "seeds", "per_hex": 0.5, "prompt": "Spores need seeds."},
+      "spawn": {"on": "land", "density": 0.5, "cluster": 0.0, "min_ring": 3, "share": 0.3},
+      "robot_roles": ["water"],
+      "robot_units": 25.0,
+      "yield": {"cubes": 2.0, "parts": 0.5},
+      "hint": "SPORES  MIST THEM",
+      "prompt": "SPORES  NEED THE MASK"
+    }
+  }
+}

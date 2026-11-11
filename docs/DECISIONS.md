@@ -472,3 +472,10 @@ The owner asked for more attention on the world's goals and look (full cities ro
 ## City polish (M3-18c, Nov 11, 2026)
 `docs/reviews/M3-18c_CITY_POLISH.md`. Restored yards get city paving, lawns and flowers; Ironside's crane swings with smoke and sparks; Kettle Bay's oil leak and slick are on the near side; Highreach has a magenta-to-coral street haze that clears on shutdown; Old Capital has a flag avenue and named gate to the pad; Lowmeadow doubled to 869 houses; all views under 6 M on Medium. Merged.
 - For the M5 polish pass (lead's review of the sheets): restored paving is a little candy-pastel (Highreach pink and mint) and should be warmer; the launch pad is still small from the yard; effects were judged from stills only and need a watched run; budget margins are thin (0.4 to 1.4%).
+
+## Pollution kinds (M3-04, Nov 11, 2026)
+`docs/reviews/M3-04_POLLUTION.md`. Litter, wrecks, slick, smog and blight are data-driven kinds sharing one waste ledger per hex; a hex is clean only when every kind is cleared; Lumi's takes pay the hex's cube value, robots earn nothing; a sixth kind on the dummy planet needs data only. City 1 pacing unchanged (first hex 55 s, first robot about 9 minutes). Merged.
+- **Each city's kind needs a real new tool** (lead): today the gates are already met on arrival (Lift Strength 2 is bought in city 1; smog and blight need only garden tools). Rigs (M3-08) supply each city's tool: a cutter for wrecks, a scrubber for smog, a soil treatment for blight; mastery (M3-05) keeps robots off a kind until Lumi has learnt it.
+- **All kinds end in the chest** for now; whether smog and blight pay as field work is settled in M3-12.
+- Highreach lists slick with no lake to hold it: removed in M3-12 with the other first-value shares and densities.
+- Not yet seen in a played run in cities 2 to 6 (rule tests only); covered by the end-of-milestone playthrough.

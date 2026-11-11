@@ -1,0 +1,76 @@
+{
+  "_doc": "The pollution kinds of this planet (design spec section 2; systems/pollution.gd). Which city holds which kinds is the `pollution` list of each city in districts.json; this table says what each kind is. A new kind is a new entry here and its id in a city's list: no code. base: the id of the base kind, the loose junk every land hex holds (its share of a hex is what the other kinds leave). default_kinds: the kinds of hexes outside every city (open ground) and of a city that lists none. kinds.<id>: name (shown, translated). work: how the kind is cleared: 'pieces' = loose junk Lumi and cleaner robots scoop (the base kind); 'heavy' = a few big pieces from `models`, scooped like any piece once the gate is met; 'float' = the floating waste of a water hex (the whole hex is this kind); 'held' = no pieces: Lumi takes it with `tool`, robots of `robot_roles` with theirs, and scooping cannot touch it. spawn: on ('land' or 'water'), density (share of the city's hexes of that ground that hold the kind, 0..1), cluster (0 = scattered evenly, 1 = in patches about 60 m across; with patches the density is only about right), min_ring (the kind keeps this many rings away from the city's site), share (the kind's share of the hex's waste, hex_work in districts.json; never under 0.08 so it cannot sweep away untouched, and all kinds beside the base kind never take more than 0.9 of a hex), pieces (heavy only: big pieces on an untouched hex). models (heavy only): {id, vol, w, lie} as in junk.json; vol 2.5 and up is the large size class, which Lift Strength 2 lifts. junk_type: the junk.json type the waste counts as in Lumi's chest and bales. color (held only): the colour of what streams into the chest. gate: what Lumi needs to work the kind at all: {stat, min} = an upgrade stat at this value or more (lift_class = Lift Strength, hover_water = Hover Jets), {flag} = a progress flag (seeds_unlocked = the garden tools: planter and watering can). tool (held only): the tool Lumi clears it with, 'water' (the watering can: misting) or 'plant' (the planter: cleansing plants). hand_factor (held only): Lumi's rate on the kind against her scoop rate (units a second = hand_factor x scoop pulse volume x scoop rate). tool_use_per_unit (held only): how much of the tool's own stock one unit takes (water from the can's tank of plants.json water_tank). cost (held only): {currency, per_hex, prompt}: clearing the kind from one whole hex costs per_hex of the currency, spent a whole unit at a time as the work adds up; at least one must be in hand to start; prompt is the toast when there is none. robot_roles: the robot roles (robots.json `role`) that may work the kind: cleaners scoop pieces, skimmers the lakes, the watering robot mists and the planting robot sets cleansing plants. robot_units (held only): units of the kind one robot action takes (an action is 3 s at work_rate 1). yield: cubes = the kind's weight in a hex's cube value (a hex is worth its city's hex_cubes whatever it holds; a unit of a kind pays its share times this over the hex's average, so the weights only move value between kinds on one hex); parts = multiplier on the chance of a part worth stripping from Lumi's take. hint: how to work the kind, shown on the hex readout when Lumi has the tool. prompt: what it needs, shown on the readout and over the piece when she has not. Numbers follow the accepted proposal (tools/pace_sim/proposals/planet1/pollution.json: hand factors 0.8 to 0.9, cube yields 0.9 to 1.1, blight 0.35 seeds a hex); spawn shares and densities are first values for the balance pass (M3-12).",
+  "base": "litter",
+  "default_kinds": ["litter"],
+  "kinds": {
+    "litter": {
+      "name": "Litter",
+      "work": "pieces",
+      "robot_roles": ["clean"],
+      "yield": {"cubes": 1.0, "parts": 1.0}
+    },
+    "wrecks": {
+      "name": "Wrecks",
+      "work": "heavy",
+      "junk_type": "metal",
+      "gate": {"stat": "lift_class", "min": 2},
+      "spawn": {"on": "land", "density": 0.35, "cluster": 0.6, "min_ring": 1, "share": 0.4, "pieces": 4},
+      "models": [
+        {"id": "electric_stove", "vol": 6.0, "w": 1.0, "lie": 0.2},
+        {"id": "exterior_aircon_unit", "vol": 5.0, "w": 1.0, "lie": 0.2},
+        {"id": "old_tyre", "vol": 3.0, "w": 1.2, "lie": 0.8},
+        {"id": "Television_01", "vol": 3.5, "w": 0.8, "lie": 0.2},
+        {"id": "vintage_microwave", "vol": 3.0, "w": 0.8, "lie": 0.1},
+        {"id": "Barrel_01", "vol": 4.0, "w": 1.0, "lie": 0.5},
+        {"id": "propane_tank", "vol": 3.5, "w": 0.6, "lie": 0.6},
+        {"id": "covered_car", "vol": 14.0, "w": 0.35, "lie": 0.0}
+      ],
+      "robot_roles": ["clean"],
+      "yield": {"cubes": 0.9, "parts": 2.5},
+      "hint": "WRECKS  LIFT THEM",
+      "prompt": "WRECKS  NEED LIFT STRENGTH 2"
+    },
+    "slick": {
+      "name": "Slick",
+      "work": "float",
+      "gate": {"stat": "hover_water", "min": 1},
+      "spawn": {"on": "water", "density": 1.0},
+      "robot_roles": ["skim"],
+      "yield": {"cubes": 1.0, "parts": 0.3},
+      "hint": "SLICK  SKIM IT",
+      "prompt": "SLICK  NEEDS HOVER JETS"
+    },
+    "smog": {
+      "name": "Smog",
+      "work": "held",
+      "junk_type": "rubber",
+      "color": "#8f7fa6",
+      "gate": {"flag": "seeds_unlocked"},
+      "tool": "water",
+      "hand_factor": 0.9,
+      "tool_use_per_unit": 0.02,
+      "spawn": {"on": "land", "density": 0.55, "cluster": 0.7, "min_ring": 2, "share": 0.25},
+      "robot_roles": ["water"],
+      "robot_units": 40.0,
+      "yield": {"cubes": 1.0, "parts": 0.6},
+      "hint": "SMOG  MIST IT WITH THE CAN",
+      "prompt": "SMOG  NEEDS THE WATERING CAN"
+    },
+    "blight": {
+      "name": "Blight",
+      "work": "held",
+      "junk_type": "paper",
+      "color": "#9fb84a",
+      "gate": {"flag": "seeds_unlocked"},
+      "tool": "plant",
+      "hand_factor": 0.9,
+      "cost": {"currency": "seeds", "per_hex": 0.35, "prompt": "Blight needs cleansing plants: out of seeds."},
+      "spawn": {"on": "land", "density": 0.5, "cluster": 0.7, "min_ring": 2, "share": 0.3},
+      "robot_roles": ["plant"],
+      "robot_units": 60.0,
+      "yield": {"cubes": 1.1, "parts": 0.15},
+      "hint": "BLIGHT  PLANT IT CLEAN",
+      "prompt": "BLIGHT  NEEDS THE PLANTER"
+    }
+  }
+}

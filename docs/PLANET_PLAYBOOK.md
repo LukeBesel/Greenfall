@@ -9,7 +9,7 @@ Status: started in Phase 0 (Nov 9, 2026). Sections marked *(fills in during Mx)*
 2. Fill in `planet.tres` (the PlanetDefinition): display name, globe spec (size, site count), target playtime, palette, music set.
 3. Fill in the data tables in `planets/<id>/data/`:
    - `districts.json`: the chapters, their order and unlock rules
-   - `pollution.json`: pollution kinds, the tool each needs, payouts
+   - `pollution.json` (table `pollution_kinds`): pollution kinds, how each is worked, its spawn rule, the tool it needs, its payout weight. The junk models are the `pollution` table (`junk.json`)
    - `upgrades.json`, `rigs.json`, `research.json`: the upgrade tree
    - `regrowth.json`: regrowth stages and their rewards
    - `restoration.json`: how district states add up to planet restoration, and what triggers the ending
@@ -40,7 +40,7 @@ A new planet should need no change outside its folder. If it does, the shared sy
 
 A site script that is a town on a street grid extends the shared `TownSite` (`planet/sites/town_site.gd`), so the garden, street power and outposts can read its streets without knowing the planet. A planet with no sites table gets a bare pad with the shared yard anchors (`SitePrefab.START_YARD_ANCHORS`).
 
-Two tests hold the rule: `tests/test_planets.gd` fails when a shared script quotes a planet id or a planet folder, and `tests/test_planet_reuse.gd` builds, runs, saves and loads the world on the dummy planet in `tests/fixtures/planets/testworld/` (five small tables, one site, one 18-line sites script).
+Two tests hold the rule: `tests/test_planets.gd` fails when a shared script quotes a planet id or a planet folder, and `tests/test_planet_reuse.gd` builds, runs, saves and loads the world on the dummy planet in `tests/fixtures/planets/testworld/` (six small tables, one site, one 18-line sites script). Its pollution kinds table holds a kind no shipped planet has (`tests/test_pollution.gd`).
 
 ## 2. What made Planet 1 addictive *(fills in during M3-M6)*
 Design intent, to be confirmed by measurement:
@@ -159,6 +159,18 @@ The accepted proposal had no distance in it, and the real game ran 1.5 to 2.5 ti
 - **Put a purchase on the card as soon as it is on offer.** While the card asked for 7 clean hexes the tower was nobody's goal and arrived anywhere from minute 6.7 to minute 11. The card now asks for the tower as soon as the base has power, before the 7 hexes.
 - **A story sequence is a wait too.** The first seed takes Lumi off the work for about 110 s. Nothing dear may be on offer when it comes (the Research Desk now waits for the tin), and by itself it is nearly the whole 120 s allowance.
 - **Run-to-run spread is about 25%.** The same build gave the first robot at 8.0 and at 12.0 minutes: digs, a salvage surge and the order hexes are finished in move it. Aim the median at least 20% inside a limit, and judge a number on two runs, never one.
+
+### Pollution kinds (M3-04)
+The rules are `systems/pollution.gd`; every number is in the planet's `pollution_kinds` table, and each city's `pollution` list in the districts table says which kinds its hexes hold. Measured values are in `docs/reviews/M3-04_POLLUTION.md`.
+
+- **One ledger per hex.** A hex holds its city's `hex_work` units whatever is on it. Each kind beside the base kind owns `spawn.share` of that; the base kind (loose junk) has the rest. All the other kinds together never own more than 0.9, and no kind less than 0.08, so nothing sweeps away untouched under the 95% rule.
+- **Clean is still one rule:** 95% of the ledger gone. Waste a scoop cannot take (a `held` kind: smog, blight) is a floor under the hex's junk for cleaners, far crews and the offline jump, so the hex stays dirty until that kind's own tool has been at it.
+- **How many hexes hold a kind** = the city's hexes of that ground past `min_ring` x `density`. With `cluster` above 0 the kind lies in patches about 60 m across and the count is only about right (measured 0.7 to 1.1 of the density).
+- **Lumi's rate on a held kind** = `hand_factor` x scoop pulse volume x scoop rate: her scoop upgrades speed every kind.
+- **Payout:** a take pays the hex's plain share (HexWorth) x the kind's `yield.cubes` over the hex's average yield (each kind's share x its yield). The weights move value between kinds on one hex; the hex still pays its city's `hex_cubes`. Robots are paid nothing.
+- **A cost** (`cost.per_hex` of a currency) is charged as the work adds up and spent a whole unit at a time; what is owed is saved.
+- Rule of thumb: a kind's gate should be something the city itself gives (its tool, its robot). A gate the player may already own on arrival is not felt as a gate.
+- Rule of thumb: keep `tool_use_per_unit` low enough that one tank clears about ten hexes; the can only fills at the base.
 
 ### The crew and the robot chain (M3-20)
 Every number is in the planet's robots table. The rules are `core/crew_rules.gd` (cap, prices) and `core/crew_chain.gd` (the ground, the Assembler's line); `tools/crew_sim` plays a whole planet on them. Measured values are in `docs/reviews/M3-20_CREW.md`.

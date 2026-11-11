@@ -48,7 +48,7 @@ func claim_dirty(from: int, hub: int, rings: int) -> int:
 	while not front.is_empty():
 		var nxt := PackedInt32Array()
 		for c: int in front:
-			if cells.is_dirty(c) and not _claimed.has(c):
+			if cells.workable(c) and not _claimed.has(c):
 				_claimed[c] = true
 				return c
 			for j: int in grid.neighbors(c):
@@ -84,6 +84,7 @@ func path(from: int, to: int) -> PackedInt32Array:
 
 func work_cell(c: int, left: float) -> void:
 	var field: SphereField = globe.field
+	left = minf(1.0, left + globe.cells.floor_of(c))  # waste held for another tool stays
 	if field.materialized[c] == 1:
 		for pid: int in field.reduce_to(c, left):
 			globe.junk_view.hide_piece(pid)
@@ -102,7 +103,8 @@ func work_cell(c: int, left: float) -> void:
 
 func junk_left(c: int) -> float:
 	var field: SphereField = globe.field
-	return (1.0 - field.removed_fraction(c)) if field and field.materialized[c] == 1 else globe.cells.junk[c]
+	var all: float = (1.0 - field.removed_fraction(c)) if field and field.materialized[c] == 1 else globe.cells.junk[c]
+	return maxf(0.0, all - globe.cells.floor_of(c))
 
 
 func release(c: int) -> void:
@@ -118,6 +120,10 @@ func tick(list: Array[Dictionary], dt: float) -> void:
 			var c: int = claim_dirty(int(cr["hub"]), int(cr["hub"]), 16)
 			if c < 0:
 				break
+			if globe.cells.floor_of(c) > SphereCells.CLEAN_LEFT:  # held waste keeps the hex dirty
+				work_cell(c, 0.0)
+				release(c)
+				continue
 			globe.cells.set_junk(c, 0.0)
 			globe.cells.set_state(c, 1)
 			if globe.field.materialized[c] == 1:

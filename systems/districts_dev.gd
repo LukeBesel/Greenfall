@@ -68,6 +68,7 @@ func set_stage(id: String, stage: int) -> int:
 		if now == Districts.NOT_LAND or now >= target:
 			continue
 		if now == 0:
+			_cells.release_hold(c)  # every pollution kind on the hex goes, not only what a scoop takes
 			_crews.work_cell(c, 0.0)
 		_levels.track(c)
 		if _levels.levels.has(c):
