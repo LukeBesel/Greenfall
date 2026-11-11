@@ -62,7 +62,17 @@ func new_game() -> void:
 	_income_log.clear()
 
 
+var _loader: Node = null
+
+
 func _physics_process(delta: float) -> void:
+	# [v6pace] The play clock and the sim stand still behind the loading screen. The staged world
+	# build runs over many frames now, so the clock ran through all of it: 11 s for a player, and
+	# 1.5 to 4 game minutes on an 8x autoplay (v5play's "the start got 2.5 minutes slower").
+	if _loader == null:
+		_loader = get_node_or_null("/root/Loader")
+	if _loader != null and bool(_loader.get("active")):
+		return
 	_sim_accum += delta
 	var step: float = 1.0 / SIM_HZ
 	while _sim_accum >= step:

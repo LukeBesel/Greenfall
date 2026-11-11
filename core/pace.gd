@@ -213,7 +213,7 @@ static func dump_value(contents: Dictionary) -> float:
 	var v: float = 0.0
 	for t: String in contents:
 		v += float(contents[t]) * float(Economy.junk_types.get(t, {}).get("value", 1.0))
-	return v * float(cfg.get("mult", 0.5)) * Economy.stat("cube_value_mult")
+	return v * float(cfg.get("mult", 0.5)) * Economy.stat("cube_value_mult") * Hub.trade_mult()  # [v6pace] restored far hubs
 
 static var _dump_cfg: Dictionary = {}
 

@@ -419,7 +419,7 @@ func _attach_power(i: int, p: SitePrefab) -> void:
 	if not (hl is HexLevels) or p.content == null or not is_instance_valid(p.content):
 		return
 	var old: Variant = power.get(i)
-	if old is Node and is_instance_valid(old):
+	if is_instance_valid(old) and old is Node:  # [v6pace] valid first: `is` on a freed instance is a script error
 		(old as Node).queue_free()
 	power.erase(i)
 	var lvl: int = levels[i]

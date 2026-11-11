@@ -1105,6 +1105,7 @@ func depot_of(hub: int) -> int:
 func cash(value: float) -> void:
 	if value <= 0.0:
 		return
+	value *= Hub.trade_mult()  # [v6pace] restored far hubs
 	cashed += value
 	GameState.add_currency("cubes", BigNum.from_float(value))
 	bale_cashed.emit(value)

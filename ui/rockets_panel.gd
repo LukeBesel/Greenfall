@@ -17,7 +17,7 @@ func _ready_to_launch() -> bool:
 		return false
 	if not Demo.rockets_allowed():  # [steam]
 		return false
-	return world.rocket_status() == "" if world.has_method("rocket_status") else ((world.hub != null and world.hub.level >= 5) or DevHooks.has("rocket"))
+	return world.rocket_status() == "" if world.has_method("rocket_status") else ((world.hub != null and Hub.rocket_open(world.hub.level)) or DevHooks.has("rocket"))
 
 
 func refresh() -> void:
@@ -43,7 +43,7 @@ func refresh() -> void:
 	else:
 		var lvl: int = world.hub.level if world.hub else 1
 		sv.add_child(UITheme.label(tr("Not built yet"), 20, UITheme.CREAM))
-		var l := UITheme.label(tr("The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Upgrades tab.") % lvl, 14, UITheme.MUTED)
+		var l := UITheme.label(Hub.rocket_lock_text(lvl), 14, UITheme.MUTED)
 		if not Demo.rockets_allowed():  # [steam]
 			l.text = tr("Rockets to the rest of Verdance are in the full game. The demo stays in the first district.")
 		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -51,13 +51,13 @@ func refresh() -> void:
 	var bar := ProgressBar.new()
 	bar.show_percentage = false
 	bar.custom_minimum_size = Vector2(0, 8)
-	bar.value = 100.0 * minf(1.0, float(world.hub.level if world.hub else 1) / 5.0)
+	bar.value = 100.0 * minf(1.0, float(world.hub.level if world.hub else 1) / float(maxi(Hub.rocket_level(), 1))) if not ready_ else 100.0
 	sv.add_child(bar)
 	_tier_box()
 	if world.get("orbit") != null:
 		# [v5play] On the round planet the rocket itself is the way to fly (press E at the pad, pick
 		# a hub). The list below launched the flat game's rocket: script errors, no flight.
-		var how := UITheme.label(tr("Walk to the rocket on the launch pad and press E to choose where to fly.") if ready_ else tr("The rocket lands on the pad when the base reaches level 5."), 15, UITheme.CREAM)
+		var how := UITheme.label(tr("Walk to the rocket on the launch pad and press E to choose where to fly.") if ready_ else Hub.rocket_lock_text(world.hub.level if world.hub else 1), 15, UITheme.CREAM)
 		how.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		add_child(how)
 		return
