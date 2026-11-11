@@ -137,11 +137,11 @@ Format: **Decision** — reason. Items marked *(assumption)* are unverified unti
 
 
 ## Homeward: the Verdance system campaign (wt/home, Nov 7)
-Canon (consistent with Lumi LM-1, the seed-keeper; the ark *Cradle*; WREN; the Bloom Core; the Makers; the Ledger):
+Canon (consistent with Lumi LM-1, the seed-keeper; the ark *Cradle*; WREN; the Bloom Core; the Settlers; the Ledger):
 - **The Verdance system is a binary star**: Hearth (warm, yellow-white) and its small orange companion Ember. Every world sees both. From nearest to farthest: Ochre, Verdance, Tidewell, Anvil, Rime. Single source of truth: `data/solar_system.json` read through `SolarSystem.suns_for(id)` (systems/solar_system.gd). The sky director's DirectionalLight is Hearth (shadows, the PhysicalSky disc); `planet/binary_sun.gd` adds Ember (unshadowed warm fill and a soft disc with a thin halo) at the planet's separation, so the pair rises and sets together. Sizes go as 1/AU and light as 1/AU².
 - **The Ledger strip-mined the whole system**, not just Verdance: Ochre's sands (open pits), Tidewell's seabed (dredging), Rime's core heat (until it froze), Anvil (its foundry world and head office). When the ore ran out it dissolved itself and left five worlds under its trash; only the audit drones carried on. Each planet tells this in an arrival memo, a half-way intercept and a restored note (`data/homeward.json` docs, DocumentView + Codex "Homeward").
-- **The Makers sleep aboard the Cradle.** Their charter, one line long: wake us when the system can feed us. Not one world, all five. So at Cradle Returns the ark comes and answers but will not land ("The Cradle Answers", story/cradle_answers.gd), which replaces the old ark finale at that point. Verdance alone isn't enough.
-- **The ending, "Homecoming"**: restore every planet, return to Verdance's Cradle Returns (the Homeward launch complex), build the Mk VII Homeward rocket from all five worlds (one relic from each), plant the last seed in a bed with a yellow fence (Class 4B's school garden), launch. In orbit the Cradle wakes and takes the rocket in; in the seed vault Lumi sets the seedling tray back on its pedestal, three hundred years after climbing into a pod to save it; below decks the Makers wake. Then the existing ark finale (story/bloom_finale.gd) brings the Cradle down to Verdance ("welcome home"), and the credits roll. The game goes on.
+- **The Settlers sleep aboard the Cradle.** Their charter, one line long: wake us when the system can feed us. Not one world, all five. So at Cradle Returns the ark comes and answers but will not land ("The Cradle Answers", story/cradle_answers.gd), which replaces the old ark finale at that point. Verdance alone isn't enough.
+- **The ending, "Homecoming"**: restore every planet, return to Verdance's Cradle Returns (the Homeward launch complex), build the Mk VII Homeward rocket from all five worlds (one relic from each), plant the last seed in a bed with a yellow fence (Class 4B's school garden), launch. In orbit the Cradle wakes and takes the rocket in; in the seed vault Lumi sets the seedling tray back on its pedestal, three hundred years after climbing into a pod to save it; below decks the Settlers wake. Then the existing ark finale (story/bloom_finale.gd) brings the Cradle down to Verdance ("welcome home"), and the credits roll. The game goes on.
 Mechanics:
 - **Planets are profile worlds with fixed seeds, names, types and modifiers** (`data/homeward.json`, `Homeward.make_planet_world`), so every system persists per planet through the existing slot machinery and worlds2's save slots. A record with `"planet": k` keeps its type when its mix is recomputed (`WorldGen.make(..., type_id)` from `CradleMode.current_full`). Verdance is world 0 / planet 0, unchanged.
 - **Random Cradle Mode worlds are kept as the post-game "beyond the system" mode**: the Ark Bridge's "Seed a new world" opens only after Homecoming (`CradleMode.unlocked()` is set by the ending). Every random world keeps its own finale (`Homeward.redirect_finale` only redirects on system planets, and only before the ending).
@@ -188,11 +188,11 @@ Mechanics:
   legacy table). GameState stores only these three.
 - **Legacy alias layer, not a hard break**: `add_currency / get_currency / spend / can_afford` accept
   the retired ids and map them at a fixed rate (bolts x5 parts, sheet metal / plastic / glass x1
-  parts, Data x10 cubes, compost x0.25 seeds, tokens x5 parts, trinkets x150 cubes, Maker Fragments
+  parts, Data x10 cubes, compost x0.25 seeds, tokens x5 parts, trinkets x150 cubes, Settler Fragments
   x25 parts), warning once per id in debug builds, so code from parallel branches keeps working
   through merges. `Currencies.fold()` does the same for cost/reward dictionaries.
 - **Save v2** folds old balances at the same rates; old compost goes into the compost press's hopper
-  (a machine fill level, not a currency) and Maker Fragments into Parts. Nothing earned is lost.
+  (a machine fill level, not a currency) and Settler Fragments into Parts. Nothing earned is lost.
 - **Research costs cubes (x10 the old Data) plus real time**; the old Data sources ("field notes":
   hexes cleaned, restored, shards, robot bales, blooms) pay those cubes instead, so research paces as
   it did. Thriving wildlife notes are a small cube trickle (6/min per hex, capped at 300/min).
@@ -226,7 +226,7 @@ Mechanics:
   ids ("haggle" source = the Locker shop). His builder stall no longer rotates.
 - **Requests start themselves and never expire**: the owner found Accept / Pass / timers too much.
 - **Locker at hub level 3**; cosmetic parts are unlocks (owning one fits every robot). Robot Builder
-  parts lost their stat mods (pure cosmetics); the Maker set's +5% speed / +6% work is the one perk.
+  parts lost their stat mods (pure cosmetics); the Settler set's +5% speed / +6% work is the one perk.
 - **Hub card shows "what you get"** computed from data (sell bonus, crew spots, the scrubber,
   stations and Locker levels, the launch pad at 5).
 - **Playtest 2: futuristic, smaller, honest costs.** One holo style (BenchKit.holo) for workbench,

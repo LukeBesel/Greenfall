@@ -52,6 +52,8 @@ func setup(p_env: Environment, p_sun: DirectionalLight3D) -> void:
 ## [worlds2] The planet this sky belongs to (data/solar_system.json ids): Verdance, or the current
 ## world's planet / world type.
 static func current_planet_id() -> String:
+	if PlanetCfg.current != "":  # [v7planet] on a globe, the globe's planet (its suns, data/solar_system.json)
+		return PlanetCfg.current
 	if CradleMode.profile.is_empty() or CradleMode.current_index() <= 0:
 		return "verdance"
 	var pid: String = WorldLook.planet_id()

@@ -65,6 +65,9 @@ func build(p_world: Node3D) -> void:
 	var home_pid: String = str(Homeward.planet_def(maxi(Homeward.current_planet(), 0)).get("id", "verdance"))  # [orbD] a new world after an interplanet flight
 	var pid: String = GlobeSpec.current_id() if DevHooks.has("orbit-planet") else str(od.get("planet_id", home_pid))
 	var spec: Dictionary = GlobeSpec.of(pid)
+	PlanetCfg.use_planet(pid)  # [v7planet] life, hub plan, sky and sound follow the globe's planet (core/planet_cfg.gd)
+	if pid != home_pid:  # [v7planet] a planet outside the campaign's current one (--orbit-planet): its own name on the HUD
+		Economy.planet["name"] = PlanetCfg.name_of(pid)
 	if int(od.get("freq", spec["frequency"])) != int(spec["frequency"]) or str(od.get("planet_id", pid)) != pid:
 		push_warning("[orbit] saved globe is %s f=%d, building %s f=%d fresh" % [od.get("planet_id", "?"), int(od.get("freq", 0)), pid, int(spec["frequency"])])
 		od = {}
@@ -173,6 +176,7 @@ func build(p_world: Node3D) -> void:
 	hl.setup()
 	BuildBudget.lap("orbit hexlevels")
 	EventBus.hex_level_changed.connect(_on_hex_level)
+	LifeCfg.use_planet(str(globe.spec.get("id", "verdance")))  # [v6life] data/life.json, per planet
 	if not DevHooks.has("life-off"):  # [v6life] clean ground greens over (plants/cell_verdure.gd)
 		var cv := CellVerdure.new()
 		w.add_child(cv)
@@ -182,7 +186,7 @@ func build(p_world: Node3D) -> void:
 		fl.setup(w, globe)
 		var la := LifeAmbience.new()  # wind over junk, leaves over green (audio/life_ambience.gd)
 		w.add_child(la)
-		la.setup(w, globe)
+		la.setup(w, globe, LifeCfg.planet_id)  # its bed: data/sound.json planets.<id>.ambience.life
 		BuildBudget.lap("orbit verdure")
 	var lumi_level := LumiLevel.new()
 	lumi_level.name = "LumiLevel"
@@ -210,6 +214,8 @@ func build(p_world: Node3D) -> void:
 	await BuildBudget.join(ck_task)  # [v5load]
 	if BuildBudget.active():
 		await FaunaModels.prewarm()  # [v5load] the animals' procedural meshes, before the hub frame makes the wildlife
+		StorySfx.ensure()  # [v6qa] the eggs' synthesised sounds (40 ms): behind the loader, not at the first hub switch (a save loaded between hubs)
+		await BuildBudget.check("story sfx")
 	_build_story()
 	BuildBudget.lap("orbit story")
 	await _build_yard_systems()
@@ -269,6 +275,8 @@ func build(p_world: Node3D) -> void:
 		print("[orbit-load] %s streamer=%s chunks=%d cells/chunk=%d" % [JSON.stringify(g.stats), JSON.stringify(g.streamer.stats), g.grid.chunk_count(), g.grid.cell_count() / maxi(g.grid.chunk_count(), 1)])
 	if not bool(w.get("building")):  # [orbE] behind the loader, slice.gd emits once it has re-enabled the world
 		w.emit_signal("built")
+	if DevHooks.has("ui-audit"):  # [v6screens] layout audit of the 2D screens (tools/ui_audit_run.gd)
+		UIAuditRun.attach(self)
 	if DevHooks.has("yard-probe"):  # [v1yard] junk distance from the pad and pod, what stands at the start
 		YardProbe.attach(self)
 	if DevHooks.has("ground-probe"):  # [v3qa] floating / sunken props and junk around Lumi
@@ -448,7 +456,7 @@ func try_interact(p: Patch) -> void:
 	if ia and ia.try_use(p.global_position):
 		return
 	var fs: FirstSeed = w.get("first_seed")
-	if fs and fs.near_tin(p.global_position):  # the Maker seed tin in the greenhouse
+	if fs and fs.near_tin(p.global_position):  # the Settler seed tin in the greenhouse
 		fs.take_tin()
 		return
 	var cmp: Composter = w.get("composter")
@@ -663,7 +671,7 @@ func _attach_extras() -> void:
 		ex.nursery.set("center", ex.nursery.global_position)
 
 
-## The Act 3 opener (story/first_seed.gd): the ruined greenhouse with the Maker seed tin, on a free
+## The Act 3 opener (story/first_seed.gd): the ruined greenhouse with the Settler seed tin, on a free
 ## spot east of the start yard (FirstSeed.find_spot; the site's colliders must be in the physics
 ## space first, so it waits two physics frames).
 func _attach_first_seed() -> void:

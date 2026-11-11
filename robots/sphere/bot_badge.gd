@@ -6,6 +6,8 @@ extends Node3D
 ## do and amber with a "!" when it needs the player (out of seeds, zone done, bales piling up).
 ## A new robot's lamp flashes white while it says hello. Drips spray water while they water.
 ## Hidden past FAR_M so hundreds of robots stay cheap.
+## Rank: a robot's Mk tier shows as small gold diamonds circling the lamp (Mk II two, Mk III
+## three, Mk IV four; Mk I none), on top of the tier's own model look, so growth reads from afar.
 
 const FAR_M: float = 70.0
 const GREY := Color(0.62, 0.63, 0.66)
@@ -22,7 +24,13 @@ var _mat: StandardMaterial3D
 var _glyph: Label3D
 var _spray: CPUParticles3D
 var _t: float = 0.0
+var tier: int = 0
+var _ranks: Node3D
 static var _mesh: SphereMesh
+static var _pip_mesh: SphereMesh
+static var _pip_mat: StandardMaterial3D
+const RANK_R: float = 0.17
+const RANK_SPIN: float = 1.1  # rad/s
 
 
 static func role_color(p_role: String) -> Color:
@@ -69,7 +77,12 @@ static func top_of(root: Node3D) -> float:
 	return clampf(top, 0.5, 2.2) if top > 0.0 else 0.9
 
 
-func setup(p_role: String, height: float = 1.2) -> void:
+## Pips shown for a tier index (0 = Mk I).
+static func pips_for(p_tier: int) -> int:
+	return 0 if p_tier <= 0 else p_tier + 1
+
+
+func setup(p_role: String, height: float = 1.2, p_tier: int = 0) -> void:
 	role = p_role
 	position = Vector3(0, height, 0)
 	if _mesh == null:
@@ -97,6 +110,40 @@ func setup(p_role: String, height: float = 1.2) -> void:
 	_glyph.visible = false
 	add_child(_glyph)
 	set_state(CrewTalk.IDLE)
+	set_tier(p_tier)
+
+
+## [v6crew] The rank pips for a Mk tier (rebuilt on an upgrade).
+func set_tier(p_tier: int) -> void:
+	tier = p_tier
+	if _ranks != null:
+		remove_child(_ranks)
+		_ranks.queue_free()
+		_ranks = null
+	var n: int = pips_for(tier)
+	if n == 0:
+		return
+	if _pip_mesh == null:
+		_pip_mesh = SphereMesh.new()  # 4 segments, 2 rings: a little diamond
+		_pip_mesh.radius = 0.04
+		_pip_mesh.height = 0.1
+		_pip_mesh.radial_segments = 4
+		_pip_mesh.rings = 2
+		_pip_mat = StandardMaterial3D.new()
+		_pip_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		_pip_mat.albedo_color = UITheme.GOLD
+	_ranks = Node3D.new()
+	_ranks.name = "Ranks"
+	add_child(_ranks)
+	for i: int in n:
+		var a: float = TAU * float(i) / float(n)
+		var mi := MeshInstance3D.new()
+		mi.mesh = _pip_mesh
+		mi.material_override = _pip_mat
+		mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		mi.visibility_range_end = FAR_M
+		mi.position = Vector3(cos(a) * RANK_R, -0.02, sin(a) * RANK_R)
+		_ranks.add_child(mi)
 
 
 func set_state(p_state: int) -> void:
@@ -150,3 +197,5 @@ func _process(delta: float) -> void:
 			_mat.albedo_color = Color(1, 1, 1).lerp(role_color(role), k)
 	if _glyph.visible:
 		_glyph.position.y = 0.3 + 0.04 * sin(_t * 2.0)
+	if _ranks != null:
+		_ranks.rotation.y = _t * RANK_SPIN

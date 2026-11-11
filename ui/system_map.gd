@@ -712,6 +712,7 @@ func _info_panel() -> PanelContainer:
 		row.add_child(bar)
 		row.add_child(UITheme.label("%d%%" % int(floor(p * 100.0 + 0.0001)), 13, Color.WHITE))
 		b.add_child(row)
+	_arc_rows(b, k, here)  # [v7arc]
 	var act := Button.new()
 	act.custom_minimum_size = Vector2(0, 38)
 	_button(act)
@@ -749,12 +750,41 @@ func _info_panel() -> PanelContainer:
 	line.color = Color(HOLO, 0.25)
 	line.custom_minimum_size = Vector2(0, 1)
 	b.add_child(line)
+	_home_meter(b)  # [v7arc]
 	var foot: String = tr("System %d%% restored  ·  relics %d/%d") % [int(floor(Homeward.system_pct() * 100.0 + 0.0001)), Homeward.relics().size(), Homeward.planets().size() - 1]
 	if Homeward.picks() > 0:
 		foot += "  ·  " + tr("%d Heirloom picks") % Homeward.picks()
 	b.add_child(_wrap(foot, 11, UITheme.MUTED))
 	b.add_child(_wrap(tr("Left/Right planet  ·  A zoom  ·  B back"), 10, Color(HOLO, 0.55)))
 	return pc
+
+
+## [v7arc] The selected planet's part in the trip home (data/story_arc.json): what it gives toward
+## the fuel and power home needs, and, for a planet still to do, its one-line reason to go.
+func _arc_rows(b: VBoxContainer, k: int, here: bool) -> void:
+	if not Homeward.discovered(k) or StoryArc.block(k).is_empty():
+		return
+	b.add_child(_wrap(StoryArc.gives_text(k), 12, UITheme.GREEN if StoryArc.given(k) else GOLD))
+	if not here and not StoryArc.given(k) and StoryArc.reason(k) != "":
+		b.add_child(_wrap(StoryArc.reason(k), 12, HOLO.lerp(Color.WHITE, 0.35)))
+
+
+## [v7arc] The two home meters, the same on every planet: "Home: fuel 2/10, power 2/10" over a
+## fuel bar and a power bar.
+func _home_meter(b: VBoxContainer) -> void:
+	var n: Vector2i = StoryArc.need()
+	if n.x <= 0 or n.y <= 0:
+		return
+	var m: Vector2i = StoryArc.meter()
+	b.add_child(_wrap(StoryArc.format_meter(m), 13, GOLD))
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 8)
+	for pair: Array in [[float(m.x) / float(n.x), Color(1.0, 0.62, 0.3)], [float(m.y) / float(n.y), Color(0.55, 0.85, 1.0)]]:
+		var bar := _bar(clampf(float(pair[0]), 0.0, 1.0), pair[1])
+		bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		row.add_child(bar)
+	b.add_child(row)
+	b.add_child(_wrap(tr(str(StoryArc.home().get("why", ""))), 11, Color(HOLO, 0.7)))
 
 
 ## The interplanetary drive, shown only where it matters: the selected planet needs a better drive,

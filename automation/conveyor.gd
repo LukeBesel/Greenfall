@@ -68,9 +68,6 @@ func _ready() -> void:
 	var hp: Vector3 = hopper_pos()
 	var main: Array[Vector3] = [hp + Vector3(-PAD_HALF - 0.05, 0.16, 0), hp + Vector3(-2.0, 0.52, 0), Vector3(1.25, 0.52, hp.z)]
 	_add_line(main, "depot")
-	var sign_label := Mats.stencil(tr("TO  SCALE  ◀"), 60, Color(0.12, 0.1, 0.08, 0.9))
-	sign_label.position = Vector3(3.4, 0.5, hp.z + BELT_W * 0.5 + 0.075)
-	add_child(sign_label)
 	YardArt.kitify(self)  # [yard] bevelled kit parts and shaders
 
 
@@ -119,90 +116,24 @@ func build_in() -> void:
 # --- Construction -------------------------------------------------------------------
 
 func _build_pad() -> void:
+	# [v6yard] The pad, gantry, sign and drive are MachineArt's kit model (one mesh), the turntable
+	# another on its own node. Colours and the sign: data/machine_art.json.
 	var hp: Vector3 = hopper_pos()
-	var plate := MeshInstance3D.new()
-	plate.mesh = ProcMesh.box(Vector3(PAD_HALF * 2.0, 0.1, PAD_HALF * 2.0))
-	plate.material_override = Mats.worn_paint(Color(0.3, 0.31, 0.31), 0.5, 0.6, 52.0, 0.7)
-	plate.position = hp + Vector3(0, 0.05, 0)
-	add_child(plate)
-	# Chevron hazard border.
-	var stripe_y := Mats.worn_paint(Color(0.95, 0.72, 0.12), 0.75, 0.4, 53.0, 0.5)
-	var stripe_k := Mats.worn_paint(Color(0.07, 0.07, 0.07), 0.9, 0.3, 54.0, 0.5)
-	for side: int in 4:
-		var b := Basis(Vector3.UP, side * PI * 0.5)
-		for k: int in 9:
-			var st := MeshInstance3D.new()
-			st.mesh = ProcMesh.box(Vector3(0.2, 0.012, 0.13))
-			st.material_override = stripe_y if k % 2 == 0 else stripe_k
-			st.position = hp + Vector3(0, 0.106, 0) + b * Vector3(-PAD_HALF + 0.1 + k * 0.2, 0, PAD_HALF - 0.065)
-			st.basis = b
-			add_child(st)
-	# Roller turntable: a steel disc with a bed of live rollers that turns to face the route.
+	var pad: MeshInstance3D = MachineArt.belt_pad(PAD_HALF).mi(0.15, "Pad")
+	pad.position = hp
+	add_child(pad)
+	YardArt.set_powered(pad, true)
 	_turntable = Node3D.new()
+	_turntable.name = "Turntable"
 	_turntable.position = hp + Vector3(0, 0.1, 0)
 	add_child(_turntable)
-	var disc := MeshInstance3D.new()
-	disc.mesh = ProcMesh.cyl(0.72, 0.74, 0.06, 32)
-	disc.material_override = _steel
-	disc.position.y = 0.03
-	_turntable.add_child(disc)
-	var ring := MeshInstance3D.new()
-	ring.mesh = ProcMesh.torus(0.7, 0.76, 32, 6)
-	ring.material_override = _frame_mat
-	ring.position.y = 0.05
-	_turntable.add_child(ring)
-	for k: int in 7:
-		var zz: float = -0.48 + k * 0.16
-		var half: float = sqrt(maxf(0.68 * 0.68 - zz * zz, 0.01))
-		var piv := Node3D.new()
-		piv.position = Vector3(0, 0.1, zz)
-		_turntable.add_child(piv)
-		var r := MeshInstance3D.new()
-		r.mesh = ProcMesh.cyl(0.045, 0.045, half * 1.8, 12)
-		r.material_override = Mats.metal("steel")
-		r.rotation_degrees = Vector3(0, 0, 90)
-		piv.add_child(r)
-		_turn_rollers.append(piv)
-	# Low side guides on the north and east edges.
-	for spec: Array in [[Vector3(0, 0.22, PAD_HALF - 0.04), Vector3(PAD_HALF * 2.0, 0.22, 0.06)], [Vector3(PAD_HALF - 0.04, 0.22, 0), Vector3(0.06, 0.22, PAD_HALF * 2.0)]]:
-		var g := MeshInstance3D.new()
-		g.mesh = ProcMesh.box(spec[1])
-		g.material_override = _frame_mat
-		g.position = hp + (spec[0] as Vector3)
-		add_child(g)
-	# Gantry over the north edge with a sign and a beacon.
-	var parts: Array = []
-	for x: float in [-PAD_HALF - 0.05, PAD_HALF + 0.05]:
-		parts.append(ProcMesh.part(ProcMesh.box(Vector3(0.1, 2.3, 0.1)), ProcMesh.xf(Vector3(x, 1.15, PAD_HALF + 0.1))))
-		parts.append(ProcMesh.part(ProcMesh.box(Vector3(0.3, 0.04, 0.3)), ProcMesh.xf(Vector3(x, 0.02, PAD_HALF + 0.1))))
-	parts.append(ProcMesh.part(ProcMesh.box(Vector3(PAD_HALF * 2.0 + 0.3, 0.12, 0.12)), ProcMesh.xf(Vector3(0, 2.3, PAD_HALF + 0.1))))
-	parts.append(ProcMesh.part(ProcMesh.box(Vector3(1.5, 0.42, 0.04)), ProcMesh.xf(Vector3(0, 1.98, PAD_HALF + 0.12))))
-	var gantry := MeshInstance3D.new()
-	gantry.mesh = ProcMesh.merge(parts)
-	gantry.material_override = _frame_mat
-	gantry.position = hp
-	add_child(gantry)
-	var sign_label := Mats.stencil(tr("BALE  FEED"), 110, Color(0.1, 0.09, 0.08, 0.95))
-	sign_label.position = hp + Vector3(0, 1.98, PAD_HALF + 0.145)
-	add_child(sign_label)
+	_turntable.add_child(MachineArt.belt_turntable().mi(0.15, "Disc"))
 	var lamp := MeshInstance3D.new()
 	lamp.mesh = ProcMesh.sphere(0.08, 12, 6)
 	_lamp = Mats.lamp(Color(1.0, 0.6, 0.15), 0.6)
 	lamp.material_override = _lamp
-	lamp.position = hp + Vector3(PAD_HALF + 0.05, 2.42, PAD_HALF + 0.1)
+	lamp.position = hp + Vector3(PAD_HALF + 0.05, 2.47, PAD_HALF + 0.1)
 	add_child(lamp)
-	# Drive motor + gearbox beside the pad.
-	var motor := MeshInstance3D.new()
-	motor.mesh = ProcMesh.cyl(0.13, 0.13, 0.42, 16)
-	motor.material_override = Mats.worn_paint(Color(0.25, 0.42, 0.55), 0.8, 0.4, 55.0, 0.5)
-	motor.rotation_degrees = Vector3(0, 0, 90)
-	motor.position = hp + Vector3(PAD_HALF + 0.3, 0.2, -0.45)
-	add_child(motor)
-	var gb := MeshInstance3D.new()
-	gb.mesh = ProcMesh.rounded_box(Vector3(0.22, 0.3, 0.3), 0.03, 2)
-	gb.material_override = _steel
-	gb.position = hp + Vector3(PAD_HALF + 0.08, 0.17, -0.45)
-	add_child(gb)
 	var sb := StaticBody3D.new()
 	sb.position = hp
 	add_child(sb)
@@ -243,59 +174,26 @@ func _belt_segment(a: Vector3, b: Vector3, first: bool, last: bool) -> void:
 	belt.material_override = bm
 	seg.add_child(belt)
 	_belt_mats.append(bm)
-	# Side skirts and a box-section frame under the belt.
-	var parts: Array = []
-	for s: float in [-1.0, 1.0]:
-		parts.append(ProcMesh.part(ProcMesh.box(Vector3(length + 0.02, 0.2, 0.05)), ProcMesh.xf(Vector3(0, 0.0, s * (BELT_W * 0.5 + 0.03)))))
-		parts.append(ProcMesh.part(ProcMesh.box(Vector3(length + 0.02, 0.03, 0.09)), ProcMesh.xf(Vector3(0, 0.1, s * (BELT_W * 0.5 + 0.05)))))
-	parts.append(ProcMesh.part(ProcMesh.box(Vector3(length, 0.05, BELT_W + 0.06)), ProcMesh.xf(Vector3(0, -0.2, 0))))
-	var frame := MeshInstance3D.new()
-	frame.mesh = ProcMesh.merge(parts)
-	frame.material_override = _frame_mat
-	seg.add_child(frame)
-	var under := MeshInstance3D.new()
-	under.mesh = ProcMesh.box(Vector3(length, 0.02, BELT_W - 0.02))
-	under.material_override = Mats.rubber(Color(0.05, 0.05, 0.055))
-	under.position = Vector3(0, -0.15, 0)
-	seg.add_child(under)
-	# Rollers: head/tail drums at the ends, return idlers underneath, bolt heads on the skirts.
-	var ends: Array[float] = []
-	if first:
-		ends.append(-length * 0.5)
-	if last:
-		ends.append(length * 0.5)
-	for ex: float in ends:
-		_roller(seg, Vector3(ex, -0.075, 0), 0.075, BELT_W + 0.04)
-	var n_idle: int = maxi(1, int(length / 0.7))
-	for k: int in n_idle:
-		_roller(seg, Vector3(-length * 0.5 + (k + 0.5) * length / n_idle, -0.17, 0), 0.03, BELT_W - 0.04)
-	var bolts: Array = []
-	for k: int in int(length / 0.35):
-		for s: float in [-1.0, 1.0]:
-			bolts.append(ProcMesh.part(ProcMesh.cyl(0.014, 0.014, 0.012, 6), ProcMesh.xf(Vector3(-length * 0.5 + 0.17 + k * 0.35, -0.02, s * (BELT_W * 0.5 + 0.058)), Vector3(90, 0, 0))))
-	if not bolts.is_empty():
-		var bm2 := MeshInstance3D.new()
-		bm2.mesh = ProcMesh.merge(bolts)
-		bm2.material_override = Mats.metal("steel")
-		seg.add_child(bm2)
-	# Legs down to the ground (in world space) every ~1.3 m.
+	# [v6yard] Skirts, bed, drums, idlers and bolts: one kit mesh (MachineArt.belt_segment).
+	seg.add_child(MachineArt.belt_segment(length, BELT_W, first, last).mi(0.15, "Frame"))
+	# Legs down to the ground (in world space) every ~1.3 m: one kit mesh per run.
 	var n_legs: int = maxi(1, int(length / 1.3) + 1)
+	var lk := YardArt.Kit.new()
+	var any_leg: bool = false
 	for k: int in n_legs:
 		var t: float = (k + 0.5) / n_legs
 		var p: Vector3 = a.lerp(b, t) - y * 0.22
 		if p.y < 0.12:
 			continue
-		var lp: Array = []
+		any_leg = true
 		for s: float in [-1.0, 1.0]:
 			var q: Vector3 = p + z * s * (BELT_W * 0.5 + 0.04)
-			lp.append(ProcMesh.part(ProcMesh.box(Vector3(0.06, q.y, 0.06)), ProcMesh.xf(Vector3(q.x, q.y * 0.5, q.z))))
-			lp.append(ProcMesh.part(ProcMesh.box(Vector3(0.16, 0.025, 0.16)), ProcMesh.xf(Vector3(q.x, 0.012, q.z))))
+			lk.box(Vector3(0.07, q.y, 0.07), Vector3(q.x, q.y * 0.5, q.z), YardArt.GUNMETAL, Vector3.ZERO, 0.015)
+			lk.box(Vector3(0.18, 0.03, 0.18), Vector3(q.x, 0.015, q.z), YardArt.DARK, Vector3.ZERO, 0.008)
 		if p.y > 0.45:
-			lp.append(ProcMesh.part(ProcMesh.box(Vector3(0.04, 0.04, BELT_W + 0.1)), ProcMesh.xf(Vector3(p.x, p.y * 0.45, p.z), Vector3(0, rad_to_deg(atan2(z.x, z.z)), 0))))
-		var legs := MeshInstance3D.new()
-		legs.mesh = ProcMesh.merge(lp)
-		legs.material_override = _steel
-		add_child(legs)
+			lk.box(Vector3(0.045, 0.045, BELT_W + 0.1), Vector3(p.x, p.y * 0.45, p.z), YardArt.GUNMETAL, Vector3(0, rad_to_deg(atan2(z.x, z.z)), 0), 0.01)
+	if any_leg:
+		add_child(lk.mi(0.15, "Legs"))
 	var sb := StaticBody3D.new()
 	var cs := CollisionShape3D.new()
 	var bs := BoxShape3D.new()

@@ -203,13 +203,76 @@ func _go(u: Dictionary, cell_path: PackedInt32Array) -> void:
 	if dirs.is_empty():
 		dirs.append(grid.centers[cell_path[cell_path.size() - 1]])
 	if u["bot"] != null:
-		(u["bot"] as SphereBot).go_via(dirs)
+		var b: SphereBot = u["bot"]
+		var on: Dictionary = {}
+		for c: int in cell_path:
+			on[c] = true
+		u["path_cells"] = on
+		b.go_via(pull_path(b.dir, dirs, on, str(u["role"])))
 	else:
 		var r: Dictionary = u["rec"]
 		r["goal"] = dirs.pop_front()
 		r["path"] = dirs
 	u["stall_best"] = INF
 	u["stall_t"] = 0.0
+
+
+# --- [v6crew] Straight runs: string-pulling the hex path ------------------------------------------
+# A* over hexes goes centre to centre, so a run that isn't along a hex axis zig-zags (60 degree
+# kinks every 17 m), and the last hop to a bale beside a cell centre doubled back. A near robot
+# now skips every waypoint it can reach in a straight line over open ground (cells on its own
+# path, or passable ones, and clear of building circles), so Haul Bugs drive in long straight runs.
+
+const PULL_STEP_M: float = 4.0
+const PULL_LOOKAHEAD: int = 10
+const PULL_CLEAR_M: float = 1.1
+
+
+## Waypoints (unit directions) with the ones a straight run can skip removed; the last is kept.
+func pull_path(from: Vector3, dirs: Array[Vector3], on: Dictionary, role: String) -> Array[Vector3]:
+	if dirs.size() < 2:
+		return dirs
+	var out: Array[Vector3] = []
+	var at: Vector3 = from
+	var i: int = 0
+	while i < dirs.size():
+		var j: int = mini(dirs.size() - 1, i + PULL_LOOKAHEAD)
+		while j > i and not clear_run(at, dirs[j], on, role):
+			j -= 1
+		out.append(dirs[j])
+		at = dirs[j]
+		i = j + 1
+	return out
+
+
+## True when a robot can drive straight from `a` to `b` (unit directions).
+func clear_run(a: Vector3, b: Vector3, on: Dictionary, role: String) -> bool:
+	var len_m: float = a.angle_to(b) * surface.radius
+	if len_m < 0.5:
+		return true
+	var obs: Array = swarm.obstacles_near(a.slerp(b, 0.5).normalized(), len_m * 0.5 + 6.0) if swarm != null else []
+	var n: int = maxi(2, ceili(len_m / PULL_STEP_M))
+	var hint: int = grid.cell_at(a)
+	for k: int in range(1, n):
+		var p: Vector3 = a.slerp(b, float(k) / float(n)).normalized()
+		hint = grid.cell_at_from(p, hint)
+		if not on.has(hint):
+			if blocked.has(hint) or (role != "skim" and cells.state[hint] == 5):
+				return false
+	for o: Array in obs:  # exact distance from each prop's centre to the run (small kit included)
+		if arc_dist_m(a, b, o[0]) < float(o[1]) + PULL_CLEAR_M:
+			return false
+	return true
+
+
+## Distance in metres from point `p` to the great-circle arc a-b (all unit directions).
+func arc_dist_m(a: Vector3, b: Vector3, p: Vector3) -> float:
+	# Chords are the arcs to well under a centimetre over a few hundred metres on a 1.8 km planet.
+	var ab: Vector3 = (b - a) * surface.radius
+	var ap: Vector3 = (p - a) * surface.radius
+	var l2: float = ab.length_squared()
+	var t: float = clampf(ap.dot(ab) / l2, 0.0, 1.0) if l2 > 1e-6 else 0.0
+	return (ap - ab * t).length()
 
 
 # --- [orbC] Stations, outposts and water on the globe (ORBIT_PARITY) -------------------------
@@ -311,21 +374,47 @@ func _go_refill(u: Dictionary, here: int) -> bool:
 	return false
 
 
-## A hauler's own spot by the depot (a ring 2.2 m out, one slot per hauler name), clear of
+## A hauler's own spot by the depot (a ring DROP_RING_M out, one slot per hauler of the hub), clear of
 ## buildings, so several Haul Bugs unloading at once don't jostle on one point.
 func _drop_spot(u: Dictionary) -> Vector3:
 	return _drop_spot_at(u, depot_points.get(int(u["hub"]), Vector3.ZERO))
 
 
+const DROP_SLOTS: int = 6
+## [v6crew] Bales and drop spots keep this far off a building circle: a robot dodges at its body
+## radius (0.7 m), so a target nearer than that had the seek and the dodge fighting (a wobble).
+const HAUL_CLEAR_M: float = 0.95
+## A drop spot keeps more room: a hauler parks there, turns and drives off again.
+const DROP_CLEAR_M: float = 1.8
+const DROP_RING_M: float = 3.4
+
+
 func _drop_spot_at(u: Dictionary, dp: Vector3) -> Vector3:
 	if dp == Vector3.ZERO:
 		return Vector3.ZERO
-	var slot: float = float(absi(hash(str(u["name"]))) % 6) / 6.0 * TAU
-	var side: Vector3 = SphereMath.any_perpendicular(dp).rotated(dp, slot)
-	var at: Vector3 = SphereMath.advance(dp, side, 2.2 / surface.radius)[0]
-	if swarm != null and _inside_building(at):
-		at = surface.up_at(_approach(surface.ground(at), surface.ground(dp)))
-	return at
+	# [v6crew] one slot per hauler of the hub (by its place in the crew, not a name hash that let two
+	# share a slot), DROP_RING_M out so neighbouring slots are more than a body length apart
+	var k: int = 0
+	var n: int = 0
+	for o: Dictionary in units:
+		if str(o["role"]) == "haul" and int(o["hub"]) == int(u["hub"]):
+			if is_same(o, u):
+				k = n
+			n += 1
+	var slot: float = (float(k % DROP_SLOTS) + (0.5 if k >= DROP_SLOTS else 0.0)) / float(DROP_SLOTS) * TAU
+	var base: Vector3 = SphereMath.any_perpendicular(dp)
+	var first: Vector3 = SphereMath.advance(dp, base.rotated(dp, slot), DROP_RING_M / surface.radius)[0]
+	if swarm == null or not _inside_building(first, DROP_CLEAR_M):
+		return first
+	# A prop (a bin, the hopper) stands on this slot: the nearest clear spot round the ring, then
+	# a ring further out. (Sliding in toward the Depot left it pressed against the prop.)
+	for ring_m: float in [DROP_RING_M, DROP_RING_M + 1.8]:
+		for i: int in range(1, 13):
+			var a: float = slot + float((i + 1) / 2) * (TAU / 12.0) * (1.0 if i % 2 == 1 else -1.0)
+			var at: Vector3 = SphereMath.advance(dp, base.rotated(dp, a), ring_m / surface.radius)[0]
+			if not _inside_building(at, DROP_CLEAR_M):
+				return at
+	return surface.up_at(_approach(surface.ground(first), surface.ground(dp), HAUL_CLEAR_M))
 
 
 ## One more waypoint at the end of the current route (a point inside the last cell).
@@ -335,7 +424,11 @@ func _append_goal(u: Dictionary, d: Vector3) -> void:
 	if u["bot"] != null:
 		var b: SphereBot = u["bot"]
 		if b.has_goal():
-			b.path.append(d)
+			# [v6crew] the end point beside a cell centre: pull again so the last hop doesn't double back
+			var all: Array[Vector3] = [b.goal]
+			all.append_array(b.path)
+			all.append(d)
+			b.go_via(pull_path(b.dir, all, u.get("path_cells", {}), str(u["role"])))
 		else:
 			b.goal = d
 	else:
@@ -805,7 +898,7 @@ func _promote(u: Dictionary) -> void:
 		var bd := BotBadge.new()
 		bd.name = "Badge"
 		b.add_child(bd)
-		bd.setup(str(u["role"]), BotBadge.top_of(b.visual) + 0.22)
+		bd.setup(str(u["role"]), BotBadge.top_of(b.visual) + 0.22, int(u["tier"]))
 	u["bot"] = b
 	_near_n += 1
 	SphereBales.dress_cargo(b, (u["carry"] as Array).size())
@@ -1118,14 +1211,14 @@ func _work_pieces(u: Dictionary, c: int, dt: float) -> void:
 ## Where to stand to scoop a piece at `p` (robot at `from`): the piece itself, or the first spot
 ## clear of the buildings on the way back toward the robot (the arm reaches in; the robot never
 ## drives into a wall).
-func _approach(p: Vector3, from: Vector3) -> Vector3:
+func _approach(p: Vector3, from: Vector3, margin: float = 0.35) -> Vector3:
 	if swarm == null:
 		return p
 	var d: Vector3 = surface.up_at(p)
 	var back: Vector3 = surface.up_at(from)
 	var total: float = d.angle_to(back) * surface.radius
 	var k: float = 0.0
-	while _inside_building(d) and k < total:
+	while _inside_building(d, margin) and k < total:
 		k += 0.5
 		d = SphereMath.slerp_safe(surface.up_at(p), back, clampf(k / maxf(total, 0.01), 0.0, 1.0))
 	return surface.ground(d)
@@ -1152,9 +1245,9 @@ func _free_spot(d: Vector3) -> Vector3:
 	return d
 
 
-func _inside_building(d: Vector3) -> bool:
-	for ob: Array in swarm.obstacles_near(d, 0.4):
-		if d.angle_to(ob[0]) * surface.radius < float(ob[1]) + 0.35:
+func _inside_building(d: Vector3, margin: float = 0.35) -> bool:
+	for ob: Array in swarm.obstacles_near(d, margin + 0.05):
+		if d.angle_to(ob[0]) * surface.radius < float(ob[1]) + margin:
 			return true
 	return false
 
@@ -1237,8 +1330,8 @@ func _drop_bale(u: Dictionary) -> void:
 	var d: Vector3 = unit_dir(u)
 	var side: Vector3 = SphereMath.any_perpendicular(d).rotated(d, randf() * TAU)
 	var at: Vector3 = SphereMath.advance(d, side, 0.9 / surface.radius)[0]
-	if swarm != null and _inside_building(at):
-		at = surface.up_at(_approach(surface.ground(at), surface.ground(d)))
+	if swarm != null and _inside_building(at, HAUL_CLEAR_M):  # [v6crew] clear of a hauler's dodge zone
+		at = surface.up_at(_approach(surface.ground(at), surface.ground(d), HAUL_CLEAR_M))
 	if cells.state[grid.cell_at(at)] == 5:  # a Skimmer's bale goes on the nearest shore
 		at = _shore_of(grid.cell_at(at))
 	bales.append({"id": _bale_seq, "cell": grid.cell_at(at), "dir": at, "value": value, "units": units_in, "claimed": "",
@@ -1263,6 +1356,30 @@ func _bale_index(id: int) -> int:
 	return -1
 
 
+## [v6crew] How good a bale is to fetch next (lower is better, metres). Nearest first, but
+## - with bales aboard, the detour off the way home counts, not the distance (no zig-zag back
+##   out to a bale behind it while the drop point is ahead);
+## - a bale right by one another Haul Bug is already going for costs more (they spread out
+##   instead of driving in a bunch to the same pile).
+const SPREAD_M: float = 14.0
+const SPREAD_COST_M: float = 25.0
+
+
+func _haul_score(u: Dictionary, here: int, bale: Dictionary, aboard: int, taken: Array[Vector3]) -> float:
+	var bc: int = int(bale["cell"])
+	var me: Vector3 = grid.centers[here]
+	var bd: Vector3 = bale.get("dir", grid.centers[bc])
+	var s: float = me.angle_to(bd) * surface.radius
+	if aboard > 0:
+		var home: Vector3 = drop_dir(int(u["hub"]))
+		s = s + bd.angle_to(home) * surface.radius - me.angle_to(home) * surface.radius
+	for t: Vector3 in taken:
+		if t.angle_to(bd) * surface.radius < SPREAD_M:
+			s += SPREAD_COST_M
+			break
+	return s
+
+
 func _find_haul(u: Dictionary, here: int) -> bool:
 	var carry: Array = u["carry"]
 	var cap: int = maxi(1, int(Economy.robot_stat(str(u["type"]), "carry", int(u["tier"]))))
@@ -1270,6 +1387,10 @@ func _find_haul(u: Dictionary, here: int) -> bool:
 	var best_d: float = INF
 	if carry.size() < cap:
 		var reach: float = region_m() + 60.0
+		var taken: Array[Vector3] = []  # [v6crew] bales other Haul Bugs are going for
+		for o: Dictionary in bales:
+			if str(o["claimed"]) != "" and str(o["claimed"]) != str(u["name"]):
+				taken.append(o.get("dir", grid.centers[int(o["cell"])]))
 		for i: int in bales.size():
 			if str(bales[i]["claimed"]) != "":
 				continue
@@ -1277,7 +1398,7 @@ func _find_haul(u: Dictionary, here: int) -> bool:
 				continue  # [v6crew] another hub's bale: its own haulers take it
 			if float(_skip.get(int(bales[i]["cell"]), -1.0)) >= _t:
 				continue  # [v5play] no way there just now: the next bale, not the same one for ever
-			var d: float = grid.distance_m(here, int(bales[i]["cell"]))
+			var d: float = _haul_score(u, here, bales[i], carry.size(), taken)
 			if d < best_d:
 				best_d = d
 				best = i
@@ -1377,7 +1498,7 @@ func print_report() -> void:
 		for k: String in LOG_KEYS:
 			if k != "stall_s" and k != "idle_s" and float(u["log"][k]) > 0.0:
 				parts.append("%s=%s" % [k, str(snappedf(float(u["log"][k]), 0.1))])
-		print("[bots] %-12s %-9s %-4s %5.0fm | %s | %s | stalled %.0fs | idle %.0fs" % [u["name"], u["type"], "near" if is_near(u) else "far",
+		print("[bots] %-12s %-9s Mk%d %-4s %5.0fm | %s | %s | stalled %.0fs | idle %.0fs" % [u["name"], u["type"], int(u["tier"]) + 1, "near" if is_near(u) else "far",
 			_focus_dist(unit_dir(u)) if focus else -1.0, ", ".join(parts), status_text(u), float(u["log"]["stall_s"]), float(u["log"]["idle_s"])])
 	if field != null and terrain_for_recount != null:  # live ledger vs what a reload would count
 		var re := SphereField.new(grid, terrain_for_recount, cells, 7)

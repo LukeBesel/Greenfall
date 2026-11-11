@@ -1106,6 +1106,9 @@ static func composter() -> Dictionary:
 	k.box(Vector3(0.2, 0.26, 0.03), Vector3(-1.39, 0.1, 0.3), GUNMETAL, Vector3(0, 0, -12), 0.012)
 	k.cyl(0.12, 0.24, Vector3(-1.5, 0.12, -0.5), TEAL, Vector3.ZERO, 0.03, 14)
 	k.pipe(Vector3(-1.4, 0.12, -0.5), Vector3(-1.22, 0.3, -0.5), 0.02, TEAL, false)
+	# [v6yard] The picture sign (a sprout) on a stalk over the bins: data/machine_art.json.
+	k.box(Vector3(0.07, 0.62, 0.07), Vector3(-0.42, 1.14, 0.47), TEAL, Vector3.ZERO, 0.015)
+	MachineArt.put_sign(k, "composter", Vector3(-0.42, 1.45 + float(MachineArt.sign_def("composter").get("size", 0.72)) * 0.5, 0.47), Vector3(0, 180, 0), true)
 	var d := Kit.new()  # drum (axis along Z)
 	d.cyl(0.25, 0.7, Vector3.ZERO, GUNMETAL, Vector3(90, 0, 0), 0.03, 16)
 	for z: float in [-0.33, 0.33]:
@@ -1246,7 +1249,7 @@ static func signal_tower(t: int) -> Dictionary:
 	var leg := func(y: float) -> float: return lerpf(0.42, 0.14, clampf((y - base_y) / h, 0.0, 1.0))
 	for sx: float in [-1.0, 1.0]:
 		for sz: float in [-1.0, 1.0]:
-			k.pipe(Vector3(sx * 0.42, base_y, sz * 0.42), Vector3(sx * 0.14, base_y + h, sz * 0.14), 0.035, TEAL, false)
+			k.pipe(Vector3(sx * 0.42, base_y, sz * 0.42), Vector3(sx * 0.14, base_y + h, sz * 0.14), 0.06, TEAL, false)  # [v6yard] chunkier: no thin sticks
 	var sections: int = int(round(h / 0.9))
 	for i: int in sections:
 		var y0: float = base_y + h * float(i) / sections
@@ -1255,8 +1258,8 @@ static func signal_tower(t: int) -> Dictionary:
 		var a1: float = leg.call(y1)
 		for side: int in 4:
 			var bs := Basis(Vector3.UP, side * PI * 0.5)
-			k.pipe(bs * Vector3(-a0, y0, a0), bs * Vector3(a1, y1, a1), 0.016, CREAM, false)
-			k.pipe(bs * Vector3(-a1, y1, a1), bs * Vector3(a1, y1, a1), 0.018, TEAL_D, false)
+			k.pipe(bs * Vector3(-a0, y0, a0), bs * Vector3(a1, y1, a1), 0.028, CREAM, false)
+			k.pipe(bs * Vector3(-a1, y1, a1), bs * Vector3(a1, y1, a1), 0.034, TEAL_D, false)
 	# Equipment cabinet at the foot, conduit up a leg.
 	k.box(Vector3(0.5, 0.7, 0.34), Vector3(0.0, 0.63, 0.5), CREAM, Vector3.ZERO, 0.04)
 	k.box(Vector3(0.54, 0.05, 0.38), Vector3(0.0, 1.0, 0.5), TEAL, Vector3.ZERO, 0.02)
@@ -1266,6 +1269,10 @@ static func signal_tower(t: int) -> Dictionary:
 		k.glow_box(Vector3(0.03, 0.03, 0.02), Vector3(-0.15 + i * 0.06, 0.86, 0.675), [MINT, MINT, AMBER][i])
 	k.pipe(Vector3(0.2, 0.98, 0.42), Vector3(0.2, 0.98, 0.42).lerp(Vector3(0.14, base_y + h * 0.95, 0.14), 1.0), 0.022, GUNMETAL, false)
 	k.hazard(Vector3(1.32, 0.06, 1.32), Vector3(0, 0.21, 0))
+	# [v6yard] The picture sign (a mast and its waves) on the cabinet: data/machine_art.json.
+	var sg: float = float(MachineArt.sign_def("signal_tower").get("size", 0.62))
+	k.box(Vector3(0.06, 0.2, 0.06), Vector3(0, 1.1, 0.56), TEAL, Vector3.ZERO, 0.015)
+	MachineArt.put_sign(k, "signal_tower", Vector3(0, 1.18 + sg * 0.5, 0.56), Vector3.ZERO, true)
 	var tip_y: float = base_y + h
 	k.cyl(0.1, 0.3, Vector3(0, tip_y + 0.12, 0), GUNMETAL, Vector3.ZERO, 0.02, 10)
 	# Dishes: tier 1 low, tier 2 higher on the other side.
@@ -1289,14 +1296,14 @@ static func signal_tower(t: int) -> Dictionary:
 		k.box(Vector3(pa * 2.0, 0.05, pa * 2.0), Vector3(0, py, 0), GUNMETAL, Vector3.ZERO, 0.015)
 		for side: int in 4:
 			var bs2 := Basis(Vector3.UP, side * PI * 0.5)
-			k.pipe(bs2 * Vector3(-pa, py + 0.4, pa), bs2 * Vector3(pa, py + 0.4, pa), 0.014, YELLOW, false)
-			k.pipe(bs2 * Vector3(pa, py, pa), bs2 * Vector3(pa, py + 0.4, pa), 0.014, YELLOW, false)
+			k.pipe(bs2 * Vector3(-pa, py + 0.4, pa), bs2 * Vector3(pa, py + 0.4, pa), 0.022, YELLOW, false)
+			k.pipe(bs2 * Vector3(pa, py, pa), bs2 * Vector3(pa, py + 0.4, pa), 0.022, YELLOW, false)
 	if t >= 3:
 		k.cyl(0.5, 0.04, Vector3(0, tip_y - 0.35, 0), GUNMETAL, Vector3.ZERO, 0.01, 24)
 		k.glow_cyl(0.52, 0.02, Vector3(0, tip_y - 0.33, 0), CYAN, Vector3.ZERO, 24)
 		for a: int in 3:
 			var d := Vector3(cos(a * TAU / 3.0), 0, sin(a * TAU / 3.0))
-			k.pipe(Vector3(0, tip_y - 0.1, 0) + d * 0.12, Vector3(0, tip_y + 0.8, 0) + d * 0.22, 0.01, STEEL, false)
+			k.pipe(Vector3(0, tip_y - 0.1, 0) + d * 0.12, Vector3(0, tip_y + 0.8, 0) + d * 0.22, 0.018, STEEL, false)
 	if t >= 4:
 		k.cyl(0.16, 0.18, Vector3(0, tip_y + 0.36, 0), CREAM, Vector3.ZERO, 0.05, 14)
 		for s: float in [-1.0, 1.0]:
@@ -1553,6 +1560,11 @@ static func fabricator_shell() -> Kit:
 	k.box(Vector3(0.3, 0.2, 0.3), Vector3(-0.3, 2.7, -0.4), ORANGE, Vector3.ZERO, 0.04)
 	k.pipe(Vector3(-0.3, 2.6, -0.4), Vector3(-0.3, 2.0, -0.4), 0.015, STEEL, false)
 	k.box(Vector3(0.24, 0.06, 0.24), Vector3(-0.3, 1.97, -0.4), GUNMETAL, Vector3.ZERO, 0.015)
+	# [v6yard] The picture sign (a robot's head) over the bay mouth: data/machine_art.json.
+	var sg: float = float(MachineArt.sign_def("fabricator").get("size", 0.8))
+	for x: float in [-0.14, 0.14]:
+		k.box(Vector3(0.05, 0.2, 0.05), Vector3(x, 3.02, 0.6), GUNMETAL, Vector3.ZERO, 0.012)
+	MachineArt.put_sign(k, "fabricator", Vector3(0, 3.06 + sg * 0.5, 0.6), Vector3.ZERO, true)
 	# Status beacon on top.
 	k.cyl(0.12, 0.1, Vector3(1.45, 2.85, 0.7), DARK, Vector3.ZERO, 0.02, 12)
 	k.glow_cyl(0.09, 0.12, Vector3(1.45, 2.95, 0.7), MINT, Vector3.ZERO, 12)

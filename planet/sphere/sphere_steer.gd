@@ -25,7 +25,9 @@ static func separation(dir: Vector3, others: Array, radius_m: float, r: float) -
 
 ## Avoidance of static round obstacles (rocks, buildings): `obstacles` = [[dir, radius_m], ...].
 ## Steers around the side the heading already favours, only for obstacles ahead.
-static func avoid(dir: Vector3, heading: Vector3, obstacles: Array, look_m: float, body_m: float, r: float) -> Vector3:
+## [v6crew] `force_side` (+1 / -1, 0 = free) makes every obstacle be passed on that side
+## (SphereBot keeps one side while it passes another robot, so the dodge can't flip-flop).
+static func avoid(dir: Vector3, heading: Vector3, obstacles: Array, look_m: float, body_m: float, r: float, force_side: float = 0.0) -> Vector3:
 	var out := Vector3.ZERO
 	for ob: Array in obstacles:
 		var od: Vector3 = ob[0]
@@ -40,7 +42,29 @@ static func avoid(dir: Vector3, heading: Vector3, obstacles: Array, look_m: floa
 			continue
 		var side: Vector3 = heading.cross(dir)  # left-hand tangent... sign below picks the free side
 		var s: float = -signf(side_v.dot(side)) if lateral > 0.05 else 1.0
+		if force_side != 0.0:
+			s = force_side
 		out += side * s * (1.0 - lateral / orad) * (1.0 - ahead / (look_m + orad)) * 2.0
+	return out
+
+
+## [v6crew] The nearest obstacle ahead that `avoid` would steer round: [index, side (+1 / -1)],
+## or [-1, 0.0] when none is ahead.
+static func nearest_ahead(dir: Vector3, heading: Vector3, obstacles: Array, look_m: float, body_m: float, r: float) -> Array:
+	var best: float = INF
+	var out: Array = [-1, 0.0]
+	for i: int in obstacles.size():
+		var ob: Array = obstacles[i]
+		var orad: float = float(ob[1]) + body_m
+		var to: Vector3 = SphereMath.tangent(Vector3(ob[0]) - dir, dir) * r
+		var ahead: float = to.dot(heading)
+		if ahead <= 0.0 or ahead > look_m + orad or ahead >= best:
+			continue
+		var side_v: Vector3 = to - heading * ahead
+		if side_v.length() >= orad:
+			continue
+		best = ahead
+		out = [i, -signf(side_v.dot(heading.cross(dir))) if side_v.length() > 0.05 else 1.0]
 	return out
 
 

@@ -157,7 +157,7 @@ func _place_hubs(n: int, fresh: bool, saved := PackedInt32Array()) -> void:
 		picks.append(best)
 	var blocked := func(c: int) -> bool: return cells.state[c] == WATER
 	for i: int in picks.size():
-		var r: float = START_SITE_M if i == 0 else (VERDANCE_HUB_SITE_M if str(spec.get("id", "verdance")) == "verdance" else HUB_SITE_M)
+		var r: float = START_SITE_M if i == 0 else (VERDANCE_HUB_SITE_M if PlanetCfg.uses_towns(str(spec.get("id", "verdance"))) else HUB_SITE_M)  # [v7planet] towns kit
 		var s: Dictionary = terrain.reserve_site(picks[i], r, SITE_BLEND_M, blocked)
 		if s.is_empty():
 			s = terrain.reserve_site(picks[i], r, SITE_BLEND_M)  # coast: allow it
@@ -195,7 +195,7 @@ func _clear_sites() -> void:
 ## [v1yard] The start yard's per-piece keep-out (the pad, the pod; SiteManager adds the building
 ## footprints), or null off Verdance (other planets' start prefabs keep the 22 m clear core).
 func yard_keep_out() -> YardKeepOut:
-	if _keep_out == null and not sites.is_empty() and str(spec.get("id", "verdance")) == "verdance":
+	if _keep_out == null and not sites.is_empty() and PlanetCfg.uses_towns(str(spec.get("id", "verdance"))):  # [v7planet] the towns kit's start yard
 		_keep_out = YardKeepOut.for_site(sites[0], terrain)
 	return _keep_out
 

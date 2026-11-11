@@ -226,22 +226,43 @@ func _rp_make_plan() -> void:
 
 
 func _rp_apply() -> void:
-	var ctxs: Array = _rp_ctxs
+	_rp_ai = 0
+	_desired.clear()
+	_rp_apply_part(0)
+
+
+var _rp_ai: int = 0  # [v6qa] the next plan entry _rp_apply_part looks at
+
+
+## [v6qa] The plan's entries into _desired, at most budget_us this call (0: all). True when the
+## apply is finished (the rest runs then). In one go it was a 40-100 ms frame on a big hub.
+func _rp_apply_part(budget_us: int) -> bool:
+	var t0: int = Time.get_ticks_usec()
 	var fd: Dictionary = _rp_fd
 	var plan: Array = _rp_plan
-	_desired.clear()
 	var spawn_r: float = float(_cfg.get("spawn_radius", 55.0))
-	for e: Dictionary in plan:
+	while _rp_ai < plan.size():
+		if budget_us > 0 and (_rp_ai & 15) == 0 and Time.get_ticks_usec() - t0 > budget_us:
+			return false
+		var e: Dictionary = plan[_rp_ai]
+		_rp_ai += 1
+		var h: int = int(e["hex"])
+		if h >= 0 and float(fd.get(h, 0.0)) > spawn_r:  # (before the def lookup: most entries are far)
+			continue
 		var sid: String = str(e["sp"])
 		var kind: String = str(FaunaRules.def(sid).get("kind", ""))
-		var h: int = int(e["hex"])
-		if h >= 0 and float(fd.get(h, 0.0)) > spawn_r:
-			continue
 		if kind in ["swarm", "school"]:
 			_desired["%s|%d" % [sid, h]] = e
 		else:
 			for k: int in int(e["n"]):
 				_desired["%s|%d|%d" % [sid, h, k]] = e
+	_rp_apply_rest()
+	return true
+
+
+func _rp_apply_rest() -> void:
+	var ctxs: Array = _rp_ctxs
+	var plan: Array = _rp_plan
 	if DevHooks.has("fauna-debug"):
 		var wn: int = 0
 		var wc: int = 0
@@ -269,6 +290,20 @@ func _rp_apply() -> void:
 	_rp_plan = []
 
 
+var _rp_applying: bool = false
+
+
+func _rp_apply_split() -> bool:
+	if not _rp_applying:
+		_rp_applying = true
+		_rp_ai = 0
+		_desired.clear()
+	if _rp_apply_part(3000):
+		_rp_applying = false
+		return true
+	return false
+
+
 ## Spawns the planned animals that are missing, in plan order. budget_us > 0: stop after that much
 ## time this call (true is returned when all are done or the round's cap is reached).
 func _rp_spawn(budget_us: int) -> bool:
@@ -290,6 +325,7 @@ func _rp_spawn(budget_us: int) -> bool:
 
 func _replan_step() -> void:
 	var h: int = Hitch.t()
+	var ran: int = _rp_phase  # [v6qa] the mark names the part that ran (it named the next one)
 	match _rp_phase:
 		1:
 			_rp_contexts()
@@ -298,12 +334,12 @@ func _replan_step() -> void:
 			_rp_make_plan()
 			_rp_phase = 3
 		3:
-			_rp_apply()
-			_rp_phase = 4
+			if _rp_apply_split():  # [v6qa] a slice a frame
+				_rp_phase = 4
 		4:
 			if _rp_spawn(3000):
 				_rp_phase = 0
-	Hitch.mark("fauna replan %d" % _rp_phase, h)
+	Hitch.mark("fauna replan %d" % ran, h)
 
 
 ## --fauna-dense: every qualifying hex gets the species (screenshots).
@@ -381,10 +417,27 @@ func _near_cells() -> PackedInt32Array:
 	_near_at = _lumi_pos
 	_near = PackedInt32Array()
 	var r: float = float(_cfg.get("spawn_radius", 55.0)) + world.field.hex_size * 2.0
+	var sf: SphereField = world.field as SphereField
+	if sf:  # [v6qa] the grid's cells round Lumi that are in the region (it measured every region cell: 20-40 ms at a hub switch)
+		if _frame_set.size() != frame_cells.size():
+			_frame_set.clear()
+			for i0: int in frame_cells.size():
+				_frame_set[frame_cells[i0]] = i0
+		var idx: Array[int] = []
+		for h: int in sf.grid.cells_within(_w(_lumi_pos).normalized(), r + 2.0):
+			if _frame_set.has(h) and _hex_c(h).distance_to(_lumi_pos) < r:
+				idx.append(int(_frame_set[h]))
+		idx.sort()  # the region's own order, as before (the plan's dice follow it)
+		for i1: int in idx:
+			_near.append(frame_cells[i1])
+		return _near
 	for h: int in frame_cells:
 		if _hex_c(h).distance_to(_lumi_pos) < r:
 			_near.append(h)
 	return _near
+
+
+var _frame_set: Dictionary = {}  # [v6qa]
 
 
 ## [orbB] The globe: rotates the hub frame's +Y onto the ground's own up at p (the frame is a
@@ -641,6 +694,7 @@ func _spawn(key: String, e: Dictionary) -> bool:
 		a.cat_name = str(adopted_cat().get("name", "Biscuit"))
 		a.coat = int(adopted_cat().get("coat", 0))
 		a.size = 1.0
+		_warm_done()  # [v6qa]
 		var w: Vector3 = _warm[0] if not _warm.is_empty() else Vector3(2, 0, 2)
 		p = w + Vector3(_rng.randf_range(-1, 1), 0, _rng.randf_range(-1, 1))
 		p.y = _ground_y(p)
@@ -841,7 +895,7 @@ func _toward_junk(p: Vector3) -> Vector3:
 	var f: HexField = world.field
 	var best: Vector3 = p + Vector3(6, 0, 0)
 	var bd: float = INF
-	for h: int in _hexes():
+	for h: int in (_near_cells() if _globe else _hexes()):  # [v6qa] on the globe the cells round Lumi (the whole hub region, each rat that left: 70-170 ms)
 		if not f.is_clean(h) and not f.is_water(h) and f.hex_hub[h] == 0:
 			var d: float = _hex_c(h).distance_to(p)
 			if d < bd:
@@ -862,17 +916,49 @@ func _build_warm_spots() -> void:
 	for h: int in _hexes():
 		if f.hex_hub[h] != 0:
 			_warm.append(_hex_c(h) + Vector3(_rng.randf_range(-3, 3), 0, _rng.randf_range(-3, 3)))
-	for i: int in range(_warm.size() - 1, -1, -1):
-		var w: Vector3 = _warm[i]
+	# [v6qa] The ground and blocked checks below were 30 ms in a hub switch: in play they run a slice
+	# a frame (_process), and anything that reads the spots first finishes them (_warm_done). The dice
+	# above are thrown here as before, so the spots and every later draw are the same.
+	_warm_pend = _warm.duplicate()
+	_warm.clear()
+	_warm_i = _warm_pend.size() - 1
+	if not (BuildBudget.current != null and BuildBudget.current.play_slice_us > 0):
+		_warm_done()
+
+
+var _warm_pend: Array[Vector3] = []  # [v6qa]
+var _warm_i: int = -1
+
+
+## [v6qa] The warm spots' checks, at most budget_us (0: all). The list is published when all are done.
+func _warm_step(budget_us: int) -> void:
+	if _warm_i < 0 and _warm_pend.is_empty():
+		return
+	var t0: int = Time.get_ticks_usec()
+	var f: HexField = world.field
+	while _warm_i >= 0:
+		if budget_us > 0 and Time.get_ticks_usec() - t0 > budget_us:
+			return
+		var i: int = _warm_i
+		_warm_i -= 1
+		var w: Vector3 = _warm_pend[i]
 		w.y = _ground_y(w)
-		_warm[i] = w
+		_warm_pend[i] = w
 		if not FaunaRules.spot_ok(f, _w(w), 0.4) or (is_inside_tree() and _props_blocked(w, 0.3)):  # [fauna2]
-			_warm.remove_at(i)
+			_warm_pend.remove_at(i)
+	_warm = _warm_pend
+	_warm_pend = []
+
+
+func _warm_done() -> void:
+	_warm_step(0)
 
 
 # --- Frame update ------------------------------------------------------------------------------
 
 func _process(delta: float) -> void:
+	if _warm_i >= 0 or not _warm_pend.is_empty():  # [v6qa]
+		_warm_step(3000)
 	if world == null or world.get("patch") == null:
 		return
 	_frame += 1
@@ -1610,6 +1696,8 @@ func _update_cat(a: Animal, dt: float) -> void:
 			a.tail = 0.25
 			if a.t <= 0.0:
 				var r: float = _rng.randf()
+				if _warm_i >= 0 or not _warm_pend.is_empty():
+					_warm_done()  # [v6qa]
 				if r < 0.25 and not _warm.is_empty() and (_night > 0.5 or _rng.randf() < 0.6):
 					var w: Vector3 = _nearest_warm(a.pos)
 					if w.distance_to(a.pos) < 22.0:

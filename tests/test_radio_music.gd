@@ -31,6 +31,8 @@ var _dir: RefCounted
 
 
 func before_each() -> void:
+	Audio._duck_until_us = 0  # [main] no spoken line left over from an earlier test (a song waits for lines)
+	Audio._duck = 0.0
 	_fake = FakeVoices.new()
 	var samples: Dictionary = Audio._music_samples
 	_dir = MusicDirector.new(samples, _fake)

@@ -173,7 +173,18 @@ func open_panel() -> void:
 	var tw: Tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	tw.tween_property(self, "modulate:a", 1.0, 0.18)
 	tw.tween_property(_panel, "scale", Vector2.ONE, 0.22)
-	_tab_buttons[_tab].call_deferred("grab_focus")
+	_first_focus().call_deferred("grab_focus")  # [v6screens] Basics alone hides the tab row: focus its first row
+
+
+## [v6screens] Where the focus starts: the tab, or on Basics alone (no tab row) its first row.
+func _first_focus() -> Control:
+	if _more:
+		return _tab_buttons[_tab]
+	for c: Node in _pages[_tab].find_children("*", "Control", true, false):
+		var ctl: Control = c as Control
+		if ctl.focus_mode == Control.FOCUS_ALL and ctl.has_meta("row_ctl") and ctl.is_visible_in_tree():
+			return ctl
+	return _back
 
 
 func close_panel() -> void:
@@ -193,7 +204,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel") or event.is_action_pressed("pause"):
 		close_panel()
 		get_viewport().set_input_as_handled()
-	elif event.is_action_pressed("ui_tab_next") or event.is_action_pressed("ui_tab_prev"):
+	elif _more and (event.is_action_pressed("ui_tab_next") or event.is_action_pressed("ui_tab_prev")):  # [v6screens] Basics alone has no tab row to switch
 		var step: int = 1 if event.is_action_pressed("ui_tab_next") else -1
 		var i: int = wrapi(_tab + step, 0, TABS.size())
 		_tab_buttons[i].button_pressed = true
@@ -230,6 +241,13 @@ func _set_more(on: bool) -> void:
 		_back_hint.visible = not on
 
 
+## [v6screens] The languages a player can pick: Settings.LANGUAGES without the translators' test
+## language (still there with --locale=pseudo, or when it is the saved choice).
+static func picker_languages() -> Array:
+	return Settings.LANGUAGES.filter(func(l: Array) -> bool:
+		return str(l[0]) != "pseudo" or Settings.language == "pseudo" or Settings.locale_override == "pseudo")
+
+
 ## [ui2] The few settings most players want, then a way to everything else.
 func _build_basics(p: VBoxContainer) -> void:
 	# [ui5] No "Basics" caption (the tab says it), so the last row fits above the footer.
@@ -246,8 +264,9 @@ func _build_basics(p: VBoxContainer) -> void:
 	_slider(p, tr("Mouse sensitivity"), Settings.mouse_sensitivity, 0.001, 0.008, 0.00025,
 		func(v: float) -> String: return "x%.1f" % (v / 0.0035),
 		func(v: float) -> void: Settings.mouse_sensitivity = v)
-	var codes: Array = Settings.LANGUAGES.map(func(l: Array) -> String: return str(l[0]))
-	var names: Array = Settings.LANGUAGES.map(func(l: Array) -> String: return tr("System default") if str(l[0]) == "" else str(l[1]))
+	var langs: Array = picker_languages()  # [v6screens] no "Pseudo (test)" for players
+	var codes: Array = langs.map(func(l: Array) -> String: return str(l[0]))
+	var names: Array = langs.map(func(l: Array) -> String: return tr("System default") if str(l[0]) == "" else str(l[1]))
 	_cycler(p, tr("Language"), names, maxi(0, codes.find(Settings.language)), func(i: int) -> void:
 		Settings.language = codes[i]
 		Settings.apply_language()
@@ -255,6 +274,8 @@ func _build_basics(p: VBoxContainer) -> void:
 	var more := Button.new()
 	more.text = tr("More settings  (sound, graphics, controls, accessibility)")
 	more.custom_minimum_size = Vector2(0, 44)
+	more.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART  # [v6screens] long in some languages
+	more.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	more.pressed.connect(func() -> void:
 		_set_more(true)
 		select_tab(1)
@@ -563,22 +584,21 @@ func apply_binding(action: String, ev: InputEvent) -> void:
 func _build_gameplay(p: VBoxContainer) -> void:
 	# [l10n] Language picker: System default, English, sample languages, Pseudo (test).
 	_section(p, tr("Language"))
-	var codes: Array = Settings.LANGUAGES.map(func(l: Array) -> String: return str(l[0]))
-	var names: Array = Settings.LANGUAGES.map(func(l: Array) -> String: return tr("System default") if str(l[0]) == "" else str(l[1]))
+	var langs: Array = picker_languages()  # [v6screens] no "Pseudo (test)" for players
+	var codes: Array = langs.map(func(l: Array) -> String: return str(l[0]))
+	var names: Array = langs.map(func(l: Array) -> String: return tr("System default") if str(l[0]) == "" else str(l[1]))
 	_cycler(p, tr("Language"), names, maxi(0, codes.find(Settings.language)), func(i: int) -> void:
 		Settings.language = codes[i]
 		Settings.apply_language()
-		_relocalize.call_deferred(), tr("Menus, HUD, subtitles and story text. Pseudo is for testing translations."))
+		_relocalize.call_deferred())  # [v6screens] the hint named the test language, which players no longer see
 	_section(p, tr("Comfort"))
 	_slider(p, tr("Camera shake"), Settings.shake_intensity, 0.0, 1.0, 0.05, _pct,
 		func(v: float) -> void: Settings.shake_intensity = v)
 	_toggle(p, tr("Reduced motion"), Settings.reduced_motion, func(v: bool) -> void: Settings.reduced_motion = v,
 		tr("Calmer camera and fewer bouncy effects."))
 	_section(p, tr("Interface"))
-	_cycler(p, tr("Number format"), [tr("Short (1.2K)"), tr("Scientific (1.2e3)"), tr("Engineering (1.2e3)")], Settings.number_format,
-		func(i: int) -> void: Settings.number_format = i)
-	_toggle(p, tr("Best-value tags"), Settings.best_value_tags, func(v: bool) -> void: Settings.best_value_tags = v,
-		tr("Tag the affordable upgrade that gives the most per cube."))
+	# [v6screens] No "Number format" (the HUD, the workbench and the map never used it) and no
+	# "Best-value tags" (the workbench lists have no upgrade cards to tag): options that did nothing.
 	_cycler(p, tr("HUD"), [tr("Full"), tr("Minimal"), tr("Hidden")], Settings.hud_mode, func(i: int) -> void:  # [hud]
 		Settings.hud_mode = i, tr("Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."))
 
@@ -635,7 +655,9 @@ func _row(p: VBoxContainer, text: String, ctl: Control, hint: String = "", focus
 	lv.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	lv.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	hb.add_child(lv)
-	lv.add_child(UITheme.label(text, 17))
+	var tl: Label = UITheme.label(text, 17)
+	tl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART  # [v6screens] long names wrap instead of pushing the panel off a small screen
+	lv.add_child(tl)
 	if hint != "":
 		var h := UITheme.label(hint, 12, UITheme.MUTED)
 		h.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -644,6 +666,7 @@ func _row(p: VBoxContainer, text: String, ctl: Control, hint: String = "", focus
 	hb.add_child(ctl)
 	var f: Control = focus_ctl if focus_ctl else ctl
 	f.set_meta("row_ctl", true)
+	f.set_meta("own_focus_ring", true)  # [v6screens] the whole row lights up (tools/ui_audit.gd)
 	f.focus_entered.connect(func() -> void: row.add_theme_stylebox_override("panel", lit))
 	f.focus_exited.connect(func() -> void: row.add_theme_stylebox_override("panel", idle))
 

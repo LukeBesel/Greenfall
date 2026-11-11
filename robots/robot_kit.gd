@@ -3,11 +3,11 @@ extends Node3D
 ## [drones] Builder part meshes fitted onto a RobotVisual (procedural, same toolkit and style as
 ## the base models). fit() measures the built body (its bounding box without wheels, arm and head)
 ## and places the parts around it, so every part works on every body type and Mk look:
-##   Chassis  side rails / cargo plates / sealed covers / Maker fairings
-##   Head     big lens / visor bar / periscope / chatter dome / Maker gem lens (on the head node)
-##   Mobility treads / quad rotor / walker legs / hover skirt / Maker pods (wheels are hidden)
+##   Chassis  side rails / cargo plates / sealed covers / Settler fairings
+##   Head     big lens / visor bar / periscope / chatter dome / Settler gem lens (on the head node)
+##   Mobility treads / quad rotor / walker legs / hover skirt / Settler pods (wheels are hidden)
 ##   Tool     wide scoop / sieve / long forks / tow hook / seed drill / mist fan / jet (at the tool tip)
-##   Topper   antenna, top hat, flag, bobble plant, cone, propeller cap, clover, Maker crest
+##   Topper   antenna, top hat, flag, bobble plant, cone, propeller cap, clover, Settler crest
 ## Mk I/II parts are painted metal; Mk III/IV parts are glossy shells with one thin light line.
 ## The kit also owns the visual root offset (lift for rotors/legs/skirts plus RobotPersona's
 ## idle offsets) and animates its moving bits.
@@ -28,7 +28,7 @@ var _legs: Array[Node3D] = []      # leg pivots (meta "ph", "side")
 var _bobble: Array[Node3D] = []    # spring toppers
 var _flags: Array[Node3D] = []     # fluttering flags
 var _rollers: Array[Node3D] = []   # tread sprockets
-var _float: Array[Node3D] = []     # gentle bob (Maker gem, clover, crest)
+var _float: Array[Node3D] = []     # gentle bob (Settler gem, clover, crest)
 var _blink: Array[StandardMaterial3D] = []
 var _t: float = 0.0
 var _sleek: bool = false

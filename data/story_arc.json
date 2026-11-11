@@ -1,0 +1,71 @@
+{
+  "_doc": "[v7arc] The whole-game story spine (docs/STORY_ARC.md, docs/ADJUSTING.md 'Story arc'). Home needs two things you can count: FUEL (to fly the Cradle home) and POWER (to wake the Settlers). home.fuel / home.power = what home needs; they must equal the sum of every planet's gives (tests/test_story_arc.gd). planets[id] (ids as in data/homeward.json planets): gives {fuel, power} = what that planet adds to the meters, earned once, when the planet's way onward opens (its exit beat: homeward.json planets[k].leave gate, else restoration reaches chart_at); reason = the one-line reason to go there (the system map, and WREN's 'next' line when the planet before it is done); arrive = WREN's lines on the first rocket landing there (Verdance: the first return, since Lumi first came by pod); leave = WREN's lines at the exit beat, after the home line; question = the mystery it leaves open, answered by the next planet's answers. Builder notes, not shown in game (not translated): from (where the fuel and power come from), answers, ledger (what we learn about the Ledger there). cradle = the last stop: reason is said instead of a 'next' line after the last planet. Templates: {fuel} {power} {fuel_need} {power_need} {planet} {reason}. Data stays English; tr() at display.",
+  "home": {
+    "fuel": 10,
+    "power": 10,
+    "why": "The Cradle needs fuel to fly home and power to wake the Settlers.",
+    "meter": "Home: fuel {fuel}/{fuel_need}, power {power}/{power_need}",
+    "home_line": "To go home we need {fuel_need} fuel and {power_need} power. We have {fuel} fuel and {power} power.",
+    "next": "{planet} is next. {reason}",
+    "gives_text": "Gives fuel {fuel} and power {power}",
+    "gave_text": "Gave fuel {fuel} and power {power}",
+    "full": "Fuel and power are full. Time to go home."
+  },
+  "planets": {
+    "verdance": {
+      "gives": {"fuel": 2, "power": 2},
+      "from": "Fuel from the tanks under the Stack Works smokestack. Power from the Fairground's big wheel cell.",
+      "reason": "The Settlers' home, where Lumi's pod fell.",
+      "answers": "Why is Lumi alone on a dead world? A meteor storm broke the Cradle open and his pod fell.",
+      "question": "The star chart shows four more buried worlds. Why did the Ledger bury them all?",
+      "ledger": "A voice on coupons and a few drones. A machine that thinks cleaning costs too much.",
+      "arrive": ["Home again. Look, Lumi: your robots kept cleaning while we were away."],
+      "leave": ["The star map shows four more worlds. The Ledger buried every one. Why?"]
+    },
+    "ochre": {
+      "gives": {"fuel": 1, "power": 3},
+      "from": "Power from the old sun mirrors and wind pumps at the pits (two suns, steady wind). Fuel from a parked haul truck's tank.",
+      "reason": "Its sun and wind can fill up our power.",
+      "answers": "The Ledger dug Ochre first. When the digging stopped paying, it left everything where it fell.",
+      "question": "A radio on Tidewell is still calling for help. Is anyone there?",
+      "ledger": "Its closure notices: it leaves a world the day digging stops paying.",
+      "arrive": ["Ochre. Hot sand and two big suns. The Ledger dug its very first pit here."],
+      "leave": ["Hear that? A radio on Tidewell, still calling for help after all this time."]
+    },
+    "tidewell": {
+      "gives": {"fuel": 3, "power": 1},
+      "from": "Fuel from sea water, split at the harbour's fuel works. Power from the tide pumps.",
+      "reason": "Its sea water can be made into fuel. And someone is calling.",
+      "answers": "The people left long ago, but they planted mangroves and asked someone to look after them. They are still alive.",
+      "question": "The dredger logs say the Ledger sold the heat of Rime. How do you sell heat?",
+      "ledger": "Its dredgers still run on a timer. Nobody ever told them to stop.",
+      "arrive": ["Tidewell. Islands and rain, and the harbour radio is still on."],
+      "leave": ["The dredger logs say the Ledger sold Rime's heat. How do you sell heat?"]
+    },
+    "rime": {
+      "gives": {"fuel": 3, "power": 1},
+      "from": "Fuel from the ice: frozen water makes good rocket fuel. Power from the warm springs under the lakes.",
+      "reason": "Its ice is frozen fuel, and there is lots of it.",
+      "answers": "The Ledger drilled out the moon's warm heart and sold it. So the lakes froze.",
+      "question": "Every Ledger memo is signed by a head office. Where is it?",
+      "ledger": "Its own sums: 'the moon was not ours to keep warm'.",
+      "arrive": ["Rime. So cold, Lumi. The Ledger took this moon's warm heart."],
+      "leave": ["Every Ledger memo comes from one head office. It is on Anvil."]
+    },
+    "anvil": {
+      "gives": {"fuel": 1, "power": 3},
+      "from": "Power from the Ledger's own foundry reactor, switched on for us once the Ledger sees the sums. Fuel from its last tank.",
+      "reason": "The Ledger's head office. Its big reactor has the last power we need.",
+      "answers": "The head office is on Anvil. Nobody works there now: only one old audit robot, still counting.",
+      "question": "Will the Settlers wake up, and will they like their green home?",
+      "ledger": "Its heart: a lonely adding machine. Lumi shows it the sums (clean ground is worth more than trash), and it switches its reactor on for us.",
+      "arrive": ["Anvil. Rust from top to bottom, and the Ledger's lights are still on."],
+      "leave": ["The Ledger balanced its books at last. It is giving us its power."]
+    }
+  },
+  "cradle": {
+    "reason": "Next stop: the Cradle. Fuel and power are full. Let's go home.",
+    "answers": "Yes. The Settlers wake up, look out of the windows, and see green.",
+    "ledger": "The Ledger sends one last coupon: 'Account balanced. Paid in full.'"
+  }
+}

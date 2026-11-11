@@ -3,7 +3,7 @@ extends GutTest
 ## data is whole, the rocket lists the right hubs, a wake gives what the hub gives, boosts apply,
 ## and the picker's rows say why to go.
 
-const LANDMARKS: Array[String] = ["water_tower", "crane", "ferris_wheel", "radio_mast", "smokestack", "old_bus", "windpump", "lighthouse"]
+const LANDMARKS: Array[String] = ["water_tower", "crane", "ferris_wheel", "radio_mast", "smokestack", "old_bus", "windpump", "lighthouse", "tower_crane"]
 
 var _orbit: Dictionary
 var _flags: Dictionary
@@ -53,6 +53,7 @@ func test_data_is_whole() -> void:
 		assert_ne(str(e.get("name", "")), "", "hub %d has a name" % s)
 		assert_ne(str(e.get("desc", "")), "", "hub %d says why to go" % s)
 		assert_true(HubPlan.TOWN_NAMES.has(str(e.get("town", ""))), "hub %d town type" % s)
+		assert_true(VerdanceSite.KINDS.has(str(e.get("town", ""))), "hub %d town is a look the site can build" % s)
 		assert_true(HubPlan.landmark_kind("verdance", s) in LANDMARKS, "hub %d landmark kind" % s)
 		assert_ne(str((e["landmark"] as Dictionary).get("name", "")), "")
 		if HubPlan.is_home("verdance", s):
@@ -131,6 +132,14 @@ func test_boosts_apply_only_while_woken() -> void:
 	assert_almost_eq(HubPlan.stat_mod("cube_value_mult", 2.0), 2.0, 0.0001)
 
 
+func test_town_label_tells_a_harbour() -> void:
+	assert_eq(HubPlan.town_name("verdance", 9), "Suburb")
+	assert_eq(HubPlan.town_name("verdance", 9, "harbour"), "Harbour town", "the lake's override shows in the label")
+	assert_true(VerdanceSite.is_harbour(func(_x: float, _z: float) -> bool: return true))
+	assert_false(VerdanceSite.is_harbour(func(_x: float, _z: float) -> bool: return false))
+	assert_false(VerdanceSite.is_harbour(Callable()))
+
+
 func test_wake_cost_grows() -> void:
 	var c0: float = float(HubPlan.wake_cost("verdance").get("cubes", 0.0))
 	assert_gt(c0, 0.0)
@@ -167,3 +176,27 @@ func test_picker_rows_say_why_to_go() -> void:
 	assert_true((fly[2] as Button).disabled, "a hub past the rocket's limit can't be flown to")
 	assert_true(texts.has("Upgrade the rocket first"))
 	p.close()
+
+
+## [v6hubs] Each far main-path hub says why Lumi came (story_reasons hub_fly_<order>), home doesn't.
+func test_every_far_main_hub_has_an_arrival_reason() -> void:
+	HubPlan.reload()
+	for e: Dictionary in HubPlan.entries("verdance"):
+		var i: int = int(e["site"])
+		if HubPlan.is_home("verdance", i):
+			assert_eq(HubPlan.reason("verdance", i), "", "home has no reason line")
+		elif HubPlan.is_main("verdance", i):
+			var r: String = HubPlan.reason("verdance", i)
+			assert_ne(r, "", "%s has a reason" % e["id"])
+			assert_ne(r, str(e.get("desc", "")), "%s's reason comes from story_reasons" % e["id"])
+
+
+## [v6hubs] The hop's timings are data (hub_defaults.hop) and keep it well under 10 s on screen.
+func test_hop_timings_come_from_data() -> void:
+	HubPlan.reload()
+	var h: Dictionary = HubPlan.defaults("verdance").get("hop", {})
+	assert_false(h.is_empty(), "verdance has hub_defaults.hop")
+	assert_almost_eq(HubHop.leg_s(), float(h["leg_s"]), 0.001)
+	assert_almost_eq(HubHop.duration(), float(h["leg_s"]) * 2.0 + float(h["fade_s"]) * 2.0, 0.001)
+	assert_lt(HubHop.duration(), 10.0)
+	assert_almost_eq(HubHop.leg_alt(1.0, true), float(h["cruise_alt_m"]), 0.01)
