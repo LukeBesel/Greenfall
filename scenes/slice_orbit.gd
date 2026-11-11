@@ -41,6 +41,7 @@ var districts: Districts  # the cities and their regrowth stages (systems/distri
 var restoration: Restoration  # launch progress, the launch point, the whole-planet share
 var city_payouts: CityPayouts  # cubes paid once when a city reaches a regrowth stage
 var chain: RobotChain  # parts finders, the Assembler and its build mix
+var look_finds: Finds  # where the planet hides the pieces of Lumi's looks (systems/finds.gd)
 var ending: PlanetEnding  # the launch cinematic and the end screen
 var hub_states: Dictionary = {}  # site index (str) -> {level} (core/save_orbit.gd); the Hub port fills it
 
@@ -416,6 +417,15 @@ func _build_districts(levels: HexLevels) -> void:
 	w.add_child(restoration)
 	restoration.setup(def, districts, globe.cells)
 	restoration.load_state(GameState.orbit.get("restoration", {}))
+	look_finds = Finds.new()
+	look_finds.name = "Finds"
+	w.add_child(look_finds)
+	look_finds.setup(def, districts, globe.cells, w.get("interactables") as Interactables)
+	look_finds.load_state(GameState.orbit.get("finds", {}))
+	var reveal := PieceReveal.new()  # the found moment: the piece on Lumi, its name, the way to the Locker
+	reveal.name = "PieceReveal"
+	reveal.world = w
+	w.add_child(reveal)
 	ending = PlanetEnding.new()
 	ending.name = "PlanetEnding"
 	ending.setup(w, restoration)
@@ -554,6 +564,8 @@ func _build_yard_systems() -> void:
 	ia.name = "Interactables"
 	w.add_child(ia)
 	w.set("interactables", ia)
+	if look_finds:
+		look_finds.set_interactables(ia)
 	var ev := WorldEvents.new()  # world events + the cleaning streak (systems/events.gd)
 	ev.name = "WorldEvents"
 	ev.world = w
@@ -1144,6 +1156,7 @@ func persist_save() -> void:
 		"city_payouts": city_payouts.save_state() if city_payouts else {},
 		"chain": chain.save_state() if chain else {},
 		"restoration": restoration.save_state() if restoration else {},
+		"finds": look_finds.save_state() if look_finds else {},
 		"site_state": sites.save_state() if sites else {},  # [orbD] built hubs, levels, growth (main: renamed from "sites", which orbB uses for site geometry)
 	}
 

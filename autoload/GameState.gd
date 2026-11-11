@@ -3,13 +3,16 @@ extends Node
 ## Runs the fixed-rate simulation tick (10 Hz) independent of frame rate.
 
 const SIM_HZ: float = 10.0
-const SAVE_VERSION: int = 4  # [money] v2: three currencies (cubes, parts, seeds); [pace] v3: Baler / Lift Strength upgrades; [ui2] v4: robot part items -> Parts
+const SAVE_VERSION: int = 5  # [money] v2: three currencies (cubes, parts, seeds); [pace] v3: Baler / Lift Strength upgrades; [ui2] v4: robot part items -> Parts; v5: looks are found pieces, kept in `global`
 const RATE_WINDOW_S: float = 60.0
 
 var currencies: Dictionary = {}  # id -> BigNum
 var upgrades: Dictionary = {}  # id -> int level
 var stats: Dictionary = {}  # id -> float / Dictionary
 var flags: Dictionary = {}  # id -> Variant (milestones, tutorial, easter eggs)
+## Global progress: what stays with the player on every planet (the save's `global` section).
+## Systems write and read their own key: "pieces" = the found pieces of Lumi's looks (systems/looks.gd).
+var global: Dictionary = {}
 ## Opaque per-system blobs (field, player, loose cubes, ...). Systems write and read their own key.
 var world: Dictionary = {}
 ## Legacy robot part items ({type, rarity}); [ui2] always folded into Parts (RobotParts.fold_items).
@@ -50,6 +53,7 @@ func new_game() -> void:
 		"cubes_earned_total": [0.0, 0], "cubes_cashed": 0, "upgrades_bought": 0,
 	}
 	flags = {}
+	global = {}
 	world = {}
 	parts = []
 	districts = {0: world}
@@ -221,6 +225,7 @@ func to_dict() -> Dictionary:
 		"upgrades": upgrades.duplicate(true),
 		"stats": stats.duplicate(true),
 		"flags": flags.duplicate(true),
+		"global": global.duplicate(true),
 		"world": (world if flat_world == null else (flat_world as Dictionary)).duplicate(true),  # [orbB]
 		"parts": parts.duplicate(true),
 		"districts": _districts_for_save(),
@@ -247,6 +252,7 @@ func from_dict(d: Dictionary) -> void:
 	for k: String in st:
 		stats[k] = st[k]
 	flags = (d.get("flags", {}) as Dictionary).duplicate(true)
+	global = (d.get("global", {}) as Dictionary).duplicate(true)
 	world = (d.get("world", {}) as Dictionary).duplicate(true)
 	parts = (d.get("parts", []) as Array).duplicate(true)
 	current_hub = int(d.get("current_hub", 0))

@@ -520,7 +520,7 @@ func _on_robot_built(_n: String) -> void:
 	st()["starter"] = true
 	add_part("treads")
 	add_part("bobble_plant")
-	EventBus.toast.emit(tr("Your first bot came with treads and a bobble plant. Style it in the Locker once the hub reaches level %d.") % LockerPanel.HUB_LEVEL, "story")  # [ui2]
+	EventBus.toast.emit(tr("Your first bot came with treads and a bobble plant. Style it at the Locker once you have built one."), "story")
 
 
 ## Dug-up parts sometimes come with a Maker Fragment (much likelier on Vintage/Legendary finds).

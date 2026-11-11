@@ -38,7 +38,7 @@ SKIP_FILES = {"tools/steam", "steam/store_art.gd", "steam/store_shots.gd"}
 # top-level key (line pools). Keys starting with "_" are docs and never extracted.
 COMMON_KEYS = {"name", "desc", "hint", "text", "text_1", "title", "body", "lore", "toast", "prompt",
                "final_prompt", "hud", "tagline", "unit", "header", "lines", "label", "subtitle",
-               "caption", "quote", "short"}
+               "caption", "quote", "short", "flag_text"}
 JSON_RULES: dict[str, dict] = {
     "*": {"keys": COMMON_KEYS},
     "wren_lines.json": {"all_top": True},

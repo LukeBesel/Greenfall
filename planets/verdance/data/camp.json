@@ -1,5 +1,5 @@
 {
-  "_doc": "[camp] The landing yard (systems/camp/camp.gd, systems/camp/yard_builds.gd). A fresh base starts with only the pod, a broken workbench and the trash bin. Lumi repairs the bench (bench_repair_s) the first time E is pressed at it. Yard builds are bought in the Hub tab: requires_level is the hub level, requires_flag a GameState flag (first_sprout = the first seed has grown). pos is [x, z] in the yard (CityLayout.YARD_HALF = 8.5; the fence runs along the back and both sides, the front at +z is open). Keep every yard interactable at least min_gap metres from the next. Every yard structure is a Hub-tab build (systems/camp/hub_builds.gd): once-builds drop off the list when built; tiered ones (trash bin, signal tower) show only their next tier. requires_bench: only after the workbench is repaired. camera_bot (camp3): global (one build for the whole game, GameState.flags.yard_global), unlocked at hub level 2 or after or_played_s seconds of play, and not listed before that (hidden_until_unlocked). Photo mode needs him (ui/photo_mode.gd). [M3-19] Yard builds cost cubes only (Parts pay for robots and machines; design spec section 14), in the first city's scale.",
+  "_doc": "[camp] The landing yard (systems/camp/camp.gd, systems/camp/yard_builds.gd). A fresh base starts with only the pod, a broken workbench and the trash bin. Lumi repairs the bench (bench_repair_s) the first time E is pressed at it. Yard builds are bought in the Hub tab: requires_level is the hub level, requires_flag a GameState flag (first_sprout = the first seed has grown). pos is [x, z] in the yard (CityLayout.YARD_HALF = 8.5; the fence runs along the back and both sides, the front at +z is open). Keep every yard interactable at least min_gap metres from the next. Every yard structure is a Hub-tab build (systems/camp/hub_builds.gd): once-builds drop off the list when built; tiered ones (trash bin, signal tower) show only their next tier. requires_bench: only after the workbench is repaired. camera_bot (camp3): global (one build for the whole game, GameState.flags.yard_global), unlocked at hub level 2 or after or_played_s seconds of play, and not listed before that (hidden_until_unlocked). Photo mode needs him (ui/photo_mode.gd). [M3-19] Yard builds cost cubes only (Parts pay for robots and machines; design spec section 14), in the first city's scale. locker (design spec section 13): offered once the first piece of a look is found (requires_flag first_piece, set by systems/looks.gd); turntable = where its turntable stands, [x, z] in the locker's own frame (x along its face, z out from its doors). flag_text: what the Build tab says while requires_flag is not met.",
   "bench_repair_s": 2.6,
   "min_gap": 3.0,
   "builds": {
@@ -15,14 +15,18 @@
     "generator": {
       "name": "Generator",
       "desc": "A patched portable generator by the lean-to. It hums; the yard feels lived in.",
-      "cost": {"cubes": 300},
+      "cost": {
+        "cubes": 300
+      },
       "requires_level": 1,
       "requires_bench": true
     },
     "lamps": {
       "name": "Yard Lamps",
       "desc": "The street lamp and the pole lamps along the fence, rewired. Light for the yard at night.",
-      "cost": {"cubes": 450},
+      "cost": {
+        "cubes": 450
+      },
       "requires_level": 1,
       "requires_bench": true
     },
@@ -34,12 +38,15 @@
         "seeds": 5
       },
       "requires_level": 1,
-      "requires_flag": "first_sprout"
+      "requires_flag": "first_sprout",
+      "flag_text": "Grow your first seed first."
     },
     "radio": {
       "name": "CD Player",
       "desc": "A chunky old CD player on a crate by the fence. Plays the discs you find.",
-      "cost": {"cubes": 600},
+      "cost": {
+        "cubes": 600
+      },
       "requires_level": 2,
       "pos": [
         6.6,
@@ -49,23 +56,39 @@
     },
     "locker": {
       "name": "Locker",
-      "desc": "A tall steel locker by the bench. Open it to change Lumi's look, Glim's and your robots'.",
-      "cost": {"cubes": 400},
-      "requires_level": 2,
-      "pos": [-6.4, 4.6],
-      "yaw_deg": 90.0
+      "desc": "A tall steel locker with a small turntable. Step up to wear the pieces you have found, and to dress Glim and your robots.",
+      "cost": {
+        "cubes": 400
+      },
+      "requires_level": 1,
+      "pos": [
+        -6.4,
+        4.6
+      ],
+      "yaw_deg": 90.0,
+      "requires_flag": "first_piece",
+      "turntable": [
+        -3.0,
+        0.3
+      ],
+      "flag_text": "Find a piece of a look first."
     },
     "nursery": {
       "name": "Robot Nursery",
       "desc": "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand.",
-      "cost": {"cubes": 1500},
+      "cost": {
+        "cubes": 1500
+      },
       "requires_level": 1,
-      "requires_flag": "first_sprout"
+      "requires_flag": "first_sprout",
+      "flag_text": "Grow your first seed first."
     },
     "glim": {
       "name": "Repair Glim",
       "desc": "The little lantern bot who held on to your pod all the way down. Patch him up and he'll follow you and light the way.",
-      "cost": {"cubes": 80},
+      "cost": {
+        "cubes": 80
+      },
       "requires_level": 1,
       "requires_bench": true,
       "requires_flag": "glim_ready",
@@ -75,7 +98,9 @@
     "camera_bot": {
       "name": "Blink",
       "desc": "A little floating camera bot with a big lens for a face. Builds once; then he follows Lumi from base to base and photo mode opens.",
-      "cost": {"cubes": 400},
+      "cost": {
+        "cubes": 400
+      },
       "requires_level": 2,
       "or_played_s": 1500,
       "requires_bench": true,

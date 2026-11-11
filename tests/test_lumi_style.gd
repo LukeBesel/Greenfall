@@ -1,27 +1,35 @@
 extends GutTest
-## [style] Character Builder looks (systems/lumi_style.gd, data/style_parts.json): serialization,
-## unlock gating, preset equivalence (each design's preset style reproduces PatchModel.VARIANTS)
-## and the applicator on a real PatchModel.
+## Lumi's look (systems/lumi_style.gd, data/style_parts.json): serialization, what may be worn
+## (found pieces only), preset equivalence (each design's preset style reproduces
+## PatchModel.VARIANTS), the applicator on a real PatchModel, and the Locker's page for Lumi.
+
+const CUSTOM_PIECES: Array[String] = ["tin_royal", "eyes_heart", "head_halo", "held_medkit", "companion_drone", "chest_heart", "companion_firefly"]
 
 var _flags: Dictionary
 var _stats: Dictionary
-var _parts_bal: BigNum
+var _global: Dictionary
 
 
 func before_each() -> void:
 	_flags = GameState.flags.duplicate(true)
 	_stats = GameState.stats.duplicate(true)
-	_parts_bal = GameState.get_currency("parts")
+	_global = GameState.global.duplicate(true)
 	GameState.flags = {}
 	GameState.stats = {}
-	LumiStyle.dev_all = false
+	GameState.global = {}
+	Looks.dev_all = false
 
 
 func after_each() -> void:
 	GameState.flags = _flags
 	GameState.stats = _stats
-	GameState.currencies["parts"] = _parts_bal
-	LumiStyle.dev_all = false
+	GameState.global = _global
+	Looks.dev_all = false
+
+
+func _find(pieces: Array[String]) -> void:
+	for id: String in pieces:
+		Looks.grant(id, "", true)
 
 
 func _custom() -> Dictionary:
@@ -36,6 +44,8 @@ func _custom() -> Dictionary:
 	s["held"] = "medkit"
 	s["companion"] = "drone"
 	s["chest"] = "heart"
+	_find(CUSTOM_PIECES)
+	GameState.flags["lumi_style"] = s.duplicate(true)  # an old save's mixed colours stay wearable
 	return s
 
 
@@ -59,25 +69,8 @@ func test_data_is_complete() -> void:
 			["held", "gear"], ["held", "bottle"], ["held", "holo"], ["held", "toolbox"], ["hip", "none"], ["hip", "satchel"],
 			["pattern", "plain"], ["pattern", "stripes"], ["pattern", "moss"], ["pattern", "seams"], ["pattern", "twotone"]]:
 		assert_false(LumiStyle.option(pair[0], pair[1]).is_empty(), "%s:%s" % pair)
-	# Every unlock names something real.
-	for slot: String in LumiStyle.PART_SLOTS:
-		for o: Dictionary in LumiStyle.options(slot):
-			_check_unlock(o.get("unlock", {}), "%s:%s" % [slot, o["id"]])
 	for s: Dictionary in LumiStyle.swatches():
-		_check_unlock(s.get("unlock", {}), "swatch " + str(s["id"]))
 		assert_true(Color.html_is_valid(str(s["color"])), str(s["id"]))
-
-
-func _check_unlock(u: Dictionary, what: String) -> void:
-	if u.has("design"):
-		assert_false(Designs.def(str(u["design"])).is_empty(), what)
-	if u.has("achievement"):
-		assert_false(Achievements.def(str(u["achievement"])).is_empty(), what)
-	if u.has("cost"):
-		for k: String in u["cost"]:
-			assert_true(k in ["cubes", "parts", "seeds"], "%s costs only cubes, parts or seeds" % what)
-	if u.has("cond"):
-		assert_ne(str(u.get("text", "")), "", what)
 
 
 func test_serialization_round_trip() -> void:
@@ -94,53 +87,59 @@ func test_serialization_round_trip() -> void:
 	assert_eq(float(bad["wear"]), 1.0)
 	assert_true(LumiStyle.same(LumiStyle.normalize(null), LumiStyle.preset("aurora")))
 	# Through the save flags.
-	GameState.flags["skins_unlocked"] = ["aurora"]
 	LumiStyle.set_current(s)
 	var saved: Dictionary = JSON.parse_string(JSON.stringify(GameState.flags))
 	GameState.flags = saved
 	assert_true(LumiStyle.same(LumiStyle.current(), s))
 
 
-func test_unlock_gating() -> void:
-	assert_true(LumiStyle.option_unlocked("head", "fin"))
-	assert_true(LumiStyle.option_unlocked("eye_shape", "crescent"))
-	assert_false(LumiStyle.option_unlocked("eye_shape", "round"), "round eyes come with Lumi Level 3")
-	assert_false(LumiStyle.option_unlocked("head", "catears"))
-	assert_false(LumiStyle.swatch_unlocked("violet"))
-	GameState.flags["skins_unlocked"] = ["aurora", "nova"]
-	assert_true(LumiStyle.option_unlocked("head", "catears"), "designs unlock their parts")
-	assert_true(LumiStyle.swatch_unlocked("violet"), "and their colours")
-	# Condition (Requests) and achievement unlocks.
-	assert_false(LumiStyle.option_unlocked("companion", "firefly"))
-	GameState.stats["contracts_done"] = 3
-	assert_true(LumiStyle.option_unlocked("companion", "firefly"))
-	assert_false(LumiStyle.option_unlocked("head", "halo"))
-	Achievements.unlocked_map()["restored_1"] = 1.0
-	assert_true(LumiStyle.option_unlocked("head", "halo"))
-	# Cost unlock: bought once with parts.
-	GameState.currencies["parts"] = BigNum.from_float(50.0)
-	assert_false(LumiStyle.buy("companion", "drone"), "can't afford 120 parts")
-	assert_false(LumiStyle.option_unlocked("companion", "drone"))
-	GameState.currencies["parts"] = BigNum.from_float(200.0)
-	assert_true(LumiStyle.buy("companion", "drone"))
-	assert_almost_eq(GameState.get_currency("parts").to_float(), 80.0, 0.01)
-	assert_true(LumiStyle.option_unlocked("companion", "drone"))
-	assert_false(LumiStyle.buy("companion", "drone"), "only once")
-	assert_false(LumiStyle.buy("head", "fin"), "free parts aren't for sale")
-	# Advanced picker gates free colours.
-	var s: Dictionary = LumiStyle.preset("aurora")
-	LumiStyle.set_value(s, "paint", Color(0.123, 0.456, 0.789))
-	assert_false(LumiStyle.allowed(s), "an off-swatch colour needs the advanced picker")
-	assert_true(LumiStyle.buy("", "advanced_picker"))
-	assert_true(LumiStyle.allowed(s))
-	# A locked part makes a look unwearable; random looks only use unlocked things.
-	var s2: Dictionary = LumiStyle.preset("aurora")
-	s2["held"] = "watering_can"
-	assert_false(LumiStyle.allowed(s2))
+func test_only_found_pieces_can_be_worn() -> void:
+	assert_true(LumiStyle.allowed(LumiStyle.preset("aurora")), "the starting look is wearable")
+	for piece: String in Looks.ids():
+		if Looks.is_starter(piece):
+			continue
+		var s: Dictionary = LumiStyle.preset("aurora")
+		LumiStyle.wear_piece(s, piece)
+		assert_eq(LumiStyle.piece_in(s, Looks.slot_of(piece)), piece, "%s reads back from its slot" % piece)
+		assert_false(LumiStyle.allowed(s), "%s cannot be worn before it is found" % piece)
+		Looks.grant(piece, "", true)
+		assert_true(LumiStyle.allowed(s), "%s can be worn once found" % piece)
+		Looks.found().clear()
+	# A colour no piece stands for cannot be put on.
+	var odd: Dictionary = LumiStyle.preset("aurora")
+	LumiStyle.set_value(odd, "paint", Color(0.123, 0.456, 0.789))
+	assert_eq(LumiStyle.piece_in(odd, "paint"), "")
+	assert_false(LumiStyle.allowed(odd))
+	# Random looks use found pieces only.
+	_find(["tin_sky", "chip_mint", "head_halo"])
 	var rng := RandomNumberGenerator.new()
 	for i: int in 30:
 		rng.seed = i
 		assert_true(LumiStyle.allowed(LumiStyle.randomized(rng)), "random look %d is wearable" % i)
+
+
+func test_a_slot_can_be_emptied_only_where_empty_is_not_a_piece() -> void:
+	for slot: String in ["pattern", "head", "ears", "shoulders", "held", "hip", "companion"]:
+		assert_true(LumiStyle.can_clear(slot), slot)
+	for slot: String in ["paint", "glow", "eye_shape", "chest"]:
+		assert_false(LumiStyle.can_clear(slot), slot)
+	var s: Dictionary = LumiStyle.preset("aurora")
+	LumiStyle.clear_slot(s, "head")
+	assert_eq(s["head"], "none")
+	assert_eq(LumiStyle.piece_in(s, "head"), "")
+	assert_true(LumiStyle.allowed(s), "an empty slot is always wearable")
+
+
+func test_every_set_piece_reads_back_from_its_design() -> void:
+	for id: String in Designs.ids():
+		var p: Dictionary = LumiStyle.preset(id)
+		for piece: String in Looks.set_ids(id):
+			assert_eq(LumiStyle.piece_in(p, Looks.slot_of(piece)), piece, "%s wears %s" % [id, piece])
+		assert_eq(LumiStyle.worn_set(p), id, "the design's own look is its complete set")
+		var built: Dictionary = LumiStyle.with_set(LumiStyle.preset("aurora"), id)
+		assert_eq(LumiStyle.worn_set(built), id, "%s put on piece by piece is the set" % id)
+		for k: String in LumiStyle.BODY_SLOTS + LumiStyle.GLOW_SLOTS:
+			assert_true(LumiStyle._close(LumiStyle.col(built, k), LumiStyle.col(p, k)), "%s %s" % [id, k])
 
 
 func test_presets_reproduce_the_designs() -> void:
@@ -184,7 +183,6 @@ func test_preset_model_matches_the_design() -> void:
 
 
 func test_custom_style_on_a_model() -> void:
-	GameState.flags["skins_unlocked"] = ["aurora"]
 	var s: Dictionary = _custom()
 	var m := PatchModel.new()
 	m.set_meta("lumi_style", s)
@@ -216,82 +214,128 @@ func test_custom_style_on_a_model() -> void:
 	fx.free()
 
 
-func test_worn_style_and_bonus() -> void:
-	GameState.flags["skins_unlocked"] = ["aurora", "nova"]
-	var s: Dictionary = _custom()
-	s["bonus"] = "nova"
+func test_worn_style_and_its_base_design() -> void:
+	_find(Looks.set_ids("nova"))
+	_find(CUSTOM_PIECES)
+	var s: Dictionary = LumiStyle.with_set(LumiStyle.preset("aurora"), "nova")
+	LumiStyle.wear_piece(s, "head_halo")
+	var changes: Array = []
+	var on_change := func() -> void: changes.append(1)
+	EventBus.look_changed.connect(on_change)
 	LumiStyle.set_current(s)
-	assert_eq(Designs.current(), "nova", "the bonus design is worn")
-	assert_almost_eq(Designs.mult("research_speed"), 1.08, 0.0001, "and its bonus applies")
+	EventBus.look_changed.disconnect(on_change)
+	assert_eq(changes.size(), 1, "look_changed fires once")
+	assert_eq(Designs.current(), "nova", "the paint set's design is the base")
+	assert_eq(Designs.worn_set(), "", "one piece swapped: a mixed look")
 	assert_true(LumiStyle.same(LumiStyle.current(), s))
 	assert_true(LumiStyle.same(LumiStyle.for_variant("nova"), s))
 	assert_true(LumiStyle.same(LumiStyle.for_variant("aurora"), LumiStyle.preset("aurora")))
-	Designs.set_looks_only(true)
-	assert_eq(Designs.mult("research_speed"), 1.0, "looks only still turns it off")
-	Designs.set_looks_only(false)
-	# A locked bonus can't be picked.
-	s["bonus"] = "bolt"
-	LumiStyle.set_current(s)
+	# A paint set that is not found cannot become the base.
+	var b: Dictionary = LumiStyle.preset("bolt")
+	LumiStyle.set_current(b)
 	assert_eq(Designs.current(), "nova")
-	# Wearing a design from the picker = its preset.
-	assert_true(LumiStyle.wear_preset("aurora"))
-	assert_true(LumiStyle.is_preset(LumiStyle.current()))
-	assert_false(LumiStyle.wear_preset("bolt"))
+	assert_true(LumiStyle.wear_set("aurora"))
+	assert_eq(Designs.worn_set(), "aurora")
+	assert_false(LumiStyle.wear_set("bolt"))
 	# Title screen reads the save's flags.
 	var fl: Dictionary = {"lumi_style": s.duplicate(true), "patch_skin": "nova"}
-	(fl["lumi_style"] as Dictionary)["bonus"] = "nova"
 	assert_eq(LumiStyle.from_save_flags(fl, "nova")["head"], "halo")
 	assert_eq(LumiStyle.from_save_flags(fl, "aurora")["head"], "fin")
 
 
-func test_saved_looks() -> void:
-	assert_eq(LumiStyle.looks().size(), LumiStyle.MAX_LOOKS)
-	for i: int in LumiStyle.MAX_LOOKS:
+func test_three_saved_looks() -> void:
+	assert_eq(Looks.preset_count(), 3)
+	assert_eq(LumiStyle.looks().size(), 3)
+	for i: int in 3:
 		assert_true(LumiStyle.look(i).is_empty())
 	var s: Dictionary = _custom()
 	assert_true(LumiStyle.save_look(2, s, "Party"))
-	assert_false(LumiStyle.save_look(5, s), "only five")
+	assert_false(LumiStyle.save_look(3, s), "only three")
 	assert_eq(LumiStyle.look(2)["name"], "Party")
 	assert_true(LumiStyle.same(LumiStyle.look(2), s))
 	LumiStyle.delete_look(2)
 	assert_true(LumiStyle.look(2).is_empty())
+	# A save from when there were five keeps the extra ones it filled, until they are cleared.
+	GameState.flags["lumi_looks"] = [{}, {}, {}, {}, s.duplicate(true)]
+	assert_eq(LumiStyle.looks().size(), 5)
+	LumiStyle.delete_look(4)
+	assert_eq(LumiStyle.looks().size(), 3)
 
 
-func test_builder_opens_and_wears() -> void:
-	GameState.flags["skins_unlocked"] = ["aurora", "pixel"]
-	var b: LumiBuilder = LumiBuilder.open(null, self)
+func test_the_locker_page_lists_found_pieces_first_and_unfound_as_hints() -> void:
+	_find(["tin_sky"])
+	var b := LumiBuilder.new()
+	add_child_autofree(b)
+	await wait_frames(2)
+	assert_eq(b.shown_slot(), "paint", "opens on the newest find's slot")
+	var rows: Array = b._list.get_children().filter(func(n: Node) -> bool: return n is PieceRow)
+	var seen_unfound: bool = false
+	for r: PieceRow in rows:
+		if not r.found:
+			seen_unfound = true
+		else:
+			assert_false(seen_unfound, "found pieces come before unfound ones (%s)" % r.piece)
+	var found_ids: Array = rows.filter(func(r: PieceRow) -> bool: return r.found).map(func(r: PieceRow) -> String: return r.piece)
+	assert_eq(found_ids, ["paint_aurora", "tin_sky"])
+	var unfound: Array[String] = b.unfound_here()
+	assert_has(unfound, "paint_sprout", "this planet's unfound paint shows as a silhouette")
+	assert_does_not_have(unfound, "paint_bolt", "other worlds' pieces are not listed")
+	for r: PieceRow in rows:
+		if r.found:
+			continue
+		var texts: Array = r.find_children("*", "Label", true, false).map(func(l: Label) -> String: return l.text)
+		assert_has(texts, "???", "%s is named ???" % r.piece)
+		assert_false(texts.any(func(t: String) -> bool: return t.to_lower() == Looks.name_of(r.piece).to_lower()), "its name stays hidden")
+		assert_has(texts, Looks.hint(r.piece), "with its one hint line")
+		var before: Dictionary = b.edit.duplicate(true)
+		r.pressed.emit()
+		assert_true(LumiStyle.same(b.edit, before), "an unfound piece cannot be put on")
+
+
+func test_the_locker_page_wears_a_found_piece() -> void:
+	_find(["tin_sky", "head_halo"])
+	var b := LumiBuilder.new()
+	add_child_autofree(b)
 	await wait_frames(2)
 	for slot: String in b._order:
-		b._select(slot, false)
-	b._select("head", false)
-	b._set_value("head", "wings")
-	b._randomize()
-	b._set_value("laser", Color("#ff5480"))
-	b._process(0.2)
-	var want: Dictionary = b.edit.duplicate(true)
-	b._done()
-	await wait_frames(1)
-	assert_true(LumiStyle.same(LumiStyle.current(), want))
-
-
-func test_builder_embeds_as_a_control() -> void:
-	# The Locker hosts it: LumiBuilder.new() + world, added to any container.
-	GameState.flags["skins_unlocked"] = ["aurora", "pixel"]
-	var box := VBoxContainer.new()
-	box.size = Vector2(1280, 720)
-	add_child_autofree(box)
-	var b := LumiBuilder.new()
-	box.add_child(b)
-	await wait_frames(2)
-	assert_false(b.standalone)
-	b._set_value("head", "wings")
-	b._process(0.2)
+		b.select_slot(slot, false)
+	b.select_slot("head", false)
+	b._wear_piece("head_halo")
+	assert_eq(b.edit["head"], "halo")
+	assert_eq(LumiStyle.current()["head"], "fin", "nothing is worn until Wear look")
+	assert_string_contains(b._status.text.to_lower(), "not worn")
+	assert_string_contains(b._set_line.text.to_lower(), "mixed", "a mixed look says so")
 	var got: Array = []
 	b.worn.connect(func() -> void: got.append(1))
-	b._done()
+	assert_true(b.wear())
 	assert_eq(got.size(), 1, "worn signal")
-	assert_true(is_instance_valid(b), "embedded builder stays open")
-	assert_eq(LumiStyle.current()["head"], "wings")
+	assert_eq(LumiStyle.current()["head"], "halo")
+	assert_eq(int(GameState.stats.get(LumiBuilder.WORN_STAT, 0)), 1)
+	# Saved looks: three slots, each loads back.
+	b.select_slot(LumiBuilder.SAVED, false)
+	assert_eq(b._list.find_children("*", "HBoxContainer", false, false).size(), 3, "three saved looks")
+	b._save_look(1)
+	b._wear_piece("head_fin")
+	b._load_look(1)
+	assert_eq(b.edit["head"], "halo")
+	# A piece that is not found is refused even if asked for directly.
+	b._wear_piece("head_catears")
+	assert_eq(b.edit["head"], "halo")
+
+
+func test_a_complete_set_shows_its_name_and_bonus() -> void:
+	_find(Looks.set_ids("sprout"))
+	var b := LumiBuilder.new()
+	add_child_autofree(b)
+	await wait_frames(2)
+	b.select_slot(LumiBuilder.SETS, false)
+	b._wear_set("sprout")
+	assert_string_contains(b._set_line.text, "SPROUT")
+	assert_string_contains(b._set_line.text.to_lower(), Designs.buff_text("sprout").to_lower())
+	b._wear_piece("head_fin")
+	assert_string_contains(b._set_line.text.to_lower(), "mixed")
+	b._wear_set("bolt")
+	assert_eq(LumiStyle.worn_set(b.edit), "", "a set that is not collected cannot be put on")
 
 
 func test_cosmetic_targets_registry() -> void:

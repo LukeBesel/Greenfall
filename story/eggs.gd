@@ -713,11 +713,18 @@ func _effect(e: Dictionary) -> void:
 
 
 func _duck_hint() -> String:
-	var have: Array = GameState.flags.get("skins_unlocked", ["aurora"])
-	for sid: String in Designs.ids():  # [skins]
-		if not (sid in have) and PatchModel.VARIANTS.has(sid):
-			return tr("The duck squeaks a secret: \"%s\" unlocks the %s design.") % [Designs.unlock_text(sid), tr(str(PatchModel.VARIANTS[sid]["name"]))]
+	var hint: String = Looks.next_hint(_pieces_hidden_here())
+	if hint != "":
+		return tr("The duck squeaks a secret: \"%s\"") % tr(hint)
 	return tr("The duck has taught you everything it knows. Quack.")
+
+
+## The pieces of Lumi's looks this planet hides (the duck only hints at what can be found here).
+func _pieces_hidden_here() -> Array[String]:
+	var out: Array[String] = []
+	for e: Dictionary in Finds.entries_for(Planets.current()):
+		out.append_array(e["pieces"])
+	return out
 
 
 func _play_jukebox() -> void:

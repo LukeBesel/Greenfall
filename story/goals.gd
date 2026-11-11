@@ -56,14 +56,23 @@ func done_count() -> int:
 	return n
 
 
-## Chain indices of the current goals (first `visible_count` unfinished ones).
+## A goal with `after_flag` belongs to something the player came across (a found piece): it is
+## not offered until that save flag is set.
+func is_offered(i: int) -> bool:
+	var flag: String = str(chain[i].get("after_flag", ""))
+	return flag == "" or bool(GameState.flags.get(flag, false))
+
+
+## Chain indices of the current goals: the first `visible_count` unfinished ones that are offered.
+## Goals offered by a flag come first, so what the player just came across is the next step.
 func current() -> Array[int]:
 	var out: Array[int] = []
-	for i: int in chain.size():
-		if not is_done(i):
-			out.append(i)
+	for flagged: bool in [true, false]:
+		for i: int in chain.size():
 			if out.size() >= visible_count:
-				break
+				return out
+			if not is_done(i) and is_offered(i) and chain[i].has("after_flag") == flagged:
+				out.append(i)
 	return out
 
 
@@ -167,7 +176,7 @@ func _process(delta: float) -> void:
 ## left to the card). Returns its index or -1.
 func check() -> int:
 	for i: int in chain.size():
-		if i == card_goal or is_done(i):
+		if i == card_goal or is_done(i) or not is_offered(i):
 			continue
 		if value_of(i) >= target_of(i):
 			complete(i)

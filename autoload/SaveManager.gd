@@ -242,6 +242,9 @@ static func migrate(d: Dictionary) -> Dictionary:
 	if v < 4:
 		d = migrate_v4(d)  # [ui2]
 		v = 4
+	if v < 5:
+		d = Looks.migrate_save(d)  # looks are found pieces: an old save keeps what it had unlocked
+		v = 5
 	d["version"] = v
 	return d
 
