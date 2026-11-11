@@ -197,7 +197,7 @@ func repair_bench() -> void:
 	var p_in: Variant = patch.get("input") if patch else null
 	if p_in is PlayerInput:
 		(p_in as PlayerInput).enabled = false
-	var target: Vector3 = _bench.global_position + OrbitUp.up(_bench.global_position) * 0.9 if _bench else world.BOARD_POS  # [orbB] local up
+	var target: Vector3 = _bench.global_position + OrbitUp.up(_bench.global_position) * 0.9 if _bench else (world.call("bench_pos") as Vector3)  # [orbB] local up
 	if patch and not OrbitUp.on_globe():  # [orbB] the globe's Patch turns through its SphereMotor
 		var d: Vector3 = target - patch.global_position
 		patch.rotation.y = atan2(-d.x, -d.z)
@@ -341,7 +341,7 @@ func _on_built(id: String) -> void:
 			if ex and ex.nursery:
 				at = ex.nursery.global_position
 		"shack":
-			at = world.BOARD_POS
+			at = world.call("bench_pos")
 		"generator", "lamps":
 			var n: Node3D = bits.get("generator" if id == "generator" else "street_lamp") as Node3D
 			if n:
@@ -420,13 +420,12 @@ func use_bin() -> void:
 ## (caretakers, robots, events) are left out.
 func points() -> Array:
 	var out: Array = []
-	out.append(["workbench", world.BOARD_POS, true])
+	out.append(["workbench", world.call("bench_pos"), true])
 	if _bin_anchor:
 		out.append(["trash_bin", _bin_anchor.global_position, true])
 	var comp: Node3D = world.get("composter") as Node3D
 	if comp:
 		out.append(["composter", comp.global_position, comp.visible])
-	out.append(["flower", world.FLOWER_POS, true])
 	var ex: ExtrasDirector = ExtrasDirector.of(world)
 	if ex and ex.radio:
 		var ra: Node3D = world.get_node_or_null("RadioReach") as Node3D

@@ -268,7 +268,7 @@ static func build(world: Node, id: String) -> bool:
 			if lg == null or not bool(lg.call("build_jammer")):
 				return false
 			var js: Array = lg.get("_jammers")
-			MachineReveal.reveal(world, nm, (js.back() as Node3D).global_position if not js.is_empty() and js.back() is Node3D else world.BOARD_POS, false)
+			MachineReveal.reveal(world, nm, (js.back() as Node3D).global_position if not js.is_empty() and js.back() is Node3D else (world.call("bench_pos") as Vector3), false)
 		"conveyor", "auto_baler", "recycler":
 			var st: Stations = Stations.of(world)
 			if st == null or not st.build(id):
