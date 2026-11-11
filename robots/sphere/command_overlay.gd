@@ -26,10 +26,13 @@ var cmd: SphereCommand
 var _font: Font
 var _box: StyleBoxFlat
 var stats: Dictionary = {}  # pips / clusters drawn last frame (tests, dev)
+## [v6screens] The boxes drawn last frame, {name, rect, text_w}, so the layout audit
+## (tools/ui_audit_run.gd) can check them like Controls: on screen, clear of the HUD and each other.
+var panels: Array[Dictionary] = []
 
 
 func _ready() -> void:
-	set_anchors_preset(Control.PRESET_FULL_RECT)
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)  # [v6screens] was set_anchors_preset: it kept a small size, so the top hints sat off the left edge
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_font = get_theme_default_font()
 	_box = StyleBoxFlat.new()
@@ -198,6 +201,7 @@ func _draw() -> void:
 		_font = get_theme_default_font()
 	var cam: Camera3D = cmd.cam.camera
 	var crew: SphereCrew = cmd.crew
+	panels.clear()  # [v6screens]
 	var surf: SphereSurface = cmd.surface
 	# Painted zones, every job: filled hexes (the job being painted on top and brighter).
 	var drawn: int = 0
@@ -300,6 +304,7 @@ func _draw() -> void:
 			var at: Vector2 = (hs as Vector2) + Vector2(14, -14)
 			at.x = clampf(at.x, 8.0, maxf(8.0, size.x - w - 20.0))
 			draw_style_box(_box, Rect2(at + Vector2(-8, -19), Vector2(w + 16, 28)))
+			panels.append({"name": "look", "rect": Rect2(at + Vector2(-8, -19), Vector2(w + 16, 28)), "text_w": w})  # [v6screens]
 			draw_string(_font, at, line, HORIZONTAL_ALIGNMENT_LEFT, -1, 16, UITheme.CREAM)
 	# The card (left, under the cube counter) and the paint hints (top centre, clear of the HUD).
 	var lines: Array = card_lines(cmd)
@@ -310,6 +315,7 @@ func _draw() -> void:
 		ch += float(l["size"]) + 9.0
 	var origin := Vector2(22, 96)
 	draw_style_box(_box, Rect2(origin, Vector2(cw + 32.0, ch)))
+	panels.append({"name": "card", "rect": Rect2(origin, Vector2(cw + 32.0, ch)), "text_w": cw})  # [v6screens]
 	var y: float = origin.y + 10.0
 	for l: Dictionary in lines:
 		var fs2: int = int(l["size"])
@@ -328,6 +334,7 @@ func _draw() -> void:
 	var w1: float = _font.get_string_size(str(hints[1]), HORIZONTAL_ALIGNMENT_LEFT, -1, 15).x
 	var bw: float = maxf(w0, w1) + 36.0
 	draw_style_box(_box, Rect2(Vector2(mid_x - bw * 0.5, 16), Vector2(bw, 62)))
+	panels.append({"name": "hints", "rect": Rect2(Vector2(mid_x - bw * 0.5, 16), Vector2(bw, 62)), "text_w": maxf(w0, w1)})  # [v6screens]
 	draw_circle(Vector2(mid_x - w0 * 0.5 - 4.0, 36), 7.0, zcol)
 	draw_string(_font, Vector2(mid_x - w0 * 0.5 + 10.0, 43), str(hints[0]), HORIZONTAL_ALIGNMENT_LEFT, -1, 22, UITheme.CREAM)
 	draw_string(_font, Vector2(mid_x - w1 * 0.5, 67), str(hints[1]), HORIZONTAL_ALIGNMENT_LEFT, -1, 15, UITheme.MUTED)
