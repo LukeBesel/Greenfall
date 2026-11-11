@@ -579,104 +579,6 @@ msgstr "Tu estuche de CD está lleno."
 msgid "Past the survey line the junk runs too deep to start on. One district at a time: clean this one, then the rockets take us to the next."
 msgstr "Más allá de la línea de exploración, la chatarra es demasiado profunda para empezar. Un distrito cada vez: limpia este y luego los cohetes nos llevarán al siguiente."
 
-#: planet/frontier_district.gd:279
-msgid "Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."
-msgstr "Tormenta de arena en el horizonte. El suelo limpio y desnudo quedará enterrado; los hexágonos plantados y protegidos aguantan."
-
-#: planet/frontier_district.gd:343
-msgid "The sandstorm buried %d hex again. Sustained hexes shelter their neighbours."
-msgid_plural "The sandstorm buried %d hexes again. Sustained hexes shelter their neighbours."
-msgstr[0] "La tormenta volvió a enterrar %d hexágono. Los hexágonos sostenidos protegen a sus vecinos."
-msgstr[1] "La tormenta volvió a enterrar %d hexágonos. Los hexágonos sostenidos protegen a sus vecinos."
-
-#: planet/frontier_district.gd:343
-msgid "The storm blew over. Everything held."
-msgstr "La tormenta ha pasado. Todo aguantó."
-
-#: planet/frontier_district.gd:391
-msgid "The ice let go. The junk underneath is just junk again."
-msgstr "El hielo se soltó. La chatarra de debajo vuelve a ser solo chatarra."
-
-#: planet/frontier_district.gd:482
-msgid "E   Light a heater on this ice · %s cubes"
-msgstr "E   Encender un calefactor en este hielo · %s cubos"
-
-#: planet/frontier_district.gd:484
-msgid "E   Build a greenhouse on this hex · %s cubes"
-msgstr "E   Construir un invernadero en este hexágono · %s cubos"
-
-#: planet/frontier_district.gd:494
-msgid "Not enough cubes for a heater."
-msgstr "No hay cubos suficientes para un calefactor."
-
-#: planet/frontier_district.gd:494
-msgid "Heater limit reached. Move on to the next ice once these have done their work."
-msgstr "Límite de calefactores alcanzado. Pasa al siguiente hielo cuando estos terminen su trabajo."
-
-#: planet/frontier_district.gd:498
-msgid "Not enough cubes for a greenhouse."
-msgstr "No hay cubos suficientes para un invernadero."
-
-#: planet/frontier_district.gd:530
-msgid "The old pumps are running. The water drops and a ring of streets comes back up, with a lot of stranded junk."
-msgstr "Las viejas bombas funcionan. El agua baja y vuelve a aparecer un anillo de calles, lleno de chatarra varada."
-
-#: planet/frontier_district.gd:551
-msgid "The landing pad is clean. Now plant it and keep it Sustained."
-msgstr "La plataforma de aterrizaje está limpia. Ahora plántala y mantenla sostenida."
-
-#: planet/frontier_district.gd:567
-msgid "The landing pad is alive and the beacon is lit. The Cradle has answered. It is coming home."
-msgstr "La plataforma está viva y la baliza encendida. El Cradle ha respondido. Vuelve a casa."
-
-#: planet/frontier_district.gd:602
-msgid "Sandstorm blowing"
-msgstr "Tormenta de arena activa"
-
-#: planet/frontier_district.gd:605
-msgid "Next sandstorm  %d:%02d"
-msgstr "Próxima tormenta  %d:%02d"
-
-#: planet/frontier_district.gd:606
-msgid "Well dry: Drips refill at tanks"
-msgstr "Pozo seco: los Drips recargan en tanques"
-
-#: planet/frontier_district.gd:612
-msgid "%d hexes iced  ·  %d heaters"
-msgstr "%d hexágonos helados  ·  %d calefactores"
-
-#: planet/frontier_district.gd:613
-msgid "Greenhouses %d%s"
-msgstr "Invernaderos %d%s"
-
-#: planet/frontier_district.gd:613
-msgid "  ·  cold-hardy seeds"
-msgstr "  ·  semillas resistentes al frío"
-
-#: planet/frontier_district.gd:617
-msgid "Water down: all streets above water"
-msgstr "Agua baja: todas las calles fuera del agua"
-
-#: planet/frontier_district.gd:619
-msgid "Pumps: ring %d skimmed %d%% / %d%%"
-msgstr "Bombas: anillo %d limpio %d%% / %d%%"
-
-#: planet/frontier_district.gd:620
-msgid "Water level %d / %d"
-msgstr "Nivel del agua %d / %d"
-
-#: planet/frontier_district.gd:623
-msgid "The Cradle is coming home"
-msgstr "El Cradle vuelve a casa"
-
-#: planet/frontier_district.gd:625
-msgid "Pad clean %d%%  ·  Sustained %d%%"
-msgstr "Plataforma limpia %d%%  ·  Sostenido %d%%"
-
-#: planet/frontier_district.gd:626
-msgid "District Growing %d%% / %d%%"
-msgstr "Distrito creciendo %d%% / %d%%"
-
 #: planet/frontiers.gd:112
 msgid "%s Research %s"
 msgstr "%s Investigación %s"
@@ -956,7 +858,7 @@ msgstr "Lugar: %s"
 msgid "Hub %d"
 msgstr "Base %d"
 
-#: planet/sites/sphere_water.gd:263 water/water_view.gd:79
+#: planet/sites/sphere_water.gd:263
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
 msgstr "El agua... veo el fondo. Lumi, algo se mueve ahí abajo."
 
@@ -1615,35 +1517,35 @@ msgstr[1] "Mientras no estabas, tus robots de aquí limpiaron %d hexágonos y ga
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s montado. Mira a su alrededor y se pone a trabajar."
 
-#: scenes/slice.gd:133 ui/rockets_panel.gd:60
+#: scenes/slice.gd:130 ui/rockets_panel.gd:60
 msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
 msgstr "Camina hasta el cohete en la plataforma de lanzamiento y pulsa E para elegir adónde volar."
 
-#: scenes/slice.gd:143 ui/rockets_panel.gd:39
+#: scenes/slice.gd:140 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Celdas de energía recargando: %s. Las mejoras del cohete las recargan más rápido."
 
-#: scenes/slice_orbit.gd:392
+#: scenes/slice_orbit.gd:400
 msgid "HEX CLEAN!  +%s"
 msgstr "¡HEXÁGONO LIMPIO!  +%s"
 
-#: scenes/slice_orbit.gd:408
+#: scenes/slice_orbit.gd:416
 msgid "Milestone: %d hexes clean!"
 msgstr "Hito: ¡%d hexágonos limpios!"
 
-#: scenes/slice_orbit.gd:477 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:485 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   Arreglar el banco de trabajo"
 
-#: scenes/slice_orbit.gd:477 systems/camp/camp.gd:195
+#: scenes/slice_orbit.gd:485 systems/camp/camp.gd:195
 msgid "E   Open the workbench"
 msgstr "E   Abrir el banco de trabajo"
 
-#: scenes/slice_orbit.gd:994
+#: scenes/slice_orbit.gd:1002
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Las mejoras necesitan un banco de trabajo. Vuelve a la base."
 
-#: scenes/slice_orbit.gd:1094
+#: scenes/slice_orbit.gd:1102
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Banco de trabajo reparado. Pulsa E en él para gastar cubos en mejoras."
 
@@ -1925,83 +1827,83 @@ msgstr ""
 msgid "Something metal surfaced in the cleared ground."
 msgstr "Algo metálico ha salido a la superficie en el suelo despejado."
 
-#: story/eggs.gd:652 story/eggs.gd:714
+#: story/eggs.gd:654 story/eggs.gd:716
 msgid "Gnome %d / %d"
 msgstr "Gnomo %d / %d"
 
-#: story/eggs.gd:660
+#: story/eggs.gd:662
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr "El último cartel señala un sitio muy cerca. Algo naranja está hecho un ovillo por ahí."
 
-#: story/eggs.gd:715
+#: story/eggs.gd:717
 msgid "%s   ·   added to Lumi's collection"
 msgstr "%s   ·   añadido a la colección de Lumi"
 
-#: story/eggs.gd:731
+#: story/eggs.gd:733
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr "La radio sisea bajito. Ahí arriba aún no hay nada despierto. Vuelve cuando oscurezca."
 
-#: story/eggs.gd:732
+#: story/eggs.gd:734
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr "Por el telescopio: solo un cielo claro y polvoriento. Vuelve cuando oscurezca."
 
-#: story/eggs.gd:761
+#: story/eggs.gd:763
 msgid "SOLD OUT"
 msgstr "AGOTADO"
 
-#: story/eggs.gd:779
+#: story/eggs.gd:781
 msgid "QUACK!"
 msgstr "¡CUAC!"
 
-#: story/eggs.gd:797
+#: story/eggs.gd:799
 msgid "NEW CHALLENGER!"
 msgstr "¡NUEVO RIVAL!"
 
-#: story/eggs.gd:800
+#: story/eggs.gd:802
 msgid "GAME OVER  ·  SCORE 12"
 msgstr "GAME OVER  ·  PUNTOS 12"
 
-#: story/eggs.gd:828
+#: story/eggs.gd:830
 msgid "hi, Gus"
 msgstr "hola, Gus"
 
-#: story/eggs.gd:873
+#: story/eggs.gd:875
 msgid "CONFETTI"
 msgstr "CONFETI"
 
-#: story/eggs.gd:873
+#: story/eggs.gd:875
 msgid "LIGHT JAZZ"
 msgstr "JAZZ SUAVE"
 
-#: story/eggs.gd:873
+#: story/eggs.gd:875
 msgid "99% DUCKS"
 msgstr "PATOS: 99%"
 
-#: story/eggs.gd:873
+#: story/eggs.gd:875
 msgid "SUNNY (INDOORS)"
 msgstr "SOLEADO (DENTRO)"
 
-#: story/eggs.gd:873
+#: story/eggs.gd:875
 msgid "FOG OF NOODLES"
 msgstr "NIEBLA DE FIDEOS"
 
-#: story/eggs.gd:878
+#: story/eggs.gd:880
 msgid "1ST PLACE"
 msgstr "1.ER PUESTO"
 
-#: story/eggs.gd:936
+#: story/eggs.gd:938
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr "El pato chilla un secreto: «%s» desbloquea el diseño %s."
 
-#: story/eggs.gd:937
+#: story/eggs.gd:939
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "El pato te ha enseñado todo lo que sabe. Cuac."
 
-#: story/eggs.gd:1168
+#: story/eggs.gd:1170
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "Curiosidad encontrada: %s  (%d / %d)   %s"
 
-#: story/eggs.gd:1179
+#: story/eggs.gd:1181
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "Todas las curiosidades de la lista, encontradas. El compartimento de colección de Lumi está llenísimo de recuerdos."
 
@@ -2214,43 +2116,43 @@ msgstr ""
 msgid "Needs %s"
 msgstr "Requiere %s"
 
-#: story/ledger.gd:497
+#: story/ledger.gd:499
 msgid "Ledger drone inbound, %s! It's heading for a clean hex."
 msgstr "¡Dron del Ledger en camino, %s! Va hacia un hexágono limpio."
 
-#: story/ledger.gd:498
+#: story/ledger.gd:500
 msgid "A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground."
 msgstr "Un dron del Ledger viene a tirar chatarra en un hexágono limpio (%s de ti). No puede tocar el suelo plantado."
 
-#: story/ledger.gd:535
+#: story/ledger.gd:537
 msgid "SIGNAL JAMMED"
 msgstr "SEÑAL INHIBIDA"
 
-#: story/ledger.gd:565
+#: story/ledger.gd:567
 msgid "Target re-classified as ASSET. Aborting. ...Interesting."
 msgstr "Objetivo reclasificado como ACTIVO. Abortando. ...Interesante."
 
-#: story/ledger.gd:636
+#: story/ledger.gd:638
 msgid "The drone dumped a little junk back. Scoop it up, or let your helpers tidy it. A Signal Jammer at the base keeps drones away."
 msgstr "El dron ha devuelto un poco de chatarra. Recógela o deja que tus ayudantes ordenen. Un inhibidor en la base mantiene alejados a los drones."
 
-#: story/ledger.gd:692
+#: story/ledger.gd:694
 msgid "SEEDS · PAID IN FULL"
 msgstr "SEMILLAS · PAGADO ÍNTEGRAMENTE"
 
-#: story/ledger.gd:709 systems/events.gd:500 systems/lumi_level.gd:218
+#: story/ledger.gd:711 systems/events.gd:500 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "+%d semillas"
 
-#: story/ledger.gd:781
+#: story/ledger.gd:783
 msgid "E   jack in: rewrite the Ledger's contract"
 msgstr "E   conectarse: reescribir el contrato del Ledger"
 
-#: story/ledger.gd:781
+#: story/ledger.gd:783
 msgid "E   read the amended contract"
 msgstr "E   leer el contrato modificado"
 
-#: story/ledger.gd:806 story/ledger.gd:860
+#: story/ledger.gd:808 story/ledger.gd:862
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: ACTIVE\n"
@@ -2260,11 +2162,11 @@ msgstr ""
 "CONTRATO 0001: ACTIVO\n"
 "EL RESIDUO ES UNA PARTIDA"
 
-#: story/ledger.gd:821
+#: story/ledger.gd:823
 msgid "RELAY 07  ·  PROPERTY OF THE LEDGER  ·  NO UNSCHEDULED ACCESS"
 msgstr "RELÉ 07  ·  PROPIEDAD DEL LEDGER  ·  PROHIBIDO EL ACCESO NO PROGRAMADO"
 
-#: story/ledger.gd:860
+#: story/ledger.gd:862
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: AMENDED\n"
@@ -2274,11 +2176,11 @@ msgstr ""
 "CONTRATO 0001: MODIFICADO\n"
 "RESTAURACIÓN = ACTIVO"
 
-#: story/ledger.gd:980
+#: story/ledger.gd:984
 msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
 msgstr "El contrato del Ledger está reescrito. Sus drones reparten semillas ahora. (+%d semillas)"
 
-#: story/ledger.gd:988
+#: story/ledger.gd:992
 msgid "<< LEDGER // OFF THE RECORD >>"
 msgstr "<< LEDGER // EXTRAOFICIAL >>"
 
@@ -17132,6 +17034,79 @@ msgstr "Ese pórtico desguazó la flota del Ledger cuando se acabó el dinero. E
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un mundo de óxido, verde. Las viejas grúas tienen flores a sus pies. Las cuentas están cerradas, {name}. Las hemos cuadrado."
+
+#~ msgid "Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."
+#~ msgstr "Tormenta de arena en el horizonte. El suelo limpio y desnudo quedará enterrado; los hexágonos plantados y protegidos aguantan."
+
+#~ msgid "The sandstorm buried %d hex again. Sustained hexes shelter their neighbours."
+#~ msgstr[0] "La tormenta volvió a enterrar %d hexágono. Los hexágonos sostenidos protegen a sus vecinos."
+#~ msgstr[1] "La tormenta volvió a enterrar %d hexágonos. Los hexágonos sostenidos protegen a sus vecinos."
+
+#~ msgid "The storm blew over. Everything held."
+#~ msgstr "La tormenta ha pasado. Todo aguantó."
+
+#~ msgid "The ice let go. The junk underneath is just junk again."
+#~ msgstr "El hielo se soltó. La chatarra de debajo vuelve a ser solo chatarra."
+
+#~ msgid "E   Light a heater on this ice · %s cubes"
+#~ msgstr "E   Encender un calefactor en este hielo · %s cubos"
+
+#~ msgid "E   Build a greenhouse on this hex · %s cubes"
+#~ msgstr "E   Construir un invernadero en este hexágono · %s cubos"
+
+#~ msgid "Not enough cubes for a heater."
+#~ msgstr "No hay cubos suficientes para un calefactor."
+
+#~ msgid "Heater limit reached. Move on to the next ice once these have done their work."
+#~ msgstr "Límite de calefactores alcanzado. Pasa al siguiente hielo cuando estos terminen su trabajo."
+
+#~ msgid "Not enough cubes for a greenhouse."
+#~ msgstr "No hay cubos suficientes para un invernadero."
+
+#~ msgid "The old pumps are running. The water drops and a ring of streets comes back up, with a lot of stranded junk."
+#~ msgstr "Las viejas bombas funcionan. El agua baja y vuelve a aparecer un anillo de calles, lleno de chatarra varada."
+
+#~ msgid "The landing pad is clean. Now plant it and keep it Sustained."
+#~ msgstr "La plataforma de aterrizaje está limpia. Ahora plántala y mantenla sostenida."
+
+#~ msgid "The landing pad is alive and the beacon is lit. The Cradle has answered. It is coming home."
+#~ msgstr "La plataforma está viva y la baliza encendida. El Cradle ha respondido. Vuelve a casa."
+
+#~ msgid "Sandstorm blowing"
+#~ msgstr "Tormenta de arena activa"
+
+#~ msgid "Next sandstorm  %d:%02d"
+#~ msgstr "Próxima tormenta  %d:%02d"
+
+#~ msgid "Well dry: Drips refill at tanks"
+#~ msgstr "Pozo seco: los Drips recargan en tanques"
+
+#~ msgid "%d hexes iced  ·  %d heaters"
+#~ msgstr "%d hexágonos helados  ·  %d calefactores"
+
+#~ msgid "Greenhouses %d%s"
+#~ msgstr "Invernaderos %d%s"
+
+#~ msgid "  ·  cold-hardy seeds"
+#~ msgstr "  ·  semillas resistentes al frío"
+
+#~ msgid "Water down: all streets above water"
+#~ msgstr "Agua baja: todas las calles fuera del agua"
+
+#~ msgid "Pumps: ring %d skimmed %d%% / %d%%"
+#~ msgstr "Bombas: anillo %d limpio %d%% / %d%%"
+
+#~ msgid "Water level %d / %d"
+#~ msgstr "Nivel del agua %d / %d"
+
+#~ msgid "The Cradle is coming home"
+#~ msgstr "El Cradle vuelve a casa"
+
+#~ msgid "Pad clean %d%%  ·  Sustained %d%%"
+#~ msgstr "Plataforma limpia %d%%  ·  Sostenido %d%%"
+
+#~ msgid "District Growing %d%% / %d%%"
+#~ msgstr "Distrito creciendo %d%% / %d%%"
 
 #~ msgid "The Cradle waits until all of them can grow again. Verdance was only the first."
 #~ msgstr "El Cradle espera hasta que en todos pueda volver a crecer algo. Verdance solo era el primero."
