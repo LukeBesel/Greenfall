@@ -476,7 +476,7 @@ msgid "Requires hub level %d or research: %s."
 msgstr "Nécessite la base niveau %d ou la recherche : %s."
 
 #: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
-#: systems/camp/camp.gd:414 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:155
+#: systems/camp/camp.gd:424 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:155
 #: systems/camp/hub_builds.gd:165 systems/camp/hub_builds.gd:175 systems/camp/yard_builds.gd:91
 #: ui/telescope_panel.gd:40
 msgid "Not enough materials."
@@ -1293,11 +1293,11 @@ msgstr "Cellules d'énergie en recharge : %s. Les améliorations de fusée les r
 msgid "Milestone: %d hexes clean!"
 msgstr "Étape : %d hexagones propres !"
 
-#: scenes/slice_orbit.gd:481 systems/camp/camp.gd:188 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:481 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   Réparer l'établi"
 
-#: scenes/slice_orbit.gd:481 systems/camp/camp.gd:189
+#: scenes/slice_orbit.gd:481 systems/camp/camp.gd:195
 msgid "E   Open the workbench"
 msgstr "E   Ouvrir l'établi"
 
@@ -2937,19 +2937,19 @@ msgstr "Clair de lune"
 msgid "New CD: %s by %s, from %s"
 msgstr "Nouveau CD : %s par %s, de %s"
 
-#: systems/camp/camp.gd:236
+#: systems/camp/camp.gd:242
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "Établi réparé ! Appuie sur %s devant lui pour acheter des améliorations."
 
-#: systems/camp/camp.gd:398
+#: systems/camp/camp.gd:408
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr "E   %s (Niv %d) : entièrement amélioré"
 
-#: systems/camp/camp.gd:404
+#: systems/camp/camp.gd:414
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr "E   %s (Niv %d) : passer à %s pour %s"
 
-#: systems/camp/camp.gd:410
+#: systems/camp/camp.gd:420
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "Poubelle améliorée : %s. Les balles se vendent ici à %d%%."
 
