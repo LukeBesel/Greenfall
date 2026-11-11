@@ -4,6 +4,8 @@
 
 Start here in a new session: `docs/PROGRESS.md` (what exists, known issues, next steps), `docs/PLAN.md` (milestones + owner feature requests), `docs/DECISIONS.md` (choices and assumptions), `docs/BUILD_PROMPT.md` (the owner's full brief).
 
+**Nov 11, 2026: Milestone 3 in progress.** Merged and pushed: the accepted economy (M3-19, M3-02), city 1 fitted to real walking (M3-21: first hex about 1 minute, first robot, a Haul Bug, near minute 9), Old Town built and polished (M3-18a, M3-18b). 993 tests pass. Running: M3-20 (crew climb to 100-200 robots, Scroungers feeding the Assembler factory at city 3) and M3-18 (the other five cities). Decisions and open owner questions: `docs/DECISIONS.md`, last three sections.
+
 ## Status (Nov 2026)
 - [x] M0 Setup, M1 Slice (city district, Aurora/Patch, baling, tutorial, lens view)
 - [x] M2 Planet layer: 40k-hex planet, hand-held survey hologram (M), districts per base, rocket travel. Seamless sphere walking deferred (see DECISIONS).
