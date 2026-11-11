@@ -57,6 +57,7 @@
  },
  "_doc_planets": "One block per planet, all the same shape. theme: which built-in score and instruments the planet uses. ambience.level_db: trim of the whole bed. ambience.loops: id -> [level while ruined, level once restored]. ambience.events: [sound, shortest wait s, longest wait s, dB, pitch low, pitch high, chance while ruined, chance once restored].",
  "planets": {
+  "_default": {"_doc": "[v7planet] A planet with no block here gets this (core/sound_cfg.gd). like: start from that planet's block; any key given here (theme, ambience) replaces its. A planet block can use like too, e.g. {\"like\": \"verdance\", \"theme\": \"ochre\"}.", "like": "verdance"},
   "verdance": {
    "theme": "verdance",
    "ambience": {

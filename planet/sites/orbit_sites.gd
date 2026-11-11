@@ -343,7 +343,7 @@ var hinterland: Hinterland
 
 
 func _build_hinterland() -> void:
-	if sm == null or sm.planet_id != "verdance" or DevHooks.has("no-hinterland"):
+	if sm == null or not PlanetCfg.has_hinterland(sm.planet_id) or DevHooks.has("no-hinterland"):  # [v7planet] towns planets (data/planets.json hinterland)
 		return
 	var hubs: Array[Vector3] = []
 	for s: Dictionary in sm.sites:
