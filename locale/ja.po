@@ -402,7 +402,7 @@ msgstr "粉砕  ·  溶解  ·  完全処分"
 msgid "HAND FEED"
 msgstr "手動投入"
 
-#: automation/rocket_tiers.gd:51 ui/robot_card.gd:251
+#: automation/rocket_tiers.gd:51 ui/robot_card.gd:256
 msgid "Top tier"
 msgstr "最高ティア"
 
@@ -772,31 +772,31 @@ msgstr "種がなくなった。咲いた植物がまた落としてくれる。
 msgid "Watering can is empty. It fills in the base yard, by the bin."
 msgstr ""
 
-#: player/patch.gd:618
+#: player/patch.gd:622
 msgid "PERFECT BALE  %s"
 msgstr "パーフェクトベール  %s"
 
-#: player/patch.gd:624
+#: player/patch.gd:628
 msgid "OVERSTUFFED  %s"
 msgstr "詰め込みすぎ  %s"
 
-#: player/patch.gd:627
+#: player/patch.gd:631
 msgid "GOOD BALE  %s"
 msgstr "いいベール  %s"
 
-#: player/patch.gd:631
+#: player/patch.gd:635
 msgid "SURGE  %s"
 msgstr "サージ  %s"
 
-#: player/patch.gd:634
+#: player/patch.gd:638
 msgid "  (streak +%d%%)"
 msgstr "  （連続 +%d%%）"
 
-#: player/patch.gd:671
+#: player/patch.gd:675
 msgid "Salvaged: %s"
 msgstr "回収：%s"
 
-#: player/patch.gd:700
+#: player/patch.gd:704
 msgid "Recovered: %s"
 msgstr "発見：%s"
 
@@ -1151,27 +1151,27 @@ msgstr "前哨基地 %d · Lv%d"
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨基地 %d · 廃墟"
 
-#: scenes/slice_orbit.gd:365
+#: scenes/slice_orbit.gd:367
 msgid "HEX CLEAN!"
 msgstr "ヘックスきれい！"
 
-#: scenes/slice_orbit.gd:381
+#: scenes/slice_orbit.gd:383
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice_orbit.gd:534 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:579
+#: scenes/slice_orbit.gd:549 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   作業台を直す"
 
-#: scenes/slice_orbit.gd:534 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:549 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr "E   作業台を開く"
 
-#: scenes/slice_orbit.gd:993
+#: scenes/slice_orbit.gd:1008
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice_orbit.gd:1093
+#: scenes/slice_orbit.gd:1108
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "作業台を修理した。作業台で E を押すとキューブでアップグレードできる。"
 
@@ -2252,6 +2252,10 @@ msgstr "{robot} の{stat} +{amount}%"
 msgid "+{amount} {robot} {stat}"
 msgstr "{robot} の{stat} +{amount}"
 
+#: systems/mastery.gd:235
+msgid "Lumi must learn %s first"
+msgstr "まずLumiが%sを覚える必要があります"
+
 #: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
 msgid "Low"
 msgstr "低"
@@ -2615,7 +2619,7 @@ msgstr "%s は苗に鼻歌を聞かせている。引退生活が似合う。"
 msgid "%s points proudly at a new bud."
 msgstr "%s は新しいつぼみを得意げに指さす。"
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:606
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:608
 msgid "E   CD player: %s"
 msgstr "E   CDプレーヤー：%s"
 
@@ -2811,8 +2815,8 @@ msgstr "%s を増やす"
 msgid "Fewer %s"
 msgstr "%s を減らす"
 
-#: ui/bench_bots.gd:12 ui/build_panel.gd:102 ui/robot_card.gd:110
-#: ui/robot_card.gd:244 ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
+#: ui/bench_bots.gd:12 ui/build_panel.gd:102 ui/robot_card.gd:114
+#: ui/robot_card.gd:249 ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
 msgid "Build"
 msgstr "建造"
 
@@ -4064,85 +4068,97 @@ msgstr ""
 msgid "All built"
 msgstr "すべて建設済み"
 
-#: ui/hud.gd:78
+#: ui/hud.gd:79
 msgid "Lumi reached level %d%s"
 msgstr "Lumi がレベル %d になった%s"
 
-#: ui/hud.gd:297
+#: ui/hud.gd:304
 msgid "WREN SIGNAL   %d%%"
 msgstr "WREN 信号   %d%%"
 
-#: ui/hud.gd:326
+#: ui/hud.gd:333
 msgid "HEX  %d%% CLEAR"
 msgstr "ヘックス  %d%% きれい"
 
-#: ui/hud.gd:335
+#: ui/hud.gd:342
 msgid "%s  BASE"
 msgstr "%s  基地"
 
-#: ui/hud.gd:338
+#: ui/hud.gd:345
 msgid "CARRYING %d/%d"
 msgstr "運搬中 %d/%d"
 
-#: ui/hud.gd:364
+#: ui/hud.gd:371
 msgid "HEX  CLEAR"
 msgstr "ヘックス  きれい"
 
-#: ui/hud.gd:368
+#: ui/hud.gd:375
 msgid "HEX  %s"
 msgstr "ヘックス  %s"
 
-#: ui/hud.gd:371
+#: ui/hud.gd:378
 msgid "  SUSTAIN %d%%"
 msgstr "  維持 %d%%"
 
-#: ui/hud.gd:373
+#: ui/hud.gd:380
 msgid "  THIRSTY"
 msgstr "  水不足"
 
-#: ui/hud.gd:392
+#: ui/hud.gd:399
 msgid "%s · %s"
 msgstr "%s · %s"
 
-#: ui/hud.gd:394
+#: ui/hud.gd:401
 msgid "%s · %s %d%%"
 msgstr "%s · %s %d%%"
 
-#: ui/hud.gd:397
+#: ui/hud.gd:404
 msgid "%d of %d city restored"
 msgid_plural "%d of %d cities restored"
 msgstr[0] ""
 
+#: ui/hud.gd:418
+msgid "MASTERY  %s"
+msgstr "熟練度  %s"
+
+#: ui/hud.gd:429
+msgid "%s mastery %d. Robots can work it now."
+msgstr "%sの熟練度 %d。ロボットが作業できるようになりました。"
+
+#: ui/hud.gd:431
+msgid "%s mastery %d. You and your crew work it faster."
+msgstr "%sの熟練度 %d。あなたもクルーも作業が速くなりました。"
+
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:405
+#: ui/hud.gd:440
 msgid "%s   pick up bale"
 msgstr "%s   ベールを持つ"
 
-#: ui/hud.gd:406
+#: ui/hud.gd:441
 msgid "%s   dig up part"
 msgstr "%s   パーツを掘り出す"
 
-#: ui/hud.gd:407
+#: ui/hud.gd:442
 msgid "%s   read memory shard"
 msgstr "%s   メモリーの破片を読む"
 
-#: ui/hud.gd:408
+#: ui/hud.gd:443
 msgid "%s   pick up the seed tin"
 msgstr "%s   種の缶を拾う"
 
-#: ui/hud.gd:409
+#: ui/hud.gd:444
 msgid "%s   set bale down"
 msgstr "%s   ベールを置く"
 
-#: ui/hud.gd:410
+#: ui/hud.gd:445
 msgid "%s   workbench"
 msgstr "%s   作業台"
 
-#: ui/hud.gd:411
+#: ui/hud.gd:446
 msgid "Filling the watering can"
 msgstr "じょうろに水を入れている"
 
-#: ui/hud.gd:412
+#: ui/hud.gd:447
 msgid "Can empty. It fills in the base yard, by the bin."
 msgstr ""
 
@@ -4286,7 +4302,7 @@ msgstr "まず外の世界で外見のパーツを見つけよう。それから
 msgid "Lumi wears what he finds: paint tins, lens chips and the pieces of old robots. Glim and your robots are dressed here too."
 msgstr "Lumiは見つけたものを身につける：ペンキ缶、レンズチップ、古いロボットのパーツ。Glimとロボットたちもここで着せ替える。"
 
-#: ui/locker_panel.gd:304 ui/robot_card.gd:78
+#: ui/locker_panel.gd:304 ui/robot_card.gd:82
 msgid "Crew"
 msgstr "クルー"
 
@@ -4860,61 +4876,65 @@ msgstr "押して予約"
 msgid "%s cancelled. Cubes refunded."
 msgstr "%s を中止。キューブを返却。"
 
-#: ui/robot_card.gd:90
+#: ui/robot_card.gd:94
 msgid "Tier"
 msgstr "ティア"
 
-#: ui/robot_card.gd:130
+#: ui/robot_card.gd:134
 msgid "Fleet upgrades"
 msgstr "艦隊アップグレード"
 
-#: ui/robot_card.gd:145
+#: ui/robot_card.gd:149
 msgid "Open Research"
 msgstr "研究を開く"
 
-#: ui/robot_card.gd:187
+#: ui/robot_card.gd:191
 msgid "Lv %d  ·  %s%s (max)"
 msgstr "Lv %d  ·  %s%s（最大）"
 
-#: ui/robot_card.gd:188 ui/upgrade_card.gd:87 ui/upgrade_card.gd:215
+#: ui/robot_card.gd:192 ui/upgrade_card.gd:87 ui/upgrade_card.gd:215
 msgid "Max"
 msgstr "最大"
 
-#: ui/robot_card.gd:197
+#: ui/robot_card.gd:201
 msgid "Need %s more"
 msgstr "あと %s 必要"
 
-#: ui/robot_card.gd:223
+#: ui/robot_card.gd:227
 msgid "Unlock with research: %s"
 msgstr "研究で解放：%s"
 
-#: ui/robot_card.gd:232
+#: ui/robot_card.gd:237
 msgid "%d built  ·  crew full"
 msgstr "%d 台製作  ·  クルー満員"
 
-#: ui/robot_card.gd:232
+#: ui/robot_card.gd:237
 msgid "%d built  ·  %d free"
 msgstr "%d台  ·  空き%d"
 
-#: ui/robot_card.gd:236
+#: ui/robot_card.gd:241
 msgid "Water Tanks %d / %d  ·  place them from the Command view"
 msgstr "給水タンク %d / %d  ·  コマンドビューで設置"
 
-#: ui/robot_card.gd:244
+#: ui/robot_card.gd:249
 msgid "Build first"
 msgstr "最初の1台を作る"
 
-#: ui/robot_card.gd:250
+#: ui/robot_card.gd:255
 msgid "top tier"
 msgstr "最高ティア"
 
-#: ui/robot_card.gd:256
+#: ui/robot_card.gd:261
 msgid "next: x%s work speed"
 msgstr "次：作業速度x%s"
 
-#: ui/robot_card.gd:257 ui/rockets_panel.gd:85 ui/yard_builds_panel.gd:125
+#: ui/robot_card.gd:262 ui/rockets_panel.gd:85 ui/yard_builds_panel.gd:125
 msgid "Upgrade to %s"
 msgstr "%s にアップグレード"
+
+#: ui/robot_card.gd:283
+msgid "Mastery  %s"
+msgstr "熟練度  %s"
 
 #: ui/rocket_picker.gd:49 ui/rockets_panel.gd:67
 msgid "ROCKET"
@@ -17868,3 +17888,9 @@ msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いて
 
 #~ msgid "There are parts buried all over the ground you clean, Lumi. I found plans for a Scrounger: it digs them up and brings them home. Bots tab!"
 #~ msgstr "Lumi、きれいにした地面のあちこちにパーツが埋まっているよ。Scrounger の設計図を見つけた。掘り出して持ち帰ってくれる。ロボットタブへ！"
+
+#~ msgid "Mastery"
+#~ msgstr "熟練度"
+
+#~ msgid "Cannot work yet"
+#~ msgstr "まだ作業できません"

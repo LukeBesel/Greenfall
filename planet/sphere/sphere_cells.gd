@@ -22,6 +22,9 @@ var flags := PackedByteArray()
 ## Share of each hex's waste (0..1) that scooping cannot take: waste of kinds worked with another
 ## tool (systems/pollution.gd writes it). Empty on a planet with no such kind.
 var hold := PackedFloat32Array()
+## 1 for a hex robots must leave alone: it holds a pollution kind Lumi has not learnt yet
+## (systems/pollution.gd writes it from systems/mastery.gd). Empty when no hex is shut.
+var shut := PackedByteArray()
 var image: Image
 var texture: ImageTexture
 var _dirty: bool = false
@@ -134,9 +137,15 @@ func release_hold(i: int) -> void:
 		hold[i] = 0.0
 
 
-## Whether a land hex still has waste a scoop can take (dirty, and more left than what is held).
+## Whether robots must leave this hex alone (Lumi's own scoop is never shut out).
+func is_shut(i: int) -> bool:
+	return i < shut.size() and shut[i] == 1
+
+
+## Whether a land hex still has waste a robot's scoop can take (dirty, more left than what is
+## held, and not shut to robots).
 func workable(i: int) -> bool:
-	return is_dirty(i) and junk[i] > floor_of(i) + WORK_EPS
+	return is_dirty(i) and junk[i] > floor_of(i) + WORK_EPS and not is_shut(i)
 
 
 func _touch(i: int) -> void:

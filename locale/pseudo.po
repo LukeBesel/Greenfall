@@ -399,7 +399,7 @@ msgstr "[ŠĤŔÉÐ  ·  ŠMÉĻŢ  ·  ĜÔÑÉ FÔŔ ĜÔÔÐ ~~~~~~~~~]"
 msgid "HAND FEED"
 msgstr "[ĤÀÑÐ FÉÉÐ ~]"
 
-#: automation/rocket_tiers.gd:51 ui/robot_card.gd:251
+#: automation/rocket_tiers.gd:51 ui/robot_card.gd:256
 msgid "Top tier"
 msgstr "[Ţôþ ţîéŕ ~]"
 
@@ -769,31 +769,31 @@ msgstr "[Ôûţ ôƒ šééðš. Bļôômîñĝ þļàñţš ðŕôþ môŕé. ~
 msgid "Watering can is empty. It fills in the base yard, by the bin."
 msgstr "[Ŵàţéŕîñĝ çàñ îš émþţý. Îţ ƒîļļš îñ ţĥé bàšé ýàŕð, bý ţĥé bîñ. ~~~~~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:618
+#: player/patch.gd:622
 msgid "PERFECT BALE  %s"
 msgstr "[ÞÉŔFÉÇŢ BÀĻÉ  %s ~~~]"
 
-#: player/patch.gd:624
+#: player/patch.gd:628
 msgid "OVERSTUFFED  %s"
 msgstr "[ÔVÉŔŠŢÛFFÉÐ  %s ~~]"
 
-#: player/patch.gd:627
+#: player/patch.gd:631
 msgid "GOOD BALE  %s"
 msgstr "[ĜÔÔÐ BÀĻÉ  %s ~~]"
 
-#: player/patch.gd:631
+#: player/patch.gd:635
 msgid "SURGE  %s"
 msgstr "[ŠÛŔĜÉ  %s ~]"
 
-#: player/patch.gd:634
+#: player/patch.gd:638
 msgid "  (streak +%d%%)"
 msgstr "  [(šţŕéàķ +%d%%) ~~~]"
 
-#: player/patch.gd:671
+#: player/patch.gd:675
 msgid "Salvaged: %s"
 msgstr "[Šàļvàĝéð: %s ~]"
 
-#: player/patch.gd:700
+#: player/patch.gd:704
 msgid "Recovered: %s"
 msgstr "[Ŕéçôvéŕéð: %s ~~]"
 
@@ -1149,27 +1149,27 @@ msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 
-#: scenes/slice_orbit.gd:365
+#: scenes/slice_orbit.gd:367
 msgid "HEX CLEAN!"
 msgstr "[ĤÉX ÇĻÉÀÑ! ~]"
 
-#: scenes/slice_orbit.gd:381
+#: scenes/slice_orbit.gd:383
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
-#: scenes/slice_orbit.gd:534 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:579
+#: scenes/slice_orbit.gd:549 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   [Fîx ţĥé ŵôŕķbéñçĥ ~~~]"
 
-#: scenes/slice_orbit.gd:534 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:549 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr "E   [Ôþéñ ţĥé ŵôŕķbéñçĥ ~~~]"
 
-#: scenes/slice_orbit.gd:993
+#: scenes/slice_orbit.gd:1008
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice_orbit.gd:1093
+#: scenes/slice_orbit.gd:1108
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "[Ŵôŕķbéñçĥ ƒîxéð. Þŕéšš É àţ îţ ţô šþéñð çûbéš ôñ ûþĝŕàðéš. ~~~~~~~~~~~~~~~~~]"
 
@@ -2256,6 +2256,10 @@ msgstr "[+{amount}% {robot} {stat}]"
 msgid "+{amount} {robot} {stat}"
 msgstr "[+{amount} {robot} {stat}]"
 
+#: systems/mastery.gd:235
+msgid "Lumi must learn %s first"
+msgstr "[Ļûmî mûšţ ļéàŕñ %s ƒîŕšţ ~~~~~]"
+
 #: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
 msgid "Low"
 msgstr "[Ļôŵ ~]"
@@ -2619,7 +2623,7 @@ msgstr "[%s ĥûmš ţô ţĥé šééðļîñĝš. Ŕéţîŕéméñţ šûîţ
 msgid "%s points proudly at a new bud."
 msgstr "[%s þôîñţš þŕôûðļý àţ à ñéŵ bûð. ~~~~~~~~]"
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:606
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:608
 msgid "E   CD player: %s"
 msgstr "E   [ÇÐ þļàýéŕ: %s ~~]"
 
@@ -2815,8 +2819,8 @@ msgstr "[Môŕé %s ~]"
 msgid "Fewer %s"
 msgstr "[Féŵéŕ %s ~]"
 
-#: ui/bench_bots.gd:12 ui/build_panel.gd:102 ui/robot_card.gd:110
-#: ui/robot_card.gd:244 ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
+#: ui/bench_bots.gd:12 ui/build_panel.gd:102 ui/robot_card.gd:114
+#: ui/robot_card.gd:249 ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
 msgid "Build"
 msgstr "[Bûîļð ~]"
 
@@ -4072,86 +4076,98 @@ msgstr ""
 msgid "All built"
 msgstr "[Àļļ bûîļţ ~]"
 
-#: ui/hud.gd:78
+#: ui/hud.gd:79
 msgid "Lumi reached level %d%s"
 msgstr "[Ļûmî ŕéàçĥéð ļévéļ %d%s ~~~~~]"
 
-#: ui/hud.gd:297
+#: ui/hud.gd:304
 msgid "WREN SIGNAL   %d%%"
 msgstr "[ŴŔÉÑ ŠÎĜÑÀĻ   %d%% ~~~]"
 
-#: ui/hud.gd:326
+#: ui/hud.gd:333
 msgid "HEX  %d%% CLEAR"
 msgstr "[ĤÉX  %d%% ÇĻÉÀŔ ~~]"
 
-#: ui/hud.gd:335
+#: ui/hud.gd:342
 msgid "%s  BASE"
 msgstr "[%s  BÀŠÉ ~]"
 
-#: ui/hud.gd:338
+#: ui/hud.gd:345
 msgid "CARRYING %d/%d"
 msgstr "[ÇÀŔŔÝÎÑĜ %d/%d ~~]"
 
-#: ui/hud.gd:364
+#: ui/hud.gd:371
 msgid "HEX  CLEAR"
 msgstr "[ĤÉX  ÇĻÉÀŔ ~]"
 
-#: ui/hud.gd:368
+#: ui/hud.gd:375
 msgid "HEX  %s"
 msgstr "[ĤÉX  %s ~]"
 
-#: ui/hud.gd:371
+#: ui/hud.gd:378
 msgid "  SUSTAIN %d%%"
 msgstr "  [ŠÛŠŢÀÎÑ %d%% ~~]"
 
-#: ui/hud.gd:373
+#: ui/hud.gd:380
 msgid "  THIRSTY"
 msgstr "  [ŢĤÎŔŠŢÝ ~]"
 
-#: ui/hud.gd:392
+#: ui/hud.gd:399
 msgid "%s · %s"
 msgstr "[%s · %s]"
 
-#: ui/hud.gd:394
+#: ui/hud.gd:401
 msgid "%s · %s %d%%"
 msgstr "[%s · %s %d%%]"
 
-#: ui/hud.gd:397
+#: ui/hud.gd:404
 msgid "%d of %d city restored"
 msgid_plural "%d of %d cities restored"
 msgstr[0] "[%d ôƒ %d çîţý ŕéšţôŕéð ~~~~~]"
 msgstr[1] "[%d ôƒ %d çîţîéš ŕéšţôŕéð ~~~~~]"
 
+#: ui/hud.gd:418
+msgid "MASTERY  %s"
+msgstr "[MÀŠŢÉŔÝ  %s ~]"
+
+#: ui/hud.gd:429
+msgid "%s mastery %d. Robots can work it now."
+msgstr "[%s màšţéŕý %d. Ŕôbôţš çàñ ŵôŕķ îţ ñôŵ. ~~~~~~~~~~]"
+
+#: ui/hud.gd:431
+msgid "%s mastery %d. You and your crew work it faster."
+msgstr "[%s màšţéŕý %d. Ýôû àñð ýôûŕ çŕéŵ ŵôŕķ îţ ƒàšţéŕ. ~~~~~~~~~~~~~~]"
+
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:405
+#: ui/hud.gd:440
 msgid "%s   pick up bale"
 msgstr "[%s   þîçķ ûþ bàļé ~~~]"
 
-#: ui/hud.gd:406
+#: ui/hud.gd:441
 msgid "%s   dig up part"
 msgstr "[%s   ðîĝ ûþ þàŕţ ~~~]"
 
-#: ui/hud.gd:407
+#: ui/hud.gd:442
 msgid "%s   read memory shard"
 msgstr "[%s   ŕéàð mémôŕý šĥàŕð ~~~~~]"
 
-#: ui/hud.gd:408
+#: ui/hud.gd:443
 msgid "%s   pick up the seed tin"
 msgstr "[%s   þîçķ ûþ ţĥé šééð ţîñ ~~~~~~]"
 
-#: ui/hud.gd:409
+#: ui/hud.gd:444
 msgid "%s   set bale down"
 msgstr "[%s   šéţ bàļé ðôŵñ ~~~]"
 
-#: ui/hud.gd:410
+#: ui/hud.gd:445
 msgid "%s   workbench"
 msgstr "[%s   ŵôŕķbéñçĥ ~~]"
 
-#: ui/hud.gd:411
+#: ui/hud.gd:446
 msgid "Filling the watering can"
 msgstr "[Fîļļîñĝ ţĥé ŵàţéŕîñĝ çàñ ~~~~~]"
 
-#: ui/hud.gd:412
+#: ui/hud.gd:447
 msgid "Can empty. It fills in the base yard, by the bin."
 msgstr "[Çàñ émþţý. Îţ ƒîļļš îñ ţĥé bàšé ýàŕð, bý ţĥé bîñ. ~~~~~~~~~~~~~~]"
 
@@ -4295,7 +4311,7 @@ msgstr "[Fîñð à þîéçé ôƒ à ļôôķ îñ ţĥé ŵôŕļð. Ţĥéñ
 msgid "Lumi wears what he finds: paint tins, lens chips and the pieces of old robots. Glim and your robots are dressed here too."
 msgstr "[Ļûmî ŵéàŕš ŵĥàţ ĥé ƒîñðš: þàîñţ ţîñš, ļéñš çĥîþš àñð ţĥé þîéçéš ôƒ ôļð ŕôbôţš. Ĝļîm àñð ýôûŕ ŕôbôţš àŕé ðŕéššéð ĥéŕé ţôô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/locker_panel.gd:304 ui/robot_card.gd:78
+#: ui/locker_panel.gd:304 ui/robot_card.gd:82
 msgid "Crew"
 msgstr "[Çŕéŵ ~]"
 
@@ -4869,61 +4885,65 @@ msgstr "[Þŕéšš ţô qûéûé ~~]"
 msgid "%s cancelled. Cubes refunded."
 msgstr "[%s çàñçéļļéð. Çûbéš ŕéƒûñðéð. ~~~~~~~]"
 
-#: ui/robot_card.gd:90
+#: ui/robot_card.gd:94
 msgid "Tier"
 msgstr "[Ţîéŕ ~]"
 
-#: ui/robot_card.gd:130
+#: ui/robot_card.gd:134
 msgid "Fleet upgrades"
 msgstr "[Fļééţ ûþĝŕàðéš ~~]"
 
-#: ui/robot_card.gd:145
+#: ui/robot_card.gd:149
 msgid "Open Research"
 msgstr "[Ôþéñ Ŕéšéàŕçĥ ~~]"
 
-#: ui/robot_card.gd:187
+#: ui/robot_card.gd:191
 msgid "Lv %d  ·  %s%s (max)"
 msgstr "[Ļv %d  ·  %s%s (màx) ~~~~]"
 
-#: ui/robot_card.gd:188 ui/upgrade_card.gd:87 ui/upgrade_card.gd:215
+#: ui/robot_card.gd:192 ui/upgrade_card.gd:87 ui/upgrade_card.gd:215
 msgid "Max"
 msgstr "[Màx ~]"
 
-#: ui/robot_card.gd:197
+#: ui/robot_card.gd:201
 msgid "Need %s more"
 msgstr "[Ñééð %s môŕé ~]"
 
-#: ui/robot_card.gd:223
+#: ui/robot_card.gd:227
 msgid "Unlock with research: %s"
 msgstr "[Ûñļôçķ ŵîţĥ ŕéšéàŕçĥ: %s ~~~~~]"
 
-#: ui/robot_card.gd:232
+#: ui/robot_card.gd:237
 msgid "%d built  ·  crew full"
 msgstr "[%d bûîļţ  ·  çŕéŵ ƒûļļ ~~~~~]"
 
-#: ui/robot_card.gd:232
+#: ui/robot_card.gd:237
 msgid "%d built  ·  %d free"
 msgstr "[%d bûîļţ  ·  %d ƒŕéé ~~~~]"
 
-#: ui/robot_card.gd:236
+#: ui/robot_card.gd:241
 msgid "Water Tanks %d / %d  ·  place them from the Command view"
 msgstr "[Ŵàţéŕ Ţàñķš %d / %d  ·  þļàçé ţĥém ƒŕôm ţĥé Çômmàñð vîéŵ ~~~~~~~~~~~~~~~~~]"
 
-#: ui/robot_card.gd:244
+#: ui/robot_card.gd:249
 msgid "Build first"
 msgstr "[Bûîļð ƒîŕšţ ~]"
 
-#: ui/robot_card.gd:250
+#: ui/robot_card.gd:255
 msgid "top tier"
 msgstr "[ţôþ ţîéŕ ~]"
 
-#: ui/robot_card.gd:256
+#: ui/robot_card.gd:261
 msgid "next: x%s work speed"
 msgstr "[ñéxţ: x%s ŵôŕķ šþééð ~~~~]"
 
-#: ui/robot_card.gd:257 ui/rockets_panel.gd:85 ui/yard_builds_panel.gd:125
+#: ui/robot_card.gd:262 ui/rockets_panel.gd:85 ui/yard_builds_panel.gd:125
 msgid "Upgrade to %s"
 msgstr "[Ûþĝŕàðé ţô %s ~~]"
+
+#: ui/robot_card.gd:283
+msgid "Mastery  %s"
+msgstr "[Màšţéŕý  %s ~]"
 
 #: ui/rocket_picker.gd:49 ui/rockets_panel.gd:67
 msgid "ROCKET"

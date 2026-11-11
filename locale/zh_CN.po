@@ -402,7 +402,7 @@ msgstr "粉碎  ·  熔炼  ·  永久清除"
 msgid "HAND FEED"
 msgstr "手动投料"
 
-#: automation/rocket_tiers.gd:51 ui/robot_card.gd:251
+#: automation/rocket_tiers.gd:51 ui/robot_card.gd:256
 msgid "Top tier"
 msgstr "最高等级"
 
@@ -772,31 +772,31 @@ msgstr "种子用完了。开花的植物会掉落更多。"
 msgid "Watering can is empty. It fills in the base yard, by the bin."
 msgstr ""
 
-#: player/patch.gd:618
+#: player/patch.gd:622
 msgid "PERFECT BALE  %s"
 msgstr "完美捆包  %s"
 
-#: player/patch.gd:624
+#: player/patch.gd:628
 msgid "OVERSTUFFED  %s"
 msgstr "塞爆了  %s"
 
-#: player/patch.gd:627
+#: player/patch.gd:631
 msgid "GOOD BALE  %s"
 msgstr "不错的捆包  %s"
 
-#: player/patch.gd:631
+#: player/patch.gd:635
 msgid "SURGE  %s"
 msgstr "冲劲  %s"
 
-#: player/patch.gd:634
+#: player/patch.gd:638
 msgid "  (streak +%d%%)"
 msgstr "  （连击 +%d%%）"
 
-#: player/patch.gd:671
+#: player/patch.gd:675
 msgid "Salvaged: %s"
 msgstr "回收：%s"
 
-#: player/patch.gd:700
+#: player/patch.gd:704
 msgid "Recovered: %s"
 msgstr "找回：%s"
 
@@ -1151,27 +1151,27 @@ msgstr "前哨 %d · %d级"
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨 %d · 废墟"
 
-#: scenes/slice_orbit.gd:365
+#: scenes/slice_orbit.gd:367
 msgid "HEX CLEAN!"
 msgstr "六角格清理完成！"
 
-#: scenes/slice_orbit.gd:381
+#: scenes/slice_orbit.gd:383
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice_orbit.gd:534 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:579
+#: scenes/slice_orbit.gd:549 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   修理工作台"
 
-#: scenes/slice_orbit.gd:534 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:549 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr "E   打开工作台"
 
-#: scenes/slice_orbit.gd:993
+#: scenes/slice_orbit.gd:1008
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice_orbit.gd:1093
+#: scenes/slice_orbit.gd:1108
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "工作台修好了。在它旁边按 E，用方块购买升级。"
 
@@ -2252,6 +2252,10 @@ msgstr "{robot} {stat} +{amount}%"
 msgid "+{amount} {robot} {stat}"
 msgstr "{robot} {stat} +{amount}"
 
+#: systems/mastery.gd:235
+msgid "Lumi must learn %s first"
+msgstr "Lumi 得先学会处理%s"
+
 #: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
 msgid "Low"
 msgstr "低"
@@ -2615,7 +2619,7 @@ msgstr "%s 对着幼苗哼歌。退休生活很适合它。"
 msgid "%s points proudly at a new bud."
 msgstr "%s 骄傲地指着一个新花苞。"
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:606
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:608
 msgid "E   CD player: %s"
 msgstr "E   CD 播放机：%s"
 
@@ -2811,8 +2815,8 @@ msgstr "增加 %s"
 msgid "Fewer %s"
 msgstr "减少 %s"
 
-#: ui/bench_bots.gd:12 ui/build_panel.gd:102 ui/robot_card.gd:110
-#: ui/robot_card.gd:244 ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
+#: ui/bench_bots.gd:12 ui/build_panel.gd:102 ui/robot_card.gd:114
+#: ui/robot_card.gd:249 ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
 msgid "Build"
 msgstr "建造"
 
@@ -4064,85 +4068,97 @@ msgstr ""
 msgid "All built"
 msgstr "已全部建成"
 
-#: ui/hud.gd:78
+#: ui/hud.gd:79
 msgid "Lumi reached level %d%s"
 msgstr "Lumi 达到了 %d 级%s"
 
-#: ui/hud.gd:297
+#: ui/hud.gd:304
 msgid "WREN SIGNAL   %d%%"
 msgstr "WREN 信号   %d%%"
 
-#: ui/hud.gd:326
+#: ui/hud.gd:333
 msgid "HEX  %d%% CLEAR"
 msgstr "六角格  已清理 %d%%"
 
-#: ui/hud.gd:335
+#: ui/hud.gd:342
 msgid "%s  BASE"
 msgstr "%s  基地"
 
-#: ui/hud.gd:338
+#: ui/hud.gd:345
 msgid "CARRYING %d/%d"
 msgstr "携带 %d/%d"
 
-#: ui/hud.gd:364
+#: ui/hud.gd:371
 msgid "HEX  CLEAR"
 msgstr "六角格  已清理"
 
-#: ui/hud.gd:368
+#: ui/hud.gd:375
 msgid "HEX  %s"
 msgstr "六角格  %s"
 
-#: ui/hud.gd:371
+#: ui/hud.gd:378
 msgid "  SUSTAIN %d%%"
 msgstr "  稳定 %d%%"
 
-#: ui/hud.gd:373
+#: ui/hud.gd:380
 msgid "  THIRSTY"
 msgstr "  缺水"
 
-#: ui/hud.gd:392
+#: ui/hud.gd:399
 msgid "%s · %s"
 msgstr "%s · %s"
 
-#: ui/hud.gd:394
+#: ui/hud.gd:401
 msgid "%s · %s %d%%"
 msgstr "%s · %s %d%%"
 
-#: ui/hud.gd:397
+#: ui/hud.gd:404
 msgid "%d of %d city restored"
 msgid_plural "%d of %d cities restored"
 msgstr[0] ""
 
+#: ui/hud.gd:418
+msgid "MASTERY  %s"
+msgstr "熟练度  %s"
+
+#: ui/hud.gd:429
+msgid "%s mastery %d. Robots can work it now."
+msgstr "%s熟练度 %d。机器人现在可以处理了。"
+
+#: ui/hud.gd:431
+msgid "%s mastery %d. You and your crew work it faster."
+msgstr "%s熟练度 %d。你和队伍处理得更快了。"
+
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:405
+#: ui/hud.gd:440
 msgid "%s   pick up bale"
 msgstr "%s   拿起捆包"
 
-#: ui/hud.gd:406
+#: ui/hud.gd:441
 msgid "%s   dig up part"
 msgstr "%s   挖出零件"
 
-#: ui/hud.gd:407
+#: ui/hud.gd:442
 msgid "%s   read memory shard"
 msgstr "%s   阅读记忆碎片"
 
-#: ui/hud.gd:408
+#: ui/hud.gd:443
 msgid "%s   pick up the seed tin"
 msgstr "%s   拿起种子罐"
 
-#: ui/hud.gd:409
+#: ui/hud.gd:444
 msgid "%s   set bale down"
 msgstr "%s   放下捆包"
 
-#: ui/hud.gd:410
+#: ui/hud.gd:445
 msgid "%s   workbench"
 msgstr "%s   工作台"
 
-#: ui/hud.gd:411
+#: ui/hud.gd:446
 msgid "Filling the watering can"
 msgstr "正在给洒水壶加水"
 
-#: ui/hud.gd:412
+#: ui/hud.gd:447
 msgid "Can empty. It fills in the base yard, by the bin."
 msgstr ""
 
@@ -4286,7 +4302,7 @@ msgstr "先在世界里找到一件外观部件，然后在建造页签里建好
 msgid "Lumi wears what he finds: paint tins, lens chips and the pieces of old robots. Glim and your robots are dressed here too."
 msgstr "Lumi 穿戴他找到的东西：油漆罐、镜片芯片和旧机器人的部件。Glim 和你的机器人也在这里换装。"
 
-#: ui/locker_panel.gd:304 ui/robot_card.gd:78
+#: ui/locker_panel.gd:304 ui/robot_card.gd:82
 msgid "Crew"
 msgstr "小队"
 
@@ -4860,61 +4876,65 @@ msgstr "按下加入队列"
 msgid "%s cancelled. Cubes refunded."
 msgstr "%s 已取消。方块已退还。"
 
-#: ui/robot_card.gd:90
+#: ui/robot_card.gd:94
 msgid "Tier"
 msgstr "等级"
 
-#: ui/robot_card.gd:130
+#: ui/robot_card.gd:134
 msgid "Fleet upgrades"
 msgstr "车队升级"
 
-#: ui/robot_card.gd:145
+#: ui/robot_card.gd:149
 msgid "Open Research"
 msgstr "打开研究"
 
-#: ui/robot_card.gd:187
+#: ui/robot_card.gd:191
 msgid "Lv %d  ·  %s%s (max)"
 msgstr "%d级  ·  %s%s（满级）"
 
-#: ui/robot_card.gd:188 ui/upgrade_card.gd:87 ui/upgrade_card.gd:215
+#: ui/robot_card.gd:192 ui/upgrade_card.gd:87 ui/upgrade_card.gd:215
 msgid "Max"
 msgstr "满级"
 
-#: ui/robot_card.gd:197
+#: ui/robot_card.gd:201
 msgid "Need %s more"
 msgstr "还差 %s"
 
-#: ui/robot_card.gd:223
+#: ui/robot_card.gd:227
 msgid "Unlock with research: %s"
 msgstr "通过研究解锁：%s"
 
-#: ui/robot_card.gd:232
+#: ui/robot_card.gd:237
 msgid "%d built  ·  crew full"
 msgstr "已造 %d  ·  小队已满"
 
-#: ui/robot_card.gd:232
+#: ui/robot_card.gd:237
 msgid "%d built  ·  %d free"
 msgstr "已建%d台  ·  空位%d"
 
-#: ui/robot_card.gd:236
+#: ui/robot_card.gd:241
 msgid "Water Tanks %d / %d  ·  place them from the Command view"
 msgstr "储水罐 %d / %d  ·  在指挥视图中放置"
 
-#: ui/robot_card.gd:244
+#: ui/robot_card.gd:249
 msgid "Build first"
 msgstr "建造第一台"
 
-#: ui/robot_card.gd:250
+#: ui/robot_card.gd:255
 msgid "top tier"
 msgstr "最高等级"
 
-#: ui/robot_card.gd:256
+#: ui/robot_card.gd:261
 msgid "next: x%s work speed"
 msgstr "下一级：工作速度x%s"
 
-#: ui/robot_card.gd:257 ui/rockets_panel.gd:85 ui/yard_builds_panel.gd:125
+#: ui/robot_card.gd:262 ui/rockets_panel.gd:85 ui/yard_builds_panel.gd:125
 msgid "Upgrade to %s"
 msgstr "升级到 %s"
+
+#: ui/robot_card.gd:283
+msgid "Mastery  %s"
+msgstr "熟练度  %s"
 
 #: ui/rocket_picker.gd:49 ui/rockets_panel.gd:67
 msgid "ROCKET"
@@ -17868,3 +17888,9 @@ msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了
 
 #~ msgid "There are parts buried all over the ground you clean, Lumi. I found plans for a Scrounger: it digs them up and brings them home. Bots tab!"
 #~ msgstr "Lumi，你清理过的地面下到处埋着零件。我找到了 Scrounger 的图纸：它会把零件挖出来带回家。去机器人页签看看！"
+
+#~ msgid "Mastery"
+#~ msgstr "熟练度"
+
+#~ msgid "Cannot work yet"
+#~ msgstr "暂时不能处理"

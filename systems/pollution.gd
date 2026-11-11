@@ -21,6 +21,10 @@ extends Node
 ##
 ## A planet without the table has one implicit kind, so every listener still gets its events.
 ##
+## Mastery (systems/mastery.gd, given with set_mastery): robots leave a kind alone until Lumi has
+## learnt it and work it faster as she masters it (systems/pollution_crew.gd keeps the hexes that
+## are shut to them); Lumi's own rate on a kind rises with its level.
+##
 ## Use: var p := Pollution.new(); add_child(p); p.setup(def, grid, cells, field, site_cells, saved)
 
 const TABLE: String = "pollution_kinds"
@@ -45,6 +49,8 @@ const FAR_RING: int = 9999
 
 ## func(cell: int, became_clean: bool, by_player: bool): the world writes the hex where it shows.
 var cell_written: Callable
+## Lumi's mastery of the kinds (null: none on this planet, robots work everything at their own rate).
+var mastery: Mastery
 
 var _kinds: Array[Dictionary] = []
 var _index: Dictionary[String, int] = {}
@@ -66,6 +72,7 @@ var _noise: FastNoiseLite
 var _seed: int = 0
 var _poll: float = 0.0
 var _hint_ms: int = -HINT_GAP_MS
+var _crew_gate: PollutionCrew
 
 
 func _process(delta: float) -> void:
@@ -75,11 +82,15 @@ func _process(delta: float) -> void:
 	_poll = POLL_S
 	refresh_gates()
 	flush_robot_events()
+	if _crew_gate != null:
+		_crew_gate.flush()
 
 
 func _exit_tree() -> void:
 	if _cells and _cells.cell_changed.is_connected(_on_cell_changed):
 		_cells.cell_changed.disconnect(_on_cell_changed)
+	if mastery != null and is_instance_valid(mastery) and mastery.changed.is_connected(_on_mastery_changed):
+		mastery.changed.disconnect(_on_mastery_changed)
 
 
 # --- Setup and state --------------------------------------------------------------------------
@@ -106,6 +117,21 @@ func setup(def: PlanetDefinition, grid: SphereGrid, cells: SphereCells, field: S
 	refresh_gates()
 	if cells and not cells.cell_changed.is_connected(_on_cell_changed):
 		cells.cell_changed.connect(_on_cell_changed)
+
+
+## Gives the kinds Lumi's mastery (after setup): from now on robots leave unlearnt kinds alone and
+## work the others at their mastery rate. Re-read whenever a level moves.
+func set_mastery(m: Mastery) -> void:
+	mastery = m
+	_crew_gate = PollutionCrew.new()
+	_crew_gate.setup(self, _cells, m)
+	if m != null and not m.changed.is_connected(_on_mastery_changed):
+		m.changed.connect(_on_mastery_changed)
+
+
+func _on_mastery_changed() -> void:
+	if _crew_gate != null:
+		_crew_gate.refresh()
 
 
 ## What a save keeps: for each held kind, the hexes where part of it is gone, and what is owed
@@ -275,6 +301,16 @@ func kind(id: String) -> Dictionary:
 
 func base_id() -> String:
 	return str(_kinds[0]["id"])
+
+
+## Every district's hexes, in district order.
+func zone_lists() -> Array[PackedInt32Array]:
+	return _zone_cells
+
+
+## The kinds (indexes) of a hex outside every district.
+func default_kinds() -> PackedInt32Array:
+	return _default
 
 
 ## The kinds that spawn on a hex (kind indexes), whether or not they have been cleared since.
@@ -500,6 +536,22 @@ func piece_taken(pid: int, vol: float) -> void:
 	var cell: int = _field.piece_hex[pid]
 	var k: int = kinds_at(cell)[0] if _field.hex_water[cell] == 1 else int(_field.piece_kind[pid])
 	EventBus.pollution_cleared.emit(str(_kinds[k]["id"]), vol, true)
+	if _crew_gate != null:
+		_crew_gate.touched(cell)
+
+
+## Lumi's rate multiplier on a kind from her mastery of it (1 with no mastery).
+func hand_bonus(id: String) -> float:
+	return mastery.hand_bonus(id) if mastery != null else 1.0
+
+
+## Lumi's rate multiplier on the kind of piece `pid`.
+func piece_hand_bonus(pid: int) -> float:
+	if _field == null or mastery == null:
+		return 1.0
+	var cell: int = _field.piece_hex[pid]
+	var k: int = kinds_at(cell)[0] if _field.hex_water[cell] == 1 else int(_field.piece_kind[pid])
+	return mastery.hand_bonus(str(_kinds[k]["id"]))
 
 
 ## What a load of piece `pid` pays against the hex's plain share: the kind's yield over the hex's
@@ -546,7 +598,7 @@ func hand_work(tool: String, cell: int, seconds: float, room: float) -> Dictiona
 	if room <= 0.0:
 		return {"blocked": ""}
 	var total: float = _field.worth.work(cell)
-	var want: float = minf(room, float(kd.get("hand_factor", 1.0)) * Pace.pulse_volume() * maxf(Economy.stat("scoop_rate"), 0.5) * seconds)
+	var want: float = minf(room, float(kd.get("hand_factor", 1.0)) * hand_bonus(id) * Pace.pulse_volume() * maxf(Economy.stat("scoop_rate"), 0.5) * seconds)
 	var left_before: float = _field.hex_left[cell] if _field.materialized[cell] == 1 else total * _cells.junk[cell]
 	var took: float = _take(cell, k, want, true)
 	if took <= 0.0:
@@ -567,7 +619,9 @@ func _held_kind(cell: int, field: String, value: String) -> int:
 		var kd: Dictionary = _kinds[k]
 		if str(kd["work"]) != WORK_HELD or _held[cell][k] <= LEFT_EPS:
 			continue
-		if (field == "tool" and str(kd.get("tool", "")) == value) or (field != "tool" and value in (kd.get("robot_roles", []) as Array)):
+		if field == "tool" and str(kd.get("tool", "")) == value:
+			return k
+		if field != "tool" and value in (kd.get("robot_roles", []) as Array) and (_crew_gate == null or _crew_gate.open(k)):
 			return k
 	return -1
 
@@ -657,3 +711,49 @@ func flush_robot_events() -> void:
 		if _robot_acc[k] > 0.0:
 			EventBus.pollution_cleared.emit(str(_kinds[k]["id"]), _robot_acc[k], false)
 			_robot_acc[k] = 0.0
+
+
+# --- Robots and mastery -----------------------------------------------------------------------
+
+## A scooping robot's rate multiplier on hex `cell` from Lumi's mastery of the kinds it holds.
+func crew_speed(cell: int) -> float:
+	return _crew_gate.scoop_speed(cell) if _crew_gate != null else 1.0
+
+
+## The rate multiplier of a robot of `role` on the held kind it works on hex `cell`.
+func crew_speed_held(role: String, cell: int) -> float:
+	var k: int = _held_kind(cell, "role", role)
+	return _crew_gate.factor(k) if _crew_gate != null and k >= 0 else 1.0
+
+
+## The rate multiplier of robots on the base kind (time away is worked at this rate).
+func crew_speed_base() -> float:
+	return _crew_gate.factor(0) if _crew_gate != null else 1.0
+
+
+## Whether some kind a robot role works is still closed to robots.
+func crew_role_gated(role: String) -> bool:
+	return _crew_gate != null and _crew_gate.role_gated(role)
+
+
+## The kind on hex `cell` a robot of `role` would work had Lumi learnt it ("" = none).
+func crew_gate_kind(role: String, cell: int) -> String:
+	return _crew_gate.gate_kind(role, cell) if _crew_gate != null else ""
+
+
+## The waste of every clean land hex by kind, {kind id: units}, in a city or on open ground:
+## what a save from before mastery is credited with (Mastery.seed_legacy). Lakes are left out: a
+## lake with nothing floating on it was never cleaned.
+func cleaned_units() -> Dictionary:
+	var out: Dictionary = {}
+	if _cells == null or _field == null:
+		return out
+	for c: int in _cells.n:
+		var state: int = _cells.state[c]
+		if state == PlanetData.State.JUNK or state == PlanetData.State.WATER:
+			continue
+		var work: float = _field.worth.work(c)
+		for k: int in kinds_at(c):
+			var id: String = str(_kinds[k]["id"])
+			out[id] = float(out.get(id, 0.0)) + share_of(c, id) * work
+	return out

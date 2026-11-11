@@ -1,15 +1,36 @@
 {
   "_doc": "Calibration of the crew simulator (tools/crew_sim/crew_sim.gd): everything it cannot read from the planet's tables, each with how it was found. All times are PLAYER time (robots work in real time; the bot plays about twice as fast as a player). ESTIMATE = taken from the accepted proposal's model, not measured in the game, because the mechanic is not in the game yet.",
   "city_minutes": {
-    "value": [48, 35, 31, 31, 32, 48],
+    "value": [
+      48,
+      35,
+      31,
+      31,
+      32,
+      48
+    ],
     "how": "Player minutes spent in each city: the accepted proposal's per-city table (docs/reviews/BALANCE_PROPOSAL_P1_V2.md section 3). ESTIMATE for cities 2 to 6; city 1 is being refitted to the game's walking (M3-21) and may run longer."
   },
   "hand_parts_per_hex": {
-    "value": [0.8, 1.33, 0.22, 0.22, 0.22, 0.22],
+    "value": [
+      0.8,
+      1.33,
+      0.22,
+      0.22,
+      0.22,
+      0.22
+    ],
     "how": "Parts Lumi's own hands bring in per hex of the city cleaned (salvage, wreck stripping, the source job). City 1: measured, about 0.8 a hex (docs/reviews/M3-19_ECONOMY.md). City 2: ESTIMATE, the proposal's wreck city (about 1 a hex by hand plus the source's 90 over 271 hexes). Cities 3 to 6: ESTIMATE, the rest of the proposal's 1,626 Parts not carried by Scroungers, spread over their hexes."
   },
   "base_level_by_city": {
-    "value": [2, 3, 4, 4, 5, 5],
+    "value": [
+      2,
+      3,
+      4,
+      4,
+      5,
+      5
+    ],
     "how": "Base level the player holds through each city. City 1: level 2 is bought near bot minute 11 (M3-21). Later levels cost 1,100 to 1,800 cubes and have no gate past level 3: ESTIMATE that a player buys the level a city's cap needs."
   },
   "base_level_2_min": {
@@ -17,11 +38,43 @@
     "how": "Player minute of base level 2: bot minute 10 to 12 in the M3-21 runs."
   },
   "type_open": {
-    "value": {"haulbug": [0, 18.0], "scoopie": [0, 34.0], "scrounger": [1, 0.0], "skimmer": [2, 0.0], "drip": [3, 0.0], "seedling": [4, 0.0]},
+    "value": {
+      "haulbug": [
+        0,
+        18.0
+      ],
+      "scoopie": [
+        0,
+        34.0
+      ],
+      "scrounger": [
+        1,
+        0.0
+      ],
+      "skimmer": [
+        2,
+        0.0
+      ],
+      "drip": [
+        3,
+        0.0
+      ],
+      "seedling": [
+        4,
+        0.0
+      ]
+    },
     "how": "[city index, player minute in that city] at which Lumi has a type's plans. Haul Bug and Scoopie: bot minutes 9 and 17 in the M3-21 runs. The rest: the design spec's unlock order (section 14), one working type per city. ESTIMATE."
   },
   "mix": {
-    "value": {"scoopie": 2, "haulbug": 2, "skimmer": 2, "drip": 2, "seedling": 2, "scrounger": 2},
+    "value": {
+      "scoopie": 2,
+      "haulbug": 2,
+      "skimmer": 2,
+      "drip": 2,
+      "seedling": 2,
+      "scrounger": 2
+    },
     "how": "The default player's build mix: every type the same share, so one robot in six is a Scrounger once all six are open (the proposal's player kept 15% Scroungers)."
   },
   "bench_visit_s": {
@@ -43,5 +96,39 @@
   "idle_rescan_s": {
     "value": 5.0,
     "how": "Seconds a Scrounger with nothing to dig waits before looking again."
+  },
+  "hand_hexes_per_min": {
+    "value": [
+      0.45,
+      3.1,
+      3.5,
+      6.9,
+      10.2,
+      3.1
+    ],
+    "how": "Hexes of waste Lumi's own hands clean per PLAYER minute in each city, before her mastery bonus (M3-05, the mastery ledger). City 1: measured, the two M3-05 bot runs cleaned 0.9 to 1.0 hexes a bot minute by hand over 21 to 22 minutes (2,909 and 2,932 units of 144-unit hexes), and a player is half as fast (the runs include her mastery bonus as it grew from level 0 to 5, so city 1 is a little high). Cities 2 to 6: ESTIMATE, the accepted proposal's hand share of each city times its hexes over its player minutes (40%, 23%, 26%, 26%, 7% of 271, 469, 817, 1,261, 2,107 hexes in 35, 31, 31, 32, 48 minutes). The game's own hand rate there is not measured (no bot run reaches city 2), and in city 1 the game runs about four times slower by hand than the proposal did, so these are likely too high."
+  },
+  "hand_scoop_share": {
+    "value": 0.5,
+    "how": "Share of Lumi's cleaning time that is the scoop itself (the rest is walking, tipping and pressing), so mastery's hand bonus speeds only this share. ESTIMATE from tools/pace_sim's city 1 model."
+  },
+  "crew_near_share": {
+    "value": 0.3,
+    "how": "Share of the crew's work done within the proximity radius of Lumi (robots.json proximity), where robots work 25% faster. ESTIMATE: with tens of robots over a city of 9 to 26 rings most work far from her."
+  },
+  "crew_duty": {
+    "value": 0.8,
+    "how": "Share of a working robot's time spent on the waste itself (the rest is driving between hexes, refilling a tank, dropping bales). The far-crew test holds a cleaner at 85% or more of its unit rate close to its base; lower further out. ESTIMATE."
+  },
+  "water_hex_share": {
+    "value": [
+      0.0,
+      0.0,
+      0.2,
+      0.0,
+      0.0,
+      0.004
+    ],
+    "how": "Share of each city's hexes that are lake (the floating kind's hexes): the census in docs/reviews/M3-04_POLLUTION.md (Kettle Bay 95 of 469, Old Capital 9 of 2,107, none elsewhere)."
   }
 }

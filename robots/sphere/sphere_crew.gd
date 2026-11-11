@@ -113,6 +113,7 @@ var _ticks: int = 0
 ## hub cell -> {cell: true}: the land a robot can drive to from that hub (see _reachable).
 var _reach: Dictionary = {}
 var _nothing: Dictionary = {}  # "role:hub" -> time until which a search is known to find nothing
+var _gate_note: Dictionary = {}  # "role:hub" -> the kind its last empty search was shut out of
 ## What the crew costs per frame, for the robot report.
 var cost := CrewCost.new()
 ## Site buildings (SphereObstacles): key -> circles [[dir, radius_m], ...]; cells under them.
@@ -460,6 +461,9 @@ func claim_dirty(from: int, hub: int, p_rings: int = -1, role: String = "clean",
 	var seen: Dictionary = {from: true}
 	var front := PackedInt32Array([from])
 	var steps: int = 0
+	# Work the role would have here but for Lumi's mastery: the robot says so while it waits.
+	var gated: bool = pollution != null and pollution.crew_role_gated(role)
+	var gate_kind: String = ""
 	while not front.is_empty() and steps < 4000:
 		var nxt := PackedInt32Array()
 		for c: int in front:
@@ -467,7 +471,10 @@ func claim_dirty(from: int, hub: int, p_rings: int = -1, role: String = "clean",
 			if (zone.is_empty() or zone.has(c)) and not _claimed.has(c) and float(_skip.get(c, -1.0)) < _t and wants(role, c) \
 					and (role == "skim" or reach.has(c) or zone.has(c)):
 				_claimed[c] = who
+				_gate_note.erase(nothing_key)
 				return c
+			if gated and gate_kind == "":
+				gate_kind = pollution.crew_gate_kind(role, c)
 			for k: int in grid.nbr_count[c]:
 				var j: int = grid.nbr[c * SphereGrid.MAX_N + k]
 				if seen.has(j):
@@ -478,7 +485,26 @@ func claim_dirty(from: int, hub: int, p_rings: int = -1, role: String = "clean",
 		front = nxt
 	if steps < 4000:  # the whole region was looked at, not a search cut short
 		_nothing[nothing_key] = _t + NOTHING_FOUND_S
+	if gate_kind != "":
+		_gate_note[nothing_key] = gate_kind
+	else:
+		_gate_note.erase(nothing_key)
 	return -1
+
+
+## The kind a robot of `role` at `hub` is waiting for Lumi to learn ("" = none): its last search
+## found only hexes of that kind.
+func waiting_on_kind(role: String, hub: int) -> String:
+	return str(_gate_note.get("%s:%d" % [role, hub], ""))
+
+
+## How fast a robot works hex `c` against its own rate: Lumi's mastery of the kinds there, and
+## the bonus for working alongside her.
+func mastery_rate(u: Dictionary, c: int, held_role: String = "") -> float:
+	if pollution == null or pollution.mastery == null:
+		return 1.0
+	var kind_rate: float = pollution.crew_speed_held(held_role, c) if held_role != "" else pollution.crew_speed(c)
+	return kind_rate * pollution.mastery.near_factor(_focus_dist(unit_dir(u)))
 
 
 ## The land cells a robot can drive to from `hub` (its depot), inside the hub's region and a
@@ -518,7 +544,7 @@ func wants(role: String, c: int) -> bool:
 		"water":
 			return cells.state[c] == 2 or _held_work(role, c)
 		"skim":
-			return water_dirty(c)
+			return water_dirty(c) and not cells.is_shut(c)
 		SphereScrounge.ROLE:
 			return chain != null and chain.has_stock(c)
 	return cells.workable(c)
@@ -892,6 +918,9 @@ func _find_job(u: Dictionary) -> bool:
 		if role == "clean" and float(u["hopper"]) > 0.0:
 			_drop_bale(u)  # nothing left: bale what it has so the haulers can take it
 		u["idle"] = {"clean": "zone clean", "plant": "nothing to plant", "water": "nothing to water", "skim": "no lake junk"}.get(role, "idle")
+		var waiting: String = waiting_on_kind(role, int(u["hub"]))
+		if waiting != "":
+			u["idle"] = pollution.mastery.learn_text(waiting)
 		return false
 	u["job"] = c
 	u["idle"] = ""
@@ -984,6 +1013,8 @@ func _work(u: Dictionary, dt: float) -> void:
 		return
 	if role == "plant" or role == "water":
 		var rate: float = maxf(Economy.robot_stat(str(u["type"]), "work_rate", int(u["tier"])), 0.1)
+		if _held_work(role, c):
+			rate *= mastery_rate(u, c, role)
 		u["work_t"] = float(u["work_t"]) + dt * rate
 		if float(u["work_t"]) < 3.0:
 			return
@@ -1003,13 +1034,16 @@ func _work(u: Dictionary, dt: float) -> void:
 		cell_worked.emit(c)
 		_finish_job(u)
 		return
+	if cells.is_shut(c):  # Lumi's to learn first: closed while the robot was on its way
+		_drop_job(u)
+		return
 	if u["bot"] != null and field != null and field.materialized[c] == 1 and field.hex_clean[c] == 0:
 		_work_pieces(u, c, dt)
 		return
 	var upc: float = units_per(c)
 	var held: float = cells.floor_of(c)  # waste another tool clears: not this robot's to take
 	var have: float = maxf(0.0, junk_left(c) - held) * upc
-	var take: float = minf(have, Offline.unit_rate(str(u["type"]), int(u["tier"])) * dt)
+	var take: float = minf(have, Offline.unit_rate(str(u["type"]), int(u["tier"])) * mastery_rate(u, c) * dt)
 	work_cell(c, held + (have - take) / upc)
 	u["hopper"] = float(u["hopper"]) + take
 	u["log"]["junk"] = float(u["log"]["junk"]) + take
@@ -1045,7 +1079,7 @@ func _work_pieces(u: Dictionary, c: int, dt: float) -> void:
 		b.go_to_point(u["reach_at"])
 	var per_unit: float = units_per(c) / maxf(field.hex_total[c], 0.001)
 	var units: float = field.piece_vol[pid] * per_unit
-	u["acc"] = minf(float(u.get("acc", 0.0)) + Offline.unit_rate(str(u["type"]), int(u["tier"])) * dt, units * 2.0)
+	u["acc"] = minf(float(u.get("acc", 0.0)) + Offline.unit_rate(str(u["type"]), int(u["tier"])) * mastery_rate(u, c) * dt, units * 2.0)
 	u["piece_t"] = float(u.get("piece_t", 0.0)) + dt
 	var at: Vector3 = u.get("reach_at", field.piece_pos[pid])
 	var near: bool = b.global_position.distance_to(at) <= REACH_M + 0.4
@@ -1383,6 +1417,16 @@ func to_dict() -> Dictionary:
 	for r: Variant in zones:
 		zd[str(r)] = (zones[r] as Dictionary).keys()
 	return {"v": 1, "robots": list, "bales": bl, "cashed": cashed, "zones": zd}
+
+
+## The roles of the robots in a to_dict() save, for systems that are restored before the crew.
+static func saved_roles(d: Dictionary) -> Array:
+	var out: Array = []
+	for r: Variant in (d.get("robots", []) as Array):
+		var role: String = SphereRobotKinds.role_of(str((r as Dictionary).get("type", "")))
+		if not role in out:
+			out.append(role)
+	return out
 
 
 func from_dict(d: Dictionary) -> void:

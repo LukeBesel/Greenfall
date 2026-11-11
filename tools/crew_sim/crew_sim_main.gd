@@ -49,6 +49,46 @@ static func summary(policy: String, r: Dictionary) -> PackedStringArray:
 		float(r["parts_on_builds"]), float(r["parts_on_tiers"]), float(r["parts_left"])])
 	out.append("[crew_sim]   ground: %.0f buried parts left by cleaning, %.0f still in the ground; fastest doubling %.0f s, longest wait for a robot from city 2 on %.0f s" % [
 		float(r["ground_seeded"]), float(r["ground_left"]), float(r["fastest_doubling_s"]), float(r["longest_stall_s"])])
+	out.append_array(mastery_lines(r.get("mastery", {})))
+	return out
+
+
+## The mastery ledger in words: hand share by city against the planet's rule, the levels reached,
+## and when each kind was first learnt.
+static func mastery_lines(m: Dictionary) -> PackedStringArray:
+	var out: PackedStringArray = []
+	if m.is_empty():
+		return out
+	var shares: PackedStringArray = []
+	var needed: PackedStringArray = []
+	var cover: PackedStringArray = []
+	var learnt: PackedStringArray = []
+	var waited: float = 0.0
+	var cities: Array = m["by_city"]
+	for i: int in cities.size():
+		var c: Dictionary = cities[i]
+		shares.append("%.0f%%" % (float(c["hand_share"]) * 100.0))
+		needed.append("%.1f" % float(c["hand_needed_per_min"]))
+		cover.append("%.0f%%" % (float(c["coverage"]) * 100.0))
+		waited += float(c["waiting_robot_min"])
+		var first: Dictionary = c["first_level_min"]
+		for id: String in first:
+			learnt.append("%s in city %d after %.1f min" % [id, i + 1, float(first[id])])
+	var levels: PackedStringArray = []
+	for id: String in (m["levels"] as Dictionary):
+		levels.append("%s %d" % [id, int(m["levels"][id])])
+	var rule: Dictionary = m["rule"]
+	var met: PackedStringArray = []
+	for i: Variant in (rule.get("target_met", []) as Array):
+		met.append(str(int(i) + 1))
+	out.append("[crew_sim]   hand share of cleaning by city: %s; all cities by volume %.0f%%" % [", ".join(shares), float(m["hand_share_volume"]) * 100.0])
+	out.append("[crew_sim]   rule (at least %.0f%% in cities 1-%d): %s, lowest %.0f%%; the old %.0f%% line holds in cities: %s" % [
+		float(rule.get("min", 0.0)) * 100.0, int(rule.get("cities", 0)), "PASS" if bool(rule.get("pass", false)) else "FAIL",
+		float(rule.get("worst", 0.0)) * 100.0, float(rule.get("target", 0.0)) * 100.0, ", ".join(met) if not met.is_empty() else "none"])
+	out.append("[crew_sim]   hexes a minute Lumi would need for that line, by city: %s; hand and crew capacity against each city's hexes: %s" % [
+		", ".join(needed), ", ".join(cover)])
+	out.append("[crew_sim]   mastery at the end: %s; first level: %s; robots waiting on a kind Lumi had not learnt: %.0f robot-minutes" % [
+		", ".join(levels), "; ".join(learnt), waited])
 	return out
 
 

@@ -402,7 +402,7 @@ msgstr "BROYER  ·  FONDRE  ·  DISPARU POUR DE BON"
 msgid "HAND FEED"
 msgstr "À LA MAIN"
 
-#: automation/rocket_tiers.gd:51 ui/robot_card.gd:251
+#: automation/rocket_tiers.gd:51 ui/robot_card.gd:256
 msgid "Top tier"
 msgstr "Palier max"
 
@@ -772,31 +772,31 @@ msgstr "Plus de graines. Les plantes en fleur en donnent d'autres."
 msgid "Watering can is empty. It fills in the base yard, by the bin."
 msgstr ""
 
-#: player/patch.gd:618
+#: player/patch.gd:622
 msgid "PERFECT BALE  %s"
 msgstr "BALLE PARFAITE  %s"
 
-#: player/patch.gd:624
+#: player/patch.gd:628
 msgid "OVERSTUFFED  %s"
 msgstr "TROP PLEINE  %s"
 
-#: player/patch.gd:627
+#: player/patch.gd:631
 msgid "GOOD BALE  %s"
 msgstr "BONNE BALLE  %s"
 
-#: player/patch.gd:631
+#: player/patch.gd:635
 msgid "SURGE  %s"
 msgstr "BOOST  %s"
 
-#: player/patch.gd:634
+#: player/patch.gd:638
 msgid "  (streak +%d%%)"
 msgstr "  (série +%d%%)"
 
-#: player/patch.gd:671
+#: player/patch.gd:675
 msgid "Salvaged: %s"
 msgstr "Récupéré : %s"
 
-#: player/patch.gd:700
+#: player/patch.gd:704
 msgid "Recovered: %s"
 msgstr "Retrouvé : %s"
 
@@ -1152,27 +1152,27 @@ msgstr "AVANT-POSTE %d · Niv%d"
 msgid "OUTPOST %d · RUIN"
 msgstr "AVANT-POSTE %d · RUINE"
 
-#: scenes/slice_orbit.gd:365
+#: scenes/slice_orbit.gd:367
 msgid "HEX CLEAN!"
 msgstr "HEXAGONE PROPRE !"
 
-#: scenes/slice_orbit.gd:381
+#: scenes/slice_orbit.gd:383
 msgid "Milestone: %d hexes clean!"
 msgstr "Étape : %d hexagones propres !"
 
-#: scenes/slice_orbit.gd:534 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:579
+#: scenes/slice_orbit.gd:549 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   Réparer l'établi"
 
-#: scenes/slice_orbit.gd:534 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:549 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr "E   Ouvrir l'établi"
 
-#: scenes/slice_orbit.gd:993
+#: scenes/slice_orbit.gd:1008
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Les améliorations demandent un établi. Retourne à la base."
 
-#: scenes/slice_orbit.gd:1093
+#: scenes/slice_orbit.gd:1108
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Établi réparé. Appuie sur E devant lui pour dépenser des cubes en améliorations."
 
@@ -2259,6 +2259,10 @@ msgstr "+{amount} % de {stat} pour {robot}"
 msgid "+{amount} {robot} {stat}"
 msgstr "+{amount} de {stat} pour {robot}"
 
+#: systems/mastery.gd:235
+msgid "Lumi must learn %s first"
+msgstr "Lumi doit d'abord apprendre : %s"
+
 #: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
 msgid "Low"
 msgstr "Bas"
@@ -2622,7 +2626,7 @@ msgstr "%s fredonne pour les semis. La retraite lui va bien."
 msgid "%s points proudly at a new bud."
 msgstr "%s montre fièrement un nouveau bourgeon."
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:606
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:608
 msgid "E   CD player: %s"
 msgstr "E   Lecteur CD : %s"
 
@@ -2818,8 +2822,8 @@ msgstr "Plus de %s"
 msgid "Fewer %s"
 msgstr "Moins de %s"
 
-#: ui/bench_bots.gd:12 ui/build_panel.gd:102 ui/robot_card.gd:110
-#: ui/robot_card.gd:244 ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
+#: ui/bench_bots.gd:12 ui/build_panel.gd:102 ui/robot_card.gd:114
+#: ui/robot_card.gd:249 ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
 msgid "Build"
 msgstr "Construire"
 
@@ -4075,86 +4079,98 @@ msgstr ""
 msgid "All built"
 msgstr "Tous construits"
 
-#: ui/hud.gd:78
+#: ui/hud.gd:79
 msgid "Lumi reached level %d%s"
 msgstr "Lumi a atteint le niveau %d%s"
 
-#: ui/hud.gd:297
+#: ui/hud.gd:304
 msgid "WREN SIGNAL   %d%%"
 msgstr "SIGNAL WREN   %d%%"
 
-#: ui/hud.gd:326
+#: ui/hud.gd:333
 msgid "HEX  %d%% CLEAR"
 msgstr "HEX  %d%% PROPRE"
 
-#: ui/hud.gd:335
+#: ui/hud.gd:342
 msgid "%s  BASE"
 msgstr "BASE %s"
 
-#: ui/hud.gd:338
+#: ui/hud.gd:345
 msgid "CARRYING %d/%d"
 msgstr "CHARGE %d/%d"
 
-#: ui/hud.gd:364
+#: ui/hud.gd:371
 msgid "HEX  CLEAR"
 msgstr "HEX  PROPRE"
 
-#: ui/hud.gd:368
+#: ui/hud.gd:375
 msgid "HEX  %s"
 msgstr "HEX  %s"
 
-#: ui/hud.gd:371
+#: ui/hud.gd:378
 msgid "  SUSTAIN %d%%"
 msgstr "  DURABLE %d%%"
 
-#: ui/hud.gd:373
+#: ui/hud.gd:380
 msgid "  THIRSTY"
 msgstr "  ASSOIFFÉ"
 
-#: ui/hud.gd:392
+#: ui/hud.gd:399
 msgid "%s · %s"
 msgstr "%s · %s"
 
-#: ui/hud.gd:394
+#: ui/hud.gd:401
 msgid "%s · %s %d%%"
 msgstr "%s · %s %d%%"
 
-#: ui/hud.gd:397
+#: ui/hud.gd:404
 msgid "%d of %d city restored"
 msgid_plural "%d of %d cities restored"
 msgstr[0] ""
 msgstr[1] ""
 
+#: ui/hud.gd:418
+msgid "MASTERY  %s"
+msgstr "MAÎTRISE  %s"
+
+#: ui/hud.gd:429
+msgid "%s mastery %d. Robots can work it now."
+msgstr "%s : maîtrise %d. Les robots peuvent s'en occuper."
+
+#: ui/hud.gd:431
+msgid "%s mastery %d. You and your crew work it faster."
+msgstr "%s : maîtrise %d. Toi et ton équipe allez plus vite."
+
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:405
+#: ui/hud.gd:440
 msgid "%s   pick up bale"
 msgstr "%s   ramasser la balle"
 
-#: ui/hud.gd:406
+#: ui/hud.gd:441
 msgid "%s   dig up part"
 msgstr "%s   déterrer la pièce"
 
-#: ui/hud.gd:407
+#: ui/hud.gd:442
 msgid "%s   read memory shard"
 msgstr "%s   lire l'éclat de mémoire"
 
-#: ui/hud.gd:408
+#: ui/hud.gd:443
 msgid "%s   pick up the seed tin"
 msgstr "%s   ramasser la boîte à graines"
 
-#: ui/hud.gd:409
+#: ui/hud.gd:444
 msgid "%s   set bale down"
 msgstr "%s   poser la balle"
 
-#: ui/hud.gd:410
+#: ui/hud.gd:445
 msgid "%s   workbench"
 msgstr "%s   établi"
 
-#: ui/hud.gd:411
+#: ui/hud.gd:446
 msgid "Filling the watering can"
 msgstr "Remplissage de l'arrosoir"
 
-#: ui/hud.gd:412
+#: ui/hud.gd:447
 msgid "Can empty. It fills in the base yard, by the bin."
 msgstr ""
 
@@ -4298,7 +4314,7 @@ msgstr "Trouve une pièce de look dans le monde. Construis ensuite le Casier dan
 msgid "Lumi wears what he finds: paint tins, lens chips and the pieces of old robots. Glim and your robots are dressed here too."
 msgstr "Lumi porte ce qu'il trouve : pots de peinture, puces de lentille et pièces de vieux robots. Glim et tes robots s'habillent ici aussi."
 
-#: ui/locker_panel.gd:304 ui/robot_card.gd:78
+#: ui/locker_panel.gd:304 ui/robot_card.gd:82
 msgid "Crew"
 msgstr "Équipe"
 
@@ -4872,61 +4888,65 @@ msgstr "Appuie pour mettre en file"
 msgid "%s cancelled. Cubes refunded."
 msgstr "%s annulée. Cubes remboursés."
 
-#: ui/robot_card.gd:90
+#: ui/robot_card.gd:94
 msgid "Tier"
 msgstr "Niveau"
 
-#: ui/robot_card.gd:130
+#: ui/robot_card.gd:134
 msgid "Fleet upgrades"
 msgstr "Améliorations de flotte"
 
-#: ui/robot_card.gd:145
+#: ui/robot_card.gd:149
 msgid "Open Research"
 msgstr "Ouvrir la Recherche"
 
-#: ui/robot_card.gd:187
+#: ui/robot_card.gd:191
 msgid "Lv %d  ·  %s%s (max)"
 msgstr "Niv %d  ·  %s%s (max)"
 
-#: ui/robot_card.gd:188 ui/upgrade_card.gd:87 ui/upgrade_card.gd:215
+#: ui/robot_card.gd:192 ui/upgrade_card.gd:87 ui/upgrade_card.gd:215
 msgid "Max"
 msgstr "Max"
 
-#: ui/robot_card.gd:197
+#: ui/robot_card.gd:201
 msgid "Need %s more"
 msgstr "Il manque %s"
 
-#: ui/robot_card.gd:223
+#: ui/robot_card.gd:227
 msgid "Unlock with research: %s"
 msgstr "Se débloque par la recherche : %s"
 
-#: ui/robot_card.gd:232
+#: ui/robot_card.gd:237
 msgid "%d built  ·  crew full"
 msgstr "%d construits  ·  équipe complète"
 
-#: ui/robot_card.gd:232
+#: ui/robot_card.gd:237
 msgid "%d built  ·  %d free"
 msgstr "%d construits  ·  %d libres"
 
-#: ui/robot_card.gd:236
+#: ui/robot_card.gd:241
 msgid "Water Tanks %d / %d  ·  place them from the Command view"
 msgstr "Réservoirs d'eau %d / %d  ·  à placer depuis la vue Commande"
 
-#: ui/robot_card.gd:244
+#: ui/robot_card.gd:249
 msgid "Build first"
 msgstr "Construire le premier"
 
-#: ui/robot_card.gd:250
+#: ui/robot_card.gd:255
 msgid "top tier"
 msgstr "niveau max"
 
-#: ui/robot_card.gd:256
+#: ui/robot_card.gd:261
 msgid "next: x%s work speed"
 msgstr "suivant : vitesse de travail x%s"
 
-#: ui/robot_card.gd:257 ui/rockets_panel.gd:85 ui/yard_builds_panel.gd:125
+#: ui/robot_card.gd:262 ui/rockets_panel.gd:85 ui/yard_builds_panel.gd:125
 msgid "Upgrade to %s"
 msgstr "Améliorer en %s"
+
+#: ui/robot_card.gd:283
+msgid "Mastery  %s"
+msgstr "Maîtrise  %s"
 
 #: ui/rocket_picker.gd:49 ui/rockets_panel.gd:67
 msgid "ROCKET"
@@ -17584,3 +17604,9 @@ msgstr "Un monde de rouille, vert. Les vieilles grues ont des fleurs à leurs pi
 
 #~ msgid "There are parts buried all over the ground you clean, Lumi. I found plans for a Scrounger: it digs them up and brings them home. Bots tab!"
 #~ msgstr "Il y a des pièces enfouies partout dans le sol que tu nettoies, Lumi. J'ai trouvé les plans d'un Scrounger : il les déterre et les rapporte. Onglet Robots !"
+
+#~ msgid "Mastery"
+#~ msgstr "Maîtrise"
+
+#~ msgid "Cannot work yet"
+#~ msgstr "Pas encore possible"

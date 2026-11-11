@@ -70,6 +70,8 @@ signal district_entered(district_id: String)
 ## Lumi tried waste of `kind` on hex `cell_id` without the tool it needs.
 signal pollution_cleared(kind: String, amount: float, by_player: bool)
 signal pollution_blocked(kind: String, cell_id: int)
+## Mastery (systems/mastery.gd): Lumi's own work on `kind` reached mastery `level` (once per level).
+signal mastery_gained(kind: String, level: int)
 ## The robot chain (systems/crew/robot_chain.gd). parts_scrounged: parts finders brought `parts`
 ## Parts to a base. assembler_offered: the Assembler can now be built. assembler_built: it stands.
 ## robot_assembled: the Assembler's line finished a robot of `type_id` (robot_built fires too).

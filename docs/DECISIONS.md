@@ -503,3 +503,10 @@ The owner asked for more attention on the world's goals and look (full cities ro
 - **Crew and Glim cosmetics follow the same rule**: found, not bought or counted. Follow-up task M3-14b.
 - Nova's set gets a sixth piece when its planet is designed.
 - Merge fix: `tools/extract_strings.py` scanned agent worktrees under `.claude/`; it now skips them.
+
+## Mastery and apprentice robots (M3-05, Nov 11, 2026)
+`docs/reviews/M3-05_MASTERY.md`. Mastery 0 to 10 per pollution kind from Lumi's own work only; robots leave a kind alone until mastery 1, then follow the speed curve, with +25% near Lumi; saved per planet, old saves credited from clean hexes. City 1 bot: first hex 60 to 69 s, first robot at 9.5 to 10 minutes, litter mastery 1 at 134 to 184 s. Merged.
+- **The 30% hand-share rule is replaced** (lead). With 100 to 200 robots, which the owner asked for, Lumi cannot do 30% of the cleaning, and forcing it would shrink the crew. The rule becomes: Lumi's hands stay needed through work only she can do: each new kind's first mastery level, each city's source job (M3-07) and Surge (M3-09). Hand share of cleaning stays at or above 10% in cities 1 to 3 (simulator: 100%, 46%, 20%) and is only reported after that.
+- **A hex holding an unlearnt kind is shut to robots whole**, litter included: the robots come in once Lumi has learnt the new kind. Kept: it makes each new city start with hand work.
+- The simulator's purchase-wait limit is 136 s, matching the accepted first-seed sequence (M3-21).
+- Robot plans do not wait on mastery yet; review in M3-12.

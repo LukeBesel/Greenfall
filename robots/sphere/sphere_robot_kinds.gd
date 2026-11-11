@@ -28,6 +28,18 @@ static func role_of(type_id: String) -> String:
 	return "clean" if r == "any" else r
 
 
+## Lumi's mastery of the pollution kinds a robot type works, for its card: "Litter 3  ·  Wrecks 0"
+## ("" for a type that works no kind, such as a hauler, or on a planet without mastery).
+static func mastery_line(type_id: String, mastery: Mastery) -> String:
+	return mastery.role_line(role_of(type_id)) if mastery != null and mastery.enabled() else ""
+
+
+## Why a robot type cannot work a kind yet ("Lumi must learn wrecks first"); "" when it may work
+## every kind Lumi has met.
+static func mastery_block(type_id: String, mastery: Mastery) -> String:
+	return mastery.block_text(role_of(type_id)) if mastery != null and mastery.enabled() else ""
+
+
 ## Ground speed in m/s: the flat game's speed stat for the type and tier.
 static func speed(type_id: String, tier: int) -> float:
 	var v: float = Economy.robot_stat(type_id, "speed", tier)

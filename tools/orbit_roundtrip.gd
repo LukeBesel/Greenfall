@@ -46,6 +46,8 @@ static func _snap(s: Node) -> Dictionary:
 		"districts": JSON.stringify((s.orbit as SliceOrbit).districts.save_state()),  # stages, unlocked, visited
 		"pollution": JSON.stringify((s.orbit as SliceOrbit).pollution.save_state()),  # part-cleared kinds, cost owed
 		"chain": JSON.stringify((s.orbit as SliceOrbit).chain.save_state()),  # buried parts, the Assembler, its mix
+		"mastery": JSON.stringify((s.orbit as SliceOrbit).mastery.save_state()),  # Lumi's hand work per kind
+		"mastery_shut_hexes": (s.orbit as SliceOrbit).globe.cells.shut.count(1),  # hexes robots must leave alone
 		"assembler_model": (s.orbit as SliceOrbit).chain.model != null,
 		"restoration": JSON.stringify((s.orbit as SliceOrbit).restoration.save_state()),
 		# Looks: found pieces are global progress; what the planet has given is in its own section.
@@ -635,6 +637,15 @@ static func run(rt: Node, check: Callable) -> void:
 	rc.chain.take(far_hub, 0.25)
 	rc.chain.deliver(0.25)
 	nb["parts"] = 3.0
+	# Mastery: Lumi has learnt the base kind to the level where robots work at their own rate (the
+	# offline check below compares against that rate), and has made a start on every other kind.
+	var mastery: Mastery = so.mastery
+	var base_kind: String = so.pollution.base_id()
+	mastery.grant(base_kind, int(mastery.config()["dev_level"]))
+	for id: String in mastery.kinds():
+		if id != base_kind:
+			mastery.add_work(id, 12.5)
+	check.call("orbit_mastery_base_level", int(mastery.config()["dev_level"]), mastery.level(base_kind))
 	var bot_dirs: Array[Vector3] = [crew.unit_dir(nb), crew.unit_dir(fb)]
 	var rad: float = g.grid.radius_m
 	check.call("orbit_robot_near_far", "near far", ("near " if crew.is_near(nb) else "far ") + ("near" if crew.is_near(fb) else "far"))
@@ -723,6 +734,11 @@ static func _old_save(tree: SceneTree, packed: PackedScene, check: Callable) -> 
 	# A save from before the robot chain: its clean ground is spent, nothing is built or on offer.
 	check.call("orbit_old_chain_ground_spent", true, so.chain.chain.seeded.size() >= clean_cells and so.chain.chain.stock_total() == 0.0)
 	check.call("orbit_old_chain_no_assembler", false, so.chain.is_built() or so.chain.listed())
+	# A save from before mastery: its clean hexes count as Lumi's work on the base kind, so a crew
+	# built on it is not shut out.
+	var old_base: String = so.pollution.base_id()
+	check.call("orbit_old_mastery_from_clean_hexes", true, so.mastery.level(old_base) >= 1 and so.mastery.robots_can_work(old_base))
+	var old_level: int = so.mastery.level(old_base)
 	var p: Patch = s.get("patch")
 	check.call("orbit_old_lumi_on_start_site", 0, g.site_at(p.global_position))
 	check.call("orbit_old_chest", 2.5, snappedf(p.compartment.fill, 0.01))
@@ -743,5 +759,6 @@ static func _old_save(tree: SceneTree, packed: PackedScene, check: Callable) -> 
 	check.call("orbit_old_reload_base_level", 2, OrbitSave.hub_level({"hubs": (s2.orbit as SliceOrbit).hub_states}, 0))
 	check.call("orbit_old_reload_cubes", cubes0, GameState.get_currency("cubes").to_float())
 	check.call("orbit_old_reload_pieces", old_pieces, JSON.stringify(GameState.global.get(Looks.KEY, [])))
+	check.call("orbit_old_reload_mastery", old_level, (s2.orbit as SliceOrbit).mastery.level(old_base))
 	s2.queue_free()
 	await tree.process_frame

@@ -1,11 +1,14 @@
 {
-  "_doc": "Dummy planet: its pollution kinds (same fields as a real pollution kinds table, see planets/verdance/data/pollution.json). 'dross' is the base kind. 'spores' is a kind no shipped planet has: it exists only in this file, to prove that a new kind needs data and no code. It is held waste on about half the land hexes from ring 3 out, cleared with the watering can once the flag test_spore_mask is set, or by watering robots, and each hex of it costs half a seed.",
+  "_doc": "Dummy planet: its pollution kinds (same fields as a real pollution kinds table, see planets/verdance/data/pollution.json). 'dross' is the base kind. 'spores' is a kind no shipped planet has: it exists only in this file, to prove that a new kind needs data and no code. It is held waste on about half the land hexes from ring 3 out, cleared with the watering can once the flag test_spore_mask is set, or by watering robots, and each hex of it costs half a seed. mastery: this planet's own mastery numbers (4 levels, doubling), with the robot speed curve and the proximity bonus given here because the dummy planet has no robots table of its own.",
   "base": "dross",
   "default_kinds": ["dross", "spores"],
+  "mastery": {"max_level": 4, "growth": 2.0, "hand_bonus_per_level": 0.1, "legacy_credit": 1.0, "robot_speed": {"base": 0.5, "per_level": 0.25, "min_level": 1}, "proximity": {"radius_m": 40.0, "bonus": 0.5}},
   "kinds": {
-    "dross": {"name": "Dross", "work": "pieces", "robot_roles": ["clean"], "yield": {"cubes": 1.0, "parts": 1.0}},
+    "dross": {"name": "Dross", "mastery_level1_units": 50.0, "mastery_per_unit": 1.0, "work": "pieces", "robot_roles": ["clean"], "yield": {"cubes": 1.0, "parts": 1.0}},
     "spores": {
       "name": "Spores",
+      "mastery_level1_units": 30.0,
+      "mastery_per_unit": 2.0,
       "work": "held",
       "junk_type": "wrap",
       "color": "#c9b458",

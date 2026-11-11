@@ -40,6 +40,7 @@ var sites: OrbitSites  # [orbD]
 var districts: Districts  # the cities and their regrowth stages (systems/districts.gd)
 var restoration: Restoration  # launch progress, the launch point, the whole-planet share
 var pollution: Pollution  # the planet's pollution kinds: which hex holds what, gates, payouts (systems/pollution.gd)
+var mastery: Mastery  # Lumi's mastery of each kind: what robots may work and how fast (systems/mastery.gd)
 var city_payouts: CityPayouts  # cubes paid once when a city reaches a regrowth stage
 var chain: RobotChain  # parts finders, the Assembler and its build mix
 var look_finds: Finds  # where the planet hides the pieces of Lumi's looks (systems/finds.gd)
@@ -193,6 +194,7 @@ func build(p_world: Node3D) -> void:
 		restore_world()
 	elif migrate:
 		(w.get("patch") as Patch).restore_cargo(OrbitMigrate.lumi_cargo())
+		_seed_legacy_mastery()  # the flat save's clean hexes are on the globe by now
 	globe.stats["site_patch_hud_ms"] = Time.get_ticks_msec() - tq
 	tq = Time.get_ticks_msec()
 	layers = OrbitLayers.attach(self)  # [orbE] sky + day/night, Glim, future layer, survey, system map, photo mode
@@ -408,9 +410,21 @@ func _build_pollution(saved: Dictionary) -> void:
 	pollution.setup(Planets.current(), globe.grid, globe.cells, globe.field, site_cells, saved)
 	pollution.cell_written = _on_pollution_written
 	w.set("pollution", pollution)
+	mastery = Mastery.new()
+	w.add_child(mastery)
+	mastery.setup(Planets.current(), GameState.orbit.get("mastery", {}))
+	pollution.set_mastery(mastery)
+	_seed_legacy_mastery()
 	if DevHooks.has(DistrictsDev.FLAG_STAGE):
 		for line: String in pollution.report():
 			print(line)
+
+
+## A save from before mastery (it has no mastery section): its clean hexes count as Lumi's own
+## work, and the kinds its robots work are open to them. Nothing to do for a new game.
+func _seed_legacy_mastery() -> void:
+	if mastery != null and not GameState.orbit.has("mastery"):
+		mastery.seed_legacy(pollution.cleaned_units(), SphereCrew.saved_roles(GameState.orbit.get("robots", {})))
 
 
 ## Waste taken with a tool (not a piece): the hex's numbers and heaps follow, and Lumi's own work
@@ -463,6 +477,7 @@ func _build_districts(levels: HexLevels) -> void:
 		ending.auto_keep_s = BOT_END_SCREEN_S
 	w.add_child(ending)
 	DistrictsDev.attach(w, districts, restoration, ending, crews, globe.cells, levels)
+	mastery.sync_districts(districts)
 	if crews.crew != null:
 		crews.crew.pollution = pollution
 	if crews.crew != null:  # Scroungers, the Assembler, where new robots go (systems/crew/robot_chain.gd)
@@ -1185,6 +1200,7 @@ func persist_save() -> void:
 		"districts": districts.save_state() if districts else {},
 		"city_payouts": city_payouts.save_state() if city_payouts else {},
 		"pollution": pollution.save_state() if pollution else {},
+		"mastery": mastery.save_state() if mastery else {},
 		"chain": chain.save_state() if chain else {},
 		"restoration": restoration.save_state() if restoration else {},
 		"finds": look_finds.save_state() if look_finds else {},
