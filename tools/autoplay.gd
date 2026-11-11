@@ -486,6 +486,8 @@ func _water_at() -> Vector3:
 
 ## The Settler seed tin in the greenhouse, once enough hexes are clean.
 func _do_tin(p: Patch) -> bool:
+	if _at_far():
+		return false  # [v6pace] the seed tin is in the home greenhouse
 	var fs: FirstSeed = world.first_seed
 	if fs == null or not fs.ready_to_find() or fs._tin == null or not fs._tin.visible:
 		return false
@@ -1103,7 +1105,27 @@ func _arc(p: Patch) -> bool:
 				var stp: String = str(os_.purpose.current_step(_hop_to).get("do", ""))
 				if stp == "clean":
 					_set_far_step("clean")
-					return false  # play here: clean the nearest hexes (bales stay where they are pressed)
+					_far_focus(p, os_)  # the station counts only its own region's land, not its town ground
+					if _focus_hex >= 0:
+						# No progress on this cell for a minute (a wall, a lake, pieces out of reach): another one.
+						var rf: float = world.field.removed_fraction(_focus_hex)
+						if _focus_hex != _far_prog_hex or rf > _far_prog_rf + 0.02:
+							_far_prog_hex = _focus_hex
+							_far_prog_rf = rf
+							_far_prog_t = _now()
+						elif _now() - _far_prog_t > 60.0:
+							_far_given_up[_focus_hex] = true
+							_focus_hex = -1
+							return true
+					if _focus_hex >= 0 and world.field.hex_center(_focus_hex).distance_to(p.global_position) > 12.0:
+						_set_task("far_walk")  # its pieces only load near Lumi: walk over first
+						_go(p, world.field.hex_center(_focus_hex), 3.0)
+						return true
+					if DevHooks.has("bot-debug") and int(_now()) % 30 == 0:
+						var cs_: Dictionary = os_.purpose.current_step(_hop_to)
+						print("[bot-far] %.1f min  clean %d / %d  focus %d removed %.2f  skip %d  task %s  dist %.1f" % [_now() / 60.0, int(cs_.get("have", 0)), int(cs_.get("need", 0)), _focus_hex,
+							world.field.removed_fraction(_focus_hex) if _focus_hex >= 0 else -1.0, _skip_hex.size(), _task, world.field.hex_center(_focus_hex).distance_to(p.global_position) if _focus_hex >= 0 else -1.0])
+					return false  # play here: clean those hexes (bales stay where they are pressed)
 				if stp == "outposts":
 					_set_far_step("outposts")
 					return _do_far_outpost(p)
@@ -1579,9 +1601,51 @@ func _far_steps_line() -> String:
 	return ", ".join(parts)
 
 
+## [v6pace] Aim the cleaning at the nearest dirty cell the station counts (its region, not water,
+## not town ground: HubPurpose.clean_cells).
+func _far_focus(p: Patch, os_: OrbitSites) -> void:
+	var f: HexField = world.field
+	if _focus_hex >= 0 and _far_cells.has(_focus_hex) and not f.is_clean(_focus_hex) and not _skip_hex.has(_focus_hex) and not _far_given_up.has(_focus_hex):
+		return
+	var cs: SphereCells = os_.sm.cells
+	var best: int = -1
+	var best_d: float = INF
+	_far_cells.clear()
+	for c: int in os_.sm.regions[_hop_to]:
+		if cs.state[c] == 5 or (cs.flags[c] & SphereCells.F_HUB) != 0 or not cs.is_dirty(c):
+			continue
+		_far_cells[c] = true
+		if _far_given_up.has(c):
+			continue
+		if _skip_hex.has(c) and f.hex_center(c).distance_to(p.global_position) > 14.0:
+			_skip_hex.erase(c)  # skipped from afar (nothing loaded yet): worth a look up close
+		if _skip_hex.has(c):
+			continue
+		var d: float = f.hex_center(c).distance_to(p.global_position)
+		if d < best_d:
+			best_d = d
+			best = c
+	if best >= 0:
+		_focus_hex = best
+
+
+var _far_cells: Dictionary = {}
+var _far_given_up: Dictionary = {}
+var _far_prog_hex: int = -1
+var _far_prog_rf: float = 0.0
+var _far_prog_t: float = 0.0
+
+
 ## True while the bot is at a far station (its tasks that lead home are off there).
 func _at_far() -> bool:
 	return _hop_state == 2
+
+
+## [v6pace] Where outpost k stands in the world (its spot is in the hub frame's local space).
+func _outpost_at(ops: Outposts, k: int) -> Vector3:
+	if k < ops.items.size() and is_instance_valid(ops.items[k]):
+		return ops.items[k].pad_world()
+	return ops.to_global(ops.spots[k]["pos"])
 
 
 ## [v6pace] The station's "repair an outpost" step: clear the outpost's hex, walk up, repair (E).
@@ -1596,19 +1660,21 @@ func _do_far_outpost(p: Patch) -> bool:
 	for k: int in ops.spots.size():
 		if ops.level_of(k) >= 1:
 			continue
-		var d: float = p.global_position.distance_to(ops.spots[k]["pos"])
+		var d: float = p.global_position.distance_to(_outpost_at(ops, k))
 		if d < best_d:
 			best_d = d
 			best = k
 	if best < 0:
 		return true
 	var why: String = ops.repair_block(best)
+	if DevHooks.has("bot-debug") and int(_now()) % 30 == 0:
+		print("[bot-outpost] %.1f min  spot %d of %d  hub_index %d  at %.1f m  clean %.2f of %.2f  block '%s'  focus %d" % [_now() / 60.0, best, ops.spots.size(), ops.hub_index, best_d, ops.clean_fraction(best), ops.clean_needed(), why, _focus_hex])
 	if ops.clean_fraction(best) < ops.clean_needed():
 		_focus_hex = int(ops.spots[best]["hex"])
 		return false
 	if best_d > 4.0:
 		_set_task("outpost")
-		_go(p, ops.spots[best]["pos"], 2.5)
+		_go(p, _outpost_at(ops, best), 2.5)
 		return true
 	if why == "":
 		ops.repair(best)
