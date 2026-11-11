@@ -62,6 +62,8 @@ var _steps: Array = []  # [until_s, name, Callable(inp, t_in_phase)]
 var _acc: Dictionary = {}
 var _fail: bool = false
 var _done: bool = false
+var _shot_next: float = 0.0
+var _shot_n: int = 0
 var _verts: Dictionary = {}  # Mesh -> PackedVector3Array (thinned)
 
 
@@ -174,6 +176,10 @@ func _physics_process(delta: float) -> void:
 		_phase = str(cur[1])
 		_acc = {}
 	(cur[2] as Callable).call(inp, _t - start)
+	if DevHooks.has("feel-shots") and _t >= _shot_next:  # frame sequences (rendered runs)
+		_shot_next = _t + DevHooks.get_f("feel-shots", 0.5)
+		DevHooks.save_viewport("screenshots/v6feel/%s_%02d_%s.png" % [mode, _shot_n, _phase])
+		_shot_n += 1
 	match mode:
 		"carry":
 			_carry_sample()
