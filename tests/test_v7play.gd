@@ -103,3 +103,40 @@ func test_exit_beat_waits_for_the_six_stations_not_the_core() -> void:
 	(Homeward.state()["pct"] as Dictionary)["verdance"] = 0.6
 	assert_gt(Homeward.leave_hubs(0).x, 0, "Verdance leaves by its stations")
 	assert_false(StoryArc.leave_open(0), "the core at 60% alone does not open the exit beat")
+
+
+func test_station_wake_lines_are_each_their_own() -> void:
+	var seen: Dictionary = {}
+	for n: int in range(2, 7):
+		var why: String = Objectives.goal_reason({"id": "hub_wake_%d" % n, "type": "stat", "key": "hubs_woken"})
+		assert_ne(why, "", "hub_wake_%d has a reason" % n)
+		if n >= 3:
+			assert_false(seen.has(why), "hub_wake_%d says its own line, not the shared one" % n)
+		seen[why] = true
+
+
+func test_telescope_hidden_while_the_next_planet_is_closed() -> void:
+	assert_true("telescope" in Homeward.hidden_builds(), "nothing to watch on other worlds yet")
+	assert_false(HubBuilds.listed(null, "telescope"))
+
+
+func test_ochre_is_charted_by_the_six_stations_not_the_core() -> void:
+	var low: Array = [0.2, 0.0, 0.0, 0.0, 0.0]
+	assert_false(Homeward.charted(1, low), "core at 20%, no exit beat yet")
+	Homeward.mark_beat(StoryArc.exit_beat(0))
+	assert_true(Homeward.charted(1, low), "the six stations' exit beat charts Ochre")
+
+
+func test_to_be_continued_card_text_is_data_and_translated() -> void:
+	var t: Dictionary = ToBeContinued.texts()
+	assert_ne(str(t["title"]), "")
+	assert_ne(str(t["line"]), "")
+	assert_string_contains(str(t["meter"]), "/10", "the home meter")
+	var c: Dictionary = Homeward.closed_cfg()["card"]
+	var was: String = TranslationServer.get_locale()
+	for loc: String in ["de", "fr", "es", "pt_BR", "zh_CN", "ja"]:
+		TranslationServer.set_locale(loc)
+		for k: String in ["title", "line", "hint"]:
+			assert_ne(TranslationServer.translate(str(c[k])), str(c[k]), "card %s has a %s translation" % [k, loc])
+	TranslationServer.set_locale(was)
+	assert_eq(ToBeContinued.seen_flag(), "tbc_seen_verdance")

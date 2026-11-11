@@ -393,7 +393,7 @@ msgstr "Palier max"
 msgid "Needs the Rocket Cargo research"
 msgstr "Nécessite la recherche Fret de fusée"
 
-#: automation/rocket_tiers.gd:61 systems/homeward.gd:574
+#: automation/rocket_tiers.gd:61 systems/homeward.gd:586
 msgid "Not enough cubes or parts"
 msgstr "Pas assez de cubes ou de pièces"
 
@@ -452,8 +452,8 @@ msgid "Requires hub level %d or research: %s."
 msgstr "Nécessite la base niveau %d ou la recherche : %s."
 
 #: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
-#: systems/camp/camp.gd:430 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:155
-#: systems/camp/hub_builds.gd:165 systems/camp/hub_builds.gd:175 systems/camp/yard_builds.gd:91
+#: systems/camp/camp.gd:430 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:157
+#: systems/camp/hub_builds.gd:167 systems/camp/hub_builds.gd:177 systems/camp/yard_builds.gd:91
 #: ui/telescope_panel.gd:40
 msgid "Not enough materials."
 msgstr "Matériaux insuffisants."
@@ -727,7 +727,7 @@ msgstr "Améliore la fusée, puis réveille : %s"
 msgid "Wake the %s (%s)"
 msgstr "Réveille : %s (%s)"
 
-#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:578
+#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:583
 msgid "E   Wake the %s  (%s)"
 msgstr "E   Réveiller : %s  (%s)"
 
@@ -825,8 +825,7 @@ msgstr "Améliore d'abord la fusée"
 msgid "%s site"
 msgstr "Site : %s"
 
-#. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: planet/sites/orbit_sites.gd:229 ui/main_menu.gd:526
+#: planet/sites/orbit_sites.gd:229
 msgid "Hub %d"
 msgstr "Base %d"
 
@@ -1590,7 +1589,7 @@ msgstr "Écran titre"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "Continuer : le premier quartier reste ouvert, base au niveau %d."
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:520
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:519
 msgid "%dh %02dm"
 msgstr "%dh %02dm"
 
@@ -1924,27 +1923,27 @@ msgstr "Ce quelqu'un, c'est toi. Petit. Têtu. Sur quatre pour cent de batterie.
 msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
 msgstr "Trouve un sol propre. Creuse. Dépose-la. Tasse. Et ensuite – c'est important – arrose."
 
-#: story/first_seed.gd:145
+#: story/first_seed.gd:147
 msgid "{tool_water}  then hold  {scoop}  to water it"
 msgstr "{tool_water}  puis maintiens  {scoop}  pour arroser"
 
-#: story/first_seed.gd:171
+#: story/first_seed.gd:176
 msgid "Hold  {scoop}  on clean ground to plant the seed"
 msgstr "Maintiens  {scoop}  sur un sol propre pour planter la graine"
 
-#: story/first_seed.gd:248
+#: story/first_seed.gd:267
 msgid "...It's green. Lumi, it's actually green."
 msgstr "...C'est vert. Lumi, c'est vraiment vert."
 
-#: story/first_seed.gd:250
+#: story/first_seed.gd:269
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "Garde-la bien arrosée. Les graines sont rares par ici, mais chaque floraison en rend une, et un peu de lumière verte pour ton cœur. C'est comme ça que tout commence."
 
-#: story/first_seed.gd:363
+#: story/first_seed.gd:383
 msgid "Lumi, that green signal is back, stronger now. Follow the beam: the old greenhouse."
 msgstr "Lumi, le signal vert est revenu, plus fort. Suis le faisceau : la vieille serre."
 
-#: story/first_seed.gd:372
+#: story/first_seed.gd:392
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr "Lumi. Je capte un signal. Vert, faible, à l'est de la base. Une vieille serre. Va voir."
 
@@ -2705,95 +2704,95 @@ msgstr "Audit gagné, %d à %d ! Le Ledger tamponne APPROUVÉ. %s"
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "Le drone a gagné l'audit, %d à %d. Il a quand même laissé un pourboire : +%s cubes."
 
-#: systems/homeward.gd:178
+#: systems/homeward.gd:184
 msgid "Wake %d old stations on %s to level %d (%d so far)"
 msgstr "Réveille %d anciennes stations sur %s au niveau %d (%d pour l'instant)"
 
-#: systems/homeward.gd:180
+#: systems/homeward.gd:186
 msgid "Restore %s to %d%% (%d%%) or get a base to level %d"
 msgstr "Restaure %s à %d%% (%d%%) ou monte une base au niveau %d"
 
-#: systems/homeward.gd:181
+#: systems/homeward.gd:187
 msgid "Restore %s to %d%% (%d%%)"
 msgstr "Restaure %s à %d%% (%d%%)"
 
-#: systems/homeward.gd:188
+#: systems/homeward.gd:194
 msgid "Restore another planet to %d%% (best %d%%)"
 msgstr "Restaure une autre planète à %d%% (record %d%%)"
 
-#: systems/homeward.gd:270
+#: systems/homeward.gd:276
 msgid "Needs %s: found on %s"
 msgstr "Nécessite %s : se trouve sur %s"
 
-#: systems/homeward.gd:415
+#: systems/homeward.gd:421
 msgid "New tech: %s. %s"
 msgstr "Nouvelle techno : %s. %s"
 
-#: systems/homeward.gd:462
+#: systems/homeward.gd:474
 msgid "Needs the %s drive"
 msgstr "Nécessite la propulsion %s"
 
-#: systems/homeward.gd:464
+#: systems/homeward.gd:476
 msgid "No chart yet: restore %s to %d%%"
 msgstr "Pas encore de carte : restaure %s à %d%%"
 
-#: systems/homeward.gd:558
+#: systems/homeward.gd:570
 msgid "The Homeward rocket is built"
 msgstr "La fusée du Retour est construite"
 
-#: systems/homeward.gd:561 systems/museum.gd:117
+#: systems/homeward.gd:573 systems/museum.gd:117
 msgid "The Cradle has to answer first (Cradle Returns)"
 msgstr "Le Cradle doit d'abord répondre (Retour du Cradle)"
 
-#: systems/homeward.gd:566
+#: systems/homeward.gd:578
 msgid "Needs full fuel and power. %s"
 msgstr "Il faut le plein de carburant et d'énergie. %s"
 
-#: systems/homeward.gd:568
+#: systems/homeward.gd:580
 msgid "Needs %d planet relics (%d)"
 msgstr "Nécessite %d reliques planétaires (%d)"
 
-#: systems/homeward.gd:570
+#: systems/homeward.gd:582
 msgid "Restore every planet first (%d%%)"
 msgstr "Restaure d'abord chaque planète (%d%%)"
 
-#: systems/homeward.gd:572
+#: systems/homeward.gd:584
 msgid "Build it at Verdance's Cradle Returns"
 msgstr "Construis-la au Retour du Cradle, sur Verdance"
 
-#: systems/homeward.gd:588
+#: systems/homeward.gd:600
 msgid "Rocket drive built: %s."
 msgstr "Propulsion construite : %s."
 
-#: systems/homeward_director.gd:296
+#: systems/homeward_director.gd:323
 msgid "Intercepted: %s"
 msgstr "Intercepté : %s"
 
-#: systems/homeward_director.gd:311
+#: systems/homeward_director.gd:338
 msgid "%s: %s"
 msgstr "%s : %s"
 
-#: systems/homeward_director.gd:321
+#: systems/homeward_director.gd:348
 msgid "%s is restored. System: %d%%."
 msgstr "%s est restaurée. Système : %d%%."
 
-#: systems/homeward_director.gd:324
+#: systems/homeward_director.gd:351
 msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
 msgstr "Relique : %s. Choix d'héritage +1 (Pont de l'Arche)."
 
-#: systems/homeward_director.gd:332
+#: systems/homeward_director.gd:359
 msgid "Every planet in the system is alive. The Settlers will wake to five green worlds."
 msgstr "Chaque planète du système est vivante. Les Colons se réveilleront face à cinq mondes verts."
 
-#: systems/homeward_director.gd:528
+#: systems/homeward_director.gd:555
 msgid "E   launch home"
 msgstr "E   décoller vers la maison"
 
-#: systems/homeward_director.gd:528
+#: systems/homeward_director.gd:555
 msgid "E   plant the last seed"
 msgstr "E   planter la dernière graine"
 
-#: systems/homeward_director.gd:539
+#: systems/homeward_director.gd:566
 msgid "The last seed is in the ground. Everything is ready. Press E again here to launch home."
 msgstr "La dernière graine est en terre. Tout est prêt. Appuie encore sur E ici pour décoller vers la maison."
 
@@ -3198,27 +3197,27 @@ msgstr "E   %s (Niv %d) : passer à %s pour %s"
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "Poubelle améliorée : %s. Les balles se vendent ici à %d%%."
 
-#: systems/camp/hub_builds.gd:148
+#: systems/camp/hub_builds.gd:150
 msgid "Trash bin, level %d of %d"
 msgstr "Poubelle, niveau %d sur %d"
 
-#: systems/camp/hub_builds.gd:153
+#: systems/camp/hub_builds.gd:155
 msgid "WREN can only reach you through the relay. Each tier makes her clearer."
 msgstr "WREN ne peut te joindre que par le relais. Chaque niveau la rend plus claire."
 
-#: systems/camp/hub_builds.gd:157
+#: systems/camp/hub_builds.gd:159
 msgid "Tier %d of %d"
 msgstr "Niveau %d sur %d"
 
-#: systems/camp/hub_builds.gd:166 systems/camp/hub_builds.gd:177
+#: systems/camp/hub_builds.gd:168 systems/camp/hub_builds.gd:179
 msgid "%d of %d built"
 msgstr "%d sur %d construits"
 
-#: systems/camp/hub_builds.gd:193
+#: systems/camp/hub_builds.gd:195
 msgid "Museum"
 msgstr "Musée"
 
-#: systems/camp/hub_builds.gd:194
+#: systems/camp/hub_builds.gd:196
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr "Une salle avec un socle pour chaque trouvaille de Lumi, pour ceux qui viendront après."
 
@@ -4303,7 +4302,7 @@ msgstr "FAIT AVEC AMOUR ET FERRAILLE"
 msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
 msgstr "Le code, les maillages procéduraux, la musique et les sons synthétisés et les textes sont des créations originales de Greenfall."
 
-#: ui/credits_roll.gd:148 ui/main_menu.gd:671
+#: ui/credits_roll.gd:148 ui/main_menu.gd:669
 msgid "Music by Lucas"
 msgstr "Musique de Lucas"
 
@@ -5239,7 +5238,7 @@ msgstr "Nouvelle partie"
 msgid "Profiles"
 msgstr "Profils"
 
-#: ui/main_menu.gd:363 ui/main_menu.gd:613 ui/pause_menu.gd:68
+#: ui/main_menu.gd:363 ui/main_menu.gd:611 ui/pause_menu.gd:68
 msgid "Settings"
 msgstr "Paramètres"
 
@@ -5251,77 +5250,77 @@ msgstr "Quitter"
 msgid "Made with Godot"
 msgstr "Fait avec Godot"
 
-#: ui/main_menu.gd:520
+#: ui/main_menu.gd:519
 msgid "%dm"
 msgstr "%d min"
 
-#. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
+#. Continue button subtitle: the planet, play time, cube count (e.g. "Verdance · 1h 05m · 3.4K cubes").
 #: ui/main_menu.gd:526 ui/profile_picker.gd:133
 msgid "%s cubes"
 msgstr "%s cubes"
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Jan"
 msgstr "janv."
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Feb"
 msgstr "févr."
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Mar"
 msgstr "mars"
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Apr"
 msgstr "avr."
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "May"
 msgstr "mai"
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Jun"
 msgstr "juin"
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Jul"
 msgstr "juil."
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Aug"
 msgstr "août"
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Sep"
 msgstr "sept."
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Oct"
 msgstr "oct."
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Nov"
 msgstr "nov."
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Dec"
 msgstr "déc."
 
-#: ui/main_menu.gd:613
+#: ui/main_menu.gd:611
 msgid "Credits"
 msgstr "Crédits"
 
-#: ui/main_menu.gd:642
+#: ui/main_menu.gd:640
 msgid "CREDITS"
 msgstr "CRÉDITS"
 
-#: ui/main_menu.gd:657 ui/profile_picker.gd:49 ui/settings_panel.gd:123
+#: ui/main_menu.gd:655 ui/profile_picker.gd:49 ui/settings_panel.gd:123
 #: ui/settings_panel.gd:148 ui/world_picker.gd:53
 msgid "Back"
 msgstr "Retour"
 
-#: ui/main_menu.gd:670
+#: ui/main_menu.gd:668
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -5331,27 +5330,27 @@ msgstr ""
 "Le code, les maillages procéduraux, l'audio synthétisé et les textes sont des créations originales de Greenfall.\n"
 "\n"
 
-#: ui/main_menu.gd:674
+#: ui/main_menu.gd:672
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "Ressources tierces : CC0, Poly Haven (polyhaven.com)."
 
-#: ui/main_menu.gd:692
+#: ui/main_menu.gd:690
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]par %s[/color]"
 
-#: ui/main_menu.gd:726
+#: ui/main_menu.gd:724
 msgid "START A NEW GAME?"
 msgstr "COMMENCER UNE NOUVELLE PARTIE ?"
 
-#: ui/main_menu.gd:727
+#: ui/main_menu.gd:725
 msgid "Your current save will be erased. This can't be undone."
 msgstr "Ta sauvegarde actuelle sera effacée. C'est irréversible."
 
-#: ui/main_menu.gd:735
+#: ui/main_menu.gd:733
 msgid "Keep my save"
 msgstr "Garder ma sauvegarde"
 
-#: ui/main_menu.gd:741 ui/profile_picker.gd:213
+#: ui/main_menu.gd:739 ui/profile_picker.gd:213
 msgid "Erase and start"
 msgstr "Effacer et commencer"
 
@@ -11458,6 +11457,18 @@ msgstr "Alors on reste un moment. Chaque ville qu'on nettoie rend Verdance plus 
 msgid "To be continued: the trip to Ochre comes in a future update. Keep restoring Verdance!"
 msgstr "À suivre : le voyage vers Ochre arrive dans une prochaine mise à jour. Continue de restaurer Verdance !"
 
+#: data/homeward.json:closed.card.title
+msgid "To be continued"
+msgstr "À suivre"
+
+#: data/homeward.json:closed.card.line
+msgid "Your robots keep cleaning while you wait. Stay as long as you like and keep making Verdance green."
+msgstr "Tes robots continuent de nettoyer pendant que tu attends. Reste autant que tu veux et continue de verdir Verdance."
+
+#: data/homeward.json:closed.card.hint
+msgid "{interact}  continue"
+msgstr "{interact}  continuer"
+
 #: data/homeward.json:tech[deep_drill].name
 msgid "Deep Drill"
 msgstr "Foreuse profonde"
@@ -14651,6 +14662,22 @@ msgstr "Un long vol demande une énergie qui dure. Le Fairground a une cellule."
 #: data/story_reasons.json:goal_reasons
 msgid "The rocket's tanks are empty. Stack Works still has fuel."
 msgstr "Les réservoirs de la fusée sont vides. Stack Works a encore du carburant."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Wake the Gantry Crane. Its hull plates keep the rocket safe in space."
+msgstr "Réveille la Grue portique. Ses plaques de coque protègent la fusée dans l'espace."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Wake the Signal Mast. It still holds the star chart, the map of where to fly."
+msgstr "Réveille le Mât de signal. Il garde encore la carte des étoiles, le plan de notre route."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Wake the Big Wheel. Its power cell keeps the rocket going on a long flight."
+msgstr "Réveille la Grande roue. Sa pile d'énergie fait tenir la fusée sur un long vol."
+
+#: data/story_reasons.json:goal_reasons
+msgid "Wake the Tall Stack. Its tanks still hold fuel for the rocket."
+msgstr "Réveille la Grande cheminée. Ses réservoirs gardent encore du carburant pour la fusée."
 
 #: data/story_reasons.json:goal_reasons
 msgid "A strong second base keeps its side of Verdance clean."

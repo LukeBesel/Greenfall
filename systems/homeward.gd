@@ -58,6 +58,12 @@ static func closed_cfg() -> Dictionary:
 	return cfg().get("closed", {})
 
 
+## [v7play] Builds that have nothing to do while the next planet is closed (closed.hide_builds: the
+## Telescope watches crews on other worlds). One already built stays.
+static func hidden_builds() -> Array:
+	return closed_cfg().get("hide_builds", []) if next_closed() else []
+
+
 ## [v7play] A goal that needs the next planet, hidden while that planet is closed.
 static func goal_hidden(id: String) -> bool:
 	return next_closed() and id in (closed_cfg().get("hide_goals", []) as Array)
@@ -459,6 +465,12 @@ static func mirror_stats() -> void:
 ## Whether planet k has its chart: the previous planet is restored to chart_at (pure).
 static func charted(k: int, pcts: Array) -> bool:
 	if k <= 0:
+		return true
+	# [v7play] planets[k-1].leave.chart "leave": the way to planet k is charted once k-1's own exit beat
+	# has played (on Verdance: six stations awake; Signal Heights gives the star chart), not only at
+	# chart_at. Verdance's % is its Bloom Core charge, which is not tied to the stations.
+	var lv: Variant = planet_def(k - 1).get("leave", {})
+	if lv is Dictionary and str((lv as Dictionary).get("chart", "")) == "leave" and beat_done(StoryArc.exit_beat(k - 1)):
 		return true
 	return float(pcts[k - 1]) >= float(cfg().get("chart_at", 0.5)) - 0.0001
 

@@ -239,6 +239,8 @@ func step(body: CharacterBody3D, wish: Vector3, delta: float, boost: bool = fals
 ## (up to 4 contacts a tick), then up or down. A low obstacle ahead starts a climb instead.
 func _level_slide(body: CharacterBody3D, u: Vector3, delta: float) -> void:
 	hits.clear()
+	if not PhysicsServer3D.body_get_space(body.get_rid()).is_valid():  # [v7play] out of every space for a frame (a rocket hop): no test motion
+		return
 	var motion: Vector3 = hv * delta
 	for i: int in 4:
 		if motion.length_squared() < 1e-10:

@@ -25,6 +25,8 @@ var _letterbox: CanvasLayer
 var _bars: Array[ColorRect] = []
 var _waiting_sprout: bool = false
 var _hint_water: bool = false  # [first]
+var _card: String = ""  # [v7play] the first-seed card text up now ("" none): hidden while Lumi is at another station
+var _card_away: bool = false
 
 
 func setup() -> void:
@@ -142,7 +144,10 @@ func _process(delta: float) -> void:
 		_tin.rotation.y += delta * 0.5
 	if _hint_water and int(GameState.stats.get("plants_planted", 0)) > 0:  # [first]
 		_hint_water = false
-		EventBus.tutorial_changed.emit(Tutorial.glyphs_bb(tr("{tool_water}  then hold  {scoop}  to water it")))
+		_show_card(Tutorial.glyphs_bb(tr("{tool_water}  then hold  {scoop}  to water it")))
+	if _card != "" and _away() != _card_away:  # [v7play] owner-style one card: the seed is at home, not at a far station
+		_card_away = not _card_away
+		EventBus.tutorial_changed.emit("" if _card_away else _card)
 	if _waiting_sprout:
 		for s: int in world.garden.slot_species.size():
 			if world.garden.slot_species[s] >= 0 and world.garden.slot_stage[s] >= 1:
@@ -168,7 +173,7 @@ func take_tin() -> void:
 	world.patch.water = world.patch.water_cap()
 	world.patch.set_tool(Patch.Tool.PLANT)
 	# [first] One instruction at a time on the checklist card: plant, then water.
-	EventBus.tutorial_changed.emit(Tutorial.glyphs_bb(tr("Hold  {scoop}  on clean ground to plant the seed")))
+	_show_card(Tutorial.glyphs_bb(tr("Hold  {scoop}  on clean ground to plant the seed")))
 	_hint_water = true
 	_waiting_sprout = true
 	_active = false
@@ -231,6 +236,20 @@ func _cinematic() -> void:
 		(world.patch.input as PlayerInput).enabled = true
 
 
+## [v7play] Shows a first-seed step on the card, unless Lumi is at another station (then on return).
+func _show_card(text: String) -> void:
+	_card = text
+	_card_away = _away()
+	if not _card_away:
+		EventBus.tutorial_changed.emit(text)
+
+
+## [v7play] True while Lumi is at a far station: the seed and its greenhouse are at home.
+func _away() -> bool:
+	var os_: OrbitSites = OrbitSites.of(world) if world else null
+	return os_ != null and os_.purpose != null and os_.purpose.site > 0
+
+
 func _sprout_moment(pos: Vector3) -> void:
 	EventBus.hitstop_requested.emit(1.2, 0.3)
 	var flash := OmniLight3D.new()
@@ -248,6 +267,7 @@ func _sprout_moment(pos: Vector3) -> void:
 	world.wren.line_started.emit(tr("...It's green. Lumi, it's actually green."), 1)
 	await get_tree().create_timer(4.5).timeout
 	world.wren.line_started.emit(tr("Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."), 1)
+	_card = ""  # [v7play]
 	EventBus.tutorial_changed.emit("")
 	GameState.flags["first_sprout"] = true
 	Audio.music_sting("first_sprout")

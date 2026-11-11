@@ -10,6 +10,10 @@
       "hub_fly_4": "Nobody knows where to fly. Signal Heights kept the star chart.",
       "hub_fly_5": "A long flight needs lasting power. The Fairground has a cell.",
       "hub_fly_6": "The rocket's tanks are empty. Stack Works still has fuel.",
+      "hub_wake_3": "Wake the Gantry Crane. Its hull plates keep the rocket safe in space.",
+      "hub_wake_4": "Wake the Signal Mast. It still holds the star chart, the map of where to fly.",
+      "hub_wake_5": "Wake the Big Wheel. Its power cell keeps the rocket going on a long flight.",
+      "hub_wake_6": "Wake the Tall Stack. Its tanks still hold fuel for the rocket.",
       "base2_3": "A strong second base keeps its side of Verdance clean.",
       "base2_4": "A strong second base keeps its side of Verdance clean."
     },

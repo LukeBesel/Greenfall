@@ -513,7 +513,6 @@ func _chain_focus(list: Array[Button]) -> void:
 
 
 func _save_summary() -> String:
-	var hub: int = int(_save.get("current_hub", 0)) + 1
 	var stats: Dictionary = _save.get("stats", {})
 	var secs: int = int(float(stats.get("time_played", 0.0)))
 	@warning_ignore("integer_division")
@@ -522,10 +521,9 @@ func _save_summary() -> String:
 	var cur: Dictionary = _save.get("currencies", {})
 	if cur.has("cubes"):
 		cubes = Settings.fmt(BigNum.from_serialized(cur["cubes"]))
-	# TRANSLATORS: Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-	var parts: Array[String] = [tr("Hub %d") % hub, played, tr("%s cubes") % cubes]
-	if CradleMode.worlds().size() > 1:  # [worlds2] which world Continue goes to
-		parts.insert(0, CradleMode.world_name())
+	# TRANSLATORS: Continue button subtitle: the planet, play time, cube count (e.g. "Verdance · 1h 05m · 3.4K cubes").
+	# [v7play] The planet's name, not "Hub N": on the globe current_hub is the flat world's and was always 1.
+	var parts: Array[String] = [tr(CradleMode.world_name()), played, tr("%s cubes") % cubes]
 	var saved: float = float(_save.get("saved_unix", 0.0))
 	if saved > 0.0:
 		var dt: Dictionary = Time.get_datetime_dict_from_unix_time(int(saved + Time.get_time_zone_from_system().get("bias", 0) * 60))
