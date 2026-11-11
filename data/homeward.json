@@ -5,7 +5,7 @@
   "chart_at": 0.5, "discover_at": 0.25,
   "planets": [
     {"id": "verdance", "name": "Verdance", "type": "verdance", "seed": 4471, "mods": [], "nav": 0, "needs_tech": [["deep_drill", 0.68], ["tide_pump", 0.8], ["heat_core", 0.9], ["cryo_beacon", 0.97]],
-      "twist": "Home. The Makers' world, buried under the Ledger's leavings. Restore it to the Cradle Returns pad.",
+      "twist": "Home. The Makers' world, buried under the Ledger's trash. Your robots keep cleaning it while you are away.",
       "color": [0.24, 0.52, 0.3], "orbit": 1.0},
     {"id": "ochre", "name": "Ochre", "type": "desert_world", "seed": 51207, "mods": ["tailwinds", "rich_salvage"], "nav": 5, "needs_tech": [["tide_pump", 0.75], ["heat_core", 0.9]],
       "arrival": {"research_tier": 3, "robots": ["scoopie", "scoopie", "haulbug", "seedling"], "cubes": 4000, "parts": 400},
@@ -41,7 +41,7 @@
     "anvil_ingot": {"name": "Anvil Ingot", "desc": "The Ledger's last ingot, recast as a plain ring with a seed stamped in it."}
   },
   "drive": [
-    {"tier": 5, "name": "Mk V Orbital", "desc": "A vacuum-rated hull and a sun-sail: reaches the near planets, Ochre and Tidewell.", "cost": {"cubes": 60000, "parts": 300}, "requires_planet_pct": [0, 0.5], "or_base_level": 3},
+    {"tier": 5, "name": "Mk V Orbital", "desc": "Your hop rocket, rebuilt for space out of a mountain of cubes. It reaches the near planets, Ochre and Tidewell.", "cost": {"cubes": 60000, "parts": 300}, "requires_planet_pct": [0, 0.5], "or_base_level": 3},
     {"tier": 6, "name": "Mk VI Interplanetary", "desc": "A fold drive salvaged from a Ledger ore hauler: reaches Rime and Anvil.", "cost": {"cubes": 1200000, "parts": 500}, "requires_other_pct": 0.5},
     {"tier": 7, "name": "Mk VII Homeward", "desc": "A great green-light rocket on a launch complex built from every planet you saved. One trip: up to the Cradle.", "cost": {"cubes": 8000000, "parts": 2000}, "requires_relics": 4, "requires_system": 1.0, "home_only": true}
   ],
