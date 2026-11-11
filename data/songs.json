@@ -11,13 +11,14 @@
   "morning_shift"
  ],
  "gap_s": [
-  75,
-  180
+  360,
+  900
  ],
  "first_gap_s": [
-  20,
-  45
+  60,
+  120
  ],
+ "_doc_gaps": "[main] Owner: songs then long breaks, like Minecraft (which waits about 10-20 min). gap_s: 6-15 min of only the world's own sounds between songs; first_gap_s: 1-2 min after loading a save. Shorter breaks: lower these numbers.",
  "landing_gap_s": [
   150,
   240
