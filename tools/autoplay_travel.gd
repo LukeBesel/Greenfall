@@ -27,6 +27,8 @@ var home_trip: bool = false
 var home_since_s: float = -1.0
 var last_home_s: float = 0.0
 var hops: int = 0
+## Walks to the rocket given up on (WALK_GIVE_UP_S): the bot boarded from where it stood.
+var board_stuck: int = 0
 var why: String = ""
 
 

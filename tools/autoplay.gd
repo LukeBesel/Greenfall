@@ -2279,13 +2279,21 @@ func _do_travel(p: Patch) -> bool:
 	if p.tool != Patch.Tool.SCOOP:
 		p.set_tool(Patch.Tool.SCOOP)
 	_set_task("board")
-	if _go(p, os.rocket_spot.global_position, 1.5) > AutoplayTravel.BOARD_M and _task_t < AutoplayTravel.WALK_GIVE_UP_S:
+	var to_rocket: float = _go(p, os.rocket_spot.global_position, 1.5)
+	if DevHooks.has("bot-debug") and int(_task_t * 10.0) % 100 == 0:
+		print("[bot-board] t=%.1f walk %.0f s, %.1f m to the rocket at %s, Lumi at %s" % [_now() / 60.0, _task_t, to_rocket,
+			str(os.rocket_spot.global_position.snappedf(0.1)), str(p.global_position.snappedf(0.1))])
+	if to_rocket > AutoplayTravel.BOARD_M and _task_t < AutoplayTravel.WALK_GIVE_UP_S:
 		return true
+	if to_rocket > AutoplayTravel.BOARD_M:
+		# Boxed in on the way (a person would call the rocket over): logged, as the bot's traps are.
+		_travel.board_stuck += 1
+		_event("board_stuck", {"rocket_m": snappedf(to_rocket, 0.1), "at": str(p.global_position.snappedf(0.1))})
 	_travel.hops += 1
 	if here == 0:
 		_travel.last_home_s = _now()  # the bench was just visited on the way out
 	_event("hop", {"from": here, "to": want, "city": d.district_of_site(want), "home_trip": _travel.home_trip, "why": _travel.why,
-		"walk_s": snappedf(_task_t, 0.1)})
+		"walk_s": snappedf(_task_t, 0.1), "rocket_m": snappedf(to_rocket, 0.1)})
 	_area_city = "?"
 	_focus_hex = -1
 	_plant_hex = -1
@@ -2620,6 +2628,7 @@ func write_report() -> void:
 	_mastery.write(_report, Mastery.of(world))
 	_surge.write(_report)
 	_report["hops"] = _travel.hops
+	_report["board_stuck"] = _travel.board_stuck
 	_stall.write(_report, end_t)
 	_cadence.write(_report, end_t, _crew())
 	if _cadence_path() != "" and not _cadence.rows.is_empty():
