@@ -51,6 +51,8 @@ const FAR_RING: int = 9999
 var cell_written: Callable
 ## Lumi's mastery of the kinds (null: none on this planet, robots work everything at their own rate).
 var mastery: Mastery
+## Lumi's rig (set_rigs): what a gate that names a module asks. Null: such a gate stays shut.
+var rigs: Rigs
 
 var _kinds: Array[Dictionary] = []
 var _index: Dictionary[String, int] = {}
@@ -91,6 +93,8 @@ func _exit_tree() -> void:
 		_cells.cell_changed.disconnect(_on_cell_changed)
 	if mastery != null and is_instance_valid(mastery) and mastery.changed.is_connected(_on_mastery_changed):
 		mastery.changed.disconnect(_on_mastery_changed)
+	if rigs != null and is_instance_valid(rigs) and rigs.changed.is_connected(refresh_gates):
+		rigs.changed.disconnect(refresh_gates)
 
 
 # --- Setup and state --------------------------------------------------------------------------
@@ -127,6 +131,15 @@ func set_mastery(m: Mastery) -> void:
 	_crew_gate.setup(self, _cells, m)
 	if m != null and not m.changed.is_connected(_on_mastery_changed):
 		m.changed.connect(_on_mastery_changed)
+
+
+## Gives the kinds Lumi's rig (after setup): a kind whose gate names a module opens and shuts as
+## that module is fitted and taken off.
+func set_rigs(r: Rigs) -> void:
+	rigs = r
+	if r != null and not r.changed.is_connected(refresh_gates):
+		r.changed.connect(refresh_gates)
+	refresh_gates()
 
 
 func _on_mastery_changed() -> void:
@@ -458,10 +471,13 @@ func report() -> PackedStringArray:
 # --- Gates ------------------------------------------------------------------------------------
 
 ## Whether Lumi has what a kind needs. gate: {stat, min} = an upgrade stat of the planet at that
-## value or more; {flag} = a progress flag that must be set. Both when both are given.
+## value or more; {flag} = a progress flag that must be set; {module} = a rig module that must be
+## fitted (systems/rigs.gd: the kind's tool). All that are given must hold.
 func can_work(id: String) -> bool:
 	var gate: Dictionary = kind(id).get("gate", {})
 	if gate.has("flag") and not bool(GameState.flags.get(str(gate["flag"]), false)):
+		return false
+	if gate.has("module") and (rigs == null or not rigs.is_fitted(str(gate["module"]))):
 		return false
 	return not gate.has("stat") or Economy.stat(str(gate["stat"])) >= float(gate.get("min", 1.0)) - 0.001
 
@@ -472,8 +488,18 @@ func refresh_gates() -> void:
 		return
 	if _field.kind_blocked.size() != _kinds.size():
 		_field.kind_blocked.resize(_kinds.size())
+	var water_gated: bool = false
 	for k: int in _kinds.size():
-		_field.kind_blocked[k] = 0 if can_work(str(_kinds[k]["id"])) else 1
+		var open: bool = can_work(str(_kinds[k]["id"]))
+		_field.kind_blocked[k] = 0 if open else 1
+		water_gated = water_gated or (not open and str(_kinds[k]["work"]) == WORK_FLOAT)
+	_field.water_gated = water_gated
+	_field.water_open = _water_hex_open
+
+
+## Whether Lumi has the tool for what floats on a water hex.
+func _water_hex_open(cell: int) -> bool:
+	return can_work(str(_kinds[kinds_at(cell)[0]]["id"]))
 
 
 ## Whether a hex holds waste Lumi has no tool for yet.
@@ -511,7 +537,8 @@ func scoop_hint(origin: Vector3, forward: Vector3, reach: float, width: float) -
 	var at: Vector3 = origin + forward
 	var pid: int = _field.find_scoop_target_sized(origin, forward, reach, width, 99, true)
 	if pid >= 0:
-		var kd: Dictionary = _kinds[_field.piece_kind[pid]]
+		var hex: int = _field.piece_hex[pid]
+		var kd: Dictionary = _kinds[kinds_at(hex)[0] if _field.hex_water[hex] == 1 else int(_field.piece_kind[pid])]
 		text = tr(str(kd.get("prompt", "")))
 		at = _field.piece_pos[pid]
 		EventBus.pollution_blocked.emit(str(kd["id"]), _field.piece_hex[pid])
@@ -542,16 +569,16 @@ func piece_taken(pid: int, vol: float) -> void:
 
 ## Lumi's rate multiplier on a kind from her mastery of it (1 with no mastery).
 func hand_bonus(id: String) -> float:
-	return mastery.hand_bonus(id) if mastery != null else 1.0
+	return (mastery.hand_bonus(id) if mastery != null else 1.0) * Rigs.factor(Rigs.KIND_PREFIX + id)
 
 
 ## Lumi's rate multiplier on the kind of piece `pid`.
 func piece_hand_bonus(pid: int) -> float:
-	if _field == null or mastery == null:
+	if _field == null:
 		return 1.0
 	var cell: int = _field.piece_hex[pid]
 	var k: int = kinds_at(cell)[0] if _field.hex_water[cell] == 1 else int(_field.piece_kind[pid])
-	return mastery.hand_bonus(str(_kinds[k]["id"]))
+	return hand_bonus(str(_kinds[k]["id"]))
 
 
 ## What a load of piece `pid` pays against the hex's plain share: the kind's yield over the hex's

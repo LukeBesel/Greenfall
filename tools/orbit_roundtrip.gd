@@ -47,6 +47,7 @@ static func _snap(s: Node) -> Dictionary:
 		"pollution": JSON.stringify((s.orbit as SliceOrbit).pollution.save_state()),  # part-cleared kinds, cost owed
 		"chain": JSON.stringify((s.orbit as SliceOrbit).chain.save_state()),  # buried parts, the Assembler, its mix
 		"mastery": JSON.stringify((s.orbit as SliceOrbit).mastery.save_state()),  # Lumi's hand work per kind
+		"rigs": JSON.stringify((s.orbit as SliceOrbit).rigs.save_state()),  # plans, built modules, what is fitted
 		"mastery_shut_hexes": (s.orbit as SliceOrbit).globe.cells.shut.count(1),  # hexes robots must leave alone
 		"assembler_model": (s.orbit as SliceOrbit).chain.model != null,
 		"restoration": JSON.stringify((s.orbit as SliceOrbit).restoration.save_state()),
@@ -646,6 +647,15 @@ static func run(rt: Node, check: Callable) -> void:
 		if id != base_kind:
 			mastery.add_work(id, 12.5)
 	check.call("orbit_mastery_base_level", int(mastery.config()["dev_level"]), mastery.level(base_kind))
+	# Rigs: one module of every slot is built and fitted, so the snapshot compares a real rig
+	# (plans, built modules, what is fitted) and not an empty one.
+	var rig_fitted: int = 0
+	for slot: String in so.rigs.slots():
+		var slot_modules: Array[String] = so.rigs.modules_of(slot)
+		if not slot_modules.is_empty():
+			so.rigs.grant(slot_modules[0])
+			rig_fitted += 1 if so.rigs.is_fitted(slot_modules[0]) else 0
+	check.call("orbit_rig_fitted_every_slot", so.rigs.slots().size(), rig_fitted)
 	var bot_dirs: Array[Vector3] = [crew.unit_dir(nb), crew.unit_dir(fb)]
 	var rad: float = g.grid.radius_m
 	check.call("orbit_robot_near_far", "near far", ("near " if crew.is_near(nb) else "far ") + ("near" if crew.is_near(fb) else "far"))

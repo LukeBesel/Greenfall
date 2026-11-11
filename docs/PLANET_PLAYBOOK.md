@@ -172,6 +172,17 @@ The rules are `systems/pollution.gd`; every number is in the planet's `pollution
 - Rule of thumb: a kind's gate should be something the city itself gives (its tool, its robot). A gate the player may already own on arrival is not felt as a gate.
 - Rule of thumb: keep `tool_use_per_unit` low enough that one tank clears about ten hexes; the can only fills at the base.
 
+### Rigs (M3-08)
+The rules are `systems/rigs.gd`; every number is in the planet's `rigs` table. Measured values are in `docs/reviews/M3-08_RIGS.md`.
+
+- **A stat of Lumi's with a rig** = max((value after upgrades, research and sets + the modules' `adds`) x the modules' `mods`, the modules' `floors`). Keys that are not upgrade stats (`kind_<id>`, `parts_yield`, `crew_near`, `crew_radius`) are plain multipliers read where they act.
+- **A kind's tool is its gate.** `gate.module` in the kinds table names a rig module; Lumi can work the kind only while it is fitted. The tool's plan arrives when the first city that holds the kind opens, free; its price is the slot.
+- **Tools that share a slot are a choice per outing**, so give two tools the same slot only when their kinds never lie on one hex (slick is whole lake hexes; blight is land).
+- **Every other module is a trade:** one gain, one loss, built once for cubes and Parts under the city price cap.
+- **The rig study** (`tools/pace_sim/rig_study.gd`, `--rig-study=1`) scores each module in each city as cubes, cleaning and Parts a minute, weighted by city. A loadout without a city's new tool loses the share of hexes that hold the new kind (nobody can open them). The study fails when one module is the best fit of its slot in every city.
+- Rule of thumb: a tool should also carry what its kind needs from upgrades (lift, hover), or a first-city upgrade becomes a hidden second gate.
+- Rule of thumb: no rig module in the first city. The first city teaches the loop; the rig is the second city's new mechanic.
+
 ### Mastery and apprentice robots (M3-05)
 The rules are `core/mastery_rules.gd` (plain maths, shared with the simulators); the state is `systems/mastery.gd`; which hexes robots must leave alone is `systems/pollution_crew.gd`. Numbers: the `mastery` block and each kind's `mastery_level1_units` in the planet's `pollution_kinds` table, and `mastery_speed` and `proximity` in its `robots` table. Measured values are in `docs/reviews/M3-05_MASTERY.md`.
 

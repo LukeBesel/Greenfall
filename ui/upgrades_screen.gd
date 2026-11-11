@@ -14,6 +14,7 @@ const TABS: Array[Dictionary] = [
 	{"id": "build", "name": "Build"},  # [ui3] [ui6] one-time buildings (HubBuilds): Yard, Machines, Story
 	{"id": "bots", "name": "Bots"},
 	{"id": "research", "name": "Research"},
+	{"id": "rigs", "name": "Rig"},  # Lumi's fitted modules (ui/rig_panel.gd); shown once a plan has arrived
 	{"id": "contracts", "name": "Requests"},  # [money] contracts + world events (onboard gate)
 ]  # [ui6] the Locker is a yard build now (systems/camp/locker_cabinet.gd), not a tab
 # l10n:end
@@ -278,6 +279,13 @@ func _populate() -> void:
 		cnp.world = w
 		_grid.add_child(cnp)
 		_panel = cnp
+		return
+	if _tab == "rigs":
+		_grid.columns = 1
+		var rp := RigPanel.new()
+		rp.world = w
+		_grid.add_child(rp)
+		_panel = rp
 		return
 	if _tab in ["patch", "build", "research", "bots"]:  # [ui6] [ui7] one list + one detail panel (ui/list_detail.gd)
 		_grid.columns = 1

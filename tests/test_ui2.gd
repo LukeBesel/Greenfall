@@ -177,7 +177,7 @@ func test_tabs_are_the_simple_six() -> void:
 	var ids: Array[String] = []
 	for t: Dictionary in UpgradesScreen.TABS:
 		ids.append(str(t["id"]))
-	assert_eq(ids, ["patch", "build", "bots", "research", "contracts"] as Array[String])  # [ui3] [ui6]
+	assert_eq(ids, ["patch", "build", "bots", "research", "rigs", "contracts"] as Array[String])  # [ui3] [ui6]; M3-08 adds the Rig tab
 	assert_eq(UpgradesScreen.TAB_ALIASES["builder"], "patch")
 	assert_eq(UpgradesScreen.TAB_ALIASES["cosmetics"], "patch")
 

@@ -16,6 +16,12 @@ func _ready() -> void:
 	var args: Dictionary[String, String] = _args()
 	if args.has("planets-dir"):
 		Planets.register_dir(args["planets-dir"])
+	if args.has("rig-study"):  # every rig module scored in every city (tools/pace_sim/rig_study.gd)
+		var study: Dictionary = RigStudy.run(Planets.current())
+		for line: String in RigStudy.lines(study):
+			print(line)
+		get_tree().quit(0 if bool(study["ok"]) and (study["dominant"] as Array).is_empty() else 1)
+		return
 	if args.get("model", MODEL_CURRENT) != MODEL_CURRENT:
 		get_tree().quit(PaceSimRedesign.main(args))
 		return

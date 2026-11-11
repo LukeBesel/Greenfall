@@ -7,6 +7,7 @@
     "patch": [["always"]],
     "bots": [["bench_tier", 2]],
     "research": [["bench_tier", 3]],
+    "rigs": [["flag", "rigs_open"]],
     "build": [["builds"]],
     "contracts": [["bench_tier", 4]],
     "rockets": [["hub_level", 4]]

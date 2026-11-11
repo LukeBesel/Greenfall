@@ -85,6 +85,14 @@ func _world(planet_id: StringName, lakes: String = "") -> void:
 	pol.setup(def, grid, cells, field, site_cells, {})
 	mastery = _mastery(planet_id)
 	pol.set_mastery(mastery)
+	# Every kind's tool is on (M3-08): these tests are about mastery, not the tool gates.
+	var rigs := Rigs.new()
+	_nodes.append(rigs)
+	rigs.setup(def, {})
+	for id: String in rigs.ids():
+		if rigs.is_tool(id) and rigs.fitted(rigs.slot_of(id)) == "":
+			rigs.grant(id)
+	pol.set_rigs(rigs)
 
 
 func _district_cells(id: String) -> PackedInt32Array:

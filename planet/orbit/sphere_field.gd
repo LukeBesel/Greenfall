@@ -68,6 +68,10 @@ var worth: HexWorth
 ## kind, 1 while Lumi lacks the tool for it (systems/pollution.gd keeps both).
 var piece_kind := PackedByteArray()
 var kind_blocked := PackedByteArray()
+## Floating waste carries no kind of its own (a lake hex is one kind whole), so while Lumi lacks
+## the tool for some floating kind the pollution system answers per hex: func(cell) -> bool open.
+var water_gated: bool = false
+var water_open: Callable
 ## func(cell: int) -> Array of {kind, share, pieces, type, models}: the heavy kinds a hex holds
 ## beside its loose junk, each with its share of the hex's piece volume. Invalid: loose junk only.
 var heavy_plan: Callable
@@ -341,6 +345,8 @@ func take_held(cell: int, vol: float) -> Array:
 ## Whether Lumi may scoop this piece: her tool for its pollution kind is in hand.
 func piece_open(pid: int) -> bool:
 	var kind: int = piece_kind[pid]
+	if water_gated and hex_water[piece_hex[pid]] == 1 and water_open.is_valid() and not water_open.call(piece_hex[pid]):
+		return false
 	return kind >= kind_blocked.size() or kind_blocked[kind] == 0
 
 

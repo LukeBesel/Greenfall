@@ -19,35 +19,35 @@ msgstr ""
 msgid "Every %s in the fleet."
 msgstr ""
 
-#: autoload/Economy.gd:174
+#: autoload/Economy.gd:175
 msgid "Base (Mk I, before tier and part rarity)"
 msgstr ""
 
-#: autoload/Economy.gd:174 ui/bench_lists.gd:11 ui/upgrades_panel.gd:39
+#: autoload/Economy.gd:175 ui/bench_lists.gd:11 ui/upgrades_panel.gd:39
 msgid "Base"
 msgstr ""
 
-#: autoload/Economy.gd:182 autoload/Economy.gd:184 ui/upgrade_card.gd:190
+#: autoload/Economy.gd:183 autoload/Economy.gd:185 ui/upgrade_card.gd:190
 msgid "%s Lv %d"
 msgstr ""
 
-#: autoload/Economy.gd:308
+#: autoload/Economy.gd:310
 msgid "Opens in a later city"
 msgstr ""
 
-#: autoload/Economy.gd:312
+#: autoload/Economy.gd:314
 msgid "Needs %s Lv %d"
 msgstr ""
 
-#: autoload/Economy.gd:315
+#: autoload/Economy.gd:317
 msgid "Needs research: %s"
 msgstr ""
 
-#: autoload/Economy.gd:318 systems/research.gd:210
+#: autoload/Economy.gd:320 systems/research.gd:210
 msgid "Needs base level %d"
 msgstr ""
 
-#: autoload/Economy.gd:504
+#: autoload/Economy.gd:506
 msgid "Mk I"
 msgstr ""
 
@@ -747,51 +747,51 @@ msgstr ""
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr ""
 
-#: player/patch.gd:198
+#: player/patch.gd:213
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr ""
 
-#: player/patch.gd:312
+#: player/patch.gd:327
 msgid "No seeds yet. Keep cleaning."
 msgstr ""
 
-#: player/patch.gd:349
+#: player/patch.gd:364
 msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 msgstr ""
 
-#: player/patch.gd:356
+#: player/patch.gd:371
 msgid "Out of seeds. Blooming plants drop more."
 msgstr ""
 
-#: player/patch.gd:363
+#: player/patch.gd:378
 msgid "Watering can is empty. It fills in the base yard, by the bin."
 msgstr ""
 
-#: player/patch.gd:622
+#: player/patch.gd:637
 msgid "PERFECT BALE  %s"
 msgstr ""
 
-#: player/patch.gd:628
+#: player/patch.gd:643
 msgid "OVERSTUFFED  %s"
 msgstr ""
 
-#: player/patch.gd:631
+#: player/patch.gd:646
 msgid "GOOD BALE  %s"
 msgstr ""
 
-#: player/patch.gd:635
+#: player/patch.gd:650
 msgid "SURGE  %s"
 msgstr ""
 
-#: player/patch.gd:638
+#: player/patch.gd:653
 msgid "  (streak +%d%%)"
 msgstr ""
 
-#: player/patch.gd:675
+#: player/patch.gd:690
 msgid "Salvaged: %s"
 msgstr ""
 
-#: player/patch.gd:704
+#: player/patch.gd:719
 msgid "Recovered: %s"
 msgstr ""
 
@@ -1139,35 +1139,35 @@ msgstr ""
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr ""
 
-#: scenes/slice.gd:261
+#: scenes/slice.gd:263
 msgid "OUTPOST %d · Lv%d"
 msgstr ""
 
-#: scenes/slice.gd:261
+#: scenes/slice.gd:263
 msgid "OUTPOST %d · RUIN"
 msgstr ""
 
-#: scenes/slice_orbit.gd:367
+#: scenes/slice_orbit.gd:368
 msgid "HEX CLEAN!"
 msgstr ""
 
-#: scenes/slice_orbit.gd:383
+#: scenes/slice_orbit.gd:384
 msgid "Milestone: %d hexes clean!"
 msgstr ""
 
-#: scenes/slice_orbit.gd:549 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:558 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:582
 msgid "E   Fix the workbench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:549 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:558 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:1008
+#: scenes/slice_orbit.gd:1017
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr ""
 
-#: scenes/slice_orbit.gd:1108
+#: scenes/slice_orbit.gd:1117
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr ""
 
@@ -1975,7 +1975,7 @@ msgstr ""
 msgid "Lumi Levels"
 msgstr ""
 
-#: systems/collection.gd:94 ui/contracts_panel.gd:25 ui/upgrades_screen.gd:17
+#: systems/collection.gd:94 ui/contracts_panel.gd:25 ui/upgrades_screen.gd:18
 msgid "Requests"
 msgstr ""
 
@@ -2233,7 +2233,7 @@ msgstr ""
 msgid "+{amount} {robot} {stat}"
 msgstr ""
 
-#: systems/mastery.gd:235
+#: systems/mastery.gd:236
 msgid "Lumi must learn %s first"
 msgstr ""
 
@@ -2302,7 +2302,7 @@ msgstr ""
 msgid "compartment size"
 msgstr ""
 
-#: systems/research.gd:411
+#: systems/research.gd:411 systems/rigs.gd:57
 msgid "bale value"
 msgstr ""
 
@@ -2310,7 +2310,7 @@ msgstr ""
 msgid "magnet radius"
 msgstr ""
 
-#: systems/research.gd:411
+#: systems/research.gd:411 systems/rigs.gd:54
 msgid "scoop speed"
 msgstr ""
 
@@ -2326,7 +2326,7 @@ msgstr ""
 msgid "lake clarity"
 msgstr ""
 
-#: systems/research.gd:413
+#: systems/research.gd:413 systems/rigs.gd:55
 msgid "speed"
 msgstr ""
 
@@ -2376,6 +2376,62 @@ msgstr ""
 
 #: systems/research.gd:639
 msgid "Research complete: %s."
+msgstr ""
+
+#: systems/rigs.gd:51
+msgid "chest size"
+msgstr ""
+
+#: systems/rigs.gd:52
+msgid "sweep width"
+msgstr ""
+
+#: systems/rigs.gd:53
+msgid "reach"
+msgstr ""
+
+#: systems/rigs.gd:56
+msgid "bales carried"
+msgstr ""
+
+#: systems/rigs.gd:58
+msgid "detector range"
+msgstr ""
+
+#: systems/rigs.gd:59
+msgid "parts found"
+msgstr ""
+
+#: systems/rigs.gd:60
+msgid "robots' bonus near Lumi"
+msgstr ""
+
+#: systems/rigs.gd:61
+msgid "range of that bonus"
+msgstr ""
+
+#: systems/rigs.gd:126
+msgid "Rig: %s"
+msgstr ""
+
+#: systems/rigs.gd:253
+msgid "New tool: %s. Fit it at the workbench."
+msgstr ""
+
+#: systems/rigs.gd:313
+msgid "Its plan arrives when %s opens."
+msgstr ""
+
+#: systems/rigs.gd:371
+msgid "Clears %s"
+msgstr ""
+
+#: systems/rigs.gd:394
+msgid "%s work"
+msgstr ""
+
+#: systems/rigs.gd:483
+msgid "at least %d"
 msgstr ""
 
 #: systems/robot_builder.gd:268 systems/robot_design.gd:60
@@ -2600,7 +2656,7 @@ msgstr ""
 msgid "%s points proudly at a new bud."
 msgstr ""
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:608
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:609
 msgid "E   CD player: %s"
 msgstr ""
 
@@ -2796,8 +2852,9 @@ msgstr ""
 msgid "Fewer %s"
 msgstr ""
 
-#: ui/bench_bots.gd:12 ui/build_panel.gd:102 ui/robot_card.gd:114
-#: ui/robot_card.gd:249 ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
+#: ui/bench_bots.gd:12 ui/build_panel.gd:102 ui/rig_panel.gd:193
+#: ui/robot_card.gd:114 ui/robot_card.gd:249 ui/upgrades_screen.gd:14
+#: ui/yard_builds_panel.gd:17
 msgid "Build"
 msgstr ""
 
@@ -3106,7 +3163,7 @@ msgstr ""
 msgid "Watch the story"
 msgstr ""
 
-#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:172
+#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:173
 msgid "Close  [%s]"
 msgstr ""
 
@@ -4849,6 +4906,38 @@ msgstr ""
 msgid "%s cancelled. Cubes refunded."
 msgstr ""
 
+#: ui/rig_panel.gd:102 ui/upgrades_screen.gd:17
+msgid "Rig"
+msgstr ""
+
+#: ui/rig_panel.gd:103
+msgid "One module in each slot. Swapping is free. A city's tool must be fitted to clear that city's waste."
+msgstr ""
+
+#: ui/rig_panel.gd:121
+msgid "No rig on this world."
+msgstr ""
+
+#: ui/rig_panel.gd:138
+msgid "Empty"
+msgstr ""
+
+#: ui/rig_panel.gd:163
+msgid "Fitted"
+msgstr ""
+
+#: ui/rig_panel.gd:165 data/robot_parts.json:slots[tool].name
+msgid "Tool"
+msgstr ""
+
+#: ui/rig_panel.gd:187
+msgid "Take off"
+msgstr ""
+
+#: ui/rig_panel.gd:190
+msgid "Fit"
+msgstr ""
+
 #: ui/robot_card.gd:94
 msgid "Tier"
 msgstr ""
@@ -5433,11 +5522,11 @@ msgstr ""
 msgid "Research"
 msgstr ""
 
-#: ui/upgrades_screen.gd:154
+#: ui/upgrades_screen.gd:155
 msgid "WORKBENCH"
 msgstr ""
 
-#: ui/upgrades_screen.gd:273
+#: ui/upgrades_screen.gd:274
 msgid "Not open yet. Keep playing."
 msgstr ""
 
@@ -10983,11 +11072,11 @@ msgid "Wrecks"
 msgstr ""
 
 #: planets/verdance/data/pollution.json:kinds.wrecks.hint
-msgid "WRECKS  LIFT THEM"
+msgid "WRECKS  CUT AND LIFT THEM"
 msgstr ""
 
 #: planets/verdance/data/pollution.json:kinds.wrecks.prompt
-msgid "WRECKS  NEED LIFT STRENGTH 2"
+msgid "WRECKS  NEED THE PLATE CUTTER"
 msgstr ""
 
 #: planets/verdance/data/pollution.json:kinds.slick.name
@@ -10999,7 +11088,7 @@ msgid "SLICK  SKIM IT"
 msgstr ""
 
 #: planets/verdance/data/pollution.json:kinds.slick.prompt
-msgid "SLICK  NEEDS HOVER JETS"
+msgid "SLICK  NEEDS THE SKIM SKIRT"
 msgstr ""
 
 #: planets/verdance/data/pollution.json:kinds.smog.name
@@ -11011,7 +11100,7 @@ msgid "SMOG  MIST IT WITH THE CAN"
 msgstr ""
 
 #: planets/verdance/data/pollution.json:kinds.smog.prompt
-msgid "SMOG  NEEDS THE WATERING CAN"
+msgid "SMOG  NEEDS THE MIST SCRUBBER"
 msgstr ""
 
 #: planets/verdance/data/pollution.json:kinds.blight.name
@@ -11027,7 +11116,7 @@ msgid "BLIGHT  PLANT IT CLEAN"
 msgstr ""
 
 #: planets/verdance/data/pollution.json:kinds.blight.prompt
-msgid "BLIGHT  NEEDS THE PLANTER"
+msgid "BLIGHT  NEEDS THE SOIL DOSER"
 msgstr ""
 
 #: data/radio.json:songs[verdance_sprout].name data/songs.json:songs[sprout_step].title
@@ -11550,6 +11639,122 @@ msgstr ""
 msgid "The whole planet"
 msgstr ""
 
+#: planets/verdance/data/rigs.json:slots[arm].name
+msgid "Arm"
+msgstr ""
+
+#: planets/verdance/data/rigs.json:slots[chest].name
+msgid "Chest"
+msgstr ""
+
+#: planets/verdance/data/rigs.json:slots[drive].name
+msgid "Drive"
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.plate_cutter.name
+msgid "Plate Cutter"
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.plate_cutter.desc
+msgid "A salvaged cutting head. Slices wrecks into pieces Lumi can lift. Narrow."
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.wide_sweep.name
+msgid "Wide Sweep"
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.wide_sweep.desc
+msgid "A broad intake fan. Sweeps a wide path of loose junk, but only close up."
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.long_reach.name
+msgid "Long Reach"
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.long_reach.desc
+msgid "A telescoping boom. Pulls junk in from far off and skims well from the bank. Thin beam."
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.guide_arm.name
+msgid "Guide Arm"
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.guide_arm.desc
+msgid "A signal paddle. Robots working near Lumi get three times the boost from her. Her own scoop slows."
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.deep_hold.name
+msgid "Deep Hold"
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.deep_hold.desc
+msgid "A bigger hopper bolted under the chest. Fewer trips to the scale. Heavy."
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.press_frame.name
+msgid "Press Frame"
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.press_frame.desc
+msgid "Stiff press rails. Bales come out tighter and pay more. Less room inside."
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.mist_scrubber.name
+msgid "Mist Scrubber"
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.mist_scrubber.desc
+msgid "A filter drum and spray bar. Turns the can's water into a mist that scrubs smog. The drum takes chest room."
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.sorter.name
+msgid "Sorter"
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.sorter.desc
+msgid "A sorting tray. Picks out far more parts worth keeping, for more robots. Bales pay a little less."
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.sprint_coils.name
+msgid "Sprint Coils"
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.sprint_coils.desc
+msgid "Rewound hover coils. Much faster over ground. They take a little chest room."
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.skim_skirt.name
+msgid "Skim Skirt"
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.skim_skirt.desc
+msgid "A float skirt with a skimming lip. Carries Lumi over water and lifts slick off it. Slower on land."
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.tow_hitch.name
+msgid "Tow Hitch"
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.tow_hitch.desc
+msgid "A bale rack on the back. Carries two more bales a trip. Slower."
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.soil_doser.name
+msgid "Soil Doser"
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.soil_doser.desc
+msgid "A dosing bar under the hover ring. Feeds the cleansing plants that draw blight out of the soil. Slower."
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.relay_mast.name
+msgid "Relay Mast"
+msgstr ""
+
+#: planets/verdance/data/rigs.json:modules.relay_mast.desc
+msgid "A tall relay on the back. Robots much further away still get a boost from Lumi, and the detector sees further. Slower."
+msgstr ""
+
 #: data/robot_parts.json:slots[chassis].name
 msgid "Chassis"
 msgstr ""
@@ -11560,10 +11765,6 @@ msgstr ""
 
 #: data/robot_parts.json:slots[mobility].name
 msgid "Mobility"
-msgstr ""
-
-#: data/robot_parts.json:slots[tool].name
-msgid "Tool"
 msgstr ""
 
 #: data/robot_parts.json:slots[topper].name

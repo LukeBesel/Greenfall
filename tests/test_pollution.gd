@@ -20,6 +20,7 @@ var cells: SphereCells
 var field: SphereField
 var site_cells := PackedInt32Array()
 var pol: Pollution
+var rigs: Rigs
 
 
 func before_all() -> void:
@@ -46,6 +47,7 @@ func after_each() -> void:
 			n.free()
 	_nodes.clear()
 	pol = null
+	rigs = null
 	GameState.currencies = _saved["currencies"]
 	GameState.flags = _saved["flags"]
 	GameState.upgrades = _saved["upgrades"]
@@ -73,10 +75,22 @@ func _world(planet_id: StringName, lakes: String = "") -> void:
 	pol = _pollution({})
 
 
+## Fits rig modules (the tools the kinds are gated by since M3-08).
+func _fit(ids: Array[String]) -> void:
+	for id: String in ids:
+		rigs.grant(id)
+	pol.refresh_gates()
+
+
 func _pollution(saved: Dictionary) -> Pollution:
 	var p := Pollution.new()
 	_nodes.append(p)
 	p.setup(def, grid, cells, field, site_cells, saved)
+	if rigs == null or not is_instance_valid(rigs):
+		rigs = Rigs.new()
+		_nodes.append(rigs)
+		rigs.setup(def, {})
+	p.set_rigs(rigs)
 	return p
 
 
@@ -213,7 +227,7 @@ func test_a_litter_hex_is_laid_out_as_before_the_kinds_existed() -> void:
 
 # --- Wrecks -----------------------------------------------------------------------------------
 
-func test_wrecks_are_heavy_pieces_gated_by_lift() -> void:
+func test_wrecks_are_heavy_pieces_gated_by_the_cutter() -> void:
 	_world(FIRST)
 	var c: int = _hex_with("scrapyard", ["litter", "wrecks"])
 	field.materialize(c)
@@ -227,31 +241,32 @@ func test_wrecks_are_heavy_pieces_gated_by_lift() -> void:
 	assert_eq(heavy, int(pol.kind("wrecks")["spawn"]["pieces"]))
 	assert_almost_eq(heavy_vol, pol.share_of(c, "wrecks") * field.worth.work(c), 0.01, "wrecks hold their share of the hex")
 	assert_almost_eq(field.hex_left[c], field.worth.work(c), 0.01, "the hex still holds its city's work")
-	assert_false(pol.can_work("wrecks"), "no lift, no wrecks")
+	GameState.upgrades["lift_strength"] = 2
+	pol.refresh_gates()
+	assert_false(pol.can_work("wrecks"), "Lift Strength alone does not open wrecks any more")
 	assert_true(pol.hex_blocked(c))
 	assert_eq(pol.hex_note(c), str(pol.kind("wrecks")["prompt"]), "the readout says what the wrecks need")
 	_hand_clean(c)
 	assert_true(cells.is_dirty(c), "litter alone does not clean a wreck hex")
 	assert_eq(pol.kinds_left(c), ["wrecks"] as Array[String])
-	GameState.upgrades["lift_strength"] = 2
-	pol.refresh_gates()
+	GameState.upgrades["lift_strength"] = 0
+	_fit(["plate_cutter"])
 	assert_true(pol.can_work("wrecks"))
 	assert_eq(pol.hex_note(c), str(pol.kind("wrecks")["hint"]))
 	_hand_clean(c)
-	assert_false(cells.is_dirty(c), "with Lift Strength 2 the hex comes clean")
+	assert_false(cells.is_dirty(c), "with the Plate Cutter fitted the hex comes clean")
 
 
 func test_a_wreck_hex_pays_its_citys_hex_value() -> void:
 	_world(FIRST)
-	GameState.upgrades["lift_strength"] = 2
-	pol.refresh_gates()
+	_fit(["plate_cutter"])
 	var c: int = _hex_with("scrapyard", ["litter", "wrecks"])
 	assert_almost_eq(_hand_clean(c), field.worth.cubes(c), field.worth.cubes(c) * 0.03)
 
 
 # --- Slick ------------------------------------------------------------------------------------
 
-func test_slick_is_the_lake_hexes_and_needs_hover() -> void:
+func test_slick_is_the_lake_hexes_and_needs_the_skirt() -> void:
 	_world(FIRST, "kettle_bay")
 	var list: PackedInt32Array = _district_cells("kettle_bay")
 	var c: int = list[list.size() - 1]
@@ -260,10 +275,15 @@ func test_slick_is_the_lake_hexes_and_needs_hover() -> void:
 	assert_false(pol.can_work("slick"))
 	assert_eq(pol.hex_note(c), str(pol.kind("slick")["prompt"]))
 	GameState.upgrades["hover_jets"] = 1
-	assert_true(pol.can_work("slick"))
-	assert_true("skim" in (pol.kind("slick")["robot_roles"] as Array))
+	pol.refresh_gates()
+	assert_false(pol.can_work("slick"), "Hover Jets alone do not skim")
 	field.materialize(c)
 	var pid: int = field.pieces_in(c)[0]
+	assert_false(field.piece_open(pid), "what floats on a slick hex cannot be scooped without the skirt")
+	_fit(["skim_skirt"])
+	assert_true(pol.can_work("slick"))
+	assert_true(field.piece_open(pid))
+	assert_true("skim" in (pol.kind("slick")["robot_roles"] as Array))
 	pol.piece_taken(pid, 1.0)
 	assert_eq(_events[-1], ["slick", 1.0, true], "skimming a lake hex counts as slick")
 
@@ -282,6 +302,12 @@ func test_smog_keeps_a_hex_dirty_until_it_is_misted() -> void:
 	assert_eq(pol.hand_work("plant", c, 1.0, 100.0), {}, "the planter does nothing to smog")
 	assert_true(pol.hand_work("water", c, 1.0, 100.0).has("blocked"), "no watering can yet")
 	GameState.flags["seeds_unlocked"] = true
+	assert_true(pol.hand_work("water", c, 1.0, 100.0).has("blocked"), "the can alone does not scrub smog")
+	_fit(["mist_scrubber"])
+	var chest: float = Economy.stat("capacity")
+	rigs.unfit("chest")
+	assert_lt(chest, Economy.stat("capacity"), "the scrubber's drum takes chest room")
+	_fit(["mist_scrubber"])
 	var take: Dictionary = pol.hand_work("water", c, 1.0, 100.0)
 	assert_eq(str(take["kind"]), "smog")
 	assert_almost_eq(float(take["vol"]), 0.9 * Pace.pulse_volume() * maxf(Economy.stat("scoop_rate"), 0.5), 0.001, "one second of misting at the hand factor")
@@ -299,6 +325,7 @@ func test_smog_keeps_a_hex_dirty_until_it_is_misted() -> void:
 func test_a_smog_hex_pays_its_citys_hex_value() -> void:
 	_world(FIRST)
 	GameState.flags["seeds_unlocked"] = true
+	_fit(["mist_scrubber"])
 	var c: int = _hex_with("highreach", ["litter", "smog"])
 	assert_almost_eq(_hand_clean(c, "water"), field.worth.cubes(c), field.worth.cubes(c) * 0.03)
 
@@ -306,6 +333,11 @@ func test_a_smog_hex_pays_its_citys_hex_value() -> void:
 func test_blight_is_cleared_with_cleansing_plants_that_cost_seeds() -> void:
 	_world(FIRST)
 	GameState.flags["seeds_unlocked"] = true
+	GameState.add_currency("seeds", BigNum.from_float(1.0))
+	var first: int = _hex_with("lowmeadow", ["litter", "blight"])
+	assert_true(pol.hand_work("plant", first, 1.0, 100.0).has("blocked"), "the planter alone does not treat blight")
+	GameState.spend("seeds", BigNum.from_float(1.0))
+	_fit(["soil_doser"])
 	var done: int = 0
 	var paid: float = 0.0
 	var worth: float = 0.0
@@ -400,6 +432,7 @@ func test_part_cleared_kinds_round_trip_and_old_saves_load() -> void:
 	_world(FIRST)
 	GameState.flags["seeds_unlocked"] = true
 	GameState.add_currency("seeds", BigNum.from_float(2.0))
+	_fit(["mist_scrubber", "soil_doser"])
 	var smog: int = _hex_with("highreach", ["litter", "smog"])
 	var blight: int = _hex_with("lowmeadow", ["litter", "blight"])
 	pol.hand_work("water", smog, 2.0, 1000.0)

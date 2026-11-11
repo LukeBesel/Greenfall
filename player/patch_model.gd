@@ -135,6 +135,10 @@ var core_glow: float = 1.0
 const EYE_MIN_ENERGY: float = 2.8  # [v2feel]
 
 
+## The fitted rig modules ([{id, slot, shape, color}], systems/rigs.gd), kept so a rebuild puts them
+## back. They are function, not looks: no variant or Locker slot touches them.
+var _rig: Array[Dictionary] = []
+var _rig_nodes: Array[Node3D] = []
 ## Set before adding to the tree to build a given design (previews) instead of the worn one.
 var preview_variant: String = ""
 
@@ -150,6 +154,29 @@ func _ready() -> void:
 	_build()
 	if DevHooks.has("beam-demo"):
 		beam_at(Vector3(0.45, 0.25, -0.9))
+
+
+## Shows these rig modules on the body in place of the ones shown before (player/rig_parts.gd).
+func set_rig(parts: Array[Dictionary]) -> void:
+	_rig = parts
+	for n: Node3D in _rig_nodes:
+		if is_instance_valid(n):
+			n.queue_free()
+	_rig_nodes = RigParts.attach(self, _rig) if _float != null else []
+
+
+## The ids of the rig modules shown on the body, in slot order.
+func rig_shown() -> Array[String]:
+	var out: Array[String] = []
+	for n: Node3D in _rig_nodes:
+		if is_instance_valid(n) and not n.is_queued_for_deletion():
+			out.append(str(n.get_meta("module", "")))
+	return out
+
+
+## Where a rig part mounts (RigParts.MOUNT_WRIST: the right wrist; else the body).
+func rig_mount(mount: String) -> Node3D:
+	return _arm_r.get_meta("wrist") as Node3D if mount == RigParts.MOUNT_WRIST and _arm_r != null else _float
 
 
 ## Switch colorway (cosmetic unlocks).
@@ -463,6 +490,7 @@ func _build() -> void:
 	_beam.visible = false
 	add_child(_beam)
 	LumiStyle.after_build(self)  # [style] eyes, side modules, hover ring, extra add-ons, laser colour
+	_rig_nodes = RigParts.attach(self, _rig)
 
 
 # --- Design add-ons -----------------------------------------------------------------------------
