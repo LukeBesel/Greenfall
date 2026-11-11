@@ -251,3 +251,5 @@ Direction: the flat world's vibe is better, so build it into the round world: bu
 55. The objective led me under a building I can't get to. Every target must be reachable.
 56. Overall: it still needs more polish.
 57. Balance the timing (base 3 and the rest) so the first planet takes 4–5 hours in total.
+58. Focus on making the first world fully playable, fun, well paced and good-looking; what works here feeds into the other worlds. Moving on to the next planet comes at 4–5 hours, NOT at 100% cleaned. The planet might be only about 20% cleaned at that point. Cleaning the rest is optional, for later.
+59. For cleanup work that doesn't much affect the game (removing the flat world and the like), use Opus helpers.
