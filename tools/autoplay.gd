@@ -1836,7 +1836,7 @@ func _essential(type_id: String) -> bool:
 		return type_id != "skimmer" or int(GameState.world.get("hub_level", 1)) >= 2
 	match type_id:
 		"drip":
-			return _drips() * HEXES_PER_DRIP < _city_gardens()
+			return _target_stage() >= 1 and _drips() * HEXES_PER_DRIP < _city_gardens()
 		"skimmer":
 			return _lake_dirty()
 		"scoopie":  # [beat] a small cleaning crew is worth more than saving a few minutes for the base
@@ -1948,7 +1948,9 @@ func _next_robot() -> String:
 	var saving: bool = not _hub_need().is_empty() and not _hub_mats_short()
 	if AutoplayCampaign.frontier_kid(world) == "sunken_city" and _lake_dirty() and fleet.count("skimmer") < 14:
 		order.append("skimmer")  # [beat] the flooded city is skimmed, not scooped
-	if seeds_on and gardens > 0 and _drips() * HEXES_PER_DRIP < gardens:
+	# Waterers once the city has its first stage: before that its stage waits on cleaning, and a
+	# waterer's Parts buy two cleaners.
+	if seeds_on and gardens > 0 and _drips() * HEXES_PER_DRIP < gardens and _target_stage() >= 1:
 		order.append("drip")
 	if haul == 0:
 		order.append("haulbug")  # the first helper carries the bales, so Lumi stays at the work
@@ -1960,15 +1962,17 @@ func _next_robot() -> String:
 	var finder: String = str((Economy.robot_cfg.get("chain", {}) as Dictionary).get("finder", ""))
 	if finder != "" and Research.robot_unlocked(finder) and fleet.count(finder) * FINDER_ONE_IN <= fleet.robot_total():
 		order.append(finder)
-	if seeds_on and fleet.count("seedling") == 0 and GameState.get_currency("seeds").to_float() > 8.0:
+	var planting: bool = seeds_on and _target_stage() >= 1  # planters too wait for the first stage
+	if planting and fleet.count("seedling") == 0 and GameState.get_currency("seeds").to_float() > 8.0:
 		order.append("seedling")
-	if seeds_on and fleet.count("seedling") * SCOOPIES_PER_SEEDLING < scoop and GameState.get_currency("seeds").to_float() > 50.0:
+	if planting and fleet.count("seedling") * SCOOPIES_PER_SEEDLING < scoop and GameState.get_currency("seeds").to_float() > 50.0:
 		order.append("seedling")  # seeds piling up: a planter for every few cleaners
 	order.append("scoopie")
 	if scoop >= 2 and fleet.count("skimmer") == 0 and _lake_dirty():
 		order.append("skimmer")
 	if seeds_on:
-		order.append("drip")
+		if _target_stage() >= 1:
+			order.append("drip")
 	order.append("multibot")
 	if haul < scoop:
 		order.append("haulbug")
@@ -1999,6 +2003,13 @@ func _city_gardens() -> int:
 		if hl.level_of(h) >= 2:
 			_gardens_n += 1
 	return _gardens_n
+
+
+## The regrowth stage of the city the bot is heading for (5 when there are no cities).
+func _target_stage() -> int:
+	var d: Districts = _districts()
+	var target: String = AutoplayTravel.target_city(d, _sources()) if d != null else ""
+	return d.stage_of(target) if target != "" else Districts.MAX_STAGE
 
 
 ## The hexes of the city the bot is heading for (the one it stands in, unless it is only home for
