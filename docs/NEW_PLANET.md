@@ -348,3 +348,5 @@ Code: `core/planet_cfg.gd` (merging, the site kit, checks), `planet/orbit/globe_
 `planet/sites/hub_plan.gd` (hubs), `core/sound_cfg.gd`, `core/life_cfg.gd`,
 `story/planet_steps.gd` (the card's hub steps), `planet/sites/planet_smoke.gd` (the smoke),
 `tests/test_planet_data.gd` (the data check).
+
+**Art style.** New landmarks, machines and props follow the approved look in docs/ART_KIT.md ("The approved look"): same kit, palette and quality as Verdance's v6 machines and landmarks.
