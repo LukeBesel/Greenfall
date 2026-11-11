@@ -241,6 +241,13 @@ func _set_more(on: bool) -> void:
 		_back_hint.visible = not on
 
 
+## [v6screens] The languages a player can pick: Settings.LANGUAGES without the translators' test
+## language (still there with --locale=pseudo, or when it is the saved choice).
+static func picker_languages() -> Array:
+	return Settings.LANGUAGES.filter(func(l: Array) -> bool:
+		return str(l[0]) != "pseudo" or Settings.language == "pseudo" or Settings.locale_override == "pseudo")
+
+
 ## [ui2] The few settings most players want, then a way to everything else.
 func _build_basics(p: VBoxContainer) -> void:
 	# [ui5] No "Basics" caption (the tab says it), so the last row fits above the footer.
@@ -257,8 +264,9 @@ func _build_basics(p: VBoxContainer) -> void:
 	_slider(p, tr("Mouse sensitivity"), Settings.mouse_sensitivity, 0.001, 0.008, 0.00025,
 		func(v: float) -> String: return "x%.1f" % (v / 0.0035),
 		func(v: float) -> void: Settings.mouse_sensitivity = v)
-	var codes: Array = Settings.LANGUAGES.map(func(l: Array) -> String: return str(l[0]))
-	var names: Array = Settings.LANGUAGES.map(func(l: Array) -> String: return tr("System default") if str(l[0]) == "" else str(l[1]))
+	var langs: Array = picker_languages()  # [v6screens] no "Pseudo (test)" for players
+	var codes: Array = langs.map(func(l: Array) -> String: return str(l[0]))
+	var names: Array = langs.map(func(l: Array) -> String: return tr("System default") if str(l[0]) == "" else str(l[1]))
 	_cycler(p, tr("Language"), names, maxi(0, codes.find(Settings.language)), func(i: int) -> void:
 		Settings.language = codes[i]
 		Settings.apply_language()
@@ -576,22 +584,21 @@ func apply_binding(action: String, ev: InputEvent) -> void:
 func _build_gameplay(p: VBoxContainer) -> void:
 	# [l10n] Language picker: System default, English, sample languages, Pseudo (test).
 	_section(p, tr("Language"))
-	var codes: Array = Settings.LANGUAGES.map(func(l: Array) -> String: return str(l[0]))
-	var names: Array = Settings.LANGUAGES.map(func(l: Array) -> String: return tr("System default") if str(l[0]) == "" else str(l[1]))
+	var langs: Array = picker_languages()  # [v6screens] no "Pseudo (test)" for players
+	var codes: Array = langs.map(func(l: Array) -> String: return str(l[0]))
+	var names: Array = langs.map(func(l: Array) -> String: return tr("System default") if str(l[0]) == "" else str(l[1]))
 	_cycler(p, tr("Language"), names, maxi(0, codes.find(Settings.language)), func(i: int) -> void:
 		Settings.language = codes[i]
 		Settings.apply_language()
-		_relocalize.call_deferred(), tr("Menus, HUD, subtitles and story text. Pseudo is for testing translations."))
+		_relocalize.call_deferred())  # [v6screens] the hint named the test language, which players no longer see
 	_section(p, tr("Comfort"))
 	_slider(p, tr("Camera shake"), Settings.shake_intensity, 0.0, 1.0, 0.05, _pct,
 		func(v: float) -> void: Settings.shake_intensity = v)
 	_toggle(p, tr("Reduced motion"), Settings.reduced_motion, func(v: bool) -> void: Settings.reduced_motion = v,
 		tr("Calmer camera and fewer bouncy effects."))
 	_section(p, tr("Interface"))
-	_cycler(p, tr("Number format"), [tr("Short (1.2K)"), tr("Scientific (1.2e3)"), tr("Engineering (1.2e3)")], Settings.number_format,
-		func(i: int) -> void: Settings.number_format = i)
-	_toggle(p, tr("Best-value tags"), Settings.best_value_tags, func(v: bool) -> void: Settings.best_value_tags = v,
-		tr("Tag the affordable upgrade that gives the most per cube."))
+	# [v6screens] No "Number format" (the HUD, the workbench and the map never used it) and no
+	# "Best-value tags" (the workbench lists have no upgrade cards to tag): options that did nothing.
 	_cycler(p, tr("HUD"), [tr("Full"), tr("Minimal"), tr("Hidden")], Settings.hud_mode, func(i: int) -> void:  # [hud]
 		Settings.hud_mode = i, tr("Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."))
 
