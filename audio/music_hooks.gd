@@ -17,21 +17,12 @@ var _pinned_resto: float = -1.0  # [sound] dev --restoration
 
 
 func _ready() -> void:
-	EventBus.upgrade_bought.connect(func(_id: String, _lvl: int) -> void:
-		Audio.music_activity(0.06)  # [sound] busy play picks the upbeat tracks
-		Audio.music_sting("upgrade"))
-	EventBus.robot_built.connect(func(_n: String) -> void:
-		Audio.music_activity(0.15)
-		Audio.music_sting("robot_built"))
-	EventBus.hex_restored.connect(func(_h: int) -> void:
-		Audio.music_activity(0.1)
-		Audio.music_sting("level_up"))
-	EventBus.hex_cleaned.connect(func(_h: int, _p: Vector3, _b: BigNum) -> void:
-		Audio.music_activity(0.07)
-		var now: float = Time.get_ticks_msec() * 0.001
-		if now - _last_hex_sting > 6.0:
-			_last_hex_sting = now
-			Audio.music_sting("hex_clean"))
+	# Methods, not lambdas: a lambda that touches nothing of this node is not tied to it, so its
+	# connection would outlive the node and every world built would add one more sting per event.
+	EventBus.upgrade_bought.connect(_on_upgrade_bought)
+	EventBus.robot_built.connect(_on_robot_built)
+	EventBus.hex_restored.connect(_on_hex_restored)
+	EventBus.hex_cleaned.connect(_on_hex_cleaned)
 	Audio.set_music_mood("explore")
 	_tunes_setup()  # [tunes]
 	# [sound] Dev: --planet-theme=<planet id> and --restoration=0..1 (pins it).
@@ -47,6 +38,29 @@ func _ready() -> void:
 ## over), the CDs in the rubble and the quick-select (N, with Glim's Music upgrade).
 ## Dev: --cds=id,id grants CDs, --scratched=id,id puts scratched CDs in the case, --cd-drop makes
 ## the next cleaned hex turn up a CD.
+func _on_upgrade_bought(_id: String, _level: int) -> void:
+	Audio.music_activity(0.06)  # [sound] busy play picks the upbeat tracks
+	Audio.music_sting("upgrade")
+
+
+func _on_robot_built(_robot_name: String) -> void:
+	Audio.music_activity(0.15)
+	Audio.music_sting("robot_built")
+
+
+func _on_hex_restored(_hex_id: int) -> void:
+	Audio.music_activity(0.1)
+	Audio.music_sting("level_up")
+
+
+func _on_hex_cleaned(_hex_id: int, _pos: Vector3, _bonus: BigNum) -> void:
+	Audio.music_activity(0.07)
+	var now: float = Time.get_ticks_msec() * 0.001
+	if now - _last_hex_sting > 6.0:
+		_last_hex_sting = now
+		Audio.music_sting("hex_clean")
+
+
 func _tunes_setup() -> void:
 	for id: String in DevHooks.get_s("cds", "").split(",", false):
 		Tunes.grant(id.strip_edges(), true)

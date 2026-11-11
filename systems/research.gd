@@ -579,8 +579,10 @@ static func award_data(base: float) -> float:
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	EventBus.hex_cleaned.connect(func(_h: int, _p: Vector3, _b: BigNum) -> void: award_data(reward("hex_cleaned")))
-	EventBus.hex_restored.connect(func(_h: int) -> void: award_data(reward("hex_restored")))
+	# Methods, not lambdas: a lambda that calls only static functions is not tied to this node, so
+	# its connection would outlive the node and every world built would pay the notes once more.
+	EventBus.hex_cleaned.connect(_on_hex_cleaned)
+	EventBus.hex_restored.connect(_on_hex_restored)
 	for k: String in ["plants_bloomed", "shards_found", "robot_bales"]:
 		_seen[k] = float(GameState.stats.get(k, 0.0))
 	# Finish whatever completed while we were away (quietly, then one summary toast).
@@ -622,6 +624,14 @@ func _announce_story(id: String) -> void:
 		(w as Wren).speak(line, (w as Wren).stage())
 	else:
 		EventBus.toast.emit(tr("New robot plans: %s. %s") % [tr(str(def(id).get("name", id))), ". ".join(effect_lines(id))], "story")
+
+
+func _on_hex_cleaned(_hex_id: int, _pos: Vector3, _bonus: BigNum) -> void:
+	award_data(reward("hex_cleaned"))
+
+
+func _on_hex_restored(_hex_id: int) -> void:
+	award_data(reward("hex_restored"))
 
 
 func _on_completed(id: String) -> void:

@@ -600,7 +600,7 @@ func _process(delta: float) -> void:
 		var t: float = clampf(_fly_t, 0.0, 1.0)
 		var dir: Vector3 = _fly_from.slerp(_fly_to, t).normalized()
 		_marker.position = dir * (1.02 + sin(t * PI) * 0.25)
-		_yaw = lerp_angle(_yaw, -atan2(dir.x, dir.z), delta * 3.0)
+		_yaw = lerp_angle(_yaw, -atan2(dir.x, dir.z), clampf(delta * 3.0, 0.0, 1.0))
 		_pitch = lerpf(_pitch, asin(clampf(dir.y, -1.0, 1.0)), delta * 3.0)
 		_pivot.rotation = Vector3(_pitch, _yaw, 0.0)
 		if _fly_t >= 1.0:

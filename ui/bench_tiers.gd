@@ -98,7 +98,20 @@ static func requirement_text(c: Array) -> String:
 		"stat":
 			if str(c[1]) == "hexes_cleaned":
 				return TranslationServer.translate("Clean %d hexes first.") % int(c[2])
+		"flag":
+			var hint: String = flag_hint(str(c[1]))
+			if hint != "":
+				return TranslationServer.translate(hint)
 	return TranslationServer.translate("Not yet. Keep playing.")
+
+
+## What a ["flag", key] condition waits for, in the player's words (data/workbench.json
+## "flag_hints"; "" when the data names none).
+static func flag_hint(flag: String) -> String:
+	for h: Variant in cfg().get("flag_hints", []):
+		if h is Dictionary and str((h as Dictionary).get("flag", "")) == flag:
+			return str((h as Dictionary).get("hint", ""))
+	return ""
 
 
 static func can_buy(w: Node = null) -> bool:

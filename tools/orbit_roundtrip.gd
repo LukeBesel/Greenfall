@@ -4,6 +4,9 @@ extends RefCounted
 ## --orbit): builds state in one orbit slice, saves it to the round trip's slot, loads it into a
 ## second slice and compares. Grows with each ported system.
 
+## The Ledger drop check draws its pieces from this seed: the same pick every run.
+const LEDGER_DROP_SEED: int = 4471
+
 
 static func _snap(s: Node) -> Dictionary:
 	var g: OrbitPlanet = (s.orbit as SliceOrbit).globe
@@ -211,13 +214,15 @@ static func _fauna_check(tree: SceneTree, s: Node, so: SliceOrbit, check: Callab
 		var dalt: float = g.surface.altitude(lg.drone.global_position) if lg.drone else -1.0
 		check.call("orbit_ledger_drone_up_high", true, dalt > 10.0 and dalt < 40.0)
 		lg._drone_done(lg.drone)
-		var hid: int = -1
-		var pids := PackedInt32Array()
-		for c: int in cands:
-			pids = LedgerArc.pick_drop_pieces(g.field, c, RandomNumberGenerator.new())
-			if not pids.is_empty():
-				hid = c
-				break
+		# A fixed seed and a pick that reaches the volume: an unseeded pick among small pieces hits
+		# the 14-piece cap first, leaves the hex clean and failed the next check now and then.
+		var drop_rng := RandomNumberGenerator.new()
+		drop_rng.seed = LEDGER_DROP_SEED
+		cands.sort()
+		var drop: Dictionary = LedgerArc.pick_dirtying_drop(g.field, cands, drop_rng)
+		var hid: int = int(drop.get("hex", -1))
+		var pids: PackedInt32Array = drop.get("pieces", PackedInt32Array())
+		check.call("orbit_ledger_drop_pick", true, hid >= 0)
 		if hid >= 0:
 			var drops0: int = int(GameState.stats.get("ledger_drops", 0))
 			lg._release(hid, pids, lg._marker(lg.to_local(g.field.hex_center(hid)), Color.RED))

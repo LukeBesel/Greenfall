@@ -241,12 +241,33 @@ static func _stat(key: String) -> float:
 	return float(v) if (v is float or v is int) else 0.0
 
 
-## Card text for an objective: [title, why]. The why is the "hint" until its wait_flag is set.
+## The workbench tab a step works in ("" when none): the story step's bench_tab, and the Research
+## tab for a goal about research.
+static func step_tab(def: Dictionary) -> String:
+	if def.has("bench_tab"):
+		return str(def["bench_tab"])
+	if def.has("_goal") and (str(def.get("type", "")) == "research" or str(def.get("key", "")) == "research_done"):
+		return "research"
+	return ""
+
+
+## True while the step's workbench tab is still shut: the step then asks for the workbench tier
+## that opens it (the Research Desk before "Finish a research project").
+static func waits_for_tab(def: Dictionary) -> bool:
+	var tab: String = step_tab(def)
+	return tab != "" and not BenchTiers.tab_open(tab)
+
+
+## Card text for an objective: [title, why]. The why is the "hint" until its wait_flag is set and
+## its workbench tab is open; while the tier that opens the tab waits for something, it is that.
 static func texts(def: Dictionary) -> Array[String]:
 	var why: String = str(def.get("desc", ""))
 	var wf: String = str(def.get("wait_flag", ""))
-	if wf != "" and not GameState.flags.get(wf, false) and def.has("hint"):
+	var tab_shut: bool = waits_for_tab(def)
+	if ((wf != "" and not GameState.flags.get(wf, false)) or tab_shut) and def.has("hint"):
 		why = str(def["hint"])
+	if tab_shut and BenchTiers.block_reason() != "":
+		why = BenchTiers.block_reason()
 	return [TranslationServer.translate(str(def.get("text", ""))), glyphs(TranslationServer.translate(why))]
 
 
@@ -279,7 +300,10 @@ func progress() -> Array:
 	var wf: String = str(def.get("wait_flag", ""))
 	if wf != "" and not GameState.flags.get(wf, false):
 		return [-1.0, ""]
-	if str(def.get("type", "")) == "bench" and BenchTiers.tier() < int(def.get("target", 2)):  # [v1guide] saving up: cubes toward the tier
+	var tab_shut: bool = waits_for_tab(def)
+	if tab_shut and BenchTiers.block_reason(world) != "":
+		return [-1.0, ""]
+	if tab_shut or (str(def.get("type", "")) == "bench" and BenchTiers.tier() < int(def.get("target", 2))):  # [v1guide] saving up: cubes toward the tier
 		var need: float = float(BenchTiers.next_cost().get("cubes", 0.0))
 		if need > 0.0:
 			var have: float = minf(GameState.get_currency("cubes").to_float(), need)
@@ -470,6 +494,8 @@ func step_target(def: Dictionary) -> Dictionary:
 	var p: Patch = world.get("patch") as Patch if world else null
 	var key: String = str(def.get("key", ""))
 	var typ: String = str(def.get("type", "stat"))
+	if waits_for_tab(def):  # the tab is shut: the workbench tier that opens it comes first
+		return _resolve({"to": "bench" if BenchTiers.block_reason(world) == "" else "hex", "row": ["patch", "bench_tier"]})
 	if not def.has("_goal"):  # the story objectives
 		match str(def.get("id", "")):
 			"dump3":  # a full-ish chest: to the bin; else out to the junk
@@ -770,7 +796,8 @@ func _step_price() -> Dictionary:
 	var key: String = str(def.get("key", ""))
 	if typ == "upgrade" and Economy.upgrade_defs.has(key) and GameState.level_of(key) < int(def.get("target", 1)):
 		return {"cubes": Economy.upgrade_cost(key).to_float()}
-	if typ == "bench" and BenchTiers.tier() < int(def.get("target", 2)) and BenchTiers.block_reason(world) == "":
+	var tier_asked: bool = waits_for_tab(def) or (typ == "bench" and BenchTiers.tier() < int(def.get("target", 2)))
+	if tier_asked and BenchTiers.block_reason(world) == "":
 		return BenchTiers.next_cost()
 	if typ == "tower" and SignalTower.tier() < int(def.get("target", 1)):
 		return SignalTower.next_cost()
