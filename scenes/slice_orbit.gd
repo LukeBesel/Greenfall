@@ -23,8 +23,8 @@ extends Node
 ## Dev flags (phase A's, now on the slice): --orbit-walk[=boost] --orbit-lap-quit,
 ## --orbit-scoop, --orbit-cash --orbit-cash-quit, --orbit-view=follow|ground|command,
 ## --orbit-day=MIN, --orbit-time=0..1, --orbit-presim=MIN, --orbit-hubs=N, --orbit-cam=D,P,
-## --orbit-bots=N (stand-in SphereBots, default 4). The phase A scenes stay reachable as
-## --orbit=globe (planet/orbit/verdance_globe.tscn) and --orbit=v1.
+## --orbit-bots=N (stand-in SphereBots, default 4). [v6flat] The phase A prototype scenes
+## (--orbit=globe, --orbit=v1) are gone.
 
 const SCHEMA: int = OrbitSave.SCHEMA  # GameState.orbit layout: core/save_orbit.gd
 const HEX_MILESTONES: Array[int] = [1, 5, 10, 25, 50, 100, 150, 200, 264]  # slice.gd's, by cell id here
@@ -40,12 +40,6 @@ var layers: OrbitLayers  # [orbE]
 var view_mode: String = "follow"
 var sites: OrbitSites  # [orbD]
 var hub_states: Dictionary = {}  # site index (str) -> {level} (core/save_orbit.gd); the Hub port fills it
-
-
-## The slice always builds on the globe, except when a phase A prototype scene is asked for
-## (--orbit=v1 / --orbit=globe).
-static func wanted() -> bool:
-	return not DevHooks.get_s("orbit", "") in ["v1", "globe"]
 
 
 ## Builds the whole orbit slice into `p_world`. [orbE] Behind the loading screen (a BuildBudget is
