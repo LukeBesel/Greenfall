@@ -3,7 +3,7 @@ extends GutTest
 ## data is whole, the rocket lists the right hubs, a wake gives what the hub gives, boosts apply,
 ## and the picker's rows say why to go.
 
-const LANDMARKS: Array[String] = ["water_tower", "crane", "ferris_wheel", "radio_mast", "smokestack", "old_bus", "windpump", "lighthouse"]
+const LANDMARKS: Array[String] = ["water_tower", "crane", "ferris_wheel", "radio_mast", "smokestack", "old_bus", "windpump", "lighthouse", "tower_crane"]
 
 var _orbit: Dictionary
 var _flags: Dictionary

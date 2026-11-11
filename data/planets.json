@@ -50,7 +50,7 @@
        "landmark": {"kind": "old_bus", "name": "Last Bus"},
        "desc": "An old station off the route. Wake it for Parts.", "gift": {"parts": 250}},
       {"site": 1, "order": 8, "id": "crane_court", "name": "Crane Court", "town": "downtown",
-       "landmark": {"kind": "crane", "name": "Tower Crane"},
+       "landmark": {"kind": "tower_crane", "name": "Tower Crane"},
        "desc": "An old station off the route. Wake it for Cubes.", "gift": {"cubes": 20000}},
       {"site": 3, "order": 9, "id": "tank_hill", "name": "Tank Hill", "town": "suburb",
        "landmark": {"kind": "water_tower", "name": "Hill Tank"},
