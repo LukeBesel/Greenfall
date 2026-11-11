@@ -10,7 +10,8 @@ extends Node
 ##   robots left there restore the town while Lumi is away;
 ## - the HUD's lines: this base's clean % and "Bases n/6" (hud_lines()).
 ## Use: HubPurpose.attach(orbit_sites) once the hop and the site manager exist.
-## Dev: --hub-wake=N wakes hub N for free at start; --hub-report prints each hub's line.
+## Dev: --hub-wake=N wakes hub N for free at start; --hub-report prints each hub's line;
+## --hub-dev-chain[=T] does a hub's chain and wake after each arrival; --hub-dev-save=T saves.
 
 signal woke(site: int)
 
@@ -73,6 +74,9 @@ func _ready() -> void:
 	if DevHooks.has("hub-wake"):
 		for s: String in DevHooks.get_s("hub-wake", "").split(",", false):
 			wake(int(s), true)
+	if DevHooks.has("hub-dev-save"):  # dev: save after T s (a walkthrough across a reload)
+		get_tree().create_timer(DevHooks.get_f("hub-dev-save", 30.0)).timeout.connect(func() -> void:
+			print("[hubs] dev: saved %s (bases %d/%d, rocket at site %d)" % [SaveManager.save_game(), HubPlan.restored_main(planet), HubPlan.main_total(planet), sites.rocket_site()]))
 	if DevHooks.has("hub-report"):
 		get_tree().create_timer(DevHooks.get_f("hub-report", 5.0)).timeout.connect(report)
 
@@ -658,7 +662,13 @@ func show_title(i: int) -> void:
 		for wait: float in [1.6, 9.0]:
 			get_tree().create_timer(wait, true, false, true).timeout.connect(func() -> void:
 				await RenderingServer.frame_post_draw
-				DevHooks.save_viewport("%s_land_%d.png" % [DevHooks.get_s("hop-shots", "screenshots/hop"), int(wait)]))
+				DevHooks.save_viewport("%s_land_%d.png" % [DevHooks.get_s("hop-shots", "screenshots/hop"), int(wait)])
+				if wait > 5.0:  # then the rocket's list, and its picture
+					sites.open_rocket()
+					await get_tree().create_timer(1.0, true, false, true).timeout
+					await RenderingServer.frame_post_draw
+					DevHooks.save_viewport("%s_picker.png" % DevHooks.get_s("hop-shots", "screenshots/hop"))
+					print("[hubs] dev: shots done"))
 
 
 ## Dev (--hub-dev-chain[=T]): T s after each arrival at a far hub, cleans the hexes its chain asks
