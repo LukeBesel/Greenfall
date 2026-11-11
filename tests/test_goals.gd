@@ -444,6 +444,24 @@ func test_the_set_goal_counts_found_pieces() -> void:
 	assert_eq(g.value_of(set_goal), 1.0)
 
 
+func test_a_city_stage_goal_fills_as_the_city_comes_clean(planet_id: StringName = use_parameters(PLANETS)) -> void:
+	var fx := DistrictFixture.new(planet_id)
+	var d: Districts = fx.districts
+	var id: String = d.ids()[0]
+	var need: int = ceili(d.stage_share * d.land_of(id) - 0.000001)
+	var def: Dictionary = {"type": Restoration.MEASURE_CITY_STAGE, "key": id, "target": 2}
+	assert_eq(GoalMeasures.value(null, def), 0.0)
+	fx.set_district_stage(id, 1, need / 2)
+	var part: float = GoalMeasures.value(null, def)
+	assert_gt(part, 0.0, "the gauge moves before the first stage")
+	assert_lt(part, 1.0, "but does not read as the stage")
+	fx.set_district_stage(id, 1, need)
+	assert_eq(d.stage_of(id), 1)
+	assert_gte(GoalMeasures.value(null, def), 1.0)
+	assert_lt(GoalMeasures.value(null, def), 2.0, "a stage goal is met only by the stage itself")
+	fx.free_systems()
+
+
 # --- Guidance -------------------------------------------------------------------------------------
 
 func test_every_goal_points_somewhere(planet_id: StringName = use_parameters(PLANETS)) -> void:
