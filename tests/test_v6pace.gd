@@ -234,7 +234,7 @@ func test_clock_stands_still_behind_the_loader() -> void:
 
 
 # The pinned numbers (cubes).
-const FAR: Array[float] = [600.0, 3000.0, 15000.0, 75000.0, 380000.0]
+const FAR: Array[float] = [600.0, 2400.0, 9600.0, 38000.0, 150000.0]
 const MK2: float = 8000.0
 const MK3: float = 150000.0
 const DRIVE: float = 500000.0

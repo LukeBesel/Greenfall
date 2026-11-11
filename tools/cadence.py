@@ -62,6 +62,11 @@ def main() -> None:
         print("  %6.1f  %s" % (t, what))
     # Cubes per minute between arc points, from the per-minute log's lifetime earned.
     pts = [(float(e["t"]) / 60.0, float(e["earned"])) for e in rep.get("log", []) if "earned" in e]
+    if log_path:  # the [card] and [arc] lines carry earned= too (a run stopped before its report)
+        for line in open(log_path, errors="replace"):
+            m = re.match(r"\[(?:card|arc)\] ([\d.]+) min .*earned=([\d.]+)", line)
+            if m:
+                pts.append((float(m.group(1)), float(m.group(2))))
     pts.sort()
 
     def earned_at(t: float) -> float:
