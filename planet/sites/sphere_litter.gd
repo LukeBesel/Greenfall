@@ -100,7 +100,7 @@ func _process(_delta: float) -> void:
 	var kob: Object = sfield.keep_out.get_object() if sfield.keep_out.is_valid() else null
 	if kob is YardKeepOut:  # [v1world] a copy for the worker (footprints may still be appended on the main thread)
 		var yk: YardKeepOut = kob
-		_job_ctx["ko"] = {"rects": yk.rects.duplicate(), "discs": yk.discs.duplicate(), "inv": yk.xf_inv, "r": yk.radius,
+		_job_ctx["ko"] = {"rects": yk.rects.duplicate(), "discs": yk.discs + yk.soft_discs, "inv": yk.xf_inv, "r": yk.radius,
 			"bins": yk._bins.duplicate(true), "bin_m": YardKeepOut.BIN_M}  # [v3city] the town's footprints, binned
 	_task = WorkerThreadPool.add_task(_job, false, "litter cells")
 

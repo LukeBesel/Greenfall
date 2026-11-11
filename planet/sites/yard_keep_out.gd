@@ -24,6 +24,9 @@ var xf_inv: Transform3D  # world -> site-local
 var radius: float = 1.0
 var rects: Array[Rect2] = []
 var discs: Array[Vector3] = []  # (x, z, radius), site-local
+## Places that only loose junk keeps off (a crash furrow, standing water): discs like `discs`, but a
+## cell under one stays a junk cell (cell_inside ignores them), so nothing starts clean for them.
+var soft_discs: Array[Vector3] = []
 
 
 ## The keep-out for a reserved site (SphereTerrain.reserve_site result) on a terrain.
@@ -37,7 +40,14 @@ static func for_site(site: Dictionary, terrain: SphereTerrain) -> YardKeepOut:
 	var pod: Array = SitePrefab.START_YARD_ANCHORS["pod"]
 	var pp: Vector3 = pod[0]
 	k.discs.append(Vector3(pp.x, pp.z, POD_CLEAR_M))
+	for d: Vector3 in CrashSite.furrow_discs():  # the trench the pod ploughed stays bare earth
+		k.soft_discs.append(Vector3(pp.x + d.x, pp.z + d.y, d.z))
 	return k
+
+
+## Loose junk keeps off the disc (x, z, radius r; site-local metres) from now on.
+func add_soft_disc(x: float, z: float, r: float) -> void:
+	soft_discs.append(Vector3(x, z, r))
 
 
 ## Building footprints (site-local rects, VerdanceSite.footprints()).
@@ -70,7 +80,11 @@ func local(dir: Vector3) -> Vector2:
 	return Vector2(p.x, p.z)
 
 
-func blocks_local(q: Vector2) -> bool:
+func blocks_local(q: Vector2, soft: bool = true) -> bool:
+	if soft:
+		for s: Vector3 in soft_discs:
+			if q.distance_squared_to(Vector2(s.x, s.y)) < s.z * s.z:
+				return true
 	for r: Rect2 in rects:
 		if r.has_point(q):
 			return true
@@ -88,6 +102,11 @@ func blocks_local(q: Vector2) -> bool:
 
 func blocks(dir: Vector3) -> bool:
 	return blocks_local(local(dir)) or (_world_n > 0 and _blocks_world(dir))
+
+
+## As blocks(), without the soft discs: what is solid or kept clear for good.
+func blocks_hard(dir: Vector3) -> bool:
+	return blocks_local(local(dir), false) or (_world_n > 0 and _blocks_world(dir))
 
 
 ## [v4world] Whether a direction lies inside a building footprint (grown FOOT_GROW_M): the start
@@ -184,6 +203,6 @@ func cell_inside(grid: SphereGrid, c: int) -> bool:
 	var f: Basis = SphereGrid.frame(ctr)
 	for o: Vector2 in SiteManager.PROBE:
 		var d: Vector3 = (ctr + (f.x * o.x * 2.0 + f.z * o.y * 2.0) / grid.radius_m).normalized()
-		if not blocks(d):
+		if not blocks_hard(d):
 			return false
 	return true

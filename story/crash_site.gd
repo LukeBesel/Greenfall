@@ -90,62 +90,54 @@ func set_stage(s: int) -> void:
 
 # --- Ground ------------------------------------------------------------------------------
 
+## The furrow: how far it runs back from the pod, its half-width at the pod and at its tail, and
+## how high its lips stand at the pod (m). Low enough to walk over.
+const FURROW_LEN: float = 7.4
+const FURROW_HALF: Vector2 = Vector2(0.78, 0.36)
+const FURROW_LIP: float = 0.36
+const FURROW_SKIRT: float = 0.85  # from the trench's edge out to the foot of the lip
+
+
+## Discs (x, z, radius; metres from the pod) over the furrow: loose junk keeps off them
+## (YardKeepOut), so the trench reads as ploughed earth and not as lumps under a litter carpet.
+static func furrow_discs() -> Array[Vector3]:
+	var back: Vector3 = Vector3(FROM_DIR.x, 0, FROM_DIR.z).normalized()
+	var out: Array[Vector3] = []
+	var n: int = 5
+	for i: int in n:
+		var t: float = float(i) / float(n - 1)
+		var c: Vector3 = back * lerpf(1.6, FURROW_LEN - 0.4, t)
+		out.append(Vector3(c.x, c.z, lerpf(FURROW_HALF.x, FURROW_HALF.y, t) + FURROW_SKIRT + 0.25))
+	return out
+
+
 func _build_ground() -> void:
 	var back: Vector3 = Vector3(FROM_DIR.x, 0, FROM_DIR.z).normalized()
 	var ang: float = atan2(back.x, back.z)
-	# The furrow: two soft dark smears stretched back along the approach.
-	for layer: Array in [[Vector2(3.2, 9.0), 0.85, 0.018, 3.0], [Vector2(1.7, 6.0), 0.95, 0.024, 2.2]]:
-		var mi := MeshInstance3D.new()
-		var pm := PlaneMesh.new()
-		pm.size = layer[0]
-		mi.mesh = pm
-		var m := StandardMaterial3D.new()
-		m.albedo_color = Color(0.06, 0.05, 0.045, float(layer[1]))
-		m.albedo_texture = EscapePod._soft_tex()
-		m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-		m.roughness = 1.0
-		mi.material_override = m
-		mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		mi.rotation.y = ang
-		mi.position = back * float(layer[3]) + Vector3(0, float(layer[2]), 0)
-		add_child(mi)
-	# Thrown-up earth: low clods along the furrow's lips and in a bank in front of the pod.
-	var dirt := StandardMaterial3D.new()
-	dirt.albedo_color = Color(0.2, 0.15, 0.11)
-	dirt.roughness = 1.0
-	var burnt := StandardMaterial3D.new()
-	burnt.albedo_color = Color(0.11, 0.09, 0.08)
-	burnt.roughness = 1.0
+	var side: Vector3 = back.cross(Vector3.UP).normalized()
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 404
-	var side: Vector3 = back.cross(Vector3.UP).normalized()
-	for i: int in 22:
-		var along: float = rng.randf_range(-1.6, 5.5)
-		var lat: float = (1.0 if i % 2 == 0 else -1.0) * rng.randf_range(0.9, 1.4) * (1.0 - clampf(along / 7.0, 0.0, 0.6))
-		if along < 0.0:
-			lat *= rng.randf_range(0.0, 1.0)  # the bank in front
-		var p: Vector3 = back * along + side * lat
-		var clod := MeshInstance3D.new()
-		clod.mesh = ProcMesh.sphere(rng.randf_range(0.12, 0.3), 7, 4)
-		clod.material_override = burnt if rng.randf() < 0.35 else dirt
-		clod.scale = Vector3(1.4, rng.randf_range(0.35, 0.6), 1.0)
-		clod.rotation.y = rng.randf() * TAU
-		clod.position = p + Vector3(0, 0.0, 0)
-		add_child(clod)
-	# The furrow's lips: two long ridges of ploughed-up earth that fade out behind the pod, and the
-	# bank it pushed up where it stopped. Low enough to walk over.
-	for i: int in 90:
+	_build_trench(back, side, rng)
+	# Thrown-up earth: clods along the lips' crests and scattered just outside them.
+	var dirt := StandardMaterial3D.new()
+	dirt.albedo_color = Color(0.46, 0.32, 0.2)
+	dirt.roughness = 1.0
+	var burnt := StandardMaterial3D.new()
+	burnt.albedo_color = Color(0.15, 0.12, 0.1)
+	burnt.roughness = 1.0
+	for i: int in 46:
 		var t: float = pow(rng.randf(), 0.8)
-		var along2: float = lerpf(0.3, 7.4, t)
 		var sgn: float = 1.0 if i % 2 == 0 else -1.0
-		var lat2: float = sgn * (lerpf(1.3, 0.7, t) + rng.randf_range(-0.3, 0.45))
-		var ridge := MeshInstance3D.new()
-		ridge.mesh = ProcMesh.sphere(lerpf(0.36, 0.14, t) * rng.randf_range(0.6, 1.25), 7, 4)
-		ridge.material_override = burnt if rng.randf() < lerpf(0.6, 0.25, t) else dirt
-		ridge.scale = Vector3(rng.randf_range(0.8, 1.3), rng.randf_range(0.3, 0.5), rng.randf_range(1.0, 1.8))
-		ridge.rotation.y = ang + rng.randf_range(-0.7, 0.7)
-		ridge.position = back * along2 + side * lat2
-		add_child(ridge)
+		var half: float = lerpf(FURROW_HALF.x, FURROW_HALF.y, t)
+		var lat: float = sgn * (half + rng.randf_range(0.2, FURROW_SKIRT))
+		var clod := MeshInstance3D.new()
+		clod.mesh = ProcMesh.sphere(lerpf(0.2, 0.09, t) * rng.randf_range(0.7, 1.3), 7, 4)
+		clod.material_override = burnt if rng.randf() < lerpf(0.4, 0.15, t) else dirt
+		clod.scale = Vector3(rng.randf_range(0.9, 1.4), rng.randf_range(0.5, 0.8), rng.randf_range(0.9, 1.5))
+		clod.rotation.y = ang + rng.randf_range(-0.7, 0.7)
+		clod.position = back * lerpf(0.4, FURROW_LEN - 0.3, t) + side * lat + Vector3(0, lerpf(FURROW_LIP, 0.06, t) * rng.randf_range(0.3, 0.8), 0)
+		add_child(clod)
+	# The bank it pushed up where it stopped.
 	for i: int in 7:
 		var a: float = lerpf(-1.1, 1.1, float(i) / 6.0)
 		var bank := MeshInstance3D.new()
@@ -164,6 +156,58 @@ func _build_ground() -> void:
 		sh.position = back * (2.4 + k * 0.9) + side * ((0.7 - (k % 2) * 1.3) * (1.0 + 0.2 * k)) + Vector3(0, 0.05, 0)
 		sh.rotation = Vector3(0.3, rng.randf() * TAU, 0.2)
 		add_child(sh)
+
+
+## The trench itself, one mesh lofted along the pod's path: outside ground, up over a lip of
+## turned earth, down a scorched inner face to a dark floor, and up the other side. The lips are
+## highest and the trench widest at the pod; both run out to nothing at the tail. Every section is
+## jittered, so the lips are lumpy and the edge wanders.
+func _build_trench(back: Vector3, side: Vector3, rng: RandomNumberGenerator) -> void:
+	var soil := Color(0.5, 0.35, 0.22)
+	var crest := Color(0.6, 0.44, 0.28)
+	var scorch := Color(0.2, 0.15, 0.12)
+	var floor_c := Color(0.11, 0.09, 0.08)
+	var sections: int = 26
+	var rows: Array = []  # per section: [[point, colour] x 7]
+	for i: int in sections + 1:
+		var t: float = float(i) / float(sections)
+		var along: float = lerpf(-0.2, FURROW_LEN, t)
+		var fade: float = clampf((1.0 - t) * 4.0, 0.0, 1.0) * clampf(t * 10.0 + 0.4, 0.0, 1.0)
+		var half: float = lerpf(FURROW_HALF.x, FURROW_HALF.y, t) * rng.randf_range(0.9, 1.1)
+		var mid: Vector3 = back * along + side * sin(t * 5.0) * 0.12
+		var row: Array = []
+		for sgn: float in [-1.0, 1.0]:
+			var lip: float = lerpf(FURROW_LIP, 0.1, t) * fade * rng.randf_range(0.7, 1.25)
+			var foot: Vector3 = mid + side * sgn * (half + FURROW_SKIRT * rng.randf_range(0.85, 1.1))
+			var top: Vector3 = mid + side * sgn * (half + 0.32 * rng.randf_range(0.8, 1.2)) + Vector3(0, lip, 0)
+			var inner: Vector3 = mid + side * sgn * half * 0.8 + Vector3(0, 0.045, 0)
+			var part: Array = [[foot + Vector3(0, 0.012, 0), soil], [top, crest.lightened(rng.randf_range(-0.08, 0.08))], [inner, scorch]]
+			if sgn > 0.0:
+				part.reverse()
+			row.append_array(part)
+		row.insert(3, [mid + Vector3(0, 0.03, 0), floor_c])
+		rows.append(row)
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for i: int in sections:
+		for j: int in 6:
+			var quad: Array = [rows[i][j], rows[i + 1][j], rows[i + 1][j + 1], rows[i][j + 1]]
+			for idx: int in [0, 1, 2, 0, 2, 3]:
+				st.set_color(quad[idx][1])
+				st.set_uv(Vector2((quad[idx][0] as Vector3).x, (quad[idx][0] as Vector3).z) * 0.6)
+				st.add_vertex(quad[idx][0])
+	st.index()
+	st.generate_normals()
+	var m: StandardMaterial3D = AssetLib.pbr_material("farm_soil", 1.0, Color.WHITE)
+	m.albedo_texture = null  # the soil's bumps and roughness; the colour is the lofted mesh's own
+	m.vertex_color_use_as_albedo = true
+	m.cull_mode = BaseMaterial3D.CULL_DISABLED
+	var mi := MeshInstance3D.new()
+	mi.name = "Furrow"
+	mi.mesh = st.commit()
+	mi.material_override = m
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	add_child(mi)
 
 
 # --- Damage -----------------------------------------------------------------------------
