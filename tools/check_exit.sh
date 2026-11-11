@@ -37,6 +37,11 @@ else
 	echo "[check_exit] FAIL orbit_reload: see screenshots/check_exit_orbit_reload.log"
 	fail=1
 fi
+# [v6qa] Quitting or freeing while a hub town builds, and quitting during a rocket hop, corrupted
+# the heap at exit (exit 134, "corrupted size vs. prev_size in fastbins"; QA_VERDANCE Q7/Q16).
+run quit_mid_build -- --fresh --orbit --no-intro --orbit-walk-in=1,380 --quit-mid-build=30
+run free_mid_build -- --fresh --orbit --no-intro --orbit-walk-in=1,380 --quit-mid-build=30 --quit-mode=free
+run quit_on_hop -- --fresh --orbit --no-intro --orbit-hop=4 --quit-on-hop=4
 if [ "$1" = "--quick" ]; then
 	run quit15 -- --fresh --quit-after=15
 fi

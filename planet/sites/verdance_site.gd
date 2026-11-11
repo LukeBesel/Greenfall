@@ -99,6 +99,16 @@ func _wet_share(r: Rect2, step: float = 3.0) -> float:
 
 ## Builds a site under `parent`; returns the VerdanceSite node.
 static func build(parent: Node3D, p_site: String, stage: int, p_restoration: float, opts: Dictionary = {}) -> VerdanceSite:
+	var s: VerdanceSite = start(parent, p_site, stage, p_restoration, opts)
+	if not s._made:
+		await s.made
+	return s
+
+
+## [v6qa] Adds the site and starts its build (it ends with `made`); returns at once. SitePrefab
+## awaits the site's own signal: no coroutine of a builder lambda or of this script's statics is
+## left pending when a town is freed mid-build (exit 134, see _make_all).
+static func start(parent: Node3D, p_site: String, stage: int, p_restoration: float, opts: Dictionary = {}) -> VerdanceSite:
 	var s := VerdanceSite.new()
 	s.name = "VerdanceSite_" + p_site
 	s.site_id = p_site if p_site in SITES else "ruin_block"
@@ -117,8 +127,6 @@ static func build(parent: Node3D, p_site: String, stage: int, p_restoration: flo
 		s.town_r = HUB_TOWN_R
 	parent.add_child(s)
 	s._make_all()  # [v6qa] not `await s._make()`: see _make_all
-	if not s._made:
-		await s.made
 	return s
 
 
