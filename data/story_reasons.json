@@ -80,8 +80,7 @@
   "exit": {
     "system_open": [
       "Look at the star map. Five worlds, and the Ledger buried every one.",
-      "The Cradle waits until all of them can grow again. Verdance was only the first.",
-      "Build the Orbital drive, and we'll go and wake the next world."
+      "The Cradle waits for all of them. Build the Orbital drive, and we'll wake the next world."
     ],
     "drive_built": [
       "The rocket can leave now. Verdance isn't finished, and that's all right.",

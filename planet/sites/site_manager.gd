@@ -395,13 +395,23 @@ func set_level(i: int, l: int) -> void:
 	if prefabs[i] != null:
 		(prefabs[i] as SitePrefab).set_stage(levels[i])
 		_reprobe(i, prefabs[i])
-	var sp: StreetPower = power.get(i) as StreetPower
-	if sp and is_instance_valid(sp):
+	var sp: StreetPower = _power_of(i)
+	if sp:
 		sp.set_hub_level(levels[i], true)
 
 
 ## Street power per built site (planet/sites/site_power.gd): hub index -> StreetPower.
 var power: Dictionary = {}
+
+
+## [v6hubs] Hub i's street power if it is still alive. A hub freed and built again (a hop back
+## home) left a freed object here, and `is` / `as` on it is a script error.
+func _power_of(i: int) -> StreetPower:
+	var v: Variant = power.get(i)
+	if not is_instance_valid(v):
+		power.erase(i)
+		return null
+	return v as StreetPower
 
 
 func _attach_power(i: int, p: SitePrefab) -> void:
@@ -418,9 +428,9 @@ func _attach_power(i: int, p: SitePrefab) -> void:
 	var hl: Variant = w.get("hex_levels")
 	if not (hl is HexLevels) or p.content == null or not is_instance_valid(p.content):
 		return
-	var old: Variant = power.get(i)
-	if is_instance_valid(old) and old is Node:  # [v6pace] valid first: `is` on a freed instance is a script error
-		(old as Node).queue_free()
+	var old: StreetPower = _power_of(i)
+	if old:
+		old.queue_free()
 	power.erase(i)
 	var lvl: int = levels[i]
 	var hub: Variant = w.get("hub") if i == 0 else null
@@ -613,6 +623,6 @@ static func _seg_hits_rect(a: Vector2, b: Vector2, r: Rect2) -> bool:
 
 
 func _on_hub0_level(l: int) -> void:
-	var sp: StreetPower = power.get(0) as StreetPower
-	if sp and is_instance_valid(sp):
+	var sp: StreetPower = _power_of(0)
+	if sp:
 		sp.set_hub_level(l, true)

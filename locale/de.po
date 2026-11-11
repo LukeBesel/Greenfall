@@ -769,10 +769,6 @@ msgstr "GEMEINSAM ERBLÜHEN"
 msgid "LIGHT  WATER  LIFE"
 msgstr "LICHT  WASSER  LEBEN"
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice_orbit.gd:398
-msgid "HEX CLEAN!  +%s"
-msgstr "HEXFELD SAUBER!  +%s"
-
 #: planet/sites/hub_hop.gd:48
 msgid "{interact}  skip"
 msgstr "{interact}  überspringen"
@@ -801,125 +797,129 @@ msgstr "Hafenstadt"
 msgid "landmark"
 msgstr "Wahrzeichen"
 
-#: planet/sites/hub_plan.gd:254
+#: planet/sites/hub_plan.gd:258
 msgid "The recycling network grew: everything sells for x%s now."
 msgstr "Das Recycling-Netz ist gewachsen: Alles verkauft sich jetzt für x%s."
 
-#: planet/sites/hub_plan.gd:273
+#: planet/sites/hub_plan.gd:277
 msgid "Rocket piece: %s"
 msgstr "Raketenteil: %s"
 
-#: planet/sites/hub_plan.gd:295
+#: planet/sites/hub_plan.gd:299
 msgid "+%s Cubes"
 msgstr "+%s Würfel"
 
-#: planet/sites/hub_plan.gd:297
+#: planet/sites/hub_plan.gd:301
 msgid "+%d Parts"
 msgstr "+%d Teile"
 
-#: planet/sites/hub_plan.gd:299
+#: planet/sites/hub_plan.gd:303
 msgid "+%d Seeds"
 msgstr "+%d Samen"
 
-#: planet/sites/hub_plan.gd:303
+#: planet/sites/hub_plan.gd:307
 msgid "New: %s"
 msgstr "Neu: %s"
 
-#: planet/sites/hub_plan.gd:307
+#: planet/sites/hub_plan.gd:311
 msgid "New Lumi design: %s"
 msgstr "Neues Lumi-Design: %s"
 
-#: planet/sites/hub_purpose.gd:143
+#: planet/sites/hub_purpose.gd:145
 msgid "Home. The workbench is by the pod."
 msgstr "Zuhause. Die Werkbank steht bei der Kapsel."
 
-#: planet/sites/hub_purpose.gd:149
+#: planet/sites/hub_purpose.gd:151
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "Die Rakete wartet auf dem Startplatz. Zuhause steht ganz oben auf ihrer Liste."
 
-#: planet/sites/hub_purpose.gd:155
+#: planet/sites/hub_purpose.gd:157
 msgid "%s: %d%% clean, up %d%% while you were away."
 msgstr "%s: %d%% sauber, +%d%% während du weg warst."
 
-#: planet/sites/hub_purpose.gd:233
+#: planet/sites/hub_purpose.gd:235
 msgid "Dig the landmark out. Clean hexes here: %d / %d"
 msgstr "Grab das Wahrzeichen frei. Hier Felder säubern: %d / %d"
 
-#: planet/sites/hub_purpose.gd:235
+#: planet/sites/hub_purpose.gd:237
 msgid "Repair an outpost here: %d / %d"
 msgstr "Hier einen Außenposten reparieren: %d / %d"
 
-#: planet/sites/hub_purpose.gd:238
+#: planet/sites/hub_purpose.gd:240
 msgid "Upgrade the rocket, then wake the %s"
 msgstr "Rüste die Rakete auf, dann wecke: %s"
 
-#: planet/sites/hub_purpose.gd:239
+#: planet/sites/hub_purpose.gd:241
 msgid "Wake the %s (%s)"
 msgstr "Wecke: %s (%s)"
 
-#: planet/sites/hub_purpose.gd:273
+#: planet/sites/hub_purpose.gd:275
 msgid "E   Wake the %s  (%s)"
 msgstr "E   Wecken: %s  (%s)"
 
-#: planet/sites/hub_purpose.gd:274
+#: planet/sites/hub_purpose.gd:276
 msgid "%s: asleep. %s"
 msgstr "%s: schläft. %s"
 
-#: planet/sites/hub_purpose.gd:279
+#: planet/sites/hub_purpose.gd:281
 msgid "The rocket can carry supplies to %d bases. Upgrade it at the workbench."
 msgstr "Die Rakete kann %d Basen mit Nachschub versorgen. Rüste sie an der Werkbank auf."
 
-#: planet/sites/hub_purpose.gd:295
+#: planet/sites/hub_purpose.gd:297
 msgid "Waking the %s needs %s."
 msgstr "Zum Wecken (%s) fehlen: %s."
 
-#: planet/sites/hub_purpose.gd:319
+#: planet/sites/hub_purpose.gd:321
 msgid "%s is awake. %s keeps cleaning when you fly on."
 msgstr "%s ist wach. %s räumt weiter auf, wenn du weiterfliegst."
 
-#: planet/sites/hub_purpose.gd:346
+#: planet/sites/hub_purpose.gd:348
 msgid "%s grows: level %d."
 msgstr "%s wächst: Stufe %d."
 
-#: planet/sites/hub_purpose.gd:374
+#: planet/sites/hub_purpose.gd:376
 msgid "%d robot working"
 msgid_plural "%d robots working"
 msgstr[0] "%d Roboter arbeitet"
 msgstr[1] "%d Roboter arbeiten"
 
-#: planet/sites/hub_purpose.gd:382
+#: planet/sites/hub_purpose.gd:384
 msgid "Home: %d%% clean"
 msgstr "Zuhause: %d%% sauber"
 
-#: planet/sites/hub_purpose.gd:384
+#: planet/sites/hub_purpose.gd:386
 msgid "Restored: %d%% clean"
 msgstr "Wiederhergestellt: %d%% sauber"
 
-#: planet/sites/hub_purpose.gd:386 ui/profile_picker.gd:111
+#: planet/sites/hub_purpose.gd:388 ui/profile_picker.gd:111
 msgid "New"
 msgstr "Neu"
 
-#: planet/sites/hub_purpose.gd:389
+#: planet/sites/hub_purpose.gd:391
 msgid "Ready to wake"
 msgstr "Bereit zum Wecken"
 
-#: planet/sites/hub_purpose.gd:390
+#: planet/sites/hub_purpose.gd:392
 msgid "Asleep: %d / %d"
 msgstr "Schläft: %d / %d"
 
-#: planet/sites/hub_purpose.gd:401
+#: planet/sites/hub_purpose.gd:403
 msgid "%s   %d%% CLEAN"
 msgstr "%s   %d%% SAUBER"
 
-#: planet/sites/hub_purpose.gd:403
+#: planet/sites/hub_purpose.gd:405
 msgid "%s   BASES %d/%d"
 msgstr "%s   BASEN %d/%d"
 
-#: planet/sites/hub_purpose.gd:450
+#: planet/sites/hub_purpose.gd:452
 msgid "Restored. Next: take the rocket to %s."
 msgstr "Wiederhergestellt. Weiter: mit der Rakete nach %s."
 
-#: planet/sites/hub_purpose.gd:624
+#: planet/sites/hub_purpose.gd:454
+msgid "All %d bases stand. Fly home and make the rocket ready to leave."
+msgstr "Alle %d Basen stehen. Flieg nach Hause und mach die Rakete startklar."
+
+#: planet/sites/hub_purpose.gd:626
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
@@ -1615,31 +1615,35 @@ msgstr[1] "Während du weg warst, haben deine Roboter hier %d Hexfelder geräumt
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s zusammengebaut. Er schaut sich um und legt los."
 
-#: scenes/slice.gd:136 ui/rockets_panel.gd:60
+#: scenes/slice.gd:133 ui/rockets_panel.gd:60
 msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
 msgstr "Geh zur Rakete auf der Startrampe und drück E, um dein Ziel zu wählen."
 
-#: scenes/slice.gd:146 ui/rockets_panel.gd:39
+#: scenes/slice.gd:143 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Energiezellen laden: %s. Raketen-Upgrades füllen sie schneller."
 
-#: scenes/slice_orbit.gd:414
+#: scenes/slice_orbit.gd:392
+msgid "HEX CLEAN!  +%s"
+msgstr "HEXFELD SAUBER!  +%s"
+
+#: scenes/slice_orbit.gd:408
 msgid "Milestone: %d hexes clean!"
 msgstr "Meilenstein: %d Hexfelder sauber!"
 
-#: scenes/slice_orbit.gd:483 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:477 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   Werkbank reparieren"
 
-#: scenes/slice_orbit.gd:483 systems/camp/camp.gd:195
+#: scenes/slice_orbit.gd:477 systems/camp/camp.gd:195
 msgid "E   Open the workbench"
 msgstr "E   Werkbank öffnen"
 
-#: scenes/slice_orbit.gd:1000
+#: scenes/slice_orbit.gd:994
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Upgrades brauchen eine Werkbank. Zurück zur Basis."
 
-#: scenes/slice_orbit.gd:1100
+#: scenes/slice_orbit.gd:1094
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Werkbank repariert. Drück dort E, um Würfel für Upgrades auszugeben."
 
@@ -14965,12 +14969,8 @@ msgid "Look at the star map. Five worlds, and the Ledger buried every one."
 msgstr "Schau auf die Sternenkarte. Fünf Welten, und der Ledger hat jede einzelne begraben."
 
 #: data/story_reasons.json:exit
-msgid "The Cradle waits until all of them can grow again. Verdance was only the first."
-msgstr "Die Cradle wartet, bis auf allen wieder etwas wachsen kann. Verdance war nur die erste."
-
-#: data/story_reasons.json:exit
-msgid "Build the Orbital drive, and we'll go and wake the next world."
-msgstr "Bau den Orbitalantrieb, dann fliegen wir los und wecken die nächste Welt."
+msgid "The Cradle waits for all of them. Build the Orbital drive, and we'll wake the next world."
+msgstr "Die Cradle wartet auf sie alle. Bau den Orbitalantrieb, dann wecken wir die nächste Welt."
 
 #: data/story_reasons.json:exit
 msgid "The rocket can leave now. Verdance isn't finished, and that's all right."
@@ -17129,17 +17129,41 @@ msgstr "Der Portalkran hat die Flotte des Ledgers verschrottet, als das Geld aus
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Eine Rostwelt, grün. Die alten Kräne haben Blumen zu ihren Füßen. Die Bücher sind geschlossen, {name}. Wir haben sie ausgeglichen."
 
+#~ msgid "The Cradle waits until all of them can grow again. Verdance was only the first."
+#~ msgstr "Die Cradle wartet, bis auf allen wieder etwas wachsen kann. Verdance war nur die erste."
+
+#~ msgid "Build the Orbital drive, and we'll go and wake the next world."
+#~ msgstr "Bau den Orbitalantrieb, dann fliegen wir los und wecken die nächste Welt."
+
+#~ msgid "The rocket isn't ready yet. Keep following WREN's steps."
+#~ msgstr "Die Rakete ist noch nicht bereit. Folge weiter WRENs Schritten."
+
 #~ msgid "Two clean hexes. Keep going, Lumi."
 #~ msgstr "Zwei saubere Hexfelder. Weiter so, Lumi."
 
 #~ msgid "Three clean hexes. The planet notices, believe me."
 #~ msgstr "Drei saubere Hexfelder. Der Planet merkt das, glaub mir."
 
+#~ msgid "Send your robot to work"
+#~ msgstr "Schick deinen Roboter an die Arbeit"
+
+#~ msgid "Robots clean where you point. Press {open_command}."
+#~ msgstr "Roboter räumen dort auf, wo du hinzeigst. Drück {open_command}."
+
+#~ msgid "Give your robot a hex to work on. It wants a job."
+#~ msgstr "Gib deinem Roboter ein Hexfeld zum Arbeiten. Er will eine Aufgabe."
+
 #~ msgid "Ten clean hexes. Your robots are learning from you, Lumi."
 #~ msgstr "Zehn saubere Hexfelder. Deine Roboter lernen von dir, Lumi."
 
 #~ msgid "Twenty hexes. The air already smells different."
 #~ msgstr "Zwanzig Hexfelder. Die Luft riecht schon anders."
+
+#~ msgid "Lumi, look at the star map. Five worlds, and the Ledger buried every one."
+#~ msgstr "Lumi, schau auf die Sternenkarte. Fünf Welten, und der Ledger hat jede einzelne begraben."
+
+#~ msgid "Your robots will keep cleaning here. Build the Orbital drive, and we'll wake the next world."
+#~ msgstr "Deine Roboter räumen hier weiter auf. Bau den Orbitalantrieb, dann wecken wir die nächste Welt."
 
 #~ msgid "Cargo pod landed: %s cubes from %d robots in other districts."
 #~ msgstr "Frachtkapsel gelandet: %s Würfel von %d Robotern aus anderen Bezirken."
@@ -17285,24 +17309,6 @@ msgstr "Eine Rostwelt, grün. Die alten Kräne haben Blumen zu ihren Füßen. Di
 
 #~ msgid "The rocket lands on the pad when the base reaches level 5."
 #~ msgstr "Die Rakete landet auf der Rampe, sobald die Basis Stufe 5 erreicht."
-
-#~ msgid "Send your robot to work"
-#~ msgstr "Schick deinen Roboter an die Arbeit"
-
-#~ msgid "Robots clean where you point. Press {open_command}."
-#~ msgstr "Roboter räumen dort auf, wo du hinzeigst. Drück {open_command}."
-
-#~ msgid "Give your robot a hex to work on. It wants a job."
-#~ msgstr "Gib deinem Roboter ein Hexfeld zum Arbeiten. Er will eine Aufgabe."
-
-#~ msgid "Lumi, look at the star map. Five worlds, and the Ledger buried every one."
-#~ msgstr "Lumi, schau auf die Sternenkarte. Fünf Welten, und der Ledger hat jede einzelne begraben."
-
-#~ msgid "Your robots will keep cleaning here. Build the Orbital drive, and we'll wake the next world."
-#~ msgstr "Deine Roboter räumen hier weiter auf. Bau den Orbitalantrieb, dann wecken wir die nächste Welt."
-
-#~ msgid "The rocket isn't ready yet. Keep following WREN's steps."
-#~ msgstr "Die Rakete ist noch nicht bereit. Folge weiter WRENs Schritten."
 
 #~ msgid "Everything sells for x%s now."
 #~ msgstr "Alles verkauft sich jetzt für x%s."
