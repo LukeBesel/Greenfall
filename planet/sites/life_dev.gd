@@ -46,7 +46,14 @@ static func attach(so: Node) -> void:
 
 
 static func apply_clean(so: Node) -> int:
-	var spec: PackedStringArray = DevHooks.get_s("life-clean", "3").split(",")
+	var n: int = 0
+	for one: String in DevHooks.get_s("life-clean", "3").split(";", false):  # several areas: "8,2;5,ramp,162,-162"
+		n += _clean_one(so, one)
+	return n
+
+
+static func _clean_one(so: Node, one: String) -> int:
+	var spec: PackedStringArray = one.split(",")
 	var rings: int = int(spec[0])
 	var ramp: bool = spec.size() > 1 and spec[1] == "ramp"  # Thriving in the middle down to Clean at the rim
 	var level: int = clampi(int(spec[1]), 1, 5) if spec.size() > 1 and not ramp else 1
@@ -103,6 +110,22 @@ static func report(so: Node) -> String:
 	var cv: Variant = w.get_node_or_null("CellVerdure")
 	if cv is CellVerdure:
 		out.append("verdure %s" % str((cv as CellVerdure).stats))
+	var fl: Variant = w.get_node_or_null("Flutter")
+	if fl is Flutter:
+		out.append("flutter %d" % (fl as Flutter).shown)
+	var la: Variant = w.get_node_or_null("LifeAmbience")
+	if la is LifeAmbience:
+		out.append("sound dirty %.2f green %.2f shots %s" % [(la as LifeAmbience).dirty, (la as LifeAmbience).green, str((la as LifeAmbience).shots_played)])
+	var sm: SiteManager = (so.get("globe") as OrbitPlanet).site_manager
+	for i: int in sm.prefabs.size() if sm else 0:
+		var pf: Variant = sm.prefabs[i]
+		if not (pf is SitePrefab) or (pf as SitePrefab).content == null:
+			continue
+		for c: Node in (pf as SitePrefab).content.get_children():
+			var tl: Variant = c.get_node_or_null("TownLife")
+			if tl is TownLife:
+				var sp: Variant = sm.power.get(i)
+				out.append("town %d %s lights %s" % [i, str((tl as TownLife).stats), "%d/%d" % [(sp as StreetPower).lit_count(), (sp as StreetPower).group_count()] if sp is StreetPower else "-"])
 	return "  ".join(out)
 
 

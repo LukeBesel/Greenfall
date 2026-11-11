@@ -137,7 +137,21 @@ func setup(p_world: Node, globe: OrbitPlanet) -> void:
 	seed_all()
 	cells.cell_changed.connect(_on_cell)
 	cells.green_changed.connect(_on_green)
+	EventBus.hex_cleaned.connect(_on_cleaned)
 	_build_meshes()
+
+
+## The hex-complete moment gets a second beat: after the gold sweep, a slow soft green ring breathes
+## out over the cell (the ground is about to turn). Only near Lumi; far crews' cells stay quiet.
+func _on_cleaned(hid: int, center: Vector3, _bonus: BigNum) -> void:
+	var patch: Variant = world.get("patch") if world else null
+	if instant or not (patch is Node3D) or (patch as Node3D).global_position.distance_to(center) > 40.0:
+		return
+	if hid < 0 or hid >= cells.n or cells.state[hid] == 5:
+		return
+	var r: float = hex_r
+	get_tree().create_timer(0.55).timeout.connect(func() -> void:
+		Vfx.ring(center, r * 1.05, Color(0.55, 0.95, 0.45, 0.6), 1.7))
 
 
 ## Every clean cell at its full green (a load, a fresh start): one pass over the clean cells.

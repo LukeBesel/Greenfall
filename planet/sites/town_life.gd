@@ -57,6 +57,7 @@ var _img: Image
 var _tex: ImageTexture
 var _night: float = 0.0
 var _moving: bool = false
+var _mean := Vector3.ZERO  # the town as a whole (its skyline past the pad follows this)
 
 
 static func attach(vs: VerdanceSite, p_grid: SphereGrid, p_cells: SphereCells, hub_i: int, sm: SiteManager = null) -> TownLife:
@@ -217,6 +218,10 @@ func _write_tex() -> void:
 		var v: Vector3 = _have[key]
 		_img.set_pixel(key.x + HALF, key.y + HALF, Color(v.x, v.y, v.z, 1.0))
 	_tex.update(_img)
+	var sum := Vector3.ZERO
+	for key: Vector2i in _have:
+		sum += _have[key]
+	_mean = sum / maxf(_have.size(), 1.0)
 
 
 func _push_material() -> void:
@@ -226,6 +231,12 @@ func _push_material() -> void:
 	m.set_shader_parameter("life_tex", _tex)
 	m.set_shader_parameter("life_on", 1.0)
 	m.set_shader_parameter("life_night", _night)
+	# The skyline past the pad (TownOutskirts, its own copy of the material, no block map) wakes
+	# with the town as a whole: a dark ring of towers until the streets below are clean.
+	var om: ShaderMaterial = TownOutskirts.material()
+	om.set_shader_parameter("life_on", 0.0)
+	om.set_shader_parameter("life_flat", Vector3(_mean.x * 0.8, _mean.y, 0.0))
+	om.set_shader_parameter("life_night", _night)
 
 
 ## How dark it is for the windows: they start to glow at dusk, before the street is black.

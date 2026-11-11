@@ -184,6 +184,12 @@ func build(p_world: Node3D) -> void:
 		var cv := CellVerdure.new()
 		w.add_child(cv)
 		cv.setup(w, globe)
+		var fl := Flutter.new()  # butterflies and fireflies over planted cells (plants/flutter.gd)
+		w.add_child(fl)
+		fl.setup(w, globe)
+		var la := LifeAmbience.new()  # wind over junk, leaves over green (audio/life_ambience.gd)
+		w.add_child(la)
+		la.setup(w, globe)
 		BuildBudget.lap("orbit verdure")
 	var lumi_level := LumiLevel.new()
 	lumi_level.name = "LumiLevel"
