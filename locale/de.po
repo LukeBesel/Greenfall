@@ -282,11 +282,11 @@ msgstr "BALLEN-ZUFUHR"
 
 #: automation/hub.gd:89
 msgid "Locked. Upgrade your base to level %d to build the launch pad."
-msgstr ""
+msgstr "Gesperrt. Bring deine Basis auf Stufe %d, um die Startrampe zu bauen."
 
 #: automation/hub.gd:90
 msgid "The rocket isn't ready yet. Keep following WREN's steps."
-msgstr ""
+msgstr "Die Rakete ist noch nicht bereit. Folge weiter WRENs Schritten."
 
 #: automation/hub.gd:170
 msgid "Hub upgraded: %s."
@@ -2510,7 +2510,7 @@ msgstr "Die Drohne hat die Prüfung gewonnen, %d zu %d. Ein Trinkgeld gab's trot
 
 #: systems/homeward.gd:153
 msgid "Restore %d hubs on %s to level %d (%d so far)"
-msgstr ""
+msgstr "Bring %d Basen auf %s auf Stufe %d (bisher %d)"
 
 #: systems/homeward.gd:155
 msgid "Restore %s to %d%% (%d%%) or get a base to level %d"
@@ -10964,7 +10964,7 @@ msgstr "Fliege zu einem anderen Planeten"
 
 #: data/goals.json:goals[home_land_1].desc
 msgid "You can fly on now. The rest of Verdance can wait."
-msgstr ""
+msgstr "Du kannst jetzt weiterfliegen. Der Rest von Verdance kann warten."
 
 #: data/goals.json:goals[perfect_1].text
 msgid "Make a perfect bale"
@@ -11536,7 +11536,7 @@ msgstr "Verdance"
 
 #: data/homeward.json:planets[verdance].leave.toast
 msgid "You can fly on now, Lumi. The rest of Verdance can wait."
-msgstr ""
+msgstr "Du kannst jetzt weiterfliegen, Lumi. Der Rest von Verdance kann warten."
 
 #: data/homeward.json:planets[ochre].name data/planets.json:ochre.name data/telescope.json:planets_default[ochre].name
 msgid "Ochre"
