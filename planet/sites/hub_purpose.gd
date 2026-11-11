@@ -29,6 +29,7 @@ var sm: SiteManager
 var planet: String = "verdance"
 var site: int = -1          # the hub Lumi is at (-1: between hubs)
 var card_text: String = ""  # what the card shows now (tests, the clarity log)
+var title_reason: String = ""  # the arrival title's "why we came" line (tests, the walkthrough)
 var _t: float = 0.0
 var _lvl_t: float = 0.0
 var _spot: Node3D           # the landmark's interact anchor
@@ -161,7 +162,7 @@ func _enter(i: int, by_rocket: bool) -> void:
 			GameState.inc_stat("hubs_seen")  # goal steps: "fly to the next hub" = stat hubs_seen >= n
 	var clean: float = sm.region_clean(i)
 	if by_rocket or first:
-		show_title(i)
+		show_title(i, first)
 	if HubPlan.is_home(planet, i):
 		if by_rocket:
 			EventBus.toast.emit(tr("Home. The workbench is by the pod."), "info")
@@ -637,8 +638,10 @@ func _build_ui() -> void:
 	EventBus.ui_modal_changed.connect(func(open: bool) -> void: _layer.visible = not open)
 
 
-## The hub's name on screen for a few seconds (an arrival).
-func show_title(i: int) -> void:
+## The hub's name on screen for a few seconds (an arrival): the name, the town type and its
+## landmark, and why Lumi came (HubPlan.reason). Timings and the first-arrival sting are data
+## (hub_defaults.hop: title_in_s, title_hold_s, title_out_s, arrive_sting).
+func show_title(i: int, first: bool = false) -> void:
 	var nm: String = HubPlan.hub_name(planet, i)
 	if nm == "" or _layer == null:
 		return
@@ -666,16 +669,27 @@ func show_title(i: int) -> void:
 	sub.add_theme_constant_override("outline_size", 5)
 	sub.add_theme_color_override("font_outline_color", Color(0.03, 0.06, 0.05, 0.85))
 	vb.add_child(sub)
+	title_reason = tr(HubPlan.reason(planet, i)) if HubPlan.reason(planet, i) != "" else ""
+	if title_reason != "":
+		var why: Label = UITheme.label(title_reason, 15, CREAM)
+		why.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		why.add_theme_constant_override("outline_size", 5)
+		why.add_theme_color_override("font_outline_color", Color(0.03, 0.06, 0.05, 0.85))
+		why.modulate.a = 0.92
+		vb.add_child(why)
 	_layer.get_child(0).add_child(vb)
+	var sting: String = str(HubPlan.hop_cfg("arrive_sting", "motif"))
+	if first and sting != "" and not HubPlan.is_home(planet, i):
+		Audio.music_sting(sting)
 	_title = vb
 	vb.modulate.a = 0.0
 	var tw := vb.create_tween()
-	tw.tween_property(vb, "modulate:a", 1.0, 0.5)
-	tw.tween_interval(3.0)
-	tw.tween_property(vb, "modulate:a", 0.0, 0.9)
+	tw.tween_property(vb, "modulate:a", 1.0, float(HubPlan.hop_cfg("title_in_s", 0.5)))
+	tw.tween_interval(float(HubPlan.hop_cfg("title_hold_s", 3.0)))
+	tw.tween_property(vb, "modulate:a", 0.0, float(HubPlan.hop_cfg("title_out_s", 0.9)))
 	tw.tween_callback(vb.queue_free)
 	_card.visible = false
-	print("[hubs] arrived at site %d: %s (%s)" % [i, nm, sub_t])
+	print("[hubs] arrived at site %d: %s (%s) | %s" % [i, nm, sub_t, title_reason])
 	if DevHooks.has("hop-shots"):  # dev: the arrival frame, and one 9 s later (the dev chain's wake)
 		for wait: float in [1.6, 9.0]:
 			get_tree().create_timer(wait, true, false, true).timeout.connect(func() -> void:

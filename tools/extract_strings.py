@@ -55,6 +55,7 @@ JSON_RULES: dict[str, dict] = {
     "planet.json": {"skip": True},
     "lumi_level.json": {"skip": True},
     "world_looks.json": {"skip": True},  # [worlds2] look tuning only
+    "machine_art.json": {"skip": True},  # [v6name] yard machine colours and sign layout only
 }
 # Strings that look like ids, colours, paths or speaker tags are never extracted from pools.
 ID_KEYS = {"id", "icon", "ears", "shape", "style", "pattern", "action", "mode", "kind", "type", "body", "anim", "set", "source", "stat", "look"}

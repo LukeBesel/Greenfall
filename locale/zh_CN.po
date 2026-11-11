@@ -260,22 +260,6 @@ msgstr "按住 %s"
 msgid "Hex clean! Green can grow here now."
 msgstr "六角格干净了！绿色可以在这里生长了。"
 
-#: automation/auto_baler.gd:478
-msgid "AUTO-BALER"
-msgstr "自动打包机"
-
-#: automation/auto_baler.gd:481
-msgid "KEEP CLEAR · 40 T"
-msgstr "请勿靠近 · 40 吨"
-
-#: automation/conveyor.gd:71
-msgid "TO  SCALE  ◀"
-msgstr "前往  磅秤  ◀"
-
-#: automation/conveyor.gd:185
-msgid "BALE  FEED"
-msgstr "捆包入口"
-
 #: automation/hub.gd:89
 msgid "Locked. Upgrade your base to level %d to build the launch pad."
 msgstr "未解锁。把基地升到 %d 级来建造发射台。"
@@ -671,7 +655,7 @@ msgstr "一起绽放"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  生命"
 
-#: planet/sites/hub_hop.gd:48
+#: planet/sites/hub_hop.gd:49
 msgid "{interact}  skip"
 msgstr "{interact}  跳过"
 
@@ -695,132 +679,132 @@ msgstr "郊区"
 msgid "Harbour town"
 msgstr "港口镇"
 
-#: planet/sites/hub_plan.gd:106
+#: planet/sites/hub_plan.gd:133
 msgid "landmark"
 msgstr "地标"
 
-#: planet/sites/hub_plan.gd:260
+#: planet/sites/hub_plan.gd:287
 msgid "The recycling network grew: everything sells for x%s now."
 msgstr "回收网络变大了：现在所有东西的售价 x%s。"
 
-#: planet/sites/hub_plan.gd:279
+#: planet/sites/hub_plan.gd:306
 msgid "Rocket piece: %s"
 msgstr "火箭部件：%s"
 
-#: planet/sites/hub_plan.gd:301
+#: planet/sites/hub_plan.gd:328
 msgid "+%s Cubes"
 msgstr "+%s 方块"
 
-#: planet/sites/hub_plan.gd:303
+#: planet/sites/hub_plan.gd:330
 msgid "+%d Parts"
 msgstr "+%d 零件"
 
-#: planet/sites/hub_plan.gd:305
+#: planet/sites/hub_plan.gd:332
 msgid "+%d Seeds"
 msgstr "+%d 种子"
 
-#: planet/sites/hub_plan.gd:309
+#: planet/sites/hub_plan.gd:336
 msgid "New: %s"
 msgstr "新获得：%s"
 
-#: planet/sites/hub_plan.gd:313
+#: planet/sites/hub_plan.gd:340
 msgid "New Lumi design: %s"
 msgstr "新的 Lumi 外观：%s"
 
-#: planet/sites/hub_purpose.gd:167
+#: planet/sites/hub_purpose.gd:168
 msgid "Home. The workbench is by the pod."
 msgstr "到家了。工作台就在逃生舱旁边。"
 
-#: planet/sites/hub_purpose.gd:173
+#: planet/sites/hub_purpose.gd:174
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "火箭停在发射台上。目的地列表的第一项就是家。"
 
-#: planet/sites/hub_purpose.gd:179
+#: planet/sites/hub_purpose.gd:180
 msgid "%s: %d%% clean, up %d%% while you were away."
 msgstr "%s：已清理 %d%%，你离开期间增加了 %d%%。"
 
-#: planet/sites/hub_purpose.gd:257
+#: planet/sites/hub_purpose.gd:258
 msgid "Dig the landmark out. Clean hexes here: %d / %d"
 msgstr "把地标挖出来。清理这里的格子：%d / %d"
 
-#: planet/sites/hub_purpose.gd:259
+#: planet/sites/hub_purpose.gd:260
 msgid "Repair an outpost here: %d / %d"
 msgstr "修好这里的前哨站：%d / %d"
 
-#: planet/sites/hub_purpose.gd:262
+#: planet/sites/hub_purpose.gd:263
 msgid "Upgrade the rocket, then wake the %s"
 msgstr "先升级火箭，再唤醒：%s"
 
-#: planet/sites/hub_purpose.gd:263
+#: planet/sites/hub_purpose.gd:264
 msgid "Wake the %s (%s)"
 msgstr "唤醒：%s（%s）"
 
-#: planet/sites/hub_purpose.gd:297
+#: planet/sites/hub_purpose.gd:298
 msgid "E   Wake the %s  (%s)"
 msgstr "E   唤醒：%s  （%s）"
 
-#: planet/sites/hub_purpose.gd:298
+#: planet/sites/hub_purpose.gd:299
 msgid "%s: asleep. %s"
 msgstr "%s：沉睡中。%s"
 
-#: planet/sites/hub_purpose.gd:303
+#: planet/sites/hub_purpose.gd:304
 msgid "The rocket can carry supplies to %d bases. Upgrade it at the workbench."
 msgstr "火箭最多能给 %d 个基地运送补给。去工作台升级火箭。"
 
-#: planet/sites/hub_purpose.gd:319
+#: planet/sites/hub_purpose.gd:320
 msgid "Waking the %s needs %s."
 msgstr "唤醒（%s）需要 %s。"
 
-#: planet/sites/hub_purpose.gd:344
+#: planet/sites/hub_purpose.gd:345
 msgid "%s is awake. %s keeps cleaning when you fly on."
 msgstr "%s 醒来了。你飞走以后，%s 会继续清理。"
 
-#: planet/sites/hub_purpose.gd:371
+#: planet/sites/hub_purpose.gd:372
 msgid "%s grows: level %d."
 msgstr "%s 成长了：等级 %d。"
 
-#: planet/sites/hub_purpose.gd:399
+#: planet/sites/hub_purpose.gd:400
 msgid "%d robot working"
 msgid_plural "%d robots working"
 msgstr[0] "%d 台机器人在工作"
 
-#: planet/sites/hub_purpose.gd:421
+#: planet/sites/hub_purpose.gd:422
 msgid "Home: %d%% clean"
 msgstr "家：已清理 %d%%"
 
-#: planet/sites/hub_purpose.gd:423
+#: planet/sites/hub_purpose.gd:424
 msgid "Restored: %d%% clean"
 msgstr "已修复：已清理 %d%%"
 
-#: planet/sites/hub_purpose.gd:425 ui/profile_picker.gd:111
+#: planet/sites/hub_purpose.gd:426 ui/profile_picker.gd:111
 msgid "New"
 msgstr "新建"
 
-#: planet/sites/hub_purpose.gd:428
+#: planet/sites/hub_purpose.gd:429
 msgid "Ready to wake"
 msgstr "可以唤醒"
 
-#: planet/sites/hub_purpose.gd:429
+#: planet/sites/hub_purpose.gd:430
 msgid "Asleep: %d / %d"
 msgstr "沉睡中：%d / %d"
 
-#: planet/sites/hub_purpose.gd:440
+#: planet/sites/hub_purpose.gd:441
 msgid "%s   %d%% CLEAN"
 msgstr "%s   已清理 %d%%"
 
-#: planet/sites/hub_purpose.gd:442
+#: planet/sites/hub_purpose.gd:443
 msgid "%s   BASES %d/%d"
 msgstr "%s   基地 %d/%d"
 
-#: planet/sites/hub_purpose.gd:489
+#: planet/sites/hub_purpose.gd:490
 msgid "Restored. Next: take the rocket to %s."
 msgstr "已修复。下一步：乘火箭前往 %s。"
 
-#: planet/sites/hub_purpose.gd:491
+#: planet/sites/hub_purpose.gd:492
 msgid "All %d bases stand. Fly home and make the rocket ready to leave."
 msgstr "%d 个基地都修好了。飞回家，让火箭做好离开的准备。"
 
-#: planet/sites/hub_purpose.gd:663
+#: planet/sites/hub_purpose.gd:666
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
@@ -16927,6 +16911,18 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "AUTO-BALER"
+#~ msgstr "自动打包机"
+
+#~ msgid "KEEP CLEAR · 40 T"
+#~ msgstr "请勿靠近 · 40 吨"
+
+#~ msgid "TO  SCALE  ◀"
+#~ msgstr "前往  磅秤  ◀"
+
+#~ msgid "BALE  FEED"
+#~ msgstr "捆包入口"
 
 #~ msgid "It's the charter. The Makers sleep in the Cradle's lower decks, and it won't wake them into a dying system."
 #~ msgstr "是宪章。Makers 睡在 Cradle 号的下层甲板里，它不会让他们在一个垂死的星系里醒来。"
