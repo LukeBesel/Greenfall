@@ -116,8 +116,26 @@ static func build(parent: Node3D, p_site: String, stage: int, p_restoration: flo
 	elif s.site_id != "start_yard":
 		s.town_r = HUB_TOWN_R
 	parent.add_child(s)
-	await s._make()
+	s._make_all()  # [v6qa] not `await s._make()`: see _make_all
+	if not s._made:
+		await s.made
 	return s
+
+
+## [v6qa] The build, ending in `made`. The static build() used to await _make() itself; a town
+## freed mid-build (Lumi walking off, a scene change, quitting) then left that await chain (the
+## site's builder lambda -> this static -> _make) pending on a freed site, and the engine corrupted
+## its heap tearing it down: "corrupted size vs. prev_size in fastbins", exit 134 at quit
+## (repro: --orbit-walk-in=1,380 --quit-mid-build=30 [--quit-mode=free]). Awaiting the site's
+## own signal instead is dropped cleanly with the site.
+signal made
+var _made: bool = false
+
+
+func _make_all() -> void:
+	await _make()
+	_made = true
+	made.emit()
 
 
 ## Site-local rectangles that are solid (building footprints): the globe clears junk under them.
@@ -228,6 +246,7 @@ func _make() -> void:
 	city.prop_radius = town_r
 	add_child(city)
 	await city.build(layout, _sidewalk_material())
+
 	BuildBudget.lap("site:city")
 	await BuildBudget.check("site:roads")  # [orbE] behind the loading screen: a few kit buildings per frame
 	_roads()

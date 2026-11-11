@@ -38,11 +38,13 @@ const ARCH: Array = [
 	["warehouse", 18.0, 15.0, 2, "factory"],
 	["works", 15.0, 12.0, 3, "factory"],
 ]
-const PROPS: Array[String] = ["car", "pole", "tank", "fence", "shed", "picket", "track"]
+const PROPS: Array[String] = ["car", "pole", "tank", "fence", "shed", "picket", "track", "barrier"]
 const VARIANTS: int = 4  # looks per archetype (palette, shopfront, roof clutter, roof colour)
 const K_SHED: int = -5
 const K_PICKET: int = -6
 const K_TRACK: int = -7
+const K_BARRIER: int = -8  # [v6qa] a road block where a track ends
+const BARRIER_SIZE := Vector2(4.8, 0.7)
 const TRACK_W: float = 4.4
 ## [v5look] Tile and sheet colours of the pitched roofs, and soft paint tints per building.
 const ROOF_TILES: Array[Color] = [Color(0.66, 0.29, 0.2), Color(0.3, 0.34, 0.4), Color(0.45, 0.3, 0.22), Color(0.33, 0.42, 0.34)]
@@ -266,6 +268,12 @@ func _prop_mesh(p: String) -> Mesh:
 				b.box("paint:#4f565c", Vector3(3.0, 0.07, 1.42), KitMesh.xf(Vector3(0, 2.26, sgn * 0.62), Vector3(sgn * 24.0, 0, 0)), 0.01)
 			b.box("paint:#7a6248", Vector3(2.5, 0.5, 1.2), KitMesh.xf(Vector3(0, 2.1, 0)), 0.02)
 			b.box("paint:#7a6248", Vector3(2.6, 0.7, 2.1), KitMesh.xf(Vector3(0, -0.3, 0)), 0.02)
+		"barrier":  # [v6qa] two concrete road blocks with faded red-and-white chevrons: the road is closed here
+			for sx4: float in [-1.2, 1.2]:
+				b.box("paint:#a9a59c", Vector3(2.3, 0.22, 0.62), KitMesh.xf(Vector3(sx4, 0.11, 0)), 0.03)
+				b.box("paint:#b5b1a8", Vector3(2.3, 0.6, 0.3), KitMesh.xf(Vector3(sx4, 0.5, 0)), 0.03)
+				for k4: int in 4:
+					b.box("paint:#a8392c" if k4 % 2 == 0 else "paint:#d8d2c4", Vector3(0.5, 0.28, 0.02), KitMesh.xf(Vector3(sx4 - 0.85 + 0.57 * k4, 0.55, 0.16), Vector3(0, 0, 30)), 0.004)
 		"picket":  # [v5look] a low garden fence, 6 m: posts, two rails, boards (some missing)
 			for px: float in [-2.9, -1.0, 1.0, 2.9]:
 				b.box("paint:#b9ad94", Vector3(0.12, 1.8, 0.12), KitMesh.xf(Vector3(px, 0.25, 0)), 0.01)
@@ -373,6 +381,8 @@ func _track_links(c: int, out: Array) -> void:
 	var k: int = grid.nbr_count[c]
 	var b6: int = c * SphereGrid.MAX_N
 	var ha: float = terrain.height(dir)
+	var links: int = 0
+	var link_t := Vector3.ZERO
 	for j: int in k:
 		var o: int = grid.nbr[b6 + j]
 		if not _is_track(o):
@@ -384,6 +394,8 @@ func _track_links(c: int, out: Array) -> void:
 		if absf(he - ha) > 2.5 or absf(terrain.height(grid.centers[o]) - ha) > 5.0:
 			continue  # too steep for a road
 		var t: Vector3 = grid.centers[o] - dir
+		links += 1
+		link_t = t
 		var lvl: int = posmod(int(floor(atan2(t.dot(f.z), t.dot(f.x)) / (PI / 3.0) + 0.5)), 3)
 		var lift: Vector3 = dir * (0.06 + 0.012 * lvl)
 		var s0d: Vector3 = (dir + ci).normalized()
@@ -406,6 +418,11 @@ func _track_links(c: int, out: Array) -> void:
 				x = -x
 				y = -y
 			out.append([K_TRACK, Transform3D(Basis(x, y, along * len_m), pts[n]), Vector2(TRACK_W, len_m), 0])
+	if links == 1:  # [v6qa] a dead end (the hubs' 345 m clearance, a lake, steep ground): a road block past the strip's end
+		var bz: Vector3 = (link_t - dir * link_t.dot(dir)).normalized()
+		var bd: Vector3 = (dir - bz * 1.9 / terrain.R).normalized()
+		var bb := Basis(dir.cross(bz).normalized(), bd, bz).orthonormalized()
+		out.append([K_BARRIER, Transform3D(bb, bd * (terrain.R + terrain.height(bd))), BARRIER_SIZE, 0])
 
 
 ## A prop beside a building: (lx, lz) metres in the building's frame, on the ground there.
@@ -754,7 +771,7 @@ func _colliders(pos: Vector3) -> void:
 			var sz: Vector2 = e[2]
 			if k == K_PICKET and sz.x < sz.y:
 				sz = Vector2(sz.y, sz.x)
-			var h: float = 4.6 if k == -3 else (1.6 if k == -1 else (8.5 if k == -2 else (1.9 if k == -4 else (2.5 if k == K_SHED else (1.05 if k == K_PICKET else float(ARCH[k][3]) * 3.0 * (float((e[4] as Vector3).y) if e.size() > 4 else 1.0) + (4.0 if k <= 1 or k == 3 else 1.0))))))
+			var h: float = 0.8 if k == K_BARRIER else 4.6 if k == -3 else (1.6 if k == -1 else (8.5 if k == -2 else (1.9 if k == -4 else (2.5 if k == K_SHED else (1.05 if k == K_PICKET else float(ARCH[k][3]) * 3.0 * (float((e[4] as Vector3).y) if e.size() > 4 else 1.0) + (4.0 if k <= 1 or k == 3 else 1.0))))))
 			var cs := CollisionShape3D.new()
 			var box := BoxShape3D.new()
 			box.size = Vector3(sz.x, h + 2.6, sz.y)
