@@ -36,6 +36,7 @@
   - `--lake-view[=back_m]` or `--lake-view-high[=m]` (rendered): puts Lumi on a lake shore to check the water look.
   - `--orbit-survey=2 [--survey-zoom=1.4..6.0]` (rendered, shot delay 110 s or more): opens the survey map after the world is up, to check its glyphs and card.
   - Soak: `--autoplay --soak --time-scale=8 --quit-after=2400` (`[soak] WARN` lines). See docs/QA_VERDANCE.md.
+- Life layers (grass on clean ground, blocks waking up, butterflies, ambience): `--life-clean=RINGS[,LEVEL|ramp[,X,Z]]` cleans cells round Lumi (several areas with `;`), `--life-grown` skips the grow-in, `--life-off` is the "before", `--life-report` prints a `[life]` line every 5 s, `--life-tour=PREFIX --life-tour-stops="x,z,yaw,time,wait[,cam_dist,cam_pitch];..."` takes several shots in one rendered run (planet/sites/life_dev.gd).
 - Translations: `python3 tools/extract_strings.py` after adding or changing player text, then `python3 tools/l10n_status.py --export` and `tools/l10n_merge_draft.py` (docs/LOCALIZATION.md). Early-game strings must be translated in all six languages or `tests/test_l10n.gd` fails. Text that skipped `tr()`: add `--locale=pseudo --l10n-audit` to an autoplay run.
 - Assets: `python3 tools/fetch_assets.py` after editing `data/assets.json`; new vendor textures need `compress/mode=2` (+ `compress/normal_map=1` for `*_nor_gl_*`) in their .import files.
 - Blender (for modeling) is not preinstalled: `apt-get install -y --no-install-recommends blender`, then script it with `blender -b --python script.py`.

@@ -361,6 +361,7 @@ func _release(c: int) -> void:
 
 
 func _drain() -> void:
+	var ht: int = Hitch.t()
 	var t0: int = Time.get_ticks_usec()
 	for c: int in _todo.keys():
 		_todo.erase(c)
@@ -369,6 +370,7 @@ func _drain() -> void:
 			break
 	stats["build_us_max"] = maxi(int(stats["build_us_max"]), Time.get_ticks_usec() - t0)
 	stats["blocks"] = _block.size()
+	Hitch.mark("verdure tufts", ht)
 
 
 ## Where tufts may stand in a cell: off a town's paving and lot plates, off the garden's mounds.

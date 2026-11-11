@@ -10,7 +10,7 @@ extends Node3D
 ## changes cell or a hex level changes. No sound, no colliders, nothing saved.
 
 const RINGS: int = 4
-const MAX_N: int = 40
+const MAX_N: int = 24
 ## Butterflies per cell by hex level 0..5.
 const PER_LEVEL: Array[int] = [0, 0, 1, 2, 2, 3]
 const COLORS: Array[Color] = [Color(1.0, 0.62, 0.15), Color(0.96, 0.95, 0.85), Color(0.4, 0.6, 1.0), Color(1.0, 0.85, 0.25), Color(0.9, 0.45, 0.72)]
@@ -161,6 +161,8 @@ func plan(centre: int) -> Array:
 	for c: int in grid.cells_around(centre, RINGS):
 		var n: int = count_for(cells.state[c], cells.level[c], cells.flags[c])
 		for k: int in n:
+			if _h(c, k + 90) < 0.35:  # not every cell: sparse and calm
+				continue
 			if out.size() >= MAX_N:
 				return out
 			var up: Vector3 = grid.centers[c]

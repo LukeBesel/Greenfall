@@ -260,7 +260,10 @@ func _process(delta: float) -> void:
 		_poll = 0.5
 		if _dirty:
 			_dirty = false
-			if evaluate() > 0:
+			var ht: int = Hitch.t()
+			var n_changed: int = evaluate()
+			Hitch.mark("town life", ht)
+			if n_changed > 0:
 				_moving = true
 			if not _live:
 				_live = true
