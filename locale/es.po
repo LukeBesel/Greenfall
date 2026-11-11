@@ -925,7 +925,7 @@ msgstr "Restaurado. Siguiente: toma el cohete a %s."
 
 #: planet/sites/hub_purpose.gd:452
 msgid "All %d bases stand. Fly home and make the rocket ready to leave."
-msgstr ""
+msgstr "Las %d bases están en pie. Vuela a casa y prepara el cohete para partir."
 
 #: planet/sites/hub_purpose.gd:624
 msgid "%s  ·  the %s"

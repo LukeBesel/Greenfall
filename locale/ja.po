@@ -923,7 +923,7 @@ msgstr "復旧完了。次はロケットで %s へ。"
 
 #: planet/sites/hub_purpose.gd:452
 msgid "All %d bases stand. Fly home and make the rocket ready to leave."
-msgstr ""
+msgstr "%d つの基地がそろった。ホームに戻ってロケットの出発準備をしよう。"
 
 #: planet/sites/hub_purpose.gd:624
 msgid "%s  ·  the %s"
