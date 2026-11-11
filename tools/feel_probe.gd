@@ -9,6 +9,16 @@ extends Node
 ##   --feel=cam                     camera arm and jumps along a walk (--feel-walk=x,z;x,z;... in
 ##                                  metres from the start cell).
 ##   --feel=snag                    pushes Lumi at the known snag corners; reports ground covered.
+##   --feel=walk                    snag walk: Lumi really walks random straight legs through each
+##                                  hub town (--feel-hubs=0,1,.. default all, --feel-legs=N per hub,
+##                                  --feel-seed=S). "clear" legs keep 0.15 m off everything, "graze"
+##                                  legs brush something, "step" legs cross something under 0.5 m
+##                                  (kerbs, steps, low planters: he hovers over up to 0.45 m). Then
+##                                  glancing pushes past small things (--feel-props=N per hub). Prints each catch (speed under half for
+##                                  0.25 s), hop (the ride height kicks) and swerve as `[snag]` lines
+##                                  with the collider. Exit 1 (with --feel-quit) on a catch.
+##                                  --feel-boost walks the legs boosting. Add --fixed-fps 60 before
+##                                  `--` to run faster than real time.
 ## --feel-quit quits when the timeline ends.
 
 class FeelInput:
@@ -98,6 +108,12 @@ func _ready() -> void:
 			return
 		"snag":
 			_snag()
+			return
+		"walk":
+			_snag_walk()
+			return
+		"props":
+			_props_audit()
 			return
 		"cam":
 			_cam_walk()
@@ -408,6 +424,12 @@ func _snag() -> void:
 					t += get_physics_process_delta_time()
 					if lumi.sphere_motor.hv.length() < 0.4 and t > 0.4:
 						still += get_physics_process_delta_time()
+					if DevHooks.get_s("feel-debug", "") == "%d,%.1f" % [h * 45, off] and t < 1.6:
+						var dm: SphereMotor = lumi.sphere_motor
+						var hs: PackedStringArray = []
+						for c: KinematicCollision3D in dm.hits:
+							hs.append("%s n%s at%s" % [_walk_name(c.get_collider()), str(_site_xz(lumi.global_position + c.get_normal()) - _site_xz(lumi.global_position)), str(_site_xz(c.get_position()))])
+						print("[feel] dbg t%.2f pos%s hv %.2f climb %.2f alt %.2f g %s | %s" % [t, str(_site_xz(lumi.global_position)), dm.hv.length(), dm.get("_climb"), dm.altitude, str(dm.grounded), " ; ".join(hs)])
 				inp.stick = Vector3.ZERO
 				var gone: float = (lumi.global_position - p0).dot(w)
 				total += 1
@@ -495,3 +517,370 @@ func _cam_wall() -> void:
 	print("[feel] camwall: pushed away from the look point for 2 s, now at (%.1f, %.1f)" % [at.x, at.y])
 	if DevHooks.has("feel-quit"):
 		get_tree().quit(0)
+
+
+# --- walk: real walks through every hub town, catches and hops ---------------------------------
+
+var _walk_q: PhysicsShapeQueryParameters3D
+var _walk_cyl: CylinderShape3D
+
+
+## Whether Lumi's body, widened by `pad` m, is clear of the town's solid things at site-local (x, z).
+func _walk_free(root: Node3D, xf: Transform3D, x: float, z: float, pad: float, skip: Object = null, lift: float = 0.25) -> bool:
+	var up: Vector3 = (xf * Vector3(x, 0, z)).normalized()
+	var g: Vector3 = so.globe.terrain.ground(up)
+	_walk_cyl.radius = Patch.BODY_R + pad
+	_walk_q.transform = Transform3D(SphereGrid.frame(up), g + up * (lift + 0.475))
+	for hit: Dictionary in lumi.get_world_3d().direct_space_state.intersect_shape(_walk_q, 8):
+		var co: Object = hit.get("collider")
+		if co == lumi or co is RigidBody3D:
+			continue
+		if skip != null and co is CollisionObject3D:  # skip one shape (a body holds a whole town's furniture)
+			var cob := co as CollisionObject3D
+			if cob.shape_owner_get_owner(cob.shape_find_owner(int(hit.get("shape", -1)))) == skip:
+				continue
+		if co is CollisionObject3D and (root.is_ancestor_of(co as Node) or ((co as CollisionObject3D).collision_layer & (PhysLayers.MOUND | PhysLayers.PROP)) != 0):
+			return false
+	return true
+
+
+func _walk_line(root: Node3D, xf: Transform3D, a: Vector2, b: Vector2, pad: float, water: Callable, lift: float = 0.25) -> bool:
+	var n: int = maxi(2, int(a.distance_to(b) / 0.4))
+	for k: int in n + 1:
+		var c: Vector2 = a.lerp(b, float(k) / n)
+		if water.is_valid() and (water.call(c.x, c.y) or water.call(c.x + 1.5, c.y) or water.call(c.x - 1.5, c.y) or water.call(c.x, c.y + 1.5) or water.call(c.x, c.y - 1.5)):
+			return false  # lakes stop him on purpose (no Hover Jets)
+		if not _walk_free(root, xf, c.x, c.y, pad, null, lift):
+			return false
+	return true
+
+
+func _walk_name(co: Object) -> String:
+	if not co is Node:
+		return "?"
+	var nd: Node = co as Node
+	var s: String = "%s/%s" % [nd.get_parent().name if nd.get_parent() else "", nd.name]
+	if co is CollisionObject3D:
+		s += " L%d" % (co as CollisionObject3D).collision_layer
+	return s
+
+
+## What else slows Lumi where he stands: water, the shore stop, a slope, a bale press.
+func _walk_why() -> String:
+	var out: PackedStringArray = []
+	var f: Variant = so.w.get("field")
+	if f:
+		var hx: int = f.hex_at(lumi.global_position)
+		if hx >= 0 and f.is_water(hx):
+			out.append("in water")
+	var m: SphereMotor = lumi.sphere_motor
+	var slope: float = rad_to_deg(m.ground_normal.angle_to(lumi.up()))
+	if slope > 8.0:
+		out.append("slope %.0f deg" % slope)
+	if float(lumi.get("_cubing")) > 0.0:
+		out.append("pressing a bale")
+	out.append("speed %.2f, alt %.2f, grounded %s" % [m.hv.length(), m.altitude, str(m.grounded)])
+	return " [" + ", ".join(out) + "]"
+
+
+func _snag_walk() -> void:
+	inp.world_space = true
+	_walk_cyl = CylinderShape3D.new()
+	_walk_cyl.height = 0.95
+	_walk_q = PhysicsShapeQueryParameters3D.new()
+	_walk_q.shape = _walk_cyl
+	_walk_q.collision_mask = PhysLayers.SOLID | PhysLayers.MOUND
+	var sm: SiteManager = so.globe.site_manager
+	var hubs: Array[int] = []
+	if DevHooks.has("feel-hubs"):
+		for h: String in DevHooks.get_s("feel-hubs", "0").split(","):
+			hubs.append(int(h))
+	else:
+		for h: int in sm.sites.size():
+			hubs.append(h)
+	var legs: int = int(DevHooks.get_f("feel-legs", 40.0))
+	var rng := RandomNumberGenerator.new()
+	rng.seed = int(DevHooks.get_f("feel-seed", 7.0))
+	var walk: float = lumi.stat("move_speed")
+	var catches: int = 0
+	var hops: int = 0
+	var swerves: int = 0
+	var tree: SceneTree = get_tree()
+	for hi: int in hubs:
+		if hi < 0 or hi >= sm.sites.size():
+			continue
+		var xf: Transform3D = sm.sites[hi]["transform"]
+		var r_town: float = (VerdanceSite.TOWN_R if hi == 0 else VerdanceSite.HUB_TOWN_R) - 6.0
+		var pos0: Vector3 = so.globe.terrain.ground((xf * Vector3(0, 0, 6)).normalized())
+		lumi.place_on_sphere(pos0, (so.globe.terrain.ground((xf * Vector3(0, 0, -6)).normalized()) - pos0))
+		lumi.velocity = Vector3.ZERO
+		var waited: float = 0.0
+		while waited < 90.0 and (sm.prefab(hi) == null or not sm.prefab(hi).is_built):
+			await tree.process_frame
+			waited += get_process_delta_time()
+		if sm.prefab(hi) == null or not sm.prefab(hi).is_built:
+			print("[snag] hub %d: town never built" % hi)
+			continue
+		await tree.create_timer(2.0).timeout
+		var root: Node3D = sm.roots[hi]
+		var inv: Transform3D = xf.affine_inverse()
+		var wet: Callable = sm.water_fn(hi)
+		var n_leg: int = 0
+		var n_try: int = 0
+		var n_clear: int = 0
+		var n_step: int = 0
+		var hub_c: int = 0
+		var hub_h: int = 0
+		var hub_s: int = 0
+		var lines: PackedStringArray = []
+		while n_leg < legs and n_try < legs * 200:
+			n_try += 1
+			# Half the legs start in the town's core, where the street furniture is.
+			var ra: float = r_town if n_try % 2 == 0 else minf(r_town, 55.0)
+			var a := Vector2(rng.randf_range(-ra, ra), rng.randf_range(-ra, ra))
+			var ang: float = rng.randf() * TAU
+			var b: Vector2 = a + Vector2(cos(ang), sin(ang)) * rng.randf_range(10.0, 26.0)
+			if a.length() > r_town or b.length() > r_town:
+				continue
+			var kind: String = ""
+			if _walk_line(root, xf, a, b, 0.0, wet):
+				kind = "clear" if _walk_line(root, xf, a, b, 0.15, Callable()) else "graze"
+			elif n_step < legs / 3 and _walk_line(root, xf, a, b, 0.0, wet, Patch.BODY_R):
+				# Only something lower than the hover-over height (0.45 m) is in the way: a kerb, a step.
+				kind = "step"
+			else:
+				continue
+			if kind == "clear" and n_clear >= (legs + 1) / 3:
+				continue  # the rest of the legs brush something or step up
+			n_step += 1 if kind == "step" else 0
+			n_clear += 1 if kind == "clear" else 0
+			n_leg += 1
+			var pa: Vector3 = so.globe.terrain.ground((xf * Vector3(a.x, 0, a.y)).normalized())
+			var pb: Vector3 = so.globe.terrain.ground((xf * Vector3(b.x, 0, b.y)).normalized())
+			lumi.place_on_sphere(pa, pb - pa)
+			lumi.velocity = Vector3.ZERO
+			lumi.sphere_motor.hv = Vector3.ZERO
+			if so.cam:
+				so.cam.reset_frame(pb - pa)
+			for k: int in 3:
+				await tree.physics_frame
+			var w: Vector3 = (pb - lumi.global_position)
+			w = (w - lumi.up() * w.dot(lumi.up())).normalized()
+			var t: float = 0.0
+			var slow: float = 0.0
+			var caught: bool = false
+			var hopped: bool = false
+			var swerved: bool = false
+			var alts: Array[float] = []
+			var last_dir := Vector3.ZERO
+			var budget: float = a.distance_to(b) / walk * 2.0 + 1.0
+			while t < budget:
+				var to: Vector3 = pb - lumi.global_position
+				to -= lumi.up() * to.dot(lumi.up())
+				if to.length() < 0.8:
+					break
+				inp.stick = to.normalized()
+				inp.boost = DevHooks.has("feel-boost")
+				await tree.physics_frame
+				var dt: float = get_physics_process_delta_time()
+				t += dt
+				var m: SphereMotor = lumi.sphere_motor
+				var spd: float = m.hv.length()
+				var lp: Vector3 = inv * lumi.global_position
+				var here := "(%.1f, %.1f)" % [lp.x, lp.z]
+				var what: PackedStringArray = []
+				for c: KinematicCollision3D in m.hits:
+					var nm: String = _walk_name(c.get_collider())
+					if not what.has(nm):
+						what.append(nm)
+				if t > 0.4 and spd < walk * 0.5:
+					slow += dt
+					if slow >= 0.25 and not caught:
+						caught = true
+						lines.append("[snag] hub %d %s leg %d: CATCH at %s on %s%s" % [hi, kind, n_leg, here, ", ".join(what) if not what.is_empty() else "nothing touched", _walk_why()])
+				else:
+					slow = 0.0
+				var alt: float = lumi.sphere.altitude(lumi.global_position)
+				alts.append(alt)
+				if alts.size() >= 3 and m.grounded and not hopped:
+					var acc: float = alts[-1] - 2.0 * alts[-2] + alts[-3]
+					if absf(acc) > 0.03:
+						hopped = true
+						lines.append("[snag] hub %d %s leg %d: HOP at %s (ride height kick %.3f m, alt %.2f)%s" % [hi, kind, n_leg, here, acc, alt, "" if what.is_empty() else " touching " + ", ".join(what)])
+				if spd > 1.0:
+					var d: Vector3 = m.hv / spd
+					if last_dir != Vector3.ZERO and not swerved and rad_to_deg(last_dir.angle_to(d)) > 20.0:
+						swerved = true
+						lines.append("[snag] hub %d %s leg %d: SWERVE at %s (%.0f deg in a tick)%s" % [hi, kind, n_leg, here, rad_to_deg(last_dir.angle_to(d)), "" if what.is_empty() else " on " + ", ".join(what)])
+					last_dir = d
+			inp.stick = Vector3.ZERO
+			var lp2: Vector3 = inv * lumi.global_position
+			if not caught and Vector2(lp2.x, lp2.z).distance_to(b) > 1.5:
+				caught = true
+				lines.append("[snag] hub %d %s leg %d: SHORT, stopped at (%.1f, %.1f), %.1f m from the end" % [hi, kind, n_leg, lp2.x, lp2.z, Vector2(lp2.x, lp2.z).distance_to(b)])
+			hub_c += 1 if caught else 0
+			hub_h += 1 if hopped else 0
+			hub_s += 1 if swerved else 0
+		var gl: Array = await _walk_glance(hi, root, xf, wet, r_town, rng)
+		lines.append_array(gl[0])
+		for l: String in lines:
+			print(l)
+		print("[snag] hub %d: %d small things passed close by, %d of %d glancing pushes got past" % [hi, int(gl[1]), int(gl[2]), int(gl[3])])
+		catches += int(gl[3]) - int(gl[2])
+		print("[snag] hub %d: %d legs (%d clear, %d graze, %d step), %d catches, %d hops, %d swerves" % [hi, n_leg, n_clear, n_leg - n_clear - n_step, n_step, hub_c, hub_h, hub_s])
+		catches += hub_c
+		hops += hub_h
+		swerves += hub_s
+	inp.boost = false
+	print("[snag] walk: %d catches, %d hops, %d swerves over %d hubs: %s" % [catches, hops, swerves, hubs.size(), "PASS" if catches == 0 else "FAIL"])
+	if DevHooks.has("feel-quit"):
+		get_tree().quit(1 if catches > 0 else 0)
+
+
+## Small solid things in a town (posts, bins, benches, lamps, planters, hydrants): Lumi is pushed past
+## each one on a fixed stick, his centre line just missing it on either side, so only his round body
+## meets its edge. He should slide round and get on (as `--feel=snag`). Returns
+## [lines, things, pushes that got past, pushes].
+func _walk_glance(hi: int, root: Node3D, xf: Transform3D, wet: Callable, r_town: float, rng: RandomNumberGenerator) -> Array:
+	var tree: SceneTree = get_tree()
+	var inv: Transform3D = xf.affine_inverse()
+	var want: int = int(DevHooks.get_f("feel-props", 16.0))
+	var cands: Array = []  # [shape node, body, half extents (x, z) local, local centre]
+	for node: Node in root.find_children("*", "CollisionShape3D", true, false):
+		var cs := node as CollisionShape3D
+		var body := cs.get_parent() as CollisionObject3D
+		if body == null or cs.disabled or cs.shape == null or body is RigidBody3D:
+			continue
+		if (body.collision_layer & (PhysLayers.PROP | PhysLayers.WORLD)) == 0 or (body.collision_layer & PhysLayers.MOUND) != 0:
+			continue
+		var he := Vector2.ZERO
+		var sc: Vector3 = cs.global_basis.get_scale()
+		if cs.shape is BoxShape3D:
+			var bs: Vector3 = (cs.shape as BoxShape3D).size * sc * 0.5
+			if bs.y < 0.5:
+				continue  # a kerb or a slab: the walk legs cover those
+			he = Vector2(bs.x, bs.z)
+		elif cs.shape is CylinderShape3D:
+			var rr: float = (cs.shape as CylinderShape3D).radius * sc.x
+			he = Vector2(rr, rr)
+		elif cs.shape is CapsuleShape3D:
+			var rc: float = (cs.shape as CapsuleShape3D).radius * sc.x
+			he = Vector2(rc, rc)
+		elif cs.shape is SphereShape3D:
+			var rs: float = (cs.shape as SphereShape3D).radius * sc.x
+			he = Vector2(rs, rs)
+		else:
+			continue
+		if he.x > 1.4 or he.y > 1.4 or he.x < 0.03:
+			continue
+		var lc: Vector3 = inv * cs.global_position
+		if Vector2(lc.x, lc.z).length() > r_town - 8.0:
+			continue
+		cands.append([cs, body, he, Vector2(lc.x, lc.z)])
+	var lines: PackedStringArray = []
+	var things: int = 0
+	var ok: int = 0
+	var total: int = 0
+	var tries: int = 0
+	while things < want and not cands.is_empty() and tries < want * 10:
+		tries += 1
+		var c: Array = cands.pop_at(rng.randi() % cands.size())
+		var cs: CollisionShape3D = c[0]
+		if not is_instance_valid(cs):
+			continue
+		var at: Vector2 = c[3]
+		var he: Vector2 = c[2]
+		# Its own axes in site space, to know how wide it is across each push.
+		var ax3: Vector3 = inv.basis * cs.global_basis.x.normalized()
+		var ax := Vector2(ax3.x, ax3.z).normalized()
+		var az := Vector2(-ax.y, ax.x)
+		var did: bool = false
+		for h: int in 2:
+			var ang: float = rng.randf() * TAU
+			var d := Vector2(cos(ang), sin(ang))
+			var side := Vector2(-d.y, d.x)
+			var ext: float = absf(side.dot(ax)) * he.x + absf(side.dot(az)) * he.y
+			for sgn: float in [-1.0, 1.0]:
+				var off: float = sgn * (ext + 0.15)
+				var a: Vector2 = at - d * 5.0 + side * off
+				var e: Vector2 = at + d * 6.0 + side * off
+				# Only where nothing else is in the way: the start, the end and the line past it.
+				if not _walk_line(root, xf, a, a + d * 2.5, 0.05, wet) or not _walk_line(root, xf, e - d * 3.0, e, 0.05, wet):
+					continue
+				var mid_ok: bool = true
+				for k: int in 9:
+					var m: Vector2 = a.lerp(e, float(k) / 8.0)
+					if not _walk_free(root, xf, m.x, m.y, 0.0, cs):
+						mid_ok = false
+						break
+				if not mid_ok:
+					continue
+				did = true
+				var pa: Vector3 = so.globe.terrain.ground((xf * Vector3(a.x, 0, a.y)).normalized())
+				var pe: Vector3 = so.globe.terrain.ground((xf * Vector3(e.x, 0, e.y)).normalized())
+				lumi.place_on_sphere(pa, pe - pa)
+				lumi.velocity = Vector3.ZERO
+				lumi.sphere_motor.hv = Vector3.ZERO
+				for k: int in 3:
+					await tree.physics_frame
+				var p0: Vector3 = lumi.global_position
+				var w: Vector3 = pe - p0
+				w = (w - lumi.up() * w.dot(lumi.up())).normalized()
+				inp.stick = w
+				var t: float = 0.0
+				var touched: bool = false
+				var last_hit: String = ""
+				var still: float = 0.0
+				while t < 2.6:
+					await tree.physics_frame
+					t += get_physics_process_delta_time()
+					if t > 0.4 and lumi.sphere_motor.hv.length() < 0.4:
+						still += get_physics_process_delta_time()
+					for col: KinematicCollision3D in lumi.sphere_motor.hits:
+						if col.get_collider() == c[1]:
+							touched = true
+						last_hit = _walk_name(col.get_collider())
+				inp.stick = Vector3.ZERO
+				var gone: float = (lumi.global_position - p0).dot(w)
+				total += 1
+				# Free ground is about 11 m; rounding the thing costs a little. Stopped = held up 0.4 s.
+				if gone >= 6.5 and still < 0.4:
+					ok += 1
+				else:
+					var lp: Vector3 = inv * lumi.global_position
+					lines.append("[snag] hub %d glance: STUCK by %s (%s %.2fx%.2f m at (%.1f, %.1f)), pushed %+.2f m off its middle, got %.1f m (held up %.1f s), at (%.1f, %.1f)%s%s%s" % [
+						hi, _walk_name(c[1]), cs.shape.get_class().replace("Shape3D", ""), he.x * 2.0, he.y * 2.0, at.x, at.y, off, gone, still, lp.x, lp.z,
+						"" if touched else " (never touched it)", "" if last_hit == "" else ", last hit " + last_hit, _walk_why()])
+		if did:
+			things += 1
+	return [lines, things, ok, total]
+
+
+## Every prop collider body (group prop_body): where its shapes are against the planet's surface.
+## A body whose shapes sit far under the ground is a ghost: Lumi walks through those props.
+func _props_audit() -> void:
+	var bad: int = 0
+	var n: int = 0
+	for b: Node in get_tree().get_nodes_in_group("prop_body"):
+		var sb := b as StaticBody3D
+		if sb == null or not sb.is_inside_tree():
+			continue
+		var cnt: int = 0
+		var worst: float = 0.0
+		for cs: Node in sb.get_children():
+			if cs is CollisionShape3D:
+				cnt += 1
+				var a: float = so.globe.surface.altitude((cs as Node3D).global_position)
+				if absf(a) > absf(worst):
+					worst = a
+		if cnt == 0:
+			continue
+		n += 1
+		var ghost: bool = absf(worst) > 30.0
+		bad += 1 if ghost else 0
+		if ghost or DevHooks.has("feel-all"):
+			print("[feel] props %s: %d shapes, worst altitude %.1f m, top_level %s, parent alt %.1f%s" % [str(sb.get_path()).right(90), cnt, worst, str(sb.top_level),
+				so.globe.surface.altitude((sb.get_parent() as Node3D).global_position) if sb.get_parent() is Node3D else 0.0, "  GHOST" if ghost else ""])
+	print("[feel] props: %d bodies, %d ghosts" % [n, bad])
+	if DevHooks.has("feel-quit"):
+		get_tree().quit(1 if bad > 0 else 0)
