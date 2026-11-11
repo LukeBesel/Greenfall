@@ -30,11 +30,20 @@ const JUKEBOX_LEAVE_M: float = 12.0  # [eggs2]
 var _jukebox_on: bool = false  # [eggs2] the waltz is playing (the score is hushed)
 
 
+static var _data_cache: Dictionary = {}
+static var _defs_cache: Dictionary = {}
+static var _order_cache: Array[String] = []  # [v6qa] data/eggs.json, parsed once (each hub switch parsed it again)
+
+
 func setup() -> void:
-	var data: Dictionary = Economy.read_json("res://data/eggs.json")
-	for e: Dictionary in data.get("eggs", []):
-		defs[str(e["id"])] = e
-		order.append(str(e["id"]))
+	if _data_cache.is_empty():
+		_data_cache = Economy.read_json("res://data/eggs.json")
+		for e: Dictionary in _data_cache.get("eggs", []):
+			_defs_cache[str(e["id"])] = e
+			_order_cache.append(str(e["id"]))
+	var data: Dictionary = _data_cache  # read only
+	defs = _defs_cache.duplicate()  # (the entries are shared and read only)
+	order = _order_cache.duplicate()
 	StorySfx.ensure()
 	if world.field is SphereField:  # [orbB] the globe: this hub's eggs, planned in the hub frame
 		_setup_globe(data)
