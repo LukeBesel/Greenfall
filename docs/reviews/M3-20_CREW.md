@@ -19,9 +19,9 @@ What was built, the crew's size city by city, the chain's numbers, the first rob
 
 Crew by player minute, default player: 10: 0, 20: 3, 30: 8, 50: 11, 60: 23, 80: 47, 100: 63, 120: 79, 140: 94, 160: 110, 180: 125, 200: 140, 220: 155.
 
-- **Every city is within 8% of the accepted crew.** The launch crew is 159, inside the owner's 100 to 200. It is 10 above the accepted 149 because the rocket's six parts are not in the game yet: in the proposal they hold the line for about nine player minutes of city 6.
+- **Cities 1 to 5 are within 5% of the accepted crew.** The launch crew is 159, inside the owner's 100 to 200. It is 10 above the accepted 149 because the rocket's six parts are not in the game yet: in the proposal they hold the line for about nine player minutes of city 6.
 - **The climb is paced.** Fastest doubling: 250 player seconds (8 to 16 robots at the start of city 2, by hand; the rule is no faster than 180). Longest wait for a new robot from city 2 on: 80 seconds (the rule is 360).
-- **The chain cannot run away.** Three things hold it, each a number in the table: the line builds one robot per 80 s whatever the Parts; the cap; and the ground. A line that builds only Scroungers ends with a smaller crew (144), and it would have cleaned nothing. Ten times the hand Parts gives the same crew at every city (a test holds this).
+- **The chain cannot run away.** Three things hold it, each a number in the table: the line builds one robot per 80 s whatever the Parts; the cap; and the ground. A line that builds only Scroungers ends with a smaller crew (144), and it would have cleaned nothing. With ten times the hand Parts the crew still stays under each city's cap and never doubles in under three minutes (a test holds this).
 - **Without a single Scrounger the crew still reaches 140.** That is higher than the proposal's 120 for the same player. Reason: the Haul Bug costs 6 Parts since M3-21 (the proposal had 16), so hand Parts alone pay for most of a crew. See open point 2.
 - **What the simulator does not do:** cleaning speed. The minutes per city are an input (the accepted 48, 35, 31, 31, 32, 48), so it shows how the crew grows across a planet played at the accepted pace, not how fast a crew cleans. Cities 2 to 6 have no wrecks, slick, smog or blight in the game yet, so the Parts Lumi's hands bring there are the proposal's, marked ESTIMATE in `tools/crew_sim/calibration.json`.
 
@@ -62,10 +62,10 @@ Parts over the whole run (default player): 9,963 earned (8,348 by Scroungers, 1,
 | Where robots work | New robots work for the base of the city Lumi is in; idle robots in another city follow (`RobotChain.redeploy`, `SphereCrew.reassign`) |
 | Events | `EventBus`: `parts_scrounged`, `salvage_found`, `assembler_offered`, `assembler_built`, `robot_assembled`. Nothing calls UI |
 | Save | `GameState.orbit["chain"]` (ground, mix, the robot on the line). A Scrounger's sack is saved with the robot. An older save loads with its clean ground spent and nothing built |
-| The bot | Buys crew upgrades and tier steps with Parts only when no robot is wanted or the crew is full; never spends Parts on them through its cube rule. The city 1 simulator (`tools/pace_sim`) mirrors it |
+| The bot | Buys crew upgrades and tier steps with Parts only when the crew is full (section 4); never spends Parts on them through its cube rule. It builds a Scrounger for every six robots once it has the plans, and the Assembler when it is on offer (neither happens in city 1). The city 1 simulator (`tools/pace_sim`) mirrors the Parts rule |
 | Dev flags | `--assembler`, `--chain-ground=RINGS[:PARTS]`, `--zone=ROLE:RINGS`, `--chain-report`; the `[bots]` report prints the crew's cost per frame |
 
-Files outside `robots/*` and planet data that had to change, and why: `autoload/Economy.gd` (upgrade currency), `autoload/EventBus.gd` (five signals), `autoload/DevHooks.gd` (flag list), `systems/research.gd` (one condition), `systems/camp/hub_builds.gd` (the build), `scenes/slice_orbit.gd` (creates the chain and saves it: 7 lines), `ui/bench_bots.gd`, `ui/bench_lists.gd`, `ui/robot_card.gd`, `ui/upgrade_card.gd`, `ui/hub_panel.gd` (prices and cap shown), `tools/autoplay.gd`, `tools/pace_sim/*` (the same rules), `tools/orbit_roundtrip.gd` (the chain in the save round trip), `planets/verdance/data/research.json`, `builds.json`, `codex.json`.
+Files outside `robots/*` and planet data that had to change, and why: `autoload/Economy.gd` (upgrade currency), `autoload/EventBus.gd` (five signals), `autoload/DevHooks.gd` (flag list), `systems/research.gd` (one condition), `systems/camp/hub_builds.gd` (the build), `scenes/slice_orbit.gd` (creates the chain and saves it: 7 lines), `ui/bench_bots.gd`, `ui/bench_lists.gd`, `ui/robot_card.gd`, `ui/upgrade_card.gd`, `ui/hub_panel.gd` (prices and cap shown), `tools/autoplay.gd`, `tools/pace_sim/*` (the same rules), `tools/orbit_roundtrip.gd` (the chain in the save round trip), `planet/sphere/sphere_bot.gd` and `planet/sphere/sphere_swarm.gd` (the near robots' cost, section 5), `planets/verdance/data/research.json`, `builds.json`, `codex.json`, `locale/*` (36 strings), and four older test files (section 7). `planets/verdance/data/districts.json` and everything under `planets/verdance/sites/` are untouched: the per-city chain numbers are in the robots table.
 
 ## 4. The first city: two fresh bot runs
 
@@ -90,7 +90,7 @@ Files outside `robots/*` and planet data that had to change, and why: `autoload/
 
 | | Before | After |
 |---|---|---|
-| Crew cost per frame, average | over 16 ms (thinking 9.6, the near robots' own steps 6.9) | 5.4 ms (thinking 1.5, near robots 3.9) |
+| Crew cost per frame, average | about 16 ms (thinking 9.6; the near robots' own steps about 6.9, from a separate profiling run) | 5.4 ms (thinking 1.5, near robots 3.9) |
 | Crew cost per frame, best second | not measured | 4.0 to 4.2 ms |
 | Worst frame | 849 ms | 57 ms, on the crew's first frame (under the loading screen) |
 | Whole headless frame | 18 to 65 ms (15 to 57 frames a second) | 11 to 18 ms (55 to 90 frames a second) |
@@ -114,10 +114,10 @@ Not done: the near robots' steps are still two thirds of the cost (about 80 micr
 2. **Parts are in surplus from city 3, and a player with no Scrounger still gets 140 robots.** The accepted proposal has the same surplus on purpose (the line paces the crew, the surplus pays for the rocket). With the Haul Bug at 6 Parts it is larger. If Scroungers should matter more: a dearer Haul Bug after city 1, or a smaller hand yield in cities 3 to 6.
 3. **The rocket's six parts are not built.** They are the late use for 2,600 Parts and take the line for part of city 6. Without them the launch crew is 159, not 149.
 4. **Tier steps have no "repair bench" gate.** The proposal opens them with a research the game does not have. They open with the second city (`price.tier_cities_open`).
-5. **Robots are shipped between cities, not driven.** An idle robot in an old city appears beside the base of the city Lumi is in. Cities are 1.6 to 5.5 km apart across lakes: a drive would take over half an hour. The player never sees it happen (Lumi is in the other city). Design call: a visible transport (a crawler, the rocket's hold) later?
+5. **Robots are shipped between cities, not driven.** An idle robot in an old city appears beside the base of the city Lumi is in. Cities are 1.6 to 5.5 km apart across lakes: a drive would take over half an hour. The player does not see it happen: Lumi is in the other city, and a robot that happens to be near her is taken off the ground first. Design call: a visible transport (a crawler, the rocket's hold) later?
 6. **Cleaners work a base's region, not the city's rings.** `SphereCrew.rings` is one number for the planet. A city of 26 rings is larger than that region. Not changed here; it belongs with the cities (M3-18) and the balance pass (M3-12).
 7. **City 2 is still a robot every 50 seconds at the bench** (the proposal's open point 8.6). The Assembler arriving in city 2, or a "build 5" button, would fix it. Not changed: the owner put the factory in city 3.
-8. **The bot does not play the chain.** It never builds a Scrounger or the Assembler, because it cannot reach city 2. The simulator stands in for it.
+8. **No bot run plays the chain.** The bot has rules for a Scrounger and for the Assembler, but it cannot reach city 2, so neither was ever used in a run. The simulator and the tests stand in for it.
 9. **The flat Command screen (`ui/command_view.gd`) still shows a job's robots against the whole crew's cap.** It is the flat world's screen; the globe uses `SphereCommand`.
 10. **The whole translation template is out of date** (it was before this task: M3-19's and M3-21's strings are missing). Running `tools/extract_strings.py` rewrites 34,000 lines of the locale files and drops the parked features' translations, so this task added only its own 36 strings to each file, with machine drafts for the six languages. Regenerating the template is a task of its own.
 11. **No agreed frame-time share for the crew.** See section 5.
@@ -125,7 +125,7 @@ Not done: the near robots' steps are still two thirds of the cost (about 80 micr
 
 ## 7. Tests
 
-TOTAL_PLACEHOLDER pass (1,028 before this task). The save round trip passes (`tools/check_exit.sh`): it now stands the Assembler up with a mix of the player's and a robot half built, buries parts in a hex, gives a robot a sack, saves, loads and compares; and it loads the old flat fixture save and checks that its clean ground is spent and nothing is on offer.
+1,034 pass (1,028 before this task). The save round trip passes (`tools/check_exit.sh`): it now stands the Assembler up with a mix of the player's and a robot half built, buries parts in a hex, gives a robot a sack, saves, loads and compares; and it loads the old flat fixture save and checks that its clean ground is spent and nothing is on offer.
 
 `tests/test_crew_chain.gd` (41 tests), by rule:
 - **Cap and prices are data:** the cap is the smaller of the two lists; a table without them keeps the old rule; the first planet holds the accepted crew per city and never more than 200; a price does not compound; the fleet reads prices from the table (first planet and dummy planet); a tier step's price and its cap; no crew price passes 600 Parts with 0 to 200 robots of every type; crew upgrades take Parts and not cubes; a full crew blocks building and says whether the base level or the next city is missing; tier steps open with the second city.
@@ -139,4 +139,4 @@ TOTAL_PLACEHOLDER pass (1,028 before this task). The save round trip passes (`to
 
 Changed to the new rules: `test_robots_water` (one cap for the whole crew), `test_ui2` (prices from the table, the tier step's price and gate), `test_qa_fixes_b` (multibots change jobs freely inside the cap), `test_ui6` (the tier row waits for the second city).
 
-Checked by eye, not by a machine: the building in the yard (one render). Not checked by eye: the Assembler panel in the workbench (its rows and buttons are tested; the workbench does not open from a dev flag on the globe, so no render was made). Two of six save round trips printed "RID allocations of type DummyMesh were leaked at exit" (a note, not a failure) from the headless renderer; four did not. Not tracked down.
+Checked by eye, not by a machine: the building in the yard (one render). Not checked by eye: the Assembler panel in the workbench (its rows and buttons are tested; the workbench does not open from a dev flag on the globe, so no render was made). Two of seven save round trips printed "RID allocations of type DummyMesh were leaked at exit" (a note, not a failure) from the headless renderer; five did not. Not tracked down.
