@@ -47,7 +47,52 @@ ever goes up; the whole-globe share (open land between towns, the far hinterland
 `SphereCells.clean_fraction()` for a later "100%" extra. `--keep-report` prints a `[keep]` line a
 game minute.
 
-MEASURED_HERE
+### Measured (2026-11-11, run on main 42932be + v6pace b1b6c77, seed 4471, `--time-scale=8`)
+
+| Bot min | ~Person (x2) | What | Sales x | Base | Planet % |
+|---|---|---|---|---|---|
+| 31.7 | 1:03 | first robot (Scoopie) | 1 | 1 | 0.1 |
+| 36 | 1:12 | first hop (the seed is planted first) | 1 | 1 | 0.1 |
+| 40.5 | 1:21 | **base 2** Garden Row woken | 2.7 | 1 | 0.1 |
+| 59.6 | 2:00 | **base 3** Gantry Works woken | 9.4 | 2 | 1.5 |
+| 64.6 | 2:09 | rocket Mk II (8K) | 9.4 | 3 | 2.2 |
+| 72.2 | 2:24 | **base 4** Signal Heights woken | 33 | 3 | 3.4 |
+| 98.6 | 3:17 | **base 5** Fairground woken | 115 | 4 | 9.4 |
+| 105.5 | 3:31 | rocket Mk III (100K) | 115 | 4 | 11.6 |
+| 131.7 | 4:23 | **base 6** Stack Works woken | 404 | 5 | 21.7 |
+| 132.8 | 4:26 | Mk V drive (500K) built, **leave point** | 404 | 5 | **22.2** |
+
+(Sales x: every sale's multiplier, `sell_growth`^woken / `pace`. Base: the start hub's level.
+Planet %: the HUD's number, every hub region's land.)
+
+**Cubes per minute** (lifetime earned / time, between wakes): 150 (start to base 2), 1.5K (x10),
+5.1K (x3.3), 16K (x3.2), 91K (x5.6), then 760K/min over the last minute. Each base multiplies
+income by roughly 3-10x, the prices by 4x (600, 2.4K, 9.6K, 38K, 300K), so steps stay 10-30 bot minutes.
+
+**Reward cadence** (`tools/cadence.py`): 132 new moments in 133 minutes (an upgrade level, a robot,
+research, a machine, a base level, a hub, a rocket tier or a card step), mean gap 1.0 min. Longest
+gap 7.8 min in the first hour (saving the first robot's Parts, 24-32 min), 4.0 min after; nothing over 12.
+The card was never empty (`--clarity-log` summary: longest empty card 0 s).
+
+**Card waits over 15 minutes** (a price on the card while the bot buys other things): "Fly to the
+next station" before base 5 (15.4 min, 38K) and before base 6 (18.8 min, 300K). Neither is pure
+grinding (the bot bought something new every few minutes through both), but the card shows one
+number for that long. Next lever if a playtest finds them slow: `far_hub.cost_override."4"`
+(hub 6) to 200K, `cost_override."3"` (hub 5) to 30K.
+
+**Away cleaning:** the keepers cleared 1,422 cells by the leave point (of about 1,780 clean in all);
+Lumi and the home crews did the rest, and the start town itself reached about 74%. Woken towns were
+33-61% clean when Lumi left Verdance, the newest one barely started.
+
+**Run to run:** seven runs while tuning; the early game varies most (the first robot at 18-36 bot
+min, set by which junk turns up Parts). With the numbers above the leave point measured 121 min
+(pace 1.15), 143 min (pace 1.3, Mk III 150K, hub 6 400K) and 133 min (now).
+
+Bugs found by these runs and fixed: crews never counted `robot_bales` (the card stalled 23 min on
+"Robots press 20 bales"); bales Lumi left for the Haul Bugs paid the far-hub multiplier twice
+(x150 became x22,500); the first-robot step showed no price; at a far base the bot walked toward
+the home bench for minutes (now: the field bench there, or the card points at the rocket).
+
 
 ### Measuring a planet's arc
 
