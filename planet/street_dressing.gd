@@ -132,6 +132,13 @@ var _drift: float = 0.0
 var _drift_col := Color(0.86, 0.74, 0.55)
 var _sign_x: float = -3.8
 var _lm_kind: String = ""
+var lm_kind_override: String = ""  # [v6hubs] set before build(): the landmark kind for this hub
+
+
+## [v6hubs] The landmark: {kind, pos, top} in this node's local metres (top = ZERO if it has none).
+func landmark_info() -> Dictionary:
+	return {"kind": _lm_kind, "pos": _lm_pos, "top": _lm_top}
+
 var _lm_pos := Vector3.ZERO
 var _lm_top := Vector3.ZERO
 var _warm: float = 0.8
@@ -1953,6 +1960,8 @@ func _build_landmark() -> void:
 			_lm_kind = ["crane", "windpump", "water_tower", "smokestack", "radio_mast", "old_bus"][hub_index % 6]
 		_:
 			_lm_kind = "water_tower"
+	if lm_kind_override != "":  # [v6hubs] the hub's landmark from the planet's data (planet/sites/hub_plan.gd)
+		_lm_kind = lm_kind_override
 	var side: float = 1.0 if start_base or _style.randi() % 2 == 0 else -1.0
 	# Out past the junk field (its collision must never cover junk), in the default view.
 	var foot: float = {"ferris_wheel": 7.0, "old_bus": 6.0, "smokestack": 7.0, "lighthouse": 3.0}.get(_lm_kind, 3.5)

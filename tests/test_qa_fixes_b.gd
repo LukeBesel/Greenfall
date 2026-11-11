@@ -331,17 +331,3 @@ func test_idle_hauler_backs_off() -> void:
 	h._rescan_t = 0.0
 	h._think(0.016)
 	assert_eq(h._target_bale, a)
-
-
-# --- #3 / #28 Command view controller ----------------------------------------------------------
-
-func test_command_view_buttons_have_a_visible_focus_style() -> void:
-	var cv := CommandView.new()
-	add_child_autofree(cv)
-	var b := Button.new()
-	add_child_autofree(b)
-	cv._style_button(b, UITheme.GOLD, false)
-	var sb: StyleBox = b.get_theme_stylebox("focus")
-	assert_true(sb is StyleBoxFlat, "amber focus box, not StyleBoxEmpty")
-	assert_gt((sb as StyleBoxFlat).border_width_top, 0)
-	assert_eq(cv._focus_id(cv._mode_row.get_child(0)), ["mode", "priority"])

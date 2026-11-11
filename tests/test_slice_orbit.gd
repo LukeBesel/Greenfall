@@ -45,7 +45,8 @@ func test_junk_view_is_the_slice_view() -> void:
 	v.free()
 
 
-func test_wanted_only_for_the_orbit_slice() -> void:
-	# The slice always builds on the globe (a phase A prototype hook aside).
-	var proto: bool = DevHooks.has("orbit") and DevHooks.get_s("orbit", "") in ["v1", "globe"]
-	assert_eq(SliceOrbit.wanted(), not proto, "the round world is the game")
+func test_the_slice_always_builds_the_globe() -> void:  # [v6flat] no flat mode, no prototype scenes
+	var src: String = FileAccess.get_file_as_string("res://scenes/slice.gd")
+	assert_true(src.contains("orbit = SliceOrbit.new()"))
+	assert_false(src.contains("change_scene_to_file"), "no hand-off to another scene")
+	assert_false(ResourceLoader.exists("res://planet/orbit/verdance_globe.tscn"), "phase A prototype gone")

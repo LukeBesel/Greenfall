@@ -136,57 +136,6 @@ static func grow_hex(w: Node, hid: int, level: int) -> void:
 				hl._push(hid, 100)
 
 
-## --restore=N[,level] / --restore-ramp.
-static func apply_restore(w: Node) -> void:
-	var spec: PackedStringArray = DevHooks.get_s("restore", "7").split(",")
-	var level: int = int(spec[1]) if spec.size() > 1 else 4
-	var land: Array = land_by_distance(w)
-	if spec[0] == "lake":  # every lakeside hex (ducks want a clean lake with a green shore)
-		land = land.filter(func(h: int) -> bool: return (w.field as HexField).is_shore(h))
-	var n: int = land.size() if spec[0] == "lake" else int(spec[0])
-	var ramp: bool = DevHooks.has("restore-ramp")
-	for i: int in mini(n, land.size()):
-		var lv: int = level
-		if ramp:  # base outward: Thriving, Sustained, Growing, Planted, Clean in equal bands
-			lv = clampi(5 - int(floor(float(i) * 5.0 / float(maxi(n, 1)))), 1, 5)
-		grow_hex(w, int(land[i]), lv)
-	var hl: HexLevels = w.get("hex_levels") as HexLevels
-	if hl:
-		hl._recalc_bonus()
-	spawn_workers(w, land.slice(0, mini(n, land.size())))
-	print("[restore] %d hexes to level %s%s" % [mini(n, land.size()), str(level), " (ramp)" if ramp else ""])
-
-
-## Drip robots (and a Seedling) out on the restored ground, so shots show the crew at work.
-static func spawn_workers(w: Node, hexes: Array) -> void:
-	var fleet: Fleet = w.get("fleet") as Fleet
-	if fleet == null or hexes.is_empty():
-		return
-	var n: int = int(DevHooks.get_f("restore-bots", 2.0))
-	for k: int in n + 1:
-		var hid: int = int(hexes[k % hexes.size()])
-		var c: Vector3 = w.field.hex_center(hid) + Vector3(1.5 * k - 1.0, 0.2, 1.2)
-		var t: String = "drip" if k < n else "seedling"
-		GameState.flags["tier_" + t] = 2
-		var rb: Robot = fleet.spawn(t, 2, c, 0.0, "%s-%d" % [t.capitalize(), k])
-		rb.rebuild_visual()
-
-
-## --green-cam=hid,dist,pitch,yaw_deg
-static func apply_cam(w: Node) -> void:
-	var spec: PackedStringArray = DevHooks.get_s("green-cam", "1,8,-0.45,0").split(",")
-	var hid: int = int(spec[0])
-	var patch: Node3D = w.patch
-	var c: Vector3 = w.field.hex_center(hid)
-	patch.global_position = Vector3(c.x, 0.2, c.z)
-	var cam: CameraRig = w.cam
-	cam.yaw = deg_to_rad(float(spec[3]) if spec.size() > 3 else 0.0)
-	patch.rotation.y = cam.yaw
-	cam.distance = float(spec[1]) if spec.size() > 1 else 8.0
-	cam.pitch = float(spec[2]) if spec.size() > 2 else -0.45
-	cam.snap()
-
-
 ## Garden._recount without the "hex restored" toast / chime (previews set many hexes at once).
 static func _quiet_recount(w: Node, g: Garden, hid: int) -> void:
 	var ids: PackedInt32Array = g.hex_slots.get(hid, PackedInt32Array())
