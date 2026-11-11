@@ -54,8 +54,12 @@ var _cell_stage: Dictionary[int, int] = {}
 ## Per district: how many land hexes stand at exactly each stage (index 0..MAX_STAGE).
 var _counts: Array[PackedInt32Array] = []
 var _stage := PackedInt32Array()
-## Per district: the highest stage it may stand at for now (MAX_STAGE = no hold).
+## Per district: the highest stage it may stand at for now (MAX_STAGE = no hold), and while it
+## is held there: the part of the way to the next stage that is the holder's job, and how much
+## of that job is done (0..1 each).
 var _cap := PackedInt32Array()
+var _hold_weight := PackedFloat32Array()
+var _hold_done := PackedFloat32Array()
 var _unlocked := PackedByteArray()
 var _visited := PackedByteArray()
 var _current: int = -1
@@ -214,6 +218,8 @@ func setup(def: PlanetDefinition, grid: SphereGrid, cells: SphereCells, site_cel
 	_stage.resize(n)
 	_cap.resize(n)
 	_cap.fill(MAX_STAGE)
+	_hold_weight.resize(n)
+	_hold_done.resize(n)
 	_unlocked.resize(n)
 	_visited.resize(n)
 	_derive()
@@ -312,6 +318,16 @@ func set_stage_cap(id: String, cap: int) -> void:
 	_raise_stage(i)
 
 
+## While a district is held at its cap, `weight` of the way to the next stage is the holder's
+## job and `done` of that job is finished (0..1 each), so the readouts do not show a full bar on
+## hexes alone.
+func set_hold_share(id: String, weight: float, done: float) -> void:
+	if not _index.has(id):
+		return
+	_hold_weight[_index[id]] = clampf(weight, 0.0, 1.0)
+	_hold_done[_index[id]] = clampf(done, 0.0, 1.0)
+
+
 ## Share of the district's land hexes that are clean (their pollution gone), 0..1.
 func clean_share_of(id: String) -> float:
 	var land: int = land_of(id)
@@ -323,7 +339,11 @@ func share_of(id: String) -> float:
 	if not _index.has(id):
 		return 0.0
 	var i: int = _index[id]
-	return share_from_counts(_counts[i], stage_share, _stage[i])
+	var by_hexes: float = share_from_counts(_counts[i], stage_share, _stage[i])
+	if _stage[i] < _cap[i] or _cap[i] >= MAX_STAGE:
+		return by_hexes
+	# Held at this stage: the hexes are only part of the way, the holder's job is the rest.
+	return by_hexes * (1.0 - _hold_weight[i]) + _hold_weight[i] * _hold_done[i]
 
 
 ## Land hexes of the district (water and hub ground are not land).

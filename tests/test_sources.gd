@@ -100,8 +100,12 @@ func _do_step(s: Sources, city: String) -> void:
 
 
 func _do_job(s: Sources, city: String) -> void:
-	_give("parts", float(Sources.total_cost(s.spec_of(city)).get("parts", 0.0)))
-	for _i: int in s.steps(city).size():
+	var left: Array = s.steps(city).slice(s.step_index(city))
+	var parts: float = 0.0
+	for st: Dictionary in left:
+		parts += float((st["cost"] as Dictionary).get("parts", 0.0))
+	_give("parts", parts)
+	for _i: int in left.size():
 		_do_step(s, city)
 
 
@@ -241,6 +245,13 @@ func test_a_citys_job_completes_and_opens_its_last_stage(city: String = use_para
 	assert_eq(d.stage_cap_of(city), Districts.MAX_STAGE - 1)
 	assert_true(s.is_open(city), "the job is on offer")
 	assert_signal_not_emitted(EventBus, "source_shut_down")
+	var hold_share: float = float(_fx.def.table(Sources.TABLE)["hold_share"])
+	assert_almost_eq(d.share_of(city), 1.0 - hold_share, 0.0001, "the readout keeps the job's part of the bar empty")
+	_give("parts", float(Sources.total_cost(s.spec_of(city)).get("parts", 0.0)))
+	_do_step(s, city)
+	assert_gt(d.share_of(city), 1.0 - hold_share, "and fills it step by step")
+	assert_lt(d.share_of(city), 1.0)
+	GameState.currencies = {}
 	var cubes: float = _have("cubes")
 	_do_job(s, city)
 	var spec: Dictionary = s.spec_of(city)
@@ -265,6 +276,7 @@ func test_the_launch_point_waits_for_every_source() -> void:
 	for id: String in CITIES:
 		_fx.set_district_stage(id, Districts.MAX_STAGE)
 	assert_false(_fx.restoration.check_launch(), "every hex of every city thrives, and the sources still run")
+	assert_lt(_fx.restoration.launch_value(), 1.0, "launch progress is not full while a source runs")
 	for id: String in CITIES:
 		assert_false(_fx.restoration.is_launched(), "not before %s is shut down" % id)
 		_do_job(s, id)

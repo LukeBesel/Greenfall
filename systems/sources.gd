@@ -51,6 +51,7 @@ var _order: Array[String] = []
 var _state: Dictionary[String, Dictionary] = {}
 var _gates_stage: int = Districts.MAX_STAGE
 var _reach_m: float = FALLBACK_REACH_M
+var _hold_share: float = 0.0
 var _engaged: String = ""
 var _progress: float = 0.0
 var _announce_t: float = 0.0
@@ -140,6 +141,7 @@ func setup(def: PlanetDefinition, districts: Districts, mastery: Mastery = null)
 	_gates_stage = gates_stage_for(def)
 	var table: Dictionary = def.table(TABLE) if def and def.has_table(TABLE) else {}
 	_reach_m = float(table.get("reach_m", FALLBACK_REACH_M))
+	_hold_share = clampf(float(table.get("hold_share", 0.0)), 0.0, 1.0)
 	for spec: Dictionary in specs_for(def):
 		var id: String = str(spec["district"])
 		if districts == null or not districts.has(id) or _specs.has(id):
@@ -177,6 +179,8 @@ func load_state(saved: Dictionary, saved_districts: Dictionary = {}) -> void:
 			st["opened"] = true
 		if st["shut"]:
 			st["step"] = steps(id).size()
+		else:  # a job that lost steps since the save still has its last one to do
+			st["step"] = mini(int(st["step"]), steps(id).size() - 1)
 		_state[id] = st
 	_apply_caps()
 
@@ -189,6 +193,7 @@ func _apply_caps() -> void:
 	if _districts == null:
 		return
 	for id: String in _order:
+		_districts.set_hold_share(id, _hold_share, job_share(id))
 		_districts.set_stage_cap(id, Districts.MAX_STAGE if is_shut(id) else _gates_stage - 1)
 
 
@@ -349,14 +354,14 @@ func use(district: String) -> bool:
 		if not cost.is_empty() and not GameState.spend_all(cost):
 			return false
 		_state[district]["carrying"] = true
-		changed.emit(district)
+		_told(district)
 		return true
 	if float(st["seconds"]) <= 0.0:
 		_finish_step(district)
 		return true
 	_engaged = district
 	_progress = 0.0
-	changed.emit(district)
+	_told(district)
 	return true
 
 
@@ -391,12 +396,19 @@ func force_shut(district: String, pay: bool = false) -> bool:
 	return true
 
 
+## A job moved on: the city's readout follows, and presentation refreshes.
+func _told(district: String) -> void:
+	if _districts:
+		_districts.set_hold_share(district, _hold_share, job_share(district))
+	changed.emit(district)
+
+
 func _disengage() -> void:
 	var was: String = _engaged
 	_engaged = ""
 	_progress = 0.0
 	if was != "":
-		changed.emit(was)
+		_told(was)
 
 
 func _finish_step(district: String) -> void:
@@ -409,7 +421,7 @@ func _finish_step(district: String) -> void:
 	EventBus.source_step_done.emit(district, i)
 	if i + 1 >= steps(district).size():
 		_shut_down(district, true)
-	changed.emit(district)
+	_told(district)
 
 
 func _shut_down(district: String, pay: bool) -> void:
