@@ -249,33 +249,18 @@ func test_ice_locks_junk_until_thawed() -> void:
 	assert_gt(w.field.pieces_within(c, w.field.hex_size * 0.5).size(), 0)
 
 
-func test_frozen_port_plants_need_greenhouse_or_hardy_seeds() -> void:
-	var w := _make("frozen_port")
-	var fd := _finish(w)
-	fd.ice.fill(0.0)
-	fd._update_locks()
-	var h: int = int(w.field.axial_to_id[Vector2i(1, 0)])
-	_clean(w, h)
-	assert_false(fd.slot_plantable(h), "too cold outdoors")
-	var slot: int = (w.garden.hex_slots[h] as PackedInt32Array)[0]
-	assert_false(w.garden.plantable(slot))
-	GameState.add_currency("cubes", BigNum.from_float(5000))
-	assert_true(fd._build_greenhouse(h, true))
-	assert_true(fd.slot_plantable(h), "a greenhouse keeps it warm")
-	assert_gt(float(w.garden.hex_grow_bonus.get(h, 0.0)), 0.0, "and grows faster")
-	var other: int = int(w.field.axial_to_id[Vector2i(-1, 0)])
-	_clean(w, other)
-	Research.grant("cold_hardy_seeds")
-	assert_true(fd.slot_plantable(other), "cold-hardy seeds grow outdoors")
-	# Outdoors only cold-hardy species; natives stay in their own frontier.
-	for sp: Dictionary in w.garden.species:
-		var m: float = Frontiers.species_mult(sp, "frozen_port", false)
-		if m > 0.0:
+## [v6flat] Frontier species rules (Frontiers.species_mult). The live Frozen Port checks (cold,
+## greenhouses) went with the flat frontier districts.
+func test_frontier_species_rules() -> void:
+	var species: Array = Economy.read_json("res://data/plants.json").get("species", [])
+	for sp: Dictionary in species:
+		if Frontiers.species_mult(sp, "frozen_port", false) > 0.0:
 			assert_true(bool(sp.get("cold_hardy", false)), "%s is cold-hardy" % sp["id"])
 	var ice_plant: Dictionary = {}
-	for sp: Dictionary in w.garden.species:
+	for sp: Dictionary in species:
 		if sp["id"] == "iceplant":
 			ice_plant = sp
+	assert_false(ice_plant.is_empty())
 	assert_eq(Frontiers.species_mult(ice_plant, "dust_flats"), 1.0)
 	assert_eq(Frontiers.species_mult(ice_plant, ""), 0.0, "natives never turn up in old districts")
 	assert_eq(Frontiers.species_mult(ice_plant, "frozen_port", true), 0.0)
