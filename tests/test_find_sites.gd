@@ -327,3 +327,73 @@ func test_a_salvaged_piece_is_a_moment_on_lumi() -> void:
 	reveal._process(Finds.reveal_s(Planets.current()) + 0.1)
 	assert_false(reveal.lit(), "the light goes with the moment")
 	assert_false(reveal._plate.visible)
+
+
+# --- Seen from afar (M3-14b) ------------------------------------------------------------------
+
+func test_a_wreck_that_holds_pieces_grows_a_young_plant_that_goes_when_salvaged() -> void:
+	_world()
+	var id: String = str(_first(Finds.WRECK)["id"])
+	var node: Node3D = _sites.show_wreck(id)
+	var plant: Node3D = node.get_node_or_null(FindProps.SAPLING) as Node3D
+	assert_not_null(plant, "a young plant grows out of a wreck that still holds pieces")
+	var top: float = 0.0
+	for mi: Node in plant.find_children("*", "MeshInstance3D", true, false):
+		top = maxf(top, (mi as MeshInstance3D).position.y)
+	var want: float = float((Finds.site_cfg(_fx.def)["sapling"] as Dictionary)["height_m"])
+	assert_gt(top, want * 0.8, "it stands well above the junk (%.2f m)" % top)
+	var tease: String = str(_finds.teases()[0]["id"])
+	assert_null(_sites.show_wreck(tease).get_node_or_null(FindProps.SAPLING), "a tease has nothing to give, and no plant")
+	assert_true(_finds.take(id))
+	assert_true(plant.is_queued_for_deletion(), "salvaged: the plant goes")
+	assert_not_null(node.get_node_or_null("Flowers"), "and flowers come up instead")
+	assert_null(_sites.show_wreck(id).get_node_or_null(FindProps.SAPLING), "a salvaged wreck stands again without it")
+
+
+func test_the_tease_sits_up_so_it_reads_as_a_robot() -> void:
+	var tease := WreckModel.new()
+	tease.design = "bolt"
+	tease.ruined = true
+	add_child_autofree(tease)
+	var own := WreckModel.new()
+	own.design = "sprout"
+	add_child_autofree(own)
+	var t_tilt: Node3D = tease.get_node("Tilt") as Node3D
+	var o_tilt: Node3D = own.get_node("Tilt") as Node3D
+	assert_lt(t_tilt.rotation.x, 0.0, "slumped forward, not on its back")
+	assert_gt(o_tilt.rotation.x, 0.0, "the planet's own wreck lies back, face to the sky")
+	assert_lt(-t_tilt.position.y, -o_tilt.position.y, "sunk less than a wreck on its back")
+	assert_lt(WreckModel.RUINED_COVERAGE_LOSS, 0.25, "enough of its paint left to say which design it is")
+
+
+func test_the_found_moment_has_a_glow_that_shows_in_sunlight() -> void:
+	Planets.set_current(FIRST)
+	var stub := GDScript.new()
+	stub.source_code = "extends Node3D\nvar patch: Node3D\nvar model: Node3D\n"
+	stub.reload()
+	var world := Node3D.new()
+	world.set_script(stub)
+	add_child_autofree(world)
+	var player := Node3D.new()
+	player.set_script(stub)
+	world.add_child(player)
+	var model := PatchModel.new()
+	player.add_child(model)
+	player.set("model", model)
+	world.set("patch", player)
+	var reveal := PieceReveal.new()
+	reveal.world = world
+	add_child_autofree(reveal)
+	Looks.grant("ears_leaf", Finds.WRECK)
+	reveal._process(0.1)
+	assert_true(reveal.lit())
+	var light: Node3D = player.get_node("FoundLight") as Node3D
+	for part: String in ["FoundRing", "FoundColumn"]:
+		var mi: MeshInstance3D = light.get_node_or_null(part) as MeshInstance3D
+		assert_not_null(mi, part)
+		var mat: StandardMaterial3D = mi.material_override as StandardMaterial3D
+		assert_eq(mat.shading_mode, BaseMaterial3D.SHADING_MODE_UNSHADED, "%s glows by itself, the sun does not wash it out" % part)
+		var c: Color = mat.albedo_color
+		assert_gt(c.g, c.r, "%s is in the colour of Sprout's light, the piece's set" % part)
+	reveal._process(Finds.reveal_s(Planets.current()) + 0.1)
+	assert_false(reveal.lit(), "it goes with the moment")

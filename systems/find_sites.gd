@@ -6,8 +6,9 @@ extends Node3D
 ##   Wrecks   an old robot of the planet's design, half buried on its hex off the main path,
 ##            under a heap of junk. Lumi pulls the heap off piece by piece (use, a short dig each),
 ##            then salvages the wreck (use, a longer dig): its pieces are given and the found
-##            moment plays (ui/piece_reveal.gd). The wreck stays, stripped, and flowers come up
-##            round it. Robots cannot do any of this: clearing the hex gives nothing.
+##            moment plays (ui/piece_reveal.gd). Until then a young plant grows up out of it
+##            (the table's `sapling`), the tell that shows it from across a hex. The wreck stays,
+##            stripped, and flowers come up round it. Robots cannot do any of this: clearing the hex gives nothing.
 ##   Teases   a wreck of a design this planet does not hand out. Using it only says its line
 ##            ("Too far gone. Maybe somewhere else."). It can never be salvaged.
 ##   Caches   a buried paint tin or lens chip whose hex has come up lies in that hex's cleared
@@ -272,6 +273,7 @@ func show_wreck(id: String) -> Node3D:
 	if not tease and _finds.is_taken(id):
 		node.add_child(FindProps.flowers(hash(id), model.glow()))
 	elif not tease:
+		_grow_sapling(node, id)
 		var heap: Array[Dictionary] = FindProps.junk(hash(id), int(cfg("junk")))
 		for k: int in range(_finds.cleared(id), heap.size()):
 			var piece: Node3D = heap[k]["node"]
@@ -529,10 +531,24 @@ func _on_taken(id: String) -> void:
 		var pieces: Array[String] = []
 		pieces.assign(_finds.entry(id)["pieces"])
 		model.strip(pieces)
+		var plant: Node = node.get_node_or_null(FindProps.SAPLING)
+		if plant:
+			plant.queue_free()
 		node.add_child(FindProps.flowers(hash(id), model.glow()))
 
 
 # --- Shared -----------------------------------------------------------------------------------
+
+## The young plant growing out of a wreck that still holds pieces (the table's `sapling`:
+## height_m, leaf colour); none when the planet's table has no `sapling`.
+func _grow_sapling(node: Node3D, id: String) -> void:
+	var sp: Variant = _cfg.get("sapling", {})
+	if not (sp is Dictionary) or (sp as Dictionary).is_empty():
+		return
+	var plant: Node3D = FindProps.sapling(hash(id), float(sp.get("height_m", 1.0)), Color.html(str(sp.get("leaf", "#7cc84a"))))
+	plant.position = Vector3(0.0, -WreckModel.SINK_M * 0.5, 0.0)
+	node.add_child(plant)
+
 
 func _lumi() -> Node3D:
 	var v: Variant = _player_fn.call() if _player_fn.is_valid() else null

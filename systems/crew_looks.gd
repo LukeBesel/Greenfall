@@ -55,10 +55,14 @@ static func color_of(piece_id: String, fallback: Color = Color.WHITE) -> Color:
 
 
 ## The colour a find shows (its tin, its chip, the light of the found moment): a Lumi piece's paint
-## or light, a mark's or a light's own colour, a Glim look's colour; `fallback` for shapes.
+## or light (a part of a set: its design's light), a mark's or a light's own colour, a Glim
+## look's colour; `fallback` for other shapes.
 static func tint_of(piece_id: String, fallback: Color = Color.WHITE) -> Color:
 	var target: String = Looks.target_of(piece_id)
 	if target == Looks.LUMI:
+		var design: String = Looks.set_of(piece_id)
+		if Looks.def(piece_id).has("option") and design != "":  # a part of a set: its design's light
+			return PatchModel.glow_of(design)
 		return LumiStyle.piece_tint(piece_id, fallback)
 	if target == GLIM:
 		var key: String = str(Looks.slot_def(Looks.slot_of(piece_id)).get("key", ""))
