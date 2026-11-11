@@ -451,6 +451,7 @@ func _attach_power(i: int, p: SitePrefab) -> void:
 		lvl = maxi(lvl, int((hub as Hub).level))
 	for c: Node in p.content.get_children():
 		if c is VerdanceSite:
+			TownLife.attach(c, grid, cells, i, self)  # [v6life] blocks wake up as they are cleaned (before the lights: SitePower asks it)
 			var sp: StreetPower = SitePower.attach(c, grid, hl, lvl)
 			if sp:
 				power[i] = sp
