@@ -1173,16 +1173,9 @@ func _manage(p: Patch) -> void:
 func _campaign(_p: Patch) -> void:
 	if bool(world.get("launching")):
 		return
-	var chore: String = AutoplayCampaign.frontier_chores(world)
-	if chore != "":
-		_progress()
-		_event("frontier", {"what": chore})
 	var kid: String = AutoplayCampaign.frontier_kid(world)
 	if kid != "":
 		_mark("arrive_%s_s" % kid)
-		var fr: FrontierDistrict = world.get("frontier")
-		if fr and fr.growing_frac >= 0.5:
-			_mark("%s_growing50_s" % kid)
 		if int(world.hub.level) >= 5:
 			_mark("%s_base5_s" % kid)
 	for b: Variant in CoreCharge.beats_done():

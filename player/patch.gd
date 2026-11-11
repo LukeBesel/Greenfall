@@ -105,6 +105,7 @@ func enable_sphere(surface: SphereSurface, cam_node: Node3D) -> void:
 	sphere_motor = SphereMotor.new(surface)
 	sphere_motor.landed.connect(func(impact: float) -> void:
 		if impact > 2.0:
+			rumble(0.0, clampf(impact * 0.06, 0.1, 0.4), 0.1)  # [v6feel]
 			model.squash(-clampf(impact * 0.06, 0.1, 0.45)))
 	sphere_motor.jumped.connect(func() -> void:
 		model.squash(0.3)
@@ -439,6 +440,7 @@ func _handle_scoop(delta: float) -> void:
 			_buzz_cooldown = 0.8
 			Audio.play("buzz", 1.0, -8.0)
 			model.shudder(0.12)
+			rumble(0.35, 0.0, 0.12)  # [v6feel] chest full
 			EventBus.compartment_changed.emit(compartment.fill, cap)  # HUD shakes the meter
 		return
 	# Magnet arm: pull nearby junk toward the scoop.
@@ -497,6 +499,8 @@ func _take_piece(pid: int) -> void:
 	# Tractor beam show (pooled, see PickupFx): lock-on reticle, twin lasers, lift with arcs,
 	# compress to light and stream into the chest hopper. Big pieces get a heavier, slower take.
 	var big: bool = vol >= BIG_PIECE_VOL
+	if big:
+		rumble(0.25, 0.2, 0.12)  # [v6feel] a heavy piece leaves the ground
 	var dur: float = 0.52 if big else 0.4
 	pickup_fx.launch(mesh, start_xf, dur, big, color)
 	# Arrival is timer-driven so a cut-short animation can never leave volume stuck as pending.
@@ -542,7 +546,7 @@ func _handle_cubing(delta: float) -> void:
 			_crunched = true
 			Audio.play("crunch", 0.85, -3.0)
 			FeelFx.bale_press(self)  # [first] squash/stretch, thunk, small shake
-			Input.start_joy_vibration(0, 0.5, 0.7, 0.25)
+			rumble(0.5, 0.7, 0.25)  # [v6feel] was pad 0 always, also for the autoplay bot
 		if not _cube_spawned and t >= 0.68:
 			_cube_spawned = true
 			_spawn_cube()
@@ -672,17 +676,19 @@ func _on_part_found(idx: int) -> void:
 	var mi := MeshInstance3D.new()
 	mi.mesh = AssetLib.model_mesh(str(pt.get("model", "metal_toolbox")))
 	get_tree().current_scene.add_child(mi)
-	mi.global_position = pos - Vector3(0, 0.3, 0)
+	var pu: Vector3 = up()  # [v6feel] local up: on the globe the part rose along world +Y, sideways out of the ground
+	mi.global_basis = global_basis.orthonormalized()
+	mi.global_position = pos - pu * 0.3
 	var tw := mi.create_tween()
-	tw.tween_property(mi, "global_position", pos + Vector3(0, 0.6, 0), 0.5).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tw.tween_property(mi, "global_position", pos + pu * 0.6, 0.5).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tw.tween_interval(0.8)
 	tw.tween_property(mi, "global_position", to_global(model.chest_point), 0.35)
 	tw.tween_callback(mi.queue_free)
-	Vfx.burst("sparkle", pos + Vector3(0, 0.6, 0), col, 0.7)
+	Vfx.burst("sparkle", pos + pu * 0.6, col, 0.7)
 	Audio.play("ding", 1.0 if r < 3 else 0.8, -6.0)
 	if r >= 3:
 		Audio.play("fanfare", 1.0, -8.0)
-	Vfx.float_text(pos + Vector3(0, 1.4, 0), L10nFmt.part_label(tr(str(rar.get("name", ""))), tr(str(pt.get("name", "Part")))), col, 0.55, 0.8)  # [i18n2]
+	Vfx.float_text(pos + pu * 1.4, L10nFmt.part_label(tr(str(rar.get("name", ""))), tr(str(pt.get("name", "Part")))), col, 0.55, 0.8)  # [i18n2]
 	EventBus.toast.emit(tr("Recovered: %s") % L10nFmt.part_label(tr(str(rar.get("name", ""))), tr(str(pt.get("name", "part")))) + "  " + RobotParts.gain_text(r), "reward")  # [v4calm] cut  [i18n2] [qafix] QA #20: name the Parts it paid
 
 
@@ -715,6 +721,7 @@ func pick_up(c: JunkCube) -> void:
 	Audio.play("pop", 0.8, -6.0)
 	model.squash(-0.2)
 	c.squish(0.2)
+	rumble(0.2, 0.35, 0.1)
 
 
 ## [v6feel] The way up: out to arm's length from Lumi's middle first, then over his head and down
@@ -780,6 +787,7 @@ func place_top_cube() -> void:
 		c.set_carried(false)
 		c.linear_velocity = Vector3.ZERO
 		Audio.play("thud", 1.0, -6.0)
+		rumble(0.15, 0.3, 0.08)  # [v6feel]
 		c.squish(0.18))
 	model.squash(0.2)
 
@@ -811,6 +819,7 @@ func _place_cube_sphere(c: JunkCube) -> void:
 		c.set_carried(false)
 		c.linear_velocity = Vector3.ZERO
 		Audio.play("thud", 1.0, -6.0)
+		rumble(0.15, 0.3, 0.08)  # [v6feel]
 		c.squish(0.18))
 	model.squash(0.2)
 
@@ -821,6 +830,7 @@ func _seat_stack() -> void:
 
 
 func _update_stack(delta: float) -> void:
+	model.carrying = not carried.is_empty()
 	if not carried.is_empty():
 		_seat_stack()  # [world2] held clearly above Lumi, not inside him
 	# Wobbly spring sway driven by acceleration.
@@ -881,6 +891,7 @@ func _update_hints(delta: float) -> void:
 	if world and world.has_method("interact_prompt") and prompt == "":
 		prompt = world.interact_prompt(self)
 	model.look_toward(look)
+	_update_aim()
 	# Idle: after a while Patch shakes off rust flakes; much later he dozes off.
 	model.sleeping = _idle_time > 45.0
 	if _idle_time > 8.0 and fmod(_idle_time, 9.0) < delta:
@@ -896,6 +907,31 @@ func _update_hints(delta: float) -> void:
 		if h != _focus_hex:
 			_focus_hex = h
 			world.view.set_focus_hex(h if h >= 0 and world.field.hex_hub[h] == 0 else -1)
+
+
+## [v6feel] The dim reticle on the piece the next scoop pulse would take (none while the chest is
+## full, while pressing, with a bale in hand to put down first, or with another tool out).
+func _update_aim() -> void:
+	var pid: int = -1
+	if world and world.get("field") != null and world.get("view") != null and tool == Tool.SCOOP and _cubing <= 0.0 and compartment.can_accept(capacity()):
+		pid = Pace.find_scoop_target(world.field, scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"), Pace.lift_class())
+	if pid < 0:
+		pickup_fx.aim = null
+		return
+	var xf: Transform3D = world.view.piece_transform(pid)
+	var mesh: Mesh = world.view.piece_mesh(pid)
+	var sc: Vector3 = xf.basis.get_scale()
+	pickup_fx.aim = xf.origin
+	pickup_fx.aim_radius = clampf(mesh.get_aabb().size.length() * 0.5 * maxf(sc.x, maxf(sc.y, sc.z)), 0.06, 0.6) if mesh else 0.15
+
+
+## [v6feel] Controller rumble for the things Lumi's body does (weak, strong 0..1; seconds). Only for
+## a real player, scaled by the Shake setting, off with Reduced motion.
+func rumble(weak: float, strong: float, secs: float) -> void:
+	if not (input is PlayerInput) or not (input as PlayerInput).enabled or Settings.reduced_motion or Settings.shake_intensity <= 0.0:
+		return
+	var k: float = Settings.shake_intensity
+	Input.start_joy_vibration(Settings.last_pad_device, clampf(weak * k, 0.0, 1.0), clampf(strong * k, 0.0, 1.0), secs)
 
 
 func focus_hex() -> int:

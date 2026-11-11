@@ -14,7 +14,9 @@ Made by the owner on Suno's free plan, Nov 2026. Free-plan songs are licensed fo
 
 ## Adding songs
 
-Drop the MP3 in this folder under the file name below, then run `godot --headless --import --path .` (the editor does it on focus). Songs whose file is missing are skipped automatically: no CD drops for them and they are not on the CD player. The list, in-game artists and unlock rules are in `data/songs.json` (`systems/tunes.gd`). Each intact CD is found on its artist's home planet.
+No code needed. Put the file (mp3, ogg or wav) in this folder, or in a folder inside it named after a planet (`ochre/`, `rime/`). That alone is enough: a file with no entry in `data/songs.json` plays with the defaults (title from the file name, owned from the start, on its folder's planet, or everywhere from this folder). Add an entry to `data/songs.json` to set the title, artist, planets, moments, weight, volume trim and whether it is a CD to find. Then run `python3 tools/check_songs.py` to see what the game will do with it. Full notes: `docs/ADJUSTING.md`, "Music and sound".
+
+The planned songs below already have entries; drop the MP3 in under the file name shown. Songs whose file is missing are skipped automatically: no CD drops for them and they are not on the CD player. Each intact CD is found on its artist's home planet.
 
 | File | Song | In-game artist (home) | Group | Unlock |
 |---|---|---|---|---|

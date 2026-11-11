@@ -192,67 +192,67 @@ msgstr "触摸板"
 msgid "Paddle 1"
 msgstr "背键 1"
 
-#: autoload/Settings.gd:522
+#: autoload/Settings.gd:535
 msgid "LMB"
 msgstr "左键"
 
-#: autoload/Settings.gd:523
+#: autoload/Settings.gd:536
 msgid "RMB"
 msgstr "右键"
 
-#: autoload/Settings.gd:524
+#: autoload/Settings.gd:537
 msgid "MMB"
 msgstr "中键"
 
-#: autoload/Settings.gd:525
+#: autoload/Settings.gd:538
 msgid "Wheel up"
 msgstr "滚轮上"
 
-#: autoload/Settings.gd:526
+#: autoload/Settings.gd:539
 msgid "Wheel down"
 msgstr "滚轮下"
 
-#: autoload/Settings.gd:527
+#: autoload/Settings.gd:540
 msgid "Mouse %d"
 msgstr "鼠标 %d"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:542
 msgid "Button %d"
 msgstr "按键 %d"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:547
 msgid "LS left"
 msgstr "左摇杆左"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:547
 msgid "LS right"
 msgstr "左摇杆右"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:548
 msgid "LS up"
 msgstr "左摇杆上"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:548
 msgid "LS down"
 msgstr "左摇杆下"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:549
 msgid "RS left"
 msgstr "右摇杆左"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:549
 msgid "RS right"
 msgstr "右摇杆右"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:550
 msgid "RS up"
 msgstr "右摇杆上"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:550
 msgid "RS down"
 msgstr "右摇杆下"
 
-#: autoload/Settings.gd:548
+#: autoload/Settings.gd:561
 msgid "hold %s"
 msgstr "按住 %s"
 
@@ -281,8 +281,8 @@ msgid "Locked. Upgrade your base to level %d to build the launch pad."
 msgstr "未解锁。把基地升到 %d 级来建造发射台。"
 
 #: automation/hub.gd:90
-msgid "The rocket isn't ready yet. Keep following WREN's steps."
-msgstr "火箭还没准备好。继续跟着 WREN 的步骤走。"
+msgid "The launch pad is still buried. Put your first robot to work to clear it."
+msgstr "发射台还埋在垃圾里。先让你的第一个机器人开工，把它清出来。"
 
 #: automation/hub.gd:170
 msgid "Hub upgraded: %s."
@@ -405,11 +405,11 @@ msgstr "粉碎  ·  熔炼  ·  永久清除"
 msgid "HAND FEED"
 msgstr "手动投料"
 
-#: automation/rocket.gd:315
+#: automation/rocket.gd:316
 msgid "LIFT OFF"
 msgstr "升空"
 
-#: automation/rocket.gd:861
+#: automation/rocket.gd:862
 msgid "Space / Esc  skip"
 msgstr "空格 / Esc  跳过"
 
@@ -425,7 +425,7 @@ msgstr "需要研究“火箭货运”"
 msgid "Not enough cubes or parts"
 msgstr "方块或零件不足"
 
-#: automation/rocket_tiers.gd:75
+#: automation/rocket_tiers.gd:74
 msgid "Rocket upgraded: %s."
 msgstr "火箭已升级：%s。"
 
@@ -519,7 +519,7 @@ msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
-#: core/pace.gd:147 story/objectives.gd:836
+#: core/pace.gd:147 story/objectives.gd:840
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "太重了。去工作台升级举升力。"
 
@@ -578,103 +578,6 @@ msgstr "你的CD盒满了。"
 #: planet/far_junk.gd:198
 msgid "Past the survey line the junk runs too deep to start on. One district at a time: clean this one, then the rockets take us to the next."
 msgstr "勘测线以外的垃圾堆得太深，没法着手。一次一个街区：先清理这里，然后火箭会带我们去下一个。"
-
-#: planet/frontier_district.gd:279
-msgid "Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."
-msgstr "沙暴将至。裸露的干净地面会被掩埋；种了植物或有遮挡的六角格能挺住。"
-
-#: planet/frontier_district.gd:343
-msgid "The sandstorm buried %d hex again. Sustained hexes shelter their neighbours."
-msgid_plural "The sandstorm buried %d hexes again. Sustained hexes shelter their neighbours."
-msgstr[0] "沙暴又掩埋了 %d 个六角格。稳定的六角格能庇护邻格。"
-
-#: planet/frontier_district.gd:343
-msgid "The storm blew over. Everything held."
-msgstr "沙暴过去了。一切都挺住了。"
-
-#: planet/frontier_district.gd:391
-msgid "The ice let go. The junk underneath is just junk again."
-msgstr "冰层松开了。底下的废料又只是废料了。"
-
-#: planet/frontier_district.gd:482
-msgid "E   Light a heater on this ice · %s cubes"
-msgstr "E   在这片冰上点燃加热器 · %s 方块"
-
-#: planet/frontier_district.gd:484
-msgid "E   Build a greenhouse on this hex · %s cubes"
-msgstr "E   在这个六角格建温室 · %s 方块"
-
-#: planet/frontier_district.gd:494
-msgid "Not enough cubes for a heater."
-msgstr "方块不够，建不了加热器。"
-
-#: planet/frontier_district.gd:494
-msgid "Heater limit reached. Move on to the next ice once these have done their work."
-msgstr "加热器已达上限。等这些完成工作后，再去下一片冰。"
-
-#: planet/frontier_district.gd:498
-msgid "Not enough cubes for a greenhouse."
-msgstr "方块不够，建不了温室。"
-
-#: planet/frontier_district.gd:530
-msgid "The old pumps are running. The water drops and a ring of streets comes back up, with a lot of stranded junk."
-msgstr "老水泵运转起来了。水位下降，一圈街道重新露出水面，上面满是搁浅的废料。"
-
-#: planet/frontier_district.gd:551
-msgid "The landing pad is clean. Now plant it and keep it Sustained."
-msgstr "着陆平台干净了。现在种上植物，让它保持稳定。"
-
-#: planet/frontier_district.gd:567
-msgid "The landing pad is alive and the beacon is lit. The Cradle has answered. It is coming home."
-msgstr "着陆平台焕发生机，信标亮了。Cradle号回应了。它要回家了。"
-
-#: planet/frontier_district.gd:602
-msgid "Sandstorm blowing"
-msgstr "沙暴正在肆虐"
-
-#: planet/frontier_district.gd:605
-msgid "Next sandstorm  %d:%02d"
-msgstr "下一场沙暴  %d:%02d"
-
-#: planet/frontier_district.gd:606
-msgid "Well dry: Drips refill at tanks"
-msgstr "井已干涸：Drip 去水箱补水"
-
-#: planet/frontier_district.gd:612
-msgid "%d hexes iced  ·  %d heaters"
-msgstr "%d 个六角格结冰  ·  %d 台加热器"
-
-#: planet/frontier_district.gd:613
-msgid "Greenhouses %d%s"
-msgstr "温室 %d%s"
-
-#: planet/frontier_district.gd:613
-msgid "  ·  cold-hardy seeds"
-msgstr "  ·  耐寒种子"
-
-#: planet/frontier_district.gd:617
-msgid "Water down: all streets above water"
-msgstr "水位已降：所有街道露出水面"
-
-#: planet/frontier_district.gd:619
-msgid "Pumps: ring %d skimmed %d%% / %d%%"
-msgstr "水泵：第 %d 圈已清理 %d%% / %d%%"
-
-#: planet/frontier_district.gd:620
-msgid "Water level %d / %d"
-msgstr "水位 %d / %d"
-
-#: planet/frontier_district.gd:623
-msgid "The Cradle is coming home"
-msgstr "Cradle号正在回家"
-
-#: planet/frontier_district.gd:625
-msgid "Pad clean %d%%  ·  Sustained %d%%"
-msgstr "平台清洁 %d%%  ·  稳定 %d%%"
-
-#: planet/frontier_district.gd:626
-msgid "District Growing %d%% / %d%%"
-msgstr "街区生长中 %d%% / %d%%"
 
 #: planet/frontiers.gd:112
 msgid "%s Research %s"
@@ -768,10 +671,6 @@ msgstr "一起绽放"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  生命"
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice_orbit.gd:398
-msgid "HEX CLEAN!  +%s"
-msgstr "六角格清理完毕！  +%s"
-
 #: planet/sites/hub_hop.gd:48
 msgid "{interact}  skip"
 msgstr "{interact}  跳过"
@@ -800,124 +699,128 @@ msgstr "港口镇"
 msgid "landmark"
 msgstr "地标"
 
-#: planet/sites/hub_plan.gd:254
+#: planet/sites/hub_plan.gd:258
 msgid "The recycling network grew: everything sells for x%s now."
 msgstr "回收网络变大了：现在所有东西的售价 x%s。"
 
-#: planet/sites/hub_plan.gd:273
+#: planet/sites/hub_plan.gd:277
 msgid "Rocket piece: %s"
 msgstr "火箭部件：%s"
 
-#: planet/sites/hub_plan.gd:295
+#: planet/sites/hub_plan.gd:299
 msgid "+%s Cubes"
 msgstr "+%s 方块"
 
-#: planet/sites/hub_plan.gd:297
+#: planet/sites/hub_plan.gd:301
 msgid "+%d Parts"
 msgstr "+%d 零件"
 
-#: planet/sites/hub_plan.gd:299
+#: planet/sites/hub_plan.gd:303
 msgid "+%d Seeds"
 msgstr "+%d 种子"
 
-#: planet/sites/hub_plan.gd:303
+#: planet/sites/hub_plan.gd:307
 msgid "New: %s"
 msgstr "新获得：%s"
 
-#: planet/sites/hub_plan.gd:307
+#: planet/sites/hub_plan.gd:311
 msgid "New Lumi design: %s"
 msgstr "新的 Lumi 外观：%s"
 
-#: planet/sites/hub_purpose.gd:143
+#: planet/sites/hub_purpose.gd:145
 msgid "Home. The workbench is by the pod."
 msgstr "到家了。工作台就在逃生舱旁边。"
 
-#: planet/sites/hub_purpose.gd:149
+#: planet/sites/hub_purpose.gd:151
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "火箭停在发射台上。目的地列表的第一项就是家。"
 
-#: planet/sites/hub_purpose.gd:155
+#: planet/sites/hub_purpose.gd:157
 msgid "%s: %d%% clean, up %d%% while you were away."
 msgstr "%s：已清理 %d%%，你离开期间增加了 %d%%。"
 
-#: planet/sites/hub_purpose.gd:233
+#: planet/sites/hub_purpose.gd:235
 msgid "Dig the landmark out. Clean hexes here: %d / %d"
 msgstr "把地标挖出来。清理这里的格子：%d / %d"
 
-#: planet/sites/hub_purpose.gd:235
+#: planet/sites/hub_purpose.gd:237
 msgid "Repair an outpost here: %d / %d"
 msgstr "修好这里的前哨站：%d / %d"
 
-#: planet/sites/hub_purpose.gd:238
+#: planet/sites/hub_purpose.gd:240
 msgid "Upgrade the rocket, then wake the %s"
 msgstr "先升级火箭，再唤醒：%s"
 
-#: planet/sites/hub_purpose.gd:239
+#: planet/sites/hub_purpose.gd:241
 msgid "Wake the %s (%s)"
 msgstr "唤醒：%s（%s）"
 
-#: planet/sites/hub_purpose.gd:273
+#: planet/sites/hub_purpose.gd:275
 msgid "E   Wake the %s  (%s)"
 msgstr "E   唤醒：%s  （%s）"
 
-#: planet/sites/hub_purpose.gd:274
+#: planet/sites/hub_purpose.gd:276
 msgid "%s: asleep. %s"
 msgstr "%s：沉睡中。%s"
 
-#: planet/sites/hub_purpose.gd:279
+#: planet/sites/hub_purpose.gd:281
 msgid "The rocket can carry supplies to %d bases. Upgrade it at the workbench."
 msgstr "火箭最多能给 %d 个基地运送补给。去工作台升级火箭。"
 
-#: planet/sites/hub_purpose.gd:295
+#: planet/sites/hub_purpose.gd:297
 msgid "Waking the %s needs %s."
 msgstr "唤醒（%s）需要 %s。"
 
-#: planet/sites/hub_purpose.gd:319
+#: planet/sites/hub_purpose.gd:321
 msgid "%s is awake. %s keeps cleaning when you fly on."
 msgstr "%s 醒来了。你飞走以后，%s 会继续清理。"
 
-#: planet/sites/hub_purpose.gd:346
+#: planet/sites/hub_purpose.gd:348
 msgid "%s grows: level %d."
 msgstr "%s 成长了：等级 %d。"
 
-#: planet/sites/hub_purpose.gd:374
+#: planet/sites/hub_purpose.gd:376
 msgid "%d robot working"
 msgid_plural "%d robots working"
 msgstr[0] "%d 台机器人在工作"
 
-#: planet/sites/hub_purpose.gd:382
+#: planet/sites/hub_purpose.gd:384
 msgid "Home: %d%% clean"
 msgstr "家：已清理 %d%%"
 
-#: planet/sites/hub_purpose.gd:384
+#: planet/sites/hub_purpose.gd:386
 msgid "Restored: %d%% clean"
 msgstr "已修复：已清理 %d%%"
 
-#: planet/sites/hub_purpose.gd:386 ui/profile_picker.gd:111
+#: planet/sites/hub_purpose.gd:388 ui/profile_picker.gd:111
 msgid "New"
 msgstr "新建"
 
-#: planet/sites/hub_purpose.gd:389
+#: planet/sites/hub_purpose.gd:391
 msgid "Ready to wake"
 msgstr "可以唤醒"
 
-#: planet/sites/hub_purpose.gd:390
+#: planet/sites/hub_purpose.gd:392
 msgid "Asleep: %d / %d"
 msgstr "沉睡中：%d / %d"
 
-#: planet/sites/hub_purpose.gd:401
+#: planet/sites/hub_purpose.gd:403
 msgid "%s   %d%% CLEAN"
 msgstr "%s   已清理 %d%%"
 
-#: planet/sites/hub_purpose.gd:403
+#: planet/sites/hub_purpose.gd:405
 msgid "%s   BASES %d/%d"
 msgstr "%s   基地 %d/%d"
 
-#: planet/sites/hub_purpose.gd:450
+#: planet/sites/hub_purpose.gd:452
 msgid "Restored. Next: take the rocket to %s."
 msgstr "已修复。下一步：乘火箭前往 %s。"
 
-#: planet/sites/hub_purpose.gd:624
+#: planet/sites/hub_purpose.gd:454
+msgid "All %d bases stand. Fly home and make the rocket ready to leave."
+msgstr "%d 个基地都修好了。飞回家，让火箭做好离开的准备。"
+
+#: planet/sites/hub_purpose.gd:626
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
@@ -954,7 +857,7 @@ msgstr "%s地点"
 msgid "Hub %d"
 msgstr "基地 %d"
 
-#: planet/sites/sphere_water.gd:263 water/water_view.gd:79
+#: planet/sites/sphere_water.gd:263
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
 msgstr "这水……我能看见底了。Lumi，下面有东西在动。"
 
@@ -1608,31 +1511,35 @@ msgstr[0] "你不在的时候，这里的机器人清理了 %d 个六角格，�
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s 组装完成。它四下看了看，就开始干活了。"
 
-#: scenes/slice.gd:136 ui/rockets_panel.gd:60 data/objectives.json:objectives[hub_fly_2].desc
+#: scenes/slice.gd:130 ui/rockets_panel.gd:60
 msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
 msgstr "走到发射台上的火箭旁，按 E 选择要飞去的地方。"
 
-#: scenes/slice.gd:146 ui/rockets_panel.gd:39
+#: scenes/slice.gd:140 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
 
-#: scenes/slice_orbit.gd:414
+#: scenes/slice_orbit.gd:400
+msgid "HEX CLEAN!  +%s"
+msgstr "六角格清理完毕！  +%s"
+
+#: scenes/slice_orbit.gd:416
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice_orbit.gd:483 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:485 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   修理工作台"
 
-#: scenes/slice_orbit.gd:483 systems/camp/camp.gd:195
+#: scenes/slice_orbit.gd:485 systems/camp/camp.gd:195
 msgid "E   Open the workbench"
 msgstr "E   打开工作台"
 
-#: scenes/slice_orbit.gd:1000
+#: scenes/slice_orbit.gd:1002
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice_orbit.gd:1100
+#: scenes/slice_orbit.gd:1102
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "工作台修好了。在它旁边按 E，用方块购买升级。"
 
@@ -1914,83 +1821,83 @@ msgstr ""
 msgid "Something metal surfaced in the cleared ground."
 msgstr "清理过的地面里冒出了什么金属的东西。"
 
-#: story/eggs.gd:652 story/eggs.gd:714
+#: story/eggs.gd:654 story/eggs.gd:716
 msgid "Gnome %d / %d"
 msgstr "地精 %d / %d"
 
-#: story/eggs.gd:660
+#: story/eggs.gd:662
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr "最后一张海报指向附近某处。有个橙色的东西蜷在那儿。"
 
-#: story/eggs.gd:715
+#: story/eggs.gd:717
 msgid "%s   ·   added to Lumi's collection"
 msgstr "%s   ·   已加入 Lumi 的收藏"
 
-#: story/eggs.gd:731
+#: story/eggs.gd:733
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr "收音机轻轻地沙沙作响。上面还没有东西醒来。天黑后再来吧。"
 
-#: story/eggs.gd:732
+#: story/eggs.gd:734
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr "透过望远镜：只有明亮又多尘的天空。天黑后再来吧。"
 
-#: story/eggs.gd:761
+#: story/eggs.gd:763
 msgid "SOLD OUT"
 msgstr "售罄"
 
-#: story/eggs.gd:779
+#: story/eggs.gd:781
 msgid "QUACK!"
 msgstr "嘎！"
 
-#: story/eggs.gd:797
+#: story/eggs.gd:799
 msgid "NEW CHALLENGER!"
 msgstr "新挑战者！"
 
-#: story/eggs.gd:800
+#: story/eggs.gd:802
 msgid "GAME OVER  ·  SCORE 12"
 msgstr "游戏结束  ·  得分 12"
 
-#: story/eggs.gd:828
+#: story/eggs.gd:830
 msgid "hi, Gus"
 msgstr "嗨，Gus"
 
-#: story/eggs.gd:873
+#: story/eggs.gd:875
 msgid "CONFETTI"
 msgstr "彩纸"
 
-#: story/eggs.gd:873
+#: story/eggs.gd:875
 msgid "LIGHT JAZZ"
 msgstr "轻爵士"
 
-#: story/eggs.gd:873
+#: story/eggs.gd:875
 msgid "99% DUCKS"
 msgstr "鸭子含量 99%"
 
-#: story/eggs.gd:873
+#: story/eggs.gd:875
 msgid "SUNNY (INDOORS)"
 msgstr "晴（室内）"
 
-#: story/eggs.gd:873
+#: story/eggs.gd:875
 msgid "FOG OF NOODLES"
 msgstr "面条雾"
 
-#: story/eggs.gd:878
+#: story/eggs.gd:880
 msgid "1ST PLACE"
 msgstr "第一名"
 
-#: story/eggs.gd:936
+#: story/eggs.gd:938
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr "鸭子吱吱地说出一个秘密：“%s”可以解锁 %s 外观。"
 
-#: story/eggs.gd:937
+#: story/eggs.gd:939
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "鸭子已经把它知道的全教给你了。嘎。"
 
-#: story/eggs.gd:1168
+#: story/eggs.gd:1170
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "发现奇物：%s（%d / %d）   %s"
 
-#: story/eggs.gd:1179
+#: story/eggs.gd:1181
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "清单上的奇物全部找到了。Lumi 的收藏舱装满了回忆。"
 
@@ -2203,43 +2110,43 @@ msgstr ""
 msgid "Needs %s"
 msgstr "需要 %s"
 
-#: story/ledger.gd:497
+#: story/ledger.gd:499
 msgid "Ledger drone inbound, %s! It's heading for a clean hex."
 msgstr "Ledger 无人机来袭，%s！它正飞向一片干净的六角格。"
 
-#: story/ledger.gd:498
+#: story/ledger.gd:500
 msgid "A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground."
 msgstr "一架 Ledger 无人机要往干净的六角格上倾倒废料（在你的%s）。它碰不了种了植物的地面。"
 
-#: story/ledger.gd:535
+#: story/ledger.gd:537
 msgid "SIGNAL JAMMED"
 msgstr "信号已干扰"
 
-#: story/ledger.gd:565
+#: story/ledger.gd:567
 msgid "Target re-classified as ASSET. Aborting. ...Interesting."
 msgstr "目标重新归类为资产。中止。……有意思。"
 
-#: story/ledger.gd:636
+#: story/ledger.gd:638
 msgid "The drone dumped a little junk back. Scoop it up, or let your helpers tidy it. A Signal Jammer at the base keeps drones away."
 msgstr "无人机倒回了一点废料。把它铲起来，或者让你的帮手收拾。基地里的信号干扰器能赶走无人机。"
 
-#: story/ledger.gd:692
+#: story/ledger.gd:694
 msgid "SEEDS · PAID IN FULL"
 msgstr "种子 · 已全额支付"
 
-#: story/ledger.gd:709 systems/events.gd:500 systems/lumi_level.gd:218
+#: story/ledger.gd:711 systems/events.gd:500 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "+%d 种子"
 
-#: story/ledger.gd:781
+#: story/ledger.gd:783
 msgid "E   jack in: rewrite the Ledger's contract"
 msgstr "E   接入：改写 Ledger 的合同"
 
-#: story/ledger.gd:781
+#: story/ledger.gd:783
 msgid "E   read the amended contract"
 msgstr "E   阅读修订后的合同"
 
-#: story/ledger.gd:806 story/ledger.gd:860
+#: story/ledger.gd:808 story/ledger.gd:862
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: ACTIVE\n"
@@ -2249,11 +2156,11 @@ msgstr ""
 "合同 0001：生效中\n"
 "废料即为账目条款"
 
-#: story/ledger.gd:821
+#: story/ledger.gd:823
 msgid "RELAY 07  ·  PROPERTY OF THE LEDGER  ·  NO UNSCHEDULED ACCESS"
 msgstr "中继站 07  ·  LEDGER 资产  ·  禁止计划外访问"
 
-#: story/ledger.gd:860
+#: story/ledger.gd:862
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: AMENDED\n"
@@ -2263,11 +2170,11 @@ msgstr ""
 "合同 0001：已修订\n"
 "修复 = 资产"
 
-#: story/ledger.gd:980
+#: story/ledger.gd:984
 msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
 msgstr "Ledger 的合同已改写。它的无人机现在运送种子了。（+%d 种子）"
 
-#: story/ledger.gd:988
+#: story/ledger.gd:992
 msgid "<< LEDGER // OFF THE RECORD >>"
 msgstr "<< LEDGER // 非正式记录 >>"
 
@@ -2279,51 +2186,51 @@ msgstr "LEDGER  WMS-07"
 msgid "Reward: %s"
 msgstr "奖励：%s"
 
-#: story/objectives.gd:376
+#: story/objectives.gd:380
 msgid "Objective complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:403
+#: story/objectives.gd:407
 msgid "Goal complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:672
+#: story/objectives.gd:676
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "打包机装好了！装满胸舱，按 [%s] 压一个捆包，再把它搬到秤上。"
 
-#: story/objectives.gd:694 story/objectives.gd:824
+#: story/objectives.gd:698 story/objectives.gd:828
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "你的胸舱满了。按 [%s] 压一个捆包。"
 
-#: story/objectives.gd:710
+#: story/objectives.gd:714
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "你的探测器发现附近埋着一个机器人零件。跟着“埋藏零件”的读数走；走到正上方时它会哔哔响。"
 
-#: story/objectives.gd:712
+#: story/objectives.gd:716
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
 
-#: story/objectives.gd:825
+#: story/objectives.gd:829
 msgid "Your chest is full. Bring it to the bin."
 msgstr "你的胸舱满了。带到垃圾桶去。"
 
-#: story/objectives.gd:832
+#: story/objectives.gd:836
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "你的胸舱满了。回家吧：垃圾桶就在高高的烟柱下面。"
 
-#: story/objectives.gd:834
+#: story/objectives.gd:838
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "把捆包搬回家：秤就在高高的烟柱下面。"
 
-#: story/objectives.gd:834
+#: story/objectives.gd:838
 msgid "Carry your bale to the scale by the bin."
 msgstr "把捆包搬到垃圾桶旁边的秤上。"
 
-#: story/objectives.gd:841
+#: story/objectives.gd:845
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "回家吧：跟着光柱走到高高的烟柱那里。"
 
-#: story/objectives.gd:851
+#: story/objectives.gd:855
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "这里没有东西可捡。走到垃圾更多的地方去。"
 
@@ -3011,20 +2918,20 @@ msgstr "存档 %d"
 msgid "%d:%02d h"
 msgstr "%d:%02d 小时"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "Low"
 msgstr "低"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
-#: ui/settings_panel.gd:594
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
+#: ui/settings_panel.gd:601
 msgid "Medium"
 msgstr "中"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "High"
 msgstr "高"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "Ultra"
 msgstr "超高"
 
@@ -3258,7 +3165,7 @@ msgstr "紫罗兰"
 msgid "Moonlight"
 msgstr "月光"
 
-#: systems/tunes.gd:166
+#: systems/tunes.gd:390
 msgid "New CD: %s by %s, from %s"
 msgstr "新CD：%s，演奏：%s，来自%s"
 
@@ -3716,7 +3623,7 @@ msgstr "初始配置：只有 Lumi。传家宝会添加更多。"
 msgid "Starting kit: %s"
 msgstr "初始配置：%s"
 
-#: ui/ark_bridge.gd:303 ui/settings_panel.gd:575
+#: ui/ark_bridge.gd:303 ui/settings_panel.gd:582
 msgid "Full"
 msgstr "完整"
 
@@ -5521,7 +5428,7 @@ msgstr "火箭飞行期间无法使用拍照模式。"
 msgid "Photo mode isn't available during a cinematic."
 msgstr "过场动画期间无法使用拍照模式。"
 
-#: ui/photo_mode.gd:362 ui/photo_mode.gd:415 ui/settings_panel.gd:383
+#: ui/photo_mode.gd:362 ui/photo_mode.gd:415 ui/settings_panel.gd:390
 msgid "Camera"
 msgstr "相机"
 
@@ -5529,7 +5436,7 @@ msgstr "相机"
 msgid "Mode"
 msgstr "模式"
 
-#: ui/photo_mode.gd:364 ui/settings_panel.gd:391
+#: ui/photo_mode.gd:364 ui/settings_panel.gd:398
 msgid "Field of view"
 msgstr "视野"
 
@@ -5566,7 +5473,7 @@ msgid "Blur"
 msgstr "模糊"
 
 #: ui/photo_mode.gd:372 ui/photo_panel.gd:240 ui/photo_panel.gd:242
-#: ui/photo_panel.gd:280 ui/settings_panel.gd:681
+#: ui/photo_panel.gd:280 ui/settings_panel.gd:688
 msgid "Off"
 msgstr "关"
 
@@ -5679,7 +5586,7 @@ msgid "Exit"
 msgstr "退出"
 
 #: ui/photo_panel.gd:240 ui/photo_panel.gd:242 ui/photo_panel.gd:280
-#: ui/settings_panel.gd:681
+#: ui/settings_panel.gd:688
 msgid "On"
 msgstr "开"
 
@@ -6050,23 +5957,23 @@ msgstr "{ui_cancel}  返回"
 msgid "Changes are saved automatically."
 msgstr "更改会自动保存。"
 
-#: ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "Quality preset"
 msgstr "画质预设"
 
-#: ui/settings_panel.gd:243 ui/settings_panel.gd:340
+#: ui/settings_panel.gd:243 ui/settings_panel.gd:347
 msgid "Fullscreen"
 msgstr "全屏"
 
-#: ui/settings_panel.gd:246 ui/settings_panel.gd:384
+#: ui/settings_panel.gd:246 ui/settings_panel.gd:391
 msgid "Mouse sensitivity"
 msgstr "鼠标灵敏度"
 
-#: ui/settings_panel.gd:250 ui/settings_panel.gd:560
+#: ui/settings_panel.gd:250 ui/settings_panel.gd:567
 msgid "System default"
 msgstr "跟随系统"
 
-#: ui/settings_panel.gd:251 ui/settings_panel.gd:558 ui/settings_panel.gd:561
+#: ui/settings_panel.gd:251 ui/settings_panel.gd:565 ui/settings_panel.gd:568
 msgid "Language"
 msgstr "语言"
 
@@ -6083,246 +5990,250 @@ msgid "Volume"
 msgstr "音量"
 
 #: ui/settings_panel.gd:309
+msgid "Ambience"
+msgstr "环境音"
+
+#: ui/settings_panel.gd:312
 msgid "Sound effects"
 msgstr "音效"
 
-#: ui/settings_panel.gd:316
-msgid "Rendering"
-msgstr "渲染"
-
-#: ui/settings_panel.gd:317
-msgid "Low drops GI and fog; Ultra adds reflections."
-msgstr "低：关闭全局光照和雾；超高：增加反射。"
-
-#: ui/settings_panel.gd:318
-msgid "This renderer always uses the Low preset."
-msgstr "此渲染器始终使用“低”预设。"
-
-#: ui/settings_panel.gd:320
-msgid "Detected: %s for %s. "
-msgstr "检测到：%s，适用于 %s。"
-
-#: ui/settings_panel.gd:321
-msgid "Your choice (hardware: %s). "
-msgstr "你的选择（硬件：%s）。"
-
-#: ui/settings_panel.gd:322
-msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
-msgstr "低：关闭全局光照、雾和阴影细节；超高：增加反射。"
-
-#: ui/settings_panel.gd:328
-msgid "Renderer"
-msgstr "渲染器"
-
-#: ui/settings_panel.gd:328
-msgid "Standard (Forward+)"
-msgstr "标准（Forward+）"
-
-#: ui/settings_panel.gd:328
-msgid "Light (Mobile)"
-msgstr "轻量（Mobile）"
-
-#: ui/settings_panel.gd:330
-msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
-msgstr "轻量适合较旧的集成显卡。重启游戏后生效（当前：%s）。"
-
-#: ui/settings_panel.gd:336
-msgid "Render scale"
-msgstr "渲染缩放"
-
-#: ui/settings_panel.gd:338
-msgid "Lower renders 3D at a smaller size; the interface stays sharp."
-msgstr "调低会以较小尺寸渲染 3D；界面保持清晰。"
-
-#: ui/settings_panel.gd:339
-msgid "Display"
-msgstr "显示"
-
-#: ui/settings_panel.gd:343
-msgid "V-Sync"
-msgstr "垂直同步"
-
-#: ui/settings_panel.gd:349 ui/settings_panel.gd:378
-msgid "Bindings"
-msgstr "按键绑定"
-
-#: ui/settings_panel.gd:352
-msgid "ACTION   (select a binding to rebind it)"
-msgstr "操作   （选择一个绑定来重新设置）"
-
-#: ui/settings_panel.gd:355
-msgid "KEYBOARD / MOUSE"
-msgstr "键盘 / 鼠标"
-
-#: ui/settings_panel.gd:355
-msgid "CONTROLLER"
-msgstr "手柄"
-
-#: ui/settings_panel.gd:371
-msgid "Reset to defaults"
-msgstr "恢复默认"
-
-#: ui/settings_panel.gd:378
-msgid "Restore every key and controller binding."
-msgstr "恢复所有键盘和手柄绑定。"
-
-#: ui/settings_panel.gd:380
-msgid "Button prompts"
-msgstr "按键图标"
-
-#: ui/settings_panel.gd:382
-msgid "Controller art: Automatic follows the connected pad."
-msgstr "手柄图标：“自动”会跟随已连接的手柄。"
-
-#: ui/settings_panel.gd:387
-msgid "Stick look speed"
-msgstr "摇杆视角速度"
-
-#: ui/settings_panel.gd:390
-msgid "Invert look Y"
-msgstr "反转 Y 轴视角"
-
-#: ui/settings_panel.gd:394
-msgid "Mouse smoothing"
-msgstr "鼠标平滑"
-
-#: ui/settings_panel.gd:395
-msgid "Eases mouse look over a few frames."
-msgstr "在几帧内平滑鼠标视角。"
-
-#: ui/settings_panel.gd:396
-msgid "Scooping"
-msgstr "铲取"
-
-#: ui/settings_panel.gd:397
-msgid "Scoop button"
-msgstr "铲取按键"
-
-#: ui/settings_panel.gd:397
-msgid "Hold"
-msgstr "按住"
-
-#: ui/settings_panel.gd:397
-msgid "Toggle"
-msgstr "切换"
-
-#: ui/settings_panel.gd:438
-msgid "press a button…"
-msgstr "请按一个按钮…"
-
-#: ui/settings_panel.gd:438
-msgid "press a key…"
-msgstr "请按一个键…"
-
-#: ui/settings_panel.gd:470
-msgid "Conflict: %s is used by both %s and %s."
-msgstr "冲突：%s 同时被 %s 和 %s 使用。"
-
-#: ui/settings_panel.gd:564
-msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
-msgstr "菜单、HUD、字幕和剧情文本。Pseudo 用于测试翻译。"
-
-#: ui/settings_panel.gd:565
-msgid "Comfort"
-msgstr "舒适度"
-
-#: ui/settings_panel.gd:566
-msgid "Camera shake"
-msgstr "镜头晃动"
-
-#: ui/settings_panel.gd:568
-msgid "Reduced motion"
-msgstr "减少动态效果"
-
-#: ui/settings_panel.gd:569
-msgid "Calmer camera and fewer bouncy effects."
-msgstr "更平稳的镜头，更少的弹跳效果。"
-
-#: ui/settings_panel.gd:570 ui/settings_panel.gd:580
+#: ui/settings_panel.gd:316 ui/settings_panel.gd:577 ui/settings_panel.gd:587
 msgid "Interface"
 msgstr "界面"
 
+#: ui/settings_panel.gd:323
+msgid "Rendering"
+msgstr "渲染"
+
+#: ui/settings_panel.gd:324
+msgid "Low drops GI and fog; Ultra adds reflections."
+msgstr "低：关闭全局光照和雾；超高：增加反射。"
+
+#: ui/settings_panel.gd:325
+msgid "This renderer always uses the Low preset."
+msgstr "此渲染器始终使用“低”预设。"
+
+#: ui/settings_panel.gd:327
+msgid "Detected: %s for %s. "
+msgstr "检测到：%s，适用于 %s。"
+
+#: ui/settings_panel.gd:328
+msgid "Your choice (hardware: %s). "
+msgstr "你的选择（硬件：%s）。"
+
+#: ui/settings_panel.gd:329
+msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
+msgstr "低：关闭全局光照、雾和阴影细节；超高：增加反射。"
+
+#: ui/settings_panel.gd:335
+msgid "Renderer"
+msgstr "渲染器"
+
+#: ui/settings_panel.gd:335
+msgid "Standard (Forward+)"
+msgstr "标准（Forward+）"
+
+#: ui/settings_panel.gd:335
+msgid "Light (Mobile)"
+msgstr "轻量（Mobile）"
+
+#: ui/settings_panel.gd:337
+msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
+msgstr "轻量适合较旧的集成显卡。重启游戏后生效（当前：%s）。"
+
+#: ui/settings_panel.gd:343
+msgid "Render scale"
+msgstr "渲染缩放"
+
+#: ui/settings_panel.gd:345
+msgid "Lower renders 3D at a smaller size; the interface stays sharp."
+msgstr "调低会以较小尺寸渲染 3D；界面保持清晰。"
+
+#: ui/settings_panel.gd:346
+msgid "Display"
+msgstr "显示"
+
+#: ui/settings_panel.gd:350
+msgid "V-Sync"
+msgstr "垂直同步"
+
+#: ui/settings_panel.gd:356 ui/settings_panel.gd:385
+msgid "Bindings"
+msgstr "按键绑定"
+
+#: ui/settings_panel.gd:359
+msgid "ACTION   (select a binding to rebind it)"
+msgstr "操作   （选择一个绑定来重新设置）"
+
+#: ui/settings_panel.gd:362
+msgid "KEYBOARD / MOUSE"
+msgstr "键盘 / 鼠标"
+
+#: ui/settings_panel.gd:362
+msgid "CONTROLLER"
+msgstr "手柄"
+
+#: ui/settings_panel.gd:378
+msgid "Reset to defaults"
+msgstr "恢复默认"
+
+#: ui/settings_panel.gd:385
+msgid "Restore every key and controller binding."
+msgstr "恢复所有键盘和手柄绑定。"
+
+#: ui/settings_panel.gd:387
+msgid "Button prompts"
+msgstr "按键图标"
+
+#: ui/settings_panel.gd:389
+msgid "Controller art: Automatic follows the connected pad."
+msgstr "手柄图标：“自动”会跟随已连接的手柄。"
+
+#: ui/settings_panel.gd:394
+msgid "Stick look speed"
+msgstr "摇杆视角速度"
+
+#: ui/settings_panel.gd:397
+msgid "Invert look Y"
+msgstr "反转 Y 轴视角"
+
+#: ui/settings_panel.gd:401
+msgid "Mouse smoothing"
+msgstr "鼠标平滑"
+
+#: ui/settings_panel.gd:402
+msgid "Eases mouse look over a few frames."
+msgstr "在几帧内平滑鼠标视角。"
+
+#: ui/settings_panel.gd:403
+msgid "Scooping"
+msgstr "铲取"
+
+#: ui/settings_panel.gd:404
+msgid "Scoop button"
+msgstr "铲取按键"
+
+#: ui/settings_panel.gd:404
+msgid "Hold"
+msgstr "按住"
+
+#: ui/settings_panel.gd:404
+msgid "Toggle"
+msgstr "切换"
+
+#: ui/settings_panel.gd:445
+msgid "press a button…"
+msgstr "请按一个按钮…"
+
+#: ui/settings_panel.gd:445
+msgid "press a key…"
+msgstr "请按一个键…"
+
+#: ui/settings_panel.gd:477
+msgid "Conflict: %s is used by both %s and %s."
+msgstr "冲突：%s 同时被 %s 和 %s 使用。"
+
 #: ui/settings_panel.gd:571
+msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
+msgstr "菜单、HUD、字幕和剧情文本。Pseudo 用于测试翻译。"
+
+#: ui/settings_panel.gd:572
+msgid "Comfort"
+msgstr "舒适度"
+
+#: ui/settings_panel.gd:573
+msgid "Camera shake"
+msgstr "镜头晃动"
+
+#: ui/settings_panel.gd:575
+msgid "Reduced motion"
+msgstr "减少动态效果"
+
+#: ui/settings_panel.gd:576
+msgid "Calmer camera and fewer bouncy effects."
+msgstr "更平稳的镜头，更少的弹跳效果。"
+
+#: ui/settings_panel.gd:578
 msgid "Number format"
 msgstr "数字格式"
 
-#: ui/settings_panel.gd:571
+#: ui/settings_panel.gd:578
 msgid "Short (1.2K)"
 msgstr "简写（1.2K）"
 
-#: ui/settings_panel.gd:571
+#: ui/settings_panel.gd:578
 msgid "Scientific (1.2e3)"
 msgstr "科学计数（1.2e3）"
 
-#: ui/settings_panel.gd:571
+#: ui/settings_panel.gd:578
 msgid "Engineering (1.2e3)"
 msgstr "工程计数（1.2e3）"
 
-#: ui/settings_panel.gd:573
+#: ui/settings_panel.gd:580
 msgid "Best-value tags"
 msgstr "性价比标签"
 
-#: ui/settings_panel.gd:574
+#: ui/settings_panel.gd:581
 msgid "Tag the affordable upgrade that gives the most per cube."
 msgstr "标出买得起且每方块收益最高的升级。"
 
-#: ui/settings_panel.gd:575
+#: ui/settings_panel.gd:582
 msgid "HUD"
 msgstr "HUD"
 
-#: ui/settings_panel.gd:575
+#: ui/settings_panel.gd:582
 msgid "Minimal"
 msgstr "精简"
 
-#: ui/settings_panel.gd:575
+#: ui/settings_panel.gd:582
 msgid "Hidden"
 msgstr "隐藏"
 
-#: ui/settings_panel.gd:576
+#: ui/settings_panel.gd:583
 msgid "Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."
 msgstr "精简：几秒后淡出额外信息。隐藏：只保留提示和消息。"
 
-#: ui/settings_panel.gd:586
+#: ui/settings_panel.gd:593
 msgid "Interface scale"
 msgstr "界面缩放"
 
-#: ui/settings_panel.gd:588
+#: ui/settings_panel.gd:595
 msgid "Size of menus, HUD and subtitles."
 msgstr "菜单、HUD 和字幕的大小。"
 
-#: ui/settings_panel.gd:589
+#: ui/settings_panel.gd:596
 msgid "Colour-blind palette"
 msgstr "色盲配色"
 
-#: ui/settings_panel.gd:590
+#: ui/settings_panel.gd:597
 msgid "Okabe-Ito colours for hex progress, the hopper meter and part rarity."
 msgstr "对六角格进度、料斗计量条和零件稀有度使用 Okabe-Ito 配色。"
 
-#: ui/settings_panel.gd:591 ui/settings_panel.gd:592
+#: ui/settings_panel.gd:598 ui/settings_panel.gd:599
 msgid "Subtitles"
 msgstr "字幕"
 
-#: ui/settings_panel.gd:593
+#: ui/settings_panel.gd:600
 msgid "WREN and Ledger lines."
 msgstr "WREN 和 Ledger 的台词。"
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:601
 msgid "Subtitle size"
 msgstr "字幕大小"
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:601
 msgid "Small"
 msgstr "小"
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:601
 msgid "Large"
 msgstr "大"
 
-#: ui/settings_panel.gd:596
+#: ui/settings_panel.gd:603
 msgid "Subtitle background"
 msgstr "字幕背景"
 
-#: ui/settings_panel.gd:597
+#: ui/settings_panel.gd:604
 msgid "A solid backdrop behind subtitle text."
 msgstr "在字幕文字后加一层实色背景。"
 
@@ -11052,25 +10963,13 @@ msgstr "将基地升到 3 级"
 msgid "Build a Seedling planter"
 msgstr "建造一台 Seedling 种植机器人"
 
-#: data/goals.json:goals[hub_wake_5].text
-msgid "Wake station 5 of 6"
-msgstr "唤醒第 5 座站点(共 6 座)"
-
 #: data/goals.json:goals[plant_25].text
 msgid "Plant 25 seeds"
 msgstr "种下 25 颗种子"
 
-#: data/goals.json:goals[rocket_mk3].text
-msgid "Upgrade the rocket to Mk III"
-msgstr "把火箭升级到 Mk III"
-
 #: data/goals.json:goals[drip_1].text
 msgid "Build a Drip watering robot"
 msgstr "建造一台 Drip 浇水机器人"
-
-#: data/goals.json:goals[hub_wake_6].text
-msgid "Wake station 6 of 6"
-msgstr "唤醒第 6 座站点(共 6 座)"
 
 #: data/goals.json:goals[home_drive_5].text
 msgid "Build the Mk V Orbital drive"
@@ -12474,16 +12373,16 @@ msgid "Clean ground lets plants grow again."
 msgstr "干净的土地能让植物重新生长。"
 
 #: data/objectives.json:objectives[hex2].lines
-msgid "Two clean hexes. Keep going, Lumi."
-msgstr "两个干净的六角格。继续加油，Lumi。"
+msgid "One hex clean. Now one more, Lumi."
+msgstr "一个六角格干净了。再来一个，Lumi。"
 
 #: data/objectives.json:objectives[hex3].desc
 msgid "Clear room around the base, so robots can start work."
 msgstr "把基地周围清出一块地方，机器人才能开工。"
 
 #: data/objectives.json:objectives[hex3].lines
-msgid "Three clean hexes. The planet notices, believe me."
-msgstr "三个干净的六角格。相信我，星球感觉到了。"
+msgid "One more hex, Lumi. The planet notices, believe me."
+msgstr "再清一个六角格，Lumi。这颗星球感觉得到，相信我。"
 
 #: data/objectives.json:objectives[bench2].text
 msgid "Add a Bot Bay to the bench"
@@ -12510,28 +12409,16 @@ msgid "The Bot Bay hums! It can build you a helper. Try the Bots tab at the work
 msgstr "机器人舱嗡嗡响了！它能给你造一个帮手。去工作台的机器人页签看看吧。"
 
 #: data/objectives.json:objectives[zone].text
-msgid "Send your robot to work"
-msgstr "派你的机器人去干活"
+msgid "Show your robot where to clean first"
+msgstr "告诉机器人先清理哪里"
 
 #: data/objectives.json:objectives[zone].desc
-msgid "Robots clean where you point. Press {open_command}."
-msgstr "你指到哪里，机器人就清理哪里。按 {open_command}。"
+msgid "It cleans by itself. {open_command}: show it where first."
+msgstr "它会自己清理。{open_command}：告诉它先去哪里。"
 
 #: data/objectives.json:objectives[zone].lines
-msgid "Give your robot a hex to work on. It wants a job."
-msgstr "给你的机器人一个六角格去干活。它想要一份工作。"
-
-#: data/objectives.json:objectives[hub_fly_2].text
-msgid "Fly to the next station"
-msgstr "飞往下一座站点"
-
-#: data/objectives.json:objectives[hub_wake_2].text
-msgid "Wake station 2 of 6"
-msgstr "唤醒第 2 座站点(共 6 座)"
-
-#: data/objectives.json:objectives[hub_wake_2].desc data/objectives.json:objectives[hub_wake_3].desc data/objectives.json:objectives[hub_wake_4].desc
-msgid "Fly there, clean up around it, then wake its landmark."
-msgstr "飞过去,清理周围,然后唤醒它的地标。"
+msgid "Your robot already knows the job. Paint a hex, and it starts there."
+msgstr "你的机器人已经知道该干什么了。涂一个六角格，它就从那里开始。"
 
 #: data/objectives.json:objectives[seed].text
 msgid "Plant the first seed"
@@ -12554,8 +12441,8 @@ msgid "More clean ground, more room to plant. Robots help."
 msgstr "干净的土地越多，能种的地方就越多。机器人会帮忙。"
 
 #: data/objectives.json:objectives[hex10].lines
-msgid "Ten clean hexes. Your robots are learning from you, Lumi."
-msgstr "十个干净的六角格。你的机器人正在向你学习，Lumi。"
+msgid "On to ten clean hexes. Your robots are learning from you, Lumi."
+msgstr "向十个干净的六角格出发。你的机器人在向你学习呢，Lumi。"
 
 #: data/objectives.json:objectives[base2].text
 msgid "Rebuild the base to level 2"
@@ -12580,10 +12467,6 @@ msgstr "继续清理。WREN 正在找 Haul Bug 的图纸。"
 #: data/objectives.json:objectives[haul].lines
 msgid "A Haul Bug carries bales for you. Build one at the bench."
 msgstr "Haul Bug 会替你搬捆包。在工作台造一台吧。"
-
-#: data/objectives.json:objectives[hub_wake_3].text
-msgid "Wake station 3 of 6"
-msgstr "唤醒第 3 座站点(共 6 座)"
 
 #: data/objectives.json:objectives[tower2].text
 msgid "Boost the signal tower"
@@ -12610,20 +12493,8 @@ msgid "More clean ground means more room to grow."
 msgstr "干净的土地越多，生长的空间就越大。"
 
 #: data/objectives.json:objectives[hex20].lines
-msgid "Twenty hexes. The air already smells different."
-msgstr "二十个六角格。空气闻起来已经不一样了。"
-
-#: data/objectives.json:objectives[rocket_mk2].text
-msgid "Upgrade the rocket to Mk II"
-msgstr "把火箭升级到 Mk II"
-
-#: data/objectives.json:objectives[rocket_mk2].desc
-msgid "Workbench, Upgrades tab. A better rocket reaches more stations."
-msgstr "工作台,升级页。更好的火箭能到达更多站点。"
-
-#: data/objectives.json:objectives[hub_wake_4].text
-msgid "Wake station 4 of 6"
-msgstr "唤醒第 4 座站点(共 6 座)"
+msgid "Twenty hexes next. The air already smells different."
+msgstr "下一个目标：二十个六角格。空气闻起来已经不一样了。"
 
 #: data/objectives.json:objectives[base3].text
 msgid "Rebuild the base to level 3"
@@ -14764,8 +14635,36 @@ msgid "Other old stations are waiting to be woken up."
 msgstr "还有别的旧清理站在等着被唤醒。"
 
 #: data/story_reasons.json:goal_reasons
+msgid "The seed tin is nearly empty. Garden Row kept the seed store."
+msgstr "种子罐快空了。Garden Row 保存着种子库。"
+
+#: data/story_reasons.json:goal_reasons
+msgid "The rocket's skin is too thin for space. Gantry Works made hulls."
+msgstr "火箭的外壳太薄，进不了太空。Gantry Works 以前造船体。"
+
+#: data/story_reasons.json:goal_reasons
+msgid "Nobody knows where to fly. Signal Heights kept the star chart."
+msgstr "没人知道该往哪儿飞。Signal Heights 保存着星图。"
+
+#: data/story_reasons.json:goal_reasons
+msgid "A long flight needs lasting power. The Fairground has a cell."
+msgstr "长途飞行需要耐用的能量。Fairground 有一块能量电池。"
+
+#: data/story_reasons.json:goal_reasons
+msgid "The rocket's tanks are empty. Stack Works still has fuel."
+msgstr "火箭的燃料箱是空的。Stack Works 还有燃料。"
+
+#: data/story_reasons.json:goal_reasons
 msgid "A strong second base keeps its side of Verdance clean."
 msgstr "强大的第二座基地能让 Verdance 的那一边保持干净。"
+
+#: data/story_reasons.json:goal_reasons
+msgid "A woken station keeps cleaning, and gives its rocket piece."
+msgstr "被唤醒的清理站会一直清理，还会交出它的火箭部件。"
+
+#: data/story_reasons.json:goal_reasons
+msgid "A bigger rocket carries supplies to more stations."
+msgstr "更大的火箭能给更多清理站运送补给。"
 
 #: data/story_reasons.json:goal_reasons
 msgid "Every piece you pick up is one less on Verdance."
@@ -14956,16 +14855,12 @@ msgid "Robots keep working while you do other things."
 msgstr "你忙别的事情时，机器人会继续干活。"
 
 #: data/story_reasons.json:exit
-msgid "Lumi, look at the star map. Five worlds, and the Ledger buried every one."
-msgstr "Lumi，看看星图。五个世界，全都被 Ledger 掩埋了。"
+msgid "Look at the star map. Five worlds, and the Ledger buried every one."
+msgstr "看看星图。五个世界，全都被 Ledger 掩埋了。"
 
 #: data/story_reasons.json:exit
-msgid "The Cradle waits until all of them can grow again. Verdance was only the first."
-msgstr "Cradle号要等到它们全都能重新长出植物。Verdance 只是第一个。"
-
-#: data/story_reasons.json:exit
-msgid "Your robots will keep cleaning here. Build the Orbital drive, and we'll wake the next world."
-msgstr "你的机器人会在这里继续清理。建好轨道推进器，我们就去唤醒下一个世界。"
+msgid "The Cradle waits for all of them. Build the Orbital drive, and we'll wake the next world."
+msgstr "Cradle号在等它们全部恢复。建好轨道推进器，我们就去唤醒下一个世界。"
 
 #: data/story_reasons.json:exit
 msgid "The rocket can leave now. Verdance isn't finished, and that's all right."
@@ -17123,6 +17018,114 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."
+#~ msgstr "沙暴将至。裸露的干净地面会被掩埋；种了植物或有遮挡的六角格能挺住。"
+
+#~ msgid "The sandstorm buried %d hex again. Sustained hexes shelter their neighbours."
+#~ msgstr[0] "沙暴又掩埋了 %d 个六角格。稳定的六角格能庇护邻格。"
+
+#~ msgid "The storm blew over. Everything held."
+#~ msgstr "沙暴过去了。一切都挺住了。"
+
+#~ msgid "The ice let go. The junk underneath is just junk again."
+#~ msgstr "冰层松开了。底下的废料又只是废料了。"
+
+#~ msgid "E   Light a heater on this ice · %s cubes"
+#~ msgstr "E   在这片冰上点燃加热器 · %s 方块"
+
+#~ msgid "E   Build a greenhouse on this hex · %s cubes"
+#~ msgstr "E   在这个六角格建温室 · %s 方块"
+
+#~ msgid "Not enough cubes for a heater."
+#~ msgstr "方块不够，建不了加热器。"
+
+#~ msgid "Heater limit reached. Move on to the next ice once these have done their work."
+#~ msgstr "加热器已达上限。等这些完成工作后，再去下一片冰。"
+
+#~ msgid "Not enough cubes for a greenhouse."
+#~ msgstr "方块不够，建不了温室。"
+
+#~ msgid "The old pumps are running. The water drops and a ring of streets comes back up, with a lot of stranded junk."
+#~ msgstr "老水泵运转起来了。水位下降，一圈街道重新露出水面，上面满是搁浅的废料。"
+
+#~ msgid "The landing pad is clean. Now plant it and keep it Sustained."
+#~ msgstr "着陆平台干净了。现在种上植物，让它保持稳定。"
+
+#~ msgid "The landing pad is alive and the beacon is lit. The Cradle has answered. It is coming home."
+#~ msgstr "着陆平台焕发生机，信标亮了。Cradle号回应了。它要回家了。"
+
+#~ msgid "Sandstorm blowing"
+#~ msgstr "沙暴正在肆虐"
+
+#~ msgid "Next sandstorm  %d:%02d"
+#~ msgstr "下一场沙暴  %d:%02d"
+
+#~ msgid "Well dry: Drips refill at tanks"
+#~ msgstr "井已干涸：Drip 去水箱补水"
+
+#~ msgid "%d hexes iced  ·  %d heaters"
+#~ msgstr "%d 个六角格结冰  ·  %d 台加热器"
+
+#~ msgid "Greenhouses %d%s"
+#~ msgstr "温室 %d%s"
+
+#~ msgid "  ·  cold-hardy seeds"
+#~ msgstr "  ·  耐寒种子"
+
+#~ msgid "Water down: all streets above water"
+#~ msgstr "水位已降：所有街道露出水面"
+
+#~ msgid "Pumps: ring %d skimmed %d%% / %d%%"
+#~ msgstr "水泵：第 %d 圈已清理 %d%% / %d%%"
+
+#~ msgid "Water level %d / %d"
+#~ msgstr "水位 %d / %d"
+
+#~ msgid "The Cradle is coming home"
+#~ msgstr "Cradle号正在回家"
+
+#~ msgid "Pad clean %d%%  ·  Sustained %d%%"
+#~ msgstr "平台清洁 %d%%  ·  稳定 %d%%"
+
+#~ msgid "District Growing %d%% / %d%%"
+#~ msgstr "街区生长中 %d%% / %d%%"
+
+#~ msgid "The Cradle waits until all of them can grow again. Verdance was only the first."
+#~ msgstr "Cradle号要等到它们全都能重新长出植物。Verdance 只是第一个。"
+
+#~ msgid "Build the Orbital drive, and we'll go and wake the next world."
+#~ msgstr "建好轨道推进器，我们就去唤醒下一个世界。"
+
+#~ msgid "The rocket isn't ready yet. Keep following WREN's steps."
+#~ msgstr "火箭还没准备好。继续跟着 WREN 的步骤走。"
+
+#~ msgid "Two clean hexes. Keep going, Lumi."
+#~ msgstr "两个干净的六角格。继续加油，Lumi。"
+
+#~ msgid "Three clean hexes. The planet notices, believe me."
+#~ msgstr "三个干净的六角格。相信我，星球感觉到了。"
+
+#~ msgid "Send your robot to work"
+#~ msgstr "派你的机器人去干活"
+
+#~ msgid "Robots clean where you point. Press {open_command}."
+#~ msgstr "你指到哪里，机器人就清理哪里。按 {open_command}。"
+
+#~ msgid "Give your robot a hex to work on. It wants a job."
+#~ msgstr "给你的机器人一个六角格去干活。它想要一份工作。"
+
+#~ msgid "Ten clean hexes. Your robots are learning from you, Lumi."
+#~ msgstr "十个干净的六角格。你的机器人正在向你学习，Lumi。"
+
+#~ msgid "Twenty hexes. The air already smells different."
+#~ msgstr "二十个六角格。空气闻起来已经不一样了。"
+
+#~ msgid "Lumi, look at the star map. Five worlds, and the Ledger buried every one."
+#~ msgstr "Lumi，看看星图。五个世界，全都被 Ledger 掩埋了。"
+
+#~ msgid "Your robots will keep cleaning here. Build the Orbital drive, and we'll wake the next world."
+#~ msgstr "你的机器人会在这里继续清理。建好轨道推进器，我们就去唤醒下一个世界。"
 
 #~ msgid "Cargo pod landed: %s cubes from %d robots in other districts."
 #~ msgstr "货运舱着陆：%s 个方块，来自其他街区的 %d 台机器人。"

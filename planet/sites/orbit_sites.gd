@@ -524,7 +524,7 @@ func _dev_hop() -> void:
 		var patch: Node3D = so.w.get("patch")
 		var d: float = patch.global_position.distance_to(sm.pad_xf(int(h)).origin)
 		print("[hop] to hub %s: %s in %d ms, %.1f m from its pad, site built %s" % [h, "ok" if ok else "FAIL", Time.get_ticks_msec() - t0, d, sm.prefab(int(h)) != null])
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(1.0 + (DevHooks.get_f("hub-dev-chain", 3.0) + 2.0 if DevHooks.has("hub-dev-chain") else 0.0)).timeout  # [v6hubs] room for the dev chain
 
 
 ## Dev: --site-reach. Narrow-gap audit (planet/sites/site_reach.gd) of every hub site on this

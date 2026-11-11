@@ -32,6 +32,8 @@ func _ready() -> void:
 		if now - _last_hex_sting > 6.0:
 			_last_hex_sting = now
 			Audio.music_sting("hex_clean"))
+	# [v6sound] A base restored: a song marked "base_restored" in data/songs.json, if there is one.
+	EventBus.cradle_district_complete.connect(func(_hub: int) -> void: Tunes.play_moment("base_restored"))
 	Audio.set_music_mood("explore")
 	_tunes_setup()  # [tunes]
 	# [sound] Dev: --planet-theme=ochre|tidewell|rime|anvil and --restoration=0..1 (pins it).

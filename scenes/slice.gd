@@ -25,7 +25,6 @@ var garden: Garden
 var hex_levels: HexLevels
 var goals: Goals
 var first_seed: FirstSeed
-var water: WaterView
 var doc_view: DocumentView
 var interactables: Interactables
 var scope_from_memory: bool = false  # [scope]
@@ -38,14 +37,12 @@ var lumi_level: LumiLevel  # [hud] Lumi Level / XP (systems/lumi_level.gd), draw
 var contracts: Contracts  # [events] contracts board + token shop (systems/contracts.gd)
 var photo: PhotoMode  # [photo] photo mode (ui/photo_mode.gd)
 var fauna: Fauna  # [wild] ambient animals (fauna/fauna.gd)
-var frontier: FrontierDistrict  # [biomes] late-game frontier districts (planet/frontier_district.gd)
 var planet_env: Dictionary = {}  # [planet-rime] dev: --planet-env=<id> dresses a district with a planet env (data/planets.json)
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var orbit: SliceOrbit  # [orbB] --orbit: the slice on the walkable globe (scenes/slice_orbit.gd); null on the flat game
 var view: FieldView
 var depot: Depot
 var patch: Patch
-var cam: CameraRig
 var hud: HUD
 var upgrades: UpgradesScreen
 var music: MusicHooks
@@ -78,9 +75,6 @@ signal built
 
 
 func _ready() -> void:
-	if not SliceOrbit.wanted():  # [orbit] phase A prototypes: --orbit=globe (verdance_globe), --orbit=v1 (orbit_world)
-		get_tree().change_scene_to_file.call_deferred("res://planet/orbit/%s.tscn" % ("orbit_world" if DevHooks.get_s("orbit", "") == "v1" else "verdance_globe"))
-		return
 	orbit = SliceOrbit.new()
 	orbit.name = "Orbit"
 	add_child(orbit)

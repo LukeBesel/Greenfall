@@ -98,6 +98,19 @@ func build_hub(i: int, sync: bool = false) -> SitePrefab:
 		# bigger now). The budget closes when the prefab is built.
 		play = BuildBudget.begin_play(get_tree(), PLAY_SLICE_US)
 		_building = true
+	if i > 0 and DevHooks.has("quit-mid-build") and is_inside_tree():  # [v6qa] dev: quit N frames into a hub town's build (the exit-134 repro)
+		var qt: SceneTree = get_tree()
+		var nq: int = int(DevHooks.get_f("quit-mid-build", 60.0))
+		(func() -> void:
+			for k: int in nq:
+				await qt.process_frame
+			print("[sites] dev: quitting %d frames into hub %d's build (built %s, at %s)" % [nq, i, str(prefabs[i] != null and prefabs[i].is_built), BuildBudget.last_at])
+			if DevHooks.get_s("quit-mode", "") == "free":  # free the town mid-build, then quit 120 frames on
+				set_process(false)
+				free_hub(i)
+				for k: int in 120:
+					await qt.process_frame
+			qt.quit()).call()
 	var s: Dictionary = sites[i].duplicate()
 	s["planet"] = planet_id
 	s["hub_index"] = i
@@ -395,13 +408,23 @@ func set_level(i: int, l: int) -> void:
 	if prefabs[i] != null:
 		(prefabs[i] as SitePrefab).set_stage(levels[i])
 		_reprobe(i, prefabs[i])
-	var sp: StreetPower = power.get(i) as StreetPower
-	if sp and is_instance_valid(sp):
+	var sp: StreetPower = _power_of(i)
+	if sp:
 		sp.set_hub_level(levels[i], true)
 
 
 ## Street power per built site (planet/sites/site_power.gd): hub index -> StreetPower.
 var power: Dictionary = {}
+
+
+## [v6hubs] Hub i's street power if it is still alive. A hub freed and built again (a hop back
+## home) left a freed object here, and `is` / `as` on it is a script error.
+func _power_of(i: int) -> StreetPower:
+	var v: Variant = power.get(i)
+	if not is_instance_valid(v):
+		power.erase(i)
+		return null
+	return v as StreetPower
 
 
 func _attach_power(i: int, p: SitePrefab) -> void:
@@ -418,9 +441,9 @@ func _attach_power(i: int, p: SitePrefab) -> void:
 	var hl: Variant = w.get("hex_levels")
 	if not (hl is HexLevels) or p.content == null or not is_instance_valid(p.content):
 		return
-	var old: Variant = power.get(i)
-	if is_instance_valid(old) and old is Node:  # [v6pace] valid first: `is` on a freed instance is a script error
-		(old as Node).queue_free()
+	var old: StreetPower = _power_of(i)
+	if old:
+		old.queue_free()
 	power.erase(i)
 	var lvl: int = levels[i]
 	var hub: Variant = w.get("hub") if i == 0 else null
@@ -613,6 +636,6 @@ static func _seg_hits_rect(a: Vector2, b: Vector2, r: Rect2) -> bool:
 
 
 func _on_hub0_level(l: int) -> void:
-	var sp: StreetPower = power.get(0) as StreetPower
-	if sp and is_instance_valid(sp):
+	var sp: StreetPower = _power_of(0)
+	if sp:
 		sp.set_hub_level(l, true)
