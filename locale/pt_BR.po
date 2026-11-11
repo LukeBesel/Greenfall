@@ -515,7 +515,7 @@ msgstr "Fardos valendo %s se acumularam na base sem ninguém para levá-los. Lum
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Os purificadores filtraram o ar o tempo todo. Está um pouco mais limpo."
 
-#: core/pace.gd:147 story/objectives.gd:834
+#: core/pace.gd:147 story/objectives.gd:836
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "Pesado demais. Melhore a Força de levantamento na bancada."
 
@@ -806,8 +806,8 @@ msgid "landmark"
 msgstr "marco"
 
 #: planet/sites/hub_plan.gd:254
-msgid "Everything sells for x%s now."
-msgstr "Agora tudo vende por x%s."
+msgid "The recycling network grew: everything sells for x%s now."
+msgstr "A rede de reciclagem cresceu: agora tudo vende por x%s."
 
 #: planet/sites/hub_plan.gd:273
 msgid "Rocket piece: %s"
@@ -846,8 +846,8 @@ msgid "%s: %d%% clean, up %d%% while you were away."
 msgstr "%s: %d%% limpo, +%d%% enquanto você estava fora."
 
 #: planet/sites/hub_purpose.gd:233
-msgid "Clean hexes here: %d / %d"
-msgstr "Limpe hexágonos aqui: %d / %d"
+msgid "Dig the landmark out. Clean hexes here: %d / %d"
+msgstr "Desenterre o marco. Limpe hexágonos aqui: %d / %d"
 
 #: planet/sites/hub_purpose.gd:235
 msgid "Repair an outpost here: %d / %d"
@@ -870,16 +870,16 @@ msgid "%s: asleep. %s"
 msgstr "%s: adormecido. %s"
 
 #: planet/sites/hub_purpose.gd:279
-msgid "The rocket can keep %d bases going. Upgrade the rocket at the workbench."
-msgstr "O foguete mantém %d bases. Melhore-o na bancada."
+msgid "The rocket can carry supplies to %d bases. Upgrade it at the workbench."
+msgstr "O foguete consegue levar suprimentos a %d bases. Melhore-o na bancada."
 
 #: planet/sites/hub_purpose.gd:295
 msgid "Waking the %s needs %s."
 msgstr "Para despertar (%s) faltam %s."
 
 #: planet/sites/hub_purpose.gd:319
-msgid "%s is awake. %s restored."
-msgstr "%s despertou. %s restaurado."
+msgid "%s is awake. %s keeps cleaning when you fly on."
+msgstr "%s despertou. %s continua limpando quando você seguir viagem."
 
 #: planet/sites/hub_purpose.gd:346
 msgid "%s grows: level %d."
@@ -2126,43 +2126,43 @@ msgstr "Objetivo concluído  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "Objetivo concluído  ·  %s"
 
-#: story/objectives.gd:670
+#: story/objectives.gd:672
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "Enfardadeira instalada! Encha seu peito, aperte [%s] para prensar um fardo e leve-o até a balança."
 
-#: story/objectives.gd:692 story/objectives.gd:822
+#: story/objectives.gd:694 story/objectives.gd:824
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Seu peito está cheio. Aperte [%s] para fazer um fardo."
 
-#: story/objectives.gd:708
+#: story/objectives.gd:710
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "Seu detector achou uma peça de robô enterrada aqui perto. Siga a leitura PEÇA ENTERRADA; ele apita quando você está bem em cima."
 
-#: story/objectives.gd:710
+#: story/objectives.gd:712
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "PEÇA ENTERRADA: ande na direção dela até a leitura chegar ao máximo e desenterre."
 
-#: story/objectives.gd:823
+#: story/objectives.gd:825
 msgid "Your chest is full. Bring it to the bin."
 msgstr "Seu peito está cheio. Leve até a lixeira."
 
-#: story/objectives.gd:830
+#: story/objectives.gd:832
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "Seu peito está cheio. Volte para casa: a lixeira fica embaixo da fumaça alta."
 
-#: story/objectives.gd:832
+#: story/objectives.gd:834
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "Leve seu fardo para casa: a balança fica embaixo da fumaça alta."
 
-#: story/objectives.gd:832
+#: story/objectives.gd:834
 msgid "Carry your bale to the scale by the bin."
 msgstr "Leve seu fardo até a balança, ao lado da lixeira."
 
-#: story/objectives.gd:839
+#: story/objectives.gd:841
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "Volte para casa: siga o feixe até a fumaça alta."
 
-#: story/objectives.gd:849
+#: story/objectives.gd:851
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Nada para pegar aqui. Ande até onde tem mais lixo."
 
@@ -12706,8 +12706,8 @@ msgid "Windpump"
 msgstr "Bomba de vento"
 
 #: data/planets.json:verdance.hubs[garden_row].desc
-msgid "The rocket's seed stock. A new seed type."
-msgstr "O estoque de sementes do foguete. Um novo tipo de semente."
+msgid "The Makers' seed store: seeds to take to the next world."
+msgstr "O depósito de sementes dos Criadores: sementes para levar ao próximo mundo."
 
 #: data/planets.json:verdance.hubs[garden_row].piece.name
 msgid "Seed Stock"
@@ -12726,8 +12726,8 @@ msgid "Gantry Crane"
 msgstr "Guindaste de pórtico"
 
 #: data/planets.json:verdance.hubs[gantry_works].desc
-msgid "Hull plates for the rocket."
-msgstr "Placas de casco para o foguete."
+msgid "Hull plates, so the rocket can stand the cold of space."
+msgstr "Placas de casco, para o foguete aguentar o frio do espaço."
 
 #: data/planets.json:verdance.hubs[gantry_works].piece.name
 msgid "Hull Plates"
@@ -12746,8 +12746,8 @@ msgid "Signal Mast"
 msgstr "Mastro de sinal"
 
 #: data/planets.json:verdance.hubs[signal_heights].desc
-msgid "The star chart: where the rocket can fly."
-msgstr "O mapa estelar: para onde o foguete pode voar."
+msgid "The Makers' star chart: it shows where the rocket can fly."
+msgstr "O mapa estelar dos Criadores: mostra para onde o foguete pode voar."
 
 #: data/planets.json:verdance.hubs[signal_heights].piece.name
 msgid "Star Chart"
@@ -12766,8 +12766,8 @@ msgid "Big Wheel"
 msgstr "Roda-gigante"
 
 #: data/planets.json:verdance.hubs[fairground].desc
-msgid "A power cell for the rocket. A new look for Lumi."
-msgstr "Uma célula de energia para o foguete. Um novo visual para o Lumi."
+msgid "A power cell that lasts a long flight. A new look for Lumi."
+msgstr "Uma célula de energia que dura um voo longo. Um novo visual para o Lumi."
 
 #: data/planets.json:verdance.hubs[fairground].piece.name
 msgid "Power Cell"
@@ -12806,8 +12806,8 @@ msgid "Last Bus"
 msgstr "Último ônibus"
 
 #: data/planets.json:verdance.hubs[bus_depot].desc
-msgid "An extra town. A reward of Parts."
-msgstr "Uma cidade extra. Recompensa: Peças."
+msgid "An old station off the route. Wake it for Parts."
+msgstr "Uma velha estação fora da rota. Acorde-a e ganhe Peças."
 
 #: data/planets.json:verdance.hubs[crane_court].name
 msgid "Crane Court"
@@ -12818,8 +12818,8 @@ msgid "Tower Crane"
 msgstr "Guindaste de torre"
 
 #: data/planets.json:verdance.hubs[crane_court].desc data/planets.json:verdance.hubs[lake_light].desc
-msgid "An extra town. A reward of Cubes."
-msgstr "Uma cidade extra. Recompensa: Cubos."
+msgid "An old station off the route. Wake it for Cubes."
+msgstr "Uma velha estação fora da rota. Acorde-a e ganhe Cubos."
 
 #: data/planets.json:verdance.hubs[tank_hill].name
 msgid "Tank Hill"
@@ -12830,8 +12830,8 @@ msgid "Hill Tank"
 msgstr "Tanque do morro"
 
 #: data/planets.json:verdance.hubs[tank_hill].desc
-msgid "An extra town. A reward of Seeds."
-msgstr "Uma cidade extra. Recompensa: Sementes."
+msgid "An old station off the route. Wake it for Seeds."
+msgstr "Uma velha estação fora da rota. Acorde-a e ganhe Sementes."
 
 #: data/planets.json:verdance.hubs[lake_light].name
 msgid "Lake Light"
@@ -17095,6 +17095,39 @@ msgstr "Aquele pórtico desmanchou a frota do Ledger quando o dinheiro acabou. A
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Um mundo de ferrugem, verde. Os velhos guindastes têm flores aos pés. As contas estão fechadas, {name}. Nós as equilibramos."
+
+#~ msgid "Everything sells for x%s now."
+#~ msgstr "Agora tudo vende por x%s."
+
+#~ msgid "Clean hexes here: %d / %d"
+#~ msgstr "Limpe hexágonos aqui: %d / %d"
+
+#~ msgid "The rocket can keep %d bases going. Upgrade the rocket at the workbench."
+#~ msgstr "O foguete mantém %d bases. Melhore-o na bancada."
+
+#~ msgid "%s is awake. %s restored."
+#~ msgstr "%s despertou. %s restaurado."
+
+#~ msgid "The rocket's seed stock. A new seed type."
+#~ msgstr "O estoque de sementes do foguete. Um novo tipo de semente."
+
+#~ msgid "Hull plates for the rocket."
+#~ msgstr "Placas de casco para o foguete."
+
+#~ msgid "The star chart: where the rocket can fly."
+#~ msgstr "O mapa estelar: para onde o foguete pode voar."
+
+#~ msgid "A power cell for the rocket. A new look for Lumi."
+#~ msgstr "Uma célula de energia para o foguete. Um novo visual para o Lumi."
+
+#~ msgid "An extra town. A reward of Parts."
+#~ msgstr "Uma cidade extra. Recompensa: Peças."
+
+#~ msgid "An extra town. A reward of Cubes."
+#~ msgstr "Uma cidade extra. Recompensa: Cubos."
+
+#~ msgid "An extra town. A reward of Seeds."
+#~ msgstr "Uma cidade extra. Recompensa: Sementes."
 
 #~ msgid "Rocket hop: %.1f km"
 #~ msgstr "Salto de foguete: %.1f km"

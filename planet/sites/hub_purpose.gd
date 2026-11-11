@@ -232,7 +232,7 @@ func can_wake(i: int) -> bool:
 func step_text(i: int, d: Dictionary) -> String:
 	match str(d.get("do", "")):
 		"clean":
-			return tr("Clean hexes here: %d / %d") % [int(d["have"]), int(d["need"])]
+			return tr("Dig the landmark out. Clean hexes here: %d / %d") % [int(d["have"]), int(d["need"])]
 		"outposts":
 			return tr("Repair an outpost here: %d / %d") % [int(d["have"]), int(d["need"])]
 		"wake":
@@ -278,7 +278,7 @@ func landmark_prompt() -> String:
 
 ## Why one more base can't be restored yet (the rocket's tier).
 func limit_text() -> String:
-	return tr("The rocket can keep %d bases going. Upgrade the rocket at the workbench.") % HubPlan.rocket_limit()
+	return tr("The rocket can carry supplies to %d bases. Upgrade it at the workbench.") % HubPlan.rocket_limit()
 
 
 func use_landmark() -> void:
@@ -318,7 +318,7 @@ func wake(i: int, free: bool = false) -> bool:
 	Audio.play("thud", 0.8, -4.0)
 	Audio.music_sting("level_up")
 	EventBus.shake_requested.emit(0.25)
-	EventBus.toast.emit(tr("%s is awake. %s restored.") % [HubPlan.landmark_name(planet, i), HubPlan.hub_name(planet, i)], "story")
+	EventBus.toast.emit(tr("%s is awake. %s keeps cleaning when you fly on.") % [HubPlan.landmark_name(planet, i), HubPlan.hub_name(planet, i)], "story")
 	if not lines.is_empty():
 		EventBus.toast.emit(" · ".join(lines), "story")
 	print("[hubs] woke site %d (%s): level %d, bases %d/%d, gave %s" % [i, str(HubPlan.entry(planet, i).get("id", "")), sm.levels[i], HubPlan.restored_main(planet), HubPlan.main_total(planet), str(lines)])

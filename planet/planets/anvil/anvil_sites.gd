@@ -15,7 +15,7 @@ extends RefCounted
 ## mounds); restoration clears the trash, cools the lava, greens the ground and plants it, and
 ## stage 4-5 adds vertical gardens, domes and thin warm-white light lines.
 
-const Batch = FrontierView.Batch
+const Batch = PropBatch.Batch
 const SITES: Array[String] = ["foundry_yard", "foundry_tower", "lava_forge", "ruined_smelter"]
 const TRASH: Array[String] = ["rusted_wheel_rim_02", "Barrel_01", "old_tyre", "tire_pump", "wooden_crate_02", "metal_jerrycan", "can_rusted", "oil_tin", "propane_tank"]
 

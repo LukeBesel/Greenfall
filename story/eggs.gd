@@ -1010,7 +1010,10 @@ func _dispense_can(n: Node3D) -> void:
 
 
 func _look_up() -> void:
-	var cam: CameraRig = world.cam
+	var so: SliceOrbit = world.get("orbit") as SliceOrbit  # [v6flat] the globe's camera (this read the flat rig: null on the globe)
+	var cam: SphereCam = so.cam if so else null
+	if cam == null:
+		return
 	var p0: float = cam.pitch
 	var was: bool = cam.lens_view
 	# Lens view allows looking up; peek at the constellation for a few seconds.

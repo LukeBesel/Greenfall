@@ -64,11 +64,16 @@ func _on_hex(_h: int, _p: Vector3, _b: BigNum) -> void:
 
 ## [onboard] Queue a scripted line (already translated), whether or not she is "awake" yet.
 ## force: passes even with no tower (her last message in the crash).
-func speak(text: String, stage: int = 1, force: bool = false) -> void:
+## [v6story] keep: when given, the line is dropped unsaid if keep() is false by the time its turn
+## comes (a step line whose step is already done: she was still reading the lines before it).
+func speak(text: String, stage: int = 1, force: bool = false, keep: Callable = Callable()) -> void:
 	if text != "":
 		if force:
 			_pass[text] = true
-		_queue.append({"text": text, "stage": stage})
+		var l: Dictionary = {"text": text, "stage": stage}
+		if keep.is_valid():
+			l["keep"] = keep
+		_queue.append(l)
 
 
 ## [onboard] The signal gate between line_started and the subtitles.
@@ -144,10 +149,17 @@ func say(trigger: String, chance: float = 1.0, important: bool = false, vars: Di
 	_queue.append({"text": text, "stage": st if stage_override < 0 else stage_override})
 
 
+func _stale(l: Dictionary) -> bool:
+	var k: Variant = l.get("keep")
+	return k is Callable and (k as Callable).is_valid() and not bool((k as Callable).call())
+
+
 func _process(delta: float) -> void:
 	_cooldown = maxf(0.0, _cooldown - delta)
 	_chatter_t = maxf(0.0, _chatter_t - delta)
 	var modal: bool = world != null and world.has_method("any_modal_open") and bool(world.call("any_modal_open"))
+	while not _queue.is_empty() and _stale(_queue[0]):  # [v6story] a step line that came too late
+		_queue.pop_front()
 	if _cooldown <= 0.0 and not _queue.is_empty() and not modal:  # [v2guide] nothing during modals
 		var l: Dictionary = _queue.pop_front()
 		line_started.emit(l["text"], int(l["stage"]))

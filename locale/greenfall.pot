@@ -514,7 +514,7 @@ msgstr ""
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr ""
 
-#: core/pace.gd:147 story/objectives.gd:834
+#: core/pace.gd:147 story/objectives.gd:836
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr ""
 
@@ -805,7 +805,7 @@ msgid "landmark"
 msgstr ""
 
 #: planet/sites/hub_plan.gd:254
-msgid "Everything sells for x%s now."
+msgid "The recycling network grew: everything sells for x%s now."
 msgstr ""
 
 #: planet/sites/hub_plan.gd:273
@@ -845,7 +845,7 @@ msgid "%s: %d%% clean, up %d%% while you were away."
 msgstr ""
 
 #: planet/sites/hub_purpose.gd:233
-msgid "Clean hexes here: %d / %d"
+msgid "Dig the landmark out. Clean hexes here: %d / %d"
 msgstr ""
 
 #: planet/sites/hub_purpose.gd:235
@@ -869,7 +869,7 @@ msgid "%s: asleep. %s"
 msgstr ""
 
 #: planet/sites/hub_purpose.gd:279
-msgid "The rocket can keep %d bases going. Upgrade the rocket at the workbench."
+msgid "The rocket can carry supplies to %d bases. Upgrade it at the workbench."
 msgstr ""
 
 #: planet/sites/hub_purpose.gd:295
@@ -877,7 +877,7 @@ msgid "Waking the %s needs %s."
 msgstr ""
 
 #: planet/sites/hub_purpose.gd:319
-msgid "%s is awake. %s restored."
+msgid "%s is awake. %s keeps cleaning when you fly on."
 msgstr ""
 
 #: planet/sites/hub_purpose.gd:346
@@ -2100,43 +2100,43 @@ msgstr ""
 msgid "Goal complete  ·  %s"
 msgstr ""
 
-#: story/objectives.gd:670
+#: story/objectives.gd:672
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr ""
 
-#: story/objectives.gd:692 story/objectives.gd:822
+#: story/objectives.gd:694 story/objectives.gd:824
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr ""
 
-#: story/objectives.gd:708
+#: story/objectives.gd:710
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr ""
 
-#: story/objectives.gd:710
+#: story/objectives.gd:712
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr ""
 
-#: story/objectives.gd:823
+#: story/objectives.gd:825
 msgid "Your chest is full. Bring it to the bin."
 msgstr ""
 
-#: story/objectives.gd:830
+#: story/objectives.gd:832
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:832
+#: story/objectives.gd:834
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:832
+#: story/objectives.gd:834
 msgid "Carry your bale to the scale by the bin."
 msgstr ""
 
-#: story/objectives.gd:839
+#: story/objectives.gd:841
 msgid "Head home: follow the beam to the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:849
+#: story/objectives.gd:851
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr ""
 
@@ -12504,7 +12504,7 @@ msgid "Windpump"
 msgstr ""
 
 #: data/planets.json:verdance.hubs[garden_row].desc
-msgid "The rocket's seed stock. A new seed type."
+msgid "The Makers' seed store: seeds to take to the next world."
 msgstr ""
 
 #: data/planets.json:verdance.hubs[garden_row].piece.name
@@ -12524,7 +12524,7 @@ msgid "Gantry Crane"
 msgstr ""
 
 #: data/planets.json:verdance.hubs[gantry_works].desc
-msgid "Hull plates for the rocket."
+msgid "Hull plates, so the rocket can stand the cold of space."
 msgstr ""
 
 #: data/planets.json:verdance.hubs[gantry_works].piece.name
@@ -12544,7 +12544,7 @@ msgid "Signal Mast"
 msgstr ""
 
 #: data/planets.json:verdance.hubs[signal_heights].desc
-msgid "The star chart: where the rocket can fly."
+msgid "The Makers' star chart: it shows where the rocket can fly."
 msgstr ""
 
 #: data/planets.json:verdance.hubs[signal_heights].piece.name
@@ -12564,7 +12564,7 @@ msgid "Big Wheel"
 msgstr ""
 
 #: data/planets.json:verdance.hubs[fairground].desc
-msgid "A power cell for the rocket. A new look for Lumi."
+msgid "A power cell that lasts a long flight. A new look for Lumi."
 msgstr ""
 
 #: data/planets.json:verdance.hubs[fairground].piece.name
@@ -12604,7 +12604,7 @@ msgid "Last Bus"
 msgstr ""
 
 #: data/planets.json:verdance.hubs[bus_depot].desc
-msgid "An extra town. A reward of Parts."
+msgid "An old station off the route. Wake it for Parts."
 msgstr ""
 
 #: data/planets.json:verdance.hubs[crane_court].name
@@ -12616,7 +12616,7 @@ msgid "Tower Crane"
 msgstr ""
 
 #: data/planets.json:verdance.hubs[crane_court].desc data/planets.json:verdance.hubs[lake_light].desc
-msgid "An extra town. A reward of Cubes."
+msgid "An old station off the route. Wake it for Cubes."
 msgstr ""
 
 #: data/planets.json:verdance.hubs[tank_hill].name
@@ -12628,7 +12628,7 @@ msgid "Hill Tank"
 msgstr ""
 
 #: data/planets.json:verdance.hubs[tank_hill].desc
-msgid "An extra town. A reward of Seeds."
+msgid "An old station off the route. Wake it for Seeds."
 msgstr ""
 
 #: data/planets.json:verdance.hubs[lake_light].name
