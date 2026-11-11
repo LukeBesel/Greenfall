@@ -21,7 +21,7 @@ Everything about a planet's hubs is in `data/planets.json`, under the planet's i
 | The price of a wake and the sell multiplier per hub | `data/hub.json` `far_hub` (v6pace) |
 | How many hubs a rocket tier can keep | `data/rockets.json` tiers' `hubs` (v6pace) |
 
-Landmark kinds: `water_tower`, `crane`, `ferris_wheel`, `radio_mast`, `smokestack`, `old_bus`,
+Landmark kinds: `water_tower`, `crane`, `tower_crane`, `ferris_wheel`, `radio_mast`, `smokestack`, `old_bus`,
 `windpump`, `lighthouse`. The `town` field picks the town's look
 (`oldtown`, `downtown`, `suburb`, `industrial`) and is what the picker and the arrival title say; a
 hub where the lake reaches into the town is always built (and named) as a harbour.
@@ -180,14 +180,15 @@ sign with one pictogram and no words, so a small child can tell what it does.
 | To change | Edit |
 |---|---|
 | Size, face and ink colour of every sign | `signs.defaults` (`size` in metres, colours `#rrggbb`) |
-| One machine's picture, rim colour, accent colour, size | `signs.<machine>`: `icon` (`wrench`, `bin`, `bale`, `belt`, `leaf`, `signal`, `bot`), `rim`, `accent`, `size` |
+| One machine's picture, rim colour, accent colour, size | `signs.<machine>`: `icon` (`wrench`, `bin`, `bale`, `belt`, `leaf`, `signal`, `bot`, `parts`), `rim`, `accent`, `size` |
 | Remove a machine's sign | `signs.<machine>.show: false` |
 | Height of the bin's and the composter's sign | `signs.trash_bin.post_height`, `signs.composter.post_height` |
 | The baler's paint (body, press head and hopper, crosshead) | `baler.body`, `baler.press`, `baler.trim` |
 | The belt drive's paint (frame, motor) | `belt.frame`, `belt.motor` |
+| The recycler's paint (housing, hopper, smelter) | `recycler.body`, `recycler.hopper`, `recycler.kiln` |
 | The repair cart by the crashed pod (shown from the first upgrade until the planter stage) | `pod.service: false` removes it; `pod.cart`, `pod.cart_trim`, `pod.cone` colour it |
 
-Machines: `workbench`, `trash_bin`, `baler`, `belt`, `composter`, `signal_tower`, `fabricator`.
+Machines: `workbench`, `trash_bin`, `baler`, `belt`, `composter`, `signal_tower`, `fabricator`, `recycler`.
 Code: `systems/camp/machine_art.gd` (signs, baler, belt drive, pod cart), `systems/camp/yard_art.gd`
 (the other machines). A new pictogram is a new case in `MachineArt._icon`.
 
@@ -197,7 +198,7 @@ Code: `systems/camp/machine_art.gd` (signs, baler, belt drive, pod cart), `syste
 | To change | Edit |
 |---|---|
 | A landmark's two colours | `kinds.<kind>.main`, `.accent`: a kit colour name (cream, white, teal, mint, sky, navy, orange, yellow, red, olive, slate, plum) or `#rrggbb` |
-| Its size | `height`, `radius`, `tank_height` (water tower); `height`, `wheel_radius`, `blades` (windpump); `span`, `height`, `run` (crane); `height` (mast, stack); `radius`, `gondolas` (wheel) |
+| Its size | `height`, `radius`, `tank_height` (water tower); `height`, `wheel_radius`, `blades` (windpump); `span`, `height`, `run` (crane); `height` (mast, stack, lighthouse); `radius`, `gondolas` (wheel); `height`, `jib` (tower crane); `length` (bus) |
 | How fast the fan, the wheel or the radar turns once the hub is awake | `kinds.<kind>.spin` (radians a second, 0 = still) |
 | The wheel's gondola colours | `kinds.ferris_wheel.gondola_a`, `.gondola_b` |
 | The room a landmark keeps clear of junk and buildings | `kinds.<kind>.foot` (metres) |
@@ -206,7 +207,8 @@ Code: `systems/camp/machine_art.gd` (signs, baler, belt drive, pod cart), `syste
 | Which look a hub level gives | `states`: the look from that level upward (`broken` is dark and still, `repaired` and `restored` are lit and turning) |
 
 Kinds with a kit model: `water_tower`, `windpump`, `crane` (a gantry crane), `radio_mast`,
-`ferris_wheel`, `smokestack`. `old_bus` and `lighthouse` still use the old models.
+`ferris_wheel`, `smokestack`, `tower_crane` (its jib turns), `old_bus`, `lighthouse`. On planets other
+than Verdance's city biome the old thin models still stand.
 Code: `planet/sites/hub_landmarks.gd` (models), `planet/sites/hub_landmark_node.gd` (state, lights,
 turning). Check the numbers with `godot --headless --path . res://tools/machine_stats.tscn`
 (triangles, draw calls and build time per model), and look at them with
