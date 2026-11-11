@@ -468,3 +468,7 @@ The owner asked for more attention on the world's goals and look (full cities ro
 - **Follow-up M3-18c (lead's review of the sheets):** the restored yards show bare sand and dark kit plates instead of Old Town's paving and lawns; running and shut-down landmarks look alike from the street in Ironside, Kettle Bay and Old Capital; Highreach's smog does not reach the streets (it must be a coloured haze, not grey); Old Capital's launch pad must read as the goal of the whole game; Lowmeadow is thin; two yard views are just over budget.
 - Landmark close-up detail (bolts, ladders, railings) and animation go to the M5 polish pass.
 - A save round trip check failed once and then passed four times (`orbit_ledger_drop_dirties_cell`); given to the bug-fix pass as flaky.
+
+## City polish (M3-18c, Nov 11, 2026)
+`docs/reviews/M3-18c_CITY_POLISH.md`. Restored yards get city paving, lawns and flowers; Ironside's crane swings with smoke and sparks; Kettle Bay's oil leak and slick are on the near side; Highreach has a magenta-to-coral street haze that clears on shutdown; Old Capital has a flag avenue and named gate to the pad; Lowmeadow doubled to 869 houses; all views under 6 M on Medium. Merged.
+- For the M5 polish pass (lead's review of the sheets): restored paving is a little candy-pastel (Highreach pink and mint) and should be warmer; the launch pad is still small from the yard; effects were judged from stills only and need a watched run; budget margins are thin (0.4 to 1.4%).

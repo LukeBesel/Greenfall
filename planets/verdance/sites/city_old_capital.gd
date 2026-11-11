@@ -6,9 +6,16 @@ extends VerdanceCity
 ## with a flame trench, an orange launch mount carrying the first stage of a rocket still in
 ## frames, a red-and-white service tower 78 m high (the tallest thing on Verdance) with three swing
 ## arms and a hammerhead crane, two lightning masts, a white propellant sphere and the assembly
-## shed with a nose cone waiting on its cradle.
-## Running (the pad still derelict): the top arm hangs broken, the sphere vents cold vapour, the
-## pad is dark. Shut down (made safe): the arms stand level, the floodlights and tower lamps come on.
+## shed with a nose cone waiting on its cradle. The pad is dressed as the goal of the whole game:
+## a stone avenue runs to it from the yard between two rows of tall flags (under the junk like
+## everything else at the start; it comes clear as the district is cleaned), a red-and-white gate
+## with the pad's name spans the avenue's end, the table's deck is painted as a red, white and
+## teal target that reads from above, and the pad's number stands on the tower.
+## Running (the pad still derelict): the top arm hangs broken and sways, sparks fall from its
+## torn cable, the stage and the sphere vent cold vapour, and a row of amber alarm lamps flashes
+## along the table's front. Shut down (made safe): the arms stand level, the venting stops, the
+## alarm row is replaced by steady white lamps, and the floodlights and tower lamps come on.
+## (Stand-ins: the pad's real states come with the rocket's build steps.)
 ## Built in the landmark's frame: x to the right seen from the yard, z toward the yard.
 
 const CONCRETE := Color(0.84, 0.82, 0.76)
@@ -40,13 +47,38 @@ const SPHERE_AT := Vector3(36.0, 7.6, 2.0)
 const SPHERE_R: float = 5.0
 const MASTS: Array[Vector2] = [Vector2(44.8, -8.8), Vector2(-45.4, 9.6)]
 const MAST_H: float = 56.0
+const STONE := Color(0.98, 0.94, 0.84)
+const FLAG_COLOURS: Array[Color] = [Color(0.84, 0.1, 0.1), Color(0.95, 0.74, 0.12), Color(0.06, 0.52, 0.54)]
+const AVENUE_HALF: float = 4.2
+const AVENUE_TOP: float = 0.07   # over the restored paving (OldTownGround.PAVE_Y), so the stone way stays on top
+const AVENUE_Z: Vector2 = Vector2(24.6, 47.4)     # along the approach block, in the landmark's frame
+const FLAG_X: float = 5.7
+const FLAG_Z: Array[float] = [12.2, 26.4, 31.4, 36.4, 41.4, 46.4]
+const FLAG_POLE_H: float = 11.0
+const FLAG_SIZE: Vector2 = Vector2(3.4, 2.1)
+const GATE_X: float = 8.6
+const GATE_Z: float = 12.3
+const GATE_H: float = 10.4
+const ALARM := Color(1.0, 0.6, 0.08)
+const SAFE := Color(0.82, 1.0, 0.96)
+const SPARK := Color(1.0, 0.8, 0.3)
+const FRONT_LAMPS: int = 9
+const ALARM_PERIOD_S: float = 0.9
+const ARM_SWAY: float = 0.1
+const ARM_SWAY_RATE: float = 0.7
+
+var _alarm: Node3D
+var _broken_arm: Node3D
 
 
 func _footprint() -> Array[Rect2]:
 	var out: Array[Rect2] = [TABLE, SHED, Rect2(-42.4, 5.6, 9.6, 4.4), Rect2(SPHERE_AT.x - 5.4, SPHERE_AT.z - 5.4, 10.8, 10.8)]
 	for m: Vector2 in MASTS:
 		out.append(Rect2(m.x - 0.9, m.y - 0.9, 1.8, 1.8))
+	for sx: float in [-1.0, 1.0]:
+		out.append(Rect2(sx * GATE_X - 0.7, GATE_Z - 0.7, 1.4, 1.4))
 	return out
+
 
 
 func _build_landmark() -> void:
@@ -58,8 +90,9 @@ func _build_landmark() -> void:
 	_sphere(g)
 	for m: Vector2 in MASTS:
 		CityKit.lattice(g, Vector3(m.x, 0.0, m.y), 0.8, 0.18, MAST_H, 14, 0.05, TOWER_RED, TOWER_WHITE)
+	_avenue(g)
 	place_mesh("LaunchPad", g)
-	var heights: Array[float] = [TABLE_H, SHED_H, 3.4, SPHERE_AT.y + SPHERE_R, 20.0, 20.0]
+	var heights: Array[float] = [TABLE_H, SHED_H, 3.4, SPHERE_AT.y + SPHERE_R, 20.0, 20.0, GATE_H, GATE_H]
 	for i: int in _footprint().size():
 		var r: Rect2 = _footprint()[i]
 		add_landmark_solid(Vector3(r.get_center().x, heights[i] * 0.5, r.get_center().y), Vector3(r.size.x, heights[i], r.size.y))
@@ -67,8 +100,24 @@ func _build_landmark() -> void:
 	add_landmark_solid(TOWER_AT + Vector3(0, 20.0, 0), Vector3(TOWER_HALF * 2.0 + 0.4, 40.0, TOWER_HALF * 2.0 + 0.4))
 	_arms(true)
 	_arms(false)
+	var stage_top := Vector3(STAGE_R + 0.3, MOUNT_Y + 0.8 + STAGE_H * 0.5, 1.0)
+	place(CityKit.smoke("StageVent", stage_top, VAPOUR, VAPOUR_END, 22, 5.0, 12.0, 1.2, 6.5, Vector3(1.6, 0.0, 0.8)), STATE_BROKEN)
+	place(CityKit.smoke("TrenchVent", Vector3(0.0, TABLE_H * 0.5, TABLE.end.y + 0.6), VAPOUR, VAPOUR_END, 18, 4.5, 8.0, 1.5, 6.0, Vector3(0.5, 0.0, 1.2)), STATE_BROKEN)
+	# The alarm row along the table's front: amber and flashing while the pad is unsafe, steady
+	# white once it is made safe.
+	var front: Array[Vector3] = []
+	for i: int in FRONT_LAMPS:
+		front.append(Vector3(lerpf(TABLE.position.x + 0.8, TABLE.end.x - 0.8, float(i) / float(FRONT_LAMPS - 1)), TABLE_H + 0.45, TABLE.end.y - 0.2))
+	_alarm = Node3D.new()
+	_alarm.name = "AlarmRow"
+	place(_alarm, STATE_BROKEN)
+	CityKit.glow(_alarm, "Heads", front, 0.34, Color(ALARM.r * 1.6, ALARM.g * 1.5, ALARM.b * 1.3))
+	place_lamps("SafeRow", front, 0.34, SAFE)
 	place(CityKit.smoke("Vent", SPHERE_AT + Vector3(0, SPHERE_R + 5.0, 0), VAPOUR, VAPOUR_END, 26, 7.0, 26.0, 1.5, 11.0, Vector3(1.2, 0.0, 0.4)), STATE_BROKEN)
-	place_sign(Transform3D(Basis.IDENTITY, Vector3(SHED.get_center().x, 6.6, SHED.end.y + 0.22)), 1.5)
+	place_sign(Transform3D(Basis.IDENTITY, Vector3(0.0, GATE_H - 1.5, GATE_Z + 0.36)), 1.7)
+	var number: Label3D = CityKit.label("1", Transform3D(Basis.IDENTITY, TOWER_AT + Vector3(0.0, 16.6, TOWER_HALF + 0.52)), 5.2, TEAL)
+	number.name = "PadNumber"
+	place(number)
 	place_beacon(TOWER_AT + Vector3(0, TOWER_H + 5.4, 0), 0.4)
 	var lamps: Array[Vector3] = []
 	for k: int in 7:
@@ -80,6 +129,12 @@ func _build_landmark() -> void:
 		lamps.append(Vector3(m2.x, MAST_H + 0.4, m2.y))
 	lamps.append(Vector3(SHED.get_center().x - 5.0, 8.6, SHED.end.y + 0.4))
 	lamps.append(Vector3(SHED.get_center().x + 5.0, 8.6, SHED.end.y + 0.4))
+	for sx: float in [-1.0, 1.0]:
+		lamps.append(Vector3(sx * GATE_X, GATE_H + 0.6, GATE_Z))
+		for z: float in FLAG_Z:
+			lamps.append(Vector3(sx * FLAG_X, FLAG_POLE_H + 0.3, z))
+	for x: float in [-5.0, -2.5, 0.0, 2.5, 5.0]:
+		lamps.append(Vector3(x, GATE_H - 2.9, GATE_Z + 0.3))
 	place_lamps("PadLights", lamps, 0.44)
 
 
@@ -91,15 +146,68 @@ func _table(g: BuildingDetail.Geo) -> void:
 	g.abox(Vector3(TABLE.position.x, 0.0, TABLE.position.y), Vector3(TABLE.size.x, TABLE_H, TABLE.size.y), BuildingDetail.K_ROOF)
 	g.mat(BuildingDetail.K_FLAT, YELLOW, 0, BuildingDetail.F_STRIPES)
 	g.abox(Vector3(TABLE.position.x - 0.05, TABLE_H - 0.5, TABLE.position.y - 0.05), Vector3(TABLE.size.x + 0.1, 0.5, TABLE.size.y + 0.1), -2)
+	# The deck painted as a target: red, white and teal rings round the mount, seen from above.
+	var rings: Array = [[10.2, TOWER_RED], [8.9, TOWER_WHITE], [7.6, TEAL], [6.3, STONE]]
+	for i: int in rings.size():
+		g.mat(BuildingDetail.K_FLAT, rings[i][1] as Color)
+		g.cyl(Transform3D(Basis.IDENTITY, Vector3(0, TABLE_H + 0.01 + float(i) * 0.012, 0)), float(rings[i][0]), float(rings[i][0]), 0.02, 32)
 	g.mat(BuildingDetail.K_DARK, Color(0.04, 0.035, 0.03))
 	g.abox(Vector3(-2.6, 0.0, TABLE.end.y - 0.02), Vector3(5.2, TABLE_H - 0.3, 0.1))
-	g.abox(Vector3(-2.6, TABLE_H, -2.6), Vector3(5.2, 0.04, 13.0))
+	g.abox(Vector3(-2.6, TABLE_H + 0.05, -2.6), Vector3(5.2, 0.04, 13.0))
 	g.mat(BuildingDetail.K_PLAIN, CONCRETE.darkened(0.1), BuildingDetail.T_CONCRETE)
 	g.box(Transform3D(Basis(Vector3.RIGHT, 0.22), Vector3(7.0, TABLE_H * 0.5 - 0.1, TABLE.end.y + 3.4)), Vector3(4.0, 0.3, 7.2))
 	for c: Vector2 in [Vector2(-9.6, 9.6), Vector2(9.6, 9.6), Vector2(9.6, -9.6)]:
 		CityKit.lattice(g, Vector3(c.x, TABLE_H, c.y), 0.5, 0.3, 14.0, 5, 0.05, BuildingDetail.METAL_DARK, BuildingDetail.METAL_DARK)
 		g.mat(BuildingDetail.K_METAL, YELLOW)
 		g.abox(Vector3(c.x - 1.2, TABLE_H + 14.0, c.y - 0.3), Vector3(2.4, 1.0, 0.6))
+
+
+## The way to the pad: a stone avenue through the approach block with a red and gold line down
+## its middle, a row of tall flags either side of it (and a pair at the pad's kerb), a white board
+## on the tower for the pad's number, and at the avenue's end a gate of two red-and-white lattice
+## pylons under a yellow truss that carries the pad's name.
+func _avenue(g: BuildingDetail.Geo) -> void:
+	g.mat(BuildingDetail.K_PLAIN, STONE, BuildingDetail.T_CONCRETE)
+	g.abox(Vector3(-AVENUE_HALF, 0.0, AVENUE_Z.x), Vector3(AVENUE_HALF * 2.0, AVENUE_TOP, AVENUE_Z.y - AVENUE_Z.x), BuildingDetail.K_ROOF)
+	for stripe: Array in [[-0.5, TOWER_RED], [0.2, GOLD]]:
+		g.mat(BuildingDetail.K_FLAT, stripe[1] as Color)
+		g.abox(Vector3(float(stripe[0]), AVENUE_TOP, AVENUE_Z.x), Vector3(0.3, 0.02, AVENUE_Z.y - AVENUE_Z.x))
+	var n: int = 0
+	for z: float in FLAG_Z:
+		for sx: float in [-1.0, 1.0]:
+			var foot := Vector3(sx * FLAG_X, CityLayout.CURB_H if z < AVENUE_Z.x else 0.0, z)
+			g.mat(BuildingDetail.K_METAL, TOWER_WHITE)
+			g.cyl(Transform3D(Basis.IDENTITY, foot + Vector3(0, FLAG_POLE_H * 0.5, 0)), 0.07, 0.12, FLAG_POLE_H, 8)
+			g.mat(BuildingDetail.K_FLAT, GOLD)
+			g.cyl(Transform3D(Basis.IDENTITY, foot + Vector3(0, FLAG_POLE_H + 0.12, 0)), 0.16, 0.16, 0.24, 8)
+			var top: Vector3 = foot + Vector3(0.1, FLAG_POLE_H - 0.3, 0)
+			var fly := Vector3(FLAG_SIZE.x, 0.16, 0.5)   # the flag flies to the right, lifting a little
+			g.mat(BuildingDetail.K_FLAT, FLAG_COLOURS[n % FLAG_COLOURS.size()])
+			for nrm: Vector3 in [Vector3(0, 0, 1), Vector3(0, 0, -1)]:
+				g.quad(top, top + fly, top + fly - Vector3(0, FLAG_SIZE.y, 0), top - Vector3(0, FLAG_SIZE.y, 0), nrm)
+			g.mat(BuildingDetail.K_FLAT, STONE)
+			for nrm2: Vector3 in [Vector3(0, 0, 1), Vector3(0, 0, -1)]:
+				var o := Vector3(0, -FLAG_SIZE.y * 0.38, 0.012 * nrm2.z)
+				g.quad(top + o, top + fly + o, top + fly + o - Vector3(0, FLAG_SIZE.y * 0.24, 0), top + o - Vector3(0, FLAG_SIZE.y * 0.24, 0), nrm2)
+			n += 1
+	# The gate at the avenue's end.
+	for sx2: float in [-1.0, 1.0]:
+		CityKit.lattice(g, Vector3(sx2 * GATE_X, CityLayout.CURB_H, GATE_Z), 0.6, 0.45, GATE_H, 5, 0.09, TOWER_RED, TOWER_WHITE)
+	g.mat(BuildingDetail.K_METAL, YELLOW, 0, BuildingDetail.F_RUST)
+	for y: float in [GATE_H - 2.7, GATE_H - 0.3]:
+		for dz: float in [-0.3, 0.3]:
+			g.rod(Vector3(-GATE_X, y, GATE_Z + dz), Vector3(GATE_X, y, GATE_Z + dz), 0.11)
+	for k: int in 8:
+		var x0: float = lerpf(-GATE_X, GATE_X, float(k) / 8.0)
+		var x1: float = lerpf(-GATE_X, GATE_X, float(k + 1) / 8.0)
+		g.rod(Vector3(x0, GATE_H - 2.7, GATE_Z + 0.3), Vector3(x1, GATE_H - 0.3, GATE_Z + 0.3), 0.05)
+	g.mat(BuildingDetail.K_FLAT, Color(0.1, 0.24, 0.2))
+	g.abox(Vector3(-GATE_X + 1.2, GATE_H - 2.5, GATE_Z + 0.2), Vector3(GATE_X * 2.0 - 2.4, 2.0, 0.12))
+	g.mat(BuildingDetail.K_FLAT, GOLD)
+	for y2: float in [GATE_H - 2.6, GATE_H - 0.5]:
+		g.abox(Vector3(-GATE_X + 1.1, y2, GATE_Z + 0.18), Vector3(GATE_X * 2.0 - 2.2, 0.1, 0.18))
+	g.mat(BuildingDetail.K_FLAT, TOWER_WHITE)
+	g.abox(TOWER_AT + Vector3(-TOWER_HALF + 0.2, 13.4, TOWER_HALF + 0.3), Vector3(TOWER_HALF * 2.0 - 0.4, 6.4, 0.16))
 
 
 ## The launch mount and what stands on it: the rocket's first stage, plated in cream with a teal
@@ -154,8 +262,18 @@ func _tower(g: BuildingDetail.Geo) -> void:
 	g.cyl(Transform3D(Basis.IDENTITY, TOWER_AT + Vector3(0, TOWER_H + 3.6, 0)), 0.08, 0.16, 4.0, 6)
 
 
+func _animate(now: float, broken_now: bool) -> void:
+	if not broken_now:
+		return
+	if _alarm:
+		_alarm.visible = fmod(now, ALARM_PERIOD_S) < ALARM_PERIOD_S * 0.55
+	if _broken_arm:
+		move_part(_broken_arm, sin(now * ARM_SWAY_RATE) * ARM_SWAY)
+
+
 ## The swing arms from the tower to the stage. Running: the lower two reach it, the top one has
-## dropped and hangs. Shut down: all three are level.
+## dropped and hangs (its own part: it sways, sparks falling from its torn cable). Shut down: all
+## three are level.
 func _arms(running: bool) -> void:
 	var g := BuildingDetail.Geo.new()
 	var to_stage: Vector3 = (Vector3(0, 0, 0) - Vector3(TOWER_AT.x, 0, TOWER_AT.z)).normalized()
@@ -164,14 +282,24 @@ func _arms(running: bool) -> void:
 		var root: Vector3 = Vector3(TOWER_AT.x, TABLE_H + ARMS[i], TOWER_AT.z) + to_stage * TOWER_HALF
 		var tip: Vector3 = root + to_stage * reach
 		if running and i == ARMS.size() - 1:
-			tip = root + (to_stage * 0.45 + Vector3(0, -0.89, 0)) * reach
-		g.mat(BuildingDetail.K_METAL, TOWER_WHITE if i % 2 == 0 else TOWER_RED, 0, BuildingDetail.F_RUST)
-		for o: Vector3 in [Vector3(0, 0.9, 0), Vector3(0, -0.9, 0)]:
-			g.rod(root + o, tip + o * 0.6, 0.22)
-		g.rod(root + Vector3(0, 0.9, 0), tip + Vector3(0, -0.5, 0), 0.1)
-		g.mat(BuildingDetail.K_METAL, YELLOW)
-		g.box(Transform3D(Basis.looking_at(tip - root, Vector3(0.3, 1, 0.1)), tip), Vector3(2.4, 2.4, 0.7))
+			# Hanging from its root: built round the root so it can sway there.
+			var hang := BuildingDetail.Geo.new()
+			_arm(hang, Vector3.ZERO, (to_stage * 0.45 + Vector3(0, -0.89, 0)) * reach, i)
+			_broken_arm = place_part("BrokenArm", hang, root, STATE_BROKEN)
+			place(CityKit.sparks("ArmSparks", root + to_stage * 0.6, Vector3(to_stage.x, -0.3, to_stage.z), SPARK, 34, 6.0, 38.0, 0.3), STATE_BROKEN)
+			continue
+		_arm(g, root, tip, i)
 	place_mesh("ArmsRunning" if running else "ArmsLevel", g, STATE_BROKEN if running else STATE_SHUT_DOWN)
+
+
+## One swing arm from `root` to `tip`: two chords and a diagonal, a yellow pad at the tip.
+func _arm(g: BuildingDetail.Geo, root: Vector3, tip: Vector3, i: int) -> void:
+	g.mat(BuildingDetail.K_METAL, TOWER_WHITE if i % 2 == 0 else TOWER_RED, 0, BuildingDetail.F_RUST)
+	for o: Vector3 in [Vector3(0, 0.9, 0), Vector3(0, -0.9, 0)]:
+		g.rod(root + o, tip + o * 0.6, 0.22)
+	g.rod(root + Vector3(0, 0.9, 0), tip + Vector3(0, -0.5, 0), 0.1)
+	g.mat(BuildingDetail.K_METAL, YELLOW)
+	g.box(Transform3D(Basis.looking_at(tip - root, Vector3(0.3, 1, 0.1)), tip), Vector3(2.4, 2.4, 0.7))
 
 
 ## The assembly shed (sandstone walls, a copper-green roof, a tall teal door and the pad's name in

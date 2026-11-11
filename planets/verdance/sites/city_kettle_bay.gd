@@ -4,8 +4,11 @@ extends VerdanceCity
 ## "kettle_bay"). This script is its source landmark: the coastal tanker Long Tide, driven bow
 ## first onto the town's shore, listing, with a torn plate forward and an oil slick spreading over
 ## the lake and up the lot. A dock crane stands at her bow.
-## Running: the slick shows its rainbow sheen and the boom is torn open. Shut down: the slick is
-## gone, the orange boom closes round the hull and her deck lamps come on.
+## Running: oil pours from a gash in her bow on the side the yard sees and runs down the lot
+## toward the town as a wide slick with a rainbow sheen; the slick lies on the lake too and the
+## boom is torn open. Shut down: a yellow plate is welded over the gash, the slick is gone from
+## the lot and the lake (clear blue water inside the boom), the orange boom closes round the hull
+## with a lit marker buoy every few floats, and her deck lamps come on.
 ## The ship is built in her own frame (z from stern to bow, keel line at y 0), heeled and skewed,
 ## then set in the landmark's frame (x to the right seen from the yard, z toward the yard).
 
@@ -22,8 +25,19 @@ const DECK_Y: float = 7.2
 const STATIONS: int = 22
 const SHIP_AT := Vector3(1.5, 0.0, 1.0)
 const SHIP_TURN := Vector3(-0.04, 0.22, 0.09)   # bow up, skewed off the street, listing
-const SLICK_A := Color(0.14, 0.07, 0.24, 0.9)
-const SLICK_B := Color(0.56, 0.22, 0.66, 0.62)
+const SLICK_A := Color(0.2, 0.08, 0.36, 0.92)
+const SLICK_B := Color(0.8, 0.2, 0.7, 0.74)
+const CLEAR_A := Color(0.2, 0.62, 0.95, 0.5)
+const CLEAR_B := Color(0.62, 0.9, 1.0, 0.36)
+const OIL := Color(0.16, 0.05, 0.3, 0.95)
+const OIL_END := Color(0.7, 0.2, 0.66, 0.6)
+const GASH_AT := Vector3(2.5, 3.9, 30.4)        # in the ship's frame: the bow plate the yard sees
+const TONGUE_AT := Vector3(4.0, 0.09, 41.0)     # the slick on the lot, in the landmark's frame
+const TONGUE_HALF := Vector2(9.0, 17.0)
+const FLOAT_R: float = 0.5
+const FLOAT_LEN: float = 2.6
+const BUOY_EVERY: int = 6
+const BUOY_H: float = 2.3
 const BOOM_AT := Vector2(5.0, -4.0)
 const BOOM_R := Vector2(27.0, 44.0)
 const BOOM_FLOATS: int = 84
@@ -61,12 +75,9 @@ func _footprint() -> Array[Rect2]:
 	return out
 
 
-func _keep_junk_off(ko: YardKeepOut) -> void:
-	if ko == null:
-		return
-	for d: Vector3 in [Vector3(8.0, 30.0, 7.0), Vector3(-2.0, 37.0, 5.0)]:
-		var p: Vector3 = frame * Vector3(d.x, 0.0, d.y)
-		ko.add_soft_disc(p.x, p.z, d.z)
+## The slick's tongue on the lot stays free of junk, so the oil shows.
+func _clear_ground() -> Array[Rect2]:
+	return [Rect2(TONGUE_AT.x - TONGUE_HALF.x * 0.8, TONGUE_AT.z - TONGUE_HALF.y * 0.85, TONGUE_HALF.x * 1.6, TONGUE_HALF.y * 1.7)]
 
 
 func _build_landmark() -> void:
@@ -86,8 +97,7 @@ func _build_landmark() -> void:
 	place_sign(_ship * Transform3D(Basis.IDENTITY, Vector3(0, DECK_Y + 10.3, -19.42)), 1.15)
 	place_beacon(_ship * Vector3(0, DECK_Y + 16.6, -24.0), 0.26)
 	_slick()
-	_boom()
-	var lamps: Array[Vector3] = []
+	var lamps: Array[Vector3] = _boom()
 	for p: Vector3 in [Vector3(-4.4, DECK_Y + 9.4, -19.6), Vector3(4.4, DECK_Y + 9.4, -19.6), Vector3(0, DECK_Y + 9.0, 0.0), Vector3(0, DECK_Y + 11.4, 27.5),
 			Vector3(-4.2, DECK_Y + 3.2, -19.4), Vector3(4.2, DECK_Y + 3.2, -19.4), Vector3(0, DECK_Y + 6.2, -19.4)]:
 		lamps.append(_ship * p)
@@ -243,25 +253,48 @@ func _crane(g: BuildingDetail.Geo) -> void:
 ## The slick: a wide film on the lake round her starboard side, a tongue of it up the lot at her
 ## bow, and the stream out of the torn plate.
 func _slick() -> void:
-	var water: MeshInstance3D = CityKit.film("SlickWater", Vector2(30.0, 44.0), SLICK_A, SLICK_B, 0.85)
-	water.position = Vector3(BOOM_AT.x + 3.0, WATER_Y + 0.06, BOOM_AT.y)
+	var water: MeshInstance3D = CityKit.film("SlickWater", Vector2(30.0, 44.0), SLICK_A, SLICK_B, 1.0)
+	water.position = Vector3(BOOM_AT.x + 3.0, WATER_Y + 0.1, BOOM_AT.y)
 	place(water, STATE_BROKEN)
-	var land: MeshInstance3D = CityKit.film("SlickLand", Vector2(11.0, 12.0), SLICK_A, SLICK_B, 0.85, false, 0.3)
-	land.position = Vector3(6.0, 0.09, 32.0)
+	var clear: MeshInstance3D = CityKit.film("ClearWater", Vector2(26.0, 42.0), CLEAR_A, CLEAR_B, 0.0)
+	clear.position = Vector3(BOOM_AT.x, WATER_Y + 0.1, BOOM_AT.y)
+	place(clear, STATE_SHUT_DOWN)
+	var land: MeshInstance3D = CityKit.film("SlickLand", TONGUE_HALF, SLICK_A, SLICK_B, 1.0, false, 0.3)
+	land.position = TONGUE_AT
 	place(land, STATE_BROKEN)
 	var g := BuildingDetail.Geo.new()
 	g.mat(BuildingDetail.K_DARK, Color(0.03, 0.02, 0.05))
 	g.rod(_ship * Vector3(5.3, 2.6, 18.2), _ship * Vector3(6.4, 0.1 - SHIP_AT.y, 19.0), 0.16)
+	# The gash in the bow plate the yard sees: a black hole, the plate's edges bent out, a black
+	# run down the hull under it.
+	var turn := Basis.from_euler(Vector3(0.0, -0.62, 0.12))
+	g.box(_ship * Transform3D(turn, GASH_AT), Vector3(0.5, 2.3, 2.9))
+	g.box(_ship * Transform3D(turn, GASH_AT + Vector3(-0.1, -2.6, 0.1)), Vector3(0.34, 3.2, 1.7))
+	g.mat(BuildingDetail.K_METAL, ORANGE.darkened(0.25), 0, BuildingDetail.F_RUST)
+	g.box(_ship * Transform3D(turn * Basis.from_euler(Vector3(0.5, 0.3, 0.5)), GASH_AT + Vector3(0.5, 1.3, 0.9)), Vector3(0.08, 1.5, 1.7))
+	g.box(_ship * Transform3D(turn * Basis.from_euler(Vector3(-0.4, -0.3, -0.5)), GASH_AT + Vector3(0.5, -0.9, -1.2)), Vector3(0.08, 1.3, 1.5))
 	place_mesh("Leak", g, STATE_BROKEN)
+	var mouth: Vector3 = _ship * (GASH_AT + Vector3(0.5, -0.8, 0.3))
+	place(CityKit.stream("OilRun", mouth, OIL, OIL_END, 70, maxf(1.0, mouth.y), 2.6, 1.4), STATE_BROKEN)
+	# Made safe: a yellow plate over the gash, strapped in orange.
+	var fix := BuildingDetail.Geo.new()
+	fix.mat(BuildingDetail.K_METAL, YELLOW)
+	fix.box(_ship * Transform3D(turn, GASH_AT + Vector3(0.15, -0.2, 0.0)), Vector3(0.14, 3.4, 3.8))
+	fix.mat(BuildingDetail.K_METAL, ORANGE)
+	for dz: float in [-1.2, 1.2]:
+		fix.box(_ship * Transform3D(turn, GASH_AT + Vector3(0.24, -0.2, dz)), Vector3(0.1, 3.7, 0.3))
+	place_mesh("Patch", fix, STATE_SHUT_DOWN)
 
 
 ## The floating boom: orange floats in a ring on the water round the hull. Torn open while she
-## leaks (half the floats, drifting off line), closed once the leak is stopped.
-func _boom() -> void:
+## leaks (half the floats, drifting off line), closed once the leak is stopped, with a marker buoy
+## on a pole every few floats. Returns the buoys' lamp points (lit when shut down).
+func _boom() -> Array[Vector3]:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 5527
 	var open: Array[Transform3D] = []
 	var closed: Array[Transform3D] = []
+	var buoys: Array[Vector3] = []
 	for i: int in BOOM_FLOATS:
 		var a: float = TAU * float(i) / float(BOOM_FLOATS)
 		var p := Vector3(BOOM_AT.x + cos(a) * BOOM_R.x, WATER_Y + 0.12, BOOM_AT.y + sin(a) * BOOM_R.y)
@@ -270,12 +303,14 @@ func _boom() -> void:
 			continue
 		var turn: float = atan2(-cos(a) * BOOM_R.y, -sin(a) * BOOM_R.x)  # the float's long axis lies along the ring
 		closed.append(Transform3D(Basis(Vector3.UP, turn), p))
+		if closed.size() % BUOY_EVERY == 1:
+			buoys.append(p)
 		if i % 9 < 5:
 			var drift := Vector3(rng.randf_range(-2.5, 2.5), 0.0, rng.randf_range(-2.5, 2.5))
 			open.append(Transform3D(Basis(Vector3.UP, turn + rng.randf_range(-0.7, 0.7)), p + drift))
 	var fg := BuildingDetail.Geo.new()
 	fg.col = Color(1, 1, 1)
-	fg.cyl(Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3.ZERO), 0.34, 0.34, 2.3, 8)
+	fg.cyl(Transform3D(Basis(Vector3.FORWARD, PI * 0.5), Vector3.ZERO), FLOAT_R, FLOAT_R, FLOAT_LEN, 8)
 	var mesh: ArrayMesh = CityKit.vc_mesh(fg)
 	var mat: StandardMaterial3D = CityKit.vc_material(0.6)
 	mat.albedo_color = ORANGE
@@ -286,3 +321,14 @@ func _boom() -> void:
 		if not (e[1] as Array).is_empty():
 			CityKit.mmi_on(holder, "Floats", mesh, e[1], [], mat, false, 320.0)
 	stats["boom_floats"] = closed.size()
+	var poles := BuildingDetail.Geo.new()
+	var lamps: Array[Vector3] = []
+	for b: Vector3 in buoys:
+		poles.mat(BuildingDetail.K_METAL, YELLOW)
+		poles.cyl(Transform3D(Basis.IDENTITY, b + Vector3(0, BUOY_H * 0.5, 0)), 0.06, 0.09, BUOY_H, 6)
+		poles.mat(BuildingDetail.K_FLAT, ORANGE)
+		poles.cyl(Transform3D(Basis.IDENTITY, b + Vector3(0, 0.5, 0)), 0.3, 0.55, 0.7, 8)
+		lamps.append(b + Vector3(0, BUOY_H + 0.2, 0))
+	if not poles.empty():
+		place_mesh("BoomBuoys", poles, STATE_SHUT_DOWN)
+	return lamps

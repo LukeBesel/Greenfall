@@ -6,8 +6,12 @@ extends VerdanceCity
 ## digester with a flare stack, a mint control house under a red roof, three pastel dosing tanks
 ## and a cracked outfall pipe whose spill stains the ground down toward the town in vivid violet
 ## and lime: poisoned soil that still reads as colour, not mud.
-## Shut down: the tanks hold clear blue water, the stain is gone, the outfall runs clear and the
-## works' lamps come on.
+## The tanks stand 4.8 m out of the ground, so their mint walls and turning scraper bridges show
+## over the wrecks on the lot.
+## Running: lime sludge spills over the tanks' rims toward the town and gushes from the cracked
+## outfall, fumes rise, the stain runs down the lot. Shut down: the tanks hold clear blue water
+## and nothing spills, the stain is gone, the outfall runs clear and the works' lamps come on.
+## The scraper bridges turn in both states (quicker once the works runs clean).
 ## Built in the landmark's frame: x to the right seen from the yard, z toward the yard.
 
 const MINT := Color(0.62, 0.9, 0.78)
@@ -27,7 +31,15 @@ const FUME_END := Color(0.6, 0.9, 0.74, 0.0)
 const FLARE_FUME := Color(0.9, 0.3, 0.8, 0.7)
 const FLARE_FUME_END := Color(1.0, 0.7, 0.5, 0.0)
 const TANK_R: float = 9.0
-const TANK_WALL: float = 2.3
+const TANK_WALL: float = 4.8
+const SPILL := Color(0.74, 0.92, 0.1, 0.95)
+const SPILL_END := Color(0.62, 0.14, 0.78, 0.7)
+const RUN_CLEAR := Color(0.3, 0.7, 1.0, 0.9)
+const RUN_CLEAR_END := Color(0.8, 0.95, 1.0, 0.5)
+const SPILL_AT: Array[float] = [-0.7, 0.0, 0.7]   # round the tank's rim, radians from the side facing the yard
+const BRIDGE_RATE: Vector2 = Vector2(0.12, 0.3)   # radians a second: fouled, clean
+
+var _bridges: Array[Node3D] = []
 const TANKS: Array[Vector2] = [Vector2(0.0, -1.0), Vector2(36.0, -1.0)]
 const EGG_AT := Vector2(-39.6, -4.4)
 const EGG_R: float = 4.8
@@ -47,12 +59,9 @@ func _footprint() -> Array[Rect2]:
 	return out
 
 
-func _keep_junk_off(ko: YardKeepOut) -> void:
-	if ko == null:
-		return
-	for d: Vector3 in [Vector3(OUTFALL_X - 1.0, 14.0, 5.0), Vector3(OUTFALL_X - 3.0, 22.0, 6.0), Vector3(OUTFALL_X - 5.0, 31.0, 6.0)]:
-		var p: Vector3 = frame * Vector3(d.x, 0.0, d.y)
-		ko.add_soft_disc(p.x, p.z, d.z)
+## The spill's run from the outfall down the lot stays free of junk, so the stain shows.
+func _clear_ground() -> Array[Rect2]:
+	return [Rect2(OUTFALL_X - 9.0, 11.0, 13.0, 24.0)]
 
 
 func _build_landmark() -> void:
@@ -60,6 +69,12 @@ func _build_landmark() -> void:
 	var lamps: Array[Vector3] = []
 	for t: Vector2 in TANKS:
 		_tank(g, t)
+		_bridge(t)
+		for a: float in SPILL_AT:
+			var rim := Vector3(t.x + sin(a) * (TANK_R + 0.6), TANK_WALL + 0.3, t.y + cos(a) * (TANK_R + 0.6))
+			var run: CPUParticles3D = CityKit.stream("Spill", rim, SPILL, SPILL_END, 26, TANK_WALL, 2.2, 1.0)
+			run.rotation.y = a
+			place(run, STATE_BROKEN)
 		lamps.append(Vector3(t.x, TANK_WALL + 3.3, t.y))
 		_liquid(t, true)
 		_liquid(t, false)
@@ -82,6 +97,9 @@ func _build_landmark() -> void:
 	var seep: MeshInstance3D = CityKit.film("Seep", Vector2(13.0, 6.0), STAIN_A, STAIN_B, 0.25, false, 0.3)
 	seep.position = Vector3(2.0, 0.16, 13.0)
 	place(seep, STATE_BROKEN)
+	var mouth := Vector3(OUTFALL_X, 1.5, 10.6)
+	place(CityKit.stream("OutfallSpill", mouth, SPILL, SPILL_END, 30, 1.5, 1.3, 0.8), STATE_BROKEN)
+	place(CityKit.stream("OutfallRun", mouth, RUN_CLEAR, RUN_CLEAR_END, 30, 1.5, 1.0, 0.6), STATE_SHUT_DOWN)
 	var clean: MeshInstance3D = CityKit.film("ClearRun", Vector2(3.4, 4.6), Color(CLEAR, 0.75), Color(0.6, 0.86, 1.0, 0.55), 0.0, false, 0.5)
 	clean.position = Vector3(OUTFALL_X, 0.16, 13.6)
 	place(clean, STATE_SHUT_DOWN)
@@ -90,8 +108,33 @@ func _build_landmark() -> void:
 	place_lamps("WorksLamps", lamps, 0.3)
 
 
-## A settling tank: a mint concrete ring with a white rim and a walkway, a dark floor, and the
-## scraper bridge across it with its orange drive in the middle.
+func _animate(now: float, broken_now: bool) -> void:
+	var turn: float = now * (BRIDGE_RATE.x if broken_now else BRIDGE_RATE.y)
+	for i: int in _bridges.size():
+		move_part(_bridges[i], turn + float(i) * 1.3)
+
+
+## A tank's scraper bridge, built round the tank's middle at rim height so it can turn: a steel
+## deck across the tank with blue handrails and the orange drive in the middle.
+func _bridge(t: Vector2) -> void:
+	var g := BuildingDetail.Geo.new()
+	g.mat(BuildingDetail.K_METAL, Color(0.74, 0.76, 0.78))
+	g.abox(Vector3(-TANK_R - 0.4, 0.5, -0.7), Vector3(TANK_R * 2.0 + 0.8, 0.16, 1.4))
+	g.mat(BuildingDetail.K_METAL, PIPE_BLUE)
+	for sz: float in [-0.7, 0.7]:
+		g.rod(Vector3(-TANK_R - 0.4, 1.6, sz), Vector3(TANK_R + 0.4, 1.6, sz), 0.06)
+		for k: int in 9:
+			var x: float = -TANK_R + float(k) * TANK_R * 0.25
+			g.rod(Vector3(x, 0.6, sz), Vector3(x, 1.6, sz), 0.04)
+	g.mat(BuildingDetail.K_METAL, Color(0.95, 0.46, 0.1), 0, BuildingDetail.F_RUST)
+	g.cyl(Transform3D(Basis.IDENTITY, Vector3(0, 1.5, 0)), 0.9, 1.0, 1.8, 12)
+	g.mat(BuildingDetail.K_METAL, BuildingDetail.METAL_DARK)
+	g.cyl(Transform3D(Basis.IDENTITY, Vector3(0, 2.8, 0)), 0.06, 0.06, 0.9, 6)
+	_bridges.append(place_part("Bridge%d" % int(t.x), g, Vector3(t.x, TANK_WALL, t.y)))
+
+
+## A settling tank: a mint concrete ring with a white rim, a coral band and three dark
+## buttresses' worth of height (the scraper bridge is its own turning part, _bridge).
 func _tank(g: BuildingDetail.Geo, t: Vector2) -> void:
 	var c := Vector3(t.x, 0.0, t.y)
 	g.mat(BuildingDetail.K_PLAIN, MINT, BuildingDetail.T_CONCRETE)
@@ -109,18 +152,8 @@ func _tank(g: BuildingDetail.Geo, t: Vector2) -> void:
 		var d1 := Vector3(cos(a1), 0, sin(a1))
 		var y := Vector3(0, TANK_WALL + 0.2, 0)
 		g.quad(c + d0 * (TANK_R - 0.3) + y, c + d1 * (TANK_R - 0.3) + y, c + d1 * (TANK_R + 0.55) + y, c + d0 * (TANK_R + 0.55) + y, Vector3.UP)
-	g.mat(BuildingDetail.K_METAL, Color(0.74, 0.76, 0.78))
-	g.abox(c + Vector3(-TANK_R - 0.4, TANK_WALL + 0.5, -0.7), Vector3(TANK_R * 2.0 + 0.8, 0.16, 1.4))
-	g.mat(BuildingDetail.K_METAL, PIPE_BLUE)
-	for sz: float in [-0.7, 0.7]:
-		g.rod(c + Vector3(-TANK_R - 0.4, TANK_WALL + 1.6, sz), c + Vector3(TANK_R + 0.4, TANK_WALL + 1.6, sz), 0.04)
-		for k: int in 9:
-			var x: float = -TANK_R + float(k) * TANK_R * 0.25
-			g.rod(c + Vector3(x, TANK_WALL + 0.6, sz), c + Vector3(x, TANK_WALL + 1.6, sz), 0.03)
-	g.mat(BuildingDetail.K_METAL, Color(0.95, 0.46, 0.1), 0, BuildingDetail.F_RUST)
-	g.cyl(Transform3D(Basis.IDENTITY, c + Vector3(0, TANK_WALL + 1.5, 0)), 0.9, 1.0, 1.8, 12)
-	g.mat(BuildingDetail.K_METAL, BuildingDetail.METAL_DARK)
-	g.cyl(Transform3D(Basis.IDENTITY, c + Vector3(0, TANK_WALL + 2.8, 0)), 0.06, 0.06, 0.9, 6)
+	g.mat(BuildingDetail.K_FLAT, SKY)
+	g.cyl(Transform3D(Basis.IDENTITY, c + Vector3(0, TANK_WALL - 0.9, 0)), TANK_R + 0.52, TANK_R + 0.52, 0.5, 28, false)
 
 
 ## What a tank holds: lime sludge under a violet film while the works runs, clear blue water after.

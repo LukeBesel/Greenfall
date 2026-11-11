@@ -200,9 +200,9 @@ func extent() -> float:
 func set_level(l: int) -> void:
 	level = clampi(l, 1, 5)
 	if dressing:
-		dressing.set_level(level, is_inside_tree())
+		dressing.set_level(_dress_level(), is_inside_tree())
 	if _rubble:
-		_rubble.visible = level <= 1
+		_rubble.visible = _dress_level() <= 1
 	var ks: String = kit_state(level)
 	if furniture:
 		furniture.set_state(ks)  # [v3city]
@@ -231,6 +231,15 @@ func set_district_stage(stage: int) -> void:
 	super.set_district_stage(stage)
 	if town:
 		town.set_stage(district_stage)
+	if dressing and dressing.level != _dress_level():
+		dressing.set_level(_dress_level(), is_inside_tree())
+	if _rubble:
+		_rubble.visible = _dress_level() <= 1
+	if _lot_root:
+		if _lot_state_now() != _lot_state:
+			_build_lots()
+		else:
+			_show_patches()
 
 
 ## The district's pollution source is running ("broken") or stopped ("shut_down"): the city's
@@ -425,7 +434,7 @@ func _town_layout() -> void:
 			if start and ring == 1:
 				b["buildings"] = _forecourt_row(r, key, rng)
 			elif pr.get("houses", false):
-				b["buildings"] = _houses(r, rng)
+				b["buildings"] = _houses(r, rng, bool(pr.get("dense", false)))
 			else:
 				b["buildings"] = layout._make_buildings(r, rng, key)
 			b["buildings"] = (b["buildings"] as Array).filter(func(bd: Dictionary) -> bool: return _wet_share((bd["rect"] as Rect2).grow(2.0), 2.0) == 0.0)
@@ -438,6 +447,8 @@ func _town_layout() -> void:
 					bd["style"] = "factory" if rng.randf() < float(pr["factory"]) else "apartments"
 				bd["ruined"] = rng.randf() < float(pr["ruin"][0 if ring <= 1 else 1])
 				bd["floors"] = maxi(1 if pr.get("houses", false) else 2, f - (rng.randi_range(1, 3) if bd["ruined"] and f > 3 else 0))
+				if ring == 1 and pr.has("near_cap"):  # after the draw, so the layout's random stream is untouched
+					bd["floors"] = mini(int(bd["floors"]), int(pr["near_cap"]))
 				if bd["style"] == "factory" and f > 8:
 					bd["style"] = "apartments"  # towers are offices and flats, not sheds
 			if b["buildings"].is_empty():
@@ -529,9 +540,35 @@ func _pick_kind() -> String:
 	return KIND_BY_HUB[hub_index % KIND_BY_HUB.size()]
 
 
+## A `dense` suburb's row of houses along one side of a block (cities.json "dense"): three narrow
+## houses side by side, or two wide ones with a drive's width between them, so a street front has
+## no long gaps. Each plan carries its "setback" from the block's edge (CityGardens lays its front
+## path and fence by it).
+static func _house_row(out: Array, rng: RandomNumberGenerator, face: Vector2, o: Vector2, length: float) -> void:
+	var three: bool = rng.randf() < DENSE_THREE_SHARE
+	var n: int = 3 if three else 2
+	var w: float = DENSE_NARROW_M if three else DENSE_WIDE_M
+	var gap: float = (length - float(n) * w) / float(n - 1)
+	for i: int in n:
+		var depth: float = rng.randf_range(6.5, 8.0)
+		var setback: float = rng.randf_range(0.8, 2.0)
+		if rng.randf() < DENSE_EMPTY_SHARE:
+			continue
+		var x0: float = o.x + float(i) * (w + gap)
+		var z0: float = o.y + (setback if face.y < 0 else 8.0 - depth - setback)
+		out.append({"rect": Rect2(Vector2(x0, z0), Vector2(w, depth)), "face": face, "bays": 3 if w > 8.0 else 2, "floors": 1,
+			"style": "apartments", "seed": rng.randi(), "ruined": false, "setback": setback})
+
+
+const DENSE_THREE_SHARE: float = 0.55   # rows of three narrow houses; the rest are two wide ones
+const DENSE_NARROW_M: float = 6.7
+const DENSE_WIDE_M: float = 9.0
+const DENSE_EMPTY_SHARE: float = 0.05   # a plot left empty
+
+
 ## [v3city] A suburb block: detached houses (one or two floors) round the block's edge, facing
-## the streets, with yards between them.
-static func _houses(r: Rect2, rng: RandomNumberGenerator) -> Array:
+## the streets, with yards between them. `dense` fills the two long sides with _house_row.
+static func _houses(r: Rect2, rng: RandomNumberGenerator, dense: bool = false) -> Array:
 	var out: Array = []
 	var sides: Array = [[Vector2(0, -1), r.position, Vector2(1, 0)], [Vector2(0, 1), Vector2(r.position.x, r.end.y - 8.0), Vector2(1, 0)],
 		[Vector2(-1, 0), Vector2(r.position.x, r.position.y + 9.0), Vector2(0, 1)], [Vector2(1, 0), Vector2(r.end.x - 8.0, r.position.y + 9.0), Vector2(0, 1)]]
@@ -540,6 +577,9 @@ static func _houses(r: Rect2, rng: RandomNumberGenerator) -> Array:
 		var o: Vector2 = sd[1]
 		var along: Vector2 = sd[2]
 		var length: float = (r.size.x if along.x > 0.5 else r.size.y - 18.0)
+		if dense and along.x > 0.5:
+			_house_row(out, rng, face, o, length)
+			continue
 		var t: float = rng.randf_range(0.0, 2.0)
 		while t + 9.0 <= length:
 			if rng.randf() < 0.82:
@@ -795,6 +835,42 @@ func _kit_blocks() -> void:
 
 var _lots: Array[Dictionary] = []
 var _lot_root: Node3D
+var _lot_state: String = ""         # the state the lots were last built in
+var _patches: Array[Node3D] = []    # the lots' kit ground patches
+const PAVED_FROM_STAGE: int = 3     # the city's restored ground (OldTownGround) shows from this district stage
+const TIDY_FROM_STAGE: int = 2
+const PLANTED_FROM_STAGE: int = 4
+
+
+## Whether the city lays its own restored ground over the yard and the lots beside it (every city
+## but the start, whose yard is the clean pad).
+func _city_ground_on_lots() -> bool:
+	return town != null and site_id != "start_yard"
+
+
+## The state the yard and lot dressing shows: the kit's (from the base level), raised by the
+## district's regrowth where the city restores its own ground, so a recovered city's yard is not
+## left broken: tidied from stage 2, planters with bushes and flowers from stage 4.
+func _lot_state_now() -> String:
+	if _city_ground_on_lots():
+		if district_stage >= PLANTED_FROM_STAGE:
+			return "restored"
+		if district_stage >= TIDY_FROM_STAGE and _kit_state == "broken":
+			return "repaired"
+	return _kit_state
+
+
+## The level the yard's dressing shows: the base's own, and at least 2 once the city's ground is
+## restored (the fallen name sign and the ruin's clutter do not stay in a recovered city's yard).
+func _dress_level() -> int:
+	return maxi(level, 2) if _city_ground_on_lots() and district_stage >= PAVED_FROM_STAGE else level
+
+
+## The kit ground patches give way to the city's paving and lawns once those show.
+func _show_patches() -> void:
+	var paved: bool = _city_ground_on_lots() and district_stage >= PAVED_FROM_STAGE
+	for p: Node3D in _patches:
+		p.visible = not paved
 
 
 ## One kit building at a site-local point, with its footprint for the junk clearing.
@@ -875,16 +951,18 @@ static func clean_pad(size: float) -> Node3D:
 	return root
 
 
-## Yard and lot dressing for the current state: kit ground patches everywhere; landfill heaps of
-## kit debris, crate stacks and tipped barrels while broken, tidied when repaired, planters with
-## bushes and flowers when restored. Rebuilt on a state change (meshes are kit-cached).
+## Yard and lot dressing for the current state (_lot_state_now): kit ground patches everywhere;
+## landfill heaps of kit debris, crate stacks and tipped barrels while broken, tidied when repaired,
+## planters with bushes and flowers when restored. Rebuilt on a state change (meshes are kit-cached).
 func _build_lots() -> void:
 	if _lot_root:
 		_lot_root.free()
 	_lot_root = Node3D.new()
 	_lot_root.name = "Lots"
 	add_child(_lot_root)
-	var st: String = _kit_state
+	var st: String = _lot_state_now()
+	_lot_state = st
+	_patches.clear()
 	var b := KitMesh.Builder.new(seed_value + 7, {"main": "cream", "accent": "teal"}, st)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_value + 409
@@ -894,6 +972,7 @@ func _build_lots() -> void:
 		var gp: Node3D = clean_pad(21.0) if yard and site_id == "start_yard" else KitMesh.ground_patch(Vector2(21, 21) if yard else Vector2(18, 18), st, int(lot["seed"]))  # [v1yard]
 		gp.position = Vector3(c.x, 0.0, c.y)
 		_lot_root.add_child(gp)
+		_patches.append(gp)
 		var t := Transform3D(Basis(), Vector3(c.x, 0, c.y))
 		if yard:
 			# Lived-in clutter on the yard's edges, clear of the anchors and the way out north.
@@ -925,3 +1004,4 @@ func _build_lots() -> void:
 	var mi: MeshInstance3D = KitMesh.instance(b)
 	mi.name = "LotProps"
 	_lot_root.add_child(mi)
+	_show_patches()

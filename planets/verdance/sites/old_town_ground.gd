@@ -8,6 +8,10 @@ extends Node3D
 ## Each block inside its sidewalk ring is cut into CELLS x CELLS squares. A square under a building
 ## or in the lake is left out; one next to a building or on the block's rim is paved; the rest is
 ## lawn. Car parks stay paved with planted strips, the pump house's forecourt is all paving.
+## A city whose yard is a kit ground patch (every city but the start) has its yard laid too: a
+## paved square in a planted frame with a lawn in each corner and a path out on every side. The
+## blocks of an avenue (a city's formal way from its yard to its landmark) are a paved way down
+## the middle between two lawns.
 ## Along the streets every tree stands in a grass verge cut into the sidewalk beside the kerb.
 ## Batched: one paving mesh and one lawn mesh for the town, and per block one MultiMesh each for
 ## tufts, shrubs and flowers (OldTownFlowers), hidden past PLANT_RANGE_M.
@@ -25,9 +29,15 @@ const FLOWERS_PER_EDGE: int = 3
 const SHRUB_IDS: Array[String] = ["shrub_01", "shrub_02"]
 const TUFT_ID: String = "grass_medium_01"
 const PAVING_SHADER: String = "res://planets/verdance/sites/old_town_paving.gdshader"
+const PAVING_COLOURS: Array[String] = ["clay", "buff", "sand", "stone"]   # the shader's colours a city may set
 const NONE: int = 0
 const PAVE: int = 1
 const LAWN: int = 2
+## How a block is laid (_plan_block).
+enum Plan { BLOCK, STATION, YARD, AVENUE_Z, AVENUE_X }
+const YARD_PATH_CELLS: int = 4     # the width of the way out on each side of the yard
+const YARD_CORNER_CELLS: int = 4   # the side of the lawn in each corner
+const AVENUE_CELLS: int = 6        # the width of an avenue's paved way
 ## Lawn colour per stage (0-5): thin and yellow-green when new, deep and bright when kept.
 const LAWN_TINT: Array[Color] = [Color.WHITE, Color.WHITE, Color.WHITE, Color(0.8, 0.82, 0.5), Color(0.6, 0.8, 0.42), Color(0.5, 0.8, 0.36)]
 
@@ -39,10 +49,13 @@ var _stage4: Array[Node3D] = []
 var _stage5: Array[Node3D] = []
 
 
-## Lays the ground of every block of `site` but its yard and the two kit lots beside it.
-## `station_key` is the pump house's block; `solid` are footprints the lawn keeps off; `tree_spots`
-## are the street trees (each gets a verge).
-func build(site: VerdanceSite, station_key: Vector2i, solid: Array[Rect2], tree_spots: Array[Vector2] = []) -> void:
+## Lays the ground of every block of `site`. With `yard` false the yard and the two kit lots beside
+## it are left out (the start yard has its own pad). `station_key` is the landmark's block (all
+## paving); `solid` are footprints the lawn keeps off; `tree_spots` are the
+## street trees (each gets a verge); `avenue` are the blocks of the city's formal way to its landmark.
+## `paving` gives the pavers the city's own colours (cities.json "paving": the shader's clay and buff).
+func build(site: VerdanceSite, station_key: Vector2i, solid: Array[Rect2], tree_spots: Array[Vector2] = [], yard: bool = false,
+		avenue: Array[Vector2i] = [], paving: Dictionary = {}) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = site.seed_value + 5503
 	var pave := SurfaceTool.new()
@@ -57,10 +70,17 @@ func build(site: VerdanceSite, station_key: Vector2i, solid: Array[Rect2], tree_
 		shrubs.append_array(PlantParts.variants(id, 420).slice(0, 1))
 	var block_i: int = 0
 	for key: Vector2i in site.layout.blocks:
-		if key == Vector2i.ZERO or (key.x == 0 and absi(key.y) == 1):
+		if not yard and (key == Vector2i.ZERO or (key.x == 0 and absi(key.y) == 1)):
 			continue
 		var b: Dictionary = site.layout.blocks[key]
-		var kinds: PackedInt32Array = _plan_block(site, b, key == station_key, solid)
+		var plan: Plan = Plan.BLOCK
+		if key == Vector2i.ZERO:
+			plan = Plan.YARD
+		elif avenue.has(key):
+			plan = Plan.AVENUE_Z if key.x == 0 else Plan.AVENUE_X
+		elif key == station_key:
+			plan = Plan.STATION
+		var kinds: PackedInt32Array = _plan_block(site, b, plan, solid)
 		var r: Rect2 = b["rect"]
 		var step: Vector2 = r.size / float(CELLS)
 		var tufts: Array[Transform3D] = []
@@ -108,6 +128,9 @@ func build(site: VerdanceSite, station_key: Vector2i, solid: Array[Rect2], tree_
 	n_lawn += n_verge
 	_paving = ShaderMaterial.new()
 	_paving.shader = load(PAVING_SHADER)
+	for key: String in PAVING_COLOURS:
+		if paving.has(key):
+			_paving.set_shader_parameter(key, CityLook.colour(paving[key]))
 	_lawn = AssetLib.pbr_material("leafy_grass", 1.0, Color.WHITE)
 	if n_pave > 0:
 		_stage3.append(_surface("Paving", pave, _paving))
@@ -140,7 +163,7 @@ static func verge_rect(p: Vector2) -> Rect2:
 
 
 ## What each square of a block is: NONE, PAVE or LAWN (row by row, CELLS x CELLS).
-static func _plan_block(site: VerdanceSite, b: Dictionary, station: bool, solid: Array[Rect2]) -> PackedInt32Array:
+static func _plan_block(site: VerdanceSite, b: Dictionary, plan: Plan, solid: Array[Rect2]) -> PackedInt32Array:
 	var r: Rect2 = b["rect"]
 	var step: Vector2 = r.size / float(CELLS)
 	var built := PackedByteArray()
@@ -170,8 +193,13 @@ static func _plan_block(site: VerdanceSite, b: Dictionary, station: bool, solid:
 				out[o] = NONE
 				continue
 			var rim: bool = i == 0 or j == 0 or i == CELLS - 1 or j == CELLS - 1
-			if station:
+			if plan == Plan.STATION:
 				out[o] = PAVE
+			elif plan == Plan.YARD:
+				out[o] = _yard_cell(i, j)
+			elif plan == Plan.AVENUE_Z or plan == Plan.AVENUE_X:
+				var across: int = i if plan == Plan.AVENUE_Z else j
+				out[o] = PAVE if absi(across * 2 - CELLS + 1) < AVENUE_CELLS else LAWN
 			elif parking:  # a paved car park in a green frame, a planted strip between the rows
 				var strip: bool = (j == CELLS / 2 - 1 or j == CELLS / 2) and absi(i * 2 - CELLS + 1) > 3
 				out[o] = LAWN if rim or strip else PAVE
@@ -183,6 +211,20 @@ static func _plan_block(site: VerdanceSite, b: Dictionary, station: bool, solid:
 						by_wall = true
 				out[o] = PAVE if rim or by_wall else LAWN
 	return out
+
+
+## A square of the yard: lawn round the rim and in each corner, paving in the middle and on the
+## way out through the middle of every side.
+static func _yard_cell(i: int, j: int) -> int:
+	var path_i: bool = absi(i * 2 - CELLS + 1) < YARD_PATH_CELLS
+	var path_j: bool = absi(j * 2 - CELLS + 1) < YARD_PATH_CELLS
+	if path_i or path_j:
+		return PAVE
+	var edge_i: int = mini(i, CELLS - 1 - i)
+	var edge_j: int = mini(j, CELLS - 1 - j)
+	if edge_i == 0 or edge_j == 0 or (edge_i < YARD_CORNER_CELLS and edge_j < YARD_CORNER_CELLS):
+		return LAWN
+	return PAVE
 
 
 ## A lawn square with paving (or nothing) on one of its four sides: where the borders grow.
