@@ -1,5 +1,5 @@
 {
- "_doc": "[v6sound] The mix and the ambience, per planet (autoload/Audio.gd, audio/ambience.gd). See docs/ADJUSTING.md, \"Music and sound\". volumes: where the five sliders in Settings start (0..1) for a new player. bus_trim_db: fixed trim of each bus under its slider. bus_of: sounds that do not play on the SFX bus: UI sounds follow the Interface slider, animal calls and wind follow the Ambience slider. sound_db: trim of one sound everywhere it is played. min_gap_s: the shortest time (game seconds) between two plays of the same sound; a play that comes sooner is dropped, so nothing can machine-gun or stack. duck: how far music and ambience dip while WREN speaks.",
+ "_doc": "[v6sound] The mix and the ambience, per planet (autoload/Audio.gd, audio/ambience.gd). See docs/ADJUSTING.md, \"Music and sound\". volumes: where the five sliders in Settings start (0..1) for a new player. bus_trim_db: fixed trim of each bus under its slider. bus_of: sounds that do not play on the SFX bus: UI sounds follow the Interface slider, animal calls and wind follow the Ambience slider. sound_db: trim of one sound everywhere it is played; \"tag:sound\" (e.g. \"scoop:blip\") trims it only where the code plays it with that tag (scoop: the pieces flying into Lumi, lumi: start/stop squeak, sweep: litter sweep, lights: street lights coming on, robot: robots at work); -80 or lower mutes it. min_gap_s: the shortest time (game seconds) between two plays of the same sound; a play that comes sooner is dropped, so nothing can machine-gun or stack. duck: how far music and ambience dip while WREN speaks.",
  "volumes": {
   "master": 0.9,
   "music": 0.55,
@@ -33,9 +33,21 @@
   "purr": "Ambience",
   "bird": "Ambience"
  },
- "sound_db": {},
+ "sound_db": {
+  "scoop:blip": -80.0
+ },
  "min_gap_s": {
-  "_default": 0.0
+  "_default": 0.04,
+  "scoop:clink": 0.07,
+  "scoop:servo": 0.5,
+  "scoop:sparkle": 0.7,
+  "scoop:whoosh": 0.7,
+  "scoop:pop": 0.35,
+  "lumi:squeak": 2.5,
+  "sweep:whoosh": 1.5,
+  "lights:clunk": 1.2,
+  "robot:clink": 1.5,
+  "robot:servo": 2.0
  },
  "duck": {
   "music_db": -7.0,

@@ -297,7 +297,7 @@ func _move(delta: float) -> void:
 	if now_moving != _moving:
 		_moving = now_moving
 		Vfx.burst("dust", global_position + up() * 0.1, Color(0.8, 0.65, 0.5, 0.7), 0.8)
-		Audio.play("squeak", 1.0 if now_moving else 0.85, -10.0, 0.1)
+		Audio.play("squeak", 1.0 if now_moving else 0.85, -10.0, 0.1, "lumi")  # [v6sound] gap: data/sound.json
 		model.squash(0.25 if now_moving else -0.3)
 	if now_moving:
 		_idle_time = 0.0
@@ -433,7 +433,7 @@ func _handle_scoop(delta: float) -> void:
 		if swept > 0:
 			Vfx.burst("dust", scoop_origin() + forward() * 0.9, Color(0.62, 0.58, 0.52, 0.35), 0.3)
 			if randf() < 0.35:
-				Audio.play("whoosh", randf_range(1.4, 1.8), -18.0)
+				Audio.play("whoosh", randf_range(1.4, 1.8), -18.0, 0.04, "sweep")  # [v6sound]
 	var cap: float = capacity()
 	if not compartment.can_accept(cap):
 		if _buzz_cooldown <= 0.0:
@@ -516,7 +516,7 @@ func _piece_arrived(type_id: String, vol: float, color: Color) -> void:
 	GameState.add_junk_removed(type_id, vol)
 	_scoop_combo = mini(_scoop_combo + 1, 10)
 	_combo_timer = 0.7
-	Audio.play_ladder("clink", _scoop_combo - 1, -7.0)  # [first] gentle combo ladder
+	Audio.play_ladder("clink", _scoop_combo - 1, -7.0, "scoop")  # [first] gentle combo ladder
 	model.squash(0.08)
 	Vfx.burst("bits", to_global(model.chest_point), color, 0.4)
 	var cap: float = capacity()

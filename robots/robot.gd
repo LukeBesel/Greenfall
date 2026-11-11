@@ -539,12 +539,12 @@ func _pick(pid: int) -> void:
 				hopper.add(str(ex[0]), float(ex[1]))
 				GameState.add_junk_removed(str(ex[0]), float(ex[1]))
 				world.salvage_materials(str(ex[0]), float(ex[1]) * 0.5)
-			Audio.play("clink", randf_range(0.8, 1.1), -14.0))
+			Audio.play("clink", randf_range(0.8, 1.1), -14.0, 0.04, "robot"))  # [v6sound] gaps: "robot:<sound>" in data/sound.json
 	if hov:
 		Vfx.burst("sparkle", start, Color(0.4, 1.0, 0.85), 0.4)
-		Audio.play("servo", 1.6, -16.0)
+		Audio.play("servo", 1.6, -16.0, 0.04, "robot")
 	else:
-		Audio.play("servo", randf_range(0.9, 1.1), -18.0)
+		Audio.play("servo", randf_range(0.9, 1.1), -18.0, 0.04, "robot")
 
 
 func _make_bale() -> void:
