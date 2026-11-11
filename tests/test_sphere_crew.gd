@@ -554,3 +554,35 @@ func test_drips_refill_their_tank_and_water_again() -> void:
 	assert_gte(float(u["log"]["refills"]), 1.0, "it went to refill")
 	assert_gt(float(u["log"]["watered"]), 3.0, "and watered after")
 	assert_eq(crew.stuck_count(), 0)
+
+
+## B34, the crew stall: a hauler always took the nearest free bale. When that bale could not be
+## reached (its cell blocked, or a lake cell) it gave up, waited and took the same bale again, for
+## good, while every other bale waited (one Haul Bug idle for 41 minutes with 141 bales out).
+func test_hauler_passes_over_a_bale_it_cannot_reach() -> void:
+	var w: Dictionary = _world(false)
+	var crew: SphereCrew = w["crew"]
+	# The near bale: two cells out, walled in (every cell round it is blocked). The far bale: the
+	# cell of the third ring farthest from it.
+	var first_ring: PackedInt32Array = _g5.cells_around(100, 1)
+	var near_cell: int = -1
+	var far_cell: int = -1
+	for c: int in _g5.cells_around(100, 2):
+		if c != 100 and not first_ring.has(c):
+			near_cell = c
+			break
+	for c: int in _g5.cells_around(100, 3):
+		if far_cell < 0 or _g5.distance_m(near_cell, c) > _g5.distance_m(near_cell, far_cell):
+			far_cell = c
+	assert_lt(_g5.distance_m(100, near_cell), _g5.distance_m(100, far_cell), "the walled-in bale is the nearer one")
+	crew.from_dict({"v": 1, "robots": [], "bales": [{"cell": near_cell, "value": 0.0, "units": 12.0}, {"cell": far_cell, "value": 0.0, "units": 12.0}]})
+	for c: int in _g5.cells_around(near_cell, 1):
+		if c != near_cell:
+			crew.blocked[c] = true
+	assert_true(crew.route(100, near_cell, "haul").is_empty(), "the near bale cannot be reached")
+	assert_false(crew.route(100, far_cell, "haul").is_empty(), "the far bale can")
+	var u: Dictionary = crew.spawn("haulbug", 0, 100)
+	_run(crew, 240.0)
+	assert_gt(float(u["log"]["hauled"]), 0.0, "the hauler brought the bale it can reach to the depot")
+	assert_eq(crew.bales.size(), 1, "only the unreachable bale is left")
+	assert_eq(int(crew.bales[0]["cell"]), near_cell)

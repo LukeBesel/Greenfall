@@ -1208,6 +1208,10 @@ func _find_haul(u: Dictionary, here: int) -> bool:
 		for i: int in bales.size():
 			if str(bales[i]["claimed"]) != "":
 				continue
+			# A bale no route led to a moment ago (_route_to marks its cell) is passed over for
+			# now: taking the nearest one again and again left every other bale waiting.
+			if float(_skip.get(int(bales[i]["cell"]), -1.0)) >= _t:
+				continue
 			var d: float = grid.distance_m(here, int(bales[i]["cell"]))
 			if d < best_d:
 				best_d = d
