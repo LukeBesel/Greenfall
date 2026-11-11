@@ -268,11 +268,11 @@ msgstr "ロック中。発射台を建てるには基地をレベル%dに上げ�
 msgid "The launch pad is still buried. Put your first robot to work to clear it."
 msgstr "発射台はまだゴミにうまっている。最初のロボットを働かせて片づけよう。"
 
-#: automation/hub.gd:170
+#: automation/hub.gd:173
 msgid "Hub upgraded: %s."
 msgstr "基地をアップグレード：%s。"
 
-#: automation/hub.gd:201
+#: automation/hub.gd:204
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr "空気清浄機が稼働。ファンが長い、ほこりっぽいため息とともに回りだした。"
 
@@ -491,7 +491,7 @@ msgstr "%s 相当のベールが、運ぶ者もなく基地に積まれていた
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "清浄機がずっと空気をろ過していた。少しだけ澄んだ。"
 
-#: core/pace.gd:147 story/objectives.gd:901
+#: core/pace.gd:147 story/objectives.gd:924
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "重すぎる。作業台でリフト力をアップグレードしよう。"
 
@@ -703,7 +703,7 @@ msgstr "Lumi の新デザイン：%s"
 msgid "Home. The workbench is by the pod."
 msgstr "ホームだ。作業台はポッドのそばにある。"
 
-#: planet/sites/hub_purpose.gd:174
+#: planet/sites/hub_purpose.gd:174 story/objectives.gd:931
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "ロケットは発着場で待っている。リストの一番上がホームだ。"
 
@@ -796,36 +796,36 @@ msgstr "%d つの基地がそろった。ホームに戻ってロケットの出
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:107
+#: planet/sites/orbit_sites.gd:108
 msgid "The rocket is in flight."
 msgstr "ロケットは飛行中。"
 
-#: planet/sites/orbit_sites.gd:130
+#: planet/sites/orbit_sites.gd:132
 msgid "Bases restored: %d of %d"
 msgstr "復旧した基地：%d / %d"
 
-#: planet/sites/orbit_sites.gd:168
+#: planet/sites/orbit_sites.gd:170
 msgid "E   Rocket: choose a destination"
 msgstr "E   ロケット：行き先を選ぶ"
 
-#: planet/sites/orbit_sites.gd:206
+#: planet/sites/orbit_sites.gd:208
 msgid "HOME"
 msgstr "ホーム"
 
-#: planet/sites/orbit_sites.gd:206
+#: planet/sites/orbit_sites.gd:208
 msgid "NEXT STOP"
 msgstr "次の目的地"
 
-#: planet/sites/orbit_sites.gd:208
+#: planet/sites/orbit_sites.gd:210
 msgid "Upgrade the rocket first"
 msgstr "先にロケットを強化"
 
-#: planet/sites/orbit_sites.gd:226
+#: planet/sites/orbit_sites.gd:228
 msgid "%s site"
 msgstr "%sの地点"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: planet/sites/orbit_sites.gd:227 ui/main_menu.gd:525
+#: planet/sites/orbit_sites.gd:229 ui/main_menu.gd:525
 msgid "Hub %d"
 msgstr "基地 %d"
 
@@ -2187,43 +2187,43 @@ msgstr "目標達成  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "目標達成  ·  %s"
 
-#: story/objectives.gd:704
+#: story/objectives.gd:727
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "ベーラーを取り付けた！胸をいっぱいにして、[%s] でベールを作り、はかりまで運ぼう。"
 
-#: story/objectives.gd:726 story/objectives.gd:889
+#: story/objectives.gd:749 story/objectives.gd:912
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "胸がいっぱい。[%s] を押してベールを作ろう。"
 
-#: story/objectives.gd:742
+#: story/objectives.gd:765
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "探知機が近くに埋まったロボットのパーツを見つけたよ。「埋もれたパーツ」の表示を追って。真上に来るとピッと鳴るよ。"
 
-#: story/objectives.gd:744
+#: story/objectives.gd:767
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋もれたパーツ：反応が一番強くなるまで近づいて、掘り出そう。"
 
-#: story/objectives.gd:890
+#: story/objectives.gd:913
 msgid "Your chest is full. Bring it to the bin."
 msgstr "胸がいっぱい。ゴミ箱へ運ぼう。"
 
-#: story/objectives.gd:897
+#: story/objectives.gd:920
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "胸がいっぱい。おうちへ帰ろう。ゴミ箱は高い煙の下だよ。"
 
-#: story/objectives.gd:899
+#: story/objectives.gd:922
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "ベールをおうちへ運ぼう。はかりは高い煙の下だよ。"
 
-#: story/objectives.gd:899
+#: story/objectives.gd:922
 msgid "Carry your bale to the scale by the bin."
 msgstr "ベールをゴミ箱のそばのはかりへ運ぼう。"
 
-#: story/objectives.gd:906
+#: story/objectives.gd:932
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "おうちへ帰ろう。光の柱を追って高い煙のところへ。"
 
-#: story/objectives.gd:916
+#: story/objectives.gd:942
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "ここには拾うものがない。もっとゴミのあるところへ歩こう。"
 
@@ -10936,6 +10936,10 @@ msgstr "基地をレベル3にする"
 msgid "Build a Seedling planter"
 msgstr "Seedling の植え付けロボを作る"
 
+#: data/goals.json:goals[base_4].text
+msgid "Upgrade the base to level 4"
+msgstr "基地をレベル4にする"
+
 #: data/goals.json:goals[hub_fly_5].text data/goals.json:goals[hub_fly_6].text data/objectives.json:objectives[hub_fly_2].text
 #: data/objectives.json:objectives[hub_fly_3].text data/objectives.json:objectives[hub_fly_4].text
 msgid "Fly to the next station"
@@ -10956,6 +10960,10 @@ msgstr "ロケットをMk IIIに強化しよう"
 #: data/goals.json:goals[drip_1].text
 msgid "Build a Drip watering robot"
 msgstr "Drip 水やりロボを作る"
+
+#: data/goals.json:goals[base_5].text
+msgid "Upgrade the base to level 5"
+msgstr "基地をレベル5にする"
 
 #: data/goals.json:goals[hub_wake_6].text
 msgid "Wake station 6 of 6"
@@ -11185,10 +11193,6 @@ msgstr "ヘックスを15個繁栄状態にする"
 msgid "Get 20 hexes to Sustained"
 msgstr "ヘックスを20個維持状態にする"
 
-#: data/goals.json:goals[base_4].text
-msgid "Upgrade the base to level 4"
-msgstr "基地をレベル4にする"
-
 #: data/goals.json:goals[stipend_5k].text
 msgid "Garden stipend: 5,000 cubes"
 msgstr "ガーデン助成金：5,000キューブ"
@@ -11216,10 +11220,6 @@ msgstr "ガーデン助成金：10,000キューブ"
 #: data/goals.json:goals[hexlv_5x25].text
 msgid "Get 25 hexes to Thriving"
 msgstr "ヘックスを25個繁栄状態にする"
-
-#: data/goals.json:goals[base_5].text
-msgid "Upgrade the base to level 5"
-msgstr "基地をレベル5にする"
 
 #: data/goals.json:goals[extras_retire].text
 msgid "Retire a robot to the nursery"
@@ -12366,10 +12366,6 @@ msgstr "次は20個。空気のにおいがもう変わってきたよ。"
 msgid "Upgrade the rocket to Mk II"
 msgstr "ロケットをMk IIに強化しよう"
 
-#: data/objectives.json:objectives[hub_wake_4].text
-msgid "Wake station 4 of 6"
-msgstr "ステーション4/6を目覚めさせよう"
-
 #: data/objectives.json:objectives[base3].text
 msgid "Rebuild the base to level 3"
 msgstr "基地をレベル3に再建する"
@@ -12381,6 +12377,10 @@ msgstr "アップグレードタブ。基地が強くなると、もっと大き
 #: data/objectives.json:objectives[base3].lines
 msgid "One more base level, Lumi. Bigger machines need a stronger base."
 msgstr "基地をもう1レベル、Lumi。大きな機械には強い基地がいるんだ。"
+
+#: data/objectives.json:objectives[hub_wake_4].text
+msgid "Wake station 4 of 6"
+msgstr "ステーション4/6を目覚めさせよう"
 
 #: data/outposts.json:levels[0].name
 msgid "Weigh Station"

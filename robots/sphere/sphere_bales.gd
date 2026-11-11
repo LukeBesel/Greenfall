@@ -217,6 +217,8 @@ func adopt(c: JunkCube) -> int:
 	var d: Vector3 = crew.surface.up_at(c.global_position)
 	var depot: Node = crew.world.get("depot") as Node if crew.world != null else null
 	var mult: float = float(depot.call("sell_factor")) if depot != null and depot.has_method("sell_factor") else 1.0
+	if depot != null and depot.has_method("sell_factor"):
+		mult /= maxf(Hub.trade_mult(), 0.0001)  # [v6pace] SphereCrew.cash() applies the far-hub multiplier; sell_factor has it too (it was paid twice: x150 became x22,500)
 	crew.bales.append({"id": id, "cell": crew.grid.cell_at(d), "dir": d, "value": c.value.to_float() * mult,
 		"units": float(c.info.get("volume", float(c.info.get("fill", 1.0)) * 12.0)), "claimed": "", "info": c.info, "raw": c.value.to_float()})
 	c.reparent(self, true)

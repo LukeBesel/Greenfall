@@ -154,8 +154,11 @@ reward gaps and card waits; targets and the last measured run are in `docs/BALAN
 | What | File and key | Now | Effect |
 |---|---|---|---|
 | When the rocket appears | `data/hub.json` `rocket.level`, `rocket.after_objective` | level 1, after the step `seed` | The rocket stands on the start pad once that story step is done and the base has that level. |
-| Single far-hub prices | `data/hub.json` `far_hub.cost_override` (step number as the key, e.g. `"2": {"cubes": 8000}`) | none | Replaces one step of the curve without moving the others. |
-| Far hub price curve | `data/hub.json` `far_hub.cost_base`, `far_hub.cost_growth` | 600 cubes x 4.0 per hub (Parts 30 x 1.4) | Price of hub n = base x growth^n, rounded to two digits: 600, 2.4K, 9.6K, 38K, 150K. One number moves the whole ladder. |
+| Single far-hub prices | `data/hub.json` `far_hub.cost_override` (step number as the key, e.g. `"2": {"cubes": 8000}`) | hub 6 (`"4"`): 400K cubes, 120 Parts | Replaces one step of the curve without moving the others. |
+| The whole planet's speed | `data/hub.json` `far_hub.pace` | 1.3 | Every sale pays 1/pace: 1.25 makes each cube step about 25% longer, 0.8 about 20% shorter. The first knob to turn after a playtest. |
+| Woken bases clean while Lumi is away | `data/hub.json` `far_hub.keep` | 4 cells/min + 1 per base level above 1 + 0.5 per robot there | The main lever on the planet % at the leave point. `home: true` lets the start hub do it too. |
+| What the planet % counts | `data/hub.json` `far_hub.pct_over` | `all_regions` | `all_regions`: every hub region's land (only goes up). `built_regions`: only the woken hubs' regions (drops at each wake). |
+| Far hub price curve | `data/hub.json` `far_hub.cost_base`, `far_hub.cost_growth` | 600 cubes x 4.0 per hub (Parts 30 x 1.4) | Price of hub n = base x growth^n, rounded to two digits: 600, 2.4K, 9.6K, 38K (then hub 6 by override). One number moves the whole ladder. |
 | Income per restored hub | `data/hub.json` `far_hub.sell_growth` | 3.5 | Every sale (scale, robot bales, trash bin) is multiplied by this for each far hub restored. Raise it and hubs come faster; lower it and each hub takes longer. |
 | Level of a restored far hub | `data/hub.json` `far_hub.level` | 2 | What a woken hub counts as. |
 | Per-planet overrides | `data/homeward.json` `planets[k].far_hub` | none | Any `far_hub` key, for that planet only. |
@@ -164,7 +167,7 @@ reward gaps and card waits; targets and the last measured run are in `docs/BALAN
 | When Lumi may leave a planet | `data/homeward.json` `planets[k].leave.hubs`, `.hub_level` | Verdance: 6 hubs at level 2 | Opens the system map and the drive. Not tied to the planet's clean %. |
 | What WREN says then | `data/homeward.json` `planets[k].leave.toast` | "Six stations awake, Lumi. Their robots can look after Verdance now." | Said once, before the exit lines in `data/story_reasons.json` `exit.system_open`. |
 | The drive that leaves Verdance | `data/homeward.json` `drive[0].cost` | 500K cubes, 300 Parts | The biggest price of the planet. |
-| Base level prices (start hub) | `data/hub.json` `levels[].cost` | 1,500 / 9,000 / 28,000 / 30,000 | Level 2 and 3 are story steps. 4 and 5 are optional on Verdance's way out. |
+| Base level prices (start hub) | `data/hub.json` `levels[].cost` | 1,500 / 9,000 / 60,000 / 250,000 | Level 2 and 3 are story steps. 4 and 5 are optional, but they lift income a lot: cheap ones made the last hub and the drive come within minutes. |
 | Order of the card's steps | `data/objectives.json` (story), then `data/goals.json` `goals` in file order | | The card shows the first unfinished one. Move a line to move the step. |
 | A goal's own "why" line | `data/goals.json` goal `desc` | only on "Fly to another planet" | Shown instead of "Reward: ...". The hub, wake and rocket steps carry none: their why is in `data/story_reasons.json` (card and WREN). |
 | The first robot's price | `data/robots.json` `scoopie.cost`, `.parts` | 800 cubes, 40 Parts | Parts come from scooping metal, plastic and glass; the card says how many are missing. |

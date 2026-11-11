@@ -1,9 +1,102 @@
 # Balance
 
+> **Read first.** Every time below is **bot time**: the autoplay bot (`tools/autoplay.gd`) playing at
+> `--time-scale=8`. A person is assumed to take **about twice as long** (reading, looking around,
+> getting lost, choosing). That factor is a guess, **not measured** with a real player. If the first
+> planet plays too fast or too slow, change **one number**, `data/hub.json` `far_hub.pace`
+> (1.3 now): every sale pays 1/pace, so 1.25 makes every cube step about 25% longer and 0.8 about
+> 20% shorter. Verdance can also get its own value in `data/homeward.json` `planets[0].far_hub.pace`.
+
+## Verdance, the round planet (v6pace)
+
+Owner's goal (items 57, 58, 61, 63, 64 and the "addictive" brief): about 4-5 hours to the point
+where Lumi can fly on, six bases woken by then, roughly 20% of the planet cleaned (not 100%),
+cubes growing semi-exponentially (tens to hundreds of thousands of cubes for the big buys), always
+one clear next step, something new every 3-6 minutes in the first hour and every 6-10 minutes later,
+never more than about 12 minutes without one, no pure-grind wait over about 15 minutes.
+In bot time that is the leave point at about **2-2.5 h**.
+
+### The arc
+
+The card (story steps from `data/objectives.json`, then `data/goals.json` in file order) walks
+through it; every hub, wake and rocket step shows its price and the cubes saved so far.
+
+1. Start yard: trash bin, chest and scoop upgrades, the Baler, the signal tower, Glim, the first
+   hexes, the Bot Bay, the first robot, its zone, the first seed.
+2. The rocket stands on the pad after the first seed (`data/hub.json` `rocket.after_objective`).
+3. Hub 2 Garden Row (600), base level 2, a Haul Bug, hub 3 Gantry Works (2.4K).
+4. Rocket Mk II (8K) reaches 5 hubs; base level 3 (9K) sits in the gap before hub 4 Signal Heights (9.6K).
+5. Goals from `data/goals.json`: a Seedling, base level 4 (60K), hub 5 Fairground (38K), 25 plants,
+   rocket Mk III (150K), a Drip, base level 5 (250K), hub 6 Stack Works (400K, `cost_override` "4"),
+   the Mk V drive (500K), fly on. Base 4 and 5 sit inside the two longest saves so each is split by
+   a real income buy.
+
+Each woken far hub multiplies every sale by `sell_growth` (3.5): x3.5, x12, x43, x150, x525.
+Prices grow by `cost_growth` (4.0) a hub. Income grows faster than that early (more robots, base
+levels) and slower late, which is where the rocket tiers and the drive take over as the big numbers.
+
+### Away cleaning and the planet %
+
+A woken far base keeps cleaning its own region while Lumi is at another hub
+(`planet/sites/base_keepers.gd`, `data/hub.json` `far_hub.keep`):
+cells per minute = `cells_per_min` (4) + `per_level` (1) x (base level - 1) + `per_robot` (0.5) x
+robots left there. Cells go centre-first, so on the next visit the town is visibly cleaner and the
+arrival line says how much. The planet % on the HUD counts the land of every hub region (the ten
+towns' regions, about 8,000 land cells on Verdance: `far_hub.pct_over` "all_regions"), so it only
+ever goes up; the whole-globe share (open land between towns, the far hinterland) stays in
+`SphereCells.clean_fraction()` for a later "100%" extra. `--keep-report` prints a `[keep]` line a
+game minute.
+
+MEASURED_HERE
+
+### Measuring a planet's arc
+
+    flock /tmp/gf-autoplay.lock godot --headless --path . -- --fresh --orbit --no-intro --autoplay \
+        --time-scale=8 --clarity-log --keep-report --quit-after=7000 > run.log 2>&1
+    python3 tools/cadence.py screenshots/autoplay_report.json run.log
+
+`cadence.py` prints the arc (each hub woken, rocket tier, drive, exit), cubes per minute between
+hubs and the factor from one to the next, the gaps between "something new" moments (an upgrade
+level, a robot, research done, a machine or station, a base level, a hub, a rocket tier, a story
+step) against the targets, and the longest card waits (`*` = a price on the card; `WALL` = a priced
+step up longer than 15 minutes). On this shared 4-core box 8x runs at 2-4x real time: a full
+Verdance arc takes 40-70 minutes of wall time.
+
+### Retuning for another planet
+
+Everything below is per planet: put the key in `data/homeward.json` `planets[k].far_hub` (it is
+merged over `data/hub.json` `far_hub` by `Hub.far_cfg()`); hub order, gifts and rocket pieces are
+in `data/planets.json` (v6hubs), the leave gate in `data/homeward.json` `planets[k].leave`.
+
+| Knob | Verdance | What it does |
+|---|---|---|
+| `far_hub.pace` | 1.3 | Whole-planet speed: every sale pays 1/pace. Start here after a playtest. |
+| `far_hub.cost_base`, `cost_growth` | 600 x 4.0 | The hub price ladder (600, 2.4K, 9.6K, 38K; hub 6 400K by override). A bigger planet: raise `cost_base` so its numbers start where the last planet ended. |
+| `far_hub.cost_override` | hub 6: 400K | One rung of the ladder, by step number. |
+| `far_hub.sell_growth` | 3.5 | Income multiplier per woken hub. Keep it below `cost_growth`, or later hubs come faster and faster. |
+| `far_hub.keep` | 4 + 1/level + 0.5/robot cells a minute | How fast woken bases clean while Lumi is away: the main lever on the % at leave. |
+| `far_hub.pct_over` | all_regions | What the HUD's planet % counts. |
+| `leave.hubs`, `leave.hub_level` (homeward) | 6 at level 2 | When the drive and the star map open. |
+| `drive[k].cost` (homeward) | 500K | The planet's last and biggest buy. |
+| `data/rockets.json` `tiers[].hubs`, `.cost` | Mk I 3, Mk II 5 (8K), Mk III all (150K) | How many hubs each rocket reaches, so the rocket is upgraded along the arc. Global, not per planet. |
+| `data/objectives.json`, `data/goals.json` | | Step order. Hub, wake and rocket steps carry no `desc`: their why is `data/story_reasons.json`. |
+
+Order of work for a new planet: set the leave gate and the drive price, run the bot once with
+`--keep-report`, then move `pace` until the leave point lands where you want it, `cost_growth` /
+`sell_growth` until no step is a wall (cadence.py), and `keep` until the % at leave feels right.
+`tests/test_v6pace.gd` pins Verdance's numbers and checks that every step on the card can be done
+on the globe (a known stat or flag writer, no flat-world-only system).
+
+## Earlier notes (before v6, mostly the flat world)
+
+Everything below predates the round planet's arc above: the flat Old Town (33 hexes), the frontier
+districts and the older whole-game passes. Kept for their methods and formulas; where a number
+disagrees with the section above, the section above is current.
+
 How Greenfall's first district (Old Town, 33 junk hexes: 27 land + 6 lake) is paced, how it was
 measured, and what was tuned. All numbers are game time (the sim clock, `GameState.stats.time_played`).
 
-## Measuring: the autoplay bot
+### Measuring: the autoplay bot
 
 `tools/autoplay.gd` (AutoplayBot) plays like a sensible human:
 
@@ -36,13 +129,13 @@ base level, station, tank, part), a per-minute `log` (cubes, income rate, lifeti
 materials, hex level counts, fleet, task), `goal_gaps_min` (stretches > 3 min with no goal completed) and
 `dead_gaps_min` (> 3 min with no goal and nothing new bought: upgrade, robot, research, station, base).
 
-## Targets
+### Targets
 
 - A next goal within ~1-3 min, no dead stretch > 3 min, through the first ~2 hours.
 - First robot ~6-10 min; first planting ~20-25 min; first Sustained hex by ~45 min; base level 3 by ~75 min.
 - Research always has something to start; late costs don't explode; no softlocks, no money loops.
 
-## Results (before -> after)
+### Results (before -> after)
 
 | Milestone (game min) | Before | After |
 |---|---|---|
@@ -189,7 +282,7 @@ Run-to-run spread over the last five runs: first robot 5.5-6.5, planting 17-22, 
 </details>
 
 
-## What the "before" run showed
+### What the "before" run showed
 
 - **Robots at 1.7 min.** Haggle's sells rusty parts for 80 cubes; a Scoopie was 120 + 4 parts = 440 cubes.
   Crew cap 6 per crew at level 1, so 6 Scoopies and 3 Haul Bugs by 10 min.
@@ -205,7 +298,7 @@ Run-to-run spread over the last five runs: first robot 5.5-6.5, planting 17-22, 
 - **Research starved.** Data came at 3 per hex; the tree (7,000 Data) could not be afforded; long idle
   stretches with nodes open.
 
-## Data changes
+### Data changes
 
 | File | Key | Before | After | Why |
 |---|---|---|---|---|
@@ -235,7 +328,7 @@ Code changes are small: `plants/hex_levels.gd` pays the stipend (`_pay_stipend`,
 (exploit fixes below); `player/patch.gd` gets a fall-through safety net (one long run pushed Patch
 through the ground near the base and he fell forever; he is now put back in the yard and the `fell_through` stat counts it).
 
-## Exploits found and fixed
+### Exploits found and fixed
 
 1. **Offline income from nothing.** `Offline.compute` paid cleaners for up to 8 h of junk per session no
    matter how much junk was left, and never removed it. A clean district paid out forever by closing and
@@ -248,7 +341,7 @@ through the ground near the base and he fell forever; he is now put back in the 
    (seeds can't loop); recycler pays 0.25x cube value plus materials (no loop); Haggle's buy/swap/scrap has no
    path back to cubes; the auto-baler presses at 0.85x.
 
-## Lumi Level (Lumi XP)
+### Lumi Level (Lumi XP)
 
 A light, always-on level shown as the thin bar above the hotbar (`systems/lumi_level.gd`,
 `data/lumi_level.json`). XP comes from everything: scoop 1 per piece, bale pressed 3, bale sold 4 (robot
@@ -280,7 +373,7 @@ goals pay XP), 3 at 1.5, 4 at 4.5, 5 at 7.2, 6 at 11.9, 7 at 19.1, 8 at 25.5, 9 
 come every 1-5 minutes, then every 6-8, then 20+: the grind is the late game. The bot ignores most world
 events, so a human levels a little faster.
 
-## Formulas (current)
+### Formulas (current)
 
 - Upgrade cost: `base_cost * growth^level` (data/upgrades.json; robots' fleet upgrades in robots.json).
 - Robot build cost: `cost * 1.35^(robots of that type)` (fleet.gd); Mk tiers: `cost * cost_mult` + a core
@@ -291,7 +384,7 @@ events, so a human levels a little faster.
 - Bale value: `sum(volume * junk value) * cube_value_mult * (2 if pure) * (1.5 if perfect) * (0.8 if lumpy)`
   then `* (1 + hub sell_mult)` at the scale.
 
-## Notes and open issues
+### Notes and open issues
 
 - A district's junk (and so its materials) is finite: ~11,000 volume of land junk, ~200 metal without the
   Recycler, ~300+ with it. After the land is clean, cubes come from the garden stipend, hex-level rewards and
@@ -308,7 +401,7 @@ events, so a human levels a little faster.
 - `tier_1` (Mk II) needs a Restored Control Core, which only comes from digging/salvage luck; it sits late in
   the chain so it can't block.
 
-## Frontier districts (late game, wt/biomes)
+### Frontier districts (late game, wt/biomes)
 
 Four frontier districts extend the grind after the ordinary bases (`data/frontiers.json`). Numbers from
 `godot --headless --path . res://tools/frontier_balance.tscn` (one representative seed; "Value at scale" is
@@ -355,7 +448,7 @@ volume x junk value x the frontier's `value_mult`, before Pure/Perfect bonuses a
   and 70% Growing: about 12-16 h of long tail. The autoplay bot cannot fly rockets or place heaters yet, so
   these need a play-test; tune `pieces_mult`, `value_mult`, `cost_mult` and the storm/ice numbers first.
 
-## Whole game and the garden ramp (wt/beat, Nov 7)
+### Whole game and the garden ramp (wt/beat, Nov 7)
 
 Owner's curve: one special seed at ~10-15 min (story), seeds scarce and growth slow while cleaning
 drives progress until ~1 h, then "the garden takes off". The early part (first seed, the trickle) is
@@ -402,7 +495,7 @@ tuned by the first-seed helper; this section is the 1 h+ ramp and everything aft
 | Dust Flats / Frozen Port / Sunken City / Cradle | | 128 / 36 / 80 / 53 min |
 | New Game to the Cradle finale | not reachable without dev hooks | ~7.5-8 h bot (~15-22 h human) |
 
-## First hour (wt/first, Nov 7)
+### First hour (wt/first, Nov 7)
 
 Owner direction: the first hour is cleaning, robots, upgrades and base levels; planting starts as a
 story hook (one Settler seed, ~min 10-15) and stays a slow, scarce side track until the ~60-min ramp
@@ -443,7 +536,7 @@ Data changes (early-game values only):
   is two seeds, not an hour of paper (`plants/composter.gd` DORMANT_CAP).
 - Tried and reverted: Scoopie 1200-1350 (first robot ~8 min, but the second-Scoopie goal stalled 10 min).
 
-## Cradle Mode (post-game prestige, wt/late)
+### Cradle Mode (post-game prestige, wt/late)
 - **Starseeds** (data/cradle.json `prestige`): 4 per Seed Ark wave, 6 per Bloom milestone,
   1.5 x sqrt(Thriving hexes over all districts), 20 for the Cradle, 3 per level-5 base. A finished
   campaign (4 milestones, 1-3 waves, ~600 Thriving hexes, 7 bases at 5) is ~95; every further wave is 4.
@@ -459,7 +552,7 @@ Data changes (early-game values only):
   the fountain is 4, a bench 1.5, a path 0.2). Decorations refund in full when picked up.
 
 
-## Homeward pacing (wt/home, Nov 7)
+### Homeward pacing (wt/home, Nov 7)
 Owner target: the whole campaign 25-40 h for a human, every planet shorter than Verdance with its own twist.
 - Verdance to "The Cradle Answers": ~15-22 h human (unchanged, see above).
 - The four planets start from the Heirloom kit and the carried rocket tier (warp hops from the start) and
@@ -471,7 +564,7 @@ Owner target: the whole campaign 25-40 h for a human, every planet shorter than 
   well under an hour); Mk VI 1.2M + 500 parts on Ochre or Tidewell, around their base 5; Mk VII 8M + 2,000
   parts back on Verdance after the system is restored (the Seed Ark gifts and four planets of stipends).
 - Each restored planet: a relic and one Heirloom pick (four picks over the campaign, so later planets speed up).
-## Three currencies (wt/money, Nov 7)
+### Three currencies (wt/money, Nov 7)
 
 Owner: "mostly focus on fewer currencies ... keep it extremely low like 3 or less." The game now has
 exactly three, defined in `data/currencies.json` (`core/currencies.gd`).
@@ -560,7 +653,7 @@ was tried and reverted (Old Town launch slipped to 93 min).
 - Parts pile up after the first district (the recycler and requests keep paying); the late sinks are
   rocket stages (Mk III 3,300, Mk IV 10,000 parts), robot tiers and the Builder.
 
-## Remote progress and the Telescope (wt/scope, Nov 7)
+### Remote progress and the Telescope (wt/scope, Nov 7)
 Robots on the other worlds of a Cradle Mode profile keep working while Lumi is elsewhere. One function
 does the maths for both: `Offline.compute` (core/offline.gd). `RemoteProgress.compute` (systems/remote_progress.gd)
 calls it and scales the result; nothing is duplicated.
@@ -588,7 +681,7 @@ calls it and scales the result; nothing is duplicated.
 - **Telescope unlock:** base level 4, or the Observatory Optics research (Robotics tier 6, 500 Data). Cost
   6000 cubes + 40 parts (bolts until the money rework adds a parts currency). Tests: `tests/test_remote_progress.gd`.
 
-## Slow start (wt/pace, Nov 8)
+### Slow start (wt/pace, Nov 8)
 Owner playtest #2: the start was far too fast and strong (4 upgrades after two bales, auto-cubing
 and robots within minutes). Lumi now starts small and earns his tools (core/pace.gd).
 
@@ -632,7 +725,7 @@ Autoplay, game minutes at --time-scale=4 (Old Town; before = 5db7ed8):
 
 Run-to-run spread is about a minute early on. Without world2's HexField.piece_size the start ring
 can still hold large models; Pace counts those as medium so the first hexes can be cleaned.
-## World2: the district reads covered (wt/world2, Nov 7)
+### World2: the district reads covered (wt/world2, Nov 7)
 
 Owner: "the only clear areas should be what you or bots pick up." Junk gen 2 (new games; saves without
 `junk_gen` keep gen 1 and radius 3): Old Town's field is radius 4 (55 junk hexes, was 33), no mid-road
@@ -677,7 +770,7 @@ Render cost at the start view (lavapipe, `--perf`, primitives / draw calls): Low
 half the far layer in one batch per model); High 20.6M -> 27.4M before the far-layer cut (estimator
 after it: 15.4M -> 19.9M, Medium 12.5M -> 16.8M).
 
-## Whole-game curve and return trips (wt/pace2, Nov 8)
+### Whole-game curve and return trips (wt/pace2, Nov 8)
 Owner targets: the whole game about 20 h for a typical player, grindy but never boring; Verdance
 (New Game to the first launch to another planet) 3-4 h; planting ramps at 1-2 h (garden takes off
 75-110 min); something new every 5-10 min early and 10-20 min later; no goal-less stretch over
@@ -743,7 +836,7 @@ front posts solid (invisible walls where Lumi stuck for minutes; camp now turns 
 the hidden parts); the bot sidesteps obstacles, and when boxed in for 90 s hops back to the yard and
 logs `[bot-trap]`; `--time-scale` above 4 raises the physics tick rate so steps stay as short as 4x.
 
-## Cross-planet pacing (orbC, Nov 8)
+### Cross-planet pacing (orbC, Nov 8)
 Owner: later planets are bigger (up to 4x Verdance's area on Anvil) but each must play faster, never
 slower: the tools, bots and drive upgrades from each planet speed the work up. Whole game ~20 h,
 Verdance 3-4 h, something new every 5-20 min. Bot-to-human factor about 2x (see above), so a later

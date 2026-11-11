@@ -268,11 +268,11 @@ msgstr "未解锁。把基地升到 %d 级来建造发射台。"
 msgid "The launch pad is still buried. Put your first robot to work to clear it."
 msgstr "发射台还埋在垃圾里。先让你的第一个机器人开工，把它清出来。"
 
-#: automation/hub.gd:170
+#: automation/hub.gd:173
 msgid "Hub upgraded: %s."
 msgstr "基地已升级：%s。"
 
-#: automation/hub.gd:201
+#: automation/hub.gd:204
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr "空气净化器启动。风扇伴着一声悠长、满是灰尘的叹息转了起来。"
 
@@ -491,7 +491,7 @@ msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
-#: core/pace.gd:147 story/objectives.gd:901
+#: core/pace.gd:147 story/objectives.gd:924
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "太重了。去工作台升级举升力。"
 
@@ -703,7 +703,7 @@ msgstr "新的 Lumi 外观：%s"
 msgid "Home. The workbench is by the pod."
 msgstr "到家了。工作台就在逃生舱旁边。"
 
-#: planet/sites/hub_purpose.gd:174
+#: planet/sites/hub_purpose.gd:174 story/objectives.gd:931
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "火箭停在发射台上。目的地列表的第一项就是家。"
 
@@ -796,36 +796,36 @@ msgstr "%d 个基地都修好了。飞回家，让火箭做好离开的准备。
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:107
+#: planet/sites/orbit_sites.gd:108
 msgid "The rocket is in flight."
 msgstr "火箭正在飞行。"
 
-#: planet/sites/orbit_sites.gd:130
+#: planet/sites/orbit_sites.gd:132
 msgid "Bases restored: %d of %d"
 msgstr "已修复基地：%d / %d"
 
-#: planet/sites/orbit_sites.gd:168
+#: planet/sites/orbit_sites.gd:170
 msgid "E   Rocket: choose a destination"
 msgstr "E   火箭：选择目的地"
 
-#: planet/sites/orbit_sites.gd:206
+#: planet/sites/orbit_sites.gd:208
 msgid "HOME"
 msgstr "家"
 
-#: planet/sites/orbit_sites.gd:206
+#: planet/sites/orbit_sites.gd:208
 msgid "NEXT STOP"
 msgstr "下一站"
 
-#: planet/sites/orbit_sites.gd:208
+#: planet/sites/orbit_sites.gd:210
 msgid "Upgrade the rocket first"
 msgstr "先升级火箭"
 
-#: planet/sites/orbit_sites.gd:226
+#: planet/sites/orbit_sites.gd:228
 msgid "%s site"
 msgstr "%s地点"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: planet/sites/orbit_sites.gd:227 ui/main_menu.gd:525
+#: planet/sites/orbit_sites.gd:229 ui/main_menu.gd:525
 msgid "Hub %d"
 msgstr "基地 %d"
 
@@ -2187,43 +2187,43 @@ msgstr "目标完成  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:704
+#: story/objectives.gd:727
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "打包机装好了！装满胸舱，按 [%s] 压一个捆包，再把它搬到秤上。"
 
-#: story/objectives.gd:726 story/objectives.gd:889
+#: story/objectives.gd:749 story/objectives.gd:912
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "你的胸舱满了。按 [%s] 压一个捆包。"
 
-#: story/objectives.gd:742
+#: story/objectives.gd:765
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "你的探测器发现附近埋着一个机器人零件。跟着“埋藏零件”的读数走；走到正上方时它会哔哔响。"
 
-#: story/objectives.gd:744
+#: story/objectives.gd:767
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
 
-#: story/objectives.gd:890
+#: story/objectives.gd:913
 msgid "Your chest is full. Bring it to the bin."
 msgstr "你的胸舱满了。带到垃圾桶去。"
 
-#: story/objectives.gd:897
+#: story/objectives.gd:920
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "你的胸舱满了。回家吧：垃圾桶就在高高的烟柱下面。"
 
-#: story/objectives.gd:899
+#: story/objectives.gd:922
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "把捆包搬回家：秤就在高高的烟柱下面。"
 
-#: story/objectives.gd:899
+#: story/objectives.gd:922
 msgid "Carry your bale to the scale by the bin."
 msgstr "把捆包搬到垃圾桶旁边的秤上。"
 
-#: story/objectives.gd:906
+#: story/objectives.gd:932
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "回家吧：跟着光柱走到高高的烟柱那里。"
 
-#: story/objectives.gd:916
+#: story/objectives.gd:942
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "这里没有东西可捡。走到垃圾更多的地方去。"
 
@@ -10936,6 +10936,10 @@ msgstr "将基地升到 3 级"
 msgid "Build a Seedling planter"
 msgstr "建造一台 Seedling 种植机器人"
 
+#: data/goals.json:goals[base_4].text
+msgid "Upgrade the base to level 4"
+msgstr "将基地升到 4 级"
+
 #: data/goals.json:goals[hub_fly_5].text data/goals.json:goals[hub_fly_6].text data/objectives.json:objectives[hub_fly_2].text
 #: data/objectives.json:objectives[hub_fly_3].text data/objectives.json:objectives[hub_fly_4].text
 msgid "Fly to the next station"
@@ -10956,6 +10960,10 @@ msgstr "把火箭升级到 Mk III"
 #: data/goals.json:goals[drip_1].text
 msgid "Build a Drip watering robot"
 msgstr "建造一台 Drip 浇水机器人"
+
+#: data/goals.json:goals[base_5].text
+msgid "Upgrade the base to level 5"
+msgstr "将基地升到 5 级"
 
 #: data/goals.json:goals[hub_wake_6].text
 msgid "Wake station 6 of 6"
@@ -11185,10 +11193,6 @@ msgstr "让 15 个六角格达到繁茂"
 msgid "Get 20 hexes to Sustained"
 msgstr "让 20 个六角格达到稳定"
 
-#: data/goals.json:goals[base_4].text
-msgid "Upgrade the base to level 4"
-msgstr "将基地升到 4 级"
-
 #: data/goals.json:goals[stipend_5k].text
 msgid "Garden stipend: 5,000 cubes"
 msgstr "花园补贴：5,000 方块"
@@ -11216,10 +11220,6 @@ msgstr "花园补贴：10,000 方块"
 #: data/goals.json:goals[hexlv_5x25].text
 msgid "Get 25 hexes to Thriving"
 msgstr "让 25 个六角格达到繁茂"
-
-#: data/goals.json:goals[base_5].text
-msgid "Upgrade the base to level 5"
-msgstr "将基地升到 5 级"
 
 #: data/goals.json:goals[extras_retire].text
 msgid "Retire a robot to the nursery"
@@ -12366,10 +12366,6 @@ msgstr "下一个目标：二十个六角格。空气闻起来已经不一样了
 msgid "Upgrade the rocket to Mk II"
 msgstr "把火箭升级到 Mk II"
 
-#: data/objectives.json:objectives[hub_wake_4].text
-msgid "Wake station 4 of 6"
-msgstr "唤醒第 4 座站点(共 6 座)"
-
 #: data/objectives.json:objectives[base3].text
 msgid "Rebuild the base to level 3"
 msgstr "把基地重建到 3 级"
@@ -12381,6 +12377,10 @@ msgstr "升级页签。基地越强，就能带动越大的机器。"
 #: data/objectives.json:objectives[base3].lines
 msgid "One more base level, Lumi. Bigger machines need a stronger base."
 msgstr "再升一级基地，Lumi。更大的机器需要更强的基地。"
+
+#: data/objectives.json:objectives[hub_wake_4].text
+msgid "Wake station 4 of 6"
+msgstr "唤醒第 4 座站点(共 6 座)"
 
 #: data/outposts.json:levels[0].name
 msgid "Weigh Station"

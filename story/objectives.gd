@@ -610,6 +610,12 @@ func _resolve(t: Dictionary) -> Dictionary:
 	match str(t.get("to", "")):
 		"bench":
 			t["pos"] = _bench_pos()
+			var fb: Variant = field_bench()  # [v6pace] at a woken far base: its field bench by the pad
+			if fb is Vector3:
+				t["pos"] = fb
+			elif away_rocket() is Vector3:  # at a far base with no bench: the rocket home
+				t["pos"] = away_rocket()
+				t["fly_home"] = true
 		"depot":
 			t["pos"] = _depot_pos()
 		"bin":  # [v2guide]
@@ -638,8 +644,25 @@ func waypoint_target() -> Variant:
 		return tt.get("pos", null) if str(tt.get("kind", "")) in ["bench", "pad"] else null
 	var pos: Variant = step_target(current()).get("pos", null)
 	if pos == null and is_lost() and needs_home():  # [v3clear] lost on the way home: the beam stands on home (a place, owner #37)
-		pos = home_pos()
+		pos = away_rocket() if away_rocket() is Vector3 else home_pos()  # [v6pace] from a far base home is a rocket hop
 	return pos
+
+
+## [v6pace] The field bench of the woken far base Lumi is at (it works like the home one), else null.
+func field_bench() -> Variant:
+	var os_: OrbitSites = OrbitSites.of(world) if world else null
+	if os_ == null or os_.purpose == null:
+		return null
+	return os_.purpose.bench_point()
+
+
+## [v6pace] The rocket's spot while Lumi is at another hub than home (the way home is a hop, not a
+## walk), else null.
+func away_rocket() -> Variant:
+	var os_: OrbitSites = OrbitSites.of(world) if world else null
+	if os_ == null or os_.purpose == null or os_.purpose.site <= 0 or os_.rocket_spot == null or not os_.rocket_spot.visible:
+		return null
+	return os_.rocket_spot.global_position
 
 
 func _bench_pos() -> Variant:
@@ -902,7 +925,10 @@ func situation_hint(dt: float = 0.0) -> String:
 	var price: Dictionary = _step_price()
 	if not price.is_empty() and not GameState.can_afford_all(price):
 		return ListDetail.short_text(price)
-	if far and needs_home():
+	var bench_here: bool = field_bench() is Vector3 and str(step_target(current()).get("to", "")) == "bench"  # [v6pace]
+	if far and needs_home() and not bench_here:
+		if away_rocket() is Vector3:
+			return tr("The rocket waits on the pad. Home is first on its list.")  # [v6pace] a far base: fly home
 		return tr("Head home: follow the beam to the tall smoke.")
 	# Nothing to pick up nearby (away from home, on a cleaning step)
 	var home: Variant = home_pos()
