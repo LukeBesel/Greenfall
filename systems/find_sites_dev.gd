@@ -23,6 +23,8 @@ const REVEAL_STAND_M: float = 1.8
 const REVEAL_HOLD_S: float = 120.0
 const REVEAL_CAM_M: float = 3.6
 const PING_STAND_M: float = 4.5
+const QUIET_TICKS: int = 600
+const QUIET_TICK_S: float = 0.25
 const DEFAULT_CAM: String = "4.4,1.9,65"
 const DEFAULT_CAM_TURN_DEG: float = 65.0
 
@@ -96,6 +98,13 @@ static func _ping(so: SliceOrbit, find_id: String) -> void:
 	var node: Node3D = so.find_sites.show_cache(find_id)
 	_stand(so, node.global_position, DevHooks.get_f("find-shot-m", PING_STAND_M), DevHooks.has("find-shot-cam"))
 	print("[finds] ping %s at hex %d" % [find_id, cell])
+	# The detector's readout shares the one message line with the robot's talk: keep the line
+	# free so the shot shows the ping.
+	var tree: SceneTree = so.w.get_tree()
+	for k: int in QUIET_TICKS:
+		if Subtitles.current:
+			Subtitles.current.clear()
+		await tree.create_timer(QUIET_TICK_S).timeout
 
 
 ## Lumi `dist` m from `at` on free ground, facing it, and a camera of the shot's own looking at
