@@ -225,9 +225,9 @@ static func layout(roots: Array, view: Rect2, ignore_overlap: Callable = Callabl
 			out.append(_issue("clipped", c, r, why))
 		var par: Control = c.get_parent() as Control
 		if par is Container and not par is ScrollContainer and sp == null:
-			var pr: Rect2 = rect_of(par)
-			if r.size.x > pr.size.x + TOL or r.size.y > pr.size.y + TOL:
-				out.append(_issue("overflow", c, r, "%dx%d in a %dx%d %s" % [roundi(r.size.x), roundi(r.size.y), roundi(pr.size.x), roundi(pr.size.y), par.get_class()]))
+			# Own sizes, not screen rects: a button that grows a little on focus (UITheme.juice) is fine.
+			if c.size.x > par.size.x + TOL or c.size.y > par.size.y + TOL:
+				out.append(_issue("overflow", c, r, "%dx%d in a %dx%d %s" % [roundi(c.size.x), roundi(c.size.y), roundi(par.size.x), roundi(par.size.y), par.get_class()]))
 	for i: int in items.size():
 		var a: Control = items[i]
 		var ra: Rect2 = rects[i]

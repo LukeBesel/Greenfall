@@ -173,7 +173,18 @@ func open_panel() -> void:
 	var tw: Tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	tw.tween_property(self, "modulate:a", 1.0, 0.18)
 	tw.tween_property(_panel, "scale", Vector2.ONE, 0.22)
-	_tab_buttons[_tab].call_deferred("grab_focus")
+	_first_focus().call_deferred("grab_focus")  # [v6screens] Basics alone hides the tab row: focus its first row
+
+
+## [v6screens] Where the focus starts: the tab, or on Basics alone (no tab row) its first row.
+func _first_focus() -> Control:
+	if _more:
+		return _tab_buttons[_tab]
+	for c: Node in _pages[_tab].find_children("*", "Control", true, false):
+		var ctl: Control = c as Control
+		if ctl.focus_mode == Control.FOCUS_ALL and ctl.has_meta("row_ctl") and ctl.is_visible_in_tree():
+			return ctl
+	return _back
 
 
 func close_panel() -> void:
@@ -193,7 +204,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel") or event.is_action_pressed("pause"):
 		close_panel()
 		get_viewport().set_input_as_handled()
-	elif event.is_action_pressed("ui_tab_next") or event.is_action_pressed("ui_tab_prev"):
+	elif _more and (event.is_action_pressed("ui_tab_next") or event.is_action_pressed("ui_tab_prev")):  # [v6screens] Basics alone has no tab row to switch
 		var step: int = 1 if event.is_action_pressed("ui_tab_next") else -1
 		var i: int = wrapi(_tab + step, 0, TABS.size())
 		_tab_buttons[i].button_pressed = true
@@ -255,6 +266,8 @@ func _build_basics(p: VBoxContainer) -> void:
 	var more := Button.new()
 	more.text = tr("More settings  (sound, graphics, controls, accessibility)")
 	more.custom_minimum_size = Vector2(0, 44)
+	more.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART  # [v6screens] long in some languages
+	more.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	more.pressed.connect(func() -> void:
 		_set_more(true)
 		select_tab(1)
@@ -635,7 +648,9 @@ func _row(p: VBoxContainer, text: String, ctl: Control, hint: String = "", focus
 	lv.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	lv.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	hb.add_child(lv)
-	lv.add_child(UITheme.label(text, 17))
+	var tl: Label = UITheme.label(text, 17)
+	tl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART  # [v6screens] long names wrap instead of pushing the panel off a small screen
+	lv.add_child(tl)
 	if hint != "":
 		var h := UITheme.label(hint, 12, UITheme.MUTED)
 		h.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -644,6 +659,7 @@ func _row(p: VBoxContainer, text: String, ctl: Control, hint: String = "", focus
 	hb.add_child(ctl)
 	var f: Control = focus_ctl if focus_ctl else ctl
 	f.set_meta("row_ctl", true)
+	f.set_meta("own_focus_ring", true)  # [v6screens] the whole row lights up (tools/ui_audit.gd)
 	f.focus_entered.connect(func() -> void: row.add_theme_stylebox_override("panel", lit))
 	f.focus_exited.connect(func() -> void: row.add_theme_stylebox_override("panel", idle))
 
