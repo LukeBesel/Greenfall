@@ -131,6 +131,42 @@ func test_dropped_state_survives_save_and_load() -> void:
 		assert_eq(g.piece_alive[pid], 1)
 
 
+## The round trip's drop check failed now and then: an unseeded pick among small pieces hit the
+## piece cap before the volume that dirties the hex. drop_dirties says which picks do, and
+## pick_dirtying_drop only returns one that does, the same one for the same seed.
+func test_drop_dirties_predicts_what_the_field_does() -> void:
+	var hid: int = _first_junk_hex()
+	_clean_hex(hid)
+	var saved: Dictionary = field.to_dict()
+	for s: int in 40:
+		field.apply_dict(saved)
+		var r := RandomNumberGenerator.new()
+		r.seed = s
+		# Capped at 3 pieces: many of these picks are too small to dirty the hex.
+		var pids: PackedInt32Array = LedgerArc.pick_drop_pieces(field, hid, r, 0.045, 3, 3)
+		var want: bool = LedgerArc.drop_dirties(field, hid, pids)
+		field.revive_pieces(pids)
+		assert_eq(not field.is_clean(hid), want, "seed %d: the forecast matches the field" % s)
+
+
+func test_dirtying_drop_pick_always_dirties_and_repeats_for_a_seed() -> void:
+	var hid: int = _first_junk_hex()
+	_clean_hex(hid)
+	var cands: Array[int] = [hid]
+	var saved: Dictionary = field.to_dict()
+	for s: int in 40:
+		field.apply_dict(saved)
+		var r := RandomNumberGenerator.new()
+		r.seed = s
+		var drop: Dictionary = LedgerArc.pick_dirtying_drop(field, cands, r)
+		assert_eq(int(drop.get("hex", -1)), hid, "seed %d finds a drop" % s)
+		var again := RandomNumberGenerator.new()
+		again.seed = s
+		assert_eq(LedgerArc.pick_dirtying_drop(field, cands, again), drop, "seed %d picks the same pieces again" % s)
+		field.revive_pieces(drop.get("pieces", PackedInt32Array()))
+		assert_false(field.is_clean(hid), "seed %d: the hex is dirty after the drop" % s)
+
+
 func test_jammer_needs_drones_scales_and_persists_per_district() -> void:
 	var lg := _new_ledger()
 	for k: String in Currencies.IDS:  # [money]

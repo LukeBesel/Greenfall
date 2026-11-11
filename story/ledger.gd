@@ -397,6 +397,31 @@ static func pick_drop_pieces(field: HexField, hid: int, r: RandomNumberGenerator
 	return out
 
 
+## True when bringing `pids` back makes clean hex `hid` dirty again. A pick is capped at max_n
+## pieces, so one that lands among small pieces can fall short of that: the hex stays clean.
+static func drop_dirties(field: HexField, hid: int, pids: PackedInt32Array) -> bool:
+	if field.hex_hub[hid] != 0 or field.hex_total[hid] <= 0.0:
+		return false
+	var left: float = field.hex_left[hid]
+	for pid: int in pids:
+		if field.piece_alive[pid] == 0:
+			left += field.piece_vol[pid]
+	return 1.0 - minf(left, field.hex_total[hid]) / field.hex_total[hid] < field.clean_threshold
+
+
+## For checks that need a drop that surely dirties its hex: the first candidate, in order, with a
+## pick that does, drawn from `r` (seed it for the same answer every run). {} when there is none.
+static func pick_dirtying_drop(field: HexField, cands: Array[int], r: RandomNumberGenerator, tries: int = 8) -> Dictionary:
+	for c: int in cands:
+		for _k: int in tries:
+			var pids: PackedInt32Array = pick_drop_pieces(field, c, r)
+			if pids.is_empty():
+				break
+			if drop_dirties(field, c, pids):
+				return {"hex": c, "pieces": pids}
+	return {}
+
+
 func _ground(x: float, z: float) -> float:
 	return to_local((world.field as SphereField).terrain.ground(to_global(Vector3(x, 0.0, z)).normalized())).y
 
