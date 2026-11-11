@@ -40,7 +40,7 @@ static func for_site(site: Dictionary, terrain: SphereTerrain) -> YardKeepOut:
 	var pod: Array = SitePrefab.START_YARD_ANCHORS["pod"]
 	var pp: Vector3 = pod[0]
 	k.discs.append(Vector3(pp.x, pp.z, POD_CLEAR_M))
-	for d: Vector3 in CrashSite.furrow_discs():  # the trench the pod ploughed stays bare earth
+	for d: Vector3 in CrashSite.furrow_discs(CrashSite.YARD_YAW):  # the trench the pod ploughed stays bare earth
 		k.soft_discs.append(Vector3(pp.x + d.x, pp.z + d.y, d.z))
 	return k
 

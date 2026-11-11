@@ -51,3 +51,15 @@ func test_site_mends_on_upgrade() -> void:
 	assert_eq(site.stage, 3)
 	assert_true((site.pod.get_node("Planter") as Node3D).visible)
 	assert_false((site.pod.get_node("Smoke") as CPUParticles3D).emitting)
+
+
+func test_furrow_keep_off_discs_follow_the_crash_sites_turn() -> void:
+	var straight: Array[Vector3] = CrashSite.furrow_discs()
+	var turned: Array[Vector3] = CrashSite.furrow_discs(CrashSite.YARD_YAW)
+	assert_eq(straight.size(), turned.size())
+	var back: Vector3 = Basis(Vector3.UP, CrashSite.YARD_YAW) * Vector3(CrashSite.FROM_DIR.x, 0, CrashSite.FROM_DIR.z).normalized()
+	for d: Vector3 in turned:
+		var along: float = Vector2(d.x, d.y).dot(Vector2(back.x, back.z))
+		assert_almost_eq(Vector2(d.x, d.y).length(), along, 0.01, "each disc sits on the turned furrow's line")
+	var last: Vector3 = turned[turned.size() - 1]
+	assert_gt(Vector2(last.x, last.y).length() + last.z, CrashSite.FURROW_LEN, "the discs cover the furrow's tail")

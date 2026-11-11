@@ -761,8 +761,8 @@ func _place_pod() -> void:
 	if fire:
 		fire.queue_free()
 	var at: Vector3 = yard_point("pod")
-	var site: Node3D = CrashSite.attach(w, pod, at, 0.5)
-	site.global_basis = SphereGrid.frame(at.normalized()) * Basis(Vector3.UP, 0.5)
+	var site: Node3D = CrashSite.attach(w, pod, at, CrashSite.YARD_YAW)
+	site.global_basis = SphereGrid.frame(at.normalized()) * Basis(Vector3.UP, CrashSite.YARD_YAW)
 	EscapePod.set_open(pod, true, CrashSite.LEAN.x)
 	pod_body(pod)  # [v1yard] colliders that fit the model (it was one box round the fins and the open ramp)
 	w.set_meta("orbit_pod", site)

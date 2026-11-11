@@ -8,11 +8,11 @@ render_mode cull_back, diffuse_burley;
 uniform vec2 paver = vec2(0.3, 0.15);
 uniform float band_every = 5.45;
 uniform float band_w = 0.32;
-uniform vec3 clay : source_color = vec3(0.76, 0.43, 0.3);
-uniform vec3 buff : source_color = vec3(0.84, 0.68, 0.46);
-uniform vec3 sand : source_color = vec3(0.78, 0.72, 0.6);
-uniform vec3 stone : source_color = vec3(0.86, 0.83, 0.76);
-uniform vec3 joint : source_color = vec3(0.36, 0.3, 0.25);
+uniform vec3 clay : source_color = vec3(0.6, 0.29, 0.19);
+uniform vec3 buff : source_color = vec3(0.66, 0.47, 0.29);
+uniform vec3 sand : source_color = vec3(0.58, 0.5, 0.39);
+uniform vec3 stone : source_color = vec3(0.68, 0.64, 0.56);
+uniform vec3 joint : source_color = vec3(0.27, 0.22, 0.18);
 uniform float fresh = 1.0;  // 0: just laid over swept ground (dusty, pale); 1: washed and bright
 
 float hash(vec2 p) {
@@ -41,7 +41,7 @@ void fragment() {
 	col = mix(col, stone * (0.94 + 0.1 * slab), band);
 	float wear = hash(floor(m * 0.37)) * 0.5 + hash(floor(m * 1.3)) * 0.5;
 	col *= mix(0.9, 1.04, wear);
-	col = mix(mix(col, vec3(0.8, 0.74, 0.64), 0.35), col, fresh);
+	col = mix(mix(col, vec3(0.62, 0.56, 0.47), 0.35), col, fresh);
 	ALBEDO = col;
 	ROUGHNESS = mix(0.9, 0.72, fresh);
 	SPECULAR = 0.3;

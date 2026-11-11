@@ -96,17 +96,20 @@ const FURROW_LEN: float = 7.4
 const FURROW_HALF: Vector2 = Vector2(0.78, 0.36)
 const FURROW_LIP: float = 0.36
 const FURROW_SKIRT: float = 0.85  # from the trench's edge out to the foot of the lip
+## The crash site's turn on a start yard (radians about up, from the yard's own frame).
+const YARD_YAW: float = 0.5
 
 
-## Discs (x, z, radius; metres from the pod) over the furrow: loose junk keeps off them
-## (YardKeepOut), so the trench reads as ploughed earth and not as lumps under a litter carpet.
-static func furrow_discs() -> Array[Vector3]:
-	var back: Vector3 = Vector3(FROM_DIR.x, 0, FROM_DIR.z).normalized()
+## Discs (x, z, radius; metres from the pod) over the furrow of a crash site turned `yaw` about
+## up: loose junk keeps off them (YardKeepOut), so the trench reads as ploughed earth and not as
+## lumps under a litter carpet.
+static func furrow_discs(yaw: float = 0.0) -> Array[Vector3]:
+	var back: Vector3 = Basis(Vector3.UP, yaw) * Vector3(FROM_DIR.x, 0, FROM_DIR.z).normalized()
 	var out: Array[Vector3] = []
-	var n: int = 5
+	var n: int = 6
 	for i: int in n:
 		var t: float = float(i) / float(n - 1)
-		var c: Vector3 = back * lerpf(1.6, FURROW_LEN - 0.4, t)
+		var c: Vector3 = back * lerpf(1.6, FURROW_LEN, t)
 		out.append(Vector3(c.x, c.z, lerpf(FURROW_HALF.x, FURROW_HALF.y, t) + FURROW_SKIRT + 0.25))
 	return out
 
@@ -173,7 +176,8 @@ func _build_trench(back: Vector3, side: Vector3, rng: RandomNumberGenerator) -> 
 		var t: float = float(i) / float(sections)
 		var along: float = lerpf(-0.2, FURROW_LEN, t)
 		var fade: float = clampf((1.0 - t) * 4.0, 0.0, 1.0) * clampf(t * 10.0 + 0.4, 0.0, 1.0)
-		var half: float = lerpf(FURROW_HALF.x, FURROW_HALF.y, t) * rng.randf_range(0.9, 1.1)
+		var tail: float = clampf((1.0 - t) * 3.5, 0.0, 1.0)  # the last stretch: the trench shallows out and closes
+		var half: float = lerpf(FURROW_HALF.x, FURROW_HALF.y, t) * rng.randf_range(0.9, 1.1) * lerpf(0.12, 1.0, tail)
 		var mid: Vector3 = back * along + side * sin(t * 5.0) * 0.12
 		var row: Array = []
 		for sgn: float in [-1.0, 1.0]:
@@ -181,11 +185,11 @@ func _build_trench(back: Vector3, side: Vector3, rng: RandomNumberGenerator) -> 
 			var foot: Vector3 = mid + side * sgn * (half + FURROW_SKIRT * rng.randf_range(0.85, 1.1))
 			var top: Vector3 = mid + side * sgn * (half + 0.32 * rng.randf_range(0.8, 1.2)) + Vector3(0, lip, 0)
 			var inner: Vector3 = mid + side * sgn * half * 0.8 + Vector3(0, 0.1, 0)
-			var part: Array = [[foot + Vector3(0, 0.04, 0), soil], [top, crest.lightened(rng.randf_range(-0.08, 0.08))], [inner, scorch]]
+			var part: Array = [[foot + Vector3(0, 0.04, 0), soil], [top, crest.lightened(rng.randf_range(-0.08, 0.08))], [inner, soil.lerp(scorch, tail)]]
 			if sgn > 0.0:
 				part.reverse()
 			row.append_array(part)
-		row.insert(3, [mid + Vector3(0, 0.085, 0), floor_c])
+		row.insert(3, [mid + Vector3(0, 0.085, 0), soil.lerp(floor_c, tail)])
 		rows.append(row)
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)

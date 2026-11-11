@@ -11,6 +11,8 @@ const VARIANTS: int = 3
 const RANGE_M: float = 300.0
 const LEAF_PX: int = 256
 const LEAVES: int = 300
+const BED_FLOWERS: int = 7       # clumps in the verge at each tree's foot (stage 5)
+const FLOWER_RANGE_M: float = 110.0
 ## Crown size per stage (0-5) and how far the leaf colour leans to the pale green of new leaves.
 const GROW: Array[float] = [0.0, 0.0, 0.0, 0.74, 0.9, 1.0]
 const YOUNG: Array[float] = [0.0, 0.0, 0.0, 0.5, 0.15, 0.0]
@@ -40,6 +42,7 @@ func build(spots: Array[Vector2], seed_v: int, body: StaticBody3D, stats: Dictio
 	for v: int in VARIANTS:
 		trunks.append([])
 	var blooms: Array[Transform3D] = []
+	var bloom_cols: Array[Color] = []
 	for i: int in spots.size():
 		var p: Vector2 = spots[i]
 		var v: int = rng.randi() % VARIANTS
@@ -56,10 +59,14 @@ func build(spots: Array[Vector2], seed_v: int, body: StaticBody3D, stats: Dictio
 			_crown_xf.append(Transform3D(cb.scaled(Vector3(cs, cs * rng.randf_range(0.8, 0.95), cs)), xf * tip))
 			_crown_col.append(green.lightened(rng.randf_range(-0.1, 0.16)))
 			_crown_bloom.append(bloom.lightened(rng.randf_range(0.0, 0.2)) if bloom.a > 0.0 and rng.randf() < 0.8 else Color(0, 0, 0, 0))
-		for k: int in 3:
-			var a: float = rng.randf() * TAU
-			blooms.append(Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3.ONE * rng.randf_range(1.3, 1.9)),
-				Vector3(p.x, 0.07, p.y) + Vector3(cos(a), 0, sin(a)) * rng.randf_range(0.45, 0.8)))
+		var bed: Rect2 = OldTownGround.verge_rect(p).grow(-0.28)
+		var bed_col: int = rng.randi()
+		for k: int in BED_FLOWERS:
+			var q: Vector2 = bed.position + Vector2(rng.randf(), rng.randf()) * bed.size
+			if q.distance_to(p) < 0.42:
+				continue
+			blooms.append(Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3.ONE * rng.randf_range(0.75, 1.2)), Vector3(q.x, OldTownGround.VERGE_Y, q.y)))
+			bloom_cols.append(OldTownFlowers.colour(bed_col + k % 2, rng))
 		PropColliders.add_cyl(body, Vector3(p.x, 0.0, p.y), 0.18, 2.6)
 	count = spots.size()
 	var bark: StandardMaterial3D = _bark_material()
@@ -72,9 +79,7 @@ func build(spots: Array[Vector2], seed_v: int, body: StaticBody3D, stats: Dictio
 	leaf.shader = load("res://planets/verdance/sites/tree_leaves.gdshader")
 	leaf.set_shader_parameter("leaf_tex", leaf_texture())
 	_crown = CityOldTown.mmi_on(self, "TreeCanopy", cluster_mesh(), _crown_xf, _crown_col, leaf, true, RANGE_M)
-	var gaz: Array[Mesh] = PlantParts.variants("flower_gazania", 400)
-	if not gaz.is_empty():
-		_flowers = CityOldTown.mmi_on(self, "TreeFlowers", gaz[0], blooms, [], null, false, 160.0)
+	_flowers = CityOldTown.mmi_on(self, "TreeFlowers", OldTownFlowers.mesh(), blooms, bloom_cols, OldTownFlowers.material(), false, FLOWER_RANGE_M)
 	stats["trees"] = count
 	stats["tree_clusters"] = _crown_xf.size()
 

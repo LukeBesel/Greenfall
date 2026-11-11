@@ -11,7 +11,7 @@ uniform vec2 source = vec2(1.0, -2.5);
 uniform float water = 1.0;
 uniform vec3 shallow : source_color = vec3(0.2, 0.52, 0.64);
 uniform vec3 deep : source_color = vec3(0.07, 0.4, 0.55);
-uniform vec3 sky : source_color = vec3(0.6, 0.8, 1.0);
+uniform vec3 sky : source_color = vec3(0.46, 0.7, 0.96);
 uniform vec3 damp : source_color = vec3(0.13, 0.11, 0.1);
 
 varying vec2 m;
@@ -56,7 +56,7 @@ void fragment() {
 	float d = length(m - source);
 	float foam = smoothstep(4.2, 1.0, d + (noise(m * 2.6 - vec2(0.0, TIME * 1.5)) - 0.5) * 2.4) * water;
 	vec3 body = mix(shallow, deep, depth);
-	body = mix(body, sky, fres * 0.75);
+	body = mix(body, sky, fres * 0.6);
 	body = mix(body, vec3(0.94, 0.98, 1.0), foam * 0.75);
 	ALBEDO = mix(damp, body, pool);
 	ROUGHNESS = mix(0.32, 0.04, pool);

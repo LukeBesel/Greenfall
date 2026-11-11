@@ -148,7 +148,7 @@ func build(site: VerdanceSite) -> void:
 	ground = OldTownGround.new()
 	ground.name = "Ground"
 	add_child(ground)
-	ground.build(_site, station_key, station_rects + _rects)
+	ground.build(_site, station_key, station_rects + _rects, tree_spots)
 	stats.merge(ground.stats)
 	await BuildBudget.check("oldtown:lamps")
 	_build_lamp_glow()
