@@ -451,13 +451,15 @@ func _dev_spawn(id: String) -> void:
 			var p: Vector3 = n.global_position + fwd * float(DevHooks.get_f("egg-dist", 2.4)) + n.global_transform.basis.x * 1.5
 			world.patch.global_position = Vector3(p.x, n.global_position.y + 0.2, p.z)
 			world.patch.rotation.y = atan2(p.x - n.global_position.x, p.z - n.global_position.z)  # -Z (forward) toward the egg
-			world.cam.yaw = world.patch.rotation.y + DevHooks.get_f("egg-yaw", 0.4)
-			world.cam.snap()
+			var rig: Variant = world.get("cam")  # [v6flat] the flat rig's framing (none on the globe)
+			if rig:
+				rig.yaw = world.patch.rotation.y + DevHooks.get_f("egg-yaw", 0.4)
+				rig.snap()
 			if DevHooks.has("egg-use"):  # [eggs2] dev: --egg-use[=S] presses E on it S wall-clock s after start
 				_dev_use = e
-			if DevHooks.has("egg-cam"):  # [eggs2] dev: camera distance for egg shots
-				world.cam.distance = DevHooks.get_f("egg-cam", 4.0)
-				world.cam.snap()
+			if DevHooks.has("egg-cam") and rig:  # [eggs2] dev: camera distance for egg shots
+				rig.distance = DevHooks.get_f("egg-cam", 4.0)
+				rig.snap()
 			if DevHooks.has("egg-poke"):
 				get_tree().create_timer(DevHooks.get_f("egg-poke", 0.5), false).timeout.connect(func() -> void: _effect(e))
 			print("[eggs] spawned next to %s at %s (patch %s, yaw %.2f)" % [id, str(n.global_position), str(world.patch.global_position), world.patch.rotation.y])

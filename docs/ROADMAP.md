@@ -19,19 +19,18 @@ The round world is the game, and the work is on its first planet, Verdance. The 
 - **Reach:** every collectible and objective target stands on reachable ground (`--target-reach`).
 - **Map:** our own survey style with sprout, Lumi and plume glyphs. Travel is at the rocket (press E), not in the map. Glyphs no longer cover each other on the start hub, the map shows the HUD's planet %, and the round game has one system map.
 - **Text:** all 3,992 strings are translated into German, French, Spanish, Brazilian Portuguese, Simplified Chinese and Japanese. A test fails when an early-game string has no translation.
-- **Checks:** 967 unit tests, the save round trips (flat and `--orbit`) and the two-process orbit reload. The dev checks are listed in CLAUDE.md.
+- **Checks:** the unit tests, the save round trip on the globe (with the shared-state checks of `tools/shared_roundtrip.gd`) and the two-process orbit reload. The dev checks are listed in CLAUDE.md.
 
 **Open**
 - **Renderers:** every render so far used opengl3 (Compatibility). Nobody has looked at Verdance on Forward+ or Metal, and the owner's Mac perf run (`--quality=1 --perf`) is still to do.
 - **Look:** the globe's light was harsher than the flat world's and the pad looked pale at noon. v5look's warm-light and matte-pad pass is merged, but the owner has not seen it yet. A flat grey sea on the horizon and a thin straight line across the junk field were reported and not rechecked since the water fix (docs/QA_VERDANCE.md, 12 and 13).
-- **Hinterland:** roads stop at a hub's 345 m clearance instead of joining the town streets (v6qa list, item 4).
-- **Known glitches (v6qa, docs/QA_VERDANCE.md "Known-glitch list"):** still open: SCRIPT ERRORs seen once in a `--orbit` round trip, loading-screen RID errors on a headless continue, walk-in hub town build frames (25-45 ms for 3 s), the shader warm-up frame at the end of loading.
+- **Known glitches (v6qa, docs/QA_VERDANCE.md "Known-glitch list"):** still open: SCRIPT ERRORs seen once in a `--orbit` round trip and loading-screen RID errors on a headless continue (neither reproduced yet), and frames of 25-45 ms for about 3 s while a hub town builds as Lumi walks in. The shader warm-up is now batched but has not been measured on real hardware.
 - **Pacing (items 57, 58, 61, 63, 64):** the gates and the price curve are in (docs/BALANCE.md, "Verdance arc"; knobs in docs/ADJUSTING.md): the rocket comes with the first working robot, far hubs cost 600 / 6K / 24K / 96K / 380K, every restored hub multiplies sales by 2.5, the rocket tiers reach 3 / 5 / all hubs, six hubs at level 2 open the way onward, and the Mk V drive costs 500K. The full-arc measurement uses a stand-in for waking a far hub until v6hubs' hub chain is in; measure again after it lands. Other planets' prices are not rescaled to the new curve yet.
 - **Autoplay:** the bot follows the card now (it saves for a priced step and sees only the card's goal). Its stuck escapes are fixed (1 in 160 minutes, v5play).
 - **Bale clipping** into Lumi's body (item 22) has not been reproduced.
 - **Translations** are machine drafts. No native speaker has reviewed them. In-world shop signs (PAWN, SHOE REPAIR, OLD TOWN) stay English in every language.
 - **Map:** the survey's hex counts are a snapshot (they update on Re-survey), while its planet % is live.
-- **Flat world:** code that only the flat world used is still in the tree.
+- **Flat world:** removed (v6flat, docs/FLAT_REMOVAL.md): no flat mode, no `--flat`, no phase A prototype scenes. Old flat saves are copied into the round tree once at startup and migrate on load. The leftovers kept on purpose are listed at the end of docs/FLAT_REMOVAL.md.
 - **Other planets** on the globe (Ochre, Rime, Anvil, Tidewell) are out of focus: Haul Bugs find no path there, and the Ochre finale camera is blocked.
 - **Polish (item 56):** the v5 wave was still running when this was written (v5play: bugs from play-testing; v5look: light, sky, hinterland; v5load: loader, perf, saves). Add their results here.
 
