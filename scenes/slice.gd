@@ -138,8 +138,9 @@ func _launch(_to_hub: int) -> void:
 
 ## "" when the rocket can launch, else why not (no pad yet, or the energy cells are recharging).
 func rocket_status() -> String:
-	if not (hub.level >= 5 or DevHooks.has("rocket") or GameState.world.get("rocket_parked", false)):
-		return tr("Locked. Upgrade your base to level 5 to build the launch pad.")
+	var os_: OrbitSites = OrbitSites.of(self)  # [v6pace] the rocket's gate is data (Hub.rocket_open); once owned it travels with Lumi
+	if not (Hub.rocket_open(hub.level) or DevHooks.has("rocket") or GameState.world.get("rocket_parked", false) or (os_ != null and os_.rocket_unlocked())):
+		return Hub.rocket_lock_text(hub.level)
 	var left: float = RocketTiers.recharge_left()
 	if left > 0.0:
 		return tr("Energy cells recharging: %s. Rocket upgrades refill them faster.") % RocketTiers.fmt_time(left)

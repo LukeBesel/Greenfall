@@ -276,11 +276,19 @@ msgstr "ZUR  WAAGE  ◀"
 msgid "BALE  FEED"
 msgstr "BALLEN-ZUFUHR"
 
-#: automation/hub.gd:72
+#: automation/hub.gd:89
+msgid "Locked. Upgrade your base to level %d to build the launch pad."
+msgstr "Gesperrt. Bring deine Basis auf Stufe %d, um die Startrampe zu bauen."
+
+#: automation/hub.gd:90
+msgid "The rocket isn't ready yet. Keep following WREN's steps."
+msgstr "Die Rakete ist noch nicht bereit. Folge weiter WRENs Schritten."
+
+#: automation/hub.gd:170
 msgid "Hub upgraded: %s."
 msgstr "Basis verbessert: %s."
 
-#: automation/hub.gd:103
+#: automation/hub.gd:201
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr "Luftwäscher in Betrieb. Die Lüfter drehen mit einem langen, staubigen Seufzer an."
 
@@ -405,19 +413,19 @@ msgstr "ABHEBEN"
 msgid "Space / Esc  skip"
 msgstr "Leertaste / Esc  überspringen"
 
-#: automation/rocket_tiers.gd:51 ui/robot_card.gd:251
+#: automation/rocket_tiers.gd:56 ui/robot_card.gd:251
 msgid "Top tier"
 msgstr "Höchste Stufe"
 
-#: automation/rocket_tiers.gd:54
+#: automation/rocket_tiers.gd:59
 msgid "Needs the Rocket Cargo research"
 msgstr "Benötigt die Forschung Raketenfracht"
 
-#: automation/rocket_tiers.gd:56 systems/homeward.gd:508
+#: automation/rocket_tiers.gd:61 systems/homeward.gd:547
 msgid "Not enough cubes or parts"
 msgstr "Nicht genug Würfel oder Teile"
 
-#: automation/rocket_tiers.gd:69
+#: automation/rocket_tiers.gd:74
 msgid "Rocket upgraded: %s."
 msgstr "Rakete verbessert: %s."
 
@@ -793,31 +801,31 @@ msgstr "Hafenstadt"
 msgid "landmark"
 msgstr "Wahrzeichen"
 
-#: planet/sites/hub_plan.gd:254
+#: planet/sites/hub_plan.gd:258
 msgid "The recycling network grew: everything sells for x%s now."
 msgstr "Das Recycling-Netz ist gewachsen: Alles verkauft sich jetzt für x%s."
 
-#: planet/sites/hub_plan.gd:273
+#: planet/sites/hub_plan.gd:277
 msgid "Rocket piece: %s"
 msgstr "Raketenteil: %s"
 
-#: planet/sites/hub_plan.gd:295
+#: planet/sites/hub_plan.gd:299
 msgid "+%s Cubes"
 msgstr "+%s Würfel"
 
-#: planet/sites/hub_plan.gd:297
+#: planet/sites/hub_plan.gd:301
 msgid "+%d Parts"
 msgstr "+%d Teile"
 
-#: planet/sites/hub_plan.gd:299
+#: planet/sites/hub_plan.gd:303
 msgid "+%d Seeds"
 msgstr "+%d Samen"
 
-#: planet/sites/hub_plan.gd:303
+#: planet/sites/hub_plan.gd:307
 msgid "New: %s"
 msgstr "Neu: %s"
 
-#: planet/sites/hub_plan.gd:307
+#: planet/sites/hub_plan.gd:311
 msgid "New Lumi design: %s"
 msgstr "Neues Lumi-Design: %s"
 
@@ -1399,19 +1407,215 @@ msgstr "Flotte %d / %d"
 msgid "Building a %s, %d%%"
 msgstr "Baut gerade: %s, %d%%"
 
-#: robots/sphere/command_overlay.gd:39
-msgid "Y: role · Hold A: paint · Hold X: erase · Left stick: move"
-msgstr "Y: Rolle · A halten: malen · X halten: löschen · Linker Stick: bewegen"
+#: robots/sphere/command_overlay.gd:17
+msgid "Cleaners"
+msgstr "Putzer"
 
-#: robots/sphere/command_overlay.gd:40
-msgid "Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi"
-msgstr "Tab: Rolle · Links: malen · Rechts: löschen · Mitte: Roboter schicken · E: zurück zu Lumi"
+#: robots/sphere/command_overlay.gd:17
+msgid "Haulers"
+msgstr "Fahrer"
 
-#: robots/sphere/command_overlay.gd:41
-msgid "%s zone"
-msgstr "Zone: %s"
+#: robots/sphere/command_overlay.gd:17
+msgid "Planters"
+msgstr "Pflanzer"
 
-#: robots/sphere/sphere_fleet.gd:53
+#: robots/sphere/command_overlay.gd:17
+msgid "Waterers"
+msgstr "Gießer"
+
+#: robots/sphere/command_overlay.gd:17
+msgid "Skimmers"
+msgstr "Abschöpfer"
+
+#: robots/sphere/command_overlay.gd:18
+msgid "Paint the ground you want cleaned first."
+msgstr "Male den Boden an, der zuerst sauber werden soll."
+
+#: robots/sphere/command_overlay.gd:18
+msgid "Paint where to plant."
+msgstr "Male an, wo gepflanzt wird."
+
+#: robots/sphere/command_overlay.gd:19
+msgid "Paint where to water."
+msgstr "Male an, wo gegossen wird."
+
+#: robots/sphere/command_overlay.gd:19
+msgid "Paint the water to skim first."
+msgstr "Male das Wasser an, das zuerst abgeschöpft wird."
+
+#: robots/sphere/command_overlay.gd:99
+msgid "ROBOT COMMAND"
+msgstr "ROBOTER-ZENTRALE"
+
+#: robots/sphere/command_overlay.gd:102
+msgid "No robots here yet."
+msgstr "Hier gibt es noch keine Roboter."
+
+#: robots/sphere/command_overlay.gd:103 data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
+msgid "Build one at the workbench."
+msgstr "Bau einen an der Werkbank."
+
+#: robots/sphere/command_overlay.gd:105
+msgid "%d robot"
+msgid_plural "%d robots"
+msgstr[0] "%d Roboter"
+msgstr[1] "%d Roboter"
+
+#: robots/sphere/command_overlay.gd:107
+msgid "About %d hexes an hour"
+msgstr "Etwa %d Hexfelder pro Stunde"
+
+#: robots/sphere/command_overlay.gd:121
+msgid "%d working"
+msgstr "%d arbeiten"
+
+#: robots/sphere/command_overlay.gd:123
+msgid "%d working, %d waiting"
+msgstr "%d arbeiten, %d warten"
+
+#: robots/sphere/command_overlay.gd:125
+msgid "%d waiting"
+msgstr "%d warten"
+
+#: robots/sphere/command_overlay.gd:129 robots/sphere/crew_talk.gd:71 robots/sphere/crew_talk.gd:75
+msgid "Bales are piling up. Build a Haul Bug."
+msgstr "Die Ballen stapeln sich. Bau einen Haul Bug."
+
+#: robots/sphere/command_overlay.gd:138
+msgid "Good! Your robots will work here first."
+msgstr "Gut! Deine Roboter arbeiten zuerst hier."
+
+#: robots/sphere/command_overlay.gd:139
+msgid "Hold A: paint   Hold X: erase   %s: back"
+msgstr "A halten: malen   X halten: löschen   %s: zurück"
+
+#: robots/sphere/command_overlay.gd:140
+msgid "Left mouse: paint   Right mouse: erase   %s: back"
+msgstr "Linke Maustaste: malen   Rechte Maustaste: löschen   %s: zurück"
+
+#: robots/sphere/command_overlay.gd:142
+msgid "Y: next job"
+msgstr "Y: nächste Aufgabe"
+
+#: robots/sphere/command_overlay.gd:142
+msgid "Tab: next job"
+msgstr "Tab: nächste Aufgabe"
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Cleaning this hex."
+msgstr "Ich räume dieses Hexfeld."
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Planting here."
+msgstr "Ich pflanze hier."
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Watering the plants."
+msgstr "Ich gieße die Pflanzen."
+
+#: robots/sphere/crew_talk.gd:21
+msgid "Skimming junk off the lake."
+msgstr "Ich schöpfe Müll vom See."
+
+#: robots/sphere/crew_talk.gd:23
+msgid "No dirty ground left around this base."
+msgstr "Rund um diese Basis ist alles sauber."
+
+#: robots/sphere/crew_talk.gd:24
+msgid "My zone is done. Paint more ground for me."
+msgstr "Meine Zone ist fertig. Male mir mehr Boden an."
+
+#: robots/sphere/crew_talk.gd:25
+msgid "No bales to carry right now."
+msgstr "Gerade gibt es keine Ballen zu tragen."
+
+#: robots/sphere/crew_talk.gd:26
+msgid "No clean ground to plant."
+msgstr "Kein sauberer Boden zum Pflanzen."
+
+#: robots/sphere/crew_talk.gd:27
+msgid "Out of seeds."
+msgstr "Keine Samen mehr."
+
+#: robots/sphere/crew_talk.gd:28
+msgid "Nothing to water yet. Plant something first."
+msgstr "Noch nichts zu gießen. Pflanz erst etwas."
+
+#: robots/sphere/crew_talk.gd:29
+msgid "No water nearby to fill my tank."
+msgstr "Kein Wasser in der Nähe für meinen Tank."
+
+#: robots/sphere/crew_talk.gd:30
+msgid "No junk on the lakes here."
+msgstr "Hier schwimmt kein Müll auf den Seen."
+
+#: robots/sphere/crew_talk.gd:31
+msgid "I can't find a way there. Trying another spot."
+msgstr "Ich finde keinen Weg dorthin. Ich versuche eine andere Stelle."
+
+#: robots/sphere/crew_talk.gd:68
+msgid "Hello! Looking around."
+msgstr "Hallo! Ich schau mich um."
+
+#: robots/sphere/crew_talk.gd:72
+msgid "On my way to work."
+msgstr "Ich fahre zur Arbeit."
+
+#: robots/sphere/crew_talk.gd:78
+msgid "Fetching a bale."
+msgstr "Ich hole einen Ballen."
+
+#: robots/sphere/crew_talk.gd:80
+msgid "Carrying bales home."
+msgstr "Ich bringe Ballen nach Hause."
+
+#: robots/sphere/crew_talk.gd:82
+msgid "Tipping junk into the baler."
+msgstr "Ich kippe Müll in die Ballenpresse."
+
+#: robots/sphere/crew_talk.gd:84
+msgid "Filling my water tank."
+msgstr "Ich fülle meinen Wassertank."
+
+#: robots/sphere/crew_talk.gd:88
+msgid "Looking for work."
+msgstr "Ich suche Arbeit."
+
+#: robots/sphere/crew_talk.gd:94
+msgid "%s the %s: %s"
+msgstr "%s (%s): %s"
+
+#: robots/sphere/crew_talk.gd:120
+msgid "No robots here yet"
+msgstr "Noch keine Roboter hier"
+
+#: robots/sphere/crew_talk.gd:122
+msgid "%d robot working here"
+msgid_plural "%d robots working here"
+msgstr[0] "%d Roboter arbeitet hier"
+msgstr[1] "%d Roboter arbeiten hier"
+
+#: robots/sphere/crew_talk.gd:124
+msgid "%s, about %d hexes an hour"
+msgstr "%s, etwa %d Hexfelder pro Stunde"
+
+#: robots/sphere/crew_talk.gd:135
+msgid "While you were away, your robots here cleaned %d hex."
+msgid_plural "While you were away, your robots here cleaned %d hexes."
+msgstr[0] "Während du weg warst, haben deine Roboter hier %d Hexfeld geräumt."
+msgstr[1] "Während du weg warst, haben deine Roboter hier %d Hexfelder geräumt."
+
+#: robots/sphere/crew_talk.gd:137
+msgid "While you were away, your robots here earned %s cubes."
+msgstr "Während du weg warst, haben deine Roboter hier %s Würfel verdient."
+
+#: robots/sphere/crew_talk.gd:138
+msgid "While you were away, your robots here cleaned %d hex and earned %s cubes."
+msgid_plural "While you were away, your robots here cleaned %d hexes and earned %s cubes."
+msgstr[0] "Während du weg warst, haben deine Roboter hier %d Hexfeld geräumt und %s Würfel verdient."
+msgstr[1] "Während du weg warst, haben deine Roboter hier %d Hexfelder geräumt und %s Würfel verdient."
+
+#: robots/sphere/sphere_fleet.gd:57
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s zusammengebaut. Er schaut sich um und legt los."
 
@@ -1419,11 +1623,7 @@ msgstr "%s %s zusammengebaut. Er schaut sich um und legt los."
 msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
 msgstr "Geh zur Rakete auf der Startrampe und drück E, um dein Ziel zu wählen."
 
-#: scenes/slice.gd:142
-msgid "Locked. Upgrade your base to level 5 to build the launch pad."
-msgstr "Gesperrt. Bring deine Basis auf Stufe 5, um die Startrampe zu bauen."
-
-#: scenes/slice.gd:145 ui/rockets_panel.gd:39
+#: scenes/slice.gd:146 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Energiezellen laden: %s. Raketen-Upgrades füllen sie schneller."
 
@@ -1439,11 +1639,11 @@ msgstr "E   Werkbank reparieren"
 msgid "E   Open the workbench"
 msgstr "E   Werkbank öffnen"
 
-#: scenes/slice_orbit.gd:997
+#: scenes/slice_orbit.gd:1000
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Upgrades brauchen eine Werkbank. Zurück zur Basis."
 
-#: scenes/slice_orbit.gd:1097
+#: scenes/slice_orbit.gd:1100
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Werkbank repariert. Drück dort E, um Würfel für Upgrades auszugeben."
 
@@ -2606,87 +2806,91 @@ msgstr "Prüfung gewonnen, %d zu %d! Der Ledger stempelt GENEHMIGT. %s"
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "Die Drohne hat die Prüfung gewonnen, %d zu %d. Ein Trinkgeld gab's trotzdem: +%s Würfel."
 
-#: systems/homeward.gd:147
+#: systems/homeward.gd:153
+msgid "Wake %d old stations on %s to level %d (%d so far)"
+msgstr "Weck %d alte Stationen auf %s bis Stufe %d (bisher %d)"
+
+#: systems/homeward.gd:155
 msgid "Restore %s to %d%% (%d%%) or get a base to level %d"
 msgstr "Stelle %s zu %d%% (%d%%) wieder her oder bring eine Basis auf Stufe %d"
 
-#: systems/homeward.gd:148
+#: systems/homeward.gd:156
 msgid "Restore %s to %d%% (%d%%)"
 msgstr "Stelle %s zu %d%% (%d%%) wieder her"
 
-#: systems/homeward.gd:155
+#: systems/homeward.gd:163
 msgid "Restore another planet to %d%% (best %d%%)"
 msgstr "Stelle einen weiteren Planeten zu %d%% wieder her (bestes %d%%)"
 
-#: systems/homeward.gd:206
+#: systems/homeward.gd:245
 msgid "Needs %s: found on %s"
 msgstr "Braucht %s: zu finden auf %s"
 
-#: systems/homeward.gd:351
+#: systems/homeward.gd:390
 msgid "New tech: %s. %s"
 msgstr "Neue Technik: %s. %s"
 
-#: systems/homeward.gd:398
+#: systems/homeward.gd:437
 msgid "Needs the %s drive"
 msgstr "Braucht den %s-Antrieb"
 
-#: systems/homeward.gd:400
+#: systems/homeward.gd:439
 msgid "No chart yet: restore %s to %d%%"
 msgstr "Noch keine Karte: Stelle %s zu %d%% wieder her"
 
-#: systems/homeward.gd:494
+#: systems/homeward.gd:533
 msgid "The Homeward rocket is built"
 msgstr "Die Heimkehr-Rakete ist gebaut"
 
-#: systems/homeward.gd:497 systems/museum.gd:117
+#: systems/homeward.gd:536 systems/museum.gd:117
 msgid "The Cradle has to answer first (Cradle Returns)"
 msgstr "Die Cradle muss zuerst antworten (Cradle-Rückkehr)"
 
-#: systems/homeward.gd:502
+#: systems/homeward.gd:541
 msgid "Needs %d planet relics (%d)"
 msgstr "Braucht %d Planetenrelikte (%d)"
 
-#: systems/homeward.gd:504
+#: systems/homeward.gd:543
 msgid "Restore every planet first (%d%%)"
 msgstr "Stelle zuerst jeden Planeten wieder her (%d%%)"
 
-#: systems/homeward.gd:506
+#: systems/homeward.gd:545
 msgid "Build it at Verdance's Cradle Returns"
 msgstr "Baue sie an Verdances Cradle-Rückkehr"
 
-#: systems/homeward.gd:522
+#: systems/homeward.gd:561
 msgid "Rocket drive built: %s."
 msgstr "Raketenantrieb gebaut: %s."
 
-#: systems/homeward_director.gd:259
+#: systems/homeward_director.gd:277
 msgid "Intercepted: %s"
 msgstr "Abgefangen: %s"
 
-#: systems/homeward_director.gd:266
+#: systems/homeward_director.gd:284
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: systems/homeward_director.gd:276
+#: systems/homeward_director.gd:294
 msgid "%s is restored. System: %d%%."
 msgstr "%s ist wiederhergestellt. System: %d%%."
 
-#: systems/homeward_director.gd:279
+#: systems/homeward_director.gd:297
 msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
 msgstr "Relikt: %s. Erbstück-Wahl +1 (Archenbrücke)."
 
-#: systems/homeward_director.gd:286
+#: systems/homeward_director.gd:304
 msgid "Every planet in the system is alive. Go back to Verdance's Cradle Returns and build the Mk VII Homeward rocket."
 msgstr "Jeder Planet im System lebt. Kehre zu Verdances Cradle-Rückkehr zurück und baue die Mk-VII-Heimkehr-Rakete."
 
-#: systems/homeward_director.gd:461
+#: systems/homeward_director.gd:479
 msgid "E   launch home"
 msgstr "E   nach Hause starten"
 
-#: systems/homeward_director.gd:461
+#: systems/homeward_director.gd:479
 msgid "E   plant the last seed"
 msgstr "E   den letzten Samen pflanzen"
 
-#: systems/homeward_director.gd:472
+#: systems/homeward_director.gd:490
 msgid "The last seed is in the ground. Everything is ready. Press E again here to launch home."
 msgstr "Der letzte Samen ist in der Erde. Alles ist bereit. Drück hier noch einmal E, um nach Hause zu starten."
 
@@ -5751,17 +5955,9 @@ msgstr "Zellen geladen und bereit. Wähl eine Basis als Ziel."
 msgid "Not built yet"
 msgstr "Noch nicht gebaut"
 
-#: ui/rockets_panel.gd:46
-msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Upgrades tab."
-msgstr "Die Startrampe braucht eine Basis der Stufe 5 (deine hat Stufe %d). Verbessere die Basis im Upgrades-Tab."
-
 #: ui/rockets_panel.gd:48
 msgid "Rockets to the rest of Verdance are in the full game. The demo stays in the first district."
 msgstr "Raketen zum Rest von Verdance gibt es im vollen Spiel. Die Demo bleibt im ersten Bezirk."
-
-#: ui/rockets_panel.gd:60
-msgid "The rocket lands on the pad when the base reaches level 5."
-msgstr "Die Rakete landet auf der Rampe, sobald die Basis Stufe 5 erreicht."
 
 #: ui/rockets_panel.gd:64
 msgid "NEARBY BASES"
@@ -7744,10 +7940,6 @@ msgstr "In der Versunkenen Stadt pflanzen."
 #: data/codex.json:plants.marsh_mint.desc
 msgid "Mint that does not mind wet feet. The drained streets smell of it on warm evenings."
 msgstr "Minze, der nasse Füße nichts ausmachen. An warmen Abenden duften die trockengelegten Straßen danach."
-
-#: data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
-msgid "Build one at the workbench."
-msgstr "Bau einen an der Werkbank."
 
 #: data/codex.json:robots.scoopie.desc
 msgid "A small, earnest cleaner with one scoop arm and a lot of enthusiasm. It hums when it finds a good pile."
@@ -10789,10 +10981,6 @@ msgstr "Hebekraft Stufe 1"
 msgid "Clean your first hex"
 msgstr "Räum dein erstes Hexfeld"
 
-#: data/goals.json:goals[perfect_1].text
-msgid "Make a perfect bale"
-msgstr "Press einen perfekten Ballen"
-
 #: data/goals.json:goals[upgrades_5].text
 msgid "Buy 5 upgrades"
 msgstr "Kauf 5 Upgrades"
@@ -10800,6 +10988,110 @@ msgstr "Kauf 5 Upgrades"
 #: data/goals.json:goals[cash_10].text
 msgid "Sell 10 bales"
 msgstr "Verkauf 10 Ballen"
+
+#: data/goals.json:goals[hex_3].text data/objectives.json:objectives[hex3].text
+msgid "Clean 3 hexes"
+msgstr "Räum 3 Hexfelder"
+
+#: data/goals.json:goals[earn_1k].text
+msgid "Earn 1,000 cubes"
+msgstr "Verdiene 1.000 Würfel"
+
+#: data/goals.json:goals[scoopie_1].text
+msgid "Build a Scoopie"
+msgstr "Bau einen Scoopie"
+
+#: data/goals.json:goals[zone_1].text
+msgid "Give a robot a work zone"
+msgstr "Gib einem Roboter eine Arbeitszone"
+
+#: data/goals.json:goals[earn_3k].text
+msgid "Earn 3,000 cubes"
+msgstr "Verdiene 3.000 Würfel"
+
+#: data/goals.json:goals[hex_5].text
+msgid "Clean 5 hexes"
+msgstr "Räum 5 Hexfelder"
+
+#: data/goals.json:goals[seeds].text
+msgid "Find the seed tin"
+msgstr "Finde die Samendose"
+
+#: data/goals.json:goals[plant_5].text
+msgid "Plant the Maker seed"
+msgstr "Pflanze den Erbauer-Samen"
+
+#: data/goals.json:goals[hex_7].text
+msgid "Clean 7 hexes"
+msgstr "Räum 7 Hexfelder"
+
+#: data/goals.json:goals[hex_10].text data/objectives.json:objectives[hex10].text data/radio.json:songs[verdance_sweep].hint
+msgid "Clean 10 hexes"
+msgstr "10 Hexfelder räumen"
+
+#: data/goals.json:goals[base_2].text
+msgid "Upgrade the base to level 2"
+msgstr "Verbessere die Basis auf Stufe 2"
+
+#: data/goals.json:goals[haulbug_1].text data/objectives.json:objectives[haul].text
+msgid "Build a Haul Bug"
+msgstr "Bau einen Haul Bug"
+
+#: data/goals.json:goals[research_1].text data/objectives.json:objectives[research1].text
+msgid "Finish a research project"
+msgstr "Schließ ein Forschungsprojekt ab"
+
+#: data/goals.json:goals[bales_20].text
+msgid "Robots press 20 bales"
+msgstr "Roboter pressen 20 Ballen"
+
+#: data/goals.json:goals[hex_12].text
+msgid "Clean 12 hexes"
+msgstr "Räum 12 Hexfelder"
+
+#: data/goals.json:goals[hexlv_2].text
+msgid "Get a hex to Planted"
+msgstr "Bring ein Hexfeld auf Bepflanzt"
+
+#: data/goals.json:goals[hex_15].text
+msgid "Clean 15 hexes"
+msgstr "Räum 15 Hexfelder"
+
+#: data/goals.json:goals[hex_17].text
+msgid "Clean 17 hexes"
+msgstr "Räum 17 Hexfelder"
+
+#: data/goals.json:goals[hex_20].text data/objectives.json:objectives[hex20].text
+msgid "Clean 20 hexes"
+msgstr "Räum 20 Hexfelder"
+
+#: data/goals.json:goals[base_3].text
+msgid "Upgrade the base to level 3"
+msgstr "Verbessere die Basis auf Stufe 3"
+
+#: data/goals.json:goals[seedling_1].text
+msgid "Build a Seedling planter"
+msgstr "Bau einen Seedling-Pflanzer"
+
+#: data/goals.json:goals[plant_25].text
+msgid "Plant 25 seeds"
+msgstr "Pflanz 25 Samen"
+
+#: data/goals.json:goals[drip_1].text
+msgid "Build a Drip watering robot"
+msgstr "Bau einen Drip-Gießroboter"
+
+#: data/goals.json:goals[home_drive_5].text
+msgid "Build the Mk V Orbital drive"
+msgstr "Baue den Mk-V-Orbitalantrieb"
+
+#: data/goals.json:goals[home_land_1].text
+msgid "Fly to another planet"
+msgstr "Fliege zu einem anderen Planeten"
+
+#: data/goals.json:goals[perfect_1].text
+msgid "Make a perfect bale"
+msgstr "Press einen perfekten Ballen"
 
 #: data/goals.json:goals[compartment_3].text
 msgid "Chest Size level 3"
@@ -10809,25 +11101,9 @@ msgstr "Brustfachgröße Stufe 3"
 msgid "Find a memory shard"
 msgstr "Finde einen Erinnerungssplitter"
 
-#: data/goals.json:goals[hex_3].text data/objectives.json:objectives[hex3].text
-msgid "Clean 3 hexes"
-msgstr "Räum 3 Hexfelder"
-
 #: data/goals.json:goals[parts_2].text
 msgid "Dig up 2 robot parts"
 msgstr "Grab 2 Roboterteile aus"
-
-#: data/goals.json:goals[earn_1k].text
-msgid "Earn 1,000 cubes"
-msgstr "Verdiene 1.000 Würfel"
-
-#: data/goals.json:goals[research_1].text data/objectives.json:objectives[research1].text
-msgid "Finish a research project"
-msgstr "Schließ ein Forschungsprojekt ab"
-
-#: data/goals.json:goals[hex_5].text
-msgid "Clean 5 hexes"
-msgstr "Räum 5 Hexfelder"
 
 #: data/goals.json:goals[lift_2].text
 msgid "Lift Strength level 2"
@@ -10836,14 +11112,6 @@ msgstr "Hebekraft Stufe 2"
 #: data/goals.json:goals[upgrades_12].text
 msgid "Buy 12 upgrades"
 msgstr "Kauf 12 Upgrades"
-
-#: data/goals.json:goals[earn_3k].text
-msgid "Earn 3,000 cubes"
-msgstr "Verdiene 3.000 Würfel"
-
-#: data/goals.json:goals[hex_7].text
-msgid "Clean 7 hexes"
-msgstr "Räum 7 Hexfelder"
 
 #: data/goals.json:goals[pet_cat].text
 msgid "Pet a stray cat"
@@ -10857,37 +11125,9 @@ msgstr "Schließ 4 Forschungsprojekte ab"
 msgid "Buy 20 upgrades"
 msgstr "Kauf 20 Upgrades"
 
-#: data/goals.json:goals[hex_10].text data/objectives.json:objectives[hex10].text data/radio.json:songs[verdance_sweep].hint
-msgid "Clean 10 hexes"
-msgstr "10 Hexfelder räumen"
-
-#: data/goals.json:goals[base_2].text
-msgid "Upgrade the base to level 2"
-msgstr "Verbessere die Basis auf Stufe 2"
-
-#: data/goals.json:goals[scoopie_1].text
-msgid "Build a Scoopie"
-msgstr "Bau einen Scoopie"
-
-#: data/goals.json:goals[zone_1].text
-msgid "Give a robot a work zone"
-msgstr "Gib einem Roboter eine Arbeitszone"
-
-#: data/goals.json:goals[haulbug_1].text data/objectives.json:objectives[haul].text
-msgid "Build a Haul Bug"
-msgstr "Bau einen Haul Bug"
-
-#: data/goals.json:goals[bales_20].text
-msgid "Robots press 20 bales"
-msgstr "Roboter pressen 20 Ballen"
-
 #: data/goals.json:goals[scoopie_2].text
 msgid "Run 2 Scoopies"
 msgstr "Lass 2 Scoopies laufen"
-
-#: data/goals.json:goals[hex_12].text
-msgid "Clean 12 hexes"
-msgstr "Räum 12 Hexfelder"
 
 #: data/goals.json:goals[upgrades_25].text
 msgid "Buy 25 upgrades"
@@ -10900,22 +11140,6 @@ msgstr "Schließ 6 Forschungsprojekte ab"
 #: data/goals.json:goals[robots_4].text
 msgid "Build 4 robots"
 msgstr "Bau 4 Roboter"
-
-#: data/goals.json:goals[hex_15].text
-msgid "Clean 15 hexes"
-msgstr "Räum 15 Hexfelder"
-
-#: data/goals.json:goals[seeds].text
-msgid "Find the seed tin"
-msgstr "Finde die Samendose"
-
-#: data/goals.json:goals[plant_5].text
-msgid "Plant the Maker seed"
-msgstr "Pflanze den Erbauer-Samen"
-
-#: data/goals.json:goals[hexlv_2].text
-msgid "Get a hex to Planted"
-msgstr "Bring ein Hexfeld auf Bepflanzt"
 
 #: data/goals.json:goals[earn_10k].text
 msgid "Earn 10,000 cubes"
@@ -10933,10 +11157,6 @@ msgstr "Lies 2 Erinnerungssplitter"
 msgid "Zone 6 hexes for your crews"
 msgstr "Weise deinen Crews 6 Hexfelder zu"
 
-#: data/goals.json:goals[hex_17].text
-msgid "Clean 17 hexes"
-msgstr "Räum 17 Hexfelder"
-
 #: data/goals.json:goals[research_8].text
 msgid "Finish 8 research projects"
 msgstr "Schließ 8 Forschungsprojekte ab"
@@ -10952,10 +11172,6 @@ msgstr "Recycle 5 Ballen"
 #: data/goals.json:goals[hexlv_3].text
 msgid "Get a hex to Growing"
 msgstr "Bring ein Hexfeld auf Wachsend"
-
-#: data/goals.json:goals[hex_20].text data/objectives.json:objectives[hex20].text
-msgid "Clean 20 hexes"
-msgstr "Räum 20 Hexfelder"
 
 #: data/goals.json:goals[skimmer_1].text
 msgid "Build a Skimmer for the lake"
@@ -10981,17 +11197,9 @@ msgstr "Räum 28 Hexfelder"
 msgid "Buy 40 upgrades"
 msgstr "Kauf 40 Upgrades"
 
-#: data/goals.json:goals[seedling_1].text
-msgid "Build a Seedling planter"
-msgstr "Bau einen Seedling-Pflanzer"
-
 #: data/goals.json:goals[hex_30].text
 msgid "Clean 30 hexes (lake too)"
 msgstr "Räum 30 Hexfelder (auch im See)"
-
-#: data/goals.json:goals[base_3].text
-msgid "Upgrade the base to level 3"
-msgstr "Verbessere die Basis auf Stufe 3"
 
 #: data/goals.json:goals[extras_radio].text
 msgid "Pick a song on the base radio"
@@ -11000,14 +11208,6 @@ msgstr "Wähl ein Lied im Basisradio"
 #: data/goals.json:goals[builder_1].text
 msgid "Style a robot in the Locker"
 msgstr "Gestalte einen Roboter im Spind"
-
-#: data/goals.json:goals[plant_25].text
-msgid "Plant 25 seeds"
-msgstr "Pflanz 25 Samen"
-
-#: data/goals.json:goals[drip_1].text
-msgid "Build a Drip watering robot"
-msgstr "Bau einen Drip-Gießroboter"
 
 #: data/goals.json:goals[pollinator].text
 msgid "Research Pollinator Survey"
@@ -11345,14 +11545,6 @@ msgstr "Bring hier 25 Hexfelder auf Wachsend"
 msgid "Call the Cradle home"
 msgstr "Hol die Cradle nach Hause"
 
-#: data/goals.json:goals[home_drive_5].text
-msgid "Build the Mk V Orbital drive"
-msgstr "Baue den Mk-V-Orbitalantrieb"
-
-#: data/goals.json:goals[home_land_1].text
-msgid "Fly to another planet"
-msgstr "Fliege zu einem anderen Planeten"
-
 #: data/goals.json:goals[home_restore_2].text
 msgid "Restore a second planet"
 msgstr "Zweiten Planeten wiederherstellen"
@@ -11464,6 +11656,10 @@ msgstr "Tiere sind eingezogen"
 #: data/homeward.json:planets[verdance].name data/planets.json:verdance.name data/telescope.json:planets_default[verdance].name
 msgid "Verdance"
 msgstr "Verdance"
+
+#: data/homeward.json:planets[verdance].leave.toast
+msgid "Six stations awake, Lumi. Their robots can look after Verdance now."
+msgstr "Sechs Stationen sind wach, Lumi. Ihre Roboter kümmern sich jetzt um Verdance."
 
 #: data/homeward.json:planets[ochre].name data/planets.json:ochre.name data/telescope.json:planets_default[ochre].name
 msgid "Ochre"
@@ -14541,6 +14737,10 @@ msgid "One more step toward a green world."
 msgstr "Ein Schritt mehr zu einer grünen Welt."
 
 #: data/story_reasons.json:goal_reasons
+msgid "You can fly on now. The rest of Verdance can wait."
+msgstr "Du kannst jetzt weiterfliegen. Der Rest von Verdance kann warten."
+
+#: data/story_reasons.json:goal_reasons
 msgid "Other old stations are waiting to be woken up."
 msgstr "Andere alte Stationen warten darauf, geweckt zu werden."
 
@@ -16926,20 +17126,17 @@ msgstr "Eine Rostwelt, grün. Die alten Kräne haben Blumen zu ihren Füßen. Di
 #~ msgid "Bots near %d, far %d"
 #~ msgstr "Bots nah %d, fern %d"
 
-#~ msgid "Cleaners"
-#~ msgstr "Putzer"
+#~ msgid "Y: role · Hold A: paint · Hold X: erase · Left stick: move"
+#~ msgstr "Y: Rolle · A halten: malen · X halten: löschen · Linker Stick: bewegen"
 
-#~ msgid "Haulers"
-#~ msgstr "Fahrer"
+#~ msgid "Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi"
+#~ msgstr "Tab: Rolle · Links: malen · Rechts: löschen · Mitte: Roboter schicken · E: zurück zu Lumi"
 
-#~ msgid "Planters"
-#~ msgstr "Pflanzer"
+#~ msgid "%s zone"
+#~ msgstr "Zone: %s"
 
-#~ msgid "Waterers"
-#~ msgstr "Gießer"
-
-#~ msgid "Skimmers"
-#~ msgstr "Abschöpfer"
+#~ msgid "Locked. Upgrade your base to level 5 to build the launch pad."
+#~ msgstr "Gesperrt. Bring deine Basis auf Stufe 5, um die Startrampe zu bauen."
 
 #~ msgid "Priority"
 #~ msgstr "Vorrang"
@@ -17046,6 +17243,12 @@ msgstr "Eine Rostwelt, grün. Die alten Kräne haben Blumen zu ihren Füßen. Di
 
 #~ msgid "%d / %d hexes clean"
 #~ msgstr "%d / %d Hexfelder sauber"
+
+#~ msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Upgrades tab."
+#~ msgstr "Die Startrampe braucht eine Basis der Stufe 5 (deine hat Stufe %d). Verbessere die Basis im Upgrades-Tab."
+
+#~ msgid "The rocket lands on the pad when the base reaches level 5."
+#~ msgstr "Die Rakete landet auf der Rampe, sobald die Basis Stufe 5 erreicht."
 
 #~ msgid "Everything sells for x%s now."
 #~ msgstr "Alles verkauft sich jetzt für x%s."

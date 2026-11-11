@@ -248,9 +248,13 @@ static func at_limit(planet: String) -> bool:
 
 ## "Everything sells for x2.5 now." once Hub.trade_mult() exists and is above 1, else "".
 static func trade_line() -> String:
-	var v: Variant = opt_static("res://automation/hub.gd", "trade_mult")
-	if (v is float or v is int) and float(v) > 1.001:
-		var t: String = ("%.2f" % float(v)).rstrip("0").rstrip(".")
+	if opt_static("res://automation/hub.gd", "trade_mult") == null:
+		return ""
+	# Hub.trade_mult() caches the count of restored hubs for the frame; at a wake that is one short.
+	var cfg: Variant = opt_static("res://automation/hub.gd", "far_cfg")
+	var v: float = pow(float((cfg as Dictionary).get("sell_growth", 1.0)), float(woken_count(active_planet))) if cfg is Dictionary else 1.0
+	if v > 1.001:
+		var t: String = ("%.2f" % v).rstrip("0").rstrip(".")
 		return TranslationServer.translate("The recycling network grew: everything sells for x%s now.") % t
 	return ""
 

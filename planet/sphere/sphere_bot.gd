@@ -46,6 +46,8 @@ var _last_d: float = 0.0
 var _desired_s := Vector3.ZERO  # [orbC] smoothed steering target
 ## [orbC] Steer round static obstacles (buildings); off for short moves next to a wall.
 var avoid_static: bool = true
+## [v6crew] Turn on the spot at this rate (rad/s) while standing (a new robot looking around).
+var look_turn: float = 0.0
 
 
 func setup(p_surface: SphereSurface, p_dir: Vector3, p_heading: Vector3 = Vector3.ZERO) -> void:
@@ -146,6 +148,9 @@ func step(delta: float) -> void:
 		_desired_s = SphereMath.tangent_dir(SphereMath.slerp_safe(SphereMath.tangent_dir(_desired_s, dir, heading), desired, SphereMath.damp(10.0, delta)), dir, heading)
 	desired = _desired_s
 	heading = SphereSteer.turn(dir, heading, desired, turn_rate, delta)
+	if look_turn != 0.0 and spd <= 0.0:  # [v6crew]
+		heading = SphereMath.tangent_dir(heading.rotated(dir, look_turn * delta), dir, heading)
+		_desired_s = heading
 	# Slow down while turning hard so bots carve instead of sliding sideways.
 	var align: float = clampf(heading.dot(SphereMath.tangent_dir(desired, dir, heading)), 0.0, 1.0)
 	spd *= lerpf(0.35, 1.0, align)

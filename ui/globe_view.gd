@@ -63,7 +63,7 @@ var _handheld: bool = false
 var _holo_mat: ShaderMaterial
 var rocket_ready: Callable = func() -> bool: return false
 ## Why the rocket can't launch right now (shown in the hub list while rocket_ready is false).
-var rocket_lock_text: Callable = func() -> String: return "Locked. Upgrade your base to level 5 to build the launch pad."
+var rocket_lock_text: Callable = func() -> String: return "Locked."
 var launch_to: Callable = func(_hub: int) -> void: pass
 ## [orbD] Which hubs the launch list offers (indices into planet.hubs); unset: the flat game's
 ## base hubs. On a walkable globe: the hub sites (planet/sites/orbit_sites.gd).
