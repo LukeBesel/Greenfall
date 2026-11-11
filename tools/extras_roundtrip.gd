@@ -12,7 +12,7 @@ static func setup(s: Node) -> void:
 	Radio.check_unlocks()
 	Radio.play("ochre_caravan")
 	Tunes.grant("sunbaked", true)  # [tunes] a CD found, one lying in the rubble, the pity counter
-	CdFinds.pending()["dune_caravan"] = {"hub": GameState.current_hub, "hex": 3, "planet": "ochre"}
+	CdFinds.pending()["glass_dunes"] = {"hub": GameState.current_hub, "hex": 3, "planet": "ochre"}  # [v6name] dune_caravan is owned from the start now (404154c); a still-unfound CD
 	Tunes.st()["pity"] = 7
 	Tunes.hold("strip_mine_shuffle")  # a scratched CD in the case
 	Tunes.note_play("clean_sweep")
