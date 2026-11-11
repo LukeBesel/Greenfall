@@ -1,5 +1,5 @@
 {
-  "_doc": "[buddy] Glim, the little lantern bot that follows Lumi (systems/glim/). Tracks are bought tier by tier; tier n costs tracks.<id>.tiers[n-1].cost (cubes / parts / seeds only). Values per tier are absolute (index 0 = before any upgrade). Looks: shells, glows and tops; 'unlock' is {cost}, {glim_tier: total tiers}, {hexes: N} or empty (free).",
+  "_doc": "[buddy] Glim, the little lantern bot that follows Lumi (systems/glim/). Tracks are bought tier by tier; tier n costs tracks.<id>.tiers[n-1].cost (cubes / parts / seeds only). Values per tier are absolute (index 0 = before any upgrade). Looks: shells, glows and tops (id, name, color). Each look is a piece in data/cosmetics.json (targets.glim): worn only once found, changed only at the Locker; nothing here is bought or opened by a counter.",
   "name": "Glim",
   "found": {
     "_doc": "[v4calm] Unused in play: Glim now clings to the crashed pod until the workbench build Repair Glim (data/camp.json builds.glim). These only feed Glim.ready_to_find.",
@@ -75,23 +75,23 @@
   ],
   "shells": [
     {"id": "pearl", "name": "Pearl", "color": "#ebe7de"},
-    {"id": "sunset", "name": "Sunset", "color": "#f0a25a", "unlock": {"cost": {"cubes": 150}}},
-    {"id": "moss", "name": "Moss", "color": "#8a9a5b", "unlock": {"hexes": 6}},
-    {"id": "graphite", "name": "Graphite", "color": "#3d3f46", "unlock": {"cost": {"parts": 25}}},
-    {"id": "blossom", "name": "Blossom", "color": "#e8a9b8", "unlock": {"glim_tier": 6}}
+    {"id": "sunset", "name": "Sunset", "color": "#f0a25a"},
+    {"id": "moss", "name": "Moss", "color": "#8a9a5b"},
+    {"id": "graphite", "name": "Graphite", "color": "#3d3f46"},
+    {"id": "blossom", "name": "Blossom", "color": "#e8a9b8"}
   ],
   "glows": [
     {"id": "cyan", "name": "Cyan", "color": "#4de0ff"},
-    {"id": "ember", "name": "Ember", "color": "#ffb04a", "unlock": {"glim_tier": 1}},
-    {"id": "leaf", "name": "Leaf", "color": "#7dff6a", "unlock": {"hexes": 10}},
-    {"id": "violet", "name": "Violet", "color": "#b98cff", "unlock": {"cost": {"parts": 40}}},
-    {"id": "rose", "name": "Rose", "color": "#ff7aa8", "unlock": {"glim_tier": 8}}
+    {"id": "ember", "name": "Ember", "color": "#ffb04a"},
+    {"id": "leaf", "name": "Leaf", "color": "#7dff6a"},
+    {"id": "violet", "name": "Violet", "color": "#b98cff"},
+    {"id": "rose", "name": "Rose", "color": "#ff7aa8"}
   ],
   "tops": [
     {"id": "none", "name": "Nothing"},
     {"id": "antenna", "name": "Antenna"},
-    {"id": "sprout", "name": "Sprout", "unlock": {"hexes": 4}},
-    {"id": "beanie", "name": "Little Beanie", "unlock": {"cost": {"cubes": 400}}},
-    {"id": "halo", "name": "Halo", "unlock": {"glim_tier": 10}}
+    {"id": "sprout", "name": "Sprout"},
+    {"id": "beanie", "name": "Little Beanie"},
+    {"id": "halo", "name": "Halo"}
   ]
 }

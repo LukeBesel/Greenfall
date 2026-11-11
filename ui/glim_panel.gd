@@ -181,9 +181,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
-## [buddy] Glim's looks (shell colour, glow colour, top). Locked looks show only "???" and how to
-## unlock them; cost unlocks are bought here. A standalone Control: the Glim panel embeds it and
-## the Locker can host it through CosmeticTargets.
+## Glim's looks (shell colour, glow colour, top), hosted by the Locker through CosmeticTargets.
+## Only found looks can be worn (CrewLooks): a look this planet hides shows as "???" with the one
+## hint line of its find; looks hidden on other worlds are only counted. Nothing is bought here.
 class GlimLooksEditor extends VBoxContainer:
 	const SLOT_NAMES: Dictionary = {"shells": "Shell", "glows": "Glow", "tops": "Top"}
 	var director: GlimDirector
@@ -198,49 +198,55 @@ class GlimLooksEditor extends VBoxContainer:
 			remove_child(c)
 			c.queue_free()
 		add_child(UITheme.label(TranslationServer.translate("LOOKS"), 15, UITheme.MUTED))
+		var def: PlanetDefinition = Planets.current()
 		for slot: String in Glim.SLOTS:
 			add_child(UITheme.label(TranslationServer.translate(str(SLOT_NAMES[slot])), 14, UITheme.CREAM))
 			var row := HFlowContainer.new()
 			row.add_theme_constant_override("h_separation", 6)
 			row.add_theme_constant_override("v_separation", 6)
 			add_child(row)
-			for l: Variant in Glim.looks(slot):
-				row.add_child(_swatch(slot, l as Dictionary))
+			var list: Dictionary = CrewLooks.listing(CrewLooks.GLIM, slot, def)
+			for piece: String in list["found"]:
+				row.add_child(_swatch(slot, CrewLooks.option_of(piece)))
+			for piece: String in list["hidden"]:
+				row.add_child(_unfound(piece, def))
+			for piece: String in list["hidden"]:
+				add_child(FieldPlate.sentence(TranslationServer.translate(Finds.hint_for(def, piece)), FieldPlate.INK_DIM))
+			if int(list["elsewhere"]) > 0:
+				add_child(FieldPlate.sentence(TranslationServer.translate("%d more lie on other worlds.") % int(list["elsewhere"]), FieldPlate.INK_DIM))
 
-	func _swatch(slot: String, l: Dictionary) -> Button:
-		var id: String = str(l["id"])
+	## A found look: press to wear it.
+	func _swatch(slot: String, id: String) -> Button:
+		var l: Dictionary = Glim.look(slot, id)
 		var b := Button.new()
-		b.custom_minimum_size = Vector2(0, 40)
-		var open: bool = Glim.look_unlocked(slot, id)
+		b.custom_minimum_size = Vector2(0, 44)
 		var worn: bool = Glim.worn(slot) == id
-		var u: Dictionary = l.get("unlock", {})
-		var hint: Array = Glim.unlock_hint(slot, id)
-		var hint_text: String = ""
-		if str(hint[0]) != "":
-			hint_text = TranslationServer.translate(str(hint[0])) % [hint[1]]
-		if open:
-			b.text = TranslationServer.translate(str(l.get("name", id)))
-			b.tooltip_text = b.text
-		elif u.has("cost"):
-			b.text = TranslationServer.translate("???  %s") % Currencies.cost_text(u["cost"])
-			b.tooltip_text = hint_text
-			b.disabled = not GameState.can_afford_all(u["cost"])
-		else:
-			b.text = "???"
-			b.tooltip_text = hint_text
-			b.disabled = true
-		var col: Color = Color.html(str(l.get("color", "#2a3036"))) if open and l.has("color") else Color(0.16, 0.18, 0.2)
+		b.text = TranslationServer.translate(str(l.get("name", id)))
+		b.tooltip_text = b.text
+		var col: Color = Color.html(str(l.get("color", "#2a3036")))
 		var border: Color = Color(0.5, 0.95, 1.0) if worn else Color(1, 1, 1, 0.12)
-		b.add_theme_stylebox_override("normal", UITheme.box(col.darkened(0.25) if open else col, border, 2 if worn else 1, 6, 10))
-		b.add_theme_stylebox_override("hover", UITheme.box(col.darkened(0.1) if open else col.lightened(0.1), Color(0.6, 0.95, 1.0), 1, 6, 10))
+		b.add_theme_stylebox_override("normal", UITheme.box(col.darkened(0.25), border, 2 if worn else 1, 6, 10))
+		b.add_theme_stylebox_override("hover", UITheme.box(col.darkened(0.1), Color(0.6, 0.95, 1.0), 1, 6, 10))
 		b.add_theme_stylebox_override("focus", UITheme.box(Color(0, 0, 0, 0), Color(0.6, 0.95, 1.0), 2, 6, 10))
-		b.add_theme_color_override("font_color", Color.WHITE if open else UITheme.MUTED)
+		b.add_theme_color_override("font_color", Color.WHITE)
 		b.pressed.connect(func() -> void:
-			if not Glim.look_unlocked(slot, id) and not Glim.buy_look(slot, id):
+			if not Glim.wear(slot, id):
 				return
-			Glim.wear(slot, id)
 			Audio.play("click", 1.3, -6.0)
 			if director:
 				director.refresh()
 			rebuild())
+		return b
+
+	## A look this planet hides and the player has not found: a dark "???" plate and its hint.
+	func _unfound(piece: String, def: PlanetDefinition) -> Control:
+		var b := Button.new()
+		b.custom_minimum_size = Vector2(0, 44)
+		b.text = TranslationServer.translate(Looks.UNFOUND_NAME)
+		b.tooltip_text = TranslationServer.translate(Finds.hint_for(def, piece))
+		b.disabled = true
+		b.focus_mode = Control.FOCUS_NONE
+		var col: Color = Color(0.16, 0.18, 0.2)
+		b.add_theme_stylebox_override("disabled", UITheme.box(col, Color(1, 1, 1, 0.12), 1, 6, 10))
+		b.add_theme_color_override("font_disabled_color", UITheme.MUTED)
 		return b

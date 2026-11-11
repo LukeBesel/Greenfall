@@ -126,6 +126,9 @@ func _begin(item: Dictionary) -> void:
 		Audio.play("fanfare", 1.0, -6.0)
 	else:
 		var slot_name: String = tr(str(Looks.slot_def(Looks.slot_of(id)).get("name", "")))
+		var target: String = Looks.target_of(id)
+		if target != Looks.LUMI:  # Glim's or the crew's: say whose it is
+			slot_name = "%s  ·  %s" % [tr(str(Looks.target_def(target).get("name", target))), slot_name]
 		_kind.text = ((tr("Salvaged  ·  %s") if str(item.get("source", "")) == Finds.WRECK else tr("Found  ·  %s")) % slot_name).to_upper()
 		_kind.add_theme_color_override("font_color", FieldPlate.CYAN)
 		_name.text = tr(Looks.name_of(id)).to_upper()
@@ -197,7 +200,8 @@ func _light_up(player: Node3D, tint: Color) -> void:
 		Vfx.burst("sparkle", player.global_position + up * 0.5 + out, tint.lightened(0.2), 0.5)
 
 
-## Lumi wears the found piece over her look for the moment, with a burst in the piece's colour.
+## Lumi wears the found piece over her look for the moment (one of hers; Glim's and the crew's
+## pieces are only lit), with a burst in the piece's colour.
 func _dress(piece: String) -> void:
 	var player: Variant = world.get("patch") if world else null
 	if not (player is Node3D):
@@ -205,13 +209,14 @@ func _dress(piece: String) -> void:
 	var model: Variant = (player as Node3D).get("model")
 	if not (model is PatchModel):
 		return
-	var style: Dictionary = LumiStyle.current()
-	LumiStyle.wear_piece(style, piece)
-	LumiStyle.apply(model as PatchModel, style)
-	_dressed = model
+	if Looks.target_of(piece) == Looks.LUMI:
+		var style: Dictionary = LumiStyle.current()
+		LumiStyle.wear_piece(style, piece)
+		LumiStyle.apply(model as PatchModel, style)
+		_dressed = model
 	(model as PatchModel).set_happy(1.0)
 	var at: Vector3 = (player as Node3D).global_position
-	var tint: Color = LumiStyle.piece_tint(piece, FieldPlate.CYAN)
+	var tint: Color = CrewLooks.tint_of(piece, FieldPlate.CYAN)
 	Vfx.burst("big_sparkle", at + (player as Node3D).global_basis.y * 0.9, tint)
 	_light_up(player as Node3D, tint)
 

@@ -1,5 +1,5 @@
 {
-  "_doc": "World events (systems/events.gd), cleaning streak, the Requests board (contracts and world events, systems/contracts.gd) with its reward track (fleet liveries, Builder parts, capsules; it replaced the token shop) and the Collection (trinkets: collectibles, not a currency) [money]. Times are seconds of play. Event rewards scale with progress: cubes = max(min_cubes, income_rate * income_s, lifetime_earned * earned_frac), so they stay a spike (about a minute or two of income) at every stage. schedule.every_s is the gap between the end of one event and the start of the next; events only start once min_hexes hexes have been cleaned (lifetime) and never in the middle of a menu, cinematic or rocket flight. [M3-19] Parts rewards are in the planet's Parts scale (a robot costs 10): 1 to 5 an event or request.",
+  "_doc": "World events (systems/events.gd), cleaning streak, the Requests board (contracts and world events, systems/contracts.gd) with its reward track (capsules and robot parts; it replaced the token shop; no looks: those are found in the world) and the Collection (trinkets: collectibles, not a currency) [money]. Times are seconds of play. Event rewards scale with progress: cubes = max(min_cubes, income_rate * income_s, lifetime_earned * earned_frac), so they stay a spike (about a minute or two of income) at every stage. schedule.every_s is the gap between the end of one event and the start of the next; events only start once min_hexes hexes have been cleaned (lifetime) and never in the middle of a menu, cinematic or rocket flight. [M3-19] Parts rewards are in the planet's Parts scale (a robot costs 10): 1 to 5 an event or request.",
   "schedule": {"first_after_s": 210, "every_s": [240, 480], "retry_s": 40, "no_repeat": 2, "min_hexes": 2},
   "reward": {"min_cubes": 20, "earned_frac": 0.004},
   "events": [
@@ -61,31 +61,25 @@
       {"id": "bloom", "text": "Grow %d plants to bloom", "stat": "plants_bloomed", "n": [8, 15, 25, 40], "time_s": [720, 840, 900, 900], "pay": "cubes", "income_s": [90, 120, 150, 180], "requires": "first_sprout"},
       {"id": "sustain", "text": "Get %d more hexes to Sustained", "text_1": "Get one more hex to Sustained", "hex_level": 4, "n": [1, 1, 2, 3], "time_s": [900, 900, 1200, 1200], "pay": "cubes", "income_s": [90, 120, 150, 180], "requires": "first_sprout"}
     ],
-    "_requests": "[money] Requests board: contracts and world events are one board (workbench Requests tab). A request pays Cubes (income_s seconds of current income, WorldEvents.progress_cubes) or Parts (parts[tier]); there are no tokens. Every finished request and every handled world event counts toward the reward track: liveries, Builder parts, Curio Capsules and rare robot parts unlock at those counts (they used to be the token shop). After the last step, every repeat_every requests prints a Vintage robot part.",
+    "_requests": "[money] Requests board: contracts and world events are one board (workbench Requests tab). A request pays Cubes (income_s seconds of current income, WorldEvents.progress_cubes) or Parts (parts[tier]); there are no tokens. Every finished request and every handled world event counts toward the reward track: Curio Capsules and robot parts (paid as Parts) at those counts (they used to be the token shop). No look is on the track: crew and Glim looks are found pieces (data/cosmetics.json targets). After the last step, every repeat_every requests prints a Vintage robot part.",
     "track": [
-      {"n": 2, "kind": "livery", "id": "livery_neon"},
-      {"n": 3, "kind": "builder", "id": "propeller_cap"},
+      {"n": 2, "kind": "capsule"},
+      {"n": 3, "kind": "part", "rarity": 1},
       {"n": 4, "kind": "capsule"},
-      {"n": 5, "kind": "livery", "id": "livery_sunset"},
-      {"n": 6, "kind": "builder", "id": "fine_sieve"},
+      {"n": 5, "kind": "capsule"},
+      {"n": 6, "kind": "part", "rarity": 1},
       {"n": 7, "kind": "part", "rarity": 3},
-      {"n": 8, "kind": "livery", "id": "livery_pennant"},
-      {"n": 9, "kind": "builder", "id": "jet_nozzle"},
+      {"n": 8, "kind": "capsule"},
+      {"n": 9, "kind": "part", "rarity": 1},
       {"n": 10, "kind": "capsule"},
-      {"n": 12, "kind": "livery", "id": "livery_halo"},
+      {"n": 12, "kind": "capsule"},
       {"n": 14, "kind": "part", "rarity": 4},
       {"n": 16, "kind": "capsule"},
-      {"n": 18, "kind": "builder_crate"},
+      {"n": 18, "kind": "part", "rarity": 2},
       {"n": 20, "kind": "part", "rarity": 4}
     ],
     "repeat_every": 5
   },
-  "liveries": [
-    {"id": "livery_neon", "kind": "livery", "name": "Neon Underglow", "desc": "A cyan glow ring under every robot in the fleet.", "color": "#5fe6ff"},
-    {"id": "livery_sunset", "kind": "livery", "name": "Sunset Underglow", "desc": "Warm orange underglow for the whole crew.", "color": "#ff9a3c"},
-    {"id": "livery_pennant", "kind": "livery", "name": "Crew Pennants", "desc": "Every robot flies a little Greenfall pennant.", "color": "#9dff8a"},
-    {"id": "livery_halo", "kind": "livery", "name": "Holo Halos", "desc": "A slowly turning hologram halo over each robot. Very smug.", "color": "#c08bff"}
-  ],
   "trinkets": [
     {"id": "brass_compass", "name": "Brass Compass", "source": "supply_drop", "desc": "Points north, mostly. Came wrapped in a sock in a supply crate."},
     {"id": "tin_robot", "name": "Wind-up Tin Robot", "source": "supply_drop", "desc": "Walks three steps and falls over. Lumi relates."},

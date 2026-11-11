@@ -2,7 +2,8 @@ class_name Glim
 extends RefCounted
 ## [buddy] Glim, the little lantern bot that follows Lumi: pure state and rules (data/glim.json).
 ## State lives in GameState.flags["glim"] (saved with the game):
-##   {found: bool, tiers: {track_id: int}, shell, glow, top: String, owned: [look keys]}
+##   {found: bool, tiers: {track_id: int}, shells, glows, tops: String (the worn look ids)}
+## Looks are found pieces like Lumi's (CrewLooks), worn and changed only at the Locker.
 ## The scene side is systems/glim/glim_director.gd (bot, scanner, magnet, panel).
 
 const FLAG: String = "glim"
@@ -11,11 +12,11 @@ const DEFAULT_LOOK: Dictionary = {"shells": "pearl", "glows": "cyan", "tops": "a
 
 ## Player-facing reasons and hints returned in English below (translated where shown).
 # l10n:begin
-const STRINGS: Array[String] = ["Find Glim first", "Maxed", "Needs %s %d", "Buy for %s", "Buy %d Glim upgrades", "Clean %d hexes", "Glim", "Find the little lantern bot in the junk"]
+const STRINGS: Array[String] = ["Find Glim first", "Maxed", "Needs %s %d", "Glim", "Find the little lantern bot in the junk"]
 # l10n:end
 
 static var _data: Dictionary = {}
-## Dev / tests: every look counts as unlocked.
+## Dev / tests: every look counts as found.
 static var dev_all: bool = false
 
 
@@ -39,8 +40,6 @@ static func st() -> Dictionary:
 		d["found"] = false
 	if not (d.get("tiers") is Dictionary):
 		d["tiers"] = {}
-	if not (d.get("owned") is Array):
-		d["owned"] = []
 	for slot: String in SLOTS:
 		if not d.has(slot):
 			d[slot] = DEFAULT_LOOK[slot]
@@ -211,49 +210,17 @@ static func look(slot: String, id: String) -> Dictionary:
 	return {}
 
 
-static func key_of(slot: String, id: String) -> String:
-	return "%s:%s" % [slot, id]
-
-
-## Unlock rules: {} free, {cost} bought once, {glim_tier: N} total tiers, {hexes: N} hexes cleaned.
+## A look is worn only once its piece is found (CrewLooks; the planet's `finds` table hides it).
+## Glim's own first looks are starting pieces.
 static func look_unlocked(slot: String, id: String) -> bool:
-	var l: Dictionary = look(slot, id)
-	if l.is_empty():
+	if look(slot, id).is_empty():
 		return false
-	if dev_all:
-		return true
-	var u: Dictionary = l.get("unlock", {})
-	if u.is_empty():
-		return true
-	if u.has("cost"):
-		return key_of(slot, id) in (st()["owned"] as Array)
-	if u.has("glim_tier"):
-		return total_tiers() >= int(u["glim_tier"])
-	if u.has("hexes"):
-		return float(GameState.stats.get("hexes_cleaned", 0.0)) >= float(u["hexes"])
-	return false
+	return dev_all or CrewLooks.has(CrewLooks.GLIM, slot, id)
 
 
-## English hint for a locked look (tr() at display; may contain one %d).
-static func unlock_hint(slot: String, id: String) -> Array:
-	var u: Dictionary = look(slot, id).get("unlock", {})
-	if u.has("cost"):
-		return ["Buy for %s", Currencies.cost_text(u["cost"])]
-	if u.has("glim_tier"):
-		return ["Buy %d Glim upgrades", int(u["glim_tier"])]
-	if u.has("hexes"):
-		return ["Clean %d hexes", int(u["hexes"])]
-	return ["", null]
-
-
-static func buy_look(slot: String, id: String) -> bool:
-	var u: Dictionary = look(slot, id).get("unlock", {})
-	if not u.has("cost") or look_unlocked(slot, id):
-		return false
-	if not GameState.spend_all(u["cost"]):
-		return false
-	(st()["owned"] as Array).append(key_of(slot, id))
-	return true
+## The piece that stands for a look ("" when none does).
+static func piece_of(slot: String, id: String) -> String:
+	return CrewLooks.piece(CrewLooks.GLIM, slot, id)
 
 
 static func wear(slot: String, id: String) -> bool:

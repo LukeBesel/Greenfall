@@ -3,12 +3,14 @@ extends RefCounted
 ## [ui7] The Locker's Bots and Rocket sections, both in the workbench's list + detail pattern
 ## (ui/list_detail.gd), with a turning 3D preview in the detail panel.
 ##   Bots:   pick a robot type (chips on top); its design (systems/robot_design.gd): Builder parts,
-##           paint (fleet liveries) and glow. Every robot of the type wears it, new ones too.
+##           fleet marks and light colour. Every robot of the type wears it, new ones too. Every
+##           look is a found piece (CrewLooks): found ones are worn, unfound ones this planet hides
+##           show as "???" with their hint, the rest are counted.
 ##   Rocket: the ship's hull paint, trim and engine glow (systems/ship_style.gd).
-## Locked looks are hidden; only what you own or can buy now is listed.
+## Rocket looks are still bought (ShipStyle).
 
 # l10n:begin
-const BOT_CATS: Array = [["parts", "Parts"], ["paint", "Paint"], ["glow", "Glow"]]
+const BOT_CATS: Array = [["parts", "Parts"], ["paint", "Fleet mark"], ["glow", "Light colour"]]
 const SHIP_CATS: Array = [["paints", "Paint"], ["trims", "Trim"], ["glows", "Glow"]]
 # l10n:end
 
@@ -28,11 +30,13 @@ static func bot_types(fleet: Fleet) -> Array[String]:
 
 # --- Bots -----------------------------------------------------------------------------------
 
+## One robot type's page (the Locker gives each type its own tab): its parts, fleet mark and light
+## colour, worn by every robot of the type.
 class BotEditor extends VBoxContainer:
 	var world: Node
 	var fleet: Fleet
-	var _type: String = ""
-	var _chips: HBoxContainer
+	## The robot type this page dresses (the Locker sets it; "" = the first type there is).
+	var type_id: String = ""
 	var _ld: ListDetail
 	var modules: bool = false  # [ui7] floating glass modules (ui/holo_frame.gd)
 
@@ -42,44 +46,16 @@ class BotEditor extends VBoxContainer:
 		size_flags_vertical = Control.SIZE_EXPAND_FILL
 		if fleet == null and world:
 			fleet = world.get("fleet") as Fleet
-		var types: Array[String] = LockerEditors.bot_types(fleet)
-		_type = types[0] if not types.is_empty() else ""
-		_chips = HBoxContainer.new()
-		_chips.add_theme_constant_override("separation", 6)
-		if modules:
-			var cm: PanelContainer = HoloFrame.module(6)
-			add_child(cm)
-			cm.add_child(_chips)
-		else:
-			add_child(_chips)
-		for rid: String in types:
-			var b := Button.new()
-			b.text = TranslationServer.translate(str(Economy.robots[rid].get("name", rid)))
-			b.custom_minimum_size = Vector2(110, 36)
-			b.set_meta("type", rid)
-			b.pressed.connect(func() -> void: set_type(rid))
-			_chips.add_child(b)
+		if type_id == "":
+			var types: Array[String] = LockerEditors.bot_types(fleet)
+			type_id = types[0] if not types.is_empty() else ""
 		_ld = ListDetail.new()
 		_ld.world = world
 		_ld.modules = modules
 		_ld.categories = LockerEditors.BOT_CATS
-		_ld.provider = func() -> Array: return LockerEditors.bot_rows(fleet, _type)
-		_ld.counter = func() -> String: return TranslationServer.translate("Every %s wears this") % TranslationServer.translate(str(Economy.robots.get(_type, {}).get("name", _type))) if _type != "" else ""
+		_ld.provider = func() -> Array: return LockerEditors.bot_rows(fleet, type_id)
+		_ld.counter = func() -> String: return TranslationServer.translate("Every %s wears this") % TranslationServer.translate(str(Economy.robots.get(type_id, {}).get("name", type_id))) if type_id != "" else ""
 		add_child(_ld)
-		_style_chips()
-
-	func set_type(rid: String) -> void:
-		if rid == _type:
-			return
-		_type = rid
-		Audio.play("click", 1.1, -8.0)
-		_style_chips()
-		_ld.refresh(true)
-
-	func _style_chips() -> void:
-		for b: Node in _chips.get_children():
-			var on: bool = str(b.get_meta("type")) == _type
-			BenchKit.style_action(b as Button, ListDetail.TAG_OK if on else BenchKit.HOLO)
 
 	func first_button() -> Button:
 		return _ld.first_button() if _ld else null
@@ -95,73 +71,70 @@ static func _bot_preview(type_id: String, parts: Dictionary, tier: int) -> Contr
 	return pv
 
 
+## The rows of a robot type's page: per slot the stock look, the found pieces (press to wear),
+## the pieces this planet hides as "???" with their hint, and a count of those on other worlds.
+## Nothing here is bought.
 static func bot_rows(fleet: Fleet, type_id: String) -> Array:
 	var out: Array = []
 	if type_id == "":
 		return out
 	var tier: int = fleet.tier_of(type_id) if fleet else 0
 	var cur: Dictionary = RobotDesign.parts(type_id)
-	# Parts: what you own, plus what you can unlock now (cost only); locked ones stay hidden.
+	var def: PlanetDefinition = Planets.current()
 	for slot: String in RobotBuilder.SLOTS:
-		for p: Dictionary in RobotBuilder.parts_for_slot(slot):
-			var id: String = str(p["id"])
+		var worn_id: String = str(cur.get(slot, ""))
+		var stock: Dictionary = cur.duplicate()
+		stock.erase(slot)
+		out.append(_wear_row("part_%s_" % slot, "parts", "%s: %s" % [RobotBuilder.slot_name(slot), _tr("Stock")], "", worn_id == "",
+			func() -> bool: return RobotDesign.set_part(fleet, type_id, slot, "") == "",
+			func(_w: Node) -> Control: return LockerEditors._bot_preview(type_id, stock, tier)))
+		var list: Dictionary = CrewLooks.listing(CrewLooks.CREW, slot, def)
+		for piece: String in list["found"]:
+			var id: String = CrewLooks.option_of(piece)
 			if not RobotBuilder.fits(id, type_id):
 				continue
-			var owned: bool = RobotBuilder.count(id) > 0
-			var why: String = "" if owned else RobotBuilder.get_block_reason(id)
-			var buyable: bool = not owned and RobotBuilder.source_kind(id) in ["craft", "haggle", "research", "set"] and RobotBuilder.locked_research(id) == ""
-			if not owned and not buyable:
-				continue
-			var worn: bool = str(cur.get(slot, "")) == id
-			var src: Dictionary = p.get("source", {})
-			var price: Dictionary = {} if owned else {"cubes": float(src.get("cubes", 0)), "parts": RobotBuilder.craft_parts(id) if RobotBuilder.source_kind(id) != "haggle" else float(src.get("parts", 0))}
+			var p: Dictionary = RobotBuilder.part(id)
 			var cand: Dictionary = cur.duplicate()
 			cand[slot] = id
-			var it: Dictionary = {"id": "part_" + id, "cat": "parts", "icon": "star", "name": "%s: %s" % [RobotBuilder.slot_name(slot), _tr(str(p.get("name", id)))],
-				"desc": _tr(str(p.get("desc", ""))), "price": price, "table": [], "requires": "",
-				"custom": func(_w: Node) -> Control: return LockerEditors._bot_preview(type_id, cand, tier)}
-			if worn:
-				it["state"] = "ready"
-				it["tag"] = _tr("WORN")
-				it["action"] = _tr("Take it off")
-				it["act"] = func() -> bool: return RobotDesign.set_part(fleet, type_id, slot, "") == ""
-			elif owned:
-				it["state"] = "ready"
-				it["tag"] = _tr("OWNED")
-				it["action"] = _tr("Wear it")
-				it["act"] = func() -> bool: return RobotDesign.set_part(fleet, type_id, slot, id) == ""
-			else:
-				it["state"] = "ready" if why == "" else "short"
-				it["action"] = _tr("Unlock and wear")
-				it["act"] = func() -> bool: return RobotBuilder.obtain(id) == "" and RobotDesign.set_part(fleet, type_id, slot, id) == ""
-			out.append(it)
-	# Paint: the fleet liveries you've won (none = plain).
-	var cur_l: String = RobotDesign.livery_for(type_id)
-	var paints: Array = [["", _tr("Plain"), ""]]
-	for l: Dictionary in Contracts.shop():
-		if str(l.get("id", "")) in Contracts.owned():
-			paints.append([str(l["id"]), _tr(str(l.get("name", ""))), _tr(str(l.get("desc", "")))])
-	for pnt: Array in paints:
-		var lid: String = str(pnt[0])
-		out.append({"id": "paint_" + lid, "cat": "paint", "icon": "star", "name": str(pnt[1]), "desc": str(pnt[2]),
-			"state": "ready", "tag": _tr("WORN") if lid == cur_l else "", "price": {}, "table": [],
-			"action": "" if lid == cur_l else _tr("Wear it"),
-			"act": func() -> bool:
-				RobotDesign.set_field(fleet, type_id, "livery", lid)
-				return true})
-	# Glow: the light strips' colour.
-	var cur_g: String = str(RobotDesign.of(type_id).get("glow", ""))
-	var glows: Array = [["", _tr("Stock")]]
-	for g: Array in RobotDesign.GLOWS:
-		glows.append([str(g[0]), _tr(str(g[1]))])
-	for g: Array in glows:
-		var gid: String = str(g[0])
-		out.append({"id": "glow_" + gid, "cat": "glow", "icon": "star", "name": str(g[1]), "desc": "",
-			"state": "ready", "tag": _tr("WORN") if gid == cur_g else "", "price": {}, "table": [],
-			"action": "" if gid == cur_g else _tr("Wear it"),
-			"act": func() -> bool:
-				RobotDesign.set_field(fleet, type_id, "glow", gid)
-				return true})
+			out.append(_wear_row("part_" + id, "parts", "%s: %s" % [RobotBuilder.slot_name(slot), _tr(str(p.get("name", id)))], _tr(str(p.get("desc", ""))),
+				worn_id == id, func() -> bool: return RobotDesign.set_part(fleet, type_id, slot, id) == "",
+				func(_w: Node) -> Control: return LockerEditors._bot_preview(type_id, cand, tier)))
+		out.append_array(_unfound_rows("parts", slot, list, def))
+	for key: String in [CrewLooks.LIVERY, CrewLooks.GLOW]:
+		var cat: String = "paint" if key == CrewLooks.LIVERY else "glow"
+		var cur_v: String = RobotDesign.livery_for(type_id) if key == CrewLooks.LIVERY else str(RobotDesign.of(type_id).get(CrewLooks.GLOW, ""))
+		out.append(_wear_row("%s_" % cat, cat, _tr("Plain") if key == CrewLooks.LIVERY else _tr("Stock"), "", cur_v == "",
+			func() -> bool: return RobotDesign.set_look(fleet, type_id, key, ""), Callable()))
+		var list: Dictionary = CrewLooks.listing(CrewLooks.CREW, key, def)
+		for piece: String in list["found"]:
+			var id: String = CrewLooks.option_of(piece)
+			out.append(_wear_row("%s_%s" % [cat, id], cat, _tr(Looks.name_of(piece)), _tr(str(Looks.def(piece).get("desc", ""))), cur_v == id,
+				func() -> bool: return RobotDesign.set_look(fleet, type_id, key, id), Callable()))
+		out.append_array(_unfound_rows(cat, key, list, def))
+	return out
+
+
+## One row of a look the player holds: WORN, or "Wear it".
+static func _wear_row(id: String, cat: String, title: String, desc: String, worn: bool, act: Callable, preview: Callable) -> Dictionary:
+	var it: Dictionary = {"id": id, "cat": cat, "icon": "star", "name": title, "desc": desc, "state": "ready", "price": {}, "table": [],
+		"requires": "", "tag": _tr("WORN") if worn else _tr("FOUND"), "action": "" if worn else _tr("Wear it"), "act": act,
+		"note": _tr("Every robot of this type wears it.") if worn else _tr("Found. Wear it on every robot of this type.")}
+	if preview.is_valid():
+		it["custom"] = preview
+	return it
+
+
+## The pieces of a slot still in the ground: "???" with the hint of where this planet hides each,
+## and one line counting the ones on other worlds.
+static func _unfound_rows(cat: String, key: String, list: Dictionary, def: PlanetDefinition) -> Array:
+	var out: Array = []
+	for piece: String in list["hidden"]:
+		out.append({"id": "unfound_" + piece, "cat": cat, "icon": "star", "name": _tr(Looks.UNFOUND_NAME), "desc": "", "state": "locked",
+			"price": {}, "table": [], "requires": "", "action": "", "note": _tr(Finds.hint_for(def, piece))})
+	var n: int = int(list["elsewhere"])
+	if n > 0:
+		out.append({"id": "elsewhere_%s_%s" % [cat, key], "cat": cat, "icon": "star", "name": _tr("%d more lie on other worlds.") % n, "desc": "",
+			"state": "locked", "price": {}, "table": [], "requires": "", "action": "", "note": ""})
 	return out
 
 

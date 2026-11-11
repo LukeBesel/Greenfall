@@ -5,9 +5,12 @@ extends GutTest
 var _flags: Dictionary
 var _world: Dictionary
 var _cur: Dictionary
+var _global: Dictionary
 
 
 func before_each() -> void:
+	_global = GameState.global.duplicate(true)
+	GameState.global = {}
 	_flags = GameState.flags.duplicate(true)
 	_world = GameState.world
 	_cur = GameState.currencies.duplicate()
@@ -15,6 +18,7 @@ func before_each() -> void:
 
 
 func after_each() -> void:
+	GameState.global = _global
 	GameState.flags = _flags
 	GameState.world = _world
 	GameState.currencies = _cur
@@ -139,9 +143,12 @@ func test_type_design_reaches_new_bots_and_saves() -> void:
 	var f := Fleet.new()
 	add_child_autofree(f)
 	var a: Robot = f.spawn("scoopie", 0, Vector3.ZERO, 0.0, "Old-01")
-	RobotBuilder.add_part("treads")
+	assert_ne(RobotDesign.set_part(f, "scoopie", "mobility", "treads"), "", "not found yet")
+	assert_false(RobotDesign.set_look(f, "scoopie", CrewLooks.GLOW, "mint"), "not found yet")
+	Looks.grant("crew_treads", "buried")
+	Looks.grant("crew_glow_mint", "buried")
 	assert_eq(RobotDesign.set_part(f, "scoopie", "mobility", "treads"), "")
-	RobotDesign.set_field(f, "scoopie", "glow", "mint")
+	assert_true(RobotDesign.set_look(f, "scoopie", CrewLooks.GLOW, "mint"))
 	assert_eq(str(a.build.get("mobility", "")), "treads", "an existing scoopie wears it")
 	var b: Robot = f.spawn("scoopie", 0, Vector3(2, 0, 0), 0.0, "New-02")
 	assert_eq(str(b.build.get("mobility", "")), "treads", "a newly built scoopie picks up its type's design")
@@ -171,18 +178,19 @@ func test_ship_style_unlocks_and_wear() -> void:
 	assert_true(ShipStyle.wear("paints", "coral"))
 
 
-func test_locker_bot_rows_hide_locked_parts() -> void:
+func test_locker_bot_rows_show_found_looks_and_hide_the_rest() -> void:
 	var f := Fleet.new()
 	add_child_autofree(f)
 	var rows: Array = LockerEditors.bot_rows(f, "scoopie")
 	for r: Dictionary in rows:
-		if str(r["cat"]) == "parts":
-			var pid: String = str(r["id"]).trim_prefix("part_")
-			assert_eq(RobotBuilder.locked_research(pid), "", "%s: research-locked parts stay hidden" % pid)
-	assert_gt(rows.filter(func(r: Dictionary) -> bool: return str(r["cat"]) == "glow").size(), 5)
+		assert_true((r.get("price", {}) as Dictionary).is_empty(), "%s: nothing has a price" % r["id"])
+		if str(r["state"]) == "ready":
+			assert_true(str(r["id"]).ends_with("_"), "%s: before any find only the stock looks can be worn" % r["id"])
+	Looks.grant("crew_glow_mint", "buried")
+	rows = LockerEditors.bot_rows(f, "scoopie")
+	assert_eq(rows.filter(func(r: Dictionary) -> bool: return str(r["id"]) == "glow_mint" and str(r["state"]) == "ready").size(), 1, "a found light")
 
 
-## [ui7] Globe robots wear the type design too.
 func test_globe_robots_get_the_type_design_hook() -> void:
 	RobotDesign.register_hooks()
 	assert_true(SphereCrew.dress_hooks.has(Callable(RobotDesign.dress_sphere)) or SphereCrew.dress_hooks.size() > 0)

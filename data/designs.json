@@ -1,16 +1,11 @@
 {
-  "_doc": "Lumi's six designs (systems/designs.gd; looks in PatchModel.VARIANTS, add-ons in art/models/aurora/designs.glb). A design is a set of pieces (data/cosmetics.json, pieces with set = this id): the player wears it by finding its pieces in the world (design spec section 13); nothing here unlocks from a counter or a cost. buff: the set's small bonus, applied only while EVERY piece of the set is worn: stat = an Economy stat id (\"*.work_rate\" = every robot type), research_speed (Research), or streak_grace (cleaning streak hold time); amount = +fraction. Off with flags.designs_looks_only. A mixed look gives no bonus. State: the worn look in flags.lumi_style, its base design in flags.patch_skin; found pieces in the save's global section.",
+  "_doc": "Lumi's six designs (systems/designs.gd; looks in PatchModel.VARIANTS, add-ons in art/models/aurora/designs.glb). A design is a set of pieces (data/cosmetics.json, pieces with set = this id): the player wears it by finding its pieces in the world (design spec section 13); nothing here unlocks from a counter or a cost. buff: the set's small bonus, applied only while EVERY piece of the set is worn: stat = an Economy stat id (\"*.work_rate\" = every robot type), research_speed (Research), or streak_grace (cleaning streak hold time); amount = +fraction. Off with flags.designs_looks_only. A mixed look gives no bonus. The starting design (aurora, every piece a starter) has no buff: a bonus that switched off when the player wore a found piece would read as a penalty; only a set completed from found pieces gives one. State: the worn look in flags.lumi_style, its base design in flags.patch_skin; found pieces in the save's global section.",
   "designs": [
     {
       "id": "aurora",
       "name": "Aurora",
       "tagline": "Baseline / Explorer",
-      "desc": "The seed-keeper fresh from the ark: pearl paint, cyan eyes, an orange fin.",
-      "buff": {
-        "stat": "detector_range",
-        "amount": 0.08,
-        "text": "+8% detector range"
-      }
+      "desc": "The seed-keeper fresh from the ark: pearl paint, cyan eyes, an orange fin."
     },
     {
       "id": "bolt",

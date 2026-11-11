@@ -285,7 +285,9 @@ func test_the_first_planet_offers_sprout_alone_spread_over_its_cities() -> void:
 
 func test_the_first_planet_buries_about_eight_colours_one_in_forty_hexes() -> void:
 	var def: PlanetDefinition = Planets.by_id(FIRST)
-	var buried: Array = Finds.entries_for(def).filter(func(e: Dictionary) -> bool: return e["where"] == Finds.BURIED)
+	# Lumi's own colours (Glim's and the crew's few finds: tests/test_crew_looks.gd).
+	var buried: Array = Finds.entries_for(def).filter(func(e: Dictionary) -> bool:
+		return e["where"] == Finds.BURIED and Looks.target_of(str((e["pieces"] as Array)[0])) == Looks.LUMI)
 	assert_between(buried.size(), 7, 10, "about eight loose colours and light tints")
 	var first_city: String = str(Districts.specs_for(def)[0]["id"])
 	var rest: Array = []
@@ -480,7 +482,7 @@ func test_playing_the_first_planet_completes_sprout_alone_and_only_in_the_last_c
 	assert_eq(str(_found[0][1]), Finds.BURIED, "and it is a colour")
 	for design: String in LATER_DESIGNS:
 		assert_eq(Looks.set_progress(design)[0], 0, "no piece of %s on this planet" % design)
-	var colours: Array = _found.filter(func(x: Array) -> bool: return x[1] == Finds.BURIED)
+	var colours: Array = _found.filter(func(x: Array) -> bool: return x[1] == Finds.BURIED and Looks.target_of(str(x[0])) == Looks.LUMI)
 	assert_between(colours.size(), 7, 9, "about eight loose colours by the end")
 	for e: Dictionary in f.entries():
 		if e["where"] in [Finds.WRECK, Finds.SOURCE] or (e["where"] == Finds.BURIED and e["district"] != Finds.OPEN_GROUND):
@@ -496,7 +498,7 @@ func test_found_pieces_live_in_the_global_section_of_the_save() -> void:
 	Looks.grant("tin_sky", "buried")
 	Looks.grant("head_sprout", "source")
 	var d: Dictionary = JSON.parse_string(JSON.stringify(GameState.to_dict()))
-	assert_eq(int(d["version"]), 5)
+	assert_eq(int(d["version"]), GameState.SAVE_VERSION)
 	assert_eq(d["global"][Looks.KEY], ["tin_sky", "head_sprout"])
 	assert_false(JSON.stringify(d["flags"]).contains("tin_sky"), "not in the per-save flags")
 	assert_false(JSON.stringify(d.get("orbit", {})).contains("tin_sky"), "not in the planet's section")

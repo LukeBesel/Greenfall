@@ -38,11 +38,13 @@ func test_six_designs_match_the_model() -> void:
 		assert_true(PatchModel.VARIANTS.has(id), id)
 		var d: Dictionary = Designs.def(id)
 		assert_ne(str(d.get("tagline", "")), "", id)
+		assert_false(d.has("unlock"), "%s opens from no counter" % id)
+		assert_false(Looks.set_ids(id).is_empty(), "%s is a set of pieces" % id)
+		if id == Designs.DEFAULT:
+			continue  # the starting set: no bonus (see the test below)
 		assert_ne(str(d.get("buff", {}).get("text", "")), "", id)
 		var amt: float = float(d["buff"]["amount"])
 		assert_true(amt > 0.0 and amt <= 0.1, "%s bonus is slight (%.2f)" % [id, amt])
-		assert_false(d.has("unlock"), "%s opens from no counter" % id)
-		assert_false(Looks.set_ids(id).is_empty(), "%s is a set of pieces" % id)
 
 
 func test_a_new_game_wears_aurora_and_holds_no_other_design() -> void:
@@ -74,8 +76,28 @@ func test_no_counter_level_or_price_opens_a_design() -> void:
 	GameState.currencies["cubes"] = BigNum.zero()
 
 
+## Only a set completed from found pieces gives a bonus: one that switched off when a found piece
+## went on would read as a penalty for dressing up (M3-14b).
+func test_the_starting_set_gives_no_bonus() -> void:
+	assert_eq(Designs.worn_set(), Designs.DEFAULT, "a new game wears the whole starting set")
+	assert_false(Designs.has_bonus(Designs.DEFAULT))
+	for stat: String in ["detector_range", "cube_value_mult", "plant_growth", "research_speed", "streak_grace", "scoopie.work_rate"]:
+		assert_almost_eq(Designs.mult(stat), 1.0, 0.0001, stat)
+	assert_eq(Designs.breakdown("detector_range").size(), 0)
+	var base: float = Economy.stat("detector_range")
+	Looks.grant("tin_sky", "buried")
+	var dressed: Dictionary = LumiStyle.current()
+	LumiStyle.wear_piece(dressed, "tin_sky")
+	LumiStyle.set_current(dressed)
+	assert_almost_eq(Economy.stat("detector_range"), base, 0.0001, "wearing a found piece takes nothing away")
+	# Every design that gives a bonus is made of pieces that have to be found.
+	for id: String in Designs.ids():
+		if Designs.has_bonus(id):
+			for piece: String in Looks.set_ids(id):
+				assert_false(Looks.is_starter(piece), "%s: %s must be found" % [id, piece])
+
+
 func test_the_bonus_needs_every_piece_of_the_set_worn() -> void:
-	assert_almost_eq(Designs.mult("detector_range"), 1.08, 0.0001, "Aurora's set: detector range")
 	assert_almost_eq(Designs.mult("plant_growth"), 1.0, 0.0001)
 	_wear_whole("sprout")
 	assert_eq(Designs.worn_set(), "sprout")

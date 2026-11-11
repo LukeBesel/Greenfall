@@ -192,7 +192,7 @@ func cache_label(kind: String) -> String:
 
 ## A paint tin holds a colour for the body; a lens chip holds a light colour.
 static func kind_of(piece: String) -> String:
-	return FindProps.CHIP if Looks.slot_of(piece) == LumiStyle.GLOW else FindProps.TIN
+	return FindProps.CHIP if CrewLooks.is_light(piece) else FindProps.TIN
 
 
 ## Something Lumi can do with her hands within `within_m` of `pos` (the unattended bot asks):
@@ -291,7 +291,7 @@ func show_cache(id: String) -> Node3D:
 		return null
 	var piece: String = str((e["pieces"] as Array)[0])
 	var kind: String = kind_of(piece)
-	var tint: Color = LumiStyle.piece_tint(piece, FieldPlate.CYAN)
+	var tint: Color = CrewLooks.tint_of(piece, FieldPlate.CYAN)
 	var node: Node3D = FindProps.cache(kind, tint)
 	add_child(node)
 	_place(node, _open_spot(cell, CACHE_OFFSET, null), Finds.roll(Planets.current().world_seed, id, 2) * TAU)

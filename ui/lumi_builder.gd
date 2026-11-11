@@ -243,7 +243,7 @@ func _build_sets() -> void:
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		b.clip_text = true
 		if p[0] == p[1]:
-			b.text = "%s  ·  %s" % [title, Designs.buff_text(id)]
+			b.text = "%s  ·  %s" % [title, Designs.buff_text(id)] if Designs.has_bonus(id) else title
 			FieldPlate.key(b, FieldPlate.GREEN, id == worn_set)
 			b.pressed.connect(_wear_set.bind(id))
 			if id == worn_set or _focus_row == null:
@@ -288,7 +288,10 @@ func _update_lines() -> void:
 	var worn_set: String = LumiStyle.worn_set(edit)
 	if worn_set != "":
 		var off: String = "  " + tr("(off: looks only)") if Designs.looks_only() else ""
-		_set_line.text = (tr("%s set  ·  %s") % [tr(Designs.name_of(worn_set)), Designs.buff_text(worn_set)] + off).to_upper()
+		if Designs.has_bonus(worn_set):
+			_set_line.text = (tr("%s set  ·  %s") % [tr(Designs.name_of(worn_set)), Designs.buff_text(worn_set)] + off).to_upper()
+		else:  # the starting set: a name, no bonus
+			_set_line.text = (tr("%s set") % tr(Designs.name_of(worn_set))).to_upper()
 		_set_line.add_theme_color_override("font_color", FieldPlate.INK_DIM if Designs.looks_only() else FieldPlate.GREEN)
 	else:
 		_set_line.text = tr("Mixed look  ·  no set bonus").to_upper()

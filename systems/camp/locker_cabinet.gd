@@ -89,21 +89,19 @@ func _on_overlay_closed() -> void:
 		stage.end()
 
 
-## Dev: opens the Locker on a section (--open-locker=lumi|bots|rocket; --open-locker-slot=ID picks
+## Dev: opens the Locker on a section (--open-locker=lumi|glim|bots|bots:TYPE|rocket; --open-locker-slot=ID picks
 ## the slot shown on Lumi's page); --locker-design paints
 ## the Scoopie design (treads, a top hat, mint glow, neon underglow) so the shot shows one applied.
 func _dev_open() -> void:
 	var sec: String = DevHooks.get_s("open-locker", "bots")
 	if DevHooks.has("locker-design"):
 		var fl: Fleet = world.get("fleet") as Fleet
-		for id: String in ["treads", "top_hat"]:
-			RobotBuilder.add_part(id)
-		if not ("livery_neon" in Contracts.owned()):
-			Contracts.owned().append("livery_neon")
+		for id: String in ["crew_treads", "crew_top_hat", "crew_livery_neon", "crew_glow_mint"]:
+			Looks.grant(id, "", true)
 		RobotDesign.set_part(fl, "scoopie", "mobility", "treads")
 		RobotDesign.set_part(fl, "scoopie", "topper", "top_hat")
-		RobotDesign.set_field(fl, "scoopie", "glow", "mint")
-		RobotDesign.set_field(fl, "scoopie", "livery", "livery_neon")
+		RobotDesign.set_look(fl, "scoopie", CrewLooks.GLOW, "mint")
+		RobotDesign.set_look(fl, "scoopie", CrewLooks.LIVERY, "livery_neon")
 	open()
 	if _overlay:
 		for n: Node in _overlay.find_children("*", "", true, false):
