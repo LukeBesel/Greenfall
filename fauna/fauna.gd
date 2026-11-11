@@ -226,22 +226,43 @@ func _rp_make_plan() -> void:
 
 
 func _rp_apply() -> void:
-	var ctxs: Array = _rp_ctxs
+	_rp_ai = 0
+	_desired.clear()
+	_rp_apply_part(0)
+
+
+var _rp_ai: int = 0  # [v6qa] the next plan entry _rp_apply_part looks at
+
+
+## [v6qa] The plan's entries into _desired, at most budget_us this call (0: all). True when the
+## apply is finished (the rest runs then). In one go it was a 40-100 ms frame on a big hub.
+func _rp_apply_part(budget_us: int) -> bool:
+	var t0: int = Time.get_ticks_usec()
 	var fd: Dictionary = _rp_fd
 	var plan: Array = _rp_plan
-	_desired.clear()
 	var spawn_r: float = float(_cfg.get("spawn_radius", 55.0))
-	for e: Dictionary in plan:
+	while _rp_ai < plan.size():
+		if budget_us > 0 and (_rp_ai & 15) == 0 and Time.get_ticks_usec() - t0 > budget_us:
+			return false
+		var e: Dictionary = plan[_rp_ai]
+		_rp_ai += 1
+		var h: int = int(e["hex"])
+		if h >= 0 and float(fd.get(h, 0.0)) > spawn_r:  # (before the def lookup: most entries are far)
+			continue
 		var sid: String = str(e["sp"])
 		var kind: String = str(FaunaRules.def(sid).get("kind", ""))
-		var h: int = int(e["hex"])
-		if h >= 0 and float(fd.get(h, 0.0)) > spawn_r:
-			continue
 		if kind in ["swarm", "school"]:
 			_desired["%s|%d" % [sid, h]] = e
 		else:
 			for k: int in int(e["n"]):
 				_desired["%s|%d|%d" % [sid, h, k]] = e
+	_rp_apply_rest()
+	return true
+
+
+func _rp_apply_rest() -> void:
+	var ctxs: Array = _rp_ctxs
+	var plan: Array = _rp_plan
 	if DevHooks.has("fauna-debug"):
 		var wn: int = 0
 		var wc: int = 0
@@ -269,6 +290,20 @@ func _rp_apply() -> void:
 	_rp_plan = []
 
 
+var _rp_applying: bool = false
+
+
+func _rp_apply_split() -> bool:
+	if not _rp_applying:
+		_rp_applying = true
+		_rp_ai = 0
+		_desired.clear()
+	if _rp_apply_part(3000):
+		_rp_applying = false
+		return true
+	return false
+
+
 ## Spawns the planned animals that are missing, in plan order. budget_us > 0: stop after that much
 ## time this call (true is returned when all are done or the round's cap is reached).
 func _rp_spawn(budget_us: int) -> bool:
@@ -290,6 +325,7 @@ func _rp_spawn(budget_us: int) -> bool:
 
 func _replan_step() -> void:
 	var h: int = Hitch.t()
+	var ran: int = _rp_phase  # [v6qa] the mark names the part that ran (it named the next one)
 	match _rp_phase:
 		1:
 			_rp_contexts()
@@ -298,12 +334,12 @@ func _replan_step() -> void:
 			_rp_make_plan()
 			_rp_phase = 3
 		3:
-			_rp_apply()
-			_rp_phase = 4
+			if _rp_apply_split():  # [v6qa] a slice a frame
+				_rp_phase = 4
 		4:
 			if _rp_spawn(3000):
 				_rp_phase = 0
-	Hitch.mark("fauna replan %d" % _rp_phase, h)
+	Hitch.mark("fauna replan %d" % ran, h)
 
 
 ## --fauna-dense: every qualifying hex gets the species (screenshots).
@@ -841,7 +877,7 @@ func _toward_junk(p: Vector3) -> Vector3:
 	var f: HexField = world.field
 	var best: Vector3 = p + Vector3(6, 0, 0)
 	var bd: float = INF
-	for h: int in _hexes():
+	for h: int in (_near_cells() if _globe else _hexes()):  # [v6qa] on the globe the cells round Lumi (the whole hub region, each rat that left: 70-170 ms)
 		if not f.is_clean(h) and not f.is_water(h) and f.hex_hub[h] == 0:
 			var d: float = _hex_c(h).distance_to(p)
 			if d < bd:

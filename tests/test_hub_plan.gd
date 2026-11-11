@@ -53,6 +53,7 @@ func test_data_is_whole() -> void:
 		assert_ne(str(e.get("name", "")), "", "hub %d has a name" % s)
 		assert_ne(str(e.get("desc", "")), "", "hub %d says why to go" % s)
 		assert_true(HubPlan.TOWN_NAMES.has(str(e.get("town", ""))), "hub %d town type" % s)
+		assert_true(VerdanceSite.KINDS.has(str(e.get("town", ""))), "hub %d town is a look the site can build" % s)
 		assert_true(HubPlan.landmark_kind("verdance", s) in LANDMARKS, "hub %d landmark kind" % s)
 		assert_ne(str((e["landmark"] as Dictionary).get("name", "")), "")
 		if HubPlan.is_home("verdance", s):
@@ -129,6 +130,14 @@ func test_boosts_apply_only_while_woken() -> void:
 	assert_eq(HubPlan.breakdown("cube_value_mult").size(), 1)
 	HubPlan.active_planet = ""
 	assert_almost_eq(HubPlan.stat_mod("cube_value_mult", 2.0), 2.0, 0.0001)
+
+
+func test_town_label_tells_a_harbour() -> void:
+	assert_eq(HubPlan.town_name("verdance", 9), "Suburb")
+	assert_eq(HubPlan.town_name("verdance", 9, "harbour"), "Harbour town", "the lake's override shows in the label")
+	assert_true(VerdanceSite.is_harbour(func(_x: float, _z: float) -> bool: return true))
+	assert_false(VerdanceSite.is_harbour(func(_x: float, _z: float) -> bool: return false))
+	assert_false(VerdanceSite.is_harbour(Callable()))
 
 
 func test_wake_cost_grows() -> void:

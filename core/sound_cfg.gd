@@ -6,6 +6,7 @@ extends RefCounted
 
 const PATH: String = "res://data/sound.json"
 const BUSES: Array[String] = ["Music", "Songs", "Ambience", "SFX", "UI"]
+const OFF_DB: float = -80.0  # a sound_db trim this low mutes the sound
 
 static var _cfg: Dictionary = {}
 
@@ -41,13 +42,21 @@ static func bus_of(sound: String) -> String:
 	return str(_d("bus_of").get(sound, "SFX"))
 
 
-static func sound_db(sound: String) -> float:
-	return float(_d("sound_db").get(sound, 0.0))
+## Trim of a sound in dB. With a tag (where it plays from: "scoop", "lumi"...), "tag:sound" wins
+## over "sound". OFF_DB or lower mutes it.
+static func sound_db(sound: String, tag: String = "") -> float:
+	var d: Dictionary = _d("sound_db")
+	if tag != "" and d.has(tag + ":" + sound):
+		return float(d[tag + ":" + sound])
+	return float(d.get(sound, 0.0))
 
 
-## Shortest time (game seconds) between two plays of `sound`; 0 = no limit.
-static func min_gap(sound: String) -> float:
+## Shortest time (game seconds) between two plays of `sound`; 0 = no limit. With a tag,
+## "tag:sound" wins over "sound", and its plays are counted apart from the others.
+static func min_gap(sound: String, tag: String = "") -> float:
 	var g: Dictionary = _d("min_gap_s")
+	if tag != "" and g.has(tag + ":" + sound):
+		return maxf(0.0, float(g[tag + ":" + sound]))
 	return maxf(0.0, float(g.get(sound, g.get("_default", 0.0))))
 
 
