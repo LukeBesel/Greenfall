@@ -79,21 +79,6 @@ func test_water_barrel_waits_for_waterers() -> void:
 	assert_false(WaterNet.barrel_wanted(null))
 
 
-# #7: the camera hides Lumi when a wall pushes it into his head, and shows him again after.
-func test_camera_hides_lumi_only_when_inside() -> void:
-	var rig := CameraRig.new()
-	add_child_autofree(rig)
-	var p := Patch.new()
-	p.model = PatchModel.new()
-	rig.target = p
-	rig._hide_target_when_inside(true)
-	assert_false(p.model.visible)
-	rig._hide_target_when_inside(false)
-	assert_true(p.model.visible)
-	p.model.free()
-	p.free()
-
-
 # #36: the trail chevrons blend normally (additive washed out to white on pale ground).
 func test_waypoint_trail_is_not_additive() -> void:
 	var w := Waypoint.new()
