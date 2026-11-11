@@ -154,7 +154,7 @@ reward gaps and card waits; targets and the last measured run are in `docs/BALAN
 | What | File and key | Now | Effect |
 |---|---|---|---|
 | When the rocket appears | `data/hub.json` `rocket.level`, `rocket.after_objective` | level 1, after the step `seed` | The rocket stands on the start pad once that story step is done and the base has that level. |
-| Single far-hub prices | `data/hub.json` `far_hub.cost_override` (step number as the key, e.g. `"2": {"cubes": 8000}`) | hub 6 (`"4"`): 300K cubes, 120 Parts | Replaces one step of the curve without moving the others. |
+| Single far-hub prices | `data/hub.json` `far_hub.cost_override` (step number as the key, e.g. `"2": {"cubes": 8000}`) | hub 6 (`"4"`): 200K cubes, 60 Parts | Replaces one step of the curve without moving the others. |
 | The whole planet's speed | `data/hub.json` `far_hub.pace` | 1.3 | Every sale pays 1/pace: 1.25 makes each cube step about 25% longer, 0.8 about 20% shorter. The first knob to turn after a playtest. |
 | Woken bases clean while Lumi is away | `data/hub.json` `far_hub.keep` | 4 cells/min + 1 per base level above 1 + 0.5 per robot there | The main lever on the planet % at the leave point. `home: true` lets the start hub do it too. |
 | What the planet % counts | `data/hub.json` `far_hub.pct_over` | `all_regions` | `all_regions`: every hub region's land (only goes up). `built_regions`: only the woken hubs' regions (drops at each wake). |
@@ -164,13 +164,15 @@ reward gaps and card waits; targets and the last measured run are in `docs/BALAN
 | Per-planet overrides | `data/homeward.json` `planets[k].far_hub` | none | Any `far_hub` key, for that planet only. |
 | How many hubs a rocket tier reaches | `data/rockets.json` `tiers[].hubs` | Mk I 3, Mk II 5, Mk III all | Hubs kept restored, the start hub included. |
 | Rocket tier prices | `data/rockets.json` `tiers[].cost` | Mk II 8K, Mk III 100K, Mk IV 2.5M | Mk IV (warp) is not needed to leave. |
-| When Lumi may leave a planet | `data/homeward.json` `planets[k].leave.hubs`, `.hub_level` | Verdance: 6 hubs at level 2 | Opens the system map and the drive. Not tied to the planet's clean %. |
+| When Lumi may leave a planet | `data/homeward.json` `planets[k].leave.hubs`, `.hub_level`, `.pct_opens` | Verdance: 6 hubs at level 2, `pct_opens` false | Opens the system map and the drive. Not tied to the planet's clean %. With `pct_opens` false the drive's `requires_planet_pct` (the Bloom Core %) no longer opens it too, so the story order can't invert. |
 | What WREN says then | `data/homeward.json` `planets[k].leave.toast` | "Six stations awake, Lumi. Their robots can look after Verdance now." | Said once, before the exit lines in `data/story_reasons.json` `exit.system_open`. |
 | The drive that leaves Verdance | `data/homeward.json` `drive[0].cost` | 500K cubes, 300 Parts | The biggest price of the planet. |
-| Base level prices (start hub) | `data/hub.json` `levels[].cost` | 1,500 / 9,000 / 60,000 / 250,000 | Level 2 and 3 are story steps. 4 and 5 are optional, but they lift income a lot: cheap ones made the last hub and the drive come within minutes. |
+| Base level prices (start hub) | `data/hub.json` `levels[].cost` | 1,500 / 9,000 / 60,000 / 250,000 (Parts 150 / 350 / 140 / 60) | Level 2 and 3 are story steps. 4 and 5 are optional, but they lift income a lot: cheap ones made the last hub and the drive come within minutes. |
 | Order of the card's steps | `data/objectives.json` (story), then `data/goals.json` `goals` in file order | | The card shows the first unfinished one. Move a line to move the step. |
 | A goal's own "why" line | `data/goals.json` goal `desc` | only on "Fly to another planet" | Shown instead of "Reward: ...". The hub, wake and rocket steps carry none: their why is in `data/story_reasons.json` (card and WREN). |
-| The first robot's price | `data/robots.json` `scoopie.cost`, `.parts` | 800 cubes, 40 Parts | Parts come from scooping metal, plastic and glass; the card says how many are missing. |
+| The first robot's price | `data/robots.json` `scoopie.cost`, `.parts` | 600 cubes, 40 Parts | The Bot Bay's kit covers the Parts (below), so the first robot never waits on lucky salvage. |
+| The Bot Bay and its robot kit | `data/workbench.json` `tiers[1].cost`, `.grants` | 900 cubes, 20 Parts; brings 40 Parts | `grants`: currencies a workbench tier brings with it (any tier may have one). |
+| Hexes to clean at a station before its wake | `data/planets.json` `verdance.hub_defaults.clean_hexes` (a hub's own `chain` wins) | 4 (Gantry Works: 4 and an outpost) | Measured by the bot doing each chain: about 4-11 bot minutes a station. |
 | Goal rewards | `data/goals.json` goal `reward` | | Paid when the step completes. |
 
 ## How Lumi moves (v6feel)

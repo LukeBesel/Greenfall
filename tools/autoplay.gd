@@ -355,7 +355,14 @@ func _watch_stuck(p: Patch, delta: float) -> void:
 				_traps += 1
 				_report["bot_traps"] = _report.get("bot_traps", []) + [[snappedf(_now() / 60.0, 0.1), str(p.global_position.snapped(Vector3.ONE * 0.1)), _task]]
 				print("[bot-trap] t=%.1f task=%s pos=%s: back to the yard" % [_now() / 60.0, _task, str(p.global_position)])
-				if world.get("orbit") != null and p.has_method("place_on_sphere"):  # [v1guide] the globe's yard
+				var os_t: OrbitSites = OrbitSites.of(world)
+				if _at_far() and os_t != null and os_t.rocket_spot != null and p.has_method("place_on_sphere"):
+					# [v6pace] at a station: back to its pad (the home yard broke the station's chain)
+					var rs: Vector3 = os_t.rocket_spot.global_position
+					p.place_on_sphere(rs + rs.normalized() * 0.3, p.forward())
+					_far_given_up[_focus_hex] = true
+					_focus_hex = -1
+				elif world.get("orbit") != null and p.has_method("place_on_sphere"):  # [v1guide] the globe's yard
 					p.place_on_sphere(_bench_at() + _bench_at().normalized() * 0.3, p.forward())
 				else:
 					p.global_position = BENCH_STAND + Vector3(0, 0.3, 1.5)
