@@ -108,3 +108,15 @@ signal source_shut_down(district_id: String)
 signal source_job_opened(district_id: String)
 signal source_step_done(district_id: String, step: int)
 @warning_ignore_restore("unused_signal")
+
+# The Surge (design spec section 8; systems/surge.gd). hand_tended: Lumi herself planted a seed
+# ("plant") or watered plants ("water"); robots' tending does not emit it. surge_charged: her
+# Bloom Core filled. surge_released: the player let it go in `district_id`; `output` is how many
+# times her hand output it gives, `wave_rings` how many rings of hexes its growth wave reached
+# (0 = no wave). surge_ended: the burst ran out.
+@warning_ignore_start("unused_signal")
+signal hand_tended(action: String)
+signal surge_charged()
+signal surge_released(district_id: String, output: float, wave_rings: int)
+signal surge_ended()
+@warning_ignore_restore("unused_signal")

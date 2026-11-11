@@ -364,6 +364,7 @@ func _handle_tools(delta: float) -> void:
 			EventBus.toast.emit(tr("Seeds need clean, open ground: not streets, kerbs or the pad."), "info")
 		if s >= 0:
 			if g.plant(s):
+				EventBus.hand_tended.emit(Surge.TEND_PLANT)
 				model.set_scooping(true)
 				model.shudder(0.15)
 			else:
@@ -386,8 +387,11 @@ func _handle_tools(delta: float) -> void:
 		Vfx.burst("dust", spot + up() * 0.05, Color(0.6, 0.75, 0.9, 0.4), 0.3)
 		if randf() < 0.5:
 			Audio.play("steam", 1.8, -16.0)
-		for slot: int in g.planted_near(global_position, forward()):
+		var poured: Array[int] = g.planted_near(global_position, forward())
+		for slot: int in poured:
 			g.water(slot, 30.0)
+		if not poured.is_empty():
+			EventBus.hand_tended.emit(Surge.TEND_WATER)
 
 
 ## Works the waste of the hex in front of Lumi that her tool in hand clears (a pollution kind
@@ -399,7 +403,8 @@ func _work_held(tool_id: String, seconds: float) -> bool:
 		return false
 	var spot: Vector3 = global_position + forward() * 1.3
 	var cap: float = capacity()
-	var room: float = cap - compartment.fill - compartment.pending if compartment.can_accept(cap) else 0.0
+	var pack: float = Surge.chest_pack()  # a Surge's load packs tight
+	var room: float = (cap - compartment.fill - compartment.pending) / pack if compartment.can_accept(cap) else 0.0
 	var take: Dictionary = pol.hand_work(tool_id, world.field.hex_at(spot), seconds, room)
 	if take.is_empty():
 		return false
@@ -415,12 +420,12 @@ func _work_held(tool_id: String, seconds: float) -> bool:
 	var vol: float = float(take["vol"])
 	var color: Color = take["color"]
 	water = maxf(0.0, water - float(take["tool_use"]))
-	compartment.reserve(vol)
+	compartment.reserve(vol * pack)
 	model.set_scooping(true)
 	Vfx.burst("dust", spot + up() * 0.4, Color(color, 0.5), 0.5)
 	if randf() < 0.4:
 		Audio.play("steam", 1.5, -16.0)
-	_piece_arrived(str(take["type_id"]), vol, color, float(take["cubes"]), float(take["strip_scale"]))
+	_piece_arrived(str(take["type_id"]), vol, color, float(take["cubes"]), float(take["strip_scale"]), vol * pack)
 	return true
 
 
@@ -494,7 +499,9 @@ func _handle_scoop(delta: float) -> void:
 			if world.field.piece_alive[e] == 1 and compartment.can_accept(cap) and budget > Pace.PULSE_CRUMB:
 				budget -= _take_piece(e, budget)
 	if took > 0:
-		_scoop_timer = 1.0 / (maxf(stat("scoop_rate"), 0.5) * mastery_bonus)
+		# The part of this frame past the pulse's time counts toward the next one, so the pulses a
+		# second are the stat's and not the frame rate's rounding of it.
+		_scoop_timer = maxf(_scoop_timer, -delta) + 1.0 / (maxf(stat("scoop_rate"), 0.5) * mastery_bonus)
 
 
 ## Takes up to `max_vol` of a piece into the chest (the whole piece when that is all of it).
@@ -521,7 +528,8 @@ func _take_piece(pid: int, max_vol: float) -> float:
 	var start_xf: Transform3D = world.view.piece_transform(pid)
 	var mesh: Mesh = world.view.piece_mesh(pid)
 	var color: Color = Color.html(str(Economy.junk_types[type_id].get("cube_color", "#888888")))
-	compartment.reserve(vol)
+	var chest_vol: float = vol * Surge.chest_pack()  # a Surge's load packs tight
+	compartment.reserve(chest_vol)
 	if world.get("events") != null:
 		world.events.on_patch_take(pid, vol)  # [events] streak, surge share, audit score
 	if whole:
@@ -536,14 +544,16 @@ func _take_piece(pid: int, max_vol: float) -> float:
 	# Arrival is timer-driven so a cut-short animation can never leave volume stuck as pending.
 	get_tree().create_timer(dur, false).timeout.connect(func() -> void:
 		if is_instance_valid(self):
-			_piece_arrived(type_id, vol, color, cubes, strip_scale))
+			_piece_arrived(type_id, vol, color, cubes, strip_scale, chest_vol))
 	return vol
 
 
-func _piece_arrived(type_id: String, vol: float, color: Color, cubes: float = 0.0, strip_scale: float = 1.0) -> void:
+## `vol` units of waste reach the chest. chest_vol: the room they take there (below zero = all of
+## it; less when a Surge packed them).
+func _piece_arrived(type_id: String, vol: float, color: Color, cubes: float = 0.0, strip_scale: float = 1.0, chest_vol: float = -1.0) -> void:
 	if cubes < 0.0:  # a field with no hex values: priced by the unit
 		cubes = vol * float(Economy.junk_types.get(type_id, {}).get("value", 1.0))
-	compartment.add(type_id, vol, cubes)
+	compartment.add(type_id, vol if chest_vol < 0.0 else chest_vol, cubes)
 	_maybe_salvage_part(type_id, strip_scale * Rigs.factor("parts_yield"))
 	world.salvage_materials(type_id, vol)
 	GameState.add_junk_removed(type_id, vol)

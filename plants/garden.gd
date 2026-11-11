@@ -186,6 +186,15 @@ func water(slot: int, amount_s: float) -> void:
 	watered.emit(slot, was_dry)
 
 
+## Pushes a planted slot's growth on by `stages` of a stage (a Surge's wave: systems/surge.gd).
+## The next growth tick shows it, through the same steps as growth by time; a plant in bloom or a
+## dry one stays as it is.
+func push_growth(slot: int, stages: float) -> void:
+	if slot_species[slot] < 0 or slot_stage[slot] >= 4 or stages <= 0.0:
+		return
+	slot_progress[slot] = minf(1.0, slot_progress[slot] + stages)
+
+
 func _pick_species(slot: int) -> int:
 	# [biomes] Frontier natives / cold rules scale the weights (Frontiers.species_mult).
 	var biome: String = str(world.field.biome) if world else ""

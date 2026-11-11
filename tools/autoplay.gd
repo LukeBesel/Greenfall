@@ -128,6 +128,9 @@ func _init(p_world: Node) -> void:
 	_hook(EventBus.mastery_gained, func(kind: String, level: int) -> void:
 		_mastery.on_gained(kind, level, _now())
 		_event("mastery", {"kind": kind, "level": level}))
+	_hook(EventBus.surge_charged, func() -> void:
+		_surge.on_charged(_now())
+		_event("surge_charged", {"n": _surge.charged.size()}))
 	_hook(EventBus.source_step_done, func(district: String, i: int) -> void:
 		_progress()
 		_event("source_step", {"district": district, "step": i}))
@@ -141,6 +144,8 @@ func _init(p_world: Node) -> void:
 var _hooks: Array = []
 ## Who cleared what, when each mastery level came, and what to learn next (tools/autoplay_mastery.gd).
 var _mastery := AutoplayMastery.new()
+## When to let a full Bloom Core go, and when each Surge came (tools/autoplay_surge.gd).
+var _surge := AutoplaySurge.new()
 var _learn_hex: int = -1
 var _learn_scan_t: float = 0.0
 ## Score (metres) by which the bot prefers a hex holding a scooped kind robots are still shut out of.
@@ -203,7 +208,7 @@ func _hand_log(p: Patch) -> void:
 ## One line with the beats the economy review compares against the accepted proposal.
 func _print_pacing(tag: String) -> void:
 	var beats: Array[String] = []
-	for key: String in ["first_payout_s", "first_upgrade_s", "first_hex_s", "baler_s", "tower_s", "bench_2_s", "first_robot_s", "base_2_s"]:
+	for key: String in ["first_payout_s", "first_upgrade_s", "first_hex_s", "first_surge_s", "baler_s", "tower_s", "bench_2_s", "first_robot_s", "base_2_s"]:
 		if _report.has(key):
 			beats.append("%s=%.0f" % [key.trim_suffix("_s"), _since_control(float(_report[key]))])
 	var hexes: Array[String] = []
@@ -451,6 +456,9 @@ func update(delta: float) -> void:
 		return
 	if not (_do_source(p) or _do_bench(p) or _do_tin(p) or _do_shard(p) or _do_dump(p) or _do_deliver(p) or _do_pickup(p) or _do_dig(p) or _do_pet(p) or _do_learn(p) or _do_garden(p)):
 		_do_clean(p)
+	if _surge.tick(Surge.of(world), _scoop and (_task == "clean" or _task == "learn"), p.compartment.ratio(p.capacity()), _now()):
+		_mark("first_surge_s")
+		_event("surge", {"n": _surge.times.size(), "output": snappedf(Surge.of(world).output_mult(), 0.01)})
 	_watch_stuck(p, delta)
 
 
@@ -2154,6 +2162,7 @@ func write_report() -> void:
 	_report["campaign_min"] = AutoplayCampaign.timeline_min()  # [beat] milestones across stages
 	_report["district"] = str(world.get("district_name"))
 	_mastery.write(_report, Mastery.of(world))
+	_surge.write(_report)
 	var path: String = ProjectSettings.globalize_path("res://screenshots/autoplay_report.json")
 	if DevHooks.get_s("save-dir", "") != "":  # [orbC] parallel staged runs keep their own report
 		path = path.replace(".json", "_%s.json" % DevHooks.get_s("save-dir", "").validate_filename())

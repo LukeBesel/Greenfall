@@ -46,6 +46,7 @@ var city_payouts: CityPayouts  # cubes paid once when a city reaches a regrowth 
 var chain: RobotChain  # parts finders, the Assembler and its build mix
 var look_finds: Finds  # where the planet hides the pieces of Lumi's looks (systems/finds.gd)
 var sources: Sources  # each city's source job, which gates its last stage (systems/sources.gd)
+var surge: Surge  # the Bloom Core's charge from Lumi's own work and its release (systems/surge.gd)
 var source_sites: SourceSites  # where the job's steps stand in the world (systems/source_sites.gd)
 var ending: PlanetEnding  # the launch cinematic and the end screen
 var hub_states: Dictionary = {}  # site index (str) -> {level} (core/save_orbit.gd); the Hub port fills it
@@ -497,6 +498,15 @@ func _build_districts(levels: HexLevels) -> void:
 	var lumi: Patch = w.get("patch") as Patch
 	if lumi != null:
 		lumi.refresh_rig()
+	surge = Surge.new()
+	w.add_child(surge)
+	surge.setup(def, districts, GameState.orbit.get(Surge.SAVE_KEY, {}))
+	surge.bind_wave(globe.grid, w.get("garden") as Garden, _player_cell)
+	surge.input_gate = _surge_input_live
+	var surge_fx := SurgeFx.new()
+	surge_fx.name = "SurgeFx"
+	surge_fx.setup(lumi, surge)
+	w.add_child(surge_fx)
 	if crews.crew != null:
 		crews.crew.pollution = pollution
 	if crews.crew != null:  # Scroungers, the Assembler, where new robots go (systems/crew/robot_chain.gd)
@@ -511,6 +521,13 @@ func _build_districts(levels: HexLevels) -> void:
 ## Lumi's node (null before she exists).
 func _patch_node() -> Node3D:
 	return w.get("patch") as Node3D
+
+
+## Whether the player's own key may release a Surge now: Lumi is under their control and no
+## screen is open.
+func _surge_input_live() -> bool:
+	var lumi: Patch = w.get("patch") as Patch
+	return lumi != null and lumi.input is PlayerInput and (lumi.input as PlayerInput).enabled and not any_modal_open()
 
 
 ## The hex Lumi stands on (-1 before Lumi exists).
@@ -1235,6 +1252,7 @@ func persist_save() -> void:
 		"restoration": restoration.save_state() if restoration else {},
 		"finds": look_finds.save_state() if look_finds else {},
 		"sources": sources.save_state() if sources else {},
+		Surge.SAVE_KEY: surge.save_state() if surge else {},
 		"site_state": sites.save_state() if sites else {},  # [orbD] built hubs, levels, growth (main: renamed from "sites", which orbB uses for site geometry)
 	}
 

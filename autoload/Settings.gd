@@ -23,6 +23,7 @@ const REBINDABLE: Array = [
 	["photo_mode", "Photo mode"],  # [photo]
 	["glim_scan", "Glim: scan (hold: upgrades)"],  # [buddy]
 	["boost", "Hover boost"],  # [orbD] hold on the walkable globe (SphereInput)
+	["surge", "Release Surge"],  # systems/surge.gd; on a pad: both zoom buttons together
 ]
 # l10n:end
 # l10n:begin
@@ -210,6 +211,7 @@ func _register_default_actions() -> void:
 		"garden_mode": [_key(KEY_H)],  # [late] Garden Mode (ui/garden_placer.gd); pad: via the pause menu
 		"glim_scan": [_key(KEY_F), _axis(JOY_AXIS_TRIGGER_LEFT, 1.0)],  # [buddy] tap: hex scan, hold: Glim panel
 		"boost": [_key(KEY_SHIFT), _joy(JOY_BUTTON_LEFT_STICK)],  # [orbD] hover-boost on the globe (x4), also the sled's boost
+		"surge": [_key(KEY_R)],  # release a full Bloom Core (systems/surge.gd); pad: both zoom buttons together
 	}
 	for action: String in _defaults:
 		if not InputMap.has_action(action):
