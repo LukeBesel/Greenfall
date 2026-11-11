@@ -48,8 +48,11 @@ The round world is the game, and the work is on its first planet, Verdance. The 
 - **Signal tower** legs and braces are chunkier. **Pod:** a repair cart, work lamp and cones stand by it
   while it is being mended. **Trash bin, workbench, composter, fabricator:** sign added, shape kept.
 - Numbers: `tools/machine_stats.tscn`; budgets in docs/PERFORMANCE.md; knobs in docs/ADJUSTING.md.
-- Open: see the hand-off notes for which pictures were and were not rendered. `old_bus` and
-  `lighthouse` (extra hubs) still use the old thin models. The recycler is still the old kitified model.
+- **Second batch:** the recycler is a kit model with its own sign (cube to nut); the four extra hubs
+  have kit landmarks too: a tower crane whose jib turns (Crane Court's own kind `tower_crane`), the
+  last bus at its stop, a lighthouse. All ten Verdance hubs' landmarks stand on clear ground.
+- Open: no game render of any of this yet (the render queue never got its 7 GB). Shapes and paint were
+  checked with an offline flat-shaded preview only. Other planets' biomes still use the old thin landmarks.
 
 ## Milestones (history, from the flat-world era)
 - [x] M0 Setup, M1 Slice (city district, Aurora/Patch, baling, tutorial, lens view)
