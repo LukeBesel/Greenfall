@@ -22,9 +22,9 @@ const TARGET: Array[float] = [0.0, 0.34, 0.52, 0.72, 0.86, 1.0]
 const GROW_PER_S: float = 1.0 / 340.0
 const TICK_S: float = 0.5
 ## Grass tufts per cell and the rings of cells round Lumi that carry them, per quality preset.
-const TUFTS: Array[int] = [26, 38, 52, 64]
+const TUFTS: Array[int] = [44, 60, 80, 100]
 const RINGS: Array[int] = [3, 4, 5, 5]
-const FLOWER_SHARE: float = 0.2
+const FLOWER_SHARE: float = 0.14
 const BUDGET_US: int = 1200
 const MASK_F1: float = 0.11
 const MASK_F2: float = 0.47
@@ -33,24 +33,26 @@ const SHADER: String = """
 shader_type spatial;
 render_mode cull_disabled, diffuse_lambert, specular_disabled;
 uniform float sway = 1.0;
-varying vec4 inst;
+varying vec3 petal;
+varying float rnd;
 varying float kind;
 varying float hgt;
 void vertex() {
-	inst = INSTANCE_CUSTOM;
-	kind = COLOR.r;
-	hgt = COLOR.g;
+	petal = COLOR.rgb;
+	rnd = INSTANCE_CUSTOM.a;
+	kind = UV.x;
+	hgt = UV.y;
 	vec3 wp = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
-	float ph = dot(wp, vec3(0.37, 0.41, 0.33)) + inst.a * 6.283;
-	float s = sin(TIME * 1.3 + ph) * 0.06 + sin(TIME * 2.9 + ph * 1.7) * 0.02;
+	float ph = dot(wp, vec3(0.37, 0.41, 0.33)) + rnd * 6.283;
+	float s = sin(TIME * 1.3 + ph) * 0.05 + sin(TIME * 2.9 + ph * 1.7) * 0.015;
 	VERTEX.x += s * hgt * hgt * sway;
 	VERTEX.z += s * 0.6 * hgt * hgt * sway;
-	NORMAL = mix(NORMAL, vec3(0.0, 1.0, 0.0), 0.75);
+	NORMAL = mix(NORMAL, vec3(0.0, 1.0, 0.0), 0.8);
 }
 void fragment() {
-	vec3 g = mix(vec3(0.16, 0.34, 0.07), vec3(0.42, 0.62, 0.16), hgt);
-	g *= mix(vec3(0.82, 0.9, 0.8), vec3(1.18, 1.1, 0.85), inst.a);
-	ALBEDO = mix(g, inst.rgb, kind);
+	vec3 g = mix(vec3(0.05, 0.16, 0.03), vec3(0.2, 0.4, 0.09), hgt);
+	g *= mix(vec3(0.8, 0.9, 0.8), vec3(1.15, 1.1, 0.85), rnd);
+	ALBEDO = mix(g, petal * 0.8, kind);
 	ROUGHNESS = 1.0;
 }
 """
@@ -68,8 +70,8 @@ var _grow: Dictionary = {}  # cell -> current green 0..1 (still growing)
 var _tick: float = 0.0
 var _grass: MultiMesh
 var _flowers: MultiMesh
-var _per: int = 26  # grass instances per block
-var _fper: int = 5  # flower instances per block
+var _per: int = 44  # grass instances per block
+var _fper: int = 6  # flower instances per block
 var _rings: int = 3
 var _block: Dictionary = {}  # cell -> block index
 var _free: Array[int] = []
@@ -200,10 +202,10 @@ static func tuft_mesh() -> ArrayMesh:
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 77
-	for b: int in 9:
-		var a: float = TAU * b / 9.0 + rng.randf_range(-0.3, 0.3)
+	for b: int in 12:
+		var a: float = TAU * b / 12.0 + rng.randf_range(-0.4, 0.4)
 		var out := Vector3(cos(a), 0.0, sin(a))
-		_blade(st, out * rng.randf_range(0.02, 0.3), out, rng.randf_range(0.55, 1.0), rng.randf_range(0.06, 0.1), rng.randf_range(0.15, 0.5), 0.0)
+		_blade(st, out * rng.randf_range(0.0, 0.16), out, rng.randf_range(0.5, 1.0), rng.randf_range(0.022, 0.04), rng.randf_range(0.04, 0.3), 0.0)
 	st.generate_normals()
 	return st.commit()
 
@@ -229,13 +231,13 @@ static func flower_mesh() -> ArrayMesh:
 			var c2: Vector3 = top + tilt * (Vector3(cos(pa), 0.06, sin(pa)) * r)
 			var c3: Vector3 = top + tilt * (Vector3(cos(pa + 0.5), 0.0, sin(pa + 0.5)) * r * 0.6)
 			for v: Vector3 in [top, c1, c2, top, c2, c3]:
-				st.set_color(Color(1.0, 1.0, 0.0))
+				st.set_uv(Vector2(1.0, 1.0))
 				st.add_vertex(v)
 	st.generate_normals()
 	return st.commit()
 
 
-## One blade: two quads and a tip. Vertex colour: R = petal (kind), G = height along the blade.
+## One blade: a quad and a tip. UV: x = petal (kind), y = height along the blade.
 static func _blade(st: SurfaceTool, base: Vector3, out: Vector3, h: float, w: float, lean: float, kind: float) -> void:
 	var side: Vector3 = out.cross(Vector3.UP).normalized()
 	var ws: Array[float] = [1.0, 0.7, 0.0]
@@ -250,7 +252,7 @@ static func _blade(st: SurfaceTool, base: Vector3, out: Vector3, h: float, w: fl
 		var b1: Vector3 = pts[i + 1] + side * w * ws[i + 1]
 		var quad: Array = [[a0, ts[i]], [b0, ts[i + 1]], [a1, ts[i]]] if i == 1 else [[a0, ts[i]], [b0, ts[i + 1]], [a1, ts[i]], [a1, ts[i]], [b0, ts[i + 1]], [b1, ts[i + 1]]]
 		for e: Array in quad:
-			st.set_color(Color(kind, float(e[1]), 0.0))
+			st.set_uv(Vector2(kind, float(e[1])))
 			st.add_vertex(e[0])
 
 
@@ -273,6 +275,7 @@ func _build_meshes() -> void:
 func _mm(nm: String, mesh: Mesh, count: int, mat: Material) -> MultiMesh:
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.use_colors = true
 	mm.use_custom_data = true
 	mm.mesh = mesh
 	mm.instance_count = count
@@ -436,10 +439,11 @@ func _write_block(c: int) -> void:
 		if k < xf.size():
 			var s: float = smoothstep(0.22, 0.5, cover(g, ms[k]))
 			if s > 0.0:
-				var sc: float = (0.3 + 0.7 * s) * 0.42
+				var sc: float = (0.3 + 0.7 * s) * 0.38
 				t = Transform3D(xf[k].basis * Basis.from_scale(Vector3(sc, sc, sc)), xf[k].origin)
 				var pc: Color = PETALS[int(rnd[k] * 4.999)]
-				_flowers.set_instance_custom_data(b * _fper + k, Color(pc.r, pc.g, pc.b, rnd[k]))
+				_flowers.set_instance_color(b * _fper + k, pc)
+				_flowers.set_instance_custom_data(b * _fper + k, Color(0.0, 0.0, 0.0, rnd[k]))
 				shown += 1
 		_flowers.set_instance_transform(b * _fper + k, t)
 	for k: int in _per:
@@ -448,8 +452,8 @@ func _write_block(c: int) -> void:
 		if j < xf.size():
 			var s: float = smoothstep(0.0, 0.25, cover(g, ms[j]))
 			if s > 0.0:
-				var w: float = 0.5 + 0.2 * s
-				var h: float = (0.12 + 0.2 * s) * (0.8 + 0.5 * g)
+				var w: float = 0.7 + 0.5 * s
+				var h: float = (0.14 + 0.2 * s) * (0.8 + 0.5 * g)
 				t = Transform3D(xf[j].basis * Basis.from_scale(Vector3(w, h, w)), xf[j].origin)
 				_grass.set_instance_custom_data(b * _per + k, Color(0.0, 0.0, 0.0, rnd[j]))
 				shown += 1

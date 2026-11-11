@@ -105,8 +105,10 @@ void fragment() {
 		float m = verd_mask(wpos);
 		float k = verd * 1.5 - 0.05 - m;
 		gcov = mix(smoothstep(0.2, 0.75, verd * 1.5 - 0.05), smoothstep(-0.03, 0.09, k), near_k);
-		vec3 young = grass * vec3(1.15, 1.06, 0.7);
-		gcol = mix(young, grass, smoothstep(0.02, 0.3, k) * smoothstep(0.3, 0.9, verd));
+		// Our own greens over the grass texture's light and dark (the texture itself is a dry yellow).
+		float gl = dot(grass, vec3(0.3, 0.5, 0.2));
+		float lush = smoothstep(0.02, 0.3, k) * smoothstep(0.3, 0.9, verd);
+		gcol = mix(vec3(0.3, 0.4, 0.13), vec3(0.11, 0.27, 0.07), lush) * (0.45 + 1.3 * gl) * (0.8 + 0.5 * n);
 		clean = mix(clean, clean * vec3(0.78, 0.86, 0.7), smoothstep(-0.25, 0.0, k) * (1.0 - gcov) * 0.7);
 	}
 	green = max(green, gcov);
