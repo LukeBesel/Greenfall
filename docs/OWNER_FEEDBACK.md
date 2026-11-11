@@ -255,3 +255,4 @@ Direction: the flat world's vibe is better, so build it into the round world: bu
 59. For cleanup work that doesn't much affect the game (removing the flat world and the like), use Opus helpers.
 60. The storyline must make sense: there must be real in-world reasons for what the player does, not "because it's a game".
 61. Before flying off Verdance (at 4–5 hours), the player should have seen about 6 of its bases (hubs).
+62. More songs are coming later. Set music up so songs are easy to add, swap and adjust (which planet, when, how often, volume) without code changes. The same goes for everything as the game grows to the other planets: keep it easy to change and adjustable per planet.
