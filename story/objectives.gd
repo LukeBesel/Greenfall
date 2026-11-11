@@ -660,7 +660,9 @@ func _narrate() -> void:
 	GameState.flags["wren_steps"] = said
 	var ls: Array = def.get("lines", [])
 	if not ls.is_empty():
-		w.speak(tr(str(ls[0])), w.stage())
+		# [v6story] dropped unsaid if the step is already done when her turn comes
+		w.speak(tr(str(ls[0])), w.stage(), false, func() -> bool:
+			return step < chain.size() and str(chain[step].get("id", "")) == id)
 
 
 # --- [v1guide] How to make a bale -----------------------------------------------------------------

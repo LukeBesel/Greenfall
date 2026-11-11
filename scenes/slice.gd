@@ -25,7 +25,6 @@ var garden: Garden
 var hex_levels: HexLevels
 var goals: Goals
 var first_seed: FirstSeed
-var wildlife: Wildlife
 var water: WaterView
 var doc_view: DocumentView
 var interactables: Interactables
@@ -41,7 +40,6 @@ var photo: PhotoMode  # [photo] photo mode (ui/photo_mode.gd)
 var fauna: Fauna  # [wild] ambient animals (fauna/fauna.gd)
 var frontier: FrontierDistrict  # [biomes] late-game frontier districts (planet/frontier_district.gd)
 var planet_env: Dictionary = {}  # [planet-rime] dev: --planet-env=<id> dresses a district with a planet env (data/planets.json)
-var bounds: WorldBounds  # [orbit] soft edge + fall rescue (planet/world_bounds.gd)
 var slice_cells := PackedInt32Array()  # slice hex id -> planet cell
 var orbit: SliceOrbit  # [orbB] --orbit: the slice on the walkable globe (scenes/slice_orbit.gd); null on the flat game
 var view: FieldView
@@ -50,7 +48,6 @@ var patch: Patch
 var cam: CameraRig
 var hud: HUD
 var upgrades: UpgradesScreen
-var command: CommandView
 var music: MusicHooks
 var intro: Intro
 var objectives: Objectives  # [onboard] first-minutes story objectives (story/objectives.gd)

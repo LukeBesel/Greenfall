@@ -1,11 +1,11 @@
 class_name AnvilProps
 extends RefCounted
-## [planet-anvil] Anvil's structures, merged per material (FrontierView.Batch) into each stage
+## [planet-anvil] Anvil's structures, merged per material (PropBatch.Batch) into each stage
 ## group of AnvilEnv: foundry stacks and halls, conveyor gantries, the core shaft's headframe,
 ## half-buried mining haulers, ore carts on a rail spur, slag heaps; restored: vertical-garden
 ## shells and thin warm-white light rings on the stacks, wind turbines, domed greenhouses.
 
-const Batch = FrontierView.Batch
+const Batch = PropBatch.Batch
 const LINE := Color(1.0, 0.88, 0.7)
 
 static var _box_mesh: Mesh
@@ -40,7 +40,7 @@ static func add_plate(b: Batch, basis: Basis, pos: Vector3, size: Vector3, m: Ma
 
 
 static func add_beam(b: Batch, a: Vector3, c: Vector3, thick: float, m: Material) -> void:
-	b.add(box(), FrontierView._beam_xf(a, c, thick), m)
+	b.add(box(), PropBatch._beam_xf(a, c, thick), m)
 
 
 ## A sagging cable from a to c (catenary-ish, n segments).

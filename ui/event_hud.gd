@@ -247,8 +247,6 @@ func _draw_marker() -> void:
 	if cam == null:
 		return
 	var w: Node = events.world
-	if w and w.get("command") != null and w.command.is_open:
-		return
 	var col: Color = events.active.get("color", UITheme.GOLD)
 	var wp: Vector3 = (p as Vector3) + Vector3(0, 2.2, 0)
 	var vs: Vector2 = _marker.size

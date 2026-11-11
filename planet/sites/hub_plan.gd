@@ -251,7 +251,7 @@ static func trade_line() -> String:
 	var v: Variant = opt_static("res://automation/hub.gd", "trade_mult")
 	if (v is float or v is int) and float(v) > 1.001:
 		var t: String = ("%.2f" % float(v)).rstrip("0").rstrip(".")
-		return TranslationServer.translate("Everything sells for x%s now.") % t
+		return TranslationServer.translate("The recycling network grew: everything sells for x%s now.") % t
 	return ""
 
 
