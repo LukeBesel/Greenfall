@@ -87,7 +87,7 @@ static func rocket_lock_text(level: int) -> String:
 		return ""
 	if level < rocket_level():
 		return TranslationServer.translate("Locked. Upgrade your base to level %d to build the launch pad.") % rocket_level()
-	return TranslationServer.translate("The rocket isn't ready yet. Keep following WREN's steps.")
+	return TranslationServer.translate("The launch pad is still buried. Put your first robot to work to clear it.")
 
 
 ## The level a restored far hub stands at, and what restoring one costs when `n` far hubs are

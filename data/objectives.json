@@ -146,12 +146,12 @@
     },
     {
       "id": "zone",
-      "text": "Send your robot to work",
-      "desc": "Robots clean where you point. Press {open_command}.",
+      "text": "Show your robot where to clean first",
+      "desc": "It cleans by itself. {open_command}: show it where first.",
       "type": "zone",
       "target": 1,
       "lines": [
-        "Give your robot a hex to work on. It wants a job."
+        "Your robot already knows the job. Paint a hex, and it starts there."
       ]
     },
     {
