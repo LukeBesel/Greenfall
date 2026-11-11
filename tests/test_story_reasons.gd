@@ -35,7 +35,8 @@ func test_every_goal_has_a_reason() -> void:
 	# The catch-all line is for late-game odds and ends, not for the Verdance chain.
 	assert_lt(n_generic, goals.size() / 3, "%d of %d goals fall back to the generic reason" % [n_generic, goals.size()])
 	for g2: Dictionary in goals:
-		if str(g2.get("id", "")) == "home_land_1":  # flying to the next planet: Verdance ends here
+		# Verdance's first visit ends where the old frontier districts (retired on the globe) or the next planet begin.
+		if str(g2.get("id", "")) in ["research_dunes", "home_land_1"] or str(g2.get("type", "")).begins_with("frontier"):
 			break
 		assert_ne(Objectives.goal_reason(g2), generic, "Verdance goal %s has its own reason" % str(g2.get("id", "?")))
 

@@ -2086,7 +2086,7 @@ msgstr "Espacio  pausa   ·   Esc  saltar"
 
 #: story/tutorial.gd:10
 msgid "Fix the old Maker workbench: press  {interact}  at it"
-msgstr ""
+msgstr "Arregla el viejo banco de los Creadores: pulsa  {interact}  junto a él"
 
 #: story/tutorial.gd:11
 msgid "Pick up trash: hold  {scoop}"
@@ -8736,7 +8736,7 @@ msgstr "Cubos"
 
 #: data/currencies.json:currencies[cubes].desc
 msgid "Clean building blocks. The bin's recycler makes them from trash and bales. Everything is built from cubes, and bigger machines need many more. Pays for upgrades, robots, base levels, research, rockets and decorations."
-msgstr ""
+msgstr "Bloques de construcción limpios. La recicladora del cubo de basura los hace con basura y fardos. Todo se construye con cubos, y las máquinas grandes necesitan muchos más. Paga mejoras, robots, niveles de base, investigación, cohetes y decoraciones."
 
 #: data/currencies.json:currencies[parts].short
 msgid "PARTS"
@@ -11617,7 +11617,7 @@ msgstr "Mk V Orbital"
 
 #: data/homeward.json:drive[0].desc
 msgid "Your hop rocket, rebuilt for space out of a mountain of cubes. It reaches the near planets, Ochre and Tidewell."
-msgstr ""
+msgstr "Tu pequeño cohete, reconstruido para el espacio con una montaña de cubos. Llega a los planetas cercanos, Ochre y Tidewell."
 
 #: data/homeward.json:drive[1].name
 msgid "Mk VI Interplanetary"
@@ -11885,7 +11885,7 @@ msgstr ""
 
 #: data/hub.json:levels[0].desc
 msgid "An old Maker cleanup station: pipe frame, tin roof, a bench."
-msgstr ""
+msgstr "Una vieja estación de limpieza de los Creadores: armazón de tubos, tejado de chapa, un banco de trabajo."
 
 #: data/hub.json:levels[1].name
 msgid "Workshop"
@@ -12241,15 +12241,15 @@ msgstr "El Cradle no puede aterrizar en un mundo muerto. Hagamos que Verdance vu
 
 #: data/objectives.json:wren_brief.lines
 msgid "Plants make green light. It fills your Bloom Core, and it's the sign the Cradle looks for."
-msgstr ""
+msgstr "Las plantas dan luz verde. Llena tu Núcleo Floral, y es la señal que busca el Cradle."
 
 #: data/objectives.json:brief.lines
 msgid "Lumi, it's WREN, up on the Cradle. Your pod fell by an old cleanup station, and my signal is weak."
-msgstr ""
+msgstr "Lumi, soy WREN, aquí arriba en el Cradle. Tu cápsula cayó junto a una vieja estación de limpieza, y mi señal es débil."
 
 #: data/objectives.json:brief.lines
 msgid "Its bin turns trash into cubes. Build a signal tower with them so we can talk. I'll be [glitch]listen—[/glitch]"
-msgstr ""
+msgstr "Su cubo de basura convierte la basura en cubos. Construye con ellos una torre de señal para que podamos hablar. Estaré [glitch]escuchan—[/glitch]"
 
 #: data/objectives.json:objectives[dump3].text
 msgid "Fill the trash bin 3 times"
@@ -12257,7 +12257,7 @@ msgstr "Llena el cubo de basura 3 veces"
 
 #: data/objectives.json:objectives[dump3].desc
 msgid "The bin turns trash into cubes. The bench builds with cubes."
-msgstr ""
+msgstr "El cubo de basura convierte la basura en cubos. El banco construye con cubos."
 
 #: data/objectives.json:objectives[dump3].lines
 msgid "Start small, Lumi. Every load in the bin earns cubes."
@@ -12293,11 +12293,11 @@ msgstr "Ahorra para la Empacadora"
 
 #: data/objectives.json:objectives[baler].desc
 msgid "The Baler presses trash into tight bales. Nothing is wasted, so a bale makes more cubes."
-msgstr ""
+msgstr "La empacadora aprieta la basura en fardos bien prietos. No se pierde nada, así que un fardo da más cubos."
 
 #: data/objectives.json:objectives[baler].lines
 msgid "Save up for the Baler. A tight bale wastes nothing, so it makes far more cubes."
-msgstr ""
+msgstr "Ahorra para la empacadora. Un fardo bien prieto no desperdicia nada, así que da muchos más cubos."
 
 #: data/objectives.json:objectives[power].text
 msgid "Sell 3 bales"
@@ -12305,11 +12305,11 @@ msgstr "Vende 3 fardos"
 
 #: data/objectives.json:objectives[power].desc
 msgid "Press {cube} for a bale and carry it to the scale. Cubes for the signal tower."
-msgstr ""
+msgstr "Pulsa {cube} para hacer un fardo y llévalo a la báscula. Cubos para la torre de señal."
 
 #: data/objectives.json:objectives[power].lines
 msgid "Carry bales to the scale by the bin. Three of them make plenty of cubes."
-msgstr ""
+msgstr "Lleva fardos a la báscula, junto al cubo. Tres fardos dan un montón de cubos."
 
 #: data/objectives.json:objectives[tower].text
 msgid "Build the signal tower"
@@ -12325,7 +12325,7 @@ msgstr "Construye la torre, Lumi. Así podré quedarme contigo."
 
 #: data/objectives.json:objectives[glim].desc
 msgid "Workbench, Build tab. He lights the dark and finds trash you missed."
-msgstr ""
+msgstr "Banco de trabajo, pestaña Construir. Alumbra en la oscuridad y encuentra la basura que se te pasó."
 
 #: data/objectives.json:objectives[glim].lines
 msgid "Lumi... something's still holding on to your pod. Small. Lantern-shaped. Patch him up at the bench."
@@ -12337,7 +12337,7 @@ msgstr "Limpia el hexágono que brilla"
 
 #: data/objectives.json:objectives[hex].desc
 msgid "Plants only grow on clean ground. Pick up every piece in the outline."
-msgstr ""
+msgstr "Las plantas solo crecen en suelo limpio. Recoge todas las piezas dentro del contorno."
 
 #: data/objectives.json:objectives[hex].lines
 msgid "First, one clean hex. Clear the outlined one. Green starts on clean ground."
@@ -12357,7 +12357,7 @@ msgstr "Dos hexágonos limpios. Sigue así, Lumi."
 
 #: data/objectives.json:objectives[hex3].desc
 msgid "Clear some room around the base. Then robots can start work."
-msgstr ""
+msgstr "Despeja sitio alrededor de la base. Así los robots podrán empezar a trabajar."
 
 #: data/objectives.json:objectives[hex3].lines
 msgid "Three clean hexes. The planet notices, believe me."
@@ -12369,7 +12369,7 @@ msgstr "Añade una Bahía de robots al banco"
 
 #: data/objectives.json:objectives[bench2].desc
 msgid "Workbench, Upgrades tab. A planet is too big for one small robot."
-msgstr ""
+msgstr "Banco de trabajo, pestaña Mejoras. Un planeta es demasiado grande para un solo robot pequeño."
 
 #: data/objectives.json:objectives[bench2].lines
 msgid "Add a Bot Bay to the bench. You shouldn't do this alone."
@@ -12385,7 +12385,7 @@ msgstr "Banco de trabajo, pestaña Bots. Los robots limpian por ti."
 
 #: data/objectives.json:objectives[robot].lines
 msgid "The Bot Bay hums! It can build you a helper. Try the Bots tab at the workbench."
-msgstr ""
+msgstr "¡La Bahía de robots zumba! Puede construirte un ayudante. Prueba la pestaña Bots del banco de trabajo."
 
 #: data/objectives.json:objectives[zone].text
 msgid "Send your robot to work"
@@ -12393,7 +12393,7 @@ msgstr "Pon a tu robot a trabajar"
 
 #: data/objectives.json:objectives[zone].desc
 msgid "Robots clean where you point. Press {open_command} and paint hexes."
-msgstr ""
+msgstr "Los robots limpian donde tú les digas. Pulsa {open_command} y pinta hexágonos."
 
 #: data/objectives.json:objectives[zone].lines
 msgid "Give your robot a hex to work on. It wants a job."
@@ -12417,7 +12417,7 @@ msgstr "Algo verde está despertando ahí fuera. Planta la primera semilla."
 
 #: data/objectives.json:objectives[hex10].desc
 msgid "More clean ground, more room to plant. Robots help: press {open_command}."
-msgstr ""
+msgstr "Más suelo limpio, más sitio para plantar. Los robots ayudan: pulsa {open_command}."
 
 #: data/objectives.json:objectives[hex10].lines
 msgid "Ten clean hexes. Your robots are learning from you, Lumi."
@@ -12429,11 +12429,11 @@ msgstr "Reconstruye la base al nivel 2"
 
 #: data/objectives.json:objectives[base2].desc
 msgid "Workbench, Upgrades tab. A bigger base powers more robots."
-msgstr ""
+msgstr "Banco de trabajo, pestaña Mejoras. Una base más grande da energía a más robots."
 
 #: data/objectives.json:objectives[base2].lines
 msgid "A bigger base makes more power, and power runs robots. Rebuild it at the workbench."
-msgstr ""
+msgstr "Una base más grande da más energía, y la energía mueve a los robots. Reconstrúyela en el banco de trabajo."
 
 #: data/objectives.json:objectives[haul].desc
 msgid "Workbench, Bots tab. It carries bales to the scale for you."
@@ -12453,11 +12453,11 @@ msgstr "Potencia la torre de señal"
 
 #: data/objectives.json:objectives[tower2].desc
 msgid "Workbench. A stronger signal lets WREN look further for you."
-msgstr ""
+msgstr "Banco de trabajo. Con una señal más fuerte, WREN puede buscar más lejos por ti."
 
 #: data/objectives.json:objectives[tower2].lines
 msgid "Boost the tower. With a stronger signal I can look further for you."
-msgstr ""
+msgstr "Refuerza la torre. Con una señal más fuerte podré buscar más lejos por ti."
 
 #: data/objectives.json:objectives[research1].desc
 msgid "Workbench, Research tab. Research unlocks new robots."
@@ -12481,11 +12481,11 @@ msgstr "Reconstruye la base al nivel 3"
 
 #: data/objectives.json:objectives[base3].desc
 msgid "Workbench, Upgrades tab. A stronger base runs bigger machines."
-msgstr ""
+msgstr "Banco de trabajo, pestaña Mejoras. Una base más fuerte mueve máquinas más grandes."
 
 #: data/objectives.json:objectives[base3].lines
 msgid "One more base level, Lumi. Bigger machines need a stronger base."
-msgstr ""
+msgstr "Un nivel de base más, Lumi. Las máquinas grandes necesitan una base más fuerte."
 
 #: data/outposts.json:levels[0].name
 msgid "Weigh Station"
@@ -14447,227 +14447,227 @@ msgstr "Tambores trituradores y un pequeño horno. Los fardos entran y nunca vue
 
 #: data/story_reasons.json:goal_reasons
 msgid "One more step toward a green world."
-msgstr ""
+msgstr "Un paso más hacia un mundo verde."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Other old stations are waiting to be woken up."
-msgstr ""
+msgstr "Otras viejas estaciones esperan a que las despierten."
 
 #: data/story_reasons.json:goal_reasons
 msgid "A strong second base keeps its side of Verdance clean."
-msgstr ""
+msgstr "Una segunda base fuerte mantiene limpio su lado de Verdance."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Every piece you pick up is one less on Verdance."
-msgstr ""
+msgstr "Cada pieza que recoges es una menos en Verdance."
 
 #: data/story_reasons.json:goal_reasons
 msgid "The bin turns trash into cubes."
-msgstr ""
+msgstr "El cubo de basura convierte la basura en cubos."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Better tools mean more trash in every trip."
-msgstr ""
+msgstr "Con mejores herramientas llevas más basura en cada viaje."
 
 #: data/story_reasons.json:goal_reasons
 msgid "A tight bale wastes nothing, so it makes more cubes."
-msgstr ""
+msgstr "Un fardo bien prieto no desperdicia nada, así que da más cubos."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Pressed trash recycles better than loose trash."
-msgstr ""
+msgstr "La basura prensada se recicla mejor que la suelta."
 
 #: data/story_reasons.json:goal_reasons
 msgid "The scale weighs your bale and recycles it into cubes."
-msgstr ""
+msgstr "La báscula pesa tu fardo y lo recicla en cubos."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Big trash holds the most cubes. It takes strong arms."
-msgstr ""
+msgstr "La basura grande guarda más cubos. Hacen falta brazos fuertes."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Plants only grow on clean ground."
-msgstr ""
+msgstr "Las plantas solo crecen en suelo limpio."
 
 #: data/story_reasons.json:goal_reasons
 msgid "A perfect bale has no gaps, so nothing is lost."
-msgstr ""
+msgstr "Un fardo perfecto no tiene huecos, así que no se pierde nada."
 
 #: data/story_reasons.json:goal_reasons
 msgid "A bigger chest means fewer walks to the bin."
-msgstr ""
+msgstr "Un pecho más grande significa menos viajes al cubo."
 
 #: data/story_reasons.json:goal_reasons
 msgid "The Makers left these behind. They tell what happened here."
-msgstr ""
+msgstr "Los Creadores los dejaron atrás. Cuentan lo que pasó aquí."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Old machine parts. Robots are built from them."
-msgstr ""
+msgstr "Piezas viejas de máquinas. Con ellas se construyen robots."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Big machines are built from a great many cubes."
-msgstr ""
+msgstr "Las máquinas grandes se construyen con muchísimos cubos."
 
 #: data/story_reasons.json:goal_reasons
 msgid "The bench studies what you find and learns to build it."
-msgstr ""
+msgstr "El banco estudia lo que encuentras y aprende a construirlo."
 
 #: data/story_reasons.json:goal_reasons
 msgid "The animals are coming back. Say hello."
-msgstr ""
+msgstr "Los animales están volviendo. Salúdalos."
 
 #: data/story_reasons.json:goal_reasons
 msgid "A bigger base makes more power for robots and machines."
-msgstr ""
+msgstr "Una base más grande da más energía para robots y máquinas."
 
 #: data/story_reasons.json:goal_reasons
 msgid "A planet is too big for one small robot."
-msgstr ""
+msgstr "Un planeta es demasiado grande para un solo robot pequeño."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Robots clean where you point."
-msgstr ""
+msgstr "Los robots limpian donde tú les digas."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Robot bales pile up. A Haul Bug carries them to the scale."
-msgstr ""
+msgstr "Los fardos de los robots se amontonan. Un Haul Bug los lleva a la báscula."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Your robots turn trash into cubes while you do other things."
-msgstr ""
+msgstr "Tus robots convierten basura en cubos mientras tú haces otras cosas."
 
 #: data/story_reasons.json:goal_reasons
 msgid "More robots, more clean ground. They carry on when you fly on."
-msgstr ""
+msgstr "Más robots, más suelo limpio. Siguen trabajando cuando tú te vas volando."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Nothing grows by itself here any more. You need seeds."
-msgstr ""
+msgstr "Aquí ya nada crece solo. Necesitas semillas."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Plants give green light for your Bloom Core."
-msgstr ""
+msgstr "Las plantas dan luz verde a tu Núcleo Floral."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Planted ground is safe from the Ledger's drones."
-msgstr ""
+msgstr "El suelo plantado está a salvo de los drones del Ledger."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Every bloom gives green light, and a seed back."
-msgstr ""
+msgstr "Cada flor da luz verde y devuelve una semilla."
 
 #: data/story_reasons.json:goal_reasons
 msgid "The Recycler turns bales into parts for robots."
-msgstr ""
+msgstr "La Recicladora convierte fardos en piezas para robots."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Watered plants grow, and growing plants give more green light."
-msgstr ""
+msgstr "Las plantas regadas crecen, y las que crecen dan más luz verde."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Trash floats on the lakes too. A Skimmer nets it."
-msgstr ""
+msgstr "También flota basura en los lagos. Un Skimmer la pesca con su red."
 
 #: data/story_reasons.json:goal_reasons
 msgid "A Seedling plants for you, so green spreads faster."
-msgstr ""
+msgstr "Un Seedling planta por ti, así el verde se extiende más rápido."
 
 #: data/story_reasons.json:goal_reasons
 msgid "A little music makes the base feel like home."
-msgstr ""
+msgstr "Un poco de música hace que la base parezca un hogar."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Your robots work hard. Let them look their best."
-msgstr ""
+msgstr "Tus robots trabajan mucho. Que luzcan bien guapos."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Thirsty plants stop growing. A Drip waters them for you."
-msgstr ""
+msgstr "Las plantas con sed dejan de crecer. Un Drip las riega por ti."
 
 #: data/story_reasons.json:goal_reasons
 msgid "One helper that can clean, plant or water."
-msgstr ""
+msgstr "Un ayudante que puede limpiar, plantar o regar."
 
 #: data/story_reasons.json:goal_reasons
 msgid "A Mk II robot does the same job faster."
-msgstr ""
+msgstr "Un robot Mk II hace el mismo trabajo más rápido."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Bees carry pollen. With bees, every plant grows faster."
-msgstr ""
+msgstr "Las abejas llevan el polen. Con abejas, todas las plantas crecen más rápido."
 
 #: data/story_reasons.json:goal_reasons
 msgid "A tank near the plants saves your Drips a long trip."
-msgstr ""
+msgstr "Un tanque cerca de las plantas les ahorra a tus Drips un viaje largo."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Ground that stays watered can look after itself."
-msgstr ""
+msgstr "El suelo que sigue regado puede cuidarse solo."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Animals come back where the ground is green."
-msgstr ""
+msgstr "Los animales vuelven donde el suelo es verde."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Thriving ground is a home for animals again."
-msgstr ""
+msgstr "El suelo próspero vuelve a ser un hogar para los animales."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Healthy gardens pay you back, all by themselves."
-msgstr ""
+msgstr "Los jardines sanos te lo devuelven ellos solitos."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Clean air lets the sun through to the plants."
-msgstr ""
+msgstr "El aire limpio deja pasar el sol hasta las plantas."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Old robots have earned a rest in the garden."
-msgstr ""
+msgstr "Los robots viejos se han ganado un descanso en el jardín."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Fully restored ground stays green without you."
-msgstr ""
+msgstr "El suelo totalmente restaurado sigue verde sin ti."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Every strong base keeps its part of Verdance clean."
-msgstr ""
+msgstr "Cada base fuerte mantiene limpia su parte de Verdance."
 
 #: data/story_reasons.json:goal_reasons
 msgid "The hop rocket can't leave the planet. A drive can."
-msgstr ""
+msgstr "El pequeño cohete no puede salir del planeta. Con un propulsor, sí."
 
 #: data/story_reasons.json:goal_reasons
 msgid "The Ledger buried five worlds. The Cradle waits for all of them."
-msgstr ""
+msgstr "El Ledger enterró cinco mundos. El Cradle los espera a todos."
 
 #: data/story_reasons.json:goal_reasons
 msgid "The bench learns to build something new."
-msgstr ""
+msgstr "El banco aprende a construir algo nuevo."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Robots keep working while you do other things."
-msgstr ""
+msgstr "Los robots siguen trabajando mientras tú haces otras cosas."
 
 #: data/story_reasons.json:exit
 msgid "Lumi, look at the star map. Five worlds, and the Ledger buried every one."
-msgstr ""
+msgstr "Lumi, mira el mapa estelar. Cinco mundos, y el Ledger los enterró todos."
 
 #: data/story_reasons.json:exit
 msgid "The Cradle waits until all of them can grow again. Verdance was only the first."
-msgstr ""
+msgstr "El Cradle espera hasta que en todos pueda volver a crecer algo. Verdance solo era el primero."
 
 #: data/story_reasons.json:exit
 msgid "Your robots will keep cleaning here. Build the Orbital drive, and we'll wake the next world."
-msgstr ""
+msgstr "Tus robots seguirán limpiando aquí. Construye el motor Orbital y despertaremos el siguiente mundo."
 
 #: data/story_reasons.json:exit
 msgid "The rocket can leave now. Verdance isn't finished, and that's all right."
-msgstr ""
+msgstr "El cohete ya puede partir. Verdance no está terminado, y no pasa nada."
 
 #: data/story_reasons.json:exit
 msgid "Some of its trash needs tools the Makers left on other worlds. We'll bring them back."
-msgstr ""
+msgstr "Parte de su basura necesita herramientas que los Creadores dejaron en otros mundos. Las traeremos de vuelta."
 
 #: data/style_parts.json:slots[accent].name
 msgid "Accent"
@@ -14964,7 +14964,7 @@ msgstr "Cubo abollado"
 
 #: data/trash_bin.json:levels[0].desc
 msgid "A dented bin on a rusty weigh plate. The recycler under it turns trash into cubes."
-msgstr ""
+msgstr "Un cubo abollado sobre una báscula oxidada. La recicladora de debajo convierte la basura en cubos."
 
 #: data/trash_bin.json:levels[1].name
 msgid "Scrap Skip"
@@ -15004,7 +15004,7 @@ msgstr "Empacadora"
 
 #: data/upgrades.json:upgrades[baler].desc
 msgid "Fit the bale press in your chest. A tight bale recycles with nothing wasted: far more cubes than loose trash."
-msgstr ""
+msgstr "Monta la prensa de fardos en tu pecho. Un fardo bien prieto se recicla sin desperdiciar nada: muchos más cubos que con basura suelta."
 
 #: data/upgrades.json:upgrades[lift_strength].name
 msgid "Lift Strength"
@@ -15044,7 +15044,7 @@ msgstr "Pila de carga"
 
 #: data/upgrades.json:upgrades[carry_stack].desc
 msgid "Balance one more bale on your back."
-msgstr ""
+msgstr "Equilibra un fardo más en la espalda."
 
 #: data/upgrades.json:upgrades[compactor_pressure].name
 msgid "Compactor Pressure"
@@ -15052,7 +15052,7 @@ msgstr "Presión del compactador"
 
 #: data/upgrades.json:upgrades[compactor_pressure].desc
 msgid "Squish harder. Denser bales are worth more."
-msgstr ""
+msgstr "Aprieta más fuerte. Los fardos más densos valen más."
 
 #: data/upgrades.json:upgrades[scoop_speed].name
 msgid "Scoop Speed"
@@ -15068,7 +15068,7 @@ msgstr "Compactador automático"
 
 #: data/upgrades.json:upgrades[auto_compactor].desc
 msgid "Presses a bale by itself when full. Perfect bales you press yourself still pay more."
-msgstr ""
+msgstr "Prensa un fardo solo cuando está lleno. Los fardos perfectos hechos a mano siguen pagando más."
 
 #: data/upgrades.json:upgrades[magnet_arm].name
 msgid "Magnet Arm"
