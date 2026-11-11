@@ -825,7 +825,13 @@ func _build_lots(sliced: bool = false) -> void:
 	for lot: Dictionary in _lots:
 		var c: Vector2 = lot["c"]
 		var yard: bool = lot["kind"] == "yard"
-		var gp: Node3D = clean_pad(21.0) if yard and site_id == "start_yard" else KitMesh.ground_patch(Vector2(21, 21) if yard else Vector2(18, 18), st, int(lot["seed"]))  # [v1yard]
+		var gp: Node3D
+		if yard and site_id == "start_yard":
+			gp = clean_pad(21.0)  # [v1yard]
+		elif sliced:  # [v6qa] the patch in slices too
+			gp = await KitMesh.ground_patch_async(Vector2(21, 21) if yard else Vector2(18, 18), st, int(lot["seed"]))
+		else:
+			gp = KitMesh.ground_patch(Vector2(21, 21) if yard else Vector2(18, 18), st, int(lot["seed"]))
 		gp.position = Vector3(c.x, 0.0, c.y)
 		_lot_root.add_child(gp)
 		if sliced:

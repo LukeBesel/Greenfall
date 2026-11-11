@@ -176,3 +176,27 @@ func test_picker_rows_say_why_to_go() -> void:
 	assert_true((fly[2] as Button).disabled, "a hub past the rocket's limit can't be flown to")
 	assert_true(texts.has("Upgrade the rocket first"))
 	p.close()
+
+
+## [v6hubs] Each far main-path hub says why Lumi came (story_reasons hub_fly_<order>), home doesn't.
+func test_every_far_main_hub_has_an_arrival_reason() -> void:
+	HubPlan.reload()
+	for e: Dictionary in HubPlan.entries("verdance"):
+		var i: int = int(e["site"])
+		if HubPlan.is_home("verdance", i):
+			assert_eq(HubPlan.reason("verdance", i), "", "home has no reason line")
+		elif HubPlan.is_main("verdance", i):
+			var r: String = HubPlan.reason("verdance", i)
+			assert_ne(r, "", "%s has a reason" % e["id"])
+			assert_ne(r, str(e.get("desc", "")), "%s's reason comes from story_reasons" % e["id"])
+
+
+## [v6hubs] The hop's timings are data (hub_defaults.hop) and keep it well under 10 s on screen.
+func test_hop_timings_come_from_data() -> void:
+	HubPlan.reload()
+	var h: Dictionary = HubPlan.defaults("verdance").get("hop", {})
+	assert_false(h.is_empty(), "verdance has hub_defaults.hop")
+	assert_almost_eq(HubHop.leg_s(), float(h["leg_s"]), 0.001)
+	assert_almost_eq(HubHop.duration(), float(h["leg_s"]) * 2.0 + float(h["fade_s"]) * 2.0, 0.001)
+	assert_lt(HubHop.duration(), 10.0)
+	assert_almost_eq(HubHop.leg_alt(1.0, true), float(h["cruise_alt_m"]), 0.01)

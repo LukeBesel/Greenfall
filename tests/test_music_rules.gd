@@ -131,15 +131,15 @@ func test_quiet_minutes_after_the_pod_lands() -> void:
 	d.tick(0.1)
 	d.intro_land(1.0)
 	d.set_context("play")
-	assert_gte(d.gap_left, 120.0, "a few quiet minutes after landing")
+	assert_gte(d.gap_left, 540.0, "[main] about ten quiet minutes after the crash landing (owner)")
 	var t: float = 0.0
-	while t < 119.0:
+	while t < 539.0:
 		d.tick(1.0)
 		t += 1.0
 		assert_eq(d.current(), "", "no song yet at %.0f s" % t)
 		if d.current() != "":
 			break
-	for i: int in 200:  # [main] stop at the first song: in headless runs it can end at once
+	for i: int in 260:  # [main] stop at the first song: in headless runs it can end at once
 		d.tick(1.0)
 		if d.current() != "":
 			break
@@ -302,3 +302,25 @@ func test_story_moment_song_plays_once_then_quiet() -> void:
 	assert_gte(d.gap_left, float(Tunes.cfg()["gap_s"][0]) - 1.0, "and the usual long quiet follows")
 	d.set_context("none")
 	Tunes.reload()
+
+
+func test_no_song_starts_over_a_spoken_line() -> void:
+	# [main] Owner: a song must not start over WREN or a story line; it waits for the line to end.
+	var d: Node = _director()
+	d.context = "play"
+	d.gap_left = 0.0
+	Audio.duck(6.0)
+	Audio._duck = 1.0
+	for i: int in 4:
+		d.tick(1.0)
+		assert_eq(d.current(), "", "no song while a line is spoken (%d s)" % (i + 1))
+	Audio._duck_until_us = 0
+	Audio._duck = 0.0
+	var started := false
+	for i: int in 12:
+		d.tick(1.0)
+		if d.current() != "":
+			started = true
+			break
+	assert_true(started, "the song comes once the line is over")
+	d.set_context("none")

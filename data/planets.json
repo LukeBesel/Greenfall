@@ -8,7 +8,8 @@
       "main_path": 6,
       "clean_hexes": 8,
       "outposts": 0,
-      "level_at": [0.2, 0.45, 0.75]
+      "level_at": [0.2, 0.45, 0.75],
+    "hop": {"_doc": "[v6hubs] The rocket hop between hubs (planet/sites/hub_hop.gd) and the arrival (hub_purpose.gd show_title). leg_s: seconds of each visible leg (out, then in); leg_m: ground covered per leg; cruise_alt_m: flight height; fade_s: the sky veil's fade while the town builds; skip_after_s: E / jump skips the flight after this; approach_pitch / approach_dist_m: the camera on the way in. title_in_s / title_hold_s / title_out_s: the town's name, type and why we came; arrive_sting: the music sting on the first arrival at a hub ('' for none).", "leg_s": 2.8, "leg_m": 260.0, "cruise_alt_m": 45.0, "fade_s": 0.6, "skip_after_s": 0.35, "approach_pitch": -0.16, "approach_dist_m": 20.0, "title_in_s": 0.5, "title_hold_s": 4.0, "title_out_s": 0.9, "arrive_sting": "motif"}
     },
     "hubs": [
       {"_doc": "[v6hubs] One entry per hub. site: SiteManager index (0 = start). order: place on the main path. town: the town's look (oldtown, downtown, suburb, industrial; VerdanceSite builds it, except where the lake reaches into the town, which is always a harbour). landmark.kind: StreetDressing landmark (water_tower, crane, ferris_wheel, radio_mast, smokestack, old_bus, windpump, lighthouse). desc: the picker's 'why go'. piece: the rocket piece the wake gives (flags rocket_piece_<id>, rocket_pieces). gift: cubes / parts / seeds / research (a node granted free) / design (a Lumi design) / flag. boosts (optional, none on Verdance: the per-hub multiplier is data/hub.json far_hub.sell_growth): stat multipliers while the hub is woken, [{stat, mult, text}] (Economy.stat ids; '*.speed' = every robot type). hint: the arrival line. chain: steps {do: clean, hexes} / {do: outposts, count} / {do: wake}.",
