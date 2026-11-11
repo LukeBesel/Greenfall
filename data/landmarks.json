@@ -11,6 +11,7 @@
 		"smokestack": {"main": "#c8694a", "accent": "cream", "height": 26.0, "foot": 7.3}
 	},
 	"planets": {
-		"verdance": {}
+		"verdance": {},
+		"testworld": {"_doc": "[v7planet] Dev stub planet: its own landmark colours.", "radio_mast": {"main": "orange", "accent": "navy"}, "smokestack": {"main": "#c9a27a", "accent": "plum"}}
 	}
 }

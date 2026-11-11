@@ -29,6 +29,7 @@
     "colors": ["#ff9e26", "#f5f2d9", "#6699ff", "#ffd940", "#e673b8"]
    }
   },
-  "verdance": {}
+  "verdance": {},
+  "testworld": {"_doc": "[v7planet] Dev stub planet (docs/NEW_PLANET.md): only what differs from _default.", "ground": {"grow_s": 120, "petals": ["#ffd27a", "#ff9e5e", "#f4f1e8"]}, "flutter": {"colors": ["#ffcf6b", "#ffffff"]}}
  }
 }

@@ -241,6 +241,8 @@ def scan_json(cat: Catalog, path: str) -> None:
                     take_all(x, ref)
 
     def walk(v, path_s):
+        if isinstance(v, dict) and v.get("dev") is True:
+            return  # [v7planet] dev-only entries (data/planets.json testworld) are never shown to players
         if isinstance(v, dict):
             for k, x in v.items():
                 if k.startswith("_"):

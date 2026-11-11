@@ -656,5 +656,22 @@
       }
     ],
     "sites_api": "AnvilSites.build(site_root: Node3D, site_id, stage 1..5, restoration 0..1) -> Node3D; local +Y up, locally flat patch at the root's origin"
+  },
+  "testworld": {
+    "_doc": "[v7planet] Dev-only stub planet, data only (docs/NEW_PLANET.md, the worked example). Never shown to players: not in data/homeward.json, reachable only with --orbit-planet=testworld. Half Verdance's size (f 64, about 920 m), two hubs, a red-earth palette, a radio mast at home instead of a water tower. Check: tools/planet_smoke.sh testworld.",
+    "name": "Testworld",
+    "dev": true,
+    "globe": {"radius": 0.5, "frequency": 64, "hub_count": 2},
+    "look": {
+      "ground": {"dirt_tex": "red_laterite_soil_stones", "clean_tex": "sand_01", "dirt": [1.1, 0.85, 0.75], "clean": [1.05, 0.95, 0.85], "grass": [0.9, 1.05, 0.8]}
+    },
+    "hub_defaults": {"main_path": 2, "clean_hexes": 4},
+    "hubs": [
+      {"site": 0, "order": 1, "id": "test_yard", "home": true, "name": "Test Yard", "town": "suburb",
+       "landmark": {"kind": "radio_mast", "name": "Test Mast"}, "desc": "Home on the test planet."},
+      {"site": 1, "order": 2, "id": "test_works", "name": "Test Works", "town": "industrial",
+       "landmark": {"kind": "smokestack", "name": "Test Stack"}, "desc": "The second test hub.",
+       "gift": {"cubes": 100}, "hint": "The test works. Wake the stack."}
+    ]
   }
 }
