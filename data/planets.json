@@ -25,9 +25,9 @@
     "hub_steps": "shared",
     "globe": {"radius": 1.0, "frequency": 128, "hub_count": 10},
     "hub_defaults": {
-      "_doc": "[v6hubs] Every hub's purpose (planet/sites/hub_plan.gd, hub_purpose.gd; docs/ADJUSTING.md). main_path: how many hubs (the start hub included) are the planet's main path; the rest are optional extras. clean_hexes: hexes to clean at a far hub before its landmark can be woken. outposts: outposts to repair there first (0 = none). level_at: the hub's clean share at which a woken hub rises to level 3, 4 and 5 (the wake itself is level 2). A hub's own chain overrides the default chain. The wake price is data/hub.json far_hub_cost (Hub.far_cost).",
+      "_doc": "[v6hubs] Every hub's purpose (planet/sites/hub_plan.gd, hub_purpose.gd; docs/ADJUSTING.md). main_path: how many hubs (the start hub included) are the planet's main path; the rest are optional extras. clean_hexes: hexes to clean at a far hub before its landmark can be woken ([v6pace] 4 on Verdance: with the first tools a bot run took 25 bot minutes for 8). outposts: outposts to repair there first (0 = none). level_at: the hub's clean share at which a woken hub rises to level 3, 4 and 5 (the wake itself is level 2). A hub's own chain overrides the default chain. The wake price is data/hub.json far_hub_cost (Hub.far_cost).",
       "main_path": 6,
-      "clean_hexes": 8,
+      "clean_hexes": 4,
       "outposts": 0,
       "level_at": [0.2, 0.45, 0.75],
     "hop": {"_doc": "[v6hubs] The rocket hop between hubs (planet/sites/hub_hop.gd) and the arrival (hub_purpose.gd show_title). leg_s: seconds of each visible leg (out, then in); leg_m: ground covered per leg; cruise_alt_m: flight height; fade_s: the sky veil's fade while the town builds; skip_after_s: E / jump skips the flight after this; approach_pitch / approach_dist_m: the camera on the way in. title_in_s / title_hold_s / title_out_s: the town's name, type and why we came; arrive_sting: the music sting on the first arrival at a hub ('' for none).", "leg_s": 2.8, "leg_m": 260.0, "cruise_alt_m": 45.0, "fade_s": 0.6, "skip_after_s": 0.35, "approach_pitch": -0.16, "approach_dist_m": 20.0, "title_in_s": 0.5, "title_hold_s": 4.0, "title_out_s": 0.9, "arrive_sting": "motif"}
@@ -49,7 +49,7 @@
        "piece": {"id": "plates", "name": "Hull Plates"},
        "gift": {"parts": 150},
        "hint": "The shipyard. The Gantry Crane can lift the hull plates the rocket needs.",
-       "chain": [{"do": "clean", "hexes": 8}, {"do": "outposts", "count": 1}, {"do": "wake"}]},
+       "chain": [{"do": "clean", "hexes": 4}, {"do": "outposts", "count": 1}, {"do": "wake"}]},
       {"site": 8, "order": 4, "id": "signal_heights", "name": "Signal Heights", "town": "downtown",
        "landmark": {"kind": "radio_mast", "name": "Signal Mast"},
        "desc": "The Settlers' star chart: it shows where the rocket can fly.",
