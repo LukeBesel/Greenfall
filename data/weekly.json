@@ -1,5 +1,7 @@
 {
   "_doc": "[extras] Seed of the Week (systems/extras/weekly.gd). The ISO week (UTC) picks the seed, the world type (data/cradle.json world_types, cycled) and the twist, so everyone gets the same challenge. It runs in its own save slot (slot) and never touches the main save; best time/score and the paint chips live in weekly.save next to the profile. goal_hexes: hexes to clean; kit: starting cubes / seeds / robots (filtered by the twist); twists: only = the only robot types allowed, ban = robot types not allowed, modifiers = world modifiers from data/cradle.json. score: per_hex, per_bloom, per_100_cubes, time_bonus_s (seconds under which the time bonus counts down to 0) and time_bonus_max. chips: paint chip colours, one per week (cycled). Chips unlock the weekly decorations in Garden Mode (data/decor.json needs_chips).",
+  "enabled": false,
+  "_enabled_doc": "[v6screens] false hides the Seed of the Week everywhere a player could start it (Keepsakes tab, its two Garden Mode decorations, its two achievements in the Codex). It does not work on the round world yet: the week's seed is ignored and a resumed run has no robots. Set true to bring it back. See docs/ADJUSTING.md.",
   "slot": 9,
   "goal_hexes": 30,
   "kit": {"cubes": 1500, "seeds": 20, "robots": ["scoopie", "scoopie", "haulbug"]},
