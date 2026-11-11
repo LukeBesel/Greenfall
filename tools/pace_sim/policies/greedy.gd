@@ -132,8 +132,8 @@ func _type_for(role: String) -> String:
 	return ""
 
 
-## The robot to work toward next, in the bot's order: waterers for the garden, the first cleaner,
-## a hauler per two cleaners, a planter, more cleaners, then general helpers.
+## The robot to work toward next, in the bot's order: waterers for the garden, the first hauler,
+## the first cleaner, a hauler per two cleaners, a planter, more cleaners, then general helpers.
 func _next_robot(m: PaceSimModel) -> String:
 	var garden: bool = m.work.garden_open()
 	var cleaners: int = m.role_count("clean")
@@ -141,6 +141,8 @@ func _next_robot(m: PaceSimModel) -> String:
 	var order: Array[String] = _goal_robots(m)
 	if garden and m.role_count("water") < maxi(1, m.work.garden_count(2)):
 		order.append(_type_for("water"))
+	if haulers == 0:
+		order.append(_type_for("haul"))
 	if cleaners == 0:
 		order.append(_type_for("clean"))
 	if haulers * 2 < cleaners:

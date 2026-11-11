@@ -710,6 +710,11 @@ func _do_pickup(p: Patch) -> bool:
 
 
 ## Buried parts: dig the ones the detector finds close by (a person follows the beeping).
+## How far Lumi walks off his work to a buried-part ping, and how far before the first hex is clean.
+const DIG_REACH_M: float = 14.0
+const DIG_REACH_FIRST_HEX_M: float = 6.0
+
+
 func _do_dig(p: Patch) -> bool:
 	if not p.carried.is_empty():
 		return false
@@ -720,7 +725,10 @@ func _do_dig(p: Patch) -> bool:
 		if det.target < 0 or _skip_hex.has(-100 - det.target):
 			return false
 		var pp: Vector3 = world.field.part_pos[det.target]
-		if pp.distance_to(p.global_position) > 14.0:
+		# The card says "clean the glowing hex": until the first hex is clean a far ping waits
+		# (one walk to a ping 19 m off cost 28 s of the first 86 in a Nov 11 run).
+		var reach: float = DIG_REACH_M if world.field.cleaned_count > 0 else DIG_REACH_FIRST_HEX_M
+		if pp.distance_to(p.global_position) > reach:
 			return false
 		_dig_target = det.target
 	_set_task("dig")
@@ -1483,6 +1491,8 @@ func _next_robot() -> String:
 		order.append("skimmer")  # [beat] the flooded city is skimmed, not scooped
 	if seeds_on and _drips() < maxi(1, gardens):
 		order.append("drip")
+	if haul == 0:
+		order.append("haulbug")  # the first helper carries the bales, so Lumi stays at the work
 	if scoop == 0:
 		order.append("scoopie")
 	if haul * 2 < scoop:

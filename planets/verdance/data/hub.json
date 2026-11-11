@@ -3,7 +3,7 @@
   "materials": {"metal": {"id": "parts", "name": "Parts", "per_unit": 0.0}, "plastic": {"id": "parts", "name": "Parts", "per_unit": 0.0}, "glass": {"id": "parts", "name": "Parts", "per_unit": 0.0}},
   "levels": [
     {"level": 1, "name": "Lean-to", "desc": "Pipe frame, tin roof, a bench.", "cost": {}},
-    {"level": 2, "name": "Workshop", "desc": "Walls, a roll-up door, floodlights. Room for a bigger crew.", "cost": {"cubes": 700}, "requires": [["bench_tier", 2]]},
+    {"level": 2, "name": "Workshop", "desc": "Walls, a roll-up door, floodlights. Room for a bigger crew.", "cost": {"cubes": 320}, "requires": [["bench_tier", 2]]},
     {"level": 3, "name": "Depot Station", "desc": "A second building, a radio mast and a sorting table.", "cost": {"cubes": 1100}},
     {"level": 4, "name": "Solar Yard", "desc": "Solar panels and a greenhouse frame. Power for bigger machines.", "cost": {"cubes": 1400}},
     {"level": 5, "name": "Garden Station", "desc": "A wind turbine, clean paint, planters, and a pad that could take a rocket.", "cost": {"cubes": 1800}}

@@ -3,7 +3,7 @@
   "pos": [3.4, 0.0, -6.6],
   "signal_pct": [0, 25, 50, 75, 100],
   "tiers": [
-    {"name": "Signal Tower", "cost": {"cubes": 500}},
+    {"name": "Signal Tower", "cost": {"cubes": 220}},
     {"name": "Signal Tower Mk II", "cost": {"cubes": 900}},
     {"name": "Signal Tower Mk III", "cost": {"cubes": 1500}},
     {"name": "Signal Tower Mk IV", "cost": {"cubes": 2500}}

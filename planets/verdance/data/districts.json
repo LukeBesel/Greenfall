@@ -20,7 +20,7 @@
   },
   "income_ref_s": 180.0,
   "districts": [
-    {"id": "old_town", "name": "Old Town", "site": 0, "rings": 6, "pollution": ["litter"], "hex_work": 144.0, "hex_cubes": 116.0, "first_hexes": {"work": 120.0, "rings": 1, "full_ring": 3}, "income_ref": 14.0, "unlock": {"type": "start"}},
+    {"id": "old_town", "name": "Old Town", "site": 0, "rings": 6, "pollution": ["litter"], "hex_work": 144.0, "hex_cubes": 116.0, "first_hexes": {"work": 108.0, "rings": 1, "full_ring": 3}, "income_ref": 14.0, "unlock": {"type": "start"}},
     {"id": "scrapyard", "name": "Ironside", "site": 7, "rings": 9, "pollution": ["litter", "wrecks"], "hex_work": 340.0, "hex_cubes": 120.0, "income_ref": 16.0, "unlock": {"type": "district_stage", "district": "old_town", "stage": 4}},
     {"id": "kettle_bay", "name": "Kettle Bay", "site": 3, "rings": 12, "pollution": ["litter", "wrecks", "slick"], "hex_work": 305.0, "hex_cubes": 125.0, "income_ref": 33.0, "unlock": {"type": "district_stage", "district": "scrapyard", "stage": 4}},
     {"id": "highreach", "name": "Highreach", "site": 8, "rings": 16, "pollution": ["litter", "wrecks", "slick", "smog"], "hex_work": 540.0, "hex_cubes": 130.0, "income_ref": 40.0, "unlock": {"type": "district_stage", "district": "kettle_bay", "stage": 4}},

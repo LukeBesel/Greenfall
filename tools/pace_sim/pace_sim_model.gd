@@ -35,6 +35,8 @@ var bin_level: int = 1
 var robots: Dictionary[String, int] = {}
 var robot_tier: Dictionary[String, int] = {}
 var first_robot_t: float = -1.0
+## The most cubes ever in the purse (the "currency stays small" rule reads it).
+var most_held: float = 0.0
 var built: Dictionary[String, bool] = {}
 var glim_tier: Dictionary[String, int] = {}
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -85,6 +87,7 @@ func pay(amount: float, win: String = "") -> void:
 		amount *= 1.0 + data.k("side_income_share")  # level rewards and weather, spread over the loads
 	cubes += amount
 	earned += amount
+	most_held = maxf(most_held, cubes)
 	if win != "":
 		record.win(t, win)
 		record.beat("first_payout", t)

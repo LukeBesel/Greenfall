@@ -1,9 +1,9 @@
 {
-  "_doc": "Robot types. requires_research = research node id needed before the type can be built (absent = unlocked from the start). [ui2] parts = Parts for the first robot of the type (with cost in cubes; cubes grow x1.35 and parts x1.2 per robot owned). recipe = flavour only now (the part types a robot is made of; nothing is consumed). stats = Mk I base values. tiers = visual/stat tiers: mult multiplies all work stats; requires_core_rarity = unused since [ui2] (Mk steps cost cubes + Fleet.TIER_PARTS). Fleet upgrades apply to every robot of the type. [M3-19] Robots and what they build cost Parts only (cubes pay for Lumi's own upgrades, base levels and builds); the Scoopie's 10 Parts is the accepted proposal's first-robot price. part_drop: the chance, by waste type, that a take of salvage.ref_take units holds a piece worth stripping (one robot part) on a hex of salvage.ref_work units; the chance is scaled so a hex yields the same parts however heavy it is. salvage: Parts are scarce here (design spec section 14: 0 to 3 a hex, from Lumi's own hands only): rarity_parts = Parts one found robot part pays by rarity (rusty to legendary), buried_per_hex = buried parts a hex holds on average (about one in three hexes), ref_take and ref_work as above. With these a hex yields about 0.8 Parts: half buried, half stripped. fragment_parts = Parts a Maker Fragment pays.",
+  "_doc": "Robot types. requires_research = research node id needed before the type can be built (absent = unlocked from the start). [ui2] parts = Parts for the first robot of the type (with cost in cubes; cubes grow x1.35 and parts x1.2 per robot owned). recipe = flavour only now (the part types a robot is made of; nothing is consumed). stats = Mk I base values. tiers = visual/stat tiers: mult multiplies all work stats; requires_core_rarity = unused since [ui2] (Mk steps cost cubes + Fleet.TIER_PARTS). Fleet upgrades apply to every robot of the type. [M3-19] Robots and what they build cost Parts only (cubes pay for Lumi's own upgrades, base levels and builds); the Scoopie's 10 Parts is the accepted proposal's first-robot price. [M3-21] The first robot is the Haul Bug (its plans come with the Bot Bay; the Scoopie's follow, research.json story_unlocks): its Parts price is what the bot has found by minute 10, so it stands by minute 12. part_drop: the chance, by waste type, that a take of salvage.ref_take units holds a piece worth stripping (one robot part) on a hex of salvage.ref_work units; the chance is scaled so a hex yields the same parts however heavy it is. salvage: Parts are scarce here (design spec section 14: 0 to 3 a hex, from Lumi's own hands only): rarity_parts = Parts one found robot part pays by rarity (rusty to legendary), buried_per_hex = buried parts a hex holds on average (about one in three hexes), ref_take and ref_work as above. With these a hex yields about 0.8 Parts: half buried, half stripped. fragment_parts = Parts a Maker Fragment pays.",
   "types": [
     {
       "id": "scoopie",
-      "requires_research": "salvage_logic",
+      "requires_research": "scoopie_rig",
       "name": "Scoopie",
       "role": "clean",
       "desc": "Small cleaner. Picks junk in its hex and leaves bales behind.",
@@ -76,7 +76,7 @@
         "battery"
       ],
       "cost": 0,
-      "parts": 16,
+      "parts": 8,
       "stats": {
         "speed": 2.8,
         "carry": 2.0

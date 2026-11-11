@@ -27,6 +27,6 @@
   ],
   "water_tank": 30,
   "refill_radius_m": 24,
-  "first_seed": {"hexes_needed": 7, "seeds_given": 1},
+  "first_seed": {"hexes_needed": 13, "seeds_given": 1},
   "seed_finds": {"chance": 0.006, "organic_mult": 2.5, "cooldown_s": 60}
 }
