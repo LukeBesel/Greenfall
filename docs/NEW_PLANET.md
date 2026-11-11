@@ -161,15 +161,27 @@ Prices, gates and the step order are v6pace's: see **docs/BALANCE.md** and docs/
 "Pacing, prices and gates". A dev planet has no Homeward entry, so it runs on the economy of the
 campaign planet the save is on (Verdance's on a fresh start).
 
-### Step 7. The story block
+### Step 7. The story block: `data/story_arc.json` `planets.<id>`
 
-v7arc is adding a per-planet story block; see **docs/STORY_ARC.md**. It was not on main when
-this was written; until it lands, the slot below is the place to fill. Leave room for it here:
+The whole-game story is in **docs/STORY_ARC.md** (v7arc): home needs 10 fuel and 10 power, and
+each planet gives some at its exit beat, leaves one question open, and answers the last planet's.
+A campaign planet's story is a block in `data/story_arc.json` `planets.<id>`, read by
+`systems/story_arc.gd` with no planet-specific code:
 
-> **Story slot for `<id>`** (to fill from docs/STORY_ARC.md): why Lumi comes here (the fuel or
-> power this planet gives toward the way home, owner item 72), the arrival line, the WREN lines
-> per hub (`data/story_reasons.json` `goal_reasons.by_id.hub_fly_<order>` or each hub's
-> `reason`), the leave toast (`data/homeward.json` `planets[k].leave.toast`), and the exit beat.
+| Key | What it is |
+|---|---|
+| `gives` | `{"fuel": n, "power": n}` earned once at the exit beat (the leave gate in data/homeward.json) |
+| `reason` | the one-line reason to go there (the system map, WREN) |
+| `arrive`, `leave` | WREN's lines on the first landing and at the exit beat |
+| `question`, `answers` | the question this planet leaves open, and its answer to the previous planet's |
+| `from`, `ledger` | notes for the planet's builder (where the fuel and power come from; what the Ledger did here), not shown yet |
+
+Adding a planet changes the sums: the five planets give exactly 10 and 10 (`home` in the same
+file). Agree the new totals with the story owner, and see docs/STORY_ARC.md "The five planets".
+The per-hub lines (why fly to each hub) are each hub's `reason` in data/planets.json, or
+`data/story_reasons.json` `goal_reasons.by_planet.<id>` (step 7b). The leave toast is
+`data/homeward.json` `planets[k].leave.toast`. A dev planet has no story block.
+`PlanetCfg.problems` (the data test) asks every campaign planet for a story block.
 
 ### Step 7b. The card's hub steps (generated from `hubs[]`)
 
@@ -279,7 +291,7 @@ Severity:
 | Where | What | Sev | What to do |
 |---|---|---|---|
 | data/objectives.json, data/goals.json (everything but the hub steps) | The rest of the chain (base levels, robots, research, the drive) is shared. The hub steps are now per planet (step 7b) | medium | A per-planet objectives list if a planet needs a different early game (with v6pace) |
-| data/story_reasons.json, data/wren_lines.json, story/intro.gd | WREN's lines and the crash-landing intro are Verdance's story. A new planet arrives by rocket (Homeward), so the intro only plays on a fresh `--orbit-planet` run | high | v7arc's per-planet story block (docs/STORY_ARC.md) |
+| data/story_reasons.json, data/wren_lines.json, story/intro.gd | WREN's step lines and the crash-landing intro are Verdance's story. A new planet arrives by rocket (Homeward), so the intro only plays on a fresh `--orbit-planet` run | medium | The planet-level story is data now (`data/story_arc.json`, step 7); per-hub lines go in `hubs[].reason` or `goal_reasons.by_planet` |
 | planet/orbit/orbit_planet.gd, planet/orbit/sphere_field.gd:343 | On the globe the junk is Verdance's everywhere: `junk_biome`, `pieces_mult`, `no_lakes` and `junk_tint` are only read by the flat-era env scripts (planet/planets/*/env.gd:94-137) | high | Set `SphereField.biome_set = Economy.biome_set(PlanetCfg.value(pid, "junk_biome", ""))` and the density in OrbitPlanet.build, behind a data key, then check the junk LOD and preload lists (`--record-preload`) |
 | data/fauna.json `species` | The same animals on every planet; no per-planet list | high | A `planets` key per species, or `fauna.json planets.<id>`; fauna/fauna.gd picks the list |
 | planet/sky_director.gd presets, planet/orbit/orbit_day.gd:42, :142 | Sky colours, fog colour and ambient light are Verdance's in code (only the suns follow the planet) | high (theme) | A `look.sky` block (zenith, horizon, fog, ambient) read by SkyDirector's sphere mode |
@@ -320,8 +332,8 @@ errors. What they lack is content, not foundation:
 | data/solar_system.json | `planets.<id>`: suns, orbit, day length |
 | data/homeward.json | `planets[k]`: campaign order, leave gate, far_hub, arrival (not for dev planets) |
 | data/hub.json, data/rockets.json | the shared economy (docs/BALANCE.md) |
-| data/objectives.json, data/goals.json, data/story_reasons.json | the story steps (shared today; see section 3) |
-| docs/STORY_ARC.md | the per-planet story block (v7arc) |
+| data/story_arc.json | `planets.<id>`: what it gives toward home, its reason, question, arrival and leave lines (docs/STORY_ARC.md) |
+| data/objectives.json, data/goals.json, data/story_reasons.json | the story steps (shared; the hub steps are per planet, step 7b; `goal_reasons.by_planet.<id>`) |
 
 Code: `core/planet_cfg.gd` (merging, the site kit, checks), `planet/orbit/globe_spec.gd` (size),
 `planet/sites/hub_plan.gd` (hubs), `core/sound_cfg.gd`, `core/life_cfg.gd`,

@@ -215,6 +215,10 @@ static func problems(id: String) -> Array[String]:
 		out.append("%s: a dev planet must not be in data/homeward.json planets (players would see it)" % id)
 	elif not is_dev(id) and k < 0:
 		out.append("%s: not in data/homeward.json planets (no leave gate, no economy, not on the map)" % id)
+	# [v7arc] The story spine: every campaign planet has a block in data/story_arc.json.
+	var arc: Variant = (Economy.read_json("res://data/story_arc.json") as Dictionary).get("planets", {})
+	if not is_dev(id) and not (arc is Dictionary and (arc as Dictionary).has(id)):
+		out.append("%s: no story block in data/story_arc.json planets (docs/STORY_ARC.md)" % id)
 	return out
 
 
