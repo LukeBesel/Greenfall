@@ -1833,7 +1833,7 @@ func _essential(type_id: String) -> bool:
 		return type_id != "skimmer" or int(GameState.world.get("hub_level", 1)) >= 2
 	match type_id:
 		"drip":
-			return _drips() < _city_gardens()
+			return _drips() * HEXES_PER_DRIP < _city_gardens()
 		"skimmer":
 			return _lake_dirty()
 		"scoopie":  # [beat] a small cleaning crew is worth more than saving a few minutes for the base
@@ -1922,6 +1922,10 @@ func _best_upgrade(reserve: float, leak: bool = true) -> String:
 
 ## The bot keeps one parts finder for every this many robots.
 const FINDER_ONE_IN: int = 6
+## Planted hexes one watering robot is bought for (it walks between them).
+const HEXES_PER_DRIP: int = 8
+## Cleaners per planting robot once seeds pile up.
+const SCOOPIES_PER_SEEDLING: int = 4
 ## Robots the bot builds in one visit to the Bots tab, at most.
 const ROBOTS_PER_VISIT: int = 6
 
@@ -1941,7 +1945,7 @@ func _next_robot() -> String:
 	var saving: bool = not _hub_need().is_empty() and not _hub_mats_short()
 	if AutoplayCampaign.frontier_kid(world) == "sunken_city" and _lake_dirty() and fleet.count("skimmer") < 14:
 		order.append("skimmer")  # [beat] the flooded city is skimmed, not scooped
-	if seeds_on and _drips() < maxi(1, gardens):
+	if seeds_on and gardens > 0 and _drips() * HEXES_PER_DRIP < gardens:
 		order.append("drip")
 	if haul == 0:
 		order.append("haulbug")  # the first helper carries the bales, so Lumi stays at the work
@@ -1955,6 +1959,8 @@ func _next_robot() -> String:
 		order.append(finder)
 	if seeds_on and fleet.count("seedling") == 0 and GameState.get_currency("seeds").to_float() > 8.0:
 		order.append("seedling")
+	if seeds_on and fleet.count("seedling") * SCOOPIES_PER_SEEDLING < scoop and GameState.get_currency("seeds").to_float() > 50.0:
+		order.append("seedling")  # seeds piling up: a planter for every few cleaners
 	order.append("scoopie")
 	if scoop >= 2 and fleet.count("skimmer") == 0 and _lake_dirty():
 		order.append("skimmer")
@@ -2096,6 +2102,11 @@ func _track_research(dt: float) -> void:
 		_research_idle_run = 0.0
 
 
+## The most hexes in the cleaners' zone: a hex or so per cleaner, so a big crew is not crowded
+## onto a few hexes.
+const ZONE_MAX_HEXES: int = 60
+
+
 ## Command zones: cleaners to the frontier, planters and waterers to the garden.
 func _paint_zones() -> void:
 	var fleet: Fleet = world.fleet
@@ -2108,7 +2119,7 @@ func _paint_zones() -> void:
 			_event("allocate", {"from": "clean", "to": "water"})
 	var f: HexField = world.field
 	var cleaners: int = fleet.crew_size("clean") if fleet is SphereFleet else fleet.robots_with_role("clean").size()  # [v3qa] globe crew
-	var want_n: int = clampi(2 + cleaners, 3, 6)
+	var want_n: int = clampi(2 + cleaners, 3, ZONE_MAX_HEXES)
 	var zone_goal: int = _zone_goal_target()
 	want_n = maxi(want_n, zone_goal)
 	if cleaners == 0 and zone_goal == 0:
