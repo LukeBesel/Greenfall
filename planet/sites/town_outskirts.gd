@@ -139,7 +139,7 @@ func build() -> void:
 	var cleared: Dictionary = {}
 	for tk: Vector2i in tiles:
 		await BuildBudget.check("town:outskirts")
-		_build_tile(tk, tiles[tk], cleared)
+		await _build_tile(tk, tiles[tk], cleared)  # [v6qa] yields per building too
 	stats["footprints"] = foot.size()
 
 
@@ -197,8 +197,14 @@ func _build_tile(tk: Vector2i, blds: Array, cleared: Dictionary) -> void:
 	var det := BuildingDetail.Geo.new()
 	var sb := StaticBody3D.new()
 	sb.name = "Body"
+	var node := Node3D.new()  # [v6qa] in the tree from the start (a build left mid-way leaves no orphans)
+	node.name = "Tile_%d_%d" % [tk.x, tk.y]
+	node.transform = site_xf.affine_inverse() * fr
+	add_child(node)
+	node.add_child(sb)
 	var placed: int = 0
 	for bd: Dictionary in blds:
+		await BuildBudget.check("town:outskirts building")  # [v6qa] a tile was one 15-30 ms step
 		var r: Rect2 = bd["rect"]  # site metres
 		# On the lake, or too steep: no building.
 		var pts: Array[Vector2] = [r.position, Vector2(r.end.x, r.position.y), r.end, Vector2(r.position.x, r.end.y), r.get_center()]
@@ -253,14 +259,11 @@ func _build_tile(tk: Vector2i, blds: Array, cleared: Dictionary) -> void:
 		# its junk): world footprints in the tile's ground frame (YardKeepOut.add_world).
 		foot.append([fr, Rect2(lr.position - Vector2(0.3, 0.3), lr.size + Vector2(0.6, 0.6))])
 	if placed == 0:
-		sb.free()
+		node.free()
 		return
 	stats["tiles"] += 1
 	stats["buildings"] += placed
-	var node := Node3D.new()
-	node.name = "Tile_%d_%d" % [tk.x, tk.y]
-	node.transform = site_xf.affine_inverse() * fr
-	add_child(node)
+	await BuildBudget.check("town:outskirts mesh")  # [v6qa]
 	var mi := MeshInstance3D.new()
 	mi.name = "Buildings"
 	mi.mesh = body.mesh()
@@ -277,4 +280,4 @@ func _build_tile(tk: Vector2i, blds: Array, cleared: Dictionary) -> void:
 		dm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		dm.set_meta("no_collide", true)
 		node.add_child(dm)
-	node.add_child(sb)
+	node.move_child(sb, -1)  # [v6qa] (the body last, as before)

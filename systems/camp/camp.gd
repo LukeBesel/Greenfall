@@ -294,7 +294,8 @@ func _apply_builds() -> void:
 	var bits: Dictionary = world.get("_ruin_bits")
 	var shack: bool = YardBuilds.built("shack")
 	for k: String in ["frame", "roof", "back", "side", "lamp", "bulb", "post_l", "post_r"]:
-		var n: Node3D = bits.get(k) as Node3D
+		var nv: Variant = bits.get(k)
+		var n: Node3D = nv as Node3D if is_instance_valid(nv) else null  # [v6pace] a rebuilt base frees its old bits: `as` on a freed object is a script error
 		if n:
 			n.visible = shack and _was_shown(k)
 			_set_solid(n, n.visible)  # [pace2] hidden parts must not leave invisible walls (posts, roof)

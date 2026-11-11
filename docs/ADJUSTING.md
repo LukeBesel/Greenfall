@@ -93,6 +93,8 @@ A new planet: add a block with its id there (and a folder if you like).
 | Which slider a sound follows (menu clicks: Interface; animal calls: Ambience; the rest: Sound effects) | `bus_of` |
 | One sound louder or quieter everywhere | `sound_db`: `"chime": -3` |
 | A sound that repeats too fast: the shortest time between two plays, in seconds | `min_gap_s`: `"clink": 0.2` |
+| The same, only where one thing plays it: `tag:sound`. Tags: `scoop` (pieces flying into Lumi), `lumi` (start/stop squeak), `sweep` (litter), `lights` (street lights coming on), `robot` (robots at work) | `min_gap_s`: `"robot:servo": 2.0`, `sound_db`: `"scoop:pop": -3` |
+| Mute a sound in one place (e.g. the beep on every scooped piece) | `sound_db`: `"scoop:blip": -80` (delete the line to bring it back) |
 | How far music and ambience dip while WREN speaks | `duck` |
 | A planet's ambience (wind, water, animal calls) and how it changes from ruined to restored | `planets`.`<id>`.`ambience` |
 | Which built-in score a planet uses when no song plays (a new planet can borrow one) | `planets`.`<id>`.`theme` |
@@ -101,7 +103,45 @@ A new planet: add a block with its id there (and a folder if you like).
 `godot --headless --path . -- --fresh --orbit --no-intro --autoplay --time-scale=4 --sound-log --quit-after=1200`.
 At the end it prints a `[snd]` table: every sound, its slider group, how often it played, its
 level, the shortest time between two plays, how many came within 5 seconds of the last, and how
-many sounded at once. The full list is in `screenshots/sound_log.txt`.
+many sounded at once, and under each sound the script lines that played it most (`from patch.gd:519 x712`).
+The full list is in `screenshots/sound_log.txt`, one line per play with its source.
+
+**The 2026-11-11 pass** (22 game minutes of autoplay from a fresh start, sound plays per minute,
+before -> after): the four layers on each scooped piece plus its beep 161 -> 56 (the beep 34 -> 0), the scoop clink
+ladder 61 -> 33 (same-frame duplicates dropped), Lumi's start/stop squeak 19 -> 7, the litter-sweep
+whoosh 17 -> 5, all sounds together 333 -> 152. Birds stayed under one call a minute, no WREN line
+repeated, and the main theme played first with quiet gaps between songs. Robots (`robot:`) and
+street lights (`lights:`) got gaps too; they only show up later in a run.
+
+## The world coming back to life (v6life)
+
+What reacts where Lumi cleans: grass on clean ground, town blocks that wake up, butterflies, and
+the sound bed. All of it is in `data/life.json` (look, rules) and `data/sound.json` (sound). In
+`data/life.json`, `_default` has every value; a planet's block (`"verdance": {...}`) repeats only
+what it changes, e.g. `"ochre": {"ground": {"grow_s": 600}}`. Nothing is saved, so a change shows
+on the next start.
+
+| To change | Edit |
+|---|---|
+| How green a clean cell grows, per hex level 0..5 (6 numbers, 0 to 1) | `ground.green_per_level` |
+| How long a freshly cleaned cell takes to green over (seconds) | `ground.grow_s` |
+| Grass tufts per cell and how far round Lumi they stand, per quality preset Low..Ultra | `ground.tufts_per_cell`, `ground.tuft_rings` |
+| How many tufts are flowers, and their colours | `ground.flower_share`, `ground.petals` (`"#rrggbb"`) |
+| How clean a city block must be for its first windows (stage 1) and its street lamps (stage 2) | `town.swept_at`, `town.awake_at` (share of its cells, 0 to 1) |
+| Planted cells that make a clean block "alive" (stage 3: neon, string lights, shop windows) | `town.planted_cells` |
+| Share of windows lit at dusk per stage 0..3 | `town.lit_windows` |
+| Which stage turns street lamps and signs on | `town.lamps_at_stage`, `town.signs_at_stage` |
+| How fast a block's colour and windows follow a change (seconds) | `town.ease_s` |
+| Butterflies and fireflies per cell by hex level, the most at once, their colours | `flutter.per_level`, `flutter.max`, `flutter.colors` |
+| The sound that follows the ground round Lumi (wind over junk, leaves over grass, rare creaks and bird phrases) | `data/sound.json` `planets.<id>.ambience.life`: `loops` (`id: [dB, dirty/green/always]`) and `events` (`[sound, min s, max s, dB, pitch lo, pitch hi, dirty/green/green_day/always, min s between]`). A loop or sound can be a `res://` file, so a recorded sound can replace a built-in one. A planet without a `life` block has none |
+| When those beds come in and how the one-shots' conditions read the ground | same block: `mix` (`dirty_from`/`dirty_full`, `green_from`/`green_full`: share of junk / mean green, 0 to 1, where a bed starts / is full; `dirty_hushes_green`) and `when` (`dirty`, `green`, `night` thresholds) |
+| The least time between two plays of any one life sound (birds, creaks), whatever the event says | same block: `min_gap_floor_s` (60: about once a minute at most; the beds are loops and do not count) |
+| How far round Lumi the bed listens, how fast it crossfades | same block: `rings` (3 is about 30 m), `fade_s` |
+
+Check with `godot --headless --path . -- --fresh --orbit --no-intro --life-clean=6,2 --life-report --quit-after=60`
+(`[life]` lines: grass tufts, butterflies, sound weights and plays, each town's blocks per stage
+and its lit lights). More dev hooks are listed at the top of `planet/sites/life_dev.gd`. Tests:
+`tests/test_town_life.gd`, `tests/test_cell_verdure.gd`.
 
 ## Pacing, prices and gates (v6pace)
 
@@ -111,7 +151,7 @@ prints a `[card]` line per objective step and an `[arc]` line per hub, rocket ti
 
 | What | File and key | Now | Effect |
 |---|---|---|---|
-| When the rocket appears | `data/hub.json` `rocket.level`, `rocket.after_objective` | level 1, after the step `zone` | The rocket stands on the start pad once that story step is done and the base has that level. |
+| When the rocket appears | `data/hub.json` `rocket.level`, `rocket.after_objective` | level 1, after the step `seed` | The rocket stands on the start pad once that story step is done and the base has that level. |
 | Price of the first far hub | `data/hub.json` `far_hub.cost_override."0"` | 600 cubes, 30 Parts | The on-ramp. Remove the entry to use the curve's base. |
 | Far hub price curve | `data/hub.json` `far_hub.cost_base`, `far_hub.cost_growth` | 1,500 cubes x 4.0 per hub (Parts 40 x 1.4) | Price of hub n = base x growth^n, rounded to two digits: 6K, 24K, 96K, 380K. One number moves the whole ladder. |
 | Income per restored hub | `data/hub.json` `far_hub.sell_growth` | 2.5 | Every sale (scale, robot bales, trash bin) is multiplied by this for each far hub restored. Raise it and hubs come faster; lower it and each hub takes longer. |
