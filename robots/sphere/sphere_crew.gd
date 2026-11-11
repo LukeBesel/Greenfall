@@ -27,6 +27,8 @@ const DEMOTE_M: float = 320.0
 const PROMOTE_M: float = 260.0
 const STALL_S: float = 8.0
 const SKIP_S: float = 30.0
+## Most cells one route search may open (a hub region is a few thousand cells).
+const ROUTE_EXPAND_MAX: int = 6000
 const RING_M: float = 18.0
 const ARRIVE_M: float = 2.5
 const PASS_M: float = 4.0
@@ -535,7 +537,16 @@ func route(from: int, to: int, role: String = "clean") -> PackedInt32Array:
 	var pass_fn: Callable = func(c: int) -> bool: return cells.state[c] != 5 and not blocked.has(c)
 	if role == "skim":
 		pass_fn = func(c: int) -> bool: return not blocked.has(c)  # skimmers float: lakes and shore alike
-	return SpherePath.astar_grid(grid, from, to, pass_fn, 6000)
+	var p: PackedInt32Array = SpherePath.astar_grid(grid, from, to, pass_fn, ROUTE_EXPAND_MAX)
+	if not p.is_empty() or blocked.is_empty():
+		return p
+	# Blocked cells are building footprints, inflated so routes keep off the walls: not walls
+	# themselves. A robot nudged into a pocket between them (or sent to a bale in one) had no route
+	# out and idled there for good. When no tidy route exists the cells may be crossed; a near
+	# robot still steers round the real walls. Water stays shut to everything but a Skimmer.
+	if role == "skim":
+		return SpherePath.astar_grid(grid, from, to, Callable(), ROUTE_EXPAND_MAX)
+	return SpherePath.astar_grid(grid, from, to, func(c: int) -> bool: return cells.state[c] != 5, ROUTE_EXPAND_MAX)
 
 
 func _real_left(c: int) -> float:

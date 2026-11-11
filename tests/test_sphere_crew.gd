@@ -556,14 +556,8 @@ func test_drips_refill_their_tank_and_water_again() -> void:
 	assert_eq(crew.stuck_count(), 0)
 
 
-## B34, the crew stall: a hauler always took the nearest free bale. When that bale could not be
-## reached (its cell blocked, or a lake cell) it gave up, waited and took the same bale again, for
-## good, while every other bale waited (one Haul Bug idle for 41 minutes with 141 bales out).
-func test_hauler_passes_over_a_bale_it_cannot_reach() -> void:
-	var w: Dictionary = _world(false)
-	var crew: SphereCrew = w["crew"]
-	# The near bale: two cells out, walled in (every cell round it is blocked). The far bale: the
-	# cell of the third ring farthest from it.
+## The first cell two rings out from the test hub (cell 100), and the third-ring cell farthest from it.
+func _near_and_far() -> Array[int]:
 	var first_ring: PackedInt32Array = _g5.cells_around(100, 1)
 	var near_cell: int = -1
 	var far_cell: int = -1
@@ -574,11 +568,55 @@ func test_hauler_passes_over_a_bale_it_cannot_reach() -> void:
 	for c: int in _g5.cells_around(100, 3):
 		if far_cell < 0 or _g5.distance_m(near_cell, c) > _g5.distance_m(near_cell, far_cell):
 			far_cell = c
-	assert_lt(_g5.distance_m(100, near_cell), _g5.distance_m(100, far_cell), "the walled-in bale is the nearer one")
+	return [near_cell, far_cell]
+
+
+## B34, the crew stall. Building footprints block cells for routing (inflated, so routes keep off
+## walls), but a route may end in any cell and a robot is nudged about as it drives, so a robot
+## can end up in a pocket ringed by blocked cells. No route led out: a Haul Bug sat "idle: no path"
+## 60 m from the depot for the rest of the run while the bales piled up (120 to 141 waiting).
+func test_hauler_gets_out_of_a_pocket_between_blocked_cells() -> void:
+	var w: Dictionary = _world(false)
+	var crew: SphereCrew = w["crew"]
+	var pocket: int = _near_and_far()[0]
+	crew.from_dict({"v": 1, "robots": [], "bales": [{"cell": pocket, "value": 0.0, "units": 12.0}]})
+	for c: int in _g5.cells_around(pocket, 1):
+		if c != pocket:
+			crew.blocked[c] = true
+	assert_false(crew.route(pocket, 100, "haul").is_empty(), "a route leads out of the pocket")
+	var u: Dictionary = crew.spawn("haulbug", 0, 100)
+	_run(crew, 240.0)
+	assert_gt(float(u["log"]["hauled"]), 0.0, "the hauler fetched the bale from the pocket and brought it to the depot")
+	assert_true(crew.bales.is_empty(), "no bale is left waiting")
+
+
+func test_routes_keep_off_blocked_cells_when_there_is_a_way_round() -> void:
+	var w: Dictionary = _world(false)
+	var crew: SphereCrew = w["crew"]
+	var far_cell: int = _near_and_far()[1]
+	var direct: PackedInt32Array = crew.route(100, far_cell, "haul")
+	assert_gt(direct.size(), 2)
+	crew.blocked[direct[1]] = true
+	var round_it: PackedInt32Array = crew.route(100, far_cell, "haul")
+	assert_false(round_it.is_empty())
+	assert_false(round_it.has(direct[1]), "the blocked cell is not crossed while another way exists")
+
+
+## A hauler always took the nearest free bale. When that bale could not be reached (water all
+## round it: a lake is a wall for a wheeled robot whatever happens) it gave up, waited and took
+## the same bale again, for good, while every other bale waited.
+func test_hauler_passes_over_a_bale_it_cannot_reach() -> void:
+	var w: Dictionary = _world(false)
+	var crew: SphereCrew = w["crew"]
+	var cells: SphereCells = w["cells"]
+	var nf: Array[int] = _near_and_far()
+	var near_cell: int = nf[0]
+	var far_cell: int = nf[1]
+	assert_lt(_g5.distance_m(100, near_cell), _g5.distance_m(100, far_cell), "the cut-off bale is the nearer one")
 	crew.from_dict({"v": 1, "robots": [], "bales": [{"cell": near_cell, "value": 0.0, "units": 12.0}, {"cell": far_cell, "value": 0.0, "units": 12.0}]})
 	for c: int in _g5.cells_around(near_cell, 1):
 		if c != near_cell:
-			crew.blocked[c] = true
+			cells.set_state(c, 5)  # water all round it
 	assert_true(crew.route(100, near_cell, "haul").is_empty(), "the near bale cannot be reached")
 	assert_false(crew.route(100, far_cell, "haul").is_empty(), "the far bale can")
 	var u: Dictionary = crew.spawn("haulbug", 0, 100)
