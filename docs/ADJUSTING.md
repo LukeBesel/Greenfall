@@ -22,13 +22,16 @@ Everything about a planet's hubs is in `data/planets.json`, under the planet's i
 | How many hubs a rocket tier can keep | `data/rockets.json` tiers' `hubs` (v6pace) |
 
 Landmark kinds: `water_tower`, `crane`, `ferris_wheel`, `radio_mast`, `smokestack`, `old_bus`,
-`windpump`, `lighthouse`. The town's look (suburb, downtown...) is `VerdanceSite.KIND_BY_HUB`; the
-`town` field is what the picker and the arrival title say, so keep the two in step.
+`windpump`, `lighthouse`. The `town` field picks the town's look
+(`oldtown`, `downtown`, `suburb`, `industrial`) and is what the picker and the arrival title say; a
+hub where the lake reaches into the town is always built (and named) as a harbour.
 
 Code: `planet/sites/hub_plan.gd` (data and saved state), `planet/sites/hub_purpose.gd` (arrival,
 steps, the wake, the field bench, HUD lines). Check with
 `godot --headless --path . -- --fresh --orbit --no-intro --rocket --orbit-hop=9 --hub-dev-chain=3 --hub-report=20 --quit-after=50`
 (`--hub-wake=9,7` wakes hubs for free at start; `--hop-skip` skips the flight; `--hop-shots=PREFIX` saves pictures in a rendered run).
+After changing hubs, run the six-base walkthrough:
+`godot --headless --path . -- --fresh --orbit --no-intro --hop-skip --hub-walkthrough` (PASS/FAIL, docs/QA_VERDANCE.md).
 A new planet gets the same by adding `hub_defaults` and `hubs` to its entry.
 
 ## Music and sound (v6sound)
@@ -133,7 +136,7 @@ prints a `[card]` line per objective step and an `[arc]` line per hub, rocket ti
 
 | What | File and key | Now | Effect |
 |---|---|---|---|
-| When the rocket appears | `data/hub.json` `rocket.level`, `rocket.after_objective` | level 1, after the step `zone` | The rocket stands on the start pad once that story step is done and the base has that level. |
+| When the rocket appears | `data/hub.json` `rocket.level`, `rocket.after_objective` | level 1, after the step `seed` | The rocket stands on the start pad once that story step is done and the base has that level. |
 | Price of the first far hub | `data/hub.json` `far_hub.cost_override."0"` | 600 cubes, 30 Parts | The on-ramp. Remove the entry to use the curve's base. |
 | Far hub price curve | `data/hub.json` `far_hub.cost_base`, `far_hub.cost_growth` | 1,500 cubes x 4.0 per hub (Parts 40 x 1.4) | Price of hub n = base x growth^n, rounded to two digits: 6K, 24K, 96K, 380K. One number moves the whole ladder. |
 | Income per restored hub | `data/hub.json` `far_hub.sell_growth` | 2.5 | Every sale (scale, robot bales, trash bin) is multiplied by this for each far hub restored. Raise it and hubs come faster; lower it and each hub takes longer. |
