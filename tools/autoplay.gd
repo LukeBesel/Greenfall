@@ -1309,9 +1309,11 @@ func _shop(want: Dictionary) -> void:
 	if RobotChain.of(world) != null and RobotChain.of(world).listed() and HubBuilds.build(world, RobotChain.BUILD_ID):
 		_progress()
 		_event("assembler", {})
-	# A bigger crew before a better one: Parts go to tiers and crew upgrades only when no robot is
-	# wanted or the crew is full (a robot is the larger gain while there is room).
-	var crew_full: bool = fleet != null and (robot == "" or not fleet.has_room())
+	# A bigger crew before a better one: Parts go to tiers and crew upgrades only when the crew is
+	# full. While there is room they are kept for the next robot, whose plans may be on the way:
+	# in the first city Parts are scarce, and 8 of them on a faster Haul Bug put the first Scoopie
+	# back by six minutes.
+	var crew_full: bool = fleet != null and not fleet.has_room()
 	if crew_full and BenchTiers.tab_open("bots"):
 		_crew_upgrade(fleet)
 	for t: String in (Economy.robot_order if crew_full and BenchTiers.tab_open("bots") else []):  # [orbB] [v1guide]

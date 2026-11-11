@@ -11,6 +11,8 @@ extends RefCounted
 # l10n:begin
 const CATS: Array = [["build", "Build"], ["tiers", "Tiers"], ["fleet", "Fleet"]]
 # l10n:end
+## The row that holds the Assembler's panel (ui/assembler_panel.gd).
+const ASSEMBLER_ROW: String = "assembler_mix"
 const ROLE_ICON: Dictionary = {"clean": "scoop", "haul": "cube", "plant": "plant", "water": "water", "skim": "water", "any": "star"}
 
 
@@ -64,10 +66,11 @@ static func rows(fleet: Fleet, build_at: Callable) -> Array:
 						[_tr("Robots"), str(n)], [_tr("Cost"), Currencies.cost_text(tc)]],
 					"requires": "", "action": _tr("Upgrade to %s") % _tr(str(nt["name"])),
 					"act": func() -> bool: return fleet.upgrade_tier(rid)})
-	# The Assembler: its build mix, once the building stands.
+	# The Assembler: its build mix, once the building stands. First in the list: from here on it
+	# is where the crew is steered from.
 	var rc: RobotChain = RobotChain.of(world)
 	if rc != null and rc.is_built():
-		out.append({"id": "assembler_mix", "cat": "build", "icon": "star", "name": _tr(rc.display_name()), "desc": "",
+		out.push_front({"id": ASSEMBLER_ROW, "cat": "build", "icon": "star", "name": _tr(rc.display_name()), "desc": "",
 			"state": "done", "table": [], "action": "", "custom": func(_w: Node) -> Control:
 				var ap := AssemblerPanel.new()
 				ap.rc = rc

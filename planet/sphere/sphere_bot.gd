@@ -242,8 +242,8 @@ func _static_obstacles() -> Array:
 
 func _apply_transform(delta: float) -> void:
 	# The terrain normal costs three ground samples: take it again only after moving.
-	var step: float = NORMAL_STEP_M / surface.radius
-	if _n_at == Vector3.ZERO or dir.distance_squared_to(_n_at) > step * step:
+	var resample: float = NORMAL_STEP_M / surface.radius
+	if _n_at == Vector3.ZERO or dir.distance_squared_to(_n_at) > resample * resample:
 		_n_raw = surface.ground_normal(dir)
 		_n_at = dir
 	_normal = _n_raw if delta <= 0.0 else SphereMath.slerp_safe(_normal, _n_raw, SphereMath.damp(8.0, delta))

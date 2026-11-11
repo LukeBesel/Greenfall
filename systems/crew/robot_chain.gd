@@ -338,21 +338,26 @@ func _mark_past_ground() -> void:
 			chain.mark_spent(c)
 
 
-## The building, on the base site's anchor named in the table, in the same frame as the Depot
-## (no site: no model, the line still runs).
+## The building, at the table's spot on the base site ("pos" and "yaw_deg" in site metres, or a
+## named "anchor"), in the same frame as the Depot (no site: no model, the line still runs).
 func _place_model() -> void:
 	if model != null and is_instance_valid(model):
 		return
 	var depot: Node3D = _world.get("depot") as Node3D if _world != null and "depot" in _world else null
 	if depot == null or depot.get_parent() == null or base_site == null:
 		return
-	var anchor: String = str(chain.assembler_cfg().get("anchor", ""))
-	if base_site.anchor(anchor) == null:
+	var cfg: Dictionary = chain.assembler_cfg()
+	var at: Array = cfg.get("pos", [])
+	var anchor: String = str(cfg.get("anchor", ""))
+	if at.size() < 2 and base_site.anchor(anchor) == null:
 		return
 	model = AssemblerModel.new()
 	model.name = "AssemblerModel"
 	depot.get_parent().add_child(model)
-	model.transform = base_site.anchor_local(anchor)
+	if at.size() >= 2:
+		model.transform = Transform3D(Basis(Vector3.UP, deg_to_rad(float(cfg.get("yaw_deg", 0.0)))), Vector3(float(at[0]), 0.0, float(at[1])))
+	else:
+		model.transform = base_site.anchor_local(anchor)
 	_crew.set_obstacles(BUILD_ID, [[_crew.surface.up_at(model.global_position), AssemblerModel.FOOTPRINT_R]])
 
 

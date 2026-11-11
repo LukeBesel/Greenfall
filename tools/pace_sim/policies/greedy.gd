@@ -74,8 +74,8 @@ func _shop_robots(m: PaceSimModel, plan: Dictionary) -> void:
 		if ok and (must or hub_save <= 0.0 or _mats_spare(m, cost, false)):
 			m.build_robot(robot)
 	# A bigger crew before a better one, as the bot does: Parts go to tiers and crew upgrades only
-	# when no robot is wanted or the crew is full.
-	if robot != "" and m.robot_total() < m.crew_cap():
+	# when the crew is full.
+	if m.robot_total() < m.crew_cap():
 		return
 	_crew_upgrade(m)
 	for id: String in Economy.robot_order:

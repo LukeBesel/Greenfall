@@ -430,7 +430,7 @@
   },
   "upgrade_currency": "parts",
   "chain": {
-    "_doc": "The robot chain (systems/crew/robot_chain.gd, core/crew_chain.gd): Scroungers find Parts, the Assembler builds robots from them, more Scroungers included. finder = the robot type that finds parts. ground: every hex leaves buried parts when it is cleaned for the first time, as many as ground[its city's id] (the accepted proposal's numbers: none in the first city, where Parts come only from Lumi's own hands), open_ground outside every city; a Scrounger digs them at its dig_rate, carries a sack of them to its base and they are gone from that hex for good. So Parts per Scrounger are capped by the trip, and all Parts by the ground that has been cleaned: the crew cannot grow faster than the cleaning. arrival_parts: Parts of salvage found the first time Lumi stands in a city, paid once (the third city's old factory shell, which the Assembler is built in). assembler: id of the build (builds table); cost in Parts; anchor = the base site's anchor the building stands on; unlock.district = the city whose first visit puts it on offer; assembly_s = seconds on the line for one robot, in real time (one at a time, one line, no upgrade on this planet; the accepted proposal's 40 s was counted on the bot's clock, which runs twice as fast as a player, and robots work in real time: 80 s gives the accepted crew of about 22 new robots in a 30-minute city); max_weight = the largest share number of the build mix; default_mix = the mix a new Assembler starts with (type id: share; a type gets weight / sum of weights of everything the line builds); reserve_parts = Parts the line never touches, so the bench always has some. A type goes on the line only after Lumi has built the first one by hand. New robots work for the base of the city Lumi is in; redeploy_idle_s = seconds a robot must have had nothing to do in another city before it is shipped to that base too (0 = robots never move between cities).",
+    "_doc": "The robot chain (systems/crew/robot_chain.gd, core/crew_chain.gd): Scroungers find Parts, the Assembler builds robots from them, more Scroungers included. finder = the robot type that finds parts. ground: every hex leaves buried parts when it is cleaned for the first time, as many as ground[its city's id] (the accepted proposal's numbers: none in the first city, where Parts come only from Lumi's own hands), open_ground outside every city; a Scrounger digs them at its dig_rate, carries a sack of them to its base and they are gone from that hex for good. So Parts per Scrounger are capped by the trip, and all Parts by the ground that has been cleaned: the crew cannot grow faster than the cleaning. arrival_parts: Parts of salvage found the first time Lumi stands in a city, paid once (the third city's old factory shell, which the Assembler is built in). assembler: id of the build (builds table); cost in Parts; pos = [x, z] in metres on the base site and yaw_deg = where the building stands (at the back of the start yard, door to the pad, clear of the yard lamp and the city's name board; a table may name an anchor of the site instead); unlock.district = the city whose first visit puts it on offer; assembly_s = seconds on the line for one robot, in real time (one at a time, one line, no upgrade on this planet; the accepted proposal's 40 s was counted on the bot's clock, which runs twice as fast as a player, and robots work in real time: 80 s gives the accepted crew of about 22 new robots in a 30-minute city); max_weight = the largest share number of the build mix; default_mix = the mix a new Assembler starts with (type id: share; a type gets weight / sum of weights of everything the line builds); reserve_parts = Parts the line never touches, so the bench always has some. A type goes on the line only after Lumi has built the first one by hand. New robots work for the base of the city Lumi is in; redeploy_idle_s = seconds a robot must have had nothing to do in another city before it is shipped to that base too (0 = robots never move between cities).",
     "finder": "scrounger",
     "ground": {
       "old_town": 0.0,
@@ -463,7 +463,11 @@
         "haulbug": 2,
         "scrounger": 1
       },
-      "anchor": "fabricator"
+      "pos": [
+        0.6,
+        -9.6
+      ],
+      "yaw_deg": 0.0
     }
   }
 }

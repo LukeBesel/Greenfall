@@ -856,3 +856,42 @@ func test_far_robots_step_on_their_own_clocks() -> void:
 		total += n
 		assert_lt(n, 50, "the far robots do not all step on the same tick")
 	assert_between(total, 80, 170, "and each of the 80 stepped once or twice in two periods")
+
+
+# --- The build mix at the bench -----------------------------------------------------------------------------
+
+func test_the_bench_shows_the_assembler_panel_and_it_sets_the_mix() -> void:
+	var w: Dictionary = _chain_world(FIRST)
+	var rc: RobotChain = w["rc"]
+	var fleet: SphereFleet = w["fleet"]
+	var world := Node.new()
+	add_child_autofree(world)
+	rc.get_parent().remove_child(rc)
+	world.add_child(rc)
+	fleet.world = world
+	var ids: Callable = func() -> Array:
+		return BenchBots.rows(fleet, Callable()).map(func(r: Dictionary) -> String: return str(r["id"]))
+	assert_false(BenchBots.ASSEMBLER_ROW in (ids.call() as Array), "no Assembler row before it stands")
+	rc.chain.offered = true
+	_set_parts(1000.0)
+	assert_true(rc.build())
+	var rows: Array = BenchBots.rows(fleet, Callable())
+	assert_eq(str((rows[0] as Dictionary)["id"]), BenchBots.ASSEMBLER_ROW, "first in the list once it stands")
+	Research.unlock_story("haul_rig")
+	Research.unlock_story("scoopie_rig")
+	(w["crew"] as SphereCrew).spawn("haulbug", 0, (w["crew"] as SphereCrew).hub_cell)
+	var panel: AssemblerPanel = ((rows[0] as Dictionary)["custom"] as Callable).call(world)
+	add_child_autofree(panel)
+	assert_eq(panel._counts.keys(), ["scoopie", "haulbug"], "a row for every type Lumi has plans for, in the game's order")
+	assert_eq(panel._shares["scoopie"].text, "by hand first", "a type not built by hand yet says so")
+	assert_eq(panel._shares["haulbug"].text, "100%")
+	var before: int = rc.chain.weight("haulbug")
+	panel._on_step("haulbug", 1)
+	assert_eq(rc.chain.weight("haulbug"), before + 1)
+	assert_eq(panel._counts["haulbug"].text, str(before + 1), "the number follows the press")
+	panel._on_step("haulbug", -99)
+	assert_eq(rc.chain.weight("haulbug"), 0, "never below nothing")
+	panel._on_pause()
+	assert_true(rc.chain.paused)
+	rc._physics_process(1.0)
+	assert_eq(AssemblerPanel.status_text(rc), "Paused.")

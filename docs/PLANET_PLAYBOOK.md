@@ -174,7 +174,7 @@ Every number is in the planet's robots table. The rules are `core/crew_rules.gd`
 
 **The ground**
 - A hex leaves `chain.ground[city]` buried parts when it is first cleaned, once. That is all the Scroungers can ever bring in, so crew growth follows cleaning. Total = the sum over cities of hexes x parts per hex: check it against what the planet's robots, tier steps and late Parts sinks cost.
-- A Scrounger's Parts a minute = sack / trip time. Trip = (ring out + one hop per further hex + ring back) x 17.35 m x `path_factor` / speed + sack / dig rate. Rule of thumb on the first planet: 2 to 4 Parts a minute per Scrounger, falling as a city's cleaned ring moves out. The ground, not the Scroungers, is the limit from the third city on.
+- A Scrounger's Parts a minute = sack / trip time. Trip = (ring out + one hop per further hex + ring back) x 17.35 m x `path_factor` / speed + sack / dig rate. Rule of thumb on the first planet: 1 to 3.5 Parts a minute per Scrounger, falling as a city's cleaned ring moves out. The ground, not the Scroungers, is the limit from the third city on.
 
 **The Assembler**
 - One line, one robot per `assembly_s`, in real time. The crew can grow by at most 60 / `assembly_s` robots a minute, whatever the Parts: this is what makes the curve steady. 80 s gives about 22 robots in a 30-minute city.
