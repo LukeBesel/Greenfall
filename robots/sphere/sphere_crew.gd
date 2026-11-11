@@ -30,6 +30,8 @@ const SKIP_S: float = 30.0
 const RING_M: float = 18.0
 const ARRIVE_M: float = 2.5
 const PASS_M: float = 4.0
+## _reachable looks this many rings past the hub's region (robots may be sent a little outside).
+const REACH_MARGIN_RINGS: float = 2.5
 const PASS_TIGHT_M: float = 2.5  # beside a building: past a parked robot's separation, short of cutting its corner
 ## Looking for work is the crew's dear step (a search over the hub's region, then a route). No
 ## more than this many microseconds of it start in one tick; robots left over ask on the next.
@@ -40,6 +42,12 @@ const NOTHING_FOUND_S: float = 1.5
 ## run_far() has no frame to protect: it starts each step this far under the search budget.
 const FAR_RUN_HEADROOM_US: int = 1 << 40
 ## Robots this far from Lumi (metres) animate every 2nd and every 4th frame.
+## A near robot in "work" mode thinks once in this many ticks; a near robot's streamer centre is
+## refreshed once in CENTRE_EVERY ticks.
+const WORK_THINK_EVERY: int = 4
+const CENTRE_EVERY: int = 8
+## A robot whose routes keep failing waits longer between tries, up to this many times its pause.
+const NO_PATH_BACKOFF_MAX: float = 8.0
 const ANIM_HALF_M: float = 45.0
 const ANIM_QUARTER_M: float = 110.0
 const LOG_KEYS: Array[String] = ["junk", "bales", "hauled", "cells", "planted", "watered", "dumps", "refills", "parts", "idle_s", "stall_s", "unstuck"]
@@ -97,6 +105,9 @@ var _report_done: bool = false
 var _names: int = 0
 var _near_n: int = 0
 var _find_us: int = 0  # microseconds of job search started this tick
+var _ticks: int = 0
+## hub cell -> {cell: true}: the land a robot can drive to from that hub (see _reachable).
+var _reach: Dictionary = {}
 var _nothing: Dictionary = {}  # "role:hub" -> time until which a search is known to find nothing
 ## The cost of tick(), for the robot report (microseconds, frames).
 var _tick_us: int = 0
@@ -441,6 +452,9 @@ func claim_dirty(from: int, hub: int, p_rings: int = -1, role: String = "clean",
 		return -1
 	if zone.is_empty() and grid.distance_m(from, hub) >= lim:
 		from = hub  # outside its region (just built, or ordered away): search from the hub
+	# Land robots only take work they can drive to (across a lake a route search would fail, at
+	# the price of a full search each time). Painted zone hexes are the player's word: always tried.
+	var reach: Dictionary = _reachable(hub) if role != "skim" else {}
 	var seen: Dictionary = {from: true}
 	var front := PackedInt32Array([from])
 	var steps: int = 0
@@ -448,7 +462,8 @@ func claim_dirty(from: int, hub: int, p_rings: int = -1, role: String = "clean",
 		var nxt := PackedInt32Array()
 		for c: int in front:
 			steps += 1
-			if (zone.is_empty() or zone.has(c)) and not _claimed.has(c) and float(_skip.get(c, -1.0)) < _t and wants(role, c):
+			if (zone.is_empty() or zone.has(c)) and not _claimed.has(c) and float(_skip.get(c, -1.0)) < _t and wants(role, c) \
+					and (role == "skim" or reach.has(c) or zone.has(c)):
 				_claimed[c] = who
 				return c
 			for k: int in grid.nbr_count[c]:
@@ -462,6 +477,35 @@ func claim_dirty(from: int, hub: int, p_rings: int = -1, role: String = "clean",
 	if steps < 4000:  # the whole region was looked at, not a search cut short
 		_nothing[nothing_key] = _t + NOTHING_FOUND_S
 	return -1
+
+
+## The land cells a robot can drive to from `hub` (its depot), inside the hub's region and a
+## little beyond: found once by flooding out over land that is not under a building, and kept
+## until the buildings change.
+func _reachable(hub: int) -> Dictionary:
+	if _reach.has(hub):
+		return _reach[hub]
+	var lim: float = (rings + REACH_MARGIN_RINGS) * 17.35
+	var start: int = depot_of(hub)
+	if cells.state[start] == 5 or blocked.has(start):
+		for c: int in grid.cells_around(start, 3):
+			if cells.state[c] != 5 and not blocked.has(c):
+				start = c
+				break
+	var seen: Dictionary = {start: true}
+	var front := PackedInt32Array([start])
+	while not front.is_empty():
+		var nxt := PackedInt32Array()
+		for c: int in front:
+			for k: int in grid.nbr_count[c]:
+				var j: int = grid.nbr[c * SphereGrid.MAX_N + k]
+				if seen.has(j) or cells.state[j] == 5 or blocked.has(j) or grid.distance_m(j, hub) >= lim:
+					continue
+				seen[j] = true
+				nxt.append(j)
+		front = nxt
+	_reach[hub] = seen
+	return seen
 
 
 ## Is `c` work for `role`? (lake junk for skimmers is a SphereField feature still to come)
@@ -551,6 +595,7 @@ func set_obstacles(key: Variant, circles: Array) -> void:
 	else:
 		_site_obs[key] = circles
 	blocked.clear()
+	_reach.clear()
 	for k: Variant in _site_obs:
 		for c: int in SphereObstacles.blocked_cells(grid, _site_obs[k], -2.0):  # inflated: routes keep 2 m off walls
 			blocked[c] = true
@@ -634,7 +679,10 @@ func tick(delta: float) -> void:
 	var far_dt: float = _far_acc
 	if far_step:
 		_far_acc = 0.0
+	_ticks += 1
+	var slot: int = _ticks
 	for u: Dictionary in units:
+		slot += 1  # each robot has its own turn, so the staggered steps below spread over the ticks
 		var near: bool = u["bot"] != null
 		if near:
 			var d: float = _focus_dist(unit_dir(u))
@@ -643,8 +691,14 @@ func tick(delta: float) -> void:
 				near = false
 			else:
 				(u["bot"] as SphereBot).anim_every = 1 if d < ANIM_HALF_M else (2 if d < ANIM_QUARTER_M else 4)
-				_think(u, delta)
-				_update_centre(u)
+				# A robot at work only counts time: it thinks every few ticks, with the time since.
+				if str(u["mode"]) == "work" and slot % WORK_THINK_EVERY != 0:
+					u["think_dt"] = float(u.get("think_dt", 0.0)) + delta
+					continue
+				_think(u, delta + float(u.get("think_dt", 0.0)))
+				u["think_dt"] = 0.0
+				if slot % CENTRE_EVERY == 0:
+					_update_centre(u)
 				continue
 		if not far_step:
 			continue
@@ -771,7 +825,7 @@ func _think(u: Dictionary, dt: float) -> void:
 						u["wp_t"] = 0.0
 					else:
 						u["wp_t"] = float(u.get("wp_t", 0.0)) + dt
-					if wd < _pass_m(b.goal) or float(u["wp_t"]) > 3.0:
+					if wd < _pass_for(u, b.goal) or float(u["wp_t"]) > 3.0:
 						b.goal = b.path.pop_front()  # waypoints are cell centres: pass near, a bot may sit on one
 						u["wp_best"] = INF
 						u["wp_t"] = 0.0
@@ -801,7 +855,7 @@ func _think(u: Dictionary, dt: float) -> void:
 			_find_us += Time.get_ticks_usec() - t0
 			if not found:
 				u["log"]["idle_s"] = float(u["log"]["idle_s"]) + dt
-				u["rescan"] = 0.6 + randf() * 0.4
+				u["rescan"] = (0.6 + randf() * 0.4) * float(u.get("backoff", 1.0))
 				if float(u.get("idle_from", -1.0)) < 0.0:
 					u["idle_from"] = _t
 			else:
@@ -843,9 +897,11 @@ func _route_to(u: Dictionary, c: int, mode: String) -> bool:
 			u["job"] = -1
 		u["mode"] = "idle"
 		u["idle"] = "no path"
+		u["backoff"] = minf(float(u.get("backoff", 1.0)) * 2.0, NO_PATH_BACKOFF_MAX)
 		return false
 	_go(u, p)
 	u["mode"] = mode
+	u["backoff"] = 1.0
 	return true
 
 
@@ -1021,6 +1077,14 @@ func _approach(p: Vector3, from: Vector3) -> Vector3:
 		k += 0.5
 		d = SphereMath.slerp_safe(surface.up_at(p), back, clampf(k / maxf(total, 0.01), 0.0, 1.0))
 	return surface.ground(d)
+
+
+## _pass_m for a robot's current waypoint, looked up once per waypoint (it scans the buildings).
+func _pass_for(u: Dictionary, wp: Vector3) -> float:
+	if u.get("pass_wp") != wp:
+		u["pass_wp"] = wp
+		u["pass_m"] = _pass_m(wp)
+	return float(u["pass_m"])
 
 
 ## How close a waypoint must be before the next one: generous in the open (a robot may sit on a
