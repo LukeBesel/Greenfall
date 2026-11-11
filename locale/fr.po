@@ -1518,7 +1518,7 @@ msgstr "HEXAGONE PROPRE !  +%s"
 msgid "Milestone: %d hexes clean!"
 msgstr "Étape : %d hexagones propres !"
 
-#: scenes/slice_orbit.gd:505 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:505 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:610
 msgid "E   Fix the workbench"
 msgstr "E   Réparer l'établi"
 
@@ -3302,7 +3302,7 @@ msgstr "%s fredonne pour les semis. La retraite lui va bien."
 msgid "%s points proudly at a new bud."
 msgstr "%s montre fièrement un nouveau bourgeon."
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:602
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:631
 msgid "E   CD player: %s"
 msgstr "E   Lecteur CD : %s"
 

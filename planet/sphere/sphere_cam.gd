@@ -57,6 +57,7 @@ const HIDE_OUT_M: float = 1.6
 ## climbs the wall and looks down at him instead of sitting in the back of his head.
 var _tilt: float = 0.0
 const TILT_BELOW_M: float = 3.0
+const TILT_MAX: float = -1.5  # [v6feel] the steepest the climb goes (radians; -PI/2 is straight down)
 const WHISKER: float = 0.38  # radians either side of the arm, and above it
 
 
@@ -231,8 +232,10 @@ func update_camera(delta: float) -> void:
 		var tilt_to: float = 0.0
 		if _collide(_focus, flat_dir, want_d) < minf(want_d, TILT_BELOW_M):
 			var best_d: float = 0.0
-			for extra: float in [0.3, 0.6, 0.9, 1.2]:
-				var pt: float = maxf(pitch - extra, -1.35)
+			# [v6feel] Up to nearly overhead: backed against a tall wall, every slope still hit it and
+			# the camera sat in his head (arm 0.6 m, Lumi hidden).
+			for extra: float in [0.3, 0.6, 0.9, 1.2, 1.6]:
+				var pt: float = maxf(pitch - extra, TILT_MAX)
 				var dt_: float = _collide(_focus, (frame.z * cos(pt) - frame.y * sin(pt)).normalized(), want_d)
 				if dt_ > best_d + 0.3:
 					best_d = dt_
@@ -242,7 +245,7 @@ func update_camera(delta: float) -> void:
 		_tilt = lerpf(_tilt, tilt_to, SphereMath.damp(5.0 if tilt_to > _tilt else 1.5, delta))
 	elif delta <= 0.0:
 		_tilt = 0.0
-	var pitch_v: float = maxf(pitch - _tilt, -1.35)
+	var pitch_v: float = maxf(pitch - _tilt, TILT_MAX)
 	var dir: Vector3 = (frame.z * cos(pitch_v) - frame.y * sin(pitch_v)).normalized()
 	var d: float = _collide(_focus, dir, want_d)
 	if delta <= 0.0:
