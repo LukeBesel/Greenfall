@@ -16626,3 +16626,8 @@ msgstr ""
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr ""
+
+#: story/planet_steps.gd:58
+#, c-format
+msgid "Wake station %d of %d"
+msgstr ""

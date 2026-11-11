@@ -72,7 +72,7 @@ static func reason(planet: String, site: int) -> String:
 		var gr: Variant = (Economy.read_json("res://data/story_reasons.json") as Dictionary).get("goal_reasons", {})
 		var bid: Variant = (gr as Dictionary).get("by_id", {}) if gr is Dictionary else {}
 		_reasons = bid if bid is Dictionary else {"_": ""}
-	var r: String = str(_reasons.get("hub_fly_%d" % int(e.get("order", 0)), ""))
+	var r: String = str(_reasons.get("hub_fly_%d" % int(e.get("order", 0)), "")) if str(PlanetCfg.value(planet, "hub_steps", "generated")) == "shared" else PlanetSteps._by_planet(planet, "hub_fly_%d" % int(e.get("order", 0)))  # [v7planet] the shared lines are Verdance's
 	return r if r != "" else str(e.get("desc", ""))
 
 

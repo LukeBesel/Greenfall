@@ -163,16 +163,39 @@ campaign planet the save is on (Verdance's on a fresh start).
 
 ### Step 7. The story block
 
-v7arc is adding a per-planet story block; see **docs/STORY_ARC.md** (if it is not merged yet,
-ask v7arc). Leave room for it here:
+v7arc is adding a per-planet story block; see **docs/STORY_ARC.md**. It was not on main when
+this was written; until it lands, the slot below is the place to fill. Leave room for it here:
 
 > **Story slot for `<id>`** (to fill from docs/STORY_ARC.md): why Lumi comes here (the fuel or
 > power this planet gives toward the way home, owner item 72), the arrival line, the WREN lines
 > per hub (`data/story_reasons.json` `goal_reasons.by_id.hub_fly_<order>` or each hub's
 > `reason`), the leave toast (`data/homeward.json` `planets[k].leave.toast`), and the exit beat.
 
-Today the objective chain (`data/objectives.json`) and the goals (`data/goals.json`) are one list
-for the whole game, written for Verdance's six stations. See section 3, "Goals".
+### Step 7b. The card's hub steps (generated from `hubs[]`)
+
+`data/objectives.json` and `data/goals.json` are one list for the whole game. Their hub steps
+(`hub_fly_N`, `hub_wake_N`, `rocket_tier_N`) are written for Verdance's six stations, so Verdance
+says `"hub_steps": "shared"`. Every other planet gets `"_default".hub_steps`, which is
+`"generated"`: `story/planet_steps.gd` builds its hub steps from its own `hubs[]`.
+
+- One `hub_fly_k` (hubs_seen ≥ k−1) and one `hub_wake_k` (hubs_woken ≥ k−1, "Wake station k of
+  N") for each main-path hub k = 2..`hub_defaults.main_path`, in `order`.
+- A `rocket_tier_T` step before the first hub the rocket in use cannot keep
+  (`data/rockets.json` `tiers[].hubs`: Mk I keeps 3 hubs and Mk II keeps 5). An 8-hub planet gets
+  Mk II before hub 4 and Mk III before hub 6.
+- They stand where the shared hub steps stood in the objective chain. The shared hub goals are left
+  out of the goal chain. Nothing else in either list changes.
+- The why line of a fly step is the hub's `reason`, else
+  `data/story_reasons.json` `goal_reasons.by_planet.<id>.hub_fly_k`, else the hub's `desc`.
+  Wake and rocket steps use `by_planet.<id>.<step id>`, else the shared by-prefix line. The
+  arrival title reads the same per-planet lines: the shared `by_id.hub_fly_k` lines are
+  Verdance's and are only used with `"shared"`.
+- On Testworld the card has `hub_fly_2` and `hub_wake_2` and nothing else of the hub kind. The
+  planet smoke checks this and checks that both are done after the hop and the wake. The data test
+  also builds an 8-hub planet.
+- What else is in the two lists (base levels, robots, the drive, the other planets) is the same on
+  every planet. A planet that needs a different early chain still needs a per-planet objectives
+  list (to do, with v6pace).
 
 ### Step 8. Translations
 
@@ -189,8 +212,8 @@ Run them one at a time (one godot process at a time on this box):
 | Check | Command | What it proves |
 |---|---|---|
 | Data | `godot --headless --path . -s addons/gut/gut_cmdln.gd -gtest=res://tests/test_planet_data.gd -gexit` | Every planet has its blocks (`PlanetCfg.problems`): name, globe, a site kit that builds, hubs that make sense, a known score, a Homeward entry unless dev |
-| Planet smoke | `tools/planet_smoke.sh <id>` | Boots the globe at its size, the start town has the data's landmark, Lumi walks, the rocket hops to hub 1 and its site builds, hub 1 wakes, the game saves, and a new process loads the same planet, Lumi's spot and the woken hub. No script errors |
-| Save round trip | `godot --headless --path . res://tools/save_roundtrip.tscn -- --fresh --orbit-planet=<id>` | Every system's state through a save. On Testworld (Nov 11) 215 checks pass. The five `orbit_old_*` checks fail by design, because migrating an old flat save only applies to Verdance's grid. `orbit_seed_controls_back` also fails: the camera's input is not back yet after the first-seed cinematic. That one is not looked into yet |
+| Planet smoke | `tools/planet_smoke.sh <id>` | Boots the globe at its size, the start town has the data's landmark, the card's hub steps are the planet's own, Lumi walks, the rocket hops to hub 1 and its site builds, hub 1 wakes, the game saves, and a new process loads the same planet, Lumi's spot and the woken hub. No script errors |
+| Save round trip | `godot --headless --path . res://tools/save_roundtrip.tscn -- --fresh --orbit-planet=<id>` | Every system's state through a save. On a globe other than f = 128 the old-flat-save checks print `SKIP orbit_old_*`: old saves migrate onto Verdance's grid only. On Testworld (Nov 11) the run is `OK (0 failures)` |
 | Hub walkthrough | `godot --headless --path . -- --fresh --orbit-planet=<id> --no-intro --hop-skip --hub-walkthrough` | Every main-path hub: town, landmark, reach, wake, gift, bench, HUD |
 | Start town | `... -- --fresh --orbit-planet=<id> --no-intro --city-walk` | Walk area, dead ends, the ways out |
 | Targets | `... -- --fresh --orbit-planet=<id> --no-intro --target-reach` | Every collectible and objective target stands on reachable ground |
@@ -249,12 +272,13 @@ Severity:
 | planet/sky_director.gd:54 | the globe's suns were Verdance's unless a Cradle world | medium |
 | planet/sphere/sphere_streamer.gd:92 | the ground textures fixed | high (theme) |
 | ui/hud.gd:302, planet/sites/hub_purpose.gd:443 | the HUD name from data/planet.json ("Verdance") | low |
+| data/objectives.json (hub_fly_2..4, hub_wake_2..4 at :219 on), data/goals.json:36-42 (hub_fly_5/6, "Wake station 6 of 6"), planet/sites/hub_plan.gd:75 | The card's hub steps and the arrival's why lines written for Verdance's six stations: on a 2-hub planet the card waited for hub 3 for ever | high (was block) |
 
 ### To do when the planet is built
 
 | Where | What | Sev | What to do |
 |---|---|---|---|
-| data/objectives.json (hub_fly_2..4, hub_wake_2..4 at :219 on), data/goals.json:36-42 (hub_fly_5/6, "Wake station 6 of 6") | One objective and goal list for the whole game, written for Verdance's six stations. On a planet with fewer hubs the card waits for a hub that does not exist; with more, the texts say "of 6" | high | v6pace and v6story own these. Add a `planets` filter per entry (or `planets.<id>` lists) in story/objectives.gd and story/goals.gd, and fill the counts from `HubPlan.main_total(planet)` |
+| data/objectives.json, data/goals.json (everything but the hub steps) | The rest of the chain (base levels, robots, research, the drive) is shared. The hub steps are now per planet (step 7b) | medium | A per-planet objectives list if a planet needs a different early game (with v6pace) |
 | data/story_reasons.json, data/wren_lines.json, story/intro.gd | WREN's lines and the crash-landing intro are Verdance's story. A new planet arrives by rocket (Homeward), so the intro only plays on a fresh `--orbit-planet` run | high | v7arc's per-planet story block (docs/STORY_ARC.md) |
 | planet/orbit/orbit_planet.gd, planet/orbit/sphere_field.gd:343 | On the globe the junk is Verdance's everywhere: `junk_biome`, `pieces_mult`, `no_lakes` and `junk_tint` are only read by the flat-era env scripts (planet/planets/*/env.gd:94-137) | high | Set `SphereField.biome_set = Economy.biome_set(PlanetCfg.value(pid, "junk_biome", ""))` and the density in OrbitPlanet.build, behind a data key, then check the junk LOD and preload lists (`--record-preload`) |
 | data/fauna.json `species` | The same animals on every planet; no per-planet list | high | A `planets` key per species, or `fauna.json planets.<id>`; fauna/fauna.gd picks the list |
@@ -301,4 +325,5 @@ errors. What they lack is content, not foundation:
 
 Code: `core/planet_cfg.gd` (merging, the site kit, checks), `planet/orbit/globe_spec.gd` (size),
 `planet/sites/hub_plan.gd` (hubs), `core/sound_cfg.gd`, `core/life_cfg.gd`,
-`planet/sites/planet_smoke.gd` (the smoke), `tests/test_planet_data.gd` (the data check).
+`story/planet_steps.gd` (the card's hub steps), `planet/sites/planet_smoke.gd` (the smoke),
+`tests/test_planet_data.gd` (the data check).

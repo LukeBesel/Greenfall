@@ -18754,3 +18754,8 @@ msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了
 
 #~ msgid "Sharper shredder teeth and a hotter smelter. More bolts and stock per bale."
 #~ msgstr "更锋利的粉碎齿和更热的熔炉。每个捆包产出更多螺栓和建材。"
+
+#: story/planet_steps.gd:58
+#, c-format
+msgid "Wake station %d of %d"
+msgstr "唤醒第 %d 座站点(共 %d 座)"
