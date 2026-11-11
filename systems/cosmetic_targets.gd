@@ -12,10 +12,9 @@ extends RefCounted
 ##       "hint": "Meet the light-bot in the Old Town",   # optional, shown while locked
 ##   })
 ##
-## Unlock rules for parts can reuse LumiStyle's helpers with your own data:
-## LumiStyle.unlock_met(u, key), unlock_progress(u, key), unlock_text(u), buy(...) work on the same
-## unlock dicts as data/style_parts.json ({design}, {lumi_level}, {achievement}, {cond}, {cost}).
-## Locked things are shown as "???" with only the hint (LumiStyle.LOCKED_NAME), never their look.
+## Nothing a target wears may be bought or opened by a counter: its pieces are found in the world
+## (systems/looks.gd). An unfound thing shows as "???" with one hint line (Looks.UNFOUND_NAME),
+## never its look.
 
 static var _targets: Dictionary = {}
 

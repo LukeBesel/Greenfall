@@ -48,6 +48,11 @@ static func _snap(s: Node) -> Dictionary:
 		"chain": JSON.stringify((s.orbit as SliceOrbit).chain.save_state()),  # buried parts, the Assembler, its mix
 		"assembler_model": (s.orbit as SliceOrbit).chain.model != null,
 		"restoration": JSON.stringify((s.orbit as SliceOrbit).restoration.save_state()),
+		# Looks: found pieces are global progress; what the planet has given is in its own section.
+		"pieces": JSON.stringify(GameState.global.get(Looks.KEY, [])),
+		"finds": JSON.stringify((s.orbit as SliceOrbit).look_finds.save_state()),
+		"worn_set": Designs.worn_set(),
+		"worn_head": str(LumiStyle.current()["head"]),
 		"hex_level_target": (s.get("hex_levels") as HexLevels).level_of(int(s.get_meta("rt_target", -1))),
 		"cells_level_target": g.cells.level[int(s.get_meta("rt_target", 0))],
 		"milestone_1": GameState.flags.get("hexm_1", false),
@@ -583,6 +588,14 @@ static func run(rt: Node, check: Callable) -> void:
 	await tree.physics_frame
 	check.call("orbit_bin_prompt", true, s1.interact_prompt(p) != "")
 	YardBuilds.mark_built("radio")
+	# Looks: a find taken from the planet, a second piece found, and a mixed look worn.
+	var first_find: Dictionary = so1.look_finds.entries()[0]
+	check.call("orbit_find_taken", true, so1.look_finds.take(str(first_find["id"])))
+	Looks.grant("head_halo", "secret")
+	var look: Dictionary = LumiStyle.current()
+	LumiStyle.wear_piece(look, "head_halo")
+	LumiStyle.set_current(look)
+	check.call("orbit_pieces_in_global", true, Looks.has(str((first_find["pieces"] as Array)[0])) and Looks.has("head_halo"))
 	var ex: ExtrasDirector = ExtrasDirector.of(s1)
 	check.call("orbit_radio_on_anchor", true, ex != null and ex.radio != null and ex.radio.global_position.distance_to(so1.yard_point("radio")) < 0.1)
 	if ex and ex.radio:
@@ -632,6 +645,8 @@ static func run(rt: Node, check: Callable) -> void:
 	var a: Dictionary = _snap(s1)
 	var disk: Dictionary = SaveManager.read_dict(SaveManager.slot_path())
 	check.call("orbit_flat_world_untouched", false, (disk.get("world", {}) as Dictionary).has("hub_level"))
+	check.call("orbit_pieces_saved_in_global_section", 2, (((disk.get("global", {}) as Dictionary).get(Looks.KEY, []) as Array)).size())
+	check.call("orbit_pieces_not_in_planet_section", false, JSON.stringify(disk.get("orbit", {})).contains("head_halo"))
 	check.call("orbit_hub_world_saved", 2, int((((disk.get("orbit", {}) as Dictionary).get("hub_worlds", {}) as Dictionary).get("0", {}) as Dictionary).get("hub_level", 0)))
 	var s1_target: int = int(s1.get_meta("rt_target", -1))
 	check.call("orbit_save_has_no_flat_xz", false, JSON.stringify(GameState.orbit.get("lumi", {})).contains("\"pos\""))
@@ -694,6 +709,11 @@ static func _old_save(tree: SceneTree, packed: PackedScene, check: Callable) -> 
 	var so: SliceOrbit = s.orbit
 	var g: OrbitPlanet = so.globe
 	check.call("orbit_old_migrated", "flat_v%d" % GameState.SAVE_VERSION, str(GameState.orbit.get("migrated", "")))
+	# A save from before found pieces keeps what it had: the colours that were free are pieces now.
+	check.call("orbit_old_keeps_its_free_colours", true, Looks.has("tin_graphite") and Looks.has("tin_slate") and Looks.has("chip_orange"))
+	check.call("orbit_old_look_still_wearable", true, LumiStyle.allowed(LumiStyle.current()))
+	check.call("orbit_old_has_no_unearned_design", false, Designs.is_collected("sprout") or Designs.is_collected("bolt"))
+	var old_pieces: String = JSON.stringify(GameState.global.get(Looks.KEY, []))
 	check.call("orbit_old_base_level", 2, OrbitSave.hub_level({"hubs": so.hub_states}, 0))
 	var clean_cells: int = 0
 	for c: int in g.cells.n:
@@ -722,5 +742,6 @@ static func _old_save(tree: SceneTree, packed: PackedScene, check: Callable) -> 
 	check.call("orbit_old_reload_cells", hash(cd["state"]), hash(g2.cells.to_dict()["state"]))
 	check.call("orbit_old_reload_base_level", 2, OrbitSave.hub_level({"hubs": (s2.orbit as SliceOrbit).hub_states}, 0))
 	check.call("orbit_old_reload_cubes", cubes0, GameState.get_currency("cubes").to_float())
+	check.call("orbit_old_reload_pieces", old_pieces, JSON.stringify(GameState.global.get(Looks.KEY, [])))
 	s2.queue_free()
 	await tree.process_frame

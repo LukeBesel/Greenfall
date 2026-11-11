@@ -1,15 +1,23 @@
 class_name LumiStyle
 extends RefCounted
-## Lumi's Character Builder look (data/style_parts.json): a dict of slots that a PatchModel reads.
+## Lumi's look (data/style_parts.json): a dict of slots that a PatchModel reads.
 ##   colours: paint, trim, accent, side (side modules), eyes, glow (light strips: ear stripes, chest,
 ##            wrists), hover (thruster ring + hover light), laser (pickup lasers, player/pickup_fx.gd)
 ##   amounts: wear (0..1; paint coverage follows it)
-##   parts:   pattern, eye_shape, head, chest, shoulders, held, companion
-##   bonus:   the unlocked design whose small bonus applies (it is also flags.patch_skin, so
-##            Designs.mult keeps working unchanged; "looks only" still turns it off)
+##   parts:   pattern, eye_shape, head, ears, chest, shoulders, held, hip, companion
+##   bonus:   the base design of the look: the design whose paint set it wears (also
+##            flags.patch_skin; the model builds from it)
 ##   hidden:  preset (the design the hidden values came from), lamp, coverage, metal
 ## The six designs are presets that fill every slot (preset(id) reads PatchModel.VARIANTS, so a
 ## preset style reproduces the design's look exactly; tests/test_lumi_style.gd checks it).
+##
+## What may be worn is decided by found pieces alone (systems/looks.gd, data/cosmetics.json; design
+## spec section 13). A piece fills one Locker slot: wear_piece() writes it into a style,
+## piece_in() reads back which piece a slot holds, allowed() says whether every piece of a style
+## has been found, and worn_set() names the design whose every piece is worn (its small bonus
+## applies then: systems/designs.gd; a mixed look gives none). The Locker's "paint" slot holds a
+## design's paint set (body colours and wear) or a paint tin over it (main paint only); its "glow"
+## slot sets every light at once (eyes, strips, hover, laser).
 ##
 ## How the model reads it (two tagged hooks in PatchModel._build):
 ##   var v: Dictionary = LumiStyle.variant_for(self, VARIANTS[variant])   (first line)
@@ -22,29 +30,28 @@ extends RefCounted
 ## leaves the laser colour as model meta "lumi_laser" for PickupFx. Every access is defensive
 ## (get / has_method / null checks), so the hero model can be rebuilt underneath.
 ##
-## Which style a model shows: meta "lumi_style" (builder preview, title screen) > preset of its
-## variant when preview_variant is set (design picker, lineups) > the worn style when its bonus is
-## the model's variant > that variant's preset.
-## State (GameState.flags, in the save): lumi_style (the worn style), lumi_looks (up to 5 saved
-## looks, each a style with a "name"), style_bought (ids bought with cubes/parts/seeds).
-## Unlock sources trickle in across the whole game: free starters, Lumi Level, hub level, the six
-## designs (their parts and colours), Collection finds, Requests, achievements (early to late), and
-## a few cosmetic buys for parts / seeds.
+## Which style a model shows: meta "lumi_style" (the Locker's turntable, title screen) > preset of
+## its variant when preview_variant is set (lineups) > the worn style when its base design is the
+## model's variant > that variant's preset.
+## State (GameState.flags, in the save): lumi_style (the worn style), lumi_looks (the saved looks,
+## each a style with a "name"). Emits EventBus.look_changed when the worn look changes.
 
 const PATH: String = "res://data/style_parts.json"
-const MAX_LOOKS: int = 5
 const VERSION: int = 1
 const COLOR_SLOTS: Array[String] = ["paint", "trim", "accent", "side", "eyes", "glow", "hover", "laser"]
 const PART_SLOTS: Array[String] = ["pattern", "eye_shape", "head", "ears", "chest", "shoulders", "held", "hip", "companion"]
 ## Part slots whose options carry PatchModel add-on ids ("acc"): a preset fills them from the
 ## design's acc list, and variant_dict turns them back into one.
 const ACC_SLOTS: Array[String] = ["pattern", "head", "ears", "shoulders", "held", "hip", "companion"]
-## Owner: locked designs and parts are never shown, only "???" and a hint of how to unlock them.
-const LOCKED_NAME: String = "???"
+## The colour keys the Locker's "paint" slot owns, and the ones its "glow" slot sets together.
+const BODY_SLOTS: Array[String] = ["paint", "trim", "accent", "side"]
+const GLOW_SLOTS: Array[String] = ["eyes", "glow", "hover", "laser"]
+const PAINT: String = "paint"
+const GLOW: String = "glow"
+## Owner: unfound pieces are never shown, only "???" and one hint line.
+const LOCKED_NAME: String = Looks.UNFOUND_NAME
 
 static var _data: Dictionary = {}
-## Dev (--lumi-parts-all / --lumi-random): every unlock met for this run.
-static var dev_all: bool = false
 
 
 # --- Data -------------------------------------------------------------------------------------
@@ -277,7 +284,7 @@ static func current() -> Dictionary:
 	return preset(Designs.current())
 
 
-## Is the worn look one of the six presets (unchanged)?
+## Is the look one of the six designs, unchanged?
 static func is_preset(style: Dictionary) -> bool:
 	return same(style, preset(str(normalize(style)["preset"])))
 
@@ -288,33 +295,39 @@ static func for_variant(variant: String) -> Dictionary:
 	return s if str(s["bonus"]) == variant else preset(variant)
 
 
-## Wear a style (the builder's Save). Its bonus design becomes the worn design when unlocked.
+## Wear a style (the Locker). Its base design falls back to the worn one when that paint set is
+## not found. Emits look_changed.
 static func set_current(style: Dictionary) -> void:
 	var s: Dictionary = normalize(style)
-	if not Designs.is_unlocked(str(s["bonus"])):
+	if not Designs.has_base(str(s["bonus"])):
 		s["bonus"] = Designs.current()
 	s.erase("name")
 	GameState.flags["lumi_style"] = s
-	Designs.select(str(s["bonus"]))
+	GameState.flags["patch_skin"] = str(s["bonus"])
+	GameState.flags[Designs.SET_FLAG] = worn_set(s)
+	EventBus.look_changed.emit()
 
 
-## Wear a design's preset look (the Cosmetics picker).
-static func wear_preset(id: String) -> bool:
-	if not Designs.select(id):
+## Wear every piece of a design over the worn look. False until the whole set is found.
+static func wear_set(id: String) -> bool:
+	if not Looks.set_collected(id):
 		return false
-	GameState.flags["lumi_style"] = preset(id)
+	set_current(with_set(current(), id))
 	return true
 
 
 # --- Saved looks ------------------------------------------------------------------------------
 
+## The saved looks: as many slots as the data asks for (Looks.preset_count). A save from when
+## there were more keeps the extra ones it filled until they are cleared.
 static func looks() -> Array:
 	var v: Variant = GameState.flags.get("lumi_looks", [])
 	var arr: Array = v if v is Array else []
-	while arr.size() < MAX_LOOKS:
+	var want: int = Looks.preset_count()
+	while arr.size() < want:
 		arr.append({})
-	if arr.size() > MAX_LOOKS:
-		arr.resize(MAX_LOOKS)
+	while arr.size() > want and not (arr[-1] is Dictionary and not (arr[-1] as Dictionary).is_empty()):
+		arr.pop_back()
 	GameState.flags["lumi_looks"] = arr
 	return arr
 
@@ -327,7 +340,7 @@ static func look(i: int) -> Dictionary:
 
 
 static func save_look(i: int, style: Dictionary, look_name: String = "") -> bool:
-	if i < 0 or i >= MAX_LOOKS:
+	if i < 0 or i >= looks().size():
 		return false
 	var s: Dictionary = normalize(style)
 	s["name"] = look_name if look_name != "" else str(style.get("name", ""))
@@ -336,186 +349,206 @@ static func save_look(i: int, style: Dictionary, look_name: String = "") -> bool
 
 
 static func delete_look(i: int) -> void:
-	if i >= 0 and i < MAX_LOOKS:
+	if i >= 0 and i < looks().size():
 		looks()[i] = {}
 
 
-# --- Unlocks ----------------------------------------------------------------------------------
+# --- Pieces -----------------------------------------------------------------------------------
 
-static func bought() -> Array:
-	var v: Variant = GameState.flags.get("style_bought", [])
-	var arr: Array = v if v is Array else []
-	GameState.flags["style_bought"] = arr
-	return arr
-
-
-## Unlock key for buying ("swatch:coral", "head:halo", "advanced_picker").
-static func key_of(slot: String, id: String) -> String:
-	return id if slot == "" else "%s:%s" % [slot, id]
-
-
-static func unlock_met(u: Dictionary, key: String = "") -> bool:
-	if u.is_empty() or dev_all:
-		return true
-	if u.has("design"):
-		return Designs.is_unlocked(str(u["design"]))
-	if u.has("lumi_level"):
-		return LumiLevel.level() >= int(u["lumi_level"])
-	if u.has("achievement"):
-		return Achievements.is_unlocked(str(u["achievement"]))
-	if u.has("cond"):
-		var c: Dictionary = u["cond"]
-		return Designs.cond_value(c) >= float(c.get("target", 1.0)) - 0.000001
-	if u.has("cost"):
-		return key != "" and key in bought()
-	return false
+## Put a piece into a style (no check that it is found: allowed() is the gate).
+static func wear_piece(style: Dictionary, piece: String) -> void:
+	var p: Dictionary = Looks.def(piece)
+	if p.is_empty():
+		return
+	var slot: String = str(p["slot"])
+	if p.has("option"):
+		set_value(style, slot, str(p["option"]))
+	elif slot == PAINT:
+		if p.has("design"):
+			_wear_paint_set(style, str(p["design"]))
+		else:
+			set_value(style, PAINT, swatch_color(swatch(str(p.get("swatch", "")))))
+	elif slot == GLOW:
+		for k: String in GLOW_SLOTS:
+			set_value(style, k, _piece_color(p))
 
 
-## 0..1 toward the unlock (cost unlocks: how much of the price you hold).
-static func unlock_progress(u: Dictionary, key: String = "") -> float:
-	if unlock_met(u, key):
-		return 1.0
-	if u.has("design"):
-		return Designs.progress(str(u["design"]))
-	if u.has("lumi_level"):
-		return clampf(float(LumiLevel.level()) / maxf(float(u["lumi_level"]), 1.0), 0.0, 1.0)
-	if u.has("achievement"):
-		return Achievements.progress(str(u["achievement"]))
-	if u.has("cond"):
-		var c: Dictionary = u["cond"]
-		return clampf(Designs.cond_value(c) / maxf(float(c.get("target", 1.0)), 0.0001), 0.0, 1.0)
-	if u.has("cost"):
-		var best: float = 1.0
-		var f: Dictionary = Currencies.fold(u["cost"])
-		for id: String in f:
-			best = minf(best, GameState.get_currency(id).to_float() / maxf(float(f[id]), 0.0001))
-		return clampf(best, 0.0, 1.0)
-	return 0.0
+## A design's paint set: its body colours and wear, and it becomes the look's base design.
+static func _wear_paint_set(style: Dictionary, design: String) -> void:
+	var src: Dictionary = preset(design)
+	for k: String in BODY_SLOTS + ["lamp", "wear", "coverage", "metal"]:
+		style[k] = src[k]
+	style["bonus"] = str(src["bonus"])
+	style["preset"] = str(src["preset"])
 
 
-## How to unlock, translated ("Unlock the Bolt design", "Achievement: Gardener", "40 parts").
-static func unlock_text(u: Dictionary) -> String:
-	if u.is_empty():
-		return ""
-	if u.has("design"):
-		var dn: String = TranslationServer.translate(str(Designs.def(str(u["design"])).get("name", u["design"])))
-		return TranslationServer.translate("Unlock the %s design") % dn
-	if u.has("lumi_level"):
-		return TranslationServer.translate("Reach Lumi Level %d") % int(u["lumi_level"])
-	if u.has("achievement"):
-		var an: String = TranslationServer.translate(str(Achievements.def(str(u["achievement"])).get("name", u["achievement"])))
-		return TranslationServer.translate("Achievement: %s") % an
-	if u.has("cond"):
-		return TranslationServer.translate(str(u.get("text", "")))
-	if u.has("cost"):
-		return TranslationServer.translate("Buy for %s") % Currencies.cost_text(u["cost"])
+static func _piece_color(p: Dictionary) -> Color:
+	if p.has("design"):
+		return col(preset(str(p["design"])), GLOW if str(p["slot"]) == GLOW else PAINT)
+	return swatch_color(swatch(str(p.get("swatch", ""))))
+
+
+## The colour a piece shows in a list: its own for a paint or light piece, `fallback` for a part.
+static func piece_tint(piece: String, fallback: Color = Color.WHITE) -> Color:
+	var p: Dictionary = Looks.def(piece)
+	if p.is_empty() or p.has("option"):
+		return fallback
+	return _piece_color(p)
+
+
+## Can a slot be left empty (its first option is "none" / "plain" and no piece stands for it)?
+static func can_clear(slot: String) -> bool:
+	if not (slot in PART_SLOTS):
+		return false
+	var opts: Array = options(slot)
+	return not opts.is_empty() and Looks.piece_for(slot, "option", str((opts[0] as Dictionary)["id"])) == ""
+
+
+## Empty a slot (only the ones can_clear allows).
+static func clear_slot(style: Dictionary, slot: String) -> void:
+	if can_clear(slot):
+		style[slot] = str((options(slot)[0] as Dictionary)["id"])
+
+
+## The piece a slot of the style holds ("" for an empty slot, or for a value no piece stands for:
+## a colour mixed in a save from before found pieces).
+static func piece_in(style: Dictionary, slot: String) -> String:
+	return _piece_in(normalize(style), slot)
+
+
+static func _piece_in(s: Dictionary, slot: String) -> String:
+	if slot in PART_SLOTS:
+		return Looks.piece_for(slot, "option", str(s[slot]))
+	if slot == PAINT:
+		var base: Dictionary = preset(str(s["bonus"]))
+		for k: String in ["trim", "accent", "side"]:
+			if not _close(col(s, k), col(base, k)):
+				return ""
+		if _close(col(s, PAINT), col(base, PAINT)):
+			return Looks.piece_for(PAINT, "design", str(s["bonus"]))
+		return _swatch_piece(PAINT, col(s, PAINT))
+	if slot == GLOW:
+		var c: Color = col(s, GLOW)
+		for k: String in GLOW_SLOTS:
+			if not _close(col(s, k), c):
+				return ""
+		for id: String in Looks.of_slot(GLOW):
+			var p: Dictionary = Looks.def(id)
+			if p.has("design") and _close(_piece_color(p), c):
+				return id
+		return _swatch_piece(GLOW, c)
 	return ""
 
 
-static func option_unlocked(slot: String, id: String) -> bool:
-	var o: Dictionary = option(slot, id)
-	return not o.is_empty() and unlock_met(o.get("unlock", {}), key_of(slot, id))
+static func _swatch_piece(slot: String, c: Color) -> String:
+	var sw: Dictionary = swatch_for(c)
+	return Looks.piece_for(slot, "swatch", str(sw["id"])) if not sw.is_empty() else ""
 
 
-static func swatch_unlocked(id: String) -> bool:
-	var s: Dictionary = swatch(id)
-	return not s.is_empty() and unlock_met(s.get("unlock", {}), key_of("swatch", id))
+## Slot -> the piece worn there ("" where none).
+static func worn_pieces(style: Dictionary) -> Dictionary:
+	var s: Dictionary = normalize(style)
+	var out: Dictionary = {}
+	for slot: String in Looks.slot_ids():
+		out[slot] = _piece_in(s, slot)
+	return out
 
 
-static func advanced_unlocked() -> bool:
-	var a: Dictionary = data().get("advanced", {})
-	return unlock_met(a.get("unlock", {}), str(a.get("id", "advanced_picker")))
+## The design whose every piece the style wears ("" for a mixed look). Slots the set does not
+## use may hold anything.
+static func worn_set(style: Dictionary) -> String:
+	var s: Dictionary = normalize(style)
+	var design: String = str(s["bonus"])
+	var pieces: Array[String] = Looks.set_ids(design)
+	if pieces.is_empty():
+		return ""
+	for id: String in pieces:
+		if _piece_in(s, Looks.slot_of(id)) != id:
+			return ""
+	return design
 
 
-## Pay a cost unlock once. `slot` = "swatch", a part slot, or "" for the advanced picker.
-static func buy(slot: String, id: String) -> bool:
-	var u: Dictionary
-	if slot == "":
-		u = (data().get("advanced", {}) as Dictionary).get("unlock", {})
-	elif slot == "swatch":
-		u = swatch(id).get("unlock", {})
-	else:
-		u = option(slot, id).get("unlock", {})
-	var key: String = key_of(slot, id)
-	if not u.has("cost") or key in bought():
-		return false
-	if not GameState.spend_all(u["cost"]):
-		return false
-	bought().append(key)
+## The style with every piece of a design worn over it.
+static func with_set(style: Dictionary, design: String) -> Dictionary:
+	var s: Dictionary = normalize(style)
+	s.erase("name")
+	for id: String in Looks.set_ids(design):
+		wear_piece(s, id)
+	return s
+
+
+## Is the slot's value the same in two styles?
+static func _slot_same(a: Dictionary, b: Dictionary, slot: String) -> bool:
+	if slot in PART_SLOTS:
+		return a[slot] == b[slot]
+	for k: String in (BODY_SLOTS if slot == PAINT else GLOW_SLOTS):
+		if not _close(col(a, k), col(b, k)):
+			return false
 	return true
 
 
-## Can this colour be worn (an unlocked swatch, or anything with the advanced picker)?
-static func color_allowed(c: Color) -> bool:
-	if advanced_unlocked():
+## A value no piece stands for may stay only where the player already had it: in the worn look
+## or in a saved look (a save from before found pieces keeps what it wore).
+static func _carried_over(s: Dictionary, slot: String) -> bool:
+	if _slot_same(s, current(), slot):
 		return true
-	var s: Dictionary = swatch_for(c)
-	return not s.is_empty() and swatch_unlocked(str(s["id"]))
+	for i: int in looks().size():
+		var lk: Dictionary = look(i)
+		if not lk.is_empty() and _slot_same(s, lk, slot):
+			return true
+	return false
 
 
-## Is every part of the style unlocked? Colours that came from an unlocked preset are allowed
-## too (the designs' own colours are always wearable).
+## May this style be worn: is every piece in it found?
 static func allowed(style: Dictionary) -> bool:
 	var s: Dictionary = normalize(style)
-	for slot: String in PART_SLOTS:
-		if not option_unlocked(slot, str(s[slot])):
-			return false
-	if not Designs.is_unlocked(str(s["bonus"])):
+	if not Designs.has_base(str(s["bonus"])):
 		return false
-	var preset_cols: Array[Color] = []
-	for id: String in preset_ids():
-		if Designs.is_unlocked(id):
-			var p: Dictionary = preset(id)
-			for slot: String in COLOR_SLOTS:
-				preset_cols.append(col(p, slot))
-	for slot: String in COLOR_SLOTS:
-		var c: Color = col(s, slot)
-		if color_allowed(c):
-			continue
-		var ok: bool = false
-		for pc: Color in preset_cols:
-			ok = ok or _close(pc, c)
-		if not ok:
+	for slot: String in Looks.slot_ids():
+		var piece: String = _piece_in(s, slot)
+		if piece != "":
+			if not Looks.has(piece):
+				return false
+		elif not (can_clear(slot) and s[slot] == str((options(slot)[0] as Dictionary)["id"])) and not _carried_over(s, slot):
 			return false
 	return true
 
 
-## A random look from unlocked parts and swatches (the bonus stays).
+## The pieces the looks in a save's flags are made of (the worn look and the saved ones): what
+## the save migration grants so an old save keeps what it wore (Looks.migrate_save).
+static func pieces_in_save(flags: Dictionary) -> Array[String]:
+	var styles: Array = [flags.get("lumi_style")]
+	if flags.get("lumi_looks") is Array:
+		styles.append_array(flags["lumi_looks"])
+	var out: Array[String] = []
+	for st: Variant in styles:
+		if not (st is Dictionary) or (st as Dictionary).is_empty():
+			continue
+		var s: Dictionary = normalize(st)
+		var ids: Array = worn_pieces(s).values()
+		ids.append(Looks.piece_for(PAINT, "design", str(s["bonus"])))
+		for id: Variant in ids:
+			if str(id) != "" and not (str(id) in out):
+				out.append(str(id))
+	return out
+
+
+## A random look from the found pieces (the Locker's shuffle, dev shots).
 static func randomized(rng: RandomNumberGenerator, base: Dictionary = {}) -> Dictionary:
 	var s: Dictionary = normalize(base) if not base.is_empty() else current()
-	var sw: Array = []
-	for x: Dictionary in swatches():
-		if swatch_unlocked(str(x["id"])):
-			sw.append(swatch_color(x))
-	if sw.is_empty():
-		sw.append(Color.WHITE)
-	# Paint light or dark, trim the other way, a bright glow; eyes/hover/laser usually match it.
-	var paint: Color = sw[rng.randi() % sw.size()]
-	var trim: Color = sw[rng.randi() % sw.size()]
-	var tries: int = 0
-	while absf(trim.get_luminance() - paint.get_luminance()) < 0.18 and tries < 12:
-		trim = sw[rng.randi() % sw.size()]
-		tries += 1
-	var bright: Array = sw.filter(func(c: Color) -> bool: return c.s > 0.4 and c.v > 0.75)
-	if bright.is_empty():
-		bright = sw
-	var glow: Color = bright[rng.randi() % bright.size()]
-	set_value(s, "paint", paint)
-	set_value(s, "trim", trim)
-	set_value(s, "side", trim if rng.randf() < 0.6 else sw[rng.randi() % sw.size()])
-	set_value(s, "accent", bright[rng.randi() % bright.size()])
-	set_value(s, "glow", glow)
-	set_value(s, "eyes", glow if rng.randf() < 0.75 else bright[rng.randi() % bright.size()])
-	set_value(s, "hover", glow if rng.randf() < 0.7 else bright[rng.randi() % bright.size()])
-	set_value(s, "laser", glow if rng.randf() < 0.6 else bright[rng.randi() % bright.size()])
-	set_value(s, "wear", snappedf(rng.randf_range(0.2, 0.85), 0.05))
-	for slot: String in PART_SLOTS:
-		var ok: Array = []
-		for o: Dictionary in options(slot):
-			if option_unlocked(slot, str(o["id"])):
-				ok.append(str(o["id"]))
-		if not ok.is_empty():
-			s[slot] = ok[rng.randi() % ok.size()]
+	s.erase("name")
+	for slot: String in Looks.slot_ids():
+		var have: Array[String] = []
+		for id: String in Looks.of_slot(slot):
+			if Looks.has(id):
+				have.append(id)
+		var pick: int = rng.randi() % (have.size() + (1 if can_clear(slot) else 0)) if not have.is_empty() or can_clear(slot) else -1
+		if pick < 0:
+			continue
+		if pick >= have.size():
+			clear_slot(s, slot)
+		else:
+			wear_piece(s, have[pick])
 	return s
 
 
@@ -738,14 +771,14 @@ static func from_save_flags(flags: Dictionary, skin: String) -> Dictionary:
 
 
 # --- Dev hooks --------------------------------------------------------------------------------
-##   --lumi-random=SEED       wear a random look (every part unlocked first)
-##   --lumi-set=slot:value,.. set slots (colours as hex without #, e.g. laser:ff3d8a)
-##   --lumi-look=N            wear saved look N (0-4)
-##   --lumi-builder           open the Character Builder (after --lumi-builder-at=S seconds, default 3)
-##   --lumi-parts-all         unlock every part, swatch and the advanced picker
+##   --lumi-parts-all         every piece counts as found for this run
+##   --lumi-random=SEED       wear a random look (every piece found first)
+##   --lumi-set=slot:value,.. set style keys (colours as hex without #, e.g. laser:ff3d8a)
+##   --lumi-look=N            wear saved look N
+## The Locker itself opens with --open-locker (systems/camp/locker_cabinet.gd).
 static func dev_hooks(world: Node) -> void:
 	if DevHooks.has("lumi-parts-all") or DevHooks.has("lumi-random"):
-		_dev_unlock_all()
+		Looks.dev_all = true
 	var changed: bool = false
 	var s: Dictionary = current()
 	if DevHooks.has("lumi-random"):
@@ -761,43 +794,15 @@ static func dev_hooks(world: Node) -> void:
 	if sets != "":
 		for kv: String in sets.split(","):
 			var p: PackedStringArray = kv.split(":")
-			if p.size() == 2:
-				set_value(s, p[0], ("#" + p[1]) if p[0] in COLOR_SLOTS else (float(p[1]) if p[0] == "wear" else p[1]))
+			if p.size() != 2:
+				continue
+			var value: Variant = p[1]
+			if p[0] in COLOR_SLOTS:
+				value = "#" + p[1]
+			elif p[0] == "wear":
+				value = float(p[1])
+			set_value(s, p[0], value)
 		changed = true
 	if changed:
 		set_current(s)
 		refresh_player(world)
-	if DevHooks.has("lumi-builder") and world:
-		# Wall clock, like --shot-delay (game time crawls on software rendering).
-		_dev_builder_ms = Time.get_ticks_msec() + int(DevHooks.get_f("lumi-builder-at", 3.0) * 1000.0)
-		world.get_tree().process_frame.connect(_dev_builder_tick.bind(world))
-
-
-static var _dev_builder_ms: int = -1
-
-
-static func _dev_builder_tick(world: Node) -> void:
-	if _dev_builder_ms < 0 or Time.get_ticks_msec() < _dev_builder_ms or not is_instance_valid(world):
-		return
-	_dev_builder_ms = -1
-	var b: LumiBuilder = LumiBuilder.open(world, world)
-	var sel: String = DevHooks.get_s("lumi-builder-slot", "")
-	if sel != "":
-		b.call_deferred("_select", sel)
-
-
-static func _dev_unlock_all() -> void:
-	for id: String in Designs.ids():
-		if not (id in Designs.unlocked()):
-			Designs.unlocked().append(id)
-	var b: Array = bought()
-	for x: Dictionary in swatches():
-		if (x.get("unlock", {}) as Dictionary).has("cost") and not (key_of("swatch", str(x["id"])) in b):
-			b.append(key_of("swatch", str(x["id"])))
-	for slot: String in PART_SLOTS:
-		for o: Dictionary in options(slot):
-			if (o.get("unlock", {}) as Dictionary).has("cost"):
-				b.append(key_of(slot, str(o["id"])))
-	b.append(str((data().get("advanced", {}) as Dictionary).get("id", "advanced_picker")))
-	# Non-cost unlocks (achievements, conditions) are met for this run only (not saved).
-	dev_all = true

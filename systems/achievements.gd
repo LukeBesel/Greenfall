@@ -128,8 +128,8 @@ func _ready() -> void:
 	EventBus.hex_restored.connect(_on_hex_restored)  # a method: the engine drops it with this node
 	EventBus.research_completed.connect(func(_id: String) -> void: _t = 1.0)
 	EventBus.hex_cleaned.connect(func(_h: int, _p: Vector3, _b: BigNum) -> void: _t = maxf(_t, 0.7))
-	Designs.dev_hooks(world)  # [skins] --design / --designs-all / --design-unlock
-	LumiStyle.dev_hooks(world)  # [style] --lumi-random / --lumi-set / --lumi-builder
+	Designs.dev_hooks(world)  # --design / --designs-all / --piece-find
+	LumiStyle.dev_hooks(world)  # --lumi-random / --lumi-set / --lumi-look
 
 
 func _on_hex_restored(_hex_id: int) -> void:
@@ -143,7 +143,6 @@ func _process(delta: float) -> void:
 	_t = 0.0
 	var found: Array[String] = Codex.scan(world)
 	var got: Array[String] = check_all()
-	Designs.check_unlocks(_first)  # [skins] Lumi's unlockable designs (quiet on the first check after loading)
 	if _first:
 		_first = false
 		if got.size() > 3:

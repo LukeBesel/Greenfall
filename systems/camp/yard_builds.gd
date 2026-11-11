@@ -92,7 +92,7 @@ static func block_reason(id: String, hub_level: int) -> String:
 		return TranslationServer.translate("Requires hub level %d.") % req
 	var flag: String = str(d.get("requires_flag", ""))
 	if flag != "" and not bool(GameState.flags.get(flag, false)):
-		return TranslationServer.translate("Grow your first seed first.") if flag == "first_sprout" else TranslationServer.translate("Not yet.")
+		return TranslationServer.translate(str(d.get("flag_text", "Not yet.")))
 	if not Hub.can_pay(d.get("cost", {})):
 		return TranslationServer.translate("Not enough materials.")
 	return ""

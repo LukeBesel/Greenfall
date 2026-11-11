@@ -1,5 +1,5 @@
 {
-  "_doc": "Lumi's unlockable designs (systems/designs.gd; looks in PatchModel.VARIANTS, add-ons in art/models/aurora/designs.glb). buff: a small themed bonus while worn: stat = an Economy stat id (\"*.work_rate\" = every robot type), research_speed (Research), or streak_grace (cleaning streak hold time); amount = +fraction. Off with flags.designs_looks_only. unlock.any: met when ANY condition reaches its target; cond types are the achievement ones (stat, research, list, flag, ...) plus fleet_tier (best robot fleet Mk index, 2 = Mk III). Stats nothing writes yet (wildlife_petted) simply stay 0. Unlocks persist in flags.skins_unlocked, the worn design in flags.patch_skin. [Nov 9, owner] Interim: unlocks made much harder (designs were opening in the first hour). Task M3-14 replaces these counters with pieces found in the world.",
+  "_doc": "Lumi's six designs (systems/designs.gd; looks in PatchModel.VARIANTS, add-ons in art/models/aurora/designs.glb). A design is a set of pieces (data/cosmetics.json, pieces with set = this id): the player wears it by finding its pieces in the world (design spec section 13); nothing here unlocks from a counter or a cost. buff: the set's small bonus, applied only while EVERY piece of the set is worn: stat = an Economy stat id (\"*.work_rate\" = every robot type), research_speed (Research), or streak_grace (cleaning streak hold time); amount = +fraction. Off with flags.designs_looks_only. A mixed look gives no bonus. State: the worn look in flags.lumi_style, its base design in flags.patch_skin; found pieces in the save's global section.",
   "designs": [
     {
       "id": "aurora",
@@ -21,17 +21,6 @@
         "stat": "cube_value_mult",
         "amount": 0.05,
         "text": "+5% bale value"
-      },
-      "unlock": {
-        "text": "Press 400 bales",
-        "any": [
-          {
-            "type": "stat",
-            "key": "cubes_made",
-            "target": 400,
-            "unit": "bales"
-          }
-        ]
       }
     },
     {
@@ -43,17 +32,6 @@
         "stat": "plant_growth",
         "amount": 0.08,
         "text": "+8% plant growth"
-      },
-      "unlock": {
-        "text": "Grow 250 plants to bloom",
-        "any": [
-          {
-            "type": "stat",
-            "key": "plants_bloomed",
-            "target": 250,
-            "unit": "blooms"
-          }
-        ]
       }
     },
     {
@@ -65,17 +43,6 @@
         "stat": "streak_grace",
         "amount": 0.1,
         "text": "+10% cleaning streak time"
-      },
-      "unlock": {
-        "text": "Find 20 Collection trinkets",
-        "any": [
-          {
-            "type": "stat",
-            "key": "trinkets_found",
-            "target": 20,
-            "unit": "trinkets"
-          }
-        ]
       }
     },
     {
@@ -87,16 +54,6 @@
         "stat": "research_speed",
         "amount": 0.08,
         "text": "+8% research speed"
-      },
-      "unlock": {
-        "text": "Finish 25 research projects",
-        "any": [
-          {
-            "type": "research",
-            "target": 25,
-            "unit": "projects"
-          }
-        ]
       }
     },
     {
@@ -108,16 +65,6 @@
         "stat": "*.work_rate",
         "amount": 0.06,
         "text": "+6% robot work speed"
-      },
-      "unlock": {
-        "text": "Upgrade a robot fleet to Mk III",
-        "any": [
-          {
-            "type": "fleet_tier",
-            "target": 2,
-            "unit": "Mk"
-          }
-        ]
       }
     }
   ]

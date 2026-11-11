@@ -1,5 +1,5 @@
 {
-  "_doc": "Lumi's Character Builder (systems/lumi_style.gd, ui/lumi_builder.gd). A style is a dict of slots: colour slots (paint, trim, accent, eyes, side, glow, hover, laser) take any swatch the player has unlocked (or any colour once the advanced picker is unlocked); part slots pick one option id each. Option fields: acc = PatchModel-native add-on names (PatchModel.VARIANTS acc ids, built by PatchModel itself), parts = add-on mesh names looked up in the add-on library (aurora.glb + designs.glb, first one found wins; a procedural fallback named by build is used when none exists). unlock (absent = free): {design: id} unlocked with that design; {lumi_level: n}; {achievement: id}; {cond: achievement-style condition, text}; {cost: {parts|cubes|seeds: n}} bought once in the builder. Part slots: pattern (wear pattern and its panels), eye_shape, head (head piece), ears (ear lenses and side pieces), chest (plate icon), shoulders, held (left claw), hip, companion; the first option of a slot is its empty one. The six designs are presets that fill every slot (LumiStyle.preset).",
+  "_doc": "What Lumi's look is built from (systems/lumi_style.gd). A style is a dict of slots: colour slots (paint, trim, accent, side, eyes, glow, hover, laser) and part slots that pick one option id each. Which of these the player may wear is decided by found pieces alone (data/cosmetics.json: a piece names an option, a swatch or a design's paint set); nothing here carries an unlock rule. Option fields: acc = PatchModel-native add-on names (PatchModel.VARIANTS acc ids, built by PatchModel itself), parts = add-on mesh names looked up in the add-on library (aurora.glb + designs.glb, first one found wins; a procedural fallback named by build is used when none exists). Part slots: pattern (wear pattern and its panels), eye_shape, head (head piece), ears (ear lenses and side pieces), chest (plate icon), shoulders, held (left claw), hip, companion; the first option of a slot is its empty one. swatches: named colours (hex) that paint tins and lens chips refer to. slots: the style's own keys with their kind (the Locker's slot list is data/cosmetics.json slots). The six designs are presets that fill every slot (LumiStyle.preset).",
   "slots": [
     {
       "id": "paint",
@@ -127,40 +127,28 @@
         "name": "Hazard stripes",
         "acc": [
           "acc_panels"
-        ],
-        "unlock": {
-          "design": "bolt"
-        }
+        ]
       },
       {
         "id": "moss",
         "name": "Moss patches",
         "acc": [
           "acc_moss"
-        ],
-        "unlock": {
-          "design": "sprout"
-        }
+        ]
       },
       {
         "id": "seams",
         "name": "Seam glow",
         "acc": [
           "acc_seams"
-        ],
-        "unlock": {
-          "design": "nova"
-        }
+        ]
       },
       {
         "id": "twotone",
         "name": "Two-tone shell",
         "acc": [
           "acc_twotone"
-        ],
-        "unlock": {
-          "design": "pixel"
-        }
+        ]
       }
     ],
     "eye_shape": [
@@ -170,37 +158,19 @@
       },
       {
         "id": "round",
-        "name": "Round",
-        "unlock": {
-          "lumi_level": 3
-        }
+        "name": "Round"
       },
       {
         "id": "happy",
-        "name": "Happy arcs",
-        "unlock": {
-          "design": "pixel"
-        }
+        "name": "Happy arcs"
       },
       {
         "id": "bar",
-        "name": "Visor bar",
-        "unlock": {
-          "design": "bolt"
-        }
+        "name": "Visor bar"
       },
       {
         "id": "heart",
-        "name": "Hearts",
-        "unlock": {
-          "cond": {
-            "type": "stat",
-            "key": "trinkets_found",
-            "target": 8,
-            "unit": "finds"
-          },
-          "text": "Find 8 Collection trinkets"
-        }
+        "name": "Hearts"
       }
     ],
     "head": [
@@ -221,45 +191,28 @@
         "parts": [
           "acc_antenna"
         ],
-        "build": "antenna",
-        "unlock": {
-          "cond": {
-            "type": "hub_level",
-            "target": 2,
-            "unit": "hub level"
-          },
-          "text": "Upgrade a hub to level 2"
-        }
+        "build": "antenna"
       },
       {
         "id": "sprout",
         "name": "Sprout leaf",
         "acc": [
           "acc_sprout"
-        ],
-        "unlock": {
-          "design": "sprout"
-        }
+        ]
       },
       {
         "id": "catears",
         "name": "Cat ears",
         "acc": [
           "acc_catears"
-        ],
-        "unlock": {
-          "design": "nova"
-        }
+        ]
       },
       {
         "id": "wings",
         "name": "Wing fins",
         "acc": [
           "acc_pixel"
-        ],
-        "unlock": {
-          "design": "pixel"
-        }
+        ]
       },
       {
         "id": "halo",
@@ -267,10 +220,7 @@
         "parts": [
           "acc_halo"
         ],
-        "build": "halo",
-        "unlock": {
-          "achievement": "restored_1"
-        }
+        "build": "halo"
       }
     ],
     "ears": [
@@ -283,40 +233,28 @@
         "name": "Heart lenses",
         "acc": [
           "acc_ear_heart"
-        ],
-        "unlock": {
-          "design": "pixel"
-        }
+        ]
       },
       {
         "id": "leaf",
         "name": "Leaf lenses",
         "acc": [
           "acc_ear_leaf"
-        ],
-        "unlock": {
-          "design": "sprout"
-        }
+        ]
       },
       {
         "id": "nut",
         "name": "Hex-nut bezels",
         "acc": [
           "acc_ear_nut"
-        ],
-        "unlock": {
-          "design": "bolt"
-        }
+        ]
       },
       {
         "id": "radio",
         "name": "Side radio",
         "acc": [
           "acc_radio"
-        ],
-        "unlock": {
-          "design": "patch"
-        }
+        ]
       }
     ],
     "chest": [
@@ -326,17 +264,11 @@
       },
       {
         "id": "leaf",
-        "name": "Leaf",
-        "unlock": {
-          "design": "sprout"
-        }
+        "name": "Leaf"
       },
       {
         "id": "cross",
-        "name": "Medic cross",
-        "unlock": {
-          "design": "patch"
-        }
+        "name": "Medic cross"
       },
       {
         "id": "heart",
@@ -344,10 +276,7 @@
         "parts": [
           "acc_icon_heart"
         ],
-        "build": "icon_heart",
-        "unlock": {
-          "design": "pixel"
-        }
+        "build": "icon_heart"
       }
     ],
     "shoulders": [
@@ -361,10 +290,7 @@
         "acc": [
           "acc_pad_r",
           "acc_pad_l"
-        ],
-        "unlock": {
-          "design": "bolt"
-        }
+        ]
       }
     ],
     "held": [
@@ -377,20 +303,14 @@
         "name": "Spare gear",
         "acc": [
           "gear"
-        ],
-        "unlock": {
-          "design": "bolt"
-        }
+        ]
       },
       {
         "id": "bottle",
         "name": "Plastic bottle",
         "acc": [
           "bottle"
-        ],
-        "unlock": {
-          "design": "sprout"
-        }
+        ]
       },
       {
         "id": "medkit",
@@ -398,20 +318,14 @@
         "parts": [
           "acc_medkit"
         ],
-        "build": "medkit",
-        "unlock": {
-          "design": "patch"
-        }
+        "build": "medkit"
       },
       {
         "id": "toolbox",
         "name": "Carry case",
         "acc": [
           "case"
-        ],
-        "unlock": {
-          "design": "patch"
-        }
+        ]
       },
       {
         "id": "watering_can",
@@ -419,20 +333,14 @@
         "parts": [
           "acc_watering_can"
         ],
-        "build": "watering_can",
-        "unlock": {
-          "achievement": "plant_100"
-        }
+        "build": "watering_can"
       },
       {
         "id": "holo",
         "name": "Holo screen",
         "acc": [
           "holo"
-        ],
-        "unlock": {
-          "design": "nova"
-        }
+        ]
       }
     ],
     "hip": [
@@ -445,10 +353,7 @@
         "name": "Medic satchel",
         "acc": [
           "acc_toolbox"
-        ],
-        "unlock": {
-          "design": "patch"
-        }
+        ]
       }
     ],
     "companion": [
@@ -461,10 +366,7 @@
         "name": "Butterfly",
         "acc": [
           "butterfly"
-        ],
-        "unlock": {
-          "design": "pixel"
-        }
+        ]
       },
       {
         "id": "firefly",
@@ -472,16 +374,7 @@
         "parts": [
           "acc_firefly"
         ],
-        "build": "firefly",
-        "unlock": {
-          "cond": {
-            "type": "stat",
-            "key": "contracts_done",
-            "target": 3,
-            "unit": "requests"
-          },
-          "text": "Finish 3 Requests"
-        }
+        "build": "firefly"
       },
       {
         "id": "drone",
@@ -489,12 +382,7 @@
         "parts": [
           "acc_drone"
         ],
-        "build": "drone",
-        "unlock": {
-          "cost": {
-            "parts": 120
-          }
-        }
+        "build": "drone"
       }
     ]
   },
@@ -507,10 +395,7 @@
     {
       "id": "white",
       "name": "Chalk",
-      "color": "#f2efe8",
-      "unlock": {
-        "lumi_level": 5
-      }
+      "color": "#f2efe8"
     },
     {
       "id": "graphite",
@@ -535,254 +420,132 @@
     {
       "id": "sky",
       "name": "Sky",
-      "color": "#7fb8ff",
-      "unlock": {
-        "lumi_level": 2
-      }
+      "color": "#7fb8ff"
     },
     {
       "id": "mint",
       "name": "Mint",
-      "color": "#6fe3b0",
-      "unlock": {
-        "cond": {
-          "type": "hub_level",
-          "target": 3,
-          "unit": "hub level"
-        },
-        "text": "Upgrade a hub to level 3"
-      }
+      "color": "#6fe3b0"
     },
     {
       "id": "hazard",
       "name": "Hazard yellow",
-      "color": "#f2b31a",
-      "unlock": {
-        "design": "bolt"
-      }
+      "color": "#f2b31a"
     },
     {
       "id": "soot",
       "name": "Soot",
-      "color": "#52493d",
-      "unlock": {
-        "design": "bolt"
-      }
+      "color": "#52493d"
     },
     {
       "id": "amber",
       "name": "Amber",
-      "color": "#ffad2e",
-      "unlock": {
-        "design": "bolt"
-      }
+      "color": "#ffad2e"
     },
     {
       "id": "olive",
       "name": "Olive",
-      "color": "#78873b",
-      "unlock": {
-        "design": "sprout"
-      }
+      "color": "#78873b"
     },
     {
       "id": "bark",
       "name": "Bark",
-      "color": "#54593a",
-      "unlock": {
-        "design": "sprout"
-      }
+      "color": "#54593a"
     },
     {
       "id": "leaf",
       "name": "Leaf green",
-      "color": "#85ff5c",
-      "unlock": {
-        "design": "sprout"
-      }
+      "color": "#85ff5c"
     },
     {
       "id": "honey",
       "name": "Honey",
-      "color": "#db9e38",
-      "unlock": {
-        "design": "sprout"
-      }
+      "color": "#db9e38"
     },
     {
       "id": "cherry",
       "name": "Cherry",
-      "color": "#cc2624",
-      "unlock": {
-        "design": "pixel"
-      }
+      "color": "#cc2624"
     },
     {
       "id": "pink",
       "name": "Pink",
-      "color": "#ff5480",
-      "unlock": {
-        "design": "pixel"
-      }
+      "color": "#ff5480"
     },
     {
       "id": "cream",
       "name": "Cream",
-      "color": "#ede8e0",
-      "unlock": {
-        "design": "pixel"
-      }
+      "color": "#ede8e0"
     },
     {
       "id": "gunmetal",
       "name": "Gunmetal",
-      "color": "#403e47",
-      "unlock": {
-        "design": "nova"
-      }
+      "color": "#403e47"
     },
     {
       "id": "ink",
       "name": "Ink",
-      "color": "#292630",
-      "unlock": {
-        "design": "nova"
-      }
+      "color": "#292630"
     },
     {
       "id": "violet",
       "name": "Violet",
-      "color": "#b366ff",
-      "unlock": {
-        "design": "nova"
-      }
+      "color": "#b366ff"
     },
     {
       "id": "ivory",
       "name": "Ivory",
-      "color": "#ebe6db",
-      "unlock": {
-        "design": "patch"
-      }
+      "color": "#ebe6db"
     },
     {
       "id": "sunset",
       "name": "Sunset",
-      "color": "#ffb342",
-      "unlock": {
-        "design": "patch"
-      }
+      "color": "#ffb342"
     },
     {
       "id": "seaglass",
       "name": "Sea glass",
-      "color": "#8fe0d0",
-      "unlock": {
-        "cond": {
-          "type": "stat",
-          "key": "trinkets_found",
-          "target": 4,
-          "unit": "finds"
-        },
-        "text": "Find 4 Collection trinkets"
-      }
+      "color": "#8fe0d0"
     },
     {
       "id": "coral",
       "name": "Coral",
-      "color": "#ff7f6b",
-      "unlock": {
-        "cond": {
-          "type": "stat",
-          "key": "trinkets_found",
-          "target": 12,
-          "unit": "finds"
-        },
-        "text": "Find 12 Collection trinkets"
-      }
+      "color": "#ff7f6b"
     },
     {
       "id": "royal",
       "name": "Royal blue",
-      "color": "#3d63ff",
-      "unlock": {
-        "cond": {
-          "type": "stat",
-          "key": "contracts_done",
-          "target": 5,
-          "unit": "requests"
-        },
-        "text": "Finish 5 Requests"
-      }
+      "color": "#3d63ff"
     },
     {
       "id": "lilac",
       "name": "Lilac",
-      "color": "#c9a6ff",
-      "unlock": {
-        "cond": {
-          "type": "stat",
-          "key": "contracts_done",
-          "target": 15,
-          "unit": "requests"
-        },
-        "text": "Finish 15 Requests"
-      }
+      "color": "#c9a6ff"
     },
     {
       "id": "gold",
       "name": "Gold",
-      "color": "#ffd34d",
-      "unlock": {
-        "achievement": "ach_25"
-      }
+      "color": "#ffd34d"
     },
     {
       "id": "bloom",
       "name": "Bloom green",
-      "color": "#5cffc8",
-      "unlock": {
-        "achievement": "bloom_district"
-      }
+      "color": "#5cffc8"
     },
     {
       "id": "midnight",
       "name": "Midnight",
-      "color": "#1b2233",
-      "unlock": {
-        "cost": {
-          "parts": 40
-        }
-      }
+      "color": "#1b2233"
     },
     {
       "id": "copper",
       "name": "Copper",
-      "color": "#c27a4a",
-      "unlock": {
-        "cost": {
-          "parts": 60
-        }
-      }
+      "color": "#c27a4a"
     },
     {
       "id": "rosegold",
       "name": "Rose gold",
-      "color": "#e8a99a",
-      "unlock": {
-        "cost": {
-          "seeds": 25
-        }
-      }
+      "color": "#e8a99a"
     }
-  ],
-  "advanced": {
-    "id": "advanced_picker",
-    "name": "Advanced colour picker",
-    "unlock": {
-      "cost": {
-        "parts": 80
-      }
-    }
-  }
+  ]
 }

@@ -1,0 +1,24 @@
+{
+  "_doc": "A version 4 save from before looks were found pieces (tests/test_looks.gd): the Bolt design unlocked by its old counter, Lumi Level 3, the Alive Again achievement, 9 Collection finds, a colour and a companion bought with Parts, base level 2, and a worn custom look with a saved one. The migration to version 5 must keep all of it as found pieces.",
+  "version": 4,
+  "created_unix": 1793000000.0,
+  "saved_unix": 1794000000.0,
+  "currencies": {"cubes": [1.2, 3], "parts": [4.0, 1], "seeds": [0.0, 0]},
+  "upgrades": {},
+  "stats": {"trinkets_found": 9, "contracts_done": 2, "cubes_made": 412, "hexes_cleaned": 31},
+  "flags": {
+    "patch_skin": "bolt",
+    "skins_unlocked": ["aurora", "bolt"],
+    "style_bought": ["swatch:copper", "companion:drone"],
+    "lumi": {"level": 3, "xp": 10, "total": 400},
+    "achievements": {"restored_1": 1793500000.0},
+    "lumi_style": {"v": 1, "preset": "bolt", "bonus": "bolt", "paint": [0.7608, 0.4784, 0.2902], "eyes": [0.498, 0.7216, 1.0], "head": "halo", "eye_shape": "round", "companion": "drone", "held": "gear"},
+    "lumi_looks": [{}, {}, {}, {}, {"v": 1, "preset": "aurora", "bonus": "aurora", "eye_shape": "heart", "name": "Look 5"}]
+  },
+  "world": {"hub_level": 2},
+  "parts": [],
+  "districts": {"0": {"hub_level": 2}},
+  "current_hub": 0,
+  "planet_state": {},
+  "orbit": {}
+}

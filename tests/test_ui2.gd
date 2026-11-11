@@ -84,7 +84,7 @@ func test_save_v4_turns_robot_part_items_into_parts() -> void:
 	var m2: Dictionary = SaveManager.migrate(old)
 	assert_eq(int(m2["version"]), GameState.SAVE_VERSION)
 	assert_almost_eq(BigNum.from_serialized(m2["currencies"]["parts"]).to_float(), 2.0 * 5.0 + RobotParts.value(1), 0.001)
-	assert_eq(GameState.SAVE_VERSION, 4)
+	assert_eq(GameState.SAVE_VERSION, 5)
 
 
 func test_robot_build_costs_parts_and_cubes() -> void:
@@ -198,9 +198,8 @@ func test_robot_card_builds_with_parts() -> void:
 func test_hub_gains_list_the_next_level() -> void:
 	var h := Hub.new()
 	add_child_autofree(h)
-	var g: Array[String] = HubPanel.level_gains(h, LockerPanel.HUB_LEVEL)
-	assert_true(g.any(func(s: String) -> bool: return "Locker" in s), "the Locker level says so")
-	assert_true(g.any(func(s: String) -> bool: return "robot" in s), "and the crew spots")
+	var g: Array[String] = HubPanel.level_gains(h, 3)
+	assert_false(g.any(func(s: String) -> bool: return "Locker" in s), "the Locker comes from a found piece, not a base level")
 
 
 func test_tabs_appear_once_open_and_stay() -> void:

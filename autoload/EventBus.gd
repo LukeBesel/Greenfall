@@ -85,3 +85,14 @@ signal launch_ready(planet_id: String)
 signal planet_restored(planet_id: String)
 signal ending_shown(planet_id: String)
 @warning_ignore_restore("unused_signal")
+
+# Looks (design spec section 13; systems/looks.gd, systems/finds.gd, systems/lumi_style.gd).
+# piece_found: a piece of a look was found; source = how ("buried", "wreck", "source", "secret").
+# set_completed: the last piece of a design was found. look_changed: Lumi wears a different look.
+# source_shut_down: a city's pollution source was stopped (whatever stops it emits this).
+@warning_ignore_start("unused_signal")
+signal piece_found(piece_id: String, source: String)
+signal set_completed(design_id: String)
+signal look_changed()
+signal source_shut_down(district_id: String)
+@warning_ignore_restore("unused_signal")

@@ -1,30 +1,36 @@
 class_name LockerPanel
 extends VBoxContainer
-## [ui2] The Locker: one place to style any bot. [ui6] Not a workbench tab any more: it is a real
-## cabinet built in the yard (systems/camp/locker_cabinet.gd, Build tab); press E at it and
-## open_overlay() shows this panel over the game. Lumi and the other cosmetic targets (Glim, ...)
-## come from CosmeticTargets; robots after them. Left: who you are editing (Lumi first,
-## then every robot) and the fleet paint (liveries won from Requests). Right: that bot's editor.
+## The Locker's panel (design spec section 13): the one place looks are edited. It opens from the
+## Locker in the yard (systems/camp/locker_cabinet.gd: press E at it) and sits on the right of
+## the screen as a field-instrument plate, leaving the left free for Lumi on the turntable
+## (systems/camp/locker_stage.gd). A bar on top picks who is being dressed: Lumi first, then the
+## other cosmetic targets (Glim, ...) from CosmeticTargets, the crew's robots (one look per robot
+## type) and the rocket; under it, that one's editor.
 ##
-## Editors are pluggable, so the Lumi character builder (wt/style) drops in without touching
-## this file:
+## Editors are pluggable:
 ##   LockerPanel.add_editor("lumi", func(world: Node) -> Control: ...)   # a factory (preferred)
 ##   LockerPanel.add_editor("lumi", some_control)                         # or a ready Control
-## Without a registered "lumi" editor the Locker embeds ui/lumi_builder.gd when it exists
-## (LumiBuilder.new(), world set, embedded mode), else the design picker (CosmeticsPanel).
-## Robots use the cosmetic robot builder (BuilderPanel in locker_mode: parts, name, personality).
-## The editor gets `world`, and `fleet` / select_robot(r) when it has them.
+## Lumi's page is ui/lumi_builder.gd (through CosmeticTargets). Robots use the cosmetic robot
+## builder (BuilderPanel in locker_mode: parts, name, personality).
+## The editor gets `world`, `stage` (the turntable), and `fleet` / select_robot(r) when it has them.
 
 signal editing_changed(who: String)
 
-const HUB_LEVEL: int = 3
-const LUMI_BUILDER_PATH: String = "res://ui/lumi_builder.gd"
+const LUMI: String = "target:lumi"
+## The docked panel's share of the screen width while Lumi is on the turntable, and its limits.
+const DOCK_SHARE: float = 0.46
+const DOCK_MIN_W: float = 540.0
+const DOCK_MAX_W: float = 680.0
+## Safe margin: this share of the screen's short side (docs/STYLE.md section 10).
+const SAFE_SHARE: float = 0.04
 
 static var _editors: Dictionary = {}  # id -> Callable(world) -> Control, or a Control
 
 var world: Node
 var fleet: Fleet
-var _who: String = "target:lumi"  # "lumi" or a robot name
+## The turntable beside the Locker (null when the panel is shown without one: tools, tests).
+var stage: LockerStage
+var _who: String = LUMI  # "target:<id>", "bots" or "rocket"
 var _list: HBoxContainer  # [ui3] the slim bot bar
 var _who_btns: Array[Button] = []
 var _host: VBoxContainer
@@ -34,9 +40,12 @@ var _robot_editor: BuilderPanel
 var _paint: HBoxContainer
 var _bots_sig: String = ""
 var _t: float = 0.0
-## [ui7] Floating glass modules (ui/holo_frame.gd): the section bar and the editor page are their
-## own modules; list + detail editors (Bots, Rocket) float as two.
+## Over the game (open_overlay): the section bar and the editor page each sit on their own plate;
+## list + detail editors (Bots, Rocket) bring their own.
 var modules: bool = false
+## Over the game: the bar starts with this title and ends with this control (the Close key).
+var bar_title: String = ""
+var bar_tail: Control
 var _page: PanelContainer
 
 
@@ -49,61 +58,72 @@ static func remove_editor(id: String) -> void:
 	_editors.erase(id)
 
 
-## The Locker is open from hub level HUB_LEVEL (any district), or when a dev flag opens it.
+## The panel has something to show once the Locker stands in the yard (or a dev flag opens it).
 static func is_open_for(_w: Node) -> bool:
-	return DevHooks.has("locker") or YardBuilds.built("locker")  # [ui6] the cabinet stands
+	return DevHooks.has("locker") or YardBuilds.built("locker")
 
 
-## [ui6] The Locker over the game (from the cabinet's E prompt): [ui7] floating holo modules, Close / Esc / B.
-## Pauses the world while open. Returns the layer (it frees itself on close).
-static func open_overlay(w: Node) -> CanvasLayer:
+## The Locker over the game: the panel docked on the right, the turntable in view on the left.
+## Close / Esc / B shuts it. Pauses the world while open. Returns the layer (it frees itself on
+## close). `p_stage` is the turntable Lumi stands on (may be null).
+static func open_overlay(w: Node, p_stage: LockerStage = null) -> CanvasLayer:
 	var cl := CanvasLayer.new()
 	cl.layer = 40
 	cl.process_mode = Node.PROCESS_MODE_ALWAYS
-	var root := Control.new()
+	var root := _StageView.new()
+	root.stage = p_stage
 	root.set_anchors_preset(Control.PRESET_FULL_RECT)
 	root.theme = UITheme.get_theme()
 	cl.add_child(root)
-	root.add_child(HoloFrame.vignette())  # [ui7] floating glass modules, no fullscreen dim
 	var frame := MarginContainer.new()
 	frame.set_anchors_preset(Control.PRESET_FULL_RECT)
+	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(frame)
-	var fit := func() -> void: HoloFrame.fit_margins(frame, root.size)
-	root.resized.connect(fit)
-	var vb := VBoxContainer.new()
-	vb.add_theme_constant_override("separation", HoloFrame.GAP)
-	frame.add_child(vb)
-	var hm: PanelContainer = HoloFrame.module(8)
-	vb.add_child(hm)
-	var head := HBoxContainer.new()
-	hm.add_child(head)
-	var t: HBoxContainer = HoloFrame.header_title(TranslationServer.translate("LOCKER"))
-	t.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	head.add_child(t)
+	var row := HBoxContainer.new()
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	frame.add_child(row)
+	var view := Control.new()  # the part of the screen left to the turntable
+	view.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	view.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_child(view)
+	var dock := VBoxContainer.new()
+	dock.add_theme_constant_override("separation", 8)
+	row.add_child(dock)
 	var close := Button.new()
 	close.text = TranslationServer.translate("Close")
-	close.custom_minimum_size = Vector2(136, 38)
-	BenchKit.style_action(close, BenchKit.HOLO)
-	head.add_child(close)
+	close.custom_minimum_size = Vector2(96, FieldPlate.TOUCH_PX)
+	FieldPlate.key(close, FieldPlate.AMBER)
 	var lp := LockerPanel.new()
+	lp.bar_title = TranslationServer.translate("Locker")
+	lp.bar_tail = close
 	lp.world = w
 	lp.fleet = w.get("fleet") as Fleet if w else null
+	lp.stage = p_stage
 	lp.modules = true
 	lp.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	vb.add_child(lp)
+	dock.add_child(lp)
+	# Lumi's page leaves the turntable in view; the wider editors (crew, rocket) take the screen.
+	var fit := func() -> void:
+		var pad: int = int(minf(root.size.x, root.size.y) * SAFE_SHARE)
+		for side: String in ["margin_left", "margin_right", "margin_top", "margin_bottom"]:
+			frame.add_theme_constant_override(side, pad)
+		var lumi: bool = lp.editing() == LUMI
+		view.visible = lumi
+		dock.size_flags_horizontal = Control.SIZE_SHRINK_END if lumi else Control.SIZE_EXPAND_FILL
+		dock.custom_minimum_size.x = clampf(root.size.x * DOCK_SHARE, DOCK_MIN_W, DOCK_MAX_W) if lumi else 0.0
+	root.resized.connect(fit)
+	lp.editing_changed.connect(func(_section: String) -> void: fit.call())
 	var tree: SceneTree = Engine.get_main_loop() as SceneTree
 	var was_paused: bool = tree.paused
-	var hidden: Array[CanvasLayer] = HoloFrame.hide_hud(tree, cl.layer)  # [ui7] no HUD text through the glass
+	var hud_layers: Array[CanvasLayer] = HoloFrame.hide_hud(tree, cl.layer)  # no HUD text behind the plates
 	var shut := func() -> void:
 		if not is_instance_valid(cl) or cl.has_meta("closing"):
 			return
 		tree.paused = was_paused
-		HoloFrame.show_hud(hidden)
+		HoloFrame.show_hud(hud_layers)
 		EventBus.ui_modal_changed.emit(false)
 		cl.set_meta("closing", true)
-		HoloFrame.fold(frame, func() -> void:
-			if is_instance_valid(cl):
-				cl.queue_free())
+		cl.queue_free()
 	close.pressed.connect(shut)
 	cl.set_meta("shut", shut)
 	var catcher := _OverlayInput.new()
@@ -115,10 +135,40 @@ static func open_overlay(w: Node) -> CanvasLayer:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	(func() -> void:
 		fit.call()
-		HoloFrame.unfold(frame)
+		_slide_in(dock)
 		var f: Button = lp.first_button()
 		(f if f else close).grab_focus()).call_deferred()
 	return cl
+
+
+## The dock slides in from the edge: one short mechanical ease, none with reduced motion.
+static func _slide_in(dock: Control) -> void:
+	if Settings.reduced_motion:
+		return
+	dock.modulate.a = 0.0
+	var tw: Tween = dock.create_tween()
+	tw.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	tw.tween_property(dock, "modulate:a", 1.0, FieldPlate.EASE_S).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+
+
+## The screen behind the dock: a drag on it turns the turntable, the wheel moves the camera.
+class _StageView extends Control:
+	var stage: LockerStage
+	var _drag: bool = false
+
+	func _gui_input(event: InputEvent) -> void:
+		if stage == null:
+			return
+		if event is InputEventMouseButton:
+			var mb: InputEventMouseButton = event
+			if mb.button_index == MOUSE_BUTTON_LEFT:
+				_drag = mb.pressed
+			elif mb.pressed and mb.button_index == MOUSE_BUTTON_WHEEL_UP:
+				stage.zoom(1.0)
+			elif mb.pressed and mb.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+				stage.zoom(-1.0)
+		elif event is InputEventMouseMotion and _drag:
+			stage.turn((event as InputEventMouseMotion).relative.x)
 
 
 class _OverlayInput extends Node:
@@ -146,12 +196,14 @@ func _ready() -> void:
 	var bar := HBoxContainer.new()
 	bar.add_theme_constant_override("separation", 10)
 	if modules:
-		add_theme_constant_override("separation", HoloFrame.GAP)
-		var bm: PanelContainer = HoloFrame.module(6)
+		add_theme_constant_override("separation", 8)
+		var bm := FieldPlate.new(8, 12.0)
 		add_child(bm)
 		bm.add_child(bar)
 	else:
 		add_child(bar)
+	if bar_title != "":
+		bar.add_child(FieldPlate.stencil(bar_title, FieldPlate.INK, 20))
 	var sc := ScrollContainer.new()
 	sc.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	sc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -167,6 +219,8 @@ func _ready() -> void:
 	_paint = HBoxContainer.new()  # [ui7] fleet paint moved into the Bots section (per robot type)
 	_paint.visible = false
 	pv.add_child(_paint)
+	if bar_tail:
+		bar.add_child(bar_tail)
 	# The editor scrolls sideways if a wide one (the Lumi builder) meets a small screen at a big
 	# UI scale, instead of pushing the workbench off the screen.
 	var hsc := ScrollContainer.new()
@@ -175,8 +229,8 @@ func _ready() -> void:
 	hsc.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	hsc.follow_focus = true
 	if modules:
-		hsc.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO  # [ui7] a tall editor scrolls inside the floating frame
-		_page = HoloFrame.module(12)
+		hsc.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO  # a tall editor scrolls inside its plate
+		_page = FieldPlate.new(14)
 		_page.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		add_child(_page)
 		_page.add_child(hsc)
@@ -191,6 +245,8 @@ func _ready() -> void:
 
 
 func _build_locked() -> void:
+	if bar_tail:
+		add_child(bar_tail)
 	var c: Array = BenchKit.card(Color(1, 1, 1, 0.12))
 	add_child(c[0])
 	var vb: VBoxContainer = c[1]
@@ -203,8 +259,8 @@ func _build_locked() -> void:
 	tv.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	top.add_child(tv)
 	tv.add_child(BenchKit.title(tr("The Locker")))
-	tv.add_child(BenchKit.body(tr("Build the Locker in the Build tab, then open it in the yard."), UITheme.CREAM))
-	tv.add_child(BenchKit.body(tr("Style Lumi and every robot: colours, eyes, head pieces, toppers, fleet paint. New pieces unlock as you play.")))
+	tv.add_child(BenchKit.body(tr("Find a piece of a look in the world. Then build the Locker in the Build tab and open it in the yard."), UITheme.CREAM))
+	tv.add_child(BenchKit.body(tr("Lumi wears what he finds: paint tins, lens chips and the pieces of old robots. Glim and your robots are dressed here too.")))
 
 
 func first_button() -> Button:
@@ -242,17 +298,17 @@ func _rebuild_list() -> void:
 	for t: Dictionary in CosmeticTargets.all():  # [ui6] Lumi, Glim, ... (locked ones aren't shown)
 		var tid: String = str(t.get("id", ""))
 		if CosmeticTargets.is_unlocked(tid):
-			_add_who("target:" + tid, CosmeticTargets.display_name(tid), "", UITheme.GOLD if tid == "lumi" else BenchKit.HOLO)
+			_add_who("target:" + tid, CosmeticTargets.display_name(tid), "", FieldPlate.CYAN)
 	# [ui7] Four sections: Lumi, Glim (CosmeticTargets), Bots (one design per robot type), Rocket.
 	if not LockerEditors.bot_types(fleet).is_empty():
-		_add_who("bots", tr("Bots"), "", BenchKit.HOLO)
+		_add_who("bots", tr("Crew"), "", FieldPlate.CYAN)
 	if _rocket_open():
-		_add_who("rocket", tr("Rocket"), "", BenchKit.HOLO)
+		_add_who("rocket", tr("Rocket"), "", FieldPlate.CYAN)
 	var ok: bool = false
 	for b: Button in _who_btns:
 		ok = ok or str(b.get_meta("who")) == _who
 	if not ok:
-		_who = "target:lumi"
+		_who = LUMI
 	_style_list()
 
 
@@ -264,9 +320,8 @@ func _add_who(id: String, title: String, sub: String, col: Color) -> void:
 	var b := Button.new()
 	b.text = title
 	b.tooltip_text = sub
-	b.custom_minimum_size = Vector2(120, 44)
+	b.custom_minimum_size = Vector2(110, FieldPlate.TOUCH_PX)
 	b.clip_text = true
-	b.add_theme_font_size_override("font_size", 16)
 	b.set_meta("who", id)
 	b.set_meta("col", col)
 	b.pressed.connect(func() -> void: set_editing(id))
@@ -276,10 +331,7 @@ func _add_who(id: String, title: String, sub: String, col: Color) -> void:
 
 func _style_list() -> void:
 	for b: Button in _who_btns:
-		var on: bool = str(b.get_meta("who")) == _who
-		var col: Color = b.get_meta("col")
-		b.add_theme_stylebox_override("normal", BenchKit.holo(col if on else Color(col, 0.22), Color(col.r * 0.16, col.g * 0.16, col.b * 0.16, 0.8) if on else BenchKit.CARD_BG, 0.9 if on else 0.0, 8, 10))
-		b.add_theme_color_override("font_color", Color.WHITE if on else UITheme.CREAM)
+		FieldPlate.key(b, b.get_meta("col") as Color, str(b.get_meta("who")) == _who)
 
 
 func _find_robot(rname: String) -> Robot:
@@ -308,10 +360,10 @@ func _show_editor() -> void:
 	if ed == null:
 		return
 	_editor = ed
-	if _page:  # [ui7] list + detail editors bring their own modules; the rest sit on the glass page
+	if _page:  # list + detail editors bring their own modules; the rest sit on the page's plate
 		var own: bool = ed is LockerEditors.BotEditor or ed is LockerEditors.ShipEditor
-		_page.add_theme_stylebox_override("panel", StyleBoxEmpty.new() if own else HoloFrame.glass(HoloFrame.GLASS_A, 0.55, 12))
-		_page.get_child(0).visible = not own
+		(_page as FieldPlate).fill = Color(0, 0, 0, 0) if own else FieldPlate.SLATE
+		_page.queue_redraw()
 	ed.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	ed.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_host.add_child(ed)
@@ -352,13 +404,6 @@ func _make_editor(kind: String) -> Control:
 		ed = se
 	elif kind.begins_with("target:"):  # [ui6] CosmeticTargets editors (Lumi's builder, Glim's looks, ...)
 		ed = CosmeticTargets.make_editor(kind.substr(7), world)
-	elif kind == "lumi":
-		if ResourceLoader.exists(LUMI_BUILDER_PATH):
-			var scr: Script = load(LUMI_BUILDER_PATH)
-			if scr:
-				ed = scr.new() as Control
-		if ed == null:
-			ed = CosmeticsPanel.new()
 	else:
 		var bp := BuilderPanel.new()
 		bp.locker_mode = true
@@ -367,6 +412,8 @@ func _make_editor(kind: String) -> Control:
 		return null
 	if "world" in ed:
 		ed.set("world", world)
+	if "stage" in ed:
+		ed.set("stage", stage)
 	if "fleet" in ed:
 		ed.set("fleet", fleet)
 	return ed

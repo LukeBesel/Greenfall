@@ -34,7 +34,7 @@ static func look_style(i: int) -> Dictionary:
 
 func _ready() -> void:
 	_out = DevHooks.get_s("out", "screenshots/style_lineup")
-	LumiStyle.dev_all = true
+	Looks.dev_all = true
 	var env := Environment.new()
 	env.background_mode = Environment.BG_SKY
 	var sky := Sky.new()

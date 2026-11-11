@@ -479,3 +479,27 @@ The owner asked for more attention on the world's goals and look (full cities ro
 - **All kinds end in the chest** for now; whether smog and blight pay as field work is settled in M3-12.
 - Highreach lists slick with no lake to hold it: removed in M3-12 with the other first-value shares and densities.
 - Not yet seen in a played run in cities 2 to 6 (rule tests only); covered by the end-of-milestone playthrough.
+
+## Looks from found pieces and the Locker (M3-14, M3-16, Nov 11, 2026)
+`docs/reviews/M3-14_16_LOOKS.md`. Every look is made of pieces (`data/cosmetics.json`, `systems/looks.gd`); a piece is worn only after it is found (`systems/finds.gd`, the planet's `finds` table). No look opens from a stat, a level, an achievement or a price any more.
+- **Found pieces are the first thing in the save's `global` section** (`GameState.global`, save version 5). Which finds a planet has handed out is in the planet's own section.
+- **Finds are fixed by the planet's seed, not rolled live.** A buried tin turns up at the same cleaned hex in every run (chance per hex from `from_hex`, certain at `by_hex`), so the simulator and tests can replay it and a reload cannot re-roll it.
+- **Planet 1 hands out Sprout (7 pieces over the six cities, the last from Old Capital's source) and nine loose colours.** Bolt, Pixel, Nova and Patch have no find here.
+- **A set's bonus needs every piece of the set worn.** The free "bonus" picker is gone: a mixed look gives nothing. Slots the set does not use may hold anything. Aurora's own five pieces are the starting set, so her detector bonus is on from the start as before.
+- **The Locker has eleven slots, as in the spec.** "Paint" holds a design's paint set (body colours and wear) or a paint tin over it (main paint only); "Light colour" sets eyes, strips, hover and laser together. The free colour mixer and the per-part colour pickers are gone.
+- **Old saves keep what they had** as found pieces: each piece carries its old rule in `legacy`, read only by the migration. Colours that used to be free (Graphite, Slate, Orange) are pieces now, given to old saves and not to new games. A look mixed in the old colour picker stays wearable until it is changed.
+- **Until sources are jobs (M3-07) a city's source counts as shut down at regrowth stage 4** (`source_shut_at_stage` in the finds table); `EventBus.source_shut_down(district)` releases the find at once when something emits it.
+- **Until wrecks stand in the world (M3-15) a wreck's pieces come when its hex is cleared.** The hex is fixed by the seed, in the outer rings. `Finds.site_cell(id)` tells the world where to put the wreck and `Finds.register_site(id, anchor, prompt)` makes it a thing Lumi uses instead.
+- **The Locker costs 400 cubes and is offered by the first find**, not by a base level. Old saves that owned any piece see it at once.
+- **Lumi on the turntable is a stand-in model.** The real Lumi is hidden while the Locker is open and never moves, so position, cargo and physics are untouched.
+- **Where a piece lies is the planet's to say.** The hint under an unfound piece comes from its find in the planet's table ("A paint tin lies under Ironside's scrap."); the piece list holds only general hints per slot.
+- **Unfound pieces of other worlds are counted, not shown** ("3 more lie on other worlds"). Only pieces this planet hides appear as silhouettes with a hint.
+- **Open (owner):** fifteen loose pieces (round and heart eyes, antenna, halo, Chalk, Gold and others) have no find on any planet yet and wait for later planets. Nova's set has five pieces where the spec asks for six to eight.
+
+## Looks from found pieces and the Locker (M3-14 + M3-16, Nov 11, 2026)
+`docs/reviews/M3-14_16_LOOKS.md`. 61 pieces in 11 slots, found only (buried tins and chips, wrecks, source shutdowns, secrets); every stat, level and cost unlock removed; pieces are global progress in a new save section (v5, old saves migrate); the Locker is a yard build offered by the first find, with a turntable, silhouettes and hints, three presets and set bonuses. First piece at bot minute 14.5. Only Sprout can be completed on Planet 1, in the last city. Merged.
+- **Aurora's starting set gives no bonus** (lead): a bonus that switches off when the player dresses up reads as a penalty. To do in the looks follow-up.
+- **The fifteen loose pieces with no find** (extra eye shapes, antenna, halo, heart plate, med kit, watering can, tiny drone, six colours) are kept for later planets' finds tables; old saves keep them. Listed in `docs/FUTURE.md`.
+- **Crew and Glim cosmetics follow the same rule**: found, not bought or counted. Follow-up task M3-14b.
+- Nova's set gets a sixth piece when its planet is designed.
+- Merge fix: `tools/extract_strings.py` scanned agent worktrees under `.claude/`; it now skips them.

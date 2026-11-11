@@ -49,7 +49,8 @@ tables = Dictionary[String, String]({
 "districts": "res://planets/verdance/data/districts.json",
 "restoration": "res://planets/verdance/data/restoration.json",
 "cities": "res://planets/verdance/data/cities.json",
-"pollution_kinds": "res://planets/verdance/data/pollution.json"
+"pollution_kinds": "res://planets/verdance/data/pollution.json",
+"finds": "res://planets/verdance/data/finds.json"
 })
 sites_script = ExtResource("2")
 globe_shader = ExtResource("3")

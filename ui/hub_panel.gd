@@ -189,8 +189,6 @@ static func level_gains(h: Hub, lv: int) -> Array[String]:
 		for id: String in ["conveyor", "auto_baler", "recycler"]:
 			if int(st.def(id).get("requires_level", 0)) == lv:
 				out.append(TranslationServer.translate("Unlocks the %s") % TranslationServer.translate(str(st.def(id).get("name", id))))
-	if lv == LockerPanel.HUB_LEVEL:
-		out.append(TranslationServer.translate("Opens the Locker: style Lumi and your robots"))
 	if lv == 5:
 		out.append(TranslationServer.translate("A launch pad: rockets to the next district"))
 	return out
