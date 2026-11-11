@@ -225,7 +225,7 @@ func _plants(nm: String, mesh: Mesh, xfs: Array[Transform3D], centre: Vector2, c
 	var local: Array[Transform3D] = []
 	for xf: Transform3D in xfs:
 		local.append(Transform3D(xf.basis, xf.origin - at))
-	var mi: MultiMeshInstance3D = CityOldTown.mmi_on(self, nm, mesh, local, cols, mat, false, PLANT_RANGE_M)
+	var mi: MultiMeshInstance3D = CityKit.mmi_on(self, nm, mesh, local, cols, mat, false, PLANT_RANGE_M)
 	mi.position = at
 	mi.visibility_range_end_margin = 10.0
 	return mi

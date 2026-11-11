@@ -77,7 +77,7 @@ var furniture: StreetFurniture  # [v3city] the start town's street life
 var kind: String = "start"   # [v3city] the town's character (KINDS)
 var outskirts: TownOutskirts  # [v3city] the city past the pad (the skyline)
 var ruin_lights: RuinLights  # the last lamps still glowing after dark in a ruined town (hubs past the start)
-var old_town: CityOldTown    # the start town's own character, landmark and regrowth (hub 0)
+var town: VerdanceCity       # the city this site is (its look, source landmark and regrowth), null on open ground
 var district_id: String = ""  # the district (city) this site belongs to, "" for open ground
 var globe_ctx: Dictionary = {}  # [v3city] {terrain, grid, cells, xf, clear} from SiteManager
 ## [v3city] func(x, z) -> bool: a site-local point on a lake cell (the start yard is by a lake).
@@ -228,8 +228,17 @@ func set_restoration(r: float) -> void:
 ## signs, street trees, the lake edge (TownSite hook; each city decides what it shows).
 func set_district_stage(stage: int) -> void:
 	super.set_district_stage(stage)
-	if old_town:
-		old_town.set_stage(district_stage)
+	if town:
+		town.set_stage(district_stage)
+
+
+## The district's pollution source is running ("broken") or stopped ("shut_down"): the city's
+## landmark shows it (TownSite hook).
+func set_source_state(state: String) -> void:
+	super.set_source_state(state)
+	if town:
+		town.set_source_state(state)
+		source_state = town.source_state
 
 
 ## Follows this site's district: its stage now (once the world's Districts node is up) and every
@@ -272,10 +281,10 @@ func _read_district_stage() -> void:
 func _make() -> void:
 	var start: bool = site_id == "start_yard"
 	layout = CityLayout.new(seed_value, START_EXTENT)  # [v3city] every Verdance hub is a town now
-	kind = "start" if start else _pick_kind()
-	if start:
-		old_town = CityOldTown.new()
-		old_town.name = "OldTown"
+	town = VerdanceCity.for_site(hub_index, start)
+	kind = "start" if start else (str(town.look.data.get("kind", "")) if town else "")
+	if not KINDS.has(kind):
+		kind = _pick_kind()
 	_town_layout()
 	city = CityView.new()
 	city.name = "City"
@@ -283,8 +292,8 @@ func _make() -> void:
 	city.buildings = CITY_BUILDINGS  # [v1world] the flat district's brick and factory buildings (owner, Nov 8); was the kit's
 	city.flush_walks = true
 	city.water_fn = water  # [v3city]
-	if old_town:
-		city.building_material = CityOldTown.material(false)
+	if town:
+		city.building_material = town.look.material(false)
 	# [v3city] kit facades on the inner ring, proxies (with colliders) beyond; props everywhere
 	city.detail_ring = 1
 	city.proxy_collide = true
@@ -303,8 +312,8 @@ func _make() -> void:
 		furniture.town_r = town_r
 		furniture.goal_r = GOAL_R if start else 18.0
 		furniture.state = kit_state(level)
-		if old_town:
-			_foot.append_array(old_town.station_rects)
+		if town:
+			_foot.append_array(town.landmark_rects)
 		furniture.buildings = _foot.duplicate()
 		furniture.big_ship = start
 		var pb: Variant = city.get("_prop_body")
@@ -328,10 +337,13 @@ func _make() -> void:
 		outskirts.r_in = town_r - 8.0
 		outskirts.seed_value = seed_value
 		outskirts.kind = kind
-		if old_town:  # every block the pad town did not keep is the outskirts' (no bare ring between them)
+		if town:  # every block the pad town did not keep is the outskirts' (no bare ring between them)
 			outskirts.r_in = 0.0
-			outskirts.painter = CityOldTown.paint
-			outskirts.town_material = CityOldTown.material(true)
+			outskirts.painter = town.look.paint
+			outskirts.town_material = town.look.material(true)
+			outskirts.profile = town.look.data.get("outskirts", {})
+			if not start:
+				outskirts.avoid = town.landmark_rects
 		add_child(outskirts)
 		await outskirts.build()
 		print("[town] hub %d outskirts (%s): %s" % [hub_index, kind, str(outskirts.stats)])
@@ -349,8 +361,10 @@ func _make() -> void:
 	dressing.skip_facades = not CITY_BUILDINGS  # [v1world] shopfronts, awnings, neon, murals, billboard, string lights
 	dressing.kit_yard = true
 	dressing.landmark_kind = str(LANDMARK_BY_KIND.get(kind, ""))
-	if old_town and old_town.has_station():
-		dressing.billboard_x = OLD_TOWN_BILLBOARD_X  # off the main street's axis: the pump house closes that view
+	if town and town.look.data.has("prop"):
+		dressing.landmark_kind = str(town.look.data["prop"])
+	if town and town.has_landmark() and town.block_key.x == 0 and town.block_key.y < 0:
+		dressing.billboard_x = OLD_TOWN_BILLBOARD_X  # off the main street's axis: the source landmark closes that view
 	add_child(dressing)
 	await dressing.build(layout, null, hub_index, district_name, "", level)
 	if not start and city and not city.lamp_bulbs.is_empty():
@@ -360,10 +374,10 @@ func _make() -> void:
 		var alive: int = ruin_lights.setup(city.lamp_bulbs, RUIN_LAMP_SHARE, seed_value, RUIN_LIGHT_CAP)
 		if DevHooks.has("load-report"):
 			print("[town] hub %d ruin lights: %d of %d lamp heads glow after dark, %d real lights" % [hub_index, alive, city.lamp_bulbs.size(), ruin_lights.light_count()])
-	if old_town:
-		add_child(old_town)
-		await old_town.build(self)
-		_extra_foot.append_array(old_town.rects())
+	if town:
+		add_child(town)
+		await town.build(self)
+		_extra_foot.append_array(town.rects())
 	set_level(level)
 	_wire_district()
 	if DevHooks.has("town-map") and (start or DevHooks.has("town-map-hubs")):
@@ -389,12 +403,12 @@ func _town_layout() -> void:
 			continue
 		# The lake: blocks whose kerb ring runs into the water go (no sidewalks over the lake).
 		var walk_r: Rect2 = r.grow(CityLayout.WALK_W)
-		if _wet_share(walk_r, 2.5) > float((KINDS[kind] as Dictionary).get("lake", 0.45)):
+		if _wet_share(walk_r, 2.5) > float(_kind_profile().get("lake", 0.45)):
 			layout.blocks.erase(key)
 			lake += 1
 			continue
 		var ring: int = maxi(absi(key.x), absi(key.y))
-		var pr: Dictionary = KINDS[kind]
+		var pr: Dictionary = _kind_profile()
 		var start: bool = kind == "start"
 		var t: int = CityLayout.Block.BUILDINGS
 		if start and key.x == 0 and ring <= 2:
@@ -426,11 +440,11 @@ func _town_layout() -> void:
 			if b["buildings"].is_empty():
 				b["type"] = CityLayout.Block.LANDFILL
 		layout.blocks[key] = b
-	if old_town:  # the first city's own colours, and its source landmark's block
+	if town:  # the city's own colours, and its source landmark's ground
 		for key2: Vector2i in layout.blocks:
 			for bd2: Dictionary in layout.blocks[key2]["buildings"]:
-				CityOldTown.paint(bd2)
-		old_town.plan(self)
+				town.look.paint(bd2)
+		town.plan(self)
 	var nb: int = 0
 	var tall: int = 0
 	var kinds: Dictionary = {}
@@ -441,6 +455,14 @@ func _town_layout() -> void:
 			nb += 1
 			tall = maxi(tall, int(bd["floors"]))
 	print("[town] hub %d %s town: %d blocks (types %s), %d buildings up to %d floors, %d blocks left to the lake" % [hub_index, kind, layout.blocks.size(), str(kinds), nb, tall, lake])
+
+
+## The town's building mix: its kind's, with the city's own keys over it (cities.json "town").
+func _kind_profile() -> Dictionary:
+	var pr: Dictionary = (KINDS[kind] as Dictionary).duplicate()
+	if town:
+		pr.merge(town.look.data.get("town", {}), true)
+	return pr
 
 
 ## [v3city] Dev: --town-map=PATH writes a top-down plan of the town (0.5 m a pixel): lake blue,

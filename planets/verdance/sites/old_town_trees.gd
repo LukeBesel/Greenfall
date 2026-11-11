@@ -74,12 +74,12 @@ func build(spots: Array[Vector2], seed_v: int, body: StaticBody3D, stats: Dictio
 		var xfs: Array[Transform3D] = []
 		xfs.assign(trunks[v])
 		if not xfs.is_empty():
-			CityOldTown.mmi_on(self, "StreetTrees%d" % v, shapes[v]["mesh"], xfs, [], bark, true, RANGE_M)
+			CityKit.mmi_on(self, "StreetTrees%d" % v, shapes[v]["mesh"], xfs, [], bark, true, RANGE_M)
 	var leaf := ShaderMaterial.new()
 	leaf.shader = load("res://planets/verdance/sites/tree_leaves.gdshader")
 	leaf.set_shader_parameter("leaf_tex", leaf_texture())
-	_crown = CityOldTown.mmi_on(self, "TreeCanopy", cluster_mesh(), _crown_xf, _crown_col, leaf, true, RANGE_M)
-	_flowers = CityOldTown.mmi_on(self, "TreeFlowers", OldTownFlowers.mesh(), blooms, bloom_cols, OldTownFlowers.material(), false, FLOWER_RANGE_M)
+	_crown = CityKit.mmi_on(self, "TreeCanopy", cluster_mesh(), _crown_xf, _crown_col, leaf, true, RANGE_M)
+	_flowers = CityKit.mmi_on(self, "TreeFlowers", OldTownFlowers.mesh(), blooms, bloom_cols, OldTownFlowers.material(), false, FLOWER_RANGE_M)
 	stats["trees"] = count
 	stats["tree_clusters"] = _crown_xf.size()
 

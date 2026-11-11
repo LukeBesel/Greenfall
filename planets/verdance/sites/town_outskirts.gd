@@ -55,6 +55,10 @@ var town_material: ShaderMaterial
 ## Every building's roof, for a town that dresses them: [frame in the site's space, Rect2 in that
 ## frame, roof height in that frame, the building's plan dictionary].
 var roofs: Array = []
+## A city's own building mix: keys of PROFILES[kind] it replaces (cities.json "outskirts").
+var profile: Dictionary = {}
+## Rects in site metres where nothing is built (a city's source landmark).
+var avoid: Array[Rect2] = []
 ## The street strips between the blocks (PROFILES "streets"), or null.
 var streets: MeshInstance3D
 
@@ -126,7 +130,7 @@ func build() -> void:
 			if far <= town_r or near.length() < r_in or c.length() > R_OUT:
 				continue  # the pad town's own block, or beyond the outskirts
 			var dist: float = c.length()
-			var pf: Dictionary = PROFILES.get(kind, PROFILES["start"])
+			var pf: Dictionary = _profile()
 			var ni: int = 0 if dist < TOWER_R else 1
 			if rng.randf() < float(pf["lots"][ni]):
 				lots += 1
@@ -143,6 +147,8 @@ func build() -> void:
 					bd["floors"] = rng.randi_range(int(fr[0]), int(fr[1]))
 					bd["ruined"] = rng.randf() < 0.2
 					bd["style"] = "factory" if rng.randf() < float(pf["factory"][ni]) else "apartments"
+			if not avoid.is_empty():
+				blds = blds.filter(_clear_of_avoid)
 			if painter.is_valid():
 				for bd2: Dictionary in blds:
 					painter.call(bd2, rng, dist)
@@ -156,9 +162,23 @@ func build() -> void:
 		await BuildBudget.check("town:outskirts")
 		_build_tile(tk, tiles[tk], cleared)
 	stats["footprints"] = foot.size()
-	if bool((PROFILES.get(kind, PROFILES["start"]) as Dictionary).get("streets", false)):
+	if bool(_profile().get("streets", false)):
 		await BuildBudget.check("town:streets")
 		_build_streets()
+
+
+## The building mix: the kind's profile with the city's own keys over it.
+func _profile() -> Dictionary:
+	var pf: Dictionary = (PROFILES.get(kind, PROFILES["start"]) as Dictionary).duplicate()
+	pf.merge(profile, true)
+	return pf
+
+
+func _clear_of_avoid(bd: Dictionary) -> bool:
+	for a: Rect2 in avoid:
+		if a.intersects((bd["rect"] as Rect2).grow(2.0)):
+			return false
+	return true
 
 
 ## A tower block: one tower (podium plus setbacks via the proxy's tiers) on the side facing the

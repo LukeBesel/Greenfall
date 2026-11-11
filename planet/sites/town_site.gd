@@ -14,7 +14,14 @@ var town_r: float = 0.0
 ## The regrowth stage (0-5) of the district this town stands in (systems/districts.gd), 0 on open
 ## ground. A planet's site script overrides set_district_stage to change the town with it.
 var district_stage: int = 0
+## The state of the town's pollution source: "broken" while it runs, "shut_down" once the
+## player has stopped it. A planet's site script overrides set_source_state to change its landmark.
+var source_state: String = "broken"
 
 
 func set_district_stage(stage: int) -> void:
 	district_stage = clampi(stage, 0, Districts.MAX_STAGE)
+
+
+func set_source_state(state: String) -> void:
+	source_state = state

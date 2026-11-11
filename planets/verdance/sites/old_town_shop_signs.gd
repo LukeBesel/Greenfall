@@ -24,7 +24,12 @@ var count: int = 0
 
 ## Signs the buildings of `site` that front a street, lie past `skip_r` of the yard and are
 ## nearest the line from the yard to `toward` (site-local metres).
-func build(site: VerdanceSite, toward: Vector2, skip_r: float, seed_v: int) -> void:
+## `names` and `board_cols` are a city's own (cities.json); empty keeps the defaults.
+func build(site: VerdanceSite, toward: Vector2, skip_r: float, seed_v: int, names: Array[String] = [], board_cols: Array[Color] = []) -> void:
+	if names.is_empty():
+		names = NAMES
+	if board_cols.is_empty():
+		board_cols = BOARDS
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v
 	var fronts: Array[Dictionary] = []
@@ -43,7 +48,7 @@ func build(site: VerdanceSite, toward: Vector2, skip_r: float, seed_v: int) -> v
 	var cols: Array[Color] = []
 	for i: int in mini(MAX_SIGNS, fronts.size()):
 		var f: Dictionary = fronts[i]
-		var text: String = NAMES[i % NAMES.size()]
+		var text: String = names[i % names.size()]
 		var width: float = minf(float(f["width"]) - 0.8, LETTER_M * float(text.length()) + 0.7)
 		if width < LETTER_M * float(text.length()) * 0.8:
 			continue
@@ -51,7 +56,7 @@ func build(site: VerdanceSite, toward: Vector2, skip_r: float, seed_v: int) -> v
 		var out := Vector3(face.x, 0.0, face.y)
 		var at: Vector2 = (f["c"] as Vector2) + face * 0.07
 		var xf := Transform3D(Basis(Vector3.UP.cross(out), Vector3.UP, out), Vector3(at.x, BOARD_Y, at.y))
-		var board: Color = BOARDS[rng.randi() % BOARDS.size()].lerp(Color(0.75, 0.72, 0.66), rng.randf_range(0.05, 0.2))
+		var board: Color = board_cols[rng.randi() % board_cols.size()].lerp(Color(0.75, 0.72, 0.66), rng.randf_range(0.05, 0.2))
 		xfs.append(xf * Transform3D(Basis.from_scale(Vector3(width, BOARD_H, 0.06)), Vector3.ZERO))
 		cols.append(board)
 		add_child(_label(text, xf.translated_local(Vector3(0, 0, 0.04)), PAINT_LIGHT if board.get_luminance() < 0.5 else PAINT_DARK))
@@ -61,7 +66,7 @@ func build(site: VerdanceSite, toward: Vector2, skip_r: float, seed_v: int) -> v
 	var mat := StandardMaterial3D.new()
 	mat.vertex_color_use_as_albedo = true
 	mat.roughness = 0.8
-	CityOldTown.mmi_on(self, "ShopBoards", BoxMesh.new(), xfs, cols, mat, false, BOARD_RANGE_M)
+	CityKit.mmi_on(self, "ShopBoards", BoxMesh.new(), xfs, cols, mat, false, BOARD_RANGE_M)
 
 
 ## The street side of a building plan: {c: middle of its front wall, face, width along the street}.
