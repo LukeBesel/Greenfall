@@ -182,7 +182,7 @@ func _drop_markers(district: String) -> void:
 
 
 func _usable(district: String, spot: String) -> bool:
-	return _sources.active_spot(district) == spot and not _sources.is_engaged(district)
+	return _sources.active_spot(district) == spot and not _sources.is_engaged(district) and not _sources.is_building(district)
 
 
 func _prompt(district: String) -> String:

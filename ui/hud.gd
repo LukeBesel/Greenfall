@@ -334,6 +334,8 @@ func _update_context(delta: float, minimal: bool) -> void:
 			# A pollution kind beside plain junk: its name and the tool it wants, on the same line.
 			var kinds: Pollution = world.get("pollution") as Pollution
 			var note: String = kinds.hex_note(h) if kinds else ""
+			if note == "":  # fouled again by the city's source: say why it is dirty
+				note = _source_note(h)
 			if note != "":
 				hex_text = "%s   %s" % [hex_text, note]
 		else:
@@ -373,12 +375,21 @@ func _short_level(h: int) -> String:
 	if l < 0:
 		return ""
 	var s: String = tr("HEX  %s") % str(hl.level_name(l)).to_upper()
+	var held: String = _source_note(h)
+	if held != "":  # the city's source holds this hex at its stage: that is the reason, not water
+		return "%s   %s" % [s, held]
 	if l == 3 or (l == 4 and not hl.sustained_now(h)):
 		if hl._ring_n.has(h) and hl.watered_ratio(h) >= float(hl.cfg.get("sustain_ratio", 0.9)):
 			s += tr("  SUSTAIN %d%%") % int(hl.sustain_progress(h) * 100.0)
 		elif hl._ring_n.has(h):
 			s += tr("  THIRSTY")
 	return s
+
+
+## "SOURCE STILL RUNNING" for a hex the city's source holds back or has fouled again, else "".
+func _source_note(h: int) -> String:
+	var so: SliceOrbit = world.get("orbit") as SliceOrbit if world else null
+	return so.source_spread.hex_note(h) if so != null and so.source_spread != null else ""
 
 
 func _on_signal(text: String, color: Color, strength: float) -> void:

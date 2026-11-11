@@ -1,12 +1,19 @@
 {
-  "_doc": "The source job of each city (design spec section 4; systems/sources.gd, shown in the world by systems/source_sites.gd): the thing that still pollutes the city, stopped by a short job only Lumi can do. Until it is done the city cannot reach regrowth stage `gates_stage`. open_stage: the city's regrowth stage from which its job is offered (a source may set its own). reach_m: how close Lumi must stand to a step's spot to use it and to keep working at it. hold_share: while a city waits for its job at the stage below the gate, this part of the way to the gated stage is the job (the rest is its hexes), so the city's readout and launch progress do not show a full bar before the source is shut. sources[]: district (the city's id in districts.json), id (never changes once shipped), name (the source, shown in the 'shut down' notice), open_stage (optional), reward {cubes, parts}: paid once when the last step is done; cubes stay under the 3-minute rule (districts.json income_ref_s x the city's income_ref; here about one minute of the city's income), toast (the notice when it is shut down), steps[] in order: id, text (the card's title), desc (the card's why line), prompt (what the interact key does at the spot), prop (the marker the world stands there: valve, lever, jam, socket, part), at [x, z] (the spot, in metres in the frame of the city's source landmark: x to the right and z toward the yard as seen from the landmark; every spot lies on the street in front of the landmark or on the open lot between it and the yard, so nothing is built on it), and type: 'use' = walk there and use it once. 'work' = use it, then stay in reach for `seconds` (leaving pauses it); with `kind` (a pollution kind of pollution.json) the work goes faster by Lumi's hand bonus for that kind, so mastering the city's kind shortens its capstone. 'carry' = pick a part up at `from` [x, z] (pays `cost`, a currency dictionary, if the step has one), carry it to `at` and fit it there for `seconds`; text_1 is the card's title and final_prompt the prompt while Lumi carries the part. at_clean (optional, 0..1): the step is offered only once that share of the city's land hexes is clean. Old Capital's job is the rocket: six parts in build order, 2,600 Parts in all (the accepted prices of docs/reviews/BALANCE_PROPOSAL_P1_V2.md section 3), each offered as the city is cleaned; Fit times are shorter than the proposal's 20 s so no step holds Lumi still for long.",
-  "open_stage": 3,
+  "_doc": "The source job of each city (design spec section 4; systems/sources.gd, shown in the world by systems/source_sites.gd): the thing that still pollutes the city, stopped by a short job only Lumi can do. Until it is done the city cannot reach regrowth stage `gates_stage`. open_stage: the city's regrowth stage from which its job is offered (a source may set its own). reach_m: how close Lumi must stand to a step's spot to use it and to keep working at it. hold_share: while a city waits for its job at the stage below the gate, this part of the way to the gated stage is the job (the rest is its hexes), so the city's readout and launch progress do not show a full bar before the source is shut. sources[]: district (the city's id in districts.json), id (never changes once shipped), name (the source, shown in the 'shut down' notice), open_stage (optional), reward {cubes, parts}: paid once when the last step is done; cubes stay under the 3-minute rule (districts.json income_ref_s x the city's income_ref; here about one minute of the city's income), toast (the notice when it is shut down), steps[] in order: id, text (the card's title), desc (the card's why line), prompt (what the interact key does at the spot), prop (the marker the world stands there: valve, lever, jam, socket, part), at [x, z] (the spot, in metres in the frame of the city's source landmark: x to the right and z toward the yard as seen from the landmark; every spot lies on the street in front of the landmark or on the open lot between it and the yard, so nothing is built on it), and type: 'use' = walk there and use it once. 'work' = use it, then stay in reach for `seconds` (leaving pauses it); with `kind` (a pollution kind of pollution.json) the work goes faster by Lumi's hand bonus for that kind, so mastering the city's kind shortens its capstone. 'carry' = pick a part up at `from` [x, z] (pays `cost`, a currency dictionary, if the step has one), carry it to `at` and fit it there for `seconds`; text_1 is the card's title and final_prompt the prompt while Lumi carries the part. at_clean (optional, 0..1): the step is offered only once that share of the city's land hexes is clean. Old Capital's job is the rocket: six built parts in build order, 2,600 Parts in all (the accepted prices of docs/reviews/BALANCE_PROPOSAL_P1_V2.md section 3), each offered as the city is cleaned; Fit times are shorter than the proposal's 20 s so no step holds Lumi still for long. built (a carry step, optional): the part is made before it can be picked up. Lumi orders it at `from` (paying `cost`); it is built on the Assembler's line in build.line_s seconds, and the line builds no robot until it is done; with no Assembler standing the workbench builds it in build.bench_s seconds, so a player without the Assembler can still finish; then it waits at `from`. build: line_s, bench_s (a step may set its own), and the card's lines while a part is built: text (title), desc (why line when it is on the line), hint (why line when the workbench builds it), text_1 (title when it is ready), prompt (the pickup prompt). spread: what a running source does to the ground round it (systems/source_spread.gd); a source may override any key with a `spread` of its own, and hexes 0 gives it none (the rocket fouls nothing). hexes: the source's reach, the land hexes nearest the city's site, where its landmark stands; it must stay under the hexes a city may leave behind (1 - districts.json stage_share of its land), or the city could never reach open_stage. hex_stage: hexes in the reach cannot pass this regrowth stage while the source runs. from_stage: the city's stage from which the source fouls clean ground again (so the first cleaning of a city is never undone). every_s: seconds between two hexes being fouled. amount: the share of a hex's waste that comes back (0..1). max_soiled: the trickle waits while this many hexes of the reach lie dirty, so it never piles up. soil_kind (per source): the pollution kind that comes back; a kind worked with a tool comes back as itself on hexes that hold it, anything else as loose pieces. The trickle is gentle on purpose: amount x 63 units / every_s is about two fifths of one Rusty Scoopie's rate (docs/PLANET_PLAYBOOK.md, 'Source jobs').",
+  "open_stage": 4,
   "gates_stage": 5,
   "reach_m": 2.8,
   "hold_share": 0.2,
+  "spread": {"hexes": 12, "hex_stage": 3, "from_stage": 1, "every_s": 90.0, "amount": 0.25, "max_soiled": 3},
+  "build": {"line_s": 45.0, "bench_s": 135.0,
+    "text": "Wait for the part",
+    "desc": "It is on the Assembler's line. Robot building waits until it is done.",
+    "hint": "The workbench is building it. The Assembler would be three times as fast.",
+    "text_1": "Fetch the finished part",
+    "prompt": "Pick up the finished part"},
   "sources": [
     {
-      "district": "old_town", "id": "burst_main", "name": "The burst main",
+      "district": "old_town", "id": "burst_main", "name": "The burst main", "soil_kind": "litter",
       "reward": {"cubes": 300, "parts": 45},
       "toast": "The burst main is capped. Old Town can thrive now.",
       "steps": [
@@ -20,7 +27,7 @@
       ]
     },
     {
-      "district": "scrapyard", "id": "crusher_stack", "name": "The crusher yard",
+      "district": "scrapyard", "id": "crusher_stack", "name": "The crusher yard", "soil_kind": "wrecks",
       "reward": {"cubes": 960, "parts": 90},
       "toast": "The crusher yard is quiet. Ironside can thrive now.",
       "steps": [
@@ -36,7 +43,7 @@
       ]
     },
     {
-      "district": "kettle_bay", "id": "long_tide", "name": "The tanker's leak",
+      "district": "kettle_bay", "id": "long_tide", "name": "The tanker's leak", "soil_kind": "litter",
       "reward": {"cubes": 1980, "parts": 80},
       "toast": "The Long Tide leaks no more. Kettle Bay can thrive now.",
       "steps": [
@@ -52,7 +59,7 @@
       ]
     },
     {
-      "district": "highreach", "id": "incinerator", "name": "The incinerator",
+      "district": "highreach", "id": "incinerator", "name": "The incinerator", "soil_kind": "smog",
       "reward": {"cubes": 2400, "parts": 150},
       "toast": "The incinerator is cold. Highreach can thrive now.",
       "steps": [
@@ -68,7 +75,7 @@
       ]
     },
     {
-      "district": "lowmeadow", "id": "treatment_works", "name": "The treatment works",
+      "district": "lowmeadow", "id": "treatment_works", "name": "The treatment works", "soil_kind": "blight",
       "reward": {"cubes": 4260, "parts": 250},
       "toast": "The treatment works runs clear. Lowmeadow can thrive now.",
       "steps": [
@@ -87,26 +94,26 @@
       ]
     },
     {
-      "district": "old_capital", "id": "launch_pad", "name": "The rocket", "open_stage": 0,
+      "district": "old_capital", "id": "launch_pad", "name": "The rocket", "open_stage": 0, "spread": {"hexes": 0},
       "reward": {"cubes": 3060},
       "toast": "The rocket stands ready on Launch Pad 1.",
       "steps": [
-        {"id": "launch_frame", "type": "carry", "prop": "socket", "from": [-10.0, 34.0], "at": [0.0, 14.5], "seconds": 6.0, "cost": {"parts": 300}, "at_clean": 0.35,
+        {"id": "launch_frame", "type": "carry", "built": true, "prop": "socket", "from": [-10.0, 34.0], "at": [0.0, 14.5], "seconds": 6.0, "cost": {"parts": 300}, "at_clean": 0.35,
          "text": "Build the launch frame", "text_1": "Fit the launch frame on the pad", "desc": "The rocket to the next world starts with its frame.",
          "prompt": "Build the launch frame", "final_prompt": "Fit the launch frame"},
-        {"id": "fuel_tanks", "type": "carry", "prop": "socket", "from": [-10.0, 34.0], "at": [-5.0, 14.5], "seconds": 6.0, "cost": {"parts": 350}, "at_clean": 0.45,
+        {"id": "fuel_tanks", "type": "carry", "built": true, "prop": "socket", "from": [-10.0, 34.0], "at": [-5.0, 14.5], "seconds": 6.0, "cost": {"parts": 350}, "at_clean": 0.45,
          "text": "Build the fuel tanks", "text_1": "Fit the fuel tanks", "desc": "Tanks next: the rocket has a long way to go.",
          "prompt": "Build the fuel tanks", "final_prompt": "Fit the fuel tanks"},
-        {"id": "engine_cluster", "type": "carry", "prop": "socket", "from": [-10.0, 34.0], "at": [5.0, 14.5], "seconds": 6.0, "cost": {"parts": 400}, "at_clean": 0.55,
+        {"id": "engine_cluster", "type": "carry", "built": true, "prop": "socket", "from": [-10.0, 34.0], "at": [5.0, 14.5], "seconds": 6.0, "cost": {"parts": 400}, "at_clean": 0.55,
          "text": "Build the engine cluster", "text_1": "Fit the engine cluster", "desc": "Five engines, made from what the city threw away.",
          "prompt": "Build the engine cluster", "final_prompt": "Fit the engines"},
-        {"id": "guidance_core", "type": "carry", "prop": "socket", "from": [-10.0, 34.0], "at": [-5.0, 14.5], "seconds": 6.0, "cost": {"parts": 450}, "at_clean": 0.65,
+        {"id": "guidance_core", "type": "carry", "built": true, "prop": "socket", "from": [-10.0, 34.0], "at": [-5.0, 14.5], "seconds": 6.0, "cost": {"parts": 450}, "at_clean": 0.65,
          "text": "Build the guidance core", "text_1": "Fit the guidance core", "desc": "The core knows the way to the next world.",
          "prompt": "Build the guidance core", "final_prompt": "Fit the guidance core"},
-        {"id": "hull_plates", "type": "carry", "prop": "socket", "from": [-10.0, 34.0], "at": [5.0, 14.5], "seconds": 6.0, "cost": {"parts": 500}, "at_clean": 0.75,
+        {"id": "hull_plates", "type": "carry", "built": true, "prop": "socket", "from": [-10.0, 34.0], "at": [5.0, 14.5], "seconds": 6.0, "cost": {"parts": 500}, "at_clean": 0.75,
          "text": "Build the hull plates", "text_1": "Fit the hull plates", "desc": "Close the bare frames. The rocket takes its shape.",
          "prompt": "Build the hull plates", "final_prompt": "Fit the hull plates"},
-        {"id": "nose_cone", "type": "carry", "prop": "socket", "from": [-10.0, 34.0], "at": [0.0, 14.5], "seconds": 6.0, "cost": {"parts": 600}, "at_clean": 0.85,
+        {"id": "nose_cone", "type": "carry", "built": true, "prop": "socket", "from": [-10.0, 34.0], "at": [0.0, 14.5], "seconds": 6.0, "cost": {"parts": 600}, "at_clean": 0.85,
          "text": "Build the nose cone", "text_1": "Fit the nose cone", "desc": "The last part. Then the rocket is ready.",
          "prompt": "Build the nose cone", "final_prompt": "Fit the nose cone"}
       ]

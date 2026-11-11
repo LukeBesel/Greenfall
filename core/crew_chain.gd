@@ -10,7 +10,8 @@ extends RefCounted
 ## Everything the crew can ever dig is therefore bounded by the ground that has been cleaned: the
 ## crew cannot grow faster than the cleaning.
 ##
-## The line. The Assembler builds one robot at a time. It pays the robot's Parts when it starts,
+## The line. The Assembler builds one thing at a time: a robot, or a part Lumi ordered for a job
+## (`part`), which goes first and holds robot building until it is done. It pays the robot's Parts when it starts,
 ## takes assembly_s seconds, and hands the robot over when the crew has room. What it builds
 ## next follows the build mix: the type furthest below its share of what the line has built since
 ## the mix was last changed.
@@ -26,6 +27,7 @@ const NO_MIX: String = "no_mix"
 const CREW_FULL: String = "crew_full"
 const NEED_PARTS: String = "need_parts"
 const BUILDING: String = "building"
+const PART: String = "part"
 const SAVE_VERSION: int = 1
 
 var cfg: Dictionary = {}
@@ -49,6 +51,10 @@ var made_total: int = 0
 var current: String = ""
 var progress_s: float = 0.0
 var status: String = OFF
+## What else is on the line ("" = nothing): a job part the line builds for Lumi (a rocket part,
+## systems/sources.gd). While it is set the line builds no robot; a robot already on it keeps the
+## work done on it. Not saved: whoever owns the part says so again every tick.
+var part: String = ""
 ## The part of a Part delivered but not paid out yet (see deliver).
 var _carry: float = 0.0
 
@@ -206,6 +212,9 @@ func tick_line(dt: float, parts: float, has_room: bool, allowed: Array[String], 
 	var out: Dictionary = {"spend": 0.0, "built": ""}
 	if not built:
 		status = OFF
+		return out
+	if part != "":
+		status = PART  # the part has the line; the robot on it, if any, waits where it is
 		return out
 	if paused:
 		status = PAUSED

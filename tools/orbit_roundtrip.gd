@@ -57,6 +57,8 @@ static func _snap(s: Node) -> Dictionary:
 		# Source jobs: the step each city's job is at, which are shut, and the hold each puts on its city.
 		"sources": JSON.stringify((s.orbit as SliceOrbit).sources.save_state()),
 		"source_holds": _source_holds(s.orbit as SliceOrbit),
+		"fouled_hex_dirty": g.cells.is_dirty(int(s.get_meta("rt_target", 0))),
+		"fouled_hex_soiled": (s.orbit as SliceOrbit).pollution.is_soiled(int(s.get_meta("rt_target", 0))),
 		"worn_set": Designs.worn_set(),
 		"worn_head": str(LumiStyle.current()["head"]),
 		"hex_level_target": (s.get("hex_levels") as HexLevels).level_of(int(s.get_meta("rt_target", -1))),
@@ -667,6 +669,13 @@ static func run(rt: Node, check: Callable) -> void:
 	var bot_dirs: Array[Vector3] = [crew.unit_dir(nb), crew.unit_dir(fb)]
 	var rad: float = g.grid.radius_m
 	check.call("orbit_robot_near_far", "near far", ("near " if crew.is_near(nb) else "far ") + ("near" if crew.is_near(fb) else "far"))
+	# A running source fouls the hex Lumi cleaned again: it lies dirty with its own pieces, keeps
+	# its level, and the save keeps what it showed before (the "pollution" snapshot).
+	var fouled_hex: int = int(s1.get_meta("rt_target", -1))
+	if fouled_hex >= 0 and g.cells.is_dirty(fouled_hex):  # a Ledger drone may have dumped on it since: clean it first
+		so.crews.work_cell(fouled_hex, 0.0)
+	check.call("orbit_source_fouled_hex", true, fouled_hex >= 0 and so.pollution.soil(fouled_hex, so.pollution.base_id(), 0.3) > 0.0)
+	check.call("orbit_fouled_hex_is_dirty", true, fouled_hex >= 0 and g.cells.is_dirty(fouled_hex) and so.pollution.is_soiled(fouled_hex))
 	for i: int in 3:
 		await tree.physics_frame
 	var ok: bool = SaveManager.save_game()

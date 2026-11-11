@@ -75,6 +75,7 @@ var _seed: int = 0
 var _poll: float = 0.0
 var _hint_ms: int = -HINT_GAP_MS
 var _crew_gate: PollutionCrew
+var _soil := PollutionSoil.new()
 
 
 func _process(delta: float) -> void:
@@ -84,6 +85,7 @@ func _process(delta: float) -> void:
 	_poll = POLL_S
 	refresh_gates()
 	flush_robot_events()
+	_soil.settle()
 	if _crew_gate != null:
 		_crew_gate.flush()
 
@@ -114,6 +116,7 @@ func setup(def: PlanetDefinition, grid: SphereGrid, cells: SphereCells, field: S
 	_robot_acc.resize(_kinds.size())
 	_build_zones(def, site_cells)
 	_build_holds(saved)
+	_soil.setup(self, saved.get("soiled", []) if saved.get("soiled") is Array else [])
 	for id: Variant in (saved.get("debt", {}) as Dictionary):
 		_debt[str(id)] = float(saved["debt"][id])
 	if field:
@@ -147,8 +150,8 @@ func _on_mastery_changed() -> void:
 		_crew_gate.refresh()
 
 
-## What a save keeps: for each held kind, the hexes where part of it is gone, and what is owed
-## toward the next whole unit of a kind's cost.
+## What a save keeps: for each held kind, the hexes where part of it is gone, what is owed toward
+## the next whole unit of a kind's cost, and the hexes a source has fouled again.
 func save_state() -> Dictionary:
 	var held: Dictionary = {}
 	for k: int in _kinds.size():
@@ -162,7 +165,7 @@ func save_state() -> Dictionary:
 				pairs.append(int(round(left * SAVE_SCALE)))
 		if not pairs.is_empty():
 			held[str(_kinds[k]["id"])] = Marshalls.raw_to_base64(pairs.to_byte_array())
-	return {"held": held, "debt": _debt.duplicate()}
+	return {"held": held, "debt": _debt.duplicate(), "soiled": _soil.save_state()}
 
 
 func _read_kinds(table: Dictionary) -> void:
@@ -738,6 +741,23 @@ func flush_robot_events() -> void:
 		if _robot_acc[k] > 0.0:
 			EventBus.pollution_cleared.emit(str(_kinds[k]["id"]), _robot_acc[k], false)
 			_robot_acc[k] = 0.0
+
+
+# --- Waste that comes back ----------------------------------------------------------------------
+
+## A running source fouls clean land hex `cell` again (systems/source_spread.gd): `share` (0..1)
+## of its waste comes back, as kind `id` where the hex can hold it, else as loose pieces. Returns
+## the share that came back (0: not clean land, or nothing to bring back). See PollutionSoil.
+func soil(cell: int, id: String, share: float) -> float:
+	var back: float = _soil.soil(cell, id, share)
+	if back > 0.0 and _crew_gate != null:
+		_crew_gate.touched(cell)
+	return back
+
+
+## Whether a hex lies fouled by a source right now.
+func is_soiled(cell: int) -> bool:
+	return _soil.is_soiled(cell)
 
 
 # --- Robots and mastery -----------------------------------------------------------------------

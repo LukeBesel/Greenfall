@@ -597,8 +597,8 @@ func _do_source(p: Patch) -> bool:
 	if so == null or so.sources == null or so.source_sites == null or not p.carried.is_empty() or _now() < _source_rest_until:
 		return false
 	var id: String = so.districts.focus_id()
-	if not so.sources.is_open(id) or not so.sources.can_afford(id):
-		return false
+	if not so.sources.is_open(id) or not so.sources.can_afford(id) or so.sources.is_building(id):
+		return false  # nothing on offer, no Parts for it, or its part is still being built: other work meanwhile
 	var at: Variant = so.source_sites.target_pos(id)
 	if at == null:
 		return false
