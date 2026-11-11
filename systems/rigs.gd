@@ -24,7 +24,8 @@ extends Node
 ## Emits EventBus.rig_module_unlocked(id) when a plan arrives, rig_module_built(id) and
 ## rig_fitted(slot, id) ("" = the slot was emptied), and its own `changed` after any of them.
 ##
-## Dev flag: --rig=plate_cutter,deep_hold owns and fits the named modules.
+## Dev flags: --rig=plate_cutter,deep_hold owns and fits the named modules; --rig-plans=<district
+## id>,... brings the plans of those cities without opening them.
 ##
 ## Use: var r := Rigs.new(); world.add_child(r); r.setup(def, saved)
 
@@ -33,6 +34,7 @@ signal changed
 const TABLE: String = "rigs"
 const NODE_NAME: String = "Rigs"
 const FLAG: String = "rig"
+const FLAG_PLANS: String = "rig-plans"
 ## Set once any plan has arrived: the workbench shows its Rig tab from then on (data/workbench.json).
 const FLAG_OPEN: String = "rigs_open"
 const UNLOCK_START: String = "start"
@@ -176,10 +178,10 @@ func _read(table: Dictionary, kinds_table: Dictionary) -> void:
 
 
 func save_state() -> Dictionary:
-	var fit: Dictionary = {}
+	var in_slots: Dictionary = {}
 	for slot: String in _fit:
-		fit[slot] = _fit[slot]
-	return {"known": _known.keys(), "owned": _owned.keys(), "fit": fit}
+		in_slots[slot] = _fit[slot]
+	return {"known": _known.keys(), "owned": _owned.keys(), "fit": in_slots}
 
 
 func load_state(saved: Dictionary) -> void:
@@ -190,9 +192,9 @@ func load_state(saved: Dictionary) -> void:
 		if _modules.has(str(id)):
 			_known[str(id)] = true
 			_owned[str(id)] = true
-	var fit: Dictionary = saved.get("fit", {})
-	for slot: Variant in fit:
-		var id: String = str(fit[slot])
+	var in_slots: Dictionary = saved.get("fit", {})
+	for slot: Variant in in_slots:
+		var id: String = str(in_slots[slot])
 		if _owned.has(id) and slot_of(id) == str(slot):
 			_fit[str(slot)] = id
 	_note_open()
@@ -219,8 +221,8 @@ func sync_districts(districts: Districts, legacy: bool = false) -> void:
 
 
 func _apply_dev_flag() -> void:
-	if not DevHooks.has(FLAG):
-		return
+	for district: String in DevHooks.get_s(FLAG_PLANS, "").split(",", false):
+		_open_district(district)
 	for id: String in DevHooks.get_s(FLAG, "").split(",", false):
 		grant(id)
 
@@ -360,18 +362,29 @@ static func part_of(id: String, row: Dictionary) -> Dictionary:
 	return {"id": id, "slot": str(row.get("slot", "")), "shape": str(part.get("shape", "")), "color": Color(str(part.get("color", "#b0b0b0")))}
 
 
-## What a module changes, one short line each ("+60% chest size"), the kind it clears first.
+## What a module changes, one short line each ("+40% chest size"): the kind it clears, then what
+## it gives, then what it takes.
 func effect_lines(id: String) -> Array[String]:
 	var out: Array[String] = []
 	var m: Dictionary = module(id)
 	if is_tool(id):
 		out.append(tr("Clears %s") % tr(_kind_names.get(str(m["tool_for"]), str(m["tool_for"]))))
 	var mods: Dictionary = m.get("mods", {})
-	for key: String in mods:
-		out.append("%+d%% %s" % [roundi((float(mods[key]) - 1.0) * 100.0), _label(key)])
 	var adds: Dictionary = m.get("adds", {})
+	var losses: Array[String] = []
+	for key: String in mods:
+		var line: String = "%+d%% %s" % [roundi((float(mods[key]) - 1.0) * 100.0), _label(key)]
+		if float(mods[key]) >= 1.0:
+			out.append(line)
+		else:
+			losses.append(line)
 	for key: String in adds:
-		out.append("%+d %s" % [roundi(float(adds[key])), _label(key)])
+		var line: String = "%+d %s" % [roundi(float(adds[key])), _label(key)]
+		if float(adds[key]) >= 0.0:
+			out.append(line)
+		else:
+			losses.append(line)
+	out.append_array(losses)
 	return out
 
 

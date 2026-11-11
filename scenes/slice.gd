@@ -201,6 +201,8 @@ func _setup_research_codex() -> void:
 		Achievements.check_all()
 	if DevHooks.get_s("open", "") == "codex":
 		(func() -> void: _open_codex(DevHooks.get_s("codex-tab", ""))).call_deferred()
+	elif DevHooks.get_s("open", "") == "upgrades":  # dev: the workbench on start (--tab=ID picks its tab)
+		open_upgrades.call_deferred()
 
 
 func _open_codex(tab: String = "") -> void:

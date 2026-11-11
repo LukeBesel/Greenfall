@@ -101,12 +101,12 @@ static func _boom(root: Node3D, paint: Material, steel: Material, dark: Material
 	_add(root, ProcMesh.cyl(0.036, 0.036, 0.012, 14), dark, Vector3(0, 0.085, -0.12), Vector3(90, 0, 0))
 
 
-## A signal paddle on a short stem, held up where robots can see it.
+## A signal paddle on a short stem, held out ahead of the claw where robots can see it.
 static func _paddle(root: Node3D, paint: Material, steel: Material) -> void:
 	_add(root, ProcMesh.rounded_box(Vector3(0.06, 0.05, 0.08), 0.012), paint, Vector3(0, 0.08, -0.01))
-	_add(root, ProcMesh.cyl(0.011, 0.011, 0.2, 10), steel, Vector3(0, 0.2, -0.01))
-	_add(root, ProcMesh.cyl(0.1, 0.1, 0.014, SEGMENTS), paint, Vector3(0, 0.36, -0.01), Vector3(90, 0, 0))
-	_add(root, ProcMesh.cyl(0.055, 0.055, 0.018, SEGMENTS), Mats.worn_paint(CREAM, 0.9, 0.2, 3.0, 0.4), Vector3(0, 0.36, -0.01), Vector3(90, 0, 0))
+	_add(root, ProcMesh.cyl(0.012, 0.012, 0.26, 10), steel, Vector3(0, 0.085, -0.17), Vector3(90, 0, 0))
+	_add(root, ProcMesh.cyl(0.13, 0.13, 0.016, SEGMENTS), paint, Vector3(0, 0.085, -0.42), Vector3(0, 0, 90))
+	_add(root, ProcMesh.cyl(0.07, 0.07, 0.02, SEGMENTS), Mats.worn_paint(CREAM, 0.9, 0.2, 3.0, 0.4), Vector3(0, 0.085, -0.42), Vector3(0, 0, 90))
 
 
 # --- Chest gear (body space) --------------------------------------------------------------------
@@ -123,11 +123,11 @@ static func _hold(root: Node3D, paint: Material, steel: Material, dark: Material
 ## Two stiff press rails either side of the chest plate, tied by cross bars.
 static func _rails(root: Node3D, paint: Material, steel: Material) -> void:
 	for sx: float in [-1.0, 1.0]:
-		_add(root, ProcMesh.rounded_box(Vector3(0.04, 0.3, 0.05), 0.01), paint, Vector3(0.17 * sx, 0.38, -0.265))
+		_add(root, ProcMesh.rounded_box(Vector3(0.05, 0.34, 0.08), 0.012), paint, Vector3(0.2 * sx, 0.38, -0.27))
 		for y: float in [0.27, 0.49]:
-			_add(root, ProcMesh.cyl(0.013, 0.013, 0.02, 8), steel, Vector3(0.17 * sx, y, -0.295), Vector3(90, 0, 0))
-	_add(root, ProcMesh.box(Vector3(0.36, 0.028, 0.02)), steel, Vector3(0, 0.25, -0.275))
-	_add(root, ProcMesh.box(Vector3(0.36, 0.028, 0.02)), steel, Vector3(0, 0.515, -0.275))
+			_add(root, ProcMesh.cyl(0.016, 0.016, 0.02, 8), steel, Vector3(0.2 * sx, y, -0.315), Vector3(90, 0, 0))
+	_add(root, ProcMesh.rounded_box(Vector3(0.46, 0.045, 0.04), 0.01), paint, Vector3(0, 0.225, -0.3))
+	_add(root, ProcMesh.box(Vector3(0.44, 0.028, 0.024)), steel, Vector3(0, 0.545, -0.29))
 
 
 ## A filter drum across the front with a spray bar under it and a hose to the can.

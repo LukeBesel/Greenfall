@@ -7,6 +7,7 @@ extends Node3D
 ##   --view=hands    : both claws in the portrait pose, framed between them.
 ##   --view=blink    : head close-up, a blink at phase 0 (open), 50 ms (closing), 90 ms (shut), 170 ms (opening).
 ##   --rig=plate_cutter,deep_hold,sprint_coils : rig modules of the current planet shown fitted.
+##   --view=rigs --rigs="a,b,c;d,e,f" : one front and one back 3/4 shot of each rig loadout, in one run.
 ##   --out=screenshots/hero/x  (writes <out>.png or <out>_N.png), --eyes=crescent|round|happy|bar|heart
 ##   --variant=aurora|bolt|sprout|pixel|nova|patch : which design (PatchModel.VARIANTS). The portrait
 ##                     pose follows that design's concept-sheet portrait (held prop in the left claw);
@@ -29,6 +30,7 @@ var _lasers: Array[MeshInstance3D] = []
 var _settle: float = 8.0
 var _variant: String = "aurora"
 var _variants: PackedStringArray = []
+var _rig_sets: PackedStringArray = []
 const BLINK_PHASES := [-1.0, 0.05, 0.09, 0.17]
 ## Portrait poses per design: [body rotation (deg), right arm, right elbow, left arm, left elbow,
 ## claw opening]. The left claw holds the design's prop (can beam, gear, bottle, holo, case).
@@ -147,12 +149,8 @@ func _ready() -> void:
 	_model.preview_variant = _variant
 	add_child(_model)
 	_model.set_happy(0.5)
-	var rig_rows: Dictionary = Planets.current().table(Rigs.TABLE).get("modules", {}) if Planets.current() else {}
-	var rig_parts: Array[Dictionary] = []
-	for id: String in DevHooks.get_s(Rigs.FLAG, "").split(",", false):
-		if rig_rows.has(id):
-			rig_parts.append(Rigs.part_of(id, rig_rows[id]))
-	_model.set_rig(rig_parts)
+	_rig_sets = DevHooks.get_s("rigs", "").split(";", false)
+	_show_rig(DevHooks.get_s(Rigs.FLAG, ""))
 	var eyes: String = DevHooks.get_s("eyes", "")
 	if eyes != "":
 		_model.set_eye_shape(eyes)
@@ -190,6 +188,11 @@ func _ready() -> void:
 		var ac: float = deg_to_rad(24.0)
 		_shots = [[Vector3(sin(ac) * 1.35, 0.55, -cos(ac) * 1.35), Vector3(-0.02, 0.38, -0.1)]]
 		_build_can_and_lasers()
+	elif _view == "rigs":
+		_cam.fov = 22.0
+		for k: int in _rig_sets.size():
+			for deg: float in [35.0, 145.0]:
+				_shots.append([Vector3(sin(deg_to_rad(deg)) * 5.4, 1.15, -cos(deg_to_rad(deg)) * 5.4), Vector3(0, 0.68, 0)])
 	elif _view == "blink":
 		_cam.fov = 18.0
 		for k: int in BLINK_PHASES.size():
@@ -202,6 +205,16 @@ func _ready() -> void:
 		for deg: float in [0.0, 40.0, 90.0, 140.0, 180.0]:
 			var r: float = deg_to_rad(deg)
 			_shots.append([Vector3(sin(r) * d2, h, -cos(r) * d2), tgt])
+
+
+## Shows the named rig modules (comma-separated ids of the current planet's rig table) on the model.
+func _show_rig(ids: String) -> void:
+	var rows: Dictionary = Planets.current().table(Rigs.TABLE).get("modules", {}) if Planets.current() else {}
+	var parts: Array[Dictionary] = []
+	for id: String in ids.split(",", false):
+		if rows.has(id):
+			parts.append(Rigs.part_of(id, rows[id]))
+	_model.set_rig(parts)
 
 
 func _build_can_and_lasers() -> void:
@@ -333,5 +346,7 @@ func _set_view(i: int) -> void:
 		_cam.position = c + off * 1.6
 		_cam.look_at(c + Vector3(0.0, 0.03, 0.04), Vector3.UP)
 		return
+	if _view == "rigs" and i % 2 == 0 and _t < 0.1:
+		_show_rig(_rig_sets[i >> 1])
 	_cam.position = v[0]
 	_cam.look_at(v[1], Vector3.UP)
