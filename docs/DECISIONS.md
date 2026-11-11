@@ -572,3 +572,25 @@ Merged. Crew at the launch point 155 (cap 200); city 1 first hex 55 s, first rob
 `docs/reviews/M3-14b_LOOKS.md`. Glim's 15 looks and the crew's 39 (parts, fleet marks, light colours) are found pieces edited only at the Locker (a tab for Glim and one per robot type); crafting, the parts stall, Request-track looks and free starter parts removed; old saves keep what they had (save v6). Planet 1 places 3 of them. Aurora's starting set gives no bonus. Wrecks grow a young plant until salvaged, the Bolt tease sits up as a robot shape, and the found moment adds a light column visible in sun. Merged.
 - To do in M3-13: rocket looks are still bought (move to found or drop); three robot-part achievements cannot be earned on Planet 1 (hide them until a planet can award them).
 - A one-off script error in `art/asset_lib.gd` during one round-trip run; not reproduced. Logged as B39.
+
+## Side systems trimmed to what Planet 1 uses (M3-13, lead, Nov 11, 2026)
+Each kept system has one job in the loop; the rest move to `parked/` (code kept, not loaded, saves keep their data).
+**Kept:**
+- World events (`systems/events.gd`): break up the grind with short chances (Salvage Glint, weather). Each event must point at cleaning, pressing or tending; events that pay outside the hex-value rules are cut.
+- Cleaning streak: makes steady sweeping feel good.
+- Achievements: Steam. Ones that cannot be earned on Planet 1 are hidden until a planet can award them.
+- Codex: the planet's record (junk, plants, robots, memory shards, landmarks, found pieces).
+- Bloom milestones: the whole-planet goal after the launch point.
+- Tunes and the radio: the owner's songs.
+- Photo album: before/after pictures per city, the restoration made visible.
+- Welcome-back card: says what the crew did while the player was away (robots earn no cubes, so it reports work, not money).
+- Liveries, robot builder parts, crew looks, Glim: part of found looks (M3-14b).
+- Robot parts (the Parts currency), the solar system (the sky).
+**Parked:**
+- The Requests board (`contracts`): the three goal tiers now give directed tasks; a second task list with its own rewards splits attention and breaks the reward rules.
+- Trinkets (`collection`) and their catalogue where it only lists trinkets (`exhibits`): a second collectible next to found pieces dilutes "rare and hard to get".
+- Garden Mode decorations (`decor`, `garden_director`): not part of the Planet 1 loop; a candidate for a later planet or post-game.
+- The robot nursery (retiring robots): tier steps cover old robots.
+- Lumi Level, unless it carries rewards the economy depends on: a second experience bar beside mastery is confusing. If removing it breaks pacing, its rewards move to mastery levels.
+- Buying ship and rocket looks (`ship_style` purchases): looks are found, not bought; the default look stays.
+Task M3-13 (execution) runs after the full-planet bot (M3-11) merges, so the two do not collide in the world wiring.
