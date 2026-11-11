@@ -78,9 +78,6 @@ signal built
 
 
 func _ready() -> void:
-	if not SliceOrbit.wanted():  # [orbit] phase A prototypes: --orbit=globe (verdance_globe), --orbit=v1 (orbit_world)
-		get_tree().change_scene_to_file.call_deferred("res://planet/orbit/%s.tscn" % ("orbit_world" if DevHooks.get_s("orbit", "") == "v1" else "verdance_globe"))
-		return
 	orbit = SliceOrbit.new()
 	orbit.name = "Orbit"
 	add_child(orbit)
