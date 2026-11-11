@@ -818,6 +818,8 @@ static func launch_blocker(w: Node, k: int) -> String:
 		return TranslationServer.translate("You are here")
 	if not Homeward.discovered(k):
 		return TranslationServer.translate("Not discovered yet")
+	if not Homeward.planet_open(k):  # [v7play] not built for this release yet (data/homeward.json "open")
+		return TranslationServer.translate(str(Homeward.closed_cfg().get("map_line", "Not ready yet")))
 	var r: String = Homeward.reach_blocker(k, Homeward.drive(), Homeward.pct_list())
 	if r != "":
 		return r

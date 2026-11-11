@@ -100,9 +100,10 @@ func _extras() -> String:
 			once.append(k)
 	var crew: Variant = SphereCrew.active
 	var zones: int = (crew as SphereCrew).zone_cells().size() if crew is SphereCrew else -1
-	return ("crew_bales=%d " % ((crew as SphereCrew).bales.size() if crew is SphereCrew else -1)) + "bots=[%s] zones=%d plants=%d bales=%d hover=%d step=%s goals=%d flags=[%s] rocket=%s " % [",".join(bots), zones, plants, bales,
+	return ("crew_bales=%d " % ((crew as SphereCrew).bales.size() if crew is SphereCrew else -1)) + "bots=[%s] zones=%d plants=%d bales=%d hover=%d step=%s goals=%d flags=[%s] rocket=%s home=%s woken=%d beats=%s " % [",".join(bots), zones, plants, bales,
 		GameState.level_of("hover_jets"), step, (gl as Goals).done_count() if gl is Goals else -1, ",".join(once),
-		str(GameState.orbit.get("rocket_site", "-"))]
+		str(GameState.orbit.get("rocket_site", "-")), str(StoryArc.meter()), HubPlan.restored_main(HubPlan.active_planet),  # [v7play] home meters, woken stations,
+		",".join(PackedStringArray((Homeward.state().get("beats", []) as Array).map(func(b: Variant) -> String: return str(b))))]  # and the once-only beats
 
 
 static func _fmt(a: Array) -> String:

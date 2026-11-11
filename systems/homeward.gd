@@ -38,6 +38,31 @@ static func planet_def(k: int) -> Dictionary:
 	return ps[k] if k >= 0 and k < ps.size() else {}
 
 
+## [v7play] Release gate: a planet the release has not built yet stays closed. data/homeward.json
+## planets[k].open (default true); false keeps it on the map with the "closed" line, no launch
+## goes there and the goals that need it leave the chain (closed.hide_goals). Dev: --open-planets.
+static func planet_open(k: int) -> bool:
+	if DevHooks.has("open-planets"):
+		return true
+	return bool(planet_def(k).get("open", true))
+
+
+## [v7play] True while the planet after the current one is closed (the release ends here for now).
+static func next_closed() -> bool:
+	var k: int = current_planet()
+	return k >= 0 and k + 1 < planets().size() and not planet_open(k + 1)
+
+
+## [v7play] data/homeward.json "closed": the map line, WREN's lines and the goals hidden meanwhile.
+static func closed_cfg() -> Dictionary:
+	return cfg().get("closed", {})
+
+
+## [v7play] A goal that needs the next planet, hidden while that planet is closed.
+static func goal_hidden(id: String) -> bool:
+	return next_closed() and id in (closed_cfg().get("hide_goals", []) as Array)
+
+
 static func planet_index(id: String) -> int:
 	var ps: Array = planets()
 	for i: int in ps.size():

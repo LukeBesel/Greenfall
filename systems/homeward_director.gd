@@ -223,7 +223,10 @@ func _process(delta: float) -> void:
 	# [v6story] The exit beat: the way onward has just opened (whatever the gate is).
 	# [v7arc] Any planet (data/story_arc.json): its fuel and power go into the home meters here.
 	var k: int = Homeward.current_planet()
-	var past: bool = k == 0 and (Homeward.answered() or Homeward.drive() >= 5)  # older saves: already past the first planet's exit
+	# Older saves: already past the first planet's exit. [v7play] A drive built with the six stations
+	# awake is not "past": the beat is still owed (the drive could be bought in the seconds before
+	# this check, e.g. right after a reload), so it is spoken, not marked silently.
+	var past: bool = k == 0 and (Homeward.answered() or (Homeward.drive() >= 5 and not StoryArc.leave_open(0)))
 	if not ("exit" in _queue) and not Homeward.beat_done(StoryArc.exit_beat(k)) and (past or StoryArc.leave_open(k)):
 		if past:
 			Homeward.mark_beat(StoryArc.exit_beat(k))
@@ -414,7 +417,28 @@ static func on_drive_built(w: Node) -> void:
 		d._build_home_site()
 	if Homeward.drive() == 5 and Homeward.current_planet() == 0 and not Homeward.beat_done("verdance_drive"):  # [v6story]
 		Homeward.mark_beat("verdance_drive")
-		say_exit(w, "drive_built")
+		if d and not Homeward.beat_done(StoryArc.exit_beat(0)) and StoryArc.leave_open(0):  # [v7play] the exit beat first, if still owed
+			d._queue.erase("exit")
+			d._exit_beat(0)
+		if Homeward.next_closed():  # [v7play] the next planet isn't in this release: the "to be continued" beat
+			say_closed(w)
+		else:
+			say_exit(w, "drive_built")
+
+
+## [v7play] The end of this release's road (data/homeward.json "closed"): WREN's lines, then the
+## "to be continued" card as a story toast. The player stays on Verdance and keeps restoring it.
+static func say_closed(w: Node) -> int:
+	var c: Dictionary = Homeward.closed_cfg()
+	var wr: Wren = w.get("wren") as Wren if w else null
+	var ls: Array = c.get("drive_lines", [])
+	if wr != null:
+		for l: Variant in ls:
+			wr.speak(TranslationServer.translate(str(l)), wr.stage(), true)
+	if str(c.get("toast", "")) != "":
+		EventBus.toast.emit(TranslationServer.translate(str(c["toast"])), "story")
+	print("[home] next planet closed: to be continued")
+	return ls.size()
 	if Homeward.drive() >= 7 and w.get("wren") != null:
 		w.wren.say("home_rocket", 1.0, true)
 

@@ -390,7 +390,7 @@ msgstr "[Ţôþ ţîéŕ ~]"
 msgid "Needs the Rocket Cargo research"
 msgstr "[Ñééðš ţĥé Ŕôçķéţ Çàŕĝô ŕéšéàŕçĥ ~~~~~~~~]"
 
-#: automation/rocket_tiers.gd:61 systems/homeward.gd:549
+#: automation/rocket_tiers.gd:61 systems/homeward.gd:574
 msgid "Not enough cubes or parts"
 msgstr "[Ñôţ éñôûĝĥ çûbéš ôŕ þàŕţš ~~~~~~]"
 
@@ -2350,19 +2350,19 @@ msgstr "[ÇŔÀÐĻÉ ~]"
 msgid "WE'LL BE BACK"
 msgstr "[ŴÉ'ĻĻ BÉ BÀÇĶ ~~]"
 
-#: systems/achievements.gd:160
+#: systems/achievements.gd:167
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr "[%d àçĥîévéméñţš ûñļôçķéð. Šéé ţĥém îñ ţĥé Çôðéx (Ķ). ~~~~~~~~~~~~~~~]"
 
-#: systems/achievements.gd:167 ui/notify_stack.gd:27 ui/subtitles.gd:450
+#: systems/achievements.gd:174 ui/notify_stack.gd:27 ui/subtitles.gd:450
 msgid "Achievement: %s. %s"
 msgstr "[Àçĥîévéméñţ: %s. %s ~~~~]"
 
-#: systems/achievements.gd:172
+#: systems/achievements.gd:179
 msgid "Codex: %d new entries."
 msgstr "[Çôðéx: %d ñéŵ éñţŕîéš. ~~~~~]"
 
-#: systems/achievements.gd:175
+#: systems/achievements.gd:182
 msgid "Codex entry: %s"
 msgstr "[Çôðéx éñţŕý: %s ~~]"
 
@@ -2702,63 +2702,63 @@ msgstr "[Àûðîţ ŵôñ, %d ţô %d! Ţĥé Ļéðĝéŕ šţàmþš îţ À�
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "[Ţĥé ðŕôñé ŵôñ ţĥé àûðîţ, %d ţô %d. Îţ ļéƒţ à ţîþ àñýŵàý: +%s çûbéš. ~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/homeward.gd:153
+#: systems/homeward.gd:178
 msgid "Wake %d old stations on %s to level %d (%d so far)"
 msgstr "[Ŵàķé %d ôļð šţàţîôñš ôñ %s ţô ļévéļ %d (%d šô ƒàŕ) ~~~~~~~~~~~~~~~]"
 
-#: systems/homeward.gd:155
+#: systems/homeward.gd:180
 msgid "Restore %s to %d%% (%d%%) or get a base to level %d"
 msgstr "[Ŕéšţôŕé %s ţô %d%% (%d%%) ôŕ ĝéţ à bàšé ţô ļévéļ %d ~~~~~~~~~~~~~~~]"
 
-#: systems/homeward.gd:156
+#: systems/homeward.gd:181
 msgid "Restore %s to %d%% (%d%%)"
 msgstr "[Ŕéšţôŕé %s ţô %d%% (%d%%) ~~~~~~]"
 
-#: systems/homeward.gd:163
+#: systems/homeward.gd:188
 msgid "Restore another planet to %d%% (best %d%%)"
 msgstr "[Ŕéšţôŕé àñôţĥéŕ þļàñéţ ţô %d%% (béšţ %d%%) ~~~~~~~~~~~~]"
 
-#: systems/homeward.gd:245
+#: systems/homeward.gd:270
 msgid "Needs %s: found on %s"
 msgstr "[Ñééðš %s: ƒôûñð ôñ %s ~~~~]"
 
-#: systems/homeward.gd:390
+#: systems/homeward.gd:415
 msgid "New tech: %s. %s"
 msgstr "[Ñéŵ ţéçĥ: %s. %s ~~~]"
 
-#: systems/homeward.gd:437
+#: systems/homeward.gd:462
 msgid "Needs the %s drive"
 msgstr "[Ñééðš ţĥé %s ðŕîvé ~~~]"
 
-#: systems/homeward.gd:439
+#: systems/homeward.gd:464
 msgid "No chart yet: restore %s to %d%%"
 msgstr "[Ñô çĥàŕţ ýéţ: ŕéšţôŕé %s ţô %d%% ~~~~~~~~]"
 
-#: systems/homeward.gd:533
+#: systems/homeward.gd:558
 msgid "The Homeward rocket is built"
 msgstr "[Ţĥé Ĥôméŵàŕð ŕôçķéţ îš bûîļţ ~~~~~~~]"
 
-#: systems/homeward.gd:536 systems/museum.gd:117
+#: systems/homeward.gd:561 systems/museum.gd:117
 msgid "The Cradle has to answer first (Cradle Returns)"
 msgstr "[Ţĥé Çŕàðļé ĥàš ţô àñšŵéŕ ƒîŕšţ (Çŕàðļé Ŕéţûŕñš) ~~~~~~~~~~~~~]"
 
-#: systems/homeward.gd:541
+#: systems/homeward.gd:566
 msgid "Needs full fuel and power. %s"
 msgstr "[Ñééðš ƒûļļ ƒûéļ àñð þôŵéŕ. %s ~~~~~~~]"
 
-#: systems/homeward.gd:543
+#: systems/homeward.gd:568
 msgid "Needs %d planet relics (%d)"
 msgstr "[Ñééðš %d þļàñéţ ŕéļîçš (%d) ~~~~~~]"
 
-#: systems/homeward.gd:545
+#: systems/homeward.gd:570
 msgid "Restore every planet first (%d%%)"
 msgstr "[Ŕéšţôŕé évéŕý þļàñéţ ƒîŕšţ (%d%%) ~~~~~~~~~]"
 
-#: systems/homeward.gd:547
+#: systems/homeward.gd:572
 msgid "Build it at Verdance's Cradle Returns"
 msgstr "[Bûîļð îţ àţ Véŕðàñçé'š Çŕàðļé Ŕéţûŕñš ~~~~~~~~~~]"
 
-#: systems/homeward.gd:563
+#: systems/homeward.gd:588
 msgid "Rocket drive built: %s."
 msgstr "[Ŕôçķéţ ðŕîvé bûîļţ: %s. ~~~~~]"
 
@@ -2782,15 +2782,15 @@ msgstr "[Ŕéļîç: %s. Ĥéîŕļôôm þîçķ +1 (Àŕķ Bŕîðĝé). ~~~~~
 msgid "Every planet in the system is alive. The Settlers will wake to five green worlds."
 msgstr "[Évéŕý þļàñéţ îñ ţĥé šýšţém îš àļîvé. Ţĥé Šéţţļéŕš ŵîļļ ŵàķé ţô ƒîvé ĝŕééñ ŵôŕļðš. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/homeward_director.gd:504
+#: systems/homeward_director.gd:522
 msgid "E   launch home"
 msgstr "E   [ļàûñçĥ ĥômé ~]"
 
-#: systems/homeward_director.gd:504
+#: systems/homeward_director.gd:522
 msgid "E   plant the last seed"
 msgstr "E   [þļàñţ ţĥé ļàšţ šééð ~~~~]"
 
-#: systems/homeward_director.gd:515
+#: systems/homeward_director.gd:533
 msgid "The last seed is in the ground. Everything is ready. Press E again here to launch home."
 msgstr "[Ţĥé ļàšţ šééð îš îñ ţĥé ĝŕôûñð. Évéŕýţĥîñĝ îš ŕéàðý. Þŕéšš É àĝàîñ ĥéŕé ţô ļàûñçĥ ĥômé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
@@ -6295,7 +6295,7 @@ msgstr "[Bûîļð ţĥé ðŕîvé ~~]"
 msgid "Not discovered yet"
 msgstr "[Ñôţ ðîšçôvéŕéð ýéţ ~~~]"
 
-#: ui/system_map.gd:826
+#: ui/system_map.gd:828
 msgid "Rocket not ready"
 msgstr "[Ŕôçķéţ ñôţ ŕéàðý ~~~]"
 
@@ -6332,8 +6332,8 @@ msgid "Pick a world you've visited to watch its crew. The one you stand on can't
 msgstr "[Þîçķ à ŵôŕļð ýôû'vé vîšîţéð ţô ŵàţçĥ îţš çŕéŵ. Ţĥé ôñé ýôû šţàñð ôñ çàñ'ţ šéé îţšéļƒ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: ui/telescope_view.gd:384
-msgid "No other world visited yet. Seed or visit another world from the Ark Bridge, then come back."
-msgstr "[Ñô ôţĥéŕ ŵôŕļð vîšîţéð ýéţ. Šééð ôŕ vîšîţ àñôţĥéŕ ŵôŕļð ƒŕôm ţĥé Àŕķ Bŕîðĝé, ţĥéñ çômé bàçķ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "No other world visited yet. Visit another world, then come back to watch its crew."
+msgstr "[Ñô ôţĥéŕ ŵôŕļð vîšîţéð ýéţ. Vîšîţ àñôţĥéŕ ŵôŕļð, ţĥéñ çômé bàçķ ţô ŵàţçĥ îţš çŕéŵ. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: ui/telescope_view.gd:477
 msgid "Spotted %s: it now shows on the system map"
@@ -11439,6 +11439,22 @@ msgstr "[Ŕîmé ~]"
 msgid "Anvil"
 msgstr "[Àñvîļ ~]"
 
+#: data/homeward.json:closed.map_line
+msgid "Coming in a future update"
+msgstr "[Çômîñĝ îñ à ƒûţûŕé ûþðàţé ~~~~~~]"
+
+#: data/homeward.json:closed.drive_lines
+msgid "The drive is ready, Lumi. But we can't reach Ochre yet. Its sky is still full of dust."
+msgstr "[Ţĥé ðŕîvé îš ŕéàðý, Ļûmî. Bûţ ŵé çàñ'ţ ŕéàçĥ Ôçĥŕé ýéţ. Îţš šķý îš šţîļļ ƒûļļ ôƒ ðûšţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/homeward.json:closed.drive_lines
+msgid "So we stay a while. Every town we clean makes Verdance greener for the Settlers."
+msgstr "[Šô ŵé šţàý à ŵĥîļé. Évéŕý ţôŵñ ŵé çļéàñ màķéš Véŕðàñçé ĝŕééñéŕ ƒôŕ ţĥé Šéţţļéŕš. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/homeward.json:closed.toast
+msgid "To be continued: the trip to Ochre comes in a future update. Keep restoring Verdance!"
+msgstr "[Ţô bé çôñţîñûéð: ţĥé ţŕîþ ţô Ôçĥŕé çôméš îñ à ƒûţûŕé ûþðàţé. Ķééþ ŕéšţôŕîñĝ Véŕðàñçé! ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
 #: data/homeward.json:tech[deep_drill].name
 msgid "Deep Drill"
 msgstr "[Ðééþ Ðŕîļļ ~]"
@@ -12124,8 +12140,8 @@ msgid "Restore Anvil."
 msgstr "[Ŕéšţôŕé Àñvîļ. ~~]"
 
 #: data/objectives.json:wren_brief.lines
-msgid "Lumi, it's WREN. I run the Cradle, our big ship. I never stopped listening for you."
-msgstr "[Ļûmî, îţ'š ŴŔÉÑ. Î ŕûñ ţĥé Çŕàðļé, ôûŕ bîĝ šĥîþ. Î ñévéŕ šţôþþéð ļîšţéñîñĝ ƒôŕ ýôû. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "I run the Cradle, our big ship. I never stopped listening for you."
+msgstr "[Î ŕûñ ţĥé Çŕàðļé, ôûŕ bîĝ šĥîþ. Î ñévéŕ šţôþþéð ļîšţéñîñĝ ƒôŕ ýôû. ~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:wren_brief.lines
 msgid "The Cradle can't land on a dead world. Let's make Verdance green again."

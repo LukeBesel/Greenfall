@@ -164,8 +164,8 @@ static func leave_open(k: int) -> bool:
 		return false
 	if k == Homeward.current_planet():
 		var lh: Vector2i = Homeward.leave_hubs(k)
-		if lh.x > 0 and Homeward.hubs_at_level(lh.y) >= lh.x:
-			return true
+		if lh.x > 0:  # [v7play] a planet with a station gate leaves by it alone: at 50% Bloom Core with
+			return Homeward.hubs_at_level(lh.y) >= lh.x  # 5 stations WREN said "Six stations awake" a minute early
 		var ob: int = Homeward.leave_base_level(k)
 		if ob > 0 and (int(GameState.world.get("hub_level", 1)) >= ob or Frontiers.bases_at_level(ob) > 0):
 			return true

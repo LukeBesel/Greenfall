@@ -608,8 +608,8 @@ func _process(delta: float) -> void:
 	_head_yaw = lerp_angle(_head_yaw, _head_yaw_target, delta * 4.0)
 	_head.rotation.y = _head_yaw
 	_head.rotation.z = sin(_t * 0.7) * 0.03 + (0.08 if _happy > 0.8 else 0.0) + pet_e * 0.2  # [fauna2] head tilt while petting
-	_look = _look.lerp(_look_target, delta * 6.0)
-	_happy = lerpf(_happy, _happy_target, delta * 4.0)
+	_look = _look.lerp(_look_target, minf(1.0, delta * 6.0))  # [v7play] clamped: long frames overshot
+	_happy = lerpf(_happy, _happy_target, minf(1.0, delta * 4.0))  # [v7play]
 	_iris_now = _happy
 	_blink_timer -= delta
 	if _blink_timer <= 0.0:

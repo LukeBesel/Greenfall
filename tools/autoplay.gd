@@ -1080,6 +1080,7 @@ func _arc(p: Patch) -> bool:
 			_hop_state = 2
 			_hop_t = _now()
 			print("[arc] %.1f min  landed at site %d" % [_now() / 60.0, _hop_to])
+			_mark("landed_%d_s" % (_far_restored(os_) + 2))  # [v7play] --stop-at=landed_N_s: at a far hub, not woken yet
 			return true
 		2:
 			# The hub's local steps (clean N hexes there, v6hubs' chain): the bot does not clean
@@ -1140,12 +1141,21 @@ func _arc(p: Patch) -> bool:
 			_hop_to = to
 			_event("launch", {"to": _hop_to})
 			os_.hop_to(_hop_to)
+			_mark.call_deferred("hop_%d_s" % (nf + 2))  # [v7play] --stop-at=hop_N_s: save and quit mid-flight
 			return true
 	if str(d.get("key", "")) == "drive_tier" and Homeward.drive() < int(d.get("target", 5)) and Homeward.drive_blocker(false) == "":
 		if Homeward.buy_drive(false):
 			HomewardDirector.on_drive_built(world)
 			_mark("drive_%d_s" % Homeward.drive())
 			print("[arc] %.1f min  built the Mk V drive  %s" % [_now() / 60.0, _planet_line()])
+	if Homeward.drive() >= 5 and Homeward.current_planet() == 0 and Homeward.next_closed() and not DevHooks.has("past-exit"):
+		# [v7play] The next planet is closed in this release (data/homeward.json "open"): the drive
+		# and WREN's "to be continued" beat are the end of the road. Give the beat time, then stop.
+		if _now() - float(_report.get("drive_5_s", _now())) > 120.0:
+			print("[arc] %.1f min  next planet closed: to be continued  %s" % [_now() / 60.0, _planet_line()])
+			_stopping = true
+			_stop_run("drive-built (next planet closed)")
+			return true
 	if str(d.get("key", "")) == "planets_landed" and Homeward.drive() >= 5 and SystemMap.launch_blocker(world, 1) != "" and not DevHooks.has("past-exit"):
 		# [v6pace] The drive is the planet's leave point. If the launch itself stays blocked (the next
 		# planet's reach, the rocket's state), say why and end the pacing run with its report.
@@ -1177,6 +1187,8 @@ func _manage(p: Patch) -> void:
 		_mark("base_%d_s" % _hub_level_seen)
 		_progress()
 		_event("base", {"level": _hub_level_seen})
+	if Homeward.beat_done(StoryArc.exit_beat(0)):  # [v7play] --stop-at=exit_beat_s: just after the exit beat
+		_mark("exit_beat_s")
 	var want: Dictionary = _shopping_list()
 	if not _at_base(p):
 		# Head back when something worth the walk is affordable.

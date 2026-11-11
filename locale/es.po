@@ -393,7 +393,7 @@ msgstr "Nivel máximo"
 msgid "Needs the Rocket Cargo research"
 msgstr "Requiere la investigación Carga de cohete"
 
-#: automation/rocket_tiers.gd:61 systems/homeward.gd:549
+#: automation/rocket_tiers.gd:61 systems/homeward.gd:574
 msgid "Not enough cubes or parts"
 msgstr "No hay suficientes cubos o piezas"
 
@@ -2353,19 +2353,19 @@ msgstr "CRADLE"
 msgid "WE'LL BE BACK"
 msgstr "VOLVEREMOS"
 
-#: systems/achievements.gd:160
+#: systems/achievements.gd:167
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr "%d logros desbloqueados. Míralos en el Códice (K)."
 
-#: systems/achievements.gd:167 ui/notify_stack.gd:27 ui/subtitles.gd:450
+#: systems/achievements.gd:174 ui/notify_stack.gd:27 ui/subtitles.gd:450
 msgid "Achievement: %s. %s"
 msgstr "Logro: %s. %s"
 
-#: systems/achievements.gd:172
+#: systems/achievements.gd:179
 msgid "Codex: %d new entries."
 msgstr "Códice: %d entradas nuevas."
 
-#: systems/achievements.gd:175
+#: systems/achievements.gd:182
 msgid "Codex entry: %s"
 msgstr "Entrada del Códice: %s"
 
@@ -2705,63 +2705,63 @@ msgstr "¡Auditoría ganada, %d a %d! El Ledger la sella como APROBADA. %s"
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "El dron ganó la auditoría, %d a %d. Aun así dejó propina: +%s cubos."
 
-#: systems/homeward.gd:153
+#: systems/homeward.gd:178
 msgid "Wake %d old stations on %s to level %d (%d so far)"
 msgstr "Despierta %d estaciones antiguas en %s hasta el nivel %d (%d por ahora)"
 
-#: systems/homeward.gd:155
+#: systems/homeward.gd:180
 msgid "Restore %s to %d%% (%d%%) or get a base to level %d"
 msgstr "Restaura %s al %d%% (%d%%) o sube una base al nivel %d"
 
-#: systems/homeward.gd:156
+#: systems/homeward.gd:181
 msgid "Restore %s to %d%% (%d%%)"
 msgstr "Restaura %s al %d%% (%d%%)"
 
-#: systems/homeward.gd:163
+#: systems/homeward.gd:188
 msgid "Restore another planet to %d%% (best %d%%)"
 msgstr "Restaura otro planeta al %d%% (récord %d%%)"
 
-#: systems/homeward.gd:245
+#: systems/homeward.gd:270
 msgid "Needs %s: found on %s"
 msgstr "Necesita %s: se encuentra en %s"
 
-#: systems/homeward.gd:390
+#: systems/homeward.gd:415
 msgid "New tech: %s. %s"
 msgstr "Nueva tecnología: %s. %s"
 
-#: systems/homeward.gd:437
+#: systems/homeward.gd:462
 msgid "Needs the %s drive"
 msgstr "Necesita el motor %s"
 
-#: systems/homeward.gd:439
+#: systems/homeward.gd:464
 msgid "No chart yet: restore %s to %d%%"
 msgstr "Aún no hay carta: restaura %s al %d%%"
 
-#: systems/homeward.gd:533
+#: systems/homeward.gd:558
 msgid "The Homeward rocket is built"
 msgstr "El cohete del Regreso está construido"
 
-#: systems/homeward.gd:536 systems/museum.gd:117
+#: systems/homeward.gd:561 systems/museum.gd:117
 msgid "The Cradle has to answer first (Cradle Returns)"
 msgstr "El Cradle tiene que responder primero (Regreso del Cradle)"
 
-#: systems/homeward.gd:541
+#: systems/homeward.gd:566
 msgid "Needs full fuel and power. %s"
 msgstr "Necesita combustible y energía llenos. %s"
 
-#: systems/homeward.gd:543
+#: systems/homeward.gd:568
 msgid "Needs %d planet relics (%d)"
 msgstr "Necesita %d reliquias planetarias (%d)"
 
-#: systems/homeward.gd:545
+#: systems/homeward.gd:570
 msgid "Restore every planet first (%d%%)"
 msgstr "Restaura primero todos los planetas (%d%%)"
 
-#: systems/homeward.gd:547
+#: systems/homeward.gd:572
 msgid "Build it at Verdance's Cradle Returns"
 msgstr "Constrúyelo en el Regreso del Cradle de Verdance"
 
-#: systems/homeward.gd:563
+#: systems/homeward.gd:588
 msgid "Rocket drive built: %s."
 msgstr "Motor construido: %s."
 
@@ -2785,15 +2785,15 @@ msgstr "Reliquia: %s. Elección de herencia +1 (Puente del Arca)."
 msgid "Every planet in the system is alive. The Settlers will wake to five green worlds."
 msgstr "Todos los planetas del sistema están vivos. Los Colonos despertarán ante cinco mundos verdes."
 
-#: systems/homeward_director.gd:504
+#: systems/homeward_director.gd:522
 msgid "E   launch home"
 msgstr "E   despegar hacia casa"
 
-#: systems/homeward_director.gd:504
+#: systems/homeward_director.gd:522
 msgid "E   plant the last seed"
 msgstr "E   plantar la última semilla"
 
-#: systems/homeward_director.gd:515
+#: systems/homeward_director.gd:533
 msgid "The last seed is in the ground. Everything is ready. Press E again here to launch home."
 msgstr "La última semilla está en la tierra. Todo está listo. Pulsa E otra vez aquí para despegar hacia casa."
 
@@ -6298,7 +6298,7 @@ msgstr "Construye el propulsor"
 msgid "Not discovered yet"
 msgstr "Aún sin descubrir"
 
-#: ui/system_map.gd:826
+#: ui/system_map.gd:828
 msgid "Rocket not ready"
 msgstr "Cohete no listo"
 
@@ -6335,8 +6335,8 @@ msgid "Pick a world you've visited to watch its crew. The one you stand on can't
 msgstr "Elige un mundo que hayas visitado para ver a su equipo. Desde el que pisas no se ve a sí mismo."
 
 #: ui/telescope_view.gd:384
-msgid "No other world visited yet. Seed or visit another world from the Ark Bridge, then come back."
-msgstr "Aún no has visitado otro mundo. Siembra o visita otro desde el Puente del Arca y vuelve."
+msgid "No other world visited yet. Visit another world, then come back to watch its crew."
+msgstr "Aún no has visitado otro mundo. Visita otro mundo y luego vuelve para ver a su equipo."
 
 #: ui/telescope_view.gd:477
 msgid "Spotted %s: it now shows on the system map"
@@ -11442,6 +11442,22 @@ msgstr "Rime"
 msgid "Anvil"
 msgstr "Anvil"
 
+#: data/homeward.json:closed.map_line
+msgid "Coming in a future update"
+msgstr "Llegará en una próxima actualización"
+
+#: data/homeward.json:closed.drive_lines
+msgid "The drive is ready, Lumi. But we can't reach Ochre yet. Its sky is still full of dust."
+msgstr "El motor está listo, Lumi. Pero aún no podemos llegar a Ochre. Su cielo sigue lleno de polvo."
+
+#: data/homeward.json:closed.drive_lines
+msgid "So we stay a while. Every town we clean makes Verdance greener for the Settlers."
+msgstr "Así que nos quedamos un tiempo. Cada pueblo que limpiamos hace Verdance más verde para los Colonos."
+
+#: data/homeward.json:closed.toast
+msgid "To be continued: the trip to Ochre comes in a future update. Keep restoring Verdance!"
+msgstr "Continuará: el viaje a Ochre llegará en una próxima actualización. ¡Sigue restaurando Verdance!"
+
 #: data/homeward.json:tech[deep_drill].name
 msgid "Deep Drill"
 msgstr "Taladro profundo"
@@ -12127,8 +12143,8 @@ msgid "Restore Anvil."
 msgstr "Restaura Anvil."
 
 #: data/objectives.json:wren_brief.lines
-msgid "Lumi, it's WREN. I run the Cradle, our big ship. I never stopped listening for you."
-msgstr "Lumi, soy WREN. Yo llevo el Cradle, nuestra gran nave. Nunca dejé de escucharte."
+msgid "I run the Cradle, our big ship. I never stopped listening for you."
+msgstr "Yo llevo el Cradle, nuestra gran nave. Nunca dejé de escucharte."
 
 #: data/objectives.json:wren_brief.lines
 msgid "The Cradle can't land on a dead world. Let's make Verdance green again."
@@ -16992,6 +17008,12 @@ msgstr "Ese pórtico desguazó la flota del Ledger cuando se acabó el dinero. E
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un mundo de óxido, verde. Las viejas grúas tienen flores a sus pies. Las cuentas están cerradas, {name}. Las hemos cuadrado."
+
+#~ msgid "No other world visited yet. Seed or visit another world from the Ark Bridge, then come back."
+#~ msgstr "Aún no has visitado otro mundo. Siembra o visita otro desde el Puente del Arca y vuelve."
+
+#~ msgid "Lumi, it's WREN. I run the Cradle, our big ship. I never stopped listening for you."
+#~ msgstr "Lumi, soy WREN. Yo llevo el Cradle, nuestra gran nave. Nunca dejé de escucharte."
 
 #~ msgid "Every planet in the system is alive. Go back to Verdance's Cradle Returns and build the Mk VII Homeward rocket."
 #~ msgstr "Todos los planetas del sistema están vivos. Vuelve al Regreso del Cradle en Verdance y construye el cohete Mk VII del Regreso."

@@ -23,6 +23,7 @@ var _wren_n: int = 0  # [v4calm]
 var _wren_hooked: bool = false
 var _fleet_t: float = 0.0
 var _last_fleet: String = "-"
+var _last_beam: String = "-"  # [v7play] the purple beam's target, as a place name
 
 
 func _init(w: Node = null) -> void:
@@ -106,6 +107,10 @@ func _process(delta: float) -> void:
 		elif fl == null and _last_fleet != "none":
 			_last_fleet = "none"
 			_say("no Fleet in this world")
+	var beam: String = beam_text(world)  # [v7play] the header promised the beam's target: log it
+	if beam != _last_beam:
+		_last_beam = beam
+		_say("beam: " + beam)
 	var hud: Variant = world.get("hud")
 	var pr: String = ""
 	if hud is HUD:
@@ -143,6 +148,47 @@ static func card_text(w: Node, with_count: bool = true) -> String:
 		if tx is RichTextLabel:
 			parts.append("checklist: " + ChecklistCard._strip_bb((tx as RichTextLabel).text))
 	return " | ".join(parts)
+
+
+## [v7play] Where the purple beam stands, named by the nearest yard object (bin, bench, rocket,
+## a hub's pad) within 6 m, else "site N (x, z)" in that site's metres; "none" when no beam shows.
+static func beam_text(w: Node) -> String:
+	var ob: Variant = w.get("objectives") if w else null
+	if not ob is Objectives:
+		return "none"
+	var t: Variant = (ob as Objectives).waypoint_target()
+	if not t is Vector3:
+		return "none"
+	var pos: Vector3 = t
+	var named: Array = []
+	var bp: Variant = Objectives.bin_point(w)
+	if bp is Vector3:
+		named.append(["bin", bp])
+	var so: Variant = w.get("orbit")
+	if so is SliceOrbit:
+		named.append(["bench", (so as SliceOrbit).bench_position()])
+	var os_: OrbitSites = OrbitSites.of(w)
+	if os_ and os_.rocket_spot and os_.rocket_spot.visible:
+		named.append(["rocket", os_.rocket_spot.global_position])
+	if os_ and os_.purpose:
+		var fb: Variant = os_.purpose.bench_point()
+		if fb is Vector3:
+			named.append(["field bench", fb])
+	for n: Array in named:
+		if (n[1] as Vector3).distance_to(pos) < 6.0:
+			return str(n[0])
+	if os_ and os_.sm:
+		var best: int = -1
+		var bd: float = INF
+		for i: int in os_.sm.sites.size():
+			var d: float = os_.sm.pad_xf(i).origin.distance_to(pos)
+			if d < bd:
+				bd = d
+				best = i
+		if best >= 0:
+			var lp: Vector3 = os_.sm.pad_xf(best).affine_inverse() * pos
+			return "site %d (%.0f, %.0f)" % [best, lp.x, lp.z]
+	return "(%.0f, %.0f, %.0f)" % [pos.x, pos.y, pos.z]
 
 
 func _summary() -> void:

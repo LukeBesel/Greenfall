@@ -1306,6 +1306,7 @@ func _check_stall(u: Dictionary, dt: float) -> void:
 		return
 	u["log"]["stall_s"] = float(u["log"]["stall_s"]) + float(u["stall_t"])
 	u["log"]["unstuck"] = float(u["log"]["unstuck"]) + 1.0
+	u["unstuck_at"] = _t  # [v7play] is_stuck: only a recent escape counts
 	if int(u["job"]) >= 0:
 		_skip[int(u["job"])] = _t + SKIP_S
 	_drop_job(u)
@@ -1462,8 +1463,12 @@ func status_text(u: Dictionary) -> String:
 
 
 ## A robot is stuck if it is stalled right now, or got stuck more than twice.
+## [v7play] Stuck now: stalled half the stall time, or freed from a stall in the last STUCK_RECENT_S.
+## (It used to count escapes over the robot's whole life, so a robot with 3 old escapes showed
+## "needs help" in the Command view, and in the soak, for the rest of the game.)
+const STUCK_RECENT_S: float = 30.0
 func is_stuck(u: Dictionary) -> bool:
-	return float(u["stall_t"]) >= STALL_S * 0.5 or float(u["log"]["unstuck"]) > 2.0
+	return float(u["stall_t"]) >= STALL_S * 0.5 or _t - float(u.get("unstuck_at", -1.0e9)) < STUCK_RECENT_S
 
 
 func stuck_count() -> int:

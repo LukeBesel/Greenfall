@@ -381,7 +381,7 @@ func _show_system() -> void:
 		_first = _bar.get_child(0) as Control
 	_left.text = tr("Two suns, one system.\nWorlds visited: %d") % nv
 	_right.text = ""
-	_hint.text = tr("Pick a world you've visited to watch its crew. The one you stand on can't see itself.") if nv > 0 else tr("No other world visited yet. Seed or visit another world from the Ark Bridge, then come back.")
+	_hint.text = tr("Pick a world you've visited to watch its crew. The one you stand on can't see itself.") if nv > 0 else tr("No other world visited yet. Visit another world, then come back to watch its crew.")  # [v7play] the Ark Bridge isn't reachable on Verdance
 	if _first:
 		_first.call_deferred("grab_focus")
 

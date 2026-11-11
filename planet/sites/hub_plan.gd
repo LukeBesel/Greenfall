@@ -290,7 +290,7 @@ static func trade_line() -> String:
 	var cfg: Variant = opt_static("res://automation/hub.gd", "far_cfg")
 	var v: float = pow(float((cfg as Dictionary).get("sell_growth", 1.0)), float(woken_count(active_planet))) if cfg is Dictionary else 1.0
 	if v > 1.001:
-		var t: String = ("%.2f" % v).rstrip("0").rstrip(".")
+		var t: String = ("%.2f" % v).rstrip("0").rstrip(".") if v < 10.0 else "%d" % int(round(v))  # [v7play] x43, not x42.88
 		return TranslationServer.translate("The recycling network grew: everything sells for x%s now.") % t
 	return ""
 

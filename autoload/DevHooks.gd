@@ -86,6 +86,7 @@ var _perf_frames: int = 0
 var _perf_wall: float = 0.0
 var _stats_done: bool = false  # [deck]
 var _garden_done: bool = false  # [green]
+var _nan_t: float = 0.0  # [v7play] --nan-probe
 
 
 func _ready() -> void:
@@ -172,6 +173,9 @@ func _process(delta: float) -> void:
 		_garden_done = true
 		if get_tree().current_scene and get_tree().current_scene.get("garden") != null:
 			GardenDev.report(get_tree().current_scene)
+	if has("nan-probe") and _elapsed >= get_f("nan-probe", 30.0) and _elapsed - _nan_t >= 10.0:  # [v7play] nodes placed at NaN/inf
+		_nan_t = _elapsed
+		_nan_probe(get_tree().root)
 	if has("quit-after") and _elapsed >= get_f("quit-after", 5.0):
 		print("[DevHooks] quitting after %.1fs" % _elapsed)
 		if has("report"):
@@ -203,3 +207,23 @@ func save_viewport(path: String) -> void:
 	var img: Image = get_viewport().get_texture().get_image()
 	var err: Error = img.save_png(abs_path)
 	print("[DevHooks] screenshot -> %s (%s)" % [abs_path, error_string(err)])
+
+
+## [v7play] Dev: --nan-probe=S prints every Node3D whose global transform is not finite (the
+## engine's "!v.is_finite()" at instance_set_transform), every 10 s from S s on.
+func _nan_probe(root: Node) -> void:
+	var n: int = 0
+	var stack: Array[Node] = [root]
+	while not stack.is_empty():
+		var nd: Node = stack.pop_back()
+		if nd is Node3D and (nd as Node3D).is_inside_tree():
+			var xf: Transform3D = (nd as Node3D).global_transform
+			if not xf.is_finite():
+				n += 1
+				if n <= 12:
+					var par: Node = nd.get_parent()
+					print("[nan] %s (%s) local %s parent %s finite=%s" % [nd.get_path(), nd.get_class(), str((nd as Node3D).transform), str(par.get_path()) if par else "-",
+						str((par as Node3D).global_transform.is_finite()) if par is Node3D else "-"])
+		for c: Node in nd.get_children():
+			stack.append(c)
+	print("[nan] %d non-finite Node3D at %.0f s" % [n, _elapsed])

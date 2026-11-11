@@ -181,6 +181,11 @@ reward gaps and card waits; targets and the last measured run are in `docs/BALAN
 `data/weekly.json` `"enabled"` is the one switch. It is `false`: the mode does not work on the round world yet (the week's seed is ignored and a resumed run has no robots), so its Keepsakes tab, its two Garden Mode decorations and its two achievements in the Codex are hidden, and Pause shows no Keepsakes button until a radio, an album or a nursery exists.
 Set it to `true` to bring all of it back. To look at it while it is off, run with `--extras=weekly` or `--weekly`. Test: `tests/test_extras.gd` (`test_weekly_off_hides_every_way_in`).
 
+## Which planets are open in this release (v7play)
+
+`data/homeward.json`: each planet's `"open"` is the switch (missing = open). Today only Verdance is open: Ochre, Tidewell, Rime and Anvil have `"open": false` because their round worlds are not built yet. A closed planet still shows on the solar-system map, with `closed.map_line` ("Coming in a future update") instead of a Launch button; the goals in `closed.hide_goals` (fly to another planet, restore more planets, the Mk VI/VII and the ending) leave the goal chain, and `closed.hide_achievements` leave the Codex, while the next planet is closed. When the Mk V drive is built, WREN says `closed.drive_lines` and `closed.toast` shows ("To be continued...") instead of the usual drive lines; the player stays on Verdance and the goal chain carries on there.
+To open a planet when it is built, set its `"open": true` (or delete the key). To look at a closed one while working on it, run with `--open-planets`. Test: `tests/test_v7play.gd`. New text in `closed` needs its six translations (docs/LOCALIZATION.md).
+
 ## Yard machines and landmarks (v6yard)
 
 **Picture signs and machine paint: `data/machine_art.json`.** Every yard machine carries a round

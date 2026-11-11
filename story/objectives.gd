@@ -314,6 +314,10 @@ static func glyphs(text: String) -> String:
 
 ## Progress of the current objective: [0..1 or -1 for none, label]. Hex objectives show the target
 ## hex's % clean; counts show "1 / 3".
+## [v7play] Stat keys whose target is an ordinal (the Nth station, tier N), not a count to fill.
+const ORDINAL_KEYS: Array[String] = ["hubs_woken", "hubs_seen", "drive_tier", "rocket_tier"]
+
+
 func progress() -> Array:
 	var def: Dictionary = current()
 	if def.is_empty():
@@ -341,6 +345,10 @@ func progress() -> Array:
 			return [have_c / need_c, "%s / %s" % [Settings.fmt(BigNum.from_float(have_c)), Settings.fmt(BigNum.from_float(need_c))]]
 	if str(def.get("type", "")) == "core":
 		return [v / maxf(tgt, 0.0001), "%d%%" % int(floor(v * 100.0))]
+	if v < tgt and str(def.get("key", "")) in ORDINAL_KEYS and not _step_price().is_empty():
+		# [v7play] One action left (wake this station, build this drive): its target is a station or tier
+		# number, so "Wake station 6 of 6 [4 / 5]" and "Build the Mk V drive [0 / 5]" read wrong. Price covered: full bar, no count.
+		return [1.0, ""]
 	return [v / maxf(tgt, 0.0001), ("%d / %d" % [int(v), int(tgt)]) if tgt > 1.0 else ""]
 
 
@@ -524,6 +532,11 @@ func step_target(def: Dictionary) -> Dictionary:
 	var p: Patch = world.get("patch") as Patch if world else null
 	var key: String = str(def.get("key", ""))
 	var typ: String = str(def.get("type", "stat"))
+	var arc: Variant = _arc_beam(def, key)  # [v7play] station and drive steps: the rocket or the landmark
+	if arc is Vector3:
+		return _resolve({"to": "place", "pos": arc, "row": []})
+	if arc is String:  # saving up for it: out to the junk
+		return _resolve({"to": str(arc), "row": []})
 	if not def.has("_goal"):  # the story objectives
 		match str(def.get("id", "")):
 			"dump3":  # a full-ish chest: to the bin; else out to the junk
@@ -878,6 +891,33 @@ func _step_price() -> Dictionary:
 		if fl.count(key) < int(def.get("target", 1)):
 			return {"cubes": fl.build_cost(key).to_float(), "parts": fl.build_parts(key).to_float()}
 	return {}
+
+
+## [v7play] The beam for the planet's arc steps (HubPurpose.goal_target was written for this but
+## never called, so "Fly to the next station" and "Wake station N" pointed at the home bench, even
+## from a far station): fly / the drive -> the parked rocket once the price is covered (else "hex":
+## go and earn); wake -> the landmark of the far station Lumi is at, else the rocket. Null when the
+## step is not one of these or there is nothing to point at.
+func _arc_beam(def: Dictionary, key: String) -> Variant:
+	var sid: String = str(def.get("id", ""))
+	var kind: String = ""
+	if key == "hubs_woken" or sid.begins_with("hub_wake_"):
+		kind = "landmark"
+	elif key == "hubs_seen" or sid.begins_with("hub_fly_") or key == "drive_tier":
+		kind = "rocket"
+	if kind == "":
+		return null
+	var os_: OrbitSites = OrbitSites.of(world) if world else null
+	if os_ == null or os_.purpose == null:
+		return null
+	if kind == "landmark":
+		var lm: Variant = os_.purpose.goal_target("landmark")
+		if lm is Vector3:
+			return lm
+	var price: Dictionary = _step_price()
+	if not price.is_empty() and not GameState.can_afford_all(price):
+		return "hex"
+	return os_.purpose.goal_target("rocket")
 
 
 ## [v6pace] What a step of the planet's arc costs, by the stat it counts: the next far hub's wake

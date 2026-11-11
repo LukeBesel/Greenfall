@@ -523,6 +523,12 @@ func load_state(d: Dictionary) -> void:
 func _dev_hop() -> void:
 	await get_tree().create_timer(1.0).timeout
 	for h: String in DevHooks.get_s("orbit-hop", "1").split(","):
+		if DevHooks.has("quit-on-hop"):  # [v7play] dev: quit in the frame a hop starts (the autoplay stop after a wake; exit 134 repro)
+			hop_to(int(h))
+			await get_tree().create_timer(DevHooks.get_f("quit-on-hop", 0.0)).timeout if DevHooks.get_f("quit-on-hop", 0.0) > 0.0 else null
+			print("[hop] dev: quitting %.2f s into the hop to %s" % [DevHooks.get_f("quit-on-hop", 0.0), h])
+			get_tree().quit()
+			return
 		var t0: int = Time.get_ticks_msec()
 		var ok: bool = await hop_to(int(h))
 		var patch: Node3D = so.w.get("patch")

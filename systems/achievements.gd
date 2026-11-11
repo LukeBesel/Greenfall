@@ -22,13 +22,20 @@ static func defs() -> Array:
 
 ## [v6screens] The ones a player is shown: without the Seed of the Week pair while it is off
 ## (data/weekly.json "enabled"). The full list stays for saves and Steam.
+## [v7play] Also without the ones that need a planet this release has not opened yet
+## (data/homeward.json closed.hide_achievements, while the next planet is closed).
 static func shown_defs() -> Array:
-	if WeeklyChallenge.enabled():
+	var weekly: bool = WeeklyChallenge.enabled()
+	var hide: Array = Homeward.closed_cfg().get("hide_achievements", []) if Homeward.next_closed() else []
+	if weekly and hide.is_empty():
 		return defs()
 	var out: Array = []
 	for a: Dictionary in defs():
-		if str((a.get("cond", {}) as Dictionary).get("key", "")) != "weekly_chips":
-			out.append(a)
+		if not weekly and str((a.get("cond", {}) as Dictionary).get("key", "")) == "weekly_chips":
+			continue
+		if str(a.get("id", "")) in hide:
+			continue
+		out.append(a)
 	return out
 
 

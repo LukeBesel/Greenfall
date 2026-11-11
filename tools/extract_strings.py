@@ -51,6 +51,7 @@ JSON_RULES: dict[str, dict] = {
                                                    "jammed", "lonely", "cinematic"}},
     "events.json": {"keys": COMMON_KEYS, "pools": {"wren"}},
     "songs.json": {"keys": COMMON_KEYS | {"genre", "bio"}},  # [tunes] artists and songs
+    "homeward.json": {"keys": COMMON_KEYS | {"map_line", "drive_lines"}},  # [v7play] the release gate ("closed")
     # Data-only files: nothing player-facing (asset lists, tuning, Steam API stat names).
     "assets.json": {"skip": True},
     "steam.json": {"skip": True},
