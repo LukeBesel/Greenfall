@@ -75,3 +75,22 @@ whose `"planets"` name it, the files in its folder, and any ids listed in
 `"planets"."ochre"."songs"` in `data/songs.json`. That block can also repeat any rule from the
 table above to change it on that planet only, e.g. `"rime": {"songs": [], "gap_s": [120, 240]}`.
 A new planet: add a block with its id there (and a folder if you like).
+
+**Volumes and the mix** are in `data/sound.json`:
+
+| To change | Edit |
+|---|---|
+| Where the five sliders in Settings start for a new player (Master, Music, Ambience, Sound effects, Interface) | `volumes` (0 to 1) |
+| A fixed trim under a slider (Music, Songs, Ambience, SFX, UI) | `bus_trim_db` |
+| Which slider a sound follows (menu clicks: Interface; animal calls: Ambience; the rest: Sound effects) | `bus_of` |
+| One sound louder or quieter everywhere | `sound_db`: `"chime": -3` |
+| A sound that repeats too fast: the shortest time between two plays, in seconds | `min_gap_s`: `"clink": 0.2` |
+| How far music and ambience dip while WREN speaks | `duck` |
+| A planet's ambience (wind, water, animal calls) and how it changes from ruined to restored | `planets`.`<id>`.`ambience` |
+| Which built-in score a planet uses when no song plays (a new planet can borrow one) | `planets`.`<id>`.`theme` |
+
+**Check what plays.** Add `--sound-log` to any run, for example
+`godot --headless --path . -- --fresh --orbit --no-intro --autoplay --time-scale=4 --sound-log --quit-after=1200`.
+At the end it prints a `[snd]` table: every sound, its slider group, how often it played, its
+level, the shortest time between two plays, how many came within 5 seconds of the last, and how
+many sounded at once. The full list is in `screenshots/sound_log.txt`.

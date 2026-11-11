@@ -346,7 +346,7 @@ func _pick_menu() -> String:
 
 
 func _planet() -> String:
-	return Audio.get_planet_theme()
+	return str(Audio.call("get_planet_id")) if Audio.has_method("get_planet_id") else Audio.get_planet_theme()
 
 
 func _advance(dt: float) -> void:

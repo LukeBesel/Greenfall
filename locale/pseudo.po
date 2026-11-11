@@ -189,67 +189,67 @@ msgstr "[Ţôûçĥþàð ~]"
 msgid "Paddle 1"
 msgstr "[Þàððļé 1 ~]"
 
-#: autoload/Settings.gd:522
+#: autoload/Settings.gd:535
 msgid "LMB"
 msgstr "[ĻMB ~]"
 
-#: autoload/Settings.gd:523
+#: autoload/Settings.gd:536
 msgid "RMB"
 msgstr "[ŔMB ~]"
 
-#: autoload/Settings.gd:524
+#: autoload/Settings.gd:537
 msgid "MMB"
 msgstr "[MMB ~]"
 
-#: autoload/Settings.gd:525
+#: autoload/Settings.gd:538
 msgid "Wheel up"
 msgstr "[Ŵĥééļ ûþ ~]"
 
-#: autoload/Settings.gd:526
+#: autoload/Settings.gd:539
 msgid "Wheel down"
 msgstr "[Ŵĥééļ ðôŵñ ~]"
 
-#: autoload/Settings.gd:527
+#: autoload/Settings.gd:540
 msgid "Mouse %d"
 msgstr "[Môûšé %d ~]"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:542
 msgid "Button %d"
 msgstr "[Bûţţôñ %d ~]"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:547
 msgid "LS left"
 msgstr "[ĻŠ ļéƒţ ~]"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:547
 msgid "LS right"
 msgstr "[ĻŠ ŕîĝĥţ ~]"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:548
 msgid "LS up"
 msgstr "[ĻŠ ûþ ~]"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:548
 msgid "LS down"
 msgstr "[ĻŠ ðôŵñ ~]"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:549
 msgid "RS left"
 msgstr "[ŔŠ ļéƒţ ~]"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:549
 msgid "RS right"
 msgstr "[ŔŠ ŕîĝĥţ ~]"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:550
 msgid "RS up"
 msgstr "[ŔŠ ûþ ~]"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:550
 msgid "RS down"
 msgstr "[ŔŠ ðôŵñ ~]"
 
-#: autoload/Settings.gd:548
+#: autoload/Settings.gd:561
 msgid "hold %s"
 msgstr "[ĥôļð %s ~]"
 
@@ -398,11 +398,11 @@ msgstr "[ŠĤŔÉÐ  ·  ŠMÉĻŢ  ·  ĜÔÑÉ FÔŔ ĜÔÔÐ ~~~~~~~~~]"
 msgid "HAND FEED"
 msgstr "[ĤÀÑÐ FÉÉÐ ~]"
 
-#: automation/rocket.gd:315
+#: automation/rocket.gd:316
 msgid "LIFT OFF"
 msgstr "[ĻÎFŢ ÔFF ~]"
 
-#: automation/rocket.gd:861
+#: automation/rocket.gd:862
 msgid "Space / Esc  skip"
 msgstr "[Šþàçé / Éšç  šķîþ ~~~]"
 
@@ -2845,20 +2845,20 @@ msgstr "[Þŕôƒîļé %d ~]"
 msgid "%d:%02d h"
 msgstr "[%d:%02d ĥ ~]"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "Low"
 msgstr "[Ļôŵ ~]"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
-#: ui/settings_panel.gd:594
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
+#: ui/settings_panel.gd:601
 msgid "Medium"
 msgstr "[Méðîûm ~]"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "High"
 msgstr "[Ĥîĝĥ ~]"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "Ultra"
 msgstr "[Ûļţŕà ~]"
 
@@ -3092,7 +3092,7 @@ msgstr "[Vîôļéţ ~]"
 msgid "Moonlight"
 msgstr "[Môôñļîĝĥţ ~]"
 
-#: systems/tunes.gd:166
+#: systems/tunes.gd:390
 msgid "New CD: %s by %s, from %s"
 msgstr "[Ñéŵ ÇÐ: %s bý %s, ƒŕôm %s ~~~~~~]"
 
@@ -3550,7 +3550,7 @@ msgstr "[Šţàŕţîñĝ ķîţ: ĵûšţ Ļûmî. Ĥéîŕļôômš àðð ţ�
 msgid "Starting kit: %s"
 msgstr "[Šţàŕţîñĝ ķîţ: %s ~~~]"
 
-#: ui/ark_bridge.gd:303 ui/settings_panel.gd:575
+#: ui/ark_bridge.gd:303 ui/settings_panel.gd:582
 msgid "Full"
 msgstr "[Fûļļ ~]"
 
@@ -5521,7 +5521,7 @@ msgstr "[Þĥôţô môðé îšñ'ţ àvàîļàbļé ðûŕîñĝ à ŕôçķ�
 msgid "Photo mode isn't available during a cinematic."
 msgstr "[Þĥôţô môðé îšñ'ţ àvàîļàbļé ðûŕîñĝ à çîñémàţîç. ~~~~~~~~~~~~~]"
 
-#: ui/photo_mode.gd:370 ui/photo_mode.gd:423 ui/settings_panel.gd:383
+#: ui/photo_mode.gd:370 ui/photo_mode.gd:423 ui/settings_panel.gd:390
 msgid "Camera"
 msgstr "[Çàméŕà ~]"
 
@@ -5529,7 +5529,7 @@ msgstr "[Çàméŕà ~]"
 msgid "Mode"
 msgstr "[Môðé ~]"
 
-#: ui/photo_mode.gd:372 ui/settings_panel.gd:391
+#: ui/photo_mode.gd:372 ui/settings_panel.gd:398
 msgid "Field of view"
 msgstr "[Fîéļð ôƒ vîéŵ ~~]"
 
@@ -5566,7 +5566,7 @@ msgid "Blur"
 msgstr "[Bļûŕ ~]"
 
 #: ui/photo_mode.gd:380 ui/photo_panel.gd:240 ui/photo_panel.gd:242
-#: ui/photo_panel.gd:280 ui/settings_panel.gd:681
+#: ui/photo_panel.gd:280 ui/settings_panel.gd:688
 msgid "Off"
 msgstr "[Ôƒƒ ~]"
 
@@ -5679,7 +5679,7 @@ msgid "Exit"
 msgstr "[Éxîţ ~]"
 
 #: ui/photo_panel.gd:240 ui/photo_panel.gd:242 ui/photo_panel.gd:280
-#: ui/settings_panel.gd:681
+#: ui/settings_panel.gd:688
 msgid "On"
 msgstr "[Ôñ ~]"
 
@@ -6059,23 +6059,23 @@ msgstr "[{ui_cancel}  bàçķ ~~~]"
 msgid "Changes are saved automatically."
 msgstr "[Çĥàñĝéš àŕé šàvéð àûţômàţîçàļļý. ~~~~~~~~]"
 
-#: ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "Quality preset"
 msgstr "[Qûàļîţý þŕéšéţ ~~]"
 
-#: ui/settings_panel.gd:243 ui/settings_panel.gd:340
+#: ui/settings_panel.gd:243 ui/settings_panel.gd:347
 msgid "Fullscreen"
 msgstr "[Fûļļšçŕééñ ~]"
 
-#: ui/settings_panel.gd:246 ui/settings_panel.gd:384
+#: ui/settings_panel.gd:246 ui/settings_panel.gd:391
 msgid "Mouse sensitivity"
 msgstr "[Môûšé šéñšîţîvîţý ~~~]"
 
-#: ui/settings_panel.gd:250 ui/settings_panel.gd:560
+#: ui/settings_panel.gd:250 ui/settings_panel.gd:567
 msgid "System default"
 msgstr "[Šýšţém ðéƒàûļţ ~~]"
 
-#: ui/settings_panel.gd:251 ui/settings_panel.gd:558 ui/settings_panel.gd:561
+#: ui/settings_panel.gd:251 ui/settings_panel.gd:565 ui/settings_panel.gd:568
 msgid "Language"
 msgstr "[Ļàñĝûàĝé ~]"
 
@@ -6092,246 +6092,250 @@ msgid "Volume"
 msgstr "[Vôļûmé ~]"
 
 #: ui/settings_panel.gd:309
+msgid "Ambience"
+msgstr "[Àmbîéñçé ~]"
+
+#: ui/settings_panel.gd:312
 msgid "Sound effects"
 msgstr "[Šôûñð éƒƒéçţš ~~]"
 
-#: ui/settings_panel.gd:316
-msgid "Rendering"
-msgstr "[Ŕéñðéŕîñĝ ~]"
-
-#: ui/settings_panel.gd:317
-msgid "Low drops GI and fog; Ultra adds reflections."
-msgstr "[Ļôŵ ðŕôþš ĜÎ àñð ƒôĝ; Ûļţŕà àððš ŕéƒļéçţîôñš. ~~~~~~~~~~~~~]"
-
-#: ui/settings_panel.gd:318
-msgid "This renderer always uses the Low preset."
-msgstr "[Ţĥîš ŕéñðéŕéŕ àļŵàýš ûšéš ţĥé Ļôŵ þŕéšéţ. ~~~~~~~~~~~]"
-
-#: ui/settings_panel.gd:320
-msgid "Detected: %s for %s. "
-msgstr "[Ðéţéçţéð: %s ƒôŕ %s. ~~~~] "
-
-#: ui/settings_panel.gd:321
-msgid "Your choice (hardware: %s). "
-msgstr "[Ýôûŕ çĥôîçé (ĥàŕðŵàŕé: %s). ~~~~~~~] "
-
-#: ui/settings_panel.gd:322
-msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
-msgstr "[Ļôŵ ðŕôþš ĜÎ, ƒôĝ àñð šĥàðôŵš ðéţàîļ; Ûļţŕà àððš ŕéƒļéçţîôñš. ~~~~~~~~~~~~~~~~~~]"
-
-#: ui/settings_panel.gd:328
-msgid "Renderer"
-msgstr "[Ŕéñðéŕéŕ ~]"
-
-#: ui/settings_panel.gd:328
-msgid "Standard (Forward+)"
-msgstr "[Šţàñðàŕð (Fôŕŵàŕð+) ~~~~]"
-
-#: ui/settings_panel.gd:328
-msgid "Light (Mobile)"
-msgstr "[Ļîĝĥţ (Môbîļé) ~~]"
-
-#: ui/settings_panel.gd:330
-msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
-msgstr "[Ļîĝĥţ šûîţš ôļðéŕ îñţéĝŕàţéð ĝŕàþĥîçš. Ţàķéš éƒƒéçţ àƒţéŕ ŕéšţàŕţîñĝ ţĥé ĝàmé (ñôŵ: %s). ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: ui/settings_panel.gd:336
-msgid "Render scale"
-msgstr "[Ŕéñðéŕ šçàļé ~]"
-
-#: ui/settings_panel.gd:338
-msgid "Lower renders 3D at a smaller size; the interface stays sharp."
-msgstr "[Ļôŵéŕ ŕéñðéŕš 3Ð àţ à šmàļļéŕ šîžé; ţĥé îñţéŕƒàçé šţàýš šĥàŕþ. ~~~~~~~~~~~~~~~~~~~]"
-
-#: ui/settings_panel.gd:339
-msgid "Display"
-msgstr "[Ðîšþļàý ~]"
-
-#: ui/settings_panel.gd:343
-msgid "V-Sync"
-msgstr "[V-Šýñç ~]"
-
-#: ui/settings_panel.gd:349 ui/settings_panel.gd:378
-msgid "Bindings"
-msgstr "[Bîñðîñĝš ~]"
-
-#: ui/settings_panel.gd:352
-msgid "ACTION   (select a binding to rebind it)"
-msgstr "[ÀÇŢÎÔÑ   (šéļéçţ à bîñðîñĝ ţô ŕébîñð îţ) ~~~~~~~~~~~]"
-
-#: ui/settings_panel.gd:355
-msgid "KEYBOARD / MOUSE"
-msgstr "[ĶÉÝBÔÀŔÐ / MÔÛŠÉ ~~~]"
-
-#: ui/settings_panel.gd:355
-msgid "CONTROLLER"
-msgstr "[ÇÔÑŢŔÔĻĻÉŔ ~]"
-
-#: ui/settings_panel.gd:371
-msgid "Reset to defaults"
-msgstr "[Ŕéšéţ ţô ðéƒàûļţš ~~~]"
-
-#: ui/settings_panel.gd:378
-msgid "Restore every key and controller binding."
-msgstr "[Ŕéšţôŕé évéŕý ķéý àñð çôñţŕôļļéŕ bîñðîñĝ. ~~~~~~~~~~~]"
-
-#: ui/settings_panel.gd:380
-msgid "Button prompts"
-msgstr "[Bûţţôñ þŕômþţš ~~]"
-
-#: ui/settings_panel.gd:382
-msgid "Controller art: Automatic follows the connected pad."
-msgstr "[Çôñţŕôļļéŕ àŕţ: Àûţômàţîç ƒôļļôŵš ţĥé çôññéçţéð þàð. ~~~~~~~~~~~~~~~]"
-
-#: ui/settings_panel.gd:387
-msgid "Stick look speed"
-msgstr "[Šţîçķ ļôôķ šþééð ~~~]"
-
-#: ui/settings_panel.gd:390
-msgid "Invert look Y"
-msgstr "[Îñvéŕţ ļôôķ Ý ~~]"
-
-#: ui/settings_panel.gd:394
-msgid "Mouse smoothing"
-msgstr "[Môûšé šmôôţĥîñĝ ~~]"
-
-#: ui/settings_panel.gd:395
-msgid "Eases mouse look over a few frames."
-msgstr "[Éàšéš môûšé ļôôķ ôvéŕ à ƒéŵ ƒŕàméš. ~~~~~~~~~]"
-
-#: ui/settings_panel.gd:396
-msgid "Scooping"
-msgstr "[Šçôôþîñĝ ~]"
-
-#: ui/settings_panel.gd:397
-msgid "Scoop button"
-msgstr "[Šçôôþ bûţţôñ ~]"
-
-#: ui/settings_panel.gd:397
-msgid "Hold"
-msgstr "[Ĥôļð ~]"
-
-#: ui/settings_panel.gd:397
-msgid "Toggle"
-msgstr "[Ţôĝĝļé ~]"
-
-#: ui/settings_panel.gd:438
-msgid "press a button…"
-msgstr "[þŕéšš à bûţţôñ… ~~]"
-
-#: ui/settings_panel.gd:438
-msgid "press a key…"
-msgstr "[þŕéšš à ķéý… ~]"
-
-#: ui/settings_panel.gd:470
-msgid "Conflict: %s is used by both %s and %s."
-msgstr "[Çôñƒļîçţ: %s îš ûšéð bý bôţĥ %s àñð %s. ~~~~~~~~~~~]"
-
-#: ui/settings_panel.gd:564
-msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
-msgstr "[Méñûš, ĤÛÐ, šûbţîţļéš àñð šţôŕý ţéxţ. Þšéûðô îš ƒôŕ ţéšţîñĝ ţŕàñšļàţîôñš. ~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: ui/settings_panel.gd:565
-msgid "Comfort"
-msgstr "[Çômƒôŕţ ~]"
-
-#: ui/settings_panel.gd:566
-msgid "Camera shake"
-msgstr "[Çàméŕà šĥàķé ~]"
-
-#: ui/settings_panel.gd:568
-msgid "Reduced motion"
-msgstr "[Ŕéðûçéð môţîôñ ~~]"
-
-#: ui/settings_panel.gd:569
-msgid "Calmer camera and fewer bouncy effects."
-msgstr "[Çàļméŕ çàméŕà àñð ƒéŵéŕ bôûñçý éƒƒéçţš. ~~~~~~~~~~~]"
-
-#: ui/settings_panel.gd:570 ui/settings_panel.gd:580
+#: ui/settings_panel.gd:316 ui/settings_panel.gd:577 ui/settings_panel.gd:587
 msgid "Interface"
 msgstr "[Îñţéŕƒàçé ~]"
 
+#: ui/settings_panel.gd:323
+msgid "Rendering"
+msgstr "[Ŕéñðéŕîñĝ ~]"
+
+#: ui/settings_panel.gd:324
+msgid "Low drops GI and fog; Ultra adds reflections."
+msgstr "[Ļôŵ ðŕôþš ĜÎ àñð ƒôĝ; Ûļţŕà àððš ŕéƒļéçţîôñš. ~~~~~~~~~~~~~]"
+
+#: ui/settings_panel.gd:325
+msgid "This renderer always uses the Low preset."
+msgstr "[Ţĥîš ŕéñðéŕéŕ àļŵàýš ûšéš ţĥé Ļôŵ þŕéšéţ. ~~~~~~~~~~~]"
+
+#: ui/settings_panel.gd:327
+msgid "Detected: %s for %s. "
+msgstr "[Ðéţéçţéð: %s ƒôŕ %s. ~~~~] "
+
+#: ui/settings_panel.gd:328
+msgid "Your choice (hardware: %s). "
+msgstr "[Ýôûŕ çĥôîçé (ĥàŕðŵàŕé: %s). ~~~~~~~] "
+
+#: ui/settings_panel.gd:329
+msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
+msgstr "[Ļôŵ ðŕôþš ĜÎ, ƒôĝ àñð šĥàðôŵš ðéţàîļ; Ûļţŕà àððš ŕéƒļéçţîôñš. ~~~~~~~~~~~~~~~~~~]"
+
+#: ui/settings_panel.gd:335
+msgid "Renderer"
+msgstr "[Ŕéñðéŕéŕ ~]"
+
+#: ui/settings_panel.gd:335
+msgid "Standard (Forward+)"
+msgstr "[Šţàñðàŕð (Fôŕŵàŕð+) ~~~~]"
+
+#: ui/settings_panel.gd:335
+msgid "Light (Mobile)"
+msgstr "[Ļîĝĥţ (Môbîļé) ~~]"
+
+#: ui/settings_panel.gd:337
+msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
+msgstr "[Ļîĝĥţ šûîţš ôļðéŕ îñţéĝŕàţéð ĝŕàþĥîçš. Ţàķéš éƒƒéçţ àƒţéŕ ŕéšţàŕţîñĝ ţĥé ĝàmé (ñôŵ: %s). ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: ui/settings_panel.gd:343
+msgid "Render scale"
+msgstr "[Ŕéñðéŕ šçàļé ~]"
+
+#: ui/settings_panel.gd:345
+msgid "Lower renders 3D at a smaller size; the interface stays sharp."
+msgstr "[Ļôŵéŕ ŕéñðéŕš 3Ð àţ à šmàļļéŕ šîžé; ţĥé îñţéŕƒàçé šţàýš šĥàŕþ. ~~~~~~~~~~~~~~~~~~~]"
+
+#: ui/settings_panel.gd:346
+msgid "Display"
+msgstr "[Ðîšþļàý ~]"
+
+#: ui/settings_panel.gd:350
+msgid "V-Sync"
+msgstr "[V-Šýñç ~]"
+
+#: ui/settings_panel.gd:356 ui/settings_panel.gd:385
+msgid "Bindings"
+msgstr "[Bîñðîñĝš ~]"
+
+#: ui/settings_panel.gd:359
+msgid "ACTION   (select a binding to rebind it)"
+msgstr "[ÀÇŢÎÔÑ   (šéļéçţ à bîñðîñĝ ţô ŕébîñð îţ) ~~~~~~~~~~~]"
+
+#: ui/settings_panel.gd:362
+msgid "KEYBOARD / MOUSE"
+msgstr "[ĶÉÝBÔÀŔÐ / MÔÛŠÉ ~~~]"
+
+#: ui/settings_panel.gd:362
+msgid "CONTROLLER"
+msgstr "[ÇÔÑŢŔÔĻĻÉŔ ~]"
+
+#: ui/settings_panel.gd:378
+msgid "Reset to defaults"
+msgstr "[Ŕéšéţ ţô ðéƒàûļţš ~~~]"
+
+#: ui/settings_panel.gd:385
+msgid "Restore every key and controller binding."
+msgstr "[Ŕéšţôŕé évéŕý ķéý àñð çôñţŕôļļéŕ bîñðîñĝ. ~~~~~~~~~~~]"
+
+#: ui/settings_panel.gd:387
+msgid "Button prompts"
+msgstr "[Bûţţôñ þŕômþţš ~~]"
+
+#: ui/settings_panel.gd:389
+msgid "Controller art: Automatic follows the connected pad."
+msgstr "[Çôñţŕôļļéŕ àŕţ: Àûţômàţîç ƒôļļôŵš ţĥé çôññéçţéð þàð. ~~~~~~~~~~~~~~~]"
+
+#: ui/settings_panel.gd:394
+msgid "Stick look speed"
+msgstr "[Šţîçķ ļôôķ šþééð ~~~]"
+
+#: ui/settings_panel.gd:397
+msgid "Invert look Y"
+msgstr "[Îñvéŕţ ļôôķ Ý ~~]"
+
+#: ui/settings_panel.gd:401
+msgid "Mouse smoothing"
+msgstr "[Môûšé šmôôţĥîñĝ ~~]"
+
+#: ui/settings_panel.gd:402
+msgid "Eases mouse look over a few frames."
+msgstr "[Éàšéš môûšé ļôôķ ôvéŕ à ƒéŵ ƒŕàméš. ~~~~~~~~~]"
+
+#: ui/settings_panel.gd:403
+msgid "Scooping"
+msgstr "[Šçôôþîñĝ ~]"
+
+#: ui/settings_panel.gd:404
+msgid "Scoop button"
+msgstr "[Šçôôþ bûţţôñ ~]"
+
+#: ui/settings_panel.gd:404
+msgid "Hold"
+msgstr "[Ĥôļð ~]"
+
+#: ui/settings_panel.gd:404
+msgid "Toggle"
+msgstr "[Ţôĝĝļé ~]"
+
+#: ui/settings_panel.gd:445
+msgid "press a button…"
+msgstr "[þŕéšš à bûţţôñ… ~~]"
+
+#: ui/settings_panel.gd:445
+msgid "press a key…"
+msgstr "[þŕéšš à ķéý… ~]"
+
+#: ui/settings_panel.gd:477
+msgid "Conflict: %s is used by both %s and %s."
+msgstr "[Çôñƒļîçţ: %s îš ûšéð bý bôţĥ %s àñð %s. ~~~~~~~~~~~]"
+
 #: ui/settings_panel.gd:571
+msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
+msgstr "[Méñûš, ĤÛÐ, šûbţîţļéš àñð šţôŕý ţéxţ. Þšéûðô îš ƒôŕ ţéšţîñĝ ţŕàñšļàţîôñš. ~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: ui/settings_panel.gd:572
+msgid "Comfort"
+msgstr "[Çômƒôŕţ ~]"
+
+#: ui/settings_panel.gd:573
+msgid "Camera shake"
+msgstr "[Çàméŕà šĥàķé ~]"
+
+#: ui/settings_panel.gd:575
+msgid "Reduced motion"
+msgstr "[Ŕéðûçéð môţîôñ ~~]"
+
+#: ui/settings_panel.gd:576
+msgid "Calmer camera and fewer bouncy effects."
+msgstr "[Çàļméŕ çàméŕà àñð ƒéŵéŕ bôûñçý éƒƒéçţš. ~~~~~~~~~~~]"
+
+#: ui/settings_panel.gd:578
 msgid "Number format"
 msgstr "[Ñûmbéŕ ƒôŕmàţ ~~]"
 
-#: ui/settings_panel.gd:571
+#: ui/settings_panel.gd:578
 msgid "Short (1.2K)"
 msgstr "[Šĥôŕţ (1.2Ķ) ~]"
 
-#: ui/settings_panel.gd:571
+#: ui/settings_panel.gd:578
 msgid "Scientific (1.2e3)"
 msgstr "[Šçîéñţîƒîç (1.2é3) ~~~]"
 
-#: ui/settings_panel.gd:571
+#: ui/settings_panel.gd:578
 msgid "Engineering (1.2e3)"
 msgstr "[Éñĝîñééŕîñĝ (1.2é3) ~~~~]"
 
-#: ui/settings_panel.gd:573
+#: ui/settings_panel.gd:580
 msgid "Best-value tags"
 msgstr "[Béšţ-vàļûé ţàĝš ~~]"
 
-#: ui/settings_panel.gd:574
+#: ui/settings_panel.gd:581
 msgid "Tag the affordable upgrade that gives the most per cube."
 msgstr "[Ţàĝ ţĥé àƒƒôŕðàbļé ûþĝŕàðé ţĥàţ ĝîvéš ţĥé môšţ þéŕ çûbé. ~~~~~~~~~~~~~~~~~]"
 
-#: ui/settings_panel.gd:575
+#: ui/settings_panel.gd:582
 msgid "HUD"
 msgstr "[ĤÛÐ ~]"
 
-#: ui/settings_panel.gd:575
+#: ui/settings_panel.gd:582
 msgid "Minimal"
 msgstr "[Mîñîmàļ ~]"
 
-#: ui/settings_panel.gd:575
+#: ui/settings_panel.gd:582
 msgid "Hidden"
 msgstr "[Ĥîððéñ ~]"
 
-#: ui/settings_panel.gd:576
+#: ui/settings_panel.gd:583
 msgid "Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."
 msgstr "[Mîñîmàļ ƒàðéš éxţŕàš àƒţéŕ à ƒéŵ šéçôñðš. Ĥîððéñ ķééþš ôñļý þŕômþţš àñð méššàĝéš. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/settings_panel.gd:586
+#: ui/settings_panel.gd:593
 msgid "Interface scale"
 msgstr "[Îñţéŕƒàçé šçàļé ~~]"
 
-#: ui/settings_panel.gd:588
+#: ui/settings_panel.gd:595
 msgid "Size of menus, HUD and subtitles."
 msgstr "[Šîžé ôƒ méñûš, ĤÛÐ àñð šûbţîţļéš. ~~~~~~~~~]"
 
-#: ui/settings_panel.gd:589
+#: ui/settings_panel.gd:596
 msgid "Colour-blind palette"
 msgstr "[Çôļôûŕ-bļîñð þàļéţţé ~~~~]"
 
-#: ui/settings_panel.gd:590
+#: ui/settings_panel.gd:597
 msgid "Okabe-Ito colours for hex progress, the hopper meter and part rarity."
 msgstr "[Ôķàbé-Îţô çôļôûŕš ƒôŕ ĥéx þŕôĝŕéšš, ţĥé ĥôþþéŕ méţéŕ àñð þàŕţ ŕàŕîţý. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/settings_panel.gd:591 ui/settings_panel.gd:592
+#: ui/settings_panel.gd:598 ui/settings_panel.gd:599
 msgid "Subtitles"
 msgstr "[Šûbţîţļéš ~]"
 
-#: ui/settings_panel.gd:593
+#: ui/settings_panel.gd:600
 msgid "WREN and Ledger lines."
 msgstr "[ŴŔÉÑ àñð Ļéðĝéŕ ļîñéš. ~~~~~]"
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:601
 msgid "Subtitle size"
 msgstr "[Šûbţîţļé šîžé ~~]"
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:601
 msgid "Small"
 msgstr "[Šmàļļ ~]"
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:601
 msgid "Large"
 msgstr "[Ļàŕĝé ~]"
 
-#: ui/settings_panel.gd:596
+#: ui/settings_panel.gd:603
 msgid "Subtitle background"
 msgstr "[Šûbţîţļé bàçķĝŕôûñð ~~~~]"
 
-#: ui/settings_panel.gd:597
+#: ui/settings_panel.gd:604
 msgid "A solid backdrop behind subtitle text."
 msgstr "[À šôļîð bàçķðŕôþ béĥîñð šûbţîţļé ţéxţ. ~~~~~~~~~~]"
 

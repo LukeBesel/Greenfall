@@ -192,67 +192,67 @@ msgstr "Touchpad"
 msgid "Paddle 1"
 msgstr "Paddle 1"
 
-#: autoload/Settings.gd:522
+#: autoload/Settings.gd:535
 msgid "LMB"
 msgstr "Botão esq."
 
-#: autoload/Settings.gd:523
+#: autoload/Settings.gd:536
 msgid "RMB"
 msgstr "Botão dir."
 
-#: autoload/Settings.gd:524
+#: autoload/Settings.gd:537
 msgid "MMB"
 msgstr "Botão do meio"
 
-#: autoload/Settings.gd:525
+#: autoload/Settings.gd:538
 msgid "Wheel up"
 msgstr "Roda p/ cima"
 
-#: autoload/Settings.gd:526
+#: autoload/Settings.gd:539
 msgid "Wheel down"
 msgstr "Roda p/ baixo"
 
-#: autoload/Settings.gd:527
+#: autoload/Settings.gd:540
 msgid "Mouse %d"
 msgstr "Mouse %d"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:542
 msgid "Button %d"
 msgstr "Botão %d"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:547
 msgid "LS left"
 msgstr "AE esquerda"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:547
 msgid "LS right"
 msgstr "AE direita"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:548
 msgid "LS up"
 msgstr "AE cima"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:548
 msgid "LS down"
 msgstr "AE baixo"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:549
 msgid "RS left"
 msgstr "AD esquerda"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:549
 msgid "RS right"
 msgstr "AD direita"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:550
 msgid "RS up"
 msgstr "AD cima"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:550
 msgid "RS down"
 msgstr "AD baixo"
 
-#: autoload/Settings.gd:548
+#: autoload/Settings.gd:561
 msgid "hold %s"
 msgstr "segure %s"
 
@@ -401,11 +401,11 @@ msgstr "TRITURAR  ·  FUNDIR  ·  SUMIU DE VEZ"
 msgid "HAND FEED"
 msgstr "À MÃO"
 
-#: automation/rocket.gd:315
+#: automation/rocket.gd:316
 msgid "LIFT OFF"
 msgstr "DECOLAGEM"
 
-#: automation/rocket.gd:861
+#: automation/rocket.gd:862
 msgid "Space / Esc  skip"
 msgstr "Espaço / Esc  pular"
 
@@ -2848,20 +2848,20 @@ msgstr "Perfil %d"
 msgid "%d:%02d h"
 msgstr "%d:%02d h"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "Low"
 msgstr "Baixo"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
-#: ui/settings_panel.gd:594
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
+#: ui/settings_panel.gd:601
 msgid "Medium"
 msgstr "Médio"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "High"
 msgstr "Alto"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "Ultra"
 msgstr "Ultra"
 
@@ -3095,7 +3095,7 @@ msgstr "Violeta"
 msgid "Moonlight"
 msgstr "Luar"
 
-#: systems/tunes.gd:166
+#: systems/tunes.gd:390
 msgid "New CD: %s by %s, from %s"
 msgstr "Novo CD: %s de %s, de %s"
 
@@ -3553,7 +3553,7 @@ msgstr "Kit inicial: só Lumi. As relíquias acrescentam mais."
 msgid "Starting kit: %s"
 msgstr "Kit inicial: %s"
 
-#: ui/ark_bridge.gd:303 ui/settings_panel.gd:575
+#: ui/ark_bridge.gd:303 ui/settings_panel.gd:582
 msgid "Full"
 msgstr "Completo"
 
@@ -5524,7 +5524,7 @@ msgstr "O modo foto não está disponível durante um voo de foguete."
 msgid "Photo mode isn't available during a cinematic."
 msgstr "O modo foto não está disponível durante uma cena."
 
-#: ui/photo_mode.gd:370 ui/photo_mode.gd:423 ui/settings_panel.gd:383
+#: ui/photo_mode.gd:370 ui/photo_mode.gd:423 ui/settings_panel.gd:390
 msgid "Camera"
 msgstr "Câmera"
 
@@ -5532,7 +5532,7 @@ msgstr "Câmera"
 msgid "Mode"
 msgstr "Modo"
 
-#: ui/photo_mode.gd:372 ui/settings_panel.gd:391
+#: ui/photo_mode.gd:372 ui/settings_panel.gd:398
 msgid "Field of view"
 msgstr "Campo de visão"
 
@@ -5569,7 +5569,7 @@ msgid "Blur"
 msgstr "Desfoque"
 
 #: ui/photo_mode.gd:380 ui/photo_panel.gd:240 ui/photo_panel.gd:242
-#: ui/photo_panel.gd:280 ui/settings_panel.gd:681
+#: ui/photo_panel.gd:280 ui/settings_panel.gd:688
 msgid "Off"
 msgstr "Desligado"
 
@@ -5682,7 +5682,7 @@ msgid "Exit"
 msgstr "Sair"
 
 #: ui/photo_panel.gd:240 ui/photo_panel.gd:242 ui/photo_panel.gd:280
-#: ui/settings_panel.gd:681
+#: ui/settings_panel.gd:688
 msgid "On"
 msgstr "Ligado"
 
@@ -6062,23 +6062,23 @@ msgstr "{ui_cancel}  voltar"
 msgid "Changes are saved automatically."
 msgstr "As alterações são salvas automaticamente."
 
-#: ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "Quality preset"
 msgstr "Predefinição de qualidade"
 
-#: ui/settings_panel.gd:243 ui/settings_panel.gd:340
+#: ui/settings_panel.gd:243 ui/settings_panel.gd:347
 msgid "Fullscreen"
 msgstr "Tela cheia"
 
-#: ui/settings_panel.gd:246 ui/settings_panel.gd:384
+#: ui/settings_panel.gd:246 ui/settings_panel.gd:391
 msgid "Mouse sensitivity"
 msgstr "Sensibilidade do mouse"
 
-#: ui/settings_panel.gd:250 ui/settings_panel.gd:560
+#: ui/settings_panel.gd:250 ui/settings_panel.gd:567
 msgid "System default"
 msgstr "Padrão do sistema"
 
-#: ui/settings_panel.gd:251 ui/settings_panel.gd:558 ui/settings_panel.gd:561
+#: ui/settings_panel.gd:251 ui/settings_panel.gd:565 ui/settings_panel.gd:568
 msgid "Language"
 msgstr "Idioma"
 
@@ -6095,246 +6095,250 @@ msgid "Volume"
 msgstr "Volume"
 
 #: ui/settings_panel.gd:309
+msgid "Ambience"
+msgstr "Ambiente"
+
+#: ui/settings_panel.gd:312
 msgid "Sound effects"
 msgstr "Efeitos sonoros"
 
-#: ui/settings_panel.gd:316
-msgid "Rendering"
-msgstr "Renderização"
-
-#: ui/settings_panel.gd:317
-msgid "Low drops GI and fog; Ultra adds reflections."
-msgstr "Baixo remove GI e neblina; Ultra adiciona reflexos."
-
-#: ui/settings_panel.gd:318
-msgid "This renderer always uses the Low preset."
-msgstr "Este renderizador sempre usa a predefinição Baixo."
-
-#: ui/settings_panel.gd:320
-msgid "Detected: %s for %s. "
-msgstr "Detectado: %s para %s."
-
-#: ui/settings_panel.gd:321
-msgid "Your choice (hardware: %s). "
-msgstr "Sua escolha (hardware: %s)."
-
-#: ui/settings_panel.gd:322
-msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
-msgstr "Baixo remove GI, neblina e detalhes de sombra; Ultra adiciona reflexos."
-
-#: ui/settings_panel.gd:328
-msgid "Renderer"
-msgstr "Renderizador"
-
-#: ui/settings_panel.gd:328
-msgid "Standard (Forward+)"
-msgstr "Padrão (Forward+)"
-
-#: ui/settings_panel.gd:328
-msgid "Light (Mobile)"
-msgstr "Leve (Mobile)"
-
-#: ui/settings_panel.gd:330
-msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
-msgstr "Leve combina com gráficos integrados antigos. Vale depois de reiniciar o jogo (agora: %s)."
-
-#: ui/settings_panel.gd:336
-msgid "Render scale"
-msgstr "Escala de renderização"
-
-#: ui/settings_panel.gd:338
-msgid "Lower renders 3D at a smaller size; the interface stays sharp."
-msgstr "Menor renderiza o 3D num tamanho menor; a interface continua nítida."
-
-#: ui/settings_panel.gd:339
-msgid "Display"
-msgstr "Tela"
-
-#: ui/settings_panel.gd:343
-msgid "V-Sync"
-msgstr "V-Sync"
-
-#: ui/settings_panel.gd:349 ui/settings_panel.gd:378
-msgid "Bindings"
-msgstr "Atalhos"
-
-#: ui/settings_panel.gd:352
-msgid "ACTION   (select a binding to rebind it)"
-msgstr "AÇÃO   (selecione um atalho para trocar)"
-
-#: ui/settings_panel.gd:355
-msgid "KEYBOARD / MOUSE"
-msgstr "TECLADO / MOUSE"
-
-#: ui/settings_panel.gd:355
-msgid "CONTROLLER"
-msgstr "CONTROLE"
-
-#: ui/settings_panel.gd:371
-msgid "Reset to defaults"
-msgstr "Restaurar padrões"
-
-#: ui/settings_panel.gd:378
-msgid "Restore every key and controller binding."
-msgstr "Restaura todas as teclas e botões do controle."
-
-#: ui/settings_panel.gd:380
-msgid "Button prompts"
-msgstr "Ícones de botões"
-
-#: ui/settings_panel.gd:382
-msgid "Controller art: Automatic follows the connected pad."
-msgstr "Arte do controle: Automático segue o controle conectado."
-
-#: ui/settings_panel.gd:387
-msgid "Stick look speed"
-msgstr "Velocidade do analógico"
-
-#: ui/settings_panel.gd:390
-msgid "Invert look Y"
-msgstr "Inverter eixo Y"
-
-#: ui/settings_panel.gd:394
-msgid "Mouse smoothing"
-msgstr "Suavização do mouse"
-
-#: ui/settings_panel.gd:395
-msgid "Eases mouse look over a few frames."
-msgstr "Suaviza o olhar com o mouse por alguns quadros."
-
-#: ui/settings_panel.gd:396
-msgid "Scooping"
-msgstr "Recolhimento"
-
-#: ui/settings_panel.gd:397
-msgid "Scoop button"
-msgstr "Botão da pá"
-
-#: ui/settings_panel.gd:397
-msgid "Hold"
-msgstr "Segurar"
-
-#: ui/settings_panel.gd:397
-msgid "Toggle"
-msgstr "Alternar"
-
-#: ui/settings_panel.gd:438
-msgid "press a button…"
-msgstr "aperte um botão…"
-
-#: ui/settings_panel.gd:438
-msgid "press a key…"
-msgstr "aperte uma tecla…"
-
-#: ui/settings_panel.gd:470
-msgid "Conflict: %s is used by both %s and %s."
-msgstr "Conflito: %s é usado por %s e por %s."
-
-#: ui/settings_panel.gd:564
-msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
-msgstr "Menus, HUD, legendas e textos da história. Pseudo serve para testar traduções."
-
-#: ui/settings_panel.gd:565
-msgid "Comfort"
-msgstr "Conforto"
-
-#: ui/settings_panel.gd:566
-msgid "Camera shake"
-msgstr "Tremor da câmera"
-
-#: ui/settings_panel.gd:568
-msgid "Reduced motion"
-msgstr "Movimento reduzido"
-
-#: ui/settings_panel.gd:569
-msgid "Calmer camera and fewer bouncy effects."
-msgstr "Câmera mais calma e menos efeitos saltitantes."
-
-#: ui/settings_panel.gd:570 ui/settings_panel.gd:580
+#: ui/settings_panel.gd:316 ui/settings_panel.gd:577 ui/settings_panel.gd:587
 msgid "Interface"
 msgstr "Interface"
 
+#: ui/settings_panel.gd:323
+msgid "Rendering"
+msgstr "Renderização"
+
+#: ui/settings_panel.gd:324
+msgid "Low drops GI and fog; Ultra adds reflections."
+msgstr "Baixo remove GI e neblina; Ultra adiciona reflexos."
+
+#: ui/settings_panel.gd:325
+msgid "This renderer always uses the Low preset."
+msgstr "Este renderizador sempre usa a predefinição Baixo."
+
+#: ui/settings_panel.gd:327
+msgid "Detected: %s for %s. "
+msgstr "Detectado: %s para %s."
+
+#: ui/settings_panel.gd:328
+msgid "Your choice (hardware: %s). "
+msgstr "Sua escolha (hardware: %s)."
+
+#: ui/settings_panel.gd:329
+msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
+msgstr "Baixo remove GI, neblina e detalhes de sombra; Ultra adiciona reflexos."
+
+#: ui/settings_panel.gd:335
+msgid "Renderer"
+msgstr "Renderizador"
+
+#: ui/settings_panel.gd:335
+msgid "Standard (Forward+)"
+msgstr "Padrão (Forward+)"
+
+#: ui/settings_panel.gd:335
+msgid "Light (Mobile)"
+msgstr "Leve (Mobile)"
+
+#: ui/settings_panel.gd:337
+msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
+msgstr "Leve combina com gráficos integrados antigos. Vale depois de reiniciar o jogo (agora: %s)."
+
+#: ui/settings_panel.gd:343
+msgid "Render scale"
+msgstr "Escala de renderização"
+
+#: ui/settings_panel.gd:345
+msgid "Lower renders 3D at a smaller size; the interface stays sharp."
+msgstr "Menor renderiza o 3D num tamanho menor; a interface continua nítida."
+
+#: ui/settings_panel.gd:346
+msgid "Display"
+msgstr "Tela"
+
+#: ui/settings_panel.gd:350
+msgid "V-Sync"
+msgstr "V-Sync"
+
+#: ui/settings_panel.gd:356 ui/settings_panel.gd:385
+msgid "Bindings"
+msgstr "Atalhos"
+
+#: ui/settings_panel.gd:359
+msgid "ACTION   (select a binding to rebind it)"
+msgstr "AÇÃO   (selecione um atalho para trocar)"
+
+#: ui/settings_panel.gd:362
+msgid "KEYBOARD / MOUSE"
+msgstr "TECLADO / MOUSE"
+
+#: ui/settings_panel.gd:362
+msgid "CONTROLLER"
+msgstr "CONTROLE"
+
+#: ui/settings_panel.gd:378
+msgid "Reset to defaults"
+msgstr "Restaurar padrões"
+
+#: ui/settings_panel.gd:385
+msgid "Restore every key and controller binding."
+msgstr "Restaura todas as teclas e botões do controle."
+
+#: ui/settings_panel.gd:387
+msgid "Button prompts"
+msgstr "Ícones de botões"
+
+#: ui/settings_panel.gd:389
+msgid "Controller art: Automatic follows the connected pad."
+msgstr "Arte do controle: Automático segue o controle conectado."
+
+#: ui/settings_panel.gd:394
+msgid "Stick look speed"
+msgstr "Velocidade do analógico"
+
+#: ui/settings_panel.gd:397
+msgid "Invert look Y"
+msgstr "Inverter eixo Y"
+
+#: ui/settings_panel.gd:401
+msgid "Mouse smoothing"
+msgstr "Suavização do mouse"
+
+#: ui/settings_panel.gd:402
+msgid "Eases mouse look over a few frames."
+msgstr "Suaviza o olhar com o mouse por alguns quadros."
+
+#: ui/settings_panel.gd:403
+msgid "Scooping"
+msgstr "Recolhimento"
+
+#: ui/settings_panel.gd:404
+msgid "Scoop button"
+msgstr "Botão da pá"
+
+#: ui/settings_panel.gd:404
+msgid "Hold"
+msgstr "Segurar"
+
+#: ui/settings_panel.gd:404
+msgid "Toggle"
+msgstr "Alternar"
+
+#: ui/settings_panel.gd:445
+msgid "press a button…"
+msgstr "aperte um botão…"
+
+#: ui/settings_panel.gd:445
+msgid "press a key…"
+msgstr "aperte uma tecla…"
+
+#: ui/settings_panel.gd:477
+msgid "Conflict: %s is used by both %s and %s."
+msgstr "Conflito: %s é usado por %s e por %s."
+
 #: ui/settings_panel.gd:571
+msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
+msgstr "Menus, HUD, legendas e textos da história. Pseudo serve para testar traduções."
+
+#: ui/settings_panel.gd:572
+msgid "Comfort"
+msgstr "Conforto"
+
+#: ui/settings_panel.gd:573
+msgid "Camera shake"
+msgstr "Tremor da câmera"
+
+#: ui/settings_panel.gd:575
+msgid "Reduced motion"
+msgstr "Movimento reduzido"
+
+#: ui/settings_panel.gd:576
+msgid "Calmer camera and fewer bouncy effects."
+msgstr "Câmera mais calma e menos efeitos saltitantes."
+
+#: ui/settings_panel.gd:578
 msgid "Number format"
 msgstr "Formato de números"
 
-#: ui/settings_panel.gd:571
+#: ui/settings_panel.gd:578
 msgid "Short (1.2K)"
 msgstr "Curto (1,2K)"
 
-#: ui/settings_panel.gd:571
+#: ui/settings_panel.gd:578
 msgid "Scientific (1.2e3)"
 msgstr "Científico (1,2e3)"
 
-#: ui/settings_panel.gd:571
+#: ui/settings_panel.gd:578
 msgid "Engineering (1.2e3)"
 msgstr "Engenharia (1,2e3)"
 
-#: ui/settings_panel.gd:573
+#: ui/settings_panel.gd:580
 msgid "Best-value tags"
 msgstr "Etiquetas de melhor valor"
 
-#: ui/settings_panel.gd:574
+#: ui/settings_panel.gd:581
 msgid "Tag the affordable upgrade that gives the most per cube."
 msgstr "Marca a melhoria acessível que dá mais por cubo."
 
-#: ui/settings_panel.gd:575
+#: ui/settings_panel.gd:582
 msgid "HUD"
 msgstr "HUD"
 
-#: ui/settings_panel.gd:575
+#: ui/settings_panel.gd:582
 msgid "Minimal"
 msgstr "Mínimo"
 
-#: ui/settings_panel.gd:575
+#: ui/settings_panel.gd:582
 msgid "Hidden"
 msgstr "Oculto"
 
-#: ui/settings_panel.gd:576
+#: ui/settings_panel.gd:583
 msgid "Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."
 msgstr "Mínimo esmaece os extras depois de alguns segundos. Oculto mantém só avisos e mensagens."
 
-#: ui/settings_panel.gd:586
+#: ui/settings_panel.gd:593
 msgid "Interface scale"
 msgstr "Escala da interface"
 
-#: ui/settings_panel.gd:588
+#: ui/settings_panel.gd:595
 msgid "Size of menus, HUD and subtitles."
 msgstr "Tamanho de menus, HUD e legendas."
 
-#: ui/settings_panel.gd:589
+#: ui/settings_panel.gd:596
 msgid "Colour-blind palette"
 msgstr "Paleta para daltonismo"
 
-#: ui/settings_panel.gd:590
+#: ui/settings_panel.gd:597
 msgid "Okabe-Ito colours for hex progress, the hopper meter and part rarity."
 msgstr "Cores Okabe-Ito para progresso dos hexágonos, medidor da caçamba e raridade das peças."
 
-#: ui/settings_panel.gd:591 ui/settings_panel.gd:592
+#: ui/settings_panel.gd:598 ui/settings_panel.gd:599
 msgid "Subtitles"
 msgstr "Legendas"
 
-#: ui/settings_panel.gd:593
+#: ui/settings_panel.gd:600
 msgid "WREN and Ledger lines."
 msgstr "Falas da WREN e do Ledger."
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:601
 msgid "Subtitle size"
 msgstr "Tamanho das legendas"
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:601
 msgid "Small"
 msgstr "Pequeno"
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:601
 msgid "Large"
 msgstr "Grande"
 
-#: ui/settings_panel.gd:596
+#: ui/settings_panel.gd:603
 msgid "Subtitle background"
 msgstr "Fundo das legendas"
 
-#: ui/settings_panel.gd:597
+#: ui/settings_panel.gd:604
 msgid "A solid backdrop behind subtitle text."
 msgstr "Um fundo sólido atrás do texto das legendas."
 
