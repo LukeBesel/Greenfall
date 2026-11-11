@@ -33,6 +33,16 @@ var _hum: float = 0.0
 var _snd_cool: Dictionary = {"blip": 0.0, "sparkle": 0.0, "whoosh": 0.0, "pop": 0.0, "servo": 0.0}
 var _verts: int = 0
 var _beam_on: bool = false
+## [v6feel] The piece the next scoop pulse will take (world position, null = nothing in reach): a dim
+## reticle on it, before the bright lock. Set by Patch every tick.
+var aim: Variant = null
+var aim_radius: float = 0.2
+var _aim_pos := Vector3.ZERO
+var _aim_r: float = 0.2
+var _aim_a: float = 0.0
+var _aim_t: float = 0.0
+## [v6feel] Local up for the ground reticles (they lay in world XZ: wrong on a round planet).
+var up_dir := Vector3.UP
 
 
 class Slot:
@@ -186,10 +196,24 @@ func _process(delta: float) -> void:
 	_hum = move_toward(_hum, 1.0 if newest else 0.0, delta * (6.0 if newest else 3.0))
 	Audio.loop("beam_hum", _hum)
 	_im.clear_surfaces()
-	if not any or cam == null:
+	var holder: Node = get_parent()
+	if holder and holder.has_method("up"):
+		up_dir = holder.call("up")
+	_aim_t += delta
+	if aim != null:
+		if _aim_a <= 0.01 or (aim as Vector3).distance_squared_to(_aim_pos) > 0.0004:
+			_aim_t = 0.0  # a new target: the ring closes in on it
+		_aim_pos = aim
+		_aim_r = aim_radius
+	_aim_a = move_toward(_aim_a, 1.0 if aim != null else 0.0, delta * (10.0 if aim != null else 6.0))
+	if (not any and _aim_a <= 0.01) or cam == null:
 		return
 	_verts = 0
 	_im.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
+	if _aim_a > 0.01:
+		var close: float = lerpf(1.35, 1.0, 1.0 - pow(1.0 - clampf(_aim_t / 0.12, 0.0, 1.0), 3.0))
+		var sz: float = (minf(_aim_r, 0.45) * 1.3 + 0.14) * close
+		_flat(_aim_pos + up_dir * 0.05, sz, Color(_glow(), 0.3 * _aim_a), _aim_t * 0.5)
 	for s: Slot in _slots:
 		if s.active:
 			_draw_slot(s)
@@ -282,7 +306,7 @@ func _draw_slot(s: Slot) -> void:
 		var snap: float = lerpf(1.9, 1.0, 1.0 - pow(1.0 - ret_in, 3.0))
 		var size: float = (minf(s.radius, 0.45) * 1.3 + 0.1) * snap
 		var flash: float = 1.0 + 1.5 * (1.0 - smoothstep(0.0, 0.12, s.t))
-		_flat(s.start + Vector3(0, 0.03, 0), size, Color(glow, 0.6 * ret_a * minf(flash, 1.4)), s.t * 1.2 + s.phase)
+		_flat(s.start + up_dir * 0.03, size, Color(glow, 0.6 * ret_a * minf(flash, 1.4)), s.t * 1.2 + s.phase)
 	# Palm beam (concept style): a fan of fine light rays from the open claw to the piece, with
 	# sparkle dust flowing back into the palm.
 	var las: float = 1.0 - smoothstep(0.62, 0.8, u)
@@ -413,8 +437,8 @@ func _sprite(c: Vector3, size: float, col: Color) -> void:
 
 
 func _flat(c: Vector3, size: float, col: Color, ang: float) -> void:
-	var x := Vector3(size, 0, 0)
-	var z := Vector3(0, 0, size)
+	var x: Vector3 = up_dir.cross(Vector3.FORWARD if absf(up_dir.z) < 0.9 else Vector3.RIGHT).normalized() * size  # [v6feel] on the local ground
+	var z: Vector3 = x.cross(up_dir)
 	_quad(c - x - z, c + x - z, c + x + z, c - x + z, col, 1.0, ang, false)
 
 

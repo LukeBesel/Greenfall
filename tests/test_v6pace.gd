@@ -41,7 +41,7 @@ func test_rocket_comes_with_the_first_working_robot() -> void:
 			zone = i
 	assert_gt(zone, 0, "the story still has its 'zone' step")
 	GameState.flags["objective_step"] = zone
-	assert_false(Hub.rocket_open(1), "not while 'Send your robot to work' is on the card")
+	assert_false(Hub.rocket_open(1), "not while the robot-zone step is on the card")
 	assert_ne(Hub.rocket_lock_text(1), "")
 	GameState.flags["objective_step"] = zone + 1
 	assert_true(Hub.rocket_open(1))
