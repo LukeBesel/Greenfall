@@ -75,6 +75,7 @@ func finish() -> void:
 	tex_a = ImageTexture.create_from_image(_img_a)
 	tex_b = ImageTexture.create_from_image(_img_b)
 	cells.cell_changed.connect(_on_cell_changed)
+	cells.green_changed.connect(_on_cell_changed)  # [v6life]
 
 
 ## Fine cell -> nearest coarse centre. Icosphere subdivision keeps vertex ids, so fine cell i
@@ -154,6 +155,7 @@ func _aggregate(c: int) -> void:
 	var jk: PackedFloat32Array = cells.junk
 	var bm: PackedByteArray = cells.biome
 	var fl: PackedByteArray = cells.flags
+	var gr: PackedByteArray = cells.green  # [v6life]
 	var has_city: bool = not city.is_empty()
 	_votes.fill(0)
 	for k: int in range(a, b):
@@ -169,7 +171,7 @@ func _aggregate(c: int) -> void:
 			junk_s += j
 			clean_s += 1.0 - j
 		else:
-			var g: float = GREEN_W[s_i]
+			var g: float = maxf(GREEN_W[s_i], float(gr[i]) / 255.0)  # [v6life] clean ground greens by itself (plants/cell_verdure.gd)
 			green_s += g
 			clean_s += 1.0 - g
 		if (city[i] >= 0) if has_city else (bi == 1 or bi == 6):

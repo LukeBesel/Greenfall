@@ -28,6 +28,7 @@ varying vec4 st;
 varying vec3 wpos;
 varying vec3 wnrm;
 varying float wet;
+varying float verd;  // [v6life] how green a clean cell is (state_tex R on clean land; junk left on junk and water)
 
 void vertex() {
 	int idx = int(UV2.x + 0.5);
@@ -35,6 +36,36 @@ void vertex() {
 	wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	wnrm = normalize((MODEL_MATRIX * vec4(NORMAL, 0.0)).xyz);
 	wet = UV2.y;
+	// [v6life] Split R per vertex (junk on junk and water cells, green on clean ones), so the two
+	// never blend into each other across a cell border.
+	float s_id = floor(st.g * 255.0 / 36.0 + 0.5);
+	bool junky = s_id < 0.5 || s_id > 4.5;
+	verd = junky ? 0.0 : st.r;
+	st.r = junky ? st.r : 0.0;
+}
+
+// [v6life] The grass mask: integer-hash value noise, the same on the CPU (CellVerdure.mask), so
+// the tufts stand in the green patches.
+float vhash(ivec3 c) {
+	uint h = (uint(c.x + 4096) * 73856093u) ^ (uint(c.y + 4096) * 19349663u) ^ (uint(c.z + 4096) * 83492791u);
+	h ^= h >> 13u;
+	h *= 1274126177u;
+	h ^= h >> 16u;
+	return float(h & 0xffffu) / 65535.0;
+}
+
+float vnoise3(vec3 p) {
+	vec3 i = floor(p);
+	vec3 f = p - i;
+	f = f * f * (3.0 - 2.0 * f);
+	ivec3 c = ivec3(i);
+	float a = mix(mix(vhash(c), vhash(c + ivec3(1, 0, 0)), f.x), mix(vhash(c + ivec3(0, 1, 0)), vhash(c + ivec3(1, 1, 0)), f.x), f.y);
+	float b = mix(mix(vhash(c + ivec3(0, 0, 1)), vhash(c + ivec3(1, 0, 1)), f.x), mix(vhash(c + ivec3(0, 1, 1)), vhash(c + ivec3(1, 1, 1)), f.x), f.y);
+	return mix(a, b, f.z);
+}
+
+float verd_mask(vec3 p) {
+	return vnoise3(p * 0.11) * 0.7 + vnoise3(p * 0.47) * 0.3;
 }
 
 vec3 tri(sampler2D t, vec3 p, vec3 w) {
@@ -63,7 +94,23 @@ void fragment() {
 	vec3 clean = tri(tex_clean, p, w) * vec3(0.95, 0.93, 0.9);
 	vec3 grass = tri(tex_grass, p * 0.8, w) * vec3(0.85, 1.0, 0.8);
 	float green = smoothstep(1.5, 2.5, state + (n - 0.45));
-	vec3 col = mix(mix(clean, grass, green), dirt, dirty);
+	// [v6life] Clean ground greens over time (plants/cell_verdure.gd): grass creeps in from patches
+	// (a soft low-frequency mask, finer breakup near), thin and yellow-green at its edge, with moss
+	// darkening the soil just ahead of it. The tufts and flowers are CellVerdure's.
+	float gcov = 0.0;
+	vec3 gcol = grass;
+	if (verd > 0.004) {
+		float dist = length(VERTEX);
+		float near_k = 1.0 - smoothstep(110.0, 200.0, dist);
+		float m = verd_mask(wpos);
+		float k = verd * 1.5 - 0.05 - m;
+		gcov = mix(smoothstep(0.2, 0.75, verd * 1.5 - 0.05), smoothstep(-0.03, 0.09, k), near_k);
+		vec3 young = grass * vec3(1.15, 1.06, 0.7);
+		gcol = mix(young, grass, smoothstep(0.02, 0.3, k) * smoothstep(0.3, 0.9, verd));
+		clean = mix(clean, clean * vec3(0.78, 0.86, 0.7), smoothstep(-0.25, 0.0, k) * (1.0 - gcov) * 0.7);
+	}
+	green = max(green, gcov);
+	vec3 col = mix(mix(clean, gcol, green), dirt, dirty);
 	// Biome tints (frost, dust, marsh) so regions read from orbit.
 	if (abs(biome - 5.0) < 0.5) col = mix(col, vec3(0.86, 0.9, 0.95), 0.55);
 	else if (abs(biome - 4.0) < 0.5) col *= vec3(1.12, 0.98, 0.8);

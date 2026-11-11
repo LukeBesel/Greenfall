@@ -180,6 +180,11 @@ func build(p_world: Node3D) -> void:
 	hl.setup()
 	BuildBudget.lap("orbit hexlevels")
 	EventBus.hex_level_changed.connect(_on_hex_level)
+	if not DevHooks.has("life-off"):  # [v6life] clean ground greens over (plants/cell_verdure.gd)
+		var cv := CellVerdure.new()
+		w.add_child(cv)
+		cv.setup(w, globe)
+		BuildBudget.lap("orbit verdure")
 	var lumi_level := LumiLevel.new()
 	lumi_level.name = "LumiLevel"
 	lumi_level.world = w
@@ -269,6 +274,7 @@ func build(p_world: Node3D) -> void:
 		YardProbe.attach(self)
 	if DevHooks.has("ground-probe"):  # [v3qa] floating / sunken props and junk around Lumi
 		GroundProbe.attach(self)
+	LifeDev.attach(self)  # [v6life] --life-clean / --life-report
 
 
 func _build_patch() -> void:
