@@ -84,17 +84,17 @@ static func specs_for(def: PlanetDefinition) -> Array[Dictionary]:
 		if not raw is Dictionary:
 			continue
 		var src: Dictionary = raw
-		var steps: Array[Dictionary] = []
+		var list: Array[Dictionary] = []
 		for s: Variant in src.get("steps", []):
 			if s is Dictionary and str((s as Dictionary).get("type", "")) in TYPES:
-				steps.append(_step_spec(s))
-		if str(src.get("district", "")) == "" or steps.is_empty():
+				list.append(_step_spec(s))
+		if str(src.get("district", "")) == "" or list.is_empty():
 			push_error("Sources: entry '%s' has no district or no valid step" % str(src.get("id", "")))
 			continue
 		out.append({
 			"district": str(src["district"]), "id": str(src.get("id", src["district"])), "name": str(src.get("name", "")),
 			"open_stage": int(src.get("open_stage", open_stage)), "reward": src.get("reward", {}),
-			"toast": str(src.get("toast", "")), "steps": steps,
+			"toast": str(src.get("toast", "")), "steps": list,
 		})
 	return out
 

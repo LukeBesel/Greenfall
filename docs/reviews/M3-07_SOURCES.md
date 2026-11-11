@@ -30,7 +30,24 @@ Nov 11 2026, on top of `6b33866`. Rules and state: `systems/sources.gd`. The wor
 
 ## 3. Checks
 
-RESULTS_PLACEHOLDER
+- `tools/run_tests.sh`: **1,175 tests, 1,175 passing** (26 new in `tests/test_sources.gd`; one test in `tests/test_looks.gd` rewritten and one adjusted for the real shutdown). Save round trip: PASS, 180 checks (new: a source shut down and its hold lifted survive the save, the other five cities stay held; an old flat save loads with all six sources running and all six cities held). Orbit reload: PASS.
+- `tests/test_sources.gd`: one run per city (parameterised over the six ids) that the city is held at stage 4 with every hex thriving, the job is on offer, Lumi's steps finish it, `source_shut_down` fires once, stage 5 opens at once and the reward is paid; the launch point waits for all six; a planet with no table (the dummy planet and a parked one) has no job and no hold; a one-step job on the dummy planet from a fixture table, gating stage 4 and paying seeds, with no code; work stops when Lumi leaves reach; mastery speeds a step of its kind; a part cannot be taken without the Parts and is paid for once; saves, old saves, the card, the beam's target and the marker's prompt; every spot of the first planet is on a street or the open lot and clear of its landmark's footprint; no reward is over three minutes of its city's income; the rocket is six parts for 2,600 Parts.
+- **The bot does every job from a dev start** (`--fresh --autoplay --no-travel --district-stage=<cities before>:4,<city>:5 --orbit-hop=<site> --time-scale=4`, one run a city; Old Capital with `--give-parts=2600`). Game minutes from the start of the run to the shutdown, which includes about 0.5 to 0.8 minutes before the bot has control:
+
+| City | Steps | Shut down at | Source find |
+|---|---|---|---|
+| Old Town (no hop) | 3 | 1.2 min | held_bottle |
+| Ironside (site 7) | 4 | 1.6 min | |
+| Kettle Bay (site 3) | 4 | 1.3 min | glow_sprout |
+| Highreach (site 8) | 4 | 1.6 min | |
+| Lowmeadow (site 9) | 5 | 1.9 min | |
+| Old Capital (site 1) | 6 | 2.4 min | head_sprout |
+
+- **The rocket leads into the ending.** One run with every city's hexes at stage 5, the five other sources shut by flag and 2,600 Parts: the bot hops to Old Capital, builds and fits the six parts by minute 2.5, `launch_ready` fires in the same second, the Bloom plays, the end screen opens and "Keep playing" returns control. `--launch-ready=20` still reaches the end screen.
+- **City 1 pacing** (`--fresh --autoplay --time-scale=8 --quit-after=250`, one run): first hex 57 s after control (limit 90), first robot 8.6 minutes after control (limit 12), longest wait between purchases in the first 20 minutes 116 s (accepted 136), most cubes held 617. Old Town's job is not on offer in that window (it opens at stage 3), so nothing in the first 25 minutes changed.
+- A job takes Lumi about 40 s to 2 minutes of walking and hand work once she is at the city's yard. The proposal counted source jobs as 4% of Lumi's time; no full-game run was made to measure it here.
+- **A script error that is not this task's** showed in one bot run (Lowmeadow): `Camp._apply_builds` (`systems/camp/camp.gd:272`), "Trying to cast a freed object", when the bot bought a yard build from 5 km away after the dev hop had unloaded the start site. It needs a hop away from the start yard and a remote purchase; the other ten headless runs had no script error.
+- `tools/warnings_audit.sh`: no warning in the new or changed code (project total 141, all in code that was already there).
 
 ## 4. Design calls for the lead
 
