@@ -18588,3 +18588,8 @@ msgstr "Un monde de rouille, vert. Les vieilles grues ont des fleurs à leurs pi
 
 #~ msgid "Unlocks with Ark milestones (next: %s, at %d restoration)"
 #~ msgstr "Se débloque avec les jalons de l'Arche (prochain : %s, à %d de restauration)"
+
+#: story/planet_steps.gd:58
+#, c-format
+msgid "Wake station %d of %d"
+msgstr "Réveille la station %d sur %d"

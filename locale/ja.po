@@ -18868,3 +18868,8 @@ msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いて
 
 #~ msgid "Sharper shredder teeth and a hotter smelter. More bolts and stock per bale."
 #~ msgstr "鋭い粉砕刃と高温の炉。ベール1個あたりのボルトと建材が増える。"
+
+#: story/planet_steps.gd:58
+#, c-format
+msgid "Wake station %d of %d"
+msgstr "ステーション%d/%dを目覚めさせよう"

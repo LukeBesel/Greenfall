@@ -119,6 +119,7 @@ static func _write(so: SliceOrbit, pid: String, bad: Array[String]) -> void:
 	if sm.levels[1] < 2 or sm.built[1] != 1:
 		bad.append("wake: hub 1 at level %d, built %d" % [sm.levels[1], sm.built[1]])
 	_check_landmark(pid, sm, 1, bad)
+	_check_card(so, pid, bad)
 	# Save.
 	var saved: bool = SaveManager.save_game()
 	var od: Dictionary = GameState.orbit
@@ -172,3 +173,34 @@ static func _check_landmark(pid: String, sm: SiteManager, i: int, bad: Array[Str
 	print("[smoke] write hub %d landmark %s (data %s)" % [i, got, want])
 	if want != "" and got != want:
 		bad.append("landmark: hub %d has '%s', data says %s" % [i, got, want])
+
+
+## The card's hub steps (story/planet_steps.gd): a generated planet has exactly its own (fly, wake
+## per main-path hub, rocket tiers where its rocket needs them), none of the shared ones, and after
+## the hop and the wake above, the steps for hub 2 hold. Every hub step is reachable: no target
+## past the planet's main path.
+static func _check_card(so: SliceOrbit, pid: String, bad: Array[String]) -> void:
+	var ob: Objectives = so.w.get("objectives") as Objectives
+	var gl: Goals = so.w.get("goals") as Goals
+	if ob == null:
+		bad.append("card: no Objectives")
+		return
+	var hub_steps: Array = ob.chain.filter(func(d: Dictionary) -> bool: return PlanetSteps.is_hub_step(d))
+	var ids: PackedStringArray = []
+	for d: Dictionary in hub_steps:
+		ids.append("%s(%s)" % [d["id"], "held" if ob.value_of(d) >= ob.target_of(d) else "open"])
+	var goal_hubs: int = gl.chain.filter(func(d: Dictionary) -> bool: return PlanetSteps.is_hub_step(d)).size() if gl else -1
+	print("[smoke] write card %s hub steps: %s; hub goals left %d" % [str(PlanetCfg.value(pid, "hub_steps", "generated")), ", ".join(ids), goal_hubs])
+	if not PlanetSteps.generated(pid):
+		return
+	var want: Array = PlanetSteps.steps_for(pid)
+	if hub_steps.size() != want.size():
+		bad.append("card: %d hub steps, the planet's hubs make %d" % [hub_steps.size(), want.size()])
+	if goal_hubs != 0:
+		bad.append("card: %d shared hub goals still on the goal chain" % goal_hubs)
+	var main: int = HubPlan.main_total(pid)
+	for d: Dictionary in hub_steps:
+		if str(d["key"]) != "rocket_tier" and int(d["target"]) > main - 1:
+			bad.append("card: %s waits for %d hubs, the planet has %d on its main path" % [d["id"], int(d["target"]) + 1, main])
+		if str(d["id"]).ends_with("_2") and ob.value_of(d) < ob.target_of(d):
+			bad.append("card: %s not done after the hop and the wake" % d["id"])

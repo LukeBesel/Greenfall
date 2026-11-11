@@ -18588,3 +18588,8 @@ msgstr "Eine Rostwelt, grün. Die alten Kräne haben Blumen zu ihren Füßen. Di
 
 #~ msgid "Unlocks with Ark milestones (next: %s, at %d restoration)"
 #~ msgstr "Wird mit Archen-Meilensteinen frei (nächstes: %s, bei %d Wiederherstellung)"
+
+#: story/planet_steps.gd:58
+#, c-format
+msgid "Wake station %d of %d"
+msgstr "Weck Station %d von %d"

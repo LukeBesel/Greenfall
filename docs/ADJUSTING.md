@@ -220,7 +220,7 @@ turning). Check the numbers with `godot --headless --path . res://tools/machine_
 
 ## A new planet (v7planet)
 
-`data/planets.json` `_default` is what every planet gets; a planet block (`"<id>": {...}`) repeats only what it changes: `name`, `globe` (`frequency`, `hub_count`, optional `seed`: the size), `site_kit` (`towns` or `prefab`), `look.ground` (ground textures and colour multipliers), `hub_defaults`, `hubs`. `"dev": true` makes a test planet that only `--orbit-planet=<id>` reaches.
+`data/planets.json` `_default` is what every planet gets; a planet block (`"<id>": {...}`) repeats only what it changes: `name`, `globe` (`frequency`, `hub_count`, optional `seed`: the size), `site_kit` (`towns` or `prefab`), `look.ground` (ground textures and colour multipliers), `hub_defaults`, `hubs`, `hub_steps` (`generated`: the card's fly/wake/rocket steps come from the planet's `hubs[]`; Verdance keeps `shared`). `"dev": true` makes a test planet that only `--orbit-planet=<id>` reaches.
 The step-by-step recipe, the per-planet blocks in the other files (`landmarks.json`, `life.json`, `sound.json` with `"like"`, `songs.json`, `homeward.json`) and the checks (`tools/planet_smoke.sh <id>`, `tests/test_planet_data.gd`) are in docs/NEW_PLANET.md; its worked example is the dev planet `testworld`.
 
 ## Story arc: fuel, power and each planet's story (v7arc)

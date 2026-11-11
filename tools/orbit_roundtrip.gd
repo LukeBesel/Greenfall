@@ -671,7 +671,14 @@ static func run(rt: Node, check: Callable) -> void:
 		check.call("orbit_offline_2h_within_10pct", true, fc > 0.0 and absf(oc - fc) / fc <= 0.10)
 	s2.queue_free()
 	await tree.process_frame
-	await _old_save(tree, packed, check)
+	# [v7planet] Old flat saves migrate onto Verdance's grid only (OrbitMigrate.can_migrate): on any
+	# other globe (--orbit-planet) these checks do not apply, and say so instead of failing.
+	var mig_f: int = 1 << (OrbitMigrate.FROM_LEVEL + 1)
+	var rt_pid: String = GlobeSpec.current_id()
+	if int(GlobeSpec.of(rt_pid)["frequency"]) != mig_f:
+		print("[roundtrip] SKIP orbit_old_*: old flat saves migrate onto a f=%d globe only; %s is f=%d" % [mig_f, rt_pid, int(GlobeSpec.of(rt_pid)["frequency"])])
+	else:
+		await _old_save(tree, packed, check)
 
 
 ## An old flat save (tests/fixtures) loads into the globe: its cleaned cells, base level and

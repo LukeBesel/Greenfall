@@ -18588,3 +18588,8 @@ msgstr "Un mundo de óxido, verde. Las viejas grúas tienen flores a sus pies. L
 
 #~ msgid "Unlocks with Ark milestones (next: %s, at %d restoration)"
 #~ msgstr "Se desbloquea con los hitos del Arca (siguiente: %s, con %d de restauración)"
+
+#: story/planet_steps.gd:58
+#, c-format
+msgid "Wake station %d of %d"
+msgstr "Despierta la estación %d de %d"
