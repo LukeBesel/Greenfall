@@ -1000,7 +1000,27 @@ func _nearest_loose(p: Patch) -> JunkCube:
 
 # --- Management (the workbench, Command view, research) ----------------------------------
 
+var _card_seen: String = ""
+
+
+## [v6pace] The pacing log: one `[card]` line each time the objective card moves to a new step.
+func _log_card() -> void:
+	var ob: Objectives = world.get("objectives") as Objectives
+	if ob == null:
+		return
+	var d: Dictionary = ob.current()
+	var id: String = str(d.get("id", ""))
+	if id == _card_seen or id == "":
+		return
+	_card_seen = id
+	var c: Dictionary = _card_cost()
+	print("[card] %.1f min  %s  \"%s\"%s  cubes=%.0f earned=%.0f" % [_now() / 60.0, id, str(d.get("text", "")),
+		("  price %s" % str(c)) if not c.is_empty() else "", GameState.get_currency("cubes").to_float(),
+		BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float()])
+
+
 func _manage(p: Patch) -> void:
+	_log_card()
 	_paint_zones()
 	_campaign(p)
 	if world.get("hub") != null and int(world.hub.level) != _hub_level_seen:
@@ -1122,13 +1142,13 @@ func _shop(want: Dictionary) -> void:
 	# 0) [onboard] The Signal Tower: the first tier right away (WREN), later tiers with the base level.
 	var tower: SignalTower = world.get_node_or_null("SignalTower") as SignalTower
 	if tower and SignalTower.tier() < mini(SignalTower.max_tier(), maxi(1, int(GameState.world.get("hub_level", 1)))) \
-			and GameState.can_afford_all(SignalTower.next_cost(), 1.5):
+			and GameState.can_afford_all(SignalTower.next_cost(), 1.5) and (_card_type() == "tower" or _card_spare(float(SignalTower.next_cost().get("cubes", 0.0)), float(SignalTower.next_cost().get("parts", 0.0)))):
 		GameState.spend_all(SignalTower.next_cost())
 		tower.raise()
 		_event("signal_tower", {"tier": SignalTower.tier()})
 	# 0b) [v1guide] The workbench tiers (ui/bench_tiers.gd): the Bots / Research / Requests tabs only
 	# open by upgrading the bench, so a player buys the next tier as soon as it's offered and paid.
-	if BenchTiers.can_buy(world) and BenchTiers.buy(world):
+	if BenchTiers.can_buy(world) and (_card_type() == "bench" or _card_spare(float(BenchTiers.next_cost().get("cubes", 0.0)), float(BenchTiers.next_cost().get("parts", 0.0)))) and BenchTiers.buy(world):
 		_progress()
 		_event("bench_tier", {"tier": BenchTiers.tier()})
 	# 0c) [v1guide] The story objective's upgrade (Compartment, Scoop Size, the Baler): what the card asks for.
@@ -1164,7 +1184,7 @@ func _shop(want: Dictionary) -> void:
 		_mark("glim_repair_s")
 	# 2c) [buddy] Glim's Lantern and Hex Scanner when affordable (1.5x margin: never starves the core loop).
 	for gid: String in ["light", "scan"]:
-		if Glim.block_reason(gid) == "" and GameState.can_afford_all(Glim.next_cost(gid), 1.5) and Glim.buy(gid):
+		if Glim.block_reason(gid) == "" and GameState.can_afford_all(Glim.next_cost(gid), 1.5) and _card_spare(float(Glim.next_cost(gid).get("cubes", 0.0)), float(Glim.next_cost(gid).get("parts", 0.0))) and Glim.buy(gid):
 			var gd: GlimDirector = GlimDirector.of(world)
 			if gd:
 				gd.refresh()
@@ -1186,17 +1206,19 @@ func _shop(want: Dictionary) -> void:
 		var hub_save: float = float(want.get("hub_save", 0.0))
 		var spare: float = GameState.get_currency("cubes").to_float() - float(want.get("robot_cost", 0.0))
 		var must: bool = _robot_goal(robot) or _essential(robot)
+		if not _robot_goal(robot) and not _card_spare(float(want.get("robot_cost", 0.0)), fleet.build_parts(robot).to_float()):
+			robot = ""  # [v6pace] the card's price comes first
 		if fab_wait and not must:
 			robot = ""  # [orbC] saving for the Fabricator
 		var ok: bool = hub_save <= 0.0 or spare >= hub_save or must
-		ok = ok and (must or hub_save <= 0.0 or _mats_spare({"parts": fleet.build_parts(robot).to_float()}, false))
-		if ok and robot != "" and fleet.can_build(robot):
+		ok = ok and robot != "" and (must or hub_save <= 0.0 or _mats_spare({"parts": fleet.build_parts(robot).to_float()}, false))
+		if robot != "" and ok and fleet.can_build(robot):
 			var at: Vector3 = world.upgrades.build_at.call() if world.upgrades.build_at.is_valid() else BENCH_STAND
 			fleet.build(robot, at)
 	for t: String in (Economy.robot_order if fleet != null and BenchTiers.tab_open("bots") else []):  # [orbB] [v1guide]
 		var treq: Dictionary = fleet.tier_requirements(t)
 		var keep_cubes: float = float(want.get("hub_save", 0.0)) * 0.5  # [ui2] a tier keeps half the base's cubes
-		if fleet.count(t) > 0 and treq.get("ok", false) and _mats_spare({"parts": (treq["parts"] as BigNum).to_float()}, false) \
+		if fleet.count(t) > 0 and treq.get("ok", false) and (_card_type() == "tier" or _card_spare((treq["cost"] as BigNum).to_float(), (treq["parts"] as BigNum).to_float())) and _mats_spare({"parts": (treq["parts"] as BigNum).to_float()}, false) \
 				and GameState.get_currency("cubes").to_float() - (treq["cost"] as BigNum).to_float() >= keep_cubes:
 			if fleet.upgrade_tier(t):
 				_progress()
@@ -1218,6 +1240,9 @@ func _shop(want: Dictionary) -> void:
 			var force: bool = id == "recycler" or (id == "conveyor" and (Research.has("recycler") or Research.is_active("recycler") or Research.is_queued("recycler")))
 			if st.block_reason(id) != "" or not _mats_spare(st.def(id).get("cost", {}), force):
 				continue
+			var stc: Dictionary = st.def(id).get("cost", {})
+			if not _card_spare(float(stc.get("cubes", 0.0)), float(stc.get("parts", 0.0))):
+				continue  # [v6pace]
 			if st.build(id):
 				_mark("first_station_s")  # [pace]
 				_mark("first_%s_s" % id)
@@ -1263,7 +1288,7 @@ func _shop(want: Dictionary) -> void:
 	var sd: Dictionary = world.hub.scrubber_def()
 	var sc: float = float(sd.get("cost", {}).get("cubes", 1e9)) * world.hub.scrubber_cost_mult()
 	var air_goal: bool = _stat_goal("air_filtered") and world.hub.scrubbers == 0
-	if world.hub.level >= int(sd.get("requires_level", 2)) and (air_goal or GameState.get_currency("cubes").to_float() > sc * 3.0 + reserve):
+	if world.hub.level >= int(sd.get("requires_level", 2)) and (air_goal or (GameState.get_currency("cubes").to_float() > sc * 3.0 + reserve and _card_spare(sc))):
 		if world.hub.build_scrubber():
 			_progress()
 			_event("scrubber", {"n": world.hub.scrubbers})
@@ -1273,7 +1298,7 @@ func _shop(want: Dictionary) -> void:
 			_event("build", {"id": "composter"})
 	var cp: Composter = world.get("composter")
 	if cp and cp.active() and cp.level < cp.max_level() and GameState.get_currency("seeds").to_float() < 10.0:
-		if cp.upgrade_cost().to_float() <= GameState.get_currency("cubes").to_float() * 0.25:
+		if cp.upgrade_cost().to_float() <= GameState.get_currency("cubes").to_float() * 0.25 and _card_spare(cp.upgrade_cost().to_float()):
 			cp.interact()
 			_progress()
 			_event("composter", {"level": cp.level})
@@ -1326,11 +1351,68 @@ func _mats_spare(cost: Dictionary, force: bool) -> bool:
 	return true
 
 
+# --- [v6pace] The bot follows the card ----------------------------------------------------------
+# A player sees ONE step on the objective card. The bot used to peek at the three next goals of
+# the hidden chain, and to save for a base level only once its Parts were in: with the card on
+# "Rebuild the base to level 3" it kept buying research, stations and robot tiers and hovered at
+# 5-7K cubes for 40 minutes. Now: only the card's goal counts as "a goal", and while the card
+# asks for something with a price, nothing optional is bought unless the price stays covered.
+
+## Goal chain indices the player can see: the one on the card (none while a story step is up).
+func _card_goals() -> Array[int]:
+	var out: Array[int] = []
+	var gl: Goals = world.get("goals")
+	if gl == null:
+		return out
+	var ob: Objectives = world.get("objectives") as Objectives
+	if ob == null or not gl.driven:
+		return gl.current()
+	var d: Dictionary = ob.current()
+	if d.has("_goal"):
+		out.append(int(d["_goal"]))
+	return out
+
+
+func _card_type() -> String:
+	var ob: Objectives = world.get("objectives") as Objectives
+	return str(ob.current().get("type", "")) if ob else ""
+
+
+## What the card's step costs right now ({} when it has no price or is already paid for).
+func _card_cost() -> Dictionary:
+	var ob: Objectives = world.get("objectives") as Objectives
+	if ob == null:
+		return {}
+	var c: Dictionary = ob._step_price()
+	if not c.is_empty():
+		return c
+	var d: Dictionary = ob.current()
+	var key: String = str(d.get("key", ""))
+	match str(d.get("type", "")):
+		"research":
+			if Research.exists(key) and not Research.has(key) and not Research.is_active(key) and not Research.is_queued(key):
+				return {"cubes": Research.cost(key).to_float()}
+		"stat":
+			if key == "drive_tier" and Homeward.drive() < int(d.get("target", 5)):
+				return (Homeward.next_drive().get("cost", {}) as Dictionary).duplicate()
+	return {}
+
+
+## True if an optional purchase leaves the card's price covered (always, when it has none).
+func _card_spare(cubes_cost: float, parts_cost: float = 0.0) -> bool:
+	var c: Dictionary = _card_cost()
+	if c.is_empty():
+		return true
+	if GameState.get_currency("cubes").to_float() - cubes_cost < float(c.get("cubes", 0.0)):
+		return false
+	return parts_cost <= 0.0 or GameState.get_currency("parts").to_float() - parts_cost >= float(c.get("parts", 0.0))
+
+
 func _goal_upgrade() -> String:
 	var gl: Goals = world.get("goals")
 	if gl == null:
 		return ""
-	for i: int in gl.current():
+	for i: int in _card_goals():
 		var g: Dictionary = gl.chain[i]
 		match str(g.get("type", "")):
 			"upgrade":
@@ -1351,7 +1433,7 @@ func _goal_research() -> String:
 	var gl: Goals = world.get("goals")
 	if gl == null:
 		return ""
-	for i: int in gl.current():
+	for i: int in _card_goals():
 		var g: Dictionary = gl.chain[i]
 		var want: String = ""
 		match str(g.get("type", "")):
@@ -1429,7 +1511,7 @@ func _stat_goal(key: String) -> bool:
 	var gl: Goals = world.get("goals")
 	if gl == null:
 		return false
-	for i: int in gl.current():
+	for i: int in _card_goals():
 		if str(gl.chain[i].get("key", "")) == key:
 			return true
 	return false
@@ -1444,7 +1526,7 @@ func _robot_goal(type_id: String) -> bool:
 	var gl: Goals = world.get("goals")
 	if gl == null:
 		return false
-	for i: int in gl.current():
+	for i: int in _card_goals():
 		var g: Dictionary = gl.chain[i]
 		if str(g.get("type", "")) == "robot" and str(g.get("key", "")) == type_id:
 			return true
@@ -1469,6 +1551,11 @@ func _best_upgrade(reserve: float, leak: bool = true) -> String:
 			best = id
 	if best == "" or best_c > cubes:
 		return ""
+	if not _card_spare(best_c):
+		# [v6pace] saving for the card's price; the card's own upgrade is bought in _shop 0c.
+		var cd: Dictionary = (world.get("objectives") as Objectives).current() if world.get("objectives") else {}
+		if not (str(cd.get("type", "")) == "stat" and str(cd.get("key", "")) == "upgrades_bought"):
+			return ""
 	if cubes - best_c >= reserve or (leak and best_c <= cubes * 0.15):
 		return best
 	return ""
@@ -1542,6 +1629,8 @@ func _lake_dirty() -> bool:
 ## the base levels pace as they did with Data); it also starts research when it is rich.
 func _research_ok(id: String) -> bool:
 	var c: float = Research.cost(id).to_float()
+	if not _card_spare(c):
+		return false  # [v6pace] the card asks for something with a price: save for it
 	if (id in ["salvage_logic", "conveyor", "auto_baler"] or id in PACE_GARDEN_CHAIN) and GameState.get_currency("cubes").to_float() >= c:
 		return true  # [pace] the helper and automation unlocks come before saving for base 3
 	var fund: float = float(GameState.stats.get("notes_cubes", 0.0)) + float(GameState.stats.get("wildlife_cubes", 0.0)) - float(GameState.stats.get("bot_research_spent", 0.0))
@@ -1707,7 +1796,7 @@ func _place_tanks() -> void:
 			var np: Vector3 = near["pos"]
 			if Vector2(np.x - c.x, np.z - c.z).length() < 14.0:
 				continue
-		if wn.tank_cost().to_float() * 2.0 > GameState.get_currency("cubes").to_float():
+		if wn.tank_cost().to_float() * 2.0 > GameState.get_currency("cubes").to_float() or not _card_spare(wn.tank_cost().to_float()):
 			return
 		for off: Vector3 in [Vector3.ZERO, Vector3(2, 0, 0), Vector3(-2, 0, 0), Vector3(0, 0, 2), Vector3(0, 0, -2), Vector3(3, 0, 3)]:
 			if wn.place_block_reason(c + off) == "" and wn.place_tank(c + off):
