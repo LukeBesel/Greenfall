@@ -957,6 +957,10 @@ func _sync_hub_level(l: int) -> void:
 ## The workbench: the start site's "bench" anchor (falls back to the pad centre).
 func bench_position() -> Vector3:
 	var sm: SiteManager = globe.site_manager
+	if sites and sites.purpose:  # [v6hubs] at a woken far hub: the field bench by its rocket pad
+		var fb: Variant = sites.purpose.bench_point()
+		if fb is Vector3:
+			return fb
 	var sp: SitePrefab = sm.prefab(0) if sm else null
 	if sp:
 		return sp.global_transform * sp.anchor_local("bench").origin
@@ -1193,7 +1197,7 @@ func persist_save() -> void:
 ## [v5play] Kept across saves: where the rocket stands, that Lumi owns it, the hubs he has flown to.
 ## (save_world rebuilt GameState.orbit without them: after a hop, a save and a reload, Lumi stood
 ## at the far hub and the rocket was back on the start pad, or gone below base level 5.)
-const ROCKET_KEYS: Array[String] = ["rocket_site", "rocket_owned", "hubs_flown"]
+const ROCKET_KEYS: Array[String] = ["rocket_site", "rocket_owned", "hubs_flown", "hub_plan"]  # [v6hubs] + each hub's purpose state (planet/sites/hub_plan.gd)
 
 
 func restore_world() -> void:

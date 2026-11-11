@@ -111,7 +111,7 @@ func stat(stat_id: String, levels: Variant = null) -> float:
 			mul *= 1.0 + float(u["amount"]) * level
 	# Research bonuses (systems/research.gd) apply on top of upgrades.
 	# The worn design's small buff (systems/designs.gd) last.  [skins]  Heirlooms/world mods/decor charm  [late]
-	return Designs.apply(stat_id, CradleMode.stat_mod(stat_id, Research.stat_mod(stat_id, value * mul)))
+	return HubPlan.stat_mod(stat_id, Designs.apply(stat_id, CradleMode.stat_mod(stat_id, Research.stat_mod(stat_id, value * mul))))  # [v6hubs] woken hubs' boosts (data/planets.json hubs[].boosts)
 
 
 ## Base value of a stat before upgrades: Patch stats come from data/patch.json, dotted robot
@@ -138,6 +138,7 @@ func stat_breakdown(stat_id: String) -> Array[Dictionary]:
 			out.append({"source": tr("%s Lv %d") % [tr(str(u["name"])), level], "text": "x%.2f" % (1.0 + float(u["amount"]) * level)})
 	out.append_array(Research.breakdown(stat_id))
 	out.append_array(Designs.breakdown(stat_id))  # [skins]
+	out.append_array(HubPlan.breakdown(stat_id))  # [v6hubs]
 	return out
 
 
