@@ -6,6 +6,8 @@ extends Node
 ##           hex cleaned there may turn it up, and a set count of hexes turns it up for certain;
 ##   wreck   an old robot under the trash, off the main path: its pieces come when its hex is
 ##           cleared, or when Lumi uses the wreck once the world has put one there (register_site);
+##   tease   (table key `teases`) a wreck of a design this planet does not hand out: it stands in
+##           the world, holds no piece and can never be taken;
 ##   source  given when a city's pollution source is shut down (EventBus.source_shut_down, from
 ##           systems/sources.gd);
 ##   secret  given when a curiosity is found.
@@ -15,13 +17,26 @@ extends Node
 ## number, so a find turns up at the same cleaned hex in every run, the simulator and the tests
 ## can replay it, and a reload cannot re-roll it.
 ##
+## When the world shows the finds (systems/find_sites.gd calls world_places()), nothing is handed
+## over from far away: a buried find whose hex came up is "surfaced" (it lies in the cleared soil
+## of that hex until Lumi digs it up: the detector pings it), and a wreck gives its pieces only
+## when Lumi has cleared its junk by hand and salvaged it. Without a world (tests, the simulator)
+## both are given at once, as before.
+##
 ## State (the planet's save section): the ids already taken, how many hexes have been cleaned in
-## each city, and the hex each wreck stands on.
+## each city, the hex each wreck stands on, the buried finds lying surfaced (id -> hex) and how
+## much of each wreck's junk Lumi has cleared.
 ##
 ## Use: var f := Finds.new(); add_child(f); f.setup(def, districts, cells, interactables);
 ## f.load_state(saved).
 
+## A buried find's hex came up and it now lies in the soil there (only when the world shows finds).
+signal surfaced(find_id: String, cell: int)
+## A find was handed over (its pieces are granted).
+signal taken(find_id: String)
+
 const TABLE: String = "finds"
+const TEASE: String = "tease"
 const BURIED: String = "buried"
 const WRECK: String = "wreck"
 const SOURCE: String = "source"
@@ -44,6 +59,10 @@ var _taken: Dictionary[String, bool] = {}
 var _hexes: Dictionary[String, int] = {}
 var _wreck_cells: Dictionary[String, int] = {}
 var _sites: Dictionary[String, Node3D] = {}
+var _teases: Array[Dictionary] = []
+var _surfaced: Dictionary[String, int] = {}
+var _cleared: Dictionary[String, int] = {}
+var _world_places: bool = false
 var _caught_up: bool = false
 
 
@@ -76,6 +95,26 @@ static func entries_for(def: PlanetDefinition) -> Array[Dictionary]:
 			"hint": str(e.get("hint", "")),
 		})
 	return out
+
+
+## The planet's tease wrecks: {id, design, district, ring_share, line, where = TEASE}. A tease is a
+## wreck of a design this planet does not hand out: it gives nothing, ever.
+static func teases_for(def: PlanetDefinition) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	var table: Dictionary = def.table(TABLE) if def else {}
+	for raw: Variant in table.get("teases", []):
+		if not (raw is Dictionary) or str((raw as Dictionary).get("id", "")) == "":
+			continue
+		var e: Dictionary = raw
+		out.append({"id": str(e["id"]), "design": str(e.get("design", "")), "district": str(e.get("district", OPEN_GROUND)),
+			"ring_share": e.get("ring_share", DEFAULT_RING_SHARE), "line": str(e.get("line", "")), "where": TEASE})
+	return out
+
+
+## How the world shows this planet's finds (the table's `sites` block; {} when it has none).
+static func site_cfg(def: PlanetDefinition) -> Dictionary:
+	var v: Variant = (def.table(TABLE) if def else {}).get("sites", {})
+	return v if v is Dictionary else {}
 
 
 ## Every piece this planet hides.
@@ -128,6 +167,7 @@ func setup(def: PlanetDefinition, districts: Districts, cells: SphereCells, inte
 	_cells = cells
 	_interactables = interactables
 	_entries = entries_for(def)
+	_teases = teases_for(def)
 	EventBus.hex_cleaned.connect(_on_hex_cleaned)
 	EventBus.source_shut_down.connect(shut_source)
 	EventBus.easter_egg_found.connect(_on_egg_found)
@@ -145,8 +185,15 @@ func _exit_tree() -> void:
 			(pair[0] as Signal).disconnect(pair[1] as Callable)
 
 
+## The world shows the finds from now on (systems/find_sites.gd): a wreck is salvaged by Lumi's
+## hands and a buried find is dug up where it surfaced. Nothing is given from far away.
+func world_places() -> void:
+	_world_places = true
+
+
 func save_state() -> Dictionary:
-	return {"taken": _taken.keys(), "hexes": _hexes.duplicate(), "wreck_cells": _wreck_cells.duplicate()}
+	return {"taken": _taken.keys(), "hexes": _hexes.duplicate(), "wreck_cells": _wreck_cells.duplicate(),
+		"surfaced": _surfaced.duplicate(), "cleared": _cleared.duplicate()}
 
 
 ## Restores a save_state() dictionary. An empty one (a save from before finds) starts every
@@ -163,6 +210,15 @@ func load_state(d: Dictionary) -> void:
 	var wrecks: Dictionary = d.get("wreck_cells", {}) if d.get("wreck_cells") is Dictionary else {}
 	for k: Variant in wrecks:
 		_wreck_cells[str(k)] = int(wrecks[k])
+	_surfaced.clear()
+	_cleared.clear()
+	var lying: Dictionary = d.get("surfaced", {}) if d.get("surfaced") is Dictionary else {}
+	for k: Variant in lying:
+		if not _taken.has(str(k)):
+			_surfaced[str(k)] = int(lying[k])
+	var cleared_n: Dictionary = d.get("cleared", {}) if d.get("cleared") is Dictionary else {}
+	for k: Variant in cleared_n:
+		_cleared[str(k)] = int(cleared_n[k])
 	_caught_up = false
 
 
@@ -201,6 +257,31 @@ func entry(find_id: String) -> Dictionary:
 	return {}
 
 
+func teases() -> Array[Dictionary]:
+	return _teases
+
+
+func tease(tease_id: String) -> Dictionary:
+	for e: Dictionary in _teases:
+		if e["id"] == tease_id:
+			return e
+	return {}
+
+
+## The buried finds lying in cleared soil, waiting to be dug up: find id -> hex.
+func surfaced_finds() -> Dictionary[String, int]:
+	return _surfaced
+
+
+## Pieces of junk Lumi has cleared off a wreck by hand so far.
+func cleared(find_id: String) -> int:
+	return _cleared.get(find_id, 0)
+
+
+func set_cleared(find_id: String, n: int) -> void:
+	_cleared[find_id] = maxi(0, n)
+
+
 func is_taken(find_id: String) -> bool:
 	return _taken.has(find_id)
 
@@ -210,21 +291,26 @@ func hexes_cleaned(district: String) -> int:
 	return _hexes.get(district, 0)
 
 
-## The hex a wreck stands on: a dirty land hex in the find's ring band, fixed by the planet's
-## seed and kept in the save. NO_CELL when the find is not a wreck, its city is not on this
-## globe, or no dirty hex is left in the band.
+## The hex a wreck (or a tease) stands on: a dirty land hex in its ring band, fixed by the
+## planet's seed and kept in the save. NO_CELL when the id is neither, its city is not on this
+## globe, or no dirty hex is left in the band (when the world shows the finds, any hex of the
+## band then does: an old save with the city already clean still gets its wreck).
 func site_cell(find_id: String) -> int:
-	if _wreck_cells.has(find_id):
+	if _wreck_cells.has(find_id) and (_wreck_cells[find_id] != NO_CELL or not _world_places):
 		return _wreck_cells[find_id]
 	var e: Dictionary = entry(find_id)
-	if e.is_empty() or e["where"] != WRECK or _districts == null or _cells == null:
+	if e.is_empty():
+		e = tease(find_id)
+	if e.is_empty() or not (e["where"] in [WRECK, TEASE]) or _districts == null or _cells == null:
 		return NO_CELL
-	var cell: int = _pick_wreck_cell(e)
+	var cell: int = _pick_wreck_cell(e, false)
+	if cell == NO_CELL and _world_places:
+		cell = _pick_wreck_cell(e, true)
 	_wreck_cells[find_id] = cell
 	return cell
 
 
-func _pick_wreck_cell(e: Dictionary) -> int:
+func _pick_wreck_cell(e: Dictionary, any_stage: bool) -> int:
 	var cells: PackedInt32Array = _districts.cells_of(str(e["district"]))
 	if cells.is_empty():
 		return NO_CELL
@@ -236,7 +322,7 @@ func _pick_wreck_cell(e: Dictionary) -> int:
 	var start: int = int(roll(_def.world_seed, str(e["id"]), 0) * span)
 	for k: int in span:
 		var c: int = cells[lo + (start + k) % span]
-		if Districts.cell_stage(_cells, c) == 0:
+		if any_stage or Districts.cell_stage(_cells, c) == 0:
 			return c
 	return NO_CELL
 
@@ -258,12 +344,24 @@ func _site_usable(find_id: String) -> bool:
 	return not is_taken(find_id)
 
 
-## Give a find now (a used wreck, a dev hook). False when it is unknown or already taken.
+## Give a find now (a salvaged wreck, a tin dug up, a dev hook). False when it is unknown or
+## already taken.
 func take(find_id: String) -> bool:
 	var e: Dictionary = entry(find_id)
 	if e.is_empty() or is_taken(find_id):
 		return false
 	_release(e)
+	return true
+
+
+## Lay a buried find in a hex's soil now, whatever the hex count says (a dev hook, tests). False
+## when it is not a buried find still to be found.
+func surface(find_id: String, cell: int) -> bool:
+	var e: Dictionary = entry(find_id)
+	if e.is_empty() or e["where"] != BURIED or is_taken(find_id) or cell == NO_CELL:
+		return false
+	_surfaced[find_id] = cell
+	surfaced.emit(find_id, cell)
 	return true
 
 
@@ -281,13 +379,20 @@ func _on_hex_cleaned(cell: int, _pos: Vector3, _bonus: BigNum) -> void:
 	var n: int = hexes_cleaned(district) + 1
 	_hexes[district] = n
 	for e: Dictionary in _entries:
+		if _world_places:
+			break  # a wreck in the world is salvaged by hand, never by clearing its hex
 		if e["where"] == WRECK and not is_taken(str(e["id"])) and not _sites.has(str(e["id"])) and site_cell(str(e["id"])) == cell:
 			_release(e)
 	for e: Dictionary in _entries:
-		if e["where"] != BURIED or e["district"] != district or is_taken(str(e["id"])):
+		var id: String = str(e["id"])
+		if e["where"] != BURIED or e["district"] != district or is_taken(id) or _surfaced.has(id):
 			continue
 		if n >= buried_hex(_def.world_seed, e):
-			_release(e)
+			if _world_places:
+				_surfaced[id] = cell
+				surfaced.emit(id, cell)
+			else:
+				_release(e)
 			break  # one buried find per hex
 
 
@@ -299,8 +404,10 @@ func _on_egg_found(egg_id: String) -> void:
 
 func _release(e: Dictionary) -> void:
 	_taken[str(e["id"])] = true
+	_surfaced.erase(str(e["id"]))
 	if DevHooks.has("autoplay"):  # pacing log
 		print("[looks] find %s (%s) at %.1f min, %d hexes cleaned" % [e["id"], ", ".join(e["pieces"]), float(GameState.stats.get("time_played", 0.0)) / 60.0,
 			int(GameState.stats.get("hexes_cleaned", 0))])
 	for piece: String in e["pieces"]:
 		Looks.grant(piece, str(e["where"]))
+	taken.emit(str(e["id"]))

@@ -6,6 +6,7 @@ extends RefCounted
 ## materialize round its pad (parts, wrecks), then tests every target with TargetReach (with the
 ## colliders loaded): memory shards (where each surfaces), CDs (where each would turn up, every
 ## 3rd hex), outposts, eggs and gnomes, the Ledger relay, the First Seed greenhouse, buried parts,
+## the wrecks and teases of the hub's city (systems/find_sites.gd, each stood where play puts it),
 ## the hub's build anchors (SiteReach.audit), and the purple beacon's point for raw hex centres
 ## (TargetReach.beacon_point, every 3rd hex). Prints a [targets] line per hub and kind, the
 ## failures, and "[targets] N unreachable" with PASS/FAIL; exits 1 on any failure.
@@ -86,6 +87,12 @@ static func run_dev(so: SliceOrbit) -> void:
 			var fs: Variant = so.w.get("first_seed")
 			if fs is FirstSeed:
 				check.call("first_seed", (fs as FirstSeed).greenhouse_point(), fs as Node)
+		var fsites: FindSites = so.find_sites
+		for wid: String in fsites.wreck_ids() if fsites else []:
+			if so.districts.site_of(fsites.district_of(wid)) != i or so.look_finds.site_cell(wid) == Finds.NO_CELL:
+				continue
+			var wn: Node3D = fsites.show_wreck(wid)  # where play stands it, with this hub's town built
+			check.call("wreck", wn.global_position, wn)
 		await SiteReach.fix_anchors(p, so.globe.terrain)
 		var ra: Dictionary = await SiteReach.audit(p, so.globe.terrain)
 		if not ra.is_empty():

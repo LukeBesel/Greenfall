@@ -454,7 +454,7 @@ func update(delta: float) -> void:
 		_escape_t -= delta
 		_move = _escape_dir
 		return
-	if not (_do_source(p) or _do_bench(p) or _do_tin(p) or _do_shard(p) or _do_dump(p) or _do_deliver(p) or _do_pickup(p) or _do_dig(p) or _do_pet(p) or _do_learn(p) or _do_garden(p)):
+	if not (_do_source(p) or _do_bench(p) or _do_tin(p) or _do_find(p) or _do_shard(p) or _do_dump(p) or _do_deliver(p) or _do_pickup(p) or _do_dig(p) or _do_pet(p) or _do_learn(p) or _do_garden(p)):
 		_do_clean(p)
 	if _surge.tick(Surge.of(world), _scoop and (_task == "clean" or _task == "learn"), p.compartment.ratio(p.capacity()), _now()):
 		_mark("first_surge_s")
@@ -647,6 +647,29 @@ func _do_tin(p: Patch) -> bool:
 	if fs.near_tin(p.global_position) and _cooldown <= 0.0:
 		_interact = true
 		_cooldown = 1.0
+	return true
+
+
+## A buried find the detector pings, or a wreck to clear and salvage: walk up and use it, as a
+## person would on seeing the glint (systems/find_sites.gd).
+const FIND_REACH_M: float = 22.0
+
+
+func _do_find(p: Patch) -> bool:
+	var fsites: FindSites = world.orbit.find_sites if world.orbit else null
+	if fsites == null or not p.carried.is_empty():
+		return false
+	var job: Dictionary = fsites.nearest_job(p.global_position, FIND_REACH_M)
+	if job.is_empty() or _skip_hex.has("find/" + str(job["id"])):
+		return false
+	_set_task("find")
+	_go(p, job["pos"], float(job["reach"]) * 0.6)
+	if _task_t > 40.0:
+		_skip_hex["find/" + str(job["id"])] = true  # cannot get to it; leave it
+		return false
+	if OrbitUp.ground_dist(p.global_position, job["pos"]) < float(job["reach"]) and _cooldown <= 0.0:
+		_interact = true
+		_cooldown = 0.6
 	return true
 
 

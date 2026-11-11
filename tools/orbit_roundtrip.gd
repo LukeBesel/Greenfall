@@ -600,6 +600,15 @@ static func run(rt: Node, check: Callable) -> void:
 	# Looks: a find taken from the planet, a second piece found, and a mixed look worn.
 	var first_find: Dictionary = so1.look_finds.entries()[0]
 	check.call("orbit_find_taken", true, so1.look_finds.take(str(first_find["id"])))
+	# The finds standing in the world: a wreck salvaged by hand, another with one piece of junk
+	# pulled off, and a buried find lying in cleared soil. All three must come back as they were.
+	var wreck_ids: Array[String] = so1.find_sites.wreck_ids()
+	var wreck_pieces: int = (so1.look_finds.entry(wreck_ids[0])["pieces"] as Array).size()
+	so1.look_finds.set_cleared(wreck_ids[0], int(so1.find_sites.cfg("junk")))
+	check.call("orbit_wreck_salvaged", true, so1.look_finds.take(wreck_ids[0]))
+	so1.look_finds.set_cleared(wreck_ids[1], 1)
+	var lying: String = _second_buried(so1)
+	check.call("orbit_buried_find_surfaced", true, so1.look_finds.surface(lying, so1.cell_at(p.global_position)))
 	# Source jobs: one city's source is shut down (one that gives no piece, so the piece counts
 	# below stay what they were); its city is no longer held, the others are.
 	var shut_city: String = _city_without_source_find(so1)
@@ -689,7 +698,7 @@ static func run(rt: Node, check: Callable) -> void:
 	var a: Dictionary = _snap(s1)
 	var disk: Dictionary = SaveManager.read_dict(SaveManager.slot_path())
 	check.call("orbit_flat_world_untouched", false, (disk.get("world", {}) as Dictionary).has("hub_level"))
-	check.call("orbit_pieces_saved_in_global_section", 2, (((disk.get("global", {}) as Dictionary).get(Looks.KEY, []) as Array)).size())
+	check.call("orbit_pieces_saved_in_global_section", 2 + wreck_pieces, (((disk.get("global", {}) as Dictionary).get(Looks.KEY, []) as Array)).size())
 	check.call("orbit_pieces_not_in_planet_section", false, JSON.stringify(disk.get("orbit", {})).contains("head_halo"))
 	check.call("orbit_hub_world_saved", 2, int((((disk.get("orbit", {}) as Dictionary).get("hub_worlds", {}) as Dictionary).get("0", {}) as Dictionary).get("hub_level", 0)))
 	var s1_target: int = int(s1.get_meta("rt_target", -1))
@@ -713,6 +722,12 @@ static func run(rt: Node, check: Callable) -> void:
 			check.call("orbit_sky_spin_within_0.05", true, absf(angle_difference(float(a[k]), float(b[k]))) <= 0.05)
 			continue
 		check.call("orbit_" + k, a[k], b[k])
+	var finds2: Finds = (s2.orbit as SliceOrbit).look_finds
+	var sites2: FindSites = (s2.orbit as SliceOrbit).find_sites
+	check.call("orbit_wreck_stays_salvaged", true, finds2.is_taken(wreck_ids[0]) and sites2.junk_left(wreck_ids[0]) == 0)
+	check.call("orbit_wreck_not_salvaged_twice", false, finds2.take(wreck_ids[0]))
+	check.call("orbit_wreck_junk_pulled_kept", int(sites2.cfg("junk")) - 1, sites2.junk_left(wreck_ids[1]))
+	check.call("orbit_buried_find_still_lies", true, finds2.surfaced_finds().has(lying) and not finds2.is_taken(lying))
 	var crew2: SphereCrew = (s2.orbit as SliceOrbit).crews.crew  # [orbC] robots back where they were
 	var worst: float = INF if crew2 == null or crew2.robots().size() != 2 else 0.0
 	if worst == 0.0:
@@ -809,6 +824,17 @@ static func _source_holds(so: SliceOrbit) -> String:
 	for id: String in so.districts.ids():
 		out.append("%s:%d" % [id, so.districts.stage_cap_of(id)])
 	return ",".join(out)
+
+
+## The second buried find of the planet's table (the first is taken by the round trip).
+static func _second_buried(so: SliceOrbit) -> String:
+	var seen: int = 0
+	for e: Dictionary in so.look_finds.entries():
+		if e["where"] == Finds.BURIED:
+			seen += 1
+			if seen == 2:
+				return str(e["id"])
+	return ""
 
 
 ## The first city with a source job whose shutdown hands out no piece of a look ("" when none).
