@@ -92,9 +92,13 @@ signal ending_shown(planet_id: String)
 # piece_found: a piece of a look was found; source = how ("buried", "wreck", "source", "secret").
 # set_completed: the last piece of a design was found. look_changed: Lumi wears a different look.
 # source_shut_down: a city's pollution source was stopped (whatever stops it emits this).
+# source_job_opened: a city's source job is on offer for the first time. source_step_done: Lumi
+# finished step `step` (from 0) of it (systems/sources.gd).
 @warning_ignore_start("unused_signal")
 signal piece_found(piece_id: String, source: String)
 signal set_completed(design_id: String)
 signal look_changed()
 signal source_shut_down(district_id: String)
+signal source_job_opened(district_id: String)
+signal source_step_done(district_id: String, step: int)
 @warning_ignore_restore("unused_signal")

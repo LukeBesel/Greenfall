@@ -35,6 +35,7 @@ var marker: TutorialMarker
 var _t: float = 0.0
 var _hold: float = 0.0
 var _dev_cleaned: bool = false
+var _source_key: int = 0
 
 
 ## [onboard2] Objectives added in front of "power" (see _ready's save migration).
@@ -174,7 +175,55 @@ func _goal_index() -> int:
 ## A position on the timeline that changes with every finished step (the card's fade key).
 func position() -> int:
 	var g: Goals = goals()
-	return step + (g.done_count() if g else 0)
+	return step + (g.done_count() if g else 0) + _source_card_key()
+
+
+# --- A city's source job on the card (systems/sources.gd) ----------------------------------------
+# Once the story objectives are done, the source job of the city the readouts follow takes the
+# card while one of its steps is on offer: it is the city's capstone and only Lumi can do it. The
+# goal chain keeps paying behind it and comes back when the job is done or waiting.
+
+func _orbit() -> SliceOrbit:
+	return world.get("orbit") as SliceOrbit if world else null
+
+
+## The city whose source job is on the card now ("" when none).
+func source_district() -> String:
+	var so: SliceOrbit = _orbit()
+	if so == null or so.sources == null or so.districts == null or step < chain.size():
+		return ""
+	var id: String = so.districts.focus_id()
+	return id if so.sources.is_open(id) else ""
+
+
+## The source step as a card entry: {_source, text, desc}. Empty when no job is on the card.
+func _source_step() -> Dictionary:
+	var id: String = source_district()
+	if id == "":
+		return {}
+	var card: Dictionary = _orbit().sources.card(id)
+	var why: String = tr(str(card["desc"]))
+	if not bool(card["affordable"]):
+		why = tr("Needs %s. Dig up more Parts.") % Currencies.cost_text(card["cost"])
+	return {"_source": id, "text": str(card["text"]), "desc": why}
+
+
+## A number that changes whenever the card's source step does (0 with no job on the card).
+func _source_card_key() -> int:
+	var id: String = source_district()
+	var src: Sources = _orbit().sources if id != "" else null
+	return 0 if src == null else 1000 * (src.ids().find(id) + 1) + src.steps_done()
+
+
+func _source_progress(id: String) -> Array:
+	var src: Sources = _orbit().sources
+	var n: int = src.steps(id).size()
+	return [src.job_share(id), "%d / %d" % [mini(src.step_index(id) + 1, n), n]]
+
+
+func _source_target(id: String) -> Dictionary:
+	var so: SliceOrbit = _orbit()
+	return {"to": "place", "pos": so.source_sites.target_pos(id) if so.source_sites else null, "row": []}
 
 
 ## The step on the card ({} when there is none: not revealed yet, or all done). A goal step is a
@@ -184,6 +233,9 @@ func current() -> Dictionary:
 		return {}
 	if step < chain.size():
 		return chain[step]
+	var job: Dictionary = _source_step()
+	if not job.is_empty():
+		return job
 	var gi: int = _goal_index()
 	if gi < 0:
 		return {}
@@ -294,6 +346,8 @@ func progress() -> Array:
 	var def: Dictionary = current()
 	if def.is_empty():
 		return [-1.0, ""]
+	if def.has("_source"):
+		return _source_progress(str(def["_source"]))
 	if def.get("hex", false):
 		var f: float = hex_fraction()
 		return [f, "%d%%" % int(floor(f * 100.0))] if target_hex >= 0 else [0.0, ""]
@@ -330,7 +384,7 @@ func _process(delta: float) -> void:
 	var gl: Goals = goals()
 	if gl:
 		gl.driven = true  # [v1guide] the card drives the goals: one step at a time
-		gl.card_goal = _goal_index() if revealed else -1
+		gl.card_goal = _goal_index() if revealed and source_district() == "" else -1
 	if not revealed:
 		return
 	_explain_signal()
@@ -344,7 +398,10 @@ func _process(delta: float) -> void:
 	var def: Dictionary = current()
 	situation = situation_hint(REFRESH_S)  # [v3clear]
 	waypoint.set_target(waypoint_target())
-	if def.is_empty() or _hold > 0.0:
+	if _source_card_key() != _source_key:  # the job took the card, moved a step on, or left it
+		_source_key = _source_card_key()
+		changed.emit(step)
+	if def.is_empty() or _hold > 0.0 or def.has("_source"):  # a source step is finished by Sources, not here
 		_set_hex(-1)
 		return
 	if value_of(def) >= target_of(def):
@@ -491,6 +548,8 @@ func step_target(def: Dictionary) -> Dictionary:
 	var out: Dictionary = {"to": "", "row": []}
 	if def.is_empty():
 		return out
+	if def.has("_source"):
+		return _source_target(str(def["_source"]))
 	var p: Patch = world.get("patch") as Patch if world else null
 	var key: String = str(def.get("key", ""))
 	var typ: String = str(def.get("type", "stat"))

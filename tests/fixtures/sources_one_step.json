@@ -1,0 +1,16 @@
+{
+  "_doc": "Test fixture: a one-step source job for the dummy planet's one district (tests/test_sources.gd). It gates stage 4, not the last stage, and pays seeds, to prove that the gated stage, the steps and the reward are the planet's data.",
+  "open_stage": 0,
+  "gates_stage": 4,
+  "reach_m": 2.0,
+  "sources": [
+    {
+      "district": "testworld", "id": "test_tap", "name": "The test tap",
+      "reward": {"seeds": 7},
+      "toast": "The test tap is shut.",
+      "steps": [
+        {"id": "tap", "type": "use", "prop": "valve", "at": [2.0, 3.0], "text": "Shut the tap", "desc": "It drips.", "prompt": "Shut the tap"}
+      ]
+    }
+  ]
+}

@@ -25,3 +25,10 @@ func set_district_stage(stage: int) -> void:
 
 func set_source_state(state: String) -> void:
 	source_state = state
+
+
+## The frame of the town's source landmark in site-local metres (x to the right and z toward the
+## yard as seen from the landmark): the steps of the city's source job stand in it
+## (systems/source_sites.gd). The site's own frame when the town has no landmark.
+func source_frame() -> Transform3D:
+	return Transform3D.IDENTITY

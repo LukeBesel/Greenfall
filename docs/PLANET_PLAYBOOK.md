@@ -186,6 +186,19 @@ The rules are `core/mastery_rules.gd` (plain maths, shared with the simulators);
 - Rule of thumb: set a kind's `mastery_level1_units` to about two minutes of Lumi's hand work on it in the city where it first appears (the heavier that city's hexes and the faster her hands by then, the larger the number).
 - Rule of thumb: the first robot of a role must be useful the moment it is built, so its plans should arrive after the first level of the kind it works. The simulators check this (`robots_never_wait_on_mastery`, and the robot-minutes spent waiting in `tools/crew_sim`).
 
+### Source jobs (M3-07)
+The rules and the state are `systems/sources.gd`; where a step stands in the world, its marker and prompt are `systems/source_sites.gd`; every job is data in the planet's `sources` table. Measured values are in `docs/reviews/M3-07_SOURCES.md`.
+
+- **The hold.** A city with a job cannot reach `gates_stage` until the job is done (`Districts.set_stage_cap`): its hexes may all be there, the city waits one stage short. The next city opens before that, so the job never blocks moving on. A planet with no table holds nothing.
+- **Offered** from the city's `open_stage` (a job may set its own), and a step with `at_clean` only once that share of the city's land hexes is clean.
+- **Three step types, no script:** `use` (walk there, use it), `work` (use it, then stay in reach for `seconds`; leaving pauses it) and `carry` (pick a part up at `from`, paying `cost`, carry it to `at`, fit it for `seconds`). Work with a `kind` runs at Lumi's hand bonus for that kind (1 + `hand_bonus_per_level` x level), so mastering the city's kind shortens its capstone.
+- **Spots** are metres in the frame of the city's source landmark (`TownSite.source_frame`: x to the right, z toward the yard), so the site decides where its landmark is. Keep every spot on a street or an open lot: the tests check the first planet's against its landmarks' footprints.
+- **Done:** `EventBus.source_shut_down(district)`, the hold lifts (the last stage and its payout follow at once if the hexes are there), the landmark goes to its shut-down state, the reward is paid, the city's source finds are given.
+- **Reward:** cubes under the 3-minute rule for that city's own `income_ref` (Planet 1 pays about one minute), plus Parts where the job costs none.
+- **A save from before jobs:** a city already at the gated stage counts as shut down, unpaid; every other city gets its job.
+- Rule of thumb: three to five steps, the first a plain `use`, one `work` step on the kind the city introduces, at most 10 s standing still in any one step.
+- Rule of thumb: a planet's last job can be its ending's set piece (Planet 1: the rocket, six `carry` steps that take the late Parts surplus). Gate its steps with `at_clean`, not with the city's stage, so they spread over the city instead of piling up at its end.
+
 ### The crew and the robot chain (M3-20)
 Every number is in the planet's robots table. The rules are `core/crew_rules.gd` (cap, prices) and `core/crew_chain.gd` (the ground, the Assembler's line); `tools/crew_sim` plays a whole planet on them. Measured values are in `docs/reviews/M3-20_CREW.md`.
 

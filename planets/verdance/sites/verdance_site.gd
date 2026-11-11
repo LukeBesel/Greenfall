@@ -251,6 +251,11 @@ func set_source_state(state: String) -> void:
 		source_state = town.source_state
 
 
+## Where the city's source landmark stands on this site (TownSite hook).
+func source_frame() -> Transform3D:
+	return town.frame if town and town.has_landmark() else Transform3D.IDENTITY
+
+
 ## Follows this site's district: its stage now (once the world's Districts node is up) and every
 ## change after (EventBus.district_stage_changed).
 func _wire_district() -> void:

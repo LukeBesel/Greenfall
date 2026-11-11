@@ -419,26 +419,25 @@ func test_shutting_down_a_source_gives_its_piece() -> void:
 	assert_eq(_found.size(), 1, "once")
 
 
-func test_until_sources_are_jobs_the_city_stage_shuts_them() -> void:
+func test_a_source_find_waits_for_the_real_shutdown_whatever_the_citys_stage() -> void:
 	var f: Finds = _play(FIRST)
-	var stage: int = int(_fx.def.table(Finds.TABLE)["source_shut_at_stage"])
 	var source: Dictionary = f.entries().filter(func(e: Dictionary) -> bool: return e["where"] == Finds.SOURCE)[0]
 	var city: String = str(source["district"])
 	f.load_state({"hexes": {city: 100000}})  # past every buried find: only the source is watched here
-	_fx.set_district_stage(city, stage - 1)
-	assert_false(f.is_taken(str(source["id"])), "not below stage %d" % stage)
-	_fx.set_district_stage(city, stage)
-	assert_true(f.is_taken(str(source["id"])))
-	assert_has(_found, [str(source["pieces"][0]), Finds.SOURCE])
-	# A save whose city is already past that stage gets it on load.
-	_found.clear()
+	_fx.set_district_stage(city, Districts.MAX_STAGE)
+	f.catch_up()
+	assert_false(f.is_taken(str(source["id"])), "a thriving city alone does not give it")
+	assert_false(_fx.def.table(Finds.TABLE).has("source_shut_at_stage"), "no stage stands in for the shutdown any more")
+	# A save whose source is shut and whose find was never given gets it on load.
 	var f2 := Finds.new()
 	add_child_autofree(f2)
 	f2.setup(_fx.def, _fx.districts, _fx.cells)
 	f2.load_state({})
-	Looks.found().clear()
+	f2.source_is_shut = func(district: String) -> bool: return district == city
 	f2.catch_up()
+	assert_true(f2.is_taken(str(source["id"])))
 	assert_has(_found, [str(source["pieces"][0]), Finds.SOURCE])
+	assert_eq(_found.size(), 1, "and no other city's")
 
 
 func test_a_secret_gives_its_piece() -> void:
@@ -457,7 +456,6 @@ func test_a_secret_gives_its_piece() -> void:
 func test_playing_the_first_planet_completes_sprout_alone_and_only_in_the_last_city() -> void:
 	var f: Finds = _play(FIRST)
 	var order: Array[String] = _fx.districts.ids()
-	var stage: int = int(_fx.def.table(Finds.TABLE)["source_shut_at_stage"])
 	var first_piece_hex: int = -1
 	var cleaned: int = 0
 	for i: int in order.size():
@@ -473,7 +471,7 @@ func test_playing_the_first_planet_completes_sprout_alone_and_only_in_the_last_c
 		assert_eq(_sets, [], "%s: clearing every hex does not complete the set" % city)
 		if last:
 			assert_eq(Looks.set_progress("sprout")[0], Looks.set_ids("sprout").size() - 1, "one piece short until the last source is shut")
-		_fx.set_district_stage(city, stage)
+		EventBus.source_shut_down.emit(city)  # what the city's source job does when its last step is done
 		if not last:
 			assert_eq(_sets, [], "Sprout is not complete after %s" % city)
 			assert_false(Looks.set_collected("sprout"))

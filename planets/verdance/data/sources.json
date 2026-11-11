@@ -1,0 +1,114 @@
+{
+  "_doc": "The source job of each city (design spec section 4; systems/sources.gd, shown in the world by systems/source_sites.gd): the thing that still pollutes the city, stopped by a short job only Lumi can do. Until it is done the city cannot reach regrowth stage `gates_stage`. open_stage: the city's regrowth stage from which its job is offered (a source may set its own). reach_m: how close Lumi must stand to a step's spot to use it and to keep working at it. sources[]: district (the city's id in districts.json), id (never changes once shipped), name (the source, shown in the 'shut down' notice), open_stage (optional), reward {cubes, parts}: paid once when the last step is done; cubes stay under the 3-minute rule (districts.json income_ref_s x the city's income_ref; here about one minute of the city's income), toast (the notice when it is shut down), steps[] in order: id, text (the card's title), desc (the card's why line), prompt (what the interact key does at the spot), prop (the marker the world stands there: valve, lever, jam, socket, part), at [x, z] (the spot, in metres in the frame of the city's source landmark: x to the right and z toward the yard as seen from the landmark; every spot lies on the street in front of the landmark or on the open lot between it and the yard, so nothing is built on it), and type: 'use' = walk there and use it once. 'work' = use it, then stay in reach for `seconds` (leaving pauses it); with `kind` (a pollution kind of pollution.json) the work goes faster by Lumi's hand bonus for that kind, so mastering the city's kind shortens its capstone. 'carry' = pick a part up at `from` [x, z] (pays `cost`, a currency dictionary, if the step has one), carry it to `at` and fit it there for `seconds`; text_1 is the card's title and final_prompt the prompt while Lumi carries the part. at_clean (optional, 0..1): the step is offered only once that share of the city's land hexes is clean. Old Capital's job is the rocket: six parts in build order, 2,600 Parts in all (the accepted prices of docs/reviews/BALANCE_PROPOSAL_P1_V2.md section 3), each offered as the city is cleaned; Fit times are shorter than the proposal's 20 s so no step holds Lumi still for long.",
+  "open_stage": 3,
+  "gates_stage": 5,
+  "reach_m": 2.8,
+  "sources": [
+    {
+      "district": "old_town", "id": "burst_main", "name": "The burst main",
+      "reward": {"cubes": 300, "parts": 45},
+      "toast": "The burst main is capped. Old Town can thrive now.",
+      "steps": [
+        {"id": "feed_valve", "type": "use", "prop": "valve", "at": [-11.0, -5.0],
+         "text": "Close the feed valve", "desc": "The pump house still pushes water into the broken main.", "prompt": "Close the valve"},
+        {"id": "drain", "type": "work", "prop": "jam", "at": [7.0, -3.0], "kind": "litter", "seconds": 6.0,
+         "text": "Dig out the blocked drain", "desc": "Litter chokes the drain, so the flood cannot run off.", "prompt": "Clear the drain"},
+        {"id": "cap", "type": "carry", "prop": "socket", "from": [-13.0, 2.0], "at": [1.4, 1.6], "seconds": 5.0,
+         "text": "Fetch the pipe cap", "text_1": "Bolt the cap on the burst main", "desc": "A spare cap lies by the pump house. Only your hands can fit it.",
+         "prompt": "Pick up the pipe cap", "final_prompt": "Bolt the cap down"}
+      ]
+    },
+    {
+      "district": "scrapyard", "id": "crusher_stack", "name": "The crusher yard",
+      "reward": {"cubes": 960, "parts": 90},
+      "toast": "The crusher yard is quiet. Ironside can thrive now.",
+      "steps": [
+        {"id": "breaker", "type": "use", "prop": "lever", "at": [-34.0, 14.5],
+         "text": "Pull the boiler breaker", "desc": "The boiler house feeds the press and its smoke.", "prompt": "Pull the breaker"},
+        {"id": "jam", "type": "work", "prop": "jam", "at": [-4.0, 14.5], "kind": "wrecks", "seconds": 8.0,
+         "text": "Cut the wreck out of the press", "desc": "A wreck is jammed in the press mouth. Cut it free by hand.", "prompt": "Cut the wreck free"},
+        {"id": "brake", "type": "carry", "prop": "socket", "from": [10.0, 34.0], "at": [19.0, 14.5], "seconds": 5.0,
+         "text": "Fetch the brake shoe", "text_1": "Fit the brake shoe on the scrap crane", "desc": "The scrap crane swings loose until its brake holds again.",
+         "prompt": "Pick up the brake shoe", "final_prompt": "Fit the brake shoe"},
+        {"id": "gantry", "type": "use", "prop": "lever", "at": [7.0, 14.5],
+         "text": "Park the gantry", "desc": "Lock the gantry with its hook up. The yard goes quiet.", "prompt": "Park the gantry"}
+      ]
+    },
+    {
+      "district": "kettle_bay", "id": "long_tide", "name": "The tanker's leak",
+      "reward": {"cubes": 1980, "parts": 80},
+      "toast": "The Long Tide leaks no more. Kettle Bay can thrive now.",
+      "steps": [
+        {"id": "transfer_valve", "type": "use", "prop": "valve", "at": [-3.0, 44.0],
+         "text": "Close the transfer valve", "desc": "Oil still runs down the tanker's shore line.", "prompt": "Close the valve"},
+        {"id": "plate", "type": "carry", "prop": "socket", "from": [-12.0, 50.0], "at": [9.0, 39.0], "seconds": 6.0,
+         "text": "Fetch the hull plate", "text_1": "Weld the plate over the gash", "desc": "The bow is torn open. A plate from the dock will close it.",
+         "prompt": "Pick up the hull plate", "final_prompt": "Weld the plate on"},
+        {"id": "skim", "type": "work", "prop": "jam", "at": [4.0, 48.0], "kind": "slick", "seconds": 8.0,
+         "text": "Skim the slick off the shore", "desc": "The last of the oil lies on the lot. Skim it by hand.", "prompt": "Skim the slick"},
+        {"id": "boom", "type": "use", "prop": "lever", "at": [13.0, 49.0],
+         "text": "Winch the boom shut", "desc": "Close the boom round the hull so nothing drifts out.", "prompt": "Winch the boom"}
+      ]
+    },
+    {
+      "district": "highreach", "id": "incinerator", "name": "The incinerator",
+      "reward": {"cubes": 2400, "parts": 150},
+      "toast": "The incinerator is cold. Highreach can thrive now.",
+      "steps": [
+        {"id": "feed_belt", "type": "use", "prop": "lever", "at": [30.0, 14.5],
+         "text": "Stop the feed belt", "desc": "The belt still carries waste into the furnace.", "prompt": "Stop the belt"},
+        {"id": "filter", "type": "work", "prop": "jam", "at": [0.0, 14.5], "kind": "smog", "seconds": 8.0,
+         "text": "Scrub the choked flue", "desc": "Soot packs the flue. Scrub it out before the fire dies.", "prompt": "Scrub the flue"},
+        {"id": "cartridge", "type": "carry", "prop": "socket", "from": [-10.0, 36.0], "at": [8.0, 14.5], "seconds": 5.0,
+         "text": "Fetch a filter cartridge", "text_1": "Fit the cartridge in the flue duct", "desc": "A clean cartridge catches what the stacks still breathe out.",
+         "prompt": "Pick up the cartridge", "final_prompt": "Fit the cartridge"},
+        {"id": "dampers", "type": "use", "prop": "valve", "at": [-30.0, 14.5],
+         "text": "Shut the furnace dampers", "desc": "With the dampers shut the fire goes out for good.", "prompt": "Shut the dampers"}
+      ]
+    },
+    {
+      "district": "lowmeadow", "id": "treatment_works", "name": "The treatment works",
+      "reward": {"cubes": 4260, "parts": 250},
+      "toast": "The treatment works runs clear. Lowmeadow can thrive now.",
+      "steps": [
+        {"id": "sluice", "type": "use", "prop": "valve", "at": [-12.0, 14.5],
+         "text": "Close the inlet sluice", "desc": "Fouled water still pours into the tanks.", "prompt": "Close the sluice"},
+        {"id": "channel", "type": "work", "prop": "jam", "at": [10.0, 14.5], "kind": "blight", "seconds": 8.0,
+         "text": "Dig the sludge out of the channel", "desc": "Poisoned sludge blocks the channel. Dig it out by hand.", "prompt": "Dig out the sludge"},
+        {"id": "lime", "type": "carry", "prop": "socket", "from": [-8.0, 38.0], "at": [22.0, 14.5], "seconds": 5.0,
+         "text": "Fetch the lime sacks", "text_1": "Dose the settling tank", "desc": "Lime settles the poison so the water can clear.",
+         "prompt": "Pick up the lime sacks", "final_prompt": "Dose the tank"},
+        {"id": "outfall", "type": "carry", "prop": "socket", "from": [8.0, 40.0], "at": [34.0, 14.5], "seconds": 6.0,
+         "text": "Fetch the outfall plug", "text_1": "Seal the cracked outfall", "desc": "The outfall leaks onto the meadow until it is sealed.",
+         "prompt": "Pick up the plug", "final_prompt": "Seal the outfall"},
+        {"id": "pumps", "type": "use", "prop": "lever", "at": [0.0, 24.0],
+         "text": "Start the clean water pumps", "desc": "Everything is tight. Send clean water through the works.", "prompt": "Start the pumps"}
+      ]
+    },
+    {
+      "district": "old_capital", "id": "launch_pad", "name": "The rocket", "open_stage": 0,
+      "reward": {"cubes": 3060},
+      "toast": "The rocket stands ready on Launch Pad 1.",
+      "steps": [
+        {"id": "launch_frame", "type": "carry", "prop": "socket", "from": [-10.0, 34.0], "at": [0.0, 14.5], "seconds": 6.0, "cost": {"parts": 300}, "at_clean": 0.35,
+         "text": "Build the launch frame", "text_1": "Fit the launch frame on the pad", "desc": "The rocket to the next world starts with its frame.",
+         "prompt": "Build the launch frame", "final_prompt": "Fit the launch frame"},
+        {"id": "fuel_tanks", "type": "carry", "prop": "socket", "from": [-10.0, 34.0], "at": [-5.0, 14.5], "seconds": 6.0, "cost": {"parts": 350}, "at_clean": 0.45,
+         "text": "Build the fuel tanks", "text_1": "Fit the fuel tanks", "desc": "Tanks next: the rocket has a long way to go.",
+         "prompt": "Build the fuel tanks", "final_prompt": "Fit the fuel tanks"},
+        {"id": "engine_cluster", "type": "carry", "prop": "socket", "from": [-10.0, 34.0], "at": [5.0, 14.5], "seconds": 6.0, "cost": {"parts": 400}, "at_clean": 0.55,
+         "text": "Build the engine cluster", "text_1": "Fit the engine cluster", "desc": "Five engines, made from what the city threw away.",
+         "prompt": "Build the engine cluster", "final_prompt": "Fit the engines"},
+        {"id": "guidance_core", "type": "carry", "prop": "socket", "from": [-10.0, 34.0], "at": [-5.0, 14.5], "seconds": 6.0, "cost": {"parts": 450}, "at_clean": 0.65,
+         "text": "Build the guidance core", "text_1": "Fit the guidance core", "desc": "The core knows the way to the next world.",
+         "prompt": "Build the guidance core", "final_prompt": "Fit the guidance core"},
+        {"id": "hull_plates", "type": "carry", "prop": "socket", "from": [-10.0, 34.0], "at": [5.0, 14.5], "seconds": 6.0, "cost": {"parts": 500}, "at_clean": 0.75,
+         "text": "Build the hull plates", "text_1": "Fit the hull plates", "desc": "Close the bare frames. The rocket takes its shape.",
+         "prompt": "Build the hull plates", "final_prompt": "Fit the hull plates"},
+        {"id": "nose_cone", "type": "carry", "prop": "socket", "from": [-10.0, 34.0], "at": [0.0, 14.5], "seconds": 6.0, "cost": {"parts": 600}, "at_clean": 0.85,
+         "text": "Build the nose cone", "text_1": "Fit the nose cone", "desc": "The last part. Then the rocket is ready.",
+         "prompt": "Build the nose cone", "final_prompt": "Fit the nose cone"}
+      ]
+    }
+  ]
+}

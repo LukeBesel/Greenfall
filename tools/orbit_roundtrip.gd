@@ -53,6 +53,9 @@ static func _snap(s: Node) -> Dictionary:
 		# Looks: found pieces are global progress; what the planet has given is in its own section.
 		"pieces": JSON.stringify(GameState.global.get(Looks.KEY, [])),
 		"finds": JSON.stringify((s.orbit as SliceOrbit).look_finds.save_state()),
+		# Source jobs: the step each city's job is at, which are shut, and the hold each puts on its city.
+		"sources": JSON.stringify((s.orbit as SliceOrbit).sources.save_state()),
+		"source_holds": _source_holds(s.orbit as SliceOrbit),
 		"worn_set": Designs.worn_set(),
 		"worn_head": str(LumiStyle.current()["head"]),
 		"hex_level_target": (s.get("hex_levels") as HexLevels).level_of(int(s.get_meta("rt_target", -1))),
@@ -593,6 +596,11 @@ static func run(rt: Node, check: Callable) -> void:
 	# Looks: a find taken from the planet, a second piece found, and a mixed look worn.
 	var first_find: Dictionary = so1.look_finds.entries()[0]
 	check.call("orbit_find_taken", true, so1.look_finds.take(str(first_find["id"])))
+	# Source jobs: one city's source is shut down (one that gives no piece, so the piece counts
+	# below stay what they were); its city is no longer held, the others are.
+	var shut_city: String = _city_without_source_find(so1)
+	check.call("orbit_source_shut", true, shut_city != "" and so1.sources.force_shut(shut_city))
+	check.call("orbit_source_hold_lifted", Districts.MAX_STAGE, so1.districts.stage_cap_of(shut_city))
 	Looks.grant("head_halo", "secret")
 	var look: Dictionary = LumiStyle.current()
 	LumiStyle.wear_piece(look, "head_halo")
@@ -739,6 +747,12 @@ static func _old_save(tree: SceneTree, packed: PackedScene, check: Callable) -> 
 	var old_base: String = so.pollution.base_id()
 	check.call("orbit_old_mastery_from_clean_hexes", true, so.mastery.level(old_base) >= 1 and so.mastery.robots_can_work(old_base))
 	var old_level: int = so.mastery.level(old_base)
+	# A save from before source jobs: no city of it was at the gated stage, so every source still
+	# runs, every city is held one stage short, and nothing was paid.
+	var old_gate: int = so.sources.gates_stage()
+	check.call("orbit_old_sources_all_running", 0, so.sources.shut_count())
+	for id: String in so.sources.ids():
+		check.call("orbit_old_source_holds_%s" % id, old_gate - 1, so.districts.stage_cap_of(id))
 	var p: Patch = s.get("patch")
 	check.call("orbit_old_lumi_on_start_site", 0, g.site_at(p.global_position))
 	check.call("orbit_old_chest", 2.5, snappedf(p.compartment.fill, 0.01))
@@ -762,3 +776,22 @@ static func _old_save(tree: SceneTree, packed: PackedScene, check: Callable) -> 
 	check.call("orbit_old_reload_mastery", old_level, (s2.orbit as SliceOrbit).mastery.level(old_base))
 	s2.queue_free()
 	await tree.process_frame
+
+
+## The stage each city is held at by its source job, in play order ("5" = not held).
+static func _source_holds(so: SliceOrbit) -> String:
+	var out: PackedStringArray = []
+	for id: String in so.districts.ids():
+		out.append("%s:%d" % [id, so.districts.stage_cap_of(id)])
+	return ",".join(out)
+
+
+## The first city with a source job whose shutdown hands out no piece of a look ("" when none).
+static func _city_without_source_find(so: SliceOrbit) -> String:
+	for id: String in so.sources.ids():
+		var gives: bool = false
+		for e: Dictionary in so.look_finds.entries():
+			gives = gives or (e["where"] == Finds.SOURCE and e["district"] == id)
+		if not gives:
+			return id
+	return ""

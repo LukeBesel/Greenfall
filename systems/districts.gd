@@ -9,6 +9,8 @@ extends Node
 ## once its pollution is gone. Land = not water and not hub ground (the yard, under buildings).
 ## A district's stage is the highest stage that at least `stage_share` of its land hexes have
 ## reached. It never drops: a hex dirtied again lowers the share, not the stage.
+## A district may be held below a stage (set_stage_cap): its source job gates its last stage
+## (systems/sources.gd). The hold is the caller's to save; set it before load_state.
 ##
 ## Counts are kept up to date from SphereCells.cell_changed, one dictionary lookup per changed
 ## cell; nothing scans the globe after setup.
@@ -52,6 +54,8 @@ var _cell_stage: Dictionary[int, int] = {}
 ## Per district: how many land hexes stand at exactly each stage (index 0..MAX_STAGE).
 var _counts: Array[PackedInt32Array] = []
 var _stage := PackedInt32Array()
+## Per district: the highest stage it may stand at for now (MAX_STAGE = no hold).
+var _cap := PackedInt32Array()
 var _unlocked := PackedByteArray()
 var _visited := PackedByteArray()
 var _current: int = -1
@@ -208,6 +212,8 @@ func setup(def: PlanetDefinition, grid: SphereGrid, cells: SphereCells, site_cel
 		_counts.append(counts)
 	var n: int = _specs.size()
 	_stage.resize(n)
+	_cap.resize(n)
+	_cap.fill(MAX_STAGE)
 	_unlocked.resize(n)
 	_visited.resize(n)
 	_derive()
@@ -241,7 +247,7 @@ func load_state(d: Dictionary) -> void:
 	var stages: Dictionary = d.get("stages", {})
 	for i: int in _specs.size():
 		var id: String = str(_specs[i]["id"])
-		_stage[i] = clampi(maxi(_stage[i], int(stages.get(id, 0))), 0, MAX_STAGE)
+		_stage[i] = clampi(maxi(_stage[i], int(stages.get(id, 0))), 0, _cap[i])
 		_visited[i] = 1 if (id in d.get("visited", []) or _starts_open(i)) else 0
 		if id in d.get("unlocked", []):
 			_unlocked[i] = 1
@@ -288,6 +294,28 @@ func site_of(id: String) -> int:
 
 func stage_of(id: String) -> int:
 	return _stage[_index[id]] if _index.has(id) else 0
+
+
+## The highest stage the district may stand at for now (MAX_STAGE when nothing holds it).
+func stage_cap_of(id: String) -> int:
+	return _cap[_index[id]] if _index.has(id) else MAX_STAGE
+
+
+## Holds the district at `cap` or below (MAX_STAGE lifts the hold). A stage already reached is
+## kept: the hold only stops the next rise. Lifting it raises the stage at once if the hexes are
+## already there.
+func set_stage_cap(id: String, cap: int) -> void:
+	if not _index.has(id):
+		return
+	var i: int = _index[id]
+	_cap[i] = clampi(cap, 0, MAX_STAGE)
+	_raise_stage(i)
+
+
+## Share of the district's land hexes that are clean (their pollution gone), 0..1.
+func clean_share_of(id: String) -> float:
+	var land: int = land_of(id)
+	return float(count_at_least(id, 1)) / float(land) if land > 0 else 0.0
 
 
 ## Share of the way to the district's next stage, 0..1.
@@ -417,7 +445,7 @@ func _on_cell_changed(c: int) -> void:
 
 
 func _raise_stage(i: int) -> void:
-	var reached: int = stage_from_counts(_counts[i], stage_share)
+	var reached: int = mini(stage_from_counts(_counts[i], stage_share), _cap[i])
 	if reached <= _stage[i]:
 		return
 	_stage[i] = reached
@@ -479,7 +507,7 @@ func _enter(i: int) -> void:
 func _derive() -> void:
 	_focus = 0
 	for i: int in _specs.size():
-		_stage[i] = stage_from_counts(_counts[i], stage_share)
+		_stage[i] = mini(stage_from_counts(_counts[i], stage_share), _cap[i])
 		_unlocked[i] = 0
 	_quiet = true
 	_apply_unlocks()
