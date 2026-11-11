@@ -192,67 +192,67 @@ msgstr "Touchpad"
 msgid "Paddle 1"
 msgstr "Paddle 1"
 
-#: autoload/Settings.gd:527
+#: autoload/Settings.gd:522
 msgid "LMB"
 msgstr "Botão esq."
 
-#: autoload/Settings.gd:528
+#: autoload/Settings.gd:523
 msgid "RMB"
 msgstr "Botão dir."
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:524
 msgid "MMB"
 msgstr "Botão do meio"
 
-#: autoload/Settings.gd:530
+#: autoload/Settings.gd:525
 msgid "Wheel up"
 msgstr "Roda p/ cima"
 
-#: autoload/Settings.gd:531
+#: autoload/Settings.gd:526
 msgid "Wheel down"
 msgstr "Roda p/ baixo"
 
-#: autoload/Settings.gd:532
+#: autoload/Settings.gd:527
 msgid "Mouse %d"
 msgstr "Mouse %d"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:529
 msgid "Button %d"
 msgstr "Botão %d"
 
-#: autoload/Settings.gd:539
+#: autoload/Settings.gd:534
 msgid "LS left"
 msgstr "AE esquerda"
 
-#: autoload/Settings.gd:539
+#: autoload/Settings.gd:534
 msgid "LS right"
 msgstr "AE direita"
 
-#: autoload/Settings.gd:540
+#: autoload/Settings.gd:535
 msgid "LS up"
 msgstr "AE cima"
 
-#: autoload/Settings.gd:540
+#: autoload/Settings.gd:535
 msgid "LS down"
 msgstr "AE baixo"
 
-#: autoload/Settings.gd:541
+#: autoload/Settings.gd:536
 msgid "RS left"
 msgstr "AD esquerda"
 
-#: autoload/Settings.gd:541
+#: autoload/Settings.gd:536
 msgid "RS right"
 msgstr "AD direita"
 
-#: autoload/Settings.gd:542
+#: autoload/Settings.gd:537
 msgid "RS up"
 msgstr "AD cima"
 
-#: autoload/Settings.gd:542
+#: autoload/Settings.gd:537
 msgid "RS down"
 msgstr "AD baixo"
 
-#: autoload/Settings.gd:553
+#: autoload/Settings.gd:548
 msgid "hold %s"
 msgstr "segure %s"
 
@@ -773,7 +773,7 @@ msgstr "WREN: Ali é o limite da zona de mapeamento, Lumi. Lá fora só tem nebl
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi flutua de volta para o chão firme."
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1085 scenes/slice_orbit.gd:397
+#: planet/orbit/verdance_globe.gd:567 scenes/slice_orbit.gd:396
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXÁGONO LIMPO!  +%s"
 
@@ -794,7 +794,7 @@ msgid "%s site"
 msgstr "Local: %s"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: planet/sites/orbit_sites.gd:191 ui/main_menu.gd:476
+#: planet/sites/orbit_sites.gd:191 ui/main_menu.gd:474
 msgid "Hub %d"
 msgstr "Base %d"
 
@@ -1277,71 +1277,35 @@ msgstr "Zona %s"
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s montado. Ele olha em volta e começa a trabalhar."
 
-#: scenes/slice.gd:390
-msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
-msgstr "Link dos robôs online. Aperte B para o Comando: pinte zonas e mande equipes para onde quiser."
-
-#: scenes/slice.gd:1099 scenes/slice_orbit.gd:413
-msgid "Milestone: %d hexes clean!"
-msgstr "Marco: %d hexágonos limpos!"
-
-#: scenes/slice.gd:1101
-msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
-msgstr "O ferro-velho inteiro está limpo. Lumi solta um bipe muito longo e muito feliz."
-
-#: scenes/slice.gd:1108 ui/rockets_panel.gd:60
+#: scenes/slice.gd:139 ui/rockets_panel.gd:60
 msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
 msgstr "Vá até o foguete na plataforma de lançamento e aperte E para escolher para onde voar."
 
-#: scenes/slice.gd:1111
-msgid "%s is out of range: %s"
-msgstr "%s está fora de alcance: %s"
-
-#: scenes/slice.gd:1121
+#: scenes/slice.gd:145
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Bloqueado. Leve sua base ao nível 5 para construir a plataforma de lançamento."
 
-#: scenes/slice.gd:1124 ui/rockets_panel.gd:39
+#: scenes/slice.gd:148 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Células de energia recarregando: %s. Melhorias do foguete recarregam mais rápido."
 
-#: scenes/slice.gd:1178
-msgid "Touchdown: %s. Hub %d of %d. %s"
-msgstr "Pouso: %s. Base %d de %d. %s"
+#: scenes/slice_orbit.gd:412
+msgid "Milestone: %d hexes clean!"
+msgstr "Marco: %d hexágonos limpos!"
 
-#: scenes/slice.gd:1179
-msgid "The rocket is parked on the lot, ready when its cells refill."
-msgstr "O foguete está estacionado no pátio, pronto quando as células recarregarem."
-
-#: scenes/slice.gd:1179
-msgid "Landed on the base pad."
-msgstr "Pousou na plataforma da base."
-
-#: scenes/slice.gd:1299 scenes/slice_orbit.gd:992
-msgid "Upgrades need a workbench. Head back to the hub."
-msgstr "Melhorias precisam de uma bancada. Volte para a base."
-
-#: scenes/slice.gd:1490
-msgid "Welcome back. The junk waited for you."
-msgstr "Bem-vindo de volta. A sucata esperou por você."
-
-#: scenes/slice.gd:1507
-msgid "OUTPOST %d · Lv%d"
-msgstr "POSTO %d · Nv%d"
-
-#: scenes/slice.gd:1507
-msgid "OUTPOST %d · RUIN"
-msgstr "POSTO %d · RUÍNA"
-
-#: scenes/slice_orbit.gd:482 systems/camp/camp.gd:188 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:481 systems/camp/camp.gd:188 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   Consertar a bancada"
 
-#: scenes/slice_orbit.gd:482 systems/camp/camp.gd:189
+#: scenes/slice_orbit.gd:481 systems/camp/camp.gd:189
 msgid "E   Open the workbench"
 msgstr "E   Abrir a bancada"
 
-#: scenes/slice_orbit.gd:1092
+#: scenes/slice_orbit.gd:991
+msgid "Upgrades need a workbench. Head back to the hub."
+msgstr "Melhorias precisam de uma bancada. Volte para a base."
+
+#: scenes/slice_orbit.gd:1091
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Bancada consertada. Aperte E nela para gastar cubos em melhorias."
 
@@ -1401,7 +1365,7 @@ msgstr "Tela de título"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "Continuar jogando: o primeiro distrito continua aberto, com a base no nível %d."
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:857 ui/main_menu.gd:470
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:857 ui/main_menu.gd:468
 msgid "%dh %02dm"
 msgstr "%dh %02dm"
 
@@ -4257,7 +4221,7 @@ msgstr "FEITO COM AMOR E SUCATA"
 msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
 msgstr "Código, malhas procedurais, música e sons sintetizados e os textos são originais de Greenfall."
 
-#: ui/credits_roll.gd:148 ui/main_menu.gd:621
+#: ui/credits_roll.gd:148 ui/main_menu.gd:619
 msgid "Music by Lucas"
 msgstr "Música de Lucas"
 
@@ -5193,7 +5157,7 @@ msgstr "Novo jogo"
 msgid "Profiles"
 msgstr "Perfis"
 
-#: ui/main_menu.gd:356 ui/main_menu.gd:563 ui/pause_menu.gd:66
+#: ui/main_menu.gd:356 ui/main_menu.gd:561 ui/pause_menu.gd:66
 msgid "Settings"
 msgstr "Configurações"
 
@@ -5205,77 +5169,77 @@ msgstr "Sair"
 msgid "Made with Godot"
 msgstr "Feito com Godot"
 
-#: ui/main_menu.gd:470
+#: ui/main_menu.gd:468
 msgid "%dm"
 msgstr "%d min"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:476 ui/profile_picker.gd:133
+#: ui/main_menu.gd:474 ui/profile_picker.gd:133
 msgid "%s cubes"
 msgstr "%s cubos"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Jan"
 msgstr "jan."
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Feb"
 msgstr "fev."
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Mar"
 msgstr "mar."
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Apr"
 msgstr "abr."
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "May"
 msgstr "mai."
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Jun"
 msgstr "jun."
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Jul"
 msgstr "jul."
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Aug"
 msgstr "ago."
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Sep"
 msgstr "set."
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Oct"
 msgstr "out."
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Nov"
 msgstr "nov."
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Dec"
 msgstr "dez."
 
-#: ui/main_menu.gd:563
+#: ui/main_menu.gd:561
 msgid "Credits"
 msgstr "Créditos"
 
-#: ui/main_menu.gd:592
+#: ui/main_menu.gd:590
 msgid "CREDITS"
 msgstr "CRÉDITOS"
 
-#: ui/main_menu.gd:607 ui/profile_picker.gd:49 ui/settings_panel.gd:123
+#: ui/main_menu.gd:605 ui/profile_picker.gd:49 ui/settings_panel.gd:123
 #: ui/settings_panel.gd:148 ui/world_picker.gd:53
 msgid "Back"
 msgstr "Voltar"
 
-#: ui/main_menu.gd:620
+#: ui/main_menu.gd:618
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -5285,27 +5249,27 @@ msgstr ""
 "Código, malhas procedurais, áudio sintetizado e textos são originais de Greenfall.\n"
 "\n"
 
-#: ui/main_menu.gd:624
+#: ui/main_menu.gd:622
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "Recursos de terceiros: CC0, Poly Haven (polyhaven.com)."
 
-#: ui/main_menu.gd:642
+#: ui/main_menu.gd:640
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]por %s[/color]"
 
-#: ui/main_menu.gd:676
+#: ui/main_menu.gd:674
 msgid "START A NEW GAME?"
 msgstr "COMEÇAR UM NOVO JOGO?"
 
-#: ui/main_menu.gd:677
+#: ui/main_menu.gd:675
 msgid "Your current save will be erased. This can't be undone."
 msgstr "Seu jogo salvo atual será apagado. Isso não pode ser desfeito."
 
-#: ui/main_menu.gd:685
+#: ui/main_menu.gd:683
 msgid "Keep my save"
 msgstr "Manter meu jogo salvo"
 
-#: ui/main_menu.gd:691 ui/profile_picker.gd:213
+#: ui/main_menu.gd:689 ui/profile_picker.gd:213
 msgid "Erase and start"
 msgstr "Apagar e começar"
 
@@ -16817,6 +16781,33 @@ msgstr "Aquele pórtico desmanchou a frota do Ledger quando o dinheiro acabou. A
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Um mundo de ferrugem, verde. Os velhos guindastes têm flores aos pés. As contas estão fechadas, {name}. Nós as equilibramos."
+
+#~ msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
+#~ msgstr "Link dos robôs online. Aperte B para o Comando: pinte zonas e mande equipes para onde quiser."
+
+#~ msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
+#~ msgstr "O ferro-velho inteiro está limpo. Lumi solta um bipe muito longo e muito feliz."
+
+#~ msgid "%s is out of range: %s"
+#~ msgstr "%s está fora de alcance: %s"
+
+#~ msgid "Touchdown: %s. Hub %d of %d. %s"
+#~ msgstr "Pouso: %s. Base %d de %d. %s"
+
+#~ msgid "The rocket is parked on the lot, ready when its cells refill."
+#~ msgstr "O foguete está estacionado no pátio, pronto quando as células recarregarem."
+
+#~ msgid "Landed on the base pad."
+#~ msgstr "Pousou na plataforma da base."
+
+#~ msgid "Welcome back. The junk waited for you."
+#~ msgstr "Bem-vindo de volta. A sucata esperou por você."
+
+#~ msgid "OUTPOST %d · Lv%d"
+#~ msgstr "POSTO %d · Nv%d"
+
+#~ msgid "OUTPOST %d · RUIN"
+#~ msgstr "POSTO %d · RUÍNA"
 
 #~ msgid "Fix the workbench: press  {interact}  at it"
 #~ msgstr "Conserte a bancada: aperte  {interact}  perto dela"

@@ -192,67 +192,67 @@ msgstr "タッチパッド"
 msgid "Paddle 1"
 msgstr "パドル 1"
 
-#: autoload/Settings.gd:527
+#: autoload/Settings.gd:522
 msgid "LMB"
 msgstr "左クリック"
 
-#: autoload/Settings.gd:528
+#: autoload/Settings.gd:523
 msgid "RMB"
 msgstr "右クリック"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:524
 msgid "MMB"
 msgstr "中クリック"
 
-#: autoload/Settings.gd:530
+#: autoload/Settings.gd:525
 msgid "Wheel up"
 msgstr "ホイール上"
 
-#: autoload/Settings.gd:531
+#: autoload/Settings.gd:526
 msgid "Wheel down"
 msgstr "ホイール下"
 
-#: autoload/Settings.gd:532
+#: autoload/Settings.gd:527
 msgid "Mouse %d"
 msgstr "マウス %d"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:529
 msgid "Button %d"
 msgstr "ボタン %d"
 
-#: autoload/Settings.gd:539
+#: autoload/Settings.gd:534
 msgid "LS left"
 msgstr "Lスティック左"
 
-#: autoload/Settings.gd:539
+#: autoload/Settings.gd:534
 msgid "LS right"
 msgstr "Lスティック右"
 
-#: autoload/Settings.gd:540
+#: autoload/Settings.gd:535
 msgid "LS up"
 msgstr "Lスティック上"
 
-#: autoload/Settings.gd:540
+#: autoload/Settings.gd:535
 msgid "LS down"
 msgstr "Lスティック下"
 
-#: autoload/Settings.gd:541
+#: autoload/Settings.gd:536
 msgid "RS left"
 msgstr "Rスティック左"
 
-#: autoload/Settings.gd:541
+#: autoload/Settings.gd:536
 msgid "RS right"
 msgstr "Rスティック右"
 
-#: autoload/Settings.gd:542
+#: autoload/Settings.gd:537
 msgid "RS up"
 msgstr "Rスティック上"
 
-#: autoload/Settings.gd:542
+#: autoload/Settings.gd:537
 msgid "RS down"
 msgstr "Rスティック下"
 
-#: autoload/Settings.gd:553
+#: autoload/Settings.gd:548
 msgid "hold %s"
 msgstr "%s 長押し"
 
@@ -772,7 +772,7 @@ msgstr "WREN：そこが測量ゾーンの端よ、Lumi。外にはもやしか�
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi はふわりと固い地面に戻った。"
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1085 scenes/slice_orbit.gd:397
+#: planet/orbit/verdance_globe.gd:567 scenes/slice_orbit.gd:396
 msgid "HEX CLEAN!  +%s"
 msgstr "ヘックス クリーン！  +%s"
 
@@ -793,7 +793,7 @@ msgid "%s site"
 msgstr "%sの地点"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: planet/sites/orbit_sites.gd:191 ui/main_menu.gd:476
+#: planet/sites/orbit_sites.gd:191 ui/main_menu.gd:474
 msgid "Hub %d"
 msgstr "基地 %d"
 
@@ -1275,71 +1275,35 @@ msgstr "%s ゾーン"
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s 組み立て完了。きょろきょろしてから、仕事に取りかかった。"
 
-#: scenes/slice.gd:390
-msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
-msgstr "ロボットアップリンク接続。B で指揮ビュー：ゾーンを塗って、好きな場所にクルーを送ろう。"
-
-#: scenes/slice.gd:1099 scenes/slice_orbit.gd:413
-msgid "Milestone: %d hexes clean!"
-msgstr "マイルストーン：きれいなヘックス %d 個！"
-
-#: scenes/slice.gd:1101
-msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
-msgstr "ジャンクヤードがまるごときれいになった。Lumi はとても長くて、とてもうれしそうなビープを鳴らした。"
-
-#: scenes/slice.gd:1108 ui/rockets_panel.gd:60
+#: scenes/slice.gd:139 ui/rockets_panel.gd:60
 msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
 msgstr "発射台のロケットまで歩いて、Eを押して行き先を選ぼう。"
 
-#: scenes/slice.gd:1111
-msgid "%s is out of range: %s"
-msgstr "%s は範囲外：%s"
-
-#: scenes/slice.gd:1121
+#: scenes/slice.gd:145
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "ロック中。発射台を建てるには基地をレベル5に上げよう。"
 
-#: scenes/slice.gd:1124 ui/rockets_panel.gd:39
+#: scenes/slice.gd:148 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "エネルギーセル充電中：%s。ロケットのアップグレードで充電が速くなる。"
 
-#: scenes/slice.gd:1178
-msgid "Touchdown: %s. Hub %d of %d. %s"
-msgstr "着陸：%s。基地 %d / %d。%s"
+#: scenes/slice_orbit.gd:412
+msgid "Milestone: %d hexes clean!"
+msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice.gd:1179
-msgid "The rocket is parked on the lot, ready when its cells refill."
-msgstr "ロケットは空き地に駐機中。セルが満タンになればいつでも行ける。"
-
-#: scenes/slice.gd:1179
-msgid "Landed on the base pad."
-msgstr "基地のパッドに着陸した。"
-
-#: scenes/slice.gd:1299 scenes/slice_orbit.gd:992
-msgid "Upgrades need a workbench. Head back to the hub."
-msgstr "アップグレードには作業台が必要。基地に戻ろう。"
-
-#: scenes/slice.gd:1490
-msgid "Welcome back. The junk waited for you."
-msgstr "おかえり。ガラクタが待っていたよ。"
-
-#: scenes/slice.gd:1507
-msgid "OUTPOST %d · Lv%d"
-msgstr "前哨基地 %d · Lv%d"
-
-#: scenes/slice.gd:1507
-msgid "OUTPOST %d · RUIN"
-msgstr "前哨基地 %d · 廃墟"
-
-#: scenes/slice_orbit.gd:482 systems/camp/camp.gd:188 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:481 systems/camp/camp.gd:188 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   作業台を直す"
 
-#: scenes/slice_orbit.gd:482 systems/camp/camp.gd:189
+#: scenes/slice_orbit.gd:481 systems/camp/camp.gd:189
 msgid "E   Open the workbench"
 msgstr "E   作業台を開く"
 
-#: scenes/slice_orbit.gd:1092
+#: scenes/slice_orbit.gd:991
+msgid "Upgrades need a workbench. Head back to the hub."
+msgstr "アップグレードには作業台が必要。基地に戻ろう。"
+
+#: scenes/slice_orbit.gd:1091
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "作業台を修理した。作業台で E を押すとキューブでアップグレードできる。"
 
@@ -1399,7 +1363,7 @@ msgstr "タイトル画面"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "プレイを続ける：最初の地区は基地レベル %d のまま遊べます。"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:857 ui/main_menu.gd:470
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:857 ui/main_menu.gd:468
 msgid "%dh %02dm"
 msgstr "%d時間%02d分"
 
@@ -4245,7 +4209,7 @@ msgstr "愛とガラクタでできています"
 msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
 msgstr "コード、プロシージャルメッシュ、合成した音楽と効果音、テキストは Greenfall のオリジナルです。"
 
-#: ui/credits_roll.gd:148 ui/main_menu.gd:621
+#: ui/credits_roll.gd:148 ui/main_menu.gd:619
 msgid "Music by Lucas"
 msgstr "音楽：Lucas"
 
@@ -5181,7 +5145,7 @@ msgstr "はじめから"
 msgid "Profiles"
 msgstr "プロフィール"
 
-#: ui/main_menu.gd:356 ui/main_menu.gd:563 ui/pause_menu.gd:66
+#: ui/main_menu.gd:356 ui/main_menu.gd:561 ui/pause_menu.gd:66
 msgid "Settings"
 msgstr "設定"
 
@@ -5193,77 +5157,77 @@ msgstr "終了"
 msgid "Made with Godot"
 msgstr "Godot で制作"
 
-#: ui/main_menu.gd:470
+#: ui/main_menu.gd:468
 msgid "%dm"
 msgstr "%d分"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:476 ui/profile_picker.gd:133
+#: ui/main_menu.gd:474 ui/profile_picker.gd:133
 msgid "%s cubes"
 msgstr "%s キューブ"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Jan"
 msgstr "1月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Feb"
 msgstr "2月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Mar"
 msgstr "3月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Apr"
 msgstr "4月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "May"
 msgstr "5月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Jun"
 msgstr "6月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Jul"
 msgstr "7月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Aug"
 msgstr "8月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Sep"
 msgstr "9月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Oct"
 msgstr "10月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Nov"
 msgstr "11月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Dec"
 msgstr "12月"
 
-#: ui/main_menu.gd:563
+#: ui/main_menu.gd:561
 msgid "Credits"
 msgstr "クレジット"
 
-#: ui/main_menu.gd:592
+#: ui/main_menu.gd:590
 msgid "CREDITS"
 msgstr "クレジット"
 
-#: ui/main_menu.gd:607 ui/profile_picker.gd:49 ui/settings_panel.gd:123
+#: ui/main_menu.gd:605 ui/profile_picker.gd:49 ui/settings_panel.gd:123
 #: ui/settings_panel.gd:148 ui/world_picker.gd:53
 msgid "Back"
 msgstr "戻る"
 
-#: ui/main_menu.gd:620
+#: ui/main_menu.gd:618
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -5273,27 +5237,27 @@ msgstr ""
 "コード、プロシージャルメッシュ、合成オーディオ、テキストは Greenfall のオリジナルです。\n"
 "\n"
 
-#: ui/main_menu.gd:624
+#: ui/main_menu.gd:622
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "サードパーティ素材：CC0、Poly Haven（polyhaven.com）。"
 
-#: ui/main_menu.gd:642
+#: ui/main_menu.gd:640
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]作者：%s[/color]"
 
-#: ui/main_menu.gd:676
+#: ui/main_menu.gd:674
 msgid "START A NEW GAME?"
 msgstr "新しくゲームを始めますか？"
 
-#: ui/main_menu.gd:677
+#: ui/main_menu.gd:675
 msgid "Your current save will be erased. This can't be undone."
 msgstr "現在のセーブデータは消去されます。元に戻せません。"
 
-#: ui/main_menu.gd:685
+#: ui/main_menu.gd:683
 msgid "Keep my save"
 msgstr "セーブを残す"
 
-#: ui/main_menu.gd:691 ui/profile_picker.gd:213
+#: ui/main_menu.gd:689 ui/profile_picker.gd:213
 msgid "Erase and start"
 msgstr "消去して始める"
 
@@ -16804,6 +16768,33 @@ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
+#~ msgstr "ロボットアップリンク接続。B で指揮ビュー：ゾーンを塗って、好きな場所にクルーを送ろう。"
+
+#~ msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
+#~ msgstr "ジャンクヤードがまるごときれいになった。Lumi はとても長くて、とてもうれしそうなビープを鳴らした。"
+
+#~ msgid "%s is out of range: %s"
+#~ msgstr "%s は範囲外：%s"
+
+#~ msgid "Touchdown: %s. Hub %d of %d. %s"
+#~ msgstr "着陸：%s。基地 %d / %d。%s"
+
+#~ msgid "The rocket is parked on the lot, ready when its cells refill."
+#~ msgstr "ロケットは空き地に駐機中。セルが満タンになればいつでも行ける。"
+
+#~ msgid "Landed on the base pad."
+#~ msgstr "基地のパッドに着陸した。"
+
+#~ msgid "Welcome back. The junk waited for you."
+#~ msgstr "おかえり。ガラクタが待っていたよ。"
+
+#~ msgid "OUTPOST %d · Lv%d"
+#~ msgstr "前哨基地 %d · Lv%d"
+
+#~ msgid "OUTPOST %d · RUIN"
+#~ msgstr "前哨基地 %d · 廃墟"
 
 #~ msgid "Fix the workbench: press  {interact}  at it"
 #~ msgstr "作業台を直す：そばで  {interact}  を押す"

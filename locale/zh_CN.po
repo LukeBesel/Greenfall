@@ -192,67 +192,67 @@ msgstr "触摸板"
 msgid "Paddle 1"
 msgstr "背键 1"
 
-#: autoload/Settings.gd:527
+#: autoload/Settings.gd:522
 msgid "LMB"
 msgstr "左键"
 
-#: autoload/Settings.gd:528
+#: autoload/Settings.gd:523
 msgid "RMB"
 msgstr "右键"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:524
 msgid "MMB"
 msgstr "中键"
 
-#: autoload/Settings.gd:530
+#: autoload/Settings.gd:525
 msgid "Wheel up"
 msgstr "滚轮上"
 
-#: autoload/Settings.gd:531
+#: autoload/Settings.gd:526
 msgid "Wheel down"
 msgstr "滚轮下"
 
-#: autoload/Settings.gd:532
+#: autoload/Settings.gd:527
 msgid "Mouse %d"
 msgstr "鼠标 %d"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:529
 msgid "Button %d"
 msgstr "按键 %d"
 
-#: autoload/Settings.gd:539
+#: autoload/Settings.gd:534
 msgid "LS left"
 msgstr "左摇杆左"
 
-#: autoload/Settings.gd:539
+#: autoload/Settings.gd:534
 msgid "LS right"
 msgstr "左摇杆右"
 
-#: autoload/Settings.gd:540
+#: autoload/Settings.gd:535
 msgid "LS up"
 msgstr "左摇杆上"
 
-#: autoload/Settings.gd:540
+#: autoload/Settings.gd:535
 msgid "LS down"
 msgstr "左摇杆下"
 
-#: autoload/Settings.gd:541
+#: autoload/Settings.gd:536
 msgid "RS left"
 msgstr "右摇杆左"
 
-#: autoload/Settings.gd:541
+#: autoload/Settings.gd:536
 msgid "RS right"
 msgstr "右摇杆右"
 
-#: autoload/Settings.gd:542
+#: autoload/Settings.gd:537
 msgid "RS up"
 msgstr "右摇杆上"
 
-#: autoload/Settings.gd:542
+#: autoload/Settings.gd:537
 msgid "RS down"
 msgstr "右摇杆下"
 
-#: autoload/Settings.gd:553
+#: autoload/Settings.gd:548
 msgid "hold %s"
 msgstr "按住 %s"
 
@@ -772,7 +772,7 @@ msgstr "WREN：那里是勘测区的边缘，Lumi。外面只有雾霾。"
 msgid "Lumi hovers back onto solid ground."
 msgstr "Lumi 悬浮着回到了坚实的地面。"
 
-#: planet/orbit/verdance_globe.gd:567 scenes/slice.gd:1085 scenes/slice_orbit.gd:397
+#: planet/orbit/verdance_globe.gd:567 scenes/slice_orbit.gd:396
 msgid "HEX CLEAN!  +%s"
 msgstr "六角格清理完毕！  +%s"
 
@@ -793,7 +793,7 @@ msgid "%s site"
 msgstr "%s地点"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: planet/sites/orbit_sites.gd:191 ui/main_menu.gd:476
+#: planet/sites/orbit_sites.gd:191 ui/main_menu.gd:474
 msgid "Hub %d"
 msgstr "基地 %d"
 
@@ -1275,71 +1275,35 @@ msgstr "%s区域"
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s 组装完成。它四下看了看，就开始干活了。"
 
-#: scenes/slice.gd:390
-msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
-msgstr "机器人上行链路上线。按 B 打开指挥：划定区域，把队伍派到你想去的地方。"
-
-#: scenes/slice.gd:1099 scenes/slice_orbit.gd:413
-msgid "Milestone: %d hexes clean!"
-msgstr "里程碑：%d 个六角格已清理！"
-
-#: scenes/slice.gd:1101
-msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
-msgstr "整个废料场都干净了。Lumi 发出一声好长好长、非常开心的哔——"
-
-#: scenes/slice.gd:1108 ui/rockets_panel.gd:60
+#: scenes/slice.gd:139 ui/rockets_panel.gd:60
 msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
 msgstr "走到发射台上的火箭旁，按 E 选择要飞去的地方。"
 
-#: scenes/slice.gd:1111
-msgid "%s is out of range: %s"
-msgstr "%s 超出范围：%s"
-
-#: scenes/slice.gd:1121
+#: scenes/slice.gd:145
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "未解锁。将基地升到 5 级才能建造发射台。"
 
-#: scenes/slice.gd:1124 ui/rockets_panel.gd:39
+#: scenes/slice.gd:148 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
 
-#: scenes/slice.gd:1178
-msgid "Touchdown: %s. Hub %d of %d. %s"
-msgstr "着陆：%s。基地 %d / %d。%s"
+#: scenes/slice_orbit.gd:412
+msgid "Milestone: %d hexes clean!"
+msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice.gd:1179
-msgid "The rocket is parked on the lot, ready when its cells refill."
-msgstr "火箭停在空地上，电池充满就能出发。"
-
-#: scenes/slice.gd:1179
-msgid "Landed on the base pad."
-msgstr "已降落在基地平台。"
-
-#: scenes/slice.gd:1299 scenes/slice_orbit.gd:992
-msgid "Upgrades need a workbench. Head back to the hub."
-msgstr "升级需要工作台。回基地去吧。"
-
-#: scenes/slice.gd:1490
-msgid "Welcome back. The junk waited for you."
-msgstr "欢迎回来。废料一直在等你。"
-
-#: scenes/slice.gd:1507
-msgid "OUTPOST %d · Lv%d"
-msgstr "前哨 %d · %d级"
-
-#: scenes/slice.gd:1507
-msgid "OUTPOST %d · RUIN"
-msgstr "前哨 %d · 废墟"
-
-#: scenes/slice_orbit.gd:482 systems/camp/camp.gd:188 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:481 systems/camp/camp.gd:188 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   修理工作台"
 
-#: scenes/slice_orbit.gd:482 systems/camp/camp.gd:189
+#: scenes/slice_orbit.gd:481 systems/camp/camp.gd:189
 msgid "E   Open the workbench"
 msgstr "E   打开工作台"
 
-#: scenes/slice_orbit.gd:1092
+#: scenes/slice_orbit.gd:991
+msgid "Upgrades need a workbench. Head back to the hub."
+msgstr "升级需要工作台。回基地去吧。"
+
+#: scenes/slice_orbit.gd:1091
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "工作台修好了。在它旁边按 E，用方块购买升级。"
 
@@ -1399,7 +1363,7 @@ msgstr "标题画面"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "继续游戏：第一个街区仍然开放，基地等级 %d。"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:857 ui/main_menu.gd:470
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:857 ui/main_menu.gd:468
 msgid "%dh %02dm"
 msgstr "%d时%02d分"
 
@@ -4245,7 +4209,7 @@ msgstr "用爱与废料制作"
 msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
 msgstr "代码、程序化网格、合成音乐和音效以及文字均为 Greenfall 原创。"
 
-#: ui/credits_roll.gd:148 ui/main_menu.gd:621
+#: ui/credits_roll.gd:148 ui/main_menu.gd:619
 msgid "Music by Lucas"
 msgstr "音乐：Lucas"
 
@@ -5181,7 +5145,7 @@ msgstr "新游戏"
 msgid "Profiles"
 msgstr "存档"
 
-#: ui/main_menu.gd:356 ui/main_menu.gd:563 ui/pause_menu.gd:66
+#: ui/main_menu.gd:356 ui/main_menu.gd:561 ui/pause_menu.gd:66
 msgid "Settings"
 msgstr "设置"
 
@@ -5193,77 +5157,77 @@ msgstr "退出"
 msgid "Made with Godot"
 msgstr "使用 Godot 制作"
 
-#: ui/main_menu.gd:470
+#: ui/main_menu.gd:468
 msgid "%dm"
 msgstr "%d分钟"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:476 ui/profile_picker.gd:133
+#: ui/main_menu.gd:474 ui/profile_picker.gd:133
 msgid "%s cubes"
 msgstr "%s 方块"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Jan"
 msgstr "1月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Feb"
 msgstr "2月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Mar"
 msgstr "3月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Apr"
 msgstr "4月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "May"
 msgstr "5月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Jun"
 msgstr "6月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Jul"
 msgstr "7月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Aug"
 msgstr "8月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Sep"
 msgstr "9月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Oct"
 msgstr "10月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Nov"
 msgstr "11月"
 
-#: ui/main_menu.gd:482
+#: ui/main_menu.gd:480
 msgid "Dec"
 msgstr "12月"
 
-#: ui/main_menu.gd:563
+#: ui/main_menu.gd:561
 msgid "Credits"
 msgstr "制作人员"
 
-#: ui/main_menu.gd:592
+#: ui/main_menu.gd:590
 msgid "CREDITS"
 msgstr "制作人员"
 
-#: ui/main_menu.gd:607 ui/profile_picker.gd:49 ui/settings_panel.gd:123
+#: ui/main_menu.gd:605 ui/profile_picker.gd:49 ui/settings_panel.gd:123
 #: ui/settings_panel.gd:148 ui/world_picker.gd:53
 msgid "Back"
 msgstr "返回"
 
-#: ui/main_menu.gd:620
+#: ui/main_menu.gd:618
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -5273,27 +5237,27 @@ msgstr ""
 "代码、程序化网格、合成音频和文字均为 Greenfall 原创。\n"
 "\n"
 
-#: ui/main_menu.gd:624
+#: ui/main_menu.gd:622
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "第三方资源：CC0，Poly Haven（polyhaven.com）。"
 
-#: ui/main_menu.gd:642
+#: ui/main_menu.gd:640
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]作者：%s[/color]"
 
-#: ui/main_menu.gd:676
+#: ui/main_menu.gd:674
 msgid "START A NEW GAME?"
 msgstr "开始新游戏？"
 
-#: ui/main_menu.gd:677
+#: ui/main_menu.gd:675
 msgid "Your current save will be erased. This can't be undone."
 msgstr "你当前的存档将被删除。此操作无法撤销。"
 
-#: ui/main_menu.gd:685
+#: ui/main_menu.gd:683
 msgid "Keep my save"
 msgstr "保留存档"
 
-#: ui/main_menu.gd:691 ui/profile_picker.gd:213
+#: ui/main_menu.gd:689 ui/profile_picker.gd:213
 msgid "Erase and start"
 msgstr "删除并开始"
 
@@ -16804,6 +16768,33 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
+#~ msgstr "机器人上行链路上线。按 B 打开指挥：划定区域，把队伍派到你想去的地方。"
+
+#~ msgid "The whole Junkyard is clean. Lumi beeps a very long, very happy beep."
+#~ msgstr "整个废料场都干净了。Lumi 发出一声好长好长、非常开心的哔——"
+
+#~ msgid "%s is out of range: %s"
+#~ msgstr "%s 超出范围：%s"
+
+#~ msgid "Touchdown: %s. Hub %d of %d. %s"
+#~ msgstr "着陆：%s。基地 %d / %d。%s"
+
+#~ msgid "The rocket is parked on the lot, ready when its cells refill."
+#~ msgstr "火箭停在空地上，电池充满就能出发。"
+
+#~ msgid "Landed on the base pad."
+#~ msgstr "已降落在基地平台。"
+
+#~ msgid "Welcome back. The junk waited for you."
+#~ msgstr "欢迎回来。废料一直在等你。"
+
+#~ msgid "OUTPOST %d · Lv%d"
+#~ msgstr "前哨 %d · %d级"
+
+#~ msgid "OUTPOST %d · RUIN"
+#~ msgstr "前哨 %d · 废墟"
 
 #~ msgid "Fix the workbench: press  {interact}  at it"
 #~ msgstr "修理工作台：在它旁边按  {interact}"
