@@ -223,7 +223,7 @@ func test_ambience_beds() -> void:
 	assert_false(amb.set_planet("mars"), "unknown bed ignored")
 	assert_eq(amb.planet, "tidewell")
 	Audio.set_planet_theme("verdance")
-	assert_eq(amb.planet, "")
+	assert_eq(amb.planet, "verdance")  # [v6sound] the bed is data; Verdance's is empty
 	assert_eq(amb.active_loops().size(), 0, "Verdance has no planet bed")
 	for id: String in ["ochre", "rime", "anvil"]:
 		Audio.set_planet_theme(id)

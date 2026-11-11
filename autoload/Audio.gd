@@ -32,6 +32,7 @@ const AmbienceBeds := preload("res://audio/ambience.gd")  # [sound]
 const AmbienceSynth := preload("res://audio/ambience_synth.gd")  # [sound]
 const TunesDirector := preload("res://audio/tunes_director.gd")  # [tunes]
 ## [sound] Mix: how far music / ambience dip while WREN speaks, and the attack / release times.
+## [v6sound] Fallbacks only: the values in use are "duck" in data/sound.json.
 const DUCK_MUSIC_DB: float = -7.0
 const DUCK_AMB_DB: float = -4.5
 const DUCK_ATTACK_S: float = 0.25
@@ -57,6 +58,11 @@ const HUSH_FADE_S: float = 1.5
 var _hush_by: Dictionary = {}  # owner -> true
 var _hush: float = 0.0  # 0..1, smoothed
 var _tunes_hush: bool = false  # [tunes] a song (or the quiet between songs) owns the music
+## [v6sound] Game seconds (follows the time scale): the per-sound gap gate and the sound log.
+var game_t: float = 0.0
+var _last_play: Dictionary = {}  # sound -> game_t of its last play
+var _planet_id: String = "verdance"  # the planet itself (its theme may be another planet's)
+var sound_log: Node  # audio/sound_log.gd, only with --sound-log
 
 
 func _ready() -> void:
@@ -85,6 +91,12 @@ func _ready() -> void:
 	tunes.name = "TunesDirector"
 	add_child(tunes)
 	apply_volumes()
+	for a: String in OS.get_cmdline_user_args():  # [v6sound] dev: --sound-log[=file]
+		if a == "--sound-log" or a.begins_with("--sound-log="):
+			sound_log = (load("res://audio/sound_log.gd") as GDScript).new()
+			sound_log.name = "SoundLog"
+			sound_log.set("out_path", a.substr(12) if a.begins_with("--sound-log=") else "")
+			add_child(sound_log)
 
 
 func _exit_tree() -> void:
@@ -97,13 +109,13 @@ func _exit_tree() -> void:
 
 
 func _setup_buses() -> void:
-	for bus_name: String in ["Music", "SFX", "Ambience"]:
+	# [v6sound] One bus per slider: Music (and Songs, audio/tunes_director.gd), Ambience, SFX, UI.
+	for bus_name: String in ["Music", "SFX", "Ambience", "UI"]:
 		if AudioServer.get_bus_index(bus_name) == -1:
 			AudioServer.add_bus()
 			var idx: int = AudioServer.bus_count - 1
 			AudioServer.set_bus_name(idx, bus_name)
-			# [sound] Ambience feeds SFX, so the SFX slider (and its reverb) covers it.
-			AudioServer.set_bus_send(idx, "SFX" if bus_name == "Ambience" else "Master")
+			AudioServer.set_bus_send(idx, "Master")
 	# [sound] A safety limiter on Master: many SFX at once must never clip.
 	if AudioServer.get_bus_effect_count(0) == 0:
 		var mlim := AudioEffectHardLimiter.new()
@@ -140,10 +152,14 @@ func _setup_buses() -> void:
 
 func apply_volumes() -> void:
 	# [sound] A slider at 0 mutes its bus (linear_to_db(0) is -inf); the duck rides on top.
+	# [v6sound] Four sliders under Master, each with its own bus; trims and the duck are data/sound.json.
 	_set_bus_level(0, Settings.master_volume, 0.0)
-	_set_bus_level(AudioServer.get_bus_index("SFX"), Settings.sfx_volume, 0.0)
-	_set_bus_level(AudioServer.get_bus_index("Music"), Settings.music_volume * (1.0 - _hush), DUCK_MUSIC_DB * _duck)  # [eggs2] hush
-	_set_bus_level(AudioServer.get_bus_index("Ambience"), 1.0, DUCK_AMB_DB * _duck)
+	_set_bus_level(AudioServer.get_bus_index("SFX"), Settings.sfx_volume, SoundCfg.bus_trim_db("SFX"))
+	_set_bus_level(AudioServer.get_bus_index("UI"), Settings.ui_volume, SoundCfg.bus_trim_db("UI"))
+	_set_bus_level(AudioServer.get_bus_index("Music"), Settings.music_volume * (1.0 - _hush),
+		SoundCfg.bus_trim_db("Music") + SoundCfg.duck("music_db", DUCK_MUSIC_DB) * _duck)  # [eggs2] hush
+	_set_bus_level(AudioServer.get_bus_index("Ambience"), Settings.ambience_volume,
+		SoundCfg.bus_trim_db("Ambience") + SoundCfg.duck("ambience_db", DUCK_AMB_DB) * _duck)
 
 
 func _set_bus_level(idx: int, linear: float, offset_db: float) -> void:
@@ -199,12 +215,23 @@ func play(sound: String, pitch: float = 1.0, volume_db: float = 0.0, jitter: flo
 	var list: Array = _sounds.get(sound, [])
 	if list.is_empty():
 		return
+	# [v6sound] The same sound never sooner than its min_gap_s (data/sound.json), so nothing stacks.
+	var gap: float = SoundCfg.min_gap(sound)
+	if gap > 0.0:
+		if game_t - float(_last_play.get(sound, -1000.0)) < gap:
+			if sound_log:
+				sound_log.call("dropped", sound)
+			return
+		_last_play[sound] = game_t
 	var p: AudioStreamPlayer = _players[_next_player]
 	_next_player = (_next_player + 1) % _players.size()
 	p.stream = list[_rng.randi() % list.size()]
 	p.pitch_scale = maxf(0.05, pitch * (1.0 + _rng.randf_range(-jitter, jitter)))
-	p.volume_db = volume_db
+	p.volume_db = volume_db + SoundCfg.sound_db(sound)
+	p.bus = SoundCfg.bus_of(sound)  # UI sounds and animal calls have their own sliders
 	p.play()
+	if sound_log:
+		sound_log.call("played", sound, p.bus, p.volume_db, p.stream.get_length() / p.pitch_scale)
 
 
 ## Plays a sound pitched up a pentatonic scale; step grows with combos.
@@ -243,7 +270,8 @@ func loop(sound: String, level: float, pitch: float = 1.0) -> void:
 		if not _loops.has(sound):
 			return
 		p = AudioStreamPlayer.new()
-		p.bus = "SFX"
+		p.bus = SoundCfg.bus_of(sound)
+		p.name = "Loop_" + sound
 		p.stream = _loops[sound]
 		add_child(p)
 		_loop_players[sound] = p
@@ -294,12 +322,21 @@ func get_music_mood() -> String:
 ## "anvil". Unknown ids are ignored (returns false). The first call for a planet synthesizes its
 ## instruments and ambience (~0.1-0.3 s), so call it while the planet loads.
 func set_planet_theme(id: String) -> bool:
-	if not PlanetThemes.has(id):
+	# [v6sound] A planet may borrow another planet's score (data/sound.json planets.<id>.theme);
+	# its songs, rules and ambience are still its own.
+	var theme: String = id if PlanetThemes.has(id) else SoundCfg.theme_of(id)
+	if not PlanetThemes.has(theme):
 		return false
-	_theme_world = id
+	_planet_id = id
+	_theme_world = theme
 	if _hold_id == "":
-		_apply_theme(id, _resto_world)
+		_apply_theme(theme, _resto_world)
 	return true
+
+
+## [v6sound] The planet the player is on (songs, music rules and ambience are looked up by it).
+func get_planet_id() -> String:
+	return _planet_id
 
 
 func get_planet_theme() -> String:
@@ -400,7 +437,7 @@ func _apply_theme(id: String, resto: float) -> void:
 	_ensure_instruments(id)
 	_music.call("set_theme", id)
 	if _ambience:
-		_ambience.call("set_planet", id)
+		_ambience.call("set_planet", _planet_id if _hold_id == "" else id)
 	_apply_resto(resto)
 
 
@@ -443,9 +480,12 @@ func music_sting(sting_name: String) -> void:
 		return
 	if _music:
 		_music.call("sting", sting_name)
+		if sound_log:
+			sound_log.call("played", "sting:" + sting_name, "Music", 0.0, 2.0)
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	game_t += delta
 	if not _music:
 		return
 	# Real time, so Engine.time_scale (autoplay) never changes the tempo.
@@ -460,7 +500,7 @@ func _process(_delta: float) -> void:
 	# [sound] Voice ducking: ease toward the target, touching the buses only while it moves.
 	var want: float = 1.0 if now < _duck_until_us else 0.0
 	if want != _duck:
-		_duck = move_toward(_duck, want, dt / (DUCK_ATTACK_S if want > _duck else DUCK_RELEASE_S))
+		_duck = move_toward(_duck, want, dt / maxf(0.01, SoundCfg.duck("attack_s", DUCK_ATTACK_S) if want > _duck else SoundCfg.duck("release_s", DUCK_RELEASE_S)))
 		apply_volumes()
 
 

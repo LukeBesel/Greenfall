@@ -88,6 +88,11 @@ func _ready() -> void:
 		"tour":
 			GameState.upgrades["baler"] = 1
 			_steps = _tour_steps()
+		"bale":  # press a full chest, pick the bale up on the move, carry, boost, put down
+			GameState.upgrades["baler"] = 1
+			lumi.compartment.add("plastic", lumi.capacity() * 0.7)
+			lumi.compartment.add("metal", lumi.capacity() * 0.25)
+			_steps = _bale_steps()
 		"map":
 			_map()
 			return
@@ -181,7 +186,7 @@ func _physics_process(delta: float) -> void:
 		DevHooks.save_viewport("screenshots/v6feel/%s_%02d_%s.png" % [mode, _shot_n, _phase])
 		_shot_n += 1
 	match mode:
-		"carry":
+		"carry", "bale":
 			_carry_sample()
 		"move":
 			_move_sample(delta, _t - start)
@@ -191,7 +196,7 @@ func _flush() -> void:
 	if _phase == "" or _acc.is_empty():
 		return
 	match mode:
-		"carry":
+		"carry", "bale":
 			var solid: float = float(_acc.get("solid", 9.0))
 			var thin: float = float(_acc.get("thin", 9.0))
 			var bad: bool = solid < 0.0
@@ -294,6 +299,25 @@ func _tour_steps() -> Array:
 		[20.0, "stop", func(i: FeelInput, _s: float) -> void:
 			i.stick = Vector3.ZERO
 			i.boost = false],
+	]
+
+
+func _bale_steps() -> Array:
+	return [
+		[0.6, "idle", func(i: FeelInput, _s: float) -> void: i.stick = Vector3.ZERO],
+		[2.8, "press", func(i: FeelInput, s: float) -> void: i.cube = s < 0.02],
+		[3.6, "turn_back", func(i: FeelInput, _s: float) -> void: i.stick = Vector3(0, 0, 1)],
+		[4.6, "pick_up", func(i: FeelInput, _s: float) -> void:
+			i.stick = Vector3(0.4, 0, 0.6)
+			i.interact = lumi.carried.is_empty() and lumi.nearest_loose_cube() != null],
+		[6.6, "carry", func(i: FeelInput, s: float) -> void: i.stick = Vector3(sin(s * 2.0), 0, -cos(s * 2.0))],
+		[8.6, "boost", func(i: FeelInput, _s: float) -> void:
+			i.stick = Vector3(0, 0, -1)
+			i.boost = true],
+		[9.4, "stop", func(i: FeelInput, _s: float) -> void:
+			i.stick = Vector3.ZERO
+			i.boost = false],
+		[10.4, "put_down", func(i: FeelInput, s: float) -> void: i.drop = s < 0.02],
 	]
 
 

@@ -98,6 +98,19 @@ func build_hub(i: int, sync: bool = false) -> SitePrefab:
 		# bigger now). The budget closes when the prefab is built.
 		play = BuildBudget.begin_play(get_tree(), PLAY_SLICE_US)
 		_building = true
+	if i > 0 and DevHooks.has("quit-mid-build") and is_inside_tree():  # [v6qa] dev: quit N frames into a hub town's build (the exit-134 repro)
+		var qt: SceneTree = get_tree()
+		var nq: int = int(DevHooks.get_f("quit-mid-build", 60.0))
+		(func() -> void:
+			for k: int in nq:
+				await qt.process_frame
+			print("[sites] dev: quitting %d frames into hub %d's build (built %s, at %s)" % [nq, i, str(prefabs[i] != null and prefabs[i].is_built), BuildBudget.last_at])
+			if DevHooks.get_s("quit-mode", "") == "free":  # free the town mid-build, then quit 120 frames on
+				set_process(false)
+				free_hub(i)
+				for k: int in 120:
+					await qt.process_frame
+			qt.quit()).call()
 	var s: Dictionary = sites[i].duplicate()
 	s["planet"] = planet_id
 	s["hub_index"] = i

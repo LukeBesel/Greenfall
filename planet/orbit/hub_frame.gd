@@ -111,6 +111,9 @@ func switch_to(i: int) -> void:
 
 
 ## _set_hub in play: the old systems go at once, the new ones are built one a frame.
+const SWITCH_SLICE_US: int = 5000  # [v6qa]
+
+
 func _set_hub_spread(i: int) -> void:
 	_switching = true
 	for key: String in _hosts:
@@ -123,14 +126,26 @@ func _set_hub_spread(i: int) -> void:
 	hub = i
 	global_transform = so.globe.sites[i]["transform"]
 	hub_changed.emit(i)  # the old systems are gone: nobody keeps a freed node
+	# [v6qa] A play budget for the switch: the systems that yield to a BuildBudget (the eggs' plan and
+	# spawns, the outposts one by one) spread their work over frames instead of one long frame each
+	# (walk-in: eggs 1.3 s, outposts 0.5 s in one frame each).
+	var own: BuildBudget = BuildBudget.begin_play(get_tree(), SWITCH_SLICE_US) if BuildBudget.current == null else null
 	for key: String in _hosts:
 		await get_tree().process_frame
 		if not is_inside_tree() or hub != i:
+			if own and BuildBudget.current == own:
+				BuildBudget.end()
 			_switching = false
 			return
 		var h: int = Hitch.t()
 		_build(key)
 		Hitch.mark("hub frame " + key, h)
+		await BuildBudget.idle()  # [v6qa] its spread work done before the next system
+		var nn: Node = node(key)
+		while BuildBudget.current != null and is_instance_valid(nn) and nn.get("building") == true:
+			await BuildBudget.pause("hub frame " + key)
+	if own and BuildBudget.current == own:
+		BuildBudget.end()
 	_switching = false
 	hub_changed.emit(i)
 	print("[hubframe] hub %d" % i)

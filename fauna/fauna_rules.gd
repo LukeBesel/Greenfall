@@ -175,8 +175,8 @@ static func plan(contexts: Array, regs: Array, night: bool, district_seed: int, 
 
 ## Hex contexts for a live district. level_of: Callable(hid) -> int (-1 when untracked).
 static func contexts(field: HexField, level_of: Callable, cells := PackedInt32Array()) -> Array:
-	if field is SphereField and not cells.is_empty():  # [orbB] the globe: a hub region's cells
-		return _contexts_cells(field as SphereField, level_of, cells)
+	if field is SphereField:  # [orbB] the globe: a hub region's cells
+		return _contexts_cells(field as SphereField, level_of, cells) if not cells.is_empty() else []  # [v6qa] none between hubs (the flat walk below read hex_axial, which the globe has not)
 	var out: Array = []
 	var lv := PackedInt32Array()
 	lv.resize(field.hex_count())

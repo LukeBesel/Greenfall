@@ -171,8 +171,9 @@ func _cash(cube: JunkCube) -> void:
 	EventBus.cube_cashed.emit(v, mouth_world())
 	Audio.play_scale("coin", mini(_combo - 1, 8), -4.0)
 	var col: Color = Color(1.0, 0.75, 0.35) if cube.info.get("perfect", false) else Color(0.9, 0.92, 0.88)
-	Vfx.float_text(mouth_world() + Vector3(0, 0.3, 0), "+" + Settings.fmt(v), col, 0.5, 0.8)
-	Vfx.burst("dust", mouth_world() - Vector3(0, 0.3, 0), Color(0.6, 0.55, 0.5, 0.5), 0.8)
+	var du: Vector3 = global_basis.y.normalized()  # [v6feel] the pad's up (world +Y only on the flat world)
+	Vfx.float_text(mouth_world() + du * 0.3, "+" + Settings.fmt(v), col, 0.5, 0.8)
+	Vfx.burst("dust", mouth_world() - du * 0.3, Color(0.6, 0.55, 0.5, 0.5), 0.8)
 	Audio.play("clunk", 0.8, -4.0)
 	_needle_t = 1.0
 	if _ram:  # [camp] the compactor presses each bale

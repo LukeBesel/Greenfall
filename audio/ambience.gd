@@ -2,8 +2,8 @@ extends Node
 ## [sound] Planet ambience beds on the "Ambience" bus (which sends to "SFX", so the SFX slider
 ## governs it). Each planet has a few seamless loops plus random one-shot events; every entry has
 ## a ruined and a restored weight, so restoration crossfades the dead world (wind, groans, creaks)
-## into a living one (birds, insects, water). Verdance has no bed here: its wildlife ambience is
-## fauna/fauna.gd. Driven by Audio.set_planet_theme() / Audio.set_restoration().
+## into a living one (birds, insects, water). Verdance's bed is empty in the data: its wildlife
+## ambience is fauna/fauna.gd and the town life's dirty-to-clean bed (v6life), on the same bus. Driven by Audio.set_planet_theme() / Audio.set_restoration().
 ##
 ## Loops and one-shots are synthesized once per planet, the first time it is chosen
 ## (audio/ambience_synth.gd, plus FaunaSounds' birds / gulls / crickets and Audio's own SFX).
@@ -13,31 +13,16 @@ const BUS: String = "Ambience"
 const LOOP_DB: float = -14.0  # a loop at weight 1.0 (loops are levelled to -20 dBFS RMS)
 const FADE_S: float = 3.0  # crossfade time for planet / restoration changes
 
+## [v6sound] The beds are data now: data/sound.json planets.<id>.ambience (core/sound_cfg.gd).
 ## loops: id -> [ruined, restored] weight. events: [sound, min_s, max_s, db, pitch_lo, pitch_hi,
 ## ruined, restored] (the weight is the chance an event fires when its timer comes up).
-const BEDS: Dictionary = {
-	"ochre": {
-		"loops": {"wind_warm": [1.0, 0.55], "heat_buzz": [0.3, 0.12], "cicadas": [0.0, 0.5]},
-		"events": [["whoosh", 8.0, 18.0, -15.0, 0.35, 0.5, 1.0, 0.4], ["song", 5.0, 12.0, -19.0, 0.9, 1.1, 0.0, 1.0],
-			["chirp", 4.0, 9.0, -21.0, 0.9, 1.15, 0.0, 0.8]],
-	},
-	"tidewell": {
-		"loops": {"waves": [1.0, 0.85], "wind_sea": [0.45, 0.25], "crickets": [0.0, 0.4], "water": [0.0, 0.35]},
-		"events": [["gull", 5.0, 12.0, -13.0, 0.9, 1.1, 1.0, 1.0], ["amb_buoy", 9.0, 20.0, -17.0, 0.95, 1.05, 1.0, 0.6],
-			["song", 6.0, 13.0, -20.0, 0.9, 1.1, 0.0, 0.9], ["frog", 7.0, 15.0, -20.0, 0.9, 1.1, 0.0, 0.6]],
-	},
-	"rime": {
-		"loops": {"wind_eerie": [1.0, 0.5], "water": [0.0, 0.65]},
-		"events": [["amb_creak", 4.0, 11.0, -13.0, 0.8, 1.2, 1.0, 0.35], ["amb_geyser", 14.0, 30.0, -12.0, 0.9, 1.1, 1.0, 0.6],
-			["song", 6.0, 14.0, -21.0, 1.0, 1.2, 0.0, 0.7], ["chirp", 5.0, 11.0, -22.0, 1.0, 1.2, 0.0, 0.6]],
-	},
-	"anvil": {
-		"loops": {"wind_dust": [1.0, 0.5], "water": [0.0, 0.55], "crickets": [0.0, 0.45]},
-		"events": [["groan", 7.0, 16.0, -13.0, 0.45, 0.65, 1.0, 0.2], ["clunk", 10.0, 22.0, -21.0, 0.5, 0.7, 1.0, 0.2],
-			["amb_devil", 15.0, 35.0, -11.0, 0.9, 1.1, 1.0, 0.3], ["song", 5.0, 12.0, -19.0, 0.9, 1.1, 0.0, 1.0],
-			["chirp", 4.0, 9.0, -21.0, 0.9, 1.15, 0.0, 0.8]],
-	},
-}
+## level_db trims the whole bed of that planet.
+static func bed(id: String) -> Dictionary:
+	var b: Dictionary = SoundCfg.ambience(id)
+	if not (b.get("loops") is Dictionary) or not (b.get("events") is Array):
+		return {}
+	return b
+
 
 static var _loop_cache: Dictionary = {}  # loop id -> AudioStreamWAV
 static var _shot_cache: Dictionary = {}  # amb_* -> Array[AudioStreamWAV]
@@ -49,6 +34,8 @@ var _timers: Array[float] = []
 var _shots: Array[AudioStreamPlayer] = []
 var _next_shot: int = 0
 var _rng := RandomNumberGenerator.new()
+var _level_db: float = 0.0
+var _bed: Dictionary = {}  # the current planet's bed (data/sound.json)
 
 
 func _ready() -> void:
@@ -61,24 +48,24 @@ func _ready() -> void:
 		_shots.append(p)
 
 
-## Switches the bed ("" or "verdance" clears it). Unknown ids are ignored (returns false).
+## Switches the bed ("" clears it; a planet with an empty bed plays nothing here). Unknown ids are ignored (returns false).
 func set_planet(id: String) -> bool:
-	if id == "verdance":
-		id = ""
-	if id != "" and not BEDS.has(id):
+	if id != "" and bed(id).is_empty():
 		return false
 	if id == planet:
 		return true
 	planet = id
+	_bed = bed(id) if id != "" else {}
 	for lid: String in _loops:
 		_loops[lid]["w"] = 0.0
 	_timers.clear()
 	if planet == "":
 		return true
-	var bed: Dictionary = BEDS[planet]
-	for lid: String in bed["loops"]:
+	var b: Dictionary = _bed
+	_level_db = float(b.get("level_db", 0.0))
+	for lid: String in b["loops"]:
 		_loop_stream(lid)  # build now (planet load), not mid-play when restoration brings it in
-	for e: Array in bed["events"]:
+	for e: Array in b["events"]:
 		_ensure_shot(str(e[0]))
 		_timers.append(_rng.randf_range(float(e[1]) * 0.3, float(e[2])))
 	_retarget()
@@ -101,7 +88,7 @@ func active_loops() -> Array[String]:
 func _retarget() -> void:
 	if planet == "":
 		return
-	var defs: Dictionary = BEDS[planet]["loops"]
+	var defs: Dictionary = _bed["loops"]
 	for lid: String in defs:
 		var w: Array = defs[lid]
 		var target: float = lerpf(float(w[0]), float(w[1]), restoration)
@@ -171,7 +158,7 @@ func _process(delta: float) -> void:
 			if float(l["w"]) <= 0.0:
 				gone.append(lid)
 			continue
-		AudioVol.set_db(p, linear_to_db(cur) + LOOP_DB)  # [qafix] crash fix: no per-frame volume churn
+		AudioVol.set_db(p, linear_to_db(cur) + LOOP_DB + _level_db)  # [qafix] crash fix: no per-frame volume churn
 		if not p.playing:
 			p.play(_rng.randf() * maxf(0.0, p.stream.get_length() - 0.1))
 	for lid: String in gone:
@@ -179,7 +166,7 @@ func _process(delta: float) -> void:
 		_loops.erase(lid)
 	if planet == "":
 		return
-	var events: Array = BEDS[planet]["events"]
+	var events: Array = _bed["events"]
 	for i: int in mini(_timers.size(), events.size()):
 		_timers[i] -= dt
 		if _timers[i] > 0.0:
@@ -198,8 +185,10 @@ func _fire(snd: String, db: float, pitch: float) -> void:
 	_next_shot = (_next_shot + 1) % _shots.size()
 	p.stream = list[_rng.randi() % list.size()]
 	p.pitch_scale = pitch
-	p.volume_db = db + _rng.randf_range(-3.0, 1.0)
+	p.volume_db = db + _level_db + _rng.randf_range(-3.0, 1.0)
 	p.play()
+	if Audio.sound_log:
+		Audio.sound_log.call("played", snd, BUS, p.volume_db, p.stream.get_length() / maxf(pitch, 0.05))
 
 
 func _exit_tree() -> void:

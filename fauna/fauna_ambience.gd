@@ -44,7 +44,7 @@ func setup(regs: Array) -> void:
 	FaunaSounds.ensure_frontier()
 	for id: String in levels(kind, 0.0):
 		var p := AudioStreamPlayer.new()
-		p.bus = "SFX"
+		p.bus = "Ambience"  # [v6sound] follows the Ambience slider
 		p.stream = FaunaSounds.loop_stream(id)
 		p.volume_db = -80.0
 		add_child(p)

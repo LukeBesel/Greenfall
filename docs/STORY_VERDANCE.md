@@ -8,7 +8,7 @@ reason that the game itself says. This page is the reference for that. Text live
 has no reason.
 
 Status key in the tables: **ok** (the game says it), **fixed** (v6story changed the text),
-**planned** (needs a step from v6hubs / v6pace; the text is written here, ready to use).
+**in game** (the step exists and says it; who built it is named).
 
 ## The story in one page
 
@@ -93,7 +93,7 @@ They are how the player learns what happened: found when the hex that holds them
 | 9 | Repairs Glim | He held on to the pod; he lights the night and spots missed trash | card `glim` + WREN | **fixed** (card gave only where to click) |
 | 10 | Cleans the glowing hex, then 2, then 3 | Plants only grow on clean ground; three clean hexes round the station give robots room to start | cards `hex`, `hex2`, `hex3` | **fixed**: "3 clean hexes unlock the Bot Bay" was a game rule, not a reason |
 | 11 | Adds a Bot Bay to the bench | A planet is too big for one small robot | card `bench2` + WREN | **fixed** (card gave only where to click) |
-| 12 | Builds the first robot, gives it hexes | Robots clean where Lumi points, and keep going when he is busy | cards `robot`, `zone` | **fixed**: WREN said "the base has power!" with no cause |
+| 12 | Builds the first robot, shows it where to clean first | The robot already cleans by itself; painting hexes only tells it where to start. Robots keep going when Lumi is busy | cards `robot`, `zone` + WREN | **fixed**: WREN said "the base has power!" with no cause; the step read as if the robot did nothing until told |
 | 13 | Finds the Maker seed tin, plants and waters the first seed | Nothing grows by itself any more; every bloom gives green light and a seed back | story/first_seed.gd (WREN's long scene), card `seed` | ok. The best-told beat in the game |
 | 14 | Meets the Ledger's drones | The Ledger thinks cleaning costs too much; drones can't touch planted ground, so planting protects clean ground | story/ledger.gd toasts | ok |
 | 15 | Cleans 10 hexes with the robots | More clean ground, more room to plant | card `hex10` | **fixed** (card gave only the key to press) |
@@ -112,11 +112,11 @@ station kept one piece of the last launch kit, and each one woken keeps cleaning
 | # | Station (landmark) | What the player does | In-world reason for going | What it gives | Status |
 |---|---|---|---|---|---|
 | 1 | Landing Yard (water tower) | everything in A and B | Lumi fell here | a home, the first crew, the hop rocket | ok |
-| 2 | Garden Row (windpump) | cleans a few hexes, wakes the windpump | The seed tin is nearly empty; the Makers' seed store was at Garden Row | seed stock, so planting never stops | planned |
-| 3 | Gantry Works (crane) | cleans, wakes the crane | The hop rocket's skin would burn up in space; the works made hull plates | hull plates (rocket tier) | planned |
-| 4 | Signal Heights (radio mast) | cleans, wakes the mast | Nobody knows where to fly; the tall mast kept the Makers' star chart | the star chart: five buried worlds, and Ochre first | planned |
-| 5 | Fairground (ferris wheel) | cleans, wakes the wheel | A long flight needs power that lasts; the wheel ran on a big power cell | a power cell (rocket tier) | planned |
-| 6 | Stack Works (smokestack) | cleans, wakes the stack | The tanks are empty; the stack works made fuel | fuel (rocket tier): the rocket can leave | planned |
+| 2 | Garden Row (windpump) | cleans a few hexes, wakes the windpump | The seed tin is nearly empty; the Makers' seed store was at Garden Row | seed stock, so planting never stops | in game (v6hubs; picker line, arrival line and wake toast; card reason `hub_fly_N` in story_reasons.json) |
+| 3 | Gantry Works (crane) | cleans, wakes the crane | The hop rocket's skin would burn up in space; the works made hull plates | hull plates (rocket tier) | in game (v6hubs; picker line, arrival line and wake toast; card reason `hub_fly_N` in story_reasons.json) |
+| 4 | Signal Heights (radio mast) | cleans, wakes the mast | Nobody knows where to fly; the tall mast kept the Makers' star chart | the star chart: five buried worlds, and Ochre first | in game (v6hubs; picker line, arrival line and wake toast; card reason `hub_fly_N` in story_reasons.json) |
+| 5 | Fairground (ferris wheel) | cleans, wakes the wheel | A long flight needs power that lasts; the wheel ran on a big power cell | a power cell (rocket tier) | in game (v6hubs; picker line, arrival line and wake toast; card reason `hub_fly_N` in story_reasons.json) |
+| 6 | Stack Works (smokestack) | cleans, wakes the stack | The tanks are empty; the stack works made fuel | fuel (rocket tier): the rocket can leave | in game (v6hubs; picker line, arrival line and wake toast; card reason `hub_fly_N` in story_reasons.json) |
 
 Two rules of the economy get a reason here too (v6pace's numbers):
 
@@ -128,18 +128,29 @@ Two rules of the economy get a reason here too (v6pace's numbers):
   keeps more. The pieces from the stations (hull plates, power cell, fuel) are what each tier is made
   of, plus a great many cubes.
 
-At each station, the same three plain reasons, said once each: *clean a few hexes* ("the landmark is
-buried; dig it out"), *wake it* ("it costs cubes: the bench rebuilds what rusted away"), and *leave a
-crew* ("these robots keep cleaning here when you fly on").
+What the game says at each station (v6hubs' steps, v6story's wording):
+
+- *Before the rocket exists* (rocket panel): "The launch pad is still buried. Put your first robot to
+  work to clear it."
+- *Why go* (rocket picker and the card's reason): one line per station, e.g. "Nobody knows where to
+  fly. Signal Heights kept the star chart."
+- *On arrival*: the station's own line, e.g. "The fuel works. The tanks under the Tall Stack are
+  still full."
+- *Clean first*: "Dig the landmark out. Clean hexes here: 3 / 8".
+- *Wake it* (costs cubes): "Gantry Crane is awake. Gantry Works keeps cleaning when you fly on.", then
+  "Rocket piece: Hull Plates" and "The recycling network grew: everything sells for x2.5 now."
+- *Too many stations for the rocket*: "The rocket can carry supplies to 2 bases. Upgrade it at the
+  workbench."
+- *Coming back*: "Garden Row: 31% clean, up 6% while you were away." (the robots really do carry on).
 
 ### D. The exit
 
 | # | What the player does | In-world reason | Where the game says it | Status |
 |---|---|---|---|---|
-| E0 | Has six stations restored to level 2 | Six crews are enough to keep Verdance going without Lumi; the launch kit is complete | v6pace's `leave` gate: card line and toast | planned (text ready when the strings land) |
-| E1 | Sees the solar map open | The star chart shows five worlds the Ledger buried; the Cradle waits for all of them | WREN `home_system_open` (new pool), spoken once when the system opens | **fixed** (there was no line at all: the map button just appeared) |
-| E2 | Builds the Mk V Orbital drive | It is the hop rocket made space-proof, out of the six pieces and a mountain of cubes | homeward.json drive desc | **fixed** (the desc was a spec sheet) |
-| E3 | Launches to Ochre | Verdance's robots carry on; Ochre has the Deep Drill that Verdance needs; Lumi will be back | WREN `home_drive_built` (new pool) + the Verdance `twist` line on the map | **fixed** |
+| E0 | Has six stations restored to level 2 | Six crews are enough to keep Verdance going without Lumi; the launch kit is complete | WREN, first line of the exit beat: "Six stations awake, Lumi. Their robots can look after Verdance now." (homeward.json `leave.toast`); before that the map says "Wake 6 old stations on Verdance to level 2 (N so far)" | in game (v6pace gate, v6story text) |
+| E1 | Sees the solar map open | The star chart shows five worlds the Ledger buried; the Cradle waits for all of them | WREN, same beat, spoken once: story_reasons.json `exit.system_open` (two lines) | **fixed** (there was no line at all: the map button just appeared) |
+| E2 | Builds the Mk V Orbital drive (500K cubes, the biggest price on Verdance) | It is the hop rocket rebuilt for space out of a mountain of cubes | homeward.json drive desc; goal reason "The hop rocket can't leave the planet. A drive can." | **fixed** (the desc was a spec sheet) |
+| E3 | Launches to Ochre | Verdance isn't finished and that is all right; some of its trash needs tools left on other worlds; Lumi will be back | WREN `exit.drive_built` (two lines, once) + the Verdance line on the map ("Your robots keep cleaning it while you are away") | **fixed** |
 
 ### E. The goal chain after the story steps
 
@@ -163,7 +174,8 @@ happened here").
 | Why cleaning matters to getting home | Briefing: clean ground → plants → green light → Lumi's core, and the sign the Cradle looks for |
 | Why robots | Bot Bay card and WREN: a planet is too big for one robot; crews carry on when Lumi leaves |
 | Why plant, if we leave | Green light for the core; planted ground is safe from the Ledger's drones; the Cradle counts green |
-| Why leave a dirty planet | The exit beat (E1–E3) |
+| Why leave a dirty planet | The exit beat (E0–E3) |
+| WREN's step line could come a step late | A step line is dropped unsaid if its step is already done when her turn comes |
 | Steps with only a "where to click" line | Each has a reason now; where to click moved behind the reason |
 | The reason vanished while saving up | The card keeps the reason and shows the "need N more cubes" hint under it |
 | Goals had no reason | `data/goal_reasons.json` + the card |
