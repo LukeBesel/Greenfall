@@ -268,10 +268,6 @@ msgstr "ENFARDADEIRA AUTO"
 msgid "KEEP CLEAR · 40 T"
 msgstr "MANTENHA DISTÂNCIA · 40 T"
 
-#: automation/cargo.gd:37
-msgid "Cargo pod landed: %s cubes from %d robots in other districts."
-msgstr "Cápsula de carga pousou: %s cubos de %d robôs de outros distritos."
-
 #: automation/conveyor.gd:71
 msgid "TO  SCALE  ◀"
 msgstr "PARA A  BALANÇA  ◀"
@@ -765,15 +761,7 @@ msgstr "JUNTOS FLORESCEMOS"
 msgid "LIGHT  WATER  LIFE"
 msgstr "LUZ  ÁGUA  VIDA"
 
-#: planet/world_bounds.gd:105
-msgid "WREN: That's the edge of the survey zone, Lumi. Nothing out there but haze."
-msgstr "WREN: Ali é o limite da zona de mapeamento, Lumi. Lá fora só tem neblina."
-
-#: planet/world_bounds.gd:166
-msgid "Lumi hovers back onto solid ground."
-msgstr "Lumi flutua de volta para o chão firme."
-
-#: planet/orbit/verdance_globe.gd:567 scenes/slice_orbit.gd:396
+#: planet/orbit/verdance_globe.gd:567 scenes/slice_orbit.gd:398
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXÁGONO LIMPO!  +%s"
 
@@ -833,101 +821,101 @@ msgstr "Novo: %s"
 msgid "New Lumi design: %s"
 msgstr "Novo visual do Lumi: %s"
 
-#: planet/sites/hub_purpose.gd:143
+#: planet/sites/hub_purpose.gd:145
 msgid "Home. The workbench is by the pod."
 msgstr "Em casa. A bancada fica ao lado da cápsula."
 
-#: planet/sites/hub_purpose.gd:149
+#: planet/sites/hub_purpose.gd:151
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "O foguete espera na plataforma. Casa é o primeiro da lista."
 
-#: planet/sites/hub_purpose.gd:155
+#: planet/sites/hub_purpose.gd:157
 msgid "%s: %d%% clean, up %d%% while you were away."
 msgstr "%s: %d%% limpo, +%d%% enquanto você estava fora."
 
-#: planet/sites/hub_purpose.gd:233
+#: planet/sites/hub_purpose.gd:235
 msgid "Dig the landmark out. Clean hexes here: %d / %d"
 msgstr "Desenterre o marco. Limpe hexágonos aqui: %d / %d"
 
-#: planet/sites/hub_purpose.gd:235
+#: planet/sites/hub_purpose.gd:237
 msgid "Repair an outpost here: %d / %d"
 msgstr "Conserte um posto aqui: %d / %d"
 
-#: planet/sites/hub_purpose.gd:238
+#: planet/sites/hub_purpose.gd:240
 msgid "Upgrade the rocket, then wake the %s"
 msgstr "Melhore o foguete e depois desperte: %s"
 
-#: planet/sites/hub_purpose.gd:239
+#: planet/sites/hub_purpose.gd:241
 msgid "Wake the %s (%s)"
 msgstr "Desperte: %s (%s)"
 
-#: planet/sites/hub_purpose.gd:273
+#: planet/sites/hub_purpose.gd:275
 msgid "E   Wake the %s  (%s)"
 msgstr "E   Despertar: %s  (%s)"
 
-#: planet/sites/hub_purpose.gd:274
+#: planet/sites/hub_purpose.gd:276
 msgid "%s: asleep. %s"
 msgstr "%s: adormecido. %s"
 
-#: planet/sites/hub_purpose.gd:279
+#: planet/sites/hub_purpose.gd:281
 msgid "The rocket can carry supplies to %d bases. Upgrade it at the workbench."
 msgstr "O foguete consegue levar suprimentos a %d bases. Melhore-o na bancada."
 
-#: planet/sites/hub_purpose.gd:295
+#: planet/sites/hub_purpose.gd:297
 msgid "Waking the %s needs %s."
 msgstr "Para despertar (%s) faltam %s."
 
-#: planet/sites/hub_purpose.gd:319
+#: planet/sites/hub_purpose.gd:321
 msgid "%s is awake. %s keeps cleaning when you fly on."
 msgstr "%s despertou. %s continua limpando quando você seguir viagem."
 
-#: planet/sites/hub_purpose.gd:346
+#: planet/sites/hub_purpose.gd:348
 msgid "%s grows: level %d."
 msgstr "%s cresce: nível %d."
 
-#: planet/sites/hub_purpose.gd:374
+#: planet/sites/hub_purpose.gd:376
 msgid "%d robot working"
 msgid_plural "%d robots working"
 msgstr[0] "%d robô trabalhando"
 msgstr[1] "%d robôs trabalhando"
 
-#: planet/sites/hub_purpose.gd:382
+#: planet/sites/hub_purpose.gd:384
 msgid "Home: %d%% clean"
 msgstr "Casa: %d%% limpo"
 
-#: planet/sites/hub_purpose.gd:384
+#: planet/sites/hub_purpose.gd:386
 msgid "Restored: %d%% clean"
 msgstr "Restaurado: %d%% limpo"
 
-#: planet/sites/hub_purpose.gd:386 ui/profile_picker.gd:111
+#: planet/sites/hub_purpose.gd:388 ui/profile_picker.gd:111
 msgid "New"
 msgstr "Novo"
 
-#: planet/sites/hub_purpose.gd:389
+#: planet/sites/hub_purpose.gd:391
 msgid "Ready to wake"
 msgstr "Pronto para despertar"
 
-#: planet/sites/hub_purpose.gd:390
+#: planet/sites/hub_purpose.gd:392
 msgid "Asleep: %d / %d"
 msgstr "Adormecido: %d / %d"
 
-#: planet/sites/hub_purpose.gd:401
+#: planet/sites/hub_purpose.gd:403
 msgid "%s   %d%% CLEAN"
 msgstr "%s   %d%% LIMPO"
 
-#: planet/sites/hub_purpose.gd:403
+#: planet/sites/hub_purpose.gd:405
 msgid "%s   BASES %d/%d"
 msgstr "%s   BASES %d/%d"
 
-#: planet/sites/hub_purpose.gd:450
+#: planet/sites/hub_purpose.gd:452
 msgid "Restored. Next: take the rocket to %s."
 msgstr "Restaurado. A seguir: pegue o foguete para %s."
 
-#: planet/sites/hub_purpose.gd:452
+#: planet/sites/hub_purpose.gd:454
 msgid "All %d bases stand. Fly home and make the rocket ready to leave."
 msgstr "As %d bases estão de pé. Voe para casa e prepare o foguete para partir."
 
-#: planet/sites/hub_purpose.gd:624
+#: planet/sites/hub_purpose.gd:626
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
@@ -967,22 +955,6 @@ msgstr "Base %d"
 #: planet/sites/sphere_water.gd:263 water/water_view.gd:79
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
 msgstr "A água... dá para ver o fundo. Lumi, tem algo se mexendo lá embaixo."
-
-#: planet/sphere/sphere_walk.gd:431
-msgid "Planet %d m around"
-msgstr "Planeta: %d m de volta"
-
-#: planet/sphere/sphere_walk.gd:431
-msgid "Walked %d m (%d%%)"
-msgstr "Andou %d m (%d%%)"
-
-#: planet/sphere/sphere_walk.gd:432
-msgid "Speed %.1f m/s"
-msgstr "Velocidade %.1f m/s"
-
-#: planet/sphere/sphere_walk.gd:432
-msgid "Bots near %d, far %d"
-msgstr "Bots perto %d, longe %d"
 
 #: plants/composter.gd:77
 msgid "E   compost press  ·  dormant until something grows"
@@ -1024,7 +996,7 @@ msgstr ""
 "PRENSA DE COMPOSTO  Nv %d\n"
 "funil %d%%  →  sementes"
 
-#: plants/garden.gd:364
+#: plants/garden.gd:361
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "Um hexágono está totalmente restaurado. Algo pequenininho já vive nele."
 
@@ -1048,7 +1020,7 @@ msgstr "      próximo: %s"
 msgid "HEX LV %d  %s"
 msgstr "HEX NV %d  %s"
 
-#: plants/hex_levels.gd:282
+#: plants/hex_levels.gd:279
 msgid "Hex Lv %d  %s.   %s"
 msgstr "Hex Nv %d  %s.   %s"
 
@@ -1068,55 +1040,55 @@ msgstr "PEÇA ENTERRADA  %s  ·  %.1f m"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "PEÇA ENTERRADA  ·  SINAL %d%%"
 
-#: player/patch.gd:146
+#: player/patch.gd:170
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi volta chacoalhando para o pátio. Que estranho."
 
-#: player/patch.gd:200
+#: player/patch.gd:224
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi não sabe nadar. Com os Jatos flutuantes da bancada ele flutua sobre os lagos."
 
-#: player/patch.gd:318
+#: player/patch.gd:348
 msgid "No seeds yet. Keep cleaning."
 msgstr "Ainda sem sementes. Continue limpando."
 
-#: player/patch.gd:353
+#: player/patch.gd:383
 msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 msgstr "Sementes precisam de chão limpo e aberto: nada de ruas, calçadas ou da plataforma."
 
-#: player/patch.gd:360
+#: player/patch.gd:390
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "Sem sementes. Plantas florindo dão mais."
 
-#: player/patch.gd:367
+#: player/patch.gd:397
 msgid "Watering can is empty. Refill at the hub."
 msgstr "Regador vazio. Reabasteça na base."
 
-#: player/patch.gd:569
+#: player/patch.gd:599
 msgid "PERFECT BALE  %s"
 msgstr "FARDO PERFEITO  %s"
 
-#: player/patch.gd:575
+#: player/patch.gd:605
 msgid "OVERSTUFFED  %s"
 msgstr "ABARROTADO  %s"
 
-#: player/patch.gd:579
+#: player/patch.gd:609
 msgid "PURE  %s"
 msgstr "PURO  %s"
 
-#: player/patch.gd:581
+#: player/patch.gd:611
 msgid "SURGE  %s"
 msgstr "IMPULSO  %s"
 
-#: player/patch.gd:584
+#: player/patch.gd:614
 msgid "  (streak +%d%%)"
 msgstr "  (sequência +%d%%)"
 
-#: player/patch.gd:627
+#: player/patch.gd:657
 msgid "Salvaged: %s"
 msgstr "Resgatado: %s"
 
-#: player/patch.gd:656
+#: player/patch.gd:686
 msgid "Recovered: %s"
 msgstr "Recuperado: %s"
 
@@ -1291,11 +1263,11 @@ msgstr[1] "levando %d fardos"
 msgid "fetching a bale"
 msgstr "buscando um fardo"
 
-#: robots/robot.gd:256 robots/robot.gd:912
+#: robots/robot.gd:256 robots/robot.gd:907
 msgid "waiting for bales"
 msgstr "esperando fardos"
 
-#: robots/robot.gd:259 robots/robot.gd:582
+#: robots/robot.gd:259 robots/robot.gd:577
 msgid "out of seeds"
 msgstr "sem sementes"
 
@@ -1339,7 +1311,7 @@ msgstr "levando um fardo à margem"
 msgid "skimming lake hex %d (%d%%)"
 msgstr "limpando hexágono do lago %d (%d%%)"
 
-#: robots/robot.gd:270 robots/robot.gd:775
+#: robots/robot.gd:270 robots/robot.gd:770
 msgid "lake is clean"
 msgstr "o lago está limpo"
 
@@ -1355,27 +1327,27 @@ msgstr "zona limpa, esperando"
 msgid "nothing left to clean"
 msgstr "nada mais para limpar"
 
-#: robots/robot.gd:427 robots/robot.gd:775
+#: robots/robot.gd:427 robots/robot.gd:770
 msgid "zone clean"
 msgstr "zona limpa"
 
-#: robots/robot.gd:580
+#: robots/robot.gd:575
 msgid "seeds locked"
 msgstr "sementes bloqueadas"
 
-#: robots/robot.gd:586 robots/robot.gd:590
+#: robots/robot.gd:581 robots/robot.gd:585
 msgid "no empty soil"
 msgstr "sem terra livre"
 
-#: robots/robot.gd:619
+#: robots/robot.gd:614
 msgid "no garden"
 msgstr "sem horta"
 
-#: robots/robot.gd:633
+#: robots/robot.gd:628
 msgid "everything watered"
 msgstr "tudo regado"
 
-#: robots/robot.gd:729
+#: robots/robot.gd:724
 msgid "no water source"
 msgstr "sem fonte de água"
 
@@ -1443,35 +1415,35 @@ msgstr "Zona %s"
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s montado. Ele olha em volta e começa a trabalhar."
 
-#: scenes/slice.gd:139 ui/rockets_panel.gd:60
+#: scenes/slice.gd:136 ui/rockets_panel.gd:60
 msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
 msgstr "Vá até o foguete na plataforma de lançamento e aperte E para escolher para onde voar."
 
-#: scenes/slice.gd:145
+#: scenes/slice.gd:142
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Bloqueado. Leve sua base ao nível 5 para construir a plataforma de lançamento."
 
-#: scenes/slice.gd:148 ui/rockets_panel.gd:39
+#: scenes/slice.gd:145 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Células de energia recarregando: %s. Melhorias do foguete recarregam mais rápido."
 
-#: scenes/slice_orbit.gd:412
+#: scenes/slice_orbit.gd:414
 msgid "Milestone: %d hexes clean!"
 msgstr "Marco: %d hexágonos limpos!"
 
-#: scenes/slice_orbit.gd:481 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:483 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   Consertar a bancada"
 
-#: scenes/slice_orbit.gd:481 systems/camp/camp.gd:195
+#: scenes/slice_orbit.gd:483 systems/camp/camp.gd:195
 msgid "E   Open the workbench"
 msgstr "E   Abrir a bancada"
 
-#: scenes/slice_orbit.gd:995
+#: scenes/slice_orbit.gd:997
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Melhorias precisam de uma bancada. Volte para a base."
 
-#: scenes/slice_orbit.gd:1095
+#: scenes/slice_orbit.gd:1097
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Bancada consertada. Aperte E nela para gastar cubos em melhorias."
 
@@ -1825,11 +1797,11 @@ msgstr "O pato grasna um segredo: \"%s\" desbloqueia o design %s."
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "O pato te ensinou tudo o que sabe. Quá."
 
-#: story/eggs.gd:1165
+#: story/eggs.gd:1168
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "Curiosidade encontrada: %s  (%d / %d)   %s"
 
-#: story/eggs.gd:1176
+#: story/eggs.gd:1179
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "Todas as curiosidades da lista, encontradas. O compartimento de coleção de Lumi está lotado de lembranças."
 
@@ -2310,11 +2282,11 @@ msgstr "Onda da Arca %d  ·  %d / %d flores no planeta"
 msgid "Wilderness: %s. New ground, new junk, new colours under it."
 msgstr "Natureza selvagem: %s. Chão novo, sucata nova, cores novas por baixo."
 
-#: systems/bloom.gd:257
+#: systems/bloom.gd:255
 msgid "Seed Ark wave %d planted across Verdance. The Cradle drops a gift. Next wave: %d blooms."
 msgstr "Onda %d da Arca de Sementes plantada por Verdance. A Cradle solta um presente. Próxima onda: %d flores."
 
-#: systems/bloom.gd:268
+#: systems/bloom.gd:266
 msgid "Verdance Bloom: %s. %s"
 msgstr "Florada de Verdance: %s. %s"
 
@@ -3308,7 +3280,7 @@ msgstr "Voltar para casa"
 msgid "The clock is running. Clean %d hexes."
 msgstr "O relógio está correndo. Limpe %d hexágonos."
 
-#: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:391
+#: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:383
 msgid "Time"
 msgstr "Horário"
 
@@ -3590,7 +3562,7 @@ msgstr "Fabricador"
 msgid "need %s"
 msgstr "faltam %s"
 
-#: ui/bench_lists.gd:11 ui/photo_mode.gd:396 ui/photo_mode.gd:423
+#: ui/bench_lists.gd:11 ui/photo_mode.gd:388 ui/photo_mode.gd:415
 #: ui/upgrades_panel.gd:32
 msgid "Lumi"
 msgstr "Lumi"
@@ -3694,8 +3666,7 @@ msgstr "Alcance do jato"
 msgid "Refill"
 msgstr "Reabastecer"
 
-#: ui/builder_panel.gd:21 ui/command_view.gd:1244 ui/command_view.gd:1247
-#: data/hex_levels.json:levels[1].name
+#: ui/builder_panel.gd:21 data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr "Limpar"
 
@@ -4123,172 +4094,6 @@ msgstr "%.2f km"
 #: ui/codex_screen.gd:860
 msgid "%dm %02ds"
 msgstr "%dm %02ds"
-
-#: ui/command_view.gd:24
-msgid "Cleaners"
-msgstr "Limpadores"
-
-#: ui/command_view.gd:24
-msgid "Haulers"
-msgstr "Transportadores"
-
-#: ui/command_view.gd:24
-msgid "Planters"
-msgstr "Plantadores"
-
-#: ui/command_view.gd:24
-msgid "Waterers"
-msgstr "Regadores"
-
-#: ui/command_view.gd:24
-msgid "Skimmers"
-msgstr "Coletores"
-
-#: ui/command_view.gd:25
-msgid "Priority"
-msgstr "Prioridade"
-
-#: ui/command_view.gd:25
-msgid "Stay"
-msgstr "Ficar"
-
-#: ui/command_view.gd:25
-msgid "Follow me"
-msgstr "Siga-me"
-
-#: ui/command_view.gd:25
-msgid "Recall"
-msgstr "Chamar de volta"
-
-#: ui/command_view.gd:28
-msgid "Works the marked hexes first, then the rest of the district."
-msgstr "Trabalha primeiro os hexágonos marcados, depois o resto do distrito."
-
-#: ui/command_view.gd:29
-msgid "Works only the marked hexes, and waits there when they are done."
-msgstr "Trabalha só os hexágonos marcados e espera lá quando termina."
-
-#: ui/command_view.gd:30
-msgid "Works the hexes around you, wherever you go."
-msgstr "Trabalha os hexágonos ao seu redor, aonde você for."
-
-#: ui/command_view.gd:31
-msgid "Comes back and parks at the base."
-msgstr "Volta e estaciona na base."
-
-#: ui/command_view.gd:106
-msgid "[p]{@dpad}  panel      {@move}  move      {pad:#0}  mark      {pad:#2}  unmark      {pad:zoom_out}{pad:zoom_in}  zoom      {pad:ui_cancel}  back[/p][k]Left drag  mark      Right drag  unmark      {@move} / middle drag  move      Wheel  zoom      {kbd:open_command}  back[/k]"
-msgstr "[p]{@dpad}  painel      {@move}  mover      {pad:#0}  marcar      {pad:#2}  desmarcar      {pad:zoom_out}{pad:zoom_in}  zoom      {pad:ui_cancel}  voltar[/p][k]Arrastar esq.  marcar      Arrastar dir.  desmarcar      {@move} / arrastar meio  mover      Roda  zoom      {kbd:open_command}  voltar[/k]"
-
-#: ui/command_view.gd:231
-msgid "COMMAND"
-msgstr "COMANDO"
-
-#: ui/command_view.gd:268
-msgid "Mark around me"
-msgstr "Marcar ao meu redor"
-
-#: ui/command_view.gd:281 ui/lumi_builder.gd:597 ui/photo_mode.gd:26
-msgid "Clear"
-msgstr "Limpar"
-
-#: ui/command_view.gd:306
-msgid "CREWS"
-msgstr "EQUIPES"
-
-#: ui/command_view.gd:598
-msgid "Following the %s orders. Mark hexes or pick a mode to give it its own."
-msgstr "Seguindo as ordens de %s. Marque hexágonos ou escolha um modo para dar ordens próprias."
-
-#: ui/command_view.gd:607
-msgid "No orders yet: roaming the district. Drag on the ground to mark where to work."
-msgstr "Ainda sem ordens: rodando pelo distrito. Arraste no chão para marcar onde trabalhar."
-
-#: ui/command_view.gd:684
-msgid "No robots yet. Build one at the workbench."
-msgstr "Ainda não há robôs. Construa um na bancada."
-
-#: ui/command_view.gd:815
-msgid "Build %s  %s"
-msgstr "Construir %s  %s"
-
-#: ui/command_view.gd:820
-msgid "Max tier"
-msgstr "Nível máximo"
-
-#: ui/command_view.gd:820
-msgid "Upgrade > %s"
-msgstr "Melhorar > %s"
-
-#: ui/command_view.gd:826
-msgid "ready"
-msgstr "pronto"
-
-#: ui/command_view.gd:826
-msgid "build at the workbench"
-msgstr "construir na bancada"
-
-#: ui/command_view.gd:833
-msgid "Place refill tank here  %s  (%d/%d)"
-msgstr "Colocar tanque de recarga aqui  %s  (%d/%d)"
-
-#: ui/command_view.gd:835
-msgid "A Water Tank at your hex. Waterers refill at the nearest one."
-msgstr "Um Tanque de Água no seu hexágono. Regadores reabastecem no mais próximo."
-
-#: ui/command_view.gd:1092
-msgid "%s · %d HEX"
-msgid_plural "%s · %d HEXES"
-msgstr[0] "%s · %d HEX"
-msgstr[1] "%s · %d HEX"
-
-#: ui/command_view.gd:1128
-msgid "BASE"
-msgstr "BASE"
-
-#: ui/command_view.gd:1135
-msgid "YOU"
-msgstr "VOCÊ"
-
-#: ui/command_view.gd:1235
-msgid "HEX %d"
-msgstr "HEX %d"
-
-#: ui/command_view.gd:1239
-msgid "BASE YARD"
-msgstr "PÁTIO DA BASE"
-
-#: ui/command_view.gd:1240
-msgid "Home ground, always clean"
-msgstr "Terreno de casa, sempre limpo"
-
-#: ui/command_view.gd:1242
-msgid "LAKE HEX %d"
-msgstr "HEX DO LAGO %d"
-
-#: ui/command_view.gd:1244
-msgid "Floating junk  %d%% left"
-msgstr "Sucata flutuante  resta %d%%"
-
-#: ui/command_view.gd:1250
-msgid "Junk  %d%% left"
-msgstr "Sucata  resta %d%%"
-
-#: ui/command_view.gd:1256
-msgid "Level %d · %s"
-msgstr "Nível %d · %s"
-
-#: ui/command_view.gd:1258
-msgid "In %s zone"
-msgstr "Na zona %s"
-
-#: ui/command_view.gd:1311
-msgid "%d robots"
-msgstr "%d robôs"
-
-#: ui/command_view.gd:1314
-msgid "%d / %d hexes clean"
-msgstr "%d / %d hexágonos limpos"
 
 #: ui/contracts_panel.gd:75
 msgid "%d done"
@@ -4835,11 +4640,11 @@ msgstr "PÁ"
 msgid "PLANT"
 msgstr "PLANTAR"
 
-#: ui/hotbar.gd:288
+#: ui/hotbar.gd:281
 msgid "+%d XP"
 msgstr "+%d XP"
 
-#: ui/hotbar.gd:298
+#: ui/hotbar.gd:291
 msgid "CORE %d%%"
 msgstr "NÚCLEO %d%%"
 
@@ -5247,7 +5052,7 @@ msgstr "Avançado (matiz, saturação, brilho)"
 msgid "Hue"
 msgstr "Matiz"
 
-#: ui/lumi_builder.gd:468 ui/photo_mode.gd:385
+#: ui/lumi_builder.gd:468 ui/photo_mode.gd:377
 msgid "Saturation"
 msgstr "Saturação"
 
@@ -5294,6 +5099,10 @@ msgstr "Carga"
 #: ui/lumi_builder.gd:589
 msgid "Save here"
 msgstr "Salvar aqui"
+
+#: ui/lumi_builder.gd:597 ui/photo_mode.gd:26
+msgid "Clear"
+msgstr "Limpar"
 
 #: ui/lumi_builder.gd:659
 msgid "Unsaved changes"
@@ -5528,148 +5337,148 @@ msgstr "O modo foto não está disponível durante um voo de foguete."
 msgid "Photo mode isn't available during a cinematic."
 msgstr "O modo foto não está disponível durante uma cena."
 
-#: ui/photo_mode.gd:370 ui/photo_mode.gd:423 ui/settings_panel.gd:383
+#: ui/photo_mode.gd:362 ui/photo_mode.gd:415 ui/settings_panel.gd:383
 msgid "Camera"
 msgstr "Câmera"
 
-#: ui/photo_mode.gd:371
+#: ui/photo_mode.gd:363
 msgid "Mode"
 msgstr "Modo"
 
-#: ui/photo_mode.gd:372 ui/settings_panel.gd:391
+#: ui/photo_mode.gd:364 ui/settings_panel.gd:391
 msgid "Field of view"
 msgstr "Campo de visão"
 
-#: ui/photo_mode.gd:373
+#: ui/photo_mode.gd:365
 msgid "Roll"
 msgstr "Inclinação"
 
-#: ui/photo_mode.gd:374
+#: ui/photo_mode.gd:366
 msgid "Distance"
 msgstr "Distância"
 
-#: ui/photo_mode.gd:375
+#: ui/photo_mode.gd:367
 msgid "Height"
 msgstr "Altura"
 
-#: ui/photo_mode.gd:376
+#: ui/photo_mode.gd:368
 msgid "Reset camera"
 msgstr "Redefinir câmera"
 
-#: ui/photo_mode.gd:377 ui/photo_mode.gd:423
+#: ui/photo_mode.gd:369 ui/photo_mode.gd:415
 msgid "Lens"
 msgstr "Lente"
 
-#: ui/photo_mode.gd:378
+#: ui/photo_mode.gd:370
 msgid "Auto-focus Lumi"
 msgstr "Foco automático em Lumi"
 
-#: ui/photo_mode.gd:379
+#: ui/photo_mode.gd:371
 msgid "Focus distance"
 msgstr "Distância de foco"
 
-#: ui/photo_mode.gd:380
+#: ui/photo_mode.gd:372
 msgid "Blur"
 msgstr "Desfoque"
 
-#: ui/photo_mode.gd:380 ui/photo_panel.gd:240 ui/photo_panel.gd:242
+#: ui/photo_mode.gd:372 ui/photo_panel.gd:240 ui/photo_panel.gd:242
 #: ui/photo_panel.gd:280 ui/settings_panel.gd:681
 msgid "Off"
 msgstr "Desligado"
 
-#: ui/photo_mode.gd:381
+#: ui/photo_mode.gd:373
 msgid "Exposure"
 msgstr "Exposição"
 
-#: ui/photo_mode.gd:381
+#: ui/photo_mode.gd:373
 msgid "%+.1f EV"
 msgstr "%+.1f EV"
 
-#: ui/photo_mode.gd:382 ui/photo_mode.gd:423
+#: ui/photo_mode.gd:374 ui/photo_mode.gd:415
 msgid "Look"
 msgstr "Estilo"
 
-#: ui/photo_mode.gd:383
+#: ui/photo_mode.gd:375
 msgid "Filter"
 msgstr "Filtro"
 
-#: ui/photo_mode.gd:384
+#: ui/photo_mode.gd:376
 msgid "Contrast"
 msgstr "Contraste"
 
-#: ui/photo_mode.gd:386
+#: ui/photo_mode.gd:378
 msgid "Warmth"
 msgstr "Calor"
 
-#: ui/photo_mode.gd:387
+#: ui/photo_mode.gd:379
 msgid "Vignette"
 msgstr "Vinheta"
 
-#: ui/photo_mode.gd:388
+#: ui/photo_mode.gd:380
 msgid "Grain"
 msgstr "Granulado"
 
-#: ui/photo_mode.gd:389 ui/photo_mode.gd:423
+#: ui/photo_mode.gd:381 ui/photo_mode.gd:415
 msgid "World"
 msgstr "Mundo"
 
-#: ui/photo_mode.gd:390
+#: ui/photo_mode.gd:382
 msgid "Set time of day"
 msgstr "Definir horário"
 
-#: ui/photo_mode.gd:395
+#: ui/photo_mode.gd:387
 msgid "Weather"
 msgstr "Clima"
 
-#: ui/photo_mode.gd:397
+#: ui/photo_mode.gd:389
 msgid "Pose"
 msgstr "Pose"
 
-#: ui/photo_mode.gd:398 data/style_parts.json:slots[eye_shape].name
+#: ui/photo_mode.gd:390 data/style_parts.json:slots[eye_shape].name
 msgid "Eyes"
 msgstr "Olhos"
 
-#: ui/photo_mode.gd:399
+#: ui/photo_mode.gd:391
 msgid "Turn"
 msgstr "Girar"
 
-#: ui/photo_mode.gd:400
+#: ui/photo_mode.gd:392
 msgid "Show robots"
 msgstr "Mostrar robôs"
 
-#: ui/photo_mode.gd:401 ui/photo_mode.gd:423
+#: ui/photo_mode.gd:393 ui/photo_mode.gd:415
 msgid "Frame"
 msgstr "Enquadramento"
 
-#: ui/photo_mode.gd:402
+#: ui/photo_mode.gd:394
 msgid "Hide HUD"
 msgstr "Ocultar HUD"
 
-#: ui/photo_mode.gd:403
+#: ui/photo_mode.gd:395
 msgid "Rule of thirds"
 msgstr "Regra dos terços"
 
-#: ui/photo_mode.gd:404
+#: ui/photo_mode.gd:396
 msgid "Letterbox 2.39:1"
 msgstr "Letterbox 2.39:1"
 
-#: ui/photo_mode.gd:405
+#: ui/photo_mode.gd:397
 msgid "Greenfall stamp"
 msgstr "Selo Greenfall"
 
-#: ui/photo_mode.gd:406
+#: ui/photo_mode.gd:398
 msgid "Resolution"
 msgstr "Resolução"
 
-#: ui/photo_mode.gd:890
+#: ui/photo_mode.gd:882
 msgid "Couldn't capture the photo."
 msgstr "Não foi possível tirar a foto."
 
-#: ui/photo_mode.gd:899
+#: ui/photo_mode.gd:891
 msgid "Couldn't save the photo (%s)."
 msgstr "Não foi possível salvar a foto (%s)."
 
-#: ui/photo_mode.gd:912
+#: ui/photo_mode.gd:904
 msgid "Saved  %s  (%dx%d)"
 msgstr "Salva  %s  (%dx%d)"
 
@@ -17095,6 +16904,148 @@ msgstr "Aquele pórtico desmanchou a frota do Ledger quando o dinheiro acabou. A
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Um mundo de ferrugem, verde. Os velhos guindastes têm flores aos pés. As contas estão fechadas, {name}. Nós as equilibramos."
+
+#~ msgid "Cargo pod landed: %s cubes from %d robots in other districts."
+#~ msgstr "Cápsula de carga pousou: %s cubos de %d robôs de outros distritos."
+
+#~ msgid "WREN: That's the edge of the survey zone, Lumi. Nothing out there but haze."
+#~ msgstr "WREN: Ali é o limite da zona de mapeamento, Lumi. Lá fora só tem neblina."
+
+#~ msgid "Lumi hovers back onto solid ground."
+#~ msgstr "Lumi flutua de volta para o chão firme."
+
+#~ msgid "Planet %d m around"
+#~ msgstr "Planeta: %d m de volta"
+
+#~ msgid "Walked %d m (%d%%)"
+#~ msgstr "Andou %d m (%d%%)"
+
+#~ msgid "Speed %.1f m/s"
+#~ msgstr "Velocidade %.1f m/s"
+
+#~ msgid "Bots near %d, far %d"
+#~ msgstr "Bots perto %d, longe %d"
+
+#~ msgid "Cleaners"
+#~ msgstr "Limpadores"
+
+#~ msgid "Haulers"
+#~ msgstr "Transportadores"
+
+#~ msgid "Planters"
+#~ msgstr "Plantadores"
+
+#~ msgid "Waterers"
+#~ msgstr "Regadores"
+
+#~ msgid "Skimmers"
+#~ msgstr "Coletores"
+
+#~ msgid "Priority"
+#~ msgstr "Prioridade"
+
+#~ msgid "Stay"
+#~ msgstr "Ficar"
+
+#~ msgid "Follow me"
+#~ msgstr "Siga-me"
+
+#~ msgid "Recall"
+#~ msgstr "Chamar de volta"
+
+#~ msgid "Works the marked hexes first, then the rest of the district."
+#~ msgstr "Trabalha primeiro os hexágonos marcados, depois o resto do distrito."
+
+#~ msgid "Works only the marked hexes, and waits there when they are done."
+#~ msgstr "Trabalha só os hexágonos marcados e espera lá quando termina."
+
+#~ msgid "Works the hexes around you, wherever you go."
+#~ msgstr "Trabalha os hexágonos ao seu redor, aonde você for."
+
+#~ msgid "Comes back and parks at the base."
+#~ msgstr "Volta e estaciona na base."
+
+#~ msgid "[p]{@dpad}  panel      {@move}  move      {pad:#0}  mark      {pad:#2}  unmark      {pad:zoom_out}{pad:zoom_in}  zoom      {pad:ui_cancel}  back[/p][k]Left drag  mark      Right drag  unmark      {@move} / middle drag  move      Wheel  zoom      {kbd:open_command}  back[/k]"
+#~ msgstr "[p]{@dpad}  painel      {@move}  mover      {pad:#0}  marcar      {pad:#2}  desmarcar      {pad:zoom_out}{pad:zoom_in}  zoom      {pad:ui_cancel}  voltar[/p][k]Arrastar esq.  marcar      Arrastar dir.  desmarcar      {@move} / arrastar meio  mover      Roda  zoom      {kbd:open_command}  voltar[/k]"
+
+#~ msgid "COMMAND"
+#~ msgstr "COMANDO"
+
+#~ msgid "Mark around me"
+#~ msgstr "Marcar ao meu redor"
+
+#~ msgid "CREWS"
+#~ msgstr "EQUIPES"
+
+#~ msgid "Following the %s orders. Mark hexes or pick a mode to give it its own."
+#~ msgstr "Seguindo as ordens de %s. Marque hexágonos ou escolha um modo para dar ordens próprias."
+
+#~ msgid "No orders yet: roaming the district. Drag on the ground to mark where to work."
+#~ msgstr "Ainda sem ordens: rodando pelo distrito. Arraste no chão para marcar onde trabalhar."
+
+#~ msgid "No robots yet. Build one at the workbench."
+#~ msgstr "Ainda não há robôs. Construa um na bancada."
+
+#~ msgid "Build %s  %s"
+#~ msgstr "Construir %s  %s"
+
+#~ msgid "Max tier"
+#~ msgstr "Nível máximo"
+
+#~ msgid "Upgrade > %s"
+#~ msgstr "Melhorar > %s"
+
+#~ msgid "ready"
+#~ msgstr "pronto"
+
+#~ msgid "build at the workbench"
+#~ msgstr "construir na bancada"
+
+#~ msgid "Place refill tank here  %s  (%d/%d)"
+#~ msgstr "Colocar tanque de recarga aqui  %s  (%d/%d)"
+
+#~ msgid "A Water Tank at your hex. Waterers refill at the nearest one."
+#~ msgstr "Um Tanque de Água no seu hexágono. Regadores reabastecem no mais próximo."
+
+#~ msgid "%s · %d HEX"
+#~ msgstr[0] "%s · %d HEX"
+#~ msgstr[1] "%s · %d HEX"
+
+#~ msgid "BASE"
+#~ msgstr "BASE"
+
+#~ msgid "YOU"
+#~ msgstr "VOCÊ"
+
+#~ msgid "HEX %d"
+#~ msgstr "HEX %d"
+
+#~ msgid "BASE YARD"
+#~ msgstr "PÁTIO DA BASE"
+
+#~ msgid "Home ground, always clean"
+#~ msgstr "Terreno de casa, sempre limpo"
+
+#~ msgid "LAKE HEX %d"
+#~ msgstr "HEX DO LAGO %d"
+
+#~ msgid "Floating junk  %d%% left"
+#~ msgstr "Sucata flutuante  resta %d%%"
+
+#~ msgid "Junk  %d%% left"
+#~ msgstr "Sucata  resta %d%%"
+
+#~ msgid "Level %d · %s"
+#~ msgstr "Nível %d · %s"
+
+#~ msgid "In %s zone"
+#~ msgstr "Na zona %s"
+
+#~ msgid "%d robots"
+#~ msgstr "%d robôs"
+
+#~ msgid "%d / %d hexes clean"
+#~ msgstr "%d / %d hexágonos limpos"
 
 #~ msgid "Everything sells for x%s now."
 #~ msgstr "Agora tudo vende por x%s."
