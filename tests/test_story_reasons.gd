@@ -47,7 +47,8 @@ func test_goal_reason_lookup_order() -> void:
 	assert_eq(Objectives.goal_reason({"id": "x", "type": "research", "key": "nope"}), "The bench learns to build something new.")
 	assert_eq(Objectives.goal_reason({"id": "rocket", "type": "districts"}), "Other old stations are waiting to be woken up.")
 	assert_true(Objectives.goal_reason({"id": "hub_fly_4", "type": "flag"}).contains("star chart"))
-	assert_true(Objectives.goal_reason({"id": "hub_wake_3", "type": "flag"}).contains("rocket piece"))
+	assert_true(Objectives.goal_reason({"id": "hub_wake_2", "type": "flag"}).contains("rocket piece"))  # [v7play] the prefix line; 3-6 have their own
+	assert_true(Objectives.goal_reason({"id": "hub_wake_3", "type": "flag"}).contains("hull plates"))
 	assert_true(Objectives.goal_reason({"id": "rocket_tier_2", "type": "stat"}).contains("supplies"))
 	assert_true(Objectives.goal_reason({"id": "hub_fly_9", "type": "flag"}).contains("stations"))
 

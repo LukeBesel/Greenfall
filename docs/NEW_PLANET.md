@@ -151,7 +151,15 @@ no hub names, no wake chain and no leave gate.
 The planet's place in the campaign is its entry in `data/homeward.json` `planets[]`. The index
 is the travel order, and 0 is Verdance, the home planet. That entry holds:
 
-- `leave` {`hubs`, `hub_level`, `toast`}: when the drive to the next planet opens.
+- `leave` {`hubs`, `hub_level`, `toast`, `chart`}: when the drive to the next planet opens.
+  `chart: "leave"` (Verdance has it) charts the next planet as soon as this planet's exit beat
+  has played (its stations awake), so reaching it does not also wait for this planet's % to reach
+  `chart_at` (Verdance's % is the Bloom Core charge, not the stations). Without it, the next planet
+  is charted at `chart_at` only.
+- `open` (default true): `false` keeps a planet that is not built yet closed in a release: the map
+  says `closed.map_line`, nothing launches there, and the goals, achievements and builds that need
+  it are hidden (`closed` block; docs/ADJUSTING.md, "Which planets are open in this release"). Set it
+  to true when the planet is ready.
 - `far_hub`: any key of `data/hub.json` `far_hub` (wake price curve, sell growth), for this
   planet only.
 - `arrival`: the research tier, robots, cubes and parts the player lands with. Also `seed`,

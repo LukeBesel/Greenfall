@@ -23,7 +23,7 @@ extends Node
 const SIZES: Array[Vector2i] = [Vector2i(1280, 720), Vector2i(1920, 1080), Vector2i(2560, 1080), Vector2i(1280, 800)]
 const SCALES: Array[float] = [0.8, 1.0, 1.25, 1.5]
 const LOCALES: Array[String] = ["en", "de", "fr", "es", "pt_BR", "zh_CN", "ja", "pseudo"]
-const SCREENS: Array[String] = ["play", "hud", "prompts", "arrival", "pause", "settings", "workbench", "locker", "survey", "loading", "codex", "rockets", "system", "document", "photo", "glim", "garden", "command", "pad"]
+const SCREENS: Array[String] = ["play", "hud", "prompts", "arrival", "pause", "settings", "workbench", "locker", "survey", "loading", "codex", "rockets", "system", "document", "photo", "glim", "garden", "command", "tbc", "pad"]
 const TITLE_SCREENS: Array[String] = ["title", "title_settings", "pad"]
 ## A long line, about the longest chunk the bar shows (Subtitles.MAX_CHARS).
 const LONG_LINE: String = "Bring every cube you scoop to the bench by the pod, and we can fix the old beacon"
@@ -412,6 +412,11 @@ func _extra_screens() -> Array[Dictionary]:
 	if gpl and Decor.unlocked():  # needs base level 5, the Cradle, or --garden
 		out.append({"name": "garden", "root": func() -> Node: return gpl,
 			"open": func() -> void: gpl.open(), "close": func() -> void: gpl.close(), "is_open": func() -> bool: return gpl.is_open})
+	var hd: HomewardDirector = HomewardDirector.of(w)  # [v7play] the "to be continued" card
+	if hd and hd.tbc:
+		var tc: ToBeContinued = hd.tbc
+		out.append({"name": "tbc", "root": func() -> Node: return tc,
+			"open": func() -> void: tc.open_card(), "close": func() -> void: tc.close_card(), "is_open": func() -> bool: return tc.is_open})
 	var dv: Node = w.get("doc_view") as Node
 	if dv:
 		var doc: Dictionary = {}

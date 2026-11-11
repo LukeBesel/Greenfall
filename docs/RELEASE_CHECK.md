@@ -4,11 +4,11 @@ The question: is Verdance, the first planet, ready to release? What would a real
 run into between the crash landing and flying off the planet? Tag on fixes: `[v7play]`. Tests:
 `tests/test_v7play.gd`.
 
-**Short answer:** not yet, but close. The arc plays end to end with no script error and no dead
-card. Two things stand in the way: a crash at quit while a town is building (a regression of an old
-fix), and the owner's yes on the end-of-Verdance moment (a closed-planet gate with a "to be
-continued" beat is now in place). After that, a few should-fix items in the first hour. See "What
-stands between Verdance and release" at the end.
+**Short answer (updated after group 3):** yes, pending one owner look. The quit crash is fixed on
+main (v6qa 8dfb097, its repros now in tools/check_exit.sh), and the owner approved the end-of-Verdance
+moment, which is now built (the "to be continued" card below). What is left is pace work in the
+first hour (v6pace: O1, O2, O3, O6, O7) and nice-to-haves. The first verdict and its reasons are
+kept below.
 
 ## 1. A full playthrough
 
@@ -198,6 +198,22 @@ All the text is data (`data/homeward.json` `closed`), translated in all six lang
 planet later: `"open": true`. Autoplay stops two minutes after the drive when the next planet is
 closed ("next planet closed: to be continued"), so pacing runs still end at the leave point.
 
+
+## Group 3 (after the owner's decisions)
+
+| Item | Done |
+|---|---|
+| O4 | `hub_wake_3`..`hub_wake_6` have their own line in data/story_reasons.json `by_id` (the crane's hull plates, the mast's star chart, the wheel's power cell, the stack's fuel); station 2 keeps the shared line, so it is said once. Six translations. |
+| O5 | The first-seed card (plant it, then water it) hides while Lumi is at a far station and comes back on return if the seed is still waiting (story/first_seed.gd). |
+| O8 | `SphereMotor._level_slide` skips the test motion while the body has no physics space (the 15 errors per run during hops). |
+| Telescope | Hidden while the next planet is closed: `closed.hide_builds` (`HubBuilds.listed`); one already built stays; it comes back when a planet opens. The research "Observatory Optics" stays in the tree (it also opens the build from base 4 on, when it is listed). |
+| End-of-Verdance card | ui/to_be_continued.gd: after WREN's drive lines, once per save (`flags.tbc_seen_<planet>`), a full-screen card: dusk sky, the two suns, the rocket on its striped pad, "TO BE CONTINUED", the home meter ("Home: fuel 2/10, power 2/10"), "Your robots keep cleaning while you wait. Stay as long as you like and keep making Verdance green.", "E continue". B/Esc closes at once; E, click or A after 1.2 s. Text in `closed.card`, six translations. A quit before it shows it on the next load (HomewardDirector.maybe_show_tbc). In `--ui-audit` as screen `tbc` (0 issues, pad B closes it); `--open=tbc` shows it. Rendered and checked at 960x540. |
+| Chart | Verdance's `leave.chart: "leave"`: Ochre is charted once Verdance's exit beat has played (six stations), not only at 50% Bloom Core (docs/NEW_PLANET.md). Only matters when Ochre opens. |
+| Nice to have | The title's Continue says the planet ("Verdance · 2h 13m · 450K cubes") instead of "Hub 1". |
+
+Still open from the nice-to-have list: the profile card's "Bloom N%" (the flat world's measure; the
+HUD's planet % is not in the save summary).
+
 ## Needs a decision
 
 1. **The end-of-Verdance moment.** Recommended: keep the gate and the lines above for the release,
@@ -237,15 +253,9 @@ Ranked. The fixes above (F1-F9) are in. What is left:
 
 **Blocker**
 
-1. **Crash at quit while a hub town builds** (exit 134, heap corruption): v6qa's Q7 repro fails again on
-   main, and so do `--target-reach` and a quit 4 s into a rocket hop. A player who quits or goes back to
-   the title just after flying to a station, or walking into a town, gets a crash. The save is written
-   first, so nothing is lost, but it is a crash. Owner: v6qa (or whoever touched the town build last).
-   Repros: `--fresh --orbit --no-intro --orbit-walk-in=1,380 --quit-mid-build=30` and
-   `--orbit --save-dir=<save at a far station> --orbit-hop=4 --quit-on-hop=4`.
-2. **The end of Verdance needs the owner's yes** (Needs a decision #1). The gate keeps the player out
-   of the unfinished Ochre and says "to be continued"; the wording and whether that is the release's
-   ending are the owner's call.
+None left after group 3. (1. The crash at quit while a town builds: fixed on main by v6qa, 8dfb097,
+with the three repros in tools/check_exit.sh. 2. The end-of-Verdance moment: approved and built, see
+"Group 3".)
 
 **Should fix**
 
@@ -253,15 +263,15 @@ Ranked. The fixes above (F1-F9) are in. What is left:
    first robot came at 46.5 bot minutes in one run and 24.5 in another. Owner target: nothing over 12.
 4. "Build a Haul Bug" with nothing to do for 12.5 minutes (O2).
 5. The far-station chain is not measured by the bot (O6): the person time per station is unknown.
-6. The Telescope has nothing to watch in this release (part 3, Needs a decision #2).
+6. ~~The Telescope~~: hidden in this release (group 3).
 7. Hub 6's single 300K save, 21 minutes on one number (O3).
 
 **Nice to have**
 
-8. WREN repeats the station line (O4); the first-seed water card can sit over a far station (O5).
-9. The drive opens at 50% Bloom Core too (O7); Ochre's chart is the core % (Needs a decision #3).
-10. Title "Continue" says "Hub 1" always; the profile card's "Bloom N%" is the flat world's measure.
-11. 15 `space is null` physics errors during hops (O8).
+8. ~~WREN repeats the station line (O4); the first-seed card over a far station (O5)~~: fixed (group 3).
+9. The drive opens at 50% Bloom Core too (O7, v6pace); ~~Ochre's chart is the core %~~: charted by the six stations now (group 3).
+10. ~~Title "Continue" says "Hub 1"~~ (fixed); the profile card's "Bloom N%" is the flat world's measure.
+11. ~~15 `space is null` physics errors during hops (O8)~~: fixed (group 3).
 
 Everything else a first-time player meets from the crash to the drive worked in these runs: the
 story in order, one card at a time with a reason, a price on every priced step that matched what was

@@ -31,6 +31,7 @@ var _bed: Node3D
 var _complex: Node3D
 var _queue: Array[String] = []
 var _busy: bool = false
+var tbc: ToBeContinued  # [v7play] the end-of-this-release card (ui/to_be_continued.gd)
 
 
 static func attach(slice: Node) -> HomewardDirector:
@@ -52,6 +53,11 @@ func _setup() -> void:
 	if g is GlobeView:
 		(g as GlobeView).open_system = func() -> void: map.open_map(true)
 	_dev_hooks()
+	tbc = ToBeContinued.new()  # [v7play]
+	tbc.name = "ToBeContinued"
+	add_child(tbc)
+	if DevHooks.get_s("open", "") == "tbc":  # dev: --open=tbc shows the card
+		tbc.open_card.call_deferred()
 	# Saves from before Homeward that already reached the Cradle: the answer counts as heard.
 	if not Homeward.answered() and Homeward.current_planet() == 0 and GameState.flags.get("cradle_returned", false) \
 			and (GameState.flags.get("bloom_finale_seen", false) or GameState.flags.get("cradle_answered", false)):
@@ -234,6 +240,27 @@ func _process(delta: float) -> void:
 			_queue.append("exit")
 	_on_restored(got)
 	_pump()
+	maybe_show_tbc()
+
+
+## [v7play] The "to be continued" card: the drive that would reach the next planet is built, that
+## planet is closed in this release, the exit beat and WREN's drive lines are said, and nothing else
+## is on screen or being spoken. Once per save; a quit before it shows it on the next load.
+func maybe_show_tbc() -> bool:
+	if tbc == null or tbc.is_open or _busy or not _queue.is_empty():
+		return false
+	var k: int = Homeward.current_planet()
+	if k < 0 or not Homeward.next_closed() or GameState.flags.get(ToBeContinued.seen_flag(), false):
+		return false
+	if Homeward.drive() < int(Homeward.planet_def(k + 1).get("nav", 5)) or not Homeward.beat_done(StoryArc.exit_beat(k)):
+		return false
+	if k == 0 and not Homeward.beat_done("verdance_drive"):
+		return false
+	var subs: Subtitles = Subtitles.current
+	if not _quiet() or (subs and is_instance_valid(subs) and subs.is_busy()):
+		return false
+	tbc.open_card()
+	return true
 
 
 func _on_restored(got: Array[int]) -> void:

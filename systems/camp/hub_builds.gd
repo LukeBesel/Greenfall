@@ -109,6 +109,8 @@ static func is_built(world: Node, id: String) -> bool:
 static func listed(world: Node, id: String) -> bool:
 	if is_built(world, id):
 		return false
+	if id in Homeward.hidden_builds():  # [v7play] nothing to do with the next planet closed (data/homeward.json closed.hide_builds)
+		return false
 	match id:
 		"trash_bin":
 			return true

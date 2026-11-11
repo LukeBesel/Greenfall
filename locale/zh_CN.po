@@ -393,7 +393,7 @@ msgstr "最高等级"
 msgid "Needs the Rocket Cargo research"
 msgstr "需要研究“火箭货运”"
 
-#: automation/rocket_tiers.gd:61 systems/homeward.gd:574
+#: automation/rocket_tiers.gd:61 systems/homeward.gd:586
 msgid "Not enough cubes or parts"
 msgstr "方块或零件不足"
 
@@ -452,8 +452,8 @@ msgid "Requires hub level %d or research: %s."
 msgstr "需要基地等级 %d 或研究：%s。"
 
 #: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
-#: systems/camp/camp.gd:430 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:155
-#: systems/camp/hub_builds.gd:165 systems/camp/hub_builds.gd:175 systems/camp/yard_builds.gd:91
+#: systems/camp/camp.gd:430 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:157
+#: systems/camp/hub_builds.gd:167 systems/camp/hub_builds.gd:177 systems/camp/yard_builds.gd:91
 #: ui/telescope_panel.gd:40
 msgid "Not enough materials."
 msgstr "材料不足。"
@@ -727,7 +727,7 @@ msgstr "先升级火箭，再唤醒：%s"
 msgid "Wake the %s (%s)"
 msgstr "唤醒：%s（%s）"
 
-#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:578
+#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:583
 msgid "E   Wake the %s  (%s)"
 msgstr "E   唤醒：%s  （%s）"
 
@@ -824,8 +824,7 @@ msgstr "先升级火箭"
 msgid "%s site"
 msgstr "%s地点"
 
-#. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: planet/sites/orbit_sites.gd:229 ui/main_menu.gd:526
+#: planet/sites/orbit_sites.gd:229
 msgid "Hub %d"
 msgstr "基地 %d"
 
@@ -1584,7 +1583,7 @@ msgstr "标题画面"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "继续游戏：第一个街区仍然开放，基地等级 %d。"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:520
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:519
 msgid "%dh %02dm"
 msgstr "%d时%02d分"
 
@@ -1918,27 +1917,27 @@ msgstr "那个人就是你。小小的。倔强的。只剩百分之四的电。
 msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
 msgstr "找到干净的地面。挖坑。放进去。拍拍土。然后——这步很重要——浇水。"
 
-#: story/first_seed.gd:145
+#: story/first_seed.gd:147
 msgid "{tool_water}  then hold  {scoop}  to water it"
 msgstr "{tool_water}  然后按住  {scoop}  浇水"
 
-#: story/first_seed.gd:171
+#: story/first_seed.gd:176
 msgid "Hold  {scoop}  on clean ground to plant the seed"
 msgstr "在干净的地面上按住  {scoop}  种下种子"
 
-#: story/first_seed.gd:248
+#: story/first_seed.gd:267
 msgid "...It's green. Lumi, it's actually green."
 msgstr "……是绿色的。Lumi，真的是绿色的。"
 
-#: story/first_seed.gd:250
+#: story/first_seed.gd:269
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "记得浇水。外面种子很稀少，但每次开花都会还你一颗，还会给你的核心一点绿光。一切就是这样开始的。"
 
-#: story/first_seed.gd:363
+#: story/first_seed.gd:383
 msgid "Lumi, that green signal is back, stronger now. Follow the beam: the old greenhouse."
 msgstr "Lumi，那个绿色信号又出现了，而且更强了。跟着光柱走：去旧温室。"
 
-#: story/first_seed.gd:372
+#: story/first_seed.gd:392
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr "Lumi。我收到一个信号。绿色的，很微弱，在基地东边。一座旧温室。去看看。"
 
@@ -2699,95 +2698,95 @@ msgstr "审计胜利，%d 比 %d！Ledger 盖上了“批准”章。%s"
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "无人机赢得了审计，%d 比 %d。不过它还是留了小费：+%s 方块。"
 
-#: systems/homeward.gd:178
+#: systems/homeward.gd:184
 msgid "Wake %d old stations on %s to level %d (%d so far)"
 msgstr "唤醒 %d 座旧站点(%s)到 %d 级(已完成 %d 座)"
 
-#: systems/homeward.gd:180
+#: systems/homeward.gd:186
 msgid "Restore %s to %d%% (%d%%) or get a base to level %d"
 msgstr "将 %s 恢复到 %d%%（%d%%），或把一座基地升到 %d 级"
 
-#: systems/homeward.gd:181
+#: systems/homeward.gd:187
 msgid "Restore %s to %d%% (%d%%)"
 msgstr "将 %s 恢复到 %d%%（%d%%）"
 
-#: systems/homeward.gd:188
+#: systems/homeward.gd:194
 msgid "Restore another planet to %d%% (best %d%%)"
 msgstr "将另一颗星球恢复到 %d%%（最高 %d%%）"
 
-#: systems/homeward.gd:270
+#: systems/homeward.gd:276
 msgid "Needs %s: found on %s"
 msgstr "需要 %s：在 %s 上找到"
 
-#: systems/homeward.gd:415
+#: systems/homeward.gd:421
 msgid "New tech: %s. %s"
 msgstr "新技术：%s。%s"
 
-#: systems/homeward.gd:462
+#: systems/homeward.gd:474
 msgid "Needs the %s drive"
 msgstr "需要 %s 推进器"
 
-#: systems/homeward.gd:464
+#: systems/homeward.gd:476
 msgid "No chart yet: restore %s to %d%%"
 msgstr "还没有星图：把 %s 恢复到 %d%%"
 
-#: systems/homeward.gd:558
+#: systems/homeward.gd:570
 msgid "The Homeward rocket is built"
 msgstr "归乡火箭已建成"
 
-#: systems/homeward.gd:561 systems/museum.gd:117
+#: systems/homeward.gd:573 systems/museum.gd:117
 msgid "The Cradle has to answer first (Cradle Returns)"
 msgstr "Cradle 号得先回应（Cradle号归来）"
 
-#: systems/homeward.gd:566
+#: systems/homeward.gd:578
 msgid "Needs full fuel and power. %s"
 msgstr "需要燃料和能量都满。%s"
 
-#: systems/homeward.gd:568
+#: systems/homeward.gd:580
 msgid "Needs %d planet relics (%d)"
 msgstr "需要 %d 件星球遗物（%d）"
 
-#: systems/homeward.gd:570
+#: systems/homeward.gd:582
 msgid "Restore every planet first (%d%%)"
 msgstr "先恢复每一个星球（%d%%）"
 
-#: systems/homeward.gd:572
+#: systems/homeward.gd:584
 msgid "Build it at Verdance's Cradle Returns"
 msgstr "在 Verdance 的 Cradle号归来建造"
 
-#: systems/homeward.gd:588
+#: systems/homeward.gd:600
 msgid "Rocket drive built: %s."
 msgstr "火箭推进器已建成：%s。"
 
-#: systems/homeward_director.gd:296
+#: systems/homeward_director.gd:323
 msgid "Intercepted: %s"
 msgstr "截获：%s"
 
-#: systems/homeward_director.gd:311
+#: systems/homeward_director.gd:338
 msgid "%s: %s"
 msgstr "%s：%s"
 
-#: systems/homeward_director.gd:321
+#: systems/homeward_director.gd:348
 msgid "%s is restored. System: %d%%."
 msgstr "%s 已恢复。星系：%d%%。"
 
-#: systems/homeward_director.gd:324
+#: systems/homeward_director.gd:351
 msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
 msgstr "遗物：%s。传家宝选择 +1（方舟舰桥）。"
 
-#: systems/homeward_director.gd:332
+#: systems/homeward_director.gd:359
 msgid "Every planet in the system is alive. The Settlers will wake to five green worlds."
 msgstr "星系里的每个星球都活过来了。定居者醒来时会看到五个绿色的世界。"
 
-#: systems/homeward_director.gd:528
+#: systems/homeward_director.gd:555
 msgid "E   launch home"
 msgstr "E   发射回家"
 
-#: systems/homeward_director.gd:528
+#: systems/homeward_director.gd:555
 msgid "E   plant the last seed"
 msgstr "E   种下最后一颗种子"
 
-#: systems/homeward_director.gd:539
+#: systems/homeward_director.gd:566
 msgid "The last seed is in the ground. Everything is ready. Press E again here to launch home."
 msgstr "最后一颗种子已经入土。一切就绪。在这里再按一次 E 就能发射回家。"
 
@@ -3186,27 +3185,27 @@ msgstr "E   %s（%d 级）：升级为 %s，需要 %s"
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "垃圾桶已升级：%s。捆包在这里按 %d%% 出售。"
 
-#: systems/camp/hub_builds.gd:148
+#: systems/camp/hub_builds.gd:150
 msgid "Trash bin, level %d of %d"
 msgstr "垃圾桶，%d / %d级"
 
-#: systems/camp/hub_builds.gd:153
+#: systems/camp/hub_builds.gd:155
 msgid "WREN can only reach you through the relay. Each tier makes her clearer."
 msgstr "WREN 只能通过中继联系你。每升一级她的声音更清晰。"
 
-#: systems/camp/hub_builds.gd:157
+#: systems/camp/hub_builds.gd:159
 msgid "Tier %d of %d"
 msgstr "等级 %d / %d"
 
-#: systems/camp/hub_builds.gd:166 systems/camp/hub_builds.gd:177
+#: systems/camp/hub_builds.gd:168 systems/camp/hub_builds.gd:179
 msgid "%d of %d built"
 msgstr "已建 %d / %d"
 
-#: systems/camp/hub_builds.gd:193
+#: systems/camp/hub_builds.gd:195
 msgid "Museum"
 msgstr "博物馆"
 
-#: systems/camp/hub_builds.gd:194
+#: systems/camp/hub_builds.gd:196
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr "一座大厅，为卢米找到的每件东西都设了展台，留给后来的人。"
 
@@ -4288,7 +4287,7 @@ msgstr "用爱与废料制作"
 msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
 msgstr "代码、程序化网格、合成音乐和音效以及文字均为 Greenfall 原创。"
 
-#: ui/credits_roll.gd:148 ui/main_menu.gd:671
+#: ui/credits_roll.gd:148 ui/main_menu.gd:669
 msgid "Music by Lucas"
 msgstr "音乐：Lucas"
 
@@ -5224,7 +5223,7 @@ msgstr "新游戏"
 msgid "Profiles"
 msgstr "存档"
 
-#: ui/main_menu.gd:363 ui/main_menu.gd:613 ui/pause_menu.gd:68
+#: ui/main_menu.gd:363 ui/main_menu.gd:611 ui/pause_menu.gd:68
 msgid "Settings"
 msgstr "设置"
 
@@ -5236,77 +5235,77 @@ msgstr "退出"
 msgid "Made with Godot"
 msgstr "使用 Godot 制作"
 
-#: ui/main_menu.gd:520
+#: ui/main_menu.gd:519
 msgid "%dm"
 msgstr "%d分钟"
 
-#. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
+#. Continue button subtitle: the planet, play time, cube count (e.g. "Verdance · 1h 05m · 3.4K cubes").
 #: ui/main_menu.gd:526 ui/profile_picker.gd:133
 msgid "%s cubes"
 msgstr "%s 方块"
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Jan"
 msgstr "1月"
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Feb"
 msgstr "2月"
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Mar"
 msgstr "3月"
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Apr"
 msgstr "4月"
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "May"
 msgstr "5月"
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Jun"
 msgstr "6月"
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Jul"
 msgstr "7月"
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Aug"
 msgstr "8月"
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Sep"
 msgstr "9月"
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Oct"
 msgstr "10月"
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Nov"
 msgstr "11月"
 
-#: ui/main_menu.gd:532
+#: ui/main_menu.gd:530
 msgid "Dec"
 msgstr "12月"
 
-#: ui/main_menu.gd:613
+#: ui/main_menu.gd:611
 msgid "Credits"
 msgstr "制作人员"
 
-#: ui/main_menu.gd:642
+#: ui/main_menu.gd:640
 msgid "CREDITS"
 msgstr "制作人员"
 
-#: ui/main_menu.gd:657 ui/profile_picker.gd:49 ui/settings_panel.gd:123
+#: ui/main_menu.gd:655 ui/profile_picker.gd:49 ui/settings_panel.gd:123
 #: ui/settings_panel.gd:148 ui/world_picker.gd:53
 msgid "Back"
 msgstr "返回"
 
-#: ui/main_menu.gd:670
+#: ui/main_menu.gd:668
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -5316,27 +5315,27 @@ msgstr ""
 "代码、程序化网格、合成音频和文字均为 Greenfall 原创。\n"
 "\n"
 
-#: ui/main_menu.gd:674
+#: ui/main_menu.gd:672
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "第三方资源：CC0，Poly Haven（polyhaven.com）。"
 
-#: ui/main_menu.gd:692
+#: ui/main_menu.gd:690
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]作者：%s[/color]"
 
-#: ui/main_menu.gd:726
+#: ui/main_menu.gd:724
 msgid "START A NEW GAME?"
 msgstr "开始新游戏？"
 
-#: ui/main_menu.gd:727
+#: ui/main_menu.gd:725
 msgid "Your current save will be erased. This can't be undone."
 msgstr "你当前的存档将被删除。此操作无法撤销。"
 
-#: ui/main_menu.gd:735
+#: ui/main_menu.gd:733
 msgid "Keep my save"
 msgstr "保留存档"
 
-#: ui/main_menu.gd:741 ui/profile_picker.gd:213
+#: ui/main_menu.gd:739 ui/profile_picker.gd:213
 msgid "Erase and start"
 msgstr "删除并开始"
 
@@ -11442,6 +11441,18 @@ msgstr "所以我们先留下来。每清理一座小镇，Verdance 就为定居
 msgid "To be continued: the trip to Ochre comes in a future update. Keep restoring Verdance!"
 msgstr "未完待续：前往 Ochre 的旅程将在后续更新中推出。继续让 Verdance 恢复生机吧！"
 
+#: data/homeward.json:closed.card.title
+msgid "To be continued"
+msgstr "未完待续"
+
+#: data/homeward.json:closed.card.line
+msgid "Your robots keep cleaning while you wait. Stay as long as you like and keep making Verdance green."
+msgstr "等待的时候，你的机器人会继续清理。想待多久就待多久，继续让 Verdance 变绿吧。"
+
+#: data/homeward.json:closed.card.hint
+msgid "{interact}  continue"
+msgstr "{interact}  继续"
+
 #: data/homeward.json:tech[deep_drill].name
 msgid "Deep Drill"
 msgstr "深层钻机"
@@ -14635,6 +14646,22 @@ msgstr "长途飞行需要耐用的能量。Fairground 有一块能量电池。"
 #: data/story_reasons.json:goal_reasons
 msgid "The rocket's tanks are empty. Stack Works still has fuel."
 msgstr "火箭的燃料箱是空的。Stack Works 还有燃料。"
+
+#: data/story_reasons.json:goal_reasons
+msgid "Wake the Gantry Crane. Its hull plates keep the rocket safe in space."
+msgstr "唤醒龙门吊。它的船体板能在太空中保护火箭。"
+
+#: data/story_reasons.json:goal_reasons
+msgid "Wake the Signal Mast. It still holds the star chart, the map of where to fly."
+msgstr "唤醒信号塔。它还保存着星图，告诉我们该往哪里飞。"
+
+#: data/story_reasons.json:goal_reasons
+msgid "Wake the Big Wheel. Its power cell keeps the rocket going on a long flight."
+msgstr "唤醒摩天轮。它的能量电池能让火箭撑过长途飞行。"
+
+#: data/story_reasons.json:goal_reasons
+msgid "Wake the Tall Stack. Its tanks still hold fuel for the rocket."
+msgstr "唤醒高烟囱。它的储罐里还有给火箭用的燃料。"
 
 #: data/story_reasons.json:goal_reasons
 msgid "A strong second base keeps its side of Verdance clean."
