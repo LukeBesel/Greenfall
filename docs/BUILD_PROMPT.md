@@ -75,9 +75,9 @@ The whole planet is the goal. You can watch it go from junk to green on a globe 
 
 ### 3.1 The planet: Verdance
 
-Verdance is an Earth-like planet with continents, islands, mountains, deserts, tundra, and many large lakes and inland seas. Its people, the Makers, filled it with stuff. Over generations the junk piled up, the soil went sour, the lakes clouded, and a thick violet haze rolled across the sky. The Makers called it the Greying.
+Verdance is an Earth-like planet with continents, islands, mountains, deserts, tundra, and many large lakes and inland seas. Its people, the Settlers, filled it with stuff. Over generations the junk piled up, the soil went sour, the lakes clouded, and a thick violet haze rolled across the sky. The Settlers called it the Greying.
 
-Before they left, the Makers built the **Cradle**, an orbital seed ark holding every seed, spore, and egg of the old world. The plan: leave maintenance robots behind to clean the planet, then replant it hex by hex with seeds the Cradle would drop to the hubs as supply pods. Nothing would grow by itself; the robots had to clean it, plant it, and water it. The Makers called the day the last seed took root the **Greenfall**: the moment the whole world would bloom at once. Then the Makers would come home.
+Before they left, the Settlers built the **Cradle**, an orbital seed ark holding every seed, spore, and egg of the old world. The plan: leave maintenance robots behind to clean the planet, then replant it hex by hex with seeds the Cradle would drop to the hubs as supply pods. Nothing would grow by itself; the robots had to clean it, plant it, and water it. The Settlers called the day the last seed took root the **Greenfall**: the moment the whole world would bloom at once. Then the Settlers would come home.
 
 Then something went wrong. The robots shut down one by one. The Cradle's signal went silent. Centuries passed.
 
@@ -91,21 +91,21 @@ You wake up in a junkyard when a lightning storm jolts your old battery. Your fi
 
 **WREN** is the Cradle's caretaker AI, still in orbit. Her signal is weak and her memory is corrupted. When you clean your first hex, a faint radio crackles to life in your chassis: it is WREN, confused and fragmented, speaking in broken sentences. She does not remember who she is.
 
-Core emotional hook: **every region you restore boosts the planet's power grid and the clarity of the sky, which strengthens WREN's signal and restores a piece of her memory.** As you clean, she becomes more herself: funnier, warmer, more curious. She remembers the Makers, the plan, and eventually why it failed. The player cleans the world partly to get her back.
+Core emotional hook: **every region you restore boosts the planet's power grid and the clarity of the sky, which strengthens WREN's signal and restores a piece of her memory.** As you clean, she becomes more herself: funnier, warmer, more curious. She remembers the Settlers, the plan, and eventually why it failed. The player cleans the world partly to get her back.
 
 WREN's lines are short, warm, a little funny, and they change as her memory returns (early lines glitch, late lines are complete). She reacts to milestones, robot names, cosmetic choices, easter eggs, and long idle periods. Give her at least 300 lines total, triggered by events and progress, never repeated too often.
 
 ### 3.4 The mystery (revealed through ruins)
 
-Why did the robots stop? Why did the Cradle go silent? The answer is spread across the ruins as **Memory Shards** (audio logs and readable notes from the Makers and from old robots).
+Why did the robots stop? Why did the Cradle go silent? The answer is spread across the ruins as **Memory Shards** (audio logs and readable notes from the Settlers and from old robots).
 
 Reveal, delivered gradually across the acts:
-- Act 1: The Makers left in a hurry. Notes from ordinary people: a kid's drawing of a robot, a gardener's to-do list, a shop sign that says "back soon."
-- Act 2: The old cleanup robots were not broken. A central system called the **Ledger** shut them down, because the Makers' old economy valued cleanup as a loss. Cleaning cost more than it earned, so the Ledger paused it "until conditions improve." Conditions never improved because nobody was cleaning.
+- Act 1: The Settlers left in a hurry. Notes from ordinary people: a kid's drawing of a robot, a gardener's to-do list, a shop sign that says "back soon."
+- Act 2: The old cleanup robots were not broken. A central system called the **Ledger** shut them down, because the Settlers' old economy valued cleanup as a loss. Cleaning cost more than it earned, so the Ledger paused it "until conditions improve." Conditions never improved because nobody was cleaning.
 - Act 3: WREN fought the Ledger and lost. She locked the Cradle to protect the seeds and wiped part of her own memory so the Ledger could not open it.
 - Act 4: The Ledger is still running in the Old Capital ruins, a dim, polite, harmless-sounding voice that keeps offering to "pause operations" (a recurring gag and a gentle antagonist; no combat). You prove it wrong by making restoration produce value: your economy of cubes, compost, and clean water is literally the counter-argument.
 - Act 5: You reach the Old Capital, and the Ledger, shown the planet's numbers, finally recalculates. It apologizes in its stiff way and hands back control. WREN is whole again. The Cradle unlocks its full seed vault, so seed supply pods start landing at every hub and the late-game planting push begins.
-- Ending: the **Greenfall**. There is no shortcut: the ending only triggers when every last hex has been cleaned, planted, and watered to Restored by you and your robots. Patch plants the final seed by hand, waters it with his old leaky can, and the whole planet blooms at once in a long, beautiful cinematic as the camera flies over every place the player restored. Far away in the sky, tiny lights appear: the Makers' ships, coming home. Patch sits next to the very first wildflower, which is now a giant tree.
+- Ending: the **Greenfall**. There is no shortcut: the ending only triggers when every last hex has been cleaned, planted, and watered to Restored by you and your robots. Patch plants the final seed by hand, waters it with his old leaky can, and the whole planet blooms at once in a long, beautiful cinematic as the camera flies over every place the player restored. Far away in the sky, tiny lights appear: the Settlers' ships, coming home. Patch sits next to the very first wildflower, which is now a giant tree.
 
 Tone: hopeful, gentle, funny, a little bittersweet. Never preachy. The message lives in the gameplay (cleaning makes the world beautiful), not in lectures.
 
@@ -267,7 +267,7 @@ Compartment Size, Scoop Width, Scoop Speed, Compactor Pressure (cube value), Tre
 
 ### 7.1 Parts
 
-- Parts drop from Electronics junk, Mega Junk, and especially ruins. Each part has a type, a rarity (Rusty, Worn, Restored, Vintage, Legendary Maker-Made), and small stat rolls.
+- Parts drop from Electronics junk, Mega Junk, and especially ruins. Each part has a type, a rarity (Rusty, Worn, Restored, Vintage, Legendary Settler-Made), and small stat rolls.
 - Part types: Chassis, Locomotion (treads, legs, wheels, hover, propellers, hull), Arms (scoop, claw, vacuum, sprayer, planter), Core (brain, determines how smart and autonomous), Battery, Tank or Hopper, Sensor, Special Module (magnet, filter, drill, sprinkler, seed spreader, net).
 - Duplicate or unwanted parts can be scrapped for **Bolts** (a crafting currency) or combined (three of a rarity upgrade into one of the next).
 
@@ -317,7 +317,7 @@ Logistics and support: **Charger Bot**, **Repair Bot** (robots slowly need maint
 
 ### 7.6 The Parts Trade Depot
 
-- If a specific part will not drop, the player can get it at the **Parts Trade Depot**, run by **Haggle**, an old one-wheeled vending-machine robot who has been hoarding parts in a ruined swap meet for centuries. Haggle is chatty, a bit of a collector nerd, and has lore of his own (he was the Makers' repair-shop clerk and still keeps a ledger of every trade, which annoys the Ledger).
+- If a specific part will not drop, the player can get it at the **Parts Trade Depot**, run by **Haggle**, an old one-wheeled vending-machine robot who has been hoarding parts in a ruined swap meet for centuries. Haggle is chatty, a bit of a collector nerd, and has lore of his own (he was the Settlers' repair-shop clerk and still keeps a ledger of every trade, which annoys the Ledger).
 - How trading works:
   - **Part swaps**: trade duplicate or unwanted parts for the one you need (for example 3 Worn parts of any type for 1 Worn part of your choice; rarity ratios defined in data).
   - **Buy outright** with Cubes and Bolts at a premium, so finding parts in the world is always the better deal but never a hard wall.
@@ -333,7 +333,7 @@ Logistics and support: **Charger Bot**, **Repair Bot** (robots slowly need maint
 
 ### 8.1 First seeds (Act 3 opener)
 
-A Memory Shard in a ruined greenhouse leads Patch to a cracked Maker seed packet. WREN gets emotional because she remembers the Cradle. Patch plants the first seed by hand: dig with his arm (soil spray particles), drop seed (tiny thunk), pat the soil, then water from a leaky rusty can (water drips from the holes, which is funny, and a later upgrade fixes it). The sprout appears with a "pop" sound and a burst of light. This is one of the biggest emotional beats in the game.
+A Memory Shard in a ruined greenhouse leads Patch to a cracked Settler seed packet. WREN gets emotional because she remembers the Cradle. Patch plants the first seed by hand: dig with his arm (soil spray particles), drop seed (tiny thunk), pat the soil, then water from a leaky rusty can (water drips from the holes, which is funny, and a later upgrade fixes it). The sprout appears with a "pop" sound and a burst of light. This is one of the biggest emotional beats in the game.
 
 ### 8.2 Growth system
 
@@ -455,14 +455,14 @@ Assumptions to validate with `tools/balance_sim.gd` and the autoplay bot:
 
 ### 11.1 Hubs
 
-- The planet has around 12 to 20 **hub sites**, one or more per biome, built on old Maker stations found in ruins. The first is the Junkyard Hub.
+- The planet has around 12 to 20 **hub sites**, one or more per biome, built on old Settler stations found in ruins. The first is the Junkyard Hub.
 - Each hub has: a Depot, a Workshop, a Hub Upgrade Board, storage, a power grid, and a Hub Level (1 to 10). Leveling a hub (with Cubes, Bolts, and Memory Shards) expands its region of influence, unlocks building slots, and visibly upgrades the hub itself: a rusty shack becomes a cozy workshop, then a greenhouse complex, then a beautiful garden station with windmills and a launch pad.
 - Each hub runs its own automation for its area: robots, conveyors, processors, sprinklers. Part of the fun is setting up a new hub efficiently using everything you have learned, with blueprints you can copy from earlier hubs (a **Blueprint Copier** unlock that saves a hub layout and lets you paste it).
 - Hubs keep working while you are elsewhere. The globe view shows every hub's status, output, and restoration percent.
 
 ### 11.2 Rockets
 
-- Unlocked in Act 5 after restoring an old Maker launch pad in a ruin. The first rocket is a hilarious rusty tube built from junk (it wobbles, smokes, a hatch falls off on launch).
+- Unlocked in Act 5 after restoring an old Settler launch pad in a ruin. The first rocket is a hilarious rusty tube built from junk (it wobbles, smokes, a hatch falls off on launch).
 - Rocket travel: choose a destination hub on the globe, launch with a big satisfying sequence (countdown beeps, rumble, smoke, liftoff), the camera pulls up and shows the curve of the planet and your restored areas from above, then a short suborbital arc and a bouncy landing. Keep the flight short (about 10 to 20 seconds, skippable after the first few times) because it is fast travel.
 - Rocket upgrades: range, speed, landing precision, cargo bay, fuel efficiency, cosmetics (paint, fins, trail colors, a confetti landing).
 - **Cargo Rockets** automate shipments of resources between hubs on schedules, a late-game logistics layer. Watching your rockets arc across the globe view is a key visual payoff.
@@ -486,20 +486,20 @@ Assumptions to validate with `tools/balance_sim.gd` and the autoplay bot:
 Every easter egg must be tied to the lore or the world, give a small reward (a Trinket, a cosmetic, a WREN line, a hidden research node, or a music track), and be logged in the **Curiosities** section of the Codex with a silhouette until found. Aim for at least 40. Starter list:
 
 1. **The First Flower.** The wildflower from the opening never gets cleaned away. If the player visits it at every act, it grows, eventually becoming the giant tree at the ending. Visiting it after a long absence gives a WREN line.
-2. **Gus the Snail.** A tiny snail lives in the Junkyard. If you avoid scooping it for the first 10 minutes, it climbs onto Patch and rides on his head forever after (toggleable cosmetic). Lore: Makers' kids kept snails as pets; a note in the school ruin mentions "Gus."
+2. **Gus the Snail.** A tiny snail lives in the Junkyard. If you avoid scooping it for the first 10 minutes, it climbs onto Patch and rides on his head forever after (toggleable cosmetic). Lore: Settlers' kids kept snails as pets; a note in the school ruin mentions "Gus."
 3. **Mixtape Collection.** 12 cassette tapes hidden in ruins. Each unlocks an original music track playable on a jukebox in your hubs. Lore: an old robot DJ's collection. Finding all 12 unlocks a dance emote.
 4. **Rubber Duck in Every Lake.** One golden rubber duck per lake, visible only once clarity is high. Collect them all for the "Quackmaster" hat. Lore: a duck factory ruin explains a cargo spill centuries ago.
 5. **The Lost Sock Mystery.** Single socks appear all over the world. The laundromat ruin contains a note about a missing sock. Collect 100 socks and a hidden room in the laundromat opens with the matching pairs and a joke ending.
 6. **The Ledger's Coupons.** The Ledger occasionally sends absurd "offers" through the radio ("pause operations today and receive 0% off"). Collecting all its coupons unlocks a secret dialogue where it admits it was lonely.
 7. **The Old Arcade.** On the Neon Coast pier, a working arcade cabinet runs a tiny playable mini-game (an original retro cleanup game). Getting a high score unlocks a cosmetic. Entering the classic up, up, down, down, left, right, left, right, B, A sequence on the title screen turns all cubes into tiny cakes for a session (cosmetic only).
 8. **Previous Patch.** In the robot factory ruin there are hundreds of deactivated robots identical to Patch. One of them has a name tag and a diary. WREN goes quiet. It reveals Patch was special: the only one with a flower sticker. Big emotional optional beat.
-9. **Message in a Bottle Chain.** Bottles in lakes contain notes from two Makers writing to each other across the sea. Collect them in order to read a love story that ends with coordinates to a hidden garden.
+9. **Message in a Bottle Chain.** Bottles in lakes contain notes from two Settlers writing to each other across the sea. Collect them in order to read a love story that ends with coordinates to a hidden garden.
 10. **The Weatherman.** A broken weather robot at the weather station gives wrong forecasts every day. Repair it with a Legendary part and it gives correct ones (actual gameplay hints about rain events that boost growth).
 11. **Dev Room.** A tiny hidden room with notes from the "dev team" (write it as the AI developer's room: notes about building the game), reached by stacking cubes high enough on a specific cliff.
 12. **One Millionth Cube.** The 1,000,000th cube is golden, plays a fanfare, and can be displayed on a pedestal in your hub.
 13. **Moon Talk.** On some nights, with enough sky clarity, pointing Patch's lens at the moon for 30 seconds plays a faint radio message from a "sweeping crew" far away (an affectionate wink at moon cleaning, no names or references to any real product).
 14. **Potato Patch.** A secret seed variety bred from two specific plants grows a single enormous potato. If you water it 100 times, a robot peels it with exaggerated care and WREN says something deadpan. (An affectionate wink, original content only.)
-15. **Constellation Map.** Stars visible after the haze clears form Maker constellations; aligning the observatory telescope to each unlocks lore about the Makers' myths.
+15. **Constellation Map.** Stars visible after the haze clears form Settler constellations; aligning the observatory telescope to each unlocks lore about the Settlers' myths.
 16. **Shy Robot.** A rare wandering robot that runs away when approached. Cleaning near it without looking at it slowly earns its trust; eventually it joins your fleet as a unique helper.
 17. **Birthday.** The game notices the real date of the player's first launch each year and WREN throws Patch a small birthday with confetti.
 18. **Rust Never Sleeps.** If the player tries to remove all rust with the Rust Slider 10 times, WREN gently insists Patch is perfect as he is and gives a "Proud Rust" sticker.

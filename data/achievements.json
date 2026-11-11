@@ -797,8 +797,8 @@
   },
   {
    "id": "builder_maker",
-   "name": "As the Makers Made It",
-   "desc": "Fit the full Maker set (shell, optic and glider) on one robot.",
+   "name": "As the Settlers Made It",
+   "desc": "Fit the full Settler set (shell, optic and glider) on one robot.",
    "icon": "star",
    "cond": {
     "type": "stat",

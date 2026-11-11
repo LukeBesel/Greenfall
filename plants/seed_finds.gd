@@ -1,6 +1,6 @@
 class_name SeedFinds
 extends Node
-## [first] The early seed trickle: once the Maker seed tin is found, Lumi now and then turns up a
+## [first] The early seed trickle: once the Settler seed tin is found, Lumi now and then turns up a
 ## dry old seed in the junk he scoops (organic junk likelier). Rare and rate-limited, so planting
 ## stays a slow side track for the first hour while cleaning drives progress.
 ## Data: data/plants.json "seed_finds" {chance, organic_mult, cooldown_s}.

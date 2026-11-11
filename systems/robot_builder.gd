@@ -1,11 +1,11 @@
 class_name RobotBuilder
 extends Node
 ## [drones] Robot Builder: per-robot part slots (Chassis, Head, Mobility, Tool, Topper), the part
-## collection, unlocking, Maker Fragments, crew presets, personality traits and salvage spotting.
+## collection, unlocking, Settler Fragments, crew presets, personality traits and salvage spotting.
 ## [ui2] Builder parts are pure cosmetics, edited in the workbench Locker (ui/locker_panel.gd):
 ## owning a part unlocks it for every robot (fitting it uses nothing up); unlocking costs Parts
 ## (+ cubes for the shop ones) or comes from research, Requests and rare finds. The one perk left
-## is the Maker set (three Maker parts: +5% speed, +6% work). Personalities are flavour only. Rules are static so the UI, tests and the save round trip
+## is the Settler set (three Settler parts: +5% speed, +6% work). Personalities are flavour only. Rules are static so the UI, tests and the save round trip
 ## can use them without a world; one instance per slice ticks salvage finds and dev hooks.
 ##
 ## State: GameState.flags["builder"] = {inv: {part_id: n}, fragments: n, presets: {crew: build},
@@ -150,8 +150,8 @@ static func take_part(id: String) -> bool:
 	return true
 
 
-## [money] Maker Fragments are Parts now (data/currencies.json legacy "fragments"): a find pays
-## FRAGMENT_PARTS parts; the Maker set costs parts + a Vintage-or-better robot part. Kept as calls
+## [money] Settler Fragments are Parts now (data/currencies.json legacy "fragments"): a find pays
+## FRAGMENT_PARTS parts; the Settler set costs parts + a Vintage-or-better robot part. Kept as calls
 ## so older code and the maker_fragments stat keep working.
 const FRAGMENT_PARTS: float = 25.0
 
@@ -180,13 +180,13 @@ static func _note_seen(id: String) -> void:
 
 # --- Stats ---------------------------------------------------------------------------------
 
-## Product of generic mods for a build plus a trait (and the Maker set bonus).
+## Product of generic mods for a build plus a trait (and the Settler set bonus).
 static func generic_mods(build: Dictionary, trait_id: String = "") -> Dictionary:
 	var out: Dictionary = {}
 	var mul := func(mods: Dictionary) -> void:
 		for k: String in mods:
 			out[k] = float(out.get(k, 1.0)) * float(mods[k])
-	# [ui2] Parts and personalities are cosmetic; only the Maker set keeps a small perk.
+	# [ui2] Parts and personalities are cosmetic; only the Settler set keeps a small perk.
 	if has_set(build):
 		mul.call(cfg().get("set_bonus", {}).get("mods", {}))
 	return out
@@ -517,14 +517,14 @@ func _on_robot_built(_n: String) -> void:
 	EventBus.toast.emit(tr("Your first bot came with treads and a bobble plant. Style it in the Locker once the hub reaches level %d.") % LockerPanel.HUB_LEVEL, "story")  # [ui2]
 
 
-## Dug-up parts sometimes come with a Maker Fragment (much likelier on Vintage/Legendary finds).
+## Dug-up parts sometimes come with a Settler Fragment (much likelier on Vintage/Legendary finds).
 func _on_part_found(_t: int, r: int) -> void:
 	if _quiet:
 		return
 	var ch: Array = cfg().get("salvage", {}).get("dig_fragment_chance", [0.02])
 	if rng.randf() < float(ch[clampi(r, 0, ch.size() - 1)]):
 		add_fragments(1)
-		EventBus.toast.emit(tr("A Maker Fragment was tucked inside it: +%d parts.") % int(FRAGMENT_PARTS), "hint")  # [money]
+		EventBus.toast.emit(tr("A Settler Fragment was tucked inside it: +%d parts.") % int(FRAGMENT_PARTS), "hint")  # [money]
 
 
 func _process(delta: float) -> void:
@@ -559,7 +559,7 @@ func _salvage_find(r: Robot, sc: Dictionary) -> void:
 		EventBus.toast.emit(tr("%s spotted something green and lucky: a Lucky Clover!") % r.robot_name, "story")
 	elif rng.randi() % maxi(int(sc.get("fragment_one_in", 10)), 1) == 0:
 		add_fragments(1)
-		EventBus.toast.emit(tr("%s spotted a Maker Fragment glinting in the junk: +%d parts.") % [r.robot_name, int(FRAGMENT_PARTS)], "story")  # [money]
+		EventBus.toast.emit(tr("%s spotted a Settler Fragment glinting in the junk: +%d parts.") % [r.robot_name, int(FRAGMENT_PARTS)], "story")  # [money]
 	else:
 		var t: int = rng.randi() % maxi(Economy.parts.get("types", [1]).size(), 1)
 		var rar: int = 0 if rng.randf() < 0.7 else 1
