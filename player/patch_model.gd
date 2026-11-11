@@ -74,6 +74,9 @@ var _blink: float = 0.0
 var _flash: float = 0.0
 var _lean := Vector2.ZERO
 var _dip: float = 0.0
+## [v6feel] Carrying bales: both arms up under the load (set by Patch).
+var carrying: bool = false
+var _carry: float = 0.0
 ## Holding up the survey hologram (right claw raised, palm up).
 var holding: bool = false
 var _hold: float = 0.0
@@ -555,6 +558,18 @@ func _process(delta: float) -> void:
 	_arm_r.rotation.x = lerpf(0.15 * sin(_t * 1.3), -0.9 + sin(s) * 0.15, _scoop_amt)
 	_arm_l.rotation.x = lerpf(0.15 * sin(_t * 1.3 + 1.0), -0.5 + sin(s + 1.5) * 0.12, _scoop_amt * 0.7)
 	_arm_r.rotation.z = lerpf(0.0, -0.25, _scoop_amt)
+	_carry = move_toward(_carry, 1.0 if carrying else 0.0, delta * 5.0)
+	if _carry > 0.0:
+		# [v6feel] Arms up and a little out, steadying the stack; the scooping arm still does its job.
+		var ce: float = _carry * _carry * (3.0 - 2.0 * _carry)
+		var up_r: float = ce * (1.0 - _scoop_amt)
+		var up_l: float = ce * (1.0 - _scoop_amt * 0.7)
+		_arm_r.rotation.x = lerpf(_arm_r.rotation.x, -2.7 + sin(_t * 2.4) * 0.03, up_r)
+		_arm_l.rotation.x = lerpf(_arm_l.rotation.x, -2.7 + sin(_t * 2.4 + 0.6) * 0.03, up_l)
+		_arm_r.rotation.z = lerpf(_arm_r.rotation.z, 0.22, up_r)
+		_arm_l.rotation.z = lerpf(0.0, -0.22, up_l)
+	else:
+		_arm_l.rotation.z = 0.0
 	_hold = move_toward(_hold, 1.0 if holding else 0.0, delta * 3.0)
 	if _hold > 0.0:
 		var e: float = _hold * _hold * (3.0 - 2.0 * _hold)
@@ -610,7 +625,8 @@ func _process(delta: float) -> void:
 
 
 func set_motion(speed: float, speed_ratio: float, local_accel: Vector2, delta: float) -> void:
-	var target := Vector2(clampf(-local_accel.y * 0.015, -0.18, 0.18) - speed_ratio * 0.08, clampf(local_accel.x * 0.012, -0.15, 0.15))
+	# [v6feel] The run lean stops growing past twice walking speed: a boost leaned him 30 degrees.
+	var target := Vector2(clampf(-local_accel.y * 0.015, -0.18, 0.18) - minf(speed_ratio, 2.0) * 0.08, clampf(local_accel.x * 0.012, -0.15, 0.15))
 	_lean = _lean.lerp(target, clampf(delta * 6.0, 0.0, 1.0))
 	_ring_mat.emission_energy_multiplier += speed * 0.3
 
