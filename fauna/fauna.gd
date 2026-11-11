@@ -417,10 +417,27 @@ func _near_cells() -> PackedInt32Array:
 	_near_at = _lumi_pos
 	_near = PackedInt32Array()
 	var r: float = float(_cfg.get("spawn_radius", 55.0)) + world.field.hex_size * 2.0
+	var sf: SphereField = world.field as SphereField
+	if sf:  # [v6qa] the grid's cells round Lumi that are in the region (it measured every region cell: 20-40 ms at a hub switch)
+		if _frame_set.size() != frame_cells.size():
+			_frame_set.clear()
+			for i0: int in frame_cells.size():
+				_frame_set[frame_cells[i0]] = i0
+		var idx: Array[int] = []
+		for h: int in sf.grid.cells_within(_w(_lumi_pos).normalized(), r + 2.0):
+			if _frame_set.has(h) and _hex_c(h).distance_to(_lumi_pos) < r:
+				idx.append(int(_frame_set[h]))
+		idx.sort()  # the region's own order, as before (the plan's dice follow it)
+		for i1: int in idx:
+			_near.append(frame_cells[i1])
+		return _near
 	for h: int in frame_cells:
 		if _hex_c(h).distance_to(_lumi_pos) < r:
 			_near.append(h)
 	return _near
+
+
+var _frame_set: Dictionary = {}  # [v6qa]
 
 
 ## [orbB] The globe: rotates the hub frame's +Y onto the ground's own up at p (the frame is a

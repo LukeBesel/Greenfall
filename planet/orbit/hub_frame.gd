@@ -43,8 +43,13 @@ func node(key: String) -> Node:
 func region() -> PackedInt32Array:
 	if hub < 0:
 		return PackedInt32Array()
-	var g: OrbitPlanet = so.globe
-	return g.grid.cells_around(int(g.sites[hub]["cell"]), SiteManager.REGION_RINGS)
+	if not _regions.has(hub):  # [v6qa] a few thousand cells' ring walk, asked by every system of a switch: once per hub
+		var g: OrbitPlanet = so.globe
+		_regions[hub] = g.grid.cells_around(int(g.sites[hub]["cell"]), SiteManager.REGION_RINGS)
+	return _regions[hub]
+
+
+var _regions: Dictionary = {}  # [v6qa] hub -> its region's cells
 
 
 func _process(delta: float) -> void:
