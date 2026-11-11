@@ -45,6 +45,8 @@ var rigs: Rigs  # Lumi's fitted modules: each city's tool and the trade-off modu
 var city_payouts: CityPayouts  # cubes paid once when a city reaches a regrowth stage
 var chain: RobotChain  # parts finders, the Assembler and its build mix
 var look_finds: Finds  # where the planet hides the pieces of Lumi's looks (systems/finds.gd)
+var sources: Sources  # each city's source job, which gates its last stage (systems/sources.gd)
+var source_sites: SourceSites  # where the job's steps stand in the world (systems/source_sites.gd)
 var ending: PlanetEnding  # the launch cinematic and the end screen
 var hub_states: Dictionary = {}  # site index (str) -> {level} (core/save_orbit.gd); the Hub port fills it
 
@@ -218,6 +220,8 @@ func build(p_world: Node3D) -> void:
 	day.after_quality(view_mode == "command")
 	if DevHooks.has("give"):
 		GameState.add_currency("cubes", BigNum.from_float(DevHooks.get_f("give", 100.0)))
+	if DevHooks.has("give-parts"):
+		GameState.add_currency("parts", BigNum.from_float(DevHooks.get_f("give-parts", 100.0)))
 	Pace.sync_flags()
 	dev = OrbitDev.new()
 	dev.name = "OrbitDev"
@@ -452,6 +456,11 @@ func _build_districts(levels: HexLevels) -> void:
 	districts.name = "Districts"
 	w.add_child(districts)
 	districts.setup(def, globe.grid, globe.cells, site_cells)
+	sources = Sources.new()  # before the districts load: a city whose source still runs is held below its last stage
+	sources.name = "Sources"
+	w.add_child(sources)
+	sources.setup(def, districts, mastery)
+	sources.load_state(GameState.orbit.get("sources", {}), GameState.orbit.get("districts", {}))
 	districts.load_state(GameState.orbit.get("districts", {}))
 	districts.player_cell_fn = _player_cell
 	city_payouts = CityPayouts.new()
@@ -469,6 +478,7 @@ func _build_districts(levels: HexLevels) -> void:
 	w.add_child(look_finds)
 	look_finds.setup(def, districts, globe.cells, w.get("interactables") as Interactables)
 	look_finds.load_state(GameState.orbit.get("finds", {}))
+	look_finds.source_is_shut = sources.is_shut
 	var reveal := PieceReveal.new()  # the found moment: the piece on Lumi, its name, the way to the Locker
 	reveal.name = "PieceReveal"
 	reveal.world = w
@@ -481,7 +491,7 @@ func _build_districts(levels: HexLevels) -> void:
 		ending.skip_credits = true
 		ending.auto_keep_s = BOT_END_SCREEN_S
 	w.add_child(ending)
-	DistrictsDev.attach(w, districts, restoration, ending, crews, globe.cells, levels)
+	DistrictsDev.attach(w, districts, restoration, ending, crews, globe.cells, levels, sources)
 	mastery.sync_districts(districts)
 	rigs.sync_districts(districts, not GameState.orbit.has(Rigs.TABLE))  # a save from before rigs keeps its cities workable
 	var lumi: Patch = w.get("patch") as Patch
@@ -496,6 +506,11 @@ func _build_districts(levels: HexLevels) -> void:
 		chain.base_site = globe.site_manager.prefab(0) if globe.site_manager else null
 		var older_save: bool = int(GameState.orbit.get("schema", 0)) >= 1 or str(GameState.orbit.get("migrated", "")) != ""
 		chain.load_state(GameState.orbit.get("chain", {}), older_save)
+
+
+## Lumi's node (null before she exists).
+func _patch_node() -> Node3D:
+	return w.get("patch") as Node3D
 
 
 ## The hex Lumi stands on (-1 before Lumi exists).
@@ -620,6 +635,11 @@ func _build_yard_systems() -> void:
 	w.set("interactables", ia)
 	if look_finds:
 		look_finds.set_interactables(ia)
+	if sources:
+		source_sites = SourceSites.new()
+		source_sites.name = "SourceSites"
+		w.add_child(source_sites)
+		source_sites.setup(sources, districts, globe.site_manager, ia, _patch_node)
 	var ev := WorldEvents.new()  # world events + the cleaning streak (systems/events.gd)
 	ev.name = "WorldEvents"
 	ev.world = w
@@ -1214,6 +1234,7 @@ func persist_save() -> void:
 		"chain": chain.save_state() if chain else {},
 		"restoration": restoration.save_state() if restoration else {},
 		"finds": look_finds.save_state() if look_finds else {},
+		"sources": sources.save_state() if sources else {},
 		"site_state": sites.save_state() if sites else {},  # [orbD] built hubs, levels, growth (main: renamed from "sites", which orbB uses for site geometry)
 	}
 

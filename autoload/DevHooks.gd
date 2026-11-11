@@ -14,7 +14,7 @@ extends Node
 ##   --time-scale=X     Engine.time_scale
 ##   --seed=N           override the slice field seed
 ##   --cam=NAME         camera preset for screenshots (see CameraRig.apply_preset)
-##   --give=N           start with N cubes (testing UI)
+##   --give=N           start with N cubes (testing UI); --give-parts=N start with N Parts
 ##   --open=NAME        open a UI screen on start (upgrades)
 ##   --rig=ID,ID        own and fit these rig modules; --rig-plans=DISTRICT,... brings those cities' plans
 ##                      (systems/rigs.gd); with --open=upgrades --tab=rigs: the Rig tab
@@ -71,7 +71,8 @@ extends Node
 ##   [garden] --open=garden, --garden, --decor-sample, --garden-cam; full list in systems/garden_director.gd
 ##   --district-stage=ID:N[,ID:N]  set every land hex of a district (city) to regrowth stage N once the
 ##                      world is up (systems/districts_dev.gd); --launch-ready[=S] meets the planet's launch
-##                      rule S wall-clock seconds after start (default 20): the ending plays fast, no credits
+##                      rule S wall-clock seconds after start (default 20): the ending plays fast, no credits;
+##                      --sources-shut=all|ID[,ID] shuts those cities' sources down at start (systems/sources.gd)
 ##   [chain] --assembler stands the Assembler up free at start; --chain-ground=RINGS[:PARTS] buries PARTS parts
 ##                      (default 1) in every land hex within RINGS of the start base, cleaned or not, for the
 ##                      Scroungers to dig; --zone=ROLE:RINGS[,ROLE:RINGS] paints a role's work area (clean, find, plant,

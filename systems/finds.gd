@@ -6,7 +6,8 @@ extends Node
 ##           hex cleaned there may turn it up, and a set count of hexes turns it up for certain;
 ##   wreck   an old robot under the trash, off the main path: its pieces come when its hex is
 ##           cleared, or when Lumi uses the wreck once the world has put one there (register_site);
-##   source  given when a city's pollution source is shut down;
+##   source  given when a city's pollution source is shut down (EventBus.source_shut_down, from
+##           systems/sources.gd);
 ##   secret  given when a curiosity is found.
 ## A planet without the table hides nothing. Which pieces a planet offers is its data alone.
 ##
@@ -36,7 +37,9 @@ var _districts: Districts
 var _cells: SphereCells
 var _interactables: Interactables
 var _entries: Array[Dictionary] = []
-var _shut_stage: int = 0
+## func(district: String) -> bool: whether that city's source is shut down already. Set by the
+## world, so a load can hand out a source find the save owes.
+var source_is_shut: Callable
 var _taken: Dictionary[String, bool] = {}
 var _hexes: Dictionary[String, int] = {}
 var _wreck_cells: Dictionary[String, int] = {}
@@ -125,9 +128,7 @@ func setup(def: PlanetDefinition, districts: Districts, cells: SphereCells, inte
 	_cells = cells
 	_interactables = interactables
 	_entries = entries_for(def)
-	_shut_stage = int((def.table(TABLE) if def else {}).get("source_shut_at_stage", 0))
 	EventBus.hex_cleaned.connect(_on_hex_cleaned)
-	EventBus.district_stage_changed.connect(_on_district_stage_changed)
 	EventBus.source_shut_down.connect(shut_source)
 	EventBus.easter_egg_found.connect(_on_egg_found)
 
@@ -138,8 +139,8 @@ func set_interactables(interactables: Interactables) -> void:
 
 
 func _exit_tree() -> void:
-	for pair: Array in [[EventBus.hex_cleaned, _on_hex_cleaned], [EventBus.district_stage_changed, _on_district_stage_changed],
-			[EventBus.source_shut_down, shut_source], [EventBus.easter_egg_found, _on_egg_found]]:
+	for pair: Array in [[EventBus.hex_cleaned, _on_hex_cleaned], [EventBus.source_shut_down, shut_source],
+			[EventBus.easter_egg_found, _on_egg_found]]:
 		if (pair[0] as Signal).is_connected(pair[1] as Callable):
 			(pair[0] as Signal).disconnect(pair[1] as Callable)
 
@@ -179,7 +180,7 @@ func catch_up() -> void:
 	for e: Dictionary in _entries:
 		if is_taken(str(e["id"])):
 			continue
-		if e["where"] == SOURCE and _shut_stage > 0 and _districts.stage_of(str(e["district"])) >= _shut_stage:
+		if e["where"] == SOURCE and source_is_shut.is_valid() and bool(source_is_shut.call(str(e["district"]))):
 			_release(e)
 		elif e["where"] == WRECK and site_cell(str(e["id"])) == NO_CELL:
 			_release(e)
@@ -288,11 +289,6 @@ func _on_hex_cleaned(cell: int, _pos: Vector3, _bonus: BigNum) -> void:
 		if n >= buried_hex(_def.world_seed, e):
 			_release(e)
 			break  # one buried find per hex
-
-
-func _on_district_stage_changed(district: String, stage: int) -> void:
-	if _shut_stage > 0 and stage >= _shut_stage:
-		shut_source(district)
 
 
 func _on_egg_found(egg_id: String) -> void:

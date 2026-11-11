@@ -8,7 +8,8 @@ extends InputSource
 ##     research, cheap upgrades;
 ##   - paints Command zones (cleaners to the frontier, planters/waterers to the garden hexes);
 ##   - picks up the seed tin, plants one hex at a time, waters by hand until Drips take over,
-##     places Water Tanks, reads memory shards.
+##     places Water Tanks, reads memory shards;
+##   - does a city's source job as soon as a step is on offer (systems/sources.gd).
 ## Writes a timeline to screenshots/autoplay_report.json on exit (goal completions, hex level-ups,
 ## robots, research, base levels, gaps > 3 min with no goal and no new purchase). Run:
 ##   godot --headless --path . -- --fresh --autoplay --time-scale=8 --quit-after=950
@@ -127,6 +128,12 @@ func _init(p_world: Node) -> void:
 	_hook(EventBus.mastery_gained, func(kind: String, level: int) -> void:
 		_mastery.on_gained(kind, level, _now())
 		_event("mastery", {"kind": kind, "level": level}))
+	_hook(EventBus.source_step_done, func(district: String, i: int) -> void:
+		_progress()
+		_event("source_step", {"district": district, "step": i}))
+	_hook(EventBus.source_shut_down, func(district: String) -> void:
+		_mark("source_%s_s" % district)
+		_event("source_shut", {"district": district}))
 	world.tree_exiting.connect(write_report)
 	world.tree_exiting.connect(_unhook)  # [beat] rocket travel reloads the scene: drop the old bot's hooks
 
@@ -442,7 +449,7 @@ func update(delta: float) -> void:
 		_escape_t -= delta
 		_move = _escape_dir
 		return
-	if not (_do_bench(p) or _do_tin(p) or _do_shard(p) or _do_dump(p) or _do_deliver(p) or _do_pickup(p) or _do_dig(p) or _do_pet(p) or _do_learn(p) or _do_garden(p)):
+	if not (_do_source(p) or _do_bench(p) or _do_tin(p) or _do_shard(p) or _do_dump(p) or _do_deliver(p) or _do_pickup(p) or _do_dig(p) or _do_pet(p) or _do_learn(p) or _do_garden(p)):
 		_do_clean(p)
 	_watch_stuck(p, delta)
 
@@ -574,6 +581,42 @@ func _water_at() -> Vector3:
 ## The Maker seed tin in the greenhouse, once enough hexes are clean.
 ## How close to the seed tin Lumi stops (FirstSeed.near_tin reaches 2.2 m).
 const TIN_STOP_M: float = 1.5
+## How close the bot walks to a source step's spot, and how long it tries before giving the step
+## a rest (a spot it cannot reach must not hold the whole run).
+const SOURCE_STOP_M: float = 1.2
+const SOURCE_TRY_S: float = 150.0
+const SOURCE_REST_S: float = 120.0
+var _source_rest_until: float = 0.0
+var _source_step_seen: int = -1
+
+
+## The source job of the city the readouts follow: walk to the spot of the step on offer and use
+## it; stand still while the work runs. True while it has a step to do.
+func _do_source(p: Patch) -> bool:
+	var so: SliceOrbit = world.get("orbit") as SliceOrbit
+	if so == null or so.sources == null or so.source_sites == null or not p.carried.is_empty() or _now() < _source_rest_until:
+		return false
+	var id: String = so.districts.focus_id()
+	if not so.sources.is_open(id) or not so.sources.can_afford(id):
+		return false
+	var at: Variant = so.source_sites.target_pos(id)
+	if at == null:
+		return false
+	_set_task("source")
+	var seen: int = so.sources.steps_done()
+	if seen != _source_step_seen:  # a step or a pickup done: the next one gets its own time
+		_source_step_seen = seen
+		_task_t = 0.0
+	if so.sources.is_engaged(id):
+		return true  # at work: stay in reach
+	_go(p, at, SOURCE_STOP_M)
+	if so.source_sites.in_reach(id) and _cooldown <= 0.0:
+		_interact = true
+		_cooldown = 0.6
+	if _task_t > SOURCE_TRY_S:
+		_source_rest_until = _now() + SOURCE_REST_S
+		_event("source_unreached", {"district": id, "step": so.sources.step_index(id)})
+	return true
 
 
 func _do_tin(p: Patch) -> bool:
