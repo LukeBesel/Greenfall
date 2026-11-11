@@ -515,7 +515,7 @@ msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
-#: core/pace.gd:147 story/objectives.gd:834
+#: core/pace.gd:147 story/objectives.gd:836
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "太重了。去工作台升级举升力。"
 
@@ -805,8 +805,8 @@ msgid "landmark"
 msgstr "地标"
 
 #: planet/sites/hub_plan.gd:254
-msgid "Everything sells for x%s now."
-msgstr "现在所有东西的售价 x%s。"
+msgid "The recycling network grew: everything sells for x%s now."
+msgstr "回收网络变大了：现在所有东西的售价 x%s。"
 
 #: planet/sites/hub_plan.gd:273
 msgid "Rocket piece: %s"
@@ -845,8 +845,8 @@ msgid "%s: %d%% clean, up %d%% while you were away."
 msgstr "%s：已清理 %d%%，你离开期间增加了 %d%%。"
 
 #: planet/sites/hub_purpose.gd:233
-msgid "Clean hexes here: %d / %d"
-msgstr "清理这里的格子：%d / %d"
+msgid "Dig the landmark out. Clean hexes here: %d / %d"
+msgstr "把地标挖出来。清理这里的格子：%d / %d"
 
 #: planet/sites/hub_purpose.gd:235
 msgid "Repair an outpost here: %d / %d"
@@ -869,16 +869,16 @@ msgid "%s: asleep. %s"
 msgstr "%s：沉睡中。%s"
 
 #: planet/sites/hub_purpose.gd:279
-msgid "The rocket can keep %d bases going. Upgrade the rocket at the workbench."
-msgstr "火箭最多能照看 %d 个基地。去工作台升级火箭。"
+msgid "The rocket can carry supplies to %d bases. Upgrade it at the workbench."
+msgstr "火箭最多能给 %d 个基地运送补给。去工作台升级火箭。"
 
 #: planet/sites/hub_purpose.gd:295
 msgid "Waking the %s needs %s."
 msgstr "唤醒（%s）需要 %s。"
 
 #: planet/sites/hub_purpose.gd:319
-msgid "%s is awake. %s restored."
-msgstr "%s 醒来了。%s 已修复。"
+msgid "%s is awake. %s keeps cleaning when you fly on."
+msgstr "%s 醒来了。你飞走以后，%s 会继续清理。"
 
 #: planet/sites/hub_purpose.gd:346
 msgid "%s grows: level %d."
@@ -2119,43 +2119,43 @@ msgstr "目标完成  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:670
+#: story/objectives.gd:672
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "打包机装好了！装满胸舱，按 [%s] 压一个捆包，再把它搬到秤上。"
 
-#: story/objectives.gd:692 story/objectives.gd:822
+#: story/objectives.gd:694 story/objectives.gd:824
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "你的胸舱满了。按 [%s] 压一个捆包。"
 
-#: story/objectives.gd:708
+#: story/objectives.gd:710
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "你的探测器发现附近埋着一个机器人零件。跟着“埋藏零件”的读数走；走到正上方时它会哔哔响。"
 
-#: story/objectives.gd:710
+#: story/objectives.gd:712
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
 
-#: story/objectives.gd:823
+#: story/objectives.gd:825
 msgid "Your chest is full. Bring it to the bin."
 msgstr "你的胸舱满了。带到垃圾桶去。"
 
-#: story/objectives.gd:830
+#: story/objectives.gd:832
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "你的胸舱满了。回家吧：垃圾桶就在高高的烟柱下面。"
 
-#: story/objectives.gd:832
+#: story/objectives.gd:834
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "把捆包搬回家：秤就在高高的烟柱下面。"
 
-#: story/objectives.gd:832
+#: story/objectives.gd:834
 msgid "Carry your bale to the scale by the bin."
 msgstr "把捆包搬到垃圾桶旁边的秤上。"
 
-#: story/objectives.gd:839
+#: story/objectives.gd:841
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "回家吧：跟着光柱走到高高的烟柱那里。"
 
-#: story/objectives.gd:849
+#: story/objectives.gd:851
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "这里没有东西可捡。走到垃圾更多的地方去。"
 
@@ -12688,8 +12688,8 @@ msgid "Windpump"
 msgstr "风力水泵"
 
 #: data/planets.json:verdance.hubs[garden_row].desc
-msgid "The rocket's seed stock. A new seed type."
-msgstr "火箭要带的种子储备。一种新种子。"
+msgid "The Makers' seed store: seeds to take to the next world."
+msgstr "造物者的种子库：带去下一个世界的种子。"
 
 #: data/planets.json:verdance.hubs[garden_row].piece.name
 msgid "Seed Stock"
@@ -12708,8 +12708,8 @@ msgid "Gantry Crane"
 msgstr "龙门吊"
 
 #: data/planets.json:verdance.hubs[gantry_works].desc
-msgid "Hull plates for the rocket."
-msgstr "火箭用的船体板。"
+msgid "Hull plates, so the rocket can stand the cold of space."
+msgstr "船体板，让火箭扛得住太空的寒冷。"
 
 #: data/planets.json:verdance.hubs[gantry_works].piece.name
 msgid "Hull Plates"
@@ -12728,8 +12728,8 @@ msgid "Signal Mast"
 msgstr "信号塔"
 
 #: data/planets.json:verdance.hubs[signal_heights].desc
-msgid "The star chart: where the rocket can fly."
-msgstr "星图：火箭能飞往哪里。"
+msgid "The Makers' star chart: it shows where the rocket can fly."
+msgstr "造物者的星图：告诉你火箭能飞往哪里。"
 
 #: data/planets.json:verdance.hubs[signal_heights].piece.name
 msgid "Star Chart"
@@ -12748,8 +12748,8 @@ msgid "Big Wheel"
 msgstr "摩天轮"
 
 #: data/planets.json:verdance.hubs[fairground].desc
-msgid "A power cell for the rocket. A new look for Lumi."
-msgstr "火箭用的能量电池。Lumi 的新外观。"
+msgid "A power cell that lasts a long flight. A new look for Lumi."
+msgstr "能撑过长途飞行的能量电池。Lumi 的新外观。"
 
 #: data/planets.json:verdance.hubs[fairground].piece.name
 msgid "Power Cell"
@@ -12788,8 +12788,8 @@ msgid "Last Bus"
 msgstr "末班车"
 
 #: data/planets.json:verdance.hubs[bus_depot].desc
-msgid "An extra town. A reward of Parts."
-msgstr "额外的城镇。奖励：零件。"
+msgid "An old station off the route. Wake it for Parts."
+msgstr "航线之外的一座旧清理站。唤醒它可以得到零件。"
 
 #: data/planets.json:verdance.hubs[crane_court].name
 msgid "Crane Court"
@@ -12800,8 +12800,8 @@ msgid "Tower Crane"
 msgstr "塔吊"
 
 #: data/planets.json:verdance.hubs[crane_court].desc data/planets.json:verdance.hubs[lake_light].desc
-msgid "An extra town. A reward of Cubes."
-msgstr "额外的城镇。奖励：方块。"
+msgid "An old station off the route. Wake it for Cubes."
+msgstr "航线之外的一座旧清理站。唤醒它可以得到方块。"
 
 #: data/planets.json:verdance.hubs[tank_hill].name
 msgid "Tank Hill"
@@ -12812,8 +12812,8 @@ msgid "Hill Tank"
 msgstr "山顶水罐"
 
 #: data/planets.json:verdance.hubs[tank_hill].desc
-msgid "An extra town. A reward of Seeds."
-msgstr "额外的城镇。奖励：种子。"
+msgid "An old station off the route. Wake it for Seeds."
+msgstr "航线之外的一座旧清理站。唤醒它可以得到种子。"
 
 #: data/planets.json:verdance.hubs[lake_light].name
 msgid "Lake Light"
@@ -17077,6 +17077,39 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Everything sells for x%s now."
+#~ msgstr "现在所有东西的售价 x%s。"
+
+#~ msgid "Clean hexes here: %d / %d"
+#~ msgstr "清理这里的格子：%d / %d"
+
+#~ msgid "The rocket can keep %d bases going. Upgrade the rocket at the workbench."
+#~ msgstr "火箭最多能照看 %d 个基地。去工作台升级火箭。"
+
+#~ msgid "%s is awake. %s restored."
+#~ msgstr "%s 醒来了。%s 已修复。"
+
+#~ msgid "The rocket's seed stock. A new seed type."
+#~ msgstr "火箭要带的种子储备。一种新种子。"
+
+#~ msgid "Hull plates for the rocket."
+#~ msgstr "火箭用的船体板。"
+
+#~ msgid "The star chart: where the rocket can fly."
+#~ msgstr "星图：火箭能飞往哪里。"
+
+#~ msgid "A power cell for the rocket. A new look for Lumi."
+#~ msgstr "火箭用的能量电池。Lumi 的新外观。"
+
+#~ msgid "An extra town. A reward of Parts."
+#~ msgstr "额外的城镇。奖励：零件。"
+
+#~ msgid "An extra town. A reward of Cubes."
+#~ msgstr "额外的城镇。奖励：方块。"
+
+#~ msgid "An extra town. A reward of Seeds."
+#~ msgstr "额外的城镇。奖励：种子。"
 
 #~ msgid "Rocket hop: %.1f km"
 #~ msgstr "火箭跳跃：%.1f 公里"
