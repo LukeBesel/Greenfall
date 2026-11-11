@@ -34,6 +34,23 @@ The round world is the game, and the work is on its first planet, Verdance. The 
 - **Other planets** on the globe (Ochre, Rime, Anvil, Tidewell) are out of focus: Haul Bugs find no path there, and the Ochre finale camera is blocked.
 - **Polish (item 56):** the v5 wave was still running when this was written (v5play: bugs from play-testing; v5look: light, sky, hinterland; v5load: loader, perf, saves). Add their results here.
 
+## Update: yard machines and hub landmarks on the art kit (wt/v6yard, Nov 11)
+- **Picture signs.** Every yard machine carries a round sign with one pictogram and no words
+  (spanner, arrow into a bin, pressed cube, belt, sprout, mast with waves, robot head), so a small
+  child can tell what it does. Look and size: `data/machine_art.json`.
+- **Auto-baler and belt drive rebuilt** as kit models (`systems/camp/machine_art.gd`): the baler
+  is a press head over a cube-sized chamber with a wide yellow hopper and a roller ramp; the belt
+  drive has a fat finned motor with a belt guard. Far fewer draw calls than before.
+- **Six hub landmarks rebuilt** (`planet/sites/hub_landmarks.gd`, `data/landmarks.json`): water
+  tower, windpump with a seed vault, gantry crane lifting hull plates, signal mast, big wheel with
+  gondolas, tall stack with fuel tanks. They follow the hub's level: broken and dark while the hub
+  sleeps, lit and turning once it wakes, restored from level 3. Each has the same wake console.
+- **Signal tower** legs and braces are chunkier. **Pod:** a repair cart, work lamp and cones stand by it
+  while it is being mended. **Trash bin, workbench, composter, fabricator:** sign added, shape kept.
+- Numbers: `tools/machine_stats.tscn`; budgets in docs/PERFORMANCE.md; knobs in docs/ADJUSTING.md.
+- Open: see the hand-off notes for which pictures were and were not rendered. `old_bus` and
+  `lighthouse` (extra hubs) still use the old thin models. The recycler is still the old kitified model.
+
 ## Milestones (history, from the flat-world era)
 - [x] M0 Setup, M1 Slice (city district, Aurora/Patch, baling, tutorial, lens view)
 - [x] M2 Planet layer: 40k-hex planet, hand-held survey hologram (M), districts per base, rocket travel. Seamless sphere walking deferred (see DECISIONS).

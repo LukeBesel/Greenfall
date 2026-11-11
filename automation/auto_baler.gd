@@ -332,67 +332,18 @@ func held_dicts() -> Array:
 # --- Construction -------------------------------------------------------------------
 
 func _build() -> void:
-	var blue: ShaderMaterial = Mats.worn_paint(Color(0.2, 0.36, 0.6), 0.8, 0.45, 71.0, 0.55)
-	var yellow: ShaderMaterial = Mats.worn_paint(Color(0.95, 0.7, 0.14), 0.75, 0.45, 72.0, 0.5)
-	var dark: StandardMaterial3D = Mats.metal("dark_steel")
-	var chrome: StandardMaterial3D = Mats.metal("chrome")
+	# [v6yard] The model is MachineArt's kit press (systems/camp/machine_art.gd): one body mesh, the
+	# platen and the gate on their own nodes. Colours and the sign: data/machine_art.json.
 	var hw: float = CHAMBER.x * 0.5
 	var hd: float = CHAMBER.z * 0.5
-	# Skid, chamber floor, columns, crosshead, back wall.
-	var frame: Array = []
-	frame.append(ProcMesh.part(ProcMesh.box(Vector3(2.3, 0.14, 2.0)), ProcMesh.xf(Vector3(0, 0.07, -0.15))))
-	frame.append(ProcMesh.part(ProcMesh.box(Vector3(CHAMBER.x + 0.1, FLOOR_Y - 0.14, CHAMBER.z + 0.1)), ProcMesh.xf(Vector3(0, 0.14 + (FLOOR_Y - 0.14) * 0.5, 0))))
-	for s: float in [-1.0, 1.0]:
-		frame.append(ProcMesh.part(ProcMesh.box(Vector3(0.24, 2.4, CHAMBER.z + 0.24)), ProcMesh.xf(Vector3(s * (hw + 0.12), 1.34, 0))))
-	frame.append(ProcMesh.part(ProcMesh.box(Vector3(CHAMBER.x + 0.6, 0.36, CHAMBER.z + 0.3)), ProcMesh.xf(Vector3(0, 2.6, 0))))
-	frame.append(ProcMesh.part(ProcMesh.box(Vector3(CHAMBER.x, 1.4, 0.08)), ProcMesh.xf(Vector3(0, FLOOR_Y + 0.7, -hd - 0.04))))
-	var fm := MeshInstance3D.new()
-	fm.mesh = ProcMesh.merge(frame)
-	fm.material_override = blue
-	add_child(fm)
-	# Infeed chute at the back: a sloped steel hopper into the top of the chamber.
-	var chute: Array = []
-	chute.append(ProcMesh.part(ProcMesh.box(Vector3(CHAMBER.x, 0.05, 0.9)), ProcMesh.xf(Vector3(0, 2.0, -0.95), Vector3(-35, 0, 0))))
-	for s2: float in [-1.0, 1.0]:
-		chute.append(ProcMesh.part(ProcMesh.box(Vector3(0.05, 0.45, 0.95)), ProcMesh.xf(Vector3(s2 * hw, 2.15, -0.95), Vector3(-35, 0, 0))))
-	var chm := MeshInstance3D.new()
-	chm.mesh = ProcMesh.merge(chute)
-	chm.material_override = yellow
-	add_child(chm)
-	# Twin hydraulic cylinders on the crosshead, with hoses down to the power pack.
-	var cyl: Array = []
-	for s3: float in [-1.0, 1.0]:
-		cyl.append(ProcMesh.part(ProcMesh.cyl(0.11, 0.11, 1.15, 16), ProcMesh.xf(Vector3(s3 * 0.33, 3.35, 0))))
-		cyl.append(ProcMesh.part(ProcMesh.cyl(0.14, 0.14, 0.08, 16), ProcMesh.xf(Vector3(s3 * 0.33, 2.82, 0))))
-		cyl.append(ProcMesh.part(ProcMesh.cyl(0.14, 0.14, 0.08, 16), ProcMesh.xf(Vector3(s3 * 0.33, 3.9, 0))))
-	var cm := MeshInstance3D.new()
-	cm.mesh = ProcMesh.merge(cyl)
-	cm.material_override = dark
-	add_child(cm)
-	var hose: Array = []
-	for s4: float in [-1.0, 1.0]:
-		hose.append(ProcMesh.part(ProcMesh.cyl(0.025, 0.025, 2.4, 8), ProcMesh.xf(Vector3(0.95 + s4 * 0.04, 2.0, -0.15 + s4 * 0.12), Vector3(0, 0, -10))))
-		hose.append(ProcMesh.part(ProcMesh.cyl(0.025, 0.025, 0.6, 8), ProcMesh.xf(Vector3(0.62, 3.75, s4 * 0.12), Vector3(0, 0, 90))))
-	var hm := MeshInstance3D.new()
-	hm.mesh = ProcMesh.merge(hose)
-	hm.material_override = Mats.rubber()
-	add_child(hm)
-	# Platen with chrome rods that slide up inside the cylinders.
+	var body: MeshInstance3D = MachineArt.baler_body().mi(0.15, "Body")
+	add_child(body)
+	YardArt.set_powered(body, true)
 	_platen = Node3D.new()
+	_platen.name = "Platen"
 	_platen.position.y = PLATEN_TOP
 	add_child(_platen)
-	var pl := MeshInstance3D.new()
-	pl.mesh = ProcMesh.box(Vector3(CHAMBER.x - 0.06, 0.14, CHAMBER.z - 0.06))
-	pl.material_override = yellow
-	pl.position.y = 0.07
-	_platen.add_child(pl)
-	var rods: Array = []
-	for s5: float in [-1.0, 1.0]:
-		rods.append(ProcMesh.part(ProcMesh.cyl(0.05, 0.05, 1.65, 12), ProcMesh.xf(Vector3(s5 * 0.33, 0.95, 0))))
-	var rm := MeshInstance3D.new()
-	rm.mesh = ProcMesh.merge(rods)
-	rm.material_override = chrome
-	_platen.add_child(rm)
+	_platen.add_child(MachineArt.baler_platen().mi(0.15, "Head"))
 	# Chamber contents: loose junk waiting to be pressed.
 	_mound = MeshInstance3D.new()
 	_mound.mesh = FieldView._mound_mesh()
@@ -400,72 +351,18 @@ func _build() -> void:
 	_mound.position = Vector3(0, FLOOR_Y, 0)
 	_mound.visible = false
 	add_child(_mound)
-	# Front safety gate: a barred steel grille that drops while pressing.
+	# Front safety gate: a barred grille that drops while pressing.
 	_gate = Node3D.new()
+	_gate.name = "Gate"
 	_gate.position = Vector3(0, 1.95, hd + 0.05)
 	add_child(_gate)
-	var bars: Array = []
-	for i: int in 7:
-		bars.append(ProcMesh.part(ProcMesh.box(Vector3(0.035, 1.5, 0.035)), ProcMesh.xf(Vector3(-hw + 0.08 + i * (CHAMBER.x - 0.16) / 6.0, FLOOR_Y + 0.8, 0))))
-	for y: float in [FLOOR_Y + 0.08, FLOOR_Y + 0.8, FLOOR_Y + 1.52]:
-		bars.append(ProcMesh.part(ProcMesh.box(Vector3(CHAMBER.x, 0.06, 0.05)), ProcMesh.xf(Vector3(0, y, 0))))
-	var gm := MeshInstance3D.new()
-	gm.mesh = ProcMesh.merge(bars)
-	gm.material_override = dark
-	_gate.add_child(gm)
-	# Output roller ramp.
-	var ramp_len: float = 1.8
-	var ramp := Node3D.new()
-	ramp.position = Vector3(0, (FLOOR_Y + 0.14) * 0.5, hd + ramp_len * 0.5)
-	ramp.rotation.x = atan2(FLOOR_Y - 0.14, ramp_len)
-	add_child(ramp)
-	var rails: Array = []
-	for s6: float in [-1.0, 1.0]:
-		rails.append(ProcMesh.part(ProcMesh.box(Vector3(0.05, 0.14, ramp_len)), ProcMesh.xf(Vector3(s6 * 0.5, -0.03, 0))))
-		rails.append(ProcMesh.part(ProcMesh.box(Vector3(0.06, (FLOOR_Y + 0.14) * 0.5, 0.06)), ProcMesh.xf(Vector3(s6 * 0.5, -0.1, ramp_len * 0.4))))
-	var rlm := MeshInstance3D.new()
-	rlm.mesh = ProcMesh.merge(rails)
-	rlm.material_override = yellow
-	ramp.add_child(rlm)
-	for i2: int in 9:
-		var piv := Node3D.new()
-		piv.position = Vector3(0, 0.0, -ramp_len * 0.5 + 0.1 + i2 * (ramp_len - 0.2) / 8.0)
-		ramp.add_child(piv)
-		var r := MeshInstance3D.new()
-		r.mesh = ProcMesh.cyl(0.04, 0.04, 0.95, 12)
-		r.material_override = Mats.metal("steel")
-		r.rotation_degrees = Vector3(0, 0, 90)
-		piv.add_child(r)
-		_ramp_rollers.append(piv)
-	# Hydraulic power pack on the side: tank, motor, pressure gauge.
-	var pack := MeshInstance3D.new()
-	pack.mesh = ProcMesh.rounded_box(Vector3(0.5, 0.6, 0.8), 0.04, 2)
-	pack.material_override = Mats.worn_paint(Color(0.88, 0.86, 0.8), 0.85, 0.35, 73.0, 0.5)
-	pack.position = Vector3(hw + 0.62, 0.44, -0.15)
-	add_child(pack)
-	var mot := MeshInstance3D.new()
-	mot.mesh = ProcMesh.cyl(0.14, 0.14, 0.45, 16)
-	mot.material_override = blue
-	mot.rotation_degrees = Vector3(90, 0, 0)
-	mot.position = Vector3(hw + 0.62, 0.88, -0.15)
-	add_child(mot)
-	var gauge_face := MeshInstance3D.new()
-	gauge_face.mesh = ProcMesh.cyl(0.08, 0.08, 0.03, 16)
-	gauge_face.material_override = Mats.worn_paint(Color(0.95, 0.94, 0.9), 0.9, 0.2, 74.0, 0.2)
-	gauge_face.rotation_degrees = Vector3(90, 0, 0)
-	gauge_face.position = Vector3(hw + 0.62, 0.55, 0.26)
-	add_child(gauge_face)
-	# Fill gauge on the right column and a status lamp on the crosshead.
-	var slot := MeshInstance3D.new()
-	slot.mesh = ProcMesh.box(Vector3(0.08, 1.6, 0.02))
-	slot.material_override = Mats.rubber(Color(0.03, 0.03, 0.03))
-	slot.position = Vector3(hw + 0.12, 1.3, hd + 0.125)
-	add_child(slot)
+	_gate.add_child(MachineArt.baler_gate().mi(0.15, "Bars"))
+	# Fill gauge on the right column and a status beacon on the crosshead (both change colour live).
 	_gauge = Node3D.new()
-	_gauge.position = Vector3(hw + 0.12, 0.52, hd + 0.135)
+	_gauge.position = Vector3(hw + 0.14, 0.52, hd + 0.135)
 	add_child(_gauge)
 	var gbar := MeshInstance3D.new()
-	gbar.mesh = ProcMesh.box(Vector3(0.05, 1.56, 0.02))
+	gbar.mesh = ProcMesh.box(Vector3(0.06, 1.56, 0.02))
 	gbar.material_override = Mats.lamp(Color(0.35, 0.9, 1.0), 2.0)
 	gbar.position.y = 0.78
 	_gauge.add_child(gbar)
@@ -473,25 +370,8 @@ func _build() -> void:
 	var lamp := MeshInstance3D.new()
 	lamp.mesh = ProcMesh.cyl(0.07, 0.09, 0.16, 12)
 	lamp.material_override = _lamp_mat
-	lamp.position = Vector3(-hw - 0.15, 2.86, 0.2)
+	lamp.position = Vector3(-hw - 0.15, 2.94, 0.2)
 	add_child(lamp)
-	var label := Mats.stencil(tr("AUTO-BALER"), 96, Color(0.95, 0.93, 0.85, 0.92))
-	label.position = Vector3(0, 2.6, hd + 0.155)
-	add_child(label)
-	var warn := Mats.stencil(tr("KEEP CLEAR · 40 T"), 44, Color(0.95, 0.8, 0.3, 0.9))
-	warn.position = Vector3(-hw - 0.12, 1.4, hd + 0.125)
-	warn.rotation_degrees = Vector3(0, 0, 90)
-	add_child(warn)
-	# Hazard chevrons on the skid front.
-	for i3: int in 6:
-		var st_pos := Vector3(-1.15 + 0.09 + i3 * 0.19, 0.07, 0.86)
-		if absf(st_pos.x) < 0.55:
-			continue  # [health] skip before creating: a skipped MeshInstance3D leaked
-		var st := MeshInstance3D.new()
-		st.mesh = ProcMesh.box(Vector3(0.18, 0.1, 0.012))
-		st.material_override = yellow if i3 % 2 == 0 else Mats.worn_paint(Color(0.07, 0.07, 0.07), 0.9, 0.3, 75.0, 0.5)
-		st.position = st_pos
-		add_child(st)
 	# Collision: columns, back, crosshead and the power pack (chamber and ramp stay open).
 	var sb := StaticBody3D.new()
 	add_child(sb)
