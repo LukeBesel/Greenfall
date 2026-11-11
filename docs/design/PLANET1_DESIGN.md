@@ -133,12 +133,14 @@ Events: `planet_restoration_changed(value)`, `launch_ready(id)`, `planet_restore
 
 ## 10. Goals (table `goals`)
 
-Three tiers are always active, each generated from state, not from a fixed chain:
-- **Now** (under 3 min): finish this hex, fill this bale, afford the next fit.
-- **District** (10-20 min): the district's next stage, its source step, the next mastery level.
-- **Planet** (hours): districts restored out of six.
+Three tiers are always active, one goal each, listed in the planet's `goals` table (built in task M3-10; `story/goals.gd`):
+- **Now** (short, minutes): the next concrete thing. Authored firsts (a first bale, a first Surge, a city's tool fitted, a new kind learnt by hand, the Locker), then repeating jobs that count side by side and grow ("Clean 2 more hexes", "Press 6 more bales", "Release a Surge"); the row shows the one nearest done.
+- **City** (medium, 10-20 min): a mastery level, a city's next stage, its source job, a crew size.
+- **Planet** (long, hours): the first city restored, three of six, the launch point, the Sprout set, then the share of the whole planet.
 
-Authored one-off goals (story beats, firsts) slot into the "now" tier when their trigger fires. The existing goal list is cut down to those.
+A tier's active goal is its first goal in table order that is on offer (`when`, `after_flag`) and not done; a repeating goal fills the tier when no authored goal is on offer, so a tier never stands empty. An authored short goal that holds the row for 3 minutes with no progress steps aside (it still pays). Every goal pays the moment its condition holds, one per beat. Every goal has a guidance target; the beam follows the story card's step unless the player asks it to follow a goal.
+
+The story card stays the one next thing: story steps, then a city's source job, and otherwise the active Now goal. The three goals show beside it as one compact readout.
 
 ## 11. What is cut or parked for Planet 1
 

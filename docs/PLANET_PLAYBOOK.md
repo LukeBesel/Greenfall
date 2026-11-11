@@ -229,6 +229,21 @@ The rules are `core/surge_rules.gd` (plain maths); the state is `systems/surge.g
 - Rule of thumb: put the output on both the pulse rate and the pulse size. Rate alone is rounded to whole frames at high upgrade levels; size alone does not feel faster.
 - Rule of thumb: the first Surge should come after the first hex and before the first robot, so it is learnt as Lumi's own move.
 
+### Goals in tiers (M3-10)
+The rules are `story/goals.gd`; what a goal can count is `story/goal_measures.gd`; where it points is `story/goal_guide.gd`; the HUD rows are `ui/goal_readout.gd`. Content: the planet's `goals` table. Measured values are in `docs/reviews/M3-10_GOALS.md`.
+
+- **Tiers are the planet's own** (`tiers[]`: id and HUD label, in row order). One goal of each tier is active. The first tier is the short one: the story card carries its active goal once the story steps are done.
+- **Active goal of a tier** = its first goal in table order that is on offer and not done. On offer = `after_flag` is set and `when` {type, key, target} holds. A goal with `after_flag` goes before the rest of its tier.
+- **Every authored goal pays the moment its condition holds**, on show or not, one per beat (0.7 s), so nothing waits and nothing bursts.
+- **Repeating goals** (`repeat`, `repeat_grow`, `repeat_max`) fill a tier when no authored goal is on offer. Amount asked = min(`repeat` + `repeat_grow` x times finished, `repeat_max`), counted from the moment the goal starts. Once a tier has fallen back on them they all count side by side and pay as they finish; the row shows the one nearest done (another takes the row only when it is 25% further along). A tier with a repeating goal that has no `when` can never stand empty.
+- **Patience** (`tiers[].patience_s`): an authored goal that holds its row that long with no progress steps aside for good and still pays when finished. Give it to the short tier only, so an optional build or a skill goal never blocks the row.
+- **Order a city's goals by when they happen, not by subject.** A city's last stage belongs after the next city's third stage: the crew finishes it while the player has moved on, and a goal that cannot move blocks its row.
+- **Gate with `when`, not with order.** A goal for a second city's tool waits on `cities_open 2`; a planting goal waits on the seed flag. An ungated goal that cannot be done yet sits on the row and reads as a dead end.
+- Rule of thumb: the short tier should turn over every 1 to 3 minutes, the medium every 5 to 15. If the bot's gap table shows a longer gap, add a goal there or lower a target; do not raise a reward.
+- Rule of thumb: do not repeat the story card. A short goal is a smaller step of what the card asks (a first bale while the card says "Sell 3 bales") or a skill beside it (a perfect bale).
+- Rewards: the currency of the action, small (under 3 minutes of the first city's income), nothing for crew, rig, find and Locker goals.
+- **A city-stage goal's gauge fills with the city's share of the way to the next stage** (value = stage + share, held under the next whole stage), so a long goal such as "Restore Old Town" moves as hexes come clean. The count still reads in whole stages.
+
 ### The crew and the robot chain (M3-20)
 Every number is in the planet's robots table. The rules are `core/crew_rules.gd` (cap, prices) and `core/crew_chain.gd` (the ground, the Assembler's line); `tools/crew_sim` plays a whole planet on them. Measured values are in `docs/reviews/M3-20_CREW.md`.
 

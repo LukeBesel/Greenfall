@@ -131,8 +131,8 @@ msgid "Pause"
 msgstr "Pause"
 
 #: autoload/Settings.gd:21
-msgid "Show more goals"
-msgstr "Mehr Ziele zeigen"
+msgid "Follow the next goal"
+msgstr ""
 
 #: autoload/Settings.gd:22
 msgid "Zoom in"
@@ -501,7 +501,7 @@ msgstr "Die Crew hat weiter aufgeräumt. Die Stadt ist ein bisschen sauberer."
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Die Luftwäscher haben die ganze Zeit gefiltert. Die Luft ist ein bisschen klarer."
 
-#: core/pace.gd:150 story/objectives.gd:886
+#: core/pace.gd:150 story/objectives.gd:873
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "Zu schwer. Verbessere die Hebekraft an der Werkbank."
 
@@ -513,7 +513,7 @@ msgstr "Hier passt nichts. Drück [%s] für einen Ballen."
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "Noch keine Ballenpresse. Bring dein Brustfach zur Tonne."
 
-#: core/pace.gd:315 systems/events.gd:487 ui/goals_panel.gd:284
+#: core/pace.gd:315 systems/events.gd:487 ui/goals_panel.gd:125
 msgid "+%s cubes"
 msgstr "+%s Würfel"
 
@@ -1174,7 +1174,7 @@ msgstr "HEXFELD SAUBER!"
 msgid "Milestone: %d hexes clean!"
 msgstr "Meilenstein: %d Hexfelder sauber!"
 
-#: scenes/slice_orbit.gd:609 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:588
+#: scenes/slice_orbit.gd:609 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:589
 msgid "E   Fix the workbench"
 msgstr "E   Werkbank reparieren"
 
@@ -1747,59 +1747,59 @@ msgstr "<< LEDGER // INOFFIZIELL >>"
 msgid "LEDGER  WMS-07"
 msgstr "LEDGER  WMS-07"
 
-#: story/objectives.gd:207
-msgid "Needs %s. Dig up more Parts."
-msgstr "Braucht %s. Grab mehr Teile aus."
-
-#: story/objectives.gd:246
+#: story/objectives.gd:186
 msgid "Reward: %s"
 msgstr "Belohnung: %s"
 
-#: story/objectives.gd:436
+#: story/objectives.gd:249
+msgid "Needs %s. Dig up more Parts."
+msgstr "Braucht %s. Grab mehr Teile aus."
+
+#: story/objectives.gd:460
 msgid "Objective complete  ·  %s"
 msgstr "Ziel erreicht  ·  %s"
 
-#: story/objectives.gd:462
+#: story/objectives.gd:486
 msgid "Goal complete  ·  %s"
 msgstr "Ziel erreicht  ·  %s"
 
-#: story/objectives.gd:731
+#: story/objectives.gd:718
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "Ballenpresse eingebaut! Füll dein Brustfach, drück [%s] für einen Ballen und trag ihn zur Waage."
 
-#: story/objectives.gd:753 story/objectives.gd:874
+#: story/objectives.gd:740 story/objectives.gd:861
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Dein Brustfach ist voll. Drück [%s] für einen Ballen."
 
-#: story/objectives.gd:769
+#: story/objectives.gd:756
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "Dein Detektor hat in der Nähe ein vergrabenes Roboterteil entdeckt. Folge der Anzeige VERGRABENES TEIL; er piept, sobald du genau darüber stehst."
 
-#: story/objectives.gd:771
+#: story/objectives.gd:758
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "VERGRABENES TEIL: Geh darauf zu, bis der Wert am höchsten ist, dann grab es aus."
 
-#: story/objectives.gd:875
+#: story/objectives.gd:862
 msgid "Your chest is full. Bring it to the bin."
 msgstr "Dein Brustfach ist voll. Bring es zur Tonne."
 
-#: story/objectives.gd:882
+#: story/objectives.gd:869
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "Dein Brustfach ist voll. Ab nach Hause: Die Tonne steht unter der hohen Rauchsäule."
 
-#: story/objectives.gd:884
+#: story/objectives.gd:871
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "Trag deinen Ballen heim: Die Waage steht unter der hohen Rauchsäule."
 
-#: story/objectives.gd:884
+#: story/objectives.gd:871
 msgid "Carry your bale to the scale by the bin."
 msgstr "Trag deinen Ballen zur Waage bei der Tonne."
 
-#: story/objectives.gd:891
+#: story/objectives.gd:878
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "Ab nach Hause: Folge dem Strahl zur hohen Rauchsäule."
 
-#: story/objectives.gd:901
+#: story/objectives.gd:888
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Hier gibt es nichts aufzuheben. Geh zu mehr Müll."
 
@@ -2720,7 +2720,7 @@ msgstr "%s summt den Setzlingen etwas vor. Der Ruhestand steht ihm."
 msgid "%s points proudly at a new bud."
 msgstr "%s zeigt stolz auf eine neue Knospe."
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:620
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:621
 msgid "E   CD player: %s"
 msgstr "E   CD-Spieler: %s"
 
@@ -4058,15 +4058,19 @@ msgstr "   ·   VERALTET"
 msgid "Re-survey      %s cubes"
 msgstr "Neu vermessen      %s Würfel"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:481 ui/objective_card.gd:137
+#: ui/goal_readout.gd:135 ui/list_detail.gd:481 ui/objective_card.gd:137
 msgid "DONE"
 msgstr "FERTIG"
 
-#: ui/goals_panel.gd:257
+#: ui/goals_panel.gd:80
+msgid "Following  ·  %s"
+msgstr ""
+
+#: ui/goals_panel.gd:117
 msgid "Goal complete  ·  %s%s"
 msgstr "Ziel erreicht  ·  %s%s"
 
-#: ui/goals_panel.gd:284
+#: ui/goals_panel.gd:125
 msgid "+%s seeds"
 msgstr "+%s Samen"
 
@@ -9896,6 +9900,18 @@ msgstr "Nichts"
 msgid "Little Beanie"
 msgstr "Kleine Mütze"
 
+#: planets/verdance/data/goals.json:tiers[short].name
+msgid "NOW"
+msgstr ""
+
+#: planets/verdance/data/goals.json:tiers[medium].name
+msgid "CITY"
+msgstr ""
+
+#: planets/verdance/data/goals.json:tiers[long].name
+msgid "PLANET"
+msgstr ""
+
 #: planets/verdance/data/goals.json:goals[scoop_15].text
 msgid "Pick up 15 pieces of trash"
 msgstr "Heb 15 Stück Müll auf"
@@ -9908,569 +9924,481 @@ msgstr "Leere dein Brustfach in die Tonne"
 msgid "Buy an upgrade at the bench"
 msgstr "Kauf ein Upgrade an der Werkbank"
 
-#: planets/verdance/data/goals.json:goals[baler_1].text
-msgid "Install the Baler"
-msgstr "Baue die Ballenpresse ein"
+#: planets/verdance/data/goals.json:goals[parts_2].text
+msgid "Dig up 2 robot parts"
+msgstr "Grab 2 Roboterteile aus"
 
 #: planets/verdance/data/goals.json:goals[bale_1].text
-msgid "Make your first bale"
-msgstr "Press deinen ersten Ballen"
+msgid "Press your first bale"
+msgstr ""
 
 #: planets/verdance/data/goals.json:goals[cash_1].text
 msgid "Sell a bale at the scale"
 msgstr "Verkauf einen Ballen an der Waage"
 
-#: planets/verdance/data/goals.json:goals[lift_1].text
-msgid "Lift Strength level 1"
-msgstr "Hebekraft Stufe 1"
-
-#: planets/verdance/data/goals.json:goals[hex_1].text
-msgid "Clean your first hex"
-msgstr "Räum dein erstes Hexfeld"
-
 #: planets/verdance/data/goals.json:goals[perfect_1].text
-msgid "Make a perfect bale"
-msgstr "Press einen perfekten Ballen"
+msgid "Press a perfect bale"
+msgstr ""
 
 #: planets/verdance/data/goals.json:goals[upgrades_5].text
 msgid "Buy 5 upgrades"
 msgstr "Kauf 5 Upgrades"
 
-#: planets/verdance/data/goals.json:goals[cash_10].text
-msgid "Sell 10 bales"
-msgstr "Verkauf 10 Ballen"
-
-#: planets/verdance/data/goals.json:goals[compartment_3].text
-msgid "Chest Size level 3"
-msgstr "Brustfachgröße Stufe 3"
-
-#: planets/verdance/data/goals.json:goals[shards_1].text
-msgid "Find a memory shard"
-msgstr "Finde einen Erinnerungssplitter"
-
 #: planets/verdance/data/goals.json:goals[hex_3].text
 msgid "Clean 3 hexes"
 msgstr "Räum 3 Hexfelder"
 
-#: planets/verdance/data/goals.json:goals[parts_2].text
-msgid "Dig up 2 robot parts"
-msgstr "Grab 2 Roboterteile aus"
+#: planets/verdance/data/goals.json:goals[cash_10].text
+msgid "Sell 10 bales"
+msgstr "Verkauf 10 Ballen"
+
+#: planets/verdance/data/goals.json:goals[lift_1].text
+msgid "Buy Lift Strength"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[compartment_3].text
+msgid "Raise Chest Size to 3"
+msgstr ""
 
 #: planets/verdance/data/goals.json:goals[earn_1k].text
 msgid "Earn 1,000 cubes"
 msgstr "Verdiene 1.000 Würfel"
 
-#: planets/verdance/data/goals.json:goals[research_1].text planets/verdance/data/objectives.json:objectives[research1].text
-msgid "Finish a research project"
-msgstr "Schließ ein Forschungsprojekt ab"
-
-#: planets/verdance/data/goals.json:goals[hex_5].text
-msgid "Clean 5 hexes"
-msgstr "Räum 5 Hexfelder"
-
-#: planets/verdance/data/goals.json:goals[lift_2].text
-msgid "Lift Strength level 2"
-msgstr "Hebekraft Stufe 2"
-
 #: planets/verdance/data/goals.json:goals[upgrades_12].text
 msgid "Buy 12 upgrades"
 msgstr "Kauf 12 Upgrades"
 
-#: planets/verdance/data/goals.json:goals[earn_3k].text
-msgid "Earn 3,000 cubes"
-msgstr "Verdiene 3.000 Würfel"
+#: planets/verdance/data/goals.json:goals[lift_2].text
+msgid "Raise Lift Strength to 2"
+msgstr ""
 
-#: planets/verdance/data/goals.json:goals[hex_7].text
-msgid "Clear the street: clean 7 hexes"
-msgstr "Räum die Straße: säubere 7 Hexfelder"
+#: planets/verdance/data/goals.json:goals[surge_1].text
+msgid "Release your first Surge"
+msgstr ""
 
-#: planets/verdance/data/goals.json:goals[pet_cat].text
-msgid "Pet a stray cat"
-msgstr "Streichle eine streunende Katze"
-
-#: planets/verdance/data/goals.json:goals[research_4].text
-msgid "Finish 4 research projects"
-msgstr "Schließ 4 Forschungsprojekte ab"
-
-#: planets/verdance/data/goals.json:goals[upgrades_20].text
-msgid "Buy 20 upgrades"
-msgstr "Kauf 20 Upgrades"
-
-#: planets/verdance/data/goals.json:goals[hex_10].text planets/verdance/data/objectives.json:objectives[hex10].text data/radio.json:songs[verdance_sweep].hint
-msgid "Clean 10 hexes"
-msgstr "10 Hexfelder räumen"
-
-#: planets/verdance/data/goals.json:goals[base_2].text
-msgid "Upgrade the base to level 2"
-msgstr "Verbessere die Basis auf Stufe 2"
-
-#: planets/verdance/data/goals.json:goals[haulbug_1].text
-msgid "Build a Haul Bug"
-msgstr "Bau einen Haul Bug"
-
-#: planets/verdance/data/goals.json:goals[scoopie_1].text planets/verdance/data/objectives.json:objectives[scoopie].text
-msgid "Build a Scoopie"
-msgstr "Bau einen Scoopie"
-
-#: planets/verdance/data/goals.json:goals[zone_1].text
-msgid "Give a robot a work zone"
-msgstr "Gib einem Roboter eine Arbeitszone"
-
-#: planets/verdance/data/goals.json:goals[bales_20].text
-msgid "Robots press 20 bales"
-msgstr "Roboter pressen 20 Ballen"
-
-#: planets/verdance/data/goals.json:goals[scoopie_2].text
-msgid "Run 2 Scoopies"
-msgstr "Lass 2 Scoopies laufen"
-
-#: planets/verdance/data/goals.json:goals[hex_12].text
-msgid "Clean 12 hexes"
-msgstr "Räum 12 Hexfelder"
-
-#: planets/verdance/data/goals.json:goals[upgrades_25].text
-msgid "Buy 25 upgrades"
-msgstr "Kauf 25 Upgrades"
-
-#: planets/verdance/data/goals.json:goals[research_6].text
-msgid "Finish 6 research projects"
-msgstr "Schließ 6 Forschungsprojekte ab"
-
-#: planets/verdance/data/goals.json:goals[robots_4].text
-msgid "Build 4 robots"
-msgstr "Bau 4 Roboter"
-
-#: planets/verdance/data/goals.json:goals[hex_15].text
-msgid "Clean 15 hexes"
-msgstr "Räum 15 Hexfelder"
-
-#: planets/verdance/data/goals.json:goals[seeds].text
-msgid "Find the seed tin"
-msgstr "Finde die Samendose"
-
-#: planets/verdance/data/goals.json:goals[plant_5].text
-msgid "Plant the Maker seed"
-msgstr "Pflanze den Erbauer-Samen"
+#: planets/verdance/data/goals.json:goals[zone_6].text
+msgid "Zone 6 hexes for the crew"
+msgstr ""
 
 #: planets/verdance/data/goals.json:goals[hexlv_2].text
 msgid "Get a hex to Planted"
 msgstr "Bring ein Hexfeld auf Bepflanzt"
 
-#: planets/verdance/data/goals.json:goals[earn_10k].text
-msgid "Earn 10,000 cubes"
-msgstr "Verdiene 10.000 Würfel"
-
 #: planets/verdance/data/goals.json:goals[bloom_5].text
 msgid "Grow 5 flowers to bloom"
 msgstr "Lass 5 Blumen erblühen"
-
-#: planets/verdance/data/goals.json:goals[shards_2].text
-msgid "Read 2 memory shards"
-msgstr "Lies 2 Erinnerungssplitter"
-
-#: planets/verdance/data/goals.json:goals[zone_6].text
-msgid "Zone 6 hexes for your crews"
-msgstr "Weise deinen Crews 6 Hexfelder zu"
-
-#: planets/verdance/data/goals.json:goals[hex_17].text
-msgid "Clean 17 hexes"
-msgstr "Räum 17 Hexfelder"
-
-#: planets/verdance/data/goals.json:goals[research_8].text
-msgid "Finish 8 research projects"
-msgstr "Schließ 8 Forschungsprojekte ab"
-
-#: planets/verdance/data/goals.json:goals[bales_100].text
-msgid "Robots press 100 bales"
-msgstr "Roboter pressen 100 Ballen"
-
-#: planets/verdance/data/goals.json:goals[recycle_5].text
-msgid "Recycle 5 bales"
-msgstr "Recycle 5 Ballen"
 
 #: planets/verdance/data/goals.json:goals[hexlv_3].text
 msgid "Get a hex to Growing"
 msgstr "Bring ein Hexfeld auf Wachsend"
 
-#: planets/verdance/data/goals.json:goals[hex_20].text planets/verdance/data/objectives.json:objectives[hex20].text
-msgid "Clean 20 hexes"
-msgstr "Räum 20 Hexfelder"
-
-#: planets/verdance/data/goals.json:goals[skimmer_1].text
-msgid "Build a Skimmer for the lake"
-msgstr "Bau einen Skimmer für den See"
-
-#: planets/verdance/data/goals.json:goals[research_12].text
-msgid "Finish 12 research projects"
-msgstr "Schließ 12 Forschungsprojekte ab"
-
-#: planets/verdance/data/goals.json:goals[hex_25].text
-msgid "Clean 25 hexes"
-msgstr "Räum 25 Hexfelder"
-
-#: planets/verdance/data/goals.json:goals[earn_50k].text
-msgid "Earn 50,000 cubes"
-msgstr "Verdiene 50.000 Würfel"
-
-#: planets/verdance/data/goals.json:goals[hex_28].text
-msgid "Clean 28 hexes"
-msgstr "Räum 28 Hexfelder"
-
-#: planets/verdance/data/goals.json:goals[upgrades_40].text
-msgid "Buy 40 upgrades"
-msgstr "Kauf 40 Upgrades"
-
-#: planets/verdance/data/goals.json:goals[seedling_1].text
-msgid "Build a Seedling planter"
-msgstr "Bau einen Seedling-Pflanzer"
-
-#: planets/verdance/data/goals.json:goals[hex_30].text
-msgid "Clean 30 hexes (lake too)"
-msgstr "Räum 30 Hexfelder (auch im See)"
-
-#: planets/verdance/data/goals.json:goals[base_3].text
-msgid "Upgrade the base to level 3"
-msgstr "Verbessere die Basis auf Stufe 3"
-
-#: planets/verdance/data/goals.json:goals[extras_radio].text
-msgid "Pick a song on the base radio"
-msgstr "Wähl ein Lied im Basisradio"
-
-#: planets/verdance/data/goals.json:goals[builder_1].text
-msgid "Style a robot in the Locker"
-msgstr "Gestalte einen Roboter im Spind"
+#: planets/verdance/data/goals.json:goals[research_4].text
+msgid "Finish 4 research projects"
+msgstr "Schließ 4 Forschungsprojekte ab"
 
 #: planets/verdance/data/goals.json:goals[plant_25].text
 msgid "Plant 25 seeds"
 msgstr "Pflanz 25 Samen"
 
-#: planets/verdance/data/goals.json:goals[drip_1].text
-msgid "Build a Drip watering robot"
-msgstr "Bau einen Drip-Gießroboter"
-
-#: planets/verdance/data/goals.json:goals[pollinator].text
-msgid "Research Pollinator Survey"
-msgstr "Erforsche Bestäuberzählung"
-
-#: planets/verdance/data/goals.json:goals[bloom_25].text
-msgid "Grow 25 flowers to bloom"
-msgstr "Lass 25 Blumen erblühen"
-
-#: planets/verdance/data/goals.json:goals[tank_1].text
-msgid "Place a Water Tank"
-msgstr "Stell einen Wassertank auf"
-
-#: planets/verdance/data/goals.json:goals[plant_60].text
-msgid "Plant 60 seeds"
-msgstr "Pflanz 60 Samen"
-
-#: planets/verdance/data/goals.json:goals[drip_2].text
-msgid "Run 2 Drip robots"
-msgstr "Lass 2 Drip-Roboter laufen"
+#: planets/verdance/data/goals.json:goals[seedling_1].text
+msgid "Build a Seedling planter"
+msgstr "Bau einen Seedling-Pflanzer"
 
 #: planets/verdance/data/goals.json:goals[hexlv_4].text
 msgid "Get a hex to Sustained"
 msgstr "Bring ein Hexfeld auf Stabil"
 
-#: planets/verdance/data/goals.json:goals[drip_4].text
-msgid "Run 4 Drip robots"
-msgstr "Lass 4 Drip-Roboter laufen"
-
-#: planets/verdance/data/goals.json:goals[hexlv_4x3].text
-msgid "Get 3 hexes to Sustained"
-msgstr "Bring 3 Hexfelder auf Stabil"
-
-#: planets/verdance/data/goals.json:goals[spot_deer].text
-msgid "Spot a deer"
-msgstr "Entdecke ein Reh"
-
 #: planets/verdance/data/goals.json:goals[hexlv_5].text
 msgid "Get a hex to Thriving"
 msgstr "Bring ein Hexfeld auf Blühend"
 
-#: planets/verdance/data/goals.json:goals[hexlv_4x5].text
-msgid "Get 5 hexes to Sustained"
-msgstr "Bring 5 Hexfelder auf Stabil"
-
-#: planets/verdance/data/goals.json:goals[plant_100].text
-msgid "Plant 100 seeds"
-msgstr "Pflanz 100 Samen"
-
-#: planets/verdance/data/goals.json:goals[robots_15].text
-msgid "Build 15 robots"
-msgstr "Bau 15 Roboter"
-
-#: planets/verdance/data/goals.json:goals[hexlv_5x3].text
-msgid "Get 3 hexes to Thriving"
-msgstr "Bring 3 Hexfelder auf Blühend"
-
-#: planets/verdance/data/goals.json:goals[hexlv_4x8].text
-msgid "Get 8 hexes to Sustained"
-msgstr "Bring 8 Hexfelder auf Stabil"
-
-#: planets/verdance/data/goals.json:goals[earn_75k].text
-msgid "Earn 75,000 cubes"
-msgstr "Verdiene 75.000 Würfel"
-
-#: planets/verdance/data/goals.json:goals[bloom_300].text
-msgid "Grow 300 flowers to bloom"
-msgstr "Lass 300 Blumen erblühen"
-
-#: planets/verdance/data/goals.json:goals[hexlv_5x8].text
-msgid "Get 8 hexes to Thriving"
-msgstr "Bring 8 Hexfelder auf Blühend"
-
-#: planets/verdance/data/goals.json:goals[hexlv_4x10].text
-msgid "Get 10 hexes to Sustained"
-msgstr "Bring 10 Hexfelder auf Stabil"
-
-#: planets/verdance/data/goals.json:goals[earn_100k].text
-msgid "Earn 100,000 cubes"
-msgstr "Verdiene 100.000 Würfel"
-
-#: planets/verdance/data/goals.json:goals[hexlv_4x15].text
-msgid "Get 15 hexes to Sustained"
-msgstr "Bring 15 Hexfelder auf Stabil"
-
-#: planets/verdance/data/goals.json:goals[hexlv_5x15].text
-msgid "Get 15 hexes to Thriving"
-msgstr "Bring 15 Hexfelder auf Blühend"
-
-#: planets/verdance/data/goals.json:goals[hexlv_4x20].text
-msgid "Get 20 hexes to Sustained"
-msgstr "Bring 20 Hexfelder auf Stabil"
-
-#: planets/verdance/data/goals.json:goals[base_4].text
-msgid "Upgrade the base to level 4"
-msgstr "Verbessere die Basis auf Stufe 4"
-
-#: planets/verdance/data/goals.json:goals[bloom_500].text
-msgid "Grow 500 flowers to bloom"
-msgstr "Lass 500 Blumen erblühen"
-
-#: planets/verdance/data/goals.json:goals[hexlv_5x20].text
-msgid "Get 20 hexes to Thriving"
-msgstr "Bring 20 Hexfelder auf Blühend"
-
-#: planets/verdance/data/goals.json:goals[air_1k].text
-msgid "Filter 1,000 m3 of air"
-msgstr "Filtere 1.000 m3 Luft"
-
-#: planets/verdance/data/goals.json:goals[hexlv_5x25].text
-msgid "Get 25 hexes to Thriving"
-msgstr "Bring 25 Hexfelder auf Blühend"
-
-#: planets/verdance/data/goals.json:goals[base_5].text
-msgid "Upgrade the base to level 5"
-msgstr "Verbessere die Basis auf Stufe 5"
-
-#: planets/verdance/data/goals.json:goals[extras_retire].text
-msgid "Retire a robot to the nursery"
-msgstr "Schick einen Roboter in die Gärtnerei"
-
-#: planets/verdance/data/goals.json:goals[rocket].text
-msgid "Launch the rocket onward"
-msgstr "Starte die Rakete weiter"
-
-#: planets/verdance/data/goals.json:goals[builder_full].text
-msgid "Fully custom-build a robot"
-msgstr "Bau einen Roboter komplett nach Maß"
-
-#: planets/verdance/data/goals.json:goals[research_20].text
-msgid "Finish 20 research projects"
-msgstr "Schließ 20 Forschungsprojekte ab"
-
-#: planets/verdance/data/goals.json:goals[multibot_1].text
-msgid "Build a Multibot"
-msgstr "Bau einen Multibot"
-
-#: planets/verdance/data/goals.json:goals[tier_1].text
-msgid "Upgrade a robot type to Mk II"
-msgstr "Verbessere einen Robotertyp auf Mk II"
-
-#: planets/verdance/data/goals.json:goals[earn_150k].text
-msgid "Earn 150,000 cubes"
-msgstr "Verdiene 150.000 Würfel"
-
-#: planets/verdance/data/goals.json:goals[hex_50].text
-msgid "Clean 50 hexes"
-msgstr "Räum 50 Hexfelder"
-
-#: planets/verdance/data/goals.json:goals[bloom_800].text
-msgid "Grow 800 flowers to bloom"
-msgstr "Lass 800 Blumen erblühen"
-
-#: planets/verdance/data/goals.json:goals[restored_40].text
-msgid "Fully restore 40 hexes"
-msgstr "Stell 40 Hexfelder vollständig wieder her"
-
-#: planets/verdance/data/goals.json:goals[base5_2].text
-msgid "Get a second base to level 5"
-msgstr "Bring eine zweite Basis auf Stufe 5"
-
-#: planets/verdance/data/goals.json:goals[research_dunes].text
-msgid "Research Dune Charts"
-msgstr "Erforsche Dünenkarten"
-
-#: planets/verdance/data/goals.json:goals[visit_dust].text
-msgid "Fly to the Dust Flats"
-msgstr "Flieg zur Staubebene"
-
-#: planets/verdance/data/goals.json:goals[research_24].text
-msgid "Finish 24 research projects"
-msgstr "Schließ 24 Forschungsprojekte ab"
-
-#: planets/verdance/data/goals.json:goals[dust_base3].text
-msgid "Dust Flats base to level 3"
-msgstr "Staubebenen-Basis auf Stufe 3"
-
-#: planets/verdance/data/goals.json:goals[dust_grow15].text planets/verdance/data/goals.json:goals[frozen_grow15].text planets/verdance/data/goals.json:goals[sunken_grow15].text
-msgid "Get 15 hexes Growing here"
-msgstr "Bring hier 15 Hexfelder auf Wachsend"
-
-#: planets/verdance/data/goals.json:goals[hex_80].text
-msgid "Clean 80 hexes"
-msgstr "Räum 80 Hexfelder"
-
-#: planets/verdance/data/goals.json:goals[dust_base4].text
-msgid "Dust Flats base to level 4"
-msgstr "Staubebenen-Basis auf Stufe 4"
-
-#: planets/verdance/data/goals.json:goals[hex_100].text
-msgid "Clean 100 hexes"
-msgstr "Räum 100 Hexfelder"
-
-#: planets/verdance/data/goals.json:goals[research_lance].text
-msgid "Research Thermal Lance"
-msgstr "Erforsche die Thermolanze"
-
-#: planets/verdance/data/goals.json:goals[dust_base5].text
-msgid "Dust Flats base to level 5"
-msgstr "Staubebenen-Basis auf Stufe 5"
-
-#: planets/verdance/data/goals.json:goals[base5_3].text
-msgid "Get three bases to level 5"
-msgstr "Bring drei Basen auf Stufe 5"
-
-#: planets/verdance/data/goals.json:goals[visit_frozen].text
-msgid "Fly to the Frozen Port"
-msgstr "Flieg zum Eishafen"
-
-#: planets/verdance/data/goals.json:goals[research_26].text
-msgid "Finish 26 research projects"
-msgstr "Schließ 26 Forschungsprojekte ab"
-
-#: planets/verdance/data/goals.json:goals[heater_1].text
-msgid "Light a heater on the ice"
-msgstr "Zünde einen Heizer auf dem Eis"
-
-#: planets/verdance/data/goals.json:goals[thaw_10].text
-msgid "Thaw 10 hexes"
-msgstr "Taue 10 Hexfelder auf"
-
-#: planets/verdance/data/goals.json:goals[greenhouse_1].text
-msgid "Build a greenhouse"
-msgstr "Bau ein Gewächshaus"
-
-#: planets/verdance/data/goals.json:goals[frozen_base3].text
-msgid "Frozen Port base to level 3"
-msgstr "Eishafen-Basis auf Stufe 3"
-
-#: planets/verdance/data/goals.json:goals[thaw_30].text
-msgid "Thaw 30 hexes"
-msgstr "Taue 30 Hexfelder auf"
-
-#: planets/verdance/data/goals.json:goals[frozen_base4].text
-msgid "Frozen Port base to level 4"
-msgstr "Eishafen-Basis auf Stufe 4"
-
-#: planets/verdance/data/goals.json:goals[hex_130].text
-msgid "Clean 130 hexes"
-msgstr "Räum 130 Hexfelder"
-
-#: planets/verdance/data/goals.json:goals[research_pumps].text
-msgid "Research Pump Works"
-msgstr "Erforsche Pumpwerke"
-
-#: planets/verdance/data/goals.json:goals[frozen_base5].text
-msgid "Frozen Port base to level 5"
-msgstr "Eishafen-Basis auf Stufe 5"
-
-#: planets/verdance/data/goals.json:goals[base5_4].text
-msgid "Get four bases to level 5"
-msgstr "Bring vier Basen auf Stufe 5"
-
-#: planets/verdance/data/goals.json:goals[visit_sunken].text
-msgid "Fly to the Sunken City"
-msgstr "Flieg zur Versunkenen Stadt"
-
-#: planets/verdance/data/goals.json:goals[sunken_base3].text
-msgid "Sunken City base to level 3"
-msgstr "Basis der Versunkenen Stadt auf Stufe 3"
-
-#: planets/verdance/data/goals.json:goals[sunken_base4].text
-msgid "Sunken City base to level 4"
-msgstr "Basis der Versunkenen Stadt auf Stufe 4"
-
-#: planets/verdance/data/goals.json:goals[sunken_base5].text
-msgid "Sunken City base to level 5"
-msgstr "Basis der Versunkenen Stadt auf Stufe 5"
-
-#: planets/verdance/data/goals.json:goals[frontiers_growing].text
-msgid "Every frontier 50% Growing"
-msgstr "Jedes Grenzgebiet 50% wachsend"
-
-#: planets/verdance/data/goals.json:goals[research_beacon].text
-msgid "Research the Ark Beacon"
-msgstr "Erforsche das Arche-Leuchtfeuer"
-
-#: planets/verdance/data/goals.json:goals[visit_cradle].text
-msgid "Fly to Cradle Returns"
-msgstr "Flieg nach Cradle-Rückkehr"
-
-#: planets/verdance/data/goals.json:goals[cradle_pad].text
-msgid "Clean the Cradle landing pad"
-msgstr "Räum die Landeplattform der Cradle"
-
-#: planets/verdance/data/goals.json:goals[cradle_grow25].text
-msgid "Get 25 hexes Growing here"
-msgstr "Bring hier 25 Hexfelder auf Wachsend"
-
-#: planets/verdance/data/goals.json:goals[cradle_home].text
-msgid "Call the Cradle home"
-msgstr "Hol die Cradle nach Hause"
-
-#: planets/verdance/data/goals.json:goals[late_garden_1].text
-msgid "Place a decoration (H)"
-msgstr "Platziere eine Dekoration (H)"
-
-#: planets/verdance/data/goals.json:goals[late_garden_10].text
-msgid "Place 10 decorations"
-msgstr "Platziere 10 Dekorationen"
-
-#: planets/verdance/data/goals.json:goals[late_garden_kinds].text
-msgid "Place 5 kinds of decoration"
-msgstr "Platziere 5 Arten von Dekoration"
-
-#: planets/verdance/data/goals.json:goals[late_eggs_30].text
-msgid "Find 30 curiosities"
-msgstr "Finde 30 Kuriositäten"
-
-#: planets/verdance/data/goals.json:goals[late_charm_20].text
-msgid "Reach 20 charm in one district"
-msgstr "Erreiche 20 Charme in einem Bezirk"
-
-#: planets/verdance/data/goals.json:goals[late_eggs_38].text
-msgid "Find 38 curiosities"
-msgstr "Finde 38 Kuriositäten"
+#: planets/verdance/data/goals.json:goals[rig_plate_cutter].text
+msgid "Fit the Plate Cutter"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[wrecks_1].text
+msgid "Learn wrecks by hand"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[scrounger_1].text
+msgid "Build a Scrounger"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[scrounge_50].text
+msgid "Scroungers bring in 50 Parts"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[rig_skim_skirt].text
+msgid "Fit the Skim Skirt"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[slick_1].text
+msgid "Learn slick by hand"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[assembler].text
+msgid "Build the Assembler"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[assemble_5].text
+msgid "Assemble 5 robots"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[skimmer_1].text
+msgid "Build a Skimmer"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[rig_mist_scrubber].text
+msgid "Fit the Mist Scrubber"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[smog_1].text
+msgid "Learn smog by hand"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[drip_1].text
+msgid "Build a Drip watering robot"
+msgstr "Bau einen Drip-Gießroboter"
+
+#: planets/verdance/data/goals.json:goals[rig_soil_doser].text
+msgid "Fit the Soil Doser"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[blight_1].text
+msgid "Learn blight by hand"
+msgstr ""
 
 #: planets/verdance/data/goals.json:goals[locker_build].text
 msgid "Build the Locker"
 msgstr "Bau den Spind"
 
 #: planets/verdance/data/goals.json:goals[locker_wear].text
-msgid "Wear a look at the Locker"
-msgstr "Zieh am Spind einen Look an"
+msgid "Wear a look you found"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[more_hexes].text planets/verdance/data/goals.json:goals[more_ground].text
+msgid "Clean %d more hexes"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[more_bales].text
+msgid "Press %d more bales"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[more_surges].text
+msgid "Release a Surge"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[more_growth].text
+msgid "Raise %d hexes a stage"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[more_parts].text
+msgid "Dig up %d more Parts"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[more_perfect].text
+msgid "Press %d perfect bales"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[litter_2].text
+msgid "Reach Litter mastery 2"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[hex_5].text
+msgid "Clean 5 hexes"
+msgstr "Räum 5 Hexfelder"
+
+#: planets/verdance/data/goals.json:goals[litter_3].text
+msgid "Reach Litter mastery 3"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[litter_4].text
+msgid "Reach Litter mastery 4"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[hex_12].text
+msgid "Clean 12 hexes"
+msgstr "Räum 12 Hexfelder"
+
+#: planets/verdance/data/goals.json:goals[crew_2].text
+msgid "Run a crew of 2"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[litter_5].text
+msgid "Reach Litter mastery 5"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[hex_25].text
+msgid "Clean 25 hexes"
+msgstr "Räum 25 Hexfelder"
+
+#: planets/verdance/data/goals.json:goals[crew_4].text
+msgid "Run a crew of 4"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[litter_6].text
+msgid "Reach Litter mastery 6"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[hex_50].text
+msgid "Clean 50 hexes"
+msgstr "Räum 50 Hexfelder"
+
+#: planets/verdance/data/goals.json:goals[crew_6].text
+msgid "Run a crew of 6"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_town_1].text
+msgid "Bring Old Town to Clean"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[litter_7].text
+msgid "Reach Litter mastery 7"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_town_2].text
+msgid "Bring Old Town to Planted"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[crew_8].text
+msgid "Run a crew of 8"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_town_3].text
+msgid "Bring Old Town to Growing"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_town_source].text
+msgid "Shut down the burst main"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_town_4].text
+msgid "Bring Old Town to Sustained"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[wrecks_3].text
+msgid "Reach Wrecks mastery 3"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[scrapyard_1].text
+msgid "Bring Ironside to Clean"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[crew_15].text
+msgid "Run a crew of 15"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[scrapyard_2].text
+msgid "Bring Ironside to Planted"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[scrapyard_3].text
+msgid "Bring Ironside to Growing"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[crew_30].text
+msgid "Run a crew of 30"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[scrapyard_source].text
+msgid "Shut down the crusher yard"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[scrapyard_4].text
+msgid "Bring Ironside to Sustained"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[wrecks_5].text
+msgid "Reach Wrecks mastery 5"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[slick_3].text
+msgid "Reach Slick mastery 3"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[kettle_bay_1].text
+msgid "Bring Kettle Bay to Clean"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[crew_50].text
+msgid "Run a crew of 50"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[kettle_bay_2].text
+msgid "Bring Kettle Bay to Planted"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[kettle_bay_3].text
+msgid "Bring Kettle Bay to Growing"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[scrapyard_5].text
+msgid "Bring Ironside to Thriving"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[kettle_bay_source].text
+msgid "Stop the tanker's leak"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[kettle_bay_4].text
+msgid "Bring Kettle Bay to Sustained"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[slick_5].text
+msgid "Reach Slick mastery 5"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[smog_3].text
+msgid "Reach Smog mastery 3"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[highreach_1].text
+msgid "Bring Highreach to Clean"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[crew_75].text
+msgid "Run a crew of 75"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[highreach_2].text
+msgid "Bring Highreach to Planted"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[highreach_3].text
+msgid "Bring Highreach to Growing"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[kettle_bay_5].text
+msgid "Bring Kettle Bay to Thriving"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[highreach_source].text
+msgid "Shut down the incinerator"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[highreach_4].text
+msgid "Bring Highreach to Sustained"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[smog_5].text
+msgid "Reach Smog mastery 5"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[blight_3].text
+msgid "Reach Blight mastery 3"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[lowmeadow_1].text
+msgid "Bring Lowmeadow to Clean"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[crew_100].text
+msgid "Run a crew of 100"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[lowmeadow_2].text
+msgid "Bring Lowmeadow to Planted"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[lowmeadow_3].text
+msgid "Bring Lowmeadow to Growing"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[highreach_5].text
+msgid "Bring Highreach to Thriving"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[lowmeadow_source].text
+msgid "Shut the treatment works"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[lowmeadow_4].text
+msgid "Bring Lowmeadow to Sustained"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[blight_5].text
+msgid "Reach Blight mastery 5"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_capital_1].text
+msgid "Bring Old Capital to Clean"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[crew_125].text
+msgid "Run a crew of 125"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_capital_2].text
+msgid "Bring Old Capital to Planted"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_capital_3].text
+msgid "Bring Old Capital to Growing"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[lowmeadow_5].text
+msgid "Bring Lowmeadow to Thriving"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_capital_source].text
+msgid "Build the rocket"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_capital_4].text
+msgid "Bring Old Capital to Sustained"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[crew_150].text
+msgid "Run a crew of 150"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_capital_5].text
+msgid "Bring Old Capital to Thriving"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[litter_10].text
+msgid "Reach Litter mastery 10"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[more_crew].text
+msgid "Build %d more robots"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_town_5].text
+msgid "Restore Old Town"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[cities_3].text
+msgid "Restore 3 of 6 cities"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[launch_point].text
+msgid "Reach the launch point"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[sprout_set].text
+msgid "Find all 7 Sprout pieces"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[planet_1].text
+msgid "Restore 1% of the planet"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[planet_5].text
+msgid "Restore 5% of the planet"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[planet_25].text
+msgid "Restore 25% of the planet"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[planet_50].text
+msgid "Restore 50% of the planet"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[planet_100].text
+msgid "Restore the whole planet"
+msgstr ""
 
 #: planets/verdance/data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
@@ -11044,6 +10972,10 @@ msgstr "Bots-Tab: Ein Haul Bug trägt deine Ballen zur Waage."
 msgid "The base has power! Build a helper: a Haul Bug will carry your bales. Try the Bots tab."
 msgstr "Die Basis hat Strom! Bau einen Helfer: Ein Haul Bug trägt deine Ballen. Schau in den Bots-Tab."
 
+#: planets/verdance/data/objectives.json:objectives[hex10].text data/radio.json:songs[verdance_sweep].hint
+msgid "Clean 10 hexes"
+msgstr "10 Hexfelder räumen"
+
 #: planets/verdance/data/objectives.json:objectives[hex10].desc
 msgid "Your Haul Bug sells the bales. Stay at the work."
 msgstr "Dein Haul Bug verkauft die Ballen. Bleib bei der Arbeit."
@@ -11079,6 +11011,10 @@ msgstr "Räum weiter auf. Samen tauchen in sauberem Boden auf."
 #: planets/verdance/data/objectives.json:objectives[seed].lines
 msgid "Something green is waking out there. Plant the first seed."
 msgstr "Da draußen erwacht etwas Grünes. Pflanz den ersten Samen."
+
+#: planets/verdance/data/objectives.json:objectives[scoopie].text
+msgid "Build a Scoopie"
+msgstr "Bau einen Scoopie"
 
 #: planets/verdance/data/objectives.json:objectives[scoopie].desc
 msgid "Workbench, Bots tab. It cleans a hex by itself."
@@ -11116,6 +11052,10 @@ msgstr "Werkbank. WREN wird klarer klingen."
 msgid "Boost the tower. I want to hear you clearly."
 msgstr "Verstärke den Turm. Ich will dich klar hören."
 
+#: planets/verdance/data/objectives.json:objectives[research1].text
+msgid "Finish a research project"
+msgstr "Schließ ein Forschungsprojekt ab"
+
 #: planets/verdance/data/objectives.json:objectives[research1].desc
 msgid "Workbench, Research tab. Research unlocks new robots."
 msgstr "Werkbank, Forschung-Tab. Forschung schaltet neue Roboter frei."
@@ -11127,6 +11067,10 @@ msgstr "Werkbank, Upgrades-Tab: Bau zuerst den Forschungstisch an."
 #: planets/verdance/data/objectives.json:objectives[research1].lines
 msgid "Your bench can study now. Research unlocks new machines and seeds."
 msgstr "Deine Werkbank kann jetzt forschen. Forschung schaltet neue Maschinen und Samen frei."
+
+#: planets/verdance/data/objectives.json:objectives[hex20].text
+msgid "Clean 20 hexes"
+msgstr "Räum 20 Hexfelder"
 
 #: planets/verdance/data/objectives.json:objectives[hex20].desc
 msgid "More clean ground means more room to grow."
@@ -15693,6 +15637,357 @@ msgstr "Der Portalkran hat die Flotte des Ledgers verschrottet, als das Geld aus
 #: planets/verdance/data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Eine Rostwelt, grün. Die alten Kräne haben Blumen zu ihren Füßen. Die Bücher sind geschlossen, {name}. Wir haben sie ausgeglichen."
+
+#~ msgid "Show more goals"
+#~ msgstr "Mehr Ziele zeigen"
+
+#~ msgid "Install the Baler"
+#~ msgstr "Baue die Ballenpresse ein"
+
+#~ msgid "Make your first bale"
+#~ msgstr "Press deinen ersten Ballen"
+
+#~ msgid "Lift Strength level 1"
+#~ msgstr "Hebekraft Stufe 1"
+
+#~ msgid "Clean your first hex"
+#~ msgstr "Räum dein erstes Hexfeld"
+
+#~ msgid "Make a perfect bale"
+#~ msgstr "Press einen perfekten Ballen"
+
+#~ msgid "Chest Size level 3"
+#~ msgstr "Brustfachgröße Stufe 3"
+
+#~ msgid "Find a memory shard"
+#~ msgstr "Finde einen Erinnerungssplitter"
+
+#~ msgid "Lift Strength level 2"
+#~ msgstr "Hebekraft Stufe 2"
+
+#~ msgid "Earn 3,000 cubes"
+#~ msgstr "Verdiene 3.000 Würfel"
+
+#~ msgid "Clear the street: clean 7 hexes"
+#~ msgstr "Räum die Straße: säubere 7 Hexfelder"
+
+#~ msgid "Pet a stray cat"
+#~ msgstr "Streichle eine streunende Katze"
+
+#~ msgid "Buy 20 upgrades"
+#~ msgstr "Kauf 20 Upgrades"
+
+#~ msgid "Upgrade the base to level 2"
+#~ msgstr "Verbessere die Basis auf Stufe 2"
+
+#~ msgid "Build a Haul Bug"
+#~ msgstr "Bau einen Haul Bug"
+
+#~ msgid "Give a robot a work zone"
+#~ msgstr "Gib einem Roboter eine Arbeitszone"
+
+#~ msgid "Robots press 20 bales"
+#~ msgstr "Roboter pressen 20 Ballen"
+
+#~ msgid "Run 2 Scoopies"
+#~ msgstr "Lass 2 Scoopies laufen"
+
+#~ msgid "Buy 25 upgrades"
+#~ msgstr "Kauf 25 Upgrades"
+
+#~ msgid "Finish 6 research projects"
+#~ msgstr "Schließ 6 Forschungsprojekte ab"
+
+#~ msgid "Build 4 robots"
+#~ msgstr "Bau 4 Roboter"
+
+#~ msgid "Clean 15 hexes"
+#~ msgstr "Räum 15 Hexfelder"
+
+#~ msgid "Find the seed tin"
+#~ msgstr "Finde die Samendose"
+
+#~ msgid "Plant the Maker seed"
+#~ msgstr "Pflanze den Erbauer-Samen"
+
+#~ msgid "Earn 10,000 cubes"
+#~ msgstr "Verdiene 10.000 Würfel"
+
+#~ msgid "Read 2 memory shards"
+#~ msgstr "Lies 2 Erinnerungssplitter"
+
+#~ msgid "Zone 6 hexes for your crews"
+#~ msgstr "Weise deinen Crews 6 Hexfelder zu"
+
+#~ msgid "Clean 17 hexes"
+#~ msgstr "Räum 17 Hexfelder"
+
+#~ msgid "Finish 8 research projects"
+#~ msgstr "Schließ 8 Forschungsprojekte ab"
+
+#~ msgid "Robots press 100 bales"
+#~ msgstr "Roboter pressen 100 Ballen"
+
+#~ msgid "Recycle 5 bales"
+#~ msgstr "Recycle 5 Ballen"
+
+#~ msgid "Build a Skimmer for the lake"
+#~ msgstr "Bau einen Skimmer für den See"
+
+#~ msgid "Finish 12 research projects"
+#~ msgstr "Schließ 12 Forschungsprojekte ab"
+
+#~ msgid "Earn 50,000 cubes"
+#~ msgstr "Verdiene 50.000 Würfel"
+
+#~ msgid "Clean 28 hexes"
+#~ msgstr "Räum 28 Hexfelder"
+
+#~ msgid "Buy 40 upgrades"
+#~ msgstr "Kauf 40 Upgrades"
+
+#~ msgid "Clean 30 hexes (lake too)"
+#~ msgstr "Räum 30 Hexfelder (auch im See)"
+
+#~ msgid "Upgrade the base to level 3"
+#~ msgstr "Verbessere die Basis auf Stufe 3"
+
+#~ msgid "Pick a song on the base radio"
+#~ msgstr "Wähl ein Lied im Basisradio"
+
+#~ msgid "Style a robot in the Locker"
+#~ msgstr "Gestalte einen Roboter im Spind"
+
+#~ msgid "Research Pollinator Survey"
+#~ msgstr "Erforsche Bestäuberzählung"
+
+#~ msgid "Grow 25 flowers to bloom"
+#~ msgstr "Lass 25 Blumen erblühen"
+
+#~ msgid "Place a Water Tank"
+#~ msgstr "Stell einen Wassertank auf"
+
+#~ msgid "Plant 60 seeds"
+#~ msgstr "Pflanz 60 Samen"
+
+#~ msgid "Run 2 Drip robots"
+#~ msgstr "Lass 2 Drip-Roboter laufen"
+
+#~ msgid "Run 4 Drip robots"
+#~ msgstr "Lass 4 Drip-Roboter laufen"
+
+#~ msgid "Get 3 hexes to Sustained"
+#~ msgstr "Bring 3 Hexfelder auf Stabil"
+
+#~ msgid "Spot a deer"
+#~ msgstr "Entdecke ein Reh"
+
+#~ msgid "Get 5 hexes to Sustained"
+#~ msgstr "Bring 5 Hexfelder auf Stabil"
+
+#~ msgid "Plant 100 seeds"
+#~ msgstr "Pflanz 100 Samen"
+
+#~ msgid "Build 15 robots"
+#~ msgstr "Bau 15 Roboter"
+
+#~ msgid "Get 3 hexes to Thriving"
+#~ msgstr "Bring 3 Hexfelder auf Blühend"
+
+#~ msgid "Get 8 hexes to Sustained"
+#~ msgstr "Bring 8 Hexfelder auf Stabil"
+
+#~ msgid "Earn 75,000 cubes"
+#~ msgstr "Verdiene 75.000 Würfel"
+
+#~ msgid "Grow 300 flowers to bloom"
+#~ msgstr "Lass 300 Blumen erblühen"
+
+#~ msgid "Get 8 hexes to Thriving"
+#~ msgstr "Bring 8 Hexfelder auf Blühend"
+
+#~ msgid "Get 10 hexes to Sustained"
+#~ msgstr "Bring 10 Hexfelder auf Stabil"
+
+#~ msgid "Earn 100,000 cubes"
+#~ msgstr "Verdiene 100.000 Würfel"
+
+#~ msgid "Get 15 hexes to Sustained"
+#~ msgstr "Bring 15 Hexfelder auf Stabil"
+
+#~ msgid "Get 15 hexes to Thriving"
+#~ msgstr "Bring 15 Hexfelder auf Blühend"
+
+#~ msgid "Get 20 hexes to Sustained"
+#~ msgstr "Bring 20 Hexfelder auf Stabil"
+
+#~ msgid "Upgrade the base to level 4"
+#~ msgstr "Verbessere die Basis auf Stufe 4"
+
+#~ msgid "Grow 500 flowers to bloom"
+#~ msgstr "Lass 500 Blumen erblühen"
+
+#~ msgid "Get 20 hexes to Thriving"
+#~ msgstr "Bring 20 Hexfelder auf Blühend"
+
+#~ msgid "Filter 1,000 m3 of air"
+#~ msgstr "Filtere 1.000 m3 Luft"
+
+#~ msgid "Get 25 hexes to Thriving"
+#~ msgstr "Bring 25 Hexfelder auf Blühend"
+
+#~ msgid "Upgrade the base to level 5"
+#~ msgstr "Verbessere die Basis auf Stufe 5"
+
+#~ msgid "Retire a robot to the nursery"
+#~ msgstr "Schick einen Roboter in die Gärtnerei"
+
+#~ msgid "Launch the rocket onward"
+#~ msgstr "Starte die Rakete weiter"
+
+#~ msgid "Fully custom-build a robot"
+#~ msgstr "Bau einen Roboter komplett nach Maß"
+
+#~ msgid "Finish 20 research projects"
+#~ msgstr "Schließ 20 Forschungsprojekte ab"
+
+#~ msgid "Build a Multibot"
+#~ msgstr "Bau einen Multibot"
+
+#~ msgid "Upgrade a robot type to Mk II"
+#~ msgstr "Verbessere einen Robotertyp auf Mk II"
+
+#~ msgid "Earn 150,000 cubes"
+#~ msgstr "Verdiene 150.000 Würfel"
+
+#~ msgid "Grow 800 flowers to bloom"
+#~ msgstr "Lass 800 Blumen erblühen"
+
+#~ msgid "Fully restore 40 hexes"
+#~ msgstr "Stell 40 Hexfelder vollständig wieder her"
+
+#~ msgid "Get a second base to level 5"
+#~ msgstr "Bring eine zweite Basis auf Stufe 5"
+
+#~ msgid "Research Dune Charts"
+#~ msgstr "Erforsche Dünenkarten"
+
+#~ msgid "Fly to the Dust Flats"
+#~ msgstr "Flieg zur Staubebene"
+
+#~ msgid "Finish 24 research projects"
+#~ msgstr "Schließ 24 Forschungsprojekte ab"
+
+#~ msgid "Dust Flats base to level 3"
+#~ msgstr "Staubebenen-Basis auf Stufe 3"
+
+#~ msgid "Get 15 hexes Growing here"
+#~ msgstr "Bring hier 15 Hexfelder auf Wachsend"
+
+#~ msgid "Clean 80 hexes"
+#~ msgstr "Räum 80 Hexfelder"
+
+#~ msgid "Dust Flats base to level 4"
+#~ msgstr "Staubebenen-Basis auf Stufe 4"
+
+#~ msgid "Clean 100 hexes"
+#~ msgstr "Räum 100 Hexfelder"
+
+#~ msgid "Research Thermal Lance"
+#~ msgstr "Erforsche die Thermolanze"
+
+#~ msgid "Dust Flats base to level 5"
+#~ msgstr "Staubebenen-Basis auf Stufe 5"
+
+#~ msgid "Get three bases to level 5"
+#~ msgstr "Bring drei Basen auf Stufe 5"
+
+#~ msgid "Fly to the Frozen Port"
+#~ msgstr "Flieg zum Eishafen"
+
+#~ msgid "Finish 26 research projects"
+#~ msgstr "Schließ 26 Forschungsprojekte ab"
+
+#~ msgid "Light a heater on the ice"
+#~ msgstr "Zünde einen Heizer auf dem Eis"
+
+#~ msgid "Thaw 10 hexes"
+#~ msgstr "Taue 10 Hexfelder auf"
+
+#~ msgid "Build a greenhouse"
+#~ msgstr "Bau ein Gewächshaus"
+
+#~ msgid "Frozen Port base to level 3"
+#~ msgstr "Eishafen-Basis auf Stufe 3"
+
+#~ msgid "Thaw 30 hexes"
+#~ msgstr "Taue 30 Hexfelder auf"
+
+#~ msgid "Frozen Port base to level 4"
+#~ msgstr "Eishafen-Basis auf Stufe 4"
+
+#~ msgid "Clean 130 hexes"
+#~ msgstr "Räum 130 Hexfelder"
+
+#~ msgid "Research Pump Works"
+#~ msgstr "Erforsche Pumpwerke"
+
+#~ msgid "Frozen Port base to level 5"
+#~ msgstr "Eishafen-Basis auf Stufe 5"
+
+#~ msgid "Get four bases to level 5"
+#~ msgstr "Bring vier Basen auf Stufe 5"
+
+#~ msgid "Fly to the Sunken City"
+#~ msgstr "Flieg zur Versunkenen Stadt"
+
+#~ msgid "Sunken City base to level 3"
+#~ msgstr "Basis der Versunkenen Stadt auf Stufe 3"
+
+#~ msgid "Sunken City base to level 4"
+#~ msgstr "Basis der Versunkenen Stadt auf Stufe 4"
+
+#~ msgid "Sunken City base to level 5"
+#~ msgstr "Basis der Versunkenen Stadt auf Stufe 5"
+
+#~ msgid "Every frontier 50% Growing"
+#~ msgstr "Jedes Grenzgebiet 50% wachsend"
+
+#~ msgid "Research the Ark Beacon"
+#~ msgstr "Erforsche das Arche-Leuchtfeuer"
+
+#~ msgid "Fly to Cradle Returns"
+#~ msgstr "Flieg nach Cradle-Rückkehr"
+
+#~ msgid "Clean the Cradle landing pad"
+#~ msgstr "Räum die Landeplattform der Cradle"
+
+#~ msgid "Get 25 hexes Growing here"
+#~ msgstr "Bring hier 25 Hexfelder auf Wachsend"
+
+#~ msgid "Call the Cradle home"
+#~ msgstr "Hol die Cradle nach Hause"
+
+#~ msgid "Place a decoration (H)"
+#~ msgstr "Platziere eine Dekoration (H)"
+
+#~ msgid "Place 10 decorations"
+#~ msgstr "Platziere 10 Dekorationen"
+
+#~ msgid "Place 5 kinds of decoration"
+#~ msgstr "Platziere 5 Arten von Dekoration"
+
+#~ msgid "Find 30 curiosities"
+#~ msgstr "Finde 30 Kuriositäten"
+
+#~ msgid "Reach 20 charm in one district"
+#~ msgstr "Erreiche 20 Charme in einem Bezirk"
+
+#~ msgid "Find 38 curiosities"
+#~ msgstr "Finde 38 Kuriositäten"
+
+#~ msgid "Wear a look at the Locker"
+#~ msgstr "Zieh am Spind einen Look an"
 
 #~ msgid "Salvage Surges"
 #~ msgstr "Bergungsschübe"

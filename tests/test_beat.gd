@@ -19,7 +19,7 @@ func after_each() -> void:
 
 func _all_code() -> String:
 	var out: String = ""
-	for dir: String in ["res://autoload", "res://automation", "res://planet", "res://plants", "res://robots", "res://story", "res://systems", "res://ui", "res://player", "res://scenes", "res://core", "res://water", "res://fauna", "res://systems/extras"]:  # [wild] fauna
+	for dir: String in ["res://autoload", "res://automation", "res://planet", "res://plants", "res://robots", "res://story", "res://systems", "res://ui", "res://player", "res://scenes", "res://core", "res://water", "res://fauna", "res://systems/extras", "res://systems/crew", "res://systems/camp"]:
 		var da := DirAccess.open(dir)
 		if da == null:
 			continue
@@ -30,36 +30,41 @@ func _all_code() -> String:
 
 
 func test_every_goal_type_is_known_and_its_key_exists() -> void:
-	var known: Array[String] = ["stat", "earned", "upgrade", "robot", "tier", "zone", "hub_level", "hex_level", "flag", "districts",
-		"research", "bases_l5", "frontier_base", "frontier_growing"]
 	var code: String = _all_code()
 	var ids: Dictionary = {}
 	for g: Dictionary in Economy.planet_table("goals")["goals"]:
 		var id: String = str(g["id"])
 		assert_false(ids.has(id), "goal id %s is unique" % id)
 		ids[id] = true
-		var t: String = str(g.get("type", "stat"))
-		assert_true(t in known, "goal %s has a known type (%s)" % [id, t])
-		var key: String = str(g.get("key", ""))
-		match t:
-			"stat":
-				# Something in the game raises this stat (inc_stat or a direct stats write).
-				assert_true(code.contains('"%s"' % key), "stat %s (goal %s) is written somewhere" % [key, id])
-			"research":
-				assert_true(Research.exists(key), "goal %s names real research %s" % [id, key])
-			"frontier_base":
-				assert_false(Frontiers.def(key).is_empty(), "goal %s names a frontier %s" % [id, key])
-			"flag":
-				assert_true(code.contains('"%s"' % key) or code.contains('"frontier_seen_" + '), "flag %s (goal %s) is set somewhere" % [key, id])
-			"upgrade":
-				assert_true(Economy.upgrade_defs.has(key), "goal %s names a real upgrade" % id)
-			"robot":
-				assert_true(key == "any" or Economy.robots.has(key), "goal %s names a real robot" % id)
+		var rows: Array = [g]
+		if g.has("when"):  # the condition that puts the goal on offer is checked the same way
+			rows.append(g["when"])
+		for row: Dictionary in rows:
+			var t: String = str(row.get("type", "stat"))
+			assert_true(t in GoalMeasures.TYPES, "goal %s has a known type (%s)" % [id, t])
+			var key: String = str(row.get("key", ""))
+			match t:
+				"stat":
+					# Something in the game raises this stat (inc_stat or a direct stats write).
+					assert_true(code.contains('"%s"' % key), "stat %s (goal %s) is written somewhere" % [key, id])
+				"research":
+					assert_true(Research.exists(key), "goal %s names real research %s" % [id, key])
+				"flag":
+					assert_true(code.contains('"%s"' % key), "flag %s (goal %s) is set somewhere" % [key, id])
+				"upgrade":
+					assert_true(Economy.upgrade_defs.has(key), "goal %s names a real upgrade" % id)
+				"robot":
+					assert_true(key == "any" or Economy.robots.has(key), "goal %s names a real robot" % id)
+				"build":
+					assert_false(YardBuilds.def(key).is_empty() and key != RobotChain.BUILD_ID, "goal %s names a real build" % id)
 
 
 ## Stats only a parked feature wrote (parked/README.md). No goal may wait on one: nothing in the
-## game writes them, so the ordered chain would stall there.
+## game writes them, so the goal could never be finished.
 const PARKED_STATS: Array[String] = ["drive_tier", "planets_landed", "planets_restored", "last_seed", "homecoming", "ark_waves", "ark_bridge_opened", "heirloom_levels", "worlds_seeded"]
+## What the goals no longer measure: the flat frontier districts and their bases went with the
+## single chain (task M3-10).
+const RETIRED_TYPES: Array[String] = ["districts", "bases_l5", "frontier_base", "frontier_growing"]
 
 
 func test_no_goal_waits_on_a_parked_feature() -> void:
@@ -69,21 +74,22 @@ func test_no_goal_waits_on_a_parked_feature() -> void:
 	var goals: Array = Economy.planet_table("goals")["goals"]
 	for g: Dictionary in goals:
 		assert_false(str(g.get("type", "stat")) == "stat" and str(g.get("key", "")) in PARKED_STATS, "goal %s can be finished" % g["id"])
-	assert_true(goals.any(func(g: Dictionary) -> bool: return str(g["id"]) == "late_garden_1"), "Garden Mode goals stay")
+		assert_false(str(g.get("type", "stat")) in RETIRED_TYPES, "goal %s counts something the game still has" % g["id"])
+		assert_false(str(g.get("key", "")).begins_with("frontier_"), "goal %s does not wait on a frontier" % g["id"])
 	assert_false(FileAccess.file_exists("res://data/parked.json"), "the parked-goal filter and its list are gone")
 	assert_false(Research.exists("observatory"), "the research node that unlocked only the parked Telescope is gone")
 
 
-func test_the_chain_ends_on_the_cradle() -> void:
+func test_the_long_tier_ends_on_the_whole_planet() -> void:
 	var chain: Array = Economy.planet_table("goals")["goals"]
 	var order: Array[String] = []
 	for g: Dictionary in chain:
-		order.append(str(g["id"]))
-	for a: Array in [["base_5", "rocket"], ["rocket", "visit_dust"], ["visit_dust", "visit_frozen"], ["visit_frozen", "visit_sunken"],
-			["visit_sunken", "visit_cradle"], ["visit_cradle", "cradle_home"], ["plant_5", "pollinator"]]:
+		if str(g.get("tier", "")) == "long":
+			order.append(str(g["id"]))
+	for a: Array in [["old_town_5", "cities_3"], ["cities_3", "launch_point"], ["launch_point", "sprout_set"], ["sprout_set", "planet_1"],
+			["planet_1", "planet_100"]]:
 		assert_lt(order.find(a[0]), order.find(a[1]), "%s comes before %s" % a)
-	# Research goals in the first district would wall the chain once its junk runs out.
-	assert_gt(order.find("research_20"), order.find("rocket"))
+	assert_eq(order[-1], "planet_100", "the last long goal is the whole planet")
 
 
 func test_frontier_unlocks_name_real_research_and_are_ordered() -> void:

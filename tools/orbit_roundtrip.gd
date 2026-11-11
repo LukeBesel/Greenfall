@@ -49,6 +49,7 @@ static func _snap(s: Node) -> Dictionary:
 		"mastery": JSON.stringify((s.orbit as SliceOrbit).mastery.save_state()),  # Lumi's hand work per kind
 		"rigs": JSON.stringify((s.orbit as SliceOrbit).rigs.save_state()),  # plans, built modules, what is fitted
 		"surge": JSON.stringify((s.orbit as SliceOrbit).surge.save_state()),  # the Bloom Core's charge: no gain while away
+		"goals": _goals_sig(s),  # finished goals, and how often each repeating goal came round
 		"mastery_shut_hexes": (s.orbit as SliceOrbit).globe.cells.shut.count(1),  # hexes robots must leave alone
 		"assembler_model": (s.orbit as SliceOrbit).chain.model != null,
 		"restoration": JSON.stringify((s.orbit as SliceOrbit).restoration.save_state()),
@@ -672,6 +673,20 @@ static func run(rt: Node, check: Callable) -> void:
 	GameState.stats["robots_built"] = maxi(int(GameState.stats.get("robots_built", 0)), 1)  # the Surge opens with the first robot
 	so.surge.add_share(0.05)
 	check.call("orbit_surge_part_charged", true, so.surge.charge() > 0.0 and so.surge.charge() < 1.0)
+	# Goals: pay every goal that already holds and bring one repeating goal round, so the snapshot
+	# compares finished goals and a repeat count, and the reloaded game has nothing left to pay.
+	var goals: Goals = s1.get("goals")
+	var settle: int = goals.chain.size()
+	while goals.check() >= 0 and settle > 0:
+		settle -= 1
+	var repeating: int = -1
+	for gi: int in goals.chain.size():
+		if goals.is_repeat(gi) and goals.is_offered(gi) and repeating < 0:
+			repeating = gi
+	if repeating >= 0:
+		goals.complete(repeating)
+	check.call("orbit_goals_one_per_tier", goals.tier_ids().size(), goals.current().size())
+	check.call("orbit_goal_repeat_counted", 1, goals.times_done(repeating) if repeating >= 0 else 0)
 	var bot_dirs: Array[Vector3] = [crew.unit_dir(nb), crew.unit_dir(fb)]
 	var rad: float = g.grid.radius_m
 	check.call("orbit_robot_near_far", "near far", ("near " if crew.is_near(nb) else "far ") + ("near" if crew.is_near(fb) else "far"))
@@ -801,6 +816,18 @@ static func _old_save(tree: SceneTree, packed: PackedScene, check: Callable) -> 
 	check.call("orbit_old_reload_mastery", old_level, (s2.orbit as SliceOrbit).mastery.level(old_base))
 	s2.queue_free()
 	await tree.process_frame
+
+
+## The goals as saved: ids of the finished ones and the count of each repeating one.
+static func _goals_sig(s: Node) -> String:
+	var done: Array = (GameState.flags.get(Goals.FLAG_DONE, []) as Array).duplicate()
+	done.sort()
+	var goals: Goals = s.get("goals")
+	var counts: Dictionary = {}  # a JSON reload reads whole numbers back as floats
+	var saved: Dictionary = (GameState.flags.get(Goals.FLAG_REPEAT, {}) as Dictionary).get("n", {})
+	for id: Variant in saved:
+		counts[str(id)] = int(saved[id])
+	return "%s %s tiers %d" % [JSON.stringify(done), JSON.stringify(counts), goals.current().size() if goals else -1]
 
 
 ## The stage each city is held at by its source job, in play order ("5" = not held).

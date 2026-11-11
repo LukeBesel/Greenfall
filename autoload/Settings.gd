@@ -18,7 +18,7 @@ const REBINDABLE: Array = [
 	["tool_scoop", "Tool: scoop"], ["tool_plant", "Tool: plant"], ["tool_water", "Tool: water"],
 	["open_upgrades", "Upgrades"], ["open_command", "Command view"], ["open_globe", "Globe map"],
 	["lens_view", "Lens view"], ["open_codex", "Codex"], ["pause", "Pause"],
-	["toggle_goals", "Show more goals"],  # [hud]
+	["toggle_goals", "Follow the next goal"],
 	["zoom_in", "Zoom in"], ["zoom_out", "Zoom out"],
 	["photo_mode", "Photo mode"],  # [photo]
 	["glim_scan", "Glim: scan (hold: upgrades)"],  # [buddy]

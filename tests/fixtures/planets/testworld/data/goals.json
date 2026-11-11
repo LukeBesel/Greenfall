@@ -1,9 +1,13 @@
 {
-  "_doc": "Dummy planet: two goals. Same fields as a real goals table.",
-  "visible": 2,
+  "_doc": "Dummy planet: two tiers, two authored goals and a repeating one. Same fields as a real goals table.",
+  "tiers": [
+    {"id": "near", "name": "NEXT"},
+    {"id": "far", "name": "WORLD"}
+  ],
   "goals": [
     {
       "id": "test_scoop_5",
+      "tier": "near",
       "text": "Pick up 5 pieces of trash",
       "type": "stat",
       "key": "junk_scooped",
@@ -13,7 +17,21 @@
       }
     },
     {
+      "id": "test_more_scoops",
+      "tier": "near",
+      "text": "Pick up %d more pieces",
+      "type": "stat",
+      "key": "junk_scooped",
+      "repeat": 4,
+      "repeat_grow": 2,
+      "repeat_max": 8,
+      "reward": {
+        "cubes": 1
+      }
+    },
+    {
       "id": "test_earn_10",
+      "tier": "far",
       "text": "Earn 10 cubes",
       "type": "earned",
       "key": "cubes",

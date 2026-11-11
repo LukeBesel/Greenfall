@@ -131,8 +131,8 @@ msgid "Pause"
 msgstr "暂停"
 
 #: autoload/Settings.gd:21
-msgid "Show more goals"
-msgstr "显示更多目标"
+msgid "Follow the next goal"
+msgstr ""
 
 #: autoload/Settings.gd:22
 msgid "Zoom in"
@@ -501,7 +501,7 @@ msgstr "小队一直在清理。城市又干净了一点。"
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
-#: core/pace.gd:150 story/objectives.gd:886
+#: core/pace.gd:150 story/objectives.gd:873
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "太重了。去工作台升级举升力。"
 
@@ -513,7 +513,7 @@ msgstr "这里装不下了。按 [%s] 压一个捆包。"
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "还没有打包机。把胸舱里的垃圾送去垃圾桶。"
 
-#: core/pace.gd:315 systems/events.gd:487 ui/goals_panel.gd:284
+#: core/pace.gd:315 systems/events.gd:487 ui/goals_panel.gd:125
 msgid "+%s cubes"
 msgstr "+%s 方块"
 
@@ -1173,7 +1173,7 @@ msgstr "六角格清理完成！"
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice_orbit.gd:609 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:588
+#: scenes/slice_orbit.gd:609 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:589
 msgid "E   Fix the workbench"
 msgstr "E   修理工作台"
 
@@ -1746,59 +1746,59 @@ msgstr "<< LEDGER // 非正式记录 >>"
 msgid "LEDGER  WMS-07"
 msgstr "LEDGER  WMS-07"
 
-#: story/objectives.gd:207
-msgid "Needs %s. Dig up more Parts."
-msgstr "需要 %s。再多挖些零件。"
-
-#: story/objectives.gd:246
+#: story/objectives.gd:186
 msgid "Reward: %s"
 msgstr "奖励：%s"
 
-#: story/objectives.gd:436
+#: story/objectives.gd:249
+msgid "Needs %s. Dig up more Parts."
+msgstr "需要 %s。再多挖些零件。"
+
+#: story/objectives.gd:460
 msgid "Objective complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:462
+#: story/objectives.gd:486
 msgid "Goal complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:731
+#: story/objectives.gd:718
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "打包机已安装！装满胸舱，按 [%s] 压出捆包，再搬到磅秤上。"
 
-#: story/objectives.gd:753 story/objectives.gd:874
+#: story/objectives.gd:740 story/objectives.gd:861
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "胸舱满了。按 [%s] 压一个捆包。"
 
-#: story/objectives.gd:769
+#: story/objectives.gd:756
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "探测器发现附近埋着一个机器人零件。跟着“埋藏零件”读数走；到正上方时它会哔哔响。"
 
-#: story/objectives.gd:771
+#: story/objectives.gd:758
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
 
-#: story/objectives.gd:875
+#: story/objectives.gd:862
 msgid "Your chest is full. Bring it to the bin."
 msgstr "胸舱满了。送去垃圾桶吧。"
 
-#: story/objectives.gd:882
+#: story/objectives.gd:869
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "胸舱满了。回家吧：垃圾桶就在那道高高的烟柱下面。"
 
-#: story/objectives.gd:884
+#: story/objectives.gd:871
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "把捆包搬回家：磅秤就在那道高高的烟柱下面。"
 
-#: story/objectives.gd:884
+#: story/objectives.gd:871
 msgid "Carry your bale to the scale by the bin."
 msgstr "把捆包搬到垃圾桶旁的磅秤上。"
 
-#: story/objectives.gd:891
+#: story/objectives.gd:878
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "回家吧：跟着光束走到那道高高的烟柱。"
 
-#: story/objectives.gd:901
+#: story/objectives.gd:888
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "这里没有可捡的。走去有更多垃圾的地方。"
 
@@ -2713,7 +2713,7 @@ msgstr "%s 对着幼苗哼歌。退休生活很适合它。"
 msgid "%s points proudly at a new bud."
 msgstr "%s 骄傲地指着一个新花苞。"
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:620
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:621
 msgid "E   CD player: %s"
 msgstr "E   CD 播放机：%s"
 
@@ -4047,15 +4047,19 @@ msgstr "   ·   已过时"
 msgid "Re-survey      %s cubes"
 msgstr "重新勘测      %s 方块"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:481 ui/objective_card.gd:137
+#: ui/goal_readout.gd:135 ui/list_detail.gd:481 ui/objective_card.gd:137
 msgid "DONE"
 msgstr "完成"
 
-#: ui/goals_panel.gd:257
+#: ui/goals_panel.gd:80
+msgid "Following  ·  %s"
+msgstr ""
+
+#: ui/goals_panel.gd:117
 msgid "Goal complete  ·  %s%s"
 msgstr "目标完成  ·  %s%s"
 
-#: ui/goals_panel.gd:284
+#: ui/goals_panel.gd:125
 msgid "+%s seeds"
 msgstr "+%s 种子"
 
@@ -9884,6 +9888,18 @@ msgstr "无"
 msgid "Little Beanie"
 msgstr "小毛线帽"
 
+#: planets/verdance/data/goals.json:tiers[short].name
+msgid "NOW"
+msgstr ""
+
+#: planets/verdance/data/goals.json:tiers[medium].name
+msgid "CITY"
+msgstr ""
+
+#: planets/verdance/data/goals.json:tiers[long].name
+msgid "PLANET"
+msgstr ""
+
 #: planets/verdance/data/goals.json:goals[scoop_15].text
 msgid "Pick up 15 pieces of trash"
 msgstr "捡起 15 件垃圾"
@@ -9896,569 +9912,481 @@ msgstr "把胸舱里的垃圾倒进垃圾桶"
 msgid "Buy an upgrade at the bench"
 msgstr "在工作台购买一项升级"
 
-#: planets/verdance/data/goals.json:goals[baler_1].text
-msgid "Install the Baler"
-msgstr "装上打包机"
+#: planets/verdance/data/goals.json:goals[parts_2].text
+msgid "Dig up 2 robot parts"
+msgstr "挖出 2 个机器人零件"
 
 #: planets/verdance/data/goals.json:goals[bale_1].text
-msgid "Make your first bale"
-msgstr "压出你的第一个捆包"
+msgid "Press your first bale"
+msgstr ""
 
 #: planets/verdance/data/goals.json:goals[cash_1].text
 msgid "Sell a bale at the scale"
 msgstr "在磅秤上卖掉一个捆包"
 
-#: planets/verdance/data/goals.json:goals[lift_1].text
-msgid "Lift Strength level 1"
-msgstr "举升力 1 级"
-
-#: planets/verdance/data/goals.json:goals[hex_1].text
-msgid "Clean your first hex"
-msgstr "清理你的第一个六角格"
-
 #: planets/verdance/data/goals.json:goals[perfect_1].text
-msgid "Make a perfect bale"
-msgstr "压出一个完美捆包"
+msgid "Press a perfect bale"
+msgstr ""
 
 #: planets/verdance/data/goals.json:goals[upgrades_5].text
 msgid "Buy 5 upgrades"
 msgstr "购买 5 项升级"
 
-#: planets/verdance/data/goals.json:goals[cash_10].text
-msgid "Sell 10 bales"
-msgstr "卖掉 10 个捆包"
-
-#: planets/verdance/data/goals.json:goals[compartment_3].text
-msgid "Chest Size level 3"
-msgstr "胸舱容量 3 级"
-
-#: planets/verdance/data/goals.json:goals[shards_1].text
-msgid "Find a memory shard"
-msgstr "找到一块记忆碎片"
-
 #: planets/verdance/data/goals.json:goals[hex_3].text
 msgid "Clean 3 hexes"
 msgstr "清理 3 个六角格"
 
-#: planets/verdance/data/goals.json:goals[parts_2].text
-msgid "Dig up 2 robot parts"
-msgstr "挖出 2 个机器人零件"
+#: planets/verdance/data/goals.json:goals[cash_10].text
+msgid "Sell 10 bales"
+msgstr "卖掉 10 个捆包"
+
+#: planets/verdance/data/goals.json:goals[lift_1].text
+msgid "Buy Lift Strength"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[compartment_3].text
+msgid "Raise Chest Size to 3"
+msgstr ""
 
 #: planets/verdance/data/goals.json:goals[earn_1k].text
 msgid "Earn 1,000 cubes"
 msgstr "赚到 1,000 方块"
 
-#: planets/verdance/data/goals.json:goals[research_1].text planets/verdance/data/objectives.json:objectives[research1].text
-msgid "Finish a research project"
-msgstr "完成一项研究"
-
-#: planets/verdance/data/goals.json:goals[hex_5].text
-msgid "Clean 5 hexes"
-msgstr "清理 5 个六角格"
-
-#: planets/verdance/data/goals.json:goals[lift_2].text
-msgid "Lift Strength level 2"
-msgstr "举升力 2 级"
-
 #: planets/verdance/data/goals.json:goals[upgrades_12].text
 msgid "Buy 12 upgrades"
 msgstr "购买 12 项升级"
 
-#: planets/verdance/data/goals.json:goals[earn_3k].text
-msgid "Earn 3,000 cubes"
-msgstr "赚到 3,000 方块"
+#: planets/verdance/data/goals.json:goals[lift_2].text
+msgid "Raise Lift Strength to 2"
+msgstr ""
 
-#: planets/verdance/data/goals.json:goals[hex_7].text
-msgid "Clear the street: clean 7 hexes"
-msgstr "清理街道：清理 7 个六角格"
+#: planets/verdance/data/goals.json:goals[surge_1].text
+msgid "Release your first Surge"
+msgstr ""
 
-#: planets/verdance/data/goals.json:goals[pet_cat].text
-msgid "Pet a stray cat"
-msgstr "摸一摸流浪猫"
-
-#: planets/verdance/data/goals.json:goals[research_4].text
-msgid "Finish 4 research projects"
-msgstr "完成 4 项研究"
-
-#: planets/verdance/data/goals.json:goals[upgrades_20].text
-msgid "Buy 20 upgrades"
-msgstr "购买 20 项升级"
-
-#: planets/verdance/data/goals.json:goals[hex_10].text planets/verdance/data/objectives.json:objectives[hex10].text data/radio.json:songs[verdance_sweep].hint
-msgid "Clean 10 hexes"
-msgstr "清理 10 个六角格"
-
-#: planets/verdance/data/goals.json:goals[base_2].text
-msgid "Upgrade the base to level 2"
-msgstr "将基地升到 2 级"
-
-#: planets/verdance/data/goals.json:goals[haulbug_1].text
-msgid "Build a Haul Bug"
-msgstr "建造一台 Haul Bug"
-
-#: planets/verdance/data/goals.json:goals[scoopie_1].text planets/verdance/data/objectives.json:objectives[scoopie].text
-msgid "Build a Scoopie"
-msgstr "建造一台 Scoopie"
-
-#: planets/verdance/data/goals.json:goals[zone_1].text
-msgid "Give a robot a work zone"
-msgstr "给一台机器人划定工作区域"
-
-#: planets/verdance/data/goals.json:goals[bales_20].text
-msgid "Robots press 20 bales"
-msgstr "机器人压制 20 个捆包"
-
-#: planets/verdance/data/goals.json:goals[scoopie_2].text
-msgid "Run 2 Scoopies"
-msgstr "让 2 台 Scoopie 运转"
-
-#: planets/verdance/data/goals.json:goals[hex_12].text
-msgid "Clean 12 hexes"
-msgstr "清理 12 个六角格"
-
-#: planets/verdance/data/goals.json:goals[upgrades_25].text
-msgid "Buy 25 upgrades"
-msgstr "购买 25 项升级"
-
-#: planets/verdance/data/goals.json:goals[research_6].text
-msgid "Finish 6 research projects"
-msgstr "完成 6 项研究"
-
-#: planets/verdance/data/goals.json:goals[robots_4].text
-msgid "Build 4 robots"
-msgstr "建造 4 台机器人"
-
-#: planets/verdance/data/goals.json:goals[hex_15].text
-msgid "Clean 15 hexes"
-msgstr "清理 15 个六角格"
-
-#: planets/verdance/data/goals.json:goals[seeds].text
-msgid "Find the seed tin"
-msgstr "找到种子罐"
-
-#: planets/verdance/data/goals.json:goals[plant_5].text
-msgid "Plant the Maker seed"
-msgstr "种下造物者的种子"
+#: planets/verdance/data/goals.json:goals[zone_6].text
+msgid "Zone 6 hexes for the crew"
+msgstr ""
 
 #: planets/verdance/data/goals.json:goals[hexlv_2].text
 msgid "Get a hex to Planted"
 msgstr "让一个六角格达到“已种植”"
 
-#: planets/verdance/data/goals.json:goals[earn_10k].text
-msgid "Earn 10,000 cubes"
-msgstr "赚到 10,000 方块"
-
 #: planets/verdance/data/goals.json:goals[bloom_5].text
 msgid "Grow 5 flowers to bloom"
 msgstr "让 5 朵花开放"
-
-#: planets/verdance/data/goals.json:goals[shards_2].text
-msgid "Read 2 memory shards"
-msgstr "阅读 2 块记忆碎片"
-
-#: planets/verdance/data/goals.json:goals[zone_6].text
-msgid "Zone 6 hexes for your crews"
-msgstr "为队伍划定 6 个六角格"
-
-#: planets/verdance/data/goals.json:goals[hex_17].text
-msgid "Clean 17 hexes"
-msgstr "清理 17 个六角格"
-
-#: planets/verdance/data/goals.json:goals[research_8].text
-msgid "Finish 8 research projects"
-msgstr "完成 8 项研究"
-
-#: planets/verdance/data/goals.json:goals[bales_100].text
-msgid "Robots press 100 bales"
-msgstr "机器人压制 100 个捆包"
-
-#: planets/verdance/data/goals.json:goals[recycle_5].text
-msgid "Recycle 5 bales"
-msgstr "回收 5 个捆包"
 
 #: planets/verdance/data/goals.json:goals[hexlv_3].text
 msgid "Get a hex to Growing"
 msgstr "让一个六角格达到“生长中”"
 
-#: planets/verdance/data/goals.json:goals[hex_20].text planets/verdance/data/objectives.json:objectives[hex20].text
-msgid "Clean 20 hexes"
-msgstr "清理 20 个六角格"
-
-#: planets/verdance/data/goals.json:goals[skimmer_1].text
-msgid "Build a Skimmer for the lake"
-msgstr "为湖面建造一台 Skimmer"
-
-#: planets/verdance/data/goals.json:goals[research_12].text
-msgid "Finish 12 research projects"
-msgstr "完成 12 项研究"
-
-#: planets/verdance/data/goals.json:goals[hex_25].text
-msgid "Clean 25 hexes"
-msgstr "清理 25 个六角格"
-
-#: planets/verdance/data/goals.json:goals[earn_50k].text
-msgid "Earn 50,000 cubes"
-msgstr "赚到 50,000 方块"
-
-#: planets/verdance/data/goals.json:goals[hex_28].text
-msgid "Clean 28 hexes"
-msgstr "清理 28 个六角格"
-
-#: planets/verdance/data/goals.json:goals[upgrades_40].text
-msgid "Buy 40 upgrades"
-msgstr "购买 40 项升级"
-
-#: planets/verdance/data/goals.json:goals[seedling_1].text
-msgid "Build a Seedling planter"
-msgstr "建造一台 Seedling 种植机器人"
-
-#: planets/verdance/data/goals.json:goals[hex_30].text
-msgid "Clean 30 hexes (lake too)"
-msgstr "清理 30 个六角格（含湖面）"
-
-#: planets/verdance/data/goals.json:goals[base_3].text
-msgid "Upgrade the base to level 3"
-msgstr "将基地升到 3 级"
-
-#: planets/verdance/data/goals.json:goals[extras_radio].text
-msgid "Pick a song on the base radio"
-msgstr "在基地收音机上选一首歌"
-
-#: planets/verdance/data/goals.json:goals[builder_1].text
-msgid "Style a robot in the Locker"
-msgstr "在储物柜装扮一台机器人"
+#: planets/verdance/data/goals.json:goals[research_4].text
+msgid "Finish 4 research projects"
+msgstr "完成 4 项研究"
 
 #: planets/verdance/data/goals.json:goals[plant_25].text
 msgid "Plant 25 seeds"
 msgstr "种下 25 颗种子"
 
-#: planets/verdance/data/goals.json:goals[drip_1].text
-msgid "Build a Drip watering robot"
-msgstr "建造一台 Drip 浇水机器人"
-
-#: planets/verdance/data/goals.json:goals[pollinator].text
-msgid "Research Pollinator Survey"
-msgstr "研究“传粉者调查”"
-
-#: planets/verdance/data/goals.json:goals[bloom_25].text
-msgid "Grow 25 flowers to bloom"
-msgstr "让 25 朵花开放"
-
-#: planets/verdance/data/goals.json:goals[tank_1].text
-msgid "Place a Water Tank"
-msgstr "放置一个水箱"
-
-#: planets/verdance/data/goals.json:goals[plant_60].text
-msgid "Plant 60 seeds"
-msgstr "种下 60 颗种子"
-
-#: planets/verdance/data/goals.json:goals[drip_2].text
-msgid "Run 2 Drip robots"
-msgstr "让 2 台 Drip 运转"
+#: planets/verdance/data/goals.json:goals[seedling_1].text
+msgid "Build a Seedling planter"
+msgstr "建造一台 Seedling 种植机器人"
 
 #: planets/verdance/data/goals.json:goals[hexlv_4].text
 msgid "Get a hex to Sustained"
 msgstr "让一个六角格达到稳定"
 
-#: planets/verdance/data/goals.json:goals[drip_4].text
-msgid "Run 4 Drip robots"
-msgstr "让 4 台 Drip 运转"
-
-#: planets/verdance/data/goals.json:goals[hexlv_4x3].text
-msgid "Get 3 hexes to Sustained"
-msgstr "让 3 个六角格达到稳定"
-
-#: planets/verdance/data/goals.json:goals[spot_deer].text
-msgid "Spot a deer"
-msgstr "发现一只鹿"
-
 #: planets/verdance/data/goals.json:goals[hexlv_5].text
 msgid "Get a hex to Thriving"
 msgstr "让一个六角格达到繁茂"
 
-#: planets/verdance/data/goals.json:goals[hexlv_4x5].text
-msgid "Get 5 hexes to Sustained"
-msgstr "让 5 个六角格达到稳定"
-
-#: planets/verdance/data/goals.json:goals[plant_100].text
-msgid "Plant 100 seeds"
-msgstr "种下 100 颗种子"
-
-#: planets/verdance/data/goals.json:goals[robots_15].text
-msgid "Build 15 robots"
-msgstr "建造 15 台机器人"
-
-#: planets/verdance/data/goals.json:goals[hexlv_5x3].text
-msgid "Get 3 hexes to Thriving"
-msgstr "让 3 个六角格达到繁茂"
-
-#: planets/verdance/data/goals.json:goals[hexlv_4x8].text
-msgid "Get 8 hexes to Sustained"
-msgstr "让 8 个六角格达到稳定"
-
-#: planets/verdance/data/goals.json:goals[earn_75k].text
-msgid "Earn 75,000 cubes"
-msgstr "赚到 75,000 方块"
-
-#: planets/verdance/data/goals.json:goals[bloom_300].text
-msgid "Grow 300 flowers to bloom"
-msgstr "让 300 朵花开放"
-
-#: planets/verdance/data/goals.json:goals[hexlv_5x8].text
-msgid "Get 8 hexes to Thriving"
-msgstr "让 8 个六角格达到繁茂"
-
-#: planets/verdance/data/goals.json:goals[hexlv_4x10].text
-msgid "Get 10 hexes to Sustained"
-msgstr "让 10 个六角格达到稳定"
-
-#: planets/verdance/data/goals.json:goals[earn_100k].text
-msgid "Earn 100,000 cubes"
-msgstr "赚到 100,000 方块"
-
-#: planets/verdance/data/goals.json:goals[hexlv_4x15].text
-msgid "Get 15 hexes to Sustained"
-msgstr "让 15 个六角格达到稳定"
-
-#: planets/verdance/data/goals.json:goals[hexlv_5x15].text
-msgid "Get 15 hexes to Thriving"
-msgstr "让 15 个六角格达到繁茂"
-
-#: planets/verdance/data/goals.json:goals[hexlv_4x20].text
-msgid "Get 20 hexes to Sustained"
-msgstr "让 20 个六角格达到稳定"
-
-#: planets/verdance/data/goals.json:goals[base_4].text
-msgid "Upgrade the base to level 4"
-msgstr "将基地升到 4 级"
-
-#: planets/verdance/data/goals.json:goals[bloom_500].text
-msgid "Grow 500 flowers to bloom"
-msgstr "让 500 朵花开放"
-
-#: planets/verdance/data/goals.json:goals[hexlv_5x20].text
-msgid "Get 20 hexes to Thriving"
-msgstr "让 20 个六角格达到繁茂"
-
-#: planets/verdance/data/goals.json:goals[air_1k].text
-msgid "Filter 1,000 m3 of air"
-msgstr "过滤 1,000 立方米空气"
-
-#: planets/verdance/data/goals.json:goals[hexlv_5x25].text
-msgid "Get 25 hexes to Thriving"
-msgstr "让 25 个六角格达到繁茂"
-
-#: planets/verdance/data/goals.json:goals[base_5].text
-msgid "Upgrade the base to level 5"
-msgstr "将基地升到 5 级"
-
-#: planets/verdance/data/goals.json:goals[extras_retire].text
-msgid "Retire a robot to the nursery"
-msgstr "让一个机器人退休去苗圃"
-
-#: planets/verdance/data/goals.json:goals[rocket].text
-msgid "Launch the rocket onward"
-msgstr "让火箭继续出发"
-
-#: planets/verdance/data/goals.json:goals[builder_full].text
-msgid "Fully custom-build a robot"
-msgstr "完全定制一台机器人"
-
-#: planets/verdance/data/goals.json:goals[research_20].text
-msgid "Finish 20 research projects"
-msgstr "完成 20 项研究"
-
-#: planets/verdance/data/goals.json:goals[multibot_1].text
-msgid "Build a Multibot"
-msgstr "建造一台 Multibot"
-
-#: planets/verdance/data/goals.json:goals[tier_1].text
-msgid "Upgrade a robot type to Mk II"
-msgstr "将一种机器人升级到 Mk II"
-
-#: planets/verdance/data/goals.json:goals[earn_150k].text
-msgid "Earn 150,000 cubes"
-msgstr "赚到 150,000 方块"
-
-#: planets/verdance/data/goals.json:goals[hex_50].text
-msgid "Clean 50 hexes"
-msgstr "清理 50 个六角格"
-
-#: planets/verdance/data/goals.json:goals[bloom_800].text
-msgid "Grow 800 flowers to bloom"
-msgstr "让 800 朵花开放"
-
-#: planets/verdance/data/goals.json:goals[restored_40].text
-msgid "Fully restore 40 hexes"
-msgstr "完全恢复 40 个六角格"
-
-#: planets/verdance/data/goals.json:goals[base5_2].text
-msgid "Get a second base to level 5"
-msgstr "让第二座基地达到 5 级"
-
-#: planets/verdance/data/goals.json:goals[research_dunes].text
-msgid "Research Dune Charts"
-msgstr "研究“沙丘海图”"
-
-#: planets/verdance/data/goals.json:goals[visit_dust].text
-msgid "Fly to the Dust Flats"
-msgstr "飞往尘土平原"
-
-#: planets/verdance/data/goals.json:goals[research_24].text
-msgid "Finish 24 research projects"
-msgstr "完成 24 项研究"
-
-#: planets/verdance/data/goals.json:goals[dust_base3].text
-msgid "Dust Flats base to level 3"
-msgstr "尘土平原基地升到 3 级"
-
-#: planets/verdance/data/goals.json:goals[dust_grow15].text planets/verdance/data/goals.json:goals[frozen_grow15].text planets/verdance/data/goals.json:goals[sunken_grow15].text
-msgid "Get 15 hexes Growing here"
-msgstr "在这里让 15 个六角格生长"
-
-#: planets/verdance/data/goals.json:goals[hex_80].text
-msgid "Clean 80 hexes"
-msgstr "清理 80 个六角格"
-
-#: planets/verdance/data/goals.json:goals[dust_base4].text
-msgid "Dust Flats base to level 4"
-msgstr "尘土平原基地升到 4 级"
-
-#: planets/verdance/data/goals.json:goals[hex_100].text
-msgid "Clean 100 hexes"
-msgstr "清理 100 个六角格"
-
-#: planets/verdance/data/goals.json:goals[research_lance].text
-msgid "Research Thermal Lance"
-msgstr "研究“热能长矛”"
-
-#: planets/verdance/data/goals.json:goals[dust_base5].text
-msgid "Dust Flats base to level 5"
-msgstr "尘土平原基地升到 5 级"
-
-#: planets/verdance/data/goals.json:goals[base5_3].text
-msgid "Get three bases to level 5"
-msgstr "让三座基地达到 5 级"
-
-#: planets/verdance/data/goals.json:goals[visit_frozen].text
-msgid "Fly to the Frozen Port"
-msgstr "飞往冰封港口"
-
-#: planets/verdance/data/goals.json:goals[research_26].text
-msgid "Finish 26 research projects"
-msgstr "完成 26 项研究"
-
-#: planets/verdance/data/goals.json:goals[heater_1].text
-msgid "Light a heater on the ice"
-msgstr "在冰上点燃一台加热器"
-
-#: planets/verdance/data/goals.json:goals[thaw_10].text
-msgid "Thaw 10 hexes"
-msgstr "解冻 10 个六角格"
-
-#: planets/verdance/data/goals.json:goals[greenhouse_1].text
-msgid "Build a greenhouse"
-msgstr "建造一座温室"
-
-#: planets/verdance/data/goals.json:goals[frozen_base3].text
-msgid "Frozen Port base to level 3"
-msgstr "冰封港口基地升到 3 级"
-
-#: planets/verdance/data/goals.json:goals[thaw_30].text
-msgid "Thaw 30 hexes"
-msgstr "解冻 30 个六角格"
-
-#: planets/verdance/data/goals.json:goals[frozen_base4].text
-msgid "Frozen Port base to level 4"
-msgstr "冰封港口基地升到 4 级"
-
-#: planets/verdance/data/goals.json:goals[hex_130].text
-msgid "Clean 130 hexes"
-msgstr "清理 130 个六角格"
-
-#: planets/verdance/data/goals.json:goals[research_pumps].text
-msgid "Research Pump Works"
-msgstr "研究“泵站”"
-
-#: planets/verdance/data/goals.json:goals[frozen_base5].text
-msgid "Frozen Port base to level 5"
-msgstr "冰封港口基地升到 5 级"
-
-#: planets/verdance/data/goals.json:goals[base5_4].text
-msgid "Get four bases to level 5"
-msgstr "让四座基地达到 5 级"
-
-#: planets/verdance/data/goals.json:goals[visit_sunken].text
-msgid "Fly to the Sunken City"
-msgstr "飞往沉没之城"
-
-#: planets/verdance/data/goals.json:goals[sunken_base3].text
-msgid "Sunken City base to level 3"
-msgstr "沉没之城基地升到 3 级"
-
-#: planets/verdance/data/goals.json:goals[sunken_base4].text
-msgid "Sunken City base to level 4"
-msgstr "沉没之城基地升到 4 级"
-
-#: planets/verdance/data/goals.json:goals[sunken_base5].text
-msgid "Sunken City base to level 5"
-msgstr "沉没之城基地升到 5 级"
-
-#: planets/verdance/data/goals.json:goals[frontiers_growing].text
-msgid "Every frontier 50% Growing"
-msgstr "每片边境 50% 生长中"
-
-#: planets/verdance/data/goals.json:goals[research_beacon].text
-msgid "Research the Ark Beacon"
-msgstr "研究“方舟信标”"
-
-#: planets/verdance/data/goals.json:goals[visit_cradle].text
-msgid "Fly to Cradle Returns"
-msgstr "飞往 Cradle号归来"
-
-#: planets/verdance/data/goals.json:goals[cradle_pad].text
-msgid "Clean the Cradle landing pad"
-msgstr "清理 Cradle号着陆平台"
-
-#: planets/verdance/data/goals.json:goals[cradle_grow25].text
-msgid "Get 25 hexes Growing here"
-msgstr "在这里让 25 个六角格生长"
-
-#: planets/verdance/data/goals.json:goals[cradle_home].text
-msgid "Call the Cradle home"
-msgstr "迎 Cradle号回家"
-
-#: planets/verdance/data/goals.json:goals[late_garden_1].text
-msgid "Place a decoration (H)"
-msgstr "放置一件装饰（H）"
-
-#: planets/verdance/data/goals.json:goals[late_garden_10].text
-msgid "Place 10 decorations"
-msgstr "放置 10 件装饰"
-
-#: planets/verdance/data/goals.json:goals[late_garden_kinds].text
-msgid "Place 5 kinds of decoration"
-msgstr "放置 5 种装饰"
-
-#: planets/verdance/data/goals.json:goals[late_eggs_30].text
-msgid "Find 30 curiosities"
-msgstr "找到 30 件奇物"
-
-#: planets/verdance/data/goals.json:goals[late_charm_20].text
-msgid "Reach 20 charm in one district"
-msgstr "在一个城区达到 20 点魅力"
-
-#: planets/verdance/data/goals.json:goals[late_eggs_38].text
-msgid "Find 38 curiosities"
-msgstr "找到 38 件奇物"
+#: planets/verdance/data/goals.json:goals[rig_plate_cutter].text
+msgid "Fit the Plate Cutter"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[wrecks_1].text
+msgid "Learn wrecks by hand"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[scrounger_1].text
+msgid "Build a Scrounger"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[scrounge_50].text
+msgid "Scroungers bring in 50 Parts"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[rig_skim_skirt].text
+msgid "Fit the Skim Skirt"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[slick_1].text
+msgid "Learn slick by hand"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[assembler].text
+msgid "Build the Assembler"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[assemble_5].text
+msgid "Assemble 5 robots"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[skimmer_1].text
+msgid "Build a Skimmer"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[rig_mist_scrubber].text
+msgid "Fit the Mist Scrubber"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[smog_1].text
+msgid "Learn smog by hand"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[drip_1].text
+msgid "Build a Drip watering robot"
+msgstr "建造一台 Drip 浇水机器人"
+
+#: planets/verdance/data/goals.json:goals[rig_soil_doser].text
+msgid "Fit the Soil Doser"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[blight_1].text
+msgid "Learn blight by hand"
+msgstr ""
 
 #: planets/verdance/data/goals.json:goals[locker_build].text
 msgid "Build the Locker"
 msgstr "建造储物柜"
 
 #: planets/verdance/data/goals.json:goals[locker_wear].text
-msgid "Wear a look at the Locker"
-msgstr "在储物柜换上一套外观"
+msgid "Wear a look you found"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[more_hexes].text planets/verdance/data/goals.json:goals[more_ground].text
+msgid "Clean %d more hexes"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[more_bales].text
+msgid "Press %d more bales"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[more_surges].text
+msgid "Release a Surge"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[more_growth].text
+msgid "Raise %d hexes a stage"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[more_parts].text
+msgid "Dig up %d more Parts"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[more_perfect].text
+msgid "Press %d perfect bales"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[litter_2].text
+msgid "Reach Litter mastery 2"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[hex_5].text
+msgid "Clean 5 hexes"
+msgstr "清理 5 个六角格"
+
+#: planets/verdance/data/goals.json:goals[litter_3].text
+msgid "Reach Litter mastery 3"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[litter_4].text
+msgid "Reach Litter mastery 4"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[hex_12].text
+msgid "Clean 12 hexes"
+msgstr "清理 12 个六角格"
+
+#: planets/verdance/data/goals.json:goals[crew_2].text
+msgid "Run a crew of 2"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[litter_5].text
+msgid "Reach Litter mastery 5"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[hex_25].text
+msgid "Clean 25 hexes"
+msgstr "清理 25 个六角格"
+
+#: planets/verdance/data/goals.json:goals[crew_4].text
+msgid "Run a crew of 4"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[litter_6].text
+msgid "Reach Litter mastery 6"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[hex_50].text
+msgid "Clean 50 hexes"
+msgstr "清理 50 个六角格"
+
+#: planets/verdance/data/goals.json:goals[crew_6].text
+msgid "Run a crew of 6"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_town_1].text
+msgid "Bring Old Town to Clean"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[litter_7].text
+msgid "Reach Litter mastery 7"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_town_2].text
+msgid "Bring Old Town to Planted"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[crew_8].text
+msgid "Run a crew of 8"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_town_3].text
+msgid "Bring Old Town to Growing"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_town_source].text
+msgid "Shut down the burst main"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_town_4].text
+msgid "Bring Old Town to Sustained"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[wrecks_3].text
+msgid "Reach Wrecks mastery 3"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[scrapyard_1].text
+msgid "Bring Ironside to Clean"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[crew_15].text
+msgid "Run a crew of 15"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[scrapyard_2].text
+msgid "Bring Ironside to Planted"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[scrapyard_3].text
+msgid "Bring Ironside to Growing"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[crew_30].text
+msgid "Run a crew of 30"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[scrapyard_source].text
+msgid "Shut down the crusher yard"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[scrapyard_4].text
+msgid "Bring Ironside to Sustained"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[wrecks_5].text
+msgid "Reach Wrecks mastery 5"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[slick_3].text
+msgid "Reach Slick mastery 3"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[kettle_bay_1].text
+msgid "Bring Kettle Bay to Clean"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[crew_50].text
+msgid "Run a crew of 50"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[kettle_bay_2].text
+msgid "Bring Kettle Bay to Planted"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[kettle_bay_3].text
+msgid "Bring Kettle Bay to Growing"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[scrapyard_5].text
+msgid "Bring Ironside to Thriving"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[kettle_bay_source].text
+msgid "Stop the tanker's leak"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[kettle_bay_4].text
+msgid "Bring Kettle Bay to Sustained"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[slick_5].text
+msgid "Reach Slick mastery 5"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[smog_3].text
+msgid "Reach Smog mastery 3"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[highreach_1].text
+msgid "Bring Highreach to Clean"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[crew_75].text
+msgid "Run a crew of 75"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[highreach_2].text
+msgid "Bring Highreach to Planted"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[highreach_3].text
+msgid "Bring Highreach to Growing"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[kettle_bay_5].text
+msgid "Bring Kettle Bay to Thriving"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[highreach_source].text
+msgid "Shut down the incinerator"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[highreach_4].text
+msgid "Bring Highreach to Sustained"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[smog_5].text
+msgid "Reach Smog mastery 5"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[blight_3].text
+msgid "Reach Blight mastery 3"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[lowmeadow_1].text
+msgid "Bring Lowmeadow to Clean"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[crew_100].text
+msgid "Run a crew of 100"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[lowmeadow_2].text
+msgid "Bring Lowmeadow to Planted"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[lowmeadow_3].text
+msgid "Bring Lowmeadow to Growing"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[highreach_5].text
+msgid "Bring Highreach to Thriving"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[lowmeadow_source].text
+msgid "Shut the treatment works"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[lowmeadow_4].text
+msgid "Bring Lowmeadow to Sustained"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[blight_5].text
+msgid "Reach Blight mastery 5"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_capital_1].text
+msgid "Bring Old Capital to Clean"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[crew_125].text
+msgid "Run a crew of 125"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_capital_2].text
+msgid "Bring Old Capital to Planted"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_capital_3].text
+msgid "Bring Old Capital to Growing"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[lowmeadow_5].text
+msgid "Bring Lowmeadow to Thriving"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_capital_source].text
+msgid "Build the rocket"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_capital_4].text
+msgid "Bring Old Capital to Sustained"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[crew_150].text
+msgid "Run a crew of 150"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_capital_5].text
+msgid "Bring Old Capital to Thriving"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[litter_10].text
+msgid "Reach Litter mastery 10"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[more_crew].text
+msgid "Build %d more robots"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[old_town_5].text
+msgid "Restore Old Town"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[cities_3].text
+msgid "Restore 3 of 6 cities"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[launch_point].text
+msgid "Reach the launch point"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[sprout_set].text
+msgid "Find all 7 Sprout pieces"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[planet_1].text
+msgid "Restore 1% of the planet"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[planet_5].text
+msgid "Restore 5% of the planet"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[planet_25].text
+msgid "Restore 25% of the planet"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[planet_50].text
+msgid "Restore 50% of the planet"
+msgstr ""
+
+#: planets/verdance/data/goals.json:goals[planet_100].text
+msgid "Restore the whole planet"
+msgstr ""
 
 #: planets/verdance/data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
@@ -11032,6 +10960,10 @@ msgstr "机器人页签：Haul Bug 会把你的捆包搬到磅秤上。"
 msgid "The base has power! Build a helper: a Haul Bug will carry your bales. Try the Bots tab."
 msgstr "基地通电了！造个帮手吧：Haul Bug 会替你搬捆包。去机器人页签看看。"
 
+#: planets/verdance/data/objectives.json:objectives[hex10].text data/radio.json:songs[verdance_sweep].hint
+msgid "Clean 10 hexes"
+msgstr "清理 10 个六角格"
+
 #: planets/verdance/data/objectives.json:objectives[hex10].desc
 msgid "Your Haul Bug sells the bales. Stay at the work."
 msgstr "Haul Bug 会去卖捆包。你专心干活就好。"
@@ -11067,6 +10999,10 @@ msgstr "继续清理。干净的土地里会出现种子。"
 #: planets/verdance/data/objectives.json:objectives[seed].lines
 msgid "Something green is waking out there. Plant the first seed."
 msgstr "外面有什么绿色的东西正在苏醒。种下第一颗种子吧。"
+
+#: planets/verdance/data/objectives.json:objectives[scoopie].text
+msgid "Build a Scoopie"
+msgstr "建造一台 Scoopie"
 
 #: planets/verdance/data/objectives.json:objectives[scoopie].desc
 msgid "Workbench, Bots tab. It cleans a hex by itself."
@@ -11104,6 +11040,10 @@ msgstr "工作台。WREN 的声音会更清楚。"
 msgid "Boost the tower. I want to hear you clearly."
 msgstr "增强信号塔。我想清楚地听到你。"
 
+#: planets/verdance/data/objectives.json:objectives[research1].text
+msgid "Finish a research project"
+msgstr "完成一项研究"
+
 #: planets/verdance/data/objectives.json:objectives[research1].desc
 msgid "Workbench, Research tab. Research unlocks new robots."
 msgstr "工作台，研究页签。研究可以解锁新机器人。"
@@ -11115,6 +11055,10 @@ msgstr "工作台，升级页签：先加装研究台。"
 #: planets/verdance/data/objectives.json:objectives[research1].lines
 msgid "Your bench can study now. Research unlocks new machines and seeds."
 msgstr "你的工作台现在可以做研究了。研究可以解锁新的机器和种子。"
+
+#: planets/verdance/data/objectives.json:objectives[hex20].text
+msgid "Clean 20 hexes"
+msgstr "清理 20 个六角格"
 
 #: planets/verdance/data/objectives.json:objectives[hex20].desc
 msgid "More clean ground means more room to grow."
@@ -15681,6 +15625,357 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: planets/verdance/data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Show more goals"
+#~ msgstr "显示更多目标"
+
+#~ msgid "Install the Baler"
+#~ msgstr "装上打包机"
+
+#~ msgid "Make your first bale"
+#~ msgstr "压出你的第一个捆包"
+
+#~ msgid "Lift Strength level 1"
+#~ msgstr "举升力 1 级"
+
+#~ msgid "Clean your first hex"
+#~ msgstr "清理你的第一个六角格"
+
+#~ msgid "Make a perfect bale"
+#~ msgstr "压出一个完美捆包"
+
+#~ msgid "Chest Size level 3"
+#~ msgstr "胸舱容量 3 级"
+
+#~ msgid "Find a memory shard"
+#~ msgstr "找到一块记忆碎片"
+
+#~ msgid "Lift Strength level 2"
+#~ msgstr "举升力 2 级"
+
+#~ msgid "Earn 3,000 cubes"
+#~ msgstr "赚到 3,000 方块"
+
+#~ msgid "Clear the street: clean 7 hexes"
+#~ msgstr "清理街道：清理 7 个六角格"
+
+#~ msgid "Pet a stray cat"
+#~ msgstr "摸一摸流浪猫"
+
+#~ msgid "Buy 20 upgrades"
+#~ msgstr "购买 20 项升级"
+
+#~ msgid "Upgrade the base to level 2"
+#~ msgstr "将基地升到 2 级"
+
+#~ msgid "Build a Haul Bug"
+#~ msgstr "建造一台 Haul Bug"
+
+#~ msgid "Give a robot a work zone"
+#~ msgstr "给一台机器人划定工作区域"
+
+#~ msgid "Robots press 20 bales"
+#~ msgstr "机器人压制 20 个捆包"
+
+#~ msgid "Run 2 Scoopies"
+#~ msgstr "让 2 台 Scoopie 运转"
+
+#~ msgid "Buy 25 upgrades"
+#~ msgstr "购买 25 项升级"
+
+#~ msgid "Finish 6 research projects"
+#~ msgstr "完成 6 项研究"
+
+#~ msgid "Build 4 robots"
+#~ msgstr "建造 4 台机器人"
+
+#~ msgid "Clean 15 hexes"
+#~ msgstr "清理 15 个六角格"
+
+#~ msgid "Find the seed tin"
+#~ msgstr "找到种子罐"
+
+#~ msgid "Plant the Maker seed"
+#~ msgstr "种下造物者的种子"
+
+#~ msgid "Earn 10,000 cubes"
+#~ msgstr "赚到 10,000 方块"
+
+#~ msgid "Read 2 memory shards"
+#~ msgstr "阅读 2 块记忆碎片"
+
+#~ msgid "Zone 6 hexes for your crews"
+#~ msgstr "为队伍划定 6 个六角格"
+
+#~ msgid "Clean 17 hexes"
+#~ msgstr "清理 17 个六角格"
+
+#~ msgid "Finish 8 research projects"
+#~ msgstr "完成 8 项研究"
+
+#~ msgid "Robots press 100 bales"
+#~ msgstr "机器人压制 100 个捆包"
+
+#~ msgid "Recycle 5 bales"
+#~ msgstr "回收 5 个捆包"
+
+#~ msgid "Build a Skimmer for the lake"
+#~ msgstr "为湖面建造一台 Skimmer"
+
+#~ msgid "Finish 12 research projects"
+#~ msgstr "完成 12 项研究"
+
+#~ msgid "Earn 50,000 cubes"
+#~ msgstr "赚到 50,000 方块"
+
+#~ msgid "Clean 28 hexes"
+#~ msgstr "清理 28 个六角格"
+
+#~ msgid "Buy 40 upgrades"
+#~ msgstr "购买 40 项升级"
+
+#~ msgid "Clean 30 hexes (lake too)"
+#~ msgstr "清理 30 个六角格（含湖面）"
+
+#~ msgid "Upgrade the base to level 3"
+#~ msgstr "将基地升到 3 级"
+
+#~ msgid "Pick a song on the base radio"
+#~ msgstr "在基地收音机上选一首歌"
+
+#~ msgid "Style a robot in the Locker"
+#~ msgstr "在储物柜装扮一台机器人"
+
+#~ msgid "Research Pollinator Survey"
+#~ msgstr "研究“传粉者调查”"
+
+#~ msgid "Grow 25 flowers to bloom"
+#~ msgstr "让 25 朵花开放"
+
+#~ msgid "Place a Water Tank"
+#~ msgstr "放置一个水箱"
+
+#~ msgid "Plant 60 seeds"
+#~ msgstr "种下 60 颗种子"
+
+#~ msgid "Run 2 Drip robots"
+#~ msgstr "让 2 台 Drip 运转"
+
+#~ msgid "Run 4 Drip robots"
+#~ msgstr "让 4 台 Drip 运转"
+
+#~ msgid "Get 3 hexes to Sustained"
+#~ msgstr "让 3 个六角格达到稳定"
+
+#~ msgid "Spot a deer"
+#~ msgstr "发现一只鹿"
+
+#~ msgid "Get 5 hexes to Sustained"
+#~ msgstr "让 5 个六角格达到稳定"
+
+#~ msgid "Plant 100 seeds"
+#~ msgstr "种下 100 颗种子"
+
+#~ msgid "Build 15 robots"
+#~ msgstr "建造 15 台机器人"
+
+#~ msgid "Get 3 hexes to Thriving"
+#~ msgstr "让 3 个六角格达到繁茂"
+
+#~ msgid "Get 8 hexes to Sustained"
+#~ msgstr "让 8 个六角格达到稳定"
+
+#~ msgid "Earn 75,000 cubes"
+#~ msgstr "赚到 75,000 方块"
+
+#~ msgid "Grow 300 flowers to bloom"
+#~ msgstr "让 300 朵花开放"
+
+#~ msgid "Get 8 hexes to Thriving"
+#~ msgstr "让 8 个六角格达到繁茂"
+
+#~ msgid "Get 10 hexes to Sustained"
+#~ msgstr "让 10 个六角格达到稳定"
+
+#~ msgid "Earn 100,000 cubes"
+#~ msgstr "赚到 100,000 方块"
+
+#~ msgid "Get 15 hexes to Sustained"
+#~ msgstr "让 15 个六角格达到稳定"
+
+#~ msgid "Get 15 hexes to Thriving"
+#~ msgstr "让 15 个六角格达到繁茂"
+
+#~ msgid "Get 20 hexes to Sustained"
+#~ msgstr "让 20 个六角格达到稳定"
+
+#~ msgid "Upgrade the base to level 4"
+#~ msgstr "将基地升到 4 级"
+
+#~ msgid "Grow 500 flowers to bloom"
+#~ msgstr "让 500 朵花开放"
+
+#~ msgid "Get 20 hexes to Thriving"
+#~ msgstr "让 20 个六角格达到繁茂"
+
+#~ msgid "Filter 1,000 m3 of air"
+#~ msgstr "过滤 1,000 立方米空气"
+
+#~ msgid "Get 25 hexes to Thriving"
+#~ msgstr "让 25 个六角格达到繁茂"
+
+#~ msgid "Upgrade the base to level 5"
+#~ msgstr "将基地升到 5 级"
+
+#~ msgid "Retire a robot to the nursery"
+#~ msgstr "让一个机器人退休去苗圃"
+
+#~ msgid "Launch the rocket onward"
+#~ msgstr "让火箭继续出发"
+
+#~ msgid "Fully custom-build a robot"
+#~ msgstr "完全定制一台机器人"
+
+#~ msgid "Finish 20 research projects"
+#~ msgstr "完成 20 项研究"
+
+#~ msgid "Build a Multibot"
+#~ msgstr "建造一台 Multibot"
+
+#~ msgid "Upgrade a robot type to Mk II"
+#~ msgstr "将一种机器人升级到 Mk II"
+
+#~ msgid "Earn 150,000 cubes"
+#~ msgstr "赚到 150,000 方块"
+
+#~ msgid "Grow 800 flowers to bloom"
+#~ msgstr "让 800 朵花开放"
+
+#~ msgid "Fully restore 40 hexes"
+#~ msgstr "完全恢复 40 个六角格"
+
+#~ msgid "Get a second base to level 5"
+#~ msgstr "让第二座基地达到 5 级"
+
+#~ msgid "Research Dune Charts"
+#~ msgstr "研究“沙丘海图”"
+
+#~ msgid "Fly to the Dust Flats"
+#~ msgstr "飞往尘土平原"
+
+#~ msgid "Finish 24 research projects"
+#~ msgstr "完成 24 项研究"
+
+#~ msgid "Dust Flats base to level 3"
+#~ msgstr "尘土平原基地升到 3 级"
+
+#~ msgid "Get 15 hexes Growing here"
+#~ msgstr "在这里让 15 个六角格生长"
+
+#~ msgid "Clean 80 hexes"
+#~ msgstr "清理 80 个六角格"
+
+#~ msgid "Dust Flats base to level 4"
+#~ msgstr "尘土平原基地升到 4 级"
+
+#~ msgid "Clean 100 hexes"
+#~ msgstr "清理 100 个六角格"
+
+#~ msgid "Research Thermal Lance"
+#~ msgstr "研究“热能长矛”"
+
+#~ msgid "Dust Flats base to level 5"
+#~ msgstr "尘土平原基地升到 5 级"
+
+#~ msgid "Get three bases to level 5"
+#~ msgstr "让三座基地达到 5 级"
+
+#~ msgid "Fly to the Frozen Port"
+#~ msgstr "飞往冰封港口"
+
+#~ msgid "Finish 26 research projects"
+#~ msgstr "完成 26 项研究"
+
+#~ msgid "Light a heater on the ice"
+#~ msgstr "在冰上点燃一台加热器"
+
+#~ msgid "Thaw 10 hexes"
+#~ msgstr "解冻 10 个六角格"
+
+#~ msgid "Build a greenhouse"
+#~ msgstr "建造一座温室"
+
+#~ msgid "Frozen Port base to level 3"
+#~ msgstr "冰封港口基地升到 3 级"
+
+#~ msgid "Thaw 30 hexes"
+#~ msgstr "解冻 30 个六角格"
+
+#~ msgid "Frozen Port base to level 4"
+#~ msgstr "冰封港口基地升到 4 级"
+
+#~ msgid "Clean 130 hexes"
+#~ msgstr "清理 130 个六角格"
+
+#~ msgid "Research Pump Works"
+#~ msgstr "研究“泵站”"
+
+#~ msgid "Frozen Port base to level 5"
+#~ msgstr "冰封港口基地升到 5 级"
+
+#~ msgid "Get four bases to level 5"
+#~ msgstr "让四座基地达到 5 级"
+
+#~ msgid "Fly to the Sunken City"
+#~ msgstr "飞往沉没之城"
+
+#~ msgid "Sunken City base to level 3"
+#~ msgstr "沉没之城基地升到 3 级"
+
+#~ msgid "Sunken City base to level 4"
+#~ msgstr "沉没之城基地升到 4 级"
+
+#~ msgid "Sunken City base to level 5"
+#~ msgstr "沉没之城基地升到 5 级"
+
+#~ msgid "Every frontier 50% Growing"
+#~ msgstr "每片边境 50% 生长中"
+
+#~ msgid "Research the Ark Beacon"
+#~ msgstr "研究“方舟信标”"
+
+#~ msgid "Fly to Cradle Returns"
+#~ msgstr "飞往 Cradle号归来"
+
+#~ msgid "Clean the Cradle landing pad"
+#~ msgstr "清理 Cradle号着陆平台"
+
+#~ msgid "Get 25 hexes Growing here"
+#~ msgstr "在这里让 25 个六角格生长"
+
+#~ msgid "Call the Cradle home"
+#~ msgstr "迎 Cradle号回家"
+
+#~ msgid "Place a decoration (H)"
+#~ msgstr "放置一件装饰（H）"
+
+#~ msgid "Place 10 decorations"
+#~ msgstr "放置 10 件装饰"
+
+#~ msgid "Place 5 kinds of decoration"
+#~ msgstr "放置 5 种装饰"
+
+#~ msgid "Find 30 curiosities"
+#~ msgstr "找到 30 件奇物"
+
+#~ msgid "Reach 20 charm in one district"
+#~ msgstr "在一个城区达到 20 点魅力"
+
+#~ msgid "Find 38 curiosities"
+#~ msgstr "找到 38 件奇物"
+
+#~ msgid "Wear a look at the Locker"
+#~ msgstr "在储物柜换上一套外观"
 
 #~ msgid "Salvage Surges"
 #~ msgstr "回收热潮"

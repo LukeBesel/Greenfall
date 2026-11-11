@@ -548,3 +548,8 @@ Merged. Crew at the launch point 155 (cap 200); city 1 first hex 55 s, first rob
 - **The stage-3 hold covers only the 12 hexes nearest each running source** (the agent's correction of the lead's brief: holding the whole city at stage 3 would stop it reaching stage 4, where its job opens). Those hexes re-soil one per 90 s, at most 3 dirty, and stop at shutdown; the readout says "SOURCE STILL RUNNING".
 - **Rocket parts** take 45 s each on the Assembler's line (robot building pauses); without the Assembler the workbench builds one in 135 s.
 - Follow-ups: a "keep Parts back" control on the Assembler panel so the line does not spend the rocket's Parts (M3-12/UI); a visible mark in the world for a source's reach (M5); the rocket and Kettle Bay's slick do not re-soil (kept).
+
+## Goals in three tiers (M3-10, Nov 11, 2026)
+`docs/reviews/M3-10_GOALS.md`. NOW (41 authored, 6 repeating), CITY (65 authored, 2 repeating) and PLANET (9) goals from data, one of each always active, beside the story card; 114 goals pointing at parked systems removed. Bot: longest stretch with no goal finished 2.0 minutes; no tier ever empty. Merged.
+- The first PLANET goal ("Restore Old Town") does not finish in the first 25 minutes. Kept: the long tier is meant to be long, and the card and NOW goals carry the opening.
+- Purchase waits of 155 and 198 s between minutes 14 and 20 go to M3-12; the simulator's goal-gap check must count repeating goals (M3-12).

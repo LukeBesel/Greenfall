@@ -128,8 +128,8 @@ msgid "Pause"
 msgstr "[Þàûšé ~]"
 
 #: autoload/Settings.gd:21
-msgid "Show more goals"
-msgstr "[Šĥôŵ môŕé ĝôàļš ~~]"
+msgid "Follow the next goal"
+msgstr "[Fôļļôŵ ţĥé ñéxţ ĝôàļ ~~~~]"
 
 #: autoload/Settings.gd:22
 msgid "Zoom in"
@@ -498,7 +498,7 @@ msgstr "[Ţĥé çŕéŵ ķéþţ çļéàñîñĝ. Ţĥé çîţý îš à ļî
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "[Ţĥé šçŕûbbéŕš ƒîļţéŕéð ţĥé àîŕ ţĥé ŵĥôļé ţîmé. Îţ'š à ļîţţļé çļéàŕéŕ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: core/pace.gd:150 story/objectives.gd:886
+#: core/pace.gd:150 story/objectives.gd:873
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "[Ţôô ĥéàvý. Ûþĝŕàðé Ļîƒţ àţ ţĥé béñçĥ. ~~~~~~~~~~]"
 
@@ -510,7 +510,7 @@ msgstr "[Ñôţĥîñĝ ĥéŕé ƒîţš. Þŕéšš [%s] ţô màķé à bàļ
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "[Ñô Bàļéŕ ýéţ. Bŕîñĝ ýôûŕ çĥéšţ ţô ţĥé bîñ. ~~~~~~~~~~~~]"
 
-#: core/pace.gd:315 systems/events.gd:487 ui/goals_panel.gd:284
+#: core/pace.gd:315 systems/events.gd:487 ui/goals_panel.gd:125
 msgid "+%s cubes"
 msgstr "[+%s çûbéš ~]"
 
@@ -1171,7 +1171,7 @@ msgstr "[ĤÉX ÇĻÉÀÑ! ~]"
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
-#: scenes/slice_orbit.gd:609 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:588
+#: scenes/slice_orbit.gd:609 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:589
 msgid "E   Fix the workbench"
 msgstr "E   [Fîx ţĥé ŵôŕķbéñçĥ ~~~]"
 
@@ -1744,59 +1744,59 @@ msgstr "[<< ĻÉÐĜÉŔ // ÔFF ŢĤÉ ŔÉÇÔŔÐ >> ~~~~~~~]"
 msgid "LEDGER  WMS-07"
 msgstr "[ĻÉÐĜÉŔ  ŴMŠ-07 ~~]"
 
-#: story/objectives.gd:207
-msgid "Needs %s. Dig up more Parts."
-msgstr "[Ñééðš %s. Ðîĝ ûþ môŕé Þàŕţš. ~~~~~~~]"
-
-#: story/objectives.gd:246
+#: story/objectives.gd:186
 msgid "Reward: %s"
 msgstr "[Ŕéŵàŕð: %s ~]"
 
-#: story/objectives.gd:436
+#: story/objectives.gd:249
+msgid "Needs %s. Dig up more Parts."
+msgstr "[Ñééðš %s. Ðîĝ ûþ môŕé Þàŕţš. ~~~~~~~]"
+
+#: story/objectives.gd:460
 msgid "Objective complete  ·  %s"
 msgstr "[Ôbĵéçţîvé çômþļéţé  ·  %s ~~~~~~]"
 
-#: story/objectives.gd:462
+#: story/objectives.gd:486
 msgid "Goal complete  ·  %s"
 msgstr "[Ĝôàļ çômþļéţé  ·  %s ~~~~]"
 
-#: story/objectives.gd:731
+#: story/objectives.gd:718
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "[Bàļéŕ îñšţàļļéð! Fîļļ ýôûŕ çĥéšţ, þŕéšš [%s] ţô þŕéšš à bàļé, ţĥéñ çàŕŕý îţ ţô ţĥé šçàļé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:753 story/objectives.gd:874
+#: story/objectives.gd:740 story/objectives.gd:861
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "[Ýôûŕ çĥéšţ îš ƒûļļ. Þŕéšš [%s] ţô màķé à bàļé. ~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:769
+#: story/objectives.gd:756
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "[Ýôûŕ ðéţéçţôŕ'š ƒôûñð à ŕôbôţ þàŕţ bûŕîéð ñéàŕbý. Fôļļôŵ ţĥé BÛŔÎÉÐ ÞÀŔŢ ŕéàðîñĝ; îţ bééþš ôñçé ýôû'ŕé ŕîĝĥţ ôñ ţôþ ôƒ îţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:771
+#: story/objectives.gd:758
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "[BÛŔÎÉÐ ÞÀŔŢ: ŵàļķ ţôŵàŕð îţ ûñţîļ ţĥé ŕéàðîñĝ þéàķš, ţĥéñ ðîĝ îţ ûþ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:875
+#: story/objectives.gd:862
 msgid "Your chest is full. Bring it to the bin."
 msgstr "[Ýôûŕ çĥéšţ îš ƒûļļ. Bŕîñĝ îţ ţô ţĥé bîñ. ~~~~~~~~~~~]"
 
-#: story/objectives.gd:882
+#: story/objectives.gd:869
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "[Ýôûŕ çĥéšţ îš ƒûļļ. Ĥéàð ĥômé: ţĥé bîñ îš ûñðéŕ ţĥé ţàļļ šmôķé. ~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:884
+#: story/objectives.gd:871
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "[Çàŕŕý ýôûŕ bàļé ĥômé: ţĥé šçàļé îš ûñðéŕ ţĥé ţàļļ šmôķé. ~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:884
+#: story/objectives.gd:871
 msgid "Carry your bale to the scale by the bin."
 msgstr "[Çàŕŕý ýôûŕ bàļé ţô ţĥé šçàļé bý ţĥé bîñ. ~~~~~~~~~~~]"
 
-#: story/objectives.gd:891
+#: story/objectives.gd:878
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "[Ĥéàð ĥômé: ƒôļļôŵ ţĥé béàm ţô ţĥé ţàļļ šmôķé. ~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:901
+#: story/objectives.gd:888
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "[Ñôţĥîñĝ ţô þîçķ ûþ ĥéŕé. Ŵàļķ ţô môŕé ţŕàšĥ. ~~~~~~~~~~~~]"
 
@@ -2717,7 +2717,7 @@ msgstr "[%s ĥûmš ţô ţĥé šééðļîñĝš. Ŕéţîŕéméñţ šûîţ
 msgid "%s points proudly at a new bud."
 msgstr "[%s þôîñţš þŕôûðļý àţ à ñéŵ bûð. ~~~~~~~~]"
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:620
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:621
 msgid "E   CD player: %s"
 msgstr "E   [ÇÐ þļàýéŕ: %s ~~]"
 
@@ -4055,15 +4055,19 @@ msgstr "   [·   ÔÛŢÐÀŢÉÐ ~~]"
 msgid "Re-survey      %s cubes"
 msgstr "[Ŕé-šûŕvéý      %s çûbéš ~~~~~]"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:481 ui/objective_card.gd:137
+#: ui/goal_readout.gd:135 ui/list_detail.gd:481 ui/objective_card.gd:137
 msgid "DONE"
 msgstr "[ÐÔÑÉ ~]"
 
-#: ui/goals_panel.gd:257
+#: ui/goals_panel.gd:80
+msgid "Following  ·  %s"
+msgstr "[Fôļļôŵîñĝ  ·  %s ~~~]"
+
+#: ui/goals_panel.gd:117
 msgid "Goal complete  ·  %s%s"
 msgstr "[Ĝôàļ çômþļéţé  ·  %s%s ~~~~~]"
 
-#: ui/goals_panel.gd:284
+#: ui/goals_panel.gd:125
 msgid "+%s seeds"
 msgstr "[+%s šééðš ~]"
 
@@ -9893,6 +9897,18 @@ msgstr "[Ñôţĥîñĝ ~]"
 msgid "Little Beanie"
 msgstr "[Ļîţţļé Béàñîé ~~]"
 
+#: planets/verdance/data/goals.json:tiers[short].name
+msgid "NOW"
+msgstr "[ÑÔŴ ~]"
+
+#: planets/verdance/data/goals.json:tiers[medium].name
+msgid "CITY"
+msgstr "[ÇÎŢÝ ~]"
+
+#: planets/verdance/data/goals.json:tiers[long].name
+msgid "PLANET"
+msgstr "[ÞĻÀÑÉŢ ~]"
+
 #: planets/verdance/data/goals.json:goals[scoop_15].text
 msgid "Pick up 15 pieces of trash"
 msgstr "[Þîçķ ûþ 15 þîéçéš ôƒ ţŕàšĥ ~~~~~~]"
@@ -9905,569 +9921,481 @@ msgstr "[Émþţý ýôûŕ çĥéšţ îñ ţĥé bîñ ~~~~~~]"
 msgid "Buy an upgrade at the bench"
 msgstr "[Bûý àñ ûþĝŕàðé àţ ţĥé béñçĥ ~~~~~~]"
 
-#: planets/verdance/data/goals.json:goals[baler_1].text
-msgid "Install the Baler"
-msgstr "[Îñšţàļļ ţĥé Bàļéŕ ~~~]"
+#: planets/verdance/data/goals.json:goals[parts_2].text
+msgid "Dig up 2 robot parts"
+msgstr "[Ðîĝ ûþ 2 ŕôbôţ þàŕţš ~~~~]"
 
 #: planets/verdance/data/goals.json:goals[bale_1].text
-msgid "Make your first bale"
-msgstr "[Màķé ýôûŕ ƒîŕšţ bàļé ~~~~]"
+msgid "Press your first bale"
+msgstr "[Þŕéšš ýôûŕ ƒîŕšţ bàļé ~~~~]"
 
 #: planets/verdance/data/goals.json:goals[cash_1].text
 msgid "Sell a bale at the scale"
 msgstr "[Šéļļ à bàļé àţ ţĥé šçàļé ~~~~~]"
 
-#: planets/verdance/data/goals.json:goals[lift_1].text
-msgid "Lift Strength level 1"
-msgstr "[Ļîƒţ Šţŕéñĝţĥ ļévéļ 1 ~~~~]"
-
-#: planets/verdance/data/goals.json:goals[hex_1].text
-msgid "Clean your first hex"
-msgstr "[Çļéàñ ýôûŕ ƒîŕšţ ĥéx ~~~~]"
-
 #: planets/verdance/data/goals.json:goals[perfect_1].text
-msgid "Make a perfect bale"
-msgstr "[Màķé à þéŕƒéçţ bàļé ~~~~]"
+msgid "Press a perfect bale"
+msgstr "[Þŕéšš à þéŕƒéçţ bàļé ~~~~]"
 
 #: planets/verdance/data/goals.json:goals[upgrades_5].text
 msgid "Buy 5 upgrades"
 msgstr "[Bûý 5 ûþĝŕàðéš ~~]"
 
-#: planets/verdance/data/goals.json:goals[cash_10].text
-msgid "Sell 10 bales"
-msgstr "[Šéļļ 10 bàļéš ~~]"
-
-#: planets/verdance/data/goals.json:goals[compartment_3].text
-msgid "Chest Size level 3"
-msgstr "[Çĥéšţ Šîžé ļévéļ 3 ~~~]"
-
-#: planets/verdance/data/goals.json:goals[shards_1].text
-msgid "Find a memory shard"
-msgstr "[Fîñð à mémôŕý šĥàŕð ~~~~]"
-
 #: planets/verdance/data/goals.json:goals[hex_3].text
 msgid "Clean 3 hexes"
 msgstr "[Çļéàñ 3 ĥéxéš ~~]"
 
-#: planets/verdance/data/goals.json:goals[parts_2].text
-msgid "Dig up 2 robot parts"
-msgstr "[Ðîĝ ûþ 2 ŕôbôţ þàŕţš ~~~~]"
+#: planets/verdance/data/goals.json:goals[cash_10].text
+msgid "Sell 10 bales"
+msgstr "[Šéļļ 10 bàļéš ~~]"
+
+#: planets/verdance/data/goals.json:goals[lift_1].text
+msgid "Buy Lift Strength"
+msgstr "[Bûý Ļîƒţ Šţŕéñĝţĥ ~~~]"
+
+#: planets/verdance/data/goals.json:goals[compartment_3].text
+msgid "Raise Chest Size to 3"
+msgstr "[Ŕàîšé Çĥéšţ Šîžé ţô 3 ~~~~]"
 
 #: planets/verdance/data/goals.json:goals[earn_1k].text
 msgid "Earn 1,000 cubes"
 msgstr "[Éàŕñ 1,000 çûbéš ~~~]"
 
-#: planets/verdance/data/goals.json:goals[research_1].text planets/verdance/data/objectives.json:objectives[research1].text
-msgid "Finish a research project"
-msgstr "[Fîñîšĥ à ŕéšéàŕçĥ þŕôĵéçţ ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[hex_5].text
-msgid "Clean 5 hexes"
-msgstr "[Çļéàñ 5 ĥéxéš ~~]"
-
-#: planets/verdance/data/goals.json:goals[lift_2].text
-msgid "Lift Strength level 2"
-msgstr "[Ļîƒţ Šţŕéñĝţĥ ļévéļ 2 ~~~~]"
-
 #: planets/verdance/data/goals.json:goals[upgrades_12].text
 msgid "Buy 12 upgrades"
 msgstr "[Bûý 12 ûþĝŕàðéš ~~]"
 
-#: planets/verdance/data/goals.json:goals[earn_3k].text
-msgid "Earn 3,000 cubes"
-msgstr "[Éàŕñ 3,000 çûbéš ~~~]"
+#: planets/verdance/data/goals.json:goals[lift_2].text
+msgid "Raise Lift Strength to 2"
+msgstr "[Ŕàîšé Ļîƒţ Šţŕéñĝţĥ ţô 2 ~~~~~]"
 
-#: planets/verdance/data/goals.json:goals[hex_7].text
-msgid "Clear the street: clean 7 hexes"
-msgstr "[Çļéàŕ ţĥé šţŕééţ: çļéàñ 7 ĥéxéš ~~~~~~~~]"
+#: planets/verdance/data/goals.json:goals[surge_1].text
+msgid "Release your first Surge"
+msgstr "[Ŕéļéàšé ýôûŕ ƒîŕšţ Šûŕĝé ~~~~~]"
 
-#: planets/verdance/data/goals.json:goals[pet_cat].text
-msgid "Pet a stray cat"
-msgstr "[Þéţ à šţŕàý çàţ ~~]"
-
-#: planets/verdance/data/goals.json:goals[research_4].text
-msgid "Finish 4 research projects"
-msgstr "[Fîñîšĥ 4 ŕéšéàŕçĥ þŕôĵéçţš ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[upgrades_20].text
-msgid "Buy 20 upgrades"
-msgstr "[Bûý 20 ûþĝŕàðéš ~~]"
-
-#: planets/verdance/data/goals.json:goals[hex_10].text planets/verdance/data/objectives.json:objectives[hex10].text data/radio.json:songs[verdance_sweep].hint
-msgid "Clean 10 hexes"
-msgstr "[Çļéàñ 10 ĥéxéš ~~]"
-
-#: planets/verdance/data/goals.json:goals[base_2].text
-msgid "Upgrade the base to level 2"
-msgstr "[Ûþĝŕàðé ţĥé bàšé ţô ļévéļ 2 ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[haulbug_1].text
-msgid "Build a Haul Bug"
-msgstr "[Bûîļð à Ĥàûļ Bûĝ ~~~]"
-
-#: planets/verdance/data/goals.json:goals[scoopie_1].text planets/verdance/data/objectives.json:objectives[scoopie].text
-msgid "Build a Scoopie"
-msgstr "[Bûîļð à Šçôôþîé ~~]"
-
-#: planets/verdance/data/goals.json:goals[zone_1].text
-msgid "Give a robot a work zone"
-msgstr "[Ĝîvé à ŕôbôţ à ŵôŕķ žôñé ~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[bales_20].text
-msgid "Robots press 20 bales"
-msgstr "[Ŕôbôţš þŕéšš 20 bàļéš ~~~~]"
-
-#: planets/verdance/data/goals.json:goals[scoopie_2].text
-msgid "Run 2 Scoopies"
-msgstr "[Ŕûñ 2 Šçôôþîéš ~~]"
-
-#: planets/verdance/data/goals.json:goals[hex_12].text
-msgid "Clean 12 hexes"
-msgstr "[Çļéàñ 12 ĥéxéš ~~]"
-
-#: planets/verdance/data/goals.json:goals[upgrades_25].text
-msgid "Buy 25 upgrades"
-msgstr "[Bûý 25 ûþĝŕàðéš ~~]"
-
-#: planets/verdance/data/goals.json:goals[research_6].text
-msgid "Finish 6 research projects"
-msgstr "[Fîñîšĥ 6 ŕéšéàŕçĥ þŕôĵéçţš ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[robots_4].text
-msgid "Build 4 robots"
-msgstr "[Bûîļð 4 ŕôbôţš ~~]"
-
-#: planets/verdance/data/goals.json:goals[hex_15].text
-msgid "Clean 15 hexes"
-msgstr "[Çļéàñ 15 ĥéxéš ~~]"
-
-#: planets/verdance/data/goals.json:goals[seeds].text
-msgid "Find the seed tin"
-msgstr "[Fîñð ţĥé šééð ţîñ ~~~]"
-
-#: planets/verdance/data/goals.json:goals[plant_5].text
-msgid "Plant the Maker seed"
-msgstr "[Þļàñţ ţĥé Màķéŕ šééð ~~~~]"
+#: planets/verdance/data/goals.json:goals[zone_6].text
+msgid "Zone 6 hexes for the crew"
+msgstr "[Žôñé 6 ĥéxéš ƒôŕ ţĥé çŕéŵ ~~~~~~]"
 
 #: planets/verdance/data/goals.json:goals[hexlv_2].text
 msgid "Get a hex to Planted"
 msgstr "[Ĝéţ à ĥéx ţô Þļàñţéð ~~~~]"
 
-#: planets/verdance/data/goals.json:goals[earn_10k].text
-msgid "Earn 10,000 cubes"
-msgstr "[Éàŕñ 10,000 çûbéš ~~~]"
-
 #: planets/verdance/data/goals.json:goals[bloom_5].text
 msgid "Grow 5 flowers to bloom"
 msgstr "[Ĝŕôŵ 5 ƒļôŵéŕš ţô bļôôm ~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[shards_2].text
-msgid "Read 2 memory shards"
-msgstr "[Ŕéàð 2 mémôŕý šĥàŕðš ~~~~]"
-
-#: planets/verdance/data/goals.json:goals[zone_6].text
-msgid "Zone 6 hexes for your crews"
-msgstr "[Žôñé 6 ĥéxéš ƒôŕ ýôûŕ çŕéŵš ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[hex_17].text
-msgid "Clean 17 hexes"
-msgstr "[Çļéàñ 17 ĥéxéš ~~]"
-
-#: planets/verdance/data/goals.json:goals[research_8].text
-msgid "Finish 8 research projects"
-msgstr "[Fîñîšĥ 8 ŕéšéàŕçĥ þŕôĵéçţš ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[bales_100].text
-msgid "Robots press 100 bales"
-msgstr "[Ŕôbôţš þŕéšš 100 bàļéš ~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[recycle_5].text
-msgid "Recycle 5 bales"
-msgstr "[Ŕéçýçļé 5 bàļéš ~~]"
 
 #: planets/verdance/data/goals.json:goals[hexlv_3].text
 msgid "Get a hex to Growing"
 msgstr "[Ĝéţ à ĥéx ţô Ĝŕôŵîñĝ ~~~~]"
 
-#: planets/verdance/data/goals.json:goals[hex_20].text planets/verdance/data/objectives.json:objectives[hex20].text
-msgid "Clean 20 hexes"
-msgstr "[Çļéàñ 20 ĥéxéš ~~]"
-
-#: planets/verdance/data/goals.json:goals[skimmer_1].text
-msgid "Build a Skimmer for the lake"
-msgstr "[Bûîļð à Šķîmméŕ ƒôŕ ţĥé ļàķé ~~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[research_12].text
-msgid "Finish 12 research projects"
-msgstr "[Fîñîšĥ 12 ŕéšéàŕçĥ þŕôĵéçţš ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[hex_25].text
-msgid "Clean 25 hexes"
-msgstr "[Çļéàñ 25 ĥéxéš ~~]"
-
-#: planets/verdance/data/goals.json:goals[earn_50k].text
-msgid "Earn 50,000 cubes"
-msgstr "[Éàŕñ 50,000 çûbéš ~~~]"
-
-#: planets/verdance/data/goals.json:goals[hex_28].text
-msgid "Clean 28 hexes"
-msgstr "[Çļéàñ 28 ĥéxéš ~~]"
-
-#: planets/verdance/data/goals.json:goals[upgrades_40].text
-msgid "Buy 40 upgrades"
-msgstr "[Bûý 40 ûþĝŕàðéš ~~]"
-
-#: planets/verdance/data/goals.json:goals[seedling_1].text
-msgid "Build a Seedling planter"
-msgstr "[Bûîļð à Šééðļîñĝ þļàñţéŕ ~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[hex_30].text
-msgid "Clean 30 hexes (lake too)"
-msgstr "[Çļéàñ 30 ĥéxéš (ļàķé ţôô) ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[base_3].text
-msgid "Upgrade the base to level 3"
-msgstr "[Ûþĝŕàðé ţĥé bàšé ţô ļévéļ 3 ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[extras_radio].text
-msgid "Pick a song on the base radio"
-msgstr "[Þîçķ à šôñĝ ôñ ţĥé bàšé ŕàðîô ~~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[builder_1].text
-msgid "Style a robot in the Locker"
-msgstr "[Šţýļé à ŕôbôţ îñ ţĥé Ļôçķéŕ ~~~~~~]"
+#: planets/verdance/data/goals.json:goals[research_4].text
+msgid "Finish 4 research projects"
+msgstr "[Fîñîšĥ 4 ŕéšéàŕçĥ þŕôĵéçţš ~~~~~~]"
 
 #: planets/verdance/data/goals.json:goals[plant_25].text
 msgid "Plant 25 seeds"
 msgstr "[Þļàñţ 25 šééðš ~~]"
 
-#: planets/verdance/data/goals.json:goals[drip_1].text
-msgid "Build a Drip watering robot"
-msgstr "[Bûîļð à Ðŕîþ ŵàţéŕîñĝ ŕôbôţ ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[pollinator].text
-msgid "Research Pollinator Survey"
-msgstr "[Ŕéšéàŕçĥ Þôļļîñàţôŕ Šûŕvéý ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[bloom_25].text
-msgid "Grow 25 flowers to bloom"
-msgstr "[Ĝŕôŵ 25 ƒļôŵéŕš ţô bļôôm ~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[tank_1].text
-msgid "Place a Water Tank"
-msgstr "[Þļàçé à Ŵàţéŕ Ţàñķ ~~~]"
-
-#: planets/verdance/data/goals.json:goals[plant_60].text
-msgid "Plant 60 seeds"
-msgstr "[Þļàñţ 60 šééðš ~~]"
-
-#: planets/verdance/data/goals.json:goals[drip_2].text
-msgid "Run 2 Drip robots"
-msgstr "[Ŕûñ 2 Ðŕîþ ŕôbôţš ~~~]"
+#: planets/verdance/data/goals.json:goals[seedling_1].text
+msgid "Build a Seedling planter"
+msgstr "[Bûîļð à Šééðļîñĝ þļàñţéŕ ~~~~~]"
 
 #: planets/verdance/data/goals.json:goals[hexlv_4].text
 msgid "Get a hex to Sustained"
 msgstr "[Ĝéţ à ĥéx ţô Šûšţàîñéð ~~~~~]"
 
-#: planets/verdance/data/goals.json:goals[drip_4].text
-msgid "Run 4 Drip robots"
-msgstr "[Ŕûñ 4 Ðŕîþ ŕôbôţš ~~~]"
-
-#: planets/verdance/data/goals.json:goals[hexlv_4x3].text
-msgid "Get 3 hexes to Sustained"
-msgstr "[Ĝéţ 3 ĥéxéš ţô Šûšţàîñéð ~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[spot_deer].text
-msgid "Spot a deer"
-msgstr "[Šþôţ à ðééŕ ~]"
-
 #: planets/verdance/data/goals.json:goals[hexlv_5].text
 msgid "Get a hex to Thriving"
 msgstr "[Ĝéţ à ĥéx ţô Ţĥŕîvîñĝ ~~~~]"
 
-#: planets/verdance/data/goals.json:goals[hexlv_4x5].text
-msgid "Get 5 hexes to Sustained"
-msgstr "[Ĝéţ 5 ĥéxéš ţô Šûšţàîñéð ~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[plant_100].text
-msgid "Plant 100 seeds"
-msgstr "[Þļàñţ 100 šééðš ~~]"
-
-#: planets/verdance/data/goals.json:goals[robots_15].text
-msgid "Build 15 robots"
-msgstr "[Bûîļð 15 ŕôbôţš ~~]"
-
-#: planets/verdance/data/goals.json:goals[hexlv_5x3].text
-msgid "Get 3 hexes to Thriving"
-msgstr "[Ĝéţ 3 ĥéxéš ţô Ţĥŕîvîñĝ ~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[hexlv_4x8].text
-msgid "Get 8 hexes to Sustained"
-msgstr "[Ĝéţ 8 ĥéxéš ţô Šûšţàîñéð ~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[earn_75k].text
-msgid "Earn 75,000 cubes"
-msgstr "[Éàŕñ 75,000 çûbéš ~~~]"
-
-#: planets/verdance/data/goals.json:goals[bloom_300].text
-msgid "Grow 300 flowers to bloom"
-msgstr "[Ĝŕôŵ 300 ƒļôŵéŕš ţô bļôôm ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[hexlv_5x8].text
-msgid "Get 8 hexes to Thriving"
-msgstr "[Ĝéţ 8 ĥéxéš ţô Ţĥŕîvîñĝ ~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[hexlv_4x10].text
-msgid "Get 10 hexes to Sustained"
-msgstr "[Ĝéţ 10 ĥéxéš ţô Šûšţàîñéð ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[earn_100k].text
-msgid "Earn 100,000 cubes"
-msgstr "[Éàŕñ 100,000 çûbéš ~~~]"
-
-#: planets/verdance/data/goals.json:goals[hexlv_4x15].text
-msgid "Get 15 hexes to Sustained"
-msgstr "[Ĝéţ 15 ĥéxéš ţô Šûšţàîñéð ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[hexlv_5x15].text
-msgid "Get 15 hexes to Thriving"
-msgstr "[Ĝéţ 15 ĥéxéš ţô Ţĥŕîvîñĝ ~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[hexlv_4x20].text
-msgid "Get 20 hexes to Sustained"
-msgstr "[Ĝéţ 20 ĥéxéš ţô Šûšţàîñéð ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[base_4].text
-msgid "Upgrade the base to level 4"
-msgstr "[Ûþĝŕàðé ţĥé bàšé ţô ļévéļ 4 ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[bloom_500].text
-msgid "Grow 500 flowers to bloom"
-msgstr "[Ĝŕôŵ 500 ƒļôŵéŕš ţô bļôôm ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[hexlv_5x20].text
-msgid "Get 20 hexes to Thriving"
-msgstr "[Ĝéţ 20 ĥéxéš ţô Ţĥŕîvîñĝ ~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[air_1k].text
-msgid "Filter 1,000 m3 of air"
-msgstr "[Fîļţéŕ 1,000 m3 ôƒ àîŕ ~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[hexlv_5x25].text
-msgid "Get 25 hexes to Thriving"
-msgstr "[Ĝéţ 25 ĥéxéš ţô Ţĥŕîvîñĝ ~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[base_5].text
-msgid "Upgrade the base to level 5"
-msgstr "[Ûþĝŕàðé ţĥé bàšé ţô ļévéļ 5 ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[extras_retire].text
-msgid "Retire a robot to the nursery"
-msgstr "[Ŕéţîŕé à ŕôbôţ ţô ţĥé ñûŕšéŕý ~~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[rocket].text
-msgid "Launch the rocket onward"
-msgstr "[Ļàûñçĥ ţĥé ŕôçķéţ ôñŵàŕð ~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[builder_full].text
-msgid "Fully custom-build a robot"
-msgstr "[Fûļļý çûšţôm-bûîļð à ŕôbôţ ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[research_20].text
-msgid "Finish 20 research projects"
-msgstr "[Fîñîšĥ 20 ŕéšéàŕçĥ þŕôĵéçţš ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[multibot_1].text
-msgid "Build a Multibot"
-msgstr "[Bûîļð à Mûļţîbôţ ~~~]"
-
-#: planets/verdance/data/goals.json:goals[tier_1].text
-msgid "Upgrade a robot type to Mk II"
-msgstr "[Ûþĝŕàðé à ŕôbôţ ţýþé ţô Mķ ÎÎ ~~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[earn_150k].text
-msgid "Earn 150,000 cubes"
-msgstr "[Éàŕñ 150,000 çûbéš ~~~]"
-
-#: planets/verdance/data/goals.json:goals[hex_50].text
-msgid "Clean 50 hexes"
-msgstr "[Çļéàñ 50 ĥéxéš ~~]"
-
-#: planets/verdance/data/goals.json:goals[bloom_800].text
-msgid "Grow 800 flowers to bloom"
-msgstr "[Ĝŕôŵ 800 ƒļôŵéŕš ţô bļôôm ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[restored_40].text
-msgid "Fully restore 40 hexes"
-msgstr "[Fûļļý ŕéšţôŕé 40 ĥéxéš ~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[base5_2].text
-msgid "Get a second base to level 5"
-msgstr "[Ĝéţ à šéçôñð bàšé ţô ļévéļ 5 ~~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[research_dunes].text
-msgid "Research Dune Charts"
-msgstr "[Ŕéšéàŕçĥ Ðûñé Çĥàŕţš ~~~~]"
-
-#: planets/verdance/data/goals.json:goals[visit_dust].text
-msgid "Fly to the Dust Flats"
-msgstr "[Fļý ţô ţĥé Ðûšţ Fļàţš ~~~~]"
-
-#: planets/verdance/data/goals.json:goals[research_24].text
-msgid "Finish 24 research projects"
-msgstr "[Fîñîšĥ 24 ŕéšéàŕçĥ þŕôĵéçţš ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[dust_base3].text
-msgid "Dust Flats base to level 3"
-msgstr "[Ðûšţ Fļàţš bàšé ţô ļévéļ 3 ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[dust_grow15].text planets/verdance/data/goals.json:goals[frozen_grow15].text planets/verdance/data/goals.json:goals[sunken_grow15].text
-msgid "Get 15 hexes Growing here"
-msgstr "[Ĝéţ 15 ĥéxéš Ĝŕôŵîñĝ ĥéŕé ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[hex_80].text
-msgid "Clean 80 hexes"
-msgstr "[Çļéàñ 80 ĥéxéš ~~]"
-
-#: planets/verdance/data/goals.json:goals[dust_base4].text
-msgid "Dust Flats base to level 4"
-msgstr "[Ðûšţ Fļàţš bàšé ţô ļévéļ 4 ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[hex_100].text
-msgid "Clean 100 hexes"
-msgstr "[Çļéàñ 100 ĥéxéš ~~]"
-
-#: planets/verdance/data/goals.json:goals[research_lance].text
-msgid "Research Thermal Lance"
-msgstr "[Ŕéšéàŕçĥ Ţĥéŕmàļ Ļàñçé ~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[dust_base5].text
-msgid "Dust Flats base to level 5"
-msgstr "[Ðûšţ Fļàţš bàšé ţô ļévéļ 5 ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[base5_3].text
-msgid "Get three bases to level 5"
-msgstr "[Ĝéţ ţĥŕéé bàšéš ţô ļévéļ 5 ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[visit_frozen].text
-msgid "Fly to the Frozen Port"
-msgstr "[Fļý ţô ţĥé Fŕôžéñ Þôŕţ ~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[research_26].text
-msgid "Finish 26 research projects"
-msgstr "[Fîñîšĥ 26 ŕéšéàŕçĥ þŕôĵéçţš ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[heater_1].text
-msgid "Light a heater on the ice"
-msgstr "[Ļîĝĥţ à ĥéàţéŕ ôñ ţĥé îçé ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[thaw_10].text
-msgid "Thaw 10 hexes"
-msgstr "[Ţĥàŵ 10 ĥéxéš ~~]"
-
-#: planets/verdance/data/goals.json:goals[greenhouse_1].text
-msgid "Build a greenhouse"
-msgstr "[Bûîļð à ĝŕééñĥôûšé ~~~]"
-
-#: planets/verdance/data/goals.json:goals[frozen_base3].text
-msgid "Frozen Port base to level 3"
-msgstr "[Fŕôžéñ Þôŕţ bàšé ţô ļévéļ 3 ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[thaw_30].text
-msgid "Thaw 30 hexes"
-msgstr "[Ţĥàŵ 30 ĥéxéš ~~]"
-
-#: planets/verdance/data/goals.json:goals[frozen_base4].text
-msgid "Frozen Port base to level 4"
-msgstr "[Fŕôžéñ Þôŕţ bàšé ţô ļévéļ 4 ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[hex_130].text
-msgid "Clean 130 hexes"
-msgstr "[Çļéàñ 130 ĥéxéš ~~]"
-
-#: planets/verdance/data/goals.json:goals[research_pumps].text
-msgid "Research Pump Works"
-msgstr "[Ŕéšéàŕçĥ Þûmþ Ŵôŕķš ~~~~]"
-
-#: planets/verdance/data/goals.json:goals[frozen_base5].text
-msgid "Frozen Port base to level 5"
-msgstr "[Fŕôžéñ Þôŕţ bàšé ţô ļévéļ 5 ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[base5_4].text
-msgid "Get four bases to level 5"
-msgstr "[Ĝéţ ƒôûŕ bàšéš ţô ļévéļ 5 ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[visit_sunken].text
-msgid "Fly to the Sunken City"
-msgstr "[Fļý ţô ţĥé Šûñķéñ Çîţý ~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[sunken_base3].text
-msgid "Sunken City base to level 3"
-msgstr "[Šûñķéñ Çîţý bàšé ţô ļévéļ 3 ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[sunken_base4].text
-msgid "Sunken City base to level 4"
-msgstr "[Šûñķéñ Çîţý bàšé ţô ļévéļ 4 ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[sunken_base5].text
-msgid "Sunken City base to level 5"
-msgstr "[Šûñķéñ Çîţý bàšé ţô ļévéļ 5 ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[frontiers_growing].text
-msgid "Every frontier 50% Growing"
-msgstr "[Évéŕý ƒŕôñţîéŕ 50% Gŕôŵîñĝ ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[research_beacon].text
-msgid "Research the Ark Beacon"
-msgstr "[Ŕéšéàŕçĥ ţĥé Àŕķ Béàçôñ ~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[visit_cradle].text
-msgid "Fly to Cradle Returns"
-msgstr "[Fļý ţô Çŕàðļé Ŕéţûŕñš ~~~~]"
-
-#: planets/verdance/data/goals.json:goals[cradle_pad].text
-msgid "Clean the Cradle landing pad"
-msgstr "[Çļéàñ ţĥé Çŕàðļé ļàñðîñĝ þàð ~~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[cradle_grow25].text
-msgid "Get 25 hexes Growing here"
-msgstr "[Ĝéţ 25 ĥéxéš Ĝŕôŵîñĝ ĥéŕé ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[cradle_home].text
-msgid "Call the Cradle home"
-msgstr "[Çàļļ ţĥé Çŕàðļé ĥômé ~~~~]"
-
-#: planets/verdance/data/goals.json:goals[late_garden_1].text
-msgid "Place a decoration (H)"
-msgstr "[Þļàçé à ðéçôŕàţîôñ (Ĥ) ~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[late_garden_10].text
-msgid "Place 10 decorations"
-msgstr "[Þļàçé 10 ðéçôŕàţîôñš ~~~~]"
-
-#: planets/verdance/data/goals.json:goals[late_garden_kinds].text
-msgid "Place 5 kinds of decoration"
-msgstr "[Þļàçé 5 ķîñðš ôƒ ðéçôŕàţîôñ ~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[late_eggs_30].text
-msgid "Find 30 curiosities"
-msgstr "[Fîñð 30 çûŕîôšîţîéš ~~~~]"
-
-#: planets/verdance/data/goals.json:goals[late_charm_20].text
-msgid "Reach 20 charm in one district"
-msgstr "[Ŕéàçĥ 20 çĥàŕm îñ ôñé ðîšţŕîçţ ~~~~~~~]"
-
-#: planets/verdance/data/goals.json:goals[late_eggs_38].text
-msgid "Find 38 curiosities"
-msgstr "[Fîñð 38 çûŕîôšîţîéš ~~~~]"
+#: planets/verdance/data/goals.json:goals[rig_plate_cutter].text
+msgid "Fit the Plate Cutter"
+msgstr "[Fîţ ţĥé Þļàţé Çûţţéŕ ~~~~]"
+
+#: planets/verdance/data/goals.json:goals[wrecks_1].text
+msgid "Learn wrecks by hand"
+msgstr "[Ļéàŕñ ŵŕéçķš bý ĥàñð ~~~~]"
+
+#: planets/verdance/data/goals.json:goals[scrounger_1].text
+msgid "Build a Scrounger"
+msgstr "[Bûîļð à Šçŕôûñĝéŕ ~~~]"
+
+#: planets/verdance/data/goals.json:goals[scrounge_50].text
+msgid "Scroungers bring in 50 Parts"
+msgstr "[Šçŕôûñĝéŕš bŕîñĝ îñ 50 Þàŕţš ~~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[rig_skim_skirt].text
+msgid "Fit the Skim Skirt"
+msgstr "[Fîţ ţĥé Šķîm Šķîŕţ ~~~]"
+
+#: planets/verdance/data/goals.json:goals[slick_1].text
+msgid "Learn slick by hand"
+msgstr "[Ļéàŕñ šļîçķ bý ĥàñð ~~~~]"
+
+#: planets/verdance/data/goals.json:goals[assembler].text
+msgid "Build the Assembler"
+msgstr "[Bûîļð ţĥé Àššémbļéŕ ~~~~]"
+
+#: planets/verdance/data/goals.json:goals[assemble_5].text
+msgid "Assemble 5 robots"
+msgstr "[Àššémbļé 5 ŕôbôţš ~~~]"
+
+#: planets/verdance/data/goals.json:goals[skimmer_1].text
+msgid "Build a Skimmer"
+msgstr "[Bûîļð à Šķîmméŕ ~~]"
+
+#: planets/verdance/data/goals.json:goals[rig_mist_scrubber].text
+msgid "Fit the Mist Scrubber"
+msgstr "[Fîţ ţĥé Mîšţ Šçŕûbbéŕ ~~~~]"
+
+#: planets/verdance/data/goals.json:goals[smog_1].text
+msgid "Learn smog by hand"
+msgstr "[Ļéàŕñ šmôĝ bý ĥàñð ~~~]"
+
+#: planets/verdance/data/goals.json:goals[drip_1].text
+msgid "Build a Drip watering robot"
+msgstr "[Bûîļð à Ðŕîþ ŵàţéŕîñĝ ŕôbôţ ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[rig_soil_doser].text
+msgid "Fit the Soil Doser"
+msgstr "[Fîţ ţĥé Šôîļ Ðôšéŕ ~~~]"
+
+#: planets/verdance/data/goals.json:goals[blight_1].text
+msgid "Learn blight by hand"
+msgstr "[Ļéàŕñ bļîĝĥţ bý ĥàñð ~~~~]"
 
 #: planets/verdance/data/goals.json:goals[locker_build].text
 msgid "Build the Locker"
 msgstr "[Bûîļð ţĥé Ļôçķéŕ ~~~]"
 
 #: planets/verdance/data/goals.json:goals[locker_wear].text
-msgid "Wear a look at the Locker"
-msgstr "[Ŵéàŕ à ļôôķ àţ ţĥé Ļôçķéŕ ~~~~~~]"
+msgid "Wear a look you found"
+msgstr "[Ŵéàŕ à ļôôķ ýôû ƒôûñð ~~~~]"
+
+#: planets/verdance/data/goals.json:goals[more_hexes].text planets/verdance/data/goals.json:goals[more_ground].text
+msgid "Clean %d more hexes"
+msgstr "[Çļéàñ %d môŕé ĥéxéš ~~~~]"
+
+#: planets/verdance/data/goals.json:goals[more_bales].text
+msgid "Press %d more bales"
+msgstr "[Þŕéšš %d môŕé bàļéš ~~~~]"
+
+#: planets/verdance/data/goals.json:goals[more_surges].text
+msgid "Release a Surge"
+msgstr "[Ŕéļéàšé à Šûŕĝé ~~]"
+
+#: planets/verdance/data/goals.json:goals[more_growth].text
+msgid "Raise %d hexes a stage"
+msgstr "[Ŕàîšé %d ĥéxéš à šţàĝé ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[more_parts].text
+msgid "Dig up %d more Parts"
+msgstr "[Ðîĝ ûþ %d môŕé Þàŕţš ~~~~]"
+
+#: planets/verdance/data/goals.json:goals[more_perfect].text
+msgid "Press %d perfect bales"
+msgstr "[Þŕéšš %d þéŕƒéçţ bàļéš ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[litter_2].text
+msgid "Reach Litter mastery 2"
+msgstr "[Ŕéàçĥ Ļîţţéŕ màšţéŕý 2 ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[hex_5].text
+msgid "Clean 5 hexes"
+msgstr "[Çļéàñ 5 ĥéxéš ~~]"
+
+#: planets/verdance/data/goals.json:goals[litter_3].text
+msgid "Reach Litter mastery 3"
+msgstr "[Ŕéàçĥ Ļîţţéŕ màšţéŕý 3 ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[litter_4].text
+msgid "Reach Litter mastery 4"
+msgstr "[Ŕéàçĥ Ļîţţéŕ màšţéŕý 4 ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[hex_12].text
+msgid "Clean 12 hexes"
+msgstr "[Çļéàñ 12 ĥéxéš ~~]"
+
+#: planets/verdance/data/goals.json:goals[crew_2].text
+msgid "Run a crew of 2"
+msgstr "[Ŕûñ à çŕéŵ ôƒ 2 ~~]"
+
+#: planets/verdance/data/goals.json:goals[litter_5].text
+msgid "Reach Litter mastery 5"
+msgstr "[Ŕéàçĥ Ļîţţéŕ màšţéŕý 5 ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[hex_25].text
+msgid "Clean 25 hexes"
+msgstr "[Çļéàñ 25 ĥéxéš ~~]"
+
+#: planets/verdance/data/goals.json:goals[crew_4].text
+msgid "Run a crew of 4"
+msgstr "[Ŕûñ à çŕéŵ ôƒ 4 ~~]"
+
+#: planets/verdance/data/goals.json:goals[litter_6].text
+msgid "Reach Litter mastery 6"
+msgstr "[Ŕéàçĥ Ļîţţéŕ màšţéŕý 6 ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[hex_50].text
+msgid "Clean 50 hexes"
+msgstr "[Çļéàñ 50 ĥéxéš ~~]"
+
+#: planets/verdance/data/goals.json:goals[crew_6].text
+msgid "Run a crew of 6"
+msgstr "[Ŕûñ à çŕéŵ ôƒ 6 ~~]"
+
+#: planets/verdance/data/goals.json:goals[old_town_1].text
+msgid "Bring Old Town to Clean"
+msgstr "[Bŕîñĝ Ôļð Ţôŵñ ţô Çļéàñ ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[litter_7].text
+msgid "Reach Litter mastery 7"
+msgstr "[Ŕéàçĥ Ļîţţéŕ màšţéŕý 7 ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[old_town_2].text
+msgid "Bring Old Town to Planted"
+msgstr "[Bŕîñĝ Ôļð Ţôŵñ ţô Þļàñţéð ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[crew_8].text
+msgid "Run a crew of 8"
+msgstr "[Ŕûñ à çŕéŵ ôƒ 8 ~~]"
+
+#: planets/verdance/data/goals.json:goals[old_town_3].text
+msgid "Bring Old Town to Growing"
+msgstr "[Bŕîñĝ Ôļð Ţôŵñ ţô Ĝŕôŵîñĝ ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[old_town_source].text
+msgid "Shut down the burst main"
+msgstr "[Šĥûţ ðôŵñ ţĥé bûŕšţ màîñ ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[old_town_4].text
+msgid "Bring Old Town to Sustained"
+msgstr "[Bŕîñĝ Ôļð Ţôŵñ ţô Šûšţàîñéð ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[wrecks_3].text
+msgid "Reach Wrecks mastery 3"
+msgstr "[Ŕéàçĥ Ŵŕéçķš màšţéŕý 3 ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[scrapyard_1].text
+msgid "Bring Ironside to Clean"
+msgstr "[Bŕîñĝ Îŕôñšîðé ţô Çļéàñ ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[crew_15].text
+msgid "Run a crew of 15"
+msgstr "[Ŕûñ à çŕéŵ ôƒ 15 ~~~]"
+
+#: planets/verdance/data/goals.json:goals[scrapyard_2].text
+msgid "Bring Ironside to Planted"
+msgstr "[Bŕîñĝ Îŕôñšîðé ţô Þļàñţéð ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[scrapyard_3].text
+msgid "Bring Ironside to Growing"
+msgstr "[Bŕîñĝ Îŕôñšîðé ţô Ĝŕôŵîñĝ ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[crew_30].text
+msgid "Run a crew of 30"
+msgstr "[Ŕûñ à çŕéŵ ôƒ 30 ~~~]"
+
+#: planets/verdance/data/goals.json:goals[scrapyard_source].text
+msgid "Shut down the crusher yard"
+msgstr "[Šĥûţ ðôŵñ ţĥé çŕûšĥéŕ ýàŕð ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[scrapyard_4].text
+msgid "Bring Ironside to Sustained"
+msgstr "[Bŕîñĝ Îŕôñšîðé ţô Šûšţàîñéð ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[wrecks_5].text
+msgid "Reach Wrecks mastery 5"
+msgstr "[Ŕéàçĥ Ŵŕéçķš màšţéŕý 5 ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[slick_3].text
+msgid "Reach Slick mastery 3"
+msgstr "[Ŕéàçĥ Šļîçķ màšţéŕý 3 ~~~~]"
+
+#: planets/verdance/data/goals.json:goals[kettle_bay_1].text
+msgid "Bring Kettle Bay to Clean"
+msgstr "[Bŕîñĝ Ķéţţļé Bàý ţô Çļéàñ ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[crew_50].text
+msgid "Run a crew of 50"
+msgstr "[Ŕûñ à çŕéŵ ôƒ 50 ~~~]"
+
+#: planets/verdance/data/goals.json:goals[kettle_bay_2].text
+msgid "Bring Kettle Bay to Planted"
+msgstr "[Bŕîñĝ Ķéţţļé Bàý ţô Þļàñţéð ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[kettle_bay_3].text
+msgid "Bring Kettle Bay to Growing"
+msgstr "[Bŕîñĝ Ķéţţļé Bàý ţô Ĝŕôŵîñĝ ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[scrapyard_5].text
+msgid "Bring Ironside to Thriving"
+msgstr "[Bŕîñĝ Îŕôñšîðé ţô Ţĥŕîvîñĝ ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[kettle_bay_source].text
+msgid "Stop the tanker's leak"
+msgstr "[Šţôþ ţĥé ţàñķéŕ'š ļéàķ ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[kettle_bay_4].text
+msgid "Bring Kettle Bay to Sustained"
+msgstr "[Bŕîñĝ Ķéţţļé Bàý ţô Šûšţàîñéð ~~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[slick_5].text
+msgid "Reach Slick mastery 5"
+msgstr "[Ŕéàçĥ Šļîçķ màšţéŕý 5 ~~~~]"
+
+#: planets/verdance/data/goals.json:goals[smog_3].text
+msgid "Reach Smog mastery 3"
+msgstr "[Ŕéàçĥ Šmôĝ màšţéŕý 3 ~~~~]"
+
+#: planets/verdance/data/goals.json:goals[highreach_1].text
+msgid "Bring Highreach to Clean"
+msgstr "[Bŕîñĝ Ĥîĝĥŕéàçĥ ţô Çļéàñ ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[crew_75].text
+msgid "Run a crew of 75"
+msgstr "[Ŕûñ à çŕéŵ ôƒ 75 ~~~]"
+
+#: planets/verdance/data/goals.json:goals[highreach_2].text
+msgid "Bring Highreach to Planted"
+msgstr "[Bŕîñĝ Ĥîĝĥŕéàçĥ ţô Þļàñţéð ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[highreach_3].text
+msgid "Bring Highreach to Growing"
+msgstr "[Bŕîñĝ Ĥîĝĥŕéàçĥ ţô Ĝŕôŵîñĝ ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[kettle_bay_5].text
+msgid "Bring Kettle Bay to Thriving"
+msgstr "[Bŕîñĝ Ķéţţļé Bàý ţô Ţĥŕîvîñĝ ~~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[highreach_source].text
+msgid "Shut down the incinerator"
+msgstr "[Šĥûţ ðôŵñ ţĥé îñçîñéŕàţôŕ ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[highreach_4].text
+msgid "Bring Highreach to Sustained"
+msgstr "[Bŕîñĝ Ĥîĝĥŕéàçĥ ţô Šûšţàîñéð ~~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[smog_5].text
+msgid "Reach Smog mastery 5"
+msgstr "[Ŕéàçĥ Šmôĝ màšţéŕý 5 ~~~~]"
+
+#: planets/verdance/data/goals.json:goals[blight_3].text
+msgid "Reach Blight mastery 3"
+msgstr "[Ŕéàçĥ Bļîĝĥţ màšţéŕý 3 ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[lowmeadow_1].text
+msgid "Bring Lowmeadow to Clean"
+msgstr "[Bŕîñĝ Ļôŵméàðôŵ ţô Çļéàñ ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[crew_100].text
+msgid "Run a crew of 100"
+msgstr "[Ŕûñ à çŕéŵ ôƒ 100 ~~~]"
+
+#: planets/verdance/data/goals.json:goals[lowmeadow_2].text
+msgid "Bring Lowmeadow to Planted"
+msgstr "[Bŕîñĝ Ļôŵméàðôŵ ţô Þļàñţéð ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[lowmeadow_3].text
+msgid "Bring Lowmeadow to Growing"
+msgstr "[Bŕîñĝ Ļôŵméàðôŵ ţô Ĝŕôŵîñĝ ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[highreach_5].text
+msgid "Bring Highreach to Thriving"
+msgstr "[Bŕîñĝ Ĥîĝĥŕéàçĥ ţô Ţĥŕîvîñĝ ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[lowmeadow_source].text
+msgid "Shut the treatment works"
+msgstr "[Šĥûţ ţĥé ţŕéàţméñţ ŵôŕķš ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[lowmeadow_4].text
+msgid "Bring Lowmeadow to Sustained"
+msgstr "[Bŕîñĝ Ļôŵméàðôŵ ţô Šûšţàîñéð ~~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[blight_5].text
+msgid "Reach Blight mastery 5"
+msgstr "[Ŕéàçĥ Bļîĝĥţ màšţéŕý 5 ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[old_capital_1].text
+msgid "Bring Old Capital to Clean"
+msgstr "[Bŕîñĝ Ôļð Çàþîţàļ ţô Çļéàñ ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[crew_125].text
+msgid "Run a crew of 125"
+msgstr "[Ŕûñ à çŕéŵ ôƒ 125 ~~~]"
+
+#: planets/verdance/data/goals.json:goals[old_capital_2].text
+msgid "Bring Old Capital to Planted"
+msgstr "[Bŕîñĝ Ôļð Çàþîţàļ ţô Þļàñţéð ~~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[old_capital_3].text
+msgid "Bring Old Capital to Growing"
+msgstr "[Bŕîñĝ Ôļð Çàþîţàļ ţô Ĝŕôŵîñĝ ~~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[lowmeadow_5].text
+msgid "Bring Lowmeadow to Thriving"
+msgstr "[Bŕîñĝ Ļôŵméàðôŵ ţô Ţĥŕîvîñĝ ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[old_capital_source].text
+msgid "Build the rocket"
+msgstr "[Bûîļð ţĥé ŕôçķéţ ~~~]"
+
+#: planets/verdance/data/goals.json:goals[old_capital_4].text
+msgid "Bring Old Capital to Sustained"
+msgstr "[Bŕîñĝ Ôļð Çàþîţàļ ţô Šûšţàîñéð ~~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[crew_150].text
+msgid "Run a crew of 150"
+msgstr "[Ŕûñ à çŕéŵ ôƒ 150 ~~~]"
+
+#: planets/verdance/data/goals.json:goals[old_capital_5].text
+msgid "Bring Old Capital to Thriving"
+msgstr "[Bŕîñĝ Ôļð Çàþîţàļ ţô Ţĥŕîvîñĝ ~~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[litter_10].text
+msgid "Reach Litter mastery 10"
+msgstr "[Ŕéàçĥ Ļîţţéŕ màšţéŕý 10 ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[more_crew].text
+msgid "Build %d more robots"
+msgstr "[Bûîļð %d môŕé ŕôbôţš ~~~~]"
+
+#: planets/verdance/data/goals.json:goals[old_town_5].text
+msgid "Restore Old Town"
+msgstr "[Ŕéšţôŕé Ôļð Ţôŵñ ~~~]"
+
+#: planets/verdance/data/goals.json:goals[cities_3].text
+msgid "Restore 3 of 6 cities"
+msgstr "[Ŕéšţôŕé 3 ôƒ 6 çîţîéš ~~~~]"
+
+#: planets/verdance/data/goals.json:goals[launch_point].text
+msgid "Reach the launch point"
+msgstr "[Ŕéàçĥ ţĥé ļàûñçĥ þôîñţ ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[sprout_set].text
+msgid "Find all 7 Sprout pieces"
+msgstr "[Fîñð àļļ 7 Šþŕôûţ þîéçéš ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[planet_1].text
+msgid "Restore 1% of the planet"
+msgstr "[Ŕéšţôŕé 1% oƒ ţĥé þļàñéţ ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[planet_5].text
+msgid "Restore 5% of the planet"
+msgstr "[Ŕéšţôŕé 5% oƒ ţĥé þļàñéţ ~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[planet_25].text
+msgid "Restore 25% of the planet"
+msgstr "[Ŕéšţôŕé 25% oƒ ţĥé þļàñéţ ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[planet_50].text
+msgid "Restore 50% of the planet"
+msgstr "[Ŕéšţôŕé 50% oƒ ţĥé þļàñéţ ~~~~~~]"
+
+#: planets/verdance/data/goals.json:goals[planet_100].text
+msgid "Restore the whole planet"
+msgstr "[Ŕéšţôŕé ţĥé ŵĥôļé þļàñéţ ~~~~~]"
 
 #: planets/verdance/data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
@@ -11041,6 +10969,10 @@ msgstr "[Bôţš ţàb: à Ĥàûļ Bûĝ çàŕŕîéš ýôûŕ bàļéš ţô
 msgid "The base has power! Build a helper: a Haul Bug will carry your bales. Try the Bots tab."
 msgstr "[Ţĥé bàšé ĥàš þôŵéŕ! Bûîļð à ĥéļþéŕ: à Ĥàûļ Bûĝ ŵîļļ çàŕŕý ýôûŕ bàļéš. Ţŕý ţĥé Bôţš ţàb. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
+#: planets/verdance/data/objectives.json:objectives[hex10].text data/radio.json:songs[verdance_sweep].hint
+msgid "Clean 10 hexes"
+msgstr "[Çļéàñ 10 ĥéxéš ~~]"
+
 #: planets/verdance/data/objectives.json:objectives[hex10].desc
 msgid "Your Haul Bug sells the bales. Stay at the work."
 msgstr "[Ýôûŕ Ĥàûļ Bûĝ šéļļš ţĥé bàļéš. Šţàý àţ ţĥé ŵôŕķ. ~~~~~~~~~~~~~~]"
@@ -11076,6 +11008,10 @@ msgstr "[Ķééþ çļéàñîñĝ. Šééðš ţûŕñ ûþ îñ çļéàñ ĝ�
 #: planets/verdance/data/objectives.json:objectives[seed].lines
 msgid "Something green is waking out there. Plant the first seed."
 msgstr "[Šôméţĥîñĝ ĝŕééñ îš ŵàķîñĝ ôûţ ţĥéŕé. Þļàñţ ţĥé ƒîŕšţ šééð. ~~~~~~~~~~~~~~~~~]"
+
+#: planets/verdance/data/objectives.json:objectives[scoopie].text
+msgid "Build a Scoopie"
+msgstr "[Bûîļð à Šçôôþîé ~~]"
 
 #: planets/verdance/data/objectives.json:objectives[scoopie].desc
 msgid "Workbench, Bots tab. It cleans a hex by itself."
@@ -11113,6 +11049,10 @@ msgstr "[Ŵôŕķbéñçĥ. ŴŔÉÑ ŵîļļ šôûñð çļéàŕéŕ. ~~~~~~~
 msgid "Boost the tower. I want to hear you clearly."
 msgstr "[Bôôšţ ţĥé ţôŵéŕ. Î ŵàñţ ţô ĥéàŕ ýôû çļéàŕļý. ~~~~~~~~~~~~]"
 
+#: planets/verdance/data/objectives.json:objectives[research1].text
+msgid "Finish a research project"
+msgstr "[Fîñîšĥ à ŕéšéàŕçĥ þŕôĵéçţ ~~~~~~]"
+
 #: planets/verdance/data/objectives.json:objectives[research1].desc
 msgid "Workbench, Research tab. Research unlocks new robots."
 msgstr "[Ŵôŕķbéñçĥ, Ŕéšéàŕçĥ ţàb. Ŕéšéàŕçĥ ûñļôçķš ñéŵ ŕôbôţš. ~~~~~~~~~~~~~~~~]"
@@ -11124,6 +11064,10 @@ msgstr "[Ŵôŕķbéñçĥ, Ûþĝŕàðéš ţàb: àðð ţĥé Ŕéšéàŕç
 #: planets/verdance/data/objectives.json:objectives[research1].lines
 msgid "Your bench can study now. Research unlocks new machines and seeds."
 msgstr "[Ýôûŕ béñçĥ çàñ šţûðý ñôŵ. Ŕéšéàŕçĥ ûñļôçķš ñéŵ màçĥîñéš àñð šééðš. ~~~~~~~~~~~~~~~~~~~~]"
+
+#: planets/verdance/data/objectives.json:objectives[hex20].text
+msgid "Clean 20 hexes"
+msgstr "[Çļéàñ 20 ĥéxéš ~~]"
 
 #: planets/verdance/data/objectives.json:objectives[hex20].desc
 msgid "More clean ground means more room to grow."
