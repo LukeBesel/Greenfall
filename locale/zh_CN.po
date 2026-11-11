@@ -519,31 +519,31 @@ msgstr "还没有打包机。把胸舱带到垃圾桶去。"
 msgid "+%s cubes"
 msgstr "+%s 方块"
 
-#: fauna/fauna.gd:1686
+#: fauna/fauna.gd:1738
 msgid "E   pet %s"
 msgstr "E   摸摸%s"
 
-#: fauna/fauna.gd:1687
+#: fauna/fauna.gd:1739
 msgid "E   pet the cat"
 msgstr "E   摸摸猫咪"
 
-#: fauna/fauna.gd:1745
+#: fauna/fauna.gd:1797
 msgid "E   scatter crumbs for the birds"
 msgstr "E   给鸟儿撒面包屑"
 
-#: fauna/fauna.gd:1793
+#: fauna/fauna.gd:1845
 msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
 msgstr "鸟儿们觉得你还不错。面包屑袋已加入你的收藏。"
 
-#: fauna/fauna.gd:1849
+#: fauna/fauna.gd:1901
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "这只猫认定你是她的了。来认识一下%s吧。她现在住在这个基地。"
 
-#: fauna/fauna.gd:2170 ui/subtitles.gd:452
+#: fauna/fauna.gd:2222 ui/subtitles.gd:452
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "新发现：%s。已收入图鉴。"
 
-#: fauna/fauna.gd:2241
+#: fauna/fauna.gd:2293
 msgid "Snap! A %s for your Collection."
 msgstr "咔嚓！一张%s的照片，收进你的收藏。"
 
@@ -1511,27 +1511,27 @@ msgstr "走到发射台上的火箭旁，按 E 选择要飞去的地方。"
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
 
-#: scenes/slice_orbit.gd:415
+#: scenes/slice_orbit.gd:417
 msgid "HEX CLEAN!  +%s"
 msgstr "六角格清理完毕！  +%s"
 
-#: scenes/slice_orbit.gd:431
+#: scenes/slice_orbit.gd:433
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice_orbit.gd:500 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:502 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   修理工作台"
 
-#: scenes/slice_orbit.gd:500 systems/camp/camp.gd:195
+#: scenes/slice_orbit.gd:502 systems/camp/camp.gd:195
 msgid "E   Open the workbench"
 msgstr "E   打开工作台"
 
-#: scenes/slice_orbit.gd:1020
+#: scenes/slice_orbit.gd:1022
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice_orbit.gd:1120
+#: scenes/slice_orbit.gd:1122
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "工作台修好了。在它旁边按 E，用方块购买升级。"
 
@@ -1727,43 +1727,43 @@ msgstr "Cradle 号正在轨道上等待。恢复整个星系：太阳系地图�
 msgid "SELECT  A1  ·  B4  ·  C7"
 msgstr "选择  A1  ·  B4  ·  C7"
 
-#: story/egg_props.gd:212
+#: story/egg_props.gd:217
 msgid "WE'LL BE BACK AFTER LUNCH"
 msgstr "午饭后回来"
 
-#: story/egg_props.gd:327
+#: story/egg_props.gd:332
 msgid "OPEN IN 100 YEARS"
 msgstr "100 年后开门"
 
-#: story/egg_props.gd:344
+#: story/egg_props.gd:349
 msgid "HI-SCORE"
 msgstr "最高分"
 
-#: story/egg_props.gd:345
+#: story/egg_props.gd:350
 msgid "WREN  999990"
 msgstr "WREN  999990"
 
-#: story/egg_props.gd:346
+#: story/egg_props.gd:351
 msgid "INSERT COIN"
 msgstr "请投币"
 
-#: story/egg_props.gd:349
+#: story/egg_props.gd:354
 msgid "SWEEP-O-TRON"
 msgstr "扫地大王"
 
-#: story/egg_props.gd:441
+#: story/egg_props.gd:446
 msgid "BISCUIT"
 msgstr "饼干"
 
-#: story/egg_props.gd:469
+#: story/egg_props.gd:474
 msgid "FIZZ"
 msgstr "FIZZ"
 
-#: story/egg_props.gd:615
+#: story/egg_props.gd:620
 msgid "(it is not wet)"
 msgstr "（它不是湿的）"
 
-#: story/egg_props.gd:632
+#: story/egg_props.gd:637
 msgid ""
 "THE LEDGER IS WATCHING\n"
 "(FOR SAVINGS)"
@@ -1771,7 +1771,7 @@ msgstr ""
 "LEDGER 正在关注你\n"
 "（是否节约）"
 
-#: story/egg_props.gd:710
+#: story/egg_props.gd:715
 msgid ""
 "EMPLOYEE OF\n"
 "THE MONTH\n"
@@ -1781,7 +1781,7 @@ msgstr ""
 "最佳员工\n"
 "— 方块 —"
 
-#: story/egg_props.gd:740
+#: story/egg_props.gd:745
 msgid ""
 "FORECAST\n"
 "ALWAYS RIGHT*"
@@ -1789,19 +1789,19 @@ msgstr ""
 "天气预报\n"
 "永远准确*"
 
-#: story/egg_props.gd:765
+#: story/egg_props.gd:770
 msgid "SHOW ENTRY"
 msgstr "演出入口"
 
-#: story/egg_props.gd:807
+#: story/egg_props.gd:812
 msgid "THE BUILDERS · DO NOT TIDY"
 msgstr "建造者 · 请勿整理"
 
-#: story/egg_props.gd:895
+#: story/egg_props.gd:900
 msgid "FINE"
 msgstr "罚款"
 
-#: story/egg_props.gd:972
+#: story/egg_props.gd:977
 msgid ""
 "BACK IN\n"
 "5 MINUTES"

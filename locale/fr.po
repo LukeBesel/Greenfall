@@ -519,31 +519,31 @@ msgstr "Pas encore de presse à balles. Apporte ton coffre à la poubelle."
 msgid "+%s cubes"
 msgstr "+%s cubes"
 
-#: fauna/fauna.gd:1686
+#: fauna/fauna.gd:1738
 msgid "E   pet %s"
 msgstr "E   caresser %s"
 
-#: fauna/fauna.gd:1687
+#: fauna/fauna.gd:1739
 msgid "E   pet the cat"
 msgstr "E   caresser le chat"
 
-#: fauna/fauna.gd:1745
+#: fauna/fauna.gd:1797
 msgid "E   scatter crumbs for the birds"
 msgstr "E   lancer des miettes aux oiseaux"
 
-#: fauna/fauna.gd:1793
+#: fauna/fauna.gd:1845
 msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
 msgstr "Les oiseaux ont décidé que tu étais quelqu'un de bien. Sac de miettes ajouté à ta Collection."
 
-#: fauna/fauna.gd:1849
+#: fauna/fauna.gd:1901
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "La chatte a décidé que tu étais à elle. Voici %s. Elle vit à cette base maintenant."
 
-#: fauna/fauna.gd:2170 ui/subtitles.gd:452
+#: fauna/fauna.gd:2222 ui/subtitles.gd:452
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "Nouvelle observation : %s. Elle est maintenant dans le Codex."
 
-#: fauna/fauna.gd:2241
+#: fauna/fauna.gd:2293
 msgid "Snap! A %s for your Collection."
 msgstr "Clic ! Une photo (%s) pour ta Collection."
 
@@ -1517,27 +1517,27 @@ msgstr "Va jusqu'à la fusée sur l'aire de lancement et appuie sur E pour chois
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Cellules d'énergie en recharge : %s. Les améliorations de fusée les remplissent plus vite."
 
-#: scenes/slice_orbit.gd:415
+#: scenes/slice_orbit.gd:417
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXAGONE PROPRE !  +%s"
 
-#: scenes/slice_orbit.gd:431
+#: scenes/slice_orbit.gd:433
 msgid "Milestone: %d hexes clean!"
 msgstr "Étape : %d hexagones propres !"
 
-#: scenes/slice_orbit.gd:500 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:502 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   Réparer l'établi"
 
-#: scenes/slice_orbit.gd:500 systems/camp/camp.gd:195
+#: scenes/slice_orbit.gd:502 systems/camp/camp.gd:195
 msgid "E   Open the workbench"
 msgstr "E   Ouvrir l'établi"
 
-#: scenes/slice_orbit.gd:1020
+#: scenes/slice_orbit.gd:1022
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Les améliorations demandent un établi. Retourne à la base."
 
-#: scenes/slice_orbit.gd:1120
+#: scenes/slice_orbit.gd:1122
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Établi réparé. Appuie sur E devant lui pour dépenser des cubes en améliorations."
 
@@ -1733,43 +1733,43 @@ msgstr "Le Cradle reste en orbite. Restaure tout le système : la carte du syst�
 msgid "SELECT  A1  ·  B4  ·  C7"
 msgstr "CHOIX  A1  ·  B4  ·  C7"
 
-#: story/egg_props.gd:212
+#: story/egg_props.gd:217
 msgid "WE'LL BE BACK AFTER LUNCH"
 msgstr "DE RETOUR APRÈS LE DÉJEUNER"
 
-#: story/egg_props.gd:327
+#: story/egg_props.gd:332
 msgid "OPEN IN 100 YEARS"
 msgstr "OUVERTURE DANS 100 ANS"
 
-#: story/egg_props.gd:344
+#: story/egg_props.gd:349
 msgid "HI-SCORE"
 msgstr "RECORD"
 
-#: story/egg_props.gd:345
+#: story/egg_props.gd:350
 msgid "WREN  999990"
 msgstr "WREN  999990"
 
-#: story/egg_props.gd:346
+#: story/egg_props.gd:351
 msgid "INSERT COIN"
 msgstr "INSÉREZ UNE PIÈCE"
 
-#: story/egg_props.gd:349
+#: story/egg_props.gd:354
 msgid "SWEEP-O-TRON"
 msgstr "BALAI-O-TRON"
 
-#: story/egg_props.gd:441
+#: story/egg_props.gd:446
 msgid "BISCUIT"
 msgstr "BISCUIT"
 
-#: story/egg_props.gd:469
+#: story/egg_props.gd:474
 msgid "FIZZ"
 msgstr "FIZZ"
 
-#: story/egg_props.gd:615
+#: story/egg_props.gd:620
 msgid "(it is not wet)"
 msgstr "(ce n'est pas mouillé)"
 
-#: story/egg_props.gd:632
+#: story/egg_props.gd:637
 msgid ""
 "THE LEDGER IS WATCHING\n"
 "(FOR SAVINGS)"
@@ -1777,7 +1777,7 @@ msgstr ""
 "LE LEDGER VOUS SURVEILLE\n"
 "(POUR LES ÉCONOMIES)"
 
-#: story/egg_props.gd:710
+#: story/egg_props.gd:715
 msgid ""
 "EMPLOYEE OF\n"
 "THE MONTH\n"
@@ -1787,7 +1787,7 @@ msgstr ""
 "DU MOIS\n"
 "— CUBE —"
 
-#: story/egg_props.gd:740
+#: story/egg_props.gd:745
 msgid ""
 "FORECAST\n"
 "ALWAYS RIGHT*"
@@ -1795,19 +1795,19 @@ msgstr ""
 "MÉTÉO\n"
 "TOUJOURS JUSTE*"
 
-#: story/egg_props.gd:765
+#: story/egg_props.gd:770
 msgid "SHOW ENTRY"
 msgstr "ENTRÉE DU SPECTACLE"
 
-#: story/egg_props.gd:807
+#: story/egg_props.gd:812
 msgid "THE BUILDERS · DO NOT TIDY"
 msgstr "LES BÂTISSEURS · NE PAS RANGER"
 
-#: story/egg_props.gd:895
+#: story/egg_props.gd:900
 msgid "FINE"
 msgstr "AMENDE"
 
-#: story/egg_props.gd:972
+#: story/egg_props.gd:977
 msgid ""
 "BACK IN\n"
 "5 MINUTES"
