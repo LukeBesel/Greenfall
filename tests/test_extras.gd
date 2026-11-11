@@ -291,7 +291,7 @@ func test_weekly_off_hides_every_way_in() -> void:
 	assert_false("weekly_arch" in Decor.type_ids())
 	for a: Dictionary in Achievements.shown_defs():
 		assert_ne(str((a.get("cond", {}) as Dictionary).get("key", "")), "weekly_chips", "no weekly achievement in the Codex")
-	assert_eq(Achievements.shown_defs().size(), Achievements.defs().size() - 2)
+	assert_eq(Achievements.shown_defs().size(), Achievements.defs().size() - 2 - _closed_hidden())  # [v7play] minus those for planets not open yet
 	var pm := PauseMenu.new()
 	add_child_autofree(pm)
 	pm.open_menu()
@@ -314,4 +314,9 @@ func test_weekly_on_brings_it_back() -> void:
 	WeeklyChallenge.enabled_override = 1
 	assert_true(ExtrasPanel.tab_open("weekly"))
 	assert_true("weekly_pennant" in Decor.type_ids())
-	assert_eq(Achievements.shown_defs().size(), Achievements.defs().size())
+	assert_eq(Achievements.shown_defs().size(), Achievements.defs().size() - _closed_hidden())  # [v7play]
+
+
+## [v7play] Achievements the Codex hides while the next planet is closed (data/homeward.json closed).
+func _closed_hidden() -> int:
+	return (Homeward.closed_cfg().get("hide_achievements", []) as Array).size() if Homeward.next_closed() else 0
