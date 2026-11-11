@@ -23,8 +23,8 @@ extends Node
 const SIZES: Array[Vector2i] = [Vector2i(1280, 720), Vector2i(1920, 1080), Vector2i(2560, 1080), Vector2i(1280, 800)]
 const SCALES: Array[float] = [0.8, 1.0, 1.25, 1.5]
 const LOCALES: Array[String] = ["en", "de", "fr", "es", "pt_BR", "zh_CN", "ja", "pseudo"]
-const SCREENS: Array[String] = ["play", "hud", "prompts", "pause", "settings", "workbench", "locker", "survey", "loading"]
-const TITLE_SCREENS: Array[String] = ["title", "title_settings"]
+const SCREENS: Array[String] = ["play", "hud", "prompts", "pause", "settings", "workbench", "locker", "survey", "loading", "codex", "rockets", "system", "document", "pad"]
+const TITLE_SCREENS: Array[String] = ["title", "title_settings", "pad"]
 ## A long line, about the longest chunk the bar shows (Subtitles.MAX_CHARS).
 const LONG_LINE: String = "Bring every cube you scoop to the bench by the pod, and we can fix the old beacon"
 
@@ -127,6 +127,9 @@ func _run() -> void:
 			_set_locale(str(loc))
 			await _frames(2)
 			await _screens_pass()
+		if _want("pad"):
+			_set_locale("en")
+			await _pad_pass()
 	root.size = size0
 	Settings.ui_scale = scale0
 	Settings.apply_ui_scale()
@@ -328,6 +331,22 @@ func _screens_pass() -> void:
 			await _wait_s(0.5)
 			so.call("set_input", true)
 			get_tree().paused = false
+	for e: Dictionary in _extra_screens():
+		if not _want(str(e["name"])):
+			continue
+		await (e["open"] as Callable).call()
+		await _wait_s(0.6)
+		var tabs: Array = (e["tabs"] as Callable).call() if e.has("tabs") else [""]
+		for t: Variant in tabs:
+			if e.has("set_tab"):
+				await (e["set_tab"] as Callable).call(t)
+				await _wait_s(0.2)
+			var nm: String = str(e["name"]) + ("/" + str(t) if str(t) != "" else "")
+			var root: Node = (e["root"] as Callable).call()
+			await _each_size(nm, func(cfg: String) -> void: _audit(cfg, str(e["name"]), [root], true, (e["other"] as Callable).call() if e.has("other") else []))
+		await (e["close"] as Callable).call()
+		await _wait_s(0.4)
+		get_tree().paused = false
 	if _want("loading"):
 		var ld: CanvasLayer = get_tree().root.get_node_or_null("Loader") as CanvasLayer
 		if ld:
@@ -336,6 +355,54 @@ func _screens_pass() -> void:
 				(ld.get("_status") as Label).text = ld.call("_status_text", stage)
 				await _each_size("loading/%d" % stage, func(cfg: String) -> void: _audit(cfg, "loading", [ld], false))
 			ld.visible = false
+
+
+## Screens opened from the pause menu, the rocket and the map, and a found document:
+## {name, open, close, is_open, root, [tabs, set_tab, other]} (callables; open/close may await).
+func _extra_screens() -> Array[Dictionary]:
+	var w: Node = so.get("w")
+	var out: Array[Dictionary] = []
+	var cx: CodexScreen = w.get("codex") as CodexScreen
+	if cx:
+		out.append({"name": "codex", "root": func() -> Node: return cx,
+			"open": func() -> void: cx.open_screen("codex"), "close": func() -> void: cx.close_screen(),
+			"is_open": func() -> bool: return cx.is_open,
+			"tabs": func() -> Array: return CodexScreen.TABS.map(func(t: Dictionary) -> String: return str(t["id"])),
+			"set_tab": func(t: Variant) -> void: cx.open_screen(str(t)),
+			"other": func() -> Array: return _buttons_named(cx, "Tab")})
+	var sites: Node = so.get("sites")
+	var pk: RocketPicker = sites.get("picker") as RocketPicker if sites else null
+	if pk:
+		out.append({"name": "rockets", "root": func() -> Node: return pk,
+			"open": func() -> void: pk.open(), "close": func() -> void: pk.close(), "is_open": func() -> bool: return pk.is_open})
+	var layers: Node = so.get("layers")
+	var sm: SystemMap = layers.get("system_map") as SystemMap if layers else null
+	if sm:
+		out.append({"name": "system", "root": func() -> Node: return sm,
+			"open": func() -> void: sm.open_map(true), "close": func() -> void: sm.close_map(), "is_open": func() -> bool: return sm.is_open})
+	var dv: Node = w.get("doc_view") as Node
+	if dv:
+		var doc: Dictionary = {}
+		var f := FileAccess.open("res://data/ledger.json", FileAccess.READ)
+		if f:
+			var d: Variant = JSON.parse_string(f.get_as_text())
+			if d is Dictionary:
+				doc = (d as Dictionary).get("contract_doc", {})
+		if not doc.is_empty():
+			out.append({"name": "document", "root": func() -> Node: return dv,
+				"open": func() -> void: dv.call("show_doc", doc), "close": func() -> void: dv.call("close_doc"),
+				"is_open": func() -> bool: return bool(dv.get("is_open"))})
+	return out
+
+
+## Buttons a screen reaches by bumpers rather than the d-pad (its tab strip): every Button whose
+## parent holds several toggle buttons.
+static func _buttons_named(root: Node, _hint: String) -> Array:
+	var out: Array = []
+	for b: Node in root.find_children("*", "Button", true, false):
+		if (b as Button).toggle_mode or (b as Button).button_group != null:
+			out.append(b)
+	return out
 
 
 func _tab_buttons_of(up: Node) -> Array:
@@ -378,6 +445,177 @@ func _check_prompts(cfg: String, hud: Node) -> void:
 			_report(cfg, "clipped", "planet line", "\"%s\" %s" % [pl.text, why if why != "" else _r(r)])
 
 
+# --- Gamepad pass -------------------------------------------------------------------------
+# [v6screens] Each screen driven by controller buttons only (real InputEventJoypadButton events,
+# through the game's own input map): the focus is on a shown control of the screen when it opens
+# and after every d-pad press, and B closes it (Settings: back to the menu it came from).
+
+func _press(btn: JoyButton) -> void:
+	var e := InputEventJoypadButton.new()
+	e.button_index = btn
+	e.device = 0
+	e.pressed = true
+	Input.parse_input_event(e)
+	await _frames(2)
+	var r := InputEventJoypadButton.new()
+	r.button_index = btn
+	r.device = 0
+	r.pressed = false
+	Input.parse_input_event(r)
+	await _frames(2)
+
+
+func _pad_focus_ok(cfg: String, roots: Array, when: String) -> bool:
+	var f: Control = get_viewport().gui_get_focus_owner()
+	var ok: bool = f != null and f.is_visible_in_tree()
+	if ok:
+		ok = false
+		for r: Variant in roots:
+			if r != null and is_instance_valid(r) and (r as Node).is_ancestor_of(f):
+				ok = true
+	if not ok:
+		_report(cfg, "pad", "focus lost " + when, "focus on %s" % (UIAudit.short_path(f) if f else "nothing"))
+	return ok
+
+
+## Walks the screen with the d-pad (down, then up) and reports where the focus gets lost.
+func _pad_walk(cfg: String, roots: Array, downs: int = 14) -> int:
+	if UIAudit.focusables(roots).is_empty():
+		return 0  # nothing to focus (a page to read): B must still close it
+	if not _pad_focus_ok(cfg, roots, "when it opens"):
+		return 0
+	var seen: Dictionary = {}
+	for i: int in downs:
+		await _press(JOY_BUTTON_DPAD_DOWN)
+		if not _pad_focus_ok(cfg, roots, "after d-pad down x%d" % (i + 1)):
+			return seen.size()
+		seen[get_viewport().gui_get_focus_owner()] = true
+	for i: int in 3:
+		await _press(JOY_BUTTON_DPAD_UP)
+		if not _pad_focus_ok(cfg, roots, "after d-pad up x%d" % (i + 1)):
+			break
+	return seen.size()
+
+
+func _pad_pass() -> void:
+	var w: Node = so.get("w")
+	var cfg: String = "pad en 1280x720@1.00"
+	get_tree().root.size = Vector2i(1280, 720)
+	Settings.ui_scale = 1.0
+	Settings.apply_ui_scale()
+	# Pause, then Settings from it.
+	var pm: PauseMenu = w.get("pause_menu") as PauseMenu
+	if pm:
+		await _press(JOY_BUTTON_START)
+		await _wait_s(0.4)
+		if not pm.is_open:
+			_report(cfg, "pad", "Start does not open the pause menu", "")
+			pm.open_menu()
+			await _wait_s(0.4)
+		var n: int = await _pad_walk(cfg + " pause", [pm])
+		print("[ui-audit] pad pause: %d controls reached" % n)
+		var sp: SettingsPanel = pm.get("_settings")
+		pm.call("_open_settings")
+		await _wait_s(0.4)
+		n = await _pad_walk(cfg + " settings", [sp], 10)
+		print("[ui-audit] pad settings: %d controls reached" % n)
+		await _press(JOY_BUTTON_B)
+		await _wait_s(0.3)
+		if sp.is_open:
+			_report(cfg + " settings", "pad", "B does not close Settings", "")
+		elif pm.is_open:
+			_pad_focus_ok(cfg + " settings", [pm], "back on the pause menu")
+		await _press(JOY_BUTTON_B)
+		await _wait_s(0.4)
+		if pm.is_open:
+			_report(cfg + " pause", "pad", "B does not close the pause menu", "")
+			pm.close_menu()
+		get_tree().paused = false
+		await _frames(4)
+	var up: UpgradesScreen = w.get("upgrades") as UpgradesScreen
+	if up:
+		up.open_screen()
+		await _wait_s(0.6)
+		var n2: int = await _pad_walk(cfg + " workbench", [up])
+		print("[ui-audit] pad workbench: %d controls reached" % n2)
+		await _press(JOY_BUTTON_RIGHT_SHOULDER)
+		await _wait_s(0.3)
+		_pad_focus_ok(cfg + " workbench", [up], "after RB (next tab)")
+		await _press(JOY_BUTTON_B)
+		await _wait_s(0.5)
+		if up.is_open:
+			_report(cfg + " workbench", "pad", "B does not close the workbench", "")
+			up.close_screen()
+		get_tree().paused = false
+		await _frames(4)
+	var cl: CanvasLayer = LockerPanel.open_overlay(w)
+	await _wait_s(0.6)
+	var n3: int = await _pad_walk(cfg + " locker", [cl], 6)
+	print("[ui-audit] pad locker: %d controls reached" % n3)
+	await _press(JOY_BUTTON_B)
+	await _wait_s(0.6)
+	if is_instance_valid(cl) and not cl.has_meta("closing") and cl.is_inside_tree():
+		_report(cfg + " locker", "pad", "B does not close the locker", "")
+		cl.queue_free()
+	get_tree().paused = false
+	await _frames(4)
+	var layers: Node = so.get("layers")
+	var gv: GlobeView = layers.get("survey") as GlobeView if layers else null
+	if gv:
+		await _press(JOY_BUTTON_BACK)
+		await _wait_s(0.8)
+		if not gv.is_open:
+			_report(cfg + " survey", "pad", "View does not open the survey map", "")
+			gv.open_view()
+			await _wait_s(0.8)
+		await _press(JOY_BUTTON_B)
+		await _wait_s(0.6)
+		if gv.is_open:
+			_report(cfg + " survey", "pad", "B does not close the survey map", "")
+			gv.close_view()
+			await _wait_s(0.5)
+		else:
+			print("[ui-audit] pad survey: View opens it, B closes it")
+		so.call("set_input", true)
+		get_tree().paused = false
+	for e: Dictionary in _extra_screens():
+		await (e["open"] as Callable).call()
+		await _wait_s(0.6)
+		var nm: String = cfg + " " + str(e["name"])
+		var n4: int = await _pad_walk(nm, [(e["root"] as Callable).call()], 8)
+		print("[ui-audit] pad %s: %d controls reached" % [e["name"], n4])
+		await _press(JOY_BUTTON_B)
+		await _wait_s(0.6)
+		if bool((e["is_open"] as Callable).call()):
+			_report(nm, "pad", "B does not close the " + str(e["name"]), "")
+			await (e["close"] as Callable).call()
+			await _wait_s(0.4)
+		get_tree().paused = false
+		await _frames(4)
+
+
+func _pad_title(mm: Node) -> void:
+	var cfg: String = "pad en 1280x720@1.00 title"
+	get_tree().root.size = Vector2i(1280, 720)
+	Settings.ui_scale = 1.0
+	Settings.apply_ui_scale()
+	await _frames(4)
+	var ui: Control = mm.get("_ui") as Control
+	var n: int = await _pad_walk(cfg, [ui], 6)
+	print("[ui-audit] pad title: %d controls reached" % n)
+	mm.call("_open_settings")
+	await _wait_s(0.4)
+	var sp: SettingsPanel = mm.get("_settings")
+	await _pad_walk(cfg + " settings", [sp], 8)
+	await _press(JOY_BUTTON_B)
+	await _wait_s(0.4)
+	if sp.is_open:
+		_report(cfg + " settings", "pad", "B does not close Settings", "")
+		sp.close_panel()
+	else:
+		_pad_focus_ok(cfg, [ui], "back on the title menu")
+
+
 # --- Title screen ------------------------------------------------------------------------
 
 func _run_title() -> void:
@@ -404,3 +642,8 @@ func _run_title() -> void:
 				await _wait_s(0.1)
 				await _each_size("title_settings/" + SettingsPanel.TABS[i], func(cfg: String) -> void: _audit(cfg, "settings", [sp], true, tabs))
 			sp.close_panel()
+	if _want("pad"):
+		_set_locale("en")
+		get_tree().reload_current_scene()
+		await _wait_s(1.5)
+		await _pad_title(get_tree().current_scene)

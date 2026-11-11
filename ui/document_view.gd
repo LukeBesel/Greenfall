@@ -44,7 +44,19 @@ func _ready() -> void:
 	vb.add_child(_body)
 	var hint := PromptLabel.new(tr("{interact}  [k]/ Esc  [/k]close"), 13, Color(0.4, 0.38, 0.35))  # [deck]
 	vb.add_child(hint)
+	_root.resized.connect(_fit)
 	_root.visible = false
+
+
+## [v6screens] On a short screen (UI scale 1.5) the paper gets wider and the text a little smaller,
+## so a long page still fits (tools/ui_audit.gd).
+func _fit() -> void:
+	var vs: Vector2 = _root.size
+	var short: bool = vs.y < 600.0
+	var w: float = clampf(vs.x - 100.0, 480.0, 760.0) if short else 480.0
+	_body.custom_minimum_size.x = w
+	_paper.custom_minimum_size.x = w + 40.0
+	_body.add_theme_font_size_override("font_size", 15 if vs.y < 520.0 else 17)
 
 
 func show_doc(doc: Dictionary) -> void:
@@ -64,6 +76,7 @@ func show_doc(doc: Dictionary) -> void:
 	_title.text = tr(str(doc.get("title", "")))
 	_body.text = tr(str(doc.get("body", "")))
 	is_open = true
+	_fit()  # [v6screens]
 	_root.visible = true
 	get_tree().paused = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
