@@ -31,6 +31,17 @@ const RING_M: float = 18.0
 const ARRIVE_M: float = 2.5
 const PASS_M: float = 4.0
 const PASS_TIGHT_M: float = 2.5  # beside a building: past a parked robot's separation, short of cutting its corner
+## Looking for work is the crew's dear step (a search over the hub's region, then a route). No
+## more than this many microseconds of it start in one tick; robots left over ask on the next.
+const FIND_BUDGET_US: int = 1500
+## After a search of a hub's whole region found nothing for a role, robots of that role and hub
+## are told "nothing" for this long without searching again.
+const NOTHING_FOUND_S: float = 1.5
+## run_far() has no frame to protect: it starts each step this far under the search budget.
+const FAR_RUN_HEADROOM_US: int = 1 << 40
+## Robots this far from Lumi (metres) animate every 2nd and every 4th frame.
+const ANIM_HALF_M: float = 45.0
+const ANIM_QUARTER_M: float = 110.0
 const LOG_KEYS: Array[String] = ["junk", "bales", "hauled", "cells", "planted", "watered", "dumps", "refills", "parts", "idle_s", "stall_s", "unstuck"]
 
 var grid: SphereGrid
@@ -85,6 +96,8 @@ var _t: float = 0.0
 var _report_done: bool = false
 var _names: int = 0
 var _near_n: int = 0
+var _find_us: int = 0  # microseconds of job search started this tick
+var _nothing: Dictionary = {}  # "role:hub" -> time until which a search is known to find nothing
 ## The cost of tick(), for the robot report (microseconds, frames).
 var _tick_us: int = 0
 var _tick_n: int = 0
@@ -423,6 +436,9 @@ func order(u: Dictionary, cell: int) -> void:
 func claim_dirty(from: int, hub: int, p_rings: int = -1, role: String = "clean", who: String = "") -> int:
 	var zone: Dictionary = zones.get(role, {})
 	var lim: float = ((p_rings if p_rings >= 0 else rings) + 0.5) * 17.35
+	var nothing_key: String = "%s:%d" % [role, hub]
+	if float(_nothing.get(nothing_key, -1.0)) > _t:
+		return -1
 	if zone.is_empty() and grid.distance_m(from, hub) >= lim:
 		from = hub  # outside its region (just built, or ordered away): search from the hub
 	var seen: Dictionary = {from: true}
@@ -443,6 +459,8 @@ func claim_dirty(from: int, hub: int, p_rings: int = -1, role: String = "clean",
 				if grid.distance_m(j, hub) < lim or zone.has(j):
 					nxt.append(j)
 		front = nxt
+	if steps < 4000:  # the whole region was looked at, not a search cut short
+		_nothing[nothing_key] = _t + NOTHING_FOUND_S
 	return -1
 
 
@@ -574,6 +592,7 @@ func _refresh_swarm_obstacles(delta: float) -> void:
 
 
 func set_zone_cell(role: String, cell: int, on: bool) -> void:
+	_nothing.clear()  # a new area: look again at once
 	if not zones.has(role):
 		zones[role] = {}
 	if on:
@@ -583,6 +602,7 @@ func set_zone_cell(role: String, cell: int, on: bool) -> void:
 
 
 func clear_zone(role: String) -> void:
+	_nothing.clear()
 	zones.erase(role)
 
 
@@ -607,6 +627,7 @@ func tick_cost() -> Dictionary:
 ## are stepped every far_every seconds; demotion and promotion with hysteresis.
 func tick(delta: float) -> void:
 	_t += delta
+	_find_us = 0
 	_refresh_swarm_obstacles(delta)
 	_far_acc += delta
 	var far_step: bool = _far_acc >= far_every
@@ -621,6 +642,7 @@ func tick(delta: float) -> void:
 				_demote(u)
 				near = false
 			else:
+				(u["bot"] as SphereBot).anim_every = 1 if d < ANIM_HALF_M else (2 if d < ANIM_QUARTER_M else 4)
 				_think(u, delta)
 				_update_centre(u)
 				continue
@@ -640,6 +662,7 @@ func run_far(seconds: float, step_s: float = 1.0) -> void:
 		var dt: float = minf(step_s, left)
 		left -= dt
 		_t += dt
+		_find_us = -FAR_RUN_HEADROOM_US  # no frame to keep smooth here: every robot may look for work
 		for u: Dictionary in units:
 			if u["bot"] == null:
 				SphereCrewSim.advance(u["rec"], dt, surface.radius)
@@ -770,10 +793,13 @@ func _think(u: Dictionary, dt: float) -> void:
 				u["rescan"] = 0.0
 		_:
 			u["rescan"] = float(u["rescan"]) - dt
-			if float(u["rescan"]) > 0.0:
+			if float(u["rescan"]) > 0.0 or _find_us > FIND_BUDGET_US:
 				u["log"]["idle_s"] = float(u["log"]["idle_s"]) + dt
 				return
-			if not _find_job(u):
+			var t0: int = Time.get_ticks_usec()
+			var found: bool = _find_job(u)
+			_find_us += Time.get_ticks_usec() - t0
+			if not found:
 				u["log"]["idle_s"] = float(u["log"]["idle_s"]) + dt
 				u["rescan"] = 0.6 + randf() * 0.4
 				if float(u.get("idle_from", -1.0)) < 0.0:

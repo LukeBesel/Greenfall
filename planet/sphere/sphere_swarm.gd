@@ -9,6 +9,9 @@ var bots: Array[SphereBot] = []
 ## Static obstacles: [[unit dir, radius_m], ...] (rocks, buildings, Lumi).
 var obstacles: Array = []
 var bucket_m: float = 16.0
+## Below this angle (radians) the straight distance between two directions stands in for the arc
+## between them (0.2 rad: the two differ by under 0.2%).
+const CHORD_LIMIT: float = 0.2
 var _buckets: Dictionary = {}
 var _frame: int = -1
 
@@ -77,7 +80,8 @@ func neighbor_bots(me: SphereBot, radius_m: float) -> Array[SphereBot]:
 				if arr == null:
 					continue
 				for b: SphereBot in arr:
-					if b != me and me.dir.angle_to(b.dir) < lim:
+					# For the few metres this looks at, the chord is the arc: no arccosine per pair.
+					if b != me and me.dir.distance_squared_to(b.dir) < lim * lim:
 						out.append(b)
 	return out
 
@@ -86,6 +90,10 @@ func obstacles_near(d: Vector3, radius_m: float) -> Array:
 	var out: Array = []
 	var lim: float = radius_m / surface.radius
 	for o: Array in obstacles:
-		if d.angle_to(o[0]) < lim + float(o[1]) / surface.radius:
+		var reach: float = lim + float(o[1]) / surface.radius
+		if reach >= CHORD_LIMIT:
+			if d.angle_to(o[0]) < reach:
+				out.append(o)
+		elif d.distance_squared_to(o[0]) < reach * reach:  # chord for arc: exact enough below CHORD_LIMIT
 			out.append(o)
 	return out

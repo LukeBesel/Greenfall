@@ -46,6 +46,27 @@ var _last_d: float = 0.0
 var _desired_s := Vector3.ZERO  # [orbC] smoothed steering target
 ## [orbC] Steer round static obstacles (buildings); off for short moves next to a wall.
 var avoid_static: bool = true
+## The visual is animated every this many frames (1 = every frame). The crew raises it for robots
+## far from the camera, where nobody can tell.
+var anim_every: int = 1
+## Static obstacles near this bot. Buildings do not move, so the list is looked up every
+## OBSTACLE_EVERY steps, a little wider than needed (OBSTACLE_MARGIN_M covers the ground a bot
+## can cross meanwhile).
+const OBSTACLE_EVERY: int = 8
+const OBSTACLE_LOOK_M: float = 12.0
+const OBSTACLE_MARGIN_M: float = 3.0
+## The terrain normal is sampled again only after the bot has moved this far.
+const NORMAL_STEP_M: float = 0.4
+var _obs_near: Array = []
+var _obs_frame: int = -OBSTACLE_EVERY
+var _obs_from: Array = []
+var _n_raw := Vector3.UP
+var _n_at := Vector3.ZERO
+var _shown_dir := Vector3.ZERO
+var _shown_heading := Vector3.ZERO
+var _shown_normal := Vector3.ZERO
+var _anim_dt: float = 0.0
+var _steps: int = 0
 
 
 func setup(p_surface: SphereSurface, p_dir: Vector3, p_heading: Vector3 = Vector3.ZERO) -> void:
@@ -100,6 +121,7 @@ func _process(delta: float) -> void:
 func step(delta: float) -> void:
 	if surface == null:
 		return
+	_steps += 1
 	if graph and not has_goal() and not working:
 		_think_graph()
 	var desired: Vector3 = heading
@@ -123,13 +145,17 @@ func step(delta: float) -> void:
 			desired = SphereSteer.seek(dir, aim, heading)
 			spd = speed * (SphereSteer.arrive(d_m, stop_m, 2.0) if path.is_empty() else 1.0)
 	if swarm:
-		var near: Array = swarm.neighbors(self, 8.0)
+		# One lookup of the bots around this one serves both the spacing and the dodging.
+		var near_bots: Array[SphereBot] = swarm.neighbor_bots(self, 8.0)
+		var near: Array = []
+		for nb: SphereBot in near_bots:
+			near.append(nb.dir)
 		var sep: Vector3 = SphereSteer.separation(dir, near, body_radius * 2.6, surface.radius)
 		# Other bots ahead are steered around like obstacles (both keep right on a head-on).
-		var obs: Array = swarm.obstacles_near(dir, 12.0) if avoid_static else []
+		var obs: Array = _static_obstacles().duplicate() if avoid_static else []
 		# [orbC] Bots driving the same way (a convoy) only keep their spacing; dodging them made
 		# both weave side to side. Oncoming and parked bots are still steered round.
-		for nb: SphereBot in swarm.neighbor_bots(self, 8.0):
+		for nb: SphereBot in near_bots:
 			if nb.moving_speed > 0.3 and nb.heading.dot(heading) > 0.6:
 				continue
 			obs.append([nb.dir, body_radius])
@@ -166,8 +192,10 @@ func step(delta: float) -> void:
 			_target_cell = -1
 			working = false
 	_apply_transform(delta)
-	if visual and visual.has_method("animate"):
-		visual.call("animate", moving_speed, working, delta)
+	_anim_dt += delta
+	if visual and (anim_every <= 1 or (_steps + get_instance_id()) % anim_every == 0) and visual.has_method("animate"):
+		visual.call("animate", moving_speed, working, _anim_dt)
+		_anim_dt = 0.0
 
 
 func _think_graph() -> void:
@@ -191,9 +219,29 @@ func _on_arrived() -> void:
 		working = true
 
 
+## The buildings near this bot (see OBSTACLE_EVERY, counted in steps). Bots are staggered so they
+## do not all look on the same step; a new obstacle list is seen at once.
+func _static_obstacles() -> Array:
+	if _steps - _obs_frame >= OBSTACLE_EVERY or not is_same(_obs_from, swarm.obstacles):
+		_obs_frame = _steps - int(get_instance_id() % OBSTACLE_EVERY) if _obs_frame < 0 else _steps
+		_obs_from = swarm.obstacles
+		_obs_near = swarm.obstacles_near(dir, OBSTACLE_LOOK_M + OBSTACLE_MARGIN_M)
+	return _obs_near
+
+
 func _apply_transform(delta: float) -> void:
-	var n: Vector3 = surface.ground_normal(dir)
-	_normal = n if delta <= 0.0 else SphereMath.slerp_safe(_normal, n, SphereMath.damp(8.0, delta))
+	# The terrain normal costs three ground samples: take it again only after moving.
+	var step: float = NORMAL_STEP_M / surface.radius
+	if _n_at == Vector3.ZERO or dir.distance_squared_to(_n_at) > step * step:
+		_n_raw = surface.ground_normal(dir)
+		_n_at = dir
+	_normal = _n_raw if delta <= 0.0 else SphereMath.slerp_safe(_normal, _n_raw, SphereMath.damp(8.0, delta))
+	# A parked bot that has settled keeps the transform it has.
+	if dir.is_equal_approx(_shown_dir) and heading.is_equal_approx(_shown_heading) and _normal.is_equal_approx(_shown_normal):
+		return
+	_shown_dir = dir
+	_shown_heading = heading
+	_shown_normal = _normal
 	var up_v: Vector3 = SphereMath.slerp_safe(dir, _normal, tilt)
 	global_transform = Transform3D(SphereMath.basis_from_up_fwd(up_v, heading), surface.ground(dir) + dir * hover)
 
