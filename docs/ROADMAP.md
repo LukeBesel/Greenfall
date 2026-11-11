@@ -1050,3 +1050,13 @@ Details and numbers in docs/PERFORMANCE.md (perf passes 6-8).
 - **Growth.** `crew.hub_summary(hub_cell)` (also used by the rocket picker), the bench's Bots counter shows the rate, and a hub's crew reports once when Lumi returns after 3 minutes or more away (`OrbitCrews._away_tick`).
 - Tests: `tests/test_crew_v6.gd`. Dev: `--crew-build=type[,s]`, `--crew-cam=i[,dist,height]`.
 - Open: rendered checks of the badge, hello and Command card were blocked by memory on the shared box (see the hand-off notes); Haul Bug reversals in `--bot-motion` (10 a minute); the Drip can be built before any plant exists (it says why it waits).
+
+## 2026-11-11: v6life (the world comes back to life where you clean and plant; owner item 58)
+What reacts to cleaning on the globe now, all derived from saved cell state (nothing new is saved):
+- **Ground** (`plants/cell_verdure.gd`, `SphereCells.green`, `sphere_ground.gdshader`): a clean cell greens by itself over about two minutes (patches of young grass creeping out from seed spots), and more with every hex level; tufts and small flowers stand in the green patches near Lumi. The hex-complete moment gets a second, soft green ring. On load, clean cells are fully grown.
+- **Streets** (`planet/sites/town_life.gd`, `building_city.gdshader`, hook in `site_power.gd`): per city block, from the cells in and round it. Clean share: facades and awnings lose grime. Mostly clean: first windows glow at dusk. Clean: the block's street lamps flicker on. Clean and planted: neon signs, string lights, lit shop windows. The skyline past the pad follows the town as a whole.
+- **Small life** (`plants/flutter.gd`): butterflies by day and fireflies from dusk over planted cells (Fauna already brings cats, birds, rabbits and fish).
+- **Sound** (`audio/life_ambience.gd`): a low gritty wind and a rare creak over junk; a soft breeze in leaves and a rare far bird phrase over green ground; nearly silent in between.
+- **Far view** (`sphere_shell.gd`, `sphere_shell.gdshader`): the far shell and the map read the same green; a trashed city is nearly dark at night and its lights return with cleaning.
+- Dev hooks: `planet/sites/life_dev.gd` (`--life-clean`, `--life-grown`, `--life-off`, `--life-report`, `--life-tour`). Tests: `tests/test_cell_verdure.gd`, `tests/test_town_life.gd`.
+Open: move the ambience one-shot gaps and bed levels into v6sound's `data/sound.json` once it is on main; the hinterland's own buildings do not wake yet; other planets' towns have no block map (their prefabs are not VerdanceSite).
