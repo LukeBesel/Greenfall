@@ -16995,6 +16995,12 @@ msgstr "Eine Rostwelt, grün. Die alten Kräne haben Blumen zu ihren Füßen. Di
 #~ msgid "A great green-light rocket on a launch complex built from every planet you saved. One trip: up to the Cradle."
 #~ msgstr "Eine große Rakete aus grünem Licht auf einer Startanlage, gebaut aus jedem Planeten, den du gerettet hast. Eine Reise: hinauf zur Cradle."
 
+#~ msgid "Fuel and power are full. Time to go home."
+#~ msgstr "Treibstoff und Energie sind voll. Zeit, nach Hause zu fliegen."
+
+#~ msgid "Next stop: the Cradle. Fuel and power are full. Let's go home."
+#~ msgstr "Nächster Halt: die Cradle. Treibstoff und Energie sind voll. Ab nach Hause."
+
 #~ msgid "Look at the star map. Five worlds, and the Ledger buried every one."
 #~ msgstr "Schau auf die Sternenkarte. Fünf Welten, und der Ledger hat jede einzelne begraben."
 

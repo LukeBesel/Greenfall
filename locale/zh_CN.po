@@ -16979,6 +16979,12 @@ msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了
 #~ msgid "A great green-light rocket on a launch complex built from every planet you saved. One trip: up to the Cradle."
 #~ msgstr "一枚巨大的绿光火箭，立在用你拯救的每个星球建成的发射场上。只有一趟旅程：飞向 Cradle 号。"
 
+#~ msgid "Fuel and power are full. Time to go home."
+#~ msgstr "燃料和能量都满了。该回家了。"
+
+#~ msgid "Next stop: the Cradle. Fuel and power are full. Let's go home."
+#~ msgstr "下一站：Cradle号。燃料和能量都满了。我们回家吧。"
+
 #~ msgid "Look at the star map. Five worlds, and the Ledger buried every one."
 #~ msgstr "看看星图。五个世界，全都被 Ledger 掩埋了。"
 

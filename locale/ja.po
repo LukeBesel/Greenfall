@@ -16979,6 +16979,12 @@ msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いて
 #~ msgid "A great green-light rocket on a launch complex built from every planet you saved. One trip: up to the Cradle."
 #~ msgstr "あなたが救ったすべての惑星で築いた発射施設に立つ、緑の光の大きなロケット。行き先はひとつ、Cradle まで。"
 
+#~ msgid "Fuel and power are full. Time to go home."
+#~ msgstr "燃料もパワーも満タン。家に帰ろう。"
+
+#~ msgid "Next stop: the Cradle. Fuel and power are full. Let's go home."
+#~ msgstr "次の行き先は Cradle号。燃料もパワーも満タン。家に帰ろう。"
+
 #~ msgid "Look at the star map. Five worlds, and the Ledger buried every one."
 #~ msgstr "星図を見て。世界は五つ。Ledger はそのぜんぶをゴミでうめたんだ。"
 
