@@ -12462,16 +12462,16 @@ msgid "Clean ground lets plants grow again."
 msgstr "干净的土地能让植物重新生长。"
 
 #: data/objectives.json:objectives[hex2].lines
-msgid "Two clean hexes. Keep going, Lumi."
-msgstr "两个干净的六角格。继续加油，Lumi。"
+msgid "One hex clean. Now one more, Lumi."
+msgstr "一个六角格干净了。再来一个，Lumi。"
 
 #: data/objectives.json:objectives[hex3].desc
 msgid "Clear room around the base, so robots can start work."
 msgstr "把基地周围清出一块地方，机器人才能开工。"
 
 #: data/objectives.json:objectives[hex3].lines
-msgid "Three clean hexes. The planet notices, believe me."
-msgstr "三个干净的六角格。相信我，星球感觉到了。"
+msgid "One more hex, Lumi. The planet notices, believe me."
+msgstr "再清一个六角格，Lumi。这颗星球感觉得到，相信我。"
 
 #: data/objectives.json:objectives[bench2].text
 msgid "Add a Bot Bay to the bench"
@@ -12530,8 +12530,8 @@ msgid "More clean ground, more room to plant. Robots help."
 msgstr "干净的土地越多，能种的地方就越多。机器人会帮忙。"
 
 #: data/objectives.json:objectives[hex10].lines
-msgid "Ten clean hexes. Your robots are learning from you, Lumi."
-msgstr "十个干净的六角格。你的机器人正在向你学习，Lumi。"
+msgid "On to ten clean hexes. Your robots are learning from you, Lumi."
+msgstr "向十个干净的六角格出发。你的机器人在向你学习呢，Lumi。"
 
 #: data/objectives.json:objectives[base2].text
 msgid "Rebuild the base to level 2"
@@ -12582,8 +12582,8 @@ msgid "More clean ground means more room to grow."
 msgstr "干净的土地越多，生长的空间就越大。"
 
 #: data/objectives.json:objectives[hex20].lines
-msgid "Twenty hexes. The air already smells different."
-msgstr "二十个六角格。空气闻起来已经不一样了。"
+msgid "Twenty hexes next. The air already smells different."
+msgstr "下一个目标：二十个六角格。空气闻起来已经不一样了。"
 
 #: data/objectives.json:objectives[base3].text
 msgid "Rebuild the base to level 3"
@@ -17111,6 +17111,18 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Two clean hexes. Keep going, Lumi."
+#~ msgstr "两个干净的六角格。继续加油，Lumi。"
+
+#~ msgid "Three clean hexes. The planet notices, believe me."
+#~ msgstr "三个干净的六角格。相信我，星球感觉到了。"
+
+#~ msgid "Ten clean hexes. Your robots are learning from you, Lumi."
+#~ msgstr "十个干净的六角格。你的机器人正在向你学习，Lumi。"
+
+#~ msgid "Twenty hexes. The air already smells different."
+#~ msgstr "二十个六角格。空气闻起来已经不一样了。"
 
 #~ msgid "Cargo pod landed: %s cubes from %d robots in other districts."
 #~ msgstr "货运舱着陆：%s 个方块，来自其他街区的 %d 台机器人。"

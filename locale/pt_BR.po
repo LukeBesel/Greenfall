@@ -12479,16 +12479,16 @@ msgid "Clean ground lets plants grow again."
 msgstr "Em chão limpo as plantas crescem de novo."
 
 #: data/objectives.json:objectives[hex2].lines
-msgid "Two clean hexes. Keep going, Lumi."
-msgstr "Dois hexágonos limpos. Continue, Lumi."
+msgid "One hex clean. Now one more, Lumi."
+msgstr "Um hexágono limpo. Agora mais um, Lumi."
 
 #: data/objectives.json:objectives[hex3].desc
 msgid "Clear room around the base, so robots can start work."
 msgstr "Abra espaço em volta da base para os robôs começarem a trabalhar."
 
 #: data/objectives.json:objectives[hex3].lines
-msgid "Three clean hexes. The planet notices, believe me."
-msgstr "Três hexágonos limpos. O planeta percebe, pode acreditar."
+msgid "One more hex, Lumi. The planet notices, believe me."
+msgstr "Mais um hexágono, Lumi. O planeta percebe, pode acreditar."
 
 #: data/objectives.json:objectives[bench2].text
 msgid "Add a Bot Bay to the bench"
@@ -12547,8 +12547,8 @@ msgid "More clean ground, more room to plant. Robots help."
 msgstr "Mais chão limpo, mais espaço para plantar. Os robôs ajudam."
 
 #: data/objectives.json:objectives[hex10].lines
-msgid "Ten clean hexes. Your robots are learning from you, Lumi."
-msgstr "Dez hexágonos limpos. Seus robôs estão aprendendo com você, Lumi."
+msgid "On to ten clean hexes. Your robots are learning from you, Lumi."
+msgstr "Rumo a dez hexágonos limpos. Seus robôs estão aprendendo com você, Lumi."
 
 #: data/objectives.json:objectives[base2].text
 msgid "Rebuild the base to level 2"
@@ -12599,8 +12599,8 @@ msgid "More clean ground means more room to grow."
 msgstr "Mais chão limpo é mais espaço para crescer."
 
 #: data/objectives.json:objectives[hex20].lines
-msgid "Twenty hexes. The air already smells different."
-msgstr "Vinte hexágonos. O ar já tem outro cheiro."
+msgid "Twenty hexes next. The air already smells different."
+msgstr "Agora, vinte hexágonos. O ar já tem outro cheiro."
 
 #: data/objectives.json:objectives[base3].text
 msgid "Rebuild the base to level 3"
@@ -17128,6 +17128,18 @@ msgstr "Aquele pórtico desmanchou a frota do Ledger quando o dinheiro acabou. A
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Um mundo de ferrugem, verde. Os velhos guindastes têm flores aos pés. As contas estão fechadas, {name}. Nós as equilibramos."
+
+#~ msgid "Two clean hexes. Keep going, Lumi."
+#~ msgstr "Dois hexágonos limpos. Continue, Lumi."
+
+#~ msgid "Three clean hexes. The planet notices, believe me."
+#~ msgstr "Três hexágonos limpos. O planeta percebe, pode acreditar."
+
+#~ msgid "Ten clean hexes. Your robots are learning from you, Lumi."
+#~ msgstr "Dez hexágonos limpos. Seus robôs estão aprendendo com você, Lumi."
+
+#~ msgid "Twenty hexes. The air already smells different."
+#~ msgstr "Vinte hexágonos. O ar já tem outro cheiro."
 
 #~ msgid "Cargo pod landed: %s cubes from %d robots in other districts."
 #~ msgstr "Cápsula de carga pousou: %s cubos de %d robôs de outros distritos."

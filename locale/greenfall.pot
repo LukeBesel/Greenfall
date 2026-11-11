@@ -12277,7 +12277,7 @@ msgid "Clean ground lets plants grow again."
 msgstr ""
 
 #: data/objectives.json:objectives[hex2].lines
-msgid "Two clean hexes. Keep going, Lumi."
+msgid "One hex clean. Now one more, Lumi."
 msgstr ""
 
 #: data/objectives.json:objectives[hex3].desc
@@ -12285,7 +12285,7 @@ msgid "Clear room around the base, so robots can start work."
 msgstr ""
 
 #: data/objectives.json:objectives[hex3].lines
-msgid "Three clean hexes. The planet notices, believe me."
+msgid "One more hex, Lumi. The planet notices, believe me."
 msgstr ""
 
 #: data/objectives.json:objectives[bench2].text
@@ -12345,7 +12345,7 @@ msgid "More clean ground, more room to plant. Robots help."
 msgstr ""
 
 #: data/objectives.json:objectives[hex10].lines
-msgid "Ten clean hexes. Your robots are learning from you, Lumi."
+msgid "On to ten clean hexes. Your robots are learning from you, Lumi."
 msgstr ""
 
 #: data/objectives.json:objectives[base2].text
@@ -12397,7 +12397,7 @@ msgid "More clean ground means more room to grow."
 msgstr ""
 
 #: data/objectives.json:objectives[hex20].lines
-msgid "Twenty hexes. The air already smells different."
+msgid "Twenty hexes next. The air already smells different."
 msgstr ""
 
 #: data/objectives.json:objectives[base3].text

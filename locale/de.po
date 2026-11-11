@@ -12479,16 +12479,16 @@ msgid "Clean ground lets plants grow again."
 msgstr "Auf sauberem Boden können wieder Pflanzen wachsen."
 
 #: data/objectives.json:objectives[hex2].lines
-msgid "Two clean hexes. Keep going, Lumi."
-msgstr "Zwei saubere Hexfelder. Weiter so, Lumi."
+msgid "One hex clean. Now one more, Lumi."
+msgstr "Ein Hexfeld ist sauber. Jetzt noch eins, Lumi."
 
 #: data/objectives.json:objectives[hex3].desc
 msgid "Clear room around the base, so robots can start work."
 msgstr "Mach rund um die Basis Platz, damit Roboter anfangen können."
 
 #: data/objectives.json:objectives[hex3].lines
-msgid "Three clean hexes. The planet notices, believe me."
-msgstr "Drei saubere Hexfelder. Der Planet merkt das, glaub mir."
+msgid "One more hex, Lumi. The planet notices, believe me."
+msgstr "Noch ein Hexfeld, Lumi. Der Planet merkt das, glaub mir."
 
 #: data/objectives.json:objectives[bench2].text
 msgid "Add a Bot Bay to the bench"
@@ -12547,8 +12547,8 @@ msgid "More clean ground, more room to plant. Robots help."
 msgstr "Mehr sauberer Boden, mehr Platz zum Pflanzen. Roboter helfen."
 
 #: data/objectives.json:objectives[hex10].lines
-msgid "Ten clean hexes. Your robots are learning from you, Lumi."
-msgstr "Zehn saubere Hexfelder. Deine Roboter lernen von dir, Lumi."
+msgid "On to ten clean hexes. Your robots are learning from you, Lumi."
+msgstr "Auf zu zehn sauberen Hexfeldern. Deine Roboter lernen von dir, Lumi."
 
 #: data/objectives.json:objectives[base2].text
 msgid "Rebuild the base to level 2"
@@ -12599,8 +12599,8 @@ msgid "More clean ground means more room to grow."
 msgstr "Mehr sauberer Boden heißt mehr Platz zum Wachsen."
 
 #: data/objectives.json:objectives[hex20].lines
-msgid "Twenty hexes. The air already smells different."
-msgstr "Zwanzig Hexfelder. Die Luft riecht schon anders."
+msgid "Twenty hexes next. The air already smells different."
+msgstr "Als Nächstes zwanzig Hexfelder. Die Luft riecht schon anders."
 
 #: data/objectives.json:objectives[base3].text
 msgid "Rebuild the base to level 3"
@@ -17128,6 +17128,18 @@ msgstr "Der Portalkran hat die Flotte des Ledgers verschrottet, als das Geld aus
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Eine Rostwelt, grün. Die alten Kräne haben Blumen zu ihren Füßen. Die Bücher sind geschlossen, {name}. Wir haben sie ausgeglichen."
+
+#~ msgid "Two clean hexes. Keep going, Lumi."
+#~ msgstr "Zwei saubere Hexfelder. Weiter so, Lumi."
+
+#~ msgid "Three clean hexes. The planet notices, believe me."
+#~ msgstr "Drei saubere Hexfelder. Der Planet merkt das, glaub mir."
+
+#~ msgid "Ten clean hexes. Your robots are learning from you, Lumi."
+#~ msgstr "Zehn saubere Hexfelder. Deine Roboter lernen von dir, Lumi."
+
+#~ msgid "Twenty hexes. The air already smells different."
+#~ msgstr "Zwanzig Hexfelder. Die Luft riecht schon anders."
 
 #~ msgid "Cargo pod landed: %s cubes from %d robots in other districts."
 #~ msgstr "Frachtkapsel gelandet: %s Würfel von %d Robotern aus anderen Bezirken."

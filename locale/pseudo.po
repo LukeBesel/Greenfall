@@ -12476,16 +12476,16 @@ msgid "Clean ground lets plants grow again."
 msgstr "[Çļéàñ ĝŕôûñð ļéţš þļàñţš ĝŕôŵ àĝàîñ. ~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[hex2].lines
-msgid "Two clean hexes. Keep going, Lumi."
-msgstr "[Ţŵô çļéàñ ĥéxéš. Ķééþ ĝôîñĝ, Ļûmî. ~~~~~~~~~]"
+msgid "One hex clean. Now one more, Lumi."
+msgstr "[Ôñé ĥéx çļéàñ. Ñôŵ ôñé môŕé, Ļûmî. ~~~~~~~~~]"
 
 #: data/objectives.json:objectives[hex3].desc
 msgid "Clear room around the base, so robots can start work."
 msgstr "[Çļéàŕ ŕôôm àŕôûñð ţĥé bàšé, šô ŕôbôţš çàñ šţàŕţ ŵôŕķ. ~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[hex3].lines
-msgid "Three clean hexes. The planet notices, believe me."
-msgstr "[Ţĥŕéé çļéàñ ĥéxéš. Ţĥé þļàñéţ ñôţîçéš, béļîévé mé. ~~~~~~~~~~~~~~~]"
+msgid "One more hex, Lumi. The planet notices, believe me."
+msgstr "[Ôñé môŕé ĥéx, Ļûmî. Ţĥé þļàñéţ ñôţîçéš, béļîévé mé. ~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[bench2].text
 msgid "Add a Bot Bay to the bench"
@@ -12544,8 +12544,8 @@ msgid "More clean ground, more room to plant. Robots help."
 msgstr "[Môŕé çļéàñ ĝŕôûñð, môŕé ŕôôm ţô þļàñţ. Ŕôbôţš ĥéļþ. ~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[hex10].lines
-msgid "Ten clean hexes. Your robots are learning from you, Lumi."
-msgstr "[Ţéñ çļéàñ ĥéxéš. Ýôûŕ ŕôbôţš àŕé ļéàŕñîñĝ ƒŕôm ýôû, Ļûmî. ~~~~~~~~~~~~~~~~~]"
+msgid "On to ten clean hexes. Your robots are learning from you, Lumi."
+msgstr "[Ôñ ţô ţéñ çļéàñ ĥéxéš. Ýôûŕ ŕôbôţš àŕé ļéàŕñîñĝ ƒŕôm ýôû, Ļûmî. ~~~~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[base2].text
 msgid "Rebuild the base to level 2"
@@ -12596,8 +12596,8 @@ msgid "More clean ground means more room to grow."
 msgstr "[Môŕé çļéàñ ĝŕôûñð méàñš môŕé ŕôôm ţô ĝŕôŵ. ~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[hex20].lines
-msgid "Twenty hexes. The air already smells different."
-msgstr "[Ţŵéñţý ĥéxéš. Ţĥé àîŕ àļŕéàðý šméļļš ðîƒƒéŕéñţ. ~~~~~~~~~~~~~]"
+msgid "Twenty hexes next. The air already smells different."
+msgstr "[Ţŵéñţý ĥéxéš ñéxţ. Ţĥé àîŕ àļŕéàðý šméļļš ðîƒƒéŕéñţ. ~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[base3].text
 msgid "Rebuild the base to level 3"

@@ -12462,16 +12462,16 @@ msgid "Clean ground lets plants grow again."
 msgstr "きれいな地面なら、植物がまた育つ。"
 
 #: data/objectives.json:objectives[hex2].lines
-msgid "Two clean hexes. Keep going, Lumi."
-msgstr "きれいなヘックスが2個。その調子、Lumi。"
+msgid "One hex clean. Now one more, Lumi."
+msgstr "ヘックスがひとつきれいになった。もうひとつ、Lumi。"
 
 #: data/objectives.json:objectives[hex3].desc
 msgid "Clear room around the base, so robots can start work."
 msgstr "基地のまわりを片づけて、ロボットが働ける場所をあけよう。"
 
 #: data/objectives.json:objectives[hex3].lines
-msgid "Three clean hexes. The planet notices, believe me."
-msgstr "きれいなヘックスが3個。この星は気づいているよ、本当に。"
+msgid "One more hex, Lumi. The planet notices, believe me."
+msgstr "ヘックスをもうひとつ、Lumi。星はちゃんと気づいているよ。"
 
 #: data/objectives.json:objectives[bench2].text
 msgid "Add a Bot Bay to the bench"
@@ -12530,8 +12530,8 @@ msgid "More clean ground, more room to plant. Robots help."
 msgstr "きれいな地面が増えると、植える場所も増える。ロボットも手伝うよ。"
 
 #: data/objectives.json:objectives[hex10].lines
-msgid "Ten clean hexes. Your robots are learning from you, Lumi."
-msgstr "きれいなヘックスが10個。ロボットたちはあなたから学んでいるよ、Lumi。"
+msgid "On to ten clean hexes. Your robots are learning from you, Lumi."
+msgstr "次はきれいなヘックスを10個。ロボットたちはあなたを見て覚えているよ、Lumi。"
 
 #: data/objectives.json:objectives[base2].text
 msgid "Rebuild the base to level 2"
@@ -12582,8 +12582,8 @@ msgid "More clean ground means more room to grow."
 msgstr "きれいな地面が増えると、育つ場所も増える。"
 
 #: data/objectives.json:objectives[hex20].lines
-msgid "Twenty hexes. The air already smells different."
-msgstr "ヘックスが20個。もう空気のにおいが違うね。"
+msgid "Twenty hexes next. The air already smells different."
+msgstr "次は20個。空気のにおいがもう変わってきたよ。"
 
 #: data/objectives.json:objectives[base3].text
 msgid "Rebuild the base to level 3"
@@ -17111,6 +17111,18 @@ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "Two clean hexes. Keep going, Lumi."
+#~ msgstr "きれいなヘックスが2個。その調子、Lumi。"
+
+#~ msgid "Three clean hexes. The planet notices, believe me."
+#~ msgstr "きれいなヘックスが3個。この星は気づいているよ、本当に。"
+
+#~ msgid "Ten clean hexes. Your robots are learning from you, Lumi."
+#~ msgstr "きれいなヘックスが10個。ロボットたちはあなたから学んでいるよ、Lumi。"
+
+#~ msgid "Twenty hexes. The air already smells different."
+#~ msgstr "ヘックスが20個。もう空気のにおいが違うね。"
 
 #~ msgid "Cargo pod landed: %s cubes from %d robots in other districts."
 #~ msgstr "貨物ポッド着陸：%s キューブ、ほかの地区のロボット %d 台から。"
