@@ -431,11 +431,22 @@ func _ground(x: float, z: float) -> float:
 	return clampf(layout.height_at(x, z), 0.0, 0.3) if layout else 0.0
 
 
+## [v6pace] Lumi is at a far station she hasn't woken yet (its chain counts her clean hexes there:
+## a bot run lost one to a drone every few minutes and never finished the step).
+func _at_unwoken_station() -> bool:
+	var os_: OrbitSites = OrbitSites.of(world)
+	if os_ == null or os_.purpose == null or os_.purpose.site <= 0:
+		return false
+	return not HubPlan.woken(os_.purpose.site)
+
+
 ## Starts a dump run. Returns false if there is nothing to drop on.
 func start_drop(force: bool = false) -> bool:
 	if drone != null or world == null:
 		return false
 	var field: HexField = world.field
+	if _globe and not force and _at_unwoken_station():
+		return false  # [v6pace] a station's own "clean N hexes here" step must not be undone under Lumi
 	var cands: Array[int] = drop_candidates(field, is_planted, frame_cells if _globe else null)
 	if cands.is_empty():
 		return false
