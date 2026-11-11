@@ -38,7 +38,7 @@ prints a `[card]` line per objective step and an `[arc]` line per hub, rocket ti
 
 | What | File and key | Now | Effect |
 |---|---|---|---|
-| When the rocket appears | `data/hub.json` `rocket.level`, `rocket.after_objective` | level 1, after the step `zone` | The rocket stands on the start pad once that story step is done and the base has that level. |
+| When the rocket appears | `data/hub.json` `rocket.level`, `rocket.after_objective` | level 1, after the step `seed` | The rocket stands on the start pad once that story step is done and the base has that level. |
 | Price of the first far hub | `data/hub.json` `far_hub.cost_override."0"` | 600 cubes, 30 Parts | The on-ramp. Remove the entry to use the curve's base. |
 | Far hub price curve | `data/hub.json` `far_hub.cost_base`, `far_hub.cost_growth` | 1,500 cubes x 4.0 per hub (Parts 40 x 1.4) | Price of hub n = base x growth^n, rounded to two digits: 6K, 24K, 96K, 380K. One number moves the whole ladder. |
 | Income per restored hub | `data/hub.json` `far_hub.sell_growth` | 2.5 | Every sale (scale, robot bales, trash bin) is multiplied by this for each far hub restored. Raise it and hubs come faster; lower it and each hub takes longer. |

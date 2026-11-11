@@ -32,16 +32,16 @@ func _goal_index(id: String) -> int:
 	return -1
 
 
-func test_rocket_comes_with_the_first_working_robot() -> void:
+func test_rocket_comes_after_the_first_robot_and_seed() -> void:
 	assert_eq(Hub.rocket_level(), 1, "no base level stands before the first hop")
 	var ch: Array = Economy.read_json("res://data/objectives.json").get("objectives", [])
 	var zone: int = -1
 	for i: int in ch.size():
-		if str(ch[i]["id"]) == "zone":
+		if str(ch[i]["id"]) == "seed":
 			zone = i
-	assert_gt(zone, 0, "the story still has its 'zone' step")
+	assert_gt(zone, 0, "the story still has its 'seed' step")
 	GameState.flags["objective_step"] = zone
-	assert_false(Hub.rocket_open(1), "not while 'Send your robot to work' is on the card")
+	assert_false(Hub.rocket_open(1), "not while 'Plant the first seed' is on the card (the seed scene comes before the hop to Garden Row)")
 	assert_ne(Hub.rocket_lock_text(1), "")
 	GameState.flags["objective_step"] = zone + 1
 	assert_true(Hub.rocket_open(1))
@@ -104,7 +104,7 @@ func test_goal_chain_leads_to_the_exit() -> void:
 	assert_gt(drive, b3)
 	assert_eq(land, drive + 1)
 	assert_lte(drive - b3, 8, "a short walk from base 3 to the drive")
-	for id: String in ["shards_1", "pet_cat", "extras_radio", "builder_1", "research_dunes", "visit_dust", "base_4", "base_5"]:
+	for id: String in ["shards_1", "pet_cat", "extras_radio", "builder_1", "research_dunes", "base_4", "base_5"]:
 		assert_gt(_goal_index(id), land, "%s is not on the way out" % id)
 	var ch: Array = Economy.read_json("res://data/goals.json").get("goals", [])
 	assert_string_contains(Objectives.goal_reason(ch[land]), "You can fly on now")
@@ -114,11 +114,11 @@ func test_hub_steps_sit_between_the_base_steps() -> void:
 	var ids: Array = []
 	for o: Dictionary in Economy.read_json("res://data/objectives.json").get("objectives", []):
 		ids.append(str(o["id"]))
-	var order: Array = ["robot", "zone", "hub_fly_2", "hub_wake_2", "base2", "hub_wake_3", "rocket_mk2", "hub_wake_4", "base3"]
+	var order: Array = ["robot", "zone", "seed", "hub_fly_2", "hub_wake_2", "base2", "hub_wake_3", "rocket_tier_2", "hub_wake_4", "base3"]
 	for i: int in range(1, order.size()):
 		assert_gt(ids.find(order[i]), ids.find(order[i - 1]), "%s comes after %s" % [order[i], order[i - 1]])
 		assert_gt(ids.find(order[i - 1]), -1)
-	for id: String in ["hub_wake_5", "rocket_mk3", "hub_wake_6"]:
+	for id: String in ["hub_wake_5", "rocket_tier_3", "hub_wake_6"]:
 		assert_gt(_goal_index(id), _goal_index("base_3"))
 		assert_lt(_goal_index(id), _goal_index("home_drive_5"))
 	var tabs: Dictionary = Economy.read_json("res://data/workbench.json").get("tabs", {})
