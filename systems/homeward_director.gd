@@ -200,6 +200,12 @@ func _process(delta: float) -> void:
 	var chart: float = float(Homeward.cfg().get("chart_at", 0.5))
 	if Homeward.current_planet() > 0 and before < chart and now >= chart:
 		_queue.append("half")
+	# [v6story] The exit beat: the star map has just opened on Verdance (whatever the gate is).
+	if Homeward.current_planet() == 0 and not ("exit" in _queue) and not Homeward.beat_done(EXIT_BEAT) and Homeward.system_open():
+		if Homeward.answered() or Homeward.drive() >= 5:  # older saves: already past it
+			Homeward.mark_beat(EXIT_BEAT)
+		else:
+			_queue.append("exit")
 	_on_restored(got)
 	_pump()
 
@@ -228,6 +234,9 @@ func _pump() -> void:
 	_busy = true
 	if b == "half":
 		_doc_beat("%s_half" % _pid(), "home_half")
+	elif b == "exit":  # [v6story]
+		Homeward.mark_beat(EXIT_BEAT)
+		say_exit(world, "system_open")
 	elif b.begins_with("restored:"):
 		_restored_beat(int(b.get_slice(":", 1)))
 	_busy = false
@@ -342,10 +351,27 @@ static func launch_home(w: Node) -> bool:
 	return _launch(w, Homeward.HOME)
 
 
+## [v6story] Owner items 58 and 60: why Lumi flies on with Verdance mostly dirty. WREN's lines for
+## `key` in data/story_reasons.json exit (system_open: the star map opens; drive_built: the Orbital
+## drive is ready), in order on the subtitle line. Returns how many lines were queued.
+const EXIT_BEAT: String = "verdance_exit"
+static func say_exit(w: Node, key: String) -> int:
+	var wr: Wren = w.get("wren") as Wren if w else null
+	var ls: Array = ((Economy.read_json("res://data/story_reasons.json") as Dictionary).get("exit", {}) as Dictionary).get(key, [])
+	if wr == null:
+		return 0
+	for l: Variant in ls:
+		wr.speak(TranslationServer.translate(str(l)), wr.stage(), true)
+	return ls.size()
+
+
 static func on_drive_built(w: Node) -> void:
 	var d: HomewardDirector = of(w)
 	if d:
 		d._build_home_site()
+	if Homeward.drive() == 5 and Homeward.current_planet() == 0 and not Homeward.beat_done("verdance_drive"):  # [v6story]
+		Homeward.mark_beat("verdance_drive")
+		say_exit(w, "drive_built")
 	if Homeward.drive() >= 7 and w.get("wren") != null:
 		w.wren.say("home_rocket", 1.0, true)
 

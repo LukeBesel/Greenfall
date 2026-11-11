@@ -381,8 +381,8 @@ func _build_ruin() -> void:
 	_ruin.add_child(EggProps.mesh(ProcMesh.cyl(0.05, 0.05, 0.9, 8), post_mat, SIGN + Vector3(0.8, 0.45, 0)))
 	_ruin.add_child(EggProps.mesh(ProcMesh.cyl(0.05, 0.05, 1.3, 8), post_mat, SIGN + Vector3(1.35, 0.07, 0.4), Vector3(84, 30, 0)))
 	var board := Node3D.new()
-	board.position = SIGN + Vector3(-0.78, 2.1, 0.06)
-	board.rotation_degrees = Vector3(0, 0, -38)
+	board.position = SIGN + Vector3(-0.78, 1.75, 0.06)  # [v6qa] its far corner in the dirt: hung at 2.1 m and -38 degrees
+	board.rotation_degrees = Vector3(0, 0, -55)  # it stopped 0.46 m above flat ground, 0.52 m on a slope (QA_VERDANCE)
 	_ruin.add_child(board)
 	var board_mat: ShaderMaterial = Mats.worn_paint(Color(0.18, 0.42, 0.45), 0.4, 0.85, 65.0 + index, 0.8)
 	board.add_child(EggProps.mesh(ProcMesh.box(Vector3(1.9, 0.6, 0.05)), board_mat, Vector3(0.95, -0.3, 0)))

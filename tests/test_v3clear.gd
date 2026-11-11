@@ -33,7 +33,7 @@ func test_short_price_says_what_is_missing_and_how() -> void:
 	GameState.currencies["cubes"] = had
 
 
-func test_card_shows_the_situation_hint_in_place_of_the_why() -> void:
+func test_card_shows_the_situation_hint_under_the_why() -> void:  # [v6story] the reason stays (owner item 60)
 	var o := Objectives.new()
 	o.chain = [{"id": "dump3", "text": "Fill the trash bin 3 times", "desc": "Hold {scoop} to pick up trash.", "type": "stat", "key": "junk_dumps", "target": 3}]
 	o.revealed = true
@@ -45,10 +45,13 @@ func test_card_shows_the_situation_hint_in_place_of_the_why() -> void:
 	assert_false(card._why.text.contains("{"), "key glyphs filled in: %s" % card._why.text)
 	o.situation = "Your chest is full. Bring it to the bin."
 	card._process(0.1)
-	assert_eq(card._why.text, o.situation)
-	assert_eq(card._why.get_theme_color("font_color"), ObjectiveCard.HINT)
+	assert_eq(card._hint.text, o.situation)
+	assert_true(card._hint.visible)
+	assert_eq(card._hint.get_theme_color("font_color"), ObjectiveCard.HINT)
+	assert_true(card._why.text.begins_with("Hold"), "the reason stays on the card")
 	o.situation = ""
 	card._process(0.1)
+	assert_false(card._hint.visible)
 	assert_true(card._why.text.begins_with("Hold"))
 	o.free()
 
