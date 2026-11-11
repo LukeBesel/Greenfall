@@ -30,6 +30,11 @@ Code: `planet/sites/hub_plan.gd` (data and saved state), `planet/sites/hub_purpo
 steps, the wake, the field bench, HUD lines). Check with
 `godot --headless --path . -- --fresh --orbit --no-intro --rocket --orbit-hop=9 --hub-dev-chain=3 --hub-report=20 --quit-after=50`
 (`--hub-wake=9,7` wakes hubs for free at start; `--hop-skip` skips the flight; `--hop-shots=PREFIX` saves pictures in a rendered run).
+The rocket hop between hubs and the arrival are `hub_defaults.hop` in the same entry: `leg_s`, `leg_m`,
+`cruise_alt_m`, `fade_s`, `skip_after_s`, the approach camera, the arrival title's `title_in_s` /
+`title_hold_s` / `title_out_s` and `arrive_sting` (the music sting on a first arrival, "" for none).
+The title's "why we came" line is the hub's `reason`, else `hub_fly_<order>` in
+data/story_reasons.json (the same line as the goal card), else its `desc`.
 After changing hubs, run the six-base walkthrough:
 `godot --headless --path . -- --fresh --orbit --no-intro --hop-skip --hub-walkthrough` (PASS/FAIL, docs/QA_VERDANCE.md).
 A new planet gets the same by adding `hub_defaults` and `hubs` to its entry.
