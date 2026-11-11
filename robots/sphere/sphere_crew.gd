@@ -1245,6 +1245,7 @@ func _drop_bale(u: Dictionary) -> void:
 		"info": SphereBales.bale_info(units_in)})
 	u["log"]["bales"] = float(u["log"]["bales"]) + 1.0
 	_hub_log(int(u["hub"]))["bales"] = float(_hub_log(int(u["hub"]))["bales"]) + 1.0  # [v6crew]
+	GameState.inc_stat("robot_bales")  # [v6pace] the goal "Robots press 20 bales": the flat Robot wrote it, crews never did
 
 
 ## Nearest land cell centre to a lake cell (BFS, a few rings), or the cell itself.

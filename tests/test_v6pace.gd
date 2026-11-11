@@ -149,6 +149,9 @@ func test_hub_steps_carry_no_desc() -> void:
 const GLOBE_TYPES: Array[String] = ["stat", "earned", "upgrade", "robot", "tier", "zone", "hub_level", "hex_level", "flag", "districts", "research"]
 ## Stats and flags the round game writes in a way the scan below can't see (written through a variable).
 const WRITTEN_BY_NAME: Dictionary = {}
+## Scripts that only run in the flat world: a stat written only here never moves on the globe (the
+## flat Robot wrote robot_bales; the globe's crews are robots/sphere/). A bot run stalled 23 min on it.
+const FLAT_ONLY: Array[String] = ["res://robots/robot.gd", "res://robots/fleet.gd"]
 
 
 func _game_code() -> String:
@@ -163,7 +166,7 @@ func _game_code() -> String:
 			if not d.begins_with(".") and not d in ["addons", "tests", "tools", "locale", "screenshots", "assets"]:
 				stack.append(dir.path_join(d))
 		for f: String in da.get_files():
-			if f.ends_with(".gd"):
+			if f.ends_with(".gd") and not dir.path_join(f) in FLAT_ONLY:
 				out += FileAccess.get_file_as_string(dir.path_join(f)) + "\n"
 	return out
 

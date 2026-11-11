@@ -1506,6 +1506,7 @@ func _card_cost() -> Dictionary:
 		return {}
 	var c: Dictionary = ob._step_price()
 	if not c.is_empty():
+		_saving_arc = _card_key() in HUB_KEYS or _card_key() == "rocket_tier"  # [v6pace] the card prices the arc now (Objectives.arc_price)
 		return c
 	var d: Dictionary = ob.current()
 	var key: String = str(d.get("key", ""))
