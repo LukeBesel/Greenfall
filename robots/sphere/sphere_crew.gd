@@ -451,6 +451,13 @@ func _hub_log(hub: int) -> Dictionary:
 	return hub_log[hub]
 
 
+## A hub's crew in numbers and one line for menus (the rocket picker's "3 robots working here"):
+## {robots, working, idle, hexes_per_hour, bales_waiting, needs_hauler, text, log}. `hub` is the
+## hub site's cell (globe.sites[i]["cell"]).
+func hub_summary(hub: int) -> Dictionary:
+	return CrewTalk.hub_summary(self, hub)
+
+
 ## Robots that belong to a hub.
 func hub_robots(hub: int) -> Array[Dictionary]:
 	var out: Array[Dictionary] = []

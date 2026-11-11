@@ -1256,19 +1256,215 @@ msgstr ""
 msgid "Building a %s, %d%%"
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:39
-msgid "Y: role · Hold A: paint · Hold X: erase · Left stick: move"
+#: robots/sphere/command_overlay.gd:17 ui/command_view.gd:24
+msgid "Cleaners"
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:40
-msgid "Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi"
+#: robots/sphere/command_overlay.gd:17 ui/command_view.gd:24
+msgid "Haulers"
 msgstr ""
 
-#: robots/sphere/command_overlay.gd:41
-msgid "%s zone"
+#: robots/sphere/command_overlay.gd:17 ui/command_view.gd:24
+msgid "Planters"
 msgstr ""
 
-#: robots/sphere/sphere_fleet.gd:53
+#: robots/sphere/command_overlay.gd:17 ui/command_view.gd:24
+msgid "Waterers"
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:17 ui/command_view.gd:24
+msgid "Skimmers"
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:18
+msgid "Paint the ground you want cleaned first."
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:18
+msgid "Paint where to plant."
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:19
+msgid "Paint where to water."
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:19
+msgid "Paint the water to skim first."
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:99
+msgid "ROBOT COMMAND"
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:102
+msgid "No robots here yet."
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:103 data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
+msgid "Build one at the workbench."
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:105
+msgid "%d robot"
+msgid_plural "%d robots"
+msgstr[0] ""
+msgstr[1] ""
+
+#: robots/sphere/command_overlay.gd:107
+msgid "About %d hexes an hour"
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:121
+msgid "%d working"
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:123
+msgid "%d working, %d waiting"
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:125
+msgid "%d waiting"
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:129 robots/sphere/crew_talk.gd:71 robots/sphere/crew_talk.gd:75
+msgid "Bales are piling up. Build a Haul Bug."
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:138
+msgid "Good! Your robots will work here first."
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:139
+msgid "Hold A: paint   Hold X: erase   %s: back"
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:140
+msgid "Left mouse: paint   Right mouse: erase   %s: back"
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:142
+msgid "Y: next job"
+msgstr ""
+
+#: robots/sphere/command_overlay.gd:142
+msgid "Tab: next job"
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Cleaning this hex."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Planting here."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Watering the plants."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:21
+msgid "Skimming junk off the lake."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:23
+msgid "No dirty ground left around this base."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:24
+msgid "My zone is done. Paint more ground for me."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:25
+msgid "No bales to carry right now."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:26
+msgid "No clean ground to plant."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:27
+msgid "Out of seeds."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:28
+msgid "Nothing to water yet. Plant something first."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:29
+msgid "No water nearby to fill my tank."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:30
+msgid "No junk on the lakes here."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:31
+msgid "I can't find a way there. Trying another spot."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:68
+msgid "Hello! Looking around."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:72
+msgid "On my way to work."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:78
+msgid "Fetching a bale."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:80
+msgid "Carrying bales home."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:82
+msgid "Tipping junk into the baler."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:84
+msgid "Filling my water tank."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:88
+msgid "Looking for work."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:94
+msgid "%s the %s: %s"
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:120
+msgid "No robots here yet"
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:122
+msgid "%d robot working here"
+msgid_plural "%d robots working here"
+msgstr[0] ""
+msgstr[1] ""
+
+#: robots/sphere/crew_talk.gd:124
+msgid "%s, about %d hexes an hour"
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:135
+msgid "While you were away, your robots here cleaned %d hex."
+msgid_plural "While you were away, your robots here cleaned %d hexes."
+msgstr[0] ""
+msgstr[1] ""
+
+#: robots/sphere/crew_talk.gd:137
+msgid "While you were away, your robots here earned %s cubes."
+msgstr ""
+
+#: robots/sphere/crew_talk.gd:138
+msgid "While you were away, your robots here cleaned %d hex and earned %s cubes."
+msgid_plural "While you were away, your robots here cleaned %d hexes and earned %s cubes."
+msgstr[0] ""
+msgstr[1] ""
+
+#: robots/sphere/sphere_fleet.gd:57
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr ""
 
@@ -1312,7 +1508,7 @@ msgstr ""
 msgid "Landed on the base pad."
 msgstr ""
 
-#: scenes/slice.gd:1299 scenes/slice_orbit.gd:992
+#: scenes/slice.gd:1299 scenes/slice_orbit.gd:995
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr ""
 
@@ -1336,7 +1532,7 @@ msgstr ""
 msgid "E   Open the workbench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:1092
+#: scenes/slice_orbit.gd:1095
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr ""
 
@@ -3961,26 +4157,6 @@ msgstr ""
 
 #: ui/codex_screen.gd:860
 msgid "%dm %02ds"
-msgstr ""
-
-#: ui/command_view.gd:24
-msgid "Cleaners"
-msgstr ""
-
-#: ui/command_view.gd:24
-msgid "Haulers"
-msgstr ""
-
-#: ui/command_view.gd:24
-msgid "Planters"
-msgstr ""
-
-#: ui/command_view.gd:24
-msgid "Waterers"
-msgstr ""
-
-#: ui/command_view.gd:24
-msgid "Skimmers"
 msgstr ""
 
 #: ui/command_view.gd:25
@@ -7750,10 +7926,6 @@ msgstr ""
 
 #: data/codex.json:plants.marsh_mint.desc
 msgid "Mint that does not mind wet feet. The drained streets smell of it on warm evenings."
-msgstr ""
-
-#: data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
-msgid "Build one at the workbench."
 msgstr ""
 
 #: data/codex.json:robots.scoopie.desc

@@ -35,9 +35,6 @@ const IDLE_LINE: Dictionary = {
 const HELP_REASONS: Array[String] = ["zone done", "out of seeds", "no water", "nothing to water"]
 
 
-static func _tr(s: String) -> String:
-	return TranslationServer.translate(s)
-
 
 ## Haul Bugs missing at a robot's hub: bales are piling up there with too few haulers.
 static func needs_hauler(crew: SphereCrew, hub: int) -> bool:
@@ -68,33 +65,33 @@ static func line(crew: SphereCrew, u: Dictionary) -> String:
 	var role: String = str(u["role"])
 	match str(u["mode"]):
 		"hello":
-			return _tr("Hello! Looking around.")
+			return TranslationServer.translate("Hello! Looking around.")
 		"go":
 			if role == "clean" and bool(crew.short_haul.get(int(u["hub"]), false)):
-				return _tr("Bales are piling up. Build a Haul Bug.")
-			return _tr("On my way to work.")
+				return TranslationServer.translate("Bales are piling up. Build a Haul Bug.")
+			return TranslationServer.translate("On my way to work.")
 		"work":
 			if role == "clean" and bool(crew.short_haul.get(int(u["hub"]), false)):
-				return _tr("Bales are piling up. Build a Haul Bug.")
-			return _tr(str(WORK_LINE.get(role, WORK_LINE["clean"])))
+				return TranslationServer.translate("Bales are piling up. Build a Haul Bug.")
+			return TranslationServer.translate(str(WORK_LINE.get(role, WORK_LINE["clean"])))
 		"to_bale":
-			return _tr("Fetching a bale.")
+			return TranslationServer.translate("Fetching a bale.")
 		"to_depot":
-			return _tr("Carrying bales home.")
+			return TranslationServer.translate("Carrying bales home.")
 		"to_baler":
-			return _tr("Tipping junk into the baler.")
+			return TranslationServer.translate("Tipping junk into the baler.")
 		"to_refill", "refill":
-			return _tr("Filling my water tank.")
+			return TranslationServer.translate("Filling my water tank.")
 	var why: String = str(u["idle"])
 	if IDLE_LINE.has(why):
-		return _tr(str(IDLE_LINE[why]))
-	return _tr("Looking for work.")
+		return TranslationServer.translate(str(IDLE_LINE[why]))
+	return TranslationServer.translate("Looking for work.")
 
 
 ## The line shown when Lumi stands by a robot: its name, kind and what it is doing.
 static func look_text(crew: SphereCrew, u: Dictionary) -> String:
-	var kind: String = _tr(str(Economy.robots.get(str(u["type"]), {}).get("name", str(u["type"]))))
-	return _tr("%s the %s: %s") % [str(u["name"]), kind, line(crew, u)]
+	var kind: String = TranslationServer.translate(str(Economy.robots.get(str(u["type"]), {}).get("name", str(u["type"]))))
+	return TranslationServer.translate("%s the %s: %s") % [str(u["name"]), kind, line(crew, u)]
 
 
 ## Clean hexes an hour a robot manages (cleaners and skimmers; 0 for the others).
@@ -120,11 +117,11 @@ static func hub_summary(crew: SphereCrew, hub: int) -> Dictionary:
 		if st != IDLE and st != HELP:
 			working += 1
 		rate += hexes_per_hour(u)
-	var text: String = _tr("No robots here yet")
+	var text: String = TranslationServer.translate("No robots here yet")
 	if n > 0:
 		text = TranslationServer.translate_plural("%d robot working here", "%d robots working here", n) % n
 		if rate >= 1.0:
-			text = _tr("%s, about %d hexes an hour") % [text, roundi(rate)]
+			text = TranslationServer.translate("%s, about %d hexes an hour") % [text, roundi(rate)]
 	return {"robots": n, "working": working, "idle": n - working, "hexes_per_hour": rate,
 		"bales_waiting": crew.bales_waiting(hub), "needs_hauler": n > 0 and needs_hauler(crew, hub), "text": text, "log": crew.hub_log.get(hub, {})}
 
@@ -133,10 +130,9 @@ static func hub_summary(crew: SphereCrew, hub: int) -> Dictionary:
 static func away_text(cells: int, cubes: float) -> String:
 	if cells <= 0 and cubes < 1.0:
 		return ""
+	var cu: String = BigNum.from_float(cubes).format()
 	if cubes < 1.0:
-		return TranslationServer.translate_plural("While you were away, your robots here cleaned %d hex.",
-			"While you were away, your robots here cleaned %d hexes.", cells) % cells
+		return TranslationServer.translate_plural("While you were away, your robots here cleaned %d hex.", "While you were away, your robots here cleaned %d hexes.", cells) % cells
 	if cells <= 0:
-		return _tr("While you were away, your robots here earned %s cubes.") % BigNum.from_float(cubes).format()
-	return TranslationServer.translate_plural("While you were away, your robots here cleaned %d hex and earned %s cubes.",
-		"While you were away, your robots here cleaned %d hexes and earned %s cubes.", cells) % [cells, BigNum.from_float(cubes).format()]
+		return TranslationServer.translate("While you were away, your robots here earned %s cubes.") % cu
+	return TranslationServer.translate_plural("While you were away, your robots here cleaned %d hex and earned %s cubes.", "While you were away, your robots here cleaned %d hexes and earned %s cubes.", cells) % [cells, cu]

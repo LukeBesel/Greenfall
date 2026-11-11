@@ -8,6 +8,7 @@ extends RefCounted
 ##   --orbit-far-crew[=N]             3 Scoopies + 1 Haul Bug at hub site N (default 1, ~1.7 km
 ##                                    away); prints the far shell's colour there before --quit-after
 ##   --bot-motion                     with --quit-after: [motion] jitter / building-overlap report
+##   --crew-build=type[,seconds]     [v6crew] builds a robot at the bench after a while and logs its hello
 ##   --crew-cam=i[,dist,height]      [v6crew] a dev camera on robot i (rendered audits of the crew)
 ##   --offline-jump[=S]               offline jump of S seconds (default 7200) for the --robots
 ##                                    fleet: flat Offline.compute vs SphereOffline.simulate, PASS
@@ -79,6 +80,22 @@ static func install(src: Object, parent: Node, lumi: Node3D, cam: SphereCam, wri
 		pr.name = "CrewProbe"
 		pr.crew = crew
 		parent.add_child(pr)
+	if DevHooks.has("crew-build"):  # [v6crew] --crew-build=type[,seconds]: a robot built at the bench after a while
+		var cb: PackedStringArray = DevHooks.get_s("crew-build", "scoopie").split(",")
+		var wait: Callable = func() -> void:
+			while DevHooks._elapsed < (float(cb[1]) if cb.size() > 1 else 4.0):  # the --shot-delay clock
+				await parent.get_tree().process_frame
+			var at: Vector3 = parent.get("orbit").call("bench_position") if parent.get("orbit") != null else lumi.global_position
+			var bc: int = crew.grid.cell_at(at)
+			var nu: Dictionary = crew.spawn(cb[0] if cb[0] != "1" else "scoopie", 0, bc, crew.nearest_hub(crew.grid.centers[bc]), "Newbie")
+			crew.greet(nu)
+			var from: Vector3 = crew.unit_dir(nu)
+			for k: int in 14:
+				await parent.get_tree().create_timer(0.5, false).timeout
+				print("[crew] built %s t=%.1f mode=%s moved=%.1f m job=%d (%.0f m from the bench) | %s" % [nu["name"], (k + 1) * 0.5, nu["mode"],
+					from.angle_to(crew.unit_dir(nu)) * crew.surface.radius, int(nu["job"]),
+					crew.grid.distance_m(int(nu["job"]), bc) if int(nu["job"]) >= 0 else -1.0, CrewTalk.look_text(crew, nu)])
+		wait.call_deferred()
 	if DevHooks.has("crew-cam"):  # [v6crew] --crew-cam=i[,dist,height]: a dev camera watching robot i (renders)
 		var cc := CrewCam.new()
 		cc.crew = crew

@@ -1259,19 +1259,211 @@ msgstr "フリート %d / %d"
 msgid "Building a %s, %d%%"
 msgstr "%s を製造中、%d%%"
 
-#: robots/sphere/command_overlay.gd:39
-msgid "Y: role · Hold A: paint · Hold X: erase · Left stick: move"
-msgstr "Y：役割 · A 長押し：塗る · X 長押し：消す · 左スティック：移動"
+#: robots/sphere/command_overlay.gd:17 ui/command_view.gd:24
+msgid "Cleaners"
+msgstr "清掃係"
 
-#: robots/sphere/command_overlay.gd:40
-msgid "Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi"
-msgstr "Tab：役割 · 左：塗る · 右：消す · 中：ロボットを送る · E：Lumi に戻る"
+#: robots/sphere/command_overlay.gd:17 ui/command_view.gd:24
+msgid "Haulers"
+msgstr "運搬係"
 
-#: robots/sphere/command_overlay.gd:41
-msgid "%s zone"
-msgstr "%s ゾーン"
+#: robots/sphere/command_overlay.gd:17 ui/command_view.gd:24
+msgid "Planters"
+msgstr "植え付け係"
 
-#: robots/sphere/sphere_fleet.gd:53
+#: robots/sphere/command_overlay.gd:17 ui/command_view.gd:24
+msgid "Waterers"
+msgstr "水やり係"
+
+#: robots/sphere/command_overlay.gd:17 ui/command_view.gd:24
+msgid "Skimmers"
+msgstr "すくい係"
+
+#: robots/sphere/command_overlay.gd:18
+msgid "Paint the ground you want cleaned first."
+msgstr "先に片づけたい地面をぬろう。"
+
+#: robots/sphere/command_overlay.gd:18
+msgid "Paint where to plant."
+msgstr "植える場所をぬろう。"
+
+#: robots/sphere/command_overlay.gd:19
+msgid "Paint where to water."
+msgstr "水をやる場所をぬろう。"
+
+#: robots/sphere/command_overlay.gd:19
+msgid "Paint the water to skim first."
+msgstr "先にすくいたい水面をぬろう。"
+
+#: robots/sphere/command_overlay.gd:99
+msgid "ROBOT COMMAND"
+msgstr "ロボット司令"
+
+#: robots/sphere/command_overlay.gd:102
+msgid "No robots here yet."
+msgstr "ここにはまだロボットがいない。"
+
+#: robots/sphere/command_overlay.gd:103 data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
+msgid "Build one at the workbench."
+msgstr "作業台で作ろう。"
+
+#: robots/sphere/command_overlay.gd:105
+msgid "%d robot"
+msgid_plural "%d robots"
+msgstr[0] "ロボット%d台"
+
+#: robots/sphere/command_overlay.gd:107
+msgid "About %d hexes an hour"
+msgstr "1時間に約%dヘックス"
+
+#: robots/sphere/command_overlay.gd:121
+msgid "%d working"
+msgstr "%d台が作業中"
+
+#: robots/sphere/command_overlay.gd:123
+msgid "%d working, %d waiting"
+msgstr "%d台が作業中、%d台が待機中"
+
+#: robots/sphere/command_overlay.gd:125
+msgid "%d waiting"
+msgstr "%d台が待機中"
+
+#: robots/sphere/command_overlay.gd:129 robots/sphere/crew_talk.gd:71 robots/sphere/crew_talk.gd:75
+msgid "Bales are piling up. Build a Haul Bug."
+msgstr "ベールがたまっている。Haul Bug を作ろう。"
+
+#: robots/sphere/command_overlay.gd:138
+msgid "Good! Your robots will work here first."
+msgstr "いいね！ロボットはまずここで働くよ。"
+
+#: robots/sphere/command_overlay.gd:139
+msgid "Hold A: paint   Hold X: erase   %s: back"
+msgstr "A長押し：ぬる   X長押し：消す   %s：もどる"
+
+#: robots/sphere/command_overlay.gd:140
+msgid "Left mouse: paint   Right mouse: erase   %s: back"
+msgstr "左クリック：ぬる   右クリック：消す   %s：もどる"
+
+#: robots/sphere/command_overlay.gd:142
+msgid "Y: next job"
+msgstr "Y：次の仕事"
+
+#: robots/sphere/command_overlay.gd:142
+msgid "Tab: next job"
+msgstr "Tab：次の仕事"
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Cleaning this hex."
+msgstr "このヘックスを片づけ中。"
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Planting here."
+msgstr "ここに植えている。"
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Watering the plants."
+msgstr "植物に水をやっている。"
+
+#: robots/sphere/crew_talk.gd:21
+msgid "Skimming junk off the lake."
+msgstr "湖のゴミをすくっている。"
+
+#: robots/sphere/crew_talk.gd:23
+msgid "No dirty ground left around this base."
+msgstr "この基地のまわりはもうきれい。"
+
+#: robots/sphere/crew_talk.gd:24
+msgid "My zone is done. Paint more ground for me."
+msgstr "ゾーンは終わったよ。もっと地面をぬって。"
+
+#: robots/sphere/crew_talk.gd:25
+msgid "No bales to carry right now."
+msgstr "いまは運ぶベールがない。"
+
+#: robots/sphere/crew_talk.gd:26
+msgid "No clean ground to plant."
+msgstr "植えられるきれいな地面がない。"
+
+#: robots/sphere/crew_talk.gd:27
+msgid "Out of seeds."
+msgstr "タネがなくなった。"
+
+#: robots/sphere/crew_talk.gd:28
+msgid "Nothing to water yet. Plant something first."
+msgstr "まだ水をやるものがない。先に何か植えよう。"
+
+#: robots/sphere/crew_talk.gd:29
+msgid "No water nearby to fill my tank."
+msgstr "タンクに入れる水が近くにない。"
+
+#: robots/sphere/crew_talk.gd:30
+msgid "No junk on the lakes here."
+msgstr "このあたりの湖にゴミはない。"
+
+#: robots/sphere/crew_talk.gd:31
+msgid "I can't find a way there. Trying another spot."
+msgstr "そこへ行く道がない。別の場所をためすよ。"
+
+#: robots/sphere/crew_talk.gd:68
+msgid "Hello! Looking around."
+msgstr "こんにちは！まわりを見ているよ。"
+
+#: robots/sphere/crew_talk.gd:72
+msgid "On my way to work."
+msgstr "仕事に向かっている。"
+
+#: robots/sphere/crew_talk.gd:78
+msgid "Fetching a bale."
+msgstr "ベールを取りに行く。"
+
+#: robots/sphere/crew_talk.gd:80
+msgid "Carrying bales home."
+msgstr "ベールを持ち帰っている。"
+
+#: robots/sphere/crew_talk.gd:82
+msgid "Tipping junk into the baler."
+msgstr "ゴミをベーラーに入れている。"
+
+#: robots/sphere/crew_talk.gd:84
+msgid "Filling my water tank."
+msgstr "水タンクを満たしている。"
+
+#: robots/sphere/crew_talk.gd:88
+msgid "Looking for work."
+msgstr "仕事を探している。"
+
+#: robots/sphere/crew_talk.gd:94
+msgid "%s the %s: %s"
+msgstr "%s（%s）：%s"
+
+#: robots/sphere/crew_talk.gd:120
+msgid "No robots here yet"
+msgstr "ここにはまだロボットがいない"
+
+#: robots/sphere/crew_talk.gd:122
+msgid "%d robot working here"
+msgid_plural "%d robots working here"
+msgstr[0] "ロボット%d台がここで作業中"
+
+#: robots/sphere/crew_talk.gd:124
+msgid "%s, about %d hexes an hour"
+msgstr "%s、1時間に約%dヘックス"
+
+#: robots/sphere/crew_talk.gd:135
+msgid "While you were away, your robots here cleaned %d hex."
+msgid_plural "While you were away, your robots here cleaned %d hexes."
+msgstr[0] "るすの間に、ここのロボットが%dヘックスを片づけた。"
+
+#: robots/sphere/crew_talk.gd:137
+msgid "While you were away, your robots here earned %s cubes."
+msgstr "るすの間に、ここのロボットがキューブを%s個かせいだ。"
+
+#: robots/sphere/crew_talk.gd:138
+msgid "While you were away, your robots here cleaned %d hex and earned %s cubes."
+msgid_plural "While you were away, your robots here cleaned %d hexes and earned %s cubes."
+msgstr[0] "るすの間に、ここのロボットが%dヘックスを片づけ、キューブを%s個かせいだ。"
+
+#: robots/sphere/sphere_fleet.gd:57
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s 組み立て完了。きょろきょろしてから、仕事に取りかかった。"
 
@@ -1315,7 +1507,7 @@ msgstr "ロケットは空き地に駐機中。セルが満タンになればい
 msgid "Landed on the base pad."
 msgstr "基地のパッドに着陸した。"
 
-#: scenes/slice.gd:1299 scenes/slice_orbit.gd:992
+#: scenes/slice.gd:1299 scenes/slice_orbit.gd:995
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
@@ -1339,7 +1531,7 @@ msgstr "E   作業台を直す"
 msgid "E   Open the workbench"
 msgstr "E   作業台を開く"
 
-#: scenes/slice_orbit.gd:1092
+#: scenes/slice_orbit.gd:1095
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "作業台を修理した。作業台で E を押すとキューブでアップグレードできる。"
 
@@ -3984,26 +4176,6 @@ msgstr "%.2f km"
 #: ui/codex_screen.gd:860
 msgid "%dm %02ds"
 msgstr "%d分%02d秒"
-
-#: ui/command_view.gd:24
-msgid "Cleaners"
-msgstr "清掃係"
-
-#: ui/command_view.gd:24
-msgid "Haulers"
-msgstr "運搬係"
-
-#: ui/command_view.gd:24
-msgid "Planters"
-msgstr "植え付け係"
-
-#: ui/command_view.gd:24
-msgid "Waterers"
-msgstr "水やり係"
-
-#: ui/command_view.gd:24
-msgid "Skimmers"
-msgstr "すくい係"
 
 #: ui/command_view.gd:25
 msgid "Priority"
@@ -7796,10 +7968,6 @@ msgstr "水没都市に植えよう。"
 #: data/codex.json:plants.marsh_mint.desc
 msgid "Mint that does not mind wet feet. The drained streets smell of it on warm evenings."
 msgstr "足がぬれても平気なミント。暖かい夕方には、干上がった通りがその香りに包まれる。"
-
-#: data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
-msgid "Build one at the workbench."
-msgstr "作業台で作ろう。"
 
 #: data/codex.json:robots.scoopie.desc
 msgid "A small, earnest cleaner with one scoop arm and a lot of enthusiasm. It hums when it finds a good pile."
@@ -16580,6 +16748,15 @@ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "Y: role · Hold A: paint · Hold X: erase · Left stick: move"
+#~ msgstr "Y：役割 · A 長押し：塗る · X 長押し：消す · 左スティック：移動"
+
+#~ msgid "Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi"
+#~ msgstr "Tab：役割 · 左：塗る · 右：消す · 中：ロボットを送る · E：Lumi に戻る"
+
+#~ msgid "%s zone"
+#~ msgstr "%s ゾーン"
 
 #~ msgid "Perfect bale: filled right to the gold line."
 #~ msgstr "パーフェクトベール：金のラインぴったりまで詰めた。"

@@ -1259,19 +1259,211 @@ msgstr "机队 %d / %d"
 msgid "Building a %s, %d%%"
 msgstr "正在建造%s，%d%%"
 
-#: robots/sphere/command_overlay.gd:39
-msgid "Y: role · Hold A: paint · Hold X: erase · Left stick: move"
-msgstr "Y：角色 · 按住 A：涂 · 按住 X：擦 · 左摇杆：移动"
+#: robots/sphere/command_overlay.gd:17 ui/command_view.gd:24
+msgid "Cleaners"
+msgstr "清洁队"
 
-#: robots/sphere/command_overlay.gd:40
-msgid "Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi"
-msgstr "Tab：角色 · 左键：涂 · 右键：擦 · 中键：派机器人 · E：回到 Lumi"
+#: robots/sphere/command_overlay.gd:17 ui/command_view.gd:24
+msgid "Haulers"
+msgstr "运输队"
 
-#: robots/sphere/command_overlay.gd:41
-msgid "%s zone"
-msgstr "%s区域"
+#: robots/sphere/command_overlay.gd:17 ui/command_view.gd:24
+msgid "Planters"
+msgstr "种植队"
 
-#: robots/sphere/sphere_fleet.gd:53
+#: robots/sphere/command_overlay.gd:17 ui/command_view.gd:24
+msgid "Waterers"
+msgstr "浇水队"
+
+#: robots/sphere/command_overlay.gd:17 ui/command_view.gd:24
+msgid "Skimmers"
+msgstr "撇捞队"
+
+#: robots/sphere/command_overlay.gd:18
+msgid "Paint the ground you want cleaned first."
+msgstr "涂出你想先清理的地面。"
+
+#: robots/sphere/command_overlay.gd:18
+msgid "Paint where to plant."
+msgstr "涂出要种植的地方。"
+
+#: robots/sphere/command_overlay.gd:19
+msgid "Paint where to water."
+msgstr "涂出要浇水的地方。"
+
+#: robots/sphere/command_overlay.gd:19
+msgid "Paint the water to skim first."
+msgstr "涂出要先打捞的水面。"
+
+#: robots/sphere/command_overlay.gd:99
+msgid "ROBOT COMMAND"
+msgstr "机器人指挥"
+
+#: robots/sphere/command_overlay.gd:102
+msgid "No robots here yet."
+msgstr "这里还没有机器人。"
+
+#: robots/sphere/command_overlay.gd:103 data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
+msgid "Build one at the workbench."
+msgstr "在工作台造一台。"
+
+#: robots/sphere/command_overlay.gd:105
+msgid "%d robot"
+msgid_plural "%d robots"
+msgstr[0] "%d 台机器人"
+
+#: robots/sphere/command_overlay.gd:107
+msgid "About %d hexes an hour"
+msgstr "每小时约 %d 个六角格"
+
+#: robots/sphere/command_overlay.gd:121
+msgid "%d working"
+msgstr "%d 台在工作"
+
+#: robots/sphere/command_overlay.gd:123
+msgid "%d working, %d waiting"
+msgstr "%d 台在工作，%d 台在等待"
+
+#: robots/sphere/command_overlay.gd:125
+msgid "%d waiting"
+msgstr "%d 台在等待"
+
+#: robots/sphere/command_overlay.gd:129 robots/sphere/crew_talk.gd:71 robots/sphere/crew_talk.gd:75
+msgid "Bales are piling up. Build a Haul Bug."
+msgstr "捆包越堆越多。建造一台 Haul Bug 吧。"
+
+#: robots/sphere/command_overlay.gd:138
+msgid "Good! Your robots will work here first."
+msgstr "很好！你的机器人会先在这里干活。"
+
+#: robots/sphere/command_overlay.gd:139
+msgid "Hold A: paint   Hold X: erase   %s: back"
+msgstr "按住 A：涂   按住 X：擦除   %s：返回"
+
+#: robots/sphere/command_overlay.gd:140
+msgid "Left mouse: paint   Right mouse: erase   %s: back"
+msgstr "鼠标左键：涂   鼠标右键：擦除   %s：返回"
+
+#: robots/sphere/command_overlay.gd:142
+msgid "Y: next job"
+msgstr "Y：下一种工作"
+
+#: robots/sphere/command_overlay.gd:142
+msgid "Tab: next job"
+msgstr "Tab：下一种工作"
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Cleaning this hex."
+msgstr "正在清理这个六角格。"
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Planting here."
+msgstr "正在这里种植。"
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Watering the plants."
+msgstr "正在给植物浇水。"
+
+#: robots/sphere/crew_talk.gd:21
+msgid "Skimming junk off the lake."
+msgstr "正在打捞湖面的垃圾。"
+
+#: robots/sphere/crew_talk.gd:23
+msgid "No dirty ground left around this base."
+msgstr "这个基地周围已经没有脏地面了。"
+
+#: robots/sphere/crew_talk.gd:24
+msgid "My zone is done. Paint more ground for me."
+msgstr "我的区域干完了。再给我涂些地面吧。"
+
+#: robots/sphere/crew_talk.gd:25
+msgid "No bales to carry right now."
+msgstr "现在没有捆包可搬。"
+
+#: robots/sphere/crew_talk.gd:26
+msgid "No clean ground to plant."
+msgstr "没有可以种植的干净地面。"
+
+#: robots/sphere/crew_talk.gd:27
+msgid "Out of seeds."
+msgstr "种子用完了。"
+
+#: robots/sphere/crew_talk.gd:28
+msgid "Nothing to water yet. Plant something first."
+msgstr "还没有东西可浇。先种点什么吧。"
+
+#: robots/sphere/crew_talk.gd:29
+msgid "No water nearby to fill my tank."
+msgstr "附近没有水可以加满水箱。"
+
+#: robots/sphere/crew_talk.gd:30
+msgid "No junk on the lakes here."
+msgstr "这里的湖面上没有垃圾。"
+
+#: robots/sphere/crew_talk.gd:31
+msgid "I can't find a way there. Trying another spot."
+msgstr "我找不到过去的路。换个地方试试。"
+
+#: robots/sphere/crew_talk.gd:68
+msgid "Hello! Looking around."
+msgstr "你好！我先四处看看。"
+
+#: robots/sphere/crew_talk.gd:72
+msgid "On my way to work."
+msgstr "正在去干活的路上。"
+
+#: robots/sphere/crew_talk.gd:78
+msgid "Fetching a bale."
+msgstr "正在去取捆包。"
+
+#: robots/sphere/crew_talk.gd:80
+msgid "Carrying bales home."
+msgstr "正在把捆包运回去。"
+
+#: robots/sphere/crew_talk.gd:82
+msgid "Tipping junk into the baler."
+msgstr "正在把垃圾倒进打包机。"
+
+#: robots/sphere/crew_talk.gd:84
+msgid "Filling my water tank."
+msgstr "正在加满水箱。"
+
+#: robots/sphere/crew_talk.gd:88
+msgid "Looking for work."
+msgstr "正在找活干。"
+
+#: robots/sphere/crew_talk.gd:94
+msgid "%s the %s: %s"
+msgstr "%s（%s）：%s"
+
+#: robots/sphere/crew_talk.gd:120
+msgid "No robots here yet"
+msgstr "这里还没有机器人"
+
+#: robots/sphere/crew_talk.gd:122
+msgid "%d robot working here"
+msgid_plural "%d robots working here"
+msgstr[0] "%d 台机器人在这里工作"
+
+#: robots/sphere/crew_talk.gd:124
+msgid "%s, about %d hexes an hour"
+msgstr "%s，每小时约 %d 个六角格"
+
+#: robots/sphere/crew_talk.gd:135
+msgid "While you were away, your robots here cleaned %d hex."
+msgid_plural "While you were away, your robots here cleaned %d hexes."
+msgstr[0] "你不在的时候，这里的机器人清理了 %d 个六角格。"
+
+#: robots/sphere/crew_talk.gd:137
+msgid "While you were away, your robots here earned %s cubes."
+msgstr "你不在的时候，这里的机器人赚了 %s 个方块。"
+
+#: robots/sphere/crew_talk.gd:138
+msgid "While you were away, your robots here cleaned %d hex and earned %s cubes."
+msgid_plural "While you were away, your robots here cleaned %d hexes and earned %s cubes."
+msgstr[0] "你不在的时候，这里的机器人清理了 %d 个六角格，赚了 %s 个方块。"
+
+#: robots/sphere/sphere_fleet.gd:57
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s 组装完成。它四下看了看，就开始干活了。"
 
@@ -1315,7 +1507,7 @@ msgstr "火箭停在空地上，电池充满就能出发。"
 msgid "Landed on the base pad."
 msgstr "已降落在基地平台。"
 
-#: scenes/slice.gd:1299 scenes/slice_orbit.gd:992
+#: scenes/slice.gd:1299 scenes/slice_orbit.gd:995
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
@@ -1339,7 +1531,7 @@ msgstr "E   修理工作台"
 msgid "E   Open the workbench"
 msgstr "E   打开工作台"
 
-#: scenes/slice_orbit.gd:1092
+#: scenes/slice_orbit.gd:1095
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "工作台修好了。在它旁边按 E，用方块购买升级。"
 
@@ -3984,26 +4176,6 @@ msgstr "%.2f 公里"
 #: ui/codex_screen.gd:860
 msgid "%dm %02ds"
 msgstr "%d分%02d秒"
-
-#: ui/command_view.gd:24
-msgid "Cleaners"
-msgstr "清洁队"
-
-#: ui/command_view.gd:24
-msgid "Haulers"
-msgstr "运输队"
-
-#: ui/command_view.gd:24
-msgid "Planters"
-msgstr "种植队"
-
-#: ui/command_view.gd:24
-msgid "Waterers"
-msgstr "浇水队"
-
-#: ui/command_view.gd:24
-msgid "Skimmers"
-msgstr "撇捞队"
 
 #: ui/command_view.gd:25
 msgid "Priority"
@@ -7796,10 +7968,6 @@ msgstr "种在沉没之城。"
 #: data/codex.json:plants.marsh_mint.desc
 msgid "Mint that does not mind wet feet. The drained streets smell of it on warm evenings."
 msgstr "不怕湿脚的薄荷。温暖的傍晚，排干的街道上满是它的香味。"
-
-#: data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
-msgid "Build one at the workbench."
-msgstr "在工作台造一台。"
 
 #: data/codex.json:robots.scoopie.desc
 msgid "A small, earnest cleaner with one scoop arm and a lot of enthusiasm. It hums when it finds a good pile."
@@ -16580,6 +16748,15 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Y: role · Hold A: paint · Hold X: erase · Left stick: move"
+#~ msgstr "Y：角色 · 按住 A：涂 · 按住 X：擦 · 左摇杆：移动"
+
+#~ msgid "Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi"
+#~ msgstr "Tab：角色 · 左键：涂 · 右键：擦 · 中键：派机器人 · E：回到 Lumi"
+
+#~ msgid "%s zone"
+#~ msgstr "%s区域"
 
 #~ msgid "Perfect bale: filled right to the gold line."
 #~ msgstr "完美捆包：刚好装到金线。"
