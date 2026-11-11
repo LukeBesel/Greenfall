@@ -515,7 +515,7 @@ msgstr "%s 相当のベールが、運ぶ者もなく基地に積まれていた
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "清浄機がずっと空気をろ過していた。少しだけ澄んだ。"
 
-#: core/pace.gd:147 story/objectives.gd:834
+#: core/pace.gd:147 story/objectives.gd:836
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "重すぎる。作業台でリフト力をアップグレードしよう。"
 
@@ -805,8 +805,8 @@ msgid "landmark"
 msgstr "ランドマーク"
 
 #: planet/sites/hub_plan.gd:254
-msgid "Everything sells for x%s now."
-msgstr "すべての売値が x%s になった。"
+msgid "The recycling network grew: everything sells for x%s now."
+msgstr "リサイクル網が広がった：すべての売値が x%s になった。"
 
 #: planet/sites/hub_plan.gd:273
 msgid "Rocket piece: %s"
@@ -845,8 +845,8 @@ msgid "%s: %d%% clean, up %d%% while you were away."
 msgstr "%s：%d%% きれい。留守のあいだに +%d%%。"
 
 #: planet/sites/hub_purpose.gd:233
-msgid "Clean hexes here: %d / %d"
-msgstr "ここのマスをきれいに：%d / %d"
+msgid "Dig the landmark out. Clean hexes here: %d / %d"
+msgstr "目印を掘り出そう。ここのマスをきれいに：%d / %d"
 
 #: planet/sites/hub_purpose.gd:235
 msgid "Repair an outpost here: %d / %d"
@@ -869,16 +869,16 @@ msgid "%s: asleep. %s"
 msgstr "%s：眠っている。%s"
 
 #: planet/sites/hub_purpose.gd:279
-msgid "The rocket can keep %d bases going. Upgrade the rocket at the workbench."
-msgstr "ロケットが支えられる基地は %d つまで。作業台でロケットを強化しよう。"
+msgid "The rocket can carry supplies to %d bases. Upgrade it at the workbench."
+msgstr "ロケットが物資を届けられる基地は %d つまで。作業台でロケットを強化しよう。"
 
 #: planet/sites/hub_purpose.gd:295
 msgid "Waking the %s needs %s."
 msgstr "起こすには（%s）%s が必要。"
 
 #: planet/sites/hub_purpose.gd:319
-msgid "%s is awake. %s restored."
-msgstr "%s が目を覚ました。%s が復旧した。"
+msgid "%s is awake. %s keeps cleaning when you fly on."
+msgstr "%s が目を覚ました。旅立ったあとも、%s は掃除を続ける。"
 
 #: planet/sites/hub_purpose.gd:346
 msgid "%s grows: level %d."
@@ -2311,43 +2311,43 @@ msgstr "目標達成  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "目標達成  ·  %s"
 
-#: story/objectives.gd:670
+#: story/objectives.gd:672
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "ベーラーを取り付けた！胸をいっぱいにして、[%s] でベールを作り、はかりまで運ぼう。"
 
-#: story/objectives.gd:692 story/objectives.gd:822
+#: story/objectives.gd:694 story/objectives.gd:824
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "胸がいっぱい。[%s] を押してベールを作ろう。"
 
-#: story/objectives.gd:708
+#: story/objectives.gd:710
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "探知機が近くに埋まったロボットのパーツを見つけたよ。「埋もれたパーツ」の表示を追って。真上に来るとピッと鳴るよ。"
 
-#: story/objectives.gd:710
+#: story/objectives.gd:712
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋もれたパーツ：反応が一番強くなるまで近づいて、掘り出そう。"
 
-#: story/objectives.gd:823
+#: story/objectives.gd:825
 msgid "Your chest is full. Bring it to the bin."
 msgstr "胸がいっぱい。ゴミ箱へ運ぼう。"
 
-#: story/objectives.gd:830
+#: story/objectives.gd:832
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "胸がいっぱい。おうちへ帰ろう。ゴミ箱は高い煙の下だよ。"
 
-#: story/objectives.gd:832
+#: story/objectives.gd:834
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "ベールをおうちへ運ぼう。はかりは高い煙の下だよ。"
 
-#: story/objectives.gd:832
+#: story/objectives.gd:834
 msgid "Carry your bale to the scale by the bin."
 msgstr "ベールをゴミ箱のそばのはかりへ運ぼう。"
 
-#: story/objectives.gd:839
+#: story/objectives.gd:841
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "おうちへ帰ろう。光の柱を追って高い煙のところへ。"
 
-#: story/objectives.gd:849
+#: story/objectives.gd:851
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "ここには拾うものがない。もっとゴミのあるところへ歩こう。"
 
@@ -12856,8 +12856,8 @@ msgid "Windpump"
 msgstr "風力ポンプ"
 
 #: data/planets.json:verdance.hubs[garden_row].desc
-msgid "The rocket's seed stock. A new seed type."
-msgstr "ロケットに積む種の蓄え。新しい種類の種。"
+msgid "The Makers' seed store: seeds to take to the next world."
+msgstr "メイカーの種の倉庫。次の世界へ持っていく種がある。"
 
 #: data/planets.json:verdance.hubs[garden_row].piece.name
 msgid "Seed Stock"
@@ -12876,8 +12876,8 @@ msgid "Gantry Crane"
 msgstr "ガントリークレーン"
 
 #: data/planets.json:verdance.hubs[gantry_works].desc
-msgid "Hull plates for the rocket."
-msgstr "ロケット用の船体プレート。"
+msgid "Hull plates, so the rocket can stand the cold of space."
+msgstr "船体プレート。ロケットが宇宙の寒さに耐えられるようになる。"
 
 #: data/planets.json:verdance.hubs[gantry_works].piece.name
 msgid "Hull Plates"
@@ -12896,8 +12896,8 @@ msgid "Signal Mast"
 msgstr "信号マスト"
 
 #: data/planets.json:verdance.hubs[signal_heights].desc
-msgid "The star chart: where the rocket can fly."
-msgstr "星図：ロケットの行き先がわかる。"
+msgid "The Makers' star chart: it shows where the rocket can fly."
+msgstr "メイカーの星図。ロケットの行き先がわかる。"
 
 #: data/planets.json:verdance.hubs[signal_heights].piece.name
 msgid "Star Chart"
@@ -12916,8 +12916,8 @@ msgid "Big Wheel"
 msgstr "観覧車"
 
 #: data/planets.json:verdance.hubs[fairground].desc
-msgid "A power cell for the rocket. A new look for Lumi."
-msgstr "ロケット用のパワーセル。Lumi の新しい見た目。"
+msgid "A power cell that lasts a long flight. A new look for Lumi."
+msgstr "長い旅でも切れないパワーセル。Lumi の新しい見た目。"
 
 #: data/planets.json:verdance.hubs[fairground].piece.name
 msgid "Power Cell"
@@ -12956,8 +12956,8 @@ msgid "Last Bus"
 msgstr "最終バス"
 
 #: data/planets.json:verdance.hubs[bus_depot].desc
-msgid "An extra town. A reward of Parts."
-msgstr "おまけの町。ごほうび：パーツ。"
+msgid "An old station off the route. Wake it for Parts."
+msgstr "ルートから外れた古いステーション。起こすとパーツがもらえる。"
 
 #: data/planets.json:verdance.hubs[crane_court].name
 msgid "Crane Court"
@@ -12968,8 +12968,8 @@ msgid "Tower Crane"
 msgstr "タワークレーン"
 
 #: data/planets.json:verdance.hubs[crane_court].desc data/planets.json:verdance.hubs[lake_light].desc
-msgid "An extra town. A reward of Cubes."
-msgstr "おまけの町。ごほうび：キューブ。"
+msgid "An old station off the route. Wake it for Cubes."
+msgstr "ルートから外れた古いステーション。起こすとキューブがもらえる。"
 
 #: data/planets.json:verdance.hubs[tank_hill].name
 msgid "Tank Hill"
@@ -12980,8 +12980,8 @@ msgid "Hill Tank"
 msgstr "丘のタンク"
 
 #: data/planets.json:verdance.hubs[tank_hill].desc
-msgid "An extra town. A reward of Seeds."
-msgstr "おまけの町。ごほうび：種。"
+msgid "An old station off the route. Wake it for Seeds."
+msgstr "ルートから外れた古いステーション。起こすと種がもらえる。"
 
 #: data/planets.json:verdance.hubs[lake_light].name
 msgid "Lake Light"
@@ -17254,6 +17254,39 @@ msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いて
 
 #~ msgid "%s zone"
 #~ msgstr "%s ゾーン"
+
+#~ msgid "Everything sells for x%s now."
+#~ msgstr "すべての売値が x%s になった。"
+
+#~ msgid "Clean hexes here: %d / %d"
+#~ msgstr "ここのマスをきれいに：%d / %d"
+
+#~ msgid "The rocket can keep %d bases going. Upgrade the rocket at the workbench."
+#~ msgstr "ロケットが支えられる基地は %d つまで。作業台でロケットを強化しよう。"
+
+#~ msgid "%s is awake. %s restored."
+#~ msgstr "%s が目を覚ました。%s が復旧した。"
+
+#~ msgid "The rocket's seed stock. A new seed type."
+#~ msgstr "ロケットに積む種の蓄え。新しい種類の種。"
+
+#~ msgid "Hull plates for the rocket."
+#~ msgstr "ロケット用の船体プレート。"
+
+#~ msgid "The star chart: where the rocket can fly."
+#~ msgstr "星図：ロケットの行き先がわかる。"
+
+#~ msgid "A power cell for the rocket. A new look for Lumi."
+#~ msgstr "ロケット用のパワーセル。Lumi の新しい見た目。"
+
+#~ msgid "An extra town. A reward of Parts."
+#~ msgstr "おまけの町。ごほうび：パーツ。"
+
+#~ msgid "An extra town. A reward of Cubes."
+#~ msgstr "おまけの町。ごほうび：キューブ。"
+
+#~ msgid "An extra town. A reward of Seeds."
+#~ msgstr "おまけの町。ごほうび：種。"
 
 #~ msgid "Rocket hop: %.1f km"
 #~ msgstr "ロケットホップ：%.1f km"
