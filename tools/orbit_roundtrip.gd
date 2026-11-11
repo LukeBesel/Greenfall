@@ -359,16 +359,16 @@ static func _first_seed_check(tree: SceneTree, s: Node, so: SliceOrbit, check: C
 	check.call("orbit_seed_cinematic_runs", true, fs._active and not (s.get("hud") as CanvasLayer).visible and not so.cam.input_enabled)
 	Engine.time_scale = 30.0
 	var t0: int = Time.get_ticks_msec()
-	var back: String = ""  # [v6qa] read on the frame the cinematic hands the HUD back: at 30x a later
+	var handback: String = ""  # [v6qa] read on the frame the cinematic hands the HUD back: at 30x a later
 	# frame can already be inside another cinematic (a few game seconds pass per slow frame)
 	while (fs._active or not (s.get("hud") as CanvasLayer).visible) and Time.get_ticks_msec() - t0 < 15000:  # (the lines' timers drift a frame each)
 		await tree.process_frame
-		if back == "" and (s.get("hud") as CanvasLayer).visible:
-			back = "hud true cam %s" % str(so.cam.input_enabled)
+		if handback == "" and (s.get("hud") as CanvasLayer).visible:
+			handback = "hud true cam %s" % str(so.cam.input_enabled)
 	Engine.time_scale = 1.0
 	check.call("orbit_seed_unlocked", true, GameState.flags.get("seeds_unlocked", false) and GameState.get_currency("seeds").to_float() > seeds0)
 	await tree.process_frame
-	check.call("orbit_seed_controls_back", "hud true cam true", back if back != "" else "hud %s cam %s" % [str((s.get("hud") as CanvasLayer).visible), str(so.cam.input_enabled)])
+	check.call("orbit_seed_controls_back", "hud true cam true", handback if handback != "" else "hud %s cam %s" % [str((s.get("hud") as CanvasLayer).visible), str(so.cam.input_enabled)])
 	fcfg["hexes_needed"] = need0
 	# The compost press stands on the "composter" anchor, hidden until it's a Hub build; once
 	# built, its own model replaces the yard's stand-in, paper feeds it and it presses seeds.
