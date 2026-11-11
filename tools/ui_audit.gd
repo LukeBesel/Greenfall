@@ -42,8 +42,14 @@ static func _shown(c: CanvasItem) -> bool:
 	return a * c.self_modulate.a > 0.05 or (a > 0.05 and c is Control and (c as Control).get_child_count() > 0)
 
 
+## Where the control is laid out on screen. Its own scale is left out: a button that grows a
+## little while it has the focus (UITheme.juice) is not off its row.
 static func rect_of(c: Control) -> Rect2:
-	return (c.get_global_transform_with_canvas() * Rect2(Vector2.ZERO, c.size)).abs()
+	var xf: Transform2D = c.get_global_transform_with_canvas()
+	if c.scale != Vector2.ONE and c.scale.x != 0.0 and c.scale.y != 0.0:
+		var p: Vector2 = c.pivot_offset
+		xf = xf * Transform2D(0.0, p) * Transform2D.IDENTITY.scaled(Vector2.ONE / c.scale) * Transform2D(0.0, -p)
+	return (xf * Rect2(Vector2.ZERO, c.size)).abs()
 
 
 static func text_of(c: Control) -> String:
