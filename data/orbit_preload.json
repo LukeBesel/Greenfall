@@ -192,6 +192,20 @@
 		"lite:street_rat@900",
 		"street_rat",
 		"lite:nettle_plant@400",
-		"lite:grass_medium_02@400"
+		"lite:grass_medium_02@400",
+		"lite:korean_public_payphone_01@4000",
+		"lite:modular_street_seating@4000",
+		"modular_street_seating",
+		"lite:vintage_microwave@4000",
+		"wooden_crate_02",
+		"lite:wooden_crate_02@4000",
+		"ocean_buoy",
+		"lite:ocean_buoy@4000",
+		"lifebuoy",
+		"lite:lifebuoy@4000",
+		"lite:covered_car@4000",
+		"covered_car",
+		"lite:old_drill_press@4000",
+		"old_drill_press"
 	]
 }

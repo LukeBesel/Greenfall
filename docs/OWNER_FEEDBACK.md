@@ -261,3 +261,4 @@ Direction: the flat world's vibe is better, so build it into the round world: bu
 65. Only three songs on Verdance gets boring. Until more songs arrive, play more of the songs we have there (done: Ochre's three songs also play on Verdance, owned from the start, and the main theme comes up less often; see `data/songs.json` `planets.verdance`).
 66. The base names are up to us (kept: Landing Yard, Garden Row, Gantry Works, Signal Heights, Fairground, Stack Works).
 67. The people asleep on the ark are not "the Makers" (and not "the Gardeners"). The owner picked **the Settlers**.
+68. Songs and breaks like Minecraft: a song, then a long quiet stretch with only the world's own sounds (done: 6–15 min between songs, 1–2 min after loading; `data/songs.json` `gap_s`, `first_gap_s`).

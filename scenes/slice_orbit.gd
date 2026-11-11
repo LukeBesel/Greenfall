@@ -211,6 +211,8 @@ func build(p_world: Node3D) -> void:
 	await BuildBudget.join(ck_task)  # [v5load]
 	if BuildBudget.active():
 		await FaunaModels.prewarm()  # [v5load] the animals' procedural meshes, before the hub frame makes the wildlife
+		StorySfx.ensure()  # [v6qa] the eggs' synthesised sounds (40 ms): behind the loader, not at the first hub switch (a save loaded between hubs)
+		await BuildBudget.check("story sfx")
 	_build_story()
 	BuildBudget.lap("orbit story")
 	await _build_yard_systems()

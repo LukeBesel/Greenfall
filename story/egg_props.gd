@@ -194,6 +194,9 @@ static func jukebox() -> Node3D:
 
 
 ## The crew mural: a freestanding slab of concrete wall with a painted scene (generated image).
+static var _mural_tex: ImageTexture = null  # [v6qa]
+
+
 static func mural() -> Node3D:
 	var n := Node3D.new()
 	var conc: StandardMaterial3D = AssetLib.pbr_material("concrete_wall_008", 0.5, Color(0.85, 0.83, 0.8), true)
@@ -204,7 +207,9 @@ static func mural() -> Node3D:
 	var q := QuadMesh.new()
 	q.size = Vector2(4.9, 2.45)
 	var m := StandardMaterial3D.new()
-	m.albedo_texture = ImageTexture.create_from_image(mural_image())
+	if _mural_tex == null:  # [v6qa] the painting is the same every time (seeded): painted once (27 ms in a hub switch)
+		_mural_tex = ImageTexture.create_from_image(mural_image())
+	m.albedo_texture = _mural_tex
 	m.roughness = 0.85
 	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR
 	m.alpha_scissor_threshold = 0.5

@@ -752,6 +752,23 @@ class _PatchData:
 
 
 static func _build_patch(out: _PatchData, size: Vector2, state: String, seed_: int, opts: Dictionary) -> void:
+	KitMesh._build_patch_steps.call(out, size, state, seed_, opts, false)  # [v6qa] (never suspends: slice false)
+
+
+## [v6qa] A ground patch in slices (a hub town's lots in play: one patch was a 25-35 ms step). Same
+## mesh, the same random draws in the same order; await it with slice true under a BuildBudget.
+static func ground_patch_async(size: Vector2, state: String = "repaired", seed_: int = 1, opts: Dictionary = {}) -> Node3D:
+	var key: String = "patch:%.1f,%.1f:%s:%d:%s" % [size.x, size.y, state, seed_, str(opts)]
+	if not _meshes.has(key):
+		var r := _PatchData.new()
+		await _build_patch_steps(r, size, state, seed_, opts, true)
+		if not _meshes.has(key):
+			_meshes[key] = r
+			stats["mesh_builds"] = int(stats["mesh_builds"]) + 1
+	return ground_patch(size, state, seed_, opts)
+
+
+static func _build_patch_steps(out: _PatchData, size: Vector2, state: String, seed_: int, opts: Dictionary, slice: bool) -> void:
 	var b := Builder.new(seed_, opts.get("palette", {}), state)
 	var rng: RandomNumberGenerator = b.rng
 	var broken: bool = state == "broken"
@@ -782,6 +799,8 @@ static func _build_patch(out: _PatchData, size: Vector2, state: String, seed_: i
 	var td: float = size.y / nz
 	var gaps: Array[Vector3] = []
 	for j: int in nz:
+		if slice:
+			await BuildBudget.check("kit:patch row")
 		for i: int in nx:
 			var c := Vector3(-hx + (i + 0.5) * tw, 0.0, -hz + (j + 0.5) * td)
 			var r: float = rng.randf()
@@ -852,7 +871,11 @@ static func _build_patch(out: _PatchData, size: Vector2, state: String, seed_: i
 		for q: int in 10:
 			var p := Vector3(rng.randf_range(-hx - 1, hx + 1), 0.02, rng.randf_range(-hz - 1, hz + 1))
 			b.box("rusty", Vector3(rng.randf_range(0.15, 0.6), 0.03, rng.randf_range(0.1, 0.35)), xf(p, Vector3(rng.randf_range(-20, 20), rng.randf() * 180, rng.randf_range(-20, 20))), 0.01)
+	if slice:
+		await BuildBudget.check("kit:patch commit")
 	out.mesh = b.commit()
+	if slice:
+		await BuildBudget.check("kit:patch grit")
 	# grit MultiMesh: along kerbs, in gaps, around the skirt edge
 	var grit_xf: Array[Transform3D] = []
 	var n_grit: int = int((size.x + size.y) * (10.0 if broken else 5.0))
@@ -871,6 +894,8 @@ static func _build_patch(out: _PatchData, size: Vector2, state: String, seed_: i
 	var pb := Builder.new(seed_ + 1)
 	pb.add("rock", pebble(seed_ % 4), Transform3D.IDENTITY, 0.5, 0.0)
 	out.grit = _multimesh(pb.commit(), grit_xf)
+	if slice:
+		await BuildBudget.check("kit:patch tufts")
 	# tufts: around the skirt edge and in gaps/cracks
 	var tuft_xf: Array[Transform3D] = []
 	var n_tuft: int = int((size.x + size.y) * (4.0 if restored else (2.5 if not broken else 1.6)))
