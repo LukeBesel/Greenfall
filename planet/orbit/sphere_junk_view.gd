@@ -288,6 +288,22 @@ func _on_swept(_cell: int, pids: PackedInt32Array) -> void:
 			Vfx.burst("dust", p + p.normalized() * 0.2, Color(0.75, 0.72, 0.62, 0.6), 0.5)
 
 
+## Pieces came back on a cell (waste a running source fouled it with again): those of a cell that
+## is on show are drawn now; any other cell shows them when it enters the near ring.
+func show_pieces(cell: int) -> void:
+	_grow_pid_arrays()
+	if not _shown_cells.has(cell):
+		return
+	var band: int = _band.get(cell, 2)
+	for pid: int in sfield.pieces_in(cell):
+		if sfield.piece_alive[pid] == 0 or _where[pid] != 0:
+			continue
+		if _grp[pid] < 0:
+			_grp[pid] = _group_for(sfield.piece_model[pid], sfield.piece_vol[pid])
+		_append(pid, _want(_grp[pid], band))
+	_count()
+
+
 func hide_piece(pid: int) -> void:
 	_remove(pid)
 

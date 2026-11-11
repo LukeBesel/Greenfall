@@ -19,7 +19,7 @@ msgstr "NEUES CREWMITGLIED  ·  %s"
 #. %s is the key, or the two pad buttons, that release the Surge.
 #: art/surge_fx.gd:121
 msgid "Bloom Core full. Press %s to release a Surge."
-msgstr "Bloom-Kern voll. Drücke %s für einen Surge."
+msgstr "Blütenkern voll. Drücke %s für einen Surge."
 
 #. %s is how many times Lumi's sweep output a Surge gives, e.g. 3.2.
 #: art/surge_fx.gd:151
@@ -126,7 +126,7 @@ msgstr "Linsenansicht"
 msgid "Codex"
 msgstr "Kodex"
 
-#: autoload/Settings.gd:20 ui/assembler_panel.gd:88
+#: autoload/Settings.gd:20 ui/assembler_panel.gd:90
 msgid "Pause"
 msgstr "Pause"
 
@@ -726,27 +726,27 @@ msgstr ""
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "Ein Hexfeld ist vollständig wiederhergestellt. Schon lebt etwas Kleines darin."
 
-#: plants/hex_levels.gd:101
+#: plants/hex_levels.gd:104
 msgid "HEX  LV %d  %s"
 msgstr "HEX  ST %d  %s"
 
-#: plants/hex_levels.gd:104
+#: plants/hex_levels.gd:107
 msgid "      SUSTAIN  %d%%"
 msgstr "      STABIL  %d%%"
 
-#: plants/hex_levels.gd:106
+#: plants/hex_levels.gd:109
 msgid "      THIRSTY"
 msgstr "      DURSTIG"
 
-#: plants/hex_levels.gd:108
+#: plants/hex_levels.gd:111
 msgid "      next: %s"
 msgstr "      nächste: %s"
 
-#: plants/hex_levels.gd:239
+#: plants/hex_levels.gd:251
 msgid "HEX LV %d  %s"
 msgstr "HEX ST %d  %s"
 
-#: plants/hex_levels.gd:243
+#: plants/hex_levels.gd:255
 msgid "Hex Lv %d  %s.   %s"
 msgstr "Hex Stufe %d  %s.   %s"
 
@@ -1166,27 +1166,27 @@ msgstr "AUSSENPOSTEN %d · St%d"
 msgid "OUTPOST %d · RUIN"
 msgstr "AUSSENPOSTEN %d · RUINE"
 
-#: scenes/slice_orbit.gd:373
+#: scenes/slice_orbit.gd:374
 msgid "HEX CLEAN!"
 msgstr "HEXFELD SAUBER!"
 
-#: scenes/slice_orbit.gd:389
+#: scenes/slice_orbit.gd:390
 msgid "Milestone: %d hexes clean!"
 msgstr "Meilenstein: %d Hexfelder sauber!"
 
-#: scenes/slice_orbit.gd:590 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:586
+#: scenes/slice_orbit.gd:609 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:588
 msgid "E   Fix the workbench"
 msgstr "E   Werkbank reparieren"
 
-#: scenes/slice_orbit.gd:590 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:609 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr "E   Werkbank öffnen"
 
-#: scenes/slice_orbit.gd:1054
+#: scenes/slice_orbit.gd:1073
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Upgrades brauchen eine Werkbank. Zurück zur Basis."
 
-#: scenes/slice_orbit.gd:1154
+#: scenes/slice_orbit.gd:1173
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Werkbank repariert. Drück dort E, um Würfel für Upgrades auszugeben."
 
@@ -2576,6 +2576,14 @@ msgstr "%s (%s)"
 msgid "You need %s for this."
 msgstr "Dafür brauchst du %s."
 
+#: systems/source_spread.gd:184
+msgid "SOURCE STILL RUNNING"
+msgstr "QUELLE LÄUFT NOCH"
+
+#: systems/source_spread.gd:215
+msgid "A source that still runs fouls the ground round it again. Shut it down to stop it."
+msgstr "Eine laufende Quelle verschmutzt den Boden um sie herum wieder. Schalte sie ab, um das zu stoppen."
+
 #: systems/surge.gd:123
 msgid "Surge"
 msgstr "Surge"
@@ -2712,7 +2720,7 @@ msgstr "%s summt den Setzlingen etwas vor. Der Ruhestand steht ihm."
 msgid "%s points proudly at a new bud."
 msgstr "%s zeigt stolz auf eine neue Knospe."
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:618
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:620
 msgid "E   CD player: %s"
 msgstr "E   CD-Spieler: %s"
 
@@ -2865,46 +2873,50 @@ msgid "Build mix: how many of each type the line builds in turn. A type joins th
 msgstr "Baumix: wie viele von jedem Typ das Band der Reihe nach baut. Ein Typ kommt aufs Band, sobald du den ersten von Hand gebaut hast. Wo Scrounger suchen, malst du in der Kommandoansicht."
 
 #: ui/assembler_panel.gd:61
+msgid "Building a part for Lumi. Robots wait until it is done."
+msgstr "Baue ein Teil für Lumi. Roboter warten, bis es fertig ist."
+
+#: ui/assembler_panel.gd:63
 msgid "Paused."
 msgstr "Pausiert."
 
-#: ui/assembler_panel.gd:63
+#: ui/assembler_panel.gd:65
 msgid "Nothing to build: give a type a share."
 msgstr "Nichts zu bauen: gib einem Typ einen Anteil."
 
-#: ui/assembler_panel.gd:65
+#: ui/assembler_panel.gd:67
 msgid "Crew full: the line waits for room."
 msgstr "Crew voll: das Band wartet auf Platz."
 
-#: ui/assembler_panel.gd:67
+#: ui/assembler_panel.gd:69
 msgid "Waiting for Parts."
 msgstr "Wartet auf Teile."
 
-#: ui/assembler_panel.gd:69
+#: ui/assembler_panel.gd:71
 msgid "Building a %s, %d%%"
 msgstr "Baue %s, %d%%"
 
-#: ui/assembler_panel.gd:70
+#: ui/assembler_panel.gd:72
 msgid "Starting up."
 msgstr "Fährt hoch."
 
-#: ui/assembler_panel.gd:83
+#: ui/assembler_panel.gd:85
 msgid "by hand first"
 msgstr "erst von Hand"
 
-#: ui/assembler_panel.gd:87
+#: ui/assembler_panel.gd:89
 msgid "Next: %s"
 msgstr "Nächster: %s"
 
-#: ui/assembler_panel.gd:88 ui/pause_menu.gd:50
+#: ui/assembler_panel.gd:90 ui/pause_menu.gd:50
 msgid "Resume"
 msgstr "Fortsetzen"
 
-#: ui/assembler_panel.gd:125
+#: ui/assembler_panel.gd:127
 msgid "More %s"
 msgstr "Mehr %s"
 
-#: ui/assembler_panel.gd:125
+#: ui/assembler_panel.gd:127
 msgid "Fewer %s"
 msgstr "Weniger %s"
 
@@ -4182,86 +4194,86 @@ msgstr "WREN-SIGNAL   %d%%"
 msgid "HEX  %d%% CLEAR"
 msgstr "HEX  %d%% SAUBER"
 
-#: ui/hud.gd:342
+#: ui/hud.gd:344
 msgid "%s  BASE"
 msgstr "%s  BASIS"
 
-#: ui/hud.gd:345
+#: ui/hud.gd:347
 msgid "CARRYING %d/%d"
 msgstr "TRÄGT %d/%d"
 
-#: ui/hud.gd:371
+#: ui/hud.gd:373
 msgid "HEX  CLEAR"
 msgstr "HEX  SAUBER"
 
-#: ui/hud.gd:375
+#: ui/hud.gd:377
 msgid "HEX  %s"
 msgstr "HEX  %s"
 
-#: ui/hud.gd:378
+#: ui/hud.gd:383
 msgid "  SUSTAIN %d%%"
 msgstr "  STABIL %d%%"
 
-#: ui/hud.gd:380
+#: ui/hud.gd:385
 msgid "  THIRSTY"
 msgstr "  DURSTIG"
 
-#: ui/hud.gd:399
+#: ui/hud.gd:410
 msgid "%s · %s"
 msgstr "%s · %s"
 
-#: ui/hud.gd:401
+#: ui/hud.gd:412
 msgid "%s · %s %d%%"
 msgstr "%s · %s %d%%"
 
-#: ui/hud.gd:404
+#: ui/hud.gd:415
 msgid "%d of %d city restored"
 msgid_plural "%d of %d cities restored"
 msgstr[0] "%d von %d Stadt wiederhergestellt"
 msgstr[1] "%d von %d Städten wiederhergestellt"
 
-#: ui/hud.gd:418
+#: ui/hud.gd:429
 msgid "MASTERY  %s"
 msgstr "MEISTERSCHAFT  %s"
 
-#: ui/hud.gd:429
+#: ui/hud.gd:440
 msgid "%s mastery %d. Robots can work it now."
 msgstr "%s: Meisterschaft %d. Roboter können das jetzt bearbeiten."
 
-#: ui/hud.gd:431
+#: ui/hud.gd:442
 msgid "%s mastery %d. You and your crew work it faster."
 msgstr "%s: Meisterschaft %d. Du und deine Crew arbeitet schneller daran."
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:440
+#: ui/hud.gd:451
 msgid "%s   pick up bale"
 msgstr "%s   Ballen aufheben"
 
-#: ui/hud.gd:441
+#: ui/hud.gd:452
 msgid "%s   dig up part"
 msgstr "%s   Teil ausgraben"
 
-#: ui/hud.gd:442
+#: ui/hud.gd:453
 msgid "%s   read memory shard"
 msgstr "%s   Erinnerungssplitter lesen"
 
-#: ui/hud.gd:443
+#: ui/hud.gd:454
 msgid "%s   pick up the seed tin"
 msgstr "%s   Samendose aufheben"
 
-#: ui/hud.gd:444
+#: ui/hud.gd:455
 msgid "%s   set bale down"
 msgstr "%s   Ballen abstellen"
 
-#: ui/hud.gd:445
+#: ui/hud.gd:456
 msgid "%s   workbench"
 msgstr "%s   Werkbank"
 
-#: ui/hud.gd:446
+#: ui/hud.gd:457
 msgid "Filling the watering can"
 msgstr "Gießkanne wird gefüllt"
 
-#: ui/hud.gd:447
+#: ui/hud.gd:458
 msgid "Can empty. It fills in the base yard, by the bin."
 msgstr "Kanne leer. Sie füllt sich im Basishof bei der Tonne."
 
@@ -13261,6 +13273,26 @@ msgstr "Schatten in der Schmelze"
 #: data/songs.json:songs[cool_stone].title
 msgid "Cool Stone"
 msgstr "Kühler Stein"
+
+#: planets/verdance/data/sources.json:build.text
+msgid "Wait for the part"
+msgstr "Warte auf das Teil"
+
+#: planets/verdance/data/sources.json:build.desc
+msgid "It is on the Assembler's line. Robot building waits until it is done."
+msgstr "Es ist am Band des Assemblers. Der Roboterbau wartet, bis es fertig ist."
+
+#: planets/verdance/data/sources.json:build.hint
+msgid "The workbench is building it. The Assembler would be three times as fast."
+msgstr "Die Werkbank baut es. Der Assembler wäre dreimal so schnell."
+
+#: planets/verdance/data/sources.json:build.text_1
+msgid "Fetch the finished part"
+msgstr "Hol das fertige Teil"
+
+#: planets/verdance/data/sources.json:build.prompt
+msgid "Pick up the finished part"
+msgstr "Nimm das fertige Teil"
 
 #: planets/verdance/data/sources.json:sources[burst_main].name
 msgid "The burst main"

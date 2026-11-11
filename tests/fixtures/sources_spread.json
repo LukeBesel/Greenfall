@@ -1,0 +1,19 @@
+{
+  "_doc": "Test fixture: a source job for the dummy planet's one district whose source reaches into the ground round it (tests/test_source_spread.gd), with numbers no shipped planet uses, to prove that the reach, the held stage and the trickle are the planet's data. Its one step is a built part, to prove the build times are data too.",
+  "open_stage": 0,
+  "gates_stage": 5,
+  "reach_m": 2.0,
+  "spread": {"hexes": 5, "hex_stage": 2, "from_stage": 0, "every_s": 10.0, "amount": 0.5, "max_soiled": 2},
+  "build": {"line_s": 20.0, "bench_s": 30.0, "text": "Wait for the pump", "desc": "The line is building it.", "hint": "The bench is building it.", "text_1": "Fetch the pump", "prompt": "Pick up the pump"},
+  "sources": [
+    {
+      "district": "testworld", "id": "test_leak", "name": "The test leak", "soil_kind": "spores",
+      "reward": {"seeds": 3},
+      "toast": "The test leak is shut.",
+      "steps": [
+        {"id": "pump", "type": "carry", "built": true, "prop": "socket", "from": [2.0, 3.0], "at": [4.0, 3.0], "seconds": 2.0, "cost": {"seeds": 4},
+         "text": "Build the pump", "text_1": "Fit the pump", "desc": "It leaks.", "prompt": "Build the pump", "final_prompt": "Fit the pump"}
+      ]
+    }
+  ]
+}

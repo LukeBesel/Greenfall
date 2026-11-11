@@ -126,7 +126,7 @@ msgstr "透镜视图"
 msgid "Codex"
 msgstr "图鉴"
 
-#: autoload/Settings.gd:20 ui/assembler_panel.gd:88
+#: autoload/Settings.gd:20 ui/assembler_panel.gd:90
 msgid "Pause"
 msgstr "暂停"
 
@@ -726,27 +726,27 @@ msgstr ""
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "一个六角格完全恢复了。已经有小东西住在里面了。"
 
-#: plants/hex_levels.gd:101
+#: plants/hex_levels.gd:104
 msgid "HEX  LV %d  %s"
 msgstr "六角格  %d 级  %s"
 
-#: plants/hex_levels.gd:104
+#: plants/hex_levels.gd:107
 msgid "      SUSTAIN  %d%%"
 msgstr "      稳定  %d%%"
 
-#: plants/hex_levels.gd:106
+#: plants/hex_levels.gd:109
 msgid "      THIRSTY"
 msgstr "      缺水"
 
-#: plants/hex_levels.gd:108
+#: plants/hex_levels.gd:111
 msgid "      next: %s"
 msgstr "      下一级：%s"
 
-#: plants/hex_levels.gd:239
+#: plants/hex_levels.gd:251
 msgid "HEX LV %d  %s"
 msgstr "六角格 %d 级  %s"
 
-#: plants/hex_levels.gd:243
+#: plants/hex_levels.gd:255
 msgid "Hex Lv %d  %s.   %s"
 msgstr "六角格 %d 级  %s。   %s"
 
@@ -1165,27 +1165,27 @@ msgstr "前哨 %d · %d级"
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨 %d · 废墟"
 
-#: scenes/slice_orbit.gd:373
+#: scenes/slice_orbit.gd:374
 msgid "HEX CLEAN!"
 msgstr "六角格清理完成！"
 
-#: scenes/slice_orbit.gd:389
+#: scenes/slice_orbit.gd:390
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice_orbit.gd:590 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:586
+#: scenes/slice_orbit.gd:609 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:588
 msgid "E   Fix the workbench"
 msgstr "E   修理工作台"
 
-#: scenes/slice_orbit.gd:590 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:609 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr "E   打开工作台"
 
-#: scenes/slice_orbit.gd:1054
+#: scenes/slice_orbit.gd:1073
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice_orbit.gd:1154
+#: scenes/slice_orbit.gd:1173
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "工作台修好了。在它旁边按 E，用方块购买升级。"
 
@@ -2569,6 +2569,14 @@ msgstr "%s（%s）"
 msgid "You need %s for this."
 msgstr "这需要 %s。"
 
+#: systems/source_spread.gd:184
+msgid "SOURCE STILL RUNNING"
+msgstr "污染源仍在运转"
+
+#: systems/source_spread.gd:215
+msgid "A source that still runs fouls the ground round it again. Shut it down to stop it."
+msgstr "仍在运转的污染源会再次弄脏周围的地面。关掉它就能阻止。"
+
 #: systems/surge.gd:123
 msgid "Surge"
 msgstr "涌能"
@@ -2705,7 +2713,7 @@ msgstr "%s 对着幼苗哼歌。退休生活很适合它。"
 msgid "%s points proudly at a new bud."
 msgstr "%s 骄傲地指着一个新花苞。"
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:618
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:620
 msgid "E   CD player: %s"
 msgstr "E   CD 播放机：%s"
 
@@ -2858,46 +2866,50 @@ msgid "Build mix: how many of each type the line builds in turn. A type joins th
 msgstr "建造配比：流水线轮流建造每种机器人的数量。亲手造出第一台后，该类型才会上线。在指挥视图里涂出 Scrounger 的搜索区域。"
 
 #: ui/assembler_panel.gd:61
+msgid "Building a part for Lumi. Robots wait until it is done."
+msgstr "正在为 Lumi 制造零件。完成前机器人等待。"
+
+#: ui/assembler_panel.gd:63
 msgid "Paused."
 msgstr "已暂停。"
 
-#: ui/assembler_panel.gd:63
+#: ui/assembler_panel.gd:65
 msgid "Nothing to build: give a type a share."
 msgstr "没有可建造的：给某个类型分配份额。"
 
-#: ui/assembler_panel.gd:65
+#: ui/assembler_panel.gd:67
 msgid "Crew full: the line waits for room."
 msgstr "小队已满：流水线等待空位。"
 
-#: ui/assembler_panel.gd:67
+#: ui/assembler_panel.gd:69
 msgid "Waiting for Parts."
 msgstr "等待零件。"
 
-#: ui/assembler_panel.gd:69
+#: ui/assembler_panel.gd:71
 msgid "Building a %s, %d%%"
 msgstr "正在建造 %s，%d%%"
 
-#: ui/assembler_panel.gd:70
+#: ui/assembler_panel.gd:72
 msgid "Starting up."
 msgstr "正在启动。"
 
-#: ui/assembler_panel.gd:83
+#: ui/assembler_panel.gd:85
 msgid "by hand first"
 msgstr "先手工造"
 
-#: ui/assembler_panel.gd:87
+#: ui/assembler_panel.gd:89
 msgid "Next: %s"
 msgstr "下一个：%s"
 
-#: ui/assembler_panel.gd:88 ui/pause_menu.gd:50
+#: ui/assembler_panel.gd:90 ui/pause_menu.gd:50
 msgid "Resume"
 msgstr "继续"
 
-#: ui/assembler_panel.gd:125
+#: ui/assembler_panel.gd:127
 msgid "More %s"
 msgstr "增加 %s"
 
-#: ui/assembler_panel.gd:125
+#: ui/assembler_panel.gd:127
 msgid "Fewer %s"
 msgstr "减少 %s"
 
@@ -4171,85 +4183,85 @@ msgstr "WREN 信号   %d%%"
 msgid "HEX  %d%% CLEAR"
 msgstr "六角格  已清理 %d%%"
 
-#: ui/hud.gd:342
+#: ui/hud.gd:344
 msgid "%s  BASE"
 msgstr "%s  基地"
 
-#: ui/hud.gd:345
+#: ui/hud.gd:347
 msgid "CARRYING %d/%d"
 msgstr "携带 %d/%d"
 
-#: ui/hud.gd:371
+#: ui/hud.gd:373
 msgid "HEX  CLEAR"
 msgstr "六角格  已清理"
 
-#: ui/hud.gd:375
+#: ui/hud.gd:377
 msgid "HEX  %s"
 msgstr "六角格  %s"
 
-#: ui/hud.gd:378
+#: ui/hud.gd:383
 msgid "  SUSTAIN %d%%"
 msgstr "  稳定 %d%%"
 
-#: ui/hud.gd:380
+#: ui/hud.gd:385
 msgid "  THIRSTY"
 msgstr "  缺水"
 
-#: ui/hud.gd:399
+#: ui/hud.gd:410
 msgid "%s · %s"
 msgstr "%s · %s"
 
-#: ui/hud.gd:401
+#: ui/hud.gd:412
 msgid "%s · %s %d%%"
 msgstr "%s · %s %d%%"
 
-#: ui/hud.gd:404
+#: ui/hud.gd:415
 msgid "%d of %d city restored"
 msgid_plural "%d of %d cities restored"
 msgstr[0] "已复原 %d / %d 座城市"
 
-#: ui/hud.gd:418
+#: ui/hud.gd:429
 msgid "MASTERY  %s"
 msgstr "熟练度  %s"
 
-#: ui/hud.gd:429
+#: ui/hud.gd:440
 msgid "%s mastery %d. Robots can work it now."
 msgstr "%s熟练度 %d。机器人现在可以处理了。"
 
-#: ui/hud.gd:431
+#: ui/hud.gd:442
 msgid "%s mastery %d. You and your crew work it faster."
 msgstr "%s熟练度 %d。你和队伍处理得更快了。"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:440
+#: ui/hud.gd:451
 msgid "%s   pick up bale"
 msgstr "%s   拿起捆包"
 
-#: ui/hud.gd:441
+#: ui/hud.gd:452
 msgid "%s   dig up part"
 msgstr "%s   挖出零件"
 
-#: ui/hud.gd:442
+#: ui/hud.gd:453
 msgid "%s   read memory shard"
 msgstr "%s   阅读记忆碎片"
 
-#: ui/hud.gd:443
+#: ui/hud.gd:454
 msgid "%s   pick up the seed tin"
 msgstr "%s   拿起种子罐"
 
-#: ui/hud.gd:444
+#: ui/hud.gd:455
 msgid "%s   set bale down"
 msgstr "%s   放下捆包"
 
-#: ui/hud.gd:445
+#: ui/hud.gd:456
 msgid "%s   workbench"
 msgstr "%s   工作台"
 
-#: ui/hud.gd:446
+#: ui/hud.gd:457
 msgid "Filling the watering can"
 msgstr "正在给洒水壶加水"
 
-#: ui/hud.gd:447
+#: ui/hud.gd:458
 msgid "Can empty. It fills in the base yard, by the bin."
 msgstr "水壶空了。在基地院子的垃圾桶旁可以加水。"
 
@@ -13249,6 +13261,26 @@ msgstr "冶炼厂里的影子"
 #: data/songs.json:songs[cool_stone].title
 msgid "Cool Stone"
 msgstr "清凉之石"
+
+#: planets/verdance/data/sources.json:build.text
+msgid "Wait for the part"
+msgstr "等待零件"
+
+#: planets/verdance/data/sources.json:build.desc
+msgid "It is on the Assembler's line. Robot building waits until it is done."
+msgstr "零件在 Assembler 的生产线上。完成前暂停制造机器人。"
+
+#: planets/verdance/data/sources.json:build.hint
+msgid "The workbench is building it. The Assembler would be three times as fast."
+msgstr "工作台正在制造。Assembler 会快三倍。"
+
+#: planets/verdance/data/sources.json:build.text_1
+msgid "Fetch the finished part"
+msgstr "去取完成的零件"
+
+#: planets/verdance/data/sources.json:build.prompt
+msgid "Pick up the finished part"
+msgstr "拿起完成的零件"
 
 #: planets/verdance/data/sources.json:sources[burst_main].name
 msgid "The burst main"

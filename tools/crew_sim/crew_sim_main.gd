@@ -47,6 +47,8 @@ static func summary(policy: String, r: Dictionary) -> PackedStringArray:
 	out.append("[crew_sim]   Parts: %.0f earned (%.0f Scroungers, %.0f hands, %.0f salvage), %.0f on robots, %.0f on tiers, %.0f left" % [
 		float(r["parts_earned"]), float(r["parts_scrounged"]), float(r["parts_hand"]), float(r["parts_arrival"]),
 		float(r["parts_on_builds"]), float(r["parts_on_tiers"]), float(r["parts_left"])])
+	out.append("[crew_sim]   job parts (the rocket): %d built for %.0f Parts; they held the Assembler's line for %.0f s" % [
+		int(r["job_parts_built"]), float(r["parts_on_jobs"]), float(r["line_held_s"])])
 	out.append("[crew_sim]   ground: %.0f buried parts left by cleaning, %.0f still in the ground; fastest doubling %.0f s, longest wait for a robot from city 2 on %.0f s" % [
 		float(r["ground_seeded"]), float(r["ground_left"]), float(r["fastest_doubling_s"]), float(r["longest_stall_s"])])
 	out.append_array(mastery_lines(r.get("mastery", {})))

@@ -233,7 +233,7 @@ func _physics_process(delta: float) -> void:
 	if str(out["built"]) != "":
 		_roll_out(str(out["built"]))
 	if model != null and is_instance_valid(model):
-		model.set_building(chain.status == CrewChain.BUILDING)
+		model.set_building(chain.status == CrewChain.BUILDING or chain.status == CrewChain.PART)
 
 
 ## Robots with nothing left to do in another city follow Lumi: one that has been idle there for

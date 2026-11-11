@@ -204,6 +204,21 @@ func materialize(cell: int) -> PackedInt32Array:
 			_roll_landmark(cell)
 	if not cells.is_dirty(cell):
 		return out
+	return _lay_pieces(cell, true)
+
+
+## Lays out the pieces of a hex that was laid out clean and has been fouled since (a running
+## source, systems/pollution_soil.gd): its cell says dirty and it has no pieces. No heaps: only
+## the loose waste that came back. Returns the new piece ids (none when it has pieces already).
+func lay_again(cell: int) -> PackedInt32Array:
+	if materialized[cell] == 0 or hex_water[cell] == 1 or not hex_pieces[cell].is_empty() or not cells.is_dirty(cell):
+		return PackedInt32Array()
+	return _lay_pieces(cell, false)
+
+
+## The pieces of a dirty land cell, as many as its junk left asks for, and its ledger.
+func _lay_pieces(cell: int, with_piles: bool) -> PackedInt32Array:
+	var out := PackedInt32Array()
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash([seed_value, cell, 911])
 	var left: float = cells.junk[cell]
@@ -217,8 +232,9 @@ func materialize(cell: int) -> PackedInt32Array:
 	var count: int = int(round(DRAW_PIECES * piece_left * (1.0 - heavy_share)))  # [v1world]
 	var ctr: Vector3 = grid.centers[cell]
 	var f: Basis = SphereGrid.frame(ctr)
-	var piles: Array = [] if cells.has_flag(cell, SphereCells.F_SITE) else _roll_piles(cell)  # [orbD] mounds wedged against kerbs and kit walls stalled Lumi; site cells keep loose junk only
-	hex_piles[cell] = piles
+	var piles: Array = [] if cells.has_flag(cell, SphereCells.F_SITE) or not with_piles else _roll_piles(cell)  # [orbD] mounds wedged against kerbs and kit walls stalled Lumi; site cells keep loose junk only
+	if with_piles:
+		hex_piles[cell] = piles
 	var lm: Dictionary = landmarks[_cell_landmark[cell]] if _cell_landmark.has(cell) else {}
 	var lm_at: Vector2 = cell_local(cell, lm["pos"]) if not lm.is_empty() else Vector2.ZERO
 	var lm_clear: float = float(lm.get("clear", 2.2)) + 0.3

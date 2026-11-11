@@ -123,7 +123,7 @@ msgstr "[Ļéñš vîéŵ ~]"
 msgid "Codex"
 msgstr "[Çôðéx ~]"
 
-#: autoload/Settings.gd:20 ui/assembler_panel.gd:88
+#: autoload/Settings.gd:20 ui/assembler_panel.gd:90
 msgid "Pause"
 msgstr "[Þàûšé ~]"
 
@@ -723,27 +723,27 @@ msgstr ""
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "[À ĥéx îš ƒûļļý ŕéšţôŕéð. Šôméţĥîñĝ šmàļļ îš àļŕéàðý ļîvîñĝ îñ îţ. ~~~~~~~~~~~~~~~~~~~~]"
 
-#: plants/hex_levels.gd:101
+#: plants/hex_levels.gd:104
 msgid "HEX  LV %d  %s"
 msgstr "[ĤÉX  ĻV %d  %s ~~]"
 
-#: plants/hex_levels.gd:104
+#: plants/hex_levels.gd:107
 msgid "      SUSTAIN  %d%%"
 msgstr "      [ŠÛŠŢÀÎÑ  %d%% ~~~~]"
 
-#: plants/hex_levels.gd:106
+#: plants/hex_levels.gd:109
 msgid "      THIRSTY"
 msgstr "      [ŢĤÎŔŠŢÝ ~~]"
 
-#: plants/hex_levels.gd:108
+#: plants/hex_levels.gd:111
 msgid "      next: %s"
 msgstr "      [ñéxţ: %s ~~]"
 
-#: plants/hex_levels.gd:239
+#: plants/hex_levels.gd:251
 msgid "HEX LV %d  %s"
 msgstr "[ĤÉX ĻV %d  %s ~~]"
 
-#: plants/hex_levels.gd:243
+#: plants/hex_levels.gd:255
 msgid "Hex Lv %d  %s.   %s"
 msgstr "[Ĥéx Ļv %d  %s.   %s ~~~~]"
 
@@ -1163,27 +1163,27 @@ msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 
-#: scenes/slice_orbit.gd:373
+#: scenes/slice_orbit.gd:374
 msgid "HEX CLEAN!"
 msgstr "[ĤÉX ÇĻÉÀÑ! ~]"
 
-#: scenes/slice_orbit.gd:389
+#: scenes/slice_orbit.gd:390
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
-#: scenes/slice_orbit.gd:590 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:586
+#: scenes/slice_orbit.gd:609 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:588
 msgid "E   Fix the workbench"
 msgstr "E   [Fîx ţĥé ŵôŕķbéñçĥ ~~~]"
 
-#: scenes/slice_orbit.gd:590 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:609 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr "E   [Ôþéñ ţĥé ŵôŕķbéñçĥ ~~~]"
 
-#: scenes/slice_orbit.gd:1054
+#: scenes/slice_orbit.gd:1073
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice_orbit.gd:1154
+#: scenes/slice_orbit.gd:1173
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "[Ŵôŕķbéñçĥ ƒîxéð. Þŕéšš É àţ îţ ţô šþéñð çûbéš ôñ ûþĝŕàðéš. ~~~~~~~~~~~~~~~~~]"
 
@@ -2573,6 +2573,14 @@ msgstr "[%s (%s)]"
 msgid "You need %s for this."
 msgstr "[Ýôû ñééð %s ƒôŕ ţĥîš. ~~~~]"
 
+#: systems/source_spread.gd:184
+msgid "SOURCE STILL RUNNING"
+msgstr "[ŠÔÛŔÇÉ ŠŢÎĻĻ ŔÛÑÑÎÑĜ ~~~~]"
+
+#: systems/source_spread.gd:215
+msgid "A source that still runs fouls the ground round it again. Shut it down to stop it."
+msgstr "[À šôûŕçé ţĥàţ šţîļļ ŕûñš ƒôûļš ţĥé ĝŕôûñð ŕôûñð îţ àĝàîñ. Šĥûţ îţ ðôŵñ ţô šţôþ îţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
 #: systems/surge.gd:123
 msgid "Surge"
 msgstr "[Šûŕĝé ~]"
@@ -2709,7 +2717,7 @@ msgstr "[%s ĥûmš ţô ţĥé šééðļîñĝš. Ŕéţîŕéméñţ šûîţ
 msgid "%s points proudly at a new bud."
 msgstr "[%s þôîñţš þŕôûðļý àţ à ñéŵ bûð. ~~~~~~~~]"
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:618
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:620
 msgid "E   CD player: %s"
 msgstr "E   [ÇÐ þļàýéŕ: %s ~~]"
 
@@ -2862,46 +2870,50 @@ msgid "Build mix: how many of each type the line builds in turn. A type joins th
 msgstr "[Bûîļð mîx: ĥôŵ màñý ôƒ éàçĥ ţýþé ţĥé ļîñé bûîļðš îñ ţûŕñ. À ţýþé ĵôîñš ţĥé ļîñé àƒţéŕ ýôû bûîļð ţĥé ƒîŕšţ ôñé bý ĥàñð. Þàîñţ ŵĥéŕé Šçŕôûñĝéŕš šéàŕçĥ îñ Çômmàñð vîéŵ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: ui/assembler_panel.gd:61
+msgid "Building a part for Lumi. Robots wait until it is done."
+msgstr "[Bûîļðîñĝ à þàŕţ ƒôŕ Ļûmî. Ŕôbôţš ŵàîţ ûñţîļ îţ îš ðôñé. ~~~~~~~~~~~~~~~~]"
+
+#: ui/assembler_panel.gd:63
 msgid "Paused."
 msgstr "[Þàûšéð. ~]"
 
-#: ui/assembler_panel.gd:63
+#: ui/assembler_panel.gd:65
 msgid "Nothing to build: give a type a share."
 msgstr "[Ñôţĥîñĝ ţô bûîļð: ĝîvé à ţýþé à šĥàŕé. ~~~~~~~~~~]"
 
-#: ui/assembler_panel.gd:65
+#: ui/assembler_panel.gd:67
 msgid "Crew full: the line waits for room."
 msgstr "[Çŕéŵ ƒûļļ: ţĥé ļîñé ŵàîţš ƒôŕ ŕôôm. ~~~~~~~~~]"
 
-#: ui/assembler_panel.gd:67
+#: ui/assembler_panel.gd:69
 msgid "Waiting for Parts."
 msgstr "[Ŵàîţîñĝ ƒôŕ Þàŕţš. ~~~]"
 
-#: ui/assembler_panel.gd:69
+#: ui/assembler_panel.gd:71
 msgid "Building a %s, %d%%"
 msgstr "[Bûîļðîñĝ à %s, %d%% ~~~~]"
 
-#: ui/assembler_panel.gd:70
+#: ui/assembler_panel.gd:72
 msgid "Starting up."
 msgstr "[Šţàŕţîñĝ ûþ. ~]"
 
-#: ui/assembler_panel.gd:83
+#: ui/assembler_panel.gd:85
 msgid "by hand first"
 msgstr "[bý ĥàñð ƒîŕšţ ~~]"
 
-#: ui/assembler_panel.gd:87
+#: ui/assembler_panel.gd:89
 msgid "Next: %s"
 msgstr "[Ñéxţ: %s ~]"
 
-#: ui/assembler_panel.gd:88 ui/pause_menu.gd:50
+#: ui/assembler_panel.gd:90 ui/pause_menu.gd:50
 msgid "Resume"
 msgstr "[Ŕéšûmé ~]"
 
-#: ui/assembler_panel.gd:125
+#: ui/assembler_panel.gd:127
 msgid "More %s"
 msgstr "[Môŕé %s ~]"
 
-#: ui/assembler_panel.gd:125
+#: ui/assembler_panel.gd:127
 msgid "Fewer %s"
 msgstr "[Féŵéŕ %s ~]"
 
@@ -4179,86 +4191,86 @@ msgstr "[ŴŔÉÑ ŠÎĜÑÀĻ   %d%% ~~~]"
 msgid "HEX  %d%% CLEAR"
 msgstr "[ĤÉX  %d%% ÇĻÉÀŔ ~~]"
 
-#: ui/hud.gd:342
+#: ui/hud.gd:344
 msgid "%s  BASE"
 msgstr "[%s  BÀŠÉ ~]"
 
-#: ui/hud.gd:345
+#: ui/hud.gd:347
 msgid "CARRYING %d/%d"
 msgstr "[ÇÀŔŔÝÎÑĜ %d/%d ~~]"
 
-#: ui/hud.gd:371
+#: ui/hud.gd:373
 msgid "HEX  CLEAR"
 msgstr "[ĤÉX  ÇĻÉÀŔ ~]"
 
-#: ui/hud.gd:375
+#: ui/hud.gd:377
 msgid "HEX  %s"
 msgstr "[ĤÉX  %s ~]"
 
-#: ui/hud.gd:378
+#: ui/hud.gd:383
 msgid "  SUSTAIN %d%%"
 msgstr "  [ŠÛŠŢÀÎÑ %d%% ~~]"
 
-#: ui/hud.gd:380
+#: ui/hud.gd:385
 msgid "  THIRSTY"
 msgstr "  [ŢĤÎŔŠŢÝ ~]"
 
-#: ui/hud.gd:399
+#: ui/hud.gd:410
 msgid "%s · %s"
 msgstr "[%s · %s]"
 
-#: ui/hud.gd:401
+#: ui/hud.gd:412
 msgid "%s · %s %d%%"
 msgstr "[%s · %s %d%%]"
 
-#: ui/hud.gd:404
+#: ui/hud.gd:415
 msgid "%d of %d city restored"
 msgid_plural "%d of %d cities restored"
 msgstr[0] "[%d ôƒ %d çîţý ŕéšţôŕéð ~~~~~]"
 msgstr[1] "[%d ôƒ %d çîţîéš ŕéšţôŕéð ~~~~~]"
 
-#: ui/hud.gd:418
+#: ui/hud.gd:429
 msgid "MASTERY  %s"
 msgstr "[MÀŠŢÉŔÝ  %s ~]"
 
-#: ui/hud.gd:429
+#: ui/hud.gd:440
 msgid "%s mastery %d. Robots can work it now."
 msgstr "[%s màšţéŕý %d. Ŕôbôţš çàñ ŵôŕķ îţ ñôŵ. ~~~~~~~~~~]"
 
-#: ui/hud.gd:431
+#: ui/hud.gd:442
 msgid "%s mastery %d. You and your crew work it faster."
 msgstr "[%s màšţéŕý %d. Ýôû àñð ýôûŕ çŕéŵ ŵôŕķ îţ ƒàšţéŕ. ~~~~~~~~~~~~~~]"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:440
+#: ui/hud.gd:451
 msgid "%s   pick up bale"
 msgstr "[%s   þîçķ ûþ bàļé ~~~]"
 
-#: ui/hud.gd:441
+#: ui/hud.gd:452
 msgid "%s   dig up part"
 msgstr "[%s   ðîĝ ûþ þàŕţ ~~~]"
 
-#: ui/hud.gd:442
+#: ui/hud.gd:453
 msgid "%s   read memory shard"
 msgstr "[%s   ŕéàð mémôŕý šĥàŕð ~~~~~]"
 
-#: ui/hud.gd:443
+#: ui/hud.gd:454
 msgid "%s   pick up the seed tin"
 msgstr "[%s   þîçķ ûþ ţĥé šééð ţîñ ~~~~~~]"
 
-#: ui/hud.gd:444
+#: ui/hud.gd:455
 msgid "%s   set bale down"
 msgstr "[%s   šéţ bàļé ðôŵñ ~~~]"
 
-#: ui/hud.gd:445
+#: ui/hud.gd:456
 msgid "%s   workbench"
 msgstr "[%s   ŵôŕķbéñçĥ ~~]"
 
-#: ui/hud.gd:446
+#: ui/hud.gd:457
 msgid "Filling the watering can"
 msgstr "[Fîļļîñĝ ţĥé ŵàţéŕîñĝ çàñ ~~~~~]"
 
-#: ui/hud.gd:447
+#: ui/hud.gd:458
 msgid "Can empty. It fills in the base yard, by the bin."
 msgstr "[Çàñ émþţý. Îţ ƒîļļš îñ ţĥé bàšé ýàŕð, bý ţĥé bîñ. ~~~~~~~~~~~~~~]"
 
@@ -13258,6 +13270,26 @@ msgstr "[Šĥàðôŵš îñ ţĥé Šméļţéŕ ~~~~~]"
 #: data/songs.json:songs[cool_stone].title
 msgid "Cool Stone"
 msgstr "[Çôôļ Šţôñé ~]"
+
+#: planets/verdance/data/sources.json:build.text
+msgid "Wait for the part"
+msgstr "[Ŵàîţ ƒôŕ ţĥé þàŕţ ~~~]"
+
+#: planets/verdance/data/sources.json:build.desc
+msgid "It is on the Assembler's line. Robot building waits until it is done."
+msgstr "[Îţ îš ôñ ţĥé Àššémbļéŕ'š ļîñé. Ŕôbôţ bûîļðîñĝ ŵàîţš ûñţîļ îţ îš ðôñé. ~~~~~~~~~~~~~~~~~~~~~]"
+
+#: planets/verdance/data/sources.json:build.hint
+msgid "The workbench is building it. The Assembler would be three times as fast."
+msgstr "[Ţĥé ŵôŕķbéñçĥ îš bûîļðîñĝ îţ. Ţĥé Àššémbļéŕ ŵôûļð bé ţĥŕéé ţîméš àš ƒàšţ. ~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: planets/verdance/data/sources.json:build.text_1
+msgid "Fetch the finished part"
+msgstr "[Féţçĥ ţĥé ƒîñîšĥéð þàŕţ ~~~~~]"
+
+#: planets/verdance/data/sources.json:build.prompt
+msgid "Pick up the finished part"
+msgstr "[Þîçķ ûþ ţĥé ƒîñîšĥéð þàŕţ ~~~~~~]"
 
 #: planets/verdance/data/sources.json:sources[burst_main].name
 msgid "The burst main"

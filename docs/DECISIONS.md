@@ -542,3 +542,9 @@ The owner asked for more attention on the world's goals and look (full cities ro
 - **"Salvage Surge" event renamed "Salvage Glint"** so only one thing is called a Surge.
 - Kept: release on R, LB+RB on a pad; chest packing during a Surge (the burst is not spent walking to the bin).
 - **Run-to-run spread of the first robot is wide** (two runs today: 7.6 and 13.8 minutes; the target is by minute 12). M3-12 narrows it (likely buried-part luck and walk-offs).
+
+## Source follow-up (M3-07b, Nov 11, 2026)
+Merged. Crew at the launch point 155 (cap 200); city 1 first hex 55 s, first robot 9.2 minutes.
+- **The stage-3 hold covers only the 12 hexes nearest each running source** (the agent's correction of the lead's brief: holding the whole city at stage 3 would stop it reaching stage 4, where its job opens). Those hexes re-soil one per 90 s, at most 3 dirty, and stop at shutdown; the readout says "SOURCE STILL RUNNING".
+- **Rocket parts** take 45 s each on the Assembler's line (robot building pauses); without the Assembler the workbench builds one in 135 s.
+- Follow-ups: a "keep Parts back" control on the Assembler panel so the line does not spend the rocket's Parts (M3-12/UI); a visible mark in the world for a source's reach (M5); the rocket and Kettle Bay's slick do not re-soil (kept).

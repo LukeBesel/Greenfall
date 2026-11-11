@@ -91,7 +91,12 @@ func _have(currency: String) -> float:
 func _do_step(s: Sources, city: String) -> void:
 	var step: Dictionary = s.current_step(city)
 	if step["type"] == Sources.TYPE_CARRY:
-		assert_true(s.use(city), "%s: picks the part up" % step["id"])
+		assert_true(s.use(city), "%s: picks the part up, or orders it" % step["id"])
+		if bool(step["built"]):
+			assert_true(s.is_building(city), "%s: a built part is made first" % step["id"])
+			s.advance_build(city, float(step["bench_s"]))
+			assert_true(s.is_ready(city), "%s: built" % step["id"])
+			assert_true(s.use(city), "%s: picks the built part up" % step["id"])
 		assert_true(s.is_carrying(city))
 	assert_true(s.use(city), "%s: uses the spot" % step["id"])
 	if float(step["seconds"]) > 0.0:
@@ -297,17 +302,18 @@ func test_the_next_city_does_not_wait_for_the_source() -> void:
 func test_a_job_is_offered_from_its_stage_and_in_an_unlocked_city_only() -> void:
 	var s: Sources = _world(FIRST)
 	var open_stage: int = int(s.spec_of("old_town")["open_stage"])
+	assert_eq(open_stage, 4, "the lead's decision: the job waits until the city is sustained")
 	_fx.set_district_stage("old_town", open_stage - 1)
 	assert_false(s.is_open("old_town"), "too early")
 	assert_false(s.use("old_town"), "nothing to use yet")
 	assert_eq(s.active_spot("old_town"), "")
 	assert_eq(s.card("old_town"), {})
-	_fx.set_district_stage("old_town", open_stage)
-	assert_true(s.is_open("old_town"))
-	assert_eq(s.active_spot("old_town"), Sources.SPOT_AT)
 	_fx.set_district_stage("scrapyard", Districts.MAX_STAGE)
 	assert_false(_fx.districts.is_unlocked("scrapyard"))
 	assert_false(s.is_open("scrapyard"), "a locked city's job waits")
+	_fx.set_district_stage("old_town", open_stage)
+	assert_true(s.is_open("old_town"))
+	assert_eq(s.active_spot("old_town"), Sources.SPOT_AT)
 	assert_false(s.is_open("no_such_city"))
 
 
@@ -372,7 +378,10 @@ func test_a_part_is_paid_for_once_and_cannot_be_taken_without_the_parts() -> voi
 	assert_false(bool(s.card(ROCKET_CITY)["affordable"]))
 	_give("parts", price + 10.0)
 	assert_true(s.use(ROCKET_CITY))
-	assert_almost_eq(_have("parts"), 10.0, 0.001, "the price is paid at the pickup")
+	assert_almost_eq(_have("parts"), 10.0, 0.001, "the price is paid with the order")
+	s.advance_build(ROCKET_CITY, float(step["bench_s"]))
+	assert_true(s.use(ROCKET_CITY), "the built part is picked up")
+	assert_almost_eq(_have("parts"), 10.0, 0.001, "and is not paid for again")
 	assert_eq(s.active_spot(ROCKET_CITY), Sources.SPOT_AT, "then she carries it to its place")
 	assert_eq((s.card(ROCKET_CITY)["cost"] as Dictionary).size(), 0, "nothing more to pay for this part")
 	assert_eq(str(s.card(ROCKET_CITY)["text"]), str(step["text_1"]))
@@ -409,7 +418,9 @@ func test_a_job_part_way_through_comes_back_from_a_save() -> void:
 		_do_job(s, id)
 	_give("parts", 1000.0)
 	_do_step(s, ROCKET_CITY)
-	assert_true(s.use(ROCKET_CITY), "the second part is in her hands")
+	assert_true(s.use(ROCKET_CITY), "the second part is ordered")
+	s.advance_build(ROCKET_CITY, float(s.current_step(ROCKET_CITY)["bench_s"]))
+	assert_true(s.use(ROCKET_CITY), "and is in her hands")
 	var parts_left: float = _have("parts")
 	var saved: Dictionary = JSON.parse_string(JSON.stringify(s.save_state()))
 	var saved_districts: Dictionary = JSON.parse_string(JSON.stringify(_fx.districts.save_state()))

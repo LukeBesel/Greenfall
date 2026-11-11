@@ -610,6 +610,13 @@ func _do_source(p: Patch) -> bool:
 	var at: Variant = so.source_sites.target_pos(id)
 	if at == null:
 		return false
+	if so.sources.is_building(id):
+		# The part is being built: stand by where it will be ready. (A player would clean meanwhile;
+		# the bot has no way back through a city's streets it can count on.)
+		_set_task("source_wait")
+		if not so.source_sites.in_reach(id):
+			_go(p, at, SOURCE_STOP_M)
+		return true
 	_set_task("source")
 	var seen: int = so.sources.steps_done()
 	if seen != _source_step_seen:  # a step or a pickup done: the next one gets its own time

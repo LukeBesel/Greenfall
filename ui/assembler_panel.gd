@@ -57,6 +57,8 @@ func _process(delta: float) -> void:
 static func status_text(rc_: RobotChain) -> String:
 	var c: CrewChain = rc_.chain
 	match c.status:
+		CrewChain.PART:
+			return TranslationServer.translate("Building a part for Lumi. Robots wait until it is done.")
 		CrewChain.PAUSED:
 			return TranslationServer.translate("Paused.")
 		CrewChain.NO_MIX:

@@ -12,11 +12,14 @@ extends RefCounted
 ##   at its speed, dig rate and sack from the robots table;
 ## - Lumi builds robots by hand at the bench until the Assembler stands, then only the first of a
 ##   type; the Assembler's line builds the rest in the policy's mix;
-## - the crew cap follows the base level and the cities open.
+## - the crew cap follows the base level and the cities open;
+## - a city's built job parts (the rocket's, from the sources table) are ordered as soon as the
+##   city is clean enough and the Parts are there; each takes the Assembler's line for its time,
+##   and the line builds no robot meanwhile (systems/sources.gd).
 ## - mastery (tools/crew_sim/crew_sim_mastery.gd): what Lumi's hands and the crew could each clean,
 ##   kind by kind, on the game's mastery rules; the hand share of all cleaning by city.
 ## What is not: cleaning speed (the city minutes are an input, so a bigger crew does not finish a
-## city sooner here) and the rocket's Parts.
+## city sooner here).
 ##
 ## Use: var r: Dictionary = CrewSim.run(def, CrewSim.load_calibration(), "default")
 
@@ -67,7 +70,8 @@ static func trip_seconds(first_ring: int, hops: int, last_ring: int, parts: floa
 ## Runs a whole planet. Returns {crew_by_city, curve (crew per 10 minutes), crew_end, cap_end,
 ## by_type, parts_earned, parts_scrounged, parts_hand, parts_arrival, parts_left, parts_on_builds,
 ## parts_on_tiers, assembled, hand_built, fastest_doubling_s, longest_stall_s, first_robot_min,
-## first_assembler_min, ground_seeded, minutes, mastery (CrewSimMastery.result)}.
+## first_assembler_min, ground_seeded, minutes, parts_on_jobs, job_parts_built, line_held_s,
+## mastery (CrewSimMastery.result)}.
 static func run(def: PlanetDefinition, cal: Dictionary, policy: String = POLICY_DEFAULT) -> Dictionary:
 	var sim := CrewSim.new()
 	sim._setup(def, cal, policy)
@@ -94,6 +98,11 @@ var _bench_acc: float = 0.0
 var _out: Dictionary = {}
 var _doubling_marks: Array[Vector2] = []
 var _last_robot_t: float = 0.0
+## City index -> its job's built parts in order: {id, at_clean, parts, line_s, bench_s}.
+var _job_parts: Dictionary[int, Array] = {}
+var _job_i: int = 0
+## How far the part being built is, 0..1 (below 0: none is being built).
+var _job_share: float = -1.0
 
 
 func _setup(def: PlanetDefinition, cal: Dictionary, policy: String) -> void:
@@ -115,6 +124,15 @@ func _setup(def: PlanetDefinition, cal: Dictionary, policy: String) -> void:
 		c.hexes = Districts.hexes_for_rings(c.rings)
 		c.seconds = float(minutes[mini(i, minutes.size() - 1)]) * 60.0 if not minutes.is_empty() else 1800.0
 		_cities.append(c)
+	for spec: Dictionary in Sources.specs_for(def):
+		var list: Array = []
+		for st: Dictionary in spec["steps"]:
+			if bool(st["built"]):
+				list.append({"id": str(st["id"]), "at_clean": float(st["at_clean"]), "parts": float((st["cost"] as Dictionary).get("parts", 0.0)),
+					"line_s": float(st["line_s"]), "bench_s": float(st["bench_s"])})
+		for i: int in _cities.size():
+			if _cities[i].id == str(spec["district"]) and not list.is_empty():
+				_job_parts[i] = list
 	var mix: Dictionary = cal.get("mix", {})
 	for id: String in _order:
 		var w: int = int(mix.get(id, 0))
@@ -125,7 +143,8 @@ func _setup(def: PlanetDefinition, cal: Dictionary, policy: String) -> void:
 		_chain.set_weight(id, w)
 	_out = {"crew_by_city": [], "curve": [], "parts_earned": 0.0, "parts_scrounged": 0.0, "parts_hand": 0.0, "parts_arrival": 0.0,
 		"parts_on_builds": 0.0, "parts_on_tiers": 0.0, "assembled": 0, "hand_built": 0, "fastest_doubling_s": INF,
-		"longest_stall_s": 0.0, "first_robot_min": -1.0, "first_assembler_min": -1.0}
+		"longest_stall_s": 0.0, "first_robot_min": -1.0, "first_assembler_min": -1.0, "parts_on_jobs": 0.0, "job_parts_built": 0,
+		"line_held_s": 0.0}
 
 
 func _play() -> Dictionary:
@@ -138,6 +157,7 @@ func _play() -> Dictionary:
 		_clean(c, city_start)
 		_scrounge()
 		_bench()
+		_job(c)
 		_line()
 		_mastery.step(TICK_S, _crew, _types, _tier_mult)
 		if _t >= next_curve:
@@ -164,6 +184,9 @@ func _play() -> Dictionary:
 
 func _enter_city(i: int) -> void:
 	_last_robot_t = _t  # waits are counted inside a city
+	_job_i = 0
+	_job_share = -1.0
+	_chain.part = ""
 	_mastery.enter_city(i)
 	var salvage: float = _chain.claim_arrival(_cities[i].id)
 	if salvage > 0.0:
@@ -292,6 +315,31 @@ func _maybe_tier() -> void:
 			_out["parts_on_tiers"] = float(_out["parts_on_tiers"]) + price
 			_tier[id] = _tier.get(id, 0) + 1
 			return
+
+
+## The city's built job parts, one at a time: ordered when the city is clean enough and the Parts
+## are there, built on the Assembler's line (which then builds no robot) or, with no Assembler,
+## at the bench, slower.
+func _job(c: City) -> void:
+	var list: Array = _job_parts.get(_city, [])
+	if _job_i >= list.size():
+		return
+	var st: Dictionary = list[_job_i]
+	if _job_share < 0.0:
+		if float(c.cleaned) / float(maxi(c.hexes, 1)) + 0.0001 < float(st["at_clean"]) or _parts < float(st["parts"]):
+			return
+		_parts -= float(st["parts"])
+		_out["parts_on_jobs"] = float(_out["parts_on_jobs"]) + float(st["parts"])
+		_job_share = 0.0
+	_job_share += TICK_S / float(st["line_s"] if _chain.built else st["bench_s"])
+	_chain.part = str(st["id"]) if _chain.built else ""
+	if _chain.built:
+		_out["line_held_s"] = float(_out["line_held_s"]) + TICK_S
+	if _job_share >= 1.0:
+		_job_share = -1.0
+		_job_i += 1
+		_chain.part = ""
+		_out["job_parts_built"] = int(_out["job_parts_built"]) + 1
 
 
 func _line() -> void:

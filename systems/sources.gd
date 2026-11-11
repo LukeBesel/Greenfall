@@ -9,6 +9,10 @@ extends Node
 ## they cost and what the job pays. Three step types cover every job: "use" (walk there, use it),
 ## "work" (use it, then stay in reach for some seconds; faster with mastery of the step's kind)
 ## and "carry" (pick a part up, pay for it if it has a price, carry it to its place and fit it).
+## A carried part marked "built" is made first: Lumi orders it at the pickup spot, paying its
+## price, and it is built on the Assembler's line (set_line), which builds no robot meanwhile. With
+## no Assembler standing the workbench builds it, slower, so no player is stranded. When it is
+## done it waits at the pickup spot.
 ## A planet without the table has no jobs and no hold on any city.
 ##
 ## This node is the rules and the state only. Where a step stands in the world, its marker and the
@@ -16,11 +20,12 @@ extends Node
 ## whether she is still in reach of it (in_reach_fn). Robots cannot do either.
 ##
 ## Emits on EventBus: source_job_opened(district) the first time a job is offered,
+## source_part_ordered(district, step) and source_part_built(district, step) for a built part,
 ## source_step_done(district, step) and, when the last step is done, source_shut_down(district)
 ## (the city's source finds, systems/finds.gd, and its landmark listen for it).
 ##
-## State (the planet's save section): per city the step it is at, whether Lumi carries the step's
-## part, and whether the source is shut. A save from before source jobs: a city already at the
+## State (the planet's save section): per city the step it is at, whether its part is being built
+## (and how far) or stands ready, whether Lumi carries it, and whether the source is shut. A save from before source jobs: a city already at the
 ## gated stage counts as shut down (nothing is paid for it); every other city gets its job.
 ##
 ## Use: var s := Sources.new(); add_child(s); s.setup(def, districts, mastery);
@@ -40,6 +45,11 @@ const SPOT_FROM: String = "from"
 const FALLBACK_REACH_M: float = 2.8
 ## Seconds between looks for a job that has come on offer (a notice cadence, not balance).
 const ANNOUNCE_S: float = 0.5
+## Seconds a built part takes when the table gives none: on the line, and at the workbench.
+const FALLBACK_LINE_S: float = 45.0
+const FALLBACK_BENCH_S: float = 135.0
+## How far a carry step is once its part is in hand or stands ready, as a share of the step.
+const SHARE_BUILT: float = 0.5
 
 ## func(district: String) -> bool: whether Lumi stands in reach of the job's spot right now.
 var in_reach_fn: Callable
@@ -55,6 +65,14 @@ var _hold_share: float = 0.0
 var _engaged: String = ""
 var _progress: float = 0.0
 var _announce_t: float = 0.0
+## The Assembler's line (null: this world has none, parts are built at the workbench).
+var _line: CrewChain
+## The table's "build" block: the card's lines while a part is built and when it is ready.
+var _build_text: Dictionary = {}
+
+
+func _exit_tree() -> void:
+	_release_line()
 
 
 func _physics_process(delta: float) -> void:
@@ -62,6 +80,7 @@ func _physics_process(delta: float) -> void:
 	if _announce_t <= 0.0:
 		_announce_t = ANNOUNCE_S
 		_announce_open()
+	_tick_builds(delta)
 	if _engaged == "":
 		return
 	if in_reach_fn.is_valid() and bool(in_reach_fn.call(_engaged)):
@@ -74,12 +93,13 @@ func _physics_process(delta: float) -> void:
 
 ## The planet's source jobs in table order, every field filled in: {district, id, name,
 ## open_stage, reward, toast, steps}. Each step: {id, type, at, from, prop, kind, seconds, cost,
-## at_clean, text, text_1, desc, prompt, final_prompt}. Entries with no district or no valid
-## step are left out and reported.
+## at_clean, built, line_s, bench_s, text, text_1, desc, prompt, final_prompt}. Entries with no
+## district or no valid step are left out and reported.
 static func specs_for(def: PlanetDefinition) -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
 	var table: Dictionary = def.table(TABLE) if def and def.has_table(TABLE) else {}
 	var open_stage: int = int(table.get("open_stage", 0))
+	var build: Dictionary = table.get("build", {}) if table.get("build") is Dictionary else {}
 	for raw: Variant in table.get("sources", []):
 		if not raw is Dictionary:
 			continue
@@ -87,7 +107,7 @@ static func specs_for(def: PlanetDefinition) -> Array[Dictionary]:
 		var list: Array[Dictionary] = []
 		for s: Variant in src.get("steps", []):
 			if s is Dictionary and str((s as Dictionary).get("type", "")) in TYPES:
-				list.append(_step_spec(s))
+				list.append(_step_spec(s, build))
 		if str(src.get("district", "")) == "" or list.is_empty():
 			push_error("Sources: entry '%s' has no district or no valid step" % str(src.get("id", "")))
 			continue
@@ -99,8 +119,11 @@ static func specs_for(def: PlanetDefinition) -> Array[Dictionary]:
 	return out
 
 
-static func _step_spec(s: Dictionary) -> Dictionary:
+static func _step_spec(s: Dictionary, build: Dictionary) -> Dictionary:
 	return {
+		"built": bool(s.get("built", false)) and str(s["type"]) == TYPE_CARRY,
+		"line_s": maxf(0.1, float(s.get("line_s", build.get("line_s", FALLBACK_LINE_S)))),
+		"bench_s": maxf(0.1, float(s.get("bench_s", build.get("bench_s", FALLBACK_BENCH_S)))),
 		"id": str(s.get("id", "")), "type": str(s["type"]), "at": _v2(s.get("at", [])), "from": _v2(s.get("from", [])),
 		"prop": str(s.get("prop", "")), "kind": str(s.get("kind", "")), "seconds": maxf(0.0, float(s.get("seconds", 0.0))),
 		"cost": s.get("cost", {}), "at_clean": clampf(float(s.get("at_clean", 0.0)), 0.0, 1.0),
@@ -142,6 +165,7 @@ func setup(def: PlanetDefinition, districts: Districts, mastery: Mastery = null)
 	var table: Dictionary = def.table(TABLE) if def and def.has_table(TABLE) else {}
 	_reach_m = float(table.get("reach_m", FALLBACK_REACH_M))
 	_hold_share = clampf(float(table.get("hold_share", 0.0)), 0.0, 1.0)
+	_build_text = table.get("build", {}) if table.get("build") is Dictionary else {}
 	for spec: Dictionary in specs_for(def):
 		var id: String = str(spec["district"])
 		if districts == null or not districts.has(id) or _specs.has(id):
@@ -173,6 +197,9 @@ func load_state(saved: Dictionary, saved_districts: Dictionary = {}) -> void:
 			st["shut"] = bool(d.get("shut", false))
 			st["step"] = clampi(int(d.get("step", 0)), 0, steps(id).size())
 			st["carrying"] = bool(d.get("carrying", false)) and not st["shut"]
+			st["ready"] = bool(d.get("ready", false)) and not st["shut"] and not st["carrying"]
+			st["building"] = bool(d.get("building", false)) and not st["shut"] and not st["carrying"] and not st["ready"]
+			st["build"] = clampf(float(d.get("build", 0.0)), 0.0, 1.0) if st["building"] else 0.0
 			st["opened"] = bool(d.get("opened", false))
 		elif saved.is_empty() and int(old_stages.get(id, 0)) >= _gates_stage:
 			st["shut"] = true
@@ -186,7 +213,7 @@ func load_state(saved: Dictionary, saved_districts: Dictionary = {}) -> void:
 
 
 static func _fresh_state() -> Dictionary:
-	return {"step": 0, "carrying": false, "shut": false, "opened": false}
+	return {"step": 0, "carrying": false, "shut": false, "opened": false, "building": false, "build": 0.0, "ready": false}
 
 
 func _apply_caps() -> void:
@@ -247,13 +274,41 @@ func reach_m() -> float:
 	return _reach_m
 
 
+## Whether the step's part is being built right now (ordered and paid, not done yet).
+func is_building(district: String) -> bool:
+	return _state.has(district) and bool(_state[district]["building"])
+
+
+## Whether the step's built part stands ready at the pickup spot.
+func is_ready(district: String) -> bool:
+	return _state.has(district) and bool(_state[district]["ready"])
+
+
+## How far the part being built is, 0..1 (0 when none is).
+func build_share(district: String) -> float:
+	return float(_state[district]["build"]) if is_building(district) else 0.0
+
+
+## Whether the part being built is on the Assembler's line (false: the workbench builds it).
+func on_line(district: String) -> bool:
+	return is_building(district) and _line != null and _line.built
+
+
+## Seconds the part being built still needs where it is being built now (0 when none is).
+func build_left_s(district: String) -> float:
+	if not is_building(district):
+		return 0.0
+	var st: Dictionary = current_step(district)
+	return (1.0 - build_share(district)) * float(st["line_s"] if on_line(district) else st["bench_s"])
+
+
 ## Whether the job's current step is on offer: the city is unlocked, has reached the job's stage
-## and is clean enough for this step. A part already in Lumi's hands is always hers to fit.
+## and is clean enough for this step. A part Lumi has paid for or carries is always hers to fit.
 func is_open(district: String) -> bool:
 	var st: Dictionary = current_step(district)
 	if st.is_empty() or _districts == null or not _districts.is_unlocked(district):
 		return false
-	if is_carrying(district):
+	if _paid(district):
 		return true
 	return _districts.stage_of(district) >= int(spec_of(district)["open_stage"]) \
 		and _districts.clean_share_of(district) + 0.0001 >= float(st["at_clean"])
@@ -271,7 +326,12 @@ func active_spot(district: String) -> String:
 ## Whether Lumi can pay for the current step (true when it has no price or it is already paid).
 func can_afford(district: String) -> bool:
 	var st: Dictionary = current_step(district)
-	return st.is_empty() or is_carrying(district) or (st["cost"] as Dictionary).is_empty() or GameState.can_afford_all(st["cost"])
+	return st.is_empty() or _paid(district) or (st["cost"] as Dictionary).is_empty() or GameState.can_afford_all(st["cost"])
+
+
+## The current step's price is behind Lumi: its part is ordered, ready or in her hands.
+func _paid(district: String) -> bool:
+	return is_carrying(district) or is_building(district) or is_ready(district)
 
 
 ## Whether Lumi is at work on the job's current step right now (a "work" step, or fitting a part).
@@ -287,8 +347,8 @@ func work_share(district: String) -> float:
 	return clampf(_progress / float(st["seconds"]), 0.0, 1.0) if _engaged == district else 0.0
 
 
-## How far the whole job is, 0..1: steps done, a picked-up part as half its step, and the share
-## of the work under way.
+## How far the whole job is, 0..1: steps done, a picked-up or finished part as half its step (one
+## being built: its share of that half), and the share of the work under way.
 func job_share(district: String) -> float:
 	var n: int = steps(district).size()
 	if n <= 0:
@@ -298,7 +358,10 @@ func job_share(district: String) -> float:
 	var st: Dictionary = current_step(district)
 	var within: float = work_share(district)
 	if st["type"] == TYPE_CARRY:
-		within = (0.5 + 0.5 * within) if is_carrying(district) else 0.0
+		if is_carrying(district):
+			within = SHARE_BUILT + (1.0 - SHARE_BUILT) * within
+		else:
+			within = SHARE_BUILT if is_ready(district) else SHARE_BUILT * build_share(district)
 	return (float(step_index(district)) + within) / float(n)
 
 
@@ -313,7 +376,7 @@ func shut_count() -> int:
 func steps_done() -> int:
 	var n: int = 0
 	for id: String in _order:
-		n += step_index(id) * 2 + (1 if is_carrying(id) else 0)
+		n += step_index(id) * 4 + (3 if is_carrying(id) else (2 if is_ready(id) else (1 if is_building(id) else 0)))
 	return n
 
 
@@ -324,18 +387,27 @@ func card(district: String) -> Dictionary:
 	if not is_open(district):
 		return {}
 	var st: Dictionary = current_step(district)
-	var carrying: bool = is_carrying(district)
-	return {"text": str(st["text_1"]) if carrying else str(st["text"]), "desc": str(st["desc"]),
-		"cost": {} if carrying else st["cost"], "affordable": can_afford(district)}
+	var text: String = str(st["text"])
+	var desc: String = str(st["desc"])
+	if is_carrying(district):
+		text = str(st["text_1"])
+	elif is_ready(district):
+		text = str(_build_text.get("text_1", text))
+	elif is_building(district):
+		text = str(_build_text.get("text", text))
+		desc = str(_build_text.get("desc" if on_line(district) else "hint", desc))
+	return {"text": text, "desc": desc, "cost": {} if _paid(district) else st["cost"], "affordable": can_afford(district)}
 
 
 ## The prompt at the job's active spot, in English ("" when there is nothing to use: no open
-## step, or Lumi is already at work on it).
+## step, Lumi is already at work on it, or its part is still being built).
 func prompt(district: String) -> String:
 	var spot: String = active_spot(district)
-	if spot == "" or is_engaged(district):
+	if spot == "" or is_engaged(district) or is_building(district):
 		return ""
 	var st: Dictionary = current_step(district)
+	if is_ready(district):
+		return str(_build_text.get("prompt", st["prompt"]))
 	return str(st["prompt"]) if spot == SPOT_FROM or st["type"] != TYPE_CARRY else str(st["final_prompt"])
 
 
@@ -343,17 +415,25 @@ func prompt(district: String) -> String:
 
 ## Lumi uses the job's active spot. A "use" step is done at once; a "work" step starts (advance
 ## carries it on while she stays in reach); a "carry" step first hands her the part, paying its
-## price, then starts the fitting. Returns false when there is nothing to use or she cannot pay.
+## price, then starts the fitting. A "built" part is ordered with the first use (paying its
+## price) and picked up with the next, once it is done. Returns false when there is nothing to
+## use, she cannot pay, or the part is still being built.
 func use(district: String) -> bool:
 	var spot: String = active_spot(district)
-	if spot == "" or is_engaged(district):
+	if spot == "" or is_engaged(district) or is_building(district):
 		return false
 	var st: Dictionary = current_step(district)
 	if spot == SPOT_FROM:
 		var cost: Dictionary = st["cost"]
-		if not cost.is_empty() and not GameState.spend_all(cost):
+		if not is_ready(district) and not cost.is_empty() and not GameState.spend_all(cost):
 			return false
-		_state[district]["carrying"] = true
+		if bool(st["built"]) and not is_ready(district):
+			_state[district]["building"] = true
+			_state[district]["build"] = 0.0
+			EventBus.source_part_ordered.emit(district, step_index(district))
+		else:
+			_state[district]["ready"] = false
+			_state[district]["carrying"] = true
 		_told(district)
 		return true
 	if float(st["seconds"]) <= 0.0:
@@ -386,6 +466,52 @@ func work_speed(step: Dictionary) -> float:
 	return maxf(1.0, _mastery.hand_bonus(kind)) if _mastery != null and kind != "" else 1.0
 
 
+## Gives the jobs the Assembler's line (after setup; null = none): a built part takes the line
+## while the Assembler stands, and the line builds no robot until the part is done.
+func set_line(line: CrewChain) -> void:
+	_release_line()
+	_line = line
+
+
+## The part being built for `district` gets `seconds` more of work: on the Assembler's line when
+## it stands, else at the workbench, which is slower (the node calls this every physics tick).
+func advance_build(district: String, seconds: float) -> void:
+	if not is_building(district):
+		return
+	var st: Dictionary = current_step(district)
+	if st.is_empty():
+		_state[district]["building"] = false
+		return
+	var need: float = float(st["line_s"] if on_line(district) else st["bench_s"])
+	_state[district]["build"] = minf(1.0, float(_state[district]["build"]) + maxf(seconds, 0.0) / need)
+	if float(_state[district]["build"]) + 0.00001 < 1.0:
+		return
+	_state[district]["building"] = false
+	_state[district]["build"] = 0.0
+	_state[district]["ready"] = true
+	EventBus.source_part_built.emit(district, step_index(district))
+	_told(district)
+
+
+## Carries every part being built on, and tells the line whether a part holds it. One part has
+## the line at a time: the first city in table order that is building.
+func _tick_builds(delta: float) -> void:
+	var holder: String = ""
+	for id: String in _order:
+		if not is_building(id):
+			continue
+		advance_build(id, delta)
+		if holder == "" and is_building(id):
+			holder = str(current_step(id)["id"])
+	if _line != null:
+		_line.part = holder if _line.built else ""
+
+
+func _release_line() -> void:
+	if _line != null:
+		_line.part = ""
+
+
 ## Shuts a source down without its steps (dev flags, tests): the gate lifts and the events fire;
 ## the reward is paid only when `pay` is set. False when it has no job or is shut already.
 func force_shut(district: String, pay: bool = false) -> bool:
@@ -416,6 +542,8 @@ func _finish_step(district: String) -> void:
 	_engaged = ""
 	_progress = 0.0
 	_state[district]["carrying"] = false
+	_state[district]["building"] = false
+	_state[district]["ready"] = false
 	_state[district]["step"] = i + 1
 	GameState.inc_stat("source_steps_done", 1)
 	EventBus.source_step_done.emit(district, i)
@@ -427,6 +555,8 @@ func _finish_step(district: String) -> void:
 func _shut_down(district: String, pay: bool) -> void:
 	_state[district]["shut"] = true
 	_state[district]["carrying"] = false
+	_state[district]["building"] = false
+	_state[district]["ready"] = false
 	_state[district]["opened"] = true
 	if pay:
 		_pay(spec_of(district)["reward"])

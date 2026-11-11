@@ -25,6 +25,9 @@ var _data_acc: float = 0.0  # [beat]
 var _stipend_acc: float = 0.0
 ## False in unit tests / catch-up: level-ups pay out and count but skip vfx/audio/toasts.
 var celebrate: bool = true
+## func(hex: int) -> int: the highest level a hex may reach for now (unset: nothing holds any
+## hex). A hex that qualifies for more waits at it and rises when the hold lifts.
+var cap_fn: Callable
 
 
 func setup() -> void:
@@ -131,7 +134,7 @@ func _sample_all() -> void:
 			_push(id, int(round(100.0 * float(m.y) / float(m.x))))
 		elif _ring_n.has(id):
 			_clear_ring(id)
-		var target: int = _target_level(id, m)
+		var target: int = capped(id, _target_level(id, m))
 		if target > int(levels[id]):
 			_level_up(id, int(levels[id]), target)
 
@@ -173,6 +176,15 @@ func _target_level(hid: int, m: Vector3i) -> int:
 	if m.z < m.x or life < float(cfg.get("thriving_life", 0.8)):
 		return 4
 	return 5
+
+
+## The level a hex that qualifies for `target` may be given now: `target`, or what cap_fn allows
+## when something holds the hex back. Never below the level it has (levels never drop).
+func capped(hid: int, target: int) -> int:
+	var have: int = int(levels.get(hid, 0))
+	if target <= have or not cap_fn.is_valid():
+		return target
+	return maxi(have, mini(target, int(cap_fn.call(hid))))
 
 
 func _push(hid: int, v: int) -> void:

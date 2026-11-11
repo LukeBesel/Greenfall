@@ -48,6 +48,7 @@ var look_finds: Finds  # where the planet hides the pieces of Lumi's looks (syst
 var sources: Sources  # each city's source job, which gates its last stage (systems/sources.gd)
 var surge: Surge  # the Bloom Core's charge from Lumi's own work and its release (systems/surge.gd)
 var source_sites: SourceSites  # where the job's steps stand in the world (systems/source_sites.gd)
+var source_spread: SourceSpread  # what a running source does to the ground round it (systems/source_spread.gd)
 var ending: PlanetEnding  # the launch cinematic and the end screen
 var hub_states: Dictionary = {}  # site index (str) -> {level} (core/save_orbit.gd); the Hub port fills it
 
@@ -446,6 +447,16 @@ func _on_pollution_written(cell: int, became_clean: bool, by_player: bool) -> vo
 		on_hex_clean(cell)
 
 
+## A source fouled a clean hex again: its pieces are drawn, with a puff of dust where Lumi can
+## see it.
+func _on_source_soiled(_district: String, cell: int) -> void:
+	if globe.field.materialized[cell] == 0:
+		return
+	globe.junk_view.show_pieces(cell)
+	var at: Vector3 = globe.field.hex_center(cell)
+	Vfx.burst("dust", at + at.normalized() * 0.3, Color(0.6, 0.55, 0.5, 0.6), 1.2)
+
+
 ## The districts, the planet's two goals and its ending, restored from the planet's save section
 ## (a save from before districts has none: they derive their state from the globe's hexes).
 func _build_districts(levels: HexLevels) -> void:
@@ -464,6 +475,13 @@ func _build_districts(levels: HexLevels) -> void:
 	sources.load_state(GameState.orbit.get("sources", {}), GameState.orbit.get("districts", {}))
 	districts.load_state(GameState.orbit.get("districts", {}))
 	districts.player_cell_fn = _player_cell
+	source_spread = SourceSpread.new()  # a running source holds the hexes round it back and fouls them again
+	source_spread.name = "SourceSpread"
+	w.add_child(source_spread)
+	source_spread.setup(def, sources, districts, globe.cells)
+	source_spread.soil_fn = pollution.soil
+	levels.cap_fn = source_spread.hex_cap
+	EventBus.source_soiled.connect(_on_source_soiled)
 	city_payouts = CityPayouts.new()
 	city_payouts.name = "CityPayouts"
 	w.add_child(city_payouts)
@@ -516,6 +534,7 @@ func _build_districts(levels: HexLevels) -> void:
 		chain.base_site = globe.site_manager.prefab(0) if globe.site_manager else null
 		var older_save: bool = int(GameState.orbit.get("schema", 0)) >= 1 or str(GameState.orbit.get("migrated", "")) != ""
 		chain.load_state(GameState.orbit.get("chain", {}), older_save)
+		sources.set_line(chain.chain)  # a job's built part takes the Assembler's line
 
 
 ## Lumi's node (null before she exists).
