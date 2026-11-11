@@ -46,10 +46,11 @@ func _scan(n: Node) -> void:
 func _on_node(n: Node) -> void:
 	if not (n is AudioStreamPlayer or n is AudioStreamPlayer2D or n is AudioStreamPlayer3D):
 		return
+	# Audio's one-shot pool and the ambience one-shots report through played(); they are created
+	# with no stream, unlike the loop players, which are watched like any other player.
 	var par: Node = n.get_parent()
-	if par == Audio and not _is_loop(n):
-		return  # Audio's own one-shot pool reports through played()
-	if par != null and par.name == "Ambience" and par.get_parent() == Audio and not _is_loop(n):
+	var pooled: bool = par == Audio or (par != null and par.name == "Ambience" and par.get_parent() == Audio)
+	if pooled and n.get("stream") == null:
 		return
 	_watch.append([n, false, 0.0])
 
