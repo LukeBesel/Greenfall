@@ -275,9 +275,10 @@ static func research() -> Array:
 	for id: String in Research.ids():
 		var d: Dictionary = Research.def(id)
 		var st: String = Research.status(id)
-		var cost: Dictionary = {"cubes": Research.cost(id).to_float()}
+		var cost: Dictionary = Research.stock(id)
 		var fx: String = "  ·  ".join(Research.effect_lines(id))
-		var table: Array = [[_tr("Effect"), fx], [_tr("Time"), Research.time_text(Research.duration(id))], [_tr("Cost"), _price_text(cost)]]
+		var data: String = ResearchNodeCard.data_text(id)
+		var table: Array = [[_tr("Effect"), fx], [_tr("Field data"), data], [_tr("Cost"), _price_text(cost)]]
 		var it: Dictionary = {"id": id, "cat": str(d.get("branch", "")), "icon": str(d.get("icon", "")), "icon_set": "research",
 			"name": _tr(str(d.get("name", id))), "desc": _tr(str(d.get("desc", ""))), "price": cost, "table": table, "requires": "", "action": ""}
 		match st:
@@ -285,16 +286,15 @@ static func research() -> Array:
 				it["state"] = "done"
 			"active":
 				it["state"] = "ready"
-				it["tag"] = Research.time_text(Research.remaining())
-				it["table"] = [[_tr("Effect"), fx], [_tr("Left"), Research.time_text(Research.remaining())]]
-				it["action"] = _tr("Cancel (refund)")
+				it["tag"] = data
+				it["table"] = [[_tr("Effect"), fx], [_tr("Field data"), data], [_tr("Fed by"), _tr("Your work: clean hexes, hex stages, mastery, finds, sources")]]
 				it["price"] = {}
-				it["act"] = func() -> bool: return Research.cancel(id)
-			"queued":
+			"paused":
 				it["state"] = "ready"
-				it["action"] = _tr("Cancel (refund)")
+				it["tag"] = data
+				it["action"] = _tr("Switch to (bar kept)")
 				it["price"] = {}
-				it["act"] = func() -> bool: return Research.cancel(id)
+				it["act"] = func() -> bool: return Research.start(id)
 			"locked":
 				it["state"] = "locked"
 				var names: Array[String] = []
@@ -304,11 +304,11 @@ static func research() -> Array:
 				it["requires"] = ", ".join(names) if not names.is_empty() else Research.reason(id)
 			_:
 				var why: String = Research.reason(id)
-				it["state"] = "ready" if Research.can_start(id) else ("short" if not GameState.can_afford("cubes", Research.cost(id)) else "locked")
+				it["state"] = "ready" if Research.can_start(id) else ("short" if not GameState.can_afford_all(cost) else "locked")
 				it["requires"] = "" if it["state"] == "ready" or it["state"] == "short" else why
-				it["action"] = _tr("Research") if Research.active().is_empty() else _tr("Queue")
+				it["action"] = _tr("Research") if Research.active().is_empty() else _tr("Switch to")
 				it["act"] = func() -> bool: return Research.start(id)
-		if st in ["active", "queued"]:
+		if st in ["active", "paused"]:
 			it["state"] = "ready"
 			it["_busy_tag"] = true
 		out.append(it)
@@ -329,5 +329,7 @@ static func research_counter() -> String:
 	var a: Dictionary = Research.active()
 	var line: String = _tr("RESEARCHED  %d / %d") % [Research.done_list().size(), Research.ids().size()]
 	if not a.is_empty():
-		line = _tr("%s  ·  %s left") % [_tr(str(Research.def(Research.active_id()).get("name", ""))), Research.time_text(Research.remaining())] + "     " + line
+		line = _tr("%s  ·  %s") % [_tr(str(Research.def(Research.active_id()).get("name", ""))), ResearchNodeCard.data_text(Research.active_id())] + "     " + line
+	else:
+		line = _tr("FIELD DATA BANKED  %d") % int(floor(FieldData.bank())) + "     " + line
 	return line

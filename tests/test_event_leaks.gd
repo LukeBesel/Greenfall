@@ -64,10 +64,10 @@ func test_clean_hex_pays_research_data_once_after_two_worlds() -> void:
 	var n0: float = _notes()
 	EventBus.hex_cleaned.emit(0, Vector3.ZERO, BigNum.from_float(0.0))
 	assert_almost_eq(_notes() - n0, want, 0.001, "one clean hex logs its notes once")
-	want = Research.reward("hex_restored")
+	want = FieldData.stage_reward(3)
 	n0 = _notes()
-	EventBus.hex_restored.emit(0)
-	assert_almost_eq(_notes() - n0, want, 0.001, "one restored hex logs its notes once")
+	EventBus.hex_level_changed.emit(0, 3)
+	assert_almost_eq(_notes() - n0, want, 0.001, "one hex stage logs its field data once")
 
 
 func test_scooped_piece_counts_once_after_two_worlds() -> void:

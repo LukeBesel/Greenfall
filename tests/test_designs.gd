@@ -98,9 +98,9 @@ func test_the_bonus_needs_every_piece_of_the_set_worn() -> void:
 
 func test_looks_only_turns_the_bonus_off() -> void:
 	_wear_whole("nova")
-	var d: float = Research.duration("salvage_logic")
+	var d: float = FieldData.gain_mult()
 	Designs.set_looks_only(true)
-	assert_almost_eq(Research.duration("salvage_logic"), d * 1.08, 0.01, "looks only: no research bonus")
+	assert_almost_eq(FieldData.gain_mult(), d / 1.08, 0.01, "looks only: no research bonus")
 	assert_almost_eq(Designs.mult("research_speed"), 1.0, 0.0001)
 
 

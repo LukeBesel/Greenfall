@@ -239,7 +239,7 @@ func test_save_round_trip_by_direction() -> void:
 
 func test_offline_compute_unchanged_by_the_refactor() -> void:
 	var r: Dictionary = Offline.compute([{"type": "scoopie", "tier": 0}, {"type": "haulbug", "tier": 0}], 0, 1.0, 3600.0)
-	var units: float = Economy.robot_stat("scoopie", "scoop_rate", 0) * 0.35 * 0.9 * 3600.0 * Offline.OFFLINE_RATE
+	var units: float = Economy.robot_stat("scoopie", "scoop_rate", 0) * 0.35 * 0.9 * 3600.0 * Offline.rate()
 	assert_almost_eq(float(r["units"]), units, 0.001)
 	assert_eq(float(r["cubes"]), 0.0, "robots earn no cubes (design spec section 16.1)")
 	assert_eq(float(r["waiting_value"]), 0.0)

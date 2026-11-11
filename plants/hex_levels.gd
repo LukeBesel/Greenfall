@@ -241,17 +241,26 @@ static func reward_text(reward: Dictionary) -> String:
 	return "  ".join(parts)
 
 
+## Each level has its own look and sound from data (levels[].fx), larger at higher stages; the
+## float text names the stage and the field data it paid (Research listens to hex_level_changed).
 func _celebrate(hid: int, to: int, reward: Dictionary) -> void:
 	var c: Vector3 = world.field.hex_center(hid)
 	var col: Color = LEVEL_COLORS[clampi(to, 0, MAX_LEVEL)]
 	var nm: String = level_name(to)
 	var up: Vector3 = (world.field as SphereField).up_at(c)
-	Vfx.burst("big_sparkle" if to >= 4 else "sparkle", c + up * 0.5, col, 1.0 if to >= 4 else 2.0)
-	Vfx.ring(c, world.field.hex_size * 1.05, Color(col.r, col.g, col.b, 0.85), 0.9)
-	Vfx.float_text(c + up * 2.0, tr("HEX LV %d  %s") % [to, nm.to_upper()], col, 1.3 if to < 4 else 1.7, 2.2)
-	Audio.play("sparkle" if to < 4 else "chime", 0.9 + 0.08 * to, -6.0 if to < 4 else -3.0)
-	if to == MAX_LEVEL:
-		Audio.play("bird", 1.1, -10.0, 0.0)
+	var fx: Dictionary = level_def(to).get("fx", {})
+	var sc: float = float(fx.get("scale", 1.0))
+	Vfx.burst(str(fx.get("burst", "sparkle")), c + up * 0.5, col, sc)
+	if bool(fx.get("ring", true)):
+		Vfx.ring(c, world.field.hex_size * 1.05, Color(col.r, col.g, col.b, 0.85), 0.9)
+	var txt: String = tr("HEX LV %d  %s") % [to, nm.to_upper()]
+	var data: float = FieldData.stage_reward(to) * FieldData.gain_mult() if to >= 2 else 0.0
+	if data > 0.0:
+		txt += "\n" + tr("+%s field data") % ("%d" % int(round(data)) if data >= 1.0 else "%.1f" % data)
+	Vfx.float_text(c + up * 2.0, txt, col, 1.0 + 0.2 * sc, 2.2)
+	Audio.play(str(fx.get("sound", "sparkle")), float(fx.get("pitch", 1.0)), float(fx.get("db", -6.0)))
+	if str(fx.get("extra_sound", "")) != "":
+		Audio.play(str(fx["extra_sound"]), 1.1, -10.0, 0.0)
 	EventBus.toast.emit(tr("Hex Lv %d  %s.   %s") % [to, nm, reward_text(reward)], "reward")  # [v4calm] item 49: hex level-ups are reward chatter (the hex's own FX shows it)
 
 

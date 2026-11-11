@@ -44,6 +44,10 @@ signal ledger_event(kind: String, data: Dictionary)
 # Research / codex / achievements
 @warning_ignore_start("unused_signal")
 signal research_completed(research_id: String)
+## A node became the active one (systems/research.gd); its bar is kept when another replaces it.
+signal research_started(research_id: String)
+## Work earned field data (systems/field_data.gd): amount after bonuses, kind = data_rewards key.
+signal field_data_gained(amount: float, kind: String)
 signal achievement_unlocked(achievement_id: String)
 signal codex_unlocked(entry_key: String)
 @warning_ignore_restore("unused_signal")

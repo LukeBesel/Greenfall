@@ -146,7 +146,7 @@ static func take_units(cells: SphereCells, field: SphereField, list: PackedInt32
 ## "hubs". Does NOT add currency: Offline.apply() the result once.
 static func simulate(grid: SphereGrid, cells: SphereCells, field: SphereField, hubs: Array, seconds: float, planet_id: String = "") -> Dictionary:
 	var def_rings: int = rings_for(grid, planet_id)
-	var total: Dictionary = {"seconds": clampf(seconds, 0.0, Offline.CAP_S), "units": 0.0, "cubes": 0.0, "waiting_value": 0.0,
+	var total: Dictionary = {"seconds": clampf(seconds, 0.0, Offline.cap_s()), "units": 0.0, "cubes": 0.0, "waiting_value": 0.0,
 		"air": 0.0, "cells": 0, "pieces": PackedInt32Array(), "hubs": []}
 	for h: Dictionary in hubs:
 		var rings: int = int(h.get("rings", def_rings))

@@ -316,13 +316,16 @@ func _helper_research(m: PaceSimModel) -> String:
 	return ""
 
 
+## As the bot (tools/autoplay.gd _research_ok): a paid node is free to pick again; a new one is
+## bought when its cubes leave what the story card is saving for.
 func _research_ok(m: PaceSimModel, id: String) -> bool:
 	var c: float = m.chains.research_cost(id)
+	if c <= 0.0:
+		return true
 	if (id in _mirror(m, "research_first") or id in _mirror(m, "research_garden_chain")) and m.cubes >= c:
 		return true
-	var hub_cubes: float = float((m.next_hub().get("cost", {}) as Dictionary).get("cubes", 0.0))
-	var reserve: float = hub_cubes * 0.5 + 1000.0 if m.hub_level >= 2 else hub_cubes * 1.5 + 2000.0
-	return c <= m.chains.notes_cubes - m.chains.research_spent or m.cubes > maxf(c * 4.0, reserve)
+	var card: float = float(_card_purchase(m).get("cubes", 0.0))
+	return m.cubes >= c and (c <= card * LEAK_OF_RESERVE or m.cubes - c >= card)
 
 
 func _goal_research(m: PaceSimModel) -> String:

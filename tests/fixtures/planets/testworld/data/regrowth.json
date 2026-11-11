@@ -63,5 +63,14 @@
       },
       "bonus": {}
     }
-  ]
+  ],
+  "tending": {
+    "wet_s": 120.0,
+    "dry_rate": 0.25,
+    "burst_stage": 0.25,
+    "rewater_s": 20.0,
+    "patch_size": 4,
+    "patch_radius_m": 3.0,
+    "patch_seeds": 1.0
+  }
 }

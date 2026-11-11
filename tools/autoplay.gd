@@ -13,8 +13,8 @@ extends InputSource
 ## Writes a timeline to screenshots/autoplay_report.json on exit (goal completions, hex level-ups,
 ## robots, research, base levels, gaps > 3 min with no goal and no new purchase). Run:
 ##   godot --headless --path . -- --fresh --autoplay --time-scale=8 --quit-after=950
-## Research runs on wall-clock time in the real game; the bot drives Research.now_override from the
-## game clock so a time-scaled run sees research at the same pace a player would.
+## Research fills from field data the work earns (systems/field_data.gd); the bot keeps one node
+## running from the moment the Research tab opens and reports how long none was (research_idle_*).
 
 const AT_BASE_R: float = 7.5
 const GAP_S: float = 180.0
@@ -25,8 +25,6 @@ const RESEARCH_PRIORITY: Array[String] = ["salvage_logic", "soil_survey", "water
 	"auto_baler", "recycler", "bigger_hopper", "auto_sort", "haul_routes", "spray_heads", "bale_tuning", "multibot_blueprint",
 	"rocket_cargo", "silt_filters", "pump_lines", "irrigation", "dune_charts", "field_magnet", "tractor_beam", "dew_condensers",
 	"thermal_lance", "pump_works", "ark_beacon", "hedgerows", "evergreens", "dune_fences", "cold_hardy_seeds", "heat_pumps"]
-## [beat] From here on the bot saves Data for the next priority node instead of spending it on side nodes.
-const RESEARCH_SAVE_FROM: String = "rocket_cargo"
 
 var world: Node
 var _move := Vector3.ZERO
@@ -89,7 +87,6 @@ func _init(p_world: Node) -> void:
 	pw.world = p_world
 	p_world.add_child.call_deferred(pw)
 	_start_t = float(GameState.stats.get("time_played", 0.0))
-	Research.now_override = 1000.0
 	_hook(EventBus.cube_made, func(_i: Dictionary) -> void: _mark("first_cube_s"))
 	_hook(EventBus.cube_cashed, func(_v: BigNum, _p: Vector3) -> void:
 		_mark("first_cashin_s")
@@ -419,7 +416,6 @@ func update(delta: float) -> void:
 	if not _pacing_printed and _since_control(_now()) >= PACING_WINDOW_S:
 		_pacing_printed = true
 		_print_pacing("first %d min" % int(PACING_WINDOW_S / 60.0))
-	Research.now_override = 1000.0 + float(GameState.stats.get("time_played", 0.0))
 	RocketTiers.now_override = 1000.0 + float(GameState.stats.get("time_played", 0.0))  # [beat]
 	if DevHooks.has("game-minutes") and _now() >= DevHooks.get_f("game-minutes", 60.0) * 60.0 and not _stopping:
 		_stopping = true
@@ -864,7 +860,7 @@ func _pace_upgrade() -> String:
 ## [pace] The helper / automation research a planner works toward once the base allows it.
 func _pace_research_next() -> String:
 	for id: String in ["salvage_logic", "conveyor", "auto_baler"]:
-		if not Research.exists(id) or Research.has(id) or Research.is_active(id) or Research.is_queued(id):
+		if not Research.exists(id) or Research.has(id) or Research.is_active(id):
 			continue
 		if Research.status(id) != "available":
 			return ""
@@ -875,7 +871,7 @@ func _pace_research_next() -> String:
 	# [pace2] Once base 3 is up, the garden chain (Pollinator Survey = the garden taking off).
 	if int(GameState.world.get("hub_level", 1)) >= 3:
 		for id: String in PACE_GARDEN_CHAIN:
-			if not Research.exists(id) or Research.has(id) or Research.is_active(id) or Research.is_queued(id):
+			if not Research.exists(id) or Research.has(id) or Research.is_active(id):
 				continue
 			return id if Research.status(id) == "available" else ""
 	return ""
@@ -994,6 +990,12 @@ func _drips() -> int:
 
 
 ## Thirstiest planted slot Patch should water (none once Drips cover the garden).
+## [M3-06] A planted hex that is not growing yet and can take a watering burst now.
+func _burst_wanted(g: Garden, hid: int) -> bool:
+	var hl: HexLevels = world.get("hex_levels") as HexLevels
+	return hl != null and hl.level_of(hid) == 2 and Tending.burst_ready(g, hid)
+
+
 func _thirsty_slot(g: Garden, p: Patch) -> int:
 	var drips: int = _drips()
 	var best: int = -1
@@ -1001,6 +1003,7 @@ func _thirsty_slot(g: Garden, p: Patch) -> int:
 	var dry: int = 0
 	var planted: int = 0
 	var limit: float = 25.0 if drips == 0 else 0.0
+	var hl: HexLevels = world.get("hex_levels") as HexLevels
 	for s: int in g.slot_species.size():
 		if g.slot_species[s] < 0:
 			continue
@@ -1008,9 +1011,11 @@ func _thirsty_slot(g: Garden, p: Patch) -> int:
 		var w: float = g.slot_water[s]
 		if w <= 0.0:
 			dry += 1
-		if w > limit:
+		# [M3-06] A planted hex not yet growing whose burst is ready: a pour pushes it on now.
+		var push: bool = hl != null and _burst_wanted(g, g.slot_hex[s])
+		if w > limit and not push:
 			continue
-		var sc: float = w * 2.0 + g.slot_pos[s].distance_to(p.global_position)
+		var sc: float = (0.0 if push else w * 2.0) + g.slot_pos[s].distance_to(p.global_position)
 		if sc < best_score:
 			best_score = sc
 			best = s
@@ -1046,7 +1051,7 @@ func _garden_task(p: Patch, g: Garden) -> bool:
 			_set_task("refill")
 			_go(p, _water_at(), 0.5)
 			return true
-	if _water_target >= 0 and (g.slot_species[_water_target] < 0 or g.slot_water[_water_target] > 50.0):
+	if _water_target >= 0 and (g.slot_species[_water_target] < 0 or (g.slot_water[_water_target] > 50.0 and not _burst_wanted(g, g.slot_hex[_water_target]))):
 		_water_target = -1
 	if _water_target < 0:
 		_water_target = _thirsty_slot(g, p)
@@ -1530,7 +1535,7 @@ func _shop(want: Dictionary) -> void:
 	var st: Stations = Stations.of(world)
 	if st:
 		for id: String in ["conveyor", "recycler", "auto_baler"]:
-			var force: bool = id == "recycler" or (id == "conveyor" and (Research.has("recycler") or Research.is_active("recycler") or Research.is_queued("recycler")))
+			var force: bool = id == "recycler" or (id == "conveyor" and (Research.has("recycler") or Research.is_active("recycler")))
 			if st.block_reason(id) != "" or not _mats_spare(st.def(id).get("cost", {}), force):
 				continue
 			if st.build(id):
@@ -1667,7 +1672,7 @@ func _goal_research() -> String:
 		var guard: int = 0
 		while want != "" and Research.exists(want) and not Research.has(want) and guard < 8:
 			guard += 1
-			if Research.is_active(want) or Research.is_queued(want):
+			if Research.is_active(want):
 				break
 			if Research.status(want) == "available":
 				if Research.can_start(want):
@@ -1879,47 +1884,46 @@ func _lake_dirty() -> bool:
 	return false
 
 
-## [money] Research costs cubes now. The bot treats the field-note cubes (the old Data income)
-## as its research fund, like a player who spends the research share on research (so research and
-## the base levels pace as they did with Data); it also starts research when it is rich.
+## [M3-06] Research costs stock once and field data, which the work earns. A node already paid
+## for is free to pick again (its bar is kept); a new one is bought when its cubes leave what the
+## story card is saving for, or cost no more than a fifth of it (as other side purchases), and the
+## helper / automation / garden unlocks as soon as they are paid.
 func _research_ok(id: String) -> bool:
+	if Research.is_paid(id):
+		return true
 	var c: float = Research.cost(id).to_float()
-	if (id in ["salvage_logic", "conveyor", "auto_baler"] or id in PACE_GARDEN_CHAIN) and GameState.get_currency("cubes").to_float() >= c:
+	var cubes: float = GameState.get_currency("cubes").to_float()
+	if (id in ["salvage_logic", "conveyor", "auto_baler"] or id in PACE_GARDEN_CHAIN) and cubes >= c:
 		return true  # [pace] the helper and automation unlocks come before saving for base 3
-	var fund: float = float(GameState.stats.get("notes_cubes", 0.0)) + float(GameState.stats.get("wildlife_cubes", 0.0)) - float(GameState.stats.get("bot_research_spent", 0.0))
-	return c <= fund or GameState.get_currency("cubes").to_float() > maxf(c * 4.0, _research_reserve())
+	var card: float = float(_card_purchase().get("cubes", 0.0))
+	return cubes >= c and (c <= card * LEAK_OF_RESERVE or cubes - c >= card)
 
 
-## Cubes the bot keeps for the next base level / robot before dipping into them for research.
-func _research_reserve() -> float:
-	var nxt: Dictionary = world.hub.level_def(world.hub.level + 1) if world.get("hub") != null else {}
-	if world.get("hub") != null and int(world.hub.level) >= 2:
-		# [pace2] mid game: a player researches with spare cubes instead of hoarding 1.5x the next base
-		return float(nxt.get("cost", {}).get("cubes", 0.0)) * 0.5 + 1000.0
-	return float(nxt.get("cost", {}).get("cubes", 0.0)) * 1.5 + 2000.0
-
-
+## One node at a time. With one running the bot only switches for an on-screen goal (the running
+## node keeps its bar); with none it takes the goal's node, the helper unlock, a paused node, then
+## the priority list.
 func _research_pick() -> String:
 	if not BenchTiers.tab_open("research"):  # [v1guide] the Research tab opens with the workbench's Mk III
 		return ""
-	if not Research.active().is_empty() and Research.queue().size() >= Research.max_queue():
-		return ""
-	var saving: bool = false
 	var gr: String = _goal_research()  # [pace2] the goal on screen first
 	if gr != "":
 		return gr
+	if not Research.active().is_empty():
+		return ""
 	var need: String = _pace_research_next()  # [pace] save for the helper / automation unlock
-	if need != "":
-		return need if _research_ok(need) and Research.can_start(need) else ""
+	if need != "" and _research_ok(need) and Research.can_start(need):
+		return need
+	var paused: String = ""
+	for id: String in Research.ids():
+		if Research.status(id) == "paused" and (paused == "" or FieldData.left(id) < FieldData.left(paused)):
+			paused = id
+	if paused != "":
+		return paused
 	var prio: Array[String] = AutoplayCampaign.research_first(world)
 	prio.append_array(RESEARCH_PRIORITY)
 	for id: String in prio:
 		if Research.exists(id) and Research.can_start(id) and _research_ok(id):
 			return id
-		if id == RESEARCH_SAVE_FROM:
-			saving = true
-		if saving and Research.exists(id) and Research.status(id) == "available":
-			return ""  # [beat] critical-path node open but not affordable yet: save Data for it
 	var best: String = ""
 	var best_c: float = INF
 	for id: String in Research.ids():
@@ -1929,8 +1933,11 @@ func _research_pick() -> String:
 	return best
 
 
-## Research bookkeeping: idle time (nothing running) and starved time (idle, nodes open, no Data).
+## Research bookkeeping, from the moment the Research tab exists: idle time (nothing running) and
+## starved time (idle while a node is open to start).
 func _track_research(dt: float) -> void:
+	if not BenchTiers.tab_open("research"):
+		return
 	if Research.active().is_empty():
 		_research_idle_s += dt
 		_research_idle_run += dt
@@ -2196,6 +2203,8 @@ func write_report() -> void:
 	_report["research_idle_s"] = snappedf(_research_idle_s, 1.0)
 	_report["research_idle_max_s"] = snappedf(_research_idle_max, 1.0)
 	_report["research_starved_s"] = snappedf(_research_starved_s, 1.0)
+	_report["field_data_earned"] = snappedf(float(GameState.stats.get("data_earned", 0.0)), 0.1)
+	_report["field_data_banked"] = snappedf(FieldData.bank(), 0.1)
 	_report["parts_bought"] = _parts_bought
 	_report["stuck_escapes"] = _escapes
 	_report["fell_through"] = GameState.stats.get("fell_through", 0)

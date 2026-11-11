@@ -563,11 +563,11 @@ func test_a_full_stage_push_shows_on_the_next_growth_tick() -> void:
 	var slots: Array[int] = made[2]
 	g.water(slots[0], 30.0)
 	g.push_growth(slots[0], 1.0)
-	g.push_growth(slots[2], 1.0)  # dry: it waits for water
+	g.push_growth(slots[2], 1.0)  # dry: [M3-06] thirsty plants grow too (at the dry rate), so it shows
 	g._tick = 0.5
 	g._process(0.0)
 	assert_eq(g.slot_stage[slots[0]], 1, "a watered plant steps up a stage")
-	assert_eq(g.slot_stage[slots[2]], 0, "a dry one does not")
+	assert_eq(g.slot_stage[slots[2]], 1, "a dry one too: thirsty plants still grow")
 
 
 func test_no_wave_before_the_wave_district() -> void:
