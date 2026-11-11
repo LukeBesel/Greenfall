@@ -17,14 +17,15 @@ extends Node3D
 ## frame under a time budget and touched again only when that cell's green changes.
 
 ## Green a cell grows to, per hex level 0..5 (a clean cell that HexLevels doesn't track counts as 1).
-const TARGET: Array[float] = [0.0, 0.34, 0.52, 0.72, 0.86, 1.0]
+## These come from data/life.json "ground" (core/life_cfg.gd); the values here are the fallbacks.
+static var TARGET: Array[float] = LifeCfg.floats("ground", "green_per_level", [0.0, 0.34, 0.52, 0.72, 0.86, 1.0], 6)
 ## Green gained per second: a fresh clean cell takes about two minutes to reach its patches.
-const GROW_PER_S: float = 1.0 / 340.0
+static var GROW_PER_S: float = 1.0 / maxf(1.0, LifeCfg.num("ground", "grow_s", 340.0))
 const TICK_S: float = 0.5
 ## Grass tufts per cell and the rings of cells round Lumi that carry them, per quality preset.
-const TUFTS: Array[int] = [44, 60, 80, 100]
-const RINGS: Array[int] = [3, 4, 5, 5]
-const FLOWER_SHARE: float = 0.14
+static var TUFTS: Array[int] = LifeCfg.ints("ground", "tufts_per_cell", [44, 60, 80, 100], 4)
+static var RINGS: Array[int] = LifeCfg.ints("ground", "tuft_rings", [3, 4, 5, 5], 4)
+static var FLOWER_SHARE: float = LifeCfg.num("ground", "flower_share", 0.14)
 const BUDGET_US: int = 1200
 const MASK_F1: float = 0.11
 const MASK_F2: float = 0.47
@@ -56,7 +57,17 @@ void fragment() {
 	ROUGHNESS = 1.0;
 }
 """
-const PETALS: Array[Color] = [Color(0.98, 0.96, 0.9), Color(1.0, 0.86, 0.3), Color(0.96, 0.62, 0.78), Color(0.66, 0.6, 0.95), Color(1.0, 0.6, 0.3)]
+static var PETALS: Array[Color] = LifeCfg.colors("ground", "petals", [Color(0.98, 0.96, 0.9), Color(1.0, 0.86, 0.3), Color(0.96, 0.62, 0.78), Color(0.66, 0.6, 0.95), Color(1.0, 0.6, 0.3)])
+
+
+## Re-reads the values for the current planet (LifeCfg.use_planet).
+static func configure() -> void:
+	TARGET = LifeCfg.floats("ground", "green_per_level", TARGET, 6)
+	GROW_PER_S = 1.0 / maxf(1.0, LifeCfg.num("ground", "grow_s", 1.0 / GROW_PER_S))
+	TUFTS = LifeCfg.ints("ground", "tufts_per_cell", TUFTS, 4)
+	RINGS = LifeCfg.ints("ground", "tuft_rings", RINGS, 4)
+	FLOWER_SHARE = LifeCfg.num("ground", "flower_share", FLOWER_SHARE)
+	PETALS = LifeCfg.colors("ground", "petals", PETALS)
 
 var cells: SphereCells
 var grid: SphereGrid
@@ -80,6 +91,7 @@ var _todo: Dictionary = {}  # cell -> true: its block needs (re)writing
 var _lumi_cell: int = -1
 var _in_range: Dictionary = {}
 var _site_of: Dictionary = {}
+var _shown: Dictionary = {}  # cell -> tufts and flowers standing in its block
 
 
 # --- The mask: the same value noise as the ground shader --------------------------------------
@@ -125,6 +137,7 @@ static func target_of(state: int, level: int, flags: int) -> float:
 
 func setup(p_world: Node, globe: OrbitPlanet) -> void:
 	name = "CellVerdure"
+	configure()
 	world = p_world
 	cells = globe.cells
 	grid = globe.grid
@@ -351,6 +364,7 @@ func _release(c: int) -> void:
 		return
 	var b: int = _block[c]
 	_block.erase(c)
+	_shown.erase(c)
 	_free.append(b)
 	var zero := Transform3D(Basis.from_scale(Vector3.ZERO), Vector3.ZERO)
 	for k: int in _per:
@@ -364,12 +378,17 @@ func _drain() -> void:
 	var ht: int = Hitch.t()
 	var t0: int = Time.get_ticks_usec()
 	for c: int in _todo.keys():
+		if not _write_block(c, t0 + BUDGET_US):
+			break  # stays in _todo; its search goes on next frame
 		_todo.erase(c)
-		_write_block(c)
 		if Time.get_ticks_usec() - t0 > BUDGET_US:
 			break
 	stats["build_us_max"] = maxi(int(stats["build_us_max"]), Time.get_ticks_usec() - t0)
 	stats["blocks"] = _block.size()
+	var total: int = 0
+	for c: int in _shown:
+		total += int(_shown[c])
+	stats["tufts"] = total
 	Hitch.mark("verdure tufts", ht)
 
 
@@ -395,22 +414,34 @@ func _spot_ok(c: int, p: Vector3, towns: Array, slots: PackedInt32Array, garden:
 	return true
 
 
-## The cell's tuft and flower spots (full-size transforms, mask and a random per spot).
-func _make_cache(c: int) -> Dictionary:
+## The cell's tuft and flower spots (full-size transforms, mask and a random per spot). The search
+## is resumable: it stops at `deadline_us` (Time.get_ticks_usec) and goes on from there next frame,
+## so a town cell (paving and lot checks per spot) never costs one frame more than the budget.
+func _make_cache(c: int, deadline_us: int = 0x7FFFFFFFFFFFFFFF) -> Dictionary:
 	var garden: Garden = world.get("garden") as Garden if world else null
 	var slots: PackedInt32Array = garden.hex_slots[c] if garden and garden.hex_slots.has(c) else PackedInt32Array()
+	var e: Dictionary = _cache.get(c, {})
+	if e.is_empty() or bool(e["done"]) or int(e["slots"]) != slots.size():
+		var r0 := RandomNumberGenerator.new()
+		r0.seed = c * 7919 + 13
+		var x0: Array[Transform3D] = []
+		e = {"xf": x0, "m": PackedFloat32Array(), "rnd": PackedFloat32Array(), "slots": slots.size(), "rng": r0, "attempt": 0, "done": false}
 	var towns: Array = garden._towns() if garden and cells.has_flag(c, SphereCells.F_SITE) else []
-	var rng := RandomNumberGenerator.new()
-	rng.seed = c * 7919 + 13
+	var rng: RandomNumberGenerator = e["rng"]
 	var up: Vector3 = grid.centers[c]
 	var f: Basis = SphereGrid.frame(up)
-	var xf: Array[Transform3D] = []
-	var ms := PackedFloat32Array()
-	var rnd := PackedFloat32Array()
+	var xf: Array[Transform3D] = e["xf"]
+	var ms: PackedFloat32Array = e["m"]
+	var rnd: PackedFloat32Array = e["rnd"]
 	var want: int = _per + _fper
-	for attempt: int in want * 2:
+	while int(e["attempt"]) < want * 2:
 		if xf.size() >= want:
 			break
+		if Time.get_ticks_usec() > deadline_us:
+			e["m"] = ms
+			e["rnd"] = rnd
+			return e
+		e["attempt"] = int(e["attempt"]) + 1
 		var a: float = rng.randf() * TAU
 		var r: float = sqrt(rng.randf()) * hex_r
 		var d: Vector3 = (up + (f.x * cos(a) + f.z * sin(a)) * r / terrain.R).normalized()
@@ -426,21 +457,28 @@ func _make_cache(c: int) -> Dictionary:
 		xf.append(Transform3D(b, p - d * 0.03))
 		ms.append(mask(p))
 		rnd.append(rr)
-	return {"xf": xf, "m": ms, "rnd": rnd, "slots": slots.size()}
+	e["m"] = ms
+	e["rnd"] = rnd
+	e["done"] = true
+	e.erase("rng")
+	return e
 
 
-func _write_block(c: int) -> void:
+## Writes a cell's block. Returns false when its spot search ran out of time (it goes on next frame).
+func _write_block(c: int, deadline_us: int = 0x7FFFFFFFFFFFFFFF) -> bool:
 	var g: float = float(cells.green[c]) / 255.0
 	if g <= 0.0 or not _in_range.has(c):
 		_release(c)
-		return
+		return true
 	var garden: Garden = world.get("garden") as Garden if world else null
 	var n_slots: int = (garden.hex_slots[c] as PackedInt32Array).size() if garden and garden.hex_slots.has(c) else 0
-	if not _cache.has(c) or int(_cache[c]["slots"]) != n_slots:
-		_cache[c] = _make_cache(c)
+	if not _cache.has(c) or int(_cache[c]["slots"]) != n_slots or not bool(_cache[c]["done"]):
+		_cache[c] = _make_cache(c, deadline_us)
+		if not bool(_cache[c]["done"]):
+			return false
 	if not _block.has(c):
 		if _free.is_empty():
-			return
+			return true
 		_block[c] = _free.pop_back()
 	var b: int = _block[c]
 	var e: Dictionary = _cache[c]
@@ -457,7 +495,7 @@ func _write_block(c: int) -> void:
 			if s > 0.0:
 				var sc: float = (0.3 + 0.7 * s) * 0.38
 				t = Transform3D(xf[k].basis * Basis.from_scale(Vector3(sc, sc, sc)), xf[k].origin)
-				var pc: Color = PETALS[int(rnd[k] * 4.999)]
+				var pc: Color = PETALS[int(rnd[k] * (PETALS.size() - 0.001))]
 				_flowers.set_instance_color(b * _fper + k, pc)
 				_flowers.set_instance_custom_data(b * _fper + k, Color(0.0, 0.0, 0.0, rnd[k]))
 				shown += 1
@@ -474,4 +512,5 @@ func _write_block(c: int) -> void:
 				_grass.set_instance_custom_data(b * _per + k, Color(0.0, 0.0, 0.0, rnd[j]))
 				shown += 1
 		_grass.set_instance_transform(b * _per + k, t)
-	stats["tufts"] = shown
+	_shown[c] = shown
+	return true

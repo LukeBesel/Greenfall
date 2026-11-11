@@ -34,6 +34,23 @@ The round world is the game, and the work is on its first planet, Verdance. The 
 - **Other planets** on the globe (Ochre, Rime, Anvil, Tidewell) are out of focus: Haul Bugs find no path there, and the Ochre finale camera is blocked.
 - **Polish (item 56):** the v5 wave was still running when this was written (v5play: bugs from play-testing; v5look: light, sky, hinterland; v5load: loader, perf, saves). Add their results here.
 
+## Update: yard machines and hub landmarks on the art kit (wt/v6yard, Nov 11)
+- **Picture signs.** Every yard machine carries a round sign with one pictogram and no words
+  (spanner, arrow into a bin, pressed cube, belt, sprout, mast with waves, robot head), so a small
+  child can tell what it does. Look and size: `data/machine_art.json`.
+- **Auto-baler and belt drive rebuilt** as kit models (`systems/camp/machine_art.gd`): the baler
+  is a press head over a cube-sized chamber with a wide yellow hopper and a roller ramp; the belt
+  drive has a fat finned motor with a belt guard. Far fewer draw calls than before.
+- **Six hub landmarks rebuilt** (`planet/sites/hub_landmarks.gd`, `data/landmarks.json`): water
+  tower, windpump with a seed vault, gantry crane lifting hull plates, signal mast, big wheel with
+  gondolas, tall stack with fuel tanks. They follow the hub's level: broken and dark while the hub
+  sleeps, lit and turning once it wakes, restored from level 3. Each has the same wake console.
+- **Signal tower** legs and braces are chunkier. **Pod:** a repair cart, work lamp and cones stand by it
+  while it is being mended. **Trash bin, workbench, composter, fabricator:** sign added, shape kept.
+- Numbers: `tools/machine_stats.tscn`; budgets in docs/PERFORMANCE.md; knobs in docs/ADJUSTING.md.
+- Open: see the hand-off notes for which pictures were and were not rendered. `old_bus` and
+  `lighthouse` (extra hubs) still use the old thin models. The recycler is still the old kitified model.
+
 ## Milestones (history, from the flat-world era)
 - [x] M0 Setup, M1 Slice (city district, Aurora/Patch, baling, tutorial, lens view)
 - [x] M2 Planet layer: 40k-hex planet, hand-held survey hologram (M), districts per base, rocket travel. Seamless sphere walking deferred (see DECISIONS).
@@ -1028,6 +1045,7 @@ Details and numbers in docs/PERFORMANCE.md (perf passes 6-8).
 - **Hop:** skippable (E / jump), HUD hidden in flight, the camera looks down the path at the new town on the approach, the town's name shows once on landing, then the step card.
 - **HUD:** the top-right lines are now this base's clean % and "BASES n/6".
 - Code: `planet/sites/hub_plan.gd`, `planet/sites/hub_purpose.gd`; tests: `tests/test_hub_plan.gd`.
+- **Hop as a moment:** every hop timing, the arrival title's timing and a first-arrival music sting are data (`hub_defaults.hop`, docs/ADJUSTING.md). The arrival title shows the name, the town and landmark, and why we came (`hub_fly_<order>` in data/story_reasons.json, the same line as the goal card). `--hub-walk-fly=N` makes the walkthrough fly the real hop and check long frames on arrival (QA H5: the long frames are behind the veil).
 - **Six-base walkthrough** (`--hub-walkthrough`, `planet/sites/hub_walk.gd`, docs/QA_VERDANCE.md): flies to and wakes the five far main-path hubs in order and checks town, landmark kind, reach, sleep card, wake prompt through Interactables, E wake, flags, rocket piece, gift, field bench, beacon, HUD and logged errors. PASS on 2026-11-11. It found that E at a far landmark did nothing in play (the entry was registered before Interactables existed); fixed. The town look and landmark per hub come from the data (`town`, `landmark.kind`), except a lake town is always a harbour (Fairground).
 - **Open:** the survey map (M) still shows the old city names and no landmark glyphs; the story text is placeholder (v6story); goal-card steps for "fly to the next hub" and "upgrade the rocket" are v6pace's; the hub town builds behind the veil in about 10 s on this box (headless), to be checked on real hardware.
 
@@ -1060,4 +1078,7 @@ What reacts to cleaning on the globe now, all derived from saved cell state (not
 - **Sound** (`audio/life_ambience.gd`): a low gritty wind and a rare creak over junk; a soft breeze in leaves and a rare far bird phrase over green ground; nearly silent in between.
 - **Far view** (`sphere_shell.gd`, `sphere_shell.gdshader`): the far shell and the map read the same green; a trashed city is nearly dark at night and its lights return with cleaning.
 - Dev hooks: `planet/sites/life_dev.gd` (`--life-clean`, `--life-grown`, `--life-off`, `--life-report`, `--life-tour`). Tests: `tests/test_cell_verdure.gd`, `tests/test_town_life.gd`.
-Open: move the ambience one-shot gaps and bed levels into v6sound's `data/sound.json` once it is on main; the hinterland's own buildings do not wake yet; other planets' towns have no block map (their prefabs are not VerdanceSite).
+- **Adjustable (item 62)**: every look and rule value is in `data/life.json` (`_default` plus per-planet overrides, `core/life_cfg.gd`); the ground-following sound bed is `data/sound.json` `planets.<id>.ambience.life` (loops and one-shots can be `res://` files). docs/ADJUSTING.md, "The world coming back to life".
+- **Measured (headless, 74 cells cleaned round the start)**: level 1: 11 of 22 blocks at stage 2, 16/42 lights, 217 tufts, 0 butterflies; level 3: 11 blocks at stage 3, 24/42 lights, 502 tufts, 24 butterflies; dirty ground: a creak about every 1 to 2 minutes. Every life one-shot is at least `min_gap_floor_s` (60 s) apart, whatever its event says; the bed's thresholds (`mix`, `when`) are data too (tests/test_town_life.gd checks the script reads them). Tuft building is resumable per cell and stays under 1.3 ms a frame (a town cell's spot search used to take 8 ms in one go); no life work in any `--hitch` frame over 30 ms.
+- Dev hooks (not in CLAUDE.md): `--life-clean=RINGS[,LEVEL|ramp[,X,Z]]`, `--life-grown`, `--life-off`, `--life-report`, `--life-sound` (synthesize the beds headless), `--life-tour=PREFIX --life-tour-stops=...`; see the top of `planet/sites/life_dev.gd`.
+Open: rendered check of the look (the tour render was blocked by memory); the hinterland's own buildings do not wake yet; other planets' towns have no block map (their prefabs are not VerdanceSite); the green-ground bird phrase did not fire in a 240 game-s headless run (it also waits for Fauna's shared bird clock), so its rate is unmeasured.

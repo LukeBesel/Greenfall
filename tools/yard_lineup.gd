@@ -17,6 +17,19 @@ const SHOTS: Dictionary = {
 	"tower": [Vector3(90.0, 4.5, 15.0), Vector3(90.0, 3.0, 0.0)],
 	"fabricator": [Vector3(115.5, 3.6, 6.5), Vector3(114.0, 1.1, -0.3)],
 	"bins": [Vector3(0.0, 4.4, -18.0), Vector3(0.0, 0.8, -26.5)],
+	# [v6yard] the rebuilt machines, the picture signs, the pod and the six hub landmarks
+	"baler": [Vector3(70.4, 3.4, 6.2), Vector3(66.2, 1.9, -0.8)],
+	"baler_back": [Vector3(62.0, 3.6, -7.0), Vector3(66.0, 1.8, -1.0)],
+	"belt": [Vector3(61.0, 3.6, 5.6), Vector3(56.2, 0.9, -0.6)],
+	"signs": [Vector3(130.0, 2.6, 7.5), Vector3(130.0, 1.6, 0.0)],
+	"pod": [Vector3(152.5, 2.4, 5.5), Vector3(150.0, 1.3, 0.0)],
+	"lm_water_tower": [Vector3(16.0, 9.0, 232.0), Vector3(0.0, 9.0, 200.0)],
+	"lm_windpump": [Vector3(74.0, 7.0, 226.0), Vector3(60.0, 7.0, 200.0)],
+	"lm_crane": [Vector3(136.0, 9.0, 230.0), Vector3(120.0, 7.5, 200.0)],
+	"lm_radio_mast": [Vector3(200.0, 12.0, 244.0), Vector3(180.0, 14.0, 200.0)],
+	"lm_ferris_wheel": [Vector3(255.0, 8.0, 234.0), Vector3(240.0, 10.5, 200.0)],
+	"lm_smokestack": [Vector3(320.0, 10.0, 243.0), Vector3(300.0, 13.0, 200.0)],
+	"lm_kiosk": [Vector3(6.5, 2.2, 211.0), Vector3(4.4, 1.2, 204.0)],
 }
 const BOARD_POS := Vector3(-3.6, 0, 2.2)  # scenes/slice.gd
 
@@ -30,6 +43,8 @@ var _cam: Camera3D
 func _ready() -> void:
 	_out = DevHooks.get_s("out", "screenshots/yard/lineup")
 	_shots = DevHooks.get_s("shots", "yard,shack,bench,locker,builds,stations,tower,fabricator,bins").split(",")
+	if _shots.size() == 1 and _shots[0] == "v6":  # [v6yard] everything this wave rebuilt
+		_shots = PackedStringArray(["baler", "baler_back", "belt", "signs", "pod", "lm_water_tower", "lm_windpump", "lm_crane", "lm_radio_mast", "lm_ferris_wheel", "lm_smokestack", "lm_kiosk"])
 	var night: bool = DevHooks.has("night")
 	var env := Environment.new()
 	env.background_mode = Environment.BG_SKY
@@ -59,7 +74,7 @@ func _ready() -> void:
 	add_child(sun)
 	var ground := MeshInstance3D.new()
 	var pm := PlaneMesh.new()
-	pm.size = Vector2(80, 80)
+	pm.size = Vector2(900, 900)
 	ground.mesh = pm
 	ground.material_override = AssetLib.pbr_material("dirty_concrete", 0.25, Color(0.7, 0.62, 0.52), true)
 	add_child(ground)
@@ -79,6 +94,7 @@ func _ready() -> void:
 	_build_stations()
 	_build_towers()
 	_build_bins()
+	_build_v6()
 	if DevHooks.has("hub-level"):
 		YardArt.ground_for_level(self, int(DevHooks.get_f("hub-level", 1.0)))
 	_cam = Camera3D.new()
@@ -199,7 +215,7 @@ func _build_builds() -> void:
 ## Batch 3: conveyor, auto-baler, recycler (real nodes, kitified), observatory (its model only).
 func _build_stations() -> void:
 	var cv := Conveyor.new()
-	cv.position = Vector3(58.0, 0, 0)
+	cv.position = Vector3(50.0, 0, 0)  # [v6yard] clear of the baler
 	add_child(cv)
 	cv.process_mode = Node.PROCESS_MODE_DISABLED
 	var ab := AutoBaler.new()
@@ -253,6 +269,27 @@ func _build_bins() -> void:
 		d.process_mode = Node.PROCESS_MODE_DISABLED
 		d._build_body(l)
 		YardArt.set_powered(d._scale_post, l >= 2)
+
+
+## [v6yard] The picture signs on posts, the pod, and the hub landmarks (--lm-state=broken|repaired|restored).
+func _build_v6() -> void:
+	var ids: Array = ["workbench", "trash_bin", "baler", "belt", "composter", "signal_tower", "fabricator"]
+	for i: int in ids.size():
+		var sp: MeshInstance3D = MachineArt.sign_post(ids[i], 1.7).mi(0.15)
+		sp.position = Vector3(130.0 + (i - 3) * 1.1, 0, 0)
+		add_child(sp)
+	var pod: Node3D = EscapePod.build()
+	pod.position = Vector3(150.0, 0, 0)
+	pod.rotation.y = PI * 0.8
+	add_child(pod)
+	EscapePod.set_condition(pod, int(DevHooks.get_f("pod-condition", 0.0)))
+	EscapePod.set_open(pod, true, 0.0)
+	var st: String = DevHooks.get_s("lm-state", "restored")
+	var kinds: Array[String] = HubLandmarks.kinds()
+	for i: int in kinds.size():
+		var lm: HubLandmarkNode = HubLandmarks.build(kinds[i], st, 1, "verdance")
+		lm.position = Vector3(i * 60.0, 0, 200.0)
+		add_child(lm)
 
 
 func _process(_delta: float) -> void:

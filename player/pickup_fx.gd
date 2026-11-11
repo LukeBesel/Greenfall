@@ -164,7 +164,7 @@ func _sfx(sound: String, pitch: float, db: float, cool: float) -> void:
 	if float(_snd_cool.get(sound, 0.0)) > 0.0:
 		return
 	_snd_cool[sound] = cool
-	Audio.play(sound, pitch, db, 0.06)
+	Audio.play(sound, pitch, db, 0.06, "scoop")  # [v6sound] trims and gaps: "scoop:<sound>" in data/sound.json
 
 
 func _process(delta: float) -> void:

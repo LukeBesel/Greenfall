@@ -173,6 +173,7 @@ func build(p_world: Node3D) -> void:
 	hl.setup()
 	BuildBudget.lap("orbit hexlevels")
 	EventBus.hex_level_changed.connect(_on_hex_level)
+	LifeCfg.use_planet(str(globe.spec.get("id", "verdance")))  # [v6life] data/life.json, per planet
 	if not DevHooks.has("life-off"):  # [v6life] clean ground greens over (plants/cell_verdure.gd)
 		var cv := CellVerdure.new()
 		w.add_child(cv)
@@ -182,7 +183,7 @@ func build(p_world: Node3D) -> void:
 		fl.setup(w, globe)
 		var la := LifeAmbience.new()  # wind over junk, leaves over green (audio/life_ambience.gd)
 		w.add_child(la)
-		la.setup(w, globe)
+		la.setup(w, globe, LifeCfg.planet_id)  # its bed: data/sound.json planets.<id>.ambience.life
 		BuildBudget.lap("orbit verdure")
 	var lumi_level := LumiLevel.new()
 	lumi_level.name = "LumiLevel"
@@ -210,6 +211,8 @@ func build(p_world: Node3D) -> void:
 	await BuildBudget.join(ck_task)  # [v5load]
 	if BuildBudget.active():
 		await FaunaModels.prewarm()  # [v5load] the animals' procedural meshes, before the hub frame makes the wildlife
+		StorySfx.ensure()  # [v6qa] the eggs' synthesised sounds (40 ms): behind the loader, not at the first hub switch (a save loaded between hubs)
+		await BuildBudget.check("story sfx")
 	_build_story()
 	BuildBudget.lap("orbit story")
 	await _build_yard_systems()

@@ -37,12 +37,39 @@ static func planet_data(planet: String) -> Dictionary:
 ## Tests: drop the cached data and boosts.
 static func reload() -> void:
 	_data = {}
+	_reasons = {}
 	_mods_for = "?"
 
 
 static func defaults(planet: String) -> Dictionary:
 	var d: Variant = planet_data(planet).get("hub_defaults", {})
 	return d if d is Dictionary else {}
+
+
+## [v6hubs] The rocket hop's tunables (hub_defaults.hop: flight, arrival title, sting); `def` when unset.
+static func hop_cfg(key: String, def: Variant) -> Variant:
+	var h: Variant = defaults(active_planet if active_planet != "" else "verdance").get("hop", {})
+	return (h as Dictionary).get(key, def) if h is Dictionary else def
+
+
+## [v6hubs] Why Lumi came to hub site (the arrival title's third line): the entry's `reason`, else
+## data/story_reasons.json goal_reasons.by_id "hub_fly_<order>" (the card's reason for the flight),
+## else the entry's `desc`. English; tr() at display. "" for home.
+static func reason(planet: String, site: int) -> String:
+	var e: Dictionary = entry(planet, site)
+	if e.is_empty() or is_home(planet, site):
+		return ""
+	if str(e.get("reason", "")) != "":
+		return str(e["reason"])
+	if _reasons.is_empty():
+		var gr: Variant = (Economy.read_json("res://data/story_reasons.json") as Dictionary).get("goal_reasons", {})
+		var bid: Variant = (gr as Dictionary).get("by_id", {}) if gr is Dictionary else {}
+		_reasons = bid if bid is Dictionary else {"_": ""}
+	var r: String = str(_reasons.get("hub_fly_%d" % int(e.get("order", 0)), ""))
+	return r if r != "" else str(e.get("desc", ""))
+
+
+static var _reasons: Dictionary = {}
 
 
 ## The planet's hub entries in main-path order.

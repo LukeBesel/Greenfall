@@ -11,10 +11,10 @@ static func setup(s: Node) -> void:
 	Radio.note_planet("ochre", 3)
 	Radio.check_unlocks()
 	Radio.play("ochre_caravan")
-	Tunes.grant("sunbaked", true)  # [tunes] a CD found, one lying in the rubble, the pity counter
-	CdFinds.pending()["dune_caravan"] = {"hub": GameState.current_hub, "hex": 3, "planet": "ochre"}
+	Tunes.grant("glass_dunes", true)  # [main] songs that are still CDs (Verdance borrows the Ochre songs that have files). [tunes] a CD found, one lying in the rubble, the pity counter
+	CdFinds.pending()["sandglass"] = {"hub": GameState.current_hub, "hex": 3, "planet": "ochre"}
 	Tunes.st()["pity"] = 7
-	Tunes.hold("strip_mine_shuffle")  # a scratched CD in the case
+	Tunes.hold("twin_noon")  # a scratched CD in the case
 	Tunes.note_play("clean_sweep")
 	var e: Dictionary = PhotoAlbum.entry(GameState.current_hub)
 	e["name"] = "Old Town"

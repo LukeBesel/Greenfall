@@ -35,8 +35,8 @@ func test_objectives_have_a_short_why() -> void:
 	assert_true(list.any(func(d: Dictionary) -> bool: return str(d["text"]) == "Build your first robot"))
 	var font: Font = HudReadable.font()
 	for d: Dictionary in list:
-		assert_true(d.has("desc") and str(d["desc"]) != "", "%s has a why" % d["id"])
-		assert_lt(str(d["desc"]).length(), 60, "%s: the why is one short line" % d["id"])
+		assert_true(Objectives.step_why(d) != "", "%s has a why" % d["id"])  # [v6pace] desc, or the story reason
+		assert_lt(Objectives.step_why(d).length(), 60 if d.has("desc") else 81, "%s: the why is one short line" % d["id"])  # [v6pace] story reasons fit the goal card (80)
 		assert_false(str(d["text"]).to_lower().contains("this hex"), "no 'this hex'")
 		assert_lt(font.get_string_size(str(d["text"]), HORIZONTAL_ALIGNMENT_LEFT, -1, 18).x, (ObjectiveCard.W - 28.0) * 2.0, "title fits two lines")
 	var hex_ones: Array = list.filter(func(d: Dictionary) -> bool: return d.get("hex", false))

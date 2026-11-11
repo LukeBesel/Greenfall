@@ -46,18 +46,18 @@ func build(p_layout: CityLayout, seed_v: int) -> void:
 	_body = PropColliders.body(self, "FurnitureBody")
 	_paint.begin(Mesh.PRIMITIVE_TRIANGLES)
 	await BuildBudget.check("town:paint")
-	_road_paint()
+	await _road_paint()  # [v6qa] yields inside (a hub town building in play: no step over a few ms)
 	await BuildBudget.check("town:sidewalks")
-	_sidewalks()
+	await _sidewalks()  # [v6qa] yields inside (a hub town building in play: no step over a few ms)
 	await BuildBudget.check("town:corners")
-	_corners()
+	await _corners()  # [v6qa] yields inside (a hub town building in play: no step over a few ms)
 	await BuildBudget.check("town:wrecks")
-	_kerb_wrecks()
+	await _kerb_wrecks()  # [v6qa] yields inside (a hub town building in play: no step over a few ms)
 	await BuildBudget.check("town:lot wrecks")  # [v5load]
-	_lot_wrecks()
+	await _lot_wrecks()  # [v6qa] yields inside (a hub town building in play: no step over a few ms)
 	if water_fn.is_valid():
 		await BuildBudget.check("town:waterfront")
-		_waterfront()
+		await _waterfront()  # [v6qa] yields inside
 	await BuildBudget.check("town:flush")
 	await _flush()
 
@@ -139,6 +139,7 @@ func _road_paint() -> void:
 	var white := Color(0.92, 0.91, 0.86)
 	var yellow := Color(0.95, 0.75, 0.2)
 	for i: int in range(-n, n):
+		await BuildBudget.check("town:paint row")  # [v6qa]
 		for j: int in range(-n, n):
 			var ic := Vector2((i + 0.5) * CityLayout.PITCH, (j + 0.5) * CityLayout.PITCH)
 			if ic.length() > town_r or _wet(ic):
@@ -181,6 +182,7 @@ func _road_paint() -> void:
 func _sidewalks() -> void:
 	var sides: Array[Vector2] = [Vector2(0, -1), Vector2(0, 1), Vector2(-1, 0), Vector2(1, 0)]
 	for key: Vector2i in layout.blocks:
+		await BuildBudget.check("town:sidewalk block")  # [v6qa]
 		if key == Vector2i.ZERO:
 			continue
 		var b: Dictionary = layout.blocks[key]
@@ -339,6 +341,7 @@ func _bollard(p: Vector2) -> void:
 func _corners() -> void:
 	var n: int = int(ceil(layout.extent / CityLayout.PITCH)) + 1
 	for i: int in range(-n, n):
+		await BuildBudget.check("town:corner row")  # [v6qa]
 		for j: int in range(-n, n):
 			var ic := Vector2((i + 0.5) * CityLayout.PITCH, (j + 0.5) * CityLayout.PITCH)
 			var around: Array[Vector2i] = [Vector2i(i, j), Vector2i(i + 1, j), Vector2i(i, j + 1), Vector2i(i + 1, j + 1)]
@@ -437,6 +440,7 @@ func _kerb_wrecks() -> void:
 	var n: int = int(ceil(layout.extent / CityLayout.PITCH)) + 1
 	for axis: int in 2:
 		for k: int in range(-n, n):
+			await BuildBudget.check("town:kerb wrecks row")  # [v6qa]
 			var line: float = (k + 0.5) * CityLayout.PITCH  # the road's centre line
 			for m: int in range(-n, n + 1):
 				var seg_c: float = m * CityLayout.PITCH  # between junctions m-0.5 and m+0.5
@@ -465,6 +469,7 @@ func _kerb_wrecks() -> void:
 ## Rows of wrecks on the parking lots, a few dumped on the other open lots.
 func _lot_wrecks() -> void:
 	for key: Vector2i in layout.blocks:
+		await BuildBudget.check("town:lot wrecks block")  # [v6qa]
 		var b: Dictionary = layout.blocks[key]
 		var r: Rect2 = b["rect"]
 		match int(b["type"]):
@@ -584,6 +589,8 @@ func _waterfront() -> void:
 	var wet := PackedByteArray()
 	wet.resize(n * n)
 	for j: int in n:
+		if (j & 7) == 0:
+			await BuildBudget.check("town:quay wet")  # [v6qa]
 		for i: int in n:
 			var p := Vector2(-half + i * QUAY_STEP, -half + j * QUAY_STEP)
 			wet[j * n + i] = 1 if _wet(p) else 0
@@ -591,6 +598,8 @@ func _waterfront() -> void:
 		return 1 if i < 0 or j < 0 or i >= n or j >= n else wet[j * n + i]
 	var shore: Array = []  # [p, normal toward the water, i, j]
 	for j: int in n:
+		if (j & 7) == 0:
+			await BuildBudget.check("town:quay shore")  # [v6qa]
 		for i: int in n:
 			if wet[j * n + i] == 1:
 				continue
@@ -614,6 +623,7 @@ func _waterfront() -> void:
 	var k: int = 0
 	var piers: Array[Vector2] = []
 	for e: Array in shore:
+		await BuildBudget.check("town:quay piece")  # [v6qa]
 		var p: Vector2 = e[0]
 		var nrm: Vector2 = e[1]
 		var b: KitMesh.Builder = _builder(p)
