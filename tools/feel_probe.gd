@@ -533,8 +533,12 @@ func _walk_free(root: Node3D, xf: Transform3D, x: float, z: float, pad: float, s
 	_walk_q.transform = Transform3D(SphereGrid.frame(up), g + up * (lift + 0.475))
 	for hit: Dictionary in lumi.get_world_3d().direct_space_state.intersect_shape(_walk_q, 8):
 		var co: Object = hit.get("collider")
-		if co == lumi or co == skip or co is RigidBody3D:
+		if co == lumi or co is RigidBody3D:
 			continue
+		if skip != null and co is CollisionObject3D:  # skip one shape (a body holds a whole town's furniture)
+			var cob := co as CollisionObject3D
+			if cob.shape_owner_get_owner(cob.shape_find_owner(int(hit.get("shape", -1)))) == skip:
+				continue
 		if co is CollisionObject3D and (root.is_ancestor_of(co as Node) or ((co as CollisionObject3D).collision_layer & (PhysLayers.MOUND | PhysLayers.PROP)) != 0):
 			return false
 	return true
@@ -806,7 +810,7 @@ func _walk_glance(hi: int, root: Node3D, xf: Transform3D, wet: Callable, r_town:
 				var mid_ok: bool = true
 				for k: int in 9:
 					var m: Vector2 = a.lerp(e, float(k) / 8.0)
-					if not _walk_free(root, xf, m.x, m.y, 0.0, c[1]):
+					if not _walk_free(root, xf, m.x, m.y, 0.0, cs):
 						mid_ok = false
 						break
 				if not mid_ok:

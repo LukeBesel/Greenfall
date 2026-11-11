@@ -252,7 +252,8 @@ func _bus_stop(p: Vector2, o: Vector2) -> void:
 	for sx2: float in [-0.9, 0.5]:
 		b.box("paint:#2c2e31", Vector3(0.06, 0.44, 0.3), xf * KitMesh.xf(Vector3(sx2, 0.22, -0.3)), 0.01)
 	# Stop pole by the kerb with its round sign and a timetable box.
-	var pole := xf * KitMesh.xf(Vector3(w * 0.5 + 0.7, 0, 0.5))
+	# [v6feel] 1.25 m past the shelter's end (was 0.7): the 0.6 m gap wedged Lumi; now he fits through.
+	var pole := xf * KitMesh.xf(Vector3(w * 0.5 + 1.25, 0, 0.5))
 	b.cyl("paint:#2c2e31", 0.04, 2.7, pole, 0.005, 8)
 	b.cyl("paint:#1f5fa8", 0.3, 0.04, pole * KitMesh.xf(Vector3(0, 2.55, 0), Vector3(90, 0, 0)), 0.01, 16)
 	b.cyl("paint:#f2efe6", 0.22, 0.05, pole * KitMesh.xf(Vector3(0, 2.55, 0.0), Vector3(90, 0, 0)), 0.01, 16)
