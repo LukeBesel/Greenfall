@@ -257,22 +257,6 @@ msgstr "[ĥôļð %s ~]"
 msgid "Hex clean! Green can grow here now."
 msgstr "[Ĥéx çļéàñ! Ĝŕééñ çàñ ĝŕôŵ ĥéŕé ñôŵ. ~~~~~~~~~]"
 
-#: automation/auto_baler.gd:478
-msgid "AUTO-BALER"
-msgstr "[ÀÛŢÔ-BÀĻÉŔ ~]"
-
-#: automation/auto_baler.gd:481
-msgid "KEEP CLEAR · 40 T"
-msgstr "[ĶÉÉÞ ÇĻÉÀŔ · 40 Ţ ~~~]"
-
-#: automation/conveyor.gd:71
-msgid "TO  SCALE  ◀"
-msgstr "[ŢÔ  ŠÇÀĻÉ  ◀ ~]"
-
-#: automation/conveyor.gd:185
-msgid "BALE  FEED"
-msgstr "[BÀĻÉ  FÉÉÐ ~]"
-
 #: automation/hub.gd:89
 msgid "Locked. Upgrade your base to level %d to build the launch pad."
 msgstr "[Ļôçķéð. Ûþĝŕàðé ýôûŕ bàšé ţô ļévéļ %d ţô bûîļð ţĥé ļàûñçĥ þàð. ~~~~~~~~~~~~~~~~~~~]"
@@ -668,7 +652,7 @@ msgstr "[ŢÔĜÉŢĤÉŔ ŴÉ BĻÔÔM ~~~]"
 msgid "LIGHT  WATER  LIFE"
 msgstr "[ĻÎĜĤŢ  ŴÀŢÉŔ  ĻÎFÉ ~~~]"
 
-#: planet/sites/hub_hop.gd:48
+#: planet/sites/hub_hop.gd:49
 msgid "{interact}  skip"
 msgstr "[{interact}  šķîþ ~~~]"
 
@@ -692,133 +676,133 @@ msgstr "[Šûbûŕb ~]"
 msgid "Harbour town"
 msgstr "[Ĥàŕbôûŕ ţôŵñ ~]"
 
-#: planet/sites/hub_plan.gd:106
+#: planet/sites/hub_plan.gd:133
 msgid "landmark"
 msgstr "[ļàñðmàŕķ ~]"
 
-#: planet/sites/hub_plan.gd:260
+#: planet/sites/hub_plan.gd:287
 msgid "The recycling network grew: everything sells for x%s now."
 msgstr "[Ţĥé ŕéçýçļîñĝ ñéţŵôŕķ ĝŕéŵ: évéŕýţĥîñĝ šéļļš ƒôŕ x%s ñôŵ. ~~~~~~~~~~~~~~~~~]"
 
-#: planet/sites/hub_plan.gd:279
+#: planet/sites/hub_plan.gd:306
 msgid "Rocket piece: %s"
 msgstr "[Ŕôçķéţ þîéçé: %s ~~~]"
 
-#: planet/sites/hub_plan.gd:301
+#: planet/sites/hub_plan.gd:328
 msgid "+%s Cubes"
 msgstr "[+%s Çûbéš ~]"
 
-#: planet/sites/hub_plan.gd:303
+#: planet/sites/hub_plan.gd:330
 msgid "+%d Parts"
 msgstr "[+%d Þàŕţš ~]"
 
-#: planet/sites/hub_plan.gd:305
+#: planet/sites/hub_plan.gd:332
 msgid "+%d Seeds"
 msgstr "[+%d Šééðš ~]"
 
-#: planet/sites/hub_plan.gd:309
+#: planet/sites/hub_plan.gd:336
 msgid "New: %s"
 msgstr "[Ñéŵ: %s ~]"
 
-#: planet/sites/hub_plan.gd:313
+#: planet/sites/hub_plan.gd:340
 msgid "New Lumi design: %s"
 msgstr "[Ñéŵ Ļûmî ðéšîĝñ: %s ~~~~]"
 
-#: planet/sites/hub_purpose.gd:167
+#: planet/sites/hub_purpose.gd:168
 msgid "Home. The workbench is by the pod."
 msgstr "[Ĥômé. Ţĥé ŵôŕķbéñçĥ îš bý ţĥé þôð. ~~~~~~~~~]"
 
-#: planet/sites/hub_purpose.gd:173
+#: planet/sites/hub_purpose.gd:174
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "[Ţĥé ŕôçķéţ ŵàîţš ôñ ţĥé þàð. Ĥômé îš ƒîŕšţ ôñ îţš ļîšţ. ~~~~~~~~~~~~~~~~]"
 
-#: planet/sites/hub_purpose.gd:179
+#: planet/sites/hub_purpose.gd:180
 msgid "%s: %d%% clean, up %d%% while you were away."
 msgstr "[%s: %d%% çļéàñ, ûþ %d%% ŵĥîļé ýôû ŵéŕé àŵàý. ~~~~~~~~~~~~]"
 
-#: planet/sites/hub_purpose.gd:257
+#: planet/sites/hub_purpose.gd:258
 msgid "Dig the landmark out. Clean hexes here: %d / %d"
 msgstr "[Ðîĝ ţĥé ļàñðmàŕķ ôûţ. Çļéàñ ĥéxéš ĥéŕé: %d / %d ~~~~~~~~~~~~~]"
 
-#: planet/sites/hub_purpose.gd:259
+#: planet/sites/hub_purpose.gd:260
 msgid "Repair an outpost here: %d / %d"
 msgstr "[Ŕéþàîŕ àñ ôûţþôšţ ĥéŕé: %d / %d ~~~~~~~~]"
 
-#: planet/sites/hub_purpose.gd:262
+#: planet/sites/hub_purpose.gd:263
 msgid "Upgrade the rocket, then wake the %s"
 msgstr "[Ûþĝŕàðé ţĥé ŕôçķéţ, ţĥéñ ŵàķé ţĥé %s ~~~~~~~~~~]"
 
-#: planet/sites/hub_purpose.gd:263
+#: planet/sites/hub_purpose.gd:264
 msgid "Wake the %s (%s)"
 msgstr "[Ŵàķé ţĥé %s (%s) ~~~]"
 
-#: planet/sites/hub_purpose.gd:297
+#: planet/sites/hub_purpose.gd:298
 msgid "E   Wake the %s  (%s)"
 msgstr "E   [Ŵàķé ţĥé %s  (%s) ~~~]"
 
-#: planet/sites/hub_purpose.gd:298
+#: planet/sites/hub_purpose.gd:299
 msgid "%s: asleep. %s"
 msgstr "[%s: àšļééþ. %s ~~]"
 
-#: planet/sites/hub_purpose.gd:303
+#: planet/sites/hub_purpose.gd:304
 msgid "The rocket can carry supplies to %d bases. Upgrade it at the workbench."
 msgstr "[Ţĥé ŕôçķéţ çàñ çàŕŕý šûþþļîéš ţô %d bàšéš. Ûþĝŕàðé îţ àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: planet/sites/hub_purpose.gd:319
+#: planet/sites/hub_purpose.gd:320
 msgid "Waking the %s needs %s."
 msgstr "[Ŵàķîñĝ ţĥé %s ñééðš %s. ~~~~~]"
 
-#: planet/sites/hub_purpose.gd:344
+#: planet/sites/hub_purpose.gd:345
 msgid "%s is awake. %s keeps cleaning when you fly on."
 msgstr "[%s îš àŵàķé. %s ķééþš çļéàñîñĝ ŵĥéñ ýôû ƒļý ôñ. ~~~~~~~~~~~~~]"
 
-#: planet/sites/hub_purpose.gd:371
+#: planet/sites/hub_purpose.gd:372
 msgid "%s grows: level %d."
 msgstr "[%s ĝŕôŵš: ļévéļ %d. ~~~~]"
 
-#: planet/sites/hub_purpose.gd:399
+#: planet/sites/hub_purpose.gd:400
 msgid "%d robot working"
 msgid_plural "%d robots working"
 msgstr[0] "[%d ŕôbôţ ŵôŕķîñĝ ~~~]"
 msgstr[1] "[%d ŕôbôţš ŵôŕķîñĝ ~~~]"
 
-#: planet/sites/hub_purpose.gd:421
+#: planet/sites/hub_purpose.gd:422
 msgid "Home: %d%% clean"
 msgstr "[Ĥômé: %d%% çļéàñ ~~~]"
 
-#: planet/sites/hub_purpose.gd:423
+#: planet/sites/hub_purpose.gd:424
 msgid "Restored: %d%% clean"
 msgstr "[Ŕéšţôŕéð: %d%% çļéàñ ~~~~]"
 
-#: planet/sites/hub_purpose.gd:425 ui/profile_picker.gd:111
+#: planet/sites/hub_purpose.gd:426 ui/profile_picker.gd:111
 msgid "New"
 msgstr "[Ñéŵ ~]"
 
-#: planet/sites/hub_purpose.gd:428
+#: planet/sites/hub_purpose.gd:429
 msgid "Ready to wake"
 msgstr "[Ŕéàðý ţô ŵàķé ~~]"
 
-#: planet/sites/hub_purpose.gd:429
+#: planet/sites/hub_purpose.gd:430
 msgid "Asleep: %d / %d"
 msgstr "[Àšļééþ: %d / %d ~~]"
 
-#: planet/sites/hub_purpose.gd:440
+#: planet/sites/hub_purpose.gd:441
 msgid "%s   %d%% CLEAN"
 msgstr "[%s   %d%% ÇĻÉÀÑ ~~]"
 
-#: planet/sites/hub_purpose.gd:442
+#: planet/sites/hub_purpose.gd:443
 msgid "%s   BASES %d/%d"
 msgstr "[%s   BÀŠÉŠ %d/%d ~~~]"
 
-#: planet/sites/hub_purpose.gd:489
+#: planet/sites/hub_purpose.gd:490
 msgid "Restored. Next: take the rocket to %s."
 msgstr "[Ŕéšţôŕéð. Ñéxţ: ţàķé ţĥé ŕôçķéţ ţô %s. ~~~~~~~~~~]"
 
-#: planet/sites/hub_purpose.gd:491
+#: planet/sites/hub_purpose.gd:492
 msgid "All %d bases stand. Fly home and make the rocket ready to leave."
 msgstr "[Àļļ %d bàšéš šţàñð. Fļý ĥômé àñð màķé ţĥé ŕôçķéţ ŕéàðý ţô ļéàvé. ~~~~~~~~~~~~~~~~~~~]"
 
-#: planet/sites/hub_purpose.gd:663
+#: planet/sites/hub_purpose.gd:666
 msgid "%s  ·  the %s"
 msgstr "[%s  ·  ţĥé %s ~~]"
 
@@ -12106,6 +12090,10 @@ msgstr ""
 "Šîĝñéð: ŢĤÉ ĻÉÐĜÉŔ (ŕéļûçţàñţļý, ţĥéñ ļéšš ŕéļûçţàñţļý)\n"
 "Ŵîţñéšš: ŴŔÉÑ, Çŕàðļé çàŕéţàķéŕ\n"
 "Ŵîţñéšš: ĻM-1 (ļéƒţ à šmàļļ ôîļ šmûðĝé) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: data/machine_art.json:baler.body
+msgid "#33609e"
+msgstr "[#33609é ~]"
 
 #: data/museum.json:exhibits[gnomes].hint
 msgid "Five garden gnomes guard Old Town's streets. Pick them up."

@@ -260,22 +260,6 @@ msgstr "segure %s"
 msgid "Hex clean! Green can grow here now."
 msgstr "Hexágono limpo! Agora o verde pode crescer aqui."
 
-#: automation/auto_baler.gd:478
-msgid "AUTO-BALER"
-msgstr "ENFARDADEIRA AUTO"
-
-#: automation/auto_baler.gd:481
-msgid "KEEP CLEAR · 40 T"
-msgstr "MANTENHA DISTÂNCIA · 40 T"
-
-#: automation/conveyor.gd:71
-msgid "TO  SCALE  ◀"
-msgstr "PARA A  BALANÇA  ◀"
-
-#: automation/conveyor.gd:185
-msgid "BALE  FEED"
-msgstr "ENTRADA DE FARDOS"
-
 #: automation/hub.gd:89
 msgid "Locked. Upgrade your base to level %d to build the launch pad."
 msgstr "Bloqueado. Suba sua base para o nível %d para construir a plataforma de lançamento."
@@ -671,7 +655,7 @@ msgstr "JUNTOS FLORESCEMOS"
 msgid "LIGHT  WATER  LIFE"
 msgstr "LUZ  ÁGUA  VIDA"
 
-#: planet/sites/hub_hop.gd:48
+#: planet/sites/hub_hop.gd:49
 msgid "{interact}  skip"
 msgstr "{interact}  pular"
 
@@ -695,133 +679,133 @@ msgstr "Subúrbio"
 msgid "Harbour town"
 msgstr "Cidade portuária"
 
-#: planet/sites/hub_plan.gd:106
+#: planet/sites/hub_plan.gd:133
 msgid "landmark"
 msgstr "marco"
 
-#: planet/sites/hub_plan.gd:260
+#: planet/sites/hub_plan.gd:287
 msgid "The recycling network grew: everything sells for x%s now."
 msgstr "A rede de reciclagem cresceu: agora tudo vende por x%s."
 
-#: planet/sites/hub_plan.gd:279
+#: planet/sites/hub_plan.gd:306
 msgid "Rocket piece: %s"
 msgstr "Peça do foguete: %s"
 
-#: planet/sites/hub_plan.gd:301
+#: planet/sites/hub_plan.gd:328
 msgid "+%s Cubes"
 msgstr "+%s Cubos"
 
-#: planet/sites/hub_plan.gd:303
+#: planet/sites/hub_plan.gd:330
 msgid "+%d Parts"
 msgstr "+%d Peças"
 
-#: planet/sites/hub_plan.gd:305
+#: planet/sites/hub_plan.gd:332
 msgid "+%d Seeds"
 msgstr "+%d Sementes"
 
-#: planet/sites/hub_plan.gd:309
+#: planet/sites/hub_plan.gd:336
 msgid "New: %s"
 msgstr "Novo: %s"
 
-#: planet/sites/hub_plan.gd:313
+#: planet/sites/hub_plan.gd:340
 msgid "New Lumi design: %s"
 msgstr "Novo visual do Lumi: %s"
 
-#: planet/sites/hub_purpose.gd:167
+#: planet/sites/hub_purpose.gd:168
 msgid "Home. The workbench is by the pod."
 msgstr "Em casa. A bancada fica ao lado da cápsula."
 
-#: planet/sites/hub_purpose.gd:173
+#: planet/sites/hub_purpose.gd:174
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "O foguete espera na plataforma. Casa é o primeiro da lista."
 
-#: planet/sites/hub_purpose.gd:179
+#: planet/sites/hub_purpose.gd:180
 msgid "%s: %d%% clean, up %d%% while you were away."
 msgstr "%s: %d%% limpo, +%d%% enquanto você estava fora."
 
-#: planet/sites/hub_purpose.gd:257
+#: planet/sites/hub_purpose.gd:258
 msgid "Dig the landmark out. Clean hexes here: %d / %d"
 msgstr "Desenterre o marco. Limpe hexágonos aqui: %d / %d"
 
-#: planet/sites/hub_purpose.gd:259
+#: planet/sites/hub_purpose.gd:260
 msgid "Repair an outpost here: %d / %d"
 msgstr "Conserte um posto aqui: %d / %d"
 
-#: planet/sites/hub_purpose.gd:262
+#: planet/sites/hub_purpose.gd:263
 msgid "Upgrade the rocket, then wake the %s"
 msgstr "Melhore o foguete e depois desperte: %s"
 
-#: planet/sites/hub_purpose.gd:263
+#: planet/sites/hub_purpose.gd:264
 msgid "Wake the %s (%s)"
 msgstr "Desperte: %s (%s)"
 
-#: planet/sites/hub_purpose.gd:297
+#: planet/sites/hub_purpose.gd:298
 msgid "E   Wake the %s  (%s)"
 msgstr "E   Despertar: %s  (%s)"
 
-#: planet/sites/hub_purpose.gd:298
+#: planet/sites/hub_purpose.gd:299
 msgid "%s: asleep. %s"
 msgstr "%s: adormecido. %s"
 
-#: planet/sites/hub_purpose.gd:303
+#: planet/sites/hub_purpose.gd:304
 msgid "The rocket can carry supplies to %d bases. Upgrade it at the workbench."
 msgstr "O foguete consegue levar suprimentos a %d bases. Melhore-o na bancada."
 
-#: planet/sites/hub_purpose.gd:319
+#: planet/sites/hub_purpose.gd:320
 msgid "Waking the %s needs %s."
 msgstr "Para despertar (%s) faltam %s."
 
-#: planet/sites/hub_purpose.gd:344
+#: planet/sites/hub_purpose.gd:345
 msgid "%s is awake. %s keeps cleaning when you fly on."
 msgstr "%s despertou. %s continua limpando quando você seguir viagem."
 
-#: planet/sites/hub_purpose.gd:371
+#: planet/sites/hub_purpose.gd:372
 msgid "%s grows: level %d."
 msgstr "%s cresce: nível %d."
 
-#: planet/sites/hub_purpose.gd:399
+#: planet/sites/hub_purpose.gd:400
 msgid "%d robot working"
 msgid_plural "%d robots working"
 msgstr[0] "%d robô trabalhando"
 msgstr[1] "%d robôs trabalhando"
 
-#: planet/sites/hub_purpose.gd:421
+#: planet/sites/hub_purpose.gd:422
 msgid "Home: %d%% clean"
 msgstr "Casa: %d%% limpo"
 
-#: planet/sites/hub_purpose.gd:423
+#: planet/sites/hub_purpose.gd:424
 msgid "Restored: %d%% clean"
 msgstr "Restaurado: %d%% limpo"
 
-#: planet/sites/hub_purpose.gd:425 ui/profile_picker.gd:111
+#: planet/sites/hub_purpose.gd:426 ui/profile_picker.gd:111
 msgid "New"
 msgstr "Novo"
 
-#: planet/sites/hub_purpose.gd:428
+#: planet/sites/hub_purpose.gd:429
 msgid "Ready to wake"
 msgstr "Pronto para despertar"
 
-#: planet/sites/hub_purpose.gd:429
+#: planet/sites/hub_purpose.gd:430
 msgid "Asleep: %d / %d"
 msgstr "Adormecido: %d / %d"
 
-#: planet/sites/hub_purpose.gd:440
+#: planet/sites/hub_purpose.gd:441
 msgid "%s   %d%% CLEAN"
 msgstr "%s   %d%% LIMPO"
 
-#: planet/sites/hub_purpose.gd:442
+#: planet/sites/hub_purpose.gd:443
 msgid "%s   BASES %d/%d"
 msgstr "%s   BASES %d/%d"
 
-#: planet/sites/hub_purpose.gd:489
+#: planet/sites/hub_purpose.gd:490
 msgid "Restored. Next: take the rocket to %s."
 msgstr "Restaurado. A seguir: pegue o foguete para %s."
 
-#: planet/sites/hub_purpose.gd:491
+#: planet/sites/hub_purpose.gd:492
 msgid "All %d bases stand. Fly home and make the rocket ready to leave."
 msgstr "As %d bases estão de pé. Voe para casa e prepare o foguete para partir."
 
-#: planet/sites/hub_purpose.gd:663
+#: planet/sites/hub_purpose.gd:666
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
@@ -12110,6 +12094,10 @@ msgstr ""
 "Testemunha: WREN, zeladora da Cradle\n"
 "Testemunha: LM-1 (deixou uma manchinha de óleo)"
 
+#: data/machine_art.json:baler.body
+msgid "#33609e"
+msgstr ""
+
 #: data/museum.json:exhibits[gnomes].hint
 msgid "Five garden gnomes guard Old Town's streets. Pick them up."
 msgstr "Cinco gnomos de jardim guardam as ruas do Cidade Velha. Pegue-os."
@@ -16948,6 +16936,18 @@ msgstr "Aquele pórtico desmanchou a frota do Ledger quando o dinheiro acabou. A
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Um mundo de ferrugem, verde. Os velhos guindastes têm flores aos pés. As contas estão fechadas, {name}. Nós as equilibramos."
+
+#~ msgid "AUTO-BALER"
+#~ msgstr "ENFARDADEIRA AUTO"
+
+#~ msgid "KEEP CLEAR · 40 T"
+#~ msgstr "MANTENHA DISTÂNCIA · 40 T"
+
+#~ msgid "TO  SCALE  ◀"
+#~ msgstr "PARA A  BALANÇA  ◀"
+
+#~ msgid "BALE  FEED"
+#~ msgstr "ENTRADA DE FARDOS"
 
 #~ msgid "Research Dune Charts"
 #~ msgstr "Pesquise Mapas das Dunas"
