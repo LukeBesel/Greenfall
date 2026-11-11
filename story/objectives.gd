@@ -276,6 +276,14 @@ static func step_why(def: Dictionary) -> String:
 	return "" if r == str(_reasons.get("default", "")) else r
 
 
+## [v6pace] WREN's lines as a story step starts: its own, else (a step with no desc) its story reason.
+static func step_lines(def: Dictionary) -> Array:
+	var ls: Array = def.get("lines", [])
+	if ls.is_empty() and not def.has("desc") and step_why(def) != "":
+		return [step_why(def)]
+	return ls
+
+
 ## Card text for an objective: [title, why]. The why is the "hint" until its wait_flag is set.
 static func texts(def: Dictionary) -> Array[String]:
 	var why: String = step_why(def)
@@ -672,9 +680,7 @@ func _narrate() -> void:
 		return
 	said.append(id)
 	GameState.flags["wren_steps"] = said
-	var ls: Array = def.get("lines", [])
-	if ls.is_empty() and not def.has("desc") and step_why(def) != "":
-		ls = [step_why(def)]  # [v6pace] the hub steps: WREN says their story reason
+	var ls: Array = step_lines(def)
 	if not ls.is_empty():
 		# [v6story] dropped unsaid if the step is already done when her turn comes
 		w.speak(tr(str(ls[0])), w.stage(), false, func() -> bool:

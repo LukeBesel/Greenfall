@@ -18,9 +18,7 @@ func test_every_story_objective_has_a_reason_line() -> void:
 		assert_lt(why.length(), 60 if def.has("desc") else 81, "objective %s: the reason is one short line (%d)" % [id, why.length()])  # [v6pace] a story reason fits the goal card (80)
 		if def.has("wait_flag"):
 			assert_gt(str(def.get("hint", "")).length(), 12, "objective %s has a line while it waits" % id)
-		var lines: Array = def.get("lines", [])
-		if lines.is_empty() and not def.has("desc"):
-			lines = [why]  # [v6pace] WREN speaks the hub steps' story reason (Objectives._narrate)
+		var lines: Array = Objectives.step_lines(def)  # [v6pace] hub steps: WREN speaks their story reason
 		assert_false(lines.is_empty(), "objective %s has WREN's line" % id)
 
 
