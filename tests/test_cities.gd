@@ -229,3 +229,106 @@ func test_a_restored_yard_is_paved_in_a_planted_frame() -> void:
 		for i: int in n:
 			lawn += 1 if OldTownGround._yard_cell(i, j) == OldTownGround.LAWN else 0
 	assert_between(lawn, n * n / 5, n * n / 2, "between a fifth and a half of the yard is green")
+
+
+func test_a_dense_suburb_block_has_house_rows_with_no_overlap() -> void:
+	var block := Rect2(-10.9, -10.9, 21.8, 21.8)
+	var thin: int = 0
+	var dense: int = 0
+	for seed_v: int in 12:
+		var a := RandomNumberGenerator.new()
+		a.seed = 900 + seed_v
+		thin += VerdanceSite._houses(block, a).size()
+		var b := RandomNumberGenerator.new()
+		b.seed = 900 + seed_v
+		var houses: Array = VerdanceSite._houses(block, b, true)
+		dense += houses.size()
+		for i: int in houses.size():
+			var r: Rect2 = houses[i]["rect"]
+			assert_true(block.grow(0.01).encloses(r), "a house stays on its block")
+			assert_true(houses[i].has("setback"), "a dense row's house knows its setback")
+			for j: int in range(i + 1, houses.size()):
+				assert_false(r.intersects(houses[j]["rect"]), "houses do not overlap")
+	assert_gt(dense, thin * 13 / 10, "dense rows hold clearly more houses (%d against %d)" % [dense, thin])
+
+
+func test_gardens_fence_hedge_and_drive_a_pair_of_houses() -> void:
+	var holder := Node3D.new()
+	add_child_autofree(holder)
+	var gardens := CityGardens.new()
+	holder.add_child(gardens)
+	var body: StaticBody3D = PropColliders.body(holder, "GardenBody")
+	var face := Vector2(0, -1)
+	var roofs: Array = [
+		[Transform3D.IDENTITY, Rect2(0.0, 1.0, 9.0, 7.0), 3.0, {"seed": 11, "floors": 1, "face": face, "style": "apartments", "setback": 1.0}],
+		[Transform3D.IDENTITY, Rect2(12.2, 1.0, 9.0, 7.0), 3.0, {"seed": 12, "floors": 2, "face": face, "style": "apartments", "setback": 1.0}],
+		[Transform3D.IDENTITY, Rect2(40.0, 1.0, 12.0, 11.0), 30.0, {"seed": 13, "floors": 9, "face": face, "style": "apartments"}],
+	]
+	gardens.build(roofs, CityLook.of("lowmeadow"), body)
+	assert_eq(int(gardens.stats["garden_houses"]), 2, "only the low houses get gardens")
+	assert_eq(int(gardens.stats["garden_drives"]), 1, "a drive in the 3.2 m gap between the two")
+	assert_eq(body.get_child_count(), 2, "each hedge of the pad town is solid")
+	var flowers: Array[Node3D] = gardens._flowers
+	assert_gt(flowers.size(), 0)
+	gardens.set_stage(2)
+	assert_false(flowers[0].visible, "no flowers while the soil is poisoned")
+	var dry: Color = gardens._leaf.albedo_color
+	gardens.set_stage(5)
+	assert_true(flowers[0].visible)
+	assert_gt(gardens._leaf.albedo_color.g - gardens._leaf.albedo_color.r, dry.g - dry.r, "hedges and crops turn green")
+
+
+func test_gable_ends_are_their_own_cheap_mesh() -> void:
+	var m: ArrayMesh = CityRoofs.gable_end_mesh()
+	assert_lt(m.surface_get_array_len(0) / 3, 12)
+	assert_almost_eq(m.get_aabb().end.y, 0.94, 0.01)
+
+
+func test_a_moving_part_turns_about_its_pivot() -> void:
+	var c: VerdanceCity = VerdanceCity.create("scrapyard")
+	add_child_autofree(c)
+	c.frame = Transform3D(Basis(Vector3.UP, PI * 0.5), Vector3(-72.0, 0.0, 0.0))
+	var part: Node3D = c.place_part("Arm", BuildingDetail.Geo.new(), Vector3(4.0, 10.0, 2.0))
+	var rest: Vector3 = part.position
+	assert_almost_eq(rest.y, 10.0, 0.001)
+	c.move_part(part, 1.0)
+	assert_almost_eq(part.position.distance_to(rest), 0.0, 0.001, "turning keeps the pivot where it is")
+	assert_almost_eq(part.basis.get_euler().y - Basis(Vector3.UP, PI * 0.5).get_euler().y, 1.0, 0.001)
+	c.move_part(part, 0.0, Vector3(3.0, 0.0, 0.0))
+	assert_almost_eq(part.position.distance_to(rest), 3.0, 0.001)
+	c.set_source_state(VerdanceCity.STATE_SHUT_DOWN)
+	assert_true(c.is_processing(), "a city with a moving part keeps animating when shut down")
+
+
+func test_clear_ground_lies_on_the_lot_in_front_of_the_landmark() -> void:
+	for id: String in ["kettle_bay", "lowmeadow"]:
+		var c: VerdanceCity = VerdanceCity.create(id)
+		var clear: Array[Rect2] = c._clear_ground()
+		assert_gt(clear.size(), 0, "%s keeps some ground free of junk" % id)
+		for r: Rect2 in clear:
+			assert_gt(r.position.y, 10.0, "%s: toward the yard, off the landmark's own block" % id)
+			assert_lt(r.end.y, CityLayout.PITCH * 2.0 - CityLayout.YARD_HALF, "%s: short of the yard" % id)
+		c.free()
+
+
+func test_street_haze_is_never_grey_or_brown_and_can_be_cleared() -> void:
+	var look: CityLook = CityLook.of("highreach")
+	for key: String in ["haze_near", "haze_far"]:
+		var col: Color = CityLook.colour(look.data.get(key, []))
+		assert_gt(col.s, 0.45, "%s is a strong colour" % key)
+		assert_gt(col.v, 0.9, "%s is bright" % key)
+	var haze: MeshInstance3D = CityKit.haze("Haze", 200.0, 150.0, Color.MAGENTA, Color.ORANGE, 0.01, 30.0)
+	var m: ShaderMaterial = haze.material_override as ShaderMaterial
+	assert_almost_eq(float(m.get_shader_parameter("radius")), 200.0, 0.001)
+	m.set_shader_parameter("strength", 0.0)
+	assert_eq(float(m.get_shader_parameter("strength")), 0.0)
+	haze.free()
+
+
+func test_sparks_and_streams_fall_along_the_sites_own_down() -> void:
+	var sp: CPUParticles3D = CityKit.sparks("S", Vector3.ZERO, Vector3.UP, Color.ORANGE, 20, 8.0, 30.0, 0.3)
+	var st: CPUParticles3D = CityKit.stream("R", Vector3.ZERO, Color.BLUE, Color.WHITE, 20, 4.0, 1.0, 0.5)
+	for p: CPUParticles3D in [sp, st]:
+		assert_true(p.local_coords, "a site on a round planet: down is the site's, not the world's")
+		assert_lt(p.gravity.y, 0.0)
+		p.free()

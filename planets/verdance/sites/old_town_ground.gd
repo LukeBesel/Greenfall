@@ -29,6 +29,7 @@ const FLOWERS_PER_EDGE: int = 3
 const SHRUB_IDS: Array[String] = ["shrub_01", "shrub_02"]
 const TUFT_ID: String = "grass_medium_01"
 const PAVING_SHADER: String = "res://planets/verdance/sites/old_town_paving.gdshader"
+const PAVING_COLOURS: Array[String] = ["clay", "buff", "sand", "stone"]   # the shader's colours a city may set
 const NONE: int = 0
 const PAVE: int = 1
 const LAWN: int = 2
@@ -52,8 +53,9 @@ var _stage5: Array[Node3D] = []
 ## it are left out (the start yard has its own pad). `station_key` is the landmark's block (all
 ## paving); `solid` are footprints the lawn keeps off; `tree_spots` are the
 ## street trees (each gets a verge); `avenue` are the blocks of the city's formal way to its landmark.
+## `paving` gives the pavers the city's own colours (cities.json "paving": the shader's clay and buff).
 func build(site: VerdanceSite, station_key: Vector2i, solid: Array[Rect2], tree_spots: Array[Vector2] = [], yard: bool = false,
-		avenue: Array[Vector2i] = []) -> void:
+		avenue: Array[Vector2i] = [], paving: Dictionary = {}) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = site.seed_value + 5503
 	var pave := SurfaceTool.new()
@@ -126,6 +128,9 @@ func build(site: VerdanceSite, station_key: Vector2i, solid: Array[Rect2], tree_
 	n_lawn += n_verge
 	_paving = ShaderMaterial.new()
 	_paving.shader = load(PAVING_SHADER)
+	for key: String in PAVING_COLOURS:
+		if paving.has(key):
+			_paving.set_shader_parameter(key, CityLook.colour(paving[key]))
 	_lawn = AssetLib.pbr_material("leafy_grass", 1.0, Color.WHITE)
 	if n_pave > 0:
 		_stage3.append(_surface("Paving", pave, _paving))

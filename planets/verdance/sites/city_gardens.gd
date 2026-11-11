@@ -15,8 +15,8 @@ const MAX_FLOORS: int = 2
 const FENCE_OUT: float = 0.42        # the fence stands this far in front of the wall
 const GATE_HALF: float = 0.6
 const POST_EVERY: float = 1.15
-const HEDGE_W: float = 0.42
-const HEDGE_H: float = 0.95
+const HEDGE_W: float = 0.46
+const HEDGE_H: float = 0.72
 const DRIVE_W: float = 2.5
 const DRIVE_GAP: Vector2 = Vector2(2.7, 7.0)   # the gap to the next house a drive fits in
 const BED_DEPTH: float = 2.2
@@ -66,7 +66,7 @@ func build(roofs: Array, look: CityLook, body: StaticBody3D) -> void:
 				drives += 1
 			if _back(fr, e[1], bd, taken, look, rng):
 				beds += 1
-	_leaf = AssetLib.pbr_material("leafy_grass", 0.6, Color.WHITE, true)
+	_leaf = AssetLib.pbr_material("leafy_grass", 1.6, Color.WHITE, true)
 	_leaf.vertex_color_use_as_albedo = true
 	var hard: StandardMaterial3D = CityKit.vc_material(0.9)
 	var box := BoxMesh.new()

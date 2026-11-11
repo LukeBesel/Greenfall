@@ -230,7 +230,7 @@ func build(site: VerdanceSite) -> void:
 	ground.name = "Ground"
 	add_child(ground)
 	ground.build(_site, block_key, landmark_rects + _rects, tree_spots, _site.site_id != "start_yard",
-		approach_keys if bool(look.landmark().get("avenue", false)) else ([] as Array[Vector2i]))
+		approach_keys if bool(look.landmark().get("avenue", false)) else ([] as Array[Vector2i]), look.data.get("paving", {}))
 	stats.merge(ground.stats)
 	await BuildBudget.check("city:signs")
 	var signs := OldTownShopSigns.new()

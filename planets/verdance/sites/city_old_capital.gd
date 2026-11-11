@@ -7,7 +7,8 @@ extends VerdanceCity
 ## frames, a red-and-white service tower 78 m high (the tallest thing on Verdance) with three swing
 ## arms and a hammerhead crane, two lightning masts, a white propellant sphere and the assembly
 ## shed with a nose cone waiting on its cradle. The pad is dressed as the goal of the whole game:
-## a stone avenue runs to it from the yard between two rows of tall flags, a red-and-white gate
+## a stone avenue runs to it from the yard between two rows of tall flags (under the junk like
+## everything else at the start; it comes clear as the district is cleaned), a red-and-white gate
 ## with the pad's name spans the avenue's end, the table's deck is painted as a red, white and
 ## teal target that reads from above, and the pad's number stands on the tower.
 ## Running (the pad still derelict): the top arm hangs broken and sways, sparks fall from its
@@ -49,6 +50,7 @@ const MAST_H: float = 56.0
 const STONE := Color(0.98, 0.94, 0.84)
 const FLAG_COLOURS: Array[Color] = [Color(0.84, 0.1, 0.1), Color(0.95, 0.74, 0.12), Color(0.06, 0.52, 0.54)]
 const AVENUE_HALF: float = 4.2
+const AVENUE_TOP: float = 0.07   # over the restored paving (OldTownGround.PAVE_Y), so the stone way stays on top
 const AVENUE_Z: Vector2 = Vector2(24.6, 47.4)     # along the approach block, in the landmark's frame
 const FLAG_X: float = 5.7
 const FLAG_Z: Array[float] = [12.2, 26.4, 31.4, 36.4, 41.4, 46.4]
@@ -77,10 +79,6 @@ func _footprint() -> Array[Rect2]:
 		out.append(Rect2(sx * GATE_X - 0.7, GATE_Z - 0.7, 1.4, 1.4))
 	return out
 
-
-## The avenue stays free of junk: the way to the pad is always open to the eye.
-func _clear_ground() -> Array[Rect2]:
-	return [Rect2(-AVENUE_HALF, AVENUE_Z.x, AVENUE_HALF * 2.0, AVENUE_Z.y - AVENUE_Z.x)]
 
 
 func _build_landmark() -> void:
@@ -170,10 +168,10 @@ func _table(g: BuildingDetail.Geo) -> void:
 ## pylons under a yellow truss that carries the pad's name.
 func _avenue(g: BuildingDetail.Geo) -> void:
 	g.mat(BuildingDetail.K_PLAIN, STONE, BuildingDetail.T_CONCRETE)
-	g.abox(Vector3(-AVENUE_HALF, 0.0, AVENUE_Z.x), Vector3(AVENUE_HALF * 2.0, 0.035, AVENUE_Z.y - AVENUE_Z.x), BuildingDetail.K_ROOF)
+	g.abox(Vector3(-AVENUE_HALF, 0.0, AVENUE_Z.x), Vector3(AVENUE_HALF * 2.0, AVENUE_TOP, AVENUE_Z.y - AVENUE_Z.x), BuildingDetail.K_ROOF)
 	for stripe: Array in [[-0.5, TOWER_RED], [0.2, GOLD]]:
 		g.mat(BuildingDetail.K_FLAT, stripe[1] as Color)
-		g.abox(Vector3(float(stripe[0]), 0.035, AVENUE_Z.x), Vector3(0.3, 0.04, AVENUE_Z.y - AVENUE_Z.x))
+		g.abox(Vector3(float(stripe[0]), AVENUE_TOP, AVENUE_Z.x), Vector3(0.3, 0.02, AVENUE_Z.y - AVENUE_Z.x))
 	var n: int = 0
 	for z: float in FLAG_Z:
 		for sx: float in [-1.0, 1.0]:

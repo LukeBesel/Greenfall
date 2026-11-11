@@ -447,6 +447,8 @@ func _town_layout() -> void:
 					bd["style"] = "factory" if rng.randf() < float(pr["factory"]) else "apartments"
 				bd["ruined"] = rng.randf() < float(pr["ruin"][0 if ring <= 1 else 1])
 				bd["floors"] = maxi(1 if pr.get("houses", false) else 2, f - (rng.randi_range(1, 3) if bd["ruined"] and f > 3 else 0))
+				if ring == 1 and pr.has("near_cap"):  # after the draw, so the layout's random stream is untouched
+					bd["floors"] = mini(int(bd["floors"]), int(pr["near_cap"]))
 				if bd["style"] == "factory" and f > 8:
 					bd["style"] = "apartments"  # towers are offices and flats, not sheds
 			if b["buildings"].is_empty():
