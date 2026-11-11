@@ -1594,7 +1594,7 @@ func _shop(want: Dictionary) -> void:
 	var robot: String = str(want.get("robot", "")) if fleet != null and BenchTiers.tab_open("bots") else ""  # [orbB] no Fleet on the globe yet (orbC)  # [v1guide] the Bots tab is open
 	var built_n: int = 0
 	while robot != "" and built_n < ROBOTS_PER_VISIT:  # a player at the Bots tab builds what is paid for
-		var hub_save: float = float(want.get("hub_save", 0.0))
+		var hub_save: float = 0.0 if _crew_first() else float(want.get("hub_save", 0.0))
 		var spare: float = GameState.get_currency("cubes").to_float() - fleet.build_cost(robot).to_float()
 		var must: bool = _robot_goal(robot) or _essential(robot)
 		var ok: bool = hub_save <= 0.0 or spare >= hub_save or must
@@ -1693,6 +1693,19 @@ func _shop(want: Dictionary) -> void:
 			cp.interact()
 			_progress()
 			_event("composter", {"level": cp.level})
+
+
+## Past the first city the crew is the engine and robots are paid in Parts: the cubes saved for the
+## next base level no longer hold a robot back (the base matters again when its level caps the crew).
+func _crew_first() -> bool:
+	var d: Districts = _districts()
+	var fleet: Fleet = world.fleet
+	if d == null or fleet == null or d.unlocked_count() < 2:
+		return false
+	var cap: Dictionary = Economy.robot_cfg.get("crew_cap", {})
+	var by_base: Array = cap.get("by_base_level", [])
+	var lv: int = int(world.hub.level)
+	return by_base.is_empty() or lv > by_base.size() or fleet.robot_total() + 1 < int(by_base[lv - 1])
 
 
 ## Whether paying `cost` leaves the Parts for the robot the bot is working toward: from the second
@@ -1945,7 +1958,7 @@ func _next_robot() -> String:
 	var order: Array[String] = []
 	# Nearly all land junk gone: no more cleaners or haulers (the lake still wants a Skimmer).
 	var late: bool = _land_left_frac() < 0.12
-	var saving: bool = not _hub_need().is_empty() and not _hub_mats_short()
+	var saving: bool = not _hub_need().is_empty() and not _hub_mats_short() and not _crew_first()
 	if AutoplayCampaign.frontier_kid(world) == "sunken_city" and _lake_dirty() and fleet.count("skimmer") < 14:
 		order.append("skimmer")  # [beat] the flooded city is skimmed, not scooped
 	# Waterers once the city has its first stage: before that its stage waits on cleaning, and a
