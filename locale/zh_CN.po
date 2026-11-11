@@ -192,67 +192,67 @@ msgstr "触摸板"
 msgid "Paddle 1"
 msgstr "背键 1"
 
-#: autoload/Settings.gd:522
+#: autoload/Settings.gd:535
 msgid "LMB"
 msgstr "左键"
 
-#: autoload/Settings.gd:523
+#: autoload/Settings.gd:536
 msgid "RMB"
 msgstr "右键"
 
-#: autoload/Settings.gd:524
+#: autoload/Settings.gd:537
 msgid "MMB"
 msgstr "中键"
 
-#: autoload/Settings.gd:525
+#: autoload/Settings.gd:538
 msgid "Wheel up"
 msgstr "滚轮上"
 
-#: autoload/Settings.gd:526
+#: autoload/Settings.gd:539
 msgid "Wheel down"
 msgstr "滚轮下"
 
-#: autoload/Settings.gd:527
+#: autoload/Settings.gd:540
 msgid "Mouse %d"
 msgstr "鼠标 %d"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:542
 msgid "Button %d"
 msgstr "按键 %d"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:547
 msgid "LS left"
 msgstr "左摇杆左"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:547
 msgid "LS right"
 msgstr "左摇杆右"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:548
 msgid "LS up"
 msgstr "左摇杆上"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:548
 msgid "LS down"
 msgstr "左摇杆下"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:549
 msgid "RS left"
 msgstr "右摇杆左"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:549
 msgid "RS right"
 msgstr "右摇杆右"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:550
 msgid "RS up"
 msgstr "右摇杆上"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:550
 msgid "RS down"
 msgstr "右摇杆下"
 
-#: autoload/Settings.gd:548
+#: autoload/Settings.gd:561
 msgid "hold %s"
 msgstr "按住 %s"
 
@@ -405,11 +405,11 @@ msgstr "粉碎  ·  熔炼  ·  永久清除"
 msgid "HAND FEED"
 msgstr "手动投料"
 
-#: automation/rocket.gd:315
+#: automation/rocket.gd:316
 msgid "LIFT OFF"
 msgstr "升空"
 
-#: automation/rocket.gd:861
+#: automation/rocket.gd:862
 msgid "Space / Esc  skip"
 msgstr "空格 / Esc  跳过"
 
@@ -767,10 +767,6 @@ msgstr "一起绽放"
 #: planet/future_layer.gd:40
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  生命"
-
-#: planet/orbit/verdance_globe.gd:567 scenes/slice_orbit.gd:398
-msgid "HEX CLEAN!  +%s"
-msgstr "六角格清理完毕！  +%s"
 
 #: planet/sites/hub_hop.gd:48
 msgid "{interact}  skip"
@@ -1612,31 +1608,35 @@ msgstr[0] "你不在的时候，这里的机器人清理了 %d 个六角格，�
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s 组装完成。它四下看了看，就开始干活了。"
 
-#: scenes/slice.gd:136 ui/rockets_panel.gd:60
+#: scenes/slice.gd:133 ui/rockets_panel.gd:60
 msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
 msgstr "走到发射台上的火箭旁，按 E 选择要飞去的地方。"
 
-#: scenes/slice.gd:146 ui/rockets_panel.gd:39
+#: scenes/slice.gd:143 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
 
-#: scenes/slice_orbit.gd:414
+#: scenes/slice_orbit.gd:392
+msgid "HEX CLEAN!  +%s"
+msgstr "六角格清理完毕！  +%s"
+
+#: scenes/slice_orbit.gd:408
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice_orbit.gd:483 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:477 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   修理工作台"
 
-#: scenes/slice_orbit.gd:483 systems/camp/camp.gd:195
+#: scenes/slice_orbit.gd:477 systems/camp/camp.gd:195
 msgid "E   Open the workbench"
 msgstr "E   打开工作台"
 
-#: scenes/slice_orbit.gd:1000
+#: scenes/slice_orbit.gd:994
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice_orbit.gd:1100
+#: scenes/slice_orbit.gd:1094
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "工作台修好了。在它旁边按 E，用方块购买升级。"
 
@@ -3015,20 +3015,20 @@ msgstr "存档 %d"
 msgid "%d:%02d h"
 msgstr "%d:%02d 小时"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "Low"
 msgstr "低"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
-#: ui/settings_panel.gd:594
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
+#: ui/settings_panel.gd:601
 msgid "Medium"
 msgstr "中"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "High"
 msgstr "高"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "Ultra"
 msgstr "超高"
 
@@ -3262,7 +3262,7 @@ msgstr "紫罗兰"
 msgid "Moonlight"
 msgstr "月光"
 
-#: systems/tunes.gd:166
+#: systems/tunes.gd:390
 msgid "New CD: %s by %s, from %s"
 msgstr "新CD：%s，演奏：%s，来自%s"
 
@@ -3720,7 +3720,7 @@ msgstr "初始配置：只有 Lumi。传家宝会添加更多。"
 msgid "Starting kit: %s"
 msgstr "初始配置：%s"
 
-#: ui/ark_bridge.gd:303 ui/settings_panel.gd:575
+#: ui/ark_bridge.gd:303 ui/settings_panel.gd:582
 msgid "Full"
 msgstr "完整"
 
@@ -5525,7 +5525,7 @@ msgstr "火箭飞行期间无法使用拍照模式。"
 msgid "Photo mode isn't available during a cinematic."
 msgstr "过场动画期间无法使用拍照模式。"
 
-#: ui/photo_mode.gd:362 ui/photo_mode.gd:415 ui/settings_panel.gd:383
+#: ui/photo_mode.gd:362 ui/photo_mode.gd:415 ui/settings_panel.gd:390
 msgid "Camera"
 msgstr "相机"
 
@@ -5533,7 +5533,7 @@ msgstr "相机"
 msgid "Mode"
 msgstr "模式"
 
-#: ui/photo_mode.gd:364 ui/settings_panel.gd:391
+#: ui/photo_mode.gd:364 ui/settings_panel.gd:398
 msgid "Field of view"
 msgstr "视野"
 
@@ -5570,7 +5570,7 @@ msgid "Blur"
 msgstr "模糊"
 
 #: ui/photo_mode.gd:372 ui/photo_panel.gd:240 ui/photo_panel.gd:242
-#: ui/photo_panel.gd:280 ui/settings_panel.gd:681
+#: ui/photo_panel.gd:280 ui/settings_panel.gd:688
 msgid "Off"
 msgstr "关"
 
@@ -5683,7 +5683,7 @@ msgid "Exit"
 msgstr "退出"
 
 #: ui/photo_panel.gd:240 ui/photo_panel.gd:242 ui/photo_panel.gd:280
-#: ui/settings_panel.gd:681
+#: ui/settings_panel.gd:688
 msgid "On"
 msgstr "开"
 
@@ -6054,23 +6054,23 @@ msgstr "{ui_cancel}  返回"
 msgid "Changes are saved automatically."
 msgstr "更改会自动保存。"
 
-#: ui/settings_panel.gd:242 ui/settings_panel.gd:323
+#: ui/settings_panel.gd:242 ui/settings_panel.gd:330
 msgid "Quality preset"
 msgstr "画质预设"
 
-#: ui/settings_panel.gd:243 ui/settings_panel.gd:340
+#: ui/settings_panel.gd:243 ui/settings_panel.gd:347
 msgid "Fullscreen"
 msgstr "全屏"
 
-#: ui/settings_panel.gd:246 ui/settings_panel.gd:384
+#: ui/settings_panel.gd:246 ui/settings_panel.gd:391
 msgid "Mouse sensitivity"
 msgstr "鼠标灵敏度"
 
-#: ui/settings_panel.gd:250 ui/settings_panel.gd:560
+#: ui/settings_panel.gd:250 ui/settings_panel.gd:567
 msgid "System default"
 msgstr "跟随系统"
 
-#: ui/settings_panel.gd:251 ui/settings_panel.gd:558 ui/settings_panel.gd:561
+#: ui/settings_panel.gd:251 ui/settings_panel.gd:565 ui/settings_panel.gd:568
 msgid "Language"
 msgstr "语言"
 
@@ -6087,246 +6087,250 @@ msgid "Volume"
 msgstr "音量"
 
 #: ui/settings_panel.gd:309
+msgid "Ambience"
+msgstr "环境音"
+
+#: ui/settings_panel.gd:312
 msgid "Sound effects"
 msgstr "音效"
 
-#: ui/settings_panel.gd:316
-msgid "Rendering"
-msgstr "渲染"
-
-#: ui/settings_panel.gd:317
-msgid "Low drops GI and fog; Ultra adds reflections."
-msgstr "低：关闭全局光照和雾；超高：增加反射。"
-
-#: ui/settings_panel.gd:318
-msgid "This renderer always uses the Low preset."
-msgstr "此渲染器始终使用“低”预设。"
-
-#: ui/settings_panel.gd:320
-msgid "Detected: %s for %s. "
-msgstr "检测到：%s，适用于 %s。"
-
-#: ui/settings_panel.gd:321
-msgid "Your choice (hardware: %s). "
-msgstr "你的选择（硬件：%s）。"
-
-#: ui/settings_panel.gd:322
-msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
-msgstr "低：关闭全局光照、雾和阴影细节；超高：增加反射。"
-
-#: ui/settings_panel.gd:328
-msgid "Renderer"
-msgstr "渲染器"
-
-#: ui/settings_panel.gd:328
-msgid "Standard (Forward+)"
-msgstr "标准（Forward+）"
-
-#: ui/settings_panel.gd:328
-msgid "Light (Mobile)"
-msgstr "轻量（Mobile）"
-
-#: ui/settings_panel.gd:330
-msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
-msgstr "轻量适合较旧的集成显卡。重启游戏后生效（当前：%s）。"
-
-#: ui/settings_panel.gd:336
-msgid "Render scale"
-msgstr "渲染缩放"
-
-#: ui/settings_panel.gd:338
-msgid "Lower renders 3D at a smaller size; the interface stays sharp."
-msgstr "调低会以较小尺寸渲染 3D；界面保持清晰。"
-
-#: ui/settings_panel.gd:339
-msgid "Display"
-msgstr "显示"
-
-#: ui/settings_panel.gd:343
-msgid "V-Sync"
-msgstr "垂直同步"
-
-#: ui/settings_panel.gd:349 ui/settings_panel.gd:378
-msgid "Bindings"
-msgstr "按键绑定"
-
-#: ui/settings_panel.gd:352
-msgid "ACTION   (select a binding to rebind it)"
-msgstr "操作   （选择一个绑定来重新设置）"
-
-#: ui/settings_panel.gd:355
-msgid "KEYBOARD / MOUSE"
-msgstr "键盘 / 鼠标"
-
-#: ui/settings_panel.gd:355
-msgid "CONTROLLER"
-msgstr "手柄"
-
-#: ui/settings_panel.gd:371
-msgid "Reset to defaults"
-msgstr "恢复默认"
-
-#: ui/settings_panel.gd:378
-msgid "Restore every key and controller binding."
-msgstr "恢复所有键盘和手柄绑定。"
-
-#: ui/settings_panel.gd:380
-msgid "Button prompts"
-msgstr "按键图标"
-
-#: ui/settings_panel.gd:382
-msgid "Controller art: Automatic follows the connected pad."
-msgstr "手柄图标：“自动”会跟随已连接的手柄。"
-
-#: ui/settings_panel.gd:387
-msgid "Stick look speed"
-msgstr "摇杆视角速度"
-
-#: ui/settings_panel.gd:390
-msgid "Invert look Y"
-msgstr "反转 Y 轴视角"
-
-#: ui/settings_panel.gd:394
-msgid "Mouse smoothing"
-msgstr "鼠标平滑"
-
-#: ui/settings_panel.gd:395
-msgid "Eases mouse look over a few frames."
-msgstr "在几帧内平滑鼠标视角。"
-
-#: ui/settings_panel.gd:396
-msgid "Scooping"
-msgstr "铲取"
-
-#: ui/settings_panel.gd:397
-msgid "Scoop button"
-msgstr "铲取按键"
-
-#: ui/settings_panel.gd:397
-msgid "Hold"
-msgstr "按住"
-
-#: ui/settings_panel.gd:397
-msgid "Toggle"
-msgstr "切换"
-
-#: ui/settings_panel.gd:438
-msgid "press a button…"
-msgstr "请按一个按钮…"
-
-#: ui/settings_panel.gd:438
-msgid "press a key…"
-msgstr "请按一个键…"
-
-#: ui/settings_panel.gd:470
-msgid "Conflict: %s is used by both %s and %s."
-msgstr "冲突：%s 同时被 %s 和 %s 使用。"
-
-#: ui/settings_panel.gd:564
-msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
-msgstr "菜单、HUD、字幕和剧情文本。Pseudo 用于测试翻译。"
-
-#: ui/settings_panel.gd:565
-msgid "Comfort"
-msgstr "舒适度"
-
-#: ui/settings_panel.gd:566
-msgid "Camera shake"
-msgstr "镜头晃动"
-
-#: ui/settings_panel.gd:568
-msgid "Reduced motion"
-msgstr "减少动态效果"
-
-#: ui/settings_panel.gd:569
-msgid "Calmer camera and fewer bouncy effects."
-msgstr "更平稳的镜头，更少的弹跳效果。"
-
-#: ui/settings_panel.gd:570 ui/settings_panel.gd:580
+#: ui/settings_panel.gd:316 ui/settings_panel.gd:577 ui/settings_panel.gd:587
 msgid "Interface"
 msgstr "界面"
 
+#: ui/settings_panel.gd:323
+msgid "Rendering"
+msgstr "渲染"
+
+#: ui/settings_panel.gd:324
+msgid "Low drops GI and fog; Ultra adds reflections."
+msgstr "低：关闭全局光照和雾；超高：增加反射。"
+
+#: ui/settings_panel.gd:325
+msgid "This renderer always uses the Low preset."
+msgstr "此渲染器始终使用“低”预设。"
+
+#: ui/settings_panel.gd:327
+msgid "Detected: %s for %s. "
+msgstr "检测到：%s，适用于 %s。"
+
+#: ui/settings_panel.gd:328
+msgid "Your choice (hardware: %s). "
+msgstr "你的选择（硬件：%s）。"
+
+#: ui/settings_panel.gd:329
+msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
+msgstr "低：关闭全局光照、雾和阴影细节；超高：增加反射。"
+
+#: ui/settings_panel.gd:335
+msgid "Renderer"
+msgstr "渲染器"
+
+#: ui/settings_panel.gd:335
+msgid "Standard (Forward+)"
+msgstr "标准（Forward+）"
+
+#: ui/settings_panel.gd:335
+msgid "Light (Mobile)"
+msgstr "轻量（Mobile）"
+
+#: ui/settings_panel.gd:337
+msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
+msgstr "轻量适合较旧的集成显卡。重启游戏后生效（当前：%s）。"
+
+#: ui/settings_panel.gd:343
+msgid "Render scale"
+msgstr "渲染缩放"
+
+#: ui/settings_panel.gd:345
+msgid "Lower renders 3D at a smaller size; the interface stays sharp."
+msgstr "调低会以较小尺寸渲染 3D；界面保持清晰。"
+
+#: ui/settings_panel.gd:346
+msgid "Display"
+msgstr "显示"
+
+#: ui/settings_panel.gd:350
+msgid "V-Sync"
+msgstr "垂直同步"
+
+#: ui/settings_panel.gd:356 ui/settings_panel.gd:385
+msgid "Bindings"
+msgstr "按键绑定"
+
+#: ui/settings_panel.gd:359
+msgid "ACTION   (select a binding to rebind it)"
+msgstr "操作   （选择一个绑定来重新设置）"
+
+#: ui/settings_panel.gd:362
+msgid "KEYBOARD / MOUSE"
+msgstr "键盘 / 鼠标"
+
+#: ui/settings_panel.gd:362
+msgid "CONTROLLER"
+msgstr "手柄"
+
+#: ui/settings_panel.gd:378
+msgid "Reset to defaults"
+msgstr "恢复默认"
+
+#: ui/settings_panel.gd:385
+msgid "Restore every key and controller binding."
+msgstr "恢复所有键盘和手柄绑定。"
+
+#: ui/settings_panel.gd:387
+msgid "Button prompts"
+msgstr "按键图标"
+
+#: ui/settings_panel.gd:389
+msgid "Controller art: Automatic follows the connected pad."
+msgstr "手柄图标：“自动”会跟随已连接的手柄。"
+
+#: ui/settings_panel.gd:394
+msgid "Stick look speed"
+msgstr "摇杆视角速度"
+
+#: ui/settings_panel.gd:397
+msgid "Invert look Y"
+msgstr "反转 Y 轴视角"
+
+#: ui/settings_panel.gd:401
+msgid "Mouse smoothing"
+msgstr "鼠标平滑"
+
+#: ui/settings_panel.gd:402
+msgid "Eases mouse look over a few frames."
+msgstr "在几帧内平滑鼠标视角。"
+
+#: ui/settings_panel.gd:403
+msgid "Scooping"
+msgstr "铲取"
+
+#: ui/settings_panel.gd:404
+msgid "Scoop button"
+msgstr "铲取按键"
+
+#: ui/settings_panel.gd:404
+msgid "Hold"
+msgstr "按住"
+
+#: ui/settings_panel.gd:404
+msgid "Toggle"
+msgstr "切换"
+
+#: ui/settings_panel.gd:445
+msgid "press a button…"
+msgstr "请按一个按钮…"
+
+#: ui/settings_panel.gd:445
+msgid "press a key…"
+msgstr "请按一个键…"
+
+#: ui/settings_panel.gd:477
+msgid "Conflict: %s is used by both %s and %s."
+msgstr "冲突：%s 同时被 %s 和 %s 使用。"
+
 #: ui/settings_panel.gd:571
+msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
+msgstr "菜单、HUD、字幕和剧情文本。Pseudo 用于测试翻译。"
+
+#: ui/settings_panel.gd:572
+msgid "Comfort"
+msgstr "舒适度"
+
+#: ui/settings_panel.gd:573
+msgid "Camera shake"
+msgstr "镜头晃动"
+
+#: ui/settings_panel.gd:575
+msgid "Reduced motion"
+msgstr "减少动态效果"
+
+#: ui/settings_panel.gd:576
+msgid "Calmer camera and fewer bouncy effects."
+msgstr "更平稳的镜头，更少的弹跳效果。"
+
+#: ui/settings_panel.gd:578
 msgid "Number format"
 msgstr "数字格式"
 
-#: ui/settings_panel.gd:571
+#: ui/settings_panel.gd:578
 msgid "Short (1.2K)"
 msgstr "简写（1.2K）"
 
-#: ui/settings_panel.gd:571
+#: ui/settings_panel.gd:578
 msgid "Scientific (1.2e3)"
 msgstr "科学计数（1.2e3）"
 
-#: ui/settings_panel.gd:571
+#: ui/settings_panel.gd:578
 msgid "Engineering (1.2e3)"
 msgstr "工程计数（1.2e3）"
 
-#: ui/settings_panel.gd:573
+#: ui/settings_panel.gd:580
 msgid "Best-value tags"
 msgstr "性价比标签"
 
-#: ui/settings_panel.gd:574
+#: ui/settings_panel.gd:581
 msgid "Tag the affordable upgrade that gives the most per cube."
 msgstr "标出买得起且每方块收益最高的升级。"
 
-#: ui/settings_panel.gd:575
+#: ui/settings_panel.gd:582
 msgid "HUD"
 msgstr "HUD"
 
-#: ui/settings_panel.gd:575
+#: ui/settings_panel.gd:582
 msgid "Minimal"
 msgstr "精简"
 
-#: ui/settings_panel.gd:575
+#: ui/settings_panel.gd:582
 msgid "Hidden"
 msgstr "隐藏"
 
-#: ui/settings_panel.gd:576
+#: ui/settings_panel.gd:583
 msgid "Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."
 msgstr "精简：几秒后淡出额外信息。隐藏：只保留提示和消息。"
 
-#: ui/settings_panel.gd:586
+#: ui/settings_panel.gd:593
 msgid "Interface scale"
 msgstr "界面缩放"
 
-#: ui/settings_panel.gd:588
+#: ui/settings_panel.gd:595
 msgid "Size of menus, HUD and subtitles."
 msgstr "菜单、HUD 和字幕的大小。"
 
-#: ui/settings_panel.gd:589
+#: ui/settings_panel.gd:596
 msgid "Colour-blind palette"
 msgstr "色盲配色"
 
-#: ui/settings_panel.gd:590
+#: ui/settings_panel.gd:597
 msgid "Okabe-Ito colours for hex progress, the hopper meter and part rarity."
 msgstr "对六角格进度、料斗计量条和零件稀有度使用 Okabe-Ito 配色。"
 
-#: ui/settings_panel.gd:591 ui/settings_panel.gd:592
+#: ui/settings_panel.gd:598 ui/settings_panel.gd:599
 msgid "Subtitles"
 msgstr "字幕"
 
-#: ui/settings_panel.gd:593
+#: ui/settings_panel.gd:600
 msgid "WREN and Ledger lines."
 msgstr "WREN 和 Ledger 的台词。"
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:601
 msgid "Subtitle size"
 msgstr "字幕大小"
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:601
 msgid "Small"
 msgstr "小"
 
-#: ui/settings_panel.gd:594
+#: ui/settings_panel.gd:601
 msgid "Large"
 msgstr "大"
 
-#: ui/settings_panel.gd:596
+#: ui/settings_panel.gd:603
 msgid "Subtitle background"
 msgstr "字幕背景"
 
-#: ui/settings_panel.gd:597
+#: ui/settings_panel.gd:604
 msgid "A solid backdrop behind subtitle text."
 msgstr "在字幕文字后加一层实色背景。"
 

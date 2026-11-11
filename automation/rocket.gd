@@ -169,6 +169,7 @@ func launch(to_hub: int) -> void:
 	GameState.world.erase("rocket_parked")
 	_begin("launch")
 	world.music.set_cinematic(true)
+	Tunes.play_moment("launch")  # [v6sound] a song marked "launch" in data/songs.json, if there is one
 	# Lumi steps onto the boarding lift (or hovers up beside the cockpit when there is no pad).
 	var p: Patch = world.patch
 	p.set_physics_process(false)
