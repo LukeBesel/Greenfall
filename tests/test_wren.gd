@@ -132,7 +132,7 @@ func test_wren_briefs_then_narrates_each_step_once() -> void:
 	ob._narrate()
 	assert_eq(wren._queue.size(), 4, "one line per step")
 	for d: Dictionary in ob.chain:
-		var ls: Array = d.get("lines", [])
+		var ls: Array = Objectives.step_lines(d)  # [v6pace] hub steps: their story reason
 		assert_eq(ls.size(), 1, "%s: one short line" % d["id"])
 		assert_lt(str(ls[0]).length(), 100, "%s: subtitle-sized" % d["id"])
 	ob.free()

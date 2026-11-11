@@ -19,7 +19,7 @@ func after_each() -> void:
 
 func _all_code() -> String:
 	var out: String = ""
-	for dir: String in ["res://autoload", "res://automation", "res://planet", "res://plants", "res://robots", "res://story", "res://systems", "res://ui", "res://player", "res://scenes", "res://core", "res://water", "res://fauna", "res://systems/extras"]:  # [wild] fauna
+	for dir: String in ["res://autoload", "res://automation", "res://planet", "res://plants", "res://robots", "res://story", "res://systems", "res://ui", "res://player", "res://scenes", "res://core", "res://water", "res://fauna", "res://systems/extras", "res://planet/sites", "res://planet/orbit", "res://robots/sphere"]:  # [wild] fauna; [v6pace] the globe's hubs
 		var da := DirAccess.open(dir)
 		if da == null:
 			continue
@@ -69,8 +69,10 @@ func test_the_chain_ends_on_the_cradle_and_the_seed_ark() -> void:
 	var order: Array[String] = []
 	for g: Dictionary in chain:
 		order.append(str(g["id"]))
-	for a: Array in [["base_5", "rocket"], ["rocket", "visit_dust"], ["visit_dust", "visit_frozen"], ["visit_frozen", "visit_sunken"],
-			["visit_sunken", "visit_cradle"], ["visit_cradle", "cradle_home"], ["cradle_home", "ark_1"], ["plant_5", "pollinator"]]:
+	# [v6pace] The frontier visits and the Cradle steps left the chain with the flat world
+	# (tests/test_v6pace.gd test_every_step_is_completable_on_the_globe).
+	for a: Array in [["base_5", "rocket"], ["rocket", "ark_1"], ["plant_5", "pollinator"]]:
+		assert_gt(order.find(a[0]), -1, "%s is in the chain" % a[0])
 		assert_lt(order.find(a[0]), order.find(a[1]), "%s comes before %s" % a)
 	# Research goals in the first district would wall the chain once its junk runs out.
 	assert_gt(order.find("research_20"), order.find("rocket"))
