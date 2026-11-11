@@ -524,3 +524,13 @@ The owner asked for more attention on the world's goals and look (full cities ro
 - **Parts on the model are procedural stand-ins** (`player/rig_parts.gd`, one shape per module); modelled parts are M5-10.
 - **The rig study is separate from the accepted proposal.** `tools/pace_sim/rig_study.gd` scores the game's own table; the proposal's loadout study (8% spread, `--model=redesign --rigs=1`) still runs on the proposal's table and was not changed. Five modules are never the study's best fit (Long Reach, Guide Arm, Press Frame, Sprint Coils, Relay Mast: 4 to 9% behind); their numbers go to M3-12.
 - Originality: slots, module names and effects come from the cleanup theme (cutting wrecks, skimming, scrubbing, dosing soil); nothing was modelled on another game. Equipment slots with trade-offs are a common genre mechanic.
+
+## Rigs (M3-08) and source jobs (M3-07), Nov 11, 2026
+`docs/reviews/M3-08_RIGS.md`, `docs/reviews/M3-07_SOURCES.md`. Merged.
+- **Rigs:** three slots (arm, chest, drive), thirteen modules from data, saved per planet. Each city's kind opens only with its tool fitted: Plate Cutter (Ironside wrecks), Skim Skirt (Kettle Bay slick), Mist Scrubber (Highreach smog), Soil Doser (Lowmeadow blight). Tools are free and arrive when their city opens; other modules cost 800 to 3,400 cubes. The study shows no module best everywhere, but the Plate Cutter wins the arm slot in four of five cities and five modules are never best: rebalanced in M3-12. Module shapes on Lumi are stand-ins that clip near the face: art in M5.
+- **Source jobs:** each city has a Lumi-only job of 3 to 5 steps from data (Old Capital: six rocket parts, 2,600 Parts) that gates the last stage, shuts the landmark down, pays its reward and fires its finds. The bot completes all six; the rocket run reaches the end screen.
+- **A running source sends waste back** (lead, as the design says): while a city's source runs, its hexes cannot pass stage 3 and cleaned hexes near the landmark slowly re-soil. This makes the job matter. Task M3-07b.
+- **Rocket parts take the Assembler's line** (about 45 s each, as M3-20 assumed), so the crew's last stretch and the rocket compete for Parts and line time. M3-07b.
+- **The job opens at stage 4**, not 3, so planting stays the main work at stage 3.
+- No step waits on robots (a crewless player must never be stuck). Kept.
+- The rocket must visibly grow on the pad as parts are fitted; source markers need proper props: M5 art.
