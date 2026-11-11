@@ -117,4 +117,5 @@ static func summary(result: Dictionary) -> PackedStringArray:
 		model.work.hexes_done, model.cubes, model.earned, model.parts, model.robot_total(), model.hub_level,
 		int(model.stat_of("upgrades_bought")), int(model.stat_of("research_done")), model.chains.goals_done.size(), model.data.goals.size()])
 	out.append_array(PaceSimReport.lines(result["report"], model.data.k("bot_to_player")))
+	out.append(PaceSimReport.fit_line(model))
 	return out

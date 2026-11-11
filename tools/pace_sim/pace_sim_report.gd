@@ -166,3 +166,39 @@ static func _share_check(record: PaceSimLog) -> Dictionary:
 			worst_at = int(b["minute"])
 	return {"id": "hand_share", "pass": worst >= LIMITS["hand_share"], "value": worst, "limit": LIMITS["hand_share"], "unit": "",
 		"note": "lowest %d-minute window ends at minute %d" % [SHARE_WINDOW_MIN, worst_at]}
+
+
+# --- The first city's fit (docs/DECISIONS.md, Nov 11; docs/reviews/M3-21_PACING_FIT.md) ----------
+
+## The window of the "no long wait between purchases" rule and of the hex cadence, in bot seconds.
+const FIT_PURCHASE_WINDOW_S: float = 1200.0
+const FIT_HEX_WINDOW_S: float = 900.0
+
+
+## What the first-city targets are judged on: {first_hex_s, first_robot_s (-1: none),
+## purchase_gap_s (longest wait between purchases in the first 20 minutes), hex_gaps_s (seconds
+## each hex took, through minute 15), most_held, largest_price}.
+static func city_fit(m: PaceSimModel) -> Dictionary:
+	var record: PaceSimLog = m.record
+	var gap: Vector2 = longest_gap(_times(record.purchases), 0.0, FIT_PURCHASE_WINDOW_S)
+	var hex_gaps: Array[float] = []
+	var prev: float = 0.0
+	for t: float in record.hex_times:
+		if t > FIT_HEX_WINDOW_S:
+			break
+		hex_gaps.append(t - prev)
+		prev = t
+	var largest: float = 0.0
+	for row: Dictionary in record.purchases:
+		largest = maxf(largest, float(row["cubes"]))
+	return {"first_hex_s": float(record.beats.get("hexes_1", -1.0)), "first_robot_s": float(record.beats.get("first_robot", -1.0)),
+		"purchase_gap_s": gap.x, "hex_gaps_s": hex_gaps, "most_held": m.most_held, "largest_price": largest}
+
+
+static func fit_line(m: PaceSimModel) -> String:
+	var fit: Dictionary = city_fit(m)
+	var gaps: PackedStringArray = []
+	for g: float in fit["hex_gaps_s"]:
+		gaps.append("%.0f" % g)
+	return "first-city fit: first hex %.0f s, first robot %.1f min, longest purchase wait in 20 min %.0f s, most cubes held %.0f, largest price %.0f, seconds per hex to minute 15: %s" % [
+		fit["first_hex_s"], float(fit["first_robot_s"]) / 60.0, fit["purchase_gap_s"], fit["most_held"], fit["largest_price"], ",".join(gaps)]

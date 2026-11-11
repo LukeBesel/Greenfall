@@ -282,6 +282,12 @@ func _research(dt: float) -> void:
 		research_left = Research.duration(research_active)
 
 
+## Plans that arrive by themselves (the research table's story_unlocks), checked every tick and
+## the moment a workbench tier is bought, as the game does: the Bot Bay's robot is on offer at once.
+func check_story() -> void:
+	_story_unlocks()
+
+
 func _story_unlocks() -> void:
 	for row: Dictionary in data.story_unlocks:
 		var id: String = str(row.get("id", ""))

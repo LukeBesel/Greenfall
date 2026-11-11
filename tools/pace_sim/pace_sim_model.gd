@@ -10,6 +10,9 @@ extends RefCounted
 
 const TICK_S: float = 1.0
 
+## Payouts that are Lumi's own loads: the side income (calibration side_income_share) rides on them.
+const HAND_WINS: Array[String] = ["dump", "bale_sold", "haul"]
+
 var data: PaceSimData
 var policy: PaceSimPolicy
 var work: PaceSimWork
@@ -32,6 +35,8 @@ var bin_level: int = 1
 var robots: Dictionary[String, int] = {}
 var robot_tier: Dictionary[String, int] = {}
 var first_robot_t: float = -1.0
+## The most cubes ever in the purse (the "currency stays small" rule reads it).
+var most_held: float = 0.0
 var built: Dictionary[String, bool] = {}
 var glim_tier: Dictionary[String, int] = {}
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -78,8 +83,13 @@ func seal() -> void:
 func pay(amount: float, win: String = "") -> void:
 	if amount <= 0.0:
 		return
+	if win in HAND_WINS:
+		# Level rewards, salvage surges and weather, spread over the loads. They start small and grow
+		# through the first minutes (a Lumi level pays 23 cubes at minute 1 and 89 at minute 10).
+		amount *= 1.0 + data.k("side_income_share") * clampf(t / maxf(data.k("side_income_ramp_s"), 1.0), 0.0, 1.0)
 	cubes += amount
 	earned += amount
+	most_held = maxf(most_held, cubes)
 	if win != "":
 		record.win(t, win)
 		record.beat("first_payout", t)
@@ -173,6 +183,7 @@ func buy_bench() -> bool:
 	record.mechanic(t, "bench_tier:%d" % bench_tier)
 	for rid: Variant in BenchTiers.def(bench_tier).get("grants_research", []):
 		chains.grant_research(str(rid))
+	chains.check_story()
 	return true
 
 
@@ -195,21 +206,12 @@ func next_hub() -> Dictionary:
 	return {}
 
 
-## Whether the next base level's own conditions hold (the hub table's "requires": the model knows
-## the workbench tier, the tower and the base level; Hub.block_reason in the game).
+## Whether the next base level's own conditions hold (the hub table's "requires", the same
+## workbench conditions the game reads in Hub.block_reason).
 func hub_ready() -> bool:
 	for c: Variant in next_hub().get("requires", []):
-		var cond: Array = c
-		match str(cond[0]):
-			"bench_tier":
-				if bench_tier < int(cond[1]):
-					return false
-			"tower":
-				if tower_tier < int(cond[1]):
-					return false
-			"hub_level":
-				if hub_level < int(cond[1]):
-					return false
+		if not chains.cond_ok(c as Array):
+			return false
 	return not next_hub().is_empty()
 
 
@@ -288,6 +290,9 @@ func glim_cost(track: String) -> Dictionary:
 
 func buy_glim(track: String, margin: float = 1.0) -> bool:
 	var cost: Dictionary = glim_cost(track)
+	var repaired: String = str((data.section("build_sets_flag") as Dictionary).get(GlimDirector.BUILD_ID, ""))
+	if repaired != "" and not flags.get(repaired, false):
+		return false  # Glim's tracks open once he is repaired, as Glim.block_reason has it
 	if cost.is_empty() or not can_pay(cost, margin):
 		return false
 	_spend(cost, "buddy", track)

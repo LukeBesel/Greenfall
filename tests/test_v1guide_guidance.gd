@@ -117,3 +117,18 @@ func test_every_step_has_a_target() -> void:
 		d2["_goal"] = i
 		assert_ne(str(o.step_target(d2).get("to", "")), "", "goal %s points somewhere" % d2["id"])
 	o.free()
+
+
+## [M3-21] Regression: the card's "scoopie" step had no guidance case and pointed at the bench
+## before the Scoopie's plans arrived. Until then it sends Lumi to the junk; after, to the bench.
+func test_scoopie_step_waits_on_its_plans() -> void:
+	var saved_f: Dictionary = GameState.flags.duplicate(true)
+	var t: Array = _timeline()
+	var o: Objectives = t[2]
+	var step: Dictionary = {"id": "scoopie", "type": "stat", "key": "robots_built", "target": 2}
+	GameState.flags["research"] = {"done": []}
+	assert_eq(str(o.step_target(step).get("to", "")), "hex", "locked: clean meanwhile")
+	GameState.flags["research"] = {"done": ["scoopie_rig"]}
+	assert_eq(str(o.step_target(step).get("to", "")), "bench", "plans in: to the bench")
+	GameState.flags = saved_f
+	o.free()

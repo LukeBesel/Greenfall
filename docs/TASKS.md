@@ -1,6 +1,6 @@
 # Greenfall: Planet 1 tasks
 
-The work list for `docs/PLAN.md`. One row per task. **Kind** is LEAD (the lead does it) or DELEGATE (a subagent does it). A task is done only when its acceptance criteria pass, the code reviewer has approved it and the QA tester has run the suite. Status values: todo, doing, review, done. In progress now (Nov 11): M3-21 (refit city 1 pacing to real walking), M3-18b (Old Town polish). Merged Nov 11: M3-19 with M3-02, M3-18a.
+The work list for `docs/PLAN.md`. One row per task. **Kind** is LEAD (the lead does it) or DELEGATE (a subagent does it). A task is done only when its acceptance criteria pass, the code reviewer has approved it and the QA tester has run the suite. Status values: todo, doing, review, done. Merged Nov 11: M3-19 with M3-02, M3-18a, M3-18b, M3-21. Next: M3-20 (crew pacing and the robot chain) with M3-18 (the other five cities).
 
 Every milestone ends with the same gate (not repeated below): full test suite, save round trip, exit check, bot playthrough, engagement review, the dummy-planet reusability test, docs updated, a commit, and a short report to the owner.
 

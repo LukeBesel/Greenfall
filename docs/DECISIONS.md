@@ -444,3 +444,12 @@ The owner asked for more attention on the world's goals and look (full cities ro
 - **The first robot is the answer to walking.** A hauling helper arrives early in city 1 and carries bales to the scale, so Lumi stays at the work. No moving drop points.
 - **Research prices in city 1 are capped with everything else** (largest price in city 1 stays under the accepted 4,200).
 - **Old Town look (M3-18a) merged.** Kept as bright and colourful. Tree crowns, the fountain, the crash furrow, a render of the fully restored stage and the street's triangle count go to M3-18b.
+
+## City 1 pacing fit (M3-21, Nov 11, 2026)
+`docs/reviews/M3-21_PACING_FIT.md`. First hex 54 to 86 s, first robot at 8.5 to 9.7 minutes, largest city 1 price 4,000, most cubes held 709. Merged.
+- **The first robot is a Haul Bug, the Scoopie follows about 8 minutes later.** This reverses the owner's note of Nov 9 (items 44 and 46: the Scoopie first, the Haul Bug later). Reason: walking bales to the scale is the slow part of the first quarter hour, and a hauler is what fixes it. **Flagged to the owner; reverted if they prefer the old order.**
+- **The first seed sequence counts as a reward beat** in the purchase-wait rule: it is a story moment with a reward, not dead time. The remaining longest wait (130 to 136 s) is accepted on that basis. Trimming dead walking out of the sequence goes to the tutorial milestone (M4).
+- **Hexes under 60 s after the Haul Bug** are left for the balance pass (M3-12), where ring 2 hex weights are set with the crew numbers.
+- **Shared stage payouts for stages 4 and 5 were cut about 40%** for every city; cities 2 to 6 are refitted in M3-12.
+- Fixed at merge: the card's new `scoopie` step had no guidance and pointed at the bench before the plans arrived (regression test in `tests/test_v1guide_guidance.gd`).
+- Old Town polish (M3-18b) merged: still below the bar are clumpy crowns up close, faceted flowers, flat lawns, pale flood water and pale lots at stages 1 and 2. These go to the M5 polish pass.

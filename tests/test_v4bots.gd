@@ -38,10 +38,13 @@ func after_each() -> void:
 
 # --- 44 / 46: unlock order ----------------------------------------------------------------------
 
-func test_bot_bay_brings_only_the_scoopie() -> void:
+## Task M3-21 (docs/DECISIONS.md, Nov 11): the first robot is the answer to walking, so the Bot
+## Bay brings the Haul Bug's plans and the Scoopie's follow.
+func test_bot_bay_brings_only_the_haul_bug() -> void:
 	for e: Dictionary in Research.def("salvage_logic").get("effects", []):
-		assert_false(str(e.get("unlock_robot", "")) in ["haulbug", "skimmer"], "Salvage Logic unlocks %s" % str(e))
+		assert_false(e.has("unlock_robot"), "Salvage Logic unlocks %s" % str(e))
 	assert_eq(Research.robot_requirement("haulbug"), "haul_rig")
+	assert_eq(Research.robot_requirement("scoopie"), "scoopie_rig")
 	assert_eq(Research.robot_requirement("skimmer"), "skimmer_rig")
 	assert_eq(Research.robot_requirement("drip"), "drip_blueprint", "Drip stays where it was (base 3)")
 
@@ -54,24 +57,31 @@ func test_story_unlocks_are_not_tree_cards() -> void:
 		assert_eq(Research.status(id), "locked")
 
 
-func test_haul_bug_arrives_twenty_minutes_after_the_first_robot() -> void:
+func test_haul_bug_comes_with_the_bot_bay_and_the_scoopie_later() -> void:
 	GameState.stats["robots_built"] = 0.0
 	GameState.stats["time_played"] = 1000.0
+	GameState.flags["bench_tier"] = 1
 	Research.grant("salvage_logic")
 	var done0: float = float(GameState.stats.get("research_done", 0.0))
-	assert_true(Research.check_story().is_empty(), "no robot yet")
+	assert_true(Research.check_story().is_empty(), "no Bot Bay yet")
+	GameState.flags["bench_tier"] = 2
+	assert_eq(Research.check_story(), ["haul_rig"] as Array[String], "the Bot Bay brings the Haul Bug's plans")
+	assert_true(Research.robot_unlocked("haulbug"))
+	assert_true(bool(GameState.flags.get("haul_rig", false)))
+	assert_false(Research.robot_unlocked("scoopie"), "the cleaner comes later")
 	GameState.stats["robots_built"] = 1.0
-	GameState.stats["hexes_cleaned"] = 9.0
+	GameState.stats["hexes_cleaned"] = 14.0
 	Research.check_story()
 	assert_eq(float(GameState.flags.get("first_robot_t", -1.0)), 1000.0, "the first robot's time is kept")
-	GameState.stats["time_played"] = 1000.0 + 1100.0
-	assert_true(Research.check_story().is_empty(), "too soon: the Scoopie works alone for a while")
-	assert_false(Research.robot_unlocked("haulbug"))
-	GameState.stats["time_played"] = 1000.0 + 1250.0
-	var got: Array[String] = Research.check_story()
-	assert_eq(got, ["haul_rig"] as Array[String])
-	assert_true(Research.robot_unlocked("haulbug"))
-	assert_true(bool(GameState.flags.get("haul_rig", false)), "the objective's wait_flag")
+	GameState.stats["time_played"] = 1000.0 + 400.0
+	assert_true(Research.check_story().is_empty(), "too soon: the Haul Bug works alone for a while")
+	GameState.stats["time_played"] = 1000.0 + 500.0
+	GameState.stats["hexes_cleaned"] = 13.0
+	assert_true(Research.check_story().is_empty(), "and not before 14 hexes are clean")
+	GameState.stats["hexes_cleaned"] = 14.0
+	assert_eq(Research.check_story(), ["scoopie_rig"] as Array[String])
+	assert_true(Research.robot_unlocked("scoopie"))
+	assert_true(bool(GameState.flags.get("scoopie_rig", false)), "the objective's wait_flag")
 	assert_false(Research.robot_unlocked("skimmer"), "the water bot waits for a plant and more time")
 	assert_eq(float(GameState.stats.get("research_done", 0.0)), done0, "plans that arrive are not research")
 	GameState.stats["plants_planted"] = 1.0
@@ -86,26 +96,28 @@ func test_late_bases_get_the_plans_at_once() -> void:
 	GameState.world["hub_level"] = 3
 	Research.check_story()
 	assert_true(Research.robot_unlocked("haulbug"))
+	assert_true(Research.robot_unlocked("scoopie"))
 	assert_true(Research.robot_unlocked("skimmer"))
 	GameState.world["hub_level"] = hl
 
 
-func test_haul_objective_waits_after_base_two() -> void:
+func test_scoopie_objective_waits_after_base_two() -> void:
 	var ids: Array = []
-	var haul: Dictionary = {}
+	var scoopie: Dictionary = {}
 	for o: Dictionary in Economy.planet_table("tutorial")["objectives"]:
 		ids.append(str(o["id"]))
-		if str(o["id"]) == "haul":
-			haul = o
-	assert_lt(ids.find("robot"), ids.find("zone"))
-	assert_gt(ids.find("haul"), ids.find("base2"), "the Haul Bug comes well after the first robot")
-	assert_eq(str(haul.get("wait_flag", "")), "haul_rig")
-	assert_true(haul.has("hint"))
+		if str(o["id"]) == "scoopie":
+			scoopie = o
+	assert_gt(ids.find("robot"), ids.find("bench2"), "the first robot follows the Bot Bay")
+	assert_gt(ids.find("scoopie"), ids.find("base2"), "the Scoopie comes well after the first robot")
+	assert_gt(ids.find("zone"), ids.find("scoopie"), "a work zone is for the cleaner")
+	assert_eq(str(scoopie.get("wait_flag", "")), "scoopie_rig")
+	assert_true(scoopie.has("hint"))
 
 
-func test_locked_haul_bug_says_it_comes_later() -> void:
+func test_locked_scoopie_says_it_comes_later() -> void:
 	Research.grant("salvage_logic")
-	assert_false(Research.robot_lock_text("haulbug").begins_with("Research"), Research.robot_lock_text("haulbug"))
+	assert_false(Research.robot_lock_text("scoopie").begins_with("Research"), Research.robot_lock_text("scoopie"))
 	assert_true(Research.robot_lock_text("seedling").begins_with("Research"))
 
 

@@ -55,6 +55,8 @@ var _blooms: PackedFloat64Array = []
 var _yard_found: bool = false
 var _cashed_by_haulers: int = 0
 var _unit_rate: Dictionary[String, float] = {}
+## Whether the trip under way ends at the scale (bales) or at the bin.
+var _to_scale: bool = false
 
 
 func _init(model: PaceSimModel) -> void:
@@ -97,7 +99,14 @@ func step(dt: float) -> void:
 
 ## Metres from the bin to where Lumi is working.
 func distance() -> float:
-	return data.hex_distance(hexes_done)
+	return _reach(data.hex_distance(hexes_done))
+
+
+## Lumi works a hex from its near edge to its far one, so the walk grows with the share cleaned:
+## the middle's distance, less half the hex's span at the start and plus half at the end.
+func _reach(middle_m: float) -> float:
+	var done: float = 1.0 - hex_left / maxf(hex_vol, 0.001)
+	return maxf(middle_m + (done - 0.5) * data.k("hex_span_m"), 0.0)
 
 
 func region_done() -> bool:
@@ -138,8 +147,14 @@ func _hand(dt: float) -> void:
 		left = _scoop(left)
 
 
+## One way between the work and the base: to the scale with bales on Lumi's back, to the bin
+## (and the bench beside it) otherwise.
 func _travel_s() -> float:
-	return distance() / move_speed + data.k("trip_overhead_s") * 0.5
+	# Lumi tips from anywhere within the bin's reach and sells from the weigh plate's edge.
+	var metres: float = _reach(data.scale_distance(hexes_done)) - Depot.PAD_RADIUS if _to_scale else distance() - Pace.bin_radius()
+	if metres <= 0.0:
+		return 0.0  # the junk lies inside the bin's reach: the load tips where Lumi stands
+	return metres * data.k("path_factor") / move_speed + data.k("trip_overhead_s") * 0.5
 
 
 ## Reasons to stop scooping and go: a full stack of bales, or something worth buying at the bench.
@@ -149,6 +164,7 @@ func _leave_for_base() -> bool:
 	if not full_stack and not bench:
 		return false
 	phase = Phase.TO_BASE
+	_to_scale = not carried.is_empty()
 	busy = _travel_s()
 	return true
 
@@ -181,6 +197,8 @@ func _scoop(left: float) -> float:
 		hex_left = hex_vol
 	if capacity * FILL_AT - chest <= 0.0001:
 		_chest_full()
+	elif not baler and carried.is_empty() and distance() <= Pace.bin_radius():
+		_tip()  # inside the bin's reach the chest empties as it fills, with no walk at all
 	return left - take / rate
 
 
@@ -201,6 +219,7 @@ func _chest_full() -> void:
 		busy = Patch.CUBE_TIME + data.k("bale_handle_s")
 	else:
 		phase = Phase.TO_BASE
+		_to_scale = false
 		busy = _travel_s()
 
 
@@ -238,12 +257,16 @@ func _phase_done() -> void:
 			phase = Phase.SCOOP
 
 
+func _tip() -> void:
+	m.pay(Pace.dump_value(_contents(), chest_worth), "dump")
+	m.add_stat("junk_dumps")
+	chest = 0.0
+	chest_worth = 0.0
+
+
 func _at_base() -> void:
 	if chest > 0.0 and not baler:
-		m.pay(Pace.dump_value(_contents(), chest_worth), "dump")
-		m.add_stat("junk_dumps")
-		chest = 0.0
-		chest_worth = 0.0
+		_tip()
 	for value: float in carried:
 		m.pay(value, "bale_sold")
 		m.add_stat("cubes_cashed")

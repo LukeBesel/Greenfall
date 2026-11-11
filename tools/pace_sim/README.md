@@ -85,6 +85,17 @@ Two beats miss the 20% target:
 - **Base level 2.** It waits on 150 Parts, and Parts come in rare big finds. The two bot runs differ by 37% on this beat; the simulator uses expected values and lands between them.
 - **Hexes after minute 70.** In the Nov 10 run the crew stopped: income reads 0.00 cubes a second for minutes 77 to 80 and three hexes were cleaned in 13 minutes with five cleaners. The simulator has no such stall. Treat everything past minute 70 as an extrapolation.
 
+### After the economy and walking changes (tasks M3-19, M3-21)
+
+The table above is the old economy. The current fit is in `docs/reviews/M3-21_PACING_FIT.md` section 3: twelve beats from the first hex to the Research Desk, each within 20% of the mean of two fresh bot runs of Nov 11 (the runs differ from each other by 12 to 59%, so compare with a mean, never with one run). What the model gained:
+
+- **Distance.** `yard_hexes.middles` in `calibration.json` are the measured middles of the hexes round the start yard (the bot prints them as `[yard]` lines; `tools/yard_report.gd`). Each is measured against the yard's bin and scale anchors, hexes are worked nearest the bin first, the walk grows across a hex (`hex_span_m`) and with the route (`path_factor`), and a load tips with no walk inside the bin's reach.
+- **Side income.** Level rewards, salvage surges and weather ride on Lumi's loads: `side_income_share`, growing over `side_income_ramp_s`.
+- **Gates.** Base levels read their `requires` through the same condition check as bench tiers; plans that arrive with a bench tier are on offer on the same visit.
+- **`first-city fit`**, the last line of the output: first hex, first robot, longest purchase wait in 20 minutes, most cubes held, largest price paid, seconds per hex to minute 15 (`PaceSimReport.city_fit`; `tests/test_pacing_fit.gd` holds the targets).
+
+Not modelled: the first-seed sequence stops Lumi's income for about 110 s in the game; the model's `seed_fetch_s` delays the garden but not the purchases, so its longest purchase wait (106 s) is shorter than the bot's (130 to 136 s).
+
 To re-calibrate: run the bot (`godot --headless --path . -- --fresh --autoplay --time-scale=8 --quit-after=1800 > LOG 2>&1`), compare its beats with a simulator run, and adjust the fitted constants with `--set` until they agree. Then write the new values and how you got them into `calibration.json`.
 
 ## Policies

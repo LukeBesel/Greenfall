@@ -97,17 +97,6 @@
       ]
     },
     {
-      "id": "street",
-      "text": "Clear the street",
-      "desc": "Clean the 7 hexes round the base.",
-      "type": "stat",
-      "key": "hexes_cleaned",
-      "target": 7,
-      "lines": [
-        "Clear the whole street, Lumi. Seven hexes round the base."
-      ]
-    },
-    {
       "id": "tower",
       "text": "Build the signal tower",
       "desc": "Workbench, Build tab. Then WREN can talk to you.",
@@ -129,6 +118,17 @@
       ]
     },
     {
+      "id": "street",
+      "text": "Clear the street",
+      "desc": "Clean the 7 hexes round the base.",
+      "type": "stat",
+      "key": "hexes_cleaned",
+      "target": 7,
+      "lines": [
+        "Clear the whole street, Lumi. Seven hexes round the base."
+      ]
+    },
+    {
       "id": "bench2",
       "text": "Add a Bot Bay to the bench",
       "desc": "Workbench, Upgrades tab: Bot Bay.",
@@ -141,41 +141,18 @@
     {
       "id": "robot",
       "text": "Build your first robot",
-      "desc": "Workbench, Bots tab. Robots cost parts you find.",
+      "desc": "Bots tab: a Haul Bug carries your bales to the scale.",
       "type": "robot",
       "key": "any",
       "target": 1,
       "lines": [
-        "The base has power! Enough to build you a helper. Try the Bots tab at the workbench."
-      ]
-    },
-    {
-      "id": "zone",
-      "text": "Send your robot to work",
-      "desc": "Press {open_command}, then paint hexes for it to clean.",
-      "type": "zone",
-      "target": 1,
-      "lines": [
-        "Give your robot a hex to work on. It wants a job."
-      ]
-    },
-    {
-      "id": "seed",
-      "text": "Plant the first seed",
-      "desc": "Plants fill your Bloom Core.",
-      "hint": "Keep cleaning. Seeds turn up in clean ground.",
-      "wait_flag": "seed_signal",
-      "type": "stat",
-      "key": "plants_planted",
-      "target": 1,
-      "lines": [
-        "Something green is waking out there. Plant the first seed."
+        "The base has power! Build a helper: a Haul Bug will carry your bales. Try the Bots tab."
       ]
     },
     {
       "id": "hex10",
       "text": "Clean 10 hexes",
-      "desc": "Robots help. Press {open_command} to give them hexes.",
+      "desc": "Your Haul Bug sells the bales. Stay at the work.",
       "type": "stat",
       "key": "hexes_cleaned",
       "target": 10,
@@ -194,16 +171,39 @@
       ]
     },
     {
-      "id": "haul",
-      "text": "Build a Haul Bug",
-      "desc": "Workbench, Bots tab. It carries bales to the scale for you.",
-      "hint": "Keep cleaning. WREN is looking for Haul Bug plans.",
-      "wait_flag": "haul_rig",
-      "type": "robot",
-      "key": "haulbug",
+      "id": "seed",
+      "text": "Plant the first seed",
+      "desc": "Plants fill your Bloom Core.",
+      "hint": "Keep cleaning. Seeds turn up in clean ground.",
+      "wait_flag": "seed_signal",
+      "type": "stat",
+      "key": "plants_planted",
       "target": 1,
       "lines": [
-        "A Haul Bug carries bales for you. Build one at the bench."
+        "Something green is waking out there. Plant the first seed."
+      ]
+    },
+    {
+      "id": "scoopie",
+      "text": "Build a Scoopie",
+      "desc": "Workbench, Bots tab. It cleans a hex by itself.",
+      "hint": "Keep cleaning. WREN is looking for Scoopie plans.",
+      "wait_flag": "scoopie_rig",
+      "type": "robot",
+      "key": "scoopie",
+      "target": 1,
+      "lines": [
+        "A Scoopie cleans a hex by itself. Build one at the bench."
+      ]
+    },
+    {
+      "id": "zone",
+      "text": "Send your Scoopie to work",
+      "desc": "Press {open_command}, then paint hexes for it to clean.",
+      "type": "zone",
+      "target": 1,
+      "lines": [
+        "Give your Scoopie a hex to work on. It wants a job."
       ]
     },
     {

@@ -150,14 +150,16 @@ func test_research_speed_shortens_time() -> void:
 
 
 func test_robot_types_gated() -> void:
-	assert_false(Research.robot_unlocked("scoopie"), "[pace] helpers wait for Salvage Logic (base 2)")
+	assert_false(Research.robot_unlocked("scoopie"), "[pace] helpers wait for the Bot Bay")
 	assert_false(Research.robot_unlocked("haulbug"))
 	Research.grant("salvage_logic")
-	assert_true(Research.robot_unlocked("scoopie"))
-	assert_false(Research.robot_unlocked("haulbug"), "[v4bots] the Scoopie comes alone (owner item 46)")
-	assert_false(Research.robot_unlocked("skimmer"), "[v4bots] and the water bot later still (item 44)")
+	assert_false(Research.robot_unlocked("haulbug"), "Salvage Logic alone unlocks no robot: plans arrive by themselves")
 	Research.unlock_story("haul_rig")
-	assert_true(Research.robot_unlocked("haulbug"))
+	assert_true(Research.robot_unlocked("haulbug"), "task M3-21: the hauler is the first helper")
+	assert_false(Research.robot_unlocked("scoopie"), "the cleaner comes later")
+	assert_false(Research.robot_unlocked("skimmer"), "[v4bots] and the water bot later still (item 44)")
+	Research.unlock_story("scoopie_rig")
+	assert_true(Research.robot_unlocked("scoopie"))
 	assert_false(Research.robot_unlocked("seedling"))
 	assert_false(Research.robot_unlocked("multibot"))
 	Research.grant("seedling_blueprint")

@@ -1,5 +1,5 @@
 {
-  "_doc": "Meadow species planted from seed. grow_s = seconds per stage while watered. water_s = how long one watering lasts. seed_yield = seeds dropped when it blooms. requires_research = research node that unlocks the species (locked species are never picked; new species go last so a locked roll falls back to the first species). biomes = only planted in those frontier districts (planet/frontiers.gd). cold_hardy = can grow outdoors in the Frozen Port once Cold-Hardy Seeds is researched (others need a greenhouse there). globe_heights = [v4grow] the height (the Poly Haven clumps are life-size, ~20-40 cm, too small to read from the game camera) in metres of a plant per stage (times its scale; 0 = only the sprout on its soil mound shows, plants/garden_marks.gd), no wider than globe_max_width. water_tank = pours in a full watering can; refill_radius_m = the can fills within this of the middle of base ground (the base yard: bench, bin, scale and greenhouse).",
+  "_doc": "Meadow species planted from seed. grow_s = seconds per stage while watered. water_s = how long one watering lasts. seed_yield = seeds dropped when it blooms. requires_research = research node that unlocks the species (locked species are never picked; new species go last so a locked roll falls back to the first species). biomes = only planted in those frontier districts (planet/frontiers.gd). cold_hardy = can grow outdoors in the Frozen Port once Cold-Hardy Seeds is researched (others need a greenhouse there). globe_heights = [v4grow] the height (the Poly Haven clumps are life-size, ~20-40 cm, too small to read from the game camera) in metres of a plant per stage (times its scale; 0 = only the sprout on its soil mound shows, plants/garden_marks.gd), no wider than globe_max_width. water_tank = pours in a full watering can; refill_radius_m = the can fills within this of the middle of base ground (the base yard: bench, bin, scale and greenhouse). first_seed: the seed tin signals once hexes_needed hexes are clean and gives seeds_given seeds. [M3-21] 13 hexes (was 7): about minute 14 to 16 for the bot, after the first robot, base level 2 and the Research Desk. Fetching the tin takes Lumi off the work for about 90 s with no cubes coming in, so it must not fall while she is saving for one of those: at 12 hexes it did, and one run bought nothing for 160 s.",
   "slot_spacing": 2.3,
   "globe_heights": [0.0, 0.0, 0.55, 0.8, 1.05],
   "globe_max_width": 1.7,
@@ -27,6 +27,6 @@
   ],
   "water_tank": 30,
   "refill_radius_m": 24,
-  "first_seed": {"hexes_needed": 7, "seeds_given": 1},
+  "first_seed": {"hexes_needed": 13, "seeds_given": 1},
   "seed_finds": {"chance": 0.006, "organic_mult": 2.5, "cooldown_s": 60}
 }

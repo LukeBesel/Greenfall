@@ -497,6 +497,8 @@ func step_target(def: Dictionary) -> Dictionary:
 				out = {"to": "bench", "row": ["bots", ""]}
 			"haul":  # [v4bots] waits for the Haul Bug plans (Research.check_story): clean meanwhile
 				out = {"to": "bench", "row": ["bots", ""]} if Research.robot_unlocked("haulbug") else {"to": "hex", "row": []}
+			"scoopie":  # [M3-21] the Scoopie's plans follow the first Haul Bug: clean meanwhile
+				out = {"to": "bench", "row": ["bots", ""]} if Research.robot_unlocked("scoopie") else {"to": "hex", "row": []}
 			"research1":  # [v3clear]
 				out = {"to": "bench", "row": ["research", ""]}
 			"base2", "base3":
