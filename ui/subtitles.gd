@@ -665,6 +665,8 @@ func _measure_feet(view: Rect2, delta: float) -> void:
 ## The goal stack's rect (top right), or empty.
 func _goal_rect() -> Rect2:
 	var hud: Node = world.get("hud") if world else null
+	if hud and hud.has_method("corner_rect"):  # [v7look] the goal stack and the base card under it
+		return hud.call("corner_rect")
 	var g: Control = hud.get("goals") as Control if hud else null
 	if g == null or not g.is_visible_in_tree():
 		return Rect2()
@@ -681,6 +683,8 @@ func _prompt_top() -> float:
 		var l: Label = hud.get(k) as Label
 		if l and l.is_visible_in_tree() and l.text.strip_edges() != "" and l.modulate.a > 0.05:
 			top = minf(top, l.get_global_rect().position.y)
+	if hud.has_method("hints_top"):  # [v7look] the key-hint pill, lifted over the hotbar on narrow screens
+		top = minf(top, float(hud.call("hints_top")))
 	return top
 
 

@@ -163,6 +163,9 @@ func _process(delta: float) -> void:
 	var hud_on: bool = world != null and (world.get("hud") == null or (world.hud as CanvasLayer).visible)
 	var modal: bool = world != null and world.has_method("any_modal_open") and bool(world.call("any_modal_open"))
 	var has: bool = _target is Vector3 and p != null and hud_on and not modal
+	var orb: Variant = world.get("orbit") if world else null  # [v7look] seen from Command height the
+	if orb is SliceOrbit and (orb as SliceOrbit).cam != null and (orb as SliceOrbit).cam.view == "command":
+		has = false  # beam lies flat as a long white streak across the map
 	if has:
 		has = OrbitUp.ground_dist(p.global_position, _target as Vector3) > NEAR_M  # [v1guide] along the ground (globe too)
 	_alpha = move_toward(_alpha, 1.0 if has else 0.0, delta * (2.0 if has else 3.0))

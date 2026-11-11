@@ -23,7 +23,7 @@ extends Node
 const SIZES: Array[Vector2i] = [Vector2i(1280, 720), Vector2i(1920, 1080), Vector2i(2560, 1080), Vector2i(1280, 800)]
 const SCALES: Array[float] = [0.8, 1.0, 1.25, 1.5]
 const LOCALES: Array[String] = ["en", "de", "fr", "es", "pt_BR", "zh_CN", "ja", "pseudo"]
-const SCREENS: Array[String] = ["play", "hud", "prompts", "pause", "settings", "workbench", "locker", "survey", "loading", "codex", "rockets", "system", "document", "photo", "glim", "garden", "command", "pad"]
+const SCREENS: Array[String] = ["play", "hud", "prompts", "arrival", "pause", "settings", "workbench", "locker", "survey", "loading", "codex", "rockets", "system", "document", "photo", "glim", "garden", "command", "pad"]
 const TITLE_SCREENS: Array[String] = ["title", "title_settings", "pad"]
 ## A long line, about the longest chunk the bar shows (Subtitles.MAX_CHARS).
 const LONG_LINE: String = "Bring every cube you scoop to the bench by the pod, and we can fix the old beacon"
@@ -234,6 +234,8 @@ func _check_play(cfg: String, hud: Node, cam: SphereCam, patch: Node3D, subs: Su
 	var pill: Rect2 = UIAudit.rect_of(subs.pill())
 	var hb: Control = hud.get("hotbar") as Control
 	var gr: Rect2 = UIAudit.rect_of(goals) if goals and goals.is_visible_in_tree() else Rect2()
+	if hud.has_method("corner_rect"):  # [v7look] the goal stack and the base card under it
+		gr = hud.call("corner_rect")
 	if DevHooks.has("ui-audit-verbose"):
 		print("[ui-audit] play %s view %dx%d lumi %s pill %s goals %s" % [cfg, roundi(view.size.x), roundi(view.size.y), _r(lr), _r(pill), _r(gr)])
 	if lr.size.y < 1.0:
@@ -349,6 +351,8 @@ func _screens_pass() -> void:
 		get_tree().paused = false
 	if _want("command"):
 		await _command_pass()
+	if _want("arrival"):
+		await _arrival_pass()
 	if _want("loading"):
 		var ld: CanvasLayer = get_tree().root.get_node_or_null("Loader") as CanvasLayer
 		if ld:
@@ -463,6 +467,69 @@ func _check_command(cfg: String, ov: CommandOverlay, hud: Node) -> void:
 			var x2: Rect2 = r.intersection(UIAudit.clip_rect(c, UIAudit.rect_of(c)))
 			if minf(x2.size.x, x2.size.y) >= UIAudit.OVERLAP_MIN:
 				_report(cfg, "overlap", "command %s with HUD %s" % [nm, UIAudit.short_path(c)], "\"%s\" %s" % [UIAudit.text_of(c).left(32), _r(x2)])
+
+
+## [v7look] A base's arrival title (hub_purpose.gd show_title), the hub with the longest words in this
+## language, with a long WREN line up: it must fit the screen, wrap without cutting, and stay clear of
+## the top-right cards (they step aside), the cube counter and the subtitle bar.
+func _arrival_pass() -> void:
+	var w: Node = so.get("w")
+	var hud: HUD = w.get("hud") as HUD
+	var sites: Node = so.get("sites")
+	var hp: HubPurpose = sites.get("purpose") as HubPurpose if sites else null
+	var subs: Subtitles = Subtitles.current
+	if hp == null or hud == null or subs == null:
+		_report("arrival", "missing", "arrival title", "purpose=%s hud=%s subs=%s" % [hp != null, hud != null, subs != null])
+		return
+	var best: int = -1
+	var most: int = -1
+	for i: int in range(1, HubPlan.main_total(hp.planet) + 1):
+		var n: int = HubPlan.hub_name(hp.planet, i).length() * 3 + tr(HubPlan.reason(hp.planet, i)).length()
+		if HubPlan.hub_name(hp.planet, i) != "" and n > most:
+			most = n
+			best = i
+	if best < 0:
+		_report("arrival", "missing", "arrival title", "no hub with a name")
+		return
+	print("[ui-audit] screen arrival: the title of hub %d (%s)" % [best, HubPlan.hub_name(hp.planet, best)])
+	await _each_size("arrival", func(cfg: String) -> void:
+		subs.show_now(tr(LONG_LINE), "wren")
+		hp.show_title(best)
+		await _wait_s(0.45)
+		_check_arrival(cfg, hp, hud, subs))
+	var t: Control = hp.title_node()
+	if t:
+		t.queue_free()
+	hud.hold_corner(0.0)
+	subs.clear()
+	await _frames(2)
+
+
+func _check_arrival(cfg: String, hp: HubPurpose, hud: HUD, subs: Subtitles) -> void:
+	var t: Control = hp.title_node()
+	if t == null:
+		_report(cfg, "missing", "arrival title", "not shown")
+		return
+	var view: Rect2 = get_viewport().get_visible_rect()
+	var tr_: Rect2 = UIAudit.rect_of(t)
+	if not view.grow(1.5).encloses(tr_):
+		_report(cfg, "offscreen", "arrival title", "%s view %dx%d" % [_r(tr_), roundi(view.size.x), roundi(view.size.y)])
+	for l: Node in t.get_children():
+		if l is Label:
+			var why: String = UIAudit.label_clipped(l as Label)
+			if why != "":
+				_report(cfg, "clipped", "arrival title", "\"%s\" %s" % [(l as Label).text.left(32), why])
+	var others: Dictionary = {"the top-right cards": hud.corner_rect(), "the subtitle bar": UIAudit.rect_of(subs.pill()) if subs.pill().visible else Rect2()}
+	var tl: Control = hud.get("_top_left") as Control
+	if tl and tl.is_visible_in_tree():
+		for c: Control in UIAudit.content_of([tl]):
+			others["the cube counter"] = UIAudit.rect_of(c) if not others.has("the cube counter") else (others["the cube counter"] as Rect2).merge(UIAudit.rect_of(c))
+	if DevHooks.has("ui-audit-verbose"):
+		print("[ui-audit] arrival %s title %s %s" % [cfg, _r(tr_), ", ".join(PackedStringArray(others.keys().map(func(k: String) -> String: return "%s %s" % [k, _r(others[k])])))])
+	for k: String in others:
+		var x: Rect2 = tr_.intersection(others[k])
+		if minf(x.size.x, x.size.y) >= UIAudit.OVERLAP_MIN:
+			_report(cfg, "overlap", "arrival title with " + k, "title %s other %s" % [_r(tr_), _r(others[k])])
 
 
 func _tab_buttons_of(up: Node) -> Array:

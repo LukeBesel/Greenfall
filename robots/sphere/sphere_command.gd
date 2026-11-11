@@ -70,7 +70,7 @@ func view_hub() -> int:
 
 func _ready() -> void:
 	var cl := CanvasLayer.new()
-	cl.layer = 5
+	cl.layer = 4  # [v7look] under the HUD (5): the overlay's shade dims the world, never the HUD
 	add_child(cl)
 	overlay = CommandOverlay.new()
 	overlay.cmd = self
