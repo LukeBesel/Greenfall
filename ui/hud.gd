@@ -36,6 +36,7 @@ var _field_bar: Control
 var _field_frac: float = 0.0
 var _planet_label: Label
 var _relay_label: Label  # [onboard] the Signal Tower's relay signal: how well WREN can reach Lumi
+var _mastery_label: Label  # Lumi's mastery of each pollution kind she has met (systems/mastery.gd)
 var _prompt: Label
 var _context: Label
 var _notify: NotifyStack
@@ -178,6 +179,11 @@ func _build_top_right() -> void:
 	_relay_label = UITheme.label("", 12, Color(0.6, 0.85, 1.0))
 	_relay_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_district.add_child(_relay_label)
+	_mastery_label = UITheme.label("", 12, UITheme.CREAM)
+	_mastery_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_mastery_label.visible = false
+	_district.add_child(_mastery_label)
+	EventBus.mastery_gained.connect(_on_mastery_gained)
 	goals = GoalsPanel.new()
 	goals.hud = self
 	vb.add_child(goals)
@@ -293,10 +299,11 @@ func _process(delta: float) -> void:
 		if _planet_t <= 0.0:
 			_planet_t = 0.25
 			_refresh_district(districts, so.restoration)
+			_refresh_mastery(so.mastery)
 		_field_bar.queue_redraw()
 		_relay_label.text = tr("WREN SIGNAL   %d%%") % SignalTower.signal_pct()
 		_relay_label.visible = SignalTower.tier() > 0  # [v3clear] hide what isn't relevant yet: no 0% before the tower
-		var sig: String = _field_label.text + _planet_label.text + _relay_label.text
+		var sig: String = _field_label.text + _planet_label.text + _relay_label.text + _mastery_label.text
 		if sig != _district_sig:
 			_district_sig = sig
 			_district_idle = 0.0
@@ -395,6 +402,34 @@ func _refresh_district(districts: Districts, restoration: Restoration) -> void:
 	var total: int = districts.count()
 	var done: int = restoration.districts_restored() if restoration else 0
 	_planet_label.text = tr_n("%d of %d city restored", "%d of %d cities restored", total) % [done, total]
+
+
+## "MASTERY  LITTER 3  WRECKS 1": the kinds Lumi has met with her level in each, once she has a
+## level in any (before that the line would be all zeros).
+func _refresh_mastery(mastery: Mastery) -> void:
+	var parts: PackedStringArray = []
+	var any: bool = false
+	if mastery != null and mastery.enabled():
+		for id: String in mastery.met_kinds():
+			parts.append("%s %d" % [mastery.kind_name(id).to_upper(), mastery.level(id)])
+			any = any or mastery.level(id) > 0
+	_mastery_label.visible = any
+	if any:
+		_mastery_label.text = tr("MASTERY  %s") % "  ".join(parts)
+
+
+## A mastery level: one line saying what it changed. The first level of a kind is the one that
+## lets robots work it.
+func _on_mastery_gained(kind: String, level: int) -> void:
+	var mastery: Mastery = Mastery.of(world)
+	if mastery == null:
+		return
+	var kind_text: String = mastery.kind_name(kind)
+	if level == int(mastery.config().get("robot_min", 1)):
+		show_toast(tr("%s mastery %d. Robots can work it now.") % [kind_text, level], "info")
+	else:
+		show_toast(tr("%s mastery %d. You and your crew work it faster.") % [kind_text, level], "info")
+	Audio.play("sparkle", 1.0 + 0.04 * float(level), -8.0)
 
 
 ## Prompt line; the button glyph follows the last input device ("E  interact" / "A  interact").

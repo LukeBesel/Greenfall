@@ -39,6 +39,7 @@ static func build(m: PaceSimModel, run_s: float) -> Dictionary:
 		checks.append(_gap_check("mechanic_later", _times(record.mechanics), FIRST_HOUR_S, run_s))
 	checks.append(_spike_check(record, run_s))
 	checks.append(_share_check(record))
+	checks.append(_apprentice_check(m))
 	var notes: PackedStringArray = []
 	for id: String in m.chains.unmodelled:
 		notes.append("not modelled, never completes: %s (the card reached it at minute %.1f; goal gaps are judged up to then)" % [
@@ -168,6 +169,15 @@ static func _share_check(record: PaceSimLog) -> Dictionary:
 		"note": "lowest %d-minute window ends at minute %d" % [SHARE_WINDOW_MIN, worst_at]}
 
 
+## A robot must be useful the moment it is built: no cleaner ever stands waiting for Lumi to
+## learn the kind it works (design spec section 3).
+static func _apprentice_check(m: PaceSimModel) -> Dictionary:
+	var first_level: float = float(m.record.beats.get("mastery_1", -1.0))
+	return {"id": "robots_never_wait_on_mastery", "pass": m.work.cleaner_wait_s <= 0.0, "value": m.work.cleaner_wait_s, "limit": 0.0, "unit": "s",
+		"note": "mastery level 1 at %.0f s, first robot at %.0f s, mastery level %d at the end" % [first_level,
+			float(m.record.beats.get("first_robot", -1.0)), m.work.mastery_level]}
+
+
 # --- The first city's fit (docs/DECISIONS.md, Nov 11; docs/reviews/M3-21_PACING_FIT.md) ----------
 
 ## The window of the "no long wait between purchases" rule and of the hex cadence, in bot seconds.
@@ -191,8 +201,12 @@ static func city_fit(m: PaceSimModel) -> Dictionary:
 	var largest: float = 0.0
 	for row: Dictionary in record.purchases:
 		largest = maxf(largest, float(row["cubes"]))
+	var done: float = m.work.hand_hexes + m.work.crew_hexes
 	return {"first_hex_s": float(record.beats.get("hexes_1", -1.0)), "first_robot_s": float(record.beats.get("first_robot", -1.0)),
-		"purchase_gap_s": gap.x, "hex_gaps_s": hex_gaps, "most_held": m.most_held, "largest_price": largest}
+		"purchase_gap_s": gap.x, "hex_gaps_s": hex_gaps, "most_held": m.most_held, "largest_price": largest,
+		"mastery_1_s": float(record.beats.get("mastery_1", -1.0)), "mastery_5_s": float(record.beats.get("mastery_5", -1.0)),
+		"mastery_level": m.work.mastery_level, "cleaner_wait_s": m.work.cleaner_wait_s,
+		"hand_share": m.work.hand_hexes / done if done > 0.0 else 1.0}
 
 
 static func fit_line(m: PaceSimModel) -> String:
@@ -200,5 +214,6 @@ static func fit_line(m: PaceSimModel) -> String:
 	var gaps: PackedStringArray = []
 	for g: float in fit["hex_gaps_s"]:
 		gaps.append("%.0f" % g)
-	return "first-city fit: first hex %.0f s, first robot %.1f min, longest purchase wait in 20 min %.0f s, most cubes held %.0f, largest price %.0f, seconds per hex to minute 15: %s" % [
-		fit["first_hex_s"], float(fit["first_robot_s"]) / 60.0, fit["purchase_gap_s"], fit["most_held"], fit["largest_price"], ",".join(gaps)]
+	return "first-city fit: first hex %.0f s, first robot %.1f min, longest purchase wait in 20 min %.0f s, most cubes held %.0f, largest price %.0f, seconds per hex to minute 15: %s\nmastery: level 1 at %.0f s, level 5 at %.1f min, level %d at the end, cleaners waited %.0f s for it, hand share of all cleaning %.0f%%" % [
+		fit["first_hex_s"], float(fit["first_robot_s"]) / 60.0, fit["purchase_gap_s"], fit["most_held"], fit["largest_price"], ",".join(gaps),
+		fit["mastery_1_s"], float(fit["mastery_5_s"]) / 60.0, fit["mastery_level"], fit["cleaner_wait_s"], float(fit["hand_share"]) * 100.0]

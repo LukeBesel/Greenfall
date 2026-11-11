@@ -193,6 +193,7 @@ func build(p_world: Node3D) -> void:
 		restore_world()
 	elif migrate:
 		(w.get("patch") as Patch).restore_cargo(OrbitMigrate.lumi_cargo())
+		_seed_legacy_mastery()  # the flat save's clean hexes are on the globe by now
 	globe.stats["site_patch_hud_ms"] = Time.get_ticks_msec() - tq
 	tq = Time.get_ticks_msec()
 	layers = OrbitLayers.attach(self)  # [orbE] sky + day/night, Glim, future layer, survey, system map, photo mode
@@ -411,12 +412,18 @@ func _build_pollution(saved: Dictionary) -> void:
 	mastery = Mastery.new()
 	w.add_child(mastery)
 	mastery.setup(Planets.current(), GameState.orbit.get("mastery", {}))
-	if not GameState.orbit.has("mastery"):  # a save from before mastery: its clean hexes count as learnt
-		mastery.seed_legacy(pollution.cleaned_units(), SphereCrew.saved_roles(GameState.orbit.get("robots", {})))
 	pollution.set_mastery(mastery)
+	_seed_legacy_mastery()
 	if DevHooks.has(DistrictsDev.FLAG_STAGE):
 		for line: String in pollution.report():
 			print(line)
+
+
+## A save from before mastery (it has no mastery section): its clean hexes count as Lumi's own
+## work, and the kinds its robots work are open to them. Nothing to do for a new game.
+func _seed_legacy_mastery() -> void:
+	if mastery != null and not GameState.orbit.has("mastery"):
+		mastery.seed_legacy(pollution.cleaned_units(), SphereCrew.saved_roles(GameState.orbit.get("robots", {})))
 
 
 ## Waste taken with a tool (not a piece): the hex's numbers and heaps follow, and Lumi's own work

@@ -123,11 +123,23 @@ func _init(p_world: Node) -> void:
 		_mark("first_research_s")
 		_event("research", {"id": id}))
 	_hook(EventBus.part_found, func(t: int, r: int) -> void: _event("part", {"type": t, "rarity": r, "parts": snappedf(GameState.get_currency("parts").to_float(), 1.0)}))
+	_hook(EventBus.pollution_cleared, _mastery.on_cleared)
+	_hook(EventBus.mastery_gained, func(kind: String, level: int) -> void:
+		_mastery.on_gained(kind, level, _now())
+		_event("mastery", {"kind": kind, "level": level}))
 	world.tree_exiting.connect(write_report)
 	world.tree_exiting.connect(_unhook)  # [beat] rocket travel reloads the scene: drop the old bot's hooks
 
 
 var _hooks: Array = []
+## Who cleared what, when each mastery level came, and what to learn next (tools/autoplay_mastery.gd).
+var _mastery := AutoplayMastery.new()
+var _learn_hex: int = -1
+var _learn_scan_t: float = 0.0
+## Score (metres) by which the bot prefers a hex holding a scooped kind robots are still shut out of.
+const LEARN_PULL_M: float = 60.0
+const LEARN_SCAN_S: float = 3.0
+const LEARN_WORK_M: float = 3.0
 ## Pacing record (docs/reviews/M3-19_ECONOMY.md): every spend (a purchase) with its time, the most
 ## cubes held, and the time each of the first hexes came clean. Times are game seconds.
 var _spend_times: Array[float] = []
@@ -197,6 +209,12 @@ func _print_pacing(tag: String) -> void:
 	print("[Autoplay] pacing %s (s from control at %.0f s): %s | hexes at %s | purchases=%d longest gap in first %d min=%.0f s | most cubes held=%.0f | purchases at %s" % [
 		tag, float(_report.get("control_s", _start_t)), " ".join(beats), ",".join(hexes), _spend_times.size(), int(PACING_WINDOW_S / 60.0),
 		_longest_purchase_gap(PACING_WINDOW_S), _max_cubes, ",".join(buys)])
+	var levels: Array[String] = []
+	for key: String in _mastery.times:
+		levels.append("%s=%.0f" % [key, _since_control(float(_mastery.times[key]))])
+	print("[Autoplay] mastery %s: levels at %s | hand %.0f units, crew %.0f units, hand share %.0f%% (lowest %d-min window %.0f%%)" % [
+		tag, " ".join(levels), _mastery.hand_units, _mastery.crew_units, _mastery.hand_share() * 100.0, int(AutoplayMastery.WINDOW_S / 60.0),
+		_mastery.lowest_window_share() * 100.0])
 
 
 func _hook(sig: Signal, f: Callable) -> void:
@@ -415,6 +433,7 @@ func update(delta: float) -> void:
 		_mgmt_t = 0.0
 		_manage(p)
 		_hand_log(p)
+		_mastery.sample(_now())
 	if world.first_seed and world.first_seed.get("_active"):
 		return  # the seed-tin cinematic
 	if p._cubing > 0.0 or p.detector.digging > 0.0:
@@ -423,7 +442,7 @@ func update(delta: float) -> void:
 		_escape_t -= delta
 		_move = _escape_dir
 		return
-	if not (_do_bench(p) or _do_tin(p) or _do_shard(p) or _do_dump(p) or _do_deliver(p) or _do_pickup(p) or _do_dig(p) or _do_pet(p) or _do_garden(p)):
+	if not (_do_bench(p) or _do_tin(p) or _do_shard(p) or _do_dump(p) or _do_deliver(p) or _do_pickup(p) or _do_dig(p) or _do_pet(p) or _do_learn(p) or _do_garden(p)):
 		_do_clean(p)
 	_watch_stuck(p, delta)
 
@@ -983,6 +1002,57 @@ func _garden_task(p: Patch, g: Garden) -> bool:
 	return false
 
 
+# --- Mastery: some hand work on each new kind ---------------------------------------------
+
+## A kind worked with a tool (misting, cleansing plants) that robots may not touch until Lumi has
+## learnt it: the bot works the nearest hex of it by hand until the first level. Scooped kinds
+## need no step of their own: _pick_focus puts their hexes first. True while it has work here.
+func _do_learn(p: Patch) -> bool:
+	var so: SliceOrbit = world.get("orbit") as SliceOrbit
+	var kind: String = AutoplayMastery.kind_to_learn(so.mastery, so.pollution, true) if so != null else ""
+	if kind == "":
+		_learn_hex = -1
+		return false
+	var pol: Pollution = so.pollution
+	var kd: Dictionary = pol.kind(kind)
+	var cost: Dictionary = kd.get("cost", {})
+	if not cost.is_empty() and GameState.get_currency(str(cost["currency"])).to_float() < 1.0:
+		return false
+	if p.compartment.ratio(p.capacity()) >= 0.9:
+		return false  # the chest is full of it: bale first (_do_clean)
+	var with_water: bool = str(kd.get("tool", "")) == "water"
+	if with_water and (_refilling or p.water < 1.5):
+		_refilling = p.water < p.water_cap() - 0.5
+		if _refilling:
+			_set_task("refill")
+			_go(p, _water_at(), 0.5)
+			return true
+	if _learn_hex < 0 or pol.held_left(_learn_hex, kind) <= Pollution.LEFT_EPS:
+		_learn_hex = -1
+		_learn_scan_t -= _dt
+		if _learn_scan_t > 0.0:
+			return false
+		_learn_scan_t = LEARN_SCAN_S
+		var best_d: float = INF
+		for h: int in _hexes():
+			if _land(h) and pol.held_left(h, kind) > Pollution.LEFT_EPS and not _skip_hex.has(h):
+				var d: float = world.field.hex_center(h).distance_to(p.global_position)
+				if d < best_d:
+					best_d = d
+					_learn_hex = h
+		if _learn_hex < 0:
+			return false
+	_set_task("learn")
+	p.set_tool(Patch.Tool.WATER if with_water else Patch.Tool.PLANT)
+	if _go(p, world.field.hex_center(_learn_hex), 1.0) < LEARN_WORK_M:
+		_scoop = true
+	if _task_t > 90.0:  # cannot get there, or nothing is coming off: try another hex
+		_skip_hex[_learn_hex] = true
+		_learn_hex = -1
+		_task_t = 0.0
+	return true
+
+
 # --- Cleaning --------------------------------------------------------------------------
 
 ## The unfinished hex to work: keep the current one until it flips; else the started or nearest one.
@@ -993,6 +1063,9 @@ func _pick_focus(p: Patch) -> int:
 	var best: int = -1
 	var best_s: float = INF
 	var base: Vector3 = (world.depot as Depot).bin_world() if world.depot else p.global_position
+	# A scooped kind robots are shut out of until Lumi learns it: its hexes come first.
+	var so: SliceOrbit = world.get("orbit") as SliceOrbit
+	var learn: String = AutoplayMastery.kind_to_learn(so.mastery, so.pollution, false) if so != null else ""
 	for h: int in _hexes():
 		if not _land(h) or f.is_clean(h) or _skip_hex.has(h) or f.locked.has(h):
 			continue
@@ -1000,6 +1073,8 @@ func _pick_focus(p: Patch) -> int:
 		# Near the bin first (short tips), then near Lumi, and finish what is started. The first term
 		# was the flat world's distance from the base at the origin; on the globe that is the depot.
 		var s: float = c.distance_to(base) + 0.6 * c.distance_to(p.global_position) - 25.0 * f.removed_fraction(h)
+		if learn != "" and learn in so.pollution.kinds_left(h):
+			s -= LEARN_PULL_M
 		if s < best_s:
 			best_s = s
 			best = h
@@ -2008,6 +2083,7 @@ func write_report() -> void:
 	_report["ignored_pieces"] = _ignore_piece.size()
 	_report["campaign_min"] = AutoplayCampaign.timeline_min()  # [beat] milestones across stages
 	_report["district"] = str(world.get("district_name"))
+	_mastery.write(_report, Mastery.of(world))
 	var path: String = ProjectSettings.globalize_path("res://screenshots/autoplay_report.json")
 	if DevHooks.get_s("save-dir", "") != "":  # [orbC] parallel staged runs keep their own report
 		path = path.replace(".json", "_%s.json" % DevHooks.get_s("save-dir", "").validate_filename())

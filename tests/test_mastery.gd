@@ -453,3 +453,69 @@ func test_a_save_from_before_mastery_is_credited_with_its_clean_hexes() -> void:
 	for id: String in fresh.kinds():
 		assert_eq(fresh.level(id), 0, "a new game starts with nothing learnt")
 	assert_eq(SphereCrew.saved_roles({"robots": [{"type": "scoopie"}, {"type": "scoopie"}, {"type": "haulbug"}]}), ["clean", "haul"])
+
+
+func test_a_robot_types_card_names_its_kinds_and_what_lumi_must_learn() -> void:
+	Planets.set_current(FIRST)
+	var m: Mastery = _mastery(FIRST)
+	assert_eq(SphereRobotKinds.mastery_line("haulbug", m), "", "a hauler works no kind")
+	assert_eq(SphereRobotKinds.mastery_block("haulbug", m), "")
+	assert_eq(SphereRobotKinds.mastery_line("scoopie", m), "Litter 0")
+	assert_eq(SphereRobotKinds.mastery_block("scoopie", m), "Lumi must learn litter first")
+	m.grant("litter", 3)
+	assert_eq(SphereRobotKinds.mastery_line("scoopie", m), "Litter 3")
+	assert_eq(SphereRobotKinds.mastery_block("scoopie", m), "")
+	assert_eq(SphereRobotKinds.mastery_line("drip", m), "", "smog is not met in the first city")
+	EventBus.district_entered.emit("highreach")
+	assert_eq(SphereRobotKinds.mastery_line("drip", m), "Smog 0")
+	assert_eq(SphereRobotKinds.mastery_block("drip", m), "Lumi must learn smog first")
+	assert_eq(SphereRobotKinds.mastery_line("scoopie", null), "", "no mastery on the planet: nothing to say")
+
+
+# --- The simulators ------------------------------------------------------------------------------
+
+func test_the_first_citys_simulator_learns_litter_before_any_cleaner_is_built() -> void:
+	Planets.set_current(FIRST)
+	GameState.new_game()
+	var result: Dictionary = PaceSim.run(FIRST, 60.0)
+	PaceSimData.overrides.clear()
+	assert_true(result["ok"], str(result["error"]))
+	var model: PaceSimModel = result["model"]
+	var fit: Dictionary = PaceSimReport.city_fit(model)
+	assert_between(float(fit["mastery_1_s"]), 60.0, 300.0, "the first level comes in the first minutes")
+	assert_lt(float(fit["mastery_1_s"]), float(fit["first_robot_s"]), "before the first robot stands")
+	assert_between(float(fit["mastery_5_s"]) / 60.0, 10.0, 25.0, "level 5 near bot minute 19: about 20 player minutes of hand work")
+	assert_eq(float(fit["cleaner_wait_s"]), 0.0, "no cleaner ever waits for Lumi to learn litter")
+	assert_gt(model.role_count("clean"), 0, "and there are cleaners by the end of the hour")
+	assert_gte(float(fit["hand_share"]), 0.3, "Lumi's hands do at least 30% of the first city's cleaning")
+	var share: Dictionary = {}
+	for check: Dictionary in PaceSimReport.build(model, 3600.0)["checks"]:
+		share[str(check["id"])] = check
+	assert_true(bool(share["hand_share"]["pass"]), "in every ten-minute window too")
+	assert_true(bool(share["robots_never_wait_on_mastery"]["pass"]))
+
+
+func test_the_crew_simulator_holds_the_hand_share_rule_and_every_kind_is_learnt_in_its_city() -> void:
+	var def: PlanetDefinition = Planets.by_id(FIRST)
+	var r: Dictionary = CrewSim.run(def, CrewSim.load_calibration())
+	var m: Dictionary = r["mastery"]
+	var cities: Array = m["by_city"]
+	var rule: Dictionary = m["rule"]
+	assert_eq(cities.size(), 6)
+	assert_eq(float(rule["min"]), 0.1, "the binding rule: at least 10% before the fourth city")
+	assert_eq(int(rule["cities"]), 3)
+	assert_true(bool(rule["pass"]), "lowest hand share in cities 1 to 3: %.0f%%" % (float(rule["worst"]) * 100.0))
+	assert_has(rule["target_met"], 0, "the first city is over the old 30% line")
+	assert_gte(float(cities[0]["hand_share"]), 0.3)
+	assert_eq(float(cities[0]["waiting_robot_min"]), 0.0, "no robot of the first city waits on a kind")
+	var new_kinds: Array = ["litter", "wrecks", "slick", "smog", "blight"]
+	for i: int in new_kinds.size():
+		var first: Dictionary = cities[i]["first_level_min"]
+		assert_true(first.has(new_kinds[i]), "%s is learnt in city %d" % [new_kinds[i], i + 1])
+		assert_lt(float(first.get(new_kinds[i], 999.0)), 6.0, "within a few minutes of hand work")
+	for id: String in (m["levels"] as Dictionary):
+		assert_gt(int(m["levels"][id]), 0, "%s has a level at the launch point" % id)
+	for i: int in range(1, cities.size()):
+		assert_lt(float(cities[i]["waiting_robot_min"]), 0.02 * float(r["minutes"]) * float(r["crew_end"]), "robots are not left waiting on mastery in city %d" % (i + 1))
+	# The crew's growth is untouched by the ledger.
+	assert_eq(r["crew_by_city"][0], 8)

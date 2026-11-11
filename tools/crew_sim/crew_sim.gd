@@ -13,6 +13,8 @@ extends RefCounted
 ## - Lumi builds robots by hand at the bench until the Assembler stands, then only the first of a
 ##   type; the Assembler's line builds the rest in the policy's mix;
 ## - the crew cap follows the base level and the cities open.
+## - mastery (tools/crew_sim/crew_sim_mastery.gd): what Lumi's hands and the crew could each clean,
+##   kind by kind, on the game's mastery rules; the hand share of all cleaning by city.
 ## What is not: cleaning speed (the city minutes are an input, so a bigger crew does not finish a
 ## city sooner here) and the rocket's Parts.
 ##
@@ -65,7 +67,7 @@ static func trip_seconds(first_ring: int, hops: int, last_ring: int, parts: floa
 ## Runs a whole planet. Returns {crew_by_city, curve (crew per 10 minutes), crew_end, cap_end,
 ## by_type, parts_earned, parts_scrounged, parts_hand, parts_arrival, parts_left, parts_on_builds,
 ## parts_on_tiers, assembled, hand_built, fastest_doubling_s, longest_stall_s, first_robot_min,
-## first_assembler_min, ground_seeded, minutes}.
+## first_assembler_min, ground_seeded, minutes, mastery (CrewSimMastery.result)}.
 static func run(def: PlanetDefinition, cal: Dictionary, policy: String = POLICY_DEFAULT) -> Dictionary:
 	var sim := CrewSim.new()
 	sim._setup(def, cal, policy)
@@ -76,6 +78,7 @@ var _cfg: Dictionary = {}
 var _cal: Dictionary = {}
 var _policy: String = POLICY_DEFAULT
 var _chain := CrewChain.new()
+var _mastery := CrewSimMastery.new()
 var _cities: Array[City] = []
 var _types: Dictionary[String, Dictionary] = {}
 var _order: Array[String] = []
@@ -98,6 +101,7 @@ func _setup(def: PlanetDefinition, cal: Dictionary, policy: String) -> void:
 	_cal = cal
 	_policy = policy
 	_chain.configure(_cfg.get("chain", {}))
+	_mastery.setup(def, cal)
 	for raw: Variant in _cfg.get("types", []):
 		var t: Dictionary = raw
 		_types[str(t["id"])] = t
@@ -135,6 +139,7 @@ func _play() -> Dictionary:
 		_scrounge()
 		_bench()
 		_line()
+		_mastery.step(TICK_S, _crew, _types, _tier_mult)
 		if _t >= next_curve:
 			(_out["curve"] as Array).append(_total())
 			next_curve += 600.0
@@ -151,6 +156,7 @@ func _play() -> Dictionary:
 	_out["ground_seeded"] = _chain.seeded_parts
 	_out["ground_left"] = _chain.stock_total()
 	_out["minutes"] = _t / 60.0
+	_out["mastery"] = _mastery.result(_cal.get("city_minutes", []))
 	return _out
 
 
@@ -158,6 +164,7 @@ func _play() -> Dictionary:
 
 func _enter_city(i: int) -> void:
 	_last_robot_t = _t  # waits are counted inside a city
+	_mastery.enter_city(i)
 	var salvage: float = _chain.claim_arrival(_cities[i].id)
 	if salvage > 0.0:
 		_earn(salvage, "parts_arrival")

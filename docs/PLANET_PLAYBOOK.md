@@ -172,6 +172,20 @@ The rules are `systems/pollution.gd`; every number is in the planet's `pollution
 - Rule of thumb: a kind's gate should be something the city itself gives (its tool, its robot). A gate the player may already own on arrival is not felt as a gate.
 - Rule of thumb: keep `tool_use_per_unit` low enough that one tank clears about ten hexes; the can only fills at the base.
 
+### Mastery and apprentice robots (M3-05)
+The rules are `core/mastery_rules.gd` (plain maths, shared with the simulators); the state is `systems/mastery.gd`; which hexes robots must leave alone is `systems/pollution_crew.gd`. Numbers: the `mastery` block and each kind's `mastery_level1_units` in the planet's `pollution_kinds` table, and `mastery_speed` and `proximity` in its `robots` table. Measured values are in `docs/reviews/M3-05_MASTERY.md`.
+
+- **Only Lumi's own work counts:** units of a kind she clears x the kind's `mastery_per_unit`. Robot work teaches nothing.
+- **Level L is held at** `mastery_level1_units x growth^(L-1)` units in all. With growth 1.78 level 5 takes ten times the work of level 1.
+- **Lumi's rate on a kind** = her rate x (1 + `hand_bonus_per_level` x level). For scooped kinds the scoop pulses that much sooner; for tool kinds the take per second is that much larger.
+- **A robot's rate on a kind** = its own rate x (`base` + `per_level` x level), and nothing under `min_level`. The rates in the robots table are therefore the rates at the level where the factor is 1 (level 5 on Planet 1).
+- **Within `proximity.radius_m` of Lumi** a robot works (1 + `bonus`) times as fast.
+- **The gate on the ground.** Scooped kinds share a hex's pieces, so a hex that still holds an unlearnt scooped kind is shut to robots as a whole (`SphereCells.shut`); it opens when Lumi learns the kind or clears it off that hex herself. Tool kinds are gated one by one, so a cleaner still takes the litter off a smog hex.
+- **Time away** is worked at the base kind's rate; shut hexes are skipped.
+- **A save from before mastery** is credited `legacy_credit` of the waste of its clean hexes, kind by kind, and at least the robot level in every kind its robots work.
+- Rule of thumb: set a kind's `mastery_level1_units` to about two minutes of Lumi's hand work on it in the city where it first appears (the heavier that city's hexes and the faster her hands by then, the larger the number).
+- Rule of thumb: the first robot of a role must be useful the moment it is built, so its plans should arrive after the first level of the kind it works. The simulators check this (`robots_never_wait_on_mastery`, and the robot-minutes spent waiting in `tools/crew_sim`).
+
 ### The crew and the robot chain (M3-20)
 Every number is in the planet's robots table. The rules are `core/crew_rules.gd` (cap, prices) and `core/crew_chain.gd` (the ground, the Assembler's line); `tools/crew_sim` plays a whole planet on them. Measured values are in `docs/reviews/M3-20_CREW.md`.
 

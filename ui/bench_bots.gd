@@ -25,6 +25,7 @@ static func rows(fleet: Fleet, build_at: Callable) -> Array:
 	if fleet == null:
 		return out
 	var world: Node = fleet.world
+	var mastery: Mastery = Mastery.of(world)
 	var tiers_n: int = Economy.robot_tiers.size()
 	for rid: String in Economy.robot_order:
 		var def: Dictionary = Economy.robots[rid]
@@ -46,6 +47,14 @@ static func rows(fleet: Fleet, build_at: Callable) -> Array:
 				[_tr("Tier"), Economy.tier_name(t)], [_tr("Cost"), Currencies.cost_text(cost)]]
 			if str(def.get("role", "")) == "water" and fleet.water_net:
 				table.insert(2, [_tr("Tanks"), "%d / %d" % [fleet.water_net.tanks.size(), int(WaterNet.cfg().get("max", 6))]])
+			# What the type may work comes from Lumi's own hands: her mastery of its kinds, and the
+			# kind she has still to learn before it can touch it.
+			var learnt: String = SphereRobotKinds.mastery_line(rid, mastery)
+			if learnt != "":
+				table.append([_tr("Mastery"), learnt])
+			var learn: String = SphereRobotKinds.mastery_block(rid, mastery)
+			if learn != "":
+				table.append([_tr("Cannot work yet"), learn])
 			out.append({"id": "build_" + rid, "cat": "build", "icon": icon, "name": name_, "desc": _tr(str(def.get("desc", ""))),
 				"lv": mini(in_crew, cap), "max": cap if cap <= 10 else 0, "price": cost,
 				"state": "ready" if why == "" else ("short" if short or n > 0 else "locked"),  # owned types keep their name
@@ -101,4 +110,12 @@ static func counter(fleet: Fleet) -> String:
 	if fleet == null:
 		return ""
 	var total: int = fleet.robot_total()  # [orbC] globe crews
-	return _tr("ROBOTS  %d   ·   CREW SPOTS %d") % [total, fleet.crew_cap()]
+	var text: String = _tr("ROBOTS  %d   ·   CREW SPOTS %d") % [total, fleet.crew_cap()]
+	var mastery: Mastery = Mastery.of(fleet.world)
+	if mastery != null and mastery.enabled():
+		var parts: PackedStringArray = []
+		for id: String in mastery.met_kinds():
+			parts.append("%s %d" % [mastery.kind_name(id).to_upper(), mastery.level(id)])
+		if not parts.is_empty():
+			text += "   ·   " + _tr("MASTERY  %s") % "  ".join(parts)
+	return text

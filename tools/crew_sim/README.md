@@ -35,13 +35,22 @@ All times are player time: robots work in real time.
 | The bench | One robot by hand per visit until the Assembler stands, then only the first of each type. The Assembler is built on the first visit that can pay for it. A tier step when Parts are to spare. |
 | The Assembler | `CrewChain.tick_line`, with the policy's build mix. |
 | Crew cap | `CrewRules.cap` from the base level (calibrated per city) and the cities open. |
+| Mastery | `crew_sim_mastery.gd`, on the game's `MasteryRules`: Lumi's hands (calibrated hexes a minute per city, faster with each level) work a kind of the city that robots cannot work yet until it is learnt, then the kinds by their share of the city's waste. Robots work the kinds their role lists, at their table rates x the kind's mastery factor, and not at all under the level they need. |
 
 Not simulated: cleaning speed, cubes, the rocket's Parts, the per-type crew upgrades.
+
+## Hand share
+
+The mastery ledger counts **capacity**: the hexes of waste Lumi's hands could clean and the crew could clean in each city's minutes. Hand share = hand / (hand + crew). It prints the share by city, the planet's rule from the `mastery.hand_share` block of the kinds table (`min` in the first `cities` cities is required; `target` is reported city by city), the hexes a minute Lumi would need in each city to reach the target, the capacity of both against the city's hexes (over 100%: the city would be done before its calibrated minutes; under: later), the mastery levels at the end, when each kind's first level came, and the robot-minutes robots spent built but shut out of every kind they work.
+
+Lumi's rate past the first city is an ESTIMATE (`hand_hexes_per_min`): no bot run reaches city 2. Read the later cities' shares as "what the accepted pace would give", not as measurements.
 
 ## Calibration
 
 `calibration.json` holds what the tables cannot say, each with how it was found. Numbers marked ESTIMATE come from the accepted proposal's model (`docs/reviews/BALANCE_PROPOSAL_P1_V2.md`), because cities 2 to 6 and their mechanics are not in the game yet. Measure them again when they are.
 
 ## Tests
+
+`tests/test_mastery.gd` holds the mastery ledger: the planet's hand-share rule passes, no robot waits on a kind in the first city, and every kind of a city is learnt inside that city.
 
 `tests/test_crew_chain.gd` runs the simulator on the first planet and holds its numbers: the crew after each city within 15% of the accepted curve, 100 to 200 robots at the launch point, no doubling in under three minutes, no wait over six minutes, and no bigger crew from building only Scroungers or from ten times the Parts.

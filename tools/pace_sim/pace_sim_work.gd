@@ -39,6 +39,12 @@ var hexes_done: int = 0
 ## Output so far in hexes, by who did it (the hand-share rule compares them).
 var hand_hexes: float = 0.0
 var crew_hexes: float = 0.0
+## Lumi's mastery of the base kind (the first city holds nothing else): the units her hands have
+## cleared, the level they hold (core/mastery_rules.gd), and the seconds cleaner robots stood
+## built but shut out because she had not learnt the kind yet.
+var mastery_units: float = 0.0
+var mastery_level: int = 0
+var cleaner_wait_s: float = 0.0
 var walk_s: float = 0.0
 var stuck_s: float = 0.0
 var last_bench_t: float = 0.0
@@ -55,6 +61,8 @@ var _blooms: PackedFloat64Array = []
 var _yard_found: bool = false
 var _cashed_by_haulers: int = 0
 var _unit_rate: Dictionary[String, float] = {}
+var _mastery_cfg: Dictionary = {}
+var _base_kind: String = ""
 ## Whether the trip under way ends at the scale (bales) or at the bin.
 var _to_scale: bool = false
 
@@ -64,6 +72,9 @@ func _init(model: PaceSimModel) -> void:
 	data = model.data
 	hex_vol = data.hex_work(0)
 	hex_left = hex_vol
+	var kinds: Dictionary = Planets.current().table(Pollution.TABLE)
+	_mastery_cfg = MasteryRules.config(kinds, Planets.current().table("robots"))
+	_base_kind = str(kinds.get("base", ""))
 	for i: int in GARDEN_TOP + 1:
 		garden.append([])
 
@@ -80,7 +91,7 @@ func refresh_stats() -> void:
 	var beam_base: float = maxf(Economy.base_stat("scoop_width") * Economy.base_stat("scoop_reach"), 0.001)
 	var beam_gain: float = pow(maxf(beam / beam_base, 0.001), data.k("beam_exponent"))
 	# Seconds per unit of volume: the pulse itself, plus finding and facing the next pieces.
-	var pulse_s: float = 1.0 / (maxf(Economy.stat("scoop_rate"), 0.5) * Pace.pulse_volume() * data.k("hand_duty"))
+	var pulse_s: float = 1.0 / (maxf(Economy.stat("scoop_rate"), 0.5) * hand_bonus() * Pace.pulse_volume() * data.k("hand_duty"))
 	hand_rate = 1.0 / (pulse_s + data.k("seek_s_per_volume") / beam_gain)
 	for id: String in m.robots:
 		_unit_rate[id] = Offline.unit_rate(id, int(m.robot_tier.get(id, 0)))
@@ -95,6 +106,29 @@ func step(dt: float) -> void:
 	_haul(dt)
 	_garden(dt)
 	_hand(dt)
+
+
+## Lumi's rate on the base kind from her mastery of it (Patch pulses that much sooner).
+func hand_bonus() -> float:
+	return MasteryRules.hand_bonus(_mastery_cfg, mastery_level) if MasteryRules.tracks(_mastery_cfg, _base_kind) else 1.0
+
+
+## A cleaner robot's rate against its own: Lumi's mastery of the base kind, and the bonus for
+## the share of the crew's work done alongside her. 0 while robots may not work the kind.
+func crew_factor() -> float:
+	var near: float = 1.0 + (MasteryRules.near_factor(_mastery_cfg, 0.0) - 1.0) * data.k("crew_near_share")
+	return MasteryRules.robot_factor(_mastery_cfg, _base_kind, mastery_level) * near
+
+
+## Lumi's own hands cleared `units`: mastery of the base kind, and a beat for each level.
+func _learn(units: float) -> void:
+	mastery_units += MasteryRules.gain(_mastery_cfg, _base_kind, units)
+	var level: int = MasteryRules.level_for(_mastery_cfg, _base_kind, mastery_units)
+	if level == mastery_level:
+		return
+	mastery_level = level
+	m.record.beat("mastery_%d" % level, m.t)
+	refresh_stats()
 
 
 ## Metres from the bin to where Lumi is working.
@@ -188,6 +222,7 @@ func _scoop(left: float) -> float:
 	chest_worth += HexWorth.share_of(data.hex_cubes, take, hex_left, hex_vol, data.clean_frac)
 	hex_left -= take
 	hand_hexes += take / (hex_vol * data.clean_frac)
+	_learn(take)
 	_salvage(take)
 	if garden_open():
 		_seed_finds(take / data.mean_bite, take / rate)
@@ -316,13 +351,17 @@ func _crew(dt: float) -> void:
 	if region_done():
 		return
 	var per_hex: float = SphereOffline.UNITS_PER_CELL * data.clean_frac
+	var learnt: float = crew_factor()
 	for id: String in m.robots:
 		if m.role_of(id) != "clean":
+			continue
+		if learnt <= 0.0:
+			cleaner_wait_s += dt * float(m.robots[id])
 			continue
 		var tier: int = int(m.robot_tier.get(id, 0))
 		# Seconds a cleaner needs for a hex: the work at its unit rate, plus driving, which grows
 		# with the distance of the frontier from the base.
-		var rate: float = float(_unit_rate.get(id, 0.0))
+		var rate: float = float(_unit_rate.get(id, 0.0)) * learnt
 		if rate <= 0.0:
 			continue
 		var hex_s: float = per_hex / rate + data.k("crew_travel_s_per_ring") * float(PaceSimData.ring_of(hexes_done))

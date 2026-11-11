@@ -17790,3 +17790,31 @@ msgstr ""
 #: planets/verdance/data/pollution.json:kinds.blight.cost.prompt
 msgid "Blight needs cleansing plants: out of seeds."
 msgstr ""
+
+#: systems/mastery.gd (M3-05 mastery)
+msgid "Lumi must learn %s first"
+msgstr "まずLumiが%sを覚える必要があります"
+
+#: ui/hud.gd (M3-05 mastery)
+msgid "MASTERY  %s"
+msgstr "熟練度  %s"
+
+#: ui/robot_card.gd (M3-05 mastery)
+msgid "Mastery  %s"
+msgstr "熟練度  %s"
+
+#: ui/bench_bots.gd (M3-05 mastery)
+msgid "Mastery"
+msgstr "熟練度"
+
+#: ui/bench_bots.gd (M3-05 mastery)
+msgid "Cannot work yet"
+msgstr "まだ作業できません"
+
+#: ui/hud.gd (M3-05 mastery)
+msgid "%s mastery %d. Robots can work it now."
+msgstr "%sの熟練度 %d。ロボットが作業できるようになりました。"
+
+#: ui/hud.gd (M3-05 mastery)
+msgid "%s mastery %d. You and your crew work it faster."
+msgstr "%sの熟練度 %d。あなたもクルーも作業が速くなりました。"

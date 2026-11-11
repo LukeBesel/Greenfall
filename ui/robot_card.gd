@@ -17,6 +17,7 @@ var build_at: Callable
 var _title: Label
 var _tier_lbl: Label
 var _desc: Label
+var _mastery: Label
 var _crew_pips: BenchKit.Pips
 var _crew_lbl: Label
 var _mk_pips: BenchKit.Pips
@@ -68,6 +69,9 @@ func _ready() -> void:
 	tr_row.add_child(_tier_lbl)
 	_desc = BenchKit.body(tr(str(Economy.robots[type_id].get("desc", ""))), UITheme.MUTED, BenchKit.SMALL_SIZE + 1)
 	tv.add_child(_desc)
+	_mastery = BenchKit.body("", UITheme.CREAM, BenchKit.SMALL_SIZE + 1)
+	_mastery.visible = false
+	tv.add_child(_mastery)
 	# Spots: crew (built / free) and Mk steps.
 	_spots = VBoxContainer.new()
 	_spots.add_theme_constant_override("separation", 6)
@@ -225,6 +229,7 @@ func refresh() -> void:
 		_extra.visible = false
 		add_theme_stylebox_override("panel", BenchKit.holo(Color(1, 1, 1, 0.08), BenchKit.CARD_BG, 0.0))
 		return
+	_refresh_mastery()
 	# Crew spots: robots in this type's crew vs the cap (a multibot can join any crew with room).
 	var cap: int = fleet.crew_cap()
 	var in_crew: int = fleet.robot_total()
@@ -265,6 +270,18 @@ func refresh() -> void:
 	_why.visible = why != ""
 	var ready: bool = why == "" or tier_ok
 	add_theme_stylebox_override("panel", BenchKit.holo(Color(BenchKit.OK, 0.6) if ready else Color(BenchKit.HOLO, 0.22), BenchKit.CARD_BG, 0.9 if ready else 0.3))
+
+
+## Lumi's mastery of the kinds this type works, and the kind she must learn before it can.
+func _refresh_mastery() -> void:
+	var mastery: Mastery = Mastery.of(fleet.world)
+	var line: String = SphereRobotKinds.mastery_line(type_id, mastery)
+	var learn: String = SphereRobotKinds.mastery_block(type_id, mastery)
+	_mastery.visible = line != ""
+	if line == "":
+		return
+	_mastery.text = tr("Mastery  %s") % line if learn == "" else "%s\n%s" % [tr("Mastery  %s") % line, learn]
+	_mastery.add_theme_color_override("font_color", UITheme.CREAM if learn == "" else UITheme.GOLD)
 
 
 func _on_build() -> void:

@@ -154,7 +154,10 @@ func test_simulator_meets_the_first_city_targets() -> void:
 	var fit: Dictionary = PaceSimReport.city_fit(result["model"] as PaceSimModel)
 	assert_between(float(fit["first_hex_s"]), 1.0, 90.0, "first clean hex under 90 s")
 	assert_between(float(fit["first_robot_s"]), 420.0, 720.0, "first robot by minute 12, and not before minute 7")
-	assert_lte(float(fit["purchase_gap_s"]), 120.0, "no wait between purchases over 120 s in the first 20 minutes")
+	# 120 s is the rule; 136 s is what the lead accepted on the bot (docs/DECISIONS.md, city 1 pacing
+	# fit). With mastery's hand bonus (M3-05) Lumi earns a little faster, the 600-cube Hardy Weeds
+	# research lands inside the 20 minutes, and the wait after it reads 133 s here (it was 106 s).
+	assert_lte(float(fit["purchase_gap_s"]), 136.0, "no wait between purchases over the accepted 136 s in the first 20 minutes")
 	assert_lt(float(fit["most_held"]), 5000.0, "most cubes held")
 	assert_lt(float(fit["largest_price"]), 4200.0, "largest price paid")
 	var gaps: Array = fit["hex_gaps_s"]
