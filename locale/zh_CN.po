@@ -393,7 +393,7 @@ msgstr "最高等级"
 msgid "Needs the Rocket Cargo research"
 msgstr "需要研究“火箭货运”"
 
-#: automation/rocket_tiers.gd:61 systems/homeward.gd:547
+#: automation/rocket_tiers.gd:61 systems/homeward.gd:549
 msgid "Not enough cubes or parts"
 msgstr "方块或零件不足"
 
@@ -491,7 +491,7 @@ msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
-#: core/pace.gd:147 story/objectives.gd:899
+#: core/pace.gd:147 story/objectives.gd:901
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "太重了。去工作台升级举升力。"
 
@@ -917,55 +917,55 @@ msgstr "埋藏零件  %s  ·  %.1f 米"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "埋藏零件  ·  信号 %d%%"
 
-#: player/patch.gd:171
+#: player/patch.gd:174
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi 哐啷哐啷地回到了院子里。真奇怪。"
 
-#: player/patch.gd:225
+#: player/patch.gd:228
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi 不会游泳。在工作台装上悬浮喷口，他就能飘过湖面。"
 
-#: player/patch.gd:349
+#: player/patch.gd:352
 msgid "No seeds yet. Keep cleaning."
 msgstr "还没有种子。继续清理吧。"
 
-#: player/patch.gd:384
+#: player/patch.gd:387
 msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 msgstr "种子需要干净、空旷的土地：不能是街道、路沿或起降台。"
 
-#: player/patch.gd:391
+#: player/patch.gd:394
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "种子用完了。开花的植物会掉落更多。"
 
-#: player/patch.gd:398
+#: player/patch.gd:401
 msgid "Watering can is empty. Refill at the hub."
 msgstr "水壶空了。回基地补水。"
 
-#: player/patch.gd:603
+#: player/patch.gd:606
 msgid "PERFECT BALE  %s"
 msgstr "完美捆包  %s"
 
-#: player/patch.gd:609
+#: player/patch.gd:612
 msgid "OVERSTUFFED  %s"
 msgstr "塞爆了  %s"
 
-#: player/patch.gd:613
+#: player/patch.gd:616
 msgid "PURE  %s"
 msgstr "纯净  %s"
 
-#: player/patch.gd:615
+#: player/patch.gd:618
 msgid "SURGE  %s"
 msgstr "冲劲  %s"
 
-#: player/patch.gd:618
+#: player/patch.gd:621
 msgid "  (streak +%d%%)"
 msgstr "  （连击 +%d%%）"
 
-#: player/patch.gd:661
+#: player/patch.gd:664
 msgid "Salvaged: %s"
 msgstr "回收：%s"
 
-#: player/patch.gd:692
+#: player/patch.gd:695
 msgid "Recovered: %s"
 msgstr "找回：%s"
 
@@ -1552,7 +1552,7 @@ msgstr "你的基地已经成长到试玩版的极限。"
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "在完整版中，Lumi 会把基地建到 5 级，种满整片街区直到繁茂，让它们成长为明亮的未来城市，还会乘火箭飞往星球上的数十座基地。你的试玩进度会被保留。"
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:787
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:789
 msgid "Hexes cleaned"
 msgstr "已清理六角格"
 
@@ -1560,11 +1560,11 @@ msgstr "已清理六角格"
 msgid "Bales made"
 msgstr "已制作捆包"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:802
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:804
 msgid "Robots built"
 msgstr "已建造机器人"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:810
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:812
 msgid "Time played"
 msgstr "游戏时长"
 
@@ -1584,7 +1584,7 @@ msgstr "标题画面"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "继续游戏：第一个街区仍然开放，基地等级 %d。"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:880 ui/main_menu.gd:519
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:519
 msgid "%dh %02dm"
 msgstr "%d时%02d分"
 
@@ -1918,31 +1918,31 @@ msgstr "那个人就是你。小小的。倔强的。只剩百分之四的电。
 msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
 msgstr "找到干净的地面。挖坑。放进去。拍拍土。然后——这步很重要——浇水。"
 
-#: story/first_seed.gd:143
+#: story/first_seed.gd:145
 msgid "{tool_water}  then hold  {scoop}  to water it"
 msgstr "{tool_water}  然后按住  {scoop}  浇水"
 
-#: story/first_seed.gd:169
+#: story/first_seed.gd:171
 msgid "Hold  {scoop}  on clean ground to plant the seed"
 msgstr "在干净的地面上按住  {scoop}  种下种子"
 
-#: story/first_seed.gd:246
+#: story/first_seed.gd:248
 msgid "...It's green. Lumi, it's actually green."
 msgstr "……是绿色的。Lumi，真的是绿色的。"
 
-#: story/first_seed.gd:248
+#: story/first_seed.gd:250
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "记得浇水。外面种子很稀少，但每次开花都会还你一颗，还会给你的核心一点绿光。一切就是这样开始的。"
 
-#: story/first_seed.gd:361
+#: story/first_seed.gd:363
 msgid "Lumi, that green signal is back, stronger now. Follow the beam: the old greenhouse."
 msgstr "Lumi，那个绿色信号又出现了，而且更强了。跟着光柱走：去旧温室。"
 
-#: story/first_seed.gd:370
+#: story/first_seed.gd:372
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr "Lumi。我收到一个信号。绿色的，很微弱，在基地东边。一座旧温室。去看看。"
 
-#: story/homecoming.gd:18
+#: story/homecoming.gd:18 story/homecoming.gd:27
 msgid "Clear of the air. Look back, {name}. Look at it."
 msgstr "离开大气层了。回头看看，{name}。好好看看。"
 
@@ -1958,27 +1958,35 @@ msgstr "CRADLE：星系勘测：五个世界。五个存活。"
 msgid "CRADLE:  CHARTER CONDITION MET.  WAKING SLEEPERS.  OPENING BAY ONE."
 msgstr "CRADLE：宪章条件已满足。唤醒沉睡者。打开一号舱。"
 
-#: story/homecoming.gd:22
+#: story/homecoming.gd:22 story/homecoming.gd:30
 msgid "It's opening the bay. It's actually opening the bay. Steady... steady..."
 msgstr "它在打开舱门。它真的在打开舱门。稳住……稳住……"
 
-#: story/homecoming.gd:25
+#: story/homecoming.gd:28
+msgid "Five worlds awake. Not all green yet, but robots are planting on every one."
+msgstr "五个世界都醒了。还没全部变绿，但每个世界上都有机器人在种植。"
+
+#: story/homecoming.gd:29
+msgid "CRADLE:  FUEL FULL.  POWER FULL.  WAKING SLEEPERS.  OPENING BAY ONE."
+msgstr "CRADLE：燃料已满。能量已满。唤醒沉睡者。打开一号舱。"
+
+#: story/homecoming.gd:33
 msgid "The vault. Your vault. It looks exactly like you left it."
 msgstr "种子库。你的种子库。和你离开时一模一样。"
 
-#: story/homecoming.gd:26
+#: story/homecoming.gd:34
 msgid "You climbed into a cargo pod to save that tray. Three hundred years later, you brought it home."
 msgstr "你为了救那个托盘钻进了货运舱。三百年后，你把它带回家了。"
 
-#: story/homecoming.gd:27
+#: story/homecoming.gd:35
 msgid "Hear that? Below decks. Doors. Voices. They're waking up, {name}."
 msgstr "听到了吗？甲板下面。开门声。说话声。他们正在醒来，{name}。"
 
-#: story/homecoming.gd:28
+#: story/homecoming.gd:36
 msgid "The first thing they'll see is a world that's green again. You did that. Small. Stubborn. Perfect."
 msgstr "他们看到的第一样东西，会是一个重新变绿的世界。是你做到的。小小的，倔强的，完美的。"
 
-#: story/homecoming.gd:132 data/achievements.json:achievements[home_homecoming].name data/codex.json:homeward.homecoming.name
+#: story/homecoming.gd:141 data/achievements.json:achievements[home_homecoming].name data/codex.json:homeward.homecoming.name
 #: data/radio.json:songs[homecoming].name
 msgid "Homecoming"
 msgstr "归乡"
@@ -2171,53 +2179,57 @@ msgstr "LEDGER  WMS-07"
 msgid "Reward: %s"
 msgstr "奖励：%s"
 
-#: story/objectives.gd:406
+#: story/objectives.gd:408
 msgid "Objective complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:433
+#: story/objectives.gd:435
 msgid "Goal complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:702
+#: story/objectives.gd:704
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "打包机装好了！装满胸舱，按 [%s] 压一个捆包，再把它搬到秤上。"
 
-#: story/objectives.gd:724 story/objectives.gd:887
+#: story/objectives.gd:726 story/objectives.gd:889
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "你的胸舱满了。按 [%s] 压一个捆包。"
 
-#: story/objectives.gd:740
+#: story/objectives.gd:742
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "你的探测器发现附近埋着一个机器人零件。跟着“埋藏零件”的读数走；走到正上方时它会哔哔响。"
 
-#: story/objectives.gd:742
+#: story/objectives.gd:744
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
 
-#: story/objectives.gd:888
+#: story/objectives.gd:890
 msgid "Your chest is full. Bring it to the bin."
 msgstr "你的胸舱满了。带到垃圾桶去。"
 
-#: story/objectives.gd:895
+#: story/objectives.gd:897
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "你的胸舱满了。回家吧：垃圾桶就在高高的烟柱下面。"
 
-#: story/objectives.gd:897
+#: story/objectives.gd:899
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "把捆包搬回家：秤就在高高的烟柱下面。"
 
-#: story/objectives.gd:897
+#: story/objectives.gd:899
 msgid "Carry your bale to the scale by the bin."
 msgstr "把捆包搬到垃圾桶旁边的秤上。"
 
-#: story/objectives.gd:904
+#: story/objectives.gd:906
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "回家吧：跟着光柱走到高高的烟柱那里。"
 
-#: story/objectives.gd:914
+#: story/objectives.gd:916
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "这里没有东西可捡。走到垃圾更多的地方去。"
+
+#: story/planet_steps.gd:57
+msgid "Wake station %d of %d"
+msgstr "唤醒第 %d 座站点(共 %d 座)"
 
 #: story/shards.gd:106
 msgid "Something surfaced in the cleared ground. A memory shard."
@@ -2728,18 +2740,22 @@ msgid "The Cradle has to answer first (Cradle Returns)"
 msgstr "Cradle 号得先回应（Cradle号归来）"
 
 #: systems/homeward.gd:541
+msgid "Needs full fuel and power. %s"
+msgstr "需要燃料和能量都满。%s"
+
+#: systems/homeward.gd:543
 msgid "Needs %d planet relics (%d)"
 msgstr "需要 %d 件星球遗物（%d）"
 
-#: systems/homeward.gd:543
+#: systems/homeward.gd:545
 msgid "Restore every planet first (%d%%)"
 msgstr "先恢复每一个星球（%d%%）"
 
-#: systems/homeward.gd:545
+#: systems/homeward.gd:547
 msgid "Build it at Verdance's Cradle Returns"
 msgstr "在 Verdance 的 Cradle号归来建造"
 
-#: systems/homeward.gd:561
+#: systems/homeward.gd:563
 msgid "Rocket drive built: %s."
 msgstr "火箭推进器已建成：%s。"
 
@@ -2759,19 +2775,19 @@ msgstr "%s 已恢复。星系：%d%%。"
 msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
 msgstr "遗物：%s。传家宝选择 +1（方舟舰桥）。"
 
-#: systems/homeward_director.gd:328
-msgid "Every planet in the system is alive. Go back to Verdance's Cradle Returns and build the Mk VII Homeward rocket."
-msgstr "星系里的每个星球都活过来了。回到 Verdance 的 Cradle号归来，建造 Mk VII 归乡火箭。"
+#: systems/homeward_director.gd:329
+msgid "Every planet in the system is alive. The Settlers will wake to five green worlds."
+msgstr "星系里的每个星球都活过来了。定居者醒来时会看到五个绿色的世界。"
 
-#: systems/homeward_director.gd:503
+#: systems/homeward_director.gd:504
 msgid "E   launch home"
 msgstr "E   发射回家"
 
-#: systems/homeward_director.gd:503
+#: systems/homeward_director.gd:504
 msgid "E   plant the last seed"
 msgstr "E   种下最后一颗种子"
 
-#: systems/homeward_director.gd:514
+#: systems/homeward_director.gd:515
 msgid "The last seed is in the ground. Everything is ready. Press E again here to launch home."
 msgstr "最后一颗种子已经入土。一切就绪。在这里再按一次 E 就能发射回家。"
 
@@ -2964,7 +2980,7 @@ msgstr "已在队列中"
 msgid "Queue is full"
 msgstr "队列已满"
 
-#: systems/research.gd:340 ui/codex_screen.gd:884
+#: systems/research.gd:340 ui/codex_screen.gd:886
 msgid "%ds"
 msgstr "%d秒"
 
@@ -3395,7 +3411,7 @@ msgstr "压了大约 %d 个捆包"
 msgid "kept the base tidy"
 msgstr "把基地收拾得整整齐齐"
 
-#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:794
+#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:796
 msgid "Cubes earned"
 msgstr "赚到的方块"
 
@@ -3906,7 +3922,7 @@ msgstr "在%s的瓦砾中找到他们的一张CD。"
 msgid "Your CDs (%d / %d): %s"
 msgstr "你的CD（%d / %d）：%s"
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:816
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:818
 msgid "Achievements"
 msgstr "成就"
 
@@ -4057,123 +4073,123 @@ msgstr "提示：在%s期间出现。"
 msgid "Unlocked  ·  %s"
 msgstr "已解锁  ·  %s"
 
-#: ui/codex_screen.gd:784
+#: ui/codex_screen.gd:786
 msgid "Total"
 msgstr "总计"
 
-#: ui/codex_screen.gd:785
+#: ui/codex_screen.gd:787
 msgid "Junk removed"
 msgstr "清除的废料"
 
-#: ui/codex_screen.gd:785
+#: ui/codex_screen.gd:787
 msgid "by type"
 msgstr "按种类"
 
-#: ui/codex_screen.gd:786 data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:788 data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "清理"
 
-#: ui/codex_screen.gd:788
+#: ui/codex_screen.gd:790
 msgid "Hexes restored"
 msgstr "恢复的六角格"
 
-#: ui/codex_screen.gd:789
+#: ui/codex_screen.gd:791
 msgid "Bales pressed"
 msgstr "压制的捆包"
 
-#: ui/codex_screen.gd:790
+#: ui/codex_screen.gd:792
 msgid "Pure bales"
 msgstr "纯净捆包"
 
-#: ui/codex_screen.gd:791
+#: ui/codex_screen.gd:793
 msgid "Perfect bales"
 msgstr "完美捆包"
 
-#: ui/codex_screen.gd:792
+#: ui/codex_screen.gd:794
 msgid "Lumpy bales"
 msgstr "不平整捆包"
 
-#: ui/codex_screen.gd:793
+#: ui/codex_screen.gd:795
 msgid "Bales cashed in"
 msgstr "兑现的捆包"
 
-#: ui/codex_screen.gd:796 ui/globe_view.gd:156 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:798 ui/globe_view.gd:156 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "种植"
 
-#: ui/codex_screen.gd:797
+#: ui/codex_screen.gd:799
 msgid "Seeds planted"
 msgstr "播下的种子"
 
-#: ui/codex_screen.gd:798
+#: ui/codex_screen.gd:800
 msgid "Plants bloomed"
 msgstr "开花的植物"
 
-#: ui/codex_screen.gd:799
+#: ui/codex_screen.gd:801
 msgid "Air filtered"
 msgstr "过滤的空气"
 
-#: ui/codex_screen.gd:801 data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:803 data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "机器人"
 
-#: ui/codex_screen.gd:803
+#: ui/codex_screen.gd:805
 msgid "Bales by robots"
 msgstr "机器人打的捆包"
 
-#: ui/codex_screen.gd:804
+#: ui/codex_screen.gd:806
 msgid "Parts dug up"
 msgstr "挖出的零件"
 
-#: ui/codex_screen.gd:806
+#: ui/codex_screen.gd:808
 msgid "Exploring"
 msgstr "探索"
 
-#: ui/codex_screen.gd:807
+#: ui/codex_screen.gd:809
 msgid "Distance rolled"
 msgstr "行驶距离"
 
-#: ui/codex_screen.gd:808
+#: ui/codex_screen.gd:810
 msgid "Memory shards read"
 msgstr "读过的记忆碎片"
 
-#: ui/codex_screen.gd:809
+#: ui/codex_screen.gd:811
 msgid "Codex entries"
 msgstr "图鉴条目"
 
-#: ui/codex_screen.gd:812
+#: ui/codex_screen.gd:814
 msgid "Progress"
 msgstr "进度"
 
-#: ui/codex_screen.gd:813
+#: ui/codex_screen.gd:815
 msgid "Upgrades bought"
 msgstr "购买的升级"
 
-#: ui/codex_screen.gd:814
+#: ui/codex_screen.gd:816
 msgid "Field notes logged"
 msgstr "已记录的野外笔记"
 
-#: ui/codex_screen.gd:815
+#: ui/codex_screen.gd:817
 msgid "Research done"
 msgstr "完成的研究"
 
-#: ui/codex_screen.gd:817
+#: ui/codex_screen.gd:819
 msgid "Best hub level"
 msgstr "最高基地等级"
 
-#: ui/codex_screen.gd:868
+#: ui/codex_screen.gd:870
 msgid "%s kg"
 msgstr "%s 千克"
 
-#: ui/codex_screen.gd:869
+#: ui/codex_screen.gd:871
 msgid "%.1f kg"
 msgstr "%.1f 千克"
 
-#: ui/codex_screen.gd:873
+#: ui/codex_screen.gd:875
 msgid "%.2f km"
 msgstr "%.2f 公里"
 
-#: ui/codex_screen.gd:883
+#: ui/codex_screen.gd:885
 msgid "%dm %02ds"
 msgstr "%d分%02d秒"
 
@@ -11495,8 +11511,8 @@ msgid "Mk VII Homeward"
 msgstr "Mk VII 归乡"
 
 #: data/homeward.json:drive[2].desc
-msgid "A great green-light rocket on a launch complex built from every planet you saved. One trip: up to the Cradle."
-msgstr "一枚巨大的绿光火箭，立在用你拯救的每个星球建成的发射场上。只有一趟旅程：飞向 Cradle 号。"
+msgid "A great green-light rocket, filled with the fuel and power of every world you woke. One trip: up to the Cradle."
+msgstr "一枚巨大的绿光火箭，装满了你唤醒的每个世界的燃料和能量。只有一趟旅程：飞向 Cradle号。"
 
 #: data/homeward.json:docs.ochre_arrive.header data/homeward.json:docs.tidewell_arrive.header data/homeward.json:docs.rime_arrive.header
 msgid "L E D G E R   ·   I N T E R N A L"
@@ -14505,8 +14521,8 @@ msgid "Gave fuel {fuel} and power {power}"
 msgstr "已提供燃料 {fuel}、能量 {power}"
 
 #: data/story_arc.json:home.full
-msgid "Fuel and power are full. Time to go home."
-msgstr "燃料和能量都满了。该回家了。"
+msgid "Fuel and power are full. Build the Homeward rocket on Verdance and fly home."
+msgstr "燃料和能量都满了。在 Verdance 上建造归乡火箭，飞回家吧。"
 
 #: data/story_arc.json:planets.verdance.reason
 msgid "The Settlers' home, where Lumi's pod fell."
@@ -14569,8 +14585,8 @@ msgid "The Ledger balanced its books at last. It is giving us its power."
 msgstr "Ledger 终于把账算平了。它把能量给了我们。"
 
 #: data/story_arc.json:cradle.reason
-msgid "Next stop: the Cradle. Fuel and power are full. Let's go home."
-msgstr "下一站：Cradle号。燃料和能量都满了。我们回家吧。"
+msgid "Fuel and power are full. Back to Verdance: build the Homeward rocket and fly home."
+msgstr "燃料和能量都满了。回到 Verdance：建造归乡火箭，飞回家吧。"
 
 #: data/story_reasons.json:goal_reasons
 msgid "One more step toward a green world."
@@ -14803,14 +14819,6 @@ msgstr "工作台学会建造新东西。"
 #: data/story_reasons.json:goal_reasons
 msgid "Robots keep working while you do other things."
 msgstr "你忙别的事情时，机器人会继续干活。"
-
-#: data/story_reasons.json:exit
-msgid "Look at the star map. Five worlds, and the Ledger buried every one."
-msgstr "看看星图。五个世界，全都被 Ledger 掩埋了。"
-
-#: data/story_reasons.json:exit
-msgid "The Cradle waits for all of them. Build the Orbital drive, and we'll wake the next world."
-msgstr "Cradle号在等它们全部恢复。建好轨道推进器，我们就去唤醒下一个世界。"
 
 #: data/story_reasons.json:exit
 msgid "The rocket can leave now. Verdance isn't finished, and that's all right."
@@ -16968,6 +16976,24 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Every planet in the system is alive. Go back to Verdance's Cradle Returns and build the Mk VII Homeward rocket."
+#~ msgstr "星系里的每个星球都活过来了。回到 Verdance 的 Cradle号归来，建造 Mk VII 归乡火箭。"
+
+#~ msgid "A great green-light rocket on a launch complex built from every planet you saved. One trip: up to the Cradle."
+#~ msgstr "一枚巨大的绿光火箭，立在用你拯救的每个星球建成的发射场上。只有一趟旅程：飞向 Cradle 号。"
+
+#~ msgid "Fuel and power are full. Time to go home."
+#~ msgstr "燃料和能量都满了。该回家了。"
+
+#~ msgid "Next stop: the Cradle. Fuel and power are full. Let's go home."
+#~ msgstr "下一站：Cradle号。燃料和能量都满了。我们回家吧。"
+
+#~ msgid "Look at the star map. Five worlds, and the Ledger buried every one."
+#~ msgstr "看看星图。五个世界，全都被 Ledger 掩埋了。"
+
+#~ msgid "The Cradle waits for all of them. Build the Orbital drive, and we'll wake the next world."
+#~ msgstr "Cradle号在等它们全部恢复。建好轨道推进器，我们就去唤醒下一个世界。"
 
 #~ msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
 #~ msgstr "菜单、HUD、字幕和剧情文本。Pseudo 用于测试翻译。"

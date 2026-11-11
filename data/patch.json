@@ -38,5 +38,10 @@
   "old_save_grant": {
     "compartment_size": 4,
     "scoop_speed": 5
+  },
+  "move": {
+    "_doc": "[v6feel] How Lumi meets things on a round planet. max_step: kerbs, steps and low planters up to this high (m) are hovered over. round_keep: the share of his speed kept while rounding a prop he clipped nearly head-on (0 = a plain slide).",
+    "max_step": 0.45,
+    "round_keep": 0.6
   }
 }

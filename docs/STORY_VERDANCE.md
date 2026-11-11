@@ -152,7 +152,7 @@ What the game says at each station (v6hubs' steps, v6story's wording):
 | # | What the player does | In-world reason | Where the game says it | Status |
 |---|---|---|---|---|
 | E0 | Has six stations restored to level 2 | Six crews are enough to keep Verdance going without Lumi; the launch kit is complete | WREN, first line of the exit beat: "Six stations awake, Lumi. Their robots can look after Verdance now." (homeward.json `leave.toast`); before that the map says "Wake 6 old stations on Verdance to level 2 (N so far)" | in game (v6pace gate, v6story text) |
-| E1 | Sees the solar map open | The star chart shows five worlds the Ledger buried; the Cradle waits for all of them | WREN, same beat, spoken once: story_reasons.json `exit.system_open` (two lines) | **fixed** (there was no line at all: the map button just appeared) |
+| E1 | Sees the solar map open | The star chart shows five worlds the Ledger buried; the Cradle waits for all of them | WREN, same beat, spoken once: data/story_arc.json `planets.verdance` (home line, leave line, Ochre's reason; docs/STORY_ARC.md) | **fixed** (there was no line at all: the map button just appeared) |
 | E2 | Builds the Mk V Orbital drive (500K cubes, the biggest price on Verdance) | It is the hop rocket rebuilt for space out of a mountain of cubes | homeward.json drive desc; goal reason "The hop rocket can't leave the planet. A drive can." | **fixed** (the desc was a spec sheet) |
 | E3 | Launches to Ochre | Verdance isn't finished and that is all right; some of its trash needs tools left on other worlds; Lumi will be back | WREN `exit.drive_built` (two lines, once) + the Verdance line on the map ("Your robots keep cleaning it while you are away") | **fixed** |
 
@@ -204,6 +204,8 @@ for the owner:
   (item 6 above): the Settlers wake when the worlds can feed them, and the ark needs the fuel and
   power to do it. Each planet woken gives both.
 - **Verdance gives fuel 2 and power 2**: the Stack Works tanks and the Fairground cell. The exit
-  beat (D, E1) now says how far home is and why Ochre is next, instead of the two `exit.system_open`
-  lines in data/story_reasons.json (those are no longer spoken; they can be removed once v6name's
-  rename is merged). The lines are in data/story_arc.json `planets.verdance`.
+  beat (D, E1) now says how far home is and why Ochre is next, instead of the two old `exit.system_open`
+  lines (removed from data/story_reasons.json). The lines are in data/story_arc.json `planets.verdance`.
+- **Home needs fuel and power, not every world at 100%** (decided 2026-11-11): the Mk VII Homeward
+  rocket needs the meters full; full restoration of every world is the optional extra with the
+  better ending (docs/STORY_ARC.md, "How it ends").

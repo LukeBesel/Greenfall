@@ -21,6 +21,14 @@ const SPACE_LINES: Array[Array] = [
 	["CRADLE:  CHARTER CONDITION MET.  WAKING SLEEPERS.  OPENING BAY ONE.", 5.0],
 	["It's opening the bay. It's actually opening the bay. Steady... steady...", 5.0],
 ]
+## [v7arc] Home needs only fuel and power (docs/STORY_ARC.md). SPACE_LINES above are the better
+## ending, kept for every planet at 100%; these play when some worlds are still only part green.
+const SPACE_LINES_AWAKE: Array[Array] = [
+	["Clear of the air. Look back, {name}. Look at it.", 4.5],
+	["Five worlds awake. Not all green yet, but robots are planting on every one.", 5.5],
+	["CRADLE:  FUEL FULL.  POWER FULL.  WAKING SLEEPERS.  OPENING BAY ONE.", 5.0],
+	["It's opening the bay. It's actually opening the bay. Steady... steady...", 5.0],
+]
 const VAULT_LINES: Array[Array] = [
 	["The vault. Your vault. It looks exactly like you left it.", 4.5],
 	["You climbed into a cargo pod to save that tray. Three hundred years later, you brought it home.", 6.0],
@@ -117,8 +125,9 @@ func _space() -> void:
 	st.show_set("space")
 	st.set_planet_green(1.0)
 	var all_green: Dictionary = {}
-	for d: Dictionary in Homeward.planets():
-		all_green[str(d["id"])] = 1.0
+	var full: bool = Homeward.system_pct() >= 0.9999  # [v7arc] the optional extra: every world at 100%
+	for k: int in Homeward.planets().size():
+		all_green[str(Homeward.planet_def(k)["id"])] = 1.0 if full else maxf(Homeward.stored_pct(k), 0.35)
 	SystemProps.add_planets(st, Vector3.ZERO, all_green)
 	var ark: CradleShip = st.ark
 	ark.rotation = Vector3(0, -PI * 0.5, 0)
@@ -132,7 +141,7 @@ func _space() -> void:
 	_c.caption(tr("Homecoming"))
 	Audio.play("fanfare", 0.8, -8.0)
 	var start: Vector3 = rocket.position
-	var skipped: bool = await _run(SPACE_LINES, func(t: float, total: float, _dt: float) -> void:
+	var skipped: bool = await _run(SPACE_LINES if full else SPACE_LINES_AWAKE, func(t: float, total: float, _dt: float) -> void:
 		var k: float = clampf(t / (total - 3.0), 0.0, 1.0)
 		var e: float = k * k * (3.0 - 2.0 * k)
 		var p: Vector3 = start.lerp(dock, e)

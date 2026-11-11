@@ -44,7 +44,7 @@ const EARLY_ADDED: int = 4
 func _ready() -> void:
 	EventBus.upgrade_bought.connect(_on_upgrade_bought)  # [v1guide] the bale how-to
 	var cfg: Dictionary = Economy.read_json(PATH)
-	chain = cfg.get("objectives", [])
+	chain = PlanetSteps.objectives(cfg.get("objectives", []))  # [v7planet] a planet's own hub steps (story/planet_steps.gd); Verdance's as they are
 	brief_lines = (cfg.get("brief", {}) as Dictionary).get("lines", [])
 	wren_brief = (cfg.get("wren_brief", {}) as Dictionary).get("lines", [])  # [v2guide]
 	step = int(GameState.flags.get("objective_step", 0))
@@ -272,6 +272,8 @@ static func step_why(def: Dictionary) -> String:
 	var d: String = str(def.get("desc", ""))
 	if d != "" or def.has("_goal"):
 		return d
+	if str(def.get("why", "")) != "":  # [v7planet] a generated hub step's own reason (story/planet_steps.gd)
+		return str(def["why"])
 	var r: String = goal_reason(def)
 	return "" if r == str(_reasons.get("default", "")) else r
 

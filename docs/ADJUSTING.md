@@ -170,6 +170,9 @@ reward gaps and card waits; targets and the last measured run are in `docs/BALAN
 | The first robot's price | `data/robots.json` `scoopie.cost`, `.parts` | 800 cubes, 40 Parts | Parts come from scooping metal, plastic and glass; the card says how many are missing. |
 | Goal rewards | `data/goals.json` goal `reward` | | Paid when the step completes. |
 
+## How Lumi moves (v6feel)
+`data/patch.json` `move` controls how Lumi meets things on a round planet: `max_step` (0.45 m) is the tallest kerb, step or low planter he hovers over instead of stopping, and `round_keep` (0.6) is how much of his speed he keeps while rounding a post, bin or heap he clipped nearly head-on (0 = a plain slide, which nearly stops him). Check a change with `--feel=walk` (tools/feel_probe.gd).
+
 ## Seed of the Week on or off (v6screens)
 
 `data/weekly.json` `"enabled"` is the one switch. It is `false`: the mode does not work on the round world yet (the week's seed is ignored and a resumed run has no robots), so its Keepsakes tab, its two Garden Mode decorations and its two achievements in the Codex are hidden, and Pause shows no Keepsakes button until a radio, an album or a nursery exists.
@@ -220,8 +223,9 @@ turning). Check the numbers with `godot --headless --path . res://tools/machine_
 
 ## A new planet (v7planet)
 
-`data/planets.json` `_default` is what every planet gets; a planet block (`"<id>": {...}`) repeats only what it changes: `name`, `globe` (`frequency`, `hub_count`, optional `seed`: the size), `site_kit` (`towns` or `prefab`), `look.ground` (ground textures and colour multipliers), `hub_defaults`, `hubs`. `"dev": true` makes a test planet that only `--orbit-planet=<id>` reaches.
+`data/planets.json` `_default` is what every planet gets; a planet block (`"<id>": {...}`) repeats only what it changes: `name`, `globe` (`frequency`, `hub_count`, optional `seed`: the size), `site_kit` (`towns` or `prefab`), `look.ground` (ground textures and colour multipliers), `hub_defaults`, `hubs`, `hub_steps` (`generated`: the card's fly/wake/rocket steps come from the planet's `hubs[]`; Verdance keeps `shared`). `"dev": true` makes a test planet that only `--orbit-planet=<id>` reaches.
 The step-by-step recipe, the per-planet blocks in the other files (`landmarks.json`, `life.json`, `sound.json` with `"like"`, `songs.json`, `homeward.json`) and the checks (`tools/planet_smoke.sh <id>`, `tests/test_planet_data.gd`) are in docs/NEW_PLANET.md; its worked example is the dev planet `testworld`.
+
 ## Story arc: fuel, power and each planet's story (v7arc)
 
 `data/story_arc.json` holds the story spine across the planets (docs/STORY_ARC.md). Home needs
@@ -239,6 +243,7 @@ once, when its way onward opens (`data/homeward.json` `planets[k].leave`, else r
 | WREN on the first rocket landing / at the exit beat | `planets.<id>.arrive` / `planets.<id>.leave` (1–2 short lines) |
 | The meter and line formats | `home.meter`, `home.home_line`, `home.next`, `home.gives_text`, `home.gave_text`, `home.full` |
 | The line after the last planet | `cradle.reason` |
+| What the final Homeward rocket needs | `data/homeward.json` `drive` tier 7: `requires_home: true` (the meters full). `requires_relics` / `requires_system` still work as gates if you want 100% back as a must |
 
 `from`, `answers` and `ledger` are notes for whoever builds the planet; they are not shown yet. A
 new planet needs only its block (keyed by its id in `data/homeward.json`). After changing text, run

@@ -129,3 +129,51 @@ func test_a_fence_is_a_wall() -> void:
 	_box(Vector3(8, 0.9, 0.2), Vector3(0, 0.45, -4.0))
 	var r: Array = await _push(2.5)
 	assert_lt(float(r[0]), 3.6)
+
+
+# A thin post clipped nearly head-on (0.1 m off his middle): he rounds it without crawling.
+func test_rounds_a_post_hit_nearly_head_on() -> void:
+	var s := CylinderShape3D.new()
+	s.radius = 0.1
+	s.height = 2.0
+	_solid(s, Vector3(0.1, 1.0, -4.0))
+	inp.stick = Vector3(0, 0, -1)
+	var slowest: float = 99.0
+	for k: int in int(2.5 * Engine.physics_ticks_per_second):
+		await get_tree().physics_frame
+		if k > int(0.4 * Engine.physics_ticks_per_second):
+			slowest = minf(slowest, lumi.sphere_motor.hv.length())
+	assert_gt(slowest, 1.5, "kept some speed round the post (slowest %.2f m/s)" % slowest)
+	assert_gt(-lumi.global_position.z, 7.0, "got past it")
+
+
+# [v6feel] Inside a site prefab's Content the builders give site-local coordinates: the prop body
+# sits in the site's frame (at identity it lay near the planet's centre and the props were ghosts).
+func test_site_prop_body_uses_the_site_frame() -> void:
+	var root := Node3D.new()
+	add_child_autofree(root)
+	root.transform = Transform3D(Basis(Vector3(1, 0, 0), 0.7), Vector3(0, R, 0))
+	var sp := SitePrefab.new()
+	root.add_child(sp)
+	var content := Node3D.new()
+	content.name = "Content"
+	sp.add_child(content)
+	var layer := Node3D.new()
+	layer.scale = Vector3(1, 0.3, 1)  # a level layer rising: the collider must not follow its scale
+	content.add_child(layer)
+	var b: StaticBody3D = PropColliders.body(layer, "Props")
+	var cs: CollisionShape3D = PropColliders.add_box(b, Transform3D(Basis(), Vector3(3, 0.5, 4)), Vector3.ONE)
+	assert_lt(cs.global_position.distance_to(content.global_transform * Vector3(3, 0.5, 4)), 0.001)
+	# Built before the site joins the tree: placed when it does.
+	var sp2 := SitePrefab.new()
+	var content2 := Node3D.new()
+	content2.name = "Content"
+	sp2.add_child(content2)
+	var b2: StaticBody3D = PropColliders.body(content2, "Props")
+	var cs2: CollisionShape3D = PropColliders.add_cyl(b2, Vector3(1, 0, 2), 0.1, 2.0)
+	root.add_child(sp2)
+	assert_lt(cs2.global_position.distance_to(content2.global_transform * Vector3(1, 1, 2)), 0.001)
+	# Anywhere else the shapes stay in world space, as before.
+	var b3: StaticBody3D = PropColliders.body(root, "World")
+	var cs3: CollisionShape3D = PropColliders.add_box(b3, Transform3D(Basis(), Vector3(5, 6, 7)), Vector3.ONE)
+	assert_lt(cs3.global_position.distance_to(Vector3(5, 6, 7)), 0.001)

@@ -53,9 +53,10 @@ static func exit_beat(k: int) -> String:
 	return "%s_exit" % str(Homeward.planet_def(k).get("id", ""))
 
 
-## True once planet k's exit beat has played (its fuel and power are in the meters).
+## True once planet k's exit beat has played (its fuel and power are in the meters), or the
+## planet is fully restored (older saves from before the meters: 100% is past its way onward).
 static func given(k: int) -> bool:
-	return Homeward.beat_done(exit_beat(k))
+	return Homeward.beat_done(exit_beat(k)) or Homeward.restored(k)
 
 
 ## Fuel and power gathered from the planets whose exit beat is done (pure on `done_ids`).
@@ -69,6 +70,7 @@ static func meter_of(done_ids: Array) -> Vector2i:
 	return out
 
 
+## Campaign planets only (data/homeward.json; dev planets from PlanetCfg never are there).
 static func given_ids() -> Array:
 	var ids: Array = []
 	for k: int in Homeward.planets().size():

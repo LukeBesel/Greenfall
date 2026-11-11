@@ -510,8 +510,8 @@ func _mesh_prop(model: String, pos: Vector3, yaw: float, collide: bool, scl: flo
 		var aabb: AABB = mesh.get_aabb()
 		var rot := Basis.from_euler(Vector3(0.0, yaw, roll))
 		if "lamp" in model:
-			var foot: Vector3 = pos + rot * Vector3(0, 0, 0)
-			PropColliders.add_box(_prop_body, Transform3D(rot, foot + rot * Vector3(0, aabb.end.y * scl * 0.5, 0)), Vector3(0.3, aabb.end.y * scl, 0.3))
+			# [v6feel] A round pole (a 0.3 m box's corners caught Lumi and narrowed the gap to walls).
+			PropColliders.add_cyl(_prop_body, pos, 0.12, aabb.end.y * scl)
 		else:
 			PropColliders.add_box(_prop_body, Transform3D(rot, pos + rot * (aabb.get_center() * scl)), Vector3(maxf(aabb.size.x, 0.2), aabb.size.y, maxf(aabb.size.z, 0.2)) * scl * 0.9)
 

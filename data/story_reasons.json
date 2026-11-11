@@ -1,5 +1,5 @@
 {
-  "_doc": "[v6story] Story text that has no other home (docs/STORY_VERDANCE.md). goal_reasons: the one-line in-world reason shown on the objective card above a goal's reward (story/objectives.gd goal_reason): by goal id, else by id prefix (by_prefix), else by kind (\"type:key\" of the goals.json entry), else by type, else `default`. Goals can be added, moved or re-priced in data/goals.json without touching this file. exit: WREN's lines when the star map opens on Verdance (system_open) and when the Orbital drive is built (drive_built), each spoken once (systems/homeward_director.gd). Data stays English; tr() at display.",
+  "_doc": "[v6story] Story text that has no other home (docs/STORY_VERDANCE.md). goal_reasons: the one-line in-world reason shown on the objective card above a goal's reward (story/objectives.gd goal_reason): by goal id, else by id prefix (by_prefix), else by kind (\"type:key\" of the goals.json entry), else by type, else `default`. Goals can be added, moved or re-priced in data/goals.json without touching this file. exit: WREN's lines when the Orbital drive is built (drive_built), spoken once (systems/homeward_director.gd). [v7arc] The lines when the way onward opens are each planet's story block in data/story_arc.json. Data stays English; tr() at display.",
   "goal_reasons": {
     "default": "One more step toward a green world.",
     "by_id": {
@@ -78,10 +78,6 @@
     }
   },
   "exit": {
-    "system_open": [
-      "Look at the star map. Five worlds, and the Ledger buried every one.",
-      "The Cradle waits for all of them. Build the Orbital drive, and we'll wake the next world."
-    ],
     "drive_built": [
       "The rocket can leave now. Verdance isn't finished, and that's all right.",
       "Some of its trash needs tools the Settlers left on other worlds. We'll bring them back."

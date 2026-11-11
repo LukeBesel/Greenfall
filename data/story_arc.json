@@ -9,7 +9,7 @@
     "next": "{planet} is next. {reason}",
     "gives_text": "Gives fuel {fuel} and power {power}",
     "gave_text": "Gave fuel {fuel} and power {power}",
-    "full": "Fuel and power are full. Time to go home."
+    "full": "Fuel and power are full. Build the Homeward rocket on Verdance and fly home."
   },
   "planets": {
     "verdance": {
@@ -64,7 +64,7 @@
     }
   },
   "cradle": {
-    "reason": "Next stop: the Cradle. Fuel and power are full. Let's go home.",
+    "reason": "Fuel and power are full. Back to Verdance: build the Homeward rocket and fly home.",
     "answers": "Yes. The Settlers wake up, look out of the windows, and see green.",
     "ledger": "The Ledger sends one last coupon: 'Account balanced. Paid in full.'"
   }

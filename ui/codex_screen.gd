@@ -759,7 +759,9 @@ func _achievement_card(a: Dictionary) -> Button:
 	UITheme.juice(b, 1.02)
 	# [v6screens] The card grows with its text (long descriptions wrap to more lines in some
 	# languages) instead of spilling into the card below.
-	var grow := func() -> void: b.custom_minimum_size.y = maxf(84.0, hb.get_combined_minimum_size().y + 12.0)
+	var grow := func() -> void:
+		if is_instance_valid(b) and is_instance_valid(hb):  # [main] the deferred call can land after the screen is freed
+			b.custom_minimum_size.y = maxf(84.0, hb.get_combined_minimum_size().y + 12.0)
 	hb.minimum_size_changed.connect(grow)
 	grow.call_deferred()
 	return b
