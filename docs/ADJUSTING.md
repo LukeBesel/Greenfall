@@ -219,3 +219,25 @@ turning). Check the numbers with `godot --headless --path . res://tools/machine_
 
 `data/planets.json` `_default` is what every planet gets; a planet block (`"<id>": {...}`) repeats only what it changes: `name`, `globe` (`frequency`, `hub_count`, optional `seed`: the size), `site_kit` (`towns` or `prefab`), `look.ground` (ground textures and colour multipliers), `hub_defaults`, `hubs`, `hub_steps` (`generated`: the card's fly/wake/rocket steps come from the planet's `hubs[]`; Verdance keeps `shared`). `"dev": true` makes a test planet that only `--orbit-planet=<id>` reaches.
 The step-by-step recipe, the per-planet blocks in the other files (`landmarks.json`, `life.json`, `sound.json` with `"like"`, `songs.json`, `homeward.json`) and the checks (`tools/planet_smoke.sh <id>`, `tests/test_planet_data.gd`) are in docs/NEW_PLANET.md; its worked example is the dev planet `testworld`.
+## Story arc: fuel, power and each planet's story (v7arc)
+
+`data/story_arc.json` holds the story spine across the planets (docs/STORY_ARC.md). Home needs
+`home.fuel` and `home.power`; each planet's `planets.<id>` block says what it gives (`gives`), its
+one-line reason to go (`reason`), the question it leaves open (`question`), and WREN's lines on the
+first rocket landing (`arrive`) and at its exit beat (`leave`). A planet gives its fuel and power
+once, when its way onward opens (`data/homeward.json` `planets[k].leave`, else restoration at
+`chart_at`).
+
+| To change | Edit |
+|---|---|
+| How much fuel and power home needs | `home.fuel`, `home.power` (must equal the sum of all `gives`) |
+| What a planet adds to the meters | `planets.<id>.gives` `{fuel, power}` |
+| The "why go" line on the map and in WREN's "next" line | `planets.<id>.reason` |
+| WREN on the first rocket landing / at the exit beat | `planets.<id>.arrive` / `planets.<id>.leave` (1–2 short lines) |
+| The meter and line formats | `home.meter`, `home.home_line`, `home.next`, `home.gives_text`, `home.gave_text`, `home.full` |
+| The line after the last planet | `cradle.reason` |
+
+`from`, `answers` and `ledger` are notes for whoever builds the planet; they are not shown yet. A
+new planet needs only its block (keyed by its id in `data/homeward.json`). After changing text, run
+`python3 tools/extract_strings.py` and fill the six languages (docs/LOCALIZATION.md). Check with
+`godot --headless --path . -s addons/gut/gut_cmdln.gd -gtest=res://tests/test_story_arc.gd -gexit`.

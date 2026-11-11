@@ -192,3 +192,18 @@ happened here").
   says what really happens there (it is recycled into cubes).
 - The Cradle Returns frontier and the late-game goals: off Verdance's first visit. They keep the
   Homeward canon in docs/DECISIONS.md.
+
+## Ties to the whole-game arc (v7arc)
+
+docs/STORY_ARC.md is the spine across all five planets. Two small changes it makes here, proposed
+for the owner:
+
+- **Why the Cradle can't just come home.** The meteor storm that broke the seed vault also cracked
+  the Cradle's fuel tanks, and three hundred years used up most of its power. Home needs **fuel**
+  (to fly home) and **power** (to wake the Settlers), 10 of each. This sits next to the charter
+  (item 6 above): the Settlers wake when the worlds can feed them, and the ark needs the fuel and
+  power to do it. Each planet woken gives both.
+- **Verdance gives fuel 2 and power 2**: the Stack Works tanks and the Fairground cell. The exit
+  beat (D, E1) now says how far home is and why Ochre is next, instead of the two `exit.system_open`
+  lines in data/story_reasons.json (those are no longer spoken; they can be removed once v6name's
+  rename is merged). The lines are in data/story_arc.json `planets.verdance`.
