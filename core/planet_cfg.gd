@@ -215,6 +215,8 @@ static func problems(id: String) -> Array[String]:
 		out.append("%s: a dev planet must not be in data/homeward.json planets (players would see it)" % id)
 	elif not is_dev(id) and k < 0:
 		out.append("%s: not in data/homeward.json planets (no leave gate, no economy, not on the map)" % id)
+	if not is_dev(id) and k >= 0 and StoryArc.block(k).is_empty():  # [v7arc]
+		out.append("%s: no story block in data/story_arc.json planets (docs/STORY_ARC.md)" % id)
 	return out
 
 

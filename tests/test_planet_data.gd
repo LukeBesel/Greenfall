@@ -112,3 +112,37 @@ func test_use_planet_points_the_lookups() -> void:
 	assert_eq(SkyDirector.current_planet_id(), "testworld")
 	assert_eq(LifeCfg.num("ground", "grow_s", 0.0), 120.0, "data/life.json testworld block")
 	assert_eq(HubPlan.hop_cfg("leg_s", 0.0), 2.8)
+
+
+## [v7planet] The card's hub steps come from the planet's own hubs[] (story/planet_steps.gd).
+func test_hub_steps_per_planet() -> void:
+	var obj: Array = Economy.read_json("res://data/objectives.json").get("objectives", [])
+	var gls: Array = Economy.read_json("res://data/goals.json").get("goals", [])
+	assert_false(PlanetSteps.generated("verdance"), "Verdance keeps the shared steps")
+	assert_eq(PlanetSteps.objectives(obj, "verdance"), obj, "Verdance's objectives as they are")
+	assert_eq(PlanetSteps.goals(gls, "verdance"), gls, "Verdance's goals as they are")
+	# Testworld: two hubs, so one fly and one wake, where the shared hub steps stood.
+	var tw: Array = PlanetSteps.objectives(obj, "testworld")
+	var ids: Array = tw.filter(func(d: Dictionary) -> bool: return PlanetSteps.is_hub_step(d)).map(func(d: Dictionary) -> String: return str(d["id"]))
+	assert_eq(ids, ["hub_fly_2", "hub_wake_2"])
+	var first: int = obj.find(obj.filter(func(d: Dictionary) -> bool: return PlanetSteps.is_hub_step(d))[0])
+	assert_eq(str(tw[first]["id"]), "hub_fly_2", "in the place of the first shared hub step")
+	assert_eq(tw.size(), obj.size() - 7 + 2)
+	assert_eq(PlanetSteps.goals(gls, "testworld").filter(func(d: Dictionary) -> bool: return PlanetSteps.is_hub_step(d)), [], "no shared hub goals")
+	assert_eq(Objectives.step_why(tw[first]), "The second test hub.", "the fly step's why is the hub's own")
+	# An 8-hub planet: rocket tiers where Mk I (3 hubs) and Mk II (5) run out.
+	var all: Dictionary = PlanetEnvs.all()
+	var hubs: Array = [{"site": 0, "order": 1, "id": "h0", "home": true, "name": "H0", "town": "suburb", "landmark": {"kind": "radio_mast"}}]
+	for i: int in range(1, 8):
+		hubs.append({"site": i, "order": i + 1, "id": "h%d" % i, "name": "H%d" % i, "town": "oldtown", "landmark": {"kind": "crane"}, "reason": "Why %d" % i})
+	var e8: Dictionary = {"name": "Eight", "globe": {"frequency": 64, "hub_count": 8}, "hub_defaults": {"main_path": 8}, "hubs": hubs}
+	all["zz_eight"] = e8
+	HubPlan.reload()
+	HubPlan.planet_data("verdance")
+	HubPlan._data["zz_eight"] = e8
+	var eight: Array = PlanetSteps.steps_for("zz_eight").map(func(d: Dictionary) -> String: return "%s>%d" % [d["id"], int(d["target"])])
+	HubPlan._data.erase("zz_eight")
+	all.erase("zz_eight")
+	HubPlan.reload()
+	assert_eq(eight, ["hub_fly_2>1", "hub_wake_2>1", "hub_fly_3>2", "hub_wake_3>2", "rocket_tier_2>2", "hub_fly_4>3", "hub_wake_4>3",
+		"hub_fly_5>4", "hub_wake_5>4", "rocket_tier_3>3", "hub_fly_6>5", "hub_wake_6>5", "hub_fly_7>6", "hub_wake_7>6", "hub_fly_8>7", "hub_wake_8>7"])

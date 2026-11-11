@@ -53,17 +53,20 @@ func test_goal_reason_lookup_order() -> void:
 
 
 func test_exit_beat_lines_exist_and_say_why() -> void:
+	# [v7arc] The way-onward lines are the planet's story block (data/story_arc.json,
+	# tests/test_story_arc.gd); here: the drive-built lines and that the whole beat says why.
 	var ex: Dictionary = (Economy.read_json("res://data/story_reasons.json") as Dictionary).get("exit", {})
-	for key: String in ["system_open", "drive_built"]:
-		var ls: Array = ex.get(key, [])
-		assert_between(ls.size(), 1, 3, "%s: one to three lines" % key)
-		for l: Variant in ls:
-			assert_true(str(l).length() <= 110, "short line: %s" % str(l))
+	assert_false(ex.has("system_open"), "the old star-map lines are the story arc's now")
+	var ls: Array = ex.get("drive_built", [])
+	assert_between(ls.size(), 1, 3, "drive_built: one to three lines")
+	for l: Variant in ls:
+		assert_true(str(l).length() <= 110, "short line: %s" % str(l))
 	var leave: String = str(((Homeward.planet_def(0).get("leave", {}) as Dictionary)).get("toast", ""))  # said first (v6pace)
-	var all: String = leave + " " + " ".join(ex["system_open"]) + " " + " ".join(ex["drive_built"])
-	assert_lt((ex["system_open"] as Array).size() + (1 if leave != "" else 0), 4, "the exit beat is three lines at most")
+	var arc: Array[String] = StoryArc.exit_lines(0, StoryArc.gives(0))
+	var all: String = leave + " " + " ".join(arc) + " " + " ".join(ls)
+	assert_lt(arc.size() + (1 if leave != "" else 0), 5, "the exit beat is four lines at most")
 	assert_true(all.contains("robots"), "says who looks after Verdance")
-	assert_true(all.contains("Five worlds") or all.contains("five worlds"), "says why fly on")
+	assert_true(all.contains("four more worlds"), "says why fly on")
 	# WREN speaks them through a real Wren node, in order.
 	var holder := Node.new()
 	add_child_autofree(holder)
@@ -72,9 +75,9 @@ func test_exit_beat_lines_exist_and_say_why() -> void:
 	var bag := StoryBag.new()
 	bag.wren = wr
 	add_child_autofree(bag)
-	assert_eq(HomewardDirector.say_exit(bag, "system_open"), (ex["system_open"] as Array).size())
-	assert_eq(wr._queue.size(), (ex["system_open"] as Array).size())
-	assert_eq(str(wr._queue[0]["text"]), tr(str(ex["system_open"][0])))
+	assert_eq(HomewardDirector.say_exit(bag, "drive_built"), ls.size())
+	assert_eq(wr._queue.size(), ls.size())
+	assert_eq(str(wr._queue[0]["text"]), tr(str(ls[0])))
 
 
 class StoryBag extends Node:

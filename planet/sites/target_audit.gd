@@ -17,6 +17,8 @@ const CD_EVERY: int = 3
 static func run_dev(so: SliceOrbit) -> void:
 	var tree: SceneTree = so.w.get_tree()
 	await tree.create_timer(DevHooks.get_f("target-reach", 3.0)).timeout
+	while so.hub_frame == null or bool(so.w.get("building")):  # [v6qa] a slow load (busy box) outlasted the 3 s timer: hub_frame was still null
+		await tree.process_frame
 	var sm: SiteManager = so.globe.site_manager
 	var hf: HubFrame = so.hub_frame
 	var patch: Node3D = so.w.get("patch")

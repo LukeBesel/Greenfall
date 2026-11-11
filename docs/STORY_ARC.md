@@ -66,9 +66,18 @@ that only counts what it takes.
 
 ## How it ends
 
-Fuel 10/10 and power 10/10. Lumi flies the big Homeward rocket up to the Cradle with the fuel and
-power on board. The Cradle fills its tanks and comes down to Verdance. The Settlers wake up. The
-first thing they see is a green world (story/homecoming.gd, story/bloom_finale.gd).
+Fuel 10/10 and power 10/10 is all home needs. WREN says so at the last planet: "Fuel and power are
+full. Back to Verdance: build the Homeward rocket and fly home." Lumi builds the big **Mk VII
+Homeward** rocket on Verdance (`data/homeward.json` drive tier 7, `requires_home`), plants the last
+seed and flies up to the Cradle with the fuel and power on board. The Cradle fills its tanks and
+comes down to Verdance. The Settlers wake up (story/homecoming.gd, story/bloom_finale.gd).
+
+**Every world at 100% is an extra, never a must** (owner item 58). Cleaning a planet all the way
+still gives what it always gave: the planet's relic and an Heirloom pick, its "restored" note, and,
+with all five, WREN's "every world alive" line. It also gives the better ending: in the Homecoming,
+the five worlds glow fully green and the Cradle reads "FIVE WORLDS. FIVE ALIVE." Without it, the
+worlds are only partly green and WREN says "Five worlds awake. Not all green yet, but robots are
+planting on every one."
 
 ## Verdance's ending, in the game
 
@@ -86,11 +95,13 @@ without Lumi (docs/STORY_VERDANCE.md, D).
 
 ## What is built and what is only planned
 
-- **Built**: the two meters, Verdance's exit beat, the map's meters and planet lines, and WREN's
-  arrival lines on the first rocket landing on each planet (on Verdance: the first return).
+- **Built**: the two meters, Verdance's exit beat, the map's meters and planet lines, WREN's
+  arrival lines on the first rocket landing on each planet (on Verdance: the first return), and the
+  Mk VII gate (full fuel and power; older saves with every planet at 100% count as full).
 - **Planned** (the text is in the data, read the same way): Ochre, Tidewell, Rime and Anvil. A
   planet builder only has to build the planet. Until a planet names its own way onward in
   `data/homeward.json` (`planets[k].leave`), its exit beat comes when it is half restored
   (`chart_at`).
+- Dev planets (`"dev": true` in data/planets.json, such as `testworld`) need no story block.
 - The story notes `from`, `answers` and `ledger` are for the people who build each planet. They are
   not shown in the game yet.

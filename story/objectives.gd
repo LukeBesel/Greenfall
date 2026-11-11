@@ -44,7 +44,7 @@ const EARLY_ADDED: int = 4
 func _ready() -> void:
 	EventBus.upgrade_bought.connect(_on_upgrade_bought)  # [v1guide] the bale how-to
 	var cfg: Dictionary = Economy.read_json(PATH)
-	chain = cfg.get("objectives", [])
+	chain = PlanetSteps.objectives(cfg.get("objectives", []))  # [v7planet] a planet's own hub steps (story/planet_steps.gd); Verdance's as they are
 	brief_lines = (cfg.get("brief", {}) as Dictionary).get("lines", [])
 	wren_brief = (cfg.get("wren_brief", {}) as Dictionary).get("lines", [])  # [v2guide]
 	step = int(GameState.flags.get("objective_step", 0))
@@ -272,6 +272,8 @@ static func step_why(def: Dictionary) -> String:
 	var d: String = str(def.get("desc", ""))
 	if d != "" or def.has("_goal"):
 		return d
+	if str(def.get("why", "")) != "":  # [v7planet] a generated hub step's own reason (story/planet_steps.gd)
+		return str(def["why"])
 	var r: String = goal_reason(def)
 	return "" if r == str(_reasons.get("default", "")) else r
 
@@ -329,6 +331,14 @@ func progress() -> Array:
 			return [have / need, "%s / %s" % [Settings.fmt(BigNum.from_float(have)), Settings.fmt(BigNum.from_float(need))]]
 	var tgt: float = target_of(def)
 	var v: float = minf(value_of(def), tgt)
+	if v < tgt and str(def.get("type", "")) in ["stat", "robot", "hub_level", "upgrade", "tower"]:
+		# [v6pace] Saving up for the step's price: cubes toward it, a number that goes up (owner: a
+		# visible goal with a number at all times). Once it's covered, the step's own count again.
+		var pc: Dictionary = _step_price()
+		var need_c: float = float(pc.get("cubes", 0.0))
+		var have_c: float = GameState.get_currency("cubes").to_float()
+		if need_c > 0.0 and have_c < need_c:
+			return [have_c / need_c, "%s / %s" % [Settings.fmt(BigNum.from_float(have_c)), Settings.fmt(BigNum.from_float(need_c))]]
 	if str(def.get("type", "")) == "core":
 		return [v / maxf(tgt, 0.0001), "%d%%" % int(floor(v * 100.0))]
 	return [v / maxf(tgt, 0.0001), ("%d / %d" % [int(v), int(tgt)]) if tgt > 1.0 else ""]
@@ -828,11 +838,44 @@ func _step_price() -> Dictionary:
 		var hub: Hub = world.get("hub")
 		if hub.level < int(def.get("target", 2)):
 			return (hub.level_def(hub.level + 1).get("cost", {}) as Dictionary).duplicate()
+	if typ == "stat" and world != null and value_of(def) < target_of(def):
+		var arc: Dictionary = arc_price(world, key)  # [v6pace] the hub, wake, rocket and drive steps
+		if not arc.is_empty():
+			return arc
+	if typ == "robot" and key == "any" and world != null and world.get("fleet") is Fleet:
+		# [v6pace] "Build your first robot": the price of the first robot the bench can build, so the
+		# card says how many Parts are still missing (a bot run waited 20 min on it with no hint).
+		var fa: Fleet = world.get("fleet")
+		if fa.robot_total() < int(def.get("target", 1)):
+			for rid: String in Economy.robots:
+				if Research.robot_unlocked(rid):
+					return {"cubes": fa.build_cost(rid).to_float(), "parts": fa.build_parts(rid).to_float()}
 	if typ == "robot" and world != null and world.get("fleet") is Fleet and Economy.robots.has(key) and Research.robot_unlocked(key):
 		var fl: Fleet = world.get("fleet")
 		if fl.count(key) < int(def.get("target", 1)):
 			return {"cubes": fl.build_cost(key).to_float(), "parts": fl.build_parts(key).to_float()}
 	return {}
+
+
+## [v6pace] What a step of the planet's arc costs, by the stat it counts: the next far hub's wake
+## (hubs_seen, hubs_woken; the next rocket tier first when this one can't keep another hub), the next
+## rocket tier (rocket_tier), the next drive (drive_tier). {} before the rocket stands on the pad.
+static func arc_price(w: Node, key: String) -> Dictionary:
+	if key == "drive_tier":
+		if Homeward.progress_blocker(Homeward.next_drive()) == "":
+			return (Homeward.next_drive().get("cost", {}) as Dictionary).duplicate()
+		return {}
+	if not key in ["hubs_seen", "hubs_woken", "rocket_tier"]:
+		return {}
+	var os_: OrbitSites = OrbitSites.of(w)
+	if os_ == null or os_.sm == null or not os_.rocket_unlocked():
+		return {}
+	var nf: int = 0
+	for i: int in range(1, os_.sm.built.size()):
+		nf += 1 if os_.sm.built[i] != 0 else 0
+	if key == "rocket_tier" or nf + 2 > RocketTiers.hub_limit():
+		return (RocketTiers.next_def().get("cost", {}) as Dictionary).duplicate()
+	return Hub.far_cost(nf)
 
 
 func situation_hint(dt: float = 0.0) -> String:
