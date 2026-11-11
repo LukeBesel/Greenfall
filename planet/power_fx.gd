@@ -58,7 +58,8 @@ static func flicker_on(host: Node, mats: Array, lights: Array, delay: float = 0.
 	tw.tween_callback(func() -> void:
 		if at != Vector3.ZERO:
 			Vfx.burst("sparkle", at, Color(1.0, 0.85, 0.5), 0.4)
-		Audio.play("clunk", randf_range(1.6, 2.0), -14.0, 0.04, "lights"))  # [v6sound] one clunk per street, not per lamp
+		if BeepGate.take("power_clunk", 1.2):  # [v6life] a block of lights coming on is a few soft ticks, not a rattle (owner item 50)
+			Audio.play("clunk", randf_range(1.6, 2.0), -17.0, 0.04, "lights"))  # [v6sound] "lights:clunk" in data/sound.json
 	for s: Array in STUTTER:
 		var p: float = s[0]
 		tw.tween_callback(func() -> void: _step(mats, lights, p))
