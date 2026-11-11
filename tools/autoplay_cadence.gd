@@ -16,6 +16,10 @@ extends RefCounted
 ## parts_end (Parts held).
 ##
 ## Report keys it writes (screenshots/autoplay_report.json): cadence (the rows), launch_s.
+## A staged run (--save-dir) keeps the table across stages in its own file (to_dict / from_dict).
+
+## Game seconds between kept samples of cubes and Parts held.
+const SAMPLE_S: float = 5.0
 
 var rows: Array[Dictionary] = []
 var launch_s: float = -1.0
@@ -93,7 +97,13 @@ func goal_done(now: float) -> void:
 	_goals.append(now)
 
 
+## Cubes and Parts held at game time `now` (the bot calls it once a second; a sample is kept
+## every SAMPLE_S, and always when it is a new high).
 func sample(now: float, cubes: float, parts: float) -> void:
+	if not _samples.is_empty():
+		var last: Vector3 = _samples[-1]
+		if now - last.x < SAMPLE_S and cubes <= last.y and parts <= last.z:
+			return
 	_samples.append(Vector3(now, cubes, parts))
 
 
@@ -165,6 +175,29 @@ func write(report: Dictionary, end: float, crew_now: int) -> void:
 			int(row["crew_arrive"]), int(row["crew_leave"]), int(row["purchases"]), float(row["longest_wait_s"]), float(row["goal_gap_s"]),
 			float(row["cubes_max"]), float(row["parts_max"]), float(row["parts_end"])])
 	print("[cadence] launch: %s (game minutes; - = not yet)" % _min(launch_s))
+
+
+## Everything the table is built from, for a staged run's next stage.
+func to_dict() -> Dictionary:
+	var samples: Array = []
+	for v: Vector3 in _samples:
+		samples.append([v.x, v.y, v.z])
+	return {"rows": rows, "launch_s": launch_s, "spends": _spends, "goals": _goals, "samples": samples}
+
+
+## Restores to_dict() over a table set up for the same cities (rows of other cities are ignored).
+func from_dict(d: Dictionary) -> void:
+	for row: Variant in d.get("rows", []):
+		if row is Dictionary and _index.has(str((row as Dictionary).get("city", ""))):
+			rows[_index[str(row["city"])]].merge(row, true)
+	launch_s = float(d.get("launch_s", launch_s))
+	for t: Variant in d.get("spends", []):
+		_spends.append(float(t))
+	for t: Variant in d.get("goals", []):
+		_goals.append(float(t))
+	for v: Variant in d.get("samples", []):
+		if v is Array and (v as Array).size() == 3:
+			_samples.append(Vector3(float(v[0]), float(v[1]), float(v[2])))
 
 
 ## Game seconds as minutes for the table ("-" when the beat has not come).

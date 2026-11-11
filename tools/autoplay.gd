@@ -2242,9 +2242,20 @@ func _setup_cadence() -> void:
 	for id: String in d.ids():
 		cities.append({"id": id, "name": d.name_of(id), "pollution": d.spec_of(id).get("pollution", [])})
 	_cadence.setup(cities)
+	var saved: String = _cadence_path()
+	if saved != "" and not DevHooks.has("fresh") and FileAccess.file_exists(saved):
+		var v: Variant = JSON.parse_string(FileAccess.get_file_as_string(saved))
+		if v is Dictionary:
+			_cadence.from_dict(v)  # a staged run goes on with the table so far
 	var first: String = d.district_of_site(_here_site())
 	if first != "":
 		_cadence.arrive(first, _now(), _crew())
+
+
+## Where a staged run (--save-dir) keeps its cadence table between stages ("" for a single run).
+func _cadence_path() -> String:
+	var dir: String = DevHooks.get_s("save-dir", "")
+	return "" if dir == "" else ProjectSettings.globalize_path("res://screenshots/autoplay_cadence_%s.json" % dir.validate_filename())
 
 
 ## Travel, as a player: when the planner points at another site and the rocket's cells are full,
@@ -2601,6 +2612,10 @@ func write_report() -> void:
 	_report["hops"] = _travel.hops
 	_stall.write(_report, end_t)
 	_cadence.write(_report, end_t, _crew())
+	if _cadence_path() != "" and not _cadence.rows.is_empty():
+		var cf := FileAccess.open(_cadence_path(), FileAccess.WRITE)
+		if cf:
+			cf.store_string(JSON.stringify(_cadence.to_dict()))
 	var path: String = ProjectSettings.globalize_path("res://screenshots/autoplay_report.json")
 	if DevHooks.get_s("save-dir", "") != "":  # [orbC] parallel staged runs keep their own report
 		path = path.replace(".json", "_%s.json" % DevHooks.get_s("save-dir", "").validate_filename())

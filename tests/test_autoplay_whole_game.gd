@@ -226,3 +226,21 @@ func test_stall_watch_does_not_count_flights_and_cinematics() -> void:
 	s.pause(400.0)
 	assert_false(s.tick(400.0, "flying"), "300 s in the air is not idle play")
 	assert_true(s.tick(541.0, "cleaning"))
+
+
+func test_cadence_table_carries_over_to_the_next_stage_of_a_staged_run() -> void:
+	var c := AutoplayCadence.new()
+	c.setup(_cities())
+	c.arrive("a", 0.0, 0)
+	c.spent(40.0)
+	c.sample(20.0, 500.0, 3.0)
+	c.arrive("b", 300.0, 8)
+	var next := AutoplayCadence.new()
+	next.setup(_cities())
+	next.from_dict(JSON.parse_string(JSON.stringify(c.to_dict())))
+	next.arrive("a", 900.0, 30)
+	assert_eq(float(next.rows[0]["arrive_s"]), 0.0, "the first stage's arrival stands")
+	var rows: Array[Dictionary] = next.table(1000.0, 30)
+	assert_eq(int(rows[0]["purchases"]), 1)
+	assert_eq(float(rows[0]["cubes_max"]), 500.0)
+	assert_eq(float(rows[1]["arrive_s"]), 300.0)

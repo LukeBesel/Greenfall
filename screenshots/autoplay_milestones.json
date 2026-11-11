@@ -1,23 +1,5 @@
 {
-  "control_s": 65.0,
-  "first_payout_s": 67.0,
-  "first_upgrade_s": 80.5,
-  "first_hex_s": 123.3,
-  "first_hexlv_1_s": 123.6,
-  "baler_s": 272.7,
-  "first_cube_s": 286.6,
-  "first_cashin_s": 303.6,
-  "tower_s": 356.4,
-  "lift_1_s": 379.1,
-  "glim_repair_s": 403.9,
-  "lift_2_s": 524.7,
-  "bench_2_s": 596.1,
-  "first_robot_s": 597.2,
-  "first_haulbug_s": 597.2,
-  "base_2_s": 662.4,
-  "first_surge_s": 711.2,
-  "seed_tin_s": 878.2,
-  "bench_3_s": 897.9,
-  "first_research_s": 963.0,
-  "first_scoopie_s": 1097.3
+  "city_old_town_stage1_s": 30.8,
+  "control_s": 32.2,
+  "tower_s": 35.2
 }
