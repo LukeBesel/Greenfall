@@ -37,7 +37,7 @@ func _surfaces(n: Node) -> int:
 
 func test_every_machine_has_a_sign_with_its_own_picture() -> void:
 	var icons: Dictionary = {}
-	for id: String in ["workbench", "trash_bin", "baler", "belt", "composter", "signal_tower", "fabricator"]:
+	for id: String in ["workbench", "trash_bin", "baler", "belt", "composter", "signal_tower", "fabricator", "recycler"]:
 		var d: Dictionary = MachineArt.sign_def(id)
 		assert_true(bool(d["show"]), id + " shows its sign")
 		assert_false(icons.has(d["icon"]), id + ": no two machines share a picture")
@@ -95,7 +95,7 @@ func test_landmarks_build_in_every_state_within_budget() -> void:
 			assert_gt(n.data.tris, 5000, nm + " is a real model")
 			assert_lt(_tris(n), TRI_BUDGET_LANDMARK, nm + " triangles")
 			assert_lte(_surfaces(n), SURFACES_LANDMARK + (6 if kind == "ferris_wheel" else 0), nm + " draw calls")
-			assert_gt(n.data.top.y, 8.0, nm + " has a top for the hub's beacon")
+			assert_gt(n.data.top.y, 3.0, nm + " has a top for the hub's beacon")
 			assert_gt(n.data.solids.size(), 0, nm + " is solid")
 			assert_ne(n.data.kiosk, Vector3.ZERO, nm + " has its wake console")
 			assert_eq(n.powered, st != "broken", nm + ": only a woken landmark is lit")
@@ -172,3 +172,21 @@ func test_pod_repair_cart_shows_only_while_mending() -> void:
 	site.set_stage(3)
 	assert_false(cart.visible, "the planter-beacon pod needs no cart")
 	assert_true((cart.find_children("*", "CollisionShape3D", true, false)[0] as CollisionShape3D).disabled)
+
+
+func test_recycler_keeps_its_moving_parts() -> void:
+	var r := Recycler.new()
+	add_child_autofree(r)
+	r.process_mode = Node.PROCESS_MODE_DISABLED
+	assert_not_null(r.get_node_or_null("Body"))
+	assert_eq(r._drums.size(), 2, "two shredder drums")
+	assert_not_null(r._glow_mat)
+	assert_not_null(r._ingots)
+	assert_eq(str(MachineArt.sign_def("recycler")["icon"]), "parts")
+	assert_lt(_tris(r), TRI_BUDGET_MACHINE)
+	assert_lt(_surfaces(r), 20, "recycler draw calls (was 40+ single meshes)")
+
+
+func test_every_verdance_hub_has_a_kit_landmark() -> void:
+	for e: Dictionary in HubPlan.entries("verdance"):
+		assert_true(HubLandmarks.has(HubPlan.landmark_kind("verdance", int(e["site"]))), str(e["id"]))

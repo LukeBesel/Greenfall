@@ -290,24 +290,27 @@ func _process(delta: float) -> void:
 ## the generator, the yard lamps (street lamp + the fence pole lamps) and the compost press.
 ## Nothing appears on its own. At the other bases the lean-to keeps its ruined look by hub level
 ## (scenes/slice.gd _apply_base_level) once it is built.
+## [v6pace] A ruin bit that is still alive, else null (a base rebuild frees the old ones).
+static func _live_bit(bits: Dictionary, k: String) -> Node3D:
+	var v: Variant = bits.get(k)
+	return v as Node3D if is_instance_valid(v) else null
+
+
 func _apply_builds() -> void:
 	var bits: Dictionary = world.get("_ruin_bits")
 	var shack: bool = YardBuilds.built("shack")
 	for k: String in ["frame", "roof", "back", "side", "lamp", "bulb", "post_l", "post_r"]:
-		var nv: Variant = bits.get(k)
-		var n: Node3D = nv as Node3D if is_instance_valid(nv) else null  # [v6pace] a rebuilt base frees its old bits: `as` on a freed object is a script error
+		var n: Node3D = _live_bit(bits, k)  # [v6pace] a rebuilt base frees its old bits: `as` on a freed object is a script error
 		if n:
 			n.visible = shack and _was_shown(k)
 			_set_solid(n, n.visible)  # [pace2] hidden parts must not leave invisible walls (posts, roof)
 	var lamps: bool = YardBuilds.built("lamps")
 	for k: String in ["street_lamp", "street_light"]:
-		var nv2: Variant = bits.get(k)
-		var n2: Node3D = nv2 as Node3D if is_instance_valid(nv2) else null  # [v6qa] as above (soak: hub 9 after a hop)
+		var n2: Node3D = _live_bit(bits, k)  # [v6pace]
 		if n2:
 			n2.visible = lamps and _was_shown(k)
 			_set_solid(n2, n2.visible)  # [pace2]
-	var gv: Variant = bits.get("generator")
-	var gen: Node3D = gv as Node3D if is_instance_valid(gv) else null  # [v6qa]
+	var gen: Node3D = _live_bit(bits, "generator")  # [v6pace]
 	if gen:
 		gen.visible = YardBuilds.built("generator")
 		_set_solid(gen, gen.visible)  # [pace2]
@@ -356,7 +359,7 @@ func _on_built(id: String) -> void:
 		"shack":
 			at = world.call("bench_pos")
 		"generator", "lamps":
-			var n: Node3D = bits.get("generator" if id == "generator" else "street_lamp") as Node3D
+			var n: Node3D = _live_bit(bits, "generator" if id == "generator" else "street_lamp")  # [v6pace]
 			if n:
 				at = n.global_position
 		"composter":

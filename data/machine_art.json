@@ -1,5 +1,5 @@
 {
-	"_doc": "[v6yard] Look of the yard machines (systems/camp/machine_art.gd) and their round picture signs. Colours are #rrggbb. signs.defaults applies to every sign; a machine's own entry overrides it. icon: wrench | bin | bale | belt | leaf | signal | bot. size: metres across. show: false removes the sign. post_height: height of the sign's centre where it stands on a post. baler / belt: the machines' paint. pod: the repair cart that stands by the crashed pod once the first upgrade is bought (service: false removes it). See docs/ADJUSTING.md, 'Yard machines and landmarks'.",
+	"_doc": "[v6yard] Look of the yard machines (systems/camp/machine_art.gd) and their round picture signs. Colours are #rrggbb. signs.defaults applies to every sign; a machine's own entry overrides it. icon: wrench | bin | bale | belt | leaf | signal | bot | parts. size: metres across. show: false removes the sign. post_height: height of the sign's centre where it stands on a post. baler / belt / recycler: the machines' paint. pod: the repair cart that stands by the crashed pod once the first upgrade is bought (service: false removes it). See docs/ADJUSTING.md, 'Yard machines and landmarks'.",
 	"signs": {
 		"defaults": {"size": 0.72, "face": "#ede3cc", "ink": "#2b3340", "show": true},
 		"workbench": {"icon": "wrench", "rim": "#f5801f", "accent": "#f5801f", "size": 0.8},
@@ -8,9 +8,11 @@
 		"belt": {"icon": "belt", "rim": "#f9bd29", "accent": "#b9824a"},
 		"composter": {"icon": "leaf", "rim": "#52994f", "accent": "#3f8f3a", "post_height": 2.3},
 		"signal_tower": {"icon": "signal", "rim": "#2e8f99", "accent": "#f5801f", "size": 0.62},
-		"fabricator": {"icon": "bot", "rim": "#2e8f99", "accent": "#f5801f", "size": 0.8}
+		"fabricator": {"icon": "bot", "rim": "#2e8f99", "accent": "#f5801f", "size": 0.8},
+		"recycler": {"icon": "parts", "rim": "#2e8f99", "accent": "#b9824a"}
 	},
 	"baler": {"body": "#33609e", "press": "#f9bd29", "trim": "#ede3cc"},
 	"belt": {"frame": "#f9bd29", "motor": "#f5801f"},
+	"recycler": {"body": "#2e8f99", "hopper": "#f9bd29", "kiln": "#5c4d45"},
 	"pod": {"service": true, "cart": "#ede3cc", "cart_trim": "#2e8f99", "cone": "#f5801f"}
 }

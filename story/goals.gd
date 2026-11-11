@@ -31,7 +31,7 @@ func _ready() -> void:
 
 func load_chain() -> void:
 	cfg = Economy.read_json("res://data/goals.json")
-	chain = cfg.get("goals", [])
+	chain = PlanetSteps.goals(cfg.get("goals", []))  # [v7planet] the shared hub goals are left out where a planet has its own
 	visible_count = int(cfg.get("visible", 3))
 	_done.clear()
 	for id: Variant in GameState.flags.get("goals_done", []):

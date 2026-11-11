@@ -1,14 +1,14 @@
 class_name FirstSeed
 extends Node3D
-## Act 3 opener: the ruined greenhouse, the Maker seed tin, the long cinematic with WREN's story,
+## Act 3 opener: the ruined greenhouse, the Settler seed tin, the long cinematic with WREN's story,
 ## the first planting and the first sprout. Runs once.
 
 const GREENHOUSE_POS := Vector3(15.0, 0.0, -9.0)
 # l10n:begin
 const LINES: Array[Array] = [
 	["Wait. Hold it up to the light.", 3.5],
-	["That's a Maker seed tin. Cradle stamp on the lid. One of ours, left behind in the rush.", 5.0],
-	["When they left, the Makers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi.", 6.0],
+	["That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush.", 5.0],
+	["When they left, the Settlers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi.", 6.0],
 	["The plan was simple. Wait for the dust to settle. Come home. Plant. They called that day the Greenfall.", 7.5],
 	["Then three hundred years went by, and the dust never settled. Until a seed-keeper fell out of the sky.", 5.5],
 	["Nothing grows on its own anymore. The soil forgot how. Somebody has to put it in the ground.", 6.0],
@@ -115,7 +115,9 @@ func _build_greenhouse() -> void:
 	for i: int in 5:
 		for x: float in [-2.5, 2.5]:
 			PropColliders.add_cyl(pb, GREENHOUSE_POS + Vector3(x, 0, -4.0 + i * 2.0), 0.08, 2.4)
-	PropColliders.add_box(pb, Transform3D(Basis(), GREENHOUSE_POS + Vector3(-2.5, 1.1, 2.0)), Vector3(0.1, 2.2, 1.9))
+	# [v6feel] The glass side's collider runs post to post (z 0..4): its ends left 0.97 m gaps to the
+	# next posts, narrower than Lumi, and he wedged in the V between glass and post.
+	PropColliders.add_box(pb, Transform3D(Basis(), GREENHOUSE_POS + Vector3(-2.5, 1.1, 2.0)), Vector3(0.1, 2.2, 4.0))
 	if _globe:  # [orbB] the shapes are in this node's space (the world on the flat game)
 		pb.global_transform = global_transform
 

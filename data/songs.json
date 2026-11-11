@@ -11,17 +11,19 @@
   "morning_shift"
  ],
  "gap_s": [
-  75,
-  180
+  360,
+  900
  ],
  "first_gap_s": [
-  20,
-  45
+  60,
+  120
  ],
+ "_doc_gaps": "[main] Owner: songs then long breaks, like Minecraft (which waits about 10-20 min). gap_s: 6-15 min of only the world's own sounds between songs; first_gap_s: 1-2 min after loading a save. Shorter breaks: lower these numbers.",
  "landing_gap_s": [
-  150,
-  240
+  540,
+  720
  ],
+ "_doc_landing": "[main] Owner: after the crash landing it is a good while (about 10 min) before the first song. A new song also waits while WREN or a story line is speaking (audio/tunes_director.gd).",
  "main_share": 0.6,
  "_doc_v1menu": "[v1menu] gap_s: silence between background songs; first_gap_s: after a load; landing_gap_s: after the pod lands in a new game; main_share: chance the main theme is picked when it may play (never twice in a row), so it stays the most common song.",
  "crossfade_s": 4.0,
@@ -184,7 +186,7 @@
    "kind": "title",
    "bpm": 85,
    "unlock": "start",
-   "desc": "The song the Makers hummed on the way to the ark. Hopeful, a little lonely."
+   "desc": "The song the Settlers hummed on the way to the ark. Hopeful, a little lonely."
   },
   {
    "id": "fall_of_lm1",

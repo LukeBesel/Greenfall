@@ -8,9 +8,13 @@
 		"crane": {"main": "yellow", "accent": "teal", "span": 12.0, "height": 11.0, "run": 7.6, "foot": 7.8},
 		"radio_mast": {"main": "white", "accent": "red", "height": 26.0, "spin": 0.7, "foot": 6.8},
 		"ferris_wheel": {"main": "cream", "accent": "#d9475e", "radius": 8.5, "gondolas": 12, "gondola_a": "yellow", "gondola_b": "teal", "spin": 0.12, "foot": 8.4},
-		"smokestack": {"main": "#c8694a", "accent": "cream", "height": 26.0, "foot": 7.3}
+		"smokestack": {"main": "#c8694a", "accent": "cream", "height": 26.0, "foot": 7.3},
+		"tower_crane": {"main": "yellow", "accent": "teal", "height": 20.0, "jib": 13.0, "spin": 0.06, "foot": 4.6},
+		"old_bus": {"main": "cream", "accent": "orange", "length": 9.0, "foot": 6.0},
+		"lighthouse": {"main": "white", "accent": "red", "height": 16.0, "foot": 5.6}
 	},
 	"planets": {
-		"verdance": {}
+		"verdance": {},
+		"testworld": {"_doc": "[v7planet] Dev stub planet: its own landmark colours.", "radio_mast": {"main": "orange", "accent": "navy"}, "smokestack": {"main": "#c9a27a", "accent": "plum"}}
 	}
 }

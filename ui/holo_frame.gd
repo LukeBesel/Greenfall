@@ -105,7 +105,7 @@ void fragment() {
 ## roomier on small logical screens so nothing has to scroll).
 static func fit_margins(mc: MarginContainer, vp: Vector2) -> void:
 	var small: bool = vp.y < 650.0
-	var side: int = int(vp.x * (0.075 if small else 0.11))
+	var side: int = int(vp.x * (0.04 if vp.x < 1000.0 else (0.075 if small else 0.11)))  # [v6screens] narrow (UI scale 1.5): every px for the rows
 	var top: int = int(vp.y * (0.045 if small else 0.11))
 	var bottom: int = int(vp.y * (0.025 if small else 0.06))
 	mc.add_theme_constant_override("margin_left", side)

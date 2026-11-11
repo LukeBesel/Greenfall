@@ -209,7 +209,44 @@ func _ready() -> void:
 	hint.align_center = true
 	tv.add_child(hint)
 	_hint = hint
+	_top_plate = top
+	_left_card = left
+	_root.resized.connect(_fit_top)  # [v6screens]
 	_root.visible = false
+
+
+## [v6screens] On a narrow screen (big interface scale) the top plate would sit on the side cards:
+## it moves under the rocket card on the right, and its big count (the left card has the same
+## numbers) goes.
+var _top_plate: PanelContainer
+var _left_card: Control
+
+
+func _fit_top() -> void:
+	if _top_plate == null or _left_card == null:
+		return
+	var w: float = _root.size.x
+	var left_end: float = _left_card.position.x + _left_card.get_combined_minimum_size().x
+	var right_w: float = _rocket_card.get_combined_minimum_size().x + 28.0 if _rocket_card and _rocket_card.visible else 0.0
+	var plate_w: float = maxf(_big.get_minimum_size().x, _hint.get_combined_minimum_size().x) + 24.0  # the same whether _big shows or not
+	var narrow: bool = w * 0.5 - plate_w * 0.5 < left_end + 12.0 or (right_w > 0.0 and w * 0.5 + plate_w * 0.5 > w - right_w - 12.0)
+	_big.visible = not narrow
+	if narrow:  # under the rocket card on the right (the survey card fills the left)
+		var below: float = 28.0 + (_rocket_card.get_combined_minimum_size().y + 12.0 if _rocket_card and _rocket_card.visible else 0.0)
+		_top_plate.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+		_top_plate.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+		_top_plate.offset_left = 0.0
+		_top_plate.offset_right = -28.0
+		_top_plate.offset_top = below
+		_top_plate.offset_bottom = below
+	else:
+		_top_plate.set_anchors_preset(Control.PRESET_CENTER_TOP)
+		_top_plate.grow_horizontal = Control.GROW_DIRECTION_BOTH
+		_top_plate.offset_left = 0.0
+		_top_plate.offset_right = 0.0
+		_top_plate.offset_top = 18.0
+		_top_plate.offset_bottom = 18.0
+	_top_plate.grow_vertical = Control.GROW_DIRECTION_END
 
 
 const HOLO := Color(0.47, 0.86, 0.78)  # [v2map] seed-keeper teal (was a cold cyan)
@@ -272,6 +309,7 @@ func survey() -> void:
 
 
 func open_view() -> void:
+	_fit_top.call_deferred()  # [v6screens]
 	if DevHooks.has("survey-zoom"):  # [v5text] dev: open the survey at a zoom (1.4 near .. 6.0 far)
 		_zoom = clampf(DevHooks.get_f("survey-zoom", 3.2), 1.4, 6.0)
 	if planet == null:

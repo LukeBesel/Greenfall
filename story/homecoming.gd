@@ -6,7 +6,7 @@ extends Node
 ##   1. space: the rocket climbs out of a green Verdance; the four restored worlds glow far off;
 ##   2. the Cradle, holding orbit, wakes (green running lights) and takes the rocket into its bay;
 ##   3. the seed vault: Lumi sets the seedling tray back on its pedestal, three hundred years after
-##      climbing into a pod to save it; the drawers light up; below decks, the Makers wake;
+##      climbing into a pod to save it; the drawers light up; below decks, the Settlers wake;
 ##   4. back on the ground: the ark finale (story/bloom_finale.gd) brings the Cradle down to
 ##      Verdance, "welcome home", then the end credits. The game carries on afterwards.
 ## Dev: --homecoming[=S] plays it S seconds after the district loads.
@@ -19,6 +19,14 @@ const SPACE_LINES: Array[Array] = [
 	["Five worlds, green. The Ledger left them as rubbish. You left them as gardens.", 5.5],
 	["CRADLE:  SYSTEM SURVEY: FIVE WORLDS.  FIVE ALIVE.", 4.5],
 	["CRADLE:  CHARTER CONDITION MET.  WAKING SLEEPERS.  OPENING BAY ONE.", 5.0],
+	["It's opening the bay. It's actually opening the bay. Steady... steady...", 5.0],
+]
+## [v7arc] Home needs only fuel and power (docs/STORY_ARC.md). SPACE_LINES above are the better
+## ending, kept for every planet at 100%; these play when some worlds are still only part green.
+const SPACE_LINES_AWAKE: Array[Array] = [
+	["Clear of the air. Look back, {name}. Look at it.", 4.5],
+	["Five worlds awake. Not all green yet, but robots are planting on every one.", 5.5],
+	["CRADLE:  FUEL FULL.  POWER FULL.  WAKING SLEEPERS.  OPENING BAY ONE.", 5.0],
 	["It's opening the bay. It's actually opening the bay. Steady... steady...", 5.0],
 ]
 const VAULT_LINES: Array[Array] = [
@@ -70,7 +78,7 @@ func play() -> void:
 	_c = null
 	_land_lumi()
 	playing = false
-	# The ark finale: the Cradle comes down to Verdance with the Makers aboard, then the credits.
+	# The ark finale: the Cradle comes down to Verdance with the Settlers aboard, then the credits.
 	GameState.flags.erase("bloom_finale_seen")
 	GameState.flags.erase("credits_seen")
 	var f := BloomFinale.new()
@@ -117,8 +125,9 @@ func _space() -> void:
 	st.show_set("space")
 	st.set_planet_green(1.0)
 	var all_green: Dictionary = {}
-	for d: Dictionary in Homeward.planets():
-		all_green[str(d["id"])] = 1.0
+	var full: bool = Homeward.system_pct() >= 0.9999  # [v7arc] the optional extra: every world at 100%
+	for k: int in Homeward.planets().size():
+		all_green[str(Homeward.planet_def(k)["id"])] = 1.0 if full else maxf(Homeward.stored_pct(k), 0.35)
 	SystemProps.add_planets(st, Vector3.ZERO, all_green)
 	var ark: CradleShip = st.ark
 	ark.rotation = Vector3(0, -PI * 0.5, 0)
@@ -132,7 +141,7 @@ func _space() -> void:
 	_c.caption(tr("Homecoming"))
 	Audio.play("fanfare", 0.8, -8.0)
 	var start: Vector3 = rocket.position
-	var skipped: bool = await _run(SPACE_LINES, func(t: float, total: float, _dt: float) -> void:
+	var skipped: bool = await _run(SPACE_LINES if full else SPACE_LINES_AWAKE, func(t: float, total: float, _dt: float) -> void:
 		var k: float = clampf(t / (total - 3.0), 0.0, 1.0)
 		var e: float = k * k * (3.0 - 2.0 * k)
 		var p: Vector3 = start.lerp(dock, e)

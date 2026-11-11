@@ -5,7 +5,7 @@
     {"id": "worn", "name": "Worn", "color": "#c9c9c9", "weight": 28, "signal": 1.1, "parts": 25},
     {"id": "restored", "name": "Restored", "color": "#5fbf7a", "weight": 14, "signal": 1.2, "parts": 60},
     {"id": "vintage", "name": "Vintage", "color": "#4aa3df", "weight": 6, "signal": 1.35, "parts": 150},
-    {"id": "legendary", "name": "Legendary Maker-Made", "color": "#e8b44a", "weight": 2, "signal": 1.6, "parts": 450}
+    {"id": "legendary", "name": "Legendary Settler-Made", "color": "#e8b44a", "weight": 2, "signal": 1.6, "parts": 450}
   ],
   "types": [
     {"id": "chassis", "name": "Chassis Frame", "model": "metal_toolbox"},

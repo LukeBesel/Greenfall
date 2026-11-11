@@ -303,6 +303,8 @@ func _make() -> void:
 	dressing.kit_yard = true
 	if site_id != "start_yard":  # [v6hubs] the far hubs' landmarks come from the planet's data (the start yard keeps its own)
 		dressing.lm_kind_override = HubPlan.landmark_kind(_plan_planet(), hub_index)
+	elif HubPlan.landmark_kind(_plan_planet(), 0) != "":  # [v7planet] the start yard's too, when the data names one (Verdance's is its water tower either way)
+		dressing.lm_kind_override = HubPlan.landmark_kind(_plan_planet(), 0)
 	add_child(dressing)
 	await dressing.build(layout, null, hub_index, district_name, "", level)
 	set_level(level)
@@ -438,7 +440,7 @@ func _pick_kind() -> String:
 
 ## [v6hubs] The planet whose hub plan names this town's look and landmark.
 static func _plan_planet() -> String:
-	return HubPlan.active_planet if HubPlan.active_planet != "" else "verdance"
+	return HubPlan.active_planet if HubPlan.active_planet != "" else PlanetCfg.current_or("verdance")  # [v7planet]
 
 
 ## [v6hubs] Whether the lake reaches into a town here (water: func(x, z) -> bool in site-local

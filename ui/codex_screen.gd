@@ -64,6 +64,10 @@ func _ready() -> void:
 	for side: String in ["margin_left", "margin_right", "margin_top", "margin_bottom"]:
 		mc.add_theme_constant_override(side, 40)
 	_root.add_child(mc)
+	_root.resized.connect(func() -> void:  # [v6screens] a short or narrow screen (UI scale 1.5) keeps every px
+		var m: int = 40 if _root.size.y >= 600.0 and _root.size.x >= 1000.0 else 10
+		for side: String in ["margin_left", "margin_right", "margin_top", "margin_bottom"]:
+			mc.add_theme_constant_override(side, m))
 	_panel = PanelContainer.new()
 	_panel.add_theme_stylebox_override("panel", UITheme.box(Color(0.06, 0.065, 0.075, 0.94), Color(1, 1, 1, 0.1), 1, 14, 20))
 	mc.add_child(_panel)
@@ -79,7 +83,7 @@ func _ready() -> void:
 	_summary.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_summary.size_flags_horizontal = Control.SIZE_EXPAND_FILL  # [vqa] wraps in long languages
 	_summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_summary.custom_minimum_size.x = 160
+	_summary.custom_minimum_size.x = 100  # [v6screens] was 160: the header fits 853 px in every language
 	header.add_child(_summary)
 	var sp := Control.new()
 	sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -87,7 +91,8 @@ func _ready() -> void:
 	# [intro2] Rewatch the opening cinematic (owner playtest #2).
 	var story := Button.new()
 	story.text = tr("Watch the story")
-	story.custom_minimum_size = Vector2(170, 44)
+	story.custom_minimum_size = Vector2(120, 44)  # [v6screens] was 170; wraps in long languages
+	story.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	story.focus_mode = Control.FOCUS_NONE
 	story.pressed.connect(func() -> void:
 		close_screen()
@@ -108,10 +113,9 @@ func _ready() -> void:
 	for t: Dictionary in TABS:
 		var b := Button.new()
 		b.text = tr(str(t["name"]))
-		b.custom_minimum_size = Vector2(100, 42)  # [vqa] was 150: five tabs + the prompt overflowed the Deck at 110%; [ui4] 100: six tabs at 125%
+		b.custom_minimum_size = Vector2(72, 42)  # [vqa] was 150: five tabs + the prompt overflowed the Deck at 110%; [ui4] 100: six tabs at 125%
 		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		b.clip_text = true
-		b.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART  # [v6screens] two lines on a narrow screen instead of "Achieve..."
 		b.focus_mode = Control.FOCUS_NONE
 		b.pressed.connect(_set_tab.bind(str(t["id"])))
 		tabs.add_child(b)
@@ -283,7 +287,7 @@ func _build_codex() -> Control:
 	hb.add_child(det)
 	var dv := VBoxContainer.new()
 	dv.add_theme_constant_override("separation", 10)
-	det.add_child(dv)
+	det.add_child(_scroll_wrap(dv))  # [v6screens] scrolls on a short screen
 	_d_icon = ResearchIcons.IconView.new("book", 72, UITheme.GOLD)
 	dv.add_child(_d_icon)
 	_d_cat = UITheme.label("", 12, UITheme.MUTED)
@@ -401,7 +405,7 @@ func _build_curiosities() -> Control:
 	hb.add_child(det)
 	var dv := VBoxContainer.new()
 	dv.add_theme_constant_override("separation", 10)
-	det.add_child(dv)
+	det.add_child(_scroll_wrap(dv))  # [v6screens] scrolls on a short screen
 	_c_icon = UITheme.label("?", 64, UITheme.MUTED)
 	dv.add_child(_c_icon)
 	_c_where = UITheme.label("", 12, CURIO_COLOR)
@@ -536,7 +540,7 @@ func _build_collection() -> Control:
 	hb.add_child(det)
 	var dv := VBoxContainer.new()
 	dv.add_theme_constant_override("separation", 10)
-	det.add_child(dv)
+	det.add_child(_scroll_wrap(dv))  # [v6screens] scrolls on a short screen
 	_c_icon = UITheme.label("?", 64, UITheme.MUTED)
 	dv.add_child(_c_icon)
 	_c_where = UITheme.label("", 12, COLLECT_COLOR)
@@ -654,6 +658,17 @@ static func _trinket_hint(t: Dictionary) -> String:
 	return TranslationServer.translate("Hint: turns up during %s.") % Collection.source_name(str(t.get("source", ""))).to_lower()
 
 
+## [v6screens] A detail column that scrolls when the screen is short (UI scale 1.5 at 720p), so
+## the Codex never runs off the bottom (tools/ui_audit.gd).
+func _scroll_wrap(c: Control) -> ScrollContainer:
+	var sc := ScrollContainer.new()
+	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	sc.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	c.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	sc.add_child(c)
+	return sc
+
+
 # --- Achievements tab ----------------------------------------------------------------
 
 func _build_achievements() -> Control:
@@ -665,6 +680,7 @@ func _build_achievements() -> Control:
 	grid.add_theme_constant_override("h_separation", 10)
 	grid.add_theme_constant_override("v_separation", 10)
 	sc.add_child(grid)
+	sc.resized.connect(func() -> void: grid.columns = clampi(int(sc.size.x / 330.0), 1, 3))  # [v6screens] cards never squeeze into each other
 	var first: Control = null
 	# Unlocked first (newest at the top), then the rest by progress.
 	var list: Array = Achievements.shown_defs().duplicate()  # [v6screens]
@@ -741,6 +757,13 @@ func _achievement_card(a: Dictionary) -> Button:
 		pl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		row.add_child(pl)
 	UITheme.juice(b, 1.02)
+	# [v6screens] The card grows with its text (long descriptions wrap to more lines in some
+	# languages) instead of spilling into the card below.
+	var grow := func() -> void:
+		if is_instance_valid(b) and is_instance_valid(hb):  # [main] the deferred call can land after the screen is freed
+			b.custom_minimum_size.y = maxf(84.0, hb.get_combined_minimum_size().y + 12.0)
+	hb.minimum_size_changed.connect(grow)
+	grow.call_deferred()
 	return b
 
 
@@ -755,6 +778,7 @@ func _build_stats() -> Control:
 	grid.add_theme_constant_override("h_separation", 12)
 	grid.add_theme_constant_override("v_separation", 12)
 	sc.add_child(grid)
+	sc.resized.connect(func() -> void: grid.columns = clampi(int(sc.size.x / 300.0), 1, 3))  # [v6screens] narrow screens: fewer columns
 	var st: Dictionary = GameState.stats
 	var junk_rows: Array = []
 	for t: String in Economy.junk_ids:
@@ -803,6 +827,7 @@ func _stat_card(parent: Control, title: String, subtitle: String, rows: Array) -
 	pc.add_theme_stylebox_override("panel", _glass(12, 14))
 	pc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	pc.focus_mode = Control.FOCUS_ALL
+	pc.set_meta("own_focus_ring", true)  # [v6screens] its border turns gold on focus (tools/ui_audit.gd)
 	parent.add_child(pc)
 	var vb := VBoxContainer.new()
 	vb.add_theme_constant_override("separation", 6)

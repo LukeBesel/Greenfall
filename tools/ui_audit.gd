@@ -42,8 +42,14 @@ static func _shown(c: CanvasItem) -> bool:
 	return a * c.self_modulate.a > 0.05 or (a > 0.05 and c is Control and (c as Control).get_child_count() > 0)
 
 
+## Where the control is laid out on screen. Its own scale is left out: a button that grows a
+## little while it has the focus (UITheme.juice) is not off its row.
 static func rect_of(c: Control) -> Rect2:
-	return (c.get_global_transform_with_canvas() * Rect2(Vector2.ZERO, c.size)).abs()
+	var xf: Transform2D = c.get_global_transform_with_canvas()
+	if c.scale != Vector2.ONE and c.scale.x != 0.0 and c.scale.y != 0.0:
+		var p: Vector2 = c.pivot_offset
+		xf = xf * Transform2D(0.0, p) * Transform2D.IDENTITY.scaled(Vector2.ONE / c.scale) * Transform2D(0.0, -p)
+	return (xf * Rect2(Vector2.ZERO, c.size)).abs()
 
 
 static func text_of(c: Control) -> String:
@@ -225,9 +231,9 @@ static func layout(roots: Array, view: Rect2, ignore_overlap: Callable = Callabl
 			out.append(_issue("clipped", c, r, why))
 		var par: Control = c.get_parent() as Control
 		if par is Container and not par is ScrollContainer and sp == null:
-			var pr: Rect2 = rect_of(par)
-			if r.size.x > pr.size.x + TOL or r.size.y > pr.size.y + TOL:
-				out.append(_issue("overflow", c, r, "%dx%d in a %dx%d %s" % [roundi(r.size.x), roundi(r.size.y), roundi(pr.size.x), roundi(pr.size.y), par.get_class()]))
+			# Own sizes, not screen rects: a button that grows a little on focus (UITheme.juice) is fine.
+			if c.size.x > par.size.x + TOL or c.size.y > par.size.y + TOL:
+				out.append(_issue("overflow", c, r, "%dx%d in a %dx%d %s" % [roundi(c.size.x), roundi(c.size.y), roundi(par.size.x), roundi(par.size.y), par.get_class()]))
 	for i: int in items.size():
 		var a: Control = items[i]
 		var ra: Rect2 = rects[i]

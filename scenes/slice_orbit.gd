@@ -65,6 +65,9 @@ func build(p_world: Node3D) -> void:
 	var home_pid: String = str(Homeward.planet_def(maxi(Homeward.current_planet(), 0)).get("id", "verdance"))  # [orbD] a new world after an interplanet flight
 	var pid: String = GlobeSpec.current_id() if DevHooks.has("orbit-planet") else str(od.get("planet_id", home_pid))
 	var spec: Dictionary = GlobeSpec.of(pid)
+	PlanetCfg.use_planet(pid)  # [v7planet] life, hub plan, sky and sound follow the globe's planet (core/planet_cfg.gd)
+	if pid != home_pid:  # [v7planet] a planet outside the campaign's current one (--orbit-planet): its own name on the HUD
+		Economy.planet["name"] = PlanetCfg.name_of(pid)
 	if int(od.get("freq", spec["frequency"])) != int(spec["frequency"]) or str(od.get("planet_id", pid)) != pid:
 		push_warning("[orbit] saved globe is %s f=%d, building %s f=%d fresh" % [od.get("planet_id", "?"), int(od.get("freq", 0)), pid, int(spec["frequency"])])
 		od = {}
@@ -453,7 +456,7 @@ func try_interact(p: Patch) -> void:
 	if ia and ia.try_use(p.global_position):
 		return
 	var fs: FirstSeed = w.get("first_seed")
-	if fs and fs.near_tin(p.global_position):  # the Maker seed tin in the greenhouse
+	if fs and fs.near_tin(p.global_position):  # the Settler seed tin in the greenhouse
 		fs.take_tin()
 		return
 	var cmp: Composter = w.get("composter")
@@ -668,7 +671,7 @@ func _attach_extras() -> void:
 		ex.nursery.set("center", ex.nursery.global_position)
 
 
-## The Act 3 opener (story/first_seed.gd): the ruined greenhouse with the Maker seed tin, on a free
+## The Act 3 opener (story/first_seed.gd): the ruined greenhouse with the Settler seed tin, on a free
 ## spot east of the start yard (FirstSeed.find_spot; the site's colliders must be in the physics
 ## space first, so it waits two physics frames).
 func _attach_first_seed() -> void:

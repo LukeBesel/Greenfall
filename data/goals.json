@@ -19,7 +19,7 @@
     {"id": "earn_3k", "text": "Earn 3,000 cubes", "type": "earned", "target": 3000, "reward": {"cubes": 250}},
     {"id": "hex_5", "text": "Clean 5 hexes", "type": "stat", "key": "hexes_cleaned", "target": 5, "reward": {"cubes": 250}},
     {"id": "seeds", "text": "Find the seed tin", "type": "flag", "key": "seeds_unlocked", "target": 1, "reward": {"cubes": 100}},
-    {"id": "plant_5", "text": "Plant the Maker seed", "type": "stat", "key": "plants_planted", "target": 1, "reward": {"cubes": 100, "seeds": 1}},
+    {"id": "plant_5", "text": "Plant the Settler seed", "type": "stat", "key": "plants_planted", "target": 1, "reward": {"cubes": 100, "seeds": 1}},
     {"id": "hex_7", "text": "Clean 7 hexes", "type": "stat", "key": "hexes_cleaned", "target": 7, "reward": {"cubes": 250}},
     {"id": "hex_10", "text": "Clean 10 hexes", "type": "stat", "key": "hexes_cleaned", "target": 10, "reward": {"cubes": 400}},
     {"id": "base_2", "text": "Upgrade the base to level 2", "type": "hub_level", "target": 2, "reward": {"cubes": 500}},

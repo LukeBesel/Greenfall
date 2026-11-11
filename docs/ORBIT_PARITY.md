@@ -74,7 +74,7 @@ Same upgrades bought, no errors.
 | Composter (organic junk to seeds) | works | | On the start yard's `composter` anchor (YardSite's stand-in steps aside). Paper feeds it and it presses seeds. Checks: `orbit_composter_*`. |
 | Seed finds (early trickle) | works | | `orbit_seed_finds`. |
 | Garden (plant, water, grow) | works | | Sparse, per cell; `orbit_garden_planted`, `orbit_garden_slots_on_ground`. |
-| Seeds unlock: First Seed (greenhouse, Maker tin, first sprout) | works | | The greenhouse stands on a clear patch east of the start yard (`FirstSeed.find_spot`). Checks: `orbit_first_seed_built`, `orbit_greenhouse_east_on_ground`, `orbit_seed_*` (prompt, cinematic, unlock, controls back). |
+| Seeds unlock: First Seed (greenhouse, Settler tin, first sprout) | works | | The greenhouse stands on a clear patch east of the start yard (`FirstSeed.find_spot`). Checks: `orbit_first_seed_built`, `orbit_greenhouse_east_on_ground`, `orbit_seed_*` (prompt, cinematic, unlock, controls back). |
 | Meadow (restored ground cover) | missing | orbB / orbE | Grass and flowers over restored cells. A per-cell `MeadowSphere` exists in history (cf2ca15, reverted for the playtest), ready to re-land. |
 | Wildlife (butterflies, birdsong) | missing | orbB | Separate from Fauna; ambience over restored cells. A per-hub port exists in history (cf2ca15, reverted for the playtest), ready to re-land. |
 | Fauna (animals) | works | | Per hub. Checks: `orbit_fauna_*` (frame, ground, upright far out, hops, sleep). Perf about 1.6 ms/frame. |

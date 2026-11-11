@@ -195,7 +195,7 @@ static func fountain() -> Node3D:
 	return n
 
 
-## A Maker on a plinth, watering can in hand.
+## A Settler on a plinth, watering can in hand.
 static func statue() -> Node3D:
 	var n := Node3D.new()
 	var s: StandardMaterial3D = stone(Color(0.86, 0.85, 0.82))

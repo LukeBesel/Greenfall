@@ -42,6 +42,7 @@ var _list: VBoxContainer
 var _rows: Dictionary = {}  # id -> Button
 var _empty: Label
 var _detail: VBoxContainer
+var _detail_hide: Control  # [v6screens] what an empty selection hides (was _detail's third parent)
 var _d_eyebrow: Label
 var _d_name: Label
 var _d_desc: Label
@@ -69,8 +70,7 @@ func _ready() -> void:
 	top.add_child(_cat_row)
 	_counter = HoloFrame.mono_label("", 13, Color(HoloFrame.EDGE, 0.7)) if modules else UITheme.label("", 14, UITheme.MUTED)
 	_counter.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	_counter.clip_text = true
-	_counter.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_counter.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART  # [v6screens] was clipped ("RECHERCHÉ…" at UI 1.5): it wraps
 	_counter.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	if not modules:
 		add_child(top)
@@ -103,7 +103,19 @@ func _ready() -> void:
 	(dp[0] as Control).size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	(dp[0] as Control).size_flags_stretch_ratio = 0.9
 	body.add_child(dp[0])
-	_detail = dp[1]
+	# [v6screens] The detail scrolls when the screen is short (interface scale 1.5 at 720p), so the
+	# frame never runs off the bottom (tools/ui_audit.gd).
+	_detail_hide = (dp[1] as Node).get_parent().get_parent().get_parent()
+	var dsc := ScrollContainer.new()
+	dsc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	dsc.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	dsc.follow_focus = true
+	(dp[1] as VBoxContainer).add_child(dsc)
+	_detail = VBoxContainer.new()
+	_detail.add_theme_constant_override("separation", 8)
+	_detail.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_detail.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	dsc.add_child(_detail)
 	_d_eyebrow = BenchKit.caps("", TAG_OK)
 	if modules:
 		_d_eyebrow.add_theme_font_override("font", HoloFrame.mono())
@@ -347,6 +359,7 @@ func _rebuild_rows(rows: Array) -> void:
 		nm.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		nm.clip_text = true
 		nm.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		nm.resized.connect(_fit_name.bind(nm))  # [v6screens] long names step the font down before they cut
 		hb.add_child(nm)
 		var pips := BenchKit.Pips.new(3, false, TAG_OK)
 		pips.pip = 7.0
@@ -454,6 +467,7 @@ func _style_row(b: Button, it: Dictionary) -> void:
 	# rows you can't pay yet are dimmer than the ones you can.
 	var goal: bool = str(it["id"]) == _goal and not locked and st != "done"
 	nm.text = ("▸ " if goal else "") + str(it.get("name", ""))
+	_fit_name(nm)  # [v6screens]
 	nm.add_theme_color_override("font_color", Color(0.08, 0.06, 0.04) if on else (LOCK_GREY if locked else (GOAL if goal else (UITheme.CREAM if st == "ready" else UITheme.CREAM.darkened(0.25)))))
 	var mx: int = int(it.get("max", 0))
 	pips.visible = mx > 0 and not locked and mx <= 10
@@ -568,8 +582,25 @@ func _flash_row(id: String) -> void:
 		c.create_tween().set_ignore_time_scale(true).tween_property(c, "modulate", Color.WHITE, 0.6).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 
+## [v6screens] A row name that does not fit its width steps down from 19 px to 14 px before the
+## ellipsis cuts it (long names in German, French and Portuguese on a narrow screen).
+const NAME_PX: int = 19
+const NAME_MIN_PX: int = 14
+
+
+static func _fit_name(nm: Label) -> void:
+	if nm.size.x <= 1.0:
+		return
+	var font: Font = nm.get_theme_font("font")
+	var px: int = NAME_PX
+	while px > NAME_MIN_PX and font.get_string_size(nm.text, HORIZONTAL_ALIGNMENT_LEFT, -1, px).x > nm.size.x:
+		px -= 1
+	if nm.get_theme_font_size("font_size") != px:
+		nm.add_theme_font_size_override("font_size", px)
+
+
 func _show_detail(it: Dictionary) -> void:
-	_detail.get_parent().get_parent().get_parent().visible = not it.is_empty()
+	_detail_hide.visible = not it.is_empty()
 	if it.is_empty():
 		return
 	var st: String = str(it.get("state", "ready"))

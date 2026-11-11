@@ -21,7 +21,7 @@ Everything about a planet's hubs is in `data/planets.json`, under the planet's i
 | The price of a wake and the sell multiplier per hub | `data/hub.json` `far_hub` (v6pace) |
 | How many hubs a rocket tier can keep | `data/rockets.json` tiers' `hubs` (v6pace) |
 
-Landmark kinds: `water_tower`, `crane`, `ferris_wheel`, `radio_mast`, `smokestack`, `old_bus`,
+Landmark kinds: `water_tower`, `crane`, `tower_crane`, `ferris_wheel`, `radio_mast`, `smokestack`, `old_bus`,
 `windpump`, `lighthouse`. The `town` field picks the town's look
 (`oldtown`, `downtown`, `suburb`, `industrial`) and is what the picker and the arrival title say; a
 hub where the lake reaches into the town is always built (and named) as a harbour.
@@ -148,24 +148,30 @@ and its lit lights). More dev hooks are listed at the top of `planet/sites/life_
 Measure after a change: `flock /tmp/gf-autoplay.lock godot --headless --path . -- --fresh --orbit --autoplay --time-scale=8 --quit-after=2700`
 prints a `[card]` line per objective step and an `[arc]` line per hub, rocket tier and the exit
 (bot minutes; a person takes about twice as long). Tests that pin these numbers: `tests/test_v6pace.gd`.
+Then `python3 tools/cadence.py screenshots/autoplay_report.json run.log` for the arc, cubes per minute,
+reward gaps and card waits; targets and the last measured run are in `docs/BALANCE.md`.
 
 | What | File and key | Now | Effect |
 |---|---|---|---|
 | When the rocket appears | `data/hub.json` `rocket.level`, `rocket.after_objective` | level 1, after the step `seed` | The rocket stands on the start pad once that story step is done and the base has that level. |
-| Price of the first far hub | `data/hub.json` `far_hub.cost_override."0"` | 600 cubes, 30 Parts | The on-ramp. Remove the entry to use the curve's base. |
-| Far hub price curve | `data/hub.json` `far_hub.cost_base`, `far_hub.cost_growth` | 1,500 cubes x 4.0 per hub (Parts 40 x 1.4) | Price of hub n = base x growth^n, rounded to two digits: 6K, 24K, 96K, 380K. One number moves the whole ladder. |
-| Income per restored hub | `data/hub.json` `far_hub.sell_growth` | 2.5 | Every sale (scale, robot bales, trash bin) is multiplied by this for each far hub restored. Raise it and hubs come faster; lower it and each hub takes longer. |
+| Single far-hub prices | `data/hub.json` `far_hub.cost_override` (step number as the key, e.g. `"2": {"cubes": 8000}`) | none | Replaces one step of the curve without moving the others. |
+| Far hub price curve | `data/hub.json` `far_hub.cost_base`, `far_hub.cost_growth` | 600 cubes x 4.0 per hub (Parts 30 x 1.4) | Price of hub n = base x growth^n, rounded to two digits: 600, 2.4K, 9.6K, 38K, 150K. One number moves the whole ladder. |
+| Income per restored hub | `data/hub.json` `far_hub.sell_growth` | 3.5 | Every sale (scale, robot bales, trash bin) is multiplied by this for each far hub restored. Raise it and hubs come faster; lower it and each hub takes longer. |
 | Level of a restored far hub | `data/hub.json` `far_hub.level` | 2 | What a woken hub counts as. |
 | Per-planet overrides | `data/homeward.json` `planets[k].far_hub` | none | Any `far_hub` key, for that planet only. |
 | How many hubs a rocket tier reaches | `data/rockets.json` `tiers[].hubs` | Mk I 3, Mk II 5, Mk III all | Hubs kept restored, the start hub included. |
-| Rocket tier prices | `data/rockets.json` `tiers[].cost` | Mk II 20K, Mk III 150K, Mk IV 2.5M | Mk IV (warp) is not needed to leave. |
+| Rocket tier prices | `data/rockets.json` `tiers[].cost` | Mk II 8K, Mk III 150K, Mk IV 2.5M | Mk IV (warp) is not needed to leave. |
 | When Lumi may leave a planet | `data/homeward.json` `planets[k].leave.hubs`, `.hub_level` | Verdance: 6 hubs at level 2 | Opens the system map and the drive. Not tied to the planet's clean %. |
 | What WREN says then | `data/homeward.json` `planets[k].leave.toast` | "Six stations awake, Lumi. Their robots can look after Verdance now." | Said once, before the exit lines in `data/story_reasons.json` `exit.system_open`. |
 | The drive that leaves Verdance | `data/homeward.json` `drive[0].cost` | 500K cubes, 300 Parts | The biggest price of the planet. |
 | Base level prices (start hub) | `data/hub.json` `levels[].cost` | 1,500 / 9,000 / 28,000 / 30,000 | Level 2 and 3 are story steps. 4 and 5 are optional on Verdance's way out. |
 | Order of the card's steps | `data/objectives.json` (story), then `data/goals.json` `goals` in file order | | The card shows the first unfinished one. Move a line to move the step. |
-| A goal's own "why" line | `data/goals.json` goal `desc` | only on "Fly to another planet" | Shown instead of "Reward: ...". |
+| A goal's own "why" line | `data/goals.json` goal `desc` | only on "Fly to another planet" | Shown instead of "Reward: ...". The hub, wake and rocket steps carry none: their why is in `data/story_reasons.json` (card and WREN). |
+| The first robot's price | `data/robots.json` `scoopie.cost`, `.parts` | 800 cubes, 40 Parts | Parts come from scooping metal, plastic and glass; the card says how many are missing. |
 | Goal rewards | `data/goals.json` goal `reward` | | Paid when the step completes. |
+
+## How Lumi moves (v6feel)
+`data/patch.json` `move` controls how Lumi meets things on a round planet: `max_step` (0.45 m) is the tallest kerb, step or low planter he hovers over instead of stopping, and `round_keep` (0.6) is how much of his speed he keeps while rounding a post, bin or heap he clipped nearly head-on (0 = a plain slide, which nearly stops him). Check a change with `--feel=walk` (tools/feel_probe.gd).
 
 ## Seed of the Week on or off (v6screens)
 
@@ -180,14 +186,15 @@ sign with one pictogram and no words, so a small child can tell what it does.
 | To change | Edit |
 |---|---|
 | Size, face and ink colour of every sign | `signs.defaults` (`size` in metres, colours `#rrggbb`) |
-| One machine's picture, rim colour, accent colour, size | `signs.<machine>`: `icon` (`wrench`, `bin`, `bale`, `belt`, `leaf`, `signal`, `bot`), `rim`, `accent`, `size` |
+| One machine's picture, rim colour, accent colour, size | `signs.<machine>`: `icon` (`wrench`, `bin`, `bale`, `belt`, `leaf`, `signal`, `bot`, `parts`), `rim`, `accent`, `size` |
 | Remove a machine's sign | `signs.<machine>.show: false` |
 | Height of the bin's and the composter's sign | `signs.trash_bin.post_height`, `signs.composter.post_height` |
 | The baler's paint (body, press head and hopper, crosshead) | `baler.body`, `baler.press`, `baler.trim` |
 | The belt drive's paint (frame, motor) | `belt.frame`, `belt.motor` |
+| The recycler's paint (housing, hopper, smelter) | `recycler.body`, `recycler.hopper`, `recycler.kiln` |
 | The repair cart by the crashed pod (shown from the first upgrade until the planter stage) | `pod.service: false` removes it; `pod.cart`, `pod.cart_trim`, `pod.cone` colour it |
 
-Machines: `workbench`, `trash_bin`, `baler`, `belt`, `composter`, `signal_tower`, `fabricator`.
+Machines: `workbench`, `trash_bin`, `baler`, `belt`, `composter`, `signal_tower`, `fabricator`, `recycler`.
 Code: `systems/camp/machine_art.gd` (signs, baler, belt drive, pod cart), `systems/camp/yard_art.gd`
 (the other machines). A new pictogram is a new case in `MachineArt._icon`.
 
@@ -197,7 +204,7 @@ Code: `systems/camp/machine_art.gd` (signs, baler, belt drive, pod cart), `syste
 | To change | Edit |
 |---|---|
 | A landmark's two colours | `kinds.<kind>.main`, `.accent`: a kit colour name (cream, white, teal, mint, sky, navy, orange, yellow, red, olive, slate, plum) or `#rrggbb` |
-| Its size | `height`, `radius`, `tank_height` (water tower); `height`, `wheel_radius`, `blades` (windpump); `span`, `height`, `run` (crane); `height` (mast, stack); `radius`, `gondolas` (wheel) |
+| Its size | `height`, `radius`, `tank_height` (water tower); `height`, `wheel_radius`, `blades` (windpump); `span`, `height`, `run` (crane); `height` (mast, stack, lighthouse); `radius`, `gondolas` (wheel); `height`, `jib` (tower crane); `length` (bus) |
 | How fast the fan, the wheel or the radar turns once the hub is awake | `kinds.<kind>.spin` (radians a second, 0 = still) |
 | The wheel's gondola colours | `kinds.ferris_wheel.gondola_a`, `.gondola_b` |
 | The room a landmark keeps clear of junk and buildings | `kinds.<kind>.foot` (metres) |
@@ -206,9 +213,39 @@ Code: `systems/camp/machine_art.gd` (signs, baler, belt drive, pod cart), `syste
 | Which look a hub level gives | `states`: the look from that level upward (`broken` is dark and still, `repaired` and `restored` are lit and turning) |
 
 Kinds with a kit model: `water_tower`, `windpump`, `crane` (a gantry crane), `radio_mast`,
-`ferris_wheel`, `smokestack`. `old_bus` and `lighthouse` still use the old models.
+`ferris_wheel`, `smokestack`, `tower_crane` (its jib turns), `old_bus`, `lighthouse`. On planets other
+than Verdance's city biome the old thin models still stand.
 Code: `planet/sites/hub_landmarks.gd` (models), `planet/sites/hub_landmark_node.gd` (state, lights,
 turning). Check the numbers with `godot --headless --path . res://tools/machine_stats.tscn`
 (triangles, draw calls and build time per model), and look at them with
 `res://tools/yard_lineup.tscn -- --shots=v6 --lm-state=broken|repaired|restored --out=screenshots/yard/v6`
 (rendered; one picture per machine and landmark).
+
+## A new planet (v7planet)
+
+`data/planets.json` `_default` is what every planet gets; a planet block (`"<id>": {...}`) repeats only what it changes: `name`, `globe` (`frequency`, `hub_count`, optional `seed`: the size), `site_kit` (`towns` or `prefab`), `look.ground` (ground textures and colour multipliers), `hub_defaults`, `hubs`, `hub_steps` (`generated`: the card's fly/wake/rocket steps come from the planet's `hubs[]`; Verdance keeps `shared`). `"dev": true` makes a test planet that only `--orbit-planet=<id>` reaches.
+The step-by-step recipe, the per-planet blocks in the other files (`landmarks.json`, `life.json`, `sound.json` with `"like"`, `songs.json`, `homeward.json`) and the checks (`tools/planet_smoke.sh <id>`, `tests/test_planet_data.gd`) are in docs/NEW_PLANET.md; its worked example is the dev planet `testworld`.
+
+## Story arc: fuel, power and each planet's story (v7arc)
+
+`data/story_arc.json` holds the story spine across the planets (docs/STORY_ARC.md). Home needs
+`home.fuel` and `home.power`; each planet's `planets.<id>` block says what it gives (`gives`), its
+one-line reason to go (`reason`), the question it leaves open (`question`), and WREN's lines on the
+first rocket landing (`arrive`) and at its exit beat (`leave`). A planet gives its fuel and power
+once, when its way onward opens (`data/homeward.json` `planets[k].leave`, else restoration at
+`chart_at`).
+
+| To change | Edit |
+|---|---|
+| How much fuel and power home needs | `home.fuel`, `home.power` (must equal the sum of all `gives`) |
+| What a planet adds to the meters | `planets.<id>.gives` `{fuel, power}` |
+| The "why go" line on the map and in WREN's "next" line | `planets.<id>.reason` |
+| WREN on the first rocket landing / at the exit beat | `planets.<id>.arrive` / `planets.<id>.leave` (1–2 short lines) |
+| The meter and line formats | `home.meter`, `home.home_line`, `home.next`, `home.gives_text`, `home.gave_text`, `home.full` |
+| The line after the last planet | `cradle.reason` |
+| What the final Homeward rocket needs | `data/homeward.json` `drive` tier 7: `requires_home: true` (the meters full). `requires_relics` / `requires_system` still work as gates if you want 100% back as a must |
+
+`from`, `answers` and `ledger` are notes for whoever builds the planet; they are not shown yet. A
+new planet needs only its block (keyed by its id in `data/homeward.json`). After changing text, run
+`python3 tools/extract_strings.py` and fill the six languages (docs/LOCALIZATION.md). Check with
+`godot --headless --path . -s addons/gut/gut_cmdln.gd -gtest=res://tests/test_story_arc.gd -gexit`.

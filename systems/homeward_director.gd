@@ -150,6 +150,9 @@ func _dress_planet() -> void:
 	if k < 0:
 		return
 	var id: String = _pid()
+	if PlanetCfg.current != "" and PlanetCfg.current != id:  # [v7planet] the globe is another planet (--orbit-planet): its sound, no campaign env
+		Audio.call("set_planet_theme", PlanetCfg.current)
+		return
 	if Audio.has_method("set_planet_theme"):
 		Audio.call("set_planet_theme", id)
 	if k == 0 or world.get("field") == null:
@@ -217,10 +220,13 @@ func _process(delta: float) -> void:
 	var chart: float = float(Homeward.cfg().get("chart_at", 0.5))
 	if Homeward.current_planet() > 0 and before < chart and now >= chart:
 		_queue.append("half")
-	# [v6story] The exit beat: the star map has just opened on Verdance (whatever the gate is).
-	if Homeward.current_planet() == 0 and not ("exit" in _queue) and not Homeward.beat_done(EXIT_BEAT) and Homeward.system_open():
-		if Homeward.answered() or Homeward.drive() >= 5:  # older saves: already past it
-			Homeward.mark_beat(EXIT_BEAT)
+	# [v6story] The exit beat: the way onward has just opened (whatever the gate is).
+	# [v7arc] Any planet (data/story_arc.json): its fuel and power go into the home meters here.
+	var k: int = Homeward.current_planet()
+	var past: bool = k == 0 and (Homeward.answered() or Homeward.drive() >= 5)  # older saves: already past the first planet's exit
+	if not ("exit" in _queue) and not Homeward.beat_done(StoryArc.exit_beat(k)) and (past or StoryArc.leave_open(k)):
+		if past:
+			Homeward.mark_beat(StoryArc.exit_beat(k))
 		else:
 			_queue.append("exit")
 	_on_restored(got)
@@ -252,12 +258,22 @@ func _pump() -> void:
 	if b == "half":
 		_doc_beat("%s_half" % _pid(), "home_half")
 	elif b == "exit":  # [v6story]
-		Homeward.mark_beat(EXIT_BEAT)
-		_leave_line()  # [v6pace]
-		say_exit(world, "system_open")
+		_exit_beat(Homeward.current_planet())
 	elif b.begins_with("restored:"):
 		_restored_beat(int(b.get_slice(":", 1)))
 	_busy = false
+
+
+## [v7arc] A planet's exit beat (owner items 58, 72): its fuel and power go into the home meters,
+## WREN says the planet's leave toast (v6pace), then how far home is, the planet's leave lines and
+## the reason to fly on (data/story_arc.json), each once; the meters show as a toast.
+func _exit_beat(k: int) -> void:
+	Homeward.mark_beat(StoryArc.exit_beat(k))
+	_leave_line()  # [v6pace]
+	var m: Vector2i = StoryArc.meter()
+	StoryArc.speak(world, StoryArc.exit_lines(k, m))
+	EventBus.toast.emit(StoryArc.format_meter(m), "story")
+	print("[arc] %s exit: %s" % [_pid(k), StoryArc.format_meter(m)])
 
 
 ## Shows a planet document (data/homeward.json docs) once per profile.
@@ -267,7 +283,7 @@ func _doc_beat(key: String, wren_key: String) -> void:
 	Homeward.mark_beat(key)
 	var doc: Dictionary = (Homeward.cfg().get("docs", {}) as Dictionary).get(key, {})
 	Codex.unlock("homeward:" + key)
-	if world.get("wren") != null:
+	if world.get("wren") != null and wren_key != "":  # [v7arc] "" when the story arc spoke already
 		world.wren.say(wren_key, 1.0, true)
 	if not doc.is_empty() and world.get("doc_view") != null and DisplayServer.get_name() != "headless":
 		get_tree().create_timer(3.0, false).timeout.connect(func() -> void:
@@ -278,11 +294,19 @@ func _doc_beat(key: String, wren_key: String) -> void:
 
 
 func _arrival_beat(k: int) -> void:
-	if k <= 0:
+	if k < 0:
+		return
+	# [v7arc] WREN's arrival lines for this planet (data/story_arc.json), on the first rocket landing.
+	var arc: Array[String] = StoryArc.arrive_lines(k)
+	var akey: String = "%s_arc_arrive" % _pid(k)
+	if not arc.is_empty() and not Homeward.beat_done(akey):
+		Homeward.mark_beat(akey)
+		StoryArc.speak(world, arc)
+	if k == 0:
 		return
 	var d: Dictionary = Homeward.planet_def(k)
 	EventBus.toast.emit(tr("%s: %s") % [Homeward.planet_name(k), tr(str(d.get("twist", "")))], "story")
-	_doc_beat("%s_arrive" % str(d["id"]), "home_arrive")
+	_doc_beat("%s_arrive" % str(d["id"]), "" if not arc.is_empty() else "home_arrive")
 	GameState.inc_stat("planets_landed")
 
 
@@ -301,7 +325,8 @@ func _restored_beat(k: int) -> void:
 		_doc_beat("%s_restored" % str(d["id"]), "home_restored")
 	if Homeward.system_pct() >= 0.9999:
 		get_tree().create_timer(9.0, false).timeout.connect(func() -> void:
-			EventBus.toast.emit(tr("Every planet in the system is alive. Go back to Verdance's Cradle Returns and build the Mk VII Homeward rocket."), "story")
+			# [v7arc] Every planet at 100% is the optional extra: home only needs fuel and power.
+			EventBus.toast.emit(tr("Every planet in the system is alive. The Settlers will wake to five green worlds."), "story")
 			if world.get("wren") != null:
 				world.wren.say("home_system_done", 1.0, true))
 
@@ -370,8 +395,8 @@ static func launch_home(w: Node) -> bool:
 
 
 ## [v6story] Owner items 58 and 60: why Lumi flies on with Verdance mostly dirty. WREN's lines for
-## `key` in data/story_reasons.json exit (system_open: the star map opens; drive_built: the Orbital
-## drive is ready), in order on the subtitle line. Returns how many lines were queued.
+## `key` in data/story_reasons.json exit (drive_built: the Orbital drive is ready; [v7arc] the
+## way-onward lines are data/story_arc.json's), in order on the subtitle line. Returns how many lines were queued.
 const EXIT_BEAT: String = "verdance_exit"
 static func say_exit(w: Node, key: String) -> int:
 	var wr: Wren = w.get("wren") as Wren if w else null

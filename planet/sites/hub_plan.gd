@@ -42,13 +42,20 @@ static func reload() -> void:
 
 
 static func defaults(planet: String) -> Dictionary:
+	# [v7planet] "_default".hub_defaults (data/planets.json) with the planet's own keys on top.
+	var out: Dictionary = {}
+	var base: Variant = planet_data("_default").get("hub_defaults", {})
+	if base is Dictionary:
+		out = (base as Dictionary).duplicate(true)
 	var d: Variant = planet_data(planet).get("hub_defaults", {})
-	return d if d is Dictionary else {}
+	if d is Dictionary:
+		PlanetCfg.deep_merge(out, d as Dictionary)
+	return out
 
 
 ## [v6hubs] The rocket hop's tunables (hub_defaults.hop: flight, arrival title, sting); `def` when unset.
 static func hop_cfg(key: String, def: Variant) -> Variant:
-	var h: Variant = defaults(active_planet if active_planet != "" else "verdance").get("hop", {})
+	var h: Variant = defaults(active_planet if active_planet != "" else PlanetCfg.current_or("verdance")).get("hop", {})  # [v7planet]
 	return (h as Dictionary).get(key, def) if h is Dictionary else def
 
 
@@ -65,7 +72,7 @@ static func reason(planet: String, site: int) -> String:
 		var gr: Variant = (Economy.read_json("res://data/story_reasons.json") as Dictionary).get("goal_reasons", {})
 		var bid: Variant = (gr as Dictionary).get("by_id", {}) if gr is Dictionary else {}
 		_reasons = bid if bid is Dictionary else {"_": ""}
-	var r: String = str(_reasons.get("hub_fly_%d" % int(e.get("order", 0)), ""))
+	var r: String = str(_reasons.get("hub_fly_%d" % int(e.get("order", 0)), "")) if str(PlanetCfg.value(planet, "hub_steps", "generated")) == "shared" else PlanetSteps._by_planet(planet, "hub_fly_%d" % int(e.get("order", 0)))  # [v7planet] the shared lines are Verdance's
 	return r if r != "" else str(e.get("desc", ""))
 
 

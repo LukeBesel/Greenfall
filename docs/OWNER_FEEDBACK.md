@@ -261,3 +261,10 @@ Direction: the flat world's vibe is better, so build it into the round world: bu
 65. Only three songs on Verdance gets boring. Until more songs arrive, play more of the songs we have there (done: Ochre's three songs also play on Verdance, owned from the start, and the main theme comes up less often; see `data/songs.json` `planets.verdance`).
 66. The base names are up to us (kept: Landing Yard, Garden Row, Gantry Works, Signal Heights, Fairground, Stack Works).
 67. The people asleep on the ark are not "the Makers" (and not "the Gardeners"). The owner picked **the Settlers**.
+68. Songs and breaks like Minecraft: a song, then a long quiet stretch with only the world's own sounds (done: 6–15 min between songs, 1–2 min after loading; `data/songs.json` `gap_s`, `first_gap_s`).
+69. After the crash landing it should be a good while (about 10 min) before the first song, and a song must never start over WREN or a story line (done: `landing_gap_s` 9–12 min; a song waits while a line is spoken).
+70. Verdance must be fully ready to release and play: simple enough for a child, addictive, with a real story. The pace keeps you moving, but you still have to grind a bit to get there.
+71. Set the foundation for more planets made the way Verdance was: different themes, planet sizes and landmarks. Do not build the other planets yet.
+72. The story must leave room for the other planets and spill into them: across the planets we gather enough fuel and power to make it back home.
+73. Renders of the yard machines and landmarks look great, except the inside of the pod (through the open hatch it shows flat brown/orange streaks). Give the pod a proper interior.
+74. Standing rule: everything built from now on (machines, landmarks, props, other planets) keeps the same style and quality as the v6 yard machines and landmarks: chunky, friendly kit shapes, the same paint palette, hazard stripes, picture signs, soft glow. Reference shots: `screenshots/yard/v6_*.png`; models in `systems/camp/machine_art.gd` and `planet/sites/hub_landmarks.gd`.

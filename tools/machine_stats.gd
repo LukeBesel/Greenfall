@@ -10,6 +10,7 @@ func _ready() -> void:
 	rows.append(["baler", _add(root3, AutoBaler.new())])
 	rows.append(["belt_drive", _add(root3, Conveyor.new())])
 	rows.append(["fabricator", _add(root3, FabricatorModel.new())])
+	rows.append(["recycler", _add(root3, Recycler.new())])
 	for l: int in [1, 3, 5]:
 		var d := Depot.new()
 		root3.add_child(d)
