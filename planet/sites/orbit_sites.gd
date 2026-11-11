@@ -60,6 +60,8 @@ func _setup() -> void:
 		CityWalk.run_dev(so)
 	if DevHooks.has("target-reach"):  # [v4world] dev: every collectible and objective target reachable (planet/sites/target_audit.gd)
 		TargetAudit.run_dev(so)
+	if DevHooks.has("planet-smoke"):  # [v7planet] dev: any planet boots, walks, hops, wakes, saves (planet/sites/planet_smoke.gd)
+		PlanetSmoke.run_dev(so)
 	if bool(GameState.flags.get("arrived_from_rocket", false)) or DevHooks.has("orbit-arrive"):
 		GameState.flags.erase("arrived_from_rocket")
 		_arrive.call_deferred()
@@ -197,7 +199,7 @@ func destinations() -> Array:
 			var he: Dictionary = HubPlan.entry(sm.planet_id, i)
 			e["home"] = HubPlan.is_home(sm.planet_id, i)
 			e["next"] = i == next_i and HubPlan.is_main(sm.planet_id, i)
-			e["town"] = HubPlan.town_name(sm.planet_id, i)
+			e["town"] = purpose.town_name(i) if purpose else HubPlan.town_name(sm.planet_id, i)
 			e["offer"] = tr(str(he.get("desc", "")))
 			e["state"] = purpose.status_text(i) if purpose else ""
 			e["robots"] = purpose.crew_line(i) if purpose else ""
@@ -343,7 +345,7 @@ var hinterland: Hinterland
 
 
 func _build_hinterland() -> void:
-	if sm == null or sm.planet_id != "verdance" or DevHooks.has("no-hinterland"):
+	if sm == null or not PlanetCfg.has_hinterland(sm.planet_id) or DevHooks.has("no-hinterland"):  # [v7planet] towns planets (data/planets.json hinterland)
 		return
 	var hubs: Array[Vector3] = []
 	for s: Dictionary in sm.sites:

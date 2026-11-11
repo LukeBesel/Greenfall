@@ -19,12 +19,17 @@ var state := PackedByteArray()
 var level := PackedByteArray()     # per-hex upgrade / restoration level (0..15)
 var biome := PackedByteArray()
 var flags := PackedByteArray()
+## [v6life] How green a clean land cell is, 0..255 (plants/cell_verdure.gd grows it from the cell's
+## state and level; never saved). It rides in the texture's R channel, which junk only uses on
+## junk and water cells.
+var green := PackedByteArray()
 var image: Image
 var texture: ImageTexture
 var _dirty: bool = false
 var _dirty_count: int = 0
 
 signal cell_changed(cell: int)
+signal green_changed(cell: int)  # [v6life] only the far shell and the verdure layer listen
 
 
 func _init(p_count: int) -> void:
@@ -35,6 +40,7 @@ func _init(p_count: int) -> void:
 	level.resize(n)
 	biome.resize(n)
 	flags.resize(n)
+	green.resize(n)  # [v6life]
 	@warning_ignore("integer_division")
 	var h: int = (n + TEX_W - 1) / TEX_W
 	image = Image.create(TEX_W, h, false, Image.FORMAT_RGBA8)
@@ -65,7 +71,7 @@ func _write_all() -> void:
 	for i: int in n:
 		var st: int = state[i]
 		var o: int = i * 4
-		data[o] = int((junk[i] if st == 0 or st == 5 else 0.0) * 255.0 + 0.5)  # [v4world] lakes too: the far water's murk (sphere_ground.gdshader)
+		data[o] = int(junk[i] * 255.0 + 0.5) if st == 0 or st == 5 else green[i]  # [v4world] lakes too: the far water's murk (sphere_ground.gdshader); [v6life] else how green
 		data[o + 1] = st * 36
 		data[o + 2] = biome[i] * 17
 		data[o + 3] = (level[i] << 4) | (flags[i] & 15)
@@ -73,9 +79,9 @@ func _write_all() -> void:
 
 
 func _write(i: int) -> void:
-	var j: float = junk[i] if state[i] == 0 or state[i] == 5 else 0.0  # [v4world] lakes too
+	var r8: int = int(junk[i] * 255.0 + 0.5) if state[i] == 0 or state[i] == 5 else green[i]  # [v4world] lakes too; [v6life] else how green
 	@warning_ignore("integer_division")
-	image.set_pixel(i % TEX_W, i / TEX_W, Color8(int(j * 255.0 + 0.5), state[i] * 36, biome[i] * 17, (level[i] << 4) | (flags[i] & 15)))
+	image.set_pixel(i % TEX_W, i / TEX_W, Color8(r8, state[i] * 36, biome[i] * 17, (level[i] << 4) | (flags[i] & 15)))
 
 
 func set_junk(i: int, left: float) -> void:
@@ -93,6 +99,18 @@ func set_state(i: int, st: int) -> void:
 func set_level(i: int, lv: int) -> void:
 	level[i] = clampi(lv, 0, 15)
 	_touch(i)
+
+
+## [v6life] Sets how green a clean cell is. Quiet: no cell_changed (junk views, litter and the
+## level layers have nothing to do with it), only green_changed.
+func set_green(i: int, g: int) -> void:
+	g = clampi(g, 0, 255)
+	if green[i] == g:
+		return
+	green[i] = g
+	_write(i)
+	_dirty = true
+	green_changed.emit(i)
 
 
 func set_flag(i: int, f: int, on: bool = true) -> void:

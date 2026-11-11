@@ -11,18 +11,49 @@ var _rng := RandomNumberGenerator.new()
 
 
 func before_each() -> void:
+	Audio._duck_until_us = 0  # [main] no spoken line left over from an earlier test (a song waits for lines)
+	Audio._duck = 0.0
 	_flags = GameState.flags.duplicate(true)
 	_stats = GameState.stats.duplicate(true)
 	GameState.flags = {}
 	GameState.stats = {}
 	Tunes.file_override = {}
 	_rng.seed = 77
+	_undo_verdance_loan()
 
 
 func after_each() -> void:
 	GameState.flags = _flags
 	GameState.stats = _stats
 	Tunes.file_override = {}
+	Tunes.reload()
+
+
+## [main] The shipped data lends Ochre's three songs to Verdance until Verdance has more of its own
+## (owner playtest). These tests check the CD rules as designed, so they put the songs back as Ochre
+## CDs; test_verdance_borrows_ochre_songs_for_now checks the loan itself.
+const LOANED: Array[String] = ["sunbaked", "strip_mine_shuffle", "dune_caravan"]
+
+
+func _undo_verdance_loan() -> void:
+	Tunes.reload()
+	var c: Dictionary = Tunes.cfg()
+	for s: Dictionary in c.get("songs", []):
+		if str(s.get("id", "")) in LOANED:
+			s["unlock"] = "cd"
+	var v: Dictionary = (c.get("planets", {}) as Dictionary).get("verdance", {})
+	v["songs"] = []
+	v.erase("main_share")
+
+
+func test_verdance_borrows_ochre_songs_for_now() -> void:
+	Tunes.reload()
+	_all_files()
+	var seen: Dictionary = {}
+	for i: int in 3000:
+		seen[Tunes.pick_next("verdance", "explore", 0.0, [], _rng)] = true
+	for id: String in ["clean_sweep", "morning_shift", "greenfall_main"] + LOANED:
+		assert_true(seen.has(id), "%s plays on Verdance from the start" % id)
 
 
 func _all_files() -> void:

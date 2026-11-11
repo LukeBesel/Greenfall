@@ -36,6 +36,8 @@ func _ready() -> void:
 	if not DevHooks.args.is_empty() and not DevHooks.has("menu"):
 		_go.call_deferred(false)
 		return
+	if DevHooks.has("ui-audit"):  # [v6screens] layout audit of the title screen (tools/ui_audit_run.gd)
+		UIAuditRun.attach_title(get_tree())
 	# Nothing to save on the title screen: keep the autosave timer and focus-loss saves from
 	# overwriting the player's slot with the blank in-memory state.
 	SaveManager.enabled = false
@@ -249,6 +251,7 @@ func _place_camera() -> void:
 
 
 func _process(delta: float) -> void:
+	_fit_song()  # [v6screens] the song's name changes as songs change
 	if _cam == null:
 		return
 	_t += delta
@@ -313,6 +316,7 @@ func _build_ui() -> void:
 	title.add_theme_constant_override("shadow_offset_y", 4)
 	title.add_theme_constant_override("shadow_offset_x", 0)
 	col.add_child(title)
+	_fit_refs["title"] = title  # [v6screens]
 	var bar := ColorRect.new()
 	bar.color = UITheme.GOLD
 	bar.custom_minimum_size = Vector2(96, 3)
@@ -321,7 +325,9 @@ func _build_ui() -> void:
 	var gap := Control.new()
 	gap.custom_minimum_size = Vector2(0, 12)
 	col.add_child(gap)
-	col.add_child(UITheme.label(tr("One small robot. One very big cleanup."), 20, Color(0.92, 0.88, 0.8)))
+	var tagline: Label = UITheme.label(tr("One small robot. One very big cleanup."), 20, Color(0.92, 0.88, 0.8))
+	col.add_child(tagline)
+	_fit_refs["tagline"] = tagline  # [v6screens]
 	if Demo.is_demo():  # [steam]
 		col.add_child(UITheme.label(tr("DEMO  ·  the first district"), 15, UITheme.GOLD))
 	var spacer := Control.new()
@@ -360,10 +366,17 @@ func _build_ui() -> void:
 	var spacer2 := Control.new()
 	spacer2.custom_minimum_size = Vector2(0, 26)
 	col.add_child(spacer2)
+	_fit_refs["spacer2"] = spacer2  # [v6screens]
 	var ver: String = str(ProjectSettings.get_setting("application/config/version", ""))
-	col.add_child(UITheme.label(("v" + ver + "   ·   " if ver != "" else "") + tr("Made with Godot"), 12, Color(1, 1, 1, 0.4)))
+	var ver_l: Label = UITheme.label(("v" + ver + "   ·   " if ver != "" else "") + tr("Made with Godot"), 12, Color(1, 1, 1, 0.4))
+	col.add_child(ver_l)
+	_fit_refs["version"] = ver_l  # [v6screens]
 
-	_ui.add_child(TitleSongTag.new())  # [tunes] bottom-right "now playing" tag
+	var song_tag := TitleSongTag.new()
+	_ui.add_child(song_tag)  # [tunes] bottom-right "now playing" tag
+	_fit_refs["song"] = song_tag  # [v6screens]
+	_ui.resized.connect(_fit_title)
+	_fit_title.call_deferred()
 	_settings = SettingsPanel.new()
 	_settings.closed.connect(_on_sub_closed.bind(2))
 	_ui.add_child(_settings)
@@ -412,11 +425,49 @@ func _title_font() -> FontVariation:
 
 
 ## A big left-aligned menu entry with an amber edge on hover. Optional second line underneath.
+## [v6screens] A short screen (interface scale 1.25 / 1.5) gets a compact title: smaller logo and
+## margins, slimmer buttons, no tagline on the shortest, so Quit and the version line stay on screen
+## (tools/ui_audit.gd). The song tag hides when it would run into the menu.
+var _fit_refs: Dictionary = {}
+
+
+func _fit_title() -> void:
+	if _ui == null or _menu_box == null or _fit_refs.is_empty():
+		return
+	var h: float = _ui.size.y
+	var compact: bool = h < 680.0
+	var tiny: bool = h < 560.0
+	_main.add_theme_constant_override("margin_top", 70 if not compact else (22 if tiny else 36))
+	_main.add_theme_constant_override("margin_bottom", 48 if not compact else 16)
+	(_fit_refs["title"] as Label).add_theme_font_size_override("font_size", 92 if not compact else (54 if tiny else 68))
+	(_fit_refs["tagline"] as Control).visible = not tiny
+	(_fit_refs["spacer2"] as Control).custom_minimum_size.y = 26.0 if not compact else 6.0
+	(_fit_refs["version"] as Control).visible = not tiny
+	_menu_box.add_theme_constant_override("separation", 10 if not compact else 6)
+	for c: Node in _menu_box.get_children():
+		if c is Button:
+			var tall: bool = bool((c as Button).get_meta("tall", false))
+			(c as Button).custom_minimum_size.y = (76.0 if tall else 56.0) if not compact else (62.0 if tall else 44.0)
+	_fit_song()
+
+
+func _fit_song() -> void:
+	var song: Control = _fit_refs.get("song") as Control
+	if song == null or _ui == null or song.get_child_count() == 0:
+		return
+	var hb: Control = song.get_child(0) as Control
+	var menu_right: float = 84.0 + _menu_box.get_combined_minimum_size().x + 24.0
+	var fits: bool = _ui.size.x - 36.0 - hb.get_combined_minimum_size().x > menu_right
+	if song.visible != fits:
+		song.visible = fits
+
+
 func _menu_button(text: String, cb: Callable, sub: String = "") -> Button:
 	var b := Button.new()
 	b.text = text.to_upper()
 	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	b.custom_minimum_size = Vector2(340, 56 if sub == "" else 76)
+	b.set_meta("tall", sub != "")  # [v6screens] _fit_title
 	b.add_theme_font_size_override("font_size", 21)
 	var pad_l: int = 22
 	var normal: StyleBoxFlat = UITheme.box(Color(0.05, 0.055, 0.06, 0.55), Color(1, 1, 1, 0.1), 1, 3, 12)

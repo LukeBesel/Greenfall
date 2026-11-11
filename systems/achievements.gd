@@ -20,6 +20,26 @@ static func defs() -> Array:
 	return _defs
 
 
+## [v6screens] The ones a player is shown: without the Seed of the Week pair while it is off
+## (data/weekly.json "enabled"). The full list stays for saves and Steam.
+static func shown_defs() -> Array:
+	if WeeklyChallenge.enabled():
+		return defs()
+	var out: Array = []
+	for a: Dictionary in defs():
+		if str((a.get("cond", {}) as Dictionary).get("key", "")) != "weekly_chips":
+			out.append(a)
+	return out
+
+
+static func shown_unlocked_count() -> int:
+	var n: int = 0
+	for a: Dictionary in shown_defs():
+		if is_unlocked(str(a["id"])):
+			n += 1
+	return n
+
+
 static func def(id: String) -> Dictionary:
 	for a: Dictionary in defs():
 		if str(a["id"]) == id:

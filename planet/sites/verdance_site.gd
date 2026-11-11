@@ -302,7 +302,9 @@ func _make() -> void:
 	dressing.skip_facades = not CITY_BUILDINGS  # [v1world] shopfronts, awnings, neon, murals, billboard, string lights
 	dressing.kit_yard = true
 	if site_id != "start_yard":  # [v6hubs] the far hubs' landmarks come from the planet's data (the start yard keeps its own)
-		dressing.lm_kind_override = HubPlan.landmark_kind("verdance", hub_index)
+		dressing.lm_kind_override = HubPlan.landmark_kind(_plan_planet(), hub_index)
+	elif HubPlan.landmark_kind(_plan_planet(), 0) != "":  # [v7planet] the start yard's too, when the data names one (Verdance's is its water tower either way)
+		dressing.lm_kind_override = HubPlan.landmark_kind(_plan_planet(), 0)
 	add_child(dressing)
 	await dressing.build(layout, null, hub_index, district_name, "", level)
 	set_level(level)
@@ -428,16 +430,32 @@ var _extra_foot: Array[Rect2] = []  # [v3city] furniture footprints (cars, shelt
 ## [v3city] The hub's character: a harbour where the lake reaches into the town, else one of
 ## HUB_KINDS, turned per hub so neighbouring hubs differ.
 func _pick_kind() -> String:
+	if is_harbour(water):
+		return "harbour"
+	var from_data: String = str(HubPlan.entry(_plan_planet(), hub_index).get("town", ""))  # [v6hubs] the planet's data names the look
+	if KINDS.has(from_data) and from_data != "start":
+		return from_data
+	return KIND_BY_HUB[hub_index % KIND_BY_HUB.size()]
+
+
+## [v6hubs] The planet whose hub plan names this town's look and landmark.
+static func _plan_planet() -> String:
+	return HubPlan.active_planet if HubPlan.active_planet != "" else PlanetCfg.current_or("verdance")  # [v7planet]
+
+
+## [v6hubs] Whether the lake reaches into a town here (water: func(x, z) -> bool in site-local
+## metres, SiteManager.water_fn). Such a hub is a harbour whatever its data says.
+static func is_harbour(water_fn: Callable) -> bool:
+	if not water_fn.is_valid():
+		return false
 	var wet: int = 0
 	var n: int = 0
 	for k: int in 48:
 		var a: float = TAU * k / 48.0
 		for rr: float in [40.0, 70.0, 100.0]:
 			n += 1
-			wet += 1 if _wet(cos(a) * rr, sin(a) * rr) else 0
-	if float(wet) / n > 0.12:
-		return "harbour"
-	return KIND_BY_HUB[hub_index % KIND_BY_HUB.size()]
+			wet += 1 if bool(water_fn.call(cos(a) * rr, sin(a) * rr)) else 0
+	return float(wet) / n > 0.12
 
 
 ## [v3city] A suburb block: detached houses (one or two floors) round the block's edge, facing
@@ -809,7 +827,13 @@ func _build_lots(sliced: bool = false) -> void:
 	for lot: Dictionary in _lots:
 		var c: Vector2 = lot["c"]
 		var yard: bool = lot["kind"] == "yard"
-		var gp: Node3D = clean_pad(21.0) if yard and site_id == "start_yard" else KitMesh.ground_patch(Vector2(21, 21) if yard else Vector2(18, 18), st, int(lot["seed"]))  # [v1yard]
+		var gp: Node3D
+		if yard and site_id == "start_yard":
+			gp = clean_pad(21.0)  # [v1yard]
+		elif sliced:  # [v6qa] the patch in slices too
+			gp = await KitMesh.ground_patch_async(Vector2(21, 21) if yard else Vector2(18, 18), st, int(lot["seed"]))
+		else:
+			gp = KitMesh.ground_patch(Vector2(21, 21) if yard else Vector2(18, 18), st, int(lot["seed"]))
 		gp.position = Vector3(c.x, 0.0, c.y)
 		_lot_root.add_child(gp)
 		if sliced:

@@ -180,6 +180,10 @@ func build(p_layout: CityLayout, p_field: HexField, p_hub: int = 0, p_district: 
 	await BuildBudget.check("dress:drifts")
 	_build_drifts(0.5)
 	await BuildBudget.check("dress:landmark")
+	_pick_landmark()
+	if biome == "" and HubLandmarks.has(_lm_kind):  # [v6yard] the kit model's geometry a frame ahead of its mesh
+		HubLandmarks.warm(_lm_kind, HubLandmarks.state_for_level(level), hub_index + 1, HubPlan.active_planet)
+		await BuildBudget.check("dress:landmark mesh")
 	_build_landmark()
 	await BuildBudget.check("dress:name_sign")
 	if level <= 1 and not start_base:
@@ -286,6 +290,8 @@ func _begin(nm: String) -> void:
 ## sparkles, the ruin sinks away in a puff of dust, paint freshens, neon and seams light up.
 func set_level(l: int, animate: bool) -> void:
 	level = clampi(l, 1, 5)
+	if is_instance_valid(_lm_node):  # [v6yard] the landmark wakes with the hub
+		_lm_node.set_level(level)
 	var k: int = 0
 	for nm: String in _layers:
 		var nv: Variant = _layers[nm]  # [beat] a freed layer can't be assigned to a typed var
@@ -311,7 +317,7 @@ func set_level(l: int, animate: bool) -> void:
 			node.scale = Vector3(1, 0.02, 1)
 			tw.tween_interval(0.5 + k * 0.45)
 			tw.tween_callback(func() -> void:
-				Audio.play("clunk", randf_range(1.1, 1.4), -8.0)
+				Audio.play("clunk", randf_range(1.1, 1.4), -8.0, 0.04, "lights")  # [v6sound]
 				for q: int in 5:
 					Vfx.burst("sparkle", Vector3(randf_range(-7, 7), 0.6, randf_range(-7, 7)), Color(0.5, 0.95, 1.0) if level >= 3 else Color(1.0, 0.8, 0.4), 0.6))
 			tw.tween_property(node, "scale", Vector3.ONE, 0.8).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
@@ -1589,16 +1595,25 @@ func _flush() -> void:
 		var items3: Array = []
 		for xf: Transform3D in _props[id]:
 			items3.append([xf, Color.WHITE])
-		_mm("Prop_" + id, AssetLib.model_mesh_lite(id, 1500), items3, null, true, false)
+		var pmesh: Mesh = AssetLib.model_mesh_lite(id, 1500)
+		await BuildBudget.check("dress:prop mesh")  # [v6qa]
+		_mm("Prop_" + id, pmesh, items3, null, true, false)
 		await BuildBudget.check("dress:flush prop")
 	for id: String in _weeds:
-		var items2: Array = []
-		for xf: Transform3D in _weeds[id]:
-			items2.append([xf, Color.WHITE])
-		var mi2: MultiMeshInstance3D = _mm("Weeds_" + id, AssetLib.model_mesh_lite(id, 400), items2, null, false, false)
-		mi2.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		mi2.visibility_range_end = 70.0
-		await BuildBudget.check("dress:flush weeds")
+		var wm: Mesh = AssetLib.model_mesh_lite(id, 400)
+		await BuildBudget.check("dress:weed mesh")  # [v6qa] the lite mesh (made on first use) and the MultiMeshes in separate slices
+		var all: Array = _weeds[id]
+		for c0: int in range(0, all.size(), WEED_CHUNK):  # [v6qa] a few hundred a MultiMesh: one big one was a 50-90 ms step
+			var items2: Array = []
+			for xf: Transform3D in all.slice(c0, c0 + WEED_CHUNK):
+				items2.append([xf, Color.WHITE])
+			var mi2: MultiMeshInstance3D = _mm("Weeds_" + id + ("" if c0 == 0 else "_%d" % (c0 / WEED_CHUNK)), wm, items2, null, false, false)
+			mi2.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			mi2.visibility_range_end = 70.0
+			await BuildBudget.check("dress:flush weeds")
+
+
+const WEED_CHUNK: int = 600  # [v6qa]
 
 
 func _mm(nm: String, mesh: Mesh, items: Array, mat: Material, shadows: bool, colors: bool = true) -> MultiMeshInstance3D:
@@ -1943,7 +1958,8 @@ func _build_drifts(amount: float) -> void:
 
 # --- Landmark: one big silhouette per base, just outside the yard --------------------------
 
-func _build_landmark() -> void:
+## [v6yard] Which landmark this base has (split out of _build_landmark so its mesh can warm a frame ahead).
+func _pick_landmark() -> void:
 	var city_kinds: Array[String] = ["water_tower", "crane", "ferris_wheel", "radio_mast", "smokestack", "old_bus"]
 	match biome:
 		"":
@@ -1962,11 +1978,27 @@ func _build_landmark() -> void:
 			_lm_kind = "water_tower"
 	if lm_kind_override != "":  # [v6hubs] the hub's landmark from the planet's data (planet/sites/hub_plan.gd)
 		_lm_kind = lm_kind_override
+
+
+func _build_landmark() -> void:
+	_pick_landmark()
 	var side: float = 1.0 if start_base or _style.randi() % 2 == 0 else -1.0
 	# Out past the junk field (its collision must never cover junk), in the default view.
 	var foot: float = {"ferris_wheel": 7.0, "old_bus": 6.0, "smokestack": 7.0, "lighthouse": 3.0}.get(_lm_kind, 3.5)
+	var kit_lm: bool = biome == "" and HubLandmarks.has(_lm_kind)  # [v6yard] the art-kit model (planet/sites/hub_landmarks.gd)
+	if kit_lm:
+		foot = HubLandmarks.foot(_lm_kind, HubPlan.active_planet)
 	_lm_pos = _far_spot(side, foot, 0.12, 0.55)
-	match _lm_kind:
+	if kit_lm:
+		# [v6yard] A kit landmark is big: if the first spot is not clear, try the other side, then wider.
+		for alt: Array in [[-side, 0.12, 0.55], [side, 0.05, 0.95], [-side, 0.05, 0.95]]:
+			if _spot_blocked(_lm_pos, foot) == 0:
+				break
+			var q: Vector3 = _far_spot(float(alt[0]), foot, float(alt[1]), float(alt[2]))
+			if _spot_blocked(q, foot) < _spot_blocked(_lm_pos, foot):
+				_lm_pos = q
+		_kit_landmark(_lm_pos)
+	match "" if kit_lm else _lm_kind:
 		"water_tower":
 			_water_tower(_lm_pos)
 		"crane":
@@ -1989,6 +2021,35 @@ func _build_landmark() -> void:
 		_caravan(cp, atan2(cp.x, cp.z) + PI * 0.5 + 0.3)
 	elif biome == "neon_coast" or biome == "lake":
 		_beach_shack(_far_spot(-side, 3.0, 0.1, 0.5))
+
+
+## [v6yard] The hub's landmark as an art-kit model (HubLandmarks; sizes and colours in
+## data/landmarks.json). It follows the hub's level: broken and dark at 1, lit and turning from 2.
+var _lm_node: HubLandmarkNode
+
+
+func _kit_landmark(p: Vector3) -> void:
+	_lm_node = HubLandmarks.create(_lm_kind, level, hub_index + 1, HubPlan.active_planet)
+	_lm_node.transform = Transform3D(Basis.looking_at(-_facing(p)), p)
+	_cur.add_child(_lm_node)
+	for sd: Array in _lm_node.data.solids:
+		_col(_lm_node.transform * (sd[0] as Vector3), sd[1], _lm_node.transform.basis)
+	_lm_top = _lm_node.transform * _lm_node.data.top
+	# The spot HubPurpose's prompt and beam point at: just in front of the wake console.
+	_lm_pos = _lm_node.transform * (_lm_node.data.kiosk + Vector3(0, 0, 1.1))
+	if DevHooks.has("lm-report"):  # dev: where each hub's landmark landed and whether its footprint is clear
+		var r: float = HubLandmarks.foot(_lm_kind, HubPlan.active_planet)
+		var blocked: int = _spot_blocked(p, r)
+		print("[landmark] hub %d %s at (%.1f, %.1f) foot %.1f level %d state %s tris %d solids %d: %s" % [hub_index, _lm_kind, p.x, p.z, r, level, _lm_node.state, _lm_node.data.tris, _lm_node.data.solids.size(), "clear" if blocked == 0 else "BLOCKED at %d of 9 probes" % blocked])
+
+
+## [v6yard] How many of _far_spot's nine probes round p (radius r) hit junk hexes or a building.
+func _spot_blocked(p: Vector3, r: float) -> int:
+	var n: int = 0
+	for o: Vector3 in [Vector3.ZERO, Vector3(r, 0, r), Vector3(-r, 0, r), Vector3(r, 0, -r), Vector3(-r, 0, -r), Vector3(r, 0, 0), Vector3(-r, 0, 0), Vector3(0, 0, r), Vector3(0, 0, -r)]:
+		if (field and field.hex_at(p + o) >= 0) or (not layout.wild and layout.surface_at(p.x + o.x, p.z + o.z) == CityLayout.Surface.BUILDING):
+			n += 1
+	return n
 
 
 ## A seeded ground spot beyond the junk field, `a0..a1` radians off the -z view axis on `side`,

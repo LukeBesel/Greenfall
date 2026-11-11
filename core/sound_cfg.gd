@@ -6,6 +6,7 @@ extends RefCounted
 
 const PATH: String = "res://data/sound.json"
 const BUSES: Array[String] = ["Music", "Songs", "Ambience", "SFX", "UI"]
+const OFF_DB: float = -80.0  # a sound_db trim this low mutes the sound
 
 static var _cfg: Dictionary = {}
 
@@ -41,13 +42,21 @@ static func bus_of(sound: String) -> String:
 	return str(_d("bus_of").get(sound, "SFX"))
 
 
-static func sound_db(sound: String) -> float:
-	return float(_d("sound_db").get(sound, 0.0))
+## Trim of a sound in dB. With a tag (where it plays from: "scoop", "lumi"...), "tag:sound" wins
+## over "sound". OFF_DB or lower mutes it.
+static func sound_db(sound: String, tag: String = "") -> float:
+	var d: Dictionary = _d("sound_db")
+	if tag != "" and d.has(tag + ":" + sound):
+		return float(d[tag + ":" + sound])
+	return float(d.get(sound, 0.0))
 
 
-## Shortest time (game seconds) between two plays of `sound`; 0 = no limit.
-static func min_gap(sound: String) -> float:
+## Shortest time (game seconds) between two plays of `sound`; 0 = no limit. With a tag,
+## "tag:sound" wins over "sound", and its plays are counted apart from the others.
+static func min_gap(sound: String, tag: String = "") -> float:
 	var g: Dictionary = _d("min_gap_s")
+	if tag != "" and g.has(tag + ":" + sound):
+		return maxf(0.0, float(g[tag + ":" + sound]))
 	return maxf(0.0, float(g.get(sound, g.get("_default", 0.0))))
 
 
@@ -55,9 +64,26 @@ static func duck(key: String, fallback: float) -> float:
 	return float(_d("duck").get(key, fallback))
 
 
+## [v7planet] A planet's block. A planet of data/planets.json with no block gets planets._default; a block (or the
+## default) with "like": "<other id>" starts from that planet's block and changes only the keys it
+## gives (top level: theme, ambience). Blocks without "like" are used as they are.
 static func planet(id: String) -> Dictionary:
-	var v: Variant = _d("planets").get(id)
-	return v if v is Dictionary else {}
+	var ps: Dictionary = _d("planets")
+	var own: Variant = ps.get(id)
+	if own is Dictionary and not (own as Dictionary).has("like"):
+		return own
+	# planets._default only for a planet of data/planets.json: an unknown id still has no block (ignored).
+	var src: Variant = own if own is Dictionary else (ps.get("_default") if PlanetCfg.has(id) else null)
+	if not (src is Dictionary):
+		return {}
+	var out: Dictionary = {}
+	var like: String = str((src as Dictionary).get("like", ""))
+	if like != "" and like != id and ps.get(like) is Dictionary and not (ps[like] as Dictionary).has("like"):
+		out = (ps[like] as Dictionary).duplicate(true)
+	for k: Variant in src:
+		if str(k) != "like" and not str(k).begins_with("_"):
+			out[k] = (src as Dictionary)[k]
+	return out
 
 
 ## The built-in score theme a planet uses ("" when it names none).

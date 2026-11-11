@@ -38,7 +38,12 @@ static func build(body: Control) -> Control:
 	hb.add_child(det)
 	var dv := VBoxContainer.new()
 	dv.add_theme_constant_override("separation", 10)
-	det.add_child(dv)
+	dv.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var dsc := ScrollContainer.new()  # [v6screens] scrolls on a short screen (tools/ui_audit.gd)
+	dsc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	dsc.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	det.add_child(dsc)
+	dsc.add_child(dv)
 	var genre: Label = UITheme.label("", 12, COLOR)
 	dv.add_child(genre)
 	var nm: Label = UITheme.label("", 24, Color.WHITE)

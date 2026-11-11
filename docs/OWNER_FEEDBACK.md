@@ -258,3 +258,11 @@ Direction: the flat world's vibe is better, so build it into the round world: bu
 62. More songs are coming later. Set music up so songs are easy to add, swap and adjust (which planet, when, how often, volume) without code changes. The same goes for everything as the game grows to the other planets: keep it easy to change and adjustable per planet.
 63. Cubes should grow semi-exponentially, like an incremental game: income and prices multiply as you go (bigger numbers each base), not a flat or linear price ladder. Time per step stays roughly steady because income grows with the prices.
 64. Numbers should be big: a few thousand cubes is far too small for major steps. Upgrading the rocket enough to leave the planet should cost tens or hundreds of thousands of cubes.
+65. Only three songs on Verdance gets boring. Until more songs arrive, play more of the songs we have there (done: Ochre's three songs also play on Verdance, owned from the start, and the main theme comes up less often; see `data/songs.json` `planets.verdance`).
+66. The base names are up to us (kept: Landing Yard, Garden Row, Gantry Works, Signal Heights, Fairground, Stack Works).
+67. The people asleep on the ark are not "the Makers" (and not "the Gardeners"). The owner picked **the Settlers**.
+68. Songs and breaks like Minecraft: a song, then a long quiet stretch with only the world's own sounds (done: 6–15 min between songs, 1–2 min after loading; `data/songs.json` `gap_s`, `first_gap_s`).
+69. After the crash landing it should be a good while (about 10 min) before the first song, and a song must never start over WREN or a story line (done: `landing_gap_s` 9–12 min; a song waits while a line is spoken).
+70. Verdance must be fully ready to release and play: simple enough for a child, addictive, with a real story. The pace keeps you moving, but you still have to grind a bit to get there.
+71. Set the foundation for more planets made the way Verdance was: different themes, planet sizes and landmarks. Do not build the other planets yet.
+72. The story must leave room for the other planets and spill into them: across the planets we gather enough fuel and power to make it back home.

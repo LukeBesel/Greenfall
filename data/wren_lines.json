@@ -11,7 +11,7 @@
   "hex_clean": [
     ["...that patch of ground. It's... brown. Brown is better than gray.", "Signal stronger. Did you do that?", "...clean... the relay likes that word. So do I.", "Another one. My static has a shape now."],
     ["Every hex you clear, I hear a little more. Keep going, {name}.", "That ground hasn't seen the sun in a long time. It's blinking.", "The grid just ticked. Somewhere a meter I used to watch moved by one.", "I'm starting to remember lists. Lists of hexes. Mostly unfinished."],
-    ["Clean dirt. The Makers would have called that a start. I call it a start, too.", "Hex logged. I've started naming them. That one is 'Not Garbage'.", "You're good at this. Annoyingly good. The old fleet took breaks."]
+    ["Clean dirt. The Settlers would have called that a start. I call it a start, too.", "Hex logged. I've started naming them. That one is 'Not Garbage'.", "You're good at this. Annoyingly good. The old fleet took breaks."]
   ],
   "milestone": [
     ["...ten... ten of something. Is ten a lot? It feels like a lot.", "Patterns in the noise. You're making them."],
@@ -26,10 +26,10 @@
   "robot_built": [
     ["...another... voice? No. It doesn't talk. It just hums.", "...you made a friend. It's very small."],
     ["{robot} is online. It looked at you for a full second before it got to work. I saw that.", "A new robot. The old fleet used to hum like that, before the quiet."],
-    ["{robot} reports for duty. Its first log entry is just the word 'can'. Fair.", "You're building a crew. The Makers had a word for that. 'Department.' I don't miss it."]
+    ["{robot} reports for duty. Its first log entry is just the word 'can'. Fair.", "You're building a crew. The Settlers had a word for that. 'Department.' I don't miss it."]
   ],
   "part_rare": [
-    ["...that... glows. That's old. Older than me?", "...Maker-made... I know that mark."],
+    ["...that... glows. That's old. Older than me?", "...Settler-made... I know that mark."],
     ["That part is older than most of this city. Treat it nicely.", "Vintage stock. Someone kept that safe for a long time."],
     ["Legendary parts don't just turn up. Someone buried that on purpose.", "That casing has a serial range I haven't seen since the Cradle was built."]
   ],
@@ -106,7 +106,7 @@
   "egg_found": [
     ["...that... I remember things like that.", "...a little thing... left behind..."],
     ["Look at that. Somebody left that here on purpose. Or by accident. Either way, it waited.", "A curiosity. I'm adding it to my list. My list is getting longer, which is nice."],
-    ["You find the best things, {name}. The Makers were weird. I miss them."]
+    ["You find the best things, {name}. The Settlers were weird. I miss them."]
   ],
   "egg_duck": [
     ["...quack...? ...is that... a word?"],
@@ -200,7 +200,7 @@
   ],
   "egg_odd_sock": [
     ["...one sock... where is... the other one..."],
-    ["One sock. There is always one sock. The Makers never solved it either.", "Keep it. Someday you'll find its partner and it'll be the happiest day of its life."],
+    ["One sock. There is always one sock. The Settlers never solved it either.", "Keep it. Someday you'll find its partner and it'll be the happiest day of its life."],
     ["Somewhere on this planet, a sock is waiting for that sock. I believe that."]
   ],
   "egg_gold_cube": [
@@ -369,7 +369,7 @@
   "egg_bonsai": [["...small... old... patient..."], ["Three hundred years old and thirty centimetres tall. It took its time. Good for it."], ["It looks like it's been expecting you. Trees are like that."]],
   "egg_listening_dish": [["...a signal... faint..."], ["That tone. That's the Cradle's beacon. Somebody out here kept listening the whole time."], ["'They said they'd call.' We did. Late, but we did."]],
   "egg_older_pod": [["...another pod... older..."], ["SK-0. A seed-keeper before you. I didn't know there were any. The Cradle never told me."], ["'Start by the water.' Good advice, from someone who knew."]],
-  "egg_heirloom_tin": [["...soil... from home..."], ["A bit of the first garden, already spilled on new ground. That's how it starts."], ["Verdance soil on another world. The Makers would have liked that."]],
+  "egg_heirloom_tin": [["...soil... from home..."], ["A bit of the first garden, already spilled on new ground. That's how it starts."], ["Verdance soil on another world. The Settlers would have liked that."]],
   "cradle_mode": [["...the vault... other worlds..."], ["The Cradle's seed vault has a lot more in it than one planet's worth. There are other worlds out here, Lumi. Ruined ones. Waiting."], ["Heirlooms, a whole map of worlds. Verdance stays green; we just take what we learned somewhere new."]],
   "new_world": [["...new ground... new junk..."], ["New world, new sky. Same job. You're better at it than you were the first time."], ["Look at that. Ruined, dusty, nobody's planted anything in centuries. You know what to do."]],
   "garden_place": [["...pretty..."], ["You're decorating. I approve. The cats are going to approve more."], ["A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."]],

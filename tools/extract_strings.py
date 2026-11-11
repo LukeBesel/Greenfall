@@ -43,6 +43,9 @@ JSON_RULES: dict[str, dict] = {
     "*": {"keys": COMMON_KEYS},
     "wren_lines.json": {"all_top": True},
     "story_reasons.json": {"all_top": True},  # [v6story] goal reasons and the exit beat
+    # [v7arc] the story spine: shown fields only (from / answers / ledger / question are builder notes)
+    "story_arc.json": {"keys": {"reason", "arrive", "leave", "meter", "home_line", "next", "gives_text",
+                                "gave_text", "full", "why"}},
     "shards.json": {"keys": COMMON_KEYS | {"kind"}},
     "ledger.json": {"keys": COMMON_KEYS, "pools": {"act1", "act2", "act3", "coupons", "drop_warn", "friendly",
                                                    "jammed", "lonely", "cinematic"}},
@@ -55,6 +58,8 @@ JSON_RULES: dict[str, dict] = {
     "planet.json": {"skip": True},
     "lumi_level.json": {"skip": True},
     "world_looks.json": {"skip": True},  # [worlds2] look tuning only
+    "machine_art.json": {"skip": True},  # [v6yard] colours and sizes only ("body" is a paint colour there)
+    "landmarks.json": {"skip": True},  # [v6yard] landmark model sizes and colours only
 }
 # Strings that look like ids, colours, paths or speaker tags are never extracted from pools.
 ID_KEYS = {"id", "icon", "ears", "shape", "style", "pattern", "action", "mode", "kind", "type", "body", "anim", "set", "source", "stat", "look"}
@@ -241,6 +246,8 @@ def scan_json(cat: Catalog, path: str) -> None:
                     take_all(x, ref)
 
     def walk(v, path_s):
+        if isinstance(v, dict) and v.get("dev") is True:
+            return  # [v7planet] dev-only entries (data/planets.json testworld) are never shown to players
         if isinstance(v, dict):
             for k, x in v.items():
                 if k.startswith("_"):

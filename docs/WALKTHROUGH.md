@@ -104,7 +104,7 @@ hooks instead of played through.
 - Then `FrontierDistrict.complete()` fires `EventBus.cradle_district_complete` once. That sets
   `flags.cradle_returned`, which is the **Verdance Bloom** milestone (data/bloom.json): the Bloom Core
   hits 100% and `Bloom.play_finale()` runs. [home] Before the ending this is **"The Cradle Answers"**
-  (story/cradle_answers.gd): the ark comes but won't land; its Makers sleep aboard until the whole system
+  (story/cradle_answers.gd): the ark comes but won't land; its Settlers sleep aboard until the whole system
   lives. The Seed Ark loop opens; the Homeward campaign starts (section 10b).
 - Bloom Core beats along the way (story/core_charge.gd): 25% ~Old Town garden, 50% ~Dust Flats,
   75% ~arriving at Sunken City / the Cradle, 100% = the finale.

@@ -3,6 +3,7 @@ extends RefCounted
 ## [orbD] Which prefab each planet's hubs get and how to build it. PlanetEnvs.build_site calls
 ## configure(prefab) to wire a SitePrefab's builder/restyler to the planet's own site code:
 ##   verdance  VerdanceSite.build(parent, id, stage, restoration, opts)        (planet/sites/)
+##             [v7planet] and every planet whose data/planets.json site_kit is "towns" (PlanetCfg)
 ##   rime      RimeHubSite.place(id, root, stage 0-2, restoration, opts)      (p_seas)
 ##   anvil     AnvilSites.build(site_root, id, stage 1-5, restoration)        (p_anvil)
 ##   ochre     OchreSites.build(id, root, stage 1-5, restoration)             (p_ochre)
@@ -19,9 +20,8 @@ const VERDANCE_SITES: Array = [
 
 ## The planet's site prefab list: [{id, kind, size_m, clear_core_m, script}], hubs first.
 static func sites_of(planet_id: String) -> Array:
-	match planet_id:
-		"verdance", "":
-			return _with_script(VERDANCE_SITES, "res://planet/sites/verdance_site.gd")
+	if PlanetCfg.uses_towns(planet_id):  # [v7planet] site_kit "towns" (data/planets.json), Verdance's kit
+		return _with_script(VERDANCE_SITES, "res://planet/sites/verdance_site.gd")
 	var e: Dictionary = PlanetEnvs.entry(planet_id)
 	var raw: Variant = e.get("sites", [])
 	var out: Array = []
@@ -76,7 +76,7 @@ static func site_for_hub(planet_id: String, hub_index: int) -> String:
 	var hubs: Array = list.filter(func(d: Dictionary) -> bool: return str(d.get("kind", "hub")) == "hub")
 	if hubs.is_empty():
 		hubs = list
-	if planet_id in ["verdance", ""]:
+	if PlanetCfg.uses_towns(planet_id):  # [v7planet]
 		return "start_yard" if hub_index == 0 else "ruin_block"
 	return str(hubs[hub_index % hubs.size()]["id"])
 
@@ -91,8 +91,8 @@ static func configure(p: SitePrefab, opts: Dictionary = {}) -> bool:
 	p.size_m = float(d.get("size_m", 90.0))
 	p.clear_core_m = float(d.get("clear_core_m", 12.0))
 	var sid: String = p.site_id
-	match p.planet_id:
-		"verdance", "":
+	match "towns" if PlanetCfg.uses_towns(p.planet_id) else "prefab":  # [v7planet] site_kit
+		"towns":
 			p.builder = func(parent: Node3D, st: int, r: float) -> void:
 				await VerdanceSite.build(parent, sid, st, r, opts)
 			p.restyler = func(content: Node3D, st: int, r: float) -> bool:

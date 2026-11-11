@@ -359,7 +359,7 @@ static func migrate(d: Dictionary) -> Dictionary:
 
 ## [money] v1 -> v2: fold the old currencies (bolts, sheet metal, plastic, glass, Data, compost,
 ## tokens, trinkets) into cubes / parts / seeds at data/currencies.json's rates; compost goes
-## into the compost press hopper and Maker Fragments become Parts, so nothing earned is lost.
+## into the compost press hopper and Settler Fragments become Parts, so nothing earned is lost.
 static func migrate_v2(d: Dictionary) -> Dictionary:
 	var res: Dictionary = Currencies.migrate_serialized(d.get("currencies", {}))
 	var cur: Dictionary = res["currencies"]

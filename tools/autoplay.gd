@@ -473,7 +473,7 @@ func _water_at() -> Vector3:
 
 # --- Patch tasks -------------------------------------------------------------------------
 
-## The Maker seed tin in the greenhouse, once enough hexes are clean.
+## The Settler seed tin in the greenhouse, once enough hexes are clean.
 func _do_tin(p: Patch) -> bool:
 	var fs: FirstSeed = world.first_seed
 	if fs == null or not fs.ready_to_find() or fs._tin == null or not fs._tin.visible:
@@ -1031,8 +1031,9 @@ func _planet_line() -> String:
 		hubs = 0
 		for b: int in os_.sm.built:
 			hubs += 1 if b != 0 else 0
-	return "planet %.1f%% hubs %d hexes %d plants %d base %d" % [pct, hubs, int(world.field.cleaned_count),
-		int(GameState.stats.get("plants_planted", 0)), int(GameState.world.get("hub_level", 1))]
+	return "planet %.1f%% hubs %d hexes %d plants %d base %d income %.0f/min robots %d" % [pct, hubs, int(world.field.cleaned_count),
+		int(GameState.stats.get("plants_planted", 0)), int(GameState.world.get("hub_level", 1)), GameState.income_rate() * 60.0,
+		int(world.fleet.robot_total()) if world.get("fleet") != null else 0]
 
 
 var _hop_state: int = 0  # 0 home, 1 flying out, 2 at the far hub, 3 flying back
@@ -1065,19 +1066,27 @@ func _arc(p: Patch) -> bool:
 				return true
 			_hop_state = 2
 			_hop_t = _now()
-			# Stand-in for v6hubs' far-hub restore: pay Hub.far_cost and raise the hub on arrival.
-			var n0: int = _far_restored(os_)
-			if _hop_to > 0 and os_.sm.built[_hop_to] == 0 and Hub.pay(Hub.far_cost(n0)):
-				os_.sm.set_level(_hop_to, Hub.far_level())
-				os_.sm.set_built(_hop_to)
-				_progress()
-				_mark("hub_%d_s" % (n0 + 2))
-			print("[arc] %.1f min  hub %d restored (site %d)  %s  cubes=%.0f earned=%.0f" % [_now() / 60.0, _far_restored(os_) + 1, _hop_to, _planet_line(),
-				GameState.get_currency("cubes").to_float(), BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float()])
+			print("[arc] %.1f min  landed at site %d" % [_now() / 60.0, _hop_to])
 			return true
 		2:
-			if _now() - _hop_t < DevHooks.get_f("far-dwell", 180.0):
-				return true  # the new hub's local work (stand-in: v6hubs' chain is not in yet)
+			# The hub's local steps (clean N hexes there, v6hubs' chain): the bot does not clean
+			# away from its yard yet, so it stands in for them with --far-dwell game seconds
+			# (default 240), then wakes the landmark the real way (HubPurpose.wake pays the price).
+			if _now() - _hop_t < DevHooks.get_f("far-dwell", 240.0):
+				return true
+			var n0: int = _far_restored(os_)
+			var ok: bool = false
+			if os_.purpose != null:
+				ok = os_.purpose.wake(_hop_to)
+			elif _hop_to > 0 and os_.sm.built[_hop_to] == 0 and Hub.pay(Hub.far_cost(n0)):
+				os_.sm.set_level(_hop_to, Hub.far_level())
+				os_.sm.set_built(_hop_to)
+				ok = true
+			if ok:
+				_progress()
+				_mark("hub_%d_s" % (n0 + 2))
+			print("[arc] %.1f min  hub %d %s (site %d)  x%.1f sales  %s  cubes=%.0f earned=%.0f" % [_now() / 60.0, n0 + 2, "restored" if ok else "NOT restored", _hop_to, Hub.trade_mult(), _planet_line(),
+				GameState.get_currency("cubes").to_float(), BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float()])
 			_hop_state = 3
 			_hop_t = _now()
 			os_.hop_to(0)
@@ -1093,25 +1102,29 @@ func _arc(p: Patch) -> bool:
 	var nf: int = _far_restored(os_)
 	var fc: Dictionary = Hub.far_cost(nf)
 	var cc: Dictionary = _card_cost()
-	var arc_turn: bool = _saving_arc or cc.is_empty()  # _card_cost falls back to the hub chain's price
-	var want_hub: bool = nf + 1 < Homeward.leave_hubs(Homeward.current_planet()).x
-	if want_hub and os_.rocket_unlocked() and nf + 2 > RocketTiers.hub_limit():
-		# The rocket's next tier reaches the next hub.
-		var tc: Dictionary = RocketTiers.next_def().get("cost", {})
-		if _at_base(p) and RocketTiers.blocker() == "" and (arc_turn or float(tc.get("cubes", 0.0)) <= float(cc.get("cubes", 0.0))) and RocketTiers.upgrade():
+	var arc_turn: bool = _saving_arc  # the card asks for a hub or a rocket tier (_card_cost -> _arc_cost)
+	var ck: String = _card_key()
+	var want_hub: bool = ck in HUB_KEYS
+	if os_.rocket_unlocked() and (ck == "rocket_tier" or (want_hub and nf + 2 > RocketTiers.hub_limit())):
+		# The rocket's next tier (it reaches the next hub).
+		if _at_base(p) and RocketTiers.blocker() == "" and RocketTiers.upgrade():
 			_progress()
 			_mark("rocket_tier_%d_s" % RocketTiers.tier())
 			print("[arc] %.1f min  rocket Mk %d  %s  cubes=%.0f earned=%.0f" % [_now() / 60.0, RocketTiers.tier(), _planet_line(),
 				GameState.get_currency("cubes").to_float(), BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float()])
 		return false
 	if want_hub and os_.rocket_unlocked() and p_ok(p) and _at_base(p) and Hub.can_pay(fc) \
-			and (arc_turn or float(fc.get("cubes", 0.0)) <= float(cc.get("cubes", 0.0))):
-		for e: Dictionary in os_.destinations():
-			if os_.sm.built[int(e["site"])] != 0:
-				continue
+			and arc_turn:
+		var to: int = HubPlan.next_site(os_.sm.planet_id) if os_.purpose != null else -1
+		if to < 0:
+			for e: Dictionary in os_.destinations():
+				if os_.sm.built[int(e["site"])] == 0:
+					to = int(e["site"])
+					break
+		if to > 0:
 			_hop_state = 1
 			_hop_t = _now()
-			_hop_to = int(e["site"])
+			_hop_to = to
 			_event("launch", {"to": _hop_to})
 			os_.hop_to(_hop_to)
 			return true
@@ -1517,12 +1530,23 @@ func _arc_cost() -> Dictionary:
 	if os_ == null or os_.sm == null or not os_.rocket_unlocked():
 		return {}
 	var nf: int = _far_restored(os_)
-	if nf + 1 >= Homeward.leave_hubs(Homeward.current_planet()).x:
-		return {}
-	_saving_arc = true
-	if nf + 2 > RocketTiers.hub_limit():
+	var key: String = _card_key()
+	if key == "rocket_tier" or (key in HUB_KEYS and nf + 2 > RocketTiers.hub_limit()):
+		_saving_arc = true
 		return (RocketTiers.next_def().get("cost", {}) as Dictionary).duplicate()
-	return Hub.far_cost(nf)
+	if key in HUB_KEYS:
+		_saving_arc = true
+		return Hub.far_cost(nf)
+	return {}
+
+
+## The stats the card's hub steps read (data/objectives.json hub_fly_N, hub_wake_N).
+const HUB_KEYS: Array[String] = ["hubs_seen", "hubs_woken"]
+
+
+func _card_key() -> String:
+	var ob: Objectives = world.get("objectives") as Objectives
+	return str(ob.current().get("key", "")) if ob else ""
 
 
 ## True if an optional purchase leaves the card's price covered (always, when it has none).
@@ -1530,7 +1554,7 @@ func _card_spare(cubes_cost: float, parts_cost: float = 0.0) -> bool:
 	var c: Dictionary = _card_cost()
 	if c.is_empty():
 		return true
-	if _saving_arc and cubes_cost <= float(c.get("cubes", 0.0)) * 0.2:
+	if _saving_arc and cubes_cost <= float(c.get("cubes", 0.0)) * 0.1:
 		return true  # the hub chain: a purchase that is cheap next to the hub's price doesn't wait
 	if GameState.get_currency("cubes").to_float() - cubes_cost < float(c.get("cubes", 0.0)):
 		return false

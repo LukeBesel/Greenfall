@@ -89,10 +89,15 @@ static func default_material(p_cells: SphereCells) -> ShaderMaterial:
 	m.shader = preload("res://planet/sphere/sphere_ground.gdshader")
 	m.set_shader_parameter("state_tex", p_cells.texture)
 	m.set_shader_parameter("state_w", SphereCells.TEX_W)
-	m.set_shader_parameter("tex_dirt", AssetLib.tex("dry_ground_rocks", "diff"))
-	m.set_shader_parameter("tex_rubble", AssetLib.tex("rubble", "diff"))
-	m.set_shader_parameter("tex_clean", AssetLib.tex("dirty_concrete", "diff"))
-	m.set_shader_parameter("tex_grass", AssetLib.tex("sparse_grass", "diff"))
+	# [v7planet] The ground's textures and colour per planet: data/planets.json look.ground (PlanetCfg).
+	var lg: Dictionary = PlanetCfg.look(PlanetCfg.current_or("verdance")).get("ground", {})
+	for slot: Array in [["tex_dirt", "dirt_tex", "dry_ground_rocks"], ["tex_rubble", "rubble_tex", "rubble"], ["tex_clean", "clean_tex", "dirty_concrete"], ["tex_grass", "grass_tex", "sparse_grass"]]:
+		var tx: Texture2D = AssetLib.tex(str(lg.get(slot[1], slot[2])), "diff")
+		m.set_shader_parameter(slot[0], tx if tx else AssetLib.tex(str(slot[2]), "diff"))
+	for tn: Array in [["tint_dirt", "dirt"], ["tint_clean", "clean"], ["tint_grass", "grass"]]:
+		var c: Variant = lg.get(tn[1])
+		if c is Array and (c as Array).size() >= 3:
+			m.set_shader_parameter(tn[0], Vector3(float(c[0]), float(c[1]), float(c[2])))
 	return m
 
 

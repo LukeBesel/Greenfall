@@ -211,27 +211,35 @@ func step_hush(dt: float) -> void:
 
 # --- Playback -----------------------------------------------------------------
 
-func play(sound: String, pitch: float = 1.0, volume_db: float = 0.0, jitter: float = 0.04) -> void:
+## `tag` names where the sound comes from ("scoop", "lumi", "lights"...): data/sound.json can then
+## trim, gap or mute "tag:sound" there without touching the same sound elsewhere.
+func play(sound: String, pitch: float = 1.0, volume_db: float = 0.0, jitter: float = 0.04, tag: String = "") -> void:
 	var list: Array = _sounds.get(sound, [])
 	if list.is_empty():
 		return
+	var key: String = sound if tag == "" else tag + ":" + sound
+	var trim: float = SoundCfg.sound_db(sound, tag)
+	if trim <= SoundCfg.OFF_DB:  # [v6sound] muted in data/sound.json
+		if sound_log:
+			sound_log.call("dropped", key)
+		return
 	# [v6sound] The same sound never sooner than its min_gap_s (data/sound.json), so nothing stacks.
-	var gap: float = SoundCfg.min_gap(sound)
+	var gap: float = SoundCfg.min_gap(sound, tag)
 	if gap > 0.0:
-		if game_t - float(_last_play.get(sound, -1000.0)) < gap:
+		if game_t - float(_last_play.get(key, -1000.0)) < gap:
 			if sound_log:
-				sound_log.call("dropped", sound)
+				sound_log.call("dropped", key)
 			return
-		_last_play[sound] = game_t
+		_last_play[key] = game_t
 	var p: AudioStreamPlayer = _players[_next_player]
 	_next_player = (_next_player + 1) % _players.size()
 	p.stream = list[_rng.randi() % list.size()]
 	p.pitch_scale = maxf(0.05, pitch * (1.0 + _rng.randf_range(-jitter, jitter)))
-	p.volume_db = volume_db + SoundCfg.sound_db(sound)
+	p.volume_db = volume_db + trim
 	p.bus = SoundCfg.bus_of(sound)  # UI sounds and animal calls have their own sliders
 	p.play()
 	if sound_log:
-		sound_log.call("played", sound, p.bus, p.volume_db, p.stream.get_length() / p.pitch_scale)
+		sound_log.call("played", key, p.bus, p.volume_db, p.stream.get_length() / p.pitch_scale)
 
 
 ## Plays a sound pitched up a pentatonic scale; step grows with combos.
@@ -242,9 +250,9 @@ func play_scale(sound: String, step: int, volume_db: float = 0.0) -> void:
 
 ## [first] A gentle combo ladder: steps climb one octave of the pentatonic scale, then hold there
 ## with a soft alternation so a long combo never gets shrill; high notes sit a little quieter.
-func play_ladder(sound: String, step: int, volume_db: float = 0.0) -> void:
+func play_ladder(sound: String, step: int, volume_db: float = 0.0, tag: String = "") -> void:
 	var s: int = ladder_semitones(step)
-	play(sound, pow(2.0, s / 12.0), volume_db - 0.25 * float(s) / 2.0, 0.0)
+	play(sound, pow(2.0, s / 12.0), volume_db - 0.25 * float(s) / 2.0, 0.0, tag)
 
 
 static func ladder_semitones(step: int) -> int:

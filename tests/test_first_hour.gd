@@ -93,7 +93,7 @@ func test_coin_flight_hold_and_land() -> void:
 func test_first_seed_is_one_early_seed() -> void:
 	var f: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/plants.json"))
 	var fs: Dictionary = f["first_seed"]
-	assert_eq(int(fs["seeds_given"]), 1, "one special Maker seed")
+	assert_eq(int(fs["seeds_given"]), 1, "one special Settler seed")
 	assert_lte(int(fs["hexes_needed"]), 10, "found around minute 10-15")
 	var hl: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/hex_levels.json"))
 	var planted: Dictionary = hl["levels"][2]["reward"]

@@ -57,6 +57,7 @@ func setup(yaw: float) -> void:
 	PropBatch.merge(self)  # [orbE] perf: the furrow's clods and shards (static) as one mesh per material
 	_build_plume()  # [v2feel] after the merge: the plume's shader works in its own frame
 	PodBatch.merge(pod)  # [orbE] perf: the pod's static shell and each repair-stage group, merged per material
+	_build_service()  # [v6yard]
 	if not EventBus.upgrade_bought.is_connected(_on_upgrade):
 		EventBus.upgrade_bought.connect(_on_upgrade)
 
@@ -83,9 +84,42 @@ func _on_upgrade(_id: String, _lvl: int) -> void:
 
 func set_stage(s: int) -> void:
 	stage = clampi(s, 0, 3)
+	_show_service()  # [v6yard]
 	_smoke.emitting = stage < 2
 	_smoke.color = Color(0.42, 0.4, 0.38, 0.45 if stage == 0 else 0.18)
 	EscapePod.set_condition(pod, stage)
+
+
+# --- [v6yard] The repair stand ------------------------------------------------------------
+
+var _service: Node3D
+const SERVICE_AT := Vector3(2.9, 0.0, 1.0)  # site frame: clear of the door ramp and the furrow
+
+
+## A service cart, its work lamp and three cones by the pod while it is being mended (stages 1-2):
+## the pod reads as a thing Lumi is fixing. Model and colours: MachineArt.pod_service,
+## data/machine_art.json "pod".
+func _build_service() -> void:
+	if _service != null or not bool(MachineArt.cfg().get("pod", {}).get("service", true)):
+		return
+	_service = Node3D.new()
+	_service.name = "Service"
+	_service.position = SERVICE_AT
+	_service.rotation.y = -atan2(SERVICE_AT.z, SERVICE_AT.x) + 0.2  # drawers (-X) toward the pod, a touch askew
+	add_child(_service)
+	_service.add_child(MachineArt.pod_service().mi(0.2, "Cart"))
+	YardArt.solid(_service, MachineArt.POD_SERVICE_SOLID, Vector3(0, 0.5, 0), "CartBody")
+	_show_service()
+
+
+func _show_service() -> void:
+	if _service == null:
+		return
+	var on: bool = stage == 1 or stage == 2
+	_service.visible = on
+	YardArt.set_powered(_service, on)
+	for c: Node in _service.find_children("*", "CollisionShape3D", true, false):
+		(c as CollisionShape3D).disabled = not on
 
 
 # --- Ground ------------------------------------------------------------------------------

@@ -10,12 +10,15 @@ extends Node
 ##   robots left there restore the town while Lumi is away;
 ## - the HUD's lines: this base's clean % and "Bases n/6" (hud_lines()).
 ## Use: HubPurpose.attach(orbit_sites) once the hop and the site manager exist.
-## Dev: --hub-wake=N wakes hub N for free at start; --hub-report prints each hub's line.
+## Dev: --hub-wake=N wakes hub N for free at start; --hub-report prints each hub's line;
+## --hub-dev-chain[=T] does a hub's chain and wake after each arrival; --hub-dev-save=T saves;
+## --hub-walkthrough[=T] flies to and wakes every main-path hub in order and checks each (HubWalk).
 
 signal woke(site: int)
 
 const POLL_S: float = 0.5
 const BEACON_H: float = 110.0
+const LANDMARK_REACH_M: float = 11.0  # how near the landmark's foot E wakes it
 const GOLD := Color(1.0, 0.82, 0.42)
 const TEAL := Color(0.47, 0.86, 0.78)
 const CREAM := Color(0.98, 0.93, 0.8)
@@ -26,6 +29,7 @@ var sm: SiteManager
 var planet: String = "verdance"
 var site: int = -1          # the hub Lumi is at (-1: between hubs)
 var card_text: String = ""  # what the card shows now (tests, the clarity log)
+var title_reason: String = ""  # the arrival title's "why we came" line (tests, the walkthrough)
 var _t: float = 0.0
 var _lvl_t: float = 0.0
 var _spot: Node3D           # the landmark's interact anchor
@@ -60,9 +64,7 @@ func _ready() -> void:
 	_spot.name = "LandmarkSpot"
 	_spot.visible = false
 	add_child(_spot)
-	var ia: Variant = so.w.get("interactables")
-	if ia is Interactables:
-		(ia as Interactables).register(_spot, 11.0, landmark_prompt, use_landmark, func() -> bool: return _spot.visible and not sites.hop.flying)
+	_register_spot()
 	_way = Waypoint.new()
 	_way.world = so.w
 	add_child(_way)
@@ -73,8 +75,28 @@ func _ready() -> void:
 	if DevHooks.has("hub-wake"):
 		for s: String in DevHooks.get_s("hub-wake", "").split(",", false):
 			wake(int(s), true)
+	if DevHooks.has("hub-dev-save"):  # dev: save after T s (a walkthrough across a reload)
+		get_tree().create_timer(DevHooks.get_f("hub-dev-save", 30.0)).timeout.connect(func() -> void:
+			print("[hubs] dev: saved %s (bases %d/%d, rocket at site %d)" % [SaveManager.save_game(), HubPlan.restored_main(planet), HubPlan.main_total(planet), sites.rocket_site()]))
 	if DevHooks.has("hub-report"):
 		get_tree().create_timer(DevHooks.get_f("hub-report", 5.0)).timeout.connect(report)
+	if DevHooks.has("hub-walkthrough"):  # dev: fly to and wake every main-path hub, check each (planet/sites/hub_walk.gd)
+		HubWalk.run_dev(self)
+
+
+## The landmark's E entry. The site manager (and this node) come up before the yard's Interactables
+## exist, so this is retried from _process until it takes (before: E at a landmark did nothing).
+func _register_spot() -> bool:
+	if _spot_registered:
+		return true
+	var ia: Variant = so.w.get("interactables")
+	if ia is Interactables:
+		(ia as Interactables).register(_spot, LANDMARK_REACH_M, landmark_prompt, use_landmark, func() -> bool: return _spot.visible and not sites.hop.flying)
+		_spot_registered = true
+	return _spot_registered
+
+
+var _spot_registered: bool = false
 
 
 func _exit_tree() -> void:
@@ -106,6 +128,7 @@ func _process(delta: float) -> void:
 	if _t < POLL_S:
 		return
 	_t = 0.0
+	_register_spot()
 	var now: int = -1 if sites.hop.flying else _current_site()
 	if now != site:
 		site = now
@@ -139,7 +162,7 @@ func _enter(i: int, by_rocket: bool) -> void:
 			GameState.inc_stat("hubs_seen")  # goal steps: "fly to the next hub" = stat hubs_seen >= n
 	var clean: float = sm.region_clean(i)
 	if by_rocket or first:
-		show_title(i)
+		show_title(i, first)
 	if HubPlan.is_home(planet, i):
 		if by_rocket:
 			EventBus.toast.emit(tr("Home. The workbench is by the pod."), "info")
@@ -317,6 +340,7 @@ func wake(i: int, free: bool = false) -> bool:
 		lines.append(tl)
 	Audio.play("thud", 0.8, -4.0)
 	Audio.music_sting("level_up")
+	HubPlan.opt_static("res://systems/tunes.gd", "play_moment", ["base_restored"])  # v6sound: a song for the moment, once one is marked
 	EventBus.shake_requested.emit(0.25)
 	EventBus.toast.emit(tr("%s is awake. %s keeps cleaning when you fly on.") % [HubPlan.landmark_name(planet, i), HubPlan.hub_name(planet, i)], "story")
 	if not lines.is_empty():
@@ -377,6 +401,20 @@ func crew_line(i: int) -> String:
 
 
 # --- What the HUD and the picker show ---------------------------------------------------------------
+
+## The town type as built: the data's `town`, or a harbour where the lake reaches into the town.
+func town_name(i: int) -> String:
+	var actual: String = ""
+	if PlanetCfg.uses_towns(planet) and i > 0 and i < sm.sites.size():  # [v7planet] towns kit: harbours
+		if not _harbour.has(i):
+			_harbour[i] = VerdanceSite.is_harbour(sm.water_fn(i))
+		if bool(_harbour[i]):
+			actual = "harbour"
+	return HubPlan.town_name(planet, i, actual)
+
+
+var _harbour: Dictionary = {}
+
 
 ## "New", "Asleep: 3 / 8 hexes", "Restored: 34% clean".
 func status_text(i: int) -> String:
@@ -600,8 +638,10 @@ func _build_ui() -> void:
 	EventBus.ui_modal_changed.connect(func(open: bool) -> void: _layer.visible = not open)
 
 
-## The hub's name on screen for a few seconds (an arrival).
-func show_title(i: int) -> void:
+## The hub's name on screen for a few seconds (an arrival): the name, the town type and its
+## landmark, and why Lumi came (HubPlan.reason). Timings and the first-arrival sting are data
+## (hub_defaults.hop: title_in_s, title_hold_s, title_out_s, arrive_sting).
+func show_title(i: int, first: bool = false) -> void:
 	var nm: String = HubPlan.hub_name(planet, i)
 	if nm == "" or _layer == null:
 		return
@@ -621,7 +661,7 @@ func show_title(i: int) -> void:
 	big.add_theme_constant_override("outline_size", 8)
 	big.add_theme_color_override("font_outline_color", Color(0.03, 0.06, 0.05, 0.85))
 	vb.add_child(big)
-	var sub_t: String = HubPlan.town_name(planet, i)
+	var sub_t: String = town_name(i)
 	if not HubPlan.is_home(planet, i):
 		sub_t = tr("%s  ·  the %s") % [sub_t, HubPlan.landmark_name(planet, i)]
 	var sub: Label = UITheme.label(sub_t, 16, TEAL)
@@ -629,21 +669,38 @@ func show_title(i: int) -> void:
 	sub.add_theme_constant_override("outline_size", 5)
 	sub.add_theme_color_override("font_outline_color", Color(0.03, 0.06, 0.05, 0.85))
 	vb.add_child(sub)
+	title_reason = tr(HubPlan.reason(planet, i)) if HubPlan.reason(planet, i) != "" else ""
+	if title_reason != "":
+		var why: Label = UITheme.label(title_reason, 15, CREAM)
+		why.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		why.add_theme_constant_override("outline_size", 5)
+		why.add_theme_color_override("font_outline_color", Color(0.03, 0.06, 0.05, 0.85))
+		why.modulate.a = 0.92
+		vb.add_child(why)
 	_layer.get_child(0).add_child(vb)
+	var sting: String = str(HubPlan.hop_cfg("arrive_sting", "motif"))
+	if first and sting != "" and not HubPlan.is_home(planet, i):
+		Audio.music_sting(sting)
 	_title = vb
 	vb.modulate.a = 0.0
 	var tw := vb.create_tween()
-	tw.tween_property(vb, "modulate:a", 1.0, 0.5)
-	tw.tween_interval(3.0)
-	tw.tween_property(vb, "modulate:a", 0.0, 0.9)
+	tw.tween_property(vb, "modulate:a", 1.0, float(HubPlan.hop_cfg("title_in_s", 0.5)))
+	tw.tween_interval(float(HubPlan.hop_cfg("title_hold_s", 3.0)))
+	tw.tween_property(vb, "modulate:a", 0.0, float(HubPlan.hop_cfg("title_out_s", 0.9)))
 	tw.tween_callback(vb.queue_free)
 	_card.visible = false
-	print("[hubs] arrived at site %d: %s (%s)" % [i, nm, sub_t])
+	print("[hubs] arrived at site %d: %s (%s) | %s" % [i, nm, sub_t, title_reason])
 	if DevHooks.has("hop-shots"):  # dev: the arrival frame, and one 9 s later (the dev chain's wake)
 		for wait: float in [1.6, 9.0]:
 			get_tree().create_timer(wait, true, false, true).timeout.connect(func() -> void:
 				await RenderingServer.frame_post_draw
-				DevHooks.save_viewport("%s_land_%d.png" % [DevHooks.get_s("hop-shots", "screenshots/hop"), int(wait)]))
+				DevHooks.save_viewport("%s_land_%d.png" % [DevHooks.get_s("hop-shots", "screenshots/hop"), int(wait)])
+				if wait > 5.0:  # then the rocket's list, and its picture
+					sites.open_rocket()
+					await get_tree().create_timer(1.0, true, false, true).timeout
+					await RenderingServer.frame_post_draw
+					DevHooks.save_viewport("%s_picker.png" % DevHooks.get_s("hop-shots", "screenshots/hop"))
+					print("[hubs] dev: shots done"))
 
 
 ## Dev (--hub-dev-chain[=T]): T s after each arrival at a far hub, cleans the hexes its chain asks
