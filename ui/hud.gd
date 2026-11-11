@@ -368,6 +368,12 @@ func _update_context(delta: float, minimal: bool) -> void:
 	if Subtitles.current and is_instance_valid(Subtitles.current) and Subtitles.current.current_text() != "":
 		want = 0.0  # [orbB] owner rule (onboard2): one message line on screen at a time
 	_context.modulate.a = move_toward(_context.modulate.a, want, delta * (4.0 if want > 0.0 else 1.2))
+	# [v6screens] With little room under Lumi (big interface scale) the subtitle line sits over the
+	# hotbar and the prompt: they dim under it instead of showing through the text.
+	var cov: Rect2 = Subtitles.current.cover_rect() if Subtitles.current and is_instance_valid(Subtitles.current) else Rect2()
+	for c: Control in [hotbar, _prompt]:
+		var dim: bool = cov.size.y > 0.0 and cov.intersects(c.get_global_rect())
+		c.self_modulate.a = move_toward(c.self_modulate.a, 0.2 if dim else 1.0, delta * 5.0)
 
 
 ## [vqa] "GROWING", "PLANTED  THIRSTY", "GROWING  SUSTAIN 60%": the hex level in a few words.
