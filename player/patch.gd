@@ -12,6 +12,8 @@ const PICKUP_RANGE: float = 1.9
 const CUBE_TIME: float = 1.7
 ## Pieces at least this big get the heavy pickup animation.
 const BIG_PIECE_VOL: float = 1.5
+## [v6feel] Lumi's collision radius on a round planet.
+const BODY_R: float = 0.5
 
 var input: InputSource
 var world: Node  # the slice scene: field, view, collect_piece(), depot
@@ -70,6 +72,7 @@ func _ready() -> void:
 	shape.position = Vector3(0, 0.6, 0)
 	add_child(shape)
 	_shape = shape
+	_fit_shape()
 	model = PatchModel.new()
 	model.name = "Model"
 	add_child(model)
@@ -108,9 +111,26 @@ func enable_sphere(surface: SphereSurface, cam_node: Node3D) -> void:
 		Audio.play("whoosh", 1.3, -12.0))
 	motion_mode = CharacterBody3D.MOTION_MODE_FLOATING
 	wall_min_slide_angle = 0.0
-	if _shape:
-		(_shape.shape as BoxShape3D).size = Vector3(1.1, 0.95, 1.0)
-		_shape.position = Vector3(0, 0.25 + 0.475, 0)
+	# [v6feel] A round body that slides on the level: a box caught on every corner, post and heap
+	# (its flat front met them square on), and turning beside a wall shoved him off it.
+	sphere_motor.flat_slide = true
+	sphere_motor.ray_mask = PhysLayers.WORLD | PhysLayers.PROP
+	sphere_motor.step_mask = PhysLayers.WORLD | PhysLayers.PROP
+	sphere_motor.ray_top = 0.9
+	_fit_shape()
+
+
+## [v6feel] The round planet's body: lifted off the ground (he hovers; only walls and props touch
+## it). enable_sphere runs before _ready in the game, where there was no shape yet: the lift never
+## happened and the flat world's box dragged along the ground.
+func _fit_shape() -> void:
+	if _shape == null or sphere == null:
+		return
+	var cyl := CylinderShape3D.new()
+	cyl.radius = BODY_R
+	cyl.height = 0.95
+	_shape.shape = cyl
+	_shape.position = Vector3(0, 0.25 + 0.475, 0)
 
 
 ## [orbit] Puts Lumi on the planet's ground under `pos`, facing `fwd`.
@@ -256,8 +276,13 @@ func _move(delta: float) -> void:
 		velocity = up() * velocity.dot(up())
 		_shore_hint()
 	# Nudge cubes we bump into.
-	for i: int in get_slide_collision_count():
-		var col: KinematicCollision3D = get_slide_collision(i)
+	var bumps: Array[KinematicCollision3D] = []
+	if sphere_motor and sphere_motor.flat_slide:
+		bumps = sphere_motor.hits  # [v6feel]
+	else:
+		for i: int in get_slide_collision_count():
+			bumps.append(get_slide_collision(i))
+	for col: KinematicCollision3D in bumps:
 		var body: Object = col.get_collider()
 		if body is JunkCube and not (body as JunkCube).carried:
 			(body as JunkCube).apply_central_impulse(-col.get_normal() * 0.6)

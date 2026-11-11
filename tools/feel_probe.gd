@@ -83,6 +83,21 @@ func _ready() -> void:
 			_steps = _carry_steps()
 		"move":
 			_steps = _move_steps()
+		"tour":
+			GameState.upgrades["baler"] = 1
+			_steps = _tour_steps()
+		"map":
+			_map()
+			return
+		"snag":
+			_snag()
+			return
+		"cam":
+			_cam_walk()
+			return
+		"camwall":
+			_cam_wall()
+			return
 	_t = 0.0
 	set_physics_process(true)
 	print("[feel] %s: start, design %s, %d bales" % [mode, lumi.model.variant, lumi.carried.size()])
@@ -247,3 +262,206 @@ func _move_sample(delta: float, s: float) -> void:
 	_acc["alt_min"] = snappedf(minf(float(_acc.get("alt_min", 9.0)), alt), 0.001)
 	_acc["alt_max"] = snappedf(maxf(float(_acc.get("alt_max", -9.0)), alt), 0.001)
 	_acc["vv_max"] = snappedf(maxf(float(_acc.get("vv_max", 0.0)), absf(m.vv)), 0.01)
+
+
+# --- tour: every core action in a row, for frame sequences ---------------------------------------
+
+func _tour_steps() -> Array:
+	return [
+		[1.0, "idle", func(i: FeelInput, _s: float) -> void: i.stick = Vector3.ZERO],
+		[2.5, "walk", _fwd],
+		[9.0, "scoop", func(i: FeelInput, s: float) -> void:
+			i.stick = Vector3(sin(s * 0.8) * 0.5, 0, -0.5)
+			i.scoop = true],
+		[11.5, "press", func(i: FeelInput, s: float) -> void:
+			i.stick = Vector3.ZERO
+			i.scoop = false
+			i.cube = s < 0.02],
+		[12.5, "turn_back", func(i: FeelInput, _s: float) -> void: i.stick = Vector3(0, 0, 1)],
+		[13.5, "pick_up", func(i: FeelInput, s: float) -> void:
+			i.stick = Vector3(0, 0, 0.3) if s < 0.5 else Vector3.ZERO
+			i.interact = s > 0.3 and lumi.carried.is_empty() and lumi.nearest_loose_cube() != null],
+		[16.0, "carry", func(i: FeelInput, s: float) -> void: i.stick = Vector3(sin(s * 2.0), 0, -cos(s * 2.0))],
+		[19.0, "boost", func(i: FeelInput, _s: float) -> void:
+			i.stick = Vector3(0, 0, -1)
+			i.boost = true],
+		[20.0, "stop", func(i: FeelInput, _s: float) -> void:
+			i.stick = Vector3.ZERO
+			i.boost = false],
+	]
+
+
+# --- placing Lumi (start-site metres, as --orbit-spawn) -------------------------------------------
+
+func _dir_at(x: float, z: float) -> Vector3:
+	var g: OrbitPlanet = so.globe
+	return g.terrain.local_to_dir(g.start_cell(), x, z)
+
+
+func _pos_at(x: float, z: float) -> Vector3:
+	return so.globe.terrain.ground(_dir_at(x, z))
+
+
+func _site_xz(p: Vector3) -> Vector2:
+	# Inverse of _pos_at by two probes (the cell frame is flat enough near the start).
+	var o: Vector3 = _pos_at(0, 0)
+	var ex: Vector3 = (_pos_at(1, 0) - o)
+	var ez: Vector3 = (_pos_at(0, 1) - o)
+	var d: Vector3 = p - o
+	return Vector2(d.dot(ex) / ex.length_squared(), d.dot(ez) / ez.length_squared())
+
+
+func _put(x: float, z: float, toward: Vector2) -> void:
+	var from: Vector3 = _pos_at(x, z)
+	var to: Vector3 = _pos_at(toward.x, toward.y)
+	lumi.place_on_sphere(from, to - from)
+	lumi.velocity = Vector3.ZERO
+	if so.cam:
+		so.cam.reset_frame(to - from)
+
+
+## Every solid thing on the start site near (x, z): what Lumi and the camera can meet.
+func _map() -> void:
+	var c: PackedStringArray = DevHooks.get_s("feel-at", "0,0,30").split(",")
+	var at := Vector2(float(c[0]), float(c[1]))
+	var r: float = float(c[2]) if c.size() > 2 else 30.0
+	var n: int = 0
+	for node: Node in so.w.find_children("*", "CollisionShape3D", true, false):
+		var cs := node as CollisionShape3D
+		var body: CollisionObject3D = cs.get_parent() as CollisionObject3D
+		if body == null or cs.shape == null or cs.disabled or body == lumi:
+			continue
+		var xz: Vector2 = _site_xz(cs.global_position)
+		if xz.distance_to(at) > r:
+			continue
+		var sz: String = ""
+		if cs.shape is BoxShape3D:
+			sz = "box %s" % str(((cs.shape as BoxShape3D).size * cs.global_basis.get_scale()).snappedf(0.1))
+		elif cs.shape is CylinderShape3D:
+			sz = "cyl r%.2f h%.1f" % [(cs.shape as CylinderShape3D).radius, (cs.shape as CylinderShape3D).height]
+		else:
+			sz = cs.shape.get_class()
+		print("[feel] map (%6.1f,%6.1f) alt %.1f layer %d %s  %s/%s" % [xz.x, xz.y, so.globe.surface.altitude(cs.global_position), body.collision_layer, sz, body.get_parent().name, body.name])
+		n += 1
+	print("[feel] map: %d shapes within %.0f m of (%.0f, %.0f)" % [n, r, at.x, at.y])
+	if DevHooks.has("feel-quit"):
+		get_tree().quit(0)
+
+
+# --- snag: push at a spot from every side, dead on and glancing --------------------------------
+
+func _snag() -> void:
+	inp.world_space = true
+	var spots: Array = []
+	for part: String in DevHooks.get_s("feel-at", "11,12;-7.7,9.3").split(";"):
+		var c: PackedStringArray = part.split(",")
+		spots.append(Vector2(float(c[0]), float(c[1])))
+	var worst: float = 99.0
+	for spot: Vector2 in spots:
+		var stuck: PackedStringArray = []
+		var total: int = 0
+		var slid: int = 0
+		for h: int in 8:
+			var d := Vector2(cos(h * TAU / 8.0), sin(h * TAU / 8.0))
+			var side := Vector2(-d.y, d.x)
+			for off: float in [-1.5, -0.9, -0.45, 0.45, 0.9, 1.5]:
+				var a: Vector2 = spot - d * 5.0 + side * off
+				_put(a.x, a.y, a + d)
+				await get_tree().physics_frame
+				var p0: Vector3 = lumi.global_position
+				var w: Vector3 = (_pos_at(a.x + d.x * 20.0, a.y + d.y * 20.0) - p0).normalized()
+				inp.stick = w
+				var still: float = 0.0
+				var t: float = 0.0
+				while t < 2.6:
+					await get_tree().physics_frame
+					t += get_physics_process_delta_time()
+					if lumi.sphere_motor.hv.length() < 0.4 and t > 0.4:
+						still += get_physics_process_delta_time()
+				inp.stick = Vector3.ZERO
+				var gone: float = (lumi.global_position - p0).dot(w)
+				total += 1
+				# Free ground: about 11.4 m. A glancing hit should slide past the spot (5 m in).
+				if still > 0.5 and gone < 7.0:
+					stuck.append("h%d off%+.1f: %.1f m, stopped %.1f s" % [h * 45, off, gone, still])
+				else:
+					slid += 1
+				worst = minf(worst, gone)
+		print("[feel] snag (%.1f, %.1f): %d of %d glancing pushes got past%s" % [spot.x, spot.y, slid, total, "" if stuck.is_empty() else "; stopped: " + " | ".join(stuck)])
+	print("[feel] snag: done, shortest push %.1f m" % worst)
+	if DevHooks.has("feel-quit"):
+		get_tree().quit(0)
+
+
+# --- cam: the follow camera along a walk ---------------------------------------------------------
+
+func _cam_walk() -> void:
+	inp.world_space = true
+	var pts: Array = []
+	for part: String in DevHooks.get_s("feel-walk", "0,6;0,-30").split(";"):
+		var c: PackedStringArray = part.split(",")
+		pts.append(Vector2(float(c[0]), float(c[1])))
+	var cam: SphereCam = so.cam
+	_put(pts[0].x, pts[0].y, pts[1])
+	await get_tree().physics_frame
+	for k: int in range(1, pts.size()):
+		var goal: Vector3 = _pos_at(pts[k].x, pts[k].y)
+		var arm_min: float = 99.0
+		var jumps: int = 0
+		var big: float = 0.0
+		var close_t: float = 0.0
+		var t: float = 0.0
+		var last_arm: float = float(cam.get("_arm"))
+		var last_pos: Vector3 = cam.camera.global_position
+		var cam_jump: float = 0.0
+		while lumi.global_position.distance_to(goal) > 1.2 and t < 40.0:
+			await get_tree().process_frame
+			var dt: float = get_process_delta_time()
+			t += dt
+			var to: Vector3 = goal - lumi.global_position
+			inp.stick = (to - lumi.up() * to.dot(lumi.up())).normalized()
+			inp.boost = DevHooks.has("feel-boost")
+			# A player keeps the camera roughly behind the walk.
+			var head: Vector3 = SphereMath.tangent_dir(inp.stick, cam.frame.y, -cam.frame.z)
+			cam.add_yaw(clampf((-cam.frame.z).signed_angle_to(head, cam.frame.y), -1.0, 1.0) * minf(1.0, 2.5 * dt))
+			var arm: float = float(cam.get("_arm"))
+			arm_min = minf(arm_min, arm)
+			if absf(arm - last_arm) > 0.6:
+				jumps += 1
+				big = maxf(big, absf(arm - last_arm))
+			# The camera's own move this frame, less what Lumi moved: a pop the player sees.
+			var cm: float = cam.camera.global_position.distance_to(last_pos) - lumi.sphere_motor.hv.length() * dt
+			cam_jump = maxf(cam_jump, cm)
+			if arm < 1.6:
+				close_t += dt
+			last_arm = arm
+			last_pos = cam.camera.global_position
+		var at: Vector2 = _site_xz(lumi.global_position)
+		print("[feel] cam leg %d to (%.0f, %.0f): %.1f s, reached (%.1f, %.1f), arm min %.1f m, %d jumps over 0.6 m (largest %.1f), camera pop %.2f m, closer than 1.6 m for %.1f s" % [k, pts[k].x, pts[k].y, t, at.x, at.y, arm_min, jumps, big, cam_jump, close_t])
+	inp.stick = Vector3.ZERO
+	print("[feel] cam: done")
+	if DevHooks.has("feel-quit"):
+		get_tree().quit(0)
+
+
+## Lumi beside a wall with the camera on the wall's side: how far the arm pulls in. --feel-at=x,z;tx,tz
+## (he stands at x,z facing tx,tz; the camera is behind him).
+func _cam_wall() -> void:
+	var c: PackedStringArray = DevHooks.get_s("feel-at", "59.5,5;40,5").split(";")
+	var a: PackedStringArray = c[0].split(",")
+	var b: PackedStringArray = c[1].split(",")
+	_put(float(a[0]), float(a[1]), Vector2(float(b[0]), float(b[1])))
+	for k: int in 30:
+		await get_tree().process_frame
+	var cam: SphereCam = so.cam
+	var at: Vector2 = _site_xz(lumi.global_position)
+	var cp: Vector2 = _site_xz(cam.camera.global_position)
+	print("[feel] camwall: Lumi at (%.1f, %.1f), camera at (%.1f, %.1f), arm %.2f of %.2f, altitude %.2f" % [at.x, at.y, cp.x, cp.y, float(cam.get("_arm")), cam.distance, lumi.sphere.altitude(cam.camera.global_position)])
+	inp.world_space = true
+	inp.stick = -(_pos_at(float(b[0]), float(b[1])) - lumi.global_position).normalized()
+	for k: int in 240:
+		await get_tree().physics_frame
+	at = _site_xz(lumi.global_position)
+	print("[feel] camwall: pushed away from the look point for 2 s, now at (%.1f, %.1f)" % [at.x, at.y])
+	if DevHooks.has("feel-quit"):
+		get_tree().quit(0)
