@@ -260,22 +260,6 @@ msgstr "%s 長押し"
 msgid "Hex clean! Green can grow here now."
 msgstr "ヘックスがきれいになった！ここに緑が育つよ。"
 
-#: automation/auto_baler.gd:478
-msgid "AUTO-BALER"
-msgstr "オートベーラー"
-
-#: automation/auto_baler.gd:481
-msgid "KEEP CLEAR · 40 T"
-msgstr "立入禁止 · 40 T"
-
-#: automation/conveyor.gd:71
-msgid "TO  SCALE  ◀"
-msgstr "はかり  へ  ◀"
-
-#: automation/conveyor.gd:185
-msgid "BALE  FEED"
-msgstr "ベール投入口"
-
 #: automation/hub.gd:89
 msgid "Locked. Upgrade your base to level %d to build the launch pad."
 msgstr "ロック中。発射台を建てるには基地をレベル%dに上げよう。"
@@ -535,31 +519,31 @@ msgstr "ベーラーがまだない。胸のゴミをゴミ箱へ運ぼう。"
 msgid "+%s cubes"
 msgstr "+%s キューブ"
 
-#: fauna/fauna.gd:1650
+#: fauna/fauna.gd:1738
 msgid "E   pet %s"
 msgstr "E   %s をなでる"
 
-#: fauna/fauna.gd:1651
+#: fauna/fauna.gd:1739
 msgid "E   pet the cat"
 msgstr "E   ネコをなでる"
 
-#: fauna/fauna.gd:1709
+#: fauna/fauna.gd:1797
 msgid "E   scatter crumbs for the birds"
 msgstr "E   鳥にパンくずをまく"
 
-#: fauna/fauna.gd:1757
+#: fauna/fauna.gd:1845
 msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
 msgstr "鳥たちはきみを気に入ったみたい。パンくず袋をコレクションに追加した。"
 
-#: fauna/fauna.gd:1813
+#: fauna/fauna.gd:1901
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "このネコはきみを自分のものだと決めたらしい。%s だよ。これからはこの基地で暮らすって。"
 
-#: fauna/fauna.gd:2134 ui/subtitles.gd:455
+#: fauna/fauna.gd:2222 ui/subtitles.gd:452
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "新しく発見：%s。図鑑に追加されたよ。"
 
-#: fauna/fauna.gd:2205
+#: fauna/fauna.gd:2293
 msgid "Snap! A %s for your Collection."
 msgstr "パシャ！%s の写真をコレクションに追加。"
 
@@ -671,7 +655,7 @@ msgstr "いっしょに咲こう"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  いのち"
 
-#: planet/sites/hub_hop.gd:48
+#: planet/sites/hub_hop.gd:49
 msgid "{interact}  skip"
 msgstr "{interact}  スキップ"
 
@@ -695,132 +679,132 @@ msgstr "郊外"
 msgid "Harbour town"
 msgstr "港町"
 
-#: planet/sites/hub_plan.gd:104
+#: planet/sites/hub_plan.gd:133
 msgid "landmark"
 msgstr "ランドマーク"
 
-#: planet/sites/hub_plan.gd:258
+#: planet/sites/hub_plan.gd:287
 msgid "The recycling network grew: everything sells for x%s now."
 msgstr "リサイクル網が広がった：すべての売値が x%s になった。"
 
-#: planet/sites/hub_plan.gd:277
+#: planet/sites/hub_plan.gd:306
 msgid "Rocket piece: %s"
 msgstr "ロケットの部品：%s"
 
-#: planet/sites/hub_plan.gd:299
+#: planet/sites/hub_plan.gd:328
 msgid "+%s Cubes"
 msgstr "+%s キューブ"
 
-#: planet/sites/hub_plan.gd:301
+#: planet/sites/hub_plan.gd:330
 msgid "+%d Parts"
 msgstr "+%d パーツ"
 
-#: planet/sites/hub_plan.gd:303
+#: planet/sites/hub_plan.gd:332
 msgid "+%d Seeds"
 msgstr "+%d 種"
 
-#: planet/sites/hub_plan.gd:307
+#: planet/sites/hub_plan.gd:336
 msgid "New: %s"
 msgstr "新しい：%s"
 
-#: planet/sites/hub_plan.gd:311
+#: planet/sites/hub_plan.gd:340
 msgid "New Lumi design: %s"
 msgstr "Lumi の新デザイン：%s"
 
-#: planet/sites/hub_purpose.gd:145
+#: planet/sites/hub_purpose.gd:168
 msgid "Home. The workbench is by the pod."
 msgstr "ホームだ。作業台はポッドのそばにある。"
 
-#: planet/sites/hub_purpose.gd:151
+#: planet/sites/hub_purpose.gd:174
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "ロケットは発着場で待っている。リストの一番上がホームだ。"
 
-#: planet/sites/hub_purpose.gd:157
+#: planet/sites/hub_purpose.gd:180
 msgid "%s: %d%% clean, up %d%% while you were away."
 msgstr "%s：%d%% きれい。留守のあいだに +%d%%。"
 
-#: planet/sites/hub_purpose.gd:235
+#: planet/sites/hub_purpose.gd:258
 msgid "Dig the landmark out. Clean hexes here: %d / %d"
 msgstr "目印を掘り出そう。ここのマスをきれいに：%d / %d"
 
-#: planet/sites/hub_purpose.gd:237
+#: planet/sites/hub_purpose.gd:260
 msgid "Repair an outpost here: %d / %d"
 msgstr "ここの前哨基地を修理：%d / %d"
 
-#: planet/sites/hub_purpose.gd:240
+#: planet/sites/hub_purpose.gd:263
 msgid "Upgrade the rocket, then wake the %s"
 msgstr "ロケットを強化してから起こそう：%s"
 
-#: planet/sites/hub_purpose.gd:241
+#: planet/sites/hub_purpose.gd:264
 msgid "Wake the %s (%s)"
 msgstr "起こそう：%s（%s）"
 
-#: planet/sites/hub_purpose.gd:275
+#: planet/sites/hub_purpose.gd:298
 msgid "E   Wake the %s  (%s)"
 msgstr "E   起こす：%s  （%s）"
 
-#: planet/sites/hub_purpose.gd:276
+#: planet/sites/hub_purpose.gd:299
 msgid "%s: asleep. %s"
 msgstr "%s：眠っている。%s"
 
-#: planet/sites/hub_purpose.gd:281
+#: planet/sites/hub_purpose.gd:304
 msgid "The rocket can carry supplies to %d bases. Upgrade it at the workbench."
 msgstr "ロケットが物資を届けられる基地は %d つまで。作業台でロケットを強化しよう。"
 
-#: planet/sites/hub_purpose.gd:297
+#: planet/sites/hub_purpose.gd:320
 msgid "Waking the %s needs %s."
 msgstr "起こすには（%s）%s が必要。"
 
-#: planet/sites/hub_purpose.gd:321
+#: planet/sites/hub_purpose.gd:345
 msgid "%s is awake. %s keeps cleaning when you fly on."
 msgstr "%s が目を覚ました。旅立ったあとも、%s は掃除を続ける。"
 
-#: planet/sites/hub_purpose.gd:348
+#: planet/sites/hub_purpose.gd:372
 msgid "%s grows: level %d."
 msgstr "%s が成長：レベル %d。"
 
-#: planet/sites/hub_purpose.gd:376
+#: planet/sites/hub_purpose.gd:400
 msgid "%d robot working"
 msgid_plural "%d robots working"
 msgstr[0] "ロボット %d 台が作業中"
 
-#: planet/sites/hub_purpose.gd:384
+#: planet/sites/hub_purpose.gd:422
 msgid "Home: %d%% clean"
 msgstr "ホーム：%d%% きれい"
 
-#: planet/sites/hub_purpose.gd:386
+#: planet/sites/hub_purpose.gd:424
 msgid "Restored: %d%% clean"
 msgstr "復旧済み：%d%% きれい"
 
-#: planet/sites/hub_purpose.gd:388 ui/profile_picker.gd:111
+#: planet/sites/hub_purpose.gd:426 ui/profile_picker.gd:111
 msgid "New"
 msgstr "新規"
 
-#: planet/sites/hub_purpose.gd:391
+#: planet/sites/hub_purpose.gd:429
 msgid "Ready to wake"
 msgstr "起こせる"
 
-#: planet/sites/hub_purpose.gd:392
+#: planet/sites/hub_purpose.gd:430
 msgid "Asleep: %d / %d"
 msgstr "眠っている：%d / %d"
 
-#: planet/sites/hub_purpose.gd:403
+#: planet/sites/hub_purpose.gd:441
 msgid "%s   %d%% CLEAN"
 msgstr "%s   %d%% きれい"
 
-#: planet/sites/hub_purpose.gd:405
+#: planet/sites/hub_purpose.gd:443
 msgid "%s   BASES %d/%d"
 msgstr "%s   基地 %d/%d"
 
-#: planet/sites/hub_purpose.gd:452
+#: planet/sites/hub_purpose.gd:490
 msgid "Restored. Next: take the rocket to %s."
 msgstr "復旧完了。次はロケットで %s へ。"
 
-#: planet/sites/hub_purpose.gd:454
+#: planet/sites/hub_purpose.gd:492
 msgid "All %d bases stand. Fly home and make the rocket ready to leave."
 msgstr "%d つの基地がそろった。ホームに戻ってロケットの出発準備をしよう。"
 
-#: planet/sites/hub_purpose.gd:626
+#: planet/sites/hub_purpose.gd:666
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
@@ -1527,27 +1511,27 @@ msgstr "発射台のロケットまで歩いて、Eを押して行き先を選�
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "エネルギーセル充電中：%s。ロケットのアップグレードで充電が速くなる。"
 
-#: scenes/slice_orbit.gd:412
+#: scenes/slice_orbit.gd:417
 msgid "HEX CLEAN!  +%s"
 msgstr "ヘックス クリーン！  +%s"
 
-#: scenes/slice_orbit.gd:428
+#: scenes/slice_orbit.gd:433
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice_orbit.gd:497 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:502 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   作業台を直す"
 
-#: scenes/slice_orbit.gd:497 systems/camp/camp.gd:195
+#: scenes/slice_orbit.gd:502 systems/camp/camp.gd:195
 msgid "E   Open the workbench"
 msgstr "E   作業台を開く"
 
-#: scenes/slice_orbit.gd:1017
+#: scenes/slice_orbit.gd:1022
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice_orbit.gd:1117
+#: scenes/slice_orbit.gd:1122
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "作業台を修理した。作業台で E を押すとキューブでアップグレードできる。"
 
@@ -1743,43 +1727,43 @@ msgstr "Cradle は軌道上で待機中。星系をまるごと再生しよう�
 msgid "SELECT  A1  ·  B4  ·  C7"
 msgstr "セレクト  A1  ·  B4  ·  C7"
 
-#: story/egg_props.gd:212
+#: story/egg_props.gd:217
 msgid "WE'LL BE BACK AFTER LUNCH"
 msgstr "昼休み後に戻ります"
 
-#: story/egg_props.gd:327
+#: story/egg_props.gd:332
 msgid "OPEN IN 100 YEARS"
 msgstr "100年後に開店"
 
-#: story/egg_props.gd:344
+#: story/egg_props.gd:349
 msgid "HI-SCORE"
 msgstr "ハイスコア"
 
-#: story/egg_props.gd:345
+#: story/egg_props.gd:350
 msgid "WREN  999990"
 msgstr "WREN  999990"
 
-#: story/egg_props.gd:346
+#: story/egg_props.gd:351
 msgid "INSERT COIN"
 msgstr "コインを入れてね"
 
-#: story/egg_props.gd:349
+#: story/egg_props.gd:354
 msgid "SWEEP-O-TRON"
 msgstr "スイープ・オ・トロン"
 
-#: story/egg_props.gd:441
+#: story/egg_props.gd:446
 msgid "BISCUIT"
 msgstr "ビスケット"
 
-#: story/egg_props.gd:469
+#: story/egg_props.gd:474
 msgid "FIZZ"
 msgstr "FIZZ"
 
-#: story/egg_props.gd:615
+#: story/egg_props.gd:620
 msgid "(it is not wet)"
 msgstr "（濡れてないよ）"
 
-#: story/egg_props.gd:632
+#: story/egg_props.gd:637
 msgid ""
 "THE LEDGER IS WATCHING\n"
 "(FOR SAVINGS)"
@@ -1787,7 +1771,7 @@ msgstr ""
 "LEDGER が見ています\n"
 "（節約のために）"
 
-#: story/egg_props.gd:710
+#: story/egg_props.gd:715
 msgid ""
 "EMPLOYEE OF\n"
 "THE MONTH\n"
@@ -1797,7 +1781,7 @@ msgstr ""
 "優秀社員\n"
 "— キューブ —"
 
-#: story/egg_props.gd:740
+#: story/egg_props.gd:745
 msgid ""
 "FORECAST\n"
 "ALWAYS RIGHT*"
@@ -1805,19 +1789,19 @@ msgstr ""
 "天気予報\n"
 "いつも的中*"
 
-#: story/egg_props.gd:765
+#: story/egg_props.gd:770
 msgid "SHOW ENTRY"
 msgstr "ショー入口"
 
-#: story/egg_props.gd:807
+#: story/egg_props.gd:812
 msgid "THE BUILDERS · DO NOT TIDY"
 msgstr "ビルダーズ · 片づけ禁止"
 
-#: story/egg_props.gd:895
+#: story/egg_props.gd:900
 msgid "FINE"
 msgstr "罰金"
 
-#: story/egg_props.gd:972
+#: story/egg_props.gd:977
 msgid ""
 "BACK IN\n"
 "5 MINUTES"
@@ -1825,87 +1809,87 @@ msgstr ""
 "5分で\n"
 "戻ります"
 
-#: story/eggs.gd:439
+#: story/eggs.gd:448
 msgid "Something metal surfaced in the cleared ground."
 msgstr "片づいた地面から何か金属のものが出てきた。"
 
-#: story/eggs.gd:654 story/eggs.gd:716
+#: story/eggs.gd:663 story/eggs.gd:725
 msgid "Gnome %d / %d"
 msgstr "ノーム %d / %d"
 
-#: story/eggs.gd:662
+#: story/eggs.gd:671
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr "最後のポスターがすぐ近くを指している。近くでオレンジ色の何かが丸まっている。"
 
-#: story/eggs.gd:717
+#: story/eggs.gd:726
 msgid "%s   ·   added to Lumi's collection"
 msgstr "%s   ·   Lumiのコレクションに追加"
 
-#: story/eggs.gd:733
+#: story/eggs.gd:742
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr "ラジオが小さくザーッと鳴っている。上ではまだ何も目覚めていない。暗くなってからまた来よう。"
 
-#: story/eggs.gd:734
+#: story/eggs.gd:743
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr "望遠鏡をのぞくと：明るくほこりっぽい空だけ。暗くなってからまた来よう。"
 
-#: story/eggs.gd:763
+#: story/eggs.gd:772
 msgid "SOLD OUT"
 msgstr "売り切れ"
 
-#: story/eggs.gd:781
+#: story/eggs.gd:790
 msgid "QUACK!"
 msgstr "グワッ！"
 
-#: story/eggs.gd:799
+#: story/eggs.gd:808
 msgid "NEW CHALLENGER!"
 msgstr "新たな挑戦者！"
 
-#: story/eggs.gd:802
+#: story/eggs.gd:811
 msgid "GAME OVER  ·  SCORE 12"
 msgstr "ゲームオーバー  ·  スコア 12"
 
-#: story/eggs.gd:830
+#: story/eggs.gd:839
 msgid "hi, Gus"
 msgstr "やあ、ガス"
 
-#: story/eggs.gd:875
+#: story/eggs.gd:884
 msgid "CONFETTI"
 msgstr "紙吹雪"
 
-#: story/eggs.gd:875
+#: story/eggs.gd:884
 msgid "LIGHT JAZZ"
 msgstr "ライトジャズ"
 
-#: story/eggs.gd:875
+#: story/eggs.gd:884
 msgid "99% DUCKS"
 msgstr "アヒル率 99%"
 
-#: story/eggs.gd:875
+#: story/eggs.gd:884
 msgid "SUNNY (INDOORS)"
 msgstr "晴れ（屋内）"
 
-#: story/eggs.gd:875
+#: story/eggs.gd:884
 msgid "FOG OF NOODLES"
 msgstr "ヌードルの霧"
 
-#: story/eggs.gd:880
+#: story/eggs.gd:889
 msgid "1ST PLACE"
 msgstr "1位"
 
-#: story/eggs.gd:938
+#: story/eggs.gd:947
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr "アヒルがキュッと秘密をささやく：「%s」で %s デザインが解放される。"
 
-#: story/eggs.gd:939
+#: story/eggs.gd:948
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "アヒルは知っていることを全部教えてくれた。グワッ。"
 
-#: story/eggs.gd:1170
+#: story/eggs.gd:1179
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "珍品発見：%s（%d / %d）   %s"
 
-#: story/eggs.gd:1181
+#: story/eggs.gd:1190
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "リストの珍品をぜんぶ見つけた。Lumi のコレクション室は思い出でいっぱい。"
 
@@ -2362,7 +2346,7 @@ msgstr "また帰ってくる"
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr "実績を %d 個解除。図鑑（K）で見られます。"
 
-#: systems/achievements.gd:167 ui/notify_stack.gd:27 ui/subtitles.gd:453
+#: systems/achievements.gd:167 ui/notify_stack.gd:27 ui/subtitles.gd:450
 msgid "Achievement: %s. %s"
 msgstr "実績：%s。%s"
 
@@ -2766,35 +2750,35 @@ msgstr "Verdance の Cradle号の帰還で建造しよう"
 msgid "Rocket drive built: %s."
 msgstr "ロケット推進を建造：%s。"
 
-#: systems/homeward_director.gd:277
+#: systems/homeward_director.gd:290
 msgid "Intercepted: %s"
 msgstr "傍受：%s"
 
-#: systems/homeward_director.gd:284
+#: systems/homeward_director.gd:305
 msgid "%s: %s"
 msgstr "%s：%s"
 
-#: systems/homeward_director.gd:294
+#: systems/homeward_director.gd:315
 msgid "%s is restored. System: %d%%."
 msgstr "%s が再生した。星系：%d%%。"
 
-#: systems/homeward_director.gd:297
+#: systems/homeward_director.gd:318
 msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
 msgstr "遺物：%s。家宝の選択 +1（アークブリッジ）。"
 
-#: systems/homeward_director.gd:304
+#: systems/homeward_director.gd:325
 msgid "Every planet in the system is alive. Go back to Verdance's Cradle Returns and build the Mk VII Homeward rocket."
 msgstr "星系のすべての惑星が生き返った。Verdance の Cradle号の帰還に戻って、Mk VII 帰郷ロケットを造ろう。"
 
-#: systems/homeward_director.gd:479
+#: systems/homeward_director.gd:500
 msgid "E   launch home"
 msgstr "E   ふるさとへ発射"
 
-#: systems/homeward_director.gd:479
+#: systems/homeward_director.gd:500
 msgid "E   plant the last seed"
 msgstr "E   最後の種を植える"
 
-#: systems/homeward_director.gd:490
+#: systems/homeward_director.gd:511
 msgid "The last seed is in the ground. Everything is ready. Press E again here to launch home."
 msgstr "最後の種が土に入った。準備は全部できた。もう一度ここで E を押すと、ふるさとへ発射する。"
 
@@ -3586,7 +3570,7 @@ msgstr "%s  ·  ヘックス %d  ·  アークウェーブ %d  ·  珍品 %d"
 msgid "restored"
 msgstr "再生済み"
 
-#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:788
+#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:818
 msgid "You are here"
 msgstr "現在地"
 
@@ -3607,7 +3591,7 @@ msgid "The Cradle has to come home first."
 msgstr "まずは Cradle号が帰ってこないと。"
 
 #: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:355
-#: ui/rockets_panel.gd:88 ui/system_map.gd:738
+#: ui/rockets_panel.gd:88 ui/system_map.gd:739
 msgid "Launch"
 msgstr "発射"
 
@@ -4863,44 +4847,44 @@ msgstr "%s  基地"
 msgid "CARRYING %d/%d"
 msgstr "運搬中 %d/%d"
 
-#: ui/hud.gd:377
+#: ui/hud.gd:383
 msgid "HEX  CLEAR"
 msgstr "ヘックス  きれい"
 
-#: ui/hud.gd:381
+#: ui/hud.gd:387
 msgid "HEX  %s"
 msgstr "ヘックス  %s"
 
-#: ui/hud.gd:384
+#: ui/hud.gd:390
 msgid "  SUSTAIN %d%%"
 msgstr "  維持 %d%%"
 
-#: ui/hud.gd:386
+#: ui/hud.gd:392
 msgid "  THIRSTY"
 msgstr "  水不足"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:416
+#: ui/hud.gd:422
 msgid "%s   pick up bale"
 msgstr "%s   ベールを持つ"
 
-#: ui/hud.gd:417
+#: ui/hud.gd:423
 msgid "%s   dig up part"
 msgstr "%s   パーツを掘り出す"
 
-#: ui/hud.gd:418
+#: ui/hud.gd:424
 msgid "%s   read memory shard"
 msgstr "%s   メモリーの破片を読む"
 
-#: ui/hud.gd:419
+#: ui/hud.gd:425
 msgid "%s   pick up the seed tin"
 msgstr "%s   種の缶を拾う"
 
-#: ui/hud.gd:420
+#: ui/hud.gd:426
 msgid "%s   set bale down"
 msgstr "%s   ベールを置く"
 
-#: ui/hud.gd:421
+#: ui/hud.gd:427
 msgid "%s   workbench"
 msgstr "%s   作業台"
 
@@ -5829,7 +5813,7 @@ msgstr "%.1f km"
 msgid "Fly"
 msgstr "飛ぶ"
 
-#: ui/rocket_picker.gd:173 ui/system_map.gd:729 data/goals.json:goals[home_launch].text
+#: ui/rocket_picker.gd:173 ui/system_map.gd:730 data/goals.json:goals[home_launch].text
 msgid "Launch home"
 msgstr "ふるさとへ発射"
 
@@ -6285,39 +6269,39 @@ msgstr "Lumi はここ"
 msgid "Ready to launch"
 msgstr "発射準備完了"
 
-#: ui/system_map.gd:719 ui/system_map.gd:734
+#: ui/system_map.gd:720 ui/system_map.gd:735
 msgid "Choose a district"
 msgstr "地区を選ぶ"
 
-#: ui/system_map.gd:719
+#: ui/system_map.gd:720
 msgid "Launch from the rocket pad"
 msgstr "ロケット発射台から出発"
 
-#: ui/system_map.gd:724
+#: ui/system_map.gd:725
 msgid "Hubs on this planet"
 msgstr "この惑星の基地"
 
-#: ui/system_map.gd:752
+#: ui/system_map.gd:754
 msgid "System %d%% restored  ·  relics %d/%d"
 msgstr "星系 %d%% 復元  ·  遺物 %d/%d"
 
-#: ui/system_map.gd:754
+#: ui/system_map.gd:756
 msgid "%d Heirloom picks"
 msgstr "家宝の選択 %d 回"
 
-#: ui/system_map.gd:756
+#: ui/system_map.gd:758
 msgid "Left/Right planet  ·  A zoom  ·  B back"
 msgstr "左右 惑星  ·  A ズーム  ·  B 戻る"
 
-#: ui/system_map.gd:774
+#: ui/system_map.gd:804
 msgid "Build the drive"
 msgstr "ドライブを建造"
 
-#: ui/system_map.gd:790
+#: ui/system_map.gd:820
 msgid "Not discovered yet"
 msgstr "まだ未発見"
 
-#: ui/system_map.gd:796
+#: ui/system_map.gd:826
 msgid "Rocket not ready"
 msgstr "ロケットの準備ができていない"
 
@@ -12089,6 +12073,10 @@ msgstr ""
 "立会人：WREN、Cradle号の世話係\n"
 "立会人：LM-1（小さな油じみを残した）"
 
+#: data/machine_art.json:baler.body
+msgid "#33609e"
+msgstr ""
+
 #: data/museum.json:exhibits[gnomes].hint
 msgid "Five garden gnomes guard Old Town's streets. Pick them up."
 msgstr "5体の庭ノームが旧市街の通りを守っている。拾い集めよう。"
@@ -14531,6 +14519,98 @@ msgstr "清掃の最前線に設置する油圧ベールプレス。清掃ロボ
 msgid "Shredder drums and a little smelter. Bales go in and never come back: out come parts and clean building stock. Every bale burnt clean helps the sky."
 msgstr "シュレッダードラムと小さな溶鉱炉。ベールは入ったら二度と戻らない。出てくるのはパーツときれいな建材。きれいに燃やしたベールは空のためになる。"
 
+#: data/story_arc.json:home.why
+msgid "The Cradle needs fuel to fly home and power to wake the Settlers."
+msgstr "Cradle号が家に帰るには燃料が、入植者を起こすにはパワーがいる。"
+
+#: data/story_arc.json:home.meter
+msgid "Home: fuel {fuel}/{fuel_need}, power {power}/{power_need}"
+msgstr "家まで：燃料 {fuel}/{fuel_need}、パワー {power}/{power_need}"
+
+#: data/story_arc.json:home.home_line
+msgid "To go home we need {fuel_need} fuel and {power_need} power. We have {fuel} fuel and {power} power."
+msgstr "家に帰るには燃料が {fuel_need}、パワーが {power_need} いる。いまは燃料 {fuel}、パワー {power} だよ。"
+
+#: data/story_arc.json:home.next
+msgid "{planet} is next. {reason}"
+msgstr "次は {planet}。{reason}"
+
+#: data/story_arc.json:home.gives_text
+msgid "Gives fuel {fuel} and power {power}"
+msgstr "燃料 {fuel} とパワー {power} がもらえる"
+
+#: data/story_arc.json:home.gave_text
+msgid "Gave fuel {fuel} and power {power}"
+msgstr "燃料 {fuel} とパワー {power} をもらった"
+
+#: data/story_arc.json:home.full
+msgid "Fuel and power are full. Time to go home."
+msgstr "燃料もパワーも満タン。家に帰ろう。"
+
+#: data/story_arc.json:planets.verdance.reason
+msgid "The Settlers' home, where Lumi's pod fell."
+msgstr "入植者たちのふるさと。Lumiのポッドが落ちた場所。"
+
+#: data/story_arc.json:planets.verdance.arrive
+msgid "Home again. Look, Lumi: your robots kept cleaning while we were away."
+msgstr "ただいま。見て、Lumi。わたしたちがいない間も、ロボットたちがそうじを続けてくれてた。"
+
+#: data/story_arc.json:planets.verdance.leave
+msgid "The star map shows four more worlds. The Ledger buried every one. Why?"
+msgstr "星図には、あと四つの世界がある。Ledger はそのぜんぶをうめた。どうして？"
+
+#: data/story_arc.json:planets.ochre.reason
+msgid "Its sun and wind can fill up our power."
+msgstr "あそこの太陽と風で、パワーをいっぱいにできる。"
+
+#: data/story_arc.json:planets.ochre.arrive
+msgid "Ochre. Hot sand and two big suns. The Ledger dug its very first pit here."
+msgstr "Ochre。熱い砂と、二つの大きな太陽。Ledger はここで最初の穴をほったんだ。"
+
+#: data/story_arc.json:planets.ochre.leave
+msgid "Hear that? A radio on Tidewell, still calling for help after all this time."
+msgstr "聞こえる？ Tidewell の無線が、こんなに時間がたっても助けを呼んでる。"
+
+#: data/story_arc.json:planets.tidewell.reason
+msgid "Its sea water can be made into fuel. And someone is calling."
+msgstr "あそこの海の水は燃料にできる。それに、だれかが呼んでる。"
+
+#: data/story_arc.json:planets.tidewell.arrive
+msgid "Tidewell. Islands and rain, and the harbour radio is still on."
+msgstr "Tidewell。島と雨。港の無線はまだついてる。"
+
+#: data/story_arc.json:planets.tidewell.leave
+msgid "The dredger logs say the Ledger sold Rime's heat. How do you sell heat?"
+msgstr "しゅんせつ船の記録には、Ledger が Rime の熱を売ったって書いてある。熱ってどうやって売るの？"
+
+#: data/story_arc.json:planets.rime.reason
+msgid "Its ice is frozen fuel, and there is lots of it."
+msgstr "あそこの氷はこおった燃料。しかも、たっぷりある。"
+
+#: data/story_arc.json:planets.rime.arrive
+msgid "Rime. So cold, Lumi. The Ledger took this moon's warm heart."
+msgstr "Rime。すごく寒いね、Lumi。Ledger はこの月のあたたかい心をうばったんだ。"
+
+#: data/story_arc.json:planets.rime.leave
+msgid "Every Ledger memo comes from one head office. It is on Anvil."
+msgstr "Ledger のメモはぜんぶ、ひとつの本社から来てる。本社は Anvil にある。"
+
+#: data/story_arc.json:planets.anvil.reason
+msgid "The Ledger's head office. Its big reactor has the last power we need."
+msgstr "Ledger の本社。その大きな原子炉に、最後に必要なパワーがある。"
+
+#: data/story_arc.json:planets.anvil.arrive
+msgid "Anvil. Rust from top to bottom, and the Ledger's lights are still on."
+msgstr "Anvil。上から下までサビだらけ。Ledger の明かりはまだついてる。"
+
+#: data/story_arc.json:planets.anvil.leave
+msgid "The Ledger balanced its books at last. It is giving us its power."
+msgstr "Ledger がやっと帳じりを合わせた。パワーをわたしたちにくれるって。"
+
+#: data/story_arc.json:cradle.reason
+msgid "Next stop: the Cradle. Fuel and power are full. Let's go home."
+msgstr "次の行き先は Cradle号。燃料もパワーも満タン。家に帰ろう。"
+
 #: data/story_reasons.json:goal_reasons
 msgid "One more step toward a green world."
 msgstr "緑の世界へ、また一歩。"
@@ -16927,6 +17007,18 @@ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "AUTO-BALER"
+#~ msgstr "オートベーラー"
+
+#~ msgid "KEEP CLEAR · 40 T"
+#~ msgstr "立入禁止 · 40 T"
+
+#~ msgid "TO  SCALE  ◀"
+#~ msgstr "はかり  へ  ◀"
+
+#~ msgid "BALE  FEED"
+#~ msgstr "ベール投入口"
 
 #~ msgid "Research Dune Charts"
 #~ msgstr "「砂丘の海図」を研究する"

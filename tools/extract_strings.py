@@ -43,6 +43,9 @@ JSON_RULES: dict[str, dict] = {
     "*": {"keys": COMMON_KEYS},
     "wren_lines.json": {"all_top": True},
     "story_reasons.json": {"all_top": True},  # [v6story] goal reasons and the exit beat
+    # [v7arc] the story spine: shown fields only (from / answers / ledger / question are builder notes)
+    "story_arc.json": {"keys": {"reason", "arrive", "leave", "meter", "home_line", "next", "gives_text",
+                                "gave_text", "full", "why"}},
     "shards.json": {"keys": COMMON_KEYS | {"kind"}},
     "ledger.json": {"keys": COMMON_KEYS, "pools": {"act1", "act2", "act3", "coupons", "drop_warn", "friendly",
                                                    "jammed", "lonely", "cinematic"}},
