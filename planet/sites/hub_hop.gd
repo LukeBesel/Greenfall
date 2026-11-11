@@ -32,6 +32,7 @@ const SKIP_AFTER_S: float = 0.35
 const APPROACH_PITCH: float = -0.16
 const APPROACH_DIST: float = 20.0
 var _skipped: bool = false
+var _shot_done: Dictionary = {}
 var _skip_hint: CanvasLayer
 
 
@@ -45,11 +46,10 @@ func _show_skip_hint(on: bool) -> void:
 	_skip_hint.layer = 91
 	add_child(_skip_hint)
 	var l := PromptLabel.new(tr("{interact}  skip"), 13)
-	l.align_center = true
-	l.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
-	l.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	l.offset_top = -46.0
-	l.offset_bottom = -22.0
+	l.set_anchors_preset(Control.PRESET_TOP_RIGHT)  # clear of the subtitle bar
+	l.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	l.offset_right = -24.0
+	l.offset_top = 18.0
 	l.modulate.a = 0.75
 	_skip_hint.add_child(l)
 
@@ -98,6 +98,10 @@ func hop_with(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTerra
 	# [v6hubs] No toast: the arrival shows the town's name. E / jump skips a leg (hint on screen).
 	_skipped = false
 	_show_skip_hint(true)
+	var hud: Variant = get_parent().get("hud") if get_parent() else null  # a clean screen for the flight
+	var hud_was: bool = hud is CanvasLayer and (hud as CanvasLayer).visible
+	if hud_was:
+		(hud as CanvasLayer).visible = false
 	var old_pitch: float = cam.pitch
 	var out_fwd: Vector3 = axis.cross(dir_a).normalized()
 	cam.reset_frame(out_fwd)
@@ -137,6 +141,8 @@ func hop_with(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTerra
 			await _fade(1.0)
 	_show_skip_hint(false)
 	cam.pitch = old_pitch
+	if hud_was and is_instance_valid(hud):
+		(hud as CanvasLayer).visible = true
 	var b: Transform3D = sm.pad_xf(to_i)
 	ship.global_transform = b
 	ship.set_lift(0.0)
@@ -321,6 +327,13 @@ func _leg(dir_a: Vector3, axis: Vector3, a0: float, a1: float, outbound: bool, t
 		_focus.global_position = pos + d * 2.0
 		lumi.global_position = pos
 		prev = pos
+		if DevHooks.has("hop-shots"):  # dev: --hop-shots=PREFIX saves the flight's key frames
+			for mark: float in [0.4, 0.8]:
+				var key: String = "%s_%d" % ["out" if outbound else "in", int(mark * 10)]
+				if k >= mark and not _shot_done.has(key):
+					_shot_done[key] = true
+					await RenderingServer.frame_post_draw
+					DevHooks.save_viewport("%s_%s.png" % [DevHooks.get_s("hop-shots", "screenshots/hop"), key])
 		await get_tree().process_frame
 
 

@@ -132,6 +132,10 @@ func _wire_survey() -> void:
 			_sync_rocket()
 			open_rocket()
 			print("[rocket] parked %s at site %d, list %s, prompt '%s'" % [rocket_spot.visible, rocket_site(), str(picker.offered_sites()), rocket_prompt()])
+			if DevHooks.has("hop-shots"):  # [v6hubs] dev: a picture of the list
+				get_tree().create_timer(0.6, true, false, true).timeout.connect(func() -> void:
+					await RenderingServer.frame_post_draw
+					DevHooks.save_viewport("%s_picker.png" % DevHooks.get_s("hop-shots", "screenshots/hop")))
 			for e: Dictionary in destinations():  # [v6hubs]
 				print("[rocket]   site %d: %s | %s | %s | %s | %s%s" % [int(e["site"]), e["name"], e.get("town", ""), e.get("offer", ""), e.get("state", ""), e.get("robots", ""), " | " + str(e["tag"]) if str(e.get("tag", "")) != "" else ""]))
 	if DevHooks.has("orbit-survey-launch"):  # dev: fly to the Nth hub of the rocket's list

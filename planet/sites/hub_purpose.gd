@@ -451,7 +451,7 @@ func _refresh() -> void:
 			else:
 				body = ""
 	card_text = (title + ": " + body) if body != "" else ""
-	_card.visible = body != "" and not bool(so.w.get("launching"))
+	_card.visible = body != "" and not bool(so.w.get("launching")) and not (_title != null and is_instance_valid(_title))  # the name first, then the step
 	if _card.visible:
 		_card_title.text = title.to_upper()
 		_card_body.text = body
@@ -611,8 +611,8 @@ func show_title(i: int) -> void:
 	vb.set_anchors_preset(Control.PRESET_CENTER)
 	vb.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	vb.grow_vertical = Control.GROW_DIRECTION_BOTH
-	vb.offset_top = -150.0
-	vb.offset_bottom = -150.0
+	vb.offset_top = -120.0
+	vb.offset_bottom = -120.0
 	vb.add_theme_constant_override("separation", 2)
 	var big: Label = UITheme.label(nm.to_upper(), 40, CREAM)
 	big.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -635,7 +635,13 @@ func show_title(i: int) -> void:
 	tw.tween_interval(3.0)
 	tw.tween_property(vb, "modulate:a", 0.0, 0.9)
 	tw.tween_callback(vb.queue_free)
+	_card.visible = false
 	print("[hubs] arrived at site %d: %s (%s)" % [i, nm, sub_t])
+	if DevHooks.has("hop-shots"):  # dev: the arrival frame, and one 9 s later (the dev chain's wake)
+		for wait: float in [1.6, 9.0]:
+			get_tree().create_timer(wait, true, false, true).timeout.connect(func() -> void:
+				await RenderingServer.frame_post_draw
+				DevHooks.save_viewport("%s_land_%d.png" % [DevHooks.get_s("hop-shots", "screenshots/hop"), int(wait)]))
 
 
 ## Dev (--hub-dev-chain[=T]): T s after each arrival at a far hub, cleans the hexes its chain asks
