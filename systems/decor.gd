@@ -34,6 +34,8 @@ static func types() -> Array:
 static func type_ids() -> Array[String]:
 	var out: Array[String] = []
 	for t: Dictionary in types():
+		if int(t.get("needs_chips", 0)) > 0 and not WeeklyChallenge.enabled():  # [v6screens] no chips to earn while the weekly is off
+			continue
 		out.append(str(t["id"]))
 	return out
 

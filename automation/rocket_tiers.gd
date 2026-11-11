@@ -69,6 +69,7 @@ static func upgrade() -> bool:
 	if not Hub.pay(nd.get("cost", {})):
 		return false
 	GameState.flags["rocket_tier"] = int(nd["tier"])
+	GameState.stats["rocket_tier"] = int(nd["tier"])  # [v6pace] the card's "Upgrade the rocket" steps read it
 	# A new rocket comes with full cells.
 	GameState.flags.erase("rocket_ready_unix")
 	EventBus.toast.emit(TranslationServer.translate("Rocket upgraded: %s.") % TranslationServer.translate(str(nd["name"])), "story")

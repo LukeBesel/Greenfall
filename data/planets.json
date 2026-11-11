@@ -11,7 +11,7 @@
       "level_at": [0.2, 0.45, 0.75]
     },
     "hubs": [
-      {"_doc": "[v6hubs] One entry per hub. site: SiteManager index (0 = start). order: place on the main path. town: the town's look as shown (the look itself is VerdanceSite.KIND_BY_HUB). landmark.kind: StreetDressing landmark (water_tower, crane, ferris_wheel, radio_mast, smokestack, old_bus, windpump, lighthouse). desc: the picker's 'why go'. piece: the rocket piece the wake gives (flags rocket_piece_<id>, rocket_pieces). gift: cubes / parts / seeds / research (a node granted free) / design (a Lumi design) / flag. boosts (optional, none on Verdance: the per-hub multiplier is data/hub.json far_hub.sell_growth): stat multipliers while the hub is woken, [{stat, mult, text}] (Economy.stat ids; '*.speed' = every robot type). hint: the arrival line. chain: steps {do: clean, hexes} / {do: outposts, count} / {do: wake}.",
+      {"_doc": "[v6hubs] One entry per hub. site: SiteManager index (0 = start). order: place on the main path. town: the town's look (oldtown, downtown, suburb, industrial; VerdanceSite builds it, except where the lake reaches into the town, which is always a harbour). landmark.kind: StreetDressing landmark (water_tower, crane, ferris_wheel, radio_mast, smokestack, old_bus, windpump, lighthouse). desc: the picker's 'why go'. piece: the rocket piece the wake gives (flags rocket_piece_<id>, rocket_pieces). gift: cubes / parts / seeds / research (a node granted free) / design (a Lumi design) / flag. boosts (optional, none on Verdance: the per-hub multiplier is data/hub.json far_hub.sell_growth): stat multipliers while the hub is woken, [{stat, mult, text}] (Economy.stat ids; '*.speed' = every robot type). hint: the arrival line. chain: steps {do: clean, hexes} / {do: outposts, count} / {do: wake}.",
        "site": 0, "order": 1, "id": "landing_yard", "home": true, "name": "Landing Yard", "town": "oldtown",
        "landmark": {"kind": "water_tower", "name": "Water Tower"},
        "desc": "Home. The pod, the workbench and your first robots."},
@@ -32,7 +32,7 @@
        "landmark": {"kind": "radio_mast", "name": "Signal Mast"},
        "desc": "The Makers' star chart: it shows where the rocket can fly.",
        "piece": {"id": "chart", "name": "Star Chart"},
-       "gift": {"cubes": 2000},
+       "gift": {"cubes": 12000},
        "hint": "The city centre. The Signal Mast kept the star chart of every route out."},
       {"site": 2, "order": 5, "id": "fairground", "name": "Fairground", "town": "oldtown",
        "landmark": {"kind": "ferris_wheel", "name": "Big Wheel"},

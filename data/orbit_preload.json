@@ -190,6 +190,8 @@
 		"lite:vintage_microwave@320",
 		"lite:vintage_microwave@80",
 		"lite:street_rat@900",
-		"street_rat"
+		"street_rat",
+		"lite:nettle_plant@400",
+		"lite:grass_medium_02@400"
 	]
 }

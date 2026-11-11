@@ -31,9 +31,12 @@ class SiteLights:
 	extends StreetPower
 	const SITE_ALL: int = 4
 	var grid: SphereGrid
+	var life: TownLife  # [v6life] the town's blocks wake up as they are cleaned and planted
 
 	func powered(g: Dictionary) -> bool:
 		if super(g):
+			return true
+		if life and is_instance_valid(life) and life.lights_on(g):  # [v6life]
 			return true
 		var h: int = int(g["hex"])
 		if h < 0 or hex_levels == null or hex_levels.level_of(h) >= 0:
@@ -67,6 +70,11 @@ static func attach(vs: Node3D, grid: SphereGrid, hex_levels: Node, hub_level: in
 	if not groups.is_empty():
 		sp.add_groups(groups)
 	sp.apply(false)
+	var tl: Variant = vs.get_node_or_null("TownLife")  # [v6life] per block: lamps when clean, signs when planted
+	if tl is TownLife:
+		sp.life = tl
+		(tl as TownLife).settled.connect(func() -> void: sp.apply(false))
+		(tl as TownLife).stage_changed.connect(func(_k: Vector2i, _s: int) -> void: sp.apply(true))
 	if DevHooks.has("power-report"):
 		var t: float = DevHooks.get_f("power-report", 6.0)
 		var wr: WeakRef = weakref(sp)

@@ -6,7 +6,7 @@
     "research": [["bench_tier", 3]],
     "build": [["builds"]],
     "contracts": [["bench_tier", 4]],
-    "rockets": [["hub_level", 4]]
+    "rockets": [["stat", "hubs_woken", 1], ["hub_level", 4]]
   },
   "tiers": [
     {"name": "Workbench", "desc": "The repaired bench: upgrades for Lumi and things to build.", "tabs": ["patch", "build"]},

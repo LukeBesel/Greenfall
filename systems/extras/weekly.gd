@@ -28,6 +28,18 @@ static func cfg() -> Dictionary:
 	return _cfg
 
 
+## [v6screens] The one switch (data/weekly.json "enabled"). Off: no tab, no decorations, no
+## achievements shown, and start() refuses. `enabled_override` (-1 = use the file) is for tests
+## and the dev hooks (`--weekly`, `--extras=weekly`).
+static var enabled_override: int = -1
+
+
+static func enabled() -> bool:
+	if enabled_override >= 0:
+		return enabled_override == 1
+	return bool(cfg().get("enabled", false)) or DevHooks.has("weekly") or DevHooks.get_s("extras", "") == "weekly"
+
+
 static func slot() -> int:
 	return int(cfg().get("slot", 9))
 
@@ -245,7 +257,7 @@ static func prepare_state() -> void:
 
 ## Leaves the current world (saved first) for this week's challenge.
 static func start(tree: SceneTree = null) -> bool:
-	if active:
+	if active or not enabled():  # [v6screens]
 		return false
 	if tree:
 		SaveManager.save_game()
