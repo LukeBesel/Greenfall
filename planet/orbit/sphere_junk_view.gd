@@ -229,6 +229,7 @@ func update_bands(cam: Vector3) -> void:
 	if cam.distance_squared_to(_last_cam) < 0.25:
 		return
 	_last_cam = cam
+	_grow_pid_arrays()  # a shown cell may have had waste laid on it again since the last pump
 	var flips: int = 0
 	for c: int in _band:
 		var was: int = _band[c]

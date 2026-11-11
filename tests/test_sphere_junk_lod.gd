@@ -85,3 +85,30 @@ func test_ring_leaves() -> void:
 		for pid: int in _field.pieces_in(c):
 			n += _field.piece_alive[pid]
 	assert_eq(_view.counts().x + _view.counts().y, n, "cells that left the ring are hidden")
+
+
+## B39: a shown cell that gets new pieces before the next pump (waste laid again on it) must not
+## break the band update: the per-piece arrays grow first (it was an out-of-bounds script error
+## in a bot run, after a rocket hop back to the start yard).
+func test_band_update_survives_pieces_laid_on_a_shown_cell_since_the_last_pump() -> void:
+	_cam.global_position = _centre + _centre.normalized() * 5.0
+	_view.rebuild(_cells)
+	_view.flush()
+	_view.update_bands(_cam.global_position)
+	var cell: int = -1
+	for c: int in _cells:
+		if _field.hex_water[c] == 0 and _field.hex_hub[c] == 0 and not _field.pieces_in(c).is_empty():
+			cell = c
+			break
+	assert_gt(cell, -1, "a shown land cell with pieces")
+	for pid: int in _field.sweep_cell(cell):
+		_view.hide_piece(pid)
+	_field.hex_pieces[cell] = PackedInt32Array()
+	_field.cells.set_state(cell, PlanetData.State.JUNK)
+	_field.cells.set_junk(cell, 1.0)
+	var laid: PackedInt32Array = _field.lay_again(cell)
+	assert_false(laid.is_empty(), "new pieces on the shown cell")
+	var far_cell: int = _cells[_cells.size() - 1]
+	_cam.global_position = _field.hex_center(far_cell) + _field.hex_center(far_cell).normalized() * 5.0
+	_view.update_bands(_cam.global_position)
+	assert_gte(_view._where.size(), _field.piece_pos.size(), "every piece id has a place in the view's arrays")
