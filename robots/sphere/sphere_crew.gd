@@ -805,7 +805,7 @@ func _promote(u: Dictionary) -> void:
 		var bd := BotBadge.new()
 		bd.name = "Badge"
 		b.add_child(bd)
-		bd.setup(str(u["role"]))
+		bd.setup(str(u["role"]), BotBadge.top_of(b.visual) + 0.22)
 	u["bot"] = b
 	_near_n += 1
 	SphereBales.dress_cargo(b, (u["carry"] as Array).size())

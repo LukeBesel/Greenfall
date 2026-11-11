@@ -309,80 +309,80 @@ msgstr "[ÔÛŢÞÔŠŢ %d  ·  ÔÑĻÎÑÉ ~~~~]"
 msgid "RECHARGE"
 msgstr "[ŔÉÇĤÀŔĜÉ ~]"
 
-#: automation/outposts.gd:321 automation/outposts.gd:335
+#: automation/outposts.gd:332 automation/outposts.gd:346
 msgid "No outpost."
 msgstr "[Ñô ôûţþôšţ. ~]"
 
-#: automation/outposts.gd:323
+#: automation/outposts.gd:334
 msgid "Already repaired."
 msgstr "[Àļŕéàðý ŕéþàîŕéð. ~~~]"
 
-#: automation/outposts.gd:327
+#: automation/outposts.gd:338
 msgid "Clear the junk around it first (%d%% of %d%%)."
 msgstr "[Çļéàŕ ţĥé ĵûñķ àŕôûñð îţ ƒîŕšţ (%d%% ôƒ %d%%). ~~~~~~~~~~~~~]"
 
-#: automation/outposts.gd:329 automation/outposts.gd:344 automation/stations.gd:131
+#: automation/outposts.gd:340 automation/outposts.gd:355 automation/stations.gd:131
 #: systems/camp/hub_builds.gd:79
 msgid "Not enough cubes or parts."
 msgstr "[Ñôţ éñôûĝĥ çûbéš ôŕ þàŕţš. ~~~~~~]"
 
-#: automation/outposts.gd:338
+#: automation/outposts.gd:349
 msgid "Repair it first."
 msgstr "[Ŕéþàîŕ îţ ƒîŕšţ. ~~~]"
 
-#: automation/outposts.gd:340 automation/trash_bin.gd:82 ui/bench_tiers.gd:83
+#: automation/outposts.gd:351 automation/trash_bin.gd:82 ui/bench_tiers.gd:83
 msgid "Fully upgraded."
 msgstr "[Fûļļý ûþĝŕàðéð. ~~]"
 
-#: automation/outposts.gd:361
+#: automation/outposts.gd:372
 msgid "Outpost %d repaired: a working scale on the frontier. Haul Bugs deliver to the nearest scale now."
 msgstr "[Ôûţþôšţ %d ŕéþàîŕéð: à ŵôŕķîñĝ šçàļé ôñ ţĥé ƒŕôñţîéŕ. Ĥàûļ Bûĝš ðéļîvéŕ ţô ţĥé ñéàŕéšţ šçàļé ñôŵ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: automation/outposts.gd:362
+#: automation/outposts.gd:373
 msgid "OUTPOST ONLINE"
 msgstr "[ÔÛŢÞÔŠŢ ÔÑĻÎÑÉ ~~]"
 
-#: automation/outposts.gd:384
+#: automation/outposts.gd:395
 msgid "Outpost %d upgraded: %s. %s"
 msgstr "[Ôûţþôšţ %d ûþĝŕàðéð: %s. %s ~~~~~~]"
 
-#: automation/outposts.gd:413
+#: automation/outposts.gd:424
 msgid "E   Ruined outpost · clear its hex first (%d%% / %d%%)"
 msgstr "E   [Ŕûîñéð ôûţþôšţ · çļéàŕ îţš ĥéx ƒîŕšţ (%d%% / %d%%) ~~~~~~~~~~~~~~~]"
 
-#: automation/outposts.gd:414
+#: automation/outposts.gd:425
 msgid "E   Repair outpost · %s%s"
 msgstr "E   [Ŕéþàîŕ ôûţþôšţ · %s%s ~~~~]"
 
-#: automation/outposts.gd:414 automation/outposts.gd:417
+#: automation/outposts.gd:425 automation/outposts.gd:428
 msgid "  (need more)"
 msgstr "  [(ñééð môŕé) ~~]"
 
-#: automation/outposts.gd:416
+#: automation/outposts.gd:427
 msgid "E   Outpost %d · %s · bales +%d%%"
 msgstr "E   [Ôûţþôšţ %d · %s · bàļéš +%d%% ~~~~~~~]"
 
-#: automation/outposts.gd:417
+#: automation/outposts.gd:428
 msgid "E   Upgrade outpost: %s · %s%s"
 msgstr "E   [Ûþĝŕàðé ôûţþôšţ: %s · %s%s ~~~~~~]"
 
-#: automation/outposts.gd:427
+#: automation/outposts.gd:438
 msgid "Outpost %d: %s"
 msgstr "[Ôûţþôšţ %d: %s ~~]"
 
-#: automation/outposts.gd:434
+#: automation/outposts.gd:445
 msgid "Outpost %d upgrade: %s"
 msgstr "[Ôûţþôšţ %d ûþĝŕàðé: %s ~~~~~]"
 
-#: automation/outposts.gd:437
+#: automation/outposts.gd:448
 msgid "Outpost %d: %s. Bales sell for +%d%% here; robots crossing the pad get a speed charge."
 msgstr "[Ôûţþôšţ %d: %s. Bàļéš šéļļ ƒôŕ +%d%% ĥéŕé; ŕôbôţš çŕôššîñĝ ţĥé þàð ĝéţ à šþééð çĥàŕĝé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: automation/outposts.gd:540
+#: automation/outposts.gd:551
 msgid "OUTPOST %d  RUINED · repair at %d%% clear"
 msgstr "[ÔÛŢÞÔŠŢ %d  ŔÛÎÑÉÐ · ŕéþàîŕ àţ %d%% çļéàŕ ~~~~~~~~~~~]"
 
-#: automation/outposts.gd:541
+#: automation/outposts.gd:552
 msgid "OUTPOST %d  %s"
 msgstr "[ÔÛŢÞÔŠŢ %d  %s ~~]"
 
@@ -943,55 +943,55 @@ msgstr "[BÛŔÎÉÐ ÞÀŔŢ  %s  ·  %.1f m ~~~~~~]"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "[BÛŔÎÉÐ ÞÀŔŢ  ·  ŠÎĜÑÀĻ %d%% ~~~~~~]"
 
-#: player/patch.gd:170
+#: player/patch.gd:171
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "[Ļûmî ŕàţţļéš bàçķ ûþ îñţô ţĥé ýàŕð. Ţĥàţ ŵàš ôðð. ~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:224
+#: player/patch.gd:225
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "[Ļûmî çàñ'ţ šŵîm. Ĥôvéŕ Ĵéţš àţ ţĥé ŵôŕķbéñçĥ ļéţ ĥîm ƒļôàţ ôvéŕ ļàķéš. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:348
+#: player/patch.gd:349
 msgid "No seeds yet. Keep cleaning."
 msgstr "[Ñô šééðš ýéţ. Ķééþ çļéàñîñĝ. ~~~~~~~]"
 
-#: player/patch.gd:383
+#: player/patch.gd:384
 msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 msgstr "[Šééðš ñééð çļéàñ, ôþéñ ĝŕôûñð: ñôţ šţŕééţš, ķéŕbš ôŕ ţĥé þàð. ~~~~~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:390
+#: player/patch.gd:391
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "[Ôûţ ôƒ šééðš. Bļôômîñĝ þļàñţš ðŕôþ môŕé. ~~~~~~~~~~~]"
 
-#: player/patch.gd:397
+#: player/patch.gd:398
 msgid "Watering can is empty. Refill at the hub."
 msgstr "[Ŵàţéŕîñĝ çàñ îš émþţý. Ŕéƒîļļ àţ ţĥé ĥûb. ~~~~~~~~~~~]"
 
-#: player/patch.gd:599
+#: player/patch.gd:603
 msgid "PERFECT BALE  %s"
 msgstr "[ÞÉŔFÉÇŢ BÀĻÉ  %s ~~~]"
 
-#: player/patch.gd:605
+#: player/patch.gd:609
 msgid "OVERSTUFFED  %s"
 msgstr "[ÔVÉŔŠŢÛFFÉÐ  %s ~~]"
 
-#: player/patch.gd:609
+#: player/patch.gd:613
 msgid "PURE  %s"
 msgstr "[ÞÛŔÉ  %s ~]"
 
-#: player/patch.gd:611
+#: player/patch.gd:615
 msgid "SURGE  %s"
 msgstr "[ŠÛŔĜÉ  %s ~]"
 
-#: player/patch.gd:614
+#: player/patch.gd:618
 msgid "  (streak +%d%%)"
 msgstr "  [(šţŕéàķ +%d%%) ~~~]"
 
-#: player/patch.gd:657
+#: player/patch.gd:661
 msgid "Salvaged: %s"
 msgstr "[Šàļvàĝéð: %s ~]"
 
-#: player/patch.gd:686
+#: player/patch.gd:692
 msgid "Recovered: %s"
 msgstr "[Ŕéçôvéŕéð: %s ~~]"
 
@@ -1350,49 +1350,57 @@ msgstr "[Ñô ŕôbôţš ĥéŕé ýéţ. ~~~~]"
 msgid "Build one at the workbench."
 msgstr "[Bûîļð ôñé àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~]"
 
-#: robots/sphere/command_overlay.gd:105
+#: robots/sphere/command_overlay.gd:106 robots/sphere/command_overlay.gd:158
 msgid "%d robot"
 msgid_plural "%d robots"
 msgstr[0] "[%d ŕôbôţ ~]"
 msgstr[1] "[%d ŕôbôţš ~]"
 
-#: robots/sphere/command_overlay.gd:107
+#: robots/sphere/command_overlay.gd:108
 msgid "About %d hexes an hour"
 msgstr "[Àbôûţ %d ĥéxéš àñ ĥôûŕ ~~~~~]"
 
-#: robots/sphere/command_overlay.gd:121
+#: robots/sphere/command_overlay.gd:122 robots/sphere/command_overlay.gd:159
 msgid "%d working"
 msgstr "[%d ŵôŕķîñĝ ~]"
 
-#: robots/sphere/command_overlay.gd:123
+#: robots/sphere/command_overlay.gd:124
 msgid "%d working, %d waiting"
 msgstr "[%d ŵôŕķîñĝ, %d ŵàîţîñĝ ~~~~~]"
 
-#: robots/sphere/command_overlay.gd:125
+#: robots/sphere/command_overlay.gd:126
 msgid "%d waiting"
 msgstr "[%d ŵàîţîñĝ ~]"
 
-#: robots/sphere/command_overlay.gd:129 robots/sphere/crew_talk.gd:71 robots/sphere/crew_talk.gd:75
+#: robots/sphere/command_overlay.gd:130 robots/sphere/crew_talk.gd:71 robots/sphere/crew_talk.gd:75
 msgid "Bales are piling up. Build a Haul Bug."
 msgstr "[Bàļéš àŕé þîļîñĝ ûþ. Bûîļð à Ĥàûļ Bûĝ. ~~~~~~~~~~]"
 
-#: robots/sphere/command_overlay.gd:138
+#: robots/sphere/command_overlay.gd:152
+msgid "OTHER BASES"
+msgstr "[ÔŢĤÉŔ BÀŠÉŠ ~]"
+
+#: robots/sphere/command_overlay.gd:156
+msgid "Base %d"
+msgstr "[Bàšé %d ~]"
+
+#: robots/sphere/command_overlay.gd:168
 msgid "Good! Your robots will work here first."
 msgstr "[Ĝôôð! Ýôûŕ ŕôbôţš ŵîļļ ŵôŕķ ĥéŕé ƒîŕšţ. ~~~~~~~~~~~]"
 
-#: robots/sphere/command_overlay.gd:139
+#: robots/sphere/command_overlay.gd:169
 msgid "Hold A: paint   Hold X: erase   %s: back"
 msgstr "[Ĥôļð À: þàîñţ   Ĥôļð X: éŕàšé   %s: bàçķ ~~~~~~~~~~~]"
 
-#: robots/sphere/command_overlay.gd:140
+#: robots/sphere/command_overlay.gd:170
 msgid "Left mouse: paint   Right mouse: erase   %s: back"
 msgstr "[Ļéƒţ môûšé: þàîñţ   Ŕîĝĥţ môûšé: éŕàšé   %s: bàçķ ~~~~~~~~~~~~~~]"
 
-#: robots/sphere/command_overlay.gd:142
+#: robots/sphere/command_overlay.gd:172
 msgid "Y: next job"
 msgstr "[Ý: ñéxţ ĵôb ~]"
 
-#: robots/sphere/command_overlay.gd:142
+#: robots/sphere/command_overlay.gd:172
 msgid "Tab: next job"
 msgstr "[Ţàb: ñéxţ ĵôb ~~]"
 
@@ -1538,11 +1546,11 @@ msgstr "E   [Fîx ţĥé ŵôŕķbéñçĥ ~~~]"
 msgid "E   Open the workbench"
 msgstr "E   [Ôþéñ ţĥé ŵôŕķbéñçĥ ~~~]"
 
-#: scenes/slice_orbit.gd:1002
+#: scenes/slice_orbit.gd:1005
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice_orbit.gd:1102
+#: scenes/slice_orbit.gd:1105
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "[Ŵôŕķbéñçĥ ƒîxéð. Þŕéšš É àţ îţ ţô šþéñð çûbéš ôñ ûþĝŕàðéš. ~~~~~~~~~~~~~~~~~]"
 

@@ -22,13 +22,16 @@ Everything about a planet's hubs is in `data/planets.json`, under the planet's i
 | How many hubs a rocket tier can keep | `data/rockets.json` tiers' `hubs` (v6pace) |
 
 Landmark kinds: `water_tower`, `crane`, `ferris_wheel`, `radio_mast`, `smokestack`, `old_bus`,
-`windpump`, `lighthouse`. The town's look (suburb, downtown...) is `VerdanceSite.KIND_BY_HUB`; the
-`town` field is what the picker and the arrival title say, so keep the two in step.
+`windpump`, `lighthouse`. The `town` field picks the town's look
+(`oldtown`, `downtown`, `suburb`, `industrial`) and is what the picker and the arrival title say; a
+hub where the lake reaches into the town is always built (and named) as a harbour.
 
 Code: `planet/sites/hub_plan.gd` (data and saved state), `planet/sites/hub_purpose.gd` (arrival,
 steps, the wake, the field bench, HUD lines). Check with
 `godot --headless --path . -- --fresh --orbit --no-intro --rocket --orbit-hop=9 --hub-dev-chain=3 --hub-report=20 --quit-after=50`
 (`--hub-wake=9,7` wakes hubs for free at start; `--hop-skip` skips the flight; `--hop-shots=PREFIX` saves pictures in a rendered run).
+After changing hubs, run the six-base walkthrough:
+`godot --headless --path . -- --fresh --orbit --no-intro --hop-skip --hub-walkthrough` (PASS/FAIL, docs/QA_VERDANCE.md).
 A new planet gets the same by adding `hub_defaults` and `hubs` to its entry.
 
 ## Music and sound (v6sound)
