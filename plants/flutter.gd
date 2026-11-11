@@ -9,11 +9,20 @@ extends Node3D
 ## vertex shader from the instance's home and phase; the CPU only re-homes instances when Lumi
 ## changes cell or a hex level changes. No sound, no colliders, nothing saved.
 
-const RINGS: int = 4
-const MAX_N: int = 24
+## These come from data/life.json "flutter" (core/life_cfg.gd); the values here are the fallbacks.
+static var RINGS: int = LifeCfg.integer("flutter", "rings", 4)
+static var MAX_N: int = LifeCfg.integer("flutter", "max", 24)
 ## Butterflies per cell by hex level 0..5.
-const PER_LEVEL: Array[int] = [0, 0, 1, 2, 2, 3]
-const COLORS: Array[Color] = [Color(1.0, 0.62, 0.15), Color(0.96, 0.95, 0.85), Color(0.4, 0.6, 1.0), Color(1.0, 0.85, 0.25), Color(0.9, 0.45, 0.72)]
+static var PER_LEVEL: Array[int] = LifeCfg.ints("flutter", "per_level", [0, 0, 1, 2, 2, 3], 6)
+static var COLORS: Array[Color] = LifeCfg.colors("flutter", "colors", [Color(1.0, 0.62, 0.15), Color(0.96, 0.95, 0.85), Color(0.4, 0.6, 1.0), Color(1.0, 0.85, 0.25), Color(0.9, 0.45, 0.72)])
+
+
+## Re-reads the values for the current planet (LifeCfg.use_planet).
+static func configure() -> void:
+	RINGS = LifeCfg.integer("flutter", "rings", RINGS)
+	MAX_N = maxi(1, LifeCfg.integer("flutter", "max", MAX_N))
+	PER_LEVEL = LifeCfg.ints("flutter", "per_level", PER_LEVEL, 6)
+	COLORS = LifeCfg.colors("flutter", "colors", COLORS)
 
 const BUTTERFLY: String = """
 shader_type spatial;
@@ -87,6 +96,7 @@ var _night: float = 0.0
 
 func setup(p_world: Node, globe: OrbitPlanet) -> void:
 	name = "Flutter"
+	configure()
 	world = p_world
 	cells = globe.cells
 	grid = globe.grid
@@ -170,7 +180,7 @@ func plan(centre: int) -> Array:
 			var a: float = _h(c, k * 3 + 1) * TAU
 			var r: float = _h(c, k * 3 + 2) * 3.0
 			var d: Vector3 = (up + (f.x * cos(a) + f.z * sin(a)) * r / terrain.R).normalized()
-			out.append([Transform3D(SphereGrid.frame(d), terrain.ground(d)), COLORS[int(_h(c, k + 40) * 4.999)],
+			out.append([Transform3D(SphereGrid.frame(d), terrain.ground(d)), COLORS[int(_h(c, k + 40) * (COLORS.size() - 0.001))],
 				Color(_h(c, k + 7), _h(c, k + 11), _h(c, k + 17), 0.0)])
 	return out
 
