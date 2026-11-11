@@ -30,3 +30,48 @@ steps, the wake, the field bench, HUD lines). Check with
 `godot --headless --path . -- --fresh --orbit --no-intro --rocket --orbit-hop=9 --hub-dev-chain=3 --hub-report=20 --quit-after=50`
 (`--hub-wake=9,7` wakes hubs for free at start; `--hop-skip` skips the flight; `--hop-shots=PREFIX` saves pictures in a rendered run).
 A new planet gets the same by adding `hub_defaults` and `hubs` to its entry.
+
+## Music and sound (v6sound)
+
+**Add a song (no code).** Put the file (mp3, ogg or wav) in `audio/songs/`. That is all: the game
+picks it up, names it after the file (`My New Song.mp3` shows as "My New Song"), owns it from the
+start and plays it everywhere. To make it a song of one planet, put it in a folder named after
+the planet instead: `audio/songs/ochre/My New Song.mp3`. Then run `python3 tools/check_songs.py`:
+it lists every song, whether its file is there, the files that have no entry, and each planet's
+playlist. A missing or damaged file never breaks anything; the song is skipped.
+
+**Say more about a song.** Add an entry to `"songs"` in `data/songs.json`. The `id` is the file
+name in lower case with `_` for spaces (`my_new_song`). Everything else is optional:
+
+| To change | Write in the entry |
+|---|---|
+| The title, the in-game artist, the CD note | `"title"`, `"artist"` (an id from `"artists"`), `"desc"` |
+| Which planets it plays on | `"planets": ["verdance", "rime"]` or `["all"]` |
+| When it plays | `"moments"`: any of `title` (title screen), `intro`, `explore` (day), `night`, `restored` (the planet is mostly green), `base_restored`, `launch`, `ending` |
+| How often | `"weight"`: 1 is normal, 2 twice as often, 0 never in the shuffle |
+| Louder or quieter | `"volume_db"`: `-3` a bit quieter, `2` a bit louder |
+| Owned at once, or a CD to find | `"unlock": "start"`, or `"unlock": "cd"` with `"found_on": "verdance"` |
+| A file name that does not match the id | `"file": "Some Other Name.mp3"` |
+
+A song with `launch`, `ending`, `base_restored` or `intro` plays at that moment whether or not
+its CD was found. While no song is marked for a moment, the built-in score plays it as before.
+What a file with no entry gets is `"defaults"` in the same file.
+
+**The rules** are at the top of `data/songs.json`:
+
+| To change | Edit |
+|---|---|
+| Quiet between songs (seconds, shortest and longest) | `gap_s` |
+| Quiet after loading a save | `first_gap_s` |
+| Quiet minutes after the pod lands | `landing_gap_s` |
+| How often the main theme is picked (0 to 1). It still never plays twice in a row | `main_share` |
+| Which song is the main theme (first on the title screen) | `main_theme` |
+| Level of all songs against the rest of the game | `song_db` |
+| How green a planet must be for `restored` songs (0 to 1) | `restored_at` |
+| How often story songs and other planets' songs turn up | `story_weight`, `other_planet_weight` |
+
+**A planet's playlist.** A planet plays the songs of its group (`"group": "ochre"`), the songs
+whose `"planets"` name it, the files in its folder, and any ids listed in
+`"planets"."ochre"."songs"` in `data/songs.json`. That block can also repeat any rule from the
+table above to change it on that planet only, e.g. `"rime": {"songs": [], "gap_s": [120, 240]}`.
+A new planet: add a block with its id there (and a folder if you like).
