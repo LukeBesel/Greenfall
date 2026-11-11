@@ -101,3 +101,20 @@ func test_bedding_flowers_are_one_small_mesh_in_strong_colours() -> void:
 	assert_lt(mesh.surface_get_array_len(0) / 3, 120, "cheap enough to plant by the thousand")
 	for c: Color in OldTownFlowers.COLOURS:
 		assert_true(c.v > 0.8, "petal colour %s is bright" % c.to_html(false))
+
+
+func test_a_shop_sign_hangs_on_the_street_side_of_its_building() -> void:
+	var f: Dictionary = OldTownShopSigns.front_of(Rect2(10, 20, 11, 6), Vector2(-1, 0))
+	assert_eq(f["c"], Vector2(10, 23), "the middle of the wall that faces west")
+	assert_eq(float(f["width"]), 6.0, "as wide as the building is along that street")
+	var g: Dictionary = OldTownShopSigns.front_of(Rect2(10, 20, 11, 6), Vector2(0, 1))
+	assert_eq(g["c"], Vector2(15.5, 26))
+	assert_eq(float(g["width"]), 11.0)
+
+
+func test_shop_names_are_all_different() -> void:
+	var seen: Dictionary = {}
+	for n: String in OldTownShopSigns.NAMES:
+		seen[n] = true
+	assert_eq(seen.size(), OldTownShopSigns.NAMES.size())
+	assert_gte(OldTownShopSigns.NAMES.size(), OldTownShopSigns.MAX_SIGNS, "no name is painted twice")

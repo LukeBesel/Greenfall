@@ -13,6 +13,7 @@ extends Node3D
 ##   street trees   OldTownTrees: bare at the start, in leaf from stage 3, blossom at stage 5
 ##   burst main     OldTownBurst: the jet, its spray and the flooded forecourt, or the cap
 ##   ground         OldTownGround: paving, lawns, shrubs and flower borders from stage 3
+##   shop names     OldTownShopSigns: painted name boards on the way from the yard to the pump house
 ##   lake edge      a scum film along the shore until stage 4, reeds after
 ##   set_stage(0-5) the town's own regrowth: shop lights and lit rooms, clean signs, lamp heads,
 ##                  trees, the lake edge (VerdanceSite wires it to EventBus.district_stage_changed)
@@ -150,6 +151,12 @@ func build(site: VerdanceSite) -> void:
 	add_child(ground)
 	ground.build(_site, station_key, station_rects + _rects, tree_spots)
 	stats.merge(ground.stats)
+	await BuildBudget.check("oldtown:signs")
+	var signs := OldTownShopSigns.new()
+	signs.name = "ShopSigns"
+	add_child(signs)
+	signs.build(_site, Vector2(station_at.x, station_at.z), StreetDressing.NEAR_R, _site.seed_value + 3391)
+	stats["shop_signs"] = signs.count
 	await BuildBudget.check("oldtown:lamps")
 	_build_lamp_glow()
 	await BuildBudget.check("oldtown:shore")
