@@ -36,7 +36,7 @@ const TOWER_SHARE: float = 0.22  # ring-3 buildings that shoot up to 18-26 floor
 ## blocks; factory: share of works/warehouse fronts; ruin: broken-off share (ring 1, rings 2+);
 ## houses: small detached buildings with yards instead of perimeter rows.
 const KINDS: Dictionary = {
-	"start": {"rings": [[3, 5], [3, 8], [7, 16]], "tower": 0.22, "tower_f": [18, 26], "lots": 0.14, "factory": 0.35, "ruin": [0.3, 0.2]},
+	"start": {"rings": [[3, 5], [3, 6], [4, 9]], "tower": 0.12, "tower_f": [10, 14], "lots": 0.0, "factory": 0.2, "ruin": [0.2, 0.12], "lake": 0.62},
 	"downtown": {"rings": [[5, 9], [8, 16], [10, 18]], "tower": 0.4, "tower_f": [18, 30], "lots": 0.06, "factory": 0.08, "ruin": [0.4, 0.35]},
 	"oldtown": {"rings": [[3, 5], [3, 6], [3, 7]], "tower": 0.0, "tower_f": [0, 0], "lots": 0.12, "factory": 0.12, "ruin": [0.45, 0.4]},
 	"industrial": {"rings": [[2, 4], [2, 5], [2, 6]], "tower": 0.0, "tower_f": [0, 0], "lots": 0.32, "factory": 0.85, "ruin": [0.5, 0.45]},
@@ -55,6 +55,7 @@ const LANDMARK_BY_KIND: Dictionary = {
 	"suburb": "ferris_wheel", "harbour": "lighthouse",
 }
 const HUB_EXTENT: float = 36.0     # 3 x 3 blocks, 108 m
+const OLD_TOWN_BILLBOARD_X: float = -9.5
 ## Which share of buildings are broken off on a ruined hub.
 const RUIN_SHARE: float = 0.7
 const START_RUIN_SHARE: float = 0.4
@@ -76,6 +77,8 @@ var furniture: StreetFurniture  # [v3city] the start town's street life
 var kind: String = "start"   # [v3city] the town's character (KINDS)
 var outskirts: TownOutskirts  # [v3city] the city past the pad (the skyline)
 var ruin_lights: RuinLights  # the last lamps still glowing after dark in a ruined town (hubs past the start)
+var old_town: CityOldTown    # the start town's own character, landmark and regrowth (hub 0)
+var district_id: String = ""  # the district (city) this site belongs to, "" for open ground
 var globe_ctx: Dictionary = {}  # [v3city] {terrain, grid, cells, xf, clear} from SiteManager
 ## [v3city] func(x, z) -> bool: a site-local point on a lake cell (the start yard is by a lake).
 var water: Callable
@@ -221,12 +224,58 @@ func set_restoration(r: float) -> void:
 	restoration = clampf(r, 0.0, 1.0)
 
 
+## The regrowth stage (0-5) of the district this town stands in changes the town itself: lights,
+## signs, street trees, the lake edge (TownSite hook; each city decides what it shows).
+func set_district_stage(stage: int) -> void:
+	super.set_district_stage(stage)
+	if old_town:
+		old_town.set_stage(district_stage)
+
+
+## Follows this site's district: its stage now (once the world's Districts node is up) and every
+## change after (EventBus.district_stage_changed).
+func _wire_district() -> void:
+	for d: Dictionary in Districts.specs_for(Planets.current()):
+		if int(d["site"]) == hub_index:
+			district_id = str(d["id"])
+	if district_id == "":
+		return
+	if not EventBus.district_stage_changed.is_connected(_on_district_stage):
+		EventBus.district_stage_changed.connect(_on_district_stage)
+	_read_district_stage()
+
+
+func _on_district_stage(id: String, stage: int) -> void:
+	if id == district_id:
+		set_district_stage(stage)
+
+
+## The district's saved stage, read from the Districts node beside the globe (it may come up after
+## this town: tried again every second until it is there).
+func _read_district_stage() -> void:
+	if not is_inside_tree():
+		return
+	var found: Districts = null
+	var n: Node = self
+	while n and found == null:
+		found = n.get_node_or_null("Districts") as Districts
+		n = n.get_parent()
+	if found and found.has(district_id):
+		if found.stage_of(district_id) > district_stage:
+			set_district_stage(found.stage_of(district_id))
+		return
+	get_tree().create_timer(1.0).timeout.connect(_read_district_stage)
+
+
 # --- Build ----------------------------------------------------------------------------------
 
 func _make() -> void:
 	var start: bool = site_id == "start_yard"
 	layout = CityLayout.new(seed_value, START_EXTENT)  # [v3city] every Verdance hub is a town now
 	kind = "start" if start else _pick_kind()
+	if start:
+		old_town = CityOldTown.new()
+		old_town.name = "OldTown"
 	_town_layout()
 	city = CityView.new()
 	city.name = "City"
@@ -234,6 +283,8 @@ func _make() -> void:
 	city.buildings = CITY_BUILDINGS  # [v1world] the flat district's brick and factory buildings (owner, Nov 8); was the kit's
 	city.flush_walks = true
 	city.water_fn = water  # [v3city]
+	if old_town:
+		city.building_material = CityOldTown.material(false)
 	# [v3city] kit facades on the inner ring, proxies (with colliders) beyond; props everywhere
 	city.detail_ring = 1
 	city.proxy_collide = true
@@ -252,6 +303,8 @@ func _make() -> void:
 		furniture.town_r = town_r
 		furniture.goal_r = GOAL_R if start else 18.0
 		furniture.state = kit_state(level)
+		if old_town:
+			_foot.append_array(old_town.station_rects)
 		furniture.buildings = _foot.duplicate()
 		furniture.big_ship = start
 		var pb: Variant = city.get("_prop_body")
@@ -275,6 +328,10 @@ func _make() -> void:
 		outskirts.r_in = town_r - 8.0
 		outskirts.seed_value = seed_value
 		outskirts.kind = kind
+		if old_town:  # every block the pad town did not keep is the outskirts' (no bare ring between them)
+			outskirts.r_in = 0.0
+			outskirts.painter = CityOldTown.paint
+			outskirts.town_material = CityOldTown.material(true)
 		add_child(outskirts)
 		await outskirts.build()
 		print("[town] hub %d outskirts (%s): %s" % [hub_index, kind, str(outskirts.stats)])
@@ -292,6 +349,8 @@ func _make() -> void:
 	dressing.skip_facades = not CITY_BUILDINGS  # [v1world] shopfronts, awnings, neon, murals, billboard, string lights
 	dressing.kit_yard = true
 	dressing.landmark_kind = str(LANDMARK_BY_KIND.get(kind, ""))
+	if old_town and old_town.has_station():
+		dressing.billboard_x = OLD_TOWN_BILLBOARD_X  # off the main street's axis: the pump house closes that view
 	add_child(dressing)
 	await dressing.build(layout, null, hub_index, district_name, "", level)
 	if not start and city and not city.lamp_bulbs.is_empty():
@@ -301,7 +360,12 @@ func _make() -> void:
 		var alive: int = ruin_lights.setup(city.lamp_bulbs, RUIN_LAMP_SHARE, seed_value, RUIN_LIGHT_CAP)
 		if DevHooks.has("load-report"):
 			print("[town] hub %d ruin lights: %d of %d lamp heads glow after dark, %d real lights" % [hub_index, alive, city.lamp_bulbs.size(), ruin_lights.light_count()])
+	if old_town:
+		add_child(old_town)
+		await old_town.build(self)
+		_extra_foot.append_array(old_town.rects())
 	set_level(level)
+	_wire_district()
 	if DevHooks.has("town-map") and (start or DevHooks.has("town-map-hubs")):
 		_town_map(DevHooks.get_s("town-map", "user://town_map.png") if start else DevHooks.get_s("town-map", "user://town_map.png").replace(".png", "_hub%d.png" % hub_index))
 
@@ -325,7 +389,7 @@ func _town_layout() -> void:
 			continue
 		# The lake: blocks whose kerb ring runs into the water go (no sidewalks over the lake).
 		var walk_r: Rect2 = r.grow(CityLayout.WALK_W)
-		if _wet_share(walk_r, 2.5) > 0.45:
+		if _wet_share(walk_r, 2.5) > float((KINDS[kind] as Dictionary).get("lake", 0.45)):
 			layout.blocks.erase(key)
 			lake += 1
 			continue
@@ -362,6 +426,11 @@ func _town_layout() -> void:
 			if b["buildings"].is_empty():
 				b["type"] = CityLayout.Block.LANDFILL
 		layout.blocks[key] = b
+	if old_town:  # the first city's own colours, and its source landmark's block
+		for key2: Vector2i in layout.blocks:
+			for bd2: Dictionary in layout.blocks[key2]["buildings"]:
+				CityOldTown.paint(bd2)
+		old_town.plan(self)
 	var nb: int = 0
 	var tall: int = 0
 	var kinds: Dictionary = {}
@@ -727,41 +796,57 @@ func _hero(c: Vector2) -> void:
 	_kit("dome", c + Vector2(-8.5, 6.5), 0.0, pal, 1 + hub_index % 3)
 
 
-## [v1yard] The start yard's pad: one flat, clean slab of pale concrete panels (thin joints, a
-## darker kerb lip and a teal edge line), no missing plates, grit or tufts. Lumi lands on it, so it
-## should read as solid, swept ground against the trash round it.
+## The start yard's pad: one flat slab of worn concrete paving (systems/camp/yard_pad.gdshader:
+## slabs with joints, stains, soot round the crashed pod and worn floor paint: a safety line and
+## Lumi's teal line round the edge, a landing ring, a hatched gate on the way out, the bin bay's
+## blue floor and the bench's orange work zone), on a dark bedding layer with a kerb lip. Lumi lands
+## on it, so it reads as solid, swept, used ground against the trash round it.
+const PAD_TOP: float = 0.07
+static var _pad_mat: ShaderMaterial
+
+
 static func clean_pad(size: float) -> Node3D:
 	var k := YardArt.Kit.new()
 	var h: float = size * 0.5
-	# [v3city] Real slabs, not painted hairlines (QA: the 5 cm seam strips read as glitch lines
-	# across the pad): a dark bedding layer, and on it 6 x 6 bevelled panels with 12 cm joints,
-	# each a touch lighter or darker, so the joints read as paving at any distance.
 	k.box(Vector3(size, 0.05, size), Vector3(0, 0.025, 0), Color(0.3, 0.3, 0.29), Vector3.ZERO, 0.02)
-	var n: int = 6
-	var step: float = size / n
-	var tone := RandomNumberGenerator.new()
-	tone.seed = 4471
-	for i: int in n:
-		for j: int in n:
-			var t: float = tone.randf_range(-0.035, 0.035)
-			var col := Color(0.47 + t, 0.47 + t, 0.45 + t * 0.9)
-			var cx: float = -h + (i + 0.5) * step
-			var cz: float = -h + (j + 0.5) * step
-			k.box(Vector3(step - 0.12, 0.03, step - 0.12), Vector3(cx, 0.06, cz), col, Vector3.ZERO, 0.015)
 	for side: int in 4:
 		var along_x: bool = side < 2
 		var sgn: float = -1.0 if side % 2 == 0 else 1.0
 		var lip := Vector3(size, 0.1, 0.3) if along_x else Vector3(0.3, 0.1, size)
 		var at := Vector3(0, 0.05, sgn * (h - 0.15)) if along_x else Vector3(sgn * (h - 0.15), 0.05, 0)
-		k.box(lip, at, Color(0.42, 0.43, 0.42), Vector3.ZERO, 0.03)
-		var line := Vector3(size - 0.9, 0.008, 0.12) if along_x else Vector3(0.12, 0.008, size - 0.9)
-		var lat := Vector3(0, 0.078, sgn * (h - 0.55)) if along_x else Vector3(sgn * (h - 0.55), 0.078, 0)
-		k.box(line, lat, Color(0.3, 0.75, 0.78))
-	var mi: MeshInstance3D = k.mi(0.08, "CleanPad")
+		k.box(lip, at, Color(0.34, 0.35, 0.35), Vector3.ZERO, 0.03, "concrete")
+	var mi: MeshInstance3D = k.mi(0.3, "PadKerb")
 	mi.set_meta("no_collide", true)
+	if _pad_mat == null:
+		_pad_mat = ShaderMaterial.new()
+		_pad_mat.shader = load("res://systems/camp/yard_pad.gdshader")
+		_pad_mat.set_shader_parameter("tex_concrete", AssetLib.tex("concrete_floor_worn_001", "diff"))
+		_pad_mat.set_shader_parameter("nrm_concrete", AssetLib.tex("concrete_floor_worn_001", "nor_gl"))
+	_pad_mat.set_shader_parameter("half_size", h - 0.3)
+	# The marked places follow the yard's anchors: the bin bay (YardSite._bin_bay's rectangle), the
+	# lean-to and bench, the pod.
+	var dep: Vector3 = START_YARD_ANCHORS["depot"][0]
+	var bin: Vector3 = START_YARD_ANCHORS["bin"][0]
+	_pad_mat.set_shader_parameter("bay_rect", Vector4(dep.x, (dep.z + bin.z) * 0.5, 2.3, absf(dep.z - bin.z) * 0.5 + 2.2))
+	var shack: Vector3 = START_YARD_ANCHORS["shack"][0]
+	_pad_mat.set_shader_parameter("work_rect", Vector4(shack.x, shack.z, 2.6, 2.3))
+	var pod: Vector3 = START_YARD_ANCHORS["pod"][0]
+	_pad_mat.set_shader_parameter("pod_at", Vector2(pod.x, pod.z))
+	var from: Vector3 = CrashSite.FROM_DIR.normalized()
+	_pad_mat.set_shader_parameter("pod_from", Vector2(from.x, from.z))
+	var top := MeshInstance3D.new()
+	top.name = "PadTop"
+	var pm := PlaneMesh.new()
+	pm.size = Vector2(size - 0.6, size - 0.6)
+	top.mesh = pm
+	top.material_override = _pad_mat
+	top.position.y = PAD_TOP
+	top.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	top.set_meta("no_collide", true)
 	var root := Node3D.new()
 	root.name = "YardPad"
 	root.add_child(mi)
+	root.add_child(top)
 	return root
 
 

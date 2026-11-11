@@ -46,6 +46,8 @@ var prop_radius: float = INF
 var _bld_body: StaticBody3D  # [v3city] one body for every proxy building's box
 ## [v3city] func(x, z) -> bool: site-local point on a lake cell (globe towns): no props there.
 var water_fn: Callable
+## The material of this town's procedural buildings (a planet's town may bring its own copy).
+var building_material: Material
 
 
 func _wet(x: float, z: float) -> bool:
@@ -175,6 +177,10 @@ func _build_block(key: Vector2i, b: Dictionary) -> void:
 
 
 ## [v3city] A proxy building's collider: its footprint up to the roof (tiers set back above).
+func _bmat() -> Material:
+	return building_material if building_material else BuildingDetail.material()
+
+
 func _proxy_box(bd: Dictionary) -> void:
 	if _bld_body == null:
 		_bld_body = StaticBody3D.new()
@@ -201,12 +207,12 @@ func _flush_block(key: Vector2i) -> void:
 		if pass_i == 0:
 			# [deck] Bodies merge per 72 m cell (world-space shader: exact); detail meshes stay per
 			# block so their 240 m visibility range still measures from the block.
-			_static.merge(g.mesh(c), Transform3D(Basis.IDENTITY, c), BuildingDetail.material(), true)
+			_static.merge(g.mesh(c), Transform3D(Basis.IDENTITY, c), _bmat(), true)
 			continue
 		var mi := MeshInstance3D.new()
 		mi.name = "Buildings%s_%d_%d" % ["" if pass_i == 0 else "Detail", key.x, key.y]
 		mi.mesh = g.mesh(c)
-		mi.material_override = BuildingDetail.material()
+		mi.material_override = _bmat()
 		mi.position = c
 		if pass_i == 1:
 			mi.visibility_range_end = DETAIL_RANGE
@@ -374,14 +380,19 @@ func _build_building(block: Vector2i, bd: Dictionary) -> void:
 	var mass_h: float = float(maxi(ruin_from, 1) if ruin_from < floors else floors) * FLOOR_H
 	# Interior mass (dark rooms behind the windows), side/back walls with windows, and the
 	# roof (membrane, parapets, bulkheads, HVAC, tanks...) all go into the block's merged mesh.
+	# The dark mass stays inside the shell on the sides and the back: those walls are the shell's
+	# brick and windows (the mass used to stand 2 cm proud of them, so they drew black).
+	var dark_r: Rect2 = BuildingDetail._inset_front(mass_r, -face, 0.08, 0.08)
 	_body.mat(BuildingDetail.K_DARK, Color(0.05, 0.045, 0.045))
-	_body.abox(Vector3(mass_r.position.x, 0.0, mass_r.position.y), Vector3(mass_r.size.x, mass_h - 0.05, mass_r.size.y))
+	_body.abox(Vector3(dark_r.position.x, 0.0, dark_r.position.y), Vector3(dark_r.size.x, mass_h - 0.05, dark_r.size.y))
 	var pal: Array = BuildingDetail.APT_PALETTE[(int(bd["seed"]) >> 3) % BuildingDetail.APT_PALETTE.size()]
-	var shell_r: Rect2 = BuildingDetail._inset_front(mass_r.grow(-0.02), face, 0.6, 0.0)
+	if bd.has("tint"):
+		pal = [int(bd.get("wall_tex", pal[0])), bd["tint"]]
+	var shell_r: Rect2 = BuildingDetail._inset_front(mass_r, face, 0.6, 0.0)
 	_body.uv = BuildingDetail._bay_uv(r, int(bd["seed"]) & 0xffff)
 	_body.mat(BuildingDetail.K_FACADE, pal[1], pal[0], BuildingDetail.F_RIBBON if kit == FAC else 0)
 	_body.abox(Vector3(shell_r.position.x, 0.0, shell_r.position.y), Vector3(shell_r.size.x, height, shell_r.size.y), BuildingDetail.K_ROOF if ruin_from < floors else -2)
-	_detail.kit_roof(_body, _det, r, face, mass_h, floors, kit == FAC, int(bd["seed"]), ruin_from < floors)
+	_detail.kit_roof(_body, _det, r, face, mass_h, floors, kit == FAC, int(bd["seed"]), ruin_from < floors, bd.get("roof_tint", Color(-1, 0, 0)))
 	# Fire escape on some apartment facades.
 	if kit == APT and floors >= 3 and _rng.randf() < 0.45:
 		var bay: int = _rng.randi_range(0, maxi(bays - 2, 0))

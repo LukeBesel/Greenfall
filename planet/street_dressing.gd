@@ -75,6 +75,8 @@ const GLYPHS: Dictionary = {
 
 ## The town's tall prop, when its site script picks one (a city landmark kind or "lighthouse"); "" = by hub number.
 var landmark_kind: String = ""
+## The billboard's x on its block (site metres), or INF for the seeded spot on the main street's axis.
+var billboard_x: float = INF
 var layout: CityLayout
 var field: HexField
 
@@ -904,6 +906,8 @@ func _build_billboard() -> void:
 		if field == null or (field.hex_at(Vector3(x + probe - 6.0, 0, z)) < 0 and field.hex_at(Vector3(x + probe + 6.0, 0, z)) < 0):
 			x += probe
 			break
+	if is_finite(billboard_x):
+		x = billboard_x
 	var w: float = 15.0
 	var h: float = 6.5
 	var y0: float = 6.0

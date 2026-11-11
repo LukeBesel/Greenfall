@@ -264,6 +264,8 @@ func proxy_building(bd: Dictionary, body: Geo, det: Geo) -> void:
 		tint = bd["tint"]
 	if bd.has("roof_tint"):
 		roof_tint = bd["roof_tint"]
+	if bd.has("wall_tex"):  # with "tint": the caller's wall material too (T_*)
+		tex = int(bd["wall_tex"])
 	var flags: int = F_RIBBON if factory else 0
 	var shop: bool = not factory and rng.randf() < 0.7
 	var uvo: Vector2 = _bay_uv(r, int(bd["seed"]) & 0xffff)
@@ -292,8 +294,10 @@ func proxy_building(bd: Dictionary, body: Geo, det: Geo) -> void:
 		body.mat(K_FACADE, tint, tex, flags)
 		body.abox(_v3(tr_.position, y0), Vector3(tr_.size.x, y1 - y0, tr_.size.y), -2, f3, F_SHOP if (shop and ti == 0) else 0)
 		# Roof surface (own material, slightly above the walls' top).
+		# 10 cm proud of the cornice's top face: at 1 cm the two fought for depth from a distance and
+		# every roof drew as the cornice's pale concrete.
 		body.mat(K_ROOF, roof_tint, 0, roof_flags)
-		body.abox(_v3(tr_.position, y1 - 0.05), Vector3(tr_.size.x, 0.06, tr_.size.y))
+		body.abox(_v3(tr_.position, y1 - 0.05), Vector3(tr_.size.x, 0.15, tr_.size.y))
 		# Cornice at the top of each tier.
 		if not factory or rng.randf() < 0.4:
 			var g: float = rng.randf_range(0.18, 0.32)
@@ -336,6 +340,9 @@ func proxy_building(bd: Dictionary, body: Geo, det: Geo) -> void:
 	if shop:
 		var col: Color = AWNINGS[rng.randi() % AWNINGS.size()]
 		var striped: bool = rng.randf() < 0.5
+		if bd.has("awning"):  # a town's own awning colour (striped with cream when "awning_striped")
+			col = bd["awning"]
+			striped = bool(bd.get("awning_striped", striped))
 		for i: int in bays:
 			if i == fe_bay or rng.randf() < 0.35:
 				continue
@@ -651,10 +658,12 @@ func _junk(g: Geo, rr: Rect2, y: float, n: int, used: Array) -> void:
 
 
 ## Roof for a kit (detail ring) building: membrane, parapets on the non-facade sides and props.
-func kit_roof(body: Geo, det: Geo, r: Rect2, face: Vector2, y: float, floors: int, factory: bool, seed_v: int, ruined: bool) -> void:
+func kit_roof(body: Geo, det: Geo, r: Rect2, face: Vector2, y: float, floors: int, factory: bool, seed_v: int, ruined: bool, roof_paint: Color = Color(-1, 0, 0)) -> void:
 	rng.seed = seed_v + 991
 	var roof_tint: Color = ROOF_TINTS[rng.randi() % ROOF_TINTS.size()]
 	var roof_flags: int = (F_ROOF_CONCRETE if rng.randf() < 0.35 else 0) | (F_ROOF_SEAMS_X if rng.randf() < 0.5 else 0)
+	if roof_paint.r >= 0.0:
+		roof_tint = roof_paint
 	body.mat(K_ROOF, roof_tint, 0, roof_flags)
 	body.abox(_v3(r.position, y), Vector3(r.size.x, 0.2, r.size.y))
 	_parapet(body, _inset_front(r, face, 0.15, 0.0), y + 0.2, 0.75, T_CONCRETE, Color(0.84, 0.82, 0.78), face)
