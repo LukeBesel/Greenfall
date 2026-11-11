@@ -4,7 +4,7 @@
 > `--time-scale=8`. A person is assumed to take **about twice as long** (reading, looking around,
 > getting lost, choosing). That factor is a guess, **not measured** with a real player. If the first
 > planet plays too fast or too slow, change **one number**, `data/hub.json` `far_hub.pace`
-> (1.0 now): every sale pays 1/pace, so 1.25 makes every cube step about 25% longer and 0.8 about
+> (1.3 now): every sale pays 1/pace, so 1.25 makes every cube step about 25% longer and 0.8 about
 > 20% shorter. Verdance can also get its own value in `data/homeward.json` `planets[0].far_hub.pace`.
 
 ## Verdance, the round planet (v6pace)
@@ -26,8 +26,10 @@ through it; every hub, wake and rocket step shows its price and the cubes saved 
 2. The rocket stands on the pad after the first seed (`data/hub.json` `rocket.after_objective`).
 3. Hub 2 Garden Row (600), base level 2, a Haul Bug, hub 3 Gantry Works (2.4K).
 4. Rocket Mk II (8K) reaches 5 hubs; base level 3 (9K) sits in the gap before hub 4 Signal Heights (9.6K).
-5. Goals from `data/goals.json`: a Seedling, hub 5 Fairground (38K), 25 plants, rocket Mk III
-   (150K), a Drip, hub 6 Stack Works (150K), the Mk V drive (500K), fly on.
+5. Goals from `data/goals.json`: a Seedling, base level 4 (60K), hub 5 Fairground (38K), 25 plants,
+   rocket Mk III (150K), a Drip, base level 5 (250K), hub 6 Stack Works (400K, `cost_override` "4"),
+   the Mk V drive (500K), fly on. Base 4 and 5 sit inside the two longest saves so each is split by
+   a real income buy.
 
 Each woken far hub multiplies every sale by `sell_growth` (3.5): x3.5, x12, x43, x150, x525.
 Prices grow by `cost_growth` (4.0) a hub. Income grows faster than that early (more robots, base
@@ -68,9 +70,9 @@ in `data/planets.json` (v6hubs), the leave gate in `data/homeward.json` `planets
 
 | Knob | Verdance | What it does |
 |---|---|---|
-| `far_hub.pace` | 1.0 | Whole-planet speed: every sale pays 1/pace. Start here after a playtest. |
-| `far_hub.cost_base`, `cost_growth` | 600 x 4.0 | The hub price ladder (600, 2.4K, 9.6K, 38K, 150K). A bigger planet: raise `cost_base` so its numbers start where the last planet ended. |
-| `far_hub.cost_override` | none | One rung of the ladder, by step number. |
+| `far_hub.pace` | 1.3 | Whole-planet speed: every sale pays 1/pace. Start here after a playtest. |
+| `far_hub.cost_base`, `cost_growth` | 600 x 4.0 | The hub price ladder (600, 2.4K, 9.6K, 38K; hub 6 400K by override). A bigger planet: raise `cost_base` so its numbers start where the last planet ended. |
+| `far_hub.cost_override` | hub 6: 400K | One rung of the ladder, by step number. |
 | `far_hub.sell_growth` | 3.5 | Income multiplier per woken hub. Keep it below `cost_growth`, or later hubs come faster and faster. |
 | `far_hub.keep` | 4 + 1/level + 0.5/robot cells a minute | How fast woken bases clean while Lumi is away: the main lever on the % at leave. |
 | `far_hub.pct_over` | all_regions | What the HUD's planet % counts. |

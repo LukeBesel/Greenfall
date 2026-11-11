@@ -155,7 +155,7 @@ reward gaps and card waits; targets and the last measured run are in `docs/BALAN
 |---|---|---|---|
 | When the rocket appears | `data/hub.json` `rocket.level`, `rocket.after_objective` | level 1, after the step `seed` | The rocket stands on the start pad once that story step is done and the base has that level. |
 | Single far-hub prices | `data/hub.json` `far_hub.cost_override` (step number as the key, e.g. `"2": {"cubes": 8000}`) | hub 6 (`"4"`): 400K cubes, 120 Parts | Replaces one step of the curve without moving the others. |
-| The whole planet's speed | `data/hub.json` `far_hub.pace` | 1.15 | Every sale pays 1/pace: 1.25 makes each cube step about 25% longer, 0.8 about 20% shorter. The first knob to turn after a playtest. |
+| The whole planet's speed | `data/hub.json` `far_hub.pace` | 1.3 | Every sale pays 1/pace: 1.25 makes each cube step about 25% longer, 0.8 about 20% shorter. The first knob to turn after a playtest. |
 | Woken bases clean while Lumi is away | `data/hub.json` `far_hub.keep` | 4 cells/min + 1 per base level above 1 + 0.5 per robot there | The main lever on the planet % at the leave point. `home: true` lets the start hub do it too. |
 | What the planet % counts | `data/hub.json` `far_hub.pct_over` | `all_regions` | `all_regions`: every hub region's land (only goes up). `built_regions`: only the woken hubs' regions (drops at each wake). |
 | Far hub price curve | `data/hub.json` `far_hub.cost_base`, `far_hub.cost_growth` | 600 cubes x 4.0 per hub (Parts 30 x 1.4) | Price of hub n = base x growth^n, rounded to two digits: 600, 2.4K, 9.6K, 38K (then hub 6 by override). One number moves the whole ladder. |
