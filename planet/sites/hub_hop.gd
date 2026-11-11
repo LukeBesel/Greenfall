@@ -27,6 +27,31 @@ var flying: bool = false
 var progress: float = 0.0
 var _focus: Node3D
 var _veil: ColorRect
+## [v6hubs] A hop can be skipped (E / jump) once a leg has run SKIP_AFTER_S; the approach camera.
+const SKIP_AFTER_S: float = 0.35
+const APPROACH_PITCH: float = -0.16
+const APPROACH_DIST: float = 20.0
+var _skipped: bool = false
+var _skip_hint: CanvasLayer
+
+
+func _show_skip_hint(on: bool) -> void:
+	if _skip_hint:
+		_skip_hint.queue_free()
+		_skip_hint = null
+	if not on:
+		return
+	_skip_hint = CanvasLayer.new()
+	_skip_hint.layer = 91
+	add_child(_skip_hint)
+	var l := PromptLabel.new(tr("{interact}  skip"), 13)
+	l.align_center = true
+	l.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	l.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	l.offset_top = -46.0
+	l.offset_bottom = -22.0
+	l.modulate.a = 0.75
+	_skip_hint.add_child(l)
 
 
 ## Seconds a hop is on screen (the build behind the veil comes on top).
@@ -70,7 +95,12 @@ func hop_with(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTerra
 	lumi.visible = false
 	lumi.process_mode = Node.PROCESS_MODE_DISABLED
 	Audio.play("whoosh", 0.7, -4.0)
-	EventBus.toast.emit(tr("Rocket hop: %.1f km") % (ang * terrain.R / 1000.0), "info")
+	# [v6hubs] No toast: the arrival shows the town's name. E / jump skips a leg (hint on screen).
+	_skipped = false
+	_show_skip_hint(true)
+	var old_pitch: float = cam.pitch
+	var out_fwd: Vector3 = axis.cross(dir_a).normalized()
+	cam.reset_frame(out_fwd)
 	# Out leg: lift off and head toward the target.
 	await _leg(dir_a, axis, 0.0, leg_ang, true, terrain, lumi, a.origin)
 	await _fade(1.0)
@@ -90,9 +120,23 @@ func hop_with(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTerra
 	for hf: Node in get_tree().get_nodes_in_group("hub_frame"):  # [v5load] the hub's systems too, while the veil hides the frame
 		(hf as HubFrame).switch_to(to_i)
 	b0 = sm.pad_xf(to_i)
-	await _fade(0.0, true)
-	# In leg: approach low and land on the pad.
-	await _leg(dir_a, axis, start_in, ang, false, terrain, lumi, b0.origin)
+	# [v6hubs] The approach: the camera sits behind the ship, looking down its path at the new town.
+	var in_fwd: Vector3 = axis.cross(d_in).normalized()
+	_focus.global_position = lumi.global_position
+	cam.reset_frame(in_fwd)
+	cam.pitch = APPROACH_PITCH
+	cam.distance = APPROACH_DIST
+	cam.snap()
+	if _skipped:  # skipped on the way out: straight to the landing
+		_skipped = false
+	else:
+		await _fade(0.0, false)
+		# In leg: approach low and land on the pad.
+		await _leg(dir_a, axis, start_in, ang, false, terrain, lumi, b0.origin)
+		if _skipped:
+			await _fade(1.0)
+	_show_skip_hint(false)
+	cam.pitch = old_pitch
 	var b: Transform3D = sm.pad_xf(to_i)
 	ship.global_transform = b
 	ship.set_lift(0.0)
@@ -110,6 +154,7 @@ func hop_with(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTerra
 	Audio.play("thud", 1.0, -6.0)
 	flying = false
 	hopped.emit(to_i)
+	_fade(0.0, true)  # [v6hubs] lifts whatever veil is left (a skipped approach lands behind it)
 	var keep: ShipModel = ship  # parked on the pad until the next hop
 	ship = null
 	keep.name = "ParkedShip"
@@ -257,6 +302,9 @@ func _leg(dir_a: Vector3, axis: Vector3, a0: float, a1: float, outbound: bool, t
 	var prev: Vector3 = ship.global_position
 	while t < LEG_S:
 		t += get_process_delta_time()
+		if t > SKIP_AFTER_S and _skip_hint != null and (Input.is_action_just_pressed("interact") or Input.is_action_just_pressed("jump") or Input.is_action_just_pressed("ui_accept") or DevHooks.has("hop-skip")):
+			_skipped = true  # [v6hubs] the veil covers the rest
+			return
 		var k: float = clampf(t / LEG_S, 0.0, 1.0)
 		progress = k * 0.5 + (0.0 if outbound else 0.5)
 		var e: float = smoothstep(0.15, 1.0, k) if outbound else smoothstep(0.0, 0.85, k)

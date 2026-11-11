@@ -154,6 +154,8 @@ func _enter(i: int, by_rocket: bool) -> void:
 		elif line != "":
 			EventBus.toast.emit("%s: %s" % [HubPlan.hub_name(planet, i), line], "info")
 	st["last_clean"] = clean
+	if DevHooks.has("hub-dev-chain") and i > 0:
+		_dev_chain(i)
 
 
 # --- Progress ----------------------------------------------------------------------------------------
@@ -182,9 +184,10 @@ func cleaned_here(i: int) -> int:
 
 func _outposts_here(i: int) -> int:
 	var op: Variant = so.w.get("outposts")
+	var kept: int = int(HubPlan.peek(i).get("outposts", 0))
 	if op is Outposts and (op as Outposts).hub_index == i:
-		return (op as Outposts).repaired_count()
-	return int(HubPlan.peek(i).get("outposts", 0))
+		return maxi(kept, (op as Outposts).repaired_count())
+	return kept
 
 
 ## The hub's steps with their progress: [{do, have, need, done}].
@@ -604,12 +607,48 @@ func show_title(i: int) -> void:
 	print("[hubs] arrived at site %d: %s (%s)" % [i, nm, sub_t])
 
 
+## Dev (--hub-dev-chain[=T]): T s after each arrival at a far hub, cleans the hexes its chain asks
+## for (data only), gives the wake price and uses the landmark: the restore flow without playing.
+func _dev_chain(i: int) -> void:
+	await get_tree().create_timer(DevHooks.get_f("hub-dev-chain", 3.0)).timeout
+	if i != site or HubPlan.woken(i):
+		return
+	var need: int = 0
+	for s: Dictionary in HubPlan.chain(planet, i):
+		if str(s["do"]) == "clean":
+			need = int(s.get("hexes", 8))
+	for c: int in sm.regions[i]:
+		if need <= 0:
+			break
+		if sm.cells.is_dirty(c) and sm.cells.state[c] != 5:
+			sm.cells.set_junk(c, 0.0)
+			sm.cells.set_state(c, 1)
+			need -= 1
+	_refresh()
+	print("[hubs] dev: %s | prompt '%s'" % [card_text, landmark_prompt()])
+	for s: Dictionary in HubPlan.chain(planet, i):
+		if str(s["do"]) == "outposts":
+			HubPlan.state(i)["outposts"] = int(s.get("count", 1))
+	GameState.add_all(HubPlan.wake_cost(planet))
+	_refresh()
+	print("[hubs] dev: %s | prompt '%s' | landmark %s" % [card_text, landmark_prompt(), "found" if not landmark(i).is_empty() else "MISSING"])
+	use_landmark()
+	_refresh()
+	print("[hubs] dev: after use: woken %s, level %d, built %d, card '%s', bench %s, hud %s" % [HubPlan.woken(i), sm.levels[i], sm.built[i], card_text, str(bench_point() != null), str(hud_lines())])
+
+
 ## Dev: one line per hub.
 func report() -> void:
 	for e: Dictionary in HubPlan.entries(planet):
 		var i: int = int(e["site"])
 		if i >= sm.sites.size():
 			continue
-		print("[hubs] %d site %d %s (%s, %s): %s, level %d, listed %s, %s" % [int(e.get("order", 0)), i, str(e.get("name", "")), str(e.get("town", "")),
+		var real: String = ""
+		var p: SitePrefab = sm.prefab(i)
+		if p and p.content:
+			for c: Node in p.content.get_children():
+				if c is VerdanceSite:
+					real = " built as " + (c as VerdanceSite).kind
+		print("[hubs] %d site %d %s (%s%s, %s): %s, level %d, listed %s, %s" % [int(e.get("order", 0)), i, str(e.get("name", "")), str(e.get("town", "")), real,
 			HubPlan.landmark_kind(planet, i), status_text(i), sm.levels[i], HubPlan.listed(planet, i), crew_line(i)])
 	print("[hubs] bases %d/%d, card '%s', wake cost %s" % [HubPlan.restored_main(planet), HubPlan.main_total(planet), card_text, str(HubPlan.wake_cost(planet))])
