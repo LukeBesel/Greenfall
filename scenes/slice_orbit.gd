@@ -270,6 +270,8 @@ func build(p_world: Node3D) -> void:
 		print("[orbit-load] %s streamer=%s chunks=%d cells/chunk=%d" % [JSON.stringify(g.stats), JSON.stringify(g.streamer.stats), g.grid.chunk_count(), g.grid.cell_count() / maxi(g.grid.chunk_count(), 1)])
 	if not bool(w.get("building")):  # [orbE] behind the loader, slice.gd emits once it has re-enabled the world
 		w.emit_signal("built")
+	if DevHooks.has("ui-audit"):  # [v6screens] layout audit of the 2D screens (tools/ui_audit_run.gd)
+		UIAuditRun.attach(self)
 	if DevHooks.has("yard-probe"):  # [v1yard] junk distance from the pad and pod, what stands at the start
 		YardProbe.attach(self)
 	if DevHooks.has("ground-probe"):  # [v3qa] floating / sunken props and junk around Lumi

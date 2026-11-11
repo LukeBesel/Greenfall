@@ -333,10 +333,7 @@ func _ready() -> void:
 	_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_root.theme = UITheme.get_theme()
 	add_child(_root)
-	_mc = MarginContainer.new()
-	_mc.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
-	_mc.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	_mc.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	_mc = MarginContainer.new()  # [v6screens] placed by _place() every frame (keeps off Lumi and the goal card)
 	_mc.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_root.add_child(_mc)
 	_pill = PanelContainer.new()
@@ -497,6 +494,11 @@ func show_now(text: String, speaker: String = "") -> void:
 		queue_line(text, speaker)
 
 
+## [v6screens] The pill on screen (the layout audit measures it).
+func pill() -> Control:
+	return _pill
+
+
 func clear() -> void:
 	show_now("")
 
@@ -619,6 +621,111 @@ func _log_shown() -> void:
 		shown_log.pop_front()
 
 
+# --- [v6screens] Placement in play -------------------------------------------------------
+# Owner: the line sat across Lumi's lower body. In play the pill sits in the band between Lumi's
+# feet (her meshes projected to the screen, LumiScreen) and the bottom HUD: just above the prompt
+# line and the hotbar when there is room (PLAY_BOTTOM), else lower, right under her feet, over
+# the hotbar, which dims while the line covers it (hud.gd reads cover_rect()). It also moves left
+# of the goal card when a tall goal stack reaches down beside it. Checked at 1280x720, 1920x1080,
+# 2560x1080 and 1280x800, interface scale 0.8 to 1.5: `--ui-audit` (tools/ui_audit_run.gd).
+
+## Pill bottom above the screen bottom when there is room: just clear of the hotbar's ink (its
+## level number); it rises above the prompt line while one shows.
+const PLAY_BOTTOM: float = 148.0
+## The lowest the pill goes (over the hotbar) and the gap kept under Lumi's feet.
+const MIN_BOTTOM: float = 10.0
+const FEET_GAP: float = 14.0
+## Lumi's feet when she cannot be measured, as a share of the screen height.
+const FEET_FALLBACK: float = 0.68
+const LUMI_EVERY_S: float = 0.1
+
+var _feet_y: float = -1.0
+var _lumi_t: float = 0.0
+var _bottom_y: float = -1.0
+var _shift_x: float = 0.0
+var _cover := Rect2()
+
+
+## The pill's rect while it covers part of the bottom HUD in play (empty otherwise).
+func cover_rect() -> Rect2:
+	return _cover
+
+
+func _measure_feet(view: Rect2, delta: float) -> void:
+	_lumi_t -= delta
+	if _lumi_t > 0.0 and _feet_y >= 0.0:
+		return
+	_lumi_t = LUMI_EVERY_S
+	var patch: Node3D = world.get("patch") as Node3D if world else null
+	var r: Rect2 = LumiScreen.rect(patch, get_viewport().get_camera_3d()) if patch else Rect2()
+	var feet: float = r.end.y if r.size.y > 1.0 else view.size.y * FEET_FALLBACK
+	_feet_y = feet if _feet_y < 0.0 or delta <= 0.0 else feet
+
+
+## The goal stack's rect (top right), or empty.
+func _goal_rect() -> Rect2:
+	var hud: Node = world.get("hud") if world else null
+	var g: Control = hud.get("goals") as Control if hud else null
+	if g == null or not g.is_visible_in_tree():
+		return Rect2()
+	return g.get_global_rect()
+
+
+## Top of the HUD's prompt / context line while one shows (canvas y), else INF.
+func _prompt_top() -> float:
+	var hud: Node = world.get("hud") if world else null
+	if hud == null:
+		return INF
+	var top: float = INF
+	for k: String in ["_prompt"]:  # the context line fades out under a line by itself (hud.gd)
+		var l: Label = hud.get(k) as Label
+		if l and l.is_visible_in_tree() and l.text.strip_edges() != "" and l.modulate.a > 0.05:
+			top = minf(top, l.get_global_rect().position.y)
+	return top
+
+
+## Where the pill's bottom edge goes in play (canvas y) and how far it shifts left.
+func play_spot(view: Rect2, pill_size: Vector2) -> Vector2:
+	return spot_for(view, pill_size, _feet_y, _prompt_top(), _goal_rect())
+
+
+## The placement rule (pure, tested): bottom edge y and left shift of the pill, given Lumi's feet
+## (canvas y), the prompt line's top (INF when none) and the goal stack's rect (empty when none).
+static func spot_for(view: Rect2, pill_size: Vector2, feet_y: float, prompt_top: float, goal: Rect2) -> Vector2:
+	var h: float = view.size.y
+	var want: float = minf(h - PLAY_BOTTOM, prompt_top - 6.0)
+	var top_min: float = feet_y + FEET_GAP
+	if want - pill_size.y < top_min:
+		want = minf(top_min + pill_size.y, h - MIN_BOTTOM)  # no room above the HUD: under her feet
+	var shift: float = 0.0
+	if goal.size.y > 0.0 and goal.end.y + 8.0 > want - pill_size.y:
+		var right: float = view.size.x * 0.5 + pill_size.x * 0.5
+		if right > goal.position.x - 12.0:
+			shift = maxf(goal.position.x - 12.0 - right, 12.0 - (view.size.x * 0.5 - pill_size.x * 0.5))
+	return Vector2(shift, want)
+
+
+func _place(delta: float) -> void:
+	var view: Rect2 = _root.get_rect()
+	if view.size.y <= 0.0:
+		return
+	_measure_feet(view, delta)
+	var sz: Vector2 = _mc.get_combined_minimum_size()
+	_mc.size = sz
+	var spot: Vector2 = play_spot(view, sz)
+	var bottom: float = lerpf(spot.y, view.size.y - 16.0, _low)
+	var shift: float = lerpf(spot.x, 0.0, _low)
+	if _bottom_y < 0.0 or delta <= 0.0 or not _pill.visible:
+		_bottom_y = bottom
+		_shift_x = shift
+	else:  # glide, never jump
+		_bottom_y = lerpf(_bottom_y, bottom, clampf(delta * 10.0, 0.0, 1.0))
+		_shift_x = lerpf(_shift_x, shift, clampf(delta * 10.0, 0.0, 1.0))
+	_mc.position = Vector2(roundf(view.size.x * 0.5 - sz.x * 0.5 + _shift_x), roundf(_bottom_y - sz.y))
+	var over_hud: bool = _low < 0.5 and _pill.visible and _bottom_y > minf(view.size.y - PLAY_BOTTOM, _prompt_top() - 6.0) + 2.0
+	_cover = Rect2(_mc.position, sz) if over_hud else Rect2()
+
+
 func _is_low() -> bool:
 	if _forced_low > 0:
 		return true
@@ -631,7 +738,7 @@ func _process(delta: float) -> void:
 	var low: float = 1.0 if _is_low() else 0.0
 	_low = low if _low < 0.0 else move_toward(_low, low, delta * 4.0)
 	layer = 45 if low > 0.5 else 6
-	_mc.add_theme_constant_override("margin_bottom", int(lerpf(182.0, 16.0, _low)))
+	_place(delta)
 	_clock += delta
 	if _phase == 0:
 		offset = Vector2.ZERO

@@ -7,6 +7,7 @@ Glitch hunt on the default game (`--orbit`, first planet Verdance) by helper v3q
 ## Tools used
 - Soak: `godot --headless --path . -- --fresh --orbit --autoplay --soak --time-scale=8 --quit-after=2400` (game-minute lines `[soak] t=...`, `[soak] WARN ...`).
 - Ground probe (new, `planet/sites/ground_probe.gd`): `godot --headless --path . -- --fresh --orbit --no-intro --ground-probe=300 --ground-probe-quit [--orbit-spawn=x,z] [--ground-probe-r=120]`. Lists floating and sunken props and junk pieces off the ground around Lumi.
+- UI layout audit (v6screens, `tools/ui_audit_run.gd`, checks in `tools/ui_audit.gd`): `godot --headless --path . -- --fresh --orbit --no-intro --ui-audit [--ui-audit-sizes=1280x720,1920x1080] [--ui-audit-scales=0.8,1,1.5]`. Default: 1280x720, 1920x1080, 2560x1080 and 1280x800 at interface scale 0.8, 1, 1.25 and 1.5. Play pass: a long WREN line on the subtitle bar must not touch Lumi (her meshes projected to the screen, `ui/lumi_screen.gd`) or the goal stack, and must dim the hotbar where it covers it. Prints `[ui-audit]` lines and `done: N issues`; exit 1 on issues.
 - Round trips: `tools/run_tests.sh`; `godot --headless --path . res://tools/save_roundtrip.tscn -- --fresh --orbit`.
 
 ## Glitches
