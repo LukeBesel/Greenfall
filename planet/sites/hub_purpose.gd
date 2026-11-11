@@ -128,6 +128,8 @@ func _enter(i: int, by_rocket: bool) -> void:
 	var e: Dictionary = HubPlan.entry(planet, i)
 	if e.is_empty():
 		return
+	if HubPlan.is_home(planet, i) and not by_rocket:
+		return  # the start of the game, or a walk back: nothing to announce
 	var st: Dictionary = HubPlan.state(i)
 	var first: bool = not bool(st.get("seen", false))
 	if first:
