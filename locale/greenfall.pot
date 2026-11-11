@@ -534,31 +534,31 @@ msgstr ""
 msgid "+%s cubes"
 msgstr ""
 
-#: fauna/fauna.gd:1650
+#: fauna/fauna.gd:1686
 msgid "E   pet %s"
 msgstr ""
 
-#: fauna/fauna.gd:1651
+#: fauna/fauna.gd:1687
 msgid "E   pet the cat"
 msgstr ""
 
-#: fauna/fauna.gd:1709
+#: fauna/fauna.gd:1745
 msgid "E   scatter crumbs for the birds"
 msgstr ""
 
-#: fauna/fauna.gd:1757
+#: fauna/fauna.gd:1793
 msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
 msgstr ""
 
-#: fauna/fauna.gd:1813
+#: fauna/fauna.gd:1849
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr ""
 
-#: fauna/fauna.gd:2134 ui/subtitles.gd:455
+#: fauna/fauna.gd:2170 ui/subtitles.gd:455
 msgid "New sighting: %s. It's in the Codex now."
 msgstr ""
 
-#: fauna/fauna.gd:2205
+#: fauna/fauna.gd:2241
 msgid "Snap! A %s for your Collection."
 msgstr ""
 
@@ -694,133 +694,133 @@ msgstr ""
 msgid "Harbour town"
 msgstr ""
 
-#: planet/sites/hub_plan.gd:104
+#: planet/sites/hub_plan.gd:106
 msgid "landmark"
 msgstr ""
 
-#: planet/sites/hub_plan.gd:258
+#: planet/sites/hub_plan.gd:260
 msgid "The recycling network grew: everything sells for x%s now."
 msgstr ""
 
-#: planet/sites/hub_plan.gd:277
+#: planet/sites/hub_plan.gd:279
 msgid "Rocket piece: %s"
 msgstr ""
 
-#: planet/sites/hub_plan.gd:299
+#: planet/sites/hub_plan.gd:301
 msgid "+%s Cubes"
 msgstr ""
 
-#: planet/sites/hub_plan.gd:301
+#: planet/sites/hub_plan.gd:303
 msgid "+%d Parts"
 msgstr ""
 
-#: planet/sites/hub_plan.gd:303
+#: planet/sites/hub_plan.gd:305
 msgid "+%d Seeds"
 msgstr ""
 
-#: planet/sites/hub_plan.gd:307
+#: planet/sites/hub_plan.gd:309
 msgid "New: %s"
 msgstr ""
 
-#: planet/sites/hub_plan.gd:311
+#: planet/sites/hub_plan.gd:313
 msgid "New Lumi design: %s"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:145
+#: planet/sites/hub_purpose.gd:167
 msgid "Home. The workbench is by the pod."
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:151
+#: planet/sites/hub_purpose.gd:173
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:157
+#: planet/sites/hub_purpose.gd:179
 msgid "%s: %d%% clean, up %d%% while you were away."
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:235
+#: planet/sites/hub_purpose.gd:257
 msgid "Dig the landmark out. Clean hexes here: %d / %d"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:237
+#: planet/sites/hub_purpose.gd:259
 msgid "Repair an outpost here: %d / %d"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:240
+#: planet/sites/hub_purpose.gd:262
 msgid "Upgrade the rocket, then wake the %s"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:241
+#: planet/sites/hub_purpose.gd:263
 msgid "Wake the %s (%s)"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:275
+#: planet/sites/hub_purpose.gd:297
 msgid "E   Wake the %s  (%s)"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:276
+#: planet/sites/hub_purpose.gd:298
 msgid "%s: asleep. %s"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:281
+#: planet/sites/hub_purpose.gd:303
 msgid "The rocket can carry supplies to %d bases. Upgrade it at the workbench."
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:297
+#: planet/sites/hub_purpose.gd:319
 msgid "Waking the %s needs %s."
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:321
+#: planet/sites/hub_purpose.gd:344
 msgid "%s is awake. %s keeps cleaning when you fly on."
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:348
+#: planet/sites/hub_purpose.gd:371
 msgid "%s grows: level %d."
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:376
+#: planet/sites/hub_purpose.gd:399
 msgid "%d robot working"
 msgid_plural "%d robots working"
 msgstr[0] ""
 msgstr[1] ""
 
-#: planet/sites/hub_purpose.gd:384
+#: planet/sites/hub_purpose.gd:421
 msgid "Home: %d%% clean"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:386
+#: planet/sites/hub_purpose.gd:423
 msgid "Restored: %d%% clean"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:388 ui/profile_picker.gd:111
+#: planet/sites/hub_purpose.gd:425 ui/profile_picker.gd:111
 msgid "New"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:391
+#: planet/sites/hub_purpose.gd:428
 msgid "Ready to wake"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:392
+#: planet/sites/hub_purpose.gd:429
 msgid "Asleep: %d / %d"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:403
+#: planet/sites/hub_purpose.gd:440
 msgid "%s   %d%% CLEAN"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:405
+#: planet/sites/hub_purpose.gd:442
 msgid "%s   BASES %d/%d"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:452
+#: planet/sites/hub_purpose.gd:489
 msgid "Restored. Next: take the rocket to %s."
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:454
+#: planet/sites/hub_purpose.gd:491
 msgid "All %d bases stand. Fly home and make the rocket ready to leave."
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:626
+#: planet/sites/hub_purpose.gd:663
 msgid "%s  ·  the %s"
 msgstr ""
 
@@ -1528,27 +1528,27 @@ msgstr ""
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr ""
 
-#: scenes/slice_orbit.gd:412
+#: scenes/slice_orbit.gd:413
 msgid "HEX CLEAN!  +%s"
 msgstr ""
 
-#: scenes/slice_orbit.gd:428
+#: scenes/slice_orbit.gd:429
 msgid "Milestone: %d hexes clean!"
 msgstr ""
 
-#: scenes/slice_orbit.gd:497 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:498 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:497 systems/camp/camp.gd:195
+#: scenes/slice_orbit.gd:498 systems/camp/camp.gd:195
 msgid "E   Open the workbench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:1017
+#: scenes/slice_orbit.gd:1018
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr ""
 
-#: scenes/slice_orbit.gd:1117
+#: scenes/slice_orbit.gd:1118
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr ""
 
@@ -1713,7 +1713,7 @@ msgid "CRADLE:  LANDING DENIED.  SYSTEM SURVEY: FIVE WORLDS.  ONE ALIVE.  SLEEPE
 msgstr ""
 
 #: story/cradle_answers.gd:17
-msgid "It's the charter. The Makers sleep in the Cradle's lower decks, and it won't wake them into a dying system."
+msgid "It's the charter. The Settlers sleep in the Cradle's lower decks, and it won't wake them into a dying system."
 msgstr ""
 
 #: story/cradle_answers.gd:18
@@ -1817,87 +1817,87 @@ msgid ""
 "5 MINUTES"
 msgstr ""
 
-#: story/eggs.gd:439
+#: story/eggs.gd:448
 msgid "Something metal surfaced in the cleared ground."
 msgstr ""
 
-#: story/eggs.gd:654 story/eggs.gd:716
+#: story/eggs.gd:663 story/eggs.gd:725
 msgid "Gnome %d / %d"
 msgstr ""
 
-#: story/eggs.gd:662
+#: story/eggs.gd:671
 msgid "The last poster points somewhere close. Something orange is curled up nearby."
 msgstr ""
 
-#: story/eggs.gd:717
+#: story/eggs.gd:726
 msgid "%s   ·   added to Lumi's collection"
 msgstr ""
 
-#: story/eggs.gd:733
+#: story/eggs.gd:742
 msgid "The radio hisses quietly. Nothing up there is awake yet. Come back after dark."
 msgstr ""
 
-#: story/eggs.gd:734
+#: story/eggs.gd:743
 msgid "Through the telescope: just a bright, dusty sky. Come back after dark."
 msgstr ""
 
-#: story/eggs.gd:763
+#: story/eggs.gd:772
 msgid "SOLD OUT"
 msgstr ""
 
-#: story/eggs.gd:781
+#: story/eggs.gd:790
 msgid "QUACK!"
 msgstr ""
 
-#: story/eggs.gd:799
+#: story/eggs.gd:808
 msgid "NEW CHALLENGER!"
 msgstr ""
 
-#: story/eggs.gd:802
+#: story/eggs.gd:811
 msgid "GAME OVER  ·  SCORE 12"
 msgstr ""
 
-#: story/eggs.gd:830
+#: story/eggs.gd:839
 msgid "hi, Gus"
 msgstr ""
 
-#: story/eggs.gd:875
+#: story/eggs.gd:884
 msgid "CONFETTI"
 msgstr ""
 
-#: story/eggs.gd:875
+#: story/eggs.gd:884
 msgid "LIGHT JAZZ"
 msgstr ""
 
-#: story/eggs.gd:875
+#: story/eggs.gd:884
 msgid "99% DUCKS"
 msgstr ""
 
-#: story/eggs.gd:875
+#: story/eggs.gd:884
 msgid "SUNNY (INDOORS)"
 msgstr ""
 
-#: story/eggs.gd:875
+#: story/eggs.gd:884
 msgid "FOG OF NOODLES"
 msgstr ""
 
-#: story/eggs.gd:880
+#: story/eggs.gd:889
 msgid "1ST PLACE"
 msgstr ""
 
-#: story/eggs.gd:938
+#: story/eggs.gd:947
 msgid "The duck squeaks a secret: \"%s\" unlocks the %s design."
 msgstr ""
 
-#: story/eggs.gd:939
+#: story/eggs.gd:948
 msgid "The duck has taught you everything it knows. Quack."
 msgstr ""
 
-#: story/eggs.gd:1170
+#: story/eggs.gd:1179
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr ""
 
-#: story/eggs.gd:1181
+#: story/eggs.gd:1190
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr ""
 
@@ -1906,11 +1906,11 @@ msgid "Wait. Hold it up to the light."
 msgstr ""
 
 #: story/first_seed.gd:10
-msgid "That's a Maker seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
+msgid "That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
 msgstr ""
 
 #: story/first_seed.gd:11
-msgid "When they left, the Makers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi."
+msgid "When they left, the Settlers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi."
 msgstr ""
 
 #: story/first_seed.gd:12
@@ -2271,7 +2271,7 @@ msgid "Space  pause   ·   Esc  skip"
 msgstr ""
 
 #: story/tutorial.gd:10
-msgid "Fix the Makers' old bench: press  {interact}"
+msgid "Fix the Settlers' old bench: press  {interact}"
 msgstr ""
 
 #: story/tutorial.gd:11
@@ -3118,7 +3118,7 @@ msgid "Your first bot came with treads and a bobble plant. Style it in the Locke
 msgstr ""
 
 #: systems/robot_builder.gd:527
-msgid "A Maker Fragment was tucked inside it: +%d parts."
+msgid "A Settler Fragment was tucked inside it: +%d parts."
 msgstr ""
 
 #: systems/robot_builder.gd:559
@@ -3126,7 +3126,7 @@ msgid "%s spotted something green and lucky: a Lucky Clover!"
 msgstr ""
 
 #: systems/robot_builder.gd:562
-msgid "%s spotted a Maker Fragment glinting in the junk: +%d parts."
+msgid "%s spotted a Settler Fragment glinting in the junk: +%d parts."
 msgstr ""
 
 #: systems/robot_builder.gd:569
@@ -3825,7 +3825,7 @@ msgid "  ·  press to unlock + fit"
 msgstr ""
 
 #: ui/builder_panel.gd:381
-msgid "  (Maker set)"
+msgid "  (Settler set)"
 msgstr ""
 
 #: ui/builder_panel.gd:401
@@ -7146,11 +7146,11 @@ msgid "Style a robot with all five custom parts in the Locker."
 msgstr ""
 
 #: data/achievements.json:achievements[builder_maker].name
-msgid "As the Makers Made It"
+msgid "As the Settlers Made It"
 msgstr ""
 
 #: data/achievements.json:achievements[builder_maker].desc
-msgid "Fit the full Maker set (shell, optic and glider) on one robot."
+msgid "Fit the full Settler set (shell, optic and glider) on one robot."
 msgstr ""
 
 #: data/achievements.json:achievements[builder_hats].name
@@ -8486,7 +8486,7 @@ msgid "Light the Cradle Returns beacon."
 msgstr ""
 
 #: data/codex.json:homeward.charter.desc
-msgid "When the Makers left Verdance, most of them went into the long sleep in the Cradle's lower decks. Their charter was one line long: wake us when the system can feed us. Not one world. All five. The Cradle has kept that promise for three hundred years, and it will not break it for anybody, even a very persuasive small robot."
+msgid "When the Settlers left Verdance, most of them went into the long sleep in the Cradle's lower decks. Their charter was one line long: wake us when the system can feed us. Not one world. All five. The Cradle has kept that promise for three hundred years, and it will not break it for anybody, even a very persuasive small robot."
 msgstr ""
 
 #: data/codex.json:homeward.ledger_system.name
@@ -8514,7 +8514,7 @@ msgid "Restore every world and launch home."
 msgstr ""
 
 #: data/codex.json:homeward.homecoming.desc
-msgid "Five worlds alive again. A rocket built from all of them. One seed planted in a bed with a yellow fence. The Cradle opened its bay for a small robot with a seedling tray, and below decks the Makers woke up to a green sky."
+msgid "Five worlds alive again. A rocket built from all of them. One seed planted in a bed with a yellow fence. The Cradle opened its bay for a small robot with a seedling tray, and below decks the Settlers woke up to a green sky."
 msgstr ""
 
 #: data/codex.json:sightings.first_light.name
@@ -8798,11 +8798,11 @@ msgid "A tiered fountain, running again. Deer come to drink at dawn."
 msgstr ""
 
 #: data/decor.json:types[statue].name
-msgid "Maker Statue"
+msgid "Settler Statue"
 msgstr ""
 
 #: data/decor.json:types[statue].desc
-msgid "A stone figure of one of the Makers, holding a watering can."
+msgid "A stone figure of one of the Settlers, holding a watering can."
 msgstr ""
 
 #: data/decor.json:types[lumi_sculpture].name
@@ -9030,7 +9030,7 @@ msgid "E   pick up gnome"
 msgstr ""
 
 #: data/eggs.json:eggs[gnomes].lore
-msgid "Five garden gnomes, each facing a different street. A Maker kid's sign said they were 'on patrol'. They still are."
+msgid "Five garden gnomes, each facing a different street. A Settler kid's sign said they were 'on patrol'. They still are."
 msgstr ""
 
 #: data/eggs.json:eggs[gnomes].toast
@@ -9054,7 +9054,7 @@ msgid "A school time capsule. Open in 100 years. It has been a little longer tha
 msgstr ""
 
 #: data/eggs.json:eggs[time_capsule].toast
-msgid "A time capsule from a Maker school class."
+msgid "A time capsule from a Settler school class."
 msgstr ""
 
 #: data/eggs.json:eggs[time_capsule].doc.title
@@ -9178,7 +9178,7 @@ msgid "E   look through the telescope"
 msgstr ""
 
 #: data/eggs.json:eggs[stars].lore
-msgid "Old Town's amateur telescope still points at the five stars the Makers called 'the Wren'. The Cradle's AI was named after them."
+msgid "Old Town's amateur telescope still points at the five stars the Settlers called 'the Wren'. The Cradle's AI was named after them."
 msgstr ""
 
 #: data/eggs.json:eggs[stars].toast
@@ -9575,7 +9575,7 @@ msgid "In the wild: a ring of stones, two stools and a cold kettle."
 msgstr ""
 
 #: data/eggs.json:eggs[campfire].lore
-msgid "A ring of stones, two folding stools and a dented kettle: somebody's last camping trip before the Makers left. The ashes are three hundred years cold."
+msgid "A ring of stones, two folding stools and a dented kettle: somebody's last camping trip before the Settlers left. The ashes are three hundred years cold."
 msgstr ""
 
 #: data/eggs.json:eggs[campfire].toast
@@ -10388,7 +10388,7 @@ msgid "A photo from photo mode. White cranes circle high over the landing city o
 msgstr ""
 
 #: data/events.json:trinkets[maker_badge].name
-msgid "Maker's Badge"
+msgid "Settler's Badge"
 msgstr ""
 
 #: data/events.json:trinkets[maker_badge].desc
@@ -10440,7 +10440,7 @@ msgid "Seed-Keeper Pin"
 msgstr ""
 
 #: data/events.json:trinkets[lumi_seed_pin].desc
-msgid "Lumi Level 20. A little enamel sprout. The ark gave these to its gardeners."
+msgid "Lumi Level 20. A little enamel sprout. The ark gave these to the Settlers who tended its seeds."
 msgstr ""
 
 #: data/events.json:trinkets[lumi_tread_charm].name
@@ -10588,7 +10588,7 @@ msgid "Strong signal. Something old and well made."
 msgstr ""
 
 #: data/events.json:wren
-msgid "That ping is Maker-grade. Follow the violet light."
+msgid "That ping is Settler-grade. Follow the violet light."
 msgstr ""
 
 #: data/events.json:wren
@@ -10812,7 +10812,7 @@ msgid "Find the seed tin"
 msgstr ""
 
 #: data/goals.json:goals[plant_5].text
-msgid "Plant the Maker seed"
+msgid "Plant the Settler seed"
 msgstr ""
 
 #: data/goals.json:goals[hex_7].text
@@ -11586,7 +11586,7 @@ msgstr ""
 msgid ""
 "ITEM 1: The system is spent. Motion to dissolve: carried.\n"
 "ITEM 2: Clean-up costs. Motion to not: carried.\n"
-"ITEM 3: The Makers' ark keeps asking about a 'charter'. Motion to ignore: carried.\n"
+"ITEM 3: The Settlers' ark keeps asking about a 'charter'. Motion to ignore: carried.\n"
 "ITEM 4: Audit drones to continue indefinitely, for form's sake.\n"
 "\n"
 "Meeting closed. Lights left on."
@@ -11622,7 +11622,7 @@ msgid ""
 msgstr ""
 
 #: data/hub.json:levels[0].desc
-msgid "An old Maker cleanup station: pipe frame, tin roof, a bench."
+msgid "An old Settler cleanup station: pipe frame, tin roof, a bench."
 msgstr ""
 
 #: data/hub.json:levels[1].name
@@ -12268,7 +12268,7 @@ msgid "Vintage"
 msgstr ""
 
 #: data/parts.json:rarities[legendary].name
-msgid "Legendary Maker-Made"
+msgid "Legendary Settler-Made"
 msgstr ""
 
 #: data/parts.json:types[chassis].name
@@ -12324,7 +12324,7 @@ msgid "Windpump"
 msgstr ""
 
 #: data/planets.json:verdance.hubs[garden_row].desc
-msgid "The Makers' seed store: seeds to take to the next world."
+msgid "The Settlers' seed store: seeds to take to the next world."
 msgstr ""
 
 #: data/planets.json:verdance.hubs[garden_row].piece.name
@@ -12364,7 +12364,7 @@ msgid "Signal Mast"
 msgstr ""
 
 #: data/planets.json:verdance.hubs[signal_heights].desc
-msgid "The Makers' star chart: it shows where the rocket can fly."
+msgid "The Settlers' star chart: it shows where the rocket can fly."
 msgstr ""
 
 #: data/planets.json:verdance.hubs[signal_heights].piece.name
@@ -13116,11 +13116,11 @@ msgid "Work rate"
 msgstr ""
 
 #: data/robot_parts.json:set_bonus.name
-msgid "Maker Resonance"
+msgid "Settler Resonance"
 msgstr ""
 
 #: data/robot_parts.json:set_bonus.desc
-msgid "All three Maker parts fitted: +5% speed, +6% work."
+msgid "All three Settler parts fitted: +5% speed, +6% work."
 msgstr ""
 
 #: data/robot_parts.json:parts[light_frame].name
@@ -13148,11 +13148,11 @@ msgid "Smooth covers, neat seams, no grit."
 msgstr ""
 
 #: data/robot_parts.json:parts[maker_shell].name
-msgid "Maker Shell"
+msgid "Settler Shell"
 msgstr ""
 
 #: data/robot_parts.json:parts[maker_shell].desc
-msgid "Pearl fairings with gold trim, as the Makers built them. Part of the Maker set."
+msgid "Pearl fairings with gold trim, as the Settlers built them. Part of the Settler set."
 msgstr ""
 
 #: data/robot_parts.json:parts[big_eye].name
@@ -13188,11 +13188,11 @@ msgid "Glass dome with a little speaker."
 msgstr ""
 
 #: data/robot_parts.json:parts[maker_optic].name
-msgid "Maker Optic"
+msgid "Settler Optic"
 msgstr ""
 
 #: data/robot_parts.json:parts[maker_optic].desc
-msgid "A floating gem lens under a gold brow. Part of the Maker set."
+msgid "A floating gem lens under a gold brow. Part of the Settler set."
 msgstr ""
 
 #: data/robot_parts.json:parts[treads].name
@@ -13228,11 +13228,11 @@ msgid "A cushion of air and a soft glow underneath."
 msgstr ""
 
 #: data/robot_parts.json:parts[maker_glider].name
-msgid "Maker Glider"
+msgid "Settler Glider"
 msgstr ""
 
 #: data/robot_parts.json:parts[maker_glider].desc
-msgid "Twin levitation pods with a thin light seam. Part of the Maker set."
+msgid "Twin levitation pods with a thin light seam. Part of the Settler set."
 msgstr ""
 
 #: data/robot_parts.json:parts[wide_scoop].name
@@ -13356,11 +13356,11 @@ msgid "Rare salvage find (robots with a good Scan)"
 msgstr ""
 
 #: data/robot_parts.json:parts[maker_crest].name
-msgid "Maker Crest"
+msgid "Settler Crest"
 msgstr ""
 
 #: data/robot_parts.json:parts[maker_crest].desc
-msgid "A floating gold ring. Purely for show; the Makers loved a show."
+msgid "A floating gold ring. Purely for show; the Settlers loved a show."
 msgstr ""
 
 #: data/robot_parts.json:traits[cautious].name
@@ -13942,7 +13942,7 @@ msgid "Greenfall (Main Theme)"
 msgstr ""
 
 #: data/songs.json:songs[greenfall_main].desc
-msgid "The song the Makers hummed on the way to the ark. Hopeful, a little lonely."
+msgid "The song the Settlers hummed on the way to the ark. Hopeful, a little lonely."
 msgstr ""
 
 #: data/songs.json:songs[fall_of_lm1].title
@@ -14362,7 +14362,7 @@ msgid "A bigger chest means fewer walks to the bin."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
-msgid "The Makers left these behind. They tell what happened here."
+msgid "The Settlers left these behind. They tell what happened here."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
@@ -14526,7 +14526,7 @@ msgid "The rocket can leave now. Verdance isn't finished, and that's all right."
 msgstr ""
 
 #: data/story_reasons.json:exit
-msgid "Some of its trash needs tools the Makers left on other worlds. We'll bring them back."
+msgid "Some of its trash needs tools the Settlers left on other worlds. We'll bring them back."
 msgstr ""
 
 #: data/style_parts.json:slots[accent].name
@@ -15135,7 +15135,7 @@ msgid "I'm starting to remember lists. Lists of hexes. Mostly unfinished."
 msgstr ""
 
 #: data/wren_lines.json:hex_clean
-msgid "Clean dirt. The Makers would have called that a start. I call it a start, too."
+msgid "Clean dirt. The Settlers would have called that a start. I call it a start, too."
 msgstr ""
 
 #: data/wren_lines.json:hex_clean
@@ -15211,7 +15211,7 @@ msgid "{robot} reports for duty. Its first log entry is just the word 'can'. Fai
 msgstr ""
 
 #: data/wren_lines.json:robot_built
-msgid "You're building a crew. The Makers had a word for that. 'Department.' I don't miss it."
+msgid "You're building a crew. The Settlers had a word for that. 'Department.' I don't miss it."
 msgstr ""
 
 #: data/wren_lines.json:part_rare
@@ -15219,7 +15219,7 @@ msgid "...that... glows. That's old. Older than me?"
 msgstr ""
 
 #: data/wren_lines.json:part_rare
-msgid "...Maker-made... I know that mark."
+msgid "...Settler-made... I know that mark."
 msgstr ""
 
 #: data/wren_lines.json:part_rare
@@ -15503,7 +15503,7 @@ msgid "A curiosity. I'm adding it to my list. My list is getting longer, which i
 msgstr ""
 
 #: data/wren_lines.json:egg_found
-msgid "You find the best things, {name}. The Makers were weird. I miss them."
+msgid "You find the best things, {name}. The Settlers were weird. I miss them."
 msgstr ""
 
 #: data/wren_lines.json:egg_duck
@@ -15799,7 +15799,7 @@ msgid "...one sock... where is... the other one..."
 msgstr ""
 
 #: data/wren_lines.json:egg_odd_sock
-msgid "One sock. There is always one sock. The Makers never solved it either."
+msgid "One sock. There is always one sock. The Settlers never solved it either."
 msgstr ""
 
 #: data/wren_lines.json:egg_odd_sock
@@ -16447,7 +16447,7 @@ msgid "A bit of the first garden, already spilled on new ground. That's how it s
 msgstr ""
 
 #: data/wren_lines.json:egg_heirloom_tin
-msgid "Verdance soil on another world. The Makers would have liked that."
+msgid "Verdance soil on another world. The Settlers would have liked that."
 msgstr ""
 
 #: data/wren_lines.json:cradle_mode
