@@ -91,6 +91,9 @@ static func line(crew: SphereCrew, u: Dictionary) -> String:
 ## The line shown when Lumi stands by a robot: its name, kind and what it is doing.
 static func look_text(crew: SphereCrew, u: Dictionary) -> String:
 	var kind: String = TranslationServer.translate(str(Economy.robots.get(str(u["type"]), {}).get("name", str(u["type"]))))
+	if int(u.get("tier", 0)) > 0:  # [v6crew] the rank shows in its line too
+		# TRANSLATORS: a robot kind and its Mk tier, e.g. "Scoopie (Mk II)".
+		kind = TranslationServer.translate("%s (%s)") % [kind, Economy.tier_name(int(u["tier"]))]
 	return TranslationServer.translate("%s the %s: %s") % [str(u["name"]), kind, line(crew, u)]
 
 
