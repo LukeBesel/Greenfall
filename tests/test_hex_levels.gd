@@ -82,6 +82,48 @@ func test_clean_then_planted_then_growing() -> void:
 	assert_eq(int(GameState.stats.get("hex_lvl_3", 0)), 1)
 
 
+## B40: slots on paving (streets, kerbs, the pad) never take a seed, so the quarter a hex needs to
+## count as Planted is a quarter of the slots that can: a street-side hex with only a few open
+## slots was held at Clean for good, and a city with many of them could never pass stage 1.
+func test_planted_counts_a_quarter_of_the_slots_that_can_take_a_seed() -> void:
+	var w: GlobeWorld = _make()
+	var hl: HexLevels = w.hex_levels
+	var g: Garden = w.garden
+	var hid: int = w.land_cell()
+	_clean(w, hid)
+	var slots: PackedInt32Array = g.hex_slots[hid]
+	assert_gte(slots.size(), 8, "a hex with room for a street")
+	var open_n: int = maxi(1, int(slots.size() * 0.2))
+	for i: int in slots.size():
+		g._paving[slots[i]] = [i >= open_n, 0.0]
+	GameState.currencies["seeds"] = BigNum.from_float(1000)
+	for i: int in open_n:
+		assert_true(g.plantable(slots[i]))
+		g.plant(slots[i])
+	g._recount(hid)
+	hl.step(1.0)
+	assert_eq(hl.level_of(hid), 2, "every open slot planted: Planted, though under a quarter of all its slots")
+
+
+## B40: a hex's life (Growing at 0.35, Thriving at 0.8) is measured over the slots that can hold a
+## plant, so a hex half under a street can still be fully restored.
+func test_life_is_measured_over_the_slots_that_can_hold_a_plant() -> void:
+	var w: GlobeWorld = _make()
+	var g: Garden = w.garden
+	var hid: int = w.land_cell()
+	_clean(w, hid)
+	var slots: PackedInt32Array = g.hex_slots[hid]
+	var half: int = slots.size() / 2
+	for i: int in slots.size():
+		g._paving[slots[i]] = [i >= half, 0.0]
+	GameState.currencies["seeds"] = BigNum.from_float(1000)
+	for i: int in half:
+		g.plant(slots[i])
+		g.slot_stage[slots[i]] = 4
+	g._recount(hid)
+	assert_almost_eq(float(g.hex_life[hid]), 1.0, 0.001, "every plant in bloom on every open slot: full life")
+
+
 func test_sustained_needs_continuous_water() -> void:
 	var w: GlobeWorld = _make()
 	var hl: HexLevels = w.hex_levels

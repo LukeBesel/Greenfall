@@ -451,6 +451,8 @@ func update(delta: float) -> void:
 		_stop_run("game-minutes")
 		return
 	_hook_goals()
+	if DevHooks.has("garden-audit") and _since_control(_now()) > 40.0 and not _report.has("garden_audit"):
+		_garden_audit()
 	if DevHooks.has("probe") and not _report.has("probed"):
 		_report["probed"] = true
 		for h: int in _hexes():
@@ -797,6 +799,8 @@ const CARRY_HOLD_MAX_S: float = 40.0
 ## The garden's share of Lumi's time once it is open: a person tends between loads. Cubes come only
 ## from Lumi's own hands, so a bot that waters without end earns nothing.
 const GARDEN_SHARE: float = 0.25
+## Seeds held past which the bot plants even when its garden share is used up.
+const SEEDS_PILE: float = 5.0
 var _garden_s: float = 0.0
 var _garden_open_s: float = -1.0
 
@@ -991,12 +995,18 @@ func _hex_planted(g: Garden, h: int) -> Vector2i:
 	return Vector2i(planted, total)
 
 
-## The hex to plant: keep filling the one already started, else the clean hex nearest the base.
+## The hex to plant: a quarter of a hex's open slots makes it Planted (stage 2), so hexes under
+## that come first, nearest Lumi; the hex being planted is kept until it has its quarter; then the
+## rest of each hex is filled (its life, and so stages 3 to 5, counts every open slot).
 func _pick_plant_hex(g: Garden) -> int:
-	if _plant_hex >= 0:
+	var here: Vector3 = world.patch.global_position
+	if _plant_hex >= 0 and _area_set().has(_plant_hex):
 		var pc0: Vector2i = _hex_planted(g, _plant_hex)
-		if pc0.x < pc0.y:
+		if pc0.x < pc0.y and (pc0.x * 4 < pc0.y or _now() < _plant_scan_at):
 			return _plant_hex
+	elif _now() < _plant_scan_at:
+		return -1  # nothing to plant at the last look: look again in a moment
+	_plant_scan_at = _now() + PLANT_SCAN_S
 	var best: int = -1
 	var best_s: float = INF
 	for h: int in _hexes():
@@ -1005,12 +1015,19 @@ func _pick_plant_hex(g: Garden) -> int:
 		var pc: Vector2i = _hex_planted(g, h)
 		if pc.y == 0 or pc.x >= pc.y:
 			continue
-		var s: float = world.field.hex_center(h).length() - (100.0 if pc.x > 0 else 0.0)
+		var s: float = world.field.hex_center(h).distance_to(here) - (PLANT_QUARTER_PULL_M if pc.x * 4 < pc.y else 0.0)
 		if s < best_s:
 			best_s = s
 			best = h
 	_plant_hex = best
 	return best
+
+
+## Metres by which a hex short of its quarter (stage 2) is preferred for planting, and how often
+## the whole city is looked over for the next hex (game seconds).
+const PLANT_QUARTER_PULL_M: float = 150.0
+const PLANT_SCAN_S: float = 3.0
+var _plant_scan_at: float = 0.0
 
 
 func _drips() -> int:
@@ -1066,10 +1083,18 @@ func _do_garden(p: Patch) -> bool:
 		return false
 	if _garden_open_s < 0.0:
 		_garden_open_s = _now()
-	if _garden_s > GARDEN_SHARE * (_now() - _garden_open_s) and _pick_focus(p) >= 0:
+	# The share holds while the city still has junk; a clean city is all garden (the wider land
+	# round it is cleaned only when there is nothing to tend).
+	if _garden_s > GARDEN_SHARE * (_now() - _garden_open_s) and _pick_focus(p) >= 0 and _city_has_work(_hexes(), false):
+		# Tended enough for now: back to the junk. Seeds piling up are planted anyway: a patch is
+		# one quick action and nothing else turns seeds into regrowth.
+		var h: int = _pick_plant_hex(g) if GameState.get_currency("seeds").to_float() >= SEEDS_PILE else -1
+		if h >= 0 and _plant_task(p, g, h):
+			_garden_s += _dt
+			return true
 		if p.tool != Patch.Tool.SCOOP:
 			p.set_tool(Patch.Tool.SCOOP)
-		return false  # tended enough for now: back to the junk
+		return false
 	if _garden_task(p, g):
 		_garden_s += _dt
 		return true
@@ -1090,7 +1115,9 @@ func _garden_task(p: Patch, g: Garden) -> bool:
 		_water_target = -1
 	if _water_target < 0:
 		_water_target = _thirsty_slot(g, p)
-	if _water_target >= 0:
+	var plant_h: int = _pick_plant_hex(g) if GameState.get_currency("seeds").to_float() >= 1.0 else -1
+	# Seeds first (each patch moves a hex toward its next stage); water first only for a burst.
+	if _water_target >= 0 and (plant_h < 0 or _burst_wanted(g, g.slot_hex[_water_target])):
 		if p.water < 1.5:
 			_refilling = true
 			return true
@@ -1104,30 +1131,35 @@ func _garden_task(p: Patch, g: Garden) -> bool:
 			_water_target = -1
 			_task_t = 0.0
 		return true
-	if GameState.get_currency("seeds").to_float() >= 1.0:
-		var h: int = _pick_plant_hex(g)
-		if h >= 0:
-			var best: int = -1
-			var best_d: float = INF
-			for s: int in g.hex_slots[h]:
-				if g.slot_species[s] >= 0 or _ignore_piece.has(-10 - s) or not g.plantable(s):
-					continue
-				var d2: float = g.slot_pos[s].distance_to(p.global_position)
-				if d2 < best_d:
-					best_d = d2
-					best = s
-			if best >= 0:
-				_set_task("plant")
-				p.set_tool(Patch.Tool.PLANT)
-				var dd: float = _go(p, g.slot_pos[best], 0.9)
-				if dd < 1.6:
-					_scoop = true
-					_move = Vector3.ZERO
-				if _task_t > 15.0:
-					_ignore_piece[-10 - best] = true
-					_task_t = 0.0
-				return true
-	return false
+	return plant_h >= 0 and _plant_task(p, g, plant_h)
+
+
+## Walks to the nearest open slot of hex `h` and sets a patch there. False when it has none left.
+func _plant_task(p: Patch, g: Garden, h: int) -> bool:
+	var best: int = -1
+	var best_d: float = INF
+	for s: int in g.hex_slots[h]:
+		if g.slot_species[s] >= 0 or _ignore_piece.has(-10 - s) or not g.plantable(s):
+			continue
+		var d2: float = g.slot_pos[s].distance_to(p.global_position)
+		if d2 < best_d:
+			best_d = d2
+			best = s
+	if best < 0:
+		return false
+	_set_task("plant")
+	p.set_tool(Patch.Tool.PLANT)
+	var dd: float = _go(p, g.slot_pos[best], 0.9)
+	if dd < 1.6:
+		_scoop = true
+		_move = Vector3.ZERO
+	if _task_t > 15.0:
+		if DevHooks.has("bot-debug"):
+			print("[bot-plant] t=%.1f slot=%d hex=%d dist=%.2f free_near=%d seeds=%.0f pos=%s" % [_now() / 60.0, best, h, dd,
+				g.free_slot_near(p.global_position, p.forward()), GameState.get_currency("seeds").to_float(), str(p.global_position.snappedf(0.1))])
+		_ignore_piece[-10 - best] = true
+		_task_t = 0.0
+	return true
 
 
 # --- Mastery: some hand work on each new kind ---------------------------------------------
@@ -2421,11 +2453,67 @@ func _snapshot() -> void:
 		write_report()
 		SaveManager.save_game()
 		world.get_tree().quit()
+	_print_garden()
 	print("[Autoplay] %5.1f min city=%s stage=%d share=%d%% launch=%.1f%% cubes=%d rate=%.2f/s partscur=%.0f seeds=%.0f parts=%d hexes=%d lv=%s robots=%s hub=%d task=%s goals=%d research=%s pos=%s esc=%d" % [_now() / 60.0,  # [money]
 		_city_id(), int(Restoration.measure(Restoration.MEASURE_CITY_STAGE)), int(floor(_city_share() * 100.0)), pct * 100.0,
 		int(GameState.get_currency("cubes").to_float()), GameState.income_rate(), GameState.get_currency("parts").to_float(),
 		GameState.get_currency("seeds").to_float(), GameState.parts.size(),
 		world.field.cleaned_count, str(lv), str(types), int(world.hub.level), _task, ngoals, Research.active_id(), str(world.patch.global_position.snappedf(0.1)), _escapes])
+
+
+## The garden of the city in play, once a minute: clean land hexes, hexes with slots, planted
+## slots and plantable ones, hexes past a quarter planted, and the hex being planted.
+func _print_garden() -> void:
+	var g: Garden = world.garden
+	if g == null or not g.unlocked():
+		return
+	var land: int = 0
+	var with_slots: int = 0
+	var planted: int = 0
+	var room: int = 0
+	var quarter: int = 0
+	for h: int in _hexes():
+		if not _land(h) or not world.field.is_clean(h):
+			continue
+		land += 1
+		var pc: Vector2i = _hex_planted(g, h)
+		if pc.y > 0:
+			with_slots += 1
+		planted += pc.x
+		room += pc.y
+		if pc.y > 0 and pc.x * 4 >= pc.y:
+			quarter += 1
+	print("[garden] %5.1f min clean land %d, with plantable slots %d, planted %d of %d plantable, a quarter planted %d, planting hex %d, seeds %.0f, garden time %.0f s" % [
+		_now() / 60.0, land, with_slots, planted, room, quarter, _plant_hex, GameState.get_currency("seeds").to_float(), _garden_s])
+
+
+## Dev: --garden-audit (with --district-stage=<city>:1 so every land hex is clean, and
+## --orbit-hop=<site> for a city other than the first). For the city Lumi stands in: how many land
+## hexes can hold a plant at all. Slots on paving take no seed, so a hex with none of the other
+## kind stays at stage 1 for good; a city whose share of plantable hexes is under its stage share
+## can never pass stage 1. Prints one line and quits.
+func _garden_audit() -> void:
+	var g: Garden = world.garden
+	var d: Districts = _districts()
+	var city: String = d.district_of_site(_here_site()) if d != null else ""
+	var land: int = 0
+	var bare: int = 0
+	for h: int in _hexes():
+		if not _land(h):
+			continue
+		land += 1
+		g.ensure_hex(h)
+		var room: int = 0
+		for sl: int in g.hex_slots.get(h, PackedInt32Array()):
+			if g.plantable(sl):
+				room += 1
+		if room == 0:
+			bare += 1
+	var share: float = float(land - bare) / maxf(1.0, float(land))
+	_report["garden_audit"] = {"city": city, "land": land, "no_plantable_slot": bare, "plantable_share": snappedf(share, 0.001)}
+	print("[garden-audit] %s: land %d, no plantable slot %d, plantable %.0f%% (stage share %.0f%%): %s" % [city, land, bare, share * 100.0,
+		100.0 * d.stage_share, "PASS" if share >= d.stage_share else "FAIL"])
+	world.get_tree().quit(0 if share >= d.stage_share else 1)
 
 
 ## The city (district) the readout shows, and its share toward its next regrowth stage.

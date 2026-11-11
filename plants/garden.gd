@@ -295,11 +295,15 @@ func _recount(hid: int) -> void:
 		return
 	var sum: float = 0.0
 	var planted: int = 0
+	var room: int = 0  # slots that hold a plant or can take one (paving never does)
 	for s: int in ids:
 		if slot_species[s] >= 0:
 			planted += 1
+			room += 1
 			sum += float(slot_stage[s]) + 1.0
-	var life: float = sum / (ids.size() * 5.0)
+		elif plantable(s):
+			room += 1
+	var life: float = sum / (maxi(room, 1) * 5.0)
 	hex_life[hid] = life
 	world.view.set_life(hid, life)
 	var planet: PlanetData = world.planet
