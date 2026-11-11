@@ -29,8 +29,9 @@ var _fabricator: FabricatorModel
 var _pod: Node3D
 var _poll: float = 0.0
 var _bench_sign: Node3D  # [v6yard]
-const SIGN_ON_BENCH := Vector3(-0.35, 1.84, -0.32)   # bench-local: on the pegboard's top shelf
-const SIGN_ON_ROOF := Vector3(0.0, 2.22, 1.68)       # bench-local: the lean-to roof's front edge
+var _roof_sign: Node3D
+const SIGN_ON_BENCH := Vector3(-0.35, 1.84, -0.32)   # in the bench's "Upper": on the pegboard's top shelf
+const SIGN_ON_ROOF := Vector3(0.0, 2.55, 1.27)       # shack-local: on the roof's raised front edge
 
 
 ## Builds every yard model on the prefab and returns the `_ruin_bits` Camp drives (bench included).
@@ -145,12 +146,18 @@ func _build(bench: Node3D) -> void:
 	bits["generator"] = gen
 	YardArt.dress_board(bits)  # the yard helper's models into the flat node layout
 	gen.position = Vector3.ZERO  # dress_board moves it out from under the flat lean-to; here the anchor is the spot
-	# [v6yard] The workbench's picture sign (a spanner): on the bench until the lean-to stands, then
-	# on the roof's front edge (_apply moves it). Look: data/machine_art.json.
-	if bench:
+	# [v6yard] The workbench's picture sign (a spanner). Until the lean-to stands it sits on the
+	# bench's pegboard shelf (and slumps with it while the bench is broken); then the one on the
+	# roof's front edge shows instead (_apply swaps them). Look: data/machine_art.json.
+	var upper: Node3D = bench.get_child(0).get_node_or_null("Upper") as Node3D if bench and bench.get_child_count() > 0 else null
+	if upper:
 		_bench_sign = MachineArt.sign_stalk("workbench").mi(0.15, "Sign")
-		bench.add_child(_bench_sign)
 		_bench_sign.position = SIGN_ON_BENCH
+		upper.add_child(_bench_sign)
+		_roof_sign = MachineArt.sign_stalk("workbench").mi(0.15, "RoofSign")
+		_roof_sign.position = SIGN_ON_ROOF
+		_roof_sign.visible = false
+		shack.add_child(_roof_sign)
 	await BuildBudget.check("yard site")  # [v5load]
 	_bin_bay()
 	await BuildBudget.check("yard site")  # [v5load]
@@ -227,9 +234,11 @@ func _process(delta: float) -> void:
 ## Shows what is built (the same state the flat systems read). Camp does its own bits.
 func _apply() -> void:
 	_yield_to_real_systems()
-	if is_instance_valid(_bench_sign):  # [v6yard]
+	if is_instance_valid(_bench_sign) and is_instance_valid(_roof_sign):  # [v6yard]
 		var fr: Node3D = bits.get("frame") as Node3D
-		_bench_sign.position = SIGN_ON_ROOF if fr and fr.visible else SIGN_ON_BENCH
+		var roofed: bool = fr != null and fr.visible
+		_roof_sign.visible = roofed
+		_bench_sign.visible = not roofed
 	var lamps: bool = YardBuilds.built("lamps")
 	for h: Node3D in _extra_lamps:
 		_show(h, lamps)

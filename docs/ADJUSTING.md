@@ -144,7 +144,7 @@ Code: `systems/camp/machine_art.gd` (signs, baler, belt drive, pod cart), `syste
 | To change | Edit |
 |---|---|
 | A landmark's two colours | `kinds.<kind>.main`, `.accent`: a kit colour name (cream, white, teal, mint, sky, navy, orange, yellow, red, olive, slate, plum) or `#rrggbb` |
-| Its size | `height`, `radius`, `tank_height` (water tower); `height`, `wheel_radius`, `blades` (windpump); `span`, `height` (crane); `height` (mast, stack); `radius`, `gondolas` (wheel) |
+| Its size | `height`, `radius`, `tank_height` (water tower); `height`, `wheel_radius`, `blades` (windpump); `span`, `height`, `run` (crane); `height` (mast, stack); `radius`, `gondolas` (wheel) |
 | How fast the fan, the wheel or the radar turns once the hub is awake | `kinds.<kind>.spin` (radians a second, 0 = still) |
 | The wheel's gondola colours | `kinds.ferris_wheel.gondola_a`, `.gondola_b` |
 | The room a landmark keeps clear of junk and buildings | `kinds.<kind>.foot` (metres) |

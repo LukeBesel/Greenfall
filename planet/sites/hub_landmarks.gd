@@ -169,7 +169,8 @@ static func _geometry(kind: String, state: String, seed_: int, c: Dictionary) ->
 			_ferris(b, d, state, c, pal, seed_)
 		"smokestack":
 			_smokestack(b, d, state, c)
-	_kiosk(b, _x(d.kiosk, Vector3(0, float(c.get("kiosk_yaw", 0.0)), 0)), state)
+	_kiosk(b, _x(d.kiosk), state)
+	d.solids.append([d.kiosk + Vector3(0, 0.7, -0.1), Vector3(1.1, 1.4, 0.7)])
 	return [b, d]
 
 
@@ -263,8 +264,8 @@ static func _water_tower(b: KitMesh.Builder, d: Data, state: String, c: Dictiona
 			b.rod("paint:accent", at.call(i, y1), at.call(i + 1, y1), 0.1, 8)
 			if state == "broken" and (i + lv) % 5 == 0:
 				continue
-			b.rod("dark_steel", at.call(i, y0), at.call(i + 1, y1), 0.055, 6)
-			b.rod("dark_steel", at.call(i + 1, y0), at.call(i, y1), 0.055, 6)
+			b.rod("dark_steel", at.call(i, y0), at.call(i + 1, y1), 0.075, 6)
+			b.rod("dark_steel", at.call(i + 1, y0), at.call(i, y1), 0.075, 6)
 			var mid: Vector3 = ((at.call(i, y0) as Vector3) + (at.call(i + 1, y1) as Vector3) + (at.call(i + 1, y0) as Vector3) + (at.call(i, y1) as Vector3)) * 0.25
 			b.add("dark_steel", KitMesh.bevel_cylinder(0.2, 0.09, 0.02, 8), KitMesh.look_y(mid * 0.985, Vector3(mid.x, 0, mid.z)))
 	_deck(b, h, r + 0.85, state, 16)
@@ -336,8 +337,8 @@ static func _windpump(b: KitMesh.Builder, d: Data, state: String, c: Dictionary,
 			b.rod("paint:accent", at.call(i, y1), at.call(i + 1, y1), 0.075, 6)
 			if state == "broken" and (i * 2 + lv) % 5 == 0:
 				continue
-			b.rod("steel", at.call(i, y0), at.call(i + 1, y1), 0.045, 5)
-			b.rod("steel", at.call(i + 1, y0), at.call(i, y1), 0.045, 5)
+			b.rod("steel", at.call(i, y0), at.call(i + 1, y1), 0.062, 6)
+			b.rod("steel", at.call(i + 1, y0), at.call(i, y1), 0.062, 6)
 	# Service deck near the top, the gearbox head on a turntable, the tail vane.
 	var dy: float = h - 1.5
 	b.box("dark_steel", Vector3(2.3, 0.1, 2.3), _x(Vector3(0, dy, 0)), 0.03)
@@ -418,7 +419,7 @@ static func _crane(b: KitMesh.Builder, d: Data, state: String, c: Dictionary) ->
 	var span: float = _f(c, "span", 15.0)
 	var ch: float = _f(c, "height", 12.0)  # underside of the girder
 	var hx: float = span * 0.5
-	var run: float = 8.6
+	var run: float = _f(c, "run", 7.6)
 	for s: float in [-1.0, 1.0]:
 		var x: float = s * hx
 		b.box("concrete", Vector3(1.5, 0.3, run + 0.8), _x(Vector3(x, 0.15, 0)), 0.06)
@@ -426,18 +427,18 @@ static func _crane(b: KitMesh.Builder, d: Data, state: String, c: Dictionary) ->
 		for z: float in [-run * 0.5 - 0.1, run * 0.5 + 0.1]:
 			b.box("hazard", Vector3(0.9, 0.7, 0.3), _x(Vector3(x, 0.65, z)), 0.06)
 		# The bogie: a fat truck on four wheels.
-		b.box("dark_steel", Vector3(1.0, 0.75, 5.8), _x(Vector3(x, 1.08, 0)), 0.12)
-		b.box("hazard", Vector3(1.04, 0.24, 5.84), _x(Vector3(x, 0.84, 0)), 0.05)
+		b.box("dark_steel", Vector3(1.0, 0.75, 5.4), _x(Vector3(x, 1.08, 0)), 0.12)
+		b.box("hazard", Vector3(1.04, 0.24, 5.44), _x(Vector3(x, 0.84, 0)), 0.05)
 		for z: float in [-2.1, -0.75, 0.75, 2.1]:
 			b.add("steel", KitMesh.bevel_cylinder(0.42, 0.5, 0.06, 14), _x(Vector3(x - 0.25, 0.86, z), Vector3(0, 0, -90)))
 		# A-frame legs up to the girder, tied half way up, a ladder on the left one.
 		for sz: float in [-1.0, 1.0]:
-			b.rod("paint:main", Vector3(x, 1.4, sz * 2.4), Vector3(x * 0.97, ch + 0.2, sz * 0.5), 0.36, 10)
-			b.box("dark_steel", Vector3(0.95, 0.16, 0.95), _x(Vector3(x, 1.5, sz * 2.4)), 0.04)
+			b.rod("paint:main", Vector3(x, 1.4, sz * 2.2), Vector3(x * 0.97, ch + 0.2, sz * 0.5), 0.36, 10)
+			b.box("dark_steel", Vector3(0.95, 0.16, 0.95), _x(Vector3(x, 1.5, sz * 2.2)), 0.04)
 		b.rod("paint:main", Vector3(x * 0.985, ch * 0.5 + 0.7, -1.45), Vector3(x * 0.985, ch * 0.5 + 0.7, 1.45), 0.17, 8)
 		b.box("paint:accent", Vector3(1.1, 0.5, 2.2), _x(Vector3(x * 0.97, ch - 0.1, 0)), 0.1)
 		d.solids.append([Vector3(x, 1.3, 0), Vector3(1.5, 2.6, run + 1.0)])
-	KitProps.ladder(b, _x(Vector3(-hx * 0.985, 1.5, 2.72), Vector3(-9.5, 0, 0)), ch - 1.6)
+	KitProps.ladder(b, _x(Vector3(-hx * 0.985, 1.5, 2.52), Vector3(-rad_to_deg(atan2(1.7, ch - 1.2)), 0, 0)), ch - 1.6)
 	# The girder: a deep box beam with flanges, ribs, hazard ends and a walkway on top.
 	var gy: float = ch + 0.95
 	b.box("paint:main", Vector3(span + 2.6, 1.6, 1.5), _x(Vector3(0, gy, 0)), 0.12)
@@ -668,6 +669,8 @@ static func _ferris(b: KitMesh.Builder, d: Data, state: String, c: Dictionary, p
 		d.gondola_skip = [2, 7, 8]
 	for key: String in ["gondola_a", "gondola_b"]:
 		var gc: String = str(c.get(key, "yellow" if key == "gondola_a" else "teal"))
+		if state == "broken":  # sun-faded while the fair sleeps
+			gc = "#" + KitMat.color(gc).lerp(Color(0.5, 0.47, 0.42), 0.55).to_html(false)
 		d.gondola_meshes.append(KitMesh.cached("landmark:gondola:%s:%s:%d" % [state, gc, pal.hash()], func() -> Resource:
 			var g := KitMesh.Builder.new(seed_ + 11, pal, state)
 			g.box("paint:" + gc, Vector3(1.5, 0.8, 1.3), _x(Vector3(0, -1.75, 0)), 0.2, 2)
@@ -707,15 +710,15 @@ static func _smokestack(b: KitMesh.Builder, d: Data, state: String, c: Dictionar
 		b.add("trim:red", KitMesh.bevel_cylinder(0.14, 0.22, 0.04, 8), _x(Vector3(cos(la) * (r1 + 0.1), h + 0.75, sin(la) * (r1 + 0.1))))
 	d.solids.append([Vector3(0, 2.2, 0), Vector3(4.7, 4.4, 4.7)])
 	# The boiler house on the right with a fat flue duct into the stack.
-	var hs: Transform3D = _x(Vector3(5.6, 0, -0.2))
-	b.box("concrete", Vector3(5.6, 0.3, 4.6), hs * _x(Vector3(0, 0.15, 0)), 0.06)
-	b.box("dark_steel", Vector3(5.0, 3.4, 4.0), hs * _x(Vector3(0, 2.0, 0)), 0.1)
-	KitMesh.panel_wall(b, 5.0, 3.4, hs * _x(Vector3(-2.5, 0.3, 2.0)), {"key": "paint:accent", "panel": Vector2(1.25, 1.13), "missing": 0.2 if state == "broken" else 0.0, "patch": 0.25 if state == "repaired" else 0.0, "hazard": true, "trim": "trim:warm"})
-	b.box("paint:main", Vector3(5.3, 0.26, 4.3), hs * _x(Vector3(0, 3.83, 0)), 0.08)
-	KitProps.hatch(b, hs * _x(Vector3(-1.2, 0.3, 2.12)), Vector2(1.1, 2.0), state)
-	KitProps.vent(b, hs * _x(Vector3(1.3, 3.96, 0.4), Vector3(-90, 0, 0)), Vector2(1.0, 0.8))
-	KitProps.pipe_run(b, Transform3D.IDENTITY, PackedVector3Array([Vector3(4.6, 3.9, -0.2), Vector3(4.6, 6.2, -0.2), Vector3(1.5, 6.2, -0.2)]), 0.62, "paint:accent")
-	d.solids.append([hs.origin + Vector3(0, 2.0, 0), Vector3(5.2, 4.0, 4.3)])
+	var hs: Transform3D = _x(Vector3(5.0, 0, -0.2))
+	b.box("concrete", Vector3(4.6, 0.3, 4.2), hs * _x(Vector3(0, 0.15, 0)), 0.06)
+	b.box("dark_steel", Vector3(4.0, 3.4, 3.6), hs * _x(Vector3(0, 2.0, 0)), 0.1)
+	KitMesh.panel_wall(b, 4.0, 3.4, hs * _x(Vector3(-2.0, 0.3, 1.8)), {"key": "paint:accent", "panel": Vector2(1.0, 1.13), "missing": 0.2 if state == "broken" else 0.0, "patch": 0.25 if state == "repaired" else 0.0, "hazard": true, "trim": "trim:warm"})
+	b.box("paint:main", Vector3(4.3, 0.26, 3.9), hs * _x(Vector3(0, 3.83, 0)), 0.08)
+	KitProps.hatch(b, hs * _x(Vector3(-0.9, 0.3, 1.92)), Vector2(1.1, 2.0), state)
+	KitProps.vent(b, hs * _x(Vector3(1.0, 3.96, 0.4), Vector3(-90, 0, 0)), Vector2(1.0, 0.8))
+	KitProps.pipe_run(b, Transform3D.IDENTITY, PackedVector3Array([Vector3(4.4, 3.9, -0.2), Vector3(4.4, 6.2, -0.2), Vector3(1.5, 6.2, -0.2)]), 0.62, "paint:accent")
+	d.solids.append([hs.origin + Vector3(0, 2.0, 0), Vector3(4.2, 4.0, 3.9)])
 	# The fuel tanks on the left, piped into the stack's foot: they are still full.
 	KitProps.tank(b, _x(Vector3(-4.6, 0, 1.2)), 1.5, 4.2, "paint:accent", state)
 	KitProps.tank(b, _x(Vector3(-4.9, 0, -2.6)), 1.2, 3.4, "paint:accent", state)

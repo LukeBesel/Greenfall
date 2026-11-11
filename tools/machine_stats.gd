@@ -77,7 +77,7 @@ func _line(nm: String, n: Node) -> String:
 		elif c is MultiMeshInstance3D and (c as MultiMeshInstance3D).multimesh:
 			mesh = (c as MultiMeshInstance3D).multimesh.mesh
 			mult = (c as MultiMeshInstance3D).multimesh.instance_count
-		if mesh == null:
+		if mesh == null or not (c as Node3D).is_visible_in_tree():
 			continue
 		meshes += 1
 		for s: int in mesh.get_surface_count():

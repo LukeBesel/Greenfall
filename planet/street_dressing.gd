@@ -1981,6 +1981,13 @@ func _build_landmark() -> void:
 		foot = HubLandmarks.foot(_lm_kind, HubPlan.active_planet)
 	_lm_pos = _far_spot(side, foot, 0.12, 0.55)
 	if kit_lm:
+		# [v6yard] A kit landmark is big: if the first spot is not clear, try the other side, then wider.
+		for alt: Array in [[-side, 0.12, 0.55], [side, 0.05, 0.95], [-side, 0.05, 0.95]]:
+			if _spot_blocked(_lm_pos, foot) == 0:
+				break
+			var q: Vector3 = _far_spot(float(alt[0]), foot, float(alt[1]), float(alt[2]))
+			if _spot_blocked(q, foot) < _spot_blocked(_lm_pos, foot):
+				_lm_pos = q
 		_kit_landmark(_lm_pos)
 	match "" if kit_lm else _lm_kind:
 		"water_tower":
@@ -2019,13 +2026,21 @@ func _kit_landmark(p: Vector3) -> void:
 	for sd: Array in _lm_node.data.solids:
 		_col(_lm_node.transform * (sd[0] as Vector3), sd[1], _lm_node.transform.basis)
 	_lm_top = _lm_node.transform * _lm_node.data.top
+	# The spot HubPurpose's prompt and beam point at: just in front of the wake console.
+	_lm_pos = _lm_node.transform * (_lm_node.data.kiosk + Vector3(0, 0, 1.1))
 	if DevHooks.has("lm-report"):  # dev: where each hub's landmark landed and whether its footprint is clear
 		var r: float = HubLandmarks.foot(_lm_kind, HubPlan.active_planet)
-		var blocked: int = 0
-		for o: Vector3 in [Vector3.ZERO, Vector3(r, 0, r), Vector3(-r, 0, r), Vector3(r, 0, -r), Vector3(-r, 0, -r), Vector3(r, 0, 0), Vector3(-r, 0, 0), Vector3(0, 0, r), Vector3(0, 0, -r)]:
-			if (field and field.hex_at(p + o) >= 0) or (not layout.wild and layout.surface_at(p.x + o.x, p.z + o.z) == CityLayout.Surface.BUILDING):
-				blocked += 1
+		var blocked: int = _spot_blocked(p, r)
 		print("[landmark] hub %d %s at (%.1f, %.1f) foot %.1f level %d state %s tris %d solids %d: %s" % [hub_index, _lm_kind, p.x, p.z, r, level, _lm_node.state, _lm_node.data.tris, _lm_node.data.solids.size(), "clear" if blocked == 0 else "BLOCKED at %d of 9 probes" % blocked])
+
+
+## [v6yard] How many of _far_spot's nine probes round p (radius r) hit junk hexes or a building.
+func _spot_blocked(p: Vector3, r: float) -> int:
+	var n: int = 0
+	for o: Vector3 in [Vector3.ZERO, Vector3(r, 0, r), Vector3(-r, 0, r), Vector3(r, 0, -r), Vector3(-r, 0, -r), Vector3(r, 0, 0), Vector3(-r, 0, 0), Vector3(0, 0, r), Vector3(0, 0, -r)]:
+		if (field and field.hex_at(p + o) >= 0) or (not layout.wild and layout.surface_at(p.x + o.x, p.z + o.z) == CityLayout.Surface.BUILDING):
+			n += 1
+	return n
 
 
 ## A seeded ground spot beyond the junk field, `a0..a1` radians off the -z view axis on `side`,
