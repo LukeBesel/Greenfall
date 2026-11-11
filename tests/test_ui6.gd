@@ -82,7 +82,7 @@ func test_locker_is_a_yard_build() -> void:
 func test_no_locker_tab() -> void:
 	for t: Dictionary in UpgradesScreen.TABS:
 		assert_ne(str(t["id"]), "locker")
-	assert_lte(UpgradesScreen.TABS.size(), 5)
+	assert_lte(UpgradesScreen.TABS.size(), 6)  # five and the Rig tab (M3-08)
 
 
 ## [ui7] The Bots tab in the list pattern.

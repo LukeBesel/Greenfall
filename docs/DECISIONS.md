@@ -510,3 +510,17 @@ The owner asked for more attention on the world's goals and look (full cities ro
 - **A hex holding an unlearnt kind is shut to robots whole**, litter included: the robots come in once Lumi has learnt the new kind. Kept: it makes each new city start with hand work.
 - The simulator's purchase-wait limit is 136 s, matching the accepted first-seed sequence (M3-21).
 - Robot plans do not wait on mastery yet; review in M3-12.
+
+## Rigs (M3-08, Nov 11, 2026)
+`docs/reviews/M3-08_RIGS.md`. Three slots on Lumi (arm, chest, drive), thirteen modules in the planet's `rigs` table, fitted free at the workbench's Rig tab; a fitted module shows on Lumi's model.
+- **Each city's kind is gated by a rig tool, and by nothing bought earlier.** Wrecks need the Plate Cutter (arm), slick the Skim Skirt (drive), smog the Mist Scrubber (chest), blight the Soil Doser (drive). Lift Strength 2, Hover Jets and the garden tools no longer open a kind on their own; the Cutter brings the lift and the Skirt the hover.
+- **A tool's plan arrives when its city opens, not when Lumi lands there** (a change from the task's wording, "on reaching that city"). The only workbench is in the start yard: a tool handed over on landing would cost two flights before the first new hex. The player is told at the bench, fits it, then flies. To revert, the unlock listens for `district_entered` instead of `district_unlocked` (one line in `systems/rigs.gd`).
+- **Tools are free; their price is the slot.** Every other module is built once for cubes and Parts (800 to 3,400 cubes, 8 to 80 Parts, all under the 4,200 cap) and trades one stat for another.
+- **No rig module in city 1.** The Rig tab appears when Ironside opens, so the first city's pacing is as it was.
+- **Skim Skirt and Soil Doser share the drive slot.** Slick is whole lake hexes and blight is land, so no single hex needs both; Old Capital (9 slick hexes) is a choice per outing.
+- **Once Lumi has learnt a kind she may take its tool off** and leave the kind to the robots at their first-level rate; keeping the tool on keeps her mastery, and so the crew's rate, climbing. This is the standing trade-off of cities 3 to 6.
+- **Saved per planet** (`orbit.rigs`): modules, prices and tools are the planet's own. A save from before rigs gets the tools of its open cities fitted wherever the slot is free.
+- **Rigs are not looks.** They mount on the right wrist and the body, take no Locker slot and are not in `data/cosmetics.json`. The Locker's turntable shows looks only.
+- **Parts on the model are procedural stand-ins** (`player/rig_parts.gd`, one shape per module); modelled parts are M5-10.
+- **The rig study is separate from the accepted proposal.** `tools/pace_sim/rig_study.gd` scores the game's own table; the proposal's loadout study (8% spread, `--model=redesign --rigs=1`) still runs on the proposal's table and was not changed. Five modules are never the study's best fit (Long Reach, Guide Arm, Press Frame, Sprint Coils, Relay Mast: 4 to 9% behind); their numbers go to M3-12.
+- Originality: slots, module names and effects come from the cleanup theme (cutting wrecks, skimming, scrubbing, dosing soil); nothing was modelled on another game. Equipment slots with trade-offs are a common genre mechanic.
