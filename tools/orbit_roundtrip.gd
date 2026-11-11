@@ -200,6 +200,7 @@ static func _fauna_check(tree: SceneTree, s: Node, so: SliceOrbit, check: Callab
 	p.place_on_sphere(back, p.forward())
 	lg._dev_clean_nearest()
 	var cands: Array[int] = LedgerArc.drop_candidates(g.field, lg.is_planted, region)
+	cands.erase(int(s.get_meta("rt_target", -1)))  # [v6qa] not the cell the round trip cleaned (its level and save are checked)
 	check.call("orbit_ledger_drop_candidates", true, cands.size() > 0)
 	if cands.size() > 0:
 		check.call("orbit_ledger_drone_inbound", true, lg.start_drop(true) and lg.drone != null)
@@ -470,6 +471,14 @@ static func run(rt: Node, check: Callable) -> void:
 			if g.field.piece_alive[pid] == 1:
 				s1.collect_piece(pid)
 	check.call("orbit_cell_cleaned", clean0 + 1, s1.field.cleaned_count)
+	# [v6qa] The clean cell is tracked and reaches level 1 at HexLevels' next sample; take that sample
+	# now. (CI flake: the 1 s sampler raced the Ledger check in _fauna_check, which re-dirtied this
+	# very cell, the region's first clean unplanted one: dirty before a sample, it stays level 0.)
+	var hl1: HexLevels = s1.get("hex_levels")
+	check.call("orbit_hex_tracked_on_clean", true, hl1.levels.has(target))
+	hl1.step(float(hl1.cfg.get("sample_s", 1.0)))
+	check.call("orbit_hex_level_1", 1, hl1.level_of(target))
+	s1.set_meta("rt_target", target)
 	# The garden: plant and water in the cell Lumi just cleaned (its slots are made on demand).
 	var gdn: Garden = s1.get("garden")
 	GameState.flags["seeds_unlocked"] = true
@@ -556,15 +565,6 @@ static func run(rt: Node, check: Callable) -> void:
 		check.call("orbit_outline_cell_sized", true, aabb.size.x > 12.0 and aabb.size.x < 24.0 and absf(aabb.size.y) < 3.0)
 		ob.set_process(true)
 	check.call("orbit_first_hex_milestone", true, GameState.flags.get("hexm_1", false))
-	for i: int in 75:  # [main] HexLevels samples once a second; poll up to 15 s (a paused tree is answered by PauseWatch after 3 s)
-		await tree.create_timer(0.2).timeout
-		if i >= 6 and (s1.get("hex_levels") as HexLevels).level_of(target) >= 1:
-			break
-	if (s1.get("hex_levels") as HexLevels).level_of(target) < 1:  # [main] say why, for CI logs
-		var hl: HexLevels = s1.get("hex_levels")
-		print("[roundtrip] FAIL-INFO hex_level: paused=%s tracked=%s clean=%s hub=%d water=%s processing=%s" % [tree.paused, hl.levels.has(target), g.field.is_clean(target), int(g.field.hex_hub[target]), g.field.is_water(target), hl.is_processing()])
-	check.call("orbit_hex_level_1", 1, (s1.get("hex_levels") as HexLevels).level_of(target))
-	s1.set_meta("rt_target", target)
 	# Half-clean a second one and set a level on a third (the far shell / future layer read these).
 	for c: int in g.grid.neighbors(target if target >= 0 else g.start_cell()):
 		if g.field.hex_hub[c] == 0 and not g.field.is_clean(c):
@@ -620,11 +620,13 @@ static func run(rt: Node, check: Callable) -> void:
 	var bot_dirs: Array[Vector3] = [crew.unit_dir(nb), crew.unit_dir(fb)]
 	var rad: float = g.grid.radius_m
 	check.call("orbit_robot_near_far", "near far", ("near " if crew.is_near(nb) else "far ") + ("near" if crew.is_near(fb) else "far"))
+	SharedRoundtrip.setup(s1, check)  # [v6flat] the shared state the flat round trip used to check
 	for i: int in 3:
 		await tree.physics_frame
 	var ok: bool = SaveManager.save_game()
 	check.call("orbit_saved", true, ok)
 	var a: Dictionary = _snap(s1)
+	var shared_a: Dictionary = SharedRoundtrip.snap(s1)
 	var disk: Dictionary = SaveManager.read_dict(SaveManager.slot_path())
 	check.call("orbit_flat_world_untouched", false, (disk.get("world", {}) as Dictionary).has("hub_level"))
 	check.call("orbit_hub_world_saved", 2, int((((disk.get("orbit", {}) as Dictionary).get("hub_worlds", {}) as Dictionary).get("0", {}) as Dictionary).get("hub_level", 0)))
@@ -649,6 +651,9 @@ static func run(rt: Node, check: Callable) -> void:
 			check.call("orbit_sky_spin_within_0.05", true, absf(angle_difference(float(a[k]), float(b[k]))) <= 0.05)
 			continue
 		check.call("orbit_" + k, a[k], b[k])
+	var shared_b: Dictionary = SharedRoundtrip.snap(s2)
+	for k: String in shared_a:
+		check.call("shared_" + k, shared_a[k], shared_b[k])
 	var crew2: SphereCrew = (s2.get("orbit") as SliceOrbit).crews.crew  # [orbC] robots back where they were
 	var worst: float = INF if crew2 == null or crew2.robots().size() != 2 else 0.0
 	if worst == 0.0:

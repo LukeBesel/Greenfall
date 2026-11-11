@@ -121,8 +121,16 @@ func test_claims_are_exclusive_and_respect_zones() -> void:
 	crew.release(a)
 	var zc: int = _g5.cells_around(100, 2)[15]
 	crew.set_zone_cell("clean", zc, true)
-	assert_eq(crew.claim_dirty(100, 100, -1, "clean", "c"), zc, "a painted zone is worked first and only")
-	assert_eq(crew.claim_dirty(100, 100, -1, "clean", "d"), -1)
+	assert_eq(crew.claim_dirty(100, 100, -1, "clean", "c"), zc, "a painted zone is worked first")
+	# [v6crew] Cleaners go on around the hub once the zone is taken; planters keep to theirs.
+	assert_gt(crew.claim_dirty(100, 100, -1, "clean", "d"), -1, "then the rest of the region: no idle robot while work is in reach")
+	crew.cells.set_junk(zc + 1, 0.0)
+	crew.cells.set_state(zc + 1, 1)
+	crew.cells.set_junk(zc + 2, 0.0)
+	crew.cells.set_state(zc + 2, 1)
+	crew.set_zone_cell("plant", zc + 1, true)
+	assert_eq(crew.claim_dirty(100, 100, -1, "plant", "e"), zc + 1, "a planter plants its zone")
+	assert_eq(crew.claim_dirty(100, 100, -1, "plant", "f"), -1, "and only its zone")
 
 
 func test_order_sends_a_robot_to_a_cell() -> void:

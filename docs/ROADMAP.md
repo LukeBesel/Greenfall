@@ -24,8 +24,10 @@ The round world is the game, and the work is on its first planet, Verdance. The 
 **Open**
 - **Renderers:** every render so far used opengl3 (Compatibility). Nobody has looked at Verdance on Forward+ or Metal, and the owner's Mac perf run (`--quality=1 --perf`) is still to do.
 - **Look:** the globe's light was harsher than the flat world's and the pad looked pale at noon. v5look's warm-light and matte-pad pass is merged, but the owner has not seen it yet. A flat grey sea on the horizon and a thin straight line across the junk field were reported and not rechecked since the water fix (docs/QA_VERDANCE.md, 12 and 13).
-- **Hinterland:** the suburb houses have no pitched roofs, there are no road strips between houses, and there is no walk check there.
-- **Autoplay:** the bot's stuck escapes climb in the garden phase (13 at 47 min, 77 at 107 min).
+- **Hinterland:** roads stop at a hub's 345 m clearance instead of joining the town streets (v6qa list, item 4).
+- **Known glitches (v6qa, docs/QA_VERDANCE.md "Known-glitch list"):** still open: SCRIPT ERRORs seen once in a `--orbit` round trip, loading-screen RID errors on a headless continue, walk-in hub town build frames (25-45 ms for 3 s), the shader warm-up frame at the end of loading.
+- **Pacing (items 57, 58, 61, 63, 64):** the gates and the price curve are in (docs/BALANCE.md, "Verdance arc"; knobs in docs/ADJUSTING.md): the rocket comes with the first working robot, far hubs cost 600 / 6K / 24K / 96K / 380K, every restored hub multiplies sales by 2.5, the rocket tiers reach 3 / 5 / all hubs, six hubs at level 2 open the way onward, and the Mk V drive costs 500K. The full-arc measurement uses a stand-in for waking a far hub until v6hubs' hub chain is in; measure again after it lands. Other planets' prices are not rescaled to the new curve yet.
+- **Autoplay:** the bot follows the card now (it saves for a priced step and sees only the card's goal). Its stuck escapes are fixed (1 in 160 minutes, v5play).
 - **Bale clipping** into Lumi's body (item 22) has not been reproduced.
 - **Translations** are machine drafts. No native speaker has reviewed them. In-world shop signs (PAWN, SHOE REPAIR, OLD TOWN) stay English in every language.
 - **Map:** the survey's hex counts are a snapshot (they update on Re-survey), while its planet % is live.
@@ -1018,3 +1020,23 @@ Details and numbers in docs/PERFORMANCE.md (perf passes 6-8).
 - **Tools:** `--hinter-walk`, `[bot-esc2]` with `--bot-debug`, `--crew-debug`, `--soak-bales`, a fuller soak digest, the reload check covers the rocket.
 - **Result:** base 2 at 40 bot-minutes (was 71), 1 stuck escape in 160 minutes (was 31), haulers carry about 300 bales each (was 20).
 - **Open:** the bot does not save for base 3 (137 min); the start got 2.5 min slower with a merge of main; see "Still open" in QA_VERDANCE.md.
+
+## 2026-11-11: v6hubs (every hub has a purpose; the rocket hop)
+- **Data:** `data/planets.json` "verdance" has `hub_defaults` and `hubs` (one entry per hub: name, town, landmark, the rocket piece and gift it gives, its local chain). How to change it: docs/ADJUSTING.md, "Hubs".
+- **Main path (6 hubs):** Landing Yard (home), Garden Row (seed stock), Gantry Works (hull plates), Signal Heights (star chart), Fairground (power cell), Stack Works (fuel). Four extras open once the six stand.
+- **Restore flow:** fly in, clean a few hexes there, press E at the landmark to wake it (price from `Hub.far_cost`). The wake sets the hub to level 2 and built, lights a beacon on the landmark, gives the piece and gift, and stands a field bench by the rocket pad. A woken hub's level then follows its clean share.
+- **Picker:** home first (marked HOME), then NEXT STOP, then the other listed hubs; each row has the town type, why to go, its state and the robots working there. The list scrolls. Hubs past the rocket's limit are shown locked.
+- **Hop:** skippable (E / jump), HUD hidden in flight, the camera looks down the path at the new town on the approach, the town's name shows once on landing, then the step card.
+- **HUD:** the top-right lines are now this base's clean % and "BASES n/6".
+- Code: `planet/sites/hub_plan.gd`, `planet/sites/hub_purpose.gd`; tests: `tests/test_hub_plan.gd`.
+- **Open:** the survey map (M) still shows the old city names and no landmark glyphs; the story text is placeholder (v6story); goal-card steps for "fly to the next hub" and "upgrade the rocket" are v6pace's; the hub town builds behind the veil in about 10 s on this box (headless), to be checked on real hardware.
+
+## 2026-11-11: v6crew (robots as the heart of the mid-game on Verdance)
+- **A robot belongs to one hub** (`u["hub"]`, the hub it is built at: `SphereCrew.nearest_hub`). It cleans that hub's region nearest dirty first, its Haul Bugs fetch only that region's bales and unload at that hub's drop point (`SphereCrew.depot_points[hub_cell]`, default 5 m off the pad; v6hubs can set the exact spot). Painted zones belong to the hub they lie in. `SphereCrew.transfer(u, hub)` / `transfer_some(from, to, n)` move robots (for the rocket).
+- **The first robot is a moment.** `SphereCrew.greet()`: a built robot rolls 3 m out, looks left and right, then starts on the nearest dirty hex with no zone painted. The first build closes the workbench so the player sees it.
+- **Zones are "here first"** for cleaners and skimmers (then they carry on around the hub, so nobody idles while work is in reach); planters and waterers keep to their zone.
+- **Readable robots.** `BotBadge`: a lamp in the job's colour (pulsing at work, grey "z" resting, amber "!" needs you). `CrewTalk.line()` is the one short line per state or reason; it shows as the prompt when Lumi stands by a robot and on hover in Command. Drips spray while watering.
+- **Command view.** Filled zone hexes per job, hover hex, bales as squares, a card with the hub's crew and "About N hexes an hour", a legend row per job, paint hints for mouse or pad, only the jobs you have robots for.
+- **Growth.** `crew.hub_summary(hub_cell)` (also used by the rocket picker), the bench's Bots counter shows the rate, and a hub's crew reports once when Lumi returns after 3 minutes or more away (`OrbitCrews._away_tick`).
+- Tests: `tests/test_crew_v6.gd`. Dev: `--crew-build=type[,s]`, `--crew-cam=i[,dist,height]`.
+- Open: rendered checks of the badge, hello and Command card were blocked by memory on the shared box (see the hand-off notes); Haul Bug reversals in `--bot-motion` (10 a minute); the Drip can be built before any plant exists (it says why it waits).

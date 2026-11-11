@@ -733,9 +733,9 @@ func _build_islands() -> void:
 func _dress_islands() -> void:
 	var rock_mat: StandardMaterial3D = AssetLib.pbr_material("dry_ground_rocks", 0.45, Color(0.7, 0.68, 0.62), true)
 	rock_mat.metallic = 0.0
-	var b_always := FrontierView.Batch.new()
-	var b_ruin := FrontierView.Batch.new()
-	var b_green := FrontierView.Batch.new()
+	var b_always := PropBatch.Batch.new()
+	var b_ruin := PropBatch.Batch.new()
+	var b_green := PropBatch.Batch.new()
 	var trunk_m: Material = _mat("trunk")
 	var leaf_m: Material = _mat("leaf")
 	var mangrove_m: Material = _mat("mangrove")
@@ -818,7 +818,7 @@ func _scatter_models(ids: Array, xfs: Array[Transform3D], parent: Node3D, vis_en
 		parent.add_child(mmi)
 
 
-func _palm(b: FrontierView.Batch, p: Vector3, h: float, trunk_m: Material, leaf_m: Material) -> void:
+func _palm(b: PropBatch.Batch, p: Vector3, h: float, trunk_m: Material, leaf_m: Material) -> void:
 	var lean := Vector3(_rng.randf_range(-1, 1), 0, _rng.randf_range(-1, 1)).normalized() * h * 0.18
 	var segs: int = 5
 	var prev: Vector3 = p
@@ -830,7 +830,7 @@ func _palm(b: FrontierView.Batch, p: Vector3, h: float, trunk_m: Material, leaf_
 		cyl.bottom_radius = 0.22
 		cyl.radial_segments = 6
 		cyl.height = 1.0
-		b.add(cyl, FrontierView._beam_xf(prev, q, 1.0), trunk_m)
+		b.add(cyl, PropBatch._beam_xf(prev, q, 1.0), trunk_m)
 		prev = q
 	for k: int in 7:
 		var a: float = TAU * k / 7.0 + _rng.randf() * 0.3
@@ -841,25 +841,25 @@ func _palm(b: FrontierView.Batch, p: Vector3, h: float, trunk_m: Material, leaf_
 		b.add(frond, xf, leaf_m)
 
 
-func _mangrove(b: FrontierView.Batch, p: Vector3, s: float, trunk_m: Material, leaf_m: Material) -> void:
+func _mangrove(b: PropBatch.Batch, p: Vector3, s: float, trunk_m: Material, leaf_m: Material) -> void:
 	var top: Vector3 = p + Vector3(0, 1.6 * s, 0)
 	for k: int in 5:
 		var a: float = TAU * k / 5.0 + _rng.randf() * 0.5
 		var foot: Vector3 = p + Vector3(cos(a), -0.3, sin(a)) * 1.1 * s
 		var knee: Vector3 = p.lerp(foot, 0.5) + Vector3(0, 0.9 * s, 0)
-		b.add(_twig(), FrontierView._beam_xf(foot, knee, 0.07 * s), trunk_m)
-		b.add(_twig(), FrontierView._beam_xf(knee, top, 0.08 * s), trunk_m)
+		b.add(_twig(), PropBatch._beam_xf(foot, knee, 0.07 * s), trunk_m)
+		b.add(_twig(), PropBatch._beam_xf(knee, top, 0.08 * s), trunk_m)
 	for k: int in 4:
 		var o := Vector3(_rng.randf_range(-1, 1), _rng.randf_range(0.2, 0.9), _rng.randf_range(-1, 1)) * s
 		var r: float = _rng.randf_range(0.9, 1.5) * s
 		b.add(_lumpy(5 + k % 3, 0.5, 2.6), _lxf(top + o, Vector3(0, _rng.randf() * 360.0, 0), Vector3(r * 1.2, r * 0.7, r * 1.2)), leaf_m)
 
 
-func _snag(b: FrontierView.Batch, p: Vector3, m: Material) -> void:
+func _snag(b: PropBatch.Batch, p: Vector3, m: Material) -> void:
 	var h: float = _rng.randf_range(2.0, 4.0)
 	var lean := Vector3(_rng.randf_range(-0.5, 0.5), 1.0, _rng.randf_range(-0.5, 0.5)).normalized()
-	b.add(_twig(), FrontierView._beam_xf(p, p + lean * h, 0.14), m)
-	b.add(_twig(), FrontierView._beam_xf(p + lean * h * 0.6, p + lean * h * 0.6 + Vector3(_rng.randf_range(-1, 1), 0.6, _rng.randf_range(-1, 1)), 0.07), m)
+	b.add(_twig(), PropBatch._beam_xf(p, p + lean * h, 0.14), m)
+	b.add(_twig(), PropBatch._beam_xf(p + lean * h * 0.6, p + lean * h * 0.6 + Vector3(_rng.randf_range(-1, 1), 0.6, _rng.randf_range(-1, 1)), 0.07), m)
 
 
 func _twig() -> CylinderMesh:
@@ -1050,7 +1050,7 @@ static func _bevel_box() -> Mesh:
 	return BoxMesh.new()
 
 
-## Transform with a LOCAL scale (ProcMesh.xf / FrontierView._xf scale in parent space, which
+## Transform with a LOCAL scale (ProcMesh.xf scales in parent space, which
 ## skews any rotated, non-uniformly scaled box).
 static func _lxf(pos: Vector3, rot_deg: Vector3 = Vector3.ZERO, scl: Vector3 = Vector3.ONE) -> Transform3D:
 	return Transform3D(Basis.from_euler(rot_deg * (PI / 180.0)) * Basis.from_scale(scl), pos)
@@ -1061,13 +1061,13 @@ static func _ls(b: Basis, s: Vector3) -> Basis:
 	return b * Basis.from_scale(s)
 
 
-func _box(b: FrontierView.Batch, pos: Vector3, size: Vector3, mat: Material, rot: Vector3 = Vector3.ZERO) -> void:
+func _box(b: PropBatch.Batch, pos: Vector3, size: Vector3, mat: Material, rot: Vector3 = Vector3.ZERO) -> void:
 	if not _mats.has("_box"):
 		_mats["_box"] = _bevel_box()
 	b.add(_mats["_box"], _lxf(pos, rot, size), mat)
 
 
-func _cyl(b: FrontierView.Batch, a: Vector3, c: Vector3, r: float, mat: Material) -> void:
+func _cyl(b: PropBatch.Batch, a: Vector3, c: Vector3, r: float, mat: Material) -> void:
 	if not _mats.has("_cyl"):
 		var cm := CylinderMesh.new()
 		cm.top_radius = 1.0
@@ -1076,7 +1076,7 @@ func _cyl(b: FrontierView.Batch, a: Vector3, c: Vector3, r: float, mat: Material
 		cm.rings = 1
 		cm.height = 1.0
 		_mats["_cyl"] = cm
-	b.add(_mats["_cyl"], FrontierView._beam_xf(a, c, r), mat)
+	b.add(_mats["_cyl"], PropBatch._beam_xf(a, c, r), mat)
 
 
 ## A free spot on open water at distance [d0, d1] (clear of islands and the field).
@@ -1099,9 +1099,9 @@ func _sea_spot(d0: float, d1: float, clear: float) -> Vector3:
 ## Jack-up dredging rigs: four lattice legs, a deck hull, a derrick, a crane and a bucket ladder
 ## dipping into the sea. Ruin: rust, a list, oil round the legs. Future: a white sea platform.
 func _build_rigs() -> void:
-	var always := FrontierView.Batch.new()
-	var fut := FrontierView.Batch.new()
-	var mid := FrontierView.Batch.new()
+	var always := PropBatch.Batch.new()
+	var fut := PropBatch.Batch.new()
+	var mid := PropBatch.Batch.new()
 	if not _mats.has("_box"):
 		_mats["_box"] = _bevel_box()
 	for i: int in 2:
@@ -1116,7 +1116,7 @@ func _build_rigs() -> void:
 
 ## One jack-up dredging rig at p (local), facing yaw: TideProps.rig ([p_seas] art pass with
 ## colliders and image decals). The batch arguments are kept for callers (left empty).
-func _rig(i: int, p: Vector3, yaw: float, _always: FrontierView.Batch = null, _mid: FrontierView.Batch = null, _fut: FrontierView.Batch = null, _label_parent: Node3D = null) -> void:
+func _rig(i: int, p: Vector3, yaw: float, _always: PropBatch.Batch = null, _mid: PropBatch.Batch = null, _fut: PropBatch.Batch = null, _label_parent: Node3D = null) -> void:
 	TideProps.rig(self, p, yaw, 7 + i * 4)
 
 
@@ -1159,7 +1159,7 @@ func _build_towers() -> void:
 ## Channel buoys round the field and out to the rigs; light buoys (thin cyan cap) when futuristic.
 func _build_buoys() -> void:
 	var pts: Array[Transform3D] = []
-	var caps := FrontierView.Batch.new()
+	var caps := PropBatch.Batch.new()
 	for k: int in 14:
 		var a: float = TAU * k / 14.0 + _rng.randf() * 0.2
 		var d: float = _field_edge + _rng.randf_range(8.0, 30.0)
@@ -1173,8 +1173,8 @@ func _build_buoys() -> void:
 ## The base is an anchored raft: pontoon floats and bollards along the yard's water edges, a
 ## couple of moored work rafts and a fuel float just outside the field (no robot traffic there).
 func _build_base_moorings() -> void:
-	var b := FrontierView.Batch.new()
-	var fut := FrontierView.Batch.new()
+	var b := PropBatch.Batch.new()
+	var fut := PropBatch.Batch.new()
 	var hub_r: float = field.hex_size * 0.92
 	for k: int in 12:
 		var a: float = TAU * k / 12.0
@@ -1244,7 +1244,7 @@ func _build_lighthouses() -> void:
 ## Floating gardens: round planted rafts moored on some clean water hexes once restored, and a
 ## ring of them just outside the field. Small and low (skimmers glide past them).
 func _build_gardens() -> void:
-	var b := FrontierView.Batch.new()
+	var b := PropBatch.Batch.new()
 	var spots: Array[Vector3] = []
 	var k_g: int = 0
 	for k: int in 10:
@@ -1265,8 +1265,8 @@ func _build_gardens() -> void:
 ## Futuristic stage: white sea platforms on slim floats with hair-thin light edges, floating
 ## solar rafts, and a glass greenhouse dome on the biggest platform.
 func _build_future() -> void:
-	var b := FrontierView.Batch.new()
-	var lit := FrontierView.Batch.new()
+	var b := PropBatch.Batch.new()
+	var lit := PropBatch.Batch.new()
 	for k: int in 3:
 		var p: Vector3 = _sea_spot(_field_edge + 25.0, 160.0, 18.0)
 		var r: float = _rng.randf_range(7.0, 11.0)

@@ -8,6 +8,8 @@ extends RefCounted
 ##   --orbit-far-crew[=N]             3 Scoopies + 1 Haul Bug at hub site N (default 1, ~1.7 km
 ##                                    away); prints the far shell's colour there before --quit-after
 ##   --bot-motion                     with --quit-after: [motion] jitter / building-overlap report
+##   --crew-build=type[,seconds]     [v6crew] builds a robot at the bench after a while and logs its hello
+##   --crew-cam=i[,dist,height]      [v6crew] a dev camera on robot i (rendered audits of the crew)
 ##   --offline-jump[=S]               offline jump of S seconds (default 7200) for the --robots
 ##                                    fleet: flat Offline.compute vs SphereOffline.simulate, PASS
 ##                                    within 10%, and the cells it cleaned
@@ -38,6 +40,12 @@ static func install(src: Object, parent: Node, lumi: Node3D, cam: SphereCam, wri
 		var dd: Vector3 = crew.surface.up_at(dp.global_position)
 		crew.depot_cell = crew.grid.cell_at(dd)
 		crew.depot_points[start] = dd
+	for st: Dictionary in src.sites:  # [v6crew] every hub: robots belong to one, haulers unload at its pad
+		var hc: int = int(st["cell"])
+		crew.hubs.append(hc)
+		if hc != start and st.get("transform") is Transform3D:
+			var o: Transform3D = st["transform"]
+			crew.depot_points[hc] = crew.surface.up_at(o * Vector3(5.0, 0.0, 3.0))
 	crew.junk_view = src.junk_view
 	crew.world = parent
 	if parent.has_method("add_cube"):
@@ -72,6 +80,26 @@ static func install(src: Object, parent: Node, lumi: Node3D, cam: SphereCam, wri
 		pr.name = "CrewProbe"
 		pr.crew = crew
 		parent.add_child(pr)
+	if DevHooks.has("crew-build"):  # [v6crew] --crew-build=type[,seconds]: a robot built at the bench after a while
+		var cb: PackedStringArray = DevHooks.get_s("crew-build", "scoopie").split(",")
+		var wait: Callable = func() -> void:
+			while DevHooks._elapsed < (float(cb[1]) if cb.size() > 1 else 4.0):  # the --shot-delay clock
+				await parent.get_tree().process_frame
+			var at: Vector3 = parent.get("orbit").call("bench_position") if parent.get("orbit") != null else lumi.global_position
+			var bc: int = crew.grid.cell_at(at)
+			var nu: Dictionary = crew.spawn(cb[0] if cb[0] != "1" else "scoopie", 0, bc, crew.nearest_hub(crew.grid.centers[bc]), "Newbie")
+			crew.greet(nu)
+			var from: Vector3 = crew.unit_dir(nu)
+			for k: int in 14:
+				await parent.get_tree().create_timer(0.5, false).timeout
+				print("[crew] built %s t=%.1f mode=%s moved=%.1f m job=%d (%.0f m from the bench) | %s" % [nu["name"], (k + 1) * 0.5, nu["mode"],
+					from.angle_to(crew.unit_dir(nu)) * crew.surface.radius, int(nu["job"]),
+					crew.grid.distance_m(int(nu["job"]), bc) if int(nu["job"]) >= 0 else -1.0, CrewTalk.look_text(crew, nu)])
+		wait.call_deferred()
+	if DevHooks.has("crew-cam"):  # [v6crew] --crew-cam=i[,dist,height]: a dev camera watching robot i (renders)
+		var cc := CrewCam.new()
+		cc.crew = crew
+		parent.add_child(cc)
 	if DevHooks.has("orbit-far-crew"):
 		var si: int = clampi(int(DevHooks.get_f("orbit-far-crew", 0.0)), 0, src.sites.size() - 1)
 		if si <= 1:  # a bare flag reads as "1"  # default: the hub nearest the start (~1.6-1.7 km on Verdance)
@@ -142,3 +170,31 @@ static func offline_jump(src: Object, fleet: Array, seconds: float) -> Dictionar
 		seconds, fleet.size(), fc, float(flat["units"]), oc, float(res["units"]), int(res["cells"]), diff * 100.0, "PASS" if diff <= 0.10 else "FAIL"])
 	Offline.apply(res)
 	return res
+
+
+## [v6crew] Dev camera for rendered audits: looks at robot `i` from `dist` m away and `height` m up.
+class CrewCam extends Camera3D:
+	var crew: SphereCrew
+	var _i: int = 0
+	var _dist: float = 5.0
+	var _h: float = 2.2
+
+	func _ready() -> void:
+		var a: PackedStringArray = DevHooks.get_s("crew-cam", "0").split(",")
+		_i = int(a[0])
+		_dist = float(a[1]) if a.size() > 1 else 5.0
+		_h = float(a[2]) if a.size() > 2 else 2.2
+		fov = 60.0
+		process_priority = 100
+
+	func _process(_d: float) -> void:
+		if crew == null or crew.units.is_empty():
+			return
+		var u: Dictionary = crew.units[clampi(_i, 0, crew.units.size() - 1)]
+		var d: Vector3 = crew.unit_dir(u)
+		var p: Vector3 = crew.surface.ground(d)
+		var side: Vector3 = SphereMath.any_perpendicular(d)
+		global_position = p + side * _dist + d * _h
+		look_at(p + d * 0.5, d)
+		if not current:
+			make_current()

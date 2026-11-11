@@ -23,8 +23,8 @@ extends Node
 ## Dev flags (phase A's, now on the slice): --orbit-walk[=boost] --orbit-lap-quit,
 ## --orbit-scoop, --orbit-cash --orbit-cash-quit, --orbit-view=follow|ground|command,
 ## --orbit-day=MIN, --orbit-time=0..1, --orbit-presim=MIN, --orbit-hubs=N, --orbit-cam=D,P,
-## --orbit-bots=N (stand-in SphereBots, default 4). The phase A scenes stay reachable as
-## --orbit=globe (planet/orbit/verdance_globe.tscn) and --orbit=v1.
+## --orbit-bots=N (stand-in SphereBots, default 4). [v6flat] The phase A prototype scenes
+## (--orbit=globe, --orbit=v1) are gone.
 
 const SCHEMA: int = OrbitSave.SCHEMA  # GameState.orbit layout: core/save_orbit.gd
 const HEX_MILESTONES: Array[int] = [1, 5, 10, 25, 50, 100, 150, 200, 264]  # slice.gd's, by cell id here
@@ -40,13 +40,6 @@ var layers: OrbitLayers  # [orbE]
 var view_mode: String = "follow"
 var sites: OrbitSites  # [orbD]
 var hub_states: Dictionary = {}  # site index (str) -> {level} (core/save_orbit.gd); the Hub port fills it
-
-
-## True when --orbit asks for the slice on the globe (not one of the phase A prototypes).
-static func wanted() -> bool:
-	if DevHooks.has("orbit"):
-		return not DevHooks.get_s("orbit", "") in ["v1", "globe"]
-	return SaveManager.round_planets()  # the title screen's "Round planets (preview)"
 
 
 ## Builds the whole orbit slice into `p_world`. [orbE] Behind the loading screen (a BuildBudget is
@@ -281,6 +274,8 @@ func build(p_world: Node3D) -> void:
 	if DevHooks.has("ground-probe"):  # [v3qa] floating / sunken props and junk around Lumi
 		GroundProbe.attach(self)
 	LifeDev.attach(self)  # [v6life] --life-clean / --life-report
+	if DevHooks.has("feel"):  # [v6feel] scripted feel checks (tools/feel_probe.gd)
+		FeelProbe.attach(self)
 
 
 func _build_patch() -> void:
@@ -492,7 +487,10 @@ func interact_prompt(p: Patch) -> String:
 		if _repairing:
 			return ""
 		return tr("E   Fix the workbench") if not Camp.bench_ok() else tr("E   Open the workbench")  # [v3clear]
-	return sites.interact_prompt() if sites else ""  # [orbD] the hover-sled
+	var sp: String = sites.interact_prompt() if sites else ""  # [orbD] the hover-sled
+	if sp == "" and crews:  # [v6crew] standing by a robot: what it is doing, or why it can't work
+		sp = crews.robot_prompt(p.global_position)
+	return sp
 
 
 func any_modal_open() -> bool:
@@ -969,6 +967,10 @@ func _sync_hub_level(l: int) -> void:
 ## The workbench: the start site's "bench" anchor (falls back to the pad centre).
 func bench_position() -> Vector3:
 	var sm: SiteManager = globe.site_manager
+	if sites and sites.purpose:  # [v6hubs] at a woken far hub: the field bench by its rocket pad
+		var fb: Variant = sites.purpose.bench_point()
+		if fb is Vector3:
+			return fb
 	var sp: SitePrefab = sm.prefab(0) if sm else null
 	if sp:
 		return sp.global_transform * sp.anchor_local("bench").origin
@@ -1205,7 +1207,7 @@ func persist_save() -> void:
 ## [v5play] Kept across saves: where the rocket stands, that Lumi owns it, the hubs he has flown to.
 ## (save_world rebuilt GameState.orbit without them: after a hop, a save and a reload, Lumi stood
 ## at the far hub and the rocket was back on the start pad, or gone below base level 5.)
-const ROCKET_KEYS: Array[String] = ["rocket_site", "rocket_owned", "hubs_flown"]
+const ROCKET_KEYS: Array[String] = ["rocket_site", "rocket_owned", "hubs_flown", "hub_plan"]  # [v6hubs] + each hub's purpose state (planet/sites/hub_plan.gd)
 
 
 func restore_world() -> void:

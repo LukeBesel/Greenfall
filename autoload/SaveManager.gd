@@ -31,6 +31,10 @@ func _init() -> void:
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	migrate_to_profiles(root_dir())  # [worlds2] before anything reads a save (CradleBoot, Steam Cloud)
+	var ua: PackedStringArray = OS.get_cmdline_user_args()  # (DevHooks is not ready yet: it loads after this autoload)
+	var unit_tests: bool = " ".join(OS.get_cmdline_args()).contains("gut_cmdln")
+	if not unit_tests and (dev_dir != "" or not ("--fresh" in ua or "--nosave" in ua)):  # dev runs and tests leave the player's saves alone
+		import_flat_tree(old_flat_root(), root_dir())  # [v6flat] old flat-world saves, once (before the profile choice: it may come along)
 	profile_slot = read_profile_choice()
 	DirAccess.make_dir_recursive_absolute(save_dir())
 	import_demo_save()  # [steam]
@@ -38,36 +42,26 @@ func _ready() -> void:
 
 ## [steam] The demo keeps its saves apart (Demo.SAVE_DIR) so a full-game save never opens in it.
 ## [worlds2] The folder that holds the profile folders.
-func root_dir(flat: bool = false) -> String:
-	if round_planets() and not flat:  # [orbB] the round world keeps its saves apart
-		return ("user://saves_" + dev_dir if dev_dir != "" else (Demo.SAVE_DIR if Demo.is_demo() else SAVE_DIR)) + ROUND_SUFFIX
+func root_dir() -> String:
+	return old_flat_root() + ROUND_SUFFIX
+
+
+## [orbB] The game (the round world) saves under user://saves_round (profiles, worlds, album and
+## all; the demo under user://saves_demo_round), and Steam Cloud names carry SteamCloud.ROUND_PREFIX.
+## The suffix dates from when the flat game had user://saves: that tree is never written now.
+const ROUND_SUFFIX: String = "_round"
+
+
+## [v6flat] Where the removed flat game kept its saves (user://saves, or the demo's / a dev
+## folder's). Read-only: Steam Cloud still syncs old flat saves down into it.
+func old_flat_root() -> String:
 	if dev_dir != "":  # [beat]
 		return "user://saves_" + dev_dir
 	return Demo.SAVE_DIR if Demo.is_demo() else SAVE_DIR
 
 
-## [orbB] The round world (Settings.round_planets): New Game and Continue start on the globe
-## (SliceOrbit.wanted), saving under user://saves_round (profiles, worlds, album and all), so the
-## flat game's saves are never read or written. Steam Cloud covers both trees, the round one
-## under its own prefix (SteamCloud.ROUND_PREFIX). [v1menu] The default since the 2026-11-08 playtest, the demo
-## included (user://saves_demo_round); `--flat` (dev) reaches the dormant flat game.
-const ROUND_SUFFIX: String = "_round"
-
-
-func round_planets() -> bool:
-	return Settings.round_planets and not "--flat" in OS.get_cmdline_user_args()  # [v1menu]
-
-
-## Turns the preview on or off (title screen): saves the setting, then points at that save tree's
-## remembered profile and reloads its Cradle profile. The caller rebuilds the menu.
-func set_round_planets(on: bool) -> void:
-	Settings.round_planets = on
-	Settings.save_settings()
-	migrate_to_profiles(root_dir())
-	profile_slot = read_profile_choice()
-	DirAccess.make_dir_recursive_absolute(save_dir())
-	CradleMode.boot()
-	print("[save] round planets %s: %s" % ["on" if on else "off", save_dir()])
+func old_flat_profile_dir(n: int) -> String:
+	return old_flat_root().path_join("p%d" % clampi(n, 1, PROFILES))
 
 
 ## [worlds2] The current save profile's folder: world slots and profile.save live here.
@@ -75,8 +69,8 @@ func save_dir() -> String:
 	return profile_dir(profile_slot)
 
 
-func profile_dir(n: int, flat: bool = false) -> String:  # [orbB] flat: the flat game's tree whatever the preview
-	return root_dir(flat).path_join("p%d" % clampi(n, 1, PROFILES))
+func profile_dir(n: int) -> String:
+	return root_dir().path_join("p%d" % clampi(n, 1, PROFILES))
 
 
 ## [worlds2] Moves pre-profile saves (slot_N.save, profile.save in `root`) into root/p1, unless p1
@@ -158,6 +152,61 @@ static func import_demo_tree(src_root: String, dst_root: String) -> void:
 			DirAccess.copy_absolute(src_dir.path_join(nm), dst)
 			FileAccess.open(dst + ".demo_imported", FileAccess.WRITE)
 			print("[save] imported demo save ", nm)
+
+
+## [v6flat] One-time import of the removed flat game's saves (user://saves pN) into the round
+## tree (user://saves_round pN), so an old player's Continue still works: the round game loads a
+## flat save and OrbitMigrate (core/save_orbit_migrate.gd) turns it into a globe save. Copies a
+## profile's .save files only when that round profile has no save yet; never overwrites, never
+## deletes or changes the flat files. Saves made before profiles (directly in user://saves) count
+## as p1. Once a flat tree with saves has been seen, FLAT_IMPORT_MARKER in the round tree stops
+## later runs (it lists what was copied). Returns how many files were copied.
+const FLAT_IMPORT_MARKER: String = "flat_import.done"
+
+
+static func import_flat_tree(src_root: String, dst_root: String) -> int:
+	if FileAccess.file_exists(dst_root.path_join(FLAT_IMPORT_MARKER)) or not DirAccess.dir_exists_absolute(src_root):
+		return 0
+	var seen: bool = false
+	var copied: Array[String] = []
+	for n: int in range(1, PROFILES + 1):
+		var src: String = src_root.path_join("p%d" % n)
+		var files: Array[String] = _save_files(src)
+		if files.is_empty() and n == 1:  # pre-profile saves, never moved (that would change the flat tree)
+			src = src_root
+			files = _save_files(src)
+		if files.is_empty():
+			continue
+		seen = true
+		var dst: String = dst_root.path_join("p%d" % n)
+		if not _save_files(dst).is_empty():
+			continue  # this round profile is in use: leave it alone
+		DirAccess.make_dir_recursive_absolute(dst)
+		for nm: String in files:
+			if DirAccess.copy_absolute(src.path_join(nm), dst.path_join(nm)) == OK:
+				copied.append("p%d/%s" % [n, nm])
+	if not seen:
+		return 0  # nothing there (yet): Steam Cloud may still sync old saves down, so look again next start
+	if not FileAccess.file_exists(dst_root.path_join(PROFILES_CFG)) and FileAccess.file_exists(src_root.path_join(PROFILES_CFG)):
+		DirAccess.copy_absolute(src_root.path_join(PROFILES_CFG), dst_root.path_join(PROFILES_CFG))  # the profile last played
+	DirAccess.make_dir_recursive_absolute(dst_root)
+	var f := FileAccess.open(dst_root.path_join(FLAT_IMPORT_MARKER), FileAccess.WRITE)
+	if f:
+		f.store_line("from %s at %s" % [src_root, Time.get_datetime_string_from_system()])
+		for c: String in copied:
+			f.store_line(c)
+	if not copied.is_empty():
+		print("[save] imported %d old flat-world saves into %s: %s" % [copied.size(), dst_root, ", ".join(copied)])
+	return copied.size()
+
+
+static func _save_files(dir: String) -> Array[String]:
+	var out: Array[String] = []
+	if DirAccess.dir_exists_absolute(dir):
+		for nm: String in DirAccess.get_files_at(dir):
+			if nm.ends_with(".save"):
+				out.append(nm)
+	return out
 
 
 func _process(delta: float) -> void:

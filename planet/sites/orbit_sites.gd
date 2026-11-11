@@ -77,11 +77,12 @@ static func of(world: Node) -> OrbitSites:
 
 
 ## [v2map] Owner note 40: the survey map (M) is only a map. Travel is at the rocket: it stands on
-## the pad of the hub Lumi last landed at (from base level 5, as on the flat game, or once Lumi
+## the pad of the hub Lumi last landed at (from the base level in data/hub.json "rocket_level", or once Lumi
 ## has flown), and E there opens the destination list (ui/rocket_picker.gd): the other hubs on
 ## this globe (a rocket hop), other planets once the system is open, and the Homeward launch.
 ## Dev: --orbit-survey-launch=N still flies to the Nth hub in that list; --rocket parks it at once.
 var picker: RocketPicker
+var purpose: HubPurpose  # [v6hubs]
 var rocket_spot: Node3D
 var _site_hub: Dictionary = {}  # site index -> planet.hubs index
 
@@ -123,12 +124,20 @@ func _wire_survey() -> void:
 		if not flown.has(to_i):
 			flown.append(to_i)
 		GameState.orbit["hubs_flown"] = flown)
+	purpose = HubPurpose.attach(self)  # [v6hubs] every hub's purpose: arrival, local steps, the wake
+	picker.planet_line_fn = func() -> String: return tr("Bases restored: %d of %d") % [HubPlan.restored_main(sm.planet_id), HubPlan.main_total(sm.planet_id)] if HubPlan.has_plan(sm.planet_id) else ""
 	_sync_rocket()
 	if DevHooks.has("orbit-rocket-open"):  # dev: open the rocket's list after T s; prints its rows
 		get_tree().create_timer(DevHooks.get_f("orbit-rocket-open", 3.0)).timeout.connect(func() -> void:
 			_sync_rocket()
 			open_rocket()
-			print("[rocket] parked %s at site %d, list %s, prompt '%s'" % [rocket_spot.visible, rocket_site(), str(picker.offered_sites()), rocket_prompt()]))
+			print("[rocket] parked %s at site %d, list %s, prompt '%s'" % [rocket_spot.visible, rocket_site(), str(picker.offered_sites()), rocket_prompt()])
+			if DevHooks.has("hop-shots"):  # [v6hubs] dev: a picture of the list
+				get_tree().create_timer(0.6, true, false, true).timeout.connect(func() -> void:
+					await RenderingServer.frame_post_draw
+					DevHooks.save_viewport("%s_picker.png" % DevHooks.get_s("hop-shots", "screenshots/hop")))
+			for e: Dictionary in destinations():  # [v6hubs]
+				print("[rocket]   site %d: %s | %s | %s | %s | %s%s" % [int(e["site"]), e["name"], e.get("town", ""), e.get("offer", ""), e.get("state", ""), e.get("robots", ""), " | " + str(e["tag"]) if str(e.get("tag", "")) != "" else ""]))
 	if DevHooks.has("orbit-survey-launch"):  # dev: fly to the Nth hub of the rocket's list
 		await get_tree().create_timer(1.0).timeout
 		var keys: Array = picker.offered_sites()
@@ -140,12 +149,12 @@ func _wire_survey() -> void:
 		hop_to(pick)
 
 
-## Whether Lumi has a rocket on this globe: base level 5 builds it (as the flat game's launch pad),
+## Whether Lumi has a rocket on this globe: the base level `Hub.rocket_level()` builds it,
 ## and once Lumi has flown (a hop or an arrival from another planet) it travels with him.
 func rocket_unlocked() -> bool:
 	var hub: Variant = so.w.get("hub")
 	return DevHooks.has("rocket") or bool(GameState.orbit.get("rocket_owned", false)) \
-		or (hub is Hub and (hub as Hub).level >= 5)
+		or (hub is Hub and Hub.rocket_open((hub as Hub).level))
 
 
 ## The hub whose pad the rocket stands on (the last landing, else the start site).
@@ -164,7 +173,10 @@ func open_rocket() -> void:
 	picker.open()
 
 
-## The other hubs on this globe, nearest first: [{site, name, km}].
+## The rocket's list: [{site, name, km, town, offer, state, robots, tag, home, next}].
+## [v6hubs] With a hub plan (data/planets.json hubs): home first, then the next hub of the path,
+## then the other hubs the plan lists (restored or visited, extras once the path is done), nearest
+## first, never capped. Without one: the six nearest hubs.
 func destinations() -> Array:
 	var out: Array = []
 	if sm == null:
@@ -172,16 +184,38 @@ func destinations() -> Array:
 	var from_i: int = rocket_site()
 	var here: Vector3 = sm.pad_xf(from_i).origin.normalized()
 	var R: float = so.globe.terrain.R
+	var plan: bool = HubPlan.has_plan(sm.planet_id)
+	var next_i: int = HubPlan.next_site(sm.planet_id) if plan else -1
 	for i: int in sm.sites.size():
 		if i == from_i or (not _site_hub.is_empty() and not _site_hub.has(i)):
 			continue
+		if plan and not HubPlan.listed(sm.planet_id, i):
+			continue
 		var d: Vector3 = (sm.sites[i]["transform"] as Transform3D).origin.normalized()
-		out.append({"site": i, "name": site_name(i), "km": here.angle_to(d) * R / 1000.0})
-	out.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return float(a["km"]) < float(b["km"]))
-	return out.slice(0, 6)
+		var e: Dictionary = {"site": i, "name": site_name(i), "km": here.angle_to(d) * R / 1000.0}
+		if plan and not HubPlan.entry(sm.planet_id, i).is_empty():
+			var he: Dictionary = HubPlan.entry(sm.planet_id, i)
+			e["home"] = HubPlan.is_home(sm.planet_id, i)
+			e["next"] = i == next_i and HubPlan.is_main(sm.planet_id, i)
+			e["town"] = HubPlan.town_name(sm.planet_id, i)
+			e["offer"] = tr(str(he.get("desc", "")))
+			e["state"] = purpose.status_text(i) if purpose else ""
+			e["robots"] = purpose.crew_line(i) if purpose else ""
+			e["tag"] = tr("HOME") if bool(e["home"]) else (tr("NEXT STOP") if bool(e["next"]) else "")
+			if not bool(e["home"]) and not HubPlan.woken(i) and not HubPlan.seen(i) and HubPlan.at_limit(sm.planet_id):
+				e["locked"] = tr("Upgrade the rocket first")  # the rocket's tier (RocketTiers.hub_limit)
+		out.append(e)
+	out.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+		var ra: int = 0 if bool(a.get("home", false)) else (1 if bool(a.get("next", false)) else 2)
+		var rb: int = 0 if bool(b.get("home", false)) else (1 if bool(b.get("next", false)) else 2)
+		return ra < rb if ra != rb else float(a["km"]) < float(b["km"]))
+	return out if plan else out.slice(0, 6)
 
 
 func site_name(i: int) -> String:
+	var pn: String = HubPlan.hub_name(sm.planet_id, i) if sm else ""  # [v6hubs] the hub's own name
+	if pn != "":
+		return pn
 	var pl: PlanetData = so.globe.planet
 	if _site_hub.has(i):
 		var cell: int = pl.hubs[int(_site_hub[i])]
@@ -231,6 +265,8 @@ var _rocket_t: float = 0.0
 
 
 func _process(delta: float) -> void:
+	if not _late_q.is_empty():  # [v6qa]
+		_sweep_late_step()
 	_rocket_t += delta
 	if _rocket_t >= 0.5:
 		_rocket_t = 0.0
@@ -318,11 +354,13 @@ func _build_hinterland() -> void:
 	hinterland.setup(sm.grid, sm.terrain, sm.cells, hubs, int(so.globe.get("seed_value")) if so.globe.get("seed_value") != null else 4471,
 		so.globe.call("yard_keep_out") as YardKeepOut if so.globe.has_method("yard_keep_out") else null)
 	hinterland.focus = so.w.get("patch")
+	hinterland.keep_out_late.connect(_sweep_late_keep_out)  # [v6qa]
 	if DevHooks.has("hinter-walk") or DevHooks.has("hinter-walk-at"):  # [v5play] dev: walk check of the hinterland (planet/sites/hinter_walk.gd)
 		HinterWalk.run_dev(so, hinterland)
 	var fld: Variant = so.globe.get("field")  # [v5look] no junk mounds on the hinterland's roads
 	if fld is SphereField:
 		(fld as SphereField).pile_block = hinterland.is_track_cell
+		(fld as SphereField).before_lay = hinterland.ensure_decided  # [v6qa] roads and buildings decided before junk is laid there
 	if DevHooks.has("hinter-goto"):  # [v5look] dev: stand Lumi by the nearest track / house / works (renders)
 		hinterland.rebuilt.connect(func() -> void:
 			var a: PackedStringArray = DevHooks.get_s("hinter-goto", "track").split(",")
@@ -336,6 +374,67 @@ func _build_hinterland() -> void:
 	if DevHooks.has("hinter-report"):
 		get_tree().create_timer(DevHooks.get_f("hinter-report", 20.0)).timeout.connect(func() -> void:
 			print("[hinter] %s nearest %s" % [str(hinterland.stats), hinterland.debug_nearest(sm.grid.cell_at((so.w.get("patch") as Node3D).global_position))]))  # [v5look]
+	if DevHooks.has("keepout-junk"):  # [v6qa] dev: live junk lying in the keep-out (roads, footprints) round Lumi
+		get_tree().create_timer(DevHooks.get_f("keepout-junk", 20.0)).timeout.connect(func() -> void:
+			print("[keepout] %d live pieces in the keep-out within 120 m, %d moved off late" % [keep_out_junk(120.0), moved_off_roads]))
+
+
+## [v6qa] Live pieces of made cells within r_m of Lumi whose spot is in the junk keep-out.
+func keep_out_junk(r_m: float) -> int:
+	var fld: SphereField = so.globe.get("field") as SphereField
+	var lumi: Node3D = so.w.get("patch")
+	if fld == null or lumi == null or not fld.keep_out.is_valid():
+		return -1
+	var n: int = 0
+	for c: int in sm.grid.cells_within(lumi.global_position.normalized(), r_m):
+		if fld.materialized[c] == 0:
+			continue
+		for pid: int in fld.pieces_in(c):
+			if fld.piece_alive[pid] == 1 and bool(fld.keep_out.call(fld.piece_pos[pid].normalized())):
+				n += 1
+	return n
+
+
+## [v6qa] The hinterland decided roads or buildings over cells whose junk was already made (made
+## before the hinterland existed, during the load): that junk moves off them
+## (SphereField.relocate_blocked), a few cells a frame (LATE_SWEEP_US).
+func _sweep_late_keep_out(late: PackedInt32Array) -> void:
+	var fld: SphereField = so.globe.get("field") as SphereField
+	if fld == null:
+		return
+	for c: int in late:
+		for c2: int in sm.grid.cells_around(c, 1):
+			if fld.materialized[c2] == 1 and not _late_seen.has(c2):
+				_late_seen[c2] = true
+				_late_q.append(c2)
+
+
+const LATE_SWEEP_US: int = 1500
+var _late_q: Array[int] = []
+var _late_seen: Dictionary = {}
+
+
+func _sweep_late_step() -> void:
+	var fld: SphereField = so.globe.get("field") as SphereField
+	var jv: SphereJunkView = so.globe.get("junk_view") as SphereJunkView
+	var t0: int = Time.get_ticks_usec()
+	while not _late_q.is_empty() and Time.get_ticks_usec() - t0 < LATE_SWEEP_US:
+		var c: int = _late_q.pop_back()
+		_late_seen.erase(c)
+		var r: Array = fld.relocate_blocked(c)
+		if (r[0] as PackedInt32Array).is_empty() and (r[1] as PackedInt32Array).is_empty():
+			continue
+		if jv:
+			for pid: int in r[0]:
+				jv.move_piece(pid, fld.piece_pos[pid])
+			for pid: int in r[1]:
+				jv.hide_piece(pid)
+		so.globe.call("write_cell", c)
+		moved_off_roads += (r[0] as PackedInt32Array).size() + (r[1] as PackedInt32Array).size()
+	Hitch.mark("late keep-out sweep", t0 if Hitch.on else 0)
+
+
+var moved_off_roads: int = 0  # [v6qa] (for checks)
 
 
 func _build_litter() -> void:
@@ -425,7 +524,7 @@ func _dev_hop() -> void:
 		var patch: Node3D = so.w.get("patch")
 		var d: float = patch.global_position.distance_to(sm.pad_xf(int(h)).origin)
 		print("[hop] to hub %s: %s in %d ms, %.1f m from its pad, site built %s" % [h, "ok" if ok else "FAIL", Time.get_ticks_msec() - t0, d, sm.prefab(int(h)) != null])
-		await get_tree().create_timer(1.0).timeout
+		await get_tree().create_timer(1.0 + (DevHooks.get_f("hub-dev-chain", 3.0) + 2.0 if DevHooks.has("hub-dev-chain") else 0.0)).timeout  # [v6hubs] room for the dev chain
 
 
 ## Dev: --site-reach. Narrow-gap audit (planet/sites/site_reach.gd) of every hub site on this

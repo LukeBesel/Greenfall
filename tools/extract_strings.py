@@ -42,6 +42,7 @@ COMMON_KEYS = {"name", "desc", "hint", "text", "text_1", "title", "body", "lore"
 JSON_RULES: dict[str, dict] = {
     "*": {"keys": COMMON_KEYS},
     "wren_lines.json": {"all_top": True},
+    "story_reasons.json": {"all_top": True},  # [v6story] goal reasons and the exit beat
     "shards.json": {"keys": COMMON_KEYS | {"kind"}},
     "ledger.json": {"keys": COMMON_KEYS, "pools": {"act1", "act2", "act3", "coupons", "drop_warn", "friendly",
                                                    "jammed", "lonely", "cinematic"}},

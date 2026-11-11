@@ -282,6 +282,8 @@ func _make() -> void:
 	dressing.name = "Dressing"
 	dressing.skip_facades = not CITY_BUILDINGS  # [v1world] shopfronts, awnings, neon, murals, billboard, string lights
 	dressing.kit_yard = true
+	if site_id != "start_yard":  # [v6hubs] the far hubs' landmarks come from the planet's data (the start yard keeps its own)
+		dressing.lm_kind_override = HubPlan.landmark_kind("verdance", hub_index)
 	add_child(dressing)
 	await dressing.build(layout, null, hub_index, district_name, "", level)
 	set_level(level)

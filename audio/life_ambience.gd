@@ -46,15 +46,16 @@ func setup(p_world: Node, globe: OrbitPlanet) -> void:
 	cells = globe.cells
 	grid = globe.grid
 	_rng.seed = 90210
-	_wind = _player()
-	_leaves = _player()
-	_shot = _player()
+	_wind = _player("LifeWind")
+	_leaves = _player("LifeLeaves")
+	_shot = _player("LifeCreak")
 	if DisplayServer.get_name() != "headless" or DevHooks.has("life-sound"):
 		_task = WorkerThreadPool.add_task(_synth, false, "life ambience")
 
 
-func _player() -> AudioStreamPlayer:
+func _player(nm: String) -> AudioStreamPlayer:
 	var p := AudioStreamPlayer.new()
+	p.name = nm
 	p.bus = "Ambience" if AudioServer.get_bus_index("Ambience") >= 0 else "SFX"
 	p.volume_db = -80.0
 	add_child(p)

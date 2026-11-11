@@ -36,7 +36,7 @@ var _rn := FastNoiseLite.new()
 var _pools_mi: Array[MeshInstance3D] = []
 var _steam: Array[CPUParticles3D] = []
 var _decks: Array[Vector3] = []
-var _ice_b: Dictionary = {}  # group -> FrontierView.Batch of glassy ice (custom material, not kit)
+var _ice_b: Dictionary = {}  # group -> PropBatch.Batch of glassy ice (custom material, not kit)
 
 
 static func place(p_site: String, root: Node3D, p_stage: int = 0, p_restoration: float = 0.0, opts: Dictionary = {}) -> RimeHubSite:
@@ -84,7 +84,7 @@ func _make(p_site: String, seed_v: int, r: float) -> void:
 		"hot_springs":
 			_site_springs()
 	for g: String in _ice_b:
-		(_ice_b[g] as FrontierView.Batch).flush(_groups[g])
+		(_ice_b[g] as PropBatch.Batch).flush(_groups[g])
 
 
 func set_state(p_stage: int, p_restoration: float) -> void:
@@ -423,8 +423,8 @@ func _dome(a: KitMesh.Builder, ruin: KitMesh.Builder, grn: KitMesh.Builder, c: V
 
 func _ice_add(group: String, mesh: Mesh, xf: Transform3D, mat: Material) -> void:
 	if not _ice_b.has(group):
-		_ice_b[group] = FrontierView.Batch.new()
-	(_ice_b[group] as FrontierView.Batch).add(mesh, xf, mat)
+		_ice_b[group] = PropBatch.Batch.new()
+	(_ice_b[group] as PropBatch.Batch).add(mesh, xf, mat)
 
 
 ## A lattice comms mast with a dish, guy lines and a red beacon (lit when restored).

@@ -7,7 +7,7 @@ extends Node
 
 # l10n:begin
 const STEPS: Array[Dictionary] = [
-	{"id": "repair", "text": "Fix the workbench: press  {interact}  at it"},
+	{"id": "repair", "text": "Fix the Makers' old bench: press  {interact}"},
 	{"id": "scoop", "text": "Pick up trash: hold  {scoop}", "goal": 8},
 	{"id": "dump", "text": "Bring your chest to the trash bin"},
 	{"id": "upgrade", "text": "Buy an upgrade: press  {interact}  at the bench"},

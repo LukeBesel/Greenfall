@@ -254,3 +254,7 @@ Direction: the flat world's vibe is better, so build it into the round world: bu
 58. Focus on making the first world fully playable, fun, well paced and good-looking; what works here feeds into the other worlds. Moving on to the next planet comes at 4–5 hours, NOT at 100% cleaned. The planet might be only about 20% cleaned at that point. Cleaning the rest is optional, for later.
 59. For cleanup work that doesn't much affect the game (removing the flat world and the like), use Opus helpers.
 60. The storyline must make sense: there must be real in-world reasons for what the player does, not "because it's a game".
+61. Before flying off Verdance (at 4–5 hours), the player should have seen about 6 of its bases (hubs).
+62. More songs are coming later. Set music up so songs are easy to add, swap and adjust (which planet, when, how often, volume) without code changes. The same goes for everything as the game grows to the other planets: keep it easy to change and adjustable per planet.
+63. Cubes should grow semi-exponentially, like an incremental game: income and prices multiply as you go (bigger numbers each base), not a flat or linear price ladder. Time per step stays roughly steady because income grows with the prices.
+64. Numbers should be big: a few thousand cubes is far too small for major steps. Upgrading the rocket enough to leave the planet should cost tens or hundreds of thousands of cubes.
