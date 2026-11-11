@@ -304,3 +304,40 @@ func test_command_view_offers_only_jobs_you_have_robots_for() -> void:
 	assert_true(str(CommandOverlay.hint_lines(cmd)[1]).contains("A"), "the pad gets pad keys")
 	cmd.painted_now = 2
 	assert_eq(str(CommandOverlay.hint_lines(cmd)[0]), tr("Good! Your robots will work here first."))
+
+
+## No dead ends: every type goes from built to working, and what it bales is cashed, also after
+## a save and a load in the middle and with Lumi far away.
+func test_every_robot_type_works_from_build_to_cash_across_a_save() -> void:
+	var w: Dictionary = _world()
+	var crew: SphereCrew = w["crew"]
+	crew.focus = null  # Lumi is far: every robot is a record
+	crew.spend_seeds = false
+	var hub_ring: PackedInt32Array = _g.cells_around(100, 3)
+	var lake: int = hub_ring[20]
+	(w["cells"] as SphereCells).set_state(lake, 5)
+	(w["cells"] as SphereCells).set_junk(lake, 1.0)
+	for c: int in [hub_ring[8], hub_ring[9]]:  # clean ground to plant, and one planted hex to water
+		(w["cells"] as SphereCells).set_junk(c, 0.0)
+		(w["cells"] as SphereCells).set_state(c, 1)
+	(w["cells"] as SphereCells).set_state(hub_ring[9], 2)
+	for t: String in ["scoopie", "haulbug", "skimmer", "seedling", "drip", "multibot"]:
+		crew.greet(crew.spawn(t, 0, 100))
+	crew.run_far(300.0, 0.5)
+	var d: Dictionary = JSON.parse_string(JSON.stringify(crew.to_dict()))
+	crew.from_dict(d)
+	assert_eq(crew.robots().size(), 6, "all six come back from the save")
+	crew.run_far(900.0, 0.5)
+	var by: Dictionary = {}
+	for u: Dictionary in crew.robots():
+		by[str(u["type"])] = u
+		assert_ne(str(u["mode"]), "hello", "%s is past its hello" % u["type"])
+	assert_gt(float(by["scoopie"]["log"]["junk"]), 100.0, "the Scoopie scooped")
+	assert_gt(float(by["multibot"]["log"]["junk"]), 100.0, "the Multibot cleaned")
+	assert_gt(float(by["skimmer"]["log"]["junk"]), 5.0, "the Skimmer skimmed the lake")
+	assert_gt(float(by["seedling"]["log"]["planted"]), 0.0, "the Seedling planted")
+	assert_gt(float(by["drip"]["log"]["watered"]), 0.0, "the Drip watered")
+	assert_gt(float(by["haulbug"]["log"]["hauled"]), 5.0, "the Haul Bug carried the bales")
+	assert_gt(crew.cashed, 0.0, "and they were cashed")
+	for u: Dictionary in crew.robots():
+		assert_ne(CrewTalk.line(crew, u), "", "%s always has a line" % u["type"])

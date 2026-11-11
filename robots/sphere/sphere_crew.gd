@@ -402,6 +402,8 @@ func greet(u: Dictionary) -> void:
 		var to: Vector3 = _free_spot(SphereMath.advance(b.dir, out, HELLO_ROLL_M / surface.radius)[0])
 		b.heading = SphereMath.tangent_dir(to - b.dir, b.dir, b.heading)
 		b.go_to_point(surface.ground(to))
+		if visuals and is_inside_tree():  # a ring of its job's colour where it rolls out
+			Vfx.ring(b.global_position + b.dir * 0.15, 1.8, BotBadge.role_color(str(u["role"])), 0.9)
 
 
 func _hello(u: Dictionary, dt: float) -> void:
