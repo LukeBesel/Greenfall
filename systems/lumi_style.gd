@@ -794,8 +794,14 @@ static func dev_hooks(world: Node) -> void:
 	if sets != "":
 		for kv: String in sets.split(","):
 			var p: PackedStringArray = kv.split(":")
-			if p.size() == 2:
-				set_value(s, p[0], ("#" + p[1]) if p[0] in COLOR_SLOTS else (float(p[1]) if p[0] == "wear" else p[1]))
+			if p.size() != 2:
+				continue
+			var value: Variant = p[1]
+			if p[0] in COLOR_SLOTS:
+				value = "#" + p[1]
+			elif p[0] == "wear":
+				value = float(p[1])
+			set_value(s, p[0], value)
 		changed = true
 	if changed:
 		set_current(s)

@@ -14,18 +14,18 @@ const DISC_R: float = 0.78
 const DISC_H: float = 0.09
 ## Camera: distance and height from the disc, the point it looks at, and how far the view is
 ## turned aside so Lumi stands in the part of the screen the panel leaves free.
-const CAM_DIST: float = 3.3
-const CAM_H: float = 1.25
+const CAM_DIST: float = 4.3
+const CAM_H: float = 1.45
 const LOOK_H: float = 0.72
 const CAM_FOV: float = 34.0
-const CAM_ASIDE_RAD: float = 0.2
+const CAM_ASIDE_RAD: float = 0.25
 ## The camera swings between these angles either side of the yard-facing direction.
 const SWING_RAD: float = 0.9
 const SWING_S: float = 26.0
 const SPIN_RAD_S: float = 0.5
 const DRAG_RAD_PX: float = 0.01
 const IDLE_S: float = 2.0
-const ZOOM_MIN: float = 0.55
+const ZOOM_MIN: float = 0.42
 const ZOOM_STEP: float = 0.08
 
 var _world: Node

@@ -1475,19 +1475,19 @@ msgstr "[FÔĜ ÔF ÑÔÔÐĻÉŠ ~~]"
 msgid "1ST PLACE"
 msgstr "[1ŠŢ ÞĻÀÇÉ ~]"
 
-#: story/eggs.gd:718
+#: story/eggs.gd:719
 msgid "The duck squeaks a secret: \"%s\""
 msgstr "[Ţĥé ðûçķ šqûéàķš à šéçŕéţ: \"%s\" ~~~~~~~~]"
 
-#: story/eggs.gd:719
+#: story/eggs.gd:720
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "[Ţĥé ðûçķ ĥàš ţàûĝĥţ ýôû évéŕýţĥîñĝ îţ ķñôŵš. Qûàçķ. ~~~~~~~~~~~~~~~]"
 
-#: story/eggs.gd:955
+#: story/eggs.gd:948
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "[Çûŕîôšîţý ƒôûñð: %s  (%d / %d)   %s ~~~~~~~~~]"
 
-#: story/eggs.gd:966
+#: story/eggs.gd:959
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "[Évéŕý çûŕîôšîţý ôñ ţĥé ļîšţ, ƒôûñð. Ļûmî'š çôļļéçţîôñ çômþàŕţméñţ îš véŕý ƒûļļ ôƒ mémôŕîéš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
@@ -2841,7 +2841,7 @@ msgstr "[Ļûmî ~]"
 msgid "Machines"
 msgstr "[Màçĥîñéš ~]"
 
-#: ui/bench_lists.gd:11 ui/globe_view.gd:176 ui/locker_panel.gd:303
+#: ui/bench_lists.gd:11 ui/globe_view.gd:176 ui/locker_panel.gd:306
 #: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "[Ŕôçķéţ ~]"
@@ -3148,7 +3148,7 @@ msgid "%d / %d entries"
 msgstr "[%d / %d éñţŕîéš ~~]"
 
 #: ui/codex_screen.gd:340 ui/codex_screen.gd:460 ui/codex_screen.gd:626
-#: ui/codex_screen.gd:641 ui/piece_row.gd:59
+#: ui/codex_screen.gd:641 ui/piece_row.gd:62
 msgid "Not found yet"
 msgstr "[Ñôţ ƒôûñð ýéţ ~~]"
 
@@ -3648,8 +3648,7 @@ msgstr "[%d ŔÉQÛÉŠŢŠ ŔÉÀÐÝ  ·  çļàîm ţĥém àţ ţĥé ŵôŕ
 msgid "CDS  ·  %d / %d"
 msgstr "[ÇÐŠ  ·  %d / %d ~~]"
 
-#: ui/extras_cd_list.gd:65 ui/extras_cd_list.gd:107 ui/lumi_builder.gd:115
-#: ui/tunes_picker.gd:95
+#: ui/extras_cd_list.gd:65 ui/extras_cd_list.gd:107 ui/tunes_picker.gd:95
 msgid "Shuffle"
 msgstr "[Šĥûƒƒļé ~]"
 
@@ -4276,100 +4275,108 @@ msgstr "[Évéŕý %s ŵéàŕš ţĥîš ~~~~]"
 msgid "Ship looks: the tiers keep their shape"
 msgstr "[Šĥîþ ļôôķš: ţĥé ţîéŕš ķééþ ţĥéîŕ šĥàþé ~~~~~~~~~~]"
 
-#: ui/locker_panel.gd:93 planets/verdance/data/camp.json:builds.locker.name
-msgid "Locker"
-msgstr "[Ļôçķéŕ ~]"
-
-#: ui/locker_panel.gd:97
+#: ui/locker_panel.gd:93
 msgid "Close"
 msgstr "[Çļôšé ~]"
 
-#: ui/locker_panel.gd:258
+#: ui/locker_panel.gd:97 planets/verdance/data/camp.json:builds.locker.name
+msgid "Locker"
+msgstr "[Ļôçķéŕ ~]"
+
+#: ui/locker_panel.gd:261
 msgid "The Locker"
 msgstr "[Ţĥé Ļôçķéŕ ~]"
 
-#: ui/locker_panel.gd:259
+#: ui/locker_panel.gd:262
 msgid "Find a piece of a look in the world. Then build the Locker in the Build tab and open it in the yard."
 msgstr "[Fîñð à þîéçé ôƒ à ļôôķ îñ ţĥé ŵôŕļð. Ţĥéñ bûîļð ţĥé Ļôçķéŕ îñ ţĥé Bûîļð ţàb àñð ôþéñ îţ îñ ţĥé ýàŕð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/locker_panel.gd:260
-msgid "Lumi wears what she finds: paint tins, lens chips and the pieces of old robots. Glim and your robots are dressed here too."
-msgstr "[Ļûmî ŵéàŕš ŵĥàţ šĥé ƒîñðš: þàîñţ ţîñš, ļéñš çĥîþš àñð ţĥé þîéçéš ôƒ ôļð ŕôbôţš. Ĝļîm àñð ýôûŕ ŕôbôţš àŕé ðŕéššéð ĥéŕé ţôô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+#: ui/locker_panel.gd:263
+msgid "Lumi wears what he finds: paint tins, lens chips and the pieces of old robots. Glim and your robots are dressed here too."
+msgstr "[Ļûmî ŵéàŕš ŵĥàţ ĥé ƒîñðš: þàîñţ ţîñš, ļéñš çĥîþš àñð ţĥé þîéçéš ôƒ ôļð ŕôbôţš. Ĝļîm àñð ýôûŕ ŕôbôţš àŕé ðŕéššéð ĥéŕé ţôô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/locker_panel.gd:301 ui/robot_card.gd:78
+#: ui/locker_panel.gd:304 ui/robot_card.gd:78
 msgid "Crew"
 msgstr "[Çŕéŵ ~]"
 
-#: ui/lumi_builder.gd:86 ui/lumi_builder.gd:184
+#: ui/lumi_builder.gd:86 ui/lumi_builder.gd:181
 msgid "Sets"
 msgstr "[Šéţš ~]"
 
-#: ui/lumi_builder.gd:106
+#: ui/lumi_builder.gd:89 ui/lumi_builder.gd:184
 msgid "Saved looks"
 msgstr "[Šàvéð ļôôķš ~]"
 
-#: ui/lumi_builder.gd:121
+#: ui/lumi_builder.gd:110
+msgid "Randomize"
+msgstr "[Ŕàñðômîžé ~]"
+
+#: ui/lumi_builder.gd:116
 msgid "Wear look"
 msgstr "[Ŵéàŕ ļôôķ ~]"
 
-#: ui/lumi_builder.gd:207 data/style_parts.json:options.head[none].name data/style_parts.json:options.shoulders[none].name
+#: ui/lumi_builder.gd:206 data/style_parts.json:options.head[none].name data/style_parts.json:options.shoulders[none].name
 #: data/style_parts.json:options.held[none].name data/style_parts.json:options.hip[none].name data/style_parts.json:options.companion[none].name
 msgid "None"
 msgstr "[Ñôñé ~]"
 
-#: ui/lumi_builder.gd:229
+#: ui/lumi_builder.gd:228
 msgid "%d more lie on other worlds."
 msgstr "[%d môŕé ļîé ôñ ôţĥéŕ ŵôŕļðš. ~~~~~~~]"
 
-#: ui/lumi_builder.gd:234
+#: ui/lumi_builder.gd:233
 msgid "Wear every piece of one set for its small bonus. A mixed look gives none."
 msgstr "[Ŵéàŕ évéŕý þîéçé ôƒ ôñé šéţ ƒôŕ îţš šmàļļ bôñûš. À mîxéð ļôôķ ĝîvéš ñôñé. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/lumi_builder.gd:253
+#: ui/lumi_builder.gd:252
 msgid "%s  ·  %d of %d pieces"
 msgstr "[%s  ·  %d ôƒ %d þîéçéš ~~~~~]"
 
-#: ui/lumi_builder.gd:258
+#: ui/lumi_builder.gd:257
 msgid "Looks only (no set bonus)"
 msgstr "[Ļôôķš ôñļý (ñô šéţ bôñûš) ~~~~~~]"
 
-#: ui/lumi_builder.gd:272 ui/lumi_builder.gd:350
+#: ui/lumi_builder.gd:267
+msgid "Keep a look to put it on again later."
+msgstr "[Ķééþ à ļôôķ ţô þûţ îţ ôñ àĝàîñ ļàţéŕ. ~~~~~~~~~~]"
+
+#: ui/lumi_builder.gd:273 ui/lumi_builder.gd:355
 msgid "Look %d"
 msgstr "[Ļôôķ %d ~]"
 
-#: ui/lumi_builder.gd:272
-msgid "%d  Empty"
-msgstr "[%d  Émþţý ~]"
+#: ui/lumi_builder.gd:273
+msgid "%d  ·  Empty"
+msgstr "[%d  ·  Émþţý ~]"
 
-#: ui/lumi_builder.gd:275
+#: ui/lumi_builder.gd:278
 msgid "Put this saved look on the turntable"
 msgstr "[Þûţ ţĥîš šàvéð ļôôķ ôñ ţĥé ţûŕñţàbļé ~~~~~~~~~~]"
 
-#: ui/lumi_builder.gd:277
-msgid "Save"
-msgstr "[Šàvé ~]"
+#: ui/lumi_builder.gd:280
+msgid "Save here"
+msgstr "[Šàvé ĥéŕé ~]"
 
-#: ui/lumi_builder.gd:278
+#: ui/lumi_builder.gd:281
 msgid "Keep the look on the turntable in this slot"
 msgstr "[Ķééþ ţĥé ļôôķ ôñ ţĥé ţûŕñţàbļé îñ ţĥîš šļôţ ~~~~~~~~~~~~]"
 
-#: ui/lumi_builder.gd:285
+#: ui/lumi_builder.gd:290
 msgid "(off: looks only)"
 msgstr "[(ôƒƒ: ļôôķš ôñļý) ~~~]"
 
-#: ui/lumi_builder.gd:286
+#: ui/lumi_builder.gd:291
 msgid "%s set  ·  %s"
 msgstr "[%s šéţ  ·  %s ~~]"
 
-#: ui/lumi_builder.gd:289
+#: ui/lumi_builder.gd:294
 msgid "Mixed look  ·  no set bonus"
 msgstr "[Mîxéð ļôôķ  ·  ñô šéţ bôñûš ~~~~~~]"
 
-#: ui/lumi_builder.gd:291
+#: ui/lumi_builder.gd:296
 msgid "Not worn yet"
 msgstr "[Ñôţ ŵôŕñ ýéţ ~]"
 
-#: ui/lumi_builder.gd:359
+#: ui/lumi_builder.gd:364
 msgid "A piece of this look is not found yet"
 msgstr "[À þîéçé ôƒ ţĥîš ļôôķ îš ñôţ ƒôûñð ýéţ ~~~~~~~~~~]"
 
@@ -4794,9 +4801,9 @@ msgstr "[Ŵéàŕ îţ àţ ţĥé Ļôçķéŕ. ~~~~~]"
 msgid "Build the Locker at the workbench to wear it."
 msgstr "[Bûîļð ţĥé Ļôçķéŕ àţ ţĥé ŵôŕķbéñçĥ ţô ŵéàŕ îţ. ~~~~~~~~~~~~~]"
 
-#: ui/piece_row.gd:51 data/parts.json:rarities[worn].name
-msgid "Worn"
-msgstr "[Ŵôŕñ ~]"
+#: ui/piece_row.gd:53
+msgid "Wearing"
+msgstr "[Ŵéàŕîñĝ ~]"
 
 #: ui/research_node_card.gd:175 ui/research_panel.gd:194
 msgid "Researched"
@@ -7415,41 +7422,21 @@ msgstr "[Ŕéçýçļé þļàţé ~~]"
 msgid "Sprout paint"
 msgstr "[Šþŕôûţ þàîñţ ~]"
 
-#: data/cosmetics.json:pieces[paint_sprout].hint
-msgid "A gardener robot stopped where the meadows used to be."
-msgstr "[À ĝàŕðéñéŕ ŕôbôţ šţôþþéð ŵĥéŕé ţĥé méàðôŵš ûšéð ţô bé. ~~~~~~~~~~~~~~~~]"
-
 #: data/cosmetics.json:pieces[pattern_moss].name data/style_parts.json:options.pattern[moss].name
 msgid "Moss patches"
 msgstr "[Môšš þàţçĥéš ~]"
-
-#: data/cosmetics.json:pieces[pattern_moss].hint
-msgid "Moss grows on a wreck that has stood high and still for years."
-msgstr "[Môšš ĝŕôŵš ôñ à ŵŕéçķ ţĥàţ ĥàš šţôôð ĥîĝĥ àñð šţîļļ ƒôŕ ýéàŕš. ~~~~~~~~~~~~~~~~~~~]"
 
 #: data/cosmetics.json:pieces[glow_sprout].name
 msgid "Sprout green"
 msgstr "[Šþŕôûţ ĝŕééñ ~]"
 
-#: data/cosmetics.json:pieces[glow_sprout].hint
-msgid "Something still glows green where a harbour's poison is stopped."
-msgstr "[Šôméţĥîñĝ šţîļļ ĝļôŵš ĝŕééñ ŵĥéŕé à ĥàŕbôûŕ'š þôîšôñ îš šţôþþéð. ~~~~~~~~~~~~~~~~~~~]"
-
 #: data/cosmetics.json:pieces[head_sprout].name data/style_parts.json:options.head[sprout].name
 msgid "Sprout leaf"
 msgstr "[Šþŕôûţ ļéàƒ ~]"
 
-#: data/cosmetics.json:pieces[head_sprout].hint
-msgid "The last leaf waits where the oldest city's poison is stopped."
-msgstr "[Ţĥé ļàšţ ļéàƒ ŵàîţš ŵĥéŕé ţĥé ôļðéšţ çîţý'š þôîšôñ îš šţôþþéð. ~~~~~~~~~~~~~~~~~~~]"
-
 #: data/cosmetics.json:pieces[ears_leaf].name data/style_parts.json:options.ears[leaf].name
 msgid "Leaf lenses"
 msgstr "[Ļéàƒ ļéñšéš ~]"
-
-#: data/cosmetics.json:pieces[ears_leaf].hint data/cosmetics.json:pieces[chest_leaf].hint
-msgid "A gardener robot rusts among the scrap."
-msgstr "[À ĝàŕðéñéŕ ŕôbôţ ŕûšţš àmôñĝ ţĥé šçŕàþ. ~~~~~~~~~~~]"
 
 #: data/cosmetics.json:pieces[chest_leaf].name
 msgid "Leaf plate"
@@ -7458,10 +7445,6 @@ msgstr "[Ļéàƒ þļàţé ~]"
 #: data/cosmetics.json:pieces[held_bottle].name data/style_parts.json:options.held[bottle].name
 msgid "Plastic bottle"
 msgstr "[Þļàšţîç bôţţļé ~~]"
-
-#: data/cosmetics.json:pieces[held_bottle].hint
-msgid "Stop what poisons the first town and see what it leaves behind."
-msgstr "[Šţôþ ŵĥàţ þôîšôñš ţĥé ƒîŕšţ ţôŵñ àñð šéé ŵĥàţ îţ ļéàvéš béĥîñð. ~~~~~~~~~~~~~~~~~~~]"
 
 #: data/cosmetics.json:pieces[paint_bolt].name
 msgid "Bolt paint"
@@ -7583,10 +7566,6 @@ msgstr "[Ŕôšé ĝôļð ţîñ ~~]"
 msgid "Royal blue tin"
 msgstr "[Ŕôýàļ bļûé ţîñ ~~]"
 
-#: data/cosmetics.json:pieces[tin_royal].hint
-msgid "A rare tin lies far out, on open ground."
-msgstr "[À ŕàŕé ţîñ ļîéš ƒàŕ ôûţ, ôñ ôþéñ ĝŕôûñð. ~~~~~~~~~~~]"
-
 #: data/cosmetics.json:pieces[tin_graphite].name
 msgid "Graphite tin"
 msgstr "[Ĝŕàþĥîţé ţîñ ~]"
@@ -7654,10 +7633,6 @@ msgstr "[Méð ķîţ ~]"
 #: data/cosmetics.json:pieces[held_watering_can].name data/style_parts.json:options.held[watering_can].name
 msgid "Watering can"
 msgstr "[Ŵàţéŕîñĝ çàñ ~]"
-
-#: data/cosmetics.json:pieces[companion_firefly].hint
-msgid "Something small glows in a quiet corner of the world."
-msgstr "[Šôméţĥîñĝ šmàļļ ĝļôŵš îñ à qûîéţ çôŕñéŕ ôƒ ţĥé ŵôŕļð. ~~~~~~~~~~~~~~~~]"
 
 #: data/cosmetics.json:pieces[companion_drone].name data/style_parts.json:options.companion[drone].name
 msgid "Tiny drone"
@@ -9607,6 +9582,70 @@ msgstr "[Àñôţĥéŕ çôñţŕàçţ ðôñé. Ţôķéñš àŕé ŵàîţ�
 msgid "Contract fulfilled. The board's lit up green."
 msgstr "[Çôñţŕàçţ ƒûļƒîļļéð. Ţĥé bôàŕð'š ļîţ ûþ ĝŕééñ. ~~~~~~~~~~~~~]"
 
+#: planets/verdance/data/finds.json:finds[old_town_tin].hint
+msgid "A paint tin lies under the litter of Old Town."
+msgstr "[À þàîñţ ţîñ ļîéš ûñðéŕ ţĥé ļîţţéŕ ôƒ Ôļð Ţôŵñ. ~~~~~~~~~~~~~]"
+
+#: planets/verdance/data/finds.json:finds[old_town_chip].hint
+msgid "A lens chip lies under the litter of Old Town."
+msgstr "[À ļéñš çĥîþ ļîéš ûñðéŕ ţĥé ļîţţéŕ ôƒ Ôļð Ţôŵñ. ~~~~~~~~~~~~~]"
+
+#: planets/verdance/data/finds.json:finds[old_town_source].hint
+msgid "Stop what floods Old Town and see what it leaves behind."
+msgstr "[Šţôþ ŵĥàţ ƒļôôðš Ôļð Ţôŵñ àñð šéé ŵĥàţ îţ ļéàvéš béĥîñð. ~~~~~~~~~~~~~~~~~]"
+
+#: planets/verdance/data/finds.json:finds[scrapyard_tin].hint
+msgid "A paint tin lies under Ironside's scrap."
+msgstr "[À þàîñţ ţîñ ļîéš ûñðéŕ Îŕôñšîðé'š šçŕàþ. ~~~~~~~~~~~]"
+
+#: planets/verdance/data/finds.json:finds[scrapyard_wreck].hint
+msgid "A gardener robot rusts at the edge of Ironside."
+msgstr "[À ĝàŕðéñéŕ ŕôbôţ ŕûšţš àţ ţĥé éðĝé ôƒ Îŕôñšîðé. ~~~~~~~~~~~~~]"
+
+#: planets/verdance/data/finds.json:finds[kettle_bay_tin].hint
+msgid "A paint tin lies under the litter of Kettle Bay."
+msgstr "[À þàîñţ ţîñ ļîéš ûñðéŕ ţĥé ļîţţéŕ ôƒ Ķéţţļé Bàý. ~~~~~~~~~~~~~~]"
+
+#: planets/verdance/data/finds.json:finds[kettle_bay_chip].hint
+msgid "A lens chip lies deep in Kettle Bay."
+msgstr "[À ļéñš çĥîþ ļîéš ðééþ îñ Ķéţţļé Bàý. ~~~~~~~~~~]"
+
+#: planets/verdance/data/finds.json:finds[kettle_bay_source].hint
+msgid "Something glows green where Kettle Bay's leak is stopped."
+msgstr "[Šôméţĥîñĝ ĝļôŵš ĝŕééñ ŵĥéŕé Ķéţţļé Bàý'š ļéàķ îš šţôþþéð. ~~~~~~~~~~~~~~~~~]"
+
+#: planets/verdance/data/finds.json:finds[highreach_tin].hint
+msgid "A paint tin lies under the litter of Highreach."
+msgstr "[À þàîñţ ţîñ ļîéš ûñðéŕ ţĥé ļîţţéŕ ôƒ Ĥîĝĥŕéàçĥ. ~~~~~~~~~~~~~]"
+
+#: planets/verdance/data/finds.json:finds[highreach_wreck].hint
+msgid "Moss grows on a wreck at the edge of Highreach."
+msgstr "[Môšš ĝŕôŵš ôñ à ŵŕéçķ àţ ţĥé éðĝé ôƒ Ĥîĝĥŕéàçĥ. ~~~~~~~~~~~~~]"
+
+#: planets/verdance/data/finds.json:finds[lowmeadow_tin].hint
+msgid "A paint tin lies under the litter of Lowmeadow."
+msgstr "[À þàîñţ ţîñ ļîéš ûñðéŕ ţĥé ļîţţéŕ ôƒ Ļôŵméàðôŵ. ~~~~~~~~~~~~~]"
+
+#: planets/verdance/data/finds.json:finds[lowmeadow_wreck].hint
+msgid "A gardener robot stopped at the edge of Lowmeadow."
+msgstr "[À ĝàŕðéñéŕ ŕôbôţ šţôþþéð àţ ţĥé éðĝé ôƒ Ļôŵméàðôŵ. ~~~~~~~~~~~~~~~]"
+
+#: planets/verdance/data/finds.json:finds[old_capital_chip].hint
+msgid "A lens chip lies under the litter of Old Capital."
+msgstr "[À ļéñš çĥîþ ļîéš ûñðéŕ ţĥé ļîţţéŕ ôƒ Ôļð Çàþîţàļ. ~~~~~~~~~~~~~~]"
+
+#: planets/verdance/data/finds.json:finds[old_capital_source].hint
+msgid "The last leaf waits where Old Capital's poison is stopped."
+msgstr "[Ţĥé ļàšţ ļéàƒ ŵàîţš ŵĥéŕé Ôļð Çàþîţàļ'š þôîšôñ îš šţôþþéð. ~~~~~~~~~~~~~~~~~]"
+
+#: planets/verdance/data/finds.json:finds[open_ground_tin].hint
+msgid "A rare tin lies far out, on open ground."
+msgstr "[À ŕàŕé ţîñ ļîéš ƒàŕ ôûţ, ôñ ôþéñ ĝŕôûñð. ~~~~~~~~~~~]"
+
+#: planets/verdance/data/finds.json:finds[campfire_firefly].hint
+msgid "Something small glows by an old campfire."
+msgstr "[Šôméţĥîñĝ šmàļļ ĝļôŵš bý àñ ôļð çàmþƒîŕé. ~~~~~~~~~~~]"
+
 #: planets/verdance/data/frontiers.json:kinds[dust_flats].tagline
 msgid "Sand dunes, half-buried wrecks and a dead solar farm."
 msgstr "[Šàñð ðûñéš, ĥàļƒ-bûŕîéð ŵŕéçķš àñð à ðéàð šôļàŕ ƒàŕm. ~~~~~~~~~~~~~~~~]"
@@ -10978,6 +11017,10 @@ msgstr "[À çĥàŕĝîñĝ þàð. Ŕôbôţš þàššîñĝ ôvéŕ îţ ŕ�
 #: data/parts.json:rarities[rusty].name planets/verdance/data/robots.json:tiers[0].name
 msgid "Rusty"
 msgstr "[Ŕûšţý ~]"
+
+#: data/parts.json:rarities[worn].name
+msgid "Worn"
+msgstr "[Ŵôŕñ ~]"
 
 #: data/parts.json:rarities[vintage].name
 msgid "Vintage"

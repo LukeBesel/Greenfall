@@ -34,7 +34,7 @@ msgstr "%s Niv %d"
 
 #: autoload/Economy.gd:308
 msgid "Opens in a later city"
-msgstr ""
+msgstr "S'ouvre dans une ville ultérieure"
 
 #: autoload/Economy.gd:312
 msgid "Needs %s Lv %d"
@@ -142,7 +142,7 @@ msgstr "Glim : scanner (maintenir : améliorations)"
 
 #: autoload/Settings.gd:25
 msgid "Hover boost"
-msgstr ""
+msgstr "Poussée de vol"
 
 #: autoload/Settings.gd:31
 msgid "View"
@@ -190,11 +190,11 @@ msgstr "Partager"
 
 #: autoload/Settings.gd:36
 msgid "Touchpad"
-msgstr ""
+msgstr "Pavé tactile"
 
 #: autoload/Settings.gd:36
 msgid "Paddle 1"
-msgstr ""
+msgstr "Palette 1"
 
 #: autoload/Settings.gd:522
 msgid "LMB"
@@ -258,7 +258,7 @@ msgstr "JD bas"
 
 #: autoload/Settings.gd:548
 msgid "hold %s"
-msgstr ""
+msgstr "maintenir %s"
 
 #: autoload/Story.gd:27
 msgid "Hex clean! Green can grow here now."
@@ -637,11 +637,11 @@ msgstr "LUMIÈRE  EAU  VIE"
 
 #: planet/sites/hub_hop.gd:73
 msgid "Rocket hop: %.1f km"
-msgstr ""
+msgstr "Saut en fusée : %.1f km"
 
 #: planet/sites/orbit_sites.gd:144
 msgid "The rocket is in flight."
-msgstr ""
+msgstr "La fusée est en vol."
 
 #: planet/sites/orbit_sites.gd:147 scenes/slice.gd:118 ui/rockets_panel.gd:38
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
@@ -649,7 +649,7 @@ msgstr "Cellules d'énergie en recharge : %s. Les améliorations de fusée les r
 
 #: planet/sites/orbit_sites.gd:152
 msgid "E   Rocket: choose a destination"
-msgstr ""
+msgstr "E   Fusée : choisir une destination"
 
 #: planet/sites/orbit_sites.gd:199
 msgid "Nowhere to fly yet. Get %s to %s to open %s."
@@ -782,7 +782,7 @@ msgstr "TROP PLEINE  %s"
 
 #: player/patch.gd:579
 msgid "GOOD BALE  %s"
-msgstr ""
+msgstr "BONNE BALLE  %s"
 
 #: player/patch.gd:583
 msgid "SURGE  %s"
@@ -807,7 +807,7 @@ msgstr "Aurora"
 #: player/patch_model.gd:27 player/patch_model.gd:29 player/patch_model.gd:31
 #: player/patch_model.gd:33 player/patch_model.gd:35 player/patch_model.gd:37
 msgid "crescent"
-msgstr ""
+msgstr "croissant"
 
 #: player/patch_model.gd:29 data/designs.json:designs[bolt].name
 msgid "Bolt"
@@ -919,7 +919,7 @@ msgstr "Regard en haut"
 
 #: player/vehicle.gd:141
 msgid "Ride the hover-sled"
-msgstr ""
+msgstr "Monter sur le traîneau volant"
 
 #: robots/fleet.gd:152
 msgid "Locked · research %s"
@@ -1154,7 +1154,7 @@ msgstr "AVANT-POSTE %d · RUINE"
 
 #: scenes/slice_orbit.gd:363
 msgid "HEX CLEAN!"
-msgstr ""
+msgstr "HEXAGONE PROPRE !"
 
 #: scenes/slice_orbit.gd:379
 msgid "Milestone: %d hexes clean!"
@@ -1162,11 +1162,11 @@ msgstr "Étape : %d hexagones propres !"
 
 #: scenes/slice_orbit.gd:504 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:578
 msgid "E   Fix the workbench"
-msgstr ""
+msgstr "E   Réparer l'établi"
 
 #: scenes/slice_orbit.gd:504 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
-msgstr ""
+msgstr "E   Ouvrir l'établi"
 
 #: scenes/slice_orbit.gd:963
 msgid "Upgrades need a workbench. Head back to the hub."
@@ -1478,19 +1478,19 @@ msgstr "BROUILLARD DE NOUILLES"
 msgid "1ST PLACE"
 msgstr "1RE PLACE"
 
-#: story/eggs.gd:718
-msgid "The duck squeaks a secret: \"%s\""
-msgstr ""
-
 #: story/eggs.gd:719
+msgid "The duck squeaks a secret: \"%s\""
+msgstr "Le canard couine un secret : « %s »"
+
+#: story/eggs.gd:720
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "Le canard t'a appris tout ce qu'il sait. Coin."
 
-#: story/eggs.gd:955
+#: story/eggs.gd:948
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "Curiosité trouvée : %s  (%d / %d)   %s"
 
-#: story/eggs.gd:966
+#: story/eggs.gd:959
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "Toutes les curiosités de la liste sont trouvées. Le compartiment de collection de Lumi déborde de souvenirs."
 
@@ -1735,7 +1735,7 @@ msgstr "LEDGER  WMS-07"
 
 #: story/objectives.gd:194
 msgid "Reward: %s"
-msgstr ""
+msgstr "Récompense : %s"
 
 #: story/objectives.gd:379
 msgid "Objective complete  ·  %s"
@@ -1743,7 +1743,7 @@ msgstr "Objectif atteint  ·  %s"
 
 #: story/objectives.gd:405
 msgid "Goal complete  ·  %s"
-msgstr ""
+msgstr "Objectif atteint  ·  %s"
 
 #: story/objectives.gd:672
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
@@ -2087,7 +2087,7 @@ msgstr "Pris dans la glace"
 
 #: systems/designs.gd:127
 msgid "Set: %s"
-msgstr ""
+msgstr "Ensemble : %s"
 
 #: systems/event_props.gd:154
 msgid "CRADLE · SUPPLY"
@@ -2398,7 +2398,7 @@ msgstr ""
 
 #: systems/research.gd:639
 msgid "Research complete: %s."
-msgstr ""
+msgstr "Recherche terminée : %s."
 
 #: systems/robot_builder.gd:268 systems/robot_design.gd:60
 msgid "Wrong slot"
@@ -2446,7 +2446,7 @@ msgstr "Récompense de demandes (%d sur %d demandes)"
 
 #: systems/robot_builder.gd:523
 msgid "Your first bot came with treads and a bobble plant. Style it at the Locker once you have built one."
-msgstr ""
+msgstr "Ton premier bot est arrivé avec des chenilles et une plante à ressort. Habille-le au Casier dès que tu en as construit un."
 
 #: systems/robot_builder.gd:533
 msgid "A Maker Fragment was tucked inside it: +%d parts."
@@ -2844,7 +2844,7 @@ msgstr "Lumi"
 msgid "Machines"
 msgstr "Machines"
 
-#: ui/bench_lists.gd:11 ui/globe_view.gd:176 ui/locker_panel.gd:303
+#: ui/bench_lists.gd:11 ui/globe_view.gd:176 ui/locker_panel.gd:306
 #: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "Fusée"
@@ -2859,7 +2859,7 @@ msgstr "Cour"
 
 #: ui/bench_tiers.gd:93
 msgid "Build the signal tower first."
-msgstr ""
+msgstr "Construis d'abord la tour radio."
 
 #: ui/bench_tiers.gd:95
 msgid "Rebuild the base to level %d first."
@@ -2867,15 +2867,15 @@ msgstr ""
 
 #: ui/bench_tiers.gd:97
 msgid "Upgrade the workbench first."
-msgstr ""
+msgstr "Améliore d'abord l'établi."
 
 #: ui/bench_tiers.gd:100
 msgid "Clean %d hexes first."
-msgstr ""
+msgstr "Nettoie d'abord %d hexagones."
 
 #: ui/bench_tiers.gd:105
 msgid "Not yet. Keep playing."
-msgstr ""
+msgstr "Pas encore. Continue à jouer."
 
 #: ui/bench_tiers.gd:135
 msgid "%s installed. New workbench tab: %s"
@@ -3151,7 +3151,7 @@ msgid "%d / %d entries"
 msgstr "%d / %d entrées"
 
 #: ui/codex_screen.gd:340 ui/codex_screen.gd:460 ui/codex_screen.gd:626
-#: ui/codex_screen.gd:641 ui/piece_row.gd:59
+#: ui/codex_screen.gd:641 ui/piece_row.gd:62
 msgid "Not found yet"
 msgstr "Pas encore trouvé"
 
@@ -3613,11 +3613,11 @@ msgstr "É C L A T   D E   M É M O I R E   ·   %s"
 
 #: ui/end_screen.gd:60
 msgid "READY TO LAUNCH"
-msgstr ""
+msgstr "PRÊT AU DÉCOLLAGE"
 
 #: ui/end_screen.gd:61
 msgid "%s is alive again"
-msgstr ""
+msgstr "%s revit"
 
 #: ui/end_screen.gd:67
 msgid "Every city is thriving and the rocket is ready. The rest of the planet is still out there if you want it."
@@ -3629,11 +3629,11 @@ msgstr "Retour au titre"
 
 #: ui/end_screen.gd:100
 msgid "Cities restored"
-msgstr ""
+msgstr "Villes restaurées"
 
 #: ui/end_screen.gd:100
 msgid "%d of %d"
-msgstr ""
+msgstr "%d sur %d"
 
 #: ui/event_hud.gd:127
 msgid "STREAK"
@@ -3651,8 +3651,7 @@ msgstr "%d DEMANDES PRÊTES  ·  récupère-les à l'établi"
 msgid "CDS  ·  %d / %d"
 msgstr "CD  ·  %d / %d"
 
-#: ui/extras_cd_list.gd:65 ui/extras_cd_list.gd:107 ui/lumi_builder.gd:115
-#: ui/tunes_picker.gd:95
+#: ui/extras_cd_list.gd:65 ui/extras_cd_list.gd:107 ui/tunes_picker.gd:95
 msgid "Shuffle"
 msgstr "Aléatoire"
 
@@ -3914,7 +3913,7 @@ msgstr "Villes"
 
 #: ui/globe_view.gd:155
 msgid "Hubs"
-msgstr ""
+msgstr "Bases"
 
 #: ui/globe_view.gd:176
 msgid "Travel between bases"
@@ -4114,11 +4113,11 @@ msgstr "  ASSOIFFÉ"
 
 #: ui/hud.gd:387
 msgid "%s · %s"
-msgstr ""
+msgstr "%s · %s"
 
 #: ui/hud.gd:389
 msgid "%s · %s %d%%"
-msgstr ""
+msgstr "%s · %s %d%%"
 
 #: ui/hud.gd:392
 msgid "%d of %d city restored"
@@ -4153,7 +4152,7 @@ msgstr "%s   établi"
 
 #: ui/hud.gd:406
 msgid "Filling the watering can"
-msgstr ""
+msgstr "Remplissage de l'arrosoir"
 
 #: ui/hud.gd:407
 msgid "Can empty. It fills in the base yard, by the bin."
@@ -4227,7 +4226,7 @@ msgstr "REQUIS   %s"
 
 #: ui/list_detail.gd:634
 msgid "You can buy this now!"
-msgstr ""
+msgstr "Tu peux l'acheter maintenant !"
 
 #: ui/list_detail.gd:654
 msgid "%s more %s"
@@ -4279,102 +4278,110 @@ msgstr "Chaque %s le porte"
 msgid "Ship looks: the tiers keep their shape"
 msgstr "Look du vaisseau : les niveaux gardent leur forme"
 
-#: ui/locker_panel.gd:93 planets/verdance/data/camp.json:builds.locker.name
-msgid "Locker"
-msgstr "Casier"
-
-#: ui/locker_panel.gd:97
+#: ui/locker_panel.gd:93
 msgid "Close"
 msgstr "Fermer"
 
-#: ui/locker_panel.gd:258
+#: ui/locker_panel.gd:97 planets/verdance/data/camp.json:builds.locker.name
+msgid "Locker"
+msgstr "Casier"
+
+#: ui/locker_panel.gd:261
 msgid "The Locker"
 msgstr "Le Casier"
 
-#: ui/locker_panel.gd:259
+#: ui/locker_panel.gd:262
 msgid "Find a piece of a look in the world. Then build the Locker in the Build tab and open it in the yard."
-msgstr ""
+msgstr "Trouve une pièce de look dans le monde. Construis ensuite le Casier dans l'onglet Construire et ouvre-le dans la cour."
 
-#: ui/locker_panel.gd:260
-msgid "Lumi wears what she finds: paint tins, lens chips and the pieces of old robots. Glim and your robots are dressed here too."
-msgstr ""
+#: ui/locker_panel.gd:263
+msgid "Lumi wears what he finds: paint tins, lens chips and the pieces of old robots. Glim and your robots are dressed here too."
+msgstr "Lumi porte ce qu'il trouve : pots de peinture, puces de lentille et pièces de vieux robots. Glim et tes robots s'habillent ici aussi."
 
-#: ui/locker_panel.gd:301 ui/robot_card.gd:78
+#: ui/locker_panel.gd:304 ui/robot_card.gd:78
 msgid "Crew"
 msgstr "Équipe"
 
-#: ui/lumi_builder.gd:86 ui/lumi_builder.gd:184
+#: ui/lumi_builder.gd:86 ui/lumi_builder.gd:181
 msgid "Sets"
-msgstr ""
+msgstr "Ensembles"
 
-#: ui/lumi_builder.gd:106
+#: ui/lumi_builder.gd:89 ui/lumi_builder.gd:184
 msgid "Saved looks"
 msgstr "Looks enregistrés"
 
-#: ui/lumi_builder.gd:121
+#: ui/lumi_builder.gd:110
+msgid "Randomize"
+msgstr "Aléatoire"
+
+#: ui/lumi_builder.gd:116
 msgid "Wear look"
 msgstr "Porter ce look"
 
-#: ui/lumi_builder.gd:207 data/style_parts.json:options.head[none].name data/style_parts.json:options.shoulders[none].name
+#: ui/lumi_builder.gd:206 data/style_parts.json:options.head[none].name data/style_parts.json:options.shoulders[none].name
 #: data/style_parts.json:options.held[none].name data/style_parts.json:options.hip[none].name data/style_parts.json:options.companion[none].name
 msgid "None"
 msgstr "Aucun"
 
-#: ui/lumi_builder.gd:229
+#: ui/lumi_builder.gd:228
 msgid "%d more lie on other worlds."
-msgstr ""
+msgstr "%d autres se trouvent sur d'autres mondes."
 
-#: ui/lumi_builder.gd:234
+#: ui/lumi_builder.gd:233
 msgid "Wear every piece of one set for its small bonus. A mixed look gives none."
-msgstr ""
+msgstr "Porte toutes les pièces d'un ensemble pour son petit bonus. Un look mélangé n'en donne aucun."
 
-#: ui/lumi_builder.gd:253
+#: ui/lumi_builder.gd:252
 msgid "%s  ·  %d of %d pieces"
-msgstr ""
+msgstr "%s  ·  %d pièces sur %d"
 
-#: ui/lumi_builder.gd:258
+#: ui/lumi_builder.gd:257
 msgid "Looks only (no set bonus)"
-msgstr ""
+msgstr "Apparence seule (sans bonus d'ensemble)"
 
-#: ui/lumi_builder.gd:272 ui/lumi_builder.gd:350
+#: ui/lumi_builder.gd:267
+msgid "Keep a look to put it on again later."
+msgstr "Garde un look pour le remettre plus tard."
+
+#: ui/lumi_builder.gd:273 ui/lumi_builder.gd:355
 msgid "Look %d"
 msgstr "Look %d"
 
-#: ui/lumi_builder.gd:272
-msgid "%d  Empty"
-msgstr ""
-
-#: ui/lumi_builder.gd:275
-msgid "Put this saved look on the turntable"
-msgstr ""
-
-#: ui/lumi_builder.gd:277
-msgid "Save"
-msgstr "Enregistrer"
+#: ui/lumi_builder.gd:273
+msgid "%d  ·  Empty"
+msgstr "%d  ·  Vide"
 
 #: ui/lumi_builder.gd:278
-msgid "Keep the look on the turntable in this slot"
-msgstr ""
+msgid "Put this saved look on the turntable"
+msgstr "Mettre ce look enregistré sur le plateau tournant"
 
-#: ui/lumi_builder.gd:285
+#: ui/lumi_builder.gd:280
+msgid "Save here"
+msgstr "Enregistrer ici"
+
+#: ui/lumi_builder.gd:281
+msgid "Keep the look on the turntable in this slot"
+msgstr "Garder le look du plateau tournant dans cet emplacement"
+
+#: ui/lumi_builder.gd:290
 msgid "(off: looks only)"
 msgstr "(désactivé : apparence seulement)"
 
-#: ui/lumi_builder.gd:286
-msgid "%s set  ·  %s"
-msgstr ""
-
-#: ui/lumi_builder.gd:289
-msgid "Mixed look  ·  no set bonus"
-msgstr ""
-
 #: ui/lumi_builder.gd:291
-msgid "Not worn yet"
-msgstr ""
+msgid "%s set  ·  %s"
+msgstr "Ensemble %s  ·  %s"
 
-#: ui/lumi_builder.gd:359
+#: ui/lumi_builder.gd:294
+msgid "Mixed look  ·  no set bonus"
+msgstr "Look mélangé  ·  pas de bonus d'ensemble"
+
+#: ui/lumi_builder.gd:296
+msgid "Not worn yet"
+msgstr "Pas encore porté"
+
+#: ui/lumi_builder.gd:364
 msgid "A piece of this look is not found yet"
-msgstr ""
+msgstr "Une pièce de ce look n'est pas encore trouvée"
 
 #: ui/main_menu.gd:322
 msgid "One small robot. One very big cleanup."
@@ -4783,23 +4790,23 @@ msgstr "MODE PHOTO   Tab"
 
 #: ui/piece_reveal.gd:98
 msgid "Set complete"
-msgstr ""
+msgstr "Ensemble complet"
 
 #: ui/piece_reveal.gd:101
 msgid "Wear every piece at the Locker: %s."
-msgstr ""
+msgstr "Porte toutes les pièces au Casier : %s."
 
 #: ui/piece_reveal.gd:107
 msgid "Wear it at the Locker."
-msgstr ""
+msgstr "Porte-la au Casier."
 
 #: ui/piece_reveal.gd:107
 msgid "Build the Locker at the workbench to wear it."
-msgstr ""
+msgstr "Construis le Casier à l'établi pour la porter."
 
-#: ui/piece_row.gd:51 data/parts.json:rarities[worn].name
-msgid "Worn"
-msgstr "Usé"
+#: ui/piece_row.gd:53
+msgid "Wearing"
+msgstr "Porté"
 
 #: ui/research_node_card.gd:175 ui/research_panel.gd:194
 msgid "Researched"
@@ -4927,7 +4934,7 @@ msgstr "FUSÉE"
 
 #: ui/rocket_picker.gd:50
 msgid "Where to?"
-msgstr ""
+msgstr "Où aller ?"
 
 #: ui/rocket_picker.gd:58
 msgid "{ui_cancel}  close"
@@ -4935,15 +4942,15 @@ msgstr ""
 
 #: ui/rocket_picker.gd:107
 msgid "No other hubs found yet."
-msgstr ""
+msgstr "Aucune autre base trouvée pour l'instant."
 
 #: ui/rocket_picker.gd:120
 msgid "%.1f km"
-msgstr ""
+msgstr "%.1f km"
 
 #: ui/rocket_picker.gd:122
 msgid "Fly"
-msgstr ""
+msgstr "Décoller"
 
 #: ui/rockets_panel.gd:34
 msgid "LAUNCH PAD"
@@ -5419,7 +5426,7 @@ msgstr "Off  →  On"
 
 #: ui/upgrade_card.gd:205
 msgid "NEXT CITY"
-msgstr ""
+msgstr "VILLE SUIVANTE"
 
 #: ui/upgrade_card.gd:205
 msgid "MAX"
@@ -6235,11 +6242,11 @@ msgstr "Un vieux lecteur CD massif sur une caisse près de la clôture. Il joue 
 
 #: planets/verdance/data/camp.json:builds.locker.desc
 msgid "A tall steel locker with a small turntable. Step up to wear the pieces you have found, and to dress Glim and your robots."
-msgstr ""
+msgstr "Un grand casier en acier avec un petit plateau tournant. Approche pour porter les pièces trouvées et habiller Glim et tes robots."
 
 #: planets/verdance/data/camp.json:builds.locker.flag_text
 msgid "Find a piece of a look first."
-msgstr ""
+msgstr "Trouve d'abord une pièce de look."
 
 #: planets/verdance/data/camp.json:builds.nursery.name
 msgid "Robot Nursery"
@@ -6251,7 +6258,7 @@ msgstr "Une pelouse entourée de murets et de massifs de fleurs, où les robots 
 
 #: planets/verdance/data/camp.json:builds.glim.name planets/verdance/data/objectives.json:objectives[glim].text
 msgid "Repair Glim"
-msgstr ""
+msgstr "Réparer Glim"
 
 #: planets/verdance/data/camp.json:builds.glim.desc
 msgid "The little lantern bot who held on to your pod all the way down. Patch him up and he'll follow you and light the way."
@@ -7320,27 +7327,27 @@ msgstr "Un drone-benne qui n'est jamais rentré, le nez planté dans les déchet
 
 #: data/cosmetics.json:slots[paint].hint
 msgid "Paint tins lie buried under ordinary trash."
-msgstr ""
+msgstr "Des pots de peinture sont enfouis sous les déchets ordinaires."
 
 #: data/cosmetics.json:slots[pattern].name
 msgid "Wear pattern"
-msgstr ""
+msgstr "Motif d'usure"
 
 #: data/cosmetics.json:slots[pattern].hint
 msgid "Old machines keep the marks of their work. Look for a wreck."
-msgstr ""
+msgstr "Les vieilles machines gardent les marques de leur travail. Cherche une épave."
 
 #: data/cosmetics.json:slots[eye_shape].hint
 msgid "Lens plates outlast the robots that wore them."
-msgstr ""
+msgstr "Les plaques de lentille survivent aux robots qui les portaient."
 
 #: data/cosmetics.json:slots[glow].name
 msgid "Light colour"
-msgstr ""
+msgstr "Couleur des lumières"
 
 #: data/cosmetics.json:slots[glow].hint
 msgid "Lens chips lie buried under ordinary trash."
-msgstr ""
+msgstr "Des puces de lentille sont enfouies sous les déchets ordinaires."
 
 #: data/cosmetics.json:slots[head].name data/style_parts.json:slots[head].name
 msgid "Head piece"
@@ -7348,15 +7355,15 @@ msgstr "Couvre-chef"
 
 #: data/cosmetics.json:slots[head].hint
 msgid "A wreck off the main path may still wear one."
-msgstr ""
+msgstr "Une épave à l'écart du chemin en porte peut-être encore un."
 
 #: data/cosmetics.json:slots[ears].name data/style_parts.json:slots[ears].name
 msgid "Ear lenses"
-msgstr ""
+msgstr "Lentilles d'oreille"
 
 #: data/cosmetics.json:slots[ears].hint
 msgid "A wreck off the main path may still wear a pair."
-msgstr ""
+msgstr "Une épave à l'écart du chemin en porte peut-être encore une paire."
 
 #: data/cosmetics.json:slots[shoulders].name data/style_parts.json:slots[shoulders].name
 msgid "Shoulders"
@@ -7364,15 +7371,15 @@ msgstr "Épaules"
 
 #: data/cosmetics.json:slots[shoulders].hint
 msgid "Heavy plating rusts where heavy work was done."
-msgstr ""
+msgstr "Les blindages lourds rouillent là où l'on travaillait dur."
 
 #: data/cosmetics.json:slots[chest].name
 msgid "Chest plate"
-msgstr ""
+msgstr "Plaque de poitrine"
 
 #: data/cosmetics.json:slots[chest].hint
 msgid "A wreck's chest plate often survives."
-msgstr ""
+msgstr "La plaque de poitrine d'une épave survit souvent."
 
 #: data/cosmetics.json:slots[held].name data/style_parts.json:slots[held].name
 msgid "Held item"
@@ -7380,11 +7387,11 @@ msgstr "Objet tenu"
 
 #: data/cosmetics.json:slots[held].hint data/cosmetics.json:slots[hip].hint
 msgid "What a robot carried lies near where it stopped."
-msgstr ""
+msgstr "Ce qu'un robot portait gît près de l'endroit où il s'est arrêté."
 
 #: data/cosmetics.json:slots[hip].name data/style_parts.json:slots[hip].name
 msgid "Hip item"
-msgstr ""
+msgstr "Objet de hanche"
 
 #: data/cosmetics.json:slots[companion].name data/style_parts.json:slots[companion].name
 msgid "Companion"
@@ -7392,19 +7399,19 @@ msgstr "Compagnon"
 
 #: data/cosmetics.json:slots[companion].hint
 msgid "Small things hide in quiet corners."
-msgstr ""
+msgstr "Les petites choses se cachent dans les coins tranquilles."
 
 #: data/cosmetics.json:pieces[paint_aurora].name
 msgid "Aurora paint"
-msgstr ""
+msgstr "Peinture Aurora"
 
 #: data/cosmetics.json:pieces[glow_aurora].name
 msgid "Aurora cyan"
-msgstr ""
+msgstr "Cyan Aurora"
 
 #: data/cosmetics.json:pieces[eyes_crescent].name
 msgid "Crescent eyes"
-msgstr ""
+msgstr "Yeux en croissant"
 
 #: data/cosmetics.json:pieces[head_fin].name data/style_parts.json:options.head[fin].name
 msgid "Fin"
@@ -7412,63 +7419,39 @@ msgstr "Aileron"
 
 #: data/cosmetics.json:pieces[chest_recycle].name
 msgid "Recycle plate"
-msgstr ""
+msgstr "Plaque recyclage"
 
 #: data/cosmetics.json:pieces[paint_sprout].name
 msgid "Sprout paint"
-msgstr ""
-
-#: data/cosmetics.json:pieces[paint_sprout].hint
-msgid "A gardener robot stopped where the meadows used to be."
-msgstr ""
+msgstr "Peinture Sprout"
 
 #: data/cosmetics.json:pieces[pattern_moss].name data/style_parts.json:options.pattern[moss].name
 msgid "Moss patches"
 msgstr "Plaques de mousse"
 
-#: data/cosmetics.json:pieces[pattern_moss].hint
-msgid "Moss grows on a wreck that has stood high and still for years."
-msgstr ""
-
 #: data/cosmetics.json:pieces[glow_sprout].name
 msgid "Sprout green"
-msgstr ""
-
-#: data/cosmetics.json:pieces[glow_sprout].hint
-msgid "Something still glows green where a harbour's poison is stopped."
-msgstr ""
+msgstr "Vert Sprout"
 
 #: data/cosmetics.json:pieces[head_sprout].name data/style_parts.json:options.head[sprout].name
 msgid "Sprout leaf"
 msgstr "Pousse"
 
-#: data/cosmetics.json:pieces[head_sprout].hint
-msgid "The last leaf waits where the oldest city's poison is stopped."
-msgstr ""
-
 #: data/cosmetics.json:pieces[ears_leaf].name data/style_parts.json:options.ears[leaf].name
 msgid "Leaf lenses"
-msgstr ""
-
-#: data/cosmetics.json:pieces[ears_leaf].hint data/cosmetics.json:pieces[chest_leaf].hint
-msgid "A gardener robot rusts among the scrap."
-msgstr ""
+msgstr "Lentilles feuille"
 
 #: data/cosmetics.json:pieces[chest_leaf].name
 msgid "Leaf plate"
-msgstr ""
+msgstr "Plaque feuille"
 
 #: data/cosmetics.json:pieces[held_bottle].name data/style_parts.json:options.held[bottle].name
 msgid "Plastic bottle"
-msgstr ""
-
-#: data/cosmetics.json:pieces[held_bottle].hint
-msgid "Stop what poisons the first town and see what it leaves behind."
-msgstr ""
+msgstr "Bouteille en plastique"
 
 #: data/cosmetics.json:pieces[paint_bolt].name
 msgid "Bolt paint"
-msgstr ""
+msgstr "Peinture Bolt"
 
 #: data/cosmetics.json:pieces[pattern_stripes].name data/style_parts.json:options.pattern[stripes].name
 msgid "Hazard stripes"
@@ -7476,11 +7459,11 @@ msgstr "Bandes de danger"
 
 #: data/cosmetics.json:pieces[glow_bolt].name
 msgid "Bolt amber"
-msgstr ""
+msgstr "Ambre Bolt"
 
 #: data/cosmetics.json:pieces[ears_nut].name data/style_parts.json:options.ears[nut].name
 msgid "Hex-nut bezels"
-msgstr ""
+msgstr "Lunettes écrou"
 
 #: data/cosmetics.json:pieces[shoulders_pads].name data/style_parts.json:options.shoulders[pads].name
 msgid "Shoulder pads"
@@ -7492,15 +7475,15 @@ msgstr "Engrenage de rechange"
 
 #: data/cosmetics.json:pieces[paint_pixel].name
 msgid "Pixel paint"
-msgstr ""
+msgstr "Peinture Pixel"
 
 #: data/cosmetics.json:pieces[pattern_twotone].name data/style_parts.json:options.pattern[twotone].name
 msgid "Two-tone shell"
-msgstr ""
+msgstr "Coque bicolore"
 
 #: data/cosmetics.json:pieces[glow_pixel].name
 msgid "Pixel pink"
-msgstr ""
+msgstr "Rose Pixel"
 
 #: data/cosmetics.json:pieces[eyes_happy].name data/style_parts.json:options.eye_shape[happy].name
 msgid "Happy arcs"
@@ -7512,7 +7495,7 @@ msgstr "Ailerons-ailes"
 
 #: data/cosmetics.json:pieces[ears_heart].name data/style_parts.json:options.ears[heart].name
 msgid "Heart lenses"
-msgstr ""
+msgstr "Lentilles cœur"
 
 #: data/cosmetics.json:pieces[companion_butterfly].name data/style_parts.json:options.companion[butterfly].name
 msgid "Butterfly"
@@ -7520,15 +7503,15 @@ msgstr "Papillon"
 
 #: data/cosmetics.json:pieces[paint_nova].name
 msgid "Nova paint"
-msgstr ""
+msgstr "Peinture Nova"
 
 #: data/cosmetics.json:pieces[pattern_seams].name data/style_parts.json:options.pattern[seams].name
 msgid "Seam glow"
-msgstr ""
+msgstr "Lueur des joints"
 
 #: data/cosmetics.json:pieces[glow_nova].name
 msgid "Nova violet"
-msgstr ""
+msgstr "Violet Nova"
 
 #: data/cosmetics.json:pieces[head_catears].name data/style_parts.json:options.head[catears].name
 msgid "Cat ears"
@@ -7540,15 +7523,15 @@ msgstr "Écran holo"
 
 #: data/cosmetics.json:pieces[paint_patch].name
 msgid "Patch paint"
-msgstr ""
+msgstr "Peinture Patch"
 
 #: data/cosmetics.json:pieces[glow_patch].name
 msgid "Patch amber"
-msgstr ""
+msgstr "Ambre Patch"
 
 #: data/cosmetics.json:pieces[ears_radio].name data/style_parts.json:options.ears[radio].name
 msgid "Side radio"
-msgstr ""
+msgstr "Radio latérale"
 
 #: data/cosmetics.json:pieces[chest_cross].name data/style_parts.json:options.chest[cross].name
 msgid "Medic cross"
@@ -7556,79 +7539,75 @@ msgstr "Croix médicale"
 
 #: data/cosmetics.json:pieces[held_case].name data/style_parts.json:options.held[toolbox].name
 msgid "Carry case"
-msgstr ""
+msgstr "Mallette"
 
 #: data/cosmetics.json:pieces[hip_satchel].name data/style_parts.json:options.hip[satchel].name
 msgid "Medic satchel"
-msgstr ""
+msgstr "Sacoche médicale"
 
 #: data/cosmetics.json:pieces[tin_sky].name
 msgid "Sky tin"
-msgstr ""
+msgstr "Pot bleu ciel"
 
 #: data/cosmetics.json:pieces[tin_copper].name
 msgid "Copper tin"
-msgstr ""
+msgstr "Pot cuivre"
 
 #: data/cosmetics.json:pieces[tin_seaglass].name
 msgid "Sea glass tin"
-msgstr ""
+msgstr "Pot verre de mer"
 
 #: data/cosmetics.json:pieces[tin_midnight].name
 msgid "Midnight tin"
-msgstr ""
+msgstr "Pot minuit"
 
 #: data/cosmetics.json:pieces[tin_rosegold].name
 msgid "Rose gold tin"
-msgstr ""
+msgstr "Pot or rose"
 
 #: data/cosmetics.json:pieces[tin_royal].name
 msgid "Royal blue tin"
-msgstr ""
-
-#: data/cosmetics.json:pieces[tin_royal].hint
-msgid "A rare tin lies far out, on open ground."
-msgstr ""
+msgstr "Pot bleu roi"
 
 #: data/cosmetics.json:pieces[tin_graphite].name
 msgid "Graphite tin"
-msgstr ""
+msgstr "Pot graphite"
 
 #: data/cosmetics.json:pieces[tin_slate].name
 msgid "Slate tin"
-msgstr ""
+msgstr "Pot ardoise"
 
 #: data/cosmetics.json:pieces[tin_chalk].name
 msgid "Chalk tin"
-msgstr ""
+msgstr "Pot craie"
 
 #: data/cosmetics.json:pieces[chip_mint].name
 msgid "Mint chip"
-msgstr ""
+msgstr "Puce menthe"
 
 #: data/cosmetics.json:pieces[chip_coral].name
 msgid "Coral chip"
-msgstr ""
+msgstr "Puce corail"
 
 #: data/cosmetics.json:pieces[chip_lilac].name
 msgid "Lilac chip"
-msgstr ""
+msgstr "Puce lilas"
 
 #: data/cosmetics.json:pieces[chip_orange].name
 msgid "Orange chip"
-msgstr ""
+msgstr "Puce orange"
 
 #: data/cosmetics.json:pieces[chip_gold].name
 msgid "Gold chip"
-msgstr ""
+msgstr "Puce or"
 
 #: data/cosmetics.json:pieces[chip_bloom].name
 msgid "Bloom green chip"
-msgstr ""
+msgstr "Puce vert éclosion"
 
 #: data/cosmetics.json:pieces[eyes_round].name
 msgid "Round eyes"
-msgstr ""
+msgstr "Yeux ronds"
 
 #: data/cosmetics.json:pieces[eyes_bar].name data/style_parts.json:options.eye_shape[bar].name
 msgid "Visor bar"
@@ -7636,7 +7615,7 @@ msgstr "Barre de visière"
 
 #: data/cosmetics.json:pieces[eyes_heart].name
 msgid "Heart eyes"
-msgstr ""
+msgstr "Yeux en cœur"
 
 #: data/cosmetics.json:pieces[head_antenna].name data/glim.json:tops[antenna].name data/style_parts.json:options.head[antenna].name
 msgid "Antenna"
@@ -7648,7 +7627,7 @@ msgstr "Auréole"
 
 #: data/cosmetics.json:pieces[chest_heart].name
 msgid "Heart plate"
-msgstr ""
+msgstr "Plaque cœur"
 
 #: data/cosmetics.json:pieces[held_medkit].name data/style_parts.json:options.held[medkit].name
 msgid "Med kit"
@@ -7657,10 +7636,6 @@ msgstr "Trousse de soins"
 #: data/cosmetics.json:pieces[held_watering_can].name data/style_parts.json:options.held[watering_can].name
 msgid "Watering can"
 msgstr "Arrosoir"
-
-#: data/cosmetics.json:pieces[companion_firefly].hint
-msgid "Something small glows in a quiet corner of the world."
-msgstr ""
 
 #: data/cosmetics.json:pieces[companion_drone].name data/style_parts.json:options.companion[drone].name
 msgid "Tiny drone"
@@ -7848,23 +7823,23 @@ msgstr "+6 % de vitesse de travail des robots"
 
 #: planets/verdance/data/districts.json:districts[scrapyard].name
 msgid "Ironside"
-msgstr ""
+msgstr "Ironside"
 
 #: planets/verdance/data/districts.json:districts[kettle_bay].name
 msgid "Kettle Bay"
-msgstr ""
+msgstr "Kettle Bay"
 
 #: planets/verdance/data/districts.json:districts[highreach].name
 msgid "Highreach"
-msgstr ""
+msgstr "Highreach"
 
 #: planets/verdance/data/districts.json:districts[lowmeadow].name
 msgid "Lowmeadow"
-msgstr ""
+msgstr "Lowmeadow"
 
 #: planets/verdance/data/districts.json:districts[old_capital].name
 msgid "Old Capital"
-msgstr ""
+msgstr "Old Capital"
 
 #: planets/verdance/data/eggs.json:eggs[duck].name planets/verdance/data/museum.json:exhibits[duck].name
 msgid "Duck on Duty"
@@ -9610,6 +9585,70 @@ msgstr "Encore un contrat rempli. Les jetons t'attendent."
 msgid "Contract fulfilled. The board's lit up green."
 msgstr "Contrat honoré. Le tableau s'allume en vert."
 
+#: planets/verdance/data/finds.json:finds[old_town_tin].hint
+msgid "A paint tin lies under the litter of Old Town."
+msgstr "Un pot de peinture gît sous les déchets de la Vieille Ville."
+
+#: planets/verdance/data/finds.json:finds[old_town_chip].hint
+msgid "A lens chip lies under the litter of Old Town."
+msgstr "Une puce de lentille gît sous les déchets de la Vieille Ville."
+
+#: planets/verdance/data/finds.json:finds[old_town_source].hint
+msgid "Stop what floods Old Town and see what it leaves behind."
+msgstr "Arrête ce qui inonde la Vieille Ville et vois ce que cela laisse."
+
+#: planets/verdance/data/finds.json:finds[scrapyard_tin].hint
+msgid "A paint tin lies under Ironside's scrap."
+msgstr "Un pot de peinture gît sous la ferraille d'Ironside."
+
+#: planets/verdance/data/finds.json:finds[scrapyard_wreck].hint
+msgid "A gardener robot rusts at the edge of Ironside."
+msgstr "Un robot jardinier rouille en bordure d'Ironside."
+
+#: planets/verdance/data/finds.json:finds[kettle_bay_tin].hint
+msgid "A paint tin lies under the litter of Kettle Bay."
+msgstr "Un pot de peinture gît sous les déchets de Kettle Bay."
+
+#: planets/verdance/data/finds.json:finds[kettle_bay_chip].hint
+msgid "A lens chip lies deep in Kettle Bay."
+msgstr "Une puce de lentille gît au fond de Kettle Bay."
+
+#: planets/verdance/data/finds.json:finds[kettle_bay_source].hint
+msgid "Something glows green where Kettle Bay's leak is stopped."
+msgstr "Quelque chose luit en vert là où la fuite de Kettle Bay est arrêtée."
+
+#: planets/verdance/data/finds.json:finds[highreach_tin].hint
+msgid "A paint tin lies under the litter of Highreach."
+msgstr "Un pot de peinture gît sous les déchets de Highreach."
+
+#: planets/verdance/data/finds.json:finds[highreach_wreck].hint
+msgid "Moss grows on a wreck at the edge of Highreach."
+msgstr "De la mousse pousse sur une épave en bordure de Highreach."
+
+#: planets/verdance/data/finds.json:finds[lowmeadow_tin].hint
+msgid "A paint tin lies under the litter of Lowmeadow."
+msgstr "Un pot de peinture gît sous les déchets de Lowmeadow."
+
+#: planets/verdance/data/finds.json:finds[lowmeadow_wreck].hint
+msgid "A gardener robot stopped at the edge of Lowmeadow."
+msgstr "Un robot jardinier s'est arrêté en bordure de Lowmeadow."
+
+#: planets/verdance/data/finds.json:finds[old_capital_chip].hint
+msgid "A lens chip lies under the litter of Old Capital."
+msgstr "Une puce de lentille gît sous les déchets d'Old Capital."
+
+#: planets/verdance/data/finds.json:finds[old_capital_source].hint
+msgid "The last leaf waits where Old Capital's poison is stopped."
+msgstr "La dernière feuille attend là où le poison d'Old Capital est arrêté."
+
+#: planets/verdance/data/finds.json:finds[open_ground_tin].hint
+msgid "A rare tin lies far out, on open ground."
+msgstr "Un pot rare gît au loin, en terrain ouvert."
+
+#: planets/verdance/data/finds.json:finds[campfire_firefly].hint
+msgid "Something small glows by an old campfire."
+msgstr "Quelque chose de petit luit près d'un vieux feu de camp."
+
 #: planets/verdance/data/frontiers.json:kinds[dust_flats].tagline
 msgid "Sand dunes, half-buried wrecks and a dead solar farm."
 msgstr "Dunes de sable, épaves à moitié ensevelies et une ferme solaire morte."
@@ -9720,7 +9759,7 @@ msgstr "Installe la presse à balles"
 
 #: planets/verdance/data/goals.json:goals[bale_1].text
 msgid "Make your first bale"
-msgstr ""
+msgstr "Fais ta première balle"
 
 #: planets/verdance/data/goals.json:goals[cash_1].text
 msgid "Sell a bale at the scale"
@@ -9736,11 +9775,11 @@ msgstr "Nettoie ton premier hexagone"
 
 #: planets/verdance/data/goals.json:goals[perfect_1].text
 msgid "Make a perfect bale"
-msgstr ""
+msgstr "Fais une balle parfaite"
 
 #: planets/verdance/data/goals.json:goals[upgrades_5].text
 msgid "Buy 5 upgrades"
-msgstr ""
+msgstr "Achète 5 améliorations"
 
 #: planets/verdance/data/goals.json:goals[cash_10].text
 msgid "Sell 10 bales"
@@ -9780,7 +9819,7 @@ msgstr ""
 
 #: planets/verdance/data/goals.json:goals[upgrades_12].text
 msgid "Buy 12 upgrades"
-msgstr ""
+msgstr "Achète 12 améliorations"
 
 #: planets/verdance/data/goals.json:goals[earn_3k].text
 msgid "Earn 3,000 cubes"
@@ -9800,7 +9839,7 @@ msgstr "Termine 4 projets de recherche"
 
 #: planets/verdance/data/goals.json:goals[upgrades_20].text
 msgid "Buy 20 upgrades"
-msgstr ""
+msgstr "Achète 20 améliorations"
 
 #: planets/verdance/data/goals.json:goals[hex_10].text planets/verdance/data/objectives.json:objectives[hex10].text data/radio.json:songs[verdance_sweep].hint
 msgid "Clean 10 hexes"
@@ -9836,7 +9875,7 @@ msgstr "Nettoie 12 hexagones"
 
 #: planets/verdance/data/goals.json:goals[upgrades_25].text
 msgid "Buy 25 upgrades"
-msgstr ""
+msgstr "Achète 25 améliorations"
 
 #: planets/verdance/data/goals.json:goals[research_6].text
 msgid "Finish 6 research projects"
@@ -9924,7 +9963,7 @@ msgstr "Nettoie 28 hexagones"
 
 #: planets/verdance/data/goals.json:goals[upgrades_40].text
 msgid "Buy 40 upgrades"
-msgstr ""
+msgstr "Achète 40 améliorations"
 
 #: planets/verdance/data/goals.json:goals[seedling_1].text
 msgid "Build a Seedling planter"
@@ -10272,11 +10311,11 @@ msgstr "Trouve 38 curiosités"
 
 #: planets/verdance/data/goals.json:goals[locker_build].text
 msgid "Build the Locker"
-msgstr ""
+msgstr "Construis le Casier"
 
 #: planets/verdance/data/goals.json:goals[locker_wear].text
 msgid "Wear a look at the Locker"
-msgstr ""
+msgstr "Porte un look au Casier"
 
 #: planets/verdance/data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
@@ -10724,7 +10763,7 @@ msgstr ""
 
 #: planets/verdance/data/objectives.json:objectives[compartment].text
 msgid "Buy a bigger chest"
-msgstr ""
+msgstr "Achète un coffre plus grand"
 
 #: planets/verdance/data/objectives.json:objectives[compartment].desc
 msgid "Workbench: Chest Size. Fewer trips to the bin."
@@ -10736,7 +10775,7 @@ msgstr ""
 
 #: planets/verdance/data/objectives.json:objectives[hex].text
 msgid "Clean the glowing hex"
-msgstr ""
+msgstr "Nettoie l'hexagone lumineux"
 
 #: planets/verdance/data/objectives.json:objectives[hex].desc
 msgid "Pick up every piece inside the outline."
@@ -10760,7 +10799,7 @@ msgstr ""
 
 #: planets/verdance/data/objectives.json:objectives[hex2].text
 msgid "Clean 2 hexes"
-msgstr ""
+msgstr "Nettoyer 2 hexagones"
 
 #: planets/verdance/data/objectives.json:objectives[hex2].desc
 msgid "Clean ground lets plants grow again."
@@ -10784,7 +10823,7 @@ msgstr ""
 
 #: planets/verdance/data/objectives.json:objectives[power].text
 msgid "Sell 3 bales"
-msgstr ""
+msgstr "Vends 3 balles"
 
 #: planets/verdance/data/objectives.json:objectives[power].desc
 msgid "Full chest? Press {cube} for a bale. Carry it to the scale."
@@ -10816,7 +10855,7 @@ msgstr ""
 
 #: planets/verdance/data/objectives.json:objectives[street].text
 msgid "Clear the street"
-msgstr ""
+msgstr "Dégage la rue"
 
 #: planets/verdance/data/objectives.json:objectives[street].desc
 msgid "Clean the 7 hexes round the base."
@@ -10981,6 +11020,10 @@ msgstr "Un plot de recharge. Les robots qui passent dessus vont 40% plus vite pe
 #: data/parts.json:rarities[rusty].name planets/verdance/data/robots.json:tiers[0].name
 msgid "Rusty"
 msgstr "Rouillé"
+
+#: data/parts.json:rarities[worn].name
+msgid "Worn"
+msgstr "Usé"
 
 #: data/parts.json:rarities[vintage].name
 msgid "Vintage"
@@ -11524,11 +11567,11 @@ msgstr "Une balise d'atterrissage réglée sur le Cradle. Une fois les trois fro
 
 #: planets/verdance/data/restoration.json:planet.steps[first_green].name
 msgid "First green"
-msgstr ""
+msgstr "Premier vert"
 
 #: planets/verdance/data/restoration.json:planet.steps[green_belt].name
 msgid "Green belt"
-msgstr ""
+msgstr "Ceinture verte"
 
 #: planets/verdance/data/restoration.json:planet.steps[quarter_alive].name
 msgid "A quarter alive"
@@ -11536,11 +11579,11 @@ msgstr ""
 
 #: planets/verdance/data/restoration.json:planet.steps[half_alive].name
 msgid "Half the world"
-msgstr ""
+msgstr "La moitié du monde"
 
 #: planets/verdance/data/restoration.json:planet.steps[whole_planet].name
 msgid "The whole planet"
-msgstr ""
+msgstr "La planète entière"
 
 #: data/robot_parts.json:slots[chassis].name
 msgid "Chassis"
@@ -13142,7 +13185,7 @@ msgstr "Des rayons de levage plus puissants. Niveau 1 : ferraille moyenne (jerri
 
 #: planets/verdance/data/upgrades.json:upgrades[compartment_size].name
 msgid "Chest Size"
-msgstr ""
+msgstr "Taille du coffre"
 
 #: planets/verdance/data/upgrades.json:upgrades[compartment_size].desc
 msgid "A bigger chest. Fewer trips to the bin."
@@ -13262,7 +13305,7 @@ msgstr "Règle le détecteur sur les signaux forts : les signaux de pièces rare
 
 #: planets/verdance/data/upgrades.json:upgrades[hover_jets].name
 msgid "Hover Jets"
-msgstr ""
+msgstr "Réacteurs de vol"
 
 #: planets/verdance/data/upgrades.json:upgrades[hover_jets].desc
 msgid "Little jets under the treads. Lumi floats over lakes instead of stopping at the shore."
@@ -13274,7 +13317,7 @@ msgstr ""
 
 #: data/workbench.json:tiers[0].name
 msgid "Workbench"
-msgstr ""
+msgstr "Établi"
 
 #: data/workbench.json:tiers[0].desc
 msgid "The repaired bench: upgrades for Lumi and things to build."
@@ -14900,6 +14943,9 @@ msgstr "Ce portique a mis la flotte du Ledger à la casse quand l'argent a manqu
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un monde de rouille, vert. Les vieilles grues ont des fleurs à leurs pieds. Les comptes sont clos, {name}. Nous les avons équilibrés."
 
+#~ msgid "Save"
+#~ msgstr "Enregistrer"
+
 #~ msgid "Perfect bale: filled right to the gold line."
 #~ msgstr "Balle parfaite : remplie pile jusqu'à la ligne dorée."
 
@@ -15453,9 +15499,6 @@ msgstr "Un monde de rouille, vert. Les vieilles grues ont des fleurs à leurs pi
 #~ msgid "Character Builder"
 #~ msgstr "Éditeur de personnage"
 
-#~ msgid "Wearing"
-#~ msgstr "Porté"
-
 #~ msgid "Unlocked"
 #~ msgstr "Débloqué"
 
@@ -15552,9 +15595,6 @@ msgstr "Un monde de rouille, vert. Les vieilles grues ont des fleurs à leurs pi
 #~ msgid "Drag to turn  ·  Wheel to zoom"
 #~ msgstr "Glisser pour tourner  ·  Molette pour zoomer"
 
-#~ msgid "Randomize"
-#~ msgstr "Aléatoire"
-
 #~ msgid "Reset to preset"
 #~ msgstr "Revenir au modèle"
 
@@ -15611,9 +15651,6 @@ msgstr "Un monde de rouille, vert. Les vieilles grues ont des fleurs à leurs pi
 
 #~ msgid "Empty"
 #~ msgstr "Vide"
-
-#~ msgid "Save here"
-#~ msgstr "Enregistrer ici"
 
 #~ msgid "Unsaved changes"
 #~ msgstr "Modifications non enregistrées"

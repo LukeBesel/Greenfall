@@ -485,5 +485,6 @@ The owner asked for more attention on the world's goals and look (full cities ro
 - **Until wrecks stand in the world (M3-15) a wreck's pieces come when its hex is cleared.** The hex is fixed by the seed, in the outer rings. `Finds.site_cell(id)` tells the world where to put the wreck and `Finds.register_site(id, anchor, prompt)` makes it a thing Lumi uses instead.
 - **The Locker costs 400 cubes and is offered by the first find**, not by a base level. Old saves that owned any piece see it at once.
 - **Lumi on the turntable is a stand-in model.** The real Lumi is hidden while the Locker is open and never moves, so position, cargo and physics are untouched.
+- **Where a piece lies is the planet's to say.** The hint under an unfound piece comes from its find in the planet's table ("A paint tin lies under Ironside's scrap."); the piece list holds only general hints per slot.
 - **Unfound pieces of other worlds are counted, not shown** ("3 more lie on other worlds"). Only pieces this planet hides appear as silhouettes with a hint.
 - **Open (owner):** fifteen loose pieces (round and heart eyes, antenna, halo, Chalk, Gold and others) have no find on any planet yet and wait for later planets. Nova's set has five pieces where the spec asks for six to eight.

@@ -134,7 +134,8 @@ static func display_name(id: String) -> String:
 	return TranslationServer.translate(name_of(id) if has(id) else UNFOUND_NAME)
 
 
-## One line about where this kind of thing turns up (the piece's own, else its slot's), in English.
+## One general line about where this kind of thing turns up (the piece's own, else its slot's),
+## in English. Where a planet hides the piece is that planet's to say: Finds.hint_for.
 static func hint(id: String) -> String:
 	var own: String = str(def(id).get("hint", ""))
 	return own if own != "" else str(slot_def(slot_of(id)).get("hint", ""))
@@ -198,16 +199,6 @@ static func grant(id: String, source: String = "", quiet: bool = false) -> bool:
 	if design != "" and not was_complete and set_collected(design):
 		EventBus.set_completed.emit(design)
 	return true
-
-
-## A hint for something still out there, for whoever wants to nudge the player (the first unfound
-## piece among `candidates`, else among all). "" when everything is found.
-static func next_hint(candidates: Array[String] = []) -> String:
-	var pool: Array[String] = candidates if not candidates.is_empty() else ids()
-	for id: String in pool:
-		if not has(id):
-			return hint(id)
-	return ""
 
 
 # --- Old saves --------------------------------------------------------------------------------

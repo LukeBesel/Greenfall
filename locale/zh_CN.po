@@ -34,7 +34,7 @@ msgstr "%s %d 级"
 
 #: autoload/Economy.gd:308
 msgid "Opens in a later city"
-msgstr ""
+msgstr "在后面的城市开放"
 
 #: autoload/Economy.gd:312
 msgid "Needs %s Lv %d"
@@ -142,7 +142,7 @@ msgstr "Glim：扫描（按住：升级）"
 
 #: autoload/Settings.gd:25
 msgid "Hover boost"
-msgstr ""
+msgstr "悬浮推进"
 
 #: autoload/Settings.gd:31
 msgid "View"
@@ -190,11 +190,11 @@ msgstr "分享"
 
 #: autoload/Settings.gd:36
 msgid "Touchpad"
-msgstr ""
+msgstr "触摸板"
 
 #: autoload/Settings.gd:36
 msgid "Paddle 1"
-msgstr ""
+msgstr "背键 1"
 
 #: autoload/Settings.gd:522
 msgid "LMB"
@@ -258,7 +258,7 @@ msgstr "右摇杆下"
 
 #: autoload/Settings.gd:548
 msgid "hold %s"
-msgstr ""
+msgstr "按住 %s"
 
 #: autoload/Story.gd:27
 msgid "Hex clean! Green can grow here now."
@@ -637,11 +637,11 @@ msgstr "光  水  生命"
 
 #: planet/sites/hub_hop.gd:73
 msgid "Rocket hop: %.1f km"
-msgstr ""
+msgstr "火箭跳跃：%.1f 公里"
 
 #: planet/sites/orbit_sites.gd:144
 msgid "The rocket is in flight."
-msgstr ""
+msgstr "火箭正在飞行。"
 
 #: planet/sites/orbit_sites.gd:147 scenes/slice.gd:118 ui/rockets_panel.gd:38
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
@@ -649,7 +649,7 @@ msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
 
 #: planet/sites/orbit_sites.gd:152
 msgid "E   Rocket: choose a destination"
-msgstr ""
+msgstr "E   火箭：选择目的地"
 
 #: planet/sites/orbit_sites.gd:199
 msgid "Nowhere to fly yet. Get %s to %s to open %s."
@@ -782,7 +782,7 @@ msgstr "塞爆了  %s"
 
 #: player/patch.gd:579
 msgid "GOOD BALE  %s"
-msgstr ""
+msgstr "不错的捆包  %s"
 
 #: player/patch.gd:583
 msgid "SURGE  %s"
@@ -807,7 +807,7 @@ msgstr "Aurora"
 #: player/patch_model.gd:27 player/patch_model.gd:29 player/patch_model.gd:31
 #: player/patch_model.gd:33 player/patch_model.gd:35 player/patch_model.gd:37
 msgid "crescent"
-msgstr ""
+msgstr "月牙"
 
 #: player/patch_model.gd:29 data/designs.json:designs[bolt].name
 msgid "Bolt"
@@ -919,7 +919,7 @@ msgstr "看上面"
 
 #: player/vehicle.gd:141
 msgid "Ride the hover-sled"
-msgstr ""
+msgstr "乘坐悬浮雪橇"
 
 #: robots/fleet.gd:152
 msgid "Locked · research %s"
@@ -1153,7 +1153,7 @@ msgstr "前哨 %d · 废墟"
 
 #: scenes/slice_orbit.gd:363
 msgid "HEX CLEAN!"
-msgstr ""
+msgstr "六角格清理完成！"
 
 #: scenes/slice_orbit.gd:379
 msgid "Milestone: %d hexes clean!"
@@ -1161,11 +1161,11 @@ msgstr "里程碑：%d 个六角格已清理！"
 
 #: scenes/slice_orbit.gd:504 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:578
 msgid "E   Fix the workbench"
-msgstr ""
+msgstr "E   修理工作台"
 
 #: scenes/slice_orbit.gd:504 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
-msgstr ""
+msgstr "E   打开工作台"
 
 #: scenes/slice_orbit.gd:963
 msgid "Upgrades need a workbench. Head back to the hub."
@@ -1477,19 +1477,19 @@ msgstr "面条雾"
 msgid "1ST PLACE"
 msgstr "第一名"
 
-#: story/eggs.gd:718
-msgid "The duck squeaks a secret: \"%s\""
-msgstr ""
-
 #: story/eggs.gd:719
+msgid "The duck squeaks a secret: \"%s\""
+msgstr "鸭子吱吱地说了个秘密：“%s”"
+
+#: story/eggs.gd:720
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "鸭子已经把它知道的全教给你了。嘎。"
 
-#: story/eggs.gd:955
+#: story/eggs.gd:948
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "发现奇物：%s（%d / %d）   %s"
 
-#: story/eggs.gd:966
+#: story/eggs.gd:959
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "清单上的奇物全部找到了。Lumi 的收藏舱装满了回忆。"
 
@@ -1734,7 +1734,7 @@ msgstr "LEDGER  WMS-07"
 
 #: story/objectives.gd:194
 msgid "Reward: %s"
-msgstr ""
+msgstr "奖励：%s"
 
 #: story/objectives.gd:379
 msgid "Objective complete  ·  %s"
@@ -1742,7 +1742,7 @@ msgstr "目标完成  ·  %s"
 
 #: story/objectives.gd:405
 msgid "Goal complete  ·  %s"
-msgstr ""
+msgstr "目标完成  ·  %s"
 
 #: story/objectives.gd:672
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
@@ -2086,7 +2086,7 @@ msgstr "被冻住了"
 
 #: systems/designs.gd:127
 msgid "Set: %s"
-msgstr ""
+msgstr "套装：%s"
 
 #: systems/event_props.gd:154
 msgid "CRADLE · SUPPLY"
@@ -2391,7 +2391,7 @@ msgstr ""
 
 #: systems/research.gd:639
 msgid "Research complete: %s."
-msgstr ""
+msgstr "研究完成：%s。"
 
 #: systems/robot_builder.gd:268 systems/robot_design.gd:60
 msgid "Wrong slot"
@@ -2439,7 +2439,7 @@ msgstr "委托奖励（%d / %d 个委托）"
 
 #: systems/robot_builder.gd:523
 msgid "Your first bot came with treads and a bobble plant. Style it at the Locker once you have built one."
-msgstr ""
+msgstr "你的第一个机器人自带履带和摇头小草。建好储物柜后就能给它换造型。"
 
 #: systems/robot_builder.gd:533
 msgid "A Maker Fragment was tucked inside it: +%d parts."
@@ -2837,7 +2837,7 @@ msgstr "Lumi"
 msgid "Machines"
 msgstr "机器"
 
-#: ui/bench_lists.gd:11 ui/globe_view.gd:176 ui/locker_panel.gd:303
+#: ui/bench_lists.gd:11 ui/globe_view.gd:176 ui/locker_panel.gd:306
 #: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "火箭"
@@ -2852,7 +2852,7 @@ msgstr "院子"
 
 #: ui/bench_tiers.gd:93
 msgid "Build the signal tower first."
-msgstr ""
+msgstr "先建造信号塔。"
 
 #: ui/bench_tiers.gd:95
 msgid "Rebuild the base to level %d first."
@@ -2860,15 +2860,15 @@ msgstr ""
 
 #: ui/bench_tiers.gd:97
 msgid "Upgrade the workbench first."
-msgstr ""
+msgstr "先升级工作台。"
 
 #: ui/bench_tiers.gd:100
 msgid "Clean %d hexes first."
-msgstr ""
+msgstr "先清理 %d 个六角格。"
 
 #: ui/bench_tiers.gd:105
 msgid "Not yet. Keep playing."
-msgstr ""
+msgstr "还不行。继续玩吧。"
 
 #: ui/bench_tiers.gd:135
 msgid "%s installed. New workbench tab: %s"
@@ -3143,7 +3143,7 @@ msgid "%d / %d entries"
 msgstr "条目 %d / %d"
 
 #: ui/codex_screen.gd:340 ui/codex_screen.gd:460 ui/codex_screen.gd:626
-#: ui/codex_screen.gd:641 ui/piece_row.gd:59
+#: ui/codex_screen.gd:641 ui/piece_row.gd:62
 msgid "Not found yet"
 msgstr "尚未发现"
 
@@ -3602,11 +3602,11 @@ msgstr "记 忆 碎 片   ·   %s"
 
 #: ui/end_screen.gd:60
 msgid "READY TO LAUNCH"
-msgstr ""
+msgstr "可以发射"
 
 #: ui/end_screen.gd:61
 msgid "%s is alive again"
-msgstr ""
+msgstr "%s 重获生机"
 
 #: ui/end_screen.gd:67
 msgid "Every city is thriving and the rocket is ready. The rest of the planet is still out there if you want it."
@@ -3618,11 +3618,11 @@ msgstr "返回标题"
 
 #: ui/end_screen.gd:100
 msgid "Cities restored"
-msgstr ""
+msgstr "已修复的城市"
 
 #: ui/end_screen.gd:100
 msgid "%d of %d"
-msgstr ""
+msgstr "%d / %d"
 
 #: ui/event_hud.gd:127
 msgid "STREAK"
@@ -3640,8 +3640,7 @@ msgstr "%d 个委托已就绪  ·  到工作台领取"
 msgid "CDS  ·  %d / %d"
 msgstr "CD  ·  %d / %d"
 
-#: ui/extras_cd_list.gd:65 ui/extras_cd_list.gd:107 ui/lumi_builder.gd:115
-#: ui/tunes_picker.gd:95
+#: ui/extras_cd_list.gd:65 ui/extras_cd_list.gd:107 ui/tunes_picker.gd:95
 msgid "Shuffle"
 msgstr "随机播放"
 
@@ -3903,7 +3902,7 @@ msgstr "城市"
 
 #: ui/globe_view.gd:155
 msgid "Hubs"
-msgstr ""
+msgstr "基地"
 
 #: ui/globe_view.gd:176
 msgid "Travel between bases"
@@ -4103,11 +4102,11 @@ msgstr "  缺水"
 
 #: ui/hud.gd:387
 msgid "%s · %s"
-msgstr ""
+msgstr "%s · %s"
 
 #: ui/hud.gd:389
 msgid "%s · %s %d%%"
-msgstr ""
+msgstr "%s · %s %d%%"
 
 #: ui/hud.gd:392
 msgid "%d of %d city restored"
@@ -4141,7 +4140,7 @@ msgstr "%s   工作台"
 
 #: ui/hud.gd:406
 msgid "Filling the watering can"
-msgstr ""
+msgstr "正在给洒水壶加水"
 
 #: ui/hud.gd:407
 msgid "Can empty. It fills in the base yard, by the bin."
@@ -4215,7 +4214,7 @@ msgstr "需要   %s"
 
 #: ui/list_detail.gd:634
 msgid "You can buy this now!"
-msgstr ""
+msgstr "现在可以购买了！"
 
 #: ui/list_detail.gd:654
 msgid "%s more %s"
@@ -4267,102 +4266,110 @@ msgstr "每台%s都会换上"
 msgid "Ship looks: the tiers keep their shape"
 msgstr "飞船外观：等级外形不变"
 
-#: ui/locker_panel.gd:93 planets/verdance/data/camp.json:builds.locker.name
-msgid "Locker"
-msgstr "储物柜"
-
-#: ui/locker_panel.gd:97
+#: ui/locker_panel.gd:93
 msgid "Close"
 msgstr "关闭"
 
-#: ui/locker_panel.gd:258
+#: ui/locker_panel.gd:97 planets/verdance/data/camp.json:builds.locker.name
+msgid "Locker"
+msgstr "储物柜"
+
+#: ui/locker_panel.gd:261
 msgid "The Locker"
 msgstr "储物柜"
 
-#: ui/locker_panel.gd:259
+#: ui/locker_panel.gd:262
 msgid "Find a piece of a look in the world. Then build the Locker in the Build tab and open it in the yard."
-msgstr ""
+msgstr "先在世界里找到一件外观部件，然后在建造页签里建好储物柜，到院子里打开它。"
 
-#: ui/locker_panel.gd:260
-msgid "Lumi wears what she finds: paint tins, lens chips and the pieces of old robots. Glim and your robots are dressed here too."
-msgstr ""
+#: ui/locker_panel.gd:263
+msgid "Lumi wears what he finds: paint tins, lens chips and the pieces of old robots. Glim and your robots are dressed here too."
+msgstr "Lumi 穿戴他找到的东西：油漆罐、镜片芯片和旧机器人的部件。Glim 和你的机器人也在这里换装。"
 
-#: ui/locker_panel.gd:301 ui/robot_card.gd:78
+#: ui/locker_panel.gd:304 ui/robot_card.gd:78
 msgid "Crew"
 msgstr "小队"
 
-#: ui/lumi_builder.gd:86 ui/lumi_builder.gd:184
+#: ui/lumi_builder.gd:86 ui/lumi_builder.gd:181
 msgid "Sets"
-msgstr ""
+msgstr "套装"
 
-#: ui/lumi_builder.gd:106
+#: ui/lumi_builder.gd:89 ui/lumi_builder.gd:184
 msgid "Saved looks"
 msgstr "已保存的外观"
 
-#: ui/lumi_builder.gd:121
+#: ui/lumi_builder.gd:110
+msgid "Randomize"
+msgstr "随机"
+
+#: ui/lumi_builder.gd:116
 msgid "Wear look"
 msgstr "穿上外观"
 
-#: ui/lumi_builder.gd:207 data/style_parts.json:options.head[none].name data/style_parts.json:options.shoulders[none].name
+#: ui/lumi_builder.gd:206 data/style_parts.json:options.head[none].name data/style_parts.json:options.shoulders[none].name
 #: data/style_parts.json:options.held[none].name data/style_parts.json:options.hip[none].name data/style_parts.json:options.companion[none].name
 msgid "None"
 msgstr "无"
 
-#: ui/lumi_builder.gd:229
+#: ui/lumi_builder.gd:228
 msgid "%d more lie on other worlds."
-msgstr ""
+msgstr "还有 %d 件在别的星球上。"
 
-#: ui/lumi_builder.gd:234
+#: ui/lumi_builder.gd:233
 msgid "Wear every piece of one set for its small bonus. A mixed look gives none."
-msgstr ""
+msgstr "穿齐同一套装的所有部件可获得小加成。混搭外观没有加成。"
 
-#: ui/lumi_builder.gd:253
+#: ui/lumi_builder.gd:252
 msgid "%s  ·  %d of %d pieces"
-msgstr ""
+msgstr "%s  ·  %d / %d 件"
 
-#: ui/lumi_builder.gd:258
+#: ui/lumi_builder.gd:257
 msgid "Looks only (no set bonus)"
-msgstr ""
+msgstr "仅外观（无套装加成）"
 
-#: ui/lumi_builder.gd:272 ui/lumi_builder.gd:350
+#: ui/lumi_builder.gd:267
+msgid "Keep a look to put it on again later."
+msgstr "保存一套外观，以后可以再换上。"
+
+#: ui/lumi_builder.gd:273 ui/lumi_builder.gd:355
 msgid "Look %d"
 msgstr "外观%d"
 
-#: ui/lumi_builder.gd:272
-msgid "%d  Empty"
-msgstr ""
-
-#: ui/lumi_builder.gd:275
-msgid "Put this saved look on the turntable"
-msgstr ""
-
-#: ui/lumi_builder.gd:277
-msgid "Save"
-msgstr "保存"
+#: ui/lumi_builder.gd:273
+msgid "%d  ·  Empty"
+msgstr "%d  ·  空"
 
 #: ui/lumi_builder.gd:278
-msgid "Keep the look on the turntable in this slot"
-msgstr ""
+msgid "Put this saved look on the turntable"
+msgstr "把这套已保存的外观放到转台上"
 
-#: ui/lumi_builder.gd:285
+#: ui/lumi_builder.gd:280
+msgid "Save here"
+msgstr "保存到此"
+
+#: ui/lumi_builder.gd:281
+msgid "Keep the look on the turntable in this slot"
+msgstr "把转台上的外观保存到这个栏位"
+
+#: ui/lumi_builder.gd:290
 msgid "(off: looks only)"
 msgstr "（已关闭：仅外观）"
 
-#: ui/lumi_builder.gd:286
-msgid "%s set  ·  %s"
-msgstr ""
-
-#: ui/lumi_builder.gd:289
-msgid "Mixed look  ·  no set bonus"
-msgstr ""
-
 #: ui/lumi_builder.gd:291
-msgid "Not worn yet"
-msgstr ""
+msgid "%s set  ·  %s"
+msgstr "%s 套装  ·  %s"
 
-#: ui/lumi_builder.gd:359
+#: ui/lumi_builder.gd:294
+msgid "Mixed look  ·  no set bonus"
+msgstr "混搭外观  ·  无套装加成"
+
+#: ui/lumi_builder.gd:296
+msgid "Not worn yet"
+msgstr "尚未穿戴"
+
+#: ui/lumi_builder.gd:364
 msgid "A piece of this look is not found yet"
-msgstr ""
+msgstr "这套外观里有部件尚未找到"
 
 #: ui/main_menu.gd:322
 msgid "One small robot. One very big cleanup."
@@ -4771,23 +4778,23 @@ msgstr "拍照模式   Tab"
 
 #: ui/piece_reveal.gd:98
 msgid "Set complete"
-msgstr ""
+msgstr "套装集齐"
 
 #: ui/piece_reveal.gd:101
 msgid "Wear every piece at the Locker: %s."
-msgstr ""
+msgstr "在储物柜穿齐所有部件：%s。"
 
 #: ui/piece_reveal.gd:107
 msgid "Wear it at the Locker."
-msgstr ""
+msgstr "到储物柜换上它。"
 
 #: ui/piece_reveal.gd:107
 msgid "Build the Locker at the workbench to wear it."
-msgstr ""
+msgstr "在工作台建造储物柜后就能换上它。"
 
-#: ui/piece_row.gd:51 data/parts.json:rarities[worn].name
-msgid "Worn"
-msgstr "磨损"
+#: ui/piece_row.gd:53
+msgid "Wearing"
+msgstr "穿戴中"
 
 #: ui/research_node_card.gd:175 ui/research_panel.gd:194
 msgid "Researched"
@@ -4915,7 +4922,7 @@ msgstr "火箭"
 
 #: ui/rocket_picker.gd:50
 msgid "Where to?"
-msgstr ""
+msgstr "去哪儿？"
 
 #: ui/rocket_picker.gd:58
 msgid "{ui_cancel}  close"
@@ -4923,15 +4930,15 @@ msgstr ""
 
 #: ui/rocket_picker.gd:107
 msgid "No other hubs found yet."
-msgstr ""
+msgstr "还没有发现其他基地。"
 
 #: ui/rocket_picker.gd:120
 msgid "%.1f km"
-msgstr ""
+msgstr "%.1f 公里"
 
 #: ui/rocket_picker.gd:122
 msgid "Fly"
-msgstr ""
+msgstr "起飞"
 
 #: ui/rockets_panel.gd:34
 msgid "LAUNCH PAD"
@@ -5407,7 +5414,7 @@ msgstr "关  →  开"
 
 #: ui/upgrade_card.gd:205
 msgid "NEXT CITY"
-msgstr ""
+msgstr "下一座城市"
 
 #: ui/upgrade_card.gd:205
 msgid "MAX"
@@ -6223,11 +6230,11 @@ msgstr "围栏边木箱上一台笨重的老式CD机。播放你找到的唱片�
 
 #: planets/verdance/data/camp.json:builds.locker.desc
 msgid "A tall steel locker with a small turntable. Step up to wear the pieces you have found, and to dress Glim and your robots."
-msgstr ""
+msgstr "一个带小转台的高大钢制储物柜。走上前就能换上找到的部件，也能给 Glim 和机器人换装。"
 
 #: planets/verdance/data/camp.json:builds.locker.flag_text
 msgid "Find a piece of a look first."
-msgstr ""
+msgstr "先找到一件外观部件。"
 
 #: planets/verdance/data/camp.json:builds.nursery.name
 msgid "Robot Nursery"
@@ -6239,7 +6246,7 @@ msgstr "一片围着矮墙、种着花坛的草坪，退休的机器人在这里
 
 #: planets/verdance/data/camp.json:builds.glim.name planets/verdance/data/objectives.json:objectives[glim].text
 msgid "Repair Glim"
-msgstr ""
+msgstr "修好 Glim"
 
 #: planets/verdance/data/camp.json:builds.glim.desc
 msgid "The little lantern bot who held on to your pod all the way down. Patch him up and he'll follow you and light the way."
@@ -7308,27 +7315,27 @@ msgstr "一架再也没能回家的倾倒无人机，一头扎进另一个世界
 
 #: data/cosmetics.json:slots[paint].hint
 msgid "Paint tins lie buried under ordinary trash."
-msgstr ""
+msgstr "油漆罐埋在普通垃圾下面。"
 
 #: data/cosmetics.json:slots[pattern].name
 msgid "Wear pattern"
-msgstr ""
+msgstr "磨损纹样"
 
 #: data/cosmetics.json:slots[pattern].hint
 msgid "Old machines keep the marks of their work. Look for a wreck."
-msgstr ""
+msgstr "旧机器留着干活的痕迹。去找一具残骸吧。"
 
 #: data/cosmetics.json:slots[eye_shape].hint
 msgid "Lens plates outlast the robots that wore them."
-msgstr ""
+msgstr "镜片板比戴过它的机器人更耐久。"
 
 #: data/cosmetics.json:slots[glow].name
 msgid "Light colour"
-msgstr ""
+msgstr "灯光颜色"
 
 #: data/cosmetics.json:slots[glow].hint
 msgid "Lens chips lie buried under ordinary trash."
-msgstr ""
+msgstr "镜片芯片埋在普通垃圾下面。"
 
 #: data/cosmetics.json:slots[head].name data/style_parts.json:slots[head].name
 msgid "Head piece"
@@ -7336,15 +7343,15 @@ msgstr "头饰"
 
 #: data/cosmetics.json:slots[head].hint
 msgid "A wreck off the main path may still wear one."
-msgstr ""
+msgstr "主路之外的残骸上也许还戴着一个。"
 
 #: data/cosmetics.json:slots[ears].name data/style_parts.json:slots[ears].name
 msgid "Ear lenses"
-msgstr ""
+msgstr "耳部镜片"
 
 #: data/cosmetics.json:slots[ears].hint
 msgid "A wreck off the main path may still wear a pair."
-msgstr ""
+msgstr "主路之外的残骸上也许还戴着一对。"
 
 #: data/cosmetics.json:slots[shoulders].name data/style_parts.json:slots[shoulders].name
 msgid "Shoulders"
@@ -7352,15 +7359,15 @@ msgstr "肩部"
 
 #: data/cosmetics.json:slots[shoulders].hint
 msgid "Heavy plating rusts where heavy work was done."
-msgstr ""
+msgstr "厚重的护板锈在干重活的地方。"
 
 #: data/cosmetics.json:slots[chest].name
 msgid "Chest plate"
-msgstr ""
+msgstr "胸板"
 
 #: data/cosmetics.json:slots[chest].hint
 msgid "A wreck's chest plate often survives."
-msgstr ""
+msgstr "残骸的胸板往往保存了下来。"
 
 #: data/cosmetics.json:slots[held].name data/style_parts.json:slots[held].name
 msgid "Held item"
@@ -7368,11 +7375,11 @@ msgstr "手持物品"
 
 #: data/cosmetics.json:slots[held].hint data/cosmetics.json:slots[hip].hint
 msgid "What a robot carried lies near where it stopped."
-msgstr ""
+msgstr "机器人带着的东西，就落在它停下的地方附近。"
 
 #: data/cosmetics.json:slots[hip].name data/style_parts.json:slots[hip].name
 msgid "Hip item"
-msgstr ""
+msgstr "腰部物品"
 
 #: data/cosmetics.json:slots[companion].name data/style_parts.json:slots[companion].name
 msgid "Companion"
@@ -7380,19 +7387,19 @@ msgstr "伙伴"
 
 #: data/cosmetics.json:slots[companion].hint
 msgid "Small things hide in quiet corners."
-msgstr ""
+msgstr "小东西藏在安静的角落里。"
 
 #: data/cosmetics.json:pieces[paint_aurora].name
 msgid "Aurora paint"
-msgstr ""
+msgstr "Aurora 漆面"
 
 #: data/cosmetics.json:pieces[glow_aurora].name
 msgid "Aurora cyan"
-msgstr ""
+msgstr "Aurora 青"
 
 #: data/cosmetics.json:pieces[eyes_crescent].name
 msgid "Crescent eyes"
-msgstr ""
+msgstr "月牙眼"
 
 #: data/cosmetics.json:pieces[head_fin].name data/style_parts.json:options.head[fin].name
 msgid "Fin"
@@ -7400,63 +7407,39 @@ msgstr "鳍"
 
 #: data/cosmetics.json:pieces[chest_recycle].name
 msgid "Recycle plate"
-msgstr ""
+msgstr "回收胸板"
 
 #: data/cosmetics.json:pieces[paint_sprout].name
 msgid "Sprout paint"
-msgstr ""
-
-#: data/cosmetics.json:pieces[paint_sprout].hint
-msgid "A gardener robot stopped where the meadows used to be."
-msgstr ""
+msgstr "Sprout 漆面"
 
 #: data/cosmetics.json:pieces[pattern_moss].name data/style_parts.json:options.pattern[moss].name
 msgid "Moss patches"
 msgstr "苔藓斑块"
 
-#: data/cosmetics.json:pieces[pattern_moss].hint
-msgid "Moss grows on a wreck that has stood high and still for years."
-msgstr ""
-
 #: data/cosmetics.json:pieces[glow_sprout].name
 msgid "Sprout green"
-msgstr ""
-
-#: data/cosmetics.json:pieces[glow_sprout].hint
-msgid "Something still glows green where a harbour's poison is stopped."
-msgstr ""
+msgstr "Sprout 绿"
 
 #: data/cosmetics.json:pieces[head_sprout].name data/style_parts.json:options.head[sprout].name
 msgid "Sprout leaf"
 msgstr "嫩芽叶"
 
-#: data/cosmetics.json:pieces[head_sprout].hint
-msgid "The last leaf waits where the oldest city's poison is stopped."
-msgstr ""
-
 #: data/cosmetics.json:pieces[ears_leaf].name data/style_parts.json:options.ears[leaf].name
 msgid "Leaf lenses"
-msgstr ""
-
-#: data/cosmetics.json:pieces[ears_leaf].hint data/cosmetics.json:pieces[chest_leaf].hint
-msgid "A gardener robot rusts among the scrap."
-msgstr ""
+msgstr "叶片镜片"
 
 #: data/cosmetics.json:pieces[chest_leaf].name
 msgid "Leaf plate"
-msgstr ""
+msgstr "叶子胸板"
 
 #: data/cosmetics.json:pieces[held_bottle].name data/style_parts.json:options.held[bottle].name
 msgid "Plastic bottle"
-msgstr ""
-
-#: data/cosmetics.json:pieces[held_bottle].hint
-msgid "Stop what poisons the first town and see what it leaves behind."
-msgstr ""
+msgstr "塑料瓶"
 
 #: data/cosmetics.json:pieces[paint_bolt].name
 msgid "Bolt paint"
-msgstr ""
+msgstr "Bolt 漆面"
 
 #: data/cosmetics.json:pieces[pattern_stripes].name data/style_parts.json:options.pattern[stripes].name
 msgid "Hazard stripes"
@@ -7464,11 +7447,11 @@ msgstr "警示条纹"
 
 #: data/cosmetics.json:pieces[glow_bolt].name
 msgid "Bolt amber"
-msgstr ""
+msgstr "Bolt 琥珀"
 
 #: data/cosmetics.json:pieces[ears_nut].name data/style_parts.json:options.ears[nut].name
 msgid "Hex-nut bezels"
-msgstr ""
+msgstr "六角螺母镜框"
 
 #: data/cosmetics.json:pieces[shoulders_pads].name data/style_parts.json:options.shoulders[pads].name
 msgid "Shoulder pads"
@@ -7480,15 +7463,15 @@ msgstr "备用齿轮"
 
 #: data/cosmetics.json:pieces[paint_pixel].name
 msgid "Pixel paint"
-msgstr ""
+msgstr "Pixel 漆面"
 
 #: data/cosmetics.json:pieces[pattern_twotone].name data/style_parts.json:options.pattern[twotone].name
 msgid "Two-tone shell"
-msgstr ""
+msgstr "双色外壳"
 
 #: data/cosmetics.json:pieces[glow_pixel].name
 msgid "Pixel pink"
-msgstr ""
+msgstr "Pixel 粉"
 
 #: data/cosmetics.json:pieces[eyes_happy].name data/style_parts.json:options.eye_shape[happy].name
 msgid "Happy arcs"
@@ -7500,7 +7483,7 @@ msgstr "翼鳍"
 
 #: data/cosmetics.json:pieces[ears_heart].name data/style_parts.json:options.ears[heart].name
 msgid "Heart lenses"
-msgstr ""
+msgstr "爱心镜片"
 
 #: data/cosmetics.json:pieces[companion_butterfly].name data/style_parts.json:options.companion[butterfly].name
 msgid "Butterfly"
@@ -7508,15 +7491,15 @@ msgstr "蝴蝶"
 
 #: data/cosmetics.json:pieces[paint_nova].name
 msgid "Nova paint"
-msgstr ""
+msgstr "Nova 漆面"
 
 #: data/cosmetics.json:pieces[pattern_seams].name data/style_parts.json:options.pattern[seams].name
 msgid "Seam glow"
-msgstr ""
+msgstr "接缝辉光"
 
 #: data/cosmetics.json:pieces[glow_nova].name
 msgid "Nova violet"
-msgstr ""
+msgstr "Nova 紫"
 
 #: data/cosmetics.json:pieces[head_catears].name data/style_parts.json:options.head[catears].name
 msgid "Cat ears"
@@ -7528,15 +7511,15 @@ msgstr "全息屏"
 
 #: data/cosmetics.json:pieces[paint_patch].name
 msgid "Patch paint"
-msgstr ""
+msgstr "Patch 漆面"
 
 #: data/cosmetics.json:pieces[glow_patch].name
 msgid "Patch amber"
-msgstr ""
+msgstr "Patch 琥珀"
 
 #: data/cosmetics.json:pieces[ears_radio].name data/style_parts.json:options.ears[radio].name
 msgid "Side radio"
-msgstr ""
+msgstr "侧挂电台"
 
 #: data/cosmetics.json:pieces[chest_cross].name data/style_parts.json:options.chest[cross].name
 msgid "Medic cross"
@@ -7544,79 +7527,75 @@ msgstr "医疗十字"
 
 #: data/cosmetics.json:pieces[held_case].name data/style_parts.json:options.held[toolbox].name
 msgid "Carry case"
-msgstr ""
+msgstr "手提箱"
 
 #: data/cosmetics.json:pieces[hip_satchel].name data/style_parts.json:options.hip[satchel].name
 msgid "Medic satchel"
-msgstr ""
+msgstr "医疗挎包"
 
 #: data/cosmetics.json:pieces[tin_sky].name
 msgid "Sky tin"
-msgstr ""
+msgstr "天蓝漆罐"
 
 #: data/cosmetics.json:pieces[tin_copper].name
 msgid "Copper tin"
-msgstr ""
+msgstr "铜色漆罐"
 
 #: data/cosmetics.json:pieces[tin_seaglass].name
 msgid "Sea glass tin"
-msgstr ""
+msgstr "海玻璃漆罐"
 
 #: data/cosmetics.json:pieces[tin_midnight].name
 msgid "Midnight tin"
-msgstr ""
+msgstr "午夜漆罐"
 
 #: data/cosmetics.json:pieces[tin_rosegold].name
 msgid "Rose gold tin"
-msgstr ""
+msgstr "玫瑰金漆罐"
 
 #: data/cosmetics.json:pieces[tin_royal].name
 msgid "Royal blue tin"
-msgstr ""
-
-#: data/cosmetics.json:pieces[tin_royal].hint
-msgid "A rare tin lies far out, on open ground."
-msgstr ""
+msgstr "宝蓝漆罐"
 
 #: data/cosmetics.json:pieces[tin_graphite].name
 msgid "Graphite tin"
-msgstr ""
+msgstr "石墨漆罐"
 
 #: data/cosmetics.json:pieces[tin_slate].name
 msgid "Slate tin"
-msgstr ""
+msgstr "板岩漆罐"
 
 #: data/cosmetics.json:pieces[tin_chalk].name
 msgid "Chalk tin"
-msgstr ""
+msgstr "粉笔白漆罐"
 
 #: data/cosmetics.json:pieces[chip_mint].name
 msgid "Mint chip"
-msgstr ""
+msgstr "薄荷芯片"
 
 #: data/cosmetics.json:pieces[chip_coral].name
 msgid "Coral chip"
-msgstr ""
+msgstr "珊瑚芯片"
 
 #: data/cosmetics.json:pieces[chip_lilac].name
 msgid "Lilac chip"
-msgstr ""
+msgstr "丁香芯片"
 
 #: data/cosmetics.json:pieces[chip_orange].name
 msgid "Orange chip"
-msgstr ""
+msgstr "橙色芯片"
 
 #: data/cosmetics.json:pieces[chip_gold].name
 msgid "Gold chip"
-msgstr ""
+msgstr "金色芯片"
 
 #: data/cosmetics.json:pieces[chip_bloom].name
 msgid "Bloom green chip"
-msgstr ""
+msgstr "绽放绿芯片"
 
 #: data/cosmetics.json:pieces[eyes_round].name
 msgid "Round eyes"
-msgstr ""
+msgstr "圆眼"
 
 #: data/cosmetics.json:pieces[eyes_bar].name data/style_parts.json:options.eye_shape[bar].name
 msgid "Visor bar"
@@ -7624,7 +7603,7 @@ msgstr "面罩光条"
 
 #: data/cosmetics.json:pieces[eyes_heart].name
 msgid "Heart eyes"
-msgstr ""
+msgstr "爱心眼"
 
 #: data/cosmetics.json:pieces[head_antenna].name data/glim.json:tops[antenna].name data/style_parts.json:options.head[antenna].name
 msgid "Antenna"
@@ -7636,7 +7615,7 @@ msgstr "光环"
 
 #: data/cosmetics.json:pieces[chest_heart].name
 msgid "Heart plate"
-msgstr ""
+msgstr "爱心胸板"
 
 #: data/cosmetics.json:pieces[held_medkit].name data/style_parts.json:options.held[medkit].name
 msgid "Med kit"
@@ -7645,10 +7624,6 @@ msgstr "医疗包"
 #: data/cosmetics.json:pieces[held_watering_can].name data/style_parts.json:options.held[watering_can].name
 msgid "Watering can"
 msgstr "洒水壶"
-
-#: data/cosmetics.json:pieces[companion_firefly].hint
-msgid "Something small glows in a quiet corner of the world."
-msgstr ""
 
 #: data/cosmetics.json:pieces[companion_drone].name data/style_parts.json:options.companion[drone].name
 msgid "Tiny drone"
@@ -7836,23 +7811,23 @@ msgstr "机器人工作速度 +6%"
 
 #: planets/verdance/data/districts.json:districts[scrapyard].name
 msgid "Ironside"
-msgstr ""
+msgstr "Ironside"
 
 #: planets/verdance/data/districts.json:districts[kettle_bay].name
 msgid "Kettle Bay"
-msgstr ""
+msgstr "Kettle Bay"
 
 #: planets/verdance/data/districts.json:districts[highreach].name
 msgid "Highreach"
-msgstr ""
+msgstr "Highreach"
 
 #: planets/verdance/data/districts.json:districts[lowmeadow].name
 msgid "Lowmeadow"
-msgstr ""
+msgstr "Lowmeadow"
 
 #: planets/verdance/data/districts.json:districts[old_capital].name
 msgid "Old Capital"
-msgstr ""
+msgstr "Old Capital"
 
 #: planets/verdance/data/eggs.json:eggs[duck].name planets/verdance/data/museum.json:exhibits[duck].name
 msgid "Duck on Duty"
@@ -9598,6 +9573,70 @@ msgstr "又完成一个委托。代币在等你。"
 msgid "Contract fulfilled. The board's lit up green."
 msgstr "委托达成。面板亮绿灯了。"
 
+#: planets/verdance/data/finds.json:finds[old_town_tin].hint
+msgid "A paint tin lies under the litter of Old Town."
+msgstr "老城区的垃圾下埋着一罐油漆。"
+
+#: planets/verdance/data/finds.json:finds[old_town_chip].hint
+msgid "A lens chip lies under the litter of Old Town."
+msgstr "老城区的垃圾下埋着一枚镜片芯片。"
+
+#: planets/verdance/data/finds.json:finds[old_town_source].hint
+msgid "Stop what floods Old Town and see what it leaves behind."
+msgstr "止住淹没老城区的源头，看看它留下了什么。"
+
+#: planets/verdance/data/finds.json:finds[scrapyard_tin].hint
+msgid "A paint tin lies under Ironside's scrap."
+msgstr "Ironside 的废铁下埋着一罐油漆。"
+
+#: planets/verdance/data/finds.json:finds[scrapyard_wreck].hint
+msgid "A gardener robot rusts at the edge of Ironside."
+msgstr "一台园丁机器人在 Ironside 的边缘生锈。"
+
+#: planets/verdance/data/finds.json:finds[kettle_bay_tin].hint
+msgid "A paint tin lies under the litter of Kettle Bay."
+msgstr "Kettle Bay 的垃圾下埋着一罐油漆。"
+
+#: planets/verdance/data/finds.json:finds[kettle_bay_chip].hint
+msgid "A lens chip lies deep in Kettle Bay."
+msgstr "Kettle Bay 深处埋着一枚镜片芯片。"
+
+#: planets/verdance/data/finds.json:finds[kettle_bay_source].hint
+msgid "Something glows green where Kettle Bay's leak is stopped."
+msgstr "堵住 Kettle Bay 的泄漏后，那里有东西泛着绿光。"
+
+#: planets/verdance/data/finds.json:finds[highreach_tin].hint
+msgid "A paint tin lies under the litter of Highreach."
+msgstr "Highreach 的垃圾下埋着一罐油漆。"
+
+#: planets/verdance/data/finds.json:finds[highreach_wreck].hint
+msgid "Moss grows on a wreck at the edge of Highreach."
+msgstr "Highreach 边缘的一具残骸上长着苔藓。"
+
+#: planets/verdance/data/finds.json:finds[lowmeadow_tin].hint
+msgid "A paint tin lies under the litter of Lowmeadow."
+msgstr "Lowmeadow 的垃圾下埋着一罐油漆。"
+
+#: planets/verdance/data/finds.json:finds[lowmeadow_wreck].hint
+msgid "A gardener robot stopped at the edge of Lowmeadow."
+msgstr "一台园丁机器人停在了 Lowmeadow 的边缘。"
+
+#: planets/verdance/data/finds.json:finds[old_capital_chip].hint
+msgid "A lens chip lies under the litter of Old Capital."
+msgstr "Old Capital 的垃圾下埋着一枚镜片芯片。"
+
+#: planets/verdance/data/finds.json:finds[old_capital_source].hint
+msgid "The last leaf waits where Old Capital's poison is stopped."
+msgstr "最后一片叶子，等在 Old Capital 的毒源被止住的地方。"
+
+#: planets/verdance/data/finds.json:finds[open_ground_tin].hint
+msgid "A rare tin lies far out, on open ground."
+msgstr "一罐稀有的油漆埋在远处的旷野里。"
+
+#: planets/verdance/data/finds.json:finds[campfire_firefly].hint
+msgid "Something small glows by an old campfire."
+msgstr "一处旧营火旁有个小东西在发光。"
+
 #: planets/verdance/data/frontiers.json:kinds[dust_flats].tagline
 msgid "Sand dunes, half-buried wrecks and a dead solar farm."
 msgstr "沙丘、半埋的残骸和一座废弃的太阳能电站。"
@@ -9708,7 +9747,7 @@ msgstr "装上打包机"
 
 #: planets/verdance/data/goals.json:goals[bale_1].text
 msgid "Make your first bale"
-msgstr ""
+msgstr "压出你的第一个捆包"
 
 #: planets/verdance/data/goals.json:goals[cash_1].text
 msgid "Sell a bale at the scale"
@@ -9724,11 +9763,11 @@ msgstr "清理你的第一个六角格"
 
 #: planets/verdance/data/goals.json:goals[perfect_1].text
 msgid "Make a perfect bale"
-msgstr ""
+msgstr "压出一个完美捆包"
 
 #: planets/verdance/data/goals.json:goals[upgrades_5].text
 msgid "Buy 5 upgrades"
-msgstr ""
+msgstr "购买 5 项升级"
 
 #: planets/verdance/data/goals.json:goals[cash_10].text
 msgid "Sell 10 bales"
@@ -9768,7 +9807,7 @@ msgstr ""
 
 #: planets/verdance/data/goals.json:goals[upgrades_12].text
 msgid "Buy 12 upgrades"
-msgstr ""
+msgstr "购买 12 项升级"
 
 #: planets/verdance/data/goals.json:goals[earn_3k].text
 msgid "Earn 3,000 cubes"
@@ -9788,7 +9827,7 @@ msgstr "完成 4 项研究"
 
 #: planets/verdance/data/goals.json:goals[upgrades_20].text
 msgid "Buy 20 upgrades"
-msgstr ""
+msgstr "购买 20 项升级"
 
 #: planets/verdance/data/goals.json:goals[hex_10].text planets/verdance/data/objectives.json:objectives[hex10].text data/radio.json:songs[verdance_sweep].hint
 msgid "Clean 10 hexes"
@@ -9824,7 +9863,7 @@ msgstr "清理 12 个六角格"
 
 #: planets/verdance/data/goals.json:goals[upgrades_25].text
 msgid "Buy 25 upgrades"
-msgstr ""
+msgstr "购买 25 项升级"
 
 #: planets/verdance/data/goals.json:goals[research_6].text
 msgid "Finish 6 research projects"
@@ -9912,7 +9951,7 @@ msgstr "清理 28 个六角格"
 
 #: planets/verdance/data/goals.json:goals[upgrades_40].text
 msgid "Buy 40 upgrades"
-msgstr ""
+msgstr "购买 40 项升级"
 
 #: planets/verdance/data/goals.json:goals[seedling_1].text
 msgid "Build a Seedling planter"
@@ -10260,11 +10299,11 @@ msgstr "找到 38 件奇物"
 
 #: planets/verdance/data/goals.json:goals[locker_build].text
 msgid "Build the Locker"
-msgstr ""
+msgstr "建造储物柜"
 
 #: planets/verdance/data/goals.json:goals[locker_wear].text
 msgid "Wear a look at the Locker"
-msgstr ""
+msgstr "在储物柜换上一套外观"
 
 #: planets/verdance/data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
@@ -10712,7 +10751,7 @@ msgstr ""
 
 #: planets/verdance/data/objectives.json:objectives[compartment].text
 msgid "Buy a bigger chest"
-msgstr ""
+msgstr "买一个更大的胸舱"
 
 #: planets/verdance/data/objectives.json:objectives[compartment].desc
 msgid "Workbench: Chest Size. Fewer trips to the bin."
@@ -10724,7 +10763,7 @@ msgstr ""
 
 #: planets/verdance/data/objectives.json:objectives[hex].text
 msgid "Clean the glowing hex"
-msgstr ""
+msgstr "清理发光的六角格"
 
 #: planets/verdance/data/objectives.json:objectives[hex].desc
 msgid "Pick up every piece inside the outline."
@@ -10748,7 +10787,7 @@ msgstr ""
 
 #: planets/verdance/data/objectives.json:objectives[hex2].text
 msgid "Clean 2 hexes"
-msgstr ""
+msgstr "清理 2 个六角格"
 
 #: planets/verdance/data/objectives.json:objectives[hex2].desc
 msgid "Clean ground lets plants grow again."
@@ -10772,7 +10811,7 @@ msgstr ""
 
 #: planets/verdance/data/objectives.json:objectives[power].text
 msgid "Sell 3 bales"
-msgstr ""
+msgstr "卖掉 3 个捆包"
 
 #: planets/verdance/data/objectives.json:objectives[power].desc
 msgid "Full chest? Press {cube} for a bale. Carry it to the scale."
@@ -10804,7 +10843,7 @@ msgstr ""
 
 #: planets/verdance/data/objectives.json:objectives[street].text
 msgid "Clear the street"
-msgstr ""
+msgstr "清理街道"
 
 #: planets/verdance/data/objectives.json:objectives[street].desc
 msgid "Clean the 7 hexes round the base."
@@ -10969,6 +11008,10 @@ msgstr "一块充电平台。经过它的机器人在 25 秒内速度提升 40%�
 #: data/parts.json:rarities[rusty].name planets/verdance/data/robots.json:tiers[0].name
 msgid "Rusty"
 msgstr "生锈"
+
+#: data/parts.json:rarities[worn].name
+msgid "Worn"
+msgstr "磨损"
 
 #: data/parts.json:rarities[vintage].name
 msgid "Vintage"
@@ -11512,11 +11555,11 @@ msgstr "调到 Cradle号频率的着陆信标。三片边境都繁茂之后，�
 
 #: planets/verdance/data/restoration.json:planet.steps[first_green].name
 msgid "First green"
-msgstr ""
+msgstr "初现绿意"
 
 #: planets/verdance/data/restoration.json:planet.steps[green_belt].name
 msgid "Green belt"
-msgstr ""
+msgstr "绿带"
 
 #: planets/verdance/data/restoration.json:planet.steps[quarter_alive].name
 msgid "A quarter alive"
@@ -11524,11 +11567,11 @@ msgstr ""
 
 #: planets/verdance/data/restoration.json:planet.steps[half_alive].name
 msgid "Half the world"
-msgstr ""
+msgstr "半个世界"
 
 #: planets/verdance/data/restoration.json:planet.steps[whole_planet].name
 msgid "The whole planet"
-msgstr ""
+msgstr "整颗星球"
 
 #: data/robot_parts.json:slots[chassis].name
 msgid "Chassis"
@@ -13130,7 +13173,7 @@ msgstr "更强的举升光束。1 级：中型垃圾（油桶、板条箱）。2
 
 #: planets/verdance/data/upgrades.json:upgrades[compartment_size].name
 msgid "Chest Size"
-msgstr ""
+msgstr "胸舱容量"
 
 #: planets/verdance/data/upgrades.json:upgrades[compartment_size].desc
 msgid "A bigger chest. Fewer trips to the bin."
@@ -13250,7 +13293,7 @@ msgstr "把探测器调到强信号：稀有零件信号会显示为紫色光柱
 
 #: planets/verdance/data/upgrades.json:upgrades[hover_jets].name
 msgid "Hover Jets"
-msgstr ""
+msgstr "悬浮喷口"
 
 #: planets/verdance/data/upgrades.json:upgrades[hover_jets].desc
 msgid "Little jets under the treads. Lumi floats over lakes instead of stopping at the shore."
@@ -13262,7 +13305,7 @@ msgstr ""
 
 #: data/workbench.json:tiers[0].name
 msgid "Workbench"
-msgstr ""
+msgstr "工作台"
 
 #: data/workbench.json:tiers[0].desc
 msgid "The repaired bench: upgrades for Lumi and things to build."
@@ -14888,6 +14931,9 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
 
+#~ msgid "Save"
+#~ msgstr "保存"
+
 #~ msgid "Perfect bale: filled right to the gold line."
 #~ msgstr "完美捆包：刚好装到金线。"
 
@@ -15440,9 +15486,6 @@ msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了
 #~ msgid "Character Builder"
 #~ msgstr "角色编辑器"
 
-#~ msgid "Wearing"
-#~ msgstr "穿戴中"
-
 #~ msgid "Unlocked"
 #~ msgstr "已解锁"
 
@@ -15539,9 +15582,6 @@ msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了
 #~ msgid "Drag to turn  ·  Wheel to zoom"
 #~ msgstr "拖动旋转  ·  滚轮缩放"
 
-#~ msgid "Randomize"
-#~ msgstr "随机"
-
 #~ msgid "Reset to preset"
 #~ msgstr "恢复预设"
 
@@ -15598,9 +15638,6 @@ msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了
 
 #~ msgid "Empty"
 #~ msgstr "空"
-
-#~ msgid "Save here"
-#~ msgstr "保存到此"
 
 #~ msgid "Unsaved changes"
 #~ msgstr "有未保存的修改"

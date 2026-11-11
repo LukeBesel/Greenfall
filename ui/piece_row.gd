@@ -3,22 +3,24 @@ extends Button
 ## One piece of a look in the Locker's list (ui/lumi_builder.gd). A found piece shows its mark in
 ## its own colour and its name; pressing it wears it. An unfound piece is a dark silhouette of the
 ## same mark, named "???" with one hint line: it cannot be pressed into a look (design spec
-## section 13). The worn piece carries a stamped bar on its left edge and the word WORN, so
+## section 13). The worn piece carries a stamped bar on its left edge and the word WEARING, so
 ## colour is never the only signal.
 
 const ICON_PX: float = 40.0
 const PAD: float = 10.0
 const ROW_H: float = 56.0
+const HINT_LINE_H: float = 26.0
 
 var piece: String = ""
 var found: bool = false
 var worn: bool = false
 
 var _tint: Color = FieldPlate.INK
+var _hint: Label
 var _slot: String = ""
 
 
-func _init(p_piece: String, p_found: bool, p_worn: bool, tint: Color) -> void:
+func _init(p_piece: String, p_found: bool, p_worn: bool, tint: Color, hint: String = "") -> void:
 	piece = p_piece
 	found = p_found
 	worn = p_worn
@@ -48,15 +50,24 @@ func _init(p_piece: String, p_found: bool, p_worn: bool, tint: Color) -> void:
 	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	head.add_child(title)
 	if worn:
-		var stamp := FieldPlate.stencil(tr("Worn"), FieldPlate.CYAN)
+		var stamp := FieldPlate.stencil(tr("Wearing"), FieldPlate.CYAN)
 		stamp.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		head.add_child(stamp)
 	if not found:
-		var hint := FieldPlate.sentence(tr(Looks.hint(piece)), FieldPlate.INK_DIM)
-		hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		box.add_child(hint)
-		custom_minimum_size.y = ROW_H + 44.0
+		_hint = FieldPlate.sentence(tr(hint if hint != "" else Looks.hint(piece)), FieldPlate.INK_DIM)
+		_hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		box.add_child(_hint)
+		_hint.resized.connect(_fit_hint)
+		custom_minimum_size.y = ROW_H + HINT_LINE_H * 2.0
 		tooltip_text = tr("Not found yet")
+
+
+## The row grows with its hint: a long line (or a long translation) wraps and is never cut.
+func _fit_hint() -> void:
+	var lines: int = maxi(1, _hint.get_line_count())
+	var want: float = ROW_H + HINT_LINE_H * lines
+	if not is_equal_approx(custom_minimum_size.y, want):
+		custom_minimum_size.y = want
 
 
 func _draw() -> void:

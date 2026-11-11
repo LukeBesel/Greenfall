@@ -107,7 +107,7 @@ func _build() -> void:
 	var foot := HBoxContainer.new()
 	foot.add_theme_constant_override("separation", 10)
 	vb.add_child(foot)
-	foot.add_child(_key(tr("Shuffle"), _shuffle))
+	foot.add_child(_key(tr("Randomize"), _shuffle))
 	_status = FieldPlate.stencil("", FieldPlate.AMBER)
 	_status.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -162,10 +162,12 @@ func unfound_here() -> Array[String]:
 
 
 func _hidden_here() -> Array[String]:
-	var out: Array[String] = []
-	for e: Dictionary in Finds.entries_for(Planets.current()):
-		out.append_array(e["pieces"])
-	return out
+	return Finds.pieces_for(Planets.current())
+
+
+## The hint line under an unfound piece: where this planet hides it.
+func hint_of(piece: String) -> String:
+	return Finds.hint_for(Planets.current(), piece)
 
 
 func _refresh(take_focus: bool = false) -> void:
@@ -219,7 +221,7 @@ func _build_pieces() -> void:
 		elif not (id in unfound):
 			elsewhere += 1
 	for id: String in unfound:
-		var row := PieceRow.new(id, false, false, FieldPlate.INK_DIM)
+		var row := PieceRow.new(id, false, false, FieldPlate.INK_DIM, hint_of(id))
 		row.pressed.connect(_refuse)
 		_list.add_child(row)
 	if elsewhere > 0:

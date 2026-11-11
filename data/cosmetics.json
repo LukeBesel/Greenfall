@@ -1,5 +1,5 @@
 {
-  "_doc": "Every look Lumi can wear is made of pieces (design spec section 13; systems/looks.gd, systems/lumi_style.gd, the Locker: ui/lumi_builder.gd). A piece is worn only after it is found in the world: nothing here is bought and nothing opens from a counter, a level or a cost. Where pieces are hidden is planet data (the planet's `finds` table); which pieces the player holds is global progress (the save's `global.pieces`). presets: how many saved looks the Locker keeps. slots[]: the Locker's slots in display order: id (the style key it edits: systems/lumi_style.gd), name, hint (one line about where that kind of thing turns up, shown under an unfound piece that has no hint of its own). pieces[]: id (never changes once shipped: saves hold it), slot, name, and exactly one of: option (an option id of that slot in data/style_parts.json), swatch (a colour id in data/style_parts.json swatches: a paint tin recolours the main body paint, a lens chip recolours every light), design (the paint set or the light colour of that design, read from the design's own look). set: the design the piece belongs to (a design is a set of pieces; wearing every piece of one set shows its name and gives the small bonus in data/designs.json; a mixed look gives none). starter: owned from a new game (Aurora's own pieces). hint: this piece's own hint line. legacy: read only by the save migration (Looks.migrate_save): what used to open this piece in saves from before found pieces, so an old save keeps what it had: {free: true} always open; {lumi_level: n}; {achievement: id}; {stat: key, target: n}; {hub_level: n}; {bought: key} a key in the old flags.style_bought. Pieces of a design are granted to old saves that had the design unlocked.",
+  "_doc": "Every look Lumi can wear is made of pieces (design spec section 13; systems/looks.gd, systems/lumi_style.gd, the Locker: ui/lumi_builder.gd). A piece is worn only after it is found in the world: nothing here is bought and nothing opens from a counter, a level or a cost. Where pieces are hidden is planet data (the planet's `finds` table); which pieces the player holds is global progress (the save's `global.pieces`). presets: how many saved looks the Locker keeps. slots[]: the Locker's slots in display order: id (the style key it edits: systems/lumi_style.gd), name, hint (one line about where that kind of thing turns up, shown under an unfound piece that has no hint of its own). pieces[]: id (never changes once shipped: saves hold it), slot, name, and exactly one of: option (an option id of that slot in data/style_parts.json), swatch (a colour id in data/style_parts.json swatches: a paint tin recolours the main body paint, a lens chip recolours every light), design (the paint set or the light colour of that design, read from the design's own look). set: the design the piece belongs to (a design is a set of pieces; wearing every piece of one set shows its name and gives the small bonus in data/designs.json; a mixed look gives none). starter: owned from a new game (Aurora's own pieces). hint (optional): this piece's own general hint line; where a planet hides a piece is that planet's to say (the hint of its find). legacy: read only by the save migration (Looks.migrate_save): what used to open this piece in saves from before found pieces, so an old save keeps what it had: {free: true} always open; {lumi_level: n}; {achievement: id}; {stat: key, target: n}; {hub_level: n}; {bought: key} a key in the old flags.style_bought. Pieces of a design are granted to old saves that had the design unlocked.",
   "presets": 3,
   "slots": [
     {"id": "paint", "name": "Paint", "hint": "Paint tins lie buried under ordinary trash."},
@@ -20,13 +20,13 @@
     {"id": "eyes_crescent", "slot": "eye_shape", "name": "Crescent eyes", "option": "crescent", "set": "aurora", "starter": true},
     {"id": "head_fin", "slot": "head", "name": "Fin", "option": "fin", "set": "aurora", "starter": true},
     {"id": "chest_recycle", "slot": "chest", "name": "Recycle plate", "option": "recycle", "set": "aurora", "starter": true},
-    {"id": "paint_sprout", "slot": "paint", "name": "Sprout paint", "design": "sprout", "set": "sprout", "hint": "A gardener robot stopped where the meadows used to be."},
-    {"id": "pattern_moss", "slot": "pattern", "name": "Moss patches", "option": "moss", "set": "sprout", "hint": "Moss grows on a wreck that has stood high and still for years."},
-    {"id": "glow_sprout", "slot": "glow", "name": "Sprout green", "design": "sprout", "set": "sprout", "hint": "Something still glows green where a harbour's poison is stopped."},
-    {"id": "head_sprout", "slot": "head", "name": "Sprout leaf", "option": "sprout", "set": "sprout", "hint": "The last leaf waits where the oldest city's poison is stopped."},
-    {"id": "ears_leaf", "slot": "ears", "name": "Leaf lenses", "option": "leaf", "set": "sprout", "hint": "A gardener robot rusts among the scrap."},
-    {"id": "chest_leaf", "slot": "chest", "name": "Leaf plate", "option": "leaf", "set": "sprout", "hint": "A gardener robot rusts among the scrap."},
-    {"id": "held_bottle", "slot": "held", "name": "Plastic bottle", "option": "bottle", "set": "sprout", "hint": "Stop what poisons the first town and see what it leaves behind."},
+    {"id": "paint_sprout", "slot": "paint", "name": "Sprout paint", "design": "sprout", "set": "sprout"},
+    {"id": "pattern_moss", "slot": "pattern", "name": "Moss patches", "option": "moss", "set": "sprout"},
+    {"id": "glow_sprout", "slot": "glow", "name": "Sprout green", "design": "sprout", "set": "sprout"},
+    {"id": "head_sprout", "slot": "head", "name": "Sprout leaf", "option": "sprout", "set": "sprout"},
+    {"id": "ears_leaf", "slot": "ears", "name": "Leaf lenses", "option": "leaf", "set": "sprout"},
+    {"id": "chest_leaf", "slot": "chest", "name": "Leaf plate", "option": "leaf", "set": "sprout"},
+    {"id": "held_bottle", "slot": "held", "name": "Plastic bottle", "option": "bottle", "set": "sprout"},
     {"id": "paint_bolt", "slot": "paint", "name": "Bolt paint", "design": "bolt", "set": "bolt"},
     {"id": "pattern_stripes", "slot": "pattern", "name": "Hazard stripes", "option": "stripes", "set": "bolt"},
     {"id": "glow_bolt", "slot": "glow", "name": "Bolt amber", "design": "bolt", "set": "bolt"},
@@ -56,7 +56,7 @@
     {"id": "tin_seaglass", "slot": "paint", "name": "Sea glass tin", "swatch": "seaglass", "legacy": {"stat": "trinkets_found", "target": 4}},
     {"id": "tin_midnight", "slot": "paint", "name": "Midnight tin", "swatch": "midnight", "legacy": {"bought": "swatch:midnight"}},
     {"id": "tin_rosegold", "slot": "paint", "name": "Rose gold tin", "swatch": "rosegold", "legacy": {"bought": "swatch:rosegold"}},
-    {"id": "tin_royal", "slot": "paint", "name": "Royal blue tin", "swatch": "royal", "hint": "A rare tin lies far out, on open ground.", "legacy": {"stat": "contracts_done", "target": 5}},
+    {"id": "tin_royal", "slot": "paint", "name": "Royal blue tin", "swatch": "royal", "legacy": {"stat": "contracts_done", "target": 5}},
     {"id": "tin_graphite", "slot": "paint", "name": "Graphite tin", "swatch": "graphite", "legacy": {"free": true}},
     {"id": "tin_slate", "slot": "paint", "name": "Slate tin", "swatch": "slate", "legacy": {"free": true}},
     {"id": "tin_chalk", "slot": "paint", "name": "Chalk tin", "swatch": "white", "legacy": {"lumi_level": 5}},
@@ -74,7 +74,7 @@
     {"id": "chest_heart", "slot": "chest", "name": "Heart plate", "option": "heart"},
     {"id": "held_medkit", "slot": "held", "name": "Med kit", "option": "medkit"},
     {"id": "held_watering_can", "slot": "held", "name": "Watering can", "option": "watering_can", "legacy": {"achievement": "plant_100"}},
-    {"id": "companion_firefly", "slot": "companion", "name": "Firefly", "option": "firefly", "hint": "Something small glows in a quiet corner of the world.", "legacy": {"stat": "contracts_done", "target": 3}},
+    {"id": "companion_firefly", "slot": "companion", "name": "Firefly", "option": "firefly", "legacy": {"stat": "contracts_done", "target": 3}},
     {"id": "companion_drone", "slot": "companion", "name": "Tiny drone", "option": "drone", "legacy": {"bought": "companion:drone"}}
   ]
 }

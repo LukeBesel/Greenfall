@@ -131,11 +131,14 @@ static func breakdown(stat_id: String) -> Array[Dictionary]:
 # --- Dev hooks (screenshots) --------------------------------------------------------------------
 ##   --design=ID        find every piece of a design and wear the set
 ##   --designs-all      find every piece of every design
+##   --pieces=ID,ID     hold these pieces from the start (no found moment)
 ##   --piece-find=ID    find one piece after --piece-find-at=S seconds (default 4): the found moment
 static func dev_hooks(world: Node) -> void:
 	if DevHooks.has("designs-all"):
 		for id: String in ids():
 			_dev_collect(id)
+	for held: String in DevHooks.get_s("pieces", "").split(",", false):
+		Looks.grant(held, "", true)
 	var want: String = DevHooks.get_s("design", "")
 	if want != "" and not def(want).is_empty():
 		_dev_collect(want)

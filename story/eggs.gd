@@ -713,18 +713,11 @@ func _effect(e: Dictionary) -> void:
 
 
 func _duck_hint() -> String:
-	var hint: String = Looks.next_hint(_pieces_hidden_here())
-	if hint != "":
-		return tr("The duck squeaks a secret: \"%s\"") % tr(hint)
+	# The duck hints at a piece of Lumi's looks this planet still hides.
+	for piece: String in Finds.pieces_for(Planets.current()):
+		if not Looks.has(piece):
+			return tr("The duck squeaks a secret: \"%s\"") % tr(Finds.hint_for(Planets.current(), piece))
 	return tr("The duck has taught you everything it knows. Quack.")
-
-
-## The pieces of Lumi's looks this planet hides (the duck only hints at what can be found here).
-func _pieces_hidden_here() -> Array[String]:
-	var out: Array[String] = []
-	for e: Dictionary in Finds.entries_for(Planets.current()):
-		out.append_array(e["pieces"])
-	return out
 
 
 func _play_jukebox() -> void:

@@ -47,7 +47,7 @@ var _caught_up: bool = false
 # --- Rules (static: the game, the tests and the simulator share them) ---------------------------
 
 ## The planet's finds with every field filled in: {id, pieces, where, district, chance_per_hex,
-## from_hex, by_hex, ring_share, egg}. Entries that name no known piece are left out.
+## from_hex, by_hex, ring_share, egg, hint}. Entries that name no known piece are left out.
 static func entries_for(def: PlanetDefinition) -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
 	var table: Dictionary = def.table(TABLE) if def else {}
@@ -70,8 +70,26 @@ static func entries_for(def: PlanetDefinition) -> Array[Dictionary]:
 			"chance_per_hex": clampf(float(e.get("chance_per_hex", 0.0)), 0.0, 1.0),
 			"from_hex": from_hex, "by_hex": maxi(from_hex, int(e.get("by_hex", from_hex))),
 			"ring_share": e.get("ring_share", DEFAULT_RING_SHARE), "egg": str(e.get("egg", "")),
+			"hint": str(e.get("hint", "")),
 		})
 	return out
+
+
+## Every piece this planet hides.
+static func pieces_for(def: PlanetDefinition) -> Array[String]:
+	var out: Array[String] = []
+	for e: Dictionary in entries_for(def):
+		out.append_array(e["pieces"])
+	return out
+
+
+## The one hint line for an unfound piece on this planet, in English: where its find lies, else
+## the piece's general hint (Looks.hint).
+static func hint_for(def: PlanetDefinition, piece: String) -> String:
+	for e: Dictionary in entries_for(def):
+		if piece in (e["pieces"] as Array) and e["hint"] != "":
+			return str(e["hint"])
+	return Looks.hint(piece)
 
 
 ## The design this planet's wrecks and sources hold ("" when it offers none).
@@ -231,9 +249,12 @@ func register_site(find_id: String, anchor: Node3D, prompt: Variant, reach_m: fl
 	if e.is_empty() or is_taken(find_id) or anchor == null or _interactables == null:
 		return false
 	_sites[find_id] = anchor
-	var usable := func() -> bool: return not is_taken(find_id)
-	_interactables.register(anchor, reach_m, prompt, take.bind(find_id), usable)
+	_interactables.register(anchor, reach_m, prompt, take.bind(find_id), _site_usable.bind(find_id))
 	return true
+
+
+func _site_usable(find_id: String) -> bool:
+	return not is_taken(find_id)
 
 
 ## Give a find now (a used wreck, a dev hook). False when it is unknown or already taken.

@@ -115,12 +115,12 @@ static func open_overlay(w: Node, p_stage: LockerStage = null) -> CanvasLayer:
 	lp.editing_changed.connect(func(_section: String) -> void: fit.call())
 	var tree: SceneTree = Engine.get_main_loop() as SceneTree
 	var was_paused: bool = tree.paused
-	var hidden: Array[CanvasLayer] = HoloFrame.hide_hud(tree, cl.layer)  # no HUD text behind the plates
+	var hud_layers: Array[CanvasLayer] = HoloFrame.hide_hud(tree, cl.layer)  # no HUD text behind the plates
 	var shut := func() -> void:
 		if not is_instance_valid(cl) or cl.has_meta("closing"):
 			return
 		tree.paused = was_paused
-		HoloFrame.show_hud(hidden)
+		HoloFrame.show_hud(hud_layers)
 		EventBus.ui_modal_changed.emit(false)
 		cl.set_meta("closing", true)
 		cl.queue_free()
@@ -260,7 +260,7 @@ func _build_locked() -> void:
 	top.add_child(tv)
 	tv.add_child(BenchKit.title(tr("The Locker")))
 	tv.add_child(BenchKit.body(tr("Find a piece of a look in the world. Then build the Locker in the Build tab and open it in the yard."), UITheme.CREAM))
-	tv.add_child(BenchKit.body(tr("Lumi wears what she finds: paint tins, lens chips and the pieces of old robots. Glim and your robots are dressed here too.")))
+	tv.add_child(BenchKit.body(tr("Lumi wears what he finds: paint tins, lens chips and the pieces of old robots. Glim and your robots are dressed here too.")))
 
 
 func first_button() -> Button:

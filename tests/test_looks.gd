@@ -259,6 +259,10 @@ func test_the_first_planet_offers_sprout_alone_spread_over_its_cities() -> void:
 				cities[e["district"]] = true
 		if e["district"] != Finds.OPEN_GROUND:
 			assert_has(order, e["district"], "%s names a city of this planet" % e["id"])
+		assert_ne(str(e["hint"]), "", "%s has its hint line" % e["id"])
+		for piece: String in e["pieces"]:
+			assert_eq(Finds.hint_for(def, piece), e["hint"], "%s shows its find's hint on this planet" % piece)
+	assert_eq(Finds.hint_for(def, "paint_bolt"), Looks.hint("paint_bolt"), "a piece hidden elsewhere keeps its general hint")
 	for piece: String in Looks.set_ids("sprout"):
 		assert_true(placed.has(piece), "%s has a find" % piece)
 	assert_gte(cities.size(), 4, "Sprout is spread over the cities")
