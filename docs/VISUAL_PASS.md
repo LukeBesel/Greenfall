@@ -25,8 +25,31 @@ Each line: what it shows, file, and OK / fixed (what) / open (why).
 - Pod at stage 0, three-quarter view: `v7/pod_pod_q0.png`. **fixed**: the crash sparks used the star "sparkle" burst (0.18 m stars that hang for 0.9 s) and read as hard dots round the pod. They now use a new `spark` burst (6 cm soft points that spit out, fall fast and die in 0.38 s).
 
 ### Lumi
+- Carry pose after the fix: `v7/feel2_q0/tour_29_carry.png`, `tour_31_carry.png` (the tray and the cyan lift beam read clearly at Low).
+- Next-piece reticle after the fix: `v7/feel2_q0/tour_08_scoop.png`, `tour_12_scoop.png` (the bead on its stalk shows over the junk).
 - Carry pose (q2 `v7/feel_q2/tour_28..31_carry.png`, q0 close `v7/feel_q0/`): **fixed**: the bale rode about 0.3 m over his head and his raised arms couldn't be made out, so it read as floating. There is now a carry rig: a gunmetal lift tray with a hazard-yellow lip under the stack, held by a soft beam in Lumi's laser colour from his head (`Patch._build_carry_rig`). The gap is the same (the owner had asked for it so the bale stops clipping).
 - Next-piece reticle while scooping (q2 and q0): **fixed**: the ring was there (`aim` is set) but lay under the junk and, right in front of him, behind his body. It is brighter now, with a second outer ring, plus a glowing bead on a thin light stalk 1 m over the piece that shows above his head.
 
 ### Snag
 - Hub 3: a 0.2x0.2 m box held Lumi up 0.6 s on a glancing push (`--feel=walk --feel-hubs=3 --feel-seed=3 --feel-props=80`). It was not the outpost ruin but the town's broken name sign: its square posts (planet/street_dressing.gd `_build_name_sign`, in every town with that sign). **fixed**: the sign posts, the fence posts and the neon sign's posts are round colliders now, and the snapped post lying in the dirt is a round log. Re-run: Lumi now slides past the post (7.9 m instead of 4.9 m). The walk still flags the push 3 m further on, where the fallen sign board blocks the way on purpose (a real wall, not a snag).
+
+### Rocket picker
+- Rocket picker at Gantry Works: `v7/hub_7_picker.png`. OK: it reads well (opaque card, two rows, clear Fly buttons). The old shot was taken 1 s after opening, mid fade-in; the dev hook now waits 6 s of wall clock.
+
+### Screens
+- Workbench at UI 1.0 (Upgrades / Lumi): `v7/bench10.png`. OK.
+- Workbench at UI 1.5 (Research): `v7/bench15.png`. OK. The detail column wraps into short lines next to the big icon; it is readable, but at 1.5 it is the tightest screen.
+- Title at UI 1.0 / 1.5: `v7/title10.png`, `v7/title15.png`. Menu OK. **open**: the background camera sits close to tall buildings, which show as big blurry beige blocks across the top right (see "Needs a decision").
+- Settings, German, UI 1.5: `v7/settings_de15.png`. OK.
+- Survey map at UI 1.0 / 1.5: `v7/survey10.png`, `v7/survey15.png`. Card OK. The headline "0.0000 %" on a fresh game is the agreed tiny-progress format (tests pin it). **open**: the globe's place labels ("Landing Yard") are too small to read at 960x540.
+- Play view, subs on, 960x540: `v7/play_subs.png` (hint column beside the hotbar; while WREN speaks over it, it fades).
+
+### The world comes alive (v6life)
+- Day, cleaned (6 rings, ramp, grown), facing town: `v7/life_on_0.png` vs. dirty `v7/life_off_0.png`; facing the pad's other side: `v7/life_on_1.png`. The difference reads at once (green lawns, tufts, flowers, a living street vs. bare grey ground). **fixed**: the lawn rendered as one flat lime carpet (rejected by the owner before). The ground shader now breaks it up with darker clumps and dry sunlit tips at two scales, and Low gets denser tufts over more rings (data/life.json `tufts_per_cell` 44 -> 70, `tuft_rings` 3 -> 4). Re-render: `v7/life2_on_0.png` (the lawn now has clumps; from the pad it is still a far strip, and the tour's stops look mostly at the concrete pad). `life2_on_1.png` is a bad dev stop (Lumi put inside a building), not a game bug.
+- Dusk, cleaned vs. dirty: `v7/life_on_2.png`, `v7/life_on_3.png` vs. `v7/life_off_2.png`. OK: lit windows across the blocks, lit lamps, fireflies as small points over the grass; the dirty town stays dark. Butterflies are too small to pick out at 960x540 Low (they are there in the [life] report).
+
+## Needs a decision
+- **Title screen background** (`v7/title10.png`): the camera sits close to tall buildings, which fill the top right as big blurry beige blocks. Recommendation: move the title camera back and higher over the start town (the yard and pod in view, the skyline behind), or use one of the approved landmark views. This is v1menu's scene; I did not change it.
+- **Life tour viewpoints**: the dev tour's stops are set by distance from the start cell, so they mostly frame the concrete pad. To judge cleaned ground fairly, add stops that face a cleaned street from about 10 m (e.g. `--life-tour-stops` with cam_dist and pitch), and judge from those before tuning the grass any further.
+- **Survey globe labels** (`v7/survey10.png`): the place names on the little globe are unreadable at 960x540. Recommendation: hide the names below a zoom level, and let the card name the hub under the cursor.
+- **Shared settings file**: a run (probably a `--ui-audit` by some helper) left the UI scale changed in `user://` for later runs (`life2_on_0.png` came out at a smaller UI scale), and `test_settings.gd` rebind_persists failed once in the full suite but passes alone. Recommendation: have `--ui-audit` and `--fresh` runs never write settings.
