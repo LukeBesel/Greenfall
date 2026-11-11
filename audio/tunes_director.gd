@@ -307,6 +307,9 @@ func _drive(dt: float) -> void:
 			gap_left -= dt
 			if gap_left > 0.0:
 				return
+			if Audio.get_duck() > 0.01:  # [main] owner: a song never starts over a WREN or story line
+				gap_left = 4.0
+				return
 			var id: String = Tunes.pick_next(_planet(), Audio.get_music_mood(), Audio.get_restoration(), recent, rng)
 			if id == "" or not _start(id, 2.0, false):
 				gap_left = 5.0  # nothing fits (yet), or the file would not load: look again soon
