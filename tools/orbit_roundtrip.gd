@@ -57,6 +57,15 @@ static func _snap(s: Node) -> Dictionary:
 	}
 
 
+## [v6qa] The cells and garden of a slice as it stands (its "built" moment on a reload).
+static func _loaded_sig(s: Node) -> Dictionary:
+	var g: OrbitPlanet = (s.get("orbit") as SliceOrbit).globe
+	var cd: Dictionary = g.cells.to_dict()
+	var gs: String = _garden_sig(s)
+	return {"cells_junk": hash(cd["junk"]), "cells_state": hash(cd["state"]), "garden": gs,
+		"raw": {"junk": g.cells.junk.duplicate(), "state": g.cells.state.duplicate(), "garden": gs, "frame": Engine.get_process_frames()}}
+
+
 ## [v6qa] Which cells (and garden cells) differ between the saved slice and the reloaded one.
 static func _cells_fail_info(ca: Dictionary, cb: Dictionary, g: OrbitPlanet) -> void:
 	var ja: PackedFloat32Array = ca["junk"]
@@ -660,6 +669,10 @@ static func run(rt: Node, check: Callable) -> void:
 	check.call("orbit_loads", true, SaveManager.load_game())
 	GameState.reload_in_memory = true
 	var s2: Node = packed.instantiate()
+	# [v6qa] The cells and the garden are compared as loaded (on the slice's "built", before a frame
+	# of play): the comparison used to come 5 frames later, and anything that works cells in play
+	# (robots before the freeze reaches them, Ledger drops, the site's growth) made it flaky (v6crew).
+	s2.connect("built", func() -> void: s2.set_meta("rt_loaded", _loaded_sig(s2)), CONNECT_ONE_SHOT)
 	tree.root.add_child(s2)
 	_freeze_crew(s2)  # [orbC] the reloaded robots must not work before the comparison
 	for i: int in 5:
@@ -667,6 +680,16 @@ static func run(rt: Node, check: Callable) -> void:
 		_freeze_crew(s2)
 	s2.set_meta("rt_target", s1_target)
 	var b: Dictionary = _snap(s2)
+	var ld: Dictionary = s2.get_meta("rt_loaded", {})
+	check.call("orbit_loaded_sig_taken", true, not ld.is_empty())
+	if not ld.is_empty() and (ld["cells_junk"] != b["cells_junk"] or ld["cells_state"] != b["cells_state"] or ld["garden"] != b["garden"]):
+		print("[roundtrip] NOTE cells or garden changed in the frames after the reload (what changes them:)")  # [v6qa] the flake's cause, for CI logs
+		_cells_fail_info(ld["raw"], s2.get_meta("rt_cells"), (s2.get("orbit") as SliceOrbit).globe)
+	for k2: String in ["cells_junk", "cells_state", "garden"]:
+		if ld.has(k2):
+			b[k2] = ld[k2]
+	if ld.has("raw"):
+		s2.set_meta("rt_cells", ld["raw"])
 	for k: String in a:
 		if k == "sky_spin":  # [orbB] the reloaded sky runs a few frames before the snapshot: within 0.05
 			check.call("orbit_sky_spin_within_0.05", true, absf(angle_difference(float(a[k]), float(b[k]))) <= 0.05)
