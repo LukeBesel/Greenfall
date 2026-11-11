@@ -1019,3 +1019,13 @@ Details and numbers in docs/PERFORMANCE.md (perf passes 6-8).
 - **Tools:** `--hinter-walk`, `[bot-esc2]` with `--bot-debug`, `--crew-debug`, `--soak-bales`, a fuller soak digest, the reload check covers the rocket.
 - **Result:** base 2 at 40 bot-minutes (was 71), 1 stuck escape in 160 minutes (was 31), haulers carry about 300 bales each (was 20).
 - **Open:** the bot does not save for base 3 (137 min); the start got 2.5 min slower with a merge of main; see "Still open" in QA_VERDANCE.md.
+
+## 2026-11-11: v6hubs (every hub has a purpose; the rocket hop)
+- **Data:** `data/planets.json` "verdance" has `hub_defaults` and `hubs` (one entry per hub: name, town, landmark, the rocket piece and gift it gives, its local chain). How to change it: docs/ADJUSTING.md, "Hubs".
+- **Main path (6 hubs):** Landing Yard (home), Garden Row (seed stock), Gantry Works (hull plates), Signal Heights (star chart), Fairground (power cell), Stack Works (fuel). Four extras open once the six stand.
+- **Restore flow:** fly in, clean a few hexes there, press E at the landmark to wake it (price from `Hub.far_cost`). The wake sets the hub to level 2 and built, lights a beacon on the landmark, gives the piece and gift, and stands a field bench by the rocket pad. A woken hub's level then follows its clean share.
+- **Picker:** home first (marked HOME), then NEXT STOP, then the other listed hubs; each row has the town type, why to go, its state and the robots working there. The list scrolls. Hubs past the rocket's limit are shown locked.
+- **Hop:** skippable (E / jump), HUD hidden in flight, the camera looks down the path at the new town on the approach, the town's name shows once on landing, then the step card.
+- **HUD:** the top-right lines are now this base's clean % and "BASES n/6".
+- Code: `planet/sites/hub_plan.gd`, `planet/sites/hub_purpose.gd`; tests: `tests/test_hub_plan.gd`.
+- **Open:** the survey map (M) still shows the old city names and no landmark glyphs; the story text is placeholder (v6story); goal-card steps for "fly to the next hub" and "upgrade the rocket" are v6pace's; the hub town builds behind the veil in about 10 s on this box (headless), to be checked on real hardware.

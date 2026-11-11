@@ -82,6 +82,7 @@ static func of(world: Node) -> OrbitSites:
 ## this globe (a rocket hop), other planets once the system is open, and the Homeward launch.
 ## Dev: --orbit-survey-launch=N still flies to the Nth hub in that list; --rocket parks it at once.
 var picker: RocketPicker
+var purpose: HubPurpose  # [v6hubs]
 var rocket_spot: Node3D
 var _site_hub: Dictionary = {}  # site index -> planet.hubs index
 
@@ -123,12 +124,20 @@ func _wire_survey() -> void:
 		if not flown.has(to_i):
 			flown.append(to_i)
 		GameState.orbit["hubs_flown"] = flown)
+	purpose = HubPurpose.attach(self)  # [v6hubs] every hub's purpose: arrival, local steps, the wake
+	picker.planet_line_fn = func() -> String: return tr("Bases restored: %d of %d") % [HubPlan.restored_main(sm.planet_id), HubPlan.main_total(sm.planet_id)] if HubPlan.has_plan(sm.planet_id) else ""
 	_sync_rocket()
 	if DevHooks.has("orbit-rocket-open"):  # dev: open the rocket's list after T s; prints its rows
 		get_tree().create_timer(DevHooks.get_f("orbit-rocket-open", 3.0)).timeout.connect(func() -> void:
 			_sync_rocket()
 			open_rocket()
-			print("[rocket] parked %s at site %d, list %s, prompt '%s'" % [rocket_spot.visible, rocket_site(), str(picker.offered_sites()), rocket_prompt()]))
+			print("[rocket] parked %s at site %d, list %s, prompt '%s'" % [rocket_spot.visible, rocket_site(), str(picker.offered_sites()), rocket_prompt()])
+			if DevHooks.has("hop-shots"):  # [v6hubs] dev: a picture of the list
+				get_tree().create_timer(0.6, true, false, true).timeout.connect(func() -> void:
+					await RenderingServer.frame_post_draw
+					DevHooks.save_viewport("%s_picker.png" % DevHooks.get_s("hop-shots", "screenshots/hop")))
+			for e: Dictionary in destinations():  # [v6hubs]
+				print("[rocket]   site %d: %s | %s | %s | %s | %s%s" % [int(e["site"]), e["name"], e.get("town", ""), e.get("offer", ""), e.get("state", ""), e.get("robots", ""), " | " + str(e["tag"]) if str(e.get("tag", "")) != "" else ""]))
 	if DevHooks.has("orbit-survey-launch"):  # dev: fly to the Nth hub of the rocket's list
 		await get_tree().create_timer(1.0).timeout
 		var keys: Array = picker.offered_sites()
@@ -164,7 +173,10 @@ func open_rocket() -> void:
 	picker.open()
 
 
-## The other hubs on this globe, nearest first: [{site, name, km}].
+## The rocket's list: [{site, name, km, town, offer, state, robots, tag, home, next}].
+## [v6hubs] With a hub plan (data/planets.json hubs): home first, then the next hub of the path,
+## then the other hubs the plan lists (restored or visited, extras once the path is done), nearest
+## first, never capped. Without one: the six nearest hubs.
 func destinations() -> Array:
 	var out: Array = []
 	if sm == null:
@@ -172,16 +184,38 @@ func destinations() -> Array:
 	var from_i: int = rocket_site()
 	var here: Vector3 = sm.pad_xf(from_i).origin.normalized()
 	var R: float = so.globe.terrain.R
+	var plan: bool = HubPlan.has_plan(sm.planet_id)
+	var next_i: int = HubPlan.next_site(sm.planet_id) if plan else -1
 	for i: int in sm.sites.size():
 		if i == from_i or (not _site_hub.is_empty() and not _site_hub.has(i)):
 			continue
+		if plan and not HubPlan.listed(sm.planet_id, i):
+			continue
 		var d: Vector3 = (sm.sites[i]["transform"] as Transform3D).origin.normalized()
-		out.append({"site": i, "name": site_name(i), "km": here.angle_to(d) * R / 1000.0})
-	out.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return float(a["km"]) < float(b["km"]))
-	return out.slice(0, 6)
+		var e: Dictionary = {"site": i, "name": site_name(i), "km": here.angle_to(d) * R / 1000.0}
+		if plan and not HubPlan.entry(sm.planet_id, i).is_empty():
+			var he: Dictionary = HubPlan.entry(sm.planet_id, i)
+			e["home"] = HubPlan.is_home(sm.planet_id, i)
+			e["next"] = i == next_i and HubPlan.is_main(sm.planet_id, i)
+			e["town"] = HubPlan.town_name(sm.planet_id, i)
+			e["offer"] = tr(str(he.get("desc", "")))
+			e["state"] = purpose.status_text(i) if purpose else ""
+			e["robots"] = purpose.crew_line(i) if purpose else ""
+			e["tag"] = tr("HOME") if bool(e["home"]) else (tr("NEXT STOP") if bool(e["next"]) else "")
+			if not bool(e["home"]) and not HubPlan.woken(i) and not HubPlan.seen(i) and HubPlan.at_limit(sm.planet_id):
+				e["locked"] = tr("Upgrade the rocket first")  # the rocket's tier (RocketTiers.hub_limit)
+		out.append(e)
+	out.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+		var ra: int = 0 if bool(a.get("home", false)) else (1 if bool(a.get("next", false)) else 2)
+		var rb: int = 0 if bool(b.get("home", false)) else (1 if bool(b.get("next", false)) else 2)
+		return ra < rb if ra != rb else float(a["km"]) < float(b["km"]))
+	return out if plan else out.slice(0, 6)
 
 
 func site_name(i: int) -> String:
+	var pn: String = HubPlan.hub_name(sm.planet_id, i) if sm else ""  # [v6hubs] the hub's own name
+	if pn != "":
+		return pn
 	var pl: PlanetData = so.globe.planet
 	if _site_hub.has(i):
 		var cell: int = pl.hubs[int(_site_hub[i])]
