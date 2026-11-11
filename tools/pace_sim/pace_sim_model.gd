@@ -195,9 +195,27 @@ func next_hub() -> Dictionary:
 	return {}
 
 
+## Whether the next base level's own conditions hold (the hub table's "requires": the model knows
+## the workbench tier, the tower and the base level; Hub.block_reason in the game).
+func hub_ready() -> bool:
+	for c: Variant in next_hub().get("requires", []):
+		var cond: Array = c
+		match str(cond[0]):
+			"bench_tier":
+				if bench_tier < int(cond[1]):
+					return false
+			"tower":
+				if tower_tier < int(cond[1]):
+					return false
+			"hub_level":
+				if hub_level < int(cond[1]):
+					return false
+	return not next_hub().is_empty()
+
+
 func raise_hub() -> bool:
 	var nd: Dictionary = next_hub()
-	if nd.is_empty() or not _spend(nd.get("cost", {}), "base", str(hub_level + 1)):
+	if nd.is_empty() or not hub_ready() or not _spend(nd.get("cost", {}), "base", str(hub_level + 1)):
 		return false
 	hub_level += 1
 	GameState.world["hub_level"] = hub_level

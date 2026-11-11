@@ -563,6 +563,16 @@ func _do_pet(p: Patch) -> bool:
 	return true
 
 
+## Seconds Lumi has carried a part-full stack while still cleaning, and the most he will.
+var _carry_hold_s: float = 0.0
+const CARRY_HOLD_MAX_S: float = 40.0
+## The garden's share of Lumi's time once it is open: a person tends between loads. Cubes come only
+## from Lumi's own hands, so a bot that waters without end earns nothing.
+const GARDEN_SHARE: float = 0.25
+var _garden_s: float = 0.0
+var _garden_open_s: float = -1.0
+
+
 func _do_deliver(p: Patch) -> bool:
 	if p.carried.is_empty():
 		return false
@@ -573,6 +583,11 @@ func _do_deliver(p: Patch) -> bool:
 		return false
 	if not full and _nearest_loose(p) != null:
 		return false
+	# Room on the stack and junk still to press: fill the stack first, but never hold a bale long.
+	if not full and _carry_hold_s < CARRY_HOLD_MAX_S and _pick_focus(p) >= 0:
+		_carry_hold_s += _dt
+		return false
+	_carry_hold_s = 0.0
 	_set_task("deliver")
 	_go(p, world.depot.global_position, 0.6)
 	return true
@@ -637,6 +652,8 @@ func _pace_bought(id: String, lv: int) -> void:
 ## The next slow-start unlock worth buying now ("" = none): the Baler first, then Lift Strength.
 func _pace_upgrade() -> String:
 	for id: String in [Pace.UP_BALER, Pace.UP_LIFT]:
+		if id == Pace.UP_LIFT and GameState.level_of(id) >= 1 and not _card_purchase().is_empty():
+			continue  # the heavier lift can wait: the card's purchase comes first
 		if Economy.upgrade_defs.has(id) and Economy.is_unlocked(id) and not Economy.is_maxed(id):
 			if GameState.can_afford("cubes", Economy.upgrade_cost(id)):
 				return id
@@ -800,6 +817,19 @@ func _do_garden(p: Patch) -> bool:
 	var g: Garden = world.garden
 	if g == null or not g.unlocked():
 		return false
+	if _garden_open_s < 0.0:
+		_garden_open_s = _now()
+	if _garden_s > GARDEN_SHARE * (_now() - _garden_open_s) and _pick_focus(p) >= 0:
+		if p.tool != Patch.Tool.SCOOP:
+			p.set_tool(Patch.Tool.SCOOP)
+		return false  # tended enough for now: back to the junk
+	if _garden_task(p, g):
+		_garden_s += _dt
+		return true
+	return false
+
+
+func _garden_task(p: Patch, g: Garden) -> bool:
 	var cap: float = p.water_cap()
 	# Refill the can at the base barrel (anywhere in the hub hex).
 	if _refilling:
@@ -1141,8 +1171,10 @@ func _shop(want: Dictionary) -> void:
 		rid = _research_pick()
 		guard += 1
 	# 2) Goal-unblocking upgrades.
+	# Not a dear one while the card asks for a purchase: a player saves for what the step says.
 	var gu: String = _goal_upgrade()
-	if gu != "":
+	var card_cubes: float = float(_card_purchase().get("cubes", 0.0))
+	if gu != "" and (card_cubes <= 0.0 or Economy.upgrade_cost(gu).to_float() <= card_cubes * LEAK_OF_RESERVE):
 		Economy.buy_upgrade(gu, 1)
 	# 2b) [pace] The slow-start unlocks (Baler, Lift Strength) before anything else.
 	var pu: String = _pace_upgrade()
@@ -1216,7 +1248,7 @@ func _shop(want: Dictionary) -> void:
 	var reserve: float = float(want.get("reserve", 0.0))
 	var leak: bool = float(want.get("hub_save", 0.0)) <= 0.0
 	if robot == "" or fleet.can_build(robot):
-		reserve = float(want.get("hub_save", 0.0))
+		reserve = maxf(float(want.get("hub_save", 0.0)), float(_card_purchase().get("cubes", 0.0)))  # the card's purchase is still saved for
 	var prn: String = _pace_research_next()
 	if prn != "":
 		reserve = maxf(reserve, Research.cost(prn).to_float())  # [pace]
