@@ -554,7 +554,7 @@ msgstr ""
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr ""
 
-#: fauna/fauna.gd:2170 ui/subtitles.gd:455
+#: fauna/fauna.gd:2170 ui/subtitles.gd:452
 msgid "New sighting: %s. It's in the Codex now."
 msgstr ""
 
@@ -1528,27 +1528,27 @@ msgstr ""
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr ""
 
-#: scenes/slice_orbit.gd:413
+#: scenes/slice_orbit.gd:415
 msgid "HEX CLEAN!  +%s"
 msgstr ""
 
-#: scenes/slice_orbit.gd:429
+#: scenes/slice_orbit.gd:431
 msgid "Milestone: %d hexes clean!"
 msgstr ""
 
-#: scenes/slice_orbit.gd:498 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:500 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:498 systems/camp/camp.gd:195
+#: scenes/slice_orbit.gd:500 systems/camp/camp.gd:195
 msgid "E   Open the workbench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:1018
+#: scenes/slice_orbit.gd:1020
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr ""
 
-#: scenes/slice_orbit.gd:1118
+#: scenes/slice_orbit.gd:1120
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr ""
 
@@ -2342,7 +2342,7 @@ msgstr ""
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr ""
 
-#: systems/achievements.gd:167 ui/notify_stack.gd:27 ui/subtitles.gd:453
+#: systems/achievements.gd:167 ui/notify_stack.gd:27 ui/subtitles.gd:450
 msgid "Achievement: %s. %s"
 msgstr ""
 
@@ -4845,44 +4845,44 @@ msgstr ""
 msgid "CARRYING %d/%d"
 msgstr ""
 
-#: ui/hud.gd:377
+#: ui/hud.gd:383
 msgid "HEX  CLEAR"
 msgstr ""
 
-#: ui/hud.gd:381
+#: ui/hud.gd:387
 msgid "HEX  %s"
 msgstr ""
 
-#: ui/hud.gd:384
+#: ui/hud.gd:390
 msgid "  SUSTAIN %d%%"
 msgstr ""
 
-#: ui/hud.gd:386
+#: ui/hud.gd:392
 msgid "  THIRSTY"
 msgstr ""
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:416
+#: ui/hud.gd:422
 msgid "%s   pick up bale"
 msgstr ""
 
-#: ui/hud.gd:417
+#: ui/hud.gd:423
 msgid "%s   dig up part"
 msgstr ""
 
-#: ui/hud.gd:418
+#: ui/hud.gd:424
 msgid "%s   read memory shard"
 msgstr ""
 
-#: ui/hud.gd:419
+#: ui/hud.gd:425
 msgid "%s   pick up the seed tin"
 msgstr ""
 
-#: ui/hud.gd:420
+#: ui/hud.gd:426
 msgid "%s   set bale down"
 msgstr ""
 
-#: ui/hud.gd:421
+#: ui/hud.gd:427
 msgid "%s   workbench"
 msgstr ""
 
