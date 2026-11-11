@@ -145,7 +145,10 @@ static func far_restored() -> int:
 
 ## What every sale is multiplied by: sell_growth for each restored far hub (its trade route).
 static func trade_mult() -> float:
-	return pow(float(far_cfg().get("sell_growth", 1.0)), float(far_restored()))
+	# [v6pace] far_hub.pace: the one knob for the whole planet's speed. Every sale (bin, scale, crew
+	# bales) pays 1/pace, so every cube price takes about pace times as long to save for.
+	var pace: float = maxf(0.05, float(far_cfg().get("pace", 1.0)))
+	return pow(float(far_cfg().get("sell_growth", 1.0)), float(far_restored())) / pace
 
 
 static func can_pay(cost: Dictionary, mult: float = 1.0) -> bool:

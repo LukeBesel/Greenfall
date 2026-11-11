@@ -114,7 +114,7 @@ func test_hub_steps_sit_between_the_base_steps() -> void:
 	var ids: Array = []
 	for o: Dictionary in Economy.read_json("res://data/objectives.json").get("objectives", []):
 		ids.append(str(o["id"]))
-	var order: Array = ["robot", "zone", "seed", "hub_fly_2", "hub_wake_2", "base2", "hub_fly_3", "hub_wake_3", "rocket_tier_2", "hub_fly_4", "hub_wake_4", "base3"]
+	var order: Array = ["robot", "zone", "seed", "hub_fly_2", "hub_wake_2", "base2", "hub_fly_3", "hub_wake_3", "rocket_tier_2", "base3", "hub_fly_4", "hub_wake_4"]
 	for i: int in range(1, order.size()):
 		assert_gt(ids.find(order[i]), ids.find(order[i - 1]), "%s comes after %s" % [order[i], order[i - 1]])
 		assert_gt(ids.find(order[i - 1]), -1)
@@ -209,6 +209,27 @@ func test_every_step_is_completable_on_the_globe() -> void:
 	for gone: String in ["sandstorms", "hexes_thawed", "heaters_placed", "greenhouses_built", "drain_stages", "frontier_seen_", "cradle_"]:
 		for g2: Dictionary in Economy.read_json("res://data/goals.json").get("goals", []):
 			assert_false(str(g2.get("key", "")).begins_with(gone), "goal %s is from the flat world's frontiers" % g2["id"])
+
+
+func test_woken_bases_keep_cleaning() -> void:
+	var c: Dictionary = BaseKeepers.cfg()
+	assert_gt(float(c.get("cells_per_min", 0.0)), 0.0, "a woken base cleans on its own")
+	assert_false(bool(c.get("home", true)), "the start hub's cleaning is the player's and the crews'")
+	assert_gt(BaseKeepers.rate(3, 0), BaseKeepers.rate(2, 0), "a higher base level cleans faster")
+	assert_gt(BaseKeepers.rate(2, 4), BaseKeepers.rate(2, 0), "robots left there add to it")
+	assert_eq(BaseKeepers.rate(1, 0, {"cells_per_min": 2.0, "per_level": 1.0}), 2.0)
+	assert_eq(str(Hub.far_cfg().get("pct_over", "")), "all_regions", "the planet % counts the playable world, so it only goes up")
+
+
+func test_pace_knob_scales_sales() -> void:
+	var cfg: Dictionary = Hub._hub_cfg()
+	var far: Dictionary = cfg["far_hub"]
+	var was: Variant = far.get("pace", 1.0)
+	assert_eq(float(was), 1.0, "Verdance ships at pace 1 (as measured)")
+	far["pace"] = 2.0
+	assert_almost_eq(Hub.trade_mult(), 0.5, 0.0001, "pace 2: every sale pays half, every cube step takes twice as long")
+	far["pace"] = was
+	assert_eq(Hub.trade_mult(), 1.0)
 
 
 func test_base_prices() -> void:

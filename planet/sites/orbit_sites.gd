@@ -85,6 +85,7 @@ static func of(world: Node) -> OrbitSites:
 ## Dev: --orbit-survey-launch=N still flies to the Nth hub in that list; --rocket parks it at once.
 var picker: RocketPicker
 var purpose: HubPurpose  # [v6hubs]
+var keepers: BaseKeepers  # [v6pace]
 var rocket_spot: Node3D
 var _site_hub: Dictionary = {}  # site index -> planet.hubs index
 
@@ -127,6 +128,7 @@ func _wire_survey() -> void:
 			flown.append(to_i)
 		GameState.orbit["hubs_flown"] = flown)
 	purpose = HubPurpose.attach(self)  # [v6hubs] every hub's purpose: arrival, local steps, the wake
+	keepers = BaseKeepers.attach(self)  # [v6pace] woken bases clean their own region while Lumi is away
 	picker.planet_line_fn = func() -> String: return tr("Bases restored: %d of %d") % [HubPlan.restored_main(sm.planet_id), HubPlan.main_total(sm.planet_id)] if HubPlan.has_plan(sm.planet_id) else ""
 	_sync_rocket()
 	if DevHooks.has("orbit-rocket-open"):  # dev: open the rocket's list after T s; prints its rows
