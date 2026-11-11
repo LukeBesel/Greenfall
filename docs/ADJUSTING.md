@@ -85,6 +85,8 @@ A new planet: add a block with its id there (and a folder if you like).
 | Which slider a sound follows (menu clicks: Interface; animal calls: Ambience; the rest: Sound effects) | `bus_of` |
 | One sound louder or quieter everywhere | `sound_db`: `"chime": -3` |
 | A sound that repeats too fast: the shortest time between two plays, in seconds | `min_gap_s`: `"clink": 0.2` |
+| The same, only where one thing plays it: `tag:sound`. Tags: `scoop` (pieces flying into Lumi), `lumi` (start/stop squeak), `sweep` (litter), `lights` (street lights coming on), `robot` (robots at work) | `min_gap_s`: `"robot:servo": 2.0`, `sound_db`: `"scoop:pop": -3` |
+| Mute a sound in one place (e.g. the beep on every scooped piece) | `sound_db`: `"scoop:blip": -80` (delete the line to bring it back) |
 | How far music and ambience dip while WREN speaks | `duck` |
 | A planet's ambience (wind, water, animal calls) and how it changes from ruined to restored | `planets`.`<id>`.`ambience` |
 | Which built-in score a planet uses when no song plays (a new planet can borrow one) | `planets`.`<id>`.`theme` |
@@ -93,7 +95,15 @@ A new planet: add a block with its id there (and a folder if you like).
 `godot --headless --path . -- --fresh --orbit --no-intro --autoplay --time-scale=4 --sound-log --quit-after=1200`.
 At the end it prints a `[snd]` table: every sound, its slider group, how often it played, its
 level, the shortest time between two plays, how many came within 5 seconds of the last, and how
-many sounded at once. The full list is in `screenshots/sound_log.txt`.
+many sounded at once, and under each sound the script lines that played it most (`from patch.gd:519 x712`).
+The full list is in `screenshots/sound_log.txt`, one line per play with its source.
+
+**The 2026-11-11 pass** (22 game minutes of autoplay from a fresh start, sound plays per minute,
+before -> after): the four layers on each scooped piece plus its beep 161 -> 56 (the beep 34 -> 0), the scoop clink
+ladder 61 -> 33 (same-frame duplicates dropped), Lumi's start/stop squeak 19 -> 7, the litter-sweep
+whoosh 17 -> 5, all sounds together 333 -> 152. Birds stayed under one call a minute, no WREN line
+repeated, and the main theme played first with quiet gaps between songs. Robots (`robot:`) and
+street lights (`lights:`) got gaps too; they only show up later in a run.
 
 ## Pacing, prices and gates (v6pace)
 

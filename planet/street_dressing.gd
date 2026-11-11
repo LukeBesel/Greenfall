@@ -311,7 +311,7 @@ func set_level(l: int, animate: bool) -> void:
 			node.scale = Vector3(1, 0.02, 1)
 			tw.tween_interval(0.5 + k * 0.45)
 			tw.tween_callback(func() -> void:
-				Audio.play("clunk", randf_range(1.1, 1.4), -8.0)
+				Audio.play("clunk", randf_range(1.1, 1.4), -8.0, 0.04, "lights")  # [v6sound]
 				for q: int in 5:
 					Vfx.burst("sparkle", Vector3(randf_range(-7, 7), 0.6, randf_range(-7, 7)), Color(0.5, 0.95, 1.0) if level >= 3 else Color(1.0, 0.8, 0.4), 0.6))
 			tw.tween_property(node, "scale", Vector3.ONE, 0.8).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
