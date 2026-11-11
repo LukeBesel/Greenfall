@@ -164,14 +164,6 @@ func open(_from_menu: bool = false) -> void:
 		_snap["model_yaw"] = model.rotation.y
 	_build_view()
 	_build_ui()
-	# Start from the game camera's framing so the switch is seamless.
-	var rig: Variant = world.get("cam")
-	if rig is CameraRig:
-		var r: CameraRig = rig
-		_t_yaw = r.yaw
-		_t_pitch = clampf(r.pitch, -1.4, 0.4)
-		values["distance"] = clampf(r.distance * 0.6, 1.2, 12.0)
-		values["fov"] = clampf(r.camera.fov - 8.0, 20.0, 100.0)
 	_c_yaw = _t_yaw
 	_c_pitch = _t_pitch
 	_c_dist = values["distance"]

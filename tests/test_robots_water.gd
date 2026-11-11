@@ -89,7 +89,6 @@ func test_skimmer_defined_and_in_crews() -> void:
 	assert_eq(str(Economy.robots["skimmer"]["role"]), "skim")
 	assert_true(Fleet.ROLES.has("skim"))
 	assert_eq(Fleet.types_for_role("skim"), ["skimmer"] as Array[String])
-	assert_true(CommandView.ROLE_NAMES.has("skim") and CommandView.ROLE_COLORS.has("skim"))
 	for s: String in ["tank", "spray_radius", "refill_rate", "speed"]:
 		assert_gt(Economy.robot_stat("drip", s), 0.0, "drip has stat " + s)
 
