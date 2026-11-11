@@ -14,6 +14,12 @@ extends Node
 
 const Synth := preload("res://audio/ambience_synth.gd")
 const BIRDS: Array[String] = ["song", "chirp", "coo"]
+## Fallbacks for the life block's "mix", "when" and "min_gap_floor_s" (data/sound.json is the source).
+const MIX: Dictionary = {"dirty_from": 0.25, "dirty_full": 0.85, "green_from": 0.12, "green_full": 0.6, "dirty_hushes_green": 0.6}
+const WHEN: Dictionary = {"dirty": 0.6, "green": 0.3, "night": 0.3}
+## No one-shot of the bed plays twice within this many seconds, whatever its own numbers say
+## (owner items 32 and 50: very little chirping). Loops are beds and are not counted.
+const MIN_GAP_FLOOR_S: float = 60.0
 
 var cells: SphereCells
 var grid: SphereGrid
@@ -33,6 +39,9 @@ var _cell: int = -1
 var _rings: int = 3
 var _fade_s: float = 6.0
 var _rng := RandomNumberGenerator.new()
+var _mix: Dictionary = MIX
+var _when: Dictionary = WHEN
+var min_gap_floor: float = MIN_GAP_FLOOR_S
 
 
 ## The life block of a planet's ambience in data/sound.json ({} when the planet has none).
@@ -46,10 +55,27 @@ func setup(p_world: Node, globe: OrbitPlanet, planet_id: String = "verdance") ->
 	world = p_world
 	cells = globe.cells
 	grid = globe.grid
-	bed = bed_of(planet_id)
+	configure(bed_of(planet_id))
+	if (_loops.size() > 0 or _events.size() > 0) and (DisplayServer.get_name() != "headless" or DevHooks.has("life-sound")):
+		var want: Array = []
+		for l: Dictionary in _loops:
+			want.append(["loop", l["id"]])
+		for e: Dictionary in _events:
+			want.append(["shot", e["snd"]])
+		_task = WorkerThreadPool.add_task(_synth.bind(want), false, "life ambience")
+
+
+## Reads a life block (data/sound.json planets.<id>.ambience.life): loops, events, mix, when, floor.
+func configure(p_bed: Dictionary) -> void:
+	bed = p_bed
+	_loops.clear()
+	_events.clear()
 	_rng.seed = 90210
 	_rings = int(bed.get("rings", 3))
 	_fade_s = maxf(0.5, float(bed.get("fade_s", 6.0)))
+	_mix = _merged(MIX, bed.get("mix"))
+	_when = _merged(WHEN, bed.get("when"))
+	min_gap_floor = maxf(0.0, float(bed.get("min_gap_floor_s", MIN_GAP_FLOOR_S)))
 	var loops: Variant = bed.get("loops")
 	if loops is Dictionary:
 		for lid: String in loops:
@@ -60,19 +86,25 @@ func setup(p_world: Node, globe: OrbitPlanet, planet_id: String = "verdance") ->
 	if evs is Array:
 		for e: Variant in evs:
 			if e is Array and (e as Array).size() >= 7:
-				var gap := Vector2(float(e[1]), maxf(float(e[1]), float(e[2])))
+				var lo: float = maxf(float(e[1]), min_gap_floor)
+				var gap := Vector2(lo, maxf(lo, float(e[2])))
 				_events.append({"snd": str(e[0]), "gap": gap, "db": float(e[3]), "pitch": Vector2(float(e[4]), float(e[5])),
-					"when": str(e[6]), "min_gap": float(e[7]) if (e as Array).size() > 7 else gap.x,
+					"when": str(e[6]), "min_gap": maxf(float(e[7]) if (e as Array).size() > 7 else gap.x, min_gap_floor),
 					"t": _rng.randf_range(gap.x * 0.4, gap.y), "streams": []})
 				shots_played[str(e[0])] = 0
-	_shot = _player("LifeShot")
-	if (_loops.size() > 0 or _events.size() > 0) and (DisplayServer.get_name() != "headless" or DevHooks.has("life-sound")):
-		var want: Array = []
-		for l: Dictionary in _loops:
-			want.append(["loop", l["id"]])
-		for e: Dictionary in _events:
-			want.append(["shot", e["snd"]])
-		_task = WorkerThreadPool.add_task(_synth.bind(want), false, "life ambience")
+	if _shot == null:
+		_shot = _player("LifeShot")
+
+
+## What configure() made of the data (tests, --life-report): loop id -> dB, and per event its gaps.
+func read_back() -> Dictionary:
+	var lo: Dictionary = {}
+	for l: Dictionary in _loops:
+		lo[l["id"]] = l["db"]
+	var ev: Array = []
+	for e: Dictionary in _events:
+		ev.append({"snd": e["snd"], "gap": e["gap"], "db": e["db"], "min_gap": e["min_gap"], "when": e["when"]})
+	return {"rings": _rings, "fade_s": _fade_s, "mix": _mix, "when": _when, "floor": min_gap_floor, "loops": lo, "events": ev}
 
 
 func _player(nm: String) -> AudioStreamPlayer:
@@ -111,9 +143,22 @@ static func _stream(v: Variant, loop: bool) -> AudioStream:
 	return null
 
 
+static func _merged(base: Dictionary, over: Variant) -> Dictionary:
+	var out: Dictionary = base.duplicate()
+	if over is Dictionary:
+		for k: String in over:
+			if (over[k] is float or over[k] is int) and out.has(k):
+				out[k] = float(over[k])
+	return out
+
+
 ## Target bed weights (dirty bed, green bed) for a dirty share and a mean green, both 0..1.
-static func weights(p_dirty: float, p_green: float) -> Vector2:
-	return Vector2(smoothstep(0.25, 0.85, p_dirty), smoothstep(0.12, 0.6, p_green) * (1.0 - 0.6 * smoothstep(0.4, 0.9, p_dirty)))
+## `mix`: the life block's "mix" (dirty_from/full: the junk share that starts / fills the dirty bed;
+## green_from/full: the same for the mean green; dirty_hushes_green: how much junk quiets the green bed).
+static func weights(p_dirty: float, p_green: float, mix: Dictionary = MIX) -> Vector2:
+	var dw: float = smoothstep(float(mix["dirty_from"]), float(mix["dirty_full"]), p_dirty)
+	var gw: float = smoothstep(float(mix["green_from"]), float(mix["green_full"]), p_green)
+	return Vector2(dw, gw * (1.0 - float(mix["dirty_hushes_green"]) * smoothstep(0.4, 0.9, p_dirty)))
 
 
 ## (dirty share, mean green) of the land cells in a list.
@@ -133,11 +178,12 @@ static func measure(p_cells: SphereCells, list: PackedInt32Array) -> Vector2:
 
 
 ## Whether a one-shot's "when" holds: dirty (mostly junk round Lumi), green, green_day (green, not night), always.
-static func when_ok(when: String, p_dirty: float, p_green: float, night: float) -> bool:
+## `th`: the life block's "when" (dirty: junk share, green: mean green, night: darkness 0..1 above which it is night).
+static func when_ok(when: String, p_dirty: float, p_green: float, night: float, th: Dictionary = WHEN) -> bool:
 	match when:
-		"dirty": return p_dirty > 0.6
-		"green": return p_green > 0.3
-		"green_day": return p_green > 0.3 and night < 0.3
+		"dirty": return p_dirty > float(th["dirty"])
+		"green": return p_green > float(th["green"])
+		"green_day": return p_green > float(th["green"]) and night < float(th["night"])
 		"always": return true
 	return false
 
@@ -175,7 +221,7 @@ func _process(delta: float) -> void:
 			var m: Vector2 = measure(cells, grid.cells_around(_cell, _rings))
 			dirty = m.x
 			green = m.y
-	var want: Vector2 = weights(dirty, green)
+	var want: Vector2 = weights(dirty, green, _mix)
 	for l: Dictionary in _loops:
 		var on: String = l["on"]
 		_fade(l, want.x if on == "dirty" else (want.y if on == "green" else (1.0 if on == "always" else 0.0)), dt)
@@ -187,7 +233,7 @@ func _process(delta: float) -> void:
 		e["t"] = _rng.randf_range(gap.x, gap.y)
 		var snd: String = e["snd"]
 		var night: float = _night()
-		if not when_ok(e["when"], dirty, green, night) or not BeepGate.take("life_" + snd, float(e["min_gap"])):
+		if not when_ok(e["when"], dirty, green, night, _when) or not BeepGate.take("life_" + snd, float(e["min_gap"])):
 			continue
 		var pitch: float = _rng.randf_range((e["pitch"] as Vector2).x, (e["pitch"] as Vector2).y)
 		var streams: Array = e["streams"]
