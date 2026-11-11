@@ -188,6 +188,13 @@ func wait_wall(s: float) -> void:
 		await get_tree().process_frame
 
 
+## [v7look] Waits `s` seconds of wall clock from now.
+func wait_wall_for(s: float) -> void:
+	var until: int = Time.get_ticks_msec() + int(s * 1000.0)
+	while Time.get_ticks_msec() < until:
+		await get_tree().process_frame
+
+
 func _take_shot(count: int) -> void:
 	var path: String = get_s("shot", "screenshots/shot.png")
 	if count > 1:

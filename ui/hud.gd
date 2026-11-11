@@ -52,6 +52,7 @@ var _signal_color: Color = Color.WHITE
 var _signal_strength: float = 0.0
 var _top_left: MarginContainer
 var _top_right: MarginContainer
+var _hints_give: float = 1.0  # [v7look] 0 while WREN's bar overlaps the key-hint pill
 var _hints_mc: MarginContainer  # [v7look] lifted over the hotbar's readouts on narrow screens
 var _hold_corner_s: float = 0.0
 var _hold_all: bool = false  # [v7look] hold_corner(s, true): the bottom band steps aside too  # [v7look] seconds the top-right cards stay faded out (hold_corner)
@@ -370,12 +371,15 @@ func _process(delta: float) -> void:
 	# [v7look] a big moment (a base's arrival title) has the screen: the top-right cards step aside
 	_hold_corner_s = maxf(_hold_corner_s - delta, 0.0)
 	# [v7look] On a narrow screen (960 wide, or UI 1.5) the key-hint pill ran over the hotbar's right
-	# readouts (STREAK, the hex count): then it sits above the hotbar band instead.
+	# readouts (STREAK, the hex count): it wraps to two rows beside them; only if even that is too
+	# wide does it sit just above the hotbar band.
 	if _hints_mc and _hints and hotbar:
 		var vw: float = _root.size.x
-		var hb_right: float = vw * 0.5 + Hotbar.LEVEL_W * 0.5 + 90.0
-		var lifted: bool = vw - 22.0 - _hints.size.x < hb_right
-		var mb: int = 22 + (108 if lifted else 0)  # just over the level bar and the slots
+		var hb_right: float = vw * 0.5 + Hotbar.LEVEL_W * 0.5 + 100.0  # the STREAK / hex readouts end about here
+		var room: float = vw - 22.0 - hb_right - 8.0  # beside the hotbar's right readouts
+		_hints.cap_w = maxf(room - 24.0, 90.0)  # the pill's padding comes on top of the flow's width
+		var lifted: bool = vw - 22.0 - _hints.size.x < hb_right  # still too wide (a very narrow screen): over the band
+		var mb: int = 22 + (150 if lifted else 0)  # just over the hotbar band
 		if _hints_mc.get_theme_constant("margin_bottom") != mb:
 			_hints_mc.add_theme_constant_override("margin_bottom", mb)
 	var orb: Variant = world.get("orbit") if world else null  # and the Command view, with its own card and hints
@@ -383,8 +387,13 @@ func _process(delta: float) -> void:
 	_top_right.modulate.a = move_toward(_top_right.modulate.a, 0.0 if _hold_corner_s > 0.0 or in_cmd else 1.0, delta * 4.0)
 	var bottom_out: bool = _hold_all and _hold_corner_s > 0.0
 	_bottom.modulate.a = move_toward(_bottom.modulate.a, 0.0 if bottom_out else 1.0, delta * 4.0)
-	if _hints_mc:
-		_hints_mc.modulate.a = _bottom.modulate.a
+	if _hints_mc:  # [v7look] and the key-hint pill gives way to WREN's bar where they meet (narrow screens)
+		var sub_on: bool = false
+		var sb: Subtitles = Subtitles.current
+		if sb and _hints and _hints.visible and sb.pill().visible and sb.pill().modulate.a > 0.2 and not sb.hushed():
+			sub_on = sb.pill().get_global_rect().grow(6.0).intersects(_hints.get_global_rect())
+		_hints_give = move_toward(_hints_give, 0.0 if sub_on else 1.0, delta * 4.0)
+		_hints_mc.modulate.a = minf(_bottom.modulate.a, _hints_give)
 	if patch:
 		if patch.detector and not patch.detector.readout_changed.is_connected(_on_signal):
 			patch.detector.readout_changed.connect(_on_signal)

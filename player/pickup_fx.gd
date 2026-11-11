@@ -218,9 +218,12 @@ func _process(delta: float) -> void:
 		var pulse: float = 0.85 + 0.15 * sin(_aim_t * 5.0)
 		_flat(_aim_pos + up_dir * 0.06, sz, Color(_glow(), 0.85 * _aim_a * pulse), _aim_t * 0.5)
 		_flat(_aim_pos + up_dir * 0.05, sz * 1.35, Color(_glow(), 0.35 * _aim_a), -_aim_t * 0.35)
-		# and a glowing bead bobbing over it: a flat ring is edge-on (or behind Lumi) from the follow camera
+		# and a glowing bead bobbing over it on a thin light stalk, high enough to show over Lumi's head:
+		# the ring lies under the junk and, right in front of him, behind his body from the follow camera.
 		var bob: float = 0.0 if Settings.reduced_motion else 0.05 * sin(_aim_t * 4.0)
-		_sprite(_aim_pos + up_dir * (minf(_aim_r, 0.45) + 0.35 + bob), 0.07, Color(_glow(), 0.9 * _aim_a))
+		var top: Vector3 = _aim_pos + up_dir * (minf(_aim_r, 0.45) + 1.05 + bob)
+		_ribbon(_aim_pos + up_dir * (minf(_aim_r, 0.45) + 0.1), top, 0.03, Color(_glow(), 0.45 * _aim_a))
+		_sprite(top, 0.13, Color(_glow(), 1.0 * _aim_a))
 	for s: Slot in _slots:
 		if s.active:
 			_draw_slot(s)

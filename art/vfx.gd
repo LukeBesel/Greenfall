@@ -20,7 +20,7 @@ func _ready() -> void:
 	add_child(_root)
 	_soft_tex = _radial_texture(Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.0)
 	_star_tex = _radial_texture(Color(1, 1, 1, 1), Color(1, 1, 1, 0), 0.55)
-	for kind: String in ["dust", "sparkle", "steam", "confetti", "soil", "bits", "big_sparkle"]:
+	for kind: String in ["dust", "sparkle", "steam", "confetti", "soil", "bits", "big_sparkle", "spark"]:  # [v7look] + spark
 		_pools[kind] = []
 		_pool_idx[kind] = 0
 		for i: int in POOL_PER_KIND:
@@ -137,6 +137,22 @@ func _make(kind: String) -> CPUParticles3D:
 			p.damping_max = 2.0
 			curve.add_point(Vector2(0, 1.0))
 			curve.add_point(Vector2(1, 0.0))
+		"spark":  # [v7look] electric sparks (the crashed pod's torn panel): small soft points that
+			# spit out and fall fast and die quickly; the star "sparkle" read as hard dots hanging round it.
+			q.material = _quad_material(_soft_tex, true)
+			q.size = Vector2(0.06, 0.06)
+			p.amount = 10
+			p.lifetime = 0.38
+			p.explosiveness = 0.9
+			p.direction = Vector3(0, 1, 0)
+			p.spread = 75.0
+			p.initial_velocity_min = 1.2
+			p.initial_velocity_max = 2.6
+			p.gravity = Vector3(0, -7.0, 0)
+			p.damping_min = 0.5
+			p.damping_max = 1.0
+			curve.add_point(Vector2(0, 1.0))
+			curve.add_point(Vector2(1, 0.2))
 		"confetti":
 			q.material = _quad_material(_soft_tex, false)
 			q.size = Vector2(0.12, 0.08)
@@ -207,6 +223,7 @@ func _base_amount(kind: String) -> int:
 		"dust": return 10
 		"steam": return 14
 		"sparkle": return 16
+		"spark": return 10
 		"big_sparkle": return 48
 		"confetti": return 40
 		"soil": return 18

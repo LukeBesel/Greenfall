@@ -38,6 +38,14 @@ var _alpha: float = 0.0
 var _peek: float = 0.0
 var _full: bool = false
 var _sig_t: float = 0.0
+## [v7look] The widest the HUD strip may be (the HUD narrows it on small screens, where it wraps to
+## two rows beside the hotbar instead of running over its readouts).
+var cap_w: float = 380.0:
+	set(v):
+		if absf(v - cap_w) > 0.5:
+			cap_w = v
+			if is_inside_tree():
+				_fit.call_deferred()
 
 
 func _init(p_mode: int = Mode.HUD) -> void:
@@ -133,7 +141,7 @@ func _fit() -> void:
 	for c: Node in rows:
 		w += (c as Control).get_combined_minimum_size().x
 	w += 12.0 * maxf(0.0, rows.size() - 1) + 2.0
-	var cap: float = 1180.0 if mode == Mode.PAUSE else 380.0  # HUD: stay right of the hotbar
+	var cap: float = 1180.0 if mode == Mode.PAUSE else minf(380.0, cap_w)  # HUD: stay right of the hotbar
 	_flow.custom_minimum_size.x = minf(w, cap)
 
 

@@ -865,7 +865,7 @@ func _build_carry_rig() -> void:
 	_rig_tray.add_child(band)
 	_rig_beam = MeshInstance3D.new()
 	var cyl := CylinderMesh.new()
-	cyl.top_radius = 0.24
+	cyl.top_radius = 0.3
 	cyl.bottom_radius = 0.09
 	cyl.height = 1.0
 	cyl.radial_segments = 16
@@ -876,7 +876,7 @@ func _build_carry_rig() -> void:
 	_rig_beam_mat = StandardMaterial3D.new()
 	_rig_beam_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	_rig_beam_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	_rig_beam_mat.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+	# mixed, not added: an additive beam vanished against bright sand at Low
 	_rig_beam_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
 	_rig_beam_mat.no_depth_test = false
 	_rig_beam.material_override = _rig_beam_mat
@@ -894,11 +894,11 @@ func _update_carry_rig(delta: float) -> void:
 		return
 	var w: float = (carried[0].size if not carried.is_empty() else 0.6) * 1.08
 	_rig_tray.scale = Vector3(w, 1.0, w) * lerpf(0.4, 1.0, _rig_k)
-	var gap: float = maxf(CarryPoint.GAP - 0.07, 0.05)  # from the tray's lip down to the top of his head
+	var gap: float = maxf(CarryPoint.GAP - 0.02, 0.05)  # from the tray's lip down into the top of his head
 	_rig_beam.scale = Vector3(1.0, gap, 1.0) * Vector3(_rig_k, 1.0, _rig_k)
 	_rig_beam.position = Vector3(0, -0.08 - gap * 0.5, 0)
 	var col: Color = LumiStyle.laser_of(model) if model else Color(0.55, 0.9, 1.0)
-	_rig_beam_mat.albedo_color = Color(col, 0.28 * _rig_k * (0.85 + 0.15 * sin(Time.get_ticks_msec() * 0.006)))
+	_rig_beam_mat.albedo_color = Color(col.lightened(0.15), 0.42 * _rig_k * (0.85 + 0.15 * sin(Time.get_ticks_msec() * 0.006)))
 
 
 ## [v6feel] The stack's base rides Lumi's floating body (bob, lean, squash), a fixed gap over his head.

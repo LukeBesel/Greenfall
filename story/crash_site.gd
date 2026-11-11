@@ -267,8 +267,8 @@ func _process(delta: float) -> void:
 	if _spark_t <= 0.0:
 		_spark_t = randf_range(1.1, 3.4)
 		var at: Vector3 = EscapePod.spark(pod)
-		Vfx.burst("sparkle", at, Color(1.0, 0.62, 0.25), 0.35)
+		Vfx.burst("spark", at, Color(1.0, 0.7, 0.32), 0.8)  # [v7look] was "sparkle" (hard star dots)
 		if randf() < 0.5:
-			Vfx.burst("sparkle", at + Vector3(0, -0.1, 0), Color(1.0, 0.85, 0.55), 0.2)
+			Vfx.burst("spark", at + Vector3(0, -0.1, 0), Color(1.0, 0.86, 0.6), 0.5)
 		if is_inside_tree() and randf() < 0.4 and Audio.has_sound("zap"):
 			Audio.play("zap", randf_range(1.2, 1.6), -24.0)

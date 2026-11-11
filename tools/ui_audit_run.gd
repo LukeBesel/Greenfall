@@ -254,6 +254,9 @@ func _check_play(cfg: String, hud: Node, cam: SphereCam, patch: Node3D, subs: Su
 		var slots: Rect2 = hb.get_global_rect().grow_side(SIDE_TOP, -14.0)
 		if kr.intersects(slots.grow_side(SIDE_LEFT, -90.0).grow_side(SIDE_RIGHT, -90.0)) and minf(kr.intersection(slots).size.x, kr.intersection(slots).size.y) >= UIAudit.OVERLAP_MIN:
 			_report(cfg, "overlap", "key hints with the hotbar", "hints %s hotbar %s" % [_r(kr), _r(slots)])
+		var hm: Control = hud.get("_hints_mc") as Control
+		if kr.intersects(pill) and subs.pill().visible and (hm == null or hm.modulate.a > 0.1):
+			_report(cfg, "covers", "subtitle over the key hints (not faded)", "hints %s pill %s" % [_r(kr), _r(pill)])
 		if kr.position.y < view.size.y * 0.55:
 			_report(cfg, "offplace", "key hints mid-screen", "hints %s view %dx%d" % [_r(kr), roundi(view.size.x), roundi(view.size.y)])
 	if hb and hb.is_visible_in_tree():

@@ -111,6 +111,23 @@ static func paint(colour: Variant = "cream", state: String = "repaired") -> Shad
 	return m
 
 
+## [v7look] Upholstery (seat cushions, quilted pads): the paint colour with no wear, grime or
+## streaks, matte. Kit paint wear read as dirty smudges on a padded seat.
+static func pad(colour: Variant = "cream") -> ShaderMaterial:
+	var c: Color = colour if colour is Color else color(str(colour))
+	var key: String = "pad:%s" % c.to_html(false)
+	if _cache.has(key):
+		return _cache[key]
+	var m := _surface(key, "metal_plate", "restored")
+	for k: String in WEAR["restored"]:
+		m.set_shader_parameter(k, 0.0)
+	m.set_shader_parameter("paint_color", c)
+	m.set_shader_parameter("paint_amount", 1.0)
+	m.set_shader_parameter("clearcoat_amt", 0.0)
+	_cache[key] = m
+	return m
+
+
 ## Bare steel (brushed plates). dark = true for gunmetal frames/greebles.
 static func steel(state: String = "repaired", dark: bool = false) -> ShaderMaterial:
 	var key: String = "steel:%s:%s" % [state, dark]
@@ -355,6 +372,8 @@ static func for_key(key: String, state: String = "repaired", powered: bool = tru
 	var head: String = parts[0]
 	var arg: String = parts[1] if parts.size() > 1 else ""
 	match head:
+		"pad":  # [v7look] upholstery: no wear in any state
+			return pad(str(palette.get(arg, arg)))
 		"paint":
 			if arg == "":
 				return paint_vc(state)

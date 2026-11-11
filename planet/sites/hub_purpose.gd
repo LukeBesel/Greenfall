@@ -712,7 +712,7 @@ func show_title(i: int, first: bool = false) -> void:
 				DevHooks.save_viewport("%s_land_%d.png" % [DevHooks.get_s("hop-shots", "screenshots/hop"), int(wait)])
 				if wait > 5.0:  # then the rocket's list, and its picture
 					sites.open_rocket()
-					await get_tree().create_timer(1.0, true, false, true).timeout
+					await DevHooks.wait_wall_for(6.0)  # [v7look] wall clock: the list was still fading in at 1 s
 					await RenderingServer.frame_post_draw
 					DevHooks.save_viewport("%s_picker.png" % DevHooks.get_s("hop-shots", "screenshots/hop"))
 					print("[hubs] dev: shots done"))
