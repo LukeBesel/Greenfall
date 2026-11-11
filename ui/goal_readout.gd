@@ -11,7 +11,8 @@ extends Control
 ## its tier slides in. The row whose goal the story card is carrying is left out (it is on the
 ## card already), and the row the player is following (Objectives.track) carries a pointer.
 
-const W: float = 340.0
+## As wide as the story card above it, so the column reads as one instrument.
+const W: float = ObjectiveCard.W
 const PAD: float = 12.0
 const ROW_H: float = 46.0
 const LINE_H: float = 20.0

@@ -814,8 +814,11 @@ static func _goals_sig(s: Node) -> String:
 	var done: Array = (GameState.flags.get(Goals.FLAG_DONE, []) as Array).duplicate()
 	done.sort()
 	var goals: Goals = s.get("goals")
-	return "%s %s tiers %d" % [JSON.stringify(done), JSON.stringify((GameState.flags.get(Goals.FLAG_REPEAT, {}) as Dictionary).get("n", {})),
-		goals.current().size() if goals else -1]
+	var counts: Dictionary = {}  # a JSON reload reads whole numbers back as floats
+	var saved: Dictionary = (GameState.flags.get(Goals.FLAG_REPEAT, {}) as Dictionary).get("n", {})
+	for id: Variant in saved:
+		counts[str(id)] = int(saved[id])
+	return "%s %s tiers %d" % [JSON.stringify(done), JSON.stringify(counts), goals.current().size() if goals else -1]
 
 
 ## The stage each city is held at by its source job, in play order ("5" = not held).
