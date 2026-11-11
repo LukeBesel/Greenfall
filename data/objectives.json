@@ -5,20 +5,20 @@
     "lines": [
       "Lumi, it's WREN. I run the Cradle, our big ship. I never stopped listening for you.",
       "The Cradle can't land on a dead world. Let's make Verdance green again.",
-      "Plants make green light. It fills your Bloom Core, and it's the sign the Cradle looks for."
+      "Plants make green light. It fills your Bloom Core, and it shows the Cradle the way home."
     ]
   },
   "brief": {
     "lines": [
       "Lumi, it's WREN, up on the Cradle. Your pod fell by an old cleanup station, and my signal is weak.",
-      "Its bin turns trash into cubes. Build a signal tower with them so we can talk. I'll be [glitch]listen—[/glitch]"
+      "Its bin makes cubes from trash. Find parts, build a signal tower and we can talk. I'll be [glitch]listen—[/glitch]"
     ]
   },
   "objectives": [
     {
       "id": "dump3",
       "text": "Fill the trash bin 3 times",
-      "desc": "The bin turns trash into cubes. The bench builds with cubes.",
+      "desc": "The bin turns trash into cubes. The bench builds with them.",
       "type": "stat",
       "key": "junk_dumps",
       "target": 3,
@@ -51,7 +51,7 @@
     {
       "id": "baler",
       "text": "Save up for the Baler",
-      "desc": "The Baler presses trash into tight bales. Nothing is wasted, so a bale makes more cubes.",
+      "desc": "A tight bale wastes nothing, so it makes more cubes.",
       "type": "upgrade",
       "key": "baler",
       "target": 1,
@@ -62,7 +62,7 @@
     {
       "id": "power",
       "text": "Sell 3 bales",
-      "desc": "Press {cube} for a bale and carry it to the scale. Cubes for the signal tower.",
+      "desc": "Press {cube} for a bale. Cubes for the signal tower.",
       "type": "stat",
       "key": "cubes_cashed",
       "target": 3,
@@ -83,7 +83,7 @@
     {
       "id": "glim",
       "text": "Repair Glim",
-      "desc": "Workbench, Build tab. He lights the dark and finds trash you missed.",
+      "desc": "Build tab. He lights the dark and finds missed trash.",
       "type": "flag",
       "key": "glim_repaired",
       "target": 1,
@@ -92,7 +92,7 @@
     {
       "id": "hex",
       "text": "Clean the glowing hex",
-      "desc": "Plants only grow on clean ground. Pick up every piece in the outline.",
+      "desc": "Plants only grow on clean ground. Clear the outline.",
       "type": "stat",
       "key": "hexes_cleaned",
       "target": 1,
@@ -115,7 +115,7 @@
     {
       "id": "hex3",
       "text": "Clean 3 hexes",
-      "desc": "Clear some room around the base. Then robots can start work.",
+      "desc": "Clear room around the base, so robots can start work.",
       "type": "stat",
       "key": "hexes_cleaned",
       "target": 3,
@@ -126,7 +126,7 @@
     {
       "id": "bench2",
       "text": "Add a Bot Bay to the bench",
-      "desc": "Workbench, Upgrades tab. A planet is too big for one small robot.",
+      "desc": "Upgrades tab. A planet is too big for one small robot.",
       "type": "bench",
       "target": 2,
       "lines": [
@@ -147,7 +147,7 @@
     {
       "id": "zone",
       "text": "Send your robot to work",
-      "desc": "Robots clean where you point. Press {open_command} and paint hexes.",
+      "desc": "Robots clean where you point. Press {open_command}.",
       "type": "zone",
       "target": 1,
       "lines": [
@@ -170,7 +170,7 @@
     {
       "id": "hex10",
       "text": "Clean 10 hexes",
-      "desc": "More clean ground, more room to plant. Robots help: press {open_command}.",
+      "desc": "More clean ground, more room to plant. Robots help.",
       "type": "stat",
       "key": "hexes_cleaned",
       "target": 10,
@@ -204,7 +204,7 @@
     {
       "id": "tower2",
       "text": "Boost the signal tower",
-      "desc": "Workbench. A stronger signal lets WREN look further for you.",
+      "desc": "Workbench. A stronger signal lets WREN look further.",
       "type": "tower",
       "target": 2,
       "lines": [
@@ -236,7 +236,7 @@
     {
       "id": "base3",
       "text": "Rebuild the base to level 3",
-      "desc": "Workbench, Upgrades tab. A stronger base runs bigger machines.",
+      "desc": "Upgrades tab. A stronger base runs bigger machines.",
       "type": "hub_level",
       "target": 3,
       "lines": [

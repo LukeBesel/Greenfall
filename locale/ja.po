@@ -2047,8 +2047,8 @@ msgid "Space  pause   ·   Esc  skip"
 msgstr "スペース  一時停止   ·   Esc  スキップ"
 
 #: story/tutorial.gd:10
-msgid "Fix the old Maker workbench: press  {interact}  at it"
-msgstr "メイカーの古い作業台を直す：そばで  {interact}  を押す"
+msgid "Fix the Makers' old bench: press  {interact}"
+msgstr "メイカーの古い作業台を直す：  {interact}  を押す"
 
 #: story/tutorial.gd:11
 msgid "Pick up trash: hold  {scoop}"
@@ -12191,24 +12191,24 @@ msgid "The Cradle can't land on a dead world. Let's make Verdance green again."
 msgstr "Cradle号は死んだ世界には降りられない。Verdance をもう一度緑にしよう。"
 
 #: data/objectives.json:wren_brief.lines
-msgid "Plants make green light. It fills your Bloom Core, and it's the sign the Cradle looks for."
-msgstr "植物は緑の光を出す。その光でブルームコアがたまるし、Cradle号が探している合図でもあるんだ。"
+msgid "Plants make green light. It fills your Bloom Core, and it shows the Cradle the way home."
+msgstr "植物は緑の光を出す。その光でブルームコアがたまるし、Cradle号に帰り道を教えてくれるんだ。"
 
 #: data/objectives.json:brief.lines
 msgid "Lumi, it's WREN, up on the Cradle. Your pod fell by an old cleanup station, and my signal is weak."
 msgstr "Lumi、WREN だよ。Cradle号の上にいるの。ポッドは古いおそうじステーションのそばに落ちたみたい。こっちの電波は弱いんだ。"
 
 #: data/objectives.json:brief.lines
-msgid "Its bin turns trash into cubes. Build a signal tower with them so we can talk. I'll be [glitch]listen—[/glitch]"
-msgstr "そこのゴミ箱はゴミをキューブに変えるの。キューブで信号塔を建てて。そうすればお話しできる。ずっと[glitch]聞いて——[/glitch]"
+msgid "Its bin makes cubes from trash. Find parts, build a signal tower and we can talk. I'll be [glitch]listen—[/glitch]"
+msgstr "そこのゴミ箱はゴミをキューブに変えるの。パーツを見つけて信号塔を建てれば、お話しできる。ずっと[glitch]聞いて——[/glitch]"
 
 #: data/objectives.json:objectives[dump3].text
 msgid "Fill the trash bin 3 times"
 msgstr "ゴミ箱を3回いっぱいにする"
 
 #: data/objectives.json:objectives[dump3].desc
-msgid "The bin turns trash into cubes. The bench builds with cubes."
-msgstr "ゴミ箱はゴミをキューブに変える。作業台はキューブでものを作る。"
+msgid "The bin turns trash into cubes. The bench builds with them."
+msgstr "ゴミ箱はゴミをキューブに変える。作業台はそれでものを作る。"
 
 #: data/objectives.json:objectives[dump3].lines
 msgid "Start small, Lumi. Every load in the bin earns cubes."
@@ -12242,9 +12242,9 @@ msgstr "幅広のスコップ。一度にたくさん拾えて、歩く距離が
 msgid "Save up for the Baler"
 msgstr "ベーラーのために貯める"
 
-#: data/objectives.json:objectives[baler].desc
-msgid "The Baler presses trash into tight bales. Nothing is wasted, so a bale makes more cubes."
-msgstr "ベーラーはゴミをぎゅっと固めてベールにする。むだが出ないから、ベールはキューブがたくさんできる。"
+#: data/objectives.json:objectives[baler].desc data/story_reasons.json:goal_reasons
+msgid "A tight bale wastes nothing, so it makes more cubes."
+msgstr "ぎゅっと固めたベールはむだが出ないから、キューブが多くできる。"
 
 #: data/objectives.json:objectives[baler].lines
 msgid "Save up for the Baler. A tight bale wastes nothing, so it makes far more cubes."
@@ -12255,8 +12255,8 @@ msgid "Sell 3 bales"
 msgstr "ベールを3個売る"
 
 #: data/objectives.json:objectives[power].desc
-msgid "Press {cube} for a bale and carry it to the scale. Cubes for the signal tower."
-msgstr "{cube} でベールを作って、はかりへ運ぼう。信号塔のためのキューブになる。"
+msgid "Press {cube} for a bale. Cubes for the signal tower."
+msgstr "{cube} でベールを作ろう。信号塔のためのキューブになる。"
 
 #: data/objectives.json:objectives[power].lines
 msgid "Carry bales to the scale by the bin. Three of them make plenty of cubes."
@@ -12275,8 +12275,8 @@ msgid "Build the tower, Lumi. Then I can stay with you."
 msgstr "塔を建てて、Lumi。そうすればずっと一緒にいられる。"
 
 #: data/objectives.json:objectives[glim].desc
-msgid "Workbench, Build tab. He lights the dark and finds trash you missed."
-msgstr "作業台の建造タブ。暗いところを照らして、見落としたゴミを見つけてくれる。"
+msgid "Build tab. He lights the dark and finds missed trash."
+msgstr "建造タブ。暗いところを照らして、見落としたゴミを見つけてくれる。"
 
 #: data/objectives.json:objectives[glim].lines
 msgid "Lumi... something's still holding on to your pod. Small. Lantern-shaped. Patch him up at the bench."
@@ -12287,8 +12287,8 @@ msgid "Clean the glowing hex"
 msgstr "光っているヘックスを片づける"
 
 #: data/objectives.json:objectives[hex].desc
-msgid "Plants only grow on clean ground. Pick up every piece in the outline."
-msgstr "植物はきれいな地面にしか育たない。枠の中のゴミをぜんぶ拾おう。"
+msgid "Plants only grow on clean ground. Clear the outline."
+msgstr "植物はきれいな地面にしか育たない。枠の中を片づけよう。"
 
 #: data/objectives.json:objectives[hex].lines
 msgid "First, one clean hex. Clear the outlined one. Green starts on clean ground."
@@ -12307,8 +12307,8 @@ msgid "Two clean hexes. Keep going, Lumi."
 msgstr "きれいなヘックスが2個。その調子、Lumi。"
 
 #: data/objectives.json:objectives[hex3].desc
-msgid "Clear some room around the base. Then robots can start work."
-msgstr "基地のまわりを片づけて場所をあけよう。そうすればロボットが働きはじめられる。"
+msgid "Clear room around the base, so robots can start work."
+msgstr "基地のまわりを片づけて、ロボットが働ける場所をあけよう。"
 
 #: data/objectives.json:objectives[hex3].lines
 msgid "Three clean hexes. The planet notices, believe me."
@@ -12319,8 +12319,8 @@ msgid "Add a Bot Bay to the bench"
 msgstr "作業台にボットベイを追加する"
 
 #: data/objectives.json:objectives[bench2].desc
-msgid "Workbench, Upgrades tab. A planet is too big for one small robot."
-msgstr "作業台のアップグレードタブ。惑星は小さなロボットひとりには大きすぎる。"
+msgid "Upgrades tab. A planet is too big for one small robot."
+msgstr "アップグレードタブ。惑星は小さなロボットひとりには大きすぎる。"
 
 #: data/objectives.json:objectives[bench2].lines
 msgid "Add a Bot Bay to the bench. You shouldn't do this alone."
@@ -12343,8 +12343,8 @@ msgid "Send your robot to work"
 msgstr "ロボットを仕事に送る"
 
 #: data/objectives.json:objectives[zone].desc
-msgid "Robots clean where you point. Press {open_command} and paint hexes."
-msgstr "ロボットは指定した場所を掃除する。{open_command} を押してヘックスを塗ろう。"
+msgid "Robots clean where you point. Press {open_command}."
+msgstr "ロボットは指定した場所を掃除する。{open_command} を押そう。"
 
 #: data/objectives.json:objectives[zone].lines
 msgid "Give your robot a hex to work on. It wants a job."
@@ -12367,8 +12367,8 @@ msgid "Something green is waking out there. Plant the first seed."
 msgstr "外で緑の何かが目を覚ましかけてる。最初の種を植えて。"
 
 #: data/objectives.json:objectives[hex10].desc
-msgid "More clean ground, more room to plant. Robots help: press {open_command}."
-msgstr "きれいな地面が増えると、植える場所も増える。ロボットも手伝うよ：{open_command} を押そう。"
+msgid "More clean ground, more room to plant. Robots help."
+msgstr "きれいな地面が増えると、植える場所も増える。ロボットも手伝うよ。"
 
 #: data/objectives.json:objectives[hex10].lines
 msgid "Ten clean hexes. Your robots are learning from you, Lumi."
@@ -12403,8 +12403,8 @@ msgid "Boost the signal tower"
 msgstr "信号塔を強化する"
 
 #: data/objectives.json:objectives[tower2].desc
-msgid "Workbench. A stronger signal lets WREN look further for you."
-msgstr "作業台。電波が強くなると、WREN がもっと遠くまで探してくれる。"
+msgid "Workbench. A stronger signal lets WREN look further."
+msgstr "作業台。電波が強くなると、WREN がもっと遠くまで探せる。"
 
 #: data/objectives.json:objectives[tower2].lines
 msgid "Boost the tower. With a stronger signal I can look further for you."
@@ -12431,8 +12431,8 @@ msgid "Rebuild the base to level 3"
 msgstr "基地をレベル3に再建する"
 
 #: data/objectives.json:objectives[base3].desc
-msgid "Workbench, Upgrades tab. A stronger base runs bigger machines."
-msgstr "作業台のアップグレードタブ。基地が強くなると、もっと大きな機械を動かせる。"
+msgid "Upgrades tab. A stronger base runs bigger machines."
+msgstr "アップグレードタブ。基地が強くなると、もっと大きな機械を動かせる。"
 
 #: data/objectives.json:objectives[base3].lines
 msgid "One more base level, Lumi. Bigger machines need a stronger base."
@@ -14419,10 +14419,6 @@ msgstr "ゴミ箱はゴミをキューブに変える。"
 #: data/story_reasons.json:goal_reasons
 msgid "Better tools mean more trash in every trip."
 msgstr "道具がよくなると、一度に運べるゴミが増える。"
-
-#: data/story_reasons.json:goal_reasons
-msgid "A tight bale wastes nothing, so it makes more cubes."
-msgstr "ぎゅっと固めたベールはむだが出ないから、キューブが多くできる。"
 
 #: data/story_reasons.json:goal_reasons
 msgid "Pressed trash recycles better than loose trash."
@@ -16768,6 +16764,51 @@ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "Plants make green light. It fills your Bloom Core, and it's the sign the Cradle looks for."
+#~ msgstr "植物は緑の光を出す。その光でブルームコアがたまるし、Cradle号が探している合図でもあるんだ。"
+
+#~ msgid "Its bin turns trash into cubes. Find parts and build a signal tower so we can talk. I'll be [glitch]listen—[/glitch]"
+#~ msgstr "そこのゴミ箱はゴミをキューブに変えるの。パーツを見つけて信号塔を建てて。そうすればお話しできる。ずっと[glitch]聞いて——[/glitch]"
+
+#~ msgid "Fix the old Maker workbench: press  {interact}  at it"
+#~ msgstr "メイカーの古い作業台を直す：そばで  {interact}  を押す"
+
+#~ msgid "Its bin turns trash into cubes. Build a signal tower with them so we can talk. I'll be [glitch]listen—[/glitch]"
+#~ msgstr "そこのゴミ箱はゴミをキューブに変えるの。キューブで信号塔を建てて。そうすればお話しできる。ずっと[glitch]聞いて——[/glitch]"
+
+#~ msgid "The bin turns trash into cubes. The bench builds with cubes."
+#~ msgstr "ゴミ箱はゴミをキューブに変える。作業台はキューブでものを作る。"
+
+#~ msgid "The Baler presses trash into tight bales. Nothing is wasted, so a bale makes more cubes."
+#~ msgstr "ベーラーはゴミをぎゅっと固めてベールにする。むだが出ないから、ベールはキューブがたくさんできる。"
+
+#~ msgid "Press {cube} for a bale and carry it to the scale. Cubes for the signal tower."
+#~ msgstr "{cube} でベールを作って、はかりへ運ぼう。信号塔のためのキューブになる。"
+
+#~ msgid "Workbench, Build tab. He lights the dark and finds trash you missed."
+#~ msgstr "作業台の建造タブ。暗いところを照らして、見落としたゴミを見つけてくれる。"
+
+#~ msgid "Plants only grow on clean ground. Pick up every piece in the outline."
+#~ msgstr "植物はきれいな地面にしか育たない。枠の中のゴミをぜんぶ拾おう。"
+
+#~ msgid "Clear some room around the base. Then robots can start work."
+#~ msgstr "基地のまわりを片づけて場所をあけよう。そうすればロボットが働きはじめられる。"
+
+#~ msgid "Workbench, Upgrades tab. A planet is too big for one small robot."
+#~ msgstr "作業台のアップグレードタブ。惑星は小さなロボットひとりには大きすぎる。"
+
+#~ msgid "Robots clean where you point. Press {open_command} and paint hexes."
+#~ msgstr "ロボットは指定した場所を掃除する。{open_command} を押してヘックスを塗ろう。"
+
+#~ msgid "More clean ground, more room to plant. Robots help: press {open_command}."
+#~ msgstr "きれいな地面が増えると、植える場所も増える。ロボットも手伝うよ：{open_command} を押そう。"
+
+#~ msgid "Workbench. A stronger signal lets WREN look further for you."
+#~ msgstr "作業台。電波が強くなると、WREN がもっと遠くまで探してくれる。"
+
+#~ msgid "Workbench, Upgrades tab. A stronger base runs bigger machines."
+#~ msgstr "作業台のアップグレードタブ。基地が強くなると、もっと大きな機械を動かせる。"
 
 #~ msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 #~ msgstr "ロボットアップリンク接続。B で指揮ビュー：ゾーンを塗って、好きな場所にクルーを送ろう。"

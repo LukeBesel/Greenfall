@@ -2049,8 +2049,8 @@ msgid "Space  pause   ·   Esc  skip"
 msgstr "Espaço  pausar   ·   Esc  pular"
 
 #: story/tutorial.gd:10
-msgid "Fix the old Maker workbench: press  {interact}  at it"
-msgstr "Conserte a velha bancada dos Criadores: aperte  {interact}  perto dela"
+msgid "Fix the Makers' old bench: press  {interact}"
+msgstr "Conserte a velha bancada dos Criadores: aperte  {interact}"
 
 #: story/tutorial.gd:11
 msgid "Pick up trash: hold  {scoop}"
@@ -12204,24 +12204,24 @@ msgid "The Cradle can't land on a dead world. Let's make Verdance green again."
 msgstr "A Cradle não pode pousar em um mundo morto. Vamos deixar Verdance verde de novo."
 
 #: data/objectives.json:wren_brief.lines
-msgid "Plants make green light. It fills your Bloom Core, and it's the sign the Cradle looks for."
-msgstr "As plantas fazem luz verde. Ela enche seu Núcleo Floral, e é o sinal que a Cradle procura."
+msgid "Plants make green light. It fills your Bloom Core, and it shows the Cradle the way home."
+msgstr "As plantas fazem luz verde. Ela enche seu Núcleo Floral e mostra à Cradle o caminho de casa."
 
 #: data/objectives.json:brief.lines
 msgid "Lumi, it's WREN, up on the Cradle. Your pod fell by an old cleanup station, and my signal is weak."
 msgstr "Lumi, é a WREN, aqui em cima na Cradle. Sua cápsula caiu ao lado de uma velha estação de limpeza, e meu sinal está fraco."
 
 #: data/objectives.json:brief.lines
-msgid "Its bin turns trash into cubes. Build a signal tower with them so we can talk. I'll be [glitch]listen—[/glitch]"
-msgstr "A lixeira dela transforma lixo em cubos. Construa uma torre de sinal com eles para a gente conversar. Vou ficar [glitch]ouvin—[/glitch]"
+msgid "Its bin makes cubes from trash. Find parts, build a signal tower and we can talk. I'll be [glitch]listen—[/glitch]"
+msgstr "A lixeira dela transforma lixo em cubos. Ache peças, construa uma torre de sinal e a gente vai poder conversar. Vou ficar [glitch]ouvin—[/glitch]"
 
 #: data/objectives.json:objectives[dump3].text
 msgid "Fill the trash bin 3 times"
 msgstr "Encha a lixeira 3 vezes"
 
 #: data/objectives.json:objectives[dump3].desc
-msgid "The bin turns trash into cubes. The bench builds with cubes."
-msgstr "A lixeira transforma lixo em cubos. A bancada constrói com cubos."
+msgid "The bin turns trash into cubes. The bench builds with them."
+msgstr "A lixeira transforma lixo em cubos. A bancada constrói com eles."
 
 #: data/objectives.json:objectives[dump3].lines
 msgid "Start small, Lumi. Every load in the bin earns cubes."
@@ -12255,9 +12255,9 @@ msgstr "Uma pá mais larga. Mais lixo por vez, menos caminhada."
 msgid "Save up for the Baler"
 msgstr "Junte para a Enfardadeira"
 
-#: data/objectives.json:objectives[baler].desc
-msgid "The Baler presses trash into tight bales. Nothing is wasted, so a bale makes more cubes."
-msgstr "A enfardadeira aperta o lixo em fardos bem firmes. Nada se perde, então um fardo rende mais cubos."
+#: data/objectives.json:objectives[baler].desc data/story_reasons.json:goal_reasons
+msgid "A tight bale wastes nothing, so it makes more cubes."
+msgstr "Um fardo bem firme não desperdiça nada, então rende mais cubos."
 
 #: data/objectives.json:objectives[baler].lines
 msgid "Save up for the Baler. A tight bale wastes nothing, so it makes far more cubes."
@@ -12268,8 +12268,8 @@ msgid "Sell 3 bales"
 msgstr "Venda 3 fardos"
 
 #: data/objectives.json:objectives[power].desc
-msgid "Press {cube} for a bale and carry it to the scale. Cubes for the signal tower."
-msgstr "Aperte {cube} para fazer um fardo e leve até a balança. Cubos para a torre de sinal."
+msgid "Press {cube} for a bale. Cubes for the signal tower."
+msgstr "Aperte {cube} para fazer um fardo. Cubos para a torre de sinal."
 
 #: data/objectives.json:objectives[power].lines
 msgid "Carry bales to the scale by the bin. Three of them make plenty of cubes."
@@ -12288,8 +12288,8 @@ msgid "Build the tower, Lumi. Then I can stay with you."
 msgstr "Construa a torre, Lumi. Aí eu posso ficar com você."
 
 #: data/objectives.json:objectives[glim].desc
-msgid "Workbench, Build tab. He lights the dark and finds trash you missed."
-msgstr "Bancada, aba Construir. Ele ilumina o escuro e acha o lixo que você deixou passar."
+msgid "Build tab. He lights the dark and finds missed trash."
+msgstr "Aba Construir. Ele ilumina o escuro e acha o lixo esquecido."
 
 #: data/objectives.json:objectives[glim].lines
 msgid "Lumi... something's still holding on to your pod. Small. Lantern-shaped. Patch him up at the bench."
@@ -12300,8 +12300,8 @@ msgid "Clean the glowing hex"
 msgstr "Limpe o hexágono que brilha"
 
 #: data/objectives.json:objectives[hex].desc
-msgid "Plants only grow on clean ground. Pick up every piece in the outline."
-msgstr "As plantas só crescem em chão limpo. Pegue todas as peças dentro do contorno."
+msgid "Plants only grow on clean ground. Clear the outline."
+msgstr "As plantas só crescem em chão limpo. Limpe o contorno."
 
 #: data/objectives.json:objectives[hex].lines
 msgid "First, one clean hex. Clear the outlined one. Green starts on clean ground."
@@ -12320,8 +12320,8 @@ msgid "Two clean hexes. Keep going, Lumi."
 msgstr "Dois hexágonos limpos. Continue, Lumi."
 
 #: data/objectives.json:objectives[hex3].desc
-msgid "Clear some room around the base. Then robots can start work."
-msgstr "Abra espaço em volta da base. Aí os robôs podem começar a trabalhar."
+msgid "Clear room around the base, so robots can start work."
+msgstr "Abra espaço em volta da base para os robôs começarem a trabalhar."
 
 #: data/objectives.json:objectives[hex3].lines
 msgid "Three clean hexes. The planet notices, believe me."
@@ -12332,8 +12332,8 @@ msgid "Add a Bot Bay to the bench"
 msgstr "Adicione uma Baia de robôs à bancada"
 
 #: data/objectives.json:objectives[bench2].desc
-msgid "Workbench, Upgrades tab. A planet is too big for one small robot."
-msgstr "Bancada, aba Melhorias. Um planeta é grande demais para um robozinho só."
+msgid "Upgrades tab. A planet is too big for one small robot."
+msgstr "Aba Melhorias. Um planeta é grande demais para um robozinho só."
 
 #: data/objectives.json:objectives[bench2].lines
 msgid "Add a Bot Bay to the bench. You shouldn't do this alone."
@@ -12356,8 +12356,8 @@ msgid "Send your robot to work"
 msgstr "Mande seu robô trabalhar"
 
 #: data/objectives.json:objectives[zone].desc
-msgid "Robots clean where you point. Press {open_command} and paint hexes."
-msgstr "Os robôs limpam onde você mandar. Aperte {open_command} e pinte hexágonos."
+msgid "Robots clean where you point. Press {open_command}."
+msgstr "Os robôs limpam onde você mandar. Aperte {open_command}."
 
 #: data/objectives.json:objectives[zone].lines
 msgid "Give your robot a hex to work on. It wants a job."
@@ -12380,8 +12380,8 @@ msgid "Something green is waking out there. Plant the first seed."
 msgstr "Algo verde está acordando lá fora. Plante a primeira semente."
 
 #: data/objectives.json:objectives[hex10].desc
-msgid "More clean ground, more room to plant. Robots help: press {open_command}."
-msgstr "Mais chão limpo, mais espaço para plantar. Os robôs ajudam: aperte {open_command}."
+msgid "More clean ground, more room to plant. Robots help."
+msgstr "Mais chão limpo, mais espaço para plantar. Os robôs ajudam."
 
 #: data/objectives.json:objectives[hex10].lines
 msgid "Ten clean hexes. Your robots are learning from you, Lumi."
@@ -12416,8 +12416,8 @@ msgid "Boost the signal tower"
 msgstr "Reforce a torre de sinal"
 
 #: data/objectives.json:objectives[tower2].desc
-msgid "Workbench. A stronger signal lets WREN look further for you."
-msgstr "Bancada. Com um sinal mais forte, a WREN consegue procurar mais longe para você."
+msgid "Workbench. A stronger signal lets WREN look further."
+msgstr "Bancada. Com um sinal mais forte, a WREN consegue procurar mais longe."
 
 #: data/objectives.json:objectives[tower2].lines
 msgid "Boost the tower. With a stronger signal I can look further for you."
@@ -12444,8 +12444,8 @@ msgid "Rebuild the base to level 3"
 msgstr "Reconstrua a base até o nível 3"
 
 #: data/objectives.json:objectives[base3].desc
-msgid "Workbench, Upgrades tab. A stronger base runs bigger machines."
-msgstr "Bancada, aba Melhorias. Uma base mais forte faz funcionar máquinas maiores."
+msgid "Upgrades tab. A stronger base runs bigger machines."
+msgstr "Aba Melhorias. Uma base mais forte faz funcionar máquinas maiores."
 
 #: data/objectives.json:objectives[base3].lines
 msgid "One more base level, Lumi. Bigger machines need a stronger base."
@@ -14432,10 +14432,6 @@ msgstr "A lixeira transforma lixo em cubos."
 #: data/story_reasons.json:goal_reasons
 msgid "Better tools mean more trash in every trip."
 msgstr "Com ferramentas melhores, vai mais lixo em cada viagem."
-
-#: data/story_reasons.json:goal_reasons
-msgid "A tight bale wastes nothing, so it makes more cubes."
-msgstr "Um fardo bem firme não desperdiça nada, então rende mais cubos."
 
 #: data/story_reasons.json:goal_reasons
 msgid "Pressed trash recycles better than loose trash."
@@ -16781,6 +16777,51 @@ msgstr "Aquele pórtico desmanchou a frota do Ledger quando o dinheiro acabou. A
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Um mundo de ferrugem, verde. Os velhos guindastes têm flores aos pés. As contas estão fechadas, {name}. Nós as equilibramos."
+
+#~ msgid "Plants make green light. It fills your Bloom Core, and it's the sign the Cradle looks for."
+#~ msgstr "As plantas fazem luz verde. Ela enche seu Núcleo Floral, e é o sinal que a Cradle procura."
+
+#~ msgid "Its bin turns trash into cubes. Find parts and build a signal tower so we can talk. I'll be [glitch]listen—[/glitch]"
+#~ msgstr "A lixeira dela transforma lixo em cubos. Ache peças e construa uma torre de sinal para a gente conversar. Vou ficar [glitch]ouvin—[/glitch]"
+
+#~ msgid "Fix the old Maker workbench: press  {interact}  at it"
+#~ msgstr "Conserte a velha bancada dos Criadores: aperte  {interact}  perto dela"
+
+#~ msgid "Its bin turns trash into cubes. Build a signal tower with them so we can talk. I'll be [glitch]listen—[/glitch]"
+#~ msgstr "A lixeira dela transforma lixo em cubos. Construa uma torre de sinal com eles para a gente conversar. Vou ficar [glitch]ouvin—[/glitch]"
+
+#~ msgid "The bin turns trash into cubes. The bench builds with cubes."
+#~ msgstr "A lixeira transforma lixo em cubos. A bancada constrói com cubos."
+
+#~ msgid "The Baler presses trash into tight bales. Nothing is wasted, so a bale makes more cubes."
+#~ msgstr "A enfardadeira aperta o lixo em fardos bem firmes. Nada se perde, então um fardo rende mais cubos."
+
+#~ msgid "Press {cube} for a bale and carry it to the scale. Cubes for the signal tower."
+#~ msgstr "Aperte {cube} para fazer um fardo e leve até a balança. Cubos para a torre de sinal."
+
+#~ msgid "Workbench, Build tab. He lights the dark and finds trash you missed."
+#~ msgstr "Bancada, aba Construir. Ele ilumina o escuro e acha o lixo que você deixou passar."
+
+#~ msgid "Plants only grow on clean ground. Pick up every piece in the outline."
+#~ msgstr "As plantas só crescem em chão limpo. Pegue todas as peças dentro do contorno."
+
+#~ msgid "Clear some room around the base. Then robots can start work."
+#~ msgstr "Abra espaço em volta da base. Aí os robôs podem começar a trabalhar."
+
+#~ msgid "Workbench, Upgrades tab. A planet is too big for one small robot."
+#~ msgstr "Bancada, aba Melhorias. Um planeta é grande demais para um robozinho só."
+
+#~ msgid "Robots clean where you point. Press {open_command} and paint hexes."
+#~ msgstr "Os robôs limpam onde você mandar. Aperte {open_command} e pinte hexágonos."
+
+#~ msgid "More clean ground, more room to plant. Robots help: press {open_command}."
+#~ msgstr "Mais chão limpo, mais espaço para plantar. Os robôs ajudam: aperte {open_command}."
+
+#~ msgid "Workbench. A stronger signal lets WREN look further for you."
+#~ msgstr "Bancada. Com um sinal mais forte, a WREN consegue procurar mais longe para você."
+
+#~ msgid "Workbench, Upgrades tab. A stronger base runs bigger machines."
+#~ msgstr "Bancada, aba Melhorias. Uma base mais forte faz funcionar máquinas maiores."
 
 #~ msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 #~ msgstr "Link dos robôs online. Aperte B para o Comando: pinte zonas e mande equipes para onde quiser."

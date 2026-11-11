@@ -15,7 +15,7 @@ func test_every_story_objective_has_a_reason_line() -> void:
 		var why: String = str(def.get("desc", "")).strip_edges()
 		assert_gt(why.length(), 12, "objective %s has a reason line" % id)
 		assert_false(why in HOW_ONLY, "objective %s: the line says more than where to click: %s" % [id, why])
-		assert_true(why.length() <= 96, "objective %s: reason fits the card (%d)" % [id, why.length()])
+		assert_lt(why.length(), 60, "objective %s: the reason is one short line (%d)" % [id, why.length()])
 		if def.has("wait_flag"):
 			assert_gt(str(def.get("hint", "")).length(), 12, "objective %s has a line while it waits" % id)
 		var lines: Array = def.get("lines", [])

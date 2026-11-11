@@ -2046,8 +2046,8 @@ msgid "Space  pause   ·   Esc  skip"
 msgstr "[Šþàçé  þàûšé   ·   Éšç  šķîþ ~~~~~~~]"
 
 #: story/tutorial.gd:10
-msgid "Fix the old Maker workbench: press  {interact}  at it"
-msgstr "[Fîx ţĥé ôļð Màķéŕ ŵôŕķbéñçĥ: þŕéšš  {interact}  àţ îţ ~~~~~~~~~~~~~~~~]"
+msgid "Fix the Makers' old bench: press  {interact}"
+msgstr "[Fîx ţĥé Màķéŕš' ôļð béñçĥ: þŕéšš  {interact} ~~~~~~~~~~~~]"
 
 #: story/tutorial.gd:11
 msgid "Pick up trash: hold  {scoop}"
@@ -12201,24 +12201,24 @@ msgid "The Cradle can't land on a dead world. Let's make Verdance green again."
 msgstr "[Ţĥé Çŕàðļé çàñ'ţ ļàñð ôñ à ðéàð ŵôŕļð. Ļéţ'š màķé Véŕðàñçé ĝŕééñ àĝàîñ. ~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:wren_brief.lines
-msgid "Plants make green light. It fills your Bloom Core, and it's the sign the Cradle looks for."
-msgstr "[Þļàñţš màķé ĝŕééñ ļîĝĥţ. Îţ ƒîļļš ýôûŕ Bļôôm Çôŕé, àñð îţ'š ţĥé šîĝñ ţĥé Çŕàðļé ļôôķš ƒôŕ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Plants make green light. It fills your Bloom Core, and it shows the Cradle the way home."
+msgstr "[Þļàñţš màķé ĝŕééñ ļîĝĥţ. Îţ ƒîļļš ýôûŕ Bļôôm Çôŕé, àñð îţ šĥôŵš ţĥé Çŕàðļé ţĥé ŵàý ĥômé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:brief.lines
 msgid "Lumi, it's WREN, up on the Cradle. Your pod fell by an old cleanup station, and my signal is weak."
 msgstr "[Ļûmî, îţ'š ŴŔÉÑ, ûþ ôñ ţĥé Çŕàðļé. Ýôûŕ þôð ƒéļļ bý àñ ôļð çļéàñûþ šţàţîôñ, àñð mý šîĝñàļ îš ŵéàķ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:brief.lines
-msgid "Its bin turns trash into cubes. Build a signal tower with them so we can talk. I'll be [glitch]listen—[/glitch]"
-msgstr "[Îţš bîñ ţûŕñš ţŕàšĥ îñţô çûbéš. Bûîļð à šîĝñàļ ţôŵéŕ ŵîţĥ ţĥém šô ŵé çàñ ţàļķ. Î'ļļ bé [glitch]ļîšţéñ—[/glitch] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Its bin makes cubes from trash. Find parts, build a signal tower and we can talk. I'll be [glitch]listen—[/glitch]"
+msgstr "[Îţš bîñ màķéš çûbéš ƒŕôm ţŕàšĥ. Fîñð þàŕţš, bûîļð à šîĝñàļ ţôŵéŕ àñð ŵé çàñ ţàļķ. Î'ļļ bé [glitch]ļîšţéñ—[/glitch] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[dump3].text
 msgid "Fill the trash bin 3 times"
 msgstr "[Fîļļ ţĥé ţŕàšĥ bîñ 3 ţîméš ~~~~~~]"
 
 #: data/objectives.json:objectives[dump3].desc
-msgid "The bin turns trash into cubes. The bench builds with cubes."
-msgstr "[Ţĥé bîñ ţûŕñš ţŕàšĥ îñţô çûbéš. Ţĥé béñçĥ bûîļðš ŵîţĥ çûbéš. ~~~~~~~~~~~~~~~~~~]"
+msgid "The bin turns trash into cubes. The bench builds with them."
+msgstr "[Ţĥé bîñ ţûŕñš ţŕàšĥ îñţô çûbéš. Ţĥé béñçĥ bûîļðš ŵîţĥ ţĥém. ~~~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[dump3].lines
 msgid "Start small, Lumi. Every load in the bin earns cubes."
@@ -12252,9 +12252,9 @@ msgstr "[À ŵîðéŕ šçôôþ. Môŕé ţŕàšĥ þéŕ ĝŕàb, ļéšš �
 msgid "Save up for the Baler"
 msgstr "[Šàvé ûþ ƒôŕ ţĥé Bàļéŕ ~~~~]"
 
-#: data/objectives.json:objectives[baler].desc
-msgid "The Baler presses trash into tight bales. Nothing is wasted, so a bale makes more cubes."
-msgstr "[Ţĥé Bàļéŕ þŕéššéš ţŕàšĥ îñţô ţîĝĥţ bàļéš. Ñôţĥîñĝ îš ŵàšţéð, šô à bàļé màķéš môŕé çûbéš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+#: data/objectives.json:objectives[baler].desc data/story_reasons.json:goal_reasons
+msgid "A tight bale wastes nothing, so it makes more cubes."
+msgstr "[À ţîĝĥţ bàļé ŵàšţéš ñôţĥîñĝ, šô îţ màķéš môŕé çûbéš. ~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[baler].lines
 msgid "Save up for the Baler. A tight bale wastes nothing, so it makes far more cubes."
@@ -12265,8 +12265,8 @@ msgid "Sell 3 bales"
 msgstr "[Šéļļ 3 bàļéš ~]"
 
 #: data/objectives.json:objectives[power].desc
-msgid "Press {cube} for a bale and carry it to the scale. Cubes for the signal tower."
-msgstr "[Þŕéšš {cube} ƒôŕ à bàļé àñð çàŕŕý îţ ţô ţĥé šçàļé. Çûbéš ƒôŕ ţĥé šîĝñàļ ţôŵéŕ. ~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Press {cube} for a bale. Cubes for the signal tower."
+msgstr "[Þŕéšš {cube} ƒôŕ à bàļé. Çûbéš ƒôŕ ţĥé šîĝñàļ ţôŵéŕ. ~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[power].lines
 msgid "Carry bales to the scale by the bin. Three of them make plenty of cubes."
@@ -12285,8 +12285,8 @@ msgid "Build the tower, Lumi. Then I can stay with you."
 msgstr "[Bûîļð ţĥé ţôŵéŕ, Ļûmî. Ţĥéñ Î çàñ šţàý ŵîţĥ ýôû. ~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[glim].desc
-msgid "Workbench, Build tab. He lights the dark and finds trash you missed."
-msgstr "[Ŵôŕķbéñçĥ, Bûîļð ţàb. Ĥé ļîĝĥţš ţĥé ðàŕķ àñð ƒîñðš ţŕàšĥ ýôû mîššéð. ~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Build tab. He lights the dark and finds missed trash."
+msgstr "[Bûîļð ţàb. Ĥé ļîĝĥţš ţĥé ðàŕķ àñð ƒîñðš mîššéð ţŕàšĥ. ~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[glim].lines
 msgid "Lumi... something's still holding on to your pod. Small. Lantern-shaped. Patch him up at the bench."
@@ -12297,8 +12297,8 @@ msgid "Clean the glowing hex"
 msgstr "[Çļéàñ ţĥé ĝļôŵîñĝ ĥéx ~~~~]"
 
 #: data/objectives.json:objectives[hex].desc
-msgid "Plants only grow on clean ground. Pick up every piece in the outline."
-msgstr "[Þļàñţš ôñļý ĝŕôŵ ôñ çļéàñ ĝŕôûñð. Þîçķ ûþ évéŕý þîéçé îñ ţĥé ôûţļîñé. ~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Plants only grow on clean ground. Clear the outline."
+msgstr "[Þļàñţš ôñļý ĝŕôŵ ôñ çļéàñ ĝŕôûñð. Çļéàŕ ţĥé ôûţļîñé. ~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[hex].lines
 msgid "First, one clean hex. Clear the outlined one. Green starts on clean ground."
@@ -12317,8 +12317,8 @@ msgid "Two clean hexes. Keep going, Lumi."
 msgstr "[Ţŵô çļéàñ ĥéxéš. Ķééþ ĝôîñĝ, Ļûmî. ~~~~~~~~~]"
 
 #: data/objectives.json:objectives[hex3].desc
-msgid "Clear some room around the base. Then robots can start work."
-msgstr "[Çļéàŕ šômé ŕôôm àŕôûñð ţĥé bàšé. Ţĥéñ ŕôbôţš çàñ šţàŕţ ŵôŕķ. ~~~~~~~~~~~~~~~~~~]"
+msgid "Clear room around the base, so robots can start work."
+msgstr "[Çļéàŕ ŕôôm àŕôûñð ţĥé bàšé, šô ŕôbôţš çàñ šţàŕţ ŵôŕķ. ~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[hex3].lines
 msgid "Three clean hexes. The planet notices, believe me."
@@ -12329,8 +12329,8 @@ msgid "Add a Bot Bay to the bench"
 msgstr "[Àðð à Bôţ Bàý ţô ţĥé béñçĥ ~~~~~~]"
 
 #: data/objectives.json:objectives[bench2].desc
-msgid "Workbench, Upgrades tab. A planet is too big for one small robot."
-msgstr "[Ŵôŕķbéñçĥ, Ûþĝŕàðéš ţàb. À þļàñéţ îš ţôô bîĝ ƒôŕ ôñé šmàļļ ŕôbôţ. ~~~~~~~~~~~~~~~~~~~~]"
+msgid "Upgrades tab. A planet is too big for one small robot."
+msgstr "[Ûþĝŕàðéš ţàb. À þļàñéţ îš ţôô bîĝ ƒôŕ ôñé šmàļļ ŕôbôţ. ~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[bench2].lines
 msgid "Add a Bot Bay to the bench. You shouldn't do this alone."
@@ -12353,8 +12353,8 @@ msgid "Send your robot to work"
 msgstr "[Šéñð ýôûŕ ŕôbôţ ţô ŵôŕķ ~~~~~]"
 
 #: data/objectives.json:objectives[zone].desc
-msgid "Robots clean where you point. Press {open_command} and paint hexes."
-msgstr "[Ŕôbôţš çļéàñ ŵĥéŕé ýôû þôîñţ. Þŕéšš {open_command} àñð þàîñţ ĥéxéš. ~~~~~~~~~~~~~~~~~~~~]"
+msgid "Robots clean where you point. Press {open_command}."
+msgstr "[Ŕôbôţš çļéàñ ŵĥéŕé ýôû þôîñţ. Þŕéšš {open_command}. ~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[zone].lines
 msgid "Give your robot a hex to work on. It wants a job."
@@ -12377,8 +12377,8 @@ msgid "Something green is waking out there. Plant the first seed."
 msgstr "[Šôméţĥîñĝ ĝŕééñ îš ŵàķîñĝ ôûţ ţĥéŕé. Þļàñţ ţĥé ƒîŕšţ šééð. ~~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[hex10].desc
-msgid "More clean ground, more room to plant. Robots help: press {open_command}."
-msgstr "[Môŕé çļéàñ ĝŕôûñð, môŕé ŕôôm ţô þļàñţ. Ŕôbôţš ĥéļþ: þŕéšš {open_command}. ~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "More clean ground, more room to plant. Robots help."
+msgstr "[Môŕé çļéàñ ĝŕôûñð, môŕé ŕôôm ţô þļàñţ. Ŕôbôţš ĥéļþ. ~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[hex10].lines
 msgid "Ten clean hexes. Your robots are learning from you, Lumi."
@@ -12413,8 +12413,8 @@ msgid "Boost the signal tower"
 msgstr "[Bôôšţ ţĥé šîĝñàļ ţôŵéŕ ~~~~~]"
 
 #: data/objectives.json:objectives[tower2].desc
-msgid "Workbench. A stronger signal lets WREN look further for you."
-msgstr "[Ŵôŕķbéñçĥ. À šţŕôñĝéŕ šîĝñàļ ļéţš ŴŔÉÑ ļôôķ ƒûŕţĥéŕ ƒôŕ ýôû. ~~~~~~~~~~~~~~~~~~]"
+msgid "Workbench. A stronger signal lets WREN look further."
+msgstr "[Ŵôŕķbéñçĥ. À šţŕôñĝéŕ šîĝñàļ ļéţš ŴŔÉÑ ļôôķ ƒûŕţĥéŕ. ~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[tower2].lines
 msgid "Boost the tower. With a stronger signal I can look further for you."
@@ -12441,8 +12441,8 @@ msgid "Rebuild the base to level 3"
 msgstr "[Ŕébûîļð ţĥé bàšé ţô ļévéļ 3 ~~~~~~]"
 
 #: data/objectives.json:objectives[base3].desc
-msgid "Workbench, Upgrades tab. A stronger base runs bigger machines."
-msgstr "[Ŵôŕķbéñçĥ, Ûþĝŕàðéš ţàb. À šţŕôñĝéŕ bàšé ŕûñš bîĝĝéŕ màçĥîñéš. ~~~~~~~~~~~~~~~~~~~]"
+msgid "Upgrades tab. A stronger base runs bigger machines."
+msgstr "[Ûþĝŕàðéš ţàb. À šţŕôñĝéŕ bàšé ŕûñš bîĝĝéŕ màçĥîñéš. ~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[base3].lines
 msgid "One more base level, Lumi. Bigger machines need a stronger base."
@@ -14429,10 +14429,6 @@ msgstr "[Ţĥé bîñ ţûŕñš ţŕàšĥ îñţô çûbéš. ~~~~~~~~]"
 #: data/story_reasons.json:goal_reasons
 msgid "Better tools mean more trash in every trip."
 msgstr "[Béţţéŕ ţôôļš méàñ môŕé ţŕàšĥ îñ évéŕý ţŕîþ. ~~~~~~~~~~~~]"
-
-#: data/story_reasons.json:goal_reasons
-msgid "A tight bale wastes nothing, so it makes more cubes."
-msgstr "[À ţîĝĥţ bàļé ŵàšţéš ñôţĥîñĝ, šô îţ màķéš môŕé çûbéš. ~~~~~~~~~~~~~~~]"
 
 #: data/story_reasons.json:goal_reasons
 msgid "Pressed trash recycles better than loose trash."

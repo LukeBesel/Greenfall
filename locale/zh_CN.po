@@ -2047,8 +2047,8 @@ msgid "Space  pause   ·   Esc  skip"
 msgstr "空格  暂停   ·   Esc  跳过"
 
 #: story/tutorial.gd:10
-msgid "Fix the old Maker workbench: press  {interact}  at it"
-msgstr "修理造物者的旧工作台：在它旁边按  {interact}"
+msgid "Fix the Makers' old bench: press  {interact}"
+msgstr "修理造物者的旧工作台：按  {interact}"
 
 #: story/tutorial.gd:11
 msgid "Pick up trash: hold  {scoop}"
@@ -12191,23 +12191,23 @@ msgid "The Cradle can't land on a dead world. Let's make Verdance green again."
 msgstr "Cradle号没法降落在死去的世界上。我们一起让 Verdance 重新变绿吧。"
 
 #: data/objectives.json:wren_brief.lines
-msgid "Plants make green light. It fills your Bloom Core, and it's the sign the Cradle looks for."
-msgstr "植物会发出绿光。绿光能充满你的绽放核心，也是 Cradle号一直在找的信号。"
+msgid "Plants make green light. It fills your Bloom Core, and it shows the Cradle the way home."
+msgstr "植物会发出绿光。绿光能充满你的绽放核心，还能为 Cradle号照亮回家的路。"
 
 #: data/objectives.json:brief.lines
 msgid "Lumi, it's WREN, up on the Cradle. Your pod fell by an old cleanup station, and my signal is weak."
 msgstr "Lumi，我是 WREN，在 Cradle号上。你的逃生舱掉在一座旧清理站旁边，我的信号很弱。"
 
 #: data/objectives.json:brief.lines
-msgid "Its bin turns trash into cubes. Build a signal tower with them so we can talk. I'll be [glitch]listen—[/glitch]"
-msgstr "那里的垃圾桶能把垃圾变成方块。用方块建一座信号塔，我们就能说话了。我会一直[glitch]听着——[/glitch]"
+msgid "Its bin makes cubes from trash. Find parts, build a signal tower and we can talk. I'll be [glitch]listen—[/glitch]"
+msgstr "那里的垃圾桶能把垃圾变成方块。找些零件，建一座信号塔，我们就能说话了。我会一直[glitch]听着——[/glitch]"
 
 #: data/objectives.json:objectives[dump3].text
 msgid "Fill the trash bin 3 times"
 msgstr "往垃圾桶倒 3 次垃圾"
 
 #: data/objectives.json:objectives[dump3].desc
-msgid "The bin turns trash into cubes. The bench builds with cubes."
+msgid "The bin turns trash into cubes. The bench builds with them."
 msgstr "垃圾桶把垃圾变成方块。工作台用方块来建造。"
 
 #: data/objectives.json:objectives[dump3].lines
@@ -12242,9 +12242,9 @@ msgstr "更宽的铲斗。每次抓得更多，走得更少。"
 msgid "Save up for the Baler"
 msgstr "攒钱买打包机"
 
-#: data/objectives.json:objectives[baler].desc
-msgid "The Baler presses trash into tight bales. Nothing is wasted, so a bale makes more cubes."
-msgstr "打包机把垃圾压成结实的捆包。一点也不浪费，所以一个捆包能变出更多方块。"
+#: data/objectives.json:objectives[baler].desc data/story_reasons.json:goal_reasons
+msgid "A tight bale wastes nothing, so it makes more cubes."
+msgstr "结实的捆包一点也不浪费，所以能变出更多方块。"
 
 #: data/objectives.json:objectives[baler].lines
 msgid "Save up for the Baler. A tight bale wastes nothing, so it makes far more cubes."
@@ -12255,8 +12255,8 @@ msgid "Sell 3 bales"
 msgstr "卖掉 3 个捆包"
 
 #: data/objectives.json:objectives[power].desc
-msgid "Press {cube} for a bale and carry it to the scale. Cubes for the signal tower."
-msgstr "按 {cube} 压出捆包，再搬到秤上。为信号塔攒方块。"
+msgid "Press {cube} for a bale. Cubes for the signal tower."
+msgstr "按 {cube} 压出捆包。为信号塔攒方块。"
 
 #: data/objectives.json:objectives[power].lines
 msgid "Carry bales to the scale by the bin. Three of them make plenty of cubes."
@@ -12275,8 +12275,8 @@ msgid "Build the tower, Lumi. Then I can stay with you."
 msgstr "把塔建起来，Lumi。这样我就能一直陪着你。"
 
 #: data/objectives.json:objectives[glim].desc
-msgid "Workbench, Build tab. He lights the dark and finds trash you missed."
-msgstr "工作台，建造页签。他能照亮黑夜，还能找到你漏掉的垃圾。"
+msgid "Build tab. He lights the dark and finds missed trash."
+msgstr "建造页签。他能照亮黑夜，还能找到漏掉的垃圾。"
 
 #: data/objectives.json:objectives[glim].lines
 msgid "Lumi... something's still holding on to your pod. Small. Lantern-shaped. Patch him up at the bench."
@@ -12287,8 +12287,8 @@ msgid "Clean the glowing hex"
 msgstr "清理发光的六角格"
 
 #: data/objectives.json:objectives[hex].desc
-msgid "Plants only grow on clean ground. Pick up every piece in the outline."
-msgstr "植物只在干净的土地上生长。把轮廓里的每一件垃圾都捡起来。"
+msgid "Plants only grow on clean ground. Clear the outline."
+msgstr "植物只在干净的土地上生长。把轮廓里清理干净。"
 
 #: data/objectives.json:objectives[hex].lines
 msgid "First, one clean hex. Clear the outlined one. Green starts on clean ground."
@@ -12307,8 +12307,8 @@ msgid "Two clean hexes. Keep going, Lumi."
 msgstr "两个干净的六角格。继续加油，Lumi。"
 
 #: data/objectives.json:objectives[hex3].desc
-msgid "Clear some room around the base. Then robots can start work."
-msgstr "先把基地周围清出一块地方。这样机器人就能开工了。"
+msgid "Clear room around the base, so robots can start work."
+msgstr "把基地周围清出一块地方，机器人才能开工。"
 
 #: data/objectives.json:objectives[hex3].lines
 msgid "Three clean hexes. The planet notices, believe me."
@@ -12319,8 +12319,8 @@ msgid "Add a Bot Bay to the bench"
 msgstr "给工作台加装机器人舱"
 
 #: data/objectives.json:objectives[bench2].desc
-msgid "Workbench, Upgrades tab. A planet is too big for one small robot."
-msgstr "工作台，升级页签。一颗星球对一个小机器人来说太大了。"
+msgid "Upgrades tab. A planet is too big for one small robot."
+msgstr "升级页签。一颗星球对一个小机器人来说太大了。"
 
 #: data/objectives.json:objectives[bench2].lines
 msgid "Add a Bot Bay to the bench. You shouldn't do this alone."
@@ -12343,8 +12343,8 @@ msgid "Send your robot to work"
 msgstr "派你的机器人去干活"
 
 #: data/objectives.json:objectives[zone].desc
-msgid "Robots clean where you point. Press {open_command} and paint hexes."
-msgstr "你指到哪里，机器人就清理哪里。按 {open_command}，再涂出六角格。"
+msgid "Robots clean where you point. Press {open_command}."
+msgstr "你指到哪里，机器人就清理哪里。按 {open_command}。"
 
 #: data/objectives.json:objectives[zone].lines
 msgid "Give your robot a hex to work on. It wants a job."
@@ -12367,8 +12367,8 @@ msgid "Something green is waking out there. Plant the first seed."
 msgstr "外面有绿色的东西正在醒来。种下第一颗种子吧。"
 
 #: data/objectives.json:objectives[hex10].desc
-msgid "More clean ground, more room to plant. Robots help: press {open_command}."
-msgstr "干净的土地越多，能种的地方就越多。机器人会帮忙：按 {open_command}。"
+msgid "More clean ground, more room to plant. Robots help."
+msgstr "干净的土地越多，能种的地方就越多。机器人会帮忙。"
 
 #: data/objectives.json:objectives[hex10].lines
 msgid "Ten clean hexes. Your robots are learning from you, Lumi."
@@ -12403,8 +12403,8 @@ msgid "Boost the signal tower"
 msgstr "增强信号塔"
 
 #: data/objectives.json:objectives[tower2].desc
-msgid "Workbench. A stronger signal lets WREN look further for you."
-msgstr "工作台。信号越强，WREN 就能帮你看得越远。"
+msgid "Workbench. A stronger signal lets WREN look further."
+msgstr "工作台。信号越强，WREN 就能看得越远。"
 
 #: data/objectives.json:objectives[tower2].lines
 msgid "Boost the tower. With a stronger signal I can look further for you."
@@ -12431,8 +12431,8 @@ msgid "Rebuild the base to level 3"
 msgstr "把基地重建到 3 级"
 
 #: data/objectives.json:objectives[base3].desc
-msgid "Workbench, Upgrades tab. A stronger base runs bigger machines."
-msgstr "工作台，升级页签。基地越强，就能带动越大的机器。"
+msgid "Upgrades tab. A stronger base runs bigger machines."
+msgstr "升级页签。基地越强，就能带动越大的机器。"
 
 #: data/objectives.json:objectives[base3].lines
 msgid "One more base level, Lumi. Bigger machines need a stronger base."
@@ -14419,10 +14419,6 @@ msgstr "垃圾桶把垃圾变成方块。"
 #: data/story_reasons.json:goal_reasons
 msgid "Better tools mean more trash in every trip."
 msgstr "工具越好，每一趟能带走的垃圾就越多。"
-
-#: data/story_reasons.json:goal_reasons
-msgid "A tight bale wastes nothing, so it makes more cubes."
-msgstr "结实的捆包一点也不浪费，所以能变出更多方块。"
 
 #: data/story_reasons.json:goal_reasons
 msgid "Pressed trash recycles better than loose trash."
@@ -16768,6 +16764,51 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Plants make green light. It fills your Bloom Core, and it's the sign the Cradle looks for."
+#~ msgstr "植物会发出绿光。绿光能充满你的绽放核心，也是 Cradle号一直在找的信号。"
+
+#~ msgid "Its bin turns trash into cubes. Find parts and build a signal tower so we can talk. I'll be [glitch]listen—[/glitch]"
+#~ msgstr "那里的垃圾桶能把垃圾变成方块。找些零件，再建一座信号塔，我们就能说话了。我会一直[glitch]听着——[/glitch]"
+
+#~ msgid "Fix the old Maker workbench: press  {interact}  at it"
+#~ msgstr "修理造物者的旧工作台：在它旁边按  {interact}"
+
+#~ msgid "Its bin turns trash into cubes. Build a signal tower with them so we can talk. I'll be [glitch]listen—[/glitch]"
+#~ msgstr "那里的垃圾桶能把垃圾变成方块。用方块建一座信号塔，我们就能说话了。我会一直[glitch]听着——[/glitch]"
+
+#~ msgid "The bin turns trash into cubes. The bench builds with cubes."
+#~ msgstr "垃圾桶把垃圾变成方块。工作台用方块来建造。"
+
+#~ msgid "The Baler presses trash into tight bales. Nothing is wasted, so a bale makes more cubes."
+#~ msgstr "打包机把垃圾压成结实的捆包。一点也不浪费，所以一个捆包能变出更多方块。"
+
+#~ msgid "Press {cube} for a bale and carry it to the scale. Cubes for the signal tower."
+#~ msgstr "按 {cube} 压出捆包，再搬到秤上。为信号塔攒方块。"
+
+#~ msgid "Workbench, Build tab. He lights the dark and finds trash you missed."
+#~ msgstr "工作台，建造页签。他能照亮黑夜，还能找到你漏掉的垃圾。"
+
+#~ msgid "Plants only grow on clean ground. Pick up every piece in the outline."
+#~ msgstr "植物只在干净的土地上生长。把轮廓里的每一件垃圾都捡起来。"
+
+#~ msgid "Clear some room around the base. Then robots can start work."
+#~ msgstr "先把基地周围清出一块地方。这样机器人就能开工了。"
+
+#~ msgid "Workbench, Upgrades tab. A planet is too big for one small robot."
+#~ msgstr "工作台，升级页签。一颗星球对一个小机器人来说太大了。"
+
+#~ msgid "Robots clean where you point. Press {open_command} and paint hexes."
+#~ msgstr "你指到哪里，机器人就清理哪里。按 {open_command}，再涂出六角格。"
+
+#~ msgid "More clean ground, more room to plant. Robots help: press {open_command}."
+#~ msgstr "干净的土地越多，能种的地方就越多。机器人会帮忙：按 {open_command}。"
+
+#~ msgid "Workbench. A stronger signal lets WREN look further for you."
+#~ msgstr "工作台。信号越强，WREN 就能帮你看得越远。"
+
+#~ msgid "Workbench, Upgrades tab. A stronger base runs bigger machines."
+#~ msgstr "工作台，升级页签。基地越强，就能带动越大的机器。"
 
 #~ msgid "Robot uplink online. Press B for Command: paint zones and send crews where you want them."
 #~ msgstr "机器人上行链路上线。按 B 打开指挥：划定区域，把队伍派到你想去的地方。"
