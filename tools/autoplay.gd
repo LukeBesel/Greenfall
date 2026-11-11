@@ -1086,9 +1086,12 @@ func _do_garden(p: Patch) -> bool:
 	# The share holds while the city still has junk; a clean city is all garden (the wider land
 	# round it is cleaned only when there is nothing to tend).
 	if _garden_s > GARDEN_SHARE * (_now() - _garden_open_s) and _pick_focus(p) >= 0 and _city_has_work(_hexes(), false):
-		# Tended enough for now: back to the junk. Seeds piling up are planted anyway: a patch is
-		# one quick action and nothing else turns seeds into regrowth.
-		var h: int = _pick_plant_hex(g) if GameState.get_currency("seeds").to_float() >= SEEDS_PILE else -1
+		# Tended enough for now: back to the junk. Once the city is mostly clean (its first stage),
+		# seeds piling up are planted anyway: a patch is one quick action and nothing else turns
+		# seeds into regrowth. Before that the cleaning is what moves the city on.
+		var d: Districts = _districts()
+		var stage1: bool = d == null or _area_city == "" or d.stage_of(_area_city) >= 1
+		var h: int = _pick_plant_hex(g) if stage1 and GameState.get_currency("seeds").to_float() >= SEEDS_PILE else -1
 		if h >= 0 and _plant_task(p, g, h):
 			_garden_s += _dt
 			return true
