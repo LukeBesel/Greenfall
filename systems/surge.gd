@@ -12,14 +12,14 @@ extends Node
 ## charge while away), and it does not charge while a Surge is running.
 ##
 ##   charge()        0..1
-##   ready()         full and not running: release() will work
+##   can_release()   full and not running: release() will work
 ##   release()       starts the Surge; false when not ready
 ##   active()        a Surge is running; time_left() seconds of it remain
 ##   gauge()         what the Bloom Core gauge shows: the charge, or the Surge draining
 ##
 ## While a Surge runs its effect reaches the game through static calls, so no caller needs the
-## node: Surge.stat_mod(stat, value) from Economy.stat (sweep rate, bite, width, reach) and
-## Surge.chest_pack() for how much chest room the swept waste takes.
+## node: Surge.stat_mod(stat, value) from Economy.stat (sweep rate, bite, width, reach),
+## Surge.chest_pack() for how much chest room the swept waste takes, and Surge.running().
 ##
 ## The player releases with the "surge" action, or on a controller by pressing both zoom buttons
 ## together (every single button already has a job). The bot calls release() itself.
@@ -100,6 +100,11 @@ static func of(world: Node) -> Surge:
 
 # --- Live effect (static) -----------------------------------------------------------------------
 
+## Whether a Surge is running on the planet being played.
+static func running() -> bool:
+	return _live_owner != 0
+
+
 ## A stat of Lumi's with the running Surge applied (unchanged when none runs).
 static func stat_mod(stat_id: String, value: float) -> float:
 	return value * _live.get(stat_id, 1.0)
@@ -178,7 +183,7 @@ func charge() -> float:
 	return _charge
 
 
-func ready() -> bool:
+func can_release() -> bool:
 	return enabled() and _charge >= 1.0 and not active()
 
 
@@ -236,7 +241,7 @@ func add_share(share: float) -> void:
 
 ## Starts the Surge. False when the core is not full or a Surge is already running.
 func release() -> bool:
-	if not ready():
+	if not can_release():
 		return false
 	var n: int = district_n()
 	_charge = 0.0

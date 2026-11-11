@@ -11,6 +11,9 @@ extends Node
 ##   75%  That night the ark is seen as a moving star crossing the sky; afterwards it crosses
 ##        every night.
 ##  100%  The core is full (a line; the ending cinematic belongs to the launch point).
+## The same core is what Lumi's own work charges for a Surge (systems/surge.gd): that charge fills
+## and empties many times an hour and is kept apart from this one; the HUD draws it as the outer arc
+## of the Bloom Core ring.
 ## State: flags.core_charge (float, max so far), flags.core_beats (Array of reached milestones).
 ## Dev: --core-charge=0.6 sets the stored charge; --core-beat=25|50|75|100 plays that beat.
 

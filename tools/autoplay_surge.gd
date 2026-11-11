@@ -21,7 +21,7 @@ func on_charged(now: float) -> void:
 ## Call every frame of play. sweeping: the bot is holding the sweep on waste in reach.
 ## chest_ratio: how full the chest is (0..1). Returns true on the frame it releases a Surge.
 func tick(surge: Surge, sweeping: bool, chest_ratio: float, now: float) -> bool:
-	if surge == null or not surge.ready() or not sweeping or chest_ratio > CHEST_ROOM:
+	if surge == null or not surge.can_release() or not sweeping or chest_ratio > CHEST_ROOM:
 		return false
 	if not surge.release():
 		return false

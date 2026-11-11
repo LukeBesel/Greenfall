@@ -499,9 +499,11 @@ func _handle_scoop(delta: float) -> void:
 			if world.field.piece_alive[e] == 1 and compartment.can_accept(cap) and budget > Pace.PULSE_CRUMB:
 				budget -= _take_piece(e, budget)
 	if took > 0:
-		# The part of this frame past the pulse's time counts toward the next one, so the pulses a
-		# second are the stat's and not the frame rate's rounding of it.
-		_scoop_timer = maxf(_scoop_timer, -delta) + 1.0 / (maxf(stat("scoop_rate"), 0.5) * mastery_bonus)
+		# A Surge's pulses come too fast for whole frames to round well: what this frame ran past
+		# the pulse's time counts toward the next one, so the burst gives the output its numbers
+		# state at any frame rate. Plain sweeping keeps its timing (city pacing is fitted to it).
+		var carry: float = maxf(_scoop_timer, -delta) if Surge.running() else 0.0
+		_scoop_timer = carry + 1.0 / (maxf(stat("scoop_rate"), 0.5) * mastery_bonus)
 
 
 ## Takes up to `max_vol` of a piece into the chest (the whole piece when that is all of it).

@@ -13,10 +13,13 @@ extends Node
 ##   ended      a soft vent of steam and the core back to its own glow
 ## Shake goes through EventBus.shake_requested (the camera honours the Shake setting); Reduced
 ## motion stills the edge glow's rays and drops the flash.
+## Dev: with --surge-demo the game clock stops at the burst's peak (--surge-demo-peak=0.35 seconds
+## after the release), so a slow software render can take its screenshot of that instant.
 
-const CYAN := Color(0.4, 0.92, 1.0)
-const GREEN := Color(0.45, 1.0, 0.6)
-const GOLD := Color(1.0, 0.85, 0.35)
+## Saturated on purpose: the burst is drawn over sunlit ground, where pale light washes out.
+const CYAN := Color(0.05, 0.78, 1.0)
+const GREEN := Color(0.15, 0.95, 0.4)
+const GOLD := Color(1.0, 0.72, 0.1)
 const EDGE_SHADER: Shader = preload("res://art/shaders/surge_edge.gdshader")
 ## Charges whose toast names the release key; after that the gauge's own prompt is enough.
 const HINTS: int = 3
@@ -27,6 +30,7 @@ const RING_S: float = 0.9
 const LAST_TICKS_S: float = 3.0
 const EDGE_STRENGTH: float = 0.55
 const CELL_M: float = PlanetDefinition.CELL_M
+const FLAG_DEMO_PEAK: String = "surge-demo-peak"
 
 var _lumi: Patch
 var _surge: Surge
@@ -36,6 +40,7 @@ var _trail_t: float = 0.0
 var _ring_t: float = 0.0
 var _tick_at: int = 0
 var _trail_i: int = 0
+var _freeze_in: float = -1.0
 
 
 ## The key (or the pad's two buttons) that releases a Surge, for prompts.
@@ -75,6 +80,10 @@ func _exit_tree() -> void:
 
 func _process(delta: float) -> void:
 	_flash = move_toward(_flash, 0.0, delta * 1.6)
+	if _freeze_in >= 0.0:
+		_freeze_in -= delta
+		if _freeze_in < 0.0:
+			Engine.time_scale = 0.0
 	var running: bool = _surge != null and _surge.active()
 	var left: float = _surge.time_left() / maxf(_surge.duration(), 0.001) if running else 0.0
 	_edge.set_shader_parameter("strength", EDGE_STRENGTH * (0.45 + 0.55 * left) if running else 0.0)
@@ -122,14 +131,20 @@ func _on_released(_district_id: String, output: float, wave_rings: int) -> void:
 	_trail_t = 0.0
 	_ring_t = RING_S * 0.5
 	_tick_at = 0
+	if DevHooks.has(Surge.FLAG_DEMO):
+		_freeze_in = DevHooks.get_f(FLAG_DEMO_PEAK, 0.35)
 	if _lumi == null:
 		return
 	var pos: Vector3 = _lumi.global_position
 	var up: Vector3 = _lumi.up()
-	Vfx.pillar(pos, GREEN, 9.0, 1.6)
+	Vfx.pillar(pos, GREEN, 10.0, 1.8)
+	Vfx.pillar(pos, CYAN, 6.0, 1.2)
 	Vfx.ring(pos, 6.0, CYAN, 0.5)
+	Vfx.ring(pos, 6.3, CYAN, 0.5)
 	Vfx.ring(pos, 10.0, GREEN, 0.8)
+	Vfx.ring(pos, 10.4, GREEN, 0.8)
 	Vfx.ring(pos, 14.0, GOLD, 1.1)
+	Vfx.ring(pos, 14.5, GOLD, 1.1)
 	Vfx.burst("big_sparkle", pos + up * 1.0, CYAN, 1.6)
 	Vfx.burst("sparkle", pos + up * 1.4, GOLD, 1.5)
 	# TRANSLATORS: %s is how many times Lumi's sweep output a Surge gives, e.g. 3.2.

@@ -182,11 +182,11 @@ func test_lumis_own_work_charges_the_core(planet_id: StringName = use_parameters
 	var s: Surge = _surge(planet_id)
 	_work(s, 0.5)
 	assert_almost_eq(s.charge(), 0.5, 0.001, "half the units, half the charge")
-	assert_false(s.ready())
+	assert_false(s.can_release())
 	assert_eq(_charged, 0)
 	_work(s, 0.5)
 	assert_almost_eq(s.charge(), 1.0, 0.001)
-	assert_true(s.ready(), "a full core can be released")
+	assert_true(s.can_release(), "a full core can be released")
 	assert_eq(_charged, 1, "the core announces that it filled, once")
 	_work(s, 0.5)
 	assert_eq(s.charge(), 1.0, "a full core takes no more")
@@ -387,7 +387,8 @@ func test_measured_sweep_output_is_at_least_three_times_for_the_whole_surge() ->
 	var s: Surge = _surge(FIRST)
 	var seconds: float = s.duration()
 	var plain: float = _swept(fx, p, seconds)
-	assert_almost_eq(plain / seconds, Pace.pulse_volume() * Economy.stat("scoop_rate"), 0.3, "the plain sweep lifts its stat's worth")
+	var stated: float = Pace.pulse_volume() * Economy.stat("scoop_rate")
+	assert_between(plain / seconds, stated * 0.9, stated * 1.01, "the plain sweep lifts about its stat's worth (whole frames round it down a little)")
 	_fill(s)
 	assert_true(s.release())
 	p._scoop_timer = 0.0
@@ -395,7 +396,8 @@ func test_measured_sweep_output_is_at_least_three_times_for_the_whole_surge() ->
 	var measured: float = surged / plain
 	gut.p("measured Surge output: %.1f units in %.0f s against %.1f plain = %.2fx" % [surged, seconds, plain, measured])
 	assert_gte(measured, SPEC_OUTPUT, "a Surge at least triples what Lumi's sweep lifts, over its whole duration")
-	assert_almost_eq(measured, SurgeRules.output_mult(s.config(), 1), 0.15, "and it is the output the rules state")
+	assert_gte(measured, SurgeRules.output_mult(s.config(), 1) - 0.05, "and no less than the output the rules state")
+	assert_almost_eq(surged / seconds, stated * SurgeRules.output_mult(s.config(), 1), stated * 0.05, "its pulses are not rounded to whole frames")
 	assert_false(s.active(), "the Surge has run out")
 	p._scoop_timer = 0.0
 	var after: float = _swept(fx, p, seconds)
@@ -414,7 +416,8 @@ func test_measured_sweep_follows_any_planets_numbers() -> void:
 	s.release()
 	p._scoop_timer = 0.0
 	var surged: float = _swept(fx, p, seconds, s)
-	assert_almost_eq(surged / plain, SurgeRules.output_mult(s.config(), 1), 0.25, "the dummy planet's own multiplier, with no code change")
+	var stated: float = SurgeRules.output_mult(s.config(), 1)
+	assert_between(surged / plain, stated - 0.1, stated * 1.12, "the dummy planet's own multiplier, with no code change")
 	assert_ne(SurgeRules.output_mult(s.config(), 1), SurgeRules.output_mult(_cfg(FIRST), 1))
 	await _settle()
 
@@ -592,7 +595,7 @@ func test_the_charge_is_saved(planet_id: StringName = use_parameters(PLANETS)) -
 	assert_false(again.active())
 	_fill(again)
 	var full: Surge = _surge(planet_id, JSON.parse_string(JSON.stringify(again.save_state())))
-	assert_true(full.ready(), "a full core is still full after a load")
+	assert_true(full.can_release(), "a full core is still full after a load")
 	assert_eq(_surge(planet_id, {"charge": 7.0}).charge(), 1.0, "a bad save is clamped")
 	assert_eq(_surge(planet_id, {}).charge(), 0.0, "a save from before the Surge starts empty")
 
@@ -652,7 +655,7 @@ func test_the_bot_releases_when_full_and_sweeping_with_room() -> void:
 	_fill(s)
 	assert_false(bot.tick(s, false, 0.0, 2.0), "not sweeping: it keeps the charge")
 	assert_false(bot.tick(s, true, AutoplaySurge.CHEST_ROOM + 0.1, 3.0), "the chest is nearly full: it empties it first")
-	assert_true(s.ready())
+	assert_true(s.can_release())
 	assert_true(bot.tick(s, true, 0.2, 4.0), "sweeping dirty ground with room in the chest: release")
 	assert_true(s.active())
 	assert_false(bot.tick(s, true, 0.2, 5.0))

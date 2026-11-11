@@ -300,7 +300,7 @@ func _draw_level(cx: float, y: float) -> void:
 		draw_circle(c, 1.6, Color(CORE_COL, 0.4 + 0.5 * _core))
 		var gauged: bool = _surge != null and _surge.enabled()
 		var show_pct: float = 1.0 if Settings.hud_mode == Settings.HudMode.FULL else clampf(_core_t / 0.6, 0.0, 1.0)
-		if gauged and (_surge.ready() or _surge.active()):
+		if gauged and (_surge.can_release() or _surge.active()):
 			show_pct = 0.0  # the Surge plate takes the line
 		if show_pct > 0.01:
 			_text(Vector2(c.x - (SURGE_R + 6.0 if gauged else 10.0), y + 5.5), tr("CORE %d%%") % int(floor(_core * 100.0 + 0.001)), 12, Color(CORE_COL, 0.85 * show_pct),
@@ -324,20 +324,20 @@ func _draw_level(cx: float, y: float) -> void:
 ## a full ring with the release key on a plate when ready (green), and a draining arc while the
 ## Surge runs (gold). Shape and words carry it as well as colour.
 func _draw_surge(c: Vector2) -> void:
-	var ready: bool = _surge.ready()
+	var full: bool = _surge.can_release()
 	var running: bool = _surge.active()
 	var f: float = _surge.gauge()
-	var col: Color = SURGE_GOLD if running else (CORE_COL if ready else CYAN)
+	var col: Color = SURGE_GOLD if running else (CORE_COL if full else CYAN)
 	draw_arc(c, SURGE_R, 0.0, TAU, 32, Color(0, 0, 0, 0.35), 4.5, true)
 	draw_arc(c, SURGE_R, 0.0, TAU, 32, Color(1, 1, 1, 0.16), 2.5, true)
 	if f > 0.001:
 		draw_arc(c, SURGE_R, -PI * 0.5, -PI * 0.5 + TAU * f, 32, col, 3.0, true)
-	if not (ready or running):
+	if not (full or running):
 		return
 	var glow: float = 0.5 if Settings.reduced_motion else 0.35 + 0.3 * (0.5 + 0.5 * sin(_t * 5.0))
 	draw_arc(c, SURGE_R + 3.0, 0.0, TAU, 32, Color(col, glow), 1.5, true)
 	var label: String = tr("SURGE")
-	var key: String = SurgeFx.release_glyph() if ready else "%d" % ceili(_surge.time_left())
+	var key: String = SurgeFx.release_glyph() if full else "%d" % ceili(_surge.time_left())
 	var key_w: float = _font.get_string_size(key, HORIZONTAL_ALIGNMENT_LEFT, -1, 16).x
 	var label_w: float = _font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, 16).x
 	var w: float = key_w + label_w + 34.0
