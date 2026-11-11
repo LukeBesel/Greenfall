@@ -3,7 +3,7 @@
   "tiers": [
     {"tier": 1, "name": "Mk I Cradle", "desc": "A compact one-seat glider: pearl hull, swept wings, twin engines and lift fans for vertical take-off.", "cost": {}, "hubs": 3, "countdown_s": 5, "flight_s": 5.0, "recharge_s": 300, "cargo_mult": 1.0, "cargo_period_s": 60},
     {"tier": 2, "name": "Mk II Glide", "desc": "Wing extensions steady the climb: shorter countdown, faster flight, cells refill twice as fast. Cargo pods carry 50% more.", "cost": {"cubes": 8000, "parts": 150}, "hubs": 5, "countdown_s": 3, "flight_s": 3.5, "recharge_s": 150, "cargo_mult": 1.5, "cargo_period_s": 50},
-    {"tier": 3, "name": "Mk III Halo", "desc": "Bigger engines and a new canopy. Cells refill in a minute; cargo pods carry 2.5x, more often.", "cost": {"cubes": 60000, "parts": 400}, "hubs": 99, "countdown_s": 3, "flight_s": 2.5, "recharge_s": 60, "cargo_mult": 2.5, "cargo_period_s": 40},
+    {"tier": 3, "name": "Mk III Halo", "desc": "Bigger engines and a new canopy. Cells refill in a minute; cargo pods carry 2.5x, more often.", "cost": {"cubes": 150000, "parts": 400}, "hubs": 99, "countdown_s": 3, "flight_s": 2.5, "recharge_s": 60, "cargo_mult": 2.5, "cargo_period_s": 40},
     {"tier": 4, "name": "Mk IV Aurora Warp", "desc": "Landing gear, cargo pods and a warp core: instant hops with no recharge. Cargo pods carry 4x, every 30 s.", "requires_research": "rocket_cargo", "cost": {"cubes": 2500000, "parts": 10000}, "hubs": 99, "countdown_s": 2, "flight_s": 1.5, "recharge_s": 0, "cargo_mult": 4.0, "cargo_period_s": 30, "warp": true}
   ]
 }
