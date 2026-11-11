@@ -12,6 +12,11 @@ extends LitterView
 const PER_M2: float = 2.6  # [v1world] was the density for every preset; now PER_M2_Q
 ## [v1world] Pieces a square metre by quality (Low .. Ultra). The flat carpet lays ~20.
 const PER_M2_Q: Array[float] = [8.0, 11.0, 14.0, 14.0]
+## How far a cell's litter shows (m, to the cell's middle): the tinted sheets, and the tiny real
+## items by quality (Low .. Ultra). A 10 cm can past 38 m is a pixel or two at 720p, and the
+## items are most of the carpet's triangles, so Low and Medium drop them sooner.
+const SHEET_RANGE_M: float = 90.0
+const TINY_RANGE_Q: Array[float] = [38.0, 38.0, 60.0, 60.0]
 const HG_N: int = 9  # height grid samples a side over the cell (2.25 m apart)
 const BIN_M: float = 2.0  # [v1world] sweep bins (cell-frame metres)
 const CELL_R: float = 9.0  # placement radius round the cell centre (10 m hexes overlap a little)
@@ -100,7 +105,7 @@ func _process(_delta: float) -> void:
 	var kob: Object = sfield.keep_out.get_object() if sfield.keep_out.is_valid() else null
 	if kob is YardKeepOut:  # [v1world] a copy for the worker (footprints may still be appended on the main thread)
 		var yk: YardKeepOut = kob
-		_job_ctx["ko"] = {"rects": yk.rects.duplicate(), "discs": yk.discs.duplicate(), "inv": yk.xf_inv, "r": yk.radius,
+		_job_ctx["ko"] = {"rects": yk.rects.duplicate(), "discs": yk.discs + yk.soft_discs, "inv": yk.xf_inv, "r": yk.radius,
 			"bins": yk._bins.duplicate(true), "bin_m": YardKeepOut.BIN_M}  # [v3city] the town's footprints, binned
 	_task = WorkerThreadPool.add_task(_job, false, "litter cells")
 
@@ -314,7 +319,7 @@ func _apply_cell(c: int, data: Dictionary) -> void:
 		var mmi := MultiMeshInstance3D.new()
 		mmi.multimesh = mm
 		mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		mmi.visibility_range_end = 90.0 if mm.use_colors else 60.0
+		mmi.visibility_range_end = SHEET_RANGE_M if mm.use_colors else TINY_RANGE_Q[clampi(Settings.quality, 0, 3)]
 		if mm.use_colors:
 			mmi.material_override = _carpet()
 		node.add_child(mmi)

@@ -76,3 +76,45 @@ func test_a_town_site_keeps_its_district_stage_in_range() -> void:
 	assert_eq(site.district_stage, Districts.MAX_STAGE)
 	site.set_district_stage(-1)
 	assert_eq(site.district_stage, 0)
+
+
+func test_a_bare_street_tree_branches_and_carries_leaf_tips() -> void:
+	var shape: Dictionary = OldTownTrees.tree_shape(5519)
+	var mesh: ArrayMesh = shape["mesh"]
+	assert_gt(mesh.get_aabb().size.x, 2.0, "limbs spread: not a plain pole")
+	assert_gt((shape["tips"] as Array).size(), 8, "leaf clusters hang on many branch ends")
+
+
+func test_a_tree_verge_runs_along_its_street_and_holds_the_tree() -> void:
+	var east := Vector2(36.0 + 12.75, 3.0)   # on the east side of block (1, 0): the street runs north-south
+	var r: Rect2 = OldTownGround.verge_rect(east)
+	assert_true(r.has_point(east), "the tree stands in its verge")
+	assert_gt(r.size.y, r.size.x, "longer along the street than across the sidewalk")
+	var south := Vector2(-4.0, 72.0 + 12.75)
+	var r2: Rect2 = OldTownGround.verge_rect(south)
+	assert_true(r2.has_point(south))
+	assert_gt(r2.size.x, r2.size.y)
+
+
+func test_bedding_flowers_are_one_small_mesh_in_strong_colours() -> void:
+	var mesh: ArrayMesh = OldTownFlowers.mesh()
+	assert_lt(mesh.surface_get_array_len(0) / 3, 120, "cheap enough to plant by the thousand")
+	for c: Color in OldTownFlowers.COLOURS:
+		assert_true(c.v > 0.8, "petal colour %s is bright" % c.to_html(false))
+
+
+func test_a_shop_sign_hangs_on_the_street_side_of_its_building() -> void:
+	var f: Dictionary = OldTownShopSigns.front_of(Rect2(10, 20, 11, 6), Vector2(-1, 0))
+	assert_eq(f["c"], Vector2(10, 23), "the middle of the wall that faces west")
+	assert_eq(float(f["width"]), 6.0, "as wide as the building is along that street")
+	var g: Dictionary = OldTownShopSigns.front_of(Rect2(10, 20, 11, 6), Vector2(0, 1))
+	assert_eq(g["c"], Vector2(15.5, 26))
+	assert_eq(float(g["width"]), 11.0)
+
+
+func test_shop_names_are_all_different() -> void:
+	var seen: Dictionary = {}
+	for n: String in OldTownShopSigns.NAMES:
+		seen[n] = true
+	assert_eq(seen.size(), OldTownShopSigns.NAMES.size())
+	assert_gte(OldTownShopSigns.NAMES.size(), OldTownShopSigns.MAX_SIGNS, "no name is painted twice")

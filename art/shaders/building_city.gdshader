@@ -118,7 +118,9 @@ void fragment() {
 			vec2 id = floor(cell);
 			vec2 f = fract(cell);
 			vec2 aa = fwidth(cell) * 0.75;
-			float r = h21(id + vec2(UV.x, UV.y) * 0.013);
+			// The building's own offset, snapped: UV is the same at every vertex of a wall, but its
+			// interpolated value wobbles in the last bits and the hash turned that into speckled panes.
+			float r = h21(id + floor(UV * 64.0 + 0.5) * (0.013 / 64.0));
 			bool shop = (flags & 1) != 0 && id.y < 0.5;
 			bool ribbon = (flags & 2) != 0;
 			vec3 frame = mix(alb, vec3(0.86, 0.84, 0.8), 0.55);
@@ -147,6 +149,7 @@ void fragment() {
 				emit = lit_color * glass * shop_on * 1.6;
 				rough = mix(rough, mix(0.08, 0.6, shutter), glass);
 				spec = mix(spec, 0.6, glass * (1.0 - shutter));
+				nm = mix(nm, vec3(0.5, 0.5, 1.0), glass);  // glass is flat: the wall's brick bumps sparkled in it
 			} else {
 				float wx0 = ribbon ? 0.03 : 0.24;
 				float wx1 = ribbon ? 0.97 : 0.76;
@@ -184,6 +187,7 @@ void fragment() {
 				alb = mix(alb, g, win);
 				rough = mix(rough, gr, win);
 				spec = mix(spec, 0.65, win * step(gr, 0.2));
+				nm = mix(nm, vec3(0.5, 0.5, 1.0), win);  // as the shop glass: no brick bumps in a pane
 				// Grime streaks under windows.
 				float streak = band(f.x, wx0 + 0.04, wx1 - 0.04, aa.x) * (1.0 - smoothstep(0.0, 0.26, f.y)) * 0.3 * h21(id + 3.0);
 				alb *= 1.0 - streak * (1.0 - win);

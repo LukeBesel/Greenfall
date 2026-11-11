@@ -8,9 +8,16 @@ extends Node
 ##     --resolution 1280x720 res://tools/world_audit/world_shot.tscn -- --fresh --no-intro \
 ##     --quality=1 --no-hud --orbit-spawn=x,z,yaw --shot=PATH --shot-delay=S --quit-after=S
 ## Extra flags: --shot-cam=dist,pitch (follow camera distance in m and pitch in radians, set
-## after the build), --shot-height=M (command view height past the game's 400 m zoom limit).
+## after the build), --shot-height=M (command view height past the game's 400 m zoom limit),
+## --town-stage=N (the towns' own look for district stage N, through TownSite.set_district_stage:
+## lights, trees, paving and planting only. No hex changes, so nothing is cleaned and stage 5 does
+## not start the ending; pair it with --district-stage=ID:4 for a clean, fully restored town).
 
 const FAST_SLICE_US: int = 1500000
+const FLAG_TOWN_STAGE: String = "town-stage"
+const TOWN_STAGE_EVERY: int = 5  # frames between looks for towns that came up since
+
+var _frame: int = 0
 
 
 func _ready() -> void:
@@ -35,3 +42,17 @@ func _process(_delta: float) -> void:
 	if b and b.play_slice_us > 0 and b.play_slice_us < FAST_SLICE_US:
 		b.play_slice_us = FAST_SLICE_US
 		b.set("_slice_us", FAST_SLICE_US)
+	_frame += 1
+	if DevHooks.has(FLAG_TOWN_STAGE) and _frame % TOWN_STAGE_EVERY == 0 and get_tree().current_scene:
+		_set_town_stage(get_tree().current_scene, int(DevHooks.get_f(FLAG_TOWN_STAGE, 0.0)))
+
+
+## Every town under `n` takes the look of district stage `stage` (towns build in play, so this
+## runs again and again; a town already at the stage is left alone).
+func _set_town_stage(n: Node, stage: int) -> void:
+	if n is TownSite:
+		if (n as TownSite).district_stage != stage:
+			(n as TownSite).set_district_stage(stage)
+		return
+	for c: Node in n.get_children():
+		_set_town_stage(c, stage)

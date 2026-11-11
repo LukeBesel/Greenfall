@@ -10,7 +10,10 @@ extends Node3D
 ##                  house with a standpipe tower and a burst main fountaining over a flooded
 ##                  forecourt. set_source_state("broken" | "shut_down") switches it.
 ##   market         striped stalls along the main street
-##   street trees   dead at the start, in leaf from stage 3, flowers round them at stage 5
+##   street trees   OldTownTrees: bare at the start, in leaf from stage 3, blossom at stage 5
+##   burst main     OldTownBurst: the jet, its spray and the flooded forecourt, or the cap
+##   ground         OldTownGround: paving, lawns, shrubs and flower borders from stage 3
+##   shop names     OldTownShopSigns: painted name boards on the way from the yard to the pump house
 ##   lake edge      a scum film along the shore until stage 4, reeds after
 ##   set_stage(0-5) the town's own regrowth: shop lights and lit rooms, clean signs, lamp heads,
 ##                  trees, the lake edge (VerdanceSite wires it to EventBus.district_stage_changed)
@@ -53,17 +56,16 @@ var station_key := Vector2i(999, 999)
 var station_rects: Array[Rect2] = []   # solid footprints (junk and furniture keep off)
 var station_at := Vector3.ZERO         # the burst main
 var stats: Dictionary = {}
+var trees: OldTownTrees
+var ground: OldTownGround
+var tree_spots: Array[Vector2] = []
 
 var _site: VerdanceSite
 var _body: StaticBody3D
-var _canopy: MultiMeshInstance3D
-var _canopy_xf: Array[Transform3D] = []
-var _flowers: MultiMeshInstance3D
 var _lamp_glow: MultiMeshInstance3D
 var _scum: MultiMeshInstance3D
 var _reeds: MultiMeshInstance3D
-var _broken: Node3D      # the fountain, the flood, the barriers' beacon
-var _shut: Node3D        # the cap and the drained forecourt
+var burst_main: OldTownBurst  # the jet and the flood, or the cap and the damp ground
 var _sign: Label3D
 var _beacon: StandardMaterial3D
 var _t: float = 0.0
@@ -117,6 +119,10 @@ func plan(site: VerdanceSite) -> bool:
 		var c: Vector2 = r.get_center()
 		station_rects = [Rect2(c + Vector2(-10.5, -10.4), Vector2(16.5, 12.4)), Rect2(c + Vector2(6.3, -9.2), Vector2(4.6, 4.6))]
 		station_at = Vector3(c.x + 2.6, 0.0, c.y + 9.4)
+		var ko: YardKeepOut = site.globe_ctx.get("keep_out") as YardKeepOut
+		if ko:  # the flood shows from the start: loose junk keeps off the water
+			for d: Vector3 in OldTownBurst.KEEP_OFF:
+				ko.add_soft_disc(station_at.x + d.x, station_at.z + d.y, d.z)
 		return true
 	return false
 
@@ -139,6 +145,18 @@ func build(site: VerdanceSite) -> void:
 	_build_roofs()
 	await BuildBudget.check("oldtown:trees")
 	_build_trees()
+	await BuildBudget.check("oldtown:ground")
+	ground = OldTownGround.new()
+	ground.name = "Ground"
+	add_child(ground)
+	ground.build(_site, station_key, station_rects + _rects, tree_spots)
+	stats.merge(ground.stats)
+	await BuildBudget.check("oldtown:signs")
+	var signs := OldTownShopSigns.new()
+	signs.name = "ShopSigns"
+	add_child(signs)
+	signs.build(_site, Vector2(station_at.x, station_at.z), StreetDressing.NEAR_R, _site.seed_value + 3391)
+	stats["shop_signs"] = signs.count
 	await BuildBudget.check("oldtown:lamps")
 	_build_lamp_glow()
 	await BuildBudget.check("oldtown:shore")
@@ -179,15 +197,10 @@ func set_stage(s: int) -> void:
 			m.set_shader_parameter("sign_clean", clean)
 	if _lamp_glow:
 		_lamp_glow.visible = stage >= 2
-	if _canopy:
-		_canopy.visible = stage >= 3
-		var grow: float = [0.0, 0.0, 0.0, 0.62, 0.86, 1.0][stage]
-		var mm: MultiMesh = _canopy.multimesh
-		for i: int in _canopy_xf.size():
-			var xf: Transform3D = _canopy_xf[i]
-			mm.set_instance_transform(i, Transform3D(xf.basis.scaled(Vector3.ONE * grow), xf.origin))
-	if _flowers:
-		_flowers.visible = stage >= 5
+	if trees:
+		trees.set_stage(stage)
+	if ground:
+		ground.set_stage(stage)
 	if _scum:
 		_scum.visible = stage < 4
 	if _reeds:
@@ -200,12 +213,8 @@ func set_stage(s: int) -> void:
 func set_source_state(state: String) -> void:
 	source_state = STATE_SHUT_DOWN if state == STATE_SHUT_DOWN else STATE_BROKEN
 	var broken: bool = source_state == STATE_BROKEN
-	if _broken:
-		_broken.visible = broken
-		for p: Node in _broken.find_children("*", "CPUParticles3D", true, false):
-			(p as CPUParticles3D).emitting = broken
-	if _shut:
-		_shut.visible = not broken
+	if burst_main:
+		burst_main.set_broken(broken)
 	if _beacon:
 		_beacon.albedo_color = Color(1.0, 0.55, 0.1) if broken else Color(0.3, 1.0, 0.5)
 		_beacon.emission = _beacon.albedo_color
@@ -250,6 +259,13 @@ static func _vc_material(rough: float = 0.85) -> StandardMaterial3D:
 
 
 func _mmi(nm: String, mesh: Mesh, xfs: Array[Transform3D], cols: Array[Color], mat: Material, shadows: bool, range_m: float) -> MultiMeshInstance3D:
+	stats[nm] = xfs.size()
+	return mmi_on(self, nm, mesh, xfs, cols, mat, shadows, range_m)
+
+
+## One MultiMesh under `parent`: per-instance colours when `cols` has them, hidden past `range_m`.
+static func mmi_on(parent: Node3D, nm: String, mesh: Mesh, xfs: Array[Transform3D], cols: Array[Color], mat: Material, shadows: bool,
+		range_m: float) -> MultiMeshInstance3D:
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_3D
 	mm.use_colors = not cols.is_empty()
@@ -268,8 +284,7 @@ func _mmi(nm: String, mesh: Mesh, xfs: Array[Transform3D], cols: Array[Color], m
 	mi.visibility_range_end = range_m
 	mi.visibility_range_end_margin = 30.0
 	mi.set_meta("no_collide", true)
-	add_child(mi)
-	stats[nm] = xfs.size()
+	parent.add_child(mi)
 	return mi
 
 
@@ -440,158 +455,11 @@ func _build_station() -> void:
 	lamp.position = post + Vector3(0, 3.3, 0)
 	lamp.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(lamp)
-	_build_burst(burst)
-
-
-## The broken state's water (fountain column, falling spray, mist, the flooded forecourt) and the
-## shut-down state's cap and damp ground, as two groups set_source_state switches.
-func _build_burst(burst: Vector3) -> void:
-	_broken = Node3D.new()
-	_broken.name = "BurstMain"
-	add_child(_broken)
-	_shut = Node3D.new()
-	_shut.name = "CappedMain"
-	add_child(_shut)
-	var top: Vector3 = burst + Vector3(0, 1.6, 0)
-	# The water column: a soft unshaded cone that widens as it climbs, so the jet reads from the
-	# yard and from above even when few particles are in view.
-	var col := MeshInstance3D.new()
-	col.name = "Column"
-	var cm := CylinderMesh.new()
-	cm.height = 15.0
-	cm.bottom_radius = 0.7
-	cm.top_radius = 2.8
-	cm.radial_segments = 12
-	cm.rings = 6
-	cm.cap_top = false
-	cm.cap_bottom = false
-	var wm := StandardMaterial3D.new()
-	wm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	wm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	wm.cull_mode = BaseMaterial3D.CULL_DISABLED
-	wm.albedo_color = Color(0.9, 0.97, 1.0, 0.8)
-	wm.albedo_texture = _streak_tex()
-	wm.uv1_scale = Vector3(3.0, 1.0, 1.0)
-	cm.material = wm
-	col.mesh = cm
-	col.position = top + Vector3(0, 7.5, 0)
-	col.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	col.set_meta("no_collide", true)
-	_broken.add_child(col)
-	var soft: Texture2D = EscapePod._soft_tex()
-	_broken.add_child(_spray("Jet", top, soft, 150, 3.5, Vector3(0, 1, 0), 9.0, 16.0, 19.5, Vector3(0, -9.8, 0), 1.2, 3.2, Color(0.95, 0.98, 1.0, 0.9)))
-	_broken.add_child(_spray("Crown", top + Vector3(0, 14.5, 0), soft, 60, 2.8, Vector3(0, 1, 0), 75.0, 2.5, 6.0, Vector3(0, -9.8, 0), 2.0, 5.0, Color(0.95, 0.98, 1.0, 0.7)))
-	_broken.add_child(_spray("Mist", burst + Vector3(0, 0.6, 0), soft, 36, 4.5, Vector3(0, 1, 0), 80.0, 1.0, 2.4, Vector3(0.3, 0.3, 0.1), 3.5, 7.0, Color(1.0, 1.0, 1.0, 0.45)))
-	# The flood: a shallow sheet over the forecourt and the junction, and a wet rim round it.
-	var flood_m := StandardMaterial3D.new()
-	flood_m.albedo_color = Color(0.16, 0.42, 0.5, 0.78)
-	flood_m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	flood_m.roughness = 0.06
-	flood_m.metallic = 0.25
-	flood_m.specular_mode = BaseMaterial3D.SPECULAR_SCHLICK_GGX
-	_broken.add_child(_puddle("Flood", burst + Vector3(-1.0, 0.085, 2.5), 13.5, 0.72, 5, flood_m))
-	var damp := StandardMaterial3D.new()
-	damp.albedo_color = Color(0.1, 0.09, 0.08, 0.45)
-	damp.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	damp.roughness = 0.35
-	_broken.add_child(_puddle("Wet", burst + Vector3(-1.0, 0.07, 2.5), 17.0, 0.75, 9, damp))
-	_shut.add_child(_puddle("Damp", burst + Vector3(-1.0, 0.07, 2.5), 11.0, 0.7, 5, damp))
-	var cap := BuildingDetail.Geo.new()
-	cap.mat(BuildingDetail.K_METAL, Color(0.93, 0.68, 0.1))
-	cap.cyl(Transform3D(Basis(Vector3.RIGHT, PI * 0.5), burst + Vector3(0, 1.5, -0.6)), 0.74, 0.74, 0.5, 14)
-	cap.mat(BuildingDetail.K_METAL, Color(0.78, 0.8, 0.8))
-	cap.cyl(Transform3D(Basis(Vector3.RIGHT, PI * 0.5), burst + Vector3(0, 1.5, -0.9)), 0.82, 0.82, 0.14, 14)
-	var cmi := MeshInstance3D.new()
-	cmi.name = "Cap"
-	cmi.mesh = cap.mesh()
-	cmi.material_override = material(false)
-	cmi.set_meta("no_collide", true)
-	_shut.add_child(cmi)
-
-
-static var _streak: GradientTexture2D
-
-
-## Vertical white streaks fading at the top and bottom: the column's falling-water look.
-static func _streak_tex() -> Texture2D:
-	if _streak == null:
-		var gr := Gradient.new()
-		gr.set_color(0, Color(1, 1, 1, 0.0))
-		gr.add_point(0.18, Color(1, 1, 1, 1.0))
-		gr.add_point(0.7, Color(1, 1, 1, 0.8))
-		gr.set_color(gr.get_point_count() - 1, Color(1, 1, 1, 0.0))
-		_streak = GradientTexture2D.new()
-		_streak.gradient = gr
-		_streak.fill_from = Vector2(0, 1)
-		_streak.fill_to = Vector2(0, 0)
-		_streak.width = 8
-		_streak.height = 64
-	return _streak
-
-
-func _spray(nm: String, at: Vector3, tex: Texture2D, amount: int, life: float, dir: Vector3, spread: float, v0: float, v1: float,
-		grav: Vector3, s0: float, s1: float, col: Color) -> CPUParticles3D:
-	var p := CPUParticles3D.new()
-	p.name = nm
-	var q := QuadMesh.new()
-	q.size = Vector2(1.0, 1.0)
-	var m := StandardMaterial3D.new()
-	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	m.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
-	m.vertex_color_use_as_albedo = true
-	m.albedo_texture = tex
-	m.disable_receive_shadows = true
-	q.material = m
-	p.mesh = q
-	p.amount = amount
-	p.lifetime = life
-	p.preprocess = life
-	p.local_coords = true  # gravity is the site's "down", not the world's
-	p.direction = dir
-	p.spread = spread
-	p.initial_velocity_min = v0
-	p.initial_velocity_max = v1
-	p.gravity = grav
-	p.scale_amount_min = s0
-	p.scale_amount_max = s1
-	p.color = col
-	var ramp := Gradient.new()
-	ramp.set_color(0, Color(1, 1, 1, 0.0))
-	ramp.add_point(0.12, Color(1, 1, 1, 1.0))
-	ramp.set_color(ramp.get_point_count() - 1, Color(1, 1, 1, 0.0))
-	p.color_ramp = ramp
-	p.position = at
-	p.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	p.visibility_aabb = AABB(Vector3(-12, -4, -12), Vector3(24, 26, 24))
-	return p
-
-
-## A flat irregular pool: a fan round `at`, radius `r` wobbling by a few lobes, squashed along z.
-func _puddle(nm: String, at: Vector3, r: float, squash: float, lobes: int, mat: Material) -> MeshInstance3D:
-	var st := SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var n: int = 40
-	var ring: Array[Vector3] = []
-	for i: int in n:
-		var a: float = TAU * float(i) / float(n)
-		var rr: float = r * (0.8 + 0.14 * sin(a * float(lobes) + 1.3) + 0.08 * sin(a * float(lobes * 2 + 1)))
-		var q := Vector3(cos(a) * rr, 0.0, sin(a) * rr * squash)
-		if _site._wet(at.x + q.x, at.z + q.z):
-			q *= 0.55
-		ring.append(q)
-	for i: int in n:
-		for v: Vector3 in [Vector3.ZERO, ring[(i + 1) % n], ring[i]]:
-			st.set_normal(Vector3.UP)
-			st.add_vertex(v)
-	var mi := MeshInstance3D.new()
-	mi.name = nm
-	mi.mesh = st.commit()
-	mi.material_override = mat
-	mi.position = at
-	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	mi.set_meta("no_collide", true)
-	return mi
+	burst_main = OldTownBurst.new()
+	burst_main.name = "Burst"
+	burst_main.position = burst
+	add_child(burst_main)
+	burst_main.build(material(false))
 
 
 # --- The market -----------------------------------------------------------------------------------
@@ -792,8 +660,8 @@ static func _shade_mesh() -> ArrayMesh:
 
 # --- Street trees ---------------------------------------------------------------------------------
 
-## Street trees in the kerb strip of every block: bare and dead at the start (one MultiMesh of
-## trunks and limbs), a canopy that set_stage shows and grows from stage 3, flowers at stage 5.
+## Street trees in the kerb strip of every block (OldTownTrees): bare at the start, in leaf from
+## stage 3, in blossom with flowers at their feet at stage 5.
 func _build_trees() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = _site.seed_value + 3301
@@ -823,121 +691,11 @@ func _build_trees() -> void:
 					blocked.append(p)
 	if spots.is_empty():
 		return
-	var trunks: Array[Transform3D] = []
-	var gaz: Array[Mesh] = PlantParts.variants("flower_gazania", 400)
-	var blooms: Array[Transform3D] = []
-	var leaf_cols: Array[Color] = []
-	for p: Vector2 in spots:
-		var s: float = rng.randf_range(0.85, 1.25)
-		var xf := Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(s, s * rng.randf_range(0.9, 1.15), s)), _v3(p, 0.02))
-		trunks.append(xf)
-		var green := Color(0.13, 0.36, 0.1).lerp(Color(0.3, 0.44, 0.1), rng.randf())
-		for k: int in 6:
-			var a: float = TAU * float(k) / 5.0 + rng.randf()
-			var off := Vector3(cos(a) * 1.25, 4.4 + rng.randf_range(-0.6, 0.8), sin(a) * 1.25) * s
-			if k == 5:
-				off = Vector3(0, 5.7 * s, 0)
-			var cs := Vector3(rng.randf_range(2.2, 3.0), rng.randf_range(1.5, 2.1), rng.randf_range(2.2, 3.0)) * s
-			var cb: Basis = Basis.from_euler(Vector3(rng.randf_range(-0.4, 0.4), rng.randf() * TAU, rng.randf_range(-0.4, 0.4))) * Basis.from_scale(cs)
-			_canopy_xf.append(Transform3D(cb, _v3(p) + off))
-			leaf_cols.append(green.lightened(rng.randf_range(-0.08, 0.14)))
-		for k2: int in 3:
-			var a2: float = rng.randf() * TAU
-			blooms.append(Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3.ONE * rng.randf_range(1.3, 1.9)), _v3(p, 0.03) + Vector3(cos(a2), 0, sin(a2)) * rng.randf_range(0.45, 0.8)))
-		PropColliders.add_cyl(_body, _v3(p), 0.16, 2.6)
-	var bark := StandardMaterial3D.new()
-	bark.vertex_color_use_as_albedo = true
-	bark.roughness = 1.0
-	_mmi("StreetTrees", _dead_tree_mesh(), trunks, [], bark, true, 300.0)
-	var leaf := StandardMaterial3D.new()
-	leaf.vertex_color_use_as_albedo = true
-	leaf.roughness = 0.9
-	leaf.backlight_enabled = true
-	leaf.backlight = Color(0.18, 0.26, 0.05)
-	_canopy = _mmi("TreeCanopy", _clump_mesh(), _canopy_xf, leaf_cols, leaf, true, 300.0)
-	if not gaz.is_empty():
-		_flowers = _mmi("TreeFlowers", gaz[0], blooms, [], null, false, 260.0)
-
-
-## One clump of a street tree's crown, a metre across: a lumpy ball (each vertex pushed in or out
-## by a hash of its direction) shaded darker underneath, so six of them make an uneven crown.
-static func _clump_mesh() -> ArrayMesh:
-	var st := SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var rings: int = 8
-	var segs: int = 14
-	var pt := func(i: int, j: int) -> Vector3:
-		var th: float = PI * float(i) / float(rings)
-		var ph: float = TAU * float(j % segs) / float(segs)
-		var d := Vector3(sin(th) * cos(ph), cos(th), sin(th) * sin(ph))
-		var bump: float = 0.0 if i == 0 or i == rings else float(hash([i, j % segs]) % 1000) / 1000.0
-		return d * (0.44 + 0.07 * bump)
-	for i: int in rings:
-		for j: int in segs:
-			var quad: Array[Vector3] = [pt.call(i, j), pt.call(i, j + 1), pt.call(i + 1, j + 1), pt.call(i + 1, j)]
-			for idx: int in [0, 1, 2, 0, 2, 3]:
-				var v: Vector3 = quad[idx]
-				var shade: float = clampf(0.62 + v.y * 1.0, 0.45, 1.0)
-				st.set_color(Color(shade, shade, shade))
-				st.set_normal(v.normalized())
-				st.add_vertex(v)
-	return st.commit()
-
-
-## A bare street tree: a tapered trunk that forks four times into limbs, branches and twigs
-## (smooth six-sided limbs, each fork thinner and lighter than its parent).
-static func _dead_tree_mesh() -> ArrayMesh:
-	var st := SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var rng := RandomNumberGenerator.new()
-	rng.seed = 5519
-	var col := Color(0.3, 0.26, 0.23)
-	_limb(st, Vector3.ZERO, Vector3(0.04, 1.6, 0.02), 0.17, 0.13, col)
-	_limb(st, Vector3(0.04, 1.6, 0.02), Vector3(-0.03, 3.1, 0.0), 0.13, 0.1, col)
-	var forks: Array = [[Vector3(-0.03, 3.1, 0.0), Vector3(0.0, 1.0, 0.0), 0.1, 4]]
-	while not forks.is_empty():
-		var f: Array = forks.pop_back()
-		var at: Vector3 = f[0]
-		var dir: Vector3 = f[1]
-		var r: float = f[2]
-		var depth: int = f[3]
-		var kids: int = 3 if depth >= 3 else 2
-		var a0: float = rng.randf() * TAU
-		for k: int in kids:
-			var a: float = a0 + TAU * (float(k) / float(kids)) + rng.randf_range(-0.4, 0.4)
-			var tilt: float = rng.randf_range(0.35, 0.75)
-			var side := Vector3(cos(a), 0.0, sin(a))
-			var d: Vector3 = (dir * cos(tilt) + side * sin(tilt)).normalized()
-			d = (d + Vector3.UP * 0.3).normalized()
-			var length: float = rng.randf_range(0.7, 1.25) * (0.45 + 0.2 * float(depth))
-			var kr: float = r * (0.62 if k > 0 else 0.74)
-			var mid: Vector3 = at + d * length * 0.5 + side * rng.randf_range(-0.06, 0.06)
-			var e: Vector3 = at + d * length + Vector3(0, rng.randf_range(0.0, 0.12), 0)
-			var c2: Color = col.lightened(0.05 * float(4 - depth))
-			if depth <= 2:  # twigs: one straight piece, three sides
-				_limb(st, at, e, r * 0.92, kr * 0.55, c2, 3)
-			else:
-				_limb(st, at, mid, r * 0.92, (r * 0.92 + kr * 0.55) * 0.5, c2)
-				_limb(st, mid, e, (r * 0.92 + kr * 0.55) * 0.5, kr * 0.55, c2)
-			if depth > 1:
-				forks.append([e, (e - mid).normalized(), kr * 0.6, depth - 1])
-	return st.commit()
-
-
-static func _limb(st: SurfaceTool, a: Vector3, b: Vector3, r0: float, r1: float, col: Color, sides: int = 6) -> void:
-	var d: Vector3 = (b - a).normalized()
-	var x: Vector3 = d.cross(Vector3.RIGHT if absf(d.x) < 0.8 else Vector3.FORWARD).normalized()
-	var z: Vector3 = d.cross(x).normalized()
-	for i: int in sides:
-		var a0: float = TAU * float(i) / float(sides)
-		var a1: float = TAU * float(i + 1) / float(sides)
-		var n0: Vector3 = x * cos(a0) + z * sin(a0)
-		var n1: Vector3 = x * cos(a1) + z * sin(a1)
-		var quad: Array = [[a + n0 * r0, n0], [b + n0 * r1, n0], [b + n1 * r1, n1], [a + n1 * r0, n1]]
-		for idx: int in [0, 1, 2, 0, 2, 3]:
-			st.set_color(col)
-			st.set_normal(quad[idx][1])
-			st.add_vertex(quad[idx][0])
+	trees = OldTownTrees.new()
+	trees.name = "Trees"
+	add_child(trees)
+	trees.build(spots, _site.seed_value + 3307, _body, stats)
+	tree_spots = spots
 
 
 # --- Lamps ----------------------------------------------------------------------------------------
@@ -1009,6 +767,6 @@ func _build_shore() -> void:
 		fm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 		fm.roughness = 0.6
 		_scum = _mmi("ShoreScum", disc.commit(), film, [], fm, false, 260.0)
-	var grass: Array[Mesh] = PlantParts.variants("leafy_grass", 500)
+	var grass: Array[Mesh] = PlantParts.variants("grass_medium_02", 300)
 	if not reed.is_empty() and not grass.is_empty():
 		_reeds = _mmi("ShoreReeds", grass[0], reed, [], null, false, 200.0)
