@@ -23,6 +23,14 @@ uniform sampler2D nrm_concrete : hint_normal, filter_linear_mipmap_anisotropic, 
 uniform sampler2D tex_roof : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D tex_roof2 : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 
+// [v6life] Streets wake up per block (planet/sites/town_life.gd): one texel per city block, R share
+// of windows lit at dusk, G how clean the block is (grime fades, colour returns), B stage / 3
+// (1: shop windows lit too). life_flat is used where there is no block map (the outskirts).
+uniform sampler2D life_tex : filter_nearest;
+uniform float life_on = 0.0;
+uniform vec3 life_flat = vec3(0.0);
+uniform float life_night = 0.0;
+
 const float FLOOR_H = 3.0;
 const float BAY = 3.0;
 
@@ -102,6 +110,11 @@ void fragment() {
 	float rough = 0.9;
 	float metal = 0.0;
 	float spec = 0.4;
+	vec3 life = life_flat;  // [v6life]
+	if (life_on > 0.5) {
+		life = texture(life_tex, (floor(wp.xz / 36.0 + 0.5) + 8.5) / 16.0).rgb;
+	}
+	vec3 emi = vec3(0.0);
 
 	if (kind == 0 || kind == 1) {
 		// Facade (with windows) or plain wall.
@@ -129,6 +142,10 @@ void fragment() {
 				alb = mix(alb, sign_c, sign_b);
 				rough = mix(rough, mix(0.08, 0.6, shutter), glass);
 				spec = mix(spec, 0.6, glass * (1.0 - shutter));
+				// [v6life] An awake, planted block: the open shops are lit inside and their sign bands glow.
+				float open_k = smoothstep(0.8, 1.0, life.b) * life_night;
+				emi += vec3(1.0, 0.8, 0.52) * glass * (1.0 - shutter) * open_k * (0.55 + 0.35 * smoothstep(0.1, 0.6, f.y));
+				emi += sign_c * sign_b * open_k * 0.5;
 			} else {
 				float wx0 = ribbon ? 0.03 : 0.24;
 				float wx1 = ribbon ? 0.97 : 0.76;
@@ -163,17 +180,22 @@ void fragment() {
 				alb = mix(alb, g, win);
 				rough = mix(rough, gr, win);
 				spec = mix(spec, 0.65, win * step(gr, 0.2));
+				// [v6life] Windows glow at dusk, more of them as the block wakes (each has its own
+				// threshold, so they come on one by one); boarded and blown-out ones stay dark.
+				float lit = step(1.0 - life.r, h21(id + 11.0 + vec2(UV.x, UV.y) * 0.013)) * step(0.13, r) * life_night;
+				vec3 wc = mix(vec3(1.0, 0.72, 0.36), vec3(0.75, 0.86, 1.0), step(0.86, h21(id + 4.4)));
+				emi += wc * win * lit * mix(1.1, 0.6, step(0.8, r)) * (0.75 + 0.25 * smoothstep(0.0, 0.3, wy1 - f.y));
 				// Grime streaks under windows.
-				float streak = band(f.x, wx0 + 0.04, wx1 - 0.04, aa.x) * (1.0 - smoothstep(0.0, 0.26, f.y)) * 0.3 * h21(id + 3.0);
+				float streak = band(f.x, wx0 + 0.04, wx1 - 0.04, aa.x) * (1.0 - smoothstep(0.0, 0.26, f.y)) * 0.3 * h21(id + 3.0) * (1.0 - 0.85 * life.g);
 				alb *= 1.0 - streak * (1.0 - win);
 			}
 			// Floor band and darker toward the street.
 			alb *= 1.0 - (1.0 - smoothstep(0.0, aa.y * 2.0 + 0.02, abs(f.y - 0.01))) * 0.25;
 		}
 		if (!top) {
-			alb *= mix(0.72, 1.0, smoothstep(0.0, 5.0, wp.y));
+			alb *= mix(mix(0.72, 0.92, life.g), 1.0, smoothstep(0.0, 5.0, wp.y));
 			// Weathering: large soft stains.
-			alb *= 0.9 + 0.14 * vnoise(fp * vec2(0.35, 0.15));
+			alb *= mix(0.9 + 0.14 * vnoise(fp * vec2(0.35, 0.15)), 1.0, life.g * 0.7);
 		}
 	} else if (kind == 2) {
 		// Roof membrane: tar or gravel ballast with seams, patches and ponding stains.
@@ -248,7 +270,10 @@ void fragment() {
 		rough = 0.1;
 		spec = 0.7;
 	}
+	// [v6life] A clean block gets its colour back (facades, awnings, roofs a little).
+	alb = mix(alb, mix(vec3(lum(alb)), alb, 1.3) * 1.07, life.g * (kind == 2 ? 0.3 : 0.85));
 	ALBEDO = clamp(alb, 0.0, 1.0);
+	EMISSION = emi;
 	NORMAL_MAP = nm;
 	NORMAL_MAP_DEPTH = 0.8;
 	ROUGHNESS = rough;

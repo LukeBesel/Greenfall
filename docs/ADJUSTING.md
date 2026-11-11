@@ -121,3 +121,8 @@ prints a `[card]` line per objective step and an `[arc]` line per hub, rocket ti
 | Order of the card's steps | `data/objectives.json` (story), then `data/goals.json` `goals` in file order | | The card shows the first unfinished one. Move a line to move the step. |
 | A goal's own "why" line | `data/goals.json` goal `desc` | only on "Fly to another planet" | Shown instead of "Reward: ...". |
 | Goal rewards | `data/goals.json` goal `reward` | | Paid when the step completes. |
+
+## Seed of the Week on or off (v6screens)
+
+`data/weekly.json` `"enabled"` is the one switch. It is `false`: the mode does not work on the round world yet (the week's seed is ignored and a resumed run has no robots), so its Keepsakes tab, its two Garden Mode decorations and its two achievements in the Codex are hidden, and Pause shows no Keepsakes button until a radio, an album or a nursery exists.
+Set it to `true` to bring all of it back. To look at it while it is off, run with `--extras=weekly` or `--weekly`. Test: `tests/test_extras.gd` (`test_weekly_off_hides_every_way_in`).
