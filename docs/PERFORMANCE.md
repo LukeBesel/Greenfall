@@ -613,7 +613,7 @@ triangles (LOD 0), mesh surfaces (draw calls before shadows), meshes, lights and
 | Auto-baler | 26k | 15 on 6 meshes | 31 single meshes, one draw each, no bevels |
 | Belt drive (pad, turntable, one belt run) | 20k | 23 on 9 meshes | 60+ single meshes (36 stripe boxes alone) |
 | Hub landmark (each of six) | 22-30k (big wheel 45k with 12 gondolas) | 7-13 (wheel 16) | thin rods in the shared deco mesh |
-| Recycler | 18k | 12 on 6 meshes | 40+ single meshes |
+| Recycler | 28k | 12 on 5 meshes | 40+ single meshes |
 | Extra-hub landmarks (tower crane, bus, lighthouse) | 29k, 15k, 13k | 12-14, 9-10, 7-10 | thin rods |
 | Picture sign | about 2k a face | none of its own (it is part of the machine's mesh) | new |
 
