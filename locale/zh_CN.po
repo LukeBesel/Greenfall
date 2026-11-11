@@ -312,80 +312,80 @@ msgstr "前哨 %d  ·  运行中"
 msgid "RECHARGE"
 msgstr "充能"
 
-#: automation/outposts.gd:321 automation/outposts.gd:335
+#: automation/outposts.gd:332 automation/outposts.gd:346
 msgid "No outpost."
 msgstr "没有前哨站。"
 
-#: automation/outposts.gd:323
+#: automation/outposts.gd:334
 msgid "Already repaired."
 msgstr "已经修好了。"
 
-#: automation/outposts.gd:327
+#: automation/outposts.gd:338
 msgid "Clear the junk around it first (%d%% of %d%%)."
 msgstr "先清理周围的废料（%d%% / %d%%）。"
 
-#: automation/outposts.gd:329 automation/outposts.gd:344 automation/stations.gd:131
+#: automation/outposts.gd:340 automation/outposts.gd:355 automation/stations.gd:131
 #: systems/camp/hub_builds.gd:79
 msgid "Not enough cubes or parts."
 msgstr "方块或零件不足。"
 
-#: automation/outposts.gd:338
+#: automation/outposts.gd:349
 msgid "Repair it first."
 msgstr "请先修复。"
 
-#: automation/outposts.gd:340 automation/trash_bin.gd:82 ui/bench_tiers.gd:83
+#: automation/outposts.gd:351 automation/trash_bin.gd:82 ui/bench_tiers.gd:83
 msgid "Fully upgraded."
 msgstr "已满级。"
 
-#: automation/outposts.gd:361
+#: automation/outposts.gd:372
 msgid "Outpost %d repaired: a working scale on the frontier. Haul Bugs deliver to the nearest scale now."
 msgstr "前哨站 %d 已修复：边境上有了一台能用的磅秤。Haul Bug 现在会送往最近的磅秤。"
 
-#: automation/outposts.gd:362
+#: automation/outposts.gd:373
 msgid "OUTPOST ONLINE"
 msgstr "前哨站上线"
 
-#: automation/outposts.gd:384
+#: automation/outposts.gd:395
 msgid "Outpost %d upgraded: %s. %s"
 msgstr "前哨站 %d 已升级：%s。%s"
 
-#: automation/outposts.gd:413
+#: automation/outposts.gd:424
 msgid "E   Ruined outpost · clear its hex first (%d%% / %d%%)"
 msgstr "E   前哨废墟 · 先清理它所在的六角格（%d%% / %d%%）"
 
-#: automation/outposts.gd:414
+#: automation/outposts.gd:425
 msgid "E   Repair outpost · %s%s"
 msgstr "E   修复前哨站 · %s%s"
 
-#: automation/outposts.gd:414 automation/outposts.gd:417
+#: automation/outposts.gd:425 automation/outposts.gd:428
 msgid "  (need more)"
 msgstr "  （还不够）"
 
-#: automation/outposts.gd:416
+#: automation/outposts.gd:427
 msgid "E   Outpost %d · %s · bales +%d%%"
 msgstr "E   前哨站 %d · %s · 捆包 +%d%%"
 
-#: automation/outposts.gd:417
+#: automation/outposts.gd:428
 msgid "E   Upgrade outpost: %s · %s%s"
 msgstr "E   升级前哨站：%s · %s%s"
 
-#: automation/outposts.gd:427
+#: automation/outposts.gd:438
 msgid "Outpost %d: %s"
 msgstr "前哨站 %d：%s"
 
-#: automation/outposts.gd:434
+#: automation/outposts.gd:445
 msgid "Outpost %d upgrade: %s"
 msgstr "前哨站 %d 升级：%s"
 
-#: automation/outposts.gd:437
+#: automation/outposts.gd:448
 msgid "Outpost %d: %s. Bales sell for +%d%% here; robots crossing the pad get a speed charge."
 msgstr "前哨站 %d：%s。在这里捆包售价 +%d%%；经过平台的机器人会获得加速。"
 
-#: automation/outposts.gd:540
+#: automation/outposts.gd:551
 msgid "OUTPOST %d  RUINED · repair at %d%% clear"
 msgstr "前哨 %d  废墟 · 清洁度 %d%% 时可修复"
 
-#: automation/outposts.gd:541
+#: automation/outposts.gd:552
 msgid "OUTPOST %d  %s"
 msgstr "前哨 %d  %s"
 
@@ -425,7 +425,7 @@ msgstr "需要研究“火箭货运”"
 msgid "Not enough cubes or parts"
 msgstr "方块或零件不足"
 
-#: automation/rocket_tiers.gd:74
+#: automation/rocket_tiers.gd:75
 msgid "Rocket upgraded: %s."
 msgstr "火箭已升级：%s。"
 
@@ -480,7 +480,7 @@ msgid "Requires hub level %d or research: %s."
 msgstr "需要基地等级 %d 或研究：%s。"
 
 #: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
-#: systems/camp/camp.gd:424 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:155
+#: systems/camp/camp.gd:425 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:155
 #: systems/camp/hub_builds.gd:165 systems/camp/hub_builds.gd:175 systems/camp/yard_builds.gd:91
 #: ui/telescope_panel.gd:40
 msgid "Not enough materials."
@@ -945,55 +945,55 @@ msgstr "埋藏零件  %s  ·  %.1f 米"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "埋藏零件  ·  信号 %d%%"
 
-#: player/patch.gd:170
+#: player/patch.gd:171
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi 哐啷哐啷地回到了院子里。真奇怪。"
 
-#: player/patch.gd:224
+#: player/patch.gd:225
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi 不会游泳。在工作台装上悬浮喷口，他就能飘过湖面。"
 
-#: player/patch.gd:348
+#: player/patch.gd:349
 msgid "No seeds yet. Keep cleaning."
 msgstr "还没有种子。继续清理吧。"
 
-#: player/patch.gd:383
+#: player/patch.gd:384
 msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 msgstr "种子需要干净、空旷的土地：不能是街道、路沿或起降台。"
 
-#: player/patch.gd:390
+#: player/patch.gd:391
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "种子用完了。开花的植物会掉落更多。"
 
-#: player/patch.gd:397
+#: player/patch.gd:398
 msgid "Watering can is empty. Refill at the hub."
 msgstr "水壶空了。回基地补水。"
 
-#: player/patch.gd:599
+#: player/patch.gd:603
 msgid "PERFECT BALE  %s"
 msgstr "完美捆包  %s"
 
-#: player/patch.gd:605
+#: player/patch.gd:609
 msgid "OVERSTUFFED  %s"
 msgstr "塞爆了  %s"
 
-#: player/patch.gd:609
+#: player/patch.gd:613
 msgid "PURE  %s"
 msgstr "纯净  %s"
 
-#: player/patch.gd:611
+#: player/patch.gd:615
 msgid "SURGE  %s"
 msgstr "冲劲  %s"
 
-#: player/patch.gd:614
+#: player/patch.gd:618
 msgid "  (streak +%d%%)"
 msgstr "  （连击 +%d%%）"
 
-#: player/patch.gd:657
+#: player/patch.gd:661
 msgid "Salvaged: %s"
 msgstr "回收：%s"
 
-#: player/patch.gd:686
+#: player/patch.gd:692
 msgid "Recovered: %s"
 msgstr "找回：%s"
 
@@ -1535,11 +1535,11 @@ msgstr "E   修理工作台"
 msgid "E   Open the workbench"
 msgstr "E   打开工作台"
 
-#: scenes/slice_orbit.gd:1002
+#: scenes/slice_orbit.gd:1005
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice_orbit.gd:1102
+#: scenes/slice_orbit.gd:1105
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "工作台修好了。在它旁边按 E，用方块购买升级。"
 
@@ -3173,15 +3173,15 @@ msgstr "新CD：%s，演奏：%s，来自%s"
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "工作台修好了！在它旁边按 %s 购买升级。"
 
-#: systems/camp/camp.gd:408
+#: systems/camp/camp.gd:409
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr "E   %s（%d 级）：已满级"
 
-#: systems/camp/camp.gd:414
+#: systems/camp/camp.gd:415
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr "E   %s（%d 级）：升级为 %s，需要 %s"
 
-#: systems/camp/camp.gd:420
+#: systems/camp/camp.gd:421
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "垃圾桶已升级：%s。捆包在这里按 %d%% 出售。"
 
@@ -10963,13 +10963,25 @@ msgstr "将基地升到 3 级"
 msgid "Build a Seedling planter"
 msgstr "建造一台 Seedling 种植机器人"
 
+#: data/goals.json:goals[hub_wake_5].text
+msgid "Wake station 5 of 6"
+msgstr "唤醒第 5 座站点(共 6 座)"
+
 #: data/goals.json:goals[plant_25].text
 msgid "Plant 25 seeds"
 msgstr "种下 25 颗种子"
 
+#: data/goals.json:goals[rocket_tier_3].text
+msgid "Upgrade the rocket to Mk III"
+msgstr "把火箭升级到 Mk III"
+
 #: data/goals.json:goals[drip_1].text
 msgid "Build a Drip watering robot"
 msgstr "建造一台 Drip 浇水机器人"
+
+#: data/goals.json:goals[hub_wake_6].text
+msgid "Wake station 6 of 6"
+msgstr "唤醒第 6 座站点(共 6 座)"
 
 #: data/goals.json:goals[home_drive_5].text
 msgid "Build the Mk V Orbital drive"
@@ -11283,45 +11295,17 @@ msgstr "完全恢复 40 个六角格"
 msgid "New base to level 4"
 msgstr "新基地升到 4 级"
 
-#: data/goals.json:goals[base5_2].text
-msgid "Get a second base to level 5"
-msgstr "让第二座基地达到 5 级"
-
 #: data/goals.json:goals[research_dunes].text
 msgid "Research Dune Charts"
 msgstr "研究“沙丘海图”"
-
-#: data/goals.json:goals[visit_dust].text
-msgid "Fly to the Dust Flats"
-msgstr "飞往尘土平原"
 
 #: data/goals.json:goals[research_24].text
 msgid "Finish 24 research projects"
 msgstr "完成 24 项研究"
 
-#: data/goals.json:goals[storm_1].text
-msgid "Ride out a sandstorm"
-msgstr "挺过一场沙暴"
-
-#: data/goals.json:goals[dust_base3].text
-msgid "Dust Flats base to level 3"
-msgstr "尘土平原基地升到 3 级"
-
-#: data/goals.json:goals[dust_grow15].text data/goals.json:goals[frozen_grow15].text data/goals.json:goals[sunken_grow15].text
-msgid "Get 15 hexes Growing here"
-msgstr "在这里让 15 个六角格生长"
-
 #: data/goals.json:goals[hex_80].text
 msgid "Clean 80 hexes"
 msgstr "清理 80 个六角格"
-
-#: data/goals.json:goals[storm_3].text
-msgid "Ride out 3 sandstorms"
-msgstr "挺过 3 场沙暴"
-
-#: data/goals.json:goals[dust_base4].text
-msgid "Dust Flats base to level 4"
-msgstr "尘土平原基地升到 4 级"
 
 #: data/goals.json:goals[hex_100].text
 msgid "Clean 100 hexes"
@@ -11331,45 +11315,9 @@ msgstr "清理 100 个六角格"
 msgid "Research Thermal Lance"
 msgstr "研究“热能长矛”"
 
-#: data/goals.json:goals[dust_base5].text
-msgid "Dust Flats base to level 5"
-msgstr "尘土平原基地升到 5 级"
-
-#: data/goals.json:goals[base5_3].text
-msgid "Get three bases to level 5"
-msgstr "让三座基地达到 5 级"
-
-#: data/goals.json:goals[visit_frozen].text
-msgid "Fly to the Frozen Port"
-msgstr "飞往冰封港口"
-
 #: data/goals.json:goals[research_26].text
 msgid "Finish 26 research projects"
 msgstr "完成 26 项研究"
-
-#: data/goals.json:goals[heater_1].text
-msgid "Light a heater on the ice"
-msgstr "在冰上点燃一台加热器"
-
-#: data/goals.json:goals[thaw_10].text
-msgid "Thaw 10 hexes"
-msgstr "解冻 10 个六角格"
-
-#: data/goals.json:goals[greenhouse_1].text
-msgid "Build a greenhouse"
-msgstr "建造一座温室"
-
-#: data/goals.json:goals[frozen_base3].text
-msgid "Frozen Port base to level 3"
-msgstr "冰封港口基地升到 3 级"
-
-#: data/goals.json:goals[thaw_30].text
-msgid "Thaw 30 hexes"
-msgstr "解冻 30 个六角格"
-
-#: data/goals.json:goals[frozen_base4].text
-msgid "Frozen Port base to level 4"
-msgstr "冰封港口基地升到 4 级"
 
 #: data/goals.json:goals[hex_130].text
 msgid "Clean 130 hexes"
@@ -11379,61 +11327,9 @@ msgstr "清理 130 个六角格"
 msgid "Research Pump Works"
 msgstr "研究“泵站”"
 
-#: data/goals.json:goals[frozen_base5].text
-msgid "Frozen Port base to level 5"
-msgstr "冰封港口基地升到 5 级"
-
-#: data/goals.json:goals[base5_4].text
-msgid "Get four bases to level 5"
-msgstr "让四座基地达到 5 级"
-
-#: data/goals.json:goals[visit_sunken].text
-msgid "Fly to the Sunken City"
-msgstr "飞往沉没之城"
-
-#: data/goals.json:goals[drain_1].text
-msgid "Run the old pumps"
-msgstr "启动老水泵"
-
-#: data/goals.json:goals[sunken_base3].text
-msgid "Sunken City base to level 3"
-msgstr "沉没之城基地升到 3 级"
-
-#: data/goals.json:goals[drain_3].text
-msgid "Drain the Sunken City"
-msgstr "排干沉没之城"
-
-#: data/goals.json:goals[sunken_base4].text
-msgid "Sunken City base to level 4"
-msgstr "沉没之城基地升到 4 级"
-
-#: data/goals.json:goals[sunken_base5].text
-msgid "Sunken City base to level 5"
-msgstr "沉没之城基地升到 5 级"
-
-#: data/goals.json:goals[frontiers_growing].text
-msgid "Every frontier 50% Growing"
-msgstr "每片边境 50% 生长中"
-
 #: data/goals.json:goals[research_beacon].text
 msgid "Research the Ark Beacon"
 msgstr "研究“方舟信标”"
-
-#: data/goals.json:goals[visit_cradle].text
-msgid "Fly to Cradle Returns"
-msgstr "飞往 Cradle号归来"
-
-#: data/goals.json:goals[cradle_pad].text
-msgid "Clean the Cradle landing pad"
-msgstr "清理 Cradle号着陆平台"
-
-#: data/goals.json:goals[cradle_grow25].text
-msgid "Get 25 hexes Growing here"
-msgstr "在这里让 25 个六角格生长"
-
-#: data/goals.json:goals[cradle_home].text
-msgid "Call the Cradle home"
-msgstr "迎 Cradle号回家"
 
 #: data/goals.json:goals[home_restore_2].text
 msgid "Restore a second planet"
@@ -12436,6 +12332,14 @@ msgstr "继续清理。干净的土地里会冒出种子。"
 msgid "Something green is waking out there. Plant the first seed."
 msgstr "外面有绿色的东西正在醒来。种下第一颗种子吧。"
 
+#: data/objectives.json:objectives[hub_fly_2].text
+msgid "Fly to the next station"
+msgstr "飞往下一座站点"
+
+#: data/objectives.json:objectives[hub_wake_2].text
+msgid "Wake station 2 of 6"
+msgstr "唤醒第 2 座站点(共 6 座)"
+
 #: data/objectives.json:objectives[hex10].desc
 msgid "More clean ground, more room to plant. Robots help."
 msgstr "干净的土地越多，能种的地方就越多。机器人会帮忙。"
@@ -12468,6 +12372,10 @@ msgstr "继续清理。WREN 正在找 Haul Bug 的图纸。"
 msgid "A Haul Bug carries bales for you. Build one at the bench."
 msgstr "Haul Bug 会替你搬捆包。在工作台造一台吧。"
 
+#: data/objectives.json:objectives[hub_wake_3].text
+msgid "Wake station 3 of 6"
+msgstr "唤醒第 3 座站点(共 6 座)"
+
 #: data/objectives.json:objectives[tower2].text
 msgid "Boost the signal tower"
 msgstr "增强信号塔"
@@ -12495,6 +12403,14 @@ msgstr "干净的土地越多，生长的空间就越大。"
 #: data/objectives.json:objectives[hex20].lines
 msgid "Twenty hexes next. The air already smells different."
 msgstr "下一个目标：二十个六角格。空气闻起来已经不一样了。"
+
+#: data/objectives.json:objectives[rocket_tier_2].text
+msgid "Upgrade the rocket to Mk II"
+msgstr "把火箭升级到 Mk II"
+
+#: data/objectives.json:objectives[hub_wake_4].text
+msgid "Wake station 4 of 6"
+msgstr "唤醒第 4 座站点(共 6 座)"
 
 #: data/objectives.json:objectives[base3].text
 msgid "Rebuild the base to level 3"
@@ -17018,6 +16934,93 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Get a second base to level 5"
+#~ msgstr "让第二座基地达到 5 级"
+
+#~ msgid "Fly to the Dust Flats"
+#~ msgstr "飞往尘土平原"
+
+#~ msgid "Ride out a sandstorm"
+#~ msgstr "挺过一场沙暴"
+
+#~ msgid "Dust Flats base to level 3"
+#~ msgstr "尘土平原基地升到 3 级"
+
+#~ msgid "Get 15 hexes Growing here"
+#~ msgstr "在这里让 15 个六角格生长"
+
+#~ msgid "Ride out 3 sandstorms"
+#~ msgstr "挺过 3 场沙暴"
+
+#~ msgid "Dust Flats base to level 4"
+#~ msgstr "尘土平原基地升到 4 级"
+
+#~ msgid "Dust Flats base to level 5"
+#~ msgstr "尘土平原基地升到 5 级"
+
+#~ msgid "Get three bases to level 5"
+#~ msgstr "让三座基地达到 5 级"
+
+#~ msgid "Fly to the Frozen Port"
+#~ msgstr "飞往冰封港口"
+
+#~ msgid "Light a heater on the ice"
+#~ msgstr "在冰上点燃一台加热器"
+
+#~ msgid "Thaw 10 hexes"
+#~ msgstr "解冻 10 个六角格"
+
+#~ msgid "Build a greenhouse"
+#~ msgstr "建造一座温室"
+
+#~ msgid "Frozen Port base to level 3"
+#~ msgstr "冰封港口基地升到 3 级"
+
+#~ msgid "Thaw 30 hexes"
+#~ msgstr "解冻 30 个六角格"
+
+#~ msgid "Frozen Port base to level 4"
+#~ msgstr "冰封港口基地升到 4 级"
+
+#~ msgid "Frozen Port base to level 5"
+#~ msgstr "冰封港口基地升到 5 级"
+
+#~ msgid "Get four bases to level 5"
+#~ msgstr "让四座基地达到 5 级"
+
+#~ msgid "Fly to the Sunken City"
+#~ msgstr "飞往沉没之城"
+
+#~ msgid "Run the old pumps"
+#~ msgstr "启动老水泵"
+
+#~ msgid "Sunken City base to level 3"
+#~ msgstr "沉没之城基地升到 3 级"
+
+#~ msgid "Drain the Sunken City"
+#~ msgstr "排干沉没之城"
+
+#~ msgid "Sunken City base to level 4"
+#~ msgstr "沉没之城基地升到 4 级"
+
+#~ msgid "Sunken City base to level 5"
+#~ msgstr "沉没之城基地升到 5 级"
+
+#~ msgid "Every frontier 50% Growing"
+#~ msgstr "每片边境 50% 生长中"
+
+#~ msgid "Fly to Cradle Returns"
+#~ msgstr "飞往 Cradle号归来"
+
+#~ msgid "Clean the Cradle landing pad"
+#~ msgstr "清理 Cradle号着陆平台"
+
+#~ msgid "Get 25 hexes Growing here"
+#~ msgstr "在这里让 25 个六角格生长"
+
+#~ msgid "Call the Cradle home"
+#~ msgstr "迎 Cradle号回家"
 
 #~ msgid "Sandstorm on the horizon. Bare clean ground will get buried; planted and sheltered hexes hold."
 #~ msgstr "沙暴将至。裸露的干净地面会被掩埋；种了植物或有遮挡的六角格能挺住。"
