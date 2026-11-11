@@ -37,19 +37,22 @@ func setup(pollution: Pollution, cells: SphereCells, mastery: Mastery) -> void:
 
 ## Re-reads every kind's gate and rate from mastery and rewrites the shut hexes.
 func refresh() -> void:
+	var before: PackedByteArray = _gated.duplicate()
 	_gated.resize(_ids.size())
 	_factor.resize(_ids.size())
 	_role_gated.clear()
 	_any_scoop_gated = false
 	for k: int in _ids.size():
-		var open: bool = _mastery == null or _mastery.robots_can_work(_ids[k])
-		_gated[k] = 0 if open else 1
+		var learnt: bool = _mastery == null or _mastery.robots_can_work(_ids[k])
+		_gated[k] = 0 if learnt else 1
 		_factor[k] = _mastery.robot_factor(_ids[k]) if _mastery != null else 1.0
-		if open:
+		if learnt:
 			continue
 		_any_scoop_gated = _any_scoop_gated or _scooped[k] == 1
 		for role: Variant in (_pollution.kind(_ids[k]).get("robot_roles", []) as Array):
 			_role_gated[str(role)] = true
+	if before == _gated:
+		return  # a level past the first: the rates moved, the shut hexes did not
 	_recheck.clear()
 	_write_shut()
 

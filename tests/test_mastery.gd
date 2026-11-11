@@ -496,8 +496,7 @@ func test_the_first_citys_simulator_learns_litter_before_any_cleaner_is_built() 
 
 
 func test_the_crew_simulator_holds_the_hand_share_rule_and_every_kind_is_learnt_in_its_city() -> void:
-	var def: PlanetDefinition = Planets.by_id(FIRST)
-	var r: Dictionary = CrewSim.run(def, CrewSim.load_calibration())
+	var r: Dictionary = CrewSim.run(Planets.by_id(FIRST), CrewSim.load_calibration())
 	var m: Dictionary = r["mastery"]
 	var cities: Array = m["by_city"]
 	var rule: Dictionary = m["rule"]

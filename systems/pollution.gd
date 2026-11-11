@@ -741,19 +741,19 @@ func crew_gate_kind(role: String, cell: int) -> String:
 	return _crew_gate.gate_kind(role, cell) if _crew_gate != null else ""
 
 
-## The waste of every clean district hex by kind, {kind id: units}: what a save from before
-## mastery is credited with (Mastery.seed_legacy).
+## The waste of every clean land hex by kind, {kind id: units}, in a city or on open ground:
+## what a save from before mastery is credited with (Mastery.seed_legacy). Lakes are left out: a
+## lake with nothing floating on it was never cleaned.
 func cleaned_units() -> Dictionary:
 	var out: Dictionary = {}
 	if _cells == null or _field == null:
 		return out
-	for list: PackedInt32Array in _zone_cells:
-		for c: int in list:
-			var water: bool = _cells.state[c] == PlanetData.State.WATER
-			if _cells.is_dirty(c) or (water and _cells.junk[c] > SphereCells.CLEAN_LEFT):
-				continue
-			var work: float = _field.worth.work(c)
-			for k: int in kinds_at(c):
-				var id: String = str(_kinds[k]["id"])
-				out[id] = float(out.get(id, 0.0)) + share_of(c, id) * work
+	for c: int in _cells.n:
+		var state: int = _cells.state[c]
+		if state == PlanetData.State.JUNK or state == PlanetData.State.WATER:
+			continue
+		var work: float = _field.worth.work(c)
+		for k: int in kinds_at(c):
+			var id: String = str(_kinds[k]["id"])
+			out[id] = float(out.get(id, 0.0)) + share_of(c, id) * work
 	return out

@@ -128,6 +128,10 @@ A policy is one script in `policies/` that extends `PaceSimPolicy` and implement
 | `pace_sim_policy.gd`, `policies/greedy.gd` | policy base and the bot-like policy |
 | `calibration.json`, `calibration_bot_run.log` | constants and the run they were measured from |
 
+## Mastery in the current model (M3-05)
+
+The first city holds one kind, the base kind. The model keeps Lumi's mastery of it on the game's rules (`core/mastery_rules.gd`): the units her hands clear raise the level, her scoop pulses sooner with each level, and cleaner robots work at their rate x the level's factor (x the proximity bonus for `crew_near_share` of their work) and not at all under the level robots need. Beats `mastery_1` ... are in the table; the check `robots_never_wait_on_mastery` fails if a cleaner is ever built before the kind is learnt; the `first-city fit` output ends with a mastery line (first level, level 5, the hand share of all cleaning). The `hand_share` check (30% in every ten-minute window) is unchanged. The other cities are in `tools/crew_sim`.
+
 ## The redesign model (`--model=redesign`)
 
 A second model next to the one above (`--model=current`, the default, unchanged). It plays Planet 1 as `docs/design/PLANET1_DESIGN.md` describes it (sections 1-16), before any of it is built, from a PROPOSAL data set in `tools/pace_sim/proposals/<name>/`. It never reads or changes game data for the new mechanics; the two things the redesign keeps (the junk table's average value and the perfect-press multiplier) are read from the planet through `Planets`.

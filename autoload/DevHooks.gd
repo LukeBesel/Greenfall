@@ -75,6 +75,10 @@ extends Node
 ##                      Scroungers to dig; --zone=ROLE:RINGS[,ROLE:RINGS] paints a role's work area (clean, find, plant,
 ##                      water, haul) as the hexes within RINGS of the base; --chain-report prints a [chain]
 ##                      line before --quit-after (systems/crew/robot_chain.gd)
+##   [mastery] --mastery=N sets Lumi's mastery of every pollution kind to level N at start,
+##                      --mastery=litter:3,wrecks:1 kind by kind (systems/mastery.gd). With --robots and no
+##                      --mastery every kind starts at the robots table's mastery_speed.dev_level, where
+##                      robots work at their own rate, so robot reports keep their numbers
 ##   [kit] --kit-lineup  art kit lineup (docs/ART_KIT.md); with --out=PREFIX it renders every piece and quits
 
 ## How long past --quit-after the run may go before the watchdog ends it (a normal quit takes a

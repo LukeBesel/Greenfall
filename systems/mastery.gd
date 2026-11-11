@@ -79,18 +79,18 @@ func setup(def: PlanetDefinition, saved: Dictionary = {}) -> void:
 
 
 func save_state() -> Dictionary:
-	var units: Dictionary = {}
+	var kept: Dictionary = {}
 	for id: String in _units:
 		if _units[id] > 0.0:
-			units[id] = _units[id]
-	return {"units": units}
+			kept[id] = _units[id]
+	return {"units": kept}
 
 
 func load_state(saved: Dictionary) -> void:
-	var units: Dictionary = saved.get("units", {})
-	for id: Variant in units:
+	var kept: Dictionary = saved.get("units", {})
+	for id: Variant in kept:
 		if _units.has(str(id)):
-			_units[str(id)] = maxf(0.0, float(units[id]))
+			_units[str(id)] = maxf(0.0, float(kept[id]))
 			_levels[str(id)] = MasteryRules.level_for(_cfg, str(id), _units[str(id)])
 			if _units[str(id)] > 0.0:
 				_met[str(id)] = true
