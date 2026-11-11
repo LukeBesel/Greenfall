@@ -98,6 +98,9 @@ void fragment() {
 	ROUGHNESS = mix(0.92, 0.15, water);
 	SPECULAR = mix(0.3, 0.65, water);
 	// City lights (warm speckle) and hub sites (cyan) so both read from orbit.
-	float lights = cs * smoothstep(0.55, 0.7, n2 + 0.15 * n) * (1.0 - 0.5 * gl);
+	// [v6life] A trashed city is nearly dark; its lights come back with the cleaning, so the cleaned
+	// district reads lit from far away at night (and greener by day, see `green`).
+	float awake = clamp((clean + green) / land, 0.0, 1.0);
+	float lights = cs * smoothstep(0.55, 0.7, n2 + 0.15 * n) * (1.0 - 0.35 * gl) * mix(0.25, 1.5, smoothstep(0.1, 0.8, awake));
 	EMISSION = glow * (vec3(1.0, 0.68, 0.3) * (lights * 0.7 + cs * 0.04) + vec3(0.3, 0.9, 1.0) * site * 0.55);
 }
