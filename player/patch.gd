@@ -38,6 +38,10 @@ var _idle_time: float = 0.0
 var _stack_root: Node3D
 var _stack_sway := Vector2.ZERO
 var _stack_sway_v := Vector2.ZERO
+var _stack_acc := Vector3.ZERO
+## [v6feel] Bales on their way up to the stack: cube instance id -> [start in the stack's space, seconds so far].
+var _lifts: Dictionary = {}
+const LIFT_TIME: float = 0.3
 var _distance_accum: float = 0.0
 var _dust_timer: float = 0.0
 var _focus_hex: int = -1
@@ -261,6 +265,7 @@ func _move(delta: float) -> void:
 	var accel_w: Vector3 = (velocity - _prev_vel) / maxf(delta, 0.0001)
 	_prev_vel = velocity
 	var local_acc: Vector3 = global_transform.basis.inverse() * accel_w
+	_stack_acc = local_acc.limit_length(30.0)  # [v6feel] the sway read velocity - _prev_vel after this line: always zero
 	model.set_motion(hspeed, hspeed / maxf(stat("move_speed"), 0.1), Vector2(local_acc.x, -local_acc.z), delta)
 	var now_moving: bool = hspeed > 0.6
 	if now_moving != _moving:
@@ -677,13 +682,29 @@ func pick_up(c: JunkCube) -> void:
 	c.set_carried(true)
 	c.reparent(_stack_root, true)
 	carried.append(c)
-	var target_y: float = _stack_height(carried.size() - 1)
-	var tw := c.create_tween().set_parallel(true)
-	tw.tween_property(c, "position", Vector3(0, target_y, 0), 0.22).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	tw.tween_property(c, "rotation", Vector3(0, randf_range(-0.15, 0.15), 0), 0.22)
+	# [v6feel] No tween: _update_stack places every carried bale each physics tick. A tween lost to
+	# that write whenever Lumi moved during the lift (the physics server hands a moving frozen body
+	# its last transform back before each tick), and the bale stayed at ground height inside him.
+	_seat_stack()
+	_lifts[c.get_instance_id()] = [_stack_root.to_local(c.global_position), 0.0, _stack_root.global_basis.inverse() * c.global_basis, randf_range(-0.15, 0.15)]
 	Audio.play("pop", 0.8, -6.0)
 	model.squash(-0.2)
 	c.squish(0.2)
+
+
+## [v6feel] The way up: out to arm's length from Lumi's middle first, then over his head and down
+## onto the stack, so a bale picked up from right behind him never passes through his body.
+static func lift_point(from: Vector3, rest: Vector3, t: float) -> Vector3:
+	var flat := Vector2(from.x, from.z)
+	var out: Vector2 = (flat.normalized() if flat.length() > 0.05 else Vector2(0, 1)) * maxf(flat.length(), LIFT_CLEAR)
+	var top: float = maxf(rest.y, from.y) + 0.45
+	var p1 := Vector3(out.x, lerpf(from.y, top, 0.75), out.y)
+	var p2 := Vector3(out.x * 0.7, top + 0.25, out.y * 0.7)
+	var e: float = clampf(t, 0.0, 1.0)
+	e = e * e * (3.0 - 2.0 * e)
+	return from.bezier_interpolate(p1, p2, rest, e)
+
+const LIFT_CLEAR: float = 1.15
 
 
 func _stack_height(index: int) -> float:
@@ -769,21 +790,47 @@ func _place_cube_sphere(c: JunkCube) -> void:
 	model.squash(0.2)
 
 
+## [v6feel] The stack's base rides Lumi's floating body (bob, lean, squash), a fixed gap over his head.
+func _seat_stack() -> void:
+	_stack_root.transform = CarryPoint.frame(model, self) * Transform3D(Basis.IDENTITY, CarryPoint.of(model, self))
+
+
 func _update_stack(delta: float) -> void:
 	if not carried.is_empty():
-		_stack_root.position = CarryPoint.of(model, self)  # [world2] held clearly above Lumi, not inside him
+		_seat_stack()  # [world2] held clearly above Lumi, not inside him
 	# Wobbly spring sway driven by acceleration.
-	var acc: Vector3 = global_transform.basis.inverse() * (velocity - _prev_vel)
-	_stack_sway_v += (Vector2(acc.z, -acc.x) * 0.9 - _stack_sway * 60.0 - _stack_sway_v * 7.0) * delta
+	var acc: Vector3 = _stack_acc
+	_stack_sway_v += (Vector2(acc.z, -acc.x) * 0.45 - _stack_sway * 60.0 - _stack_sway_v * 7.0) * delta
 	_stack_sway += _stack_sway_v * delta
 	_stack_sway = _stack_sway.clamp(Vector2(-0.35, -0.35), Vector2(0.35, 0.35))
 	for i: int in carried.size():
 		var c: JunkCube = carried[i]
 		var k: float = float(i + 1) / maxf(carried.size(), 1.0)
-		c.position.x = -_stack_sway.y * k * 0.6 * (i + 1) * 0.5
-		c.position.z = _stack_sway.x * k * 0.6 * (i + 1) * 0.5
-		c.rotation.x = _stack_sway.x * 0.5 * k
-		c.rotation.z = _stack_sway.y * 0.5 * k
+		# [v6feel] The whole transform, every tick (see pick_up). The stack leans from its base: a
+		# bale's lean also lifts it by what its low edge would drop, so it never dips toward his head.
+		var tilt := Vector2(_stack_sway.x * 0.5 * k, _stack_sway.y * 0.5 * k)
+		var rest := Vector3(-_stack_sway.y * k * 0.6 * (i + 1) * 0.5, _stack_height(i) + c.size * 0.5 * (absf(sin(tilt.x)) + absf(sin(tilt.y))), _stack_sway.x * k * 0.6 * (i + 1) * 0.5)
+		var id: int = c.get_instance_id()
+		var yaw: float = float(c.get_meta("stack_yaw", 0.0))
+		if _lifts.has(id):
+			var l: Array = _lifts[id]
+			l[1] = float(l[1]) + delta
+			var t: float = float(l[1]) / LIFT_TIME
+			if t >= 1.0:
+				_lifts.erase(id)
+				c.set_meta("stack_yaw", float(l[3]))
+				yaw = float(l[3])
+			else:
+				var e: float = t * t * (3.0 - 2.0 * t)
+				c.position = lift_point(l[0], rest, t)
+				c.basis = (l[2] as Basis).orthonormalized().slerp(Basis.from_euler(Vector3(tilt.x, float(l[3]), tilt.y)), e)
+				continue
+		c.position = rest
+		c.rotation = Vector3(tilt.x, yaw, tilt.y)
+	if not _lifts.is_empty() and _lifts.size() > carried.size():  # a bale left the stack mid-lift
+		for id: int in _lifts.keys():
+			if not carried.any(func(c: JunkCube) -> bool: return c.get_instance_id() == id):
+				_lifts.erase(id)
 
 
 # --- Hints / idle ---------------------------------------------------------------

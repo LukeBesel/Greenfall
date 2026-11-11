@@ -269,6 +269,8 @@ func build(p_world: Node3D) -> void:
 		YardProbe.attach(self)
 	if DevHooks.has("ground-probe"):  # [v3qa] floating / sunken props and junk around Lumi
 		GroundProbe.attach(self)
+	if DevHooks.has("feel"):  # [v6feel] scripted feel checks (tools/feel_probe.gd)
+		FeelProbe.attach(self)
 
 
 func _build_patch() -> void:
