@@ -1114,7 +1114,9 @@ func animate(speed: float, working: bool, delta: float) -> void:
 		_antenna.rotation.z = sin(_t * 7.0) * (0.05 + 0.1 * minf(speed, 1.5))
 		_antenna.rotation.x = cos(_t * 5.3) * 0.04
 	if _arm and not hover:
-		_arm.rotation.x = (sin(_t * 9.0) * 0.4 - 0.2) if working else lerpf(_arm.rotation.x, sin(_t * 0.8) * 0.03, delta * 4.0)
+		# The weight is clamped: past 2 a lerp overshoots further each frame, and on long frames
+		# (fast-forward runs, a slow machine) an idle arm's angle grew until its transform was NaN.
+		_arm.rotation.x = (sin(_t * 9.0) * 0.4 - 0.2) if working else lerpf(_arm.rotation.x, sin(_t * 0.8) * 0.03, clampf(delta * 4.0, 0.0, 1.0))
 	if _field_mat:
 		_field_mat.albedo_color.a = 0.07 + 0.03 * sin(_t * 4.0) + (0.05 if working else 0.0)
 	if _beam and _beam.visible:

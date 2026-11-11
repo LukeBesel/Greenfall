@@ -831,11 +831,11 @@ func _process(delta: float) -> void:
 		_root.position = Vector3.ZERO
 	_float.rotation = Vector3(_lean.x, 0, _lean.y)
 	# Head look and face.
-	_head_yaw = lerp_angle(_head_yaw, _head_yaw_target, delta * 4.0)
+	_head_yaw = lerp_angle(_head_yaw, _head_yaw_target, clampf(delta * 4.0, 0.0, 1.0))  # clamped: a weight past 2 runs away on long frames
 	_head.rotation.y = _head_yaw
 	_head.rotation.z = sin(_t * 0.7) * 0.03 + (0.08 if _happy > 0.8 else 0.0) + pet_e * 0.2  # [fauna2] head tilt while petting
-	_look = _look.lerp(_look_target, delta * 6.0)
-	_happy = lerpf(_happy, _happy_target, delta * 4.0)
+	_look = _look.lerp(_look_target, clampf(delta * 6.0, 0.0, 1.0))
+	_happy = lerpf(_happy, _happy_target, clampf(delta * 4.0, 0.0, 1.0))
 	_iris_now = _happy
 	# [hero] Crisp blinks (owner: "closing slowly"): ~70 ms close, a short hold, ~110 ms open, and
 	# now and then a double blink. Sleep closes/opens eased over about a second / half a second.

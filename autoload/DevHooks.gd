@@ -6,7 +6,8 @@ extends Node
 ##   --nosave           don't write saves (but load if present)
 ##   --shot=PATH        save a viewport PNG (res:// or relative to project) after --shot-delay seconds
 ##   --shots=N          take N screenshots spaced by --shot-every seconds (suffix _0, _1, ...)
-##   --quit-after=S     quit after S real seconds (wall clock: --time-scale does not shorten it)
+##   --quit-after=S     quit after S real seconds (wall clock: --time-scale does not shorten it);
+##                      if the main loop is stuck, tools/quit_watchdog.gd ends the process 60 s later
 ##   [l10n] --locale=xx  force a locale (pseudo, de, es, en; not saved); --l10n-audit lists on-screen
 ##                      text that skipped tr() (screenshots/l10n_audit.txt, use with --locale=pseudo)
 ##   --autoplay         let tools/autoplay.gd drive Patch
@@ -23,6 +24,7 @@ extends Node
 ##   --research-start=a+b starts/queues nodes (--research-elapsed=S backdates the start)
 ##   --robots=type:n,..  spawn test robots (slice.gd); any --robots run prints a [bots] report before quitting
 ##   --clean-hexes=N    pre-clean the N land hexes nearest the base
+##   --nan-watch        print "[nan] <node path>" for every node given a non-finite transform
 ##   --bot-report       print the [bots] robot report before --quit-after
 ##   --orbit-far-crew[=N] --offline-jump[=S]  [orbC] round-planet crew checks (robots/sphere/sphere_crew_dev.gd)
 ##   --trace-bot=NAME   print one robot's state every 2 s (target, hopper, stall timer, status)
@@ -75,6 +77,10 @@ extends Node
 ##                      line before --quit-after (systems/crew/robot_chain.gd)
 ##   [kit] --kit-lineup  art kit lineup (docs/ART_KIT.md); with --out=PREFIX it renders every piece and quits
 
+## How long past --quit-after the run may go before the watchdog ends it (a normal quit takes a
+## few seconds: saving reports, waiting on worker tasks).
+const QUIT_GRACE_S: float = 60.0
+
 var args: Dictionary = {}
 var _elapsed: float = 0.0
 var _shots_taken: int = 0
@@ -84,6 +90,7 @@ var _frames: int = 0
 var _perf_frames: int = 0
 var _perf_wall: float = 0.0
 var _stats_done: bool = false  # [deck]
+var _watchdog: QuitWatchdog  # ends a --quit-after run whose main loop stopped turning
 
 
 func _ready() -> void:
@@ -115,6 +122,11 @@ func _ready() -> void:
 		add_child(au)
 	if has("quality-probe"):  # [v1menu] times quality preset switches (tools/quality_switch_probe.gd)
 		add_child(load("res://tools/quality_switch_probe.gd").new())
+	if has("quit-after"):
+		_watchdog = QuitWatchdog.new()
+		_watchdog.start(_start_ms, get_f("quit-after", 5.0), QUIT_GRACE_S)
+	if has("nan-watch"):  # names nodes whose transform is not finite (tools/nan_watch.gd)
+		add_child(NanWatch.new())
 	if has("pad-audit"):  # [deck] controller-only screen audit (tools/pad_audit.gd)
 		add_child(PadAudit.new())
 	if has("no-hud"):  # [steam] store/trailer shots without HUD, toasts and subtitles
@@ -125,6 +137,11 @@ func _ready() -> void:
 		get_tree().change_scene_to_file.call_deferred("res://art/kit/kit_lineup.tscn")
 	if not args.is_empty():
 		print("[DevHooks] args: ", args)
+
+
+func _exit_tree() -> void:
+	if _watchdog != null:
+		_watchdog.stop()
 
 
 func has(flag: String) -> bool:
@@ -143,6 +160,8 @@ func _process(delta: float) -> void:
 	# Wall-clock time (frame delta is clamped by the engine on very slow frames).
 	_elapsed = (Time.get_ticks_msec() - _start_ms) / 1000.0
 	_frames += 1
+	if _watchdog != null:
+		_watchdog.start_ms = _start_ms  # a planet may count from the end of its build
 	if has("shot"):
 		var count: int = int(get_f("shots", 1.0))
 		var delay: float = get_f("shot-delay", 2.0)
