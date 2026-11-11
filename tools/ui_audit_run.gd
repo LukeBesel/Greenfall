@@ -23,7 +23,7 @@ extends Node
 const SIZES: Array[Vector2i] = [Vector2i(1280, 720), Vector2i(1920, 1080), Vector2i(2560, 1080), Vector2i(1280, 800)]
 const SCALES: Array[float] = [0.8, 1.0, 1.25, 1.5]
 const LOCALES: Array[String] = ["en", "de", "fr", "es", "pt_BR", "zh_CN", "ja", "pseudo"]
-const SCREENS: Array[String] = ["play", "hud", "prompts", "pause", "settings", "workbench", "locker", "survey", "loading", "codex", "rockets", "system", "document", "pad"]
+const SCREENS: Array[String] = ["play", "hud", "prompts", "pause", "settings", "workbench", "locker", "survey", "loading", "codex", "rockets", "system", "document", "photo", "glim", "garden", "command", "pad"]
 const TITLE_SCREENS: Array[String] = ["title", "title_settings", "pad"]
 ## A long line, about the longest chunk the bar shows (Subtitles.MAX_CHARS).
 const LONG_LINE: String = "Bring every cube you scoop to the bench by the pod, and we can fix the old beacon"
@@ -347,6 +347,8 @@ func _screens_pass() -> void:
 		await (e["close"] as Callable).call()
 		await _wait_s(0.4)
 		get_tree().paused = false
+	if _want("command"):
+		await _command_pass()
 	if _want("loading"):
 		var ld: CanvasLayer = get_tree().root.get_node_or_null("Loader") as CanvasLayer
 		if ld:
@@ -380,6 +382,18 @@ func _extra_screens() -> Array[Dictionary]:
 	if sm:
 		out.append({"name": "system", "root": func() -> Node: return sm,
 			"open": func() -> void: sm.open_map(true), "close": func() -> void: sm.close_map(), "is_open": func() -> bool: return sm.is_open})
+	var ph: PhotoMode = w.get("photo") as PhotoMode
+	if ph:
+		out.append({"name": "photo", "root": func() -> Node: return ph,
+			"open": func() -> void: ph.open(), "close": func() -> void: ph.close(), "is_open": func() -> bool: return ph.is_open})
+	var gp: GlimPanel = w.get_node_or_null("GlimPanel") as GlimPanel
+	if gp:
+		out.append({"name": "glim", "root": func() -> Node: return gp,
+			"open": func() -> void: gp.open_panel(), "close": func() -> void: gp.close_panel(), "is_open": func() -> bool: return gp.is_open})
+	var gpl: GardenPlacer = w.get_node_or_null("GardenPlacer") as GardenPlacer
+	if gpl and Decor.unlocked():  # needs base level 5, the Cradle, or --garden
+		out.append({"name": "garden", "root": func() -> Node: return gpl,
+			"open": func() -> void: gpl.open(), "close": func() -> void: gpl.close(), "is_open": func() -> bool: return gpl.is_open})
 	var dv: Node = w.get("doc_view") as Node
 	if dv:
 		var doc: Dictionary = {}
@@ -403,6 +417,52 @@ static func _buttons_named(root: Node, _hint: String) -> Array:
 		if (b as Button).toggle_mode or (b as Button).button_group != null:
 			out.append(b)
 	return out
+
+
+## The Command view's boxes are drawn, not Controls (robots/sphere/command_overlay.gd keeps
+## their rects in `panels`): each must be on screen, and clear of the HUD's texts and each other.
+func _command_pass() -> void:
+	var cam: SphereCam = so.get("cam")
+	var w: Node = so.get("w")
+	var hud: Node = w.get("hud")
+	cam.view = "command"
+	so.get("crews").call("on_view", so)
+	await _wait_s(2.5)
+	var ov: CommandOverlay = null
+	for n: Node in get_tree().root.find_children("*", "Control", true, false):
+		if n is CommandOverlay:
+			ov = n
+	if ov == null:
+		_report("command", "missing", "Command view overlay", "")
+	else:
+		await _each_size("command", func(cfg: String) -> void: await _check_command(cfg, ov, hud))
+	cam.view = "follow"
+	so.get("crews").call("on_view", so)
+	await _wait_s(1.5)
+
+
+func _check_command(cfg: String, ov: CommandOverlay, hud: Node) -> void:
+	ov.queue_redraw()
+	await _frames(2)
+	var view: Rect2 = get_viewport().get_visible_rect()
+	var ps: Array[Dictionary] = ov.panels.duplicate()
+	if not _counted.has("command"):
+		_counted["command"] = true
+		print("[ui-audit] screen command: %d drawn boxes (%s)" % [ps.size(), ", ".join(PackedStringArray(ps.map(func(p: Dictionary) -> String: return str(p["name"]))))])
+	var huds: Array[Control] = UIAudit.content_of([hud]) if hud else []
+	for i: int in ps.size():
+		var r: Rect2 = ps[i]["rect"]
+		var nm: String = str(ps[i]["name"])
+		if not view.grow(1.5).encloses(r):
+			_report(cfg, "offscreen", "command " + nm, "%s view %dx%d" % [_r(r), roundi(view.size.x), roundi(view.size.y)])
+		for j: int in range(i + 1, ps.size()):
+			var x: Rect2 = r.intersection(ps[j]["rect"])
+			if minf(x.size.x, x.size.y) >= UIAudit.OVERLAP_MIN:
+				_report(cfg, "overlap", "command %s with %s" % [nm, ps[j]["name"]], _r(x))
+		for c: Control in huds:
+			var x2: Rect2 = r.intersection(UIAudit.clip_rect(c, UIAudit.rect_of(c)))
+			if minf(x2.size.x, x2.size.y) >= UIAudit.OVERLAP_MIN:
+				_report(cfg, "overlap", "command %s with HUD %s" % [nm, UIAudit.short_path(c)], "\"%s\" %s" % [UIAudit.text_of(c).left(32), _r(x2)])
 
 
 func _tab_buttons_of(up: Node) -> Array:

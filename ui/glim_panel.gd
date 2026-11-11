@@ -51,7 +51,15 @@ func _ready() -> void:
 	_tracks = VBoxContainer.new()
 	_tracks.add_theme_constant_override("separation", 8)
 	_tracks.custom_minimum_size = Vector2(470, 0)
-	body.add_child(_tracks)
+	# [v6screens] The upgrade list scrolls on a short screen (UI scale 1.25 / 1.5) instead of
+	# running off the bottom (tools/ui_audit.gd).
+	_track_scroll = ScrollContainer.new()
+	_track_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_track_scroll.follow_focus = true
+	_track_scroll.add_child(_tracks)
+	body.add_child(_track_scroll)
+	_panel_box = pc
+	_root.resized.connect(_fit)
 	var sep := ColorRect.new()
 	sep.color = Color(1, 1, 1, 0.07)
 	sep.custom_minimum_size = Vector2(1, 0)
@@ -70,6 +78,19 @@ func _ready() -> void:
 	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	vb.add_child(hint)
 	_root.visible = false
+
+
+var _track_scroll: ScrollContainer
+var _panel_box: PanelContainer
+
+
+func _fit() -> void:  # [v6screens]
+	var vs: Vector2 = _root.size
+	if vs.y <= 0.0:
+		return
+	_panel_box.custom_minimum_size.x = minf(860.0, vs.x - 24.0)
+	var want: float = _tracks.get_combined_minimum_size().y
+	_track_scroll.custom_minimum_size = Vector2(_tracks.custom_minimum_size.x, minf(want, maxf(160.0, vs.y - 190.0)))
 
 
 func open_panel() -> void:
@@ -111,8 +132,13 @@ func _rebuild() -> void:
 	for t: Variant in Glim.tracks():
 		_tracks.add_child(_track_row(t as Dictionary))
 	_looks.rebuild()
+	if _first == null:  # [v6screens] nothing affordable yet: a pad still starts on the first row (it says what it needs)
+		for c: Node in _tracks.find_children("*", "Button", true, false):
+			_first = c as Button
+			break
 	if _first:
 		_first.call_deferred("grab_focus")
+	_fit.call_deferred()
 
 
 func _track_row(t: Dictionary) -> Control:

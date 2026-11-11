@@ -39,6 +39,7 @@ func _ready() -> void:
 	_panel.offset_right = -16.0
 	_panel.offset_top = 16.0
 	_panel.offset_bottom = -16.0
+	_panel.grow_horizontal = Control.GROW_DIRECTION_BEGIN  # [v6screens] longer languages widen it leftwards, never off the right edge
 	add_child(_panel)
 	var outer := VBoxContainer.new()
 	outer.add_theme_constant_override("separation", 0)
@@ -170,10 +171,12 @@ func _row(p: VBoxContainer, text: String, ctl: Control, focus_ctl: Control = nul
 	var l := UITheme.label(text, 14)
 	l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	l.custom_minimum_size = Vector2(104, 0)
+	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART  # [v6screens] long names wrap (tools/ui_audit.gd)
 	hb.add_child(l)
 	ctl.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	hb.add_child(ctl)
 	var f: Control = focus_ctl if focus_ctl else ctl
+	f.set_meta("own_focus_ring", true)  # [v6screens] the row lights up on focus
 	f.focus_entered.connect(func() -> void: row.add_theme_stylebox_override("panel", lit))
 	f.focus_exited.connect(func() -> void: row.add_theme_stylebox_override("panel", idle))
 
@@ -207,7 +210,7 @@ func cycler(p: VBoxContainer, text: String, key: String, options: Array) -> void
 	var b := Button.new()
 	b.custom_minimum_size = Vector2(176, ROW_H)
 	b.add_theme_font_size_override("font_size", 13)
-	b.clip_text = true
+	b.clip_text = false  # [v6screens] "Orbite autour de Lumi" was cut: the panel widens instead
 	var show_: Callable = func() -> void: b.text = "‹  %s  ›" % tr(str(options[clampi(int(owner_mode.get_value(key)), 0, options.size() - 1)]))
 	var step: Callable = func(d: int) -> void:
 		owner_mode.set_value(key, wrapi(int(owner_mode.get_value(key)) + d, 0, options.size()))

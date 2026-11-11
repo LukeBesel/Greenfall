@@ -70,8 +70,7 @@ func _ready() -> void:
 	top.add_child(_cat_row)
 	_counter = HoloFrame.mono_label("", 13, Color(HoloFrame.EDGE, 0.7)) if modules else UITheme.label("", 14, UITheme.MUTED)
 	_counter.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	_counter.clip_text = true
-	_counter.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_counter.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART  # [v6screens] was clipped ("RECHERCHÉ…" at UI 1.5): it wraps
 	_counter.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	if not modules:
 		add_child(top)
