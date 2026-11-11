@@ -30,6 +30,15 @@ static func setup(s: Node) -> void:
 		Nursery.note_service(fl)
 
 
+## [v6qa] With no song picked the mood music moves on by itself between save and load (that flaked):
+## compare the pick, and for a picked radio track that it is the one playing.
+static func _radio_track() -> String:
+	var pick: String = Radio.playing()
+	if pick == "" or pick == Tunes.SHUFFLE or not Tunes.song(pick).is_empty():
+		return pick
+	return "%s live %s" % [pick, str(Audio.get_music_track() == pick)]
+
+
 static func snap(s: Node) -> Dictionary:
 	Radio.planets()  # normalise JSON floats
 	var nu: Nursery = Nursery.of(s)
@@ -37,7 +46,7 @@ static func snap(s: Node) -> Dictionary:
 		"radio": JSON.stringify(Radio.st()),
 		"songs": JSON.stringify(JSON.parse_string(JSON.stringify(Tunes.st()))),  # [tunes] ints load back as floats
 		"songs_found": ",".join(Tunes.found()),
-		"radio_track": Audio.get_music_track() if Audio.get_music_track() != "" else Radio.playing(),
+		"radio_track": _radio_track(),  # [v6qa] the saved pick (and that it plays), not whatever mood track is on
 		"album": JSON.stringify(PhotoAlbum.st()),
 		"nursery": JSON.stringify(Nursery.list()),
 		"nursery_live": nu.keepers.size() if nu else -1,

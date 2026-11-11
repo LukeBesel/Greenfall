@@ -188,7 +188,7 @@ func _physics_process(delta: float) -> void:
 	if cur.is_empty():
 		_flush()
 		_done = true
-		print("[feel] %s: %s" % [mode, "FAIL" if _fail else "PASS"])
+		print("[feel] %s: %s, %d bales carried at the end" % [mode, "FAIL" if _fail else "PASS", lumi.carried.size()])
 		if DevHooks.has("feel-quit"):
 			get_tree().quit(1 if _fail else 0)
 		return
@@ -304,11 +304,10 @@ func _tour_steps() -> Array:
 			i.stick = Vector3.ZERO
 			i.scoop = false
 			i.cube = s < 0.02],
-		[12.5, "turn_back", func(i: FeelInput, _s: float) -> void: i.stick = Vector3(0, 0, 1)],
-		[13.5, "pick_up", func(i: FeelInput, s: float) -> void:
-			i.stick = Vector3(0, 0, 0.3) if s < 0.5 else Vector3.ZERO
-			i.interact = s > 0.3 and lumi.carried.is_empty() and lumi.nearest_loose_cube() != null],
-		[16.0, "carry", func(i: FeelInput, s: float) -> void: i.stick = Vector3(sin(s * 2.0), 0, -cos(s * 2.0))],
+		[14.0, "pick_up", func(i: FeelInput, _s: float) -> void: _to_bale(i)],
+		[16.0, "carry", func(i: FeelInput, s: float) -> void:
+			i.world_space = false
+			i.stick = Vector3(sin(s * 2.0), 0, -cos(s * 2.0))],
 		[19.0, "boost", func(i: FeelInput, _s: float) -> void:
 			i.stick = Vector3(0, 0, -1)
 			i.boost = true],
@@ -316,6 +315,26 @@ func _tour_steps() -> Array:
 			i.stick = Vector3.ZERO
 			i.boost = false],
 	]
+
+
+## Walks to the nearest loose bale (world space) and picks it up once it is in reach.
+func _to_bale(i: FeelInput) -> void:
+	i.world_space = true
+	i.stick = Vector3.ZERO
+	if not lumi.carried.is_empty():
+		return
+	var c: Node3D = null
+	for n: Node in get_tree().get_nodes_in_group("junk_cube"):
+		if not (n as JunkCube).carried and (c == null or (n as Node3D).global_position.distance_to(lumi.global_position) < c.global_position.distance_to(lumi.global_position)):
+			c = n as Node3D
+	if c == null:
+		return
+	var to: Vector3 = c.global_position - lumi.global_position
+	to -= lumi.up() * to.dot(lumi.up())
+	if lumi.nearest_loose_cube() != null:
+		i.interact = true
+	else:
+		i.stick = to.normalized() * 0.6
 
 
 func _bale_steps() -> Array:
@@ -508,13 +527,38 @@ func _cam_wall() -> void:
 	var cam: SphereCam = so.cam
 	var at: Vector2 = _site_xz(lumi.global_position)
 	var cp: Vector2 = _site_xz(cam.camera.global_position)
+	if DevHooks.has("feel-shots"):
+		DevHooks.save_viewport("screenshots/v6feel/camwall_0.png")
 	print("[feel] camwall: Lumi at (%.1f, %.1f), camera at (%.1f, %.1f), arm %.2f of %.2f, altitude %.2f" % [at.x, at.y, cp.x, cp.y, float(cam.get("_arm")), cam.distance, lumi.sphere.altitude(cam.camera.global_position)])
 	inp.world_space = true
 	inp.stick = -(_pos_at(float(b[0]), float(b[1])) - lumi.global_position).normalized()
 	for k: int in 240:
 		await get_tree().physics_frame
 	at = _site_xz(lumi.global_position)
-	print("[feel] camwall: pushed away from the look point for 2 s, now at (%.1f, %.1f)" % [at.x, at.y])
+	cp = _site_xz(cam.camera.global_position)
+	print("[feel] camwall: pushed away from the look point for 2 s, now at (%.1f, %.1f), camera at (%.1f, %.1f), arm %.2f, tilt %.2f, pitch %.2f, altitude %.2f, Lumi hidden %s" % [at.x, at.y, cp.x, cp.y, float(cam.get("_arm")), float(cam.get("_tilt")), cam.pitch, lumi.sphere.altitude(cam.camera.global_position), str(cam.get("_hid") != null)])
+	if DevHooks.has("feel-shots"):
+		DevHooks.save_viewport("screenshots/v6feel/camwall_1_pushed.png")
+	if DevHooks.has("feel-bump-at"):  # then a glancing push past a prop: --feel-bump-at=x,z;dx,dz;off
+		var bp: PackedStringArray = DevHooks.get_s("feel-bump-at", "84.8,23.9;1,0;0.3").split(";")
+		var pa: PackedStringArray = bp[0].split(",")
+		var pd: PackedStringArray = bp[1].split(",")
+		var spot := Vector2(float(pa[0]), float(pa[1]))
+		var dd := Vector2(float(pd[0]), float(pd[1])).normalized()
+		var side := Vector2(-dd.y, dd.x) * (float(bp[2]) if bp.size() > 2 else 0.3)
+		var a0: Vector2 = spot - dd * 4.0 + side
+		_put(a0.x, a0.y, a0 + dd)
+		for k: int in 20:
+			await get_tree().process_frame
+		inp.stick = (_pos_at(a0.x + dd.x * 12.0, a0.y + dd.y * 12.0) - lumi.global_position).normalized()
+		for k: int in 6:
+			for j: int in 30:
+				await get_tree().physics_frame
+			if DevHooks.has("feel-shots"):
+				DevHooks.save_viewport("screenshots/v6feel/bump_%d.png" % k)
+		inp.stick = Vector3.ZERO
+		var bt: Vector2 = _site_xz(lumi.global_position)
+		print("[feel] bump: from (%.1f, %.1f) to (%.1f, %.1f), %.1f m along" % [a0.x, a0.y, bt.x, bt.y, (bt - a0).dot(dd)])
 	if DevHooks.has("feel-quit"):
 		get_tree().quit(0)
 
