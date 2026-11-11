@@ -37,6 +37,7 @@ Largest price 3,400 cubes (cap 4,200). Every slot has a module that acts on the 
 - The Cutter carries the lift wrecks need and the Skirt the hover, so no first-city upgrade is a hidden second gate.
 - Floating waste had no kind on its pieces, so the old slick gate was only the shore. The field now asks per lake hex (`SphereField.water_open`), so a Lumi with Hover Jets and no Skirt cannot skim a slick lake; an Old Town pond (plain junk) is as before.
 - Other modules are built once from their plan (cubes and Parts), then fitted free. "Build" in the panel fits at once.
+- **The panel** (`screenshots/rigs/rig_panel.png`): one column per slot with the fitted module named at its head; a row is the module's name, its effects (gains green with a plus, losses amber with a minus), and one button (Build with its price, Fit, Take off); tools are tagged; a module with no plan says which city brings it; a plate above the columns describes the row in focus or under the pointer. The tab is hidden until the first plan arrives.
 - Effects reach the game through `Rigs.stat_mod` (called by `Economy.stat` after upgrades, research and sets: adds, then multipliers, then floors) and `Rigs.factor` (`kind_<id>` in `Pollution.hand_bonus`, `parts_yield` in `Patch._piece_arrived`, `crew_near` and `crew_radius` in `Mastery.near_factor`). The stat tooltip lists the module.
 - Events: `rig_module_unlocked(id)`, `rig_module_built(id)`, `rig_fitted(slot, id)`.
 - **Saved per planet** (`orbit.rigs`: plans, built modules, what is fitted). A save from before rigs gets the tools of its open cities fitted where the slot is free.
@@ -65,7 +66,20 @@ What the study does not show:
 
 ## 3. Checks
 
-See section 5 for the numbers of the final run.
+- `tools/run_tests.sh`: 1,176 tests, 1,176 passing (1,149 before this task), then the save round trip and the two-process reload, both PASS.
+- 27 new tests in `tests/test_rigs.gd`: three slots and three modules each; every module has a gain and a loss; prices under the cap; a crew module per slot; nothing in city 1; each of the four gates (the tool arrives with its city and not before; the kind stays shut on arrival with everything that used to open it, opens when the tool is fitted, shuts when it is taken off); the tools carry their own lift and hover; build, fit and swap; stats both ways; kind rate, Parts and crew effects; saving, odd saves, old saves; any planet (the dummy planet has no rig table); every module's part builds; parts show on the model and survive a change of look; rigs touch no look; the tab and the panel; the bot's rule; the study (no dominant module; each tool best in its city).
+- `tests/test_pollution.gd` and `tests/test_mastery.gd` follow the moved gates; three tab-count tests (`test_ui2`, `test_ui3`, `test_ui6`) now expect the Rig tab.
+- Save round trip and two-process reload: PASS, with one module of every slot built and fitted before the save (`orbit_rig_fitted_every_slot`, `orbit_rigs`).
+- City 1 bot, `--fresh --autoplay --time-scale=8 --quit-after=130`, no script errors: first hex 52 s after control (limit 90), first robot 8.3 minutes after control (limit 12), longest wait between purchases in the first 20 minutes 105 s (limit 120). The M3-21 targets hold.
+- Bot with Ironside opened by the dev flag (`--district-stage=old_town:4`): it walks to the bench and fits the Plate Cutter (`rig_fit {"module":"plate_cutter","slot":"arm"}`).
+- `tools/warnings_audit.sh`: no warning in the new files (141 in the repo, as before).
+
+**Screenshots** (`screenshots/rigs/`, Compatibility renderer):
+- `lumi_rig_parts_sheet.png`: five loadouts, front and back, covering all thirteen parts. Each part can be told from the others and sits where its slot is. They are stand-ins and look it: boxes, tubes and rings in flat worn paint beside a modelled hero. In the idle pose the Long Reach boom and the Guide Arm paddle cross the lower visor; the Soil Doser's bar hangs clear of the body; the Relay Mast stands a little off the back.
+- `lumi_rig_in_yard.png`: the game camera, Lumi with a Guide Arm, Press Frame and Skim Skirt. From behind at play distance only the drive gear (the red skirt) reads; arm and chest parts are hidden by the body. Tools should be readable from behind when they are modelled (M5-10).
+- `rig_panel.png`: 1280x720. Three columns fit; about two rows of each show before scrolling, more when rows are locked (one line each).
+
+Not verified: no played run in cities 2 to 6 with the gates (rule tests, the dev-flag bot run and the study only); the panel with a controller; other aspect ratios.
 
 ## 4. Open design calls
 
@@ -74,11 +88,12 @@ See section 5 for the numbers of the final run.
 3. **Skim Skirt and Soil Doser share the drive slot** (Old Capital's 9 slick hexes need a second outing). A fourth slot or moving one of them would remove the choice.
 4. **Hover Jets and Lift Strength 2 are now worth less**: Hover Jets still crosses water (short cuts, plain ponds), Lift Strength still lifts big loose junk. Whether Hover Jets stays an upgrade is for M3-12.
 5. **Module numbers and prices are first values** for M3-12, with the five never-best modules above.
-6. **No objective card step for the first fit.** The toast and the blocked readout are the only guidance; a card step belongs with the tutorial milestone.
-7. **Rig parts are procedural stand-ins** until M5-10.
+6. **A sixth workbench tab.** Three older tests held the bench to five tabs (the owner's simpler workbench). The Rig tab is hidden until Ironside opens; folding it into Upgrades as a section is the alternative.
+7. **No objective card step for the first fit.** The toast and the blocked readout are the only guidance; a card step belongs with the tutorial milestone.
+8. **Rig parts are procedural stand-ins** until M5-10.
 
 ## 5. Files outside the task's list, and why
 
-`systems/pollution.gd`, `planets/verdance/data/pollution.json` (the gates), `planet/orbit/sphere_field.gd` (floating waste asks its hex), `autoload/Economy.gd` (two lines: the stat hook and the tooltip), `autoload/EventBus.gd` (three signals), `systems/mastery.gd` (the crew bonus), `player/patch.gd` (parts yield, model refresh), `player/rig_parts.gd` (new), `scenes/slice_orbit.gd` (wiring, save), `scenes/hero_preview.gd` (`--rig=`), `tools/orbit_roundtrip.gd` (snapshot), `ui/rig_panel.gd` (new), `ui/upgrades_screen.gd`, `data/workbench.json` (the tab), `tools/autoplay.gd` (the bot), `tools/pace_sim/rig_study.gd` (new), `tools/pace_sim/pace_sim.gd` (the flag), `planets/verdance/planet.tres` (the table), `tests/test_pollution.gd` (the gates moved), `docs/PLANET_PLAYBOOK.md`, `docs/DECISIONS.md`. Not touched: `systems/sources.gd`, `planets/verdance/sources/*`, `story/planet_ending.gd`, `CLAUDE.md`, `.claude/`. `tools/extract_strings.py` was not run: the new strings (module names and descriptions, panel and toast lines, four prompts) are not in `locale/` yet.
+`systems/pollution.gd`, `planets/verdance/data/pollution.json` (the gates), `planet/orbit/sphere_field.gd` (floating waste asks its hex), `autoload/Economy.gd` (two lines: the stat hook and the tooltip), `autoload/EventBus.gd` (three signals), `systems/mastery.gd` (the crew bonus), `player/patch.gd` (parts yield, model refresh), `player/rig_parts.gd` (new), `scenes/slice_orbit.gd` (wiring, save), `scenes/hero_preview.gd` (`--rig=`, `--view=rigs`), `scenes/slice.gd` (`--open=upgrades`, documented in DevHooks but no longer handled anywhere), `tools/orbit_roundtrip.gd` (snapshot), `ui/rig_panel.gd` (new), `ui/upgrades_screen.gd`, `data/workbench.json` (the tab), `tools/autoplay.gd` (the bot), `tools/pace_sim/rig_study.gd` (new), `tools/pace_sim/pace_sim.gd` (the flag), `planets/verdance/planet.tres` (the table), `tests/test_pollution.gd`, `tests/test_mastery.gd` (the gates moved), `tests/test_ui2.gd`, `tests/test_ui3.gd`, `tests/test_ui6.gd` (they fixed the workbench at five tabs), `docs/PLANET_PLAYBOOK.md`, `docs/DECISIONS.md`. Not touched: `systems/sources.gd`, `planets/verdance/sources/*`, `story/planet_ending.gd`, `CLAUDE.md`, `.claude/`. `tools/extract_strings.py` was not run: the new strings (module names and descriptions, panel and toast lines, four prompts) are not in `locale/` yet.
 
 Originality: the slots, the module names and what they do come from the cleanup theme. Equipment slots with trade-offs are a common genre mechanic; nothing here copies another game's layout, names or numbers.

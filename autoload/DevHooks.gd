@@ -16,6 +16,8 @@ extends Node
 ##   --cam=NAME         camera preset for screenshots (see CameraRig.apply_preset)
 ##   --give=N           start with N cubes (testing UI)
 ##   --open=NAME        open a UI screen on start (upgrades)
+##   --rig=ID,ID        own and fit these rig modules; --rig-plans=DISTRICT,... brings those cities' plans
+##                      (systems/rigs.gd); with --open=upgrades --tab=rigs: the Rig tab
 ##   --quality=N        render quality preset 0..3 (Low..Ultra) for faster screenshots
 ##   --ui-scale=X       interface scale 0.8..1.5 for this run (not saved); --colorblind uses that palette
 ##   --tab=ID           upgrades screen starts on this tab (e.g. research)
