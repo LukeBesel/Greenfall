@@ -317,6 +317,7 @@ func wake(i: int, free: bool = false) -> bool:
 		lines.append(tl)
 	Audio.play("thud", 0.8, -4.0)
 	Audio.music_sting("level_up")
+	HubPlan.opt_static("res://systems/tunes.gd", "play_moment", ["base_restored"])  # v6sound: a song for the moment, once one is marked
 	EventBus.shake_requested.emit(0.25)
 	EventBus.toast.emit(tr("%s is awake. %s keeps cleaning when you fly on.") % [HubPlan.landmark_name(planet, i), HubPlan.hub_name(planet, i)], "story")
 	if not lines.is_empty():
@@ -377,6 +378,20 @@ func crew_line(i: int) -> String:
 
 
 # --- What the HUD and the picker show ---------------------------------------------------------------
+
+## The town type as built: the data's `town`, or a harbour where the lake reaches into the town.
+func town_name(i: int) -> String:
+	var actual: String = ""
+	if planet == "verdance" and i > 0 and i < sm.sites.size():
+		if not _harbour.has(i):
+			_harbour[i] = VerdanceSite.is_harbour(sm.water_fn(i))
+		if bool(_harbour[i]):
+			actual = "harbour"
+	return HubPlan.town_name(planet, i, actual)
+
+
+var _harbour: Dictionary = {}
+
 
 ## "New", "Asleep: 3 / 8 hexes", "Restored: 34% clean".
 func status_text(i: int) -> String:
@@ -621,7 +636,7 @@ func show_title(i: int) -> void:
 	big.add_theme_constant_override("outline_size", 8)
 	big.add_theme_color_override("font_outline_color", Color(0.03, 0.06, 0.05, 0.85))
 	vb.add_child(big)
-	var sub_t: String = HubPlan.town_name(planet, i)
+	var sub_t: String = town_name(i)
 	if not HubPlan.is_home(planet, i):
 		sub_t = tr("%s  ·  the %s") % [sub_t, HubPlan.landmark_name(planet, i)]
 	var sub: Label = UITheme.label(sub_t, 16, TEAL)

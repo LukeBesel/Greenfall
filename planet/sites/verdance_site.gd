@@ -409,16 +409,27 @@ var _extra_foot: Array[Rect2] = []  # [v3city] furniture footprints (cars, shelt
 ## [v3city] The hub's character: a harbour where the lake reaches into the town, else one of
 ## HUB_KINDS, turned per hub so neighbouring hubs differ.
 func _pick_kind() -> String:
+	if is_harbour(water):
+		return "harbour"
+	var from_data: String = str(HubPlan.entry("verdance", hub_index).get("town", ""))  # [v6hubs] the planet's data names the look
+	if KINDS.has(from_data) and from_data != "start":
+		return from_data
+	return KIND_BY_HUB[hub_index % KIND_BY_HUB.size()]
+
+
+## [v6hubs] Whether the lake reaches into a town here (water: func(x, z) -> bool in site-local
+## metres, SiteManager.water_fn). Such a hub is a harbour whatever its data says.
+static func is_harbour(water_fn: Callable) -> bool:
+	if not water_fn.is_valid():
+		return false
 	var wet: int = 0
 	var n: int = 0
 	for k: int in 48:
 		var a: float = TAU * k / 48.0
 		for rr: float in [40.0, 70.0, 100.0]:
 			n += 1
-			wet += 1 if _wet(cos(a) * rr, sin(a) * rr) else 0
-	if float(wet) / n > 0.12:
-		return "harbour"
-	return KIND_BY_HUB[hub_index % KIND_BY_HUB.size()]
+			wet += 1 if bool(water_fn.call(cos(a) * rr, sin(a) * rr)) else 0
+	return float(wet) / n > 0.12
 
 
 ## [v3city] A suburb block: detached houses (one or two floors) round the block's edge, facing

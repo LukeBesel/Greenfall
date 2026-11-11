@@ -88,8 +88,10 @@ static func hub_name(planet: String, site: int) -> String:
 	return TranslationServer.translate(str(e["name"])) if e.has("name") else ""
 
 
-static func town_name(planet: String, site: int) -> String:
-	var t: String = str(entry(planet, site).get("town", ""))
+## The town type's display name. `actual`: the look the town really has when it differs from the
+## data (a harbour where the lake reaches in).
+static func town_name(planet: String, site: int, actual: String = "") -> String:
+	var t: String = actual if actual != "" else str(entry(planet, site).get("town", ""))
 	return TranslationServer.translate(str(TOWN_NAMES[t])) if TOWN_NAMES.has(t) else ""
 
 
