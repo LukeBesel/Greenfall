@@ -18,3 +18,5 @@ Short notes only. Nothing here is designed or scheduled. Planet 1 is the only pl
 - **Visible robot transport between cities** (M3-20): robots are shipped unseen today; a crawler or the rocket hold could carry them on screen.
 
 - **Fifteen loose look pieces without a find yet** (M3-14): round, heart and bar eyes, antenna, halo, heart plate, med kit, watering can, tiny drone, and Graphite, Slate, Chalk, Orange, Gold and Bloom green paints. Place them in later planets' finds tables.
+
+- **Native review of all translations** (de, es, fr, ja, pt_BR, zh_CN): every string is a machine draft. The CJK font lacks some glyphs (two zh_CN strings were reworded around 坩埚穹); add a fuller CJK font before release.
