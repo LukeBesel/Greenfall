@@ -50,6 +50,15 @@ func sell_mult() -> float:
 	return float(level_def(level).get("bonus", {}).get("sell_mult", 0.0))
 
 
+## [v6pace] The base level that brings the rocket (data/hub.json "rocket_level"). It was level 5
+## in code: on the globe that put the first hop to another hub past the planet's whole arc.
+static var _rocket_level: int = -1
+static func rocket_level() -> int:
+	if _rocket_level < 0:
+		_rocket_level = int(Economy.read_json("res://data/hub.json").get("rocket_level", 5))
+	return _rocket_level
+
+
 static func can_pay(cost: Dictionary, mult: float = 1.0) -> bool:
 	return GameState.can_afford_all(cost, mult)  # [money] legacy keys folded into the three
 

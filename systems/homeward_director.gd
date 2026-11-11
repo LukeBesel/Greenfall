@@ -185,6 +185,28 @@ static func registry_entry(id: String) -> Dictionary:
 
 # --- Restoration -----------------------------------------------------------------------------
 
+## [v6pace] Owner note 58: the moment the way onward opens (the planet's leave gate, Homeward
+## .system_open), WREN says so plainly, once per planet: planets[k].leave.toast in the data.
+func _leave_beat() -> void:
+	var k: int = Homeward.current_planet()
+	var lv: Variant = Homeward.planet_def(k).get("leave", {})
+	if not (lv is Dictionary) or str((lv as Dictionary).get("toast", "")) == "" or not Homeward.system_open():
+		return
+	var told: Array = GameState.flags.get("leave_told", [])
+	var id: String = str(Homeward.planet_def(k).get("id", ""))
+	if id in told:
+		return
+	told.append(id)
+	GameState.flags["leave_told"] = told
+	var line: String = tr(str((lv as Dictionary)["toast"]))
+	var wv: Variant = world.get("wren") if world else null
+	var w: Wren = wv as Wren if wv is Wren else null
+	if w != null and w.awake():
+		w.speak(line, w.stage())
+	else:
+		EventBus.toast.emit(line, "story")
+	print("[home] leave gate open on %s at %.1f min" % [id, float(GameState.stats.get("time_played", 0.0)) / 60.0])
+
 func _process(delta: float) -> void:
 	_t += delta
 	if _t < CHECK_S:
@@ -192,6 +214,7 @@ func _process(delta: float) -> void:
 	_t = 0.0
 	if Homeward.current_planet() < 0:
 		return
+	_leave_beat()
 	var before: float = Homeward.stored_pct(Homeward.current_planet())
 	var got: Array[int] = Homeward.store_current(Homeward.measure_current())
 	var now: float = Homeward.stored_pct(Homeward.current_planet())

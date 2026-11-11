@@ -1117,8 +1117,9 @@ func _launch(to_hub: int) -> void:
 
 ## "" when the rocket can launch, else why not (no pad yet, or the energy cells are recharging).
 func rocket_status() -> String:
-	if not (hub.level >= 5 or DevHooks.has("rocket") or GameState.world.get("rocket_parked", false)):
-		return tr("Locked. Upgrade your base to level 5 to build the launch pad.")
+	var os_: OrbitSites = OrbitSites.of(self)  # [v6pace] on the globe the rocket travels with Lumi once owned
+	if not (hub.level >= Hub.rocket_level() or DevHooks.has("rocket") or GameState.world.get("rocket_parked", false) or (os_ != null and os_.rocket_unlocked())):
+		return tr("Locked. Upgrade your base to level %d to build the launch pad.") % Hub.rocket_level()
 	var left: float = RocketTiers.recharge_left()
 	if left > 0.0:
 		return tr("Energy cells recharging: %s. Rocket upgrades refill them faster.") % RocketTiers.fmt_time(left)
@@ -1128,7 +1129,7 @@ func rocket_status() -> String:
 ## Launch pad and rocket (level 5 or --rocket), a hologram of the pad at level 4, or a rocket
 ## parked on the ground where it landed in a district without a pad.
 func _refresh_rocket_site() -> void:
-	var has_pad: bool = hub.level >= 5 or DevHooks.has("rocket")
+	var has_pad: bool = hub.level >= Hub.rocket_level() or DevHooks.has("rocket")
 	if has_pad and (rocket == null or rocket.pad == null):
 		if rocket and not rocket.is_flying():
 			rocket.queue_free()
@@ -1138,7 +1139,7 @@ func _refresh_rocket_site() -> void:
 			GameState.world.erase("rocket_parked")
 	elif not has_pad and rocket == null and GameState.world.get("rocket_parked", false):
 		_place_rocket(false)
-	var want_holo: bool = hub.level == 4 and not has_pad
+	var want_holo: bool = hub.level == Hub.rocket_level() - 1 and not has_pad
 	if want_holo and _pad_holo == null:
 		_pad_holo = LaunchPad.new()
 		_pad_holo.construction = true

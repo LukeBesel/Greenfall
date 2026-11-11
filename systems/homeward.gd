@@ -140,7 +140,10 @@ static func progress_blocker(nd: Dictionary) -> String:
 	if pp is Array and (pp as Array).size() >= 2:
 		var k: int = int(pp[0])
 		var need: float = float(pp[1])
-		var ob: int = int(nd.get("or_base_level", 0))  # [pace2] or a base that far along there
+		# [pace2] or a base that far along there. [v6pace] Owner note 58: leaving a planet is not tied
+		# to cleaning it. Each planet names its own leave gate (planets[k].leave.base_level); the
+		# drive's or_base_level is the fallback.
+		var ob: int = leave_base_level(k, int(nd.get("or_base_level", 0)))
 		var base_ok: bool = ob > 0 and current_planet() == k and (int(GameState.world.get("hub_level", 1)) >= ob or Frontiers.bases_at_level(ob) > 0)
 		if stored_pct(k) < need - 0.0001 and not base_ok:
 			if ob > 0:
@@ -154,6 +157,13 @@ static func progress_blocker(nd: Dictionary) -> String:
 		if best < need2 - 0.0001:
 			return TranslationServer.translate("Restore another planet to %d%% (best %d%%)") % [int(round(need2 * 100.0)), int(floor(best * 100.0))]
 	return ""
+
+
+## [v6pace] The base level on planet k that opens the way onward (data/homeward.json
+## planets[k].leave.base_level), or `fallback` when the planet names none.
+static func leave_base_level(k: int, fallback: int = 0) -> int:
+	var lv: Variant = planet_def(k).get("leave", {})
+	return int((lv as Dictionary).get("base_level", fallback)) if lv is Dictionary else fallback
 
 
 static func done() -> bool:

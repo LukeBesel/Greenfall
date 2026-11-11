@@ -201,7 +201,8 @@ func current() -> Dictionary:
 	var d: Dictionary = (g.chain[gi] as Dictionary).duplicate()
 	d["_goal"] = gi
 	var rw: String = GoalsPanel.reward_text(g.reward_of(gi), 1.0)
-	d["desc"] = (tr("Reward: %s") % rw) if rw != "" else ""
+	if str(d.get("desc", "")) == "":  # [v6pace] a goal may carry its own why line (data/goals.json "desc")
+		d["desc"] = (tr("Reward: %s") % rw) if rw != "" else ""
 	return d
 
 

@@ -325,6 +325,8 @@ func update(delta: float) -> void:
 		_track_research(_mgmt_t)
 		_mgmt_t = 0.0
 		_manage(p)
+	if _arc(p):
+		return  # [v6pace] rocket in flight / the planet's exit
 	if world.first_seed and world.first_seed.get("_active"):
 		return  # the seed-tin cinematic
 	if p._cubing > 0.0 or p.detector.digging > 0.0:
@@ -1014,9 +1016,88 @@ func _log_card() -> void:
 		return
 	_card_seen = id
 	var c: Dictionary = _card_cost()
-	print("[card] %.1f min  %s  \"%s\"%s  cubes=%.0f earned=%.0f" % [_now() / 60.0, id, str(d.get("text", "")),
+	print("[card] %.1f min  %s  \"%s\"%s  cubes=%.0f earned=%.0f  %s" % [_now() / 60.0, id, str(d.get("text", "")),
 		("  price %s" % str(c)) if not c.is_empty() else "", GameState.get_currency("cubes").to_float(),
-		BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float()])
+		BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float(), _planet_line()])
+
+
+## [v6pace] "planet 3.2% hubs 1 hexes 24 plants 12 base 2": the HUD's planet %, the hubs that count
+## for it, and the garden, for the pacing table.
+func _planet_line() -> String:
+	var os_: OrbitSites = OrbitSites.of(world)
+	var pct: float = os_.planet_fraction() * 100.0 if os_ else -1.0
+	var hubs: int = 1
+	if os_ and os_.sm:
+		hubs = 0
+		for b: int in os_.sm.built:
+			hubs += 1 if b != 0 else 0
+	return "planet %.1f%% hubs %d hexes %d plants %d base %d" % [pct, hubs, int(world.field.cleaned_count),
+		int(GameState.stats.get("plants_planted", 0)), int(GameState.world.get("hub_level", 1))]
+
+
+var _hop_state: int = 0  # 0 home, 1 flying out, 2 at the far hub, 3 flying back
+var _hop_t: float = 0.0
+var _exit_done: bool = false
+
+
+## [v6pace] The arc's steps past the base levels, as the card asks for them: the rocket hop to a
+## second hub (and back: the bot's yard is the start hub), the planet's drive, the launch onward.
+## Returns true while the bot should stand still (in flight, or looking round the far hub).
+func _arc(p: Patch) -> bool:
+	var os_: OrbitSites = OrbitSites.of(world)
+	if os_ == null or os_.sm == null or _exit_done:
+		return _exit_done
+	if os_.hop.flying or bool(world.get("launching")):
+		return true
+	var ob: Objectives = world.get("objectives") as Objectives
+	var d: Dictionary = ob.current() if ob else {}
+	match _hop_state:
+		1:
+			if _now() - _hop_t < 3.0:
+				return true
+			_hop_state = 2
+			_hop_t = _now()
+			_mark("second_hub_s")
+			print("[arc] %.1f min  landed at a second hub  %s" % [_now() / 60.0, _planet_line()])
+			return true
+		2:
+			if _now() - _hop_t < 60.0:
+				return true  # a look round the new hub
+			_hop_state = 3
+			_hop_t = _now()
+			os_.hop_to(0)
+			return true
+		3:
+			if _now() - _hop_t < 3.0:
+				return true
+			_hop_state = 0
+			print("[arc] %.1f min  back at the start hub" % (_now() / 60.0))
+			return false
+	if str(d.get("type", "")) == "districts" and os_.rocket_unlocked() and p_ok(p) and _at_base(p):
+		var dest: Array = os_.destinations()
+		if not dest.is_empty():
+			_hop_state = 1
+			_hop_t = _now()
+			_event("launch", {"to": int(dest[0]["site"])})
+			os_.hop_to(int(dest[0]["site"]))
+			return true
+	if str(d.get("key", "")) == "drive_tier" and Homeward.drive() < int(d.get("target", 5)) and Homeward.drive_blocker(false) == "":
+		if Homeward.buy_drive(false):
+			HomewardDirector.on_drive_built(world)
+			_mark("drive_%d_s" % Homeward.drive())
+			print("[arc] %.1f min  built the Mk V drive  %s" % [_now() / 60.0, _planet_line()])
+	if str(d.get("key", "")) == "planets_landed" and Homeward.drive() >= 5 and SystemMap.launch_blocker(world, 1) == "":
+		_exit_done = true
+		_mark("planet_exit_s")
+		print("[arc] %.1f min  PLANET EXIT: launch onward  %s  earned=%.0f" % [_now() / 60.0, _planet_line(),
+			BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float()])
+		if not DevHooks.has("past-exit"):  # the pacing run ends where the planet's arc ends
+			_stopping = true
+			_stop_run("planet-exit")
+		else:
+			HomewardDirector.launch_planet(world, 1)
+		return true
+	return false
 
 
 func _manage(p: Patch) -> void:

@@ -77,7 +77,7 @@ static func of(world: Node) -> OrbitSites:
 
 
 ## [v2map] Owner note 40: the survey map (M) is only a map. Travel is at the rocket: it stands on
-## the pad of the hub Lumi last landed at (from base level 5, as on the flat game, or once Lumi
+## the pad of the hub Lumi last landed at (from the base level in data/hub.json "rocket_level", or once Lumi
 ## has flown), and E there opens the destination list (ui/rocket_picker.gd): the other hubs on
 ## this globe (a rocket hop), other planets once the system is open, and the Homeward launch.
 ## Dev: --orbit-survey-launch=N still flies to the Nth hub in that list; --rocket parks it at once.
@@ -140,12 +140,12 @@ func _wire_survey() -> void:
 		hop_to(pick)
 
 
-## Whether Lumi has a rocket on this globe: base level 5 builds it (as the flat game's launch pad),
+## Whether Lumi has a rocket on this globe: the base level `Hub.rocket_level()` builds it,
 ## and once Lumi has flown (a hop or an arrival from another planet) it travels with him.
 func rocket_unlocked() -> bool:
 	var hub: Variant = so.w.get("hub")
 	return DevHooks.has("rocket") or bool(GameState.orbit.get("rocket_owned", false)) \
-		or (hub is Hub and (hub as Hub).level >= 5)
+		or (hub is Hub and (hub as Hub).level >= Hub.rocket_level())
 
 
 ## The hub whose pad the rocket stands on (the last landing, else the start site).

@@ -1,5 +1,6 @@
 {
-  "_doc": "Hub levels and hub buildings. [money] Parts are salvaged while scooping metal, plastic and glass junk (per compartment unit of that junk type; all three now give Parts). Costs: cubes + parts. Scooped parts are finite in a district (junk runs out; the recycler and Haggle make more), so level 4-5 and Air Scrubbers ask only for cubes plus what a district reliably yields; cubes keep coming from the garden stipend (hex_levels.json).",
+  "_doc": "Hub levels and hub buildings. [money] Parts are salvaged while scooping metal, plastic and glass junk (per compartment unit of that junk type; all three now give Parts). Costs: cubes + parts. Scooped parts are finite in a district (junk runs out; the recycler and Haggle make more), so level 4-5 and Air Scrubbers ask only for cubes plus what a district reliably yields; cubes keep coming from the garden stipend (hex_levels.json). [v6pace] rocket_level = the base level that brings the rocket (Hub.rocket_level()).",
+  "rocket_level": 4,
   "materials": {"metal": {"id": "parts", "name": "Parts", "per_unit": 0.3}, "plastic": {"id": "parts", "name": "Parts", "per_unit": 0.12}, "glass": {"id": "parts", "name": "Parts", "per_unit": 0.15}},
   "levels": [
     {"level": 1, "name": "Lean-to", "desc": "Pipe frame, tin roof, a bench.", "cost": {}},
