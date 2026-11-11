@@ -776,3 +776,83 @@ func test_the_simulators_scrounger_keeps_pace_with_the_real_one() -> void:
 		hex += sack
 	assert_gt(brought[0], 0.0)
 	assert_between(brought[0], expected * 0.75, expected * 1.25, "real %.0f Parts against the simulator's %.0f in %d s" % [brought[0], expected, int(seconds)])
+
+
+# --- Keeping 200 robots cheap ----------------------------------------------------------------------------
+
+## A dirty world of far records round HUB (the crew's cells are all junk).
+func _dirty_crew_world() -> SphereCrew:
+	var crew: SphereCrew = _crew_world()
+	crew.cells.junk.fill(1.0)
+	crew.cells.state.fill(0)
+	crew.cells.refresh_all()
+	return crew
+
+
+func test_a_search_that_found_nothing_is_not_repeated_at_once() -> void:
+	var crew: SphereCrew = _crew_world()  # all clean: nothing to do
+	assert_eq(crew.claim_dirty(HUB, HUB, crew.rings, "clean", "a"), -1)
+	var cell: int = _g5.cells_around(HUB, 2)[9]
+	crew.cells.set_state(cell, 0)
+	crew.cells.set_junk(cell, 1.0)
+	assert_eq(crew.claim_dirty(HUB, HUB, crew.rings, "clean", "b"), -1, "the answer is kept for a moment: no second search of the whole region")
+	crew.run_far(SphereCrew.NOTHING_FOUND_S + 0.5, 0.5)
+	assert_eq(crew.claim_dirty(HUB, HUB, crew.rings, "clean", "c"), cell, "then the new work is found")
+	crew.release(cell)
+	assert_eq(crew.claim_dirty(HUB, HUB, crew.rings, "water", "d"), -1)
+	assert_ne(crew.claim_dirty(HUB, HUB, crew.rings, "plant", "f"), -1, "each job's answer is its own: clean ground is a planter's work")
+	crew.set_zone_cell("clean", cell, true)
+	assert_eq(crew.claim_dirty(HUB, HUB, crew.rings, "clean", "e"), cell, "painting an area looks again at once")
+
+
+func test_land_robots_take_no_work_across_water() -> void:
+	var crew: SphereCrew = _crew_world()
+	var island: int = _g5.cells_around(HUB, 4)[40]
+	crew.cells.set_state(island, 0)
+	crew.cells.set_junk(island, 1.0)
+	for c: int in _g5.cells_around(island, 1):
+		if c != island:
+			crew.cells.set_state(c, 5)  # a ring of lake round it
+	assert_true(crew.route(HUB, island).is_empty(), "no way over the water")
+	assert_eq(crew.claim_dirty(HUB, HUB, crew.rings, "clean", "a"), -1, "so the hex is never claimed, and no route search is spent on it")
+	crew.set_zone_cell("clean", island, true)
+	assert_eq(crew.claim_dirty(HUB, HUB, crew.rings, "clean", "b"), island, "unless the player painted it: the robot tries")
+
+
+func test_looking_for_work_is_spread_over_the_ticks() -> void:
+	var crew: SphereCrew = _dirty_crew_world()
+	for i: int in 60:
+		crew.spawn("scoopie", 0, HUB)
+	crew.tick(crew.far_every + 0.01)
+	var busy: int = 0
+	for u: Dictionary in crew.robots():
+		if str(u["mode"]) != "idle":
+			busy += 1
+	assert_gt(busy, 0, "some set off on the first tick")
+	assert_lt(busy, 60, "not all sixty: a tick has a budget for searching")
+	for i: int in 400:
+		crew.tick(0.05)
+	busy = 0
+	for u: Dictionary in crew.robots():
+		if str(u["mode"]) != "idle":
+			busy += 1
+	assert_eq(busy, 60, "a few seconds later every robot has work")
+
+
+func test_far_robots_step_on_their_own_clocks() -> void:
+	var crew: SphereCrew = _dirty_crew_world()
+	for i: int in 80:
+		crew.spawn("scoopie", 0, HUB)
+	var stepped_per_tick: Array[int] = []
+	for i: int in 10:
+		crew.tick(crew.far_every / 5.0)
+		var n: int = 0
+		for u: Dictionary in crew.robots():
+			if is_equal_approx(float(u["far_at"]), crew._t):
+				n += 1
+		stepped_per_tick.append(n)
+	var total: int = 0
+	for n: int in stepped_per_tick:
+		total += n
+		assert_lt(n, 50, "the far robots do not all step on the same tick")
+	assert_between(total, 80, 170, "and each of the 80 stepped once or twice in two periods")

@@ -99,7 +99,6 @@ var _claimed: Dictionary = {}  # cell -> unit name
 var _left: Dictionary = {}  # cell -> work target (junk left 0..1) while robots work it
 var _skip: Dictionary = {}  # cell -> time it may be claimed again
 var _bale_seq: int = 0
-var _far_acc: float = 0.0
 var _t: float = 0.0
 var _report_done: bool = false
 var _names: int = 0
@@ -109,10 +108,8 @@ var _ticks: int = 0
 ## hub cell -> {cell: true}: the land a robot can drive to from that hub (see _reachable).
 var _reach: Dictionary = {}
 var _nothing: Dictionary = {}  # "role:hub" -> time until which a search is known to find nothing
-## The cost of tick(), for the robot report (microseconds, frames).
-var _tick_us: int = 0
-var _tick_n: int = 0
-var _tick_max_us: int = 0
+## What the crew costs per frame, for the robot report.
+var cost := CrewCost.new()
 ## Site buildings (SphereObstacles): key -> circles [[dir, radius_m], ...]; cells under them.
 var _site_obs: Dictionary = {}
 var blocked: Dictionary = {}  # cell -> true
@@ -171,7 +168,7 @@ func spawn(type_id: String, tier: int, cell: int, hub: int = -1, p_name: String 
 		"hub": hub if hub >= 0 else hub_cell, "hopper": 0.0, "carry": [], "mode": "idle", "job": -1, "bale": -1,
 		"work_t": 0.0, "bot": null, "rec": {"dir": d, "heading": SphereMath.any_perpendicular(d), "goal": Vector3.ZERO,
 		"path": [], "speed": SphereRobotKinds.speed(type_id, tier), "cell": cell}, "stall_best": INF, "stall_t": 0.0,
-		"idle": "", "rescan": 0.0, "log": {}}
+		"idle": "", "rescan": 0.0, "log": {}, "far_at": _t - randf() * far_every}
 	for k: String in LOG_KEYS:
 		u["log"][k] = 0.0
 	units.append(u)
@@ -656,29 +653,17 @@ func clear_zone(role: String) -> void:
 func _process(delta: float) -> void:
 	var t0: int = Time.get_ticks_usec()
 	tick(delta)
-	var took: int = Time.get_ticks_usec() - t0
-	_tick_us += took
-	_tick_n += 1
-	_tick_max_us = maxi(_tick_max_us, took)
+	cost.add(Time.get_ticks_usec() - t0, SphereBot.take_step_usec())
 	_maybe_report()
 
 
-## What the crew's own thinking costs: {avg_ms, max_ms, frames} since the crew started.
-func tick_cost() -> Dictionary:
-	return {"avg_ms": float(_tick_us) / 1000.0 / float(maxi(_tick_n, 1)), "max_ms": float(_tick_max_us) / 1000.0, "frames": _tick_n}
-
-
 ## One crew step: near robots think every frame (their SphereBots move themselves), far robots
-## are stepped every far_every seconds; demotion and promotion with hysteresis.
+## are stepped every far_every seconds, each on its own clock so their steps spread over the
+## frames instead of all landing on one; demotion and promotion with hysteresis.
 func tick(delta: float) -> void:
 	_t += delta
 	_find_us = 0
 	_refresh_swarm_obstacles(delta)
-	_far_acc += delta
-	var far_step: bool = _far_acc >= far_every
-	var far_dt: float = _far_acc
-	if far_step:
-		_far_acc = 0.0
 	_ticks += 1
 	var slot: int = _ticks
 	for u: Dictionary in units:
@@ -700,8 +685,10 @@ func tick(delta: float) -> void:
 				if slot % CENTRE_EVERY == 0:
 					_update_centre(u)
 				continue
-		if not far_step:
+		var far_dt: float = _t - float(u["far_at"])
+		if far_dt < far_every:
 			continue
+		u["far_at"] = _t
 		SphereCrewSim.advance(u["rec"], far_dt, surface.radius)
 		_think(u, far_dt)
 		if _focus_dist(unit_dir(u)) < PROMOTE_M and near_count() < max_near:
@@ -719,6 +706,7 @@ func run_far(seconds: float, step_s: float = 1.0) -> void:
 		_find_us = -FAR_RUN_HEADROOM_US  # no frame to keep smooth here: every robot may look for work
 		for u: Dictionary in units:
 			if u["bot"] == null:
+				u["far_at"] = _t
 				SphereCrewSim.advance(u["rec"], dt, surface.radius)
 				_think(u, dt)
 
@@ -785,6 +773,7 @@ func _demote(u: Dictionary) -> void:
 	var b: SphereBot = u["bot"]
 	var keep_cell: int = int((u["rec"] as Dictionary).get("cell", 0))
 	u["rec"] = SphereCrewSim.demote(b)
+	u["far_at"] = _t
 	(u["rec"] as Dictionary)["cell"] = keep_cell
 	u["bot"] = null
 	_near_n -= 1
@@ -1330,9 +1319,10 @@ func print_report() -> void:
 				if re.hex_clean[i] != field.hex_clean[i] and re.hex_hub[i] == 0 and re.hex_water[i] == 0:
 					odd.append("%d(live=%d reload=%d junk=%.3f st=%d mat=%d worked=%s)" % [i, field.hex_clean[i], re.hex_clean[i], cells.junk[i], cells.state[i], field.materialized[i], str(_touched.has(i))])
 			print("[bots] mismatched hexes: %s" % ", ".join(odd.slice(0, 8)))
-	var cost: Dictionary = tick_cost()
-	print("[bots] crew tick: %.2f ms a frame on average, %.1f ms at worst, over %d frames (%d robots)" % [
-		float(cost["avg_ms"]), float(cost["max_ms"]), int(cost["frames"]), units.size()])
+	var c: Dictionary = cost.summary()
+	print("[bots] crew cost per frame, %d robots (%d near): %.2f ms on average (thinking %.2f, near robots %.2f), %.2f ms in the best second, worst frame %.1f ms, over %d frames" % [
+		units.size(), near_count(), float(c["total_ms"]), float(c["tick_ms"]), float(c["bodies_ms"]), float(c["best_second_ms"]),
+		float(c["worst_ms"]), int(c["frames"])])
 	var stuck: int = stuck_count()
 	print("[bots] stuck=%d %s" % [stuck, "PASS" if stuck == 0 else "FAIL"])
 

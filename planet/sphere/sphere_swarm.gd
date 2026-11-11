@@ -71,12 +71,14 @@ func neighbors(me: SphereBot, radius_m: float) -> Array:
 func neighbor_bots(me: SphereBot, radius_m: float) -> Array[SphereBot]:
 	_rebuild()
 	var out: Array[SphereBot] = []
-	var k: Vector3i = _key(me.dir)
 	var lim: float = radius_m / surface.radius
-	for dx: int in [-1, 0, 1]:
-		for dy: int in [-1, 0, 1]:
-			for dz: int in [-1, 0, 1]:
-				var arr: Variant = _buckets.get(k + Vector3i(dx, dy, dz))
+	# Only the buckets the search radius reaches (usually one or two per axis, not all 27).
+	var lo: Vector3i = _key(me.dir - Vector3(lim, lim, lim))
+	var hi: Vector3i = _key(me.dir + Vector3(lim, lim, lim))
+	for x: int in range(lo.x, hi.x + 1):
+		for y: int in range(lo.y, hi.y + 1):
+			for z: int in range(lo.z, hi.z + 1):
+				var arr: Variant = _buckets.get(Vector3i(x, y, z))
 				if arr == null:
 					continue
 				for b: SphereBot in arr:

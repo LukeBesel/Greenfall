@@ -67,6 +67,7 @@ var _shown_heading := Vector3.ZERO
 var _shown_normal := Vector3.ZERO
 var _anim_dt: float = 0.0
 var _steps: int = 0
+static var _step_usec: int = 0
 
 
 func setup(p_surface: SphereSurface, p_dir: Vector3, p_heading: Vector3 = Vector3.ZERO) -> void:
@@ -115,7 +116,17 @@ func has_goal() -> bool:
 
 
 func _process(delta: float) -> void:
+	var t0: int = Time.get_ticks_usec()
 	step(delta)
+	_step_usec += Time.get_ticks_usec() - t0
+
+
+## Microseconds every bot's step() has taken since this was last asked (the robot report's
+## "near robots" cost: robots/sphere/crew_cost.gd).
+static func take_step_usec() -> int:
+	var out: int = _step_usec
+	_step_usec = 0
+	return out
 
 
 func step(delta: float) -> void:
