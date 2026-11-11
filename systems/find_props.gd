@@ -25,6 +25,8 @@ const SAPLING: String = "Sapling"
 ## out by SAPLING_SPREAD.
 const SAPLING_STEMS: Array[float] = [1.0, 0.78, 0.66]
 const SAPLING_SPREAD: float = 0.38
+## A side stem carries this share of the main stem's leaves.
+const SIDE_STEM_LEAVES: float = 0.67
 const SAPLING_LEAVES: int = 15
 const SAPLING_LEAF_M: float = 0.62
 const SAPLING_LEAF_W: float = 0.5
@@ -172,7 +174,7 @@ static func sapling(plant_seed: int, height_m: float, leaf: Color) -> Node3D:
 		var lean := Vector3(cos(a0) * spread + rng.randf_range(-0.08, 0.08), 1.0, sin(a0) * spread + rng.randf_range(-0.08, 0.08)).normalized()
 		root.add_child(_part(ProcMesh.cyl(SAPLING_STEM_R * 0.6, SAPLING_STEM_R, h, 6), stem, lean * h * 0.5,
 			Basis(Quaternion(Vector3.UP, lean)), Vector3.ONE))
-		var n: int = SAPLING_LEAVES if s == 0 else SAPLING_LEAVES * 2 / 3
+		var n: int = SAPLING_LEAVES if s == 0 else roundi(SAPLING_LEAVES * SIDE_STEM_LEAVES)
 		for k: int in n:
 			var t: float = 0.35 + 0.65 * float(k) / float(n - 1)  # up the stem
 			var a: float = float(k) * GOLDEN_ANGLE + a0 + rng.randf_range(-0.25, 0.25)

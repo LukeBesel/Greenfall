@@ -368,14 +368,14 @@ func test_the_tease_sits_up_so_it_reads_as_a_robot() -> void:
 
 func test_the_found_moment_has_a_glow_that_shows_in_sunlight() -> void:
 	Planets.set_current(FIRST)
-	var stub := GDScript.new()
-	stub.source_code = "extends Node3D\nvar patch: Node3D\nvar model: Node3D\n"
-	stub.reload()
+	var script_stub := GDScript.new()
+	script_stub.source_code = "extends Node3D\nvar patch: Node3D\nvar model: Node3D\n"
+	script_stub.reload()
 	var world := Node3D.new()
-	world.set_script(stub)
+	world.set_script(script_stub)
 	add_child_autofree(world)
 	var player := Node3D.new()
-	player.set_script(stub)
+	player.set_script(script_stub)
 	world.add_child(player)
 	var model := PatchModel.new()
 	player.add_child(model)
