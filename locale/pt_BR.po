@@ -17309,3 +17309,143 @@ msgstr "Um mundo de ferrugem, verde. Os velhos guindastes têm flores aos pés. 
 
 #~ msgid "Unlocks with Ark milestones (next: %s, at %d restoration)"
 #~ msgstr "Libera com os marcos da Arca (próximo: %s, com %d de restauração)"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Crew full (%d/%d): raise the base level"
+msgstr "Equipe cheia (%d/%d): suba o nível da base"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Crew full (%d/%d): open the next city"
+msgstr "Equipe cheia (%d/%d): abra a próxima cidade"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Opens with the next city"
+msgstr "Abre com a próxima cidade"
+
+#: M3-20 crew pacing and the robot chain
+msgid "+%d robot spots"
+msgstr "+%d vagas de robô"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Need %s more"
+msgstr "Faltam %s"
+
+#: M3-20 crew pacing and the robot chain
+msgid "%d built  ·  crew full"
+msgstr "%d construídos  ·  equipe cheia"
+
+#: M3-20 crew pacing and the robot chain
+msgid "The Assembler built its first robot. Set the build mix at the workbench."
+msgstr "O Assembler construiu seu primeiro robô. Ajuste a mistura na bancada."
+
+#: M3-20 crew pacing and the robot chain
+msgid "Your Scrounger brought parts home. Newly cleaned ground holds more."
+msgstr "Seu Scrounger trouxe peças. O solo recém-limpo guarda mais."
+
+#: M3-20 crew pacing and the robot chain
+msgid "Salvage: %s in an old factory shell."
+msgstr "Achado: %s na carcaça de uma velha fábrica."
+
+#: M3-20 crew pacing and the robot chain
+msgid "The old factory line can run again. Build the Assembler at the workbench."
+msgstr "A velha linha de fábrica pode voltar a funcionar. Construa o Assembler na bancada."
+
+#: M3-20 crew pacing and the robot chain
+msgid "Build mix: how many of each type the line builds in turn. A type joins the line after you build the first one by hand. Paint where Scroungers search in Command view."
+msgstr "Mistura: quantos de cada tipo a linha constrói por vez. Um tipo entra na linha depois que você constrói o primeiro à mão. Pinte onde os Scroungers procuram na visão de comando."
+
+#: M3-20 crew pacing and the robot chain
+msgid "Nothing to build: give a type a share."
+msgstr "Nada para construir: dê uma parte a um tipo."
+
+#: M3-20 crew pacing and the robot chain
+msgid "Crew full: the line waits for room."
+msgstr "Equipe cheia: a linha espera por vaga."
+
+#: M3-20 crew pacing and the robot chain
+msgid "Waiting for Parts."
+msgstr "Esperando peças."
+
+#: M3-20 crew pacing and the robot chain
+msgid "Paused."
+msgstr "Em pausa."
+
+#: M3-20 crew pacing and the robot chain
+msgid "Starting up."
+msgstr "Iniciando."
+
+#: M3-20 crew pacing and the robot chain
+msgid "by hand first"
+msgstr "primeiro à mão"
+
+#: M3-20 crew pacing and the robot chain
+msgid "More %s"
+msgstr "Mais %s"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Fewer %s"
+msgstr "Menos %s"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Clean zone"
+msgstr "Zona de limpeza"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Search zone"
+msgstr "Zona de busca"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Plant zone"
+msgstr "Zona de plantio"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Water zone"
+msgstr "Zona de rega"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Haul zone"
+msgstr "Zona de transporte"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Parts finder. Digs buried parts out of cleaned ground in its search area and carries them to the base."
+msgstr "Buscador de peças. Desenterra peças do solo limpo da sua zona de busca e as leva para a base."
+
+#: M3-20 crew pacing and the robot chain
+msgid "Bigger Sack"
+msgstr "Saco maior"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Repaired"
+msgstr "Consertado"
+
+#: M3-20 crew pacing and the robot chain
+msgid "An old factory line, running again. Parts go in at the loading bay, robots roll out of the door, one at a time, in the mix you set."
+msgstr "Uma velha linha de fábrica, funcionando de novo. As peças entram pela doca de carga e os robôs saem pela porta, um de cada vez, na mistura que você definir."
+
+#: M3-20 crew pacing and the robot chain
+msgid "Scrounger Plans"
+msgstr "Planos do Scrounger"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Comes with the second city: WREN will send plans for a parts finder."
+msgstr "Chega com a segunda cidade: WREN vai enviar planos de um buscador de peças."
+
+#: M3-20 crew pacing and the robot chain
+msgid "There are parts buried all over the ground you clean, Lumi. I found plans for a Scrounger: it digs them up and brings them home. Bots tab!"
+msgstr "Há peças enterradas por todo o solo que você limpa, Lumi. Achei planos de um Scrounger: ele as desenterra e traz para casa. Aba Robôs!"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Its plans come with the second city."
+msgstr "Os planos chegam com a segunda cidade."
+
+#: M3-20 crew pacing and the robot chain
+msgid "A low digger with a detector coil out front. It noses over ground you have cleaned, digs up what the junk left behind and carries a crate of parts home."
+msgstr "Um escavador baixo com uma bobina detectora na frente. Ele fareja o solo que você limpou, desenterra o que a sucata deixou e leva para casa uma caixa de peças."
+
+#: M3-20 crew pacing and the robot chain
+msgid "Scrounger"
+msgstr "Scrounger"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Assembler"
+msgstr "Assembler"

@@ -16482,3 +16482,147 @@ msgstr "[Ţĥàţ ĝàñţŕý šçŕàþþéð ţĥé Ļéðĝéŕ'š ƒļéé�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "[À ŕûšţ ŵôŕļð, ĝŕééñ. Ţĥé ôļð çŕàñéš ĥàvé ƒļôŵéŕš àţ ţĥéîŕ ƒééţ. Ţĥé bôôķš àŕé çļôšéð, {name}. Ŵé bàļàñçéð ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Crew full (%d/%d): raise the base level"
+msgstr "[Çŕéŵ ƒûļļ (%d/%d): ŕàîšé ţĥé bàšé ļévéļ ~~~~~~~~~~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Crew full (%d/%d): open the next city"
+msgstr "[Çŕéŵ ƒûļļ (%d/%d): ôþéñ ţĥé ñéxţ çîţý ~~~~~~~~~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Opens with the next city"
+msgstr "[Ôþéñš ŵîţĥ ţĥé ñéxţ çîţý ~~~~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "+%d robot spots"
+msgstr "[+%d ŕôbôţ šþôţš ~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Need %s more"
+msgstr "[Ñééð %s môŕé ~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "%d built  ·  crew full"
+msgstr "[%d bûîļţ  ·  çŕéŵ ƒûļļ ~~~~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "The Assembler built its first robot. Set the build mix at the workbench."
+msgstr "[Ţĥé Àššémbļéŕ bûîļţ îţš ƒîŕšţ ŕôbôţ. Šéţ ţĥé bûîļð mîx àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Your Scrounger brought parts home. Newly cleaned ground holds more."
+msgstr "[Ýôûŕ Šçŕôûñĝéŕ bŕôûĝĥţ þàŕţš ĥômé. Ñéŵļý çļéàñéð ĝŕôûñð ĥôļðš môŕé. ~~~~~~~~~~~~~~~~~~~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Salvage: %s in an old factory shell."
+msgstr "[Šàļvàĝé: %s îñ àñ ôļð ƒàçţôŕý šĥéļļ. ~~~~~~~~~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "The old factory line can run again. Build the Assembler at the workbench."
+msgstr "[Ţĥé ôļð ƒàçţôŕý ļîñé çàñ ŕûñ àĝàîñ. Bûîļð ţĥé Àššémbļéŕ àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Build mix: how many of each type the line builds in turn. A type joins the line after you build the first one by hand. Paint where Scroungers search in Command view."
+msgstr "[Bûîļð mîx: ĥôŵ màñý ôƒ éàçĥ ţýþé ţĥé ļîñé bûîļðš îñ ţûŕñ. À ţýþé ĵôîñš ţĥé ļîñé àƒţéŕ ýôû bûîļð ţĥé ƒîŕšţ ôñé bý ĥàñð. Þàîñţ ŵĥéŕé Šçŕôûñĝéŕš šéàŕçĥ îñ Çômmàñð vîéŵ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Nothing to build: give a type a share."
+msgstr "[Ñôţĥîñĝ ţô bûîļð: ĝîvé à ţýþé à šĥàŕé. ~~~~~~~~~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Crew full: the line waits for room."
+msgstr "[Çŕéŵ ƒûļļ: ţĥé ļîñé ŵàîţš ƒôŕ ŕôôm. ~~~~~~~~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Waiting for Parts."
+msgstr "[Ŵàîţîñĝ ƒôŕ Þàŕţš. ~~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Paused."
+msgstr "[Þàûšéð. ~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Starting up."
+msgstr "[Šţàŕţîñĝ ûþ. ~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "by hand first"
+msgstr "[bý ĥàñð ƒîŕšţ ~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Next: %s"
+msgstr "[Ñéxţ: %s ~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "More %s"
+msgstr "[Môŕé %s ~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Fewer %s"
+msgstr "[Féŵéŕ %s ~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Clean zone"
+msgstr "[Çļéàñ žôñé ~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Search zone"
+msgstr "[Šéàŕçĥ žôñé ~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Plant zone"
+msgstr "[Þļàñţ žôñé ~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Water zone"
+msgstr "[Ŵàţéŕ žôñé ~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Haul zone"
+msgstr "[Ĥàûļ žôñé ~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Parts finder. Digs buried parts out of cleaned ground in its search area and carries them to the base."
+msgstr "[Þàŕţš ƒîñðéŕ. Ðîĝš bûŕîéð þàŕţš ôûţ ôƒ çļéàñéð ĝŕôûñð îñ îţš šéàŕçĥ àŕéà àñð çàŕŕîéš ţĥém ţô ţĥé bàšé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Bigger Sack"
+msgstr "[Bîĝĝéŕ Šàçķ ~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Repaired"
+msgstr "[Ŕéþàîŕéð ~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "An old factory line, running again. Parts go in at the loading bay, robots roll out of the door, one at a time, in the mix you set."
+msgstr "[Àñ ôļð ƒàçţôŕý ļîñé, ŕûññîñĝ àĝàîñ. Þàŕţš ĝô îñ àţ ţĥé ļôàðîñĝ bàý, ŕôbôţš ŕôļļ ôûţ ôƒ ţĥé ðôôŕ, ôñé àţ à ţîmé, îñ ţĥé mîx ýôû šéţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Scrounger Plans"
+msgstr "[Šçŕôûñĝéŕ Þļàñš ~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Comes with the second city: WREN will send plans for a parts finder."
+msgstr "[Çôméš ŵîţĥ ţĥé šéçôñð çîţý: ŴŔÉÑ ŵîļļ šéñð þļàñš ƒôŕ à þàŕţš ƒîñðéŕ. ~~~~~~~~~~~~~~~~~~~~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "There are parts buried all over the ground you clean, Lumi. I found plans for a Scrounger: it digs them up and brings them home. Bots tab!"
+msgstr "[Ţĥéŕé àŕé þàŕţš bûŕîéð àļļ ôvéŕ ţĥé ĝŕôûñð ýôû çļéàñ, Ļûmî. Î ƒôûñð þļàñš ƒôŕ à Šçŕôûñĝéŕ: îţ ðîĝš ţĥém ûþ àñð bŕîñĝš ţĥém ĥômé. Bôţš ţàb! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Its plans come with the second city."
+msgstr "[Îţš þļàñš çômé ŵîţĥ ţĥé šéçôñð çîţý. ~~~~~~~~~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "A low digger with a detector coil out front. It noses over ground you have cleaned, digs up what the junk left behind and carries a crate of parts home."
+msgstr "[À ļôŵ ðîĝĝéŕ ŵîţĥ à ðéţéçţôŕ çôîļ ôûţ ƒŕôñţ. Îţ ñôšéš ôvéŕ ĝŕôûñð ýôû ĥàvé çļéàñéð, ðîĝš ûþ ŵĥàţ ţĥé ĵûñķ ļéƒţ béĥîñð àñð çàŕŕîéš à çŕàţé ôƒ þàŕţš ĥômé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Scrounger"
+msgstr "[Šçŕôûñĝéŕ ~]"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Assembler"
+msgstr "[Àššémbļéŕ ~]"

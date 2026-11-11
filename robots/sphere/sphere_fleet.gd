@@ -43,9 +43,10 @@ func build(type_id: String, at: Vector3) -> Robot:
 		return null
 	GameState.spend("parts", build_parts(type_id))
 	GameState.spend("cubes", build_cost(type_id))
-	var cell: int = crew.grid.cell_at(at) if at != Vector3.ZERO else crew.depot_of(crew.hub_cell)
+	var hub: int = crew.hub_for_new_robot()
+	var cell: int = crew.grid.cell_at(at) if at != Vector3.ZERO else crew.depot_of(hub)
 	var rname: String = NAMES[randi() % NAMES.size()] + "-%02d" % (randi() % 100)
-	var u: Dictionary = crew.spawn(type_id, tier_of(type_id), cell, crew.hub_cell, rname)
+	var u: Dictionary = crew.spawn(type_id, tier_of(type_id), cell, hub, rname)
 	if str(Economy.robots[type_id].get("role", "")) == "any":
 		u["role"] = join_crew(type_id) if join_crew(type_id) != "" else "clean"
 	GameState.inc_stat("robots_built")

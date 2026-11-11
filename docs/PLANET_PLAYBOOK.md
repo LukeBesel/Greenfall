@@ -159,6 +159,32 @@ The accepted proposal had no distance in it, and the real game ran 1.5 to 2.5 ti
 - **A story sequence is a wait too.** The first seed takes Lumi off the work for about 110 s. Nothing dear may be on offer when it comes (the Research Desk now waits for the tin), and by itself it is nearly the whole 120 s allowance.
 - **Run-to-run spread is about 25%.** The same build gave the first robot at 8.0 and at 12.0 minutes: digs, a salvage surge and the order hexes are finished in move it. Aim the median at least 20% inside a limit, and judge a number on two runs, never one.
 
+### The crew and the robot chain (M3-20)
+Every number is in the planet's robots table. The rules are `core/crew_rules.gd` (cap, prices) and `core/crew_chain.gd` (the ground, the Assembler's line); `tools/crew_sim` plays a whole planet on them. Measured values are in `docs/reviews/M3-20_CREW.md`.
+
+**Crew cap**
+- cap = the smaller of `crew_cap.by_base_level[base level]` and `crew_cap.by_cities_open[cities open]`. One cap for the whole crew, whatever the jobs. Buildings are not robots.
+- Write `by_cities_open` first, as the crew each city should end with plus about a fifth of room. Then write `by_base_level` so that a new city's cap needs the next base level: the base level stays a purchase that matters.
+
+**Prices**
+- A robot costs `parts` x `price.parts_growth`^owned x the tier's `build_mult`. Keep the growth at 1.0: with a crew of 150 any compounding passes every other price on the planet (1.2 per robot was 1,977 Parts for the 30th Scoopie).
+- A tier step costs the type's `tier_parts` + `price.tier_per_robot` x its build price x robots owned, never more than `price.tier_max_parts`. Set that cap to the planet's dearest Parts price.
+- Crew upgrades cost Parts (`upgrade_currency`). Few levels, small prices: their job is the choice between a better crew and a bigger one, not a second price curve.
+- `price.tier_cities_open` keeps tier steps out of the first city, where Parts are for the first robots.
+
+**The ground**
+- A hex leaves `chain.ground[city]` buried parts when it is first cleaned, once. That is all the Scroungers can ever bring in, so crew growth follows cleaning. Total = the sum over cities of hexes x parts per hex: check it against what the planet's robots, tier steps and late Parts sinks cost.
+- A Scrounger's Parts a minute = sack / trip time. Trip = (ring out + one hop per further hex + ring back) x 17.35 m x `path_factor` / speed + sack / dig rate. Rule of thumb on the first planet: 2 to 4 Parts a minute per Scrounger, falling as a city's cleaned ring moves out. The ground, not the Scroungers, is the limit from the third city on.
+
+**The Assembler**
+- One line, one robot per `assembly_s`, in real time. The crew can grow by at most 60 / `assembly_s` robots a minute, whatever the Parts: this is what makes the curve steady. 80 s gives about 22 robots in a 30-minute city.
+- The accepted proposal counted seconds on the bot's clock, which runs twice as fast as a player. Robots and the line run in real time, so a number taken from the proposal for a machine doubles (40 s became 80 s).
+- Before the Assembler the bench paces the crew: a robot per bench visit. In the city of hand building keep robots cheap and Parts plentiful enough for a robot every 50 s, or the city feels like a queue.
+- The line builds a type only after Lumi has built the first one by hand, and never past the crew cap.
+
+**Where robots work**
+- New robots work for the base of the city Lumi is in. A robot with nothing to do in another city for `chain.redeploy_idle_s` is shipped there. Robots still at work stay.
+
 ### Formulas proposed for the Planet 1 redesign (M3-01, second run)
 Proposed, not built: the numbers live in `tools/pace_sim/proposals/planet1/` and the results in `docs/reviews/BALANCE_PROPOSAL_P1_V2.md` (the first run: `BALANCE_PROPOSAL_P1.md`). They follow the lead's decisions in `docs/design/PLANET1_DESIGN.md` section 16. Times are bot seconds; a new player is about 2x slower at actions, and growth timers are real time. Every cadence limit above is a player limit, so a bot time is doubled before it is compared.
 

@@ -12,7 +12,7 @@ extends Node
 
 signal cell_picked(cell: int)
 
-const ROLES: Array[String] = ["clean", "plant", "water", "haul"]
+const ROLES: Array[String] = ["clean", "find", "plant", "water", "haul"]
 
 var cam: SphereCam
 var surface: SphereSurface

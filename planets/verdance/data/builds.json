@@ -1,5 +1,5 @@
 {
-  "_doc": "[camp2] The single list of things built at a base (systems/camp/hub_builds.gd). kind one_time: a building, bought once in the workbench Build tab, then it drops off that list (HubBuilds.built_names lists what stands). kind tiered: it has levels; its next level is bought in the Upgrades tab (HubBuilds.available(world, \"tiered\")). first_build_one_time: the first tier is a building (bought in the Build tab), later tiers are upgrades. Order is the display order. Costs, unlock conditions and names live with each system (data/camp.json builds, data/stations.json, data/telescope.json, data/trash_bin.json, data/signal_tower.json, data/museum.json). first_build_one_time: the first one (tower tier 1, the first jammer) is a building in the Build tab; the rest are upgrades. air_scrubber: data/hub.json buildings (up to max); signal_jammer: data/ledger.json jammer (listed once the Ledger's drones start).",
+  "_doc": "[camp2] The single list of things built at a base (systems/camp/hub_builds.gd). kind one_time: a building, bought once in the workbench Build tab, then it drops off that list (HubBuilds.built_names lists what stands). kind tiered: it has levels; its next level is bought in the Upgrades tab (HubBuilds.available(world, \"tiered\")). first_build_one_time: the first tier is a building (bought in the Build tab), later tiers are upgrades. Order is the display order. Costs, unlock conditions and names live with each system (data/camp.json builds, data/stations.json, data/telescope.json, data/trash_bin.json, data/signal_tower.json, data/museum.json). first_build_one_time: the first one (tower tier 1, the first jammer) is a building in the Build tab; the rest are upgrades. air_scrubber: data/hub.json buildings (up to max); signal_jammer: data/ledger.json jammer (listed once the Ledger's drones start). [M3-20] assembler: the factory that builds robots (robots.json chain.assembler; systems/crew/robot_chain.gd), listed once the city that table names has been visited.",
   "builds": [
     {
       "id": "shack",
@@ -74,6 +74,10 @@
       "id": "signal_jammer",
       "kind": "tiered",
       "first_build_one_time": true
+    },
+    {
+      "id": "assembler",
+      "kind": "one_time"
     },
     {
       "id": "bot_fabricator",

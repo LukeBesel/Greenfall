@@ -73,11 +73,31 @@ func _shop_robots(m: PaceSimModel, plan: Dictionary) -> void:
 		var ok: bool = hub_save <= 0.0 or m.cubes - float(cost["cubes"]) >= hub_save or must
 		if ok and (must or hub_save <= 0.0 or _mats_spare(m, cost, false)):
 			m.build_robot(robot)
+	# A bigger crew before a better one, as the bot does: Parts go to tiers and crew upgrades only
+	# when no robot is wanted or the crew is full.
+	if robot != "" and m.robot_total() < m.crew_cap():
+		return
+	_crew_upgrade(m)
 	for id: String in Economy.robot_order:
 		var cost: Dictionary = m.tier_cost(id)
 		if m.count(id) > 0 and not cost.is_empty() and m.can_pay(cost) and _mats_spare(m, cost, false) \
 				and m.cubes - float(cost["cubes"]) >= hub_save * 0.5:
 			m.raise_tier(id)
+
+
+## The cheapest crew upgrade priced in Parts, for a type the crew has, when the Parts are spare.
+func _crew_upgrade(m: PaceSimModel) -> void:
+	var best: String = ""
+	var best_cost: float = INF
+	for id: String in Economy.upgrade_order:
+		var def: Dictionary = Economy.upgrade_defs[id]
+		if not def.has("robot") or m.count(str(def["robot"])) == 0 or Economy.upgrade_currency(id) == "cubes" or not m.upgrade_open(id):
+			continue
+		if m.upgrade_cost(id) < best_cost:
+			best_cost = m.upgrade_cost(id)
+			best = id
+	if best != "" and _mats_spare(m, {Economy.upgrade_currency(best): best_cost}, false):
+		m.buy_upgrade(best)
 
 
 func _shop_upgrades(m: PaceSimModel, plan: Dictionary) -> void:
@@ -263,8 +283,8 @@ func _best_upgrade(m: PaceSimModel, reserve: float, leak: bool) -> String:
 	var best: String = ""
 	var best_cost: float = INF
 	for id: String in Economy.upgrade_order:
-		if not m.upgrade_open(id) or not _useful(m, id):
-			continue
+		if not m.upgrade_open(id) or not _useful(m, id) or Economy.upgrade_currency(id) != "cubes":
+			continue  # the crew's upgrades cost Parts: _crew_upgrade buys those
 		var c: float = m.upgrade_cost(id)
 		if c < best_cost:
 			best_cost = c

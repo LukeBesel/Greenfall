@@ -101,16 +101,19 @@ func test_robot_build_costs_parts_and_cubes() -> void:
 	assert_almost_eq(_parts_now(), 0.0, 0.001)
 	assert_almost_eq(GameState.get_currency("cubes").to_float(), 0.0, 0.001)
 	assert_almost_eq(r.rarity_bonus, 0.0, 0.0001)
-	assert_gt(f.build_parts("scoopie").to_float(), parts, "the next one costs more")
+	# Task M3-20: the growth of a price is the table's (1.0 on the first planet: it never compounds).
+	assert_almost_eq(f.build_parts("scoopie").to_float(), CrewRules.build_parts(Economy.robot_cfg, Economy.robots["scoopie"], 1, 0), 0.001)
 
 
 func test_mk_tier_costs_parts_no_core() -> void:
 	var f := _fleet()
+	GameState.flags[Economy.FLAG_TIERS_OPEN] = 2  # task M3-20: tier steps open with the second city
 	var req: Dictionary = f.tier_requirements("scoopie")
 	assert_false(req["ok"])
-	assert_almost_eq((req["parts"] as BigNum).to_float(), Fleet.TIER_PARTS[0], 0.001)
+	var step: float = CrewRules.tier_parts(Economy.robot_cfg, Economy.robots["scoopie"], 0, 0)
+	assert_almost_eq((req["parts"] as BigNum).to_float(), step, 0.001)
 	GameState.currencies["cubes"] = BigNum.from_float((req["cost"] as BigNum).to_float())
-	GameState.currencies["parts"] = BigNum.from_float(Fleet.TIER_PARTS[0])
+	GameState.currencies["parts"] = BigNum.from_float(step)
 	req = f.tier_requirements("scoopie")
 	assert_true(req["ok"], "cubes + parts are enough: no Control Core")
 	assert_true(f.upgrade_tier("scoopie"))

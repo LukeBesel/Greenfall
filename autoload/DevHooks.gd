@@ -68,6 +68,11 @@ extends Node
 ##   --district-stage=ID:N[,ID:N]  set every land hex of a district (city) to regrowth stage N once the
 ##                      world is up (systems/districts_dev.gd); --launch-ready[=S] meets the planet's launch
 ##                      rule S wall-clock seconds after start (default 20): the ending plays fast, no credits
+##   [chain] --assembler stands the Assembler up free at start; --chain-ground=RINGS[:PARTS] buries PARTS parts
+##                      (default 1) in every land hex within RINGS of the start base, as if it had just been
+##                      cleaned; --zone=ROLE:RINGS[,ROLE:RINGS] paints a role's work area (clean, find, plant,
+##                      water, haul) as the hexes within RINGS of the base; --chain-report prints a [chain]
+##                      line before --quit-after (systems/crew/robot_chain.gd)
 ##   [kit] --kit-lineup  art kit lineup (docs/ART_KIT.md); with --out=PREFIX it renders every piece and quits
 
 var args: Dictionary = {}

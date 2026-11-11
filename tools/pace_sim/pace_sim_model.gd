@@ -9,6 +9,8 @@ extends RefCounted
 ## are PaceSimChains.
 
 const TICK_S: float = 1.0
+## This model plays one city: the first (crew cap and tier offers read it).
+const CITIES_OPEN: int = 1
 
 ## Payouts that are Lumi's own loads: the side income (calibration side_income_share) rides on them.
 const HAND_WINS: Array[String] = ["dump", "bale_sold", "haul"]
@@ -134,7 +136,7 @@ func upgrade_cost(id: String) -> float:
 
 
 func buy_upgrade(id: String) -> bool:
-	if not upgrade_open(id) or not _spend({"cubes": upgrade_cost(id)}, "upgrade", id):
+	if not upgrade_open(id) or not _spend({Economy.upgrade_currency(id): upgrade_cost(id)}, "upgrade", id):
 		return false
 	GameState.upgrades[id] = level_of(id) + 1
 	add_stat("upgrades_bought")
@@ -325,9 +327,9 @@ func role_count(role: String) -> int:
 	return n
 
 
+## The most robots in all (core/crew_rules.gd). This model plays one city.
 func crew_cap() -> int:
-	var c: Dictionary = Economy.robot_cfg.get("crew_cap", {})
-	return int(c.get("base", 3)) + int(c.get("per_level", 3)) * hub_level
+	return CrewRules.cap(Economy.robot_cfg, hub_level, CITIES_OPEN)
 
 
 func robot_unlocked(type_id: String) -> bool:
@@ -338,12 +340,12 @@ func robot_unlocked(type_id: String) -> bool:
 func robot_cost(type_id: String) -> Dictionary:
 	var def: Dictionary = Economy.robots[type_id]
 	var n: int = count(type_id)
-	return {"cubes": float(def.get("cost", 100)) * pow(data.k("robot_cost_growth"), n),
-		"parts": ceilf(float(def.get("parts", 30)) * pow(Fleet.PARTS_GROWTH, n))}
+	return {"cubes": CrewRules.build_cubes(Economy.robot_cfg, def, n),
+		"parts": CrewRules.build_parts(Economy.robot_cfg, def, n, int(robot_tier.get(type_id, 0)))}
 
 
 func robot_open(type_id: String) -> bool:
-	return Economy.robots.has(type_id) and tab_open("bots") and robot_unlocked(type_id) and role_count(role_of(type_id)) < crew_cap()
+	return Economy.robots.has(type_id) and tab_open("bots") and robot_unlocked(type_id) and robot_total() < crew_cap()
 
 
 func build_robot(type_id: String) -> bool:
@@ -362,10 +364,10 @@ func build_robot(type_id: String) -> bool:
 
 func tier_cost(type_id: String) -> Dictionary:
 	var tier: int = int(robot_tier.get(type_id, 0))
-	if tier + 1 >= Economy.robot_tiers.size():
+	if tier + 1 >= Economy.robot_tiers.size() or not CrewRules.tiers_open(Economy.robot_cfg, CITIES_OPEN):
 		return {}
-	var mult: float = float((Economy.robot_tiers[tier + 1] as Dictionary).get("cost_mult", 1))
-	return {"cubes": float((Economy.robots[type_id] as Dictionary).get("cost", 100)) * mult, "parts": Fleet.TIER_PARTS[clampi(tier, 0, Fleet.TIER_PARTS.size() - 1)]}
+	var def: Dictionary = Economy.robots[type_id]
+	return {"cubes": CrewRules.tier_cubes(Economy.robot_cfg, def, tier), "parts": CrewRules.tier_parts(Economy.robot_cfg, def, tier, count(type_id))}
 
 
 func raise_tier(type_id: String) -> bool:

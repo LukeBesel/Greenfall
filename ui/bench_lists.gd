@@ -42,13 +42,13 @@ static func _upgrade_item(id: String, cat: String) -> Dictionary:
 	var lv: int = GameState.level_of(id)
 	var mx: int = Economy.upgrade_max(id)
 	var unit: String = _tr(str(d.get("unit", "")))
-	var cost: Dictionary = {"cubes": Economy.upgrade_cost(id).to_float()}
+	var cost: Dictionary = {Economy.upgrade_currency(id): Economy.upgrade_cost(id).to_float()}
 	var waits: bool = Economy.waits_for_district(id)  # this city's levels are sold; more open with the next
 	var locked: bool = not Economy.is_unlocked(id) or waits
 	var now: float = Economy.stat_with_upgrade_level(id, lv)
 	var nxt: float = Economy.stat_with_upgrade_level(id, lv + 1)
 	var it: Dictionary = {"id": id, "cat": cat, "icon": str(d.get("icon", "cube")), "icon_set": "ui", "name": _tr(str(d.get("name", id))),
-		"desc": _tr(str(d.get("desc", ""))), "lv": lv, "max": mx, "price": cost, "_cost": cost.get("cubes", 0.0),
+		"desc": _tr(str(d.get("desc", ""))), "lv": lv, "max": mx, "price": cost, "_cost": Economy.upgrade_cost(id).to_float(),
 		"state": "locked" if locked else ("done" if Economy.is_maxed(id) else _state(cost)),
 		"table": [[_tr("Level"), "%d / %d" % [lv, mx] if mx > 0 else str(lv)], [_tr("Now"), "%s%s" % [_num(now), unit]],
 			[_tr("Next"), "%s%s" % [_num(nxt), unit]], [_tr("Cost"), _price_text(cost)]],

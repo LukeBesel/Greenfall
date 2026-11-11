@@ -1,0 +1,47 @@
+{
+  "_doc": "Calibration of the crew simulator (tools/crew_sim/crew_sim.gd): everything it cannot read from the planet's tables, each with how it was found. All times are PLAYER time (robots work in real time; the bot plays about twice as fast as a player). ESTIMATE = taken from the accepted proposal's model, not measured in the game, because the mechanic is not in the game yet.",
+  "city_minutes": {
+    "value": [48, 35, 31, 31, 32, 48],
+    "how": "Player minutes spent in each city: the accepted proposal's per-city table (docs/reviews/BALANCE_PROPOSAL_P1_V2.md section 3). ESTIMATE for cities 2 to 6; city 1 is being refitted to the game's walking (M3-21) and may run longer."
+  },
+  "hand_parts_per_hex": {
+    "value": [0.8, 1.33, 0.22, 0.22, 0.22, 0.22],
+    "how": "Parts Lumi's own hands bring in per hex of the city cleaned (salvage, wreck stripping, the source job). City 1: measured, about 0.8 a hex (docs/reviews/M3-19_ECONOMY.md). City 2: ESTIMATE, the proposal's wreck city (about 1 a hex by hand plus the source's 90 over 271 hexes). Cities 3 to 6: ESTIMATE, the rest of the proposal's 1,626 Parts not carried by Scroungers, spread over their hexes."
+  },
+  "base_level_by_city": {
+    "value": [2, 3, 4, 4, 5, 5],
+    "how": "Base level the player holds through each city. City 1: level 2 is bought near bot minute 11 (M3-21). Later levels cost 1,100 to 1,800 cubes and have no gate past level 3: ESTIMATE that a player buys the level a city's cap needs."
+  },
+  "base_level_2_min": {
+    "value": 22.0,
+    "how": "Player minute of base level 2: bot minute 10 to 12 in the M3-21 runs."
+  },
+  "type_open": {
+    "value": {"haulbug": [0, 18.0], "scoopie": [0, 34.0], "scrounger": [1, 0.0], "skimmer": [2, 0.0], "drip": [3, 0.0], "seedling": [4, 0.0]},
+    "how": "[city index, player minute in that city] at which Lumi has a type's plans. Haul Bug and Scoopie: bot minutes 9 and 17 in the M3-21 runs. The rest: the design spec's unlock order (section 14), one working type per city. ESTIMATE."
+  },
+  "mix": {
+    "value": {"scoopie": 2, "haulbug": 2, "skimmer": 2, "drip": 2, "seedling": 2, "scrounger": 2},
+    "how": "The default player's build mix: every type the same share, so one robot in six is a Scrounger once all six are open (the proposal's player kept 15% Scroungers)."
+  },
+  "bench_visit_s": {
+    "value": 50.0,
+    "how": "Player seconds between bench visits at which Lumi builds one robot by hand: the proposal's city 2 pace (8 to 50 robots in 35 player minutes, a robot every 50 seconds at the bench)."
+  },
+  "tier_reserve_parts": {
+    "value": 60.0,
+    "how": "Parts the simulated player keeps when buying a tier step. ESTIMATE."
+  },
+  "hex_spacing_m": {
+    "value": 17.35,
+    "how": "Metres between the middles of neighbouring hexes on the globe (the constant SphereCrew.claim_dirty uses)."
+  },
+  "path_factor": {
+    "value": 1.3,
+    "how": "A Scrounger's driven distance over the straight ring distance. Fitted so the simulator's Parts per Scrounger-minute agree with the real crew on a test globe (tests/test_crew_chain.gd)."
+  },
+  "idle_rescan_s": {
+    "value": 5.0,
+    "how": "Seconds a Scrounger with nothing to dig waits before looking again."
+  }
+}

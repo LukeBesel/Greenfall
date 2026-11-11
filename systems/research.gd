@@ -477,6 +477,8 @@ static func story_ids() -> Array[String]:
 ## One story condition: the workbench.json ones, plus since_first_robot and owned.
 static func story_cond(c: Array, w: Node = null) -> bool:
 	match str(c[0]):
+		"cities_open":  # this many of the planet's cities are unlocked
+			return Economy.tiers_open() >= int(c[1])
 		"since_first_robot":
 			if not GameState.flags.has("first_robot_t"):
 				return false

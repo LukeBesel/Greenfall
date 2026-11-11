@@ -1,5 +1,5 @@
 {
-  "_doc": "Robot types. requires_research = research node id needed before the type can be built (absent = unlocked from the start). [ui2] parts = Parts for the first robot of the type (with cost in cubes; cubes grow x1.35 and parts x1.2 per robot owned). recipe = flavour only now (the part types a robot is made of; nothing is consumed). stats = Mk I base values. tiers = visual/stat tiers: mult multiplies all work stats; requires_core_rarity = unused since [ui2] (Mk steps cost cubes + Fleet.TIER_PARTS). Fleet upgrades apply to every robot of the type. [M3-19] Robots and what they build cost Parts only (cubes pay for Lumi's own upgrades, base levels and builds); the Scoopie's 10 Parts is the accepted proposal's first-robot price. [M3-21] The first robot is the Haul Bug (its plans come with the Bot Bay; the Scoopie's follow, research.json story_unlocks): its 6 Parts are what the bot has found by about minute 6 in every measured run, so the Bot Bay's 6 clean hexes and 260 cubes, not luck with Parts, decide when it stands (docs/reviews/M3-21_PACING_FIT.md). part_drop: the chance, by waste type, that a take of salvage.ref_take units holds a piece worth stripping (one robot part) on a hex of salvage.ref_work units; the chance is scaled so a hex yields the same parts however heavy it is. salvage: Parts are scarce here (design spec section 14: 0 to 3 a hex, from Lumi's own hands only): rarity_parts = Parts one found robot part pays by rarity (rusty to legendary), buried_per_hex = buried parts a hex holds on average (about one in three hexes), ref_take and ref_work as above. With these a hex yields about 0.8 Parts: half buried, half stripped. fragment_parts = Parts a Maker Fragment pays.",
+  "_doc": "Robot types. requires_research = research node id needed before the type can be built (absent = unlocked from the start). [ui2] parts = Parts for the first robot of the type (with cost in cubes; cubes grow x1.35 and parts x1.2 per robot owned). recipe = flavour only now (the part types a robot is made of; nothing is consumed). stats = Mk I base values. tiers = visual/stat tiers: mult multiplies all work stats; requires_core_rarity = unused since [ui2] (Mk steps cost cubes + Fleet.TIER_PARTS). Fleet upgrades apply to every robot of the type. [M3-19] Robots and what they build cost Parts only (cubes pay for Lumi's own upgrades, base levels and builds); the Scoopie's 10 Parts is the accepted proposal's first-robot price. [M3-21] The first robot is the Haul Bug (its plans come with the Bot Bay; the Scoopie's follow, research.json story_unlocks): its 6 Parts are what the bot has found by about minute 6 in every measured run, so the Bot Bay's 6 clean hexes and 260 cubes, not luck with Parts, decide when it stands (docs/reviews/M3-21_PACING_FIT.md). part_drop: the chance, by waste type, that a take of salvage.ref_take units holds a piece worth stripping (one robot part) on a hex of salvage.ref_work units; the chance is scaled so a hex yields the same parts however heavy it is. salvage: Parts are scarce here (design spec section 14: 0 to 3 a hex, from Lumi's own hands only): rarity_parts = Parts one found robot part pays by rarity (rusty to legendary), buried_per_hex = buried parts a hex holds on average (about one in three hexes), ref_take and ref_work as above. With these a hex yields about 0.8 Parts: half buried, half stripped. fragment_parts = Parts a Maker Fragment pays. [M3-20] Crew pacing and the robot chain (design spec section 14; docs/reviews/M3-20_CREW.md). Every number of the crew is here, none in code. crew_cap: the most robots in all (core/crew_rules.gd). price: parts_growth and cubes_growth multiply a type's price for each robot of the type already owned (1.0 = a fixed price, as accepted: a price never compounds); tier_per_robot = share of the type's build price a tier step costs for each robot already owned, on top of the type's tier_parts, and tier_max_parts is the most a tier step ever costs (the dearest Parts price on this planet, the rocket's last part); tier_cities_open = cities that must be open before tier steps are on offer (2: the repaired tier comes with the second city, where Parts open up, so in the first city Parts go to the first robots). upgrade_currency: what the per-type fleet upgrades cost (Parts: one job per currency); their levels are few and their prices small so no crew price passes the dearest Parts price (the rocket's 600). tiers: two on this planet, rusty and repaired; mult multiplies the work stats, build_mult the build price of a robot of a type at that tier. types[].tier_parts: Parts for each tier step of the type (index 0 = the step to tier 1). types[].role 'find' is the parts finder (the chain's Scrounger): stats dig_rate = buried parts dug a second, sack = Parts it carries per trip. chain: see its own _doc.",
   "types": [
     {
       "id": "scoopie",
@@ -27,9 +27,9 @@
           "name": "Drive Motors",
           "mode": "mul_pct",
           "amount": 0.12,
-          "base_cost": 90,
-          "growth": 1.6,
-          "max_level": 15,
+          "base_cost": 8,
+          "growth": 1.5,
+          "max_level": 5,
           "unit": " m/s"
         },
         {
@@ -37,9 +37,9 @@
           "name": "Arm Servos",
           "mode": "mul_pct",
           "amount": 0.15,
-          "base_cost": 110,
-          "growth": 1.6,
-          "max_level": 15,
+          "base_cost": 10,
+          "growth": 1.5,
+          "max_level": 5,
           "unit": "/s"
         },
         {
@@ -47,9 +47,9 @@
           "name": "Hopper Liner",
           "mode": "add",
           "amount": 3.0,
-          "base_cost": 130,
-          "growth": 1.65,
-          "max_level": 15,
+          "base_cost": 10,
+          "growth": 1.5,
+          "max_level": 5,
           "unit": ""
         },
         {
@@ -57,11 +57,14 @@
           "name": "Compactor Tune",
           "mode": "mul_pct",
           "amount": 0.1,
-          "base_cost": 160,
-          "growth": 1.7,
-          "max_level": 20,
+          "base_cost": 12,
+          "growth": 1.5,
+          "max_level": 5,
           "unit": "x"
         }
+      ],
+      "tier_parts": [
+        30
       ]
     },
     {
@@ -87,9 +90,9 @@
           "name": "Drive Motors",
           "mode": "mul_pct",
           "amount": 0.12,
-          "base_cost": 100,
-          "growth": 1.6,
-          "max_level": 15,
+          "base_cost": 8,
+          "growth": 1.5,
+          "max_level": 5,
           "unit": " m/s"
         },
         {
@@ -97,9 +100,57 @@
           "name": "Longer Forks",
           "mode": "add",
           "amount": 1.0,
-          "base_cost": 250,
-          "growth": 2.0,
+          "base_cost": 14,
+          "growth": 1.8,
+          "max_level": 4,
+          "unit": ""
+        }
+      ],
+      "tier_parts": [
+        40
+      ]
+    },
+    {
+      "id": "scrounger",
+      "requires_research": "scrounger_rig",
+      "name": "Scrounger",
+      "role": "find",
+      "desc": "Parts finder. Digs buried parts out of cleaned ground in its search area and carries them to the base.",
+      "recipe": [
+        "chassis",
+        "locomotion",
+        "arm",
+        "hopper"
+      ],
+      "cost": 0,
+      "parts": 18,
+      "tier_parts": [
+        50
+      ],
+      "stats": {
+        "speed": 2.4,
+        "dig_rate": 0.5,
+        "sack": 8.0
+      },
+      "upgrades": [
+        {
+          "stat": "speed",
+          "name": "Drive Motors",
+          "mode": "mul_pct",
+          "amount": 0.12,
+          "base_cost": 10,
+          "growth": 1.5,
           "max_level": 5,
+          "unit": " m/s"
+        },
+        {
+          "stat": "sack",
+          "name": "Bigger Sack",
+          "mode": "add",
+          "amount": 2.0,
+          "base_cost": 12,
+          "growth": 1.6,
+          "max_level": 4,
           "unit": ""
         }
       ]
@@ -128,9 +179,9 @@
           "name": "Drive Motors",
           "mode": "mul_pct",
           "amount": 0.12,
-          "base_cost": 200,
-          "growth": 1.6,
-          "max_level": 15,
+          "base_cost": 12,
+          "growth": 1.5,
+          "max_level": 5,
           "unit": " m/s"
         },
         {
@@ -138,11 +189,14 @@
           "name": "Seed Drill",
           "mode": "mul_pct",
           "amount": 0.15,
-          "base_cost": 260,
-          "growth": 1.6,
-          "max_level": 15,
+          "base_cost": 14,
+          "growth": 1.5,
+          "max_level": 5,
           "unit": "/s"
         }
+      ],
+      "tier_parts": [
+        80
       ]
     },
     {
@@ -172,9 +226,9 @@
           "name": "Drive Motors",
           "mode": "mul_pct",
           "amount": 0.12,
-          "base_cost": 200,
-          "growth": 1.6,
-          "max_level": 15,
+          "base_cost": 12,
+          "growth": 1.5,
+          "max_level": 5,
           "unit": " m/s"
         },
         {
@@ -182,9 +236,9 @@
           "name": "Bigger Tank",
           "mode": "add",
           "amount": 8.0,
-          "base_cost": 240,
-          "growth": 1.65,
-          "max_level": 15,
+          "base_cost": 12,
+          "growth": 1.5,
+          "max_level": 5,
           "unit": ""
         },
         {
@@ -192,9 +246,9 @@
           "name": "Wide Nozzle",
           "mode": "add",
           "amount": 0.3,
-          "base_cost": 300,
-          "growth": 1.8,
-          "max_level": 8,
+          "base_cost": 14,
+          "growth": 1.6,
+          "max_level": 4,
           "unit": " m"
         },
         {
@@ -202,11 +256,14 @@
           "name": "Fast Pump",
           "mode": "mul_pct",
           "amount": 0.25,
-          "base_cost": 220,
-          "growth": 1.6,
-          "max_level": 12,
+          "base_cost": 12,
+          "growth": 1.5,
+          "max_level": 5,
           "unit": "/s"
         }
+      ],
+      "tier_parts": [
+        60
       ]
     },
     {
@@ -235,9 +292,9 @@
           "name": "Hover Fans",
           "mode": "mul_pct",
           "amount": 0.12,
-          "base_cost": 220,
-          "growth": 1.6,
-          "max_level": 15,
+          "base_cost": 12,
+          "growth": 1.5,
+          "max_level": 5,
           "unit": " m/s"
         },
         {
@@ -245,9 +302,9 @@
           "name": "Net Winch",
           "mode": "mul_pct",
           "amount": 0.15,
-          "base_cost": 260,
-          "growth": 1.6,
-          "max_level": 15,
+          "base_cost": 14,
+          "growth": 1.5,
+          "max_level": 5,
           "unit": "/s"
         },
         {
@@ -255,11 +312,14 @@
           "name": "Bigger Net",
           "mode": "add",
           "amount": 3.0,
-          "base_cost": 280,
-          "growth": 1.65,
-          "max_level": 15,
+          "base_cost": 14,
+          "growth": 1.5,
+          "max_level": 5,
           "unit": ""
         }
+      ],
+      "tier_parts": [
+        60
       ]
     },
     {
@@ -292,42 +352,29 @@
           "name": "Drive Motors",
           "mode": "mul_pct",
           "amount": 0.12,
-          "base_cost": 300,
-          "growth": 1.6,
-          "max_level": 15,
+          "base_cost": 16,
+          "growth": 1.5,
+          "max_level": 5,
           "unit": " m/s"
         }
+      ],
+      "tier_parts": [
+        90
       ]
     }
   ],
   "tiers": [
     {
-      "name": "Mk I",
+      "name": "Rusty",
       "look": "salvage",
       "mult": 1.0,
-      "cost_mult": 0,
-      "requires_core_rarity": -1
+      "build_mult": 1.0
     },
     {
-      "name": "Mk II",
+      "name": "Repaired",
       "look": "restored",
-      "mult": 1.5,
-      "cost_mult": 6,
-      "requires_core_rarity": 2
-    },
-    {
-      "name": "Mk III",
-      "look": "modern",
-      "mult": 2.4,
-      "cost_mult": 30,
-      "requires_core_rarity": 3
-    },
-    {
-      "name": "Mk IV",
-      "look": "hover",
-      "mult": 4.0,
-      "cost_mult": 150,
-      "requires_core_rarity": 4
+      "mult": 1.6,
+      "build_mult": 1.5
     }
   ],
   "part_drop": {
@@ -335,9 +382,22 @@
     "metal": 0.0075
   },
   "crew_cap": {
-    "_doc": "Max robots per crew (role) = base + per_level * hub level.",
-    "base": 1,
-    "per_level": 2
+    "_doc": "The most robots in all, whatever their job (buildings such as the Assembler do not count): the smaller of by_base_level[base level - 1] and by_cities_open[cities open - 1]. by_cities_open is the accepted proposal's cap per city (8, 56, 90, 120, 160, 200). by_base_level makes the base level matter: level 1 holds 4, level 2 fills the first city's 8, level 3 carries cities 2 and 3 up to 56, level 4 to 120, level 5 to 200. A missing list sets no limit of its kind.",
+    "by_base_level": [
+      4,
+      8,
+      56,
+      120,
+      200
+    ],
+    "by_cities_open": [
+      8,
+      56,
+      90,
+      120,
+      160,
+      200
+    ]
   },
   "water_tank": {
     "_doc": "Placeable refill station for Drip robots. cost in cubes grows per tank; holds `capacity` water and refills itself at `regen` per second (rain catcher + condenser).",
@@ -360,5 +420,50 @@
     "buried_per_hex": 0.33,
     "ref_take": 1.22,
     "ref_work": 120.0
+  },
+  "price": {
+    "parts_growth": 1.0,
+    "cubes_growth": 1.0,
+    "tier_per_robot": 0.9,
+    "tier_max_parts": 600,
+    "tier_cities_open": 2
+  },
+  "upgrade_currency": "parts",
+  "chain": {
+    "_doc": "The robot chain (systems/crew/robot_chain.gd, core/crew_chain.gd): Scroungers find Parts, the Assembler builds robots from them, more Scroungers included. finder = the robot type that finds parts. ground: every hex leaves buried parts when it is cleaned for the first time, as many as ground[its city's id] (the accepted proposal's numbers: none in the first city, where Parts come only from Lumi's own hands), open_ground outside every city; a Scrounger digs them at its dig_rate, carries a sack of them to its base and they are gone from that hex for good. So Parts per Scrounger are capped by the trip, and all Parts by the ground that has been cleaned: the crew cannot grow faster than the cleaning. arrival_parts: Parts of salvage found the first time Lumi stands in a city, paid once (the third city's old factory shell, which the Assembler is built in). assembler: id of the build (builds table); cost in Parts; anchor = the base site's anchor the building stands on; unlock.district = the city whose first visit puts it on offer; assembly_s = seconds on the line for one robot, in real time (one at a time, one line, no upgrade on this planet; the accepted proposal's 40 s was counted on the bot's clock, which runs twice as fast as a player, and robots work in real time: 80 s gives the accepted crew of about 22 new robots in a 30-minute city); max_weight = the largest share number of the build mix; default_mix = the mix a new Assembler starts with (type id: share; a type gets weight / sum of weights of everything the line builds); reserve_parts = Parts the line never touches, so the bench always has some. A type goes on the line only after Lumi has built the first one by hand. New robots work for the base of the city Lumi is in; redeploy_idle_s = seconds a robot must have had nothing to do in another city before it is shipped to that base too (0 = robots never move between cities).",
+    "finder": "scrounger",
+    "ground": {
+      "old_town": 0.0,
+      "scrapyard": 1.0,
+      "kettle_bay": 1.8,
+      "highreach": 2.2,
+      "lowmeadow": 2.0,
+      "old_capital": 2.4
+    },
+    "open_ground": 1.0,
+    "arrival_parts": {
+      "kettle_bay": 130.0
+    },
+    "redeploy_idle_s": 45.0,
+    "assembler": {
+      "id": "assembler",
+      "name": "Assembler",
+      "desc": "An old factory line, running again. Parts go in at the loading bay, robots roll out of the door, one at a time, in the mix you set.",
+      "cost": {
+        "parts": 45
+      },
+      "unlock": {
+        "district": "kettle_bay"
+      },
+      "assembly_s": 80.0,
+      "max_weight": 9,
+      "reserve_parts": 0,
+      "default_mix": {
+        "scoopie": 3,
+        "haulbug": 2,
+        "scrounger": 1
+      },
+      "anchor": "fabricator"
+    }
   }
 }

@@ -66,7 +66,7 @@ func _ready() -> void:
 	vb.add_child(_change)
 	var cost_row := HBoxContainer.new()
 	vb.add_child(cost_row)
-	cost_row.add_child(CurrencyIcon.new("cubes", 22.0))  # [ui2] the same cube glyph everywhere
+	cost_row.add_child(CurrencyIcon.new(Economy.upgrade_currency(upgrade_id), 22.0))  # [ui2] the same cube glyph everywhere
 	_cost = UITheme.label("", 19, BenchKit.OK)
 	cost_row.add_child(_cost)
 	var sp := Control.new()
@@ -200,7 +200,7 @@ func refresh() -> void:
 	else:
 		_change.text = "%s%s  →  %s%s" % [_fmt(before), unit, _fmt(after), unit]
 		_change.add_theme_color_override("font_color", UITheme.GREEN)
-	var money: BigNum = GameState.get_currency("cubes")
+	var money: BigNum = GameState.get_currency(Economy.upgrade_currency(upgrade_id))
 	var cost: BigNum = Economy.upgrade_cost(upgrade_id)
 	_cost.text = (tr("NEXT CITY") if Economy.waits_for_district(upgrade_id) else tr("MAX")) if maxed else Settings.fmt(cost)
 	var ratio: float = 1.0 if maxed else clampf(money.ratio_to(cost), 0.0, 1.0)

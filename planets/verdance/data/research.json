@@ -4,7 +4,7 @@
   "note_pay": 0.0,
   "data_rewards": {"hex_cleaned": 10.0, "hex_restored": 15.0, "plant_bloomed": 1.5, "shard_read": 20.0, "robot_bale": 1.0},
   "max_queue": 3,
-  "story_unlocks_doc": "[v4bots] Owner 2026-11-09 (items 44, 46): the Scoopie comes alone; the Haul Bug and the Skimmer arrive later by themselves (no tree card, no cost, no research_done stat). [M3-21] The lead, Nov 11: the first robot is the answer to walking, so the Haul Bug's plans come with the Bot Bay (bench_tier 2) and the Scoopie's arrive later (scoopie_rig); the Skimmer follows the Scoopie. Research.check_story grants one when everything in requires is researched and either every `when` condition holds or any `any` condition does. Conditions: the workbench.json ones (UpgradesScreen.cond_ok), plus [\"since_first_robot\", s] (play seconds since the first robot was built) and [\"owned\", type, n] (robots of that type in the fleet: older saves keep building theirs). Granting sets flags[id] (the objectives' wait_flag) and WREN says `line` (a toast while she is silent). hint: the locked robot card's text.",
+  "story_unlocks_doc": "[v4bots] Owner 2026-11-09 (items 44, 46): the Scoopie comes alone; the Haul Bug and the Skimmer arrive later by themselves (no tree card, no cost, no research_done stat). [M3-21] The lead, Nov 11: the first robot is the answer to walking, so the Haul Bug's plans come with the Bot Bay (bench_tier 2) and the Scoopie's arrive later (scoopie_rig); the Skimmer follows the Scoopie. Research.check_story grants one when everything in requires is researched and either every `when` condition holds or any `any` condition does. Conditions: the workbench.json ones (UpgradesScreen.cond_ok), plus [\"since_first_robot\", s] (play seconds since the first robot was built) and [\"owned\", type, n] (robots of that type in the fleet: older saves keep building theirs). Granting sets flags[id] (the objectives' wait_flag) and WREN says `line` (a toast while she is silent). hint: the locked robot card's text. [M3-20] [\"cities_open\", n]: n of the planet's cities are unlocked (the Scrounger's plans come with the second city, where Parts open up: design spec section 14).",
   "story_unlocks": [
     {"id": "haul_rig", "icon": "bot", "name": "Haul Bug Plans", "hint": "Comes with the Bot Bay: a Haul Bug carries your bales to the scale.", "requires": ["salvage_logic"],
      "when": [["bench_tier", 2]], "any": [["owned", "haulbug", 1], ["hub_level", 3]],
@@ -17,7 +17,11 @@
     {"id": "skimmer_rig", "icon": "bot", "name": "Skimmer Plans", "hint": "Comes later: WREN will send Skimmer plans once the land is greening.", "requires": ["scoopie_rig"],
      "when": [["since_first_robot", 2100], ["stat", "plants_planted", 1]], "any": [["owned", "skimmer", 1], ["hub_level", 3]],
      "line": "The lakes are full of floating junk. I've sent you plans for a Skimmer: it nets what floats. Bots tab.",
-     "effects": [{"unlock_robot": "skimmer"}]}
+     "effects": [{"unlock_robot": "skimmer"}]},
+    {"id": "scrounger_rig", "icon": "bot", "name": "Scrounger Plans", "hint": "Comes with the second city: WREN will send plans for a parts finder.", "requires": ["haul_rig"],
+     "when": [["cities_open", 2]], "any": [["owned", "scrounger", 1]],
+     "line": "There are parts buried all over the ground you clean, Lumi. I found plans for a Scrounger: it digs them up and brings them home. Bots tab!",
+     "effects": [{"unlock_robot": "scrounger"}]}
   ],
   "branches": [
     {"id": "cleaning", "name": "Cleaning", "color": "#ffb342"},

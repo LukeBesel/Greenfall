@@ -190,10 +190,11 @@ func _refresh_ups() -> void:
 		else:
 			(r["val"] as Label).text = "Lv %d%s  ·  %s → %s%s" % [lv, ("/%d" % mx) if mx > 0 else "", _num(now), _num(Economy.stat_with_upgrade_level(uid, lv + 1)), unit]
 			var cost: BigNum = Economy.upgrade_cost(uid)
-			var can: bool = Economy.is_unlocked(uid) and GameState.can_afford("cubes", cost)
-			b.text = tr("+  %s cubes") % Settings.fmt(cost)
+			var cur: String = Economy.upgrade_currency(uid)
+			var can: bool = Economy.is_unlocked(uid) and GameState.can_afford(cur, cost)
+			b.text = "+  %s" % L10nFmt.amount(cur, cost.to_float())
 			b.disabled = not can
-			b.tooltip_text = "" if can else tr("Need %s more cubes") % Settings.fmt(cost.sub(GameState.get_currency("cubes")))
+			b.tooltip_text = "" if can else tr("Need %s more") % L10nFmt.amount(cur, cost.sub(GameState.get_currency(cur)).to_float())
 
 
 static func _num(v: float) -> String:
@@ -225,11 +226,10 @@ func refresh() -> void:
 		add_theme_stylebox_override("panel", BenchKit.holo(Color(1, 1, 1, 0.08), BenchKit.CARD_BG, 0.0))
 		return
 	# Crew spots: robots in this type's crew vs the cap (a multibot can join any crew with room).
-	var crew: String = Fleet.crew_of_type(type_id)
 	var cap: int = fleet.crew_cap()
-	var in_crew: int = fleet.crew_size(crew)
+	var in_crew: int = fleet.robot_total()
 	_crew_pips.set_counts(mini(in_crew, cap), cap)
-	_crew_lbl.text = (tr("%d built  ·  full: more spots with hub levels") % n) if in_crew >= cap else (tr("%d built  ·  %d free") % [n, cap - in_crew])
+	_crew_lbl.text = (tr("%d built  ·  crew full") % n) if in_crew >= cap else (tr("%d built  ·  %d free") % [n, cap - in_crew])
 	_mk_pips.set_counts(t + 1, Economy.robot_tiers.size())
 	if str(Economy.robots[type_id].get("role", "")) == "water" and fleet.water_net and n > 0:
 		var wn: WaterNet = fleet.water_net
