@@ -7,9 +7,13 @@ extends RefCounted
 ##                                    prints the [bots] table before --quit-after
 ##   --orbit-far-crew[=N]             3 Scoopies + 1 Haul Bug at hub site N (default 1, ~1.7 km
 ##                                    away); prints the far shell's colour there before --quit-after
-##   --bot-motion                     with --quit-after: [motion] jitter / building-overlap report
+##   --bot-motion                     with --quit-after: [motion] jitter / building-overlap report,
+##                                    [v6crew] plus metres, deg/100m, trip detour and hauler bunching;
+##                                    --motion-debug adds a [flip] line per hauler reversal (what was near)
 ##   --crew-build=type[,seconds]     [v6crew] builds a robot at the bench after a while and logs its hello
 ##   --crew-cam=i[,dist,height]      [v6crew] a dev camera on robot i (rendered audits of the crew)
+##   --crew-command=S                 [v6crew] opens the Command view after S seconds (as pressing B)
+##                                    and prints its card's lines as [cmd] (renders, headless checks)
 ##   --offline-jump[=S]               offline jump of S seconds (default 7200) for the --robots
 ##                                    fleet: flat Offline.compute vs SphereOffline.simulate, PASS
 ##                                    within 10%, and the cells it cleaned
@@ -104,6 +108,18 @@ static func install(src: Object, parent: Node, lumi: Node3D, cam: SphereCam, wri
 		var cc := CrewCam.new()
 		cc.crew = crew
 		parent.add_child(cc)
+	if DevHooks.has("crew-command"):  # [v6crew]
+		var open_cmd: Callable = func() -> void:
+			await parent.get_tree().create_timer(DevHooks.get_f("crew-command", 20.0), false).timeout
+			var ev := InputEventAction.new()
+			ev.action = "open_command"
+			ev.pressed = true
+			Input.parse_input_event(ev)
+			await parent.get_tree().create_timer(1.0, false).timeout
+			for l: Dictionary in CommandOverlay.card_lines(cmd):
+				print("[cmd] %s" % str(l["text"]))
+			print("[cmd] view %s, hints: %s" % [cmd.cam.view if cmd.cam != null else "?", " | ".join(CommandOverlay.hint_lines(cmd))])
+		open_cmd.call_deferred()
 	if DevHooks.has("orbit-far-crew"):
 		var si: int = clampi(int(DevHooks.get_f("orbit-far-crew", 0.0)), 0, src.sites.size() - 1)
 		if si <= 1:  # a bare flag reads as "1"  # default: the hub nearest the start (~1.6-1.7 km on Verdance)

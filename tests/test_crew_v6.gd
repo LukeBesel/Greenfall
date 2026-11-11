@@ -356,3 +356,79 @@ func test_every_robot_type_works_from_build_to_cash_across_a_save() -> void:
 	assert_gt(crew.cashed, 0.0, "and they were cashed")
 	for u: Dictionary in crew.robots():
 		assert_ne(CrewTalk.line(crew, u), "", "%s always has a line" % u["type"])
+
+
+## [v6crew] Haul Bug weaving: a hex path is pulled into straight runs over open ground, but never
+## across a blocked hex or close by a building circle.
+func test_hex_paths_are_pulled_straight_but_not_through_walls() -> void:
+	var w: Dictionary = _world(false)
+	var crew: SphereCrew = w["crew"]
+	var far: int = _g.cells_around(100, 6)[_g.cells_around(100, 6).size() - 1]
+	var p: PackedInt32Array = crew.route(100, far)
+	assert_gt(p.size(), 4, "a path several hexes long")
+	var dirs: Array[Vector3] = []
+	var on: Dictionary = {}
+	for c: int in p:
+		on[c] = true
+	for i: int in range(1, p.size()):
+		dirs.append(_g.centers[p[i]])
+	var pulled: Array[Vector3] = crew.pull_path(_g.centers[100], dirs, on, "clean")
+	assert_lt(pulled.size(), dirs.size(), "open ground: fewer corners (%d of %d)" % [pulled.size(), dirs.size()])
+	assert_eq(pulled[pulled.size() - 1], dirs[dirs.size() - 1], "the end point is kept")
+	# A prop right on the straight line keeps the corner.
+	var mid: Vector3 = _g.centers[100].slerp(_g.centers[far], 0.5).normalized()
+	crew.swarm.obstacles = [[mid, 2.0]]
+	assert_false(crew.clear_run(_g.centers[100], _g.centers[far], {}, "clean"), "a building on the line blocks the straight run")
+	crew.swarm.obstacles = []
+	assert_true(crew.clear_run(_g.centers[100], _g.centers[far], on, "clean"))
+
+
+## [v6crew] With bales aboard a Haul Bug picks the one on its way home, not one behind it; and a
+## bale right by one another hauler is fetching costs more (they spread out).
+func test_haul_bugs_pick_bales_on_the_way_and_spread_out() -> void:
+	var w: Dictionary = _world(false)
+	var crew: SphereCrew = w["crew"]
+	var ring: PackedInt32Array = _g.cells_around(100, 4)
+	var here: int = ring[ring.size() - 1]
+	var home: Vector3 = crew.drop_dir(100)
+	var toward: Vector3 = _g.centers[here].slerp(home, 0.35).normalized()
+	var me: Vector3 = _g.centers[here]
+	var away: Vector3 = (me + (me - toward)).normalized()
+	var hb: Dictionary = crew.spawn("haulbug", 0, here, 100)
+	var on_way := {"cell": _g.cell_at(toward), "dir": toward, "claimed": ""}
+	var behind := {"cell": _g.cell_at(away), "dir": away, "claimed": ""}
+	var none: Array[Vector3] = []
+	assert_lt(crew._haul_score(hb, here, on_way, 1, none), crew._haul_score(hb, here, behind, 1, none), "on the way home wins with a bale aboard")
+	var taken: Array[Vector3] = [toward]
+	assert_gt(crew._haul_score(hb, here, on_way, 0, taken), crew._haul_score(hb, here, on_way, 0, none), "a bale by another's costs more")
+
+
+## [v6crew] Each hauler of a hub unloads at its own slot, and the slots are a body length apart.
+func test_haulers_get_their_own_drop_slots() -> void:
+	var w: Dictionary = _world(false)
+	var crew: SphereCrew = w["crew"]
+	crew.depot_points[100] = _g.centers[100]
+	var spots: Array[Vector3] = []
+	for i: int in 4:
+		spots.append(crew._drop_spot(crew.spawn("haulbug", 0, 100, 100)))
+	for i: int in spots.size():
+		for j: int in range(i + 1, spots.size()):
+			assert_gt(spots[i].angle_to(spots[j]) * crew.surface.radius, 2.5, "slots %d and %d apart" % [i, j])
+
+
+## [v6crew] Mk tiers show on the bot: rank pips round its lamp, and its line names the tier.
+func test_mk_tier_shows_as_rank_pips_and_in_its_line() -> void:
+	assert_eq(BotBadge.pips_for(0), 0)
+	assert_eq(BotBadge.pips_for(1), 2)
+	assert_eq(BotBadge.pips_for(3), 4)
+	var bd := BotBadge.new()
+	add_child_autofree(bd)
+	bd.setup("clean", 1.0, 2)
+	var rk: Node = bd.get_node_or_null("Ranks")
+	assert_not_null(rk)
+	assert_eq(rk.get_child_count(), 3, "Mk III: three pips")
+	bd.set_tier(0)
+	assert_null(bd.get_node_or_null("Ranks"), "Mk I: none")
+	var w: Dictionary = _world()
+	var u: Dictionary = (w["crew"] as SphereCrew).spawn("scoopie", 1, 100)
+	assert_true(CrewTalk.look_text(w["crew"], u).contains(Economy.tier_name(1)), CrewTalk.look_text(w["crew"], u))
