@@ -165,7 +165,7 @@ The rules are `systems/pollution.gd`; every number is in the planet's `pollution
 
 - **One ledger per hex.** A hex holds its city's `hex_work` units whatever is on it. Each kind beside the base kind owns `spawn.share` of that; the base kind (loose junk) has the rest. All the other kinds together never own more than 0.9, and no kind less than 0.08, so nothing sweeps away untouched under the 95% rule.
 - **Clean is still one rule:** 95% of the ledger gone. Waste a scoop cannot take (a `held` kind: smog, blight) is a floor under the hex's junk for cleaners, far crews and the offline jump, so the hex stays dirty until that kind's own tool has been at it.
-- **How many hexes hold a kind** = the city's hexes of that ground past `min_ring` x `density`. With `cluster` above 0 the kind lies in patches about 60 m across and the count is only about right (measured 0.8 to 1.1 of the density).
+- **How many hexes hold a kind** = the city's hexes of that ground past `min_ring` x `density`. With `cluster` above 0 the kind lies in patches about 60 m across and the count is only about right (measured 0.7 to 1.1 of the density).
 - **Lumi's rate on a held kind** = `hand_factor` x scoop pulse volume x scoop rate: her scoop upgrades speed every kind.
 - **Payout:** a take pays the hex's plain share (HexWorth) x the kind's `yield.cubes` over the hex's average yield (each kind's share x its yield). The weights move value between kinds on one hex; the hex still pays its city's `hex_cubes`. Robots are paid nothing.
 - **A cost** (`cost.per_hex` of a currency) is charged as the work adds up and spent a whole unit at a time; what is owed is saved.

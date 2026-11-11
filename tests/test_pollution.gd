@@ -344,6 +344,16 @@ func test_cleaner_robots_cannot_take_held_waste() -> void:
 	assert_eq(SphereOffline.units_left(cells, region), 0.0, "and the offline crew sees no work there")
 
 
+func test_a_released_hex_cleans_outright_and_holds_nothing_after() -> void:
+	_world(FIRST)
+	var c: int = _hex_with("highreach", ["litter", "smog"])
+	cells.release_hold(c)
+	SphereOffline.write_cell(cells, field, c, 0.0)
+	assert_false(cells.is_dirty(c), "the dev stage flag cleans a smog hex")
+	assert_eq(pol.kinds_left(c), [] as Array[String])
+	assert_eq(pol.held_left(c, "smog"), 0.0)
+
+
 func test_the_watering_robot_mists_smog_and_the_planter_sets_cleansing_plants() -> void:
 	_world(FIRST)
 	GameState.add_currency("seeds", BigNum.from_float(5.0))

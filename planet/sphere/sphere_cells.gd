@@ -127,6 +127,13 @@ func floor_of(i: int) -> float:
 	return hold[i] if i < hold.size() else 0.0
 
 
+## Drops what is held on a hex, so the next write may clean it outright (dev flags, scripted
+## cleaning: not a worker's path).
+func release_hold(i: int) -> void:
+	if i < hold.size():
+		hold[i] = 0.0
+
+
 ## Whether a land hex still has waste a scoop can take (dirty, and more left than what is held).
 func workable(i: int) -> bool:
 	return is_dirty(i) and junk[i] > floor_of(i) + WORK_EPS
