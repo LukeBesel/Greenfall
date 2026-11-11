@@ -20,11 +20,11 @@ const BOARD_M: float = 4.0
 ## Shopping alone brings Lumi home at most this often (game seconds); a city's tool or the
 ## Assembler always does.
 const SHOP_EVERY_S: float = 900.0
-## A walk to the rocket that takes longer than this is given up and tried again later.
+## A walk to the rocket that takes longer than this is given up: the bot boards from where it is
+## (a person boxed in would call the rocket over) and counts it in board_stuck.
 const WALK_GIVE_UP_S: float = 120.0
 
 var home_trip: bool = false
-var home_since_s: float = -1.0
 var last_home_s: float = 0.0
 var hops: int = 0
 ## Walks to the rocket given up on (WALK_GIVE_UP_S): the bot boarded from where it stood.
@@ -100,5 +100,4 @@ func want_site(d: Districts, src: Sources) -> int:
 ## Lumi reached the bench during a home trip: the trip is done.
 func shopped(now: float) -> void:
 	home_trip = false
-	home_since_s = -1.0
 	last_home_s = now

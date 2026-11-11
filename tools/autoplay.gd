@@ -1536,7 +1536,7 @@ func _shop(want: Dictionary) -> void:
 	var obj_now: Objectives = world.get("objectives") as Objectives
 	var tower_asked: bool = obj_now != null and str(obj_now.current().get("type", "")) == "tower"
 	if tower and SignalTower.tier() < mini(SignalTower.max_tier(), maxi(1, int(GameState.world.get("hub_level", 1)))) \
-			and GameState.can_afford_all(SignalTower.next_cost(), 1.0 if tower_asked else 1.5):
+			and GameState.can_afford_all(SignalTower.next_cost(), 1.0 if tower_asked else 1.5) and (tower_asked or _keeps_robot_parts(SignalTower.next_cost(), want)):
 		GameState.spend_all(SignalTower.next_cost())
 		tower.raise()
 		_mark("tower_s")
@@ -1582,22 +1582,26 @@ func _shop(want: Dictionary) -> void:
 		_mark("glim_repair_s")
 	# 2c) [buddy] Glim's Lantern and Hex Scanner when affordable (1.5x margin: never starves the core loop).
 	for gid: String in ["light", "scan"]:
-		if Glim.block_reason(gid) == "" and GameState.can_afford_all(Glim.next_cost(gid), 1.5) and Glim.buy(gid):
+		if Glim.block_reason(gid) == "" and GameState.can_afford_all(Glim.next_cost(gid), 1.5) and _keeps_robot_parts(Glim.next_cost(gid), want) and Glim.buy(gid):
 			var gd: GlimDirector = GlimDirector.of(world)
 			if gd:
 				gd.refresh()
 			_event("glim_" + gid, {"tier": Glim.tier(gid)})
 	# 3) Robots ([ui2] Parts + cubes; keep the next base level's Parts unless the robot can't wait).
 	var robot: String = str(want.get("robot", "")) if fleet != null and BenchTiers.tab_open("bots") else ""  # [orbB] no Fleet on the globe yet (orbC)  # [v1guide] the Bots tab is open
-	if robot != "":
+	var built_n: int = 0
+	while robot != "" and built_n < ROBOTS_PER_VISIT:  # a player at the Bots tab builds what is paid for
 		var hub_save: float = float(want.get("hub_save", 0.0))
-		var spare: float = GameState.get_currency("cubes").to_float() - float(want.get("robot_cost", 0.0))
+		var spare: float = GameState.get_currency("cubes").to_float() - fleet.build_cost(robot).to_float()
 		var must: bool = _robot_goal(robot) or _essential(robot)
 		var ok: bool = hub_save <= 0.0 or spare >= hub_save or must
 		ok = ok and (must or hub_save <= 0.0 or _mats_spare({"parts": fleet.build_parts(robot).to_float()}, false))
-		if ok and robot != "" and fleet.can_build(robot):
-			var at: Vector3 = world.upgrades.build_at.call()
-			fleet.build(robot, at)
+		if not ok or not fleet.can_build(robot):
+			break
+		var at: Vector3 = world.upgrades.build_at.call()
+		fleet.build(robot, at)
+		built_n += 1
+		robot = _next_robot()
 	# The Assembler as soon as it is on offer: from then on the line builds the crew.
 	if RobotChain.of(world) != null and RobotChain.of(world).listed() and HubBuilds.build(world, RobotChain.BUILD_ID):
 		_progress()
@@ -1686,6 +1690,15 @@ func _shop(want: Dictionary) -> void:
 			cp.interact()
 			_progress()
 			_event("composter", {"level": cp.level})
+
+
+## Whether paying `cost` leaves the Parts for the robot the bot is working toward: from the second
+## city on Parts are the crew, so side purchases (the tower, Glim) wait for them.
+func _keeps_robot_parts(cost: Dictionary, want: Dictionary) -> bool:
+	var robot: String = str(want.get("robot", ""))
+	if robot == "" or world.fleet == null or not cost.has("parts"):
+		return true
+	return GameState.get_currency("parts").to_float() - float(cost["parts"]) >= world.fleet.build_parts(robot).to_float()
 
 
 ## Materials the next base level still needs (cubes ignored).
@@ -1820,7 +1833,7 @@ func _essential(type_id: String) -> bool:
 		return type_id != "skimmer" or int(GameState.world.get("hub_level", 1)) >= 2
 	match type_id:
 		"drip":
-			return _drips() < (world.hex_levels.count_at_least(2) if world.get("hex_levels") else 0)
+			return _drips() < _city_gardens()
 		"skimmer":
 			return _lake_dirty()
 		"scoopie":  # [beat] a small cleaning crew is worth more than saving a few minutes for the base
@@ -1909,6 +1922,8 @@ func _best_upgrade(reserve: float, leak: bool = true) -> String:
 
 ## The bot keeps one parts finder for every this many robots.
 const FINDER_ONE_IN: int = 6
+## Robots the bot builds in one visit to the Bots tab, at most.
+const ROBOTS_PER_VISIT: int = 6
 
 
 ## The robot to work toward next (research done, crew room), or "".
@@ -1919,7 +1934,7 @@ func _next_robot() -> String:
 	var seeds_on: bool = world.garden != null and world.garden.unlocked()
 	var scoop: int = fleet.count("scoopie")
 	var haul: int = fleet.count("haulbug")
-	var gardens: int = world.hex_levels.count_at_least(2) if world.get("hex_levels") else 0
+	var gardens: int = _city_gardens()
 	var order: Array[String] = []
 	# Nearly all land junk gone: no more cleaners or haulers (the lake still wants a Skimmer).
 	var late: bool = _land_left_frac() < 0.12
@@ -1948,6 +1963,8 @@ func _next_robot() -> String:
 	order.append("multibot")
 	if haul < scoop:
 		order.append("haulbug")
+	if finder != "" and fleet.count(finder) == 0:
+		order.push_front(finder)  # the first parts finder starts the chain: the crew grows from what it digs up
 	for t: String in order:
 		if not Research.robot_unlocked(t) or fleet.join_crew(t) == "":
 			continue
@@ -1957,6 +1974,26 @@ func _next_robot() -> String:
 			continue  # saving for the base: only the robots that can't wait
 		return t
 	return ""
+
+
+## Planted hexes (stage 2 and up) of the city in play: what its watering robots have to keep wet.
+## A finished city's garden keeps its own waterers; the next city's needs are its own.
+func _city_gardens() -> int:
+	var hl: HexLevels = world.get("hex_levels") as HexLevels
+	if hl == null:
+		return 0
+	if _now() - _gardens_t < 5.0:
+		return _gardens_n
+	_gardens_t = _now()
+	_gardens_n = 0
+	for h: int in _hexes():
+		if hl.level_of(h) >= 2:
+			_gardens_n += 1
+	return _gardens_n
+
+
+var _gardens_t: float = -100.0
+var _gardens_n: int = 0
 
 
 ## Share of the land junk volume still on the ground.
@@ -2483,11 +2520,29 @@ func _snapshot() -> void:
 		SaveManager.save_game()
 		world.get_tree().quit()
 	_print_garden()
+	_print_crew_here()
 	print("[Autoplay] %5.1f min city=%s stage=%d share=%d%% launch=%.1f%% cubes=%d rate=%.2f/s partscur=%.0f seeds=%.0f parts=%d hexes=%d lv=%s robots=%s hub=%d task=%s goals=%d research=%s pos=%s esc=%d" % [_now() / 60.0,  # [money]
 		_city_id(), int(Restoration.measure(Restoration.MEASURE_CITY_STAGE)), int(floor(_city_share() * 100.0)), pct * 100.0,
 		int(GameState.get_currency("cubes").to_float()), GameState.income_rate(), GameState.get_currency("parts").to_float(),
 		GameState.get_currency("seeds").to_float(), GameState.parts.size(),
 		world.field.cleaned_count, str(lv), str(types), int(world.hub.level), _task, ngoals, Research.active_id(), str(world.patch.global_position.snappedf(0.1)), _escapes])
+
+
+## Where the crew works, once a minute: robots of the base Lumi works from, and by job.
+func _print_crew_here() -> void:
+	var rc: RobotChain = RobotChain.of(world)
+	if rc == null or not world.fleet is SphereFleet:
+		return
+	var hub: int = rc.work_hub()
+	var here: Dictionary = {}
+	var n_here: int = 0
+	var n_all: int = 0
+	for u: Dictionary in (world.fleet as SphereFleet).crew.robots():
+		n_all += 1
+		if int(u["hub"]) == hub:
+			n_here += 1
+			here[str(u["type"])] = int(here.get(str(u["type"]), 0)) + 1
+	print("[crew] %5.1f min %d of %d robots work for the base Lumi is at: %s" % [_now() / 60.0, n_here, n_all, JSON.stringify(here)])
 
 
 ## The garden of the city in play, once a minute: clean land hexes, hexes with slots, planted
