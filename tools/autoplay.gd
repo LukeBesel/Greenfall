@@ -1102,19 +1102,19 @@ func _arc(p: Patch) -> bool:
 	var nf: int = _far_restored(os_)
 	var fc: Dictionary = Hub.far_cost(nf)
 	var cc: Dictionary = _card_cost()
-	var arc_turn: bool = _saving_arc or cc.is_empty()  # _card_cost falls back to the hub chain's price
-	var want_hub: bool = nf + 1 < Homeward.leave_hubs(Homeward.current_planet()).x
-	if want_hub and os_.rocket_unlocked() and nf + 2 > RocketTiers.hub_limit():
-		# The rocket's next tier reaches the next hub.
-		var tc: Dictionary = RocketTiers.next_def().get("cost", {})
-		if _at_base(p) and RocketTiers.blocker() == "" and (arc_turn or float(tc.get("cubes", 0.0)) <= float(cc.get("cubes", 0.0))) and RocketTiers.upgrade():
+	var arc_turn: bool = _saving_arc  # the card asks for a hub or a rocket tier (_card_cost -> _arc_cost)
+	var ck: String = _card_key()
+	var want_hub: bool = ck in HUB_KEYS
+	if os_.rocket_unlocked() and (ck == "rocket_tier" or (want_hub and nf + 2 > RocketTiers.hub_limit())):
+		# The rocket's next tier (it reaches the next hub).
+		if _at_base(p) and RocketTiers.blocker() == "" and RocketTiers.upgrade():
 			_progress()
 			_mark("rocket_tier_%d_s" % RocketTiers.tier())
 			print("[arc] %.1f min  rocket Mk %d  %s  cubes=%.0f earned=%.0f" % [_now() / 60.0, RocketTiers.tier(), _planet_line(),
 				GameState.get_currency("cubes").to_float(), BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float()])
 		return false
 	if want_hub and os_.rocket_unlocked() and p_ok(p) and _at_base(p) and Hub.can_pay(fc) \
-			and (arc_turn or float(fc.get("cubes", 0.0)) <= float(cc.get("cubes", 0.0))):
+			and arc_turn:
 		var to: int = HubPlan.next_site(os_.sm.planet_id) if os_.purpose != null else -1
 		if to < 0:
 			for e: Dictionary in os_.destinations():
@@ -1537,12 +1537,23 @@ func _arc_cost() -> Dictionary:
 	if os_ == null or os_.sm == null or not os_.rocket_unlocked():
 		return {}
 	var nf: int = _far_restored(os_)
-	if nf + 1 >= Homeward.leave_hubs(Homeward.current_planet()).x:
-		return {}
-	_saving_arc = true
-	if nf + 2 > RocketTiers.hub_limit():
+	var key: String = _card_key()
+	if key == "rocket_tier" or (key in HUB_KEYS and nf + 2 > RocketTiers.hub_limit()):
+		_saving_arc = true
 		return (RocketTiers.next_def().get("cost", {}) as Dictionary).duplicate()
-	return Hub.far_cost(nf)
+	if key in HUB_KEYS:
+		_saving_arc = true
+		return Hub.far_cost(nf)
+	return {}
+
+
+## The stats the card's hub steps read (data/objectives.json hub_fly_N, hub_wake_N).
+const HUB_KEYS: Array[String] = ["hubs_seen", "hubs_woken"]
+
+
+func _card_key() -> String:
+	var ob: Objectives = world.get("objectives") as Objectives
+	return str(ob.current().get("key", "")) if ob else ""
 
 
 ## True if an optional purchase leaves the card's price covered (always, when it has none).

@@ -62,6 +62,7 @@ func test_far_hub_prices_multiply() -> void:
 func test_nice_keeps_two_digits() -> void:
 	assert_eq(Hub.nice(4056.0), 4100.0)
 	assert_eq(Hub.nice(384000.0), 380000.0)
+	assert_eq(Hub.nice(153600.0), 150000.0)
 	assert_eq(Hub.nice(1000.0), 1000.0)
 	assert_eq(Hub.nice(42.4), 42.0)
 
@@ -102,11 +103,26 @@ func test_goal_chain_leads_to_the_exit() -> void:
 	assert_gt(b3, 0)
 	assert_gt(drive, b3)
 	assert_eq(land, drive + 1)
-	assert_lte(drive - b3, 6, "a short walk from base 3 to the drive")
+	assert_lte(drive - b3, 8, "a short walk from base 3 to the drive")
 	for id: String in ["shards_1", "pet_cat", "extras_radio", "builder_1", "research_dunes", "visit_dust", "base_4", "base_5"]:
 		assert_gt(_goal_index(id), land, "%s is not on the way out" % id)
 	var ch: Array = Economy.read_json("res://data/goals.json").get("goals", [])
 	assert_string_contains(Objectives.goal_reason(ch[land]), "You can fly on now")
+
+
+func test_hub_steps_sit_between_the_base_steps() -> void:
+	var ids: Array = []
+	for o: Dictionary in Economy.read_json("res://data/objectives.json").get("objectives", []):
+		ids.append(str(o["id"]))
+	var order: Array = ["robot", "zone", "hub_fly_2", "hub_wake_2", "base2", "hub_wake_3", "rocket_mk2", "hub_wake_4", "base3"]
+	for i: int in range(1, order.size()):
+		assert_gt(ids.find(order[i]), ids.find(order[i - 1]), "%s comes after %s" % [order[i], order[i - 1]])
+		assert_gt(ids.find(order[i - 1]), -1)
+	for id: String in ["hub_wake_5", "rocket_mk3", "hub_wake_6"]:
+		assert_gt(_goal_index(id), _goal_index("base_3"))
+		assert_lt(_goal_index(id), _goal_index("home_drive_5"))
+	var tabs: Dictionary = Economy.read_json("res://data/workbench.json").get("tabs", {})
+	assert_true(str(tabs.get("rockets", "")).contains("hubs_woken"), "the bench's Rocket section opens with the first woken station")
 
 
 func test_base_prices() -> void:
@@ -132,8 +148,8 @@ func test_clock_stands_still_behind_the_loader() -> void:
 
 
 # The pinned numbers (cubes).
-const FAR: Array[float] = [600.0, 6000.0, 24000.0, 96000.0, 380000.0]
-const MK2: float = 20000.0
-const MK3: float = 150000.0
+const FAR: Array[float] = [600.0, 2400.0, 9600.0, 38000.0, 150000.0]
+const MK2: float = 8000.0
+const MK3: float = 60000.0
 const DRIVE: float = 500000.0
 const BASE3: float = 9000.0
