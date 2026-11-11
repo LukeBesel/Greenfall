@@ -5,7 +5,12 @@ extends RefCounted
 ## and painted lettering. All static; everything is in site-local metres.
 
 const FILM_SHADER: String = "res://planets/verdance/sites/city_film.gdshader"
+const HAZE_SHADER: String = "res://planets/verdance/sites/city_haze.gdshader"
+const HAZE_GROUND_BELOW_M: float = 30.0   # the haze box reaches this far under the street (the globe falls away from the pad)
 const PUFF_PX: int = 64
+const HALO_SIZE: float = 5.0      # a lamp's halo, in lamp-head sizes
+const HALO_ALPHA: float = 0.55
+const SPARK_LIFE_S: float = 0.9
 
 static var _puff: GradientTexture2D
 
@@ -205,21 +210,144 @@ static func film(nm: String, half: Vector2, a: Color, b: Color, rainbow: float, 
 	m.set_shader_parameter("rainbow", rainbow)
 	m.set_shader_parameter("under_only", under_only)
 	m.set_shader_parameter("patch_scale", scale)
+	m.render_priority = 1   # over the lake's own surface
 	mi.material_override = m
 	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	mi.set_meta("no_collide", true)
 	return mi
 
 
-## Unshaded lamp heads at `pts` (floodlights, deck lamps, stack lights).
-static func glow(parent: Node3D, nm: String, pts: Array[Vector3], r: float, col: Color, range_m: float = 420.0) -> MultiMeshInstance3D:
+## Coloured air over a district (city_haze.gdshader): a box `radius` m round its middle and
+## `height` m high, standing on the street. The air takes `near` close by and `far` in the
+## distance, `density` per metre at street level, thinning to 1/e every `scale_height` m up.
+## Set the material's "strength" (0..1) to thin or clear it.
+static func haze(nm: String, radius: float, height: float, near: Color, far: Color, density: float, scale_height: float) -> MeshInstance3D:
+	var mi := MeshInstance3D.new()
+	mi.name = nm
+	var box := BoxMesh.new()
+	box.size = Vector3(radius * 2.0, height + HAZE_GROUND_BELOW_M, radius * 2.0)
+	mi.mesh = box
+	mi.position = Vector3(0.0, (height - HAZE_GROUND_BELOW_M) * 0.5, 0.0)
+	var m := ShaderMaterial.new()
+	m.shader = load(HAZE_SHADER)
+	m.set_shader_parameter("colour_near", near)
+	m.set_shader_parameter("colour_far", far)
+	m.set_shader_parameter("density", density)
+	m.set_shader_parameter("radius", radius)
+	m.set_shader_parameter("ground_y", -(height - HAZE_GROUND_BELOW_M) * 0.5)
+	m.set_shader_parameter("scale_height", scale_height)
+	m.render_priority = 2   # after the films and the smoke
+	mi.material_override = m
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	mi.set_meta("no_collide", true)
+	return mi
+
+
+## Unshaded lamp heads at `pts` (floodlights, deck lamps, stack lights), each in a soft halo
+## `halo` times its size so a lit lamp reads as lit by day too (0: no halo).
+static func glow(parent: Node3D, nm: String, pts: Array[Vector3], r: float, col: Color, range_m: float = 420.0, halo: float = HALO_SIZE) -> MultiMeshInstance3D:
 	var xfs: Array[Transform3D] = []
+	var halos: Array[Transform3D] = []
 	for p: Vector3 in pts:
 		xfs.append(Transform3D(Basis.from_scale(Vector3.ONE * r), p))
+		halos.append(Transform3D(Basis.from_scale(Vector3.ONE * r * halo), p))
 	var m := StandardMaterial3D.new()
 	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	m.albedo_color = col
+	if halo > 0.0:
+		var hm := StandardMaterial3D.new()
+		hm.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+		hm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+		hm.blend_mode = BaseMaterial3D.BLEND_MODE_ADD
+		hm.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
+		hm.billboard_keep_scale = true
+		hm.albedo_texture = puff_texture()
+		hm.albedo_color = Color(minf(col.r, 1.0), minf(col.g, 1.0), minf(col.b, 1.0), HALO_ALPHA)
+		hm.disable_receive_shadows = true
+		mmi_on(parent, nm + "Halo", QuadMesh.new(), halos, [], hm, false, range_m)
 	return mmi_on(parent, nm, ProcMesh.sphere(1.0, 10, 6), xfs, [], m, false, range_m)
+
+
+## Sparks thrown from `at` (a grinder, a cutting torch, a shorting cable): bright grains flung
+## along `dir` within `spread_deg`, falling back under the site's gravity.
+static func sparks(nm: String, at: Vector3, dir: Vector3, col: Color, amount: int, speed: float, spread_deg: float, size: float) -> CPUParticles3D:
+	var p := CPUParticles3D.new()
+	p.name = nm
+	var q := QuadMesh.new()
+	var m := StandardMaterial3D.new()
+	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	m.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
+	m.billboard_keep_scale = true
+	m.vertex_color_use_as_albedo = true
+	m.disable_receive_shadows = true
+	q.material = m
+	p.mesh = q
+	p.amount = amount
+	p.lifetime = SPARK_LIFE_S
+	p.preprocess = SPARK_LIFE_S
+	p.explosiveness = 0.35
+	p.randomness = 0.6
+	p.local_coords = true
+	p.direction = dir.normalized()
+	p.spread = spread_deg
+	p.initial_velocity_min = speed * 0.55
+	p.initial_velocity_max = speed
+	p.gravity = Vector3(0.0, -9.8, 0.0)
+	p.scale_amount_min = size * 0.6
+	p.scale_amount_max = size
+	var ramp := Gradient.new()
+	ramp.set_color(0, Color(1.0, 1.0, 0.86))
+	ramp.add_point(0.35, col)
+	ramp.set_color(ramp.get_point_count() - 1, Color(col.r, col.g * 0.5, col.b * 0.3, 0.0))
+	p.color_ramp = ramp
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	p.position = at
+	p.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	var reach: float = speed * SPARK_LIFE_S + 2.0
+	p.visibility_aabb = AABB(Vector3(-reach, -reach, -reach), Vector3.ONE * reach * 2.0)
+	return p
+
+
+## A run of liquid falling `fall` m from `at` (a leak, an outfall): soft drops `width` across the
+## run, colour `col` fading to `col_end` where it lands.
+static func stream(nm: String, at: Vector3, col: Color, col_end: Color, amount: int, fall: float, width: float, size: float) -> CPUParticles3D:
+	var p := CPUParticles3D.new()
+	p.name = nm
+	var q := QuadMesh.new()
+	q.size = Vector2(1.0, 1.8)   # drawn out along the fall
+	var m := StandardMaterial3D.new()
+	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	m.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
+	m.billboard_keep_scale = true
+	m.vertex_color_use_as_albedo = true
+	m.albedo_texture = puff_texture()
+	m.disable_receive_shadows = true
+	q.material = m
+	p.mesh = q
+	var life: float = sqrt(2.0 * fall / 9.8) + 0.12
+	p.amount = amount
+	p.lifetime = life
+	p.preprocess = life
+	p.local_coords = true
+	p.emission_shape = CPUParticles3D.EMISSION_SHAPE_BOX
+	p.emission_box_extents = Vector3(width * 0.5, 0.05, 0.08)
+	p.direction = Vector3.DOWN
+	p.spread = 4.0
+	p.initial_velocity_min = 0.4
+	p.initial_velocity_max = 0.9
+	p.gravity = Vector3(0.0, -9.8, 0.0)
+	p.scale_amount_min = size * 0.8
+	p.scale_amount_max = size * 1.2
+	var ramp := Gradient.new()
+	ramp.set_color(0, col)
+	ramp.add_point(0.8, col.lerp(col_end, 0.5))
+	ramp.set_color(ramp.get_point_count() - 1, Color(col_end.r, col_end.g, col_end.b, 0.0))
+	p.color_ramp = ramp
+	p.position = at
+	p.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	p.visibility_aabb = AABB(Vector3(-width - 1.0, -fall - 2.0, -2.0), Vector3(width * 2.0 + 2.0, fall + 3.0, 4.0))
+	return p
 
 
 ## Painted lettering on a wall or hull: faces along the basis' +Z.

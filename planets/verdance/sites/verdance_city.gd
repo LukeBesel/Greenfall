@@ -8,7 +8,8 @@ extends Node3D
 ##   roofs          CityRoofs: tanks, signs, parasols, pitched roofs, skylights, hoardings, domes, flags
 ##   street         CityStreet: stalls, containers, car stacks, fences or banners on the main street
 ##   street trees   OldTownTrees: bare at the start, in leaf from stage 3, blossom at stage 5
-##   ground         OldTownGround: paving, lawns, shrubs and flower borders from stage 3
+##   ground         OldTownGround: paving, lawns, shrubs and flower borders from stage 3 (the yard too)
+##   gardens        CityGardens: fences, hedges, drives and vegetable beds round a suburb's houses
 ##   shop names     OldTownShopSigns: painted name boards on the way from the yard to the landmark
 ##   lake edge      a scum film along the shore until stage 4, reeds after
 ##   landmark       the pollution source, on a block the city reserves (plan), built by the city's
@@ -48,6 +49,7 @@ var frame := Transform3D.IDENTITY
 var stats: Dictionary = {}
 var trees: OldTownTrees
 var ground: OldTownGround
+var gardens: CityGardens
 var tree_spots: Array[Vector2] = []
 var approach_keys: Array[Vector2i] = []   # the open blocks between the yard and the landmark
 var view_step := Vector2i.ZERO            # one block from the landmark toward the yard
@@ -63,6 +65,7 @@ var _t: float = 0.0
 var _rects: Array[Rect2] = []
 var _broken: Array[Node3D] = []    # shown while the source is running
 var _shut: Array[Node3D] = []      # shown once it is shut down
+var _moving: bool = false          # the city's script moves parts of its landmark (_animate)
 
 
 ## The city that stands on hub `hub_index` of the planet being played (the district whose site it
@@ -128,7 +131,7 @@ func plan(site: VerdanceSite) -> bool:
 			site.layout.blocks[key] = b
 	if bool(look.landmark().get("approach", false)):
 		_open_approach(site, Vector2i(to_yard))
-	_keep_junk_off(site.globe_ctx.get("keep_out") as YardKeepOut)
+	_keep_junk_off(site)
 	return true
 
 
@@ -166,9 +169,24 @@ func _footprint() -> Array[Rect2]:
 	return []
 
 
-## Soft keep-off discs for loose junk (water, a slick, a stain). A city overrides this.
-func _keep_junk_off(_ko: YardKeepOut) -> void:
-	pass
+## Ground of the landmark that stays free of junk so it can be seen (a slick, a stain, an avenue):
+## rects in the landmark's frame (x right, y toward the yard). A city overrides this.
+func _clear_ground() -> Array[Rect2]:
+	return []
+
+
+## Registers the city's clear ground with the globe's keep-out, in this site's own frame (the
+## keep-out's plain lists are the start yard's: a hub town's go in as world footprints).
+func _keep_junk_off(site: VerdanceSite) -> void:
+	var ko: YardKeepOut = site.globe_ctx.get("keep_out") as YardKeepOut
+	var clear: Array[Rect2] = _clear_ground()
+	if ko == null or clear.is_empty() or not site.globe_ctx.has("xf"):
+		return
+	var items: Array = []
+	for r: Rect2 in clear:
+		items.append([site.globe_ctx["xf"], site_rect(r)])
+	ko.add_world("city_ground%d" % site.hub_index, items)
+	stats["clear_ground"] = items.size()
 
 
 func _on_landmark(r: Rect2) -> bool:
@@ -198,6 +216,13 @@ func build(site: VerdanceSite) -> void:
 	stats["street"] = CityStreet.build(self, site, look, yard_r)
 	await BuildBudget.check("city:roofs")
 	CityRoofs.build(self, _roofs(), look)
+	if bool(look.data.get("gardens", false)):
+		await BuildBudget.check("city:gardens")
+		gardens = CityGardens.new()
+		gardens.name = "Gardens"
+		add_child(gardens)
+		gardens.build(_roofs(), look, _body)
+		stats.merge(gardens.stats)
 	await BuildBudget.check("city:trees")
 	_build_trees()
 	await BuildBudget.check("city:ground")
@@ -231,8 +256,10 @@ func _build_landmark() -> void:
 
 func _process(delta: float) -> void:
 	_t += delta
-	if _beacon:
+	if _beacon and source_state == STATE_BROKEN:
 		_beacon.emission_energy_multiplier = 3.5 if fmod(_t, 1.2) < 0.5 else 0.2
+	if _moving:
+		_animate(_t, source_state == STATE_BROKEN)
 
 
 ## The solid things this module added: junk keeps off them (VerdanceSite.prop_rects()).
@@ -286,6 +313,8 @@ func set_stage(s: int) -> void:
 		trees.set_stage(stage)
 	if ground:
 		ground.set_stage(stage)
+	if gardens:
+		gardens.set_stage(stage)
 	if _scum:
 		_scum.visible = stage < 4
 	if _reeds:
@@ -306,7 +335,7 @@ func set_source_state(state: String) -> void:
 	if _beacon:
 		_beacon.albedo_color = BEACON_ALARM if broken else BEACON_SAFE
 		_beacon.emission = _beacon.albedo_color
-	set_process(broken and _beacon != null)
+	set_process(_moving or (broken and _beacon != null))
 	if not broken and _beacon:
 		_beacon.emission_energy_multiplier = 2.0
 	_apply_sign()
@@ -319,6 +348,12 @@ func _on_stage() -> void:
 
 
 func _on_source(_broken_now: bool) -> void:
+	pass
+
+
+## Moves the landmark's working parts (a crane's swing, a scraper bridge's turn) at time `_now` s.
+## Called every frame once the city has placed a moving part (place_part).
+func _animate(_now: float, _broken_now: bool) -> void:
 	pass
 
 
@@ -355,6 +390,29 @@ func place_mesh(nm: String, g: BuildingDetail.Geo, when: String = "") -> MeshIns
 		_shut.append(mi)
 	stats[nm + "_tris"] = g.tri_count()
 	return mi
+
+
+## A part of the landmark that moves: `g` is built round the origin (x right, z toward the yard)
+## and the node stands at `pivot` in the landmark's frame. The city's _animate() turns or shifts it
+## with move_part().
+func place_part(nm: String, g: BuildingDetail.Geo, pivot: Vector3, when: String = "") -> Node3D:
+	var holder := Node3D.new()
+	holder.name = nm
+	holder.transform = Transform3D(Basis.IDENTITY, pivot)
+	holder.set_meta("rest", frame * holder.transform)
+	if not g.empty():
+		holder.add_child(CityKit.mesh_node("Mesh", g, look.material(false)))
+		stats[nm + "_tris"] = g.tri_count()
+	place(holder, when)
+	_moving = true
+	return holder
+
+
+## Sets a moving part to its rest place turned `yaw` about the site's up and shifted by `shift`
+## (in the part's own axes).
+func move_part(part: Node3D, yaw: float, shift: Vector3 = Vector3.ZERO) -> void:
+	var rest: Transform3D = part.get_meta("rest", part.transform)
+	part.transform = rest * Transform3D(Basis(Vector3.UP, yaw), shift)
 
 
 ## The landmark's painted name (lit with the city), at a landmark-frame transform.

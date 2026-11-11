@@ -434,7 +434,7 @@ func _town_layout() -> void:
 			if start and ring == 1:
 				b["buildings"] = _forecourt_row(r, key, rng)
 			elif pr.get("houses", false):
-				b["buildings"] = _houses(r, rng)
+				b["buildings"] = _houses(r, rng, bool(pr.get("dense", false)))
 			else:
 				b["buildings"] = layout._make_buildings(r, rng, key)
 			b["buildings"] = (b["buildings"] as Array).filter(func(bd: Dictionary) -> bool: return _wet_share((bd["rect"] as Rect2).grow(2.0), 2.0) == 0.0)
@@ -538,9 +538,35 @@ func _pick_kind() -> String:
 	return KIND_BY_HUB[hub_index % KIND_BY_HUB.size()]
 
 
+## A `dense` suburb's row of houses along one side of a block (cities.json "dense"): three narrow
+## houses side by side, or two wide ones with a drive's width between them, so a street front has
+## no long gaps. Each plan carries its "setback" from the block's edge (CityGardens lays its front
+## path and fence by it).
+static func _house_row(out: Array, rng: RandomNumberGenerator, face: Vector2, o: Vector2, length: float) -> void:
+	var three: bool = rng.randf() < DENSE_THREE_SHARE
+	var n: int = 3 if three else 2
+	var w: float = DENSE_NARROW_M if three else DENSE_WIDE_M
+	var gap: float = (length - float(n) * w) / float(n - 1)
+	for i: int in n:
+		var depth: float = rng.randf_range(6.5, 8.0)
+		var setback: float = rng.randf_range(0.8, 2.0)
+		if rng.randf() < DENSE_EMPTY_SHARE:
+			continue
+		var x0: float = o.x + float(i) * (w + gap)
+		var z0: float = o.y + (setback if face.y < 0 else 8.0 - depth - setback)
+		out.append({"rect": Rect2(Vector2(x0, z0), Vector2(w, depth)), "face": face, "bays": 3 if w > 8.0 else 2, "floors": 1,
+			"style": "apartments", "seed": rng.randi(), "ruined": false, "setback": setback})
+
+
+const DENSE_THREE_SHARE: float = 0.55   # rows of three narrow houses; the rest are two wide ones
+const DENSE_NARROW_M: float = 6.7
+const DENSE_WIDE_M: float = 9.0
+const DENSE_EMPTY_SHARE: float = 0.05   # a plot left empty
+
+
 ## [v3city] A suburb block: detached houses (one or two floors) round the block's edge, facing
-## the streets, with yards between them.
-static func _houses(r: Rect2, rng: RandomNumberGenerator) -> Array:
+## the streets, with yards between them. `dense` fills the two long sides with _house_row.
+static func _houses(r: Rect2, rng: RandomNumberGenerator, dense: bool = false) -> Array:
 	var out: Array = []
 	var sides: Array = [[Vector2(0, -1), r.position, Vector2(1, 0)], [Vector2(0, 1), Vector2(r.position.x, r.end.y - 8.0), Vector2(1, 0)],
 		[Vector2(-1, 0), Vector2(r.position.x, r.position.y + 9.0), Vector2(0, 1)], [Vector2(1, 0), Vector2(r.end.x - 8.0, r.position.y + 9.0), Vector2(0, 1)]]
@@ -549,6 +575,9 @@ static func _houses(r: Rect2, rng: RandomNumberGenerator) -> Array:
 		var o: Vector2 = sd[1]
 		var along: Vector2 = sd[2]
 		var length: float = (r.size.x if along.x > 0.5 else r.size.y - 18.0)
+		if dense and along.x > 0.5:
+			_house_row(out, rng, face, o, length)
+			continue
 		var t: float = rng.randf_range(0.0, 2.0)
 		while t + 9.0 <= length:
 			if rng.randf() < 0.82:

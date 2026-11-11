@@ -141,7 +141,7 @@ func build() -> void:
 			elif rng.randf() < float(pf["warehouse"]):
 				blds = _warehouse(rect, c, rng)
 			else:
-				blds = VerdanceSite._houses(rect, rng) if pf.get("houses", false) else _lay._make_buildings(rect, rng, Vector2i(bx, bz))
+				blds = VerdanceSite._houses(rect, rng, bool(pf.get("dense", false))) if pf.get("houses", false) else _lay._make_buildings(rect, rng, Vector2i(bx, bz))
 				var fr: Array = pf["mid"] if ni == 0 else pf["far"]
 				for bd: Dictionary in blds:
 					bd["floors"] = rng.randi_range(int(fr[0]), int(fr[1]))

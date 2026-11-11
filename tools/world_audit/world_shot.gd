@@ -15,7 +15,9 @@ extends Node
 ## --town-source=shut_down (every town's pollution source in that state, through
 ## TownSite.set_source_state), --shot-hub=N[,x,z,yaw_deg] (stand on hub N's site, x m east and
 ## z m south of its centre in the site's own frame, turned yaw_deg from its north; the local time
-## there is --orbit-time, 0.42 by default, so far hubs render in daylight too).
+## there is --orbit-time, 0.42 by default, so far hubs render in daylight too. Standing on a hub
+## at once lays its junk before its town stands, the reverse of walking in; so junk is moved off
+## the town's keep-off ground whenever more of it is registered, as a player would find it).
 
 const FAST_SLICE_US: int = 1500000
 const FLAG_TOWN_STAGE: String = "town-stage"
@@ -26,6 +28,7 @@ const DEFAULT_TIME: float = 0.42
 
 var _frame: int = 0
 var _at_hub: bool = false
+var _keep_out_seen: int = -1
 
 
 func _ready() -> void:
@@ -56,6 +59,8 @@ func _process(_delta: float) -> void:
 		return
 	if DevHooks.has(FLAG_HUB) and not _at_hub:
 		_go_to_hub(scene.get("orbit") as SliceOrbit)
+	if _at_hub:
+		_reseat_junk(scene.get("orbit") as SliceOrbit)
 	if DevHooks.has(FLAG_TOWN_STAGE) or DevHooks.has(FLAG_TOWN_SOURCE):
 		_set_town_stage(scene, int(DevHooks.get_f(FLAG_TOWN_STAGE, -1.0)), DevHooks.get_s(FLAG_TOWN_SOURCE, ""))
 
@@ -84,6 +89,19 @@ func _go_to_hub(orbit: SliceOrbit) -> void:
 		sky.time_of_day = DevHooks.get_f("orbit-time", DEFAULT_TIME)
 		sky.spin = SkyDirector.spin_for_local_time(sky.time_of_day, up)
 		sky.frozen = true
+
+
+## Junk laid before a town's keep-off ground was registered moves off it.
+func _reseat_junk(orbit: SliceOrbit) -> void:
+	if orbit == null or orbit.globe == null or not orbit.globe.has_method("yard_keep_out"):
+		return
+	var ko: YardKeepOut = orbit.globe.call("yard_keep_out") as YardKeepOut
+	var field: SphereField = orbit.globe.get("field") as SphereField
+	if ko == null or field == null or ko.version == _keep_out_seen:
+		return
+	_keep_out_seen = ko.version
+	if field.clear_keep_out() > 0 and orbit.globe.has_method("mark_junk_dirty"):
+		orbit.globe.call("mark_junk_dirty")
 
 
 ## Every town under `n` takes the look of district stage `stage` (-1: left alone) and its source

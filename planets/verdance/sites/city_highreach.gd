@@ -3,10 +3,12 @@ extends VerdanceCity
 ## cyan and yellow signs (the look is data: cities.json "highreach"). This script is its source
 ## landmark: the incinerator plant across three blocks at the head of the open lot. Three
 ## red-and-white stacks stand in the middle behind the waste bunker, pouring violet smog that
-## spreads into a tinted layer over this district only; a tall sky-blue boiler hall feeds them
+## fills this district's streets with a warm magenta-to-orange haze (the street ahead fades into
+## colour, the sky overhead stays blue) under a tinted layer; a tall sky-blue boiler hall feeds them
 ## through a silver flue duct on a pipe bridge, and a cyan tipping hall with three bay doors
 ## sends its yellow conveyor gallery over the street to the bunker.
-## Shut down: the plumes stop, the layer lifts, the stack lights and the plant's lamps come on.
+## Shut down: the plumes stop, the haze and the layer lift, the stack lights and the plant's lamps
+## come on. While the plant runs the haze thins a little with each stage of the district's regrowth.
 ## Built in the landmark's frame: x to the right seen from the yard, z toward the yard.
 
 const HALL_BLUE := Color(0.42, 0.68, 0.94)
@@ -33,8 +35,15 @@ const STACKS: Array[Vector3] = [Vector3(-7.0, -5.0, 60.0), Vector3(0.0, -5.0, 72
 const DUCT_Y: float = 9.0
 ## Per district stage 0..5: how thick the smog layer is while the plant still runs.
 const LAYER_BY_STAGE: Array[float] = [1.0, 1.0, 0.9, 0.75, 0.6, 0.45]
+const HAZE_NEAR := Color(0.98, 0.4, 0.7)
+const HAZE_FAR := Color(1.0, 0.56, 0.42)
+const HAZE_RADIUS: float = 260.0
+const HAZE_HEIGHT: float = 170.0
+const HAZE_DENSITY: float = 0.009      # per metre at street level
+const HAZE_SCALE_HEIGHT: float = 34.0
 
 var _layer: MeshInstance3D
+var _haze: MeshInstance3D
 
 
 func _footprint() -> Array[Rect2]:
@@ -77,11 +86,18 @@ func _build_landmark() -> void:
 	_layer.position = Vector3(0.0, LAYER_Y, CityLayout.PITCH * 2.0)
 	_layer.extra_cull_margin = LAYER_HALF
 	place(_layer, STATE_BROKEN)
+	var near: Color = CityLook.colour(look.data.get("haze_near", [HAZE_NEAR.r, HAZE_NEAR.g, HAZE_NEAR.b]))
+	var far: Color = CityLook.colour(look.data.get("haze_far", [HAZE_FAR.r, HAZE_FAR.g, HAZE_FAR.b]))
+	_haze = CityKit.haze("StreetHaze", HAZE_RADIUS, HAZE_HEIGHT, near, far, HAZE_DENSITY, HAZE_SCALE_HEIGHT)
+	_haze.position += Vector3(0.0, 0.0, CityLayout.PITCH * 2.0)   # round the yard, not the plant
+	place(_haze, STATE_BROKEN)
 
 
 func _on_stage() -> void:
 	if _layer:
 		(_layer.material_override as ShaderMaterial).set_shader_parameter("strength", LAYER_BY_STAGE[stage])
+	if _haze:
+		(_haze.material_override as ShaderMaterial).set_shader_parameter("strength", LAYER_BY_STAGE[stage])
 
 
 ## The boiler hall (sky-blue cladding in three bands with a yellow and a magenta stripe, a roof

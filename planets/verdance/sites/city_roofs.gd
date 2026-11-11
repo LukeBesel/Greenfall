@@ -18,7 +18,7 @@ const PARAPET_H: float = 1.2         # the proxy building's tallest parapet: a p
 static func build(city: VerdanceCity, roofs: Array, look: CityLook) -> void:
 	var xf: Dictionary = {}
 	var col: Dictionary = {}
-	for k: String in ["tank", "sign", "shade", "gable", "sawtooth", "billboard", "dome", "flag"]:
+	for k: String in ["tank", "sign", "shade", "gable", "gable_end", "sawtooth", "billboard", "dome", "flag"]:
 		xf[k] = [] as Array[Transform3D]
 		col[k] = [] as Array[Color]
 	var pct: Dictionary = {}
@@ -36,6 +36,7 @@ static func build(city: VerdanceCity, roofs: Array, look: CityLook) -> void:
 	_emit(city, "RoofSigns", sign_mesh(), xf["sign"], col["sign"], mat, true, RANGE_FAR)
 	_emit(city, "RoofShades", shade_mesh(), xf["shade"], col["shade"], mat, false, RANGE_NEAR)
 	_emit(city, "RoofGables", gable_mesh(), xf["gable"], col["gable"], mat, true, RANGE_FAR)
+	_emit(city, "RoofGableEnds", gable_end_mesh(), xf["gable_end"], col["gable_end"], mat, false, RANGE_FAR)
 	_emit(city, "RoofSawteeth", sawtooth_mesh(), xf["sawtooth"], col["sawtooth"], mat, true, RANGE_FAR)
 	_emit(city, "RoofBillboards", billboard_mesh(), xf["billboard"], col["billboard"], mat, true, RANGE_FAR)
 	_emit(city, "RoofDomes", dome_mesh(), xf["dome"], [], mat, true, RANGE_FAR)
@@ -70,6 +71,8 @@ static func _roof(fr: Transform3D, r: Rect2, y: float, bd: Dictionary, look: Cit
 		var b := Basis(Vector3.UP, 0.0 if along_x else PI * 0.5).scaled_local(Vector3(length, rise, span))
 		(xf["gable"] as Array[Transform3D]).append(fr * Transform3D(b, CityKit.v3(c, y + PARAPET_H)))
 		(col["gable"] as Array[Color]).append(_pick(look.gables, h >> 3))
+		(xf["gable_end"] as Array[Transform3D]).append(fr * Transform3D(b, CityKit.v3(c, y + PARAPET_H)))
+		(col["gable_end"] as Array[Color]).append(bd.get("tint", Color.WHITE))
 		return
 	if depth < MIN_ROOF_M or width < MIN_ROOF_M:
 		return
@@ -180,20 +183,32 @@ static func shade_mesh() -> ArrayMesh:
 
 
 ## A pitched roof in a unit box (x along the ridge, z across, eaves at y 0, ridge at y 1): two
-## tiled slopes in the instance colour, darker gable ends, a fascia under the eaves and a ridge cap.
+## tiled slopes in the instance colour, a fascia under the eaves and a ridge cap. Its gable ends
+## are gable_end_mesh's.
 static func gable_mesh() -> ArrayMesh:
 	var g := BuildingDetail.Geo.new()
 	g.col = Color(1, 1, 1)
 	for sgn: float in [-1.0, 1.0]:
 		var nrm := Vector3(0, 0.5, sgn).normalized()
 		g.quad(Vector3(-0.5, 0, sgn * 0.5), Vector3(0.5, 0, sgn * 0.5), Vector3(0.5, 1, 0), Vector3(-0.5, 1, 0), nrm)
-	g.col = Color(0.8, 0.78, 0.74)
-	for sx: float in [-0.47, 0.47]:
-		g.tri(Vector3(sx, 0, -0.47), Vector3(sx, 0, 0.47), Vector3(sx, 0.94, 0), Vector3(signf(sx), 0, 0))
 	g.col = Color(0.62, 0.6, 0.58)
 	g.box(Transform3D(Basis.IDENTITY, Vector3(0, -0.06, 0)), Vector3(0.96, 0.12, 0.96), -1, true)
 	g.col = Color(0.5, 0.48, 0.46)
 	g.box(Transform3D(Basis.IDENTITY, Vector3(0, 1.0, 0)), Vector3(1.0, 0.05, 0.035))
+	return CityKit.vc_mesh(g)
+
+
+## The two gable ends of a pitched roof in the same unit box: the house's wall carried up to the
+## ridge, so they take the wall's colour as the instance colour, with a small dark attic vent.
+static func gable_end_mesh() -> ArrayMesh:
+	var g := BuildingDetail.Geo.new()
+	for sx: float in [-0.47, 0.47]:
+		var out := Vector3(signf(sx), 0, 0)
+		g.col = Color(1, 1, 1)
+		g.tri(Vector3(sx, 0, -0.47), Vector3(sx, 0, 0.47), Vector3(sx, 0.94, 0), out)
+		g.col = Color(0.3, 0.32, 0.36)
+		g.quad(Vector3(sx, 0.34, -0.07) + out * 0.004, Vector3(sx, 0.34, 0.07) + out * 0.004, Vector3(sx, 0.52, 0.07) + out * 0.004,
+			Vector3(sx, 0.52, -0.07) + out * 0.004, out)
 	return CityKit.vc_mesh(g)
 
 

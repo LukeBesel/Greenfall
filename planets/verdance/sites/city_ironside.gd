@@ -5,7 +5,12 @@ extends VerdanceCity
 ## blocks at the head of the open lot. A yellow gantry crane straddles the street with a crushed
 ## car on its hook, a blue press with a feed hopper and conveyor stands under it, a banded stack
 ## smokes over the boiler house, and a wall of crushed cubes in car paint closes the east side.
-## Shut down: the stack stops smoking, the crane parks with its hook up, the floodlights come on.
+## In front of the gantry a slewing scrap crane swings a crushed car between the cube wall and the
+## press, low enough to be seen from the yard.
+## Running: orange smoke from the stack and from two flues on the boiler house roof, sparks from
+## the press and the cutting bay, the gantry's trolley travelling and the scrap crane swinging its
+## load. Shut down: no smoke or sparks, both cranes parked with their hooks up and empty, the
+## floodlights on.
 ## Built in the landmark's frame: x to the right seen from the yard, z toward the yard.
 
 const YELLOW := Color(0.98, 0.76, 0.06)
@@ -21,11 +26,25 @@ const LEG_Z: float = 7.0
 const STACK_AT := Vector3(-36.0, 0.0, -6.5)
 const STACK_H: float = 44.0
 const CUBE: float = 1.7
+const FLUES: Array[Vector3] = [Vector3(-38.6, 8.0, 3.4), Vector3(-32.0, 8.0, 3.4)]   # on the boiler house roof
+const FLUE_H: float = 5.5
+const SPARK := Color(1.0, 0.72, 0.16)
+const HANDLER_AT := Vector3(19.0, 0.0, 4.0)   # the scrap crane's mast
+const HANDLER_MAST_H: float = 11.0
+const JIB_TIP := Vector3(0.0, 4.2, 12.5)      # in the slewing part's own frame
+const SWING_RAD: float = 0.85
+const SWING_RATE: float = 0.45
+const TROLLEY_TRAVEL_M: float = 7.0
+const TROLLEY_RATE: float = 0.22
+
+var _trolley: Node3D
+var _slew: Node3D
 
 
 func _footprint() -> Array[Rect2]:
 	return [Rect2(-8.5, -3.5, 8.5, 7.0), Rect2(6.2, -8.0, 1.6, 16.0), Rect2(30.2, -8.0, 1.6, 16.0), Rect2(-41.5, -3.0, 13.0, 10.0),
-		Rect2(-38.0, -8.6, 4.0, 4.2), Rect2(34.5, -10.2, 10.6, 4.0), Rect2(-12.5, -1.2, 4.0, 2.4)]
+		Rect2(-38.0, -8.6, 4.0, 4.2), Rect2(34.5, -10.2, 10.6, 4.0), Rect2(-12.5, -1.2, 4.0, 2.4),
+		Rect2(HANDLER_AT.x - 1.6, HANDLER_AT.z - 1.6, 3.2, 3.2)]
 
 
 func _build_landmark() -> void:
@@ -37,9 +56,14 @@ func _build_landmark() -> void:
 	place_mesh("CrusherYard", g)
 	for r: Rect2 in _footprint():
 		add_landmark_solid(Vector3(r.get_center().x, 4.0, r.get_center().y), Vector3(r.size.x, 8.0, r.size.y))
-	_crane_load(true)
+	_trolley = _crane_load(true)
 	_crane_load(false)
+	_handler()
 	place(CityKit.smoke("StackSmoke", STACK_AT + Vector3(0, STACK_H, 0), SMOKE, SMOKE_END, 46, 11.0, 60.0, 4.0, 22.0, Vector3(1.4, 0.0, 0.5)), STATE_BROKEN)
+	for i: int in FLUES.size():
+		place(CityKit.smoke("FlueSmoke%d" % i, FLUES[i] + Vector3(0, FLUE_H, 0), SMOKE, SMOKE_END, 44, 9.0, 12.0, 2.2, 12.0, Vector3(1.7, 0.0, 0.3)), STATE_BROKEN)
+	place(CityKit.sparks("PressSparks", Vector3(-4.2, 9.6, 1.0), Vector3(0.1, 1.0, 0.3), SPARK, 90, 13.0, 30.0, 0.5), STATE_BROKEN)
+	place(CityKit.sparks("CutSparks", Vector3(3.6, 3.0, 1.6), Vector3(0.5, 1.0, 0.4), SPARK, 50, 9.0, 40.0, 0.42), STATE_BROKEN)
 	place_sign(Transform3D(Basis.IDENTITY, Vector3(-35.0, 6.4, 7.12)), 0.82)
 	place_beacon(Vector3(-4.2, 9.4, 0.0), 0.22)
 	var heads: Array[Vector3] = []
@@ -74,11 +98,24 @@ func _gantry(g: BuildingDetail.Geo) -> void:
 		CityKit.lattice(g, m, 0.55, 0.3, 15.0, 6, 0.05, BuildingDetail.METAL_DARK, BuildingDetail.METAL_DARK)
 		g.mat(BuildingDetail.K_METAL, ORANGE)
 		g.abox(m + Vector3(-1.1, 15.0, -0.3), Vector3(2.2, 1.5, 0.6))
+	# The scrap crane's plinth and mast (its slewing part is _handler's).
+	g.mat(BuildingDetail.K_FLAT, YELLOW, 0, BuildingDetail.F_STRIPES)
+	g.abox(HANDLER_AT + Vector3(-1.5, 0.0, -1.5), Vector3(3.0, 1.0, 3.0))
+	CityKit.lattice(g, HANDLER_AT + Vector3(0, 1.0, 0), 0.95, 0.8, HANDLER_MAST_H - 1.0, 5, 0.1, ORANGE, YELLOW)
+
+
+func _animate(now: float, broken_now: bool) -> void:
+	if not broken_now:
+		return
+	if _trolley:
+		_trolley.position = frame.basis.x * sin(now * TROLLEY_RATE) * TROLLEY_TRAVEL_M
+	if _slew:
+		move_part(_slew, sin(now * SWING_RATE) * SWING_RAD)
 
 
 ## The trolley, cab and hook. Running: over the street with a crushed car hanging. Parked: at the
 ## west leg, hook up, nothing on it.
-func _crane_load(running: bool) -> void:
+func _crane_load(running: bool) -> MeshInstance3D:
 	var g := BuildingDetail.Geo.new()
 	var x: float = 18.0 if running else LEG_X[0] + 2.4
 	var hook_y: float = 9.5 if running else 19.0
@@ -96,7 +133,52 @@ func _crane_load(running: bool) -> void:
 		g.box(Transform3D(Basis.from_euler(Vector3(0.12, 0.5, -0.08)), Vector3(x, hook_y + 0.2, 0)), Vector3(1.9, 0.75, 4.1), -1, true)
 		g.mat(BuildingDetail.K_DARK, Color(0.05, 0.06, 0.08))
 		g.box(Transform3D(Basis.from_euler(Vector3(0.12, 0.5, -0.08)), Vector3(x, hook_y + 0.2, 0.2)), Vector3(1.94, 0.3, 1.8))
-	place_mesh("CraneRunning" if running else "CraneParked", g, STATE_BROKEN if running else STATE_SHUT_DOWN)
+	return place_mesh("CraneRunning" if running else "CraneParked", g, STATE_BROKEN if running else STATE_SHUT_DOWN)
+
+
+## The scrap crane in front of the gantry: a striped plinth and an orange lattice mast (part of the
+## yard's own mesh, _gantry), and on it the slewing part: deck, cab, counterweight, A-frame and a
+## lattice jib with a grapple on its rope. Running it swings a crushed car; shut down it stands
+## still, jib toward the yard, the grapple empty.
+func _handler() -> void:
+	var g := BuildingDetail.Geo.new()
+	g.mat(BuildingDetail.K_METAL, BuildingDetail.METAL_DARK)
+	g.cyl(Transform3D(Basis.IDENTITY, Vector3(0, 0.3, 0)), 1.5, 1.5, 0.6, 16)
+	g.mat(BuildingDetail.K_METAL, ORANGE, 0, BuildingDetail.F_RUST)
+	g.abox(Vector3(-1.3, 0.6, -1.6), Vector3(2.6, 2.4, 3.0))
+	g.mat(BuildingDetail.K_GLASS, Color(0.3, 0.5, 0.62))
+	g.abox(Vector3(-1.1, 1.3, 1.4), Vector3(2.2, 1.4, 0.08))
+	g.mat(BuildingDetail.K_METAL, YELLOW, 0, BuildingDetail.F_RUST)
+	for sx: float in [-0.7, 0.7]:
+		g.rod(Vector3(sx, 0.9, -1.4), Vector3(sx * 0.6, 0.9, -5.0), 0.16)
+		g.rod(Vector3(sx, 3.0, 0.6), Vector3(0.0, 6.4, -0.6), 0.12)
+		g.rod(Vector3(sx, 2.6, 1.5), JIB_TIP + Vector3(sx * 0.4, 0.0, 0.0), 0.15)
+	g.rod(Vector3(0.0, 4.0, 1.5), JIB_TIP + Vector3(0.0, 0.9, 0.0), 0.12)
+	for k: int in 6:
+		var a: Vector3 = Vector3(0.0, 2.6, 1.5).lerp(JIB_TIP, float(k) / 6.0)
+		var b: Vector3 = Vector3(0.0, 4.0, 1.5).lerp(JIB_TIP + Vector3(0, 0.9, 0), (float(k) + 0.5) / 6.0)
+		var c: Vector3 = Vector3(0.0, 2.6, 1.5).lerp(JIB_TIP, float(k + 1) / 6.0)
+		g.rod(a + Vector3(-0.5, 0, 0), b, 0.06)
+		g.rod(b, c + Vector3(0.5, 0, 0), 0.06)
+	g.mat(BuildingDetail.K_PLAIN, Color(0.8, 0.78, 0.74), BuildingDetail.T_CONCRETE)
+	g.abox(Vector3(-1.0, 0.4, -6.0), Vector3(2.0, 1.4, 1.4))
+	g.mat(BuildingDetail.K_METAL, BuildingDetail.METAL_DARK)
+	g.rod(Vector3(0.0, 6.4, -0.6), JIB_TIP + Vector3(0, 0.9, 0), 0.04)
+	g.rod(Vector3(0.0, 6.4, -0.6), Vector3(0.0, 1.2, -5.2), 0.04)
+	var hook: Vector3 = JIB_TIP + Vector3(0, -5.6, 0)
+	g.rod(JIB_TIP, hook + Vector3(0, 1.0, 0), 0.05)
+	g.cyl(Transform3D(Basis.IDENTITY, hook + Vector3(0, 0.8, 0)), 0.5, 0.7, 0.5, 10)
+	for a2: float in [0.4, 1.97, 3.54, 5.11]:
+		g.rod(hook + Vector3(cos(a2) * 0.5, 0.6, sin(a2) * 0.5), hook + Vector3(cos(a2) * 1.25, -0.5, sin(a2) * 1.25), 0.08)
+	_slew = place_part("ScrapCrane", g, HANDLER_AT + Vector3(0, HANDLER_MAST_H, 0))
+	var cargo := BuildingDetail.Geo.new()
+	cargo.mat(BuildingDetail.K_METAL, STACK_RED, 0, BuildingDetail.F_RUST)
+	cargo.box(Transform3D(Basis.from_euler(Vector3(0.1, 0.6, -0.12)), hook + Vector3(0, -0.5, 0)), Vector3(1.9, 0.8, 4.1), -1, true)
+	cargo.mat(BuildingDetail.K_DARK, Color(0.05, 0.06, 0.08))
+	cargo.box(Transform3D(Basis.from_euler(Vector3(0.1, 0.6, -0.12)), hook + Vector3(0, -0.45, 0.2)), Vector3(1.94, 0.3, 1.8))
+	var car: MeshInstance3D = CityKit.mesh_node("Load", cargo, look.material(false))
+	_slew.add_child(car)
+	_broken.append(car)
 
 
 ## The car press: a blue steel frame with yellow rams, a hopper on top, a conveyor rising to it
@@ -150,6 +232,8 @@ func _boiler_house(g: BuildingDetail.Geo) -> void:
 	g.abox(Vector3(-40.7, 5.4, 6.98), Vector3(11.4, 0.1, 0.16))
 	g.abox(Vector3(-40.7, 7.3, 6.98), Vector3(11.4, 0.1, 0.16))
 	CityKit.banded(g, STACK_AT, 1.9, 1.2, STACK_H, 9, STACK_RED, STACK_WHITE)
+	for f: Vector3 in FLUES:
+		CityKit.banded(g, f, 0.55, 0.45, FLUE_H, 3, STACK_RED, STACK_WHITE, 10)
 	g.mat(BuildingDetail.K_METAL, Color(0.74, 0.76, 0.78), 0, BuildingDetail.F_RUST)
 	g.cyl(Transform3D(Basis(Vector3.RIGHT, PI * 0.5), Vector3(STACK_AT.x, 5.5, -4.0)), 0.8, 0.8, 2.6, 12, false)
 
