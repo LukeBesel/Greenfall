@@ -15,6 +15,7 @@ Status: started in Phase 0 (Nov 9, 2026). Sections marked *(fills in during Mx)*
    - `restoration.json`: how district states add up to planet restoration, and what triggers the ending
    - `tutorial.json`, `goals.json`: onboarding steps and the goal ladder
    - `balance.json`: curves and constants
+   - `cities.json` (optional, visual only): each city's palette, building mix, roof props, street dressing and source landmark, read by the planet's own site scripts
 4. Add art hooks only if needed: `env.gd` (sky, light, weather) and site scripts for the planet's own props. Shared systems call them through the definition.
 5. Run the simulator (`tools/pace_sim`) until the cadence rules pass.
 6. Run the planet-parameterised tests and the bot on the new id.

@@ -14,7 +14,7 @@ func test_paint_gives_a_building_walls_roof_and_awning() -> void:
 
 
 func test_no_roof_in_the_palette_is_white_or_grey() -> void:
-	for c: Color in CityOldTown.ROOFS:
+	for c: Color in CityLook.of("old_town").roofs:
 		assert_true(c.s > 0.04 and c.v < 0.85, "roof %s carries colour and is not white" % c.to_html(false))
 
 
