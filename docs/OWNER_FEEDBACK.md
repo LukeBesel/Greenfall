@@ -263,3 +263,6 @@ Direction: the flat world's vibe is better, so build it into the round world: bu
 67. The people asleep on the ark are not "the Makers" (and not "the Gardeners"). The owner picked **the Settlers**.
 68. Songs and breaks like Minecraft: a song, then a long quiet stretch with only the world's own sounds (done: 6–15 min between songs, 1–2 min after loading; `data/songs.json` `gap_s`, `first_gap_s`).
 69. After the crash landing it should be a good while (about 10 min) before the first song, and a song must never start over WREN or a story line (done: `landing_gap_s` 9–12 min; a song waits while a line is spoken).
+70. Verdance must be fully ready to release and play: simple enough for a child, addictive, with a real story. The pace keeps you moving, but you still have to grind a bit to get there.
+71. Set the foundation for more planets made the way Verdance was: different themes, planet sizes and landmarks. Do not build the other planets yet.
+72. The story must leave room for the other planets and spill into them: across the planets we gather enough fuel and power to make it back home.
