@@ -36,7 +36,7 @@ const WALLS: Array = [
 	[T_PAINT, Color(0.62, 0.76, 0.88)],
 ]
 const ROOFS: Array[Color] = [Color(0.8, 0.34, 0.2), Color(0.74, 0.3, 0.2), Color(0.66, 0.24, 0.18), Color(0.3, 0.6, 0.5),
-	Color(0.34, 0.44, 0.6), Color(0.3, 0.29, 0.3), Color(0.78, 0.62, 0.36), Color(0.16, 0.5, 0.52)]
+	Color(0.34, 0.44, 0.6), Color(0.36, 0.28, 0.38), Color(0.78, 0.62, 0.36), Color(0.16, 0.5, 0.52)]
 const AWNING_COLS: Array[Color] = [Color(0.84, 0.14, 0.1), Color(0.04, 0.5, 0.5), Color(0.94, 0.68, 0.08), Color(0.12, 0.3, 0.64), Color(0.2, 0.52, 0.3)]
 const TANK_COLS: Array[Color] = [Color(0.72, 0.5, 0.3), Color(0.66, 0.44, 0.26), Color(0.12, 0.5, 0.52), Color(0.7, 0.24, 0.16), Color(0.9, 0.84, 0.7)]
 const SIGN_COLS: Array[Color] = [Color(0.86, 0.14, 0.1), Color(0.05, 0.52, 0.55), Color(0.96, 0.7, 0.06), Color(0.14, 0.32, 0.7), Color(0.9, 0.36, 0.08), Color(0.24, 0.58, 0.3)]
@@ -824,20 +824,23 @@ func _build_trees() -> void:
 	if spots.is_empty():
 		return
 	var trunks: Array[Transform3D] = []
-	var shrub: Array[Mesh] = PlantParts.variants("shrub_01", 900)
 	var gaz: Array[Mesh] = PlantParts.variants("flower_gazania", 400)
 	var blooms: Array[Transform3D] = []
+	var leaf_cols: Array[Color] = []
 	for p: Vector2 in spots:
 		var s: float = rng.randf_range(0.85, 1.25)
 		var xf := Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(s, s * rng.randf_range(0.9, 1.15), s)), _v3(p, 0.02))
 		trunks.append(xf)
-		for k: int in 4:
-			var a: float = TAU * float(k) / 4.0 + rng.randf()
-			var off := Vector3(cos(a) * 1.1, 4.3 + rng.randf_range(-0.5, 0.9), sin(a) * 1.1) * s
-			if k == 3:
-				off = Vector3(0, 5.6 * s, 0)
-			var cs: float = rng.randf_range(2.6, 3.6) * s
-			_canopy_xf.append(Transform3D(Basis.from_euler(Vector3(rng.randf_range(-0.3, 0.3), rng.randf() * TAU, rng.randf_range(-0.3, 0.3))).scaled(Vector3.ONE * cs), _v3(p) + off))
+		var green := Color(0.13, 0.36, 0.1).lerp(Color(0.3, 0.44, 0.1), rng.randf())
+		for k: int in 6:
+			var a: float = TAU * float(k) / 5.0 + rng.randf()
+			var off := Vector3(cos(a) * 1.25, 4.4 + rng.randf_range(-0.6, 0.8), sin(a) * 1.25) * s
+			if k == 5:
+				off = Vector3(0, 5.7 * s, 0)
+			var cs := Vector3(rng.randf_range(2.2, 3.0), rng.randf_range(1.5, 2.1), rng.randf_range(2.2, 3.0)) * s
+			var cb: Basis = Basis.from_euler(Vector3(rng.randf_range(-0.4, 0.4), rng.randf() * TAU, rng.randf_range(-0.4, 0.4))) * Basis.from_scale(cs)
+			_canopy_xf.append(Transform3D(cb, _v3(p) + off))
+			leaf_cols.append(green.lightened(rng.randf_range(-0.08, 0.14)))
 		for k2: int in 3:
 			var a2: float = rng.randf() * TAU
 			blooms.append(Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3.ONE * rng.randf_range(1.3, 1.9)), _v3(p, 0.03) + Vector3(cos(a2), 0, sin(a2)) * rng.randf_range(0.45, 0.8)))
@@ -846,10 +849,39 @@ func _build_trees() -> void:
 	bark.vertex_color_use_as_albedo = true
 	bark.roughness = 1.0
 	_mmi("StreetTrees", _dead_tree_mesh(), trunks, [], bark, true, 300.0)
-	if not shrub.is_empty():
-		_canopy = _mmi("TreeCanopy", shrub[0], _canopy_xf, [], null, true, 300.0)
+	var leaf := StandardMaterial3D.new()
+	leaf.vertex_color_use_as_albedo = true
+	leaf.roughness = 0.9
+	leaf.backlight_enabled = true
+	leaf.backlight = Color(0.18, 0.26, 0.05)
+	_canopy = _mmi("TreeCanopy", _clump_mesh(), _canopy_xf, leaf_cols, leaf, true, 300.0)
 	if not gaz.is_empty():
 		_flowers = _mmi("TreeFlowers", gaz[0], blooms, [], null, false, 260.0)
+
+
+## One clump of a street tree's crown, a metre across: a lumpy ball (each vertex pushed in or out
+## by a hash of its direction) shaded darker underneath, so six of them make an uneven crown.
+static func _clump_mesh() -> ArrayMesh:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var rings: int = 8
+	var segs: int = 14
+	var pt := func(i: int, j: int) -> Vector3:
+		var th: float = PI * float(i) / float(rings)
+		var ph: float = TAU * float(j % segs) / float(segs)
+		var d := Vector3(sin(th) * cos(ph), cos(th), sin(th) * sin(ph))
+		var bump: float = 0.0 if i == 0 or i == rings else float(hash([i, j % segs]) % 1000) / 1000.0
+		return d * (0.44 + 0.07 * bump)
+	for i: int in rings:
+		for j: int in segs:
+			var quad: Array[Vector3] = [pt.call(i, j), pt.call(i, j + 1), pt.call(i + 1, j + 1), pt.call(i + 1, j)]
+			for idx: int in [0, 1, 2, 0, 2, 3]:
+				var v: Vector3 = quad[idx]
+				var shade: float = clampf(0.62 + v.y * 1.0, 0.45, 1.0)
+				st.set_color(Color(shade, shade, shade))
+				st.set_normal(v.normalized())
+				st.add_vertex(v)
+	return st.commit()
 
 
 ## A bare street tree: a tapered trunk that forks four times into limbs, branches and twigs
@@ -882,18 +914,20 @@ static func _dead_tree_mesh() -> ArrayMesh:
 			var mid: Vector3 = at + d * length * 0.5 + side * rng.randf_range(-0.06, 0.06)
 			var e: Vector3 = at + d * length + Vector3(0, rng.randf_range(0.0, 0.12), 0)
 			var c2: Color = col.lightened(0.05 * float(4 - depth))
-			_limb(st, at, mid, r * 0.92, (r * 0.92 + kr * 0.55) * 0.5, c2)
-			_limb(st, mid, e, (r * 0.92 + kr * 0.55) * 0.5, kr * 0.55, c2)
+			if depth <= 2:  # twigs: one straight piece, three sides
+				_limb(st, at, e, r * 0.92, kr * 0.55, c2, 3)
+			else:
+				_limb(st, at, mid, r * 0.92, (r * 0.92 + kr * 0.55) * 0.5, c2)
+				_limb(st, mid, e, (r * 0.92 + kr * 0.55) * 0.5, kr * 0.55, c2)
 			if depth > 1:
 				forks.append([e, (e - mid).normalized(), kr * 0.6, depth - 1])
 	return st.commit()
 
 
-static func _limb(st: SurfaceTool, a: Vector3, b: Vector3, r0: float, r1: float, col: Color) -> void:
+static func _limb(st: SurfaceTool, a: Vector3, b: Vector3, r0: float, r1: float, col: Color, sides: int = 6) -> void:
 	var d: Vector3 = (b - a).normalized()
 	var x: Vector3 = d.cross(Vector3.RIGHT if absf(d.x) < 0.8 else Vector3.FORWARD).normalized()
 	var z: Vector3 = d.cross(x).normalized()
-	var sides: int = 6
 	for i: int in sides:
 		var a0: float = TAU * float(i) / float(sides)
 		var a1: float = TAU * float(i + 1) / float(sides)
@@ -916,7 +950,7 @@ func _build_lamp_glow() -> void:
 	var cols: Array[Color] = []
 	for e: Array in _site.city.lamp_bulbs:
 		var xf: Transform3D = e[0]
-		xfs.append(Transform3D(xf.basis.orthonormalized().scaled(Vector3.ONE * 0.2), xf.origin))
+		xfs.append(Transform3D(xf.basis.orthonormalized().scaled(Vector3.ONE * 0.15), xf.origin))
 		cols.append(LAMP_WARM)
 	var m := StandardMaterial3D.new()
 	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED

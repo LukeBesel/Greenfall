@@ -94,7 +94,7 @@ func _build_ground() -> void:
 	var back: Vector3 = Vector3(FROM_DIR.x, 0, FROM_DIR.z).normalized()
 	var ang: float = atan2(back.x, back.z)
 	# The furrow: two soft dark smears stretched back along the approach.
-	for layer: Array in [[Vector2(3.4, 15.0), 0.85, 0.018, 5.6], [Vector2(1.8, 10.0), 0.95, 0.024, 4.0], [Vector2(5.2, 5.2), 0.9, 0.03, 0.0]]:
+	for layer: Array in [[Vector2(3.2, 9.0), 0.85, 0.018, 3.0], [Vector2(1.7, 6.0), 0.95, 0.024, 2.2]]:
 		var mi := MeshInstance3D.new()
 		var pm := PlaneMesh.new()
 		pm.size = layer[0]
@@ -136,7 +136,7 @@ func _build_ground() -> void:
 	# bank it pushed up where it stopped. Low enough to walk over.
 	for i: int in 90:
 		var t: float = pow(rng.randf(), 0.8)
-		var along2: float = lerpf(0.3, 13.0, t)
+		var along2: float = lerpf(0.3, 7.4, t)
 		var sgn: float = 1.0 if i % 2 == 0 else -1.0
 		var lat2: float = sgn * (lerpf(1.3, 0.7, t) + rng.randf_range(-0.3, 0.45))
 		var ridge := MeshInstance3D.new()
@@ -161,7 +161,7 @@ func _build_ground() -> void:
 		var sh := MeshInstance3D.new()
 		sh.mesh = ProcMesh.box(Vector3(0.36, 0.025, 0.24) * (1.0 + 0.35 * (k % 3)))
 		sh.material_override = shard_m
-		sh.position = back * (2.6 + k * 1.7) + side * ((0.7 - (k % 2) * 1.3) * (1.0 + 0.2 * k)) + Vector3(0, 0.05, 0)
+		sh.position = back * (2.4 + k * 0.9) + side * ((0.7 - (k % 2) * 1.3) * (1.0 + 0.2 * k)) + Vector3(0, 0.05, 0)
 		sh.rotation = Vector3(0.3, rng.randf() * TAU, 0.2)
 		add_child(sh)
 
