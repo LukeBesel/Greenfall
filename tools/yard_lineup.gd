@@ -30,6 +30,10 @@ const SHOTS: Dictionary = {
 	"lm_ferris_wheel": [Vector3(255.0, 8.0, 234.0), Vector3(240.0, 10.5, 200.0)],
 	"lm_smokestack": [Vector3(320.0, 10.0, 243.0), Vector3(300.0, 13.0, 200.0)],
 	"lm_kiosk": [Vector3(6.5, 2.2, 211.0), Vector3(4.4, 1.2, 204.0)],
+	"lm_tower_crane": [Vector3(376.0, 10.0, 234.0), Vector3(361.0, 12.0, 200.0)],
+	"lm_old_bus": [Vector3(427.0, 4.5, 213.0), Vector3(420.0, 1.6, 200.5)],
+	"lm_lighthouse": [Vector3(492.0, 7.0, 226.0), Vector3(480.0, 9.5, 200.0)],
+	"recycler": [Vector3(75.5, 3.6, 6.5), Vector3(71.3, 1.2, 0.0)],
 }
 const BOARD_POS := Vector3(-3.6, 0, 2.2)  # scenes/slice.gd
 
@@ -44,7 +48,7 @@ func _ready() -> void:
 	_out = DevHooks.get_s("out", "screenshots/yard/lineup")
 	_shots = DevHooks.get_s("shots", "yard,shack,bench,locker,builds,stations,tower,fabricator,bins").split(",")
 	if _shots.size() == 1 and _shots[0] == "v6":  # [v6yard] everything this wave rebuilt
-		_shots = PackedStringArray(["baler", "baler_back", "belt", "signs", "pod", "lm_water_tower", "lm_windpump", "lm_crane", "lm_radio_mast", "lm_ferris_wheel", "lm_smokestack", "lm_kiosk"])
+		_shots = PackedStringArray(["baler", "baler_back", "belt", "signs", "pod", "lm_water_tower", "lm_windpump", "lm_crane", "lm_radio_mast", "lm_ferris_wheel", "lm_smokestack", "lm_kiosk", "lm_tower_crane", "lm_old_bus", "lm_lighthouse", "recycler"])
 	var night: bool = DevHooks.has("night")
 	var env := Environment.new()
 	env.background_mode = Environment.BG_SKY
