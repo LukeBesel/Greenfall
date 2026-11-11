@@ -262,7 +262,7 @@ msgstr "按住 %s"
 
 #: autoload/Story.gd:27
 msgid "Hex clean! Green can grow here now."
-msgstr ""
+msgstr "六角格干净了！绿色可以在这里生长了。"
 
 #: automation/auto_baler.gd:479
 msgid "AUTO-BALER"
@@ -481,7 +481,7 @@ msgstr "你离开期间（%s）："
 
 #: core/offline.gd:130
 msgid "The crew kept cleaning. The city is a little clearer."
-msgstr ""
+msgstr "小队一直在清理。城市又干净了一点。"
 
 #: core/offline.gd:132
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
@@ -489,15 +489,15 @@ msgstr "净化器一直在过滤空气。现在清新了一点。"
 
 #: core/pace.gd:150 story/objectives.gd:886
 msgid "Too heavy. Upgrade Lift at the bench."
-msgstr ""
+msgstr "太重了。去工作台升级举升力。"
 
 #: core/pace.gd:195
 msgid "Nothing here fits. Press [%s] to make a bale."
-msgstr ""
+msgstr "这里装不下了。按 [%s] 压一个捆包。"
 
 #: core/pace.gd:207
 msgid "No Baler yet. Bring your chest to the bin."
-msgstr ""
+msgstr "还没有打包机。把胸舱里的垃圾送去垃圾桶。"
 
 #: core/pace.gd:315 systems/events.gd:487 ui/goals_panel.gd:284
 msgid "+%s cubes"
@@ -653,11 +653,11 @@ msgstr "E   火箭：选择目的地"
 
 #: planet/sites/orbit_sites.gd:199
 msgid "Nowhere to fly yet. Get %s to %s to open %s."
-msgstr ""
+msgstr "还没有可飞往的地方。把 %s 提升到 %s 即可开放 %s。"
 
 #: planet/sites/orbit_sites.gd:213
 msgid "%s site"
-msgstr ""
+msgstr "%s 地点"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
 #: planet/sites/orbit_sites.gd:214 ui/main_menu.gd:450
@@ -754,7 +754,7 @@ msgstr "埋藏零件  ·  信号 %d%%"
 
 #: player/patch.gd:213
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
-msgstr ""
+msgstr "Lumi 不会游泳。在工作台装上悬浮喷口，就能飘过湖面。"
 
 #: player/patch.gd:327
 msgid "No seeds yet. Keep cleaning."
@@ -762,7 +762,7 @@ msgstr "还没有种子。继续清理吧。"
 
 #: player/patch.gd:364
 msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
-msgstr ""
+msgstr "种子需要干净开阔的土地：街道、路缘和平台上不行。"
 
 #: player/patch.gd:371
 msgid "Out of seeds. Blooming plants drop more."
@@ -770,7 +770,7 @@ msgstr "种子用完了。开花的植物会掉落更多。"
 
 #: player/patch.gd:378
 msgid "Watering can is empty. It fills in the base yard, by the bin."
-msgstr ""
+msgstr "洒水壶空了。在基地院子的垃圾桶旁可以加水。"
 
 #: player/patch.gd:637
 msgid "PERFECT BALE  %s"
@@ -1129,15 +1129,15 @@ msgstr "搬运区"
 
 #: robots/sphere/command_overlay.gd:43
 msgid "Y: role · Hold A: paint · Hold X: erase · Left stick: move"
-msgstr ""
+msgstr "Y：角色 · 按住 A：涂画 · 按住 X：擦除 · 左摇杆：移动"
 
 #: robots/sphere/command_overlay.gd:44
 msgid "Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi"
-msgstr ""
+msgstr "Tab：角色 · 左键：涂画 · 右键：擦除 · 中键：派出机器人 · E：回到 Lumi"
 
 #: robots/sphere/sphere_fleet.gd:54
 msgid "%s %s assembled. It looks around, then gets to work."
-msgstr ""
+msgstr "%s %s 组装完成。它四下看了看，就开始干活了。"
 
 #: scenes/slice.gd:116
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
@@ -1543,7 +1543,7 @@ msgstr "记得浇水。外面种子很稀少，但每次开花都会还你一颗
 
 #: story/first_seed.gd:351
 msgid "Lumi, that green signal is back, stronger now. Follow the beam: the old greenhouse."
-msgstr ""
+msgstr "Lumi，那个绿色信号又出现了，而且更强。跟着光束走：是那座旧温室。"
 
 #: story/first_seed.gd:360
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
@@ -1734,7 +1734,7 @@ msgstr "LEDGER  WMS-07"
 
 #: story/objectives.gd:207
 msgid "Needs %s. Dig up more Parts."
-msgstr ""
+msgstr "需要 %s。再多挖些零件。"
 
 #: story/objectives.gd:246
 msgid "Reward: %s"
@@ -1750,15 +1750,15 @@ msgstr "目标完成  ·  %s"
 
 #: story/objectives.gd:731
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
-msgstr ""
+msgstr "打包机已安装！装满胸舱，按 [%s] 压出捆包，再搬到磅秤上。"
 
 #: story/objectives.gd:753 story/objectives.gd:874
 msgid "Your chest is full. Press [%s] to make a bale."
-msgstr ""
+msgstr "胸舱满了。按 [%s] 压一个捆包。"
 
 #: story/objectives.gd:769
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
-msgstr ""
+msgstr "探测器发现附近埋着一个机器人零件。跟着“埋藏零件”读数走；到正上方时它会哔哔响。"
 
 #: story/objectives.gd:771
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
@@ -1766,27 +1766,27 @@ msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。
 
 #: story/objectives.gd:875
 msgid "Your chest is full. Bring it to the bin."
-msgstr ""
+msgstr "胸舱满了。送去垃圾桶吧。"
 
 #: story/objectives.gd:882
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
-msgstr ""
+msgstr "胸舱满了。回家吧：垃圾桶就在那道高高的烟柱下面。"
 
 #: story/objectives.gd:884
 msgid "Carry your bale home: the scale is under the tall smoke."
-msgstr ""
+msgstr "把捆包搬回家：磅秤就在那道高高的烟柱下面。"
 
 #: story/objectives.gd:884
 msgid "Carry your bale to the scale by the bin."
-msgstr ""
+msgstr "把捆包搬到垃圾桶旁的磅秤上。"
 
 #: story/objectives.gd:891
 msgid "Head home: follow the beam to the tall smoke."
-msgstr ""
+msgstr "回家吧：跟着光束走到那道高高的烟柱。"
 
 #: story/objectives.gd:901
 msgid "Nothing to pick up here. Walk to more trash."
-msgstr ""
+msgstr "这里没有可捡的。走去有更多垃圾的地方。"
 
 #: story/shards.gd:100
 msgid "Something surfaced in the cleared ground. A memory shard."
@@ -1838,19 +1838,19 @@ msgstr "空格  暂停   ·   Esc  跳过"
 
 #: story/tutorial.gd:10
 msgid "Fix the workbench: press  {interact}  at it"
-msgstr ""
+msgstr "修好工作台：在它旁边按  {interact}"
 
 #: story/tutorial.gd:11
 msgid "Pick up trash: hold  {scoop}"
-msgstr ""
+msgstr "捡垃圾：按住  {scoop}"
 
 #: story/tutorial.gd:12
 msgid "Bring your chest to the trash bin"
-msgstr ""
+msgstr "把胸舱里的垃圾送去垃圾桶"
 
 #: story/tutorial.gd:13
 msgid "Buy an upgrade: press  {interact}  at the bench"
-msgstr ""
+msgstr "购买升级：在工作台按  {interact}"
 
 #: story/tutorial.gd:19
 msgid "Lumi is back on the job"
@@ -2395,7 +2395,7 @@ msgstr "你离开期间，研究完成了：%s。"
 
 #: systems/research.gd:626
 msgid "New robot plans: %s. %s"
-msgstr ""
+msgstr "新的机器人图纸：%s。%s"
 
 #: systems/research.gd:639
 msgid "Research complete: %s."
@@ -2403,59 +2403,59 @@ msgstr "研究完成：%s。"
 
 #: systems/rigs.gd:51
 msgid "chest size"
-msgstr ""
+msgstr "胸舱容量"
 
 #: systems/rigs.gd:52
 msgid "sweep width"
-msgstr ""
+msgstr "清扫宽度"
 
 #: systems/rigs.gd:53
 msgid "reach"
-msgstr ""
+msgstr "范围"
 
 #: systems/rigs.gd:56
 msgid "bales carried"
-msgstr ""
+msgstr "携带捆包"
 
 #: systems/rigs.gd:58
 msgid "detector range"
-msgstr ""
+msgstr "探测器范围"
 
 #: systems/rigs.gd:59
 msgid "parts found"
-msgstr ""
+msgstr "发现的零件"
 
 #: systems/rigs.gd:60
 msgid "robots' bonus near Lumi"
-msgstr ""
+msgstr "Lumi 附近机器人的加成"
 
 #: systems/rigs.gd:61
 msgid "range of that bonus"
-msgstr ""
+msgstr "该加成的范围"
 
 #: systems/rigs.gd:126
 msgid "Rig: %s"
-msgstr ""
+msgstr "装备：%s"
 
 #: systems/rigs.gd:253
 msgid "New tool: %s. Fit it at the workbench."
-msgstr ""
+msgstr "新工具：%s。去工作台装上吧。"
 
 #: systems/rigs.gd:313
 msgid "Its plan arrives when %s opens."
-msgstr ""
+msgstr "%s 开放时图纸就会送到。"
 
 #: systems/rigs.gd:371
 msgid "Clears %s"
-msgstr ""
+msgstr "清除 %s"
 
 #: systems/rigs.gd:394
 msgid "%s work"
-msgstr ""
+msgstr "%s 作业"
 
 #: systems/rigs.gd:483
 msgid "at least %d"
-msgstr ""
+msgstr "至少 %d"
 
 #: systems/robot_builder.gd:268 systems/robot_design.gd:60
 msgid "Wrong slot"
@@ -2549,11 +2549,11 @@ msgstr "月光"
 
 #: systems/source_sites.gd:192
 msgid "%s (%s)"
-msgstr ""
+msgstr "%s（%s）"
 
 #: systems/source_sites.gd:200
 msgid "You need %s for this."
-msgstr ""
+msgstr "这需要 %s。"
 
 #: systems/tunes.gd:166
 msgid "New CD: %s by %s, from %s"
@@ -2561,7 +2561,7 @@ msgstr "新CD：%s，演奏：%s，来自%s"
 
 #: systems/camp/camp.gd:221
 msgid "Workbench fixed! Press %s at it to buy upgrades."
-msgstr ""
+msgstr "工作台修好了！在它旁边按 %s 购买升级。"
 
 #: systems/camp/camp.gd:356
 msgid "E   %s (Lv %d): fully upgraded"
@@ -2781,11 +2781,11 @@ msgstr "在垃圾堆里找到那个小灯笼机器人"
 
 #: systems/glim/glim_director.gd:248
 msgid "Glim! He held on to your pod the whole way down, just to stay with you. Welcome back, little light."
-msgstr ""
+msgstr "Glim！它一路紧紧抓着你的舱降落下来，只为了陪着你。欢迎回来，小小的光。"
 
 #: systems/glim/glim_director.gd:252
 msgid "Glim blinks awake. He held on to the pod the whole way down, just to stay with Lumi."
-msgstr ""
+msgstr "Glim 眨着眼醒来。它一路紧紧抓着舱降落下来，只为了陪着 Lumi。"
 
 #: systems/glim/glim_director.gd:268 systems/glim/glim_director.gd:292
 msgid "Tap %s: Glim scans your hex for junk you missed. Hold %s for his upgrades."
@@ -2857,7 +2857,7 @@ msgstr "等待零件。"
 
 #: ui/assembler_panel.gd:69
 msgid "Building a %s, %d%%"
-msgstr ""
+msgstr "正在建造 %s，%d%%"
 
 #: ui/assembler_panel.gd:70
 msgid "Starting up."
@@ -2929,7 +2929,7 @@ msgstr "先建造信号塔。"
 
 #: ui/bench_tiers.gd:95
 msgid "Rebuild the base to level %d first."
-msgstr ""
+msgstr "先把基地重建到 %d 级。"
 
 #: ui/bench_tiers.gd:97
 msgid "Upgrade the workbench first."
@@ -2945,7 +2945,7 @@ msgstr "还不行。继续玩吧。"
 
 #: ui/bench_tiers.gd:135
 msgid "%s installed. New workbench tab: %s"
-msgstr ""
+msgstr "%s 已安装。工作台新页签：%s"
 
 #: ui/build_panel.gd:25
 msgid "Nothing new to build right now. New buildings unlock as you play."
@@ -3683,7 +3683,7 @@ msgstr "%s 重获生机"
 
 #: ui/end_screen.gd:67
 msgid "Every city is thriving and the rocket is ready. The rest of the planet is still out there if you want it."
-msgstr ""
+msgstr "每座城市都已繁茂，火箭也准备好了。如果你愿意，星球上还有其他地方在等着你。"
 
 #: ui/end_screen.gd:80
 msgid "Quit to title"
@@ -3863,7 +3863,7 @@ msgstr "花园加成：植物生长快 %d%%（最多 %d%%）。"
 
 #: ui/extras_panel.gd:330
 msgid "No one has retired yet. Old or Mk I-II robots can retire here; they'll look after the nursery garden at the base."
-msgstr ""
+msgstr "还没有机器人退休。老机器人或 Mk I-II 机器人可以在这里退休；它们会照料基地的苗圃花园。"
 
 #: ui/extras_panel.gd:339
 msgid "RETIRE A ROBOT"
@@ -3951,7 +3951,7 @@ msgstr "勘测"
 
 #: ui/globe_view.gd:136
 msgid "{planet}  ·  seed-keeper's survey"
-msgstr ""
+msgstr "{planet}  ·  守种者的勘测"
 
 #: ui/globe_view.gd:152
 msgid "Not cleaned yet"
@@ -3987,7 +3987,7 @@ msgstr "[k]拖动旋转   ·   滚轮缩放   ·   [/k][p]{@look}  旋转     {z
 
 #: ui/globe_view.gd:283
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     [/p]{open_globe}  close"
-msgstr ""
+msgstr "[k]拖动旋转   ·   滚轮缩放   ·   [/k][p]{@look}  旋转     {zoom_out}{zoom_in}  缩放     [/p]{open_globe}  关闭"
 
 #: ui/globe_view.gd:338
 msgid "%d sectors away"
@@ -4087,7 +4087,7 @@ msgstr "当前：%d级，%s。草捆售价+%d%%。"
 
 #: ui/hub_panel.gd:207
 msgid "Now: level %d, %s."
-msgstr ""
+msgstr "当前：%d 级，%s。"
 
 #: ui/hub_panel.gd:209
 msgid "Hub level %d  ·  fully built"
@@ -4184,7 +4184,7 @@ msgstr "%s · %s %d%%"
 #: ui/hud.gd:404
 msgid "%d of %d city restored"
 msgid_plural "%d of %d cities restored"
-msgstr[0] ""
+msgstr[0] "已复原 %d / %d 座城市"
 
 #: ui/hud.gd:418
 msgid "MASTERY  %s"
@@ -4229,7 +4229,7 @@ msgstr "正在给洒水壶加水"
 
 #: ui/hud.gd:447
 msgid "Can empty. It fills in the base yard, by the bin."
-msgstr ""
+msgstr "水壶空了。在基地院子的垃圾桶旁可以加水。"
 
 #: ui/key_hints.gd:20
 msgid "press bale"
@@ -4287,11 +4287,11 @@ msgstr "免费"
 
 #: ui/list_detail.gd:628
 msgid "LOCKED.  To unlock: %s"
-msgstr ""
+msgstr "未解锁。  解锁条件：%s"
 
 #: ui/list_detail.gd:628
 msgid "Locked. Keep playing to unlock it."
-msgstr ""
+msgstr "未解锁。继续游玩即可解锁。"
 
 #: ui/list_detail.gd:631
 msgid "REQUIRES   %s"
@@ -4303,19 +4303,19 @@ msgstr "现在可以购买了！"
 
 #: ui/list_detail.gd:654
 msgid "%s more %s"
-msgstr ""
+msgstr "还差 %s %s"
 
 #: ui/list_detail.gd:656
 msgid "Pick up trash to earn them."
-msgstr ""
+msgstr "捡垃圾就能赚到。"
 
 #: ui/list_detail.gd:656
 msgid "Dig up parts and salvage junk to get them."
-msgstr ""
+msgstr "挖零件、回收废料就能得到。"
 
 #: ui/list_detail.gd:659
 msgid "Need %s. %s"
-msgstr ""
+msgstr "需要 %s。%s"
 
 #: ui/loading_screen.gd:163
 msgid "Loading"
@@ -4947,15 +4947,15 @@ msgstr "%s 已取消。方块已退还。"
 
 #: ui/rig_panel.gd:102 ui/upgrades_screen.gd:17
 msgid "Rig"
-msgstr ""
+msgstr "装备"
 
 #: ui/rig_panel.gd:103
 msgid "One module in each slot. Swapping is free. A city's tool must be fitted to clear that city's waste."
-msgstr ""
+msgstr "每个槽位装一个模块。更换免费。要清理某座城市的废料，必须装上该城市的工具。"
 
 #: ui/rig_panel.gd:121
 msgid "No rig on this world."
-msgstr ""
+msgstr "这个世界没有装备。"
 
 #: ui/rig_panel.gd:138
 msgid "Empty"
@@ -4963,7 +4963,7 @@ msgstr "空"
 
 #: ui/rig_panel.gd:163
 msgid "Fitted"
-msgstr ""
+msgstr "已装备"
 
 #: ui/rig_panel.gd:165 data/robot_parts.json:slots[tool].name
 msgid "Tool"
@@ -4971,11 +4971,11 @@ msgstr "工具"
 
 #: ui/rig_panel.gd:187
 msgid "Take off"
-msgstr ""
+msgstr "卸下"
 
 #: ui/rig_panel.gd:190
 msgid "Fit"
-msgstr ""
+msgstr "装备"
 
 #: ui/robot_card.gd:94
 msgid "Tier"
@@ -5047,7 +5047,7 @@ msgstr "去哪儿？"
 
 #: ui/rocket_picker.gd:58
 msgid "{ui_cancel}  close"
-msgstr ""
+msgstr "{ui_cancel}  关闭"
 
 #: ui/rocket_picker.gd:107
 msgid "No other hubs found yet."
@@ -5067,7 +5067,7 @@ msgstr "发射台"
 
 #: ui/rockets_panel.gd:37
 msgid "Cells charged and ready. Walk to the rocket to pick a base."
-msgstr ""
+msgstr "电池已充满。走到火箭旁选择一个基地。"
 
 #: ui/rockets_panel.gd:44
 msgid "Not built yet"
@@ -6371,7 +6371,7 @@ msgstr "修好 Glim"
 
 #: planets/verdance/data/camp.json:builds.glim.desc
 msgid "The little lantern bot who held on to your pod all the way down. Patch him up and he'll follow you and light the way."
-msgstr ""
+msgstr "那个一路紧抓着你的舱降落下来的小灯笼机器人。把它修好，它就会跟着你、为你照亮前路。"
 
 #: planets/verdance/data/camp.json:builds.camera_bot.name
 msgid "Blink"
@@ -9748,7 +9748,7 @@ msgstr "Old Capital 的垃圾下埋着一枚镜片芯片。"
 
 #: planets/verdance/data/finds.json:finds[old_capital_source].hint
 msgid "The last leaf waits on the rocket of Old Capital."
-msgstr ""
+msgstr "最后一片叶子在 Old Capital 的火箭上等着。"
 
 #: planets/verdance/data/finds.json:finds[open_ground_tin].hint
 msgid "A rare tin lies far out, on open ground."
@@ -9852,7 +9852,7 @@ msgstr "小毛线帽"
 
 #: planets/verdance/data/goals.json:goals[scoop_15].text
 msgid "Pick up 15 pieces of trash"
-msgstr ""
+msgstr "捡起 15 件垃圾"
 
 #: planets/verdance/data/goals.json:goals[dump_1].text
 msgid "Empty your chest in the bin"
@@ -9860,7 +9860,7 @@ msgstr "把胸舱里的垃圾倒进垃圾桶"
 
 #: planets/verdance/data/goals.json:goals[upgrade_1].text
 msgid "Buy an upgrade at the bench"
-msgstr ""
+msgstr "在工作台购买一项升级"
 
 #: planets/verdance/data/goals.json:goals[baler_1].text
 msgid "Install the Baler"
@@ -9896,7 +9896,7 @@ msgstr "卖掉 10 个捆包"
 
 #: planets/verdance/data/goals.json:goals[compartment_3].text
 msgid "Chest Size level 3"
-msgstr ""
+msgstr "胸舱容量 3 级"
 
 #: planets/verdance/data/goals.json:goals[shards_1].text
 msgid "Find a memory shard"
@@ -9924,7 +9924,7 @@ msgstr "清理 5 个六角格"
 
 #: planets/verdance/data/goals.json:goals[lift_2].text
 msgid "Lift Strength level 2"
-msgstr ""
+msgstr "举升力 2 级"
 
 #: planets/verdance/data/goals.json:goals[upgrades_12].text
 msgid "Buy 12 upgrades"
@@ -9936,7 +9936,7 @@ msgstr "赚到 3,000 方块"
 
 #: planets/verdance/data/goals.json:goals[hex_7].text
 msgid "Clear the street: clean 7 hexes"
-msgstr ""
+msgstr "清理街道：清理 7 个六角格"
 
 #: planets/verdance/data/goals.json:goals[pet_cat].text
 msgid "Pet a stray cat"
@@ -9968,7 +9968,7 @@ msgstr "建造一台 Scoopie"
 
 #: planets/verdance/data/goals.json:goals[zone_1].text
 msgid "Give a robot a work zone"
-msgstr ""
+msgstr "给一台机器人划定工作区域"
 
 #: planets/verdance/data/goals.json:goals[bales_20].text
 msgid "Robots press 20 bales"
@@ -10464,7 +10464,7 @@ msgstr "车间"
 
 #: planets/verdance/data/hub.json:levels[1].desc
 msgid "Walls, a roll-up door, floodlights. Room for a bigger crew."
-msgstr ""
+msgstr "围墙、卷帘门、泛光灯。容得下更大的小队。"
 
 #: planets/verdance/data/hub.json:levels[2].name
 msgid "Depot Station"
@@ -10840,23 +10840,23 @@ msgstr "复兴 Anvil。"
 
 #: planets/verdance/data/objectives.json:wren_brief.lines
 msgid "Lumi, it's WREN. I run the Cradle, our big ship. I never stopped listening for you."
-msgstr ""
+msgstr "Lumi，我是 WREN。我负责管理我们的大船 Cradle。我一直在等你的消息。"
 
 #: planets/verdance/data/objectives.json:wren_brief.lines
 msgid "The Cradle can't land on a dead world. Let's make Verdance green again."
-msgstr ""
+msgstr "Cradle 无法降落在死去的世界上。让我们把 Verdance 重新变绿吧。"
 
 #: planets/verdance/data/objectives.json:wren_brief.lines
 msgid "Every plant fills your Bloom Core. When it's full, the Cradle comes down and we go home."
-msgstr ""
+msgstr "每一株植物都会充满你的绽放核心。充满后，Cradle 就会降落，我们就能回家。"
 
 #: planets/verdance/data/objectives.json:brief.lines
 msgid "Lumi, it's WREN, up on the Cradle. Your pod crashed, and my signal is weak."
-msgstr ""
+msgstr "Lumi，我是 WREN，在上面的 Cradle 上。你的舱坠毁了，我的信号很弱。"
 
 #: planets/verdance/data/objectives.json:brief.lines
 msgid "Pick up trash, find parts, and build a signal tower so we can talk. I'll be [glitch]listen—[/glitch]"
-msgstr ""
+msgstr "捡垃圾，找零件，建一座信号塔，我们就能通话了。我会一直[glitch]听着——[/glitch]"
 
 #: planets/verdance/data/objectives.json:objectives[dump3].text
 msgid "Fill the trash bin 3 times"
@@ -10864,11 +10864,11 @@ msgstr "往垃圾桶倒 3 次垃圾"
 
 #: planets/verdance/data/objectives.json:objectives[dump3].desc
 msgid "Hold {scoop} to pick up trash. Empty it at the bin."
-msgstr ""
+msgstr "按住 {scoop} 捡垃圾。然后倒进垃圾桶。"
 
 #: planets/verdance/data/objectives.json:objectives[dump3].lines
 msgid "Start small, Lumi. Every load in the bin earns cubes."
-msgstr ""
+msgstr "从小事做起，Lumi。每倒一次垃圾都能赚到方块。"
 
 #: planets/verdance/data/objectives.json:objectives[compartment].text
 msgid "Buy a bigger chest"
@@ -10876,11 +10876,11 @@ msgstr "买一个更大的胸舱"
 
 #: planets/verdance/data/objectives.json:objectives[compartment].desc
 msgid "Workbench: Chest Size. Fewer trips to the bin."
-msgstr ""
+msgstr "工作台：胸舱容量。少跑几趟垃圾桶。"
 
 #: planets/verdance/data/objectives.json:objectives[compartment].lines
 msgid "A bigger chest means fewer trips. The bench can fit one."
-msgstr ""
+msgstr "胸舱更大，跑的趟数就更少。工作台可以给你装一个。"
 
 #: planets/verdance/data/objectives.json:objectives[hex].text
 msgid "Clean the glowing hex"
@@ -10888,11 +10888,11 @@ msgstr "清理发光的六角格"
 
 #: planets/verdance/data/objectives.json:objectives[hex].desc
 msgid "Pick up every piece inside the outline."
-msgstr ""
+msgstr "把轮廓线内的每一件都捡起来。"
 
 #: planets/verdance/data/objectives.json:objectives[hex].lines
 msgid "First, one clean hex. Clear the outlined one. Green starts on clean ground."
-msgstr ""
+msgstr "先清理出一个六角格。清理有轮廓线的那个。绿色从干净的土地开始。"
 
 #: planets/verdance/data/objectives.json:objectives[scoop_size].text
 msgid "Buy Scoop Size"
@@ -10900,11 +10900,11 @@ msgstr "购买铲斗容量"
 
 #: planets/verdance/data/objectives.json:objectives[scoop_size].desc
 msgid "Workbench: grab more trash at once."
-msgstr ""
+msgstr "工作台：一次抓起更多垃圾。"
 
 #: planets/verdance/data/objectives.json:objectives[scoop_size].lines
 msgid "A wider scoop. More trash per grab, less walking."
-msgstr ""
+msgstr "更宽的铲子。每次抓得更多，少走些路。"
 
 #: planets/verdance/data/objectives.json:objectives[hex2].text
 msgid "Clean 2 hexes"
@@ -10912,11 +10912,11 @@ msgstr "清理 2 个六角格"
 
 #: planets/verdance/data/objectives.json:objectives[hex2].desc
 msgid "Clean ground lets plants grow again."
-msgstr ""
+msgstr "干净的土地能让植物重新生长。"
 
 #: planets/verdance/data/objectives.json:objectives[hex2].lines
 msgid "Two clean hexes. Keep going, Lumi."
-msgstr ""
+msgstr "两个干净的六角格了。继续，Lumi。"
 
 #: planets/verdance/data/objectives.json:objectives[baler].text
 msgid "Save up for the Baler"
@@ -10924,11 +10924,11 @@ msgstr "攒钱买打包机"
 
 #: planets/verdance/data/objectives.json:objectives[baler].desc
 msgid "The Baler presses bales. A bale always sells for more."
-msgstr ""
+msgstr "打包机能压出捆包。捆包总能卖得更贵。"
 
 #: planets/verdance/data/objectives.json:objectives[baler].lines
 msgid "Save up for the Baler. A pressed bale always sells for more than loose trash."
-msgstr ""
+msgstr "攒钱买打包机吧。压好的捆包总比散装垃圾卖得贵。"
 
 #: planets/verdance/data/objectives.json:objectives[power].text
 msgid "Sell 3 bales"
@@ -10936,11 +10936,11 @@ msgstr "卖掉 3 个捆包"
 
 #: planets/verdance/data/objectives.json:objectives[power].desc
 msgid "Full chest? Press {cube} for a bale. Carry it to the scale."
-msgstr ""
+msgstr "胸舱满了？按 {cube} 压出捆包。搬到磅秤上。"
 
 #: planets/verdance/data/objectives.json:objectives[power].lines
 msgid "Carry bales to the scale by the bin. Three of them and the base wakes up."
-msgstr ""
+msgstr "把捆包搬到垃圾桶旁的磅秤上。送满三个，基地就会苏醒。"
 
 #: planets/verdance/data/objectives.json:objectives[tower].text
 msgid "Build the signal tower"
@@ -10948,19 +10948,19 @@ msgstr "建造信号塔"
 
 #: planets/verdance/data/objectives.json:objectives[tower].desc
 msgid "Workbench, Build tab. Then WREN can talk to you."
-msgstr ""
+msgstr "工作台，建造页签。之后 WREN 就能和你通话。"
 
 #: planets/verdance/data/objectives.json:objectives[tower].lines
 msgid "Build the tower, Lumi. Then I can stay with you."
-msgstr ""
+msgstr "把塔建起来，Lumi。这样我就能一直陪着你。"
 
 #: planets/verdance/data/objectives.json:objectives[glim].desc
 msgid "Workbench, Build tab. The little bot stuck to your pod."
-msgstr ""
+msgstr "工作台，建造页签。那个粘在你舱上的小机器人。"
 
 #: planets/verdance/data/objectives.json:objectives[glim].lines
 msgid "Lumi... something's still holding on to your pod. Small. Lantern-shaped. Patch him up at the bench."
-msgstr ""
+msgstr "Lumi……还有什么东西抓着你的舱。小小的。灯笼形状。去工作台把它修好。"
 
 #: planets/verdance/data/objectives.json:objectives[street].text
 msgid "Clear the street"
@@ -10968,23 +10968,23 @@ msgstr "清理街道"
 
 #: planets/verdance/data/objectives.json:objectives[street].desc
 msgid "Clean the 7 hexes round the base."
-msgstr ""
+msgstr "清理基地周围的 7 个六角格。"
 
 #: planets/verdance/data/objectives.json:objectives[street].lines
 msgid "Clear the whole street, Lumi. Seven hexes round the base."
-msgstr ""
+msgstr "把整条街清理干净，Lumi。基地周围的七个六角格。"
 
 #: planets/verdance/data/objectives.json:objectives[bench2].text
 msgid "Add a Bot Bay to the bench"
-msgstr ""
+msgstr "给工作台加装机器人舱"
 
 #: planets/verdance/data/objectives.json:objectives[bench2].desc
 msgid "Workbench, Upgrades tab: Bot Bay."
-msgstr ""
+msgstr "工作台，升级页签：机器人舱。"
 
 #: planets/verdance/data/objectives.json:objectives[bench2].lines
 msgid "Add a Bot Bay to the bench. You shouldn't do this alone."
-msgstr ""
+msgstr "给工作台加装机器人舱。这些事不该你一个人扛。"
 
 #: planets/verdance/data/objectives.json:objectives[robot].text
 msgid "Build your first robot"
@@ -10992,31 +10992,31 @@ msgstr "造出你的第一个机器人"
 
 #: planets/verdance/data/objectives.json:objectives[robot].desc
 msgid "Bots tab: a Haul Bug carries your bales to the scale."
-msgstr ""
+msgstr "机器人页签：Haul Bug 会把你的捆包搬到磅秤上。"
 
 #: planets/verdance/data/objectives.json:objectives[robot].lines
 msgid "The base has power! Build a helper: a Haul Bug will carry your bales. Try the Bots tab."
-msgstr ""
+msgstr "基地通电了！造个帮手吧：Haul Bug 会替你搬捆包。去机器人页签看看。"
 
 #: planets/verdance/data/objectives.json:objectives[hex10].desc
 msgid "Your Haul Bug sells the bales. Stay at the work."
-msgstr ""
+msgstr "Haul Bug 会去卖捆包。你专心干活就好。"
 
 #: planets/verdance/data/objectives.json:objectives[hex10].lines
 msgid "Ten clean hexes. Your robots are learning from you, Lumi."
-msgstr ""
+msgstr "十个干净的六角格。你的机器人正在向你学习，Lumi。"
 
 #: planets/verdance/data/objectives.json:objectives[base2].text
 msgid "Rebuild the base to level 2"
-msgstr ""
+msgstr "把基地重建到 2 级"
 
 #: planets/verdance/data/objectives.json:objectives[base2].desc
 msgid "Workbench, Upgrades tab. More robots can work."
-msgstr ""
+msgstr "工作台，升级页签。可以让更多机器人干活。"
 
 #: planets/verdance/data/objectives.json:objectives[base2].lines
 msgid "The base can grow now. Rebuild it from the Upgrades tab at the workbench."
-msgstr ""
+msgstr "基地现在可以扩建了。在工作台的升级页签重建它。"
 
 #: planets/verdance/data/objectives.json:objectives[seed].text
 msgid "Plant the first seed"
@@ -11024,39 +11024,39 @@ msgstr "种下第一颗种子"
 
 #: planets/verdance/data/objectives.json:objectives[seed].desc
 msgid "Plants fill your Bloom Core."
-msgstr ""
+msgstr "植物会充满你的绽放核心。"
 
 #: planets/verdance/data/objectives.json:objectives[seed].hint
 msgid "Keep cleaning. Seeds turn up in clean ground."
-msgstr ""
+msgstr "继续清理。干净的土地里会出现种子。"
 
 #: planets/verdance/data/objectives.json:objectives[seed].lines
 msgid "Something green is waking out there. Plant the first seed."
-msgstr ""
+msgstr "外面有什么绿色的东西正在苏醒。种下第一颗种子吧。"
 
 #: planets/verdance/data/objectives.json:objectives[scoopie].desc
 msgid "Workbench, Bots tab. It cleans a hex by itself."
-msgstr ""
+msgstr "工作台，机器人页签。它能独自清理一个六角格。"
 
 #: planets/verdance/data/objectives.json:objectives[scoopie].hint
 msgid "Keep cleaning. WREN is looking for Scoopie plans."
-msgstr ""
+msgstr "继续清理。WREN 正在寻找 Scoopie 的图纸。"
 
 #: planets/verdance/data/objectives.json:objectives[scoopie].lines
 msgid "A Scoopie cleans a hex by itself. Build one at the bench."
-msgstr ""
+msgstr "Scoopie 能独自清理一个六角格。去工作台造一台。"
 
 #: planets/verdance/data/objectives.json:objectives[zone].text
 msgid "Send your Scoopie to work"
-msgstr ""
+msgstr "派你的 Scoopie 去干活"
 
 #: planets/verdance/data/objectives.json:objectives[zone].desc
 msgid "Press {open_command}, then paint hexes for it to clean."
-msgstr ""
+msgstr "按 {open_command}，然后涂画出要它清理的六角格。"
 
 #: planets/verdance/data/objectives.json:objectives[zone].lines
 msgid "Give your Scoopie a hex to work on. It wants a job."
-msgstr ""
+msgstr "给你的 Scoopie 一个六角格去干活。它想要一份工作。"
 
 #: planets/verdance/data/objectives.json:objectives[tower2].text
 msgid "Boost the signal tower"
@@ -11064,43 +11064,43 @@ msgstr "增强信号塔"
 
 #: planets/verdance/data/objectives.json:objectives[tower2].desc
 msgid "Workbench. WREN will sound clearer."
-msgstr ""
+msgstr "工作台。WREN 的声音会更清楚。"
 
 #: planets/verdance/data/objectives.json:objectives[tower2].lines
 msgid "Boost the tower. I want to hear you clearly."
-msgstr ""
+msgstr "增强信号塔。我想清楚地听到你。"
 
 #: planets/verdance/data/objectives.json:objectives[research1].desc
 msgid "Workbench, Research tab. Research unlocks new robots."
-msgstr ""
+msgstr "工作台，研究页签。研究可以解锁新机器人。"
 
 #: planets/verdance/data/objectives.json:objectives[research1].hint
 msgid "Workbench, Upgrades tab: add the Research Desk first."
-msgstr ""
+msgstr "工作台，升级页签：先加装研究台。"
 
 #: planets/verdance/data/objectives.json:objectives[research1].lines
 msgid "Your bench can study now. Research unlocks new machines and seeds."
-msgstr ""
+msgstr "你的工作台现在可以做研究了。研究可以解锁新的机器和种子。"
 
 #: planets/verdance/data/objectives.json:objectives[hex20].desc
 msgid "More clean ground means more room to grow."
-msgstr ""
+msgstr "干净的土地越多，生长的空间就越大。"
 
 #: planets/verdance/data/objectives.json:objectives[hex20].lines
 msgid "Twenty hexes. The air already smells different."
-msgstr ""
+msgstr "二十个六角格了。空气的味道已经不一样了。"
 
 #: planets/verdance/data/objectives.json:objectives[base3].text
 msgid "Rebuild the base to level 3"
-msgstr ""
+msgstr "把基地重建到 3 级"
 
 #: planets/verdance/data/objectives.json:objectives[base3].desc
 msgid "Workbench, Upgrades tab. It opens the Request Board."
-msgstr ""
+msgstr "工作台，升级页签。可开放委托板。"
 
 #: planets/verdance/data/objectives.json:objectives[base3].lines
 msgid "One more base level. The Cradle is watching, Lumi."
-msgstr ""
+msgstr "基地再升一级。Cradle 正看着呢，Lumi。"
 
 #: planets/verdance/data/outposts.json:levels[0].name
 msgid "Weigh Station"
@@ -11176,59 +11176,59 @@ msgstr "特殊模块"
 
 #: planets/verdance/data/pollution.json:kinds.litter.name
 msgid "Litter"
-msgstr ""
+msgstr "垃圾"
 
 #: planets/verdance/data/pollution.json:kinds.wrecks.name
 msgid "Wrecks"
-msgstr ""
+msgstr "残骸"
 
 #: planets/verdance/data/pollution.json:kinds.wrecks.hint
 msgid "WRECKS  CUT AND LIFT THEM"
-msgstr ""
+msgstr "残骸  切开再搬走"
 
 #: planets/verdance/data/pollution.json:kinds.wrecks.prompt
 msgid "WRECKS  NEED THE PLATE CUTTER"
-msgstr ""
+msgstr "残骸  需要切板器"
 
 #: planets/verdance/data/pollution.json:kinds.slick.name
 msgid "Slick"
-msgstr ""
+msgstr "油污"
 
 #: planets/verdance/data/pollution.json:kinds.slick.hint
 msgid "SLICK  SKIM IT"
-msgstr ""
+msgstr "油污  撇捞干净"
 
 #: planets/verdance/data/pollution.json:kinds.slick.prompt
 msgid "SLICK  NEEDS THE SKIM SKIRT"
-msgstr ""
+msgstr "油污  需要撇捞裙"
 
 #: planets/verdance/data/pollution.json:kinds.smog.name
 msgid "Smog"
-msgstr ""
+msgstr "烟雾"
 
 #: planets/verdance/data/pollution.json:kinds.smog.hint
 msgid "SMOG  MIST IT WITH THE CAN"
-msgstr ""
+msgstr "烟雾  用水壶喷雾"
 
 #: planets/verdance/data/pollution.json:kinds.smog.prompt
 msgid "SMOG  NEEDS THE MIST SCRUBBER"
-msgstr ""
+msgstr "烟雾  需要水雾净化器"
 
 #: planets/verdance/data/pollution.json:kinds.blight.name
 msgid "Blight"
-msgstr ""
+msgstr "毒土"
 
 #: planets/verdance/data/pollution.json:kinds.blight.cost.prompt
 msgid "Blight needs cleansing plants: out of seeds."
-msgstr ""
+msgstr "毒土需要净化植物：种子用完了。"
 
 #: planets/verdance/data/pollution.json:kinds.blight.hint
 msgid "BLIGHT  PLANT IT CLEAN"
-msgstr ""
+msgstr "毒土  种植来净化"
 
 #: planets/verdance/data/pollution.json:kinds.blight.prompt
 msgid "BLIGHT  NEEDS THE SOIL DOSER"
-msgstr ""
+msgstr "毒土  需要土壤投料器"
 
 #: data/radio.json:songs[verdance_sprout].name data/songs.json:songs[sprout_step].title
 msgid "Sprout Step"
@@ -11384,27 +11384,27 @@ msgstr "把 Cradle 带回家"
 
 #: planets/verdance/data/research.json:story_unlocks[haul_rig].name
 msgid "Haul Bug Plans"
-msgstr ""
+msgstr "Haul Bug 图纸"
 
 #: planets/verdance/data/research.json:story_unlocks[haul_rig].hint
 msgid "Comes with the Bot Bay: a Haul Bug carries your bales to the scale."
-msgstr ""
+msgstr "随机器人舱到来：Haul Bug 会把你的捆包搬到磅秤上。"
 
 #: planets/verdance/data/research.json:story_unlocks[scoopie_rig].name
 msgid "Scoopie Plans"
-msgstr ""
+msgstr "Scoopie 图纸"
 
 #: planets/verdance/data/research.json:story_unlocks[scoopie_rig].hint
 msgid "WREN is looking for Scoopie plans. Keep your Haul Bug busy."
-msgstr ""
+msgstr "WREN 正在寻找 Scoopie 的图纸。别让你的 Haul Bug 闲着。"
 
 #: planets/verdance/data/research.json:story_unlocks[skimmer_rig].name
 msgid "Skimmer Plans"
-msgstr ""
+msgstr "Skimmer 图纸"
 
 #: planets/verdance/data/research.json:story_unlocks[skimmer_rig].hint
 msgid "Comes later: WREN will send Skimmer plans once the land is greening."
-msgstr ""
+msgstr "稍后到来：等大地开始变绿，WREN 会发来 Skimmer 的图纸。"
 
 #: planets/verdance/data/research.json:story_unlocks[scrounger_rig].name
 msgid "Scrounger Plans"
@@ -11484,7 +11484,7 @@ msgstr "回收逻辑"
 
 #: planets/verdance/data/research.json:nodes[salvage_logic].desc
 msgid "Lumi rewrites the base's old assembly logic. The base can build helpers again."
-msgstr ""
+msgstr "Lumi 重写了基地的旧组装逻辑。基地又能建造帮手了。"
 
 #: planets/verdance/data/research.json:nodes[seedling_blueprint].name
 msgid "Seedling Blueprint"
@@ -11740,7 +11740,7 @@ msgstr "绿带"
 
 #: planets/verdance/data/restoration.json:planet.steps[quarter_alive].name
 msgid "A quarter alive"
-msgstr ""
+msgstr "四分之一恢复生机"
 
 #: planets/verdance/data/restoration.json:planet.steps[half_alive].name
 msgid "Half the world"
@@ -11752,119 +11752,119 @@ msgstr "整颗星球"
 
 #: planets/verdance/data/rigs.json:slots[arm].name
 msgid "Arm"
-msgstr ""
+msgstr "手臂"
 
 #: planets/verdance/data/rigs.json:slots[chest].name
 msgid "Chest"
-msgstr ""
+msgstr "胸舱"
 
 #: planets/verdance/data/rigs.json:slots[drive].name
 msgid "Drive"
-msgstr ""
+msgstr "驱动"
 
 #: planets/verdance/data/rigs.json:modules.plate_cutter.name
 msgid "Plate Cutter"
-msgstr ""
+msgstr "切板器"
 
 #: planets/verdance/data/rigs.json:modules.plate_cutter.desc
 msgid "A salvaged cutting head. Slices wrecks into pieces Lumi can lift. Narrow."
-msgstr ""
+msgstr "回收来的切割头。把残骸切成 Lumi 搬得动的小块。范围窄。"
 
 #: planets/verdance/data/rigs.json:modules.wide_sweep.name
 msgid "Wide Sweep"
-msgstr ""
+msgstr "宽幅清扫"
 
 #: planets/verdance/data/rigs.json:modules.wide_sweep.desc
 msgid "A broad intake fan. Sweeps a wide path of loose junk, but only close up."
-msgstr ""
+msgstr "宽大的吸入风扇。能扫过一大片散落的废料，但只限近处。"
 
 #: planets/verdance/data/rigs.json:modules.long_reach.name
 msgid "Long Reach"
-msgstr ""
+msgstr "长距抓取"
 
 #: planets/verdance/data/rigs.json:modules.long_reach.desc
 msgid "A telescoping boom. Pulls junk in from far off and skims well from the bank. Thin beam."
-msgstr ""
+msgstr "伸缩吊臂。能从远处吸来废料，在岸边撇捞也很好用。光束细。"
 
 #: planets/verdance/data/rigs.json:modules.guide_arm.name
 msgid "Guide Arm"
-msgstr ""
+msgstr "引导臂"
 
 #: planets/verdance/data/rigs.json:modules.guide_arm.desc
 msgid "A signal paddle. Robots working near Lumi get three times the boost from her. Her own scoop slows."
-msgstr ""
+msgstr "信号指挥板。在 Lumi 附近工作的机器人获得三倍加成。自己的铲子会变慢。"
 
 #: planets/verdance/data/rigs.json:modules.deep_hold.name
 msgid "Deep Hold"
-msgstr ""
+msgstr "深舱"
 
 #: planets/verdance/data/rigs.json:modules.deep_hold.desc
 msgid "A bigger hopper bolted under the chest. Fewer trips to the scale. Heavy."
-msgstr ""
+msgstr "栓在胸舱下方的更大料斗。少跑几趟磅秤。很重。"
 
 #: planets/verdance/data/rigs.json:modules.press_frame.name
 msgid "Press Frame"
-msgstr ""
+msgstr "压制框架"
 
 #: planets/verdance/data/rigs.json:modules.press_frame.desc
 msgid "Stiff press rails. Bales come out tighter and pay more. Less room inside."
-msgstr ""
+msgstr "坚固的压制导轨。捆包压得更紧、卖得更贵。内部空间变小。"
 
 #: planets/verdance/data/rigs.json:modules.mist_scrubber.name
 msgid "Mist Scrubber"
-msgstr ""
+msgstr "水雾净化器"
 
 #: planets/verdance/data/rigs.json:modules.mist_scrubber.desc
 msgid "A filter drum and spray bar. Turns the can's water into a mist that scrubs smog. The drum takes chest room."
-msgstr ""
+msgstr "过滤滚筒加喷淋杆。把水壶里的水变成能洗净烟雾的水雾。滚筒会占用胸舱空间。"
 
 #: planets/verdance/data/rigs.json:modules.sorter.name
 msgid "Sorter"
-msgstr ""
+msgstr "分拣器"
 
 #: planets/verdance/data/rigs.json:modules.sorter.desc
 msgid "A sorting tray. Picks out far more parts worth keeping, for more robots. Bales pay a little less."
-msgstr ""
+msgstr "分拣托盘。能挑出多得多的可用零件，用来造更多机器人。捆包会稍微便宜一点。"
 
 #: planets/verdance/data/rigs.json:modules.sprint_coils.name
 msgid "Sprint Coils"
-msgstr ""
+msgstr "冲刺线圈"
 
 #: planets/verdance/data/rigs.json:modules.sprint_coils.desc
 msgid "Rewound hover coils. Much faster over ground. They take a little chest room."
-msgstr ""
+msgstr "重新绕制的悬浮线圈。在地面上快得多。会占用一点胸舱空间。"
 
 #: planets/verdance/data/rigs.json:modules.skim_skirt.name
 msgid "Skim Skirt"
-msgstr ""
+msgstr "撇捞裙"
 
 #: planets/verdance/data/rigs.json:modules.skim_skirt.desc
 msgid "A float skirt with a skimming lip. Carries Lumi over water and lifts slick off it. Slower on land."
-msgstr ""
+msgstr "带撇捞唇边的浮力裙。能载着 Lumi 过水面，并撇走水上的油污。陆地上较慢。"
 
 #: planets/verdance/data/rigs.json:modules.tow_hitch.name
 msgid "Tow Hitch"
-msgstr ""
+msgstr "拖挂钩"
 
 #: planets/verdance/data/rigs.json:modules.tow_hitch.desc
 msgid "A bale rack on the back. Carries two more bales a trip. Slower."
-msgstr ""
+msgstr "背后的捆包架。每趟多带两个捆包。速度较慢。"
 
 #: planets/verdance/data/rigs.json:modules.soil_doser.name
 msgid "Soil Doser"
-msgstr ""
+msgstr "土壤投料器"
 
 #: planets/verdance/data/rigs.json:modules.soil_doser.desc
 msgid "A dosing bar under the hover ring. Feeds the cleansing plants that draw blight out of the soil. Slower."
-msgstr ""
+msgstr "悬浮环下方的投料杆。为能把毒素从土里吸出来的净化植物供给养料。速度较慢。"
 
 #: planets/verdance/data/rigs.json:modules.relay_mast.name
 msgid "Relay Mast"
-msgstr ""
+msgstr "中继桅杆"
 
 #: planets/verdance/data/rigs.json:modules.relay_mast.desc
 msgid "A tall relay on the back. Robots much further away still get a boost from Lumi, and the detector sees further. Slower."
-msgstr ""
+msgstr "背后的高大中继器。远得多的机器人也能获得 Lumi 的加成，探测器也看得更远。速度较慢。"
 
 #: data/robot_parts.json:slots[chassis].name
 msgid "Chassis"
@@ -12610,83 +12610,83 @@ msgstr "信号塔 Mk IV"
 
 #: planets/anvil/data/sites.json:sites[foundry_yard].name
 msgid "Foundry Yard"
-msgstr ""
+msgstr "铸造场"
 
 #: planets/anvil/data/sites.json:sites[foundry_yard].desc
 msgid "hub base: casting hall, two stacks, conveyor truss and hopper, ore spur, ember slag tip, buried hauler"
-msgstr ""
+msgstr "枢纽基地：铸造车间、两座烟囱、输送桁架和料斗、矿石支线、余烬渣堆、被埋的运输车"
 
 #: planets/anvil/data/sites.json:sites[foundry_tower].name
 msgid "Ledger Foundry Tower"
-msgstr ""
+msgstr "Ledger 铸造塔"
 
 #: planets/anvil/data/sites.json:sites[foundry_tower].desc
 msgid "the Ledger's colossal 130 m foundry stack on buttresses, pipes and slag tips"
-msgstr ""
+msgstr "Ledger 那座 130 米高、立在扶壁上的巨型铸造烟囱，还有管道和渣堆"
 
 #: planets/anvil/data/sites.json:sites[lava_forge].name
 msgid "Lava Forge"
-msgstr ""
+msgstr "熔岩锻炉"
 
 #: planets/anvil/data/sites.json:sites[lava_forge].desc
 msgid "running furnace pouring molten slag down a channel to a pool; ladle crane; cools as restored"
-msgstr ""
+msgstr "仍在运转的熔炉，把熔渣顺着沟槽倒进池中；钢包吊车；随着复原逐渐冷却"
 
 #: planets/anvil/data/sites.json:sites[ruined_smelter].name
 msgid "Ruined Smelter"
-msgstr ""
+msgstr "废弃冶炼厂"
 
 #: planets/anvil/data/sites.json:sites[ruined_smelter].desc
 msgid "collapsed smelter hall frame, tipped and spilled pots, a toppled stack; restored as a planted pergola"
-msgstr ""
+msgstr "坍塌的冶炼车间框架、翻倒洒出的熔罐、一座倒下的烟囱；复原后成为种满植物的藤架"
 
 #: planets/ochre/data/sites.json:sites[hub_base].name
 msgid "Ledger Haul Depot"
-msgstr ""
+msgstr "Ledger 运输站"
 
 #: planets/ochre/data/sites.json:sites[toppled_excavator].name
 msgid "The Fallen Wheel"
-msgstr ""
+msgstr "倒下的巨轮"
 
 #: planets/ochre/data/sites.json:sites[pit_fragment].name
 msgid "Bench Cut"
-msgstr ""
+msgstr "台阶采掘面"
 
 #: planets/ochre/data/sites.json:sites[oasis].name
 msgid "Spring Terraces"
-msgstr ""
+msgstr "泉水梯田"
 
 #: planets/rime/data/sites.json:sites[hub_camp].name
 msgid "Drill Camp"
-msgstr ""
+msgstr "钻探营地"
 
 #: planets/rime/data/sites.json:sites[hub_camp].desc
 msgid "Cabins on skids round a plated yard, a greenhouse dome, fuel tanks, a comms mast and a snowcat."
-msgstr ""
+msgstr "围着铁板院子的雪橇小屋、一座温室圆顶、燃料罐、通信桅杆和一辆雪地车。"
 
 #: planets/rime/data/sites.json:sites[derrick].name
 msgid "Frozen Derrick"
-msgstr ""
+msgstr "冰封井架"
 
 #: planets/rime/data/sites.json:sites[derrick].desc
 msgid "A Ledger core-drill derrick frozen into the ice; a geothermal tap when restored."
-msgstr ""
+msgstr "冻在冰里的 Ledger 岩芯钻探井架；复原后成为地热取热口。"
 
 #: planets/rime/data/sites.json:sites[borehole].name
 msgid "The Borehole"
-msgstr ""
+msgstr "钻孔"
 
 #: planets/rime/data/sites.json:sites[borehole].desc
 msgid "The shaft under its headframe and winder house; cold mist, then a warm glow."
-msgstr ""
+msgstr "井架和绞车房下方的竖井；先是冷雾，然后是温暖的光。"
 
 #: planets/rime/data/sites.json:sites[hot_springs].name
 msgid "Hot Springs"
-msgstr ""
+msgstr "温泉"
 
 #: planets/rime/data/sites.json:sites[hot_springs].desc
 msgid "Geothermal pools with a bathhouse and boardwalk; frozen, then steaming."
-msgstr ""
+msgstr "带浴室和木栈道的地热池；先是冰封，然后热气腾腾。"
 
 #: planets/tidewell/data/sites.json:sites[hub_raft].name
 msgid "Anchored Raft"
@@ -12738,11 +12738,11 @@ msgstr "一排排挂着绳索和幽灵渔网的系泊浮标；未来化后会戴
 
 #: planets/verdance/data/sites.json:sites[start_yard].desc
 msgid "Hub 0: the landing yard (pod, broken workbench, trash bin) in a lived-in town."
-msgstr ""
+msgstr "基地 0：一座有生活气息的小镇里的降落院子（舱、坏掉的工作台、垃圾桶）。"
 
 #: planets/verdance/data/sites.json:sites[ruin_block].desc
 msgid "Hubs 1 and up: a ruined town round the hub yard, seeded per hub."
-msgstr ""
+msgstr "基地 1 及以后：围绕基地院子的废墟小镇，每个基地按种子生成。"
 
 #: data/solar_system.json:star_a.name
 msgid "Hearth"
@@ -13230,411 +13230,411 @@ msgstr "清凉之石"
 
 #: planets/verdance/data/sources.json:sources[burst_main].name
 msgid "The burst main"
-msgstr ""
+msgstr "爆裂的主水管"
 
 #: planets/verdance/data/sources.json:sources[burst_main].toast
 msgid "The burst main is capped. Old Town can thrive now."
-msgstr ""
+msgstr "爆裂的主水管已封好。老城区现在可以繁茂起来了。"
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[feed_valve].text
 msgid "Close the feed valve"
-msgstr ""
+msgstr "关闭进水阀"
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[feed_valve].desc
 msgid "The pump house still pushes water into the broken main."
-msgstr ""
+msgstr "泵房还在往破裂的主水管里送水。"
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[feed_valve].prompt planets/verdance/data/sources.json:sources[long_tide].steps[transfer_valve].prompt
 msgid "Close the valve"
-msgstr ""
+msgstr "关闭阀门"
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[drain].text
 msgid "Dig out the blocked drain"
-msgstr ""
+msgstr "挖通堵塞的排水口"
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[drain].desc
 msgid "Litter chokes the drain, so the flood cannot run off."
-msgstr ""
+msgstr "垃圾堵住了排水口，积水排不出去。"
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[drain].prompt
 msgid "Clear the drain"
-msgstr ""
+msgstr "清理排水口"
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[cap].text
 msgid "Fetch the pipe cap"
-msgstr ""
+msgstr "取来管帽"
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[cap].text_1
 msgid "Bolt the cap on the burst main"
-msgstr ""
+msgstr "把管帽栓在爆裂的主水管上"
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[cap].desc
 msgid "A spare cap lies by the pump house. Only your hands can fit it."
-msgstr ""
+msgstr "泵房旁有一个备用管帽。只有你的双手能把它装上。"
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[cap].prompt
 msgid "Pick up the pipe cap"
-msgstr ""
+msgstr "捡起管帽"
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[cap].final_prompt
 msgid "Bolt the cap down"
-msgstr ""
+msgstr "栓紧管帽"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].name
 msgid "The crusher yard"
-msgstr ""
+msgstr "破碎场"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].toast
 msgid "The crusher yard is quiet. Ironside can thrive now."
-msgstr ""
+msgstr "破碎场安静下来了。Ironside 现在可以繁茂起来了。"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[breaker].text
 msgid "Pull the boiler breaker"
-msgstr ""
+msgstr "拉下锅炉断路器"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[breaker].desc
 msgid "The boiler house feeds the press and its smoke."
-msgstr ""
+msgstr "锅炉房给压机和它的浓烟供着能。"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[breaker].prompt
 msgid "Pull the breaker"
-msgstr ""
+msgstr "拉下断路器"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[jam].text
 msgid "Cut the wreck out of the press"
-msgstr ""
+msgstr "把残骸从压机里切出来"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[jam].desc
 msgid "A wreck is jammed in the press mouth. Cut it free by hand."
-msgstr ""
+msgstr "一具残骸卡在压机口。动手把它切下来。"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[jam].prompt
 msgid "Cut the wreck free"
-msgstr ""
+msgstr "切下残骸"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[brake].text
 msgid "Fetch the brake shoe"
-msgstr ""
+msgstr "取来刹车蹄"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[brake].text_1
 msgid "Fit the brake shoe on the scrap crane"
-msgstr ""
+msgstr "把刹车蹄装到废料吊车上"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[brake].desc
 msgid "The scrap crane swings loose until its brake holds again."
-msgstr ""
+msgstr "刹车重新起作用之前，废料吊车会一直晃来晃去。"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[brake].prompt
 msgid "Pick up the brake shoe"
-msgstr ""
+msgstr "捡起刹车蹄"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[brake].final_prompt
 msgid "Fit the brake shoe"
-msgstr ""
+msgstr "装上刹车蹄"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[gantry].text planets/verdance/data/sources.json:sources[crusher_stack].steps[gantry].prompt
 msgid "Park the gantry"
-msgstr ""
+msgstr "停好龙门吊"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[gantry].desc
 msgid "Lock the gantry with its hook up. The yard goes quiet."
-msgstr ""
+msgstr "把吊钩升起、锁住龙门吊。场地安静下来。"
 
 #: planets/verdance/data/sources.json:sources[long_tide].name
 msgid "The tanker's leak"
-msgstr ""
+msgstr "油轮的泄漏"
 
 #: planets/verdance/data/sources.json:sources[long_tide].toast
 msgid "The Long Tide leaks no more. Kettle Bay can thrive now."
-msgstr ""
+msgstr "Long Tide 不再漏油了。Kettle Bay 现在可以繁茂起来了。"
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[transfer_valve].text
 msgid "Close the transfer valve"
-msgstr ""
+msgstr "关闭输油阀"
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[transfer_valve].desc
 msgid "Oil still runs down the tanker's shore line."
-msgstr ""
+msgstr "油还在顺着油轮的岸上管线往下流。"
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[plate].text
 msgid "Fetch the hull plate"
-msgstr ""
+msgstr "取来船体板"
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[plate].text_1
 msgid "Weld the plate over the gash"
-msgstr ""
+msgstr "把钢板焊在裂口上"
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[plate].desc
 msgid "The bow is torn open. A plate from the dock will close it."
-msgstr ""
+msgstr "船头被撕开了。码头上的一块钢板能把它补上。"
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[plate].prompt
 msgid "Pick up the hull plate"
-msgstr ""
+msgstr "捡起船体板"
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[plate].final_prompt
 msgid "Weld the plate on"
-msgstr ""
+msgstr "焊上钢板"
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[skim].text
 msgid "Skim the slick off the shore"
-msgstr ""
+msgstr "撇捞岸边的油污"
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[skim].desc
 msgid "The last of the oil lies on the lot. Skim it by hand."
-msgstr ""
+msgstr "最后的油还留在空地上。动手把它撇走。"
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[skim].prompt
 msgid "Skim the slick"
-msgstr ""
+msgstr "撇捞油污"
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[boom].text
 msgid "Winch the boom shut"
-msgstr ""
+msgstr "用绞车收拢围油栏"
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[boom].desc
 msgid "Close the boom round the hull so nothing drifts out."
-msgstr ""
+msgstr "把围油栏围住船体合拢，什么也漂不出去。"
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[boom].prompt
 msgid "Winch the boom"
-msgstr ""
+msgstr "收拢围油栏"
 
 #: planets/verdance/data/sources.json:sources[incinerator].name
 msgid "The incinerator"
-msgstr ""
+msgstr "焚化炉"
 
 #: planets/verdance/data/sources.json:sources[incinerator].toast
 msgid "The incinerator is cold. Highreach can thrive now."
-msgstr ""
+msgstr "焚化炉冷却了。Highreach 现在可以繁茂起来了。"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[feed_belt].text
 msgid "Stop the feed belt"
-msgstr ""
+msgstr "停下进料传送带"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[feed_belt].desc
 msgid "The belt still carries waste into the furnace."
-msgstr ""
+msgstr "传送带还在往炉子里送废料。"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[feed_belt].prompt
 msgid "Stop the belt"
-msgstr ""
+msgstr "停下传送带"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[filter].text
 msgid "Scrub the choked flue"
-msgstr ""
+msgstr "刷洗堵塞的烟道"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[filter].desc
 msgid "Soot packs the flue. Scrub it out before the fire dies."
-msgstr ""
+msgstr "煤灰塞满了烟道。趁火熄灭前把它刷干净。"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[filter].prompt
 msgid "Scrub the flue"
-msgstr ""
+msgstr "刷洗烟道"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[cartridge].text
 msgid "Fetch a filter cartridge"
-msgstr ""
+msgstr "取来一个滤芯"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[cartridge].text_1
 msgid "Fit the cartridge in the flue duct"
-msgstr ""
+msgstr "把滤芯装进烟道管"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[cartridge].desc
 msgid "A clean cartridge catches what the stacks still breathe out."
-msgstr ""
+msgstr "干净的滤芯能拦住烟囱还在呼出的东西。"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[cartridge].prompt
 msgid "Pick up the cartridge"
-msgstr ""
+msgstr "捡起滤芯"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[cartridge].final_prompt
 msgid "Fit the cartridge"
-msgstr ""
+msgstr "装上滤芯"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[dampers].text
 msgid "Shut the furnace dampers"
-msgstr ""
+msgstr "关上炉子的风门"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[dampers].desc
 msgid "With the dampers shut the fire goes out for good."
-msgstr ""
+msgstr "风门关上后，火就彻底熄灭了。"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[dampers].prompt
 msgid "Shut the dampers"
-msgstr ""
+msgstr "关上风门"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].name
 msgid "The treatment works"
-msgstr ""
+msgstr "污水处理厂"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].toast
 msgid "The treatment works runs clear. Lowmeadow can thrive now."
-msgstr ""
+msgstr "污水处理厂流出了清水。Lowmeadow 现在可以繁茂起来了。"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[sluice].text
 msgid "Close the inlet sluice"
-msgstr ""
+msgstr "关闭进水闸"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[sluice].desc
 msgid "Fouled water still pours into the tanks."
-msgstr ""
+msgstr "脏水还在不停地流进池子里。"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[sluice].prompt
 msgid "Close the sluice"
-msgstr ""
+msgstr "关闭水闸"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[channel].text
 msgid "Dig the sludge out of the channel"
-msgstr ""
+msgstr "把淤泥从水渠里挖出来"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[channel].desc
 msgid "Poisoned sludge blocks the channel. Dig it out by hand."
-msgstr ""
+msgstr "有毒的淤泥堵住了水渠。动手把它挖出来。"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[channel].prompt
 msgid "Dig out the sludge"
-msgstr ""
+msgstr "挖出淤泥"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[lime].text
 msgid "Fetch the lime sacks"
-msgstr ""
+msgstr "取来石灰袋"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[lime].text_1
 msgid "Dose the settling tank"
-msgstr ""
+msgstr "给沉淀池投料"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[lime].desc
 msgid "Lime settles the poison so the water can clear."
-msgstr ""
+msgstr "石灰能让毒素沉淀，水才会变清。"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[lime].prompt
 msgid "Pick up the lime sacks"
-msgstr ""
+msgstr "捡起石灰袋"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[lime].final_prompt
 msgid "Dose the tank"
-msgstr ""
+msgstr "给池子投料"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[outfall].text
 msgid "Fetch the outfall plug"
-msgstr ""
+msgstr "取来排放口塞子"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[outfall].text_1
 msgid "Seal the cracked outfall"
-msgstr ""
+msgstr "封住开裂的排放口"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[outfall].desc
 msgid "The outfall leaks onto the meadow until it is sealed."
-msgstr ""
+msgstr "封好之前，排放口会一直往草地上渗漏。"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[outfall].prompt
 msgid "Pick up the plug"
-msgstr ""
+msgstr "捡起塞子"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[outfall].final_prompt
 msgid "Seal the outfall"
-msgstr ""
+msgstr "封住排放口"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[pumps].text
 msgid "Start the clean water pumps"
-msgstr ""
+msgstr "启动清水泵"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[pumps].desc
 msgid "Everything is tight. Send clean water through the works."
-msgstr ""
+msgstr "一切都密封好了。让清水流过整座厂区。"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[pumps].prompt
 msgid "Start the pumps"
-msgstr ""
+msgstr "启动水泵"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].name
 msgid "The rocket"
-msgstr ""
+msgstr "火箭"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].toast
 msgid "The rocket stands ready on Launch Pad 1."
-msgstr ""
+msgstr "火箭已在 1 号发射台就绪。"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[launch_frame].text planets/verdance/data/sources.json:sources[launch_pad].steps[launch_frame].prompt
 msgid "Build the launch frame"
-msgstr ""
+msgstr "建造发射架"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[launch_frame].text_1
 msgid "Fit the launch frame on the pad"
-msgstr ""
+msgstr "把发射架装到发射台上"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[launch_frame].desc
 msgid "The rocket to the next world starts with its frame."
-msgstr ""
+msgstr "飞往下一个世界的火箭，从它的框架开始。"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[launch_frame].final_prompt
 msgid "Fit the launch frame"
-msgstr ""
+msgstr "装上发射架"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[fuel_tanks].text planets/verdance/data/sources.json:sources[launch_pad].steps[fuel_tanks].prompt
 msgid "Build the fuel tanks"
-msgstr ""
+msgstr "建造燃料罐"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[fuel_tanks].text_1 planets/verdance/data/sources.json:sources[launch_pad].steps[fuel_tanks].final_prompt
 msgid "Fit the fuel tanks"
-msgstr ""
+msgstr "装上燃料罐"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[fuel_tanks].desc
 msgid "Tanks next: the rocket has a long way to go."
-msgstr ""
+msgstr "接下来是燃料罐：火箭还有很长的路要走。"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[engine_cluster].text planets/verdance/data/sources.json:sources[launch_pad].steps[engine_cluster].prompt
 msgid "Build the engine cluster"
-msgstr ""
+msgstr "建造发动机组"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[engine_cluster].text_1
 msgid "Fit the engine cluster"
-msgstr ""
+msgstr "装上发动机组"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[engine_cluster].desc
 msgid "Five engines, made from what the city threw away."
-msgstr ""
+msgstr "五台发动机，用城市丢弃的东西造成。"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[engine_cluster].final_prompt
 msgid "Fit the engines"
-msgstr ""
+msgstr "装上发动机"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[guidance_core].text planets/verdance/data/sources.json:sources[launch_pad].steps[guidance_core].prompt
 msgid "Build the guidance core"
-msgstr ""
+msgstr "建造制导核心"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[guidance_core].text_1 planets/verdance/data/sources.json:sources[launch_pad].steps[guidance_core].final_prompt
 msgid "Fit the guidance core"
-msgstr ""
+msgstr "装上制导核心"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[guidance_core].desc
 msgid "The core knows the way to the next world."
-msgstr ""
+msgstr "核心知道去往下一个世界的路。"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[hull_plates].text planets/verdance/data/sources.json:sources[launch_pad].steps[hull_plates].prompt
 msgid "Build the hull plates"
-msgstr ""
+msgstr "建造船体板"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[hull_plates].text_1 planets/verdance/data/sources.json:sources[launch_pad].steps[hull_plates].final_prompt
 msgid "Fit the hull plates"
-msgstr ""
+msgstr "装上船体板"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[hull_plates].desc
 msgid "Close the bare frames. The rocket takes its shape."
-msgstr ""
+msgstr "把裸露的骨架封起来。火箭有了它的模样。"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[nose_cone].text planets/verdance/data/sources.json:sources[launch_pad].steps[nose_cone].prompt
 msgid "Build the nose cone"
-msgstr ""
+msgstr "建造鼻锥"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[nose_cone].text_1 planets/verdance/data/sources.json:sources[launch_pad].steps[nose_cone].final_prompt
 msgid "Fit the nose cone"
-msgstr ""
+msgstr "装上鼻锥"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[nose_cone].desc
 msgid "The last part. Then the rocket is ready."
-msgstr ""
+msgstr "最后一个部件。然后火箭就准备好了。"
 
 #: planets/verdance/data/stations.json:conveyor.name
 msgid "Conveyor Feeder"
@@ -13826,7 +13826,7 @@ msgstr "废料斗"
 
 #: planets/verdance/data/trash_bin.json:levels[1].desc
 msgid "A proper steel skip. Bales go in faster."
-msgstr ""
+msgstr "一个像样的钢制料斗。捆包投得更快。"
 
 #: planets/verdance/data/trash_bin.json:levels[2].name
 msgid "Weigh Skip"
@@ -13834,7 +13834,7 @@ msgstr "称重料斗"
 
 #: planets/verdance/data/trash_bin.json:levels[2].desc
 msgid "A ribbed skip on a calibrated scale with a warning beacon. It takes a whole stack without a pause."
-msgstr ""
+msgstr "一个带棱纹的料斗，架在校准过的磅秤上，还有警示灯。一整摞都能不停顿地收下。"
 
 #: planets/verdance/data/trash_bin.json:levels[3].name
 msgid "Compactor"
@@ -13850,7 +13850,7 @@ msgstr "粉碎机"
 
 #: planets/verdance/data/trash_bin.json:levels[4].desc
 msgid "A clean white shredder with twin rotors and a scanner seam. It swallows bales as fast as they land."
-msgstr ""
+msgstr "一台干净的白色粉碎机，带双转子和扫描缝。捆包一落下就被吞掉。"
 
 #: planets/verdance/data/upgrades.json:upgrades[baler].name
 msgid "Baler"
@@ -13858,7 +13858,7 @@ msgstr "打包机"
 
 #: planets/verdance/data/upgrades.json:upgrades[baler].desc
 msgid "Fit the bale press in your chest. A pressed bale always sells for more than the same load tipped loose."
-msgstr ""
+msgstr "在胸舱里装上压包机。压好的捆包总比同样一堆散装垃圾卖得贵。"
 
 #: planets/verdance/data/upgrades.json:upgrades[lift_strength].name
 msgid "Lift Strength"
@@ -13874,7 +13874,7 @@ msgstr "胸舱容量"
 
 #: planets/verdance/data/upgrades.json:upgrades[compartment_size].desc
 msgid "A bigger chest. Fewer trips to the bin."
-msgstr ""
+msgstr "更大的胸舱。少跑几趟垃圾桶。"
 
 #: planets/verdance/data/upgrades.json:upgrades[scoop_width].name
 msgid "Scoop Width"
@@ -13978,7 +13978,7 @@ msgstr "铲斗容量"
 
 #: planets/verdance/data/upgrades.json:upgrades[multi_lock].desc
 msgid "A bigger scoop. Every pulse lifts more trash."
-msgstr ""
+msgstr "更大的铲子。每次脉冲能抓起更多垃圾。"
 
 #: planets/verdance/data/upgrades.json:upgrades[signal_finder].name
 msgid "Signal Finder"
@@ -13994,11 +13994,11 @@ msgstr "悬浮喷口"
 
 #: planets/verdance/data/upgrades.json:upgrades[hover_jets].desc
 msgid "Little jets under the treads. Lumi floats over lakes instead of stopping at the shore."
-msgstr ""
+msgstr "履带下的小喷口。Lumi 不用再停在岸边，可以飘过湖面。"
 
 #: data/workbench.json:flag_hints[0].hint
 msgid "Find the seed tin first."
-msgstr ""
+msgstr "先找到种子罐。"
 
 #: data/workbench.json:tiers[0].name
 msgid "Workbench"
@@ -14006,31 +14006,31 @@ msgstr "工作台"
 
 #: data/workbench.json:tiers[0].desc
 msgid "The repaired bench: upgrades for Lumi and things to build."
-msgstr ""
+msgstr "修好的工作台：给 Lumi 的升级，还有可以建造的东西。"
 
 #: data/workbench.json:tiers[1].name
 msgid "Workbench Mk II: Bot Bay"
-msgstr ""
+msgstr "工作台 Mk II：机器人舱"
 
 #: data/workbench.json:tiers[1].desc
 msgid "Adds a bot bay. Build helpers that keep cleaning while you work."
-msgstr ""
+msgstr "加装机器人舱。建造帮手，你干活时它们会继续清理。"
 
 #: data/workbench.json:tiers[2].name
 msgid "Workbench Mk III: Research Desk"
-msgstr ""
+msgstr "工作台 Mk III：研究台"
 
 #: data/workbench.json:tiers[2].desc
 msgid "Adds a research desk. Study what you dig up to unlock machines and seeds."
-msgstr ""
+msgstr "加装研究台。研究你挖出的东西，解锁机器和种子。"
 
 #: data/workbench.json:tiers[3].name
 msgid "Workbench Mk IV: Request Board"
-msgstr ""
+msgstr "工作台 Mk IV：委托板"
 
 #: data/workbench.json:tiers[3].desc
 msgid "Adds a request board. Take on jobs for tokens and rare parts."
-msgstr ""
+msgstr "加装委托板。接下委托，换取代币和稀有零件。"
 
 #: planets/verdance/data/wren_lines.json:wake
 msgid "...Lumi? ...It's WREN. Your tower's carrying me. Barely. Keep it standing."

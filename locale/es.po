@@ -262,7 +262,7 @@ msgstr "mantén %s"
 
 #: autoload/Story.gd:27
 msgid "Hex clean! Green can grow here now."
-msgstr ""
+msgstr "¡Hexágono limpio! Ahora aquí puede crecer el verde."
 
 #: automation/auto_baler.gd:479
 msgid "AUTO-BALER"
@@ -481,7 +481,7 @@ msgstr "Mientras no estabas (%s):"
 
 #: core/offline.gd:130
 msgid "The crew kept cleaning. The city is a little clearer."
-msgstr ""
+msgstr "El equipo siguió limpiando. La ciudad está un poco más despejada."
 
 #: core/offline.gd:132
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
@@ -489,15 +489,15 @@ msgstr "Los depuradores filtraron el aire todo el rato. Está un poco más limpi
 
 #: core/pace.gd:150 story/objectives.gd:886
 msgid "Too heavy. Upgrade Lift at the bench."
-msgstr ""
+msgstr "Pesa demasiado. Mejora la Fuerza de elevación en el banco."
 
 #: core/pace.gd:195
 msgid "Nothing here fits. Press [%s] to make a bale."
-msgstr ""
+msgstr "Aquí no cabe nada. Pulsa [%s] para hacer una paca."
 
 #: core/pace.gd:207
 msgid "No Baler yet. Bring your chest to the bin."
-msgstr ""
+msgstr "Aún no hay Empacadora. Lleva tu compartimento al contenedor."
 
 #: core/pace.gd:315 systems/events.gd:487 ui/goals_panel.gd:284
 msgid "+%s cubes"
@@ -653,11 +653,11 @@ msgstr "E   Cohete: elige un destino"
 
 #: planet/sites/orbit_sites.gd:199
 msgid "Nowhere to fly yet. Get %s to %s to open %s."
-msgstr ""
+msgstr "Aún no hay adónde volar. Lleva %s a %s para abrir %s."
 
 #: planet/sites/orbit_sites.gd:213
 msgid "%s site"
-msgstr ""
+msgstr "sitio de %s"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
 #: planet/sites/orbit_sites.gd:214 ui/main_menu.gd:450
@@ -754,7 +754,7 @@ msgstr "PIEZA ENTERRADA  ·  SEÑAL %d%%"
 
 #: player/patch.gd:213
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
-msgstr ""
+msgstr "Lumi no sabe nadar. Con los Propulsores de flote del banco de trabajo puede flotar sobre los lagos."
 
 #: player/patch.gd:327
 msgid "No seeds yet. Keep cleaning."
@@ -762,7 +762,7 @@ msgstr "Aún no hay semillas. Sigue limpiando."
 
 #: player/patch.gd:364
 msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
-msgstr ""
+msgstr "Las semillas necesitan suelo limpio y despejado: ni calles, ni bordillos, ni la plataforma."
 
 #: player/patch.gd:371
 msgid "Out of seeds. Blooming plants drop more."
@@ -770,7 +770,7 @@ msgstr "Sin semillas. Las plantas en flor dan más."
 
 #: player/patch.gd:378
 msgid "Watering can is empty. It fills in the base yard, by the bin."
-msgstr ""
+msgstr "La regadera está vacía. Se llena en el patio de la base, junto al contenedor."
 
 #: player/patch.gd:637
 msgid "PERFECT BALE  %s"
@@ -1130,15 +1130,15 @@ msgstr "Zona de transporte"
 
 #: robots/sphere/command_overlay.gd:43
 msgid "Y: role · Hold A: paint · Hold X: erase · Left stick: move"
-msgstr ""
+msgstr "Y: rol · Mantén A: pintar · Mantén X: borrar · Stick izquierdo: mover"
 
 #: robots/sphere/command_overlay.gd:44
 msgid "Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi"
-msgstr ""
+msgstr "Tab: rol · Izquierdo: pintar · Derecho: borrar · Central: enviar un robot · E: volver a Lumi"
 
 #: robots/sphere/sphere_fleet.gd:54
 msgid "%s %s assembled. It looks around, then gets to work."
-msgstr ""
+msgstr "%s %s montado. Mira a su alrededor y se pone a trabajar."
 
 #: scenes/slice.gd:116
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
@@ -1544,7 +1544,7 @@ msgstr "Mantenla regada. Aquí fuera las semillas escasean, pero cada flor devue
 
 #: story/first_seed.gd:351
 msgid "Lumi, that green signal is back, stronger now. Follow the beam: the old greenhouse."
-msgstr ""
+msgstr "Lumi, esa señal verde ha vuelto, ahora más fuerte. Sigue el rayo: el viejo invernadero."
 
 #: story/first_seed.gd:360
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
@@ -1735,7 +1735,7 @@ msgstr "LEDGER  WMS-07"
 
 #: story/objectives.gd:207
 msgid "Needs %s. Dig up more Parts."
-msgstr ""
+msgstr "Necesita %s. Desentierra más Piezas."
 
 #: story/objectives.gd:246
 msgid "Reward: %s"
@@ -1751,15 +1751,15 @@ msgstr "Objetivo cumplido  ·  %s"
 
 #: story/objectives.gd:731
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
-msgstr ""
+msgstr "¡Empacadora instalada! Llena tu compartimento, pulsa [%s] para prensar una paca y llévala a la báscula."
 
 #: story/objectives.gd:753 story/objectives.gd:874
 msgid "Your chest is full. Press [%s] to make a bale."
-msgstr ""
+msgstr "Tu compartimento está lleno. Pulsa [%s] para hacer una paca."
 
 #: story/objectives.gd:769
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
-msgstr ""
+msgstr "Tu detector ha encontrado una pieza de robot enterrada cerca. Sigue la lectura PIEZA ENTERRADA; pita cuando estás justo encima."
 
 #: story/objectives.gd:771
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
@@ -1767,27 +1767,27 @@ msgstr "PIEZA ENTERRADA: camina hacia ella hasta que la lectura llegue al máxim
 
 #: story/objectives.gd:875
 msgid "Your chest is full. Bring it to the bin."
-msgstr ""
+msgstr "Tu compartimento está lleno. Llévalo al contenedor."
 
 #: story/objectives.gd:882
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
-msgstr ""
+msgstr "Tu compartimento está lleno. Vuelve a casa: el contenedor está bajo el humo alto."
 
 #: story/objectives.gd:884
 msgid "Carry your bale home: the scale is under the tall smoke."
-msgstr ""
+msgstr "Lleva tu paca a casa: la báscula está bajo el humo alto."
 
 #: story/objectives.gd:884
 msgid "Carry your bale to the scale by the bin."
-msgstr ""
+msgstr "Lleva tu paca a la báscula junto al contenedor."
 
 #: story/objectives.gd:891
 msgid "Head home: follow the beam to the tall smoke."
-msgstr ""
+msgstr "Vuelve a casa: sigue el rayo hasta el humo alto."
 
 #: story/objectives.gd:901
 msgid "Nothing to pick up here. Walk to more trash."
-msgstr ""
+msgstr "Aquí no hay nada que recoger. Camina hasta más basura."
 
 #: story/shards.gd:100
 msgid "Something surfaced in the cleared ground. A memory shard."
@@ -1839,19 +1839,19 @@ msgstr "Espacio  pausa   ·   Esc  saltar"
 
 #: story/tutorial.gd:10
 msgid "Fix the workbench: press  {interact}  at it"
-msgstr ""
+msgstr "Repara el banco de trabajo: pulsa  {interact}  junto a él"
 
 #: story/tutorial.gd:11
 msgid "Pick up trash: hold  {scoop}"
-msgstr ""
+msgstr "Recoge basura: mantén  {scoop}"
 
 #: story/tutorial.gd:12
 msgid "Bring your chest to the trash bin"
-msgstr ""
+msgstr "Lleva tu compartimento al cubo de basura"
 
 #: story/tutorial.gd:13
 msgid "Buy an upgrade: press  {interact}  at the bench"
-msgstr ""
+msgstr "Compra una mejora: pulsa  {interact}  en el banco"
 
 #: story/tutorial.gd:19
 msgid "Lumi is back on the job"
@@ -2402,7 +2402,7 @@ msgstr "Mientras no estabas, terminó una investigación: %s."
 
 #: systems/research.gd:626
 msgid "New robot plans: %s. %s"
-msgstr ""
+msgstr "Nuevos planos de robot: %s. %s"
 
 #: systems/research.gd:639
 msgid "Research complete: %s."
@@ -2410,59 +2410,59 @@ msgstr "Investigación completada: %s."
 
 #: systems/rigs.gd:51
 msgid "chest size"
-msgstr ""
+msgstr "tamaño del compartimento"
 
 #: systems/rigs.gd:52
 msgid "sweep width"
-msgstr ""
+msgstr "ancho de barrido"
 
 #: systems/rigs.gd:53
 msgid "reach"
-msgstr ""
+msgstr "alcance"
 
 #: systems/rigs.gd:56
 msgid "bales carried"
-msgstr ""
+msgstr "pacas cargadas"
 
 #: systems/rigs.gd:58
 msgid "detector range"
-msgstr ""
+msgstr "alcance del detector"
 
 #: systems/rigs.gd:59
 msgid "parts found"
-msgstr ""
+msgstr "piezas encontradas"
 
 #: systems/rigs.gd:60
 msgid "robots' bonus near Lumi"
-msgstr ""
+msgstr "bonificación de robots cerca de Lumi"
 
 #: systems/rigs.gd:61
 msgid "range of that bonus"
-msgstr ""
+msgstr "alcance de esa bonificación"
 
 #: systems/rigs.gd:126
 msgid "Rig: %s"
-msgstr ""
+msgstr "Equipamiento: %s"
 
 #: systems/rigs.gd:253
 msgid "New tool: %s. Fit it at the workbench."
-msgstr ""
+msgstr "Nueva herramienta: %s. Instálala en el banco de trabajo."
 
 #: systems/rigs.gd:313
 msgid "Its plan arrives when %s opens."
-msgstr ""
+msgstr "Su plano llega cuando se abra %s."
 
 #: systems/rigs.gd:371
 msgid "Clears %s"
-msgstr ""
+msgstr "Limpia %s"
 
 #: systems/rigs.gd:394
 msgid "%s work"
-msgstr ""
+msgstr "trabajo de %s"
 
 #: systems/rigs.gd:483
 msgid "at least %d"
-msgstr ""
+msgstr "al menos %d"
 
 #: systems/robot_builder.gd:268 systems/robot_design.gd:60
 msgid "Wrong slot"
@@ -2556,11 +2556,11 @@ msgstr "Luz de luna"
 
 #: systems/source_sites.gd:192
 msgid "%s (%s)"
-msgstr ""
+msgstr "%s (%s)"
 
 #: systems/source_sites.gd:200
 msgid "You need %s for this."
-msgstr ""
+msgstr "Necesitas %s para esto."
 
 #: systems/tunes.gd:166
 msgid "New CD: %s by %s, from %s"
@@ -2568,7 +2568,7 @@ msgstr "Nuevo CD: %s de %s, de %s"
 
 #: systems/camp/camp.gd:221
 msgid "Workbench fixed! Press %s at it to buy upgrades."
-msgstr ""
+msgstr "¡Banco de trabajo reparado! Pulsa %s junto a él para comprar mejoras."
 
 #: systems/camp/camp.gd:356
 msgid "E   %s (Lv %d): fully upgraded"
@@ -2788,11 +2788,11 @@ msgstr "Encuentra al pequeño robot farolillo en la chatarra"
 
 #: systems/glim/glim_director.gd:248
 msgid "Glim! He held on to your pod the whole way down, just to stay with you. Welcome back, little light."
-msgstr ""
+msgstr "¡Glim! Se agarró a tu cápsula durante toda la caída, solo para quedarse contigo. Bienvenido de vuelta, lucecita."
 
 #: systems/glim/glim_director.gd:252
 msgid "Glim blinks awake. He held on to the pod the whole way down, just to stay with Lumi."
-msgstr ""
+msgstr "Glim despierta parpadeando. Se agarró a la cápsula durante toda la caída, solo para quedarse con Lumi."
 
 #: systems/glim/glim_director.gd:268 systems/glim/glim_director.gd:292
 msgid "Tap %s: Glim scans your hex for junk you missed. Hold %s for his upgrades."
@@ -2864,7 +2864,7 @@ msgstr "Esperando piezas."
 
 #: ui/assembler_panel.gd:69
 msgid "Building a %s, %d%%"
-msgstr ""
+msgstr "Construyendo %s, %d%%"
 
 #: ui/assembler_panel.gd:70
 msgid "Starting up."
@@ -2936,7 +2936,7 @@ msgstr "Primero construye la torre de señal."
 
 #: ui/bench_tiers.gd:95
 msgid "Rebuild the base to level %d first."
-msgstr ""
+msgstr "Reconstruye antes la base al nivel %d."
 
 #: ui/bench_tiers.gd:97
 msgid "Upgrade the workbench first."
@@ -2952,7 +2952,7 @@ msgstr "Todavía no. Sigue jugando."
 
 #: ui/bench_tiers.gd:135
 msgid "%s installed. New workbench tab: %s"
-msgstr ""
+msgstr "%s instalado. Nueva pestaña del banco: %s"
 
 #: ui/build_panel.gd:25
 msgid "Nothing new to build right now. New buildings unlock as you play."
@@ -3694,7 +3694,7 @@ msgstr "%s vuelve a vivir"
 
 #: ui/end_screen.gd:67
 msgid "Every city is thriving and the rocket is ready. The rest of the planet is still out there if you want it."
-msgstr ""
+msgstr "Todas las ciudades prosperan y el cohete está listo. El resto del planeta sigue ahí fuera si lo quieres."
 
 #: ui/end_screen.gd:80
 msgid "Quit to title"
@@ -3874,7 +3874,7 @@ msgstr "Bonus del jardín: las plantas crecen un %d%% más rápido (hasta un %d%
 
 #: ui/extras_panel.gd:330
 msgid "No one has retired yet. Old or Mk I-II robots can retire here; they'll look after the nursery garden at the base."
-msgstr ""
+msgstr "Nadie se ha jubilado todavía. Los robots viejos o Mk I-II pueden jubilarse aquí; cuidarán el jardín del vivero en la base."
 
 #: ui/extras_panel.gd:339
 msgid "RETIRE A ROBOT"
@@ -3962,7 +3962,7 @@ msgstr "Explorar"
 
 #: ui/globe_view.gd:136
 msgid "{planet}  ·  seed-keeper's survey"
-msgstr ""
+msgstr "{planet}  ·  reconocimiento del guardasemillas"
 
 #: ui/globe_view.gd:152
 msgid "Not cleaned yet"
@@ -3998,7 +3998,7 @@ msgstr "[k]Arrastra para girar   ·   Rueda para zoom   ·   [/k][p]{@look}  gir
 
 #: ui/globe_view.gd:283
 msgid "[k]Drag to spin   ·   Wheel to zoom   ·   [/k][p]{@look}  spin     {zoom_out}{zoom_in}  zoom     [/p]{open_globe}  close"
-msgstr ""
+msgstr "[k]Arrastra para girar   ·   Rueda para zoom   ·   [/k][p]{@look}  girar     {zoom_out}{zoom_in}  zoom     [/p]{open_globe}  cerrar"
 
 #: ui/globe_view.gd:338
 msgid "%d sectors away"
@@ -4098,7 +4098,7 @@ msgstr "Ahora: nivel %d, %s. Las balas se venden por +%d%%."
 
 #: ui/hub_panel.gd:207
 msgid "Now: level %d, %s."
-msgstr ""
+msgstr "Ahora: nivel %d, %s."
 
 #: ui/hub_panel.gd:209
 msgid "Hub level %d  ·  fully built"
@@ -4195,8 +4195,8 @@ msgstr "%s · %s %d%%"
 #: ui/hud.gd:404
 msgid "%d of %d city restored"
 msgid_plural "%d of %d cities restored"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d de %d ciudad restaurada"
+msgstr[1] "%d de %d ciudades restauradas"
 
 #: ui/hud.gd:418
 msgid "MASTERY  %s"
@@ -4241,7 +4241,7 @@ msgstr "Llenando la regadera"
 
 #: ui/hud.gd:447
 msgid "Can empty. It fills in the base yard, by the bin."
-msgstr ""
+msgstr "Regadera vacía. Se llena en el patio de la base, junto al contenedor."
 
 #: ui/key_hints.gd:20
 msgid "press bale"
@@ -4299,11 +4299,11 @@ msgstr "GRATIS"
 
 #: ui/list_detail.gd:628
 msgid "LOCKED.  To unlock: %s"
-msgstr ""
+msgstr "BLOQUEADO.  Para desbloquear: %s"
 
 #: ui/list_detail.gd:628
 msgid "Locked. Keep playing to unlock it."
-msgstr ""
+msgstr "Bloqueado. Sigue jugando para desbloquearlo."
 
 #: ui/list_detail.gd:631
 msgid "REQUIRES   %s"
@@ -4315,19 +4315,19 @@ msgstr "¡Ya puedes comprarlo!"
 
 #: ui/list_detail.gd:654
 msgid "%s more %s"
-msgstr ""
+msgstr "%s %s más"
 
 #: ui/list_detail.gd:656
 msgid "Pick up trash to earn them."
-msgstr ""
+msgstr "Recoge basura para ganarlos."
 
 #: ui/list_detail.gd:656
 msgid "Dig up parts and salvage junk to get them."
-msgstr ""
+msgstr "Desentierra piezas y recupera chatarra para conseguirlas."
 
 #: ui/list_detail.gd:659
 msgid "Need %s. %s"
-msgstr ""
+msgstr "Faltan %s. %s"
 
 #: ui/loading_screen.gd:163
 msgid "Loading"
@@ -4959,15 +4959,15 @@ msgstr "%s cancelada. Cubos devueltos."
 
 #: ui/rig_panel.gd:102 ui/upgrades_screen.gd:17
 msgid "Rig"
-msgstr ""
+msgstr "Equipamiento"
 
 #: ui/rig_panel.gd:103
 msgid "One module in each slot. Swapping is free. A city's tool must be fitted to clear that city's waste."
-msgstr ""
+msgstr "Un módulo en cada ranura. Cambiar es gratis. Para limpiar los residuos de una ciudad hay que llevar instalada su herramienta."
 
 #: ui/rig_panel.gd:121
 msgid "No rig on this world."
-msgstr ""
+msgstr "No hay equipamiento en este mundo."
 
 #: ui/rig_panel.gd:138
 msgid "Empty"
@@ -4975,7 +4975,7 @@ msgstr "Vacío"
 
 #: ui/rig_panel.gd:163
 msgid "Fitted"
-msgstr ""
+msgstr "Instalado"
 
 #: ui/rig_panel.gd:165 data/robot_parts.json:slots[tool].name
 msgid "Tool"
@@ -4983,11 +4983,11 @@ msgstr "Herramienta"
 
 #: ui/rig_panel.gd:187
 msgid "Take off"
-msgstr ""
+msgstr "Quitar"
 
 #: ui/rig_panel.gd:190
 msgid "Fit"
-msgstr ""
+msgstr "Instalar"
 
 #: ui/robot_card.gd:94
 msgid "Tier"
@@ -5059,7 +5059,7 @@ msgstr "¿Adónde?"
 
 #: ui/rocket_picker.gd:58
 msgid "{ui_cancel}  close"
-msgstr ""
+msgstr "{ui_cancel}  cerrar"
 
 #: ui/rocket_picker.gd:107
 msgid "No other hubs found yet."
@@ -5079,7 +5079,7 @@ msgstr "PLATAFORMA DE LANZAMIENTO"
 
 #: ui/rockets_panel.gd:37
 msgid "Cells charged and ready. Walk to the rocket to pick a base."
-msgstr ""
+msgstr "Celdas cargadas y listas. Camina hasta el cohete para elegir una base."
 
 #: ui/rockets_panel.gd:44
 msgid "Not built yet"
@@ -6383,7 +6383,7 @@ msgstr "Repara a Glim"
 
 #: planets/verdance/data/camp.json:builds.glim.desc
 msgid "The little lantern bot who held on to your pod all the way down. Patch him up and he'll follow you and light the way."
-msgstr ""
+msgstr "El pequeño robot farolillo que se agarró a tu cápsula durante toda la caída. Arréglalo y te seguirá e iluminará el camino."
 
 #: planets/verdance/data/camp.json:builds.camera_bot.name
 msgid "Blink"
@@ -9760,7 +9760,7 @@ msgstr "Hay un chip de lente bajo la basura de Old Capital."
 
 #: planets/verdance/data/finds.json:finds[old_capital_source].hint
 msgid "The last leaf waits on the rocket of Old Capital."
-msgstr ""
+msgstr "La última hoja espera en el cohete de Old Capital."
 
 #: planets/verdance/data/finds.json:finds[open_ground_tin].hint
 msgid "A rare tin lies far out, on open ground."
@@ -9864,7 +9864,7 @@ msgstr "Gorrito"
 
 #: planets/verdance/data/goals.json:goals[scoop_15].text
 msgid "Pick up 15 pieces of trash"
-msgstr ""
+msgstr "Recoge 15 trozos de basura"
 
 #: planets/verdance/data/goals.json:goals[dump_1].text
 msgid "Empty your chest in the bin"
@@ -9872,7 +9872,7 @@ msgstr "Vacía tu compartimento en el cubo"
 
 #: planets/verdance/data/goals.json:goals[upgrade_1].text
 msgid "Buy an upgrade at the bench"
-msgstr ""
+msgstr "Compra una mejora en el banco"
 
 #: planets/verdance/data/goals.json:goals[baler_1].text
 msgid "Install the Baler"
@@ -9908,7 +9908,7 @@ msgstr "Vende 10 pacas"
 
 #: planets/verdance/data/goals.json:goals[compartment_3].text
 msgid "Chest Size level 3"
-msgstr ""
+msgstr "Tamaño del compartimento nivel 3"
 
 #: planets/verdance/data/goals.json:goals[shards_1].text
 msgid "Find a memory shard"
@@ -9936,7 +9936,7 @@ msgstr "Limpia 5 hexágonos"
 
 #: planets/verdance/data/goals.json:goals[lift_2].text
 msgid "Lift Strength level 2"
-msgstr ""
+msgstr "Fuerza de elevación nivel 2"
 
 #: planets/verdance/data/goals.json:goals[upgrades_12].text
 msgid "Buy 12 upgrades"
@@ -9948,7 +9948,7 @@ msgstr "Gana 3.000 cubos"
 
 #: planets/verdance/data/goals.json:goals[hex_7].text
 msgid "Clear the street: clean 7 hexes"
-msgstr ""
+msgstr "Despeja la calle: limpia 7 hexágonos"
 
 #: planets/verdance/data/goals.json:goals[pet_cat].text
 msgid "Pet a stray cat"
@@ -9980,7 +9980,7 @@ msgstr "Construye un Scoopie"
 
 #: planets/verdance/data/goals.json:goals[zone_1].text
 msgid "Give a robot a work zone"
-msgstr ""
+msgstr "Dale a un robot una zona de trabajo"
 
 #: planets/verdance/data/goals.json:goals[bales_20].text
 msgid "Robots press 20 bales"
@@ -10476,7 +10476,7 @@ msgstr "Taller"
 
 #: planets/verdance/data/hub.json:levels[1].desc
 msgid "Walls, a roll-up door, floodlights. Room for a bigger crew."
-msgstr ""
+msgstr "Paredes, una puerta enrollable, focos. Sitio para un equipo más grande."
 
 #: planets/verdance/data/hub.json:levels[2].name
 msgid "Depot Station"
@@ -10852,23 +10852,23 @@ msgstr "Restaura Anvil."
 
 #: planets/verdance/data/objectives.json:wren_brief.lines
 msgid "Lumi, it's WREN. I run the Cradle, our big ship. I never stopped listening for you."
-msgstr ""
+msgstr "Lumi, soy WREN. Dirijo el Cradle, nuestra gran nave. Nunca dejé de escuchar por si aparecías."
 
 #: planets/verdance/data/objectives.json:wren_brief.lines
 msgid "The Cradle can't land on a dead world. Let's make Verdance green again."
-msgstr ""
+msgstr "El Cradle no puede aterrizar en un mundo muerto. Hagamos que Verdance vuelva a ser verde."
 
 #: planets/verdance/data/objectives.json:wren_brief.lines
 msgid "Every plant fills your Bloom Core. When it's full, the Cradle comes down and we go home."
-msgstr ""
+msgstr "Cada planta llena tu Núcleo Floral. Cuando esté lleno, el Cradle bajará y volveremos a casa."
 
 #: planets/verdance/data/objectives.json:brief.lines
 msgid "Lumi, it's WREN, up on the Cradle. Your pod crashed, and my signal is weak."
-msgstr ""
+msgstr "Lumi, soy WREN, desde el Cradle. Tu cápsula se estrelló y mi señal es débil."
 
 #: planets/verdance/data/objectives.json:brief.lines
 msgid "Pick up trash, find parts, and build a signal tower so we can talk. I'll be [glitch]listen—[/glitch]"
-msgstr ""
+msgstr "Recoge basura, encuentra piezas y construye una torre de señal para que podamos hablar. Estaré [glitch]escuchan—[/glitch]"
 
 #: planets/verdance/data/objectives.json:objectives[dump3].text
 msgid "Fill the trash bin 3 times"
@@ -10876,11 +10876,11 @@ msgstr "Llena el cubo de basura 3 veces"
 
 #: planets/verdance/data/objectives.json:objectives[dump3].desc
 msgid "Hold {scoop} to pick up trash. Empty it at the bin."
-msgstr ""
+msgstr "Mantén {scoop} para recoger basura. Vacíala en el contenedor."
 
 #: planets/verdance/data/objectives.json:objectives[dump3].lines
 msgid "Start small, Lumi. Every load in the bin earns cubes."
-msgstr ""
+msgstr "Empieza poco a poco, Lumi. Cada carga en el contenedor da cubos."
 
 #: planets/verdance/data/objectives.json:objectives[compartment].text
 msgid "Buy a bigger chest"
@@ -10888,11 +10888,11 @@ msgstr "Compra un compartimento más grande"
 
 #: planets/verdance/data/objectives.json:objectives[compartment].desc
 msgid "Workbench: Chest Size. Fewer trips to the bin."
-msgstr ""
+msgstr "Banco de trabajo: Tamaño del compartimento. Menos viajes al contenedor."
 
 #: planets/verdance/data/objectives.json:objectives[compartment].lines
 msgid "A bigger chest means fewer trips. The bench can fit one."
-msgstr ""
+msgstr "Un compartimento más grande son menos viajes. El banco puede instalarte uno."
 
 #: planets/verdance/data/objectives.json:objectives[hex].text
 msgid "Clean the glowing hex"
@@ -10900,11 +10900,11 @@ msgstr "Limpia el hexágono brillante"
 
 #: planets/verdance/data/objectives.json:objectives[hex].desc
 msgid "Pick up every piece inside the outline."
-msgstr ""
+msgstr "Recoge todo lo que hay dentro del contorno."
 
 #: planets/verdance/data/objectives.json:objectives[hex].lines
 msgid "First, one clean hex. Clear the outlined one. Green starts on clean ground."
-msgstr ""
+msgstr "Primero, un hexágono limpio. Despeja el que está marcado. El verde empieza en suelo limpio."
 
 #: planets/verdance/data/objectives.json:objectives[scoop_size].text
 msgid "Buy Scoop Size"
@@ -10912,11 +10912,11 @@ msgstr "Compra Tamaño de pala"
 
 #: planets/verdance/data/objectives.json:objectives[scoop_size].desc
 msgid "Workbench: grab more trash at once."
-msgstr ""
+msgstr "Banco de trabajo: recoge más basura de una vez."
 
 #: planets/verdance/data/objectives.json:objectives[scoop_size].lines
 msgid "A wider scoop. More trash per grab, less walking."
-msgstr ""
+msgstr "Una pala más ancha. Más basura por pasada, menos caminar."
 
 #: planets/verdance/data/objectives.json:objectives[hex2].text
 msgid "Clean 2 hexes"
@@ -10924,11 +10924,11 @@ msgstr "Limpia 2 hexágonos"
 
 #: planets/verdance/data/objectives.json:objectives[hex2].desc
 msgid "Clean ground lets plants grow again."
-msgstr ""
+msgstr "En suelo limpio las plantas vuelven a crecer."
 
 #: planets/verdance/data/objectives.json:objectives[hex2].lines
 msgid "Two clean hexes. Keep going, Lumi."
-msgstr ""
+msgstr "Dos hexágonos limpios. Sigue así, Lumi."
 
 #: planets/verdance/data/objectives.json:objectives[baler].text
 msgid "Save up for the Baler"
@@ -10936,11 +10936,11 @@ msgstr "Ahorra para la Empacadora"
 
 #: planets/verdance/data/objectives.json:objectives[baler].desc
 msgid "The Baler presses bales. A bale always sells for more."
-msgstr ""
+msgstr "La Empacadora prensa pacas. Una paca siempre se vende por más."
 
 #: planets/verdance/data/objectives.json:objectives[baler].lines
 msgid "Save up for the Baler. A pressed bale always sells for more than loose trash."
-msgstr ""
+msgstr "Ahorra para la Empacadora. Una paca prensada siempre se vende por más que la basura suelta."
 
 #: planets/verdance/data/objectives.json:objectives[power].text
 msgid "Sell 3 bales"
@@ -10948,11 +10948,11 @@ msgstr "Vende 3 pacas"
 
 #: planets/verdance/data/objectives.json:objectives[power].desc
 msgid "Full chest? Press {cube} for a bale. Carry it to the scale."
-msgstr ""
+msgstr "¿Compartimento lleno? Pulsa {cube} para hacer una paca. Llévala a la báscula."
 
 #: planets/verdance/data/objectives.json:objectives[power].lines
 msgid "Carry bales to the scale by the bin. Three of them and the base wakes up."
-msgstr ""
+msgstr "Lleva pacas a la báscula junto al contenedor. Con tres, la base despierta."
 
 #: planets/verdance/data/objectives.json:objectives[tower].text
 msgid "Build the signal tower"
@@ -10960,19 +10960,19 @@ msgstr "Construye la torre de señal"
 
 #: planets/verdance/data/objectives.json:objectives[tower].desc
 msgid "Workbench, Build tab. Then WREN can talk to you."
-msgstr ""
+msgstr "Banco de trabajo, pestaña Construir. Así WREN podrá hablar contigo."
 
 #: planets/verdance/data/objectives.json:objectives[tower].lines
 msgid "Build the tower, Lumi. Then I can stay with you."
-msgstr ""
+msgstr "Construye la torre, Lumi. Así podré quedarme contigo."
 
 #: planets/verdance/data/objectives.json:objectives[glim].desc
 msgid "Workbench, Build tab. The little bot stuck to your pod."
-msgstr ""
+msgstr "Banco de trabajo, pestaña Construir. El pequeño bot pegado a tu cápsula."
 
 #: planets/verdance/data/objectives.json:objectives[glim].lines
 msgid "Lumi... something's still holding on to your pod. Small. Lantern-shaped. Patch him up at the bench."
-msgstr ""
+msgstr "Lumi... algo sigue agarrado a tu cápsula. Pequeño. Con forma de farolillo. Arréglalo en el banco."
 
 #: planets/verdance/data/objectives.json:objectives[street].text
 msgid "Clear the street"
@@ -10980,23 +10980,23 @@ msgstr "Despeja la calle"
 
 #: planets/verdance/data/objectives.json:objectives[street].desc
 msgid "Clean the 7 hexes round the base."
-msgstr ""
+msgstr "Limpia los 7 hexágonos alrededor de la base."
 
 #: planets/verdance/data/objectives.json:objectives[street].lines
 msgid "Clear the whole street, Lumi. Seven hexes round the base."
-msgstr ""
+msgstr "Despeja toda la calle, Lumi. Siete hexágonos alrededor de la base."
 
 #: planets/verdance/data/objectives.json:objectives[bench2].text
 msgid "Add a Bot Bay to the bench"
-msgstr ""
+msgstr "Añade una Bahía de bots al banco"
 
 #: planets/verdance/data/objectives.json:objectives[bench2].desc
 msgid "Workbench, Upgrades tab: Bot Bay."
-msgstr ""
+msgstr "Banco de trabajo, pestaña Mejoras: Bahía de bots."
 
 #: planets/verdance/data/objectives.json:objectives[bench2].lines
 msgid "Add a Bot Bay to the bench. You shouldn't do this alone."
-msgstr ""
+msgstr "Añade una Bahía de bots al banco. No deberías hacer esto a solas."
 
 #: planets/verdance/data/objectives.json:objectives[robot].text
 msgid "Build your first robot"
@@ -11004,31 +11004,31 @@ msgstr "Construye tu primer robot"
 
 #: planets/verdance/data/objectives.json:objectives[robot].desc
 msgid "Bots tab: a Haul Bug carries your bales to the scale."
-msgstr ""
+msgstr "Pestaña Bots: un Haul Bug lleva tus pacas a la báscula."
 
 #: planets/verdance/data/objectives.json:objectives[robot].lines
 msgid "The base has power! Build a helper: a Haul Bug will carry your bales. Try the Bots tab."
-msgstr ""
+msgstr "¡La base tiene energía! Construye un ayudante: un Haul Bug llevará tus pacas. Prueba la pestaña Bots."
 
 #: planets/verdance/data/objectives.json:objectives[hex10].desc
 msgid "Your Haul Bug sells the bales. Stay at the work."
-msgstr ""
+msgstr "Tu Haul Bug vende las pacas. Tú sigue con el trabajo."
 
 #: planets/verdance/data/objectives.json:objectives[hex10].lines
 msgid "Ten clean hexes. Your robots are learning from you, Lumi."
-msgstr ""
+msgstr "Diez hexágonos limpios. Tus robots aprenden de ti, Lumi."
 
 #: planets/verdance/data/objectives.json:objectives[base2].text
 msgid "Rebuild the base to level 2"
-msgstr ""
+msgstr "Reconstruye la base al nivel 2"
 
 #: planets/verdance/data/objectives.json:objectives[base2].desc
 msgid "Workbench, Upgrades tab. More robots can work."
-msgstr ""
+msgstr "Banco de trabajo, pestaña Mejoras. Podrán trabajar más robots."
 
 #: planets/verdance/data/objectives.json:objectives[base2].lines
 msgid "The base can grow now. Rebuild it from the Upgrades tab at the workbench."
-msgstr ""
+msgstr "La base ya puede crecer. Reconstrúyela desde la pestaña Mejoras del banco de trabajo."
 
 #: planets/verdance/data/objectives.json:objectives[seed].text
 msgid "Plant the first seed"
@@ -11036,39 +11036,39 @@ msgstr "Planta la primera semilla"
 
 #: planets/verdance/data/objectives.json:objectives[seed].desc
 msgid "Plants fill your Bloom Core."
-msgstr ""
+msgstr "Las plantas llenan tu Núcleo Floral."
 
 #: planets/verdance/data/objectives.json:objectives[seed].hint
 msgid "Keep cleaning. Seeds turn up in clean ground."
-msgstr ""
+msgstr "Sigue limpiando. Las semillas aparecen en suelo limpio."
 
 #: planets/verdance/data/objectives.json:objectives[seed].lines
 msgid "Something green is waking out there. Plant the first seed."
-msgstr ""
+msgstr "Algo verde está despertando ahí fuera. Planta la primera semilla."
 
 #: planets/verdance/data/objectives.json:objectives[scoopie].desc
 msgid "Workbench, Bots tab. It cleans a hex by itself."
-msgstr ""
+msgstr "Banco de trabajo, pestaña Bots. Limpia un hexágono él solo."
 
 #: planets/verdance/data/objectives.json:objectives[scoopie].hint
 msgid "Keep cleaning. WREN is looking for Scoopie plans."
-msgstr ""
+msgstr "Sigue limpiando. WREN está buscando planos de Scoopie."
 
 #: planets/verdance/data/objectives.json:objectives[scoopie].lines
 msgid "A Scoopie cleans a hex by itself. Build one at the bench."
-msgstr ""
+msgstr "Un Scoopie limpia un hexágono él solo. Construye uno en el banco."
 
 #: planets/verdance/data/objectives.json:objectives[zone].text
 msgid "Send your Scoopie to work"
-msgstr ""
+msgstr "Manda a tu Scoopie a trabajar"
 
 #: planets/verdance/data/objectives.json:objectives[zone].desc
 msgid "Press {open_command}, then paint hexes for it to clean."
-msgstr ""
+msgstr "Pulsa {open_command} y pinta los hexágonos que debe limpiar."
 
 #: planets/verdance/data/objectives.json:objectives[zone].lines
 msgid "Give your Scoopie a hex to work on. It wants a job."
-msgstr ""
+msgstr "Dale a tu Scoopie un hexágono en el que trabajar. Quiere una tarea."
 
 #: planets/verdance/data/objectives.json:objectives[tower2].text
 msgid "Boost the signal tower"
@@ -11076,43 +11076,43 @@ msgstr "Potencia la torre de señal"
 
 #: planets/verdance/data/objectives.json:objectives[tower2].desc
 msgid "Workbench. WREN will sound clearer."
-msgstr ""
+msgstr "Banco de trabajo. WREN se oirá más claro."
 
 #: planets/verdance/data/objectives.json:objectives[tower2].lines
 msgid "Boost the tower. I want to hear you clearly."
-msgstr ""
+msgstr "Potencia la torre. Quiero oírte con claridad."
 
 #: planets/verdance/data/objectives.json:objectives[research1].desc
 msgid "Workbench, Research tab. Research unlocks new robots."
-msgstr ""
+msgstr "Banco de trabajo, pestaña Investigación. Investigar desbloquea robots nuevos."
 
 #: planets/verdance/data/objectives.json:objectives[research1].hint
 msgid "Workbench, Upgrades tab: add the Research Desk first."
-msgstr ""
+msgstr "Banco de trabajo, pestaña Mejoras: añade antes la Mesa de investigación."
 
 #: planets/verdance/data/objectives.json:objectives[research1].lines
 msgid "Your bench can study now. Research unlocks new machines and seeds."
-msgstr ""
+msgstr "Tu banco ya puede investigar. Investigar desbloquea máquinas y semillas nuevas."
 
 #: planets/verdance/data/objectives.json:objectives[hex20].desc
 msgid "More clean ground means more room to grow."
-msgstr ""
+msgstr "Más suelo limpio es más espacio para crecer."
 
 #: planets/verdance/data/objectives.json:objectives[hex20].lines
 msgid "Twenty hexes. The air already smells different."
-msgstr ""
+msgstr "Veinte hexágonos. El aire ya huele distinto."
 
 #: planets/verdance/data/objectives.json:objectives[base3].text
 msgid "Rebuild the base to level 3"
-msgstr ""
+msgstr "Reconstruye la base al nivel 3"
 
 #: planets/verdance/data/objectives.json:objectives[base3].desc
 msgid "Workbench, Upgrades tab. It opens the Request Board."
-msgstr ""
+msgstr "Banco de trabajo, pestaña Mejoras. Abre el Tablón de encargos."
 
 #: planets/verdance/data/objectives.json:objectives[base3].lines
 msgid "One more base level. The Cradle is watching, Lumi."
-msgstr ""
+msgstr "Un nivel más de base. El Cradle te observa, Lumi."
 
 #: planets/verdance/data/outposts.json:levels[0].name
 msgid "Weigh Station"
@@ -11188,59 +11188,59 @@ msgstr "Módulo especial"
 
 #: planets/verdance/data/pollution.json:kinds.litter.name
 msgid "Litter"
-msgstr ""
+msgstr "Basura"
 
 #: planets/verdance/data/pollution.json:kinds.wrecks.name
 msgid "Wrecks"
-msgstr ""
+msgstr "Restos"
 
 #: planets/verdance/data/pollution.json:kinds.wrecks.hint
 msgid "WRECKS  CUT AND LIFT THEM"
-msgstr ""
+msgstr "RESTOS  CÓRTALOS Y LEVÁNTALOS"
 
 #: planets/verdance/data/pollution.json:kinds.wrecks.prompt
 msgid "WRECKS  NEED THE PLATE CUTTER"
-msgstr ""
+msgstr "RESTOS  NECESITAN EL CORTAPLACAS"
 
 #: planets/verdance/data/pollution.json:kinds.slick.name
 msgid "Slick"
-msgstr ""
+msgstr "Mancha de aceite"
 
 #: planets/verdance/data/pollution.json:kinds.slick.hint
 msgid "SLICK  SKIM IT"
-msgstr ""
+msgstr "MANCHA DE ACEITE  ESPÚMALA"
 
 #: planets/verdance/data/pollution.json:kinds.slick.prompt
 msgid "SLICK  NEEDS THE SKIM SKIRT"
-msgstr ""
+msgstr "MANCHA DE ACEITE  NECESITA EL FALDÓN ESPUMADOR"
 
 #: planets/verdance/data/pollution.json:kinds.smog.name
 msgid "Smog"
-msgstr ""
+msgstr "Esmog"
 
 #: planets/verdance/data/pollution.json:kinds.smog.hint
 msgid "SMOG  MIST IT WITH THE CAN"
-msgstr ""
+msgstr "ESMOG  ROCÍALO CON LA REGADERA"
 
 #: planets/verdance/data/pollution.json:kinds.smog.prompt
 msgid "SMOG  NEEDS THE MIST SCRUBBER"
-msgstr ""
+msgstr "ESMOG  NECESITA EL DEPURADOR DE BRUMA"
 
 #: planets/verdance/data/pollution.json:kinds.blight.name
 msgid "Blight"
-msgstr ""
+msgstr "Plaga"
 
 #: planets/verdance/data/pollution.json:kinds.blight.cost.prompt
 msgid "Blight needs cleansing plants: out of seeds."
-msgstr ""
+msgstr "La plaga necesita plantas depuradoras: no quedan semillas."
 
 #: planets/verdance/data/pollution.json:kinds.blight.hint
 msgid "BLIGHT  PLANT IT CLEAN"
-msgstr ""
+msgstr "PLAGA  LÍMPIALA PLANTANDO"
 
 #: planets/verdance/data/pollution.json:kinds.blight.prompt
 msgid "BLIGHT  NEEDS THE SOIL DOSER"
-msgstr ""
+msgstr "PLAGA  NECESITA EL DOSIFICADOR DE SUELO"
 
 #: data/radio.json:songs[verdance_sprout].name data/songs.json:songs[sprout_step].title
 msgid "Sprout Step"
@@ -11396,27 +11396,27 @@ msgstr "Trae el Cradle a casa"
 
 #: planets/verdance/data/research.json:story_unlocks[haul_rig].name
 msgid "Haul Bug Plans"
-msgstr ""
+msgstr "Planos de Haul Bug"
 
 #: planets/verdance/data/research.json:story_unlocks[haul_rig].hint
 msgid "Comes with the Bot Bay: a Haul Bug carries your bales to the scale."
-msgstr ""
+msgstr "Viene con la Bahía de bots: un Haul Bug lleva tus pacas a la báscula."
 
 #: planets/verdance/data/research.json:story_unlocks[scoopie_rig].name
 msgid "Scoopie Plans"
-msgstr ""
+msgstr "Planos de Scoopie"
 
 #: planets/verdance/data/research.json:story_unlocks[scoopie_rig].hint
 msgid "WREN is looking for Scoopie plans. Keep your Haul Bug busy."
-msgstr ""
+msgstr "WREN está buscando planos de Scoopie. Mantén ocupado a tu Haul Bug."
 
 #: planets/verdance/data/research.json:story_unlocks[skimmer_rig].name
 msgid "Skimmer Plans"
-msgstr ""
+msgstr "Planos de Skimmer"
 
 #: planets/verdance/data/research.json:story_unlocks[skimmer_rig].hint
 msgid "Comes later: WREN will send Skimmer plans once the land is greening."
-msgstr ""
+msgstr "Llega más adelante: WREN enviará planos de Skimmer cuando la tierra reverdezca."
 
 #: planets/verdance/data/research.json:story_unlocks[scrounger_rig].name
 msgid "Scrounger Plans"
@@ -11496,7 +11496,7 @@ msgstr "Lógica de rescate"
 
 #: planets/verdance/data/research.json:nodes[salvage_logic].desc
 msgid "Lumi rewrites the base's old assembly logic. The base can build helpers again."
-msgstr ""
+msgstr "Lumi reescribe la vieja lógica de montaje de la base. La base puede volver a construir ayudantes."
 
 #: planets/verdance/data/research.json:nodes[seedling_blueprint].name
 msgid "Seedling Blueprint"
@@ -11752,7 +11752,7 @@ msgstr "Cinturón verde"
 
 #: planets/verdance/data/restoration.json:planet.steps[quarter_alive].name
 msgid "A quarter alive"
-msgstr ""
+msgstr "Un cuarto con vida"
 
 #: planets/verdance/data/restoration.json:planet.steps[half_alive].name
 msgid "Half the world"
@@ -11764,119 +11764,119 @@ msgstr "El planeta entero"
 
 #: planets/verdance/data/rigs.json:slots[arm].name
 msgid "Arm"
-msgstr ""
+msgstr "Brazo"
 
 #: planets/verdance/data/rigs.json:slots[chest].name
 msgid "Chest"
-msgstr ""
+msgstr "Compartimento"
 
 #: planets/verdance/data/rigs.json:slots[drive].name
 msgid "Drive"
-msgstr ""
+msgstr "Tracción"
 
 #: planets/verdance/data/rigs.json:modules.plate_cutter.name
 msgid "Plate Cutter"
-msgstr ""
+msgstr "Cortaplacas"
 
 #: planets/verdance/data/rigs.json:modules.plate_cutter.desc
 msgid "A salvaged cutting head. Slices wrecks into pieces Lumi can lift. Narrow."
-msgstr ""
+msgstr "Un cabezal de corte rescatado. Trocea los restos en piezas que Lumi puede levantar. Estrecho."
 
 #: planets/verdance/data/rigs.json:modules.wide_sweep.name
 msgid "Wide Sweep"
-msgstr ""
+msgstr "Barrido ancho"
 
 #: planets/verdance/data/rigs.json:modules.wide_sweep.desc
 msgid "A broad intake fan. Sweeps a wide path of loose junk, but only close up."
-msgstr ""
+msgstr "Un ventilador de aspiración ancho. Barre una franja amplia de chatarra suelta, pero solo de cerca."
 
 #: planets/verdance/data/rigs.json:modules.long_reach.name
 msgid "Long Reach"
-msgstr ""
+msgstr "Largo alcance"
 
 #: planets/verdance/data/rigs.json:modules.long_reach.desc
 msgid "A telescoping boom. Pulls junk in from far off and skims well from the bank. Thin beam."
-msgstr ""
+msgstr "Una pluma telescópica. Atrae chatarra desde lejos y espuma bien desde la orilla. Rayo fino."
 
 #: planets/verdance/data/rigs.json:modules.guide_arm.name
 msgid "Guide Arm"
-msgstr ""
+msgstr "Brazo guía"
 
 #: planets/verdance/data/rigs.json:modules.guide_arm.desc
 msgid "A signal paddle. Robots working near Lumi get three times the boost from her. Her own scoop slows."
-msgstr ""
+msgstr "Una paleta de señales. Los robots que trabajan cerca de Lumi reciben el triple de impulso. Su propia pala se vuelve más lenta."
 
 #: planets/verdance/data/rigs.json:modules.deep_hold.name
 msgid "Deep Hold"
-msgstr ""
+msgstr "Bodega honda"
 
 #: planets/verdance/data/rigs.json:modules.deep_hold.desc
 msgid "A bigger hopper bolted under the chest. Fewer trips to the scale. Heavy."
-msgstr ""
+msgstr "Una tolva más grande atornillada bajo el compartimento. Menos viajes a la báscula. Pesa."
 
 #: planets/verdance/data/rigs.json:modules.press_frame.name
 msgid "Press Frame"
-msgstr ""
+msgstr "Marco de prensa"
 
 #: planets/verdance/data/rigs.json:modules.press_frame.desc
 msgid "Stiff press rails. Bales come out tighter and pay more. Less room inside."
-msgstr ""
+msgstr "Raíles de prensa rígidos. Las pacas salen más prietas y se pagan mejor. Menos espacio dentro."
 
 #: planets/verdance/data/rigs.json:modules.mist_scrubber.name
 msgid "Mist Scrubber"
-msgstr ""
+msgstr "Depurador de bruma"
 
 #: planets/verdance/data/rigs.json:modules.mist_scrubber.desc
 msgid "A filter drum and spray bar. Turns the can's water into a mist that scrubs smog. The drum takes chest room."
-msgstr ""
+msgstr "Un tambor filtrante y una barra de riego. Convierte el agua de la regadera en una bruma que limpia el esmog. El tambor ocupa sitio en el compartimento."
 
 #: planets/verdance/data/rigs.json:modules.sorter.name
 msgid "Sorter"
-msgstr ""
+msgstr "Clasificador"
 
 #: planets/verdance/data/rigs.json:modules.sorter.desc
 msgid "A sorting tray. Picks out far more parts worth keeping, for more robots. Bales pay a little less."
-msgstr ""
+msgstr "Una bandeja clasificadora. Aparta muchas más piezas aprovechables, para más robots. Las pacas se pagan un poco menos."
 
 #: planets/verdance/data/rigs.json:modules.sprint_coils.name
 msgid "Sprint Coils"
-msgstr ""
+msgstr "Bobinas de esprint"
 
 #: planets/verdance/data/rigs.json:modules.sprint_coils.desc
 msgid "Rewound hover coils. Much faster over ground. They take a little chest room."
-msgstr ""
+msgstr "Bobinas de flote rebobinadas. Mucho más rápidas por tierra. Ocupan un poco del compartimento."
 
 #: planets/verdance/data/rigs.json:modules.skim_skirt.name
 msgid "Skim Skirt"
-msgstr ""
+msgstr "Faldón espumador"
 
 #: planets/verdance/data/rigs.json:modules.skim_skirt.desc
 msgid "A float skirt with a skimming lip. Carries Lumi over water and lifts slick off it. Slower on land."
-msgstr ""
+msgstr "Un faldón flotante con labio espumador. Lleva a Lumi sobre el agua y retira la mancha de aceite. Más lento en tierra."
 
 #: planets/verdance/data/rigs.json:modules.tow_hitch.name
 msgid "Tow Hitch"
-msgstr ""
+msgstr "Enganche de remolque"
 
 #: planets/verdance/data/rigs.json:modules.tow_hitch.desc
 msgid "A bale rack on the back. Carries two more bales a trip. Slower."
-msgstr ""
+msgstr "Un portapacas en la espalda. Lleva dos pacas más por viaje. Más lento."
 
 #: planets/verdance/data/rigs.json:modules.soil_doser.name
 msgid "Soil Doser"
-msgstr ""
+msgstr "Dosificador de suelo"
 
 #: planets/verdance/data/rigs.json:modules.soil_doser.desc
 msgid "A dosing bar under the hover ring. Feeds the cleansing plants that draw blight out of the soil. Slower."
-msgstr ""
+msgstr "Una barra dosificadora bajo el aro de flote. Alimenta las plantas depuradoras que sacan la plaga del suelo. Más lento."
 
 #: planets/verdance/data/rigs.json:modules.relay_mast.name
 msgid "Relay Mast"
-msgstr ""
+msgstr "Mástil repetidor"
 
 #: planets/verdance/data/rigs.json:modules.relay_mast.desc
 msgid "A tall relay on the back. Robots much further away still get a boost from Lumi, and the detector sees further. Slower."
-msgstr ""
+msgstr "Un repetidor alto en la espalda. Los robots mucho más lejanos siguen recibiendo impulso de Lumi, y el detector ve más lejos. Más lento."
 
 #: data/robot_parts.json:slots[chassis].name
 msgid "Chassis"
@@ -12622,83 +12622,83 @@ msgstr "Torre de señal Mk IV"
 
 #: planets/anvil/data/sites.json:sites[foundry_yard].name
 msgid "Foundry Yard"
-msgstr ""
+msgstr "Patio de la fundición"
 
 #: planets/anvil/data/sites.json:sites[foundry_yard].desc
 msgid "hub base: casting hall, two stacks, conveyor truss and hopper, ore spur, ember slag tip, buried hauler"
-msgstr ""
+msgstr "base central: nave de colada, dos chimeneas, celosía de cinta y tolva, ramal de mineral, escorial incandescente, transportador enterrado"
 
 #: planets/anvil/data/sites.json:sites[foundry_tower].name
 msgid "Ledger Foundry Tower"
-msgstr ""
+msgstr "Torre de fundición del Ledger"
 
 #: planets/anvil/data/sites.json:sites[foundry_tower].desc
 msgid "the Ledger's colossal 130 m foundry stack on buttresses, pipes and slag tips"
-msgstr ""
+msgstr "la colosal chimenea de fundición del Ledger, de 130 m, sobre contrafuertes, con tuberías y escoriales"
 
 #: planets/anvil/data/sites.json:sites[lava_forge].name
 msgid "Lava Forge"
-msgstr ""
+msgstr "Forja de lava"
 
 #: planets/anvil/data/sites.json:sites[lava_forge].desc
 msgid "running furnace pouring molten slag down a channel to a pool; ladle crane; cools as restored"
-msgstr ""
+msgstr "horno en marcha que vierte escoria fundida por un canal hasta una poza; grúa de cuchara; se enfría al restaurarse"
 
 #: planets/anvil/data/sites.json:sites[ruined_smelter].name
 msgid "Ruined Smelter"
-msgstr ""
+msgstr "Fundición en ruinas"
 
 #: planets/anvil/data/sites.json:sites[ruined_smelter].desc
 msgid "collapsed smelter hall frame, tipped and spilled pots, a toppled stack; restored as a planted pergola"
-msgstr ""
+msgstr "armazón derrumbado de la nave de fundición, crisoles volcados y derramados, una chimenea caída; restaurado como pérgola plantada"
 
 #: planets/ochre/data/sites.json:sites[hub_base].name
 msgid "Ledger Haul Depot"
-msgstr ""
+msgstr "Depósito de carga del Ledger"
 
 #: planets/ochre/data/sites.json:sites[toppled_excavator].name
 msgid "The Fallen Wheel"
-msgstr ""
+msgstr "La rueda caída"
 
 #: planets/ochre/data/sites.json:sites[pit_fragment].name
 msgid "Bench Cut"
-msgstr ""
+msgstr "Corte en bancos"
 
 #: planets/ochre/data/sites.json:sites[oasis].name
 msgid "Spring Terraces"
-msgstr ""
+msgstr "Terrazas del manantial"
 
 #: planets/rime/data/sites.json:sites[hub_camp].name
 msgid "Drill Camp"
-msgstr ""
+msgstr "Campamento de perforación"
 
 #: planets/rime/data/sites.json:sites[hub_camp].desc
 msgid "Cabins on skids round a plated yard, a greenhouse dome, fuel tanks, a comms mast and a snowcat."
-msgstr ""
+msgstr "Cabañas sobre patines alrededor de un patio de planchas, una cúpula invernadero, depósitos de combustible, un mástil de comunicaciones y un quitanieves oruga."
 
 #: planets/rime/data/sites.json:sites[derrick].name
 msgid "Frozen Derrick"
-msgstr ""
+msgstr "Torre de perforación helada"
 
 #: planets/rime/data/sites.json:sites[derrick].desc
 msgid "A Ledger core-drill derrick frozen into the ice; a geothermal tap when restored."
-msgstr ""
+msgstr "Una torre de sondeo del Ledger atrapada en el hielo; restaurada, una toma geotérmica."
 
 #: planets/rime/data/sites.json:sites[borehole].name
 msgid "The Borehole"
-msgstr ""
+msgstr "El pozo de sondeo"
 
 #: planets/rime/data/sites.json:sites[borehole].desc
 msgid "The shaft under its headframe and winder house; cold mist, then a warm glow."
-msgstr ""
+msgstr "El pozo bajo su castillete y su casa de máquinas; bruma fría y, después, un resplandor cálido."
 
 #: planets/rime/data/sites.json:sites[hot_springs].name
 msgid "Hot Springs"
-msgstr ""
+msgstr "Aguas termales"
 
 #: planets/rime/data/sites.json:sites[hot_springs].desc
 msgid "Geothermal pools with a bathhouse and boardwalk; frozen, then steaming."
-msgstr ""
+msgstr "Pozas geotérmicas con casa de baños y pasarela; heladas y, después, humeantes."
 
 #: planets/tidewell/data/sites.json:sites[hub_raft].name
 msgid "Anchored Raft"
@@ -12750,11 +12750,11 @@ msgstr "Hileras de boyas de amarre con cuerdas y redes fantasma; con luces cuand
 
 #: planets/verdance/data/sites.json:sites[start_yard].desc
 msgid "Hub 0: the landing yard (pod, broken workbench, trash bin) in a lived-in town."
-msgstr ""
+msgstr "Base 0: el patio de aterrizaje (cápsula, banco de trabajo roto, cubo de basura) en un pueblo con vida."
 
 #: planets/verdance/data/sites.json:sites[ruin_block].desc
 msgid "Hubs 1 and up: a ruined town round the hub yard, seeded per hub."
-msgstr ""
+msgstr "Bases 1 en adelante: un pueblo en ruinas alrededor del patio de la base, generado con semilla propia por base."
 
 #: data/solar_system.json:star_a.name
 msgid "Hearth"
@@ -13242,411 +13242,411 @@ msgstr "Piedra fresca"
 
 #: planets/verdance/data/sources.json:sources[burst_main].name
 msgid "The burst main"
-msgstr ""
+msgstr "La tubería reventada"
 
 #: planets/verdance/data/sources.json:sources[burst_main].toast
 msgid "The burst main is capped. Old Town can thrive now."
-msgstr ""
+msgstr "La tubería reventada está tapada. El Casco Antiguo ya puede prosperar."
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[feed_valve].text
 msgid "Close the feed valve"
-msgstr ""
+msgstr "Cierra la válvula de alimentación"
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[feed_valve].desc
 msgid "The pump house still pushes water into the broken main."
-msgstr ""
+msgstr "La casa de bombas sigue empujando agua a la tubería rota."
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[feed_valve].prompt planets/verdance/data/sources.json:sources[long_tide].steps[transfer_valve].prompt
 msgid "Close the valve"
-msgstr ""
+msgstr "Cerrar la válvula"
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[drain].text
 msgid "Dig out the blocked drain"
-msgstr ""
+msgstr "Desatasca el desagüe"
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[drain].desc
 msgid "Litter chokes the drain, so the flood cannot run off."
-msgstr ""
+msgstr "La basura atasca el desagüe, así que la inundación no puede salir."
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[drain].prompt
 msgid "Clear the drain"
-msgstr ""
+msgstr "Despejar el desagüe"
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[cap].text
 msgid "Fetch the pipe cap"
-msgstr ""
+msgstr "Trae la tapa de la tubería"
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[cap].text_1
 msgid "Bolt the cap on the burst main"
-msgstr ""
+msgstr "Atornilla la tapa en la tubería reventada"
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[cap].desc
 msgid "A spare cap lies by the pump house. Only your hands can fit it."
-msgstr ""
+msgstr "Hay una tapa de repuesto junto a la casa de bombas. Solo tus manos pueden colocarla."
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[cap].prompt
 msgid "Pick up the pipe cap"
-msgstr ""
+msgstr "Recoger la tapa"
 
 #: planets/verdance/data/sources.json:sources[burst_main].steps[cap].final_prompt
 msgid "Bolt the cap down"
-msgstr ""
+msgstr "Atornillar la tapa"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].name
 msgid "The crusher yard"
-msgstr ""
+msgstr "El patio de la trituradora"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].toast
 msgid "The crusher yard is quiet. Ironside can thrive now."
-msgstr ""
+msgstr "El patio de la trituradora está en silencio. Ironside ya puede prosperar."
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[breaker].text
 msgid "Pull the boiler breaker"
-msgstr ""
+msgstr "Baja el disyuntor de la caldera"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[breaker].desc
 msgid "The boiler house feeds the press and its smoke."
-msgstr ""
+msgstr "La sala de calderas alimenta la prensa y su humo."
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[breaker].prompt
 msgid "Pull the breaker"
-msgstr ""
+msgstr "Bajar el disyuntor"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[jam].text
 msgid "Cut the wreck out of the press"
-msgstr ""
+msgstr "Corta los restos atascados en la prensa"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[jam].desc
 msgid "A wreck is jammed in the press mouth. Cut it free by hand."
-msgstr ""
+msgstr "Hay unos restos atascados en la boca de la prensa. Libéralos cortando a mano."
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[jam].prompt
 msgid "Cut the wreck free"
-msgstr ""
+msgstr "Liberar los restos"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[brake].text
 msgid "Fetch the brake shoe"
-msgstr ""
+msgstr "Trae la zapata de freno"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[brake].text_1
 msgid "Fit the brake shoe on the scrap crane"
-msgstr ""
+msgstr "Instala la zapata de freno en la grúa de chatarra"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[brake].desc
 msgid "The scrap crane swings loose until its brake holds again."
-msgstr ""
+msgstr "La grúa de chatarra se balancea suelta hasta que su freno vuelva a agarrar."
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[brake].prompt
 msgid "Pick up the brake shoe"
-msgstr ""
+msgstr "Recoger la zapata de freno"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[brake].final_prompt
 msgid "Fit the brake shoe"
-msgstr ""
+msgstr "Instalar la zapata de freno"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[gantry].text planets/verdance/data/sources.json:sources[crusher_stack].steps[gantry].prompt
 msgid "Park the gantry"
-msgstr ""
+msgstr "Aparca el pórtico"
 
 #: planets/verdance/data/sources.json:sources[crusher_stack].steps[gantry].desc
 msgid "Lock the gantry with its hook up. The yard goes quiet."
-msgstr ""
+msgstr "Bloquea el pórtico con el gancho arriba. El patio queda en silencio."
 
 #: planets/verdance/data/sources.json:sources[long_tide].name
 msgid "The tanker's leak"
-msgstr ""
+msgstr "La fuga del petrolero"
 
 #: planets/verdance/data/sources.json:sources[long_tide].toast
 msgid "The Long Tide leaks no more. Kettle Bay can thrive now."
-msgstr ""
+msgstr "El Long Tide ya no pierde aceite. Kettle Bay ya puede prosperar."
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[transfer_valve].text
 msgid "Close the transfer valve"
-msgstr ""
+msgstr "Cierra la válvula de trasvase"
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[transfer_valve].desc
 msgid "Oil still runs down the tanker's shore line."
-msgstr ""
+msgstr "El aceite sigue bajando por la línea de costa del petrolero."
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[plate].text
 msgid "Fetch the hull plate"
-msgstr ""
+msgstr "Trae la plancha del casco"
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[plate].text_1
 msgid "Weld the plate over the gash"
-msgstr ""
+msgstr "Suelda la plancha sobre la brecha"
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[plate].desc
 msgid "The bow is torn open. A plate from the dock will close it."
-msgstr ""
+msgstr "La proa está rajada. Una plancha del muelle la cerrará."
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[plate].prompt
 msgid "Pick up the hull plate"
-msgstr ""
+msgstr "Recoger la plancha del casco"
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[plate].final_prompt
 msgid "Weld the plate on"
-msgstr ""
+msgstr "Soldar la plancha"
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[skim].text
 msgid "Skim the slick off the shore"
-msgstr ""
+msgstr "Espuma la mancha de aceite de la orilla"
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[skim].desc
 msgid "The last of the oil lies on the lot. Skim it by hand."
-msgstr ""
+msgstr "Lo último del aceite queda en la explanada. Espúmalo a mano."
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[skim].prompt
 msgid "Skim the slick"
-msgstr ""
+msgstr "Espumar la mancha"
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[boom].text
 msgid "Winch the boom shut"
-msgstr ""
+msgstr "Cierra la barrera con el cabrestante"
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[boom].desc
 msgid "Close the boom round the hull so nothing drifts out."
-msgstr ""
+msgstr "Cierra la barrera alrededor del casco para que nada se escape a la deriva."
 
 #: planets/verdance/data/sources.json:sources[long_tide].steps[boom].prompt
 msgid "Winch the boom"
-msgstr ""
+msgstr "Cerrar la barrera"
 
 #: planets/verdance/data/sources.json:sources[incinerator].name
 msgid "The incinerator"
-msgstr ""
+msgstr "La incineradora"
 
 #: planets/verdance/data/sources.json:sources[incinerator].toast
 msgid "The incinerator is cold. Highreach can thrive now."
-msgstr ""
+msgstr "La incineradora está fría. Highreach ya puede prosperar."
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[feed_belt].text
 msgid "Stop the feed belt"
-msgstr ""
+msgstr "Para la cinta de alimentación"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[feed_belt].desc
 msgid "The belt still carries waste into the furnace."
-msgstr ""
+msgstr "La cinta sigue llevando residuos al horno."
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[feed_belt].prompt
 msgid "Stop the belt"
-msgstr ""
+msgstr "Parar la cinta"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[filter].text
 msgid "Scrub the choked flue"
-msgstr ""
+msgstr "Limpia el conducto de humos atascado"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[filter].desc
 msgid "Soot packs the flue. Scrub it out before the fire dies."
-msgstr ""
+msgstr "El hollín atasca el conducto. Límpialo antes de que el fuego se apague."
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[filter].prompt
 msgid "Scrub the flue"
-msgstr ""
+msgstr "Limpiar el conducto"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[cartridge].text
 msgid "Fetch a filter cartridge"
-msgstr ""
+msgstr "Trae un cartucho de filtro"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[cartridge].text_1
 msgid "Fit the cartridge in the flue duct"
-msgstr ""
+msgstr "Instala el cartucho en el conducto de humos"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[cartridge].desc
 msgid "A clean cartridge catches what the stacks still breathe out."
-msgstr ""
+msgstr "Un cartucho limpio atrapa lo que las chimeneas aún exhalan."
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[cartridge].prompt
 msgid "Pick up the cartridge"
-msgstr ""
+msgstr "Recoger el cartucho"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[cartridge].final_prompt
 msgid "Fit the cartridge"
-msgstr ""
+msgstr "Instalar el cartucho"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[dampers].text
 msgid "Shut the furnace dampers"
-msgstr ""
+msgstr "Cierra los registros del horno"
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[dampers].desc
 msgid "With the dampers shut the fire goes out for good."
-msgstr ""
+msgstr "Con los registros cerrados, el fuego se apaga para siempre."
 
 #: planets/verdance/data/sources.json:sources[incinerator].steps[dampers].prompt
 msgid "Shut the dampers"
-msgstr ""
+msgstr "Cerrar los registros"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].name
 msgid "The treatment works"
-msgstr ""
+msgstr "La depuradora"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].toast
 msgid "The treatment works runs clear. Lowmeadow can thrive now."
-msgstr ""
+msgstr "La depuradora funciona limpia. Lowmeadow ya puede prosperar."
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[sluice].text
 msgid "Close the inlet sluice"
-msgstr ""
+msgstr "Cierra la compuerta de entrada"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[sluice].desc
 msgid "Fouled water still pours into the tanks."
-msgstr ""
+msgstr "El agua sucia sigue entrando en los tanques."
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[sluice].prompt
 msgid "Close the sluice"
-msgstr ""
+msgstr "Cerrar la compuerta"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[channel].text
 msgid "Dig the sludge out of the channel"
-msgstr ""
+msgstr "Saca el lodo del canal"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[channel].desc
 msgid "Poisoned sludge blocks the channel. Dig it out by hand."
-msgstr ""
+msgstr "Un lodo envenenado bloquea el canal. Sácalo a mano."
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[channel].prompt
 msgid "Dig out the sludge"
-msgstr ""
+msgstr "Sacar el lodo"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[lime].text
 msgid "Fetch the lime sacks"
-msgstr ""
+msgstr "Trae los sacos de cal"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[lime].text_1
 msgid "Dose the settling tank"
-msgstr ""
+msgstr "Dosifica el tanque de decantación"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[lime].desc
 msgid "Lime settles the poison so the water can clear."
-msgstr ""
+msgstr "La cal asienta el veneno para que el agua pueda aclararse."
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[lime].prompt
 msgid "Pick up the lime sacks"
-msgstr ""
+msgstr "Recoger los sacos de cal"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[lime].final_prompt
 msgid "Dose the tank"
-msgstr ""
+msgstr "Dosificar el tanque"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[outfall].text
 msgid "Fetch the outfall plug"
-msgstr ""
+msgstr "Trae el tapón del desagüe"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[outfall].text_1
 msgid "Seal the cracked outfall"
-msgstr ""
+msgstr "Sella el desagüe agrietado"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[outfall].desc
 msgid "The outfall leaks onto the meadow until it is sealed."
-msgstr ""
+msgstr "El desagüe gotea sobre el prado hasta que se selle."
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[outfall].prompt
 msgid "Pick up the plug"
-msgstr ""
+msgstr "Recoger el tapón"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[outfall].final_prompt
 msgid "Seal the outfall"
-msgstr ""
+msgstr "Sellar el desagüe"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[pumps].text
 msgid "Start the clean water pumps"
-msgstr ""
+msgstr "Arranca las bombas de agua limpia"
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[pumps].desc
 msgid "Everything is tight. Send clean water through the works."
-msgstr ""
+msgstr "Todo está sellado. Envía agua limpia por la planta."
 
 #: planets/verdance/data/sources.json:sources[treatment_works].steps[pumps].prompt
 msgid "Start the pumps"
-msgstr ""
+msgstr "Arrancar las bombas"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].name
 msgid "The rocket"
-msgstr ""
+msgstr "El cohete"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].toast
 msgid "The rocket stands ready on Launch Pad 1."
-msgstr ""
+msgstr "El cohete espera listo en la Plataforma de lanzamiento 1."
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[launch_frame].text planets/verdance/data/sources.json:sources[launch_pad].steps[launch_frame].prompt
 msgid "Build the launch frame"
-msgstr ""
+msgstr "Construye la estructura de lanzamiento"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[launch_frame].text_1
 msgid "Fit the launch frame on the pad"
-msgstr ""
+msgstr "Instala la estructura de lanzamiento en la plataforma"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[launch_frame].desc
 msgid "The rocket to the next world starts with its frame."
-msgstr ""
+msgstr "El cohete al próximo mundo empieza por su estructura."
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[launch_frame].final_prompt
 msgid "Fit the launch frame"
-msgstr ""
+msgstr "Instalar la estructura"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[fuel_tanks].text planets/verdance/data/sources.json:sources[launch_pad].steps[fuel_tanks].prompt
 msgid "Build the fuel tanks"
-msgstr ""
+msgstr "Construye los depósitos de combustible"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[fuel_tanks].text_1 planets/verdance/data/sources.json:sources[launch_pad].steps[fuel_tanks].final_prompt
 msgid "Fit the fuel tanks"
-msgstr ""
+msgstr "Instalar los depósitos de combustible"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[fuel_tanks].desc
 msgid "Tanks next: the rocket has a long way to go."
-msgstr ""
+msgstr "Ahora los depósitos: al cohete le queda un largo camino."
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[engine_cluster].text planets/verdance/data/sources.json:sources[launch_pad].steps[engine_cluster].prompt
 msgid "Build the engine cluster"
-msgstr ""
+msgstr "Construye el grupo de motores"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[engine_cluster].text_1
 msgid "Fit the engine cluster"
-msgstr ""
+msgstr "Instalar el grupo de motores"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[engine_cluster].desc
 msgid "Five engines, made from what the city threw away."
-msgstr ""
+msgstr "Cinco motores, hechos con lo que la ciudad tiró."
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[engine_cluster].final_prompt
 msgid "Fit the engines"
-msgstr ""
+msgstr "Instalar los motores"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[guidance_core].text planets/verdance/data/sources.json:sources[launch_pad].steps[guidance_core].prompt
 msgid "Build the guidance core"
-msgstr ""
+msgstr "Construye el núcleo de guiado"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[guidance_core].text_1 planets/verdance/data/sources.json:sources[launch_pad].steps[guidance_core].final_prompt
 msgid "Fit the guidance core"
-msgstr ""
+msgstr "Instalar el núcleo de guiado"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[guidance_core].desc
 msgid "The core knows the way to the next world."
-msgstr ""
+msgstr "El núcleo conoce el camino al próximo mundo."
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[hull_plates].text planets/verdance/data/sources.json:sources[launch_pad].steps[hull_plates].prompt
 msgid "Build the hull plates"
-msgstr ""
+msgstr "Construye las planchas del casco"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[hull_plates].text_1 planets/verdance/data/sources.json:sources[launch_pad].steps[hull_plates].final_prompt
 msgid "Fit the hull plates"
-msgstr ""
+msgstr "Instalar las planchas del casco"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[hull_plates].desc
 msgid "Close the bare frames. The rocket takes its shape."
-msgstr ""
+msgstr "Cierra las cuadernas desnudas. El cohete toma forma."
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[nose_cone].text planets/verdance/data/sources.json:sources[launch_pad].steps[nose_cone].prompt
 msgid "Build the nose cone"
-msgstr ""
+msgstr "Construye el cono de proa"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[nose_cone].text_1 planets/verdance/data/sources.json:sources[launch_pad].steps[nose_cone].final_prompt
 msgid "Fit the nose cone"
-msgstr ""
+msgstr "Instalar el cono de proa"
 
 #: planets/verdance/data/sources.json:sources[launch_pad].steps[nose_cone].desc
 msgid "The last part. Then the rocket is ready."
-msgstr ""
+msgstr "La última pieza. Después, el cohete estará listo."
 
 #: planets/verdance/data/stations.json:conveyor.name
 msgid "Conveyor Feeder"
@@ -13838,7 +13838,7 @@ msgstr "Contenedor de chatarra"
 
 #: planets/verdance/data/trash_bin.json:levels[1].desc
 msgid "A proper steel skip. Bales go in faster."
-msgstr ""
+msgstr "Un contenedor de acero como es debido. Las pacas entran más rápido."
 
 #: planets/verdance/data/trash_bin.json:levels[2].name
 msgid "Weigh Skip"
@@ -13846,7 +13846,7 @@ msgstr "Contenedor báscula"
 
 #: planets/verdance/data/trash_bin.json:levels[2].desc
 msgid "A ribbed skip on a calibrated scale with a warning beacon. It takes a whole stack without a pause."
-msgstr ""
+msgstr "Un contenedor acanalado sobre una báscula calibrada con baliza de aviso. Admite una pila entera sin pausa."
 
 #: planets/verdance/data/trash_bin.json:levels[3].name
 msgid "Compactor"
@@ -13862,7 +13862,7 @@ msgstr "Trituradora"
 
 #: planets/verdance/data/trash_bin.json:levels[4].desc
 msgid "A clean white shredder with twin rotors and a scanner seam. It swallows bales as fast as they land."
-msgstr ""
+msgstr "Una trituradora blanca y limpia con dos rotores y una franja de escáner. Se traga las pacas tan rápido como caen."
 
 #: planets/verdance/data/upgrades.json:upgrades[baler].name
 msgid "Baler"
@@ -13870,7 +13870,7 @@ msgstr "Empacadora"
 
 #: planets/verdance/data/upgrades.json:upgrades[baler].desc
 msgid "Fit the bale press in your chest. A pressed bale always sells for more than the same load tipped loose."
-msgstr ""
+msgstr "Instala la prensa de pacas en tu compartimento. Una paca prensada siempre se vende por más que la misma carga volcada suelta."
 
 #: planets/verdance/data/upgrades.json:upgrades[lift_strength].name
 msgid "Lift Strength"
@@ -13886,7 +13886,7 @@ msgstr "Tamaño del compartimento"
 
 #: planets/verdance/data/upgrades.json:upgrades[compartment_size].desc
 msgid "A bigger chest. Fewer trips to the bin."
-msgstr ""
+msgstr "Un compartimento más grande. Menos viajes al contenedor."
 
 #: planets/verdance/data/upgrades.json:upgrades[scoop_width].name
 msgid "Scoop Width"
@@ -13990,7 +13990,7 @@ msgstr "Tamaño de pala"
 
 #: planets/verdance/data/upgrades.json:upgrades[multi_lock].desc
 msgid "A bigger scoop. Every pulse lifts more trash."
-msgstr ""
+msgstr "Una pala más grande. Cada pulso levanta más basura."
 
 #: planets/verdance/data/upgrades.json:upgrades[signal_finder].name
 msgid "Signal Finder"
@@ -14006,11 +14006,11 @@ msgstr "Propulsores de flote"
 
 #: planets/verdance/data/upgrades.json:upgrades[hover_jets].desc
 msgid "Little jets under the treads. Lumi floats over lakes instead of stopping at the shore."
-msgstr ""
+msgstr "Pequeños propulsores bajo las orugas. Lumi flota sobre los lagos en vez de pararse en la orilla."
 
 #: data/workbench.json:flag_hints[0].hint
 msgid "Find the seed tin first."
-msgstr ""
+msgstr "Encuentra antes la lata de semillas."
 
 #: data/workbench.json:tiers[0].name
 msgid "Workbench"
@@ -14018,31 +14018,31 @@ msgstr "Banco de trabajo"
 
 #: data/workbench.json:tiers[0].desc
 msgid "The repaired bench: upgrades for Lumi and things to build."
-msgstr ""
+msgstr "El banco reparado: mejoras para Lumi y cosas que construir."
 
 #: data/workbench.json:tiers[1].name
 msgid "Workbench Mk II: Bot Bay"
-msgstr ""
+msgstr "Banco de trabajo Mk II: Bahía de bots"
 
 #: data/workbench.json:tiers[1].desc
 msgid "Adds a bot bay. Build helpers that keep cleaning while you work."
-msgstr ""
+msgstr "Añade una bahía de bots. Construye ayudantes que siguen limpiando mientras trabajas."
 
 #: data/workbench.json:tiers[2].name
 msgid "Workbench Mk III: Research Desk"
-msgstr ""
+msgstr "Banco de trabajo Mk III: Mesa de investigación"
 
 #: data/workbench.json:tiers[2].desc
 msgid "Adds a research desk. Study what you dig up to unlock machines and seeds."
-msgstr ""
+msgstr "Añade una mesa de investigación. Estudia lo que desentierras para desbloquear máquinas y semillas."
 
 #: data/workbench.json:tiers[3].name
 msgid "Workbench Mk IV: Request Board"
-msgstr ""
+msgstr "Banco de trabajo Mk IV: Tablón de encargos"
 
 #: data/workbench.json:tiers[3].desc
 msgid "Adds a request board. Take on jobs for tokens and rare parts."
-msgstr ""
+msgstr "Añade un tablón de encargos. Acepta trabajos a cambio de fichas y piezas raras."
 
 #: planets/verdance/data/wren_lines.json:wake
 msgid "...Lumi? ...It's WREN. Your tower's carrying me. Barely. Keep it standing."
