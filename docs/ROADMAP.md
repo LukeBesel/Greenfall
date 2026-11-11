@@ -19,7 +19,7 @@ The round world is the game, and the work is on its first planet, Verdance. The 
 - **Reach:** every collectible and objective target stands on reachable ground (`--target-reach`).
 - **Map:** our own survey style with sprout, Lumi and plume glyphs. Travel is at the rocket (press E), not in the map. Glyphs no longer cover each other on the start hub, the map shows the HUD's planet %, and the round game has one system map.
 - **Text:** all 3,992 strings are translated into German, French, Spanish, Brazilian Portuguese, Simplified Chinese and Japanese. A test fails when an early-game string has no translation.
-- **Checks:** 967 unit tests, the save round trips (flat and `--orbit`) and the two-process orbit reload. The dev checks are listed in CLAUDE.md.
+- **Checks:** the unit tests, the save round trip on the globe (with the shared-state checks of `tools/shared_roundtrip.gd`) and the two-process orbit reload. The dev checks are listed in CLAUDE.md.
 
 **Open**
 - **Renderers:** every render so far used opengl3 (Compatibility). Nobody has looked at Verdance on Forward+ or Metal, and the owner's Mac perf run (`--quality=1 --perf`) is still to do.
@@ -30,7 +30,7 @@ The round world is the game, and the work is on its first planet, Verdance. The 
 - **Bale clipping** into Lumi's body (item 22) has not been reproduced.
 - **Translations** are machine drafts. No native speaker has reviewed them. In-world shop signs (PAWN, SHOE REPAIR, OLD TOWN) stay English in every language.
 - **Map:** the survey's hex counts are a snapshot (they update on Re-survey), while its planet % is live.
-- **Flat world:** code that only the flat world used is still in the tree.
+- **Flat world:** removed (v6flat, docs/FLAT_REMOVAL.md): no flat mode, no `--flat`, no phase A prototype scenes. Old flat saves are copied into the round tree once at startup and migrate on load. The leftovers kept on purpose are listed at the end of docs/FLAT_REMOVAL.md.
 - **Other planets** on the globe (Ochre, Rime, Anvil, Tidewell) are out of focus: Haul Bugs find no path there, and the Ochre finale camera is blocked.
 - **Polish (item 56):** the v5 wave was still running when this was written (v5play: bugs from play-testing; v5look: light, sky, hinterland; v5load: loader, perf, saves). Add their results here.
 
@@ -1029,6 +1029,17 @@ Details and numbers in docs/PERFORMANCE.md (perf passes 6-8).
 - **HUD:** the top-right lines are now this base's clean % and "BASES n/6".
 - Code: `planet/sites/hub_plan.gd`, `planet/sites/hub_purpose.gd`; tests: `tests/test_hub_plan.gd`.
 - **Open:** the survey map (M) still shows the old city names and no landmark glyphs; the story text is placeholder (v6story); goal-card steps for "fly to the next hub" and "upgrade the rocket" are v6pace's; the hub town builds behind the veil in about 10 s on this box (headless), to be checked on real hardware.
+
+## 2026-11-11: v6feel (how Lumi feels to play, round Verdance)
+- **Carried bale inside Lumi (owner items 22 and 45): cause found and fixed.** The pick-up tweened the bale's height while Patch wrote its x/z every physics tick; the physics server hands a moving frozen body its last transform back before each tick, so the tween's height was thrown away whenever Lumi moved during the lift, and the bale stayed at ground height inside him. Patch now places every carried bale each tick, on a lift path that goes out and over his head; the hold point rides his lean and squash. Also fixed: the hold point cached at 0.8 m when first measured while Lumi was hidden (rocket, loader), never re-measured after a Character Builder rebuild, and the stack sway read zero.
+- **Snagging:** on the globe Lumi's lifted collision shape was never applied (the flat box dragged on the ground and stopped dead on every corner, post, kerb and heap). He now has a round body that slides on the level round corners, posts and junk heaps, and hovers over kerbs and planters up to 0.45 m. Fences and walls still stop him.
+- **Camera (SphereCam):** a soft arm with whiskers (eases in before a wall cuts the view, out gently), climbs a wall that is close behind Lumi and looks down at him, looks past posts, hides Lumi when the camera is inside him, softer up-and-down follow, and the flat camera's screen shake (bale press, depot, heavy pieces did nothing on the globe).
+- **Scoop:** a dim reticle on the piece the next pulse will take; the lock and aim reticles lie on the local ground (they lay in world XZ, tilted on the globe).
+- **Controller:** rumble for chest full, heavy piece, bale press, pick-up, put-down and landing (scaled by the Shake setting, off with Reduced motion; never for the autoplay bot).
+- **Lumi:** arms up under a carried stack; the run lean stops growing past twice walking speed (a boost leaned him 30 degrees).
+- **Local up:** a dug-up part, the holo screen, the butterfly, the depot's "+N" and the upgrade sparkle used world +Y.
+- **Tool:** `--feel=carry|bale|move|snag|cam|camwall|map|tour` (tools/feel_probe.gd; `--feel-quit`, `--feel-shots=S` for frame sequences, `--feel-at=x,z`, `--feel-walk=x,z;x,z`). Tests: `tests/test_v6feel.gd`, `tests/test_v6feel_slide.gd`.
+- **Numbers:** bale gap to his body +0.19 m in every phase (was -0.30 m); glancing pushes that get past the greenhouse spot 36 of 48 (was 6), the shack nook 39 of 48 (was 28); 0 camera jumps over 0.6 m round a town block; 0 to 90% speed in 0.27 s, stop in 0.22 s.
 
 ## 2026-11-11: v6crew (robots as the heart of the mid-game on Verdance)
 - **A robot belongs to one hub** (`u["hub"]`, the hub it is built at: `SphereCrew.nearest_hub`). It cleans that hub's region nearest dirty first, its Haul Bugs fetch only that region's bales and unload at that hub's drop point (`SphereCrew.depot_points[hub_cell]`, default 5 m off the pad; v6hubs can set the exact spot). Painted zones belong to the hub they lie in. `SphereCrew.transfer(u, hub)` / `transfer_some(from, to, n)` move robots (for the rocket).

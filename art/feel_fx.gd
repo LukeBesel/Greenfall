@@ -108,7 +108,7 @@ func show_off_upgrade(n: int) -> void:
 		return
 	Audio.play("confirm", 1.0 + minf(n - 1, 4) * 0.03, -9.0)
 	Audio.play("servo", 1.5, -14.0)
-	Vfx.burst("sparkle", p.global_position + Vector3(0, 0.9, 0), Color(1.0, 0.85, 0.5), 0.8)
+	Vfx.burst("sparkle", p.global_position + p.up() * 0.9, Color(1.0, 0.85, 0.5), 0.8)  # [v6feel] local up
 	p.model.set_happy(1.0)
 	if not Settings.reduced_motion:
 		var m: Node3D = p.model

@@ -121,7 +121,7 @@ func setup(p_world: Node) -> void:
 	dense = DevHooks.has("fauna-dense")
 	FaunaSounds.ensure()
 	_crickets = AudioStreamPlayer.new()
-	_crickets.bus = "SFX"
+	_crickets.bus = "Ambience"  # [v6sound] wildlife beds follow the Ambience slider
 	_crickets.stream = FaunaSounds.crickets_loop()
 	_crickets.volume_db = -80.0
 	add_child(_crickets)

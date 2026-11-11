@@ -1,5 +1,7 @@
 # Round planets: rollout after phase A
 
+**Finished (Nov 11).** The round world is the only game: the flat mode, `--flat`, the title toggle and the phase A prototype scenes (`--orbit=globe`, `--orbit=v1`) are removed (docs/FLAT_REMOVAL.md). Old flat saves are imported once into the round save tree and migrate on load (OrbitMigrate). This file is kept as history; "the flat game" below means the removed mode.
+
 Owner decisions are in `docs/DECISIONS.md` ("Round planets"). Phase A is on `wt/orbit` behind `--orbit`: the real Lumi (`player/patch.gd`) walks, scoops, presses bales, carries them and cashes them at a Depot on Verdance's 163,842-hex globe, with real day and night sides. Everything below builds on it. Start every helper from `wt/orbit` once phase A has merged.
 
 ## What already exists (read before starting)
