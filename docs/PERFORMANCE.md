@@ -600,3 +600,27 @@ piece has its own worn-paint material, and merging breaks the scatter when an ou
 The litter is the next real win: 428 MultiMeshes for one ring. One MultiMesh per item kind for
 the whole ring would be about 12 draws, but every ring move would re-upload the buffer; a mesh
 merged per cell would lose the per-piece sweep.
+
+## Yard machines and hub landmarks (v6yard, Nov 11 2026)
+
+Budgets (pinned by `tests/test_machine_art.gd`): a yard machine stays under 30k triangles, a hub
+landmark under 50k triangles and 14 mesh surfaces (the big wheel 20, its gondolas included).
+Measure with `godot --headless --path . res://tools/machine_stats.tscn`: one line per model with
+triangles (LOD 0), mesh surfaces (draw calls before shadows), meshes, lights and build time.
+
+| Model | Triangles | Surfaces | Before |
+|---|---|---|---|
+| Auto-baler | 26k | 15 on 6 meshes | 31 single meshes, one draw each, no bevels |
+| Belt drive (pad, turntable, one belt run) | 20k | 23 on 9 meshes | 60+ single meshes (36 stripe boxes alone) |
+| Hub landmark (each of six) | 22-30k (big wheel 45k with 12 gondolas) | 7-13 (wheel 16) | thin rods in the shared deco mesh |
+| Picture sign | about 2k a face | none of its own (it is part of the machine's mesh) | new |
+
+- A landmark is one body mesh with automatic LODs, plus one mesh for the turning part (fan, wheel,
+  radar). The wheel's gondolas are two MultiMeshes of six. Lights: 2-4 shadowless OmniLights, only
+  while the hub is awake, fading out between 70 and 90 m.
+- Build cost: 30-60 ms of geometry plus 30-60 ms for the mesh and its LODs on the loaded cloud box.
+  StreetDressing spreads the two halves over two frames (`HubLandmarks.warm`, then `data_for`), so a
+  town build's longest frame does not grow. A hub's state change (the wake) builds the new state
+  once: one frame of about 100 ms on this box, during the wake's own flash and shake.
+- The pod was not rebuilt. Its draw calls were already merged by `PodBatch` (story/pod_batch.gd).
+  The repair cart beside it is one mesh, 5 surfaces.
