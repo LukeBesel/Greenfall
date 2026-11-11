@@ -390,7 +390,7 @@ msgstr "[Ţôþ ţîéŕ ~]"
 msgid "Needs the Rocket Cargo research"
 msgstr "[Ñééðš ţĥé Ŕôçķéţ Çàŕĝô ŕéšéàŕçĥ ~~~~~~~~]"
 
-#: automation/rocket_tiers.gd:61 systems/homeward.gd:586
+#: automation/rocket_tiers.gd:61 systems/homeward.gd:596
 msgid "Not enough cubes or parts"
 msgstr "[Ñôţ éñôûĝĥ çûbéš ôŕ þàŕţš ~~~~~~]"
 
@@ -2701,63 +2701,63 @@ msgstr "[Àûðîţ ŵôñ, %d ţô %d! Ţĥé Ļéðĝéŕ šţàmþš îţ À�
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "[Ţĥé ðŕôñé ŵôñ ţĥé àûðîţ, %d ţô %d. Îţ ļéƒţ à ţîþ àñýŵàý: +%s çûbéš. ~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/homeward.gd:184
+#: systems/homeward.gd:187
 msgid "Wake %d old stations on %s to level %d (%d so far)"
 msgstr "[Ŵàķé %d ôļð šţàţîôñš ôñ %s ţô ļévéļ %d (%d šô ƒàŕ) ~~~~~~~~~~~~~~~]"
 
-#: systems/homeward.gd:186
+#: systems/homeward.gd:189
 msgid "Restore %s to %d%% (%d%%) or get a base to level %d"
 msgstr "[Ŕéšţôŕé %s ţô %d%% (%d%%) ôŕ ĝéţ à bàšé ţô ļévéļ %d ~~~~~~~~~~~~~~~]"
 
-#: systems/homeward.gd:187
+#: systems/homeward.gd:190
 msgid "Restore %s to %d%% (%d%%)"
 msgstr "[Ŕéšţôŕé %s ţô %d%% (%d%%) ~~~~~~]"
 
-#: systems/homeward.gd:194
+#: systems/homeward.gd:197
 msgid "Restore another planet to %d%% (best %d%%)"
 msgstr "[Ŕéšţôŕé àñôţĥéŕ þļàñéţ ţô %d%% (béšţ %d%%) ~~~~~~~~~~~~]"
 
-#: systems/homeward.gd:276
+#: systems/homeward.gd:286
 msgid "Needs %s: found on %s"
 msgstr "[Ñééðš %s: ƒôûñð ôñ %s ~~~~]"
 
-#: systems/homeward.gd:421
+#: systems/homeward.gd:431
 msgid "New tech: %s. %s"
 msgstr "[Ñéŵ ţéçĥ: %s. %s ~~~]"
 
-#: systems/homeward.gd:474
+#: systems/homeward.gd:484
 msgid "Needs the %s drive"
 msgstr "[Ñééðš ţĥé %s ðŕîvé ~~~]"
 
-#: systems/homeward.gd:476
+#: systems/homeward.gd:486
 msgid "No chart yet: restore %s to %d%%"
 msgstr "[Ñô çĥàŕţ ýéţ: ŕéšţôŕé %s ţô %d%% ~~~~~~~~]"
 
-#: systems/homeward.gd:570
+#: systems/homeward.gd:580
 msgid "The Homeward rocket is built"
 msgstr "[Ţĥé Ĥôméŵàŕð ŕôçķéţ îš bûîļţ ~~~~~~~]"
 
-#: systems/homeward.gd:573 systems/museum.gd:117
+#: systems/homeward.gd:583 systems/museum.gd:117
 msgid "The Cradle has to answer first (Cradle Returns)"
 msgstr "[Ţĥé Çŕàðļé ĥàš ţô àñšŵéŕ ƒîŕšţ (Çŕàðļé Ŕéţûŕñš) ~~~~~~~~~~~~~]"
 
-#: systems/homeward.gd:578
+#: systems/homeward.gd:588
 msgid "Needs full fuel and power. %s"
 msgstr "[Ñééðš ƒûļļ ƒûéļ àñð þôŵéŕ. %s ~~~~~~~]"
 
-#: systems/homeward.gd:580
+#: systems/homeward.gd:590
 msgid "Needs %d planet relics (%d)"
 msgstr "[Ñééðš %d þļàñéţ ŕéļîçš (%d) ~~~~~~]"
 
-#: systems/homeward.gd:582
+#: systems/homeward.gd:592
 msgid "Restore every planet first (%d%%)"
 msgstr "[Ŕéšţôŕé évéŕý þļàñéţ ƒîŕšţ (%d%%) ~~~~~~~~~]"
 
-#: systems/homeward.gd:584
+#: systems/homeward.gd:594
 msgid "Build it at Verdance's Cradle Returns"
 msgstr "[Bûîļð îţ àţ Véŕðàñçé'š Çŕàðļé Ŕéţûŕñš ~~~~~~~~~~]"
 
-#: systems/homeward.gd:600
+#: systems/homeward.gd:610
 msgid "Rocket drive built: %s."
 msgstr "[Ŕôçķéţ ðŕîvé bûîļţ: %s. ~~~~~]"
 
@@ -3707,7 +3707,7 @@ msgstr "[Çļéàñ %d ĥéxéš ƒîŕšţ. ~~~~]"
 msgid "Not yet. Keep playing."
 msgstr "[Ñôţ ýéţ. Ķééþ þļàýîñĝ. ~~~~~]"
 
-#: ui/bench_tiers.gd:120
+#: ui/bench_tiers.gd:124
 msgid "%s installed. New workbench tab: %s"
 msgstr "[%s îñšţàļļéð. Ñéŵ ŵôŕķbéñçĥ ţàb: %s ~~~~~~~~~]"
 
@@ -12358,6 +12358,10 @@ msgstr "[Ŵôŕķbéñçĥ, Ûþĝŕàðéš ţàb. À bîĝĝéŕ bàšé þô�
 msgid "A bigger base makes more power, and power runs robots. Rebuild it at the workbench."
 msgstr "[À bîĝĝéŕ bàšé màķéš môŕé þôŵéŕ, àñð þôŵéŕ ŕûñš ŕôbôţš. Ŕébûîļð îţ àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
+#: data/objectives.json:objectives[hub_wake_3].text
+msgid "Wake station 3 of 6"
+msgstr "[Ŵàķé šţàţîôñ 3 ôƒ 6 ~~~~]"
+
 #: data/objectives.json:objectives[haul].desc
 msgid "Workbench, Bots tab. It carries bales to the scale for you."
 msgstr "[Ŵôŕķbéñçĥ, Bôţš ţàb. Îţ çàŕŕîéš bàļéš ţô ţĥé šçàļé ƒôŕ ýôû. ~~~~~~~~~~~~~~~~~~]"
@@ -12369,10 +12373,6 @@ msgstr "[Ķééþ çļéàñîñĝ. ŴŔÉÑ îš ļôôķîñĝ ƒôŕ Ĥàûļ
 #: data/objectives.json:objectives[haul].lines
 msgid "A Haul Bug carries bales for you. Build one at the bench."
 msgstr "[À Ĥàûļ Bûĝ çàŕŕîéš bàļéš ƒôŕ ýôû. Bûîļð ôñé àţ ţĥé béñçĥ. ~~~~~~~~~~~~~~~~~]"
-
-#: data/objectives.json:objectives[hub_wake_3].text
-msgid "Wake station 3 of 6"
-msgstr "[Ŵàķé šţàţîôñ 3 ôƒ 6 ~~~~]"
 
 #: data/objectives.json:objectives[tower2].text
 msgid "Boost the signal tower"

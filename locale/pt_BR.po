@@ -393,7 +393,7 @@ msgstr "Nível máximo"
 msgid "Needs the Rocket Cargo research"
 msgstr "Requer a pesquisa Carga de Foguete"
 
-#: automation/rocket_tiers.gd:61 systems/homeward.gd:586
+#: automation/rocket_tiers.gd:61 systems/homeward.gd:596
 msgid "Not enough cubes or parts"
 msgstr "Cubos ou peças insuficientes"
 
@@ -2704,63 +2704,63 @@ msgstr "Auditoria vencida, %d a %d! O Ledger carimba APROVADO. %s"
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "O drone venceu a auditoria, %d a %d. Mesmo assim deixou uma gorjeta: +%s cubos."
 
-#: systems/homeward.gd:184
+#: systems/homeward.gd:187
 msgid "Wake %d old stations on %s to level %d (%d so far)"
 msgstr "Acorde %d estações antigas em %s até o nível %d (%d até agora)"
 
-#: systems/homeward.gd:186
+#: systems/homeward.gd:189
 msgid "Restore %s to %d%% (%d%%) or get a base to level %d"
 msgstr "Restaure %s a %d%% (%d%%) ou leve uma base ao nível %d"
 
-#: systems/homeward.gd:187
+#: systems/homeward.gd:190
 msgid "Restore %s to %d%% (%d%%)"
 msgstr "Restaure %s a %d%% (%d%%)"
 
-#: systems/homeward.gd:194
+#: systems/homeward.gd:197
 msgid "Restore another planet to %d%% (best %d%%)"
 msgstr "Restaure outro planeta a %d%% (melhor %d%%)"
 
-#: systems/homeward.gd:276
+#: systems/homeward.gd:286
 msgid "Needs %s: found on %s"
 msgstr "Precisa de %s: encontrado em %s"
 
-#: systems/homeward.gd:421
+#: systems/homeward.gd:431
 msgid "New tech: %s. %s"
 msgstr "Nova tecnologia: %s. %s"
 
-#: systems/homeward.gd:474
+#: systems/homeward.gd:484
 msgid "Needs the %s drive"
 msgstr "Precisa do propulsor %s"
 
-#: systems/homeward.gd:476
+#: systems/homeward.gd:486
 msgid "No chart yet: restore %s to %d%%"
 msgstr "Ainda sem carta: restaure %s até %d%%"
 
-#: systems/homeward.gd:570
+#: systems/homeward.gd:580
 msgid "The Homeward rocket is built"
 msgstr "O foguete do Regresso está construído"
 
-#: systems/homeward.gd:573 systems/museum.gd:117
+#: systems/homeward.gd:583 systems/museum.gd:117
 msgid "The Cradle has to answer first (Cradle Returns)"
 msgstr "A Cradle precisa responder primeiro (Retorno da Cradle)"
 
-#: systems/homeward.gd:578
+#: systems/homeward.gd:588
 msgid "Needs full fuel and power. %s"
 msgstr "Precisa de combustível e energia cheios. %s"
 
-#: systems/homeward.gd:580
+#: systems/homeward.gd:590
 msgid "Needs %d planet relics (%d)"
 msgstr "Precisa de %d artefatos planetários (%d)"
 
-#: systems/homeward.gd:582
+#: systems/homeward.gd:592
 msgid "Restore every planet first (%d%%)"
 msgstr "Restaure todos os planetas primeiro (%d%%)"
 
-#: systems/homeward.gd:584
+#: systems/homeward.gd:594
 msgid "Build it at Verdance's Cradle Returns"
 msgstr "Construa no Retorno da Cradle, em Verdance"
 
-#: systems/homeward.gd:600
+#: systems/homeward.gd:610
 msgid "Rocket drive built: %s."
 msgstr "Propulsor construído: %s."
 
@@ -3710,7 +3710,7 @@ msgstr "Limpe %d hexágonos primeiro."
 msgid "Not yet. Keep playing."
 msgstr "Ainda não. Continue jogando."
 
-#: ui/bench_tiers.gd:120
+#: ui/bench_tiers.gd:124
 msgid "%s installed. New workbench tab: %s"
 msgstr "%s instalado. Nova aba da bancada: %s"
 
@@ -12361,6 +12361,10 @@ msgstr "Bancada, aba Melhorias. Uma base maior dá energia para mais robôs."
 msgid "A bigger base makes more power, and power runs robots. Rebuild it at the workbench."
 msgstr "Uma base maior gera mais energia, e é a energia que move os robôs. Reconstrua a base na bancada."
 
+#: data/objectives.json:objectives[hub_wake_3].text
+msgid "Wake station 3 of 6"
+msgstr "Acorde a estação 3 de 6"
+
 #: data/objectives.json:objectives[haul].desc
 msgid "Workbench, Bots tab. It carries bales to the scale for you."
 msgstr "Bancada, aba Bots. Ele leva os fardos até a balança para você."
@@ -12372,10 +12376,6 @@ msgstr "Continue limpando. A WREN está procurando os planos do Haul Bug."
 #: data/objectives.json:objectives[haul].lines
 msgid "A Haul Bug carries bales for you. Build one at the bench."
 msgstr "Um Haul Bug leva os fardos para você. Construa um na bancada."
-
-#: data/objectives.json:objectives[hub_wake_3].text
-msgid "Wake station 3 of 6"
-msgstr "Acorde a estação 3 de 6"
 
 #: data/objectives.json:objectives[tower2].text
 msgid "Boost the signal tower"

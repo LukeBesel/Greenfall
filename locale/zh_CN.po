@@ -393,7 +393,7 @@ msgstr "最高等级"
 msgid "Needs the Rocket Cargo research"
 msgstr "需要研究“火箭货运”"
 
-#: automation/rocket_tiers.gd:61 systems/homeward.gd:586
+#: automation/rocket_tiers.gd:61 systems/homeward.gd:596
 msgid "Not enough cubes or parts"
 msgstr "方块或零件不足"
 
@@ -2698,63 +2698,63 @@ msgstr "审计胜利，%d 比 %d！Ledger 盖上了“批准”章。%s"
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "无人机赢得了审计，%d 比 %d。不过它还是留了小费：+%s 方块。"
 
-#: systems/homeward.gd:184
+#: systems/homeward.gd:187
 msgid "Wake %d old stations on %s to level %d (%d so far)"
 msgstr "唤醒 %d 座旧站点(%s)到 %d 级(已完成 %d 座)"
 
-#: systems/homeward.gd:186
+#: systems/homeward.gd:189
 msgid "Restore %s to %d%% (%d%%) or get a base to level %d"
 msgstr "将 %s 恢复到 %d%%（%d%%），或把一座基地升到 %d 级"
 
-#: systems/homeward.gd:187
+#: systems/homeward.gd:190
 msgid "Restore %s to %d%% (%d%%)"
 msgstr "将 %s 恢复到 %d%%（%d%%）"
 
-#: systems/homeward.gd:194
+#: systems/homeward.gd:197
 msgid "Restore another planet to %d%% (best %d%%)"
 msgstr "将另一颗星球恢复到 %d%%（最高 %d%%）"
 
-#: systems/homeward.gd:276
+#: systems/homeward.gd:286
 msgid "Needs %s: found on %s"
 msgstr "需要 %s：在 %s 上找到"
 
-#: systems/homeward.gd:421
+#: systems/homeward.gd:431
 msgid "New tech: %s. %s"
 msgstr "新技术：%s。%s"
 
-#: systems/homeward.gd:474
+#: systems/homeward.gd:484
 msgid "Needs the %s drive"
 msgstr "需要 %s 推进器"
 
-#: systems/homeward.gd:476
+#: systems/homeward.gd:486
 msgid "No chart yet: restore %s to %d%%"
 msgstr "还没有星图：把 %s 恢复到 %d%%"
 
-#: systems/homeward.gd:570
+#: systems/homeward.gd:580
 msgid "The Homeward rocket is built"
 msgstr "归乡火箭已建成"
 
-#: systems/homeward.gd:573 systems/museum.gd:117
+#: systems/homeward.gd:583 systems/museum.gd:117
 msgid "The Cradle has to answer first (Cradle Returns)"
 msgstr "Cradle 号得先回应（Cradle号归来）"
 
-#: systems/homeward.gd:578
+#: systems/homeward.gd:588
 msgid "Needs full fuel and power. %s"
 msgstr "需要燃料和能量都满。%s"
 
-#: systems/homeward.gd:580
+#: systems/homeward.gd:590
 msgid "Needs %d planet relics (%d)"
 msgstr "需要 %d 件星球遗物（%d）"
 
-#: systems/homeward.gd:582
+#: systems/homeward.gd:592
 msgid "Restore every planet first (%d%%)"
 msgstr "先恢复每一个星球（%d%%）"
 
-#: systems/homeward.gd:584
+#: systems/homeward.gd:594
 msgid "Build it at Verdance's Cradle Returns"
 msgstr "在 Verdance 的 Cradle号归来建造"
 
-#: systems/homeward.gd:600
+#: systems/homeward.gd:610
 msgid "Rocket drive built: %s."
 msgstr "火箭推进器已建成：%s。"
 
@@ -3698,7 +3698,7 @@ msgstr "先清理 %d 个六角格。"
 msgid "Not yet. Keep playing."
 msgstr "还不行。继续玩吧。"
 
-#: ui/bench_tiers.gd:120
+#: ui/bench_tiers.gd:124
 msgid "%s installed. New workbench tab: %s"
 msgstr "%s 已安装。工作台新页签：%s"
 
@@ -12345,6 +12345,10 @@ msgstr "工作台，升级页签。基地越大，能供电的机器人就越多
 msgid "A bigger base makes more power, and power runs robots. Rebuild it at the workbench."
 msgstr "基地越大，电就越多，机器人靠电干活。去工作台把它重建起来吧。"
 
+#: data/objectives.json:objectives[hub_wake_3].text
+msgid "Wake station 3 of 6"
+msgstr "唤醒第 3 座站点(共 6 座)"
+
 #: data/objectives.json:objectives[haul].desc
 msgid "Workbench, Bots tab. It carries bales to the scale for you."
 msgstr "工作台，机器人页签。它会替你把捆包运到秤上。"
@@ -12356,10 +12360,6 @@ msgstr "继续清理。WREN 正在找 Haul Bug 的图纸。"
 #: data/objectives.json:objectives[haul].lines
 msgid "A Haul Bug carries bales for you. Build one at the bench."
 msgstr "Haul Bug 会替你搬捆包。在工作台造一台吧。"
-
-#: data/objectives.json:objectives[hub_wake_3].text
-msgid "Wake station 3 of 6"
-msgstr "唤醒第 3 座站点(共 6 座)"
 
 #: data/objectives.json:objectives[tower2].text
 msgid "Boost the signal tower"

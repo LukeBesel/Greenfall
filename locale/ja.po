@@ -393,7 +393,7 @@ msgstr "最高ティア"
 msgid "Needs the Rocket Cargo research"
 msgstr "研究「ロケット貨物」が必要"
 
-#: automation/rocket_tiers.gd:61 systems/homeward.gd:586
+#: automation/rocket_tiers.gd:61 systems/homeward.gd:596
 msgid "Not enough cubes or parts"
 msgstr "キューブかパーツが足りない"
 
@@ -2698,63 +2698,63 @@ msgstr "監査に勝利、%d 対 %d！Ledger が「承認」のスタンプを�
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "監査はドローンの勝ち、%d 対 %d。それでもチップを置いていった：+%s キューブ。"
 
-#: systems/homeward.gd:184
+#: systems/homeward.gd:187
 msgid "Wake %d old stations on %s to level %d (%d so far)"
 msgstr "古いステーションを%dか所(%s)、レベル%dまで目覚めさせよう(現在%dか所)"
 
-#: systems/homeward.gd:186
+#: systems/homeward.gd:189
 msgid "Restore %s to %d%% (%d%%) or get a base to level %d"
 msgstr "%s を %d%% まで復元（%d%%）するか、基地を Lv %d にする"
 
-#: systems/homeward.gd:187
+#: systems/homeward.gd:190
 msgid "Restore %s to %d%% (%d%%)"
 msgstr "%s を %d%% まで復元（%d%%）"
 
-#: systems/homeward.gd:194
+#: systems/homeward.gd:197
 msgid "Restore another planet to %d%% (best %d%%)"
 msgstr "ほかの惑星を %d%% まで復元（最高 %d%%）"
 
-#: systems/homeward.gd:276
+#: systems/homeward.gd:286
 msgid "Needs %s: found on %s"
 msgstr "%s が必要：%s で見つかる"
 
-#: systems/homeward.gd:421
+#: systems/homeward.gd:431
 msgid "New tech: %s. %s"
 msgstr "新技術：%s。%s"
 
-#: systems/homeward.gd:474
+#: systems/homeward.gd:484
 msgid "Needs the %s drive"
 msgstr "%s 推進が必要"
 
-#: systems/homeward.gd:476
+#: systems/homeward.gd:486
 msgid "No chart yet: restore %s to %d%%"
 msgstr "まだ星図がない：%s を %d%% まで再生しよう"
 
-#: systems/homeward.gd:570
+#: systems/homeward.gd:580
 msgid "The Homeward rocket is built"
 msgstr "帰郷ロケットは完成した"
 
-#: systems/homeward.gd:573 systems/museum.gd:117
+#: systems/homeward.gd:583 systems/museum.gd:117
 msgid "The Cradle has to answer first (Cradle Returns)"
 msgstr "まず Cradle が応答する必要がある（Cradle号の帰還）"
 
-#: systems/homeward.gd:578
+#: systems/homeward.gd:588
 msgid "Needs full fuel and power. %s"
 msgstr "燃料とパワーを満タンにする必要がある。%s"
 
-#: systems/homeward.gd:580
+#: systems/homeward.gd:590
 msgid "Needs %d planet relics (%d)"
 msgstr "惑星の遺物が %d 個必要（%d）"
 
-#: systems/homeward.gd:582
+#: systems/homeward.gd:592
 msgid "Restore every planet first (%d%%)"
 msgstr "まずすべての惑星を再生しよう（%d%%）"
 
-#: systems/homeward.gd:584
+#: systems/homeward.gd:594
 msgid "Build it at Verdance's Cradle Returns"
 msgstr "Verdance の Cradle号の帰還で建造しよう"
 
-#: systems/homeward.gd:600
+#: systems/homeward.gd:610
 msgid "Rocket drive built: %s."
 msgstr "ロケット推進を建造：%s。"
 
@@ -3698,7 +3698,7 @@ msgstr "まずヘックスを %d 個片づけよう。"
 msgid "Not yet. Keep playing."
 msgstr "まだだよ。プレイを続けよう。"
 
-#: ui/bench_tiers.gd:120
+#: ui/bench_tiers.gd:124
 msgid "%s installed. New workbench tab: %s"
 msgstr "%s を取り付けた。作業台の新しいタブ：%s"
 
@@ -12345,6 +12345,10 @@ msgstr "作業台のアップグレードタブ。基地が大きいほど、多
 msgid "A bigger base makes more power, and power runs robots. Rebuild it at the workbench."
 msgstr "基地が大きくなると電気が増えて、その電気でロボットが動くの。作業台で建て直そう。"
 
+#: data/objectives.json:objectives[hub_wake_3].text
+msgid "Wake station 3 of 6"
+msgstr "ステーション3/6を目覚めさせよう"
+
 #: data/objectives.json:objectives[haul].desc
 msgid "Workbench, Bots tab. It carries bales to the scale for you."
 msgstr "作業台のボットタブ。ベールをはかりまで運んでくれる。"
@@ -12356,10 +12360,6 @@ msgstr "掃除を続けよう。WREN が Haul Bug の設計図を探している
 #: data/objectives.json:objectives[haul].lines
 msgid "A Haul Bug carries bales for you. Build one at the bench."
 msgstr "Haul Bug がベールを運んでくれるよ。作業台で作って。"
-
-#: data/objectives.json:objectives[hub_wake_3].text
-msgid "Wake station 3 of 6"
-msgstr "ステーション3/6を目覚めさせよう"
 
 #: data/objectives.json:objectives[tower2].text
 msgid "Boost the signal tower"
