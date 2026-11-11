@@ -43,15 +43,25 @@ func _ready() -> void:
 	add_to_group("outposts")
 
 
+var building: bool = false  # [v6qa] still laying its outposts (HubFrame waits on it)
+
+
 func setup() -> void:
 	cfg = load_cfg()
 	_globe = world.field is SphereField  # [orbB]
-	spots = plan_cells(self, world.field, frame_cells, cfg, hub_index) if _globe else plan(world.field, cfg)
+	building = true
+	if _globe:  # [v6qa] the site scan spreads over frames in a hub switch (a play budget)
+		spots = await plan_cells_async(self, world.field, frame_cells, cfg, hub_index)
+	else:
+		spots = plan(world.field, cfg)
 	var lv: Array = levels()
 	while lv.size() < spots.size():
 		lv.append(0)
 	_apply_dev_levels(lv)
+	building = true  # [v6qa] in a hub switch (a play budget) one outpost a slice; without a budget all at once, as before
 	for i: int in spots.size():
+		if i > 0:
+			await BuildBudget.check("outposts:ruin")
 		var o := Outpost.new()
 		add_child(o)
 		if _globe:  # [orbB] frame-local, standing on the ground's own up
@@ -63,6 +73,7 @@ func setup() -> void:
 		items.append(o)
 		if world.get("interactables") != null:
 			world.interactables.register(o.anchor, 3.0, prompt.bind(i), use.bind(i))
+	building = false
 	var where: Array[String] = []
 	for sp: Dictionary in spots:
 		where.append("hex%d@(%.0f,%.0f)" % [int(sp["hex"]), (sp["pos"] as Vector3).x, (sp["pos"] as Vector3).z])
@@ -551,7 +562,51 @@ var _globe: bool = false
 ## The hub's outpost sites, frame-local: [{pos, yaw, hex, xf}]. Like plan(): 3-4 ruins spread
 ## round the hub, on open cells just outside the hub site (its frontier), standing on the ground's
 ## up. Deterministic per planet seed and hub; the eggs avoid them (story/eggs.gd).
+## [v6qa] plan_cells is the same for a hub every time (the eggs and the Ledger's relay ask again
+## to keep clear of the outposts): about 0.8 s for a hub region, three times per hub switch. The
+## result is kept per field, hub and frame.
+static var _plan_cache: Dictionary = {}
+
+
+static func _plan_key(frame: Node3D, f: SphereField, cells: PackedInt32Array, hub: int) -> String:
+	return "%d:%d:%d:%s" % [f.get_instance_id(), hub, cells.size(), str(frame.global_transform.origin.snapped(Vector3.ONE * 0.1))]
+
+
 static func plan_cells(frame: Node3D, f: SphereField, cells: PackedInt32Array, c: Dictionary, hub: int) -> Array[Dictionary]:
+	var key: String = _plan_key(frame, f, cells, hub)
+	if _plan_cache.has(key):
+		return (_plan_cache[key] as Array[Dictionary]).duplicate(true)
+	var out: Array[Dictionary] = _plan_cells_now(frame, f, cells, c, hub)
+	_plan_cache[key] = out.duplicate(true)
+	return out
+
+
+## [v6qa] plan_cells yielding to a BuildBudget between site checks (a hub switch in play).
+static func plan_cells_async(frame: Node3D, f: SphereField, cells: PackedInt32Array, c: Dictionary, hub: int) -> Array[Dictionary]:
+	var key: String = _plan_key(frame, f, cells, hub)
+	if _plan_cache.has(key):
+		return (_plan_cache[key] as Array[Dictionary]).duplicate(true)
+	if c.is_empty():
+		c = load_cfg()
+	var foot: float = float(c.get("footprint", 3.6))
+	var sites: Array[Dictionary] = []
+	var t0: int = Time.get_ticks_usec()
+	for id: int in cells:  # the site scan, a slice at a time (the slow part)
+		if Time.get_ticks_usec() - t0 > 2000:
+			await BuildBudget.check("outposts:plan")
+			t0 = Time.get_ticks_usec()
+		if f.hex_hub[id] != 0 or f.is_water(id) or f.cells.has_flag(id, SphereCells.F_SITE):
+			continue
+		var site: Dictionary = _site_cell(frame, f, id, foot, f.seed_value + 4242 + id * 31)
+		if not site.is_empty():
+			sites.append(site)
+	var out: Array[Dictionary] = _plan_cells_now(frame, f, cells, c, hub, sites)
+	_plan_cache[key] = out.duplicate(true)
+	return out
+
+
+## sites_in: the scan's results when the caller made them already (plan_cells_async).
+static func _plan_cells_now(frame: Node3D, f: SphereField, cells: PackedInt32Array, c: Dictionary, hub: int, sites_in: Variant = null) -> Array[Dictionary]:
 	if c.is_empty():
 		c = load_cfg()
 	var r := RandomNumberGenerator.new()
@@ -561,12 +616,7 @@ static func plan_cells(frame: Node3D, f: SphereField, cells: PackedInt32Array, c
 	var foot: float = float(c.get("footprint", 3.6))
 	var sites: Array[Dictionary] = []
 	var d_min: float = INF
-	for id: int in cells:
-		if f.hex_hub[id] != 0 or f.is_water(id) or f.cells.has_flag(id, SphereCells.F_SITE):
-			continue
-		var site: Dictionary = _site_cell(frame, f, id, foot, f.seed_value + 4242 + id * 31)
-		if site.is_empty():
-			continue
+	for site: Dictionary in (sites_in if sites_in != null else _scan_sites(frame, f, cells, foot)):
 		var pl: Vector3 = site["pos"]
 		site["d"] = Vector2(pl.x, pl.z).length()
 		d_min = minf(d_min, float(site["d"]))
@@ -610,6 +660,17 @@ static func plan_cells(frame: Node3D, f: SphereField, cells: PackedInt32Array, c
 		var up: Vector3 = (frame.global_basis.inverse() * f.up_at(frame.to_global(pp))).normalized()
 		var bas: Basis = Basis(Quaternion(Vector3.UP, up)) * Basis(Vector3.UP, yaw)
 		out.append({"pos": pp, "yaw": yaw, "hex": int(sites[best]["hex"]), "xf": Transform3D(bas, pp)})
+	return out
+
+
+static func _scan_sites(frame: Node3D, f: SphereField, cells: PackedInt32Array, foot: float) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	for id: int in cells:
+		if f.hex_hub[id] != 0 or f.is_water(id) or f.cells.has_flag(id, SphereCells.F_SITE):
+			continue
+		var site: Dictionary = _site_cell(frame, f, id, foot, f.seed_value + 4242 + id * 31)
+		if not site.is_empty():
+			out.append(site)
 	return out
 
 
