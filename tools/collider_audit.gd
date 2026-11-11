@@ -21,8 +21,8 @@ const MIN_W: float = 0.1
 const CELL: float = 0.5
 const MERGED: float = 1.5  # an AABB wider than this (merged geometry, arches, walls) is rasterized
 ## Node classes / names whose subtrees are never props.
-const SKIP_CLASSES: Array[String] = ["Patch", "Robot", "JunkCube", "LitterView", "Fauna", "CameraRig", "WaterView",
-	"Garden", "FarJunk", "PickupFx", "GlobeView", "HUD", "PhotoMode", "Wildlife", "SkyDirector", "Vfx"]
+const SKIP_CLASSES: Array[String] = ["Patch", "Robot", "JunkCube", "LitterView", "Fauna",
+	"Garden", "FarJunk", "PickupFx", "GlobeView", "HUD", "PhotoMode", "SkyDirector", "Vfx"]
 const SKIP_NAMES: Array[String] = ["Ground", "Cubes", "Fleet", "Skyline", "Fauna", "Garden", "Plants", "Sky", "Weather"]
 ## Mesh / node name fragments that are clutter, light or cloth (never solid).
 const CLUTTER: Array[String] = ["weed", "puddle", "paint", "litter", "flower", "grass", "moss", "bulb", "pennant", "cloth",

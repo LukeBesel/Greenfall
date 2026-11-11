@@ -19,7 +19,7 @@ The round world is the game, and the work is on its first planet, Verdance. The 
 - **Reach:** every collectible and objective target stands on reachable ground (`--target-reach`).
 - **Map:** our own survey style with sprout, Lumi and plume glyphs. Travel is at the rocket (press E), not in the map. Glyphs no longer cover each other on the start hub, the map shows the HUD's planet %, and the round game has one system map.
 - **Text:** all 3,992 strings are translated into German, French, Spanish, Brazilian Portuguese, Simplified Chinese and Japanese. A test fails when an early-game string has no translation.
-- **Checks:** 967 unit tests, the save round trips (flat and `--orbit`) and the two-process orbit reload. The dev checks are listed in CLAUDE.md.
+- **Checks:** the unit tests, the save round trip on the globe (with the shared-state checks of `tools/shared_roundtrip.gd`) and the two-process orbit reload. The dev checks are listed in CLAUDE.md.
 
 **Open**
 - **Renderers:** every render so far used opengl3 (Compatibility). Nobody has looked at Verdance on Forward+ or Metal, and the owner's Mac perf run (`--quality=1 --perf`) is still to do.
@@ -31,7 +31,7 @@ The round world is the game, and the work is on its first planet, Verdance. The 
 - **Bale clipping** into Lumi's body (item 22) has not been reproduced.
 - **Translations** are machine drafts. No native speaker has reviewed them. In-world shop signs (PAWN, SHOE REPAIR, OLD TOWN) stay English in every language.
 - **Map:** the survey's hex counts are a snapshot (they update on Re-survey), while its planet % is live.
-- **Flat world:** code that only the flat world used is still in the tree.
+- **Flat world:** removed (v6flat, docs/FLAT_REMOVAL.md): no flat mode, no `--flat`, no phase A prototype scenes. Old flat saves are copied into the round tree once at startup and migrate on load. The leftovers kept on purpose are listed at the end of docs/FLAT_REMOVAL.md.
 - **Other planets** on the globe (Ochre, Rime, Anvil, Tidewell) are out of focus: Haul Bugs find no path there, and the Ochre finale camera is blocked.
 - **Polish (item 56):** the v5 wave was still running when this was written (v5play: bugs from play-testing; v5look: light, sky, hinterland; v5load: loader, perf, saves). Add their results here.
 

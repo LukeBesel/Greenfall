@@ -902,7 +902,9 @@ func _bars_to(px: float) -> void:
 func _set_player(enabled: bool) -> void:
 	if world.patch.input is PlayerInput:
 		(world.patch.input as PlayerInput).enabled = enabled
-	world.cam.input_enabled = enabled
+	var so: SliceOrbit = world.get("orbit") as SliceOrbit  # [v6flat] the globe's camera (this was the flat rig: null on the globe)
+	if so and so.cam:
+		so.cam.input_enabled = enabled
 	world.hud.visible = enabled
 
 
