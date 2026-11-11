@@ -455,13 +455,24 @@ func _haulers() -> int:
 
 
 func _at_base(p: Patch) -> bool:
-	return p.global_position.distance_to(_bench_at()) < AT_BASE_R
+	var home: Vector3 = world.call("bench_pos") if world.get("orbit") != null and world.has_method("bench_pos") else BENCH_POS  # [v6pace] the home yard, not a field bench
+	return p.global_position.distance_to(home) < AT_BASE_R
 
 
 ## [v1guide] The workbench: the flat BENCH_POS, or the globe's bench anchor (the bot used to walk to
 ## the flat spot on the globe for 60 s and then shop "remotely", which slowed every globe run).
 func _bench_at() -> Vector3:
+	var os_: OrbitSites = OrbitSites.of(world)
+	if os_ and os_.purpose and os_.purpose.bench_point() is Vector3:  # [v6pace] a woken far base's field bench
+		return os_.purpose.bench_point()
 	return world.call("bench_pos") if world.get("orbit") != null and world.has_method("bench_pos") else BENCH_POS
+
+
+## [v6pace] At a far base with no bench of its own: the bench waits until the hop home (v6qa saw
+## the bot stand 4+ min at Garden Row walking at the home bench).
+func _bench_unreachable() -> bool:
+	var os_: OrbitSites = OrbitSites.of(world)
+	return os_ != null and os_.purpose != null and os_.purpose.site > 0 and not (os_.purpose.bench_point() is Vector3)
 
 
 ## [v4bots] Where the can refills (anywhere in the hub hex, Patch._handle_tools): the flat
@@ -491,7 +502,7 @@ func _do_tin(p: Patch) -> bool:
 
 
 func _do_bench(p: Patch) -> bool:
-	if not _bench_trip:
+	if not _bench_trip or _bench_unreachable():
 		return false
 	if p.global_position.distance_to(_bench_at()) < 3.0:  # [v1guide]
 		_bench_trip = false
@@ -1135,6 +1146,14 @@ func _arc(p: Patch) -> bool:
 			HomewardDirector.on_drive_built(world)
 			_mark("drive_%d_s" % Homeward.drive())
 			print("[arc] %.1f min  built the Mk V drive  %s" % [_now() / 60.0, _planet_line()])
+	if str(d.get("key", "")) == "planets_landed" and Homeward.drive() >= 5 and SystemMap.launch_blocker(world, 1) != "" and not DevHooks.has("past-exit"):
+		# [v6pace] The drive is the planet's leave point. If the launch itself stays blocked (the next
+		# planet's reach, the rocket's state), say why and end the pacing run with its report.
+		if _now() - float(_report.get("drive_5_s", _now())) > 120.0:
+			print("[arc] %.1f min  launch blocked after the drive: %s" % [_now() / 60.0, SystemMap.launch_blocker(world, 1)])
+			_stopping = true
+			_stop_run("drive-built")
+			return true
 	if str(d.get("key", "")) == "planets_landed" and Homeward.drive() >= 5 and SystemMap.launch_blocker(world, 1) == "":
 		_exit_done = true
 		_mark("planet_exit_s")

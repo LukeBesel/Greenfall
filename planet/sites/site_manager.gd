@@ -465,14 +465,18 @@ func set_built(i: int, on: bool = true) -> void:
 
 
 ## Planet %: clean share over the regions of the built hubs (cells counted once).
+## [v6pace] data/hub.json far_hub.pct_over "all_regions": over every hub region's land instead (the
+## playable world: the number only goes up, it doesn't drop when a new region is woken). The
+## whole-globe share stays in SphereCells.clean_fraction() for a planet's later "100%".
 func planet_fraction() -> float:
 	if cells == null:
 		return 0.0
+	var all_regions: bool = str(Hub.far_cfg().get("pct_over", "built_regions")) == "all_regions"
 	var n: int = 0
 	var ok: int = 0
 	for c: Variant in _region_of:
 		var i: int = _region_of[c]
-		if built[i] == 0:
+		if built[i] == 0 and not all_regions:
 			continue
 		var ci: int = c
 		if cells.state[ci] == 5:

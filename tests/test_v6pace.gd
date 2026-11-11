@@ -53,7 +53,7 @@ func test_far_hub_prices_multiply() -> void:
 	assert_eq(Hub.far_level(), 2)
 	for n: int in FAR.size():
 		assert_eq(float(Hub.far_cost(n)["cubes"]), FAR[n], "far hub %d" % (n + 2))
-	for n: int in range(2, FAR.size()):
+	for n: int in range(2, FAR.size() - 1):
 		var f: float = float(Hub.far_cost(n)["cubes"]) / float(Hub.far_cost(n - 1)["cubes"])
 		assert_almost_eq(f, float(cfg["cost_growth"]["cubes"]), 0.3, "one growth factor between steps")
 	assert_gte(float(Hub.far_cost(4)["cubes"]), 100000.0, "hub 6 costs hundreds of thousands (owner note 64)")
@@ -68,7 +68,7 @@ func test_nice_keeps_two_digits() -> void:
 
 
 func test_trade_multiplier_is_one_without_far_hubs() -> void:
-	assert_eq(Hub.trade_mult(), 1.0)
+	assert_almost_eq(Hub.trade_mult(), 1.0 / PACE, 0.0001, "only the pace knob before the first far hub")
 	assert_gt(float(Hub.far_cfg()["sell_growth"]), 1.5, "each restored hub multiplies income")
 	assert_lt(float(Hub.far_cfg()["sell_growth"]), float(Hub.far_cfg()["cost_growth"]["cubes"]), "prices outgrow the multiplier: robots and tiers make up the rest")
 
@@ -103,8 +103,8 @@ func test_goal_chain_leads_to_the_exit() -> void:
 	assert_gt(b3, 0)
 	assert_gt(drive, b3)
 	assert_eq(land, drive + 1)
-	assert_lte(drive - b3, 10, "a short walk from base 3 to the drive: stations 5 and 6, Mk III and a few garden steps")
-	for id: String in ["shards_1", "pet_cat", "extras_radio", "builder_1", "base_4", "base_5"]:
+	assert_lte(drive - b3, 12, "a short walk from base 3 to the drive: stations 5 and 6, Mk III, base 4 and 5 and a few garden steps")
+	for id: String in ["shards_1", "pet_cat", "extras_radio", "builder_1"]:
 		assert_gt(_goal_index(id), land, "%s is not on the way out" % id)
 	var ch: Array = Economy.read_json("res://data/goals.json").get("goals", [])
 	assert_string_contains(Objectives.goal_reason(ch[land]), "You can fly on now")
@@ -114,11 +114,11 @@ func test_hub_steps_sit_between_the_base_steps() -> void:
 	var ids: Array = []
 	for o: Dictionary in Economy.read_json("res://data/objectives.json").get("objectives", []):
 		ids.append(str(o["id"]))
-	var order: Array = ["robot", "zone", "seed", "hub_fly_2", "hub_wake_2", "base2", "hub_fly_3", "hub_wake_3", "rocket_tier_2", "hub_fly_4", "hub_wake_4", "base3"]
+	var order: Array = ["robot", "zone", "seed", "hub_fly_2", "hub_wake_2", "base2", "hub_fly_3", "hub_wake_3", "rocket_tier_2", "base3", "hub_fly_4", "hub_wake_4"]
 	for i: int in range(1, order.size()):
 		assert_gt(ids.find(order[i]), ids.find(order[i - 1]), "%s comes after %s" % [order[i], order[i - 1]])
 		assert_gt(ids.find(order[i - 1]), -1)
-	var late: Array = ["hub_fly_5", "hub_wake_5", "rocket_tier_3", "hub_fly_6", "hub_wake_6"]
+	var late: Array = ["base_4", "hub_fly_5", "hub_wake_5", "rocket_tier_3", "base_5", "hub_fly_6", "hub_wake_6"]  # base 4 and 5: an income buy inside each long saving step
 	for i: int in late.size():
 		assert_gt(_goal_index(late[i]), _goal_index("base_3"))
 		assert_lt(_goal_index(late[i]), _goal_index("home_drive_5"))
@@ -211,6 +211,27 @@ func test_every_step_is_completable_on_the_globe() -> void:
 			assert_false(str(g2.get("key", "")).begins_with(gone), "goal %s is from the flat world's frontiers" % g2["id"])
 
 
+func test_woken_bases_keep_cleaning() -> void:
+	var c: Dictionary = BaseKeepers.cfg()
+	assert_gt(float(c.get("cells_per_min", 0.0)), 0.0, "a woken base cleans on its own")
+	assert_false(bool(c.get("home", true)), "the start hub's cleaning is the player's and the crews'")
+	assert_gt(BaseKeepers.rate(3, 0), BaseKeepers.rate(2, 0), "a higher base level cleans faster")
+	assert_gt(BaseKeepers.rate(2, 4), BaseKeepers.rate(2, 0), "robots left there add to it")
+	assert_eq(BaseKeepers.rate(1, 0, {"cells_per_min": 2.0, "per_level": 1.0}), 2.0)
+	assert_eq(str(Hub.far_cfg().get("pct_over", "")), "all_regions", "the planet % counts the playable world, so it only goes up")
+
+
+func test_pace_knob_scales_sales() -> void:
+	var cfg: Dictionary = Hub._hub_cfg()
+	var far: Dictionary = cfg["far_hub"]
+	var was: Variant = far.get("pace", 1.0)
+	assert_eq(float(was), PACE, "Verdance's pace (docs/BALANCE.md)")
+	far["pace"] = 2.0
+	assert_almost_eq(Hub.trade_mult(), 0.5, 0.0001, "pace 2: every sale pays half, every cube step takes twice as long")
+	far["pace"] = was
+	assert_almost_eq(Hub.trade_mult(), 1.0 / PACE, 0.0001)
+
+
 func test_base_prices() -> void:
 	var lv: Array = Economy.read_json("res://data/hub.json")["levels"]
 	assert_eq(float(lv[1]["cost"]["cubes"]), 1500.0, "base 2: the owner's start stays")
@@ -234,8 +255,9 @@ func test_clock_stands_still_behind_the_loader() -> void:
 
 
 # The pinned numbers (cubes).
-const FAR: Array[float] = [600.0, 2400.0, 9600.0, 38000.0, 150000.0]
+const FAR: Array[float] = [600.0, 2400.0, 9600.0, 38000.0, 400000.0]  # hub 6: cost_override "4" (a push before the drive)
 const MK2: float = 8000.0
+const PACE: float = 1.3
 const MK3: float = 150000.0
 const DRIVE: float = 500000.0
 const BASE3: float = 9000.0

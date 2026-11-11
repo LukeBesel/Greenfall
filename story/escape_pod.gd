@@ -37,6 +37,8 @@ const STEEL := Color(0.62, 0.64, 0.68)
 const CYAN := Color(0.3, 0.88, 1.0)
 const LAMP := Color(1.0, 0.36, 0.12)
 const SOOT := Color(0.36, 0.32, 0.28)
+## [v7pod] How bright the cabin's light out of the open door is per repair stage (x 1.4 energy).
+const CABIN_LIGHT: Array[float] = [0.3, 0.75, 1.0, 1.0]
 const PAINT_SHADER := preload("res://art/shaders/pod_paint.gdshader")
 
 ## (radius, y) of the shell, bottom to top: a teardrop, widest low, a long taper to the tip.
@@ -486,12 +488,11 @@ static func build() -> Node3D:
 	var dark: StandardMaterial3D = _trim()
 	var seam: StandardMaterial3D = Mats.lamp(CYAN, 1.5)
 	pod.set_meta("seam", seam)
+	# [v7pod] The cabin's inner wall: a clean matte cream (the old lining was a dim brown with a
+	# warm self-glow, which read as a flat smear through the hatch). Both sides drawn, so no gaps.
 	var lining := StandardMaterial3D.new()
-	lining.albedo_color = Color(0.36, 0.33, 0.3)
-	lining.roughness = 0.8
-	lining.emission_enabled = true
-	lining.emission = Color(1.0, 0.72, 0.45)
-	lining.emission_energy_multiplier = 0.12
+	lining.albedo_color = MachineArt.col("pod", "cabin_wall", Color(0.84, 0.8, 0.71))
+	lining.roughness = 0.92
 	lining.cull_mode = BaseMaterial3D.CULL_DISABLED
 	var ramp := StandardMaterial3D.new()
 	ramp.albedo_color = Color(0.58, 0.59, 0.6)
@@ -507,7 +508,9 @@ static func build() -> Node3D:
 	pod.add_child(body)
 	var lin := MeshInstance3D.new()
 	lin.name = "Lining"
-	lin.mesh = _commit(_shell_mesh(WALL, true, false, false), [lining] as Array[Material])
+	# [v7pod] skip_door: the lining used to run straight across the doorway, so the open hatch showed
+	# a flat inner skin (brown, self-lit, facet-banded) where the cabin should be.
+	lin.mesh = _commit(_shell_mesh(WALL, true, true, false), [lining] as Array[Material])
 	lin.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	pod.add_child(lin)
 	var jamb := MeshInstance3D.new()
@@ -515,11 +518,7 @@ static func build() -> Node3D:
 	jamb.mesh = _jamb_mesh()
 	jamb.material_override = gasket
 	pod.add_child(jamb)
-	var seat := MeshInstance3D.new()
-	seat.mesh = ProcMesh.rounded_box(Vector3(0.7, 0.08, 0.5), 0.03, 2)
-	seat.material_override = accent
-	seat.position = Vector3(0, DOOR_Y0 - 0.02, 0.05)
-	pod.add_child(seat)
+	_build_cabin(pod)  # [v7pod] floor, padded seat, console, wall pads, lamps
 	_build_canopy(pod, dark)
 	_build_skirt(pod, dark, accent)
 	_build_fins(pod, accent)
@@ -532,6 +531,105 @@ static func build() -> Node3D:
 	(pod.get_node("HoverGlow") as Node3D).visible = false
 	(pod.get_node("HoverLight") as OmniLight3D).visible = false
 	return pod
+
+
+## [v7pod] Where a point on the inner wall of facet j sits at height y, `off` metres in from it,
+## with a basis whose +Z looks into the cabin (for Kit parts laid on the wall).
+static func _wall_xf(j: int, y: float, off: float) -> Transform3D:
+	var n: Vector3 = facet_normal(j, y)
+	var p: Vector3 = facet_point(j, y, -WALL * cos(PI / SEGS) - off)
+	return Transform3D(Basis.looking_at(n, Vector3.UP), p)
+
+
+## [v7pod] The cabin seen through the open hatch, on the yard machines' art kit (YardArt.Kit):
+## a rubber-matted floor with a hazard sill, a padded tangerine cradle sized for Lumi with a
+## cream harness, quilted cream wall pads, a teal console with a screen and two buttons (node
+## "Cabin": its glow comes on with power), a strip of warm lamps round the back wall and a ceiling
+## lamp ("CabinLamps"), and a little red alarm lamp ("CabinAlarm") that blinks while the pod is
+## dead. Colours: data/machine_art.json "pod" (cabin_*). set_condition() powers them per stage.
+static func _build_cabin(pod: Node3D) -> void:
+	var wall_pad: Color = MachineArt.col("pod", "cabin_pad", YardArt.CREAM)
+	var seat_c: Color = MachineArt.col("pod", "cabin_seat", YardArt.ORANGE)
+	var frame: Color = MachineArt.col("pod", "cabin_frame", Color(0.17, 0.2, 0.25))
+	var console_c: Color = MachineArt.col("pod", "cabin_console", YardArt.TEAL)
+	var floor_c: Color = MachineArt.col("pod", "cabin_floor", YardArt.DARK)
+	var screen: Color = MachineArt.col("pod", "cabin_screen", YardArt.CYAN)
+	var lamp: Color = MachineArt.col("pod", "cabin_lamp", YardArt.WARM)
+	var k := YardArt.Kit.new()
+	# Floor: a deck plate just over the sill, a rubber mat on it, a hazard strip at the door.
+	var fr: float = (_door_r(DOOR_Y0) - WALL) * cos(PI / SEGS) - 0.004
+	k.cyl(fr, 0.05, Vector3(0, DOOR_Y0 - 0.02, 0), floor_c, Vector3.ZERO, 0.01, SEGS * 2)
+	k.cyl(fr - 0.1, 0.012, Vector3(0, DOOR_Y0 + 0.008, 0.04), floor_c.lightened(0.12), Vector3.ZERO, 0.004, SEGS * 2)
+	for i: int in 4:  # grip ribs on the mat
+		k.box(Vector3(0.7, 0.008, 0.025), Vector3(0, DOOR_Y0 + 0.016, -0.2 + i * 0.13), floor_c.darkened(0.2), Vector3.ZERO, 0.003)
+	k.hazard(Vector3(0.62, 0.014, 0.07), Vector3(0, DOOR_Y0 + 0.009, -fr + 0.06))
+	# The cradle: pedestal, cushion, backrest, headrest, side bolsters, harness.
+	k.box(Vector3(0.3, 0.3, 0.26), Vector3(0, 0.57, 0.33), frame, Vector3.ZERO, 0.03)
+	k.box(Vector3(0.4, 0.04, 0.34), Vector3(0, 0.71, 0.32), frame, Vector3.ZERO, 0.012)
+	k.box(Vector3(0.48, 0.11, 0.38), Vector3(0, 0.78, 0.31), seat_c, Vector3.ZERO, 0.05)
+	k.box(Vector3(0.46, 0.62, 0.1), Vector3(0, 1.13, 0.52), seat_c, Vector3(-4, 0, 0), 0.05)
+	k.box(Vector3(0.3, 0.15, 0.1), Vector3(0, 1.53, 0.5), seat_c, Vector3(-8, 0, 0), 0.05)
+	k.box(Vector3(0.5, 0.05, 0.09), Vector3(0, 0.83, 0.56), frame, Vector3.ZERO, 0.015)
+	for sx: float in [-1.0, 1.0]:
+		k.box(Vector3(0.08, 0.15, 0.36), Vector3(sx * 0.27, 0.9, 0.36), seat_c.darkened(0.08), Vector3.ZERO, 0.035)
+		k.box(Vector3(0.05, 0.12, 0.05), Vector3(sx * 0.27, 0.78, 0.22), frame, Vector3.ZERO, 0.012)
+		k.box(Vector3(0.012, 0.5, 0.012), Vector3(sx * 0.08, 1.14, 0.466), seat_c.darkened(0.22), Vector3(-4, 0, 0), 0.004)
+		k.box(Vector3(0.05, 0.56, 0.014), Vector3(sx * 0.13, 1.1, 0.462), wall_pad, Vector3(-4, 0, sx * -6.0), 0.005)
+	k.box(Vector3(0.09, 0.07, 0.02), Vector3(0, 0.92, 0.46), YardArt.STEEL, Vector3.ZERO, 0.01)
+	# Quilted wall pads on the flanks and a padded strip under the door's top edge inside.
+	for j: int in [1, 2, 10, 11]:
+		for y: float in [0.86, 1.28]:
+			k.push(_wall_xf(j, y, 0.025))
+			k.box(Vector3(0.24, 0.34, 0.05), Vector3.ZERO, wall_pad, Vector3.ZERO, 0.035)
+			k.box(Vector3(0.012, 0.3, 0.012), Vector3(0, 0, 0.026), wall_pad.darkened(0.12), Vector3.ZERO, 0.004)
+			k.pop()
+	for j: int in [3, 9]:
+		k.push(_wall_xf(j, 1.38, 0.02))
+		k.box(Vector3(0.24, 0.3, 0.04), Vector3.ZERO, wall_pad, Vector3.ZERO, 0.03)
+		k.pop()
+	# The console on the +X wall, facing the cradle and the door: a teal desk with a raked face, a
+	# screen (Lumi's C-eye mark on it) and two round buttons.
+	var cpos := Vector3(0.47, 0.0, -0.02)
+	var cxf: Transform3D = ProcMesh.xf(cpos, Vector3(0, -110, 0))
+	k.push(cxf)
+	k.box(Vector3(0.34, 0.5, 0.2), Vector3(0, 0.69, 0.0), console_c, Vector3.ZERO, 0.03)
+	k.box(Vector3(0.38, 0.05, 0.24), Vector3(0, 0.95, 0.0), wall_pad, Vector3.ZERO, 0.02)
+	k.push(ProcMesh.xf(Vector3(0, 1.06, 0.02), Vector3(-35, 0, 0)))
+	k.box(Vector3(0.32, 0.2, 0.05), Vector3.ZERO, frame, Vector3.ZERO, 0.02)
+	k.glow_box(Vector3(0.22, 0.12, 0.012), Vector3(0, 0.01, 0.026), screen)
+	k.pop()
+	k.glow_cyl(0.028, 0.02, Vector3(-0.09, 0.985, 0.07), lamp)
+	k.glow_cyl(0.028, 0.02, Vector3(0.0, 0.985, 0.08), YardArt.MINT)
+	k.box(Vector3(0.06, 0.02, 0.03), Vector3(0.1, 0.985, 0.07), YardArt.STEEL, Vector3.ZERO, 0.006)
+	k.vent(0.2, 0.12, Vector3(0, 0.6, 0.105), frame, Vector3.ZERO, 3)
+	k.pop()
+	var cabin: MeshInstance3D = k.mi(0.1, "Cabin")
+	cabin.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	pod.add_child(cabin)
+	# Lamps: a warm strip on every wall facet but the door's, above head height, and a ceiling lamp.
+	var lk := YardArt.Kit.new()
+	for j: int in SEGS:
+		if j >= DOOR_J0 - 1 and j <= DOOR_J1:
+			continue
+		lk.push(_wall_xf(j, 1.7, 0.012))
+		lk.box(Vector3(0.2, 0.05, 0.024), Vector3.ZERO, frame, Vector3.ZERO, 0.01)
+		lk.glow_box(Vector3(0.16, 0.022, 0.012), Vector3(0, 0, 0.014), lamp)
+		lk.pop()
+	lk.pipe(Vector3(0, 2.4, 0), Vector3(0, 2.0, 0), 0.014, frame, false)
+	lk.cyl(0.12, 0.04, Vector3(0, 1.98, 0.0), frame, Vector3.ZERO, 0.012, 16)
+	lk.glow_cyl(0.085, 0.02, Vector3(0, 1.955, 0.0), lamp, Vector3.ZERO, 16)
+	var lamps: MeshInstance3D = lk.mi(0.1, "CabinLamps")
+	lamps.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	pod.add_child(lamps)
+	# The alarm lamp on the console's top corner (its own material: it blinks while the pod is dead).
+	var alarm := MeshInstance3D.new()
+	alarm.name = "CabinAlarm"
+	alarm.mesh = ProcMesh.sphere(0.026, 10, 5)
+	alarm.material_override = Mats.lamp(Color(1.0, 0.18, 0.12), 0.0)
+	alarm.position = cxf * Vector3(0.13, 0.99, -0.05)
+	alarm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	pod.add_child(alarm)
+	pod.set_meta("cabin", {"cabin": cabin, "lamps": lamps, "alarm": alarm})
 
 
 ## The raked canopy over the door: a faceted glass visor proud of the shell, with frame bars.
@@ -653,14 +751,48 @@ static func _build_fins(pod: Node3D, accent: ShaderMaterial) -> void:
 	pod.set_meta("fin_lamps", lamps)
 
 
+## [v7pod] Thin raised strips along chines `js` from y0 to y1, following the profile (one mesh).
+static func _seam_strips(pod: Node3D, js: Array, y0: float, y1: float, w: float, h: float, mat: Material) -> void:
+	var ys: Array[float] = [y0]
+	for r: Vector2 in _rows():
+		if r.y > y0 + 0.01 and r.y < y1 - 0.01:
+			ys.append(r.y)
+	ys.append(y1)
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	for j: int in js:
+		var a: float = _ang(j)
+		var d := Vector3(sin(a), 0.0, -cos(a))
+		var t := Vector3(cos(a), 0.0, sin(a))
+		for i: int in ys.size() - 1:
+			var cb: Vector3 = _pt(a, ys[i], _door_r(ys[i]))
+			var ct: Vector3 = _pt(a, ys[i + 1], _door_r(ys[i + 1]))
+			var lbi: Vector3 = cb - t * w - d * 0.002
+			var rbi: Vector3 = cb + t * w - d * 0.002
+			var lti: Vector3 = ct - t * w - d * 0.002
+			var rti: Vector3 = ct + t * w - d * 0.002
+			var lbo: Vector3 = cb - t * w * 0.6 + d * h
+			var rbo: Vector3 = cb + t * w * 0.6 + d * h
+			var lto: Vector3 = ct - t * w * 0.6 + d * h
+			var rto: Vector3 = ct + t * w * 0.6 + d * h
+			var z := Vector2.ZERO
+			_quad(st, lbo, rbo, rto, lto, z, z, z, z)
+			_quad(st, rbo, rbi, rti, rto, z, z, z, z)
+			_quad(st, lbi, lbo, lto, lti, z, z, z, z)
+	st.generate_normals()
+	var mi := MeshInstance3D.new()
+	mi.mesh = st.commit()
+	mi.material_override = mat
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	pod.add_child(mi)
+
+
 ## Panel seams, raised plates, vent grilles, RCS nubs, grab rails and the mast with the beacon.
 static func _build_greebles(pod: Node3D, dark: StandardMaterial3D, seam: StandardMaterial3D, panel_m: ShaderMaterial) -> void:
-	for j: int in [0, 2, 10]:
-		var a: float = _ang(j)
-		_bar(pod, _pt(a, 0.36, _door_r(0.36) + 0.002), _pt(a, 2.1, _door_r(2.1) + 0.002), 0.006, dark)
-	for j: int in [4, 9]:
-		var a: float = _ang(j)
-		_bar(pod, _pt(a, 0.5, _door_r(0.5) + 0.004), _pt(a, 1.55, _door_r(1.55) + 0.004), 0.005, seam)
+	# [v7pod] The chine seams follow the curved shell (they were straight bars from end to end, which
+	# cut right through the cabin and showed as dark lines down its inner wall).
+	_seam_strips(pod, [0, 2, 10], 0.36, 2.1, 0.006, 0.006, dark)
+	_seam_strips(pod, [4, 9], 0.5, 1.55, 0.005, 0.008, seam)
 	var steel: StandardMaterial3D = Mats.metal("steel")
 	for j: int in [2, 10]:
 		var f: Node3D = _on_facet(pod, j, 1.12)
@@ -746,7 +878,7 @@ static func _build_lights(pod: Node3D) -> void:
 	light.light_color = Color(1.0, 0.78, 0.5)
 	light.light_energy = 0.0
 	light.omni_range = 3.2
-	light.position = Vector3(0, 1.1, 0.05)
+	light.position = Vector3(0, 1.45, -0.2)  # [v7pod] up by the lamps, clear of the seat's padding
 	pod.add_child(light)
 	var spill := MeshInstance3D.new()
 	spill.name = "Spill"
@@ -952,6 +1084,29 @@ static func set_condition(pod: Node3D, stage: int) -> void:
 	(pod.get_meta("thrust") as StandardMaterial3D).emission_energy_multiplier = 0.0 if stage < 2 else 2.5
 	for lm: StandardMaterial3D in pod.get_meta("fin_lamps", []):
 		lm.emission_energy_multiplier = 0.0 if stage == 0 else 2.5
+	_cabin_stage(pod, stage)
+
+
+## [v7pod] The cabin per stage: 0 dead (console and lamps dark, the red alarm blinks, a dim amber
+## glow), 1 patched (the console wakes, the alarm turns steady amber), 2+ restored (warm lamps on,
+## a green all-good lamp, full warm light out of the door).
+static func _cabin_stage(pod: Node3D, stage: int) -> void:
+	var c: Dictionary = pod.get_meta("cabin", {})
+	if c.is_empty():
+		return
+	YardArt.set_wear(c["cabin"], 0.3 if stage == 0 else 0.1)
+	YardArt.set_powered(c["cabin"], stage >= 1)
+	YardArt.set_powered(c["lamps"], stage >= 2)
+	var alarm: StandardMaterial3D = (c["alarm"] as MeshInstance3D).material_override
+	alarm.emission = [Color(1.0, 0.16, 0.1), Color(1.0, 0.6, 0.15), Color(0.4, 1.0, 0.5), Color(0.4, 1.0, 0.5)][stage]
+	alarm.albedo_color = alarm.emission.darkened(0.3)
+	alarm.emission_energy_multiplier = 0.0 if stage == 0 else 2.0
+	pod.set_meta("cabin_k", CABIN_LIGHT[stage])
+	var light: OmniLight3D = pod.get_node("PodLight")
+	light.light_color = Color(1.0, 0.6, 0.4) if stage == 0 else Color(1.0, 0.78, 0.5)
+	var hatch: Node3D = pod.get_node("Hatch")
+	if hatch.rotation.x < -0.5:  # open: match the light to the stage
+		set_open(pod, true, -(hatch.rotation.x - OPEN))
 
 
 ## Per-frame life: stuttering seams and glyph, flickering wires and a swaying cable while damaged;
@@ -981,6 +1136,10 @@ static func animate(pod: Node3D, t: float, delta: float) -> void:
 			var links: Array = kit["links"]
 			for k: int in links.size():
 				(links[k] as Node3D).rotation = Vector3(sin(t * 1.7 - k * 0.5) * 0.12, 0, sin(t * 2.3 - k * 0.6) * 0.18)
+			var cab: Dictionary = pod.get_meta("cabin", {})  # [v7pod] the cabin's alarm blinks
+			if not cab.is_empty():
+				var al: StandardMaterial3D = (cab["alarm"] as MeshInstance3D).material_override
+				al.emission_energy_multiplier = 3.0 if fmod(t, 1.3) < 0.3 else 0.0
 		1:
 			for i: int in lamps.size():
 				var ph: float = fmod(t * 1.3 + i * 0.33, 1.0)
@@ -1009,8 +1168,9 @@ static func set_open(pod: Node3D, open: bool, lean: float = 0.0) -> void:
 	var hatch: Node3D = pod.get_node("Hatch")
 	hatch.rotation.x = OPEN - lean if open else 0.0
 	hatch.position.z = float(pod.get_meta("hinge_z", -0.74))
-	(pod.get_node("PodLight") as OmniLight3D).light_energy = 1.4 if open else 0.0
-	((pod.get_node("Spill") as MeshInstance3D).material_override as StandardMaterial3D).albedo_color.a = 0.35 if open else 0.0
+	var k: float = float(pod.get_meta("cabin_k", 1.0))  # [v7pod] dim while the cabin is dead
+	(pod.get_node("PodLight") as OmniLight3D).light_energy = 1.4 * k if open else 0.0
+	((pod.get_node("Spill") as MeshInstance3D).material_override as StandardMaterial3D).albedo_color.a = 0.35 * k if open else 0.0
 
 
 ## Where steam vents from the door seams (pod-local).
@@ -1035,21 +1195,22 @@ static func open_door(pod: Node3D, puff: Callable, speed: float = 1.0, lean: flo
 	hatch.rotation.x = 0.0
 	hatch.position.z = z0
 	var k: float = 1.0 / maxf(speed, 0.05)
+	var lk: float = float(pod.get_meta("cabin_k", 1.0))  # [v7pod] dim while the cabin is dead
 	var tw := pod.create_tween()
 	tw.tween_property(hatch, "position:z", z0 - 0.035, 0.12 * k).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tw.parallel().tween_property(hatch, "rotation:x", -0.04, 0.12 * k)
-	tw.parallel().tween_property(light, "light_energy", 0.35, 0.12 * k)
+	tw.parallel().tween_property(light, "light_energy", 0.35 * lk, 0.12 * k)
 	tw.tween_callback(func() -> void:
 		for p: Vector3 in seam_points():
 			var out: Vector3 = Vector3(p.x, 0.0, p.z).normalized()
 			puff.call(p, out + Vector3(0, 0.35, 0)))
 	tw.tween_interval(0.45 * k)
 	tw.tween_property(hatch, "rotation:x", open_a, 0.95 * k).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-	tw.parallel().tween_property(light, "light_energy", 1.6, 0.95 * k)
-	tw.parallel().tween_property(spill, "albedo_color:a", 0.38, 1.1 * k)
+	tw.parallel().tween_property(light, "light_energy", 1.6 * lk, 0.95 * k)
+	tw.parallel().tween_property(spill, "albedo_color:a", 0.38 * lk, 1.1 * k)
 	tw.tween_property(hatch, "rotation:x", open_a + 0.07, 0.12 * k).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tw.tween_property(hatch, "rotation:x", open_a, 0.16 * k).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
-	tw.parallel().tween_property(light, "light_energy", 1.4, 0.3 * k)
+	tw.parallel().tween_property(light, "light_energy", 1.4 * lk, 0.3 * k)
 	return (0.12 + 0.45 + 0.95 + 0.28) * k
 
 

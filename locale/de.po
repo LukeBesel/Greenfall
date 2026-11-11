@@ -268,11 +268,11 @@ msgstr "Gesperrt. Bring deine Basis auf Stufe %d, um die Startrampe zu bauen."
 msgid "The launch pad is still buried. Put your first robot to work to clear it."
 msgstr "Die Startrampe ist noch verschüttet. Lass deinen ersten Roboter arbeiten, damit sie frei wird."
 
-#: automation/hub.gd:170
+#: automation/hub.gd:173
 msgid "Hub upgraded: %s."
 msgstr "Basis verbessert: %s."
 
-#: automation/hub.gd:201
+#: automation/hub.gd:204
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr "Luftwäscher in Betrieb. Die Lüfter drehen mit einem langen, staubigen Seufzer an."
 
@@ -491,7 +491,7 @@ msgstr "Ballen im Wert von %s stapelten sich an der Basis, ohne dass jemand sie 
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Die Luftwäscher haben die ganze Zeit gefiltert. Die Luft ist ein bisschen klarer."
 
-#: core/pace.gd:147 story/objectives.gd:901
+#: core/pace.gd:147 story/objectives.gd:924
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "Zu schwer. Verbessere die Hebekraft an der Werkbank."
 
@@ -703,7 +703,7 @@ msgstr "Neues Lumi-Design: %s"
 msgid "Home. The workbench is by the pod."
 msgstr "Zuhause. Die Werkbank steht bei der Kapsel."
 
-#: planet/sites/hub_purpose.gd:174
+#: planet/sites/hub_purpose.gd:174 story/objectives.gd:931
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "Die Rakete wartet auf dem Startplatz. Zuhause steht ganz oben auf ihrer Liste."
 
@@ -727,7 +727,7 @@ msgstr "Rüste die Rakete auf, dann wecke: %s"
 msgid "Wake the %s (%s)"
 msgstr "Wecke: %s (%s)"
 
-#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:491
+#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:558
 msgid "E   Wake the %s  (%s)"
 msgstr "E   Wecken: %s  (%s)"
 
@@ -793,40 +793,40 @@ msgstr "Wiederhergestellt. Weiter: mit der Rakete nach %s."
 msgid "All %d bases stand. Fly home and make the rocket ready to leave."
 msgstr "Alle %d Basen stehen. Flieg nach Hause und mach die Rakete startklar."
 
-#: planet/sites/hub_purpose.gd:666
+#: planet/sites/hub_purpose.gd:671
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:107
+#: planet/sites/orbit_sites.gd:108
 msgid "The rocket is in flight."
 msgstr "Die Rakete ist unterwegs."
 
-#: planet/sites/orbit_sites.gd:130
+#: planet/sites/orbit_sites.gd:132
 msgid "Bases restored: %d of %d"
 msgstr "Basen wiederhergestellt: %d von %d"
 
-#: planet/sites/orbit_sites.gd:168
+#: planet/sites/orbit_sites.gd:170
 msgid "E   Rocket: choose a destination"
 msgstr "E   Rakete: Ziel wählen"
 
-#: planet/sites/orbit_sites.gd:206
+#: planet/sites/orbit_sites.gd:208
 msgid "HOME"
 msgstr "ZUHAUSE"
 
-#: planet/sites/orbit_sites.gd:206
+#: planet/sites/orbit_sites.gd:208
 msgid "NEXT STOP"
 msgstr "NÄCHSTER HALT"
 
-#: planet/sites/orbit_sites.gd:208
+#: planet/sites/orbit_sites.gd:210
 msgid "Upgrade the rocket first"
 msgstr "Erst die Rakete aufrüsten"
 
-#: planet/sites/orbit_sites.gd:226
+#: planet/sites/orbit_sites.gd:228
 msgid "%s site"
 msgstr "Ort: %s"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: planet/sites/orbit_sites.gd:227 ui/main_menu.gd:525
+#: planet/sites/orbit_sites.gd:229 ui/main_menu.gd:525
 msgid "Hub %d"
 msgstr "Basis %d"
 
@@ -2193,43 +2193,43 @@ msgstr "Ziel erreicht  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "Ziel erreicht  ·  %s"
 
-#: story/objectives.gd:704
+#: story/objectives.gd:727
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "Ballenpresse eingebaut! Füll dein Brustfach, drück [%s] für einen Ballen und trag ihn zur Waage."
 
-#: story/objectives.gd:726 story/objectives.gd:889
+#: story/objectives.gd:749 story/objectives.gd:912
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Dein Brustfach ist voll. Drück [%s] für einen Ballen."
 
-#: story/objectives.gd:742
+#: story/objectives.gd:765
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "Dein Detektor hat in der Nähe ein vergrabenes Roboterteil gefunden. Folge der Anzeige VERGRABENES TEIL; er piept, wenn du genau darüber stehst."
 
-#: story/objectives.gd:744
+#: story/objectives.gd:767
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "VERGRABENES TEIL: Geh darauf zu, bis der Wert am höchsten ist, dann grab es aus."
 
-#: story/objectives.gd:890
+#: story/objectives.gd:913
 msgid "Your chest is full. Bring it to the bin."
 msgstr "Dein Brustfach ist voll. Bring es zur Tonne."
 
-#: story/objectives.gd:897
+#: story/objectives.gd:920
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "Dein Brustfach ist voll. Ab nach Hause: Die Tonne steht unter der hohen Rauchsäule."
 
-#: story/objectives.gd:899
+#: story/objectives.gd:922
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "Trag deinen Ballen nach Hause: Die Waage steht unter der hohen Rauchsäule."
 
-#: story/objectives.gd:899
+#: story/objectives.gd:922
 msgid "Carry your bale to the scale by the bin."
 msgstr "Trag deinen Ballen zur Waage neben der Tonne."
 
-#: story/objectives.gd:906
+#: story/objectives.gd:932
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "Ab nach Hause: Folge dem Lichtstrahl zur hohen Rauchsäule."
 
-#: story/objectives.gd:916
+#: story/objectives.gd:942
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Hier gibt es nichts aufzuheben. Lauf dorthin, wo mehr Müll liegt."
 
@@ -3511,7 +3511,7 @@ msgstr "Alles sauber hier!"
 msgid "Only big pieces left"
 msgstr "Nur noch große Teile übrig"
 
-#: tools/ui_audit_run.gd:316 ui/locker_panel.gd:84 ui/telescope_view.gd:379
+#: tools/ui_audit_run.gd:318 ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"
 msgstr "Schließen"
 
@@ -4851,68 +4851,68 @@ msgstr ""
 msgid "All built"
 msgstr "Alle gebaut"
 
-#: ui/hud.gd:79
+#: ui/hud.gd:82
 msgid "Lumi reached level %d%s"
 msgstr "Lumi hat Stufe %d erreicht%s"
 
-#: ui/hud.gd:164
+#: ui/hud.gd:179
 msgid "OLD TOWN   0%"
 msgstr "ALTSTADT   0%"
 
-#: ui/hud.gd:315
+#: ui/hud.gd:358
 msgid "WREN SIGNAL   %d%%"
 msgstr "WREN-SIGNAL   %d%%"
 
-#: ui/hud.gd:344
+#: ui/hud.gd:401
 msgid "HEX  %d%% CLEAR"
 msgstr "HEX  %d%% SAUBER"
 
-#: ui/hud.gd:348
+#: ui/hud.gd:405
 msgid "%s  BASE"
 msgstr "%s  BASIS"
 
-#: ui/hud.gd:351
+#: ui/hud.gd:408
 msgid "CARRYING %d/%d"
 msgstr "TRÄGT %d/%d"
 
-#: ui/hud.gd:383
+#: ui/hud.gd:440
 msgid "HEX  CLEAR"
 msgstr "HEX  SAUBER"
 
-#: ui/hud.gd:387
+#: ui/hud.gd:444
 msgid "HEX  %s"
 msgstr "HEX  %s"
 
-#: ui/hud.gd:390
+#: ui/hud.gd:447
 msgid "  SUSTAIN %d%%"
 msgstr "  STABIL %d%%"
 
-#: ui/hud.gd:392
+#: ui/hud.gd:449
 msgid "  THIRSTY"
 msgstr "  DURSTIG"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:422
+#: ui/hud.gd:479
 msgid "%s   pick up bale"
 msgstr "%s   Ballen aufheben"
 
-#: ui/hud.gd:423
+#: ui/hud.gd:480
 msgid "%s   dig up part"
 msgstr "%s   Teil ausgraben"
 
-#: ui/hud.gd:424
+#: ui/hud.gd:481
 msgid "%s   read memory shard"
 msgstr "%s   Erinnerungssplitter lesen"
 
-#: ui/hud.gd:425
+#: ui/hud.gd:482
 msgid "%s   pick up the seed tin"
 msgstr "%s   Samendose aufheben"
 
-#: ui/hud.gd:426
+#: ui/hud.gd:483
 msgid "%s   set bale down"
 msgstr "%s   Ballen abstellen"
 
-#: ui/hud.gd:427
+#: ui/hud.gd:484
 msgid "%s   workbench"
 msgstr "%s   Werkbank"
 
@@ -10952,6 +10952,10 @@ msgstr "Verbessere die Basis auf Stufe 3"
 msgid "Build a Seedling planter"
 msgstr "Bau einen Seedling-Pflanzer"
 
+#: data/goals.json:goals[base_4].text
+msgid "Upgrade the base to level 4"
+msgstr "Verbessere die Basis auf Stufe 4"
+
 #: data/goals.json:goals[hub_fly_5].text data/goals.json:goals[hub_fly_6].text data/objectives.json:objectives[hub_fly_2].text
 #: data/objectives.json:objectives[hub_fly_3].text data/objectives.json:objectives[hub_fly_4].text
 msgid "Fly to the next station"
@@ -10972,6 +10976,10 @@ msgstr "Rüste die Rakete auf Mk III auf"
 #: data/goals.json:goals[drip_1].text
 msgid "Build a Drip watering robot"
 msgstr "Bau einen Drip-Gießroboter"
+
+#: data/goals.json:goals[base_5].text
+msgid "Upgrade the base to level 5"
+msgstr "Verbessere die Basis auf Stufe 5"
 
 #: data/goals.json:goals[hub_wake_6].text
 msgid "Wake station 6 of 6"
@@ -11201,10 +11209,6 @@ msgstr "Bring 15 Hexfelder auf Blühend"
 msgid "Get 20 hexes to Sustained"
 msgstr "Bring 20 Hexfelder auf Stabil"
 
-#: data/goals.json:goals[base_4].text
-msgid "Upgrade the base to level 4"
-msgstr "Verbessere die Basis auf Stufe 4"
-
 #: data/goals.json:goals[stipend_5k].text
 msgid "Garden stipend: 5,000 cubes"
 msgstr "Gartenzuschuss: 5.000 Würfel"
@@ -11232,10 +11236,6 @@ msgstr "Gartenzuschuss: 10.000 Würfel"
 #: data/goals.json:goals[hexlv_5x25].text
 msgid "Get 25 hexes to Thriving"
 msgstr "Bring 25 Hexfelder auf Blühend"
-
-#: data/goals.json:goals[base_5].text
-msgid "Upgrade the base to level 5"
-msgstr "Verbessere die Basis auf Stufe 5"
 
 #: data/goals.json:goals[extras_retire].text
 msgid "Retire a robot to the nursery"
@@ -12382,10 +12382,6 @@ msgstr "Als Nächstes zwanzig Hexfelder. Die Luft riecht schon anders."
 msgid "Upgrade the rocket to Mk II"
 msgstr "Rüste die Rakete auf Mk II auf"
 
-#: data/objectives.json:objectives[hub_wake_4].text
-msgid "Wake station 4 of 6"
-msgstr "Weck Station 4 von 6"
-
 #: data/objectives.json:objectives[base3].text
 msgid "Rebuild the base to level 3"
 msgstr "Bau die Basis auf Stufe 3 aus"
@@ -12397,6 +12393,10 @@ msgstr "Tab „Upgrades“. Eine stärkere Basis treibt größere Maschinen an."
 #: data/objectives.json:objectives[base3].lines
 msgid "One more base level, Lumi. Bigger machines need a stronger base."
 msgstr "Noch eine Basisstufe, Lumi. Größere Maschinen brauchen eine stärkere Basis."
+
+#: data/objectives.json:objectives[hub_wake_4].text
+msgid "Wake station 4 of 6"
+msgstr "Weck Station 4 von 6"
 
 #: data/outposts.json:levels[0].name
 msgid "Weigh Station"

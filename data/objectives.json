@@ -269,6 +269,16 @@
       "target": 2
     },
     {
+      "id": "base3",
+      "text": "Rebuild the base to level 3",
+      "desc": "Upgrades tab. A stronger base runs bigger machines.",
+      "type": "hub_level",
+      "target": 3,
+      "lines": [
+        "One more base level, Lumi. Bigger machines need a stronger base."
+      ]
+    },
+    {
       "id": "hub_fly_4",
       "text": "Fly to the next station",
       "type": "stat",
@@ -281,16 +291,6 @@
       "type": "stat",
       "key": "hubs_woken",
       "target": 3
-    },
-    {
-      "id": "base3",
-      "text": "Rebuild the base to level 3",
-      "desc": "Upgrades tab. A stronger base runs bigger machines.",
-      "type": "hub_level",
-      "target": 3,
-      "lines": [
-        "One more base level, Lumi. Bigger machines need a stronger base."
-      ]
     }
   ]
 }

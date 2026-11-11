@@ -105,6 +105,9 @@ func test_planet_fraction_counts_built_hub_regions_only() -> void:
 	g.cells.state.fill(0)
 	g.cells.junk.fill(1.0)
 	assert_almost_eq(sm.planet_fraction(), 0.0, 0.001)
+	var far: Dictionary = Hub._hub_cfg()["far_hub"]  # [v6pace] this test is about pct_over "built_regions"
+	var was_over: Variant = far.get("pct_over", "built_regions")
+	far["pct_over"] = "built_regions"
 	for c: int in sm.regions[0]:
 		g.cells.set_state(c, 1)
 		g.cells.set_junk(c, 0.0)
@@ -115,6 +118,11 @@ func test_planet_fraction_counts_built_hub_regions_only() -> void:
 		for c: int in sm.regions[k]:
 			union[c] = true
 	assert_almost_eq(sm.planet_fraction(), float(sm.regions[0].size()) / float(union.size()), 0.001)
+	sm.set_built(1, false)
+	far["pct_over"] = "all_regions"  # [v6pace] every hub region counts, woken or not: the % never drops at a wake
+	assert_almost_eq(sm.planet_fraction(), float(sm.regions[0].size()) / float(union.size()), 0.001)
+	far["pct_over"] = was_over
+	sm.set_built(1)
 	# A thriving hub greens cells past its region.
 	var n: int = sm.grow(600.0)
 	assert_gt(n, 0)

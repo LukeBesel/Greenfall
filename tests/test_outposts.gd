@@ -132,7 +132,7 @@ func test_upgrades_bigger_skip_then_recharge_pad() -> void:
 	assert_eq(op.level_of(0), 2)
 	assert_gt(d.pad_radius, r1, "Big Skip: wider plate")
 	assert_gt(d.value_bonus, 0.0, "Big Skip: better price")
-	assert_almost_eq(d.sell_factor(), 1.0 + d.value_bonus, 0.001)
+	assert_almost_eq(d.sell_factor(), (1.0 + d.value_bonus) * Hub.trade_mult(), 0.001)  # [v6pace] far_hub.pace
 	assert_true(op.upgrade(0, false))
 	assert_eq(op.level_of(0), 3)
 	assert_eq(op.upgrade_block(0), "Fully upgraded.")
