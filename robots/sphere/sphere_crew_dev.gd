@@ -7,7 +7,9 @@ extends RefCounted
 ##                                    prints the [bots] table before --quit-after
 ##   --orbit-far-crew[=N]             3 Scoopies + 1 Haul Bug at hub site N (default 1, ~1.7 km
 ##                                    away); prints the far shell's colour there before --quit-after
-##   --bot-motion                     with --quit-after: [motion] jitter / building-overlap report
+##   --bot-motion                     with --quit-after: [motion] jitter / building-overlap report,
+##                                    [v6crew] plus metres, deg/100m, trip detour and hauler bunching;
+##                                    --motion-debug adds a [flip] line per hauler reversal (what was near)
 ##   --crew-build=type[,seconds]     [v6crew] builds a robot at the bench after a while and logs its hello
 ##   --crew-cam=i[,dist,height]      [v6crew] a dev camera on robot i (rendered audits of the crew)
 ##   --offline-jump[=S]               offline jump of S seconds (default 7200) for the --robots
