@@ -519,7 +519,7 @@ msgstr "%s 相当のベールが、運ぶ者もなく基地に積まれていた
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "清浄機がずっと空気をろ過していた。少しだけ澄んだ。"
 
-#: core/pace.gd:147 story/objectives.gd:840
+#: core/pace.gd:147 story/objectives.gd:852
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "重すぎる。作業台でリフト力をアップグレードしよう。"
 
@@ -2186,51 +2186,51 @@ msgstr "LEDGER  WMS-07"
 msgid "Reward: %s"
 msgstr "報酬：%s"
 
-#: story/objectives.gd:380
+#: story/objectives.gd:390
 msgid "Objective complete  ·  %s"
 msgstr "目標達成  ·  %s"
 
-#: story/objectives.gd:407
+#: story/objectives.gd:417
 msgid "Goal complete  ·  %s"
 msgstr "目標達成  ·  %s"
 
-#: story/objectives.gd:676
+#: story/objectives.gd:688
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "ベーラーを取り付けた！胸をいっぱいにして、[%s] でベールを作り、はかりまで運ぼう。"
 
-#: story/objectives.gd:698 story/objectives.gd:828
+#: story/objectives.gd:710 story/objectives.gd:840
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "胸がいっぱい。[%s] を押してベールを作ろう。"
 
-#: story/objectives.gd:714
+#: story/objectives.gd:726
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "探知機が近くに埋まったロボットのパーツを見つけたよ。「埋もれたパーツ」の表示を追って。真上に来るとピッと鳴るよ。"
 
-#: story/objectives.gd:716
+#: story/objectives.gd:728
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋もれたパーツ：反応が一番強くなるまで近づいて、掘り出そう。"
 
-#: story/objectives.gd:829
+#: story/objectives.gd:841
 msgid "Your chest is full. Bring it to the bin."
 msgstr "胸がいっぱい。ゴミ箱へ運ぼう。"
 
-#: story/objectives.gd:836
+#: story/objectives.gd:848
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "胸がいっぱい。おうちへ帰ろう。ゴミ箱は高い煙の下だよ。"
 
-#: story/objectives.gd:838
+#: story/objectives.gd:850
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "ベールをおうちへ運ぼう。はかりは高い煙の下だよ。"
 
-#: story/objectives.gd:838
+#: story/objectives.gd:850
 msgid "Carry your bale to the scale by the bin."
 msgstr "ベールをゴミ箱のそばのはかりへ運ぼう。"
 
-#: story/objectives.gd:845
+#: story/objectives.gd:857
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "おうちへ帰ろう。光の柱を追って高い煙のところへ。"
 
-#: story/objectives.gd:855
+#: story/objectives.gd:867
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "ここには拾うものがない。もっとゴミのあるところへ歩こう。"
 
@@ -10963,6 +10963,11 @@ msgstr "基地をレベル3にする"
 msgid "Build a Seedling planter"
 msgstr "Seedling の植え付けロボを作る"
 
+#: data/goals.json:goals[hub_fly_5].text data/goals.json:goals[hub_fly_6].text data/objectives.json:objectives[hub_fly_2].text
+#: data/objectives.json:objectives[hub_fly_3].text data/objectives.json:objectives[hub_fly_4].text
+msgid "Fly to the next station"
+msgstr "次のステーションへ飛ぼう"
+
 #: data/goals.json:goals[hub_wake_5].text
 msgid "Wake station 5 of 6"
 msgstr "ステーション5/6を目覚めさせよう"
@@ -11295,10 +11300,6 @@ msgstr "ヘックスを40個完全によみがえらせる"
 msgid "New base to level 4"
 msgstr "新しい基地をレベル4に"
 
-#: data/goals.json:goals[research_dunes].text
-msgid "Research Dune Charts"
-msgstr "「砂丘の海図」を研究する"
-
 #: data/goals.json:goals[research_24].text
 msgid "Finish 24 research projects"
 msgstr "研究を24件完了する"
@@ -11311,10 +11312,6 @@ msgstr "ヘックスを80個片づける"
 msgid "Clean 100 hexes"
 msgstr "ヘックスを100個片づける"
 
-#: data/goals.json:goals[research_lance].text
-msgid "Research Thermal Lance"
-msgstr "「サーマルランス」を研究する"
-
 #: data/goals.json:goals[research_26].text
 msgid "Finish 26 research projects"
 msgstr "研究を26件完了する"
@@ -11322,14 +11319,6 @@ msgstr "研究を26件完了する"
 #: data/goals.json:goals[hex_130].text
 msgid "Clean 130 hexes"
 msgstr "ヘックスを130個片づける"
-
-#: data/goals.json:goals[research_pumps].text
-msgid "Research Pump Works"
-msgstr "「ポンプ設備」を研究する"
-
-#: data/goals.json:goals[research_beacon].text
-msgid "Research the Ark Beacon"
-msgstr "「アークビーコン」を研究する"
 
 #: data/goals.json:goals[home_restore_2].text
 msgid "Restore a second planet"
@@ -12331,10 +12320,6 @@ msgstr "掃除を続けよう。きれいな地面から種が見つかる。"
 #: data/objectives.json:objectives[seed].lines
 msgid "Something green is waking out there. Plant the first seed."
 msgstr "外で緑の何かが目を覚ましかけてる。最初の種を植えて。"
-
-#: data/objectives.json:objectives[hub_fly_2].text
-msgid "Fly to the next station"
-msgstr "次のステーションへ飛ぼう"
 
 #: data/objectives.json:objectives[hub_wake_2].text
 msgid "Wake station 2 of 6"
@@ -16934,6 +16919,18 @@ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "Research Dune Charts"
+#~ msgstr "「砂丘の海図」を研究する"
+
+#~ msgid "Research Thermal Lance"
+#~ msgstr "「サーマルランス」を研究する"
+
+#~ msgid "Research Pump Works"
+#~ msgstr "「ポンプ設備」を研究する"
+
+#~ msgid "Research the Ark Beacon"
+#~ msgstr "「アークビーコン」を研究する"
 
 #~ msgid "Get a second base to level 5"
 #~ msgstr "2つ目の基地をレベル5にする"

@@ -519,7 +519,7 @@ msgstr "Pacas por valor de %s se amontonaron en la base sin nadie que las llevar
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Los depuradores filtraron el aire todo el rato. Está un poco más limpio."
 
-#: core/pace.gd:147 story/objectives.gd:840
+#: core/pace.gd:147 story/objectives.gd:852
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "Pesa demasiado. Mejora la Fuerza de elevación en el banco."
 
@@ -2192,51 +2192,51 @@ msgstr "LEDGER  WMS-07"
 msgid "Reward: %s"
 msgstr "Recompensa: %s"
 
-#: story/objectives.gd:380
+#: story/objectives.gd:390
 msgid "Objective complete  ·  %s"
 msgstr "Objetivo cumplido  ·  %s"
 
-#: story/objectives.gd:407
+#: story/objectives.gd:417
 msgid "Goal complete  ·  %s"
 msgstr "Objetivo cumplido  ·  %s"
 
-#: story/objectives.gd:676
+#: story/objectives.gd:688
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "¡Empacadora instalada! Llena tu pecho, pulsa [%s] para prensar un fardo y llévalo a la báscula."
 
-#: story/objectives.gd:698 story/objectives.gd:828
+#: story/objectives.gd:710 story/objectives.gd:840
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Tu pecho está lleno. Pulsa [%s] para hacer un fardo."
 
-#: story/objectives.gd:714
+#: story/objectives.gd:726
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "Tu detector ha encontrado una pieza de robot enterrada cerca. Sigue la lectura PIEZA ENTERRADA; pita cuando estás justo encima."
 
-#: story/objectives.gd:716
+#: story/objectives.gd:728
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "PIEZA ENTERRADA: camina hacia ella hasta que la lectura llegue al máximo y desentiérrala."
 
-#: story/objectives.gd:829
+#: story/objectives.gd:841
 msgid "Your chest is full. Bring it to the bin."
 msgstr "Tu pecho está lleno. Llévalo al cubo."
 
-#: story/objectives.gd:836
+#: story/objectives.gd:848
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "Tu pecho está lleno. Vuelve a casa: el cubo está bajo el humo alto."
 
-#: story/objectives.gd:838
+#: story/objectives.gd:850
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "Lleva tu fardo a casa: la báscula está bajo el humo alto."
 
-#: story/objectives.gd:838
+#: story/objectives.gd:850
 msgid "Carry your bale to the scale by the bin."
 msgstr "Lleva tu fardo a la báscula, junto al cubo."
 
-#: story/objectives.gd:845
+#: story/objectives.gd:857
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "Vuelve a casa: sigue el rayo hasta el humo alto."
 
-#: story/objectives.gd:855
+#: story/objectives.gd:867
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Aquí no hay nada que recoger. Camina hasta donde haya más basura."
 
@@ -10979,6 +10979,11 @@ msgstr "Mejora la base a nivel 3"
 msgid "Build a Seedling planter"
 msgstr "Construye un plantador Seedling"
 
+#: data/goals.json:goals[hub_fly_5].text data/goals.json:goals[hub_fly_6].text data/objectives.json:objectives[hub_fly_2].text
+#: data/objectives.json:objectives[hub_fly_3].text data/objectives.json:objectives[hub_fly_4].text
+msgid "Fly to the next station"
+msgstr "Vuela a la siguiente estación"
+
 #: data/goals.json:goals[hub_wake_5].text
 msgid "Wake station 5 of 6"
 msgstr "Despierta la estación 5 de 6"
@@ -11311,10 +11316,6 @@ msgstr "Restaura 40 hexágonos por completo"
 msgid "New base to level 4"
 msgstr "Nueva base a nivel 4"
 
-#: data/goals.json:goals[research_dunes].text
-msgid "Research Dune Charts"
-msgstr "Investiga las Cartas de dunas"
-
 #: data/goals.json:goals[research_24].text
 msgid "Finish 24 research projects"
 msgstr "Termina 24 proyectos de investigación"
@@ -11327,10 +11328,6 @@ msgstr "Limpia 80 hexágonos"
 msgid "Clean 100 hexes"
 msgstr "Limpia 100 hexágonos"
 
-#: data/goals.json:goals[research_lance].text
-msgid "Research Thermal Lance"
-msgstr "Investiga la Lanza térmica"
-
 #: data/goals.json:goals[research_26].text
 msgid "Finish 26 research projects"
 msgstr "Termina 26 proyectos de investigación"
@@ -11338,14 +11335,6 @@ msgstr "Termina 26 proyectos de investigación"
 #: data/goals.json:goals[hex_130].text
 msgid "Clean 130 hexes"
 msgstr "Limpia 130 hexágonos"
-
-#: data/goals.json:goals[research_pumps].text
-msgid "Research Pump Works"
-msgstr "Investiga las Estaciones de bombeo"
-
-#: data/goals.json:goals[research_beacon].text
-msgid "Research the Ark Beacon"
-msgstr "Investiga la Baliza del Arca"
 
 #: data/goals.json:goals[home_restore_2].text
 msgid "Restore a second planet"
@@ -12347,10 +12336,6 @@ msgstr "Sigue limpiando. Las semillas aparecen en suelo limpio."
 #: data/objectives.json:objectives[seed].lines
 msgid "Something green is waking out there. Plant the first seed."
 msgstr "Algo verde está despertando ahí fuera. Planta la primera semilla."
-
-#: data/objectives.json:objectives[hub_fly_2].text
-msgid "Fly to the next station"
-msgstr "Vuela a la siguiente estación"
 
 #: data/objectives.json:objectives[hub_wake_2].text
 msgid "Wake station 2 of 6"
@@ -16950,6 +16935,18 @@ msgstr "Ese pórtico desguazó la flota del Ledger cuando se acabó el dinero. E
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un mundo de óxido, verde. Las viejas grúas tienen flores a sus pies. Las cuentas están cerradas, {name}. Las hemos cuadrado."
+
+#~ msgid "Research Dune Charts"
+#~ msgstr "Investiga las Cartas de dunas"
+
+#~ msgid "Research Thermal Lance"
+#~ msgstr "Investiga la Lanza térmica"
+
+#~ msgid "Research Pump Works"
+#~ msgstr "Investiga las Estaciones de bombeo"
+
+#~ msgid "Research the Ark Beacon"
+#~ msgstr "Investiga la Baliza del Arca"
 
 #~ msgid "Get a second base to level 5"
 #~ msgstr "Lleva una segunda base a nivel 5"

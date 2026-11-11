@@ -519,7 +519,7 @@ msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
-#: core/pace.gd:147 story/objectives.gd:840
+#: core/pace.gd:147 story/objectives.gd:852
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "太重了。去工作台升级举升力。"
 
@@ -2186,51 +2186,51 @@ msgstr "LEDGER  WMS-07"
 msgid "Reward: %s"
 msgstr "奖励：%s"
 
-#: story/objectives.gd:380
+#: story/objectives.gd:390
 msgid "Objective complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:407
+#: story/objectives.gd:417
 msgid "Goal complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:676
+#: story/objectives.gd:688
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "打包机装好了！装满胸舱，按 [%s] 压一个捆包，再把它搬到秤上。"
 
-#: story/objectives.gd:698 story/objectives.gd:828
+#: story/objectives.gd:710 story/objectives.gd:840
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "你的胸舱满了。按 [%s] 压一个捆包。"
 
-#: story/objectives.gd:714
+#: story/objectives.gd:726
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "你的探测器发现附近埋着一个机器人零件。跟着“埋藏零件”的读数走；走到正上方时它会哔哔响。"
 
-#: story/objectives.gd:716
+#: story/objectives.gd:728
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
 
-#: story/objectives.gd:829
+#: story/objectives.gd:841
 msgid "Your chest is full. Bring it to the bin."
 msgstr "你的胸舱满了。带到垃圾桶去。"
 
-#: story/objectives.gd:836
+#: story/objectives.gd:848
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "你的胸舱满了。回家吧：垃圾桶就在高高的烟柱下面。"
 
-#: story/objectives.gd:838
+#: story/objectives.gd:850
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "把捆包搬回家：秤就在高高的烟柱下面。"
 
-#: story/objectives.gd:838
+#: story/objectives.gd:850
 msgid "Carry your bale to the scale by the bin."
 msgstr "把捆包搬到垃圾桶旁边的秤上。"
 
-#: story/objectives.gd:845
+#: story/objectives.gd:857
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "回家吧：跟着光柱走到高高的烟柱那里。"
 
-#: story/objectives.gd:855
+#: story/objectives.gd:867
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "这里没有东西可捡。走到垃圾更多的地方去。"
 
@@ -10963,6 +10963,11 @@ msgstr "将基地升到 3 级"
 msgid "Build a Seedling planter"
 msgstr "建造一台 Seedling 种植机器人"
 
+#: data/goals.json:goals[hub_fly_5].text data/goals.json:goals[hub_fly_6].text data/objectives.json:objectives[hub_fly_2].text
+#: data/objectives.json:objectives[hub_fly_3].text data/objectives.json:objectives[hub_fly_4].text
+msgid "Fly to the next station"
+msgstr "飞往下一座站点"
+
 #: data/goals.json:goals[hub_wake_5].text
 msgid "Wake station 5 of 6"
 msgstr "唤醒第 5 座站点(共 6 座)"
@@ -11295,10 +11300,6 @@ msgstr "完全恢复 40 个六角格"
 msgid "New base to level 4"
 msgstr "新基地升到 4 级"
 
-#: data/goals.json:goals[research_dunes].text
-msgid "Research Dune Charts"
-msgstr "研究“沙丘海图”"
-
 #: data/goals.json:goals[research_24].text
 msgid "Finish 24 research projects"
 msgstr "完成 24 项研究"
@@ -11311,10 +11312,6 @@ msgstr "清理 80 个六角格"
 msgid "Clean 100 hexes"
 msgstr "清理 100 个六角格"
 
-#: data/goals.json:goals[research_lance].text
-msgid "Research Thermal Lance"
-msgstr "研究“热能长矛”"
-
 #: data/goals.json:goals[research_26].text
 msgid "Finish 26 research projects"
 msgstr "完成 26 项研究"
@@ -11322,14 +11319,6 @@ msgstr "完成 26 项研究"
 #: data/goals.json:goals[hex_130].text
 msgid "Clean 130 hexes"
 msgstr "清理 130 个六角格"
-
-#: data/goals.json:goals[research_pumps].text
-msgid "Research Pump Works"
-msgstr "研究“泵站”"
-
-#: data/goals.json:goals[research_beacon].text
-msgid "Research the Ark Beacon"
-msgstr "研究“方舟信标”"
 
 #: data/goals.json:goals[home_restore_2].text
 msgid "Restore a second planet"
@@ -12331,10 +12320,6 @@ msgstr "继续清理。干净的土地里会冒出种子。"
 #: data/objectives.json:objectives[seed].lines
 msgid "Something green is waking out there. Plant the first seed."
 msgstr "外面有绿色的东西正在醒来。种下第一颗种子吧。"
-
-#: data/objectives.json:objectives[hub_fly_2].text
-msgid "Fly to the next station"
-msgstr "飞往下一座站点"
 
 #: data/objectives.json:objectives[hub_wake_2].text
 msgid "Wake station 2 of 6"
@@ -16934,6 +16919,18 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Research Dune Charts"
+#~ msgstr "研究“沙丘海图”"
+
+#~ msgid "Research Thermal Lance"
+#~ msgstr "研究“热能长矛”"
+
+#~ msgid "Research Pump Works"
+#~ msgstr "研究“泵站”"
+
+#~ msgid "Research the Ark Beacon"
+#~ msgstr "研究“方舟信标”"
 
 #~ msgid "Get a second base to level 5"
 #~ msgstr "让第二座基地达到 5 级"

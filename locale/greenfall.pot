@@ -518,7 +518,7 @@ msgstr ""
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr ""
 
-#: core/pace.gd:147 story/objectives.gd:840
+#: core/pace.gd:147 story/objectives.gd:852
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr ""
 
@@ -2166,51 +2166,51 @@ msgstr ""
 msgid "Reward: %s"
 msgstr ""
 
-#: story/objectives.gd:380
+#: story/objectives.gd:390
 msgid "Objective complete  ·  %s"
 msgstr ""
 
-#: story/objectives.gd:407
+#: story/objectives.gd:417
 msgid "Goal complete  ·  %s"
 msgstr ""
 
-#: story/objectives.gd:676
+#: story/objectives.gd:688
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr ""
 
-#: story/objectives.gd:698 story/objectives.gd:828
+#: story/objectives.gd:710 story/objectives.gd:840
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr ""
 
-#: story/objectives.gd:714
+#: story/objectives.gd:726
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr ""
 
-#: story/objectives.gd:716
+#: story/objectives.gd:728
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr ""
 
-#: story/objectives.gd:829
+#: story/objectives.gd:841
 msgid "Your chest is full. Bring it to the bin."
 msgstr ""
 
-#: story/objectives.gd:836
+#: story/objectives.gd:848
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:838
+#: story/objectives.gd:850
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:838
+#: story/objectives.gd:850
 msgid "Carry your bale to the scale by the bin."
 msgstr ""
 
-#: story/objectives.gd:845
+#: story/objectives.gd:857
 msgid "Head home: follow the beam to the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:855
+#: story/objectives.gd:867
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr ""
 
@@ -10859,6 +10859,11 @@ msgstr ""
 msgid "Build a Seedling planter"
 msgstr ""
 
+#: data/goals.json:goals[hub_fly_5].text data/goals.json:goals[hub_fly_6].text data/objectives.json:objectives[hub_fly_2].text
+#: data/objectives.json:objectives[hub_fly_3].text data/objectives.json:objectives[hub_fly_4].text
+msgid "Fly to the next station"
+msgstr ""
+
 #: data/goals.json:goals[hub_wake_5].text
 msgid "Wake station 5 of 6"
 msgstr ""
@@ -11191,10 +11196,6 @@ msgstr ""
 msgid "New base to level 4"
 msgstr ""
 
-#: data/goals.json:goals[research_dunes].text
-msgid "Research Dune Charts"
-msgstr ""
-
 #: data/goals.json:goals[research_24].text
 msgid "Finish 24 research projects"
 msgstr ""
@@ -11207,24 +11208,12 @@ msgstr ""
 msgid "Clean 100 hexes"
 msgstr ""
 
-#: data/goals.json:goals[research_lance].text
-msgid "Research Thermal Lance"
-msgstr ""
-
 #: data/goals.json:goals[research_26].text
 msgid "Finish 26 research projects"
 msgstr ""
 
 #: data/goals.json:goals[hex_130].text
 msgid "Clean 130 hexes"
-msgstr ""
-
-#: data/goals.json:goals[research_pumps].text
-msgid "Research Pump Works"
-msgstr ""
-
-#: data/goals.json:goals[research_beacon].text
-msgid "Research the Ark Beacon"
 msgstr ""
 
 #: data/goals.json:goals[home_restore_2].text
@@ -12144,10 +12133,6 @@ msgstr ""
 
 #: data/objectives.json:objectives[seed].lines
 msgid "Something green is waking out there. Plant the first seed."
-msgstr ""
-
-#: data/objectives.json:objectives[hub_fly_2].text
-msgid "Fly to the next station"
 msgstr ""
 
 #: data/objectives.json:objectives[hub_wake_2].text

@@ -216,6 +216,13 @@
       ]
     },
     {
+      "id": "hub_fly_3",
+      "text": "Fly to the next station",
+      "type": "stat",
+      "key": "hubs_seen",
+      "target": 2
+    },
+    {
       "id": "hub_wake_3",
       "text": "Wake station 3 of 6",
       "type": "stat",
@@ -260,6 +267,13 @@
       "type": "stat",
       "key": "rocket_tier",
       "target": 2
+    },
+    {
+      "id": "hub_fly_4",
+      "text": "Fly to the next station",
+      "type": "stat",
+      "key": "hubs_seen",
+      "target": 3
     },
     {
       "id": "hub_wake_4",
