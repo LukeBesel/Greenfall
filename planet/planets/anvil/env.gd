@@ -1112,16 +1112,3 @@ func _dev_hooks() -> void:
 			fc.current = true
 	if DevHooks.has("planet-nohud"):  # clean landscape shots: hide every overlay (see _process)
 		set_meta("nohud", true)
-	if DevHooks.has("planet-cam"):
-		var c: PackedStringArray = DevHooks.get_s("planet-cam", "30,-0.3,0").split(",")
-		var cam: CameraRig = world.get("cam")
-		if cam:
-			cam.max_distance = maxf(cam.max_distance, float(c[0]))
-			cam.distance = float(c[0])
-			cam.pitch = float(c[1]) if c.size() > 1 else -0.3
-			cam.yaw = float(c[2]) if c.size() > 2 else cam.yaw
-			(cam.get("_arm") as SpringArm3D).collision_mask = 0
-			if c.size() > 3:
-				Settings.fov = float(c[3])
-				cam.camera.fov = Settings.fov
-			cam.snap()

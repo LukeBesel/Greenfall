@@ -70,9 +70,9 @@ func _make(p_site: String, seed_v: int, water_r: float) -> void:
 			_barge(Vector3(0, SEA_Y, 0), 0.7)
 		"dredge_rig":
 			islands = []
-			var a := FrontierView.Batch.new()
-			var m := FrontierView.Batch.new()
-			var f := FrontierView.Batch.new()
+			var a := PropBatch.Batch.new()
+			var m := PropBatch.Batch.new()
+			var f := PropBatch.Batch.new()
 			_rig(0, Vector3(0, SEA_Y, 0), 0.4, a, m, f, _groups["always"])
 			a.flush(_groups["always"])
 			m.flush(_groups["mid"])
@@ -256,7 +256,7 @@ func _site_junk(r: float) -> void:
 	net.shader = preload(DIR + "net.gdshader")
 	var pm := PlaneMesh.new()
 	pm.size = Vector2(2, 2)
-	var b := FrontierView.Batch.new()
+	var b := PropBatch.Batch.new()
 	for cl: int in 18:
 		var cp := Vector3(cos(cl * 1.7 + 0.4) * r * 0.55, SEA_Y + 0.015, sin(cl * 2.3 + 1.0) * r * 0.55)
 		if cl >= 6:
@@ -282,7 +282,7 @@ func _on_deck(p: Vector3) -> bool:
 
 ## Detailed shack: corrugated walls with a plinth, a pitched tin roof with overhang, a door,
 ## windows, a stove pipe. ruin: rust and a sagging roof; future: white shell, thin light seam.
-func _shack(b: FrontierView.Batch, fut: FrontierView.Batch, p: Vector3, yaw: float, size: Vector3) -> void:
+func _shack(b: PropBatch.Batch, fut: PropBatch.Batch, p: Vector3, yaw: float, size: Vector3) -> void:
 	var bs := Basis(Vector3.UP, yaw)
 	var xf := func(v: Vector3) -> Vector3: return p + bs * v
 	var rot := Vector3(0, rad_to_deg(yaw), 0)
@@ -301,7 +301,7 @@ func _shack(b: FrontierView.Batch, fut: FrontierView.Batch, p: Vector3, yaw: flo
 
 ## A timber deck of individual planks (slightly uneven, varied tones, gaps) over joists, clipped
 ## to an irregular outline (rx, rz with noise); top at y.
-func _plank_deck(b: FrontierView.Batch, c: Vector3, rx: float, rz: float, y: float, yaw: float, variant: int) -> void:
+func _plank_deck(b: PropBatch.Batch, c: Vector3, rx: float, rz: float, y: float, yaw: float, variant: int) -> void:
 	var nz := FastNoiseLite.new()
 	nz.seed = 4000 + variant
 	nz.frequency = 0.9
@@ -330,7 +330,7 @@ func _plank_deck(b: FrontierView.Batch, c: Vector3, rx: float, rz: float, y: flo
 		x += w
 
 
-func _planter(b: FrontierView.Batch, p: Vector3, r: float) -> void:
+func _planter(b: PropBatch.Batch, p: Vector3, r: float) -> void:
 	b.add(_blob_slab(_rng.randi() % 4, 0.2, 1.0), _lxf(p + Vector3(0, 0.2, 0), Vector3(0, _rng.randf() * 360.0, 0), Vector3(r, 0.4, r)), _mat("wood"))
 	for k: int in 5:
 		var o := Vector3(_rng.randf_range(-0.6, 0.6), 0.5, _rng.randf_range(-0.6, 0.6)) * r
@@ -398,10 +398,10 @@ func _mat(key: String) -> Material:
 ## The anchored raft base: an irregular timber deck (about 32 m) on rusted pontoons, a workshop
 ## shack and a store, a deck crane, fuel tank, net piles and mooring lines out to buoys.
 func _site_raft() -> void:
-	var b := FrontierView.Batch.new()
-	var ruin := FrontierView.Batch.new()
-	var grn := FrontierView.Batch.new()
-	var fut := FrontierView.Batch.new()
+	var b := PropBatch.Batch.new()
+	var ruin := PropBatch.Batch.new()
+	var grn := PropBatch.Batch.new()
+	var fut := PropBatch.Batch.new()
 	var deck_r: float = 16.0
 	var deck_y: float = 0.75
 	_decks.append(Vector3(0, 0, deck_r + 1.5))
@@ -477,9 +477,9 @@ func _site_stilts() -> void:
 	var ruin: KitMesh.Builder = TideProps.builder(self, "ruin")
 	var grn: KitMesh.Builder = TideProps.builder(self, "green")
 	var fut: KitMesh.Builder = TideProps.builder(self, "future")
-	var nat := FrontierView.Batch.new()
-	var nat_ruin := FrontierView.Batch.new()
-	var nat_grn := FrontierView.Batch.new()
+	var nat := PropBatch.Batch.new()
+	var nat_ruin := PropBatch.Batch.new()
+	var nat_grn := PropBatch.Batch.new()
 	var deck_y: float = 1.9
 	var deck_c := Vector3(-14.0, 0, -10.0)
 	var bs := Basis(Vector3.UP, 0.6)

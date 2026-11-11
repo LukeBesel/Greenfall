@@ -268,10 +268,6 @@ msgstr "自动打包机"
 msgid "KEEP CLEAR · 40 T"
 msgstr "请勿靠近 · 40 吨"
 
-#: automation/cargo.gd:37
-msgid "Cargo pod landed: %s cubes from %d robots in other districts."
-msgstr "货运舱着陆：%s 个方块，来自其他街区的 %d 台机器人。"
-
 #: automation/conveyor.gd:71
 msgid "TO  SCALE  ◀"
 msgstr "前往  磅秤  ◀"
@@ -280,11 +276,19 @@ msgstr "前往  磅秤  ◀"
 msgid "BALE  FEED"
 msgstr "捆包入口"
 
-#: automation/hub.gd:72
+#: automation/hub.gd:89
+msgid "Locked. Upgrade your base to level %d to build the launch pad."
+msgstr "未解锁。把基地升到 %d 级来建造发射台。"
+
+#: automation/hub.gd:90
+msgid "The rocket isn't ready yet. Keep following WREN's steps."
+msgstr "火箭还没准备好。继续跟着 WREN 的步骤走。"
+
+#: automation/hub.gd:170
 msgid "Hub upgraded: %s."
 msgstr "基地已升级：%s。"
 
-#: automation/hub.gd:103
+#: automation/hub.gd:201
 msgid "Air Scrubber online. The fans spin up with a long, dusty sigh."
 msgstr "空气净化器启动。风扇伴着一声悠长、满是灰尘的叹息转了起来。"
 
@@ -409,19 +413,19 @@ msgstr "升空"
 msgid "Space / Esc  skip"
 msgstr "空格 / Esc  跳过"
 
-#: automation/rocket_tiers.gd:51 ui/robot_card.gd:251
+#: automation/rocket_tiers.gd:56 ui/robot_card.gd:251
 msgid "Top tier"
 msgstr "最高等级"
 
-#: automation/rocket_tiers.gd:54
+#: automation/rocket_tiers.gd:59
 msgid "Needs the Rocket Cargo research"
 msgstr "需要研究“火箭货运”"
 
-#: automation/rocket_tiers.gd:56 systems/homeward.gd:508
+#: automation/rocket_tiers.gd:61 systems/homeward.gd:547
 msgid "Not enough cubes or parts"
 msgstr "方块或零件不足"
 
-#: automation/rocket_tiers.gd:69
+#: automation/rocket_tiers.gd:74
 msgid "Rocket upgraded: %s."
 msgstr "火箭已升级：%s。"
 
@@ -515,7 +519,7 @@ msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
-#: core/pace.gd:147 story/objectives.gd:834
+#: core/pace.gd:147 story/objectives.gd:836
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "太重了。去工作台升级举升力。"
 
@@ -764,18 +768,6 @@ msgstr "一起绽放"
 msgid "LIGHT  WATER  LIFE"
 msgstr "光  水  生命"
 
-#: planet/world_bounds.gd:105
-msgid "WREN: That's the edge of the survey zone, Lumi. Nothing out there but haze."
-msgstr "WREN：那里是勘测区的边缘，Lumi。外面只有雾霾。"
-
-#: planet/world_bounds.gd:166
-msgid "Lumi hovers back onto solid ground."
-msgstr "Lumi 悬浮着回到了坚实的地面。"
-
-#: planet/orbit/verdance_globe.gd:567 scenes/slice_orbit.gd:396
-msgid "HEX CLEAN!  +%s"
-msgstr "六角格清理完毕！  +%s"
-
 #: planet/sites/hub_hop.gd:48
 msgid "{interact}  skip"
 msgstr "{interact}  跳过"
@@ -804,124 +796,128 @@ msgstr "港口镇"
 msgid "landmark"
 msgstr "地标"
 
-#: planet/sites/hub_plan.gd:254
-msgid "Everything sells for x%s now."
-msgstr "现在所有东西的售价 x%s。"
+#: planet/sites/hub_plan.gd:258
+msgid "The recycling network grew: everything sells for x%s now."
+msgstr "回收网络变大了：现在所有东西的售价 x%s。"
 
-#: planet/sites/hub_plan.gd:273
+#: planet/sites/hub_plan.gd:277
 msgid "Rocket piece: %s"
 msgstr "火箭部件：%s"
 
-#: planet/sites/hub_plan.gd:295
+#: planet/sites/hub_plan.gd:299
 msgid "+%s Cubes"
 msgstr "+%s 方块"
 
-#: planet/sites/hub_plan.gd:297
+#: planet/sites/hub_plan.gd:301
 msgid "+%d Parts"
 msgstr "+%d 零件"
 
-#: planet/sites/hub_plan.gd:299
+#: planet/sites/hub_plan.gd:303
 msgid "+%d Seeds"
 msgstr "+%d 种子"
 
-#: planet/sites/hub_plan.gd:303
+#: planet/sites/hub_plan.gd:307
 msgid "New: %s"
 msgstr "新获得：%s"
 
-#: planet/sites/hub_plan.gd:307
+#: planet/sites/hub_plan.gd:311
 msgid "New Lumi design: %s"
 msgstr "新的 Lumi 外观：%s"
 
-#: planet/sites/hub_purpose.gd:143
+#: planet/sites/hub_purpose.gd:145
 msgid "Home. The workbench is by the pod."
 msgstr "到家了。工作台就在逃生舱旁边。"
 
-#: planet/sites/hub_purpose.gd:149
+#: planet/sites/hub_purpose.gd:151
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "火箭停在发射台上。目的地列表的第一项就是家。"
 
-#: planet/sites/hub_purpose.gd:155
+#: planet/sites/hub_purpose.gd:157
 msgid "%s: %d%% clean, up %d%% while you were away."
 msgstr "%s：已清理 %d%%，你离开期间增加了 %d%%。"
 
-#: planet/sites/hub_purpose.gd:233
-msgid "Clean hexes here: %d / %d"
-msgstr "清理这里的格子：%d / %d"
-
 #: planet/sites/hub_purpose.gd:235
+msgid "Dig the landmark out. Clean hexes here: %d / %d"
+msgstr "把地标挖出来。清理这里的格子：%d / %d"
+
+#: planet/sites/hub_purpose.gd:237
 msgid "Repair an outpost here: %d / %d"
 msgstr "修好这里的前哨站：%d / %d"
 
-#: planet/sites/hub_purpose.gd:238
+#: planet/sites/hub_purpose.gd:240
 msgid "Upgrade the rocket, then wake the %s"
 msgstr "先升级火箭，再唤醒：%s"
 
-#: planet/sites/hub_purpose.gd:239
+#: planet/sites/hub_purpose.gd:241
 msgid "Wake the %s (%s)"
 msgstr "唤醒：%s（%s）"
 
-#: planet/sites/hub_purpose.gd:273
+#: planet/sites/hub_purpose.gd:275
 msgid "E   Wake the %s  (%s)"
 msgstr "E   唤醒：%s  （%s）"
 
-#: planet/sites/hub_purpose.gd:274
+#: planet/sites/hub_purpose.gd:276
 msgid "%s: asleep. %s"
 msgstr "%s：沉睡中。%s"
 
-#: planet/sites/hub_purpose.gd:279
-msgid "The rocket can keep %d bases going. Upgrade the rocket at the workbench."
-msgstr "火箭最多能照看 %d 个基地。去工作台升级火箭。"
+#: planet/sites/hub_purpose.gd:281
+msgid "The rocket can carry supplies to %d bases. Upgrade it at the workbench."
+msgstr "火箭最多能给 %d 个基地运送补给。去工作台升级火箭。"
 
-#: planet/sites/hub_purpose.gd:295
+#: planet/sites/hub_purpose.gd:297
 msgid "Waking the %s needs %s."
 msgstr "唤醒（%s）需要 %s。"
 
-#: planet/sites/hub_purpose.gd:319
-msgid "%s is awake. %s restored."
-msgstr "%s 醒来了。%s 已修复。"
+#: planet/sites/hub_purpose.gd:321
+msgid "%s is awake. %s keeps cleaning when you fly on."
+msgstr "%s 醒来了。你飞走以后，%s 会继续清理。"
 
-#: planet/sites/hub_purpose.gd:346
+#: planet/sites/hub_purpose.gd:348
 msgid "%s grows: level %d."
 msgstr "%s 成长了：等级 %d。"
 
-#: planet/sites/hub_purpose.gd:374
+#: planet/sites/hub_purpose.gd:376
 msgid "%d robot working"
 msgid_plural "%d robots working"
 msgstr[0] "%d 台机器人在工作"
 
-#: planet/sites/hub_purpose.gd:382
+#: planet/sites/hub_purpose.gd:384
 msgid "Home: %d%% clean"
 msgstr "家：已清理 %d%%"
 
-#: planet/sites/hub_purpose.gd:384
+#: planet/sites/hub_purpose.gd:386
 msgid "Restored: %d%% clean"
 msgstr "已修复：已清理 %d%%"
 
-#: planet/sites/hub_purpose.gd:386 ui/profile_picker.gd:111
+#: planet/sites/hub_purpose.gd:388 ui/profile_picker.gd:111
 msgid "New"
 msgstr "新建"
 
-#: planet/sites/hub_purpose.gd:389
+#: planet/sites/hub_purpose.gd:391
 msgid "Ready to wake"
 msgstr "可以唤醒"
 
-#: planet/sites/hub_purpose.gd:390
+#: planet/sites/hub_purpose.gd:392
 msgid "Asleep: %d / %d"
 msgstr "沉睡中：%d / %d"
 
-#: planet/sites/hub_purpose.gd:401
+#: planet/sites/hub_purpose.gd:403
 msgid "%s   %d%% CLEAN"
 msgstr "%s   已清理 %d%%"
 
-#: planet/sites/hub_purpose.gd:403
+#: planet/sites/hub_purpose.gd:405
 msgid "%s   BASES %d/%d"
 msgstr "%s   基地 %d/%d"
 
-#: planet/sites/hub_purpose.gd:450
+#: planet/sites/hub_purpose.gd:452
 msgid "Restored. Next: take the rocket to %s."
 msgstr "已修复。下一步：乘火箭前往 %s。"
 
-#: planet/sites/hub_purpose.gd:624
+#: planet/sites/hub_purpose.gd:454
+msgid "All %d bases stand. Fly home and make the rocket ready to leave."
+msgstr "%d 个基地都修好了。飞回家，让火箭做好离开的准备。"
+
+#: planet/sites/hub_purpose.gd:626
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
@@ -961,22 +957,6 @@ msgstr "基地 %d"
 #: planet/sites/sphere_water.gd:263 water/water_view.gd:79
 msgid "The water... I can see the bottom. Lumi, there's something moving down there."
 msgstr "这水……我能看见底了。Lumi，下面有东西在动。"
-
-#: planet/sphere/sphere_walk.gd:431
-msgid "Planet %d m around"
-msgstr "星球一圈 %d 米"
-
-#: planet/sphere/sphere_walk.gd:431
-msgid "Walked %d m (%d%%)"
-msgstr "已走 %d 米（%d%%）"
-
-#: planet/sphere/sphere_walk.gd:432
-msgid "Speed %.1f m/s"
-msgstr "速度 %.1f 米/秒"
-
-#: planet/sphere/sphere_walk.gd:432
-msgid "Bots near %d, far %d"
-msgstr "机器人 近 %d，远 %d"
 
 #: plants/composter.gd:77
 msgid "E   compost press  ·  dormant until something grows"
@@ -1018,7 +998,7 @@ msgstr ""
 "堆肥压机  等级 %d\n"
 "料斗 %d%%  →  种子"
 
-#: plants/garden.gd:364
+#: plants/garden.gd:361
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "一个六角格完全恢复了。已经有小东西住在里面了。"
 
@@ -1042,7 +1022,7 @@ msgstr "      下一级：%s"
 msgid "HEX LV %d  %s"
 msgstr "六角格 %d 级  %s"
 
-#: plants/hex_levels.gd:282
+#: plants/hex_levels.gd:279
 msgid "Hex Lv %d  %s.   %s"
 msgstr "六角格 %d 级  %s。   %s"
 
@@ -1062,55 +1042,55 @@ msgstr "埋藏零件  %s  ·  %.1f 米"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "埋藏零件  ·  信号 %d%%"
 
-#: player/patch.gd:146
+#: player/patch.gd:170
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi 哐啷哐啷地回到了院子里。真奇怪。"
 
-#: player/patch.gd:200
+#: player/patch.gd:224
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi 不会游泳。在工作台装上悬浮喷口，他就能飘过湖面。"
 
-#: player/patch.gd:318
+#: player/patch.gd:348
 msgid "No seeds yet. Keep cleaning."
 msgstr "还没有种子。继续清理吧。"
 
-#: player/patch.gd:353
+#: player/patch.gd:383
 msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 msgstr "种子需要干净、空旷的土地：不能是街道、路沿或起降台。"
 
-#: player/patch.gd:360
+#: player/patch.gd:390
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "种子用完了。开花的植物会掉落更多。"
 
-#: player/patch.gd:367
+#: player/patch.gd:397
 msgid "Watering can is empty. Refill at the hub."
 msgstr "水壶空了。回基地补水。"
 
-#: player/patch.gd:569
+#: player/patch.gd:599
 msgid "PERFECT BALE  %s"
 msgstr "完美捆包  %s"
 
-#: player/patch.gd:575
+#: player/patch.gd:605
 msgid "OVERSTUFFED  %s"
 msgstr "塞爆了  %s"
 
-#: player/patch.gd:579
+#: player/patch.gd:609
 msgid "PURE  %s"
 msgstr "纯净  %s"
 
-#: player/patch.gd:581
+#: player/patch.gd:611
 msgid "SURGE  %s"
 msgstr "冲劲  %s"
 
-#: player/patch.gd:584
+#: player/patch.gd:614
 msgid "  (streak +%d%%)"
 msgstr "  （连击 +%d%%）"
 
-#: player/patch.gd:627
+#: player/patch.gd:657
 msgid "Salvaged: %s"
 msgstr "回收：%s"
 
-#: player/patch.gd:656
+#: player/patch.gd:686
 msgid "Recovered: %s"
 msgstr "找回：%s"
 
@@ -1284,11 +1264,11 @@ msgstr[0] "正在运送 %d 个捆包"
 msgid "fetching a bale"
 msgstr "正在取捆包"
 
-#: robots/robot.gd:256 robots/robot.gd:912
+#: robots/robot.gd:256 robots/robot.gd:907
 msgid "waiting for bales"
 msgstr "等待捆包"
 
-#: robots/robot.gd:259 robots/robot.gd:582
+#: robots/robot.gd:259 robots/robot.gd:577
 msgid "out of seeds"
 msgstr "种子用完了"
 
@@ -1332,7 +1312,7 @@ msgstr "正把捆包运到岸边"
 msgid "skimming lake hex %d (%d%%)"
 msgstr "清理湖面六角格 %d（%d%%）"
 
-#: robots/robot.gd:270 robots/robot.gd:775
+#: robots/robot.gd:270 robots/robot.gd:770
 msgid "lake is clean"
 msgstr "湖面已干净"
 
@@ -1348,27 +1328,27 @@ msgstr "区域已清理，待命"
 msgid "nothing left to clean"
 msgstr "没有可清理的了"
 
-#: robots/robot.gd:427 robots/robot.gd:775
+#: robots/robot.gd:427 robots/robot.gd:770
 msgid "zone clean"
 msgstr "区域已清理"
 
-#: robots/robot.gd:580
+#: robots/robot.gd:575
 msgid "seeds locked"
 msgstr "种子未解锁"
 
-#: robots/robot.gd:586 robots/robot.gd:590
+#: robots/robot.gd:581 robots/robot.gd:585
 msgid "no empty soil"
 msgstr "没有空地"
 
-#: robots/robot.gd:619
+#: robots/robot.gd:614
 msgid "no garden"
 msgstr "没有菜园"
 
-#: robots/robot.gd:633
+#: robots/robot.gd:628
 msgid "everything watered"
 msgstr "全都浇过了"
 
-#: robots/robot.gd:729
+#: robots/robot.gd:724
 msgid "no water source"
 msgstr "没有水源"
 
@@ -1420,51 +1400,243 @@ msgstr "机队 %d / %d"
 msgid "Building a %s, %d%%"
 msgstr "正在建造%s，%d%%"
 
-#: robots/sphere/command_overlay.gd:39
-msgid "Y: role · Hold A: paint · Hold X: erase · Left stick: move"
-msgstr "Y：角色 · 按住 A：涂 · 按住 X：擦 · 左摇杆：移动"
+#: robots/sphere/command_overlay.gd:17
+msgid "Cleaners"
+msgstr "清洁队"
 
-#: robots/sphere/command_overlay.gd:40
-msgid "Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi"
-msgstr "Tab：角色 · 左键：涂 · 右键：擦 · 中键：派机器人 · E：回到 Lumi"
+#: robots/sphere/command_overlay.gd:17
+msgid "Haulers"
+msgstr "运输队"
 
-#: robots/sphere/command_overlay.gd:41
-msgid "%s zone"
-msgstr "%s区域"
+#: robots/sphere/command_overlay.gd:17
+msgid "Planters"
+msgstr "种植队"
 
-#: robots/sphere/sphere_fleet.gd:53
+#: robots/sphere/command_overlay.gd:17
+msgid "Waterers"
+msgstr "浇水队"
+
+#: robots/sphere/command_overlay.gd:17
+msgid "Skimmers"
+msgstr "撇捞队"
+
+#: robots/sphere/command_overlay.gd:18
+msgid "Paint the ground you want cleaned first."
+msgstr "涂出你想先清理的地面。"
+
+#: robots/sphere/command_overlay.gd:18
+msgid "Paint where to plant."
+msgstr "涂出要种植的地方。"
+
+#: robots/sphere/command_overlay.gd:19
+msgid "Paint where to water."
+msgstr "涂出要浇水的地方。"
+
+#: robots/sphere/command_overlay.gd:19
+msgid "Paint the water to skim first."
+msgstr "涂出要先打捞的水面。"
+
+#: robots/sphere/command_overlay.gd:99
+msgid "ROBOT COMMAND"
+msgstr "机器人指挥"
+
+#: robots/sphere/command_overlay.gd:102
+msgid "No robots here yet."
+msgstr "这里还没有机器人。"
+
+#: robots/sphere/command_overlay.gd:103 data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
+msgid "Build one at the workbench."
+msgstr "在工作台造一台。"
+
+#: robots/sphere/command_overlay.gd:105
+msgid "%d robot"
+msgid_plural "%d robots"
+msgstr[0] "%d 台机器人"
+
+#: robots/sphere/command_overlay.gd:107
+msgid "About %d hexes an hour"
+msgstr "每小时约 %d 个六角格"
+
+#: robots/sphere/command_overlay.gd:121
+msgid "%d working"
+msgstr "%d 台在工作"
+
+#: robots/sphere/command_overlay.gd:123
+msgid "%d working, %d waiting"
+msgstr "%d 台在工作，%d 台在等待"
+
+#: robots/sphere/command_overlay.gd:125
+msgid "%d waiting"
+msgstr "%d 台在等待"
+
+#: robots/sphere/command_overlay.gd:129 robots/sphere/crew_talk.gd:71 robots/sphere/crew_talk.gd:75
+msgid "Bales are piling up. Build a Haul Bug."
+msgstr "捆包越堆越多。建造一台 Haul Bug 吧。"
+
+#: robots/sphere/command_overlay.gd:138
+msgid "Good! Your robots will work here first."
+msgstr "很好！你的机器人会先在这里干活。"
+
+#: robots/sphere/command_overlay.gd:139
+msgid "Hold A: paint   Hold X: erase   %s: back"
+msgstr "按住 A：涂   按住 X：擦除   %s：返回"
+
+#: robots/sphere/command_overlay.gd:140
+msgid "Left mouse: paint   Right mouse: erase   %s: back"
+msgstr "鼠标左键：涂   鼠标右键：擦除   %s：返回"
+
+#: robots/sphere/command_overlay.gd:142
+msgid "Y: next job"
+msgstr "Y：下一种工作"
+
+#: robots/sphere/command_overlay.gd:142
+msgid "Tab: next job"
+msgstr "Tab：下一种工作"
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Cleaning this hex."
+msgstr "正在清理这个六角格。"
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Planting here."
+msgstr "正在这里种植。"
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Watering the plants."
+msgstr "正在给植物浇水。"
+
+#: robots/sphere/crew_talk.gd:21
+msgid "Skimming junk off the lake."
+msgstr "正在打捞湖面的垃圾。"
+
+#: robots/sphere/crew_talk.gd:23
+msgid "No dirty ground left around this base."
+msgstr "这个基地周围已经没有脏地面了。"
+
+#: robots/sphere/crew_talk.gd:24
+msgid "My zone is done. Paint more ground for me."
+msgstr "我的区域干完了。再给我涂些地面吧。"
+
+#: robots/sphere/crew_talk.gd:25
+msgid "No bales to carry right now."
+msgstr "现在没有捆包可搬。"
+
+#: robots/sphere/crew_talk.gd:26
+msgid "No clean ground to plant."
+msgstr "没有可以种植的干净地面。"
+
+#: robots/sphere/crew_talk.gd:27
+msgid "Out of seeds."
+msgstr "种子用完了。"
+
+#: robots/sphere/crew_talk.gd:28
+msgid "Nothing to water yet. Plant something first."
+msgstr "还没有东西可浇。先种点什么吧。"
+
+#: robots/sphere/crew_talk.gd:29
+msgid "No water nearby to fill my tank."
+msgstr "附近没有水可以加满水箱。"
+
+#: robots/sphere/crew_talk.gd:30
+msgid "No junk on the lakes here."
+msgstr "这里的湖面上没有垃圾。"
+
+#: robots/sphere/crew_talk.gd:31
+msgid "I can't find a way there. Trying another spot."
+msgstr "我找不到过去的路。换个地方试试。"
+
+#: robots/sphere/crew_talk.gd:68
+msgid "Hello! Looking around."
+msgstr "你好！我先四处看看。"
+
+#: robots/sphere/crew_talk.gd:72
+msgid "On my way to work."
+msgstr "正在去干活的路上。"
+
+#: robots/sphere/crew_talk.gd:78
+msgid "Fetching a bale."
+msgstr "正在去取捆包。"
+
+#: robots/sphere/crew_talk.gd:80
+msgid "Carrying bales home."
+msgstr "正在把捆包运回去。"
+
+#: robots/sphere/crew_talk.gd:82
+msgid "Tipping junk into the baler."
+msgstr "正在把垃圾倒进打包机。"
+
+#: robots/sphere/crew_talk.gd:84
+msgid "Filling my water tank."
+msgstr "正在加满水箱。"
+
+#: robots/sphere/crew_talk.gd:88
+msgid "Looking for work."
+msgstr "正在找活干。"
+
+#: robots/sphere/crew_talk.gd:94
+msgid "%s the %s: %s"
+msgstr "%s（%s）：%s"
+
+#: robots/sphere/crew_talk.gd:120
+msgid "No robots here yet"
+msgstr "这里还没有机器人"
+
+#: robots/sphere/crew_talk.gd:122
+msgid "%d robot working here"
+msgid_plural "%d robots working here"
+msgstr[0] "%d 台机器人在这里工作"
+
+#: robots/sphere/crew_talk.gd:124
+msgid "%s, about %d hexes an hour"
+msgstr "%s，每小时约 %d 个六角格"
+
+#: robots/sphere/crew_talk.gd:135
+msgid "While you were away, your robots here cleaned %d hex."
+msgid_plural "While you were away, your robots here cleaned %d hexes."
+msgstr[0] "你不在的时候，这里的机器人清理了 %d 个六角格。"
+
+#: robots/sphere/crew_talk.gd:137
+msgid "While you were away, your robots here earned %s cubes."
+msgstr "你不在的时候，这里的机器人赚了 %s 个方块。"
+
+#: robots/sphere/crew_talk.gd:138
+msgid "While you were away, your robots here cleaned %d hex and earned %s cubes."
+msgid_plural "While you were away, your robots here cleaned %d hexes and earned %s cubes."
+msgstr[0] "你不在的时候，这里的机器人清理了 %d 个六角格，赚了 %s 个方块。"
+
+#: robots/sphere/sphere_fleet.gd:57
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s 组装完成。它四下看了看，就开始干活了。"
 
-#: scenes/slice.gd:139 ui/rockets_panel.gd:60
+#: scenes/slice.gd:133 ui/rockets_panel.gd:60
 msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
 msgstr "走到发射台上的火箭旁，按 E 选择要飞去的地方。"
 
-#: scenes/slice.gd:145
-msgid "Locked. Upgrade your base to level 5 to build the launch pad."
-msgstr "未解锁。将基地升到 5 级才能建造发射台。"
-
-#: scenes/slice.gd:148 ui/rockets_panel.gd:39
+#: scenes/slice.gd:143 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
 
-#: scenes/slice_orbit.gd:412
+#: scenes/slice_orbit.gd:392
+msgid "HEX CLEAN!  +%s"
+msgstr "六角格清理完毕！  +%s"
+
+#: scenes/slice_orbit.gd:408
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice_orbit.gd:481 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:477 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   修理工作台"
 
-#: scenes/slice_orbit.gd:481 systems/camp/camp.gd:195
+#: scenes/slice_orbit.gd:477 systems/camp/camp.gd:195
 msgid "E   Open the workbench"
 msgstr "E   打开工作台"
 
-#: scenes/slice_orbit.gd:995
+#: scenes/slice_orbit.gd:994
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice_orbit.gd:1095
+#: scenes/slice_orbit.gd:1094
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "工作台修好了。在它旁边按 E，用方块购买升级。"
 
@@ -1818,11 +1990,11 @@ msgstr "鸭子吱吱地说出一个秘密：“%s”可以解锁 %s 外观。"
 msgid "The duck has taught you everything it knows. Quack."
 msgstr "鸭子已经把它知道的全教给你了。嘎。"
 
-#: story/eggs.gd:1165
+#: story/eggs.gd:1168
 msgid "Curiosity found: %s  (%d / %d)   %s"
 msgstr "发现奇物：%s（%d / %d）   %s"
 
-#: story/eggs.gd:1176
+#: story/eggs.gd:1179
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "清单上的奇物全部找到了。Lumi 的收藏舱装满了回忆。"
 
@@ -2119,43 +2291,43 @@ msgstr "目标完成  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:670
+#: story/objectives.gd:672
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "打包机装好了！装满胸舱，按 [%s] 压一个捆包，再把它搬到秤上。"
 
-#: story/objectives.gd:692 story/objectives.gd:822
+#: story/objectives.gd:694 story/objectives.gd:824
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "你的胸舱满了。按 [%s] 压一个捆包。"
 
-#: story/objectives.gd:708
+#: story/objectives.gd:710
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "你的探测器发现附近埋着一个机器人零件。跟着“埋藏零件”的读数走；走到正上方时它会哔哔响。"
 
-#: story/objectives.gd:710
+#: story/objectives.gd:712
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
 
-#: story/objectives.gd:823
+#: story/objectives.gd:825
 msgid "Your chest is full. Bring it to the bin."
 msgstr "你的胸舱满了。带到垃圾桶去。"
 
-#: story/objectives.gd:830
+#: story/objectives.gd:832
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "你的胸舱满了。回家吧：垃圾桶就在高高的烟柱下面。"
 
-#: story/objectives.gd:832
+#: story/objectives.gd:834
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "把捆包搬回家：秤就在高高的烟柱下面。"
 
-#: story/objectives.gd:832
+#: story/objectives.gd:834
 msgid "Carry your bale to the scale by the bin."
 msgstr "把捆包搬到垃圾桶旁边的秤上。"
 
-#: story/objectives.gd:839
+#: story/objectives.gd:841
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "回家吧：跟着光柱走到高高的烟柱那里。"
 
-#: story/objectives.gd:849
+#: story/objectives.gd:851
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "这里没有东西可捡。走到垃圾更多的地方去。"
 
@@ -2303,11 +2475,11 @@ msgstr "种子方舟第 %d 波  ·  全星球 %d / %d 朵花"
 msgid "Wilderness: %s. New ground, new junk, new colours under it."
 msgstr "荒野：%s。新的土地，新的废料，底下藏着新的颜色。"
 
-#: systems/bloom.gd:257
+#: systems/bloom.gd:255
 msgid "Seed Ark wave %d planted across Verdance. The Cradle drops a gift. Next wave: %d blooms."
 msgstr "种子方舟第 %d 波已在 Verdance 各地种下。Cradle号投下了一份礼物。下一波：%d 朵花。"
 
-#: systems/bloom.gd:268
+#: systems/bloom.gd:266
 msgid "Verdance Bloom: %s. %s"
 msgstr "Verdance 绽放：%s。%s"
 
@@ -2627,87 +2799,91 @@ msgstr "审计胜利，%d 比 %d！Ledger 盖上了“批准”章。%s"
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "无人机赢得了审计，%d 比 %d。不过它还是留了小费：+%s 方块。"
 
-#: systems/homeward.gd:147
+#: systems/homeward.gd:153
+msgid "Wake %d old stations on %s to level %d (%d so far)"
+msgstr "唤醒 %d 座旧站点(%s)到 %d 级(已完成 %d 座)"
+
+#: systems/homeward.gd:155
 msgid "Restore %s to %d%% (%d%%) or get a base to level %d"
 msgstr "将 %s 恢复到 %d%%（%d%%），或把一座基地升到 %d 级"
 
-#: systems/homeward.gd:148
+#: systems/homeward.gd:156
 msgid "Restore %s to %d%% (%d%%)"
 msgstr "将 %s 恢复到 %d%%（%d%%）"
 
-#: systems/homeward.gd:155
+#: systems/homeward.gd:163
 msgid "Restore another planet to %d%% (best %d%%)"
 msgstr "将另一颗星球恢复到 %d%%（最高 %d%%）"
 
-#: systems/homeward.gd:206
+#: systems/homeward.gd:245
 msgid "Needs %s: found on %s"
 msgstr "需要 %s：在 %s 上找到"
 
-#: systems/homeward.gd:351
+#: systems/homeward.gd:390
 msgid "New tech: %s. %s"
 msgstr "新技术：%s。%s"
 
-#: systems/homeward.gd:398
+#: systems/homeward.gd:437
 msgid "Needs the %s drive"
 msgstr "需要 %s 推进器"
 
-#: systems/homeward.gd:400
+#: systems/homeward.gd:439
 msgid "No chart yet: restore %s to %d%%"
 msgstr "还没有星图：把 %s 恢复到 %d%%"
 
-#: systems/homeward.gd:494
+#: systems/homeward.gd:533
 msgid "The Homeward rocket is built"
 msgstr "归乡火箭已建成"
 
-#: systems/homeward.gd:497 systems/museum.gd:117
+#: systems/homeward.gd:536 systems/museum.gd:117
 msgid "The Cradle has to answer first (Cradle Returns)"
 msgstr "Cradle 号得先回应（Cradle号归来）"
 
-#: systems/homeward.gd:502
+#: systems/homeward.gd:541
 msgid "Needs %d planet relics (%d)"
 msgstr "需要 %d 件星球遗物（%d）"
 
-#: systems/homeward.gd:504
+#: systems/homeward.gd:543
 msgid "Restore every planet first (%d%%)"
 msgstr "先恢复每一个星球（%d%%）"
 
-#: systems/homeward.gd:506
+#: systems/homeward.gd:545
 msgid "Build it at Verdance's Cradle Returns"
 msgstr "在 Verdance 的 Cradle号归来建造"
 
-#: systems/homeward.gd:522
+#: systems/homeward.gd:561
 msgid "Rocket drive built: %s."
 msgstr "火箭推进器已建成：%s。"
 
-#: systems/homeward_director.gd:259
+#: systems/homeward_director.gd:277
 msgid "Intercepted: %s"
 msgstr "截获：%s"
 
-#: systems/homeward_director.gd:266
+#: systems/homeward_director.gd:284
 msgid "%s: %s"
 msgstr "%s：%s"
 
-#: systems/homeward_director.gd:276
+#: systems/homeward_director.gd:294
 msgid "%s is restored. System: %d%%."
 msgstr "%s 已恢复。星系：%d%%。"
 
-#: systems/homeward_director.gd:279
+#: systems/homeward_director.gd:297
 msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
 msgstr "遗物：%s。传家宝选择 +1（方舟舰桥）。"
 
-#: systems/homeward_director.gd:286
+#: systems/homeward_director.gd:304
 msgid "Every planet in the system is alive. Go back to Verdance's Cradle Returns and build the Mk VII Homeward rocket."
 msgstr "星系里的每个星球都活过来了。回到 Verdance 的 Cradle号归来，建造 Mk VII 归乡火箭。"
 
-#: systems/homeward_director.gd:461
+#: systems/homeward_director.gd:479
 msgid "E   launch home"
 msgstr "E   发射回家"
 
-#: systems/homeward_director.gd:461
+#: systems/homeward_director.gd:479
 msgid "E   plant the last seed"
 msgstr "E   种下最后一颗种子"
 
-#: systems/homeward_director.gd:472
+#: systems/homeward_director.gd:490
 msgid "The last seed is in the ground. Everything is ready. Press E again here to launch home."
 msgstr "最后一颗种子已经入土。一切就绪。在这里再按一次 E 就能发射回家。"
 
@@ -3295,7 +3471,7 @@ msgstr "回家"
 msgid "The clock is running. Clean %d hexes."
 msgstr "计时开始。清理 %d 个六角格。"
 
-#: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:391
+#: systems/extras/weekly_run.gd:117 ui/photo_mode.gd:383
 msgid "Time"
 msgstr "时间"
 
@@ -3577,7 +3753,7 @@ msgstr "制造机"
 msgid "need %s"
 msgstr "还差%s"
 
-#: ui/bench_lists.gd:11 ui/photo_mode.gd:396 ui/photo_mode.gd:423
+#: ui/bench_lists.gd:11 ui/photo_mode.gd:388 ui/photo_mode.gd:415
 #: ui/upgrades_panel.gd:32
 msgid "Lumi"
 msgstr "Lumi"
@@ -3681,8 +3857,7 @@ msgstr "喷洒范围"
 msgid "Refill"
 msgstr "补水"
 
-#: ui/builder_panel.gd:21 ui/command_view.gd:1244 ui/command_view.gd:1247
-#: data/hex_levels.json:levels[1].name
+#: ui/builder_panel.gd:21 data/hex_levels.json:levels[1].name
 msgid "Clean"
 msgstr "清理"
 
@@ -4109,171 +4284,6 @@ msgstr "%.2f 公里"
 #: ui/codex_screen.gd:860
 msgid "%dm %02ds"
 msgstr "%d分%02d秒"
-
-#: ui/command_view.gd:24
-msgid "Cleaners"
-msgstr "清洁队"
-
-#: ui/command_view.gd:24
-msgid "Haulers"
-msgstr "运输队"
-
-#: ui/command_view.gd:24
-msgid "Planters"
-msgstr "种植队"
-
-#: ui/command_view.gd:24
-msgid "Waterers"
-msgstr "浇水队"
-
-#: ui/command_view.gd:24
-msgid "Skimmers"
-msgstr "撇捞队"
-
-#: ui/command_view.gd:25
-msgid "Priority"
-msgstr "优先"
-
-#: ui/command_view.gd:25
-msgid "Stay"
-msgstr "原地"
-
-#: ui/command_view.gd:25
-msgid "Follow me"
-msgstr "跟着我"
-
-#: ui/command_view.gd:25
-msgid "Recall"
-msgstr "召回"
-
-#: ui/command_view.gd:28
-msgid "Works the marked hexes first, then the rest of the district."
-msgstr "先处理标记的六角格，再处理街区其余部分。"
-
-#: ui/command_view.gd:29
-msgid "Works only the marked hexes, and waits there when they are done."
-msgstr "只处理标记的六角格，完成后在那里待命。"
-
-#: ui/command_view.gd:30
-msgid "Works the hexes around you, wherever you go."
-msgstr "无论你去哪，都处理你周围的六角格。"
-
-#: ui/command_view.gd:31
-msgid "Comes back and parks at the base."
-msgstr "回来停在基地。"
-
-#: ui/command_view.gd:106
-msgid "[p]{@dpad}  panel      {@move}  move      {pad:#0}  mark      {pad:#2}  unmark      {pad:zoom_out}{pad:zoom_in}  zoom      {pad:ui_cancel}  back[/p][k]Left drag  mark      Right drag  unmark      {@move} / middle drag  move      Wheel  zoom      {kbd:open_command}  back[/k]"
-msgstr "[p]{@dpad}  面板      {@move}  移动      {pad:#0}  标记      {pad:#2}  取消标记      {pad:zoom_out}{pad:zoom_in}  缩放      {pad:ui_cancel}  返回[/p][k]左键拖动  标记      右键拖动  取消标记      {@move} / 中键拖动  移动      滚轮  缩放      {kbd:open_command}  返回[/k]"
-
-#: ui/command_view.gd:231
-msgid "COMMAND"
-msgstr "指挥"
-
-#: ui/command_view.gd:268
-msgid "Mark around me"
-msgstr "标记我周围"
-
-#: ui/command_view.gd:281 ui/lumi_builder.gd:597 ui/photo_mode.gd:26
-msgid "Clear"
-msgstr "清除"
-
-#: ui/command_view.gd:306
-msgid "CREWS"
-msgstr "队伍"
-
-#: ui/command_view.gd:598
-msgid "Following the %s orders. Mark hexes or pick a mode to give it its own."
-msgstr "正在执行%s的命令。标记六角格或选择模式来给它单独下令。"
-
-#: ui/command_view.gd:607
-msgid "No orders yet: roaming the district. Drag on the ground to mark where to work."
-msgstr "还没有命令：在街区里巡游。在地面上拖动来标记工作区域。"
-
-#: ui/command_view.gd:684
-msgid "No robots yet. Build one at the workbench."
-msgstr "还没有机器人。去工作台造一台吧。"
-
-#: ui/command_view.gd:815
-msgid "Build %s  %s"
-msgstr "建造 %s  %s"
-
-#: ui/command_view.gd:820
-msgid "Max tier"
-msgstr "最高等级"
-
-#: ui/command_view.gd:820
-msgid "Upgrade > %s"
-msgstr "升级 > %s"
-
-#: ui/command_view.gd:826
-msgid "ready"
-msgstr "就绪"
-
-#: ui/command_view.gd:826
-msgid "build at the workbench"
-msgstr "在工作台建造"
-
-#: ui/command_view.gd:833
-msgid "Place refill tank here  %s  (%d/%d)"
-msgstr "在此放置补水箱  %s  （%d/%d）"
-
-#: ui/command_view.gd:835
-msgid "A Water Tank at your hex. Waterers refill at the nearest one."
-msgstr "你所在六角格的水箱。浇水机器人会去最近的水箱补水。"
-
-#: ui/command_view.gd:1092
-msgid "%s · %d HEX"
-msgid_plural "%s · %d HEXES"
-msgstr[0] "%s · %d 个六角格"
-
-#: ui/command_view.gd:1128
-msgid "BASE"
-msgstr "基地"
-
-#: ui/command_view.gd:1135
-msgid "YOU"
-msgstr "你"
-
-#: ui/command_view.gd:1235
-msgid "HEX %d"
-msgstr "六角格 %d"
-
-#: ui/command_view.gd:1239
-msgid "BASE YARD"
-msgstr "基地院子"
-
-#: ui/command_view.gd:1240
-msgid "Home ground, always clean"
-msgstr "家园，永远干净"
-
-#: ui/command_view.gd:1242
-msgid "LAKE HEX %d"
-msgstr "湖面六角格 %d"
-
-#: ui/command_view.gd:1244
-msgid "Floating junk  %d%% left"
-msgstr "漂浮废料  剩余 %d%%"
-
-#: ui/command_view.gd:1250
-msgid "Junk  %d%% left"
-msgstr "废料  剩余 %d%%"
-
-#: ui/command_view.gd:1256
-msgid "Level %d · %s"
-msgstr "等级 %d · %s"
-
-#: ui/command_view.gd:1258
-msgid "In %s zone"
-msgstr "在%s区域"
-
-#: ui/command_view.gd:1311
-msgid "%d robots"
-msgstr "%d 台机器人"
-
-#: ui/command_view.gd:1314
-msgid "%d / %d hexes clean"
-msgstr "%d / %d 个六角格已清理"
 
 #: ui/contracts_panel.gd:75
 msgid "%d done"
@@ -4818,11 +4828,11 @@ msgstr "铲子"
 msgid "PLANT"
 msgstr "种植"
 
-#: ui/hotbar.gd:288
+#: ui/hotbar.gd:281
 msgid "+%d XP"
 msgstr "+%d 经验"
 
-#: ui/hotbar.gd:298
+#: ui/hotbar.gd:291
 msgid "CORE %d%%"
 msgstr "核心 %d%%"
 
@@ -5230,7 +5240,7 @@ msgstr "高级（色相、饱和度、亮度）"
 msgid "Hue"
 msgstr "色相"
 
-#: ui/lumi_builder.gd:468 ui/photo_mode.gd:385
+#: ui/lumi_builder.gd:468 ui/photo_mode.gd:377
 msgid "Saturation"
 msgstr "饱和度"
 
@@ -5277,6 +5287,10 @@ msgstr "载重"
 #: ui/lumi_builder.gd:589
 msgid "Save here"
 msgstr "保存到此"
+
+#: ui/lumi_builder.gd:597 ui/photo_mode.gd:26
+msgid "Clear"
+msgstr "清除"
 
 #: ui/lumi_builder.gd:659
 msgid "Unsaved changes"
@@ -5511,148 +5525,148 @@ msgstr "火箭飞行期间无法使用拍照模式。"
 msgid "Photo mode isn't available during a cinematic."
 msgstr "过场动画期间无法使用拍照模式。"
 
-#: ui/photo_mode.gd:370 ui/photo_mode.gd:423 ui/settings_panel.gd:390
+#: ui/photo_mode.gd:362 ui/photo_mode.gd:415 ui/settings_panel.gd:390
 msgid "Camera"
 msgstr "相机"
 
-#: ui/photo_mode.gd:371
+#: ui/photo_mode.gd:363
 msgid "Mode"
 msgstr "模式"
 
-#: ui/photo_mode.gd:372 ui/settings_panel.gd:398
+#: ui/photo_mode.gd:364 ui/settings_panel.gd:398
 msgid "Field of view"
 msgstr "视野"
 
-#: ui/photo_mode.gd:373
+#: ui/photo_mode.gd:365
 msgid "Roll"
 msgstr "翻滚"
 
-#: ui/photo_mode.gd:374
+#: ui/photo_mode.gd:366
 msgid "Distance"
 msgstr "距离"
 
-#: ui/photo_mode.gd:375
+#: ui/photo_mode.gd:367
 msgid "Height"
 msgstr "高度"
 
-#: ui/photo_mode.gd:376
+#: ui/photo_mode.gd:368
 msgid "Reset camera"
 msgstr "重置相机"
 
-#: ui/photo_mode.gd:377 ui/photo_mode.gd:423
+#: ui/photo_mode.gd:369 ui/photo_mode.gd:415
 msgid "Lens"
 msgstr "镜头"
 
-#: ui/photo_mode.gd:378
+#: ui/photo_mode.gd:370
 msgid "Auto-focus Lumi"
 msgstr "自动对焦 Lumi"
 
-#: ui/photo_mode.gd:379
+#: ui/photo_mode.gd:371
 msgid "Focus distance"
 msgstr "对焦距离"
 
-#: ui/photo_mode.gd:380
+#: ui/photo_mode.gd:372
 msgid "Blur"
 msgstr "模糊"
 
-#: ui/photo_mode.gd:380 ui/photo_panel.gd:240 ui/photo_panel.gd:242
+#: ui/photo_mode.gd:372 ui/photo_panel.gd:240 ui/photo_panel.gd:242
 #: ui/photo_panel.gd:280 ui/settings_panel.gd:688
 msgid "Off"
 msgstr "关"
 
-#: ui/photo_mode.gd:381
+#: ui/photo_mode.gd:373
 msgid "Exposure"
 msgstr "曝光"
 
-#: ui/photo_mode.gd:381
+#: ui/photo_mode.gd:373
 msgid "%+.1f EV"
 msgstr "%+.1f EV"
 
-#: ui/photo_mode.gd:382 ui/photo_mode.gd:423
+#: ui/photo_mode.gd:374 ui/photo_mode.gd:415
 msgid "Look"
 msgstr "风格"
 
-#: ui/photo_mode.gd:383
+#: ui/photo_mode.gd:375
 msgid "Filter"
 msgstr "滤镜"
 
-#: ui/photo_mode.gd:384
+#: ui/photo_mode.gd:376
 msgid "Contrast"
 msgstr "对比度"
 
-#: ui/photo_mode.gd:386
+#: ui/photo_mode.gd:378
 msgid "Warmth"
 msgstr "色温"
 
-#: ui/photo_mode.gd:387
+#: ui/photo_mode.gd:379
 msgid "Vignette"
 msgstr "暗角"
 
-#: ui/photo_mode.gd:388
+#: ui/photo_mode.gd:380
 msgid "Grain"
 msgstr "颗粒"
 
-#: ui/photo_mode.gd:389 ui/photo_mode.gd:423
+#: ui/photo_mode.gd:381 ui/photo_mode.gd:415
 msgid "World"
 msgstr "世界"
 
-#: ui/photo_mode.gd:390
+#: ui/photo_mode.gd:382
 msgid "Set time of day"
 msgstr "设定时间"
 
-#: ui/photo_mode.gd:395
+#: ui/photo_mode.gd:387
 msgid "Weather"
 msgstr "天气"
 
-#: ui/photo_mode.gd:397
+#: ui/photo_mode.gd:389
 msgid "Pose"
 msgstr "姿势"
 
-#: ui/photo_mode.gd:398 data/style_parts.json:slots[eye_shape].name
+#: ui/photo_mode.gd:390 data/style_parts.json:slots[eye_shape].name
 msgid "Eyes"
 msgstr "眼睛"
 
-#: ui/photo_mode.gd:399
+#: ui/photo_mode.gd:391
 msgid "Turn"
 msgstr "转身"
 
-#: ui/photo_mode.gd:400
+#: ui/photo_mode.gd:392
 msgid "Show robots"
 msgstr "显示机器人"
 
-#: ui/photo_mode.gd:401 ui/photo_mode.gd:423
+#: ui/photo_mode.gd:393 ui/photo_mode.gd:415
 msgid "Frame"
 msgstr "画框"
 
-#: ui/photo_mode.gd:402
+#: ui/photo_mode.gd:394
 msgid "Hide HUD"
 msgstr "隐藏 HUD"
 
-#: ui/photo_mode.gd:403
+#: ui/photo_mode.gd:395
 msgid "Rule of thirds"
 msgstr "三分法构图"
 
-#: ui/photo_mode.gd:404
+#: ui/photo_mode.gd:396
 msgid "Letterbox 2.39:1"
 msgstr "宽银幕 2.39:1"
 
-#: ui/photo_mode.gd:405
+#: ui/photo_mode.gd:397
 msgid "Greenfall stamp"
 msgstr "Greenfall 印章"
 
-#: ui/photo_mode.gd:406
+#: ui/photo_mode.gd:398
 msgid "Resolution"
 msgstr "分辨率"
 
-#: ui/photo_mode.gd:890
+#: ui/photo_mode.gd:882
 msgid "Couldn't capture the photo."
 msgstr "无法拍摄照片。"
 
-#: ui/photo_mode.gd:899
+#: ui/photo_mode.gd:891
 msgid "Couldn't save the photo (%s)."
 msgstr "无法保存照片（%s）。"
 
-#: ui/photo_mode.gd:912
+#: ui/photo_mode.gd:904
 msgid "Saved  %s  (%dx%d)"
 msgstr "已保存  %s  （%dx%d）"
 
@@ -5924,17 +5938,9 @@ msgstr "电池已充满。选择要飞往的基地。"
 msgid "Not built yet"
 msgstr "尚未建造"
 
-#: ui/rockets_panel.gd:46
-msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Upgrades tab."
-msgstr "发射台需要 5 级基地（你的是 %d 级）。请在升级页签中升级基地。"
-
 #: ui/rockets_panel.gd:48
 msgid "Rockets to the rest of Verdance are in the full game. The demo stays in the first district."
 msgstr "飞往 Verdance 其他地方的火箭在完整版中。试玩版只在第一个街区。"
-
-#: ui/rockets_panel.gd:60
-msgid "The rocket lands on the pad when the base reaches level 5."
-msgstr "基地升到 5 级时，火箭会降落在发射台上。"
 
 #: ui/rockets_panel.gd:64
 msgid "NEARBY BASES"
@@ -7921,10 +7927,6 @@ msgstr "种在沉没之城。"
 #: data/codex.json:plants.marsh_mint.desc
 msgid "Mint that does not mind wet feet. The drained streets smell of it on warm evenings."
 msgstr "不怕湿脚的薄荷。温暖的傍晚，排干的街道上满是它的香味。"
-
-#: data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
-msgid "Build one at the workbench."
-msgstr "在工作台造一台。"
 
 #: data/codex.json:robots.scoopie.desc
 msgid "A small, earnest cleaner with one scoop arm and a lot of enthusiasm. It hums when it finds a good pile."
@@ -10966,10 +10968,6 @@ msgstr "举升力 1 级"
 msgid "Clean your first hex"
 msgstr "清理你的第一个六角格"
 
-#: data/goals.json:goals[perfect_1].text
-msgid "Make a perfect bale"
-msgstr "压出一个完美捆包"
-
 #: data/goals.json:goals[upgrades_5].text
 msgid "Buy 5 upgrades"
 msgstr "购买 5 项升级"
@@ -10977,6 +10975,110 @@ msgstr "购买 5 项升级"
 #: data/goals.json:goals[cash_10].text
 msgid "Sell 10 bales"
 msgstr "卖掉 10 个捆包"
+
+#: data/goals.json:goals[hex_3].text data/objectives.json:objectives[hex3].text
+msgid "Clean 3 hexes"
+msgstr "清理 3 个六角格"
+
+#: data/goals.json:goals[earn_1k].text
+msgid "Earn 1,000 cubes"
+msgstr "赚到 1,000 方块"
+
+#: data/goals.json:goals[scoopie_1].text
+msgid "Build a Scoopie"
+msgstr "建造一台 Scoopie"
+
+#: data/goals.json:goals[zone_1].text
+msgid "Give a robot a work zone"
+msgstr "给一台机器人划一块工作区域"
+
+#: data/goals.json:goals[earn_3k].text
+msgid "Earn 3,000 cubes"
+msgstr "赚到 3,000 方块"
+
+#: data/goals.json:goals[hex_5].text
+msgid "Clean 5 hexes"
+msgstr "清理 5 个六角格"
+
+#: data/goals.json:goals[seeds].text
+msgid "Find the seed tin"
+msgstr "找到种子罐"
+
+#: data/goals.json:goals[plant_5].text
+msgid "Plant the Maker seed"
+msgstr "种下造物者的种子"
+
+#: data/goals.json:goals[hex_7].text
+msgid "Clean 7 hexes"
+msgstr "清理 7 个六角格"
+
+#: data/goals.json:goals[hex_10].text data/objectives.json:objectives[hex10].text data/radio.json:songs[verdance_sweep].hint
+msgid "Clean 10 hexes"
+msgstr "清理 10 个六角格"
+
+#: data/goals.json:goals[base_2].text
+msgid "Upgrade the base to level 2"
+msgstr "将基地升到 2 级"
+
+#: data/goals.json:goals[haulbug_1].text data/objectives.json:objectives[haul].text
+msgid "Build a Haul Bug"
+msgstr "建造一台 Haul Bug"
+
+#: data/goals.json:goals[research_1].text data/objectives.json:objectives[research1].text
+msgid "Finish a research project"
+msgstr "完成一项研究"
+
+#: data/goals.json:goals[bales_20].text
+msgid "Robots press 20 bales"
+msgstr "机器人压制 20 个捆包"
+
+#: data/goals.json:goals[hex_12].text
+msgid "Clean 12 hexes"
+msgstr "清理 12 个六角格"
+
+#: data/goals.json:goals[hexlv_2].text
+msgid "Get a hex to Planted"
+msgstr "让一个六角格达到“已种植”"
+
+#: data/goals.json:goals[hex_15].text
+msgid "Clean 15 hexes"
+msgstr "清理 15 个六角格"
+
+#: data/goals.json:goals[hex_17].text
+msgid "Clean 17 hexes"
+msgstr "清理 17 个六角格"
+
+#: data/goals.json:goals[hex_20].text data/objectives.json:objectives[hex20].text
+msgid "Clean 20 hexes"
+msgstr "清理 20 个六角格"
+
+#: data/goals.json:goals[base_3].text
+msgid "Upgrade the base to level 3"
+msgstr "将基地升到 3 级"
+
+#: data/goals.json:goals[seedling_1].text
+msgid "Build a Seedling planter"
+msgstr "建造一台 Seedling 种植机器人"
+
+#: data/goals.json:goals[plant_25].text
+msgid "Plant 25 seeds"
+msgstr "种下 25 颗种子"
+
+#: data/goals.json:goals[drip_1].text
+msgid "Build a Drip watering robot"
+msgstr "建造一台 Drip 浇水机器人"
+
+#: data/goals.json:goals[home_drive_5].text
+msgid "Build the Mk V Orbital drive"
+msgstr "建造 Mk V 轨道推进器"
+
+#: data/goals.json:goals[home_land_1].text
+msgid "Fly to another planet"
+msgstr "飞往另一个星球"
+
+#: data/goals.json:goals[perfect_1].text
+msgid "Make a perfect bale"
+msgstr "压出一个完美捆包"
 
 #: data/goals.json:goals[compartment_3].text
 msgid "Chest Size level 3"
@@ -10986,25 +11088,9 @@ msgstr "胸舱容量达到 3 级"
 msgid "Find a memory shard"
 msgstr "找到一块记忆碎片"
 
-#: data/goals.json:goals[hex_3].text data/objectives.json:objectives[hex3].text
-msgid "Clean 3 hexes"
-msgstr "清理 3 个六角格"
-
 #: data/goals.json:goals[parts_2].text
 msgid "Dig up 2 robot parts"
 msgstr "挖出 2 个机器人零件"
-
-#: data/goals.json:goals[earn_1k].text
-msgid "Earn 1,000 cubes"
-msgstr "赚到 1,000 方块"
-
-#: data/goals.json:goals[research_1].text data/objectives.json:objectives[research1].text
-msgid "Finish a research project"
-msgstr "完成一项研究"
-
-#: data/goals.json:goals[hex_5].text
-msgid "Clean 5 hexes"
-msgstr "清理 5 个六角格"
 
 #: data/goals.json:goals[lift_2].text
 msgid "Lift Strength level 2"
@@ -11013,14 +11099,6 @@ msgstr "举升力达到 2 级"
 #: data/goals.json:goals[upgrades_12].text
 msgid "Buy 12 upgrades"
 msgstr "购买 12 项升级"
-
-#: data/goals.json:goals[earn_3k].text
-msgid "Earn 3,000 cubes"
-msgstr "赚到 3,000 方块"
-
-#: data/goals.json:goals[hex_7].text
-msgid "Clean 7 hexes"
-msgstr "清理 7 个六角格"
 
 #: data/goals.json:goals[pet_cat].text
 msgid "Pet a stray cat"
@@ -11034,37 +11112,9 @@ msgstr "完成 4 项研究"
 msgid "Buy 20 upgrades"
 msgstr "购买 20 项升级"
 
-#: data/goals.json:goals[hex_10].text data/objectives.json:objectives[hex10].text data/radio.json:songs[verdance_sweep].hint
-msgid "Clean 10 hexes"
-msgstr "清理 10 个六角格"
-
-#: data/goals.json:goals[base_2].text
-msgid "Upgrade the base to level 2"
-msgstr "将基地升到 2 级"
-
-#: data/goals.json:goals[scoopie_1].text
-msgid "Build a Scoopie"
-msgstr "建造一台 Scoopie"
-
-#: data/goals.json:goals[zone_1].text
-msgid "Give a robot a work zone"
-msgstr "给一台机器人划一块工作区域"
-
-#: data/goals.json:goals[haulbug_1].text data/objectives.json:objectives[haul].text
-msgid "Build a Haul Bug"
-msgstr "建造一台 Haul Bug"
-
-#: data/goals.json:goals[bales_20].text
-msgid "Robots press 20 bales"
-msgstr "机器人压制 20 个捆包"
-
 #: data/goals.json:goals[scoopie_2].text
 msgid "Run 2 Scoopies"
 msgstr "让 2 台 Scoopie 运转"
-
-#: data/goals.json:goals[hex_12].text
-msgid "Clean 12 hexes"
-msgstr "清理 12 个六角格"
 
 #: data/goals.json:goals[upgrades_25].text
 msgid "Buy 25 upgrades"
@@ -11077,22 +11127,6 @@ msgstr "完成 6 项研究"
 #: data/goals.json:goals[robots_4].text
 msgid "Build 4 robots"
 msgstr "建造 4 台机器人"
-
-#: data/goals.json:goals[hex_15].text
-msgid "Clean 15 hexes"
-msgstr "清理 15 个六角格"
-
-#: data/goals.json:goals[seeds].text
-msgid "Find the seed tin"
-msgstr "找到种子罐"
-
-#: data/goals.json:goals[plant_5].text
-msgid "Plant the Maker seed"
-msgstr "种下造物者的种子"
-
-#: data/goals.json:goals[hexlv_2].text
-msgid "Get a hex to Planted"
-msgstr "让一个六角格达到“已种植”"
 
 #: data/goals.json:goals[earn_10k].text
 msgid "Earn 10,000 cubes"
@@ -11110,10 +11144,6 @@ msgstr "阅读 2 块记忆碎片"
 msgid "Zone 6 hexes for your crews"
 msgstr "为队伍划定 6 个六角格"
 
-#: data/goals.json:goals[hex_17].text
-msgid "Clean 17 hexes"
-msgstr "清理 17 个六角格"
-
 #: data/goals.json:goals[research_8].text
 msgid "Finish 8 research projects"
 msgstr "完成 8 项研究"
@@ -11129,10 +11159,6 @@ msgstr "回收 5 个捆包"
 #: data/goals.json:goals[hexlv_3].text
 msgid "Get a hex to Growing"
 msgstr "让一个六角格达到“生长中”"
-
-#: data/goals.json:goals[hex_20].text data/objectives.json:objectives[hex20].text
-msgid "Clean 20 hexes"
-msgstr "清理 20 个六角格"
 
 #: data/goals.json:goals[skimmer_1].text
 msgid "Build a Skimmer for the lake"
@@ -11158,17 +11184,9 @@ msgstr "清理 28 个六角格"
 msgid "Buy 40 upgrades"
 msgstr "购买 40 项升级"
 
-#: data/goals.json:goals[seedling_1].text
-msgid "Build a Seedling planter"
-msgstr "建造一台 Seedling 种植机器人"
-
 #: data/goals.json:goals[hex_30].text
 msgid "Clean 30 hexes (lake too)"
 msgstr "清理 30 个六角格（含湖面）"
-
-#: data/goals.json:goals[base_3].text
-msgid "Upgrade the base to level 3"
-msgstr "将基地升到 3 级"
 
 #: data/goals.json:goals[extras_radio].text
 msgid "Pick a song on the base radio"
@@ -11177,14 +11195,6 @@ msgstr "在基地收音机上选一首歌"
 #: data/goals.json:goals[builder_1].text
 msgid "Style a robot in the Locker"
 msgstr "在储物柜装扮一台机器人"
-
-#: data/goals.json:goals[plant_25].text
-msgid "Plant 25 seeds"
-msgstr "种下 25 颗种子"
-
-#: data/goals.json:goals[drip_1].text
-msgid "Build a Drip watering robot"
-msgstr "建造一台 Drip 浇水机器人"
 
 #: data/goals.json:goals[pollinator].text
 msgid "Research Pollinator Survey"
@@ -11522,14 +11532,6 @@ msgstr "在这里让 25 个六角格生长"
 msgid "Call the Cradle home"
 msgstr "迎 Cradle号回家"
 
-#: data/goals.json:goals[home_drive_5].text
-msgid "Build the Mk V Orbital drive"
-msgstr "建造 Mk V 轨道推进器"
-
-#: data/goals.json:goals[home_land_1].text
-msgid "Fly to another planet"
-msgstr "飞往另一个星球"
-
 #: data/goals.json:goals[home_restore_2].text
 msgid "Restore a second planet"
 msgstr "恢复第二个星球"
@@ -11641,6 +11643,10 @@ msgstr "野生动物已经入住"
 #: data/homeward.json:planets[verdance].name data/planets.json:verdance.name data/telescope.json:planets_default[verdance].name
 msgid "Verdance"
 msgstr "Verdance"
+
+#: data/homeward.json:planets[verdance].leave.toast
+msgid "Six stations awake, Lumi. Their robots can look after Verdance now."
+msgstr "六座站点都醒了,Lumi。它们的机器人现在可以照看 Verdance 了。"
 
 #: data/homeward.json:planets[ochre].name data/planets.json:ochre.name data/telescope.json:planets_default[ochre].name
 msgid "Ochre"
@@ -12692,8 +12698,8 @@ msgid "Windpump"
 msgstr "风力水泵"
 
 #: data/planets.json:verdance.hubs[garden_row].desc
-msgid "The rocket's seed stock. A new seed type."
-msgstr "火箭要带的种子储备。一种新种子。"
+msgid "The Makers' seed store: seeds to take to the next world."
+msgstr "造物者的种子库：带去下一个世界的种子。"
 
 #: data/planets.json:verdance.hubs[garden_row].piece.name
 msgid "Seed Stock"
@@ -12712,8 +12718,8 @@ msgid "Gantry Crane"
 msgstr "龙门吊"
 
 #: data/planets.json:verdance.hubs[gantry_works].desc
-msgid "Hull plates for the rocket."
-msgstr "火箭用的船体板。"
+msgid "Hull plates, so the rocket can stand the cold of space."
+msgstr "船体板，让火箭扛得住太空的寒冷。"
 
 #: data/planets.json:verdance.hubs[gantry_works].piece.name
 msgid "Hull Plates"
@@ -12732,8 +12738,8 @@ msgid "Signal Mast"
 msgstr "信号塔"
 
 #: data/planets.json:verdance.hubs[signal_heights].desc
-msgid "The star chart: where the rocket can fly."
-msgstr "星图：火箭能飞往哪里。"
+msgid "The Makers' star chart: it shows where the rocket can fly."
+msgstr "造物者的星图：告诉你火箭能飞往哪里。"
 
 #: data/planets.json:verdance.hubs[signal_heights].piece.name
 msgid "Star Chart"
@@ -12752,8 +12758,8 @@ msgid "Big Wheel"
 msgstr "摩天轮"
 
 #: data/planets.json:verdance.hubs[fairground].desc
-msgid "A power cell for the rocket. A new look for Lumi."
-msgstr "火箭用的能量电池。Lumi 的新外观。"
+msgid "A power cell that lasts a long flight. A new look for Lumi."
+msgstr "能撑过长途飞行的能量电池。Lumi 的新外观。"
 
 #: data/planets.json:verdance.hubs[fairground].piece.name
 msgid "Power Cell"
@@ -12792,8 +12798,8 @@ msgid "Last Bus"
 msgstr "末班车"
 
 #: data/planets.json:verdance.hubs[bus_depot].desc
-msgid "An extra town. A reward of Parts."
-msgstr "额外的城镇。奖励：零件。"
+msgid "An old station off the route. Wake it for Parts."
+msgstr "航线之外的一座旧清理站。唤醒它可以得到零件。"
 
 #: data/planets.json:verdance.hubs[crane_court].name
 msgid "Crane Court"
@@ -12804,8 +12810,8 @@ msgid "Tower Crane"
 msgstr "塔吊"
 
 #: data/planets.json:verdance.hubs[crane_court].desc data/planets.json:verdance.hubs[lake_light].desc
-msgid "An extra town. A reward of Cubes."
-msgstr "额外的城镇。奖励：方块。"
+msgid "An old station off the route. Wake it for Cubes."
+msgstr "航线之外的一座旧清理站。唤醒它可以得到方块。"
 
 #: data/planets.json:verdance.hubs[tank_hill].name
 msgid "Tank Hill"
@@ -12816,8 +12822,8 @@ msgid "Hill Tank"
 msgstr "山顶水罐"
 
 #: data/planets.json:verdance.hubs[tank_hill].desc
-msgid "An extra town. A reward of Seeds."
-msgstr "额外的城镇。奖励：种子。"
+msgid "An old station off the route. Wake it for Seeds."
+msgstr "航线之外的一座旧清理站。唤醒它可以得到种子。"
 
 #: data/planets.json:verdance.hubs[lake_light].name
 msgid "Lake Light"
@@ -14716,6 +14722,10 @@ msgstr "粉碎滚筒和一座小熔炉。草捆进去就再也不会回来：出
 #: data/story_reasons.json:goal_reasons
 msgid "One more step toward a green world."
 msgstr "离绿色的世界又近了一步。"
+
+#: data/story_reasons.json:goal_reasons
+msgid "You can fly on now. The rest of Verdance can wait."
+msgstr "现在可以继续飞行了。Verdance 剩下的部分可以以后再说。"
 
 #: data/story_reasons.json:goal_reasons
 msgid "Other old stations are waiting to be woken up."
@@ -17081,6 +17091,183 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Cargo pod landed: %s cubes from %d robots in other districts."
+#~ msgstr "货运舱着陆：%s 个方块，来自其他街区的 %d 台机器人。"
+
+#~ msgid "WREN: That's the edge of the survey zone, Lumi. Nothing out there but haze."
+#~ msgstr "WREN：那里是勘测区的边缘，Lumi。外面只有雾霾。"
+
+#~ msgid "Lumi hovers back onto solid ground."
+#~ msgstr "Lumi 悬浮着回到了坚实的地面。"
+
+#~ msgid "Planet %d m around"
+#~ msgstr "星球一圈 %d 米"
+
+#~ msgid "Walked %d m (%d%%)"
+#~ msgstr "已走 %d 米（%d%%）"
+
+#~ msgid "Speed %.1f m/s"
+#~ msgstr "速度 %.1f 米/秒"
+
+#~ msgid "Bots near %d, far %d"
+#~ msgstr "机器人 近 %d，远 %d"
+
+#~ msgid "Y: role · Hold A: paint · Hold X: erase · Left stick: move"
+#~ msgstr "Y：角色 · 按住 A：涂 · 按住 X：擦 · 左摇杆：移动"
+
+#~ msgid "Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi"
+#~ msgstr "Tab：角色 · 左键：涂 · 右键：擦 · 中键：派机器人 · E：回到 Lumi"
+
+#~ msgid "%s zone"
+#~ msgstr "%s区域"
+
+#~ msgid "Locked. Upgrade your base to level 5 to build the launch pad."
+#~ msgstr "未解锁。将基地升到 5 级才能建造发射台。"
+
+#~ msgid "Priority"
+#~ msgstr "优先"
+
+#~ msgid "Stay"
+#~ msgstr "原地"
+
+#~ msgid "Follow me"
+#~ msgstr "跟着我"
+
+#~ msgid "Recall"
+#~ msgstr "召回"
+
+#~ msgid "Works the marked hexes first, then the rest of the district."
+#~ msgstr "先处理标记的六角格，再处理街区其余部分。"
+
+#~ msgid "Works only the marked hexes, and waits there when they are done."
+#~ msgstr "只处理标记的六角格，完成后在那里待命。"
+
+#~ msgid "Works the hexes around you, wherever you go."
+#~ msgstr "无论你去哪，都处理你周围的六角格。"
+
+#~ msgid "Comes back and parks at the base."
+#~ msgstr "回来停在基地。"
+
+#~ msgid "[p]{@dpad}  panel      {@move}  move      {pad:#0}  mark      {pad:#2}  unmark      {pad:zoom_out}{pad:zoom_in}  zoom      {pad:ui_cancel}  back[/p][k]Left drag  mark      Right drag  unmark      {@move} / middle drag  move      Wheel  zoom      {kbd:open_command}  back[/k]"
+#~ msgstr "[p]{@dpad}  面板      {@move}  移动      {pad:#0}  标记      {pad:#2}  取消标记      {pad:zoom_out}{pad:zoom_in}  缩放      {pad:ui_cancel}  返回[/p][k]左键拖动  标记      右键拖动  取消标记      {@move} / 中键拖动  移动      滚轮  缩放      {kbd:open_command}  返回[/k]"
+
+#~ msgid "COMMAND"
+#~ msgstr "指挥"
+
+#~ msgid "Mark around me"
+#~ msgstr "标记我周围"
+
+#~ msgid "CREWS"
+#~ msgstr "队伍"
+
+#~ msgid "Following the %s orders. Mark hexes or pick a mode to give it its own."
+#~ msgstr "正在执行%s的命令。标记六角格或选择模式来给它单独下令。"
+
+#~ msgid "No orders yet: roaming the district. Drag on the ground to mark where to work."
+#~ msgstr "还没有命令：在街区里巡游。在地面上拖动来标记工作区域。"
+
+#~ msgid "No robots yet. Build one at the workbench."
+#~ msgstr "还没有机器人。去工作台造一台吧。"
+
+#~ msgid "Build %s  %s"
+#~ msgstr "建造 %s  %s"
+
+#~ msgid "Max tier"
+#~ msgstr "最高等级"
+
+#~ msgid "Upgrade > %s"
+#~ msgstr "升级 > %s"
+
+#~ msgid "ready"
+#~ msgstr "就绪"
+
+#~ msgid "build at the workbench"
+#~ msgstr "在工作台建造"
+
+#~ msgid "Place refill tank here  %s  (%d/%d)"
+#~ msgstr "在此放置补水箱  %s  （%d/%d）"
+
+#~ msgid "A Water Tank at your hex. Waterers refill at the nearest one."
+#~ msgstr "你所在六角格的水箱。浇水机器人会去最近的水箱补水。"
+
+#~ msgid "%s · %d HEX"
+#~ msgstr[0] "%s · %d 个六角格"
+
+#~ msgid "BASE"
+#~ msgstr "基地"
+
+#~ msgid "YOU"
+#~ msgstr "你"
+
+#~ msgid "HEX %d"
+#~ msgstr "六角格 %d"
+
+#~ msgid "BASE YARD"
+#~ msgstr "基地院子"
+
+#~ msgid "Home ground, always clean"
+#~ msgstr "家园，永远干净"
+
+#~ msgid "LAKE HEX %d"
+#~ msgstr "湖面六角格 %d"
+
+#~ msgid "Floating junk  %d%% left"
+#~ msgstr "漂浮废料  剩余 %d%%"
+
+#~ msgid "Junk  %d%% left"
+#~ msgstr "废料  剩余 %d%%"
+
+#~ msgid "Level %d · %s"
+#~ msgstr "等级 %d · %s"
+
+#~ msgid "In %s zone"
+#~ msgstr "在%s区域"
+
+#~ msgid "%d robots"
+#~ msgstr "%d 台机器人"
+
+#~ msgid "%d / %d hexes clean"
+#~ msgstr "%d / %d 个六角格已清理"
+
+#~ msgid "The launch pad comes with a level 5 base (yours is level %d). Upgrade the base in the Upgrades tab."
+#~ msgstr "发射台需要 5 级基地（你的是 %d 级）。请在升级页签中升级基地。"
+
+#~ msgid "The rocket lands on the pad when the base reaches level 5."
+#~ msgstr "基地升到 5 级时，火箭会降落在发射台上。"
+
+#~ msgid "Everything sells for x%s now."
+#~ msgstr "现在所有东西的售价 x%s。"
+
+#~ msgid "Clean hexes here: %d / %d"
+#~ msgstr "清理这里的格子：%d / %d"
+
+#~ msgid "The rocket can keep %d bases going. Upgrade the rocket at the workbench."
+#~ msgstr "火箭最多能照看 %d 个基地。去工作台升级火箭。"
+
+#~ msgid "%s is awake. %s restored."
+#~ msgstr "%s 醒来了。%s 已修复。"
+
+#~ msgid "The rocket's seed stock. A new seed type."
+#~ msgstr "火箭要带的种子储备。一种新种子。"
+
+#~ msgid "Hull plates for the rocket."
+#~ msgstr "火箭用的船体板。"
+
+#~ msgid "The star chart: where the rocket can fly."
+#~ msgstr "星图：火箭能飞往哪里。"
+
+#~ msgid "A power cell for the rocket. A new look for Lumi."
+#~ msgstr "火箭用的能量电池。Lumi 的新外观。"
+
+#~ msgid "An extra town. A reward of Parts."
+#~ msgstr "额外的城镇。奖励：零件。"
+
+#~ msgid "An extra town. A reward of Cubes."
+#~ msgstr "额外的城镇。奖励：方块。"
+
+#~ msgid "An extra town. A reward of Seeds."
+#~ msgstr "额外的城镇。奖励：种子。"
 
 #~ msgid "Rocket hop: %.1f km"
 #~ msgstr "火箭跳跃：%.1f 公里"

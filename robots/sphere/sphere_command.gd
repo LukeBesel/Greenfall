@@ -12,7 +12,8 @@ extends Node
 
 signal cell_picked(cell: int)
 
-const ROLES: Array[String] = ["clean", "plant", "water", "haul"]
+## [v6crew] Jobs a zone can be painted for (Haul Bugs follow the bales, so they have none).
+const ROLES: Array[String] = ["clean", "plant", "water", "skim"]
 
 var cam: SphereCam
 var surface: SphereSurface
@@ -32,6 +33,39 @@ var _was_command: bool = false
 ## Lumi's input: off while commanding, so the move keys pan the view instead of walking.
 var lumi_input: PlayerInput
 var overlay: CommandOverlay
+## [v6crew] Cells painted since the view was opened (the guided step's "Good!" line).
+var painted_now: int = 0
+## [v6crew] The robot under the cursor (or the pad's reticle): its line is shown by the overlay.
+var hover_unit: Dictionary = {}
+
+
+## [v6crew] The jobs the player can paint right now: those he has a robot for (always "clean").
+func roles() -> Array[String]:
+	var out: Array[String] = ["clean"]
+	if crew != null:
+		for r: String in ROLES:
+			if r == "clean":
+				continue
+			for u: Dictionary in crew.robots():
+				if str(u["role"]) == r:
+					out.append(r)
+					break
+	return out
+
+
+func next_role() -> void:
+	var rs: Array[String] = roles()
+	role = rs[(rs.find(role) + 1) % rs.size()]
+
+
+## [v6crew] The hub this view is over (the one nearest the camera's focus).
+func view_hub() -> int:
+	if crew == null:
+		return -1
+	var d: Vector3 = cam.command_focus if cam != null and cam.command_focus != Vector3.ZERO else Vector3.ZERO
+	if d == Vector3.ZERO and crew.focus != null and is_instance_valid(crew.focus):
+		d = surface.up_at(crew.focus.global_position)
+	return crew.nearest_hub(d) if d != Vector3.ZERO else crew.hub_cell
 
 
 func _ready() -> void:
@@ -92,6 +126,9 @@ func _process(_delta: float) -> void:
 			streamer.outlines = on
 		_paint = 0
 		_pad_paint = 0
+		painted_now = 0
+		if not roles().has(role):
+			role = "clean"
 		if lumi_input:
 			lumi_input.enabled = not on
 		if not on and cam:
@@ -108,7 +145,10 @@ func _process(_delta: float) -> void:
 	hover_cell = pick_cell(cam.camera, at, surface, grid)
 	var paint: int = _pad_paint if using_pad else _paint
 	if paint != 0 and hover_cell >= 0 and crew:
+		if paint > 0 and not (crew.zones.get(role, {}) as Dictionary).has(hover_cell):
+			painted_now += 1
 		crew.set_zone_cell(role, hover_cell, paint > 0)
+	hover_unit = _unit_near(at, 26.0) if crew != null and paint == 0 else {}
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -128,7 +168,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				_pad_paint = -1 if jb.pressed else (0 if _pad_paint == -1 else _pad_paint)
 			JOY_BUTTON_Y:
 				if jb.pressed:
-					role = ROLES[(ROLES.find(role) + 1) % ROLES.size()]
+					next_role()
 		return
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event
@@ -142,7 +182,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if mb.pressed and c >= 0:
 			cell_picked.emit(c)
 	elif event is InputEventKey and (event as InputEventKey).pressed and (event as InputEventKey).keycode == KEY_TAB:
-		role = ROLES[(ROLES.find(role) + 1) % ROLES.size()]
+		next_role()
 	elif event.is_action_pressed("interact"):
 		cam.recenter_command()
 
@@ -163,4 +203,20 @@ func order_nearest(cell: int) -> Dictionary:
 			best = u
 	if not best.is_empty():
 		crew.order(best, cell)
+	return best
+
+
+## [v6crew] The robot drawn nearest a screen point, within `px` pixels ({} if none).
+func _unit_near(at: Vector2, px: float) -> Dictionary:
+	var best: Dictionary = {}
+	var bd: float = px
+	for u: Dictionary in crew.robots():
+		var p: Vector3 = surface.ground(crew.unit_dir(u))
+		var sp: Variant = CommandOverlay.screen_of(cam.camera, surface, p + surface.up_at(p) * 0.8)
+		if sp == null:
+			continue
+		var d: float = (sp as Vector2).distance_to(at)
+		if d < bd:
+			bd = d
+			best = u
 	return best

@@ -68,6 +68,21 @@ var _touched: Dictionary = {}  # dev: cells the crew wrote
 ## design registers itself with SphereCrew.dress_hooks.append(...).
 static var dress_hooks: Array[Callable] = []
 
+## [v6crew] Every hub site's cell on this globe (set by the slice). A robot belongs to one hub:
+## it cleans that hub's region, its haulers fetch bales there and unload at that hub's drop point.
+var hubs: PackedInt32Array = PackedInt32Array()
+## [v6crew] What each hub's crew did since Lumi last stood there: hub -> {cells, cubes, bales, t}.
+var hub_log: Dictionary = {}
+## [v6crew] Seconds a newly built robot spends on its hello (roll out, look around) before work.
+const HELLO_S: float = 3.4
+const HELLO_ROLL_M: float = 3.2
+## [v6crew] Haulers only fetch bales this far past their hub region, and only use a scale this near.
+const HAUL_REACH_M: float = 600.0
+## [v6crew] hub -> true while bales pile up there for want of Haul Bugs (CrewTalk.needs_hauler, 1 Hz).
+var short_haul: Dictionary = {}
+var _talk_t: float = 0.0
+var _zone_hub: Dictionary = {}  # [v6crew] "role|hub" -> {cell: true}: the painted cells in that hub's region
+
 var _claimed: Dictionary = {}  # cell -> unit name
 var _left: Dictionary = {}  # cell -> work target (junk left 0..1) while robots work it
 var _skip: Dictionary = {}  # cell -> time it may be claimed again
@@ -250,13 +265,12 @@ func _hopper_contents(units: float) -> Dictionary:
 ## says it is closer. Returns a unit direction; sets u["drop"].
 func _haul_target(u: Dictionary) -> Vector3:
 	u["drop"] = ""
-	var d: Vector3 = depot_points.get(int(u["hub"]), Vector3.ZERO)
-	if d == Vector3.ZERO:
-		d = grid.centers[depot_of(int(u["hub"]))]
+	var d: Vector3 = drop_dir(int(u["hub"]))  # [v6crew] its own hub's drop point
 	var here: Vector3 = surface.ground(unit_dir(u))
 	if world != null and world.get("outposts") is Outposts:
 		var dp: Depot = Outposts.nearest_depot(world, here)
-		if dp != null:
+		# [v6crew] only a scale in reach: the start Depot is no use to a crew at another hub
+		if dp != null and surface.up_at(dp.global_position).angle_to(unit_dir(u)) * surface.radius < HAUL_REACH_M:
 			d = surface.up_at(dp.global_position)
 	if u["bot"] != null:
 		var to: Vector3 = Stations.haul_drop(u["bot"], surface.ground(d))
@@ -350,13 +364,169 @@ func order(u: Dictionary, cell: int) -> void:
 	_route_to(u, cell, "go")
 
 
+# --- [v6crew] Hubs, the hello, hub readouts ----------------------------------------------------
+
+## The hub site nearest a spot on the planet (the crew's own hub when no list is set).
+func nearest_hub(d: Vector3) -> int:
+	var best: int = hub_cell
+	var ba: float = INF
+	for h: int in hubs:
+		var a: float = grid.centers[h].angle_to(d)
+		if a < ba:
+			ba = a
+			best = h
+	return best
+
+
+## Region radius in metres (claim_dirty's limit).
+func region_m() -> float:
+	return (rings + 0.5) * 17.35
+
+
+## Where a hub's haulers unload: its registered drop point, else its depot cell's centre.
+func drop_dir(hub: int) -> Vector3:
+	var d: Vector3 = depot_points.get(hub, Vector3.ZERO)
+	return d if d != Vector3.ZERO else grid.centers[depot_of(hub)]
+
+
+## A newly built robot says hello: it rolls out of the Bot Bay, looks left and right, then starts
+## on the nearest dirty hex by itself (no Command view needed).
+func greet(u: Dictionary) -> void:
+	_drop_job(u)
+	u["mode"] = "hello"
+	u["work_t"] = 0.0
+	u["idle"] = ""
+	if u["bot"] != null:
+		var b: SphereBot = u["bot"]
+		var out: Vector3 = SphereMath.tangent_dir(b.dir - grid.centers[int(u["hub"])], b.dir, b.heading)
+		var to: Vector3 = _free_spot(SphereMath.advance(b.dir, out, HELLO_ROLL_M / surface.radius)[0])
+		b.heading = SphereMath.tangent_dir(to - b.dir, b.dir, b.heading)
+		b.go_to_point(surface.ground(to))
+		if visuals and is_inside_tree():  # a ring of its job's colour where it rolls out
+			Vfx.ring(b.global_position + b.dir * 0.15, 1.8, BotBadge.role_color(str(u["role"])), 0.9)
+
+
+func _hello(u: Dictionary, dt: float) -> void:
+	u["work_t"] = float(u["work_t"]) + dt
+	var t: float = float(u["work_t"])
+	var b: SphereBot = u["bot"]
+	if b == null or t >= HELLO_S:
+		if b != null:
+			b.look_turn = 0.0
+		u["mode"] = "idle"
+		u["rescan"] = 0.0
+		return
+	# Roll out first; once stopped (or after 1.6 s) look left, then right, then go.
+	if t > 1.6 or not b.has_goal():
+		b.goal = Vector3.ZERO
+		b.path.clear()
+		var k: float = clampf((t - 1.6) / (HELLO_S - 1.6), 0.0, 1.0)
+		b.look_turn = sin(k * TAU) * 1.5
+
+
+## The painted cells of `role` that lie in `hub`'s region (a zone belongs to the hub it is in).
+func zone_for(role: String, hub: int) -> Dictionary:
+	var all: Dictionary = zones.get(role, {})
+	if all.is_empty():
+		return all
+	var key: String = "%s|%d" % [role, hub]
+	if not _zone_hub.has(key):
+		var z: Dictionary = {}
+		var lim: float = region_m() + 60.0
+		for c: Variant in all:
+			if hubs.size() <= 1 or grid.distance_m(int(c), hub) < lim:
+				z[int(c)] = true
+		_zone_hub[key] = z
+	return _zone_hub[key]
+
+
+## Planting and watering keep to a painted zone (seeds and water cost something). Cleaning and
+## skimming treat it as "here first": once the zone is clean they go on around the hub, so a robot
+## never stands idle while there is work in reach.
+static func zone_strict(role: String) -> bool:
+	return role == "plant" or role == "water"
+
+
+func _hub_log(hub: int) -> Dictionary:
+	if not hub_log.has(hub):
+		hub_log[hub] = {"cells": 0.0, "cubes": 0.0, "bales": 0.0, "t": 0.0}
+	return hub_log[hub]
+
+
+## A hub's crew in numbers and one line for menus (the rocket picker's "3 robots working here"):
+## {robots, working, idle, hexes_per_hour, bales_waiting, needs_hauler, text, log}. `hub` is the
+## hub site's cell (globe.sites[i]["cell"]).
+func hub_summary(hub: int) -> Dictionary:
+	return CrewTalk.hub_summary(self, hub)
+
+
+## Robots that belong to a hub.
+func hub_robots(hub: int) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	for u: Dictionary in units:
+		if int(u["hub"]) == hub:
+			out.append(u)
+	return out
+
+
+## Bales lying in a hub's region with nobody coming for them.
+func bales_waiting(hub: int) -> int:
+	var n: int = 0
+	var lim: float = region_m() + 60.0
+	for b: Dictionary in bales:
+		if hubs.size() <= 1 or grid.distance_m(int(b["cell"]), hub) < lim:
+			n += 1
+	return n
+
+
+## Moves a robot to another hub at once (the rocket carried it): it stands by that hub's drop
+## point, says hello and cleans around there from now on.
+func transfer(u: Dictionary, hub: int) -> void:
+	_drop_job(u)
+	if u["bot"] != null:
+		_demote(u)
+	var slot: float = float(absi(hash(str(u["name"]))) % 8) / 8.0 * TAU
+	var dd: Vector3 = drop_dir(hub)
+	var at: Vector3 = _free_spot(SphereMath.advance(dd, SphereMath.any_perpendicular(dd).rotated(dd, slot), 4.0 / surface.radius)[0])
+	u["hub"] = hub
+	var rec: Dictionary = u["rec"]
+	rec["dir"] = at
+	rec["cell"] = grid.cell_at(at)
+	rec["goal"] = Vector3.ZERO
+	rec["path"] = []
+	if _focus_dist(at) < PROMOTE_M and near_count() < max_near:
+		_promote(u)
+	greet(u)
+
+
+## Moves up to `n` robots of `type_id` ("" = any type) from one hub to another. Returns how many.
+func transfer_some(from_hub: int, to_hub: int, n: int, type_id: String = "") -> int:
+	var moved: int = 0
+	for u: Dictionary in hub_robots(from_hub):
+		if moved >= n:
+			break
+		if type_id == "" or str(u["type"]) == type_id:
+			transfer(u, to_hub)
+			moved += 1
+	return moved
+
+
 # --- Graph: jobs by cell id -----------------------------------------------------------------
 
 ## Next dirty cell for a robot at `from` working for `hub` (BFS outward, so nearest first),
 ## inside the hub region (or the role's painted zone). -1 if none.
 func claim_dirty(from: int, hub: int, p_rings: int = -1, role: String = "clean", who: String = "") -> int:
-	var zone: Dictionary = zones.get(role, {})
+	var zone: Dictionary = zone_for(role, hub)  # [v6crew] the zone cells of this robot's own hub
 	var lim: float = ((p_rings if p_rings >= 0 else rings) + 0.5) * 17.35
+	if not zone.is_empty() and not zone_strict(role):  # [v6crew] "here first": zone, then the region
+		var zc: int = _claim_in(from, hub, lim, role, who, zone)
+		if zc >= 0:
+			return zc
+		zone = {}
+	return _claim_in(from, hub, lim, role, who, zone)
+
+
+func _claim_in(from: int, hub: int, lim: float, role: String, who: String, zone: Dictionary) -> int:
 	if zone.is_empty() and grid.distance_m(from, hub) >= lim:
 		from = hub  # outside its region (just built, or ordered away): search from the hub
 	var seen: Dictionary = {from: true}
@@ -527,6 +697,7 @@ func _refresh_swarm_obstacles(delta: float) -> void:
 
 
 func set_zone_cell(role: String, cell: int, on: bool) -> void:
+	_zone_hub.clear()  # [v6crew]
 	if not zones.has(role):
 		zones[role] = {}
 	if on:
@@ -536,6 +707,7 @@ func set_zone_cell(role: String, cell: int, on: bool) -> void:
 
 
 func clear_zone(role: String) -> void:
+	_zone_hub.clear()  # [v6crew]
 	zones.erase(role)
 
 
@@ -550,6 +722,13 @@ func _process(delta: float) -> void:
 ## are stepped every far_every seconds; demotion and promotion with hysteresis.
 func tick(delta: float) -> void:
 	_t += delta
+	_talk_t -= delta
+	if _talk_t <= 0.0:  # [v6crew]
+		_talk_t = 1.0
+		short_haul.clear()
+		for u: Dictionary in units:
+			if not short_haul.has(int(u["hub"])):
+				short_haul[int(u["hub"])] = CrewTalk.needs_hauler(self, int(u["hub"]))
 	_refresh_swarm_obstacles(delta)
 	_far_acc += delta
 	var far_step: bool = _far_acc >= far_every
@@ -622,6 +801,11 @@ func _promote(u: Dictionary) -> void:
 	b.swarm = swarm
 	if swarm:
 		swarm.add(b)
+	if visuals:  # [v6crew] the state light
+		var bd := BotBadge.new()
+		bd.name = "Badge"
+		b.add_child(bd)
+		bd.setup(str(u["role"]))
 	u["bot"] = b
 	_near_n += 1
 	SphereBales.dress_cargo(b, (u["carry"] as Array).size())
@@ -674,6 +858,14 @@ func _think(u: Dictionary, dt: float) -> void:
 	var b: SphereBot = u["bot"]
 	if b:
 		b.working = u["mode"] == "work"
+		var bd: BotBadge = b.get_node_or_null("Badge") as BotBadge
+		if bd != null:  # [v6crew]
+			bd.set_state(CrewTalk.state(self, u))
+			if str(u["role"]) == "water":
+				var rv: RobotVisual = b.visual as RobotVisual
+				bd.set_spray(u["mode"] == "work", rv.nozzle_point if rv != null else Vector3(0, 0.7, -0.55))
+				if rv != null:
+					rv.set_fill(clampf(float(u.get("water", _tank(u))) / maxf(_tank(u), 0.1), 0.0, 1.0))
 		# Piece work: the stand points are outside the walls, so only the last couple of metres skip
 		# building avoidance (it would keep a robot off a piece lying against a wall).
 		b.avoid_static = not b.working or b.distance_to_goal() > 2.5
@@ -703,6 +895,8 @@ func _think(u: Dictionary, dt: float) -> void:
 			_arrive(u)
 		"work":
 			_work(u, dt)
+		"hello":  # [v6crew]
+			_hello(u, dt)
 		"refill":
 			u["work_t"] = float(u["work_t"]) + dt
 			var tank: float = _tank(u)
@@ -738,6 +932,8 @@ func _find_job(u: Dictionary) -> bool:
 		if role == "clean" and float(u["hopper"]) > 0.0:
 			_drop_bale(u)  # nothing left: bale what it has so the haulers can take it
 		u["idle"] = {"clean": "zone clean", "plant": "nothing to plant", "water": "nothing to water", "skim": "no lake junk"}.get(role, "idle")
+		if zone_strict(role) and not zone_for(role, int(u["hub"])).is_empty():
+			u["idle"] = "zone done"  # [v6crew] its painted zone is finished (work may wait outside it)
 		return false
 	u["job"] = c
 	u["idle"] = ""
@@ -798,7 +994,7 @@ func _arrive(u: Dictionary) -> void:
 					add_cube_fn.call(cube)
 					cube.global_position = at + surface.up_at(at) * 0.9
 			else:
-				cash(v)
+				cash(v, int(u["hub"]))
 			(u["carry"] as Array).clear()
 			u["drop"] = ""
 			SphereBales.dress_cargo(u["bot"], 0)
@@ -855,7 +1051,7 @@ func _work(u: Dictionary, dt: float) -> void:
 	if float(u["hopper"]) >= _capacity(u) and _hopper_full(u):
 		return
 	if not (cells.is_dirty(c) or water_dirty(c)):
-		u["log"]["cells"] = float(u["log"]["cells"]) + 1.0
+		_cell_done(u)
 		_finish_job(u)
 
 
@@ -876,7 +1072,7 @@ func _work_pieces(u: Dictionary, c: int, dt: float) -> void:
 		u["piece_t"] = 0.0
 		if pid < 0:
 			work_cell(c, 0.0)  # nothing left to see: settle the hex clean
-			u["log"]["cells"] = float(u["log"]["cells"]) + 1.0
+			_cell_done(u)
 			_finish_job(u)
 			return
 		b.stop_m = REACH_M * 0.6
@@ -914,7 +1110,7 @@ func _work_pieces(u: Dictionary, c: int, dt: float) -> void:
 	if not (cells.is_dirty(c) or water_dirty(c)):
 		if was_dirty:
 			cell_cleaned.emit(c)
-		u["log"]["cells"] = float(u["log"]["cells"]) + 1.0
+		_cell_done(u)
 		b.stop_m = 0.5
 		_finish_job(u)
 
@@ -974,6 +1170,13 @@ func _nearest_piece(c: int, from: Vector3) -> int:
 			bd = d
 			best = pid
 	return best
+
+
+## [v6crew] A robot finished a hex: its own log and its hub's.
+func _cell_done(u: Dictionary) -> void:
+	u["log"]["cells"] = float(u["log"]["cells"]) + 1.0
+	var hl: Dictionary = _hub_log(int(u["hub"]))
+	hl["cells"] = float(hl["cells"]) + 1.0
 
 
 func _finish_job(u: Dictionary) -> void:
@@ -1041,6 +1244,7 @@ func _drop_bale(u: Dictionary) -> void:
 	bales.append({"id": _bale_seq, "cell": grid.cell_at(at), "dir": at, "value": value, "units": units_in, "claimed": "",
 		"info": SphereBales.bale_info(units_in)})
 	u["log"]["bales"] = float(u["log"]["bales"]) + 1.0
+	_hub_log(int(u["hub"]))["bales"] = float(_hub_log(int(u["hub"]))["bales"]) + 1.0  # [v6crew]
 
 
 ## Nearest land cell centre to a lake cell (BFS, a few rings), or the cell itself.
@@ -1064,9 +1268,12 @@ func _find_haul(u: Dictionary, here: int) -> bool:
 	var best: int = -1
 	var best_d: float = INF
 	if carry.size() < cap:
+		var reach: float = region_m() + 60.0
 		for i: int in bales.size():
 			if str(bales[i]["claimed"]) != "":
 				continue
+			if hubs.size() > 1 and grid.distance_m(int(bales[i]["cell"]), int(u["hub"])) > reach:
+				continue  # [v6crew] another hub's bale: its own haulers take it
 			if float(_skip.get(int(bales[i]["cell"]), -1.0)) >= _t:
 				continue  # [v5play] no way there just now: the next bale, not the same one for ever
 			var d: float = grid.distance_m(here, int(bales[i]["cell"]))
@@ -1102,10 +1309,13 @@ func depot_of(hub: int) -> int:
 	return hub
 
 
-func cash(value: float) -> void:
+func cash(value: float, hub: int = -1) -> void:
 	if value <= 0.0:
 		return
+	value *= Hub.trade_mult()  # [v6pace] restored far hubs
 	cashed += value
+	var hl: Dictionary = _hub_log(hub if hub >= 0 else hub_cell)  # [v6crew]
+	hl["cubes"] = float(hl["cubes"]) + value
 	GameState.add_currency("cubes", BigNum.from_float(value))
 	bale_cashed.emit(value)
 
@@ -1200,7 +1410,10 @@ func to_dict() -> Dictionary:
 	var zd: Dictionary = {}  # [v3qa] painted Command zones survive a reload
 	for r: Variant in zones:
 		zd[str(r)] = (zones[r] as Dictionary).keys()
-	return {"v": 1, "robots": list, "bales": bl, "cashed": cashed, "zones": zd}
+	var hl: Dictionary = {}  # [v6crew] what each hub's crew did since Lumi last stood there
+	for h: Variant in hub_log:
+		hl[str(h)] = (hub_log[h] as Dictionary).duplicate()
+	return {"v": 1, "robots": list, "bales": bl, "cashed": cashed, "zones": zd, "hub_log": hl}
 
 
 func from_dict(d: Dictionary) -> void:
@@ -1233,7 +1446,14 @@ func from_dict(d: Dictionary) -> void:
 		if b.has("raw"):
 			bales[-1]["raw"] = float(b["raw"])
 	cashed = float(d.get("cashed", 0.0))
+	hub_log.clear()  # [v6crew]
+	var hld: Dictionary = d.get("hub_log", {})
+	for h: Variant in hld:
+		var e: Dictionary = _hub_log(int(str(h)))
+		for k: Variant in (hld[h] as Dictionary):
+			e[str(k)] = float(hld[h][k])
 	zones.clear()  # [v3qa]
+	_zone_hub.clear()  # [v6crew]
 	var zd: Dictionary = d.get("zones", {})
 	for r: Variant in zd:
 		var z: Dictionary = {}

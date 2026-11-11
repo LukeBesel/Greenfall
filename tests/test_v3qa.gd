@@ -91,6 +91,14 @@ func test_globe_command_pad_paints_and_cycles() -> void:
 	y.pressed = true
 	var r0: String = sc.role
 	sc._unhandled_input(y)
+	assert_eq(sc.role, r0, "[v6crew] with only cleaners there is one job: nothing to cycle")
+	var crew := SphereCrew.new()  # [v6crew] Y cycles the jobs you have robots for
+	crew.visuals = false
+	crew.set_process(false)
+	add_child_autofree(crew)
+	crew.units.append({"role": "water"})
+	sc.crew = crew
+	sc._unhandled_input(y)
 	assert_ne(sc.role, r0, "Y picks the next role")
 	var mm := InputEventMouseMotion.new()
 	mm.relative = Vector2(10, 0)

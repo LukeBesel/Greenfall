@@ -38,6 +38,20 @@ var max_slope: float = deg_to_rad(42.0)
 ## Ray-sample the physics ground too (needs a physics space). Off = analytic surface only.
 var use_ray: bool = true
 var ray_mask: int = 1
+## [v6feel] Where the ground ray starts above the body's base (lower = it never finds an awning).
+var ray_top: float = 1.2
+## [v6feel] Level slide (Lumi): walls, heaps and props all act as upright walls, so he slides round
+## them on the level instead of riding up a heap's side and jittering; contacts are kept in `hits`.
+## Off = CharacterBody3D.move_and_slide in 3D (the walker demo).
+var flat_slide: bool = false
+## [v6feel] With flat_slide: solid things up to this high (kerbs, low planters, steps) are hovered
+## over with a quick lift instead of stopping him. Junk heaps (PhysLayers.MOUND) and bales never are.
+var max_step: float = 0.45
+var step_mask: int = 1
+var hits: Array[KinematicCollision3D] = []
+var _climb: float = 0.0   # extra ride height while crossing a low obstacle
+var _climb_t: float = 0.0
+var _under: float = 0.0
 
 var fwd := Vector3.FORWARD
 var hv := Vector3.ZERO  # tangent velocity
@@ -90,7 +104,7 @@ func sample_ground(body: CharacterBody3D, u: Vector3) -> Array:
 	if use_ray and body.is_inside_tree():
 		var space: PhysicsDirectSpaceState3D = body.get_world_3d().direct_space_state
 		if space:
-			var q := PhysicsRayQueryParameters3D.create(p + u * 1.2, p - u * 3.0, ray_mask, [body.get_rid()])
+			var q := PhysicsRayQueryParameters3D.create(p + u * ray_top, p - u * 3.0, ray_mask, [body.get_rid()])
 			var hit: Dictionary = space.intersect_ray(q)
 			if not hit.is_empty():
 				var a2: float = (p - (hit["position"] as Vector3)).dot(u)
@@ -141,6 +155,12 @@ func step(body: CharacterBody3D, wish: Vector3, delta: float, boost: bool = fals
 	hv = hv.move_toward(target, rate * delta)
 	# --- Vertical ---------------------------------------------------------------------------
 	var ride: float = ride_height + boost_lift * ease_b
+	if flat_slide:  # [v6feel] crossing a kerb: hold the lift a moment, then let it go
+		_climb_t = maxf(0.0, _climb_t - delta)
+		if _climb_t <= 0.0:
+			_climb = move_toward(_climb, 0.0, delta * 2.0)
+		_under = maxf(0.0, surface.altitude(p0) - altitude)  # what he is over already (a kerb's top)
+		ride = maxf(ride, _climb - _under)
 	if grounded:
 		if jump and _jump_lock <= 0.0:
 			vv = jump_speed
@@ -151,6 +171,8 @@ func step(body: CharacterBody3D, wish: Vector3, delta: float, boost: bool = fals
 			var c: float = 2.0 * sqrt(spring_k)
 			vv += (spring_k * (ride - altitude) - c * vv) * delta
 			vv = clampf(vv, -8.0, 8.0)
+			if _climb_t > 0.0 and altitude < ride - 0.02:  # [v6feel] a quick thruster kick over the kerb
+				vv = maxf(vv, minf(3.5, (ride - altitude) * 16.0))
 			if altitude > ride + 0.6:  # ground dropped away (ledge): fall
 				grounded = false
 	if not grounded:
@@ -160,7 +182,10 @@ func step(body: CharacterBody3D, wish: Vector3, delta: float, boost: bool = fals
 			landed.emit(-vv)
 			vv = 0.0
 	body.velocity = hv + u * vv
-	body.move_and_slide()
+	if flat_slide:
+		_level_slide(body, u, delta)
+	else:
+		body.move_and_slide()
 	# --- After the move ---------------------------------------------------------------------
 	var p1: Vector3 = body.global_position
 	var u1: Vector3 = surface.up_at(p1)
@@ -172,14 +197,17 @@ func step(body: CharacterBody3D, wish: Vector3, delta: float, boost: bool = fals
 	# [orbD] Held up by a body the ground ray doesn't see (a junk mound, a prop on its own layer):
 	# land on it. Without this he hung there "falling" forever, vv grew without bound and the
 	# slide ate all his tangent speed, wedged between a mound and a prop.
-	if not grounded and vv < -2.0 and body.get_real_velocity().dot(u1) > vv * 0.3:
+	var real_v: Vector3 = (p1 - p0) / maxf(delta, 1e-5) if flat_slide else body.get_real_velocity()
+	if not grounded and vv < -2.0 and real_v.dot(u1) > vv * 0.3:
 		grounded = true
 		landed.emit(-vv)
 		vv = 0.0
 	vv = clampf(vv, -40.0, 40.0)
 	# Walls: keep only the tangent velocity the slide left us.
-	var real: Vector3 = SphereMath.tangent(body.get_real_velocity(), u1)
-	if real.length() < hv.length() - 0.01 and body.get_slide_collision_count() > 0:
+	var real: Vector3 = SphereMath.tangent(real_v, u1)
+	if flat_slide:
+		pass  # _level_slide already took the blocked part out of hv
+	elif real.length() < hv.length() - 0.01 and body.get_slide_collision_count() > 0:
 		hv = SphereMath.tangent(SphereMath.transport_vec(hv, u, u1), u1).limit_length(real.length())
 	var hs: float = hv.length()
 	if hs > 0.3:
@@ -196,3 +224,61 @@ func step(body: CharacterBody3D, wish: Vector3, delta: float, boost: bool = fals
 	body.up_direction = u1
 	body.global_basis = SphereMath.basis_from_up_fwd(u1, fwd)
 	distance += surface.arc_dist(p0, body.global_position)
+
+
+## [v6feel] The move for flat_slide: along the ground first, sliding on each contact's level normal
+## (up to 4 contacts a tick), then up or down. A low obstacle ahead starts a climb instead.
+func _level_slide(body: CharacterBody3D, u: Vector3, delta: float) -> void:
+	hits.clear()
+	var motion: Vector3 = hv * delta
+	for i: int in 4:
+		if motion.length_squared() < 1e-10:
+			break
+		var col: KinematicCollision3D = body.move_and_collide(motion, false, 0.001, true)
+		if col == null:
+			break
+		hits.append(col)
+		var n3: Vector3 = col.get_normal()
+		var n: Vector3 = SphereMath.tangent(n3, u)
+		if _can_climb(body, col, u, n):
+			break  # he keeps his speed and goes on as soon as the lift clears it
+		if n.length() < 0.15:  # the top or underside of something: nothing to slide on
+			if n3.dot(u) > 0.0:
+				_climb = maxf(_climb, altitude + _under + 0.06)
+				_climb_t = 0.2
+			break
+		n = n.normalized()
+		motion = SphereMath.tangent(col.get_remainder().slide(n), u)
+		if hv.dot(n) < 0.0:
+			hv = hv.slide(n)
+	var vc: KinematicCollision3D = body.move_and_collide(u * vv * delta, false, 0.001, false)
+	if vc != null:
+		hits.append(vc)
+		if vv > 0.0 and vc.get_normal().dot(u) < -0.5:
+			vv = 0.0  # bumped his head
+
+
+## True (and the climb is under way) when the thing hit is low enough to hover over.
+func _can_climb(body: CharacterBody3D, col: KinematicCollision3D, u: Vector3, n_level: Vector3) -> bool:
+	if max_step <= 0.0 or not grounded or n_level.length() < 0.15:
+		return false
+	var co: Object = col.get_collider()
+	if co is RigidBody3D:
+		return false
+	if co is CollisionObject3D and ((co as CollisionObject3D).collision_layer & PhysLayers.MOUND) != 0:
+		return false
+	var base: Vector3 = body.global_position - u * altitude  # the ground under him
+	var cp: Vector3 = col.get_position()
+	var at: Vector3 = cp - n_level.normalized() * 0.15
+	at = base + SphereMath.tangent(at - base, u)
+	var q := PhysicsRayQueryParameters3D.create(at + u * (max_step + 0.3), at - u * 0.2, step_mask, [body.get_rid()])
+	q.hit_from_inside = true
+	var hit: Dictionary = body.get_world_3d().direct_space_state.intersect_ray(q)
+	if hit.is_empty():
+		return false
+	var top: float = ((hit["position"] as Vector3) - base).dot(u)
+	if top > max_step or top < 0.02:
+		return false
+	_climb = maxf(_climb, top + _under + 0.03)  # over the planet's own ground
+	_climb_t = 0.35
+	return true

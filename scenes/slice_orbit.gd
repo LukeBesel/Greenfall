@@ -23,8 +23,8 @@ extends Node
 ## Dev flags (phase A's, now on the slice): --orbit-walk[=boost] --orbit-lap-quit,
 ## --orbit-scoop, --orbit-cash --orbit-cash-quit, --orbit-view=follow|ground|command,
 ## --orbit-day=MIN, --orbit-time=0..1, --orbit-presim=MIN, --orbit-hubs=N, --orbit-cam=D,P,
-## --orbit-bots=N (stand-in SphereBots, default 4). The phase A scenes stay reachable as
-## --orbit=globe (planet/orbit/verdance_globe.tscn) and --orbit=v1.
+## --orbit-bots=N (stand-in SphereBots, default 4). [v6flat] The phase A prototype scenes
+## (--orbit=globe, --orbit=v1) are gone.
 
 const SCHEMA: int = OrbitSave.SCHEMA  # GameState.orbit layout: core/save_orbit.gd
 const HEX_MILESTONES: Array[int] = [1, 5, 10, 25, 50, 100, 150, 200, 264]  # slice.gd's, by cell id here
@@ -40,12 +40,6 @@ var layers: OrbitLayers  # [orbE]
 var view_mode: String = "follow"
 var sites: OrbitSites  # [orbD]
 var hub_states: Dictionary = {}  # site index (str) -> {level} (core/save_orbit.gd); the Hub port fills it
-
-
-## The slice always builds on the globe, except when a phase A prototype scene is asked for
-## (--orbit=v1 / --orbit=globe).
-static func wanted() -> bool:
-	return not DevHooks.get_s("orbit", "") in ["v1", "globe"]
 
 
 ## Builds the whole orbit slice into `p_world`. [orbE] Behind the loading screen (a BuildBudget is
@@ -268,6 +262,8 @@ func build(p_world: Node3D) -> void:
 		YardProbe.attach(self)
 	if DevHooks.has("ground-probe"):  # [v3qa] floating / sunken props and junk around Lumi
 		GroundProbe.attach(self)
+	if DevHooks.has("feel"):  # [v6feel] scripted feel checks (tools/feel_probe.gd)
+		FeelProbe.attach(self)
 
 
 func _build_patch() -> void:
@@ -479,7 +475,10 @@ func interact_prompt(p: Patch) -> String:
 		if _repairing:
 			return ""
 		return tr("E   Fix the workbench") if not Camp.bench_ok() else tr("E   Open the workbench")  # [v3clear]
-	return sites.interact_prompt() if sites else ""  # [orbD] the hover-sled
+	var sp: String = sites.interact_prompt() if sites else ""  # [orbD] the hover-sled
+	if sp == "" and crews:  # [v6crew] standing by a robot: what it is doing, or why it can't work
+		sp = crews.robot_prompt(p.global_position)
+	return sp
 
 
 func any_modal_open() -> bool:
