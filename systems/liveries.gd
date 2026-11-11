@@ -1,9 +1,11 @@
 class_name Liveries
 extends RefCounted
-## Fleet liveries bought with contract tokens (data/events.json "shop", kind "livery"): a small
-## add-on fitted to every robot (underglow ring, pennant, holo halo). The equipped one is
-## GameState.flags["livery"] ("" = none). WorldEvents calls sync() now and then; it only
-## rebuilds a robot's add-on when the livery changed or the robot is new.
+## Fleet marks: a small add-on fitted to every robot of a type (underglow ring, pennant, holo
+## halo). Each mark is a found piece (data/cosmetics.json targets.crew, slot crew_paint: its name,
+## line and colour), worn per robot type at the Locker (systems/robot_design.gd). A save from
+## before found pieces may still hold one fleet-wide mark in GameState.flags["livery"].
+## WorldEvents calls sync() now and then; it only rebuilds a robot's add-on when the mark changed
+## or the robot is new.
 
 const NODE_NAME: String = "Livery"
 
@@ -31,7 +33,7 @@ static func sync(fleet: Fleet) -> void:
 
 
 static func build(id: String) -> Node3D:
-	var it: Dictionary = Contracts.shop_item(id)
+	var it: Dictionary = Looks.def(CrewLooks.piece(CrewLooks.CREW, CrewLooks.LIVERY, id))
 	if it.is_empty():
 		return null
 	var col: Color = Color.html(str(it.get("color", "#5fe6ff")))

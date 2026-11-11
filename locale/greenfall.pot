@@ -512,7 +512,7 @@ msgstr ""
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr ""
 
-#: core/pace.gd:315 systems/events.gd:487 ui/goals_panel.gd:125
+#: core/pace.gd:315 systems/events.gd:486 ui/goals_panel.gd:125
 msgid "+%s cubes"
 msgstr ""
 
@@ -834,7 +834,8 @@ msgstr ""
 msgid "Bolt"
 msgstr ""
 
-#: player/patch_model.gd:31 data/designs.json:designs[sprout].name data/glim.json:tops[sprout].name
+#: player/patch_model.gd:31 data/cosmetics.json:targets.glim.pieces[glim_top_sprout].name data/designs.json:designs[sprout].name
+#: data/glim.json:tops[sprout].name
 msgid "Sprout"
 msgstr ""
 
@@ -951,7 +952,7 @@ msgid "Not enough parts"
 msgstr ""
 
 #: robots/fleet.gd:158 robots/fleet.gd:234 robots/water_net.gd:149
-#: systems/research.gd:219 systems/robot_builder.gd:356 systems/robot_builder.gd:408
+#: systems/research.gd:219
 msgid "Not enough cubes"
 msgstr ""
 
@@ -1663,7 +1664,7 @@ msgid ""
 msgstr ""
 
 #: story/ledger.gd:305 systems/decor.gd:119 systems/research.gd:213
-#: systems/robot_builder.gd:354 systems/robot_builder.gd:410 ui/stations_panel.gd:100
+#: ui/stations_panel.gd:100
 msgid "Needs %s"
 msgstr ""
 
@@ -1691,7 +1692,7 @@ msgstr ""
 msgid "SEEDS · PAID IN FULL"
 msgstr ""
 
-#: story/ledger.gd:703 systems/events.gd:495 systems/lumi_level.gd:224
+#: story/ledger.gd:703 systems/events.gd:494 systems/lumi_level.gd:224
 msgid "+%d seeds"
 msgstr ""
 
@@ -2013,60 +2014,32 @@ msgstr ""
 msgid "Curio Capsules"
 msgstr ""
 
-#: systems/contracts.gd:245
-msgid "%s (robot style)"
-msgstr ""
-
-#: systems/contracts.gd:247
-msgid "Builder Crate"
-msgstr ""
-
-#: systems/contracts.gd:249
+#: systems/contracts.gd:227
 msgid "Curio Capsule"
 msgstr ""
 
-#: systems/contracts.gd:324
+#: systems/contracts.gd:294
 msgid "Request complete: %s. Claim it at the workbench."
 msgstr ""
 
-#: systems/contracts.gd:330
+#: systems/contracts.gd:300
 msgid "A request ran out of time. No harm done; a new one will be posted soon."
 msgstr ""
 
-#: systems/contracts.gd:338
+#: systems/contracts.gd:308
 msgid "New at the workbench: the Requests board. Small jobs, real rewards."
 msgstr ""
 
-#: systems/contracts.gd:341
+#: systems/contracts.gd:311
 msgid "The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."
 msgstr ""
 
-#: systems/contracts.gd:426
+#: systems/contracts.gd:396
 msgid "Request done: %s."
 msgstr ""
 
-#: systems/contracts.gd:468
-msgid "Requests reward: %s. Paint your fleet with it in the Locker."
-msgstr ""
-
-#: systems/contracts.gd:471
-msgid "Requests reward: %s. Fit it in the Locker."
-msgstr ""
-
-#: systems/contracts.gd:475 systems/contracts.gd:484
+#: systems/contracts.gd:442
 msgid "Requests reward: %s."
-msgstr ""
-
-#: systems/contracts.gd:492
-msgid "Unknown item"
-msgstr ""
-
-#: systems/contracts.gd:505
-msgid "Unlocks after %d requests"
-msgstr ""
-
-#: systems/contracts.gd:506
-msgid "Locked"
 msgstr ""
 
 #: systems/decor.gd:117
@@ -2089,7 +2062,7 @@ msgstr ""
 msgid "Frozen in"
 msgstr ""
 
-#: systems/designs.gd:127
+#: systems/designs.gd:132
 msgid "Set: %s"
 msgstr ""
 
@@ -2097,147 +2070,147 @@ msgstr ""
 msgid "CRADLE · SUPPLY"
 msgstr ""
 
-#: systems/events.gd:447
+#: systems/events.gd:446
 msgid "STREAK x%d  +%d%%"
 msgstr ""
 
-#: systems/events.gd:633
+#: systems/events.gd:632
 msgid "%d pieces of junk left around the crate"
 msgstr ""
 
-#: systems/events.gd:658
+#: systems/events.gd:657
 msgid "Supply crate opened: %s"
 msgstr ""
 
-#: systems/events.gd:660
+#: systems/events.gd:659
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr ""
 
-#: systems/events.gd:709
+#: systems/events.gd:708
 msgid "%d pieces grabbed at 3x"
 msgstr ""
 
-#: systems/events.gd:714
+#: systems/events.gd:713
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr ""
 
-#: systems/events.gd:714
+#: systems/events.gd:713
 msgid "The surge faded. Next time!"
 msgstr ""
 
-#: systems/events.gd:763
+#: systems/events.gd:762
 msgid "Every plant is drinking"
 msgstr ""
 
-#: systems/events.gd:773
+#: systems/events.gd:772
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr ""
 
-#: systems/events.gd:794
+#: systems/events.gd:793
 msgid "E   fix %s's hiccup"
 msgstr ""
 
-#: systems/events.gd:821
+#: systems/events.gd:820
 msgid "%s is %d m away"
 msgstr ""
 
-#: systems/events.gd:823
+#: systems/events.gd:822
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr ""
 
-#: systems/events.gd:837
+#: systems/events.gd:836
 msgid "%s is fixed and back to work. %s"
 msgstr ""
 
-#: systems/events.gd:891
+#: systems/events.gd:890
 msgid "Wildlife Visit: %s"
 msgstr ""
 
-#: systems/events.gd:892
+#: systems/events.gd:891
 msgid "E   take a photo of the %s"
 msgstr ""
 
-#: systems/events.gd:926
+#: systems/events.gd:925
 msgid "%s, %d m away"
 msgstr ""
 
-#: systems/events.gd:929
+#: systems/events.gd:928
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr ""
 
-#: systems/events.gd:959
+#: systems/events.gd:958
 msgid "Snap! The %s is in your Collection. %s"
 msgstr ""
 
-#: systems/events.gd:959
+#: systems/events.gd:958
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr ""
 
-#: systems/events.gd:1010
+#: systems/events.gd:1009
 msgid "Signal %d%%"
 msgstr ""
 
-#: systems/events.gd:1014
+#: systems/events.gd:1013
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr ""
 
-#: systems/events.gd:1016
+#: systems/events.gd:1015
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr ""
 
-#: systems/events.gd:1083
+#: systems/events.gd:1082
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr ""
 
-#: systems/events.gd:1084
+#: systems/events.gd:1083
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr ""
 
-#: systems/events.gd:1122
+#: systems/events.gd:1121
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr ""
 
-#: systems/events.gd:1126
+#: systems/events.gd:1125
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr ""
 
-#: systems/find_sites.gd:190
+#: systems/find_sites.gd:191
 msgid "LENS CHIP"
 msgstr ""
 
-#: systems/find_sites.gd:190
+#: systems/find_sites.gd:191
 msgid "BURIED TIN"
 msgstr ""
 
-#: systems/find_sites.gd:378
+#: systems/find_sites.gd:380
 msgid "E   Look at the wreck"
 msgstr ""
 
-#: systems/find_sites.gd:379
+#: systems/find_sites.gd:381
 msgid "E   Pull the junk off the wreck"
 msgstr ""
 
-#: systems/find_sites.gd:379
+#: systems/find_sites.gd:381
 msgid "E   Salvage the wreck"
 msgstr ""
 
-#: systems/find_sites.gd:463
+#: systems/find_sites.gd:465
 msgid "E   Dig up the lens chip"
 msgstr ""
 
-#: systems/find_sites.gd:463
+#: systems/find_sites.gd:465
 msgid "E   Dig up the paint tin"
 msgstr ""
 
-#: systems/find_sites.gd:511
+#: systems/find_sites.gd:513
 msgid "Something is buried in the cleared soil. Follow the detector and dig."
 msgstr ""
 
-#: systems/find_sites.gd:514
+#: systems/find_sites.gd:516
 msgid "open ground"
 msgstr ""
 
-#: systems/find_sites.gd:515
+#: systems/find_sites.gd:517
 msgid "Your crew uncovered something buried in %s. The detector will find it."
 msgstr ""
 
@@ -2492,94 +2465,38 @@ msgstr ""
 msgid "at least %d"
 msgstr ""
 
-#: systems/robot_builder.gd:268 systems/robot_design.gd:60
+#: systems/robot_builder.gd:242 systems/robot_design.gd:64
 msgid "Wrong slot"
 msgstr ""
 
-#: systems/robot_builder.gd:270 systems/robot_design.gd:62
+#: systems/robot_builder.gd:244 systems/robot_design.gd:66
 msgid "Doesn't fit a %s"
 msgstr ""
 
-#: systems/robot_builder.gd:272 systems/robot_design.gd:64
-msgid "Not unlocked yet"
+#: systems/robot_builder.gd:246 systems/robot_design.gd:68 ui/codex_screen.gd:340
+#: ui/codex_screen.gd:460 ui/codex_screen.gd:626 ui/codex_screen.gd:641
+#: ui/piece_row.gd:62
+msgid "Not found yet"
 msgstr ""
 
-#: systems/robot_builder.gd:301
+#: systems/robot_builder.gd:276
 msgid "Names need at least 2 letters"
 msgstr ""
 
-#: systems/robot_builder.gd:303
+#: systems/robot_builder.gd:278
 msgid "Another robot is already called %s"
 msgstr ""
 
-#: systems/robot_builder.gd:348
-msgid "Can't be crafted"
-msgstr ""
-
-#: systems/robot_builder.gd:352
-msgid "Research %s"
-msgstr ""
-
-#: systems/robot_builder.gd:365 systems/robot_builder.gd:370
-msgid "Unlock · %s"
-msgstr ""
-
-#: systems/robot_builder.gd:367
-msgid "Requests reward · %d requests"
-msgstr ""
-
-#: systems/robot_builder.gd:405
-msgid "Can't be bought"
-msgstr ""
-
-#: systems/robot_builder.gd:432
-msgid "Requests reward (%d of %d requests)"
-msgstr ""
-
-#: systems/robot_builder.gd:523
-msgid "Your first bot came with treads and a bobble plant. Style it at the Locker once you have built one."
-msgstr ""
-
-#: systems/robot_builder.gd:533
+#: systems/robot_builder.gd:360
 msgid "A Maker Fragment was tucked inside it: +%d parts."
 msgstr ""
 
-#: systems/robot_builder.gd:565
-msgid "%s spotted something green and lucky: a Lucky Clover!"
-msgstr ""
-
-#: systems/robot_builder.gd:568
+#: systems/robot_builder.gd:392
 msgid "%s spotted a Maker Fragment glinting in the junk: +%d parts."
 msgstr ""
 
-#: systems/robot_builder.gd:575
+#: systems/robot_builder.gd:399
 msgid "%s spotted a %s: %s."
-msgstr ""
-
-#: systems/robot_design.gd:16 data/glim.json:glows[cyan].name data/ship_style.json:glows[cyan].name
-#: data/style_parts.json:swatches[cyan].name
-msgid "Cyan"
-msgstr ""
-
-#: systems/robot_design.gd:16 data/ship_style.json:glows[mint].name data/style_parts.json:swatches[mint].name
-msgid "Mint"
-msgstr ""
-
-#: systems/robot_design.gd:16 data/ship_style.json:glows[amber].name data/style_parts.json:swatches[amber].name
-msgid "Amber"
-msgstr ""
-
-#: systems/robot_design.gd:17 data/glim.json:glows[rose].name
-msgid "Rose"
-msgstr ""
-
-#: systems/robot_design.gd:17 data/glim.json:glows[violet].name data/ship_style.json:glows[violet].name
-#: data/style_parts.json:swatches[violet].name
-msgid "Violet"
-msgstr ""
-
-#: systems/robot_design.gd:17
-msgid "Moonlight"
 msgstr ""
 
 #: systems/source_sites.gd:192
@@ -2794,63 +2711,52 @@ msgstr ""
 msgid "Back to work"
 msgstr ""
 
-#: systems/glim/glim.gd:14
+#: systems/glim/glim.gd:15
 msgid "Find Glim first"
 msgstr ""
 
-#: systems/glim/glim.gd:14 ui/glim_bench.gd:58 ui/glim_panel.gd:147
+#: systems/glim/glim.gd:15 ui/glim_bench.gd:58 ui/glim_panel.gd:147
 msgid "Maxed"
 msgstr ""
 
-#: systems/glim/glim.gd:14 ui/glim_bench.gd:38 ui/glim_panel.gd:154
+#: systems/glim/glim.gd:15 ui/glim_bench.gd:38 ui/glim_panel.gd:154
 msgid "Needs %s %d"
 msgstr ""
 
-#: systems/glim/glim.gd:14
-msgid "Buy for %s"
-msgstr ""
-
-#: systems/glim/glim.gd:14
-msgid "Buy %d Glim upgrades"
-msgstr ""
-
-#: systems/glim/glim.gd:14 planets/verdance/data/events.json:contracts.templates[clean_hexes].text
-msgid "Clean %d hexes"
-msgstr ""
-
-#: systems/glim/glim.gd:14 ui/bench_lists.gd:11 ui/glim_bench.gd:13
+#: systems/glim/glim.gd:15 ui/bench_lists.gd:11 ui/glim_bench.gd:13
+#: data/cosmetics.json:targets.glim.name
 msgid "Glim"
 msgstr ""
 
-#: systems/glim/glim.gd:14
+#: systems/glim/glim.gd:15
 msgid "Find the little lantern bot in the junk"
 msgstr ""
 
-#: systems/glim/glim_director.gd:248
+#: systems/glim/glim_director.gd:246
 msgid "Glim! He held on to your pod the whole way down, just to stay with you. Welcome back, little light."
 msgstr ""
 
-#: systems/glim/glim_director.gd:252
+#: systems/glim/glim_director.gd:250
 msgid "Glim blinks awake. He held on to the pod the whole way down, just to stay with Lumi."
 msgstr ""
 
-#: systems/glim/glim_director.gd:268 systems/glim/glim_director.gd:292
+#: systems/glim/glim_director.gd:266 systems/glim/glim_director.gd:290
 msgid "Tap %s: Glim scans your hex for junk you missed. Hold %s for his upgrades."
 msgstr ""
 
-#: systems/glim/glim_director.gd:288
+#: systems/glim/glim_director.gd:286
 msgid "A little lantern bot flickers awake in the junk beside you: Glim! He'll light the way at night."
 msgstr ""
 
-#: systems/glim/glim_director.gd:290
+#: systems/glim/glim_director.gd:288
 msgid "Something in the junk blinks back at you: Glim, a little lantern bot! He'll light the way at night."
 msgstr ""
 
-#: systems/glim/glim_director.gd:347
+#: systems/glim/glim_director.gd:345
 msgid "All clear here!"
 msgstr ""
 
-#: systems/glim/glim_director.gd:349
+#: systems/glim/glim_director.gd:347
 msgid "Only big pieces left"
 msgstr ""
 
@@ -2961,7 +2867,7 @@ msgstr ""
 msgid "Machines"
 msgstr ""
 
-#: ui/bench_lists.gd:11 ui/globe_view.gd:176 ui/locker_panel.gd:306
+#: ui/bench_lists.gd:11 ui/globe_view.gd:176 ui/locker_panel.gd:288
 #: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr ""
@@ -3004,177 +2910,6 @@ msgstr ""
 
 #: ui/build_panel.gd:107 ui/yard_builds_panel.gd:59
 msgid "Built:  %s"
-msgstr ""
-
-#: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
-#: ui/builder_panel.gd:17 ui/builder_panel.gd:18 data/robot_parts.json:stats[speed].name
-msgid "Speed"
-msgstr ""
-
-#: ui/builder_panel.gd:14
-msgid "Scoop rate"
-msgstr ""
-
-#: ui/builder_panel.gd:14 ui/builder_panel.gd:15
-msgid "Hopper"
-msgstr ""
-
-#: ui/builder_panel.gd:14 ui/builder_panel.gd:15 data/robot_parts.json:stats[quality].name
-msgid "Cube quality"
-msgstr ""
-
-#: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
-#: ui/builder_panel.gd:17 ui/builder_panel.gd:18 data/robot_parts.json:stats[scan].name
-msgid "Scan"
-msgstr ""
-
-#: ui/builder_panel.gd:15
-msgid "Net rate"
-msgstr ""
-
-#: ui/builder_panel.gd:16
-msgid "Forks"
-msgstr ""
-
-#: ui/builder_panel.gd:16
-msgid " bales"
-msgstr ""
-
-#: ui/builder_panel.gd:17
-msgid "Planting"
-msgstr ""
-
-#: ui/builder_panel.gd:18
-msgid "Spray rate"
-msgstr ""
-
-#: ui/builder_panel.gd:18
-msgid "Tank"
-msgstr ""
-
-#: ui/builder_panel.gd:18 data/robot_parts.json:stats[reach].name
-msgid "Spray reach"
-msgstr ""
-
-#: ui/builder_panel.gd:18
-msgid "Refill"
-msgstr ""
-
-#: ui/builder_panel.gd:21 ui/command_view.gd:1242 ui/command_view.gd:1245
-#: planets/verdance/data/hex_levels.json:levels[1].name
-msgid "Clean"
-msgstr ""
-
-#: ui/builder_panel.gd:21
-msgid "Haul"
-msgstr ""
-
-#: ui/builder_panel.gd:21
-msgid "Plant"
-msgstr ""
-
-#: ui/builder_panel.gd:21
-msgid "Water"
-msgstr ""
-
-#: ui/builder_panel.gd:21
-msgid "Skim"
-msgstr ""
-
-#: ui/builder_panel.gd:113
-msgid "YOUR ROBOTS"
-msgstr ""
-
-#: ui/builder_panel.gd:154
-msgid "New name"
-msgstr ""
-
-#: ui/builder_panel.gd:162 ui/builder_panel.gd:317
-msgid "Retire"
-msgstr ""
-
-#: ui/builder_panel.gd:172
-msgid ""
-"No robots yet. Build one in the Bots tab, then style it here.\n"
-"Your first robot comes with treads and a bobble plant."
-msgstr ""
-
-#: ui/builder_panel.gd:227
-msgid "PART SLOTS"
-msgstr ""
-
-#: ui/builder_panel.gd:239
-msgid "PARTS THAT FIT"
-msgstr ""
-
-#: ui/builder_panel.gd:310
-msgid "ROBOT BUILDER"
-msgstr ""
-
-#: ui/builder_panel.gd:326
-msgid "Stock"
-msgstr ""
-
-#: ui/builder_panel.gd:362
-msgid "Stock  ·  the %s look%s"
-msgstr ""
-
-#: ui/builder_panel.gd:362
-msgid "   (fitted)"
-msgstr ""
-
-#: ui/builder_panel.gd:370
-msgid "Unlocked  ·  press to fit"
-msgstr ""
-
-#: ui/builder_panel.gd:379
-msgid "  ·  press to unlock + fit"
-msgstr ""
-
-#: ui/builder_panel.gd:381
-msgid "  (Maker set)"
-msgstr ""
-
-#: ui/builder_panel.gd:401
-msgid "Save as %s preset"
-msgstr ""
-
-#: ui/builder_panel.gd:403
-msgid "Fit preset on crew (%d)"
-msgstr ""
-
-#: ui/builder_panel.gd:409
-msgid "%s crew preset: %s"
-msgstr ""
-
-#: ui/builder_panel.gd:409
-msgid "none saved"
-msgstr ""
-
-#: ui/builder_panel.gd:413
-msgid "%d styles unlocked   ·   Parts %s"
-msgstr ""
-
-#: ui/builder_panel.gd:435
-msgid "Stock part: no changes. The %s look of this robot type."
-msgstr ""
-
-#: ui/builder_panel.gd:590
-msgid "Saved %s's build as the %s crew preset."
-msgstr ""
-
-#: ui/builder_panel.gd:598
-msgid "Fitted %d part across the %s crew."
-msgid_plural "Fitted %d parts across the %s crew."
-msgstr[0] ""
-msgstr[1] ""
-
-#: ui/builder_panel.gd:598
-msgid "Nothing to fit: the bin is short of those parts, or the crew already has them."
-msgstr ""
-
-#: ui/builder_panel.gd:613
-msgid "Retire? +%d parts"
 msgstr ""
 
 #: ui/checklist_card.gd:92
@@ -3265,11 +3000,6 @@ msgstr ""
 msgid "%d / %d entries"
 msgstr ""
 
-#: ui/codex_screen.gd:340 ui/codex_screen.gd:460 ui/codex_screen.gd:626
-#: ui/codex_screen.gd:641 ui/piece_row.gd:62
-msgid "Not found yet"
-msgstr ""
-
 #: ui/codex_screen.gd:344
 msgid ""
 "\n"
@@ -3289,7 +3019,7 @@ msgstr ""
 msgid "Other worlds"
 msgstr ""
 
-#: ui/codex_screen.gd:464 ui/piece_reveal.gd:129
+#: ui/codex_screen.gd:464 ui/piece_reveal.gd:144
 msgid "Found  ·  %s"
 msgstr ""
 
@@ -3621,6 +3351,10 @@ msgstr ""
 
 #: ui/command_view.gd:1240
 msgid "LAKE HEX %d"
+msgstr ""
+
+#: ui/command_view.gd:1242 ui/command_view.gd:1245 planets/verdance/data/hex_levels.json:levels[1].name
+msgid "Clean"
 msgstr ""
 
 #: ui/command_view.gd:1242
@@ -3995,8 +3729,8 @@ msgstr ""
 msgid "LOOKS"
 msgstr ""
 
-#: ui/glim_panel.gd:225
-msgid "???  %s"
+#: ui/glim_panel.gd:216 ui/lumi_builder.gd:228
+msgid "%d more lie on other worlds."
 msgstr ""
 
 #: ui/globe_view.gd:136
@@ -4071,7 +3805,7 @@ msgstr ""
 msgid "Re-survey      %s cubes"
 msgstr ""
 
-#: ui/goal_readout.gd:135 ui/list_detail.gd:481 ui/objective_card.gd:137
+#: ui/goal_readout.gd:135 ui/list_detail.gd:482 ui/objective_card.gd:137
 msgid "DONE"
 msgstr ""
 
@@ -4327,55 +4061,55 @@ msgstr ""
 msgid "◢ %s %d%%"
 msgstr ""
 
-#: ui/list_detail.gd:99
+#: ui/list_detail.gd:100
 msgid "Nothing here yet. Keep playing."
 msgstr ""
 
-#: ui/list_detail.gd:359 ui/upgrade_card.gd:85
+#: ui/list_detail.gd:360 ui/upgrade_card.gd:85
 msgid "Buy"
 msgstr ""
 
-#: ui/list_detail.gd:477
+#: ui/list_detail.gd:478
 msgid "LOCKED"
 msgstr ""
 
-#: ui/list_detail.gd:485
+#: ui/list_detail.gd:486
 msgid "ACTIVE"
 msgstr ""
 
-#: ui/list_detail.gd:506
+#: ui/list_detail.gd:507
 msgid "FREE"
 msgstr ""
 
-#: ui/list_detail.gd:628
+#: ui/list_detail.gd:629
 msgid "LOCKED.  To unlock: %s"
 msgstr ""
 
-#: ui/list_detail.gd:628
+#: ui/list_detail.gd:629
 msgid "Locked. Keep playing to unlock it."
 msgstr ""
 
-#: ui/list_detail.gd:631
+#: ui/list_detail.gd:632
 msgid "REQUIRES   %s"
 msgstr ""
 
-#: ui/list_detail.gd:634
+#: ui/list_detail.gd:635
 msgid "You can buy this now!"
 msgstr ""
 
-#: ui/list_detail.gd:654
+#: ui/list_detail.gd:658
 msgid "%s more %s"
 msgstr ""
 
-#: ui/list_detail.gd:656
+#: ui/list_detail.gd:660
 msgid "Pick up trash to earn them."
 msgstr ""
 
-#: ui/list_detail.gd:656
+#: ui/list_detail.gd:660
 msgid "Dig up parts and salvage junk to get them."
 msgstr ""
 
-#: ui/list_detail.gd:659
+#: ui/list_detail.gd:663
 msgid "Need %s. %s"
 msgstr ""
 
@@ -4387,54 +4121,57 @@ msgstr ""
 msgid "Warming up"
 msgstr ""
 
-#: ui/locker_editors.gd:11 data/currencies.json:currencies[parts].name planets/verdance/data/hub.json:materials.metal.name
+#: ui/locker_editors.gd:13 data/currencies.json:currencies[parts].name planets/verdance/data/hub.json:materials.metal.name
 #: planets/verdance/data/hub.json:materials.plastic.name planets/verdance/data/hub.json:materials.glass.name
 msgid "Parts"
 msgstr ""
 
-#: ui/locker_editors.gd:11 ui/locker_editors.gd:12 data/cosmetics.json:slots[paint].name
-#: data/style_parts.json:slots[paint].name
+#: ui/locker_editors.gd:13 data/cosmetics.json:targets.crew.slots[crew_paint].name
+msgid "Fleet mark"
+msgstr ""
+
+#: ui/locker_editors.gd:13 data/cosmetics.json:slots[glow].name data/cosmetics.json:targets.crew.slots[crew_glow].name
+msgid "Light colour"
+msgstr ""
+
+#: ui/locker_editors.gd:14 data/cosmetics.json:slots[paint].name data/style_parts.json:slots[paint].name
 msgid "Paint"
 msgstr ""
 
-#: ui/locker_editors.gd:11 ui/locker_editors.gd:12
-msgid "Glow"
-msgstr ""
-
-#: ui/locker_editors.gd:12 data/style_parts.json:slots[trim].name
+#: ui/locker_editors.gd:14 data/style_parts.json:slots[trim].name
 msgid "Trim"
 msgstr ""
 
-#: ui/locker_editors.gd:67
+#: ui/locker_editors.gd:14 data/cosmetics.json:targets.glim.slots[glim_glow].name
+msgid "Glow"
+msgstr ""
+
+#: ui/locker_editors.gd:57
 msgid "Every %s wears this"
 msgstr ""
 
-#: ui/locker_editors.gd:222
+#: ui/locker_editors.gd:195
 msgid "Ship looks: the tiers keep their shape"
 msgstr ""
 
-#: ui/locker_panel.gd:93
+#: ui/locker_panel.gd:95
 msgid "Close"
 msgstr ""
 
-#: ui/locker_panel.gd:97 planets/verdance/data/camp.json:builds.locker.name
+#: ui/locker_panel.gd:99 planets/verdance/data/camp.json:builds.locker.name
 msgid "Locker"
 msgstr ""
 
-#: ui/locker_panel.gd:261
+#: ui/locker_panel.gd:257
 msgid "The Locker"
 msgstr ""
 
-#: ui/locker_panel.gd:262
+#: ui/locker_panel.gd:258
 msgid "Find a piece of a look in the world. Then build the Locker in the Build tab and open it in the yard."
 msgstr ""
 
-#: ui/locker_panel.gd:263
+#: ui/locker_panel.gd:259
 msgid "Lumi wears what he finds: paint tins, lens chips and the pieces of old robots. Glim and your robots are dressed here too."
-msgstr ""
-
-#: ui/locker_panel.gd:304 ui/robot_card.gd:82
-msgid "Crew"
 msgstr ""
 
 #: ui/lumi_builder.gd:86 ui/lumi_builder.gd:181
@@ -4458,10 +4195,6 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: ui/lumi_builder.gd:228
-msgid "%d more lie on other worlds."
-msgstr ""
-
 #: ui/lumi_builder.gd:233
 msgid "Wear every piece of one set for its small bonus. A mixed look gives none."
 msgstr ""
@@ -4478,7 +4211,7 @@ msgstr ""
 msgid "Keep a look to put it on again later."
 msgstr ""
 
-#: ui/lumi_builder.gd:273 ui/lumi_builder.gd:355
+#: ui/lumi_builder.gd:273 ui/lumi_builder.gd:358
 msgid "Look %d"
 msgstr ""
 
@@ -4502,19 +4235,23 @@ msgstr ""
 msgid "(off: looks only)"
 msgstr ""
 
-#: ui/lumi_builder.gd:291
+#: ui/lumi_builder.gd:292
 msgid "%s set  ·  %s"
 msgstr ""
 
 #: ui/lumi_builder.gd:294
+msgid "%s set"
+msgstr ""
+
+#: ui/lumi_builder.gd:297
 msgid "Mixed look  ·  no set bonus"
 msgstr ""
 
-#: ui/lumi_builder.gd:296
+#: ui/lumi_builder.gd:299
 msgid "Not worn yet"
 msgstr ""
 
-#: ui/lumi_builder.gd:364
+#: ui/lumi_builder.gd:367
 msgid "A piece of this look is not found yet"
 msgstr ""
 
@@ -4920,23 +4657,23 @@ msgstr ""
 msgid "PHOTO MODE   Tab"
 msgstr ""
 
-#: ui/piece_reveal.gd:122
+#: ui/piece_reveal.gd:134
 msgid "Set complete"
 msgstr ""
 
-#: ui/piece_reveal.gd:125
+#: ui/piece_reveal.gd:137
 msgid "Wear every piece at the Locker: %s."
 msgstr ""
 
-#: ui/piece_reveal.gd:129
+#: ui/piece_reveal.gd:144
 msgid "Salvaged  ·  %s"
 msgstr ""
 
-#: ui/piece_reveal.gd:132
+#: ui/piece_reveal.gd:147
 msgid "Wear it at the Locker."
 msgstr ""
 
-#: ui/piece_reveal.gd:132
+#: ui/piece_reveal.gd:147
 msgid "Build the Locker at the workbench to wear it."
 msgstr ""
 
@@ -5068,7 +4805,7 @@ msgstr ""
 msgid "Fitted"
 msgstr ""
 
-#: ui/rig_panel.gd:165 data/robot_parts.json:slots[tool].name
+#: ui/rig_panel.gd:165 data/cosmetics.json:targets.crew.slots[crew_tool].name data/robot_parts.json:slots[tool].name
 msgid "Tool"
 msgstr ""
 
@@ -5078,6 +4815,10 @@ msgstr ""
 
 #: ui/rig_panel.gd:190
 msgid "Fit"
+msgstr ""
+
+#: ui/robot_card.gd:82 data/cosmetics.json:targets.crew.name
+msgid "Crew"
 msgstr ""
 
 #: ui/robot_card.gd:94
@@ -7537,7 +7278,7 @@ msgstr ""
 msgid "A dump drone that never made it home, nose-down in the junk of another world. Its red eye still blinks. Even from here it looks embarrassed."
 msgstr ""
 
-#: data/cosmetics.json:slots[paint].hint
+#: data/cosmetics.json:slots[paint].hint data/cosmetics.json:targets.glim.slots[glim_shell].hint
 msgid "Paint tins lie buried under ordinary trash."
 msgstr ""
 
@@ -7553,11 +7294,7 @@ msgstr ""
 msgid "Lens plates outlast the robots that wore them."
 msgstr ""
 
-#: data/cosmetics.json:slots[glow].name
-msgid "Light colour"
-msgstr ""
-
-#: data/cosmetics.json:slots[glow].hint
+#: data/cosmetics.json:slots[glow].hint data/cosmetics.json:targets.glim.slots[glim_glow].hint data/cosmetics.json:targets.crew.slots[crew_glow].hint
 msgid "Lens chips lie buried under ordinary trash."
 msgstr ""
 
@@ -7609,7 +7346,7 @@ msgstr ""
 msgid "Companion"
 msgstr ""
 
-#: data/cosmetics.json:slots[companion].hint
+#: data/cosmetics.json:slots[companion].hint data/cosmetics.json:targets.glim.slots[glim_top].hint data/cosmetics.json:targets.crew.slots[crew_topper].hint
 msgid "Small things hide in quiet corners."
 msgstr ""
 
@@ -7829,11 +7566,13 @@ msgstr ""
 msgid "Heart eyes"
 msgstr ""
 
-#: data/cosmetics.json:pieces[head_antenna].name data/glim.json:tops[antenna].name data/style_parts.json:options.head[antenna].name
+#: data/cosmetics.json:pieces[head_antenna].name data/cosmetics.json:targets.glim.pieces[glim_top_antenna].name data/glim.json:tops[antenna].name
+#: data/style_parts.json:options.head[antenna].name
 msgid "Antenna"
 msgstr ""
 
-#: data/cosmetics.json:pieces[head_halo].name data/glim.json:tops[halo].name data/style_parts.json:options.head[halo].name
+#: data/cosmetics.json:pieces[head_halo].name data/cosmetics.json:targets.glim.pieces[glim_top_halo].name data/glim.json:tops[halo].name
+#: data/style_parts.json:options.head[halo].name
 msgid "Halo"
 msgstr ""
 
@@ -7851,6 +7590,272 @@ msgstr ""
 
 #: data/cosmetics.json:pieces[companion_drone].name data/style_parts.json:options.companion[drone].name
 msgid "Tiny drone"
+msgstr ""
+
+#: data/cosmetics.json:targets.glim.slots[glim_shell].name
+msgid "Shell"
+msgstr ""
+
+#: data/cosmetics.json:targets.glim.slots[glim_top].name
+msgid "Top"
+msgstr ""
+
+#: data/cosmetics.json:targets.glim.pieces[glim_shell_pearl].name
+msgid "Pearl shell"
+msgstr ""
+
+#: data/cosmetics.json:targets.glim.pieces[glim_shell_sunset].name
+msgid "Sunset shell"
+msgstr ""
+
+#: data/cosmetics.json:targets.glim.pieces[glim_shell_moss].name
+msgid "Moss shell"
+msgstr ""
+
+#: data/cosmetics.json:targets.glim.pieces[glim_shell_graphite].name
+msgid "Graphite shell"
+msgstr ""
+
+#: data/cosmetics.json:targets.glim.pieces[glim_shell_blossom].name
+msgid "Blossom shell"
+msgstr ""
+
+#: data/cosmetics.json:targets.glim.pieces[glim_glow_cyan].name
+msgid "Cyan glow"
+msgstr ""
+
+#: data/cosmetics.json:targets.glim.pieces[glim_glow_ember].name
+msgid "Ember glow"
+msgstr ""
+
+#: data/cosmetics.json:targets.glim.pieces[glim_glow_leaf].name
+msgid "Leaf glow"
+msgstr ""
+
+#: data/cosmetics.json:targets.glim.pieces[glim_glow_violet].name
+msgid "Violet glow"
+msgstr ""
+
+#: data/cosmetics.json:targets.glim.pieces[glim_glow_rose].name
+msgid "Rose glow"
+msgstr ""
+
+#: data/cosmetics.json:targets.glim.pieces[glim_top_none].name data/glim.json:tops[none].name
+msgid "Nothing"
+msgstr ""
+
+#: data/cosmetics.json:targets.glim.pieces[glim_top_beanie].name data/glim.json:tops[beanie].name
+msgid "Little Beanie"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.slots[crew_chassis].name data/robot_parts.json:slots[chassis].name
+msgid "Chassis"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.slots[crew_chassis].hint
+msgid "Old machines rust where heavy work was done."
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.slots[crew_head].name data/robot_parts.json:slots[head].name
+msgid "Head"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.slots[crew_head].hint
+msgid "Sensor heads outlast the robots that wore them."
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.slots[crew_mobility].name data/robot_parts.json:slots[mobility].name
+msgid "Mobility"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.slots[crew_mobility].hint
+msgid "Wheels, legs and fans lie where a robot stopped."
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.slots[crew_tool].hint
+msgid "Tools lie near the work they did."
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.slots[crew_topper].name data/robot_parts.json:slots[topper].name
+msgid "Topper"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.slots[crew_paint].hint
+msgid "Old fleet marks turn up where crews once worked."
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_light_frame].name data/robot_parts.json:parts[light_frame].name
+msgid "Light Frame"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_cargo_hull].name data/robot_parts.json:parts[cargo_hull].name
+msgid "Cargo Hull"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_sealed_shell].name data/robot_parts.json:parts[sealed_shell].name
+msgid "Sealed Shell"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_maker_shell].name data/robot_parts.json:parts[maker_shell].name
+msgid "Maker Shell"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_big_eye].name data/robot_parts.json:parts[big_eye].name
+msgid "Big-Eye Sensor"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_focus_visor].name data/robot_parts.json:parts[focus_visor].name
+msgid "Focus Visor"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_periscope].name data/robot_parts.json:parts[periscope].name
+msgid "Periscope"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_chatter_dome].name data/robot_parts.json:parts[chatter_dome].name
+msgid "Chatterbox Dome"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_maker_optic].name data/robot_parts.json:parts[maker_optic].name
+msgid "Maker Optic"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_treads].name data/robot_parts.json:parts[treads].name
+msgid "Treads"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_rotor].name data/robot_parts.json:parts[rotor].name
+msgid "Quad Rotor"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_legs].name data/robot_parts.json:parts[legs].name
+msgid "Walker Legs"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_hover_skirt].name data/robot_parts.json:parts[hover_skirt].name
+msgid "Hover Skirt"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_maker_glider].name data/robot_parts.json:parts[maker_glider].name
+msgid "Maker Glider"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_wide_scoop].name data/robot_parts.json:parts[wide_scoop].name
+msgid "Wide Scoop"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_fine_sieve].name data/robot_parts.json:parts[fine_sieve].name
+msgid "Fine Sieve"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_long_forks].name data/robot_parts.json:parts[long_forks].name
+msgid "Long Forks"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_tow_hook].name data/robot_parts.json:parts[tow_hook].name
+msgid "Tow Hook"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_seed_drill].name data/robot_parts.json:parts[seed_drill].name planets/verdance/data/robots.json:types[seedling].upgrades[1].name
+msgid "Seed Drill"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_mist_sprayer].name data/robot_parts.json:parts[mist_sprayer].name
+msgid "Mist Sprayer"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_jet_nozzle].name data/robot_parts.json:parts[jet_nozzle].name
+msgid "Jet Nozzle"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_antenna].name data/robot_parts.json:parts[antenna].name
+msgid "Bulb Antenna"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_top_hat].name data/robot_parts.json:parts[top_hat].name
+msgid "Tiny Top Hat"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_crew_flag].name data/robot_parts.json:parts[crew_flag].name
+msgid "Crew Flag"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_bobble_plant].name data/robot_parts.json:parts[bobble_plant].name
+msgid "Bobble Plant"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_traffic_cone].name data/robot_parts.json:parts[traffic_cone].name
+msgid "Traffic Cone"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_propeller_cap].name data/robot_parts.json:parts[propeller_cap].name
+msgid "Propeller Cap"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_lucky_clover].name data/robot_parts.json:parts[lucky_clover].name
+msgid "Lucky Clover"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_maker_crest].name data/robot_parts.json:parts[maker_crest].name
+msgid "Maker Crest"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_livery_neon].name
+msgid "Neon Underglow"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_livery_neon].desc
+msgid "A cyan glow ring under every robot in the fleet."
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_livery_sunset].name
+msgid "Sunset Underglow"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_livery_sunset].desc
+msgid "Warm orange underglow for the whole crew."
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_livery_pennant].name
+msgid "Crew Pennants"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_livery_pennant].desc
+msgid "Every robot flies a little Greenfall pennant."
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_livery_halo].name
+msgid "Holo Halos"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_livery_halo].desc
+msgid "A slowly turning hologram halo over each robot. Very smug."
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_cyan].name data/glim.json:glows[cyan].name data/ship_style.json:glows[cyan].name
+#: data/style_parts.json:swatches[cyan].name
+msgid "Cyan"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_mint].name data/ship_style.json:glows[mint].name data/style_parts.json:swatches[mint].name
+msgid "Mint"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_amber].name data/ship_style.json:glows[amber].name data/style_parts.json:swatches[amber].name
+msgid "Amber"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_rose].name data/glim.json:glows[rose].name
+msgid "Rose"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_violet].name data/glim.json:glows[violet].name data/ship_style.json:glows[violet].name
+#: data/style_parts.json:swatches[violet].name
+msgid "Violet"
+msgstr ""
+
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_white].name
+msgid "Moonlight"
 msgstr ""
 
 #: data/currencies.json:currencies[cubes].name
@@ -7971,10 +7976,6 @@ msgstr ""
 
 #: data/designs.json:designs[aurora].desc
 msgid "The seed-keeper fresh from the ark: pearl paint, cyan eyes, an orange fin."
-msgstr ""
-
-#: data/designs.json:designs[aurora].buff.text
-msgid "+8% detector range"
 msgstr ""
 
 #: data/designs.json:designs[bolt].tagline
@@ -9119,6 +9120,10 @@ msgstr ""
 msgid "Press %d Pure bales (one junk type)"
 msgstr ""
 
+#: planets/verdance/data/events.json:contracts.templates[clean_hexes].text
+msgid "Clean %d hexes"
+msgstr ""
+
 #: planets/verdance/data/events.json:contracts.templates[scoop].text
 msgid "Scoop %d pieces of junk"
 msgstr ""
@@ -9145,38 +9150,6 @@ msgstr ""
 
 #: planets/verdance/data/events.json:contracts.templates[sustain].text_1
 msgid "Get one more hex to Sustained"
-msgstr ""
-
-#: planets/verdance/data/events.json:liveries[livery_neon].name
-msgid "Neon Underglow"
-msgstr ""
-
-#: planets/verdance/data/events.json:liveries[livery_neon].desc
-msgid "A cyan glow ring under every robot in the fleet."
-msgstr ""
-
-#: planets/verdance/data/events.json:liveries[livery_sunset].name
-msgid "Sunset Underglow"
-msgstr ""
-
-#: planets/verdance/data/events.json:liveries[livery_sunset].desc
-msgid "Warm orange underglow for the whole crew."
-msgstr ""
-
-#: planets/verdance/data/events.json:liveries[livery_pennant].name
-msgid "Crew Pennants"
-msgstr ""
-
-#: planets/verdance/data/events.json:liveries[livery_pennant].desc
-msgid "Every robot flies a little Greenfall pennant."
-msgstr ""
-
-#: planets/verdance/data/events.json:liveries[livery_halo].name
-msgid "Holo Halos"
-msgstr ""
-
-#: planets/verdance/data/events.json:liveries[livery_halo].desc
-msgid "A slowly turning hologram halo over each robot. Very smug."
 msgstr ""
 
 #: planets/verdance/data/events.json:trinkets[brass_compass].name
@@ -9795,6 +9768,18 @@ msgstr ""
 msgid "The last leaf waits on the rocket of Old Capital."
 msgstr ""
 
+#: planets/verdance/data/finds.json:finds[scrapyard_crew_chip].hint
+msgid "A lens chip for a robot's lights lies under Ironside's scrap."
+msgstr ""
+
+#: planets/verdance/data/finds.json:finds[highreach_glim_tin].hint
+msgid "A small tin of lantern paint lies deep in Highreach."
+msgstr ""
+
+#: planets/verdance/data/finds.json:finds[lowmeadow_glim_chip].hint
+msgid "A lantern's lens chip lies deep in Lowmeadow."
+msgstr ""
+
 #: planets/verdance/data/finds.json:finds[open_ground_tin].hint
 msgid "A rare tin lies far out, on open ground."
 msgstr ""
@@ -9885,14 +9870,6 @@ msgstr ""
 
 #: data/glim.json:glows[leaf].name data/style_parts.json:options.chest[leaf].name
 msgid "Leaf"
-msgstr ""
-
-#: data/glim.json:tops[none].name
-msgid "Nothing"
-msgstr ""
-
-#: data/glim.json:tops[beanie].name
-msgid "Little Beanie"
 msgstr ""
 
 #: planets/verdance/data/goals.json:tiers[short].name
@@ -11841,20 +11818,8 @@ msgstr ""
 msgid "A tall relay on the back. Robots much further away still get a boost from Lumi, and the detector sees further. Slower."
 msgstr ""
 
-#: data/robot_parts.json:slots[chassis].name
-msgid "Chassis"
-msgstr ""
-
-#: data/robot_parts.json:slots[head].name
-msgid "Head"
-msgstr ""
-
-#: data/robot_parts.json:slots[mobility].name
-msgid "Mobility"
-msgstr ""
-
-#: data/robot_parts.json:slots[topper].name
-msgid "Topper"
+#: data/robot_parts.json:stats[speed].name
+msgid "Speed"
 msgstr ""
 
 #: data/robot_parts.json:stats[load].name
@@ -11865,6 +11830,18 @@ msgstr ""
 msgid "Work rate"
 msgstr ""
 
+#: data/robot_parts.json:stats[quality].name
+msgid "Cube quality"
+msgstr ""
+
+#: data/robot_parts.json:stats[reach].name
+msgid "Spray reach"
+msgstr ""
+
+#: data/robot_parts.json:stats[scan].name
+msgid "Scan"
+msgstr ""
+
 #: data/robot_parts.json:set_bonus.name
 msgid "Maker Resonance"
 msgstr ""
@@ -11873,240 +11850,116 @@ msgstr ""
 msgid "All three Maker parts fitted: +5% speed, +6% work."
 msgstr ""
 
-#: data/robot_parts.json:parts[light_frame].name
-msgid "Light Frame"
-msgstr ""
-
 #: data/robot_parts.json:parts[light_frame].desc
 msgid "Slim exposed rails instead of a full shell."
-msgstr ""
-
-#: data/robot_parts.json:parts[cargo_hull].name
-msgid "Cargo Hull"
 msgstr ""
 
 #: data/robot_parts.json:parts[cargo_hull].desc
 msgid "Thick side plates and a rear rack."
 msgstr ""
 
-#: data/robot_parts.json:parts[sealed_shell].name
-msgid "Sealed Shell"
-msgstr ""
-
 #: data/robot_parts.json:parts[sealed_shell].desc
 msgid "Smooth covers, neat seams, no grit."
-msgstr ""
-
-#: data/robot_parts.json:parts[maker_shell].name
-msgid "Maker Shell"
 msgstr ""
 
 #: data/robot_parts.json:parts[maker_shell].desc
 msgid "Pearl fairings with gold trim, as the Makers built them. Part of the Maker set."
 msgstr ""
 
-#: data/robot_parts.json:parts[big_eye].name
-msgid "Big-Eye Sensor"
-msgstr ""
-
 #: data/robot_parts.json:parts[big_eye].desc
 msgid "A huge lens on a stalk."
-msgstr ""
-
-#: data/robot_parts.json:parts[focus_visor].name
-msgid "Focus Visor"
 msgstr ""
 
 #: data/robot_parts.json:parts[focus_visor].desc
 msgid "Blinkers for robots."
 msgstr ""
 
-#: data/robot_parts.json:parts[periscope].name
-msgid "Periscope"
-msgstr ""
-
 #: data/robot_parts.json:parts[periscope].desc
 msgid "Sees over the plants. Mostly."
-msgstr ""
-
-#: data/robot_parts.json:parts[chatter_dome].name
-msgid "Chatterbox Dome"
 msgstr ""
 
 #: data/robot_parts.json:parts[chatter_dome].desc
 msgid "Glass dome with a little speaker."
 msgstr ""
 
-#: data/robot_parts.json:parts[maker_optic].name
-msgid "Maker Optic"
-msgstr ""
-
 #: data/robot_parts.json:parts[maker_optic].desc
 msgid "A floating gem lens under a gold brow. Part of the Maker set."
-msgstr ""
-
-#: data/robot_parts.json:parts[treads].name
-msgid "Treads"
 msgstr ""
 
 #: data/robot_parts.json:parts[treads].desc
 msgid "Rubber tracks."
 msgstr ""
 
-#: data/robot_parts.json:parts[rotor].name
-msgid "Quad Rotor"
-msgstr ""
-
 #: data/robot_parts.json:parts[rotor].desc
 msgid "Four ducted fans."
-msgstr ""
-
-#: data/robot_parts.json:parts[legs].name
-msgid "Walker Legs"
 msgstr ""
 
 #: data/robot_parts.json:parts[legs].desc
 msgid "Four careful legs."
 msgstr ""
 
-#: data/robot_parts.json:parts[hover_skirt].name
-msgid "Hover Skirt"
-msgstr ""
-
 #: data/robot_parts.json:parts[hover_skirt].desc
 msgid "A cushion of air and a soft glow underneath."
-msgstr ""
-
-#: data/robot_parts.json:parts[maker_glider].name
-msgid "Maker Glider"
 msgstr ""
 
 #: data/robot_parts.json:parts[maker_glider].desc
 msgid "Twin levitation pods with a thin light seam. Part of the Maker set."
 msgstr ""
 
-#: data/robot_parts.json:parts[wide_scoop].name
-msgid "Wide Scoop"
-msgstr ""
-
 #: data/robot_parts.json:parts[wide_scoop].desc
 msgid "A big, wide scoop."
-msgstr ""
-
-#: data/robot_parts.json:parts[fine_sieve].name
-msgid "Fine Sieve"
 msgstr ""
 
 #: data/robot_parts.json:parts[fine_sieve].desc
 msgid "A sieve that shakes out the dirt."
 msgstr ""
 
-#: data/robot_parts.json:parts[long_forks].name
-msgid "Long Forks"
-msgstr ""
-
 #: data/robot_parts.json:parts[long_forks].desc
 msgid "Extra-long forks."
-msgstr ""
-
-#: data/robot_parts.json:parts[tow_hook].name
-msgid "Tow Hook"
 msgstr ""
 
 #: data/robot_parts.json:parts[tow_hook].desc
 msgid "Winch and hook."
 msgstr ""
 
-#: data/robot_parts.json:parts[seed_drill].name planets/verdance/data/robots.json:types[seedling].upgrades[1].name
-msgid "Seed Drill"
-msgstr ""
-
 #: data/robot_parts.json:parts[seed_drill].desc
 msgid "An auger nose."
-msgstr ""
-
-#: data/robot_parts.json:parts[mist_sprayer].name
-msgid "Mist Sprayer"
 msgstr ""
 
 #: data/robot_parts.json:parts[mist_sprayer].desc
 msgid "A fan nozzle."
 msgstr ""
 
-#: data/robot_parts.json:parts[jet_nozzle].name
-msgid "Jet Nozzle"
-msgstr ""
-
 #: data/robot_parts.json:parts[jet_nozzle].desc
 msgid "A strong, straight jet nozzle."
-msgstr ""
-
-#: data/robot_parts.json:parts[antenna].name
-msgid "Bulb Antenna"
 msgstr ""
 
 #: data/robot_parts.json:parts[antenna].desc
 msgid "A springy antenna with a soft glowing bulb."
 msgstr ""
 
-#: data/robot_parts.json:parts[top_hat].name
-msgid "Tiny Top Hat"
-msgstr ""
-
 #: data/robot_parts.json:parts[top_hat].desc
 msgid "For the robot who means business."
-msgstr ""
-
-#: data/robot_parts.json:parts[crew_flag].name
-msgid "Crew Flag"
 msgstr ""
 
 #: data/robot_parts.json:parts[crew_flag].desc
 msgid "A little flag in the crew's colour."
 msgstr ""
 
-#: data/robot_parts.json:parts[bobble_plant].name
-msgid "Bobble Plant"
-msgstr ""
-
 #: data/robot_parts.json:parts[bobble_plant].desc
 msgid "A sprout on a spring. Boings when it brakes."
-msgstr ""
-
-#: data/robot_parts.json:parts[bobble_plant].source.hint
-msgid "Comes with your first robot"
-msgstr ""
-
-#: data/robot_parts.json:parts[traffic_cone].name
-msgid "Traffic Cone"
 msgstr ""
 
 #: data/robot_parts.json:parts[traffic_cone].desc
 msgid "Found it, kept it, wears it."
 msgstr ""
 
-#: data/robot_parts.json:parts[propeller_cap].name
-msgid "Propeller Cap"
-msgstr ""
-
 #: data/robot_parts.json:parts[propeller_cap].desc
 msgid "Spins when it hurries. Does not help."
 msgstr ""
 
-#: data/robot_parts.json:parts[lucky_clover].name
-msgid "Lucky Clover"
-msgstr ""
-
 #: data/robot_parts.json:parts[lucky_clover].desc
 msgid "A four-leaf clover that floats. Rare: a robot has to spot one."
-msgstr ""
-
-#: data/robot_parts.json:parts[lucky_clover].source.hint
-msgid "Rare salvage find (robots with a good Scan)"
-msgstr ""
-
-#: data/robot_parts.json:parts[maker_crest].name
-msgid "Maker Crest"
 msgstr ""
 
 #: data/robot_parts.json:parts[maker_crest].desc

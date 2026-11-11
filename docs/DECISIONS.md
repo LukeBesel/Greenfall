@@ -567,3 +567,8 @@ Merged. Crew at the launch point 155 (cap 200); city 1 first hex 55 s, first rob
 ## Research and tending from work (M3-06, Nov 11, 2026)
 `docs/reviews/M3-06_RESEARCH_TENDING.md`. Research costs stock once plus field data from cleaned hexes, stage changes, mastery levels, finds and sources; one node active, switching keeps its bar; time away adds no research (offline rate and cap in data). Watering soaks a hex for 3 minutes with a growth burst; dry plants grow at 25%; planting sets a patch; each stage has its own sound and look. Bot: longest research idle 58 to 99 s (was about 880). Research cube prices cut to 0.3x. Merged.
 - **Regrowth is too slow in the opening:** no hex passed stage 1 in 26 bot minutes, because the seed tin gives a single seed. Regrowth is the heart of the game, so M3-12 must have the first hex visibly growing within the first 20 minutes.
+
+## Crew and Glim looks found-only (M3-14b, Nov 11, 2026)
+`docs/reviews/M3-14b_LOOKS.md`. Glim's 15 looks and the crew's 39 (parts, fleet marks, light colours) are found pieces edited only at the Locker (a tab for Glim and one per robot type); crafting, the parts stall, Request-track looks and free starter parts removed; old saves keep what they had (save v6). Planet 1 places 3 of them. Aurora's starting set gives no bonus. Wrecks grow a young plant until salvaged, the Bolt tease sits up as a robot shape, and the found moment adds a light column visible in sun. Merged.
+- To do in M3-13: rocket looks are still bought (move to found or drop); three robot-part achievements cannot be earned on Planet 1 (hide them until a planet can award them).
+- A one-off script error in `art/asset_lib.gd` during one round-trip run; not reproduced. Logged as B39.

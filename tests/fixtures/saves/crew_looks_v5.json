@@ -1,0 +1,24 @@
+{
+  "_doc": "A version 5 save from before Glim's and the crew's looks were found pieces (tests/test_crew_looks.gd, tools/orbit_roundtrip.gd): Glim with one upgrade, two looks bought (Sunset shell, Little Beanie) and wearing Sunset, Ember and Sprout; 5 hexes cleaned (the Sprout top opened at 4, the Moss shell at 6); two Builder parts in the bin (treads, top hat); the Neon Underglow won from Requests and worn fleet-wide; the Scoopie design wearing treads, the top hat, mint lights and the neon mark. The migration to version 6 must keep all of it as found pieces, and the robot light colours (free before) too.",
+  "version": 5,
+  "created_unix": 1793000000.0,
+  "saved_unix": 1794000000.0,
+  "currencies": {"cubes": [1.2, 3], "parts": [4.0, 1], "seeds": [0.0, 0]},
+  "upgrades": {},
+  "stats": {"hexes_cleaned": 5, "cubes_made": 120},
+  "global": {"pieces": ["tin_sky"]},
+  "flags": {
+    "first_piece": true,
+    "glim": {"found": true, "tiers": {"light": 1, "scan": 0}, "shells": "sunset", "glows": "ember", "tops": "sprout", "owned": ["shells:sunset", "tops:beanie"]},
+    "builder": {"inv": {"treads": 1, "top_hat": 1}, "presets": {}, "fragments": 0},
+    "shop_owned": ["livery_neon"],
+    "livery": "livery_neon",
+    "robot_designs": {"scoopie": {"parts": {"mobility": "treads", "topper": "top_hat"}, "glow": "mint", "livery": "livery_neon"}}
+  },
+  "world": {"hub_level": 2},
+  "parts": [],
+  "districts": {"0": {"hub_level": 2}},
+  "current_hub": 0,
+  "planet_state": {},
+  "orbit": {}
+}

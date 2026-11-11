@@ -1,15 +1,15 @@
 class_name RobotBuilder
 extends Node
-## [drones] Robot Builder: per-robot part slots (Chassis, Head, Mobility, Tool, Topper), the part
-## collection, unlocking, Maker Fragments, crew presets, personality traits and salvage spotting.
-## [ui2] Builder parts are pure cosmetics, edited in the workbench Locker (ui/locker_panel.gd):
-## owning a part unlocks it for every robot (fitting it uses nothing up); unlocking costs Parts
-## (+ cubes for the shop ones) or comes from research, Requests and rare finds. The one perk left
-## is the Maker set (three Maker parts: +5% speed, +6% work). Personalities are flavour only. Rules are static so the UI, tests and the save round trip
-## can use them without a world; one instance per slice ticks salvage finds and dev hooks.
+## [drones] Robot Builder: per-robot part slots (Chassis, Head, Mobility, Tool, Topper), Maker
+## Fragments, crew presets, personality traits and salvage spotting.
+## Builder parts are pure cosmetics, worn by robot type at the Locker (systems/robot_design.gd).
+## A part is a found piece (CrewLooks, data/cosmetics.json targets.crew): it is never bought,
+## crafted or won from a counter, and once found it fits every robot. The one perk left is the
+## Maker set (three Maker parts: +5% speed, +6% work). Personalities are flavour only. Rules are
+## static so the UI, tests and the save round trip can use them without a world; one instance per
+## slice ticks salvage finds and dev hooks.
 ##
-## State: GameState.flags["builder"] = {inv: {part_id: n}, fragments: n, presets: {crew: build},
-##   starter: bool}. Builds and traits live on each robot (Robot.build / Robot.trait_id, saved in
+## State: GameState.flags["builder"] = {fragments: n, presets: {crew: build}, seen: [part ids]}. Builds and traits live on each robot (Robot.build / Robot.trait_id, saved in
 ##   Robot.to_dict). A build is {slot: part_id}; a missing slot is the Mk tier's stock part.
 
 const PATH: String = "res://data/robot_parts.json"
@@ -118,36 +118,14 @@ static func st() -> Dictionary:
 		v = {}
 		GameState.flags["builder"] = v
 	var d: Dictionary = v
-	if not (d.get("inv") is Dictionary):
-		d["inv"] = {}
 	if not (d.get("presets") is Dictionary):
 		d["presets"] = {}
 	return d
 
 
-static func inv() -> Dictionary:
-	return st()["inv"]
-
-
-static func count(id: String) -> int:
-	return int(inv().get(id, 0))
-
-
-static func add_part(id: String, n: int = 1) -> void:
-	if part(id).is_empty():
-		return
-	inv()[id] = count(id) + n
-	GameState.inc_stat("builder_parts_got", n)
-	_note_seen(id)
-
-
-static func take_part(id: String) -> bool:
-	if count(id) <= 0:
-		return false
-	inv()[id] = count(id) - 1
-	if int(inv()[id]) <= 0:
-		inv().erase(id)
-	return true
+## Whether a part may be fitted: its piece is found.
+static func owned(id: String) -> bool:
+	return CrewLooks.has(CrewLooks.CREW, str(part(id).get("slot", "")), id)
 
 
 ## [money] Maker Fragments are Parts now (data/currencies.json legacy "fragments"): a find pays
@@ -171,17 +149,13 @@ static func add_fragments(n: int) -> void:
 	GameState.inc_stat("maker_fragments", n)
 
 
-## Distinct toppers ever collected (for the Hat Rack achievement).
-static func _note_seen(id: String) -> void:
-	var seen: Array = st().get("seen", [])
-	if not (id in seen):
-		seen.append(id)
-	st()["seen"] = seen
+## Distinct toppers found (for the Hat Rack achievement).
+static func count_toppers() -> void:
 	var toppers: int = 0
 	for p: Dictionary in parts_for_slot("topper"):
-		if str(p["id"]) in seen:
+		if owned(str(p["id"])):
 			toppers += 1
-	GameState.stats["builder_toppers"] = float(toppers)
+	GameState.stats["builder_toppers"] = maxf(float(GameState.stats.get("builder_toppers", 0.0)), float(toppers))
 
 
 # --- Stats ---------------------------------------------------------------------------------
@@ -257,7 +231,7 @@ static func set_build(r: Robot, build: Dictionary) -> void:
 	r.rebuild_visual()
 
 
-## Fit a part ("" = stock). The old part goes back to the bin. Returns "" or why not.
+## Fit a part ("" = stock). Returns "" or why not.
 static func equip(r: Robot, slot: String, id: String) -> String:
 	var cur: String = str(r.build.get(slot, ""))
 	if cur == id:
@@ -268,8 +242,8 @@ static func equip(r: Robot, slot: String, id: String) -> String:
 			return TranslationServer.translate("Wrong slot")
 		if not fits(id, r.type_id):
 			return TranslationServer.translate("Doesn't fit a %s") % TranslationServer.translate(str(Economy.robots.get(r.type_id, {}).get("name", r.type_id)))
-		if count(id) <= 0:  # [ui2] owned = unlocked for every robot, nothing is used up
-			return TranslationServer.translate("Not unlocked yet")
+		if not owned(id):
+			return TranslationServer.translate("Not found yet")
 	if id == "":
 		r.build.erase(slot)
 	else:
@@ -290,6 +264,7 @@ static func note_build(build: Dictionary) -> void:
 		GameState.stats["builder_full_custom"] = maxf(float(GameState.stats.get("builder_full_custom", 0.0)), 1.0)
 	if has_set(build):
 		GameState.stats["builder_maker_set"] = 1.0
+	count_toppers()
 
 
 ## Rename a robot (unique in the fleet). Its own Command order follows the new name.
@@ -314,153 +289,6 @@ static func rename(fleet: Fleet, r: Robot, new_name: String) -> String:
 	return ""
 
 
-# --- Getting parts -------------------------------------------------------------------------
-
-static func source_kind(id: String) -> String:
-	return str(part(id).get("source", {}).get("kind", ""))
-
-
-## Research gate for research-source parts ("" = none or done).
-static func locked_research(id: String) -> String:
-	var src: Dictionary = part(id).get("source", {})
-	var rid: String = str(src.get("research", ""))
-	if rid != "" and not Research.has(rid):
-		return rid
-	return ""
-
-
-## Craftable here (craft, research and set sources).
-static func craftable(id: String) -> bool:
-	return source_kind(id) in ["craft", "research", "set"]
-
-
-## [ui2] Parts to unlock a craftable part: its parts plus what the robot part item it used to
-## consume is worth (data/parts.json rarity value), so prices stay where they were.
-static func craft_parts(id: String) -> float:
-	var src: Dictionary = part(id).get("source", {})
-	var extra: float = RobotParts.value(int(src.get("min_rarity", 0))) if str(src.get("part", "")) != "" else 0.0
-	return float(src.get("parts", 0)) + extra
-
-
-static func craft_block_reason(id: String) -> String:
-	var p: Dictionary = part(id)
-	if p.is_empty() or not craftable(id):
-		return TranslationServer.translate("Can't be crafted")
-	var src: Dictionary = p["source"]
-	var lr: String = locked_research(id)
-	if lr != "":
-		return TranslationServer.translate("Research %s") % TranslationServer.translate(str(Research.def(lr).get("name", lr)))
-	if not GameState.can_afford("parts", BigNum.from_float(craft_parts(id))):  # [ui2]
-		return TranslationServer.translate("Needs %s") % L10nFmt.amount("parts", craft_parts(id))
-	if not GameState.can_afford("cubes", BigNum.from_float(float(src.get("cubes", 0)))):
-		return TranslationServer.translate("Not enough cubes")
-	return ""
-
-
-## Short unlock line, e.g. "Unlock · 50 parts" ([ui2] costs are Parts + cubes only).
-static func cost_text(id: String) -> String:
-	var src: Dictionary = part(id).get("source", {})
-	match str(src.get("kind", "")):
-		"haggle":
-			return TranslationServer.translate("Unlock · %s") % Currencies.cost_text({"cubes": src.get("cubes", 0), "parts": src.get("parts", 0)})  # [money]
-		"request":
-			return TranslationServer.translate("Requests reward · %d requests") % int(src.get("requests", 0))
-		"drop":
-			return TranslationServer.translate(str(src.get("hint", "Rare find")))
-	return TranslationServer.translate("Unlock · %s") % Currencies.cost_text({"cubes": src.get("cubes", 0), "parts": craft_parts(id)})
-
-
-static func craft(id: String) -> bool:
-	if craft_block_reason(id) != "":
-		return false
-	var src: Dictionary = part(id)["source"]
-	GameState.spend("parts", BigNum.from_float(craft_parts(id)))  # [ui2]
-	GameState.spend("cubes", BigNum.from_float(float(src.get("cubes", 0))))
-	add_part(id)
-	GameState.inc_stat("builder_crafted")
-	Audio.play("hydraulic", 1.2, -8.0)
-	Audio.play("buy", 1.1, -4.0)
-	return true
-
-
-## [ui2] The shop parts ("haggle" source: cubes + parts). No rotating stall any more: all of
-## them are always on offer in the Locker. play_time is ignored (kept for older callers).
-static func haggle_offers(_play_time: float = -1.0) -> Array[String]:
-	var out: Array[String] = []
-	for p: Dictionary in all_parts():
-		if str(p.get("source", {}).get("kind", "")) == "haggle":
-			out.append(str(p["id"]))
-	return out
-
-
-static func haggle_seconds_left(play_time: float = -1.0) -> float:
-	if play_time < 0.0:
-		play_time = float(GameState.stats.get("time_played", 0.0))
-	var rot: float = maxf(float(cfg().get("haggle", {}).get("rotate_s", 480)), 1.0)
-	return rot - fmod(play_time, rot)
-
-
-static func haggle_block_reason(id: String) -> String:
-	if not (id in haggle_offers()):
-		return TranslationServer.translate("Can't be bought")
-	var src: Dictionary = part(id).get("source", {})
-	if not GameState.can_afford("cubes", BigNum.from_float(float(src.get("cubes", 0)))):
-		return TranslationServer.translate("Not enough cubes")
-	if not GameState.can_afford("parts", BigNum.from_float(float(src.get("parts", 0)))):  # [money]
-		return TranslationServer.translate("Needs %s") % L10nFmt.amount("parts", float(src.get("parts", 0)))
-	return ""
-
-
-static func buy_haggle(id: String) -> String:
-	var why: String = haggle_block_reason(id)
-	if why != "":
-		return why
-	var src: Dictionary = part(id)["source"]
-	GameState.spend("cubes", BigNum.from_float(float(src.get("cubes", 0))))
-	GameState.spend("parts", BigNum.from_float(float(src.get("parts", 0))))  # [money]
-	add_part(id)
-	Audio.play("buy", 1.0, -3.0)
-	return ""
-
-
-## Why a part can't be had right now from the builder tab ("" = it can, via craft or Haggle).
-static func get_block_reason(id: String) -> String:
-	match source_kind(id):
-		"haggle":
-			return haggle_block_reason(id)
-		"request":
-			return TranslationServer.translate("Requests reward (%d of %d requests)") % [mini(Contracts.done_total(), int(part(id).get("source", {}).get("requests", 0))), int(part(id).get("source", {}).get("requests", 0))]  # [money]
-		"drop":
-			return TranslationServer.translate(str(part(id).get("source", {}).get("hint", "Rare find")))
-	return craft_block_reason(id)
-
-
-## Craft it or buy it from Haggle, whichever its source is.
-static func obtain(id: String) -> String:
-	if source_kind(id) == "haggle":
-		return buy_haggle(id)
-	var why: String = get_block_reason(id)
-	if why != "":
-		return why
-	craft(id)
-	return ""
-
-
-## A random builder part the player doesn't own yet (token crate), else any non-set part.
-static func roll_unowned(r: RandomNumberGenerator) -> String:
-	var pool: Array[String] = []
-	var any: Array[String] = []
-	for p: Dictionary in all_parts():
-		var k: String = str(p.get("source", {}).get("kind", ""))
-		if k == "set":
-			continue
-		any.append(str(p["id"]))
-		if count(str(p["id"])) == 0:
-			pool.append(str(p["id"]))
-	var src: Array[String] = pool if not pool.is_empty() else any
-	return src[r.randi() % src.size()]
-
-
 # --- Crew presets --------------------------------------------------------------------------
 
 static func preset(crew: String) -> Dictionary:
@@ -473,7 +301,7 @@ static func save_preset(crew: String, build: Dictionary) -> void:
 	Audio.play("ding", 1.2, -6.0)
 
 
-## Fit the crew's preset on every robot of the crew, as far as the bin allows. Returns the
+## Fit the crew's preset on every robot of the crew, as far as found parts allow. Returns the
 ## number of parts fitted.
 static func apply_preset(fleet: Fleet, crew: String) -> int:
 	var pre: Dictionary = preset(crew)
@@ -483,7 +311,7 @@ static func apply_preset(fleet: Fleet, crew: String) -> int:
 	for r: Robot in fleet.robots_with_role(crew):
 		for s: String in SLOTS:
 			var want: String = str(pre.get(s, ""))
-			if want == str(r.build.get(s, "")) or (want != "" and (not fits(want, r.type_id) or count(want) <= 0)):
+			if want == str(r.build.get(s, "")) or (want != "" and (not fits(want, r.type_id) or not owned(want))):
 				continue
 			if equip(r, s, want) == "" and want != "":
 				n += 1
@@ -500,27 +328,26 @@ static func scan_of(r: Robot) -> float:
 func _ready() -> void:
 	rng.randomize()
 	cfg()
-	EventBus.robot_built.connect(_on_robot_built)
 	EventBus.part_found.connect(_on_part_found)
+	EventBus.piece_found.connect(_on_piece_found)
 	if DevHooks.has("builder-sample"):
 		sample_inventory()
 
 
-## Dev / screenshots: a stocked parts bin.
+func _exit_tree() -> void:
+	EventBus.part_found.disconnect(_on_part_found)
+	EventBus.piece_found.disconnect(_on_piece_found)
+
+
+## Dev / screenshots: every crew part counts as found for this run (quietly, as on an old save).
 static func sample_inventory() -> void:
 	for p: Dictionary in all_parts():
-		add_part(str(p["id"]), 2)
+		Looks.grant(CrewLooks.piece(CrewLooks.CREW, str(p["slot"]), str(p["id"])), "", true)
 	GameState.add_currency("parts", BigNum.from_float(600))  # [money]
 
 
-## Haggle's welcome gift with the first robot: treads and a bobble plant.
-func _on_robot_built(_n: String) -> void:
-	if st().get("starter", false):
-		return
-	st()["starter"] = true
-	add_part("treads")
-	add_part("bobble_plant")
-	EventBus.toast.emit(tr("Your first bot came with treads and a bobble plant. Style it at the Locker once you have built one."), "story")
+func _on_piece_found(_piece: String, _source: String) -> void:
+	count_toppers()
 
 
 ## Dug-up parts sometimes come with a Maker Fragment (much likelier on Vintage/Legendary finds).
@@ -560,10 +387,7 @@ func _process(delta: float) -> void:
 
 func _salvage_find(r: Robot, sc: Dictionary) -> void:
 	GameState.inc_stat("builder_salvage_finds")
-	if rng.randi() % maxi(int(sc.get("clover_one_in", 40)), 1) == 0:
-		add_part("lucky_clover")
-		EventBus.toast.emit(tr("%s spotted something green and lucky: a Lucky Clover!") % r.robot_name, "story")
-	elif rng.randi() % maxi(int(sc.get("fragment_one_in", 10)), 1) == 0:
+	if rng.randi() % maxi(int(sc.get("fragment_one_in", 10)), 1) == 0:
 		add_fragments(1)
 		EventBus.toast.emit(tr("%s spotted a Maker Fragment glinting in the junk: +%d parts.") % [r.robot_name, int(FRAGMENT_PARTS)], "story")  # [money]
 	else:

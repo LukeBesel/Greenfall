@@ -84,7 +84,7 @@ func test_save_v4_turns_robot_part_items_into_parts() -> void:
 	var m2: Dictionary = SaveManager.migrate(old)
 	assert_eq(int(m2["version"]), GameState.SAVE_VERSION)
 	assert_almost_eq(BigNum.from_serialized(m2["currencies"]["parts"]).to_float(), 2.0 * 5.0 + RobotParts.value(1), 0.001)
-	assert_eq(GameState.SAVE_VERSION, 5)
+	assert_eq(GameState.SAVE_VERSION, 6)
 
 
 func test_robot_build_costs_parts_and_cubes() -> void:
@@ -149,10 +149,11 @@ func test_locker_hosts_a_registered_lumi_editor_and_the_robot_editor() -> void:
 	var whos: Array[String] = []
 	for b: Button in lp._who_btns:
 		whos.append(str(b.get_meta("who")))
-	assert_true("bots" in whos, "[ui7] a Bots section (one design per robot type), not one row per robot")
+	assert_true("bots:scoopie" in whos, "a tab per robot type (one design per type), not one per robot")
 	assert_false("Locker-01" in whos)
-	lp.set_editing("bots")
+	lp.set_editing("bots:scoopie")
 	assert_true(lp._editor is LockerEditors.BotEditor)
+	assert_eq((lp._editor as LockerEditors.BotEditor).type_id, "scoopie")
 	lp.set_editing("target:lumi")
 	assert_eq(made.size(), 2)
 

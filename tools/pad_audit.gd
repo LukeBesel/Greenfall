@@ -176,9 +176,11 @@ func _audit_locker(w: Node) -> void:
 	var secs: Array[String] = []
 	for b: Button in lp.get("_who_btns"):
 		secs.append(str(b.get_meta("who")))
-	for want: String in ["target:lumi", "target:glim", "bots", "rocket"]:
+	for want: String in ["target:lumi", "target:glim", "rocket"]:
 		if not (want in secs):
 			_fail("Locker", "no %s section" % want)
+	if secs.filter(func(sec_id: String) -> bool: return sec_id.begins_with(LockerPanel.BOTS_PREFIX)).is_empty():
+		_fail("Locker", "no robot type section")
 	for sec: String in secs:
 		lp.set_editing(sec)
 		await _frames(5)

@@ -177,6 +177,7 @@ Severity: **P1** blocks finishing or loses progress, **P2** hurts the experience
 | B36 | P2 | `planet/sites/site_manager.gd:417` script error on every far spawn. **Fixed (Nov 10)** with a regression test. | World audit |
 | B37 | P2 | The robot report of a 70-minute bot run ends with `field cleaned live 83, recount from cells 90 FAIL` (3 to 7 hexes each run: `live=0 reload=1 junk=0.000 st=4`): cells the save counts as clean that the live field does not. Not triaged. | B34 runs |
 | B38 | P3 | After 70 minutes of the bot run about 105 bales are still waiting: three Scoopies make them faster than two Haul Bugs carry them. A pacing question, not a fault. | B34 runs |
+| B39 | P3 | One save round-trip run printed a script error in `art/asset_lib.gd` (seen during M3-14b); a rerun was clean. Not reproduced. | M3-14b |
 
 The save round trip check `orbit_ledger_drop_dirties_cell` failed once in a full suite run: it drew its drop from an unseeded RNG, and a pick among small pieces hit the 14-piece cap before the volume that dirties the hex. It now uses a fixed seed and a pick that reaches the volume (Nov 11).
 

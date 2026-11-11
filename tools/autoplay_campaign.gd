@@ -90,14 +90,10 @@ static func tinker(world: Node) -> String:
 			var id: String = str(p["id"])
 			if not RobotBuilder.fits(id, r.type_id):
 				continue
-			if RobotBuilder.count(id) > 0:
+			if RobotBuilder.owned(id):
 				best = id
 				break
-			if best == "" and RobotBuilder.craftable(id) and RobotBuilder.craft_block_reason(id) == "":
-				best = id
 		if best == "":
-			continue
-		if RobotBuilder.count(best) <= 0 and not RobotBuilder.craft(best):
 			continue
 		if RobotBuilder.equip(r, slot, best) == "":
 			return "fit %s on %s" % [best, r.robot_name]

@@ -21,8 +21,13 @@ const STAT_FOUND: String = "pieces_found"
 const UNFOUND_NAME: String = "???"
 const DEFAULT_PRESETS: int = 3
 
+## The target of Lumi's own pieces. Glim's and the crew's pieces sit under the data's `targets`.
+const LUMI: String = "lumi"
+const TARGETS: String = "targets"
+
 static var _data: Dictionary = {}
 static var _by_id: Dictionary = {}
+static var _target_of: Dictionary = {}
 ## Dev (--lumi-parts-all, lineups): every piece counts as found for this run. Never saved.
 static var dev_all: bool = false
 
@@ -36,11 +41,52 @@ static func data() -> Dictionary:
 			_data = parsed
 		for p: Dictionary in _data.get("pieces", []):
 			_by_id[str(p["id"])] = p
+			_target_of[str(p["id"])] = LUMI
+		var targets: Variant = _data.get(TARGETS, {})
+		if targets is Dictionary:
+			for t: String in targets:
+				for p: Dictionary in ((targets as Dictionary)[t] as Dictionary).get("pieces", []):
+					_by_id[str(p["id"])] = p
+					_target_of[str(p["id"])] = t
 	return _data
 
 
+## Lumi's pieces (the other targets' pieces: target_defs).
 static func defs() -> Array:
 	return data().get("pieces", [])
+
+
+# --- Other targets (Glim, the crew) -----------------------------------------------------------
+
+## The ids of the other things the Locker dresses ("glim", "crew").
+static func target_ids() -> Array[String]:
+	var out: Array[String] = []
+	var targets: Variant = data().get(TARGETS, {})
+	if targets is Dictionary:
+		for t: String in targets:
+			out.append(t)
+	return out
+
+
+static func target_def(target: String) -> Dictionary:
+	var v: Variant = (data().get(TARGETS, {}) as Dictionary).get(target, {})
+	return v if v is Dictionary else {}
+
+
+## A target's slots in display order: {id, name, key, hint} (Lumi's own for LUMI).
+static func target_slots(target: String) -> Array:
+	return slot_defs() if target == LUMI else target_def(target).get("slots", [])
+
+
+## A target's pieces (Lumi's own for LUMI).
+static func target_defs(target: String) -> Array:
+	return defs() if target == LUMI else target_def(target).get("pieces", [])
+
+
+## Who wears a piece: LUMI or a target id ("" when it is unknown).
+static func target_of(id: String) -> String:
+	data()
+	return str(_target_of.get(id, ""))
 
 
 static func def(id: String) -> Dictionary:
@@ -64,10 +110,15 @@ static func slot_defs() -> Array:
 	return data().get("slots", [])
 
 
+## Any slot, Lumi's or another target's (slot ids are unique across them).
 static func slot_def(slot: String) -> Dictionary:
 	for s: Dictionary in slot_defs():
 		if str(s["id"]) == slot:
 			return s
+	for t: String in target_ids():
+		for s: Dictionary in target_slots(t):
+			if str(s["id"]) == slot:
+				return s
 	return {}
 
 
@@ -96,13 +147,18 @@ static func is_starter(id: String) -> bool:
 	return bool(def(id).get("starter", false))
 
 
-## Every piece of a slot, in data order.
+## Every piece of a slot, in data order (any target's slot).
 static func of_slot(slot: String) -> Array[String]:
 	var out: Array[String] = []
-	for p: Dictionary in defs():
+	for p: Dictionary in _all_defs():
 		if str(p["slot"]) == slot:
 			out.append(str(p["id"]))
 	return out
+
+
+static func _all_defs() -> Array:
+	data()
+	return _by_id.values()
 
 
 ## The pieces that make up a design.
@@ -118,7 +174,7 @@ static func set_ids(design: String) -> Array[String]:
 
 ## The piece of `slot` that carries this option / swatch / design ("" when none does).
 static func piece_for(slot: String, field: String, value: String) -> String:
-	for p: Dictionary in defs():
+	for p: Dictionary in _all_defs():
 		if str(p["slot"]) == slot and str(p.get(field, "")) == value:
 			return str(p["id"])
 	return ""

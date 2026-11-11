@@ -107,10 +107,8 @@ func _dev_hooks() -> void:
 		for pair: String in DevHooks.get_s("glim-look", "").split(",", false):
 			var kv: PackedStringArray = pair.split(":")
 			if kv.size() == 2 and not Glim.look(kv[0], kv[1]).is_empty():
-				var key: String = Glim.key_of(kv[0], kv[1])
-				if not (key in (Glim.st()["owned"] as Array)):
-					(Glim.st()["owned"] as Array).append(key)
-				Glim.st()[kv[0]] = kv[1]
+				Looks.grant(Glim.piece_of(kv[0], kv[1]), "", true)
+				Glim.wear(kv[0], kv[1])
 
 
 ## The Locker (ui/locker_panel.gd) lists CosmeticTargets: Glim registers his looks editor there.

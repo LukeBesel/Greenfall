@@ -763,6 +763,36 @@ static func run(rt: Node, check: Callable) -> void:
 	s2.queue_free()
 	await tree.process_frame
 	await _old_save(tree, packed, check)
+	_old_crew_looks(check)
+
+
+## A version 5 save from before Glim's and the crew's looks were found pieces keeps what it had
+## (tests/fixtures/saves/crew_looks_v5.json), and keeps it through a save and a load.
+static func _old_crew_looks(check: Callable) -> void:
+	var d: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://tests/fixtures/saves/crew_looks_v5.json"))
+	check.call("old_crew_looks_fixture", true, d is Dictionary)
+	if not (d is Dictionary):
+		return
+	(d as Dictionary).erase("_doc")
+	SaveManager.write_dict(SaveManager.slot_path(), d)
+	GameState.new_game()
+	check.call("old_crew_looks_loads", true, SaveManager.load_game())
+	var kept: Array[String] = ["glim_shell_sunset", "glim_top_beanie", "glim_glow_ember", "glim_top_sprout", "crew_treads", "crew_top_hat",
+		"crew_livery_neon", "crew_glow_mint"]
+	var have := func() -> bool:
+		for id: String in kept:
+			if not Looks.has(id):
+				return false
+		return true
+	check.call("old_crew_looks_kept", true, have.call())
+	check.call("old_crew_looks_not_given", false, Looks.has("glim_shell_moss") or Looks.has("crew_big_eye"))
+	check.call("old_crew_looks_glim_worn", "sunset/ember/sprout", "%s/%s/%s" % [Glim.worn("shells"), Glim.worn("glows"), Glim.worn("tops")])
+	check.call("old_crew_looks_design_worn", "treads", str(RobotDesign.parts("scoopie").get("mobility", "")))
+	check.call("old_crew_looks_saved", true, SaveManager.save_game())
+	GameState.new_game()
+	SaveManager.load_game()
+	check.call("old_crew_looks_reload_kept", true, have.call())
+	check.call("old_crew_looks_reload_glim_worn", "sunset", Glim.worn("shells"))
 
 
 ## An old flat save (tests/fixtures) loads into the globe: its cleaned cells, base level and

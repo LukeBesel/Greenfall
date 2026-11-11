@@ -9,21 +9,26 @@ extends Node3D
 ## A wreck that can be salvaged still has one eye glowing faintly in its design's colour (the
 ## glint that draws the player in). Once Lumi has taken its pieces those parts are gone from the
 ## model and the eye is dark. A wreck that is `ruined` (a design this planet does not hand out)
-## is further gone: more rust, an arm missing, no light at all.
+## is further gone: more rust, an arm missing, no light at all. It still sits up, slumped where it
+## stopped, so its head and body read as a robot at a glance and its paint says which design.
 ##
 ## Origin on the ground, +Y up. Use: var m := WreckModel.new(); m.design = "sprout";
 ## m.pose_seed = 7; parent.add_child(m). Later: m.strip(pieces).
 
 const SINK_M: float = 0.34
-const RUINED_SINK_M: float = 0.46
+const RUINED_SINK_M: float = 0.18
+## How far a wreck is tipped back (radians, a range): on its back, face to the sky; a ruined one
+## sits slumped forward instead, so its outline stays a robot's.
+const LEAN := Vector2(0.42, 0.6)
+const RUINED_LEAN := Vector2(-0.32, -0.18)
 const EYE_ENERGY: float = 2.6
 const EYE_RATE: float = 1.7
 const LIGHT_RANGE_M: float = 2.2
 const LIGHT_ENERGY: float = 0.55
 const RUST: float = 0.72
-const RUINED_RUST: float = 0.95
+const RUINED_RUST: float = 0.8
 const COVERAGE_LOSS: float = 0.16
-const RUINED_COVERAGE_LOSS: float = 0.34
+const RUINED_COVERAGE_LOSS: float = 0.2
 ## What is left of the paint once the paint set itself has been salvaged.
 const BARE_COVERAGE: float = 0.1
 const MOSS_MORE: float = 0.3
@@ -130,10 +135,11 @@ func _build() -> void:
 	_tilt = Node3D.new()
 	_tilt.name = "Tilt"
 	add_child(_tilt)
-	var lean: float = _rng.randf_range(0.42, 0.6) if not ruined else _rng.randf_range(0.85, 1.0)
+	var lean_range: Vector2 = RUINED_LEAN if ruined else LEAN
+	var lean: float = _rng.randf_range(lean_range.x, lean_range.y)
 	var side: float = _rng.randf_range(-0.28, 0.28)
 	_tilt.position = Vector3(0, -(RUINED_SINK_M if ruined else SINK_M), 0)
-	_tilt.rotation = Vector3(lean, _rng.randf_range(-0.5, 0.5), side)  # tipped onto its back, the face to the sky
+	_tilt.rotation = Vector3(lean, _rng.randf_range(-0.5, 0.5), side)  # tipped back (face to the sky) or slumped forward
 	_model = PatchModel.new()
 	_model.name = "Robot"
 	_model.preview_variant = design

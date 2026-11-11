@@ -510,7 +510,7 @@ msgstr "[Ñôţĥîñĝ ĥéŕé ƒîţš. Þŕéšš [%s] ţô màķé à bàļ
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "[Ñô Bàļéŕ ýéţ. Bŕîñĝ ýôûŕ çĥéšţ ţô ţĥé bîñ. ~~~~~~~~~~~~]"
 
-#: core/pace.gd:315 systems/events.gd:487 ui/goals_panel.gd:125
+#: core/pace.gd:315 systems/events.gd:486 ui/goals_panel.gd:125
 msgid "+%s cubes"
 msgstr "[+%s çûbéš ~]"
 
@@ -836,7 +836,8 @@ msgstr "[çŕéšçéñţ ~]"
 msgid "Bolt"
 msgstr "[Bôļţ ~]"
 
-#: player/patch_model.gd:31 data/designs.json:designs[sprout].name data/glim.json:tops[sprout].name
+#: player/patch_model.gd:31 data/cosmetics.json:targets.glim.pieces[glim_top_sprout].name data/designs.json:designs[sprout].name
+#: data/glim.json:tops[sprout].name
 msgid "Sprout"
 msgstr "[Šþŕôûţ ~]"
 
@@ -953,7 +954,7 @@ msgid "Not enough parts"
 msgstr "[Ñôţ éñôûĝĥ þàŕţš ~~~]"
 
 #: robots/fleet.gd:158 robots/fleet.gd:234 robots/water_net.gd:149
-#: systems/research.gd:219 systems/robot_builder.gd:356 systems/robot_builder.gd:408
+#: systems/research.gd:219
 msgid "Not enough cubes"
 msgstr "[Ñôţ éñôûĝĥ çûbéš ~~~]"
 
@@ -1680,7 +1681,7 @@ msgstr ""
 "[Ţĥé Ļéðĝéŕ îš ôñ ôûŕ šîðé ñôŵ. Ţĥé ĵàmméŕš ĵûšţ ĥûm àļôñĝ ţô ţĥé mûšîç. ~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: story/ledger.gd:305 systems/decor.gd:119 systems/research.gd:213
-#: systems/robot_builder.gd:354 systems/robot_builder.gd:410 ui/stations_panel.gd:100
+#: ui/stations_panel.gd:100
 msgid "Needs %s"
 msgstr "[Ñééðš %s ~]"
 
@@ -1708,7 +1709,7 @@ msgstr "[Ţĥé ðŕôñé ðûmþéð à ļîţţļé ĵûñķ bàçķ. Šçô�
 msgid "SEEDS · PAID IN FULL"
 msgstr "[ŠÉÉÐŠ · ÞÀÎÐ ÎÑ FÛĻĻ ~~~~]"
 
-#: story/ledger.gd:703 systems/events.gd:495 systems/lumi_level.gd:224
+#: story/ledger.gd:703 systems/events.gd:494 systems/lumi_level.gd:224
 msgid "+%d seeds"
 msgstr "[+%d šééðš ~]"
 
@@ -2036,61 +2037,33 @@ msgstr "[Ŕéqûéšţš ~]"
 msgid "Curio Capsules"
 msgstr "[Çûŕîô Çàþšûļéš ~~]"
 
-#: systems/contracts.gd:245
-msgid "%s (robot style)"
-msgstr "[%s (ŕôbôţ šţýļé) ~~~]"
-
-#: systems/contracts.gd:247
-msgid "Builder Crate"
-msgstr "[Bûîļðéŕ Çŕàţé ~~]"
-
-#: systems/contracts.gd:249
+#: systems/contracts.gd:227
 msgid "Curio Capsule"
 msgstr "[Çûŕîô Çàþšûļé ~~]"
 
-#: systems/contracts.gd:324
+#: systems/contracts.gd:294
 msgid "Request complete: %s. Claim it at the workbench."
 msgstr "[Ŕéqûéšţ çômþļéţé: %s. Çļàîm îţ àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~]"
 
-#: systems/contracts.gd:330
+#: systems/contracts.gd:300
 msgid "A request ran out of time. No harm done; a new one will be posted soon."
 msgstr "[À ŕéqûéšţ ŕàñ ôûţ ôƒ ţîmé. Ñô ĥàŕm ðôñé; à ñéŵ ôñé ŵîļļ bé þôšţéð šôôñ. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/contracts.gd:338
+#: systems/contracts.gd:308
 msgid "New at the workbench: the Requests board. Small jobs, real rewards."
 msgstr "[Ñéŵ àţ ţĥé ŵôŕķbéñçĥ: ţĥé Ŕéqûéšţš bôàŕð. Šmàļļ ĵôbš, ŕéàļ ŕéŵàŕðš. ~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/contracts.gd:341
+#: systems/contracts.gd:311
 msgid "The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."
 msgstr "[Ţĥé ŕéļàý'š šţŕôñĝ éñôûĝĥ ñôŵ ţô ĥéàŕ ţĥé Çŕàðļé'š ôļð ŵôŕķ ôŕðéŕš. Ţĥéý'ŕé ôñ ţĥé Ŕéqûéšţš bôàŕð àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/contracts.gd:426
+#: systems/contracts.gd:396
 msgid "Request done: %s."
 msgstr "[Ŕéqûéšţ ðôñé: %s. ~~~]"
 
-#: systems/contracts.gd:468
-msgid "Requests reward: %s. Paint your fleet with it in the Locker."
-msgstr "[Ŕéqûéšţš ŕéŵàŕð: %s. Þàîñţ ýôûŕ ƒļééţ ŵîţĥ îţ îñ ţĥé Ļôçķéŕ. ~~~~~~~~~~~~~~~~~~]"
-
-#: systems/contracts.gd:471
-msgid "Requests reward: %s. Fit it in the Locker."
-msgstr "[Ŕéqûéšţš ŕéŵàŕð: %s. Fîţ îţ îñ ţĥé Ļôçķéŕ. ~~~~~~~~~~~~]"
-
-#: systems/contracts.gd:475 systems/contracts.gd:484
+#: systems/contracts.gd:442
 msgid "Requests reward: %s."
 msgstr "[Ŕéqûéšţš ŕéŵàŕð: %s. ~~~~]"
-
-#: systems/contracts.gd:492
-msgid "Unknown item"
-msgstr "[Ûñķñôŵñ îţém ~]"
-
-#: systems/contracts.gd:505
-msgid "Unlocks after %d requests"
-msgstr "[Ûñļôçķš àƒţéŕ %d ŕéqûéšţš ~~~~~~]"
-
-#: systems/contracts.gd:506
-msgid "Locked"
-msgstr "[Ļôçķéð ~]"
 
 #: systems/decor.gd:117
 msgid "Needs %d Collection finds (%d so far)"
@@ -2112,7 +2085,7 @@ msgstr "[Ţĥàţ'š ŵàţéŕ ~]"
 msgid "Frozen in"
 msgstr "[Fŕôžéñ îñ ~]"
 
-#: systems/designs.gd:127
+#: systems/designs.gd:132
 msgid "Set: %s"
 msgstr "[Šéţ: %s ~]"
 
@@ -2120,147 +2093,147 @@ msgstr "[Šéţ: %s ~]"
 msgid "CRADLE · SUPPLY"
 msgstr "[ÇŔÀÐĻÉ · ŠÛÞÞĻÝ ~~]"
 
-#: systems/events.gd:447
+#: systems/events.gd:446
 msgid "STREAK x%d  +%d%%"
 msgstr "[ŠŢŔÉÀĶ x%d  +%d%% ~~~]"
 
-#: systems/events.gd:633
+#: systems/events.gd:632
 msgid "%d pieces of junk left around the crate"
 msgstr "[%d þîéçéš ôƒ ĵûñķ ļéƒţ àŕôûñð ţĥé çŕàţé ~~~~~~~~~~~]"
 
-#: systems/events.gd:658
+#: systems/events.gd:657
 msgid "Supply crate opened: %s"
 msgstr "[Šûþþļý çŕàţé ôþéñéð: %s ~~~~~]"
 
-#: systems/events.gd:660
+#: systems/events.gd:659
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr "[Ţĥé šûþþļý çŕàţé'š béàçôñ ţîméð ôûţ àñð à ðŕôñé ĥàûļéð îţ bàçķ ûþ. Àñôţĥéŕ ŵîļļ çômé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:709
+#: systems/events.gd:708
 msgid "%d pieces grabbed at 3x"
 msgstr "[%d þîéçéš ĝŕàbbéð àţ 3x ~~~~~]"
 
-#: systems/events.gd:714
+#: systems/events.gd:713
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "[Ţĥé šûŕĝé ƒàðéð. Ýôû ĝŕàbbéð %d þîéçéš àţ ţŕîþļé vàļûé; ţĥéý þàý ôûţ ŵĥéñ ýôû bàļé. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:714
+#: systems/events.gd:713
 msgid "The surge faded. Next time!"
 msgstr "[Ţĥé šûŕĝé ƒàðéð. Ñéxţ ţîmé! ~~~~~~]"
 
-#: systems/events.gd:763
+#: systems/events.gd:762
 msgid "Every plant is drinking"
 msgstr "[Évéŕý þļàñţ îš ðŕîñķîñĝ ~~~~~]"
 
-#: systems/events.gd:773
+#: systems/events.gd:772
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "[Ţĥé ŕàîñ môvéš ôñ. Ţĥé ĝŕôûñð šôàķéð îţ ûþ: %s ~~~~~~~~~~~~~]"
 
-#: systems/events.gd:794
+#: systems/events.gd:793
 msgid "E   fix %s's hiccup"
 msgstr "E   [ƒîx %s'š ĥîççûþ ~~]"
 
-#: systems/events.gd:821
+#: systems/events.gd:820
 msgid "%s is %d m away"
 msgstr "[%s îš %d m àŵàý ~~]"
 
-#: systems/events.gd:823
+#: systems/events.gd:822
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr "[%s šĥôôķ ôƒƒ îţš ĥîççûþš ôñ îţš ôŵñ. Îţ ļôôķš émbàŕŕàššéð. ~~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:837
+#: systems/events.gd:836
 msgid "%s is fixed and back to work. %s"
 msgstr "[%s îš ƒîxéð àñð bàçķ ţô ŵôŕķ. %s ~~~~~~~~]"
 
-#: systems/events.gd:891
+#: systems/events.gd:890
 msgid "Wildlife Visit: %s"
 msgstr "[Ŵîļðļîƒé Vîšîţ: %s ~~~]"
 
-#: systems/events.gd:892
+#: systems/events.gd:891
 msgid "E   take a photo of the %s"
 msgstr "E   [ţàķé à þĥôţô ôƒ ţĥé %s ~~~~~]"
 
-#: systems/events.gd:926
+#: systems/events.gd:925
 msgid "%s, %d m away"
 msgstr "[%s, %d m àŵàý ~~]"
 
-#: systems/events.gd:929
+#: systems/events.gd:928
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr "[Ţĥé %s ŵàñðéŕéð ôƒƒ. Îţ'ļļ bé bàçķ šôméŵĥéŕé ĝŕééñ. ~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:959
+#: systems/events.gd:958
 msgid "Snap! The %s is in your Collection. %s"
 msgstr "[Šñàþ! Ţĥé %s îš îñ ýôûŕ Çôļļéçţîôñ. %s ~~~~~~~~~~]"
 
-#: systems/events.gd:959
+#: systems/events.gd:958
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr "[Šñàþ! Àñôţĥéŕ ļôvéļý šĥôţ ôƒ ţĥé %s. %s ~~~~~~~~~~~]"
 
-#: systems/events.gd:1010
+#: systems/events.gd:1009
 msgid "Signal %d%%"
 msgstr "[Šîĝñàļ %d%% ~]"
 
-#: systems/events.gd:1014
+#: systems/events.gd:1013
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "[Ţĥàţ ŵàš ţĥé šîĝñàļ: à šţàšĥ ŵîţĥ à ŕàŕé þàŕţ îñšîðé. %s ~~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:1016
+#: systems/events.gd:1015
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "[Ţĥé šîĝñàļ ƒàðéð. Ţĥé þàŕţ îš šţîļļ ðôŵñ ţĥéŕé; ţĥé ðéţéçţôŕ ŵîļļ ƒîñð îţ. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:1083
+#: systems/events.gd:1082
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr "[ÀÛÐÎŢ   ÝÔÛ %d  :  %d ÐŔÔÑÉ ~~~~~~]"
 
-#: systems/events.gd:1084
+#: systems/events.gd:1083
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr "[Ýôû %d  :  %d Ðŕôñé   ·   %d ļéƒţ ~~~~~~~~~]"
 
-#: systems/events.gd:1122
+#: systems/events.gd:1121
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr "[Àûðîţ ŵôñ, %d ţô %d! Ţĥé Ļéðĝéŕ šţàmþš îţ ÀÞÞŔÔVÉÐ. %s ~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:1126
+#: systems/events.gd:1125
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "[Ţĥé ðŕôñé ŵôñ ţĥé àûðîţ, %d ţô %d. Îţ ļéƒţ à ţîþ àñýŵàý: +%s çûbéš. ~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/find_sites.gd:190
+#: systems/find_sites.gd:191
 msgid "LENS CHIP"
 msgstr "[ĻÉÑŠ ÇĤÎÞ ~]"
 
-#: systems/find_sites.gd:190
+#: systems/find_sites.gd:191
 msgid "BURIED TIN"
 msgstr "[BÛŔÎÉÐ ŢÎÑ ~]"
 
-#: systems/find_sites.gd:378
+#: systems/find_sites.gd:380
 msgid "E   Look at the wreck"
 msgstr "E   [Ļôôķ àţ ţĥé ŵŕéçķ ~~~]"
 
-#: systems/find_sites.gd:379
+#: systems/find_sites.gd:381
 msgid "E   Pull the junk off the wreck"
 msgstr "E   [Þûļļ ţĥé ĵûñķ ôƒƒ ţĥé ŵŕéçķ ~~~~~~]"
 
-#: systems/find_sites.gd:379
+#: systems/find_sites.gd:381
 msgid "E   Salvage the wreck"
 msgstr "E   [Šàļvàĝé ţĥé ŵŕéçķ ~~~]"
 
-#: systems/find_sites.gd:463
+#: systems/find_sites.gd:465
 msgid "E   Dig up the lens chip"
 msgstr "E   [Ðîĝ ûþ ţĥé ļéñš çĥîþ ~~~~]"
 
-#: systems/find_sites.gd:463
+#: systems/find_sites.gd:465
 msgid "E   Dig up the paint tin"
 msgstr "E   [Ðîĝ ûþ ţĥé þàîñţ ţîñ ~~~~]"
 
-#: systems/find_sites.gd:511
+#: systems/find_sites.gd:513
 msgid "Something is buried in the cleared soil. Follow the detector and dig."
 msgstr "[Šôméţĥîñĝ îš bûŕîéð îñ ţĥé çļéàŕéð šôîļ. Fôļļôŵ ţĥé ðéţéçţôŕ àñð ðîĝ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/find_sites.gd:514
+#: systems/find_sites.gd:516
 msgid "open ground"
 msgstr "[ôþéñ ĝŕôûñð ~]"
 
-#: systems/find_sites.gd:515
+#: systems/find_sites.gd:517
 msgid "Your crew uncovered something buried in %s. The detector will find it."
 msgstr "[Ýôûŕ çŕéŵ ûñçôvéŕéð šôméţĥîñĝ bûŕîéð îñ %s. Ţĥé ðéţéçţôŕ ŵîļļ ƒîñð îţ. ~~~~~~~~~~~~~~~~~~~~~]"
 
@@ -2515,95 +2488,39 @@ msgstr "[%s ŵôŕķ ~]"
 msgid "at least %d"
 msgstr "[àţ ļéàšţ %d ~]"
 
-#: systems/robot_builder.gd:268 systems/robot_design.gd:60
+#: systems/robot_builder.gd:242 systems/robot_design.gd:64
 msgid "Wrong slot"
 msgstr "[Ŵŕôñĝ šļôţ ~]"
 
-#: systems/robot_builder.gd:270 systems/robot_design.gd:62
+#: systems/robot_builder.gd:244 systems/robot_design.gd:66
 msgid "Doesn't fit a %s"
 msgstr "[Ðôéšñ'ţ ƒîţ à %s ~~~]"
 
-#: systems/robot_builder.gd:272 systems/robot_design.gd:64
-msgid "Not unlocked yet"
-msgstr "[Ñôţ ûñļôçķéð ýéţ ~~~]"
+#: systems/robot_builder.gd:246 systems/robot_design.gd:68 ui/codex_screen.gd:340
+#: ui/codex_screen.gd:460 ui/codex_screen.gd:626 ui/codex_screen.gd:641
+#: ui/piece_row.gd:62
+msgid "Not found yet"
+msgstr "[Ñôţ ƒôûñð ýéţ ~~]"
 
-#: systems/robot_builder.gd:301
+#: systems/robot_builder.gd:276
 msgid "Names need at least 2 letters"
 msgstr "[Ñàméš ñééð àţ ļéàšţ 2 ļéţţéŕš ~~~~~~~]"
 
-#: systems/robot_builder.gd:303
+#: systems/robot_builder.gd:278
 msgid "Another robot is already called %s"
 msgstr "[Àñôţĥéŕ ŕôbôţ îš àļŕéàðý çàļļéð %s ~~~~~~~~~]"
 
-#: systems/robot_builder.gd:348
-msgid "Can't be crafted"
-msgstr "[Çàñ'ţ bé çŕàƒţéð ~~~]"
-
-#: systems/robot_builder.gd:352
-msgid "Research %s"
-msgstr "[Ŕéšéàŕçĥ %s ~]"
-
-#: systems/robot_builder.gd:365 systems/robot_builder.gd:370
-msgid "Unlock · %s"
-msgstr "[Ûñļôçķ · %s ~]"
-
-#: systems/robot_builder.gd:367
-msgid "Requests reward · %d requests"
-msgstr "[Ŕéqûéšţš ŕéŵàŕð · %d ŕéqûéšţš ~~~~~~~]"
-
-#: systems/robot_builder.gd:405
-msgid "Can't be bought"
-msgstr "[Çàñ'ţ bé bôûĝĥţ ~~]"
-
-#: systems/robot_builder.gd:432
-msgid "Requests reward (%d of %d requests)"
-msgstr "[Ŕéqûéšţš ŕéŵàŕð (%d ôƒ %d ŕéqûéšţš) ~~~~~~~~~]"
-
-#: systems/robot_builder.gd:523
-msgid "Your first bot came with treads and a bobble plant. Style it at the Locker once you have built one."
-msgstr "[Ýôûŕ ƒîŕšţ bôţ çàmé ŵîţĥ ţŕéàðš àñð à bôbbļé þļàñţ. Šţýļé îţ àţ ţĥé Ļôçķéŕ ôñçé ýôû ĥàvé bûîļţ ôñé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: systems/robot_builder.gd:533
+#: systems/robot_builder.gd:360
 msgid "A Maker Fragment was tucked inside it: +%d parts."
 msgstr "[À Màķéŕ Fŕàĝméñţ ŵàš ţûçķéð îñšîðé îţ: +%d þàŕţš. ~~~~~~~~~~~~~~]"
 
-#: systems/robot_builder.gd:565
-msgid "%s spotted something green and lucky: a Lucky Clover!"
-msgstr "[%s šþôţţéð šôméţĥîñĝ ĝŕééñ àñð ļûçķý: à Ļûçķý Çļôvéŕ! ~~~~~~~~~~~~~~~~]"
-
-#: systems/robot_builder.gd:568
+#: systems/robot_builder.gd:392
 msgid "%s spotted a Maker Fragment glinting in the junk: +%d parts."
 msgstr "[%s šþôţţéð à Màķéŕ Fŕàĝméñţ ĝļîñţîñĝ îñ ţĥé ĵûñķ: +%d þàŕţš. ~~~~~~~~~~~~~~~~~~]"
 
-#: systems/robot_builder.gd:575
+#: systems/robot_builder.gd:399
 msgid "%s spotted a %s: %s."
 msgstr "[%s šþôţţéð à %s: %s. ~~~~]"
-
-#: systems/robot_design.gd:16 data/glim.json:glows[cyan].name data/ship_style.json:glows[cyan].name
-#: data/style_parts.json:swatches[cyan].name
-msgid "Cyan"
-msgstr "[Çýàñ ~]"
-
-#: systems/robot_design.gd:16 data/ship_style.json:glows[mint].name data/style_parts.json:swatches[mint].name
-msgid "Mint"
-msgstr "[Mîñţ ~]"
-
-#: systems/robot_design.gd:16 data/ship_style.json:glows[amber].name data/style_parts.json:swatches[amber].name
-msgid "Amber"
-msgstr "[Àmbéŕ ~]"
-
-#: systems/robot_design.gd:17 data/glim.json:glows[rose].name
-msgid "Rose"
-msgstr "[Ŕôšé ~]"
-
-#: systems/robot_design.gd:17 data/glim.json:glows[violet].name data/ship_style.json:glows[violet].name
-#: data/style_parts.json:swatches[violet].name
-msgid "Violet"
-msgstr "[Vîôļéţ ~]"
-
-#: systems/robot_design.gd:17
-msgid "Moonlight"
-msgstr "[Môôñļîĝĥţ ~]"
 
 #: systems/source_sites.gd:192
 msgid "%s (%s)"
@@ -2817,63 +2734,52 @@ msgstr "[Ŕôbôţš ŵôŕķ ûþ ţô %d ĥ ŵĥîļé ýôû'ŕé àŵàý. ~
 msgid "Back to work"
 msgstr "[Bàçķ ţô ŵôŕķ ~]"
 
-#: systems/glim/glim.gd:14
+#: systems/glim/glim.gd:15
 msgid "Find Glim first"
 msgstr "[Fîñð Ĝļîm ƒîŕšţ ~~]"
 
-#: systems/glim/glim.gd:14 ui/glim_bench.gd:58 ui/glim_panel.gd:147
+#: systems/glim/glim.gd:15 ui/glim_bench.gd:58 ui/glim_panel.gd:147
 msgid "Maxed"
 msgstr "[Màxéð ~]"
 
-#: systems/glim/glim.gd:14 ui/glim_bench.gd:38 ui/glim_panel.gd:154
+#: systems/glim/glim.gd:15 ui/glim_bench.gd:38 ui/glim_panel.gd:154
 msgid "Needs %s %d"
 msgstr "[Ñééðš %s %d ~]"
 
-#: systems/glim/glim.gd:14
-msgid "Buy for %s"
-msgstr "[Bûý ƒôŕ %s ~]"
-
-#: systems/glim/glim.gd:14
-msgid "Buy %d Glim upgrades"
-msgstr "[Bûý %d Ĝļîm ûþĝŕàðéš ~~~~]"
-
-#: systems/glim/glim.gd:14 planets/verdance/data/events.json:contracts.templates[clean_hexes].text
-msgid "Clean %d hexes"
-msgstr "[Çļéàñ %d ĥéxéš ~~]"
-
-#: systems/glim/glim.gd:14 ui/bench_lists.gd:11 ui/glim_bench.gd:13
+#: systems/glim/glim.gd:15 ui/bench_lists.gd:11 ui/glim_bench.gd:13
+#: data/cosmetics.json:targets.glim.name
 msgid "Glim"
 msgstr "[Ĝļîm ~]"
 
-#: systems/glim/glim.gd:14
+#: systems/glim/glim.gd:15
 msgid "Find the little lantern bot in the junk"
 msgstr "[Fîñð ţĥé ļîţţļé ļàñţéŕñ bôţ îñ ţĥé ĵûñķ ~~~~~~~~~~~]"
 
-#: systems/glim/glim_director.gd:248
+#: systems/glim/glim_director.gd:246
 msgid "Glim! He held on to your pod the whole way down, just to stay with you. Welcome back, little light."
 msgstr "[Ĝļîm! Ĥé ĥéļð ôñ ţô ýôûŕ þôð ţĥé ŵĥôļé ŵàý ðôŵñ, ĵûšţ ţô šţàý ŵîţĥ ýôû. Ŵéļçômé bàçķ, ļîţţļé ļîĝĥţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/glim/glim_director.gd:252
+#: systems/glim/glim_director.gd:250
 msgid "Glim blinks awake. He held on to the pod the whole way down, just to stay with Lumi."
 msgstr "[Ĝļîm bļîñķš àŵàķé. Ĥé ĥéļð ôñ ţô ţĥé þôð ţĥé ŵĥôļé ŵàý ðôŵñ, ĵûšţ ţô šţàý ŵîţĥ Ļûmî. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/glim/glim_director.gd:268 systems/glim/glim_director.gd:292
+#: systems/glim/glim_director.gd:266 systems/glim/glim_director.gd:290
 msgid "Tap %s: Glim scans your hex for junk you missed. Hold %s for his upgrades."
 msgstr "[Ţàþ %s: Ĝļîm šçàñš ýôûŕ ĥéx ƒôŕ ĵûñķ ýôû mîššéð. Ĥôļð %s ƒôŕ ĥîš ûþĝŕàðéš. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/glim/glim_director.gd:288
+#: systems/glim/glim_director.gd:286
 msgid "A little lantern bot flickers awake in the junk beside you: Glim! He'll light the way at night."
 msgstr "[À ļîţţļé ļàñţéŕñ bôţ ƒļîçķéŕš àŵàķé îñ ţĥé ĵûñķ béšîðé ýôû: Ĝļîm! Ĥé'ļļ ļîĝĥţ ţĥé ŵàý àţ ñîĝĥţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/glim/glim_director.gd:290
+#: systems/glim/glim_director.gd:288
 msgid "Something in the junk blinks back at you: Glim, a little lantern bot! He'll light the way at night."
 msgstr "[Šôméţĥîñĝ îñ ţĥé ĵûñķ bļîñķš bàçķ àţ ýôû: Ĝļîm, à ļîţţļé ļàñţéŕñ bôţ! Ĥé'ļļ ļîĝĥţ ţĥé ŵàý àţ ñîĝĥţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/glim/glim_director.gd:347
+#: systems/glim/glim_director.gd:345
 msgid "All clear here!"
 msgstr "[Àļļ çļéàŕ ĥéŕé! ~~]"
 
-#: systems/glim/glim_director.gd:349
+#: systems/glim/glim_director.gd:347
 msgid "Only big pieces left"
 msgstr "[Ôñļý bîĝ þîéçéš ļéƒţ ~~~~]"
 
@@ -2984,7 +2890,7 @@ msgstr "[Ļûmî ~]"
 msgid "Machines"
 msgstr "[Màçĥîñéš ~]"
 
-#: ui/bench_lists.gd:11 ui/globe_view.gd:176 ui/locker_panel.gd:306
+#: ui/bench_lists.gd:11 ui/globe_view.gd:176 ui/locker_panel.gd:288
 #: ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "[Ŕôçķéţ ~]"
@@ -3028,179 +2934,6 @@ msgstr "[Ñôţĥîñĝ ñéŵ ţô bûîļð ŕîĝĥţ ñôŵ. Ñéŵ bûîļ�
 #: ui/build_panel.gd:107 ui/yard_builds_panel.gd:59
 msgid "Built:  %s"
 msgstr "[Bûîļţ:  %s ~]"
-
-#: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
-#: ui/builder_panel.gd:17 ui/builder_panel.gd:18 data/robot_parts.json:stats[speed].name
-msgid "Speed"
-msgstr "[Šþééð ~]"
-
-#: ui/builder_panel.gd:14
-msgid "Scoop rate"
-msgstr "[Šçôôþ ŕàţé ~]"
-
-#: ui/builder_panel.gd:14 ui/builder_panel.gd:15
-msgid "Hopper"
-msgstr "[Ĥôþþéŕ ~]"
-
-#: ui/builder_panel.gd:14 ui/builder_panel.gd:15 data/robot_parts.json:stats[quality].name
-msgid "Cube quality"
-msgstr "[Çûbé qûàļîţý ~]"
-
-#: ui/builder_panel.gd:14 ui/builder_panel.gd:15 ui/builder_panel.gd:16
-#: ui/builder_panel.gd:17 ui/builder_panel.gd:18 data/robot_parts.json:stats[scan].name
-msgid "Scan"
-msgstr "[Šçàñ ~]"
-
-#: ui/builder_panel.gd:15
-msgid "Net rate"
-msgstr "[Ñéţ ŕàţé ~]"
-
-#: ui/builder_panel.gd:16
-msgid "Forks"
-msgstr "[Fôŕķš ~]"
-
-#: ui/builder_panel.gd:16
-msgid " bales"
-msgstr " [bàļéš ~]"
-
-#: ui/builder_panel.gd:17
-msgid "Planting"
-msgstr "[Þļàñţîñĝ ~]"
-
-#: ui/builder_panel.gd:18
-msgid "Spray rate"
-msgstr "[Šþŕàý ŕàţé ~]"
-
-#: ui/builder_panel.gd:18
-msgid "Tank"
-msgstr "[Ţàñķ ~]"
-
-#: ui/builder_panel.gd:18 data/robot_parts.json:stats[reach].name
-msgid "Spray reach"
-msgstr "[Šþŕàý ŕéàçĥ ~]"
-
-#: ui/builder_panel.gd:18
-msgid "Refill"
-msgstr "[Ŕéƒîļļ ~]"
-
-#: ui/builder_panel.gd:21 ui/command_view.gd:1242 ui/command_view.gd:1245
-#: planets/verdance/data/hex_levels.json:levels[1].name
-msgid "Clean"
-msgstr "[Çļéàñ ~]"
-
-#: ui/builder_panel.gd:21
-msgid "Haul"
-msgstr "[Ĥàûļ ~]"
-
-#: ui/builder_panel.gd:21
-msgid "Plant"
-msgstr "[Þļàñţ ~]"
-
-#: ui/builder_panel.gd:21
-msgid "Water"
-msgstr "[Ŵàţéŕ ~]"
-
-#: ui/builder_panel.gd:21
-msgid "Skim"
-msgstr "[Šķîm ~]"
-
-#: ui/builder_panel.gd:113
-msgid "YOUR ROBOTS"
-msgstr "[ÝÔÛŔ ŔÔBÔŢŠ ~]"
-
-#: ui/builder_panel.gd:154
-msgid "New name"
-msgstr "[Ñéŵ ñàmé ~]"
-
-#: ui/builder_panel.gd:162 ui/builder_panel.gd:317
-msgid "Retire"
-msgstr "[Ŕéţîŕé ~]"
-
-#: ui/builder_panel.gd:172
-msgid ""
-"No robots yet. Build one in the Bots tab, then style it here.\n"
-"Your first robot comes with treads and a bobble plant."
-msgstr ""
-"[Ñô ŕôbôţš ýéţ. Bûîļð ôñé îñ ţĥé Bôţš ţàb, ţĥéñ šţýļé îţ ĥéŕé.\n"
-"Ýôûŕ ƒîŕšţ ŕôbôţ çôméš ŵîţĥ ţŕéàðš àñð à bôbbļé þļàñţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: ui/builder_panel.gd:227
-msgid "PART SLOTS"
-msgstr "[ÞÀŔŢ ŠĻÔŢŠ ~]"
-
-#: ui/builder_panel.gd:239
-msgid "PARTS THAT FIT"
-msgstr "[ÞÀŔŢŠ ŢĤÀŢ FÎŢ ~~]"
-
-#: ui/builder_panel.gd:310
-msgid "ROBOT BUILDER"
-msgstr "[ŔÔBÔŢ BÛÎĻÐÉŔ ~~]"
-
-#: ui/builder_panel.gd:326
-msgid "Stock"
-msgstr "[Šţôçķ ~]"
-
-#: ui/builder_panel.gd:362
-msgid "Stock  ·  the %s look%s"
-msgstr "[Šţôçķ  ·  ţĥé %s ļôôķ%s ~~~~~]"
-
-#: ui/builder_panel.gd:362
-msgid "   (fitted)"
-msgstr "   [(ƒîţţéð) ~]"
-
-#: ui/builder_panel.gd:370
-msgid "Unlocked  ·  press to fit"
-msgstr "[Ûñļôçķéð  ·  þŕéšš ţô ƒîţ ~~~~~~]"
-
-#: ui/builder_panel.gd:379
-msgid "  ·  press to unlock + fit"
-msgstr "  [·  þŕéšš ţô ûñļôçķ + ƒîţ ~~~~~~]"
-
-#: ui/builder_panel.gd:381
-msgid "  (Maker set)"
-msgstr "  [(Màķéŕ šéţ) ~~]"
-
-#: ui/builder_panel.gd:401
-msgid "Save as %s preset"
-msgstr "[Šàvé àš %s þŕéšéţ ~~~]"
-
-#: ui/builder_panel.gd:403
-msgid "Fit preset on crew (%d)"
-msgstr "[Fîţ þŕéšéţ ôñ çŕéŵ (%d) ~~~~~]"
-
-#: ui/builder_panel.gd:409
-msgid "%s crew preset: %s"
-msgstr "[%s çŕéŵ þŕéšéţ: %s ~~~]"
-
-#: ui/builder_panel.gd:409
-msgid "none saved"
-msgstr "[ñôñé šàvéð ~]"
-
-#: ui/builder_panel.gd:413
-msgid "%d styles unlocked   ·   Parts %s"
-msgstr "[%d šţýļéš ûñļôçķéð   ·   Þàŕţš %s ~~~~~~~~~]"
-
-#: ui/builder_panel.gd:435
-msgid "Stock part: no changes. The %s look of this robot type."
-msgstr "[Šţôçķ þàŕţ: ñô çĥàñĝéš. Ţĥé %s ļôôķ ôƒ ţĥîš ŕôbôţ ţýþé. ~~~~~~~~~~~~~~~~]"
-
-#: ui/builder_panel.gd:590
-msgid "Saved %s's build as the %s crew preset."
-msgstr "[Šàvéð %s'š bûîļð àš ţĥé %s çŕéŵ þŕéšéţ. ~~~~~~~~~~~]"
-
-#: ui/builder_panel.gd:598
-msgid "Fitted %d part across the %s crew."
-msgid_plural "Fitted %d parts across the %s crew."
-msgstr[0] "[Fîţţéð %d þàŕţ àçŕôšš ţĥé %s çŕéŵ. ~~~~~~~~~]"
-msgstr[1] "[Fîţţéð %d þàŕţš àçŕôšš ţĥé %s çŕéŵ. ~~~~~~~~~]"
-
-#: ui/builder_panel.gd:598
-msgid "Nothing to fit: the bin is short of those parts, or the crew already has them."
-msgstr "[Ñôţĥîñĝ ţô ƒîţ: ţĥé bîñ îš šĥôŕţ ôƒ ţĥôšé þàŕţš, ôŕ ţĥé çŕéŵ àļŕéàðý ĥàš ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: ui/builder_panel.gd:613
-msgid "Retire? +%d parts"
-msgstr "[Ŕéţîŕé? +%d þàŕţš ~~~]"
 
 #: ui/checklist_card.gd:92
 msgid "RESTART"
@@ -3290,11 +3023,6 @@ msgstr "[%d / %d àçĥîévéméñţš ~~~~]"
 msgid "%d / %d entries"
 msgstr "[%d / %d éñţŕîéš ~~]"
 
-#: ui/codex_screen.gd:340 ui/codex_screen.gd:460 ui/codex_screen.gd:626
-#: ui/codex_screen.gd:641 ui/piece_row.gd:62
-msgid "Not found yet"
-msgstr "[Ñôţ ƒôûñð ýéţ ~~]"
-
 #: ui/codex_screen.gd:344
 msgid ""
 "\n"
@@ -3317,7 +3045,7 @@ msgstr "[%d / %d ƒôûñð ~~]"
 msgid "Other worlds"
 msgstr "[Ôţĥéŕ ŵôŕļðš ~]"
 
-#: ui/codex_screen.gd:464 ui/piece_reveal.gd:129
+#: ui/codex_screen.gd:464 ui/piece_reveal.gd:144
 msgid "Found  ·  %s"
 msgstr "[Fôûñð  ·  %s ~]"
 
@@ -3650,6 +3378,10 @@ msgstr "[Ĥômé ĝŕôûñð, àļŵàýš çļéàñ ~~~~~~]"
 #: ui/command_view.gd:1240
 msgid "LAKE HEX %d"
 msgstr "[ĻÀĶÉ ĤÉX %d ~]"
+
+#: ui/command_view.gd:1242 ui/command_view.gd:1245 planets/verdance/data/hex_levels.json:levels[1].name
+msgid "Clean"
+msgstr "[Çļéàñ ~]"
 
 #: ui/command_view.gd:1242
 msgid "Floating junk  %d%% left"
@@ -4023,9 +3755,9 @@ msgstr "[ÛÞĜŔÀÐÉŠ ~]"
 msgid "LOOKS"
 msgstr "[ĻÔÔĶŠ ~]"
 
-#: ui/glim_panel.gd:225
-msgid "???  %s"
-msgstr "[???  %s]"
+#: ui/glim_panel.gd:216 ui/lumi_builder.gd:228
+msgid "%d more lie on other worlds."
+msgstr "[%d môŕé ļîé ôñ ôţĥéŕ ŵôŕļðš. ~~~~~~~]"
 
 #: ui/globe_view.gd:136
 msgid "Survey"
@@ -4099,7 +3831,7 @@ msgstr "   [·   ÔÛŢÐÀŢÉÐ ~~]"
 msgid "Re-survey      %s cubes"
 msgstr "[Ŕé-šûŕvéý      %s çûbéš ~~~~~]"
 
-#: ui/goal_readout.gd:135 ui/list_detail.gd:481 ui/objective_card.gd:137
+#: ui/goal_readout.gd:135 ui/list_detail.gd:482 ui/objective_card.gd:137
 msgid "DONE"
 msgstr "[ÐÔÑÉ ~]"
 
@@ -4360,55 +4092,55 @@ msgstr "[◢ BÛŔÎÉÐ ÞÀŔŢ %d%% ~~~]"
 msgid "◢ %s %d%%"
 msgstr "[◢ %s %d%%]"
 
-#: ui/list_detail.gd:99
+#: ui/list_detail.gd:100
 msgid "Nothing here yet. Keep playing."
 msgstr "[Ñôţĥîñĝ ĥéŕé ýéţ. Ķééþ þļàýîñĝ. ~~~~~~~~]"
 
-#: ui/list_detail.gd:359 ui/upgrade_card.gd:85
+#: ui/list_detail.gd:360 ui/upgrade_card.gd:85
 msgid "Buy"
 msgstr "[Bûý ~]"
 
-#: ui/list_detail.gd:477
+#: ui/list_detail.gd:478
 msgid "LOCKED"
 msgstr "[ĻÔÇĶÉÐ ~]"
 
-#: ui/list_detail.gd:485
+#: ui/list_detail.gd:486
 msgid "ACTIVE"
 msgstr "[ÀÇŢÎVÉ ~]"
 
-#: ui/list_detail.gd:506
+#: ui/list_detail.gd:507
 msgid "FREE"
 msgstr "[FŔÉÉ ~]"
 
-#: ui/list_detail.gd:628
+#: ui/list_detail.gd:629
 msgid "LOCKED.  To unlock: %s"
 msgstr "[ĻÔÇĶÉÐ.  Ţô ûñļôçķ: %s ~~~~~]"
 
-#: ui/list_detail.gd:628
+#: ui/list_detail.gd:629
 msgid "Locked. Keep playing to unlock it."
 msgstr "[Ļôçķéð. Ķééþ þļàýîñĝ ţô ûñļôçķ îţ. ~~~~~~~~~]"
 
-#: ui/list_detail.gd:631
+#: ui/list_detail.gd:632
 msgid "REQUIRES   %s"
 msgstr "[ŔÉQÛÎŔÉŠ   %s ~~]"
 
-#: ui/list_detail.gd:634
+#: ui/list_detail.gd:635
 msgid "You can buy this now!"
 msgstr "[Ýôû çàñ bûý ţĥîš ñôŵ! ~~~~]"
 
-#: ui/list_detail.gd:654
+#: ui/list_detail.gd:658
 msgid "%s more %s"
 msgstr "[%s môŕé %s ~]"
 
-#: ui/list_detail.gd:656
+#: ui/list_detail.gd:660
 msgid "Pick up trash to earn them."
 msgstr "[Þîçķ ûþ ţŕàšĥ ţô éàŕñ ţĥém. ~~~~~~]"
 
-#: ui/list_detail.gd:656
+#: ui/list_detail.gd:660
 msgid "Dig up parts and salvage junk to get them."
 msgstr "[Ðîĝ ûþ þàŕţš àñð šàļvàĝé ĵûñķ ţô ĝéţ ţĥém. ~~~~~~~~~~~~]"
 
-#: ui/list_detail.gd:659
+#: ui/list_detail.gd:663
 msgid "Need %s. %s"
 msgstr "[Ñééð %s. %s ~]"
 
@@ -4420,55 +4152,58 @@ msgstr "[Ļôàðîñĝ ~]"
 msgid "Warming up"
 msgstr "[Ŵàŕmîñĝ ûþ ~]"
 
-#: ui/locker_editors.gd:11 data/currencies.json:currencies[parts].name planets/verdance/data/hub.json:materials.metal.name
+#: ui/locker_editors.gd:13 data/currencies.json:currencies[parts].name planets/verdance/data/hub.json:materials.metal.name
 #: planets/verdance/data/hub.json:materials.plastic.name planets/verdance/data/hub.json:materials.glass.name
 msgid "Parts"
 msgstr "[Þàŕţš ~]"
 
-#: ui/locker_editors.gd:11 ui/locker_editors.gd:12 data/cosmetics.json:slots[paint].name
-#: data/style_parts.json:slots[paint].name
+#: ui/locker_editors.gd:13 data/cosmetics.json:targets.crew.slots[crew_paint].name
+msgid "Fleet mark"
+msgstr "[Fļééţ màŕķ ~]"
+
+#: ui/locker_editors.gd:13 data/cosmetics.json:slots[glow].name data/cosmetics.json:targets.crew.slots[crew_glow].name
+msgid "Light colour"
+msgstr "[Ļîĝĥţ çôļôûŕ ~]"
+
+#: ui/locker_editors.gd:14 data/cosmetics.json:slots[paint].name data/style_parts.json:slots[paint].name
 msgid "Paint"
 msgstr "[Þàîñţ ~]"
 
-#: ui/locker_editors.gd:11 ui/locker_editors.gd:12
-msgid "Glow"
-msgstr "[Ĝļôŵ ~]"
-
-#: ui/locker_editors.gd:12 data/style_parts.json:slots[trim].name
+#: ui/locker_editors.gd:14 data/style_parts.json:slots[trim].name
 msgid "Trim"
 msgstr "[Ţŕîm ~]"
 
-#: ui/locker_editors.gd:67
+#: ui/locker_editors.gd:14 data/cosmetics.json:targets.glim.slots[glim_glow].name
+msgid "Glow"
+msgstr "[Ĝļôŵ ~]"
+
+#: ui/locker_editors.gd:57
 msgid "Every %s wears this"
 msgstr "[Évéŕý %s ŵéàŕš ţĥîš ~~~~]"
 
-#: ui/locker_editors.gd:222
+#: ui/locker_editors.gd:195
 msgid "Ship looks: the tiers keep their shape"
 msgstr "[Šĥîþ ļôôķš: ţĥé ţîéŕš ķééþ ţĥéîŕ šĥàþé ~~~~~~~~~~]"
 
-#: ui/locker_panel.gd:93
+#: ui/locker_panel.gd:95
 msgid "Close"
 msgstr "[Çļôšé ~]"
 
-#: ui/locker_panel.gd:97 planets/verdance/data/camp.json:builds.locker.name
+#: ui/locker_panel.gd:99 planets/verdance/data/camp.json:builds.locker.name
 msgid "Locker"
 msgstr "[Ļôçķéŕ ~]"
 
-#: ui/locker_panel.gd:261
+#: ui/locker_panel.gd:257
 msgid "The Locker"
 msgstr "[Ţĥé Ļôçķéŕ ~]"
 
-#: ui/locker_panel.gd:262
+#: ui/locker_panel.gd:258
 msgid "Find a piece of a look in the world. Then build the Locker in the Build tab and open it in the yard."
 msgstr "[Fîñð à þîéçé ôƒ à ļôôķ îñ ţĥé ŵôŕļð. Ţĥéñ bûîļð ţĥé Ļôçķéŕ îñ ţĥé Bûîļð ţàb àñð ôþéñ îţ îñ ţĥé ýàŕð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/locker_panel.gd:263
+#: ui/locker_panel.gd:259
 msgid "Lumi wears what he finds: paint tins, lens chips and the pieces of old robots. Glim and your robots are dressed here too."
 msgstr "[Ļûmî ŵéàŕš ŵĥàţ ĥé ƒîñðš: þàîñţ ţîñš, ļéñš çĥîþš àñð ţĥé þîéçéš ôƒ ôļð ŕôbôţš. Ĝļîm àñð ýôûŕ ŕôbôţš àŕé ðŕéššéð ĥéŕé ţôô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: ui/locker_panel.gd:304 ui/robot_card.gd:82
-msgid "Crew"
-msgstr "[Çŕéŵ ~]"
 
 #: ui/lumi_builder.gd:86 ui/lumi_builder.gd:181
 msgid "Sets"
@@ -4491,10 +4226,6 @@ msgstr "[Ŵéàŕ ļôôķ ~]"
 msgid "None"
 msgstr "[Ñôñé ~]"
 
-#: ui/lumi_builder.gd:228
-msgid "%d more lie on other worlds."
-msgstr "[%d môŕé ļîé ôñ ôţĥéŕ ŵôŕļðš. ~~~~~~~]"
-
 #: ui/lumi_builder.gd:233
 msgid "Wear every piece of one set for its small bonus. A mixed look gives none."
 msgstr "[Ŵéàŕ évéŕý þîéçé ôƒ ôñé šéţ ƒôŕ îţš šmàļļ bôñûš. À mîxéð ļôôķ ĝîvéš ñôñé. ~~~~~~~~~~~~~~~~~~~~~~~]"
@@ -4511,7 +4242,7 @@ msgstr "[Ļôôķš ôñļý (ñô šéţ bôñûš) ~~~~~~]"
 msgid "Keep a look to put it on again later."
 msgstr "[Ķééþ à ļôôķ ţô þûţ îţ ôñ àĝàîñ ļàţéŕ. ~~~~~~~~~~]"
 
-#: ui/lumi_builder.gd:273 ui/lumi_builder.gd:355
+#: ui/lumi_builder.gd:273 ui/lumi_builder.gd:358
 msgid "Look %d"
 msgstr "[Ļôôķ %d ~]"
 
@@ -4535,19 +4266,23 @@ msgstr "[Ķééþ ţĥé ļôôķ ôñ ţĥé ţûŕñţàbļé îñ ţĥîš š
 msgid "(off: looks only)"
 msgstr "[(ôƒƒ: ļôôķš ôñļý) ~~~]"
 
-#: ui/lumi_builder.gd:291
+#: ui/lumi_builder.gd:292
 msgid "%s set  ·  %s"
 msgstr "[%s šéţ  ·  %s ~~]"
 
 #: ui/lumi_builder.gd:294
+msgid "%s set"
+msgstr "[%s šéţ ~]"
+
+#: ui/lumi_builder.gd:297
 msgid "Mixed look  ·  no set bonus"
 msgstr "[Mîxéð ļôôķ  ·  ñô šéţ bôñûš ~~~~~~]"
 
-#: ui/lumi_builder.gd:296
+#: ui/lumi_builder.gd:299
 msgid "Not worn yet"
 msgstr "[Ñôţ ŵôŕñ ýéţ ~]"
 
-#: ui/lumi_builder.gd:364
+#: ui/lumi_builder.gd:367
 msgid "A piece of this look is not found yet"
 msgstr "[À þîéçé ôƒ ţĥîš ļôôķ îš ñôţ ƒôûñð ýéţ ~~~~~~~~~~]"
 
@@ -4956,23 +4691,23 @@ msgstr "[Ðŕàĝ ôŕbîţ/ļôôķ · Ŵĥééļ ðîšţàñçé · ŴÀŠÐ 
 msgid "PHOTO MODE   Tab"
 msgstr "[ÞĤÔŢÔ MÔÐÉ   Ţàb ~~~]"
 
-#: ui/piece_reveal.gd:122
+#: ui/piece_reveal.gd:134
 msgid "Set complete"
 msgstr "[Šéţ çômþļéţé ~]"
 
-#: ui/piece_reveal.gd:125
+#: ui/piece_reveal.gd:137
 msgid "Wear every piece at the Locker: %s."
 msgstr "[Ŵéàŕ évéŕý þîéçé àţ ţĥé Ļôçķéŕ: %s. ~~~~~~~~~]"
 
-#: ui/piece_reveal.gd:129
+#: ui/piece_reveal.gd:144
 msgid "Salvaged  ·  %s"
 msgstr "[Šàļvàĝéð  ·  %s ~~]"
 
-#: ui/piece_reveal.gd:132
+#: ui/piece_reveal.gd:147
 msgid "Wear it at the Locker."
 msgstr "[Ŵéàŕ îţ àţ ţĥé Ļôçķéŕ. ~~~~~]"
 
-#: ui/piece_reveal.gd:132
+#: ui/piece_reveal.gd:147
 msgid "Build the Locker at the workbench to wear it."
 msgstr "[Bûîļð ţĥé Ļôçķéŕ àţ ţĥé ŵôŕķbéñçĥ ţô ŵéàŕ îţ. ~~~~~~~~~~~~~]"
 
@@ -5104,7 +4839,7 @@ msgstr "[Émþţý ~]"
 msgid "Fitted"
 msgstr "[Fîţţéð ~]"
 
-#: ui/rig_panel.gd:165 data/robot_parts.json:slots[tool].name
+#: ui/rig_panel.gd:165 data/cosmetics.json:targets.crew.slots[crew_tool].name data/robot_parts.json:slots[tool].name
 msgid "Tool"
 msgstr "[Ţôôļ ~]"
 
@@ -5115,6 +4850,10 @@ msgstr "[Ţàķé ôƒƒ ~]"
 #: ui/rig_panel.gd:190
 msgid "Fit"
 msgstr "[Fîţ ~]"
+
+#: ui/robot_card.gd:82 data/cosmetics.json:targets.crew.name
+msgid "Crew"
+msgstr "[Çŕéŵ ~]"
 
 #: ui/robot_card.gd:94
 msgid "Tier"
@@ -7573,7 +7312,7 @@ msgstr "[Ţĥŕôûĝĥ ţĥé ţéļéšçôþé, ôñ à ŵôŕļð ŵĥéŕé
 msgid "A dump drone that never made it home, nose-down in the junk of another world. Its red eye still blinks. Even from here it looks embarrassed."
 msgstr "[À ðûmþ ðŕôñé ţĥàţ ñévéŕ màðé îţ ĥômé, ñôšé-ðôŵñ îñ ţĥé ĵûñķ ôƒ àñôţĥéŕ ŵôŕļð. Îţš ŕéð éýé šţîļļ bļîñķš. Évéñ ƒŕôm ĥéŕé îţ ļôôķš émbàŕŕàššéð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: data/cosmetics.json:slots[paint].hint
+#: data/cosmetics.json:slots[paint].hint data/cosmetics.json:targets.glim.slots[glim_shell].hint
 msgid "Paint tins lie buried under ordinary trash."
 msgstr "[Þàîñţ ţîñš ļîé bûŕîéð ûñðéŕ ôŕðîñàŕý ţŕàšĥ. ~~~~~~~~~~~~]"
 
@@ -7589,11 +7328,7 @@ msgstr "[Ôļð màçĥîñéš ķééþ ţĥé màŕķš ôƒ ţĥéîŕ ŵôŕ
 msgid "Lens plates outlast the robots that wore them."
 msgstr "[Ļéñš þļàţéš ôûţļàšţ ţĥé ŕôbôţš ţĥàţ ŵôŕé ţĥém. ~~~~~~~~~~~~~]"
 
-#: data/cosmetics.json:slots[glow].name
-msgid "Light colour"
-msgstr "[Ļîĝĥţ çôļôûŕ ~]"
-
-#: data/cosmetics.json:slots[glow].hint
+#: data/cosmetics.json:slots[glow].hint data/cosmetics.json:targets.glim.slots[glim_glow].hint data/cosmetics.json:targets.crew.slots[crew_glow].hint
 msgid "Lens chips lie buried under ordinary trash."
 msgstr "[Ļéñš çĥîþš ļîé bûŕîéð ûñðéŕ ôŕðîñàŕý ţŕàšĥ. ~~~~~~~~~~~~]"
 
@@ -7645,7 +7380,7 @@ msgstr "[Ĥîþ îţém ~]"
 msgid "Companion"
 msgstr "[Çômþàñîôñ ~]"
 
-#: data/cosmetics.json:slots[companion].hint
+#: data/cosmetics.json:slots[companion].hint data/cosmetics.json:targets.glim.slots[glim_top].hint data/cosmetics.json:targets.crew.slots[crew_topper].hint
 msgid "Small things hide in quiet corners."
 msgstr "[Šmàļļ ţĥîñĝš ĥîðé îñ qûîéţ çôŕñéŕš. ~~~~~~~~~]"
 
@@ -7865,11 +7600,13 @@ msgstr "[Vîšôŕ bàŕ ~]"
 msgid "Heart eyes"
 msgstr "[Ĥéàŕţ éýéš ~]"
 
-#: data/cosmetics.json:pieces[head_antenna].name data/glim.json:tops[antenna].name data/style_parts.json:options.head[antenna].name
+#: data/cosmetics.json:pieces[head_antenna].name data/cosmetics.json:targets.glim.pieces[glim_top_antenna].name data/glim.json:tops[antenna].name
+#: data/style_parts.json:options.head[antenna].name
 msgid "Antenna"
 msgstr "[Àñţéññà ~]"
 
-#: data/cosmetics.json:pieces[head_halo].name data/glim.json:tops[halo].name data/style_parts.json:options.head[halo].name
+#: data/cosmetics.json:pieces[head_halo].name data/cosmetics.json:targets.glim.pieces[glim_top_halo].name data/glim.json:tops[halo].name
+#: data/style_parts.json:options.head[halo].name
 msgid "Halo"
 msgstr "[Ĥàļô ~]"
 
@@ -7888,6 +7625,272 @@ msgstr "[Ŵàţéŕîñĝ çàñ ~]"
 #: data/cosmetics.json:pieces[companion_drone].name data/style_parts.json:options.companion[drone].name
 msgid "Tiny drone"
 msgstr "[Ţîñý ðŕôñé ~]"
+
+#: data/cosmetics.json:targets.glim.slots[glim_shell].name
+msgid "Shell"
+msgstr "[Šĥéļļ ~]"
+
+#: data/cosmetics.json:targets.glim.slots[glim_top].name
+msgid "Top"
+msgstr "[Ţôþ ~]"
+
+#: data/cosmetics.json:targets.glim.pieces[glim_shell_pearl].name
+msgid "Pearl shell"
+msgstr "[Þéàŕļ šĥéļļ ~]"
+
+#: data/cosmetics.json:targets.glim.pieces[glim_shell_sunset].name
+msgid "Sunset shell"
+msgstr "[Šûñšéţ šĥéļļ ~]"
+
+#: data/cosmetics.json:targets.glim.pieces[glim_shell_moss].name
+msgid "Moss shell"
+msgstr "[Môšš šĥéļļ ~]"
+
+#: data/cosmetics.json:targets.glim.pieces[glim_shell_graphite].name
+msgid "Graphite shell"
+msgstr "[Ĝŕàþĥîţé šĥéļļ ~~]"
+
+#: data/cosmetics.json:targets.glim.pieces[glim_shell_blossom].name
+msgid "Blossom shell"
+msgstr "[Bļôššôm šĥéļļ ~~]"
+
+#: data/cosmetics.json:targets.glim.pieces[glim_glow_cyan].name
+msgid "Cyan glow"
+msgstr "[Çýàñ ĝļôŵ ~]"
+
+#: data/cosmetics.json:targets.glim.pieces[glim_glow_ember].name
+msgid "Ember glow"
+msgstr "[Émbéŕ ĝļôŵ ~]"
+
+#: data/cosmetics.json:targets.glim.pieces[glim_glow_leaf].name
+msgid "Leaf glow"
+msgstr "[Ļéàƒ ĝļôŵ ~]"
+
+#: data/cosmetics.json:targets.glim.pieces[glim_glow_violet].name
+msgid "Violet glow"
+msgstr "[Vîôļéţ ĝļôŵ ~]"
+
+#: data/cosmetics.json:targets.glim.pieces[glim_glow_rose].name
+msgid "Rose glow"
+msgstr "[Ŕôšé ĝļôŵ ~]"
+
+#: data/cosmetics.json:targets.glim.pieces[glim_top_none].name data/glim.json:tops[none].name
+msgid "Nothing"
+msgstr "[Ñôţĥîñĝ ~]"
+
+#: data/cosmetics.json:targets.glim.pieces[glim_top_beanie].name data/glim.json:tops[beanie].name
+msgid "Little Beanie"
+msgstr "[Ļîţţļé Béàñîé ~~]"
+
+#: data/cosmetics.json:targets.crew.slots[crew_chassis].name data/robot_parts.json:slots[chassis].name
+msgid "Chassis"
+msgstr "[Çĥàššîš ~]"
+
+#: data/cosmetics.json:targets.crew.slots[crew_chassis].hint
+msgid "Old machines rust where heavy work was done."
+msgstr "[Ôļð màçĥîñéš ŕûšţ ŵĥéŕé ĥéàvý ŵôŕķ ŵàš ðôñé. ~~~~~~~~~~~~]"
+
+#: data/cosmetics.json:targets.crew.slots[crew_head].name data/robot_parts.json:slots[head].name
+msgid "Head"
+msgstr "[Ĥéàð ~]"
+
+#: data/cosmetics.json:targets.crew.slots[crew_head].hint
+msgid "Sensor heads outlast the robots that wore them."
+msgstr "[Šéñšôŕ ĥéàðš ôûţļàšţ ţĥé ŕôbôţš ţĥàţ ŵôŕé ţĥém. ~~~~~~~~~~~~~]"
+
+#: data/cosmetics.json:targets.crew.slots[crew_mobility].name data/robot_parts.json:slots[mobility].name
+msgid "Mobility"
+msgstr "[Môbîļîţý ~]"
+
+#: data/cosmetics.json:targets.crew.slots[crew_mobility].hint
+msgid "Wheels, legs and fans lie where a robot stopped."
+msgstr "[Ŵĥééļš, ļéĝš àñð ƒàñš ļîé ŵĥéŕé à ŕôbôţ šţôþþéð. ~~~~~~~~~~~~~~]"
+
+#: data/cosmetics.json:targets.crew.slots[crew_tool].hint
+msgid "Tools lie near the work they did."
+msgstr "[Ţôôļš ļîé ñéàŕ ţĥé ŵôŕķ ţĥéý ðîð. ~~~~~~~~~]"
+
+#: data/cosmetics.json:targets.crew.slots[crew_topper].name data/robot_parts.json:slots[topper].name
+msgid "Topper"
+msgstr "[Ţôþþéŕ ~]"
+
+#: data/cosmetics.json:targets.crew.slots[crew_paint].hint
+msgid "Old fleet marks turn up where crews once worked."
+msgstr "[Ôļð ƒļééţ màŕķš ţûŕñ ûþ ŵĥéŕé çŕéŵš ôñçé ŵôŕķéð. ~~~~~~~~~~~~~~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_light_frame].name data/robot_parts.json:parts[light_frame].name
+msgid "Light Frame"
+msgstr "[Ļîĝĥţ Fŕàmé ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_cargo_hull].name data/robot_parts.json:parts[cargo_hull].name
+msgid "Cargo Hull"
+msgstr "[Çàŕĝô Ĥûļļ ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_sealed_shell].name data/robot_parts.json:parts[sealed_shell].name
+msgid "Sealed Shell"
+msgstr "[Šéàļéð Šĥéļļ ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_maker_shell].name data/robot_parts.json:parts[maker_shell].name
+msgid "Maker Shell"
+msgstr "[Màķéŕ Šĥéļļ ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_big_eye].name data/robot_parts.json:parts[big_eye].name
+msgid "Big-Eye Sensor"
+msgstr "[Bîĝ-Éýé Šéñšôŕ ~~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_focus_visor].name data/robot_parts.json:parts[focus_visor].name
+msgid "Focus Visor"
+msgstr "[Fôçûš Vîšôŕ ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_periscope].name data/robot_parts.json:parts[periscope].name
+msgid "Periscope"
+msgstr "[Þéŕîšçôþé ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_chatter_dome].name data/robot_parts.json:parts[chatter_dome].name
+msgid "Chatterbox Dome"
+msgstr "[Çĥàţţéŕbôx Ðômé ~~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_maker_optic].name data/robot_parts.json:parts[maker_optic].name
+msgid "Maker Optic"
+msgstr "[Màķéŕ Ôþţîç ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_treads].name data/robot_parts.json:parts[treads].name
+msgid "Treads"
+msgstr "[Ţŕéàðš ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_rotor].name data/robot_parts.json:parts[rotor].name
+msgid "Quad Rotor"
+msgstr "[Qûàð Ŕôţôŕ ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_legs].name data/robot_parts.json:parts[legs].name
+msgid "Walker Legs"
+msgstr "[Ŵàļķéŕ Ļéĝš ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_hover_skirt].name data/robot_parts.json:parts[hover_skirt].name
+msgid "Hover Skirt"
+msgstr "[Ĥôvéŕ Šķîŕţ ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_maker_glider].name data/robot_parts.json:parts[maker_glider].name
+msgid "Maker Glider"
+msgstr "[Màķéŕ Ĝļîðéŕ ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_wide_scoop].name data/robot_parts.json:parts[wide_scoop].name
+msgid "Wide Scoop"
+msgstr "[Ŵîðé Šçôôþ ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_fine_sieve].name data/robot_parts.json:parts[fine_sieve].name
+msgid "Fine Sieve"
+msgstr "[Fîñé Šîévé ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_long_forks].name data/robot_parts.json:parts[long_forks].name
+msgid "Long Forks"
+msgstr "[Ļôñĝ Fôŕķš ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_tow_hook].name data/robot_parts.json:parts[tow_hook].name
+msgid "Tow Hook"
+msgstr "[Ţôŵ Ĥôôķ ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_seed_drill].name data/robot_parts.json:parts[seed_drill].name planets/verdance/data/robots.json:types[seedling].upgrades[1].name
+msgid "Seed Drill"
+msgstr "[Šééð Ðŕîļļ ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_mist_sprayer].name data/robot_parts.json:parts[mist_sprayer].name
+msgid "Mist Sprayer"
+msgstr "[Mîšţ Šþŕàýéŕ ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_jet_nozzle].name data/robot_parts.json:parts[jet_nozzle].name
+msgid "Jet Nozzle"
+msgstr "[Ĵéţ Ñôžžļé ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_antenna].name data/robot_parts.json:parts[antenna].name
+msgid "Bulb Antenna"
+msgstr "[Bûļb Àñţéññà ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_top_hat].name data/robot_parts.json:parts[top_hat].name
+msgid "Tiny Top Hat"
+msgstr "[Ţîñý Ţôþ Ĥàţ ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_crew_flag].name data/robot_parts.json:parts[crew_flag].name
+msgid "Crew Flag"
+msgstr "[Çŕéŵ Fļàĝ ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_bobble_plant].name data/robot_parts.json:parts[bobble_plant].name
+msgid "Bobble Plant"
+msgstr "[Bôbbļé Þļàñţ ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_traffic_cone].name data/robot_parts.json:parts[traffic_cone].name
+msgid "Traffic Cone"
+msgstr "[Ţŕàƒƒîç Çôñé ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_propeller_cap].name data/robot_parts.json:parts[propeller_cap].name
+msgid "Propeller Cap"
+msgstr "[Þŕôþéļļéŕ Çàþ ~~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_lucky_clover].name data/robot_parts.json:parts[lucky_clover].name
+msgid "Lucky Clover"
+msgstr "[Ļûçķý Çļôvéŕ ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_maker_crest].name data/robot_parts.json:parts[maker_crest].name
+msgid "Maker Crest"
+msgstr "[Màķéŕ Çŕéšţ ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_livery_neon].name
+msgid "Neon Underglow"
+msgstr "[Ñéôñ Ûñðéŕĝļôŵ ~~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_livery_neon].desc
+msgid "A cyan glow ring under every robot in the fleet."
+msgstr "[À çýàñ ĝļôŵ ŕîñĝ ûñðéŕ évéŕý ŕôbôţ îñ ţĥé ƒļééţ. ~~~~~~~~~~~~~~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_livery_sunset].name
+msgid "Sunset Underglow"
+msgstr "[Šûñšéţ Ûñðéŕĝļôŵ ~~~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_livery_sunset].desc
+msgid "Warm orange underglow for the whole crew."
+msgstr "[Ŵàŕm ôŕàñĝé ûñðéŕĝļôŵ ƒôŕ ţĥé ŵĥôļé çŕéŵ. ~~~~~~~~~~~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_livery_pennant].name
+msgid "Crew Pennants"
+msgstr "[Çŕéŵ Þéññàñţš ~~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_livery_pennant].desc
+msgid "Every robot flies a little Greenfall pennant."
+msgstr "[Évéŕý ŕôbôţ ƒļîéš à ļîţţļé Ĝŕééñƒàļļ þéññàñţ. ~~~~~~~~~~~~~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_livery_halo].name
+msgid "Holo Halos"
+msgstr "[Ĥôļô Ĥàļôš ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_livery_halo].desc
+msgid "A slowly turning hologram halo over each robot. Very smug."
+msgstr "[À šļôŵļý ţûŕñîñĝ ĥôļôĝŕàm ĥàļô ôvéŕ éàçĥ ŕôbôţ. Véŕý šmûĝ. ~~~~~~~~~~~~~~~~~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_cyan].name data/glim.json:glows[cyan].name data/ship_style.json:glows[cyan].name
+#: data/style_parts.json:swatches[cyan].name
+msgid "Cyan"
+msgstr "[Çýàñ ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_mint].name data/ship_style.json:glows[mint].name data/style_parts.json:swatches[mint].name
+msgid "Mint"
+msgstr "[Mîñţ ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_amber].name data/ship_style.json:glows[amber].name data/style_parts.json:swatches[amber].name
+msgid "Amber"
+msgstr "[Àmbéŕ ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_rose].name data/glim.json:glows[rose].name
+msgid "Rose"
+msgstr "[Ŕôšé ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_violet].name data/glim.json:glows[violet].name data/ship_style.json:glows[violet].name
+#: data/style_parts.json:swatches[violet].name
+msgid "Violet"
+msgstr "[Vîôļéţ ~]"
+
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_white].name
+msgid "Moonlight"
+msgstr "[Môôñļîĝĥţ ~]"
 
 #: data/currencies.json:currencies[cubes].name
 msgid "Cubes"
@@ -8008,10 +8011,6 @@ msgstr "[Bàšéļîñé / Éxþļôŕéŕ ~~~~]"
 #: data/designs.json:designs[aurora].desc
 msgid "The seed-keeper fresh from the ark: pearl paint, cyan eyes, an orange fin."
 msgstr "[Ţĥé šééð-ķééþéŕ ƒŕéšĥ ƒŕôm ţĥé àŕķ: þéàŕļ þàîñţ, çýàñ éýéš, àñ ôŕàñĝé ƒîñ. ~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: data/designs.json:designs[aurora].buff.text
-msgid "+8% detector range"
-msgstr "[+8% déţéçţôŕ ŕàñĝé ~~~]"
 
 #: data/designs.json:designs[bolt].tagline
 msgid "Industrial / Tough"
@@ -9217,6 +9216,10 @@ msgstr "[Þŕéšš %d Þéŕƒéçţ bàļéš ~~~~~]"
 msgid "Press %d Pure bales (one junk type)"
 msgstr "[Þŕéšš %d Þûŕé bàļéš (ôñé ĵûñķ ţýþé) ~~~~~~~~~]"
 
+#: planets/verdance/data/events.json:contracts.templates[clean_hexes].text
+msgid "Clean %d hexes"
+msgstr "[Çļéàñ %d ĥéxéš ~~]"
+
 #: planets/verdance/data/events.json:contracts.templates[scoop].text
 msgid "Scoop %d pieces of junk"
 msgstr "[Šçôôþ %d þîéçéš ôƒ ĵûñķ ~~~~~]"
@@ -9244,38 +9247,6 @@ msgstr "[Ĝéţ %d môŕé ĥéxéš ţô Šûšţàîñéð ~~~~~~~]"
 #: planets/verdance/data/events.json:contracts.templates[sustain].text_1
 msgid "Get one more hex to Sustained"
 msgstr "[Ĝéţ ôñé môŕé ĥéx ţô Šûšţàîñéð ~~~~~~~]"
-
-#: planets/verdance/data/events.json:liveries[livery_neon].name
-msgid "Neon Underglow"
-msgstr "[Ñéôñ Ûñðéŕĝļôŵ ~~]"
-
-#: planets/verdance/data/events.json:liveries[livery_neon].desc
-msgid "A cyan glow ring under every robot in the fleet."
-msgstr "[À çýàñ ĝļôŵ ŕîñĝ ûñðéŕ évéŕý ŕôbôţ îñ ţĥé ƒļééţ. ~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:liveries[livery_sunset].name
-msgid "Sunset Underglow"
-msgstr "[Šûñšéţ Ûñðéŕĝļôŵ ~~~]"
-
-#: planets/verdance/data/events.json:liveries[livery_sunset].desc
-msgid "Warm orange underglow for the whole crew."
-msgstr "[Ŵàŕm ôŕàñĝé ûñðéŕĝļôŵ ƒôŕ ţĥé ŵĥôļé çŕéŵ. ~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:liveries[livery_pennant].name
-msgid "Crew Pennants"
-msgstr "[Çŕéŵ Þéññàñţš ~~]"
-
-#: planets/verdance/data/events.json:liveries[livery_pennant].desc
-msgid "Every robot flies a little Greenfall pennant."
-msgstr "[Évéŕý ŕôbôţ ƒļîéš à ļîţţļé Ĝŕééñƒàļļ þéññàñţ. ~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:liveries[livery_halo].name
-msgid "Holo Halos"
-msgstr "[Ĥôļô Ĥàļôš ~]"
-
-#: planets/verdance/data/events.json:liveries[livery_halo].desc
-msgid "A slowly turning hologram halo over each robot. Very smug."
-msgstr "[À šļôŵļý ţûŕñîñĝ ĥôļôĝŕàm ĥàļô ôvéŕ éàçĥ ŕôbôţ. Véŕý šmûĝ. ~~~~~~~~~~~~~~~~~]"
 
 #: planets/verdance/data/events.json:trinkets[brass_compass].name
 msgid "Brass Compass"
@@ -9893,6 +9864,18 @@ msgstr "[À ļéñš çĥîþ ļîéš ûñðéŕ ţĥé ļîţţéŕ ôƒ Ôļ�
 msgid "The last leaf waits on the rocket of Old Capital."
 msgstr "[Ţĥé ļàšţ ļéàƒ ŵàîţš ôñ ţĥé ŕôçķéţ ôƒ Ôļð Çàþîţàļ. ~~~~~~~~~~~~~~]"
 
+#: planets/verdance/data/finds.json:finds[scrapyard_crew_chip].hint
+msgid "A lens chip for a robot's lights lies under Ironside's scrap."
+msgstr "[À ļéñš çĥîþ ƒôŕ à ŕôbôţ'š ļîĝĥţš ļîéš ûñðéŕ Îŕôñšîðé'š šçŕàþ. ~~~~~~~~~~~~~~~~~~]"
+
+#: planets/verdance/data/finds.json:finds[highreach_glim_tin].hint
+msgid "A small tin of lantern paint lies deep in Highreach."
+msgstr "[À šmàļļ ţîñ ôƒ ļàñţéŕñ þàîñţ ļîéš ðééþ îñ Ĥîĝĥŕéàçĥ. ~~~~~~~~~~~~~~~]"
+
+#: planets/verdance/data/finds.json:finds[lowmeadow_glim_chip].hint
+msgid "A lantern's lens chip lies deep in Lowmeadow."
+msgstr "[À ļàñţéŕñ'š ļéñš çĥîþ ļîéš ðééþ îñ Ļôŵméàðôŵ. ~~~~~~~~~~~~~]"
+
 #: planets/verdance/data/finds.json:finds[open_ground_tin].hint
 msgid "A rare tin lies far out, on open ground."
 msgstr "[À ŕàŕé ţîñ ļîéš ƒàŕ ôûţ, ôñ ôþéñ ĝŕôûñð. ~~~~~~~~~~~]"
@@ -9984,14 +9967,6 @@ msgstr "[Émbéŕ ~]"
 #: data/glim.json:glows[leaf].name data/style_parts.json:options.chest[leaf].name
 msgid "Leaf"
 msgstr "[Ļéàƒ ~]"
-
-#: data/glim.json:tops[none].name
-msgid "Nothing"
-msgstr "[Ñôţĥîñĝ ~]"
-
-#: data/glim.json:tops[beanie].name
-msgid "Little Beanie"
-msgstr "[Ļîţţļé Béàñîé ~~]"
 
 #: planets/verdance/data/goals.json:tiers[short].name
 msgid "NOW"
@@ -11949,21 +11924,9 @@ msgstr "[Ŕéļàý Màšţ ~]"
 msgid "A tall relay on the back. Robots much further away still get a boost from Lumi, and the detector sees further. Slower."
 msgstr "[À ţàļļ ŕéļàý ôñ ţĥé bàçķ. Ŕôbôţš mûçĥ ƒûŕţĥéŕ àŵàý šţîļļ ĝéţ à bôôšţ ƒŕôm Ļûmî, àñð ţĥé ðéţéçţôŕ šééš ƒûŕţĥéŕ. Šļôŵéŕ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: data/robot_parts.json:slots[chassis].name
-msgid "Chassis"
-msgstr "[Çĥàššîš ~]"
-
-#: data/robot_parts.json:slots[head].name
-msgid "Head"
-msgstr "[Ĥéàð ~]"
-
-#: data/robot_parts.json:slots[mobility].name
-msgid "Mobility"
-msgstr "[Môbîļîţý ~]"
-
-#: data/robot_parts.json:slots[topper].name
-msgid "Topper"
-msgstr "[Ţôþþéŕ ~]"
+#: data/robot_parts.json:stats[speed].name
+msgid "Speed"
+msgstr "[Šþééð ~]"
 
 #: data/robot_parts.json:stats[load].name
 msgid "Load"
@@ -11973,6 +11936,18 @@ msgstr "[Ļôàð ~]"
 msgid "Work rate"
 msgstr "[Ŵôŕķ ŕàţé ~]"
 
+#: data/robot_parts.json:stats[quality].name
+msgid "Cube quality"
+msgstr "[Çûbé qûàļîţý ~]"
+
+#: data/robot_parts.json:stats[reach].name
+msgid "Spray reach"
+msgstr "[Šþŕàý ŕéàçĥ ~]"
+
+#: data/robot_parts.json:stats[scan].name
+msgid "Scan"
+msgstr "[Šçàñ ~]"
+
 #: data/robot_parts.json:set_bonus.name
 msgid "Maker Resonance"
 msgstr "[Màķéŕ Ŕéšôñàñçé ~~]"
@@ -11981,241 +11956,117 @@ msgstr "[Màķéŕ Ŕéšôñàñçé ~~]"
 msgid "All three Maker parts fitted: +5% speed, +6% work."
 msgstr "[Àļļ ţĥŕéé Màķéŕ þàŕţš ƒîţţéð: +5% sþééð, +6% ŵôŕķ. ~~~~~~~~~~~~~~~]"
 
-#: data/robot_parts.json:parts[light_frame].name
-msgid "Light Frame"
-msgstr "[Ļîĝĥţ Fŕàmé ~]"
-
 #: data/robot_parts.json:parts[light_frame].desc
 msgid "Slim exposed rails instead of a full shell."
 msgstr "[Šļîm éxþôšéð ŕàîļš îñšţéàð ôƒ à ƒûļļ šĥéļļ. ~~~~~~~~~~~~]"
-
-#: data/robot_parts.json:parts[cargo_hull].name
-msgid "Cargo Hull"
-msgstr "[Çàŕĝô Ĥûļļ ~]"
 
 #: data/robot_parts.json:parts[cargo_hull].desc
 msgid "Thick side plates and a rear rack."
 msgstr "[Ţĥîçķ šîðé þļàţéš àñð à ŕéàŕ ŕàçķ. ~~~~~~~~~]"
 
-#: data/robot_parts.json:parts[sealed_shell].name
-msgid "Sealed Shell"
-msgstr "[Šéàļéð Šĥéļļ ~]"
-
 #: data/robot_parts.json:parts[sealed_shell].desc
 msgid "Smooth covers, neat seams, no grit."
 msgstr "[Šmôôţĥ çôvéŕš, ñéàţ šéàmš, ñô ĝŕîţ. ~~~~~~~~~]"
-
-#: data/robot_parts.json:parts[maker_shell].name
-msgid "Maker Shell"
-msgstr "[Màķéŕ Šĥéļļ ~]"
 
 #: data/robot_parts.json:parts[maker_shell].desc
 msgid "Pearl fairings with gold trim, as the Makers built them. Part of the Maker set."
 msgstr "[Þéàŕļ ƒàîŕîñĝš ŵîţĥ ĝôļð ţŕîm, àš ţĥé Màķéŕš bûîļţ ţĥém. Þàŕţ ôƒ ţĥé Màķéŕ šéţ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: data/robot_parts.json:parts[big_eye].name
-msgid "Big-Eye Sensor"
-msgstr "[Bîĝ-Éýé Šéñšôŕ ~~]"
-
 #: data/robot_parts.json:parts[big_eye].desc
 msgid "A huge lens on a stalk."
 msgstr "[À ĥûĝé ļéñš ôñ à šţàļķ. ~~~~~]"
-
-#: data/robot_parts.json:parts[focus_visor].name
-msgid "Focus Visor"
-msgstr "[Fôçûš Vîšôŕ ~]"
 
 #: data/robot_parts.json:parts[focus_visor].desc
 msgid "Blinkers for robots."
 msgstr "[Bļîñķéŕš ƒôŕ ŕôbôţš. ~~~~]"
 
-#: data/robot_parts.json:parts[periscope].name
-msgid "Periscope"
-msgstr "[Þéŕîšçôþé ~]"
-
 #: data/robot_parts.json:parts[periscope].desc
 msgid "Sees over the plants. Mostly."
 msgstr "[Šééš ôvéŕ ţĥé þļàñţš. Môšţļý. ~~~~~~~]"
-
-#: data/robot_parts.json:parts[chatter_dome].name
-msgid "Chatterbox Dome"
-msgstr "[Çĥàţţéŕbôx Ðômé ~~]"
 
 #: data/robot_parts.json:parts[chatter_dome].desc
 msgid "Glass dome with a little speaker."
 msgstr "[Ĝļàšš ðômé ŵîţĥ à ļîţţļé šþéàķéŕ. ~~~~~~~~~]"
 
-#: data/robot_parts.json:parts[maker_optic].name
-msgid "Maker Optic"
-msgstr "[Màķéŕ Ôþţîç ~]"
-
 #: data/robot_parts.json:parts[maker_optic].desc
 msgid "A floating gem lens under a gold brow. Part of the Maker set."
 msgstr "[À ƒļôàţîñĝ ĝém ļéñš ûñðéŕ à ĝôļð bŕôŵ. Þàŕţ ôƒ ţĥé Màķéŕ šéţ. ~~~~~~~~~~~~~~~~~~]"
-
-#: data/robot_parts.json:parts[treads].name
-msgid "Treads"
-msgstr "[Ţŕéàðš ~]"
 
 #: data/robot_parts.json:parts[treads].desc
 msgid "Rubber tracks."
 msgstr "[Ŕûbbéŕ ţŕàçķš. ~~]"
 
-#: data/robot_parts.json:parts[rotor].name
-msgid "Quad Rotor"
-msgstr "[Qûàð Ŕôţôŕ ~]"
-
 #: data/robot_parts.json:parts[rotor].desc
 msgid "Four ducted fans."
 msgstr "[Fôûŕ ðûçţéð ƒàñš. ~~~]"
-
-#: data/robot_parts.json:parts[legs].name
-msgid "Walker Legs"
-msgstr "[Ŵàļķéŕ Ļéĝš ~]"
 
 #: data/robot_parts.json:parts[legs].desc
 msgid "Four careful legs."
 msgstr "[Fôûŕ çàŕéƒûļ ļéĝš. ~~~]"
 
-#: data/robot_parts.json:parts[hover_skirt].name
-msgid "Hover Skirt"
-msgstr "[Ĥôvéŕ Šķîŕţ ~]"
-
 #: data/robot_parts.json:parts[hover_skirt].desc
 msgid "A cushion of air and a soft glow underneath."
 msgstr "[À çûšĥîôñ ôƒ àîŕ àñð à šôƒţ ĝļôŵ ûñðéŕñéàţĥ. ~~~~~~~~~~~~]"
-
-#: data/robot_parts.json:parts[maker_glider].name
-msgid "Maker Glider"
-msgstr "[Màķéŕ Ĝļîðéŕ ~]"
 
 #: data/robot_parts.json:parts[maker_glider].desc
 msgid "Twin levitation pods with a thin light seam. Part of the Maker set."
 msgstr "[Ţŵîñ ļévîţàţîôñ þôðš ŵîţĥ à ţĥîñ ļîĝĥţ šéàm. Þàŕţ ôƒ ţĥé Màķéŕ šéţ. ~~~~~~~~~~~~~~~~~~~~]"
 
-#: data/robot_parts.json:parts[wide_scoop].name
-msgid "Wide Scoop"
-msgstr "[Ŵîðé Šçôôþ ~]"
-
 #: data/robot_parts.json:parts[wide_scoop].desc
 msgid "A big, wide scoop."
 msgstr "[À bîĝ, ŵîðé šçôôþ. ~~~]"
-
-#: data/robot_parts.json:parts[fine_sieve].name
-msgid "Fine Sieve"
-msgstr "[Fîñé Šîévé ~]"
 
 #: data/robot_parts.json:parts[fine_sieve].desc
 msgid "A sieve that shakes out the dirt."
 msgstr "[À šîévé ţĥàţ šĥàķéš ôûţ ţĥé ðîŕţ. ~~~~~~~~~]"
 
-#: data/robot_parts.json:parts[long_forks].name
-msgid "Long Forks"
-msgstr "[Ļôñĝ Fôŕķš ~]"
-
 #: data/robot_parts.json:parts[long_forks].desc
 msgid "Extra-long forks."
 msgstr "[Éxţŕà-ļôñĝ ƒôŕķš. ~~~]"
-
-#: data/robot_parts.json:parts[tow_hook].name
-msgid "Tow Hook"
-msgstr "[Ţôŵ Ĥôôķ ~]"
 
 #: data/robot_parts.json:parts[tow_hook].desc
 msgid "Winch and hook."
 msgstr "[Ŵîñçĥ àñð ĥôôķ. ~~]"
 
-#: data/robot_parts.json:parts[seed_drill].name planets/verdance/data/robots.json:types[seedling].upgrades[1].name
-msgid "Seed Drill"
-msgstr "[Šééð Ðŕîļļ ~]"
-
 #: data/robot_parts.json:parts[seed_drill].desc
 msgid "An auger nose."
 msgstr "[Àñ àûĝéŕ ñôšé. ~~]"
-
-#: data/robot_parts.json:parts[mist_sprayer].name
-msgid "Mist Sprayer"
-msgstr "[Mîšţ Šþŕàýéŕ ~]"
 
 #: data/robot_parts.json:parts[mist_sprayer].desc
 msgid "A fan nozzle."
 msgstr "[À ƒàñ ñôžžļé. ~~]"
 
-#: data/robot_parts.json:parts[jet_nozzle].name
-msgid "Jet Nozzle"
-msgstr "[Ĵéţ Ñôžžļé ~]"
-
 #: data/robot_parts.json:parts[jet_nozzle].desc
 msgid "A strong, straight jet nozzle."
 msgstr "[À šţŕôñĝ, šţŕàîĝĥţ ĵéţ ñôžžļé. ~~~~~~~]"
-
-#: data/robot_parts.json:parts[antenna].name
-msgid "Bulb Antenna"
-msgstr "[Bûļb Àñţéññà ~]"
 
 #: data/robot_parts.json:parts[antenna].desc
 msgid "A springy antenna with a soft glowing bulb."
 msgstr "[À šþŕîñĝý àñţéññà ŵîţĥ à šôƒţ ĝļôŵîñĝ bûļb. ~~~~~~~~~~~~]"
 
-#: data/robot_parts.json:parts[top_hat].name
-msgid "Tiny Top Hat"
-msgstr "[Ţîñý Ţôþ Ĥàţ ~]"
-
 #: data/robot_parts.json:parts[top_hat].desc
 msgid "For the robot who means business."
 msgstr "[Fôŕ ţĥé ŕôbôţ ŵĥô méàñš bûšîñéšš. ~~~~~~~~~]"
-
-#: data/robot_parts.json:parts[crew_flag].name
-msgid "Crew Flag"
-msgstr "[Çŕéŵ Fļàĝ ~]"
 
 #: data/robot_parts.json:parts[crew_flag].desc
 msgid "A little flag in the crew's colour."
 msgstr "[À ļîţţļé ƒļàĝ îñ ţĥé çŕéŵ'š çôļôûŕ. ~~~~~~~~~]"
 
-#: data/robot_parts.json:parts[bobble_plant].name
-msgid "Bobble Plant"
-msgstr "[Bôbbļé Þļàñţ ~]"
-
 #: data/robot_parts.json:parts[bobble_plant].desc
 msgid "A sprout on a spring. Boings when it brakes."
 msgstr "[À šþŕôûţ ôñ à šþŕîñĝ. Bôîñĝš ŵĥéñ îţ bŕàķéš. ~~~~~~~~~~~~]"
-
-#: data/robot_parts.json:parts[bobble_plant].source.hint
-msgid "Comes with your first robot"
-msgstr "[Çôméš ŵîţĥ ýôûŕ ƒîŕšţ ŕôbôţ ~~~~~~]"
-
-#: data/robot_parts.json:parts[traffic_cone].name
-msgid "Traffic Cone"
-msgstr "[Ţŕàƒƒîç Çôñé ~]"
 
 #: data/robot_parts.json:parts[traffic_cone].desc
 msgid "Found it, kept it, wears it."
 msgstr "[Fôûñð îţ, ķéþţ îţ, ŵéàŕš îţ. ~~~~~~~]"
 
-#: data/robot_parts.json:parts[propeller_cap].name
-msgid "Propeller Cap"
-msgstr "[Þŕôþéļļéŕ Çàþ ~~]"
-
 #: data/robot_parts.json:parts[propeller_cap].desc
 msgid "Spins when it hurries. Does not help."
 msgstr "[Šþîñš ŵĥéñ îţ ĥûŕŕîéš. Ðôéš ñôţ ĥéļþ. ~~~~~~~~~~]"
 
-#: data/robot_parts.json:parts[lucky_clover].name
-msgid "Lucky Clover"
-msgstr "[Ļûçķý Çļôvéŕ ~]"
-
 #: data/robot_parts.json:parts[lucky_clover].desc
 msgid "A four-leaf clover that floats. Rare: a robot has to spot one."
 msgstr "[À ƒôûŕ-ļéàƒ çļôvéŕ ţĥàţ ƒļôàţš. Ŕàŕé: à ŕôbôţ ĥàš ţô šþôţ ôñé. ~~~~~~~~~~~~~~~~~~~]"
-
-#: data/robot_parts.json:parts[lucky_clover].source.hint
-msgid "Rare salvage find (robots with a good Scan)"
-msgstr "[Ŕàŕé šàļvàĝé ƒîñð (ŕôbôţš ŵîţĥ à ĝôôð Šçàñ) ~~~~~~~~~~~~]"
-
-#: data/robot_parts.json:parts[maker_crest].name
-msgid "Maker Crest"
-msgstr "[Màķéŕ Çŕéšţ ~]"
 
 #: data/robot_parts.json:parts[maker_crest].desc
 msgid "A floating gold ring. Purely for show; the Makers loved a show."

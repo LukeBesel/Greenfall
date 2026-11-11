@@ -6,6 +6,7 @@ extends GutTest
 var _cur: Dictionary
 var _flags: Dictionary
 var _stats: Dictionary
+var _global: Dictionary
 
 
 func before_each() -> void:
@@ -15,10 +16,13 @@ func before_each() -> void:
 	GameState.currencies = {"cubes": BigNum.zero(), "parts": BigNum.zero(), "seeds": BigNum.zero()}
 	GameState.flags = {}
 	GameState.stats = {}
+	_global = GameState.global.duplicate(true)
+	GameState.global = {}
 	Glim.dev_all = false
 
 
 func after_each() -> void:
+	GameState.global = _global
 	GameState.currencies = _cur
 	GameState.flags = _flags
 	GameState.stats = _stats
@@ -40,11 +44,6 @@ func test_data_uses_only_three_currencies() -> void:
 			for k: String in ((tr_ as Dictionary)["cost"] as Dictionary):
 				assert_true(k in Currencies.IDS, "cost id %s" % k)
 				n += 1
-	for slot: String in Glim.SLOTS:
-		for l: Variant in Glim.looks(slot):
-			var u: Dictionary = (l as Dictionary).get("unlock", {})
-			for k: String in (u.get("cost", {}) as Dictionary):
-				assert_true(k in Currencies.IDS)
 	assert_gt(n, 0)
 	for id: String in ["light", "scan", "auto", "magnet", "music"]:
 		assert_false(Glim.track(id).is_empty(), id)
@@ -108,22 +107,26 @@ func test_tracks_max_out() -> void:
 	assert_gt(Glim.value("magnet", "radius"), 0.0)
 
 
-func test_looks_locked_until_met() -> void:
+func test_looks_are_worn_only_once_found() -> void:
 	assert_eq(Glim.worn("shells"), "pearl")
 	assert_eq(Glim.worn("glows"), "cyan")
+	assert_true(Glim.look_unlocked("tops", "antenna"), "his own first looks are starting pieces")
 	assert_false(Glim.look_unlocked("shells", "sunset"))
 	assert_false(Glim.wear("shells", "sunset"))
-	assert_false(Glim.buy_look("shells", "sunset"), "no money")
-	_give(1000)
-	assert_true(Glim.buy_look("shells", "sunset"))
-	assert_true(Glim.wear("shells", "sunset"))
+	# Money, hexes and Glim upgrades open nothing any more.
+	_give(100000, 10000, 100)
+	GameState.stats["hexes_cleaned"] = 9999.0
+	for t: Variant in Glim.tracks():
+		(Glim.st()["tiers"] as Dictionary)[str((t as Dictionary)["id"])] = Glim.max_tier(str((t as Dictionary)["id"]))
+	for slot: String in Glim.SLOTS:
+		for l: Variant in Glim.looks(slot):
+			var id: String = str((l as Dictionary)["id"])
+			assert_ne(Glim.piece_of(slot, id), "", "%s:%s is a piece" % [slot, id])
+			assert_eq(Glim.look_unlocked(slot, id), Looks.is_starter(Glim.piece_of(slot, id)), "%s:%s" % [slot, id])
+			assert_false((l as Dictionary).has("unlock"), "%s:%s carries no unlock rule" % [slot, id])
+	Looks.grant(Glim.piece_of("shells", "sunset"), "buried")
+	assert_true(Glim.wear("shells", "sunset"), "found: wearable")
 	assert_eq(Glim.worn("shells"), "sunset")
-	assert_false(Glim.look_unlocked("tops", "sprout"))
-	GameState.stats["hexes_cleaned"] = 4.0
-	assert_true(Glim.look_unlocked("tops", "sprout"))
-	assert_false(Glim.look_unlocked("glows", "ember"))
-	(Glim.st()["tiers"] as Dictionary)["light"] = 1
-	assert_true(Glim.look_unlocked("glows", "ember"), "one Glim upgrade")
 
 
 func test_state_survives_serialization() -> void:

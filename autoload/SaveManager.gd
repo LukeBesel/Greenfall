@@ -245,6 +245,9 @@ static func migrate(d: Dictionary) -> Dictionary:
 	if v < 5:
 		d = Looks.migrate_save(d)  # looks are found pieces: an old save keeps what it had unlocked
 		v = 5
+	if v < 6:
+		d = CrewLooks.migrate_save(d)  # Glim's and the crew's looks are found pieces too
+		v = 6
 	d["version"] = v
 	return d
 

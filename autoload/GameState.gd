@@ -3,7 +3,7 @@ extends Node
 ## Runs the fixed-rate simulation tick (10 Hz) independent of frame rate.
 
 const SIM_HZ: float = 10.0
-const SAVE_VERSION: int = 5  # [money] v2: three currencies (cubes, parts, seeds); [pace] v3: Baler / Lift Strength upgrades; [ui2] v4: robot part items -> Parts; v5: looks are found pieces, kept in `global`
+const SAVE_VERSION: int = 6  # [money] v2: three currencies (cubes, parts, seeds); [pace] v3: Baler / Lift Strength upgrades; [ui2] v4: robot part items -> Parts; v5: looks are found pieces, kept in `global`; v6: Glim's and the crew's looks are found pieces
 const RATE_WINDOW_S: float = 60.0
 
 var currencies: Dictionary = {}  # id -> BigNum

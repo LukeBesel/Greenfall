@@ -8,6 +8,7 @@ extends RefCounted
 ##   cache(kind, tint)   a buried paint tin or lens chip: a low mound of turned soil with the lid's
 ##                       rim (or the chip's edge) catching the light.
 ##   dug(kind, tint)     the same thing out of the ground, for the moment it is lifted.
+##   sapling(seed, h, c) the young plant growing out of a wreck that still holds pieces.
 ##   flowers(seed, tint) what grows round a wreck once it has given up its pieces.
 ## Every piece is its own node with its origin on the ground, +Y up.
 
@@ -18,6 +19,20 @@ const JUNK_KINDS: Array[String] = ["panel", "drum", "crate", "tyre", "pipe"]
 const JUNK_PAINT: Dictionary = {"panel": "teal", "drum": "red", "crate": "#2f74c0", "pipe": "yellow"}
 const SOIL := Color(0.36, 0.27, 0.19)
 const TIN_STEEL := Color(0.78, 0.79, 0.8)
+## The young plant on a wreck that still holds pieces (sapling()).
+const SAPLING: String = "Sapling"
+## Its stems, as shares of its height (the first is the main one, straight up); the others lean
+## out by SAPLING_SPREAD.
+const SAPLING_STEMS: Array[float] = [1.0, 0.78, 0.66]
+const SAPLING_SPREAD: float = 0.38
+## A side stem carries this share of the main stem's leaves.
+const SIDE_STEM_LEAVES: float = 0.67
+const SAPLING_LEAVES: int = 15
+const SAPLING_LEAF_M: float = 0.62
+const SAPLING_LEAF_W: float = 0.5
+const SAPLING_LEAF_THICK: float = 0.025
+const SAPLING_STEM_R: float = 0.022
+const GOLDEN_ANGLE: float = 2.39996
 const PETALS: Array[Color] = [Color(0.98, 0.82, 0.2), Color(0.95, 0.45, 0.62), Color(0.97, 0.96, 0.9), Color(0.55, 0.5, 0.95)]
 
 
@@ -130,6 +145,61 @@ static func dug(kind: String, tint: Color) -> Node3D:
 	# The wire handle, fallen to one side.
 	root.add_child(EggProps.mesh(ProcMesh.torus(0.082, 0.089, 20, 6), steel, Vector3(0, 0.13, 0.03), Vector3(62, 0, 0)))
 	return root
+
+
+## A young plant growing up out of a wreck that still holds pieces: a few green stems fanning up
+## out of the body, taller than the junk, fresh leaves in a spiral on each and a tight bud of new
+## leaves at the top. Bright young green against litter and bare earth tells the wreck from
+## across a hex without a marker.
+static func sapling(plant_seed: int, height_m: float, leaf: Color) -> Node3D:
+	var root := Node3D.new()
+	root.name = SAPLING
+	var rng := RandomNumberGenerator.new()
+	rng.seed = plant_seed
+	var stem: StandardMaterial3D = DecorProps.paint(leaf.darkened(0.45), 0.75)
+	var mats: Array[StandardMaterial3D] = []
+	for k: int in 3:  # young leaves vary a little in tone
+		var m := StandardMaterial3D.new()
+		m.albedo_color = leaf.lightened(0.12 * k - 0.06).darkened(0.04 * k)
+		m.roughness = 0.5
+		m.cull_mode = BaseMaterial3D.CULL_DISABLED
+		m.backlight_enabled = true  # sun through the leaf: it reads green, not dark, against the sky
+		m.backlight = leaf.darkened(0.25)
+		mats.append(m)
+	var turn: float = rng.randf() * TAU
+	for s: int in SAPLING_STEMS.size():
+		var h: float = height_m * float(SAPLING_STEMS[s])
+		var a0: float = turn + TAU * float(s) / float(SAPLING_STEMS.size())
+		var spread: float = 0.0 if s == 0 else SAPLING_SPREAD
+		var lean := Vector3(cos(a0) * spread + rng.randf_range(-0.08, 0.08), 1.0, sin(a0) * spread + rng.randf_range(-0.08, 0.08)).normalized()
+		root.add_child(_part(ProcMesh.cyl(SAPLING_STEM_R * 0.6, SAPLING_STEM_R, h, 6), stem, lean * h * 0.5,
+			Basis(Quaternion(Vector3.UP, lean)), Vector3.ONE))
+		var n: int = SAPLING_LEAVES if s == 0 else roundi(SAPLING_LEAVES * SIDE_STEM_LEAVES)
+		for k: int in n:
+			var t: float = 0.35 + 0.65 * float(k) / float(n - 1)  # up the stem
+			var a: float = float(k) * GOLDEN_ANGLE + a0 + rng.randf_range(-0.25, 0.25)
+			var size: float = lerpf(SAPLING_LEAF_M, SAPLING_LEAF_M * 0.6, t) * rng.randf_range(0.85, 1.15)
+			var dir := Vector3(cos(a), 0.0, sin(a))
+			var at: Vector3 = lean * h * t + dir * size * 0.45 + Vector3(0, size * 0.12, 0)
+			var tilt: float = deg_to_rad(rng.randf_range(12.0, 34.0))  # leaves reach up and out
+			var b := Basis(Vector3.UP, -a) * Basis(Vector3.BACK, tilt)
+			root.add_child(_part(ProcMesh.sphere(0.5, 10, 4), mats[k % mats.size()], at, b, Vector3(size, SAPLING_LEAF_THICK, size * SAPLING_LEAF_W)))
+		for k: int in 3:  # the bud: new leaves folded upward at the tip
+			var a: float = TAU * float(k) / 3.0 + rng.randf()
+			var b := Basis(Vector3.UP, -a) * Basis(Vector3.BACK, deg_to_rad(68.0))
+			var size: float = SAPLING_LEAF_M * 0.5
+			root.add_child(_part(ProcMesh.sphere(0.5, 10, 4), mats[2], lean * h + Vector3(cos(a), 0.0, sin(a)) * 0.03 + Vector3(0, size * 0.3, 0),
+				b, Vector3(size, SAPLING_LEAF_THICK, size * 0.4)))
+	return root
+
+
+## A mesh with a rotation and a scale in its own axes (EggProps.mesh scales in the parent's).
+static func _part(m: Mesh, mat: Material, pos: Vector3, rot: Basis, scl: Vector3) -> MeshInstance3D:
+	var mi := MeshInstance3D.new()
+	mi.mesh = m
+	mi.material_override = mat
+	mi.transform = Transform3D(rot * Basis.from_scale(scl), pos)
+	return mi
 
 
 ## A handful of grass tufts and flowers round a salvaged wreck: the ground taking it back.

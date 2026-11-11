@@ -4,19 +4,23 @@ extends VBoxContainer
 ## Locker in the yard (systems/camp/locker_cabinet.gd: press E at it) and sits on the right of
 ## the screen as a field-instrument plate, leaving the left free for Lumi on the turntable
 ## (systems/camp/locker_stage.gd). A bar on top picks who is being dressed: Lumi first, then the
-## other cosmetic targets (Glim, ...) from CosmeticTargets, the crew's robots (one look per robot
-## type) and the rocket; under it, that one's editor.
+## other cosmetic targets (Glim, ...) from CosmeticTargets, then one tab per robot type of the
+## crew (one look per robot type, every robot of the type wears it) and the rocket; under it, that
+## one's editor.
 ##
 ## Editors are pluggable:
 ##   LockerPanel.add_editor("lumi", func(world: Node) -> Control: ...)   # a factory (preferred)
 ##   LockerPanel.add_editor("lumi", some_control)                         # or a ready Control
-## Lumi's page is ui/lumi_builder.gd (through CosmeticTargets). Robots use the cosmetic robot
-## builder (BuilderPanel in locker_mode: parts, name, personality).
-## The editor gets `world`, `stage` (the turntable), and `fleet` / select_robot(r) when it has them.
+## Lumi's page is ui/lumi_builder.gd (through CosmeticTargets). A robot type's page is
+## LockerEditors.BotEditor fixed to that type.
+## The editor gets `world`, `stage` (the turntable) and `fleet` when it has them.
 
 signal editing_changed(who: String)
 
 const LUMI: String = "target:lumi"
+## A robot type's tab: this prefix and the type id. BOTS alone opens the first type.
+const BOTS: String = "bots"
+const BOTS_PREFIX: String = "bots:"
 ## The docked panel's share of the screen width while Lumi is on the turntable, and its limits.
 const DOCK_SHARE: float = 0.46
 const DOCK_MIN_W: float = 540.0
@@ -30,14 +34,12 @@ var world: Node
 var fleet: Fleet
 ## The turntable beside the Locker (null when the panel is shown without one: tools, tests).
 var stage: LockerStage
-var _who: String = LUMI  # "target:<id>", "bots" or "rocket"
+var _who: String = LUMI  # "target:<id>", "bots:<type>" or "rocket"
 var _list: HBoxContainer  # [ui3] the slim bot bar
 var _who_btns: Array[Button] = []
 var _host: VBoxContainer
 var _editor: Control
 var _editor_kind: String = ""
-var _robot_editor: BuilderPanel
-var _paint: HBoxContainer
 var _bots_sig: String = ""
 var _t: float = 0.0
 ## Over the game (open_overlay): the section bar and the editor page each sit on their own plate;
@@ -213,12 +215,6 @@ func _ready() -> void:
 	_list = HBoxContainer.new()
 	_list.add_theme_constant_override("separation", 6)
 	sc.add_child(_list)
-	var pv := VBoxContainer.new()
-	pv.add_theme_constant_override("separation", 2)
-	bar.add_child(pv)
-	_paint = HBoxContainer.new()  # [ui7] fleet paint moved into the Bots section (per robot type)
-	_paint.visible = false
-	pv.add_child(_paint)
 	if bar_tail:
 		bar.add_child(bar_tail)
 	# The editor scrolls sideways if a wide one (the Lumi builder) meets a small screen at a big
@@ -271,22 +267,8 @@ func editing() -> String:
 	return _who
 
 
-func _bots() -> Array[Robot]:
-	var out: Array[Robot] = []
-	if fleet:
-		out = fleet.robots()
-	out.sort_custom(func(a: Robot, b: Robot) -> bool:
-		var ra: int = Fleet.ROLES.find(a.role())
-		var rb: int = Fleet.ROLES.find(b.role())
-		return ra < rb if ra != rb else a.robot_name < b.robot_name)
-	return out
-
-
 func _bots_signature() -> String:
-	var bits: Array[String] = []
-	for r: Robot in _bots():
-		bits.append("%s/%d" % [r.robot_name, r.tier])
-	return ",".join(bits)
+	return ",".join(LockerEditors.bot_types(fleet))
 
 
 func _rebuild_list() -> void:
@@ -299,9 +281,9 @@ func _rebuild_list() -> void:
 		var tid: String = str(t.get("id", ""))
 		if CosmeticTargets.is_unlocked(tid):
 			_add_who("target:" + tid, CosmeticTargets.display_name(tid), "", FieldPlate.CYAN)
-	# [ui7] Four sections: Lumi, Glim (CosmeticTargets), Bots (one design per robot type), Rocket.
-	if not LockerEditors.bot_types(fleet).is_empty():
-		_add_who("bots", tr("Crew"), "", FieldPlate.CYAN)
+	# Lumi, Glim (CosmeticTargets), one tab per robot type (one design each), the rocket.
+	for rid: String in LockerEditors.bot_types(fleet):
+		_add_who(BOTS_PREFIX + rid, tr(str(Economy.robots[rid].get("name", rid))), "", FieldPlate.CYAN)
 	if _rocket_open():
 		_add_who("rocket", tr("Rocket"), "", FieldPlate.CYAN)
 	var ok: bool = false
@@ -334,15 +316,11 @@ func _style_list() -> void:
 		FieldPlate.key(b, b.get_meta("col") as Color, str(b.get_meta("who")) == _who)
 
 
-func _find_robot(rname: String) -> Robot:
-	for r: Robot in _bots():
-		if r.robot_name == rname:
-			return r
-	return null
-
-
-## Switches the editor to Lumi ("lumi") or a robot (its name).
+## Switches the editor: LUMI, "target:<id>", "bots:<type>" (BOTS: the first type) or "rocket".
 func set_editing(who: String) -> void:
+	if who == BOTS:
+		var types: Array[String] = LockerEditors.bot_types(fleet)
+		who = BOTS_PREFIX + types[0] if not types.is_empty() else LUMI
 	if who == _who and _editor != null:
 		return
 	_who = who
@@ -367,11 +345,6 @@ func _show_editor() -> void:
 	ed.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	ed.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_host.add_child(ed)
-	if kind == "robot":
-		if ed.has_method("select_robot"):
-			ed.call("select_robot", _find_robot(_who))
-		if ed is BuilderPanel:
-			_robot_editor = ed
 
 
 func _clear_editor() -> void:
@@ -381,7 +354,6 @@ func _clear_editor() -> void:
 		if not (reg is Control and reg == _editor):  # a registered Control is reused, not freed
 			_editor.queue_free()
 	_editor = null
-	_robot_editor = null
 
 
 func _make_editor(kind: String) -> Control:
@@ -393,10 +365,11 @@ func _make_editor(kind: String) -> Control:
 		ed = reg
 		if ed.get_parent():
 			ed.get_parent().remove_child(ed)
-	elif kind == "bots":  # [ui7] per-type robot designs
+	elif kind.begins_with(BOTS_PREFIX):  # one robot type's design
 		var be := LockerEditors.BotEditor.new()
 		be.fleet = fleet
 		be.modules = modules
+		be.type_id = kind.substr(BOTS_PREFIX.length())
 		ed = be
 	elif kind == "rocket":  # [ui7] ship paint, trim, glow
 		var se := LockerEditors.ShipEditor.new()
@@ -404,10 +377,6 @@ func _make_editor(kind: String) -> Control:
 		ed = se
 	elif kind.begins_with("target:"):  # [ui6] CosmeticTargets editors (Lumi's builder, Glim's looks, ...)
 		ed = CosmeticTargets.make_editor(kind.substr(7), world)
-	else:
-		var bp := BuilderPanel.new()
-		bp.locker_mode = true
-		ed = bp
 	if ed == null:
 		return null
 	if "world" in ed:
@@ -417,42 +386,6 @@ func _make_editor(kind: String) -> Control:
 	if "fleet" in ed:
 		ed.set("fleet", fleet)
 	return ed
-
-
-## Fleet paint: the liveries won from Requests (press to wear, again to take off).
-func _rebuild_paint() -> void:
-	for c: Node in _paint.get_children():
-		_paint.remove_child(c)
-		c.queue_free()
-	var owned: Array = Contracts.owned()
-	var any: bool = false
-	for it: Dictionary in Contracts.shop():
-		var id: String = str(it.get("id", ""))
-		var have: bool = id in owned
-		if not have:
-			continue  # [ui3] only the paints you own (nothing shown before it's unlocked)
-		var col: Color = Color.html(str(it.get("color", "#8fe8d8")))
-		var b := Button.new()
-		b.custom_minimum_size = Vector2(40, 40)
-		b.tooltip_text = "%s\n%s" % [tr(str(it.get("name", id))), tr(str(it.get("desc", ""))) if have else Contracts.block_reason(id)]
-		var on: bool = Liveries.equipped() == id
-		b.add_theme_stylebox_override("normal", UITheme.box(Color(col, 0.85) if have else Color(col, 0.12), Color.WHITE if on else Color(col, 0.4), 3 if on else 1, 20, 4))
-		b.add_theme_stylebox_override("hover", UITheme.box(Color(col, 1.0) if have else Color(col, 0.18), Color.WHITE, 2, 20, 4))
-		b.disabled = not have
-		if not have:
-			b.focus_mode = Control.FOCUS_NONE  # [ui3] locked chips aren't stops for the D-pad
-			b.custom_minimum_size = Vector2(28, 28)
-		b.pressed.connect(func() -> void:
-			if GameState.flags.get("livery", "") == id:
-				GameState.flags["livery"] = ""
-			else:
-				GameState.flags["livery"] = id
-			Audio.play("click", 1.2, -6.0)
-			_rebuild_paint())
-		_paint.add_child(b)
-		any = true
-	_paint.get_parent().get_child(_paint.get_index() - 1).visible = any
-	_paint.visible = any
 
 
 func _process(delta: float) -> void:

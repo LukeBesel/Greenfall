@@ -176,8 +176,7 @@ func _dev_hooks() -> void:
 			i += 1
 	if DevHooks.has("livery"):
 		var lid: String = DevHooks.get_s("livery", "livery_neon")
-		if not (lid in Contracts.owned()):
-			Contracts.owned().append(lid)
+		Looks.grant(CrewLooks.piece(CrewLooks.CREW, CrewLooks.LIVERY, lid), "", true)
 		GameState.flags["livery"] = lid
 	if DevHooks.has("event"):
 		_dev_event_t = DevHooks.get_f("event-at", 3.0)

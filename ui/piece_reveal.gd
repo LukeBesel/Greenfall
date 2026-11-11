@@ -24,6 +24,18 @@ const LIGHT_SETTLE_S: float = 0.9
 const ANSWER_S: float = 0.28
 const RING_SPARKS: int = 6
 const RING_R_M: float = 0.9
+## The ring of light on the ground and the column through Lumi (they read in full sun).
+const RING_W_M: float = 0.07
+const RING_UP_M: float = 0.04
+const RING_FLAT: float = 0.3
+const RING_FROM: float = 0.35
+const RING_OPEN_S: float = 0.45
+const RING_ALPHA: float = 0.9
+const COLUMN_R_M: float = 0.75
+const COLUMN_TOP_R_M: float = 0.35
+const COLUMN_H_M: float = 3.2
+const COLUMN_ALPHA: float = 0.42
+const COLUMN_SETTLE: float = 0.45
 
 var world: Node
 var _queue: Array[Dictionary] = []
@@ -126,6 +138,9 @@ func _begin(item: Dictionary) -> void:
 		Audio.play("fanfare", 1.0, -6.0)
 	else:
 		var slot_name: String = tr(str(Looks.slot_def(Looks.slot_of(id)).get("name", "")))
+		var target: String = Looks.target_of(id)
+		if target != Looks.LUMI:  # Glim's or the crew's: say whose it is
+			slot_name = "%s  ·  %s" % [tr(str(Looks.target_def(target).get("name", target))), slot_name]
 		_kind.text = ((tr("Salvaged  ·  %s") if str(item.get("source", "")) == Finds.WRECK else tr("Found  ·  %s")) % slot_name).to_upper()
 		_kind.add_theme_color_override("font_color", FieldPlate.CYAN)
 		_name.text = tr(Looks.name_of(id)).to_upper()
@@ -195,9 +210,53 @@ func _light_up(player: Node3D, tint: Color) -> void:
 		var a: float = TAU * float(k) / float(RING_SPARKS)
 		var out: Vector3 = (player.global_basis.x * cos(a) + player.global_basis.z * sin(a)) * RING_R_M
 		Vfx.burst("sparkle", player.global_position + up * 0.5 + out, tint.lightened(0.2), 0.5)
+	_glow_shapes(tint)
 
 
-## Lumi wears the found piece over her look for the moment, with a burst in the piece's colour.
+## A lamp does not show in full sun, so the moment also has shapes that glow by themselves: a
+## ring of light on the ground round Lumi that opens out, and a soft column of the piece's colour
+## rising through her that settles to a faint haze. They go with the light.
+func _glow_shapes(tint: Color) -> void:
+	var col: Color = tint.lightened(0.3)
+	var ring_mat := _glow_mat(col, RING_ALPHA)
+	var ring := MeshInstance3D.new()
+	ring.name = "FoundRing"
+	ring.mesh = ProcMesh.torus(RING_R_M - RING_W_M, RING_R_M, 40, 6)
+	ring.material_override = ring_mat
+	ring.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	ring.position = Vector3(0, RING_UP_M - LIGHT_UP_M, 0)
+	ring.scale = Vector3(1.0, RING_FLAT, 1.0)
+	_light.add_child(ring)
+	var column_mat := _glow_mat(col, COLUMN_ALPHA)
+	var column := MeshInstance3D.new()
+	column.name = "FoundColumn"
+	column.mesh = ProcMesh.cyl(COLUMN_TOP_R_M, COLUMN_R_M, COLUMN_H_M, 24)
+	column.material_override = column_mat
+	column.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	column.position = Vector3(0, COLUMN_H_M * 0.5 - LIGHT_UP_M, 0)
+	_light.add_child(column)
+	if Settings.reduced_motion:
+		column_mat.albedo_color.a = COLUMN_ALPHA * COLUMN_SETTLE
+		return
+	ring.scale = Vector3(RING_FROM, RING_FLAT, RING_FROM)
+	var tw: Tween = ring.create_tween()
+	tw.set_parallel(true)
+	tw.tween_property(ring, "scale", Vector3(1.0, RING_FLAT, 1.0), RING_OPEN_S).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tw.tween_property(column_mat, "albedo_color:a", COLUMN_ALPHA * COLUMN_SETTLE, LIGHT_SETTLE_S).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+
+
+static func _glow_mat(col: Color, alpha: float) -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	m.cull_mode = BaseMaterial3D.CULL_DISABLED
+	m.disable_receive_shadows = true
+	m.albedo_color = Color(col, alpha)
+	return m
+
+
+## Lumi wears the found piece over her look for the moment (one of hers; Glim's and the crew's
+## pieces are only lit), with a burst in the piece's colour.
 func _dress(piece: String) -> void:
 	var player: Variant = world.get("patch") if world else null
 	if not (player is Node3D):
@@ -205,13 +264,14 @@ func _dress(piece: String) -> void:
 	var model: Variant = (player as Node3D).get("model")
 	if not (model is PatchModel):
 		return
-	var style: Dictionary = LumiStyle.current()
-	LumiStyle.wear_piece(style, piece)
-	LumiStyle.apply(model as PatchModel, style)
-	_dressed = model
+	if Looks.target_of(piece) == Looks.LUMI:
+		var style: Dictionary = LumiStyle.current()
+		LumiStyle.wear_piece(style, piece)
+		LumiStyle.apply(model as PatchModel, style)
+		_dressed = model
 	(model as PatchModel).set_happy(1.0)
 	var at: Vector3 = (player as Node3D).global_position
-	var tint: Color = LumiStyle.piece_tint(piece, FieldPlate.CYAN)
+	var tint: Color = CrewLooks.tint_of(piece, FieldPlate.CYAN)
 	Vfx.burst("big_sparkle", at + (player as Node3D).global_basis.y * 0.9, tint)
 	_light_up(player as Node3D, tint)
 

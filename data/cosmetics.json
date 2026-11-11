@@ -1,5 +1,5 @@
 {
-  "_doc": "Every look Lumi can wear is made of pieces (design spec section 13; systems/looks.gd, systems/lumi_style.gd, the Locker: ui/lumi_builder.gd). A piece is worn only after it is found in the world: nothing here is bought and nothing opens from a counter, a level or a cost. Where pieces are hidden is planet data (the planet's `finds` table); which pieces the player holds is global progress (the save's `global.pieces`). presets: how many saved looks the Locker keeps. slots[]: the Locker's slots in display order: id (the style key it edits: systems/lumi_style.gd), name, hint (one line about where that kind of thing turns up, shown under an unfound piece that has no hint of its own). pieces[]: id (never changes once shipped: saves hold it), slot, name, and exactly one of: option (an option id of that slot in data/style_parts.json), swatch (a colour id in data/style_parts.json swatches: a paint tin recolours the main body paint, a lens chip recolours every light), design (the paint set or the light colour of that design, read from the design's own look). set: the design the piece belongs to (a design is a set of pieces; wearing every piece of one set shows its name and gives the small bonus in data/designs.json; a mixed look gives none). starter: owned from a new game (Aurora's own pieces). hint (optional): this piece's own general hint line; where a planet hides a piece is that planet's to say (the hint of its find). legacy: read only by the save migration (Looks.migrate_save): what used to open this piece in saves from before found pieces, so an old save keeps what it had: {free: true} always open; {lumi_level: n}; {achievement: id}; {stat: key, target: n}; {hub_level: n}; {bought: key} a key in the old flags.style_bought. Pieces of a design are granted to old saves that had the design unlocked.",
+  "_doc": "Every look Lumi can wear is made of pieces (design spec section 13; systems/looks.gd, systems/lumi_style.gd, the Locker: ui/lumi_builder.gd). A piece is worn only after it is found in the world: nothing here is bought and nothing opens from a counter, a level or a cost. Where pieces are hidden is planet data (the planet's `finds` table); which pieces the player holds is global progress (the save's `global.pieces`). presets: how many saved looks the Locker keeps. slots[]: the Locker's slots in display order: id (the style key it edits: systems/lumi_style.gd), name, hint (one line about where that kind of thing turns up, shown under an unfound piece that has no hint of its own). pieces[]: id (never changes once shipped: saves hold it), slot, name, and exactly one of: option (an option id of that slot in data/style_parts.json), swatch (a colour id in data/style_parts.json swatches: a paint tin recolours the main body paint, a lens chip recolours every light), design (the paint set or the light colour of that design, read from the design's own look). set: the design the piece belongs to (a design is a set of pieces; wearing every piece of one set shows its name and gives the small bonus in data/designs.json; a mixed look gives none). starter: owned from a new game (Aurora's own pieces). hint (optional): this piece's own general hint line; where a planet hides a piece is that planet's to say (the hint of its find). legacy: read only by the save migration (Looks.migrate_save): what used to open this piece in saves from before found pieces, so an old save keeps what it had: {free: true} always open; {lumi_level: n}; {achievement: id}; {stat: key, target: n}; {hub_level: n}; {bought: key} a key in the old flags.style_bought. Pieces of a design are granted to old saves that had the design unlocked. targets: the other things the Locker dresses, under the same rule (found only, edited only in the Locker; systems/crew_looks.gd). glim = Glim, the lantern companion; crew = the crew's robots, one look per robot type. Each has name, slots[] and pieces[]. A target's slot: id (unique across every slot list), name, key (the field it edits: Glim's look slot in data/glim.json, a Robot Builder slot in data/robot_parts.json, 'livery' for a fleet mark, 'glow' for the robots' light colour), hint.  light: true for a light-colour slot (its pieces lie buried as lens chips, the others as paint tins). A target's piece: id, slot, name, option (the look id, part id, mark id or light id it stands for), starter (held from a new game), color (marks and lights: the colour shown), desc (marks: one line), legacy (save migration v5 -> v6, CrewLooks.migrate_save: {free: true}; {stat: key, target: n}; {glim_tier: total Glim upgrades}; {glim_bought: 'slot:id' in the old flags.glim.owned}; {builder_part: id in the old flags.builder.inv}; {livery: id in the old flags.shop_owned}). Target pieces belong to no set and give no bonus.",
   "presets": 3,
   "slots": [
     {"id": "paint", "name": "Paint", "hint": "Paint tins lie buried under ordinary trash."},
@@ -76,5 +76,85 @@
     {"id": "held_watering_can", "slot": "held", "name": "Watering can", "option": "watering_can", "legacy": {"achievement": "plant_100"}},
     {"id": "companion_firefly", "slot": "companion", "name": "Firefly", "option": "firefly", "legacy": {"stat": "contracts_done", "target": 3}},
     {"id": "companion_drone", "slot": "companion", "name": "Tiny drone", "option": "drone", "legacy": {"bought": "companion:drone"}}
-  ]
+  ],
+  "targets": {
+    "glim": {
+      "name": "Glim",
+      "slots": [
+        {"id": "glim_shell", "name": "Shell", "key": "shells", "hint": "Paint tins lie buried under ordinary trash."},
+        {"id": "glim_glow", "name": "Glow", "key": "glows", "light": true, "hint": "Lens chips lie buried under ordinary trash."},
+        {"id": "glim_top", "name": "Top", "key": "tops", "hint": "Small things hide in quiet corners."}
+      ],
+      "pieces": [
+        {"id": "glim_shell_pearl", "slot": "glim_shell", "name": "Pearl shell", "option": "pearl", "starter": true},
+        {"id": "glim_shell_sunset", "slot": "glim_shell", "name": "Sunset shell", "option": "sunset", "legacy": {"glim_bought": "shells:sunset"}},
+        {"id": "glim_shell_moss", "slot": "glim_shell", "name": "Moss shell", "option": "moss", "legacy": {"stat": "hexes_cleaned", "target": 6}},
+        {"id": "glim_shell_graphite", "slot": "glim_shell", "name": "Graphite shell", "option": "graphite", "legacy": {"glim_bought": "shells:graphite"}},
+        {"id": "glim_shell_blossom", "slot": "glim_shell", "name": "Blossom shell", "option": "blossom", "legacy": {"glim_tier": 6}},
+        {"id": "glim_glow_cyan", "slot": "glim_glow", "name": "Cyan glow", "option": "cyan", "starter": true},
+        {"id": "glim_glow_ember", "slot": "glim_glow", "name": "Ember glow", "option": "ember", "legacy": {"glim_tier": 1}},
+        {"id": "glim_glow_leaf", "slot": "glim_glow", "name": "Leaf glow", "option": "leaf", "legacy": {"stat": "hexes_cleaned", "target": 10}},
+        {"id": "glim_glow_violet", "slot": "glim_glow", "name": "Violet glow", "option": "violet", "legacy": {"glim_bought": "glows:violet"}},
+        {"id": "glim_glow_rose", "slot": "glim_glow", "name": "Rose glow", "option": "rose", "legacy": {"glim_tier": 8}},
+        {"id": "glim_top_none", "slot": "glim_top", "name": "Nothing", "option": "none", "starter": true},
+        {"id": "glim_top_antenna", "slot": "glim_top", "name": "Antenna", "option": "antenna", "starter": true},
+        {"id": "glim_top_sprout", "slot": "glim_top", "name": "Sprout", "option": "sprout", "legacy": {"stat": "hexes_cleaned", "target": 4}},
+        {"id": "glim_top_beanie", "slot": "glim_top", "name": "Little Beanie", "option": "beanie", "legacy": {"glim_bought": "tops:beanie"}},
+        {"id": "glim_top_halo", "slot": "glim_top", "name": "Halo", "option": "halo", "legacy": {"glim_tier": 10}}
+      ]
+    },
+    "crew": {
+      "name": "Crew",
+      "slots": [
+        {"id": "crew_chassis", "name": "Chassis", "key": "chassis", "hint": "Old machines rust where heavy work was done."},
+        {"id": "crew_head", "name": "Head", "key": "head", "hint": "Sensor heads outlast the robots that wore them."},
+        {"id": "crew_mobility", "name": "Mobility", "key": "mobility", "hint": "Wheels, legs and fans lie where a robot stopped."},
+        {"id": "crew_tool", "name": "Tool", "key": "tool", "hint": "Tools lie near the work they did."},
+        {"id": "crew_topper", "name": "Topper", "key": "topper", "hint": "Small things hide in quiet corners."},
+        {"id": "crew_paint", "name": "Fleet mark", "key": "livery", "hint": "Old fleet marks turn up where crews once worked."},
+        {"id": "crew_glow", "name": "Light colour", "key": "glow", "light": true, "hint": "Lens chips lie buried under ordinary trash."}
+      ],
+      "pieces": [
+        {"id": "crew_light_frame", "slot": "crew_chassis", "name": "Light Frame", "option": "light_frame", "legacy": {"builder_part": "light_frame"}},
+        {"id": "crew_cargo_hull", "slot": "crew_chassis", "name": "Cargo Hull", "option": "cargo_hull", "legacy": {"builder_part": "cargo_hull"}},
+        {"id": "crew_sealed_shell", "slot": "crew_chassis", "name": "Sealed Shell", "option": "sealed_shell", "legacy": {"builder_part": "sealed_shell"}},
+        {"id": "crew_maker_shell", "slot": "crew_chassis", "name": "Maker Shell", "option": "maker_shell", "legacy": {"builder_part": "maker_shell"}},
+        {"id": "crew_big_eye", "slot": "crew_head", "name": "Big-Eye Sensor", "option": "big_eye", "legacy": {"builder_part": "big_eye"}},
+        {"id": "crew_focus_visor", "slot": "crew_head", "name": "Focus Visor", "option": "focus_visor", "legacy": {"builder_part": "focus_visor"}},
+        {"id": "crew_periscope", "slot": "crew_head", "name": "Periscope", "option": "periscope", "legacy": {"builder_part": "periscope"}},
+        {"id": "crew_chatter_dome", "slot": "crew_head", "name": "Chatterbox Dome", "option": "chatter_dome", "legacy": {"builder_part": "chatter_dome"}},
+        {"id": "crew_maker_optic", "slot": "crew_head", "name": "Maker Optic", "option": "maker_optic", "legacy": {"builder_part": "maker_optic"}},
+        {"id": "crew_treads", "slot": "crew_mobility", "name": "Treads", "option": "treads", "legacy": {"builder_part": "treads"}},
+        {"id": "crew_rotor", "slot": "crew_mobility", "name": "Quad Rotor", "option": "rotor", "legacy": {"builder_part": "rotor"}},
+        {"id": "crew_legs", "slot": "crew_mobility", "name": "Walker Legs", "option": "legs", "legacy": {"builder_part": "legs"}},
+        {"id": "crew_hover_skirt", "slot": "crew_mobility", "name": "Hover Skirt", "option": "hover_skirt", "legacy": {"builder_part": "hover_skirt"}},
+        {"id": "crew_maker_glider", "slot": "crew_mobility", "name": "Maker Glider", "option": "maker_glider", "legacy": {"builder_part": "maker_glider"}},
+        {"id": "crew_wide_scoop", "slot": "crew_tool", "name": "Wide Scoop", "option": "wide_scoop", "legacy": {"builder_part": "wide_scoop"}},
+        {"id": "crew_fine_sieve", "slot": "crew_tool", "name": "Fine Sieve", "option": "fine_sieve", "legacy": {"builder_part": "fine_sieve"}},
+        {"id": "crew_long_forks", "slot": "crew_tool", "name": "Long Forks", "option": "long_forks", "legacy": {"builder_part": "long_forks"}},
+        {"id": "crew_tow_hook", "slot": "crew_tool", "name": "Tow Hook", "option": "tow_hook", "legacy": {"builder_part": "tow_hook"}},
+        {"id": "crew_seed_drill", "slot": "crew_tool", "name": "Seed Drill", "option": "seed_drill", "legacy": {"builder_part": "seed_drill"}},
+        {"id": "crew_mist_sprayer", "slot": "crew_tool", "name": "Mist Sprayer", "option": "mist_sprayer", "legacy": {"builder_part": "mist_sprayer"}},
+        {"id": "crew_jet_nozzle", "slot": "crew_tool", "name": "Jet Nozzle", "option": "jet_nozzle", "legacy": {"builder_part": "jet_nozzle"}},
+        {"id": "crew_antenna", "slot": "crew_topper", "name": "Bulb Antenna", "option": "antenna", "legacy": {"builder_part": "antenna"}},
+        {"id": "crew_top_hat", "slot": "crew_topper", "name": "Tiny Top Hat", "option": "top_hat", "legacy": {"builder_part": "top_hat"}},
+        {"id": "crew_crew_flag", "slot": "crew_topper", "name": "Crew Flag", "option": "crew_flag", "legacy": {"builder_part": "crew_flag"}},
+        {"id": "crew_bobble_plant", "slot": "crew_topper", "name": "Bobble Plant", "option": "bobble_plant", "legacy": {"builder_part": "bobble_plant"}},
+        {"id": "crew_traffic_cone", "slot": "crew_topper", "name": "Traffic Cone", "option": "traffic_cone", "legacy": {"builder_part": "traffic_cone"}},
+        {"id": "crew_propeller_cap", "slot": "crew_topper", "name": "Propeller Cap", "option": "propeller_cap", "legacy": {"builder_part": "propeller_cap"}},
+        {"id": "crew_lucky_clover", "slot": "crew_topper", "name": "Lucky Clover", "option": "lucky_clover", "legacy": {"builder_part": "lucky_clover"}},
+        {"id": "crew_maker_crest", "slot": "crew_topper", "name": "Maker Crest", "option": "maker_crest", "legacy": {"builder_part": "maker_crest"}},
+        {"id": "crew_livery_neon", "slot": "crew_paint", "name": "Neon Underglow", "option": "livery_neon", "desc": "A cyan glow ring under every robot in the fleet.", "color": "#5fe6ff", "legacy": {"livery": "livery_neon"}},
+        {"id": "crew_livery_sunset", "slot": "crew_paint", "name": "Sunset Underglow", "option": "livery_sunset", "desc": "Warm orange underglow for the whole crew.", "color": "#ff9a3c", "legacy": {"livery": "livery_sunset"}},
+        {"id": "crew_livery_pennant", "slot": "crew_paint", "name": "Crew Pennants", "option": "livery_pennant", "desc": "Every robot flies a little Greenfall pennant.", "color": "#9dff8a", "legacy": {"livery": "livery_pennant"}},
+        {"id": "crew_livery_halo", "slot": "crew_paint", "name": "Holo Halos", "option": "livery_halo", "desc": "A slowly turning hologram halo over each robot. Very smug.", "color": "#c08bff", "legacy": {"livery": "livery_halo"}},
+        {"id": "crew_glow_cyan", "slot": "crew_glow", "name": "Cyan", "option": "cyan", "color": "#4cd8ff", "legacy": {"free": true}},
+        {"id": "crew_glow_mint", "slot": "crew_glow", "name": "Mint", "option": "mint", "color": "#59f2b0", "legacy": {"free": true}},
+        {"id": "crew_glow_amber", "slot": "crew_glow", "name": "Amber", "option": "amber", "color": "#ffb347", "legacy": {"free": true}},
+        {"id": "crew_glow_rose", "slot": "crew_glow", "name": "Rose", "option": "rose", "color": "#ff6f9a", "legacy": {"free": true}},
+        {"id": "crew_glow_violet", "slot": "crew_glow", "name": "Violet", "option": "violet", "color": "#b98cff", "legacy": {"free": true}},
+        {"id": "crew_glow_white", "slot": "crew_glow", "name": "Moonlight", "option": "white", "color": "#e8f0ff", "legacy": {"free": true}}
+      ]
+    }
+  }
 }

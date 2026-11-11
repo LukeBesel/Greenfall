@@ -6,17 +6,12 @@ extends RefCounted
 ## and ones restored from a save.
 ##
 ## Design (GameState.flags["robot_designs"][type_id]):
-##   {"parts": {slot: part_id}  (Robot Builder parts; owned parts fit every robot),
-##    "livery": "" | livery id (the fleet paints won from Requests: underglow, pennant, halo),
-##    "glow": "" | glow id (data below: recolours the robot's light strips)}
-## A type with no design keeps the stock look (and the old fleet-wide livery, if one is equipped).
-
-# l10n:begin
-const GLOWS: Array = [
-	["cyan", "Cyan", "#4cd8ff"], ["mint", "Mint", "#59f2b0"], ["amber", "Amber", "#ffb347"],
-	["rose", "Rose", "#ff6f9a"], ["violet", "Violet", "#b98cff"], ["white", "Moonlight", "#e8f0ff"],
-]
-# l10n:end
+##   {"parts": {slot: part_id}  (Robot Builder parts),
+##    "livery": "" | mark id (a fleet mark: underglow, pennant, halo; systems/liveries.gd),
+##    "glow": "" | light id (recolours the robot's light strips)}
+## Every part, mark and light is a found piece (CrewLooks, data/cosmetics.json targets.crew): only
+## found ones can be put on. A type with no design keeps the stock look (and the fleet-wide mark
+## of a save from before found pieces, if one is equipped).
 
 
 static func _all() -> Dictionary:
@@ -37,14 +32,23 @@ static func parts(type_id: String) -> Dictionary:
 
 
 static func glow_color(id: String) -> Color:
-	for g: Array in GLOWS:
-		if str(g[0]) == id:
-			return Color.html(str(g[2]))
-	return Color(0, 0, 0, 0)
+	var piece: String = CrewLooks.piece(CrewLooks.CREW, CrewLooks.GLOW, id)
+	return CrewLooks.color_of(piece, Color(0, 0, 0, 0)) if piece != "" else Color(0, 0, 0, 0)
+
+
+## Puts a fleet mark (CrewLooks.LIVERY) or a light colour (CrewLooks.GLOW) on a type ("" = stock).
+## False when that look is not found yet.
+static func set_look(fleet: Fleet, type_id: String, key: String, id: String) -> bool:
+	if not (key in [CrewLooks.LIVERY, CrewLooks.GLOW]):
+		return false
+	if id != "" and not CrewLooks.has(CrewLooks.CREW, key, id):
+		return false
+	_set_field(fleet, type_id, key, id)
+	return true
 
 
 ## Changes one field of a type's design and puts it on every robot of that type now.
-static func set_field(fleet: Fleet, type_id: String, key: String, value: Variant) -> void:
+static func _set_field(fleet: Fleet, type_id: String, key: String, value: Variant) -> void:
 	var d: Dictionary = of(type_id).duplicate(true)
 	d[key] = value
 	_all()[type_id] = d
@@ -60,15 +64,15 @@ static func set_part(fleet: Fleet, type_id: String, slot: String, part_id: Strin
 			return TranslationServer.translate("Wrong slot")
 		if not RobotBuilder.fits(part_id, type_id):
 			return TranslationServer.translate("Doesn't fit a %s") % TranslationServer.translate(str(Economy.robots.get(type_id, {}).get("name", type_id)))
-		if RobotBuilder.count(part_id) <= 0:
-			return TranslationServer.translate("Not unlocked yet")
+		if not RobotBuilder.owned(part_id):
+			return TranslationServer.translate("Not found yet")
 	var ps: Dictionary = parts(type_id).duplicate()
 	if part_id == "":
 		ps.erase(slot)
 	else:
 		ps[slot] = part_id
 		GameState.inc_stat("builder_parts_fitted")
-	set_field(fleet, type_id, "parts", ps)
+	_set_field(fleet, type_id, "parts", ps)
 	RobotBuilder.note_build(ps)
 	return ""
 

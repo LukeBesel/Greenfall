@@ -93,6 +93,11 @@ static func buff(id: String) -> Dictionary:
 	return def(id).get("buff", {})
 
 
+## Whether wearing the set gives a bonus (the starting set gives none).
+static func has_bonus(id: String) -> bool:
+	return str(buff(id).get("stat", "")) != ""
+
+
 static func buff_text(id: String) -> String:
 	return TranslationServer.translate(str(buff(id).get("text", "")))
 

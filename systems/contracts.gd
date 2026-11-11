@@ -4,9 +4,9 @@ extends Node
 ## and world events on one board. Three optional, timed requests are offered; accept one and its
 ## timer starts; finish it in time and claim Cubes or Parts (each template says which). A world
 ## event in progress shows on the board too, and every claimed request or handled world event
-## counts toward the reward track (liveries, Builder parts, Curio Capsules, rare robot parts),
-## which replaced the token shop. Nothing is lost on failure: the slot just cools down and a new
-## offer arrives. State lives in GameState.flags["contracts"]:
+## counts toward the reward track (Curio Capsules and robot parts that pay Parts), which replaced
+## the token shop. Nothing on the track is a look: looks are found in the world (CrewLooks).
+## Nothing is lost on failure: the slot just cools down and a new offer arrives. State lives in GameState.flags["contracts"]:
 ##   {"slots": [slot, ...], "done_total": int, "events_seen": float, "track_done": int}
 ##   slot = {state: offer|active|done|wait, tpl, n, time_s, pay, parts, income_s, tier, offer_left, left, base, peak, wait}
 ## Timers count play time (they only tick while the game runs). The static helpers are pure on
@@ -18,7 +18,6 @@ static var _cfg: Dictionary = {}
 ## [ui2] Simple board: a new request starts right away (no Accept / Pass) and never runs out of
 ## time; the player only claims it. Tests of the old offer flow turn this off.
 static var auto_accept: bool = true
-static var _shop: Array = []
 
 var world: Node
 var rng := RandomNumberGenerator.new()
@@ -32,29 +31,14 @@ static func cfg() -> Dictionary:
 	return _cfg
 
 
-## Fleet liveries (data/events.json "liveries"; unlocked by the reward track).
-static func shop() -> Array:
-	if _shop.is_empty():
-		_shop = Economy.planet_table(TABLE).get("liveries", [])
-		Economy.drop_on_planet_change(_drop_planet_cache)
-	return _shop
-
 
 
 static func _drop_planet_cache() -> void:
 	_cfg = {}
-	_shop = []
 
 
 static func track() -> Array:
 	return cfg().get("track", [])
-
-
-static func shop_item(id: String) -> Dictionary:
-	for s: Dictionary in shop():
-		if str(s["id"]) == id:
-			return s
-	return {}
 
 
 static func templates() -> Array:
@@ -239,25 +223,11 @@ static func next_track_step(done: int) -> Dictionary:
 ## Display name of a track step.
 static func track_name(t: Dictionary) -> String:
 	match str(t.get("kind", "")):
-		"livery":
-			return TranslationServer.translate(str(shop_item(str(t.get("id", ""))).get("name", "")))
-		"builder":
-			return TranslationServer.translate("%s (robot style)") % TranslationServer.translate(str(RobotBuilder.part(str(t.get("id", ""))).get("name", "")))  # [ui2]
-		"builder_crate":
-			return TranslationServer.translate("Builder Crate")
 		"capsule":
 			return TranslationServer.translate("Curio Capsule")
 		"part":
 			return L10nFmt.amount("parts", RobotParts.value(int(t.get("rarity", 3))), true)  # [ui2] pays Parts
 	return "?"
-
-
-static func owned() -> Array:
-	var v: Variant = GameState.flags.get("shop_owned")
-	if not (v is Array):
-		v = []
-		GameState.flags["shop_owned"] = v
-	return v
 
 
 # --- Live node --------------------------------------------------------------------------------
@@ -461,18 +431,6 @@ func grant_track(st: Dictionary) -> void:
 
 func _grant_step(t: Dictionary) -> void:
 	match str(t.get("kind", "")):
-		"livery":
-			var id: String = str(t.get("id", ""))
-			if not (id in owned()):
-				owned().append(id)
-			EventBus.toast.emit(tr("Requests reward: %s. Paint your fleet with it in the Locker.") % track_name(t), "story")  # [ui2]
-		"builder":
-			RobotBuilder.add_part(str(t.get("id", "")))
-			EventBus.toast.emit(tr("Requests reward: %s. Fit it in the Locker.") % track_name(t), "story")  # [ui2]
-		"builder_crate":
-			var pid: String = RobotBuilder.roll_unowned(rng)
-			RobotBuilder.add_part(pid)
-			EventBus.toast.emit(tr("Requests reward: %s.") % tr(str(RobotBuilder.part(pid).get("name", pid))), "story")
 		"capsule":
 			var cid: String = Collection.roll("capsule", rng.randf())
 			if cid != "":
@@ -483,24 +441,3 @@ func _grant_step(t: Dictionary) -> void:
 			RobotParts.salvage(ty, r)  # [ui2] pays Parts
 			EventBus.toast.emit(tr("Requests reward: %s.") % RobotParts.gain_text(r), "story")
 	Audio.play("fanfare", 1.1, -8.0)
-
-
-## Equips (or takes off) an unlocked livery. Returns "" on success or a short reason.
-func buy(item_id: String) -> String:
-	var it: Dictionary = shop_item(item_id)
-	if it.is_empty():
-		return tr("Unknown item")
-	if not (item_id in owned()):
-		return block_reason(item_id)
-	GameState.flags["livery"] = "" if str(GameState.flags.get("livery", "")) == item_id else item_id
-	Audio.play("click", 1.2, -6.0)
-	return ""
-
-
-static func block_reason(item_id: String) -> String:
-	if item_id in owned():
-		return ""
-	for t: Dictionary in track():
-		if str(t.get("id", "")) == item_id:
-			return TranslationServer.translate("Unlocks after %d requests") % int(t.get("n", 0))
-	return TranslationServer.translate("Locked")

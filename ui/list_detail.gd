@@ -11,7 +11,8 @@ extends VBoxContainer
 ##   name, desc, lv, max (pips; max 0 = none), price ({cubes/parts/seeds}),
 ##   state: "ready" | "short" | "locked" | "done" | "busy",
 ##   table: [[label, value], ...], requires: "" or text, action: button text, act: Callable() -> bool,
-##   custom: optional Callable(world) -> Control shown in the detail panel instead of the table.
+##   custom: optional Callable(world) -> Control shown in the detail panel instead of the table,
+##   note: optional line shown instead of the price / requires line (rows that are not for sale).
 ## `categories`: [[id, name], ...] in tab order. `counter`: Callable() -> String for the corner.
 
 signal acted(id: String)
@@ -633,6 +634,9 @@ func _show_detail(it: Dictionary) -> void:
 	else:
 		_d_req.text = tr("You can buy this now!") if st == "ready" else (short_text(it.get("price", {})) if st == "short" else "")  # [v3clear]
 		_d_req.add_theme_color_override("font_color", BenchKit.OK if st == "ready" else Color(1.0, 0.6, 0.45))
+	if it.has("note"):  # a row that is not for sale says its own line (a found look, an unfound one's hint)
+		_d_req.text = str(it["note"])
+		_d_req.add_theme_color_override("font_color", UITheme.MUTED)
 	_d_req.visible = _d_req.text != ""
 	var action: String = str(it.get("action", ""))
 	_d_btn.visible = action != "" and not locked

@@ -245,7 +245,6 @@ func test_requests_persist() -> void:
 	Contracts.accept_slot(st["slots"][0], 4.0)
 	st["slots"][0]["left"] = 123.5
 	st["done_total"] = 7
-	Contracts.owned().append("livery_neon")
 	GameState.flags["livery"] = "livery_neon"
 	Collection.grant("golden_bolt", true)
 	var d: Dictionary = JSON.parse_string(JSON.stringify(GameState.to_dict()))
@@ -259,7 +258,6 @@ func test_requests_persist() -> void:
 	assert_eq(int(st2["done_total"]), 7)
 	assert_eq(Contracts.done_total(), 7)
 	assert_eq(Liveries.equipped(), "livery_neon")
-	assert_true("livery_neon" in Contracts.owned())
 	assert_true(Collection.has("golden_bolt"))
 
 
@@ -283,25 +281,18 @@ func test_claim_pays_cubes_or_parts_and_milestone_trinket() -> void:
 	c.free()
 
 
-func test_reward_track_unlocks_liveries_and_builder_parts() -> void:
-	# [money] The token shop is gone: liveries and Builder parts unlock by finished requests.
+func test_reward_track_pays_capsules_and_parts_never_looks() -> void:
+	# Looks are found in the world: the track hands out Curio Capsules and Parts only.
 	var c := Contracts.new()
-	assert_ne(Contracts.block_reason("livery_neon"), "", "locked before any request")
-	assert_ne(c.buy("livery_neon"), "")
-	c.count_done(2)
-	assert_true("livery_neon" in Contracts.owned(), "2 requests unlock Neon Underglow")
-	assert_eq(c.buy("livery_neon"), "")
-	assert_eq(Liveries.equipped(), "livery_neon")
-	assert_eq(c.buy("livery_neon"), "", "an unlocked livery toggles")
-	assert_eq(Liveries.equipped(), "")
-	c.count_done(1)
-	assert_eq(RobotBuilder.count("propeller_cap"), 1, "3 requests: the Propeller Cap")
-	c.count_done(0)
-	assert_eq(RobotBuilder.count("propeller_cap"), 1, "each step is granted once")
+	var pieces_before: int = Looks.found().size()
+	for t: Dictionary in Contracts.track():
+		assert_true(str(t.get("kind", "")) in ["capsule", "part"], "step %d: %s" % [int(t.get("n", 0)), t.get("kind", "")])
 	var before: float = GameState.get_currency("parts").to_float()
-	c.count_done(17 + 5)  # past the last step (20): one repeat Vintage part per repeat_every
+	c.count_done(20 + 5)  # past the last step (20): one repeat Vintage part per repeat_every
 	assert_true(GameState.get_currency("parts").to_float() >= before + RobotParts.value(4) * 2.0 + RobotParts.value(3) * 2.0 - 0.01, "[ui2] the track's rare robot parts pay Parts")
 	assert_eq(GameState.parts.size(), 0, "no robot part items")
+	assert_eq(Looks.found().size(), pieces_before, "no look came from the track")
+	assert_eq(str(GameState.flags.get("livery", "")), "", "and no fleet mark")
 	c.free()
 
 
