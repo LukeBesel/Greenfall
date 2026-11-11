@@ -32,19 +32,19 @@ msgstr "Base"
 msgid "%s Lv %d"
 msgstr "%s Nv %d"
 
-#: autoload/Economy.gd:188
+#: autoload/Economy.gd:189
 msgid "Needs %s Lv %d"
 msgstr "Necesita %s Nv %d"
 
-#: autoload/Economy.gd:191
+#: autoload/Economy.gd:192
 msgid "Needs research: %s"
 msgstr "Necesita investigación: %s"
 
-#: autoload/Economy.gd:194 systems/research.gd:206
+#: autoload/Economy.gd:195 systems/research.gd:206
 msgid "Needs base level %d"
 msgstr "Requiere base de nivel %d"
 
-#: autoload/Economy.gd:330 data/robots.json:tiers[0].name
+#: autoload/Economy.gd:331 data/robots.json:tiers[0].name
 msgid "Mk I"
 msgstr "Mk I"
 
@@ -777,24 +777,186 @@ msgstr "Lumi vuelve flotando a tierra firme."
 msgid "HEX CLEAN!  +%s"
 msgstr "¡HEXÁGONO LIMPIO!  +%s"
 
-#: planet/sites/hub_hop.gd:73
-msgid "Rocket hop: %.1f km"
-msgstr "Salto en cohete: %.1f km"
+#: planet/sites/hub_hop.gd:47
+msgid "{interact}  skip"
+msgstr "{interact}  saltar"
 
-#: planet/sites/orbit_sites.gd:104
+#: planet/sites/hub_plan.gd:13 planet/sites/hub_plan.gd:18
+msgid "Old town"
+msgstr "Casco antiguo"
+
+#: planet/sites/hub_plan.gd:14
+msgid "Downtown"
+msgstr "Centro"
+
+#: planet/sites/hub_plan.gd:15
+msgid "Industrial town"
+msgstr "Ciudad industrial"
+
+#: planet/sites/hub_plan.gd:16
+msgid "Suburb"
+msgstr "Suburbio"
+
+#: planet/sites/hub_plan.gd:17
+msgid "Harbour town"
+msgstr "Ciudad portuaria"
+
+#: planet/sites/hub_plan.gd:104
+msgid "landmark"
+msgstr "monumento"
+
+#: planet/sites/hub_plan.gd:254
+msgid "Everything sells for x%s now."
+msgstr "Ahora todo se vende por x%s."
+
+#: planet/sites/hub_plan.gd:273
+msgid "Rocket piece: %s"
+msgstr "Pieza del cohete: %s"
+
+#: planet/sites/hub_plan.gd:295
+msgid "+%s Cubes"
+msgstr "+%s Cubos"
+
+#: planet/sites/hub_plan.gd:297
+msgid "+%d Parts"
+msgstr "+%d Piezas"
+
+#: planet/sites/hub_plan.gd:299
+msgid "+%d Seeds"
+msgstr "+%d Semillas"
+
+#: planet/sites/hub_plan.gd:303
+msgid "New: %s"
+msgstr "Nuevo: %s"
+
+#: planet/sites/hub_plan.gd:307
+msgid "New Lumi design: %s"
+msgstr "Nuevo diseño de Lumi: %s"
+
+#: planet/sites/hub_purpose.gd:143
+msgid "Home. The workbench is by the pod."
+msgstr "En casa. El banco de trabajo está junto a la cápsula."
+
+#: planet/sites/hub_purpose.gd:149
+msgid "The rocket waits on the pad. Home is first on its list."
+msgstr "El cohete espera en la plataforma. Casa es lo primero de su lista."
+
+#: planet/sites/hub_purpose.gd:155
+msgid "%s: %d%% clean, up %d%% while you were away."
+msgstr "%s: %d%% limpio, +%d%% mientras no estabas."
+
+#: planet/sites/hub_purpose.gd:233
+msgid "Clean hexes here: %d / %d"
+msgstr "Limpia casillas aquí: %d / %d"
+
+#: planet/sites/hub_purpose.gd:235
+msgid "Repair an outpost here: %d / %d"
+msgstr "Repara un puesto aquí: %d / %d"
+
+#: planet/sites/hub_purpose.gd:238
+msgid "Upgrade the rocket, then wake the %s"
+msgstr "Mejora el cohete y luego despierta: %s"
+
+#: planet/sites/hub_purpose.gd:239
+msgid "Wake the %s (%s)"
+msgstr "Despierta: %s (%s)"
+
+#: planet/sites/hub_purpose.gd:273
+msgid "E   Wake the %s  (%s)"
+msgstr "E   Despertar: %s  (%s)"
+
+#: planet/sites/hub_purpose.gd:274
+msgid "%s: asleep. %s"
+msgstr "%s: dormido. %s"
+
+#: planet/sites/hub_purpose.gd:279
+msgid "The rocket can keep %d bases going. Upgrade the rocket at the workbench."
+msgstr "El cohete puede mantener %d bases. Mejóralo en el banco de trabajo."
+
+#: planet/sites/hub_purpose.gd:295
+msgid "Waking the %s needs %s."
+msgstr "Para despertar (%s) hacen falta %s."
+
+#: planet/sites/hub_purpose.gd:319
+msgid "%s is awake. %s restored."
+msgstr "%s ha despertado. %s, restaurado."
+
+#: planet/sites/hub_purpose.gd:346
+msgid "%s grows: level %d."
+msgstr "%s crece: nivel %d."
+
+#: planet/sites/hub_purpose.gd:374
+msgid "%d robot working"
+msgid_plural "%d robots working"
+msgstr[0] "%d robot trabajando"
+msgstr[1] "%d robots trabajando"
+
+#: planet/sites/hub_purpose.gd:382
+msgid "Home: %d%% clean"
+msgstr "Casa: %d%% limpio"
+
+#: planet/sites/hub_purpose.gd:384
+msgid "Restored: %d%% clean"
+msgstr "Restaurado: %d%% limpio"
+
+#: planet/sites/hub_purpose.gd:386 ui/profile_picker.gd:111
+msgid "New"
+msgstr "Nuevo"
+
+#: planet/sites/hub_purpose.gd:389
+msgid "Ready to wake"
+msgstr "Listo para despertar"
+
+#: planet/sites/hub_purpose.gd:390
+msgid "Asleep: %d / %d"
+msgstr "Dormido: %d / %d"
+
+#: planet/sites/hub_purpose.gd:401
+msgid "%s   %d%% CLEAN"
+msgstr "%s   %d%% LIMPIO"
+
+#: planet/sites/hub_purpose.gd:403
+msgid "%s   BASES %d/%d"
+msgstr "%s   BASES %d/%d"
+
+#: planet/sites/hub_purpose.gd:450
+msgid "Restored. Next: take the rocket to %s."
+msgstr "Restaurado. Siguiente: toma el cohete a %s."
+
+#: planet/sites/hub_purpose.gd:624
+msgid "%s  ·  the %s"
+msgstr "%s  ·  %s"
+
+#: planet/sites/orbit_sites.gd:105
 msgid "The rocket is in flight."
 msgstr "El cohete está en vuelo."
 
-#: planet/sites/orbit_sites.gd:157
+#: planet/sites/orbit_sites.gd:128
+msgid "Bases restored: %d of %d"
+msgstr "Bases restauradas: %d de %d"
+
+#: planet/sites/orbit_sites.gd:162
 msgid "E   Rocket: choose a destination"
 msgstr "E   Cohete: elige un destino"
 
-#: planet/sites/orbit_sites.gd:190
+#: planet/sites/orbit_sites.gd:200
+msgid "HOME"
+msgstr "CASA"
+
+#: planet/sites/orbit_sites.gd:200
+msgid "NEXT STOP"
+msgstr "PRÓXIMA PARADA"
+
+#: planet/sites/orbit_sites.gd:202
+msgid "Upgrade the rocket first"
+msgstr "Primero mejora el cohete"
+
+#: planet/sites/orbit_sites.gd:220
 msgid "%s site"
 msgstr "Lugar: %s"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: planet/sites/orbit_sites.gd:191 ui/main_menu.gd:476
+#: planet/sites/orbit_sites.gd:221 ui/main_menu.gd:476
 msgid "Hub %d"
 msgstr "Base %d"
 
@@ -1317,7 +1479,7 @@ msgstr "El cohete está aparcado en el solar, listo cuando se recarguen sus celd
 msgid "Landed on the base pad."
 msgstr "Aterrizaje en la plataforma de la base."
 
-#: scenes/slice.gd:1299 scenes/slice_orbit.gd:992
+#: scenes/slice.gd:1299 scenes/slice_orbit.gd:996
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Las mejoras necesitan un banco de trabajo. Vuelve a la base."
 
@@ -1341,7 +1503,7 @@ msgstr "E   Arreglar el banco de trabajo"
 msgid "E   Open the workbench"
 msgstr "E   Abrir el banco de trabajo"
 
-#: scenes/slice_orbit.gd:1092
+#: scenes/slice_orbit.gd:1096
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Banco de trabajo reparado. Pulsa E en él para gastar cubos en mejoras."
 
@@ -4813,60 +4975,60 @@ msgstr "Lumi ha llegado al nivel %d%s"
 msgid "OLD TOWN   0%"
 msgstr "CASCO ANTIGUO   0%"
 
-#: ui/hud.gd:308
+#: ui/hud.gd:315
 msgid "WREN SIGNAL   %d%%"
 msgstr "SEÑAL DE WREN   %d%%"
 
-#: ui/hud.gd:337
+#: ui/hud.gd:344
 msgid "HEX  %d%% CLEAR"
 msgstr "HEX  %d%% LIMPIO"
 
-#: ui/hud.gd:341
+#: ui/hud.gd:348
 msgid "%s  BASE"
 msgstr "BASE %s"
 
-#: ui/hud.gd:344
+#: ui/hud.gd:351
 msgid "CARRYING %d/%d"
 msgstr "CARGA %d/%d"
 
-#: ui/hud.gd:370
+#: ui/hud.gd:377
 msgid "HEX  CLEAR"
 msgstr "HEX  LIMPIO"
 
-#: ui/hud.gd:374
+#: ui/hud.gd:381
 msgid "HEX  %s"
 msgstr "HEX  %s"
 
-#: ui/hud.gd:377
+#: ui/hud.gd:384
 msgid "  SUSTAIN %d%%"
 msgstr "  SOSTENIDO %d%%"
 
-#: ui/hud.gd:379
+#: ui/hud.gd:386
 msgid "  THIRSTY"
 msgstr "  SEDIENTO"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:409
+#: ui/hud.gd:416
 msgid "%s   pick up bale"
 msgstr "%s   coger paca"
 
-#: ui/hud.gd:410
+#: ui/hud.gd:417
 msgid "%s   dig up part"
 msgstr "%s   desenterrar pieza"
 
-#: ui/hud.gd:411
+#: ui/hud.gd:418
 msgid "%s   read memory shard"
 msgstr "%s   leer fragmento de memoria"
 
-#: ui/hud.gd:412
+#: ui/hud.gd:419
 msgid "%s   pick up the seed tin"
 msgstr "%s   coger la lata de semillas"
 
-#: ui/hud.gd:413
+#: ui/hud.gd:420
 msgid "%s   set bale down"
 msgstr "%s   dejar paca"
 
-#: ui/hud.gd:414
+#: ui/hud.gd:421
 msgid "%s   workbench"
 msgstr "%s   banco de trabajo"
 
@@ -5584,10 +5746,6 @@ msgstr "PERFILES DE GUARDADO"
 msgid "Each profile has its own planets and progress. Settings are shared."
 msgstr "Cada perfil tiene sus propios planetas y progreso. Los ajustes son compartidos."
 
-#: ui/profile_picker.gd:111
-msgid "New"
-msgstr "Nuevo"
-
 #: ui/profile_picker.gd:112
 msgid "Rename"
 msgstr "Renombrar"
@@ -5772,35 +5930,35 @@ msgstr "siguiente: x%s velocidad de trabajo"
 msgid "Upgrade to %s"
 msgstr "Mejorar a %s"
 
-#: ui/rocket_picker.gd:53 ui/rockets_panel.gd:108
+#: ui/rocket_picker.gd:60 ui/rockets_panel.gd:108
 msgid "ROCKET"
 msgstr "COHETE"
 
-#: ui/rocket_picker.gd:54
+#: ui/rocket_picker.gd:61
 msgid "Where to?"
 msgstr "¿A dónde?"
 
-#: ui/rocket_picker.gd:62
+#: ui/rocket_picker.gd:77
 msgid "{ui_cancel}  close"
 msgstr "{ui_cancel}  cerrar"
 
-#: ui/rocket_picker.gd:110
+#: ui/rocket_picker.gd:128
 msgid "No other hubs found yet."
 msgstr "Aún no has encontrado otras bases."
 
-#: ui/rocket_picker.gd:121
+#: ui/rocket_picker.gd:145
 msgid "%.1f km"
 msgstr "%.1f km"
 
-#: ui/rocket_picker.gd:123
+#: ui/rocket_picker.gd:162
 msgid "Fly"
 msgstr "Volar"
 
-#: ui/rocket_picker.gd:134 ui/system_map.gd:729 data/goals.json:goals[home_launch].text
+#: ui/rocket_picker.gd:173 ui/system_map.gd:729 data/goals.json:goals[home_launch].text
 msgid "Launch home"
 msgstr "Despegar hacia casa"
 
-#: ui/rocket_picker.gd:143
+#: ui/rocket_picker.gd:182
 msgid "Other planets"
 msgstr "Otros planetas"
 
@@ -12559,6 +12717,162 @@ msgstr "Módulo sensor"
 msgid "Special Module"
 msgstr "Módulo especial"
 
+#: data/planets.json:verdance.hubs[landing_yard].name
+msgid "Landing Yard"
+msgstr "Patio de aterrizaje"
+
+#: data/planets.json:verdance.hubs[landing_yard].landmark.name
+msgid "Water Tower"
+msgstr "Torre de agua"
+
+#: data/planets.json:verdance.hubs[landing_yard].desc
+msgid "Home. The pod, the workbench and your first robots."
+msgstr "Casa. La cápsula, el banco de trabajo y tus primeros robots."
+
+#: data/planets.json:verdance.hubs[garden_row].name
+msgid "Garden Row"
+msgstr "Calle de los Jardines"
+
+#: data/planets.json:verdance.hubs[garden_row].landmark.name
+msgid "Windpump"
+msgstr "Bomba de viento"
+
+#: data/planets.json:verdance.hubs[garden_row].desc
+msgid "The rocket's seed stock. A new seed type."
+msgstr "La reserva de semillas del cohete. Un nuevo tipo de semilla."
+
+#: data/planets.json:verdance.hubs[garden_row].piece.name
+msgid "Seed Stock"
+msgstr "Reserva de semillas"
+
+#: data/planets.json:verdance.hubs[garden_row].hint
+msgid "The old gardens. The Windpump still holds a sealed seed store."
+msgstr "Los viejos jardines. La bomba de viento aún guarda una reserva de semillas sellada."
+
+#: data/planets.json:verdance.hubs[gantry_works].name
+msgid "Gantry Works"
+msgstr "Astillero del Pórtico"
+
+#: data/planets.json:verdance.hubs[gantry_works].landmark.name
+msgid "Gantry Crane"
+msgstr "Grúa pórtico"
+
+#: data/planets.json:verdance.hubs[gantry_works].desc
+msgid "Hull plates for the rocket."
+msgstr "Placas de casco para el cohete."
+
+#: data/planets.json:verdance.hubs[gantry_works].piece.name
+msgid "Hull Plates"
+msgstr "Placas de casco"
+
+#: data/planets.json:verdance.hubs[gantry_works].hint
+msgid "The shipyard. The Gantry Crane can lift the hull plates the rocket needs."
+msgstr "El astillero. La grúa pórtico puede levantar las placas de casco que necesita el cohete."
+
+#: data/planets.json:verdance.hubs[signal_heights].name
+msgid "Signal Heights"
+msgstr "Altos de la Señal"
+
+#: data/planets.json:verdance.hubs[signal_heights].landmark.name
+msgid "Signal Mast"
+msgstr "Mástil de señal"
+
+#: data/planets.json:verdance.hubs[signal_heights].desc
+msgid "The star chart: where the rocket can fly."
+msgstr "La carta estelar: adónde puede volar el cohete."
+
+#: data/planets.json:verdance.hubs[signal_heights].piece.name
+msgid "Star Chart"
+msgstr "Carta estelar"
+
+#: data/planets.json:verdance.hubs[signal_heights].hint
+msgid "The city centre. The Signal Mast kept the star chart of every route out."
+msgstr "El centro. El mástil de señal guardó la carta estelar con todas las rutas de salida."
+
+#: data/planets.json:verdance.hubs[fairground].name
+msgid "Fairground"
+msgstr "Feria"
+
+#: data/planets.json:verdance.hubs[fairground].landmark.name
+msgid "Big Wheel"
+msgstr "Noria"
+
+#: data/planets.json:verdance.hubs[fairground].desc
+msgid "A power cell for the rocket. A new look for Lumi."
+msgstr "Una célula de energía para el cohete. Un nuevo aspecto para Lumi."
+
+#: data/planets.json:verdance.hubs[fairground].piece.name
+msgid "Power Cell"
+msgstr "Célula de energía"
+
+#: data/planets.json:verdance.hubs[fairground].hint
+msgid "The fairground. The Big Wheel's motor ran on a power cell that never ran down."
+msgstr "La feria. El motor de la noria funcionaba con una célula de energía que nunca se agotaba."
+
+#: data/planets.json:verdance.hubs[stack_works].name
+msgid "Stack Works"
+msgstr "Fábrica de la Chimenea"
+
+#: data/planets.json:verdance.hubs[stack_works].landmark.name
+msgid "Tall Stack"
+msgstr "Chimenea alta"
+
+#: data/planets.json:verdance.hubs[stack_works].desc
+msgid "Fuel for the rocket: the last piece."
+msgstr "Combustible para el cohete: la última pieza."
+
+#: data/planets.json:verdance.hubs[stack_works].piece.name
+msgid "Rocket Fuel"
+msgstr "Combustible de cohete"
+
+#: data/planets.json:verdance.hubs[stack_works].hint
+msgid "The fuel works. The tanks under the Tall Stack are still full."
+msgstr "La fábrica de combustible. Los tanques bajo la chimenea alta siguen llenos."
+
+#: data/planets.json:verdance.hubs[bus_depot].name
+msgid "Bus Depot"
+msgstr "Cochera de autobuses"
+
+#: data/planets.json:verdance.hubs[bus_depot].landmark.name
+msgid "Last Bus"
+msgstr "Último autobús"
+
+#: data/planets.json:verdance.hubs[bus_depot].desc
+msgid "An extra town. A reward of Parts."
+msgstr "Un pueblo extra. Recompensa: Piezas."
+
+#: data/planets.json:verdance.hubs[crane_court].name
+msgid "Crane Court"
+msgstr "Patio de la Grúa"
+
+#: data/planets.json:verdance.hubs[crane_court].landmark.name
+msgid "Tower Crane"
+msgstr "Grúa torre"
+
+#: data/planets.json:verdance.hubs[crane_court].desc data/planets.json:verdance.hubs[lake_light].desc
+msgid "An extra town. A reward of Cubes."
+msgstr "Un pueblo extra. Recompensa: Cubos."
+
+#: data/planets.json:verdance.hubs[tank_hill].name
+msgid "Tank Hill"
+msgstr "Colina del Tanque"
+
+#: data/planets.json:verdance.hubs[tank_hill].landmark.name
+msgid "Hill Tank"
+msgstr "Tanque de la colina"
+
+#: data/planets.json:verdance.hubs[tank_hill].desc
+msgid "An extra town. A reward of Seeds."
+msgstr "Un pueblo extra. Recompensa: Semillas."
+
+#: data/planets.json:verdance.hubs[lake_light].name
+msgid "Lake Light"
+msgstr "Luz del Lago"
+
+#: data/planets.json:verdance.hubs[lake_light].landmark.name
+msgid "Lighthouse"
+msgstr "Faro"
+
 #: data/planets.json:rime.tagline
 msgid "An ice moon, core-mined until it froze."
 msgstr "Una luna de hielo, minada hasta el núcleo hasta que se congeló."
@@ -16593,6 +16907,9 @@ msgstr "Ese pórtico desguazó la flota del Ledger cuando se acabó el dinero. E
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un mundo de óxido, verde. Las viejas grúas tienen flores a sus pies. Las cuentas están cerradas, {name}. Las hemos cuadrado."
+
+#~ msgid "Rocket hop: %.1f km"
+#~ msgstr "Salto en cohete: %.1f km"
 
 #~ msgid "Perfect bale: filled right to the gold line."
 #~ msgstr "Paca perfecta: llena justo hasta la línea dorada."

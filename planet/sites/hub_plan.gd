@@ -8,14 +8,16 @@ extends RefCounted
 ## orbit dictionary is); planet/sites/hub_purpose.gd runs it in the world.
 ## State per site: {"seen": bool, "base": clean cells at first arrival, "woken": bool}.
 
-const TOWN_NAMES: Dictionary = {  # l10n:begin
+# l10n:begin
+const TOWN_NAMES: Dictionary = {
 	"oldtown": "Old town",
 	"downtown": "Downtown",
 	"industrial": "Industrial town",
 	"suburb": "Suburb",
 	"harbour": "Harbour town",
 	"start": "Old town",
-}  # l10n:end
+}
+# l10n:end
 const FALLBACK_COST: Array = [1200.0, 2000.0, 3000.0, 4000.0, 5000.0]
 
 ## The planet whose boosts apply (set by HubPurpose when a globe comes up).
@@ -198,27 +200,59 @@ static func listed(planet: String, site: int) -> bool:
 	return restored_main(planet) >= main_total(planet)
 
 
-## Price of the next wake: data/hub.json far_hub_cost through Hub.far_cost(n) when the game has it
-## (n = far hubs already restored), else the table read here. Returns a cost dictionary.
+## Calls a static function of another helper's script if the game has it (Hub.far_cost,
+## Hub.trade_mult, RocketTiers.hub_limit: v6pace's), else returns null.
+static func opt_static(path: String, method: String, args: Array = []) -> Variant:
+	var sc: Script = load(path) as Script if ResourceLoader.exists(path) else null
+	if sc == null:
+		return null
+	for m: Dictionary in sc.get_script_method_list():
+		if str(m.get("name", "")) == method:
+			return sc.callv(method, args)
+	return null
+
+
+## Price of the next wake: Hub.far_cost(n) when the game has it (n = far hubs already restored),
+## else data/hub.json far_hub {cost_base, cost_growth} or the far_hub_cost table. A cost dictionary.
 static func wake_cost(planet: String) -> Dictionary:
 	var n: int = woken_count(planet)
-	var hs: Script = load("res://automation/hub.gd") as Script if ResourceLoader.exists("res://automation/hub.gd") else null
-	if hs:
-		for m: Dictionary in hs.get_script_method_list():
-			if str(m.get("name", "")) == "far_cost":
-				var v: Variant = hs.call("far_cost", n)
-				if v is Dictionary:
-					return v
-				if v is BigNum:
-					return {"cubes": (v as BigNum).to_float()}
-				return {"cubes": float(v)}
-	var t: Variant = Economy.read_json("res://data/hub.json").get("far_hub_cost", FALLBACK_COST)
-	if t is Dictionary:
-		return {"cubes": roundf(float((t as Dictionary).get("base", 1200.0)) * pow(float((t as Dictionary).get("growth", 1.6)), n))}
+	var v: Variant = opt_static("res://automation/hub.gd", "far_cost", [n])
+	if v is Dictionary:
+		return v
+	if v is BigNum:
+		return {"cubes": (v as BigNum).to_float()}
+	if v is float or v is int:
+		return {"cubes": float(v)}
+	var hj: Dictionary = Economy.read_json("res://data/hub.json")
+	var fh: Variant = hj.get("far_hub", null)
+	if fh is Dictionary and (fh as Dictionary).has("cost_base"):
+		return {"cubes": roundf(float(fh["cost_base"]) * pow(float((fh as Dictionary).get("cost_growth", 4.0)), n))}
+	var t: Variant = hj.get("far_hub_cost", FALLBACK_COST)
 	var arr: Array = t if t is Array and not (t as Array).is_empty() else FALLBACK_COST
 	if n < arr.size():
 		return {"cubes": float(arr[n])}
 	return {"cubes": roundf(float(arr[arr.size() - 1]) * pow(1.4, n - arr.size() + 1))}
+
+
+## How many hubs (the start hub included) the rocket can keep restored: RocketTiers.hub_limit()
+## when the game has it, else no limit.
+static func rocket_limit() -> int:
+	var v: Variant = opt_static("res://automation/rocket_tiers.gd", "hub_limit")
+	return int(v) if v is int or v is float else 999
+
+
+## True when one more wake needs a better rocket first.
+static func at_limit(planet: String) -> bool:
+	return woken_count(planet) + 1 >= rocket_limit()
+
+
+## "Everything sells for x2.5 now." once Hub.trade_mult() exists and is above 1, else "".
+static func trade_line() -> String:
+	var v: Variant = opt_static("res://automation/hub.gd", "trade_mult")
+	if (v is float or v is int) and float(v) > 1.001:
+		var t: String = ("%.2f" % float(v)).rstrip("0").rstrip(".")
+		return TranslationServer.translate("Everything sells for x%s now.") % t
+	return ""
 
 
 # --- The wake's rewards --------------------------------------------------------------------------

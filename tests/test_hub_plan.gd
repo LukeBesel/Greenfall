@@ -66,10 +66,7 @@ func test_data_is_whole() -> void:
 			var pid: String = str((e["piece"] as Dictionary)["id"])
 			assert_false(pieces.has(pid), "one rocket piece per hub")
 			pieces[pid] = true
-			assert_gt((e["boosts"] as Array).size(), 0, "main hub %d has a production boost" % s)
-			for b: Dictionary in e["boosts"]:
-				assert_gt(float(b["mult"]), 1.0)
-				assert_ne(str(b.get("text", "")), "")
+			assert_false(e.has("boosts"), "Verdance's per-hub multiplier is Hub.trade_mult, not a boost")
 			assert_ne(str(e.get("hint", "")), "", "main hub %d has an arrival line" % s)
 		var g: Dictionary = e["gift"]
 		if g.has("research"):
@@ -115,12 +112,19 @@ func test_wake_gives_the_hubs_gift_once() -> void:
 
 
 func test_boosts_apply_only_while_woken() -> void:
+	# No hub on Verdance has boosts (the per-hub multiplier is Hub.trade_mult); the mechanism stays
+	# for other planets, so it is tested on made-up data.
+	HubPlan._data = {"testworld": {"hubs": [
+		{"site": 0, "order": 1, "home": true, "name": "A"},
+		{"site": 1, "order": 2, "name": "B", "boosts": [{"stat": "cube_value_mult", "mult": 1.5, "text": "t"}]},
+		{"site": 2, "order": 3, "name": "C", "boosts": [{"stat": "*.speed", "mult": 1.3, "text": "t"}]}]}}
+	HubPlan.active_planet = "testworld"
 	assert_almost_eq(HubPlan.stat_mod("cube_value_mult", 2.0), 2.0, 0.0001)
-	HubPlan.wake("verdance", 7)
-	assert_almost_eq(HubPlan.stat_mod("cube_value_mult", 2.0), 3.0, 0.0001, "Gantry Works: bales x1.5")
+	HubPlan.wake("testworld", 1)
+	assert_almost_eq(HubPlan.stat_mod("cube_value_mult", 2.0), 3.0, 0.0001)
 	assert_almost_eq(HubPlan.stat_mod("scoopie.speed", 1.0), 1.0, 0.0001)
-	HubPlan.wake("verdance", 8)
-	assert_almost_eq(HubPlan.stat_mod("scoopie.speed", 1.0), 1.3, 0.0001, "Signal Heights: every robot's speed")
+	HubPlan.wake("testworld", 2)
+	assert_almost_eq(HubPlan.stat_mod("scoopie.speed", 1.0), 1.3, 0.0001, "every robot's speed")
 	assert_almost_eq(HubPlan.stat_mod("scoop_rate", 1.0), 1.0, 0.0001, "Lumi's own stats are not robot stats")
 	assert_eq(HubPlan.breakdown("cube_value_mult").size(), 1)
 	HubPlan.active_planet = ""
@@ -147,7 +151,8 @@ func test_picker_rows_say_why_to_go() -> void:
 	add_child_autofree(p)
 	p.entries_fn = func() -> Array: return [
 		{"site": 0, "name": "Landing Yard", "km": 1.2, "town": "Old town", "offer": "Home.", "state": "Home: 12% clean", "robots": "3 robots working", "tag": "HOME"},
-		{"site": 7, "name": "Gantry Works", "km": 2.5, "town": "Industrial town", "offer": "Hull plates for the rocket.", "state": "New", "robots": "", "tag": "NEXT STOP"}]
+		{"site": 7, "name": "Gantry Works", "km": 2.5, "town": "Industrial town", "offer": "Hull plates for the rocket.", "state": "New", "robots": "", "tag": "NEXT STOP"},
+		{"site": 8, "name": "Signal Heights", "km": 3.0, "locked": "Upgrade the rocket first"}]
 	p.planet_line_fn = func() -> String: return "Bases restored: 2 of 6"
 	p.open()
 	var texts: Array = []
@@ -156,5 +161,9 @@ func test_picker_rows_say_why_to_go() -> void:
 	for want: String in ["Landing Yard", "HOME", "NEXT STOP", "Hull plates for the rocket.", "Bases restored: 2 of 6"]:
 		assert_true(texts.has(want), "the list shows '%s'" % want)
 	assert_true(texts.has("Home: 12% clean  ·  3 robots working"), "state and robots on one line")
-	assert_eq(p.offered_sites(), [0, 7], "home first")
+	assert_eq(p.offered_sites(), [0, 7, 8], "home first")
+	var fly: Array = p._list.find_children("*", "Button", true, false)
+	assert_false((fly[1] as Button).disabled)
+	assert_true((fly[2] as Button).disabled, "a hub past the rocket's limit can't be flown to")
+	assert_true(texts.has("Upgrade the rocket first"))
 	p.close()

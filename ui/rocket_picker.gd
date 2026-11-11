@@ -11,7 +11,8 @@ signal picked(site: int)
 
 var is_open: bool = false
 ## Rows to offer: [{"site": int, "name": String, "km": float}], in the order shown. [v6hubs]
-## Optional per row: "town", "offer", "state", "robots", "tag" (HOME / NEXT STOP).
+## Optional per row: "town", "offer", "state", "robots", "tag" (HOME / NEXT STOP), "locked" (why it
+## can't be flown to yet; its Fly button is off).
 var entries_fn: Callable = func() -> Array: return []
 ## "" when the rocket can fly now, else why not (shown instead of the buttons).
 var blocker_fn: Callable = func() -> String: return ""
@@ -155,9 +156,11 @@ func _rebuild() -> void:
 			st_t = "%s  ·  %s" % [st_t, str(e["robots"])] if st_t != "" else str(e["robots"])
 		if st_t != "":
 			tv.add_child(UITheme.label(st_t, 12, CREAM.darkened(0.12)))
+		if str(e.get("locked", "")) != "":
+			tv.add_child(UITheme.label(str(e["locked"]), 12, GOLD))
 		hb.add_child(tv)
 		var b := _button(tr("Fly"))
-		b.disabled = why != ""
+		b.disabled = why != "" or str(e.get("locked", "")) != ""
 		var site: int = int(e["site"])
 		b.pressed.connect(func() -> void:
 			close()

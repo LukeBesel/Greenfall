@@ -133,6 +133,8 @@ func _enter(i: int, by_rocket: bool) -> void:
 	if first:
 		st["seen"] = true
 		st["base"] = clean_cells(i)
+		if not HubPlan.is_home(planet, i):
+			GameState.inc_stat("hubs_seen")  # goal steps: "fly to the next hub" = stat hubs_seen >= n
 	var clean: float = sm.region_clean(i)
 	if by_rocket or first:
 		show_title(i)
@@ -232,6 +234,8 @@ func step_text(i: int, d: Dictionary) -> String:
 		"outposts":
 			return tr("Repair an outpost here: %d / %d") % [int(d["have"]), int(d["need"])]
 		"wake":
+			if HubPlan.at_limit(planet):
+				return tr("Upgrade the rocket, then wake the %s") % HubPlan.landmark_name(planet, i)
 			return tr("Wake the %s (%s)") % [HubPlan.landmark_name(planet, i), Outposts.cost_text(HubPlan.wake_cost(planet))]
 	return ""
 
@@ -263,9 +267,16 @@ func landmark_prompt() -> String:
 	if site < 0 or HubPlan.woken(site):
 		return ""
 	var d: Dictionary = current_step(site)
+	if str(d.get("do", "")) == "wake" and HubPlan.at_limit(planet):
+		return limit_text()
 	if str(d.get("do", "")) == "wake":
 		return tr("E   Wake the %s  (%s)") % [HubPlan.landmark_name(planet, site), Outposts.cost_text(HubPlan.wake_cost(planet))]
 	return tr("%s: asleep. %s") % [HubPlan.landmark_name(planet, site), step_text(site, d)]
+
+
+## Why one more base can't be restored yet (the rocket's tier).
+func limit_text() -> String:
+	return tr("The rocket can keep %d bases going. Upgrade the rocket at the workbench.") % HubPlan.rocket_limit()
 
 
 func use_landmark() -> void:
@@ -273,6 +284,10 @@ func use_landmark() -> void:
 		return
 	if not can_wake(site):
 		EventBus.toast.emit(step_text(site, current_step(site)), "info")
+		return
+	if HubPlan.at_limit(planet):
+		Audio.play("blip", 0.7, -6.0)
+		EventBus.toast.emit(limit_text(), "hint")
 		return
 	var cost: Dictionary = HubPlan.wake_cost(planet)
 	if not GameState.can_afford_all(cost):
@@ -295,6 +310,9 @@ func wake(i: int, free: bool = false) -> bool:
 	var lines: Array[String] = HubPlan.wake(planet, i)
 	sm.set_built(i)
 	sm.set_level(i, maxi(2, sm.levels[i]))
+	var tl: String = HubPlan.trade_line()  # the per-hub multiplier (v6pace's Hub.trade_mult, off SiteManager.built)
+	if tl != "":
+		lines.append(tl)
 	Audio.play("thud", 0.8, -4.0)
 	Audio.music_sting("level_up")
 	EventBus.shake_requested.emit(0.25)
@@ -384,6 +402,19 @@ func hud_lines() -> Dictionary:
 		"frac": share,
 		"planet": tr("%s   BASES %d/%d") % [tr(str(Economy.planet.get("name", "Verdance"))).to_upper(), HubPlan.restored_main(planet), HubPlan.main_total(planet)],
 	}
+
+
+## For goal steps (story/objectives.gd step targets): where the beam should stand for
+## "rocket" (the parked rocket: fly to the next hub, or upgrade it) and "landmark" (the landmark of
+## the far hub Lumi is at). Null when there is nothing to point at.
+func goal_target(kind: String) -> Variant:
+	match kind:
+		"rocket":
+			return sites.rocket_spot.global_position if sites.rocket_spot and sites.rocket_spot.visible else null
+		"landmark":
+			var lm: Dictionary = landmark(site) if site > 0 else {}
+			return lm["pos"] if not lm.is_empty() else null
+	return null
 
 
 ## Where the workbench is for Lumi now: the field bench of the woken far hub he is at, else null

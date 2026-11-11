@@ -198,6 +198,8 @@ func destinations() -> Array:
 			e["state"] = purpose.status_text(i) if purpose else ""
 			e["robots"] = purpose.crew_line(i) if purpose else ""
 			e["tag"] = tr("HOME") if bool(e["home"]) else (tr("NEXT STOP") if bool(e["next"]) else "")
+			if not bool(e["home"]) and not HubPlan.woken(i) and not HubPlan.seen(i) and HubPlan.at_limit(sm.planet_id):
+				e["locked"] = tr("Upgrade the rocket first")  # the rocket's tier (RocketTiers.hub_limit)
 		out.append(e)
 	out.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 		var ra: int = 0 if bool(a.get("home", false)) else (1 if bool(a.get("next", false)) else 2)
