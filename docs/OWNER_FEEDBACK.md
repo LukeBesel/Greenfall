@@ -266,3 +266,4 @@ Direction: the flat world's vibe is better, so build it into the round world: bu
 70. Verdance must be fully ready to release and play: simple enough for a child, addictive, with a real story. The pace keeps you moving, but you still have to grind a bit to get there.
 71. Set the foundation for more planets made the way Verdance was: different themes, planet sizes and landmarks. Do not build the other planets yet.
 72. The story must leave room for the other planets and spill into them: across the planets we gather enough fuel and power to make it back home.
+73. Renders of the yard machines and landmarks look great, except the inside of the pod (through the open hatch it shows flat brown/orange streaks). Give the pod a proper interior.
