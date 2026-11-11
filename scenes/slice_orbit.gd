@@ -42,11 +42,10 @@ var sites: OrbitSites  # [orbD]
 var hub_states: Dictionary = {}  # site index (str) -> {level} (core/save_orbit.gd); the Hub port fills it
 
 
-## True when --orbit asks for the slice on the globe (not one of the phase A prototypes).
+## The slice always builds on the globe, except when a phase A prototype scene is asked for
+## (--orbit=v1 / --orbit=globe).
 static func wanted() -> bool:
-	if DevHooks.has("orbit"):
-		return not DevHooks.get_s("orbit", "") in ["v1", "globe"]
-	return SaveManager.round_planets()  # the title screen's "Round planets (preview)"
+	return not DevHooks.get_s("orbit", "") in ["v1", "globe"]
 
 
 ## Builds the whole orbit slice into `p_world`. [orbE] Behind the loading screen (a BuildBudget is

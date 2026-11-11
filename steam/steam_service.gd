@@ -99,16 +99,14 @@ func attach(s: Object, init: bool = true) -> bool:
 		if legacy > 0:
 			print("[steam] cloud: %d pre-profile saves adopted into profile 1" % legacy)
 		for n: int in range(1, SaveManager.PROFILES + 1):
-			var res: Dictionary = cloud.sync_dir(SaveManager.profile_dir(n, true), SteamCloud.profile_prefix(n, false))  # the flat game's saves (older builds, --flat)
+			var res: Dictionary = cloud.sync_dir(SaveManager.old_flat_profile_dir(n), SteamCloud.profile_prefix(n, false))  # [v6flat] old flat saves from older builds: synced down, never played
 			if not res.is_empty():
 				print("[steam] cloud sync p%d: " % n, res)
-		# [v5load] The round world is the game now and saves under user://saves_round: sync that tree
-		# too, under its own cloud prefix. (It used to be skipped as a preview.)
-		if SaveManager.round_planets():
-			for n: int in range(1, SaveManager.PROFILES + 1):
-				var res2: Dictionary = cloud.sync_dir(SaveManager.profile_dir(n), SteamCloud.profile_prefix(n, true))
-				if not res2.is_empty():
-					print("[steam] cloud sync round p%d: " % n, res2)
+		# [v5load] The game's saves (user://saves_round), under their own cloud prefix.
+		for n: int in range(1, SaveManager.PROFILES + 1):
+			var res2: Dictionary = cloud.sync_dir(SaveManager.profile_dir(n), SteamCloud.profile_prefix(n, true))
+			if not res2.is_empty():
+				print("[steam] cloud sync round p%d: " % n, res2)
 	sync_achievements()
 	print("[steam] ", status)
 	return true
