@@ -134,7 +134,7 @@ static func system_open() -> bool:
 ## [pace2] "" when a drive tier's partial-progress gates hold (pure on the stored percentages):
 ## requires_planet_pct [k, pct]: planet k restored to pct; requires_other_pct: any planet other
 ## than Verdance restored to pct (its chart). 100% and relics stay optional except where a tier
-## still lists requires_relics / requires_system (Mk VII Homeward).
+## still lists requires_relics / requires_system ([v7arc] none today: Mk VII takes requires_home).
 static func progress_blocker(nd: Dictionary) -> String:
 	var pp: Variant = nd.get("requires_planet_pct")
 	if pp is Array and (pp as Array).size() >= 2:
@@ -537,6 +537,8 @@ static func drive_blocker(at_home_site: bool = false) -> String:
 	var pb: String = progress_blocker(nd)  # [pace2]
 	if pb != "":
 		return pb
+	if bool(nd.get("requires_home", false)) and not StoryArc.full():  # [v7arc] fuel and power for home
+		return TranslationServer.translate("Needs full fuel and power. %s") % StoryArc.meter_text()
 	if relics().size() < int(nd.get("requires_relics", 0)):
 		return TranslationServer.translate("Needs %d planet relics (%d)") % [int(nd["requires_relics"]), relics().size()]
 	if system_pct() < float(nd.get("requires_system", 0.0)) - 0.0001:

@@ -150,6 +150,9 @@ func _dress_planet() -> void:
 	if k < 0:
 		return
 	var id: String = _pid()
+	if PlanetCfg.current != "" and PlanetCfg.current != id:  # [v7planet] the globe is another planet (--orbit-planet): its sound, no campaign env
+		Audio.call("set_planet_theme", PlanetCfg.current)
+		return
 	if Audio.has_method("set_planet_theme"):
 		Audio.call("set_planet_theme", id)
 	if k == 0 or world.get("field") == null:
@@ -322,7 +325,8 @@ func _restored_beat(k: int) -> void:
 		_doc_beat("%s_restored" % str(d["id"]), "home_restored")
 	if Homeward.system_pct() >= 0.9999:
 		get_tree().create_timer(9.0, false).timeout.connect(func() -> void:
-			EventBus.toast.emit(tr("Every planet in the system is alive. Go back to Verdance's Cradle Returns and build the Mk VII Homeward rocket."), "story")
+			# [v7arc] Every planet at 100% is the optional extra: home only needs fuel and power.
+			EventBus.toast.emit(tr("Every planet in the system is alive. The Settlers will wake to five green worlds."), "story")
 			if world.get("wren") != null:
 				world.wren.say("home_system_done", 1.0, true))
 
@@ -391,8 +395,8 @@ static func launch_home(w: Node) -> bool:
 
 
 ## [v6story] Owner items 58 and 60: why Lumi flies on with Verdance mostly dirty. WREN's lines for
-## `key` in data/story_reasons.json exit (system_open: the star map opens; drive_built: the Orbital
-## drive is ready), in order on the subtitle line. Returns how many lines were queued.
+## `key` in data/story_reasons.json exit (drive_built: the Orbital drive is ready; [v7arc] the
+## way-onward lines are data/story_arc.json's), in order on the subtitle line. Returns how many lines were queued.
 const EXIT_BEAT: String = "verdance_exit"
 static func say_exit(w: Node, key: String) -> int:
 	var wr: Wren = w.get("wren") as Wren if w else null

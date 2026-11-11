@@ -215,6 +215,11 @@ turning). Check the numbers with `godot --headless --path . res://tools/machine_
 `res://tools/yard_lineup.tscn -- --shots=v6 --lm-state=broken|repaired|restored --out=screenshots/yard/v6`
 (rendered; one picture per machine and landmark).
 
+## A new planet (v7planet)
+
+`data/planets.json` `_default` is what every planet gets; a planet block (`"<id>": {...}`) repeats only what it changes: `name`, `globe` (`frequency`, `hub_count`, optional `seed`: the size), `site_kit` (`towns` or `prefab`), `look.ground` (ground textures and colour multipliers), `hub_defaults`, `hubs`. `"dev": true` makes a test planet that only `--orbit-planet=<id>` reaches.
+The step-by-step recipe, the per-planet blocks in the other files (`landmarks.json`, `life.json`, `sound.json` with `"like"`, `songs.json`, `homeward.json`) and the checks (`tools/planet_smoke.sh <id>`, `tests/test_planet_data.gd`) are in docs/NEW_PLANET.md; its worked example is the dev planet `testworld`.
+
 ## Story arc: fuel, power and each planet's story (v7arc)
 
 `data/story_arc.json` holds the story spine across the planets (docs/STORY_ARC.md). Home needs
@@ -232,6 +237,7 @@ once, when its way onward opens (`data/homeward.json` `planets[k].leave`, else r
 | WREN on the first rocket landing / at the exit beat | `planets.<id>.arrive` / `planets.<id>.leave` (1–2 short lines) |
 | The meter and line formats | `home.meter`, `home.home_line`, `home.next`, `home.gives_text`, `home.gave_text`, `home.full` |
 | The line after the last planet | `cradle.reason` |
+| What the final Homeward rocket needs | `data/homeward.json` `drive` tier 7: `requires_home: true` (the meters full). `requires_relics` / `requires_system` still work as gates if you want 100% back as a must |
 
 `from`, `answers` and `ledger` are notes for whoever builds the planet; they are not shown yet. A
 new planet needs only its block (keyed by its id in `data/homeward.json`). After changing text, run

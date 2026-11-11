@@ -53,6 +53,31 @@ func test_every_planet_has_a_complete_story_block() -> void:
 		assert_gt(Homeward.planet_index(str(id2)), -1, "%s is a planet in data/homeward.json" % str(id2))
 
 
+func test_campaign_planets_need_a_block_dev_planets_do_not() -> void:
+	# planets-as-data (core/planet_cfg.gd): every campaign planet has a block; dev planets
+	# (testworld) are never in data/homeward.json and need none.
+	for id: String in PlanetCfg.ids(true):
+		var k: int = Homeward.planet_index(id)
+		if PlanetCfg.is_dev(id):
+			assert_eq(k, -1, "%s is a dev planet" % id)
+			continue
+		assert_gt(k, -1, "%s is a campaign planet" % id)
+		assert_false(StoryArc.block(k).is_empty(), "%s has a story block" % id)
+		for pr: String in PlanetCfg.problems(id):
+			assert_false(pr.contains("story"), pr)
+
+
+func test_mk7_needs_fuel_and_power_only() -> void:
+	var d7: Dictionary = Homeward.drive_def(7)
+	assert_true(bool(d7.get("requires_home", false)), "Mk VII takes the home meters")
+	assert_false(d7.has("requires_relics"), "relics are the optional extra")
+	assert_false(d7.has("requires_system"), "100% everywhere is the optional extra")
+	# An older save with every planet fully restored (no exit beats yet) is full.
+	for k: int in Homeward.planets().size():
+		(Homeward.state()["pct"] as Dictionary)[str(Homeward.planet_def(k)["id"])] = 1.0
+	assert_true(StoryArc.full(), "a fully restored system has all its fuel and power")
+
+
 func test_the_meters_add_up_to_exactly_home() -> void:
 	var n: Vector2i = StoryArc.need()
 	assert_gt(n.x, 0)

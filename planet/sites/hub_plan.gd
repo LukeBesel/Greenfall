@@ -42,13 +42,20 @@ static func reload() -> void:
 
 
 static func defaults(planet: String) -> Dictionary:
+	# [v7planet] "_default".hub_defaults (data/planets.json) with the planet's own keys on top.
+	var out: Dictionary = {}
+	var base: Variant = planet_data("_default").get("hub_defaults", {})
+	if base is Dictionary:
+		out = (base as Dictionary).duplicate(true)
 	var d: Variant = planet_data(planet).get("hub_defaults", {})
-	return d if d is Dictionary else {}
+	if d is Dictionary:
+		PlanetCfg.deep_merge(out, d as Dictionary)
+	return out
 
 
 ## [v6hubs] The rocket hop's tunables (hub_defaults.hop: flight, arrival title, sting); `def` when unset.
 static func hop_cfg(key: String, def: Variant) -> Variant:
-	var h: Variant = defaults(active_planet if active_planet != "" else "verdance").get("hop", {})
+	var h: Variant = defaults(active_planet if active_planet != "" else PlanetCfg.current_or("verdance")).get("hop", {})  # [v7planet]
 	return (h as Dictionary).get(key, def) if h is Dictionary else def
 
 

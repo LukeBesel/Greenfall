@@ -393,7 +393,7 @@ msgstr "最高等级"
 msgid "Needs the Rocket Cargo research"
 msgstr "需要研究“火箭货运”"
 
-#: automation/rocket_tiers.gd:61 systems/homeward.gd:547
+#: automation/rocket_tiers.gd:61 systems/homeward.gd:549
 msgid "Not enough cubes or parts"
 msgstr "方块或零件不足"
 
@@ -667,35 +667,35 @@ msgstr "郊区"
 msgid "Harbour town"
 msgstr "港口镇"
 
-#: planet/sites/hub_plan.gd:133
+#: planet/sites/hub_plan.gd:140
 msgid "landmark"
 msgstr "地标"
 
-#: planet/sites/hub_plan.gd:287
+#: planet/sites/hub_plan.gd:294
 msgid "The recycling network grew: everything sells for x%s now."
 msgstr "回收网络变大了：现在所有东西的售价 x%s。"
 
-#: planet/sites/hub_plan.gd:306
+#: planet/sites/hub_plan.gd:313
 msgid "Rocket piece: %s"
 msgstr "火箭部件：%s"
 
-#: planet/sites/hub_plan.gd:328
+#: planet/sites/hub_plan.gd:335
 msgid "+%s Cubes"
 msgstr "+%s 方块"
 
-#: planet/sites/hub_plan.gd:330
+#: planet/sites/hub_plan.gd:337
 msgid "+%d Parts"
 msgstr "+%d 零件"
 
-#: planet/sites/hub_plan.gd:332
+#: planet/sites/hub_plan.gd:339
 msgid "+%d Seeds"
 msgstr "+%d 种子"
 
-#: planet/sites/hub_plan.gd:336
+#: planet/sites/hub_plan.gd:343
 msgid "New: %s"
 msgstr "新获得：%s"
 
-#: planet/sites/hub_plan.gd:340
+#: planet/sites/hub_plan.gd:347
 msgid "New Lumi design: %s"
 msgstr "新的 Lumi 外观：%s"
 
@@ -796,36 +796,36 @@ msgstr "%d 个基地都修好了。飞回家，让火箭做好离开的准备。
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:105
+#: planet/sites/orbit_sites.gd:107
 msgid "The rocket is in flight."
 msgstr "火箭正在飞行。"
 
-#: planet/sites/orbit_sites.gd:128
+#: planet/sites/orbit_sites.gd:130
 msgid "Bases restored: %d of %d"
 msgstr "已修复基地：%d / %d"
 
-#: planet/sites/orbit_sites.gd:166
+#: planet/sites/orbit_sites.gd:168
 msgid "E   Rocket: choose a destination"
 msgstr "E   火箭：选择目的地"
 
-#: planet/sites/orbit_sites.gd:204
+#: planet/sites/orbit_sites.gd:206
 msgid "HOME"
 msgstr "家"
 
-#: planet/sites/orbit_sites.gd:204
+#: planet/sites/orbit_sites.gd:206
 msgid "NEXT STOP"
 msgstr "下一站"
 
-#: planet/sites/orbit_sites.gd:206
+#: planet/sites/orbit_sites.gd:208
 msgid "Upgrade the rocket first"
 msgstr "先升级火箭"
 
-#: planet/sites/orbit_sites.gd:224
+#: planet/sites/orbit_sites.gd:226
 msgid "%s site"
 msgstr "%s地点"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: planet/sites/orbit_sites.gd:225 ui/main_menu.gd:525
+#: planet/sites/orbit_sites.gd:227 ui/main_menu.gd:525
 msgid "Hub %d"
 msgstr "基地 %d"
 
@@ -1504,27 +1504,27 @@ msgstr "走到发射台上的火箭旁，按 E 选择要飞去的地方。"
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
 
-#: scenes/slice_orbit.gd:417
+#: scenes/slice_orbit.gd:420
 msgid "HEX CLEAN!  +%s"
 msgstr "六角格清理完毕！  +%s"
 
-#: scenes/slice_orbit.gd:433
+#: scenes/slice_orbit.gd:436
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice_orbit.gd:502 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:505 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   修理工作台"
 
-#: scenes/slice_orbit.gd:502 systems/camp/camp.gd:195
+#: scenes/slice_orbit.gd:505 systems/camp/camp.gd:195
 msgid "E   Open the workbench"
 msgstr "E   打开工作台"
 
-#: scenes/slice_orbit.gd:1022
+#: scenes/slice_orbit.gd:1025
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice_orbit.gd:1122
+#: scenes/slice_orbit.gd:1125
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "工作台修好了。在它旁边按 E，用方块购买升级。"
 
@@ -1942,7 +1942,7 @@ msgstr "Lumi，那个绿色信号又出现了，而且更强了。跟着光柱�
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr "Lumi。我收到一个信号。绿色的，很微弱，在基地东边。一座旧温室。去看看。"
 
-#: story/homecoming.gd:18
+#: story/homecoming.gd:18 story/homecoming.gd:27
 msgid "Clear of the air. Look back, {name}. Look at it."
 msgstr "离开大气层了。回头看看，{name}。好好看看。"
 
@@ -1958,27 +1958,35 @@ msgstr "CRADLE：星系勘测：五个世界。五个存活。"
 msgid "CRADLE:  CHARTER CONDITION MET.  WAKING SLEEPERS.  OPENING BAY ONE."
 msgstr "CRADLE：宪章条件已满足。唤醒沉睡者。打开一号舱。"
 
-#: story/homecoming.gd:22
+#: story/homecoming.gd:22 story/homecoming.gd:30
 msgid "It's opening the bay. It's actually opening the bay. Steady... steady..."
 msgstr "它在打开舱门。它真的在打开舱门。稳住……稳住……"
 
-#: story/homecoming.gd:25
+#: story/homecoming.gd:28
+msgid "Five worlds awake. Not all green yet, but robots are planting on every one."
+msgstr "五个世界都醒了。还没全部变绿，但每个世界上都有机器人在种植。"
+
+#: story/homecoming.gd:29
+msgid "CRADLE:  FUEL FULL.  POWER FULL.  WAKING SLEEPERS.  OPENING BAY ONE."
+msgstr "CRADLE：燃料已满。能量已满。唤醒沉睡者。打开一号舱。"
+
+#: story/homecoming.gd:33
 msgid "The vault. Your vault. It looks exactly like you left it."
 msgstr "种子库。你的种子库。和你离开时一模一样。"
 
-#: story/homecoming.gd:26
+#: story/homecoming.gd:34
 msgid "You climbed into a cargo pod to save that tray. Three hundred years later, you brought it home."
 msgstr "你为了救那个托盘钻进了货运舱。三百年后，你把它带回家了。"
 
-#: story/homecoming.gd:27
+#: story/homecoming.gd:35
 msgid "Hear that? Below decks. Doors. Voices. They're waking up, {name}."
 msgstr "听到了吗？甲板下面。开门声。说话声。他们正在醒来，{name}。"
 
-#: story/homecoming.gd:28
+#: story/homecoming.gd:36
 msgid "The first thing they'll see is a world that's green again. You did that. Small. Stubborn. Perfect."
 msgstr "他们看到的第一样东西，会是一个重新变绿的世界。是你做到的。小小的，倔强的，完美的。"
 
-#: story/homecoming.gd:132 data/achievements.json:achievements[home_homecoming].name data/codex.json:homeward.homecoming.name
+#: story/homecoming.gd:141 data/achievements.json:achievements[home_homecoming].name data/codex.json:homeward.homecoming.name
 #: data/radio.json:songs[homecoming].name
 msgid "Homecoming"
 msgstr "归乡"
@@ -2728,50 +2736,54 @@ msgid "The Cradle has to answer first (Cradle Returns)"
 msgstr "Cradle 号得先回应（Cradle号归来）"
 
 #: systems/homeward.gd:541
+msgid "Needs full fuel and power. %s"
+msgstr "需要燃料和能量都满。%s"
+
+#: systems/homeward.gd:543
 msgid "Needs %d planet relics (%d)"
 msgstr "需要 %d 件星球遗物（%d）"
 
-#: systems/homeward.gd:543
+#: systems/homeward.gd:545
 msgid "Restore every planet first (%d%%)"
 msgstr "先恢复每一个星球（%d%%）"
 
-#: systems/homeward.gd:545
+#: systems/homeward.gd:547
 msgid "Build it at Verdance's Cradle Returns"
 msgstr "在 Verdance 的 Cradle号归来建造"
 
-#: systems/homeward.gd:561
+#: systems/homeward.gd:563
 msgid "Rocket drive built: %s."
 msgstr "火箭推进器已建成：%s。"
 
-#: systems/homeward_director.gd:290
+#: systems/homeward_director.gd:293
 msgid "Intercepted: %s"
 msgstr "截获：%s"
 
-#: systems/homeward_director.gd:305
+#: systems/homeward_director.gd:308
 msgid "%s: %s"
 msgstr "%s：%s"
 
-#: systems/homeward_director.gd:315
+#: systems/homeward_director.gd:318
 msgid "%s is restored. System: %d%%."
 msgstr "%s 已恢复。星系：%d%%。"
 
-#: systems/homeward_director.gd:318
+#: systems/homeward_director.gd:321
 msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
 msgstr "遗物：%s。传家宝选择 +1（方舟舰桥）。"
 
-#: systems/homeward_director.gd:325
-msgid "Every planet in the system is alive. Go back to Verdance's Cradle Returns and build the Mk VII Homeward rocket."
-msgstr "星系里的每个星球都活过来了。回到 Verdance 的 Cradle号归来，建造 Mk VII 归乡火箭。"
+#: systems/homeward_director.gd:329
+msgid "Every planet in the system is alive. The Settlers will wake to five green worlds."
+msgstr "星系里的每个星球都活过来了。定居者醒来时会看到五个绿色的世界。"
 
-#: systems/homeward_director.gd:500
+#: systems/homeward_director.gd:504
 msgid "E   launch home"
 msgstr "E   发射回家"
 
-#: systems/homeward_director.gd:500
+#: systems/homeward_director.gd:504
 msgid "E   plant the last seed"
 msgstr "E   种下最后一颗种子"
 
-#: systems/homeward_director.gd:511
+#: systems/homeward_director.gd:515
 msgid "The last seed is in the ground. Everything is ready. Press E again here to launch home."
 msgstr "最后一颗种子已经入土。一切就绪。在这里再按一次 E 就能发射回家。"
 
@@ -11495,8 +11507,8 @@ msgid "Mk VII Homeward"
 msgstr "Mk VII 归乡"
 
 #: data/homeward.json:drive[2].desc
-msgid "A great green-light rocket on a launch complex built from every planet you saved. One trip: up to the Cradle."
-msgstr "一枚巨大的绿光火箭，立在用你拯救的每个星球建成的发射场上。只有一趟旅程：飞向 Cradle 号。"
+msgid "A great green-light rocket, filled with the fuel and power of every world you woke. One trip: up to the Cradle."
+msgstr "一枚巨大的绿光火箭，装满了你唤醒的每个世界的燃料和能量。只有一趟旅程：飞向 Cradle号。"
 
 #: data/homeward.json:docs.ochre_arrive.header data/homeward.json:docs.tidewell_arrive.header data/homeward.json:docs.rime_arrive.header
 msgid "L E D G E R   ·   I N T E R N A L"
@@ -14505,8 +14517,8 @@ msgid "Gave fuel {fuel} and power {power}"
 msgstr "已提供燃料 {fuel}、能量 {power}"
 
 #: data/story_arc.json:home.full
-msgid "Fuel and power are full. Time to go home."
-msgstr "燃料和能量都满了。该回家了。"
+msgid "Fuel and power are full. Build the Homeward rocket on Verdance and fly home."
+msgstr "燃料和能量都满了。在 Verdance 上建造归乡火箭，飞回家吧。"
 
 #: data/story_arc.json:planets.verdance.reason
 msgid "The Settlers' home, where Lumi's pod fell."
@@ -14569,8 +14581,8 @@ msgid "The Ledger balanced its books at last. It is giving us its power."
 msgstr "Ledger 终于把账算平了。它把能量给了我们。"
 
 #: data/story_arc.json:cradle.reason
-msgid "Next stop: the Cradle. Fuel and power are full. Let's go home."
-msgstr "下一站：Cradle号。燃料和能量都满了。我们回家吧。"
+msgid "Fuel and power are full. Back to Verdance: build the Homeward rocket and fly home."
+msgstr "燃料和能量都满了。回到 Verdance：建造归乡火箭，飞回家吧。"
 
 #: data/story_reasons.json:goal_reasons
 msgid "One more step toward a green world."
@@ -14803,14 +14815,6 @@ msgstr "工作台学会建造新东西。"
 #: data/story_reasons.json:goal_reasons
 msgid "Robots keep working while you do other things."
 msgstr "你忙别的事情时，机器人会继续干活。"
-
-#: data/story_reasons.json:exit
-msgid "Look at the star map. Five worlds, and the Ledger buried every one."
-msgstr "看看星图。五个世界，全都被 Ledger 掩埋了。"
-
-#: data/story_reasons.json:exit
-msgid "The Cradle waits for all of them. Build the Orbital drive, and we'll wake the next world."
-msgstr "Cradle号在等它们全部恢复。建好轨道推进器，我们就去唤醒下一个世界。"
 
 #: data/story_reasons.json:exit
 msgid "The rocket can leave now. Verdance isn't finished, and that's all right."
@@ -16968,6 +16972,18 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Every planet in the system is alive. Go back to Verdance's Cradle Returns and build the Mk VII Homeward rocket."
+#~ msgstr "星系里的每个星球都活过来了。回到 Verdance 的 Cradle号归来，建造 Mk VII 归乡火箭。"
+
+#~ msgid "A great green-light rocket on a launch complex built from every planet you saved. One trip: up to the Cradle."
+#~ msgstr "一枚巨大的绿光火箭，立在用你拯救的每个星球建成的发射场上。只有一趟旅程：飞向 Cradle 号。"
+
+#~ msgid "Look at the star map. Five worlds, and the Ledger buried every one."
+#~ msgstr "看看星图。五个世界，全都被 Ledger 掩埋了。"
+
+#~ msgid "The Cradle waits for all of them. Build the Orbital drive, and we'll wake the next world."
+#~ msgstr "Cradle号在等它们全部恢复。建好轨道推进器，我们就去唤醒下一个世界。"
 
 #~ msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
 #~ msgstr "菜单、HUD、字幕和剧情文本。Pseudo 用于测试翻译。"

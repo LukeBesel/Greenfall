@@ -393,7 +393,7 @@ msgstr "Höchste Stufe"
 msgid "Needs the Rocket Cargo research"
 msgstr "Benötigt die Forschung Raketenfracht"
 
-#: automation/rocket_tiers.gd:61 systems/homeward.gd:547
+#: automation/rocket_tiers.gd:61 systems/homeward.gd:549
 msgid "Not enough cubes or parts"
 msgstr "Nicht genug Würfel oder Teile"
 
@@ -667,35 +667,35 @@ msgstr "Vorstadt"
 msgid "Harbour town"
 msgstr "Hafenstadt"
 
-#: planet/sites/hub_plan.gd:133
+#: planet/sites/hub_plan.gd:140
 msgid "landmark"
 msgstr "Wahrzeichen"
 
-#: planet/sites/hub_plan.gd:287
+#: planet/sites/hub_plan.gd:294
 msgid "The recycling network grew: everything sells for x%s now."
 msgstr "Das Recycling-Netz ist gewachsen: Alles verkauft sich jetzt für x%s."
 
-#: planet/sites/hub_plan.gd:306
+#: planet/sites/hub_plan.gd:313
 msgid "Rocket piece: %s"
 msgstr "Raketenteil: %s"
 
-#: planet/sites/hub_plan.gd:328
+#: planet/sites/hub_plan.gd:335
 msgid "+%s Cubes"
 msgstr "+%s Würfel"
 
-#: planet/sites/hub_plan.gd:330
+#: planet/sites/hub_plan.gd:337
 msgid "+%d Parts"
 msgstr "+%d Teile"
 
-#: planet/sites/hub_plan.gd:332
+#: planet/sites/hub_plan.gd:339
 msgid "+%d Seeds"
 msgstr "+%d Samen"
 
-#: planet/sites/hub_plan.gd:336
+#: planet/sites/hub_plan.gd:343
 msgid "New: %s"
 msgstr "Neu: %s"
 
-#: planet/sites/hub_plan.gd:340
+#: planet/sites/hub_plan.gd:347
 msgid "New Lumi design: %s"
 msgstr "Neues Lumi-Design: %s"
 
@@ -797,36 +797,36 @@ msgstr "Alle %d Basen stehen. Flieg nach Hause und mach die Rakete startklar."
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:105
+#: planet/sites/orbit_sites.gd:107
 msgid "The rocket is in flight."
 msgstr "Die Rakete ist unterwegs."
 
-#: planet/sites/orbit_sites.gd:128
+#: planet/sites/orbit_sites.gd:130
 msgid "Bases restored: %d of %d"
 msgstr "Basen wiederhergestellt: %d von %d"
 
-#: planet/sites/orbit_sites.gd:166
+#: planet/sites/orbit_sites.gd:168
 msgid "E   Rocket: choose a destination"
 msgstr "E   Rakete: Ziel wählen"
 
-#: planet/sites/orbit_sites.gd:204
+#: planet/sites/orbit_sites.gd:206
 msgid "HOME"
 msgstr "ZUHAUSE"
 
-#: planet/sites/orbit_sites.gd:204
+#: planet/sites/orbit_sites.gd:206
 msgid "NEXT STOP"
 msgstr "NÄCHSTER HALT"
 
-#: planet/sites/orbit_sites.gd:206
+#: planet/sites/orbit_sites.gd:208
 msgid "Upgrade the rocket first"
 msgstr "Erst die Rakete aufrüsten"
 
-#: planet/sites/orbit_sites.gd:224
+#: planet/sites/orbit_sites.gd:226
 msgid "%s site"
 msgstr "Ort: %s"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: planet/sites/orbit_sites.gd:225 ui/main_menu.gd:525
+#: planet/sites/orbit_sites.gd:227 ui/main_menu.gd:525
 msgid "Hub %d"
 msgstr "Basis %d"
 
@@ -1510,27 +1510,27 @@ msgstr "Geh zur Rakete auf der Startrampe und drück E, um dein Ziel zu wählen.
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Energiezellen laden: %s. Raketen-Upgrades füllen sie schneller."
 
-#: scenes/slice_orbit.gd:417
+#: scenes/slice_orbit.gd:420
 msgid "HEX CLEAN!  +%s"
 msgstr "HEXFELD SAUBER!  +%s"
 
-#: scenes/slice_orbit.gd:433
+#: scenes/slice_orbit.gd:436
 msgid "Milestone: %d hexes clean!"
 msgstr "Meilenstein: %d Hexfelder sauber!"
 
-#: scenes/slice_orbit.gd:502 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:505 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   Werkbank reparieren"
 
-#: scenes/slice_orbit.gd:502 systems/camp/camp.gd:195
+#: scenes/slice_orbit.gd:505 systems/camp/camp.gd:195
 msgid "E   Open the workbench"
 msgstr "E   Werkbank öffnen"
 
-#: scenes/slice_orbit.gd:1022
+#: scenes/slice_orbit.gd:1025
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Upgrades brauchen eine Werkbank. Zurück zur Basis."
 
-#: scenes/slice_orbit.gd:1122
+#: scenes/slice_orbit.gd:1125
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Werkbank repariert. Drück dort E, um Würfel für Upgrades auszugeben."
 
@@ -1948,7 +1948,7 @@ msgstr "Lumi, das grüne Signal ist wieder da, und stärker. Folge dem Lichtstra
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr "Lumi. Ich empfange ein Signal. Grün, schwach, östlich der Basis. Ein altes Gewächshaus. Sieh nach."
 
-#: story/homecoming.gd:18
+#: story/homecoming.gd:18 story/homecoming.gd:27
 msgid "Clear of the air. Look back, {name}. Look at it."
 msgstr "Raus aus der Luft. Schau zurück, {name}. Sieh es dir an."
 
@@ -1964,27 +1964,35 @@ msgstr "CRADLE:  SYSTEMSCAN: FÜNF WELTEN.  FÜNF LEBEN."
 msgid "CRADLE:  CHARTER CONDITION MET.  WAKING SLEEPERS.  OPENING BAY ONE."
 msgstr "CRADLE:  CHARTA ERFÜLLT.  WECKE SCHLÄFER.  ÖFFNE BUCHT EINS."
 
-#: story/homecoming.gd:22
+#: story/homecoming.gd:22 story/homecoming.gd:30
 msgid "It's opening the bay. It's actually opening the bay. Steady... steady..."
 msgstr "Sie öffnet die Bucht. Sie öffnet tatsächlich die Bucht. Ruhig... ruhig..."
 
-#: story/homecoming.gd:25
+#: story/homecoming.gd:28
+msgid "Five worlds awake. Not all green yet, but robots are planting on every one."
+msgstr "Fünf Welten sind wach. Noch nicht alle grün, aber auf jeder pflanzen Roboter."
+
+#: story/homecoming.gd:29
+msgid "CRADLE:  FUEL FULL.  POWER FULL.  WAKING SLEEPERS.  OPENING BAY ONE."
+msgstr "CRADLE:  TREIBSTOFF VOLL.  ENERGIE VOLL.  WECKE SCHLÄFER.  ÖFFNE BUCHT EINS."
+
+#: story/homecoming.gd:33
 msgid "The vault. Your vault. It looks exactly like you left it."
 msgstr "Der Tresor. Dein Tresor. Er sieht genau so aus, wie du ihn verlassen hast."
 
-#: story/homecoming.gd:26
+#: story/homecoming.gd:34
 msgid "You climbed into a cargo pod to save that tray. Three hundred years later, you brought it home."
 msgstr "Du bist in eine Frachtkapsel geklettert, um dieses Tablett zu retten. Dreihundert Jahre später hast du es nach Hause gebracht."
 
-#: story/homecoming.gd:27
+#: story/homecoming.gd:35
 msgid "Hear that? Below decks. Doors. Voices. They're waking up, {name}."
 msgstr "Hörst du das? Unter Deck. Türen. Stimmen. Sie wachen auf, {name}."
 
-#: story/homecoming.gd:28
+#: story/homecoming.gd:36
 msgid "The first thing they'll see is a world that's green again. You did that. Small. Stubborn. Perfect."
 msgstr "Das Erste, was sie sehen, ist eine Welt, die wieder grün ist. Das warst du. Klein. Stur. Perfekt."
 
-#: story/homecoming.gd:132 data/achievements.json:achievements[home_homecoming].name data/codex.json:homeward.homecoming.name
+#: story/homecoming.gd:141 data/achievements.json:achievements[home_homecoming].name data/codex.json:homeward.homecoming.name
 #: data/radio.json:songs[homecoming].name
 msgid "Homecoming"
 msgstr "Heimkehr"
@@ -2734,50 +2742,54 @@ msgid "The Cradle has to answer first (Cradle Returns)"
 msgstr "Die Cradle muss zuerst antworten (Cradle-Rückkehr)"
 
 #: systems/homeward.gd:541
+msgid "Needs full fuel and power. %s"
+msgstr "Braucht vollen Treibstoff und volle Energie. %s"
+
+#: systems/homeward.gd:543
 msgid "Needs %d planet relics (%d)"
 msgstr "Braucht %d Planetenrelikte (%d)"
 
-#: systems/homeward.gd:543
+#: systems/homeward.gd:545
 msgid "Restore every planet first (%d%%)"
 msgstr "Stelle zuerst jeden Planeten wieder her (%d%%)"
 
-#: systems/homeward.gd:545
+#: systems/homeward.gd:547
 msgid "Build it at Verdance's Cradle Returns"
 msgstr "Baue sie an Verdances Cradle-Rückkehr"
 
-#: systems/homeward.gd:561
+#: systems/homeward.gd:563
 msgid "Rocket drive built: %s."
 msgstr "Raketenantrieb gebaut: %s."
 
-#: systems/homeward_director.gd:290
+#: systems/homeward_director.gd:293
 msgid "Intercepted: %s"
 msgstr "Abgefangen: %s"
 
-#: systems/homeward_director.gd:305
+#: systems/homeward_director.gd:308
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: systems/homeward_director.gd:315
+#: systems/homeward_director.gd:318
 msgid "%s is restored. System: %d%%."
 msgstr "%s ist wiederhergestellt. System: %d%%."
 
-#: systems/homeward_director.gd:318
+#: systems/homeward_director.gd:321
 msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
 msgstr "Relikt: %s. Erbstück-Wahl +1 (Archenbrücke)."
 
-#: systems/homeward_director.gd:325
-msgid "Every planet in the system is alive. Go back to Verdance's Cradle Returns and build the Mk VII Homeward rocket."
-msgstr "Jeder Planet im System lebt. Kehre zu Verdances Cradle-Rückkehr zurück und baue die Mk-VII-Heimkehr-Rakete."
+#: systems/homeward_director.gd:329
+msgid "Every planet in the system is alive. The Settlers will wake to five green worlds."
+msgstr "Jeder Planet im System lebt. Die Siedler wachen in fünf grünen Welten auf."
 
-#: systems/homeward_director.gd:500
+#: systems/homeward_director.gd:504
 msgid "E   launch home"
 msgstr "E   nach Hause starten"
 
-#: systems/homeward_director.gd:500
+#: systems/homeward_director.gd:504
 msgid "E   plant the last seed"
 msgstr "E   den letzten Samen pflanzen"
 
-#: systems/homeward_director.gd:511
+#: systems/homeward_director.gd:515
 msgid "The last seed is in the ground. Everything is ready. Press E again here to launch home."
 msgstr "Der letzte Samen ist in der Erde. Alles ist bereit. Drück hier noch einmal E, um nach Hause zu starten."
 
@@ -11511,8 +11523,8 @@ msgid "Mk VII Homeward"
 msgstr "Mk VII Heimkehr"
 
 #: data/homeward.json:drive[2].desc
-msgid "A great green-light rocket on a launch complex built from every planet you saved. One trip: up to the Cradle."
-msgstr "Eine große Rakete aus grünem Licht auf einer Startanlage, gebaut aus jedem Planeten, den du gerettet hast. Eine Reise: hinauf zur Cradle."
+msgid "A great green-light rocket, filled with the fuel and power of every world you woke. One trip: up to the Cradle."
+msgstr "Eine große Grünlicht-Rakete, gefüllt mit Treibstoff und Energie aus jeder Welt, die du geweckt hast. Eine Reise: hinauf zur Cradle."
 
 #: data/homeward.json:docs.ochre_arrive.header data/homeward.json:docs.tidewell_arrive.header data/homeward.json:docs.rime_arrive.header
 msgid "L E D G E R   ·   I N T E R N A L"
@@ -14521,8 +14533,8 @@ msgid "Gave fuel {fuel} and power {power}"
 msgstr "Gab Treibstoff {fuel} und Energie {power}"
 
 #: data/story_arc.json:home.full
-msgid "Fuel and power are full. Time to go home."
-msgstr "Treibstoff und Energie sind voll. Zeit, nach Hause zu fliegen."
+msgid "Fuel and power are full. Build the Homeward rocket on Verdance and fly home."
+msgstr "Treibstoff und Energie sind voll. Bau auf Verdance die Heimkehr-Rakete und flieg nach Hause."
 
 #: data/story_arc.json:planets.verdance.reason
 msgid "The Settlers' home, where Lumi's pod fell."
@@ -14585,8 +14597,8 @@ msgid "The Ledger balanced its books at last. It is giving us its power."
 msgstr "Der Ledger hat endlich seine Bücher ausgeglichen. Er gibt uns seine Energie."
 
 #: data/story_arc.json:cradle.reason
-msgid "Next stop: the Cradle. Fuel and power are full. Let's go home."
-msgstr "Nächster Halt: die Cradle. Treibstoff und Energie sind voll. Ab nach Hause."
+msgid "Fuel and power are full. Back to Verdance: build the Homeward rocket and fly home."
+msgstr "Treibstoff und Energie sind voll. Zurück nach Verdance: Bau die Heimkehr-Rakete und flieg nach Hause."
 
 #: data/story_reasons.json:goal_reasons
 msgid "One more step toward a green world."
@@ -14819,14 +14831,6 @@ msgstr "Die Werkbank lernt, etwas Neues zu bauen."
 #: data/story_reasons.json:goal_reasons
 msgid "Robots keep working while you do other things."
 msgstr "Roboter arbeiten weiter, während du etwas anderes tust."
-
-#: data/story_reasons.json:exit
-msgid "Look at the star map. Five worlds, and the Ledger buried every one."
-msgstr "Schau auf die Sternenkarte. Fünf Welten, und der Ledger hat jede einzelne begraben."
-
-#: data/story_reasons.json:exit
-msgid "The Cradle waits for all of them. Build the Orbital drive, and we'll wake the next world."
-msgstr "Die Cradle wartet auf sie alle. Bau den Orbitalantrieb, dann wecken wir die nächste Welt."
 
 #: data/story_reasons.json:exit
 msgid "The rocket can leave now. Verdance isn't finished, and that's all right."
@@ -16984,6 +16988,18 @@ msgstr "Der Portalkran hat die Flotte des Ledgers verschrottet, als das Geld aus
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Eine Rostwelt, grün. Die alten Kräne haben Blumen zu ihren Füßen. Die Bücher sind geschlossen, {name}. Wir haben sie ausgeglichen."
+
+#~ msgid "Every planet in the system is alive. Go back to Verdance's Cradle Returns and build the Mk VII Homeward rocket."
+#~ msgstr "Jeder Planet im System lebt. Kehre zu Verdances Cradle-Rückkehr zurück und baue die Mk-VII-Heimkehr-Rakete."
+
+#~ msgid "A great green-light rocket on a launch complex built from every planet you saved. One trip: up to the Cradle."
+#~ msgstr "Eine große Rakete aus grünem Licht auf einer Startanlage, gebaut aus jedem Planeten, den du gerettet hast. Eine Reise: hinauf zur Cradle."
+
+#~ msgid "Look at the star map. Five worlds, and the Ledger buried every one."
+#~ msgstr "Schau auf die Sternenkarte. Fünf Welten, und der Ledger hat jede einzelne begraben."
+
+#~ msgid "The Cradle waits for all of them. Build the Orbital drive, and we'll wake the next world."
+#~ msgstr "Die Cradle wartet auf sie alle. Bau den Orbitalantrieb, dann wecken wir die nächste Welt."
 
 #~ msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
 #~ msgstr "Menüs, HUD, Untertitel und Story-Texte. Pseudo dient zum Testen von Übersetzungen."

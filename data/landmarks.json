@@ -14,6 +14,7 @@
 		"lighthouse": {"main": "white", "accent": "red", "height": 16.0, "foot": 5.6}
 	},
 	"planets": {
-		"verdance": {}
+		"verdance": {},
+		"testworld": {"_doc": "[v7planet] Dev stub planet: its own landmark colours.", "radio_mast": {"main": "orange", "accent": "navy"}, "smokestack": {"main": "#c9a27a", "accent": "plum"}}
 	}
 }

@@ -119,13 +119,18 @@ func test_drive_gates_and_costs() -> void:
 	assert_true(Homeward.relics().is_empty())
 	assert_true(Homeward.buy_drive())
 	assert_eq(Homeward.drive(), 6)
-	for r: String in ["ochre_glass", "tidewell_pearl", "rime_core", "anvil_ingot"]:
-		Homeward.relics().append(r)
 	GameState.add_currency("cubes", BigNum.from_float(1.0e7))
 	GameState.add_currency("parts", BigNum.from_float(3000))
-	assert_ne(Homeward.drive_blocker(true), "", "Mk VII needs the whole system")
-	for d: Dictionary in Homeward.planets():
-		(Homeward.state()["pct"] as Dictionary)[str(d["id"])] = 1.0
+	# [v7arc] Mk VII needs the home meters full (fuel and power from every planet's exit beat),
+	# not every planet at 100% or any relic: those are the optional extra.
+	assert_string_contains(Homeward.drive_blocker(true), "fuel")
+	for k: int in Homeward.planets().size() - 1:
+		Homeward.mark_beat(StoryArc.exit_beat(k))
+	assert_string_contains(Homeward.drive_blocker(true), "fuel", "one planet short is not enough")
+	Homeward.mark_beat(StoryArc.exit_beat(Homeward.planets().size() - 1))
+	assert_true(StoryArc.full())
+	assert_true(Homeward.relics().is_empty())
+	assert_lt(Homeward.system_pct(), 1.0)
 	assert_ne(Homeward.drive_blocker(false), "", "only at the Homeward complex")
 	assert_eq(Homeward.drive_blocker(true), "")
 
@@ -217,7 +222,7 @@ func test_leave_each_planet_at_half() -> void:
 		assert_eq(Homeward.reach_blocker(k, Homeward.drive(), Homeward.pct_list()), "", "%s reachable" % ids[k])
 	assert_false(Homeward.answered(), "the Cradle can answer later")
 	assert_true(Homeward.relics().is_empty())
-	assert_ne(Homeward.drive_blocker(true), "", "only Mk VII Homeward needs the whole system")
+	assert_ne(Homeward.drive_blocker(true), "", "Mk VII Homeward needs full fuel and power")  # [v7arc]
 
 
 ## [pace2] 100% needs tools from later planets: Verdance stops at its cap until Ochre's Deep Drill,

@@ -11,6 +11,11 @@ uniform sampler2D tex_rubble : source_color, filter_linear_mipmap_anisotropic, r
 uniform sampler2D tex_clean : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D tex_grass : source_color, filter_linear_mipmap_anisotropic, repeat_enable;
 uniform float tex_scale = 0.22;
+// [v7planet] Per-planet ground colour (data/planets.json look.ground, PlanetCfg.look): multipliers on
+// the trashed ground, the cleaned ground and the grass. 1 = as is (Verdance).
+uniform vec3 tint_dirt = vec3(1.0);
+uniform vec3 tint_clean = vec3(1.0);
+uniform vec3 tint_grass = vec3(1.0);
 // 1 on the far shell: coarser texture, no fine detail (it is only seen from far away).
 uniform float far_shell = 0.0;
 // Debug: tint each LOD (0 = off).
@@ -90,9 +95,9 @@ void fragment() {
 	float tl2 = dot(tri(tex_rubble, wpos * 0.23 + 3.7, w), vec3(0.333));
 	vec3 trash = mix(vec3(0.07, 0.07, 0.08), vec3(0.4, 0.31, 0.22), smoothstep(0.3, 0.46, tl));
 	trash = mix(trash, vec3(0.74, 0.7, 0.6), smoothstep(0.52, 0.62, tl2) * 0.85);
-	dirt = mix(dirt, trash, far_k * 0.7);
-	vec3 clean = tri(tex_clean, p, w) * vec3(0.95, 0.93, 0.9);
-	vec3 grass = tri(tex_grass, p * 0.8, w) * vec3(0.85, 1.0, 0.8);
+	dirt = mix(dirt, trash, far_k * 0.7) * tint_dirt;
+	vec3 clean = tri(tex_clean, p, w) * vec3(0.95, 0.93, 0.9) * tint_clean;
+	vec3 grass = tri(tex_grass, p * 0.8, w) * vec3(0.85, 1.0, 0.8) * tint_grass;
 	float green = smoothstep(1.5, 2.5, state + (n - 0.45));
 	// [v6life] Clean ground greens over time (plants/cell_verdure.gd): grass creeps in from patches
 	// (a soft low-frequency mask, finer breakup near), thin and yellow-green at its edge, with moss
@@ -108,7 +113,7 @@ void fragment() {
 		// Our own greens over the grass texture's light and dark (the texture itself is a dry yellow).
 		float gl = dot(grass, vec3(0.3, 0.5, 0.2));
 		float lush = smoothstep(0.02, 0.3, k) * smoothstep(0.3, 0.9, verd);
-		gcol = mix(vec3(0.3, 0.4, 0.13), vec3(0.11, 0.27, 0.07), lush) * (0.45 + 1.3 * gl) * (0.8 + 0.5 * n);
+		gcol = mix(vec3(0.3, 0.4, 0.13), vec3(0.11, 0.27, 0.07), lush) * (0.45 + 1.3 * gl) * (0.8 + 0.5 * n) * tint_grass;
 		clean = mix(clean, clean * vec3(0.78, 0.86, 0.7), smoothstep(-0.25, 0.0, k) * (1.0 - gcov) * 0.7);
 	}
 	green = max(green, gcov);
