@@ -80,6 +80,10 @@ static func install(src: Object, parent: Node, lumi: Node3D, cam: SphereCam, wri
 		pr.name = "CrewProbe"
 		pr.crew = crew
 		parent.add_child(pr)
+	if DevHooks.has("crew-zone"):  # [v6crew] --crew-zone=N: N hexes painted for cleaning by the start hub (renders)
+		var zr: PackedInt32Array = (src.grid as SphereGrid).cells_around(start, 4)
+		for k: int in mini(int(DevHooks.get_f("crew-zone", 8.0)), zr.size() - 20):
+			crew.set_zone_cell("clean", zr[20 + k], true)
 	if DevHooks.has("crew-build"):  # [v6crew] --crew-build=type[,seconds]: a robot built at the bench after a while
 		var cb: PackedStringArray = DevHooks.get_s("crew-build", "scoopie").split(",")
 		var wait: Callable = func() -> void:

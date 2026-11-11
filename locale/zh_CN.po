@@ -1468,48 +1468,56 @@ msgstr "这里还没有机器人。"
 msgid "Build one at the workbench."
 msgstr "在工作台造一台。"
 
-#: robots/sphere/command_overlay.gd:105
+#: robots/sphere/command_overlay.gd:106 robots/sphere/command_overlay.gd:158
 msgid "%d robot"
 msgid_plural "%d robots"
 msgstr[0] "%d 台机器人"
 
-#: robots/sphere/command_overlay.gd:107
+#: robots/sphere/command_overlay.gd:108
 msgid "About %d hexes an hour"
 msgstr "每小时约 %d 个六角格"
 
-#: robots/sphere/command_overlay.gd:121
+#: robots/sphere/command_overlay.gd:122 robots/sphere/command_overlay.gd:159
 msgid "%d working"
 msgstr "%d 台在工作"
 
-#: robots/sphere/command_overlay.gd:123
+#: robots/sphere/command_overlay.gd:124
 msgid "%d working, %d waiting"
 msgstr "%d 台在工作，%d 台在等待"
 
-#: robots/sphere/command_overlay.gd:125
+#: robots/sphere/command_overlay.gd:126
 msgid "%d waiting"
 msgstr "%d 台在等待"
 
-#: robots/sphere/command_overlay.gd:129 robots/sphere/crew_talk.gd:71 robots/sphere/crew_talk.gd:75
+#: robots/sphere/command_overlay.gd:130 robots/sphere/crew_talk.gd:71 robots/sphere/crew_talk.gd:75
 msgid "Bales are piling up. Build a Haul Bug."
 msgstr "捆包越堆越多。建造一台 Haul Bug 吧。"
 
-#: robots/sphere/command_overlay.gd:138
+#: robots/sphere/command_overlay.gd:152
+msgid "OTHER BASES"
+msgstr "其他基地"
+
+#: robots/sphere/command_overlay.gd:156
+msgid "Base %d"
+msgstr "基地 %d"
+
+#: robots/sphere/command_overlay.gd:168
 msgid "Good! Your robots will work here first."
 msgstr "很好！你的机器人会先在这里干活。"
 
-#: robots/sphere/command_overlay.gd:139
+#: robots/sphere/command_overlay.gd:169
 msgid "Hold A: paint   Hold X: erase   %s: back"
 msgstr "按住 A：涂   按住 X：擦除   %s：返回"
 
-#: robots/sphere/command_overlay.gd:140
+#: robots/sphere/command_overlay.gd:170
 msgid "Left mouse: paint   Right mouse: erase   %s: back"
 msgstr "鼠标左键：涂   鼠标右键：擦除   %s：返回"
 
-#: robots/sphere/command_overlay.gd:142
+#: robots/sphere/command_overlay.gd:172
 msgid "Y: next job"
 msgstr "Y：下一种工作"
 
-#: robots/sphere/command_overlay.gd:142
+#: robots/sphere/command_overlay.gd:172
 msgid "Tab: next job"
 msgstr "Tab：下一种工作"
 

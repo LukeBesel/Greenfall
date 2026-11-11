@@ -304,6 +304,21 @@ func test_command_view_offers_only_jobs_you_have_robots_for() -> void:
 	assert_true(str(CommandOverlay.hint_lines(cmd)[1]).contains("A"), "the pad gets pad keys")
 	cmd.painted_now = 2
 	assert_eq(str(CommandOverlay.hint_lines(cmd)[0]), tr("Good! Your robots will work here first."))
+	assert_true(CommandOverlay.other_bases(crew, 100).is_empty(), "one base: no other-bases rows")
+
+
+## [v6crew] The card also lists the other bases' crews, so one glance shows every robot.
+func test_command_card_lists_other_bases() -> void:
+	var w: Dictionary = _world()
+	var crew: SphereCrew = w["crew"]
+	var far: int = _far_hub()
+	crew.hubs = PackedInt32Array([100, far])
+	crew.spawn("scoopie", 0, far, far)
+	crew.spawn("scoopie", 0, far, far)
+	var rows: Array = CommandOverlay.other_bases(crew, 100)
+	assert_eq(rows.size(), 2, "a header and one row: %s" % [rows])
+	assert_true(str(rows[1]["text"]).contains("2"), "the row counts that base's robots: %s" % rows[1]["text"])
+	assert_true(CommandOverlay.other_bases(crew, far).is_empty(), "seen from the far base, the start base has none")
 
 
 ## No dead ends: every type goes from built to working, and what it bales is cashed, also after

@@ -1471,49 +1471,57 @@ msgstr "Aún no hay robots aquí."
 msgid "Build one at the workbench."
 msgstr "Construye uno en el banco de trabajo."
 
-#: robots/sphere/command_overlay.gd:105
+#: robots/sphere/command_overlay.gd:106 robots/sphere/command_overlay.gd:158
 msgid "%d robot"
 msgid_plural "%d robots"
 msgstr[0] "%d robot"
 msgstr[1] "%d robots"
 
-#: robots/sphere/command_overlay.gd:107
+#: robots/sphere/command_overlay.gd:108
 msgid "About %d hexes an hour"
 msgstr "Unos %d hexágonos por hora"
 
-#: robots/sphere/command_overlay.gd:121
+#: robots/sphere/command_overlay.gd:122 robots/sphere/command_overlay.gd:159
 msgid "%d working"
 msgstr "%d trabajando"
 
-#: robots/sphere/command_overlay.gd:123
+#: robots/sphere/command_overlay.gd:124
 msgid "%d working, %d waiting"
 msgstr "%d trabajando, %d esperando"
 
-#: robots/sphere/command_overlay.gd:125
+#: robots/sphere/command_overlay.gd:126
 msgid "%d waiting"
 msgstr "%d esperando"
 
-#: robots/sphere/command_overlay.gd:129 robots/sphere/crew_talk.gd:71 robots/sphere/crew_talk.gd:75
+#: robots/sphere/command_overlay.gd:130 robots/sphere/crew_talk.gd:71 robots/sphere/crew_talk.gd:75
 msgid "Bales are piling up. Build a Haul Bug."
 msgstr "Las pacas se amontonan. Construye un Haul Bug."
 
-#: robots/sphere/command_overlay.gd:138
+#: robots/sphere/command_overlay.gd:152
+msgid "OTHER BASES"
+msgstr "OTRAS BASES"
+
+#: robots/sphere/command_overlay.gd:156
+msgid "Base %d"
+msgstr "Base %d"
+
+#: robots/sphere/command_overlay.gd:168
 msgid "Good! Your robots will work here first."
 msgstr "¡Bien! Tus robots trabajarán aquí primero."
 
-#: robots/sphere/command_overlay.gd:139
+#: robots/sphere/command_overlay.gd:169
 msgid "Hold A: paint   Hold X: erase   %s: back"
 msgstr "Mantén A: pintar   Mantén X: borrar   %s: volver"
 
-#: robots/sphere/command_overlay.gd:140
+#: robots/sphere/command_overlay.gd:170
 msgid "Left mouse: paint   Right mouse: erase   %s: back"
 msgstr "Clic izquierdo: pintar   Clic derecho: borrar   %s: volver"
 
-#: robots/sphere/command_overlay.gd:142
+#: robots/sphere/command_overlay.gd:172
 msgid "Y: next job"
 msgstr "Y: siguiente tarea"
 
-#: robots/sphere/command_overlay.gd:142
+#: robots/sphere/command_overlay.gd:172
 msgid "Tab: next job"
 msgstr "Tab: siguiente tarea"
 

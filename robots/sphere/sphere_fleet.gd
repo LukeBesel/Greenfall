@@ -77,6 +77,10 @@ func upgrade_tier(type_id: String) -> bool:
 				if rv:
 					rv.build(type_id, str(Economy.robot_tiers[clampi(t, 0, Economy.robot_tiers.size() - 1)].get("look", "salvage")))
 				SphereCrew.dress(b, type_id, t)
+				var bd: BotBadge = b.get_node_or_null("Badge") as BotBadge  # [v6crew] the new model's height, and a flash
+				if bd != null:
+					bd.position.y = BotBadge.top_of(b.visual) + 0.22
+				Vfx.ring(b.global_position + b.dir * 0.15, 2.2, UITheme.GOLD, 1.0)
 	return true
 
 
