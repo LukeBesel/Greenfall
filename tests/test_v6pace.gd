@@ -103,8 +103,8 @@ func test_goal_chain_leads_to_the_exit() -> void:
 	assert_gt(b3, 0)
 	assert_gt(drive, b3)
 	assert_eq(land, drive + 1)
-	assert_lte(drive - b3, 10, "a short walk from base 3 to the drive: stations 5 and 6, Mk III and a few garden steps")
-	for id: String in ["shards_1", "pet_cat", "extras_radio", "builder_1", "base_4", "base_5"]:
+	assert_lte(drive - b3, 12, "a short walk from base 3 to the drive: stations 5 and 6, Mk III, base 4 and 5 and a few garden steps")
+	for id: String in ["shards_1", "pet_cat", "extras_radio", "builder_1"]:
 		assert_gt(_goal_index(id), land, "%s is not on the way out" % id)
 	var ch: Array = Economy.read_json("res://data/goals.json").get("goals", [])
 	assert_string_contains(Objectives.goal_reason(ch[land]), "You can fly on now")
@@ -118,7 +118,7 @@ func test_hub_steps_sit_between_the_base_steps() -> void:
 	for i: int in range(1, order.size()):
 		assert_gt(ids.find(order[i]), ids.find(order[i - 1]), "%s comes after %s" % [order[i], order[i - 1]])
 		assert_gt(ids.find(order[i - 1]), -1)
-	var late: Array = ["hub_fly_5", "hub_wake_5", "rocket_tier_3", "hub_fly_6", "hub_wake_6"]
+	var late: Array = ["base_4", "hub_fly_5", "hub_wake_5", "rocket_tier_3", "base_5", "hub_fly_6", "hub_wake_6"]  # base 4 and 5: an income buy inside each long saving step
 	for i: int in late.size():
 		assert_gt(_goal_index(late[i]), _goal_index("base_3"))
 		assert_lt(_goal_index(late[i]), _goal_index("home_drive_5"))
@@ -257,7 +257,7 @@ func test_clock_stands_still_behind_the_loader() -> void:
 # The pinned numbers (cubes).
 const FAR: Array[float] = [600.0, 2400.0, 9600.0, 38000.0, 400000.0]  # hub 6: cost_override "4" (a push before the drive)
 const MK2: float = 8000.0
-const PACE: float = 1.15
+const PACE: float = 1.3
 const MK3: float = 150000.0
 const DRIVE: float = 500000.0
 const BASE3: float = 9000.0
