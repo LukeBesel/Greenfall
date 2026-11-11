@@ -257,3 +257,4 @@ Direction: the flat world's vibe is better, so build it into the round world: bu
 61. Before flying off Verdance (at 4–5 hours), the player should have seen about 6 of its bases (hubs).
 62. More songs are coming later. Set music up so songs are easy to add, swap and adjust (which planet, when, how often, volume) without code changes. The same goes for everything as the game grows to the other planets: keep it easy to change and adjustable per planet.
 63. Cubes should grow semi-exponentially, like an incremental game: income and prices multiply as you go (bigger numbers each base), not a flat or linear price ladder. Time per step stays roughly steady because income grows with the prices.
+64. Numbers should be big: a few thousand cubes is far too small for major steps. Upgrading the rocket enough to leave the planet should cost tens or hundreds of thousands of cubes.
