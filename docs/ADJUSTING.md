@@ -98,6 +98,33 @@ At the end it prints a `[snd]` table: every sound, its slider group, how often i
 level, the shortest time between two plays, how many came within 5 seconds of the last, and how
 many sounded at once. The full list is in `screenshots/sound_log.txt`.
 
+## The world coming back to life (v6life)
+
+What reacts where Lumi cleans: grass on clean ground, town blocks that wake up, butterflies, and
+the sound bed. All of it is in `data/life.json` (look, rules) and `data/sound.json` (sound). In
+`data/life.json`, `_default` has every value; a planet's block (`"verdance": {...}`) repeats only
+what it changes, e.g. `"ochre": {"ground": {"grow_s": 600}}`. Nothing is saved, so a change shows
+on the next start.
+
+| To change | Edit |
+|---|---|
+| How green a clean cell grows, per hex level 0..5 (6 numbers, 0 to 1) | `ground.green_per_level` |
+| How long a freshly cleaned cell takes to green over (seconds) | `ground.grow_s` |
+| Grass tufts per cell and how far round Lumi they stand, per quality preset Low..Ultra | `ground.tufts_per_cell`, `ground.tuft_rings` |
+| How many tufts are flowers, and their colours | `ground.flower_share`, `ground.petals` (`"#rrggbb"`) |
+| How clean a city block must be for its first windows (stage 1) and its street lamps (stage 2) | `town.swept_at`, `town.awake_at` (share of its cells, 0 to 1) |
+| Planted cells that make a clean block "alive" (stage 3: neon, string lights, shop windows) | `town.planted_cells` |
+| Share of windows lit at dusk per stage 0..3 | `town.lit_windows` |
+| Which stage turns street lamps and signs on | `town.lamps_at_stage`, `town.signs_at_stage` |
+| How fast a block's colour and windows follow a change (seconds) | `town.ease_s` |
+| Butterflies and fireflies per cell by hex level, the most at once, their colours | `flutter.per_level`, `flutter.max`, `flutter.colors` |
+| The sound that follows the ground round Lumi (wind over junk, leaves over grass, rare creaks and bird phrases) | `data/sound.json` `planets.<id>.ambience.life`: `loops` (`id: [dB, dirty/green/always]`) and `events` (`[sound, min s, max s, dB, pitch lo, pitch hi, dirty/green/green_day/always, min s between]`). A loop or sound can be a `res://` file, so a recorded sound can replace a built-in one. A planet without a `life` block has none |
+
+Check with `godot --headless --path . -- --fresh --orbit --no-intro --life-clean=6,2 --life-report --quit-after=60`
+(`[life]` lines: grass tufts, butterflies, sound weights and plays, each town's blocks per stage
+and its lit lights). More dev hooks are listed at the top of `planet/sites/life_dev.gd`. Tests:
+`tests/test_town_life.gd`, `tests/test_cell_verdure.gd`.
+
 ## Pacing, prices and gates (v6pace)
 
 Measure after a change: `flock /tmp/gf-autoplay.lock godot --headless --path . -- --fresh --orbit --autoplay --time-scale=8 --quit-after=2700`

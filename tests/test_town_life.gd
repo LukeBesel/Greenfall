@@ -52,18 +52,26 @@ func test_ambience_is_wind_over_junk_leaves_over_green_and_quiet_between() -> vo
 	var lush: Vector2 = LifeAmbience.weights(0.0, 0.7)
 	assert_eq(lush.x, 0.0, "no dump wind in the garden")
 	assert_gt(lush.y, 0.9)
-	assert_lt(LifeAmbience.WIND_DB, -20.0, "beds stay under everything")
-	assert_lt(LifeAmbience.LEAVES_DB, -20.0)
+	var bed: Dictionary = LifeAmbience.bed_of("verdance")
+	assert_false(bed.is_empty(), "Verdance's life bed is in data/sound.json")
+	var ons: Array = []
+	for lid: String in bed["loops"]:
+		assert_lt(float(bed["loops"][lid][0]), -20.0, "beds stay under everything: " + lid)
+		ons.append(str(bed["loops"][lid][1]))
+	assert_has(ons, "dirty")
+	assert_has(ons, "green")
 
 
 func test_one_shots_are_rare_and_tied_to_the_ground() -> void:
-	assert_false(LifeAmbience.creak_ok(0.3))
-	assert_true(LifeAmbience.creak_ok(0.9))
-	assert_false(LifeAmbience.song_ok(0.1, 0.0), "no birdsong over bare ground")
-	assert_true(LifeAmbience.song_ok(0.5, 0.0))
-	assert_false(LifeAmbience.song_ok(0.5, 1.0), "none at night")
-	assert_gte(LifeAmbience.CREAK_GAP.x, 30.0)
-	assert_gte(LifeAmbience.SONG_GAP.x, 45.0, "owner items 32 and 50: very little chirping")
+	assert_false(LifeAmbience.when_ok("dirty", 0.3, 0.0, 0.0))
+	assert_true(LifeAmbience.when_ok("dirty", 0.9, 0.0, 0.0))
+	assert_false(LifeAmbience.when_ok("green_day", 0.0, 0.1, 0.0), "no birdsong over bare ground")
+	assert_true(LifeAmbience.when_ok("green_day", 0.0, 0.5, 0.0))
+	assert_false(LifeAmbience.when_ok("green_day", 0.0, 0.5, 1.0), "none at night")
+	assert_false(LifeAmbience.when_ok("typo", 1.0, 1.0, 0.0), "an unknown condition never plays")
+	for e: Array in LifeAmbience.bed_of("verdance")["events"]:
+		assert_gte(float(e[1]), 30.0, "owner items 32 and 50: very little chirping: " + str(e[0]))
+		assert_gte(float(e[7]), 30.0)
 
 
 func test_ambience_measures_the_land_round_lumi() -> void:
@@ -75,3 +83,28 @@ func test_ambience_measures_the_land_round_lumi() -> void:
 	var m: Vector2 = LifeAmbience.measure(c, PackedInt32Array([0, 1, 2, 3, 4, 5, 6, 7, 15]))
 	assert_almost_eq(m.x, 0.5, 0.001, "half the land is still junk")
 	assert_almost_eq(m.y, 0.5, 0.001, "half of it is fully green")
+
+
+func test_life_values_come_from_data() -> void:
+	var raw: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/life.json"))
+	assert_true(raw is Dictionary, "data/life.json parses")
+	var d: Dictionary = raw["planets"]["_default"]
+	assert_eq(TownLife.LIT.size(), 4)
+	assert_almost_eq(TownLife.CLEAN_2, float(d["town"]["awake_at"]), 0.0001)
+	assert_eq(CellVerdure.TARGET.size(), 6)
+	assert_almost_eq(CellVerdure.TARGET[1], float(d["ground"]["green_per_level"][1]), 0.0001)
+	assert_eq(Flutter.MAX_N, int(d["flutter"]["max"]))
+	assert_eq(Flutter.COLORS.size(), (d["flutter"]["colors"] as Array).size())
+
+
+func test_a_planet_block_overrides_only_what_it_names() -> void:
+	LifeCfg.cfg()
+	var keep: Dictionary = LifeCfg._cfg
+	LifeCfg._cfg = {"planets": {"_default": {"town": {"swept_at": 0.5, "awake_at": 0.9}}, "ochre": {"town": {"awake_at": 0.8}}}}
+	LifeCfg.use_planet("ochre")
+	assert_almost_eq(LifeCfg.num("town", "awake_at", 0.0), 0.8, 0.0001)
+	assert_almost_eq(LifeCfg.num("town", "swept_at", 0.0), 0.5, 0.0001, "the rest from _default")
+	assert_eq(LifeCfg.floats("town", "lit_windows", [0.0, 1.0], 4), [0.0, 1.0] as Array[float], "a missing list falls back")
+	LifeCfg._cfg = keep
+	LifeCfg.use_planet("verdance")
+	TownLife.configure()

@@ -51,7 +51,20 @@
     "_note": "Verdance's bed is its wildlife (fauna/) and the dirty-to-clean bed of the town life (v6life). Loops and events listed here would play on top, like on the other planets.",
     "level_db": 0.0,
     "loops": {},
-    "events": []
+    "events": [],
+    "life": {
+     "_doc": "[v6life] The bed that follows the ground round Lumi (audio/life_ambience.gd), not the planet's restoration. Any planet can have one. rings: rings of cells round Lumi it listens to (3 is about 30 m). fade_s: crossfade seconds. loops: id -> [dB at full weight, on]; on is dirty (mostly junk round Lumi), green (grass round Lumi) or always; an id is a built-in loop (wind_dust, wind_warm, wind_sea, wind_eerie, heat_buzz, waves, water, cicadas, leaves) or a res:// sound file. events: [sound, shortest wait s, longest wait s, dB, pitch low, pitch high, when, at least s between two]; when is dirty, green, green_day or always; sound is amb_creak, a game sound (song, chirp, coo, gull, frog, ...) or a res:// file. Bird calls also wait for the wildlife's shared bird clock.",
+     "rings": 3,
+     "fade_s": 6.0,
+     "loops": {
+      "wind_dust": [-25.0, "dirty"],
+      "leaves": [-23.0, "green"]
+     },
+     "events": [
+      ["amb_creak", 35.0, 80.0, -27.0, 0.75, 1.05, "dirty", 30.0],
+      ["song", 50.0, 110.0, -25.0, 0.95, 1.1, "green_day", 50.0]
+     ]
+    }
    }
   },
   "ochre": {
