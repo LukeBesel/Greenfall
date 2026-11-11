@@ -491,7 +491,7 @@ msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
-#: core/pace.gd:147 story/objectives.gd:899
+#: core/pace.gd:147 story/objectives.gd:901
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "太重了。去工作台升级举升力。"
 
@@ -917,55 +917,55 @@ msgstr "埋藏零件  %s  ·  %.1f 米"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "埋藏零件  ·  信号 %d%%"
 
-#: player/patch.gd:171
+#: player/patch.gd:174
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi 哐啷哐啷地回到了院子里。真奇怪。"
 
-#: player/patch.gd:225
+#: player/patch.gd:228
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi 不会游泳。在工作台装上悬浮喷口，他就能飘过湖面。"
 
-#: player/patch.gd:349
+#: player/patch.gd:352
 msgid "No seeds yet. Keep cleaning."
 msgstr "还没有种子。继续清理吧。"
 
-#: player/patch.gd:384
+#: player/patch.gd:387
 msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 msgstr "种子需要干净、空旷的土地：不能是街道、路沿或起降台。"
 
-#: player/patch.gd:391
+#: player/patch.gd:394
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "种子用完了。开花的植物会掉落更多。"
 
-#: player/patch.gd:398
+#: player/patch.gd:401
 msgid "Watering can is empty. Refill at the hub."
 msgstr "水壶空了。回基地补水。"
 
-#: player/patch.gd:603
+#: player/patch.gd:606
 msgid "PERFECT BALE  %s"
 msgstr "完美捆包  %s"
 
-#: player/patch.gd:609
+#: player/patch.gd:612
 msgid "OVERSTUFFED  %s"
 msgstr "塞爆了  %s"
 
-#: player/patch.gd:613
+#: player/patch.gd:616
 msgid "PURE  %s"
 msgstr "纯净  %s"
 
-#: player/patch.gd:615
+#: player/patch.gd:618
 msgid "SURGE  %s"
 msgstr "冲劲  %s"
 
-#: player/patch.gd:618
+#: player/patch.gd:621
 msgid "  (streak +%d%%)"
 msgstr "  （连击 +%d%%）"
 
-#: player/patch.gd:661
+#: player/patch.gd:664
 msgid "Salvaged: %s"
 msgstr "回收：%s"
 
-#: player/patch.gd:692
+#: player/patch.gd:695
 msgid "Recovered: %s"
 msgstr "找回：%s"
 
@@ -1552,7 +1552,7 @@ msgstr "你的基地已经成长到试玩版的极限。"
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "在完整版中，Lumi 会把基地建到 5 级，种满整片街区直到繁茂，让它们成长为明亮的未来城市，还会乘火箭飞往星球上的数十座基地。你的试玩进度会被保留。"
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:787
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:789
 msgid "Hexes cleaned"
 msgstr "已清理六角格"
 
@@ -1560,11 +1560,11 @@ msgstr "已清理六角格"
 msgid "Bales made"
 msgstr "已制作捆包"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:802
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:804
 msgid "Robots built"
 msgstr "已建造机器人"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:810
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:812
 msgid "Time played"
 msgstr "游戏时长"
 
@@ -1584,7 +1584,7 @@ msgstr "标题画面"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "继续游戏：第一个街区仍然开放，基地等级 %d。"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:880 ui/main_menu.gd:519
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:519
 msgid "%dh %02dm"
 msgstr "%d时%02d分"
 
@@ -1918,27 +1918,27 @@ msgstr "那个人就是你。小小的。倔强的。只剩百分之四的电。
 msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
 msgstr "找到干净的地面。挖坑。放进去。拍拍土。然后——这步很重要——浇水。"
 
-#: story/first_seed.gd:143
+#: story/first_seed.gd:145
 msgid "{tool_water}  then hold  {scoop}  to water it"
 msgstr "{tool_water}  然后按住  {scoop}  浇水"
 
-#: story/first_seed.gd:169
+#: story/first_seed.gd:171
 msgid "Hold  {scoop}  on clean ground to plant the seed"
 msgstr "在干净的地面上按住  {scoop}  种下种子"
 
-#: story/first_seed.gd:246
+#: story/first_seed.gd:248
 msgid "...It's green. Lumi, it's actually green."
 msgstr "……是绿色的。Lumi，真的是绿色的。"
 
-#: story/first_seed.gd:248
+#: story/first_seed.gd:250
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "记得浇水。外面种子很稀少，但每次开花都会还你一颗，还会给你的核心一点绿光。一切就是这样开始的。"
 
-#: story/first_seed.gd:361
+#: story/first_seed.gd:363
 msgid "Lumi, that green signal is back, stronger now. Follow the beam: the old greenhouse."
 msgstr "Lumi，那个绿色信号又出现了，而且更强了。跟着光柱走：去旧温室。"
 
-#: story/first_seed.gd:370
+#: story/first_seed.gd:372
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr "Lumi。我收到一个信号。绿色的，很微弱，在基地东边。一座旧温室。去看看。"
 
@@ -2179,53 +2179,57 @@ msgstr "LEDGER  WMS-07"
 msgid "Reward: %s"
 msgstr "奖励：%s"
 
-#: story/objectives.gd:406
+#: story/objectives.gd:408
 msgid "Objective complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:433
+#: story/objectives.gd:435
 msgid "Goal complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:702
+#: story/objectives.gd:704
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "打包机装好了！装满胸舱，按 [%s] 压一个捆包，再把它搬到秤上。"
 
-#: story/objectives.gd:724 story/objectives.gd:887
+#: story/objectives.gd:726 story/objectives.gd:889
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "你的胸舱满了。按 [%s] 压一个捆包。"
 
-#: story/objectives.gd:740
+#: story/objectives.gd:742
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "你的探测器发现附近埋着一个机器人零件。跟着“埋藏零件”的读数走；走到正上方时它会哔哔响。"
 
-#: story/objectives.gd:742
+#: story/objectives.gd:744
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
 
-#: story/objectives.gd:888
+#: story/objectives.gd:890
 msgid "Your chest is full. Bring it to the bin."
 msgstr "你的胸舱满了。带到垃圾桶去。"
 
-#: story/objectives.gd:895
+#: story/objectives.gd:897
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "你的胸舱满了。回家吧：垃圾桶就在高高的烟柱下面。"
 
-#: story/objectives.gd:897
+#: story/objectives.gd:899
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "把捆包搬回家：秤就在高高的烟柱下面。"
 
-#: story/objectives.gd:897
+#: story/objectives.gd:899
 msgid "Carry your bale to the scale by the bin."
 msgstr "把捆包搬到垃圾桶旁边的秤上。"
 
-#: story/objectives.gd:904
+#: story/objectives.gd:906
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "回家吧：跟着光柱走到高高的烟柱那里。"
 
-#: story/objectives.gd:914
+#: story/objectives.gd:916
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "这里没有东西可捡。走到垃圾更多的地方去。"
+
+#: story/planet_steps.gd:57
+msgid "Wake station %d of %d"
+msgstr "唤醒第 %d 座站点(共 %d 座)"
 
 #: story/shards.gd:106
 msgid "Something surfaced in the cleared ground. A memory shard."
@@ -2976,7 +2980,7 @@ msgstr "已在队列中"
 msgid "Queue is full"
 msgstr "队列已满"
 
-#: systems/research.gd:340 ui/codex_screen.gd:884
+#: systems/research.gd:340 ui/codex_screen.gd:886
 msgid "%ds"
 msgstr "%d秒"
 
@@ -3407,7 +3411,7 @@ msgstr "压了大约 %d 个捆包"
 msgid "kept the base tidy"
 msgstr "把基地收拾得整整齐齐"
 
-#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:794
+#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:796
 msgid "Cubes earned"
 msgstr "赚到的方块"
 
@@ -3918,7 +3922,7 @@ msgstr "在%s的瓦砾中找到他们的一张CD。"
 msgid "Your CDs (%d / %d): %s"
 msgstr "你的CD（%d / %d）：%s"
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:816
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:818
 msgid "Achievements"
 msgstr "成就"
 
@@ -4069,123 +4073,123 @@ msgstr "提示：在%s期间出现。"
 msgid "Unlocked  ·  %s"
 msgstr "已解锁  ·  %s"
 
-#: ui/codex_screen.gd:784
+#: ui/codex_screen.gd:786
 msgid "Total"
 msgstr "总计"
 
-#: ui/codex_screen.gd:785
+#: ui/codex_screen.gd:787
 msgid "Junk removed"
 msgstr "清除的废料"
 
-#: ui/codex_screen.gd:785
+#: ui/codex_screen.gd:787
 msgid "by type"
 msgstr "按种类"
 
-#: ui/codex_screen.gd:786 data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:788 data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "清理"
 
-#: ui/codex_screen.gd:788
+#: ui/codex_screen.gd:790
 msgid "Hexes restored"
 msgstr "恢复的六角格"
 
-#: ui/codex_screen.gd:789
+#: ui/codex_screen.gd:791
 msgid "Bales pressed"
 msgstr "压制的捆包"
 
-#: ui/codex_screen.gd:790
+#: ui/codex_screen.gd:792
 msgid "Pure bales"
 msgstr "纯净捆包"
 
-#: ui/codex_screen.gd:791
+#: ui/codex_screen.gd:793
 msgid "Perfect bales"
 msgstr "完美捆包"
 
-#: ui/codex_screen.gd:792
+#: ui/codex_screen.gd:794
 msgid "Lumpy bales"
 msgstr "不平整捆包"
 
-#: ui/codex_screen.gd:793
+#: ui/codex_screen.gd:795
 msgid "Bales cashed in"
 msgstr "兑现的捆包"
 
-#: ui/codex_screen.gd:796 ui/globe_view.gd:156 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:798 ui/globe_view.gd:156 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "种植"
 
-#: ui/codex_screen.gd:797
+#: ui/codex_screen.gd:799
 msgid "Seeds planted"
 msgstr "播下的种子"
 
-#: ui/codex_screen.gd:798
+#: ui/codex_screen.gd:800
 msgid "Plants bloomed"
 msgstr "开花的植物"
 
-#: ui/codex_screen.gd:799
+#: ui/codex_screen.gd:801
 msgid "Air filtered"
 msgstr "过滤的空气"
 
-#: ui/codex_screen.gd:801 data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:803 data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "机器人"
 
-#: ui/codex_screen.gd:803
+#: ui/codex_screen.gd:805
 msgid "Bales by robots"
 msgstr "机器人打的捆包"
 
-#: ui/codex_screen.gd:804
+#: ui/codex_screen.gd:806
 msgid "Parts dug up"
 msgstr "挖出的零件"
 
-#: ui/codex_screen.gd:806
+#: ui/codex_screen.gd:808
 msgid "Exploring"
 msgstr "探索"
 
-#: ui/codex_screen.gd:807
+#: ui/codex_screen.gd:809
 msgid "Distance rolled"
 msgstr "行驶距离"
 
-#: ui/codex_screen.gd:808
+#: ui/codex_screen.gd:810
 msgid "Memory shards read"
 msgstr "读过的记忆碎片"
 
-#: ui/codex_screen.gd:809
+#: ui/codex_screen.gd:811
 msgid "Codex entries"
 msgstr "图鉴条目"
 
-#: ui/codex_screen.gd:812
+#: ui/codex_screen.gd:814
 msgid "Progress"
 msgstr "进度"
 
-#: ui/codex_screen.gd:813
+#: ui/codex_screen.gd:815
 msgid "Upgrades bought"
 msgstr "购买的升级"
 
-#: ui/codex_screen.gd:814
+#: ui/codex_screen.gd:816
 msgid "Field notes logged"
 msgstr "已记录的野外笔记"
 
-#: ui/codex_screen.gd:815
+#: ui/codex_screen.gd:817
 msgid "Research done"
 msgstr "完成的研究"
 
-#: ui/codex_screen.gd:817
+#: ui/codex_screen.gd:819
 msgid "Best hub level"
 msgstr "最高基地等级"
 
-#: ui/codex_screen.gd:868
+#: ui/codex_screen.gd:870
 msgid "%s kg"
 msgstr "%s 千克"
 
-#: ui/codex_screen.gd:869
+#: ui/codex_screen.gd:871
 msgid "%.1f kg"
 msgstr "%.1f 千克"
 
-#: ui/codex_screen.gd:873
+#: ui/codex_screen.gd:875
 msgid "%.2f km"
 msgstr "%.2f 公里"
 
-#: ui/codex_screen.gd:883
+#: ui/codex_screen.gd:885
 msgid "%dm %02ds"
 msgstr "%d分%02d秒"
 
@@ -18868,8 +18872,3 @@ msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了
 
 #~ msgid "Sharper shredder teeth and a hotter smelter. More bolts and stock per bale."
 #~ msgstr "更锋利的粉碎齿和更热的熔炉。每个捆包产出更多螺栓和建材。"
-
-#: story/planet_steps.gd:58
-#, c-format
-msgid "Wake station %d of %d"
-msgstr "唤醒第 %d 座站点(共 %d 座)"
