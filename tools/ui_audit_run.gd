@@ -248,6 +248,14 @@ func _check_play(cfg: String, hud: Node, cam: SphereCam, patch: Node3D, subs: Su
 		_report(cfg, "covers", "subtitle over Lumi", "pill %s lumi %s" % [_r(pill), _r(lr)])
 	if gr.size.y > 0.0 and pill.intersects(gr):
 		_report(cfg, "covers", "subtitle over the goal card", "goals %s" % _r(gr))
+	var kh: Control = hud.get("_hints") as Control  # [v7look] the key-hint pill: off the hotbar, never mid-screen
+	if kh and kh.is_visible_in_tree() and kh.modulate.a > 0.05 and hb and hb.is_visible_in_tree():
+		var kr: Rect2 = UIAudit.rect_of(kh)
+		var slots: Rect2 = hb.get_global_rect().grow_side(SIDE_TOP, -14.0)
+		if kr.intersects(slots.grow_side(SIDE_LEFT, -90.0).grow_side(SIDE_RIGHT, -90.0)) and minf(kr.intersection(slots).size.x, kr.intersection(slots).size.y) >= UIAudit.OVERLAP_MIN:
+			_report(cfg, "overlap", "key hints with the hotbar", "hints %s hotbar %s" % [_r(kr), _r(slots)])
+		if kr.position.y < view.size.y * 0.55:
+			_report(cfg, "offplace", "key hints mid-screen", "hints %s view %dx%d" % [_r(kr), roundi(view.size.x), roundi(view.size.y)])
 	if hb and hb.is_visible_in_tree():
 		var ink: Rect2 = hb.get_global_rect().grow_side(SIDE_TOP, -14.0)
 		if pill.intersects(ink) and hb.self_modulate.a > 0.5:
@@ -501,6 +509,7 @@ func _arrival_pass() -> void:
 	if t:
 		t.queue_free()
 	hud.hold_corner(0.0)
+	subs.hush(0.0)
 	subs.clear()
 	await _frames(2)
 
@@ -519,7 +528,12 @@ func _check_arrival(cfg: String, hp: HubPurpose, hud: HUD, subs: Subtitles) -> v
 			var why: String = UIAudit.label_clipped(l as Label)
 			if why != "":
 				_report(cfg, "clipped", "arrival title", "\"%s\" %s" % [(l as Label).text.left(32), why])
-	var others: Dictionary = {"the top-right cards": hud.corner_rect(), "the subtitle bar": UIAudit.rect_of(subs.pill()) if subs.pill().visible else Rect2()}
+	var others: Dictionary = {"the top-right cards": hud.corner_rect(), "the subtitle bar": UIAudit.rect_of(subs.pill()) if subs.pill().visible and not subs.hushed() else Rect2()}
+	if not subs.hushed():
+		_report(cfg, "covers", "arrival title with WREN's bar still up", "the bar should fade out while the title shows")
+	var bottom: Control = hud.get("_bottom") as Control
+	if bottom and bottom.is_visible_in_tree() and bottom.modulate.a > 0.05:
+		_report(cfg, "covers", "arrival title with the hotbar still up", "alpha %.2f" % bottom.modulate.a)
 	var tl: Control = hud.get("_top_left") as Control
 	if tl and tl.is_visible_in_tree():
 		for c: Control in UIAudit.content_of([tl]):

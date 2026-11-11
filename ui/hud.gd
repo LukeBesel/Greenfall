@@ -53,7 +53,8 @@ var _signal_strength: float = 0.0
 var _top_left: MarginContainer
 var _top_right: MarginContainer
 var _hints_mc: MarginContainer  # [v7look] lifted over the hotbar's readouts on narrow screens
-var _hold_corner_s: float = 0.0  # [v7look] seconds the top-right cards stay faded out (hold_corner)
+var _hold_corner_s: float = 0.0
+var _hold_all: bool = false  # [v7look] hold_corner(s, true): the bottom band steps aside too  # [v7look] seconds the top-right cards stay faded out (hold_corner)
 var _bottom: Control
 var _scrims: Control
 
@@ -254,8 +255,10 @@ func _build_hints() -> void:
 
 ## [v7look] Fades the top-right cards (base line, goal stack) out for `s` seconds and then back, so a
 ## big centred moment (a base's arrival title) has the top of the screen to itself. 0 releases now.
-func hold_corner(s: float) -> void:
+## With `all`, the hotbar band and the key hints step aside too (an arrival title: nothing else on screen).
+func hold_corner(s: float, all: bool = false) -> void:
 	_hold_corner_s = s  # the cards fade in 0.25 s, about as fast as the title fades in
+	_hold_all = all and s > 0.0
 
 
 ## [v7look] Top of the key-hint pill while it is lifted over the hotbar (narrow screens) and showing,
@@ -378,6 +381,10 @@ func _process(delta: float) -> void:
 	var orb: Variant = world.get("orbit") if world else null  # and the Command view, with its own card and hints
 	var in_cmd: bool = orb is SliceOrbit and (orb as SliceOrbit).cam != null and (orb as SliceOrbit).cam.view == "command"
 	_top_right.modulate.a = move_toward(_top_right.modulate.a, 0.0 if _hold_corner_s > 0.0 or in_cmd else 1.0, delta * 4.0)
+	var bottom_out: bool = _hold_all and _hold_corner_s > 0.0
+	_bottom.modulate.a = move_toward(_bottom.modulate.a, 0.0 if bottom_out else 1.0, delta * 4.0)
+	if _hints_mc:
+		_hints_mc.modulate.a = _bottom.modulate.a
 	if patch:
 		if patch.detector and not patch.detector.readout_changed.is_connected(_on_signal):
 			patch.detector.readout_changed.connect(_on_signal)

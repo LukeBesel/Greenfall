@@ -688,8 +688,11 @@ func show_title(i: int, first: bool = false) -> void:
 	_title = vb
 	fit_title()
 	var hud: Variant = so.w.get("hud") if so and so.w else null
-	if hud is HUD:  # the goal stack steps aside while the name is up, then comes back
-		(hud as HUD).hold_corner(float(HubPlan.hop_cfg("title_in_s", 0.5)) + float(HubPlan.hop_cfg("title_hold_s", 3.0)) + float(HubPlan.hop_cfg("title_out_s", 0.9)) * 0.5)
+	var up_s: float = float(HubPlan.hop_cfg("title_in_s", 0.5)) + float(HubPlan.hop_cfg("title_hold_s", 3.0)) + float(HubPlan.hop_cfg("title_out_s", 0.9)) * 0.5
+	if hud is HUD:  # the HUD steps aside while the name is up (only the cube counter stays), then comes back
+		(hud as HUD).hold_corner(up_s, true)
+	if Subtitles.current:  # and WREN's bar: the line waits and plays on after
+		Subtitles.current.hush(up_s)
 	var sting: String = str(HubPlan.hop_cfg("arrive_sting", "motif"))
 	if first and sting != "" and not HubPlan.is_home(planet, i):
 		Audio.music_sting(sting)
