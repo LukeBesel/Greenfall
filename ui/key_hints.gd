@@ -38,6 +38,17 @@ var _alpha: float = 0.0
 var _peek: float = 0.0
 var _full: bool = false
 var _sig_t: float = 0.0
+## [v7look] The HUD strip is always ONE row. When it is wider than `cap_w` (the room beside the
+## hotbar's right readouts on a small screen) it first gets smaller text and tighter gaps, then
+## drops the words and keeps the key caps (`compact` 0 / 1 / 2). The HUD sets cap_w every frame.
+var cap_w: float = 380.0:
+	set(v):
+		if absf(v - cap_w) > 0.5:
+			cap_w = v
+			_pick_compact()
+var compact: int = 0
+## Per compact level: [key px, name px, gap between items, show names].
+const COMPACT: Array = [[13, 14, 12, true], [11, 12, 8, true], [12, 0, 6, false]]
 
 
 func _init(p_mode: int = Mode.HUD) -> void:
@@ -116,10 +127,12 @@ func _rebuild() -> void:
 		var g: String = Settings.glyph(str(it[0]))
 		if str(it[0]) == "tool_scoop":
 			g = "%s %s %s" % [g, Settings.glyph("tool_plant"), Settings.glyph("tool_water")]
-		cap.add_child(UITheme.label(g, KEY_PX, KEY_COLOR))
+		var lv: Array = COMPACT[compact] if mode == Mode.HUD else COMPACT[0]
+		cap.add_child(UITheme.label(g, int(lv[0]), KEY_COLOR))
 		row.add_child(cap)
 		var name_: String = tr("tools") if str(it[0]) == "tool_scoop" else tr(str(it[1]))
-		var l: Label = UITheme.label(name_, NAME_PX, NAME_COLOR)
+		var l: Label = UITheme.label(name_, int(lv[1]) if bool(lv[3]) else NAME_PX, NAME_COLOR)
+		l.visible = bool(lv[3])
 		l.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		row.add_child(l)
 		_flow.add_child(row)
@@ -127,13 +140,46 @@ func _rebuild() -> void:
 
 
 ## One row when it fits (the HUD's short list), else wrap at the cap.
+## [v7look] The widest row of each compact level, measured with the theme font (for _pick_compact).
+func row_width(level: int) -> float:
+	var f: Font = get_theme_default_font() if is_inside_tree() else ThemeDB.fallback_font
+	var lv: Array = COMPACT[level]
+	var w: float = 0.0
+	var items: Array = _items()
+	for it: Array in items:
+		var g: String = Settings.glyph(str(it[0]))
+		w += f.get_string_size(g, HORIZONTAL_ALIGNMENT_LEFT, -1, int(lv[0])).x + 14.0
+		if bool(lv[3]):
+			var nm: String = tr("tools") if str(it[0]) == "tool_scoop" else tr(str(it[1]))
+			w += 7.0 + f.get_string_size(nm, HORIZONTAL_ALIGNMENT_LEFT, -1, int(lv[1])).x
+	return w + float(lv[2]) * maxf(0.0, items.size() - 1) + 22.0  # + the pill's padding
+
+
+func _pick_compact() -> void:
+	if mode != Mode.HUD:
+		return
+	var want: int = 2
+	for lvl: int in 3:
+		if row_width(lvl) <= cap_w:
+			want = lvl
+			break
+	if want != compact:
+		compact = want
+		if is_inside_tree():
+			_rebuild()
+
+
 func _fit() -> void:
 	var w: float = 0.0
 	var rows: Array[Node] = _flow.get_children().filter(func(c: Node) -> bool: return not c.is_queued_for_deletion())
 	for c: Node in rows:
 		w += (c as Control).get_combined_minimum_size().x
 	w += 12.0 * maxf(0.0, rows.size() - 1) + 2.0
-	var cap: float = 1180.0 if mode == Mode.PAUSE else 380.0  # HUD: stay right of the hotbar
+	if mode == Mode.HUD:  # [v7look] one row, never wrapped
+		_flow.add_theme_constant_override("h_separation", int(COMPACT[compact][2]))
+		_flow.custom_minimum_size.x = w + 2.0
+		return
+	var cap: float = 1180.0
 	_flow.custom_minimum_size.x = minf(w, cap)
 
 

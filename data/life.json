@@ -6,8 +6,8 @@
     "_doc": "green_per_level: how green a clean cell grows, per hex level 0..5 (0 = none, 1 = closed lush sward; 6 numbers). grow_s: seconds a freshly cleaned cell takes from bare to fully green. tufts_per_cell / tuft_rings: grass tufts per cell and rings of cells round Lumi that carry them, per quality preset Low..Ultra (4 numbers each). flower_share: share of tufts that are flowers. petals: flower colours.",
     "green_per_level": [0.0, 0.34, 0.52, 0.72, 0.86, 1.0],
     "grow_s": 340.0,
-    "tufts_per_cell": [44, 60, 80, 100],
-    "tuft_rings": [3, 4, 5, 5],
+    "tufts_per_cell": [70, 84, 100, 120],
+    "tuft_rings": [4, 4, 5, 5],
     "flower_share": 0.14,
     "petals": ["#faf5e6", "#ffdb4d", "#f59ec7", "#a899f2", "#ff994d"]
    },

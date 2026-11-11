@@ -222,6 +222,11 @@ func _ready() -> void:
 	_root.resized.connect(_relayout)
 	_relayout()
 	_root.visible = false
+	if DevHooks.has("open-bench"):  # [v7look] dev: opens the workbench S wall seconds in (shots; --tab, --bench-all)
+		(func() -> void:
+			await DevHooks.wait_wall(DevHooks.get_f("open-bench", 100.0))
+			if is_inside_tree() and not is_open:
+				open_screen()).call_deferred()
 	if DevHooks.has("bench-report"):  # [v1guide] dev: print the tabs and rows every N game seconds
 		var t := Timer.new()
 		t.wait_time = maxf(1.0, DevHooks.get_f("bench-report", 20.0))

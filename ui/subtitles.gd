@@ -65,6 +65,7 @@ var world: Node
 var shown_log: Array[Dictionary] = []
 
 var _root: Control
+var _hush_s: float = 0.0  # [v7look] hush()
 var _mc: MarginContainer
 var _pill: PanelContainer
 var _tag: Label
@@ -495,6 +496,16 @@ func show_now(text: String, speaker: String = "") -> void:
 
 
 ## [v6screens] The pill on screen (the layout audit measures it).
+## [v7look] Hides the bar for `s` seconds; the line in it pauses and resumes after (0 releases now).
+func hush(s: float) -> void:
+	_hush_s = s
+
+
+## [v7look] Whether the bar is hushed (tools/ui_audit_run.gd).
+func hushed() -> bool:
+	return _hush_s > 0.0 or _root.modulate.a < 0.05
+
+
 func pill() -> Control:
 	return _pill
 
@@ -743,6 +754,12 @@ func _process(delta: float) -> void:
 	_low = low if _low < 0.0 else move_toward(_low, low, delta * 4.0)
 	layer = 45 if low > 0.5 else 6
 	_place(delta)
+	# [v7look] A big moment has the screen (a base's arrival title): the bar fades out and the line
+	# waits where it is, then comes back and plays on (hush()).
+	_hush_s = maxf(_hush_s - delta, 0.0)
+	_root.modulate.a = move_toward(_root.modulate.a, 0.0 if _hush_s > 0.0 else 1.0, delta * 4.0)
+	if _hush_s > 0.0:
+		return
 	_clock += delta
 	if _phase == 0:
 		offset = Vector2.ZERO

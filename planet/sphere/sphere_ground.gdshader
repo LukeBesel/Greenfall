@@ -113,7 +113,13 @@ void fragment() {
 		// Our own greens over the grass texture's light and dark (the texture itself is a dry yellow).
 		float gl = dot(grass, vec3(0.3, 0.5, 0.2));
 		float lush = smoothstep(0.02, 0.3, k) * smoothstep(0.3, 0.9, verd);
-		gcol = mix(vec3(0.3, 0.4, 0.13), vec3(0.11, 0.27, 0.07), lush) * (0.45 + 1.3 * gl) * (0.8 + 0.5 * n) * tint_grass;
+		gcol = mix(vec3(0.3, 0.4, 0.13), vec3(0.11, 0.27, 0.07), lush) * (0.35 + 1.6 * gl) * (0.8 + 0.5 * n) * tint_grass;
+		// [v7look] Break the lawn up (it rendered as one flat lime carpet, which the owner has rejected
+		// before): darker clumps and sunlit dry tips at two scales, a little warmer where it is thin.
+		float clump = vnoise3(wpos * 1.9) * 0.6 + vnoise3(wpos * 5.3) * 0.4;
+		float fine = vnoise3(wpos * 13.0);
+		gcol *= mix(0.55, 1.15, clump) * mix(0.85, 1.08, fine) * 0.9;
+		gcol = mix(gcol, gcol * vec3(1.3, 1.12, 0.62), smoothstep(0.55, 0.85, clump) * (1.0 - lush * 0.3));
 		clean = mix(clean, clean * vec3(0.78, 0.86, 0.7), smoothstep(-0.25, 0.0, k) * (1.0 - gcov) * 0.7);
 	}
 	green = max(green, gcov);

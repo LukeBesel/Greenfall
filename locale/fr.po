@@ -192,67 +192,67 @@ msgstr "Pavé tactile"
 msgid "Paddle 1"
 msgstr "Palette 1"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:544
 msgid "LMB"
 msgstr "Clic G"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:545
 msgid "RMB"
 msgstr "Clic D"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:546
 msgid "MMB"
 msgstr "Clic M"
 
-#: autoload/Settings.gd:538
+#: autoload/Settings.gd:547
 msgid "Wheel up"
 msgstr "Molette haut"
 
-#: autoload/Settings.gd:539
+#: autoload/Settings.gd:548
 msgid "Wheel down"
 msgstr "Molette bas"
 
-#: autoload/Settings.gd:540
+#: autoload/Settings.gd:549
 msgid "Mouse %d"
 msgstr "Souris %d"
 
-#: autoload/Settings.gd:542
+#: autoload/Settings.gd:551
 msgid "Button %d"
 msgstr "Bouton %d"
 
-#: autoload/Settings.gd:547
+#: autoload/Settings.gd:556
 msgid "LS left"
 msgstr "JG gauche"
 
-#: autoload/Settings.gd:547
+#: autoload/Settings.gd:556
 msgid "LS right"
 msgstr "JG droite"
 
-#: autoload/Settings.gd:548
+#: autoload/Settings.gd:557
 msgid "LS up"
 msgstr "JG haut"
 
-#: autoload/Settings.gd:548
+#: autoload/Settings.gd:557
 msgid "LS down"
 msgstr "JG bas"
 
-#: autoload/Settings.gd:549
+#: autoload/Settings.gd:558
 msgid "RS left"
 msgstr "JD gauche"
 
-#: autoload/Settings.gd:549
+#: autoload/Settings.gd:558
 msgid "RS right"
 msgstr "JD droite"
 
-#: autoload/Settings.gd:550
+#: autoload/Settings.gd:559
 msgid "RS up"
 msgstr "JD haut"
 
-#: autoload/Settings.gd:550
+#: autoload/Settings.gd:559
 msgid "RS down"
 msgstr "JD bas"
 
-#: autoload/Settings.gd:561
+#: autoload/Settings.gd:570
 msgid "hold %s"
 msgstr "maintenir %s"
 
@@ -491,7 +491,7 @@ msgstr "Des balles d'une valeur de %s s'empilaient à la base sans personne pour
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Les épurateurs ont filtré l'air tout ce temps. Il est un peu plus clair."
 
-#: core/pace.gd:147 story/objectives.gd:924
+#: core/pace.gd:147 story/objectives.gd:964
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "Trop lourd. Améliore la Force de levage à l'établi."
 
@@ -527,7 +527,7 @@ msgstr "Les oiseaux ont décidé que tu étais quelqu'un de bien. Sac de miettes
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "La chatte a décidé que tu étais à elle. Voici %s. Elle vit à cette base maintenant."
 
-#: fauna/fauna.gd:2222 ui/subtitles.gd:452
+#: fauna/fauna.gd:2222 ui/subtitles.gd:453
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "Nouvelle observation : %s. Elle est maintenant dans le Codex."
 
@@ -703,7 +703,7 @@ msgstr "Nouveau design de Lumi : %s"
 msgid "Home. The workbench is by the pod."
 msgstr "La maison. L'établi est près de la capsule."
 
-#: planet/sites/hub_purpose.gd:174 story/objectives.gd:931
+#: planet/sites/hub_purpose.gd:174 story/objectives.gd:971
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "La fusée attend sur l'aire. La maison est en tête de sa liste."
 
@@ -727,7 +727,7 @@ msgstr "Améliore la fusée, puis réveille : %s"
 msgid "Wake the %s (%s)"
 msgstr "Réveille : %s (%s)"
 
-#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:558
+#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:578
 msgid "E   Wake the %s  (%s)"
 msgstr "E   Réveiller : %s  (%s)"
 
@@ -826,7 +826,7 @@ msgid "%s site"
 msgstr "Site : %s"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: planet/sites/orbit_sites.gd:229 ui/main_menu.gd:525
+#: planet/sites/orbit_sites.gd:229 ui/main_menu.gd:526
 msgid "Hub %d"
 msgstr "Base %d"
 
@@ -918,55 +918,55 @@ msgstr "PIÈCE ENTERRÉE  %s  ·  %.1f m"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "PIÈCE ENTERRÉE  ·  SIGNAL %d%%"
 
-#: player/patch.gd:174
+#: player/patch.gd:175
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi remonte dans la cour en cliquetant. C'était bizarre."
 
-#: player/patch.gd:228
+#: player/patch.gd:229
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi ne sait pas nager. Avec les Jets de vol de l'établi, il flotte au-dessus des lacs."
 
-#: player/patch.gd:352
+#: player/patch.gd:353
 msgid "No seeds yet. Keep cleaning."
 msgstr "Pas encore de graines. Continue de nettoyer."
 
-#: player/patch.gd:387
+#: player/patch.gd:388
 msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 msgstr "Les graines veulent un sol propre et dégagé : pas les rues, les trottoirs ni l'aire d'atterrissage."
 
-#: player/patch.gd:394
+#: player/patch.gd:395
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "Plus de graines. Les plantes en fleur en donnent d'autres."
 
-#: player/patch.gd:401
+#: player/patch.gd:402
 msgid "Watering can is empty. Refill at the hub."
 msgstr "Arrosoir vide. Remplis-le à la base."
 
-#: player/patch.gd:606
+#: player/patch.gd:607
 msgid "PERFECT BALE  %s"
 msgstr "BALLE PARFAITE  %s"
 
-#: player/patch.gd:612
+#: player/patch.gd:613
 msgid "OVERSTUFFED  %s"
 msgstr "TROP PLEINE  %s"
 
-#: player/patch.gd:616
+#: player/patch.gd:617
 msgid "PURE  %s"
 msgstr "PURE  %s"
 
-#: player/patch.gd:618
+#: player/patch.gd:619
 msgid "SURGE  %s"
 msgstr "BOOST  %s"
 
-#: player/patch.gd:621
+#: player/patch.gd:622
 msgid "  (streak +%d%%)"
 msgstr "  (série +%d%%)"
 
-#: player/patch.gd:664
+#: player/patch.gd:665
 msgid "Salvaged: %s"
 msgstr "Récupéré : %s"
 
-#: player/patch.gd:695
+#: player/patch.gd:696
 msgid "Recovered: %s"
 msgstr "Retrouvé : %s"
 
@@ -1574,7 +1574,7 @@ msgstr "Robots construits"
 msgid "Time played"
 msgstr "Temps de jeu"
 
-#: steam/demo_end_screen.gd:78 ui/main_menu.gd:361
+#: steam/demo_end_screen.gd:78 ui/main_menu.gd:362
 msgid "Wishlist on Steam"
 msgstr "Ajouter à ma liste de souhaits Steam"
 
@@ -1590,7 +1590,7 @@ msgstr "Écran titre"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "Continuer : le premier quartier reste ouvert, base au niveau %d."
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:519
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:520
 msgid "%dh %02dm"
 msgstr "%dh %02dm"
 
@@ -2185,51 +2185,51 @@ msgstr "LEDGER  WMS-07"
 msgid "Reward: %s"
 msgstr "Récompense : %s"
 
-#: story/objectives.gd:408
+#: story/objectives.gd:416
 msgid "Objective complete  ·  %s"
 msgstr "Objectif atteint  ·  %s"
 
-#: story/objectives.gd:435
+#: story/objectives.gd:443
 msgid "Goal complete  ·  %s"
 msgstr "Objectif atteint  ·  %s"
 
-#: story/objectives.gd:727
+#: story/objectives.gd:740
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "Presse à balles installée ! Remplis ton coffre, appuie sur [%s] pour presser un ballot, puis porte-le à la balance."
 
-#: story/objectives.gd:749 story/objectives.gd:912
+#: story/objectives.gd:762 story/objectives.gd:952
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Ton coffre est plein. Appuie sur [%s] pour faire un ballot."
 
-#: story/objectives.gd:765
+#: story/objectives.gd:778
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "Ton détecteur a trouvé une pièce de robot enterrée tout près. Suis l'indication PIÈCE ENTERRÉE ; il bipe quand tu es juste au-dessus."
 
-#: story/objectives.gd:767
+#: story/objectives.gd:780
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "PIÈCE ENTERRÉE : avance vers elle jusqu'au signal maximal, puis déterre-la."
 
-#: story/objectives.gd:913
+#: story/objectives.gd:953
 msgid "Your chest is full. Bring it to the bin."
 msgstr "Ton coffre est plein. Apporte-le à la poubelle."
 
-#: story/objectives.gd:920
+#: story/objectives.gd:960
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "Ton coffre est plein. Rentre à la maison : la poubelle est sous la grande fumée."
 
-#: story/objectives.gd:922
+#: story/objectives.gd:962
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "Rapporte ton ballot à la maison : la balance est sous la grande fumée."
 
-#: story/objectives.gd:922
+#: story/objectives.gd:962
 msgid "Carry your bale to the scale by the bin."
 msgstr "Porte ton ballot à la balance, près de la poubelle."
 
-#: story/objectives.gd:932
+#: story/objectives.gd:972
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "Rentre à la maison : suis le faisceau jusqu'à la grande fumée."
 
-#: story/objectives.gd:942
+#: story/objectives.gd:982
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Rien à ramasser ici. Va là où il y a plus de déchets."
 
@@ -2357,7 +2357,7 @@ msgstr "NOUS REVIENDRONS"
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr "%d succès débloqués. Retrouve-les dans le Codex (K)."
 
-#: systems/achievements.gd:174 ui/notify_stack.gd:27 ui/subtitles.gd:450
+#: systems/achievements.gd:174 ui/notify_stack.gd:27 ui/subtitles.gd:451
 msgid "Achievement: %s. %s"
 msgstr "Succès : %s. %s"
 
@@ -2765,35 +2765,35 @@ msgstr "Construis-la au Retour du Cradle, sur Verdance"
 msgid "Rocket drive built: %s."
 msgstr "Propulsion construite : %s."
 
-#: systems/homeward_director.gd:293
+#: systems/homeward_director.gd:296
 msgid "Intercepted: %s"
 msgstr "Intercepté : %s"
 
-#: systems/homeward_director.gd:308
+#: systems/homeward_director.gd:311
 msgid "%s: %s"
 msgstr "%s : %s"
 
-#: systems/homeward_director.gd:318
+#: systems/homeward_director.gd:321
 msgid "%s is restored. System: %d%%."
 msgstr "%s est restaurée. Système : %d%%."
 
-#: systems/homeward_director.gd:321
+#: systems/homeward_director.gd:324
 msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
 msgstr "Relique : %s. Choix d'héritage +1 (Pont de l'Arche)."
 
-#: systems/homeward_director.gd:329
+#: systems/homeward_director.gd:332
 msgid "Every planet in the system is alive. The Settlers will wake to five green worlds."
 msgstr "Chaque planète du système est vivante. Les Colons se réveilleront face à cinq mondes verts."
 
-#: systems/homeward_director.gd:522
+#: systems/homeward_director.gd:528
 msgid "E   launch home"
 msgstr "E   décoller vers la maison"
 
-#: systems/homeward_director.gd:522
+#: systems/homeward_director.gd:528
 msgid "E   plant the last seed"
 msgstr "E   planter la dernière graine"
 
-#: systems/homeward_director.gd:533
+#: systems/homeward_director.gd:539
 msgid "The last seed is in the ground. Everything is ready. Press E again here to launch home."
 msgstr "La dernière graine est en terre. Tout est prêt. Appuie encore sur E ici pour décoller vers la maison."
 
@@ -3511,7 +3511,7 @@ msgstr "Tout est propre ici !"
 msgid "Only big pieces left"
 msgstr "Il ne reste que les grosses pièces"
 
-#: tools/ui_audit_run.gd:318 ui/locker_panel.gd:84 ui/telescope_view.gd:379
+#: tools/ui_audit_run.gd:332 ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"
 msgstr "Fermer"
 
@@ -4303,7 +4303,7 @@ msgstr "FAIT AVEC AMOUR ET FERRAILLE"
 msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
 msgstr "Le code, les maillages procéduraux, la musique et les sons synthétisés et les textes sont des créations originales de Greenfall."
 
-#: ui/credits_roll.gd:148 ui/main_menu.gd:670
+#: ui/credits_roll.gd:148 ui/main_menu.gd:671
 msgid "Music by Lucas"
 msgstr "Musique de Lucas"
 
@@ -4851,68 +4851,68 @@ msgstr ""
 msgid "All built"
 msgstr "Tous construits"
 
-#: ui/hud.gd:82
+#: ui/hud.gd:84
 msgid "Lumi reached level %d%s"
 msgstr "Lumi a atteint le niveau %d%s"
 
-#: ui/hud.gd:179
+#: ui/hud.gd:181
 msgid "OLD TOWN   0%"
 msgstr "VIEILLE VILLE   0%"
 
-#: ui/hud.gd:358
+#: ui/hud.gd:362
 msgid "WREN SIGNAL   %d%%"
 msgstr "SIGNAL WREN   %d%%"
 
-#: ui/hud.gd:401
+#: ui/hud.gd:417
 msgid "HEX  %d%% CLEAR"
 msgstr "HEX  %d%% PROPRE"
 
-#: ui/hud.gd:405
+#: ui/hud.gd:421
 msgid "%s  BASE"
 msgstr "BASE %s"
 
-#: ui/hud.gd:408
+#: ui/hud.gd:424
 msgid "CARRYING %d/%d"
 msgstr "CHARGE %d/%d"
 
-#: ui/hud.gd:440
+#: ui/hud.gd:456
 msgid "HEX  CLEAR"
 msgstr "HEX  PROPRE"
 
-#: ui/hud.gd:444
+#: ui/hud.gd:460
 msgid "HEX  %s"
 msgstr "HEX  %s"
 
-#: ui/hud.gd:447
+#: ui/hud.gd:463
 msgid "  SUSTAIN %d%%"
 msgstr "  DURABLE %d%%"
 
-#: ui/hud.gd:449
+#: ui/hud.gd:465
 msgid "  THIRSTY"
 msgstr "  ASSOIFFÉ"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:479
+#: ui/hud.gd:495
 msgid "%s   pick up bale"
 msgstr "%s   ramasser la balle"
 
-#: ui/hud.gd:480
+#: ui/hud.gd:496
 msgid "%s   dig up part"
 msgstr "%s   déterrer la pièce"
 
-#: ui/hud.gd:481
+#: ui/hud.gd:497
 msgid "%s   read memory shard"
 msgstr "%s   lire l'éclat de mémoire"
 
-#: ui/hud.gd:482
+#: ui/hud.gd:498
 msgid "%s   pick up the seed tin"
 msgstr "%s   ramasser la boîte à graines"
 
-#: ui/hud.gd:483
+#: ui/hud.gd:499
 msgid "%s   set bale down"
 msgstr "%s   poser la balle"
 
-#: ui/hud.gd:484
+#: ui/hud.gd:500
 msgid "%s   workbench"
 msgstr "%s   établi"
 
@@ -4956,7 +4956,7 @@ msgstr "établi"
 msgid "photo"
 msgstr "photo"
 
-#: ui/key_hints.gd:121
+#: ui/key_hints.gd:133 ui/key_hints.gd:153
 msgid "tools"
 msgstr "outils"
 
@@ -5219,109 +5219,109 @@ msgstr "Modifications non enregistrées"
 msgid "Part of this look is still locked."
 msgstr "Une partie de ce look est encore verrouillée."
 
-#: ui/main_menu.gd:328
+#: ui/main_menu.gd:329
 msgid "One small robot. One very big cleanup."
 msgstr "Un petit robot. Un très grand ménage."
 
-#: ui/main_menu.gd:332
+#: ui/main_menu.gd:333
 msgid "DEMO  ·  the first district"
 msgstr "DÉMO  ·  le premier quartier"
 
-#: ui/main_menu.gd:344 ui/profile_picker.gd:110
+#: ui/main_menu.gd:345 ui/profile_picker.gd:110
 msgid "Continue"
 msgstr "Continuer"
 
-#: ui/main_menu.gd:353 ui/main_menu.gd:358
+#: ui/main_menu.gd:354 ui/main_menu.gd:359
 msgid "New Game"
 msgstr "Nouvelle partie"
 
-#: ui/main_menu.gd:355
+#: ui/main_menu.gd:356
 msgid "Profiles"
 msgstr "Profils"
 
-#: ui/main_menu.gd:362 ui/main_menu.gd:612 ui/pause_menu.gd:68
+#: ui/main_menu.gd:363 ui/main_menu.gd:613 ui/pause_menu.gd:68
 msgid "Settings"
 msgstr "Paramètres"
 
-#: ui/main_menu.gd:364 ui/pause_menu.gd:72
+#: ui/main_menu.gd:365 ui/pause_menu.gd:72
 msgid "Quit"
 msgstr "Quitter"
 
-#: ui/main_menu.gd:371
+#: ui/main_menu.gd:372
 msgid "Made with Godot"
 msgstr "Fait avec Godot"
 
-#: ui/main_menu.gd:519
+#: ui/main_menu.gd:520
 msgid "%dm"
 msgstr "%d min"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:525 ui/profile_picker.gd:133
+#: ui/main_menu.gd:526 ui/profile_picker.gd:133
 msgid "%s cubes"
 msgstr "%s cubes"
 
-#: ui/main_menu.gd:531
+#: ui/main_menu.gd:532
 msgid "Jan"
 msgstr "janv."
 
-#: ui/main_menu.gd:531
+#: ui/main_menu.gd:532
 msgid "Feb"
 msgstr "févr."
 
-#: ui/main_menu.gd:531
+#: ui/main_menu.gd:532
 msgid "Mar"
 msgstr "mars"
 
-#: ui/main_menu.gd:531
+#: ui/main_menu.gd:532
 msgid "Apr"
 msgstr "avr."
 
-#: ui/main_menu.gd:531
+#: ui/main_menu.gd:532
 msgid "May"
 msgstr "mai"
 
-#: ui/main_menu.gd:531
+#: ui/main_menu.gd:532
 msgid "Jun"
 msgstr "juin"
 
-#: ui/main_menu.gd:531
+#: ui/main_menu.gd:532
 msgid "Jul"
 msgstr "juil."
 
-#: ui/main_menu.gd:531
+#: ui/main_menu.gd:532
 msgid "Aug"
 msgstr "août"
 
-#: ui/main_menu.gd:531
+#: ui/main_menu.gd:532
 msgid "Sep"
 msgstr "sept."
 
-#: ui/main_menu.gd:531
+#: ui/main_menu.gd:532
 msgid "Oct"
 msgstr "oct."
 
-#: ui/main_menu.gd:531
+#: ui/main_menu.gd:532
 msgid "Nov"
 msgstr "nov."
 
-#: ui/main_menu.gd:531
+#: ui/main_menu.gd:532
 msgid "Dec"
 msgstr "déc."
 
-#: ui/main_menu.gd:612
+#: ui/main_menu.gd:613
 msgid "Credits"
 msgstr "Crédits"
 
-#: ui/main_menu.gd:641
+#: ui/main_menu.gd:642
 msgid "CREDITS"
 msgstr "CRÉDITS"
 
-#: ui/main_menu.gd:656 ui/profile_picker.gd:49 ui/settings_panel.gd:123
+#: ui/main_menu.gd:657 ui/profile_picker.gd:49 ui/settings_panel.gd:123
 #: ui/settings_panel.gd:148 ui/world_picker.gd:53
 msgid "Back"
 msgstr "Retour"
 
-#: ui/main_menu.gd:669
+#: ui/main_menu.gd:670
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -5331,27 +5331,27 @@ msgstr ""
 "Le code, les maillages procéduraux, l'audio synthétisé et les textes sont des créations originales de Greenfall.\n"
 "\n"
 
-#: ui/main_menu.gd:673
+#: ui/main_menu.gd:674
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "Ressources tierces : CC0, Poly Haven (polyhaven.com)."
 
-#: ui/main_menu.gd:691
+#: ui/main_menu.gd:692
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]par %s[/color]"
 
-#: ui/main_menu.gd:725
+#: ui/main_menu.gd:726
 msgid "START A NEW GAME?"
 msgstr "COMMENCER UNE NOUVELLE PARTIE ?"
 
-#: ui/main_menu.gd:726
+#: ui/main_menu.gd:727
 msgid "Your current save will be erased. This can't be undone."
 msgstr "Ta sauvegarde actuelle sera effacée. C'est irréversible."
 
-#: ui/main_menu.gd:734
+#: ui/main_menu.gd:735
 msgid "Keep my save"
 msgstr "Garder ma sauvegarde"
 
-#: ui/main_menu.gd:740 ui/profile_picker.gd:213
+#: ui/main_menu.gd:741 ui/profile_picker.gd:213
 msgid "Erase and start"
 msgstr "Effacer et commencer"
 
@@ -6540,7 +6540,7 @@ msgstr "Recherche"
 msgid "WORKBENCH"
 msgstr "ÉTABLI"
 
-#: ui/upgrades_screen.gd:273
+#: ui/upgrades_screen.gd:278
 msgid "Not open yet. Keep playing."
 msgstr "Pas encore ouvert. Continue à jouer."
 

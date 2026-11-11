@@ -2442,10 +2442,11 @@ func _build_name_sign(broken: bool) -> void:
 	for sx: float in [-2.45, 2.45]:
 		var hgt: float = 3.6 if not (broken and sx > 0.0) else 1.3
 		_deco.box(Transform3D(Basis(), Vector3(x + sx, hgt * 0.5, z)), Vector3(0.16, hgt, 0.16), post)
-		_solid_box(Transform3D(Basis(), Vector3(x + sx, hgt * 0.5, z)), Vector3(0.22, hgt, 0.22))  # [world2]
+		_solid_cyl(Vector3(x + sx, 0, z), 0.11, hgt)  # [v7look] round: the square post's corner held Lumi up 0.6 s on a glancing push
 		if broken and sx > 0.0:
 			_deco.box(Transform3D(Basis(Vector3.BACK, 1.45).rotated(Vector3.UP, 0.4), Vector3(x + sx + 0.9, 0.1, z + 0.6)), Vector3(0.16, 2.2, 0.16), post)
-			_solid_box(Transform3D(Basis(Vector3.BACK, 1.45).rotated(Vector3.UP, 0.4), Vector3(x + sx + 0.9, 0.1, z + 0.6)), Vector3(0.2, 2.2, 0.2))  # [world2]
+			# [v7look] the snapped post lies in the dirt: a round log (was a 0.2 m box that held Lumi up 0.6 s head-on)
+			PropColliders.add_cyl_at(_body, Transform3D(Basis(Vector3.BACK, 1.45).rotated(Vector3.UP, 0.4), Vector3(x + sx + 0.9, 0.1, z + 0.6)), 0.1, 2.2)
 	var board_xf := Transform3D(Basis(), Vector3(x, 2.85, z + 0.1))
 	if broken:
 		var pivot := Vector3(x - 2.4, 3.45, z + 0.1)
@@ -2505,7 +2506,7 @@ func _build_camp() -> void:
 				_deco.box(Transform3D(Basis(Vector3.UP, _rng.randf_range(-0.015, 0.015)), Vector3(x, 0.035, 6.2)), Vector3(0.26, 0.05, 3.7 - (i % 3) * 0.15), wood.darkened(_rng.randf_range(0.0, 0.25)))
 			for c: Vector2 in [Vector2(-8.35, 4.35), Vector2(-4.75, 4.35)]:
 				_deco.box(Transform3D(Basis(), Vector3(c.x, 0.45, c.y)), Vector3(0.18, 0.9, 0.18), wood.darkened(0.3))
-				_solid_box(Transform3D(Basis(), Vector3(c.x, 0.45, c.y)), Vector3(0.22, 0.9, 0.22))  # [world2]
+				_solid_cyl(Vector3(c.x, 0, c.y), 0.11, 0.9)  # [v7look] round post
 			_deco.rod(Vector3(-8.35, 0.82, 4.35), Vector3(-4.75, 0.78, 4.35), 0.02, Color(0.7, 0.62, 0.45, PAINT))
 		"rustlands":
 			for k: int in 3:
@@ -2597,7 +2598,7 @@ func _build_holo_sign() -> void:
 	for sx: float in [-2.5, 2.5]:
 		var bp := Vector3(x + sx, 0, z)
 		_deco.box(Transform3D(Basis(), bp + Vector3(0, 1.4, 0)), Vector3(0.3, 2.8, 0.3), GLOSS)
-		_solid_box(Transform3D(Basis(), bp + Vector3(0, 1.4, 0)), Vector3(0.36, 2.8, 0.36))  # [world2]
+		_solid_cyl(bp, 0.18, 2.8)  # [v7look] round post
 		_deco.box(Transform3D(Basis(), bp + Vector3(0, 2.86, 0)), Vector3(0.4, 0.12, 0.4), GLASS)
 		_tubes.box(Transform3D(Basis(), bp + Vector3(0, 1.4, 0.155)), Vector3(0.05, 2.5, 0.01), CYAN, Vector2(13.0, 0.0))
 		_tubes.box(Transform3D(Basis(), bp + Vector3(0, 2.94, 0)), Vector3(0.3, 0.03, 0.3), _accent, Vector2(13.4, 0.0))

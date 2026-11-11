@@ -88,6 +88,7 @@ func _ready() -> void:
 	_stack_root.name = "Stack"
 	_stack_root.position = model.stack_point
 	add_child(_stack_root)
+	_build_carry_rig()
 	if input == null:
 		input = PlayerInput.new()
 
@@ -827,6 +828,79 @@ func _place_cube_sphere(c: JunkCube) -> void:
 	model.squash(0.2)
 
 
+# [v7look] The carry rig: a chunky lift tray under the stack (gunmetal, a hazard-yellow lip) held by a
+# soft beam from Lumi's head. At 960x540 his raised arms can't be made out, so a bale riding over his
+# head read as floating; the tray and the beam say "he is holding it".
+var _carry_rig: Node3D
+var _rig_tray: Node3D
+var _rig_beam: MeshInstance3D
+var _rig_beam_mat: StandardMaterial3D
+var _rig_k: float = 0.0
+
+
+func _build_carry_rig() -> void:
+	_carry_rig = Node3D.new()
+	_carry_rig.name = "CarryRig"
+	_stack_root.add_child(_carry_rig)
+	_rig_tray = Node3D.new()
+	_carry_rig.add_child(_rig_tray)
+	var metal := StandardMaterial3D.new()
+	metal.albedo_color = Color(0.25, 0.27, 0.3)
+	metal.roughness = 0.45
+	metal.metallic = 0.4
+	var lip := StandardMaterial3D.new()
+	lip.albedo_color = Color(0.96, 0.74, 0.16)
+	lip.roughness = 0.5
+	var tray := MeshInstance3D.new()  # unit size; scaled to the bale under it
+	tray.mesh = ProcMesh.rounded_box(Vector3(1.0, 0.05, 1.0), 0.02, 2)
+	tray.material_override = metal
+	tray.position = Vector3(0, -0.03, 0)
+	tray.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	_rig_tray.add_child(tray)
+	var band := MeshInstance3D.new()
+	band.mesh = ProcMesh.rounded_box(Vector3(1.06, 0.035, 1.06), 0.015, 2)
+	band.material_override = lip
+	band.position = Vector3(0, -0.065, 0)
+	band.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	_rig_tray.add_child(band)
+	_rig_beam = MeshInstance3D.new()
+	var cyl := CylinderMesh.new()
+	cyl.top_radius = 0.3
+	cyl.bottom_radius = 0.09
+	cyl.height = 1.0
+	cyl.radial_segments = 16
+	cyl.rings = 1
+	cyl.cap_top = false
+	cyl.cap_bottom = false
+	_rig_beam.mesh = cyl
+	_rig_beam_mat = StandardMaterial3D.new()
+	_rig_beam_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	_rig_beam_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	# mixed, not added: an additive beam vanished against bright sand at Low
+	_rig_beam_mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	_rig_beam_mat.no_depth_test = false
+	_rig_beam.material_override = _rig_beam_mat
+	_rig_beam.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	_carry_rig.add_child(_rig_beam)
+	_carry_rig.visible = false
+
+
+func _update_carry_rig(delta: float) -> void:
+	if _carry_rig == null:
+		return
+	_rig_k = move_toward(_rig_k, 1.0 if not carried.is_empty() else 0.0, delta * 6.0)
+	_carry_rig.visible = _rig_k > 0.01
+	if not _carry_rig.visible:
+		return
+	var w: float = (carried[0].size if not carried.is_empty() else 0.6) * 1.08
+	_rig_tray.scale = Vector3(w, 1.0, w) * lerpf(0.4, 1.0, _rig_k)
+	var gap: float = maxf(CarryPoint.GAP - 0.02, 0.05)  # from the tray's lip down into the top of his head
+	_rig_beam.scale = Vector3(1.0, gap, 1.0) * Vector3(_rig_k, 1.0, _rig_k)
+	_rig_beam.position = Vector3(0, -0.08 - gap * 0.5, 0)
+	var col: Color = LumiStyle.laser_of(model) if model else Color(0.55, 0.9, 1.0)
+	_rig_beam_mat.albedo_color = Color(col.lightened(0.15), 0.42 * _rig_k * (0.85 + 0.15 * sin(Time.get_ticks_msec() * 0.006)))
+
+
 ## [v6feel] The stack's base rides Lumi's floating body (bob, lean, squash), a fixed gap over his head.
 func _seat_stack() -> void:
 	_stack_root.transform = CarryPoint.frame(model, self) * Transform3D(Basis.IDENTITY, CarryPoint.of(model, self))
@@ -834,6 +908,7 @@ func _seat_stack() -> void:
 
 func _update_stack(delta: float) -> void:
 	model.carrying = not carried.is_empty()
+	_update_carry_rig(delta)
 	if not carried.is_empty():
 		_seat_stack()  # [world2] held clearly above Lumi, not inside him
 	# Wobbly spring sway driven by acceleration.

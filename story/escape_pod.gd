@@ -563,29 +563,30 @@ static func _build_cabin(pod: Node3D) -> void:
 	for i: int in 4:  # grip ribs on the mat
 		k.box(Vector3(0.7, 0.008, 0.025), Vector3(0, DOOR_Y0 + 0.016, -0.2 + i * 0.13), floor_c.darkened(0.2), Vector3.ZERO, 0.003)
 	k.hazard(Vector3(0.62, 0.014, 0.07), Vector3(0, DOOR_Y0 + 0.009, -fr + 0.06))
-	# The cradle: pedestal, cushion, backrest, headrest, side bolsters, harness.
+	# The cradle: pedestal, cushion, backrest, headrest, side bolsters, harness. [v7look] cushions and
+	# pads use the kit "pad" key: no paint wear (it read as grime smudges on the backrest).
 	k.box(Vector3(0.3, 0.3, 0.26), Vector3(0, 0.57, 0.33), frame, Vector3.ZERO, 0.03)
 	k.box(Vector3(0.4, 0.04, 0.34), Vector3(0, 0.71, 0.32), frame, Vector3.ZERO, 0.012)
-	k.box(Vector3(0.48, 0.11, 0.38), Vector3(0, 0.78, 0.31), seat_c, Vector3.ZERO, 0.05)
-	k.box(Vector3(0.46, 0.62, 0.1), Vector3(0, 1.13, 0.52), seat_c, Vector3(-4, 0, 0), 0.05)
-	k.box(Vector3(0.3, 0.15, 0.1), Vector3(0, 1.53, 0.5), seat_c, Vector3(-8, 0, 0), 0.05)
+	k.box(Vector3(0.48, 0.11, 0.38), Vector3(0, 0.78, 0.31), seat_c, Vector3.ZERO, 0.05, "pad")
+	k.box(Vector3(0.46, 0.62, 0.1), Vector3(0, 1.13, 0.52), seat_c, Vector3(-4, 0, 0), 0.05, "pad")
+	k.box(Vector3(0.3, 0.15, 0.1), Vector3(0, 1.53, 0.5), seat_c, Vector3(-8, 0, 0), 0.05, "pad")
 	k.box(Vector3(0.5, 0.05, 0.09), Vector3(0, 0.83, 0.56), frame, Vector3.ZERO, 0.015)
 	for sx: float in [-1.0, 1.0]:
-		k.box(Vector3(0.08, 0.15, 0.36), Vector3(sx * 0.27, 0.9, 0.36), seat_c.darkened(0.08), Vector3.ZERO, 0.035)
+		k.box(Vector3(0.08, 0.15, 0.36), Vector3(sx * 0.27, 0.9, 0.36), seat_c, Vector3.ZERO, 0.035, "pad")  # [v7look] one pad colour per surface: the cabin's draw-call budget
 		k.box(Vector3(0.05, 0.12, 0.05), Vector3(sx * 0.27, 0.78, 0.22), frame, Vector3.ZERO, 0.012)
 		k.box(Vector3(0.012, 0.5, 0.012), Vector3(sx * 0.08, 1.14, 0.466), seat_c.darkened(0.22), Vector3(-4, 0, 0), 0.004)
-		k.box(Vector3(0.05, 0.56, 0.014), Vector3(sx * 0.13, 1.1, 0.462), wall_pad, Vector3(-4, 0, sx * -6.0), 0.005)
+		k.box(Vector3(0.05, 0.56, 0.014), Vector3(sx * 0.13, 1.1, 0.462), wall_pad, Vector3(-4, 0, sx * -6.0), 0.005, "pad")
 	k.box(Vector3(0.09, 0.07, 0.02), Vector3(0, 0.92, 0.46), YardArt.STEEL, Vector3.ZERO, 0.01)
 	# Quilted wall pads on the flanks and a padded strip under the door's top edge inside.
 	for j: int in [1, 2, 10, 11]:
 		for y: float in [0.86, 1.28]:
 			k.push(_wall_xf(j, y, 0.025))
-			k.box(Vector3(0.24, 0.34, 0.05), Vector3.ZERO, wall_pad, Vector3.ZERO, 0.035)
+			k.box(Vector3(0.24, 0.34, 0.05), Vector3.ZERO, wall_pad, Vector3.ZERO, 0.035, "pad")
 			k.box(Vector3(0.012, 0.3, 0.012), Vector3(0, 0, 0.026), wall_pad.darkened(0.12), Vector3.ZERO, 0.004)
 			k.pop()
 	for j: int in [3, 9]:
 		k.push(_wall_xf(j, 1.38, 0.02))
-		k.box(Vector3(0.24, 0.3, 0.04), Vector3.ZERO, wall_pad, Vector3.ZERO, 0.03)
+		k.box(Vector3(0.24, 0.3, 0.04), Vector3.ZERO, wall_pad, Vector3.ZERO, 0.03, "pad")
 		k.pop()
 	# The console on the +X wall, facing the cradle and the door: a teal desk with a raked face, a
 	# screen (Lumi's C-eye mark on it) and two round buttons.

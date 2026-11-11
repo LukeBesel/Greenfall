@@ -94,6 +94,8 @@ class Kit:
 				return "trim:#" + Color(col.r, col.g, col.b).to_html(false)
 			"hazard", "glass", "concrete", "rusty", "rubber", "dirt", "leaves", "foliage":
 				return key
+			"pad":  # [v7look] upholstery (KitMat.pad)
+				return "pad:#" + Color(col.r, col.g, col.b).to_html(false)
 		if col.a < 0.5:
 			return "steel" if col.get_luminance() > 0.45 else "dark_steel"
 		if col.is_equal_approx(YardArt.RUBBER):

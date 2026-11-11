@@ -876,8 +876,8 @@ func _place_glyphs() -> void:
 				l.outline_modulate = Color(0.03, 0.08, 0.07, 0.9)
 				l.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 				l.no_depth_test = true
-				l.pixel_size = GLYPH_PX * 0.55
-				l.offset = Vector2(0, -78)
+				l.pixel_size = GLYPH_PX * 1.0  # [v7look] was 0.55: about 8 px tall at 1280x720, unreadable
+				l.offset = Vector2(0, -62)
 				l.render_priority = 2
 				g.add_child(l)
 	if pod_dir.is_valid():

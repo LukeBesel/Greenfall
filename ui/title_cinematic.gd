@@ -78,12 +78,34 @@ func _key(t: float) -> Array:
 	return [keys[-1][1], keys[-1][2]]
 
 
+## [v7look] The title is one slow drifting shot (owner: the old high passes put huge untextured
+## skyline blocks right at the lens and the pod far below): low over the clearing, Lumi cleaning in
+## the right half, the smoking crash site behind him, the trashed district and the skyline beyond,
+## into the low sun. A gentle sway and push keep it alive; nothing cuts.
+const DRIFT_FROM := Vector3(4.0, 2.1, -5.0)  # the pod and Lumi land right of centre, clear of the menu
+const DRIFT_LOOK := Vector3(-5.0, 1.4, 12.0)
+
+
+func _drift(t: float) -> Array:
+	var sway: float = sin(t * TAU / LOOP)
+	var push: float = 0.5 - 0.5 * cos(t * TAU / LOOP)
+	var pos: Vector3 = DRIFT_FROM + Vector3(sway * 0.9, 0.25 * sin(t * 0.11), push * 0.9)
+	return [pos, DRIFT_LOOK + Vector3(sway * 0.9, 0.0, 0.0)]
+
+
 func step(delta: float) -> void:
 	if not DevHooks.has("title-hold"):  # screenshots hold the camera at --title-t
 		_t = fmod(_t + delta, LOOP)
 	var pos: Vector3
 	var look: Vector3
 	var hoff: float = 0.0
+	if not DevHooks.has("title-old"):
+		var d: Array = _drift(_t)
+		cam.position = d[0]
+		cam.look_at(d[1], Vector3.UP)
+		cam.h_offset = 0.0
+		_clean(delta)
+		return
 	if _t < CLOSE_A:
 		var kk: Array = _key(_t)
 		pos = kk[0]
@@ -125,8 +147,8 @@ func _clean(delta: float) -> void:
 				n.visible = true
 	_hop = maxf(0.0, _hop - delta * 2.5)
 	var bob: float = sin(_t * 1.3) * 0.06 + sin(_hop * PI) * 0.18
-	if _t < 26.0:
-		# Camera still high: Lumi idles in the clearing.
+	if _t < (26.0 if DevHooks.has("title-old") else 4.0):
+		# Camera still high (the old path): Lumi idles in the clearing.
 		pivot.position = pivot.position.lerp(_home + Vector3(0, 0.32 + bob, 0), minf(1.0, delta * 1.5))
 		model.beam_at(null)
 		return
