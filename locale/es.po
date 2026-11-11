@@ -727,7 +727,7 @@ msgstr "Mejora el cohete y luego despierta: %s"
 msgid "Wake the %s (%s)"
 msgstr "Despierta: %s (%s)"
 
-#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:431
+#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:491
 msgid "E   Wake the %s  (%s)"
 msgstr "E   Despertar: %s  (%s)"
 
@@ -1313,69 +1313,69 @@ msgstr "Pinta dónde regar."
 msgid "Paint the water to skim first."
 msgstr "Pinta el agua que hay que limpiar primero."
 
-#: robots/sphere/command_overlay.gd:99
+#: robots/sphere/command_overlay.gd:102
 msgid "ROBOT COMMAND"
 msgstr "MANDO DE ROBOTS"
 
-#: robots/sphere/command_overlay.gd:102
+#: robots/sphere/command_overlay.gd:105
 msgid "No robots here yet."
 msgstr "Aún no hay robots aquí."
 
-#: robots/sphere/command_overlay.gd:103 data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
+#: robots/sphere/command_overlay.gd:106 data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
 msgid "Build one at the workbench."
 msgstr "Construye uno en el banco de trabajo."
 
-#: robots/sphere/command_overlay.gd:106 robots/sphere/command_overlay.gd:158
+#: robots/sphere/command_overlay.gd:109 robots/sphere/command_overlay.gd:161
 msgid "%d robot"
 msgid_plural "%d robots"
 msgstr[0] "%d robot"
 msgstr[1] "%d robots"
 
-#: robots/sphere/command_overlay.gd:108
+#: robots/sphere/command_overlay.gd:111
 msgid "About %d hexes an hour"
 msgstr "Unos %d hexágonos por hora"
 
-#: robots/sphere/command_overlay.gd:122 robots/sphere/command_overlay.gd:159
+#: robots/sphere/command_overlay.gd:125 robots/sphere/command_overlay.gd:162
 msgid "%d working"
 msgstr "%d trabajando"
 
-#: robots/sphere/command_overlay.gd:124
+#: robots/sphere/command_overlay.gd:127
 msgid "%d working, %d waiting"
 msgstr "%d trabajando, %d esperando"
 
-#: robots/sphere/command_overlay.gd:126
+#: robots/sphere/command_overlay.gd:129
 msgid "%d waiting"
 msgstr "%d esperando"
 
-#: robots/sphere/command_overlay.gd:130 robots/sphere/crew_talk.gd:71 robots/sphere/crew_talk.gd:75
+#: robots/sphere/command_overlay.gd:133 robots/sphere/crew_talk.gd:71 robots/sphere/crew_talk.gd:75
 msgid "Bales are piling up. Build a Haul Bug."
 msgstr "Las pacas se amontonan. Construye un Haul Bug."
 
-#: robots/sphere/command_overlay.gd:152
+#: robots/sphere/command_overlay.gd:155
 msgid "OTHER BASES"
 msgstr "OTRAS BASES"
 
-#: robots/sphere/command_overlay.gd:156
+#: robots/sphere/command_overlay.gd:159
 msgid "Base %d"
 msgstr "Base %d"
 
-#: robots/sphere/command_overlay.gd:168
+#: robots/sphere/command_overlay.gd:171
 msgid "Good! Your robots will work here first."
 msgstr "¡Bien! Tus robots trabajarán aquí primero."
 
-#: robots/sphere/command_overlay.gd:169
+#: robots/sphere/command_overlay.gd:172
 msgid "Hold A: paint   Hold X: erase   %s: back"
 msgstr "Mantén A: pintar   Mantén X: borrar   %s: volver"
 
-#: robots/sphere/command_overlay.gd:170
+#: robots/sphere/command_overlay.gd:173
 msgid "Left mouse: paint   Right mouse: erase   %s: back"
 msgstr "Clic izquierdo: pintar   Clic derecho: borrar   %s: volver"
 
-#: robots/sphere/command_overlay.gd:172
+#: robots/sphere/command_overlay.gd:175
 msgid "Y: next job"
 msgstr "Y: siguiente tarea"
 
-#: robots/sphere/command_overlay.gd:172
+#: robots/sphere/command_overlay.gd:175
 msgid "Tab: next job"
 msgstr "Tab: siguiente tarea"
 
@@ -3447,11 +3447,11 @@ msgstr "A trabajar"
 msgid "Find Glim first"
 msgstr "Encuentra primero a Glim"
 
-#: systems/glim/glim.gd:14 ui/glim_bench.gd:58 ui/glim_panel.gd:147
+#: systems/glim/glim.gd:14 ui/glim_bench.gd:58 ui/glim_panel.gd:173
 msgid "Maxed"
 msgstr "Al máximo"
 
-#: systems/glim/glim.gd:14 ui/glim_bench.gd:38 ui/glim_panel.gd:154
+#: systems/glim/glim.gd:14 ui/glim_bench.gd:38 ui/glim_panel.gd:180
 msgid "Needs %s %d"
 msgstr "Necesita %s %d"
 
@@ -4459,7 +4459,7 @@ msgstr "Foto"
 msgid "Photos you take in photo mode show up here."
 msgstr "Las fotos que hagas en el modo foto aparecen aquí."
 
-#: ui/extras_panel.gd:274 ui/photo_panel.gd:58
+#: ui/extras_panel.gd:274 ui/photo_panel.gd:59
 msgid "PHOTO MODE"
 msgstr "MODO FOTO"
 
@@ -4619,23 +4619,23 @@ msgstr "GLIM"
 msgid "lantern bot"
 msgstr "robot farolillo"
 
-#: ui/glim_panel.gd:64
+#: ui/glim_panel.gd:72
 msgid "Change Glim's looks at the Locker in the yard."
 msgstr "Cambia el aspecto de Glim en la Taquilla del patio."
 
-#: ui/glim_panel.gd:69
+#: ui/glim_panel.gd:77
 msgid "%s  close"
 msgstr "%s  cerrar"
 
-#: ui/glim_panel.gd:110
+#: ui/glim_panel.gd:131
 msgid "UPGRADES"
 msgstr "MEJORAS"
 
-#: ui/glim_panel.gd:200
+#: ui/glim_panel.gd:226
 msgid "LOOKS"
 msgstr "ASPECTO"
 
-#: ui/glim_panel.gd:225
+#: ui/glim_panel.gd:251
 msgid "???  %s"
 msgstr "???  %s"
 
@@ -4715,7 +4715,7 @@ msgstr "del suelo alrededor de tus bases está limpio"
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "del planeta recuperado  ·  %s de %s hexágonos de tierra"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:496 ui/objective_card.gd:149
+#: ui/goals_panel.gd:231 ui/list_detail.gd:495 ui/objective_card.gd:149
 msgid "DONE"
 msgstr "HECHO"
 
@@ -4974,55 +4974,55 @@ msgstr "PACA LISTA"
 msgid "◢ BURIED PART %d%%"
 msgstr "◢ PIEZA ENTERRADA %d%%"
 
-#: ui/list_detail.gd:100
+#: ui/list_detail.gd:99
 msgid "Nothing here yet. Keep playing."
 msgstr "Aquí aún no hay nada. Sigue jugando."
 
-#: ui/list_detail.gd:373 ui/upgrade_card.gd:85
+#: ui/list_detail.gd:372 ui/upgrade_card.gd:85
 msgid "Buy"
 msgstr "Comprar"
 
-#: ui/list_detail.gd:492
+#: ui/list_detail.gd:491
 msgid "LOCKED"
 msgstr "BLOQUEADO"
 
-#: ui/list_detail.gd:500 ui/profile_picker.gd:97
+#: ui/list_detail.gd:499 ui/profile_picker.gd:97
 msgid "ACTIVE"
 msgstr "ACTIVO"
 
-#: ui/list_detail.gd:521
+#: ui/list_detail.gd:520
 msgid "FREE"
 msgstr "GRATIS"
 
-#: ui/list_detail.gd:660
+#: ui/list_detail.gd:659
 msgid "LOCKED.  To unlock: %s"
 msgstr "BLOQUEADO.  Para desbloquear: %s"
 
-#: ui/list_detail.gd:660
+#: ui/list_detail.gd:659
 msgid "Locked. Keep playing to unlock it."
 msgstr "Bloqueado. Sigue jugando para desbloquearlo."
 
-#: ui/list_detail.gd:663
+#: ui/list_detail.gd:662
 msgid "REQUIRES   %s"
 msgstr "REQUIERE   %s"
 
-#: ui/list_detail.gd:666
+#: ui/list_detail.gd:665
 msgid "You can buy this now!"
 msgstr "¡Ya puedes comprarlo!"
 
-#: ui/list_detail.gd:686
+#: ui/list_detail.gd:685
 msgid "%s more %s"
 msgstr "%s %s"
 
-#: ui/list_detail.gd:688
+#: ui/list_detail.gd:687
 msgid "Pick up trash to earn them."
 msgstr "Recoge basura para ganarlos."
 
-#: ui/list_detail.gd:688
+#: ui/list_detail.gd:687
 msgid "Dig up parts and salvage junk to get them."
 msgstr "Desentierra piezas y desmonta chatarra para conseguirlas."
 
-#: ui/list_detail.gd:691
+#: ui/list_detail.gd:690
 msgid "Need %s. %s"
 msgstr "Te faltan %s. %s"
 
@@ -5472,8 +5472,8 @@ msgstr "Distancia de enfoque"
 msgid "Blur"
 msgstr "Desenfoque"
 
-#: ui/photo_mode.gd:372 ui/photo_panel.gd:240 ui/photo_panel.gd:242
-#: ui/photo_panel.gd:280 ui/settings_panel.gd:711
+#: ui/photo_mode.gd:372 ui/photo_panel.gd:243 ui/photo_panel.gd:245
+#: ui/photo_panel.gd:283 ui/settings_panel.gd:711
 msgid "Off"
 msgstr "No"
 
@@ -5573,36 +5573,36 @@ msgstr "No se pudo guardar la foto (%s)."
 msgid "Saved  %s  (%dx%d)"
 msgstr "Guardada  %s  (%dx%d)"
 
-#: ui/photo_panel.gd:57
+#: ui/photo_panel.gd:58
 msgid "CAPTURE  ·  LM-1 LENS"
 msgstr "CAPTURA  ·  LENTE LM-1"
 
-#: ui/photo_panel.gd:88
+#: ui/photo_panel.gd:89
 msgid "Capture"
 msgstr "Capturar"
 
-#: ui/photo_panel.gd:97
+#: ui/photo_panel.gd:98
 msgid "Exit"
 msgstr "Salir"
 
-#: ui/photo_panel.gd:240 ui/photo_panel.gd:242 ui/photo_panel.gd:280
+#: ui/photo_panel.gd:243 ui/photo_panel.gd:245 ui/photo_panel.gd:283
 #: ui/settings_panel.gd:711
 msgid "On"
 msgstr "Sí"
 
-#: ui/photo_panel.gd:318
+#: ui/photo_panel.gd:321
 msgid "RS orbit · LT/RT distance · LB/RB zoom · D-pad roll/height · X capture · Y hide panel · View orbit/free · B exit"
 msgstr "JD orbitar · LT/RT distancia · LB/RB zoom · Cruceta giro/altura · X capturar · Y ocultar panel · Vista orbitar/libre · B salir"
 
-#: ui/photo_panel.gd:319
+#: ui/photo_panel.gd:322
 msgid "PHOTO MODE   Y"
 msgstr "MODO FOTO   Y"
 
-#: ui/photo_panel.gd:321
+#: ui/photo_panel.gd:324
 msgid "Drag orbit/look · Wheel distance · WASD move · R/F height · Q/E roll · Z/X zoom · C capture · Tab hide panel · H hide UI · Esc exit"
 msgstr "Arrastrar orbitar/mirar · Rueda distancia · WASD mover · R/F altura · Q/E giro · Z/X zoom · C capturar · Tab ocultar panel · H ocultar UI · Esc salir"
 
-#: ui/photo_panel.gd:322
+#: ui/photo_panel.gd:325
 msgid "PHOTO MODE   Tab"
 msgstr "MODO FOTO   Tab"
 
