@@ -323,6 +323,7 @@ func test_a_salvaged_piece_is_a_moment_on_lumi() -> void:
 	assert_eq(reveal._name.text, tr(Looks.name_of("ears_leaf")).to_upper(), "the piece is named")
 	assert_string_contains(reveal._line.text, "Locker", "the way to the Locker")
 	assert_true(reveal.lit(), "a light in the piece's colour over Lumi")
+	assert_lt(reveal._plate.size.y, 200.0, "the plate is as tall as its text, not the screen")
 	reveal._process(Finds.reveal_s(Planets.current()) + 0.1)
 	assert_false(reveal.lit(), "the light goes with the moment")
 	assert_false(reveal._plate.visible)

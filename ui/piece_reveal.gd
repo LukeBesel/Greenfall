@@ -15,6 +15,7 @@ const DEFAULT_HOLD_S: float = 3.5
 const GAP_S: float = 0.35
 const TOP_SHARE: float = 0.09
 const PLATE_W: float = 460.0
+const PLATE_PAD: int = 14
 const LIGHT_UP_M: float = 1.7
 const LIGHT_RANGE_M: float = 6.0
 const LIGHT_FLASH: float = 5.0
@@ -41,7 +42,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 	EventBus.piece_found.connect(_on_piece_found)
 	EventBus.set_completed.connect(_on_set_completed)
-	_plate = FieldPlate.new(14)
+	_plate = FieldPlate.new(PLATE_PAD)
 	_plate.custom_minimum_size = Vector2(PLATE_W, 0)
 	_plate.set_anchors_preset(Control.PRESET_CENTER_TOP)
 	_plate.grow_horizontal = Control.GROW_DIRECTION_BOTH
@@ -59,6 +60,9 @@ func _ready() -> void:
 	vb.add_child(_name)
 	vb.add_child(FieldPlate.rule())
 	_line = FieldPlate.sentence("", FieldPlate.INK_DIM)
+	# A wrapped line sizes its height from its width: without a set width the plate first lays out
+	# one word a line and stays that tall (seen in the M3-15 render).
+	_line.custom_minimum_size.x = PLATE_W - 2.0 * PLATE_PAD
 	vb.add_child(_line)
 	_plate.visible = false
 
@@ -73,6 +77,13 @@ func _exit_tree() -> void:
 ## What is on the plate now: {kind, id} ({} when nothing shows). For tests and tools.
 func showing() -> Dictionary:
 	return _queue[0] if _showing and not _queue.is_empty() else {}
+
+
+## Keeps the moment that shows now on screen for `seconds` more (render tools: a slow software
+## frame must not miss it). Nothing in play calls it.
+func hold_for(seconds: float) -> void:
+	if _showing:
+		_left = maxf(_left, seconds)
 
 
 func queued() -> int:
@@ -123,7 +134,7 @@ func _begin(item: Dictionary) -> void:
 		get_tree().create_timer(ANSWER_S).timeout.connect(_answer)
 		_dress(id)
 	_plate.visible = true
-	_plate.position.y = get_viewport().get_visible_rect().size.y * TOP_SHARE
+	_place_plate()
 	if not Settings.reduced_motion:
 		_plate.modulate.a = 0.0
 		var tw: Tween = _plate.create_tween()
@@ -137,6 +148,13 @@ func _end() -> void:
 	_queue.pop_front()
 	_undress()
 	_drop_light()
+
+
+## The plate shrinks to its text and sits centred near the top of the screen.
+func _place_plate() -> void:
+	_plate.reset_size()
+	var view: Vector2 = get_viewport().get_visible_rect().size
+	_plate.position = Vector2((view.x - _plate.size.x) * 0.5, view.y * TOP_SHARE)
 
 
 ## The second note of the moment, a fifth above the first.
