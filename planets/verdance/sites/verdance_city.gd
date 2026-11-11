@@ -49,6 +49,8 @@ var stats: Dictionary = {}
 var trees: OldTownTrees
 var ground: OldTownGround
 var tree_spots: Array[Vector2] = []
+var approach_keys: Array[Vector2i] = []   # the open blocks between the yard and the landmark
+var view_step := Vector2i.ZERO            # one block from the landmark toward the yard
 
 var _site: VerdanceSite
 var _body: StaticBody3D
@@ -147,12 +149,14 @@ func _pick_block(site: VerdanceSite) -> Vector2i:
 ## closes the view across an open, junk-filled lot.
 func _open_approach(site: VerdanceSite, step: Vector2i) -> void:
 	var key: Vector2i = block_key + step
+	view_step = step
 	while key != Vector2i.ZERO and maxi(absi(key.x), absi(key.y)) < 4:
 		if site.layout.blocks.has(key):
 			var b: Dictionary = site.layout.blocks[key]
 			b["type"] = CityLayout.Block.PARKING
 			b["buildings"] = []
 			site.layout.blocks[key] = b
+			approach_keys.append(key)
 		key += step
 	stats["approach"] = true
 
@@ -200,7 +204,8 @@ func build(site: VerdanceSite) -> void:
 	ground = OldTownGround.new()
 	ground.name = "Ground"
 	add_child(ground)
-	ground.build(_site, block_key, landmark_rects + _rects, tree_spots)
+	ground.build(_site, block_key, landmark_rects + _rects, tree_spots, _site.site_id != "start_yard",
+		approach_keys if bool(look.landmark().get("avenue", false)) else ([] as Array[Vector2i]))
 	stats.merge(ground.stats)
 	await BuildBudget.check("city:signs")
 	var signs := OldTownShopSigns.new()
@@ -216,7 +221,7 @@ func build(site: VerdanceSite) -> void:
 	set_source_state(source_state)
 	set_stage(stage)
 	if DevHooks.has("load-report") or DevHooks.has("town-map"):
-		print("[city] %s %s" % [city_id, str(stats)])
+		print("[city] %s on block %s %s" % [city_id, str(block_key), str(stats)])
 
 
 ## The city's source landmark, in the city's building material. A city overrides this.
@@ -412,6 +417,8 @@ func _build_trees() -> void:
 			continue
 		var c := Vector2(key) * CityLayout.PITCH
 		for o: Vector2 in [Vector2(0, -1), Vector2(0, 1), Vector2(-1, 0), Vector2(1, 0)]:
+			if _across_view(key, o):
+				continue
 			var along := Vector2(-o.y, o.x)
 			for t: float in [-9.6, -3.2, 3.2, 9.6]:
 				if rng.randf() < skip:
@@ -434,6 +441,15 @@ func _build_trees() -> void:
 	add_child(trees)
 	trees.build(spots, _site.seed_value + 3307, _body, stats)
 	tree_spots = spots
+
+
+## Whether side `o` of block `key` lies across the line of sight from the yard to the landmark: a
+## kerb of an approach block that the view crosses, or the landmark block's side toward the yard.
+## No street trees stand there, so the landmark still closes the view once they are in leaf.
+func _across_view(key: Vector2i, o: Vector2) -> bool:
+	if view_step == Vector2i.ZERO or absf(o.dot(Vector2(view_step))) < 0.5:
+		return false
+	return approach_keys.has(key) or (key == block_key and o.dot(Vector2(view_step)) > 0.5)
 
 
 ## A warm glow on every street lamp head of the town (CityView.lamp_bulbs), shown from stage 2.

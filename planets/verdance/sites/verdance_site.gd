@@ -200,9 +200,9 @@ func extent() -> float:
 func set_level(l: int) -> void:
 	level = clampi(l, 1, 5)
 	if dressing:
-		dressing.set_level(level, is_inside_tree())
+		dressing.set_level(_dress_level(), is_inside_tree())
 	if _rubble:
-		_rubble.visible = level <= 1
+		_rubble.visible = _dress_level() <= 1
 	var ks: String = kit_state(level)
 	if furniture:
 		furniture.set_state(ks)  # [v3city]
@@ -231,6 +231,15 @@ func set_district_stage(stage: int) -> void:
 	super.set_district_stage(stage)
 	if town:
 		town.set_stage(district_stage)
+	if dressing and dressing.level != _dress_level():
+		dressing.set_level(_dress_level(), is_inside_tree())
+	if _rubble:
+		_rubble.visible = _dress_level() <= 1
+	if _lot_root:
+		if _lot_state_now() != _lot_state:
+			_build_lots()
+		else:
+			_show_patches()
 
 
 ## The district's pollution source is running ("broken") or stopped ("shut_down"): the city's
@@ -795,6 +804,42 @@ func _kit_blocks() -> void:
 
 var _lots: Array[Dictionary] = []
 var _lot_root: Node3D
+var _lot_state: String = ""         # the state the lots were last built in
+var _patches: Array[Node3D] = []    # the lots' kit ground patches
+const PAVED_FROM_STAGE: int = 3     # the city's restored ground (OldTownGround) shows from this district stage
+const TIDY_FROM_STAGE: int = 2
+const PLANTED_FROM_STAGE: int = 4
+
+
+## Whether the city lays its own restored ground over the yard and the lots beside it (every city
+## but the start, whose yard is the clean pad).
+func _city_ground_on_lots() -> bool:
+	return town != null and site_id != "start_yard"
+
+
+## The state the yard and lot dressing shows: the kit's (from the base level), raised by the
+## district's regrowth where the city restores its own ground, so a recovered city's yard is not
+## left broken: tidied from stage 2, planters with bushes and flowers from stage 4.
+func _lot_state_now() -> String:
+	if _city_ground_on_lots():
+		if district_stage >= PLANTED_FROM_STAGE:
+			return "restored"
+		if district_stage >= TIDY_FROM_STAGE and _kit_state == "broken":
+			return "repaired"
+	return _kit_state
+
+
+## The level the yard's dressing shows: the base's own, and at least 2 once the city's ground is
+## restored (the fallen name sign and the ruin's clutter do not stay in a recovered city's yard).
+func _dress_level() -> int:
+	return maxi(level, 2) if _city_ground_on_lots() and district_stage >= PAVED_FROM_STAGE else level
+
+
+## The kit ground patches give way to the city's paving and lawns once those show.
+func _show_patches() -> void:
+	var paved: bool = _city_ground_on_lots() and district_stage >= PAVED_FROM_STAGE
+	for p: Node3D in _patches:
+		p.visible = not paved
 
 
 ## One kit building at a site-local point, with its footprint for the junk clearing.
@@ -875,16 +920,18 @@ static func clean_pad(size: float) -> Node3D:
 	return root
 
 
-## Yard and lot dressing for the current state: kit ground patches everywhere; landfill heaps of
-## kit debris, crate stacks and tipped barrels while broken, tidied when repaired, planters with
-## bushes and flowers when restored. Rebuilt on a state change (meshes are kit-cached).
+## Yard and lot dressing for the current state (_lot_state_now): kit ground patches everywhere;
+## landfill heaps of kit debris, crate stacks and tipped barrels while broken, tidied when repaired,
+## planters with bushes and flowers when restored. Rebuilt on a state change (meshes are kit-cached).
 func _build_lots() -> void:
 	if _lot_root:
 		_lot_root.free()
 	_lot_root = Node3D.new()
 	_lot_root.name = "Lots"
 	add_child(_lot_root)
-	var st: String = _kit_state
+	var st: String = _lot_state_now()
+	_lot_state = st
+	_patches.clear()
 	var b := KitMesh.Builder.new(seed_value + 7, {"main": "cream", "accent": "teal"}, st)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_value + 409
@@ -894,6 +941,7 @@ func _build_lots() -> void:
 		var gp: Node3D = clean_pad(21.0) if yard and site_id == "start_yard" else KitMesh.ground_patch(Vector2(21, 21) if yard else Vector2(18, 18), st, int(lot["seed"]))  # [v1yard]
 		gp.position = Vector3(c.x, 0.0, c.y)
 		_lot_root.add_child(gp)
+		_patches.append(gp)
 		var t := Transform3D(Basis(), Vector3(c.x, 0, c.y))
 		if yard:
 			# Lived-in clutter on the yard's edges, clear of the anchors and the way out north.
@@ -925,3 +973,4 @@ func _build_lots() -> void:
 	var mi: MeshInstance3D = KitMesh.instance(b)
 	mi.name = "LotProps"
 	_lot_root.add_child(mi)
+	_show_patches()

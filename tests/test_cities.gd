@@ -214,3 +214,18 @@ func test_a_lattice_tower_reaches_its_height() -> void:
 	var box: AABB = g.mesh().get_aabb()
 	assert_almost_eq(box.end.y, 30.0, 0.2)
 	assert_almost_eq(box.size.x, 4.2, 0.2)
+
+
+func test_a_restored_yard_is_paved_in_a_planted_frame() -> void:
+	var n: int = OldTownGround.CELLS
+	assert_eq(OldTownGround._yard_cell(n / 2, n / 2), OldTownGround.PAVE, "the middle of the yard is paved")
+	assert_eq(OldTownGround._yard_cell(0, 0), OldTownGround.LAWN, "a lawn in the corner")
+	assert_eq(OldTownGround._yard_cell(2, 2), OldTownGround.LAWN)
+	assert_eq(OldTownGround._yard_cell(1, 0), OldTownGround.LAWN, "the rim is planted")
+	assert_eq(OldTownGround._yard_cell(n / 2, 0), OldTownGround.PAVE, "a way out through the middle of each side")
+	assert_eq(OldTownGround._yard_cell(n - 1, n / 2), OldTownGround.PAVE)
+	var lawn: int = 0
+	for j: int in n:
+		for i: int in n:
+			lawn += 1 if OldTownGround._yard_cell(i, j) == OldTownGround.LAWN else 0
+	assert_between(lawn, n * n / 5, n * n / 2, "between a fifth and a half of the yard is green")
