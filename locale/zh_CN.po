@@ -2102,43 +2102,43 @@ msgstr ""
 msgid "Needs %s"
 msgstr "需要 %s"
 
-#: story/ledger.gd:499
+#: story/ledger.gd:510
 msgid "Ledger drone inbound, %s! It's heading for a clean hex."
 msgstr "Ledger 无人机来袭，%s！它正飞向一片干净的六角格。"
 
-#: story/ledger.gd:500
+#: story/ledger.gd:511
 msgid "A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground."
 msgstr "一架 Ledger 无人机要往干净的六角格上倾倒废料（在你的%s）。它碰不了种了植物的地面。"
 
-#: story/ledger.gd:537
+#: story/ledger.gd:548
 msgid "SIGNAL JAMMED"
 msgstr "信号已干扰"
 
-#: story/ledger.gd:567
+#: story/ledger.gd:578
 msgid "Target re-classified as ASSET. Aborting. ...Interesting."
 msgstr "目标重新归类为资产。中止。……有意思。"
 
-#: story/ledger.gd:638
+#: story/ledger.gd:649
 msgid "The drone dumped a little junk back. Scoop it up, or let your helpers tidy it. A Signal Jammer at the base keeps drones away."
 msgstr "无人机倒回了一点废料。把它铲起来，或者让你的帮手收拾。基地里的信号干扰器能赶走无人机。"
 
-#: story/ledger.gd:694
+#: story/ledger.gd:705
 msgid "SEEDS · PAID IN FULL"
 msgstr "种子 · 已全额支付"
 
-#: story/ledger.gd:711 systems/events.gd:500 systems/lumi_level.gd:218
+#: story/ledger.gd:722 systems/events.gd:500 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "+%d 种子"
 
-#: story/ledger.gd:783
+#: story/ledger.gd:794
 msgid "E   jack in: rewrite the Ledger's contract"
 msgstr "E   接入：改写 Ledger 的合同"
 
-#: story/ledger.gd:783
+#: story/ledger.gd:794
 msgid "E   read the amended contract"
 msgstr "E   阅读修订后的合同"
 
-#: story/ledger.gd:808 story/ledger.gd:862
+#: story/ledger.gd:819 story/ledger.gd:873
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: ACTIVE\n"
@@ -2148,11 +2148,11 @@ msgstr ""
 "合同 0001：生效中\n"
 "废料即为账目条款"
 
-#: story/ledger.gd:823
+#: story/ledger.gd:834
 msgid "RELAY 07  ·  PROPERTY OF THE LEDGER  ·  NO UNSCHEDULED ACCESS"
 msgstr "中继站 07  ·  LEDGER 资产  ·  禁止计划外访问"
 
-#: story/ledger.gd:862
+#: story/ledger.gd:873
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: AMENDED\n"
@@ -2162,11 +2162,11 @@ msgstr ""
 "合同 0001：已修订\n"
 "修复 = 资产"
 
-#: story/ledger.gd:984
+#: story/ledger.gd:995
 msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
 msgstr "Ledger 的合同已改写。它的无人机现在运送种子了。（+%d 种子）"
 
-#: story/ledger.gd:992
+#: story/ledger.gd:1003
 msgid "<< LEDGER // OFF THE RECORD >>"
 msgstr "<< LEDGER // 非正式记录 >>"
 

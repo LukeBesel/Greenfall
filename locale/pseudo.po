@@ -2105,43 +2105,43 @@ msgstr ""
 msgid "Needs %s"
 msgstr "[Ñééðš %s ~]"
 
-#: story/ledger.gd:499
+#: story/ledger.gd:510
 msgid "Ledger drone inbound, %s! It's heading for a clean hex."
 msgstr "[Ļéðĝéŕ ðŕôñé îñbôûñð, %s! Îţ'š ĥéàðîñĝ ƒôŕ à çļéàñ ĥéx. ~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:500
+#: story/ledger.gd:511
 msgid "A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground."
 msgstr "[À Ļéðĝéŕ ðŕôñé îš çômîñĝ ţô ðûmþ ĵûñķ ôñ à çļéàñ ĥéx (%s ôƒ ýôû). Îţ çàñ'ţ ţôûçĥ þļàñţéð ĝŕôûñð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:537
+#: story/ledger.gd:548
 msgid "SIGNAL JAMMED"
 msgstr "[ŠÎĜÑÀĻ ĴÀMMÉÐ ~~]"
 
-#: story/ledger.gd:567
+#: story/ledger.gd:578
 msgid "Target re-classified as ASSET. Aborting. ...Interesting."
 msgstr "[Ţàŕĝéţ ŕé-çļàššîƒîéð àš ÀŠŠÉŢ. Àbôŕţîñĝ. ...Îñţéŕéšţîñĝ. ~~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:638
+#: story/ledger.gd:649
 msgid "The drone dumped a little junk back. Scoop it up, or let your helpers tidy it. A Signal Jammer at the base keeps drones away."
 msgstr "[Ţĥé ðŕôñé ðûmþéð à ļîţţļé ĵûñķ bàçķ. Šçôôþ îţ ûþ, ôŕ ļéţ ýôûŕ ĥéļþéŕš ţîðý îţ. À Šîĝñàļ Ĵàmméŕ àţ ţĥé bàšé ķééþš ðŕôñéš àŵàý. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:694
+#: story/ledger.gd:705
 msgid "SEEDS · PAID IN FULL"
 msgstr "[ŠÉÉÐŠ · ÞÀÎÐ ÎÑ FÛĻĻ ~~~~]"
 
-#: story/ledger.gd:711 systems/events.gd:500 systems/lumi_level.gd:218
+#: story/ledger.gd:722 systems/events.gd:500 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "[+%d šééðš ~]"
 
-#: story/ledger.gd:783
+#: story/ledger.gd:794
 msgid "E   jack in: rewrite the Ledger's contract"
 msgstr "E   [ĵàçķ îñ: ŕéŵŕîţé ţĥé Ļéðĝéŕ'š çôñţŕàçţ ~~~~~~~~~~]"
 
-#: story/ledger.gd:783
+#: story/ledger.gd:794
 msgid "E   read the amended contract"
 msgstr "E   [ŕéàð ţĥé àméñðéð çôñţŕàçţ ~~~~~~]"
 
-#: story/ledger.gd:808 story/ledger.gd:862
+#: story/ledger.gd:819 story/ledger.gd:873
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: ACTIVE\n"
@@ -2151,11 +2151,11 @@ msgstr ""
 "ÇÔÑŢŔÀÇŢ 0001: ÀÇŢÎVÉ\n"
 "ŴÀŠŢÉ ÎŠ À ĻÎÑÉ ÎŢÉM ~~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:823
+#: story/ledger.gd:834
 msgid "RELAY 07  ·  PROPERTY OF THE LEDGER  ·  NO UNSCHEDULED ACCESS"
 msgstr "[ŔÉĻÀÝ 07  ·  ÞŔÔÞÉŔŢÝ ÔF ŢĤÉ ĻÉÐĜÉŔ  ·  ÑÔ ÛÑŠÇĤÉÐÛĻÉÐ ÀÇÇÉŠŠ ~~~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:862
+#: story/ledger.gd:873
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: AMENDED\n"
@@ -2165,11 +2165,11 @@ msgstr ""
 "ÇÔÑŢŔÀÇŢ 0001: ÀMÉÑÐÉÐ\n"
 "ŔÉŠŢÔŔÀŢÎÔÑ = ÀŠŠÉŢ ~~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:984
+#: story/ledger.gd:995
 msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
 msgstr "[Ţĥé Ļéðĝéŕ'š çôñţŕàçţ îš ŕéŵŕîţţéñ. Îţš ðŕôñéš ðéļîvéŕ šééðš ñôŵ. (+%d šééðš) ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:992
+#: story/ledger.gd:1003
 msgid "<< LEDGER // OFF THE RECORD >>"
 msgstr "[<< ĻÉÐĜÉŔ // ÔFF ŢĤÉ ŔÉÇÔŔÐ >> ~~~~~~~]"
 

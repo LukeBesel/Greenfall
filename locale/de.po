@@ -2108,43 +2108,43 @@ msgstr ""
 msgid "Needs %s"
 msgstr "Benötigt %s"
 
-#: story/ledger.gd:499
+#: story/ledger.gd:510
 msgid "Ledger drone inbound, %s! It's heading for a clean hex."
 msgstr "Ledger-Drohne im Anflug, %s! Sie hält auf ein sauberes Hexfeld zu."
 
-#: story/ledger.gd:500
+#: story/ledger.gd:511
 msgid "A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground."
 msgstr "Eine Ledger-Drohne will Schrott auf ein sauberes Hexfeld kippen (%s von dir). Bepflanzten Boden kann sie nicht anrühren."
 
-#: story/ledger.gd:537
+#: story/ledger.gd:548
 msgid "SIGNAL JAMMED"
 msgstr "SIGNAL GESTÖRT"
 
-#: story/ledger.gd:567
+#: story/ledger.gd:578
 msgid "Target re-classified as ASSET. Aborting. ...Interesting."
 msgstr "Ziel neu klassifiziert als AKTIVPOSTEN. Abbruch. ...Interessant."
 
-#: story/ledger.gd:638
+#: story/ledger.gd:649
 msgid "The drone dumped a little junk back. Scoop it up, or let your helpers tidy it. A Signal Jammer at the base keeps drones away."
 msgstr "Die Drohne hat etwas Schrott zurückgekippt. Schaufel ihn auf oder lass deine Helfer aufräumen. Ein Störsender an der Basis hält Drohnen fern."
 
-#: story/ledger.gd:694
+#: story/ledger.gd:705
 msgid "SEEDS · PAID IN FULL"
 msgstr "SAMEN · VOLLSTÄNDIG BEZAHLT"
 
-#: story/ledger.gd:711 systems/events.gd:500 systems/lumi_level.gd:218
+#: story/ledger.gd:722 systems/events.gd:500 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "+%d Samen"
 
-#: story/ledger.gd:783
+#: story/ledger.gd:794
 msgid "E   jack in: rewrite the Ledger's contract"
 msgstr "E   einklinken: den Vertrag des Ledgers umschreiben"
 
-#: story/ledger.gd:783
+#: story/ledger.gd:794
 msgid "E   read the amended contract"
 msgstr "E   den geänderten Vertrag lesen"
 
-#: story/ledger.gd:808 story/ledger.gd:862
+#: story/ledger.gd:819 story/ledger.gd:873
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: ACTIVE\n"
@@ -2154,11 +2154,11 @@ msgstr ""
 "VERTRAG 0001: AKTIV\n"
 "ABFALL IST EIN POSTEN"
 
-#: story/ledger.gd:823
+#: story/ledger.gd:834
 msgid "RELAY 07  ·  PROPERTY OF THE LEDGER  ·  NO UNSCHEDULED ACCESS"
 msgstr "RELAIS 07  ·  EIGENTUM DES LEDGERS  ·  KEIN UNGEPLANTER ZUGRIFF"
 
-#: story/ledger.gd:862
+#: story/ledger.gd:873
 msgid ""
 "LEDGER RELAY 07\n"
 "CONTRACT 0001: AMENDED\n"
@@ -2168,11 +2168,11 @@ msgstr ""
 "VERTRAG 0001: GEÄNDERT\n"
 "WIEDERHERSTELLUNG = AKTIVPOSTEN"
 
-#: story/ledger.gd:984
+#: story/ledger.gd:995
 msgid "The Ledger's contract is rewritten. Its drones deliver seeds now. (+%d seeds)"
 msgstr "Der Vertrag des Ledgers ist umgeschrieben. Seine Drohnen liefern jetzt Samen. (+%d Samen)"
 
-#: story/ledger.gd:992
+#: story/ledger.gd:1003
 msgid "<< LEDGER // OFF THE RECORD >>"
 msgstr "<< LEDGER // INOFFIZIELL >>"
 
