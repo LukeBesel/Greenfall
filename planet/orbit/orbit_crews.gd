@@ -130,6 +130,10 @@ func tick(list: Array[Dictionary], dt: float) -> void:
 func _process(delta: float) -> void:
 	if globe:
 		tick(crews, delta)
+	_away_t += delta
+	if _away_t >= 1.0:  # [v6crew]
+		_away_tick(_away_t)
+		_away_t = 0.0
 
 
 func cleaned_by_bots() -> int:
@@ -149,6 +153,57 @@ func cleaned_by_bots() -> int:
 var crew: SphereCrew
 
 const AWAY_MIN_S: float = 120.0  # the flat slice's threshold for an offline payout
+
+# --- [v6crew] Looking at a robot; what a hub's crew did while Lumi was away ---------------------
+## Lumi stands this close to a robot: its line shows as the prompt (what it does, or why it can't).
+const LOOK_M: float = 3.4
+## A hub's crew reports once when Lumi comes back within HERE_M after AWAY_S or more past GONE_M.
+const HERE_M: float = 150.0
+const GONE_M: float = 330.0
+const AWAY_S: float = 180.0
+var _away_t: float = 0.0
+var _away_quiet: float = 0.0
+
+
+## The line of the robot Lumi stands by ("" if none is close).
+func robot_prompt(pos: Vector3) -> String:
+	if crew == null:
+		return ""
+	var best: Dictionary = {}
+	var bd: float = LOOK_M
+	for u: Dictionary in crew.robots():
+		if u["bot"] == null:
+			continue
+		var d: float = (u["bot"] as SphereBot).global_position.distance_to(pos)
+		if d < bd:
+			bd = d
+			best = u
+	return "~ " + CrewTalk.look_text(crew, best) if not best.is_empty() else ""
+
+
+## Once a second: time each hub's crew has worked unwatched, and the one note on Lumi's return.
+func _away_tick(dt: float) -> void:
+	if crew == null or crew.focus == null or not is_instance_valid(crew.focus):
+		return
+	_away_quiet = maxf(0.0, _away_quiet - dt)
+	var at: Vector3 = crew.surface.up_at(crew.focus.global_position)
+	var seen: Dictionary = {}
+	for u: Dictionary in crew.robots():
+		var h: int = int(u["hub"])
+		if seen.has(h):
+			continue
+		seen[h] = true
+		var log: Dictionary = crew._hub_log(h)
+		var m: float = at.angle_to(crew.grid.centers[h]) * crew.surface.radius
+		if m > GONE_M:
+			log["t"] = float(log["t"]) + dt
+		elif m < HERE_M:
+			if float(log["t"]) >= AWAY_S and _away_quiet <= 0.0:
+				var text: String = CrewTalk.away_text(int(log["cells"]), float(log["cubes"]))
+				if text != "":
+					EventBus.toast.emit(text, "info")
+			for k: String in ["cells", "cubes", "bales", "t"]:
+				log[k] = 0.0
 
 
 ## Builds the crew into the slice (`so` = SliceOrbit, after Patch and the camera exist).
@@ -225,6 +280,7 @@ func restore_crew(so: Node, od: Dictionary, from_disk: bool) -> Dictionary:
 	if GameState.saved_unix <= 0.0 or away <= AWAY_MIN_S or crew.robots().is_empty():
 		return {}
 	var res: Dictionary = offline(away)
+	_away_quiet = 60.0  # [v6crew] the offline note covers it: no second "while you were away"
 	Offline.apply(res)
 	EventBus.toast.emit(Offline.summary_text(res), "info")
 	return res

@@ -20358,6 +20358,197 @@ msgstr ""
 msgid "You can fly on now. The rest of Verdance can wait."
 msgstr "Tu peux repartir maintenant. Le reste de Verdance peut attendre."
 
+#: robots/sphere/command_overlay.gd:18
+msgid "Paint the ground you want cleaned first."
+msgstr "Peins le sol à nettoyer en premier."
+
+#: robots/sphere/command_overlay.gd:18
+msgid "Paint where to plant."
+msgstr "Peins où planter."
+
+#: robots/sphere/command_overlay.gd:19
+msgid "Paint where to water."
+msgstr "Peins où arroser."
+
+#: robots/sphere/command_overlay.gd:19
+msgid "Paint the water to skim first."
+msgstr "Peins l'eau à écumer en premier."
+
+#: robots/sphere/command_overlay.gd:99
+msgid "ROBOT COMMAND"
+msgstr "COMMANDE DES ROBOTS"
+
+#: robots/sphere/command_overlay.gd:102
+msgid "No robots here yet."
+msgstr "Pas encore de robots ici."
+
+#: robots/sphere/command_overlay.gd:105
+msgid "%d robot"
+msgid_plural "%d robots"
+msgstr[0] "%d robot"
+msgstr[1] "%d robots"
+
+#: robots/sphere/command_overlay.gd:107
+msgid "About %d hexes an hour"
+msgstr "Environ %d hexagones par heure"
+
+#: robots/sphere/command_overlay.gd:121
+msgid "%d working"
+msgstr "%d au travail"
+
+#: robots/sphere/command_overlay.gd:123
+msgid "%d working, %d waiting"
+msgstr "%d au travail, %d en attente"
+
+#: robots/sphere/command_overlay.gd:125
+msgid "%d waiting"
+msgstr "%d en attente"
+
+#: robots/sphere/command_overlay.gd:129 robots/sphere/crew_talk.gd:71
+#: robots/sphere/crew_talk.gd:75
+msgid "Bales are piling up. Build a Haul Bug."
+msgstr "Les balles s'entassent. Construis un Haul Bug."
+
+#: robots/sphere/command_overlay.gd:138
+msgid "Good! Your robots will work here first."
+msgstr "Bien ! Tes robots travailleront ici en premier."
+
+#: robots/sphere/command_overlay.gd:139
+msgid "Hold A: paint   Hold X: erase   %s: back"
+msgstr "Maintenir A : peindre   Maintenir X : effacer   %s : retour"
+
+#: robots/sphere/command_overlay.gd:140
+msgid "Left mouse: paint   Right mouse: erase   %s: back"
+msgstr "Clic gauche : peindre   Clic droit : effacer   %s : retour"
+
+#: robots/sphere/command_overlay.gd:142
+msgid "Y: next job"
+msgstr "Y : tâche suivante"
+
+#: robots/sphere/command_overlay.gd:142
+msgid "Tab: next job"
+msgstr "Tab : tâche suivante"
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Cleaning this hex."
+msgstr "Je nettoie cet hexagone."
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Planting here."
+msgstr "Je plante ici."
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Watering the plants."
+msgstr "J'arrose les plantes."
+
+#: robots/sphere/crew_talk.gd:21
+msgid "Skimming junk off the lake."
+msgstr "J'écume les déchets du lac."
+
+#: robots/sphere/crew_talk.gd:23
+msgid "No dirty ground left around this base."
+msgstr "Plus de sol sale autour de cette base."
+
+#: robots/sphere/crew_talk.gd:24
+msgid "My zone is done. Paint more ground for me."
+msgstr "Ma zone est finie. Peins-moi plus de sol."
+
+#: robots/sphere/crew_talk.gd:25
+msgid "No bales to carry right now."
+msgstr "Pas de balles à porter pour l'instant."
+
+#: robots/sphere/crew_talk.gd:26
+msgid "No clean ground to plant."
+msgstr "Pas de sol propre où planter."
+
+#: robots/sphere/crew_talk.gd:27
+msgid "Out of seeds."
+msgstr "Plus de graines."
+
+#: robots/sphere/crew_talk.gd:28
+msgid "Nothing to water yet. Plant something first."
+msgstr "Rien à arroser pour l'instant. Plante d'abord quelque chose."
+
+#: robots/sphere/crew_talk.gd:29
+msgid "No water nearby to fill my tank."
+msgstr "Pas d'eau à proximité pour remplir mon réservoir."
+
+#: robots/sphere/crew_talk.gd:30
+msgid "No junk on the lakes here."
+msgstr "Pas de déchets sur les lacs ici."
+
+#: robots/sphere/crew_talk.gd:31
+msgid "I can't find a way there. Trying another spot."
+msgstr "Je ne trouve pas de chemin. J'essaie un autre endroit."
+
+#: robots/sphere/crew_talk.gd:68
+msgid "Hello! Looking around."
+msgstr "Bonjour ! Je regarde autour de moi."
+
+#: robots/sphere/crew_talk.gd:72
+msgid "On my way to work."
+msgstr "En route pour le travail."
+
+#: robots/sphere/crew_talk.gd:78
+msgid "Fetching a bale."
+msgstr "Je vais chercher une balle."
+
+#: robots/sphere/crew_talk.gd:80
+msgid "Carrying bales home."
+msgstr "Je rapporte des balles."
+
+#: robots/sphere/crew_talk.gd:82
+msgid "Tipping junk into the baler."
+msgstr "Je verse les déchets dans la presse à balles."
+
+#: robots/sphere/crew_talk.gd:84
+msgid "Filling my water tank."
+msgstr "Je remplis mon réservoir d'eau."
+
+#: robots/sphere/crew_talk.gd:88
+msgid "Looking for work."
+msgstr "Je cherche du travail."
+
+#: robots/sphere/crew_talk.gd:94
+msgid "%s the %s: %s"
+msgstr "%s (%s) : %s"
+
+#: robots/sphere/crew_talk.gd:120
+msgid "No robots here yet"
+msgstr "Pas encore de robots ici"
+
+#: robots/sphere/crew_talk.gd:122
+msgid "%d robot working here"
+msgid_plural "%d robots working here"
+msgstr[0] "%d robot travaille ici"
+msgstr[1] "%d robots travaillent ici"
+
+#: robots/sphere/crew_talk.gd:124
+msgid "%s, about %d hexes an hour"
+msgstr "%s, environ %d hexagones par heure"
+
+#: robots/sphere/crew_talk.gd:135
+msgid "While you were away, your robots here cleaned %d hex."
+msgid_plural "While you were away, your robots here cleaned %d hexes."
+msgstr[0] "Pendant ton absence, tes robots ici ont nettoyé %d hexagone."
+msgstr[1] "Pendant ton absence, tes robots ici ont nettoyé %d hexagones."
+
+#: robots/sphere/crew_talk.gd:137
+msgid "While you were away, your robots here earned %s cubes."
+msgstr "Pendant ton absence, tes robots ici ont gagné %s cubes."
+
+#: robots/sphere/crew_talk.gd:138
+msgid ""
+"While you were away, your robots here cleaned %d hex and earned %s cubes."
+msgid_plural ""
+"While you were away, your robots here cleaned %d hexes and earned %s cubes."
+msgstr[0] ""
+"Pendant ton absence, tes robots ici ont nettoyé %d hexagone et gagné %s "
+"cubes."
+msgstr[1] ""
+"Pendant ton absence, tes robots ici ont nettoyé %d hexagones et gagné %s "
+"cubes."
+
 #~ msgid "Everything sells for x%s now."
 #~ msgstr "Tout se vend x%s maintenant."
 

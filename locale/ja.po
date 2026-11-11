@@ -18571,6 +18571,189 @@ msgstr "6つのステーションが目覚めたよ、Lumi。あとはロボッ�
 msgid "You can fly on now. The rest of Verdance can wait."
 msgstr "もう次へ飛べるよ。Verdanceの残りは後でいい。"
 
+#: robots/sphere/command_overlay.gd:18
+msgid "Paint the ground you want cleaned first."
+msgstr "先に片づけたい地面をぬろう。"
+
+#: robots/sphere/command_overlay.gd:18
+msgid "Paint where to plant."
+msgstr "植える場所をぬろう。"
+
+#: robots/sphere/command_overlay.gd:19
+msgid "Paint where to water."
+msgstr "水をやる場所をぬろう。"
+
+#: robots/sphere/command_overlay.gd:19
+msgid "Paint the water to skim first."
+msgstr "先にすくいたい水面をぬろう。"
+
+#: robots/sphere/command_overlay.gd:99
+msgid "ROBOT COMMAND"
+msgstr "ロボット司令"
+
+#: robots/sphere/command_overlay.gd:102
+msgid "No robots here yet."
+msgstr "ここにはまだロボットがいない。"
+
+#: robots/sphere/command_overlay.gd:105
+msgid "%d robot"
+msgid_plural "%d robots"
+msgstr[0] "ロボット%d台"
+
+#: robots/sphere/command_overlay.gd:107
+msgid "About %d hexes an hour"
+msgstr "1時間に約%dヘックス"
+
+#: robots/sphere/command_overlay.gd:121
+msgid "%d working"
+msgstr "%d台が作業中"
+
+#: robots/sphere/command_overlay.gd:123
+msgid "%d working, %d waiting"
+msgstr "%d台が作業中、%d台が待機中"
+
+#: robots/sphere/command_overlay.gd:125
+msgid "%d waiting"
+msgstr "%d台が待機中"
+
+#: robots/sphere/command_overlay.gd:129 robots/sphere/crew_talk.gd:71
+#: robots/sphere/crew_talk.gd:75
+msgid "Bales are piling up. Build a Haul Bug."
+msgstr "ベールがたまっている。Haul Bug を作ろう。"
+
+#: robots/sphere/command_overlay.gd:138
+msgid "Good! Your robots will work here first."
+msgstr "いいね！ロボットはまずここで働くよ。"
+
+#: robots/sphere/command_overlay.gd:139
+msgid "Hold A: paint   Hold X: erase   %s: back"
+msgstr "A長押し：ぬる   X長押し：消す   %s：もどる"
+
+#: robots/sphere/command_overlay.gd:140
+msgid "Left mouse: paint   Right mouse: erase   %s: back"
+msgstr "左クリック：ぬる   右クリック：消す   %s：もどる"
+
+#: robots/sphere/command_overlay.gd:142
+msgid "Y: next job"
+msgstr "Y：次の仕事"
+
+#: robots/sphere/command_overlay.gd:142
+msgid "Tab: next job"
+msgstr "Tab：次の仕事"
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Cleaning this hex."
+msgstr "このヘックスを片づけ中。"
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Planting here."
+msgstr "ここに植えている。"
+
+#: robots/sphere/crew_talk.gd:20
+msgid "Watering the plants."
+msgstr "植物に水をやっている。"
+
+#: robots/sphere/crew_talk.gd:21
+msgid "Skimming junk off the lake."
+msgstr "湖のゴミをすくっている。"
+
+#: robots/sphere/crew_talk.gd:23
+msgid "No dirty ground left around this base."
+msgstr "この基地のまわりはもうきれい。"
+
+#: robots/sphere/crew_talk.gd:24
+msgid "My zone is done. Paint more ground for me."
+msgstr "ゾーンは終わったよ。もっと地面をぬって。"
+
+#: robots/sphere/crew_talk.gd:25
+msgid "No bales to carry right now."
+msgstr "いまは運ぶベールがない。"
+
+#: robots/sphere/crew_talk.gd:26
+msgid "No clean ground to plant."
+msgstr "植えられるきれいな地面がない。"
+
+#: robots/sphere/crew_talk.gd:27
+msgid "Out of seeds."
+msgstr "タネがなくなった。"
+
+#: robots/sphere/crew_talk.gd:28
+msgid "Nothing to water yet. Plant something first."
+msgstr "まだ水をやるものがない。先に何か植えよう。"
+
+#: robots/sphere/crew_talk.gd:29
+msgid "No water nearby to fill my tank."
+msgstr "タンクに入れる水が近くにない。"
+
+#: robots/sphere/crew_talk.gd:30
+msgid "No junk on the lakes here."
+msgstr "このあたりの湖にゴミはない。"
+
+#: robots/sphere/crew_talk.gd:31
+msgid "I can't find a way there. Trying another spot."
+msgstr "そこへ行く道がない。別の場所をためすよ。"
+
+#: robots/sphere/crew_talk.gd:68
+msgid "Hello! Looking around."
+msgstr "こんにちは！まわりを見ているよ。"
+
+#: robots/sphere/crew_talk.gd:72
+msgid "On my way to work."
+msgstr "仕事に向かっている。"
+
+#: robots/sphere/crew_talk.gd:78
+msgid "Fetching a bale."
+msgstr "ベールを取りに行く。"
+
+#: robots/sphere/crew_talk.gd:80
+msgid "Carrying bales home."
+msgstr "ベールを持ち帰っている。"
+
+#: robots/sphere/crew_talk.gd:82
+msgid "Tipping junk into the baler."
+msgstr "ゴミをベーラーに入れている。"
+
+#: robots/sphere/crew_talk.gd:84
+msgid "Filling my water tank."
+msgstr "水タンクを満たしている。"
+
+#: robots/sphere/crew_talk.gd:88
+msgid "Looking for work."
+msgstr "仕事を探している。"
+
+#: robots/sphere/crew_talk.gd:94
+msgid "%s the %s: %s"
+msgstr "%s（%s）：%s"
+
+#: robots/sphere/crew_talk.gd:120
+msgid "No robots here yet"
+msgstr "ここにはまだロボットがいない"
+
+#: robots/sphere/crew_talk.gd:122
+msgid "%d robot working here"
+msgid_plural "%d robots working here"
+msgstr[0] "ロボット%d台がここで作業中"
+
+#: robots/sphere/crew_talk.gd:124
+msgid "%s, about %d hexes an hour"
+msgstr "%s、1時間に約%dヘックス"
+
+#: robots/sphere/crew_talk.gd:135
+msgid "While you were away, your robots here cleaned %d hex."
+msgid_plural "While you were away, your robots here cleaned %d hexes."
+msgstr[0] "るすの間に、ここのロボットが%dヘックスを片づけた。"
+
+#: robots/sphere/crew_talk.gd:137
+msgid "While you were away, your robots here earned %s cubes."
+msgstr "るすの間に、ここのロボットがキューブを%s個かせいだ。"
+
+#: robots/sphere/crew_talk.gd:138
+msgid ""
+"While you were away, your robots here cleaned %d hex and earned %s cubes."
+msgid_plural ""
+"While you were away, your robots here cleaned %d hexes and earned %s cubes."
+msgstr[0] "るすの間に、ここのロボットが%dヘックスを片づけ、キューブを%s個かせいだ。"
+
 #~ msgid "Everything sells for x%s now."
 #~ msgstr "すべての売値が x%s になった。"
 

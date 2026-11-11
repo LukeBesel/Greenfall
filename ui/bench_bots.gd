@@ -115,4 +115,11 @@ static func counter(fleet: Fleet) -> String:
 	if fleet == null:
 		return ""
 	var total: int = fleet.robot_total()  # [orbC] globe crews
-	return _tr("ROBOTS  %d   ·   CREW SPOTS %d") % [total, fleet.crew_cap()]
+	var line: String = _tr("ROBOTS  %d   ·   CREW SPOTS %d") % [total, fleet.crew_cap()]
+	if fleet is SphereFleet and (fleet as SphereFleet).crew != null:  # [v6crew] what this hub's crew gets done
+		var cr: SphereCrew = (fleet as SphereFleet).crew
+		var hub: int = cr.nearest_hub(cr.surface.up_at(cr.focus.global_position)) if cr.focus != null and is_instance_valid(cr.focus) else cr.hub_cell
+		var rate: float = float(cr.hub_summary(hub)["hexes_per_hour"])
+		if rate >= 1.0:
+			line += "   ·   " + (_tr("About %d hexes an hour") % roundi(rate)).to_upper()
+	return line
