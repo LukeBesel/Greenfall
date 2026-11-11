@@ -318,8 +318,10 @@ func regrowth_table() -> Dictionary:
 
 func _load_chains() -> void:
 	objectives = _rows("tutorial", "objectives")
-	goals.assign(_rows("goals", "goals"))
-	goals_visible = int(Economy.planet_table("goals").get("visible", 3))
+	# The authored goals only: a repeating goal counts from the moment it comes up, which the model
+	# does not follow. One goal per tier is on screen.
+	goals.assign(_rows("goals", "goals").filter(func(row: Dictionary) -> bool: return not row.has("repeat")))
+	goals_visible = maxi((Economy.planet_table("goals").get("tiers", []) as Array).size(), 1)
 	hub_levels = _rows("hub", "levels")
 	tower_tiers = _rows("signal_tower", "tiers")
 	bin_levels = _rows("trash_bin", "levels")

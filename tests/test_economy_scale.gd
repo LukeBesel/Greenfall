@@ -288,7 +288,6 @@ func _goals() -> Goals:
 func test_a_goal_completed_off_card_pays_at_once() -> void:
 	Planets.set_current(FIRST)
 	var g: Goals = _goals()
-	g.driven = true
 	g.card_goal = 0  # the card shows the first goal and completes it itself
 	var far: int = -1
 	for i: int in g.chain.size():

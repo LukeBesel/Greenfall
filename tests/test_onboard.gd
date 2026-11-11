@@ -286,11 +286,10 @@ func test_goals_never_dim_in_minimal_hud() -> void:  # [onboard2] QA P1
 	var mode: int = Settings.hud_mode
 	Settings.hud_mode = Settings.HudMode.MINIMAL
 	var gp := GoalsPanel.new()
-	gp._idle = 100.0
-	gp._alpha = 1.0
-	var src: String = (gp.get_script() as Script).source_code
-	assert_false(src.contains("want = 0.5"), "no dimming branch")
-	gp.free()
+	add_child_autofree(gp)
+	gp._process(100.0)
+	assert_eq(gp.modulate.a, 1.0, "the goal column stays fully readable")
+	assert_eq(gp.readout.modulate.a, 1.0, "and so do the three goals beside the card")
 	Settings.hud_mode = mode
 
 

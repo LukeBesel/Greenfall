@@ -44,12 +44,12 @@ func test_detector_range_is_a_real_stat() -> void:
 
 func test_goal_titles_fit_goals_card() -> void:
 	var font: Font = UITheme.font()
-	var max_w: float = GoalsPanel.ROW_W - 22.0
+	var max_w: float = GoalReadout.TITLE_W
 	var goals: Dictionary = Economy.planet_table("goals")
 	var list: Array = goals.get("goals", [])
 	assert_gt(list.size(), 0)
 	for g: Dictionary in list:
-		var w: float = font.get_string_size(str(g["text"]), HORIZONTAL_ALIGNMENT_LEFT, -1, 15).x
+		var w: float = font.get_string_size(str(g["text"]), HORIZONTAL_ALIGNMENT_LEFT, -1, GoalReadout.FONT_PX).x
 		assert_lt(w, max_w, "goal '%s' fits the goals card (%.0f px)" % [g["text"], w])
 
 

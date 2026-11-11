@@ -66,14 +66,13 @@ func test_one_step_at_a_time_story_then_goals() -> void:
 	var t: Array = _timeline()
 	var g: Goals = t[1]
 	var o: Objectives = t[2]
-	g.driven = true
 	assert_eq(str(o.current().get("id", "")), "a", "the story step first")
 	GameState.stats["junk_scooped"] = 99.0
 	assert_eq(g.check(), 0, "a goal that holds pays at once, whatever step the card shows")
 	assert_true(g.is_done(0))
 	o.step = 1
 	var d: Dictionary = o.current()
-	assert_true(d.has("_goal"), "then the goal chain, on the same card")
+	assert_true(d.has("_goal"), "then the short goal, on the same card")
 	assert_eq(int(d["_goal"]), g.current()[0])
 	g.card_goal = int(d["_goal"])
 	GameState.stats["junk_dumps"] = 1.0

@@ -146,6 +146,8 @@ var _hooks: Array = []
 var _mastery := AutoplayMastery.new()
 ## When to let a full Bloom Core go, and when each Surge came (tools/autoplay_surge.gd).
 var _surge := AutoplaySurge.new()
+## When each goal was finished, by tier, and the gaps between them (tools/autoplay_goals.gd).
+var _goal_log := AutoplayGoals.new()
 var _learn_hex: int = -1
 var _learn_scan_t: float = 0.0
 ## Score (metres) by which the bot prefers a hex holding a scooped kind robots are still shut out of.
@@ -446,6 +448,8 @@ func update(delta: float) -> void:
 		_manage(p)
 		_hand_log(p)
 		_mastery.sample(_now())
+		if world.get("goals"):
+			_goal_log.sample(world.goals, _now())
 	if world.first_seed and world.first_seed.get("_active"):
 		return  # the seed-tin cinematic
 	if p._cubing > 0.0 or p.detector.digging > 0.0:
@@ -559,8 +563,11 @@ func _hook_goals() -> void:
 	(world.goals as Goals).completed.connect(func(i: int) -> void:
 		var g: Dictionary = world.goals.chain[i]
 		_goal_times.append(_now())
+		_goal_log.on_completed(world.goals, i, _now())
 		_progress()
-		_event("goal", {"id": str(g["id"]), "n": world.goals.done_count()}))
+		_event("goal", {"id": str(g["id"]), "tier": world.goals.tier_of(i), "n": world.goals.done_count()}))
+	(world.goals as Goals).tier_changed.connect(func(tier: String, i: int) -> void:
+		_event("goal_up", {"tier": tier, "id": str(world.goals.chain[i]["id"]) if i >= 0 else ""}))
 
 
 func _haulers() -> int:
@@ -1390,6 +1397,8 @@ func _shop(want: Dictionary) -> void:
 	for tool_id: String in _rig_tools():
 		if rigs.fit(tool_id):
 			_event("rig_fit", {"module": tool_id, "slot": rigs.slot_of(tool_id)})
+	# A build a goal on show asks for, before the cubes go to upgrades.
+	_build_for_goals()
 	# 0) [onboard] The Signal Tower: the first tier right away (WREN), later tiers with the base level.
 	# When the card asks for it, it is bought the moment it is paid for; otherwise with cubes to spare.
 	var tower: SignalTower = world.get_node_or_null("SignalTower") as SignalTower
@@ -1574,6 +1583,21 @@ func _mats_spare(cost: Dictionary, force: bool) -> bool:
 		if have - float(cost[k]) < float(need.get(k, 0.0)):
 			return false
 	return true
+
+
+## A base build a goal on show asks for (its guide names the Build row) is built once it is
+## affordable, as a player following the goal would.
+func _build_for_goals() -> void:
+	var gl: Goals = world.get("goals")
+	if gl == null:
+		return
+	for i: int in gl.current():
+		var row: Array = GoalGuide.target(world, gl.chain[i]).get("row", [])
+		if row.size() < 2 or str(row[0]) != "build":
+			continue
+		var id: String = str(row[1])
+		if HubBuilds.listed(world, id) and str(HubBuilds.entry(world, id)["reason"]) == "" and HubBuilds.build(world, id):
+			_event("build", {"id": id})
 
 
 func _goal_upgrade() -> String:
@@ -2133,7 +2157,8 @@ func write_report() -> void:
 	var next_goals: Array = []
 	if world.get("goals"):
 		_report["goals_done"] = world.goals.done_count()
-		_report["goals_total"] = world.goals.chain.size()
+		_report["goals_total"] = world.goals.authored_count()
+		_goal_log.write(_report, world.goals, float(_report.get("control_s", _start_t)), end_t)
 		for i: int in world.goals.current():
 			next_goals.append(str(world.goals.chain[i]["id"]))
 	_report["next_goals"] = next_goals

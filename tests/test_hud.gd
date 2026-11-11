@@ -132,12 +132,13 @@ func test_currency_chip_appears_on_change() -> void:
 	assert_eq(cc.chip_count(), 2, "a legacy id lands on the Parts chip, no new chip")
 
 
-func test_goal_tracker_compact_and_expandable() -> void:
+func test_goal_column_holds_the_card_the_checklist_and_the_goal_readout() -> void:
 	var gp := GoalsPanel.new()
 	add_child_autofree(gp)
-	assert_false(gp.expanded)
-	gp.toggle()
-	assert_true(gp.expanded)
+	assert_not_null(gp.objective)
+	assert_not_null(gp.readout, "the three goals sit beside the card")
+	assert_eq(gp.visible_rows(), 0, "nothing to show before the world has goals")
+	gp.toggle()  # no objectives yet: the follow key does nothing
 	gp.set_checklist("Hold  LMB  to scoop   2/8")
 	assert_true(gp.checklist.visible)
 	assert_eq(GoalsPanel._strip_count("Hold  LMB  to scoop   2/8"), "Hold  LMB  to scoop")

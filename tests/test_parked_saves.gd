@@ -102,7 +102,8 @@ func test_parked_keys_are_ignored_not_migrated() -> void:
 	var chain_ids: Array = goals.chain.map(func(g: Dictionary) -> String: return str(g["id"]))
 	for id: String in Fixture.PARKED_GOALS:
 		assert_false(id in chain_ids, "goal %s is not in the chain" % id)
-	assert_eq(goals.done_count(), (_raw["flags"]["goals_done"] as Array).size() - Fixture.PARKED_GOALS.size(), "only playable goals count as done")
+	var kept: Array = (_raw["flags"]["goals_done"] as Array).filter(func(id: Variant) -> bool: return str(id) in chain_ids)
+	assert_eq(goals.done_count(), kept.size(), "only goals the chain still has count as done")
 	assert_false(goals.current().is_empty(), "the chain goes on")
 	# Research: a finished node the game no longer has is carried and ignored.
 	assert_true("observatory" in Research.done_list(), "the old save finished the removed node")

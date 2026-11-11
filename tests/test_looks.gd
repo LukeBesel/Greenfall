@@ -568,10 +568,12 @@ func test_the_goal_chain_brings_the_locker_once_a_piece_is_found() -> void:
 	assert_does_not_have(g.current(), build, "not offered before a piece is found")
 	assert_does_not_have(g.current(), wear)
 	Looks.grant("tin_sky", "buried")
+	g.refresh()
 	assert_eq(g.current()[0], build, "then it is the next step")
-	assert_eq(g.current()[1], wear)
 	GameState.flags[LockerCabinet.BUILT_FLAG] = true
 	assert_gte(g.value_of(build), g.target_of(build))
+	g.complete(build)
+	assert_eq(g.current()[0], wear, "and wearing a look follows it")
 	GameState.stats[LumiBuilder.WORN_STAT] = 1
 	assert_gte(g.value_of(wear), g.target_of(wear))
 
