@@ -96,3 +96,123 @@ func test_stack_sways_but_never_dips() -> void:
 		low = minf(low, c.position.y - c.size * 0.5 * (absf(sin(c.rotation.x)) + absf(sin(c.rotation.z))))
 	assert_gt(moved, 0.03, "it wobbles")
 	assert_gt(low, rest_y - 0.005, "its low edge never comes down toward his head")
+
+
+# --- The follow camera on a round planet ---------------------------------------------------
+
+class CamTarget:
+	extends Node3D
+	var model := Node3D.new()
+
+	func _init() -> void:
+		add_child(model)
+
+
+func _cam_rig(wall_behind_m: float, wall_size: Vector3) -> Array:
+	var r: float = 1840.0
+	var t := CamTarget.new()
+	add_child_autofree(t)
+	t.global_position = Vector3(0, r, 0)
+	var cam := SphereCam.new()
+	cam.surface = SphereSurface.new(r)
+	cam.target = t
+	cam.input_enabled = false
+	add_child_autofree(cam)
+	cam.set_process(false)
+	if wall_behind_m > 0.0:
+		var b := StaticBody3D.new()
+		b.collision_layer = PhysLayers.WORLD
+		var cs := CollisionShape3D.new()
+		var box := BoxShape3D.new()
+		box.size = wall_size
+		cs.shape = box
+		b.add_child(cs)
+		add_child_autofree(b)
+		b.global_position = Vector3(0, r + wall_size.y * 0.5, wall_behind_m + wall_size.z * 0.5)
+	await wait_physics_frames(3)
+	cam.reset_frame(Vector3(0, 0, -1))  # looking north: the camera sits to the south (+Z)
+	return [cam, t]
+
+
+# A wall 1.5 m behind Lumi: the camera climbs it and looks down at him from a usable distance,
+# instead of sitting 1.2 m away in the back of his head.
+func test_camera_climbs_a_wall_close_behind() -> void:
+	var rig: Array = await _cam_rig(1.5, Vector3(30, 30, 4))
+	var cam: SphereCam = rig[0]
+	var first: float = cam._arm
+	assert_lt(first, 1.6, "the plain arm is cut short by the wall")
+	for k: int in 180:
+		cam.update_camera(1.0 / 60.0)
+	assert_gt(cam._arm, 2.2, "after a moment the arm is %.2f m" % cam._arm)
+	assert_gt(cam._tilt, 0.5)
+	assert_lt(cam.camera.global_position.z, 1.5, "and the camera is on Lumi's side of the wall")
+	assert_false(cam.hides_target(), "he is in view, not hidden")
+
+
+# Open ground: full arm, no tilt, nothing hidden.
+func test_camera_open_ground_is_untouched() -> void:
+	var rig: Array = await _cam_rig(0.0, Vector3.ONE)
+	var cam: SphereCam = rig[0]
+	for k: int in 60:
+		cam.update_camera(1.0 / 60.0)
+	assert_almost_eq(cam._arm, cam.distance, 0.01)
+	assert_almost_eq(cam._tilt, 0.0, 0.001)
+
+
+# A post crossing the line between camera and Lumi does not yank the camera in.
+func test_camera_ignores_a_small_thing_on_the_line() -> void:
+	var rig: Array = await _cam_rig(3.0, Vector3(0.4, 8.0, 0.4))
+	var cam: SphereCam = rig[0]
+	for k: int in 30:
+		cam.update_camera(1.0 / 60.0)
+	assert_gt(cam._arm, cam.distance - 0.3, "arm %.2f m" % cam._arm)
+
+
+# Boxed in on every side (an alcove): the arm has nowhere to go, so Lumi is hidden rather than
+# filling the screen, and shown again when there is room.
+func test_camera_hides_lumi_only_when_it_is_in_his_head() -> void:
+	var rig: Array = await _cam_rig(0.9, Vector3(30, 30, 4))
+	var cam: SphereCam = rig[0]
+	var t: CamTarget = rig[1]
+	var roof := StaticBody3D.new()
+	roof.collision_layer = PhysLayers.WORLD
+	var cs := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = Vector3(30, 1, 30)
+	cs.shape = box
+	roof.add_child(cs)
+	add_child_autofree(roof)
+	roof.global_position = Vector3(0, 1840.0 + 2.4, 0)
+	await wait_physics_frames(3)
+	for k: int in 120:
+		cam.update_camera(1.0 / 60.0)
+	assert_lt(cam._arm, SphereCam.HIDE_IN_M)
+	assert_false(t.model.visible, "hidden while the camera is inside him")
+	roof.global_position = Vector3(0, 1840.0 + 400.0, 0)
+	t.global_position = Vector3(0, 1840.0, -20.0)
+	await wait_physics_frames(3)
+	for k: int in 240:
+		cam.update_camera(1.0 / 60.0)
+	assert_true(t.model.visible, "back in view")
+
+
+# Screen shake reaches the globe's camera, and Reduced motion switches it off.
+func test_camera_shake_on_the_globe() -> void:
+	var rig: Array = await _cam_rig(0.0, Vector3.ONE)
+	var cam: SphereCam = rig[0]
+	var was_rm: bool = Settings.reduced_motion
+	var was_sh: float = Settings.shake_intensity
+	Settings.reduced_motion = false
+	Settings.shake_intensity = 1.0
+	EventBus.shake_requested.emit(0.5)
+	cam.update_camera(1.0 / 60.0)
+	assert_gt(absf(cam.camera.h_offset) + absf(cam.camera.v_offset), 0.001)
+	for k: int in 120:
+		cam.update_camera(1.0 / 60.0)
+	assert_almost_eq(cam.camera.h_offset, 0.0, 0.0001, "it dies away")
+	Settings.reduced_motion = true
+	EventBus.shake_requested.emit(0.5)
+	cam.update_camera(1.0 / 60.0)
+	assert_almost_eq(cam.camera.h_offset, 0.0, 0.0001)
+	Settings.reduced_motion = was_rm
+	Settings.shake_intensity = was_sh
