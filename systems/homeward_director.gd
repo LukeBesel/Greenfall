@@ -186,26 +186,21 @@ static func registry_entry(id: String) -> Dictionary:
 # --- Restoration -----------------------------------------------------------------------------
 
 ## [v6pace] Owner note 58: the moment the way onward opens (the planet's leave gate, Homeward
-## .system_open), WREN says so plainly, once per planet: planets[k].leave.toast in the data.
-func _leave_beat() -> void:
+## .system_open), WREN says the planet's own line first (planets[k].leave.toast in the data), as
+## part of v6story's exit beat, so it is said once.
+func _leave_line() -> void:
 	var k: int = Homeward.current_planet()
 	var lv: Variant = Homeward.planet_def(k).get("leave", {})
-	if not (lv is Dictionary) or str((lv as Dictionary).get("toast", "")) == "" or not Homeward.system_open():
+	print("[home] leave gate open on %s at %.1f min" % [str(Homeward.planet_def(k).get("id", "")), float(GameState.stats.get("time_played", 0.0)) / 60.0])
+	if not (lv is Dictionary) or str((lv as Dictionary).get("toast", "")) == "":
 		return
-	var told: Array = GameState.flags.get("leave_told", [])
-	var id: String = str(Homeward.planet_def(k).get("id", ""))
-	if id in told:
-		return
-	told.append(id)
-	GameState.flags["leave_told"] = told
 	var line: String = tr(str((lv as Dictionary)["toast"]))
 	var wv: Variant = world.get("wren") if world else null
 	var w: Wren = wv as Wren if wv is Wren else null
 	if w != null and w.awake():
-		w.speak(line, w.stage())
+		w.speak(line, w.stage(), true)
 	else:
 		EventBus.toast.emit(line, "story")
-	print("[home] leave gate open on %s at %.1f min" % [id, float(GameState.stats.get("time_played", 0.0)) / 60.0])
 
 func _process(delta: float) -> void:
 	_t += delta
@@ -214,7 +209,6 @@ func _process(delta: float) -> void:
 	_t = 0.0
 	if Homeward.current_planet() < 0:
 		return
-	_leave_beat()
 	var before: float = Homeward.stored_pct(Homeward.current_planet())
 	var got: Array[int] = Homeward.store_current(Homeward.measure_current())
 	var now: float = Homeward.stored_pct(Homeward.current_planet())
@@ -259,6 +253,7 @@ func _pump() -> void:
 		_doc_beat("%s_half" % _pid(), "home_half")
 	elif b == "exit":  # [v6story]
 		Homeward.mark_beat(EXIT_BEAT)
+		_leave_line()  # [v6pace]
 		say_exit(world, "system_open")
 	elif b.begins_with("restored:"):
 		_restored_beat(int(b.get_slice(":", 1)))

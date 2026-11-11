@@ -92,7 +92,7 @@ func test_leave_gate_counts_hubs_not_cleaning() -> void:
 	var d5: Dictionary = Homeward.drive_def(5)
 	assert_eq(float(d5["cost"]["cubes"]), DRIVE, "the drive is the biggest number of the arc")
 	assert_gt(DRIVE, FAR[FAR.size() - 1])
-	assert_string_contains(str(Homeward.planet_def(0)["leave"]["toast"]), "The rest of Verdance can wait")
+	assert_ne(str(Homeward.planet_def(0)["leave"]["toast"]), "", "WREN says so when the way opens")
 
 
 func test_goal_chain_leads_to_the_exit() -> void:

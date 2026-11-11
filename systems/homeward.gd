@@ -150,7 +150,7 @@ static func progress_blocker(nd: Dictionary) -> String:
 			base_ok = current_planet() == k and hubs_at_level(lh.y) >= lh.x
 		if stored_pct(k) < need - 0.0001 and not base_ok:
 			if lh.x > 0:
-				return TranslationServer.translate("Restore %d hubs on %s to level %d (%d so far)") % [lh.x, planet_name(k), lh.y, hubs_at_level(lh.y) if current_planet() == k else 0]
+				return TranslationServer.translate("Wake %d old stations on %s to level %d (%d so far)") % [lh.x, planet_name(k), lh.y, hubs_at_level(lh.y) if current_planet() == k else 0]
 			if ob > 0:
 				return TranslationServer.translate("Restore %s to %d%% (%d%%) or get a base to level %d") % [planet_name(k), int(round(need * 100.0)), int(floor(stored_pct(k) * 100.0)), ob]
 			return TranslationServer.translate("Restore %s to %d%% (%d%%)") % [planet_name(k), int(round(need * 100.0)), int(floor(stored_pct(k) * 100.0))]

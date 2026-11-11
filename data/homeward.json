@@ -5,7 +5,7 @@
   "chart_at": 0.5, "discover_at": 0.25,
   "planets": [
     {"id": "verdance", "name": "Verdance", "type": "verdance", "seed": 4471, "mods": [], "nav": 0, "needs_tech": [["deep_drill", 0.68], ["tide_pump", 0.8], ["heat_core", 0.9], ["cryo_beacon", 0.97]],
-      "leave": {"hubs": 6, "hub_level": 2, "toast": "You can fly on now, Lumi. The rest of Verdance can wait."},
+      "leave": {"hubs": 6, "hub_level": 2, "toast": "Six stations awake, Lumi. Their robots can look after Verdance now."},
       "twist": "Home. The Makers' world, buried under the Ledger's trash. Your robots keep cleaning it while you are away.",
       "color": [0.24, 0.52, 0.3], "orbit": 1.0},
     {"id": "ochre", "name": "Ochre", "type": "desert_world", "seed": 51207, "mods": ["tailwinds", "rich_salvage"], "nav": 5, "needs_tech": [["tide_pump", 0.75], ["heat_core", 0.9]],
