@@ -118,3 +118,44 @@ prints a `[card]` line per objective step and an `[arc]` line per hub, rocket ti
 | Order of the card's steps | `data/objectives.json` (story), then `data/goals.json` `goals` in file order | | The card shows the first unfinished one. Move a line to move the step. |
 | A goal's own "why" line | `data/goals.json` goal `desc` | only on "Fly to another planet" | Shown instead of "Reward: ...". |
 | Goal rewards | `data/goals.json` goal `reward` | | Paid when the step completes. |
+
+## Yard machines and landmarks (v6yard)
+
+**Picture signs and machine paint: `data/machine_art.json`.** Every yard machine carries a round
+sign with one pictogram and no words, so a small child can tell what it does.
+
+| To change | Edit |
+|---|---|
+| Size, face and ink colour of every sign | `signs.defaults` (`size` in metres, colours `#rrggbb`) |
+| One machine's picture, rim colour, accent colour, size | `signs.<machine>`: `icon` (`wrench`, `bin`, `bale`, `belt`, `leaf`, `signal`, `bot`), `rim`, `accent`, `size` |
+| Remove a machine's sign | `signs.<machine>.show: false` |
+| Height of the bin's and the composter's sign | `signs.trash_bin.post_height`, `signs.composter.post_height` |
+| The baler's paint (body, press head and hopper, crosshead) | `baler.body`, `baler.press`, `baler.trim` |
+| The belt drive's paint (frame, motor) | `belt.frame`, `belt.motor` |
+| The repair cart by the crashed pod (shown from the first upgrade until the planter stage) | `pod.service: false` removes it; `pod.cart`, `pod.cart_trim`, `pod.cone` colour it |
+
+Machines: `workbench`, `trash_bin`, `baler`, `belt`, `composter`, `signal_tower`, `fabricator`.
+Code: `systems/camp/machine_art.gd` (signs, baler, belt drive, pod cart), `systems/camp/yard_art.gd`
+(the other machines). A new pictogram is a new case in `MachineArt._icon`.
+
+**Hub landmarks: `data/landmarks.json`.** Which hub has which landmark stays in
+`data/planets.json` (`hubs[].landmark.kind`, see "Hubs" above). This file is how each kind looks.
+
+| To change | Edit |
+|---|---|
+| A landmark's two colours | `kinds.<kind>.main`, `.accent`: a kit colour name (cream, white, teal, mint, sky, navy, orange, yellow, red, olive, slate, plum) or `#rrggbb` |
+| Its size | `height`, `radius`, `tank_height` (water tower); `height`, `wheel_radius`, `blades` (windpump); `span`, `height` (crane); `height` (mast, stack); `radius`, `gondolas` (wheel) |
+| How fast the fan, the wheel or the radar turns once the hub is awake | `kinds.<kind>.spin` (radians a second, 0 = still) |
+| The wheel's gondola colours | `kinds.ferris_wheel.gondola_a`, `.gondola_b` |
+| The room a landmark keeps clear of junk and buildings | `kinds.<kind>.foot` (metres) |
+| Go back to the old thin model for one kind | `kinds.<kind>.kit: false` |
+| A different look on another planet | `planets.<planet>.<kind>`: any of the keys above; what is left out comes from `kinds` |
+| Which look a hub level gives | `states`: the look from that level upward (`broken` is dark and still, `repaired` and `restored` are lit and turning) |
+
+Kinds with a kit model: `water_tower`, `windpump`, `crane` (a gantry crane), `radio_mast`,
+`ferris_wheel`, `smokestack`. `old_bus` and `lighthouse` still use the old models.
+Code: `planet/sites/hub_landmarks.gd` (models), `planet/sites/hub_landmark_node.gd` (state, lights,
+turning). Check the numbers with `godot --headless --path . res://tools/machine_stats.tscn`
+(triangles, draw calls and build time per model), and look at them with
+`res://tools/yard_lineup.tscn -- --shots=v6 --lm-state=broken|repaired|restored --out=screenshots/yard/v6`
+(rendered; one picture per machine and landmark).

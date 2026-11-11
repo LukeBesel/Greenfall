@@ -28,6 +28,9 @@ var _stations: Dictionary = {}  # id -> Node3D
 var _fabricator: FabricatorModel
 var _pod: Node3D
 var _poll: float = 0.0
+var _bench_sign: Node3D  # [v6yard]
+const SIGN_ON_BENCH := Vector3(-0.35, 1.84, -0.32)   # bench-local: on the pegboard's top shelf
+const SIGN_ON_ROOF := Vector3(0.0, 2.22, 1.68)       # bench-local: the lean-to roof's front edge
 
 
 ## Builds every yard model on the prefab and returns the `_ruin_bits` Camp drives (bench included).
@@ -142,6 +145,12 @@ func _build(bench: Node3D) -> void:
 	bits["generator"] = gen
 	YardArt.dress_board(bits)  # the yard helper's models into the flat node layout
 	gen.position = Vector3.ZERO  # dress_board moves it out from under the flat lean-to; here the anchor is the spot
+	# [v6yard] The workbench's picture sign (a spanner): on the bench until the lean-to stands, then
+	# on the roof's front edge (_apply moves it). Look: data/machine_art.json.
+	if bench:
+		_bench_sign = MachineArt.sign_stalk("workbench").mi(0.15, "Sign")
+		bench.add_child(_bench_sign)
+		_bench_sign.position = SIGN_ON_BENCH
 	await BuildBudget.check("yard site")  # [v5load]
 	_bin_bay()
 	await BuildBudget.check("yard site")  # [v5load]
@@ -218,6 +227,9 @@ func _process(delta: float) -> void:
 ## Shows what is built (the same state the flat systems read). Camp does its own bits.
 func _apply() -> void:
 	_yield_to_real_systems()
+	if is_instance_valid(_bench_sign):  # [v6yard]
+		var fr: Node3D = bits.get("frame") as Node3D
+		_bench_sign.position = SIGN_ON_ROOF if fr and fr.visible else SIGN_ON_BENCH
 	var lamps: bool = YardBuilds.built("lamps")
 	for h: Node3D in _extra_lamps:
 		_show(h, lamps)
@@ -299,7 +311,13 @@ func _bin_bay() -> void:
 	post.name = "BayLamp"
 	post.position = Vector3(-sz.x * 0.5 + 0.35, -0.07, -sz.y * 0.5 + 0.35)
 	bay.add_child(post)
-	post.add_child(YardArt.street_lamp().mi(0.15, "Post"))
+	var lamp_kit: YardArt.Kit = YardArt.street_lamp()
+	# [v6yard] The bin's picture sign (an arrow into a bin) on the bay's lamp post, facing the yard
+	# and the far side. Look: data/machine_art.json.
+	var sign_y: float = float(MachineArt.sign_def("trash_bin").get("post_height", 2.7))
+	for side: float in [0.0, 180.0]:
+		MachineArt.put_sign(lamp_kit, "trash_bin", Basis(Vector3.UP, deg_to_rad(45.0 + side)) * Vector3(0, 0, 0.14) + Vector3(0, sign_y, 0), Vector3(0, 45.0 + side, 0))
+	post.add_child(lamp_kit.mi(0.15, "Post"))
 	var light := SpotLight3D.new()
 	light.name = "BayLight"
 	light.light_color = Color(1.0, 0.86, 0.62)
