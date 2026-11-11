@@ -4,6 +4,9 @@ extends Control
 ## hopper gauge folded in underneath:
 ##   level   level number centred over a thin XP bar; a tiny Bloom Core ring at its left end
 ##           (set_core_charge); "+XP" ticks; a restrained flash + chime on level-up
+##   surge   the Bloom Core ring's outer arc is the Surge gauge (systems/surge.gd): it fills with
+##           Lumi's own work, shows the release key on a plate when full, and drains while the
+##           Surge runs
 ##   slots   one rounded glass slot per tool (Scoop / Plant / Water): icon, key (1-3 or a D-pad
 ##           glyph on a pad), counter (seeds, water); the selected slot is raised with a thin glow;
 ##           locked tools are dim with a small lock
@@ -21,6 +24,9 @@ const HOLD_ZOOM_S: float = 0.3
 const CYAN := Color(0.55, 0.9, 1.0)
 const XP_COL := Color(0.5, 0.95, 0.75)
 const CORE_COL := Color(0.45, 1.0, 0.6)
+const SURGE_GOLD := Color(1.0, 0.85, 0.35)
+const SURGE_R: float = 11.0
+const SURGE_PLATE_H: float = 26.0
 # l10n:begin
 const TOOLS: Array[Dictionary] = [
 	{"id": "scoop", "name": "SCOOP", "action": "tool_scoop", "icon": "scoop"},
@@ -47,6 +53,7 @@ var _lvl_text: String = ""
 var _lvl_num: int = 0
 var _core: float = -1.0
 var _core_t: float = 0.0
+var _surge: Surge
 var _hopper: float = 0.0
 var _hopper_shake: float = 0.0
 var _tool_name_t: float = 0.0
@@ -154,6 +161,9 @@ func _input(event: InputEvent) -> void:
 		if jb.pressed:
 			if not _can_take_input():
 				return
+			if _bumper == -dir:  # both bumpers together release a Surge (systems/surge.gd): no tool change
+				_bumper = 0
+				return
 			_bumper = dir
 			_bumper_t = 0.0
 			get_viewport().set_input_as_handled()
@@ -212,6 +222,8 @@ func _process(delta: float) -> void:
 	var cc: Variant = world.get("core_charge") if world else null
 	if cc is Object and (cc as Object).get("shown") != null:
 		set_core_charge(float((cc as Object).get("shown")))
+	if _surge == null and world:
+		_surge = Surge.of(world)
 	queue_redraw()
 
 
@@ -286,9 +298,15 @@ func _draw_level(cx: float, y: float) -> void:
 		if _core > 0.001:
 			draw_arc(c, 6.0, -PI * 0.5, -PI * 0.5 + TAU * _core, 24, CORE_COL, 1.6, true)
 		draw_circle(c, 1.6, Color(CORE_COL, 0.4 + 0.5 * _core))
+		var gauged: bool = _surge != null and _surge.enabled()
 		var show_pct: float = 1.0 if Settings.hud_mode == Settings.HudMode.FULL else clampf(_core_t / 0.6, 0.0, 1.0)
+		if gauged and (_surge.can_release() or _surge.active()):
+			show_pct = 0.0  # the Surge plate takes the line
 		if show_pct > 0.01:
-			_text(Vector2(c.x - 10.0, y + 5.5), tr("CORE %d%%") % int(floor(_core * 100.0 + 0.001)), 12, Color(CORE_COL, 0.85 * show_pct), HORIZONTAL_ALIGNMENT_RIGHT)
+			_text(Vector2(c.x - (SURGE_R + 6.0 if gauged else 10.0), y + 5.5), tr("CORE %d%%") % int(floor(_core * 100.0 + 0.001)), 12, Color(CORE_COL, 0.85 * show_pct),
+				HORIZONTAL_ALIGNMENT_RIGHT)
+		if gauged:
+			_draw_surge(c)
 	# Level-up banner: "LEVEL 7" and the reward line, rising slightly and fading.
 	if _lvl_t > 0.0:
 		var a2: float = clampf(_lvl_t / 0.6, 0.0, 1.0) * clampf((3.6 - _lvl_t) / 0.25, 0.0, 1.0)
@@ -300,6 +318,40 @@ func _draw_level(cx: float, y: float) -> void:
 		var sweep: float = clampf((3.6 - _lvl_t) / 0.7, 0.0, 1.0)
 		var hw: float = LEVEL_W * 0.5 * sweep
 		draw_line(Vector2(cx - hw, y + 1.5), Vector2(cx + hw, y + 1.5), Color(1, 1, 1, 0.8 * (1.0 - sweep)), 2.0)
+
+
+## The Surge gauge round the Bloom Core ring at `c`: an arc that fills with Lumi's own work (cyan),
+## a full ring with the release key on a plate when ready (green), and a draining arc while the
+## Surge runs (gold). Shape and words carry it as well as colour.
+func _draw_surge(c: Vector2) -> void:
+	var full: bool = _surge.can_release()
+	var running: bool = _surge.active()
+	var f: float = _surge.gauge()
+	var col: Color = SURGE_GOLD if running else (CORE_COL if full else CYAN)
+	draw_arc(c, SURGE_R, 0.0, TAU, 32, Color(0, 0, 0, 0.35), 4.5, true)
+	draw_arc(c, SURGE_R, 0.0, TAU, 32, Color(1, 1, 1, 0.16), 2.5, true)
+	if f > 0.001:
+		draw_arc(c, SURGE_R, -PI * 0.5, -PI * 0.5 + TAU * f, 32, col, 3.0, true)
+	if not (full or running):
+		return
+	var glow: float = 0.5 if Settings.reduced_motion else 0.35 + 0.3 * (0.5 + 0.5 * sin(_t * 5.0))
+	draw_arc(c, SURGE_R + 3.0, 0.0, TAU, 32, Color(col, glow), 1.5, true)
+	var label: String = tr("SURGE")
+	var key: String = SurgeFx.release_glyph() if full else "%d" % ceili(_surge.time_left())
+	var key_w: float = _font.get_string_size(key, HORIZONTAL_ALIGNMENT_LEFT, -1, 16).x
+	var label_w: float = _font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, 16).x
+	var w: float = key_w + label_w + 34.0
+	var x1: float = c.x - SURGE_R - 8.0
+	var r := Rect2(x1 - w, c.y - SURGE_PLATE_H * 0.5, w, SURGE_PLATE_H)
+	var cut: float = 7.0  # the instrument plate's clipped corner
+	var plate := PackedVector2Array([r.position + Vector2(cut, 0.0), Vector2(r.end.x, r.position.y), r.end, Vector2(r.position.x, r.end.y),
+		r.position + Vector2(0.0, cut)])
+	draw_colored_polygon(plate, Color(0.07, 0.09, 0.11, 0.9))
+	plate.append(plate[0])
+	draw_polyline(plate, Color(col, 0.9), 1.5, true)
+	var base_y: float = c.y + 5.5
+	_text(Vector2(r.position.x + 12.0, base_y), key, 16, Color(col, 1.0), HORIZONTAL_ALIGNMENT_LEFT, false)
+	_text(Vector2(r.end.x - 10.0, base_y), label, 16, UITheme.CREAM, HORIZONTAL_ALIGNMENT_RIGHT, false)
 
 
 func _draw_slots(cx: float, y: float) -> void:

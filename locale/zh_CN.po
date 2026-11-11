@@ -16,39 +16,49 @@ msgstr ""
 msgid "NEW CREWMATE  ·  %s"
 msgstr "新船员  ·  %s"
 
+#. %s is the key, or the two pad buttons, that release the Surge.
+#: art/surge_fx.gd:121
+msgid "Bloom Core full. Press %s to release a Surge."
+msgstr "绽放核心已满。按 %s 释放涌能。"
+
+#. %s is how many times Lumi's sweep output a Surge gives, e.g. 3.2.
+#: art/surge_fx.gd:151
+msgid "SURGE  x%s"
+msgstr "涌能  x%s"
+
 #: autoload/Economy.gd:117
 msgid "Every %s in the fleet."
 msgstr "机队中的每台%s。"
 
-#: autoload/Economy.gd:175
+#: autoload/Economy.gd:176
 msgid "Base (Mk I, before tier and part rarity)"
 msgstr "基础（Mk I，未计等级和零件稀有度）"
 
-#: autoload/Economy.gd:175 ui/bench_lists.gd:11 ui/upgrades_panel.gd:39
+#: autoload/Economy.gd:176 ui/bench_lists.gd:11 ui/upgrades_panel.gd:39
 msgid "Base"
 msgstr "基础"
 
-#: autoload/Economy.gd:183 autoload/Economy.gd:185 ui/upgrade_card.gd:190
+#: autoload/Economy.gd:184 autoload/Economy.gd:186 ui/upgrade_card.gd:190
 msgid "%s Lv %d"
 msgstr "%s %d 级"
 
-#: autoload/Economy.gd:310
+#: autoload/Economy.gd:312
 msgid "Opens in a later city"
 msgstr "在后面的城市开放"
 
-#: autoload/Economy.gd:314
+#: autoload/Economy.gd:316
 msgid "Needs %s Lv %d"
 msgstr "需要%s %d级"
 
-#: autoload/Economy.gd:317
+#: autoload/Economy.gd:319
 msgid "Needs research: %s"
 msgstr "需要研究：%s"
 
-#: autoload/Economy.gd:320 systems/research.gd:210
+#: autoload/Economy.gd:322 systems/research.gd:210
 msgid "Needs base level %d"
 msgstr "需要基地等级 %d"
 
-#: autoload/Economy.gd:506
+#: autoload/Economy.gd:508
 msgid "Mk I"
 msgstr "Mk I"
 
@@ -144,119 +154,123 @@ msgstr "Glim：扫描（按住：升级）"
 msgid "Hover boost"
 msgstr "悬浮推进"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:26
+msgid "Release Surge"
+msgstr "释放涌能"
+
+#: autoload/Settings.gd:32
 msgid "View"
 msgstr "视图"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:32
 msgid "Menu"
 msgstr "菜单"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:32
 msgid "LS"
 msgstr "左摇杆"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:33
 msgid "RS"
 msgstr "右摇杆"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:33
 msgid "LB"
 msgstr "LB"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:33
 msgid "RB"
 msgstr "RB"
 
-#: autoload/Settings.gd:33
+#: autoload/Settings.gd:34
 msgid "D-pad up"
 msgstr "方向键上"
 
-#: autoload/Settings.gd:33
+#: autoload/Settings.gd:34
 msgid "D-pad down"
 msgstr "方向键下"
 
-#: autoload/Settings.gd:34
+#: autoload/Settings.gd:35
 msgid "D-pad left"
 msgstr "方向键左"
 
-#: autoload/Settings.gd:34
+#: autoload/Settings.gd:35
 msgid "D-pad right"
 msgstr "方向键右"
 
-#: autoload/Settings.gd:35
+#: autoload/Settings.gd:36
 msgid "Share"
 msgstr "分享"
 
-#: autoload/Settings.gd:36
+#: autoload/Settings.gd:37
 msgid "Touchpad"
 msgstr "触摸板"
 
-#: autoload/Settings.gd:36
+#: autoload/Settings.gd:37
 msgid "Paddle 1"
 msgstr "背键 1"
 
-#: autoload/Settings.gd:522
+#: autoload/Settings.gd:524
 msgid "LMB"
 msgstr "左键"
 
-#: autoload/Settings.gd:523
+#: autoload/Settings.gd:525
 msgid "RMB"
 msgstr "右键"
 
-#: autoload/Settings.gd:524
+#: autoload/Settings.gd:526
 msgid "MMB"
 msgstr "中键"
 
-#: autoload/Settings.gd:525
+#: autoload/Settings.gd:527
 msgid "Wheel up"
 msgstr "滚轮上"
 
-#: autoload/Settings.gd:526
+#: autoload/Settings.gd:528
 msgid "Wheel down"
 msgstr "滚轮下"
 
-#: autoload/Settings.gd:527
+#: autoload/Settings.gd:529
 msgid "Mouse %d"
 msgstr "鼠标 %d"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:531
 msgid "Button %d"
 msgstr "按键 %d"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:536
 msgid "LS left"
 msgstr "左摇杆左"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:536
 msgid "LS right"
 msgstr "左摇杆右"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:537
 msgid "LS up"
 msgstr "左摇杆上"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:537
 msgid "LS down"
 msgstr "左摇杆下"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:538
 msgid "RS left"
 msgstr "右摇杆左"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:538
 msgid "RS right"
 msgstr "右摇杆右"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:539
 msgid "RS up"
 msgstr "右摇杆上"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:539
 msgid "RS down"
 msgstr "右摇杆下"
 
-#: autoload/Settings.gd:548
+#: autoload/Settings.gd:550
 msgid "hold %s"
 msgstr "按住 %s"
 
@@ -708,7 +722,7 @@ msgstr ""
 "堆肥压机  等级 %d\n"
 "料斗 %d%%  →  种子"
 
-#: plants/garden.gd:277
+#: plants/garden.gd:286
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "一个六角格完全恢复了。已经有小东西住在里面了。"
 
@@ -764,39 +778,39 @@ msgstr "还没有种子。继续清理吧。"
 msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 msgstr "种子需要干净开阔的土地：街道、路缘和平台上不行。"
 
-#: player/patch.gd:371
+#: player/patch.gd:372
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "种子用完了。开花的植物会掉落更多。"
 
-#: player/patch.gd:378
+#: player/patch.gd:379
 msgid "Watering can is empty. It fills in the base yard, by the bin."
 msgstr "洒水壶空了。在基地院子的垃圾桶旁可以加水。"
 
-#: player/patch.gd:637
+#: player/patch.gd:649
 msgid "PERFECT BALE  %s"
 msgstr "完美捆包  %s"
 
-#: player/patch.gd:643
+#: player/patch.gd:655
 msgid "OVERSTUFFED  %s"
 msgstr "塞爆了  %s"
 
-#: player/patch.gd:646
+#: player/patch.gd:658
 msgid "GOOD BALE  %s"
 msgstr "不错的捆包  %s"
 
-#: player/patch.gd:650
+#: player/patch.gd:662
 msgid "SURGE  %s"
 msgstr "冲劲  %s"
 
-#: player/patch.gd:653
+#: player/patch.gd:665
 msgid "  (streak +%d%%)"
 msgstr "  （连击 +%d%%）"
 
-#: player/patch.gd:690
+#: player/patch.gd:702
 msgid "Salvaged: %s"
 msgstr "回收：%s"
 
-#: player/patch.gd:719
+#: player/patch.gd:731
 msgid "Recovered: %s"
 msgstr "找回：%s"
 
@@ -1103,7 +1117,7 @@ msgstr "离另一个水箱太近"
 msgid "Water Tank placed. Waterers nearby will refill here."
 msgstr "水箱已放置。附近的浇水机器人会来这里补水。"
 
-#: robots/water_net.gd:308 ui/hotbar.gd:28
+#: robots/water_net.gd:308 ui/hotbar.gd:34
 msgid "WATER"
 msgstr "水"
 
@@ -1151,27 +1165,27 @@ msgstr "前哨 %d · %d级"
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨 %d · 废墟"
 
-#: scenes/slice_orbit.gd:372
+#: scenes/slice_orbit.gd:373
 msgid "HEX CLEAN!"
 msgstr "六角格清理完成！"
 
-#: scenes/slice_orbit.gd:388
+#: scenes/slice_orbit.gd:389
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice_orbit.gd:573 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:585
+#: scenes/slice_orbit.gd:590 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:586
 msgid "E   Fix the workbench"
 msgstr "E   修理工作台"
 
-#: scenes/slice_orbit.gd:573 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:590 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr "E   打开工作台"
 
-#: scenes/slice_orbit.gd:1037
+#: scenes/slice_orbit.gd:1054
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice_orbit.gd:1137
+#: scenes/slice_orbit.gd:1154
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "工作台修好了。在它旁边按 E，用方块购买升级。"
 
@@ -1271,55 +1285,55 @@ msgstr "没有什么在等着结束，{name}。没有人在计分。我们到家
 msgid "The Cradle is home. The Seed Ark is open: every bloom on {planet} counts toward the next wave. Progress shows on the hologram (M)."
 msgstr "Cradle号到家了。种子方舟已开启：{planet} 上的每一朵花都计入下一波。进度显示在全息图上（M）。"
 
-#: story/core_charge.gd:204
+#: story/core_charge.gd:207
 msgid "Bloom Core 100%. Lumi's core is full of green light."
 msgstr "绽放核心 100%。Lumi 的核心充满了绿光。"
 
-#: story/core_charge.gd:230
+#: story/core_charge.gd:233
 msgid "Bloom Core  25%"
 msgstr "绽放核心  25%"
 
-#: story/core_charge.gd:231
+#: story/core_charge.gd:234
 msgid "There. The relay just locked on. Lumi, I can hear you properly now. Clear as the old days."
 msgstr "好了。中继刚刚锁定。Lumi，我终于能好好听见你了。清楚得像从前一样。"
 
-#: story/core_charge.gd:251
+#: story/core_charge.gd:254
 msgid "A memory  ·  the garden deck of the Cradle"
 msgstr "一段回忆  ·  Cradle号的花园甲板"
 
-#: story/core_charge.gd:262
+#: story/core_charge.gd:265
 msgid "Remember the garden deck? You watered every bed twice, just to be sure."
 msgstr "还记得花园甲板吗？你每块苗床都浇两遍，就为了保险。"
 
-#: story/core_charge.gd:265
+#: story/core_charge.gd:268
 msgid "Every patch you grow down there is one more bed like these. You're not lost, Lumi. You're replanting."
 msgstr "你在下面种出的每一小片，都是又一块这样的苗床。你没有迷路，Lumi。你在重新播种。"
 
-#: story/core_charge.gd:269
+#: story/core_charge.gd:272
 msgid "Bloom Core 25%: WREN's signal is clear now."
 msgstr "绽放核心 25%：WREN 的信号清晰了。"
 
-#: story/core_charge.gd:287
+#: story/core_charge.gd:290
 msgid "Bloom Core 50%: Lumi's glow is back, brighter than it has been in years."
 msgstr "绽放核心 50%：Lumi 的光芒回来了，比这些年来都要亮。"
 
-#: story/core_charge.gd:289
+#: story/core_charge.gd:292
 msgid "Half charged. You're glowing, Lumi. Properly glowing. I'd forgotten you could be this bright."
 msgstr "充了一半。你在发光，Lumi。是真正地发光。我都忘了你能这么亮。"
 
-#: story/core_charge.gd:323
+#: story/core_charge.gd:326
 msgid "That night..."
 msgstr "那天夜里……"
 
-#: story/core_charge.gd:347
+#: story/core_charge.gd:350
 msgid "Lumi, look up. That light. West to east, steady, not twinkling."
 msgstr "Lumi，抬头看。那道光。从西到东，平稳，不闪烁。"
 
-#: story/core_charge.gd:352
+#: story/core_charge.gd:355
 msgid "That's the Cradle. When your core lit up, the ark heard it. She turned around. We're coming back for you."
 msgstr "那是 Cradle号。你的核心亮起时，方舟听见了。它调头了。我们回来接你了。"
 
-#: story/core_charge.gd:362
+#: story/core_charge.gd:365
 msgid "Bloom Core 75%: the Cradle is on its way home. Look for it crossing the night sky."
 msgstr "绽放核心 75%：Cradle号正在回家的路上。夜里留意它划过天空。"
 
@@ -1969,8 +1983,8 @@ msgid "Supply Drops"
 msgstr "补给空投"
 
 #: systems/collection.gd:85
-msgid "Salvage Surges"
-msgstr "回收热潮"
+msgid "Salvage Glints"
+msgstr "回收闪光"
 
 #: systems/collection.gd:86
 msgid "Rain Showers"
@@ -2555,6 +2569,10 @@ msgstr "%s（%s）"
 msgid "You need %s for this."
 msgstr "这需要 %s。"
 
+#: systems/surge.gd:123
+msgid "Surge"
+msgstr "涌能"
+
 #: systems/tunes.gd:166
 msgid "New CD: %s by %s, from %s"
 msgstr "新CD：%s，演奏：%s，来自%s"
@@ -2687,7 +2705,7 @@ msgstr "%s 对着幼苗哼歌。退休生活很适合它。"
 msgid "%s points proudly at a new bud."
 msgstr "%s 骄傲地指着一个新花苞。"
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:617
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:618
 msgid "E   CD player: %s"
 msgstr "E   CD 播放机：%s"
 
@@ -4029,21 +4047,25 @@ msgstr "目标完成  ·  %s%s"
 msgid "+%s seeds"
 msgstr "+%s 种子"
 
-#: ui/hotbar.gd:26
+#: ui/hotbar.gd:32
 msgid "SCOOP"
 msgstr "铲子"
 
-#: ui/hotbar.gd:27
+#: ui/hotbar.gd:33
 msgid "PLANT"
 msgstr "种植"
 
-#: ui/hotbar.gd:281
+#: ui/hotbar.gd:293
 msgid "+%d XP"
 msgstr "+%d 经验"
 
-#: ui/hotbar.gd:291
+#: ui/hotbar.gd:306
 msgid "CORE %d%%"
 msgstr "核心 %d%%"
+
+#: ui/hotbar.gd:339
+msgid "SURGE"
+msgstr "涌能"
 
 #: ui/hub_panel.gd:58
 msgid "What you get"
@@ -8951,12 +8973,12 @@ msgid "Clear the junk around the crate"
 msgstr "清理箱子周围的废料"
 
 #: planets/verdance/data/events.json:events[salvage_surge].name
-msgid "Salvage Surge"
-msgstr "回收热潮"
+msgid "Salvage Glint"
+msgstr "回收闪光"
 
 #: planets/verdance/data/events.json:events[salvage_surge].toast
-msgid "Salvage Surge! A hex %s of you is glowing: its junk is worth 3x for two minutes."
-msgstr "回收热潮！你%s的一个六角格在发光：两分钟内，那里的废料价值 3 倍。"
+msgid "Salvage Glint! A hex %s of you is glowing: its junk is worth 3x for two minutes."
+msgstr "回收闪光！你%s的一个六角格在发光：两分钟内，那里的废料价值 3 倍。"
 
 #: planets/verdance/data/events.json:events[salvage_surge].hud
 msgid "Junk from the glowing hex is worth 3x"
@@ -15627,6 +15649,15 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: planets/verdance/data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Salvage Surges"
+#~ msgstr "回收热潮"
+
+#~ msgid "Salvage Surge"
+#~ msgstr "回收热潮"
+
+#~ msgid "Salvage Surge! A hex %s of you is glowing: its junk is worth 3x for two minutes."
+#~ msgstr "回收热潮！你%s的一个六角格在发光：两分钟内，那里的废料价值 3 倍。"
 
 #~ msgid "The last leaf waits where Old Capital's poison is stopped."
 #~ msgstr "最后一片叶子，等在 Old Capital 的毒源被止住的地方。"

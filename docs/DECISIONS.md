@@ -534,3 +534,11 @@ The owner asked for more attention on the world's goals and look (full cities ro
 - **The job opens at stage 4**, not 3, so planting stays the main work at stage 3.
 - No step waits on robots (a crewless player must never be stuck). Kept.
 - The rocket must visibly grow on the pad as parts are fitted; source markers need proper props: M5 art.
+
+## Surge (M3-09, Nov 11, 2026)
+`docs/reviews/M3-09_SURGE.md`. Hand work, pressing and tending charge the Bloom Core; robots never do; a full core releases a 12 s Surge measured at 3.5x Lumi's output; from city 4 it also pushes a growth wave; charge and power scale by district; saved. Merged.
+- **The Surge opens with the first robot** (lead; data `balance.surge.unlock`). Open from the start it sped the opening (first robot 7.5 to 8.7 minutes against about 9); opening with the robot keeps the fitted opening and gives a new tool exactly when the crew starts taking work from Lumi. Bot: first Surge about 2.5 minutes after the robot, then every 2 to 3.5 minutes.
+- Fixed at merge: the Surge only listened for work if it was already open at setup, so a game that opened it later never charged (regression test in `tests/test_surge.gd`).
+- **"Salvage Surge" event renamed "Salvage Glint"** so only one thing is called a Surge.
+- Kept: release on R, LB+RB on a pad; chest packing during a Surge (the burst is not spent walking to the bin).
+- **Run-to-run spread of the first robot is wide** (two runs today: 7.6 and 13.8 minutes; the target is by minute 12). M3-12 narrows it (likely buried-part luck and walk-offs).

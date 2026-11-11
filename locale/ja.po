@@ -16,39 +16,49 @@ msgstr ""
 msgid "NEW CREWMATE  ·  %s"
 msgstr "新しい仲間  ·  %s"
 
+#. %s is the key, or the two pad buttons, that release the Surge.
+#: art/surge_fx.gd:121
+msgid "Bloom Core full. Press %s to release a Surge."
+msgstr "ブルームコア満タン。%sでサージ発動。"
+
+#. %s is how many times Lumi's sweep output a Surge gives, e.g. 3.2.
+#: art/surge_fx.gd:151
+msgid "SURGE  x%s"
+msgstr "サージ  x%s"
+
 #: autoload/Economy.gd:117
 msgid "Every %s in the fleet."
 msgstr "フリートの全%s。"
 
-#: autoload/Economy.gd:175
+#: autoload/Economy.gd:176
 msgid "Base (Mk I, before tier and part rarity)"
 msgstr "基本（Mk I、ティアとパーツのレア度を除く）"
 
-#: autoload/Economy.gd:175 ui/bench_lists.gd:11 ui/upgrades_panel.gd:39
+#: autoload/Economy.gd:176 ui/bench_lists.gd:11 ui/upgrades_panel.gd:39
 msgid "Base"
 msgstr "基本"
 
-#: autoload/Economy.gd:183 autoload/Economy.gd:185 ui/upgrade_card.gd:190
+#: autoload/Economy.gd:184 autoload/Economy.gd:186 ui/upgrade_card.gd:190
 msgid "%s Lv %d"
 msgstr "%s Lv %d"
 
-#: autoload/Economy.gd:310
+#: autoload/Economy.gd:312
 msgid "Opens in a later city"
 msgstr "あとの都市で解放"
 
-#: autoload/Economy.gd:314
+#: autoload/Economy.gd:316
 msgid "Needs %s Lv %d"
 msgstr "%s Lv %dが必要"
 
-#: autoload/Economy.gd:317
+#: autoload/Economy.gd:319
 msgid "Needs research: %s"
 msgstr "研究が必要：%s"
 
-#: autoload/Economy.gd:320 systems/research.gd:210
+#: autoload/Economy.gd:322 systems/research.gd:210
 msgid "Needs base level %d"
 msgstr "基地レベル %d が必要"
 
-#: autoload/Economy.gd:506
+#: autoload/Economy.gd:508
 msgid "Mk I"
 msgstr "Mk I"
 
@@ -144,119 +154,123 @@ msgstr "Glim：スキャン（長押し：アップグレード）"
 msgid "Hover boost"
 msgstr "ホバーブースト"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:26
+msgid "Release Surge"
+msgstr "サージ発動"
+
+#: autoload/Settings.gd:32
 msgid "View"
 msgstr "ビュー"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:32
 msgid "Menu"
 msgstr "メニュー"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:32
 msgid "LS"
 msgstr "Lスティック"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:33
 msgid "RS"
 msgstr "Rスティック"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:33
 msgid "LB"
 msgstr "LB"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:33
 msgid "RB"
 msgstr "RB"
 
-#: autoload/Settings.gd:33
+#: autoload/Settings.gd:34
 msgid "D-pad up"
 msgstr "十字キー上"
 
-#: autoload/Settings.gd:33
+#: autoload/Settings.gd:34
 msgid "D-pad down"
 msgstr "十字キー下"
 
-#: autoload/Settings.gd:34
+#: autoload/Settings.gd:35
 msgid "D-pad left"
 msgstr "十字キー左"
 
-#: autoload/Settings.gd:34
+#: autoload/Settings.gd:35
 msgid "D-pad right"
 msgstr "十字キー右"
 
-#: autoload/Settings.gd:35
+#: autoload/Settings.gd:36
 msgid "Share"
 msgstr "シェア"
 
-#: autoload/Settings.gd:36
+#: autoload/Settings.gd:37
 msgid "Touchpad"
 msgstr "タッチパッド"
 
-#: autoload/Settings.gd:36
+#: autoload/Settings.gd:37
 msgid "Paddle 1"
 msgstr "パドル1"
 
-#: autoload/Settings.gd:522
+#: autoload/Settings.gd:524
 msgid "LMB"
 msgstr "左クリック"
 
-#: autoload/Settings.gd:523
+#: autoload/Settings.gd:525
 msgid "RMB"
 msgstr "右クリック"
 
-#: autoload/Settings.gd:524
+#: autoload/Settings.gd:526
 msgid "MMB"
 msgstr "中クリック"
 
-#: autoload/Settings.gd:525
+#: autoload/Settings.gd:527
 msgid "Wheel up"
 msgstr "ホイール上"
 
-#: autoload/Settings.gd:526
+#: autoload/Settings.gd:528
 msgid "Wheel down"
 msgstr "ホイール下"
 
-#: autoload/Settings.gd:527
+#: autoload/Settings.gd:529
 msgid "Mouse %d"
 msgstr "マウス %d"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:531
 msgid "Button %d"
 msgstr "ボタン %d"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:536
 msgid "LS left"
 msgstr "Lスティック左"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:536
 msgid "LS right"
 msgstr "Lスティック右"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:537
 msgid "LS up"
 msgstr "Lスティック上"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:537
 msgid "LS down"
 msgstr "Lスティック下"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:538
 msgid "RS left"
 msgstr "Rスティック左"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:538
 msgid "RS right"
 msgstr "Rスティック右"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:539
 msgid "RS up"
 msgstr "Rスティック上"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:539
 msgid "RS down"
 msgstr "Rスティック下"
 
-#: autoload/Settings.gd:548
+#: autoload/Settings.gd:550
 msgid "hold %s"
 msgstr "%s長押し"
 
@@ -708,7 +722,7 @@ msgstr ""
 "コンポストプレス  Lv %d\n"
 "ホッパー %d%%  →  種"
 
-#: plants/garden.gd:277
+#: plants/garden.gd:286
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "ヘックスが完全によみがえった。もう小さな何かが住みついている。"
 
@@ -764,39 +778,39 @@ msgstr "まだ種がない。片づけを続けよう。"
 msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 msgstr "種にはきれいで開けた地面が必要。道路や縁石、パッドには植えられない。"
 
-#: player/patch.gd:371
+#: player/patch.gd:372
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "種がなくなった。咲いた植物がまた落としてくれる。"
 
-#: player/patch.gd:378
+#: player/patch.gd:379
 msgid "Watering can is empty. It fills in the base yard, by the bin."
 msgstr "じょうろが空っぽ。基地の庭、ゴミ箱のそばで水が入る。"
 
-#: player/patch.gd:637
+#: player/patch.gd:649
 msgid "PERFECT BALE  %s"
 msgstr "パーフェクトベール  %s"
 
-#: player/patch.gd:643
+#: player/patch.gd:655
 msgid "OVERSTUFFED  %s"
 msgstr "詰め込みすぎ  %s"
 
-#: player/patch.gd:646
+#: player/patch.gd:658
 msgid "GOOD BALE  %s"
 msgstr "いいベール  %s"
 
-#: player/patch.gd:650
+#: player/patch.gd:662
 msgid "SURGE  %s"
 msgstr "サージ  %s"
 
-#: player/patch.gd:653
+#: player/patch.gd:665
 msgid "  (streak +%d%%)"
 msgstr "  （連続 +%d%%）"
 
-#: player/patch.gd:690
+#: player/patch.gd:702
 msgid "Salvaged: %s"
 msgstr "回収：%s"
 
-#: player/patch.gd:719
+#: player/patch.gd:731
 msgid "Recovered: %s"
 msgstr "発見：%s"
 
@@ -1103,7 +1117,7 @@ msgstr "ほかのタンクに近すぎる"
 msgid "Water Tank placed. Waterers nearby will refill here."
 msgstr "給水タンクを設置。近くの水やりロボはここで補給する。"
 
-#: robots/water_net.gd:308 ui/hotbar.gd:28
+#: robots/water_net.gd:308 ui/hotbar.gd:34
 msgid "WATER"
 msgstr "水"
 
@@ -1151,27 +1165,27 @@ msgstr "前哨基地 %d · Lv%d"
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨基地 %d · 廃墟"
 
-#: scenes/slice_orbit.gd:372
+#: scenes/slice_orbit.gd:373
 msgid "HEX CLEAN!"
 msgstr "ヘックスきれい！"
 
-#: scenes/slice_orbit.gd:388
+#: scenes/slice_orbit.gd:389
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice_orbit.gd:573 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:585
+#: scenes/slice_orbit.gd:590 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:586
 msgid "E   Fix the workbench"
 msgstr "E   作業台を直す"
 
-#: scenes/slice_orbit.gd:573 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:590 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr "E   作業台を開く"
 
-#: scenes/slice_orbit.gd:1037
+#: scenes/slice_orbit.gd:1054
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice_orbit.gd:1137
+#: scenes/slice_orbit.gd:1154
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "作業台を修理した。作業台で E を押すとキューブでアップグレードできる。"
 
@@ -1271,55 +1285,55 @@ msgstr "終わりを待っているものは何もないよ、{name}。誰も点
 msgid "The Cradle is home. The Seed Ark is open: every bloom on {planet} counts toward the next wave. Progress shows on the hologram (M)."
 msgstr "Cradle号が帰還した。シードアークが開いた：{planet} で咲く花はすべて次の波に数えられる。進行はホログラム（M）で。"
 
-#: story/core_charge.gd:204
+#: story/core_charge.gd:207
 msgid "Bloom Core 100%. Lumi's core is full of green light."
 msgstr "ブルームコア 100%。Lumi のコアは緑の光でいっぱい。"
 
-#: story/core_charge.gd:230
+#: story/core_charge.gd:233
 msgid "Bloom Core  25%"
 msgstr "ブルームコア  25%"
 
-#: story/core_charge.gd:231
+#: story/core_charge.gd:234
 msgid "There. The relay just locked on. Lumi, I can hear you properly now. Clear as the old days."
 msgstr "よし。リレーがつながった。Lumi、やっとちゃんと聞こえる。昔みたいにはっきりと。"
 
-#: story/core_charge.gd:251
+#: story/core_charge.gd:254
 msgid "A memory  ·  the garden deck of the Cradle"
 msgstr "ある記憶  ·  Cradle号の庭園デッキ"
 
-#: story/core_charge.gd:262
+#: story/core_charge.gd:265
 msgid "Remember the garden deck? You watered every bed twice, just to be sure."
 msgstr "庭園デッキのこと、覚えてる？念のためにって、どの苗床も2回ずつ水をあげてたよね。"
 
-#: story/core_charge.gd:265
+#: story/core_charge.gd:268
 msgid "Every patch you grow down there is one more bed like these. You're not lost, Lumi. You're replanting."
 msgstr "下で育てる一区画一区画が、こういう苗床がまたひとつ増えるってこと。君は迷子じゃないよ、Lumi。植えなおしてるんだ。"
 
-#: story/core_charge.gd:269
+#: story/core_charge.gd:272
 msgid "Bloom Core 25%: WREN's signal is clear now."
 msgstr "ブルームコア 25%：WREN のシグナルがはっきりした。"
 
-#: story/core_charge.gd:287
+#: story/core_charge.gd:290
 msgid "Bloom Core 50%: Lumi's glow is back, brighter than it has been in years."
 msgstr "ブルームコア 50%：Lumi の輝きが戻った。ここ何年でいちばん明るい。"
 
-#: story/core_charge.gd:289
+#: story/core_charge.gd:292
 msgid "Half charged. You're glowing, Lumi. Properly glowing. I'd forgotten you could be this bright."
 msgstr "半分充電。光ってるよ、Lumi。ちゃんと光ってる。こんなに明るくなれるの、忘れてた。"
 
-#: story/core_charge.gd:323
+#: story/core_charge.gd:326
 msgid "That night..."
 msgstr "あの夜……"
 
-#: story/core_charge.gd:347
+#: story/core_charge.gd:350
 msgid "Lumi, look up. That light. West to east, steady, not twinkling."
 msgstr "Lumi、上を見て。あの光。西から東へ、ゆっくりと、またたかずに。"
 
-#: story/core_charge.gd:352
+#: story/core_charge.gd:355
 msgid "That's the Cradle. When your core lit up, the ark heard it. She turned around. We're coming back for you."
 msgstr "あれが Cradle号。君のコアが灯ったとき、アークはそれを聞いた。向きを変えたんだ。君を迎えに戻ってる。"
 
-#: story/core_charge.gd:362
+#: story/core_charge.gd:365
 msgid "Bloom Core 75%: the Cradle is on its way home. Look for it crossing the night sky."
 msgstr "ブルームコア 75%：Cradle号が帰ってくる。夜空を横切るのを探してみよう。"
 
@@ -1969,8 +1983,8 @@ msgid "Supply Drops"
 msgstr "補給物資の投下"
 
 #: systems/collection.gd:85
-msgid "Salvage Surges"
-msgstr "サルベージラッシュ"
+msgid "Salvage Glints"
+msgstr "サルベージの輝き"
 
 #: systems/collection.gd:86
 msgid "Rain Showers"
@@ -2555,6 +2569,10 @@ msgstr "%s（%s）"
 msgid "You need %s for this."
 msgstr "これには %s が必要。"
 
+#: systems/surge.gd:123
+msgid "Surge"
+msgstr "サージ"
+
 #: systems/tunes.gd:166
 msgid "New CD: %s by %s, from %s"
 msgstr "新しいCD：%s（%s、%s出身）"
@@ -2687,7 +2705,7 @@ msgstr "%s は苗に鼻歌を聞かせている。引退生活が似合う。"
 msgid "%s points proudly at a new bud."
 msgstr "%s は新しいつぼみを得意げに指さす。"
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:617
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:618
 msgid "E   CD player: %s"
 msgstr "E   CDプレーヤー：%s"
 
@@ -4029,21 +4047,25 @@ msgstr "目標達成  ·  %s%s"
 msgid "+%s seeds"
 msgstr "+%s 種"
 
-#: ui/hotbar.gd:26
+#: ui/hotbar.gd:32
 msgid "SCOOP"
 msgstr "すくう"
 
-#: ui/hotbar.gd:27
+#: ui/hotbar.gd:33
 msgid "PLANT"
 msgstr "植える"
 
-#: ui/hotbar.gd:281
+#: ui/hotbar.gd:293
 msgid "+%d XP"
 msgstr "+%d XP"
 
-#: ui/hotbar.gd:291
+#: ui/hotbar.gd:306
 msgid "CORE %d%%"
 msgstr "コア %d%%"
+
+#: ui/hotbar.gd:339
+msgid "SURGE"
+msgstr "サージ"
 
 #: ui/hub_panel.gd:58
 msgid "What you get"
@@ -8951,12 +8973,12 @@ msgid "Clear the junk around the crate"
 msgstr "木箱のまわりのガラクタを片づけよう"
 
 #: planets/verdance/data/events.json:events[salvage_surge].name
-msgid "Salvage Surge"
-msgstr "サルベージラッシュ"
+msgid "Salvage Glint"
+msgstr "サルベージの輝き"
 
 #: planets/verdance/data/events.json:events[salvage_surge].toast
-msgid "Salvage Surge! A hex %s of you is glowing: its junk is worth 3x for two minutes."
-msgstr "サルベージラッシュ！君の%sのヘックスが光っている：2分間、そこのガラクタは3倍の価値。"
+msgid "Salvage Glint! A hex %s of you is glowing: its junk is worth 3x for two minutes."
+msgstr "サルベージの輝き！君の%sのヘックスが光っている：2分間、そこのガラクタは3倍の価値。"
 
 #: planets/verdance/data/events.json:events[salvage_surge].hud
 msgid "Junk from the glowing hex is worth 3x"
@@ -15627,6 +15649,15 @@ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を�
 #: planets/verdance/data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "Salvage Surges"
+#~ msgstr "サルベージラッシュ"
+
+#~ msgid "Salvage Surge"
+#~ msgstr "サルベージラッシュ"
+
+#~ msgid "Salvage Surge! A hex %s of you is glowing: its junk is worth 3x for two minutes."
+#~ msgstr "サルベージラッシュ！君の%sのヘックスが光っている：2分間、そこのガラクタは3倍の価値。"
 
 #~ msgid "The last leaf waits where Old Capital's poison is stopped."
 #~ msgstr "最後の葉は、Old Capitalの毒が止まる場所で待っている。"

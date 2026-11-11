@@ -16,39 +16,49 @@ msgstr ""
 msgid "NEW CREWMATE  ·  %s"
 msgstr "NUEVO TRIPULANTE  ·  %s"
 
+#. %s is the key, or the two pad buttons, that release the Surge.
+#: art/surge_fx.gd:121
+msgid "Bloom Core full. Press %s to release a Surge."
+msgstr "Núcleo Bloom lleno. Pulsa %s para liberar un Surge."
+
+#. %s is how many times Lumi's sweep output a Surge gives, e.g. 3.2.
+#: art/surge_fx.gd:151
+msgid "SURGE  x%s"
+msgstr "SURGE  x%s"
+
 #: autoload/Economy.gd:117
 msgid "Every %s in the fleet."
 msgstr "Cada %s de la flota."
 
-#: autoload/Economy.gd:175
+#: autoload/Economy.gd:176
 msgid "Base (Mk I, before tier and part rarity)"
 msgstr "Base (Mk I, antes de nivel y rareza de piezas)"
 
-#: autoload/Economy.gd:175 ui/bench_lists.gd:11 ui/upgrades_panel.gd:39
+#: autoload/Economy.gd:176 ui/bench_lists.gd:11 ui/upgrades_panel.gd:39
 msgid "Base"
 msgstr "Base"
 
-#: autoload/Economy.gd:183 autoload/Economy.gd:185 ui/upgrade_card.gd:190
+#: autoload/Economy.gd:184 autoload/Economy.gd:186 ui/upgrade_card.gd:190
 msgid "%s Lv %d"
 msgstr "%s Nv %d"
 
-#: autoload/Economy.gd:310
+#: autoload/Economy.gd:312
 msgid "Opens in a later city"
 msgstr "Se abre en una ciudad posterior"
 
-#: autoload/Economy.gd:314
+#: autoload/Economy.gd:316
 msgid "Needs %s Lv %d"
 msgstr "Necesita %s Nv %d"
 
-#: autoload/Economy.gd:317
+#: autoload/Economy.gd:319
 msgid "Needs research: %s"
 msgstr "Necesita investigación: %s"
 
-#: autoload/Economy.gd:320 systems/research.gd:210
+#: autoload/Economy.gd:322 systems/research.gd:210
 msgid "Needs base level %d"
 msgstr "Requiere base de nivel %d"
 
-#: autoload/Economy.gd:506
+#: autoload/Economy.gd:508
 msgid "Mk I"
 msgstr "Mk I"
 
@@ -144,119 +154,123 @@ msgstr "Glim: escanear (mantén: mejoras)"
 msgid "Hover boost"
 msgstr "Impulso de flote"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:26
+msgid "Release Surge"
+msgstr "Liberar Surge"
+
+#: autoload/Settings.gd:32
 msgid "View"
 msgstr "Vista"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:32
 msgid "Menu"
 msgstr "Menú"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:32
 msgid "LS"
 msgstr "JI"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:33
 msgid "RS"
 msgstr "JD"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:33
 msgid "LB"
 msgstr "LB"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:33
 msgid "RB"
 msgstr "RB"
 
-#: autoload/Settings.gd:33
+#: autoload/Settings.gd:34
 msgid "D-pad up"
 msgstr "Cruceta arriba"
 
-#: autoload/Settings.gd:33
+#: autoload/Settings.gd:34
 msgid "D-pad down"
 msgstr "Cruceta abajo"
 
-#: autoload/Settings.gd:34
+#: autoload/Settings.gd:35
 msgid "D-pad left"
 msgstr "Cruceta izquierda"
 
-#: autoload/Settings.gd:34
+#: autoload/Settings.gd:35
 msgid "D-pad right"
 msgstr "Cruceta derecha"
 
-#: autoload/Settings.gd:35
+#: autoload/Settings.gd:36
 msgid "Share"
 msgstr "Compartir"
 
-#: autoload/Settings.gd:36
+#: autoload/Settings.gd:37
 msgid "Touchpad"
 msgstr "Panel táctil"
 
-#: autoload/Settings.gd:36
+#: autoload/Settings.gd:37
 msgid "Paddle 1"
 msgstr "Paleta 1"
 
-#: autoload/Settings.gd:522
+#: autoload/Settings.gd:524
 msgid "LMB"
 msgstr "Clic izq."
 
-#: autoload/Settings.gd:523
+#: autoload/Settings.gd:525
 msgid "RMB"
 msgstr "Clic der."
 
-#: autoload/Settings.gd:524
+#: autoload/Settings.gd:526
 msgid "MMB"
 msgstr "Clic central"
 
-#: autoload/Settings.gd:525
+#: autoload/Settings.gd:527
 msgid "Wheel up"
 msgstr "Rueda arriba"
 
-#: autoload/Settings.gd:526
+#: autoload/Settings.gd:528
 msgid "Wheel down"
 msgstr "Rueda abajo"
 
-#: autoload/Settings.gd:527
+#: autoload/Settings.gd:529
 msgid "Mouse %d"
 msgstr "Ratón %d"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:531
 msgid "Button %d"
 msgstr "Botón %d"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:536
 msgid "LS left"
 msgstr "JI izquierda"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:536
 msgid "LS right"
 msgstr "JI derecha"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:537
 msgid "LS up"
 msgstr "JI arriba"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:537
 msgid "LS down"
 msgstr "JI abajo"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:538
 msgid "RS left"
 msgstr "JD izquierda"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:538
 msgid "RS right"
 msgstr "JD derecha"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:539
 msgid "RS up"
 msgstr "JD arriba"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:539
 msgid "RS down"
 msgstr "JD abajo"
 
-#: autoload/Settings.gd:548
+#: autoload/Settings.gd:550
 msgid "hold %s"
 msgstr "mantén %s"
 
@@ -708,7 +722,7 @@ msgstr ""
 "PRENSA DE COMPOST  Nv %d\n"
 "tolva %d%%  →  semillas"
 
-#: plants/garden.gd:277
+#: plants/garden.gd:286
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "Un hexágono está totalmente restaurado. Algo pequeñito ya vive en él."
 
@@ -764,39 +778,39 @@ msgstr "Aún no hay semillas. Sigue limpiando."
 msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 msgstr "Las semillas necesitan suelo limpio y despejado: ni calles, ni bordillos, ni la plataforma."
 
-#: player/patch.gd:371
+#: player/patch.gd:372
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "Sin semillas. Las plantas en flor dan más."
 
-#: player/patch.gd:378
+#: player/patch.gd:379
 msgid "Watering can is empty. It fills in the base yard, by the bin."
 msgstr "La regadera está vacía. Se llena en el patio de la base, junto al contenedor."
 
-#: player/patch.gd:637
+#: player/patch.gd:649
 msgid "PERFECT BALE  %s"
 msgstr "PACA PERFECTA  %s"
 
-#: player/patch.gd:643
+#: player/patch.gd:655
 msgid "OVERSTUFFED  %s"
 msgstr "REPLETA  %s"
 
-#: player/patch.gd:646
+#: player/patch.gd:658
 msgid "GOOD BALE  %s"
 msgstr "BUENA PACA  %s"
 
-#: player/patch.gd:650
+#: player/patch.gd:662
 msgid "SURGE  %s"
 msgstr "IMPULSO  %s"
 
-#: player/patch.gd:653
+#: player/patch.gd:665
 msgid "  (streak +%d%%)"
 msgstr "  (racha +%d%%)"
 
-#: player/patch.gd:690
+#: player/patch.gd:702
 msgid "Salvaged: %s"
 msgstr "Rescatado: %s"
 
-#: player/patch.gd:719
+#: player/patch.gd:731
 msgid "Recovered: %s"
 msgstr "Recuperado: %s"
 
@@ -1104,7 +1118,7 @@ msgstr "Demasiado cerca de otro tanque"
 msgid "Water Tank placed. Waterers nearby will refill here."
 msgstr "Tanque de agua colocado. Los regadores cercanos recargarán aquí."
 
-#: robots/water_net.gd:308 ui/hotbar.gd:28
+#: robots/water_net.gd:308 ui/hotbar.gd:34
 msgid "WATER"
 msgstr "AGUA"
 
@@ -1152,27 +1166,27 @@ msgstr "PUESTO %d · Nv%d"
 msgid "OUTPOST %d · RUIN"
 msgstr "PUESTO %d · RUINA"
 
-#: scenes/slice_orbit.gd:372
+#: scenes/slice_orbit.gd:373
 msgid "HEX CLEAN!"
 msgstr "¡HEXÁGONO LIMPIO!"
 
-#: scenes/slice_orbit.gd:388
+#: scenes/slice_orbit.gd:389
 msgid "Milestone: %d hexes clean!"
 msgstr "Hito: ¡%d hexágonos limpios!"
 
-#: scenes/slice_orbit.gd:573 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:585
+#: scenes/slice_orbit.gd:590 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:586
 msgid "E   Fix the workbench"
 msgstr "E   Reparar el banco de trabajo"
 
-#: scenes/slice_orbit.gd:573 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:590 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr "E   Abrir el banco de trabajo"
 
-#: scenes/slice_orbit.gd:1037
+#: scenes/slice_orbit.gd:1054
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Las mejoras necesitan un banco de trabajo. Vuelve a la base."
 
-#: scenes/slice_orbit.gd:1137
+#: scenes/slice_orbit.gd:1154
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Banco de trabajo reparado. Pulsa E en él para gastar cubos en mejoras."
 
@@ -1272,55 +1286,55 @@ msgstr "Nada está esperando a terminar, {name}. Nadie lleva la cuenta. Estamos 
 msgid "The Cradle is home. The Seed Ark is open: every bloom on {planet} counts toward the next wave. Progress shows on the hologram (M)."
 msgstr "El Cradle está en casa. El Arca de Semillas está abierta: cada flor de {planet} cuenta para la próxima oleada. El progreso se ve en el holograma (M)."
 
-#: story/core_charge.gd:204
+#: story/core_charge.gd:207
 msgid "Bloom Core 100%. Lumi's core is full of green light."
 msgstr "Núcleo Floral 100%. El núcleo de Lumi está lleno de luz verde."
 
-#: story/core_charge.gd:230
+#: story/core_charge.gd:233
 msgid "Bloom Core  25%"
 msgstr "Núcleo Floral  25%"
 
-#: story/core_charge.gd:231
+#: story/core_charge.gd:234
 msgid "There. The relay just locked on. Lumi, I can hear you properly now. Clear as the old days."
 msgstr "Ahí. El relé acaba de engancharse. Lumi, ahora te oigo bien. Claro como en los viejos tiempos."
 
-#: story/core_charge.gd:251
+#: story/core_charge.gd:254
 msgid "A memory  ·  the garden deck of the Cradle"
 msgstr "Un recuerdo  ·  la cubierta jardín del Cradle"
 
-#: story/core_charge.gd:262
+#: story/core_charge.gd:265
 msgid "Remember the garden deck? You watered every bed twice, just to be sure."
 msgstr "¿Recuerdas la cubierta jardín? Regabas cada bancal dos veces, solo para asegurarte."
 
-#: story/core_charge.gd:265
+#: story/core_charge.gd:268
 msgid "Every patch you grow down there is one more bed like these. You're not lost, Lumi. You're replanting."
 msgstr "Cada parcela que haces crecer ahí abajo es un bancal más como estos. No estás perdido, Lumi. Estás replantando."
 
-#: story/core_charge.gd:269
+#: story/core_charge.gd:272
 msgid "Bloom Core 25%: WREN's signal is clear now."
 msgstr "Núcleo Floral 25%: la señal de WREN ya es clara."
 
-#: story/core_charge.gd:287
+#: story/core_charge.gd:290
 msgid "Bloom Core 50%: Lumi's glow is back, brighter than it has been in years."
 msgstr "Núcleo Floral 50%: el brillo de Lumi ha vuelto, más intenso que en años."
 
-#: story/core_charge.gd:289
+#: story/core_charge.gd:292
 msgid "Half charged. You're glowing, Lumi. Properly glowing. I'd forgotten you could be this bright."
 msgstr "Media carga. Estás brillando, Lumi. Brillando de verdad. Había olvidado lo luminoso que podías ser."
 
-#: story/core_charge.gd:323
+#: story/core_charge.gd:326
 msgid "That night..."
 msgstr "Aquella noche..."
 
-#: story/core_charge.gd:347
+#: story/core_charge.gd:350
 msgid "Lumi, look up. That light. West to east, steady, not twinkling."
 msgstr "Lumi, mira arriba. Esa luz. De oeste a este, fija, sin titilar."
 
-#: story/core_charge.gd:352
+#: story/core_charge.gd:355
 msgid "That's the Cradle. When your core lit up, the ark heard it. She turned around. We're coming back for you."
 msgstr "Es el Cradle. Cuando tu núcleo se encendió, el arca lo oyó. Dio la vuelta. Volvemos a por ti."
 
-#: story/core_charge.gd:362
+#: story/core_charge.gd:365
 msgid "Bloom Core 75%: the Cradle is on its way home. Look for it crossing the night sky."
 msgstr "Núcleo Floral 75%: el Cradle vuelve a casa. Búscalo cruzando el cielo de noche."
 
@@ -1970,8 +1984,8 @@ msgid "Supply Drops"
 msgstr "Envíos de suministros"
 
 #: systems/collection.gd:85
-msgid "Salvage Surges"
-msgstr "Oleadas de chatarra"
+msgid "Salvage Glints"
+msgstr "Destellos de chatarra"
 
 #: systems/collection.gd:86
 msgid "Rain Showers"
@@ -2562,6 +2576,10 @@ msgstr "%s (%s)"
 msgid "You need %s for this."
 msgstr "Necesitas %s para esto."
 
+#: systems/surge.gd:123
+msgid "Surge"
+msgstr "Surge"
+
 #: systems/tunes.gd:166
 msgid "New CD: %s by %s, from %s"
 msgstr "Nuevo CD: %s de %s, de %s"
@@ -2694,7 +2712,7 @@ msgstr "%s les tararea a los brotes. La jubilación le sienta bien."
 msgid "%s points proudly at a new bud."
 msgstr "%s señala orgulloso un capullo nuevo."
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:617
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:618
 msgid "E   CD player: %s"
 msgstr "E   Reproductor de CD: %s"
 
@@ -4040,21 +4058,25 @@ msgstr "Objetivo cumplido  ·  %s%s"
 msgid "+%s seeds"
 msgstr "+%s semillas"
 
-#: ui/hotbar.gd:26
+#: ui/hotbar.gd:32
 msgid "SCOOP"
 msgstr "PALA"
 
-#: ui/hotbar.gd:27
+#: ui/hotbar.gd:33
 msgid "PLANT"
 msgstr "PLANTAR"
 
-#: ui/hotbar.gd:281
+#: ui/hotbar.gd:293
 msgid "+%d XP"
 msgstr "+%d PX"
 
-#: ui/hotbar.gd:291
+#: ui/hotbar.gd:306
 msgid "CORE %d%%"
 msgstr "NÚCLEO %d%%"
+
+#: ui/hotbar.gd:339
+msgid "SURGE"
+msgstr "SURGE"
 
 #: ui/hub_panel.gd:58
 msgid "What you get"
@@ -8963,12 +8985,12 @@ msgid "Clear the junk around the crate"
 msgstr "Limpia la chatarra alrededor de la caja"
 
 #: planets/verdance/data/events.json:events[salvage_surge].name
-msgid "Salvage Surge"
-msgstr "Oleada de chatarra"
+msgid "Salvage Glint"
+msgstr "Destello de chatarra"
 
 #: planets/verdance/data/events.json:events[salvage_surge].toast
-msgid "Salvage Surge! A hex %s of you is glowing: its junk is worth 3x for two minutes."
-msgstr "¡Oleada de chatarra! Un hexágono %s de ti brilla: su chatarra vale el triple durante dos minutos."
+msgid "Salvage Glint! A hex %s of you is glowing: its junk is worth 3x for two minutes."
+msgstr "¡Destello de chatarra! Un hexágono %s de ti brilla: su chatarra vale el triple durante dos minutos."
 
 #: planets/verdance/data/events.json:events[salvage_surge].hud
 msgid "Junk from the glowing hex is worth 3x"
@@ -15639,6 +15661,15 @@ msgstr "Ese pórtico desguazó la flota del Ledger cuando se acabó el dinero. E
 #: planets/verdance/data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un mundo de óxido, verde. Las viejas grúas tienen flores a sus pies. Las cuentas están cerradas, {name}. Las hemos cuadrado."
+
+#~ msgid "Salvage Surges"
+#~ msgstr "Oleadas de chatarra"
+
+#~ msgid "Salvage Surge"
+#~ msgstr "Oleada de chatarra"
+
+#~ msgid "Salvage Surge! A hex %s of you is glowing: its junk is worth 3x for two minutes."
+#~ msgstr "¡Oleada de chatarra! Un hexágono %s de ti brilla: su chatarra vale el triple durante dos minutos."
 
 #~ msgid "The last leaf waits where Old Capital's poison is stopped."
 #~ msgstr "La última hoja espera donde se detiene el veneno de Old Capital."

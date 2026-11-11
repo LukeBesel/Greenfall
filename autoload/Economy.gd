@@ -157,8 +157,9 @@ func stat(stat_id: String, levels: Variant = null) -> float:
 			mul *= 1.0 + float(u["amount"]) * level
 	# Research bonuses (systems/research.gd) apply on top of upgrades.
 	# The worn design's small buff (systems/designs.gd) last.  [skins]  Decor charm and nursery caretakers  [late]
-	# The fitted rig modules (systems/rigs.gd) after everything else: a module's floor is a floor.
-	return Rigs.stat_mod(stat_id, Designs.apply(stat_id, Research.stat_mod(stat_id, value * mul) * Decor.stat_mult(stat_id) * Nursery.stat_mult(stat_id)))
+	# The fitted rig modules (systems/rigs.gd) after those: a module's floor is a floor. A running
+	# Surge (systems/surge.gd) multiplies the lot.
+	return Surge.stat_mod(stat_id, Rigs.stat_mod(stat_id, Designs.apply(stat_id, Research.stat_mod(stat_id, value * mul) * Decor.stat_mult(stat_id) * Nursery.stat_mult(stat_id))))
 
 
 ## Base value of a stat before upgrades: Lumi's stats come from the planet's "player" table, dotted
@@ -186,6 +187,7 @@ func stat_breakdown(stat_id: String) -> Array[Dictionary]:
 	out.append_array(Research.breakdown(stat_id))
 	out.append_array(Designs.breakdown(stat_id))  # [skins]
 	out.append_array(Rigs.breakdown(stat_id))
+	out.append_array(Surge.breakdown(stat_id))
 	return out
 
 

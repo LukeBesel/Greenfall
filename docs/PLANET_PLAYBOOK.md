@@ -210,6 +210,18 @@ The rules and the state are `systems/sources.gd`; where a step stands in the wor
 - Rule of thumb: three to five steps, the first a plain `use`, one `work` step on the kind the city introduces, at most 10 s standing still in any one step.
 - Rule of thumb: a planet's last job can be its ending's set piece (Planet 1: the rocket, six `carry` steps that take the late Parts surplus). Gate its steps with `at_clean`, not with the city's stage, so they spread over the city instead of piling up at its end.
 
+### Surge (M3-09)
+The rules are `core/surge_rules.gd` (plain maths); the state is `systems/surge.gd`; the look and sound are `art/surge_fx.gd`. Numbers: the `surge` block of the planet's `balance` table. Measured values are in `docs/reviews/M3-09_SURGE.md`.
+
+- **Only Lumi's own work charges the core:** units of waste she clears / `charge.units[district]`, plus `charge.per_bale` for each bale she presses and `charge.per_plant` / `charge.per_water` for each seed and each pour. Robot work, standing still and time away add nothing; nor does work during a Surge.
+- **Charge needed** is one entry per district in play order, about four minutes of Lumi's hand rate there, so better tools shorten it inside a city and the next city resets it.
+- **Fastest fill** = `charge.min_fill_s` seconds of work, whatever the tools: a Surge stays a moment.
+- **A stat during a Surge** = stat x (1 + (`stats[stat]` - 1) x power), power = 1 + `power_per_district` x (district - 1). **Output** = the `scoop_rate` multiplier x the `pickup_count` multiplier (pulses a second x waste a pulse). Keep it at 3 or more in every district; the suite measures it on a real sweep.
+- **Chest room of swept waste** = `chest_pack` / output of its volume (cube value unchanged). At 1 the chest fills as fast as in plain sweeping; below 1 slower. Without this a Surge is spent walking to the bin.
+- **Growth wave:** from `wave.from_district` on, every plant within `wave.rings` (+ `rings_per_district` per later district) rings of Lumi gets `wave.water_s` of water and `wave.stages` of a growth stage.
+- Rule of thumb: put the output on both the pulse rate and the pulse size. Rate alone is rounded to whole frames at high upgrade levels; size alone does not feel faster.
+- Rule of thumb: the first Surge should come after the first hex and before the first robot, so it is learnt as Lumi's own move.
+
 ### The crew and the robot chain (M3-20)
 Every number is in the planet's robots table. The rules are `core/crew_rules.gd` (cap, prices) and `core/crew_chain.gd` (the ground, the Assembler's line); `tools/crew_sim` plays a whole planet on them. Measured values are in `docs/reviews/M3-20_CREW.md`.
 

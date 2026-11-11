@@ -48,6 +48,7 @@ static func _snap(s: Node) -> Dictionary:
 		"chain": JSON.stringify((s.orbit as SliceOrbit).chain.save_state()),  # buried parts, the Assembler, its mix
 		"mastery": JSON.stringify((s.orbit as SliceOrbit).mastery.save_state()),  # Lumi's hand work per kind
 		"rigs": JSON.stringify((s.orbit as SliceOrbit).rigs.save_state()),  # plans, built modules, what is fitted
+		"surge": JSON.stringify((s.orbit as SliceOrbit).surge.save_state()),  # the Bloom Core's charge: no gain while away
 		"mastery_shut_hexes": (s.orbit as SliceOrbit).globe.cells.shut.count(1),  # hexes robots must leave alone
 		"assembler_model": (s.orbit as SliceOrbit).chain.model != null,
 		"restoration": JSON.stringify((s.orbit as SliceOrbit).restoration.save_state()),
@@ -664,6 +665,11 @@ static func run(rt: Node, check: Callable) -> void:
 			so.rigs.grant(slot_modules[0])
 			rig_fitted += 1 if so.rigs.is_fitted(slot_modules[0]) else 0
 	check.call("orbit_rig_fitted_every_slot", so.rigs.slots().size(), rig_fitted)
+	# Surge: a part-charged Bloom Core, so the snapshot compares a real charge. The time away that
+	# this round trip plays through must add nothing to it.
+	GameState.stats["robots_built"] = maxi(int(GameState.stats.get("robots_built", 0)), 1)  # the Surge opens with the first robot
+	so.surge.add_share(0.05)
+	check.call("orbit_surge_part_charged", true, so.surge.charge() > 0.0 and so.surge.charge() < 1.0)
 	var bot_dirs: Array[Vector3] = [crew.unit_dir(nb), crew.unit_dir(fb)]
 	var rad: float = g.grid.radius_m
 	check.call("orbit_robot_near_far", "near far", ("near " if crew.is_near(nb) else "far ") + ("near" if crew.is_near(fb) else "far"))

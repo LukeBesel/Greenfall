@@ -13,39 +13,49 @@ msgstr ""
 msgid "NEW CREWMATE  ·  %s"
 msgstr "[ÑÉŴ ÇŔÉŴMÀŢÉ  ·  %s ~~~~]"
 
+#. %s is the key, or the two pad buttons, that release the Surge.
+#: art/surge_fx.gd:121
+msgid "Bloom Core full. Press %s to release a Surge."
+msgstr "[Bļôôm Çôŕé ƒûļļ. Þŕéšš %s ţô ŕéļéàšé à Šûŕĝé. ~~~~~~~~~~~~~]"
+
+#. %s is how many times Lumi's sweep output a Surge gives, e.g. 3.2.
+#: art/surge_fx.gd:151
+msgid "SURGE  x%s"
+msgstr "[ŠÛŔĜÉ  x%s ~]"
+
 #: autoload/Economy.gd:117
 msgid "Every %s in the fleet."
 msgstr "[Évéŕý %s îñ ţĥé ƒļééţ. ~~~~~]"
 
-#: autoload/Economy.gd:175
+#: autoload/Economy.gd:176
 msgid "Base (Mk I, before tier and part rarity)"
 msgstr "[Bàšé (Mķ Î, béƒôŕé ţîéŕ àñð þàŕţ ŕàŕîţý) ~~~~~~~~~~~]"
 
-#: autoload/Economy.gd:175 ui/bench_lists.gd:11 ui/upgrades_panel.gd:39
+#: autoload/Economy.gd:176 ui/bench_lists.gd:11 ui/upgrades_panel.gd:39
 msgid "Base"
 msgstr "[Bàšé ~]"
 
-#: autoload/Economy.gd:183 autoload/Economy.gd:185 ui/upgrade_card.gd:190
+#: autoload/Economy.gd:184 autoload/Economy.gd:186 ui/upgrade_card.gd:190
 msgid "%s Lv %d"
 msgstr "[%s Ļv %d ~]"
 
-#: autoload/Economy.gd:310
+#: autoload/Economy.gd:312
 msgid "Opens in a later city"
 msgstr "[Ôþéñš îñ à ļàţéŕ çîţý ~~~~]"
 
-#: autoload/Economy.gd:314
+#: autoload/Economy.gd:316
 msgid "Needs %s Lv %d"
 msgstr "[Ñééðš %s Ļv %d ~~]"
 
-#: autoload/Economy.gd:317
+#: autoload/Economy.gd:319
 msgid "Needs research: %s"
 msgstr "[Ñééðš ŕéšéàŕçĥ: %s ~~~]"
 
-#: autoload/Economy.gd:320 systems/research.gd:210
+#: autoload/Economy.gd:322 systems/research.gd:210
 msgid "Needs base level %d"
 msgstr "[Ñééðš bàšé ļévéļ %d ~~~~]"
 
-#: autoload/Economy.gd:506
+#: autoload/Economy.gd:508
 msgid "Mk I"
 msgstr "[Mķ Î ~]"
 
@@ -141,119 +151,123 @@ msgstr "[Ĝļîm: šçàñ (ĥôļð: ûþĝŕàðéš) ~~~~~~]"
 msgid "Hover boost"
 msgstr "[Ĥôvéŕ bôôšţ ~]"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:26
+msgid "Release Surge"
+msgstr "[Ŕéļéàšé Šûŕĝé ~~]"
+
+#: autoload/Settings.gd:32
 msgid "View"
 msgstr "[Vîéŵ ~]"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:32
 msgid "Menu"
 msgstr "[Méñû ~]"
 
-#: autoload/Settings.gd:31
+#: autoload/Settings.gd:32
 msgid "LS"
 msgstr "[ĻŠ ~]"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:33
 msgid "RS"
 msgstr "[ŔŠ ~]"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:33
 msgid "LB"
 msgstr "[ĻB ~]"
 
-#: autoload/Settings.gd:32
+#: autoload/Settings.gd:33
 msgid "RB"
 msgstr "[ŔB ~]"
 
-#: autoload/Settings.gd:33
+#: autoload/Settings.gd:34
 msgid "D-pad up"
 msgstr "[Ð-þàð ûþ ~]"
 
-#: autoload/Settings.gd:33
+#: autoload/Settings.gd:34
 msgid "D-pad down"
 msgstr "[Ð-þàð ðôŵñ ~]"
 
-#: autoload/Settings.gd:34
+#: autoload/Settings.gd:35
 msgid "D-pad left"
 msgstr "[Ð-þàð ļéƒţ ~]"
 
-#: autoload/Settings.gd:34
+#: autoload/Settings.gd:35
 msgid "D-pad right"
 msgstr "[Ð-þàð ŕîĝĥţ ~]"
 
-#: autoload/Settings.gd:35
+#: autoload/Settings.gd:36
 msgid "Share"
 msgstr "[Šĥàŕé ~]"
 
-#: autoload/Settings.gd:36
+#: autoload/Settings.gd:37
 msgid "Touchpad"
 msgstr "[Ţôûçĥþàð ~]"
 
-#: autoload/Settings.gd:36
+#: autoload/Settings.gd:37
 msgid "Paddle 1"
 msgstr "[Þàððļé 1 ~]"
 
-#: autoload/Settings.gd:522
+#: autoload/Settings.gd:524
 msgid "LMB"
 msgstr "[ĻMB ~]"
 
-#: autoload/Settings.gd:523
+#: autoload/Settings.gd:525
 msgid "RMB"
 msgstr "[ŔMB ~]"
 
-#: autoload/Settings.gd:524
+#: autoload/Settings.gd:526
 msgid "MMB"
 msgstr "[MMB ~]"
 
-#: autoload/Settings.gd:525
+#: autoload/Settings.gd:527
 msgid "Wheel up"
 msgstr "[Ŵĥééļ ûþ ~]"
 
-#: autoload/Settings.gd:526
+#: autoload/Settings.gd:528
 msgid "Wheel down"
 msgstr "[Ŵĥééļ ðôŵñ ~]"
 
-#: autoload/Settings.gd:527
+#: autoload/Settings.gd:529
 msgid "Mouse %d"
 msgstr "[Môûšé %d ~]"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:531
 msgid "Button %d"
 msgstr "[Bûţţôñ %d ~]"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:536
 msgid "LS left"
 msgstr "[ĻŠ ļéƒţ ~]"
 
-#: autoload/Settings.gd:534
+#: autoload/Settings.gd:536
 msgid "LS right"
 msgstr "[ĻŠ ŕîĝĥţ ~]"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:537
 msgid "LS up"
 msgstr "[ĻŠ ûþ ~]"
 
-#: autoload/Settings.gd:535
+#: autoload/Settings.gd:537
 msgid "LS down"
 msgstr "[ĻŠ ðôŵñ ~]"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:538
 msgid "RS left"
 msgstr "[ŔŠ ļéƒţ ~]"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:538
 msgid "RS right"
 msgstr "[ŔŠ ŕîĝĥţ ~]"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:539
 msgid "RS up"
 msgstr "[ŔŠ ûþ ~]"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:539
 msgid "RS down"
 msgstr "[ŔŠ ðôŵñ ~]"
 
-#: autoload/Settings.gd:548
+#: autoload/Settings.gd:550
 msgid "hold %s"
 msgstr "[ĥôļð %s ~]"
 
@@ -705,7 +719,7 @@ msgstr ""
 "[ÇÔMÞÔŠŢ ÞŔÉŠŠ  Ļv %d\n"
 "ĥôþþéŕ %d%%  →  šééðš ~~~~~~~~~~~~]"
 
-#: plants/garden.gd:277
+#: plants/garden.gd:286
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "[À ĥéx îš ƒûļļý ŕéšţôŕéð. Šôméţĥîñĝ šmàļļ îš àļŕéàðý ļîvîñĝ îñ îţ. ~~~~~~~~~~~~~~~~~~~~]"
 
@@ -761,39 +775,39 @@ msgstr "[Ñô šééðš ýéţ. Ķééþ çļéàñîñĝ. ~~~~~~~]"
 msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 msgstr "[Šééðš ñééð çļéàñ, ôþéñ ĝŕôûñð: ñôţ šţŕééţš, ķéŕbš ôŕ ţĥé þàð. ~~~~~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:371
+#: player/patch.gd:372
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "[Ôûţ ôƒ šééðš. Bļôômîñĝ þļàñţš ðŕôþ môŕé. ~~~~~~~~~~~]"
 
-#: player/patch.gd:378
+#: player/patch.gd:379
 msgid "Watering can is empty. It fills in the base yard, by the bin."
 msgstr "[Ŵàţéŕîñĝ çàñ îš émþţý. Îţ ƒîļļš îñ ţĥé bàšé ýàŕð, bý ţĥé bîñ. ~~~~~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:637
+#: player/patch.gd:649
 msgid "PERFECT BALE  %s"
 msgstr "[ÞÉŔFÉÇŢ BÀĻÉ  %s ~~~]"
 
-#: player/patch.gd:643
+#: player/patch.gd:655
 msgid "OVERSTUFFED  %s"
 msgstr "[ÔVÉŔŠŢÛFFÉÐ  %s ~~]"
 
-#: player/patch.gd:646
+#: player/patch.gd:658
 msgid "GOOD BALE  %s"
 msgstr "[ĜÔÔÐ BÀĻÉ  %s ~~]"
 
-#: player/patch.gd:650
+#: player/patch.gd:662
 msgid "SURGE  %s"
 msgstr "[ŠÛŔĜÉ  %s ~]"
 
-#: player/patch.gd:653
+#: player/patch.gd:665
 msgid "  (streak +%d%%)"
 msgstr "  [(šţŕéàķ +%d%%) ~~~]"
 
-#: player/patch.gd:690
+#: player/patch.gd:702
 msgid "Salvaged: %s"
 msgstr "[Šàļvàĝéð: %s ~]"
 
-#: player/patch.gd:719
+#: player/patch.gd:731
 msgid "Recovered: %s"
 msgstr "[Ŕéçôvéŕéð: %s ~~]"
 
@@ -1101,7 +1115,7 @@ msgstr "[Ţôô çļôšé ţô àñôţĥéŕ ţàñķ ~~~~~~]"
 msgid "Water Tank placed. Waterers nearby will refill here."
 msgstr "[Ŵàţéŕ Ţàñķ þļàçéð. Ŵàţéŕéŕš ñéàŕbý ŵîļļ ŕéƒîļļ ĥéŕé. ~~~~~~~~~~~~~~~]"
 
-#: robots/water_net.gd:308 ui/hotbar.gd:28
+#: robots/water_net.gd:308 ui/hotbar.gd:34
 msgid "WATER"
 msgstr "[ŴÀŢÉŔ ~]"
 
@@ -1149,27 +1163,27 @@ msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 
-#: scenes/slice_orbit.gd:372
+#: scenes/slice_orbit.gd:373
 msgid "HEX CLEAN!"
 msgstr "[ĤÉX ÇĻÉÀÑ! ~]"
 
-#: scenes/slice_orbit.gd:388
+#: scenes/slice_orbit.gd:389
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
-#: scenes/slice_orbit.gd:573 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:585
+#: scenes/slice_orbit.gd:590 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:586
 msgid "E   Fix the workbench"
 msgstr "E   [Fîx ţĥé ŵôŕķbéñçĥ ~~~]"
 
-#: scenes/slice_orbit.gd:573 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:590 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr "E   [Ôþéñ ţĥé ŵôŕķbéñçĥ ~~~]"
 
-#: scenes/slice_orbit.gd:1037
+#: scenes/slice_orbit.gd:1054
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice_orbit.gd:1137
+#: scenes/slice_orbit.gd:1154
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "[Ŵôŕķbéñçĥ ƒîxéð. Þŕéšš É àţ îţ ţô šþéñð çûbéš ôñ ûþĝŕàðéš. ~~~~~~~~~~~~~~~~~]"
 
@@ -1269,55 +1283,55 @@ msgstr "[Ñôţĥîñĝ îš ŵàîţîñĝ ţô éñð, {name}. Ñôbôðý î�
 msgid "The Cradle is home. The Seed Ark is open: every bloom on {planet} counts toward the next wave. Progress shows on the hologram (M)."
 msgstr "[Ţĥé Çŕàðļé îš ĥômé. Ţĥé Šééð Àŕķ îš ôþéñ: évéŕý bļôôm ôñ {planet} çôûñţš ţôŵàŕð ţĥé ñéxţ ŵàvé. Þŕôĝŕéšš šĥôŵš ôñ ţĥé ĥôļôĝŕàm (M). ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:204
+#: story/core_charge.gd:207
 msgid "Bloom Core 100%. Lumi's core is full of green light."
 msgstr "[Bļôôm Çôŕé 100%. Ļûmî'š çôŕé îš ƒûļļ ôƒ ĝŕééñ ļîĝĥţ. ~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:230
+#: story/core_charge.gd:233
 msgid "Bloom Core  25%"
 msgstr "[Bļôôm Çôŕé  25% ~~]"
 
-#: story/core_charge.gd:231
+#: story/core_charge.gd:234
 msgid "There. The relay just locked on. Lumi, I can hear you properly now. Clear as the old days."
 msgstr "[Ţĥéŕé. Ţĥé ŕéļàý ĵûšţ ļôçķéð ôñ. Ļûmî, Î çàñ ĥéàŕ ýôû þŕôþéŕļý ñôŵ. Çļéàŕ àš ţĥé ôļð ðàýš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:251
+#: story/core_charge.gd:254
 msgid "A memory  ·  the garden deck of the Cradle"
 msgstr "[À mémôŕý  ·  ţĥé ĝàŕðéñ ðéçķ ôƒ ţĥé Çŕàðļé ~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:262
+#: story/core_charge.gd:265
 msgid "Remember the garden deck? You watered every bed twice, just to be sure."
 msgstr "[Ŕémémbéŕ ţĥé ĝàŕðéñ ðéçķ? Ýôû ŵàţéŕéð évéŕý béð ţŵîçé, ĵûšţ ţô bé šûŕé. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:265
+#: story/core_charge.gd:268
 msgid "Every patch you grow down there is one more bed like these. You're not lost, Lumi. You're replanting."
 msgstr "[Évéŕý þàţçĥ ýôû ĝŕôŵ ðôŵñ ţĥéŕé îš ôñé môŕé béð ļîķé ţĥéšé. Ýôû'ŕé ñôţ ļôšţ, Ļûmî. Ýôû'ŕé ŕéþļàñţîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:269
+#: story/core_charge.gd:272
 msgid "Bloom Core 25%: WREN's signal is clear now."
 msgstr "[Bļôôm Çôŕé 25%: ŴŔÉÑ'š šîĝñàļ îš çļéàŕ ñôŵ. ~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:287
+#: story/core_charge.gd:290
 msgid "Bloom Core 50%: Lumi's glow is back, brighter than it has been in years."
 msgstr "[Bļôôm Çôŕé 50%: Ļûmî'š ĝļôŵ îš bàçķ, bŕîĝĥţéŕ ţĥàñ îţ ĥàš bééñ îñ ýéàŕš. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:289
+#: story/core_charge.gd:292
 msgid "Half charged. You're glowing, Lumi. Properly glowing. I'd forgotten you could be this bright."
 msgstr "[Ĥàļƒ çĥàŕĝéð. Ýôû'ŕé ĝļôŵîñĝ, Ļûmî. Þŕôþéŕļý ĝļôŵîñĝ. Î'ð ƒôŕĝôţţéñ ýôû çôûļð bé ţĥîš bŕîĝĥţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:323
+#: story/core_charge.gd:326
 msgid "That night..."
 msgstr "[Ţĥàţ ñîĝĥţ... ~~]"
 
-#: story/core_charge.gd:347
+#: story/core_charge.gd:350
 msgid "Lumi, look up. That light. West to east, steady, not twinkling."
 msgstr "[Ļûmî, ļôôķ ûþ. Ţĥàţ ļîĝĥţ. Ŵéšţ ţô éàšţ, šţéàðý, ñôţ ţŵîñķļîñĝ. ~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:352
+#: story/core_charge.gd:355
 msgid "That's the Cradle. When your core lit up, the ark heard it. She turned around. We're coming back for you."
 msgstr "[Ţĥàţ'š ţĥé Çŕàðļé. Ŵĥéñ ýôûŕ çôŕé ļîţ ûþ, ţĥé àŕķ ĥéàŕð îţ. Šĥé ţûŕñéð àŕôûñð. Ŵé'ŕé çômîñĝ bàçķ ƒôŕ ýôû. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/core_charge.gd:362
+#: story/core_charge.gd:365
 msgid "Bloom Core 75%: the Cradle is on its way home. Look for it crossing the night sky."
 msgstr "[Bļôôm Çôŕé 75%: ţĥé Çŕàðļé îš ôñ îţš ŵàý ĥômé. Ļôôķ ƒôŕ îţ çŕôššîñĝ ţĥé ñîĝĥţ šķý. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
@@ -1967,8 +1981,8 @@ msgid "Supply Drops"
 msgstr "[Šûþþļý Ðŕôþš ~]"
 
 #: systems/collection.gd:85
-msgid "Salvage Surges"
-msgstr "[Šàļvàĝé Šûŕĝéš ~~]"
+msgid "Salvage Glints"
+msgstr "[Šàļvàĝé Ĝļîñţš ~~]"
 
 #: systems/collection.gd:86
 msgid "Rain Showers"
@@ -2559,6 +2573,10 @@ msgstr "[%s (%s)]"
 msgid "You need %s for this."
 msgstr "[Ýôû ñééð %s ƒôŕ ţĥîš. ~~~~]"
 
+#: systems/surge.gd:123
+msgid "Surge"
+msgstr "[Šûŕĝé ~]"
+
 #: systems/tunes.gd:166
 msgid "New CD: %s by %s, from %s"
 msgstr "[Ñéŵ ÇÐ: %s bý %s, ƒŕôm %s ~~~~~~]"
@@ -2691,7 +2709,7 @@ msgstr "[%s ĥûmš ţô ţĥé šééðļîñĝš. Ŕéţîŕéméñţ šûîţ
 msgid "%s points proudly at a new bud."
 msgstr "[%s þôîñţš þŕôûðļý àţ à ñéŵ bûð. ~~~~~~~~]"
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:617
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:618
 msgid "E   CD player: %s"
 msgstr "E   [ÇÐ þļàýéŕ: %s ~~]"
 
@@ -4037,21 +4055,25 @@ msgstr "[Ĝôàļ çômþļéţé  ·  %s%s ~~~~~]"
 msgid "+%s seeds"
 msgstr "[+%s šééðš ~]"
 
-#: ui/hotbar.gd:26
+#: ui/hotbar.gd:32
 msgid "SCOOP"
 msgstr "[ŠÇÔÔÞ ~]"
 
-#: ui/hotbar.gd:27
+#: ui/hotbar.gd:33
 msgid "PLANT"
 msgstr "[ÞĻÀÑŢ ~]"
 
-#: ui/hotbar.gd:281
+#: ui/hotbar.gd:293
 msgid "+%d XP"
 msgstr "[+%d XÞ ~]"
 
-#: ui/hotbar.gd:291
+#: ui/hotbar.gd:306
 msgid "CORE %d%%"
 msgstr "[ÇÔŔÉ %d%% ~]"
+
+#: ui/hotbar.gd:339
+msgid "SURGE"
+msgstr "[ŠÛŔĜÉ ~]"
 
 #: ui/hub_panel.gd:58
 msgid "What you get"
@@ -8960,12 +8982,12 @@ msgid "Clear the junk around the crate"
 msgstr "[Çļéàŕ ţĥé ĵûñķ àŕôûñð ţĥé çŕàţé ~~~~~~~~]"
 
 #: planets/verdance/data/events.json:events[salvage_surge].name
-msgid "Salvage Surge"
-msgstr "[Šàļvàĝé Šûŕĝé ~~]"
+msgid "Salvage Glint"
+msgstr "[Šàļvàĝé Ĝļîñţ ~~]"
 
 #: planets/verdance/data/events.json:events[salvage_surge].toast
-msgid "Salvage Surge! A hex %s of you is glowing: its junk is worth 3x for two minutes."
-msgstr "[Šàļvàĝé Šûŕĝé! À ĥéx %s ôƒ ýôû îš ĝļôŵîñĝ: îţš ĵûñķ îš ŵôŕţĥ 3x ƒôŕ ţŵô mîñûţéš. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Salvage Glint! A hex %s of you is glowing: its junk is worth 3x for two minutes."
+msgstr "[Šàļvàĝé Ĝļîñţ! À ĥéx %s ôƒ ýôû îš ĝļôŵîñĝ: îţš ĵûñķ îš ŵôŕţĥ 3x ƒôŕ ţŵô mîñûţéš. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: planets/verdance/data/events.json:events[salvage_surge].hud
 msgid "Junk from the glowing hex is worth 3x"

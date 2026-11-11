@@ -82,7 +82,7 @@ static func roll(source: String, r: float) -> String:
 static func source_name(source: String) -> String:
 	match source:
 		"supply_drop": return TranslationServer.translate("Supply Drops")
-		"salvage_surge": return TranslationServer.translate("Salvage Surges")
+		"salvage_surge": return TranslationServer.translate("Salvage Glints")
 		"rain_shower": return TranslationServer.translate("Rain Showers")
 		"robot_hiccup": return TranslationServer.translate("Robot Hiccups")
 		"wildlife_visit": return TranslationServer.translate("Wildlife Photos")

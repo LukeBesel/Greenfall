@@ -21,7 +21,8 @@ tables = Dictionary[String, String]({
 "tutorial": "res://tests/fixtures/planets/testworld/data/tutorial.json",
 "goals": "res://tests/fixtures/planets/testworld/data/goals.json",
 "sites": "res://tests/fixtures/planets/testworld/data/sites.json",
-"pollution_kinds": "res://tests/fixtures/planets/testworld/data/pollution_kinds.json"
+"pollution_kinds": "res://tests/fixtures/planets/testworld/data/pollution_kinds.json",
+"balance": "res://tests/fixtures/planets/testworld/data/balance.json"
 })
 sites_script = ExtResource("2")
 palette = Dictionary[String, Color]({})
