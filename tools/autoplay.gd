@@ -1986,10 +1986,20 @@ func _city_gardens() -> int:
 		return _gardens_n
 	_gardens_t = _now()
 	_gardens_n = 0
-	for h: int in _hexes():
+	for h: int in _target_cells():
 		if hl.level_of(h) >= 2:
 			_gardens_n += 1
 	return _gardens_n
+
+
+## The hexes of the city the bot is heading for (the one it stands in, unless it is only home for
+## the bench): robots bought at the bench are for that city.
+func _target_cells() -> PackedInt32Array:
+	var d: Districts = _districts()
+	var target: String = AutoplayTravel.target_city(d, _sources()) if d != null else ""
+	if target == "" or target == _area_city:
+		return _hexes()
+	return d.cells_of(target)
 
 
 var _gardens_t: float = -100.0
@@ -2001,7 +2011,7 @@ func _land_left_frac() -> float:
 	var f: HexField = world.field
 	var left: float = 0.0
 	var total: float = 0.0
-	for h: int in _hexes():
+	for h: int in _target_cells():
 		if _land(h):
 			total += f.hex_total[h]
 			if not f.is_clean(h):
@@ -2011,7 +2021,7 @@ func _land_left_frac() -> float:
 
 func _lake_dirty() -> bool:
 	var f: HexField = world.field
-	for h: int in _hexes():
+	for h: int in _target_cells():
 		if f.is_water(h) and not f.is_clean(h):
 			return true
 	return false
