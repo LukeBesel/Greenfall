@@ -92,13 +92,60 @@ static func rocket_lock_text(level: int) -> String:
 
 ## The level a restored far hub stands at, and what restoring one costs when `n` far hubs are
 ## already restored ({"cubes", "parts"}).
+static func far_cfg() -> Dictionary:
+	var c: Dictionary = (_hub_cfg().get("far_hub", {}) as Dictionary).duplicate()
+	var po: Variant = Homeward.planet_def(Homeward.current_planet()).get("far_hub", {})
+	if po is Dictionary:
+		c.merge(po as Dictionary, true)
+	return c
+
+
 static func far_level() -> int:
-	return int((_hub_cfg().get("far_hub", {}) as Dictionary).get("level", 2))
+	return int(far_cfg().get("level", 2))
 
 
+## Owner note 63: prices multiply. base x growth^n, kept to two leading digits (1.5K, 6K, 24K...).
 static func far_cost(n: int) -> Dictionary:
-	var c: Array = (_hub_cfg().get("far_hub", {}) as Dictionary).get("cost", [])
-	return (c[clampi(n, 0, c.size() - 1)] as Dictionary).duplicate() if not c.is_empty() else {}
+	var c: Dictionary = far_cfg()
+	var ov: Variant = (c.get("cost_override", {}) as Dictionary).get(str(n))
+	if ov is Dictionary:
+		return (ov as Dictionary).duplicate()
+	var out: Dictionary = {}
+	var base: Dictionary = c.get("cost_base", {})
+	var gr: Dictionary = c.get("cost_growth", {})
+	for k: String in base:
+		out[k] = nice(float(base[k]) * pow(float(gr.get(k, 1.0)), float(maxi(n, 0))))
+	return out
+
+
+## v rounded to two leading digits (4056 -> 4100).
+static func nice(v: float) -> float:
+	if v < 100.0:
+		return roundf(v)
+	var mag: float = pow(10.0, floorf(log(v) / log(10.0) + 0.000001) - 1.0)
+	return roundf(v / mag) * mag
+
+
+## Far hubs restored on the round planet Lumi is on (SiteManager.built past the start hub).
+static var _far_n: int = 0
+static var _far_frame: int = -1
+static func far_restored() -> int:
+	var f: int = Engine.get_process_frames()
+	if f == _far_frame:
+		return _far_n
+	_far_frame = f
+	_far_n = 0
+	var tree: SceneTree = Engine.get_main_loop() as SceneTree
+	var os_: OrbitSites = OrbitSites.of(tree.current_scene) if tree and tree.current_scene else null
+	if os_ != null and os_.sm != null:
+		for i: int in range(1, os_.sm.built.size()):
+			_far_n += 1 if os_.sm.built[i] != 0 else 0
+	return _far_n
+
+
+## What every sale is multiplied by: sell_growth for each restored far hub (its trade route).
+static func trade_mult() -> float:
+	return pow(float(far_cfg().get("sell_growth", 1.0)), float(far_restored()))
 
 
 static func can_pay(cost: Dictionary, mult: float = 1.0) -> bool:
