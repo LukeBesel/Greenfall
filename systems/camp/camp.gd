@@ -134,6 +134,12 @@ func _setup() -> void:
 				var i: int = _tools.size()
 				var broken := Transform3D(Basis.from_euler(Vector3(randf_range(-1.2, 1.2), i * 1.7, randf_range(-1.4, 1.4))),
 					Vector3(-0.9 + i * 0.42, -0.62 + (0.06 if i % 2 == 0 else 0.0), 0.55 + (i % 3) * 0.12))
+				if world.get("orbit") != null:  # [v6qa] the globe's bench stands on its anchor (origin on the ground): the tools
+					# lie on the ground by its feet, not 0.6 m under it (the flat bench's origin was higher). In the bench's
+					# broken frame: BROKEN_DELTA^-1 * a pose on the ground of the upright bench.
+					var rest := Transform3D(Basis.from_euler(Vector3(PI * 0.5 if i % 2 == 0 else 0.0, i * 1.7, 0.25 - i * 0.2)),
+						Vector3(-0.9 + i * 0.55, 0.08 if i % 2 == 0 else 0.05, 0.75 + (i % 2) * 0.15))
+					broken = BROKEN_DELTA.affine_inverse() * rest
 				_tools.append([n, n.transform, broken])
 	_apply_bench(bench_ok(), false)
 	var hub: Hub = world.get("hub") as Hub
@@ -242,10 +248,14 @@ func repair_now() -> void:
 	_apply_bench(true, false)
 
 
+## The broken bench's pose against its upright one (tilted on a buckled leg).
+static var BROKEN_DELTA := Transform3D(Basis.from_euler(Vector3(0.06, 0.1, -0.2)), Vector3(0.15, -0.16, 0.05))
+
+
 func _apply_bench(ok: bool, animate: bool) -> void:
 	if _bench == null:
 		return
-	var bxf: Transform3D = _bench_xf if ok else _bench_xf * Transform3D(Basis.from_euler(Vector3(0.06, 0.1, -0.2)), Vector3(0.15, -0.16, 0.05))
+	var bxf: Transform3D = _bench_xf if ok else _bench_xf * BROKEN_DELTA
 	if not animate:
 		_bench.transform = bxf
 	else:
