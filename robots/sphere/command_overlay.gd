@@ -101,6 +101,7 @@ static func card_lines(p_cmd: SphereCommand) -> Array:
 	if n == 0:
 		out.append({"text": TranslationServer.translate("No robots here yet."), "col": UITheme.CREAM, "size": 20})
 		out.append({"text": TranslationServer.translate("Build one at the workbench."), "col": UITheme.MUTED, "size": 16})
+		out.append_array(other_bases(crew, hub))
 		return out
 	out.append({"text": TranslationServer.translate_plural("%d robot", "%d robots", n) % n, "col": UITheme.CREAM, "size": 22})
 	if float(sum["hexes_per_hour"]) >= 1.0:
@@ -127,6 +128,35 @@ static func card_lines(p_cmd: SphereCommand) -> Array:
 			"dot": ROLE_COL[r], "sel": r == p_cmd.role and p_cmd.roles().size() > 1})
 	if bool(sum["needs_hauler"]):
 		out.append({"text": TranslationServer.translate("Bales are piling up. Build a Haul Bug."), "col": BotBadge.AMBER, "size": 16})
+	out.append_array(other_bases(crew, hub))
+	return out
+
+
+## [v6crew] The other bases with robots, one short row each, so one glance shows the whole crew:
+## a header and up to MAX_OTHER rows "Maple Yard: 3 robots, 2 working" (most robots first).
+const MAX_OTHER: int = 5
+
+
+static func other_bases(crew: SphereCrew, here: int) -> Array:
+	var rows: Array = []
+	for i: int in crew.hubs.size():
+		var h: int = crew.hubs[i]
+		if h == here:
+			continue
+		var sum: Dictionary = CrewTalk.hub_summary(crew, h)
+		if int(sum["robots"]) > 0:
+			rows.append({"i": i, "n": int(sum["robots"]), "w": int(sum["working"])})
+	if rows.is_empty():
+		return []
+	rows.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return int(a["n"]) > int(b["n"]))
+	var out: Array = [{"text": TranslationServer.translate("OTHER BASES"), "col": UITheme.MUTED, "size": 14}]
+	for r: Dictionary in rows.slice(0, MAX_OTHER):
+		var nm: String = HubPlan.hub_name(crew.planet_id, int(r["i"]))
+		if nm == "":
+			nm = TranslationServer.translate("Base %d") % (int(r["i"]) + 1)
+		var n: int = int(r["n"])
+		out.append({"text": "%s: %s, %s" % [nm, TranslationServer.translate_plural("%d robot", "%d robots", n) % n,
+			TranslationServer.translate("%d working") % int(r["w"])], "col": UITheme.CREAM, "size": 15})
 	return out
 
 
@@ -192,6 +222,10 @@ func _draw() -> void:
 	if cmd.hover_cell >= 0:  # the hex under the cursor
 		var hp: PackedVector2Array = _hex(cam, surf, cmd.hover_cell)
 		if hp.size() >= 3:
+			# [v6crew] an unpainted hex under the cursor shows what a click does: it fills in the job's colour
+			if not (crew.zones.get(cmd.role, {}) as Dictionary).has(cmd.hover_cell):
+				var pulse_h: float = 0.5 + 0.5 * sin(Time.get_ticks_msec() * 0.005)
+				draw_colored_polygon(hp, Color(zcol, 0.14 + 0.12 * pulse_h))
 			hp.append(hp[0])
 			draw_polyline(hp, Color(1, 1, 1, 0.95), 3.0, true)
 			draw_polyline(hp, Color(zcol, 0.95), 1.5, true)

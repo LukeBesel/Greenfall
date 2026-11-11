@@ -206,7 +206,7 @@ func _build_tab() -> void:
 		"collection":
 			_summary.text = tr("%d / %d collectibles") % [Collection.count(), Collection.total()]
 		"achievements":
-			_summary.text = tr("%d / %d achievements") % [Achievements.unlocked_count(), Achievements.defs().size()]
+			_summary.text = tr("%d / %d achievements") % [Achievements.shown_unlocked_count(), Achievements.shown_defs().size()]
 		"codex":
 			_summary.text = tr("%d / %d entries") % [Codex.count(), Codex.total()]
 		_:
@@ -667,7 +667,7 @@ func _build_achievements() -> Control:
 	sc.add_child(grid)
 	var first: Control = null
 	# Unlocked first (newest at the top), then the rest by progress.
-	var list: Array = Achievements.defs().duplicate()
+	var list: Array = Achievements.shown_defs().duplicate()  # [v6screens]
 	var um: Dictionary = Achievements.unlocked_map()
 	list.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 		var ua: bool = um.has(a["id"])
@@ -791,7 +791,7 @@ func _build_stats() -> Control:
 		[UITheme.GOLD, tr("Upgrades bought"), _int(st.get("upgrades_bought", 0))],
 		[Color(0.45, 0.8, 1.0), tr("Field notes logged"), _int(st.get("data_earned", 0))],
 		[Color(0.45, 0.8, 1.0), tr("Research done"), "%d / %d" % [Research.done_list().size(), Research.ids().size()]],
-		[UITheme.GOLD, tr("Achievements"), "%d / %d" % [Achievements.unlocked_count(), Achievements.defs().size()]],
+		[UITheme.GOLD, tr("Achievements"), "%d / %d" % [Achievements.shown_unlocked_count(), Achievements.shown_defs().size()]],
 		[UITheme.CREAM, tr("Best hub level"), str(Achievements.best_hub_level())],
 	])
 	return first

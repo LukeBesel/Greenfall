@@ -25,6 +25,7 @@ func before_each() -> void:
 	DirAccess.remove_absolute(WeeklyChallenge.path_override)
 	WeeklyChallenge.reset_cache()
 	WeeklyChallenge.now_override = -1.0
+	WeeklyChallenge.enabled_override = 1  # [v6screens] these tests cover the mode itself
 
 
 func after_each() -> void:
@@ -34,6 +35,7 @@ func after_each() -> void:
 	GameState.world = _world
 	GameState.districts = _districts
 	WeeklyChallenge.active = false
+	WeeklyChallenge.enabled_override = -1
 	WeeklyChallenge.now_override = -1.0
 	DirAccess.remove_absolute(WeeklyChallenge.path_override)
 	WeeklyChallenge.path_override = ""
@@ -268,3 +270,48 @@ func test_simulate_caps_and_never_pays_twice() -> void:
 	assert_eq(float(remote["units"]), 0.0, "a district that never saved its junk_left pays nothing")
 	var r2: Dictionary = Offline.simulate({"robots": ws["robots"], "junk_left": 500.0}, 3600.0)
 	assert_gt(float(r2["cubes"]), 0.0)
+
+
+# --- [v6screens] Seed of the Week is switched off on the round world -------------------------
+
+func test_weekly_is_off_in_the_shipped_data() -> void:
+	WeeklyChallenge.enabled_override = -1
+	assert_false(bool(WeeklyChallenge.cfg().get("enabled", true)), "data/weekly.json enabled must stay false until the mode works on the globe")
+	assert_false(WeeklyChallenge.enabled())
+
+
+func test_weekly_off_hides_every_way_in() -> void:
+	WeeklyChallenge.enabled_override = 0
+	assert_false(ExtrasPanel.tab_open("weekly"), "no Keepsakes tab")
+	assert_false("weekly" in ExtrasPanel.open_tabs())
+	assert_true(ExtrasPanel.open_tabs().is_empty(), "a fresh game has no Keepsakes tab at all")
+	assert_false(WeeklyChallenge.start(null), "start() refuses")
+	assert_false(WeeklyChallenge.active)
+	assert_false("weekly_pennant" in Decor.type_ids(), "no paint chip decorations in Garden Mode")
+	assert_false("weekly_arch" in Decor.type_ids())
+	for a: Dictionary in Achievements.shown_defs():
+		assert_ne(str((a.get("cond", {}) as Dictionary).get("key", "")), "weekly_chips", "no weekly achievement in the Codex")
+	assert_eq(Achievements.shown_defs().size(), Achievements.defs().size() - 2)
+	var pm := PauseMenu.new()
+	add_child_autofree(pm)
+	pm.open_menu()
+	var kb: Button = pm.find_child("KeepsakesBtn", true, false) as Button
+	assert_not_null(kb)
+	assert_false(kb.visible, "Pause hides Keepsakes while it has nothing to show")
+	for c: Node in kb.get_parent().get_children():
+		if c is Button and (c as Button).visible:
+			var up: Control = c.get_node_or_null((c as Button).focus_neighbor_top) as Control
+			assert_true(up != null and up.visible, "focus chain skips hidden buttons: " + (c as Button).text)
+	pm.close_menu()
+	var ep := ExtrasPanel.new()
+	add_child_autofree(ep)
+	ep.open_panel("weekly")
+	assert_false(ep.is_open, "the panel does not open on an empty tab list")
+	assert_false(get_tree().paused)
+
+
+func test_weekly_on_brings_it_back() -> void:
+	WeeklyChallenge.enabled_override = 1
+	assert_true(ExtrasPanel.tab_open("weekly"))
+	assert_true("weekly_pennant" in Decor.type_ids())
+	assert_eq(Achievements.shown_defs().size(), Achievements.defs().size())

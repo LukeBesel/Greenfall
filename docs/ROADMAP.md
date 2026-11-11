@@ -1028,6 +1028,7 @@ Details and numbers in docs/PERFORMANCE.md (perf passes 6-8).
 - **Hop:** skippable (E / jump), HUD hidden in flight, the camera looks down the path at the new town on the approach, the town's name shows once on landing, then the step card.
 - **HUD:** the top-right lines are now this base's clean % and "BASES n/6".
 - Code: `planet/sites/hub_plan.gd`, `planet/sites/hub_purpose.gd`; tests: `tests/test_hub_plan.gd`.
+- **Six-base walkthrough** (`--hub-walkthrough`, `planet/sites/hub_walk.gd`, docs/QA_VERDANCE.md): flies to and wakes the five far main-path hubs in order and checks town, landmark kind, reach, sleep card, wake prompt through Interactables, E wake, flags, rocket piece, gift, field bench, beacon, HUD and logged errors. PASS on 2026-11-11. It found that E at a far landmark did nothing in play (the entry was registered before Interactables existed); fixed. The town look and landmark per hub come from the data (`town`, `landmark.kind`), except a lake town is always a harbour (Fairground).
 - **Open:** the survey map (M) still shows the old city names and no landmark glyphs; the story text is placeholder (v6story); goal-card steps for "fly to the next hub" and "upgrade the rocket" are v6pace's; the hub town builds behind the veil in about 10 s on this box (headless), to be checked on real hardware.
 
 ## 2026-11-11: v6feel (how Lumi feels to play, round Verdance)
