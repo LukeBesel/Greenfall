@@ -146,3 +146,159 @@ func test_quiet_minutes_after_the_pod_lands() -> void:
 	assert_ne(d.current(), "", "then the music starts")
 	assert_ne(d.current(), MAIN, "and not the main theme right after the title's")
 	d.set_context("none")
+
+
+# --- [v6sound] drop-in songs, per-planet lists, missing files --------------------------------
+
+const TMP: String = "user://gf_song_test/"
+
+
+func _touch(rel: String) -> void:
+	DirAccess.make_dir_recursive_absolute(TMP.path_join(rel).get_base_dir())
+	var f := FileAccess.open(TMP.path_join(rel), FileAccess.WRITE)
+	f.store_string("")
+	f.close()
+
+
+func _wipe(dir: String = TMP) -> void:
+	for sub: String in DirAccess.get_directories_at(dir):
+		_wipe(dir.path_join(sub))
+	for f: String in DirAccess.get_files_at(dir):
+		DirAccess.remove_absolute(dir.path_join(f))
+	DirAccess.remove_absolute(dir)
+
+
+func test_a_dropped_file_needs_no_entry() -> void:
+	_touch("My New Song.mp3")
+	_touch("ochre/desert_drive.ogg")
+	_touch("ochre/notes.txt")
+	_touch("clean_sweep.mp3.import")  # an exported game lists only the import stub
+	var found: Dictionary = Tunes.scan_files(TMP)
+	assert_eq(found.size(), 3, "three songs, the text file is not one")
+	assert_true(found.has("my_new_song") and found.has("desert_drive") and found.has("clean_sweep"))
+	assert_eq(str(found["desert_drive"]["folder"]), "ochre")
+	var ids: Array = Tunes.planet_ids()
+	var a: Dictionary = Tunes.default_entry("my_new_song", "My New Song", "", ids)
+	assert_eq(str(a["title"]), "My New Song", "title from the file name")
+	assert_eq(a["planets"], ["all"], "main folder: plays everywhere")
+	assert_eq(str(a["unlock"]), "start", "owned from the start")
+	var b: Dictionary = Tunes.default_entry("desert_drive", "desert_drive", "ochre", ids)
+	assert_eq(str(b["title"]), "Desert Drive")
+	assert_eq(b["planets"], ["ochre"], "a planet folder: plays on that planet")
+	_wipe()
+
+
+func _add(entry: Dictionary) -> void:
+	(Tunes.songs() as Array).append(entry)
+	Tunes._index[str(entry["id"])] = entry
+	Tunes.file_override[str(entry["id"])] = true
+
+
+func test_planets_moments_weight_and_trim_come_from_the_entry() -> void:
+	_add({"id": "t_rime_only", "unlock": "start", "planets": ["rime"], "moments": ["explore"], "volume_db": -3.0})
+	_add({"id": "t_all_night", "unlock": "start", "planets": "all", "moments": ["night"]})
+	_add({"id": "t_never", "unlock": "start", "planets": ["all"], "moments": ["explore"], "weight": 0.0})
+	_add({"id": "t_launch", "unlock": "cd", "found_on": "rime", "moments": ["launch"]})
+	assert_true(Tunes.fits("t_rime_only", "rime", "explore", 0.0))
+	assert_false(Tunes.fits("t_rime_only", "verdance", "explore", 0.0), "only on its planets")
+	assert_false(Tunes.fits("t_rime_only", "rime", "night", 0.0), "only in its moments")
+	assert_true(Tunes.fits("t_all_night", "anvil", "night", 0.0), "all: any planet")
+	assert_false(Tunes.fits("t_all_night", "anvil", "explore", 0.0))
+	assert_false(Tunes.fits("t_launch", "rime", "explore", 0.0), "a launch song is not in the shuffle")
+	assert_eq(Tunes.moment_songs("launch", "rime"), ["t_launch"] as Array[String], "story moments need no CD")
+	assert_almost_eq(Tunes.trim_db("t_rime_only"), -3.0, 0.001)
+	assert_almost_eq(Tunes.weight("t_rime_only", "rime"), 1.0, 0.001)
+	for i: int in 200:
+		assert_ne(Tunes.pick_next("verdance", "explore", 0.0, [], _rng), "t_never", "weight 0 never plays")
+	Tunes.reload()
+
+
+func test_each_planet_has_its_own_playlist_and_rules() -> void:
+	for p: String in ["verdance", "ochre", "tidewell", "rime", "anvil"]:
+		assert_true(Tunes.cfg()["planets"].has(p), "%s has a block in data/songs.json" % p)
+		var own: int = 0
+		for s: Dictionary in Tunes.songs():
+			if str(s.get("group", "")) == p and Tunes.fits(str(s["id"]), p, "explore", 0.0):
+				own += 1
+		assert_gt(own, 5, "%s has its own songs" % p)
+	# A planet's block can list extra songs and change the rules for that planet only.
+	var pc: Dictionary = Tunes.cfg()["planets"]["rime"]
+	pc["songs"] = ["verdance_night"]
+	pc["gap_s"] = [300, 400]
+	pc["main_share"] = 0.0
+	assert_true(Tunes.fits("verdance_night", "rime", "night", 0.0), "listed on Rime by hand")
+	assert_false(Tunes.fits("verdance_night", "ochre", "night", 0.0))
+	var d: Node = _director()
+	Audio.set_planet_theme("rime")
+	d._start_gap(false)
+	assert_between(d.gap_left, 300.0, 400.0, "Rime's own gap")
+	for i: int in 60:
+		assert_ne(Tunes.pick_next("rime", "explore", 0.0, [], _rng), MAIN, "Rime's own main-theme share (0)")
+	Audio.set_planet_theme("verdance")
+	d._start_gap(false)
+	assert_lte(d.gap_left, float(Tunes.cfg()["gap_s"][1]), "the others keep the global gap")
+	Tunes.reload()
+
+
+func test_a_file_that_will_not_load_is_skipped_and_never_stalls() -> void:
+	_touch("t_broken.mp3")  # zero bytes: the file is there but will not load
+	_add({"id": "t_broken", "unlock": "start"})
+	_add({"id": "t_nofile", "unlock": "start"})  # listed, said to exist, but there is no file
+	Tunes._files["t_broken"] = TMP + "t_broken.mp3"
+	var d: Node = _director()
+	var bad: Array[String] = ["t_broken", "t_nofile"]
+	d.set_menu_pool(bad)
+	d.set_context("menu")
+	for i: int in 8:
+		d.tick(0.1)
+	assert_eq(d.current(), MAIN, "nothing in the pool will play: the title falls back to the main theme")
+	assert_false(d._start("t_broken", 1.0, false), "a damaged file does not start")
+	assert_false(Tunes.has_file("t_broken"), "the damaged file is skipped from now on")
+	assert_false(Tunes.has_file("t_nofile"))
+	d.set_context("none")
+	# In play: a pool of only unplayable songs falls back to quiet (and the synth score), no stall.
+	Tunes._broken.clear()
+	Tunes._streams.clear()
+	for s: Dictionary in Tunes.songs():
+		Tunes.file_override[str(s["id"])] = str(s["id"]) in ["t_broken", "t_nofile"]
+	var d2: Node = _director()
+	d2.context = "play"
+	d2.gap_left = 0.0
+	for i: int in 30:
+		d2.tick(1.0)
+	assert_eq(d2.current(), "", "nothing playable: quiet")
+	assert_true(Tunes.found().is_empty(), "both are out of the collection until fixed")
+	Tunes.reload()
+	_wipe()
+
+
+func test_no_song_over_the_quiet_beats_of_the_intro() -> void:
+	var d: Node = _director()
+	d.intro_start()
+	d.tick(0.1)
+	assert_true(Tunes.has_moment(d.current(), "intro"), "the intro's song is the one marked intro")
+	d.intro_land(0.5)
+	for i: int in 120:  # the wake-up: the context is still the intro
+		d.tick(1.0)
+		if i > 2:
+			assert_eq(d.current(), "", "quiet after the landing (%d s)" % i)
+			if d.current() != "":
+				break
+	d.set_context("none")
+
+
+func test_story_moment_song_plays_once_then_quiet() -> void:
+	var d: Node = _director()
+	d.context = "play"
+	assert_false(d.play_moment("launch"), "no song marked for the launch: the synth score keeps it")
+	_add({"id": "t_moment", "unlock": "cd", "found_on": "verdance", "moments": ["launch"], "file": "clean_sweep.mp3"})
+	Tunes._files["t_moment"] = Tunes.path("clean_sweep")
+	assert_true(d.play_moment("launch"))
+	d.tick(0.1)
+	assert_eq(d.current(), "t_moment")
+	d._slot[d._main]["t"] = float(d._slot[d._main]["len"])
+	d.tick(0.1)
+	assert_eq(d.moment, "", "the moment is over")
+	assert_gte(d.gap_left, float(Tunes.cfg()["gap_s"][0]) - 1.0, "and the usual long quiet follows")
+	d.set_context("none")
+	Tunes.reload()
