@@ -53,7 +53,7 @@ func test_far_hub_prices_multiply() -> void:
 	assert_eq(Hub.far_level(), 2)
 	for n: int in FAR.size():
 		assert_eq(float(Hub.far_cost(n)["cubes"]), FAR[n], "far hub %d" % (n + 2))
-	for n: int in range(2, FAR.size()):
+	for n: int in range(2, FAR.size() - 1):
 		var f: float = float(Hub.far_cost(n)["cubes"]) / float(Hub.far_cost(n - 1)["cubes"])
 		assert_almost_eq(f, float(cfg["cost_growth"]["cubes"]), 0.3, "one growth factor between steps")
 	assert_gte(float(Hub.far_cost(4)["cubes"]), 100000.0, "hub 6 costs hundreds of thousands (owner note 64)")
@@ -68,7 +68,7 @@ func test_nice_keeps_two_digits() -> void:
 
 
 func test_trade_multiplier_is_one_without_far_hubs() -> void:
-	assert_eq(Hub.trade_mult(), 1.0)
+	assert_almost_eq(Hub.trade_mult(), 1.0 / PACE, 0.0001, "only the pace knob before the first far hub")
 	assert_gt(float(Hub.far_cfg()["sell_growth"]), 1.5, "each restored hub multiplies income")
 	assert_lt(float(Hub.far_cfg()["sell_growth"]), float(Hub.far_cfg()["cost_growth"]["cubes"]), "prices outgrow the multiplier: robots and tiers make up the rest")
 
@@ -225,11 +225,11 @@ func test_pace_knob_scales_sales() -> void:
 	var cfg: Dictionary = Hub._hub_cfg()
 	var far: Dictionary = cfg["far_hub"]
 	var was: Variant = far.get("pace", 1.0)
-	assert_eq(float(was), 1.0, "Verdance ships at pace 1 (as measured)")
+	assert_eq(float(was), PACE, "Verdance's pace (docs/BALANCE.md)")
 	far["pace"] = 2.0
 	assert_almost_eq(Hub.trade_mult(), 0.5, 0.0001, "pace 2: every sale pays half, every cube step takes twice as long")
 	far["pace"] = was
-	assert_eq(Hub.trade_mult(), 1.0)
+	assert_almost_eq(Hub.trade_mult(), 1.0 / PACE, 0.0001)
 
 
 func test_base_prices() -> void:
@@ -255,8 +255,9 @@ func test_clock_stands_still_behind_the_loader() -> void:
 
 
 # The pinned numbers (cubes).
-const FAR: Array[float] = [600.0, 2400.0, 9600.0, 38000.0, 150000.0]
+const FAR: Array[float] = [600.0, 2400.0, 9600.0, 38000.0, 400000.0]  # hub 6: cost_override "4" (a push before the drive)
 const MK2: float = 8000.0
+const PACE: float = 1.15
 const MK3: float = 150000.0
 const DRIVE: float = 500000.0
 const BASE3: float = 9000.0
