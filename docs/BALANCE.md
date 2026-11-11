@@ -27,7 +27,7 @@ through it; every hub, wake and rocket step shows its price and the cubes saved 
 3. Hub 2 Garden Row (600), base level 2, a Haul Bug, hub 3 Gantry Works (2.4K).
 4. Rocket Mk II (8K) reaches 5 hubs; base level 3 (9K) sits in the gap before hub 4 Signal Heights (9.6K).
 5. Goals from `data/goals.json`: a Seedling, base level 4 (60K), hub 5 Fairground (38K), 25 plants,
-   rocket Mk III (150K), a Drip, base level 5 (250K), hub 6 Stack Works (400K, `cost_override` "4"),
+   rocket Mk III (100K), a Drip, base level 5 (250K), hub 6 Stack Works (300K, `cost_override` "4"),
    the Mk V drive (500K), fly on. Base 4 and 5 sit inside the two longest saves so each is split by
    a real income buy.
 
@@ -71,14 +71,14 @@ in `data/planets.json` (v6hubs), the leave gate in `data/homeward.json` `planets
 | Knob | Verdance | What it does |
 |---|---|---|
 | `far_hub.pace` | 1.3 | Whole-planet speed: every sale pays 1/pace. Start here after a playtest. |
-| `far_hub.cost_base`, `cost_growth` | 600 x 4.0 | The hub price ladder (600, 2.4K, 9.6K, 38K; hub 6 400K by override). A bigger planet: raise `cost_base` so its numbers start where the last planet ended. |
-| `far_hub.cost_override` | hub 6: 400K | One rung of the ladder, by step number. |
+| `far_hub.cost_base`, `cost_growth` | 600 x 4.0 | The hub price ladder (600, 2.4K, 9.6K, 38K; hub 6 300K by override). A bigger planet: raise `cost_base` so its numbers start where the last planet ended. |
+| `far_hub.cost_override` | hub 6: 300K | One rung of the ladder, by step number. |
 | `far_hub.sell_growth` | 3.5 | Income multiplier per woken hub. Keep it below `cost_growth`, or later hubs come faster and faster. |
 | `far_hub.keep` | 4 + 1/level + 0.5/robot cells a minute | How fast woken bases clean while Lumi is away: the main lever on the % at leave. |
 | `far_hub.pct_over` | all_regions | What the HUD's planet % counts. |
 | `leave.hubs`, `leave.hub_level` (homeward) | 6 at level 2 | When the drive and the star map open. |
 | `drive[k].cost` (homeward) | 500K | The planet's last and biggest buy. |
-| `data/rockets.json` `tiers[].hubs`, `.cost` | Mk I 3, Mk II 5 (8K), Mk III all (150K) | How many hubs each rocket reaches, so the rocket is upgraded along the arc. Global, not per planet. |
+| `data/rockets.json` `tiers[].hubs`, `.cost` | Mk I 3, Mk II 5 (8K), Mk III all (100K) | How many hubs each rocket reaches, so the rocket is upgraded along the arc. Global, not per planet. |
 | `data/objectives.json`, `data/goals.json` | | Step order. Hub, wake and rocket steps carry no `desc`: their why is `data/story_reasons.json`. |
 
 Order of work for a new planet: set the leave gate and the drive price, run the bot once with
