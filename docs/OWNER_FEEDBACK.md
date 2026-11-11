@@ -254,3 +254,4 @@ Direction: the flat world's vibe is better, so build it into the round world: bu
 58. Focus on making the first world fully playable, fun, well paced and good-looking; what works here feeds into the other worlds. Moving on to the next planet comes at 4–5 hours, NOT at 100% cleaned. The planet might be only about 20% cleaned at that point. Cleaning the rest is optional, for later.
 59. For cleanup work that doesn't much affect the game (removing the flat world and the like), use Opus helpers.
 60. The storyline must make sense: there must be real in-world reasons for what the player does, not "because it's a game".
+61. Before flying off Verdance (at 4–5 hours), the player should have seen about 6 of its bases (hubs).
