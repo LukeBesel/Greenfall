@@ -242,7 +242,8 @@ func offline(seconds: float) -> Dictionary:
 		(by_hub[h] as Array).append({"type": u["type"], "tier": u["tier"]})
 	var hubs: Array = []
 	for h: int in by_hub:
-		hubs.append({"cell": h, "robots": by_hub[h]})
+		# Time away is worked at the base kind's mastery rate (hexes of unlearnt kinds are shut).
+		hubs.append({"cell": h, "robots": by_hub[h], "rate": crew.pollution.crew_speed_base() if crew.pollution != null else 1.0})
 	var res: Dictionary = SphereOffline.simulate(g.get("grid"), g.get("cells"), g.get("field"), hubs, seconds, crew.planet_id)
 	var jv: Object = g.get("junk_view")
 	if jv != null:

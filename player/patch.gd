@@ -458,6 +458,8 @@ func _handle_scoop(delta: float) -> void:
 	# many pieces as it takes: light litter goes several pieces at a time, a heavy piece in bites.
 	var budget: float = Pace.pulse_volume()
 	var took: int = 0
+	var kinds: Pollution = world.get("pollution") as Pollution
+	var mastery_bonus: float = 1.0  # Lumi's mastery of the kind in the scoop: the next pulse comes sooner
 	while budget > Pace.PULSE_CRUMB and took < Pace.PULSE_MAX_PIECES:
 		if took > 0 and not compartment.can_accept(cap):
 			break
@@ -469,13 +471,15 @@ func _handle_scoop(delta: float) -> void:
 				Pace.heavy_hint(self, world.field, scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"))  # [pace]
 			break
 		var extra: PackedInt32Array = world.field.cluster_extra(pid)  # [world2] gen-2 junk is finer: grab the little cluster
+		if took == 0 and kinds != null:
+			mastery_bonus = kinds.piece_hand_bonus(pid)
 		budget -= _take_piece(pid, budget)
 		took += 1
 		for e: int in extra:
 			if world.field.piece_alive[e] == 1 and compartment.can_accept(cap) and budget > Pace.PULSE_CRUMB:
 				budget -= _take_piece(e, budget)
 	if took > 0:
-		_scoop_timer = 1.0 / maxf(stat("scoop_rate"), 0.5)
+		_scoop_timer = 1.0 / (maxf(stat("scoop_rate"), 0.5) * mastery_bonus)
 
 
 ## Takes up to `max_vol` of a piece into the chest (the whole piece when that is all of it).

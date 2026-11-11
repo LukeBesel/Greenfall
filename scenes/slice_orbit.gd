@@ -40,6 +40,7 @@ var sites: OrbitSites  # [orbD]
 var districts: Districts  # the cities and their regrowth stages (systems/districts.gd)
 var restoration: Restoration  # launch progress, the launch point, the whole-planet share
 var pollution: Pollution  # the planet's pollution kinds: which hex holds what, gates, payouts (systems/pollution.gd)
+var mastery: Mastery  # Lumi's mastery of each kind: what robots may work and how fast (systems/mastery.gd)
 var city_payouts: CityPayouts  # cubes paid once when a city reaches a regrowth stage
 var chain: RobotChain  # parts finders, the Assembler and its build mix
 var ending: PlanetEnding  # the launch cinematic and the end screen
@@ -407,6 +408,12 @@ func _build_pollution(saved: Dictionary) -> void:
 	pollution.setup(Planets.current(), globe.grid, globe.cells, globe.field, site_cells, saved)
 	pollution.cell_written = _on_pollution_written
 	w.set("pollution", pollution)
+	mastery = Mastery.new()
+	w.add_child(mastery)
+	mastery.setup(Planets.current(), GameState.orbit.get("mastery", {}))
+	if not GameState.orbit.has("mastery"):  # a save from before mastery: its clean hexes count as learnt
+		mastery.seed_legacy(pollution.cleaned_units(), SphereCrew.saved_roles(GameState.orbit.get("robots", {})))
+	pollution.set_mastery(mastery)
 	if DevHooks.has(DistrictsDev.FLAG_STAGE):
 		for line: String in pollution.report():
 			print(line)
@@ -453,6 +460,7 @@ func _build_districts(levels: HexLevels) -> void:
 		ending.auto_keep_s = BOT_END_SCREEN_S
 	w.add_child(ending)
 	DistrictsDev.attach(w, districts, restoration, ending, crews, globe.cells, levels)
+	mastery.sync_districts(districts)
 	if crews.crew != null:
 		crews.crew.pollution = pollution
 	if crews.crew != null:  # Scroungers, the Assembler, where new robots go (systems/crew/robot_chain.gd)
@@ -1173,6 +1181,7 @@ func persist_save() -> void:
 		"districts": districts.save_state() if districts else {},
 		"city_payouts": city_payouts.save_state() if city_payouts else {},
 		"pollution": pollution.save_state() if pollution else {},
+		"mastery": mastery.save_state() if mastery else {},
 		"chain": chain.save_state() if chain else {},
 		"restoration": restoration.save_state() if restoration else {},
 		"site_state": sites.save_state() if sites else {},  # [orbD] built hubs, levels, growth (main: renamed from "sites", which orbB uses for site geometry)

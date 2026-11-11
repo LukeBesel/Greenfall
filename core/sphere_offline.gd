@@ -59,6 +59,11 @@ static func _dirty(cells: SphereCells, c: int) -> bool:
 	return cells.is_dirty(c) or (cells.state[c] == 5 and cells.junk[c] > SphereCells.CLEAN_LEFT)
 
 
+## Dirty, and open to robots (a hex with a kind Lumi has not learnt is shut: SphereCells.shut).
+static func _crew_work(cells: SphereCells, c: int) -> bool:
+	return _dirty(cells, c) and not cells.is_shut(c)
+
+
 static func _upc(cells: SphereCells, c: int) -> float:
 	return UNITS_PER_WATER_CELL if cells.state[c] == 5 else UNITS_PER_CELL
 
@@ -67,7 +72,7 @@ static func _upc(cells: SphereCells, c: int) -> float:
 static func units_left(cells: SphereCells, list: PackedInt32Array) -> float:
 	var u: float = 0.0
 	for c: int in list:
-		if _dirty(cells, c):
+		if _crew_work(cells, c):
 			u += maxf(0.0, cells.junk[c] - cells.floor_of(c)) * _upc(cells, c)
 	return u
 
@@ -117,7 +122,7 @@ static func take_units(cells: SphereCells, field: SphereField, list: PackedInt32
 	for c: int in list:
 		if budget <= 1e-6:
 			break
-		if not _dirty(cells, c):
+		if not _crew_work(cells, c):
 			continue
 		var upc: float = _upc(cells, c)
 		var held: float = cells.floor_of(c)
@@ -134,7 +139,8 @@ static func take_units(cells: SphereCells, field: SphereField, list: PackedInt32
 
 
 ## The offline jump for a whole planet. `hubs` = [{cell, robots: [{type, tier}], rings?,
-## scrubbers?, filter_per_s?}]; rings default to the planet's region size (rings_for). Each hub earns Offline.compute() over its own region's junk and
+## scrubbers?, filter_per_s?, rate?}] (rate: the crew's work rate against its own, from Lumi's
+## mastery; 1 when absent); rings default to the planet's region size (rings_for). Each hub earns Offline.compute() over its own region's junk and
 ## the region's cells are cleaned by the units it baled. Returns compute()'s keys summed over the
 ## hubs (seconds, units, cubes, waiting_value, air) plus cells, pieces and per-hub results in
 ## "hubs". Does NOT add currency: Offline.apply() the result once.
@@ -158,10 +164,13 @@ static func simulate(grid: SphereGrid, cells: SphereCells, field: SphereField, h
 					skim.append(r)  # haulers serve both
 		var res: Dictionary = Offline.compute(land, int(h.get("scrubbers", 0)), float(h.get("filter_per_s", 1.0)),
 			seconds, units_left(cells, list))
+		var rate: float = maxf(float(h.get("rate", 1.0)), 0.0)
+		res["units"] = minf(float(res["units"]) * rate, units_left(cells, list))
 		var took: Dictionary = take_units(cells, field, list, float(res["units"]))
 		if not skim.is_empty():
 			var wl: PackedInt32Array = region_water(grid, cells, int(h["cell"]), rings)
 			var wres: Dictionary = Offline.compute(skim, 0, 1.0, seconds, units_left(cells, wl))
+			wres["units"] = minf(float(wres["units"]) * rate, units_left(cells, wl))
 			var wt: Dictionary = take_units(cells, field, wl, float(wres["units"]))
 			for k: String in ["units", "cubes", "waiting_value"]:
 				res[k] = float(res[k]) + float(wres[k])
