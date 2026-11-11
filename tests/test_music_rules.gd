@@ -12,6 +12,8 @@ var _rng := RandomNumberGenerator.new()
 
 
 func before_each() -> void:
+	Audio._duck_until_us = 0  # [main] no spoken line left over from an earlier test (a song waits for lines)
+	Audio._duck = 0.0
 	_flags = GameState.flags.duplicate(true)
 	_opened = Tunes._title_opened
 	GameState.flags = {}

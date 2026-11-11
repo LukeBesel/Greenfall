@@ -405,7 +405,7 @@ tuned by the first-seed helper; this section is the 1 h+ ramp and everything aft
 ## First hour (wt/first, Nov 7)
 
 Owner direction: the first hour is cleaning, robots, upgrades and base levels; planting starts as a
-story hook (one Maker seed, ~min 10-15) and stays a slow, scarce side track until the ~60-min ramp
+story hook (one Settler seed, ~min 10-15) and stays a slow, scarce side track until the ~60-min ramp
 (owned by the "beat" pass: plant_growth / seed_yield stats, Pollinator Survey, Seedling/Drip gates,
 goals after `plant_5`, compost press yield).
 
@@ -430,7 +430,7 @@ uses the Builder), which is a bot gap, not a game gap: a player sees "Fit a part
 Data changes (early-game values only):
 - `goals.json`: Scoop 15 pays 10 (was 15), first bale 10 (was 20), so the first upgrade needs the first
   sale (earn, then spend). "Find the seed tin" pays no seeds (was 5). `plant_5` (id kept for saves and
-  the chain split) is now "Plant the Maker seed", target 1, +1 seed.
+  the chain split) is now "Plant the Settler seed", target 1, +1 seed.
 - `plants.json`: `first_seed` at 7 clean hexes (was 17) and gives 1 seed (was 15). Base meadow species
   grow at half speed (`grow_s` x2) and yield 60% of their seeds per bloom, so beat's growth/seed stats
   have room to make the garden take off. New `seed_finds`: 0.6% per scooped piece (x2.5 for paper),
@@ -485,7 +485,7 @@ exactly three, defined in `data/currencies.json` (`core/currencies.gd`).
 | Bolts | **Parts** | 1 bolt = 5 parts | robot tiers (50/200/750 parts), Builder crafts, Haggle's stall, rocket Mk IV |
 | Sheet metal / plastic stock / glass | Parts | 1 = 1 part | scooping metal/plastic/glass junk gives Parts; base levels, stations, outposts, rockets |
 | Contract tokens | Parts (or unlocks) | 1 token = 5 parts | Requests pay cubes or parts; the token shop became the Requests reward track |
-| Maker Fragments | Parts | 1 = 25 parts | Maker set crafts cost parts + a Vintage robot part |
+| Settler Fragments | Parts | 1 = 25 parts | Settler set crafts cost parts + a Vintage robot part |
 | Trinkets (as a currency) | Cubes | 1 = 150 cubes | trinkets are only Collection finds; decor that cost trinkets needs Collection finds |
 | Compost | Seeds (press hopper) | 4 compost = 1 seed | the press's hopper is a machine fill level; it makes seeds directly |
 | Seeds | **Seeds** | 1 | unchanged |
@@ -513,7 +513,7 @@ earned: 45 Data -> 450 cubes, 10 bolts + 30 metal + 20 plastic + 5 glass -> 105 
 - Lumi Level: every 5th level 5 + 5/10 levels Parts (was tokens).
 - Eggs and Bloom milestones: trinket rewards became 150 cubes each.
 - The compost press: unchanged rates (4 organic -> 1 seed per cycle), so the owner's planting curve
-  holds: one Maker seed at ~13 min, a trickle until ~1 h, then the garden takes off.
+  holds: one Settler seed at ~13 min, a trickle until ~1 h, then the garden takes off.
 
 **Milestones, before -> after** (autoplay, game minutes, `--fresh --autoplay --time-scale=16`, the
 same staged campaign as WALKTHROUGH.md; the 4x first-hour run in brackets)
@@ -524,7 +524,7 @@ same staged campaign as WALKTHROUGH.md; the 4x first-hour run in brackets)
 | First hex clean | 2.1 | 4.6 | +119% |
 | First robot (Scoopie) | 8.0 | 8.8 | +10% |
 | First research started | 8.3 | 9.1 | +9% |
-| Seed tin (the Maker seed) | 13.5 | 14.7 | +9% |
+| Seed tin (the Settler seed) | 13.5 | 14.7 | +9% |
 | First hex Planted | 16.0 | 17.5 | +9% |
 | Base level 2 | 16.8 | 14.8 | -12% |
 | First hex Sustained | 18.0 | 19.3 | +7% |

@@ -1,6 +1,6 @@
 extends GutTest
 ## [drones] Robot Builder rules (systems/robot_builder.gd). [ui2] Parts are cosmetics (the
-## Locker): no stat mods except the Maker set's small perk, owned parts fit every robot, unlocks
+## Locker): no stat mods except the Settler set's small perk, owned parts fit every robot, unlocks
 ## cost Parts (+ cubes), the shop lists every shop part. Also presets, traits, renaming, the kit
 ## visuals and robot save data.
 
@@ -116,7 +116,7 @@ func test_research_gate() -> void:
 
 
 func test_maker_set_needs_parts_and_gives_bonus() -> void:
-	# [money] Maker Fragments are Parts now: a fragment find pays FRAGMENT_PARTS parts.
+	# [money] Settler Fragments are Parts now: a fragment find pays FRAGMENT_PARTS parts.
 	RobotBuilder.add_fragments(3)
 	assert_almost_eq(GameState.get_currency("parts").to_float(), 3.0 * RobotBuilder.FRAGMENT_PARTS, 0.001)
 	var need: float = RobotBuilder.craft_parts("maker_shell")
@@ -128,11 +128,34 @@ func test_maker_set_needs_parts_and_gives_bonus() -> void:
 	var b: Dictionary = {"chassis": "maker_shell", "head": "maker_optic", "mobility": "maker_glider"}
 	assert_true(RobotBuilder.has_set(b))
 	var with_set: Dictionary = RobotBuilder.generic_mods(b)
-	assert_almost_eq(float(with_set["speed"]), 1.05, 0.0001, "the one perk: the Maker set")
+	assert_almost_eq(float(with_set["speed"]), 1.05, 0.0001, "the one perk: the Settler set")
 	assert_almost_eq(float(with_set["work"]), 1.06, 0.0001)
 	b.erase("head")
 	assert_false(RobotBuilder.has_set(b))
 	assert_true(RobotBuilder.generic_mods(b).is_empty())
+
+func test_settler_rename_keeps_old_ids() -> void:
+	# [v6name] "the Makers" became "the Settlers" in player text only. Saves store ids, so the old
+	# maker_* part ids, the "maker" set, the stats and the achievement/trinket ids must still resolve.
+	for id: String in ["maker_shell", "maker_optic", "maker_glider", "maker_crest"]:
+		var p: Dictionary = RobotBuilder.part(id)
+		assert_false(p.is_empty(), "old part id %s still exists" % id)
+		assert_string_starts_with(str(p["name"]), "Settler ", "%s shows the new name" % id)
+	assert_eq(str(RobotBuilder.part("maker_shell").get("set", "")), "maker", "set id unchanged")
+	# An old save's robot build (ids only) still gets the set perk.
+	var old_build: Dictionary = {"chassis": "maker_shell", "head": "maker_optic", "mobility": "maker_glider", "topper": "maker_crest"}
+	assert_true(RobotBuilder.has_set(old_build))
+	var ach: Dictionary = {}
+	for a: Dictionary in (JSON.parse_string(FileAccess.get_file_as_string("res://data/achievements.json")) as Dictionary)["achievements"]:
+		if str(a.get("id", "")) == "builder_maker":
+			ach = a
+	assert_false(ach.is_empty(), "achievement id builder_maker kept")
+	assert_eq(str(ach.get("cond", {}).get("key", "")), "builder_maker_set", "achievement stat key kept")
+	var trinkets: Array = (JSON.parse_string(FileAccess.get_file_as_string("res://data/events.json")) as Dictionary)["trinkets"]
+	assert_true(trinkets.any(func(t: Dictionary) -> bool: return str(t.get("id", "")) == "maker_badge"), "trinket id maker_badge kept")
+	RobotBuilder.add_fragments(1)
+	assert_eq(int(GameState.stats.get("maker_fragments", 0)), 1, "fragment stat key unchanged")
+
 
 func test_full_custom_goal_stat() -> void:
 	var r := _bot()

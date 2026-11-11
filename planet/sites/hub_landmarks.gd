@@ -4,7 +4,8 @@ extends RefCounted
 ## call per material, automatic LODs, three states. One big readable gesture each, so a small child
 ## can say what it is: a tank on legs (water), a fan on a tower (wind), a portal with a hook
 ## (lifting), a mast with dishes (signal), a wheel with gondolas (fair), a tall chimney with tanks
-## (fuel). Every landmark has the same little console in front: that is where Lumi wakes it.
+## (fuel); and for the extra hubs a tower crane with a turning jib, the last bus at its stop, and a
+## lighthouse. Every landmark has the same little console in front: that is where Lumi wakes it.
 ##
 ## Sizes, colours and spin speeds are data: data/landmarks.json, per kind and per planet
 ## (docs/ADJUSTING.md, "Yard machines and landmarks").
@@ -17,7 +18,7 @@ extends RefCounted
 ## States follow the hub's level (data "states"): 1 broken and dark, 2 repaired and lit, 3+ restored.
 
 const DATA: String = "res://data/landmarks.json"
-const KINDS: Array[String] = ["water_tower", "windpump", "crane", "radio_mast", "ferris_wheel", "smokestack"]
+const KINDS: Array[String] = ["water_tower", "windpump", "crane", "radio_mast", "ferris_wheel", "smokestack", "tower_crane", "old_bus", "lighthouse"]
 
 static var _cfg: Dictionary = {}
 
@@ -169,6 +170,12 @@ static func _geometry(kind: String, state: String, seed_: int, c: Dictionary) ->
 			_ferris(b, d, state, c, pal, seed_)
 		"smokestack":
 			_smokestack(b, d, state, c)
+		"tower_crane":
+			_tower_crane(b, d, state, c, pal, seed_)
+		"old_bus":
+			_old_bus(b, d, state, c)
+		"lighthouse":
+			_lighthouse(b, d, state, c)
 	_kiosk(b, _x(d.kiosk), state)
 	d.solids.append([d.kiosk + Vector3(0, 0.7, -0.1), Vector3(1.1, 1.4, 0.7)])
 	return [b, d]
@@ -739,3 +746,218 @@ static func _smokestack(b: KitMesh.Builder, d: Data, state: String, c: Dictionar
 		b.lights.append({"pos": Vector3(0, h + 1.5, 0), "color": KitMat.GLOW["red"], "range": 10.0, "energy": 1.2})
 	d.kiosk = Vector3(1.0, 0, 4.6)
 	d.top = Vector3(0, h + 1.3, 0)
+
+
+# --- Tower crane (Crane Court) ---------------------------------------------------------------------
+
+static func _tower_crane(b: KitMesh.Builder, d: Data, state: String, c: Dictionary, pal: Dictionary, seed_: int) -> void:
+	var h: float = _f(c, "height", 20.0)
+	var jib: float = _f(c, "jib", 13.0)
+	var w: float = 0.85
+	b.box("concrete", Vector3(4.2, 0.8, 4.2), _x(Vector3(0, 0.4, 0)), 0.1)
+	b.box("hazard", Vector3(4.24, 0.14, 4.24), _x(Vector3(0, 0.76, 0)), 0.03)
+	var cs: Array[Vector2] = [Vector2(-1, -1), Vector2(1, -1), Vector2(1, 1), Vector2(-1, 1)]
+	for i: int in 4:
+		b.box("dark_steel", Vector3(0.6, 0.12, 0.6), _x(Vector3(cs[i].x * w, 0.86, cs[i].y * w)), 0.03)
+		b.rod("paint:main", Vector3(cs[i].x * w, 0.8, cs[i].y * w), Vector3(cs[i].x * w, h, cs[i].y * w), 0.16, 8)
+	var bays: int = int(h / 2.5)
+	for lv: int in bays:
+		var y0: float = 0.9 + lv * (h - 1.0) / bays
+		var y1: float = 0.9 + (lv + 1) * (h - 1.0) / bays
+		for i: int in 4:
+			var p0 := Vector3(cs[i].x * w, 0, cs[i].y * w)
+			var p1 := Vector3(cs[(i + 1) % 4].x * w, 0, cs[(i + 1) % 4].y * w)
+			b.rod("paint:main", p0 + Vector3(0, y1, 0), p1 + Vector3(0, y1, 0), 0.09, 6)
+			if state == "broken" and (i + lv * 3) % 7 == 0:
+				continue
+			if (i + lv) % 2 == 0:
+				b.rod("paint:main", p0 + Vector3(0, y0, 0), p1 + Vector3(0, y1, 0), 0.07, 6)
+			else:
+				b.rod("paint:main", p1 + Vector3(0, y0, 0), p0 + Vector3(0, y1, 0), 0.07, 6)
+	KitProps.ladder(b, _x(Vector3(0, 0.8, -0.2)), h - 1.2)
+	b.cyl("dark_steel", 1.5, 0.4, _x(Vector3(0, h, 0)), 0.08, 18)
+	d.solids.append([Vector3(0, 1.6, 0), Vector3(4.2, 3.2, 4.2)])
+	if state == "broken":
+		KitProps.debris(b, _x(Vector3(0, 0, 3.2)), 3.0, 10)
+		KitProps.crate_stack(b, _x(Vector3(-3.2, 0, 2.6)), 3, state)
+	else:
+		KitProps.crate_stack(b, _x(Vector3(-3.2, 0, 2.6)), 4, state)
+		b.lights.append({"pos": Vector3(0, h - 2.0, 2.0), "color": KitMat.GLOW["warm"], "range": 14.0, "energy": 1.6})
+	d.kiosk = Vector3(1.6, 0, 3.6)
+	d.top = Vector3(0, h + 5.4, 0)
+	# Everything above the slewing ring turns slowly once the hub is awake: cab, cat head, jib, hook.
+	d.spin_at = Vector3(0, h + 0.4, 0)
+	d.spin_axis = Vector3.UP
+	d.spin_speed = _f(c, "spin", 0.06)
+	d.spin_mesh = KitMesh.cached("landmark:jib:%s:%.1f:%d" % [state, jib, pal.hash()], func() -> Resource:
+		var j := KitMesh.Builder.new(seed_ + 21, pal, state)
+		j.box("paint:accent", Vector3(2.4, 0.5, 2.4), _x(Vector3(0, 0.25, 0)), 0.1)
+		j.box("paint:accent", Vector3(1.7, 1.8, 1.6), _x(Vector3(0.3, 1.4, 1.5)), 0.2, 2)  # the cab, out on the hub's side
+		j.box("dark_steel", Vector3(1.4, 0.9, 0.1), _x(Vector3(0.3, 1.55, 2.3)), 0.04)
+		j.box("glass", Vector3(1.2, 0.72, 0.1), _x(Vector3(0.3, 1.55, 2.33)), 0.03)
+		j.box("trim:warm", Vector3(1.0, 0.05, 0.08), _x(Vector3(0.3, 0.75, 2.3)), 0.015)
+		var apex := Vector3(0, 5.0, 0)
+		for sx: float in [-1.0, 1.0]:
+			for sz: float in [-1.0, 1.0]:
+				j.rod("paint:main", Vector3(sx * 0.8, 0.5, sz * 0.8), apex, 0.13, 8)
+		j.add("trim:red", KitMesh.bevel_cylinder(0.16, 0.26, 0.05, 10), _x(apex + Vector3(0, 0.05, 0)))
+		# The jib (+X) and the counter-jib (-X): two bottom chords, one top chord, zig-zag bracing.
+		var droop: float = -1.6 if state == "broken" else 0.0
+		for seg: Array in [[1.0, jib, droop], [-1.0, jib * 0.42, 0.0]]:
+			var sg: float = seg[0]
+			var ln: float = seg[1]
+			var end_y: float = float(seg[2])
+			var n: int = maxi(2, int(ln / 2.0))
+			var at: Callable = func(t: float, zz: float, top: bool) -> Vector3:
+				return Vector3(sg * (1.0 + t * (ln - 1.0)), 1.0 + end_y * t * t + (1.3 * (1.0 - t * 0.5) if top else 0.0), zz)
+			for sz: float in [-0.55, 0.55]:
+				j.rod("paint:main", at.call(0.0, sz, false), at.call(1.0, sz, false), 0.11, 6)
+			j.rod("paint:main", at.call(0.0, 0.0, true), at.call(1.0, 0.0, true), 0.11, 6)
+			for k: int in n:
+				var t0: float = float(k) / n
+				var t1: float = float(k + 1) / n
+				for sz: float in [-0.55, 0.55]:
+					j.rod("paint:main", at.call(t0, sz, false), at.call((t0 + t1) * 0.5, 0.0, true), 0.06, 5)
+					j.rod("paint:main", at.call((t0 + t1) * 0.5, 0.0, true), at.call(t1, sz, false), 0.06, 5)
+				j.rod("paint:main", at.call(t1, -0.55, false), at.call(t1, 0.55, false), 0.06, 5)
+			j.rod("steel", apex, at.call(0.85, 0.0, true), 0.045, 5)
+			j.box("hazard", Vector3(0.3, 0.5, 1.3), _x(at.call(1.0, 0.0, false) + Vector3(0, 0.1, 0)), 0.06)
+		for k: int in 3:  # counterweights
+			j.box("concrete", Vector3(0.8, 1.3, 1.3), _x(Vector3(-jib * 0.42 + 0.7 + k * 0.9, 0.3, 0)), 0.08)
+		# Trolley, cables, hook block, hook.
+		var tx: float = jib * 0.62
+		var ty: float = 1.0 + droop * 0.62 * 0.62
+		j.box("paint:accent", Vector3(1.3, 0.4, 1.3), _x(Vector3(tx, ty - 0.3, 0)), 0.08)
+		var hook_y: float = ty - 7.0
+		for sz: float in [-0.25, 0.25]:
+			j.rod("steel", Vector3(tx, ty - 0.5, sz), Vector3(tx, hook_y + 0.6, sz), 0.04, 5)
+		j.box("hazard", Vector3(0.6, 0.75, 0.9), _x(Vector3(tx, hook_y + 0.3, 0)), 0.1)
+		j.tube("dark_steel", PackedVector3Array([Vector3(tx, hook_y, 0), Vector3(tx, hook_y - 0.55, 0), Vector3(tx, hook_y - 0.85, 0.3), Vector3(tx, hook_y - 0.6, 0.55), Vector3(tx, hook_y - 0.35, 0.5)]), 0.1, 8, 0.2)
+		return j.commit()) as ArrayMesh
+
+
+# --- The last bus (Bus Depot) ----------------------------------------------------------------------
+
+static func _old_bus(b: KitMesh.Builder, d: Data, state: String, c: Dictionary) -> void:
+	var ln: float = _f(c, "length", 9.0)
+	var broken: bool = state == "broken"
+	var bt: Transform3D = _x(Vector3(0, 0.0, -0.6), Vector3(0, 0, -2.5) if broken else Vector3.ZERO)
+	# Body: a fat rounded box with a stripe, a window band both sides, windscreen at the +X end.
+	b.box("paint:main", Vector3(ln, 2.3, 2.5), bt * _x(Vector3(0, 1.85, 0)), 0.32, 3)
+	b.box("paint:accent", Vector3(ln + 0.04, 0.34, 2.54), bt * _x(Vector3(0, 1.35, 0)), 0.1)
+	b.box("dark_steel", Vector3(ln - 0.3, 0.3, 2.3), bt * _x(Vector3(0, 0.62, 0)), 0.08)
+	b.box("paint:main", Vector3(ln * 0.5, 0.26, 1.5), bt * _x(Vector3(-0.6, 3.08, 0)), 0.08)  # roof unit
+	KitProps.vent(b, bt * _x(Vector3(-0.6, 2.98, 0.75)), Vector2(1.6, 0.22), "paint:main")
+	var nwin: int = 6
+	for sz: float in [-1.0, 1.0]:
+		b.box("dark_steel", Vector3(ln - 1.9, 0.86, 0.08), bt * _x(Vector3(-0.45, 2.2, sz * 1.24)), 0.03)
+		for k: int in nwin:
+			var wx: float = -0.45 - (ln - 1.9) * 0.5 + (k + 0.5) * (ln - 1.9) / nwin
+			if broken and (k * 2 + int(sz)) % 5 == 0:
+				b.box("rusty", Vector3((ln - 1.9) / nwin - 0.1, 0.72, 0.06), bt * _x(Vector3(wx, 2.2, sz * 1.27), Vector3(0, 0, 4)), 0.02)
+			else:
+				b.box("glass", Vector3((ln - 1.9) / nwin - 0.16, 0.68, 0.06), bt * _x(Vector3(wx, 2.2, sz * 1.27)), 0.03)
+	b.box("dark_steel", Vector3(0.1, 1.05, 2.1), bt * _x(Vector3(ln * 0.5 - 0.02, 2.15, 0)), 0.04)
+	b.box("glass", Vector3(0.1, 0.9, 1.9), bt * _x(Vector3(ln * 0.5 + 0.01, 2.15, 0)), 0.04)
+	b.box("dark_steel", Vector3(0.12, 0.34, 1.7), bt * _x(Vector3(ln * 0.5 + 0.0, 2.84, 0)), 0.04)  # destination board
+	b.box("trim:cool", Vector3(0.1, 0.22, 1.5), bt * _x(Vector3(ln * 0.5 + 0.03, 2.84, 0)), 0.02)
+	for sz: float in [-0.85, 0.85]:
+		b.add("trim:warm", KitMesh.bevel_cylinder(0.17, 0.08, 0.03, 12), bt * _x(Vector3(ln * 0.5 - 0.02, 1.0, sz), Vector3(0, 0, -90)))
+		b.add("trim:red", KitMesh.bevel_cylinder(0.12, 0.08, 0.03, 10), bt * _x(Vector3(-ln * 0.5 + 0.02, 1.0, sz), Vector3(0, 0, 90)))
+	for sx: float in [-1.0, 1.0]:
+		b.box("dark_steel", Vector3(0.3, 0.34, 2.6), bt * _x(Vector3(sx * (ln * 0.5 + 0.04), 0.66, 0)), 0.1)
+	# The door on the hub's side (+Z), near the front.
+	b.box("dark_steel", Vector3(1.1, 1.95, 0.08), bt * _x(Vector3(ln * 0.5 - 1.5, 1.72, 1.24)), 0.03)
+	for dx: float in [-0.26, 0.26]:
+		b.box("paint:accent", Vector3(0.46, 1.8, 0.06), bt * _x(Vector3(ln * 0.5 - 1.5 + dx, 1.72, 1.28)), 0.03)
+		b.box("glass", Vector3(0.3, 0.8, 0.05), bt * _x(Vector3(ln * 0.5 - 1.5 + dx, 2.1, 1.31)), 0.02)
+	b.decal("logo", Vector2(0.8, 0.8), bt * _x(Vector3(-ln * 0.5 + 1.6, 1.0, 1.26)))
+	# Wheels: fat tyres with steel hubs. Broken: one is gone and the axle sits on blocks.
+	for sx: float in [-1.0, 1.0]:
+		for sz: float in [-1.0, 1.0]:
+			var wp := Vector3(sx * (ln * 0.5 - 1.9), 0.55, sz * 1.02)
+			if broken and sx > 0.0 and sz > 0.0:
+				b.box("concrete", Vector3(0.5, 0.3, 0.4), _x(Vector3(wp.x, 0.15, wp.z - 0.6)), 0.04)
+				b.box("concrete", Vector3(0.4, 0.3, 0.5), _x(Vector3(wp.x, 0.45, wp.z - 0.6), Vector3(0, 20, 0)), 0.04)
+				b.add("rubber", KitMesh.bevel_cylinder(0.55, 0.34, 0.1, 16), _x(Vector3(wp.x + 0.9, 0.0, 2.6), Vector3(0, 0, 0)))
+				continue
+			b.add("rubber", KitMesh.bevel_cylinder(0.55, 0.36, 0.1, 16), bt * _x(wp - Vector3(0, 0, sz * 0.18 - 0.18 * 0.0), Vector3(sz * 90.0, 0, 0)))
+			b.add("steel", KitMesh.bevel_cylinder(0.26, 0.06, 0.02, 10), bt * _x(wp + Vector3(0, 0, sz * 0.19), Vector3(sz * 90.0, 0, 0)))
+	d.solids.append([Vector3(0, 1.6, -0.6), Vector3(ln + 0.3, 3.2, 2.7)])
+	# The stop: a shelter with a bench and a round bus-stop sign, on the hub's side.
+	var st: Transform3D = _x(Vector3(-ln * 0.5 + 2.0, 0, 2.9))
+	b.box("concrete", Vector3(3.6, 0.16, 1.8), st * _x(Vector3(0, 0.08, 0)), 0.04)
+	for sx: float in [-1.6, 1.6]:
+		b.rod("paint:accent", st * Vector3(sx, 0.16, -0.7), st * Vector3(sx, 2.5, -0.7), 0.08, 8)
+	b.box("paint:accent", Vector3(3.8, 0.14, 1.7), st * _x(Vector3(0, 2.55, -0.1), Vector3(8, 0, 0)), 0.05)
+	b.box("glass", Vector3(3.0, 1.5, 0.06), st * _x(Vector3(0, 1.45, -0.72)), 0.02)
+	b.box("paint:main", Vector3(2.4, 0.1, 0.5), st * _x(Vector3(0, 0.62, -0.35)), 0.03)
+	for sx: float in [-1.0, 1.0]:
+		b.box("dark_steel", Vector3(0.1, 0.46, 0.4), st * _x(Vector3(sx, 0.39, -0.35)), 0.02)
+	b.box("trim:warm", Vector3(2.6, 0.04, 0.1), st * _x(Vector3(0, 2.44, -0.3)), 0.012)
+	b.rod("paint:accent", st * Vector3(2.3, 0.0, 0.5), st * Vector3(2.3, 2.9, 0.5), 0.07, 8)
+	b.add("paint:accent", KitMesh.bevel_cylinder(0.5, 0.1, 0.03, 20), st * _x(Vector3(2.3, 3.2, 0.45), Vector3(90, 0, 0)))
+	b.add("paint:main", KitMesh.bevel_cylinder(0.42, 0.03, 0.01, 20), st * _x(Vector3(2.3, 3.2, 0.55), Vector3(90, 0, 0)))
+	b.box("paint:accent", Vector3(0.5, 0.26, 0.03), st * _x(Vector3(2.3, 3.24, 0.59)), 0.06)  # a little bus on the sign
+	for sx: float in [-0.14, 0.14]:
+		b.add("dark_steel", KitMesh.bevel_cylinder(0.06, 0.03, 0.01, 8), st * _x(Vector3(2.3 + sx, 3.08, 0.58), Vector3(90, 0, 0)))
+	d.solids.append([st.origin + Vector3(0, 1.3, -0.7), Vector3(3.4, 2.6, 0.3)])
+	if broken:
+		KitProps.debris(b, _x(Vector3(1.5, 0, 2.6)), 3.5, 10)
+	else:
+		KitProps.planter(b, _x(Vector3(ln * 0.5 - 0.6, 0, 2.9)), 2.0, state)
+		b.lights.append({"pos": st * Vector3(0, 2.2, 0.2), "color": KitMat.GLOW["warm"], "range": 8.0, "energy": 1.6})
+	d.kiosk = Vector3(1.3, 0, 3.4)
+	d.top = Vector3(0, 3.9, -0.6)
+
+
+# --- Lighthouse (Lake Light) -----------------------------------------------------------------------
+
+static func _lighthouse(b: KitMesh.Builder, d: Data, state: String, c: Dictionary) -> void:
+	var h: float = _f(c, "height", 16.0)
+	var r0: float = 2.3
+	var r1: float = 1.5
+	var rad: Callable = func(y: float) -> float: return lerpf(r0, r1, clampf((y - 0.6) / (h - 0.6), 0.0, 1.0))
+	b.cyl("concrete", 3.1, 0.6, _x(Vector3.ZERO, Vector3(0, 22.5, 0)), 0.1, 8)
+	var body := PackedVector3Array([Vector3(0, 0.6, 0), Vector3(r0 + 0.15, 0.6, 1), Vector3(r0 + 0.15, 1.1, 1), Vector3(r0, 1.3, 0), Vector3(r1, h, 0), Vector3(0, h, 0)])
+	b.add("paint:main", KitMesh.lathe(body, 20), Transform3D.IDENTITY)
+	for k: int in 2:
+		var y0: float = h * (0.24 + 0.36 * k)
+		_band(b, "paint:accent", y0, y0 + h * 0.17, (rad.call(y0) as float) + 0.03, (rad.call(y0 + h * 0.17) as float) + 0.03)
+	KitProps.hatch(b, _x(Vector3(0, 0.6, r0 + 0.08)), Vector2(1.0, 1.9), state)
+	for wy: float in [h * 0.36, h * 0.56, h * 0.78]:
+		var wr: float = rad.call(wy)
+		b.box("dark_steel", Vector3(0.7, 1.0, 0.3), _x(Vector3(0, wy, wr - 0.02)), 0.05)
+		b.box("rusty" if state == "broken" and wy > h * 0.5 else "glass", Vector3(0.5, 0.8, 0.3), _x(Vector3(0, wy, wr + 0.01)), 0.03)
+	# The gallery, the lantern room (it glows once the hub is awake), the cap.
+	_deck(b, h + 0.18, r1 + 1.0, state, 14)
+	b.cyl("dark_steel", 1.3, 0.3, _x(Vector3(0, h + 0.18, 0)), 0.05, 16)
+	b.cyl("glass", 1.12, 1.7, _x(Vector3(0, h + 0.48, 0)), 0.03, 16)
+	for k: int in 8:
+		var a: float = TAU * k / 8.0
+		b.rod("dark_steel", Vector3(cos(a) * 1.15, h + 0.48, sin(a) * 1.15), Vector3(cos(a) * 1.15, h + 2.18, sin(a) * 1.15), 0.06, 6)
+	var cap := PackedVector3Array([Vector3(0, h + 2.15, 0), Vector3(1.45, h + 2.15, 1), Vector3(1.45, h + 2.35, 1), Vector3(0.7, h + 3.1, 0), Vector3(0.22, h + 3.45, 1), Vector3(0.22, h + 3.7, 1), Vector3(0, h + 3.7, 0)])
+	b.add("paint:accent", KitMesh.lathe(cap, 16), Transform3D.IDENTITY)
+	b.add("trim:red", KitMesh.bevel_cylinder(0.14, 0.24, 0.05, 10), _x(Vector3(0, h + 3.7, 0)))
+	d.solids.append([Vector3(0, 2.0, 0), Vector3(4.8, 4.0, 4.8)])
+	# A keeper's store and a boat on trestles at the foot.
+	var hs: Transform3D = _x(Vector3(-3.9, 0, 0.6))
+	b.box("concrete", Vector3(2.8, 0.2, 2.4), hs * _x(Vector3(0, 0.1, 0)), 0.05)
+	b.box("paint:main", Vector3(2.3, 1.9, 1.9), hs * _x(Vector3(0, 1.15, 0)), 0.14, 2)
+	b.box("paint:accent", Vector3(2.6, 0.2, 2.2), hs * _x(Vector3(0, 2.2, 0)), 0.07)
+	KitProps.hatch(b, hs * _x(Vector3(0, 0.2, 0.95)), Vector2(0.8, 1.5), state)
+	d.solids.append([hs.origin + Vector3(0, 1.2, 0), Vector3(2.5, 2.4, 2.1)])
+	var bo: Transform3D = _x(Vector3(3.8, 0.55, 0.8), Vector3(0, 25, 12 if state == "broken" else 0))
+	b.box("paint:accent", Vector3(3.0, 0.6, 1.2), bo, 0.25, 2)
+	b.box("paint:main", Vector3(3.04, 0.14, 1.24), bo * _x(Vector3(0, 0.26, 0)), 0.05)
+	b.box("dirt" if state == "broken" else "dark_steel", Vector3(2.5, 0.06, 0.8), bo * _x(Vector3(0, 0.29, 0)), 0.02)
+	for sx: float in [-0.9, 0.9]:
+		b.box("dark_steel", Vector3(0.14, 0.3, 1.3), _x(Vector3(3.8, 0.15, 0.8), Vector3(0, 25, 0)) * _x(Vector3(sx, 0, 0)), 0.03)
+	d.solids.append([Vector3(3.8, 0.5, 0.8), Vector3(2.8, 1.0, 2.2)])
+	if state == "broken":
+		KitProps.debris(b, _x(Vector3(0, 0, 3.6)), 3.0, 8)
+	else:
+		b.lights.append({"pos": Vector3(0, h + 1.3, 0), "color": KitMat.GLOW["warm"], "range": 30.0, "energy": 3.0})
+		b.lights.append({"pos": Vector3(0, 3.2, r0 + 1.2), "color": KitMat.GLOW["warm"], "range": 7.0, "energy": 1.2})
+	d.kiosk = Vector3(1.6, 0, 4.2)
+	d.top = Vector3(0, h + 4.0, 0)

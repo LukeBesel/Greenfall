@@ -17,7 +17,7 @@ static func value(rarity: int) -> float:
 
 
 ## A salvaged robot part: pays Parts, counts as a find. Returns the Parts paid.
-## `announce` emits EventBus.part_found (the stat, achievements, Requests and the Maker
+## `announce` emits EventBus.part_found (the stat, achievements, Requests and the Settler
 ## Fragment roll listen to it).
 static func salvage(type_idx: int, rarity: int, announce: bool = true) -> float:
 	var v: float = value(rarity)

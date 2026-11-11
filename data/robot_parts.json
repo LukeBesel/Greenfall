@@ -1,5 +1,5 @@
 {
-  "_doc": "[ui2] Pure cosmetics now (the Locker): owning a part unlocks it for every robot, nothing is used up, and parts change no stats; only the Maker set (three Maker parts) keeps the small set_bonus perk. haggle-source parts are simply bought (cubes + parts); craft-source parts cost parts + the old robot part item's value (RobotBuilder.craft_parts). [drones] Robot Builder parts. Five slots per robot; 'stock' (no entry) keeps the Mk tier's own look and stats. mods are multipliers on generic stats: speed, load (hopper capacity / fork carry / water tank), work (scoop / plant / spray / refill rate), quality (cube efficiency), reach (spray radius), scan (chance to spot salvage while working). Every non-cosmetic part has at least one upside and one downside (gentle: specialised, not strictly better). source: craft (parts + one stored robot part of a type, optional cubes), haggle (Haggle's rotating builder stall: cubes + parts), request (unlocked by the Requests board after `requests` finished requests, events.json requests.track), research (unlock node, then craft), drop (rare finds), set (parts + a Vintage-or-better robot part). [money] Bolts and Maker Fragments are Parts now (x5, x25). roles: which crews a tool fits (multibots take any tool).",
+  "_doc": "[ui2] Pure cosmetics now (the Locker): owning a part unlocks it for every robot, nothing is used up, and parts change no stats; only the Settler set (three Settler parts) keeps the small set_bonus perk. haggle-source parts are simply bought (cubes + parts); craft-source parts cost parts + the old robot part item's value (RobotBuilder.craft_parts). [drones] Robot Builder parts. Five slots per robot; 'stock' (no entry) keeps the Mk tier's own look and stats. mods are multipliers on generic stats: speed, load (hopper capacity / fork carry / water tank), work (scoop / plant / spray / refill rate), quality (cube efficiency), reach (spray radius), scan (chance to spot salvage while working). Every non-cosmetic part has at least one upside and one downside (gentle: specialised, not strictly better). source: craft (parts + one stored robot part of a type, optional cubes), haggle (Haggle's rotating builder stall: cubes + parts), request (unlocked by the Requests board after `requests` finished requests, events.json requests.track), research (unlock node, then craft), drop (rare finds), set (parts + a Vintage-or-better robot part). [money] Bolts and Settler Fragments are Parts now (x5, x25). roles: which crews a tool fits (multibots take any tool).",
   "slots": [
     {"id": "chassis", "name": "Chassis"},
     {"id": "head", "name": "Head"},
@@ -15,26 +15,26 @@
     {"id": "reach", "name": "Spray reach"},
     {"id": "scan", "name": "Scan"}
   ],
-  "salvage": {"_doc": "Working robots spot salvage now and then: chance per second = base * scan. A find is a stored part (mostly Rusty/Worn); 1 in fragment_one_in is a Maker Fragment.", "base_per_s": 0.0011, "fragment_one_in": 10, "clover_one_in": 40, "dig_fragment_chance": [0.02, 0.03, 0.05, 0.25, 0.5]},
+  "salvage": {"_doc": "Working robots spot salvage now and then: chance per second = base * scan. A find is a stored part (mostly Rusty/Worn); 1 in fragment_one_in is a Settler Fragment.", "base_per_s": 0.0011, "fragment_one_in": 10, "clover_one_in": 40, "dig_fragment_chance": [0.02, 0.03, 0.05, 0.25, 0.5]},
   "haggle": {"_doc": "Haggle's builder stall: `offers` haggle-source parts, reshuffled every `rotate_s` seconds of play.", "offers": 3, "rotate_s": 480},
-  "set_bonus": {"id": "maker", "name": "Maker Resonance", "mods": {"speed": 1.05, "work": 1.06}, "desc": "All three Maker parts fitted: +5% speed, +6% work."},
+  "set_bonus": {"id": "maker", "name": "Settler Resonance", "mods": {"speed": 1.05, "work": 1.06}, "desc": "All three Settler parts fitted: +5% speed, +6% work."},
   "parts": [
     {"id": "light_frame", "slot": "chassis", "name": "Light Frame", "desc": "Slim exposed rails instead of a full shell.", "source": {"kind": "craft", "parts": 40, "part": "chassis"}},
     {"id": "cargo_hull", "slot": "chassis", "name": "Cargo Hull", "desc": "Thick side plates and a rear rack.", "source": {"kind": "craft", "parts": 50, "part": "chassis"}},
     {"id": "sealed_shell", "slot": "chassis", "name": "Sealed Shell", "desc": "Smooth covers, neat seams, no grit.", "source": {"kind": "research", "research": "auto_sort", "parts": 70, "part": "chassis"}},
-    {"id": "maker_shell", "slot": "chassis", "name": "Maker Shell", "desc": "Pearl fairings with gold trim, as the Makers built them. Part of the Maker set.", "set": "maker", "source": {"kind": "set", "parts": 250, "part": "chassis", "min_rarity": 3}},
+    {"id": "maker_shell", "slot": "chassis", "name": "Settler Shell", "desc": "Pearl fairings with gold trim, as the Settlers built them. Part of the Settler set.", "set": "maker", "source": {"kind": "set", "parts": 250, "part": "chassis", "min_rarity": 3}},
 
     {"id": "big_eye", "slot": "head", "name": "Big-Eye Sensor", "desc": "A huge lens on a stalk.", "source": {"kind": "craft", "parts": 40, "part": "sensor"}},
     {"id": "focus_visor", "slot": "head", "name": "Focus Visor", "desc": "Blinkers for robots.", "source": {"kind": "haggle", "cubes": 900, "parts": 30}},
     {"id": "periscope", "slot": "head", "name": "Periscope", "desc": "Sees over the plants. Mostly.", "source": {"kind": "research", "research": "spray_heads", "parts": 60, "part": "sensor"}},
     {"id": "chatter_dome", "slot": "head", "name": "Chatterbox Dome", "desc": "Glass dome with a little speaker.", "source": {"kind": "haggle", "cubes": 600, "parts": 20}},
-    {"id": "maker_optic", "slot": "head", "name": "Maker Optic", "desc": "A floating gem lens under a gold brow. Part of the Maker set.", "set": "maker", "source": {"kind": "set", "parts": 250, "part": "sensor", "min_rarity": 3}},
+    {"id": "maker_optic", "slot": "head", "name": "Settler Optic", "desc": "A floating gem lens under a gold brow. Part of the Settler set.", "set": "maker", "source": {"kind": "set", "parts": 250, "part": "sensor", "min_rarity": 3}},
 
     {"id": "treads", "slot": "mobility", "name": "Treads", "desc": "Rubber tracks.", "source": {"kind": "craft", "parts": 30, "part": "locomotion"}},
     {"id": "rotor", "slot": "mobility", "name": "Quad Rotor", "desc": "Four ducted fans.", "source": {"kind": "research", "research": "swarm_sync", "parts": 80, "part": "locomotion"}},
     {"id": "legs", "slot": "mobility", "name": "Walker Legs", "desc": "Four careful legs.", "source": {"kind": "research", "research": "salvage_logic", "parts": 50, "part": "locomotion"}},
     {"id": "hover_skirt", "slot": "mobility", "name": "Hover Skirt", "desc": "A cushion of air and a soft glow underneath.", "source": {"kind": "haggle", "cubes": 1400, "parts": 50}},
-    {"id": "maker_glider", "slot": "mobility", "name": "Maker Glider", "desc": "Twin levitation pods with a thin light seam. Part of the Maker set.", "set": "maker", "source": {"kind": "set", "parts": 350, "part": "locomotion", "min_rarity": 3}},
+    {"id": "maker_glider", "slot": "mobility", "name": "Settler Glider", "desc": "Twin levitation pods with a thin light seam. Part of the Settler set.", "set": "maker", "source": {"kind": "set", "parts": 350, "part": "locomotion", "min_rarity": 3}},
 
     {"id": "wide_scoop", "slot": "tool", "name": "Wide Scoop", "desc": "A big, wide scoop.", "roles": ["clean", "skim"], "source": {"kind": "craft", "parts": 40, "part": "arm"}},
     {"id": "fine_sieve", "slot": "tool", "name": "Fine Sieve", "desc": "A sieve that shakes out the dirt.", "roles": ["clean", "skim"], "source": {"kind": "request", "requests": 6}},
@@ -51,7 +51,7 @@
     {"id": "traffic_cone", "slot": "topper", "name": "Traffic Cone", "desc": "Found it, kept it, wears it.", "source": {"kind": "haggle", "cubes": 200, "parts": 5}},
     {"id": "propeller_cap", "slot": "topper", "name": "Propeller Cap", "desc": "Spins when it hurries. Does not help.", "source": {"kind": "request", "requests": 3}},
     {"id": "lucky_clover", "slot": "topper", "name": "Lucky Clover", "desc": "A four-leaf clover that floats. Rare: a robot has to spot one.", "source": {"kind": "drop", "hint": "Rare salvage find (robots with a good Scan)"}},
-    {"id": "maker_crest", "slot": "topper", "name": "Maker Crest", "desc": "A floating gold ring. Purely for show; the Makers loved a show.", "source": {"kind": "set", "parts": 100, "part": "", "min_rarity": 0}}
+    {"id": "maker_crest", "slot": "topper", "name": "Settler Crest", "desc": "A floating gold ring. Purely for show; the Settlers loved a show.", "source": {"kind": "set", "parts": 100, "part": "", "min_rarity": 0}}
   ],
   "traits": [
     {"id": "cautious", "name": "Cautious", "desc": "Looks both ways. Twice.", "mods": {"speed": 0.97, "quality": 1.03}, "idle": "look", "beep": "blip", "pitch": 0.9, "every": 11.0},

@@ -378,7 +378,7 @@ func _rebuild_options() -> void:
 				else:
 					line2 += tr("  ·  press to unlock + fit")
 					col = UITheme.GREEN
-			b.text = "%s%s\n%s" % [tr(str(p.get("name", id))), tr("  (Maker set)") if p.has("set") else "", line2]
+			b.text = "%s%s\n%s" % [tr(str(p.get("name", id))), tr("  (Settler set)") if p.has("set") else "", line2]
 		b.add_theme_color_override("font_color", col)
 		b.focus_entered.connect(func() -> void: _preview_candidate(id))
 		b.mouse_entered.connect(func() -> void: _preview_candidate(id))

@@ -80,6 +80,7 @@ func upgrade_tier(type_id: String) -> bool:
 				var bd: BotBadge = b.get_node_or_null("Badge") as BotBadge  # [v6crew] the new model's height, and a flash
 				if bd != null:
 					bd.position.y = BotBadge.top_of(b.visual) + 0.22
+					bd.set_tier(t)
 				Vfx.ring(b.global_position + b.dir * 0.15, 2.2, UITheme.GOLD, 1.0)
 	return true
 

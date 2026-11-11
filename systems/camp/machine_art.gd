@@ -14,6 +14,7 @@ extends RefCounted
 ##   pod_service()                       the repair cart and cones by the crashed pod (story/crash_site.gd)
 ##   baler_body() / baler_platen() / baler_gate()    automation/auto_baler.gd
 ##   belt_pad() / belt_turntable() / belt_segment()  automation/conveyor.gd (the Belt Drive)
+##   recycler_body() / recycler_drum()               automation/recycler.gd
 
 const DATA: String = "res://data/machine_art.json"
 const SIGN_BASE: float = 0.72  # the size the pictograms are drawn at (metres across)
@@ -189,6 +190,15 @@ static func _icon(k: YardArt.Kit, icon: String, u: float, ink: Color, accent: Co
 			_bar(k, u, 0.13, 0.028, 0.0, -0.105, face, 0.0, 1)
 			_bar(k, u, 0.03, 0.09, 0.0, 0.125, ink)
 			_dot(k, u, 0.034, 0.0, 0.19, accent)
+		"parts":  # the recycler: a cube goes in, a nut comes out
+			_bar(k, u, 0.15, 0.15, -0.18, 0.0, accent)
+			_bar(k, u, 0.11, 0.04, 0.0, 0.0, ink)
+			_bar(k, u, 0.04, 0.1, 0.045, 0.03, ink, 45.0)
+			_bar(k, u, 0.04, 0.1, 0.045, -0.03, ink, -45.0)
+			_dot(k, u, 0.1, 0.19, 0.0, ink, 0, 6)
+			_dot(k, u, 0.04, 0.19, 0.0, face, 1, 12)
+			for i: int in 5:  # shredder teeth along the bottom
+				_bar(k, u, 0.06, 0.06, -0.2 + i * 0.1, -0.19, ink, 45.0)
 		_:  # an arrow up: something happens here
 			_bar(k, u, 0.07, 0.24, 0.0, -0.06, ink)
 			_bar(k, u, 0.07, 0.17, -0.05, 0.1, ink, -45.0)
@@ -493,4 +503,100 @@ static func pod_service() -> YardArt.Kit:
 		k.box(Vector3(0.3, 0.035, 0.3), c + Vector3(0, 0.018, 0), YardArt.DARK, Vector3.ZERO, 0.012)
 		k.cyl(0.11, 0.42, c + Vector3(0, 0.245, 0), cone, Vector3.ZERO, 0.01, 12, "paint", 0.03)
 		k.cyl(0.082, 0.09, c + Vector3(0, 0.27, 0), YardArt.CREAM, Vector3.ZERO, 0.006, 12, "paint", 0.066)
+	return k
+
+
+# --- Recycler (automation/recycler.gd) ----------------------------------------------------------------
+
+## Everything of the recycler that stands still (Recycler's frame, +Z faces the feeder): skid, the
+## shredder housing with its flared hazard-lipped throat, the drive motor and gearbox, the squat
+## smelter with a fat chimney, the duct between them, the ingot tray, the control box, the
+## hand-feed plate and the picture sign. throat = Recycler.THROAT, pad = PAD_LOCAL, pad_half = PAD_HALF.
+static func recycler_body(throat: Vector3, pad: Vector3, pad_half: float) -> YardArt.Kit:
+	var k := YardArt.Kit.new()
+	var body: Color = col("recycler", "body", YardArt.TEAL)
+	var hop: Color = col("recycler", "hopper", YardArt.YELLOW)
+	var kiln: Color = col("recycler", "kiln", Color(0.36, 0.3, 0.27))
+	var tz: float = throat.z
+	k.box(Vector3(3.9, 0.14, 2.1), Vector3(-0.7, 0.07, 0), YardArt.GUNMETAL, Vector3.ZERO, 0.03)
+	for x: float in [-2.55, 1.15]:
+		k.box(Vector3(0.16, 0.2, 2.16), Vector3(x, 0.1, 0), YardArt.DARK, Vector3.ZERO, 0.03)
+	k.hazard(Vector3(3.9, 0.07, 0.04), Vector3(-0.7, 0.1, 1.05))
+	# Housing: ribs front and back, a bolted service panel, top rails.
+	k.box(Vector3(2.0, 0.86, 1.7), Vector3(0, 0.57, 0), body, Vector3.ZERO, 0.06)
+	for s: float in [-1.0, 1.0]:
+		for x: float in [-0.95, -0.3, 0.3, 0.95]:
+			k.box(Vector3(0.08, 0.82, 0.07), Vector3(x, 0.57, s * 0.86), body.darkened(0.18), Vector3.ZERO, 0.02)
+		k.box(Vector3(2.06, 0.09, 0.09), Vector3(0, 1.0, s * 0.84), body.darkened(0.18), Vector3.ZERO, 0.025)
+	k.panel(0.5, 0.6, Vector3(-0.62, 0.55, 0.87), body.lightened(0.05), Vector3.ZERO, Color(-1, 0, 0), 0.035)
+	k.decal("label_scrap", Vector2(0.4, 0.1), Vector3(-0.62, 0.68, 0.91))
+	k.decal("warn", Vector2(0.22, 0.22), Vector3(-0.62, 0.45, 0.91))
+	k.vent(0.5, 0.4, Vector3(0.0, 0.55, 0.875), body.darkened(0.2), Vector3.ZERO, 4)
+	# The throat: a flared hopper with hazard lips, the dark pit under the drums.
+	for s: float in [-1.0, 1.0]:
+		k.box(Vector3(1.6, 0.36, 0.06), Vector3(0, 1.12, tz + s * 0.6), hop, Vector3(-s * 28.0, 0, 0), 0.02)
+		k.box(Vector3(0.06, 0.36, 1.25), Vector3(s * 0.8, 1.12, tz), hop, Vector3(0, 0, s * 22.0), 0.02)
+		k.hazard(Vector3(1.92, 0.08, 0.1), Vector3(0, 1.28, tz + s * 0.7))
+		k.hazard(Vector3(0.1, 0.08, 1.5), Vector3(s * 0.92, 1.28, tz))
+	k.box(Vector3(1.3, 0.04, 0.95), Vector3(0, 1.005, tz), YardArt.RUBBER, Vector3.ZERO, 0.01)
+	# Drive on the +X end: a fat finned motor, its fan cowl, the gearbox over the drum shafts.
+	k.cyl(0.22, 0.55, Vector3(1.32, 0.62, 0.15), YardArt.ORANGE, Vector3(0, 0, 90), 0.04, 18)
+	for i: int in 4:
+		k.cyl(0.245, 0.03, Vector3(1.14 + i * 0.1, 0.62, 0.15), YardArt.ORANGE.darkened(0.25), Vector3(0, 0, 90), 0.008, 18)
+	k.cyl(0.21, 0.08, Vector3(1.63, 0.62, 0.15), YardArt.DARK, Vector3(0, 0, 90), 0.02, 18)
+	k.box(Vector3(0.5, 0.1, 0.5), Vector3(1.35, 0.33, 0.15), YardArt.GUNMETAL, Vector3.ZERO, 0.025)
+	k.box(Vector3(0.3, 0.5, 0.62), Vector3(0.98, 1.1, tz), YardArt.GUNMETAL, Vector3.ZERO, 0.05)
+	k.bolts4(Vector3(1.132, 1.1, tz), Vector3(0, 0.18, 0), Vector3(0, 0, 0.24), Vector3.RIGHT)
+	# The smelter: a squat banded kiln, a cap, a fat chimney with a rain hat, a framed peephole.
+	var kc := Vector3(-1.55, 0, -0.3)
+	k.cyl(0.6, 1.5, kc + Vector3(0, 0.89, 0), kiln, Vector3.ZERO, 0.04, 20, "paint", 0.5)
+	for y: float in [0.45, 1.0, 1.52]:
+		k.cyl(0.6 - (y - 0.14) / 1.5 * 0.1 + 0.035, 0.09, kc + Vector3(0, y, 0), YardArt.GUNMETAL, Vector3.ZERO, 0.02, 20)
+	k.cyl(0.52, 0.2, kc + Vector3(0, 1.74, 0), YardArt.GUNMETAL, Vector3.ZERO, 0.04, 20, "paint", 0.4)
+	k.cyl(0.17, 1.9, kc + Vector3(0, 2.78, 0), YardArt.GUNMETAL, Vector3.ZERO, 0.02, 14)
+	k.cyl(0.21, 0.07, kc + Vector3(0, 2.3, 0), YardArt.DARK, Vector3.ZERO, 0.015, 14)
+	k.cyl(0.27, 0.12, kc + Vector3(0, 3.78, 0), YardArt.DARK, Vector3.ZERO, 0.03, 14, "paint", 0.18)
+	for s: float in [-1.0, 1.0]:
+		k.box(Vector3(0.07, 0.06, 0.46), Vector3(-2.1, 0.62 + s * 0.15, -0.3), YardArt.GUNMETAL, Vector3.ZERO, 0.015)
+		k.box(Vector3(0.07, 0.36, 0.06), Vector3(-2.1, 0.62, -0.3 + s * 0.2), YardArt.GUNMETAL, Vector3.ZERO, 0.015)
+	k.pipe(Vector3(-1.02, 0.8, -0.3), Vector3(-0.98, 0.8, -0.3), 0.17, YardArt.GUNMETAL, false)
+	k.pipe(Vector3(-1.4, 0.8, -0.3), Vector3(-1.0, 0.8, -0.3), 0.15, YardArt.GUNMETAL, true)
+	# Ingot tray in front of the kiln.
+	var tray := Vector3(-2.4, 0.14, 0.3)
+	k.box(Vector3(0.52, 0.03, 0.4), tray + Vector3(0, 0.015, 0), YardArt.DARK, Vector3.ZERO, 0.008)
+	for s: float in [-1.0, 1.0]:
+		k.box(Vector3(0.52, 0.12, 0.035), tray + Vector3(0, 0.06, s * 0.19), YardArt.DARK, Vector3.ZERO, 0.01)
+		k.box(Vector3(0.035, 0.12, 0.4), tray + Vector3(s * 0.25, 0.06, 0), YardArt.DARK, Vector3.ZERO, 0.01)
+	# Control box with three lamps, the beacon's socket.
+	k.box(Vector3(0.42, 0.55, 0.18), Vector3(0.62, 0.6, 0.95), YardArt.CREAM, Vector3.ZERO, 0.04)
+	for i: int in 3:
+		k.glow_cyl(0.032, 0.03, Vector3(0.52 + i * 0.1, 0.72, 1.045), [YardArt.MINT, YardArt.AMBER, YardArt.RED][i], Vector3(90, 0, 0), 10)
+	k.decal("power", Vector2(0.16, 0.16), Vector3(0.62, 0.5, 1.045))
+	k.cyl(0.1, 0.05, Vector3(0.88, 1.03, -0.72), YardArt.DARK, Vector3.ZERO, 0.012, 12)
+	# Hand-feed plate: a dark tread plate in a hazard frame with an arrow toward the machine.
+	k.box(Vector3(pad_half * 2.0, 0.08, pad_half * 2.0), pad + Vector3(0, 0.04, 0), YardArt.DARK, Vector3.ZERO, 0.02)
+	for side: int in 4:
+		k.push(ProcMesh.xf(pad + Vector3(0, 0.085, 0), Vector3(0, side * 90.0, 0)))
+		k.hazard(Vector3(pad_half * 2.0, 0.014, 0.1), Vector3(0, 0, pad_half - 0.05))
+		k.pop()
+	k.decal("arrow", Vector2(0.5, 0.5), pad + Vector3(0, 0.084, 0), Vector3(-90, 0, 0))
+	# The picture sign on a stalk at the back of the housing.
+	var sg: float = float(sign_def("recycler").get("size", SIGN_BASE))
+	for x: float in [-0.12, 0.12]:
+		k.box(Vector3(0.05, 0.62, 0.05), Vector3(-0.2 + x, 1.31, -0.8), body, Vector3.ZERO, 0.012)
+	put_sign(k, "recycler", Vector3(-0.2, 1.6 + sg * 0.5, -0.8), Vector3.ZERO, true)
+	return k
+
+
+## One shredder drum (axis along X; two of them counter-rotate in the throat): a steel core,
+## seven discs, hooked teeth.
+static func recycler_drum() -> YardArt.Kit:
+	var k := YardArt.Kit.new()
+	k.cyl(0.15, 1.3, Vector3.ZERO, YardArt.STEEL, Vector3(0, 0, 90), 0.02, 14)
+	for ring: int in 7:
+		var x: float = -0.54 + ring * 0.18
+		k.cyl(0.19, 0.05, Vector3(x, 0, 0), YardArt.GUNMETAL, Vector3(0, 0, 90), 0.012, 12)
+		for t: int in 5:
+			var a: float = TAU * t / 5.0 + ring * 0.7
+			k.box(Vector3(0.05, 0.11, 0.07), Vector3(x, cos(a) * 0.22, sin(a) * 0.22), YardArt.STEEL, Vector3(rad_to_deg(a) + 17.0, 0, 0), 0.012)
 	return k

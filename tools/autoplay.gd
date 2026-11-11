@@ -473,7 +473,7 @@ func _water_at() -> Vector3:
 
 # --- Patch tasks -------------------------------------------------------------------------
 
-## The Maker seed tin in the greenhouse, once enough hexes are clean.
+## The Settler seed tin in the greenhouse, once enough hexes are clean.
 func _do_tin(p: Patch) -> bool:
 	var fs: FirstSeed = world.first_seed
 	if fs == null or not fs.ready_to_find() or fs._tin == null or not fs._tin.visible:

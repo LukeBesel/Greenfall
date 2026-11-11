@@ -46,6 +46,12 @@ var _last_d: float = 0.0
 var _desired_s := Vector3.ZERO  # [orbC] smoothed steering target
 ## [orbC] Steer round static obstacles (buildings); off for short moves next to a wall.
 var avoid_static: bool = true
+## [v6crew] The side kept while passing another robot (+1 / -1, 0 none) and for how long still.
+const DODGE_HOLD_S: float = 1.2
+var _dodge_s: float = 0.0
+var _dodge_t: float = 0.0
+var _wall_o := Vector3.ZERO
+var _wall_s: float = 0.0
 ## [v6crew] Turn on the spot at this rate (rad/s) while standing (a new robot looking around).
 var look_turn: float = 0.0
 
@@ -131,11 +137,39 @@ func step(delta: float) -> void:
 		var obs: Array = swarm.obstacles_near(dir, 12.0) if avoid_static else []
 		# [orbC] Bots driving the same way (a convoy) only keep their spacing; dodging them made
 		# both weave side to side. Oncoming and parked bots are still steered round.
+		var bots: Array = []
 		for nb: SphereBot in swarm.neighbor_bots(self, 8.0):
 			if nb.moving_speed > 0.3 and nb.heading.dot(heading) > 0.6:
 				continue
-			obs.append([nb.dir, body_radius])
-		var av: Vector3 = SphereSteer.avoid(dir, heading, obs, 4.0, body_radius, surface.radius)
+			bots.append([nb.dir, body_radius])
+		# [v6crew] Passing a robot or a prop: pick a side once and keep it for DODGE_HOLD_S, so a Haul
+		# Bug driving past a working Scoopie or a bin by the Depot doesn't swing left-right-left as
+		# the centres line up. Robots are passed all on the held side; of the props only the one
+		# that was nearest ahead (a corridor between two still steers round each on its own side).
+		_dodge_t -= delta
+		if _dodge_t <= 0.0:
+			# The side is judged along the way to the goal (steady), not the heading (it swings).
+			var way: Vector3 = SphereMath.tangent_dir(desired, dir, heading) if spd > 0.0 else heading
+			_dodge_s = SphereSteer.nearest_ahead(dir, way, bots, 4.0, body_radius, surface.radius)[1]
+			var wa: Array = SphereSteer.nearest_ahead(dir, way, obs, 4.0, body_radius, surface.radius)
+			_wall_o = obs[int(wa[0])][0] if int(wa[0]) >= 0 else Vector3.ZERO
+			_wall_s = float(wa[1])
+			if _dodge_s != 0.0 or _wall_s != 0.0:
+				_dodge_t = DODGE_HOLD_S
+		var free_obs: Array = obs
+		var held: Array = []
+		if _wall_o != Vector3.ZERO:
+			free_obs = []
+			for o: Array in obs:
+				if (o[0] as Vector3).is_equal_approx(_wall_o):
+					held.append(o)
+				else:
+					free_obs.append(o)
+		var av: Vector3 = SphereSteer.avoid(dir, heading, free_obs, 4.0, body_radius, surface.radius)
+		if not held.is_empty():
+			av += SphereSteer.avoid(dir, heading, held, 4.0, body_radius, surface.radius, _wall_s)
+		if not bots.is_empty():
+			av += SphereSteer.avoid(dir, heading, bots, 4.0, body_radius, surface.radius, _dodge_s)
 		if spd > 0.0:
 			desired = (desired + sep * 1.6 + av).normalized() if (desired + sep * 1.6 + av).length() > 0.01 else desired
 		elif sep.length() > 0.05:  # parked bots shuffle apart

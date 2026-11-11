@@ -456,7 +456,7 @@ func try_interact(p: Patch) -> void:
 	if ia and ia.try_use(p.global_position):
 		return
 	var fs: FirstSeed = w.get("first_seed")
-	if fs and fs.near_tin(p.global_position):  # the Maker seed tin in the greenhouse
+	if fs and fs.near_tin(p.global_position):  # the Settler seed tin in the greenhouse
 		fs.take_tin()
 		return
 	var cmp: Composter = w.get("composter")
@@ -671,7 +671,7 @@ func _attach_extras() -> void:
 		ex.nursery.set("center", ex.nursery.global_position)
 
 
-## The Act 3 opener (story/first_seed.gd): the ruined greenhouse with the Maker seed tin, on a free
+## The Act 3 opener (story/first_seed.gd): the ruined greenhouse with the Settler seed tin, on a free
 ## spot east of the start yard (FirstSeed.find_spot; the site's colliders must be in the physics
 ## space first, so it waits two physics frames).
 func _attach_first_seed() -> void:

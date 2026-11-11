@@ -6,7 +6,7 @@
   "planets": [
     {"id": "verdance", "name": "Verdance", "type": "verdance", "seed": 4471, "mods": [], "nav": 0, "needs_tech": [["deep_drill", 0.68], ["tide_pump", 0.8], ["heat_core", 0.9], ["cryo_beacon", 0.97]],
       "leave": {"hubs": 6, "hub_level": 2, "toast": "Six stations awake, Lumi. Their robots can look after Verdance now."},
-      "twist": "Home. The Makers' world, buried under the Ledger's trash. Your robots keep cleaning it while you are away.",
+      "twist": "Home. The Settlers' world, buried under the Ledger's trash. Your robots keep cleaning it while you are away.",
       "color": [0.24, 0.52, 0.3], "orbit": 1.0},
     {"id": "ochre", "name": "Ochre", "type": "desert_world", "seed": 51207, "mods": ["tailwinds", "rich_salvage"], "nav": 5, "needs_tech": [["tide_pump", 0.75], ["heat_core", 0.9]],
       "arrival": {"research_tier": 3, "robots": ["scoopie", "scoopie", "haulbug", "seedling"], "cubes": 4000, "parts": 400},
@@ -57,7 +57,7 @@
     "rime_arrive": {"kind": "memo", "header": "L E D G E R   ·   I N T E R N A L", "title": "Core tap report, Rime", "body": "RIME DEEP CORE TAP\n\nHeat extracted and sold: all of it.\nSurface temperature: falling (expected).\nLakes: freezing (expected).\nPopulation: relocated (see invoice).\n\nNote from Finance: the moon was not ours to keep warm."},
     "rime_half": {"kind": "log", "title": "Greenhouse keeper's diary", "body": "Day 1. The heaters are off. Moved the seedlings to the kitchen.\nDay 9. Kitchen's cold too. Wrapped them in my coat.\nDay 30. We're leaving on the last shuttle. I left the coat. And a note: please keep them warm. I know that's silly. You're a frozen moon."},
     "rime_restored": {"kind": "note", "title": "A note pinned in a thawed greenhouse", "body": "[Under the note from Day 30, a new line in bright ink:]\n\nKept them warm. They're fine. They're more than fine.\n\n— LM-1 (and WREN, who wants it known she helped)"},
-    "anvil_arrive": {"kind": "contract", "header": "L E D G E R   ·   H E A D   O F F I C E", "title": "Board minutes, the final meeting", "body": "ITEM 1: The system is spent. Motion to dissolve: carried.\nITEM 2: Clean-up costs. Motion to not: carried.\nITEM 3: The Makers' ark keeps asking about a 'charter'. Motion to ignore: carried.\nITEM 4: Audit drones to continue indefinitely, for form's sake.\n\nMeeting closed. Lights left on."},
+    "anvil_arrive": {"kind": "contract", "header": "L E D G E R   ·   H E A D   O F F I C E", "title": "Board minutes, the final meeting", "body": "ITEM 1: The system is spent. Motion to dissolve: carried.\nITEM 2: Clean-up costs. Motion to not: carried.\nITEM 3: The Settlers' ark keeps asking about a 'charter'. Motion to ignore: carried.\nITEM 4: Audit drones to continue indefinitely, for form's sake.\n\nMeeting closed. Lights left on."},
     "anvil_half": {"kind": "memo", "title": "The last audit", "body": "LEDGER AUDIT UNIT 0001\nSUBJECT: Anvil foundry district\nFINDING: Unauthorised gardens. 214 counts.\nFINDING: Unauthorised gardens. 215 counts.\nFINDING: ...\nRECOMMENDATION: Recommend we stop counting. It is rather nice."},
     "anvil_restored": {"kind": "letter", "title": "From the Ledger's last clerk", "body": "Whoever you are,\n\nI kept the books for forty years. I wrote down every ton we took. I never wrote down what we left.\n\nIf you're reading this in a garden on Anvil, then someone finally balanced the account. Thank you.\n\n— T. Hale, Accounts"}
   }
