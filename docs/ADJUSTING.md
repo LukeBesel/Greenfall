@@ -30,7 +30,6 @@ steps, the wake, the field bench, HUD lines). Check with
 `godot --headless --path . -- --fresh --orbit --no-intro --rocket --orbit-hop=9 --hub-dev-chain=3 --hub-report=20 --quit-after=50`
 (`--hub-wake=9,7` wakes hubs for free at start; `--hop-skip` skips the flight; `--hop-shots=PREFIX` saves pictures in a rendered run).
 A new planet gets the same by adding `hub_defaults` and `hubs` to its entry.
-<<<<<<< HEAD
 
 ## Music and sound (v6sound)
 
@@ -95,7 +94,7 @@ A new planet: add a block with its id there (and a folder if you like).
 At the end it prints a `[snd]` table: every sound, its slider group, how often it played, its
 level, the shortest time between two plays, how many came within 5 seconds of the last, and how
 many sounded at once. The full list is in `screenshots/sound_log.txt`.
-=======
+
 ## Pacing, prices and gates (v6pace)
 
 Measure after a change: `flock /tmp/gf-autoplay.lock godot --headless --path . -- --fresh --orbit --autoplay --time-scale=8 --quit-after=2700`
@@ -119,4 +118,3 @@ prints a `[card]` line per objective step and an `[arc]` line per hub, rocket ti
 | Order of the card's steps | `data/objectives.json` (story), then `data/goals.json` `goals` in file order | | The card shows the first unfinished one. Move a line to move the step. |
 | A goal's own "why" line | `data/goals.json` goal `desc` | only on "Fly to another planet" | Shown instead of "Reward: ...". |
 | Goal rewards | `data/goals.json` goal `reward` | | Paid when the step completes. |
->>>>>>> claude/kind-wright-rhxixd
