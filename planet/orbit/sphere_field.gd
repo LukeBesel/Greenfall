@@ -379,6 +379,31 @@ func _seat(pid: int, d: Vector3) -> void:
 	piece_xf[pid] = xf
 
 
+## Moves every live piece that lies in the keep-out to another spot of its own cell: for zones
+## that came after the cell was laid (a town's late footprints, standing water). A piece with no
+## free spot in KEEP_OUT_TRIES tries stays where it is. Returns how many moved.
+func clear_keep_out() -> int:
+	if not keep_out.is_valid():
+		return 0
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash([seed_value, 7717])
+	var moved: int = 0
+	for pid: int in piece_pos.size():
+		if piece_alive[pid] == 0 or hex_water[piece_hex[pid]] == 1 or not bool(keep_out.call(piece_pos[pid].normalized())):
+			continue
+		var ctr: Vector3 = grid.centers[piece_hex[pid]]
+		var f: Basis = SphereGrid.frame(ctr)
+		for _try: int in KEEP_OUT_TRIES:
+			var r: float = sqrt(rng.randf()) * hex_size * 0.92
+			var a: float = rng.randf() * TAU
+			var d: Vector3 = (ctr + (f.x * cos(a) * r + f.z * sin(a) * r) / grid.radius_m).normalized()
+			if not bool(keep_out.call(d)):
+				_seat(pid, d)
+				moved += 1
+				break
+	return moved
+
+
 ## Re-seat a cell's remaining pieces on its (shrinking) piles. Returns the pieces that moved.
 func resettle(cell: int) -> PackedInt32Array:
 	var out := PackedInt32Array()

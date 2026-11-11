@@ -31,10 +31,10 @@ func build(cap_material: Material) -> void:
 	var top := Vector3(0, PIPE_Y, 0)
 	# The jet: tight and solid where it leaves the pipe, tearing open as it climbs and slows.
 	broken.add_child(_water("Jet", top, [Vector2(0.34, 0.0), Vector2(0.4, 2.0), Vector2(0.5, 6.0), Vector2(0.8, 10.0), Vector2(1.5, 12.8), Vector2(2.3, JET_H)],
-		{"speed": 2.6, "density": 0.86, "opacity": 0.96, "grain": Vector2(8.0, 3.2), "fade_out": 0.22}))
+		{"speed": 2.6, "density": 0.98, "opacity": 1.0, "grain": Vector2(8.0, 3.2), "fade_out": 0.22}))
 	# A looser skin round it, so the column is never one clean tube.
 	broken.add_child(_water("JetSkin", top, [Vector2(0.5, 0.2), Vector2(0.62, 3.0), Vector2(0.85, 7.5), Vector2(1.5, 11.5), Vector2(2.6, 13.6)],
-		{"speed": 2.0, "density": 0.5, "opacity": 0.7, "grain": Vector2(11.0, 2.4), "fade_out": 0.35}))
+		{"speed": 2.0, "density": 0.62, "opacity": 0.8, "grain": Vector2(11.0, 2.4), "fade_out": 0.35}))
 	# The water coming back down: a bell from the head of the jet to the ground.
 	broken.add_child(_water("Curtain", Vector3.ZERO, [Vector2(1.2, PIPE_Y + JET_H - 0.4), Vector2(2.7, PIPE_Y + JET_H - 1.2), Vector2(3.7, 12.0), Vector2(4.4, 8.0), Vector2(4.9, 3.5), Vector2(5.2, 0.1)],
 		{"speed": 1.5, "density": 0.42, "opacity": 0.55, "grain": Vector2(26.0, 2.0), "fade_out": 0.1, "fade_in": 0.12}))

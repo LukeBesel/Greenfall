@@ -36,16 +36,16 @@ func build(spots: Array[Vector2], seed_v: int, body: StaticBody3D, stats: Dictio
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_v
 	var shapes: Array[Dictionary] = shapes_cached()
-	var trunks: Array = []
+	var trunks: Array[Array] = []
 	for v: int in VARIANTS:
-		trunks.append([] as Array[Transform3D])
+		trunks.append([])
 	var blooms: Array[Transform3D] = []
 	for i: int in spots.size():
 		var p: Vector2 = spots[i]
 		var v: int = rng.randi() % VARIANTS
 		var s: float = rng.randf_range(0.85, 1.2)
 		var xf := Transform3D(Basis(Vector3.UP, rng.randf() * TAU).scaled(Vector3(s, s * rng.randf_range(0.92, 1.12), s)), Vector3(p.x, 0.02, p.y))
-		(trunks[v] as Array[Transform3D]).append(xf)
+		trunks[v].append(xf)
 		var green: Color = SPECIES[rng.randi() % SPECIES.size()]
 		var bloom := Color(0, 0, 0, 0)
 		if rng.randf() < BLOSSOM_SHARE:
@@ -64,7 +64,8 @@ func build(spots: Array[Vector2], seed_v: int, body: StaticBody3D, stats: Dictio
 	count = spots.size()
 	var bark: StandardMaterial3D = _bark_material()
 	for v: int in VARIANTS:
-		var xfs: Array[Transform3D] = trunks[v]
+		var xfs: Array[Transform3D] = []
+		xfs.assign(trunks[v])
 		if not xfs.is_empty():
 			CityOldTown.mmi_on(self, "StreetTrees%d" % v, shapes[v]["mesh"], xfs, [], bark, true, RANGE_M)
 	var leaf := ShaderMaterial.new()

@@ -9,7 +9,7 @@ render_mode blend_mix, cull_back, depth_draw_never, specular_schlick_ggx;
 uniform vec2 radii = vec2(11.0, 7.5);
 uniform vec2 source = vec2(1.0, -2.5);
 uniform float water = 1.0;
-uniform vec3 shallow : source_color = vec3(0.3, 0.62, 0.68);
+uniform vec3 shallow : source_color = vec3(0.2, 0.52, 0.64);
 uniform vec3 deep : source_color = vec3(0.07, 0.4, 0.55);
 uniform vec3 sky : source_color = vec3(0.6, 0.8, 1.0);
 uniform vec3 damp : source_color = vec3(0.13, 0.11, 0.1);

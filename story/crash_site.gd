@@ -120,7 +120,7 @@ func _build_ground() -> void:
 	_build_trench(back, side, rng)
 	# Thrown-up earth: clods along the lips' crests and scattered just outside them.
 	var dirt := StandardMaterial3D.new()
-	dirt.albedo_color = Color(0.46, 0.32, 0.2)
+	dirt.albedo_color = Color(0.42, 0.29, 0.18)
 	dirt.roughness = 1.0
 	var burnt := StandardMaterial3D.new()
 	burnt.albedo_color = Color(0.15, 0.12, 0.1)
@@ -163,10 +163,10 @@ func _build_ground() -> void:
 ## highest and the trench widest at the pod; both run out to nothing at the tail. Every section is
 ## jittered, so the lips are lumpy and the edge wanders.
 func _build_trench(back: Vector3, side: Vector3, rng: RandomNumberGenerator) -> void:
-	var soil := Color(0.5, 0.35, 0.22)
-	var crest := Color(0.6, 0.44, 0.28)
-	var scorch := Color(0.2, 0.15, 0.12)
-	var floor_c := Color(0.11, 0.09, 0.08)
+	var soil := Color(0.4, 0.27, 0.17)
+	var crest := Color(0.5, 0.35, 0.21)
+	var scorch := Color(0.16, 0.12, 0.1)
+	var floor_c := Color(0.08, 0.07, 0.065)
 	var sections: int = 26
 	var rows: Array = []  # per section: [[point, colour] x 7]
 	for i: int in sections + 1:
@@ -180,12 +180,12 @@ func _build_trench(back: Vector3, side: Vector3, rng: RandomNumberGenerator) -> 
 			var lip: float = lerpf(FURROW_LIP, 0.1, t) * fade * rng.randf_range(0.7, 1.25)
 			var foot: Vector3 = mid + side * sgn * (half + FURROW_SKIRT * rng.randf_range(0.85, 1.1))
 			var top: Vector3 = mid + side * sgn * (half + 0.32 * rng.randf_range(0.8, 1.2)) + Vector3(0, lip, 0)
-			var inner: Vector3 = mid + side * sgn * half * 0.8 + Vector3(0, 0.045, 0)
-			var part: Array = [[foot + Vector3(0, 0.012, 0), soil], [top, crest.lightened(rng.randf_range(-0.08, 0.08))], [inner, scorch]]
+			var inner: Vector3 = mid + side * sgn * half * 0.8 + Vector3(0, 0.1, 0)
+			var part: Array = [[foot + Vector3(0, 0.04, 0), soil], [top, crest.lightened(rng.randf_range(-0.08, 0.08))], [inner, scorch]]
 			if sgn > 0.0:
 				part.reverse()
 			row.append_array(part)
-		row.insert(3, [mid + Vector3(0, 0.03, 0), floor_c])
+		row.insert(3, [mid + Vector3(0, 0.085, 0), floor_c])
 		rows.append(row)
 	var st := SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)

@@ -10,7 +10,9 @@ extends Node3D
 ##                  house with a standpipe tower and a burst main fountaining over a flooded
 ##                  forecourt. set_source_state("broken" | "shut_down") switches it.
 ##   market         striped stalls along the main street
-##   street trees   dead at the start, in leaf from stage 3, flowers round them at stage 5
+##   street trees   OldTownTrees: bare at the start, in leaf from stage 3, blossom at stage 5
+##   burst main     OldTownBurst: the jet, its spray and the flooded forecourt, or the cap
+##   ground         OldTownGround: paving, lawns, shrubs and flower borders from stage 3
 ##   lake edge      a scum film along the shore until stage 4, reeds after
 ##   set_stage(0-5) the town's own regrowth: shop lights and lit rooms, clean signs, lamp heads,
 ##                  trees, the lake edge (VerdanceSite wires it to EventBus.district_stage_changed)
@@ -54,6 +56,7 @@ var station_rects: Array[Rect2] = []   # solid footprints (junk and furniture ke
 var station_at := Vector3.ZERO         # the burst main
 var stats: Dictionary = {}
 var trees: OldTownTrees
+var ground: OldTownGround
 var tree_spots: Array[Vector2] = []
 
 var _site: VerdanceSite
@@ -115,6 +118,10 @@ func plan(site: VerdanceSite) -> bool:
 		var c: Vector2 = r.get_center()
 		station_rects = [Rect2(c + Vector2(-10.5, -10.4), Vector2(16.5, 12.4)), Rect2(c + Vector2(6.3, -9.2), Vector2(4.6, 4.6))]
 		station_at = Vector3(c.x + 2.6, 0.0, c.y + 9.4)
+		var ko: YardKeepOut = site.globe_ctx.get("keep_out") as YardKeepOut
+		if ko:  # the flood shows from the start: loose junk keeps off the water
+			for d: Vector3 in OldTownBurst.KEEP_OFF:
+				ko.add_soft_disc(station_at.x + d.x, station_at.z + d.y, d.z)
 		return true
 	return false
 
@@ -137,6 +144,12 @@ func build(site: VerdanceSite) -> void:
 	_build_roofs()
 	await BuildBudget.check("oldtown:trees")
 	_build_trees()
+	await BuildBudget.check("oldtown:ground")
+	ground = OldTownGround.new()
+	ground.name = "Ground"
+	add_child(ground)
+	ground.build(_site, station_key, station_rects + _rects)
+	stats.merge(ground.stats)
 	await BuildBudget.check("oldtown:lamps")
 	_build_lamp_glow()
 	await BuildBudget.check("oldtown:shore")
@@ -179,6 +192,8 @@ func set_stage(s: int) -> void:
 		_lamp_glow.visible = stage >= 2
 	if trees:
 		trees.set_stage(stage)
+	if ground:
+		ground.set_stage(stage)
 	if _scum:
 		_scum.visible = stage < 4
 	if _reeds:
@@ -745,6 +760,6 @@ func _build_shore() -> void:
 		fm.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 		fm.roughness = 0.6
 		_scum = _mmi("ShoreScum", disc.commit(), film, [], fm, false, 260.0)
-	var grass: Array[Mesh] = PlantParts.variants("leafy_grass", 500)
+	var grass: Array[Mesh] = PlantParts.variants("grass_medium_02", 300)
 	if not reed.is_empty() and not grass.is_empty():
 		_reeds = _mmi("ShoreReeds", grass[0], reed, [], null, false, 200.0)

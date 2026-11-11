@@ -301,6 +301,9 @@ func _clear_footprints(i: int, p: SitePrefab) -> void:
 				_clear_cell(c)
 			elif field is SphereField and (field as SphereField).materialized[c] == 1:
 				print("[sites] hub 0 cell %d already had its junk when the footprints came" % c)
+		# Cells laid before the town stood: their pieces move off its footprints and keep-off zones.
+		if field is SphereField and (field as SphereField).clear_keep_out() > 0 and globe.has_method("mark_junk_dirty"):
+			globe.call("mark_junk_dirty")
 		return
 	var inv: Transform3D = (sites[i]["transform"] as Transform3D).affine_inverse()
 	for c: int in sites[i]["cells"]:
