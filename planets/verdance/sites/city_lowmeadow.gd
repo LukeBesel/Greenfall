@@ -24,6 +24,8 @@ const STAIN_A := Color(0.62, 0.14, 0.78, 0.86)
 const STAIN_B := Color(0.78, 0.94, 0.12, 0.8)
 const FUME := Color(0.8, 0.96, 0.3, 0.5)
 const FUME_END := Color(0.6, 0.9, 0.74, 0.0)
+const FLARE_FUME := Color(0.9, 0.3, 0.8, 0.7)
+const FLARE_FUME_END := Color(1.0, 0.7, 0.5, 0.0)
 const TANK_R: float = 9.0
 const TANK_WALL: float = 2.3
 const TANKS: Array[Vector2] = [Vector2(0.0, -1.0), Vector2(36.0, -1.0)]
@@ -71,8 +73,8 @@ func _build_landmark() -> void:
 		add_landmark_solid(Vector3(r.get_center().x, h * 0.5, r.get_center().y), Vector3(r.size.x, h, r.size.y))
 	place_sign(Transform3D(Basis.IDENTITY, Vector3(-36.0, 3.4, 10.32)), 0.58)
 	place_beacon(Vector3(HOUSE.end.x - 0.5, 7.6, HOUSE.end.y - 0.5), 0.2)
-	place(CityKit.smoke("FlareFume", Vector3(EGG_AT.x + 3.0, FLARE_H, EGG_AT.y + 3.6), Color(0.9, 0.3, 0.8, 0.7), Color(1.0, 0.7, 0.5, 0.0), 22, 8.0, 30.0, 1.5, 12.0,
-		Vector3(1.0, 0.0, 0.4)), STATE_BROKEN)
+	var flare := Vector3(EGG_AT.x + 3.0, FLARE_H, EGG_AT.y + 3.6)
+	place(CityKit.smoke("FlareFume", flare, FLARE_FUME, FLARE_FUME_END, 22, 8.0, 30.0, 1.5, 12.0, Vector3(1.0, 0.0, 0.4)), STATE_BROKEN)
 	# The spill: out of the cracked outfall, across the street and down the lot toward the town.
 	var stain: MeshInstance3D = CityKit.film("Stain", Vector2(11.0, 17.0), STAIN_A, STAIN_B, 0.25, false, 0.22)
 	stain.position = Vector3(OUTFALL_X - 3.0, 0.16, 24.0)
@@ -145,7 +147,7 @@ func _digester(g: BuildingDetail.Geo) -> void:
 		var a0: float = -1.1 + 2.5 * float(i) / float(rings)
 		var a1: float = -1.1 + 2.5 * float(i + 1) / float(rings)
 		g.mat(BuildingDetail.K_METAL, CORAL if i == 4 else (WHITE if i == rings - 1 else BUTTER), 0, BuildingDetail.F_HOOPS)
-		g.cyl(Transform3D(Basis.IDENTITY, c + Vector3(0, 8.4 + (sin(a0) + sin(a1)) * 3.6, 0)), cos(a1) * EGG_R, cos(a0) * EGG_R, (sin(a1) - sin(a0)) * 7.2, 18, i == rings - 1)
+		CityKit.ball_ring(g, c + Vector3(0, 8.4, 0), EGG_R, 7.2, a0, a1, 18, i == rings - 1)
 	g.mat(BuildingDetail.K_METAL, PIPE_BLUE)
 	g.cyl(Transform3D(Basis.IDENTITY, c + Vector3(0, 11.4, 0)), EGG_R + 0.7, EGG_R + 0.7, 0.12, 18)
 	g.cyl(Transform3D(Basis.IDENTITY, c + Vector3(0, 12.3, 0)), EGG_R + 0.7, EGG_R + 0.7, 0.06, 18, false)
@@ -161,7 +163,7 @@ func _digester(g: BuildingDetail.Geo) -> void:
 		var b0: float = -1.2 + 2.6 * float(i3) / 6.0
 		var b1: float = -1.2 + 2.6 * float(i3 + 1) / 6.0
 		g.mat(BuildingDetail.K_METAL, SKY if i3 == 3 else MINT, 0, BuildingDetail.F_HOOPS)
-		g.cyl(Transform3D(Basis.IDENTITY, lift + Vector3(0, LIFT_H + 3.4 + (sin(b0) + sin(b1)) * 1.9, 0)), cos(b1) * 4.0, cos(b0) * 4.0, (sin(b1) - sin(b0)) * 3.8, 16, false)
+		CityKit.ball_ring(g, lift + Vector3(0, LIFT_H + 3.4, 0), 4.0, 3.8, b0, b1, 16)
 	g.mat(BuildingDetail.K_ROOF, ROOF_RED)
 	g.cyl(Transform3D(Basis.IDENTITY, lift + Vector3(0, LIFT_H + 7.6, 0)), 0.2, 1.3, 1.6, 16)
 	# The dosing tanks in a row along the front.

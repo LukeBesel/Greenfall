@@ -121,6 +121,14 @@ static func banded(g: BuildingDetail.Geo, base: Vector3, r_bot: float, r_top: fl
 	g.cyl(Transform3D(Basis.IDENTITY, base + Vector3(0, h + 0.02, 0)), r_top * 0.82, r_top * 0.82, 0.06, segs)
 
 
+## One ring of a ball (or an egg: half_h taller than radius) round `centre`, between the
+## latitudes a0 and a1 (radians, -PI/2 at the bottom). Stack rings to plate a tank in bands.
+static func ball_ring(g: BuildingDetail.Geo, centre: Vector3, radius: float, half_h: float, a0: float, a1: float, segs: int,
+		cap: bool = false) -> void:
+	var at: Vector3 = centre + Vector3(0, (sin(a0) + sin(a1)) * 0.5 * half_h, 0)
+	g.cyl(Transform3D(Basis.IDENTITY, at), cos(a1) * radius, cos(a0) * radius, (sin(a1) - sin(a0)) * half_h, segs, cap)
+
+
 static func puff_texture() -> GradientTexture2D:
 	if _puff == null:
 		var gr := Gradient.new()

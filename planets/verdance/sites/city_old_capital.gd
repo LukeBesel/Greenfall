@@ -117,7 +117,9 @@ func _stage(g: BuildingDetail.Geo) -> void:
 	var bands: Array = [[0.0, 0.2, CREAM], [0.2, 0.27, ORANGE], [0.27, 0.62, CREAM], [0.62, 0.74, TEAL], [0.74, 1.0, CREAM]]
 	for b: Array in bands:
 		g.mat(BuildingDetail.K_METAL, b[2] as Color)
-		g.cyl(Transform3D(Basis.IDENTITY, Vector3(0, y0 + STAGE_H * (float(b[0]) + float(b[1])) * 0.5, 0)), STAGE_R, STAGE_R, STAGE_H * (float(b[1]) - float(b[0])), 20, false)
+		var from: float = float(b[0])
+		var to: float = float(b[1])
+		g.cyl(Transform3D(Basis.IDENTITY, Vector3(0, y0 + STAGE_H * (from + to) * 0.5, 0)), STAGE_R, STAGE_R, STAGE_H * (to - from), 20, false)
 	g.mat(BuildingDetail.K_DARK, Color(0.06, 0.06, 0.07))
 	g.cyl(Transform3D(Basis.IDENTITY, Vector3(0, y0 + STAGE_H - 0.1, 0)), STAGE_R - 0.15, STAGE_R - 0.15, 0.1, 20)
 	# Frames above the plating: the stage is not finished.
@@ -179,7 +181,8 @@ func _shed(g: BuildingDetail.Geo) -> void:
 	g.mat(BuildingDetail.K_FACADE, SANDSTONE, BuildingDetail.T_BRICK, BuildingDetail.F_RIBBON)
 	g.abox(Vector3(SHED.position.x, 0.0, SHED.position.y), Vector3(SHED.size.x, SHED_H, SHED.size.y), -2)
 	g.mat(BuildingDetail.K_ROOF, COPPER, 0, BuildingDetail.F_ROOF_SEAMS_X)
-	g.box(Transform3D(Basis(Vector3.RIGHT, 0.08), Vector3(SHED.get_center().x, SHED_H + 0.6, SHED.get_center().y)), Vector3(SHED.size.x + 1.0, 0.16, SHED.size.y + 1.2))
+	var sc: Vector2 = SHED.get_center()
+	g.box(Transform3D(Basis(Vector3.RIGHT, 0.08), Vector3(sc.x, SHED_H + 0.6, sc.y)), Vector3(SHED.size.x + 1.0, 0.16, SHED.size.y + 1.2))
 	g.mat(BuildingDetail.K_COPING, SANDSTONE.lightened(0.2))
 	g.abox(Vector3(SHED.position.x - 0.3, SHED_H - 0.5, SHED.position.y - 0.3), Vector3(SHED.size.x + 0.6, 0.5, SHED.size.y + 0.6))
 	g.mat(BuildingDetail.K_METAL, TEAL, 0, BuildingDetail.F_RUST)
@@ -210,8 +213,7 @@ func _sphere(g: BuildingDetail.Geo) -> void:
 		var a0: float = -PI * 0.5 + PI * float(i) / float(rings)
 		var a1: float = -PI * 0.5 + PI * float(i + 1) / float(rings)
 		g.mat(BuildingDetail.K_METAL, TANK_BLUE if i == 5 else TOWER_WHITE, 0, BuildingDetail.F_RUST if i < 3 else 0)
-		g.cyl(Transform3D(Basis.IDENTITY, SPHERE_AT + Vector3(0, (sin(a0) + sin(a1)) * 0.5 * SPHERE_R, 0)), cos(a1) * SPHERE_R, cos(a0) * SPHERE_R,
-			(sin(a1) - sin(a0)) * SPHERE_R, 18, false)
+		CityKit.ball_ring(g, SPHERE_AT, SPHERE_R, SPHERE_R, a0, a1, 18)
 	g.mat(BuildingDetail.K_METAL, TANK_BLUE.darkened(0.2))
 	for k: int in 6:
 		var a: float = TAU * float(k) / 6.0
