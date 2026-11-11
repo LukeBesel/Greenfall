@@ -9,6 +9,7 @@ static func _snap(s: Node) -> Dictionary:
 	var g: OrbitPlanet = (s.get("orbit") as SliceOrbit).globe
 	var p: Patch = s.get("patch")
 	var cd: Dictionary = g.cells.to_dict()
+	s.set_meta("rt_cells", {"junk": g.cells.junk.duplicate(), "state": g.cells.state.duplicate(), "garden": _garden_sig(s), "frame": Engine.get_process_frames()})  # [v6qa] for FAIL-INFO
 	var at: Array = g.to_dirh(p.global_position)
 	var cubes: Array = []
 	for n: Node in (s.get("_cubes_root") as Node).get_children():
@@ -54,6 +55,21 @@ static func _snap(s: Node) -> Dictionary:
 		"sky_spin": (s.get("sky_director") as SkyDirector).spin if s.get("sky_director") is SkyDirector else -1.0,  # [orbE] compared within 0.05 rad
 		"sky_clouds": snappedf((s.get("sky_director") as SkyDirector).clouds, 0.01) if s.get("sky_director") is SkyDirector else -1.0,  # [orbE]
 	}
+
+
+## [v6qa] Which cells (and garden cells) differ between the saved slice and the reloaded one.
+static func _cells_fail_info(ca: Dictionary, cb: Dictionary, g: OrbitPlanet) -> void:
+	var ja: PackedFloat32Array = ca["junk"]
+	var jb: PackedFloat32Array = cb["junk"]
+	var sa: PackedByteArray = ca["state"]
+	var sb: PackedByteArray = cb["state"]
+	var diff: Array = []
+	for c: int in mini(ja.size(), jb.size()):
+		if ja[c] != jb[c] or sa[c] != sb[c]:
+			diff.append("%d junk %.3f->%.3f state %d->%d hub %d %.0fm" % [c, ja[c], jb[c], sa[c], sb[c], int(g.field.hex_hub[c]), g.grid.great_circle_m(g.grid.centers[c], g.grid.centers[g.start_cell()])])
+	print("[roundtrip] FAIL-INFO cells: %d differ: %s" % [diff.size(), "; ".join(diff.slice(0, 12))])
+	print("[roundtrip] FAIL-INFO garden a: %s" % str(ca["garden"]))
+	print("[roundtrip] FAIL-INFO garden b: %s" % str(cb["garden"]))
 
 
 static func _outpost_state() -> String:
@@ -343,12 +359,16 @@ static func _first_seed_check(tree: SceneTree, s: Node, so: SliceOrbit, check: C
 	check.call("orbit_seed_cinematic_runs", true, fs._active and not (s.get("hud") as CanvasLayer).visible and not so.cam.input_enabled)
 	Engine.time_scale = 30.0
 	var t0: int = Time.get_ticks_msec()
+	var back: String = ""  # [v6qa] read on the frame the cinematic hands the HUD back: at 30x a later
+	# frame can already be inside another cinematic (a few game seconds pass per slow frame)
 	while (fs._active or not (s.get("hud") as CanvasLayer).visible) and Time.get_ticks_msec() - t0 < 15000:  # (the lines' timers drift a frame each)
 		await tree.process_frame
+		if back == "" and (s.get("hud") as CanvasLayer).visible:
+			back = "hud true cam %s" % str(so.cam.input_enabled)
 	Engine.time_scale = 1.0
 	check.call("orbit_seed_unlocked", true, GameState.flags.get("seeds_unlocked", false) and GameState.get_currency("seeds").to_float() > seeds0)
 	await tree.process_frame
-	check.call("orbit_seed_controls_back", "hud true cam true", "hud %s cam %s" % [str((s.get("hud") as CanvasLayer).visible), str(so.cam.input_enabled)])
+	check.call("orbit_seed_controls_back", "hud true cam true", back if back != "" else "hud %s cam %s" % [str((s.get("hud") as CanvasLayer).visible), str(so.cam.input_enabled)])
 	fcfg["hexes_needed"] = need0
 	# The compost press stands on the "composter" anchor, hidden until it's a Hub build; once
 	# built, its own model replaces the yard's stand-in, paper feeds it and it presses seeds.
@@ -631,6 +651,7 @@ static func run(rt: Node, check: Callable) -> void:
 	check.call("orbit_flat_world_untouched", false, (disk.get("world", {}) as Dictionary).has("hub_level"))
 	check.call("orbit_hub_world_saved", 2, int((((disk.get("orbit", {}) as Dictionary).get("hub_worlds", {}) as Dictionary).get("0", {}) as Dictionary).get("hub_level", 0)))
 	var s1_target: int = int(s1.get_meta("rt_target", -1))
+	var s1_cells: Dictionary = s1.get_meta("rt_cells")
 	check.call("orbit_save_has_no_flat_xz", false, JSON.stringify(GameState.orbit.get("lumi", {})).contains("\"pos\""))
 	s1.queue_free()
 	await tree.process_frame
@@ -651,6 +672,8 @@ static func run(rt: Node, check: Callable) -> void:
 			check.call("orbit_sky_spin_within_0.05", true, absf(angle_difference(float(a[k]), float(b[k]))) <= 0.05)
 			continue
 		check.call("orbit_" + k, a[k], b[k])
+	if a["cells_junk"] != b["cells_junk"] or a["cells_state"] != b["cells_state"] or a["garden"] != b["garden"]:
+		_cells_fail_info(s1_cells, s2.get_meta("rt_cells"), (s2.get("orbit") as SliceOrbit).globe)
 	var shared_b: Dictionary = SharedRoundtrip.snap(s2)
 	for k: String in shared_a:
 		check.call("shared_" + k, shared_a[k], shared_b[k])

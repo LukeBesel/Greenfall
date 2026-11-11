@@ -301,11 +301,13 @@ func _apply_builds() -> void:
 			_set_solid(n, n.visible)  # [pace2] hidden parts must not leave invisible walls (posts, roof)
 	var lamps: bool = YardBuilds.built("lamps")
 	for k: String in ["street_lamp", "street_light"]:
-		var n2: Node3D = bits.get(k) as Node3D
+		var nv2: Variant = bits.get(k)
+		var n2: Node3D = nv2 as Node3D if is_instance_valid(nv2) else null  # [v6qa] as above (soak: hub 9 after a hop)
 		if n2:
 			n2.visible = lamps and _was_shown(k)
 			_set_solid(n2, n2.visible)  # [pace2]
-	var gen: Node3D = bits.get("generator") as Node3D
+	var gv: Variant = bits.get("generator")
+	var gen: Node3D = gv as Node3D if is_instance_valid(gv) else null  # [v6qa]
 	if gen:
 		gen.visible = YardBuilds.built("generator")
 		_set_solid(gen, gen.visible)  # [pace2]
