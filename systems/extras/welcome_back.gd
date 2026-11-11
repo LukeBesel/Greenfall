@@ -1,9 +1,9 @@
 class_name WelcomeBack
 extends CanvasLayer
 ## [extras] The "welcome back" card after a break. core/offline.gd computes what the fleet baled
-## (capped at Offline.CAP_S, and by the junk the district has left, so closing and reopening the
+## (capped at Offline.cap_s(), and by the junk the district has left, so closing and reopening the
 ## game never pays twice); this adds the garden (planted slots keep growing while watered, at
-## Offline.OFFLINE_RATE; every plant blooms once, so it can't be farmed) and shows it all on one
+## Offline.rate(); every plant blooms once, so it can't be farmed) and shows it all on one
 ## small card in the minimal-HUD style: away time, the robots and what they did, cubes, plants,
 ## air. A / B / Esc / Enter closes it. scenes/slice.gd hands the payout over with `offer()`.
 
@@ -81,7 +81,7 @@ static func build_summary(res: Dictionary, garden: Dictionary, robots: Array) ->
 	if float(res.get("air", 0.0)) > 0.0:
 		rows.append({"kind": "air", "label": TranslationServer.translate("Scrubbers cleaned the air"), "value": ""})
 	var raw: float = float(res.get("away_raw", res.get("seconds", 0.0)))
-	return {"away": float(res.get("seconds", 0.0)), "capped": raw > Offline.CAP_S + 1.0, "rows": rows,
+	return {"away": float(res.get("seconds", 0.0)), "capped": raw > Offline.cap_s() + 1.0, "rows": rows,
 		"cubes": cubes, "grew": int(garden.get("grew", 0)), "bloomed": int(garden.get("bloomed", 0))}
 
 
@@ -160,7 +160,7 @@ func _ready() -> void:
 		lab.clip_text = true
 		vb.add_child(row)
 	if bool(summary.get("capped", false)):
-		var cap: Label = UITheme.label(tr("Robots work up to %d h while you're away.") % int(Offline.CAP_S / 3600.0), 12, UITheme.MUTED)
+		var cap: Label = UITheme.label(tr("Robots work up to %d h while you're away.") % int(Offline.cap_s() / 3600.0), 12, UITheme.MUTED)
 		vb.add_child(cap)
 	_btn = Button.new()
 	_btn.text = tr("Back to work")

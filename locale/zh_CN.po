@@ -54,7 +54,7 @@ msgstr "需要%s %d级"
 msgid "Needs research: %s"
 msgstr "需要研究：%s"
 
-#: autoload/Economy.gd:322 systems/research.gd:210
+#: autoload/Economy.gd:322 systems/research.gd:217
 msgid "Needs base level %d"
 msgstr "需要基地等级 %d"
 
@@ -484,20 +484,20 @@ msgstr "每 %d 个捆包送 1 个去回收炉"
 msgid "Not enough materials."
 msgstr "材料不足。"
 
-#: core/offline.gd:127 steam/demo_end_screen.gd:124 systems/extras/welcome_back.gd:56
+#: core/offline.gd:145 steam/demo_end_screen.gd:124 systems/extras/welcome_back.gd:56
 #: ui/end_screen.gd:112 ui/globe_view.gd:488 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "%d 分钟"
 
-#: core/offline.gd:128
+#: core/offline.gd:146
 msgid "While you were away (%s):"
 msgstr "你离开期间（%s）："
 
-#: core/offline.gd:130
+#: core/offline.gd:148
 msgid "The crew kept cleaning. The city is a little clearer."
 msgstr "小队一直在清理。城市又干净了一点。"
 
-#: core/offline.gd:132
+#: core/offline.gd:150
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
@@ -722,7 +722,7 @@ msgstr ""
 "堆肥压机  等级 %d\n"
 "料斗 %d%%  →  种子"
 
-#: plants/garden.gd:286
+#: plants/garden.gd:317
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "一个六角格完全恢复了。已经有小东西住在里面了。"
 
@@ -742,11 +742,15 @@ msgstr "      缺水"
 msgid "      next: %s"
 msgstr "      下一级：%s"
 
-#: plants/hex_levels.gd:251
+#: plants/hex_levels.gd:256
 msgid "HEX LV %d  %s"
 msgstr "六角格 %d 级  %s"
 
-#: plants/hex_levels.gd:255
+#: plants/hex_levels.gd:259
+msgid "+%s field data"
+msgstr ""
+
+#: plants/hex_levels.gd:264
 msgid "Hex Lv %d  %s.   %s"
 msgstr "六角格 %d 级  %s。   %s"
 
@@ -794,31 +798,31 @@ msgstr "种子用完了。开花的植物会掉落更多。"
 msgid "Watering can is empty. It fills in the base yard, by the bin."
 msgstr "洒水壶空了。在基地院子的垃圾桶旁可以加水。"
 
-#: player/patch.gd:649
+#: player/patch.gd:647
 msgid "PERFECT BALE  %s"
 msgstr "完美捆包  %s"
 
-#: player/patch.gd:655
+#: player/patch.gd:653
 msgid "OVERSTUFFED  %s"
 msgstr "塞爆了  %s"
 
-#: player/patch.gd:658
+#: player/patch.gd:656
 msgid "GOOD BALE  %s"
 msgstr "不错的捆包  %s"
 
-#: player/patch.gd:662
+#: player/patch.gd:660
 msgid "SURGE  %s"
 msgstr "冲劲  %s"
 
-#: player/patch.gd:665
+#: player/patch.gd:663
 msgid "  (streak +%d%%)"
 msgstr "  （连击 +%d%%）"
 
-#: player/patch.gd:702
+#: player/patch.gd:700
 msgid "Salvaged: %s"
 msgstr "回收：%s"
 
-#: player/patch.gd:731
+#: player/patch.gd:729
 msgid "Recovered: %s"
 msgstr "找回：%s"
 
@@ -952,7 +956,7 @@ msgid "Not enough parts"
 msgstr "零件不足"
 
 #: robots/fleet.gd:158 robots/fleet.gd:234 robots/water_net.gd:149
-#: systems/research.gd:214 systems/robot_builder.gd:356 systems/robot_builder.gd:408
+#: systems/research.gd:219 systems/robot_builder.gd:356 systems/robot_builder.gd:408
 msgid "Not enough cubes"
 msgstr "方块不足"
 
@@ -1029,7 +1033,7 @@ msgstr "正在补水：%s（%d%%）"
 msgid "base barrel"
 msgstr "基地水桶"
 
-#: robots/robot.gd:263 systems/research.gd:413
+#: robots/robot.gd:263 systems/research.gd:340
 msgid "tank"
 msgstr "水箱"
 
@@ -1165,11 +1169,11 @@ msgstr "%s %s 组装完成。它四下看了看，就开始干活了。"
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "未解锁。将基地升到 5 级才能建造发射台。"
 
-#: scenes/slice.gd:263
+#: scenes/slice.gd:266
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨 %d · %d级"
 
-#: scenes/slice.gd:263
+#: scenes/slice.gd:266
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨 %d · 废墟"
 
@@ -1677,7 +1681,7 @@ msgstr ""
 "\n"
 "Ledger 现在站在我们这边了。干扰器只是跟着音乐哼哼。"
 
-#: story/ledger.gd:305 systems/decor.gd:119 systems/research.gd:206
+#: story/ledger.gd:305 systems/decor.gd:119 systems/research.gd:213
 #: systems/robot_builder.gd:354 systems/robot_builder.gd:410 ui/stations_panel.gd:100
 msgid "Needs %s"
 msgstr "需要 %s"
@@ -2347,119 +2351,107 @@ msgstr "经帧率检测后降低"
 msgid "Graphics set to %s to keep things smooth. You can change it in Settings."
 msgstr "画质已设为%s，以保持流畅。你可以在设置中更改。"
 
-#: systems/research.gd:191
+#: systems/research.gd:198
 msgid "Unknown research"
 msgstr "未知研究"
 
-#: systems/research.gd:196
+#: systems/research.gd:203
 msgid "Already researched"
 msgstr "已研究"
 
-#: systems/research.gd:198
+#: systems/research.gd:205
 msgid "Researching now"
 msgstr "正在研究"
 
-#: systems/research.gd:200
-msgid "Already queued"
-msgstr "已在队列中"
+#: systems/research.gd:221
+msgid "Not enough Parts"
+msgstr ""
 
-#: systems/research.gd:212
-msgid "Queue is full"
-msgstr "队列已满"
-
-#: systems/research.gd:353 ui/codex_screen.gd:861
-msgid "%ds"
-msgstr "%d秒"
-
-#: systems/research.gd:400 systems/research.gd:461
+#: systems/research.gd:327 systems/research.gd:388
 msgid "Research: %s"
 msgstr "研究：%s"
 
-#: systems/research.gd:410
+#: systems/research.gd:337
 msgid "scoop reach"
 msgstr "铲子范围"
 
-#: systems/research.gd:410
+#: systems/research.gd:337
 msgid "scoop width"
 msgstr "铲子宽度"
 
-#: systems/research.gd:410
+#: systems/research.gd:337
 msgid "compartment size"
 msgstr "储物舱容量"
 
-#: systems/research.gd:411 systems/rigs.gd:57
+#: systems/research.gd:338 systems/rigs.gd:57
 msgid "bale value"
 msgstr "捆包价值"
 
-#: systems/research.gd:411
+#: systems/research.gd:338
 msgid "magnet radius"
 msgstr "磁铁半径"
 
-#: systems/research.gd:411 systems/rigs.gd:54
+#: systems/research.gd:338 systems/rigs.gd:54
 msgid "scoop speed"
 msgstr "铲子速度"
 
-#: systems/research.gd:412
-msgid "field-note cubes"
-msgstr "野外笔记方块"
+#: systems/research.gd:339
+msgid "field data"
+msgstr ""
 
-#: systems/research.gd:412
+#: systems/research.gd:339
 msgid "research speed"
 msgstr "研究速度"
 
-#: systems/research.gd:412
+#: systems/research.gd:339
 msgid "lake clarity"
 msgstr "湖水清澈度"
 
-#: systems/research.gd:413 systems/rigs.gd:55
+#: systems/research.gd:340 systems/rigs.gd:55
 msgid "speed"
 msgstr "速度"
 
-#: systems/research.gd:413
+#: systems/research.gd:340
 msgid "work rate"
 msgstr "工作效率"
 
-#: systems/research.gd:413
+#: systems/research.gd:340
 msgid "range"
 msgstr "范围"
 
-#: systems/research.gd:414
+#: systems/research.gd:341
 msgid "bale quality"
 msgstr "捆包品质"
 
-#: systems/research.gd:414
+#: systems/research.gd:341
 msgid "carry"
 msgstr "载重"
 
-#: systems/research.gd:415
+#: systems/research.gd:342
 msgid "plant growth"
 msgstr "植物生长"
 
-#: systems/research.gd:415
+#: systems/research.gd:342
 msgid "seeds per bloom"
 msgstr "每朵花的种子"
 
-#: systems/research.gd:436
+#: systems/research.gd:363
 msgid "Unlocks the %s robot"
 msgstr "解锁 %s 机器人"
 
-#: systems/research.gd:438
+#: systems/research.gd:365
 msgid "Unlocks %s seeds"
 msgstr "解锁%s种子"
 
-#: systems/research.gd:440
+#: systems/research.gd:367
 msgid "Unlocks: %s"
 msgstr "解锁：%s"
 
-#: systems/research.gd:595
-msgid "While you were away, research finished: %s."
-msgstr "你离开期间，研究完成了：%s。"
-
-#: systems/research.gd:626
+#: systems/research.gd:530
 msgid "New robot plans: %s. %s"
 msgstr "新的机器人图纸：%s。%s"
 
-#: systems/research.gd:639
+#: systems/research.gd:561
 msgid "Research complete: %s."
 msgstr "研究完成：%s。"
 
@@ -3508,6 +3500,10 @@ msgstr "%.2f 公里"
 msgid "%dm %02ds"
 msgstr "%d分%02d秒"
 
+#: ui/codex_screen.gd:861
+msgid "%ds"
+msgstr "%d秒"
+
 #: ui/command_view.gd:24
 msgid "Cleaners"
 msgstr "清洁队"
@@ -4227,93 +4223,93 @@ msgstr "已全部建成"
 msgid "Lumi reached level %d%s"
 msgstr "Lumi 达到了 %d 级%s"
 
-#: ui/hud.gd:304
+#: ui/hud.gd:305
 msgid "WREN SIGNAL   %d%%"
 msgstr "WREN 信号   %d%%"
 
-#: ui/hud.gd:333
+#: ui/hud.gd:334
 msgid "HEX  %d%% CLEAR"
 msgstr "六角格  已清理 %d%%"
 
-#: ui/hud.gd:344
+#: ui/hud.gd:345
 msgid "%s  BASE"
 msgstr "%s  基地"
 
-#: ui/hud.gd:347
+#: ui/hud.gd:348
 msgid "CARRYING %d/%d"
 msgstr "携带 %d/%d"
 
-#: ui/hud.gd:373
+#: ui/hud.gd:374
 msgid "HEX  CLEAR"
 msgstr "六角格  已清理"
 
-#: ui/hud.gd:377
+#: ui/hud.gd:378
 msgid "HEX  %s"
 msgstr "六角格  %s"
 
-#: ui/hud.gd:383
+#: ui/hud.gd:384
 msgid "  SUSTAIN %d%%"
 msgstr "  稳定 %d%%"
 
-#: ui/hud.gd:385
+#: ui/hud.gd:386
 msgid "  THIRSTY"
 msgstr "  缺水"
 
-#: ui/hud.gd:410
+#: ui/hud.gd:411
 msgid "%s · %s"
 msgstr "%s · %s"
 
-#: ui/hud.gd:412
+#: ui/hud.gd:413
 msgid "%s · %s %d%%"
 msgstr "%s · %s %d%%"
 
-#: ui/hud.gd:415
+#: ui/hud.gd:416
 msgid "%d of %d city restored"
 msgid_plural "%d of %d cities restored"
 msgstr[0] "已复原 %d / %d 座城市"
 
-#: ui/hud.gd:429
+#: ui/hud.gd:430
 msgid "MASTERY  %s"
 msgstr "熟练度  %s"
 
-#: ui/hud.gd:440
+#: ui/hud.gd:441
 msgid "%s mastery %d. Robots can work it now."
 msgstr "%s熟练度 %d。机器人现在可以处理了。"
 
-#: ui/hud.gd:442
+#: ui/hud.gd:443
 msgid "%s mastery %d. You and your crew work it faster."
 msgstr "%s熟练度 %d。你和队伍处理得更快了。"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:451
+#: ui/hud.gd:452
 msgid "%s   pick up bale"
 msgstr "%s   拿起捆包"
 
-#: ui/hud.gd:452
+#: ui/hud.gd:453
 msgid "%s   dig up part"
 msgstr "%s   挖出零件"
 
-#: ui/hud.gd:453
+#: ui/hud.gd:454
 msgid "%s   read memory shard"
 msgstr "%s   阅读记忆碎片"
 
-#: ui/hud.gd:454
+#: ui/hud.gd:455
 msgid "%s   pick up the seed tin"
 msgstr "%s   拿起种子罐"
 
-#: ui/hud.gd:455
+#: ui/hud.gd:456
 msgid "%s   set bale down"
 msgstr "%s   放下捆包"
 
-#: ui/hud.gd:456
+#: ui/hud.gd:457
 msgid "%s   workbench"
 msgstr "%s   工作台"
 
-#: ui/hud.gd:457
+#: ui/hud.gd:458
 msgid "Filling the watering can"
 msgstr "正在给洒水壶加水"
 
-#: ui/hud.gd:458
+#: ui/hud.gd:459
 msgid "Can empty. It fills in the base yard, by the bin."
 msgstr "水壶空了。在基地院子的垃圾桶旁可以加水。"
 
@@ -4975,69 +4971,109 @@ msgstr "在工作台建造储物柜后就能换上它。"
 msgid "Wearing"
 msgstr "穿戴中"
 
-#: ui/research_node_card.gd:175 ui/research_panel.gd:194
+#: ui/research_node_card.gd:180 ui/research_panel.gd:221
 msgid "Researched"
 msgstr "已研究"
 
-#: ui/research_node_card.gd:178 ui/research_panel.gd:197
-msgid "%s left"
-msgstr "剩余 %s"
+#: ui/research_node_card.gd:186
+msgid "Paused  ·  %s"
+msgstr ""
 
-#: ui/research_node_card.gd:181
-msgid "Queued  ·  %s"
-msgstr "排队中  ·  %s"
-
-#: ui/research_node_card.gd:184 ui/research_panel.gd:203
+#: ui/research_node_card.gd:189 ui/research_panel.gd:230
 msgid "%s  ·  %s"
 msgstr "%s  ·  %s"
 
-#: ui/research_panel.gd:34 data/currencies.json:currencies[cubes].short
-msgid "CUBES"
-msgstr "方块"
+#: ui/research_node_card.gd:189 ui/research_panel.gd:178 ui/research_panel.gd:230
+msgid "%d data"
+msgstr ""
 
-#: ui/research_panel.gd:41
-msgid "Research costs cubes and takes real time. It keeps going while you play or are away."
-msgstr "研究需要方块和真实时间。无论你在玩还是离开，它都会继续。"
+#: ui/research_node_card.gd:198
+msgid "%d / %d data"
+msgstr ""
 
-#: ui/research_panel.gd:60
+#: ui/research_panel.gd:7
+msgid "clean hex"
+msgstr ""
+
+#: ui/research_panel.gd:7
+msgid "mastery level"
+msgstr ""
+
+#: ui/research_panel.gd:7
+msgid "find"
+msgstr ""
+
+#: ui/research_panel.gd:8
+msgid "source step"
+msgstr ""
+
+#: ui/research_panel.gd:8
+msgid "source shut down"
+msgstr ""
+
+#: ui/research_panel.gd:8
+msgid "memory shard"
+msgstr ""
+
+#: ui/research_panel.gd:39
+msgid "FIELD DATA BANKED"
+msgstr ""
+
+#: ui/research_panel.gd:61
 msgid "RESEARCHING"
 msgstr "研究中"
 
-#: ui/research_panel.gd:163
+#: ui/research_panel.gd:166
+msgid "hex stage +%s to +%s"
+msgstr ""
+
+#: ui/research_panel.gd:170
+msgid "Work earns it: %s. It fills the active research."
+msgstr ""
+
+#: ui/research_panel.gd:189
 msgid "Nothing yet"
 msgstr "暂无"
 
-#: ui/research_panel.gd:164
+#: ui/research_panel.gd:190
 msgid "Pick a glowing card below"
 msgstr "从下方选一张发光的卡片"
 
-#: ui/research_panel.gd:169
-msgid "%s left  ·  %d%%"
-msgstr "剩余 %s  ·  %d%%"
+#: ui/research_panel.gd:195
+msgid "%s  ·  %d%%"
+msgstr ""
 
-#: ui/research_panel.gd:175
-msgid "Queue: empty  (%d slots)"
-msgstr "队列：空（%d 个位置）"
+#: ui/research_panel.gd:202
+msgid "Paused, bars kept: %s"
+msgstr ""
 
-#: ui/research_panel.gd:198 ui/research_panel.gd:201
-msgid "Press again to cancel (refund)"
-msgstr "再按一次取消（返还）"
+#: ui/research_panel.gd:202
+msgid "Fills as you clean, tend and learn."
+msgstr ""
 
-#: ui/research_panel.gd:200
-msgid "Queued #%d"
-msgstr "排队第 %d 位"
+#: ui/research_panel.gd:225
+msgid "Filling as you work"
+msgstr ""
 
-#: ui/research_panel.gd:205
+#: ui/research_panel.gd:228
+msgid "Press to switch back (paid)"
+msgstr ""
+
+#: ui/research_panel.gd:232
 msgid "Press to research"
 msgstr "按下开始研究"
 
-#: ui/research_panel.gd:205
-msgid "Press to queue"
-msgstr "按下加入队列"
+#: ui/research_panel.gd:232
+msgid "Press to switch (bars are kept)"
+msgstr ""
 
-#: ui/research_panel.gd:214
-msgid "%s cancelled. Cubes refunded."
-msgstr "%s 已取消。方块已退还。"
+#: ui/research_strip.gd:72
+msgid "RESEARCH  %s  %d/%d"
+msgstr ""
+
+#: ui/research_strip.gd:78
+msgid "RESEARCH  PICK A NODE  ·  %d DATA BANKED"
+msgstr ""
 
 #: ui/rig_panel.gd:102 ui/upgrades_screen.gd:17
 msgid "Rig"
@@ -7848,6 +7884,10 @@ msgstr "迷你无人机"
 msgid "Cubes"
 msgstr "方块"
 
+#: data/currencies.json:currencies[cubes].short
+msgid "CUBES"
+msgstr "方块"
+
 #: data/currencies.json:currencies[cubes].desc
 msgid "The main money. Sell bales at the scale. Pays for upgrades, robots, base levels, research, rockets and decorations."
 msgstr "主要货币。在磅秤上卖草捆。用于升级、机器人、基地等级、研究、火箭和装饰。"
@@ -10453,8 +10493,8 @@ msgid "Plant seeds here (tool 2)"
 msgstr "在这里播种（工具 2）"
 
 #: planets/verdance/data/hex_levels.json:levels[2].hint
-msgid "Water the sprouts so they grow"
-msgstr "给嫩芽浇水，让它们生长"
+msgid "Water it: every plant grows at once"
+msgstr ""
 
 #: planets/verdance/data/hex_levels.json:levels[3].hint
 msgid "Keep it watered for 3 min (Drip robots)"
@@ -15681,6 +15721,48 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: planets/verdance/data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Already queued"
+#~ msgstr "已在队列中"
+
+#~ msgid "Queue is full"
+#~ msgstr "队列已满"
+
+#~ msgid "field-note cubes"
+#~ msgstr "野外笔记方块"
+
+#~ msgid "While you were away, research finished: %s."
+#~ msgstr "你离开期间，研究完成了：%s。"
+
+#~ msgid "%s left"
+#~ msgstr "剩余 %s"
+
+#~ msgid "Queued  ·  %s"
+#~ msgstr "排队中  ·  %s"
+
+#~ msgid "Research costs cubes and takes real time. It keeps going while you play or are away."
+#~ msgstr "研究需要方块和真实时间。无论你在玩还是离开，它都会继续。"
+
+#~ msgid "%s left  ·  %d%%"
+#~ msgstr "剩余 %s  ·  %d%%"
+
+#~ msgid "Queue: empty  (%d slots)"
+#~ msgstr "队列：空（%d 个位置）"
+
+#~ msgid "Press again to cancel (refund)"
+#~ msgstr "再按一次取消（返还）"
+
+#~ msgid "Queued #%d"
+#~ msgstr "排队第 %d 位"
+
+#~ msgid "Press to queue"
+#~ msgstr "按下加入队列"
+
+#~ msgid "%s cancelled. Cubes refunded."
+#~ msgstr "%s 已取消。方块已退还。"
+
+#~ msgid "Water the sprouts so they grow"
+#~ msgstr "给嫩芽浇水，让它们生长"
 
 #~ msgid "Show more goals"
 #~ msgstr "显示更多目标"

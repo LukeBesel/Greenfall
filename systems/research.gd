@@ -1,14 +1,16 @@
 class_name Research
 extends Node
-## Research tree (data/research.json). Static helpers own the rules; state lives in
-## GameState.flags["research"] = {done: [ids], active: {id, start, dur}, queue: [ids]}.
-## Research runs on wall-clock unix time, so it keeps going while paused, in menus and offline.
+## Research tree (the planet's research table). Static helpers own the rules; state lives in
+## GameState.flags["research"] = {done: [ids], active: {id}, paid: [ids], progress: {id: data},
+## bank: data}. A node costs stock (cubes, and Parts where it says), paid once when it is first
+## started, and field data (systems/field_data.gd), which only work earns: the active node's bar
+## fills as Lumi works. One node is active at a time; switching keeps every node's bar. Nothing
+## runs on a clock, so time away adds no research (design spec section 6).
 ## Other systems gate on `Research.has(id)`; stat effects reach the game through Economy.stat
-## (see `stat_mod`). An instance of this node (added by the slice) awards Data and finishes
-## research while playing.
+## (see `stat_mod`). An instance of this node (added by the slice) turns work into field data.
 
 const TABLE: String = "research"
-const CURRENCY: String = "cubes"  # [money] research costs cubes (was Data) plus real time
+const CURRENCY: String = "cubes"
 
 static var _cfg: Dictionary = {}
 static var _defs: Dictionary = {}
@@ -17,8 +19,6 @@ static var _story: Array[String] = []  # [v4bots] story unlocks: in _defs, never
 static var _mods: Dictionary = {}  # stat id -> Vector2(add, mul)
 static var _mods_done: Array = []
 static var _mods_size: int = -1
-## Tests set this to drive time; < 0 means use the system clock.
-static var now_override: float = -1.0
 
 var world: Node
 var _tick: float = 0.0
@@ -59,6 +59,12 @@ static func _drop_planet_cache() -> void:
 	_mods_size = -1
 
 
+## The planet's research table.
+static func config() -> Dictionary:
+	_ensure()
+	return _cfg
+
+
 static func ids() -> Array[String]:
 	_ensure()
 	return _order
@@ -79,18 +85,9 @@ static func branches() -> Array:
 	return _cfg.get("branches", [])
 
 
-static func max_queue() -> int:
-	_ensure()
-	return int(_cfg.get("max_queue", 3))
-
-
+## Field data one kind of work pays, before bonuses (FieldData.reward).
 static func reward(kind: String) -> float:
-	_ensure()
-	return float(_cfg.get("data_rewards", {}).get(kind, 0.0))
-
-
-static func now() -> float:
-	return now_override if now_override >= 0.0 else Time.get_unix_time_from_system()
+	return FieldData.reward(kind)
 
 
 # --- State -----------------------------------------------------------------------
@@ -103,19 +100,22 @@ static func state() -> Dictionary:
 	var d: Dictionary = s
 	if not d.has("done"):
 		d["done"] = []
-	if not d.has("queue"):
-		d["queue"] = []
+	var a: Variant = d.get("active", {})
+	if d.has("queue") or (a is Dictionary and (a as Dictionary).has("start")):
+		FieldData.migrate(d, Time.get_unix_time_from_system())
 	if not d.has("active"):
 		d["active"] = {}
+	if not d.has("paid"):
+		d["paid"] = []
+	if not d.has("progress"):
+		d["progress"] = {}
+	if not d.has("bank"):
+		d["bank"] = 0.0
 	return d
 
 
 static func done_list() -> Array:
 	return state()["done"]
-
-
-static func queue() -> Array:
-	return state()["queue"]
 
 
 static func active() -> Dictionary:
@@ -136,15 +136,12 @@ static func is_active(id: String) -> bool:
 	return active_id() == id
 
 
-static func is_queued(id: String) -> bool:
-	return id in queue()
+## True when the node's stock is paid (it was started once): starting it again is free.
+static func is_paid(id: String) -> bool:
+	return id in (state()["paid"] as Array)
 
 
-static func queue_position(id: String) -> int:
-	return queue().find(id)
-
-
-## "researched" | "active" | "queued" | "available" | "locked"
+## "researched" | "active" | "paused" (started before, its bar kept) | "available" | "locked"
 static func status(id: String) -> String:
 	if has(id):
 		return "researched"
@@ -152,33 +149,43 @@ static func status(id: String) -> String:
 		return "locked"
 	if is_active(id):
 		return "active"
-	if is_queued(id):
-		return "queued"
-	return "available" if prereqs_met(id, true) else "locked"
+	if not prereqs_met(id):
+		return "locked"
+	return "paused" if is_paid(id) else "available"
 
 
 static func requires(id: String) -> Array:
 	return def(id).get("requires", [])
 
 
-## Prerequisites researched (or, with allow_pending, already running/queued ahead of this).
-static func prereqs_met(id: String, allow_pending: bool = false) -> bool:
+static func prereqs_met(id: String) -> bool:
 	for r: String in requires(id):
-		if has(r):
-			continue
-		if allow_pending and (is_active(r) or is_queued(r)):
-			continue
-		return false
+		if not has(r):
+			return false
 	return true
 
 
+## The cube part of a node's stock.
 static func cost(id: String) -> BigNum:
 	return BigNum.from_float(float(def(id).get("cost", 0)))
 
 
-## Real seconds to research, after research-speed bonuses.
-static func duration(id: String) -> float:
-	return float(def(id).get("time_s", 60)) / maxf(Designs.apply("research_speed", stat_mod("research_speed", 1.0)), 0.1)  # [skins] design buff
+## Everything a node's stock costs: {currency: amount} (cubes, and Parts where the node asks).
+static func stock(id: String) -> Dictionary:
+	var out: Dictionary = {CURRENCY: float(def(id).get("cost", 0))}
+	if float(def(id).get("parts", 0)) > 0.0:
+		out[Currencies.PARTS] = float(def(id).get("parts", 0))
+	return out
+
+
+## Field data the node needs in all.
+static func data_cost(id: String) -> float:
+	return FieldData.need(id)
+
+
+## 0..1 of a node's field data put in (1 once researched).
+static func progress(id: String) -> float:
+	return FieldData.fraction(id)
 
 
 static func can_start(id: String) -> bool:
@@ -196,130 +203,54 @@ static func reason(id: String) -> String:
 			return TranslationServer.translate("Already researched")
 		"active":
 			return TranslationServer.translate("Researching now")
-		"queued":
-			return TranslationServer.translate("Already queued")
+		"paused":
+			return ""
 		"locked":
 			var names: Array[String] = []
 			for r: String in requires(id):
-				if not has(r) and not is_active(r) and not is_queued(r):
+				if not has(r):
 					names.append(TranslationServer.translate(str(def(r).get("name", r))))
 			return TranslationServer.translate("Needs %s") % ", ".join(names)
 	# [beat] Garden robots wait for a proper base (the ~1 h garden ramp): min_base_level in data.
 	var mb: int = int(def(id).get("min_base_level", 0))
 	if mb > 0 and int(GameState.world.get("hub_level", 1)) < mb and Frontiers.bases_at_level(mb) == 0:
 		return TranslationServer.translate("Needs base level %d") % mb
-	if not active().is_empty() and queue().size() >= max_queue():
-		return TranslationServer.translate("Queue is full")
 	if not GameState.can_afford(CURRENCY, cost(id)):
 		return TranslationServer.translate("Not enough cubes")
+	if not GameState.can_afford_all(stock(id)):
+		return TranslationServer.translate("Not enough Parts")
 	return ""
 
 
-## Pays and starts (or queues) a node. Returns true on success.
-static func start(id: String, t: float = -1.0) -> bool:
+## Makes a node the active one: pays its stock the first time, keeps the bar of the node it
+## replaces and draws banked field data into it. Returns true on success.
+static func start(id: String) -> bool:
 	if not can_start(id):
 		return false
-	var at: float = now() if t < 0.0 else t
-	GameState.spend(CURRENCY, cost(id))
-	if active().is_empty():
-		_activate(id, at)
-	else:
-		queue().append(id)
+	if not is_paid(id):
+		GameState.spend_all(stock(id))
+		(state()["paid"] as Array).append(id)
+	state()["active"] = {"id": id}
+	EventBus.research_started.emit(id)
+	FieldData.feed_active()
 	return true
 
 
-static func _activate(id: String, at: float) -> void:
-	state()["active"] = {"id": id, "start": at, "dur": duration(id)}
+## Leaves the active node (its bar is kept); field data banks until a node is started.
+static func pause() -> void:
+	state()["active"] = {}
 
 
-## Cancels a running or queued node with a full refund; queued nodes that depended on it go too.
-static func cancel(id: String, t: float = -1.0) -> bool:
-	var at: float = now() if t < 0.0 else t
-	var removed: Array[String] = []
-	if is_active(id):
-		state()["active"] = {}
-		removed.append(id)
-	elif is_queued(id):
-		queue().erase(id)
-		removed.append(id)
-	else:
-		return false
-	# Cascade: drop queued nodes whose prerequisites are no longer pending or done.
-	var changed: bool = true
-	while changed:
-		changed = false
-		for q: String in queue().duplicate():
-			if not _prereqs_before(q):
-				queue().erase(q)
-				removed.append(q)
-				changed = true
-	for r: String in removed:
-		GameState.add_currency(CURRENCY, cost(r))
-	if active().is_empty():
-		_start_next(at)
-	return true
-
-
-## Prereqs are done, active, or earlier in the queue than `id`.
-static func _prereqs_before(id: String) -> bool:
-	var pos: int = queue_position(id)
-	for r: String in requires(id):
-		if has(r) or is_active(r):
-			continue
-		var rp: int = queue_position(r)
-		if rp < 0 or (pos >= 0 and rp > pos):
-			return false
-	return true
-
-
-static func _start_next(at: float) -> void:
-	while not queue().is_empty():
-		var nxt: String = str(queue().pop_front())
-		if prereqs_met(nxt):
-			_activate(nxt, at)
-			return
-		GameState.add_currency(CURRENCY, cost(nxt))  # shouldn't happen; refund to be safe
-
-
-static func progress(id: String = "", t: float = -1.0) -> float:
-	var a: Dictionary = active()
-	if a.is_empty() or (id != "" and str(a["id"]) != id):
-		return 1.0 if id != "" and has(id) else 0.0
-	var at: float = now() if t < 0.0 else t
-	return clampf((at - float(a["start"])) / maxf(float(a["dur"]), 0.001), 0.0, 1.0)
-
-
-static func remaining(t: float = -1.0) -> float:
-	var a: Dictionary = active()
-	if a.is_empty():
-		return 0.0
-	var at: float = now() if t < 0.0 else t
-	return maxf(0.0, float(a["start"]) + float(a["dur"]) - at)
-
-
-## Finishes everything that is due by time t (chains through the queue, so offline time
-## completes several nodes). Returns the ids completed, in order.
-static func update(t: float = -1.0) -> Array[String]:
-	var at: float = now() if t < 0.0 else t
-	var out: Array[String] = []
-	var guard: int = 0
-	while guard < 64:
-		guard += 1
-		var a: Dictionary = active()
-		if a.is_empty():
-			if queue().is_empty():
-				break
-			_start_next(at)
-			continue
-		var end: float = float(a["start"]) + float(a["dur"])
-		if at < end:
-			break
-		var id: String = str(a["id"])
-		state()["active"] = {}
-		_complete(id)
-		out.append(id)
-		_start_next(end)
-	return out
+## The active node's bar is full: it is researched and nothing is active.
+static func finish_active() -> void:
+	var id: String = active_id()
+	if id == "":
+		return
+	var s: Dictionary = state()
+	s["active"] = {}
+	(s["progress"] as Dictionary).erase(id)
+	(s["paid"] as Array).erase(id)
+	_complete(id)
 
 
 static func _complete(id: String) -> void:
@@ -333,6 +264,8 @@ static func _complete(id: String) -> void:
 ## Test/dev helper: mark researched immediately (no cost).
 static func grant(id: String) -> void:
 	if exists(id) and not has(id):
+		if is_active(id):
+			state()["active"] = {}
 		_complete(id)
 
 
@@ -342,15 +275,9 @@ static func grant(id: String) -> void:
 static func gift(id: String) -> void:
 	if exists(id) and not has(id):
 		done_list().append(id)
+		if is_active(id):
+			state()["active"] = {}
 		_mods_size = -1
-
-
-static func time_text(s: float) -> String:
-	var n: int = int(ceil(s))
-	if n >= 60:
-		@warning_ignore("integer_division")
-		return "%d:%02d" % [n / 60, n % 60]
-	return TranslationServer.translate("%ds") % n
 
 
 # --- Effects ---------------------------------------------------------------------
@@ -409,7 +336,7 @@ static func _num(v: float) -> String:
 const STAT_NAMES: Dictionary = {
 	"scoop_reach": "scoop reach", "scoop_width": "scoop width", "capacity": "compartment size",
 	"cube_value_mult": "bale value", "magnet_radius": "magnet radius", "scoop_rate": "scoop speed",
-	"data_gain": "field-note cubes", "research_speed": "research speed", "lake_clarity": "lake clarity",
+	"data_gain": "field data", "research_speed": "research speed", "lake_clarity": "lake clarity",
 	"speed": "speed", "work_rate": "work rate", "tank": "tank", "range": "range",
 	"efficiency": "bale quality", "carry": "carry",
 	"plant_growth": "plant growth", "seed_yield": "seeds per bloom",
@@ -546,33 +473,17 @@ static func apply_garden(garden: Node) -> void:
 		sp["weight"] = float(sp["_base_weight"]) if plant_unlocked(sp) else 0.0
 
 
-# --- Field notes ----------------------------------------------------------------------
+# --- Field data ------------------------------------------------------------------------
 
-## [money] Cubes per field note (data/research.json note_cubes; the old Data's worth).
+## [money] Cubes one old Data unit was worth (parked systems still count in it).
 static func note_cubes() -> float:
 	_ensure()
 	return float(_cfg.get("note_cubes", 10.0))
 
 
-## Cubes one field note pays (the planet's research table, note_pay). A planet that does not say
-## pays note_cubes, the worth of a note in research costs.
-static func note_pay() -> float:
-	_ensure()
-	return float(_cfg.get("note_pay", note_cubes()))
-
-
-## Logs field notes (after research bonuses): they pay cubes (note_cubes each), so the old Data
-## income is still there and research, which costs cubes now, paces as before. Returns the notes
-## logged; stats.data_earned counts notes (achievements), stats.notes_cubes the cubes paid.
-static func award_data(base: float) -> float:
-	if base <= 0.0:
-		return 0.0
-	var amt: float = stat_mod("data_gain", 1.0) * base
-	var c: float = amt * note_pay()
-	GameState.add_currency("cubes", BigNum.from_float(c))
-	GameState.inc_stat("data_earned", amt)
-	GameState.inc_stat("notes_cubes", c)
-	return amt
+## Adds field data from work (after bonuses): see FieldData.award. Returns the data added.
+static func award_data(base: float, kind: String = "") -> float:
+	return FieldData.award(base, kind)
 
 
 # --- Live node -------------------------------------------------------------------
@@ -580,19 +491,15 @@ static func award_data(base: float) -> float:
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	# Methods, not lambdas: a lambda that calls only static functions is not tied to this node, so
-	# its connection would outlive the node and every world built would pay the notes once more.
+	# its connection would outlive the node and every world built would pay the data once more.
 	EventBus.hex_cleaned.connect(_on_hex_cleaned)
-	EventBus.hex_restored.connect(_on_hex_restored)
-	for k: String in ["plants_bloomed", "shards_found", "robot_bales"]:
-		_seen[k] = float(GameState.stats.get(k, 0.0))
-	# Finish whatever completed while we were away (quietly, then one summary toast).
-	var finished: Array[String] = update()
+	EventBus.hex_level_changed.connect(_on_hex_level)
+	EventBus.mastery_gained.connect(_on_mastery)
+	EventBus.piece_found.connect(_on_piece_found)
+	EventBus.source_step_done.connect(_on_source_step)
+	EventBus.source_shut_down.connect(_on_source_shut)
 	EventBus.research_completed.connect(_on_completed)
-	if not finished.is_empty():
-		var names: Array[String] = []
-		for id: String in finished:
-			names.append(tr(str(def(id).get("name", id))))
-		(func() -> void: EventBus.toast.emit(tr("While you were away, research finished: %s.") % ", ".join(names), "story")).call_deferred()
+	_seen["shards_found"] = float(GameState.stats.get("shards_found", 0.0))
 
 
 func _process(delta: float) -> void:
@@ -600,16 +507,13 @@ func _process(delta: float) -> void:
 	if _tick < 0.5:
 		return
 	_tick = 0.0
-	update()
 	for sid: String in check_story(world):  # [v4bots] the Haul Bug / Skimmer plans arrive
 		_announce_story(sid)
-	var rewards: Dictionary = {"plants_bloomed": "plant_bloomed", "shards_found": "shard_read", "robot_bales": "robot_bale"}
-	for k: String in rewards:
-		var v: float = float(GameState.stats.get(k, 0.0))
-		var d: float = v - float(_seen.get(k, v))
-		_seen[k] = v
-		if d > 0.0:
-			award_data(d * reward(rewards[k]))
+	var v: float = float(GameState.stats.get("shards_found", 0.0))
+	var d: float = v - float(_seen.get("shards_found", v))
+	_seen["shards_found"] = v
+	if d > 0.0:
+		award_data(d * reward("shard_read"), "shard_read")
 	if world and "garden" in world and world.get("garden") != null and _garden_applied != done_list().size():
 		_garden_applied = done_list().size()
 		apply_garden(world.get("garden"))
@@ -627,11 +531,29 @@ func _announce_story(id: String) -> void:
 
 
 func _on_hex_cleaned(_hex_id: int, _pos: Vector3, _bonus: BigNum) -> void:
-	award_data(reward("hex_cleaned"))
+	award_data(reward("hex_cleaned"), "hex_cleaned")
 
 
-func _on_hex_restored(_hex_id: int) -> void:
-	award_data(reward("hex_restored"))
+## A hex reached a regrowth stage (stage 1, clean, is paid by hex_cleaned).
+func _on_hex_level(_hex_id: int, level: int) -> void:
+	if level >= 2:
+		award_data(FieldData.stage_reward(level), "hex_stage")
+
+
+func _on_mastery(_kind: String, _level: int) -> void:
+	award_data(reward("mastery_level"), "mastery_level")
+
+
+func _on_piece_found(_piece_id: String, _source: String) -> void:
+	award_data(reward("piece_found"), "piece_found")
+
+
+func _on_source_step(_district_id: String, _step: int) -> void:
+	award_data(reward("source_step"), "source_step")
+
+
+func _on_source_shut(_district_id: String) -> void:
+	award_data(reward("source_shut"), "source_shut")
 
 
 func _on_completed(id: String) -> void:

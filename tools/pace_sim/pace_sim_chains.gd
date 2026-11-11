@@ -1,8 +1,9 @@
 class_name PaceSimChains
 extends RefCounted
 ## The chains that give the player something to aim for: the story objectives (one at a time), the
-## goals (one per tier on screen), research (cubes plus real time, a short queue) and the unlocks
-## that arrive by themselves. Conditions are read from the planet's tables.
+## goals (one per tier on screen), research (stock once plus field data from work, one node at a
+## time, bars kept) and the unlocks that arrive by themselves. Conditions are read from the
+## planet's tables.
 
 const SEED_FLAG: String = "seed_signal"
 
@@ -10,10 +11,13 @@ var m: PaceSimModel
 var data: PaceSimData
 var research_done: Array[String] = []
 var research_active: String = ""
-var research_left: float = 0.0
-var research_queue: Array[String] = []
+## Nodes whose stock is paid (started once); field data put into each node so far.
+var research_paid: Array[String] = []
+var research_data: Dictionary = {}
 var research_spent: float = 0.0
-var notes_cubes: float = 0.0
+## Field data earned in all, and what waits in the bank (no node running, or past its need).
+var data_earned: float = 0.0
+var data_bank: float = 0.0
 var objective_index: int = 0
 var goals_done: Dictionary[int, bool] = {}
 ## Goals and objectives the model cannot complete (a stat or flag it does not track).
@@ -34,9 +38,8 @@ func _init(model: PaceSimModel) -> void:
 	data = model.data
 
 
-func step(dt: float) -> void:
+func step(_dt: float) -> void:
 	_side_events()
-	_research(dt)
 	_story_unlocks()
 	pay_goals()
 	_objectives()
@@ -251,8 +254,9 @@ func has_research(id: String) -> bool:
 	return id in research_done
 
 
+## Running, or started before with its bar kept (switching keeps progress: no stock to pay again).
 func research_busy(id: String) -> bool:
-	return research_active == id or id in research_queue
+	return research_active == id
 
 
 ## A node the player could start now: not a story unlock, prerequisites done, base level reached.
@@ -268,26 +272,40 @@ func research_available(id: String) -> bool:
 	return true
 
 
+## Cubes still to pay to start a node (0 once paid: switching back is free).
 func research_cost(id: String) -> float:
-	return Research.cost(id).to_float()
+	return 0.0 if id in research_paid else Research.cost(id).to_float()
 
 
+## One node at a time: room only when none is running.
 func research_room() -> bool:
-	return research_active == "" or research_queue.size() < Research.max_queue()
+	return research_active == ""
 
 
+## Pays the node's stock the first time and makes it the active one; banked field data goes in.
 func start_research(id: String) -> bool:
 	if not m.tab_open("research") or not research_available(id) or not research_room() or m.cubes < research_cost(id):
 		return false
-	m.cubes -= research_cost(id)
-	research_spent += research_cost(id)
-	m.record.purchase(m.t, "research", id, research_cost(id))
-	if research_active == "":
-		research_active = id
-		research_left = Research.duration(id)
-	else:
-		research_queue.append(id)
+	var c: float = research_cost(id)
+	if c > 0.0:
+		m.cubes -= c
+		research_spent += c
+		research_paid.append(id)
+		m.record.purchase(m.t, "research", id, c)
+	research_active = id
+	_feed_research()
 	return true
+
+
+## Field data from work (FieldData.award without the game's side effects): banked, then poured
+## into the active node.
+func add_data(base: float) -> void:
+	if base <= 0.0:
+		return
+	var amt: float = base * Research.stat_mod("data_gain", 1.0) * Research.stat_mod("research_speed", 1.0)
+	data_earned += amt
+	data_bank += amt
+	_feed_research()
 
 
 ## Research that arrives without being started (a workbench tier's gift, a story unlock).
@@ -295,25 +313,28 @@ func grant_research(id: String) -> void:
 	if has_research(id) or not Research.exists(id):
 		return
 	research_done.append(id)
+	if research_active == id:
+		research_active = ""
 	m.flags[id] = true
 	m.work.refresh_stats()
 
 
-func _research(dt: float) -> void:
+func _feed_research() -> void:
 	if research_active == "":
 		return
-	research_left -= dt
-	if research_left > 0.0:
-		return
 	var id: String = research_active
+	var need: float = Research.data_cost(id)
+	var take: float = minf(data_bank, maxf(need - float(research_data.get(id, 0.0)), 0.0))
+	research_data[id] = float(research_data.get(id, 0.0)) + take
+	data_bank -= take
+	if float(research_data[id]) < need:
+		return
 	research_active = ""
+	research_data.erase(id)
 	grant_research(id)
 	m.add_stat("research_done")
 	m.record.win(m.t, "research")
 	m.record.beat("first_research", m.t)
-	if not research_queue.is_empty():
-		research_active = research_queue.pop_front()
-		research_left = Research.duration(research_active)
 
 
 ## Plans that arrive by themselves (the research table's story_unlocks), checked every tick and

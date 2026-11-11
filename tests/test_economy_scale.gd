@@ -345,7 +345,9 @@ func test_no_reward_exceeds_three_minutes_of_city_one_income() -> void:
 		var rich: Dictionary = LumiLevel.reward_plan(lv, 1.0e9, 20000.0, true)
 		if lv <= 20:
 			assert_lte(float(rich["cubes"]), limit, "Lumi level %d at its cap" % lv)
-	assert_eq(Research.note_pay(), 0.0, "field notes pay no cubes")
+	var cubes0: float = GameState.get_currency("cubes").to_float()
+	Research.award_data(100.0, "test")
+	assert_eq(GameState.get_currency("cubes").to_float(), cubes0, "field data pays no cubes")
 	gut.p("largest one-off cube reward in city 1: %d (limit %d)" % [int(largest), int(limit)])
 
 

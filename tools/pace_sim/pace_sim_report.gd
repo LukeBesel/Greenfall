@@ -51,6 +51,8 @@ static func build(m: PaceSimModel, run_s: float) -> Dictionary:
 		notes.append("Lumi stood %.0f s in front of junk too heavy to lift" % m.work.stuck_s)
 	if m.work.region_done():
 		notes.append("the hub region ran out of dirty hexes at %d: travel to other hubs is not modelled" % m.work.hexes_done)
+	notes.append("field data: earned %.0f, %.0f in the bank at the end; research done %d" % [m.chains.data_earned, m.chains.data_bank,
+		m.chains.research_done.size()])
 	return {"beats": beats, "checks": checks, "notes": notes}
 
 

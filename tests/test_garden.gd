@@ -35,7 +35,7 @@ func test_plant_water_grow() -> void:
 	assert_eq(int(GameState.get_currency("seeds").to_float()), 4)
 	assert_eq(w.planet.state[hid], PlanetData.State.PLANTED)
 	assert_eq(w.fixture.cells.state[hid], PlanetData.State.PLANTED, "the globe's cells follow")
-	# Without water it doesn't grow.
+	# Without water it grows only at the dry rate (a quarter): no new stage in 100 s.
 	g._tick = 100.0
 	g._process(0.0)
 	assert_eq(g.slot_stage[slot], 0)

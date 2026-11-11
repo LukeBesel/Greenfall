@@ -54,7 +54,7 @@ msgstr "Necesita %s Nv %d"
 msgid "Needs research: %s"
 msgstr "Necesita investigación: %s"
 
-#: autoload/Economy.gd:322 systems/research.gd:210
+#: autoload/Economy.gd:322 systems/research.gd:217
 msgid "Needs base level %d"
 msgstr "Requiere base de nivel %d"
 
@@ -484,20 +484,20 @@ msgstr "1 de cada %d pacas a la recicladora"
 msgid "Not enough materials."
 msgstr "Materiales insuficientes."
 
-#: core/offline.gd:127 steam/demo_end_screen.gd:124 systems/extras/welcome_back.gd:56
+#: core/offline.gd:145 steam/demo_end_screen.gd:124 systems/extras/welcome_back.gd:56
 #: ui/end_screen.gd:112 ui/globe_view.gd:488 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "%d min"
 
-#: core/offline.gd:128
+#: core/offline.gd:146
 msgid "While you were away (%s):"
 msgstr "Mientras no estabas (%s):"
 
-#: core/offline.gd:130
+#: core/offline.gd:148
 msgid "The crew kept cleaning. The city is a little clearer."
 msgstr "El equipo siguió limpiando. La ciudad está un poco más despejada."
 
-#: core/offline.gd:132
+#: core/offline.gd:150
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Los depuradores filtraron el aire todo el rato. Está un poco más limpio."
 
@@ -722,7 +722,7 @@ msgstr ""
 "PRENSA DE COMPOST  Nv %d\n"
 "tolva %d%%  →  semillas"
 
-#: plants/garden.gd:286
+#: plants/garden.gd:317
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "Un hexágono está totalmente restaurado. Algo pequeñito ya vive en él."
 
@@ -742,11 +742,15 @@ msgstr "      SEDIENTO"
 msgid "      next: %s"
 msgstr "      siguiente: %s"
 
-#: plants/hex_levels.gd:251
+#: plants/hex_levels.gd:256
 msgid "HEX LV %d  %s"
 msgstr "HEX NV %d  %s"
 
-#: plants/hex_levels.gd:255
+#: plants/hex_levels.gd:259
+msgid "+%s field data"
+msgstr ""
+
+#: plants/hex_levels.gd:264
 msgid "Hex Lv %d  %s.   %s"
 msgstr "Hex Nv %d  %s.   %s"
 
@@ -794,31 +798,31 @@ msgstr "Sin semillas. Las plantas en flor dan más."
 msgid "Watering can is empty. It fills in the base yard, by the bin."
 msgstr "La regadera está vacía. Se llena en el patio de la base, junto al contenedor."
 
-#: player/patch.gd:649
+#: player/patch.gd:647
 msgid "PERFECT BALE  %s"
 msgstr "PACA PERFECTA  %s"
 
-#: player/patch.gd:655
+#: player/patch.gd:653
 msgid "OVERSTUFFED  %s"
 msgstr "REPLETA  %s"
 
-#: player/patch.gd:658
+#: player/patch.gd:656
 msgid "GOOD BALE  %s"
 msgstr "BUENA PACA  %s"
 
-#: player/patch.gd:662
+#: player/patch.gd:660
 msgid "SURGE  %s"
 msgstr "IMPULSO  %s"
 
-#: player/patch.gd:665
+#: player/patch.gd:663
 msgid "  (streak +%d%%)"
 msgstr "  (racha +%d%%)"
 
-#: player/patch.gd:702
+#: player/patch.gd:700
 msgid "Salvaged: %s"
 msgstr "Rescatado: %s"
 
-#: player/patch.gd:731
+#: player/patch.gd:729
 msgid "Recovered: %s"
 msgstr "Recuperado: %s"
 
@@ -952,7 +956,7 @@ msgid "Not enough parts"
 msgstr "No hay suficientes piezas"
 
 #: robots/fleet.gd:158 robots/fleet.gd:234 robots/water_net.gd:149
-#: systems/research.gd:214 systems/robot_builder.gd:356 systems/robot_builder.gd:408
+#: systems/research.gd:219 systems/robot_builder.gd:356 systems/robot_builder.gd:408
 msgid "Not enough cubes"
 msgstr "No hay cubos suficientes"
 
@@ -1030,7 +1034,7 @@ msgstr "recargando en: %s (%d%%)"
 msgid "base barrel"
 msgstr "barril de la base"
 
-#: robots/robot.gd:263 systems/research.gd:413
+#: robots/robot.gd:263 systems/research.gd:340
 msgid "tank"
 msgstr "tanque"
 
@@ -1166,11 +1170,11 @@ msgstr "%s %s montado. Mira a su alrededor y se pone a trabajar."
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Bloqueado. Sube tu base a nivel 5 para construir la plataforma de lanzamiento."
 
-#: scenes/slice.gd:263
+#: scenes/slice.gd:266
 msgid "OUTPOST %d · Lv%d"
 msgstr "PUESTO %d · Nv%d"
 
-#: scenes/slice.gd:263
+#: scenes/slice.gd:266
 msgid "OUTPOST %d · RUIN"
 msgstr "PUESTO %d · RUINA"
 
@@ -1678,7 +1682,7 @@ msgstr ""
 "\n"
 "El Ledger está de nuestro lado ahora. Los inhibidores solo tararean al ritmo de la música."
 
-#: story/ledger.gd:305 systems/decor.gd:119 systems/research.gd:206
+#: story/ledger.gd:305 systems/decor.gd:119 systems/research.gd:213
 #: systems/robot_builder.gd:354 systems/robot_builder.gd:410 ui/stations_panel.gd:100
 msgid "Needs %s"
 msgstr "Requiere %s"
@@ -2354,119 +2358,107 @@ msgstr "reducido tras comprobar la tasa de imágenes"
 msgid "Graphics set to %s to keep things smooth. You can change it in Settings."
 msgstr "Gráficos en %s para que todo vaya fluido. Puedes cambiarlo en Ajustes."
 
-#: systems/research.gd:191
+#: systems/research.gd:198
 msgid "Unknown research"
 msgstr "Investigación desconocida"
 
-#: systems/research.gd:196
+#: systems/research.gd:203
 msgid "Already researched"
 msgstr "Ya investigado"
 
-#: systems/research.gd:198
+#: systems/research.gd:205
 msgid "Researching now"
 msgstr "Investigando ahora"
 
-#: systems/research.gd:200
-msgid "Already queued"
-msgstr "Ya en cola"
+#: systems/research.gd:221
+msgid "Not enough Parts"
+msgstr ""
 
-#: systems/research.gd:212
-msgid "Queue is full"
-msgstr "La cola está llena"
-
-#: systems/research.gd:353 ui/codex_screen.gd:861
-msgid "%ds"
-msgstr "%d s"
-
-#: systems/research.gd:400 systems/research.gd:461
+#: systems/research.gd:327 systems/research.gd:388
 msgid "Research: %s"
 msgstr "Investigación: %s"
 
-#: systems/research.gd:410
+#: systems/research.gd:337
 msgid "scoop reach"
 msgstr "alcance de pala"
 
-#: systems/research.gd:410
+#: systems/research.gd:337
 msgid "scoop width"
 msgstr "anchura de pala"
 
-#: systems/research.gd:410
+#: systems/research.gd:337
 msgid "compartment size"
 msgstr "tamaño del compartimento"
 
-#: systems/research.gd:411 systems/rigs.gd:57
+#: systems/research.gd:338 systems/rigs.gd:57
 msgid "bale value"
 msgstr "valor de pacas"
 
-#: systems/research.gd:411
+#: systems/research.gd:338
 msgid "magnet radius"
 msgstr "radio del imán"
 
-#: systems/research.gd:411 systems/rigs.gd:54
+#: systems/research.gd:338 systems/rigs.gd:54
 msgid "scoop speed"
 msgstr "velocidad de pala"
 
-#: systems/research.gd:412
-msgid "field-note cubes"
-msgstr "cubos de notas de campo"
+#: systems/research.gd:339
+msgid "field data"
+msgstr ""
 
-#: systems/research.gd:412
+#: systems/research.gd:339
 msgid "research speed"
 msgstr "velocidad de investigación"
 
-#: systems/research.gd:412
+#: systems/research.gd:339
 msgid "lake clarity"
 msgstr "claridad del lago"
 
-#: systems/research.gd:413 systems/rigs.gd:55
+#: systems/research.gd:340 systems/rigs.gd:55
 msgid "speed"
 msgstr "velocidad"
 
-#: systems/research.gd:413
+#: systems/research.gd:340
 msgid "work rate"
 msgstr "ritmo de trabajo"
 
-#: systems/research.gd:413
+#: systems/research.gd:340
 msgid "range"
 msgstr "alcance"
 
-#: systems/research.gd:414
+#: systems/research.gd:341
 msgid "bale quality"
 msgstr "calidad de pacas"
 
-#: systems/research.gd:414
+#: systems/research.gd:341
 msgid "carry"
 msgstr "carga"
 
-#: systems/research.gd:415
+#: systems/research.gd:342
 msgid "plant growth"
 msgstr "crecimiento de plantas"
 
-#: systems/research.gd:415
+#: systems/research.gd:342
 msgid "seeds per bloom"
 msgstr "semillas por flor"
 
-#: systems/research.gd:436
+#: systems/research.gd:363
 msgid "Unlocks the %s robot"
 msgstr "Desbloquea el robot %s"
 
-#: systems/research.gd:438
+#: systems/research.gd:365
 msgid "Unlocks %s seeds"
 msgstr "Desbloquea semillas: %s"
 
-#: systems/research.gd:440
+#: systems/research.gd:367
 msgid "Unlocks: %s"
 msgstr "Desbloquea: %s"
 
-#: systems/research.gd:595
-msgid "While you were away, research finished: %s."
-msgstr "Mientras no estabas, terminó una investigación: %s."
-
-#: systems/research.gd:626
+#: systems/research.gd:530
 msgid "New robot plans: %s. %s"
 msgstr "Nuevos planos de robot: %s. %s"
 
-#: systems/research.gd:639
+#: systems/research.gd:561
 msgid "Research complete: %s."
 msgstr "Investigación completada: %s."
 
@@ -3516,6 +3508,10 @@ msgstr "%.2f km"
 msgid "%dm %02ds"
 msgstr "%dm %02ds"
 
+#: ui/codex_screen.gd:861
+msgid "%ds"
+msgstr "%d s"
+
 #: ui/command_view.gd:24
 msgid "Cleaners"
 msgstr "Limpiadores"
@@ -4238,94 +4234,94 @@ msgstr "Todos construidos"
 msgid "Lumi reached level %d%s"
 msgstr "Lumi ha llegado al nivel %d%s"
 
-#: ui/hud.gd:304
+#: ui/hud.gd:305
 msgid "WREN SIGNAL   %d%%"
 msgstr "SEÑAL DE WREN   %d%%"
 
-#: ui/hud.gd:333
+#: ui/hud.gd:334
 msgid "HEX  %d%% CLEAR"
 msgstr "HEX  %d%% LIMPIO"
 
-#: ui/hud.gd:344
+#: ui/hud.gd:345
 msgid "%s  BASE"
 msgstr "BASE %s"
 
-#: ui/hud.gd:347
+#: ui/hud.gd:348
 msgid "CARRYING %d/%d"
 msgstr "CARGA %d/%d"
 
-#: ui/hud.gd:373
+#: ui/hud.gd:374
 msgid "HEX  CLEAR"
 msgstr "HEX  LIMPIO"
 
-#: ui/hud.gd:377
+#: ui/hud.gd:378
 msgid "HEX  %s"
 msgstr "HEX  %s"
 
-#: ui/hud.gd:383
+#: ui/hud.gd:384
 msgid "  SUSTAIN %d%%"
 msgstr "  SOSTENIDO %d%%"
 
-#: ui/hud.gd:385
+#: ui/hud.gd:386
 msgid "  THIRSTY"
 msgstr "  SEDIENTO"
 
-#: ui/hud.gd:410
+#: ui/hud.gd:411
 msgid "%s · %s"
 msgstr "%s · %s"
 
-#: ui/hud.gd:412
+#: ui/hud.gd:413
 msgid "%s · %s %d%%"
 msgstr "%s · %s %d%%"
 
-#: ui/hud.gd:415
+#: ui/hud.gd:416
 msgid "%d of %d city restored"
 msgid_plural "%d of %d cities restored"
 msgstr[0] "%d de %d ciudad restaurada"
 msgstr[1] "%d de %d ciudades restauradas"
 
-#: ui/hud.gd:429
+#: ui/hud.gd:430
 msgid "MASTERY  %s"
 msgstr "MAESTRÍA  %s"
 
-#: ui/hud.gd:440
+#: ui/hud.gd:441
 msgid "%s mastery %d. Robots can work it now."
 msgstr "%s: maestría %d. Los robots ya pueden trabajarlo."
 
-#: ui/hud.gd:442
+#: ui/hud.gd:443
 msgid "%s mastery %d. You and your crew work it faster."
 msgstr "%s: maestría %d. Tú y tu equipo lo trabajáis más rápido."
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:451
+#: ui/hud.gd:452
 msgid "%s   pick up bale"
 msgstr "%s   coger paca"
 
-#: ui/hud.gd:452
+#: ui/hud.gd:453
 msgid "%s   dig up part"
 msgstr "%s   desenterrar pieza"
 
-#: ui/hud.gd:453
+#: ui/hud.gd:454
 msgid "%s   read memory shard"
 msgstr "%s   leer fragmento de memoria"
 
-#: ui/hud.gd:454
+#: ui/hud.gd:455
 msgid "%s   pick up the seed tin"
 msgstr "%s   coger la lata de semillas"
 
-#: ui/hud.gd:455
+#: ui/hud.gd:456
 msgid "%s   set bale down"
 msgstr "%s   dejar paca"
 
-#: ui/hud.gd:456
+#: ui/hud.gd:457
 msgid "%s   workbench"
 msgstr "%s   banco de trabajo"
 
-#: ui/hud.gd:457
+#: ui/hud.gd:458
 msgid "Filling the watering can"
 msgstr "Llenando la regadera"
 
-#: ui/hud.gd:458
+#: ui/hud.gd:459
 msgid "Can empty. It fills in the base yard, by the bin."
 msgstr "Regadera vacía. Se llena en el patio de la base, junto al contenedor."
 
@@ -4987,69 +4983,109 @@ msgstr "Construye la Taquilla en el banco de trabajo para ponértela."
 msgid "Wearing"
 msgstr "Puesto"
 
-#: ui/research_node_card.gd:175 ui/research_panel.gd:194
+#: ui/research_node_card.gd:180 ui/research_panel.gd:221
 msgid "Researched"
 msgstr "Investigado"
 
-#: ui/research_node_card.gd:178 ui/research_panel.gd:197
-msgid "%s left"
-msgstr "Quedan %s"
+#: ui/research_node_card.gd:186
+msgid "Paused  ·  %s"
+msgstr ""
 
-#: ui/research_node_card.gd:181
-msgid "Queued  ·  %s"
-msgstr "En cola  ·  %s"
-
-#: ui/research_node_card.gd:184 ui/research_panel.gd:203
+#: ui/research_node_card.gd:189 ui/research_panel.gd:230
 msgid "%s  ·  %s"
 msgstr "%s  ·  %s"
 
-#: ui/research_panel.gd:34 data/currencies.json:currencies[cubes].short
-msgid "CUBES"
-msgstr "CUBOS"
+#: ui/research_node_card.gd:189 ui/research_panel.gd:178 ui/research_panel.gd:230
+msgid "%d data"
+msgstr ""
 
-#: ui/research_panel.gd:41
-msgid "Research costs cubes and takes real time. It keeps going while you play or are away."
-msgstr "La investigación cuesta cubos y lleva tiempo real. Sigue avanzando mientras juegas o estás fuera."
+#: ui/research_node_card.gd:198
+msgid "%d / %d data"
+msgstr ""
 
-#: ui/research_panel.gd:60
+#: ui/research_panel.gd:7
+msgid "clean hex"
+msgstr ""
+
+#: ui/research_panel.gd:7
+msgid "mastery level"
+msgstr ""
+
+#: ui/research_panel.gd:7
+msgid "find"
+msgstr ""
+
+#: ui/research_panel.gd:8
+msgid "source step"
+msgstr ""
+
+#: ui/research_panel.gd:8
+msgid "source shut down"
+msgstr ""
+
+#: ui/research_panel.gd:8
+msgid "memory shard"
+msgstr ""
+
+#: ui/research_panel.gd:39
+msgid "FIELD DATA BANKED"
+msgstr ""
+
+#: ui/research_panel.gd:61
 msgid "RESEARCHING"
 msgstr "INVESTIGANDO"
 
-#: ui/research_panel.gd:163
+#: ui/research_panel.gd:166
+msgid "hex stage +%s to +%s"
+msgstr ""
+
+#: ui/research_panel.gd:170
+msgid "Work earns it: %s. It fills the active research."
+msgstr ""
+
+#: ui/research_panel.gd:189
 msgid "Nothing yet"
 msgstr "Nada todavía"
 
-#: ui/research_panel.gd:164
+#: ui/research_panel.gd:190
 msgid "Pick a glowing card below"
 msgstr "Elige una carta brillante de abajo"
 
-#: ui/research_panel.gd:169
-msgid "%s left  ·  %d%%"
-msgstr "Quedan %s  ·  %d%%"
+#: ui/research_panel.gd:195
+msgid "%s  ·  %d%%"
+msgstr ""
 
-#: ui/research_panel.gd:175
-msgid "Queue: empty  (%d slots)"
-msgstr "Cola: vacía  (%d huecos)"
+#: ui/research_panel.gd:202
+msgid "Paused, bars kept: %s"
+msgstr ""
 
-#: ui/research_panel.gd:198 ui/research_panel.gd:201
-msgid "Press again to cancel (refund)"
-msgstr "Pulsa otra vez para cancelar (reembolso)"
+#: ui/research_panel.gd:202
+msgid "Fills as you clean, tend and learn."
+msgstr ""
 
-#: ui/research_panel.gd:200
-msgid "Queued #%d"
-msgstr "En cola n.º %d"
+#: ui/research_panel.gd:225
+msgid "Filling as you work"
+msgstr ""
 
-#: ui/research_panel.gd:205
+#: ui/research_panel.gd:228
+msgid "Press to switch back (paid)"
+msgstr ""
+
+#: ui/research_panel.gd:232
 msgid "Press to research"
 msgstr "Pulsa para investigar"
 
-#: ui/research_panel.gd:205
-msgid "Press to queue"
-msgstr "Pulsa para poner en cola"
+#: ui/research_panel.gd:232
+msgid "Press to switch (bars are kept)"
+msgstr ""
 
-#: ui/research_panel.gd:214
-msgid "%s cancelled. Cubes refunded."
-msgstr "%s cancelada. Cubos devueltos."
+#: ui/research_strip.gd:72
+msgid "RESEARCH  %s  %d/%d"
+msgstr ""
+
+#: ui/research_strip.gd:78
+msgid "RESEARCH  PICK A NODE  ·  %d DATA BANKED"
+msgstr ""
 
 #: ui/rig_panel.gd:102 ui/upgrades_screen.gd:17
 msgid "Rig"
@@ -7860,6 +7896,10 @@ msgstr "Dron diminuto"
 msgid "Cubes"
 msgstr "Cubos"
 
+#: data/currencies.json:currencies[cubes].short
+msgid "CUBES"
+msgstr "CUBOS"
+
 #: data/currencies.json:currencies[cubes].desc
 msgid "The main money. Sell bales at the scale. Pays for upgrades, robots, base levels, research, rockets and decorations."
 msgstr "El dinero principal. Vende fardos en la báscula. Paga mejoras, robots, niveles de base, investigación, cohetes y decoraciones."
@@ -10465,8 +10505,8 @@ msgid "Plant seeds here (tool 2)"
 msgstr "Planta semillas aquí (herramienta 2)"
 
 #: planets/verdance/data/hex_levels.json:levels[2].hint
-msgid "Water the sprouts so they grow"
-msgstr "Riega los brotes para que crezcan"
+msgid "Water it: every plant grows at once"
+msgstr ""
 
 #: planets/verdance/data/hex_levels.json:levels[3].hint
 msgid "Keep it watered for 3 min (Drip robots)"
@@ -15693,6 +15733,48 @@ msgstr "Ese pórtico desguazó la flota del Ledger cuando se acabó el dinero. E
 #: planets/verdance/data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un mundo de óxido, verde. Las viejas grúas tienen flores a sus pies. Las cuentas están cerradas, {name}. Las hemos cuadrado."
+
+#~ msgid "Already queued"
+#~ msgstr "Ya en cola"
+
+#~ msgid "Queue is full"
+#~ msgstr "La cola está llena"
+
+#~ msgid "field-note cubes"
+#~ msgstr "cubos de notas de campo"
+
+#~ msgid "While you were away, research finished: %s."
+#~ msgstr "Mientras no estabas, terminó una investigación: %s."
+
+#~ msgid "%s left"
+#~ msgstr "Quedan %s"
+
+#~ msgid "Queued  ·  %s"
+#~ msgstr "En cola  ·  %s"
+
+#~ msgid "Research costs cubes and takes real time. It keeps going while you play or are away."
+#~ msgstr "La investigación cuesta cubos y lleva tiempo real. Sigue avanzando mientras juegas o estás fuera."
+
+#~ msgid "%s left  ·  %d%%"
+#~ msgstr "Quedan %s  ·  %d%%"
+
+#~ msgid "Queue: empty  (%d slots)"
+#~ msgstr "Cola: vacía  (%d huecos)"
+
+#~ msgid "Press again to cancel (refund)"
+#~ msgstr "Pulsa otra vez para cancelar (reembolso)"
+
+#~ msgid "Queued #%d"
+#~ msgstr "En cola n.º %d"
+
+#~ msgid "Press to queue"
+#~ msgstr "Pulsa para poner en cola"
+
+#~ msgid "%s cancelled. Cubes refunded."
+#~ msgstr "%s cancelada. Cubos devueltos."
+
+#~ msgid "Water the sprouts so they grow"
+#~ msgstr "Riega los brotes para que crezcan"
 
 #~ msgid "Show more goals"
 #~ msgstr "Más objetivos"

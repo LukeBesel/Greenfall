@@ -1,18 +1,36 @@
 class_name Offline
 extends RefCounted
 ## Offline progress: computed from aggregated rates (never by simulating ticks).
-## Cleaners clean at OFFLINE_RATE of their online rate and earn no cubes (robots never do: design
+## Cleaners clean at rate() of their online rate and earn no cubes (robots never do: design
 ## spec section 16.1). Air scrubbers keep filtering. World geometry is not advanced offline (assumption: keeps saves simple; the
-## player still sees their own progress happen live).
+## player still sees their own progress happen live). Time away adds no research (field data
+## comes only from work: systems/field_data.gd). The rate and the cap on time away are the
+## planet's (balance table `offline`: rate, cap_h).
 
-const OFFLINE_RATE: float = 0.5
-const CAP_S: float = 8.0 * 3600.0
+## Used only when a planet's balance table has no `offline` block.
+const DEFAULT_RATE: float = 0.5
+const DEFAULT_CAP_H: float = 8.0
+
+
+## Share of their online rate robots work at while the game is closed.
+static func rate() -> float:
+	return clampf(float(_cfg().get("rate", DEFAULT_RATE)), 0.0, 1.0)
+
+
+## The most time away that counts, in seconds.
+static func cap_s() -> float:
+	return maxf(float(_cfg().get("cap_h", DEFAULT_CAP_H)), 0.0) * 3600.0
+
+
+static func _cfg() -> Dictionary:
+	var v: Variant = Economy.planet_table("balance").get("offline", {})
+	return v if v is Dictionary else {}
 
 
 ## junk_left caps the junk volume the fleet can bale offline (the district's remaining junk), so a
 ## fully clean district stops paying out (no infinite income from closing and reopening the game).
 static func compute(robots: Array, scrubbers: int, filter_per_s: float, elapsed_s: float, junk_left: float = INF) -> Dictionary:
-	var t: float = clampf(elapsed_s, 0.0, CAP_S)
+	var t: float = clampf(elapsed_s, 0.0, cap_s())
 	var units: float = 0.0
 	var haulers: int = 0
 	for r: Dictionary in robots:
@@ -22,7 +40,7 @@ static func compute(robots: Array, scrubbers: int, filter_per_s: float, elapsed_
 		if role == "haul":
 			haulers += 1
 			continue
-		units += unit_rate(type_id, tier) * t * OFFLINE_RATE
+		units += unit_rate(type_id, tier) * t * rate()
 	units = minf(units, maxf(junk_left, 0.0))
 	# Robots earn no cubes (design spec section 16.1): the time away cleans, it does not pay. The
 	# two cube keys stay in the result at zero for the welcome-back card and older callers.
@@ -38,14 +56,14 @@ static func compute(robots: Array, scrubbers: int, filter_per_s: float, elapsed_
 
 ## [orbC] Junk units one cleaner robot takes per second while it works (its online rate):
 ## seconds per piece = travel + pick, roughly 0.9 units of junk per piece. Offline earns
-## OFFLINE_RATE of this; far crews on the round planet (robots/sphere/sphere_crew.gd) earn it in
+## rate() of this; far crews on the round planet (robots/sphere/sphere_crew.gd) earn it in
 ## full. One code path for "off-screen" and "offline".
 static func unit_rate(type_id: String, tier: int) -> float:
 	return Economy.robot_stat(type_id, "scoop_rate", tier) * 0.35 * 0.9
 
 
 ## [extras] The one entry point for idle gains on a district (the welcome-back card): what `world_state` (a
-## GameState.districts entry) earns over `seconds` away. Hard cap: CAP_S of time, and the junk the
+## GameState.districts entry) earns over `seconds` away. Hard cap: cap_s() of time, and the junk the
 ## district has left. Junk already paid for offline (`world_state.offline_units`) is counted against
 ## what is left and the new units are added to it, so calling this again for the same time (or the
 ## same junk from another view) never pays twice. Does NOT add currency: call `apply()` once on the
@@ -73,14 +91,14 @@ static func simulate(world_state: Dictionary, seconds: float, junk_left: float =
 	return res
 
 
-## [extras] Planted slots keep growing while watered, at OFFLINE_RATE (moves the Garden's arrays).
+## [extras] Planted slots keep growing while watered, at rate() (moves the Garden's arrays).
 ## Slots dry out on their own water unless the fleet has a waterer. A plant blooms (and pays seeds)
 ## once, so reopening the game can't farm it. Returns {grew, bloomed, seeds, hexes}.
 static func grow_garden(g: Garden, seconds: float, waterer: bool, grow_mult: float = 1.0, seed_mult: float = 1.0) -> Dictionary:
 	var out: Dictionary = {"grew": 0, "bloomed": 0, "seeds": 0.0, "hexes": {}}
 	if g == null or seconds <= 0.0:
 		return out
-	seconds = minf(seconds, CAP_S)
+	seconds = minf(seconds, cap_s())
 	for s: int in g.slot_species.size():
 		if g.slot_species[s] < 0 or g.slot_stage[s] >= 4:
 			continue
@@ -91,7 +109,7 @@ static func grow_garden(g: Garden, seconds: float, waterer: bool, grow_mult: flo
 		if wet_s <= 0.0:
 			continue
 		var before: int = g.slot_stage[s]
-		var prog: float = g.slot_progress[s] + wet_s * OFFLINE_RATE * grow_mult / float(sp.get("grow_s", 40))
+		var prog: float = g.slot_progress[s] + wet_s * rate() * grow_mult / float(sp.get("grow_s", 40))
 		while prog >= 1.0 and g.slot_stage[s] < 4:
 			prog -= 1.0
 			g.slot_stage[s] += 1

@@ -363,7 +363,7 @@ func _handle_tools(delta: float) -> void:
 			_no_slot_ms = Time.get_ticks_msec()
 			EventBus.toast.emit(tr("Seeds need clean, open ground: not streets, kerbs or the pad."), "info")
 		if s >= 0:
-			if g.plant(s):
+			if Tending.plant_patch(g, global_position, forward()) > 0:  # a patch of plants per action
 				EventBus.hand_tended.emit(Surge.TEND_PLANT)
 				model.set_scooping(true)
 				model.shudder(0.15)
@@ -387,9 +387,7 @@ func _handle_tools(delta: float) -> void:
 		Vfx.burst("dust", spot + up() * 0.05, Color(0.6, 0.75, 0.9, 0.4), 0.3)
 		if randf() < 0.5:
 			Audio.play("steam", 1.8, -16.0)
-		var poured: Array[int] = g.planted_near(global_position, forward())
-		for slot: int in poured:
-			g.water(slot, 30.0)
+		var poured: Array[int] = Tending.hand_water(g, global_position, forward())  # the whole hex, with its burst
 		if not poured.is_empty():
 			EventBus.hand_tended.emit(Surge.TEND_WATER)
 

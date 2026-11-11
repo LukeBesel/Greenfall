@@ -51,7 +51,7 @@ msgstr "[Ñééðš %s Ļv %d ~~]"
 msgid "Needs research: %s"
 msgstr "[Ñééðš ŕéšéàŕçĥ: %s ~~~]"
 
-#: autoload/Economy.gd:322 systems/research.gd:210
+#: autoload/Economy.gd:322 systems/research.gd:217
 msgid "Needs base level %d"
 msgstr "[Ñééðš bàšé ļévéļ %d ~~~~]"
 
@@ -481,20 +481,20 @@ msgstr "[Évéŕý %dţĥ bàļé ţô ţĥé ŕéçýçļéŕ ~~~~~~~~]"
 msgid "Not enough materials."
 msgstr "[Ñôţ éñôûĝĥ màţéŕîàļš. ~~~~]"
 
-#: core/offline.gd:127 steam/demo_end_screen.gd:124 systems/extras/welcome_back.gd:56
+#: core/offline.gd:145 steam/demo_end_screen.gd:124 systems/extras/welcome_back.gd:56
 #: ui/end_screen.gd:112 ui/globe_view.gd:488 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "[%d mîñ ~]"
 
-#: core/offline.gd:128
+#: core/offline.gd:146
 msgid "While you were away (%s):"
 msgstr "[Ŵĥîļé ýôû ŵéŕé àŵàý (%s): ~~~~~~]"
 
-#: core/offline.gd:130
+#: core/offline.gd:148
 msgid "The crew kept cleaning. The city is a little clearer."
 msgstr "[Ţĥé çŕéŵ ķéþţ çļéàñîñĝ. Ţĥé çîţý îš à ļîţţļé çļéàŕéŕ. ~~~~~~~~~~~~~~~~]"
 
-#: core/offline.gd:132
+#: core/offline.gd:150
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "[Ţĥé šçŕûbbéŕš ƒîļţéŕéð ţĥé àîŕ ţĥé ŵĥôļé ţîmé. Îţ'š à ļîţţļé çļéàŕéŕ. ~~~~~~~~~~~~~~~~~~~~~]"
 
@@ -719,7 +719,7 @@ msgstr ""
 "[ÇÔMÞÔŠŢ ÞŔÉŠŠ  Ļv %d\n"
 "ĥôþþéŕ %d%%  →  šééðš ~~~~~~~~~~~~]"
 
-#: plants/garden.gd:286
+#: plants/garden.gd:317
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "[À ĥéx îš ƒûļļý ŕéšţôŕéð. Šôméţĥîñĝ šmàļļ îš àļŕéàðý ļîvîñĝ îñ îţ. ~~~~~~~~~~~~~~~~~~~~]"
 
@@ -739,11 +739,15 @@ msgstr "      [ŢĤÎŔŠŢÝ ~~]"
 msgid "      next: %s"
 msgstr "      [ñéxţ: %s ~~]"
 
-#: plants/hex_levels.gd:251
+#: plants/hex_levels.gd:256
 msgid "HEX LV %d  %s"
 msgstr "[ĤÉX ĻV %d  %s ~~]"
 
-#: plants/hex_levels.gd:255
+#: plants/hex_levels.gd:259
+msgid "+%s field data"
+msgstr "[+%s ƒîéļð ðàţà ~~]"
+
+#: plants/hex_levels.gd:264
 msgid "Hex Lv %d  %s.   %s"
 msgstr "[Ĥéx Ļv %d  %s.   %s ~~~~]"
 
@@ -791,31 +795,31 @@ msgstr "[Ôûţ ôƒ šééðš. Bļôômîñĝ þļàñţš ðŕôþ môŕé. ~
 msgid "Watering can is empty. It fills in the base yard, by the bin."
 msgstr "[Ŵàţéŕîñĝ çàñ îš émþţý. Îţ ƒîļļš îñ ţĥé bàšé ýàŕð, bý ţĥé bîñ. ~~~~~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:649
+#: player/patch.gd:647
 msgid "PERFECT BALE  %s"
 msgstr "[ÞÉŔFÉÇŢ BÀĻÉ  %s ~~~]"
 
-#: player/patch.gd:655
+#: player/patch.gd:653
 msgid "OVERSTUFFED  %s"
 msgstr "[ÔVÉŔŠŢÛFFÉÐ  %s ~~]"
 
-#: player/patch.gd:658
+#: player/patch.gd:656
 msgid "GOOD BALE  %s"
 msgstr "[ĜÔÔÐ BÀĻÉ  %s ~~]"
 
-#: player/patch.gd:662
+#: player/patch.gd:660
 msgid "SURGE  %s"
 msgstr "[ŠÛŔĜÉ  %s ~]"
 
-#: player/patch.gd:665
+#: player/patch.gd:663
 msgid "  (streak +%d%%)"
 msgstr "  [(šţŕéàķ +%d%%) ~~~]"
 
-#: player/patch.gd:702
+#: player/patch.gd:700
 msgid "Salvaged: %s"
 msgstr "[Šàļvàĝéð: %s ~]"
 
-#: player/patch.gd:731
+#: player/patch.gd:729
 msgid "Recovered: %s"
 msgstr "[Ŕéçôvéŕéð: %s ~~]"
 
@@ -949,7 +953,7 @@ msgid "Not enough parts"
 msgstr "[Ñôţ éñôûĝĥ þàŕţš ~~~]"
 
 #: robots/fleet.gd:158 robots/fleet.gd:234 robots/water_net.gd:149
-#: systems/research.gd:214 systems/robot_builder.gd:356 systems/robot_builder.gd:408
+#: systems/research.gd:219 systems/robot_builder.gd:356 systems/robot_builder.gd:408
 msgid "Not enough cubes"
 msgstr "[Ñôţ éñôûĝĥ çûbéš ~~~]"
 
@@ -1027,7 +1031,7 @@ msgstr "[ŕéƒîļļîñĝ àţ %s (%d%%) ~~~~~]"
 msgid "base barrel"
 msgstr "[bàšé bàŕŕéļ ~]"
 
-#: robots/robot.gd:263 systems/research.gd:413
+#: robots/robot.gd:263 systems/research.gd:340
 msgid "tank"
 msgstr "[ţàñķ ~]"
 
@@ -1163,11 +1167,11 @@ msgstr "[%s %s àššémbļéð. Îţ ļôôķš àŕôûñð, ţĥéñ ĝéţš
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "[Ļôçķéð. Ûþĝŕàðé ýôûŕ bàšé ţô ļévéļ 5 ţô bûîļð ţĥé ļàûñçĥ þàð. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:263
+#: scenes/slice.gd:266
 msgid "OUTPOST %d · Lv%d"
 msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 
-#: scenes/slice.gd:263
+#: scenes/slice.gd:266
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 
@@ -1675,7 +1679,7 @@ msgstr ""
 "\n"
 "[Ţĥé Ļéðĝéŕ îš ôñ ôûŕ šîðé ñôŵ. Ţĥé ĵàmméŕš ĵûšţ ĥûm àļôñĝ ţô ţĥé mûšîç. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:305 systems/decor.gd:119 systems/research.gd:206
+#: story/ledger.gd:305 systems/decor.gd:119 systems/research.gd:213
 #: systems/robot_builder.gd:354 systems/robot_builder.gd:410 ui/stations_panel.gd:100
 msgid "Needs %s"
 msgstr "[Ñééðš %s ~]"
@@ -2351,119 +2355,107 @@ msgstr "[šţéþþéð ðôŵñ àƒţéŕ à ƒŕàmé-ŕàţé çĥéçķ ~~~
 msgid "Graphics set to %s to keep things smooth. You can change it in Settings."
 msgstr "[Ĝŕàþĥîçš šéţ ţô %s ţô ķééþ ţĥîñĝš šmôôţĥ. Ýôû çàñ çĥàñĝé îţ îñ Šéţţîñĝš. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/research.gd:191
+#: systems/research.gd:198
 msgid "Unknown research"
 msgstr "[Ûñķñôŵñ ŕéšéàŕçĥ ~~~]"
 
-#: systems/research.gd:196
+#: systems/research.gd:203
 msgid "Already researched"
 msgstr "[Àļŕéàðý ŕéšéàŕçĥéð ~~~]"
 
-#: systems/research.gd:198
+#: systems/research.gd:205
 msgid "Researching now"
 msgstr "[Ŕéšéàŕçĥîñĝ ñôŵ ~~]"
 
-#: systems/research.gd:200
-msgid "Already queued"
-msgstr "[Àļŕéàðý qûéûéð ~~]"
+#: systems/research.gd:221
+msgid "Not enough Parts"
+msgstr "[Ñôţ éñôûĝĥ Þàŕţš ~~~]"
 
-#: systems/research.gd:212
-msgid "Queue is full"
-msgstr "[Qûéûé îš ƒûļļ ~~]"
-
-#: systems/research.gd:353 ui/codex_screen.gd:861
-msgid "%ds"
-msgstr "[%dš ~]"
-
-#: systems/research.gd:400 systems/research.gd:461
+#: systems/research.gd:327 systems/research.gd:388
 msgid "Research: %s"
 msgstr "[Ŕéšéàŕçĥ: %s ~]"
 
-#: systems/research.gd:410
+#: systems/research.gd:337
 msgid "scoop reach"
 msgstr "[šçôôþ ŕéàçĥ ~]"
 
-#: systems/research.gd:410
+#: systems/research.gd:337
 msgid "scoop width"
 msgstr "[šçôôþ ŵîðţĥ ~]"
 
-#: systems/research.gd:410
+#: systems/research.gd:337
 msgid "compartment size"
 msgstr "[çômþàŕţméñţ šîžé ~~~]"
 
-#: systems/research.gd:411 systems/rigs.gd:57
+#: systems/research.gd:338 systems/rigs.gd:57
 msgid "bale value"
 msgstr "[bàļé vàļûé ~]"
 
-#: systems/research.gd:411
+#: systems/research.gd:338
 msgid "magnet radius"
 msgstr "[màĝñéţ ŕàðîûš ~~]"
 
-#: systems/research.gd:411 systems/rigs.gd:54
+#: systems/research.gd:338 systems/rigs.gd:54
 msgid "scoop speed"
 msgstr "[šçôôþ šþééð ~]"
 
-#: systems/research.gd:412
-msgid "field-note cubes"
-msgstr "[ƒîéļð-ñôţé çûbéš ~~~]"
+#: systems/research.gd:339
+msgid "field data"
+msgstr "[ƒîéļð ðàţà ~]"
 
-#: systems/research.gd:412
+#: systems/research.gd:339
 msgid "research speed"
 msgstr "[ŕéšéàŕçĥ šþééð ~~]"
 
-#: systems/research.gd:412
+#: systems/research.gd:339
 msgid "lake clarity"
 msgstr "[ļàķé çļàŕîţý ~]"
 
-#: systems/research.gd:413 systems/rigs.gd:55
+#: systems/research.gd:340 systems/rigs.gd:55
 msgid "speed"
 msgstr "[šþééð ~]"
 
-#: systems/research.gd:413
+#: systems/research.gd:340
 msgid "work rate"
 msgstr "[ŵôŕķ ŕàţé ~]"
 
-#: systems/research.gd:413
+#: systems/research.gd:340
 msgid "range"
 msgstr "[ŕàñĝé ~]"
 
-#: systems/research.gd:414
+#: systems/research.gd:341
 msgid "bale quality"
 msgstr "[bàļé qûàļîţý ~]"
 
-#: systems/research.gd:414
+#: systems/research.gd:341
 msgid "carry"
 msgstr "[çàŕŕý ~]"
 
-#: systems/research.gd:415
+#: systems/research.gd:342
 msgid "plant growth"
 msgstr "[þļàñţ ĝŕôŵţĥ ~]"
 
-#: systems/research.gd:415
+#: systems/research.gd:342
 msgid "seeds per bloom"
 msgstr "[šééðš þéŕ bļôôm ~~]"
 
-#: systems/research.gd:436
+#: systems/research.gd:363
 msgid "Unlocks the %s robot"
 msgstr "[Ûñļôçķš ţĥé %s ŕôbôţ ~~~~]"
 
-#: systems/research.gd:438
+#: systems/research.gd:365
 msgid "Unlocks %s seeds"
 msgstr "[Ûñļôçķš %s šééðš ~~~]"
 
-#: systems/research.gd:440
+#: systems/research.gd:367
 msgid "Unlocks: %s"
 msgstr "[Ûñļôçķš: %s ~]"
 
-#: systems/research.gd:595
-msgid "While you were away, research finished: %s."
-msgstr "[Ŵĥîļé ýôû ŵéŕé àŵàý, ŕéšéàŕçĥ ƒîñîšĥéð: %s. ~~~~~~~~~~~~]"
-
-#: systems/research.gd:626
+#: systems/research.gd:530
 msgid "New robot plans: %s. %s"
 msgstr "[Ñéŵ ŕôbôţ þļàñš: %s. %s ~~~~~]"
 
-#: systems/research.gd:639
+#: systems/research.gd:561
 msgid "Research complete: %s."
 msgstr "[Ŕéšéàŕçĥ çômþļéţé: %s. ~~~~~]"
 
@@ -3513,6 +3505,10 @@ msgstr "[%.2f ķm ~]"
 msgid "%dm %02ds"
 msgstr "[%dm %02dš ~]"
 
+#: ui/codex_screen.gd:861
+msgid "%ds"
+msgstr "[%dš ~]"
+
 #: ui/command_view.gd:24
 msgid "Cleaners"
 msgstr "[Çļéàñéŕš ~]"
@@ -4235,94 +4231,94 @@ msgstr "[Àļļ bûîļţ ~]"
 msgid "Lumi reached level %d%s"
 msgstr "[Ļûmî ŕéàçĥéð ļévéļ %d%s ~~~~~]"
 
-#: ui/hud.gd:304
+#: ui/hud.gd:305
 msgid "WREN SIGNAL   %d%%"
 msgstr "[ŴŔÉÑ ŠÎĜÑÀĻ   %d%% ~~~]"
 
-#: ui/hud.gd:333
+#: ui/hud.gd:334
 msgid "HEX  %d%% CLEAR"
 msgstr "[ĤÉX  %d%% ÇĻÉÀŔ ~~]"
 
-#: ui/hud.gd:344
+#: ui/hud.gd:345
 msgid "%s  BASE"
 msgstr "[%s  BÀŠÉ ~]"
 
-#: ui/hud.gd:347
+#: ui/hud.gd:348
 msgid "CARRYING %d/%d"
 msgstr "[ÇÀŔŔÝÎÑĜ %d/%d ~~]"
 
-#: ui/hud.gd:373
+#: ui/hud.gd:374
 msgid "HEX  CLEAR"
 msgstr "[ĤÉX  ÇĻÉÀŔ ~]"
 
-#: ui/hud.gd:377
+#: ui/hud.gd:378
 msgid "HEX  %s"
 msgstr "[ĤÉX  %s ~]"
 
-#: ui/hud.gd:383
+#: ui/hud.gd:384
 msgid "  SUSTAIN %d%%"
 msgstr "  [ŠÛŠŢÀÎÑ %d%% ~~]"
 
-#: ui/hud.gd:385
+#: ui/hud.gd:386
 msgid "  THIRSTY"
 msgstr "  [ŢĤÎŔŠŢÝ ~]"
 
-#: ui/hud.gd:410
+#: ui/hud.gd:411
 msgid "%s · %s"
 msgstr "[%s · %s]"
 
-#: ui/hud.gd:412
+#: ui/hud.gd:413
 msgid "%s · %s %d%%"
 msgstr "[%s · %s %d%%]"
 
-#: ui/hud.gd:415
+#: ui/hud.gd:416
 msgid "%d of %d city restored"
 msgid_plural "%d of %d cities restored"
 msgstr[0] "[%d ôƒ %d çîţý ŕéšţôŕéð ~~~~~]"
 msgstr[1] "[%d ôƒ %d çîţîéš ŕéšţôŕéð ~~~~~]"
 
-#: ui/hud.gd:429
+#: ui/hud.gd:430
 msgid "MASTERY  %s"
 msgstr "[MÀŠŢÉŔÝ  %s ~]"
 
-#: ui/hud.gd:440
+#: ui/hud.gd:441
 msgid "%s mastery %d. Robots can work it now."
 msgstr "[%s màšţéŕý %d. Ŕôbôţš çàñ ŵôŕķ îţ ñôŵ. ~~~~~~~~~~]"
 
-#: ui/hud.gd:442
+#: ui/hud.gd:443
 msgid "%s mastery %d. You and your crew work it faster."
 msgstr "[%s màšţéŕý %d. Ýôû àñð ýôûŕ çŕéŵ ŵôŕķ îţ ƒàšţéŕ. ~~~~~~~~~~~~~~]"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:451
+#: ui/hud.gd:452
 msgid "%s   pick up bale"
 msgstr "[%s   þîçķ ûþ bàļé ~~~]"
 
-#: ui/hud.gd:452
+#: ui/hud.gd:453
 msgid "%s   dig up part"
 msgstr "[%s   ðîĝ ûþ þàŕţ ~~~]"
 
-#: ui/hud.gd:453
+#: ui/hud.gd:454
 msgid "%s   read memory shard"
 msgstr "[%s   ŕéàð mémôŕý šĥàŕð ~~~~~]"
 
-#: ui/hud.gd:454
+#: ui/hud.gd:455
 msgid "%s   pick up the seed tin"
 msgstr "[%s   þîçķ ûþ ţĥé šééð ţîñ ~~~~~~]"
 
-#: ui/hud.gd:455
+#: ui/hud.gd:456
 msgid "%s   set bale down"
 msgstr "[%s   šéţ bàļé ðôŵñ ~~~]"
 
-#: ui/hud.gd:456
+#: ui/hud.gd:457
 msgid "%s   workbench"
 msgstr "[%s   ŵôŕķbéñçĥ ~~]"
 
-#: ui/hud.gd:457
+#: ui/hud.gd:458
 msgid "Filling the watering can"
 msgstr "[Fîļļîñĝ ţĥé ŵàţéŕîñĝ çàñ ~~~~~]"
 
-#: ui/hud.gd:458
+#: ui/hud.gd:459
 msgid "Can empty. It fills in the base yard, by the bin."
 msgstr "[Çàñ émþţý. Îţ ƒîļļš îñ ţĥé bàšé ýàŕð, bý ţĥé bîñ. ~~~~~~~~~~~~~~]"
 
@@ -4984,69 +4980,109 @@ msgstr "[Bûîļð ţĥé Ļôçķéŕ àţ ţĥé ŵôŕķbéñçĥ ţô ŵéà
 msgid "Wearing"
 msgstr "[Ŵéàŕîñĝ ~]"
 
-#: ui/research_node_card.gd:175 ui/research_panel.gd:194
+#: ui/research_node_card.gd:180 ui/research_panel.gd:221
 msgid "Researched"
 msgstr "[Ŕéšéàŕçĥéð ~]"
 
-#: ui/research_node_card.gd:178 ui/research_panel.gd:197
-msgid "%s left"
-msgstr "[%s ļéƒţ ~]"
+#: ui/research_node_card.gd:186
+msgid "Paused  ·  %s"
+msgstr "[Þàûšéð  ·  %s ~~]"
 
-#: ui/research_node_card.gd:181
-msgid "Queued  ·  %s"
-msgstr "[Qûéûéð  ·  %s ~~]"
-
-#: ui/research_node_card.gd:184 ui/research_panel.gd:203
+#: ui/research_node_card.gd:189 ui/research_panel.gd:230
 msgid "%s  ·  %s"
 msgstr "[%s  ·  %s]"
 
-#: ui/research_panel.gd:34 data/currencies.json:currencies[cubes].short
-msgid "CUBES"
-msgstr "[ÇÛBÉŠ ~]"
+#: ui/research_node_card.gd:189 ui/research_panel.gd:178 ui/research_panel.gd:230
+msgid "%d data"
+msgstr "[%d ðàţà ~]"
 
-#: ui/research_panel.gd:41
-msgid "Research costs cubes and takes real time. It keeps going while you play or are away."
-msgstr "[Ŕéšéàŕçĥ çôšţš çûbéš àñð ţàķéš ŕéàļ ţîmé. Îţ ķééþš ĝôîñĝ ŵĥîļé ýôû þļàý ôŕ àŕé àŵàý. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+#: ui/research_node_card.gd:198
+msgid "%d / %d data"
+msgstr "[%d / %d ðàţà ~]"
 
-#: ui/research_panel.gd:60
+#: ui/research_panel.gd:7
+msgid "clean hex"
+msgstr "[çļéàñ ĥéx ~]"
+
+#: ui/research_panel.gd:7
+msgid "mastery level"
+msgstr "[màšţéŕý ļévéļ ~~]"
+
+#: ui/research_panel.gd:7
+msgid "find"
+msgstr "[ƒîñð ~]"
+
+#: ui/research_panel.gd:8
+msgid "source step"
+msgstr "[šôûŕçé šţéþ ~]"
+
+#: ui/research_panel.gd:8
+msgid "source shut down"
+msgstr "[šôûŕçé šĥûţ ðôŵñ ~~~]"
+
+#: ui/research_panel.gd:8
+msgid "memory shard"
+msgstr "[mémôŕý šĥàŕð ~]"
+
+#: ui/research_panel.gd:39
+msgid "FIELD DATA BANKED"
+msgstr "[FÎÉĻÐ ÐÀŢÀ BÀÑĶÉÐ ~~~]"
+
+#: ui/research_panel.gd:61
 msgid "RESEARCHING"
 msgstr "[ŔÉŠÉÀŔÇĤÎÑĜ ~]"
 
-#: ui/research_panel.gd:163
+#: ui/research_panel.gd:166
+msgid "hex stage +%s to +%s"
+msgstr "[ĥéx šţàĝé +%s ţô +%s ~~~~]"
+
+#: ui/research_panel.gd:170
+msgid "Work earns it: %s. It fills the active research."
+msgstr "[Ŵôŕķ éàŕñš îţ: %s. Îţ ƒîļļš ţĥé àçţîvé ŕéšéàŕçĥ. ~~~~~~~~~~~~~~]"
+
+#: ui/research_panel.gd:189
 msgid "Nothing yet"
 msgstr "[Ñôţĥîñĝ ýéţ ~]"
 
-#: ui/research_panel.gd:164
+#: ui/research_panel.gd:190
 msgid "Pick a glowing card below"
 msgstr "[Þîçķ à ĝļôŵîñĝ çàŕð béļôŵ ~~~~~~]"
 
-#: ui/research_panel.gd:169
-msgid "%s left  ·  %d%%"
-msgstr "[%s ļéƒţ  ·  %d%% ~~~]"
+#: ui/research_panel.gd:195
+msgid "%s  ·  %d%%"
+msgstr "[%s  ·  %d%%]"
 
-#: ui/research_panel.gd:175
-msgid "Queue: empty  (%d slots)"
-msgstr "[Qûéûé: émþţý  (%d šļôţš) ~~~~~]"
+#: ui/research_panel.gd:202
+msgid "Paused, bars kept: %s"
+msgstr "[Þàûšéð, bàŕš ķéþţ: %s ~~~~]"
 
-#: ui/research_panel.gd:198 ui/research_panel.gd:201
-msgid "Press again to cancel (refund)"
-msgstr "[Þŕéšš àĝàîñ ţô çàñçéļ (ŕéƒûñð) ~~~~~~~]"
+#: ui/research_panel.gd:202
+msgid "Fills as you clean, tend and learn."
+msgstr "[Fîļļš àš ýôû çļéàñ, ţéñð àñð ļéàŕñ. ~~~~~~~~~]"
 
-#: ui/research_panel.gd:200
-msgid "Queued #%d"
-msgstr "[Qûéûéð #%d ~]"
+#: ui/research_panel.gd:225
+msgid "Filling as you work"
+msgstr "[Fîļļîñĝ àš ýôû ŵôŕķ ~~~~]"
 
-#: ui/research_panel.gd:205
+#: ui/research_panel.gd:228
+msgid "Press to switch back (paid)"
+msgstr "[Þŕéšš ţô šŵîţçĥ bàçķ (þàîð) ~~~~~~]"
+
+#: ui/research_panel.gd:232
 msgid "Press to research"
 msgstr "[Þŕéšš ţô ŕéšéàŕçĥ ~~~]"
 
-#: ui/research_panel.gd:205
-msgid "Press to queue"
-msgstr "[Þŕéšš ţô qûéûé ~~]"
+#: ui/research_panel.gd:232
+msgid "Press to switch (bars are kept)"
+msgstr "[Þŕéšš ţô šŵîţçĥ (bàŕš àŕé ķéþţ) ~~~~~~~~]"
 
-#: ui/research_panel.gd:214
-msgid "%s cancelled. Cubes refunded."
-msgstr "[%s çàñçéļļéð. Çûbéš ŕéƒûñðéð. ~~~~~~~]"
+#: ui/research_strip.gd:72
+msgid "RESEARCH  %s  %d/%d"
+msgstr "[ŔÉŠÉÀŔÇĤ  %s  %d/%d ~~~~]"
+
+#: ui/research_strip.gd:78
+msgid "RESEARCH  PICK A NODE  ·  %d DATA BANKED"
+msgstr "[ŔÉŠÉÀŔÇĤ  ÞÎÇĶ À ÑÔÐÉ  ·  %d ÐÀŢÀ BÀÑĶÉÐ ~~~~~~~~~~~]"
 
 #: ui/rig_panel.gd:102 ui/upgrades_screen.gd:17
 msgid "Rig"
@@ -7857,6 +7893,10 @@ msgstr "[Ţîñý ðŕôñé ~]"
 msgid "Cubes"
 msgstr "[Çûbéš ~]"
 
+#: data/currencies.json:currencies[cubes].short
+msgid "CUBES"
+msgstr "[ÇÛBÉŠ ~]"
+
 #: data/currencies.json:currencies[cubes].desc
 msgid "The main money. Sell bales at the scale. Pays for upgrades, robots, base levels, research, rockets and decorations."
 msgstr "[Ţĥé màîñ môñéý. Šéļļ bàļéš àţ ţĥé šçàļé. Þàýš ƒôŕ ûþĝŕàðéš, ŕôbôţš, bàšé ļévéļš, ŕéšéàŕçĥ, ŕôçķéţš àñð ðéçôŕàţîôñš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
@@ -10462,8 +10502,8 @@ msgid "Plant seeds here (tool 2)"
 msgstr "[Þļàñţ šééðš ĥéŕé (ţôôļ 2) ~~~~~~]"
 
 #: planets/verdance/data/hex_levels.json:levels[2].hint
-msgid "Water the sprouts so they grow"
-msgstr "[Ŵàţéŕ ţĥé šþŕôûţš šô ţĥéý ĝŕôŵ ~~~~~~~]"
+msgid "Water it: every plant grows at once"
+msgstr "[Ŵàţéŕ îţ: évéŕý þļàñţ ĝŕôŵš àţ ôñçé ~~~~~~~~~]"
 
 #: planets/verdance/data/hex_levels.json:levels[3].hint
 msgid "Keep it watered for 3 min (Drip robots)"

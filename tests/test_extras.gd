@@ -166,14 +166,14 @@ func test_summary_rows_and_cap() -> void:
 	assert_has(kinds, "plants")
 	assert_has(kinds, "seeds")
 	assert_true(bool(s["capped"]))
-	assert_almost_eq(float(s["away"]), Offline.CAP_S, 0.01)
+	assert_almost_eq(float(s["away"]), Offline.cap_s(), 0.01)
 	assert_string_contains(WelcomeBack.fleet_text(bots), "×2")
 
 
 func test_simulate_caps_and_never_pays_twice() -> void:
 	var ws: Dictionary = {"robots": [{"type": "scoopie", "tier": 1}, {"type": "haulbug", "tier": 0}]}
 	var a: Dictionary = Offline.simulate(ws, 30.0 * 3600.0, 60.0)
-	assert_almost_eq(float(a["seconds"]), Offline.CAP_S, 0.01, "time is capped")
+	assert_almost_eq(float(a["seconds"]), Offline.cap_s(), 0.01, "time is capped")
 	assert_almost_eq(float(a["units"]), 60.0, 0.001, "and so is the junk")
 	var b: Dictionary = Offline.simulate(ws, 30.0 * 3600.0, 60.0)
 	assert_eq(float(b["units"]), 0.0, "the same junk never pays twice (telescope + welcome back)")

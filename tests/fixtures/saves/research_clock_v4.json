@@ -1,0 +1,16 @@
+{
+  "_doc": "A save from before research ran on field data (tests/test_research.gd, task M3-06): research ran on a clock with a queue. Scoop Beam is researched, Wide Beam was running (the test sets how much of its clock had passed) and Bigger Hopper was queued and paid for. The migration keeps the running node's share of its clock as field data put in and keeps the queued node paid.",
+  "version": 4,
+  "created_unix": 1793000000.0,
+  "saved_unix": 1794000000.0,
+  "currencies": {"cubes": [1.2, 3], "parts": [0.0, 0], "seeds": [0.0, 0]},
+  "upgrades": {},
+  "stats": {"hexes_cleaned": 24, "research_done": 1},
+  "flags": {
+    "research": {
+      "done": ["scoop_beam"],
+      "active": {"id": "wide_beam", "start": 1793999000.0, "dur": 60.0},
+      "queue": ["bigger_hopper"]
+    }
+  }
+}

@@ -8,7 +8,7 @@ extends RefCounted
 
 static var _data: Dictionary = {}
 ## [beat] The autoplay bot drives this from the game clock so a time-scaled run recharges at
-## game speed (like Research.now_override); < 0 means the system clock.
+## game speed; < 0 means the system clock.
 static var now_override: float = -1.0
 
 

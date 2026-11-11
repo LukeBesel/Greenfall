@@ -126,6 +126,7 @@ func _learn(units: float) -> void:
 	var level: int = MasteryRules.level_for(_mastery_cfg, _base_kind, mastery_units)
 	if level == mastery_level:
 		return
+	m.chains.add_data(FieldData.reward("mastery_level") * float(level - mastery_level))
 	mastery_level = level
 	m.record.beat("mastery_%d" % level, m.t)
 	refresh_stats()
@@ -327,12 +328,11 @@ func hex_cleaned(by_hand: bool) -> void:
 	m.record.hex(m.t, hexes_done)
 
 
-## Cubes one field note of this kind pays (Research.award_data without the side effects). The
-## total is the bot's research fund, so it is counted.
+## Field data for this kind of work (the research table's data_rewards) into the research model.
+## Field data is not money: returns the cubes it pays, which are none.
 func field_note(kind: String) -> float:
-	var paid: float = Research.stat_mod("data_gain", 1.0) * Research.reward(kind) * Research.note_pay()
-	m.chains.notes_cubes += paid
-	return paid
+	m.chains.add_data(FieldData.reward(kind))
+	return 0.0
 
 
 func _level_reward(level: int) -> float:
@@ -436,8 +436,10 @@ func _garden(dt: float) -> void:
 		return
 	_plant(dt)
 	_bloom()
-	# Growing once the first plants are part-grown; Sustained needs a waterer per drip_hexes.
-	_age(2, data.bloom_s * float(data.regrowth.get("growing_life", 0.35)), 1 << 30)
+	# Growing once the first plants are part-grown (a hand watering's burst takes a share of a stage
+	# off at once); Sustained needs a waterer per drip_hexes.
+	var stage_s: float = data.bloom_s / float(PaceSimData.GROW_STAGES - 1)
+	_age(2, maxf(data.bloom_s * float(data.regrowth.get("growing_life", 0.35)) - data.burst_stage * stage_s, 0.0), 1 << 30)
 	_age(3, float(data.regrowth.get("sustain_window_s", 180.0)), m.role_count("water") * int(data.k("drip_hexes")) - garden_count(4))
 	_stipend(dt)
 
@@ -501,10 +503,10 @@ func _promote(level: int) -> void:
 	garden[level].pop_front()
 	garden[level + 1].append(m.t)
 	m.pay(_level_reward(level + 1), "hex_level")
+	m.chains.add_data(FieldData.stage_reward(level + 1))
 	m.record.beat("hex_level_%d" % (level + 1), m.t)
 	if level + 1 >= 4:
 		m.add_stat("hexes_restored")
-		m.pay(field_note("hex_restored"))
 
 
 func _stipend(dt: float) -> void:

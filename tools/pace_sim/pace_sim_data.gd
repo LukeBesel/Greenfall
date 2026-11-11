@@ -50,6 +50,8 @@ var cell_spacing: float = 0.0
 var seeds_to_plant: float = 0.0
 var seeds_to_thrive: float = 0.0
 var bloom_s: float = 0.0
+## Share of a stage a hand watering grows at once (the regrowth table's tending.burst_stage).
+var burst_stage: float = 0.0
 var seed_yield: float = 0.0
 var objectives: Array[Dictionary] = []
 var goals: Array[Dictionary] = []
@@ -297,8 +299,13 @@ func _derive_garden(hex_area: float) -> void:
 		return
 	var slots: float = hex_area / (spacing * spacing)
 	var planted: float = float(regrowth_table().get("planted_min_frac", 0.25))
-	seeds_to_plant = ceilf(slots * planted)
-	seeds_to_thrive = ceilf(slots * maxf(float(regrowth_table().get("thriving_life", 0.8)) - planted, 0.0))
+	# [M3-06] Lumi plants a patch per action (plants/tending.gd): seeds go by patch, not by plant.
+	var tend: Dictionary = regrowth_table().get("tending", {})
+	var patch: float = maxf(float(tend.get("patch_size", 1)), 1.0)
+	var per_patch: float = float(tend.get("patch_seeds", 1.0))
+	seeds_to_plant = ceilf(slots * planted / patch) * per_patch
+	seeds_to_thrive = ceilf(slots * maxf(float(regrowth_table().get("thriving_life", 0.8)) - planted, 0.0) / patch) * per_patch
+	burst_stage = float(tend.get("burst_stage", 0.0))
 	var weight: float = 0.0
 	for row: Variant in plants.get("species", []):
 		var sp: Dictionary = row

@@ -1,7 +1,12 @@
 class_name ResearchPanel
 extends VBoxContainer
-## Workbench "Research" tab: Cubes balance [money], the active research with a progress ring and the
-## queue, a detail box for the focused node, and the node graph (5 branches x 6 tiers).
+## Workbench "Research" tab: the field data bank and what earns it, the active research with its
+## field-data ring, a detail box for the focused node, and the node graph (5 branches x 6 tiers).
+
+# l10n:begin
+const FEED_NAMES: Dictionary = {"hex_cleaned": "clean hex", "mastery_level": "mastery level", "piece_found": "find",
+	"source_step": "source step", "source_shut": "source shut down", "shard_read": "memory shard"}
+# l10n:end
 
 var _graph: Graph
 var _data_lbl: Label
@@ -24,23 +29,19 @@ func _ready() -> void:
 	var top := HBoxContainer.new()
 	top.add_theme_constant_override("separation", 12)
 	add_child(top)
-	# [money] Cubes balance (research costs cubes plus real time).
+	# The field data bank and what feeds it.
 	var dbox := _glass()
-	dbox.custom_minimum_size = Vector2(230, 100)
+	dbox.custom_minimum_size = Vector2(250, 100)
 	top.add_child(dbox)
 	var dvb := VBoxContainer.new()
 	dvb.add_theme_constant_override("separation", 2)
 	dbox.add_child(dvb)
-	dvb.add_child(UITheme.label(tr("CUBES"), 14, UITheme.MUTED))  # [ui2] readable sizes
-	var drow := HBoxContainer.new()
-	drow.add_theme_constant_override("separation", 8)
-	dvb.add_child(drow)
-	drow.add_child(CurrencyIcon.new("cubes", 30.0))
-	_data_lbl = UITheme.label("0", 30, UITheme.CREAM)
-	drow.add_child(_data_lbl)
-	var earn := UITheme.label(tr("Research costs cubes and takes real time. It keeps going while you play or are away."), 14, UITheme.MUTED)
+	dvb.add_child(UITheme.label(tr("FIELD DATA BANKED"), 14, UITheme.MUTED))  # [ui2] readable sizes
+	_data_lbl = UITheme.label("0", 26, UITheme.CREAM)
+	dvb.add_child(_data_lbl)
+	var earn := UITheme.label(feeds_text(), 14, UITheme.MUTED)
 	earn.autowrap_mode = TextServer.AUTOWRAP_WORD
-	earn.custom_minimum_size = Vector2(200, 0)
+	earn.custom_minimum_size = Vector2(230, 0)
 	dvb.add_child(earn)
 	# Active research.
 	var abox := _glass()
@@ -148,8 +149,33 @@ func _process(delta: float) -> void:
 		_update_active()
 
 
+## What earns field data, with this planet's amounts: "Work earns it: clean hex +4, hex stage
+## +1 to +4, ..." (only the kinds the planet pays for).
+static func feeds_text() -> String:
+	var rows: Array[String] = []
+	var names: Dictionary = FEED_NAMES
+	if FieldData.reward("hex_cleaned") > 0.0:
+		rows.append("%s +%s" % [TranslationServer.translate(names["hex_cleaned"]), _n(FieldData.reward("hex_cleaned"))])
+	var lo: float = INF
+	var hi: float = 0.0
+	for st: int in range(2, 6):
+		if FieldData.stage_reward(st) > 0.0:
+			lo = minf(lo, FieldData.stage_reward(st))
+			hi = maxf(hi, FieldData.stage_reward(st))
+	if hi > 0.0:
+		rows.append(TranslationServer.translate("hex stage +%s to +%s") % [_n(lo), _n(hi)])
+	for k: String in ["mastery_level", "piece_found", "source_step", "source_shut", "shard_read"]:
+		if FieldData.reward(k) > 0.0:
+			rows.append("%s +%s" % [TranslationServer.translate(names[k]), _n(FieldData.reward(k))])
+	return TranslationServer.translate("Work earns it: %s. It fills the active research.") % ", ".join(rows)
+
+
+static func _n(v: float) -> String:
+	return str(int(round(v))) if is_equal_approx(v, round(v)) else "%.1f" % v
+
+
 func refresh() -> void:
-	_data_lbl.text = Settings.fmt(GameState.get_currency(Research.CURRENCY))
+	_data_lbl.text = tr("%d data") % int(floor(FieldData.bank()))
 	for c: ResearchNodeCard in _graph.cards.values():
 		c.refresh()
 	_update_active()
@@ -166,13 +192,14 @@ func _update_active() -> void:
 		_active_ring.kind = "data"
 	else:
 		_active_name.text = tr(str(Research.def(aid).get("name", aid)))
-		_active_time.text = tr("%s left  ·  %d%%") % [Research.time_text(Research.remaining()), int(Research.progress(aid) * 100.0)]
+		_active_time.text = tr("%s  ·  %d%%") % [ResearchNodeCard.data_text(aid), int(Research.progress(aid) * 100.0)]
 		_active_ring.progress = Research.progress(aid)
 		_active_ring.kind = str(Research.def(aid).get("icon", "data"))
-	var q: Array[String] = []
-	for id: String in Research.queue():
-		q.append(tr(str(Research.def(id).get("name", id))))
-	_queue_lbl.text = ("Next: " + ", ".join(q)) if not q.is_empty() else tr("Queue: empty  (%d slots)") % Research.max_queue()
+	var paused: Array[String] = []
+	for id: String in Research.ids():
+		if Research.status(id) == "paused":
+			paused.append(tr(str(Research.def(id).get("name", id))))
+	_queue_lbl.text = (tr("Paused, bars kept: %s") % ", ".join(paused)) if not paused.is_empty() else tr("Fills as you clean, tend and learn.")
 	_active_ring.queue_redraw()
 
 
@@ -194,24 +221,23 @@ func _update_detail() -> void:
 			_d_cost.text = tr("Researched")
 			_d_hint.text = ""
 		"active":
-			_d_cost.text = tr("%s left") % Research.time_text(Research.remaining())
-			_d_hint.text = tr("Press again to cancel (refund)")
-		"queued":
-			_d_cost.text = tr("Queued #%d") % (Research.queue_position(_focus_id) + 1)
-			_d_hint.text = tr("Press again to cancel (refund)")
+			_d_cost.text = ResearchNodeCard.data_text(_focus_id)
+			_d_hint.text = tr("Filling as you work")
+		"paused":
+			_d_cost.text = ResearchNodeCard.data_text(_focus_id)
+			_d_hint.text = tr("Press to switch back (paid)")
 		_:
-			_d_cost.text = tr("%s  ·  %s") % [L10nFmt.amount("cubes", Research.cost(_focus_id).to_float()), Research.time_text(Research.duration(_focus_id))]
+			_d_cost.text = tr("%s  ·  %s") % [ResearchNodeCard.stock_text(_focus_id), tr("%d data") % int(ceil(Research.data_cost(_focus_id)))]
 			var why: String = Research.reason(_focus_id)
-			_d_hint.text = why if why != "" else (tr("Press to research") if Research.active().is_empty() else tr("Press to queue"))
+			_d_hint.text = why if why != "" else (tr("Press to research") if Research.active().is_empty() else tr("Press to switch (bars are kept)"))
 
 
 func _on_card_pressed(id: String) -> void:
 	var c: ResearchNodeCard = _graph.cards[id]
 	var st: String = Research.status(id)
-	if st == "active" or st == "queued":
-		Research.cancel(id)
+	if st == "active":
 		Audio.play("click", 0.8, -6.0)
-		EventBus.toast.emit(tr("%s cancelled. Cubes refunded.") % tr(str(Research.def(id).get("name", id))), "info")
+		c.shake()
 	elif Research.start(id):
 		Audio.play("buy", 1.1, -3.0)
 		c.pop()
@@ -358,7 +384,7 @@ class Graph extends Control:
 				if Research.has(r) and Research.has(id):
 					col = Color(c_to.accent, 0.75)
 					w = 3.0
-				elif Research.has(r) or Research.is_active(r) or Research.is_queued(r):
+				elif Research.has(r) or Research.is_active(r):
 					col = Color(c_from.accent, 0.45)
 					w = 2.0
 				draw_polyline(pts, col, w, true)

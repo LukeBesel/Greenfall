@@ -54,7 +54,7 @@ msgstr "%s Lv %dが必要"
 msgid "Needs research: %s"
 msgstr "研究が必要：%s"
 
-#: autoload/Economy.gd:322 systems/research.gd:210
+#: autoload/Economy.gd:322 systems/research.gd:217
 msgid "Needs base level %d"
 msgstr "基地レベル %d が必要"
 
@@ -484,20 +484,20 @@ msgstr "ベール%d個に1個をリサイクラーへ"
 msgid "Not enough materials."
 msgstr "素材が足りません。"
 
-#: core/offline.gd:127 steam/demo_end_screen.gd:124 systems/extras/welcome_back.gd:56
+#: core/offline.gd:145 steam/demo_end_screen.gd:124 systems/extras/welcome_back.gd:56
 #: ui/end_screen.gd:112 ui/globe_view.gd:488 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "%d 分"
 
-#: core/offline.gd:128
+#: core/offline.gd:146
 msgid "While you were away (%s):"
 msgstr "留守のあいだに（%s）："
 
-#: core/offline.gd:130
+#: core/offline.gd:148
 msgid "The crew kept cleaning. The city is a little clearer."
 msgstr "クルーが掃除を続けてくれた。街が少しきれいになった。"
 
-#: core/offline.gd:132
+#: core/offline.gd:150
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "清浄機がずっと空気をろ過していた。少しだけ澄んだ。"
 
@@ -722,7 +722,7 @@ msgstr ""
 "コンポストプレス  Lv %d\n"
 "ホッパー %d%%  →  種"
 
-#: plants/garden.gd:286
+#: plants/garden.gd:317
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "ヘックスが完全によみがえった。もう小さな何かが住みついている。"
 
@@ -742,11 +742,15 @@ msgstr "      水不足"
 msgid "      next: %s"
 msgstr "      次：%s"
 
-#: plants/hex_levels.gd:251
+#: plants/hex_levels.gd:256
 msgid "HEX LV %d  %s"
 msgstr "ヘックス Lv %d  %s"
 
-#: plants/hex_levels.gd:255
+#: plants/hex_levels.gd:259
+msgid "+%s field data"
+msgstr ""
+
+#: plants/hex_levels.gd:264
 msgid "Hex Lv %d  %s.   %s"
 msgstr "ヘックス Lv %d  %s。   %s"
 
@@ -794,31 +798,31 @@ msgstr "種がなくなった。咲いた植物がまた落としてくれる。
 msgid "Watering can is empty. It fills in the base yard, by the bin."
 msgstr "じょうろが空っぽ。基地の庭、ゴミ箱のそばで水が入る。"
 
-#: player/patch.gd:649
+#: player/patch.gd:647
 msgid "PERFECT BALE  %s"
 msgstr "パーフェクトベール  %s"
 
-#: player/patch.gd:655
+#: player/patch.gd:653
 msgid "OVERSTUFFED  %s"
 msgstr "詰め込みすぎ  %s"
 
-#: player/patch.gd:658
+#: player/patch.gd:656
 msgid "GOOD BALE  %s"
 msgstr "いいベール  %s"
 
-#: player/patch.gd:662
+#: player/patch.gd:660
 msgid "SURGE  %s"
 msgstr "サージ  %s"
 
-#: player/patch.gd:665
+#: player/patch.gd:663
 msgid "  (streak +%d%%)"
 msgstr "  （連続 +%d%%）"
 
-#: player/patch.gd:702
+#: player/patch.gd:700
 msgid "Salvaged: %s"
 msgstr "回収：%s"
 
-#: player/patch.gd:731
+#: player/patch.gd:729
 msgid "Recovered: %s"
 msgstr "発見：%s"
 
@@ -952,7 +956,7 @@ msgid "Not enough parts"
 msgstr "パーツが足りません"
 
 #: robots/fleet.gd:158 robots/fleet.gd:234 robots/water_net.gd:149
-#: systems/research.gd:214 systems/robot_builder.gd:356 systems/robot_builder.gd:408
+#: systems/research.gd:219 systems/robot_builder.gd:356 systems/robot_builder.gd:408
 msgid "Not enough cubes"
 msgstr "キューブが足りない"
 
@@ -1029,7 +1033,7 @@ msgstr "%s で補給中（%d%%）"
 msgid "base barrel"
 msgstr "基地のたる"
 
-#: robots/robot.gd:263 systems/research.gd:413
+#: robots/robot.gd:263 systems/research.gd:340
 msgid "tank"
 msgstr "タンク"
 
@@ -1165,11 +1169,11 @@ msgstr "%s %s 組み立て完了。きょろきょろしてから、仕事に取
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "ロック中。発射台を建てるには基地をレベル5に上げよう。"
 
-#: scenes/slice.gd:263
+#: scenes/slice.gd:266
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨基地 %d · Lv%d"
 
-#: scenes/slice.gd:263
+#: scenes/slice.gd:266
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨基地 %d · 廃墟"
 
@@ -1677,7 +1681,7 @@ msgstr ""
 "\n"
 "Ledger はもう私たちの味方。ジャマーは音楽に合わせてハミングしているだけ。"
 
-#: story/ledger.gd:305 systems/decor.gd:119 systems/research.gd:206
+#: story/ledger.gd:305 systems/decor.gd:119 systems/research.gd:213
 #: systems/robot_builder.gd:354 systems/robot_builder.gd:410 ui/stations_panel.gd:100
 msgid "Needs %s"
 msgstr "%s が必要"
@@ -2347,119 +2351,107 @@ msgstr "フレームレート確認の結果、下げました"
 msgid "Graphics set to %s to keep things smooth. You can change it in Settings."
 msgstr "なめらかに動くようグラフィックを%sに設定しました。設定で変更できます。"
 
-#: systems/research.gd:191
+#: systems/research.gd:198
 msgid "Unknown research"
 msgstr "不明な研究"
 
-#: systems/research.gd:196
+#: systems/research.gd:203
 msgid "Already researched"
 msgstr "研究済み"
 
-#: systems/research.gd:198
+#: systems/research.gd:205
 msgid "Researching now"
 msgstr "研究中"
 
-#: systems/research.gd:200
-msgid "Already queued"
-msgstr "すでに予約済み"
+#: systems/research.gd:221
+msgid "Not enough Parts"
+msgstr ""
 
-#: systems/research.gd:212
-msgid "Queue is full"
-msgstr "予約がいっぱい"
-
-#: systems/research.gd:353 ui/codex_screen.gd:861
-msgid "%ds"
-msgstr "%d秒"
-
-#: systems/research.gd:400 systems/research.gd:461
+#: systems/research.gd:327 systems/research.gd:388
 msgid "Research: %s"
 msgstr "研究：%s"
 
-#: systems/research.gd:410
+#: systems/research.gd:337
 msgid "scoop reach"
 msgstr "スコップの届く距離"
 
-#: systems/research.gd:410
+#: systems/research.gd:337
 msgid "scoop width"
 msgstr "スコップの幅"
 
-#: systems/research.gd:410
+#: systems/research.gd:337
 msgid "compartment size"
 msgstr "コンテナ容量"
 
-#: systems/research.gd:411 systems/rigs.gd:57
+#: systems/research.gd:338 systems/rigs.gd:57
 msgid "bale value"
 msgstr "ベールの価値"
 
-#: systems/research.gd:411
+#: systems/research.gd:338
 msgid "magnet radius"
 msgstr "磁石の範囲"
 
-#: systems/research.gd:411 systems/rigs.gd:54
+#: systems/research.gd:338 systems/rigs.gd:54
 msgid "scoop speed"
 msgstr "スコップの速さ"
 
-#: systems/research.gd:412
-msgid "field-note cubes"
-msgstr "フィールドノートのキューブ"
+#: systems/research.gd:339
+msgid "field data"
+msgstr ""
 
-#: systems/research.gd:412
+#: systems/research.gd:339
 msgid "research speed"
 msgstr "研究速度"
 
-#: systems/research.gd:412
+#: systems/research.gd:339
 msgid "lake clarity"
 msgstr "湖の透明度"
 
-#: systems/research.gd:413 systems/rigs.gd:55
+#: systems/research.gd:340 systems/rigs.gd:55
 msgid "speed"
 msgstr "速度"
 
-#: systems/research.gd:413
+#: systems/research.gd:340
 msgid "work rate"
 msgstr "作業効率"
 
-#: systems/research.gd:413
+#: systems/research.gd:340
 msgid "range"
 msgstr "範囲"
 
-#: systems/research.gd:414
+#: systems/research.gd:341
 msgid "bale quality"
 msgstr "ベールの品質"
 
-#: systems/research.gd:414
+#: systems/research.gd:341
 msgid "carry"
 msgstr "運搬量"
 
-#: systems/research.gd:415
+#: systems/research.gd:342
 msgid "plant growth"
 msgstr "植物の成長"
 
-#: systems/research.gd:415
+#: systems/research.gd:342
 msgid "seeds per bloom"
 msgstr "花1輪あたりの種"
 
-#: systems/research.gd:436
+#: systems/research.gd:363
 msgid "Unlocks the %s robot"
 msgstr "ロボット %s を解放"
 
-#: systems/research.gd:438
+#: systems/research.gd:365
 msgid "Unlocks %s seeds"
 msgstr "%sの種を解放"
 
-#: systems/research.gd:440
+#: systems/research.gd:367
 msgid "Unlocks: %s"
 msgstr "解放：%s"
 
-#: systems/research.gd:595
-msgid "While you were away, research finished: %s."
-msgstr "留守のあいだに研究が完了：%s。"
-
-#: systems/research.gd:626
+#: systems/research.gd:530
 msgid "New robot plans: %s. %s"
 msgstr "新しいロボット設計図：%s。%s"
 
-#: systems/research.gd:639
+#: systems/research.gd:561
 msgid "Research complete: %s."
 msgstr "研究完了：%s。"
 
@@ -3508,6 +3500,10 @@ msgstr "%.2f km"
 msgid "%dm %02ds"
 msgstr "%d分%02d秒"
 
+#: ui/codex_screen.gd:861
+msgid "%ds"
+msgstr "%d秒"
+
 #: ui/command_view.gd:24
 msgid "Cleaners"
 msgstr "清掃係"
@@ -4227,93 +4223,93 @@ msgstr "すべて建設済み"
 msgid "Lumi reached level %d%s"
 msgstr "Lumi がレベル %d になった%s"
 
-#: ui/hud.gd:304
+#: ui/hud.gd:305
 msgid "WREN SIGNAL   %d%%"
 msgstr "WREN 信号   %d%%"
 
-#: ui/hud.gd:333
+#: ui/hud.gd:334
 msgid "HEX  %d%% CLEAR"
 msgstr "ヘックス  %d%% きれい"
 
-#: ui/hud.gd:344
+#: ui/hud.gd:345
 msgid "%s  BASE"
 msgstr "%s  基地"
 
-#: ui/hud.gd:347
+#: ui/hud.gd:348
 msgid "CARRYING %d/%d"
 msgstr "運搬中 %d/%d"
 
-#: ui/hud.gd:373
+#: ui/hud.gd:374
 msgid "HEX  CLEAR"
 msgstr "ヘックス  きれい"
 
-#: ui/hud.gd:377
+#: ui/hud.gd:378
 msgid "HEX  %s"
 msgstr "ヘックス  %s"
 
-#: ui/hud.gd:383
+#: ui/hud.gd:384
 msgid "  SUSTAIN %d%%"
 msgstr "  維持 %d%%"
 
-#: ui/hud.gd:385
+#: ui/hud.gd:386
 msgid "  THIRSTY"
 msgstr "  水不足"
 
-#: ui/hud.gd:410
+#: ui/hud.gd:411
 msgid "%s · %s"
 msgstr "%s · %s"
 
-#: ui/hud.gd:412
+#: ui/hud.gd:413
 msgid "%s · %s %d%%"
 msgstr "%s · %s %d%%"
 
-#: ui/hud.gd:415
+#: ui/hud.gd:416
 msgid "%d of %d city restored"
 msgid_plural "%d of %d cities restored"
 msgstr[0] "%d / %d 都市を再生"
 
-#: ui/hud.gd:429
+#: ui/hud.gd:430
 msgid "MASTERY  %s"
 msgstr "熟練度  %s"
 
-#: ui/hud.gd:440
+#: ui/hud.gd:441
 msgid "%s mastery %d. Robots can work it now."
 msgstr "%sの熟練度 %d。ロボットが作業できるようになりました。"
 
-#: ui/hud.gd:442
+#: ui/hud.gd:443
 msgid "%s mastery %d. You and your crew work it faster."
 msgstr "%sの熟練度 %d。あなたもクルーも作業が速くなりました。"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:451
+#: ui/hud.gd:452
 msgid "%s   pick up bale"
 msgstr "%s   ベールを持つ"
 
-#: ui/hud.gd:452
+#: ui/hud.gd:453
 msgid "%s   dig up part"
 msgstr "%s   パーツを掘り出す"
 
-#: ui/hud.gd:453
+#: ui/hud.gd:454
 msgid "%s   read memory shard"
 msgstr "%s   メモリーの破片を読む"
 
-#: ui/hud.gd:454
+#: ui/hud.gd:455
 msgid "%s   pick up the seed tin"
 msgstr "%s   種の缶を拾う"
 
-#: ui/hud.gd:455
+#: ui/hud.gd:456
 msgid "%s   set bale down"
 msgstr "%s   ベールを置く"
 
-#: ui/hud.gd:456
+#: ui/hud.gd:457
 msgid "%s   workbench"
 msgstr "%s   作業台"
 
-#: ui/hud.gd:457
+#: ui/hud.gd:458
 msgid "Filling the watering can"
 msgstr "じょうろに水を入れている"
 
-#: ui/hud.gd:458
+#: ui/hud.gd:459
 msgid "Can empty. It fills in the base yard, by the bin."
 msgstr "じょうろが空。基地の庭、ゴミ箱のそばで水が入る。"
 
@@ -4975,69 +4971,109 @@ msgstr "作業台でロッカーを建てると着けられる。"
 msgid "Wearing"
 msgstr "着用中"
 
-#: ui/research_node_card.gd:175 ui/research_panel.gd:194
+#: ui/research_node_card.gd:180 ui/research_panel.gd:221
 msgid "Researched"
 msgstr "研究済み"
 
-#: ui/research_node_card.gd:178 ui/research_panel.gd:197
-msgid "%s left"
-msgstr "残り %s"
+#: ui/research_node_card.gd:186
+msgid "Paused  ·  %s"
+msgstr ""
 
-#: ui/research_node_card.gd:181
-msgid "Queued  ·  %s"
-msgstr "予約中  ·  %s"
-
-#: ui/research_node_card.gd:184 ui/research_panel.gd:203
+#: ui/research_node_card.gd:189 ui/research_panel.gd:230
 msgid "%s  ·  %s"
 msgstr "%s  ·  %s"
 
-#: ui/research_panel.gd:34 data/currencies.json:currencies[cubes].short
-msgid "CUBES"
-msgstr "キューブ"
+#: ui/research_node_card.gd:189 ui/research_panel.gd:178 ui/research_panel.gd:230
+msgid "%d data"
+msgstr ""
 
-#: ui/research_panel.gd:41
-msgid "Research costs cubes and takes real time. It keeps going while you play or are away."
-msgstr "研究はキューブと実時間がかかる。プレイ中も留守中も進む。"
+#: ui/research_node_card.gd:198
+msgid "%d / %d data"
+msgstr ""
 
-#: ui/research_panel.gd:60
+#: ui/research_panel.gd:7
+msgid "clean hex"
+msgstr ""
+
+#: ui/research_panel.gd:7
+msgid "mastery level"
+msgstr ""
+
+#: ui/research_panel.gd:7
+msgid "find"
+msgstr ""
+
+#: ui/research_panel.gd:8
+msgid "source step"
+msgstr ""
+
+#: ui/research_panel.gd:8
+msgid "source shut down"
+msgstr ""
+
+#: ui/research_panel.gd:8
+msgid "memory shard"
+msgstr ""
+
+#: ui/research_panel.gd:39
+msgid "FIELD DATA BANKED"
+msgstr ""
+
+#: ui/research_panel.gd:61
 msgid "RESEARCHING"
 msgstr "研究中"
 
-#: ui/research_panel.gd:163
+#: ui/research_panel.gd:166
+msgid "hex stage +%s to +%s"
+msgstr ""
+
+#: ui/research_panel.gd:170
+msgid "Work earns it: %s. It fills the active research."
+msgstr ""
+
+#: ui/research_panel.gd:189
 msgid "Nothing yet"
 msgstr "まだなし"
 
-#: ui/research_panel.gd:164
+#: ui/research_panel.gd:190
 msgid "Pick a glowing card below"
 msgstr "下の光っているカードを選ぼう"
 
-#: ui/research_panel.gd:169
-msgid "%s left  ·  %d%%"
-msgstr "残り %s  ·  %d%%"
+#: ui/research_panel.gd:195
+msgid "%s  ·  %d%%"
+msgstr ""
 
-#: ui/research_panel.gd:175
-msgid "Queue: empty  (%d slots)"
-msgstr "予約：なし（%d 枠）"
+#: ui/research_panel.gd:202
+msgid "Paused, bars kept: %s"
+msgstr ""
 
-#: ui/research_panel.gd:198 ui/research_panel.gd:201
-msgid "Press again to cancel (refund)"
-msgstr "もう一度押すとキャンセル（返却）"
+#: ui/research_panel.gd:202
+msgid "Fills as you clean, tend and learn."
+msgstr ""
 
-#: ui/research_panel.gd:200
-msgid "Queued #%d"
-msgstr "予約 %d 番目"
+#: ui/research_panel.gd:225
+msgid "Filling as you work"
+msgstr ""
 
-#: ui/research_panel.gd:205
+#: ui/research_panel.gd:228
+msgid "Press to switch back (paid)"
+msgstr ""
+
+#: ui/research_panel.gd:232
 msgid "Press to research"
 msgstr "押して研究"
 
-#: ui/research_panel.gd:205
-msgid "Press to queue"
-msgstr "押して予約"
+#: ui/research_panel.gd:232
+msgid "Press to switch (bars are kept)"
+msgstr ""
 
-#: ui/research_panel.gd:214
-msgid "%s cancelled. Cubes refunded."
-msgstr "%s を中止。キューブを返却。"
+#: ui/research_strip.gd:72
+msgid "RESEARCH  %s  %d/%d"
+msgstr ""
+
+#: ui/research_strip.gd:78
+msgid "RESEARCH  PICK A NODE  ·  %d DATA BANKED"
+msgstr ""
 
 #: ui/rig_panel.gd:102 ui/upgrades_screen.gd:17
 msgid "Rig"
@@ -7848,6 +7884,10 @@ msgstr "ちびドローン"
 msgid "Cubes"
 msgstr "キューブ"
 
+#: data/currencies.json:currencies[cubes].short
+msgid "CUBES"
+msgstr "キューブ"
+
 #: data/currencies.json:currencies[cubes].desc
 msgid "The main money. Sell bales at the scale. Pays for upgrades, robots, base levels, research, rockets and decorations."
 msgstr "メインのお金。はかりでベールを売ろう。アップグレード、ロボット、拠点レベル、研究、ロケット、飾りに使う。"
@@ -10453,8 +10493,8 @@ msgid "Plant seeds here (tool 2)"
 msgstr "ここに種を植える（ツール2）"
 
 #: planets/verdance/data/hex_levels.json:levels[2].hint
-msgid "Water the sprouts so they grow"
-msgstr "新芽に水をあげて育てる"
+msgid "Water it: every plant grows at once"
+msgstr ""
 
 #: planets/verdance/data/hex_levels.json:levels[3].hint
 msgid "Keep it watered for 3 min (Drip robots)"
@@ -15681,6 +15721,48 @@ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を�
 #: planets/verdance/data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "Already queued"
+#~ msgstr "すでに予約済み"
+
+#~ msgid "Queue is full"
+#~ msgstr "予約がいっぱい"
+
+#~ msgid "field-note cubes"
+#~ msgstr "フィールドノートのキューブ"
+
+#~ msgid "While you were away, research finished: %s."
+#~ msgstr "留守のあいだに研究が完了：%s。"
+
+#~ msgid "%s left"
+#~ msgstr "残り %s"
+
+#~ msgid "Queued  ·  %s"
+#~ msgstr "予約中  ·  %s"
+
+#~ msgid "Research costs cubes and takes real time. It keeps going while you play or are away."
+#~ msgstr "研究はキューブと実時間がかかる。プレイ中も留守中も進む。"
+
+#~ msgid "%s left  ·  %d%%"
+#~ msgstr "残り %s  ·  %d%%"
+
+#~ msgid "Queue: empty  (%d slots)"
+#~ msgstr "予約：なし（%d 枠）"
+
+#~ msgid "Press again to cancel (refund)"
+#~ msgstr "もう一度押すとキャンセル（返却）"
+
+#~ msgid "Queued #%d"
+#~ msgstr "予約 %d 番目"
+
+#~ msgid "Press to queue"
+#~ msgstr "押して予約"
+
+#~ msgid "%s cancelled. Cubes refunded."
+#~ msgstr "%s を中止。キューブを返却。"
+
+#~ msgid "Water the sprouts so they grow"
+#~ msgstr "新芽に水をあげて育てる"
 
 #~ msgid "Show more goals"
 #~ msgstr "目標をもっと表示"

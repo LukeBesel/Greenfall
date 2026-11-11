@@ -1,18 +1,121 @@
 {
-  "_doc": "Hex levels for every non-hub land hex. 0 Junk -> 1 Clean -> 2 Planted -> 3 Growing -> 4 Sustained -> 5 Thriving. Levels never drop. planted_min_frac = share of a hex's plant slots that must be planted for Planted. growing_life = garden hex_life for Growing. Sustained: while Growing, the planted slots must have water > 0 for sustain_ratio of the last sustain_window_s seconds (sampled every sample_s); watering robots (Drip, Multibot on water) keep this up. Thriving: Sustained, every planted slot in bloom, hex_life >= thriving_life, and still watered. reward = one-off currencies on reaching the level. bonus = small permanent bonus per hex at that level (grow_pct: faster plant growth, seed_pct: more seeds from blooms), summed over hexes and capped by bonus_caps; cubes_per_min = a garden stipend in cubes per minute (Sustained/Thriving hexes keep paying after the junk is gone); wildlife_cubes_per_min = [money] a small cube trickle from wildlife notes on Thriving hexes (was research Data; research costs cubes now), so research keeps moving in a finished district. [M3-19] A hex's stage pays no cubes and there is no garden stipend or wildlife trickle: cubes come only from Lumi's own loads and bales and from the CITY stage payout (districts.json stage_reward). A hex's stage still gives back seeds.",
+  "_doc": "Hex levels for every non-hub land hex. 0 Junk -> 1 Clean -> 2 Planted -> 3 Growing -> 4 Sustained -> 5 Thriving. Levels never drop. planted_min_frac = share of a hex's plant slots that must be planted for Planted. growing_life = garden hex_life for Growing. Sustained: while Growing, the planted slots must have water > 0 for sustain_ratio of the last sustain_window_s seconds (sampled every sample_s); watering robots (Drip, Multibot on water) keep this up. Thriving: Sustained, every planted slot in bloom, hex_life >= thriving_life, and still watered. reward = one-off currencies on reaching the level. bonus = small permanent bonus per hex at that level (grow_pct: faster plant growth, seed_pct: more seeds from blooms), summed over hexes and capped by bonus_caps; cubes_per_min = a garden stipend in cubes per minute (Sustained/Thriving hexes keep paying after the junk is gone); wildlife_cubes_per_min = [money] a small cube trickle from wildlife notes on Thriving hexes (was research Data; research costs cubes now), so research keeps moving in a finished district. [M3-19] A hex's stage pays no cubes and there is no garden stipend or wildlife trickle: cubes come only from Lumi's own loads and bales and from the CITY stage payout (districts.json stage_reward). A hex's stage still gives back seeds. [M3-06] tending (plants/tending.gd, plants/garden.gd; design spec section 5): wet_s = seconds of full growth one watering gives every plant on the hex (3 minutes); dry_rate = growth rate of a thirsty plant (a quarter); burst_stage = share of a stage every plant on a hex grows at once when Lumi waters it; rewater_s = seconds before the same hex can burst again; patch_size = plants one planting action sets; patch_radius_m = how far round the first slot a patch reaches; patch_seeds = seeds one patch costs. With these a hex goes from clean to growing in about 2 minutes of tending (tests/test_tending.gd). fx (per level) = the level-up's own look and sound, larger at higher stages: sound and pitch (Audio ids), db, burst (Vfx burst id), scale (burst and float text size), ring (true: a ring round the hex). Every level from 2 also pays field data (the research table's data_rewards.hex_stage), shown in the float text.",
   "planted_min_frac": 0.25,
   "growing_life": 0.35,
   "thriving_life": 0.8,
   "sustain_window_s": 180,
   "sustain_ratio": 0.8,
   "sample_s": 1.0,
-  "bonus_caps": {"grow_pct": 1.0, "seed_pct": 1.0},
+  "bonus_caps": {
+    "grow_pct": 1.0,
+    "seed_pct": 1.0
+  },
   "levels": [
-    {"level": 0, "name": "Junk", "hint": "Clear every piece of junk"},
-    {"level": 1, "name": "Clean", "hint": "Plant seeds here (tool 2)", "reward": {}, "bonus": {}},
-    {"level": 2, "name": "Planted", "hint": "Water the sprouts so they grow", "reward": {}, "bonus": {"grow_pct": 0.002}},
-    {"level": 3, "name": "Growing", "hint": "Keep it watered for 3 min (Drip robots)", "reward": {"seeds": 1}, "bonus": {"grow_pct": 0.003}},
-    {"level": 4, "name": "Sustained", "hint": "Bring every plant to bloom", "reward": {"seeds": 2}, "bonus": {"grow_pct": 0.004, "seed_pct": 0.005}},
-    {"level": 5, "name": "Thriving", "hint": "Wildlife has moved in", "reward": {"seeds": 4}, "bonus": {"grow_pct": 0.006, "seed_pct": 0.01}}
-  ]
+    {
+      "level": 0,
+      "name": "Junk",
+      "hint": "Clear every piece of junk"
+    },
+    {
+      "level": 1,
+      "name": "Clean",
+      "hint": "Plant seeds here (tool 2)",
+      "reward": {},
+      "bonus": {},
+      "fx": {
+        "sound": "sparkle",
+        "pitch": 0.95,
+        "db": -6.0,
+        "burst": "sparkle",
+        "scale": 1.0,
+        "ring": true
+      }
+    },
+    {
+      "level": 2,
+      "name": "Planted",
+      "hint": "Water it: every plant grows at once",
+      "reward": {},
+      "bonus": {
+        "grow_pct": 0.002
+      },
+      "fx": {
+        "sound": "dig",
+        "pitch": 0.8,
+        "db": -4.0,
+        "burst": "sparkle",
+        "scale": 1.2,
+        "ring": true
+      }
+    },
+    {
+      "level": 3,
+      "name": "Growing",
+      "hint": "Keep it watered for 3 min (Drip robots)",
+      "reward": {
+        "seeds": 1
+      },
+      "bonus": {
+        "grow_pct": 0.003
+      },
+      "fx": {
+        "sound": "sparkle",
+        "pitch": 1.15,
+        "db": -4.0,
+        "burst": "sparkle",
+        "scale": 1.5,
+        "ring": true
+      }
+    },
+    {
+      "level": 4,
+      "name": "Sustained",
+      "hint": "Bring every plant to bloom",
+      "reward": {
+        "seeds": 2
+      },
+      "bonus": {
+        "grow_pct": 0.004,
+        "seed_pct": 0.005
+      },
+      "fx": {
+        "sound": "chime",
+        "pitch": 1.0,
+        "db": -3.0,
+        "burst": "big_sparkle",
+        "scale": 1.7,
+        "ring": true
+      }
+    },
+    {
+      "level": 5,
+      "name": "Thriving",
+      "hint": "Wildlife has moved in",
+      "reward": {
+        "seeds": 4
+      },
+      "bonus": {
+        "grow_pct": 0.006,
+        "seed_pct": 0.01
+      },
+      "fx": {
+        "sound": "chime",
+        "pitch": 1.25,
+        "db": -1.0,
+        "burst": "big_sparkle",
+        "scale": 2.0,
+        "ring": true,
+        "extra_sound": "bird"
+      }
+    }
+  ],
+  "tending": {
+    "wet_s": 180.0,
+    "dry_rate": 0.25,
+    "burst_stage": 0.3,
+    "rewater_s": 30.0,
+    "patch_size": 6,
+    "patch_radius_m": 4.5,
+    "patch_seeds": 1.0
+  }
 }

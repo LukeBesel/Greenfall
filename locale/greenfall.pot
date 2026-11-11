@@ -53,7 +53,7 @@ msgstr ""
 msgid "Needs research: %s"
 msgstr ""
 
-#: autoload/Economy.gd:322 systems/research.gd:210
+#: autoload/Economy.gd:322 systems/research.gd:217
 msgid "Needs base level %d"
 msgstr ""
 
@@ -483,20 +483,20 @@ msgstr ""
 msgid "Not enough materials."
 msgstr ""
 
-#: core/offline.gd:127 steam/demo_end_screen.gd:124 systems/extras/welcome_back.gd:56
+#: core/offline.gd:145 steam/demo_end_screen.gd:124 systems/extras/welcome_back.gd:56
 #: ui/end_screen.gd:112 ui/globe_view.gd:488 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr ""
 
-#: core/offline.gd:128
+#: core/offline.gd:146
 msgid "While you were away (%s):"
 msgstr ""
 
-#: core/offline.gd:130
+#: core/offline.gd:148
 msgid "The crew kept cleaning. The city is a little clearer."
 msgstr ""
 
-#: core/offline.gd:132
+#: core/offline.gd:150
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr ""
 
@@ -717,7 +717,7 @@ msgid ""
 "hopper %d%%  →  seeds"
 msgstr ""
 
-#: plants/garden.gd:286
+#: plants/garden.gd:317
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr ""
 
@@ -737,11 +737,15 @@ msgstr ""
 msgid "      next: %s"
 msgstr ""
 
-#: plants/hex_levels.gd:251
+#: plants/hex_levels.gd:256
 msgid "HEX LV %d  %s"
 msgstr ""
 
-#: plants/hex_levels.gd:255
+#: plants/hex_levels.gd:259
+msgid "+%s field data"
+msgstr ""
+
+#: plants/hex_levels.gd:264
 msgid "Hex Lv %d  %s.   %s"
 msgstr ""
 
@@ -789,31 +793,31 @@ msgstr ""
 msgid "Watering can is empty. It fills in the base yard, by the bin."
 msgstr ""
 
-#: player/patch.gd:649
+#: player/patch.gd:647
 msgid "PERFECT BALE  %s"
 msgstr ""
 
-#: player/patch.gd:655
+#: player/patch.gd:653
 msgid "OVERSTUFFED  %s"
 msgstr ""
 
-#: player/patch.gd:658
+#: player/patch.gd:656
 msgid "GOOD BALE  %s"
 msgstr ""
 
-#: player/patch.gd:662
+#: player/patch.gd:660
 msgid "SURGE  %s"
 msgstr ""
 
-#: player/patch.gd:665
+#: player/patch.gd:663
 msgid "  (streak +%d%%)"
 msgstr ""
 
-#: player/patch.gd:702
+#: player/patch.gd:700
 msgid "Salvaged: %s"
 msgstr ""
 
-#: player/patch.gd:731
+#: player/patch.gd:729
 msgid "Recovered: %s"
 msgstr ""
 
@@ -947,7 +951,7 @@ msgid "Not enough parts"
 msgstr ""
 
 #: robots/fleet.gd:158 robots/fleet.gd:234 robots/water_net.gd:149
-#: systems/research.gd:214 systems/robot_builder.gd:356 systems/robot_builder.gd:408
+#: systems/research.gd:219 systems/robot_builder.gd:356 systems/robot_builder.gd:408
 msgid "Not enough cubes"
 msgstr ""
 
@@ -1025,7 +1029,7 @@ msgstr ""
 msgid "base barrel"
 msgstr ""
 
-#: robots/robot.gd:263 systems/research.gd:413
+#: robots/robot.gd:263 systems/research.gd:340
 msgid "tank"
 msgstr ""
 
@@ -1161,11 +1165,11 @@ msgstr ""
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr ""
 
-#: scenes/slice.gd:263
+#: scenes/slice.gd:266
 msgid "OUTPOST %d · Lv%d"
 msgstr ""
 
-#: scenes/slice.gd:263
+#: scenes/slice.gd:266
 msgid "OUTPOST %d · RUIN"
 msgstr ""
 
@@ -1658,7 +1662,7 @@ msgid ""
 "The Ledger is on our side now. The jammers just hum along to the music."
 msgstr ""
 
-#: story/ledger.gd:305 systems/decor.gd:119 systems/research.gd:206
+#: story/ledger.gd:305 systems/decor.gd:119 systems/research.gd:213
 #: systems/robot_builder.gd:354 systems/robot_builder.gd:410 ui/stations_panel.gd:100
 msgid "Needs %s"
 msgstr ""
@@ -2328,119 +2332,107 @@ msgstr ""
 msgid "Graphics set to %s to keep things smooth. You can change it in Settings."
 msgstr ""
 
-#: systems/research.gd:191
+#: systems/research.gd:198
 msgid "Unknown research"
 msgstr ""
 
-#: systems/research.gd:196
+#: systems/research.gd:203
 msgid "Already researched"
 msgstr ""
 
-#: systems/research.gd:198
+#: systems/research.gd:205
 msgid "Researching now"
 msgstr ""
 
-#: systems/research.gd:200
-msgid "Already queued"
+#: systems/research.gd:221
+msgid "Not enough Parts"
 msgstr ""
 
-#: systems/research.gd:212
-msgid "Queue is full"
-msgstr ""
-
-#: systems/research.gd:353 ui/codex_screen.gd:861
-msgid "%ds"
-msgstr ""
-
-#: systems/research.gd:400 systems/research.gd:461
+#: systems/research.gd:327 systems/research.gd:388
 msgid "Research: %s"
 msgstr ""
 
-#: systems/research.gd:410
+#: systems/research.gd:337
 msgid "scoop reach"
 msgstr ""
 
-#: systems/research.gd:410
+#: systems/research.gd:337
 msgid "scoop width"
 msgstr ""
 
-#: systems/research.gd:410
+#: systems/research.gd:337
 msgid "compartment size"
 msgstr ""
 
-#: systems/research.gd:411 systems/rigs.gd:57
+#: systems/research.gd:338 systems/rigs.gd:57
 msgid "bale value"
 msgstr ""
 
-#: systems/research.gd:411
+#: systems/research.gd:338
 msgid "magnet radius"
 msgstr ""
 
-#: systems/research.gd:411 systems/rigs.gd:54
+#: systems/research.gd:338 systems/rigs.gd:54
 msgid "scoop speed"
 msgstr ""
 
-#: systems/research.gd:412
-msgid "field-note cubes"
+#: systems/research.gd:339
+msgid "field data"
 msgstr ""
 
-#: systems/research.gd:412
+#: systems/research.gd:339
 msgid "research speed"
 msgstr ""
 
-#: systems/research.gd:412
+#: systems/research.gd:339
 msgid "lake clarity"
 msgstr ""
 
-#: systems/research.gd:413 systems/rigs.gd:55
+#: systems/research.gd:340 systems/rigs.gd:55
 msgid "speed"
 msgstr ""
 
-#: systems/research.gd:413
+#: systems/research.gd:340
 msgid "work rate"
 msgstr ""
 
-#: systems/research.gd:413
+#: systems/research.gd:340
 msgid "range"
 msgstr ""
 
-#: systems/research.gd:414
+#: systems/research.gd:341
 msgid "bale quality"
 msgstr ""
 
-#: systems/research.gd:414
+#: systems/research.gd:341
 msgid "carry"
 msgstr ""
 
-#: systems/research.gd:415
+#: systems/research.gd:342
 msgid "plant growth"
 msgstr ""
 
-#: systems/research.gd:415
+#: systems/research.gd:342
 msgid "seeds per bloom"
 msgstr ""
 
-#: systems/research.gd:436
+#: systems/research.gd:363
 msgid "Unlocks the %s robot"
 msgstr ""
 
-#: systems/research.gd:438
+#: systems/research.gd:365
 msgid "Unlocks %s seeds"
 msgstr ""
 
-#: systems/research.gd:440
+#: systems/research.gd:367
 msgid "Unlocks: %s"
 msgstr ""
 
-#: systems/research.gd:595
-msgid "While you were away, research finished: %s."
-msgstr ""
-
-#: systems/research.gd:626
+#: systems/research.gd:530
 msgid "New robot plans: %s. %s"
 msgstr ""
 
-#: systems/research.gd:639
+#: systems/research.gd:561
 msgid "Research complete: %s."
 msgstr ""
 
@@ -3485,6 +3477,10 @@ msgstr ""
 msgid "%dm %02ds"
 msgstr ""
 
+#: ui/codex_screen.gd:861
+msgid "%ds"
+msgstr ""
+
 #: ui/command_view.gd:24
 msgid "Cleaners"
 msgstr ""
@@ -4205,94 +4201,94 @@ msgstr ""
 msgid "Lumi reached level %d%s"
 msgstr ""
 
-#: ui/hud.gd:304
+#: ui/hud.gd:305
 msgid "WREN SIGNAL   %d%%"
 msgstr ""
 
-#: ui/hud.gd:333
+#: ui/hud.gd:334
 msgid "HEX  %d%% CLEAR"
 msgstr ""
 
-#: ui/hud.gd:344
+#: ui/hud.gd:345
 msgid "%s  BASE"
 msgstr ""
 
-#: ui/hud.gd:347
+#: ui/hud.gd:348
 msgid "CARRYING %d/%d"
 msgstr ""
 
-#: ui/hud.gd:373
+#: ui/hud.gd:374
 msgid "HEX  CLEAR"
 msgstr ""
 
-#: ui/hud.gd:377
+#: ui/hud.gd:378
 msgid "HEX  %s"
 msgstr ""
 
-#: ui/hud.gd:383
+#: ui/hud.gd:384
 msgid "  SUSTAIN %d%%"
 msgstr ""
 
-#: ui/hud.gd:385
+#: ui/hud.gd:386
 msgid "  THIRSTY"
 msgstr ""
 
-#: ui/hud.gd:410
+#: ui/hud.gd:411
 msgid "%s · %s"
 msgstr ""
 
-#: ui/hud.gd:412
+#: ui/hud.gd:413
 msgid "%s · %s %d%%"
 msgstr ""
 
-#: ui/hud.gd:415
+#: ui/hud.gd:416
 msgid "%d of %d city restored"
 msgid_plural "%d of %d cities restored"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ui/hud.gd:429
+#: ui/hud.gd:430
 msgid "MASTERY  %s"
 msgstr ""
 
-#: ui/hud.gd:440
+#: ui/hud.gd:441
 msgid "%s mastery %d. Robots can work it now."
 msgstr ""
 
-#: ui/hud.gd:442
+#: ui/hud.gd:443
 msgid "%s mastery %d. You and your crew work it faster."
 msgstr ""
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:451
+#: ui/hud.gd:452
 msgid "%s   pick up bale"
 msgstr ""
 
-#: ui/hud.gd:452
+#: ui/hud.gd:453
 msgid "%s   dig up part"
 msgstr ""
 
-#: ui/hud.gd:453
+#: ui/hud.gd:454
 msgid "%s   read memory shard"
 msgstr ""
 
-#: ui/hud.gd:454
+#: ui/hud.gd:455
 msgid "%s   pick up the seed tin"
 msgstr ""
 
-#: ui/hud.gd:455
+#: ui/hud.gd:456
 msgid "%s   set bale down"
 msgstr ""
 
-#: ui/hud.gd:456
+#: ui/hud.gd:457
 msgid "%s   workbench"
 msgstr ""
 
-#: ui/hud.gd:457
+#: ui/hud.gd:458
 msgid "Filling the watering can"
 msgstr ""
 
-#: ui/hud.gd:458
+#: ui/hud.gd:459
 msgid "Can empty. It fills in the base yard, by the bin."
 msgstr ""
 
@@ -4948,68 +4944,108 @@ msgstr ""
 msgid "Wearing"
 msgstr ""
 
-#: ui/research_node_card.gd:175 ui/research_panel.gd:194
+#: ui/research_node_card.gd:180 ui/research_panel.gd:221
 msgid "Researched"
 msgstr ""
 
-#: ui/research_node_card.gd:178 ui/research_panel.gd:197
-msgid "%s left"
+#: ui/research_node_card.gd:186
+msgid "Paused  ·  %s"
 msgstr ""
 
-#: ui/research_node_card.gd:181
-msgid "Queued  ·  %s"
-msgstr ""
-
-#: ui/research_node_card.gd:184 ui/research_panel.gd:203
+#: ui/research_node_card.gd:189 ui/research_panel.gd:230
 msgid "%s  ·  %s"
 msgstr ""
 
-#: ui/research_panel.gd:34 data/currencies.json:currencies[cubes].short
-msgid "CUBES"
+#: ui/research_node_card.gd:189 ui/research_panel.gd:178 ui/research_panel.gd:230
+msgid "%d data"
 msgstr ""
 
-#: ui/research_panel.gd:41
-msgid "Research costs cubes and takes real time. It keeps going while you play or are away."
+#: ui/research_node_card.gd:198
+msgid "%d / %d data"
 msgstr ""
 
-#: ui/research_panel.gd:60
+#: ui/research_panel.gd:7
+msgid "clean hex"
+msgstr ""
+
+#: ui/research_panel.gd:7
+msgid "mastery level"
+msgstr ""
+
+#: ui/research_panel.gd:7
+msgid "find"
+msgstr ""
+
+#: ui/research_panel.gd:8
+msgid "source step"
+msgstr ""
+
+#: ui/research_panel.gd:8
+msgid "source shut down"
+msgstr ""
+
+#: ui/research_panel.gd:8
+msgid "memory shard"
+msgstr ""
+
+#: ui/research_panel.gd:39
+msgid "FIELD DATA BANKED"
+msgstr ""
+
+#: ui/research_panel.gd:61
 msgid "RESEARCHING"
 msgstr ""
 
-#: ui/research_panel.gd:163
+#: ui/research_panel.gd:166
+msgid "hex stage +%s to +%s"
+msgstr ""
+
+#: ui/research_panel.gd:170
+msgid "Work earns it: %s. It fills the active research."
+msgstr ""
+
+#: ui/research_panel.gd:189
 msgid "Nothing yet"
 msgstr ""
 
-#: ui/research_panel.gd:164
+#: ui/research_panel.gd:190
 msgid "Pick a glowing card below"
 msgstr ""
 
-#: ui/research_panel.gd:169
-msgid "%s left  ·  %d%%"
+#: ui/research_panel.gd:195
+msgid "%s  ·  %d%%"
 msgstr ""
 
-#: ui/research_panel.gd:175
-msgid "Queue: empty  (%d slots)"
+#: ui/research_panel.gd:202
+msgid "Paused, bars kept: %s"
 msgstr ""
 
-#: ui/research_panel.gd:198 ui/research_panel.gd:201
-msgid "Press again to cancel (refund)"
+#: ui/research_panel.gd:202
+msgid "Fills as you clean, tend and learn."
 msgstr ""
 
-#: ui/research_panel.gd:200
-msgid "Queued #%d"
+#: ui/research_panel.gd:225
+msgid "Filling as you work"
 msgstr ""
 
-#: ui/research_panel.gd:205
+#: ui/research_panel.gd:228
+msgid "Press to switch back (paid)"
+msgstr ""
+
+#: ui/research_panel.gd:232
 msgid "Press to research"
 msgstr ""
 
-#: ui/research_panel.gd:205
-msgid "Press to queue"
+#: ui/research_panel.gd:232
+msgid "Press to switch (bars are kept)"
 msgstr ""
 
-#: ui/research_panel.gd:214
-msgid "%s cancelled. Cubes refunded."
+#: ui/research_strip.gd:72
+msgid "RESEARCH  %s  %d/%d"
+msgstr ""
+
+#: ui/research_strip.gd:78
+msgid "RESEARCH  PICK A NODE  ·  %d DATA BANKED"
 msgstr ""
 
 #: ui/rig_panel.gd:102 ui/upgrades_screen.gd:17
@@ -7821,6 +7857,10 @@ msgstr ""
 msgid "Cubes"
 msgstr ""
 
+#: data/currencies.json:currencies[cubes].short
+msgid "CUBES"
+msgstr ""
+
 #: data/currencies.json:currencies[cubes].desc
 msgid "The main money. Sell bales at the scale. Pays for upgrades, robots, base levels, research, rockets and decorations."
 msgstr ""
@@ -10364,7 +10404,7 @@ msgid "Plant seeds here (tool 2)"
 msgstr ""
 
 #: planets/verdance/data/hex_levels.json:levels[2].hint
-msgid "Water the sprouts so they grow"
+msgid "Water it: every plant grows at once"
 msgstr ""
 
 #: planets/verdance/data/hex_levels.json:levels[3].hint

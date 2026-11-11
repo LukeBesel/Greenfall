@@ -554,6 +554,16 @@ Merged. Crew at the launch point 155 (cap 200); city 1 first hex 55 s, first rob
 - The first PLANET goal ("Restore Old Town") does not finish in the first 25 minutes. Kept: the long tier is meant to be long, and the card and NOW goals carry the opening.
 - Purchase waits of 155 and 198 s between minutes 14 and 20 go to M3-12; the simulator's goal-gap check must count repeating goals (M3-12).
 
+## Research from field work and tending (M3-06, Nov 11, 2026)
+`docs/reviews/M3-06_RESEARCH_TENDING.md`. Research costs stock once plus field data from work (clean hexes, hex stages, mastery, finds, sources); one node active, switching keeps its bar; data banks when nothing is active; time away adds nothing; offline rate and cap are planet data. Watering soaks a hex for 3 minutes with a burst; thirsty plants grow at 25%; planting sets a patch. Bot: first hex 55 to 58 s, first robot 8.3 to 8.9 min, longest research idle 58 to 99 s (was about 880 s, mostly counted before the Research Desk existed).
+- **No queue and no refund.** Switching replaces both: a paused node keeps its paid stock and its bar.
+- **Research stock is 0.3 of the M3-21 prices** (dearest city 1 price 1,200): field data is the pace; stock only has to be small enough that one node can always run.
+- **Open:** the seed tin's single seed now limits the garden, not the number of actions (M3-12).
+
 ## Wrecks and buried finds (M3-15, Nov 11, 2026)
 `docs/reviews/M3-15_WRECKS.md`. Three Sprout wrecks (Ironside, Highreach, Lowmeadow) that Lumi uncovers by hand and salvages; one Bolt wreck in Kettle Bay as an unsalvageable tease; buried tins and lens chips that the detector pings; a found moment on Lumi with light, chimes, the piece named and a pointer to the Locker. All reachable. Merged.
 - Below the bar, for M5 art: wrecks are hard to pick out from 30 m; the tease reads as a dark lump; the found light barely shows in sunlight.
+
+## Research and tending from work (M3-06, Nov 11, 2026)
+`docs/reviews/M3-06_RESEARCH_TENDING.md`. Research costs stock once plus field data from cleaned hexes, stage changes, mastery levels, finds and sources; one node active, switching keeps its bar; time away adds no research (offline rate and cap in data). Watering soaks a hex for 3 minutes with a growth burst; dry plants grow at 25%; planting sets a patch; each stage has its own sound and look. Bot: longest research idle 58 to 99 s (was about 880). Research cube prices cut to 0.3x. Merged.
+- **Regrowth is too slow in the opening:** no hex passed stage 1 in 26 bot minutes, because the seed tin gives a single seed. Regrowth is the heart of the game, so M3-12 must have the first hex visibly growing within the first 20 minutes.

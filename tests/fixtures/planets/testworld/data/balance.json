@@ -1,11 +1,33 @@
 {
-  "_doc": "Dummy planet: its Surge numbers (same fields as a real balance table, see planets/verdance/data/balance.json), different from every shipped planet's so a test cannot pass on a hardcoded number. It has one district, so its Surges push a growth wave from the start.",
+  "_doc": "Dummy planet: its Surge numbers (same fields as a real balance table, see planets/verdance/data/balance.json), different from every shipped planet's so a test cannot pass on a hardcoded number. It has one district, so its Surges push a growth wave from the start. offline (core/offline.gd): rate = share of their online rate robots work at while the game is closed; cap_h = the most hours away that count. Time away adds no research and no field data.",
   "surge": {
-    "charge": {"units": [60.0], "per_bale": 0.1, "per_plant": 0.05, "per_water": 0.02, "min_fill_s": 8.0},
+    "charge": {
+      "units": [
+        60.0
+      ],
+      "per_bale": 0.1,
+      "per_plant": 0.05,
+      "per_water": 0.02,
+      "min_fill_s": 8.0
+    },
     "duration_s": 5.0,
-    "stats": {"scoop_rate": 2.0, "pickup_count": 2.5, "scoop_width": 1.5},
+    "stats": {
+      "scoop_rate": 2.0,
+      "pickup_count": 2.5,
+      "scoop_width": 1.5
+    },
     "power_per_district": 0.5,
     "chest_pack": 0.8,
-    "wave": {"from_district": 1, "rings": 1.0, "rings_per_district": 1.0, "water_s": 20.0, "stages": 0.5}
+    "wave": {
+      "from_district": 1,
+      "rings": 1.0,
+      "rings_per_district": 1.0,
+      "water_s": 20.0,
+      "stages": 0.5
+    }
+  },
+  "offline": {
+    "rate": 0.5,
+    "cap_h": 2.0
   }
 }

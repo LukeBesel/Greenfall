@@ -3,9 +3,13 @@ extends Node3D
 ## Planting, watering and growth on clean hexes. Each clean hex has plant slots on a jittered
 ## grid in the cell's own frame on the globe ground, made when Lumi plants or waters near it (a
 ## 164k-cell globe can't hold every slot) and seeded by the cell, so a cell always gets the same
-## slots; they are saved per cell, not by slot index. Plants grow one stage per grow_s while watered; thirsty plants droop and pause (never
-## die). Blooms drop seeds. Hex life = mean stage / 4 drives the ground turning green and the
-## planet cell state (Planted -> Growing -> Restored).
+## slots; they are saved per cell, not by slot index. Plants grow one stage per grow_s while
+## watered and at the tending table's dry_rate (a quarter) while thirsty, drooping (never dying).
+## Tending by hand (design spec section 5, the regrowth table's `tending`): a planting action sets
+## a patch of several plants for one seed cost, and watering a hex soaks every plant on it for
+## wet_s (3 minutes of full growth) with an immediate growth burst (once per rewater_s per hex).
+## Blooms drop seeds. Hex life = mean stage / 4 drives the ground turning green and the planet
+## cell state (Planted -> Growing -> Restored).
 
 ## [v4grow] A seed went in / a plant got water (was_dry: it had none). plants/garden_marks.gd.
 signal planted(slot: int)
@@ -16,7 +20,12 @@ var world: Node
 var cells: SphereCells
 var site_manager: SiteManager
 var cfg: Dictionary
+## The regrowth table's `tending` block (wet_s, dry_rate, burst_stage, rewater_s, patch_*).
+var tending: Dictionary = {}
 var species: Array = []
+## Garden clock (s of play), for the burst cooldown; hex id -> clock time of its last burst.
+var clock: float = 0.0
+var burst_at: Dictionary = {}
 var _sp_weight_sum: float = 0.0
 
 # Slots (flat arrays, all hexes)
@@ -45,6 +54,7 @@ var _saved_cells: Dictionary = {}  # cell -> [species bytes, stage bytes, water 
 
 func setup() -> void:
 	cfg = Economy.planet_table("plants")
+	tending = Economy.planet_table("regrowth").get("tending", {})
 	species = cfg.get("species", [])
 	for s: Dictionary in species:
 		_sp_weight_sum += float(s.get("weight", 1.0))
@@ -156,10 +166,17 @@ func _slot_near(pos: Vector3, fwd: Vector3, reach: float, empty: bool) -> int:
 	return best
 
 
+## One seed into one slot (robots plant this way; Lumi plants a patch: plants/tending.gd).
 func plant(slot: int) -> bool:
 	if slot < 0 or slot_species[slot] >= 0 or not GameState.can_afford("seeds", BigNum.from_float(1.0)):
 		return false
 	GameState.spend("seeds", BigNum.from_float(1.0))
+	set_seed(slot)
+	return true
+
+
+## Puts a seed in an empty slot (already paid for).
+func set_seed(slot: int) -> void:
 	slot_species[slot] = _pick_species(slot)
 	slot_stage[slot] = 0
 	slot_progress[slot] = 0.0
@@ -171,24 +188,28 @@ func plant(slot: int) -> bool:
 	GameState.inc_stat("plants_planted")
 	_recount(slot_hex[slot])
 	planted.emit(slot)  # [v4grow]
-	return true
+
+
+## Seconds of full growth a slot can hold: the tending table's wet_s (or the species' own, if longer).
+func wet_cap(slot: int) -> float:
+	var sp: Dictionary = species[slot_species[slot]]
+	return maxf(float(tending.get("wet_s", 0.0)), float(sp.get("water_s", 120)))
 
 
 func water(slot: int, amount_s: float) -> void:
 	if slot_species[slot] < 0:
 		return
-	var sp: Dictionary = species[slot_species[slot]]
 	var was_dry: bool = slot_water[slot] <= 0.0
-	slot_water[slot] = minf(slot_water[slot] + amount_s, float(sp.get("water_s", 120)))
+	slot_water[slot] = minf(slot_water[slot] + amount_s, wet_cap(slot))
 	if was_dry:
 		_perk[slot] = PERK_S  # [v4grow] it straightens up with a little bounce
 		_update_inst(slot)
 	watered.emit(slot, was_dry)
 
 
-## Pushes a planted slot's growth on by `stages` of a stage (a Surge's wave: systems/surge.gd).
-## The next growth tick shows it, through the same steps as growth by time; a plant in bloom or a
-## dry one stays as it is.
+## Pushes a planted slot's growth on by `stages` of a stage (a Surge's wave: systems/surge.gd, a
+## watering burst: plants/tending.gd). The next growth tick shows it, through the same steps as
+## growth by time; a plant in bloom stays as it is.
 func push_growth(slot: int, stages: float) -> void:
 	if slot_species[slot] < 0 or slot_stage[slot] >= 4 or stages <= 0.0:
 		return
@@ -224,7 +245,15 @@ func _process(delta: float) -> void:
 		return
 	var dt: float = _tick
 	_tick = 0.0
+	clock += dt
+	grow_step(dt)
+
+
+## Grows every planted slot by dt seconds: full rate while it has water, dry_rate while thirsty.
+## dt = 0 only shows progress already pushed (a burst).
+func grow_step(dt: float) -> void:
 	var changed_hexes: Dictionary = {}
+	var dry_rate: float = float(tending.get("dry_rate", 0.0))
 	# Irrigation research: buried drip lines halve how fast plants dry out.
 	var drain: float = dt * (0.5 if Research.has("irrigation") else 1.0) * Frontiers.plant_drain_mult(str(world.field.biome))  # [biomes] desert heat
 	var hl: HexLevels = world.get("hex_levels") as HexLevels
@@ -237,23 +266,25 @@ func _process(delta: float) -> void:
 		if slot_species[s] < 0:
 			continue
 		var sp: Dictionary = species[slot_species[s]]
+		var rate: float = dry_rate
 		if slot_water[s] > 0.0:
+			rate = 1.0
 			slot_water[s] = maxf(0.0, slot_water[s] - drain)
 			if slot_water[s] <= 0.0:
 				_update_inst(s)  # droop
-			if slot_stage[s] < 4:
-				slot_progress[s] += dt * (grow_mult + float(hex_grow_bonus.get(slot_hex[s], 0.0))) / float(sp.get("grow_s", 40))  # [biomes] greenhouses
-				if slot_progress[s] >= 1.0:
-					slot_progress[s] = 0.0
-					slot_stage[s] += 1
-					_update_inst(s)
-					changed_hexes[slot_hex[s]] = true
-					if slot_stage[s] == 1:
-						Audio.play("pop", 1.4, -16.0)
-					if slot_stage[s] == 4:
-						GameState.add_currency("seeds", BigNum.from_float(float(sp.get("seed_yield", 0.5)) * seed_mult))
-						GameState.inc_stat("plants_bloomed")
-						Vfx.burst("sparkle", slot_pos[s] + OrbitUp.up(slot_pos[s]) * 0.5, Color(1.0, 0.95, 0.6), 0.25)  # [orbB]
+		if slot_stage[s] < 4:
+			slot_progress[s] += rate * dt * (grow_mult + float(hex_grow_bonus.get(slot_hex[s], 0.0))) / float(sp.get("grow_s", 40))  # [biomes] greenhouses
+			if slot_progress[s] >= 1.0:
+				slot_progress[s] = 0.0
+				slot_stage[s] += 1
+				_update_inst(s)
+				changed_hexes[slot_hex[s]] = true
+				if slot_stage[s] == 1:
+					Audio.play("pop", 1.4, -16.0)
+				if slot_stage[s] == 4:
+					GameState.add_currency("seeds", BigNum.from_float(float(sp.get("seed_yield", 0.5)) * seed_mult))
+					GameState.inc_stat("plants_bloomed")
+					Vfx.burst("sparkle", slot_pos[s] + OrbitUp.up(slot_pos[s]) * 0.5, Color(1.0, 0.95, 0.6), 0.25)  # [orbB]
 	for h: int in changed_hexes:
 		_recount(h)
 

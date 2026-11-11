@@ -172,14 +172,17 @@ func _setup_research_codex() -> void:
 	pause_menu.codex_requested.connect(_open_codex)
 	if DevHooks.has("give-data"):
 		GameState.add_currency("cubes", BigNum.from_float(DevHooks.get_f("give-data", 500.0) * Research.note_cubes()))  # [money] research costs cubes
+		FieldData.award(DevHooks.get_f("give-data", 500.0), "dev")  # and field data, banked
 	if DevHooks.has("research"):
-		# --research=scoop_beam+wide_beam (researched) ; --research-start=bigger_hopper+conveyor
+		# --research=scoop_beam+wide_beam (researched) ; --research-start=bigger_hopper (active, the
+		# last one wins) ; --research-elapsed=0.4 (share of its field data already put in)
 		for id: String in DevHooks.get_s("research", "").split("+"):
 			Research.grant(id)
 	if DevHooks.has("research-start"):
 		for id: String in DevHooks.get_s("research-start", "").split("+"):
 			GameState.add_currency(Research.CURRENCY, Research.cost(id))
-			Research.start(id, Research.now() - DevHooks.get_f("research-elapsed", 0.0))
+			if Research.start(id):
+				FieldData.award(Research.data_cost(id) * clampf(DevHooks.get_f("research-elapsed", 0.0), 0.0, 0.99) / maxf(FieldData.gain_mult(), 0.01), "dev")
 	if DevHooks.has("codex-sample"):
 		# Screenshot helper: a game a little way in (some finds, stats and achievements).
 		var i: int = 0

@@ -1,8 +1,10 @@
 class_name ResearchNodeCard
 extends Button
-## One node in the research graph: a rounded glass card with an icon disc, name and a status line.
-## States: locked / available / queued / active (progress ring) / researched. Hover and focus
-## grow it a touch; starting research pops it; finishing it bursts and flashes.
+## One node in the research graph: a glass card with an icon disc, name, a status line and the
+## node's field-data bar along its foot (it fills as Lumi works while the node is active, and keeps
+## its fill when another node takes over). States: locked / available / paused (started before,
+## bar kept) / active (progress ring) / researched. Hover and focus grow it a touch; starting
+## research pops it; finishing it bursts and flashes.
 
 const W: float = 184.0  # [ui2] taller, readable cards (was 200 x 76, 15 / 12 px text); 5 columns fit 1280x720 @125%
 const H: float = 86.0
@@ -51,7 +53,7 @@ func _ready() -> void:
 
 func refresh() -> void:
 	var s: String = Research.status(node_id)
-	_affordable = GameState.can_afford(Research.CURRENCY, Research.cost(node_id))
+	_affordable = Research.is_paid(node_id) or GameState.can_afford_all(Research.stock(node_id))
 	if s != state:
 		state = s
 	tooltip_text = ""
@@ -118,9 +120,9 @@ func _draw() -> void:
 			border = Color(accent, 0.55 if _affordable else 0.25)
 			name_col = UITheme.CREAM
 			icon_col = accent
-		"queued":
+		"paused":
 			bg = Color(0.11, 0.1, 0.08, 0.95)
-			border = Color(UITheme.GOLD, 0.7)
+			border = Color(UITheme.GOLD, 0.45)
 			name_col = UITheme.CREAM
 			icon_col = accent
 		"active":
@@ -156,10 +158,13 @@ func _draw() -> void:
 		ResearchIcons.draw(self, "check", Vector2(size.x - 14, 14), 9.0, Color(0.06, 0.07, 0.08), 1.6)
 	elif state == "locked":
 		ResearchIcons.draw(self, "lock", Vector2(size.x - 15, 15), 9.0, Color(1, 1, 1, 0.25), 1.6)
-	elif state == "queued":
-		var qp: int = Research.queue_position(node_id) + 1
-		draw_style_box(UITheme.box(UITheme.GOLD, Color(0, 0, 0, 0), 0, 8, 0), Rect2(Vector2(size.x - 34, 7), Vector2(26, 17)))
-		draw_string(UITheme.font(), Vector2(size.x - 34, 20), "#%d" % qp, HORIZONTAL_ALIGNMENT_CENTER, 26, 12, Color(0.1, 0.07, 0.03))
+	if state != "researched" and state != "locked":
+		# The field-data bar: a hairline track along the foot, filled as far as data went in.
+		var bar := Rect2(Vector2(12, size.y - 9), Vector2(size.x - 24, 3))
+		draw_rect(bar, Color(1, 1, 1, 0.1))
+		var p2: float = Research.progress(node_id)
+		if p2 > 0.0:
+			draw_rect(Rect2(bar.position, Vector2(bar.size.x * p2, bar.size.y)), UITheme.GOLD if state == "active" else Color(UITheme.GOLD, 0.55))
 	# Text.
 	var f: Font = UITheme.font()
 	var tx: float = 62.0
@@ -175,17 +180,32 @@ func _draw() -> void:
 			sub = tr("Researched")
 			sub_col = Color(accent, 0.9)
 		"active":
-			sub = tr("%s left") % Research.time_text(Research.remaining())
+			sub = data_text(node_id)
 			sub_col = UITheme.GOLD
-		"queued":
-			sub = tr("Queued  ·  %s") % Research.time_text(Research.duration(node_id))
+		"paused":
+			sub = tr("Paused  ·  %s") % data_text(node_id)
 			sub_col = UITheme.CREAM
 		_:
-			sub = tr("%s  ·  %s") % [L10nFmt.amount("cubes", Research.cost(node_id).to_float()), Research.time_text(Research.duration(node_id))]
+			sub = tr("%s  ·  %s") % [stock_text(node_id), tr("%d data") % int(ceil(Research.data_cost(node_id)))]
 			sub_col = UITheme.GOLD if state == "available" and _affordable else UITheme.MUTED
 	draw_string(f, Vector2(tx, sub_y), sub, HORIZONTAL_ALIGNMENT_LEFT, size.x - tx - 8.0, 14, sub_col)
 	if _flash > 0.0:
 		draw_style_box(UITheme.box(Color(1, 0.95, 0.8, _flash * 0.45), Color(0, 0, 0, 0), 0, 12, 0), rect)
+
+
+## "34 / 70 data": field data put in over what the node needs.
+static func data_text(id: String) -> String:
+	return TranslationServer.translate("%d / %d data") % [int(floor(FieldData.put_in(id))), int(ceil(Research.data_cost(id)))]
+
+
+## The node's stock as short amounts ("600 cubes  12 Parts").
+static func stock_text(id: String) -> String:
+	var parts: Array[String] = []
+	var st: Dictionary = Research.stock(id)
+	for k: String in st:
+		if float(st[k]) > 0.0:
+			parts.append(L10nFmt.amount(k, float(st[k])))
+	return "  ".join(parts)
 
 
 ## Splits a name over at most two lines that fit `width`.

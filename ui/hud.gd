@@ -183,6 +183,7 @@ func _build_top_right() -> void:
 	_mastery_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_mastery_label.visible = false
 	_district.add_child(_mastery_label)
+	_district.add_child(ResearchStrip.new())  # the research the work is feeding (field data)
 	EventBus.mastery_gained.connect(_on_mastery_gained)
 	goals = GoalsPanel.new()
 	goals.hud = self
