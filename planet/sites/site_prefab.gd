@@ -66,7 +66,9 @@ func build() -> void:
 	holder.name = "Content"
 	add_child(holder)
 	if builder.is_valid():
-		await builder.call(holder, stage, restoration)
+		var made: Variant = await builder.call(holder, stage, restoration)
+		if made is Node and is_instance_valid(made) and (made as Node).has_signal("made") and not bool((made as Node).get("_made")):
+			await (made as Node).made  # [v6qa] the site's own signal: dropped cleanly if the town is freed mid-build
 	content = holder
 	if not _has_own_bodies(holder):
 		body = collision_for(holder, self)

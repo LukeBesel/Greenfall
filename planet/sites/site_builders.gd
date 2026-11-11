@@ -93,8 +93,8 @@ static func configure(p: SitePrefab, opts: Dictionary = {}) -> bool:
 	var sid: String = p.site_id
 	match "towns" if PlanetCfg.uses_towns(p.planet_id) else "prefab":  # [v7planet] site_kit
 		"towns":
-			p.builder = func(parent: Node3D, st: int, r: float) -> void:
-				await VerdanceSite.build(parent, sid, st, r, opts)
+			p.builder = func(parent: Node3D, st: int, r: float) -> Variant:
+				return VerdanceSite.start(parent, sid, st, r, opts)  # [v6qa] no await here: SitePrefab waits on the site's `made`
 			p.restyler = func(content: Node3D, st: int, r: float) -> bool:
 				var vs: VerdanceSite = _first(content, "VerdanceSite") as VerdanceSite
 				if vs == null:
