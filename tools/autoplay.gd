@@ -1000,7 +1000,7 @@ func _hex_planted(g: Garden, h: int) -> Vector2i:
 ## rest of each hex is filled (its life, and so stages 3 to 5, counts every open slot).
 func _pick_plant_hex(g: Garden) -> int:
 	var here: Vector3 = world.patch.global_position
-	if _plant_hex >= 0 and _area_set().has(_plant_hex):
+	if _plant_hex >= 0 and _area_set().has(_plant_hex) and not _plant_skip.has(_plant_hex):
 		var pc0: Vector2i = _hex_planted(g, _plant_hex)
 		if pc0.x < pc0.y and (pc0.x * 4 < pc0.y or _now() < _plant_scan_at):
 			return _plant_hex
@@ -1010,7 +1010,7 @@ func _pick_plant_hex(g: Garden) -> int:
 	var best: int = -1
 	var best_s: float = INF
 	for h: int in _hexes():
-		if not _land(h) or not world.field.is_clean(h):
+		if not _land(h) or not world.field.is_clean(h) or _plant_skip.has(h):
 			continue
 		var pc: Vector2i = _hex_planted(g, h)
 		if pc.y == 0 or pc.x >= pc.y:
@@ -1028,6 +1028,8 @@ func _pick_plant_hex(g: Garden) -> int:
 const PLANT_QUARTER_PULL_M: float = 150.0
 const PLANT_SCAN_S: float = 3.0
 var _plant_scan_at: float = 0.0
+## Hexes whose open slots were all out of reach (hex -> true).
+var _plant_skip: Dictionary = {}
 
 
 func _drips() -> int:
@@ -1149,6 +1151,9 @@ func _plant_task(p: Patch, g: Garden, h: int) -> bool:
 			best_d = d2
 			best = s
 	if best < 0:
+		_plant_skip[h] = true  # every open slot left here was out of reach: plant elsewhere
+		_plant_hex = -1
+		_plant_scan_at = 0.0
 		return false
 	_set_task("plant")
 	p.set_tool(Patch.Tool.PLANT)
@@ -2337,6 +2342,15 @@ func _setup_cadence() -> void:
 		_cadence.arrive(first, _now(), _crew())
 
 
+## A staged run keeps its table on disk every minute, so a stage cut short loses at most a minute.
+func _save_cadence() -> void:
+	if _cadence_path() == "" or _cadence.rows.is_empty():
+		return
+	var cf := FileAccess.open(_cadence_path(), FileAccess.WRITE)
+	if cf:
+		cf.store_string(JSON.stringify(_cadence.to_dict()))
+
+
 ## Where a staged run (--save-dir) keeps its cadence table between stages ("" for a single run).
 func _cadence_path() -> String:
 	var dir: String = DevHooks.get_s("save-dir", "")
@@ -2569,6 +2583,7 @@ func _snapshot() -> void:
 		world.get_tree().quit()
 	_print_garden()
 	_print_crew_here()
+	_save_cadence()
 	print("[Autoplay] %5.1f min city=%s stage=%d share=%d%% launch=%.1f%% cubes=%d rate=%.2f/s partscur=%.0f seeds=%.0f parts=%d hexes=%d lv=%s robots=%s hub=%d task=%s goals=%d research=%s pos=%s esc=%d" % [_now() / 60.0,  # [money]
 		_city_id(), int(Restoration.measure(Restoration.MEASURE_CITY_STAGE)), int(floor(_city_share() * 100.0)), pct * 100.0,
 		int(GameState.get_currency("cubes").to_float()), GameState.income_rate(), GameState.get_currency("parts").to_float(),
@@ -2734,10 +2749,7 @@ func write_report() -> void:
 	_report["board_stuck"] = _travel.board_stuck
 	_stall.write(_report, end_t)
 	_cadence.write(_report, end_t, _crew())
-	if _cadence_path() != "" and not _cadence.rows.is_empty():
-		var cf := FileAccess.open(_cadence_path(), FileAccess.WRITE)
-		if cf:
-			cf.store_string(JSON.stringify(_cadence.to_dict()))
+	_save_cadence()
 	var path: String = ProjectSettings.globalize_path("res://screenshots/autoplay_report.json")
 	if DevHooks.get_s("save-dir", "") != "":  # [orbC] parallel staged runs keep their own report
 		path = path.replace(".json", "_%s.json" % DevHooks.get_s("save-dir", "").validate_filename())
