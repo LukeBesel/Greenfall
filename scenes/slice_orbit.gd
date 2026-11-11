@@ -279,6 +279,14 @@ func _build_patch() -> void:
 	if DevHooks.has("orbit-spawn") and DevHooks.get_s("orbit-spawn", "").split(",").size() > 2:  # [v1world]
 		var up_s: Vector3 = spawn_dir.normalized()
 		north = north.rotated(up_s, deg_to_rad(float(DevHooks.get_s("orbit-spawn", "").split(",")[2])))
+	if DevHooks.has("orbit-walk-in") and g.sites.size() > 1:  # [v6qa] dev: --orbit-walk-in=HUB[,m]: start m (default 470) short of hub HUB on the way from the start, facing it (with --orbit-walk=boost: a walk into a town as it builds)
+		var wa: PackedStringArray = DevHooks.get_s("orbit-walk-in", "1").split(",")
+		var hd: Vector3 = (g.sites[clampi(int(wa[0]), 1, g.sites.size() - 1)]["transform"] as Transform3D).origin.normalized()
+		var sd: Vector3 = g.grid.centers[hub_cell]
+		var back_a: float = (float(wa[1]) if wa.size() > 1 else 470.0) / g.terrain.R
+		var ax: Vector3 = hd.cross(sd).normalized()
+		spawn_dir = hd.rotated(ax, back_a)
+		north = (hd - spawn_dir * hd.dot(spawn_dir)).normalized()
 	cam = SphereCam.new()
 	cam.name = "SphereCam"
 	cam.surface = g.surface
@@ -738,6 +746,9 @@ func _build_hub_frame() -> void:
 		eg.setup()
 		return eg)
 	await BuildBudget.idle()  # [v5load] the eggs plan and spawn across frames
+	var op0: Node = hub_frame.node("Outposts")
+	while BuildBudget.current != null and is_instance_valid(op0) and op0.get("building") == true:  # [v6qa] the outposts too
+		await BuildBudget.pause("hub frame:outposts")
 	await BuildBudget.check("hub frame:eggs")  # [v5load]
 	w.set("fauna", hub_frame.node("Fauna") as Fauna)
 	hub_frame.host("Ledger", func(f: HubFrame, hub: int) -> Node:  # the Ledger arc: drones, jammers and the relay at this hub

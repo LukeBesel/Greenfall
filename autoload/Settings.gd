@@ -67,6 +67,9 @@ var hold_to_scoop: bool = true  # false = toggle
 var master_volume: float = 0.9
 var sfx_volume: float = 0.9
 var music_volume: float = 0.55
+## [v6sound] Wind, wildlife and planet beds; and menu clicks. Defaults: data/sound.json "volumes".
+var ambience_volume: float = 0.8
+var ui_volume: float = 0.8
 var mouse_sensitivity: float = 0.0035
 var invert_y: bool = false
 var best_value_tags: bool = true
@@ -117,6 +120,12 @@ var _overrides: Dictionary = {}
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_register_default_actions()
+	# [v6sound] Where the volume sliders start for a new player is data, not code.
+	master_volume = SoundCfg.volume_default("master", master_volume)
+	music_volume = SoundCfg.volume_default("music", music_volume)
+	ambience_volume = SoundCfg.volume_default("ambience", ambience_volume)
+	sfx_volume = SoundCfg.volume_default("sfx", sfx_volume)
+	ui_volume = SoundCfg.volume_default("ui", ui_volume)
 	load_settings()
 	PadHold.install(get_tree())  # [orbD] hold the pad's map button (View) for the goal tracker
 	for a: String in OS.get_cmdline_user_args():  # [l10n] dev hook: --locale=pseudo|de|es|en
@@ -254,6 +263,8 @@ func save_settings() -> void:
 	cfg.set_value("audio", "master", master_volume)
 	cfg.set_value("audio", "sfx", sfx_volume)
 	cfg.set_value("audio", "music", music_volume)
+	cfg.set_value("audio", "ambience", ambience_volume)
+	cfg.set_value("audio", "ui", ui_volume)
 	cfg.set_value("ui", "best_value_tags", best_value_tags)
 	cfg.set_value("ui", "hud_mode", hud_mode)  # [hud]
 	cfg.set_value("display", "quality", quality)
@@ -304,6 +315,8 @@ func load_settings() -> void:
 	master_volume = float(cfg.get_value("audio", "master", master_volume))
 	sfx_volume = float(cfg.get_value("audio", "sfx", sfx_volume))
 	music_volume = float(cfg.get_value("audio", "music", music_volume))
+	ambience_volume = float(cfg.get_value("audio", "ambience", ambience_volume))
+	ui_volume = float(cfg.get_value("audio", "ui", ui_volume))
 	best_value_tags = bool(cfg.get_value("ui", "best_value_tags", best_value_tags))
 	hud_mode = clampi(int(cfg.get_value("ui", "hud_mode", hud_mode)), 0, 2)  # [hud]
 	quality = int(cfg.get_value("display", "quality", quality))

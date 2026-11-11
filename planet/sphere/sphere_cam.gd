@@ -45,6 +45,19 @@ var _look_pending := Vector2.ZERO
 var _manual_t: float = 0.0
 var _last_up := Vector3.ZERO
 var _boost_fx: float = 0.0
+## [v6feel] The flat camera's manners, on the globe: a soft arm that eases in before a wall cuts the
+## view (whiskers either side and above), screen shake, and Lumi hidden when the camera is in his head.
+var _soft: float = 6.2
+var _trauma: float = 0.0
+var _noise_t: float = 0.0
+var _hid: Node3D
+const HIDE_IN_M: float = 1.3
+const HIDE_OUT_M: float = 1.6
+## Extra downward pitch (radians) while a wall close behind Lumi cuts the arm short: the camera
+## climbs the wall and looks down at him instead of sitting in the back of his head.
+var _tilt: float = 0.0
+const TILT_BELOW_M: float = 3.0
+const WHISKER: float = 0.38  # radians either side of the arm, and above it
 
 
 func _ready() -> void:
@@ -56,6 +69,15 @@ func _ready() -> void:
 	camera.current = true
 	if surface == null:
 		surface = SphereSurface.new()
+	var bus: Node = get_node_or_null("/root/EventBus")
+	if bus and bus.has_signal("shake_requested"):
+		bus.connect("shake_requested", add_trauma)  # [v6feel] bale press, depot, big pieces
+
+
+## [v6feel] Screen shake (honours the Shake setting and Reduced motion, as the flat camera did).
+func add_trauma(amount: float) -> void:
+	if float(_setting("shake_intensity", 1.0)) > 0.0 and not bool(_setting("reduced_motion", false)):
+		_trauma = clampf(_trauma + amount, 0.0, 1.0)
 
 
 func _setting(n: String, d: Variant) -> Variant:
@@ -80,6 +102,7 @@ func snap() -> void:
 	var u: Vector3 = surface.up_at(target.global_position)
 	_focus = target.global_position + u * 1.1
 	_arm = distance
+	_soft = distance
 	_mode_t = 1.0 if view == "command" else 0.0
 	update_camera(0.0)
 
@@ -189,7 +212,11 @@ func update_camera(delta: float) -> void:
 	if _focus == Vector3.ZERO or delta <= 0.0:
 		_focus = want
 	else:
-		_focus = _focus.lerp(want, SphereMath.damp(14.0, delta))
+		# [v6feel] Along the ground it keeps up closely; up and down it follows softly, so a hop over
+		# a kerb or a landing is a gentle rise of the view, not a bump.
+		var gap: Vector3 = want - _focus
+		var gap_up: Vector3 = u * gap.dot(u)
+		_focus += (gap - gap_up) * SphereMath.damp(14.0, delta) + gap_up * SphereMath.damp(7.0, delta)
 		var lag: Vector3 = want - _focus
 		if lag.length() > 2.5:
 			_focus = want - lag.normalized() * 2.5
@@ -198,9 +225,46 @@ func update_camera(delta: float) -> void:
 	var fu: Vector3 = surface.up_at(_focus)
 	# Follow pose (spring-arm collision against walls and props, never below the ground).
 	var want_d: float = distance * (1.0 + 0.45 * _boost_fx)
-	var dir: Vector3 = (frame.z * cos(pitch) - frame.y * sin(pitch)).normalized()
+	var flat_dir: Vector3 = (frame.z * cos(pitch) - frame.y * sin(pitch)).normalized()
+	if delta > 0.0 and view == "follow" and not lens_view:
+		# [v6feel] How much steeper the view must be for a usable arm (0 when the plain one is fine).
+		var tilt_to: float = 0.0
+		if _collide(_focus, flat_dir, want_d) < minf(want_d, TILT_BELOW_M):
+			var best_d: float = 0.0
+			for extra: float in [0.3, 0.6, 0.9, 1.2]:
+				var pt: float = maxf(pitch - extra, -1.35)
+				var dt_: float = _collide(_focus, (frame.z * cos(pt) - frame.y * sin(pt)).normalized(), want_d)
+				if dt_ > best_d + 0.3:
+					best_d = dt_
+					tilt_to = pitch - pt
+				if dt_ >= minf(want_d, TILT_BELOW_M + 0.6):
+					break
+		_tilt = lerpf(_tilt, tilt_to, SphereMath.damp(5.0 if tilt_to > _tilt else 1.5, delta))
+	elif delta <= 0.0:
+		_tilt = 0.0
+	var pitch_v: float = maxf(pitch - _tilt, -1.35)
+	var dir: Vector3 = (frame.z * cos(pitch_v) - frame.y * sin(pitch_v)).normalized()
 	var d: float = _collide(_focus, dir, want_d)
-	_arm = d if d < _arm or delta <= 0.0 else lerpf(_arm, d, SphereMath.damp(6.0, delta))
+	if delta <= 0.0:
+		_soft = want_d
+		_arm = d
+	else:
+		# [v6feel] Whiskers: where the arm would be cut if the view turned a little or a roof came
+		# over. The soft arm eases toward that (in quickly, out gently), so most walls pull the
+		# camera in before they can cut the view; the centre sweep stays the hard limit.
+		var side: Basis = Basis(frame.y, WHISKER)
+		var d_l: float = _collide(_focus, side * dir, want_d)
+		var d_r: float = _collide(_focus, side.inverse() * dir, want_d)
+		var up_dir: Vector3 = Basis(frame.x, -WHISKER) * dir
+		var d_u: float = _collide(_focus, up_dir, want_d)
+		if d < want_d and _thin_block(dir, want_d):
+			d = want_d  # something small crossing the line (a post, a planter's end): look past it
+		if d_u < want_d and _thin_block(up_dir, want_d):
+			d_u = want_d
+		var soft_to: float = clampf(minf(minf(d_l, d_r) + 1.2, d_u + 0.6), minf(want_d, 2.4), want_d)
+		_soft = lerpf(_soft, soft_to, SphereMath.damp(8.0 if soft_to < _soft else 3.0, delta))
+		_arm = minf(d, lerpf(_arm, minf(_soft, d), SphereMath.damp(10.0, delta)))
+	_hide_target(view == "follow" and not lens_view and _mode_t < 0.05)
 	var p_follow: Vector3 = _focus + dir * _arm
 	var alt: float = surface.altitude(p_follow)
 	if alt < 0.45:
@@ -219,6 +283,14 @@ func update_camera(delta: float) -> void:
 		up_ref = -frame.z
 	camera.global_transform = Transform3D(Basis.looking_at(fwd_v, up_ref), pos)
 	_lens_pose(u)  # [orbE]
+	# [v6feel] Shake.
+	_trauma = maxf(0.0, _trauma - delta * 1.6)
+	_noise_t += delta * 40.0
+	var sh: float = _trauma * _trauma * float(_setting("shake_intensity", 1.0))
+	camera.h_offset = sin(_noise_t * 1.3) * 0.25 * sh
+	camera.v_offset = sin(_noise_t * 1.7 + 2.0) * 0.25 * sh
+	if sh > 0.0005:
+		camera.global_transform = camera.global_transform * Transform3D(Basis(Vector3(0, 0, 1), sin(_noise_t * 0.9 + 5.0) * 0.03 * sh), Vector3.ZERO)
 	var base_fov: float = float(_setting("fov", fov))
 	camera.fov = lerpf(camera.fov, base_fov + 12.0 * _boost_fx - 8.0 * e, SphereMath.damp(6.0, delta)) if delta > 0.0 else base_fov
 
@@ -256,6 +328,48 @@ func _collide(from: Vector3, dir: Vector3, length: float) -> float:
 	if r.size() < 2 or r[0] >= 1.0:
 		return length
 	return maxf(0.6, length * r[0] - 0.1)
+
+
+## [v6feel] True when what cuts the arm is narrow (a post, a sign's leg: clear a little to each side) and
+## the camera's own spot is free: the arm ignores it instead of jumping in and easing back out.
+func _thin_block(dir: Vector3, length: float) -> bool:
+	for b: Basis in [Basis(frame.y, 0.22), Basis(frame.y, -0.22)]:
+		if _collide(_focus, b * dir, length) < length - 0.05:
+			return false
+	return _free_at(_focus + dir * length)
+
+
+## [v6feel] True when a camera-sized ball at `p` touches nothing the arm collides with.
+func _free_at(p: Vector3) -> bool:
+	var space: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state if is_inside_tree() else null
+	if space == null:
+		return true
+	var q := PhysicsShapeQueryParameters3D.new()
+	var sh := SphereShape3D.new()
+	sh.radius = 0.4
+	q.shape = sh
+	q.collision_mask = collide_mask
+	q.transform = Transform3D(Basis(), p)
+	return space.intersect_shape(q, 1).is_empty()
+
+
+## [v6feel] With a wall right behind him the arm ends in Lumi's head, which then fills the screen:
+## closer than HIDE_IN_M his model is hidden (and shown again past HIDE_OUT_M, so it never flickers).
+func _hide_target(allowed: bool) -> void:
+	var m: Node3D = target.get("model") as Node3D if target and "model" in target else null
+	var hide: bool = allowed and m != null and (_arm < HIDE_IN_M or (_hid != null and _arm < HIDE_OUT_M))
+	if hide == (_hid != null):
+		return
+	if is_instance_valid(_hid):
+		_hid.visible = true
+	_hid = null
+	if hide and m.visible:
+		m.visible = false
+		_hid = m
+
+
+func hides_target() -> bool:
+	return _hid != null
 
 
 ## Roll error in radians: how far the camera's right vector tilts out of the local horizon.

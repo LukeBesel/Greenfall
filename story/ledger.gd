@@ -415,7 +415,9 @@ static func pick_drop_pieces(field: HexField, hid: int, r: RandomNumberGenerator
 	var need: float = maxf(frac, (1.0 - field.clean_threshold) * 1.3) * field.hex_total[hid]
 	var vol: float = 0.0
 	for pid: int in dead:
-		if out.size() >= max_n or (vol >= need and out.size() >= min_n):
+		# [main] The dump must always make the cell dirty again: with many light pieces per cell, 14 of them
+		# can stay under the 5% "still clean" share, so keep going until the volume is met (hard cap 48).
+		if (out.size() >= max_n and vol >= need) or out.size() >= 48 or (vol >= need and out.size() >= min_n):
 			break
 		out.append(pid)
 		vol += field.piece_vol[pid]
@@ -605,7 +607,7 @@ func _release(hid: int, pids: PackedInt32Array, marker: MeshInstance3D) -> void:
 		falling.append(mi)
 		var start := Transform3D(Basis.from_euler(Vector3(rng.randf() * TAU, rng.randf() * TAU, 0)).scaled(Vector3.ONE * field.piece_scale[pid]), origin + Vector3(rng.randf_range(-0.3, 0.3), 0, rng.randf_range(-0.3, 0.3)))
 		mi.global_transform = start
-		var delay: float = i * 0.07
+		var delay: float = i * minf(0.07, 1.0 / float(pids.size()))  # [main] a bigger dump still lands within about 2 s
 		var dur: float = rng.randf_range(0.65, 0.9)
 		last = maxf(last, delay + dur)
 		var tw := mi.create_tween()
@@ -900,7 +902,9 @@ func _bars_to(px: float) -> void:
 func _set_player(enabled: bool) -> void:
 	if world.patch.input is PlayerInput:
 		(world.patch.input as PlayerInput).enabled = enabled
-	world.cam.input_enabled = enabled
+	var so: SliceOrbit = world.get("orbit") as SliceOrbit  # [v6flat] the globe's camera (this was the flat rig: null on the globe)
+	if so and so.cam:
+		so.cam.input_enabled = enabled
 	world.hud.visible = enabled
 
 
