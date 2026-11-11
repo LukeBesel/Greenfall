@@ -87,6 +87,22 @@ example `{"trim_cool": "green"}`. Per-planet suggestions:
 - `COLOR.b`: per-part random seed.
 - `CUSTOM0`: paint or glow colour. `a = 1` means hazard stripes (on paint) or emissive (on trim).
 
+## The approved look (owner, item 74)
+
+The owner looked at the v6 yard machines and landmarks and said "Renders look great", then:
+"Keep that same style and quality for anything else we build." So those are the reference for
+every new machine, landmark, prop and planet:
+
+- Reference shots (render them with `res://tools/yard_lineup.tscn -- --shots=v6 --out=screenshots/yard/v6`):
+  picture signs, auto-baler, belt drive, recycler, and the landmarks (water tower, windpump,
+  gantry crane, signal mast, big wheel, tall stack, tower crane, last bus, lighthouse).
+- Models: `systems/camp/machine_art.gd`, `planet/sites/hub_landmarks.gd`; colours and sizes in
+  `data/machine_art.json`, `data/landmarks.json`.
+- What makes the look: chunky friendly shapes, the same paint palette, hazard stripes, picture
+  signs with no words, a small console or lamp that glows when it works, and a real interior
+  wherever you can see inside (the pod's old interior was the one thing the owner rejected).
+- Before handing off new art: render it, look at it, and compare it with the reference shots.
+
 ## Art rules (owner's bar, from owners.md)
 
 - Chunky, readable silhouettes. Every edge bevelled: use `b.box` / `b.cyl`, never a raw `BoxMesh` or `CylinderMesh`.
