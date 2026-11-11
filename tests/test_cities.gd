@@ -218,17 +218,17 @@ func test_a_lattice_tower_reaches_its_height() -> void:
 
 func test_a_restored_yard_is_paved_in_a_planted_frame() -> void:
 	var n: int = OldTownGround.CELLS
-	assert_eq(OldTownGround._yard_cell(n / 2, n / 2), OldTownGround.PAVE, "the middle of the yard is paved")
+	assert_eq(OldTownGround._yard_cell(n >> 1, n >> 1), OldTownGround.PAVE, "the middle of the yard is paved")
 	assert_eq(OldTownGround._yard_cell(0, 0), OldTownGround.LAWN, "a lawn in the corner")
 	assert_eq(OldTownGround._yard_cell(2, 2), OldTownGround.LAWN)
 	assert_eq(OldTownGround._yard_cell(1, 0), OldTownGround.LAWN, "the rim is planted")
-	assert_eq(OldTownGround._yard_cell(n / 2, 0), OldTownGround.PAVE, "a way out through the middle of each side")
-	assert_eq(OldTownGround._yard_cell(n - 1, n / 2), OldTownGround.PAVE)
+	assert_eq(OldTownGround._yard_cell(n >> 1, 0), OldTownGround.PAVE, "a way out through the middle of each side")
+	assert_eq(OldTownGround._yard_cell(n - 1, n >> 1), OldTownGround.PAVE)
 	var lawn: int = 0
 	for j: int in n:
 		for i: int in n:
 			lawn += 1 if OldTownGround._yard_cell(i, j) == OldTownGround.LAWN else 0
-	assert_between(lawn, n * n / 5, n * n / 2, "between a fifth and a half of the yard is green")
+	assert_between(float(lawn), float(n * n) * 0.2, float(n * n) * 0.5, "between a fifth and a half of the yard is green")
 
 
 func test_a_dense_suburb_block_has_house_rows_with_no_overlap() -> void:
@@ -249,7 +249,7 @@ func test_a_dense_suburb_block_has_house_rows_with_no_overlap() -> void:
 			assert_true(houses[i].has("setback"), "a dense row's house knows its setback")
 			for j: int in range(i + 1, houses.size()):
 				assert_false(r.intersects(houses[j]["rect"]), "houses do not overlap")
-	assert_gt(dense, thin * 13 / 10, "dense rows hold clearly more houses (%d against %d)" % [dense, thin])
+	assert_gt(float(dense), float(thin) * 1.3, "dense rows hold clearly more houses (%d against %d)" % [dense, thin])
 
 
 func test_gardens_fence_hedge_and_drive_a_pair_of_houses() -> void:
@@ -280,7 +280,7 @@ func test_gardens_fence_hedge_and_drive_a_pair_of_houses() -> void:
 
 func test_gable_ends_are_their_own_cheap_mesh() -> void:
 	var m: ArrayMesh = CityRoofs.gable_end_mesh()
-	assert_lt(m.surface_get_array_len(0) / 3, 12)
+	assert_lt(m.surface_get_array_len(0), 36, "four triangles an end")
 	assert_almost_eq(m.get_aabb().end.y, 0.94, 0.01)
 
 

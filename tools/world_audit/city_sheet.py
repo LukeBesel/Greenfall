@@ -13,7 +13,7 @@ for a in sys.argv[2:]:
     if a.startswith("--cols="):
         cols = int(a.split("=", 1)[1])
     else:
-        label, path = a.split("=", 1)
+        label, path = a.rsplit("=", 1)
         items.append((label, path))
 font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 15)
 tw, th, bar = 640, 360, 24
