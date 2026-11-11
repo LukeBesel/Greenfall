@@ -129,6 +129,9 @@ on the next start.
 | How fast a block's colour and windows follow a change (seconds) | `town.ease_s` |
 | Butterflies and fireflies per cell by hex level, the most at once, their colours | `flutter.per_level`, `flutter.max`, `flutter.colors` |
 | The sound that follows the ground round Lumi (wind over junk, leaves over grass, rare creaks and bird phrases) | `data/sound.json` `planets.<id>.ambience.life`: `loops` (`id: [dB, dirty/green/always]`) and `events` (`[sound, min s, max s, dB, pitch lo, pitch hi, dirty/green/green_day/always, min s between]`). A loop or sound can be a `res://` file, so a recorded sound can replace a built-in one. A planet without a `life` block has none |
+| When those beds come in and how the one-shots' conditions read the ground | same block: `mix` (`dirty_from`/`dirty_full`, `green_from`/`green_full`: share of junk / mean green, 0 to 1, where a bed starts / is full; `dirty_hushes_green`) and `when` (`dirty`, `green`, `night` thresholds) |
+| The least time between two plays of any one life sound (birds, creaks), whatever the event says | same block: `min_gap_floor_s` (60: about once a minute at most; the beds are loops and do not count) |
+| How far round Lumi the bed listens, how fast it crossfades | same block: `rings` (3 is about 30 m), `fade_s` |
 
 Check with `godot --headless --path . -- --fresh --orbit --no-intro --life-clean=6,2 --life-report --quit-after=60`
 (`[life]` lines: grass tufts, butterflies, sound weights and plays, each town's blocks per stage

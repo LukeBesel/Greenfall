@@ -66,15 +66,19 @@
     "events": [],
     "life": {
      "_doc": "[v6life] The bed that follows the ground round Lumi (audio/life_ambience.gd), not the planet's restoration. Any planet can have one. rings: rings of cells round Lumi it listens to (3 is about 30 m). fade_s: crossfade seconds. loops: id -> [dB at full weight, on]; on is dirty (mostly junk round Lumi), green (grass round Lumi) or always; an id is a built-in loop (wind_dust, wind_warm, wind_sea, wind_eerie, heat_buzz, waves, water, cicadas, leaves) or a res:// sound file. events: [sound, shortest wait s, longest wait s, dB, pitch low, pitch high, when, at least s between two]; when is dirty, green, green_day or always; sound is amb_creak, a game sound (song, chirp, coo, gull, frog, ...) or a res:// file. Bird calls also wait for the wildlife's shared bird clock.",
+     "_doc_mix": "mix: when the beds come in: dirty_from / dirty_full are the share of junk round Lumi where the dirty bed starts / is full; green_from / green_full the same for the mean green (0..1); dirty_hushes_green: how much junk quiets the green bed (0..1). when: the thresholds of the events' conditions (dirty: junk share, green: mean green, night: darkness 0..1 above which green_day is off). min_gap_floor_s: no one-shot plays twice within this many seconds, whatever its own numbers say (the owner wants birds and creaks rare: about once a minute at most). Loops are beds and do not count.",
      "rings": 3,
      "fade_s": 6.0,
+     "mix": {"dirty_from": 0.25, "dirty_full": 0.85, "green_from": 0.12, "green_full": 0.6, "dirty_hushes_green": 0.6},
+     "when": {"dirty": 0.6, "green": 0.3, "night": 0.3},
+     "min_gap_floor_s": 60.0,
      "loops": {
       "wind_dust": [-25.0, "dirty"],
       "leaves": [-23.0, "green"]
      },
      "events": [
-      ["amb_creak", 35.0, 80.0, -27.0, 0.75, 1.05, "dirty", 30.0],
-      ["song", 50.0, 110.0, -25.0, 0.95, 1.1, "green_day", 50.0]
+      ["amb_creak", 60.0, 120.0, -27.0, 0.75, 1.05, "dirty", 60.0],
+      ["song", 70.0, 150.0, -25.0, 0.95, 1.1, "green_day", 70.0]
      ]
     }
    }

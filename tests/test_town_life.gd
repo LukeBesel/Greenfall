@@ -70,8 +70,8 @@ func test_one_shots_are_rare_and_tied_to_the_ground() -> void:
 	assert_false(LifeAmbience.when_ok("green_day", 0.0, 0.5, 1.0), "none at night")
 	assert_false(LifeAmbience.when_ok("typo", 1.0, 1.0, 0.0), "an unknown condition never plays")
 	for e: Array in LifeAmbience.bed_of("verdance")["events"]:
-		assert_gte(float(e[1]), 30.0, "owner items 32 and 50: very little chirping: " + str(e[0]))
-		assert_gte(float(e[7]), 30.0)
+		assert_gte(float(e[1]), 60.0, "owner items 32 and 50: very little chirping: " + str(e[0]))
+		assert_gte(float(e[7]), 60.0)
 
 
 func test_ambience_measures_the_land_round_lumi() -> void:
@@ -108,3 +108,35 @@ func test_a_planet_block_overrides_only_what_it_names() -> void:
 	LifeCfg._cfg = keep
 	LifeCfg.use_planet("verdance")
 	TownLife.configure()
+
+
+func test_ambience_reads_its_numbers_from_the_data() -> void:
+	var la := LifeAmbience.new()
+	la.configure(LifeAmbience.bed_of("verdance"))
+	var got: Dictionary = la.read_back()
+	var bed: Dictionary = LifeAmbience.bed_of("verdance")
+	assert_eq(got["loops"].size(), (bed["loops"] as Dictionary).size())
+	assert_almost_eq(float(got["floor"]), float(bed["min_gap_floor_s"]), 0.001)
+	assert_gte(float(got["floor"]), 60.0, "no life one-shot more than about once a minute")
+	for e: Dictionary in got["events"]:
+		assert_gte((e["gap"] as Vector2).x, 60.0, str(e["snd"]))
+		assert_gte(float(e["min_gap"]), 60.0, str(e["snd"]))
+	# Made-up data: every number comes through, and the floor holds even against the data's own gaps.
+	la.configure({"rings": 5, "fade_s": 2.0, "min_gap_floor_s": 90.0,
+		"mix": {"dirty_from": 0.1, "dirty_full": 0.2}, "when": {"green": 0.5},
+		"loops": {"waves": [-31.0, "always"]},
+		"events": [["chirp", 5.0, 9.0, -30.0, 1.0, 1.0, "green", 2.0]]})
+	got = la.read_back()
+	assert_eq(int(got["rings"]), 5)
+	assert_almost_eq(float(got["fade_s"]), 2.0, 0.001)
+	assert_almost_eq(float(got["loops"]["waves"]), -31.0, 0.001)
+	assert_almost_eq(float(got["mix"]["dirty_full"]), 0.2, 0.001)
+	assert_almost_eq(float(got["mix"]["green_full"]), 0.6, 0.001, "unnamed keys keep their default")
+	assert_almost_eq(float(got["when"]["green"]), 0.5, 0.001)
+	var ev: Dictionary = got["events"][0]
+	assert_almost_eq((ev["gap"] as Vector2).x, 90.0, 0.001, "the floor lifts a short gap")
+	assert_almost_eq(float(ev["min_gap"]), 90.0, 0.001)
+	assert_almost_eq(float(ev["db"]), -30.0, 0.001)
+	assert_gt(LifeAmbience.weights(0.15, 0.0, got["mix"]).x, 0.3, "the dirty bed starts where the data says")
+	assert_false(LifeAmbience.when_ok("green", 0.0, 0.4, 0.0, got["when"]))
+	la.free()
