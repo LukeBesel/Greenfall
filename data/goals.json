@@ -36,7 +36,7 @@
     {"id": "plant_25", "text": "Plant 25 seeds", "type": "stat", "key": "plants_planted", "target": 25, "reward": {"cubes": 300, "seeds": 10}},
     {"id": "drip_1", "text": "Build a Drip watering robot", "type": "robot", "key": "drip", "target": 1, "reward": {"cubes": 400}},
     {"id": "home_drive_5", "text": "Build the Mk V Orbital drive", "type": "stat", "key": "drive_tier", "target": 5, "reward": {"cubes": 5000}},
-    {"id": "home_land_1", "text": "Fly to another planet", "type": "stat", "key": "planets_landed", "target": 1, "reward": {"cubes": 5000, "seeds": 40}, "desc": "You can fly on now. The rest of Verdance can wait."},
+    {"id": "home_land_1", "text": "Fly to another planet", "type": "stat", "key": "planets_landed", "target": 1, "reward": {"cubes": 5000, "seeds": 40}},
     {"id": "perfect_1", "text": "Make a perfect bale", "type": "stat", "key": "perfect_cubes", "target": 1, "reward": {"cubes": 40}},
     {"id": "compartment_3", "text": "Chest Size level 3", "type": "upgrade", "key": "compartment_size", "target": 3, "reward": {"cubes": 100}},
     {"id": "shards_1", "text": "Find a memory shard", "type": "stat", "key": "shards_found", "target": 1, "reward": {"cubes": 60}},

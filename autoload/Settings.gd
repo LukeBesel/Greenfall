@@ -70,11 +70,6 @@ var music_volume: float = 0.55
 var mouse_sensitivity: float = 0.0035
 var invert_y: bool = false
 var best_value_tags: bool = true
-## [orbB] New Game / Continue start on the walkable globe (scenes/slice_orbit.gd), with its own save
-## folder (SaveManager.root_dir). [v1menu] The round world is the game now: always true, never saved
-## or loaded (old settings files hold the preview's `false`). The dev hook `--flat` turns it off to
-## reach the dormant flat game (SaveManager.round_planets).
-var round_planets: bool = true
 ## [hud] In-game HUD density: FULL (everything, no auto-fade), MINIMAL (default: non-essential
 ## elements fade after a few seconds without change), HIDDEN (only prompts and notifications).
 enum HudMode { FULL, MINIMAL, HIDDEN }

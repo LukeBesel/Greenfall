@@ -201,9 +201,29 @@ func current() -> Dictionary:
 	var d: Dictionary = (g.chain[gi] as Dictionary).duplicate()
 	d["_goal"] = gi
 	var rw: String = GoalsPanel.reward_text(g.reward_of(gi), 1.0)
-	if str(d.get("desc", "")) == "":  # [v6pace] a goal may carry its own why line (data/goals.json "desc")
-		d["desc"] = (tr("Reward: %s") % rw) if rw != "" else ""
+	d["desc"] = (tr("Reward: %s") % rw) if rw != "" else ""
+	var why: String = goal_reason(d)  # [v6story] the in-world reason first, then the reward
+	if why != "":
+		d["desc"] = TranslationServer.translate(why) + ("\n" + str(d["desc"]) if str(d["desc"]) != "" else "")
 	return d
+
+
+## [v6story] Owner item 60: every goal says why. The English reason line for a goals.json entry
+## (data/story_reasons.json goal_reasons): by id, else by kind ("type:key"), else by type, else the default.
+static var _reasons: Dictionary = {}
+static func goal_reason(g: Dictionary) -> String:
+	if _reasons.is_empty():
+		_reasons = (Economy.read_json("res://data/story_reasons.json") as Dictionary).get("goal_reasons", {})
+	var by_id: Dictionary = _reasons.get("by_id", {})
+	var by_kind: Dictionary = _reasons.get("by_kind", {})
+	var by_type: Dictionary = _reasons.get("by_type", {})
+	var typ: String = str(g.get("type", "stat"))
+	var kind: String = "%s:%s" % [typ, str(g.get("key", ""))]
+	if by_id.has(str(g.get("id", ""))):
+		return str(by_id[str(g.get("id", ""))])
+	if by_kind.has(kind):
+		return str(by_kind[kind])
+	return str(by_type.get(typ, _reasons.get("default", "")))
 
 
 func target_of(def: Dictionary) -> float:

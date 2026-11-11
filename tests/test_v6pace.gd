@@ -106,7 +106,7 @@ func test_goal_chain_leads_to_the_exit() -> void:
 	for id: String in ["shards_1", "pet_cat", "extras_radio", "builder_1", "research_dunes", "visit_dust", "base_4", "base_5"]:
 		assert_gt(_goal_index(id), land, "%s is not on the way out" % id)
 	var ch: Array = Economy.read_json("res://data/goals.json").get("goals", [])
-	assert_string_contains(str(ch[land].get("desc", "")), "You can fly on now")
+	assert_string_contains(Objectives.goal_reason(ch[land]), "You can fly on now")
 
 
 func test_base_prices() -> void:
