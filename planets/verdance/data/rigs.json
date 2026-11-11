@@ -1,0 +1,106 @@
+{
+  "_doc": "Rigs (design spec section 7, decision 16.8; systems/rigs.gd): modules fitted to Lumi's body at the workbench. One module per slot, swapped at the bench at no cost; a fitted module shows on Lumi's model. Rigs are function, never looks: the Locker's eleven look slots are separate and nothing here is a cosmetic piece. slots: [{id, name}] in panel order. modules.<id>: slot; name and desc (shown, translated); district = the city whose opening brings the module's plan to the bench (the plan arrives the moment the city opens, so the tool can be fitted before the flight); tool_for = the pollution kind this module is the tool for (that kind's gate in pollution.json names the module: without it fitted Lumi cannot work the kind at all); cost = {cubes, parts} to build it once at the bench (no cost = handed over with the plan: every city's tool is free, the price of a tool is the slot it takes); mods = {stat: multiplier while fitted}; adds = {stat: amount added while fitted}; floors = {stat: the stat is at least this while fitted} (the Plate Cutter cuts a wreck into bites Lumi can lift, so it stands in for Lift Strength 2; the Skim Skirt carries her over water). Stats are Lumi's own (patch.json stats: capacity, scoop_width, scoop_reach, scoop_rate, move_speed, carry_stack, cube_value_mult, detector_range, lift_class, hover_water) and five that are not upgrade stats: kind_<kind id> = Lumi's rate on that pollution kind; parts_yield = the chance of a part worth stripping from what she takes (more Parts, so more robots); crew_near = the bonus robots get for working alongside Lumi (robots.json proximity.bonus is multiplied by this); crew_radius = how far that bonus reaches (proximity.radius_m is multiplied by this). Every slot has one module that acts on the crew (decision 16.8): Guide Arm, Sorter, Relay Mast. part = how the module shows on the model (player/rig_parts.gd): shape = one of that file's part builders, color = its paint (hex). Prices are first values inside the city price cap (nothing above 4,200 cubes); the balance pass (M3-12) sets them with the crew numbers. study: the numbers of the rig study (tools/pace_sim/rig_study.gd), which scores every module in every city and fails when one module of a slot is the best fit in every city: walk_m_per_ring = metres of a round trip to the scale per ring of the city; press_s = seconds to press one bale; float_hex_share = share of the hexes that are water in a city that lists a floating kind; hand_scale_by_city = how much faster Lumi scoops and how much bigger her chest is in each city than at the start, from the upgrade tracks; lumi_hauls_share = share of her bales Lumi walks to the scale herself in each city (haulers take the rest); crew_by_city = robots at work in each city, in city order (the accepted crew sizes, docs/DECISIONS.md M3-20); crew_near_share = share of the crew that works within reach of Lumi; robot_units_s = units of waste one robot clears a second; parts_per_robot = Parts one more robot costs; parts_per_unit = Parts Lumi strips from one unit of waste; learn_share = share of a city's hand work done before Lumi has learnt its newest kind (while robots must leave it alone, so only her own tool clears it); weights = how much the study values cubes a minute, cleaning a minute and Parts a minute against each other in each city, in city order (each city sums to 1): cubes count most early; once the crew is large the city is restored by the crew, and Parts are what build it.",
+  "slots": [
+    {"id": "arm", "name": "Arm"},
+    {"id": "chest", "name": "Chest"},
+    {"id": "drive", "name": "Drive"}
+  ],
+  "modules": {
+    "plate_cutter": {
+      "slot": "arm", "name": "Plate Cutter", "desc": "A salvaged cutting head. Slices wrecks into pieces Lumi can lift. Narrow.",
+      "district": "scrapyard", "tool_for": "wrecks",
+      "mods": {"scoop_width": 0.85}, "floors": {"lift_class": 2.0},
+      "part": {"shape": "cutter", "color": "#d9772b"}
+    },
+    "wide_sweep": {
+      "slot": "arm", "name": "Wide Sweep", "desc": "A broad intake fan. Sweeps a wide path of loose junk, but only close up.",
+      "district": "scrapyard", "cost": {"cubes": 900},
+      "mods": {"scoop_width": 1.5, "scoop_reach": 0.85},
+      "part": {"shape": "fan", "color": "#2f9c95"}
+    },
+    "long_reach": {
+      "slot": "arm", "name": "Long Reach", "desc": "A telescoping boom. Pulls junk in from far off and skims well from the bank. Thin beam.",
+      "district": "kettle_bay", "cost": {"cubes": 1500, "parts": 20},
+      "mods": {"scoop_reach": 1.5, "scoop_width": 0.85, "kind_slick": 1.3},
+      "part": {"shape": "boom", "color": "#e8c33a"}
+    },
+    "guide_arm": {
+      "slot": "arm", "name": "Guide Arm", "desc": "A signal paddle. Robots working near Lumi get three times the boost from her. Her own scoop slows.",
+      "district": "highreach", "cost": {"cubes": 2800, "parts": 60},
+      "mods": {"crew_near": 3.0, "scoop_rate": 0.92},
+      "part": {"shape": "paddle", "color": "#e25a4e"}
+    },
+    "deep_hold": {
+      "slot": "chest", "name": "Deep Hold", "desc": "A bigger hopper bolted under the chest. Fewer trips to the scale. Heavy.",
+      "district": "scrapyard", "cost": {"cubes": 1200, "parts": 10},
+      "mods": {"capacity": 1.4, "move_speed": 0.92},
+      "part": {"shape": "hold", "color": "#2f9c95"}
+    },
+    "press_frame": {
+      "slot": "chest", "name": "Press Frame", "desc": "Stiff press rails. Bales come out tighter and pay more. Less room inside.",
+      "district": "kettle_bay", "cost": {"cubes": 2000, "parts": 30},
+      "mods": {"cube_value_mult": 1.25, "capacity": 0.9},
+      "part": {"shape": "rails", "color": "#d9772b"}
+    },
+    "mist_scrubber": {
+      "slot": "chest", "name": "Mist Scrubber", "desc": "A filter drum and spray bar. Turns the can's water into a mist that scrubs smog. The drum takes chest room.",
+      "district": "highreach", "tool_for": "smog",
+      "mods": {"capacity": 0.9},
+      "part": {"shape": "drum", "color": "#5aa7d6"}
+    },
+    "sorter": {
+      "slot": "chest", "name": "Sorter", "desc": "A sorting tray. Picks out far more parts worth keeping, for more robots. Bales pay a little less.",
+      "district": "highreach", "cost": {"cubes": 2600, "parts": 50},
+      "mods": {"parts_yield": 2.0, "cube_value_mult": 0.95},
+      "part": {"shape": "tray", "color": "#e8c33a"}
+    },
+    "sprint_coils": {
+      "slot": "drive", "name": "Sprint Coils", "desc": "Rewound hover coils. Much faster over ground. They take a little chest room.",
+      "district": "scrapyard", "cost": {"cubes": 800, "parts": 8},
+      "mods": {"move_speed": 1.3, "capacity": 0.92},
+      "part": {"shape": "coils", "color": "#e8c33a"}
+    },
+    "skim_skirt": {
+      "slot": "drive", "name": "Skim Skirt", "desc": "A float skirt with a skimming lip. Carries Lumi over water and lifts slick off it. Slower on land.",
+      "district": "kettle_bay", "tool_for": "slick",
+      "mods": {"move_speed": 0.95}, "floors": {"hover_water": 1.0},
+      "part": {"shape": "skirt", "color": "#c8402f"}
+    },
+    "tow_hitch": {
+      "slot": "drive", "name": "Tow Hitch", "desc": "A bale rack on the back. Carries two more bales a trip. Slower.",
+      "district": "highreach", "cost": {"cubes": 2400, "parts": 40},
+      "mods": {"move_speed": 0.88}, "adds": {"carry_stack": 2.0},
+      "part": {"shape": "hitch", "color": "#d9772b"}
+    },
+    "soil_doser": {
+      "slot": "drive", "name": "Soil Doser", "desc": "A dosing bar under the hover ring. Feeds the cleansing plants that draw blight out of the soil. Slower.",
+      "district": "lowmeadow", "tool_for": "blight",
+      "mods": {"move_speed": 0.95},
+      "part": {"shape": "doser", "color": "#6fae3f"}
+    },
+    "relay_mast": {
+      "slot": "drive", "name": "Relay Mast", "desc": "A tall relay on the back. Robots much further away still get a boost from Lumi, and the detector sees further. Slower.",
+      "district": "lowmeadow", "cost": {"cubes": 3400, "parts": 80},
+      "mods": {"crew_radius": 2.5, "detector_range": 1.4, "move_speed": 0.95},
+      "part": {"shape": "mast", "color": "#5aa7d6"}
+    }
+  },
+  "study": {
+    "walk_m_per_ring": 10.0,
+    "press_s": 1.7,
+    "float_hex_share": 0.2,
+    "hand_scale_by_city": [1.0, 2.5, 5.0, 8.0, 12.0, 16.0],
+    "lumi_hauls_share": [0.5, 0.15, 0.1, 0.1, 0.1, 0.1],
+    "crew_by_city": [8, 50, 74, 98, 123, 159],
+    "crew_near_share": 0.2,
+    "robot_units_s": 0.6,
+    "parts_per_robot": 30.0,
+    "parts_per_unit": 0.004,
+    "learn_share": 0.35,
+    "weights": {
+      "cubes": [0.7, 0.6, 0.5, 0.35, 0.25, 0.2],
+      "cleaning": [0.2, 0.25, 0.3, 0.4, 0.5, 0.55],
+      "parts": [0.1, 0.15, 0.2, 0.25, 0.25, 0.25]
+    }
+  }
+}

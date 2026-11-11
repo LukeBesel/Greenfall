@@ -6,6 +6,7 @@ extends Node3D
 ##   --view=head / chest : close-ups (eyes and visor; chest plate and claws), portrait lighting.
 ##   --view=hands    : both claws in the portrait pose, framed between them.
 ##   --view=blink    : head close-up, a blink at phase 0 (open), 50 ms (closing), 90 ms (shut), 170 ms (opening).
+##   --rig=plate_cutter,deep_hold,sprint_coils : rig modules of the current planet shown fitted.
 ##   --out=screenshots/hero/x  (writes <out>.png or <out>_N.png), --eyes=crescent|round|happy|bar|heart
 ##   --variant=aurora|bolt|sprout|pixel|nova|patch : which design (PatchModel.VARIANTS). The portrait
 ##                     pose follows that design's concept-sheet portrait (held prop in the left claw);
@@ -146,6 +147,12 @@ func _ready() -> void:
 	_model.preview_variant = _variant
 	add_child(_model)
 	_model.set_happy(0.5)
+	var rig_rows: Dictionary = Planets.current().table(Rigs.TABLE).get("modules", {}) if Planets.current() else {}
+	var rig_parts: Array[Dictionary] = []
+	for id: String in DevHooks.get_s(Rigs.FLAG, "").split(",", false):
+		if rig_rows.has(id):
+			rig_parts.append(Rigs.part_of(id, rig_rows[id]))
+	_model.set_rig(rig_parts)
 	var eyes: String = DevHooks.get_s("eyes", "")
 	if eyes != "":
 		_model.set_eye_shape(eyes)

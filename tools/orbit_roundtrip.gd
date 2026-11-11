@@ -47,6 +47,7 @@ static func _snap(s: Node) -> Dictionary:
 		"pollution": JSON.stringify((s.orbit as SliceOrbit).pollution.save_state()),  # part-cleared kinds, cost owed
 		"chain": JSON.stringify((s.orbit as SliceOrbit).chain.save_state()),  # buried parts, the Assembler, its mix
 		"mastery": JSON.stringify((s.orbit as SliceOrbit).mastery.save_state()),  # Lumi's hand work per kind
+		"rigs": JSON.stringify((s.orbit as SliceOrbit).rigs.save_state()),  # plans, built modules, what is fitted
 		"mastery_shut_hexes": (s.orbit as SliceOrbit).globe.cells.shut.count(1),  # hexes robots must leave alone
 		"assembler_model": (s.orbit as SliceOrbit).chain.model != null,
 		"restoration": JSON.stringify((s.orbit as SliceOrbit).restoration.save_state()),

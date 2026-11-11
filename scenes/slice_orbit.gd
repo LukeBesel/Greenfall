@@ -41,6 +41,7 @@ var districts: Districts  # the cities and their regrowth stages (systems/distri
 var restoration: Restoration  # launch progress, the launch point, the whole-planet share
 var pollution: Pollution  # the planet's pollution kinds: which hex holds what, gates, payouts (systems/pollution.gd)
 var mastery: Mastery  # Lumi's mastery of each kind: what robots may work and how fast (systems/mastery.gd)
+var rigs: Rigs  # Lumi's fitted modules: each city's tool and the trade-off modules (systems/rigs.gd)
 var city_payouts: CityPayouts  # cubes paid once when a city reaches a regrowth stage
 var chain: RobotChain  # parts finders, the Assembler and its build mix
 var look_finds: Finds  # where the planet hides the pieces of Lumi's looks (systems/finds.gd)
@@ -415,6 +416,10 @@ func _build_pollution(saved: Dictionary) -> void:
 	mastery.setup(Planets.current(), GameState.orbit.get("mastery", {}))
 	pollution.set_mastery(mastery)
 	_seed_legacy_mastery()
+	rigs = Rigs.new()
+	w.add_child(rigs)
+	rigs.setup(Planets.current(), GameState.orbit.get(Rigs.TABLE, {}))
+	pollution.set_rigs(rigs)
 	if DevHooks.has(DistrictsDev.FLAG_STAGE):
 		for line: String in pollution.report():
 			print(line)
@@ -478,6 +483,10 @@ func _build_districts(levels: HexLevels) -> void:
 	w.add_child(ending)
 	DistrictsDev.attach(w, districts, restoration, ending, crews, globe.cells, levels)
 	mastery.sync_districts(districts)
+	rigs.sync_districts(districts, not GameState.orbit.has(Rigs.TABLE))  # a save from before rigs keeps its cities workable
+	var lumi: Patch = w.get("patch") as Patch
+	if lumi != null:
+		lumi.refresh_rig()
 	if crews.crew != null:
 		crews.crew.pollution = pollution
 	if crews.crew != null:  # Scroungers, the Assembler, where new robots go (systems/crew/robot_chain.gd)
@@ -1201,6 +1210,7 @@ func persist_save() -> void:
 		"city_payouts": city_payouts.save_state() if city_payouts else {},
 		"pollution": pollution.save_state() if pollution else {},
 		"mastery": mastery.save_state() if mastery else {},
+		Rigs.TABLE: rigs.save_state() if rigs else {},
 		"chain": chain.save_state() if chain else {},
 		"restoration": restoration.save_state() if restoration else {},
 		"finds": look_finds.save_state() if look_finds else {},

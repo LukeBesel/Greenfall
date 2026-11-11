@@ -1281,6 +1281,8 @@ func _shopping_list() -> Dictionary:
 				out["trip"] = true
 	if BenchTiers.can_buy(world):
 		out["trip"] = true  # a new bench tab is on offer and paid for: nobody leaves that waiting
+	if not _rig_tools().is_empty():
+		out["trip"] = true  # a city's tool is waiting at the bench: without it that city's waste stays shut
 	if _research_pick() != "":
 		out["trip"] = true
 	var st: Stations = Stations.of(world)
@@ -1310,8 +1312,33 @@ func _card_purchase() -> Dictionary:
 	return {}
 
 
+## The tools at the bench that Lumi needs and has not fitted (systems/rigs.gd): the tools for the
+## kinds of every open city, the newest city and its newest kind first, so where two tools share
+## a slot the one for the city just opened wins.
+func _rig_tools() -> Array[String]:
+	var rigs: Rigs = Rigs.of(world)
+	var r: Restoration = Restoration.active()
+	if rigs == null or r == null or r.districts == null:
+		return []
+	var kinds: Array = []
+	var open_ids: Array[String] = r.districts.ids().filter(func(id: String) -> bool: return r.districts.is_unlocked(id))
+	open_ids.reverse()
+	for id: String in open_ids:
+		var listed: Array = (r.districts.spec_of(id).get("pollution", []) as Array).duplicate()
+		listed.reverse()
+		for kind: Variant in listed:
+			if not kinds.has(kind):
+				kinds.append(kind)
+	return rigs.tools_wanted(kinds)
+
+
 func _shop(want: Dictionary) -> void:
 	var fleet: Fleet = world.fleet
+	# The city's tool first: it is free and nothing in that city's new waste moves without it.
+	var rigs: Rigs = Rigs.of(world)
+	for tool_id: String in _rig_tools():
+		if rigs.fit(tool_id):
+			_event("rig_fit", {"module": tool_id, "slot": rigs.slot_of(tool_id)})
 	# 0) [onboard] The Signal Tower: the first tier right away (WREN), later tiers with the base level.
 	# When the card asks for it, it is bought the moment it is paid for; otherwise with cubes to spare.
 	var tower: SignalTower = world.get_node_or_null("SignalTower") as SignalTower

@@ -210,7 +210,8 @@ func robot_factor(kind: String) -> float:
 
 
 func near_factor(dist_m: float) -> float:
-	return MasteryRules.near_factor(_cfg, dist_m)
+	# The rig (systems/rigs.gd) may stretch the reach of the bonus and its size.
+	return 1.0 + (MasteryRules.near_factor(_cfg, dist_m / maxf(Rigs.factor("crew_radius"), 0.01)) - 1.0) * Rigs.factor("crew_near")
 
 
 ## The kinds a robot role works that Lumi has met, in table order.

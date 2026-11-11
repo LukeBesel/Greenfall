@@ -80,6 +80,7 @@ func _ready() -> void:
 	pickup_fx.name = "PickupFx"
 	pickup_fx.model = model
 	add_child(pickup_fx)
+	EventBus.rig_fitted.connect(_on_rig_fitted)
 	_stack_root = Node3D.new()
 	_stack_root.name = "Stack"
 	_stack_root.position = model.stack_point
@@ -124,6 +125,20 @@ func stat(id: String) -> float:
 
 func capacity() -> float:
 	return stat("capacity")
+
+
+## Shows the fitted rig modules on the model (systems/rigs.gd).
+func refresh_rig() -> void:
+	var rigs: Rigs = Rigs.of(world)
+	var parts: Array[Dictionary] = []
+	if rigs != null:
+		parts = rigs.parts()
+	model.set_rig(parts)
+
+
+func _on_rig_fitted(_slot: String, _module_id: String) -> void:
+	refresh_rig()
+	model.squash(0.2)
 
 
 func carry_cap() -> int:
@@ -529,7 +544,7 @@ func _piece_arrived(type_id: String, vol: float, color: Color, cubes: float = 0.
 	if cubes < 0.0:  # a field with no hex values: priced by the unit
 		cubes = vol * float(Economy.junk_types.get(type_id, {}).get("value", 1.0))
 	compartment.add(type_id, vol, cubes)
-	_maybe_salvage_part(type_id, strip_scale)
+	_maybe_salvage_part(type_id, strip_scale * Rigs.factor("parts_yield"))
 	world.salvage_materials(type_id, vol)
 	GameState.add_junk_removed(type_id, vol)
 	_scoop_combo = mini(_scoop_combo + 1, 10)

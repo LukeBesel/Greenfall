@@ -72,6 +72,12 @@ signal pollution_cleared(kind: String, amount: float, by_player: bool)
 signal pollution_blocked(kind: String, cell_id: int)
 ## Mastery (systems/mastery.gd): Lumi's own work on `kind` reached mastery `level` (once per level).
 signal mastery_gained(kind: String, level: int)
+## Rigs (systems/rigs.gd). rig_module_unlocked: a module's plan reached the workbench.
+## rig_module_built: it was built from the plan. rig_fitted: `module_id` went into `slot`
+## ("" = the slot was emptied).
+signal rig_module_unlocked(module_id: String)
+signal rig_module_built(module_id: String)
+signal rig_fitted(slot: String, module_id: String)
 ## The robot chain (systems/crew/robot_chain.gd). parts_scrounged: parts finders brought `parts`
 ## Parts to a base. assembler_offered: the Assembler can now be built. assembler_built: it stands.
 ## robot_assembled: the Assembler's line finished a robot of `type_id` (robot_built fires too).
