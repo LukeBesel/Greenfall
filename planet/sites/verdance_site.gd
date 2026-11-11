@@ -302,7 +302,7 @@ func _make() -> void:
 	dressing.skip_facades = not CITY_BUILDINGS  # [v1world] shopfronts, awnings, neon, murals, billboard, string lights
 	dressing.kit_yard = true
 	if site_id != "start_yard":  # [v6hubs] the far hubs' landmarks come from the planet's data (the start yard keeps its own)
-		dressing.lm_kind_override = HubPlan.landmark_kind("verdance", hub_index)
+		dressing.lm_kind_override = HubPlan.landmark_kind(_plan_planet(), hub_index)
 	add_child(dressing)
 	await dressing.build(layout, null, hub_index, district_name, "", level)
 	set_level(level)
@@ -430,10 +430,15 @@ var _extra_foot: Array[Rect2] = []  # [v3city] furniture footprints (cars, shelt
 func _pick_kind() -> String:
 	if is_harbour(water):
 		return "harbour"
-	var from_data: String = str(HubPlan.entry("verdance", hub_index).get("town", ""))  # [v6hubs] the planet's data names the look
+	var from_data: String = str(HubPlan.entry(_plan_planet(), hub_index).get("town", ""))  # [v6hubs] the planet's data names the look
 	if KINDS.has(from_data) and from_data != "start":
 		return from_data
 	return KIND_BY_HUB[hub_index % KIND_BY_HUB.size()]
+
+
+## [v6hubs] The planet whose hub plan names this town's look and landmark.
+static func _plan_planet() -> String:
+	return HubPlan.active_planet if HubPlan.active_planet != "" else "verdance"
 
 
 ## [v6hubs] Whether the lake reaches into a town here (water: func(x, z) -> bool in site-local

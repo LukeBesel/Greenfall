@@ -11,12 +11,14 @@ extends Node
 ## - the HUD's lines: this base's clean % and "Bases n/6" (hud_lines()).
 ## Use: HubPurpose.attach(orbit_sites) once the hop and the site manager exist.
 ## Dev: --hub-wake=N wakes hub N for free at start; --hub-report prints each hub's line;
-## --hub-dev-chain[=T] does a hub's chain and wake after each arrival; --hub-dev-save=T saves.
+## --hub-dev-chain[=T] does a hub's chain and wake after each arrival; --hub-dev-save=T saves;
+## --hub-walkthrough[=T] flies to and wakes every main-path hub in order and checks each (HubWalk).
 
 signal woke(site: int)
 
 const POLL_S: float = 0.5
 const BEACON_H: float = 110.0
+const LANDMARK_REACH_M: float = 11.0  # how near the landmark's foot E wakes it
 const GOLD := Color(1.0, 0.82, 0.42)
 const TEAL := Color(0.47, 0.86, 0.78)
 const CREAM := Color(0.98, 0.93, 0.8)
@@ -61,9 +63,7 @@ func _ready() -> void:
 	_spot.name = "LandmarkSpot"
 	_spot.visible = false
 	add_child(_spot)
-	var ia: Variant = so.w.get("interactables")
-	if ia is Interactables:
-		(ia as Interactables).register(_spot, 11.0, landmark_prompt, use_landmark, func() -> bool: return _spot.visible and not sites.hop.flying)
+	_register_spot()
 	_way = Waypoint.new()
 	_way.world = so.w
 	add_child(_way)
@@ -79,6 +79,23 @@ func _ready() -> void:
 			print("[hubs] dev: saved %s (bases %d/%d, rocket at site %d)" % [SaveManager.save_game(), HubPlan.restored_main(planet), HubPlan.main_total(planet), sites.rocket_site()]))
 	if DevHooks.has("hub-report"):
 		get_tree().create_timer(DevHooks.get_f("hub-report", 5.0)).timeout.connect(report)
+	if DevHooks.has("hub-walkthrough"):  # dev: fly to and wake every main-path hub, check each (planet/sites/hub_walk.gd)
+		HubWalk.run_dev(self)
+
+
+## The landmark's E entry. The site manager (and this node) come up before the yard's Interactables
+## exist, so this is retried from _process until it takes (before: E at a landmark did nothing).
+func _register_spot() -> bool:
+	if _spot_registered:
+		return true
+	var ia: Variant = so.w.get("interactables")
+	if ia is Interactables:
+		(ia as Interactables).register(_spot, LANDMARK_REACH_M, landmark_prompt, use_landmark, func() -> bool: return _spot.visible and not sites.hop.flying)
+		_spot_registered = true
+	return _spot_registered
+
+
+var _spot_registered: bool = false
 
 
 func _exit_tree() -> void:
@@ -110,6 +127,7 @@ func _process(delta: float) -> void:
 	if _t < POLL_S:
 		return
 	_t = 0.0
+	_register_spot()
 	var now: int = -1 if sites.hop.flying else _current_site()
 	if now != site:
 		site = now
