@@ -744,6 +744,42 @@ func title_node() -> Control:
 	return _title if _title != null and is_instance_valid(_title) and not _title.is_queued_for_deletion() else null
 
 
+## [v7look] Dev (--lm-shots=PREFIX with --hub-dev-chain): puts Lumi on open ground by the woken landmark,
+## facing it, and saves PREFIX_woken.png (by day) and PREFIX_woken_dusk.png with the lights on.
+func _shoot_landmark(lmd: Dictionary) -> void:
+	var lp: Vector3 = lmd["pos"]
+	var patch: Node3D = so.w.get("patch") as Node3D
+	if patch == null or so.globe == null:
+		return
+	var up: Vector3 = lp.normalized()
+	var pad_d: Vector3 = sm.pad_xf(site).origin.normalized()
+	var away: Vector3 = (pad_d - up * pad_d.dot(up)).normalized()  # from the landmark toward the pad
+	if away.length() < 0.5:
+		away = SphereGrid.frame(up).x
+	# open ground by the landmark (the reach check's beacon point), so Lumi never lands in a building
+	var spot: Vector3 = so.globe.terrain.ground(TargetReach.beacon_point(so.w, lp).normalized())
+	var to_lm: Vector3 = lp - spot
+	var sup: Vector3 = spot.normalized()
+	var north: Vector3 = (to_lm - sup * to_lm.dot(sup)).normalized() if to_lm.length() > 1.0 else -away  # facing the landmark
+	patch.call("place_on_sphere", spot, north)
+	so.cam.distance = 11.0
+	so.cam.pitch = -0.08
+	so.cam.reset_frame(north)
+	so.cam.snap()
+	await DevHooks.wait_wall_for(10.0)
+	await RenderingServer.frame_post_draw
+	DevHooks.save_viewport("%s_woken.png" % DevHooks.get_s("lm-shots", "screenshots/lm"))
+	var sky: Variant = so.w.get("sky_director")
+	if sky is SkyDirector:
+		(sky as SkyDirector).time_of_day = 0.8
+		(sky as SkyDirector).spin = SkyDirector.spin_for_local_time(0.8, patch.global_position)
+		(sky as SkyDirector).frozen = true
+		await DevHooks.wait_wall_for(12.0)
+		await RenderingServer.frame_post_draw
+		DevHooks.save_viewport("%s_woken_dusk.png" % DevHooks.get_s("lm-shots", "screenshots/lm"))
+	print("[hubs] dev: landmark shots done")
+
+
 ## Dev (--hub-dev-chain[=T]): T s after each arrival at a far hub, cleans the hexes its chain asks
 ## for (data only), gives the wake price and uses the landmark: the restore flow without playing.
 func _dev_chain(i: int) -> void:
@@ -776,6 +812,8 @@ func _dev_chain(i: int) -> void:
 	print("[hubs] dev: %s | prompt '%s' | landmark %s" % [card_text, landmark_prompt(), reach])
 	use_landmark()
 	_refresh()
+	if DevHooks.has("lm-shots") and not lmd.is_empty():  # [v7look] dev: the woken landmark, lit, from its foot
+		_shoot_landmark(lmd)
 	print("[hubs] dev: after use: woken %s, level %d, built %d, card '%s', bench %s, hud %s" % [HubPlan.woken(i), sm.levels[i], sm.built[i], card_text, str(bench_point() != null), str(hud_lines())])
 
 

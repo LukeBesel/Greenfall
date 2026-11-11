@@ -1,7 +1,9 @@
 extends GutTest
 ## Key/controller rebinding: persistence, conflicts and reset; new accessibility settings.
 
-const TEST_PATH: String = "user://test_settings.cfg"
+## [v7look] Per process: every worktree's tests share one user:// folder, and two runs at once read
+## each other's file (test_rebind_persists_through_save_and_load flaked).
+var TEST_PATH: String = "user://test_settings_%d.cfg" % OS.get_process_id()
 
 var _saved_path: String
 var _saved: Dictionary = {}
@@ -148,3 +150,26 @@ func test_glyph_follows_device() -> void:
 	Settings.last_input_pad = true
 	assert_eq(Settings.glyph("interact"), "A")
 	Settings.last_input_pad = was
+
+
+## [v7look] A dev run that overrides settings (--ui-scale, --ui-audit, ...) must not write the
+## player's settings file; the test path still saves.
+func test_dev_runs_do_not_write_the_players_settings() -> void:
+	var p: String = ProjectSettings.globalize_path(Settings.SETTINGS_PATH)
+	var before: String = FileAccess.get_file_as_string(p) if FileAccess.file_exists(p) else "<none>"
+	Settings.settings_path = Settings.SETTINGS_PATH
+	Settings.no_write = true
+	var scale0: float = Settings.ui_scale
+	Settings.ui_scale = 1.37
+	Settings.save_settings()
+	Settings.ui_scale = scale0
+	Settings.no_write = false
+	Settings.settings_path = TEST_PATH
+	var after: String = FileAccess.get_file_as_string(p) if FileAccess.file_exists(p) else "<none>"
+	assert_eq(after, before, "the player's settings file is untouched")
+	Settings.no_write = true  # the test file is still written
+	Settings.save_settings()
+	Settings.no_write = false
+	assert_true(FileAccess.file_exists(TEST_PATH))
+	for f: String in ["ui-scale", "locale", "quality", "ui-audit"]:
+		assert_has(DevHooks.NO_SETTINGS_WRITE, f)

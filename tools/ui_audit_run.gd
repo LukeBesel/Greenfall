@@ -256,8 +256,10 @@ func _check_play(cfg: String, hud: Node, cam: SphereCam, patch: Node3D, subs: Su
 			_report(cfg, "overlap", "key hints with the hotbar", "hints %s hotbar %s" % [_r(kr), _r(slots)])
 		var hm: Control = hud.get("_hints_mc") as Control
 		var giving: bool = float(hud.get("_hints_give")) < 0.95  # fading out (it takes 0.25 s)
-		if kr.intersects(pill) and subs.pill().visible and (hm == null or hm.modulate.a > 0.1) and not giving:
-			_report(cfg, "covers", "subtitle over the key hints (not faded)", "hints %s pill %s" % [_r(kr), _r(pill)])
+		if subs.pill().visible and (hm == null or hm.modulate.a > 0.1) and not giving:
+			_report(cfg, "covers", "key hints still up during a WREN line", "hints %s pill %s" % [_r(kr), _r(pill)])
+		if kr.size.y > 60.0:
+			_report(cfg, "offplace", "key hints wrap to more than one row", "hints %s" % _r(kr))
 		if kr.position.y < view.size.y * 0.55:
 			_report(cfg, "offplace", "key hints mid-screen", "hints %s view %dx%d" % [_r(kr), roundi(view.size.x), roundi(view.size.y)])
 	if hb and hb.is_visible_in_tree():

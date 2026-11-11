@@ -81,6 +81,8 @@ var _elapsed: float = 0.0
 var _shots_taken: int = 0
 var _perf_t: float = 0.0
 var _start_ms: int = Time.get_ticks_msec()
+## [v7look] Flags that make a run leave user://settings.cfg alone (Settings.no_write).
+const NO_SETTINGS_WRITE: Array[String] = ["fresh", "nosave", "ui-scale", "locale", "quality", "ui-audit", "colorblind", "no-subs", "menu"]
 var _frames: int = 0
 var _perf_frames: int = 0
 var _perf_wall: float = 0.0
@@ -96,6 +98,9 @@ func _ready() -> void:
 			args[kv[0]] = kv[1] if kv.size() > 1 else "1"
 	if has("fresh") or has("nosave"):
 		SaveManager.enabled = false
+	for f: String in NO_SETTINGS_WRITE:  # [v7look] these runs never write the player's settings file
+		if has(f):
+			Settings.no_write = true
 	if has("quality"):
 		Settings.quality = clampi(int(get_f("quality", 2.0)), 0, 3)
 	if has("ui-scale"):

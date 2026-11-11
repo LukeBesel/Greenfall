@@ -377,7 +377,7 @@ func _process(delta: float) -> void:
 		var vw: float = _root.size.x
 		var hb_right: float = vw * 0.5 + Hotbar.LEVEL_W * 0.5 + 100.0  # the STREAK / hex readouts end about here
 		var room: float = vw - 22.0 - hb_right - 8.0  # beside the hotbar's right readouts
-		_hints.cap_w = maxf(room - 24.0, 90.0)  # the pill's padding comes on top of the flow's width
+		_hints.cap_w = maxf(room, 90.0)  # one row: smaller, then key caps only, to fit (KeyHints.compact)
 		var lifted: bool = vw - 22.0 - _hints.size.x < hb_right  # still too wide (a very narrow screen): over the band
 		var mb: int = 22 + (150 if lifted else 0)  # just over the hotbar band
 		if _hints_mc.get_theme_constant("margin_bottom") != mb:
@@ -387,11 +387,11 @@ func _process(delta: float) -> void:
 	_top_right.modulate.a = move_toward(_top_right.modulate.a, 0.0 if _hold_corner_s > 0.0 or in_cmd else 1.0, delta * 4.0)
 	var bottom_out: bool = _hold_all and _hold_corner_s > 0.0
 	_bottom.modulate.a = move_toward(_bottom.modulate.a, 0.0 if bottom_out else 1.0, delta * 4.0)
-	if _hints_mc:  # [v7look] and the key-hint pill gives way to WREN's bar where they meet (narrow screens)
+	if _hints_mc:  # [v7look] and the key-hint pill gives way while a WREN line is up
 		var sub_on: bool = false
 		var sb: Subtitles = Subtitles.current
 		if sb and _hints and _hints.visible and sb.pill().visible and sb.pill().modulate.a > 0.2 and not sb.hushed():
-			sub_on = sb.pill().get_global_rect().grow(6.0).intersects(_hints.get_global_rect())
+			sub_on = true  # [v7look] owner rule: no key hints while WREN talks (they come back after)
 		_hints_give = move_toward(_hints_give, 0.0 if sub_on else 1.0, delta * 4.0)
 		_hints_mc.modulate.a = minf(_bottom.modulate.a, _hints_give)
 	if patch:

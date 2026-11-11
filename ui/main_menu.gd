@@ -43,7 +43,7 @@ func _ready() -> void:
 	SaveManager.enabled = false
 	get_tree().paused = false
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	if SaveManager.has_save():
+	if SaveManager.has_save() and not DevHooks.has("menu-nosave"):  # [v7look] dev: the title as on a first launch
 		_save = SaveManager.read_dict(SaveManager.slot_path())
 	Tunes.setup_title(_save)  # [tunes] a random song (the synth score if there are no files)
 	_build_stage()
@@ -144,7 +144,8 @@ func _build_stage() -> void:
 		add_child(mi)
 
 	_scatter_junk()
-	_build_skyline()
+	if DevHooks.has("title-skyline"):  # [v7look] the plain box skyline read as big untextured blocks in the haze;
+		_build_skyline()                 # the horizon is the low sun's haze now
 
 	_pivot = Node3D.new()
 	add_child(_pivot)
@@ -226,12 +227,12 @@ func _build_skyline() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 11
 	var mat := StandardMaterial3D.new()
-	mat.albedo_color = Color(0.36, 0.3, 0.28)
+	mat.albedo_color = Color(0.46, 0.42, 0.42)  # [v7look] hazier: a far city, not near walls
 	mat.roughness = 0.95
 	for i: int in 26:
 		var a: float = rng.randf_range(-PI, PI)
-		var d: float = rng.randf_range(32.0, 60.0)
-		var size := Vector3(rng.randf_range(6, 14), rng.randf_range(8, 34), rng.randf_range(6, 14))
+		var d: float = rng.randf_range(110.0, 170.0)  # [v7look] was 32-60 m: plain blocks filled the lens; now a low far skyline
+		var size := Vector3(rng.randf_range(8, 16), rng.randf_range(6, 22), rng.randf_range(8, 16))
 		var mi := MeshInstance3D.new()
 		var bm := BoxMesh.new()
 		bm.size = size

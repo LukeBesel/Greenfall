@@ -17,7 +17,7 @@ Each line: what it shows, file, and OK / fixed (what) / open (why).
 ### Robots
 - Mk rank pips, Scoopie Mk III close-up (subtitles off, new `--no-subs` dev flag): `v7/pips_0.png`. **fixed**: the pips were 4 cm diamonds spinning round the lamp and could not be seen at all; bigger ones smeared into the orange lamp. Now a row of crisp gold diamonds with a dark rim (picture texture, `BotBadge._diamond_image`) between the head and the lamp, turned to face the camera; lamp 11 cm (was 8.5).
 - Mk pips, Haul Bug Mk II close-up: `v7/pips_1.png`. OK after the fix (two diamonds, grey idle lamp, "z").
-- Key-hint pill vs. the hotbar on a 960-wide screen (seen in v6feel's tour shots: it covered STREAK and the hex count): `v7/play_subs.png`. **fixed** (second try; the first lifted it to mid-screen): on narrow screens the pill wraps to fit beside the hotbar's right readouts (`KeyHints.cap_w`, a right-aligned column at 960x540); it lifts over the hotbar band only if even that cannot fit. Where WREN's bar meets it, the pill fades out until the line is done. `--ui-audit` play pass: hints vs. hotbar, hints mid-screen, subtitle over unfaded hints.
+- Key-hint pill vs. the hotbar on a 960-wide screen (it covered STREAK and the hex count): **fixed** (third try, the owner's rule): always ONE row. When the row doesn't fit beside the hotbar's right readouts it gets smaller text and tighter gaps, then drops the words and keeps the key caps (`KeyHints.compact` 0/1/2, picked from measured widths). It hides completely while a WREN line or an arrival title is on screen, and fades back after. `--ui-audit` play pass: hints vs. hotbar, more than one row, mid-screen, still up during a WREN line.
 - Arrival title with a WREN line playing (subs on): `v7/hub_7_land_9.png`. **fixed**: WREN's bar, the hotbar band and the key hints fade out while the title is up; the line pauses and plays on after (`Subtitles.hush`, `HUD.hold_corner(s, true)`). The arrival audit checks both.
 
 ### Pod (v7pod's cabin, merged)
@@ -49,7 +49,27 @@ Each line: what it shows, file, and OK / fixed (what) / open (why).
 - Dusk, cleaned vs. dirty: `v7/life_on_2.png`, `v7/life_on_3.png` vs. `v7/life_off_2.png`. OK: lit windows across the blocks, lit lamps, fireflies as small points over the grass; the dirty town stays dark. Butterflies are too small to pick out at 960x540 Low (they are there in the [life] report).
 
 ## Needs a decision
-- **Title screen background** (`v7/title10.png`): the camera sits close to tall buildings, which fill the top right as big blurry beige blocks. Recommendation: move the title camera back and higher over the start town (the yard and pod in view, the skyline behind), or use one of the approved landmark views. This is v1menu's scene; I did not change it.
+- ~~Title screen background~~: done by the main session's decision, see "Title" above.
 - **Life tour viewpoints**: the dev tour's stops are set by distance from the start cell, so they mostly frame the concrete pad. To judge cleaned ground fairly, add stops that face a cleaned street from about 10 m (e.g. `--life-tour-stops` with cam_dist and pitch), and judge from those before tuning the grass any further.
 - **Survey globe labels** (`v7/survey10.png`): the place names on the little globe are unreadable at 960x540. Recommendation: hide the names below a zoom level, and let the card name the hub under the cursor.
-- **Shared settings file**: a run (probably a `--ui-audit` by some helper) left the UI scale changed in `user://` for later runs (`life2_on_0.png` came out at a smaller UI scale), and `test_settings.gd` rebind_persists failed once in the full suite but passes alone. Recommendation: have `--ui-audit` and `--fresh` runs never write settings.
+- ~~Shared settings file~~ **fixed**: a dev or test run with --fresh, --nosave, --ui-scale, --locale, --quality, --ui-audit, --colorblind, --no-subs or --menu applies those for the run only and never writes user://settings.cfg (`Settings.no_write`, set by DevHooks). test_settings.gd uses its own per-process file (the shared one made `rebind_persists` flake when two runs overlapped), and a new test checks that a no_write save leaves the player's file alone.
+
+### Title (group 3, the main session's decision)
+- Old: `v7/title_t0.png`, `title_t12.png` (the camera's high passes went right past huge untextured skyline blocks, and the pod sat tiny far below). **fixed**: the title is now one slow drifting shot, low over the clearing. The crash-site pod (lamp, smoke plume) and Lumi cleaning sit right of centre, clear of the menu, with the trashed ground running back into the low sun's haze (`TitleCinematic._drift`; the old keyed path stays behind `--title-old`). The plain box skyline is gone (`--title-skyline` brings it back). Shots: `v7/title4_960.png` (Low 960x540, with a save), `title4_nosave.png` (first launch, new dev flag `--menu-nosave`), `title4_720q1.png` (Medium 1280x720), `title4_720q0.png` (Low 1280x720, later in the drift). Earlier steps: `title2_*`, `title3_*`.
+
+### Woken bases (dev chain, `--lm-shots=PREFIX`: Lumi on open ground by the landmark, by day and at dusk)
+- Garden Row, windpump: `v7/hub_9_woken.png`, `hub_9_woken_dusk.png`. OK (from 30 m; its lamps are small at dusk).
+- Gantry Works, gantry crane: `v7/hub_7_woken.png`, `hub_7_woken_dusk.png`. OK, looks great.
+- Signal Heights, signal mast: `v7/hub_8_woken.png`. OK (from its foot, top cut off). The first try put Lumi inside a building; the dev placement now uses the reach check's open ground.
+- Fairground, big wheel: `v7/hub_2_woken_dusk.png`. OK: lit gondolas, a fine dusk shot.
+- Stack Works, tall stack: `v7/hub_4_woken.png`. OK.
+
+### Landmarks asleep and at night (lineup)
+- Asleep (`--lm-state=broken`): `v7/lm_broken_lm_*.png`. OK: faded, rusty, no glow; reads as asleep at a glance.
+- Night (repaired): `v7/lm_night_lm_*.png`. Landmarks OK: warm lamps, lit consoles. **fixed**: the pod's tall smoke plume (behind several lineup shots) was unshaded and stayed cream-white at night, reading as glowing white curtains. It is lit by the scene now, with only its ember foot and a faint self-light (`art/shaders/smoke_plume.gdshader`). Re-render: `v7/lm2_night_*.png` (now a dim brown column, no longer white curtains; it still shows as a few tall streaks in the lineup), by day `v7/lm2_day_*.png` (unchanged, grey).
+
+### Cleaned street vs. dirty (new stops: Lumi past the pad's edge, facing out)
+- `v7/street_on_0..3.png` vs `v7/street_off_0..3.png`: the difference is huge and pleasing (a tidy street with lawns, tufts and props vs. a sea of litter). **fixed** (second step): close up, the lawn still read as a flat lime carpet; the clump/dry-tip breakup is stronger now, with a fine mottle and a slightly deeper green. Re-render: `v7/street2_on_*.png` (the near lawn is mottled now; still a smooth lawn rather than meadow, but no longer one flat tone).
+
+### Survey map at 1280x720
+- `v7/survey720.png`: card OK; the place names on the globe were about 8 px tall, unreadable at 1280x720 too. **fixed**: labels at about twice the size (`globe_view.gd`). Re-render: `v7/survey720b.png`: "Landing Yard" and "Garden Row" read clearly.

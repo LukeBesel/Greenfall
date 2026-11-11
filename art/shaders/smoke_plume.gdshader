@@ -2,7 +2,10 @@ shader_type spatial;
 // [v2feel] Owner item 38: the crashed pod's smoke as a very tall plume, the landmark for home seen
 // from far across the globe. One open cylinder (no particles): soft edges from the view angle,
 // slow rising noise, a lean with the wind higher up, a faint glow so it still reads at night.
-render_mode unshaded, blend_mix, depth_draw_never, cull_disabled, shadows_disabled, fog_disabled;
+// [v7look] Lit (was unshaded): at night the plume stayed cream-white and read as glowing white
+// curtains in a dark sky. Now it takes the scene's light; only the ember glow at its foot and a faint
+// self-light keep it readable at night.
+render_mode blend_mix, depth_draw_never, cull_disabled, shadows_disabled, fog_disabled, specular_disabled;
 
 uniform float height = 320.0;
 uniform vec4 base_color : source_color = vec4(0.62, 0.6, 0.58, 1.0);
@@ -42,7 +45,9 @@ void fragment() {
 	float dist = length(VERTEX);
 	float a = body * rise * opacity * smoothstep(near_fade, near_fade * 3.0, dist);
 	vec3 col = mix(base_color.rgb, top_color.rgb, h) * (0.85 + 0.3 * n);
-	col += glow_color.rgb * 0.35 * (1.0 - smoothstep(0.0, 0.12, h));
 	ALBEDO = col;
+	NORMAL = normalize(NORMAL + VIEW);  // soft, cloud-like: no hard lit and dark sides
+	ROUGHNESS = 1.0;
+	EMISSION = glow_color.rgb * 0.35 * (1.0 - smoothstep(0.0, 0.12, h)) + col * 0.06;
 	ALPHA = clamp(a, 0.0, 1.0);
 }

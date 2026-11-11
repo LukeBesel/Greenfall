@@ -237,7 +237,16 @@ func _register_default_actions() -> void:
 			InputMap.action_add_event(pair[0], _joy(pair[1]))
 
 
+## [v7look] A dev or test run that overrides settings on the command line (--ui-scale, --locale,
+## --quality, --ui-audit, ...) applies them for the run only: it never writes the player's settings
+## file (DevHooks sets this). One audit's UI scale leaked into every later run on the machine.
+var no_write: bool = false
+
+
 func save_settings() -> void:
+	if no_write and settings_path == SETTINGS_PATH:
+		changed.emit()
+		return
 	var cfg := ConfigFile.new()
 	cfg.set_value("display", "number_format", number_format)
 	cfg.set_value("feel", "screen_shake", screen_shake)
