@@ -16,7 +16,7 @@ Nov 11 2026, on top of `e8eb066`. Follows `docs/reviews/M3-14_16_LOOKS.md` (open
 | Tease reads as a robot | met | Sits up slumped, less sunk, more paint. `test_the_tease_sits_up_so_it_reads_as_a_robot`, sheet row 2 |
 | Found light reads in full sun | met | A ring of light on the ground and a soft column, unshaded. `test_the_found_moment_has_a_glow_that_shows_in_sunlight`, sheet row 3 |
 
-Full suite: see the final run below. Save round trip: passes, the old crew fixture included.
+Full suite: 1,303 tests pass (142 files; 3 new in `tests/test_find_sites.gd`, 11 in the new `tests/test_crew_looks.gd`), translations test included. Save round trip and the two-process reload: pass. One `check_exit` run flagged a SCRIPT ERROR in `art/asset_lib.gd:53` (a junk mesh with no vertex array, from `sphere_junk_view.gd`, code this task did not touch) with all round-trip checks passing; a rerun was clean.
 
 ## What changed
 
