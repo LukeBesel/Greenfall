@@ -90,9 +90,6 @@ func plantable(s: int) -> bool:
 		return false
 	if sparse and on_paving(s):  # [v4grow] streets, sidewalks and kerbs, the pad, buildings
 		return false
-	var fr: Variant = world.get("frontier")
-	if fr is FrontierDistrict:
-		return (fr as FrontierDistrict).slot_plantable(slot_hex[s])
 	return true
 
 

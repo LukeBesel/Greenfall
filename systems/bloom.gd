@@ -234,8 +234,6 @@ func measure_now() -> Dictionary:
 	var m: Dictionary = measure(sums, frac)
 	# [beat] The true ending runs through the Cradle Returns frontier (data/bloom.json).
 	m["cradle_returned"] = 1.0 if GameState.flags.get("cradle_returned", false) else 0.0
-	if world and world.get("frontier") != null:
-		(world.frontier as FrontierDistrict).persist_save()  # live frontier summary for the campaign
 	if world and world.get("planet") != null:
 		m["campaign"] = CoreCharge.campaign_progress((world.planet as PlanetData).frontier_hubs)
 	return m

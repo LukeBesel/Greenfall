@@ -129,9 +129,6 @@ func _can_take_input() -> bool:
 		return false
 	if world and world.has_method("any_modal_open") and bool(world.call("any_modal_open")):
 		return false
-	var cam: Variant = world.get("cam") if world else null
-	if cam is CameraRig and (not (cam as CameraRig).input_enabled or (cam as CameraRig).lens_view):
-		return false
 	var hud: Variant = world.get("hud") if world else null
 	if hud is CanvasLayer and not (hud as CanvasLayer).visible:
 		return false
@@ -211,10 +208,6 @@ func _process(delta: float) -> void:
 	_hopper_shake = maxf(0.0, _hopper_shake - delta)
 	if _bumper != 0:
 		_bumper_t += delta
-		var cam: Variant = world.get("cam") if world else null
-		if _bumper_t >= HOLD_ZOOM_S and cam is CameraRig:
-			var c: CameraRig = cam
-			c.distance = clampf(c.distance * pow(0.6 if _bumper > 0 else 1.6, delta), c.min_distance, c.max_distance)
 	# Duck-typed Bloom Core (story/core_charge.gd exposes `shown`), so no hard dependency.
 	var cc: Variant = world.get("core_charge") if world else null
 	if cc is Object and (cc as Object).get("shown") != null:
