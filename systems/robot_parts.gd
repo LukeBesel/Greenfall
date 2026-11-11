@@ -11,9 +11,51 @@ extends RefCounted
 ## caller from a parallel branch that still appends items loses nothing).
 
 
-## Parts paid for one salvaged robot part of this rarity.
+## Parts paid for one salvaged robot part of this rarity: the planet's own scale (its "robots"
+## table, salvage.rarity_parts, one value per rarity) or the shared list's (data/parts.json).
 static func value(rarity: int) -> float:
-	return float(Economy.rarity(clampi(rarity, 0, 4)).get("parts", 10))
+	var own: Array = salvage_rules().get("rarity_parts", [])
+	var r: int = clampi(rarity, 0, 4)
+	if r < own.size():
+		return float(own[r])
+	return float(Economy.rarity(r).get("parts", 10))
+
+
+## How salvage is scaled on this planet (its "robots" table, key "salvage"; {} when it has none).
+static func salvage_rules() -> Dictionary:
+	return Economy.robot_cfg.get("salvage", {})
+
+
+## Buried parts per hex: the planet's own number, else the shared list's.
+static func buried_per_hex() -> float:
+	return float(salvage_rules().get("buried_per_hex", Economy.parts.get("chance_per_hex", 0.14)))
+
+
+## A rarity index for `roll` (0..1) by the rarity weights.
+static func roll_rarity(roll: float) -> int:
+	var rar: Array = Economy.parts.get("rarities", [])
+	var total: float = 0.0
+	for r: Dictionary in rar:
+		total += float(r.get("weight", 0.0))
+	var x: float = roll * total
+	for i: int in rar.size():
+		x -= float(rar[i].get("weight", 0.0))
+		if x <= 0.0:
+			return i
+	return 0
+
+
+## Scales the chance that a take of `vol` units from a hex of `hex_total` units holds a part worth
+## stripping. The table's part_drop is the chance for a take of salvage.ref_take units on a hex of
+## salvage.ref_work units, so a hex yields the same parts however heavy it is and however big the
+## scoop. 1.0 on a planet without those numbers (the chance is then per take).
+static func strip_scale(vol: float, hex_total: float) -> float:
+	var rules: Dictionary = salvage_rules()
+	var ref_take: float = float(rules.get("ref_take", 0.0))
+	var ref_work: float = float(rules.get("ref_work", 0.0))
+	if ref_take <= 0.0 or ref_work <= 0.0 or hex_total <= 0.0:
+		return 1.0
+	return (vol / ref_take) * (ref_work / hex_total)
 
 
 ## A salvaged robot part: pays Parts, counts as a find. Returns the Parts paid.

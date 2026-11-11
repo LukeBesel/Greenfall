@@ -1,17 +1,17 @@
 {
-  "_doc": "Bale automation and recycling stations at the base (automation/stations.gd). Costs: cubes + parts, paid once. [money] The recycler pays Parts: parts_per_bale x (0.5 + fill) plus the bale volume x material_mult x the junk type's per_unit (hub.json). Upgrades live in upgrades.json (tab hub): belt_speed, baler_speed, recycler_yield (bases in patch.json).",
+  "_doc": "Bale automation and recycling stations at the base (automation/stations.gd). Costs: cubes + parts, paid once. [money] The recycler pays Parts: parts_per_bale x (0.5 + fill) plus the bale volume x material_mult x the junk type's per_unit (hub.json). Upgrades live in upgrades.json (tab hub): belt_speed, baler_speed, recycler_yield (bases in patch.json). [M3-19] Machines cost Parts only. The recycler gives up a bale's cubes for a little salvage: parts_per_bale x (0.5 + fill) Parts, kept as a running total and paid a whole Part at a time; cube_mult 0 (the bale is not also sold) and material_mult 0 (waste holds no Parts by the unit), so Parts stay scarce.",
   "conveyor": {
     "name": "Conveyor Feeder",
     "desc": "A hopper pad and a powered belt into the scale. Drop bales on the pad; haulers use it when it is closer.",
-    "cost": {"cubes": 250, "parts": 12},
+    "cost": {"parts": 6},
     "belt_speed": 1.1,
     "gap": 0.75
   },
   "auto_baler": {
     "name": "Auto-baler",
     "desc": "A hydraulic baling press dropped at the cleaning frontier. Cleaner robots tip their hoppers into it instead of baling on the spot; it presses denser bales for the haulers.",
-    "cost": {"cubes": 900, "parts": 30},
-    "relocate_cost": {"cubes": 40},
+    "cost": {"parts": 12},
+    "relocate_cost": {"cubes": 20},
     "bale_capacity": 14.0,
     "press_time": 5.0,
     "store_max": 70.0,
@@ -23,11 +23,11 @@
     "name": "Recycler",
     "desc": "Shredder drums and a little smelter. Bales go in and never come back: out come parts and clean building stock. Every bale burnt clean helps the sky.",
     "requires_level": 2,
-    "cost": {"cubes": 1500, "parts": 45},
+    "cost": {"parts": 15},
     "process_time": 3.2,
-    "parts_per_bale": 10.0,
-    "material_mult": 4.0,
-    "cube_mult": 0.25,
+    "parts_per_bale": 0.25,
+    "material_mult": 0.0,
+    "cube_mult": 0.0,
     "air_per_bale": 30.0
   }
 }

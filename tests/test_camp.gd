@@ -50,7 +50,7 @@ func test_trash_bin_levels() -> void:
 	var last: float = TrashBin.value_mult()
 	var feed: float = TrashBin.feed_interval()
 	while TrashBin.upgrade(5):
-		assert_gt(TrashBin.value_mult(), last, "every level pays more")
+		assert_eq(TrashBin.value_mult(), last, "a better bin does not pay more (few multipliers)")
 		assert_lt(TrashBin.feed_interval(), feed, "and swallows faster")
 		last = TrashBin.value_mult()
 		feed = TrashBin.feed_interval()

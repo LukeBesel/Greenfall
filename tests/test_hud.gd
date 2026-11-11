@@ -66,8 +66,7 @@ func test_reward_schedule() -> void:
 	assert_gt(int(LumiLevel.reward_plan(se, 0.0, 0.0, true)["seeds"]), 0, "every seeds_every-th level pays seeds once the garden is open")
 	assert_eq(int(LumiLevel.reward_plan(se, 0.0, 0.0, false)["seeds"]), 0, "no seeds before the garden")
 	var r5: Dictionary = LumiLevel.reward_plan(5, 0.0, 0.0, false)
-	assert_eq(int(r5["parts"]), 1)
-	assert_gt(int(r5["bonus_parts"]), 0, "[money] Parts every few levels (was tokens)")
+	assert_eq(int(r5["parts"]) + int(r5["bonus_parts"]), 0, "a level pays no Parts: those come from salvage alone")
 	assert_false(bool(r5["trinket"]))
 	assert_true(bool(LumiLevel.reward_plan(10, 0.0, 0.0, false)["trinket"]))
 	# Early income spikes are capped; lifetime earnings lift the cap late.

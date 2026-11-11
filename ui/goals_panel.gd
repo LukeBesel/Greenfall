@@ -250,7 +250,7 @@ func _draw_line(r: Dictionary) -> void:
 
 func _on_completed(gi: int) -> void:
 	_idle = 0.0
-	if _timeline():  # [v1guide] the objective card says it (one timeline), or it was folded in quietly
+	if _timeline() and gi == _goals.card_goal:  # [v1guide] the objective card says it (one timeline)
 		return
 	var reward: String = reward_text(_goals.reward_of(gi), 1.0)
 	if hud and hud.has_method("notify"):
@@ -282,6 +282,8 @@ static func reward_text(reward: Dictionary, t: float) -> String:
 	for k: String in ["cubes", "seeds"]:
 		if float(reward.get(k, 0.0)) > 0.0:
 			parts.append((TranslationServer.translate("+%s cubes") if k == "cubes" else TranslationServer.translate("+%s seeds")) % _n(round(float(reward[k]) * t)))
+	if float(reward.get("parts", 0.0)) > 0.0:
+		parts.append(L10nFmt.amount("parts", round(float(reward["parts"]) * t), true))
 	return "  ".join(parts)
 
 

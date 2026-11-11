@@ -28,8 +28,7 @@ func after_each() -> void:
 # #20: "Lumi reached level 5 · +89 cubes +10 parts +5 parts" listed Parts twice.
 func test_level_reward_names_parts_once() -> void:
 	var plan: Dictionary = LumiLevel.reward_plan(5, 0.0, 0.0, false)
-	assert_gt(int(plan["parts"]), 0, "level 5 pays a robot part")
-	assert_gt(int(plan["bonus_parts"]), 0, "and bonus Parts")
+	assert_eq(int(plan["parts"]) + int(plan["bonus_parts"]), 0, "a level pays no Parts on this planet")
 	var lv := LumiLevel.new()
 	add_child_autofree(lv)
 	var text: String = lv._grant(5)
@@ -37,7 +36,7 @@ func test_level_reward_names_parts_once() -> void:
 	for w: String in text.split(" ", false):
 		if w.begins_with("part"):
 			hits += 1
-	assert_eq(hits, 1, "one Parts amount in '%s'" % text)
+	assert_lte(hits, 1, "at most one Parts amount in '%s'" % text)
 
 
 # #14: the Glim discovery line used to end in "He'll…"; the message line splits it into chunks.

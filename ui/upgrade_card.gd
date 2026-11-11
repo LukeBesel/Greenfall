@@ -202,7 +202,7 @@ func refresh() -> void:
 		_change.add_theme_color_override("font_color", UITheme.GREEN)
 	var money: BigNum = GameState.get_currency("cubes")
 	var cost: BigNum = Economy.upgrade_cost(upgrade_id)
-	_cost.text = tr("MAX") if maxed else Settings.fmt(cost)
+	_cost.text = (tr("NEXT CITY") if Economy.waits_for_district(upgrade_id) else tr("MAX")) if maxed else Settings.fmt(cost)
 	var ratio: float = 1.0 if maxed else clampf(money.ratio_to(cost), 0.0, 1.0)
 	_bar.value = ratio
 	_affordable = unlocked and not maxed and ratio >= 1.0

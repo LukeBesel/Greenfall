@@ -1,5 +1,5 @@
 {
-  "_doc": "Lumi Level (systems/lumi_level.gd). Lumi XP comes from everything you do; the level bar sits above the hotbar. need(L) = round(base * L^power) XP from level L to L+1 (see docs/BALANCE.md). xp: points per source. reward: what each level pays (cubes = about cube_secs of current income, floored by min_cubes_per_level x L and capped at max(cap_cubes_base x L^1.5, cap_earned_frac x lifetime cubes); every part_every levels a robot part; every bonus_parts_every levels some Parts ([money] was tokens); every trinket_every levels a Lumi keepsake for the Collection while any are left, trinket_parts Parts otherwise; seeds_every levels some seeds once the garden is unlocked).",
+  "_doc": "Lumi Level (systems/lumi_level.gd). Lumi XP comes from everything you do; the level bar sits above the hotbar. need(L) = round(base * L^power) XP from level L to L+1 (see docs/BALANCE.md). xp: points per source. reward: what each level pays (cubes = about cube_secs of current income, floored by min_cubes_per_level x L and capped at max(cap_cubes_base x L^1.5, cap_earned_frac x lifetime cubes); every part_every levels a robot part; every bonus_parts_every levels some Parts ([money] was tokens); every trinket_every levels a Lumi keepsake for the Collection while any are left, trinket_parts Parts otherwise; seeds_every levels some seeds once the garden is unlocked). [M3-19] Levels pay cubes and seeds only: Parts come from salvage alone (part_every, bonus_parts_every and trinket_parts are 0). The cube reward is at most cube_secs of current income, far under the 3-minute rule.",
   "curve": {
     "base": 150,
     "power": 1.5
@@ -26,14 +26,14 @@
   "reward": {
     "cube_secs": 30,
     "min_cubes_per_level": 5,
-    "part_every": 5,
-    "bonus_parts_every": 5,
-    "bonus_parts": 5,
-    "bonus_parts_per_10_levels": 5,
+    "part_every": 0,
+    "bonus_parts_every": 0,
+    "bonus_parts": 0,
+    "bonus_parts_per_10_levels": 0,
     "seeds_every": 3,
     "seeds": 2,
     "trinket_every": 10,
-    "trinket_parts": 15,
+    "trinket_parts": 0,
     "cap_cubes_base": 8,
     "cap_earned_frac": 0.004
   }

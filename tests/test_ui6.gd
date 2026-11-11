@@ -72,7 +72,7 @@ func test_locker_is_a_yard_build() -> void:
 	assert_true("locker" in YardBuilds.IDS)
 	assert_false(HubBuilds.def("locker").is_empty(), "listed in data/builds.json")
 	assert_eq(str(HubBuilds.def("locker").get("kind", "")), "one_time")
-	assert_gt(float(YardBuilds.def("locker").get("cost", {}).get("parts", 0)), 0.0, "costs parts")
+	assert_gt(float(YardBuilds.def("locker").get("cost", {}).get("cubes", 0)), 0.0, "costs cubes (a build)")
 	assert_false(LockerCabinet.is_built())
 	YardBuilds.mark_built("locker")
 	assert_true(LockerCabinet.is_built())

@@ -185,6 +185,7 @@ func _start_press() -> void:
 	_press_take = take
 	_bale_info = Economy.evaluate_cube(contents, cap, float(cfg().get("value_mult", 0.85)))
 	_bale_info["perfect"] = false
+	_bale_info["value"] = BigNum.zero()  # robots earn no cubes: what their hoppers held is waste, not money
 	Audio.play("servo", 0.7, -8.0)
 
 

@@ -105,8 +105,11 @@ func test_scoopies_clean_cells_and_haulbug_cashes() -> void:
 		dirty0 += 1 if cells.is_dirty(c) else 0
 	_run(crew, 600.0, 0.2)
 	assert_gt(crew.cells_cleaned(), 3, "three Scoopies clean a few hexes in 10 min")
-	assert_gt(crew.cashed, 0.0, "the Haul Bug brought bales to the depot")
-	assert_gt(GameState.get_currency("cubes").to_float(), c0)
+	var hauled: float = 0.0
+	for u: Dictionary in crew.robots():
+		hauled += float(u["log"]["hauled"])
+	assert_gt(hauled, 0.0, "the Haul Bug brought bales to the depot")
+	assert_eq(GameState.get_currency("cubes").to_float(), c0, "and the crew's bales paid nothing")
 	assert_eq(crew.stuck_count(), 0, "no stuck robots")
 	for u: Dictionary in crew.robots():
 		assert_true(u["bot"] != null, "all near Lumi stay real")
@@ -238,7 +241,51 @@ func test_offline_compute_unchanged_by_the_refactor() -> void:
 	var r: Dictionary = Offline.compute([{"type": "scoopie", "tier": 0}, {"type": "haulbug", "tier": 0}], 0, 1.0, 3600.0)
 	var units: float = Economy.robot_stat("scoopie", "scoop_rate", 0) * 0.35 * 0.9 * 3600.0 * Offline.OFFLINE_RATE
 	assert_almost_eq(float(r["units"]), units, 0.001)
-	assert_almost_eq(float(r["cubes"]), units * Offline.AVG_VALUE_PER_UNIT * Economy.robot_stat("scoopie", "efficiency", 0), 0.001)
+	assert_eq(float(r["cubes"]), 0.0, "robots earn no cubes (design spec section 16.1)")
+	assert_eq(float(r["waiting_value"]), 0.0)
+
+
+# --- Robots earn no cubes ---------------------------------------------------------------
+
+func test_a_crew_cleans_bales_and_hauls_without_adding_a_cube() -> void:
+	var purse: Dictionary = GameState.currencies
+	var flags: Dictionary = GameState.flags
+	GameState.currencies = {}
+	GameState.flags = {}
+	var w: Dictionary = _world()
+	var crew: SphereCrew = w["crew"]
+	var c: int = _g5.cells_around(100, 1)[2]
+	var cleaner: Dictionary = crew.spawn("scoopie", 0, c)
+	crew.spawn("haulbug", 0, 100)
+	crew.order(cleaner, c)
+	_run(crew, 240.0, 0.1)
+	assert_gt(float(cleaner["log"]["bales"]), 0.0, "the Scoopie pressed bales")
+	for b: Dictionary in crew.bales:
+		assert_eq(float(b["value"]), 0.0, "a robot's bale is waste, not money")
+	assert_eq(crew.cashed, 0.0, "nothing was cashed for the crew's bales")
+	assert_eq(GameState.get_currency("cubes").to_float(), 0.0, "robots add no cubes")
+	GameState.currencies = purse
+	GameState.flags = flags
+
+
+func test_a_hauler_still_pays_lumi_for_her_own_bales_and_old_robot_bales_load_as_waste() -> void:
+	var purse: Dictionary = GameState.currencies
+	var flags: Dictionary = GameState.flags
+	GameState.currencies = {}
+	GameState.flags = {}
+	var w: Dictionary = _world()
+	var crew: SphereCrew = w["crew"]
+	# An older save: one robot bale that was worth 27 cubes, and one of Lumi's (it carries "raw").
+	crew.from_dict({"v": 1, "robots": [], "bales": [{"cell": 101, "value": 27.0, "units": 12.0}, {"cell": 102, "value": 44.6, "units": 12.0, "raw": 40.0}]})
+	assert_eq(crew.bales.size(), 2, "both bales load")
+	assert_eq(float(crew.bales[0]["value"]), 0.0, "the robot's bale is waste now")
+	assert_almost_eq(float(crew.bales[1]["value"]), 44.6, 0.001, "Lumi's own bale keeps its value")
+	crew.cash(float(crew.bales[0]["value"]))
+	assert_eq(GameState.get_currency("cubes").to_float(), 0.0)
+	crew.cash(float(crew.bales[1]["value"]))
+	assert_eq(GameState.get_currency("cubes").to_float(), 44.0, "paid in whole cubes when a hauler delivers it")
+	GameState.currencies = purse
+	GameState.flags = flags
 
 
 func test_two_hour_offline_matches_flat_within_10_percent() -> void:
@@ -248,9 +295,10 @@ func test_two_hour_offline_matches_flat_within_10_percent() -> void:
 		{"type": "haulbug", "tier": 0}, {"type": "haulbug", "tier": 0}]
 	var flat: Dictionary = Offline.compute(fleet, 0, 1.0, 7200.0, 1e9)
 	var orbit: Dictionary = SphereOffline.simulate(g7, cells, null, [{"cell": 500, "robots": fleet}], 7200.0)
-	var fc: float = float(flat["cubes"])
+	var fc: float = float(flat["units"])
 	assert_gt(fc, 0.0)
-	assert_lt(absf(float(orbit["cubes"]) - fc) / fc, 0.10, "orbit %.0f vs flat %.0f cubes" % [float(orbit["cubes"]), fc])
+	assert_lt(absf(float(orbit["units"]) - fc) / fc, 0.10, "orbit %.0f vs flat %.0f units" % [float(orbit["units"]), fc])
+	assert_eq(float(orbit["cubes"]) + float(flat["cubes"]), 0.0, "robots earn no cubes")
 	var cleaned: int = 0
 	for c: int in SphereOffline.region(g7, cells, 500):
 		cleaned += 0 if cells.is_dirty(c) else 1
@@ -460,7 +508,7 @@ func test_offline_skimmers_work_the_lakes() -> void:
 	var land0: float = SphereOffline.units_left(cells, SphereOffline.region(_g5, cells, 100, 4))
 	var fleet: Array = [{"type": "skimmer", "tier": 0}, {"type": "haulbug", "tier": 0}]
 	var r: Dictionary = SphereOffline.simulate(_g5, cells, null, [{"cell": 100, "robots": fleet, "rings": 4}], 3600.0)
-	assert_gt(float(r["cubes"]), 0.0)
+	assert_gt(float(r["units"]), 0.0)
 	assert_almost_eq(SphereOffline.units_left(cells, SphereOffline.region(_g5, cells, 100, 4)), land0, 0.01, "land untouched")
 	assert_lt(SphereOffline.units_left(cells, SphereOffline.region_water(_g5, cells, 100, 4)), lake.size() * SphereOffline.UNITS_PER_WATER_CELL, "lakes cleaner")
 

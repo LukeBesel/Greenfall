@@ -124,10 +124,7 @@ func _physics_process(delta: float) -> void:
 			_feed_timer = FEED_INTERVAL if bare else TrashBin.feed_interval()  # [camp]
 			_swallow(cube)
 	if patch and not bare and _feed_timer <= 0.0:  # [pace] no Baler yet: empty the chest loose
-		var bin: Node3D = Pace.trash_bin(get_tree(), global_position)
-		if bin:
-			Pace.try_dump(patch, bin.global_position, Pace.BIN_RADIUS, bin)
-		else:
+		if Pace.try_dump(patch, bin_world(), Pace.bin_radius()) <= 0.0:  # at the bin body, or on the weigh plate
 			Pace.try_dump(patch, global_position, pad_radius)
 	# Loose cubes on the pad get sucked in.
 	for n: Node in get_tree().get_nodes_in_group("junk_cube"):
@@ -161,16 +158,15 @@ func _cash(cube: JunkCube) -> void:
 	_combo += 1
 	_combo_timer = 1.2
 	cashed += 1
-	var v: BigNum = cube.value
-	v = v.mul_f(sell_factor())
-	GameState.add_currency("cubes", v)
+	var v: BigNum = BigNum.from_float(Economy.pay_whole_cubes(cube.value.to_float() * sell_factor()))
 	GameState.inc_stat("cubes_cashed")
 	if bare:
 		GameState.inc_stat("outpost_bales")  # [outposts]
 	EventBus.cube_cashed.emit(v, mouth_world())
 	Audio.play_scale("coin", mini(_combo - 1, 8), -4.0)
 	var col: Color = Color(1.0, 0.75, 0.35) if cube.info.get("perfect", false) else Color(0.9, 0.92, 0.88)
-	Vfx.float_text(mouth_world() + Vector3(0, 0.3, 0), "+" + Settings.fmt(v), col, 0.5, 0.8)
+	if not v.is_zero():  # a robot's bale is waste gone, not money (robots earn no cubes)
+		Vfx.float_text(mouth_world() + Vector3(0, 0.3, 0), "+" + Settings.fmt(v), col, 0.5, 0.8)
 	Vfx.burst("dust", mouth_world() - Vector3(0, 0.3, 0), Color(0.6, 0.55, 0.5, 0.5), 0.8)
 	Audio.play("clunk", 0.8, -4.0)
 	_needle_t = 1.0

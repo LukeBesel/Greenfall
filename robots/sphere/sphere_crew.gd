@@ -999,7 +999,7 @@ func _drop_bale(u: Dictionary) -> void:
 		return
 	u["hopper"] = 0.0
 	_bale_seq += 1
-	var value: float = Offline.units_value([{"type": u["type"], "tier": u["tier"]}], units_in)
+	var value: float = 0.0  # robots earn no cubes: the bale is waste on its way out, not money
 	# Dropped beside the robot (a little to its side, so a crew's bales don't stack in one spot).
 	var d: Vector3 = unit_dir(u)
 	var side: Vector3 = SphereMath.any_perpendicular(d).rotated(d, randf() * TAU)
@@ -1070,12 +1070,13 @@ func depot_of(hub: int) -> int:
 	return hub
 
 
+## A hauler delivered bales worth `value`: only Lumi's own bales are worth anything.
 func cash(value: float) -> void:
 	if value <= 0.0:
 		return
-	cashed += value
-	GameState.add_currency("cubes", BigNum.from_float(value))
-	bale_cashed.emit(value)
+	var paid: float = Economy.pay_whole_cubes(value)
+	cashed += paid
+	bale_cashed.emit(paid)
 
 
 # --- Status, report, save ------------------------------------------------------------------
@@ -1197,7 +1198,10 @@ func from_dict(d: Dictionary) -> void:
 		_bale_seq += 1
 		var dv: Array = b.get("dir", [])
 		var bd: Vector3 = Vector3(float(dv[0]), float(dv[1]), float(dv[2])).normalized() if dv.size() == 3 else grid.centers[int(b["cell"])]
-		bales.append({"id": _bale_seq, "cell": int(b["cell"]), "dir": bd, "value": float(b["value"]), "units": float(b.get("units", 0.0)), "claimed": ""})
+		# Only Lumi's own bales (they carry "raw") are worth cubes; a robot's bale from an older save
+		# loads as waste.
+		bales.append({"id": _bale_seq, "cell": int(b["cell"]), "dir": bd, "value": float(b["value"]) if b.has("raw") else 0.0,
+			"units": float(b.get("units", 0.0)), "claimed": ""})
 		if b.has("raw"):
 			bales[-1]["raw"] = float(b["raw"])
 	cashed = float(d.get("cashed", 0.0))

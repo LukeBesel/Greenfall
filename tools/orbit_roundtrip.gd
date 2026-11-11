@@ -585,6 +585,7 @@ static func run(rt: Node, check: Callable) -> void:
 	# The base: a hub upgrade raises the start site's stage and stays in the site's own dict.
 	GameState.add_currency("cubes", BigNum.from_float(1e6))
 	GameState.add_currency("parts", BigNum.from_float(1e5))
+	GameState.flags["bench_tier"] = maxi(int(GameState.flags.get("bench_tier", 1)), 2)  # base level 2 waits for the Bot Bay
 	check.call("orbit_hub_upgrade", true, (s1.get("hub") as Hub).upgrade())
 	check.call("orbit_site_stage", 2, g.site_manager.levels[0] if g.site_manager else -1)
 	# Lumi walks 40 m off the pad with something in the chest.
@@ -637,15 +638,17 @@ static func run(rt: Node, check: Callable) -> void:
 		for i: int in 2:
 			worst = maxf(worst, crew2.unit_dir(crew2.robots()[i]).angle_to(bot_dirs[i]) * rad)
 	check.call("orbit_robot_positions_within_1m", true, worst < 1.0)
-	# [orbC] Reopened from disk 2 h later: the offline jump pays what the flat game would (10%).
+	# [orbC] Reopened from disk 2 h later: the offline jump cleans what the flat game would (10%).
 	if crew2 != null:
 		GameState.saved_unix = Time.get_unix_time_from_system() - 7200.0
 		var so2: SliceOrbit = s2.orbit
 		var res: Dictionary = so2.crews.restore_crew(so2, GameState.orbit, true)
 		var flat: Dictionary = Offline.compute([{"type": "scoopie", "tier": 1}, {"type": "haulbug", "tier": 0}], 0, 1.0, 7200.0, INF)
-		var fc: float = float(flat["cubes"]) + float(flat["waiting_value"])
-		var oc: float = float(res.get("cubes", 0.0)) + float(res.get("waiting_value", 0.0))
+		# Robots earn no cubes: the time away is compared in units cleaned, and pays nothing.
+		var fc: float = float(flat["units"])
+		var oc: float = float(res.get("units", 0.0))
 		check.call("orbit_offline_2h_within_10pct", true, fc > 0.0 and absf(oc - fc) / fc <= 0.10)
+		check.call("orbit_offline_pays_no_cubes", 0.0, float(res.get("cubes", 0.0)) + float(res.get("waiting_value", 0.0)))
 	s2.queue_free()
 	await tree.process_frame
 	await _old_save(tree, packed, check)

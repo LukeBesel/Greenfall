@@ -168,15 +168,16 @@ func format(fmt: int = Format.SHORT, decimals: int = 2) -> String:
 	return ("-" + s) if neg else s
 
 
+## Below this a number is written out whole, with no "k" or "M" (design spec section 14: the first
+## districts play in small whole numbers).
+const WHOLE_BELOW: float = 100000.0
+
+
 static func _format_abs(m: float, e: int, fmt: int, decimals: int) -> String:
-	if e < 3:
+	if e < 5:
 		var v: float = m * pow(10.0, e)
-		if e < 0:
-			return String.num(v, decimals)
-		# Whole-number display below 1000, but keep one decimal for small fractional values.
-		if v < 10.0 and not is_equal_approx(v, round(v)):
-			return String.num(v, 1)
-		return str(int(floor(v + 0.000001)))
+		if v < WHOLE_BELOW - 0.5:
+			return str(int(floor(v + 0.000001)))
 	match fmt:
 		Format.SCIENTIFIC:
 			if String.num(m, decimals).to_float() >= 10.0:  # [beat] 9.999e5 -> 1e6, not 10e5

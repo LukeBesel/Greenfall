@@ -31,7 +31,7 @@ func test_parts_rate_and_detector() -> void:
 	for c: int in cs:
 		f.materialize(c)
 	var rate: float = float(f.part_pos.size()) / cs.size()
-	assert_almost_eq(rate, float(Economy.parts.get("chance_per_hex", 0.45)), 0.12, "parts per hex like the flat field")
+	assert_almost_eq(rate, RobotParts.buried_per_hex(), 0.12, "buried parts per hex as the planet sets them")
 	assert_gt(f.part_pos.size(), 0)
 	var p: Vector3 = f.part_pos[0]
 	var up: Vector3 = p.normalized()

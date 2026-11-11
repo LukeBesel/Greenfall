@@ -7,6 +7,10 @@ extends PaceSimPolicy
 
 const RICH_FACTOR: float = 3.0
 const LEAK_SHARE: float = 0.15
+## While saving for something the bot still buys levels under this share of what it saves for.
+const LEAK_OF_RESERVE: float = 0.2
+## Hexes before the end of the small-junk start area at which the bot starts saving for the lift.
+const HEAVY_AHEAD_HEXES: int = 6
 const TOWER_MARGIN: float = 1.5
 const BUDDY_MARGIN: float = 1.5
 
@@ -26,7 +30,7 @@ func wants_trip(m: PaceSimModel) -> bool:
 func shop(m: PaceSimModel) -> void:
 	var plan: Dictionary = _plan(m)
 	if m.tower_tier < mini(m.data.tower_tiers.size(), maxi(1, m.hub_level)):
-		m.buy_tower(TOWER_MARGIN)
+		m.buy_tower(1.0 if str(m.chains.current_objective().get("type", "")) == "tower" else TOWER_MARGIN)
 	m.buy_bench()
 	var obj: Dictionary = m.chains.current_objective()
 	if str(obj.get("type", "")) == "upgrade":
@@ -36,7 +40,8 @@ func shop(m: PaceSimModel) -> void:
 		if rid == "" or not m.chains.start_research(rid):
 			break
 	var goal_up: String = _goal_upgrade(m)
-	if goal_up != "":
+	var card_cubes: float = float(_card_purchase(m).get("cubes", 0.0))
+	if goal_up != "" and (card_cubes <= 0.0 or m.upgrade_cost(goal_up) <= card_cubes * LEAK_OF_RESERVE):
 		m.buy_upgrade(goal_up)
 	var unlock: String = _unlock_upgrade(m)
 	if unlock != "":
@@ -75,12 +80,14 @@ func _shop_upgrades(m: PaceSimModel, plan: Dictionary) -> void:
 	var reserve: float = plan["reserve"]
 	var hub_save: float = plan["hub_save"]
 	if robot == "" or m.can_pay(m.robot_cost(robot)):
-		reserve = hub_save
+		reserve = maxf(hub_save, float(_card_purchase(m).get("cubes", 0.0)))
 	var helper: String = _helper_research(m)
 	if helper != "":
 		reserve = maxf(reserve, m.chains.research_cost(helper))
 	if m.upgrade_open(Pace.UP_BALER):
 		reserve = maxf(reserve, m.upgrade_cost(Pace.UP_BALER))
+	if m.upgrade_open(Pace.UP_LIFT) and _heavy_junk_near(m):
+		reserve = maxf(reserve, m.upgrade_cost(Pace.UP_LIFT))
 	if m.bench_ready():
 		reserve = maxf(reserve, float((m.next_bench().get("cost", {}) as Dictionary).get("cubes", 0.0)))
 	for i: int in 20:
@@ -96,12 +103,26 @@ func _plan(m: PaceSimModel) -> Dictionary:
 		var cost: Dictionary = m.robot_cost(str(out["robot"]))
 		out["reserve"] = float(cost["cubes"])
 		out["trip"] = m.can_pay(cost)
+	# The card's own purchase (the tower, a workbench tier that waits only for its price): saved for.
+	var card: Dictionary = _card_purchase(m)
+	if not card.is_empty():
+		out["reserve"] = maxf(float(out["reserve"]), float(card.get("cubes", 0.0)))
+		out["trip"] = out["trip"] or m.can_pay(card)
 	var hub: Dictionary = m.next_hub().get("cost", {})
-	if not m.next_hub().is_empty() and m.parts >= float(hub.get("parts", 0.0)):
+	if m.hub_ready() and m.parts >= float(hub.get("parts", 0.0)):
 		out["hub_save"] = float(hub.get("cubes", 0.0))
 		out["reserve"] = maxf(float(out["reserve"]), float(out["hub_save"]))
 		out["trip"] = out["trip"] or m.can_pay(hub)
 	return out
+
+
+func _card_purchase(m: PaceSimModel) -> Dictionary:
+	match str(m.chains.current_objective().get("type", "")):
+		"tower":
+			return m.next_tower_cost() if m.tower_tier < m.data.tower_tiers.size() else {}
+		"bench":
+			return m.next_bench().get("cost", {}) if m.bench_ready() else {}
+	return {}
 
 
 func _type_for(role: String) -> String:
@@ -202,11 +223,19 @@ func _goal_upgrade(m: PaceSimModel) -> String:
 	return ""
 
 
+## True when the hexes Lumi is about to reach hold junk too heavy for his lift (past the small-junk
+## start area): from here the next Lift Strength level comes before anything else.
+func _heavy_junk_near(m: PaceSimModel) -> bool:
+	return m.work.hexes_done >= m.data.starter_hexes - HEAVY_AHEAD_HEXES
+
+
 ## The slow-start unlocks before anything else: the Baler (save for it), then Lift Strength.
 func _unlock_upgrade(m: PaceSimModel) -> String:
 	for id: String in [Pace.UP_BALER, Pace.UP_LIFT]:
 		if not m.upgrade_open(id):
 			continue
+		if id == Pace.UP_LIFT and GameState.level_of(id) >= 1 and not _card_purchase(m).is_empty() and not _heavy_junk_near(m):
+			continue  # the heavier lift waits for the card's purchase until heavy junk is near
 		if m.cubes >= m.upgrade_cost(id):
 			return id
 		if id == Pace.UP_BALER:
@@ -235,7 +264,7 @@ func _best_upgrade(m: PaceSimModel, reserve: float, leak: bool) -> String:
 			best = id
 	if best == "" or best_cost > m.cubes:
 		return ""
-	return best if m.cubes - best_cost >= reserve or (leak and best_cost <= m.cubes * LEAK_SHARE) else ""
+	return best if m.cubes - best_cost >= reserve or (leak and best_cost <= maxf(m.cubes * LEAK_SHARE, reserve * LEAK_OF_RESERVE)) else ""
 
 
 # --- Research ------------------------------------------------------------------------------

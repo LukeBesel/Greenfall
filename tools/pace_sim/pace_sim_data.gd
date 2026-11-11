@@ -15,9 +15,17 @@ static var overrides: Dictionary[String, float] = {}
 
 ## Tables that hold nothing the model can use (reported as "no content").
 var missing: PackedStringArray = []
-## Volume of junk in one untouched hex and the share that must go before it counts as clean.
-var hex_vol: float = SphereField.FLAT_HEX_VOL
+## Volume of junk in one untouched hex of the start district (HexWorth: the planet's districts
+## table, else the default weight) and the share that must go before it counts as clean. The first
+## hexes may be lighter: hex_work(n) is the n-th hex's own weight.
+var hex_vol: float = HexWorth.DEFAULT_WORK
 var clean_frac: float = 1.0 - SphereCells.CLEAN_LEFT
+## What one cleaned hex of the start district pays when Lumi tips its waste loose.
+var hex_cubes: float = 0.0
+## The start district's lighter first hexes ({} when it has none) and its city stage payout rule.
+var first_hexes: Dictionary = {}
+var stage_rule: Dictionary = {}
+var stage_share: float = Districts.FALLBACK_STAGE_SHARE
 ## Junk type id -> share of a hex's volume.
 var mix: Dictionary[String, float] = {}
 ## Cubes per unit of volume for the average mix (before any multiplier).
@@ -56,6 +64,8 @@ var story_unlocks: Array[Dictionary] = []
 var glim_tracks: Array[Dictionary] = []
 
 var _cal: Dictionary = {}
+var _strip_scaled: bool = false
+var _district_rings: int = 0
 
 
 func _init() -> void:
@@ -92,6 +102,21 @@ func hex_distance(n: int) -> float:
 	return k("yard_offset_m") + float(ring_of(n)) * cell_spacing
 
 
+## Units of waste in the n-th hex cleaned (0 = the first): hexes go ring by ring from the base,
+## whose own hex is the yard, so the first six are ring 1.
+func hex_work(n: int) -> float:
+	var ring: int = 1
+	while 3 * ring * (ring + 1) <= n:
+		ring += 1
+	return HexWorth.work_at_ring(hex_vol, first_hexes, ring)
+
+
+## Robot parts found per unit of waste scooped from a hex of `work` units: the table's chance per
+## take, scaled as the game scales it (RobotParts.strip_scale).
+func finds_per_unit(work: float) -> float:
+	return finds_per_bite * RobotParts.strip_scale(1.0, work) if _strip_scaled else finds_per_bite / maxf(mean_bite, 0.001)
+
+
 ## Ring around the start that holds the n-th hex (the first hex is ring 0, the next six ring 1).
 static func ring_of(n: int) -> int:
 	var ring: int = 0
@@ -117,9 +142,10 @@ func liftable_share(lift_class: int) -> float:
 static func mean_part_value() -> float:
 	var total: float = 0.0
 	var weight: float = 0.0
-	for r: Variant in Economy.parts.get("rarities", []):
-		var row: Dictionary = r
-		total += float(row.get("weight", 0.0)) * float(row.get("parts", 0.0))
+	var rarities: Array = Economy.parts.get("rarities", [])
+	for i: int in rarities.size():
+		var row: Dictionary = rarities[i]
+		total += float(row.get("weight", 0.0)) * RobotParts.value(i)
 		weight += float(row.get("weight", 0.0))
 	return total / weight if weight > 0.0 else 0.0
 
@@ -128,6 +154,7 @@ func _derive_junk() -> void:
 	if Economy.junk_ids.is_empty():
 		missing.append("pollution")
 		return
+	_derive_district()
 	var type_w: float = 0.0
 	for id: String in Economy.junk_ids:
 		type_w += float(Economy.junk_types[id].get("weight", 1.0))
@@ -165,11 +192,36 @@ func _derive_junk() -> void:
 		bites_by_type[id] = bites_by_type.get(id, 0.0) + chance * bites
 	for id: String in mix:
 		avg_value += mix[id] * float(Economy.junk_types[id].get("value", 1.0))
-	bites_per_hex = SphereField.DRAW_PIECES * bites_per_piece * clean_frac
-	mean_bite = hex_vol * clean_frac / maxf(bites_per_hex, 0.001)
+	# A scoop pulse lifts a set volume (Pace.pulse_volume) from as many pieces as it takes, so the
+	# mean take is the bite itself; bites_per_hex is kept for the printed summary.
+	mean_bite = float(Economy.scoop_rules.get("bite_vol", SphereField.FLAT_BITE_VOL))
+	bites_per_hex = hex_vol * clean_frac / maxf(mean_bite, 0.001)
 	var drops: Dictionary = Economy.robot_cfg.get("part_drop", {})
-	for id: String in bites_by_type:
-		finds_per_bite += bites_by_type[id] / bites_per_piece * float(drops.get(id, 0.0))
+	_strip_scaled = not is_equal_approx(RobotParts.strip_scale(1.0, hex_vol), 1.0) or RobotParts.salvage_rules().has("ref_take")
+	for id: String in mix:
+		finds_per_bite += mix[id] * float(drops.get(id, 0.0))
+	if hex_cubes <= 0.0:
+		hex_cubes = hex_vol * avg_value
+
+
+## The start district's hex weight, hex value, first hexes and stage payout (the planet's
+## "districts" table; a planet without one keeps the defaults).
+func _derive_district() -> void:
+	var def: PlanetDefinition = Planets.current()
+	if def == null or not def.has_table(Districts.TABLE):
+		return
+	var table: Dictionary = def.table(Districts.TABLE)
+	stage_rule = table.get(CityPayouts.KEY, {})
+	stage_share = float(table.get("stage_share", Districts.FALLBACK_STAGE_SHARE))
+	for raw: Variant in table.get("districts", []):
+		var d: Dictionary = raw
+		if str((d.get("unlock", {}) as Dictionary).get("type", Districts.UNLOCK_START)) != Districts.UNLOCK_START:
+			continue
+		hex_vol = float(d.get("hex_work", hex_vol))
+		hex_cubes = float(d.get("hex_cubes", 0.0))
+		first_hexes = d.get("first_hexes", {})
+		_district_rings = int(d.get("rings", 0))
+		return
 
 
 ## Takes Lumi needs for a piece of this volume: the same rule as SphereField.bite().
@@ -185,7 +237,7 @@ static func _bites(vol: float) -> float:
 func _derive_parts() -> void:
 	var each: float = mean_part_value()
 	parts_per_bite = finds_per_bite * each
-	finds_per_hex_buried = float(Economy.parts.get("chance_per_hex", 0.0))
+	finds_per_hex_buried = RobotParts.buried_per_hex()
 	parts_per_hex_buried = finds_per_hex_buried * each
 
 
@@ -196,7 +248,7 @@ func _derive_space() -> void:
 	cell_spacing = hex_size * sqrt(3.0)
 	starter_hexes = cells_in_rings(int(floor(YardKeepOut.SMALL_ONLY_M / cell_spacing)))
 	if def != null:
-		region_hexes = cells_in_rings(SphereOffline.region_rings(def.cell_count(), def.hub_count))
+		region_hexes = cells_in_rings(_district_rings if _district_rings > 0 else SphereOffline.region_rings(def.cell_count(), def.hub_count))
 	_derive_garden(1.5 * sqrt(3.0) * hex_size * hex_size)
 
 

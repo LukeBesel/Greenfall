@@ -160,8 +160,14 @@ static func fragments() -> int:
 	return 0
 
 
+## Parts one Maker Fragment pays: the planet's own scale (its "robots" table,
+## salvage.fragment_parts) or FRAGMENT_PARTS.
+static func fragment_parts() -> float:
+	return float(RobotParts.salvage_rules().get("fragment_parts", FRAGMENT_PARTS))
+
+
 static func add_fragments(n: int) -> void:
-	GameState.add_currency("parts", BigNum.from_float(n * FRAGMENT_PARTS))
+	GameState.add_currency("parts", BigNum.from_float(n * fragment_parts()))
 	GameState.inc_stat("maker_fragments", n)
 
 
@@ -524,7 +530,7 @@ func _on_part_found(_t: int, r: int) -> void:
 	var ch: Array = cfg().get("salvage", {}).get("dig_fragment_chance", [0.02])
 	if rng.randf() < float(ch[clampi(r, 0, ch.size() - 1)]):
 		add_fragments(1)
-		EventBus.toast.emit(tr("A Maker Fragment was tucked inside it: +%d parts.") % int(FRAGMENT_PARTS), "hint")  # [money]
+		EventBus.toast.emit(tr("A Maker Fragment was tucked inside it: +%d parts.") % int(fragment_parts()), "hint")  # [money]
 
 
 func _process(delta: float) -> void:

@@ -194,6 +194,7 @@ func test_demo_caps_the_base() -> void:
 	var hub := Hub.new()
 	add_child_autofree(hub)
 	GameState.add_currency("cubes", BigNum.from_float(1e9))
+	GameState.flags["bench_tier"] = BenchTiers.max_tier()
 	for l: int in range(2, 6):
 		for k: String in hub.level_def(l).get("cost", {}):
 			GameState.add_currency(k, BigNum.from_float(1e9))

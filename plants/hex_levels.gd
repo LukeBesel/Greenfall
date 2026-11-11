@@ -125,7 +125,6 @@ func step(dt: float) -> void:
 
 
 func _sample_all() -> void:
-	_pay_stipend(float(cfg.get("sample_s", 1.0)))
 	for id: int in levels:
 		var m: Vector3i = _measure(id)
 		if m.x > 0:
@@ -135,31 +134,6 @@ func _sample_all() -> void:
 		var target: int = _target_level(id, m)
 		if target > int(levels[id]):
 			_level_up(id, int(levels[id]), target)
-
-
-## Garden stipend: Sustained and Thriving hexes pay a small steady trickle of cubes (bonus key
-## "cubes_per_min", summed over hexes and capped like the other bonuses). It keeps a district whose
-## junk is all gone moving toward the next base level instead of stalling.
-func _pay_stipend(dt: float) -> void:
-	# [beat] Thriving hexes also log wildlife notes, so research never stalls for good in a district
-	# whose junk is gone. [money] They pay a small cube trickle (research costs cubes now).
-	var data_min: float = bonus("wildlife_cubes_per_min")
-	if data_min > 0.0:
-		_data_acc += data_min * dt / 60.0
-		if _data_acc >= 1.0:
-			var wd: float = floorf(_data_acc)
-			_data_acc -= wd
-			GameState.add_currency("cubes", BigNum.from_float(wd))
-			GameState.inc_stat("wildlife_cubes", wd)
-	var per_min: float = bonus("cubes_per_min")
-	if per_min <= 0.0:
-		return
-	_stipend_acc += per_min * dt / 60.0
-	if _stipend_acc >= 1.0:
-		var whole: float = floorf(_stipend_acc)
-		_stipend_acc -= whole
-		GameState.add_currency("cubes", BigNum.from_float(whole))
-		GameState.inc_stat("garden_stipend", whole)
 
 
 ## (planted, watered, bloomed) slot counts of a hex.

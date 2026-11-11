@@ -1,14 +1,12 @@
 class_name Offline
 extends RefCounted
 ## Offline progress: computed from aggregated rates (never by simulating ticks).
-## Cleaners earn bale value at OFFLINE_RATE of their online rate, delivered only if the fleet has
-## at least one hauler (otherwise the bales are counted as "waiting at the hub"). Air scrubbers
-## keep filtering. World geometry is not advanced offline (assumption: keeps saves simple; the
+## Cleaners clean at OFFLINE_RATE of their online rate and earn no cubes (robots never do: design
+## spec section 16.1). Air scrubbers keep filtering. World geometry is not advanced offline (assumption: keeps saves simple; the
 ## player still sees their own progress happen live).
 
 const OFFLINE_RATE: float = 0.5
 const CAP_S: float = 8.0 * 3600.0
-const AVG_VALUE_PER_UNIT: float = 0.75
 
 
 ## junk_left caps the junk volume the fleet can bale offline (the district's remaining junk), so a
@@ -26,12 +24,14 @@ static func compute(robots: Array, scrubbers: int, filter_per_s: float, elapsed_
 			continue
 		units += unit_rate(type_id, tier) * t * OFFLINE_RATE
 	units = minf(units, maxf(junk_left, 0.0))
-	var value: float = units_value(robots, units)
+	# Robots earn no cubes (design spec section 16.1): the time away cleans, it does not pay. The
+	# two cube keys stay in the result at zero for the welcome-back card and older callers.
 	return {
 		"seconds": t,
 		"units": units,
-		"cubes": value if haulers > 0 else 0.0,
-		"waiting_value": 0.0 if haulers > 0 else value,
+		"haulers": haulers,
+		"cubes": 0.0,
+		"waiting_value": 0.0,
 		"air": scrubbers * filter_per_s * t,
 	}
 
@@ -42,14 +42,6 @@ static func compute(robots: Array, scrubbers: int, filter_per_s: float, elapsed_
 ## full. One code path for "off-screen" and "offline".
 static func unit_rate(type_id: String, tier: int) -> float:
 	return Economy.robot_stat(type_id, "scoop_rate", tier) * 0.35 * 0.9
-
-
-## [orbC] Cube value of `units` of baled junk for this fleet (the first robot's efficiency).
-static func units_value(robots: Array, units: float) -> float:
-	var eff: float = 1.0
-	if not robots.is_empty():
-		eff = Economy.robot_stat(str(robots[0].get("type", "scoopie")), "efficiency", int(robots[0].get("tier", 0)))
-	return units * AVG_VALUE_PER_UNIT * eff
 
 
 ## [extras] The one entry point for idle gains on a district (the welcome-back card): what `world_state` (a
@@ -127,11 +119,6 @@ static func apply(result: Dictionary) -> void:
 		GameState.add_currency("seeds", BigNum.from_float(float(gr["seeds"])))
 	if int(gr.get("bloomed", 0)) > 0:
 		GameState.inc_stat("plants_bloomed", float(gr["bloomed"]))
-	if float(result["cubes"]) > 0.0:
-		GameState.add_currency("cubes", BigNum.from_float(float(result["cubes"])))
-	# With no hauler the bales pile up at the hub; Patch cashes them in on his way back.
-	if float(result.get("waiting_value", 0.0)) > 0.0:
-		GameState.add_currency("cubes", BigNum.from_float(float(result["waiting_value"])))
 	GameState.inc_stat("air_filtered", float(result["air"]))
 
 
@@ -139,10 +126,8 @@ static func summary_text(result: Dictionary) -> String:
 	var t: float = float(result["seconds"])
 	var when: String = (TranslationServer.translate("%d min") % int(t / 60.0)) if t < 3600.0 else ("%.1f h" % (t / 3600.0))
 	var lines: Array[String] = [TranslationServer.translate("While you were away (%s):") % when]
-	if float(result["cubes"]) > 0.0:
-		lines.append(TranslationServer.translate("The fleet baled and delivered %s cubes.") % Settings.fmt(BigNum.from_float(float(result["cubes"]))))
-	elif float(result["waiting_value"]) > 0.0:
-		lines.append(TranslationServer.translate("Bales worth %s were stacked at the hub with nobody to haul them. Lumi cashed them in. A Haul Bug would keep them moving.") % Settings.fmt(BigNum.from_float(float(result["waiting_value"]))))
+	if float(result.get("units", 0.0)) > 0.0:
+		lines.append(TranslationServer.translate("The crew kept cleaning. The city is a little clearer."))
 	if float(result["air"]) > 0.0:
 		lines.append(TranslationServer.translate("The scrubbers filtered the air the whole time. It's a little clearer."))
 	return "\n".join(lines)

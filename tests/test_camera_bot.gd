@@ -45,12 +45,12 @@ func test_hidden_until_unlocked_then_a_one_time_build() -> void:
 	GameState.world["hub_level"] = 2
 	assert_has(_once(), CameraBot.ID, "or at hub level 2")
 	var cost: Dictionary = HubBuilds.entry(null, CameraBot.ID)["cost"]
-	assert_gte(float(cost.get("parts", 0.0)), 50.0, "a good chunk of parts")
+	assert_false(cost.has("parts"), "a build costs cubes only (Parts pay for robots and machines)")
+	assert_gt(float(cost.get("cubes", 0.0)), 0.0)
 	Camp.set_bench_ok(true)
+	GameState.add_currency("cubes", BigNum.from_float(float(cost["cubes"]) - 1.0))
+	assert_false(HubBuilds.build(null, CameraBot.ID), "not without the cubes")
 	GameState.add_currency("cubes", BigNum.from_float(1.0e4))
-	GameState.add_currency("parts", BigNum.from_float(10))
-	assert_false(HubBuilds.build(null, CameraBot.ID), "not without the parts")
-	GameState.add_currency("parts", BigNum.from_float(500))
 	assert_true(HubBuilds.build(null, CameraBot.ID))
 	assert_true(CameraBot.available(), "photo mode opens")
 	assert_does_not_have(_once(), CameraBot.ID, "built: off the Build tab")

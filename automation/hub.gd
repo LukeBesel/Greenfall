@@ -58,12 +58,25 @@ static func pay(cost: Dictionary, mult: float = 1.0) -> bool:
 	return GameState.spend_all(cost, mult)  # [money]
 
 
+## "" when the next base level can be built now (cost aside), else what it waits for. A level's
+## "requires" in the planet's "hub" table is a list of workbench conditions, all of which must hold
+## (the same conditions the workbench tiers use, UpgradesScreen.cond_ok).
+func block_reason() -> String:
+	var next: Dictionary = level_def(level + 1)
+	if next.is_empty():
+		return tr("Fully upgraded.")
+	for c: Variant in next.get("requires", []):
+		if c is Array and not UpgradesScreen.cond_ok(c as Array, get_parent()):
+			return BenchTiers.requirement_text(c as Array)
+	return ""
+
+
 func upgrade() -> bool:
 	if not Demo.can_raise_base(level):  # [steam] demo cap
 		Demo.block("base")
 		return false
 	var next: Dictionary = level_def(level + 1)
-	if next.is_empty() or not pay(next.get("cost", {})):
+	if next.is_empty() or block_reason() != "" or not pay(next.get("cost", {})):
 		return false
 	level += 1
 	GameState.world["hub_level"] = level

@@ -93,6 +93,8 @@ static func requirement_text(c: Array) -> String:
 			return TranslationServer.translate("Build the signal tower first.")
 		"hub_level":
 			return TranslationServer.translate("Rebuild the base to level %d first.") % int(c[1])
+		"bench_tier":
+			return TranslationServer.translate("Upgrade the workbench first.")
 		"stat":
 			if str(c[1]) == "hexes_cleaned":
 				return TranslationServer.translate("Clean %d hexes first.") % int(c[2])

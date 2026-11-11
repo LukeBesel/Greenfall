@@ -50,14 +50,16 @@ func test_salvage_pays_parts_by_rarity() -> void:
 	var got: Array = []
 	var cb := func(t: int, r: int) -> void: got.append([t, r])
 	EventBus.part_found.connect(cb)
-	assert_almost_eq(RobotParts.salvage(2, 0), 10.0, 0.001)
-	assert_almost_eq(RobotParts.salvage(3, 3), 150.0, 0.001)
+	var own: Array = RobotParts.salvage_rules()["rarity_parts"]
+	assert_almost_eq(RobotParts.salvage(2, 0), float(own[0]), 0.001)
+	assert_almost_eq(RobotParts.salvage(3, 3), float(own[3]), 0.001)
 	EventBus.part_found.disconnect(cb)
-	assert_almost_eq(_parts_now(), 160.0, 0.001)
+	assert_almost_eq(_parts_now(), float(own[0]) + float(own[3]), 0.001)
 	assert_eq(GameState.parts.size(), 0, "no items are stored")
 	assert_eq(got.size(), 2, "finds are still announced")
 	for r: int in 5:
-		assert_almost_eq(RobotParts.value(r), float(Economy.rarity(r)["parts"]), 0.001)
+		assert_almost_eq(RobotParts.value(r), float(own[r]), 0.001, "the planet's own Parts scale")
+		assert_lt(RobotParts.value(r), float(Economy.rarity(r)["parts"]), "scarcer than the shared list")
 
 
 func test_leftover_items_fold_into_parts() -> void:
@@ -65,7 +67,7 @@ func test_leftover_items_fold_into_parts() -> void:
 	var f := _fleet()
 	f._process(0.0)
 	assert_eq(GameState.parts.size(), 0)
-	assert_almost_eq(_parts_now(), 25.0 + 450.0, 0.001)
+	assert_almost_eq(_parts_now(), RobotParts.value(1) + RobotParts.value(4), 0.001)
 
 
 func test_save_v4_turns_robot_part_items_into_parts() -> void:
@@ -74,13 +76,13 @@ func test_save_v4_turns_robot_part_items_into_parts() -> void:
 	var m: Dictionary = SaveManager.migrate(d)
 	assert_eq(int(m["version"]), GameState.SAVE_VERSION)
 	assert_eq((m["parts"] as Array).size(), 0)
-	assert_almost_eq(BigNum.from_serialized(m["currencies"]["parts"]).to_float(), 40.0 + 10.0 + 60.0 + 150.0, 0.001)
-	assert_almost_eq(float(m["flags"]["parts_migrated"]), 220.0, 0.001)
+	assert_almost_eq(BigNum.from_serialized(m["currencies"]["parts"]).to_float(), 40.0 + RobotParts.value(0) + RobotParts.value(2) + RobotParts.value(3), 0.001)
+	assert_almost_eq(float(m["flags"]["parts_migrated"]), RobotParts.value(0) + RobotParts.value(2) + RobotParts.value(3), 0.001)
 	# A v1 save goes through v2 and v3.
 	var old: Dictionary = {"version": 1, "currencies": {"cubes": BigNum.from_float(5).serialize(), "bolts": BigNum.from_float(2).serialize()}, "parts": [{"type": 1, "rarity": 1}]}
 	var m2: Dictionary = SaveManager.migrate(old)
 	assert_eq(int(m2["version"]), GameState.SAVE_VERSION)
-	assert_almost_eq(BigNum.from_serialized(m2["currencies"]["parts"]).to_float(), 2.0 * 5.0 + 25.0, 0.001)
+	assert_almost_eq(BigNum.from_serialized(m2["currencies"]["parts"]).to_float(), 2.0 * 5.0 + RobotParts.value(1), 0.001)
 	assert_eq(GameState.SAVE_VERSION, 4)
 
 
@@ -194,7 +196,7 @@ func test_hub_gains_list_the_next_level() -> void:
 	add_child_autofree(h)
 	var g: Array[String] = HubPanel.level_gains(h, LockerPanel.HUB_LEVEL)
 	assert_true(g.any(func(s: String) -> bool: return "Locker" in s), "the Locker level says so")
-	assert_true(g.any(func(s: String) -> bool: return "sell" in s))
+	assert_true(g.any(func(s: String) -> bool: return "robot" in s), "and the crew spots")
 
 
 func test_tabs_appear_once_open_and_stay() -> void:

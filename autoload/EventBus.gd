@@ -7,6 +7,8 @@ signal junk_scooped(type_id: String, world_pos: Vector3)
 signal compartment_changed(fill: float, capacity: float)
 signal cube_made(cube_info: Dictionary)
 signal cube_cashed(value: BigNum, world_pos: Vector3)
+## A loose load was tipped in the bin: the cubes it paid and where.
+signal load_tipped(cubes: float, world_pos: Vector3)
 signal currency_changed(currency: String, amount: BigNum)
 
 # World
@@ -60,6 +62,8 @@ signal cradle_district_complete(hub_index: int)
 @warning_ignore_start("unused_signal")
 signal district_unlocked(district_id: String)
 signal district_stage_changed(district_id: String, stage: int)
+## The city stage payout (systems/city_payouts.gd): cubes paid once for the stage just reached.
+signal district_stage_paid(district_id: String, stage: int, cubes: float)
 signal district_entered(district_id: String)
 signal planet_restoration_changed(value: float)
 signal planet_step_reached(planet_id: String, step_id: String)

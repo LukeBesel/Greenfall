@@ -151,7 +151,8 @@ func test_signal_tower_tiers_and_migration() -> void:
 	var c: Dictionary = SignalTower.next_cost()
 	for k: String in c:
 		assert_true(k in ["cubes", "parts", "seeds"], "three currencies only")
-	assert_lt(float(c.get("cubes", 0)), 200.0, "the first tier is cheap")
+	assert_lte(float(c.get("cubes", 0)), 500.0, "the first tier at the accepted price")
+	assert_false(c.has("parts"), "a build costs cubes only")
 	GameState.flags.erase("signal_tower")
 	GameState.flags["wren_awake"] = true
 	SignalTower.migrate(null)

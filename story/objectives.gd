@@ -154,9 +154,9 @@ func done() -> bool:
 
 # --- [v1guide] One goal timeline ---------------------------------------------------------------
 # Owner 2026-11-08: ONE list of goals. The story objectives come first; after them the goal chain
-# (data/goals.json) continues on the same card, one step at a time. Goals that already hold when a
-# step finishes are folded into it (their rewards paid with it), so nothing completes on its own
-# in the background.
+# (data/goals.json) continues on the same card, one step at a time. A goal whose condition holds
+# while another step is on the card pays at once (Goals.check) with its own short notice, so no
+# reward waits for the card and none lands in a burst.
 
 func goals() -> Goals:
 	return world.get("goals") as Goals if world else null
@@ -175,16 +175,6 @@ func _goal_index() -> int:
 func position() -> int:
 	var g: Goals = goals()
 	return step + (g.done_count() if g else 0)
-
-
-## Quietly completes every goal that already holds; "" or "  +N cubes" for the notice.
-func _fold_goals() -> String:
-	var g: Goals = goals()
-	if g == null:
-		return ""
-	var r: Dictionary = g.absorb()
-	var txt: String = GoalsPanel.reward_text(r, 1.0) if not r.is_empty() else ""
-	return ("    " + txt) if txt != "" else ""
 
 
 ## The step on the card ({} when there is none: not revealed yet, or all done). A goal step is a
@@ -314,8 +304,9 @@ func _process(delta: float) -> void:
 		return
 	_update_focus()
 	var gl: Goals = goals()
-	if gl and not gl.driven:
+	if gl:
 		gl.driven = true  # [v1guide] the card drives the goals: one step at a time
+		gl.card_goal = _goal_index() if revealed else -1
 	if not revealed:
 		return
 	_explain_signal()
@@ -359,10 +350,9 @@ func complete() -> void:
 		print("[onboard] objective %s done at %.1f min" % [str(chain[i].get("id", "")), float(GameState.stats.get("time_played", 0.0)) / 60.0])
 	_hold = NEXT_DELAY_S
 	_set_hex(-1)
-	var folded: String = _fold_goals()  # [v1guide] goals that already hold ride along
 	var hud: Variant = world.get("hud") if world else null
 	if hud != null and (hud as Object).has_method("notify"):
-		hud.call("notify", (tr("Objective complete  ·  %s") % t[0]) + folded, "goal")
+		hud.call("notify", tr("Objective complete  ·  %s") % t[0], "goal")
 	Audio.play("chime", 1.2, -8.0)
 	completed.emit(i)
 	if not done():
@@ -382,14 +372,13 @@ func _complete_goal() -> void:
 	var text: String = tr(str(g.chain[gi].get("text", "")))
 	var rw: String = GoalsPanel.reward_text(g.reward_of(gi), 1.0)
 	g.complete(gi)
-	var folded: String = _fold_goals()
 	if DevHooks.has("autoplay"):
 		print("[onboard] goal %s done at %.1f min" % [str(g.chain[gi].get("id", "")), float(GameState.stats.get("time_played", 0.0)) / 60.0])
 	_hold = NEXT_DELAY_S
 	_set_hex(-1)
 	var hud: Variant = world.get("hud") if world else null
 	if hud != null and (hud as Object).has_method("notify"):
-		hud.call("notify", tr("Goal complete  ·  %s") % text + (("    " + rw) if rw != "" else "") + folded, "goal")
+		hud.call("notify", tr("Goal complete  ·  %s") % text + (("    " + rw) if rw != "" else ""), "goal")
 	completed.emit(step)
 	get_tree().create_timer(NEXT_DELAY_S).timeout.connect(func() -> void: changed.emit(step))
 
@@ -500,7 +489,7 @@ func step_target(def: Dictionary) -> Dictionary:
 			"glim":  # [v4calm] item 43: the Repair Glim build once it's affordable; else earn
 				var aff3: bool = GameState.can_afford_all(YardBuilds.def("glim").get("cost", {}))
 				out = {"to": "bench" if aff3 else ("depot" if p and not p.carried.is_empty() else "hex"), "row": ["build", "glim"]}
-			"hex", "hex2", "hex3", "hex10", "hex20", "zone":  # [v3clear] hex2, hex10, hex20
+			"hex", "hex2", "hex3", "street", "hex10", "hex20", "zone":  # [v3clear] hex2, hex10, hex20
 				out["to"] = "hex"
 			"bench2":
 				out = {"to": "bench" if BenchTiers.block_reason(world) == "" else "hex", "row": ["patch", "bench_tier"]}

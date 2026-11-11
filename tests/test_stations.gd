@@ -56,7 +56,7 @@ func test_conveyor_costs_parts() -> void:
 	assert_true(s.build("conveyor"))
 	assert_true(s.built("conveyor"))
 	assert_true(GameState.world["stations"]["conveyor"])
-	assert_lt(GameState.get_currency("cubes").to_float(), 10000.0)
+	assert_lt(GameState.get_currency("parts").to_float(), 100.0, "a machine costs Parts")
 	assert_false(s.build("conveyor"), "only once")
 
 
@@ -102,14 +102,19 @@ func test_recycler_destroys_bale_and_pays_parts() -> void:
 	var c := _bale(1.0, "metal")
 	var kg: float = c.mass
 	var got: Dictionary = s.recycler.recycle(c)
-	assert_gt(float(got["parts"]), 0.0)
+	assert_gt(float(got["yield"]), 0.0, "a bale yields a little salvage")
 	assert_almost_eq(GameState.get_currency("parts").to_float() - parts0, float(got["parts"]), 0.001)
+	assert_almost_eq(float(got["parts"]), roundf(float(got["parts"])), 0.0001, "paid in whole Parts")
 	assert_eq(float(GameState.stats.get("bales_recycled", 0.0)), float(_stats.get("bales_recycled", 0.0)) + 1.0)
 	assert_almost_eq(float(GameState.stats.get("junk_destroyed_kg", 0.0)) - float(_stats.get("junk_destroyed_kg", 0.0)), kg, 0.01)
 	assert_true(c.is_queued_for_deletion(), "gone for good")
-	# Recycling beats the scoop salvage rate for the same junk by a wide margin.
-	var scoop_rate: float = 12.0 * 0.5 * 0.3
-	assert_gt(float(got["parts"]), scoop_rate * 2.0)
+	# Parts stay scarce: a bale is a fraction of a Part, and the fractions add up to whole ones.
+	assert_lt(float(got["yield"]), 1.0)
+	var paid: float = float(got["parts"])
+	for _i: int in 7:
+		paid += float(s.recycler.recycle(_bale(1.0, "metal"))["parts"])
+	assert_almost_eq(paid, floorf(float(got["yield"]) * 8.0 + 0.0001), 1.0, "eight bales pay their summed yield in whole Parts")
+	assert_gt(paid, 0.0)
 
 
 func test_recycler_yield_upgrade() -> void:
@@ -120,7 +125,7 @@ func test_recycler_yield_upgrade() -> void:
 	var base: Dictionary = s.recycler.recycle(_bale(1.0, "plastic"))
 	GameState.upgrades["recycler_yield"] = 4
 	var up: Dictionary = s.recycler.recycle(_bale(1.0, "plastic"))
-	assert_gt(float(up["parts"]), float(base["parts"]))
+	assert_gt(float(up["yield"]), float(base["yield"]))
 
 
 func test_upgrade_multipliers() -> void:
@@ -146,7 +151,7 @@ func test_auto_baler_presses_a_bale() -> void:
 	assert_almost_eq(b.store_fill, 15.0 - b.bale_cap(), 0.001)
 	b._press(b._dur * 0.5)
 	assert_not_null(b._bale, "bale strapped at the bottom of the stroke")
-	assert_gt(b._bale.value.to_float(), 0.0)
+	assert_eq(b._bale.value.to_float(), 0.0, "a bale pressed from robots' hoppers is worth no cubes")
 	b._press(b._dur * 0.6)
 	assert_eq(b.phase, "idle")
 

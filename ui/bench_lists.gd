@@ -43,7 +43,8 @@ static func _upgrade_item(id: String, cat: String) -> Dictionary:
 	var mx: int = Economy.upgrade_max(id)
 	var unit: String = _tr(str(d.get("unit", "")))
 	var cost: Dictionary = {"cubes": Economy.upgrade_cost(id).to_float()}
-	var locked: bool = not Economy.is_unlocked(id)
+	var waits: bool = Economy.waits_for_district(id)  # this city's levels are sold; more open with the next
+	var locked: bool = not Economy.is_unlocked(id) or waits
 	var now: float = Economy.stat_with_upgrade_level(id, lv)
 	var nxt: float = Economy.stat_with_upgrade_level(id, lv + 1)
 	var it: Dictionary = {"id": id, "cat": cat, "icon": str(d.get("icon", "cube")), "icon_set": "ui", "name": _tr(str(d.get("name", id))),
@@ -51,7 +52,7 @@ static func _upgrade_item(id: String, cat: String) -> Dictionary:
 		"state": "locked" if locked else ("done" if Economy.is_maxed(id) else _state(cost)),
 		"table": [[_tr("Level"), "%d / %d" % [lv, mx] if mx > 0 else str(lv)], [_tr("Now"), "%s%s" % [_num(now), unit]],
 			[_tr("Next"), "%s%s" % [_num(nxt), unit]], [_tr("Cost"), _price_text(cost)]],
-		"requires": Economy.lock_reason(id) if locked else "",
+		"requires": (_tr("More levels open in the next city") if waits else Economy.lock_reason(id)) if locked else "",
 		"action": _tr("Install level %d") % (lv + 1),
 		"act": func() -> bool: return Economy.buy_upgrade(id, 1) > 0}
 	if str(d.get("stat", "")) == "auto_compactor":
@@ -119,13 +120,13 @@ static func _base(world: Node) -> Array:
 			var cost: Dictionary = nxt.get("cost", {})
 			var gains: Array[String] = HubPanel.level_gains(hub, hub.level + 1)
 			var table: Array = [[_tr("Level"), "%d / %d" % [hub.level, (hub.data.get("levels", []) as Array).size()]],
-				[_tr("Now"), _tr("Bales +%d%%") % int(round(hub.sell_mult() * 100.0))]]
+				[_tr("Now"), _tr(str(hub.level_def(hub.level).get("name", "")))]]
 			if not gains.is_empty():
 				table.append([_tr("Next"), gains[0]])
 			table.append([_tr("Cost"), _price_text(cost)])
 			out.append({"id": "hub_level", "cat": "base", "icon": "hex", "icon_set": "ui", "name": _tr(str(nxt.get("name", ""))),
 				"desc": _tr(str(nxt.get("desc", ""))), "lv": hub.level, "max": (hub.data.get("levels", []) as Array).size(),
-				"price": cost, "state": _state(cost), "table": table, "requires": "",
+				"price": cost, "state": _state(cost) if hub.block_reason() == "" else "locked", "table": table, "requires": hub.block_reason(),
 				"action": _tr("Build hub level %d") % (hub.level + 1), "act": func() -> bool: return hub.upgrade()})
 	for e: Dictionary in HubBuilds.available(world, "tiered"):
 		var id: String = str(e["id"])
