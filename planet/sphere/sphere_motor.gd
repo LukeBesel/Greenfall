@@ -185,7 +185,13 @@ func step(body: CharacterBody3D, wish: Vector3, delta: float, boost: bool = fals
 	if flat_slide:
 		_level_slide(body, u, delta)
 	else:
+		# [v6feel] move_and_slide moves by the engine's own frame delta, not ours: scale the
+		# velocity so a manual step(delta) (tests, a fixed-step caller) moves by `delta`.
+		var ed: float = body.get_physics_process_delta_time() if Engine.is_in_physics_frame() else body.get_process_delta_time()
+		var k: float = delta / ed if ed > 1e-6 else 1.0
+		body.velocity *= k
 		body.move_and_slide()
+		body.velocity /= k
 	# --- After the move ---------------------------------------------------------------------
 	var p1: Vector3 = body.global_position
 	var u1: Vector3 = surface.up_at(p1)
@@ -197,7 +203,7 @@ func step(body: CharacterBody3D, wish: Vector3, delta: float, boost: bool = fals
 	# [orbD] Held up by a body the ground ray doesn't see (a junk mound, a prop on its own layer):
 	# land on it. Without this he hung there "falling" forever, vv grew without bound and the
 	# slide ate all his tangent speed, wedged between a mound and a prop.
-	var real_v: Vector3 = (p1 - p0) / maxf(delta, 1e-5) if flat_slide else body.get_real_velocity()
+	var real_v: Vector3 = (p1 - p0) / maxf(delta, 1e-5)  # [v6feel] our delta, either path
 	if not grounded and vv < -2.0 and real_v.dot(u1) > vv * 0.3:
 		grounded = true
 		landed.emit(-vv)
