@@ -13,12 +13,17 @@ extends RefCounted
 ##   bench    the field bench stands on the ground by the pad, the beacon is lit, the HUD counts it
 ##   errors   no engine or script error was logged while at the hub
 ## --hub-walk-hubs=N stops after the first N hubs.
+## --hub-walk-fly[=N]: the first N hubs (default 1) fly the real hop (no skip): prints the flight's
+## length and frames, and fails on a frame over --hub-walk-max-ms (default 250, main-thread CPU) in
+## the first 6 s on the ground; with --hitch, systems/hitch.gd also prints what ran in each long frame.
 ## Prints a [hubwalk] line per hub and "[hubwalk] PASS|FAIL"; quits 1 on any failure.
 ## The rocket tier is raised for the run (--rocket-tier, unless given) so no wake hits the limit.
 ## Run: godot --headless --path . -- --fresh --orbit --no-intro --hop-skip --hub-walkthrough
 
 const WAIT_TOWN_S: float = 120.0
 const REACH_M: float = HubPurpose.LANDMARK_REACH_M
+const LONG_MS: int = 100
+const ARRIVAL_S: float = 6.0
 
 
 ## Counts the engine's errors (script errors, push_error, ERR_FAIL...) while it is added.
@@ -38,6 +43,39 @@ class ErrCount extends Logger:
 		_m.unlock()
 
 
+## Main-thread CPU time of every frame while it is in the tree (BuildBudget.cpu_us, as --hitch
+## counts it: wall time is mostly other processes on a busy box), for the long-frame check.
+class FrameWatch extends Node:
+	var last_us: int = 0
+	var frames: PackedInt32Array = []  # ms per frame, since mark()
+
+	func _ready() -> void:
+		process_mode = Node.PROCESS_MODE_ALWAYS
+		last_us = _now()
+
+	func _now() -> int:
+		var c: int = BuildBudget.cpu_us()
+		return c if c > 0 else Time.get_ticks_usec()
+
+	func _process(_d: float) -> void:
+		var now: int = _now()
+		frames.append(int((now - last_us) / 1000))
+		last_us = now
+
+	func mark() -> void:
+		frames = PackedInt32Array()
+		last_us = _now()
+
+	## [worst ms, frames over `long_ms`, frames]
+	func stats(long_ms: int) -> Array:
+		var worst: int = 0
+		var n: int = 0
+		for f: int in frames:
+			worst = maxi(worst, f)
+			n += 1 if f >= long_ms else 0
+		return [worst, n, frames.size()]
+
+
 static func run_dev(hp: HubPurpose) -> void:
 	var tree: SceneTree = hp.get_tree()
 	if not DevHooks.has("rocket-tier"):
@@ -45,6 +83,10 @@ static func run_dev(hp: HubPurpose) -> void:
 	await tree.create_timer(DevHooks.get_f("hub-walkthrough", 3.0)).timeout
 	var errs := ErrCount.new()
 	OS.add_logger(errs)
+	var fw := FrameWatch.new()
+	fw.name = "HubWalkFrames"
+	hp.add_child(fw)
+	var skip_given: bool = DevHooks.has("hop-skip")
 	var order: Array = HubPlan.entries(hp.planet).duplicate()
 	order.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return int(a.get("order", 0)) < int(b.get("order", 0)))
 	var fails: int = 0
@@ -56,7 +98,13 @@ static func run_dev(hp: HubPurpose) -> void:
 			continue
 		if DevHooks.has("hub-walk-hubs") and done >= int(DevHooks.get_f("hub-walk-hubs", 5.0)):
 			break
-		var bad: Array[String] = await _visit(hp, e, errs)
+		# --hub-walk-fly[=N]: the first N hubs (default 1) fly the real hop, not the skip.
+		var fly: bool = DevHooks.has("hub-walk-fly") and done < int(DevHooks.get_f("hub-walk-fly", 1.0))
+		if fly:
+			DevHooks.args.erase("hop-skip")
+		elif skip_given or DevHooks.has("hub-walk-fly"):
+			DevHooks.args["hop-skip"] = "1"
+		var bad: Array[String] = await _visit(hp, e, errs, fw if fly else null)
 		done += 1
 		fails += 1 if not bad.is_empty() else 0
 		if not hp.is_inside_tree():
@@ -79,7 +127,7 @@ static func run_dev(hp: HubPurpose) -> void:
 
 
 ## One hub: fly there, check it, wake it. Returns what failed ([] when all is well).
-static func _visit(hp: HubPurpose, e: Dictionary, errs: ErrCount) -> Array[String]:
+static func _visit(hp: HubPurpose, e: Dictionary, errs: ErrCount, fw: FrameWatch = null) -> Array[String]:
 	var tree: SceneTree = hp.get_tree()
 	var i: int = int(e["site"])
 	var nm: String = str(e.get("id", i))
@@ -88,9 +136,28 @@ static func _visit(hp: HubPurpose, e: Dictionary, errs: ErrCount) -> Array[Strin
 	var err0: int = errs.n
 	var t0: int = Time.get_ticks_msec()
 	# Fly.
+	if fw:
+		fw.mark()
+	var t_fly: int = Time.get_ticks_msec()
 	var ok: bool = await hp.sites.hop_to(i)
 	if not ok:
 		bad.append("hop refused")
+	if fw:
+		# The real flight: its length, then the frames of the first seconds on the ground.
+		var fl: Array = fw.stats(LONG_MS)
+		notes.append("flew %.1f s (worst frame %d ms cpu, %d of %d over %d ms)" % [(Time.get_ticks_msec() - t_fly) / 1000.0, fl[0], fl[1], fl[2], LONG_MS])
+		fw.mark()
+		await tree.create_timer(ARRIVAL_S).timeout
+		var ar: Array = fw.stats(LONG_MS)
+		var max_ms: int = int(DevHooks.get_f("hub-walk-max-ms", 250.0))
+		notes.append("arrival %.0f s: worst frame %d ms cpu, %d of %d over %d ms" % [ARRIVAL_S, ar[0], ar[1], ar[2], LONG_MS])
+		if int(ar[0]) > max_ms:
+			bad.append("hitch: a %d ms frame in the first %.0f s on the ground (limit %d ms; add --hitch for what ran)" % [ar[0], ARRIVAL_S, max_ms])
+	# The arrival title: name, town, and why we came.
+	if hp.title_reason == "":
+		bad.append("arrival: no reason line under the title")
+	else:
+		notes.append("why '%s'" % hp.title_reason)
 	# The town and its landmark.
 	var lm: Dictionary = {}
 	var waited: float = 0.0

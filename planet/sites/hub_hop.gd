@@ -7,10 +7,11 @@ extends Node3D
 ## jumps to the far leg, the target's ground chunks settle and its site prefab is built. The view
 ## fades back in on the approach, and the ship lands on the target's rocket_pad; Lumi steps off
 ## beside it. Owner (Nov 8): keep it well under 10 s, blue sky, no high-altitude pastel map.
-## Flight time is LEG_S out + the fade + LEG_S in (about 7 s plus however long the target
+## Flight time is leg_s out + the fade + leg_s in (about 7 s plus however long the target
 ## takes to build behind the veil), whatever the distance, so Anvil's long hops cost the same.
 ## Use: var h := HubHop.new(); add_child(h); await h.hop_with(site_manager, lumi, cam, terrain, i, j)
 ## (or h.hop(globe, i, j) when the globe has lumi / cam / terrain / site_manager).
+## [v6hubs] All timings and heights are data: data/planets.json <planet>.hub_defaults.hop (cfg()).
 ## Dev: --orbit-hop=N[,M] (planet/sites/orbit_sites.gd).
 
 signal hopped(to_hub: int)
@@ -54,15 +55,33 @@ func _show_skip_hint(on: bool) -> void:
 	_skip_hint.add_child(l)
 
 
+## [v6hubs] A hop tunable from the planet's data (hub_defaults.hop in data/planets.json); the
+## constants above are the defaults.
+static func cfg(key: String, def: float) -> float:
+	return float(HubPlan.hop_cfg(key, def))
+
+
+static func leg_s() -> float:
+	return cfg("leg_s", LEG_S)
+
+
+static func fade_s() -> float:
+	return cfg("fade_s", FADE_S)
+
+
+static func cruise_alt() -> float:
+	return cfg("cruise_alt_m", CRUISE_ALT)
+
+
 ## Seconds a hop is on screen (the build behind the veil comes on top).
 static func duration(_dist_m: float = 0.0) -> float:
-	return LEG_S * 2.0 + FADE_S * 2.0
+	return leg_s() * 2.0 + fade_s() * 2.0
 
 
-## Altitude along a leg 0..1: out leg climbs to CRUISE_ALT, in leg descends from it.
+## Altitude along a leg 0..1: out leg climbs to the cruise height, in leg descends from it.
 static func leg_alt(t: float, outbound: bool) -> float:
 	var k: float = smoothstep(0.0, 0.7, t) if outbound else 1.0 - smoothstep(0.3, 1.0, t)
-	return CRUISE_ALT * k
+	return cruise_alt() * k
 
 
 func hop(globe: Node3D, from_i: int, to_i: int) -> bool:
@@ -81,7 +100,7 @@ func hop_with(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTerra
 	var dir_b: Vector3 = b0.origin.normalized()
 	var ang: float = dir_a.angle_to(dir_b)
 	var axis: Vector3 = dir_a.cross(dir_b).normalized() if ang > 0.0001 else SphereGrid.frame(dir_a).x
-	var leg_ang: float = minf(LEG_M / terrain.R, ang * 0.45)
+	var leg_ang: float = minf(cfg("leg_m", LEG_M) / terrain.R, ang * 0.45)
 	ship = _take_parked()  # [v2map] the parked rocket lifts off (no twin left on the pad)
 	ship.global_transform = a
 	_focus = Node3D.new()
@@ -111,7 +130,7 @@ func hop_with(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTerra
 	# Behind the veil: carry Lumi to the far leg, settle the ground there, build the site.
 	var start_in: float = ang - leg_ang
 	var d_in: Vector3 = dir_a.rotated(axis, start_in)
-	lumi.global_position = terrain.ground(d_in) + d_in * CRUISE_ALT
+	lumi.global_position = terrain.ground(d_in) + d_in * cruise_alt()
 	var g: Node = sm.globe
 	if g and g.has_method("update_centres"):
 		g.call("update_centres")
@@ -128,8 +147,8 @@ func hop_with(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTerra
 	var in_fwd: Vector3 = axis.cross(d_in).normalized()
 	_focus.global_position = lumi.global_position
 	cam.reset_frame(in_fwd)
-	cam.pitch = APPROACH_PITCH
-	cam.distance = APPROACH_DIST
+	cam.pitch = cfg("approach_pitch", APPROACH_PITCH)
+	cam.distance = cfg("approach_dist_m", APPROACH_DIST)
 	cam.snap()
 	if _skipped:  # skipped on the way out: straight to the landing
 		_skipped = false
@@ -181,7 +200,7 @@ func depart_with(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTe
 	var axis: Vector3 = SphereGrid.frame(dir_a).x
 	_board(a, lumi, cam)
 	Audio.play("whoosh", 0.6, -2.0)
-	await _leg(dir_a, axis, 0.0, LEG_M / terrain.R, true, terrain, lumi, a.origin)
+	await _leg(dir_a, axis, 0.0, cfg("leg_m", LEG_M) / terrain.R, true, terrain, lumi, a.origin)
 	await _fade(1.0)
 	flying = false
 	return true
@@ -196,9 +215,9 @@ func arrive_with(sm: SiteManager, lumi: Patch, cam: SphereCam, terrain: SphereTe
 	var b0: Transform3D = sm.pad_xf(to_i)
 	var dir_b: Vector3 = b0.origin.normalized()
 	var axis: Vector3 = SphereGrid.frame(dir_b).x
-	var a0: float = -LEG_M / terrain.R
+	var a0: float = -cfg("leg_m", LEG_M) / terrain.R
 	var dir_a: Vector3 = dir_b.rotated(axis, a0)
-	_board(Transform3D(SphereGrid.frame(dir_a), terrain.ground(dir_a) + dir_a * CRUISE_ALT), lumi, cam)
+	_board(Transform3D(SphereGrid.frame(dir_a), terrain.ground(dir_a) + dir_a * cruise_alt()), lumi, cam)
 	_veil_now(1.0)
 	await _fade(0.0, true)
 	await _leg(dir_a, axis, 0.0, -a0, false, terrain, lumi, b0.origin)
@@ -306,12 +325,14 @@ func _veil_now(a: float) -> void:
 func _leg(dir_a: Vector3, axis: Vector3, a0: float, a1: float, outbound: bool, terrain: SphereTerrain, lumi: Node3D, land_at: Vector3) -> void:
 	var t: float = 0.0
 	var prev: Vector3 = ship.global_position
-	while t < LEG_S:
+	var leg_t: float = leg_s()
+	var skip_t: float = cfg("skip_after_s", SKIP_AFTER_S)
+	while t < leg_t:
 		t += get_process_delta_time()
-		if t > SKIP_AFTER_S and _skip_hint != null and (Input.is_action_just_pressed("interact") or Input.is_action_just_pressed("jump") or Input.is_action_just_pressed("ui_accept") or DevHooks.has("hop-skip")):
+		if t > skip_t and _skip_hint != null and (Input.is_action_just_pressed("interact") or Input.is_action_just_pressed("jump") or Input.is_action_just_pressed("ui_accept") or DevHooks.has("hop-skip")):
 			_skipped = true  # [v6hubs] the veil covers the rest
 			return
-		var k: float = clampf(t / LEG_S, 0.0, 1.0)
+		var k: float = clampf(t / leg_t, 0.0, 1.0)
 		progress = k * 0.5 + (0.0 if outbound else 0.5)
 		var e: float = smoothstep(0.15, 1.0, k) if outbound else smoothstep(0.0, 0.85, k)
 		var d: Vector3 = dir_a.rotated(axis, lerpf(a0, a1, e))
@@ -349,7 +370,7 @@ func _fade(to: float, free_after: bool = false) -> void:
 		_veil.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		cl.add_child(_veil)
 	var tw := create_tween()
-	tw.tween_property(_veil, "color:a", to, FADE_S)
+	tw.tween_property(_veil, "color:a", to, fade_s())
 	await tw.finished
 	if free_after and _veil:
 		_veil.get_parent().queue_free()
