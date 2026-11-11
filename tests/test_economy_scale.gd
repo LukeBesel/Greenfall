@@ -338,7 +338,7 @@ func test_no_reward_exceeds_three_minutes_of_city_one_income() -> void:
 		var plan: Dictionary = LumiLevel.reward_plan(lv, 1.0e9, 20000.0, true)
 		assert_lte(float(plan["cubes"]), limit, "Lumi level %d at its cap" % lv)
 		assert_eq(int(plan["parts"]) + int(plan["bonus_parts"]), 0)
-	assert_eq(Research.note_cubes(), 0.0, "field notes pay no cubes")
+	assert_eq(Research.note_pay(), 0.0, "field notes pay no cubes")
 	gut.p("largest one-off cube reward in city 1: %d (limit %d)" % [int(largest), int(limit)])
 
 
@@ -479,6 +479,6 @@ func test_numbers_are_whole_with_no_suffix_under_100000() -> void:
 			[12400.0, "12400"], [99999.0, "99999"]]:
 		for fmt: int in [BigNum.Format.SHORT, BigNum.Format.SCIENTIFIC, BigNum.Format.ENGINEERING]:
 			assert_eq(BigNum.from_float(float(row[0])).format(fmt), str(row[1]), "%s in format %d" % [str(row[0]), fmt])
-	assert_eq(BigNum.from_float(100000.0).format(BigNum.Format.SHORT), "100k", "abbreviation starts at 100,000")
+	assert_eq(BigNum.from_float(100000.0).format(BigNum.Format.SHORT), "100K", "abbreviation starts at 100,000")
 	assert_eq(BigNum.from_float(2500000.0).format(BigNum.Format.SHORT), "2.5M")
 	assert_eq(BigNum.from_float(-250.0).format(BigNum.Format.SHORT), "-250")

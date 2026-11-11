@@ -69,26 +69,37 @@ func test_one_step_at_a_time_story_then_goals() -> void:
 	g.driven = true
 	assert_eq(str(o.current().get("id", "")), "a", "the story step first")
 	GameState.stats["junk_scooped"] = 99.0
-	assert_eq(g.check(), -1, "goals never finish on their own while the card drives them")
+	assert_eq(g.check(), 0, "a goal that holds pays at once, whatever step the card shows")
+	assert_true(g.is_done(0))
 	o.step = 1
 	var d: Dictionary = o.current()
 	assert_true(d.has("_goal"), "then the goal chain, on the same card")
 	assert_eq(int(d["_goal"]), g.current()[0])
+	g.card_goal = int(d["_goal"])
+	GameState.stats["junk_dumps"] = 1.0
+	assert_ne(g.check(), g.card_goal, "the card completes its own goal")
 	o.free()
 	GameState.flags = saved_f
 	GameState.stats = saved_s
 
 
-func test_folded_goals_pay_their_rewards_quietly() -> void:
+func test_goals_that_hold_pay_one_per_beat_not_in_a_burst() -> void:
 	var saved_f: Dictionary = GameState.flags.duplicate(true)
 	var saved_s: Dictionary = GameState.stats.duplicate(true)
 	GameState.flags = {}
 	GameState.stats = {"junk_scooped": 99.0, "junk_dumps": 1.0}
 	var t: Array = _timeline()
 	var g: Goals = t[1]
-	var r: Dictionary = g.absorb()
-	assert_gt(float(r.get("cubes", 0.0)), 0.0, "rewards folded in")
+	var purse: Dictionary = GameState.currencies
+	GameState.currencies = {}
+	assert_eq(g.check(), 0)
+	assert_false(g.is_done(1), "one goal per beat")
+	var first: float = GameState.get_currency("cubes").to_float()
+	assert_almost_eq(first, float(g.reward_of(0).get("cubes", 0.0)), 0.001, "paid as it completes")
+	assert_eq(g.check(), 1)
 	assert_true(g.is_done(0) and g.is_done(1), "scoop and dump goals done")
+	assert_gt(GameState.get_currency("cubes").to_float(), first)
+	GameState.currencies = purse
 	(t[2] as Objectives).free()
 	GameState.flags = saved_f
 	GameState.stats = saved_s

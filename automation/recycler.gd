@@ -90,7 +90,8 @@ func feed(cube: JunkCube) -> void:
 const FLAG_PARTS_CARRY: String = "recycler_parts_carry"
 
 
-## Pays out for one bale and frees it. Returns what it gave: {parts, cubes, kg}.
+## Pays out for one bale and frees it. Returns what it gave: {parts (whole Parts paid now), yield
+## (this bale's own share, a fraction of a Part), cubes, kg}.
 ## [money] Bolts and the three building stocks are one currency now: Parts. A bale gives a flat
 ## parts_per_bale plus its volume's worth of stock (metal-heavy bales give the most).
 func recycle(cube: JunkCube) -> Dictionary:
@@ -113,6 +114,7 @@ func recycle(cube: JunkCube) -> Dictionary:
 		for k: String in mdefs:
 			parts += per * float(mdefs[k].get("per_unit", 0.1)) / maxf(mdefs.size(), 1.0)
 	# Whole Parts only: what is left of a Part is kept (in the save) for the next bale.
+	var bale_yield: float = parts
 	var owed: float = parts + float(GameState.flags.get(FLAG_PARTS_CARRY, 0.0))
 	parts = floorf(owed + 0.000001)
 	GameState.flags[FLAG_PARTS_CARRY] = maxf(0.0, owed - parts)
@@ -126,7 +128,7 @@ func recycle(cube: JunkCube) -> Dictionary:
 	GameState.inc_stat("air_filtered", float(d.get("air_per_bale", 30.0)))
 	queue.erase(cube)
 	cube.queue_free()
-	return {"parts": parts, "cubes": cubes, "kg": kg}
+	return {"parts": parts, "yield": bale_yield, "cubes": cubes, "kg": kg}
 
 
 func build_in() -> void:

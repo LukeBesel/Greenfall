@@ -186,7 +186,7 @@ func test_data_award_and_bonus() -> void:
 	assert_almost_eq(Research.award_data(10.0), 10.0, 0.001)
 	Research.grant("soil_survey")
 	assert_almost_eq(Research.award_data(10.0), 11.5, 0.001)
-	assert_almost_eq(_data(), 21.5, 0.001)
+	assert_almost_eq(_data(), 21.5 * Research.note_pay() / Research.note_cubes(), 0.001, "notes pay note_pay cubes each (0 on this planet: a note is not money)")
 	assert_almost_eq(float(GameState.stats["data_earned"]), float(_stats.get("data_earned", 0.0)) + 21.5, 0.001)
 
 
@@ -196,10 +196,12 @@ func test_live_node_awards_data_from_events() -> void:
 	add_child_autofree(n)
 	EventBus.hex_cleaned.emit(0, Vector3.ZERO, BigNum.zero())
 	EventBus.hex_restored.emit(0)
-	assert_almost_eq(_data(), Research.reward("hex_cleaned") + Research.reward("hex_restored"), 0.001)
+	var notes0: float = float(_stats.get("data_earned", 0.0))
+	assert_almost_eq(float(GameState.stats["data_earned"]) - notes0, Research.reward("hex_cleaned") + Research.reward("hex_restored"), 0.001)
 	GameState.inc_stat("shards_found")
 	n._process(1.0)
-	assert_almost_eq(_data(), Research.reward("hex_cleaned") + Research.reward("hex_restored") + Research.reward("shard_read"), 0.001)
+	assert_almost_eq(float(GameState.stats["data_earned"]) - notes0, Research.reward("hex_cleaned") + Research.reward("hex_restored") + Research.reward("shard_read"), 0.001)
+	assert_almost_eq(_data(), (float(GameState.stats["data_earned"]) - notes0) * Research.note_pay() / Research.note_cubes(), 0.001)
 
 
 func test_state_survives_save_round_trip() -> void:

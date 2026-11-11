@@ -10,9 +10,11 @@ func test_cleaners_need_hauler_to_deliver() -> void:
 	var cleaners: Array = [{"type": "scoopie", "tier": 0}, {"type": "scoopie", "tier": 0}]
 	var r: Dictionary = Offline.compute(cleaners, 0, 1.0, 3600.0)
 	assert_eq(float(r["cubes"]), 0.0)
-	assert_gt(float(r["waiting_value"]), 0.0)
+	assert_eq(float(r["waiting_value"]), 0.0, "robots earn no cubes, hauler or not")
+	assert_gt(float(r["units"]), 0.0, "they clean")
 	var r2: Dictionary = Offline.compute(cleaners + [{"type": "haulbug", "tier": 0}], 0, 1.0, 3600.0)
-	assert_gt(float(r2["cubes"]), 0.0)
+	assert_eq(float(r2["cubes"]), 0.0)
+	assert_eq(int(r2["haulers"]), 1)
 
 
 func test_capped_at_eight_hours() -> void:
@@ -26,7 +28,7 @@ func test_capped_at_eight_hours() -> void:
 func test_higher_tier_earns_more() -> void:
 	var lo: Dictionary = Offline.compute([{"type": "scoopie", "tier": 0}, {"type": "haulbug", "tier": 0}], 0, 1.0, 3600.0)
 	var hi: Dictionary = Offline.compute([{"type": "scoopie", "tier": 3}, {"type": "haulbug", "tier": 0}], 0, 1.0, 3600.0)
-	assert_gt(float(hi["cubes"]), float(lo["cubes"]))
+	assert_gt(float(hi["units"]), float(lo["units"]), "a higher tier cleans more while away")
 
 
 func test_capped_by_junk_left() -> void:

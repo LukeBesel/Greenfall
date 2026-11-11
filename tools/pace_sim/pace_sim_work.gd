@@ -272,7 +272,7 @@ func hex_cleaned(by_hand: bool) -> void:
 ## Cubes one field note of this kind pays (Research.award_data without the side effects). The
 ## total is the bot's research fund, so it is counted.
 func field_note(kind: String) -> float:
-	var paid: float = Research.stat_mod("data_gain", 1.0) * Research.reward(kind) * Research.note_cubes()
+	var paid: float = Research.stat_mod("data_gain", 1.0) * Research.reward(kind) * Research.note_pay()
 	m.chains.notes_cubes += paid
 	return paid
 

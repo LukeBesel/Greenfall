@@ -105,8 +105,11 @@ func test_scoopies_clean_cells_and_haulbug_cashes() -> void:
 		dirty0 += 1 if cells.is_dirty(c) else 0
 	_run(crew, 600.0, 0.2)
 	assert_gt(crew.cells_cleaned(), 3, "three Scoopies clean a few hexes in 10 min")
-	assert_gt(crew.cashed, 0.0, "the Haul Bug brought bales to the depot")
-	assert_gt(GameState.get_currency("cubes").to_float(), c0)
+	var hauled: float = 0.0
+	for u: Dictionary in crew.robots():
+		hauled += float(u["log"]["hauled"])
+	assert_gt(hauled, 0.0, "the Haul Bug brought bales to the depot")
+	assert_eq(GameState.get_currency("cubes").to_float(), c0, "and the crew's bales paid nothing")
 	assert_eq(crew.stuck_count(), 0, "no stuck robots")
 	for u: Dictionary in crew.robots():
 		assert_true(u["bot"] != null, "all near Lumi stay real")
@@ -292,9 +295,10 @@ func test_two_hour_offline_matches_flat_within_10_percent() -> void:
 		{"type": "haulbug", "tier": 0}, {"type": "haulbug", "tier": 0}]
 	var flat: Dictionary = Offline.compute(fleet, 0, 1.0, 7200.0, 1e9)
 	var orbit: Dictionary = SphereOffline.simulate(g7, cells, null, [{"cell": 500, "robots": fleet}], 7200.0)
-	var fc: float = float(flat["cubes"])
+	var fc: float = float(flat["units"])
 	assert_gt(fc, 0.0)
-	assert_lt(absf(float(orbit["cubes"]) - fc) / fc, 0.10, "orbit %.0f vs flat %.0f cubes" % [float(orbit["cubes"]), fc])
+	assert_lt(absf(float(orbit["units"]) - fc) / fc, 0.10, "orbit %.0f vs flat %.0f units" % [float(orbit["units"]), fc])
+	assert_eq(float(orbit["cubes"]) + float(flat["cubes"]), 0.0, "robots earn no cubes")
 	var cleaned: int = 0
 	for c: int in SphereOffline.region(g7, cells, 500):
 		cleaned += 0 if cells.is_dirty(c) else 1
@@ -504,7 +508,7 @@ func test_offline_skimmers_work_the_lakes() -> void:
 	var land0: float = SphereOffline.units_left(cells, SphereOffline.region(_g5, cells, 100, 4))
 	var fleet: Array = [{"type": "skimmer", "tier": 0}, {"type": "haulbug", "tier": 0}]
 	var r: Dictionary = SphereOffline.simulate(_g5, cells, null, [{"cell": 100, "robots": fleet, "rings": 4}], 3600.0)
-	assert_gt(float(r["cubes"]), 0.0)
+	assert_gt(float(r["units"]), 0.0)
 	assert_almost_eq(SphereOffline.units_left(cells, SphereOffline.region(_g5, cells, 100, 4)), land0, 0.01, "land untouched")
 	assert_lt(SphereOffline.units_left(cells, SphereOffline.region_water(_g5, cells, 100, 4)), lake.size() * SphereOffline.UNITS_PER_WATER_CELL, "lakes cleaner")
 

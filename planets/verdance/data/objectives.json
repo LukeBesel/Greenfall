@@ -77,7 +77,7 @@
     {
       "id": "baler",
       "text": "Save up for the Baler",
-      "desc": "The Baler squeezes trash into bales. A bale always sells for more.",
+      "desc": "The Baler presses bales. A bale always sells for more.",
       "type": "upgrade",
       "key": "baler",
       "target": 1,
@@ -141,7 +141,7 @@
     {
       "id": "robot",
       "text": "Build your first robot",
-      "desc": "Workbench, Bots tab. A robot costs parts you dig up and strip.",
+      "desc": "Workbench, Bots tab. Robots cost parts you find.",
       "type": "robot",
       "key": "any",
       "target": 1,

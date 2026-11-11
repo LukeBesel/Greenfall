@@ -60,14 +60,15 @@ func test_dump_pays_less_than_a_bale() -> void:
 
 func test_start_is_small_and_slow() -> void:
 	assert_lte(Economy.stat("capacity"), 12.0, "a few pieces per chest at first")
-	assert_lte(Economy.stat("scoop_rate"), 3.0, "a slow scoop: heaps take real time")
+	var start_rate: float = Economy.stat("scoop_rate") * Pace.pulse_volume()
+	assert_between(start_rate, 4.0, 5.5, "about 4 units a second at the start (the accepted proposal's hand rate)")
 	assert_eq(int(Economy.stat("pickup_count")), 1)
-	# A couple of upgrades bring back the old speed (30 capacity, 8 pieces/s).
+	# A few upgrades: a chest of five loads and a scoop more than twice as fast.
 	GameState.upgrades["compartment_size"] = 4
 	GameState.upgrades["scoop_speed"] = 3
-	GameState.upgrades[Pace.UP_SCOOP_SIZE] = 1
+	GameState.upgrades[Pace.UP_SCOOP_SIZE] = 3
 	assert_gte(Economy.stat("capacity"), 30.0)
-	assert_gte(Economy.stat("scoop_rate") * Economy.stat("pickup_count"), 8.0)
+	assert_gte(Economy.stat("scoop_rate") * Pace.pulse_volume(), start_rate * 2.0)
 
 
 func test_only_one_upgrade_after_two_early_bales() -> void:

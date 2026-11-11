@@ -46,15 +46,16 @@ func test_beyond_int64() -> void:
 
 func test_format_short() -> void:
 	assert_eq(BigNum.from_float(999.0).format(), "999")
-	assert_eq(BigNum.from_float(1500.0).format(), "1.5K")
+	assert_eq(BigNum.from_float(1500.0).format(), "1500", "whole under 100,000")
+	assert_eq(BigNum.from_float(150000.0).format(), "150K")
 	assert_eq(BigNum.from_float(2_340_000.0).format(), "2.34M")
 	assert_eq(BigNum.new(1.0, 36).format(), "1aa")
 	assert_eq(BigNum.zero().format(), "0")
 
 
 func test_format_sci_eng() -> void:
-	assert_eq(BigNum.from_float(12345.0).format(BigNum.Format.SCIENTIFIC), "1.23e4")
-	assert_eq(BigNum.from_float(12360.0).format(BigNum.Format.ENGINEERING), "12.36e3")
+	assert_eq(BigNum.from_float(1234500.0).format(BigNum.Format.SCIENTIFIC), "1.23e6")
+	assert_eq(BigNum.from_float(12360000.0).format(BigNum.Format.ENGINEERING), "12.36e6")
 
 
 func test_serialize_roundtrip() -> void:

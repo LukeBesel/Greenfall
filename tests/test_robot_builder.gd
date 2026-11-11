@@ -118,11 +118,11 @@ func test_research_gate() -> void:
 func test_maker_set_needs_parts_and_gives_bonus() -> void:
 	# [money] Maker Fragments are Parts now: a fragment find pays FRAGMENT_PARTS parts.
 	RobotBuilder.add_fragments(3)
-	assert_almost_eq(GameState.get_currency("parts").to_float(), 3.0 * RobotBuilder.FRAGMENT_PARTS, 0.001)
+	assert_almost_eq(GameState.get_currency("parts").to_float(), 3.0 * RobotBuilder.fragment_parts(), 0.001)
 	var need: float = RobotBuilder.craft_parts("maker_shell")
 	assert_almost_eq(need, 250.0 + RobotParts.value(3), 0.001, "250 parts + a Vintage part's worth")
 	assert_string_contains(RobotBuilder.craft_block_reason("maker_shell"), "parts")
-	GameState.add_currency("parts", BigNum.from_float(need - 3.0 * RobotBuilder.FRAGMENT_PARTS))
+	GameState.add_currency("parts", BigNum.from_float(need - 3.0 * RobotBuilder.fragment_parts()))
 	assert_true(RobotBuilder.craft("maker_shell"))
 	assert_almost_eq(GameState.get_currency("parts").to_float(), 0.0, 0.001)
 	var b: Dictionary = {"chassis": "maker_shell", "head": "maker_optic", "mobility": "maker_glider"}

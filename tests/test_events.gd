@@ -273,7 +273,7 @@ func test_claim_pays_cubes_or_parts_and_milestone_trinket() -> void:
 	st["slots"] = [s, Contracts.make_offer(Contracts.template("scoop"), 0), p]
 	assert_eq(c.claim(1), 0.0, "an offer can't be claimed")
 	var paid: float = c.claim(0)
-	assert_true(paid >= 40.0, "a cube request pays progress-scaled cubes")
+	assert_true(paid >= float(WorldEvents.cfg().get("reward", {}).get("min_cubes", 0.0)), "a cube request pays progress-scaled cubes")
 	assert_almost_eq(GameState.get_currency("cubes").to_float(), paid, 0.01)
 	assert_eq(st["slots"][0]["state"], "wait")
 	assert_true(Collection.has("contract_pen"), "first request unlocks its collectible")
@@ -300,7 +300,7 @@ func test_reward_track_unlocks_liveries_and_builder_parts() -> void:
 	assert_eq(RobotBuilder.count("propeller_cap"), 1, "each step is granted once")
 	var before: float = GameState.get_currency("parts").to_float()
 	c.count_done(17 + 5)  # past the last step (20): one repeat Vintage part per repeat_every
-	assert_true(GameState.get_currency("parts").to_float() >= before + 450.0 * 2.0 + 150.0 * 2.0 - 0.01, "[ui2] the track's rare robot parts pay Parts")
+	assert_true(GameState.get_currency("parts").to_float() >= before + RobotParts.value(4) * 2.0 + RobotParts.value(3) * 2.0 - 0.01, "[ui2] the track's rare robot parts pay Parts")
 	assert_eq(GameState.parts.size(), 0, "no robot part items")
 	c.free()
 

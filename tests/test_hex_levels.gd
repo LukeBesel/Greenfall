@@ -70,7 +70,7 @@ func test_clean_then_planted_then_growing() -> void:
 	var c0: float = GameState.get_currency("cubes").to_float()
 	hl.step(1.0)
 	assert_eq(hl.level_of(hid), 1)
-	assert_gt(GameState.get_currency("cubes").to_float(), c0, "level-up pays cubes")
+	assert_eq(GameState.get_currency("cubes").to_float(), c0, "a hex's stage pays no cubes")
 	assert_eq(_events.back(), [hid, 1])
 	_plant_all(w, hid, 0, 50.0)
 	hl.step(1.0)
@@ -149,15 +149,12 @@ func test_persist_roundtrip() -> void:
 	assert_almost_eq(hl2.sustain_progress(hid), w.hex_levels.sustain_progress(hid), 0.001, "sustain window restored")
 
 
-func test_garden_stipend_pays_sustained_and_thriving_hexes() -> void:
+func test_sustained_and_thriving_hexes_pay_no_cube_stipend() -> void:
 	var hl := HexLevels.new()
 	hl.cfg = Economy.planet_table("regrowth")
 	hl.levels = {1: 5, 2: 4, 3: 2}
 	hl._recalc_bonus()
-	var per_min: float = hl.bonus("cubes_per_min")
-	assert_gt(per_min, 0.0, "Sustained/Thriving hexes pay a stipend")
-	var c0: float = GameState.get_currency("cubes").to_float()
-	hl._pay_stipend(60.0)
-	# [money] plus the wildlife-notes trickle (was research Data) from the Thriving hex
-	assert_almost_eq(GameState.get_currency("cubes").to_float() - c0, floorf(per_min) + floorf(hl.bonus("wildlife_cubes_per_min")), 1.0)
+	assert_eq(hl.bonus("cubes_per_min"), 0.0, "no garden stipend")
+	assert_eq(hl.bonus("wildlife_cubes_per_min"), 0.0, "no wildlife trickle")
+	assert_false(hl.has_method("_pay_stipend"), "nothing pays cubes over time")
 	hl.free()

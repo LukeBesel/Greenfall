@@ -119,7 +119,8 @@ func test_campaign_progress_never_full_before_the_cradle() -> void:
 func test_big_num_rounding_rolls_into_the_next_suffix() -> void:
 	assert_eq(BigNum.from_float(999999.0).format(), "1M")
 	assert_eq(BigNum.from_float(999.4e3).format(), "999.4K")
-	assert_eq(BigNum.from_float(1234.0).format(), "1.23K")
+	assert_eq(BigNum.from_float(1234.0).format(), "1234", "whole under 100,000")
+	assert_eq(BigNum.from_float(123400.0).format(), "123.4K")
 	assert_eq(BigNum.from_float(999999.0).format(BigNum.Format.SCIENTIFIC), "1.0e6")
 	assert_eq(BigNum.from_float(0.0).format(), "0")
 	assert_eq(BigNum.from_float(999.0).format(), "999")

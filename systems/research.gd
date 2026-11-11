@@ -552,6 +552,13 @@ static func note_cubes() -> float:
 	return float(_cfg.get("note_cubes", 10.0))
 
 
+## Cubes one field note pays (the planet's research table, note_pay). A planet that does not say
+## pays note_cubes, the worth of a note in research costs.
+static func note_pay() -> float:
+	_ensure()
+	return float(_cfg.get("note_pay", note_cubes()))
+
+
 ## Logs field notes (after research bonuses): they pay cubes (note_cubes each), so the old Data
 ## income is still there and research, which costs cubes now, paces as before. Returns the notes
 ## logged; stats.data_earned counts notes (achievements), stats.notes_cubes the cubes paid.
@@ -559,7 +566,7 @@ static func award_data(base: float) -> float:
 	if base <= 0.0:
 		return 0.0
 	var amt: float = stat_mod("data_gain", 1.0) * base
-	var c: float = amt * note_cubes()
+	var c: float = amt * note_pay()
 	GameState.add_currency("cubes", BigNum.from_float(c))
 	GameState.inc_stat("data_earned", amt)
 	GameState.inc_stat("notes_cubes", c)

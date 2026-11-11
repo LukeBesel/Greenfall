@@ -40,7 +40,7 @@ func test_reenabled_input_ignores_the_closing_press() -> void:
 func test_offline_waiting_bales_are_credited() -> void:
 	var cleaners: Array = [{"type": "scoopie", "tier": 0}]
 	var r: Dictionary = Offline.compute(cleaners, 0, 1.0, 3600.0)
-	assert_gt(float(r["waiting_value"]), 0.0)
+	assert_eq(float(r["waiting_value"]), 0.0, "robots earn no cubes: nothing waits to be credited")
 	var before: float = GameState.get_currency("cubes").to_float()
 	Offline.apply(r)
 	var after: float = GameState.get_currency("cubes").to_float()
