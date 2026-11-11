@@ -727,7 +727,7 @@ msgstr "Melhore o foguete e depois desperte: %s"
 msgid "Wake the %s (%s)"
 msgstr "Desperte: %s (%s)"
 
-#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:364
+#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:431
 msgid "E   Wake the %s  (%s)"
 msgstr "E   Despertar: %s  (%s)"
 
@@ -1558,7 +1558,7 @@ msgstr "Sua base cresceu até onde a demo vai."
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "No jogo completo, Lumi leva a base até o nível 5, planta distritos inteiros até prosperarem, transforma-os numa cidade futurista brilhante e voa de foguete para dezenas de bases pelo planeta. Seu progresso da demo é mantido."
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:765
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:787
 msgid "Hexes cleaned"
 msgstr "Hexágonos limpos"
 
@@ -1566,11 +1566,11 @@ msgstr "Hexágonos limpos"
 msgid "Bales made"
 msgstr "Fardos feitos"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:780
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:802
 msgid "Robots built"
 msgstr "Robôs construídos"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:788
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:810
 msgid "Time played"
 msgstr "Tempo de jogo"
 
@@ -1590,7 +1590,7 @@ msgstr "Tela de título"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "Continuar jogando: o primeiro distrito continua aberto, com a base no nível %d."
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:857 ui/main_menu.gd:519
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:880 ui/main_menu.gd:519
 msgid "%dh %02dm"
 msgstr "%dh %02dm"
 
@@ -2385,11 +2385,11 @@ msgstr "Em algum lugar debaixo da sucata."
 msgid "Found on the planet it belongs to."
 msgstr "Encontrado no planeta ao qual pertence."
 
-#: systems/codex.gd:200 ui/codex_screen.gd:380
+#: systems/codex.gd:200 ui/codex_screen.gd:384
 msgid "Old Town"
 msgstr "Cidade Velha"
 
-#: systems/codex.gd:204 ui/codex_screen.gd:380
+#: systems/codex.gd:204 ui/codex_screen.gd:384
 msgid "Wilderness bases"
 msgstr "Bases selvagens"
 
@@ -2397,7 +2397,7 @@ msgstr "Bases selvagens"
 msgid " · often %s"
 msgstr " · muitas vezes %s"
 
-#: systems/codex.gd:207 ui/codex_screen.gd:380 data/codex.json:categories[frontiers].name
+#: systems/codex.gd:207 ui/codex_screen.gd:384 data/codex.json:categories[frontiers].name
 msgid "Frontiers"
 msgstr "Fronteiras"
 
@@ -2405,11 +2405,11 @@ msgstr "Fronteiras"
 msgid " · %s"
 msgstr " · %s"
 
-#: systems/codex.gd:209 ui/codex_screen.gd:380
+#: systems/codex.gd:209 ui/codex_screen.gd:384
 msgid "Other worlds"
 msgstr "Outros mundos"
 
-#: systems/codex.gd:210 ui/codex_screen.gd:380
+#: systems/codex.gd:210 ui/codex_screen.gd:384
 msgid "Any district"
 msgstr "Qualquer distrito"
 
@@ -2915,20 +2915,20 @@ msgstr "Perfil %d"
 msgid "%d:%02d h"
 msgstr "%d:%02d h"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:253 ui/settings_panel.gd:343
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 msgid "Low"
 msgstr "Baixo"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:253 ui/settings_panel.gd:343
-#: ui/settings_panel.gd:614
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
+#: ui/settings_panel.gd:621
 msgid "Medium"
 msgstr "Médio"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:253 ui/settings_panel.gd:343
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 msgid "High"
 msgstr "Alto"
 
-#: systems/quality_detect.gd:128 ui/settings_panel.gd:253 ui/settings_panel.gd:343
+#: systems/quality_detect.gd:128 ui/settings_panel.gd:260 ui/settings_panel.gd:351
 msgid "Ultra"
 msgstr "Ultra"
 
@@ -2976,7 +2976,7 @@ msgstr "Já na fila"
 msgid "Queue is full"
 msgstr "A fila está cheia"
 
-#: systems/research.gd:340 ui/codex_screen.gd:861
+#: systems/research.gd:340 ui/codex_screen.gd:884
 msgid "%ds"
 msgstr "%d s"
 
@@ -3407,7 +3407,7 @@ msgstr "enfardou cerca de %d fardos"
 msgid "kept the base tidy"
 msgstr "manteve a base arrumada"
 
-#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:772
+#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:794
 msgid "Cubes earned"
 msgstr "Cubos ganhos"
 
@@ -3495,7 +3495,7 @@ msgstr "Tudo limpo aqui!"
 msgid "Only big pieces left"
 msgstr "Só sobraram peças grandes"
 
-#: tools/ui_audit_run.gd:313 ui/locker_panel.gd:84 ui/telescope_view.gd:379
+#: tools/ui_audit_run.gd:316 ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"
 msgstr "Fechar"
 
@@ -3624,7 +3624,7 @@ msgstr "Kit inicial: só Lumi. As relíquias acrescentam mais."
 msgid "Starting kit: %s"
 msgstr "Kit inicial: %s"
 
-#: ui/ark_bridge.gd:303 ui/settings_panel.gd:595
+#: ui/ark_bridge.gd:303 ui/settings_panel.gd:602
 msgid "Full"
 msgstr "Completo"
 
@@ -3903,23 +3903,23 @@ msgstr "ARTISTAS"
 msgid "%d / %d known"
 msgstr "%d / %d conhecidos"
 
-#: ui/codex_artists.gd:58
+#: ui/codex_artists.gd:63
 msgid "From %s"
 msgstr "De %s"
 
-#: ui/codex_artists.gd:59
+#: ui/codex_artists.gd:64
 msgid "Not met yet"
 msgstr "Ainda não descoberto"
 
-#: ui/codex_artists.gd:60
+#: ui/codex_artists.gd:65
 msgid "Find one of their CDs in the rubble on %s."
 msgstr "Encontre um dos CDs deles no entulho de %s."
 
-#: ui/codex_artists.gd:67
+#: ui/codex_artists.gd:72
 msgid "Your CDs (%d / %d): %s"
 msgstr "Seus CDs (%d / %d): %s"
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:794
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:816
 msgid "Achievements"
 msgstr "Conquistas"
 
@@ -3939,40 +3939,40 @@ msgstr "Coleção"
 msgid "Artists"
 msgstr "Artistas"
 
-#: ui/codex_screen.gd:77
+#: ui/codex_screen.gd:81
 msgid "CODEX"
 msgstr "CÓDICE"
 
-#: ui/codex_screen.gd:89
+#: ui/codex_screen.gd:93
 msgid "Watch the story"
 msgstr "Ver a história"
 
-#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:172
+#: ui/codex_screen.gd:105 ui/upgrades_screen.gd:172
 msgid "Close  [%s]"
 msgstr "Fechar  [%s]"
 
-#: ui/codex_screen.gd:205
+#: ui/codex_screen.gd:209
 msgid "%d / %d curiosities"
 msgstr "%d / %d curiosidades"
 
-#: ui/codex_screen.gd:207
+#: ui/codex_screen.gd:211
 msgid "%d / %d collectibles"
 msgstr "%d / %d colecionáveis"
 
-#: ui/codex_screen.gd:209
+#: ui/codex_screen.gd:213
 msgid "%d / %d achievements"
 msgstr "%d / %d conquistas"
 
-#: ui/codex_screen.gd:211
+#: ui/codex_screen.gd:215
 msgid "%d / %d entries"
 msgstr "%d / %d entradas"
 
-#: ui/codex_screen.gd:340 ui/codex_screen.gd:460 ui/codex_screen.gd:626
-#: ui/codex_screen.gd:641
+#: ui/codex_screen.gd:344 ui/codex_screen.gd:464 ui/codex_screen.gd:630
+#: ui/codex_screen.gd:645
 msgid "Not found yet"
 msgstr "Ainda não encontrado"
 
-#: ui/codex_screen.gd:344
+#: ui/codex_screen.gd:348
 msgid ""
 "\n"
 "\n"
@@ -3982,211 +3982,211 @@ msgstr ""
 "\n"
 "Limpo até agora: %s"
 
-#: ui/codex_screen.gd:369
+#: ui/codex_screen.gd:373
 msgid "CURIOSITIES"
 msgstr "CURIOSIDADES"
 
-#: ui/codex_screen.gd:370 ui/codex_screen.gd:491
+#: ui/codex_screen.gd:374 ui/codex_screen.gd:495
 msgid "%d / %d found"
 msgstr "%d / %d encontradas"
 
-#: ui/codex_screen.gd:464
+#: ui/codex_screen.gd:468
 msgid "Found  ·  %s"
 msgstr "Encontrado  ·  %s"
 
-#: ui/codex_screen.gd:467
+#: ui/codex_screen.gd:471
 msgid "Parts found: %d / %d"
 msgstr "Peças encontradas: %d / %d"
 
-#: ui/codex_screen.gd:468
+#: ui/codex_screen.gd:472
 msgid "Reward: a small surprise"
 msgstr "Recompensa: uma pequena surpresa"
 
-#: ui/codex_screen.gd:490
+#: ui/codex_screen.gd:494
 msgid "COLLECTION"
 msgstr "COLEÇÃO"
 
-#: ui/codex_screen.gd:574
+#: ui/codex_screen.gd:578
 msgid "LUMI'S COLLECTION"
 msgstr "COLEÇÃO DA LUMI"
 
-#: ui/codex_screen.gd:575
+#: ui/codex_screen.gd:579
 msgid "%d / %d complete"
 msgstr "%d / %d completos"
 
-#: ui/codex_screen.gd:613
+#: ui/codex_screen.gd:617
 msgid "TRINKETS AND CURIOS"
 msgstr "BUGIGANGAS E CURIOSIDADES"
 
-#: ui/codex_screen.gd:625
+#: ui/codex_screen.gd:629
 msgid "EVERY PLANET"
 msgstr "TODOS OS PLANETAS"
 
-#: ui/codex_screen.gd:628
+#: ui/codex_screen.gd:632
 msgid "In Lumi's collection. It has a plinth in the Museum."
 msgstr "Na coleção de Lumi. Tem um pedestal no Museu."
 
-#: ui/codex_screen.gd:630
+#: ui/codex_screen.gd:634
 msgid "Hint: %s"
 msgstr "Dica: %s"
 
-#: ui/codex_screen.gd:632
+#: ui/codex_screen.gd:636
 msgid "The Museum: built"
 msgstr "O Museu: construído"
 
-#: ui/codex_screen.gd:632
+#: ui/codex_screen.gd:636
 msgid "The Museum is built at Cradle Returns, near the end of the journey."
 msgstr "O Museu é construído em Cradle Returns, perto do fim da jornada."
 
-#: ui/codex_screen.gd:644
+#: ui/codex_screen.gd:648
 msgid "In your collection"
 msgstr "Na sua coleção"
 
-#: ui/codex_screen.gd:649
+#: ui/codex_screen.gd:653
 msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
 msgstr "Dica: um visitante tímido aparece em hexágonos sustentados e prósperos. Leve uma câmera."
 
-#: ui/codex_screen.gd:650
+#: ui/codex_screen.gd:654
 msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
 msgstr "Dica: os animais voltam quando o chão se cura. Fotografe-os no modo foto (P)."
 
-#: ui/codex_screen.gd:651
+#: ui/codex_screen.gd:655
 msgid "Hint: finish %d requests (Requests tab at the workbench)."
 msgstr "Dica: conclua %d pedidos (aba Pedidos na bancada)."
 
-#: ui/codex_screen.gd:652
+#: ui/codex_screen.gd:656
 msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
 msgstr "Dica: Cápsulas de curiosidades, na trilha de recompensas dos pedidos na bancada."
 
-#: ui/codex_screen.gd:653
+#: ui/codex_screen.gd:657
 msgid "Hint: keep scooping without stopping until the streak meter is full."
 msgstr "Dica: continue recolhendo sem parar até encher o medidor de sequência."
 
-#: ui/codex_screen.gd:654
+#: ui/codex_screen.gd:658
 msgid "Hint: turns up during %s."
 msgstr "Dica: aparece durante: %s."
 
-#: ui/codex_screen.gd:723
+#: ui/codex_screen.gd:739
 msgid "Unlocked  ·  %s"
 msgstr "Desbloqueado  ·  %s"
 
-#: ui/codex_screen.gd:762
+#: ui/codex_screen.gd:784
 msgid "Total"
 msgstr "Total"
 
-#: ui/codex_screen.gd:763
+#: ui/codex_screen.gd:785
 msgid "Junk removed"
 msgstr "Sucata removida"
 
-#: ui/codex_screen.gd:763
+#: ui/codex_screen.gd:785
 msgid "by type"
 msgstr "por tipo"
 
-#: ui/codex_screen.gd:764 data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:786 data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "Limpeza"
 
-#: ui/codex_screen.gd:766
+#: ui/codex_screen.gd:788
 msgid "Hexes restored"
 msgstr "Hexágonos restaurados"
 
-#: ui/codex_screen.gd:767
+#: ui/codex_screen.gd:789
 msgid "Bales pressed"
 msgstr "Fardos prensados"
 
-#: ui/codex_screen.gd:768
+#: ui/codex_screen.gd:790
 msgid "Pure bales"
 msgstr "Fardos puros"
 
-#: ui/codex_screen.gd:769
+#: ui/codex_screen.gd:791
 msgid "Perfect bales"
 msgstr "Fardos perfeitos"
 
-#: ui/codex_screen.gd:770
+#: ui/codex_screen.gd:792
 msgid "Lumpy bales"
 msgstr "Fardos irregulares"
 
-#: ui/codex_screen.gd:771
+#: ui/codex_screen.gd:793
 msgid "Bales cashed in"
 msgstr "Fardos trocados"
 
-#: ui/codex_screen.gd:774 ui/globe_view.gd:156 data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:796 ui/globe_view.gd:156 data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "Cultivo"
 
-#: ui/codex_screen.gd:775
+#: ui/codex_screen.gd:797
 msgid "Seeds planted"
 msgstr "Sementes plantadas"
 
-#: ui/codex_screen.gd:776
+#: ui/codex_screen.gd:798
 msgid "Plants bloomed"
 msgstr "Plantas floridas"
 
-#: ui/codex_screen.gd:777
+#: ui/codex_screen.gd:799
 msgid "Air filtered"
 msgstr "Ar filtrado"
 
-#: ui/codex_screen.gd:779 data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:801 data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "Robôs"
 
-#: ui/codex_screen.gd:781
+#: ui/codex_screen.gd:803
 msgid "Bales by robots"
 msgstr "Fardos por robôs"
 
-#: ui/codex_screen.gd:782
+#: ui/codex_screen.gd:804
 msgid "Parts dug up"
 msgstr "Peças desenterradas"
 
-#: ui/codex_screen.gd:784
+#: ui/codex_screen.gd:806
 msgid "Exploring"
 msgstr "Exploração"
 
-#: ui/codex_screen.gd:785
+#: ui/codex_screen.gd:807
 msgid "Distance rolled"
 msgstr "Distância percorrida"
 
-#: ui/codex_screen.gd:786
+#: ui/codex_screen.gd:808
 msgid "Memory shards read"
 msgstr "Fragmentos de memória lidos"
 
-#: ui/codex_screen.gd:787
+#: ui/codex_screen.gd:809
 msgid "Codex entries"
 msgstr "Entradas do Códice"
 
-#: ui/codex_screen.gd:790
+#: ui/codex_screen.gd:812
 msgid "Progress"
 msgstr "Progresso"
 
-#: ui/codex_screen.gd:791
+#: ui/codex_screen.gd:813
 msgid "Upgrades bought"
 msgstr "Melhorias compradas"
 
-#: ui/codex_screen.gd:792
+#: ui/codex_screen.gd:814
 msgid "Field notes logged"
 msgstr "Notas de campo registradas"
 
-#: ui/codex_screen.gd:793
+#: ui/codex_screen.gd:815
 msgid "Research done"
 msgstr "Pesquisas feitas"
 
-#: ui/codex_screen.gd:795
+#: ui/codex_screen.gd:817
 msgid "Best hub level"
 msgstr "Melhor nível de base"
 
-#: ui/codex_screen.gd:845
+#: ui/codex_screen.gd:868
 msgid "%s kg"
 msgstr "%s kg"
 
-#: ui/codex_screen.gd:846
+#: ui/codex_screen.gd:869
 msgid "%.1f kg"
 msgstr "%.1f kg"
 
-#: ui/codex_screen.gd:850
+#: ui/codex_screen.gd:873
 msgid "%.2f km"
 msgstr "%.2f km"
 
-#: ui/codex_screen.gd:860
+#: ui/codex_screen.gd:883
 msgid "%dm %02ds"
 msgstr "%dm %02ds"
 
@@ -4319,7 +4319,7 @@ msgstr "Use na bancada: Cosméticos"
 msgid "{interact}  [k]/ Esc  [/k]close"
 msgstr "{interact}  [k]/ Esc  [/k]fechar"
 
-#: ui/document_view.gd:63
+#: ui/document_view.gd:75
 msgid "M E M O R Y   S H A R D   ·   %s"
 msgstr "F R A G M E N T O   D E   M E M Ó R I A   ·   %s"
 
@@ -5428,7 +5428,7 @@ msgstr "O modo foto não está disponível durante um voo de foguete."
 msgid "Photo mode isn't available during a cinematic."
 msgstr "O modo foto não está disponível durante uma cena."
 
-#: ui/photo_mode.gd:362 ui/photo_mode.gd:415 ui/settings_panel.gd:403
+#: ui/photo_mode.gd:362 ui/photo_mode.gd:415 ui/settings_panel.gd:411
 msgid "Camera"
 msgstr "Câmera"
 
@@ -5436,7 +5436,7 @@ msgstr "Câmera"
 msgid "Mode"
 msgstr "Modo"
 
-#: ui/photo_mode.gd:364 ui/settings_panel.gd:411
+#: ui/photo_mode.gd:364 ui/settings_panel.gd:419
 msgid "Field of view"
 msgstr "Campo de visão"
 
@@ -5473,7 +5473,7 @@ msgid "Blur"
 msgstr "Desfoque"
 
 #: ui/photo_mode.gd:372 ui/photo_panel.gd:240 ui/photo_panel.gd:242
-#: ui/photo_panel.gd:280 ui/settings_panel.gd:704
+#: ui/photo_panel.gd:280 ui/settings_panel.gd:711
 msgid "Off"
 msgstr "Desligado"
 
@@ -5586,7 +5586,7 @@ msgid "Exit"
 msgstr "Sair"
 
 #: ui/photo_panel.gd:240 ui/photo_panel.gd:242 ui/photo_panel.gd:280
-#: ui/settings_panel.gd:704
+#: ui/settings_panel.gd:711
 msgid "On"
 msgstr "Ligado"
 
@@ -5958,283 +5958,255 @@ msgstr "{ui_cancel}  voltar"
 msgid "Changes are saved automatically."
 msgstr "As alterações são salvas automaticamente."
 
-#: ui/settings_panel.gd:253 ui/settings_panel.gd:343
+#: ui/settings_panel.gd:260 ui/settings_panel.gd:351
 msgid "Quality preset"
 msgstr "Predefinição de qualidade"
 
-#: ui/settings_panel.gd:254 ui/settings_panel.gd:360
+#: ui/settings_panel.gd:261 ui/settings_panel.gd:368
 msgid "Fullscreen"
 msgstr "Tela cheia"
 
-#: ui/settings_panel.gd:257 ui/settings_panel.gd:404
+#: ui/settings_panel.gd:264 ui/settings_panel.gd:412
 msgid "Mouse sensitivity"
 msgstr "Sensibilidade do mouse"
 
-#: ui/settings_panel.gd:261 ui/settings_panel.gd:580
+#: ui/settings_panel.gd:269 ui/settings_panel.gd:589
 msgid "System default"
 msgstr "Padrão do sistema"
 
-#: ui/settings_panel.gd:262 ui/settings_panel.gd:578 ui/settings_panel.gd:581
+#: ui/settings_panel.gd:270 ui/settings_panel.gd:586 ui/settings_panel.gd:590
 msgid "Language"
 msgstr "Idioma"
 
-#: ui/settings_panel.gd:267
+#: ui/settings_panel.gd:275
 msgid "More settings  (sound, graphics, controls, accessibility)"
 msgstr "Mais configurações  (som, gráficos, controles, acessibilidade)"
 
-#: ui/settings_panel.gd:275
+#: ui/settings_panel.gd:283
 msgid "Everything else"
 msgstr "Todo o resto"
 
-#: ui/settings_panel.gd:315
+#: ui/settings_panel.gd:323
 msgid "Volume"
 msgstr "Volume"
 
-#: ui/settings_panel.gd:322
+#: ui/settings_panel.gd:330
 msgid "Ambience"
 msgstr "Ambiente"
 
-#: ui/settings_panel.gd:325
+#: ui/settings_panel.gd:333
 msgid "Sound effects"
 msgstr "Efeitos sonoros"
 
-#: ui/settings_panel.gd:329 ui/settings_panel.gd:590 ui/settings_panel.gd:600
+#: ui/settings_panel.gd:337 ui/settings_panel.gd:599 ui/settings_panel.gd:607
 msgid "Interface"
 msgstr "Interface"
 
-#: ui/settings_panel.gd:336
+#: ui/settings_panel.gd:344
 msgid "Rendering"
 msgstr "Renderização"
 
-#: ui/settings_panel.gd:337
+#: ui/settings_panel.gd:345
 msgid "Low drops GI and fog; Ultra adds reflections."
 msgstr "Baixo remove GI e neblina; Ultra adiciona reflexos."
 
-#: ui/settings_panel.gd:338
+#: ui/settings_panel.gd:346
 msgid "This renderer always uses the Low preset."
 msgstr "Este renderizador sempre usa a predefinição Baixo."
 
-#: ui/settings_panel.gd:340
+#: ui/settings_panel.gd:348
 msgid "Detected: %s for %s. "
 msgstr "Detectado: %s para %s."
 
-#: ui/settings_panel.gd:341
+#: ui/settings_panel.gd:349
 msgid "Your choice (hardware: %s). "
 msgstr "Sua escolha (hardware: %s)."
 
-#: ui/settings_panel.gd:342
+#: ui/settings_panel.gd:350
 msgid "Low drops GI, fog and shadows detail; Ultra adds reflections."
 msgstr "Baixo remove GI, neblina e detalhes de sombra; Ultra adiciona reflexos."
 
-#: ui/settings_panel.gd:348
+#: ui/settings_panel.gd:356
 msgid "Renderer"
 msgstr "Renderizador"
 
-#: ui/settings_panel.gd:348
+#: ui/settings_panel.gd:356
 msgid "Standard (Forward+)"
 msgstr "Padrão (Forward+)"
 
-#: ui/settings_panel.gd:348
+#: ui/settings_panel.gd:356
 msgid "Light (Mobile)"
 msgstr "Leve (Mobile)"
 
-#: ui/settings_panel.gd:350
+#: ui/settings_panel.gd:358
 msgid "Light suits older integrated graphics. Takes effect after restarting the game (now: %s)."
 msgstr "Leve combina com gráficos integrados antigos. Vale depois de reiniciar o jogo (agora: %s)."
 
-#: ui/settings_panel.gd:356
+#: ui/settings_panel.gd:364
 msgid "Render scale"
 msgstr "Escala de renderização"
 
-#: ui/settings_panel.gd:358
+#: ui/settings_panel.gd:366
 msgid "Lower renders 3D at a smaller size; the interface stays sharp."
 msgstr "Menor renderiza o 3D num tamanho menor; a interface continua nítida."
 
-#: ui/settings_panel.gd:359
+#: ui/settings_panel.gd:367
 msgid "Display"
 msgstr "Tela"
 
-#: ui/settings_panel.gd:363
+#: ui/settings_panel.gd:371
 msgid "V-Sync"
 msgstr "V-Sync"
 
-#: ui/settings_panel.gd:369 ui/settings_panel.gd:398
+#: ui/settings_panel.gd:377 ui/settings_panel.gd:406
 msgid "Bindings"
 msgstr "Atalhos"
 
-#: ui/settings_panel.gd:372
+#: ui/settings_panel.gd:380
 msgid "ACTION   (select a binding to rebind it)"
 msgstr "AÇÃO   (selecione um atalho para trocar)"
 
-#: ui/settings_panel.gd:375
+#: ui/settings_panel.gd:383
 msgid "KEYBOARD / MOUSE"
 msgstr "TECLADO / MOUSE"
 
-#: ui/settings_panel.gd:375
+#: ui/settings_panel.gd:383
 msgid "CONTROLLER"
 msgstr "CONTROLE"
 
-#: ui/settings_panel.gd:391
+#: ui/settings_panel.gd:399
 msgid "Reset to defaults"
 msgstr "Restaurar padrões"
 
-#: ui/settings_panel.gd:398
+#: ui/settings_panel.gd:406
 msgid "Restore every key and controller binding."
 msgstr "Restaura todas as teclas e botões do controle."
 
-#: ui/settings_panel.gd:400
+#: ui/settings_panel.gd:408
 msgid "Button prompts"
 msgstr "Ícones de botões"
 
-#: ui/settings_panel.gd:402
+#: ui/settings_panel.gd:410
 msgid "Controller art: Automatic follows the connected pad."
 msgstr "Arte do controle: Automático segue o controle conectado."
 
-#: ui/settings_panel.gd:407
+#: ui/settings_panel.gd:415
 msgid "Stick look speed"
 msgstr "Velocidade do analógico"
 
-#: ui/settings_panel.gd:410
+#: ui/settings_panel.gd:418
 msgid "Invert look Y"
 msgstr "Inverter eixo Y"
 
-#: ui/settings_panel.gd:414
+#: ui/settings_panel.gd:422
 msgid "Mouse smoothing"
 msgstr "Suavização do mouse"
 
-#: ui/settings_panel.gd:415
+#: ui/settings_panel.gd:423
 msgid "Eases mouse look over a few frames."
 msgstr "Suaviza o olhar com o mouse por alguns quadros."
 
-#: ui/settings_panel.gd:416
+#: ui/settings_panel.gd:424
 msgid "Scooping"
 msgstr "Recolhimento"
 
-#: ui/settings_panel.gd:417
+#: ui/settings_panel.gd:425
 msgid "Scoop button"
 msgstr "Botão da pá"
 
-#: ui/settings_panel.gd:417
+#: ui/settings_panel.gd:425
 msgid "Hold"
 msgstr "Segurar"
 
-#: ui/settings_panel.gd:417
+#: ui/settings_panel.gd:425
 msgid "Toggle"
 msgstr "Alternar"
 
-#: ui/settings_panel.gd:458
+#: ui/settings_panel.gd:466
 msgid "press a button…"
 msgstr "aperte um botão…"
 
-#: ui/settings_panel.gd:458
+#: ui/settings_panel.gd:466
 msgid "press a key…"
 msgstr "aperte uma tecla…"
 
-#: ui/settings_panel.gd:490
+#: ui/settings_panel.gd:498
 msgid "Conflict: %s is used by both %s and %s."
 msgstr "Conflito: %s é usado por %s e por %s."
 
-#: ui/settings_panel.gd:584
-msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
-msgstr "Menus, HUD, legendas e textos da história. Pseudo serve para testar traduções."
-
-#: ui/settings_panel.gd:585
+#: ui/settings_panel.gd:594
 msgid "Comfort"
 msgstr "Conforto"
 
-#: ui/settings_panel.gd:586
+#: ui/settings_panel.gd:595
 msgid "Camera shake"
 msgstr "Tremor da câmera"
 
-#: ui/settings_panel.gd:588
+#: ui/settings_panel.gd:597
 msgid "Reduced motion"
 msgstr "Movimento reduzido"
 
-#: ui/settings_panel.gd:589
+#: ui/settings_panel.gd:598
 msgid "Calmer camera and fewer bouncy effects."
 msgstr "Câmera mais calma e menos efeitos saltitantes."
 
-#: ui/settings_panel.gd:591
-msgid "Number format"
-msgstr "Formato de números"
-
-#: ui/settings_panel.gd:591
-msgid "Short (1.2K)"
-msgstr "Curto (1,2K)"
-
-#: ui/settings_panel.gd:591
-msgid "Scientific (1.2e3)"
-msgstr "Científico (1,2e3)"
-
-#: ui/settings_panel.gd:591
-msgid "Engineering (1.2e3)"
-msgstr "Engenharia (1,2e3)"
-
-#: ui/settings_panel.gd:593
-msgid "Best-value tags"
-msgstr "Etiquetas de melhor valor"
-
-#: ui/settings_panel.gd:594
-msgid "Tag the affordable upgrade that gives the most per cube."
-msgstr "Marca a melhoria acessível que dá mais por cubo."
-
-#: ui/settings_panel.gd:595
+#: ui/settings_panel.gd:602
 msgid "HUD"
 msgstr "HUD"
 
-#: ui/settings_panel.gd:595
+#: ui/settings_panel.gd:602
 msgid "Minimal"
 msgstr "Mínimo"
 
-#: ui/settings_panel.gd:595
+#: ui/settings_panel.gd:602
 msgid "Hidden"
 msgstr "Oculto"
 
-#: ui/settings_panel.gd:596
+#: ui/settings_panel.gd:603
 msgid "Minimal fades extras after a few seconds. Hidden keeps only prompts and messages."
 msgstr "Mínimo esmaece os extras depois de alguns segundos. Oculto mantém só avisos e mensagens."
 
-#: ui/settings_panel.gd:606
+#: ui/settings_panel.gd:613
 msgid "Interface scale"
 msgstr "Escala da interface"
 
-#: ui/settings_panel.gd:608
+#: ui/settings_panel.gd:615
 msgid "Size of menus, HUD and subtitles."
 msgstr "Tamanho de menus, HUD e legendas."
 
-#: ui/settings_panel.gd:609
+#: ui/settings_panel.gd:616
 msgid "Colour-blind palette"
 msgstr "Paleta para daltonismo"
 
-#: ui/settings_panel.gd:610
+#: ui/settings_panel.gd:617
 msgid "Okabe-Ito colours for hex progress, the hopper meter and part rarity."
 msgstr "Cores Okabe-Ito para progresso dos hexágonos, medidor da caçamba e raridade das peças."
 
-#: ui/settings_panel.gd:611 ui/settings_panel.gd:612
+#: ui/settings_panel.gd:618 ui/settings_panel.gd:619
 msgid "Subtitles"
 msgstr "Legendas"
 
-#: ui/settings_panel.gd:613
+#: ui/settings_panel.gd:620
 msgid "WREN and Ledger lines."
 msgstr "Falas da WREN e do Ledger."
 
-#: ui/settings_panel.gd:614
+#: ui/settings_panel.gd:621
 msgid "Subtitle size"
 msgstr "Tamanho das legendas"
 
-#: ui/settings_panel.gd:614
+#: ui/settings_panel.gd:621
 msgid "Small"
 msgstr "Pequeno"
 
-#: ui/settings_panel.gd:614
+#: ui/settings_panel.gd:621
 msgid "Large"
 msgstr "Grande"
 
-#: ui/settings_panel.gd:616
+#: ui/settings_panel.gd:623
 msgid "Subtitle background"
 msgstr "Fundo das legendas"
 
-#: ui/settings_panel.gd:617
+#: ui/settings_panel.gd:624
 msgid "A solid backdrop behind subtitle text."
 msgstr "Um fundo sólido atrás do texto das legendas."
 
@@ -16920,6 +16892,27 @@ msgstr "Aquele pórtico desmanchou a frota do Ledger quando o dinheiro acabou. A
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Um mundo de ferrugem, verde. Os velhos guindastes têm flores aos pés. As contas estão fechadas, {name}. Nós as equilibramos."
+
+#~ msgid "Menus, HUD, subtitles and story text. Pseudo is for testing translations."
+#~ msgstr "Menus, HUD, legendas e textos da história. Pseudo serve para testar traduções."
+
+#~ msgid "Number format"
+#~ msgstr "Formato de números"
+
+#~ msgid "Short (1.2K)"
+#~ msgstr "Curto (1,2K)"
+
+#~ msgid "Scientific (1.2e3)"
+#~ msgstr "Científico (1,2e3)"
+
+#~ msgid "Engineering (1.2e3)"
+#~ msgstr "Engenharia (1,2e3)"
+
+#~ msgid "Best-value tags"
+#~ msgstr "Etiquetas de melhor valor"
+
+#~ msgid "Tag the affordable upgrade that gives the most per cube."
+#~ msgstr "Marca a melhoria acessível que dá mais por cubo."
 
 #~ msgid "RECYCLER"
 #~ msgstr "RECICLADOR"
