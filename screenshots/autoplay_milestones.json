@@ -40,5 +40,21 @@
   "garden_takes_off_s": 4831.8,
   "first_hexlv_5_s": 4840.0,
   "base_4_s": 4924.8,
-  "first_drip_s": 5041.6
+  "first_drip_s": 5041.6,
+  "hop_5_s": 5231.7,
+  "landed_5_s": 5288.8,
+  "hub_5_s": 5605.0,
+  "rocket_tier_3_s": 5784.2,
+  "base_5_s": 6446.3,
+  "signal_finder_s": 6489.5,
+  "auto_compactor_s": 6705.2,
+  "hop_6_s": 6749.2,
+  "landed_6_s": 6818.8,
+  "core_50_s": 6955.8,
+  "pct50_verdance_s": 7007.1,
+  "hub_6_s": 7014.7,
+  "home_system_open_s": 7079.8,
+  "home_on_verdance_s": 7079.8,
+  "exit_beat_s": 7079.8,
+  "drive_5_s": 7079.8
 }
