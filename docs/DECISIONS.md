@@ -553,3 +553,7 @@ Merged. Crew at the launch point 155 (cap 200); city 1 first hex 55 s, first rob
 `docs/reviews/M3-10_GOALS.md`. NOW (41 authored, 6 repeating), CITY (65 authored, 2 repeating) and PLANET (9) goals from data, one of each always active, beside the story card; 114 goals pointing at parked systems removed. Bot: longest stretch with no goal finished 2.0 minutes; no tier ever empty. Merged.
 - The first PLANET goal ("Restore Old Town") does not finish in the first 25 minutes. Kept: the long tier is meant to be long, and the card and NOW goals carry the opening.
 - Purchase waits of 155 and 198 s between minutes 14 and 20 go to M3-12; the simulator's goal-gap check must count repeating goals (M3-12).
+
+## Wrecks and buried finds (M3-15, Nov 11, 2026)
+`docs/reviews/M3-15_WRECKS.md`. Three Sprout wrecks (Ironside, Highreach, Lowmeadow) that Lumi uncovers by hand and salvages; one Bolt wreck in Kettle Bay as an unsalvageable tease; buried tins and lens chips that the detector pings; a found moment on Lumi with light, chimes, the piece named and a pointer to the Locker. All reachable. Merged.
+- Below the bar, for M5 art: wrecks are hard to pick out from 30 m; the tease reads as a dark lump; the found light barely shows in sunlight.

@@ -45,6 +45,7 @@ var rigs: Rigs  # Lumi's fitted modules: each city's tool and the trade-off modu
 var city_payouts: CityPayouts  # cubes paid once when a city reaches a regrowth stage
 var chain: RobotChain  # parts finders, the Assembler and its build mix
 var look_finds: Finds  # where the planet hides the pieces of Lumi's looks (systems/finds.gd)
+var find_sites: FindSites  # the wrecks and buried finds standing in the world (systems/find_sites.gd)
 var sources: Sources  # each city's source job, which gates its last stage (systems/sources.gd)
 var surge: Surge  # the Bloom Core's charge from Lumi's own work and its release (systems/surge.gd)
 var source_sites: SourceSites  # where the job's steps stand in the world (systems/source_sites.gd)
@@ -671,6 +672,15 @@ func _build_yard_systems() -> void:
 	w.set("interactables", ia)
 	if look_finds:
 		look_finds.set_interactables(ia)
+		find_sites = FindSites.new()  # wrecks to clear and salvage by hand, buried finds the detector pings
+		find_sites.name = "FindSites"
+		w.add_child(find_sites)
+		find_sites.setup(look_finds, districts, globe.field, ia, _patch_node)
+		var lumi: Patch = w.get("patch") as Patch
+		if lumi and lumi.detector:
+			lumi.detector.cache_fn = find_sites.nearest_cache
+		if DevHooks.has(FindSitesDev.FLAG):
+			FindSitesDev.run(self)
 	if sources:
 		source_sites = SourceSites.new()
 		source_sites.name = "SourceSites"

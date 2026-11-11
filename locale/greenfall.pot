@@ -753,12 +753,20 @@ msgstr ""
 msgid "A dry old seed, still sealed in its husk. Junk hides a few of these."
 msgstr ""
 
-#: player/detector.gd:77
+#: player/detector.gd:81
 msgid "BURIED PART  %s  ·  %.1f m"
 msgstr ""
 
-#: player/detector.gd:80
+#: player/detector.gd:84
 msgid "BURIED PART  ·  SIGNAL %d%%"
+msgstr ""
+
+#: player/detector.gd:113
+msgid "%s  ·  %.1f m"
+msgstr ""
+
+#: player/detector.gd:113
+msgid "%s  ·  SIGNAL %d%%"
 msgstr ""
 
 #: player/patch.gd:213
@@ -1161,27 +1169,27 @@ msgstr ""
 msgid "OUTPOST %d · RUIN"
 msgstr ""
 
-#: scenes/slice_orbit.gd:374
+#: scenes/slice_orbit.gd:375
 msgid "HEX CLEAN!"
 msgstr ""
 
-#: scenes/slice_orbit.gd:390
+#: scenes/slice_orbit.gd:391
 msgid "Milestone: %d hexes clean!"
 msgstr ""
 
-#: scenes/slice_orbit.gd:609 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:589
+#: scenes/slice_orbit.gd:610 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:589
 msgid "E   Fix the workbench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:609 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:610 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:1073
+#: scenes/slice_orbit.gd:1083
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr ""
 
-#: scenes/slice_orbit.gd:1173
+#: scenes/slice_orbit.gd:1183
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr ""
 
@@ -2189,6 +2197,46 @@ msgstr ""
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr ""
 
+#: systems/find_sites.gd:190
+msgid "LENS CHIP"
+msgstr ""
+
+#: systems/find_sites.gd:190
+msgid "BURIED TIN"
+msgstr ""
+
+#: systems/find_sites.gd:378
+msgid "E   Look at the wreck"
+msgstr ""
+
+#: systems/find_sites.gd:379
+msgid "E   Pull the junk off the wreck"
+msgstr ""
+
+#: systems/find_sites.gd:379
+msgid "E   Salvage the wreck"
+msgstr ""
+
+#: systems/find_sites.gd:463
+msgid "E   Dig up the lens chip"
+msgstr ""
+
+#: systems/find_sites.gd:463
+msgid "E   Dig up the paint tin"
+msgstr ""
+
+#: systems/find_sites.gd:511
+msgid "Something is buried in the cleared soil. Follow the detector and dig."
+msgstr ""
+
+#: systems/find_sites.gd:514
+msgid "open ground"
+msgstr ""
+
+#: systems/find_sites.gd:515
+msgid "Your crew uncovered something buried in %s. The detector will find it."
+msgstr ""
+
 #: systems/l10n_fmt.gd:21
 msgid "+%d cube"
 msgid_plural "+%d cubes"
@@ -2694,7 +2742,7 @@ msgstr ""
 msgid "%s points proudly at a new bud."
 msgstr ""
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:621
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:630
 msgid "E   CD player: %s"
 msgstr ""
 
@@ -3249,7 +3297,7 @@ msgstr ""
 msgid "Other worlds"
 msgstr ""
 
-#: ui/codex_screen.gd:464 ui/piece_reveal.gd:104
+#: ui/codex_screen.gd:464 ui/piece_reveal.gd:129
 msgid "Found  ·  %s"
 msgstr ""
 
@@ -4279,6 +4327,10 @@ msgstr ""
 msgid "◢ BURIED PART %d%%"
 msgstr ""
 
+#: ui/lens_overlay.gd:69
+msgid "◢ %s %d%%"
+msgstr ""
+
 #: ui/list_detail.gd:99
 msgid "Nothing here yet. Keep playing."
 msgstr ""
@@ -4872,19 +4924,23 @@ msgstr ""
 msgid "PHOTO MODE   Tab"
 msgstr ""
 
-#: ui/piece_reveal.gd:98
+#: ui/piece_reveal.gd:122
 msgid "Set complete"
 msgstr ""
 
-#: ui/piece_reveal.gd:101
+#: ui/piece_reveal.gd:125
 msgid "Wear every piece at the Locker: %s."
 msgstr ""
 
-#: ui/piece_reveal.gd:107
+#: ui/piece_reveal.gd:129
+msgid "Salvaged  ·  %s"
+msgstr ""
+
+#: ui/piece_reveal.gd:132
 msgid "Wear it at the Locker."
 msgstr ""
 
-#: ui/piece_reveal.gd:107
+#: ui/piece_reveal.gd:132
 msgid "Build the Locker at the workbench to wear it."
 msgstr ""
 

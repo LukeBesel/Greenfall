@@ -758,13 +758,21 @@ msgstr "+1 SEMENTE"
 msgid "A dry old seed, still sealed in its husk. Junk hides a few of these."
 msgstr "Uma semente velha e seca, ainda lacrada na casca. A sucata esconde algumas dessas."
 
-#: player/detector.gd:77
+#: player/detector.gd:81
 msgid "BURIED PART  %s  ·  %.1f m"
 msgstr "PEÇA ENTERRADA  %s  ·  %.1f m"
 
-#: player/detector.gd:80
+#: player/detector.gd:84
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "PEÇA ENTERRADA  ·  SINAL %d%%"
+
+#: player/detector.gd:113
+msgid "%s  ·  %.1f m"
+msgstr ""
+
+#: player/detector.gd:113
+msgid "%s  ·  SIGNAL %d%%"
+msgstr ""
 
 #: player/patch.gd:213
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
@@ -1166,27 +1174,27 @@ msgstr "POSTO %d · Nv%d"
 msgid "OUTPOST %d · RUIN"
 msgstr "POSTO %d · RUÍNA"
 
-#: scenes/slice_orbit.gd:374
+#: scenes/slice_orbit.gd:375
 msgid "HEX CLEAN!"
 msgstr "HEXÁGONO LIMPO!"
 
-#: scenes/slice_orbit.gd:390
+#: scenes/slice_orbit.gd:391
 msgid "Milestone: %d hexes clean!"
 msgstr "Marco: %d hexágonos limpos!"
 
-#: scenes/slice_orbit.gd:609 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:589
+#: scenes/slice_orbit.gd:610 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:589
 msgid "E   Fix the workbench"
 msgstr "E   Consertar a bancada"
 
-#: scenes/slice_orbit.gd:609 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:610 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr "E   Abrir a bancada"
 
-#: scenes/slice_orbit.gd:1073
+#: scenes/slice_orbit.gd:1083
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Melhorias precisam de uma bancada. Volte para a base."
 
-#: scenes/slice_orbit.gd:1173
+#: scenes/slice_orbit.gd:1183
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Bancada consertada. Aperte E nela para gastar cubos em melhorias."
 
@@ -2215,6 +2223,46 @@ msgstr "Auditoria vencida, %d a %d! O Ledger carimba APROVADO. %s"
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "O drone venceu a auditoria, %d a %d. Mesmo assim deixou uma gorjeta: +%s cubos."
 
+#: systems/find_sites.gd:190
+msgid "LENS CHIP"
+msgstr ""
+
+#: systems/find_sites.gd:190
+msgid "BURIED TIN"
+msgstr ""
+
+#: systems/find_sites.gd:378
+msgid "E   Look at the wreck"
+msgstr ""
+
+#: systems/find_sites.gd:379
+msgid "E   Pull the junk off the wreck"
+msgstr ""
+
+#: systems/find_sites.gd:379
+msgid "E   Salvage the wreck"
+msgstr ""
+
+#: systems/find_sites.gd:463
+msgid "E   Dig up the lens chip"
+msgstr ""
+
+#: systems/find_sites.gd:463
+msgid "E   Dig up the paint tin"
+msgstr ""
+
+#: systems/find_sites.gd:511
+msgid "Something is buried in the cleared soil. Follow the detector and dig."
+msgstr ""
+
+#: systems/find_sites.gd:514
+msgid "open ground"
+msgstr ""
+
+#: systems/find_sites.gd:515
+msgid "Your crew uncovered something buried in %s. The detector will find it."
+msgstr ""
+
 #: systems/l10n_fmt.gd:21
 msgid "+%d cube"
 msgid_plural "+%d cubes"
@@ -2720,7 +2768,7 @@ msgstr "%s cantarola para as mudas. A aposentadoria combina com ele."
 msgid "%s points proudly at a new bud."
 msgstr "%s aponta orgulhoso para um botão novo."
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:621
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:630
 msgid "E   CD player: %s"
 msgstr "E   Toca-CD: %s"
 
@@ -3280,7 +3328,7 @@ msgstr "%d / %d encontradas"
 msgid "Other worlds"
 msgstr "Outros mundos"
 
-#: ui/codex_screen.gd:464 ui/piece_reveal.gd:104
+#: ui/codex_screen.gd:464 ui/piece_reveal.gd:129
 msgid "Found  ·  %s"
 msgstr "Encontrado  ·  %s"
 
@@ -4315,6 +4363,10 @@ msgstr "FARDO PRONTO"
 msgid "◢ BURIED PART %d%%"
 msgstr "◢ PEÇA ENTERRADA %d%%"
 
+#: ui/lens_overlay.gd:69
+msgid "◢ %s %d%%"
+msgstr ""
+
 #: ui/list_detail.gd:99
 msgid "Nothing here yet. Keep playing."
 msgstr "Nada aqui ainda. Continue jogando."
@@ -4911,19 +4963,23 @@ msgstr "Arrastar orbitar/olhar · Roda distância · WASD mover · R/F altura ·
 msgid "PHOTO MODE   Tab"
 msgstr "MODO FOTO   Tab"
 
-#: ui/piece_reveal.gd:98
+#: ui/piece_reveal.gd:122
 msgid "Set complete"
 msgstr "Conjunto completo"
 
-#: ui/piece_reveal.gd:101
+#: ui/piece_reveal.gd:125
 msgid "Wear every piece at the Locker: %s."
 msgstr "Use todas as peças no Armário: %s."
 
-#: ui/piece_reveal.gd:107
+#: ui/piece_reveal.gd:129
+msgid "Salvaged  ·  %s"
+msgstr ""
+
+#: ui/piece_reveal.gd:132
 msgid "Wear it at the Locker."
 msgstr "Use-a no Armário."
 
-#: ui/piece_reveal.gd:107
+#: ui/piece_reveal.gd:132
 msgid "Build the Locker at the workbench to wear it."
 msgstr "Construa o Armário na bancada para usá-la."
 

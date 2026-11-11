@@ -73,6 +73,9 @@ extends Node
 ##                      world is up (systems/districts_dev.gd); --launch-ready[=S] meets the planet's launch
 ##                      rule S wall-clock seconds after start (default 20): the ending plays fast, no credits;
 ##                      --sources-shut=all|ID[,ID] shuts those cities' sources down at start (systems/sources.gd)
+##   --find-shot=ID[:STATE]  Lumi beside a wreck or tease of the finds table (buried, cleared, salvaged,
+##                      reveal), or --find-shot=ping: a buried find in the soil beside her
+##                      (systems/find_sites_dev.gd; --find-shot-m, --find-shot-side, --find-shot-at)
 ##   [chain] --assembler stands the Assembler up free at start; --chain-ground=RINGS[:PARTS] buries PARTS parts
 ##                      (default 1) in every land hex within RINGS of the start base, cleaned or not, for the
 ##                      Scroungers to dig; --zone=ROLE:RINGS[,ROLE:RINGS] paints a role's work area (clean, find, plant,

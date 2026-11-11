@@ -758,13 +758,21 @@ msgstr "+1 種"
 msgid "A dry old seed, still sealed in its husk. Junk hides a few of these."
 msgstr "殻に包まれたままの、古くて乾いた種。ガラクタの中にいくつか隠れている。"
 
-#: player/detector.gd:77
+#: player/detector.gd:81
 msgid "BURIED PART  %s  ·  %.1f m"
 msgstr "埋もれたパーツ  %s  ·  %.1f m"
 
-#: player/detector.gd:80
+#: player/detector.gd:84
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "埋もれたパーツ  ·  シグナル %d%%"
+
+#: player/detector.gd:113
+msgid "%s  ·  %.1f m"
+msgstr ""
+
+#: player/detector.gd:113
+msgid "%s  ·  SIGNAL %d%%"
+msgstr ""
 
 #: player/patch.gd:213
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
@@ -1165,27 +1173,27 @@ msgstr "前哨基地 %d · Lv%d"
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨基地 %d · 廃墟"
 
-#: scenes/slice_orbit.gd:374
+#: scenes/slice_orbit.gd:375
 msgid "HEX CLEAN!"
 msgstr "ヘックスきれい！"
 
-#: scenes/slice_orbit.gd:390
+#: scenes/slice_orbit.gd:391
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice_orbit.gd:609 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:589
+#: scenes/slice_orbit.gd:610 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:589
 msgid "E   Fix the workbench"
 msgstr "E   作業台を直す"
 
-#: scenes/slice_orbit.gd:609 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:610 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr "E   作業台を開く"
 
-#: scenes/slice_orbit.gd:1073
+#: scenes/slice_orbit.gd:1083
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice_orbit.gd:1173
+#: scenes/slice_orbit.gd:1183
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "作業台を修理した。作業台で E を押すとキューブでアップグレードできる。"
 
@@ -2214,6 +2222,46 @@ msgstr "監査に勝利、%d 対 %d！Ledger が「承認」のスタンプを�
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "監査はドローンの勝ち、%d 対 %d。それでもチップを置いていった：+%s キューブ。"
 
+#: systems/find_sites.gd:190
+msgid "LENS CHIP"
+msgstr ""
+
+#: systems/find_sites.gd:190
+msgid "BURIED TIN"
+msgstr ""
+
+#: systems/find_sites.gd:378
+msgid "E   Look at the wreck"
+msgstr ""
+
+#: systems/find_sites.gd:379
+msgid "E   Pull the junk off the wreck"
+msgstr ""
+
+#: systems/find_sites.gd:379
+msgid "E   Salvage the wreck"
+msgstr ""
+
+#: systems/find_sites.gd:463
+msgid "E   Dig up the lens chip"
+msgstr ""
+
+#: systems/find_sites.gd:463
+msgid "E   Dig up the paint tin"
+msgstr ""
+
+#: systems/find_sites.gd:511
+msgid "Something is buried in the cleared soil. Follow the detector and dig."
+msgstr ""
+
+#: systems/find_sites.gd:514
+msgid "open ground"
+msgstr ""
+
+#: systems/find_sites.gd:515
+msgid "Your crew uncovered something buried in %s. The detector will find it."
+msgstr ""
+
 #: systems/l10n_fmt.gd:21
 msgid "+%d cube"
 msgid_plural "+%d cubes"
@@ -2713,7 +2761,7 @@ msgstr "%s は苗に鼻歌を聞かせている。引退生活が似合う。"
 msgid "%s points proudly at a new bud."
 msgstr "%s は新しいつぼみを得意げに指さす。"
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:621
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:630
 msgid "E   CD player: %s"
 msgstr "E   CDプレーヤー：%s"
 
@@ -3272,7 +3320,7 @@ msgstr "%d / %d 発見"
 msgid "Other worlds"
 msgstr "ほかの世界"
 
-#: ui/codex_screen.gd:464 ui/piece_reveal.gd:104
+#: ui/codex_screen.gd:464 ui/piece_reveal.gd:129
 msgid "Found  ·  %s"
 msgstr "発見  ·  %s"
 
@@ -4303,6 +4351,10 @@ msgstr "ベール完成"
 msgid "◢ BURIED PART %d%%"
 msgstr "◢ 埋もれたパーツ %d%%"
 
+#: ui/lens_overlay.gd:69
+msgid "◢ %s %d%%"
+msgstr ""
+
 #: ui/list_detail.gd:99
 msgid "Nothing here yet. Keep playing."
 msgstr "まだ何もありません。プレイを続けよう。"
@@ -4899,19 +4951,23 @@ msgstr "ドラッグ 回転/視点 · ホイール 距離 · WASD 移動 · R/F 
 msgid "PHOTO MODE   Tab"
 msgstr "フォトモード   Tab"
 
-#: ui/piece_reveal.gd:98
+#: ui/piece_reveal.gd:122
 msgid "Set complete"
 msgstr "セット完成"
 
-#: ui/piece_reveal.gd:101
+#: ui/piece_reveal.gd:125
 msgid "Wear every piece at the Locker: %s."
 msgstr "ロッカーで全パーツを着けよう：%s。"
 
-#: ui/piece_reveal.gd:107
+#: ui/piece_reveal.gd:129
+msgid "Salvaged  ·  %s"
+msgstr ""
+
+#: ui/piece_reveal.gd:132
 msgid "Wear it at the Locker."
 msgstr "ロッカーで着けよう。"
 
-#: ui/piece_reveal.gd:107
+#: ui/piece_reveal.gd:132
 msgid "Build the Locker at the workbench to wear it."
 msgstr "作業台でロッカーを建てると着けられる。"
 

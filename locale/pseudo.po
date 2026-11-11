@@ -755,13 +755,21 @@ msgstr "[+1 ŠÉÉÐ ~]"
 msgid "A dry old seed, still sealed in its husk. Junk hides a few of these."
 msgstr "[À ðŕý ôļð šééð, šţîļļ šéàļéð îñ îţš ĥûšķ. Ĵûñķ ĥîðéš à ƒéŵ ôƒ ţĥéšé. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: player/detector.gd:77
+#: player/detector.gd:81
 msgid "BURIED PART  %s  ·  %.1f m"
 msgstr "[BÛŔÎÉÐ ÞÀŔŢ  %s  ·  %.1f m ~~~~~~]"
 
-#: player/detector.gd:80
+#: player/detector.gd:84
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "[BÛŔÎÉÐ ÞÀŔŢ  ·  ŠÎĜÑÀĻ %d%% ~~~~~~]"
+
+#: player/detector.gd:113
+msgid "%s  ·  %.1f m"
+msgstr "[%s  ·  %.1f m ~~]"
+
+#: player/detector.gd:113
+msgid "%s  ·  SIGNAL %d%%"
+msgstr "[%s  ·  ŠÎĜÑÀĻ %d%% ~~~]"
 
 #: player/patch.gd:213
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
@@ -1163,27 +1171,27 @@ msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 
-#: scenes/slice_orbit.gd:374
+#: scenes/slice_orbit.gd:375
 msgid "HEX CLEAN!"
 msgstr "[ĤÉX ÇĻÉÀÑ! ~]"
 
-#: scenes/slice_orbit.gd:390
+#: scenes/slice_orbit.gd:391
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
-#: scenes/slice_orbit.gd:609 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:589
+#: scenes/slice_orbit.gd:610 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:589
 msgid "E   Fix the workbench"
 msgstr "E   [Fîx ţĥé ŵôŕķbéñçĥ ~~~]"
 
-#: scenes/slice_orbit.gd:609 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:610 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr "E   [Ôþéñ ţĥé ŵôŕķbéñçĥ ~~~]"
 
-#: scenes/slice_orbit.gd:1073
+#: scenes/slice_orbit.gd:1083
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice_orbit.gd:1173
+#: scenes/slice_orbit.gd:1183
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "[Ŵôŕķbéñçĥ ƒîxéð. Þŕéšš É àţ îţ ţô šþéñð çûbéš ôñ ûþĝŕàðéš. ~~~~~~~~~~~~~~~~~]"
 
@@ -2212,6 +2220,46 @@ msgstr "[Àûðîţ ŵôñ, %d ţô %d! Ţĥé Ļéðĝéŕ šţàmþš îţ À�
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "[Ţĥé ðŕôñé ŵôñ ţĥé àûðîţ, %d ţô %d. Îţ ļéƒţ à ţîþ àñýŵàý: +%s çûbéš. ~~~~~~~~~~~~~~~~~~~~]"
 
+#: systems/find_sites.gd:190
+msgid "LENS CHIP"
+msgstr "[ĻÉÑŠ ÇĤÎÞ ~]"
+
+#: systems/find_sites.gd:190
+msgid "BURIED TIN"
+msgstr "[BÛŔÎÉÐ ŢÎÑ ~]"
+
+#: systems/find_sites.gd:378
+msgid "E   Look at the wreck"
+msgstr "E   [Ļôôķ àţ ţĥé ŵŕéçķ ~~~]"
+
+#: systems/find_sites.gd:379
+msgid "E   Pull the junk off the wreck"
+msgstr "E   [Þûļļ ţĥé ĵûñķ ôƒƒ ţĥé ŵŕéçķ ~~~~~~]"
+
+#: systems/find_sites.gd:379
+msgid "E   Salvage the wreck"
+msgstr "E   [Šàļvàĝé ţĥé ŵŕéçķ ~~~]"
+
+#: systems/find_sites.gd:463
+msgid "E   Dig up the lens chip"
+msgstr "E   [Ðîĝ ûþ ţĥé ļéñš çĥîþ ~~~~]"
+
+#: systems/find_sites.gd:463
+msgid "E   Dig up the paint tin"
+msgstr "E   [Ðîĝ ûþ ţĥé þàîñţ ţîñ ~~~~]"
+
+#: systems/find_sites.gd:511
+msgid "Something is buried in the cleared soil. Follow the detector and dig."
+msgstr "[Šôméţĥîñĝ îš bûŕîéð îñ ţĥé çļéàŕéð šôîļ. Fôļļôŵ ţĥé ðéţéçţôŕ àñð ðîĝ. ~~~~~~~~~~~~~~~~~~~~~]"
+
+#: systems/find_sites.gd:514
+msgid "open ground"
+msgstr "[ôþéñ ĝŕôûñð ~]"
+
+#: systems/find_sites.gd:515
+msgid "Your crew uncovered something buried in %s. The detector will find it."
+msgstr "[Ýôûŕ çŕéŵ ûñçôvéŕéð šôméţĥîñĝ bûŕîéð îñ %s. Ţĥé ðéţéçţôŕ ŵîļļ ƒîñð îţ. ~~~~~~~~~~~~~~~~~~~~~]"
+
 #: systems/l10n_fmt.gd:21
 msgid "+%d cube"
 msgid_plural "+%d cubes"
@@ -2717,7 +2765,7 @@ msgstr "[%s ĥûmš ţô ţĥé šééðļîñĝš. Ŕéţîŕéméñţ šûîţ
 msgid "%s points proudly at a new bud."
 msgstr "[%s þôîñţš þŕôûðļý àţ à ñéŵ bûð. ~~~~~~~~]"
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:621
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:630
 msgid "E   CD player: %s"
 msgstr "E   [ÇÐ þļàýéŕ: %s ~~]"
 
@@ -3277,7 +3325,7 @@ msgstr "[%d / %d ƒôûñð ~~]"
 msgid "Other worlds"
 msgstr "[Ôţĥéŕ ŵôŕļðš ~]"
 
-#: ui/codex_screen.gd:464 ui/piece_reveal.gd:104
+#: ui/codex_screen.gd:464 ui/piece_reveal.gd:129
 msgid "Found  ·  %s"
 msgstr "[Fôûñð  ·  %s ~]"
 
@@ -4312,6 +4360,10 @@ msgstr "[BÀĻÉ ŔÉÀÐÝ ~]"
 msgid "◢ BURIED PART %d%%"
 msgstr "[◢ BÛŔÎÉÐ ÞÀŔŢ %d%% ~~~]"
 
+#: ui/lens_overlay.gd:69
+msgid "◢ %s %d%%"
+msgstr "[◢ %s %d%%]"
+
 #: ui/list_detail.gd:99
 msgid "Nothing here yet. Keep playing."
 msgstr "[Ñôţĥîñĝ ĥéŕé ýéţ. Ķééþ þļàýîñĝ. ~~~~~~~~]"
@@ -4908,19 +4960,23 @@ msgstr "[Ðŕàĝ ôŕbîţ/ļôôķ · Ŵĥééļ ðîšţàñçé · ŴÀŠÐ 
 msgid "PHOTO MODE   Tab"
 msgstr "[ÞĤÔŢÔ MÔÐÉ   Ţàb ~~~]"
 
-#: ui/piece_reveal.gd:98
+#: ui/piece_reveal.gd:122
 msgid "Set complete"
 msgstr "[Šéţ çômþļéţé ~]"
 
-#: ui/piece_reveal.gd:101
+#: ui/piece_reveal.gd:125
 msgid "Wear every piece at the Locker: %s."
 msgstr "[Ŵéàŕ évéŕý þîéçé àţ ţĥé Ļôçķéŕ: %s. ~~~~~~~~~]"
 
-#: ui/piece_reveal.gd:107
+#: ui/piece_reveal.gd:129
+msgid "Salvaged  ·  %s"
+msgstr "[Šàļvàĝéð  ·  %s ~~]"
+
+#: ui/piece_reveal.gd:132
 msgid "Wear it at the Locker."
 msgstr "[Ŵéàŕ îţ àţ ţĥé Ļôçķéŕ. ~~~~~]"
 
-#: ui/piece_reveal.gd:107
+#: ui/piece_reveal.gd:132
 msgid "Build the Locker at the workbench to wear it."
 msgstr "[Bûîļð ţĥé Ļôçķéŕ àţ ţĥé ŵôŕķbéñçĥ ţô ŵéàŕ îţ. ~~~~~~~~~~~~~]"
 

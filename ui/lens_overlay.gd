@@ -65,4 +65,6 @@ func _process(delta: float) -> void:
 	_signal.text = ""
 	if patch.detector and patch.detector.target >= 0:
 		_signal.text = tr("◢ BURIED PART %d%%") % int(patch.detector.strength * 100.0)
+	elif patch.detector and not patch.detector.cache.is_empty():  # a paint tin or lens chip in cleared soil
+		_signal.text = tr("◢ %s %d%%") % [str(patch.detector.cache.get("label", "")), int(patch.detector.strength * 100.0)]
 	_signal.position = Vector2(_root.size.x * 0.5 - 50.0, _root.size.y * 0.5 + 44.0)
