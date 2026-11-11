@@ -258,3 +258,6 @@ Direction: the flat world's vibe is better, so build it into the round world: bu
 62. More songs are coming later. Set music up so songs are easy to add, swap and adjust (which planet, when, how often, volume) without code changes. The same goes for everything as the game grows to the other planets: keep it easy to change and adjustable per planet.
 63. Cubes should grow semi-exponentially, like an incremental game: income and prices multiply as you go (bigger numbers each base), not a flat or linear price ladder. Time per step stays roughly steady because income grows with the prices.
 64. Numbers should be big: a few thousand cubes is far too small for major steps. Upgrading the rocket enough to leave the planet should cost tens or hundreds of thousands of cubes.
+65. Only three songs on Verdance gets boring. Until more songs arrive, play more of the songs we have there (done: Ochre's three songs also play on Verdance, owned from the start, and the main theme comes up less often; see `data/songs.json` `planets.verdance`).
+66. The base names are up to us (kept: Landing Yard, Garden Row, Gantry Works, Signal Heights, Fairground, Stack Works).
+67. The people asleep on the ark are not "the Makers" (and not "the Gardeners"). The owner picked **the Settlers**.
