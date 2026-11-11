@@ -4,7 +4,7 @@ extends RefCounted
 ## data/planets.json "<id>".globe = {"radius": x Verdance, "frequency": f, "hub_count": n}.
 ## frequency is the source of truth: the grid has 10·f²+2 cells (SphereGrid.for_freq); radius is
 ## the target it was picked for (R grows linearly with f, Verdance f = 128 = level 7 ~ 1.84 km).
-## A planet without a globe entry gets Verdance's.
+## A planet without a globe entry gets "_default".globe (Verdance's size). [v7planet]
 
 const HEX_M: float = 10.0
 const VERDANCE_FREQ: int = 128
@@ -15,12 +15,19 @@ static func of(planet_id: String) -> Dictionary:
 	var e: Dictionary = PlanetEnvs.all().get(planet_id, {}) if PlanetEnvs.all().get(planet_id) is Dictionary else {}
 	var g: Variant = e.get("globe")
 	var out: Dictionary = DEFAULT.duplicate()
+	var dg: Variant = PlanetCfg.defaults().get("globe")  # [v7planet] data/planets.json "_default".globe
+	if dg is Dictionary:
+		for k: String in out:
+			if (dg as Dictionary).has(k):
+				out[k] = (dg as Dictionary)[k]
 	if g is Dictionary:
 		for k: String in out:
 			if (g as Dictionary).has(k):
 				out[k] = (g as Dictionary)[k]
 		if not (g as Dictionary).has("frequency") and (g as Dictionary).has("radius"):
 			out["frequency"] = freq_for_radius(float(out["radius"]))
+	if g is Dictionary and (g as Dictionary).has("seed"):  # [v7planet] the survey/terrain seed, per planet (default 4471)
+		out["seed"] = int((g as Dictionary)["seed"])
 	out["frequency"] = maxi(1, int(out["frequency"]))
 	out["hub_count"] = maxi(1, int(out["hub_count"]))
 	out["id"] = planet_id

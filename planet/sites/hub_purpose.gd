@@ -405,7 +405,7 @@ func crew_line(i: int) -> String:
 ## The town type as built: the data's `town`, or a harbour where the lake reaches into the town.
 func town_name(i: int) -> String:
 	var actual: String = ""
-	if planet == "verdance" and i > 0 and i < sm.sites.size():
+	if PlanetCfg.uses_towns(planet) and i > 0 and i < sm.sites.size():  # [v7planet] towns kit: harbours
 		if not _harbour.has(i):
 			_harbour[i] = VerdanceSite.is_harbour(sm.water_fn(i))
 		if bool(_harbour[i]):

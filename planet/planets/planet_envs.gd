@@ -114,7 +114,7 @@ static func build_site(site_root: Node3D, site: Dictionary, stage: int, restorat
 	var opts: Dictionary = {"hub_index": hub_i, "seed": int(site.get("seed", 4471)), "name": str(site.get("name", ""))}
 	if site.get("water_fn") is Callable:  # [v3city] Verdance's towns keep off the lakes
 		opts["water"] = site["water_fn"]
-	if site.has("flat") and pid in ["verdance", ""]:
+	if site.has("flat") and PlanetCfg.uses_towns(pid):  # [v7planet] site_kit "towns"
 		opts["flat"] = float(site["flat"])  # [v3city] the town fills its pad
 	if site.get("globe_ctx") is Dictionary:
 		opts["globe"] = site["globe_ctx"]

@@ -65,6 +65,9 @@ func build(p_world: Node3D) -> void:
 	var home_pid: String = str(Homeward.planet_def(maxi(Homeward.current_planet(), 0)).get("id", "verdance"))  # [orbD] a new world after an interplanet flight
 	var pid: String = GlobeSpec.current_id() if DevHooks.has("orbit-planet") else str(od.get("planet_id", home_pid))
 	var spec: Dictionary = GlobeSpec.of(pid)
+	PlanetCfg.use_planet(pid)  # [v7planet] life, hub plan, sky and sound follow the globe's planet (core/planet_cfg.gd)
+	if pid != home_pid:  # [v7planet] a planet outside the campaign's current one (--orbit-planet): its own name on the HUD
+		Economy.planet["name"] = PlanetCfg.name_of(pid)
 	if int(od.get("freq", spec["frequency"])) != int(spec["frequency"]) or str(od.get("planet_id", pid)) != pid:
 		push_warning("[orbit] saved globe is %s f=%d, building %s f=%d fresh" % [od.get("planet_id", "?"), int(od.get("freq", 0)), pid, int(spec["frequency"])])
 		od = {}

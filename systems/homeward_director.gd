@@ -150,6 +150,9 @@ func _dress_planet() -> void:
 	if k < 0:
 		return
 	var id: String = _pid()
+	if PlanetCfg.current != "" and PlanetCfg.current != id:  # [v7planet] the globe is another planet (--orbit-planet): its sound, no campaign env
+		Audio.call("set_planet_theme", PlanetCfg.current)
+		return
 	if Audio.has_method("set_planet_theme"):
 		Audio.call("set_planet_theme", id)
 	if k == 0 or world.get("field") == null:
