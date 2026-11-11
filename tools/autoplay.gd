@@ -810,6 +810,8 @@ func _do_garden(p: Patch) -> bool:
 	var g: Garden = world.garden
 	if g == null or not g.unlocked():
 		return false
+	if _parts_short():
+		return false  # [v6pace] the card says "Dig up parts and salvage junk": a player goes scooping (a run watered 25 min with the card stuck on Parts)
 	var cap: float = p.water_cap()
 	# Refill the can at the base barrel (anywhere in the hub hex).
 	if _refilling:
@@ -1499,6 +1501,12 @@ func _card_type() -> String:
 	return str(ob.current().get("type", "")) if ob else ""
 
 
+## [v6pace] The card's price wants Parts that Lumi doesn't have.
+func _parts_short() -> bool:
+	var c: Dictionary = _card_cost()
+	return float(c.get("parts", 0.0)) > GameState.get_currency("parts").to_float()
+
+
 ## What the card's step costs right now ({} when it has no price or is already paid for).
 func _card_cost() -> Dictionary:
 	var ob: Objectives = world.get("objectives") as Objectives
@@ -1506,6 +1514,7 @@ func _card_cost() -> Dictionary:
 		return {}
 	var c: Dictionary = ob._step_price()
 	if not c.is_empty():
+		_saving_arc = _card_key() in HUB_KEYS or _card_key() == "rocket_tier"  # [v6pace] the card prices the arc now (Objectives.arc_price)
 		return c
 	var d: Dictionary = ob.current()
 	var key: String = str(d.get("key", ""))
