@@ -527,7 +527,7 @@ msgstr "鳥たちはきみを気に入ったみたい。パンくず袋をコレ
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "このネコはきみを自分のものだと決めたらしい。%s だよ。これからはこの基地で暮らすって。"
 
-#: fauna/fauna.gd:2222 ui/subtitles.gd:452
+#: fauna/fauna.gd:2222 ui/subtitles.gd:453
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "新しく発見：%s。図鑑に追加されたよ。"
 
@@ -727,7 +727,7 @@ msgstr "ロケットを強化してから起こそう：%s"
 msgid "Wake the %s (%s)"
 msgstr "起こそう：%s（%s）"
 
-#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:558
+#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:576
 msgid "E   Wake the %s  (%s)"
 msgstr "E   起こす：%s  （%s）"
 
@@ -917,55 +917,55 @@ msgstr "埋もれたパーツ  %s  ·  %.1f m"
 msgid "BURIED PART  ·  SIGNAL %d%%"
 msgstr "埋もれたパーツ  ·  シグナル %d%%"
 
-#: player/patch.gd:174
+#: player/patch.gd:175
 msgid "Lumi rattles back up into the yard. That was odd."
 msgstr "Lumi はガタガタと庭に戻ってきた。いまのは何だったんだろう。"
 
-#: player/patch.gd:228
+#: player/patch.gd:229
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi は泳げない。作業台のホバージェットがあれば湖の上を浮いて進める。"
 
-#: player/patch.gd:352
+#: player/patch.gd:353
 msgid "No seeds yet. Keep cleaning."
 msgstr "まだ種がない。片づけを続けよう。"
 
-#: player/patch.gd:387
+#: player/patch.gd:388
 msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 msgstr "種にはきれいで開けた地面が必要。道路、縁石、発着場には植えられない。"
 
-#: player/patch.gd:394
+#: player/patch.gd:395
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "種がなくなった。咲いた植物がまた落としてくれる。"
 
-#: player/patch.gd:401
+#: player/patch.gd:402
 msgid "Watering can is empty. Refill at the hub."
 msgstr "じょうろが空っぽ。基地で補給しよう。"
 
-#: player/patch.gd:606
+#: player/patch.gd:607
 msgid "PERFECT BALE  %s"
 msgstr "パーフェクトベール  %s"
 
-#: player/patch.gd:612
+#: player/patch.gd:613
 msgid "OVERSTUFFED  %s"
 msgstr "詰め込みすぎ  %s"
 
-#: player/patch.gd:616
+#: player/patch.gd:617
 msgid "PURE  %s"
 msgstr "ピュア  %s"
 
-#: player/patch.gd:618
+#: player/patch.gd:619
 msgid "SURGE  %s"
 msgstr "サージ  %s"
 
-#: player/patch.gd:621
+#: player/patch.gd:622
 msgid "  (streak +%d%%)"
 msgstr "  （連続 +%d%%）"
 
-#: player/patch.gd:664
+#: player/patch.gd:665
 msgid "Salvaged: %s"
 msgstr "回収：%s"
 
-#: player/patch.gd:695
+#: player/patch.gd:696
 msgid "Recovered: %s"
 msgstr "発見：%s"
 
@@ -2351,7 +2351,7 @@ msgstr "また帰ってくる"
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr "実績を %d 個解除。図鑑（K）で見られます。"
 
-#: systems/achievements.gd:167 ui/notify_stack.gd:27 ui/subtitles.gd:450
+#: systems/achievements.gd:167 ui/notify_stack.gd:27 ui/subtitles.gd:451
 msgid "Achievement: %s. %s"
 msgstr "実績：%s。%s"
 
@@ -3499,7 +3499,7 @@ msgstr "ここはすっかりきれい！"
 msgid "Only big pieces left"
 msgstr "大きいものだけ残っている"
 
-#: tools/ui_audit_run.gd:318 ui/locker_panel.gd:84 ui/telescope_view.gd:379
+#: tools/ui_audit_run.gd:330 ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"
 msgstr "閉じる"
 
@@ -4836,68 +4836,68 @@ msgstr ""
 msgid "All built"
 msgstr "すべて建設済み"
 
-#: ui/hud.gd:82
+#: ui/hud.gd:84
 msgid "Lumi reached level %d%s"
 msgstr "Lumi がレベル %d になった%s"
 
-#: ui/hud.gd:179
+#: ui/hud.gd:181
 msgid "OLD TOWN   0%"
 msgstr "旧市街   0%"
 
-#: ui/hud.gd:358
+#: ui/hud.gd:362
 msgid "WREN SIGNAL   %d%%"
 msgstr "WREN 信号   %d%%"
 
-#: ui/hud.gd:401
+#: ui/hud.gd:417
 msgid "HEX  %d%% CLEAR"
 msgstr "ヘックス  %d%% きれい"
 
-#: ui/hud.gd:405
+#: ui/hud.gd:421
 msgid "%s  BASE"
 msgstr "%s  基地"
 
-#: ui/hud.gd:408
+#: ui/hud.gd:424
 msgid "CARRYING %d/%d"
 msgstr "運搬中 %d/%d"
 
-#: ui/hud.gd:440
+#: ui/hud.gd:456
 msgid "HEX  CLEAR"
 msgstr "ヘックス  きれい"
 
-#: ui/hud.gd:444
+#: ui/hud.gd:460
 msgid "HEX  %s"
 msgstr "ヘックス  %s"
 
-#: ui/hud.gd:447
+#: ui/hud.gd:463
 msgid "  SUSTAIN %d%%"
 msgstr "  維持 %d%%"
 
-#: ui/hud.gd:449
+#: ui/hud.gd:465
 msgid "  THIRSTY"
 msgstr "  水不足"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:479
+#: ui/hud.gd:495
 msgid "%s   pick up bale"
 msgstr "%s   ベールを持つ"
 
-#: ui/hud.gd:480
+#: ui/hud.gd:496
 msgid "%s   dig up part"
 msgstr "%s   パーツを掘り出す"
 
-#: ui/hud.gd:481
+#: ui/hud.gd:497
 msgid "%s   read memory shard"
 msgstr "%s   メモリーの破片を読む"
 
-#: ui/hud.gd:482
+#: ui/hud.gd:498
 msgid "%s   pick up the seed tin"
 msgstr "%s   種の缶を拾う"
 
-#: ui/hud.gd:483
+#: ui/hud.gd:499
 msgid "%s   set bale down"
 msgstr "%s   ベールを置く"
 
-#: ui/hud.gd:484
+#: ui/hud.gd:500
 msgid "%s   workbench"
 msgstr "%s   作業台"
 
@@ -4941,7 +4941,7 @@ msgstr "作業台"
 msgid "photo"
 msgstr "フォト"
 
-#: ui/key_hints.gd:121
+#: ui/key_hints.gd:129
 msgid "tools"
 msgstr "ツール"
 
@@ -6524,7 +6524,7 @@ msgstr "研究"
 msgid "WORKBENCH"
 msgstr "作業台"
 
-#: ui/upgrades_screen.gd:273
+#: ui/upgrades_screen.gd:278
 msgid "Not open yet. Keep playing."
 msgstr "まだ開いていません。プレイを続けよう。"
 
