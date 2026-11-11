@@ -10,7 +10,9 @@ signal closed
 signal picked(site: int)
 
 var is_open: bool = false
-## Rows to offer: [{"site": int, "name": String, "km": float}], nearest first.
+## Rows to offer: [{"site": int, "name": String, "km": float}], in the order shown. [v6hubs]
+## Optional per row: "town", "offer", "state", "robots", "tag" (HOME / NEXT STOP), "locked" (why it
+## can't be flown to yet; its Fly button is off).
 var entries_fn: Callable = func() -> Array: return []
 ## "" when the rocket can fly now, else why not (shown instead of the buttons).
 var blocker_fn: Callable = func() -> String: return ""
@@ -19,6 +21,10 @@ var open_planets: Callable = Callable()
 var planets_open: Callable = func() -> bool: return false
 var launch_home: Callable = Callable()
 var home_ready: Callable = func() -> bool: return false
+## [v6hubs] Optional line under the title ("Bases restored: 2 of 6"); "" hides it.
+var planet_line_fn: Callable = func() -> String: return ""
+var _planet_line: Label
+var _scroll: ScrollContainer
 
 var _root: Control
 var _list: VBoxContainer
@@ -26,6 +32,7 @@ var _first: Button
 
 const INK := Color(0.47, 0.86, 0.78)  # seed-keeper teal
 const CREAM := Color(0.98, 0.93, 0.8)
+const GOLD := Color(1.0, 0.82, 0.42)
 
 
 func _ready() -> void:
@@ -42,7 +49,7 @@ func _ready() -> void:
 	_root.add_child(dim)
 	var pc := PanelContainer.new()
 	pc.add_theme_stylebox_override("panel", UITheme.box(Color(0.05, 0.11, 0.1, 0.92), Color(INK, 0.55), 1, 10, 18))
-	pc.custom_minimum_size = Vector2(380, 0)
+	pc.custom_minimum_size = Vector2(440, 0)
 	pc.set_anchors_preset(Control.PRESET_CENTER)
 	pc.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	pc.grow_vertical = Control.GROW_DIRECTION_BOTH
@@ -52,13 +59,21 @@ func _ready() -> void:
 	pc.add_child(vb)
 	vb.add_child(UITheme.label(tr("ROCKET"), 22, CREAM))
 	vb.add_child(UITheme.label(tr("Where to?"), 13, Color(INK, 0.9)))
+	_planet_line = UITheme.label("", 12, GOLD)
+	_planet_line.visible = false
+	vb.add_child(_planet_line)
 	var line := ColorRect.new()
 	line.color = Color(INK, 0.4)
 	line.custom_minimum_size = Vector2(0, 1)
 	vb.add_child(line)
+	_scroll = ScrollContainer.new()  # [v6hubs] every restored hub is listed: the list scrolls when it is long
+	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_scroll.follow_focus = true
+	vb.add_child(_scroll)
 	_list = VBoxContainer.new()
 	_list.add_theme_constant_override("separation", 6)
-	vb.add_child(_list)
+	_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_scroll.add_child(_list)
 	var hint := PromptLabel.new(tr("{ui_cancel}  close"), 12)
 	hint.align_center = true
 	vb.add_child(hint)
@@ -100,6 +115,9 @@ func _rebuild() -> void:
 	for c: Node in _list.get_children():
 		c.queue_free()
 	_first = null
+	var pl_t: String = str(planet_line_fn.call())
+	_planet_line.text = pl_t
+	_planet_line.visible = pl_t != ""
 	var why: String = str(blocker_fn.call())
 	if why != "":
 		var l := UITheme.label(why, 13, UITheme.MUTED)
@@ -117,11 +135,32 @@ func _rebuild() -> void:
 		var tv := VBoxContainer.new()
 		tv.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		tv.add_theme_constant_override("separation", 0)
-		tv.add_child(UITheme.label(str(e["name"]), 15, CREAM))
-		tv.add_child(UITheme.label(tr("%.1f km") % float(e["km"]), 12, UITheme.MUTED))
+		# [v6hubs] Why go: name (+ HOME / NEXT STOP), town and distance, what it offers, its state.
+		var head := HBoxContainer.new()
+		head.add_theme_constant_override("separation", 8)
+		head.add_child(UITheme.label(str(e["name"]), 16, CREAM))
+		if str(e.get("tag", "")) != "":
+			head.add_child(UITheme.label(str(e["tag"]), 11, GOLD))
+		tv.add_child(head)
+		var sub_t: String = tr("%.1f km") % float(e["km"])
+		if str(e.get("town", "")) != "":
+			sub_t = "%s  ·  %s" % [str(e["town"]), sub_t]
+		tv.add_child(UITheme.label(sub_t, 12, UITheme.MUTED))
+		if str(e.get("offer", "")) != "":
+			var ol := UITheme.label(str(e["offer"]), 13, Color(INK, 0.95))
+			ol.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			ol.custom_minimum_size = Vector2(300, 0)
+			tv.add_child(ol)
+		var st_t: String = str(e.get("state", ""))
+		if str(e.get("robots", "")) != "":
+			st_t = "%s  ·  %s" % [st_t, str(e["robots"])] if st_t != "" else str(e["robots"])
+		if st_t != "":
+			tv.add_child(UITheme.label(st_t, 12, CREAM.darkened(0.12)))
+		if str(e.get("locked", "")) != "":
+			tv.add_child(UITheme.label(str(e["locked"]), 12, GOLD))
 		hb.add_child(tv)
 		var b := _button(tr("Fly"))
-		b.disabled = why != ""
+		b.disabled = why != "" or str(e.get("locked", "")) != ""
 		var site: int = int(e["site"])
 		b.pressed.connect(func() -> void:
 			close()
@@ -147,6 +186,13 @@ func _rebuild() -> void:
 		_list.add_child(pb)
 		if _first == null:
 			_first = pb
+	_fit.call_deferred()
+
+
+## [v6hubs] The list takes the height it needs, up to what the screen leaves.
+func _fit() -> void:
+	var room: float = maxf(160.0, get_viewport().get_visible_rect().size.y - 190.0)
+	_scroll.custom_minimum_size.y = minf(_list.get_combined_minimum_size().y, room)
 
 
 func _button(text: String) -> Button:
