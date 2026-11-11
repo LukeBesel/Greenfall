@@ -73,3 +73,20 @@ func test_exit_beat_lines_exist_and_say_why() -> void:
 
 class StoryBag extends Node:
 	var wren: Wren
+
+
+func test_wren_drops_a_step_line_that_comes_too_late() -> void:
+	var wr := Wren.new()
+	add_child_autofree(wr)
+	wr.set_process(false)
+	var live: Array = [true]
+	wr.speak("first", 1, true)
+	wr.speak("late step line", 1, true, func() -> bool: return live[0])
+	wr.speak("after", 1, true)
+	var heard: Array = []
+	wr.line_started.connect(func(t: String, _s: int) -> void: heard.append(t))
+	wr._process(0.1)
+	live[0] = false  # the step finished while she read the first line
+	wr._cooldown = 0.0
+	wr._process(0.1)
+	assert_eq(heard, ["first", "after"])
