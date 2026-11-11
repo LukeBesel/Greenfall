@@ -1,5 +1,5 @@
 {
-  "_doc": "The look of this planet's cities (visual only; planets/verdance/sites/verdance_city.gd and city_look.gd read it). Keyed by district id (districts.json). script: the city's own script (its source landmark). prop: the yard's tall prop (StreetDressing.landmark_kind). town / outskirts: the building mix on the pad and round it; any key left out keeps the value of the town kind the site would have had (VerdanceSite.KINDS, TownOutskirts.PROFILES): rings = floors [min, max] per block ring 1..3, tower = share of outer buildings that shoot up to tower_f floors, lots = share of open blocks, factory = share of works fronts, ruin = broken-off share [ring 1, beyond], houses = detached houses, mid / far = floors near and far, warehouse = share of shed blocks, streets = asphalt strips through the outskirts. walls: [texture, [r, g, b]] with texture red_brick | brick | render; tall_avoid: indices of the walls a building of tall_floors or more may not take; it takes one of tall_walls instead. roofs, awnings, tanks, signs, gables: colour lists [r, g, b] for roof surfaces, awnings and parasols, roof tanks, roof signs and flags, pitched roofs and domes. No roof colour may be white or grey (tests/test_cities.gd). roof_props: share of roofs (0..1) that carry each prop: tank, sign, shade (parasols), gable (a pitched roof over a low building), sawtooth (works skylights), billboard (a tall two-post hoarding), dome (a drum and dome), flag. street: the main street's dressing: stalls | containers | car_stacks | fences | banners, with street_gap = metres between pieces [min, max] and street_skip = share left out. tree_skip: share of kerb tree spots left empty. shop_names: painted name boards, each used once. boards: their board colours. landmark: sign = the text on the source landmark, blocks = block keys [x, z] the landmark may stand on (the first dry one wins; z is south, so [0, -2] is two blocks north of the yard), approach = true keeps the blocks between the yard and the landmark open so it closes the view on arrival. haze: the tint [r, g, b, a] of the air the source fouls (a local layer that lifts when the source is shut down), empty for none.",
+  "_doc": "The look of this planet's cities (visual only; planets/verdance/sites/verdance_city.gd and city_look.gd read it). Keyed by district id (districts.json). script: the city's own script (its source landmark). prop: the yard's tall prop (StreetDressing.landmark_kind). town / outskirts: the building mix on the pad and round it; any key left out keeps the value of the town kind the site would have had (VerdanceSite.KINDS, TownOutskirts.PROFILES): rings = floors [min, max] per block ring 1..3, tower = share of outer buildings that shoot up to tower_f floors, lots = share of open blocks, factory = share of works fronts, ruin = broken-off share [ring 1, beyond], houses = detached houses, mid / far = floors near and far, warehouse = share of shed blocks, streets = asphalt strips through the outskirts, detail_m = how far the outskirts' balconies, awnings and roof clutter draw (a city of towers keeps it short to hold the triangle budget). walls: [texture, [r, g, b]] with texture red_brick | brick | render; tall_avoid: indices of the walls a building of tall_floors or more may not take; it takes one of tall_walls instead. roofs, awnings, tanks, signs, gables: colour lists [r, g, b] for roof surfaces, awnings and parasols, roof tanks, roof signs and flags, pitched roofs and domes. No roof colour may be white or grey (tests/test_cities.gd). roof_props: share of roofs (0..1) that carry each prop: tank, sign, shade (parasols), gable (a pitched roof over a low building), sawtooth (works skylights), billboard (a tall two-post hoarding), dome (a drum and dome), flag. street: the main street's dressing: stalls | containers | car_stacks | fences | banners, with street_gap = metres between pieces [min, max] and street_skip = share left out. tree_skip: share of kerb tree spots left empty. shop_names: painted name boards, each used once. boards: their board colours. landmark: sign = the text on the source landmark, blocks = block keys [x, z] the landmark may stand on (the first dry one wins; z is south, so [0, -2] is two blocks north of the yard), approach = true keeps the blocks between the yard and the landmark open so it closes the view on arrival. haze: the tint [r, g, b, a] of the air the source fouls (a local layer that lifts when the source is shut down), empty for none.",
   "cities": {
     "old_town": {
       "script": "res://planets/verdance/sites/city_old_town.gd",
@@ -88,8 +88,8 @@
       "script": "res://planets/verdance/sites/city_highreach.gd",
       "kind": "downtown",
       "prop": "radio_mast",
-      "town": {"rings": [[5, 8], [8, 14], [10, 18]], "tower": 0.4, "tower_f": [18, 28], "lots": 0.04, "factory": 0.04, "ruin": [0.2, 0.16]},
-      "outskirts": {"lots": [0.05, 0.14], "tower": 0.7, "tower_f": [16, 34], "mid": [8, 14], "far": [4, 9], "factory": [0.0, 0.12], "warehouse": 0.0, "streets": true},
+      "town": {"rings": [[3, 4], [8, 14], [10, 18]], "tower": 0.4, "tower_f": [18, 28], "lots": 0.04, "factory": 0.04, "ruin": [0.2, 0.16]},
+      "outskirts": {"detail_m": 130, "lots": [0.05, 0.14], "tower": 0.7, "tower_f": [16, 34], "mid": [8, 14], "far": [4, 9], "factory": [0.0, 0.12], "warehouse": 0.0, "streets": true},
       "walls": [
         ["render", [0.56, 0.74, 0.94]], ["render", [0.94, 0.96, 1.0]], ["render", [0.7, 0.84, 0.96]], ["render", [0.82, 0.76, 0.96]],
         ["render", [0.52, 0.86, 0.9]], ["render", [1.0, 0.86, 0.36]], ["render", [0.96, 0.62, 0.8]], ["brick", [0.9, 0.9, 0.96]]
@@ -114,7 +114,7 @@
     "lowmeadow": {
       "script": "res://planets/verdance/sites/city_lowmeadow.gd",
       "kind": "suburb",
-      "prop": "water_tower",
+      "prop": "old_bus",
       "town": {"rings": [[1, 2], [1, 2], [1, 2]], "lots": 0.06, "factory": 0.0, "ruin": [0.12, 0.1], "houses": true},
       "outskirts": {"lots": [0.08, 0.2], "mid": [1, 2], "far": [1, 2], "factory": [0.0, 0.05], "warehouse": 0.0, "houses": true, "streets": true},
       "walls": [
@@ -143,8 +143,8 @@
       "script": "res://planets/verdance/sites/city_old_capital.gd",
       "kind": "downtown",
       "prop": "radio_mast",
-      "town": {"rings": [[4, 6], [5, 8], [6, 10]], "tower": 0.22, "tower_f": [14, 20], "lots": 0.03, "factory": 0.0, "ruin": [0.18, 0.14]},
-      "outskirts": {"lots": [0.04, 0.12], "tower": 0.35, "tower_f": [14, 26], "mid": [5, 9], "far": [4, 7], "factory": [0.0, 0.08], "warehouse": 0.0, "streets": true},
+      "town": {"rings": [[3, 4], [5, 8], [6, 10]], "tower": 0.22, "tower_f": [14, 20], "lots": 0.03, "factory": 0.0, "ruin": [0.18, 0.14]},
+      "outskirts": {"detail_m": 150, "lots": [0.04, 0.12], "tower": 0.35, "tower_f": [14, 26], "mid": [5, 9], "far": [4, 7], "factory": [0.0, 0.08], "warehouse": 0.0, "streets": true},
       "walls": [
         ["brick", [1.0, 0.9, 0.66]], ["brick", [0.98, 0.84, 0.58]], ["render", [0.98, 0.9, 0.7]], ["render", [0.96, 0.84, 0.6]],
         ["render", [0.4, 0.7, 0.6]], ["render", [0.9, 0.56, 0.4]], ["red_brick", [1.0, 0.88, 0.8]], ["render", [0.98, 0.94, 0.84]]

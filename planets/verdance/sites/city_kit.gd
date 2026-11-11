@@ -148,6 +148,7 @@ static func smoke(nm: String, at: Vector3, col: Color, col_end: Color, amount: i
 	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	m.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
+	m.billboard_keep_scale = true  # without it every puff draws one metre across
 	m.vertex_color_use_as_albedo = true
 	m.albedo_texture = puff_texture()
 	m.disable_receive_shadows = true

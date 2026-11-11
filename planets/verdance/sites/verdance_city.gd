@@ -36,6 +36,7 @@ const YARD_MARGIN_M: float = 6.0   # the street dressing starts this far past th
 const OLD_TOWN_ID: String = "old_town"
 
 var city_id: String = ""
+var display_name: String = ""   # the district's name, as the player reads it
 var look: CityLook
 var stage: int = 0
 var source_state: String = STATE_BROKEN
@@ -66,10 +67,15 @@ var _shut: Array[Node3D] = []      # shown once it is shut down
 ## is), or null on open ground. The start site is the first city even on a planet without districts.
 static func for_site(hub_index: int, start: bool) -> VerdanceCity:
 	var id: String = OLD_TOWN_ID if start else ""
+	var shown: String = ""
 	for d: Dictionary in Districts.specs_for(Planets.current()):
 		if int(d["site"]) == hub_index and CityLook.has(str(d["id"])):
 			id = str(d["id"])
-	return create(id)
+			shown = str(d.get("name", ""))
+	var c: VerdanceCity = create(id)
+	if c:
+		c.display_name = shown
+	return c
 
 
 ## A city by id, or null when the data has none. The script is the one the data names.

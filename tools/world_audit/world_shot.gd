@@ -79,8 +79,11 @@ func _go_to_hub(orbit: SliceOrbit) -> void:
 	patch.place_on_sphere(orbit.globe.terrain.ground(up) + up * 0.3, north)
 	orbit.cam.reset_frame(north)
 	orbit.cam.snap()
-	if orbit.day:
-		orbit.day.set("_phi0", atan2(up.x, up.z) + (DevHooks.get_f("orbit-time", DEFAULT_TIME) - 0.5) * TAU - TAU * orbit.day.elapsed() / (orbit.day.day_min * 60.0))
+	var sky: SkyDirector = orbit.w.get("sky_director") as SkyDirector
+	if sky:
+		sky.time_of_day = DevHooks.get_f("orbit-time", DEFAULT_TIME)
+		sky.spin = SkyDirector.spin_for_local_time(sky.time_of_day, up)
+		sky.frozen = true
 
 
 ## Every town under `n` takes the look of district stage `stage` (-1: left alone) and its source

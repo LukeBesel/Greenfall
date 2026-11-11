@@ -4,7 +4,7 @@ extends VerdanceCity
 ## cities.json "old_capital"). This script is its landmark, the place the whole planet is working
 ## toward: Launch Pad 1 across three blocks at the head of the open lot. A concrete launch table
 ## with a flame trench, an orange launch mount carrying the first stage of a rocket still in
-## frames, a red-and-white service tower taller than anything else on Verdance with three swing
+## frames, a red-and-white service tower 78 m high (the tallest thing on Verdance) with three swing
 ## arms and a hammerhead crane, two lightning masts, a white propellant sphere and the assembly
 ## shed with a nose cone waiting on its cradle.
 ## Running (the pad still derelict): the top arm hangs broken, the sphere vents cold vapour, the
@@ -27,12 +27,13 @@ const VAPOUR_END := Color(1.0, 1.0, 1.0, 0.0)
 const TABLE := Rect2(-10.5, -10.5, 21.0, 21.0)
 const TABLE_H: float = 1.6
 const MOUNT_Y: float = 4.6
-const STAGE_R: float = 2.6
-const STAGE_H: float = 13.0
-const TOWER_AT := Vector3(-7.0, TABLE_H, -6.4)
-const TOWER_H: float = 66.0
-const TOWER_HALF: float = 2.4
-const ARMS: Array[float] = [9.0, 15.5, 22.0]      # heights of the swing arms over the table
+const STAGE_R: float = 3.5
+const STAGE_H: float = 22.0
+const TOWER_AT := Vector3(-7.2, TABLE_H, -7.0)
+const TOWER_H: float = 78.0
+const TOWER_HALF: float = 3.1
+const TOWER_LEVELS: int = 13
+const ARMS: Array[float] = [10.0, 19.0, 28.0]      # heights of the swing arms over the table
 const SHED := Rect2(-45.0, -9.8, 17.0, 13.6)
 const SHED_H: float = 9.0
 const SPHERE_AT := Vector3(36.0, 7.6, 2.0)
@@ -62,7 +63,7 @@ func _build_landmark() -> void:
 	for i: int in _footprint().size():
 		var r: Rect2 = _footprint()[i]
 		add_landmark_solid(Vector3(r.get_center().x, heights[i] * 0.5, r.get_center().y), Vector3(r.size.x, heights[i], r.size.y))
-	add_landmark_solid(Vector3(0.0, TABLE_H + 10.0, 0.0), Vector3(7.2, 20.0, 7.2))
+	add_landmark_solid(Vector3(0.0, TABLE_H + 10.0, 0.0), Vector3(9.0, 20.0, 9.0))
 	add_landmark_solid(TOWER_AT + Vector3(0, 20.0, 0), Vector3(TOWER_HALF * 2.0 + 0.4, 40.0, TOWER_HALF * 2.0 + 0.4))
 	_arms(true)
 	_arms(false)
@@ -70,8 +71,8 @@ func _build_landmark() -> void:
 	place_sign(Transform3D(Basis.IDENTITY, Vector3(SHED.get_center().x, 6.6, SHED.end.y + 0.22)), 1.5)
 	place_beacon(TOWER_AT + Vector3(0, TOWER_H + 5.4, 0), 0.4)
 	var lamps: Array[Vector3] = []
-	for k: int in 6:
-		lamps.append(TOWER_AT + Vector3(TOWER_HALF, 8.0 + float(k) * 11.0, TOWER_HALF))
+	for k: int in 7:
+		lamps.append(TOWER_AT + Vector3(TOWER_HALF + 0.3, 6.0 + float(k) * 12.0, TOWER_HALF + 0.3))
 	for c: Vector2 in [Vector2(-9.6, 9.6), Vector2(9.6, 9.6), Vector2(9.6, -9.6)]:
 		for dx: float in [-0.7, 0.0, 0.7]:
 			lamps.append(Vector3(c.x + dx, TABLE_H + 14.4, c.y))
@@ -107,11 +108,11 @@ func _stage(g: BuildingDetail.Geo) -> void:
 	var base := Vector3(0.0, TABLE_H, 0.0)
 	g.mat(BuildingDetail.K_METAL, ORANGE, 0, BuildingDetail.F_RUST)
 	for a: float in [0.785, 2.356, 3.927, 5.498]:
-		g.rod(base + Vector3(cos(a) * 4.2, 0, sin(a) * 4.2), base + Vector3(cos(a) * 3.0, MOUNT_Y - TABLE_H, sin(a) * 3.0), 0.34)
-	g.cyl(Transform3D(Basis.IDENTITY, Vector3(0, MOUNT_Y + 0.3, 0)), 3.5, 3.5, 0.6, 20, false)
+		g.rod(base + Vector3(cos(a) * 5.4, 0, sin(a) * 5.4), base + Vector3(cos(a) * 3.9, MOUNT_Y - TABLE_H, sin(a) * 3.9), 0.42)
+	g.cyl(Transform3D(Basis.IDENTITY, Vector3(0, MOUNT_Y + 0.3, 0)), STAGE_R + 0.9, STAGE_R + 0.9, 0.6, 20, false)
 	g.mat(BuildingDetail.K_DARK, Color(0.05, 0.05, 0.06))
 	for a2: float in [0.0, 1.571, 3.142, 4.712]:
-		g.cyl(Transform3D(Basis.IDENTITY, Vector3(cos(a2) * 1.3, MOUNT_Y + 0.2, sin(a2) * 1.3)), 0.5, 0.85, 1.2, 10)
+		g.cyl(Transform3D(Basis.IDENTITY, Vector3(cos(a2) * 1.7, MOUNT_Y + 0.2, sin(a2) * 1.7)), 0.7, 1.15, 1.4, 10)
 	var y0: float = MOUNT_Y + 0.8
 	var bands: Array = [[0.0, 0.2, CREAM], [0.2, 0.27, ORANGE], [0.27, 0.62, CREAM], [0.62, 0.74, TEAL], [0.74, 1.0, CREAM]]
 	for b: Array in bands:
@@ -134,15 +135,20 @@ func _stage(g: BuildingDetail.Geo) -> void:
 ## The service tower: a red-and-white lattice shaft with work decks, the hammerhead crane on top
 ## and a mast above that.
 func _tower(g: BuildingDetail.Geo) -> void:
-	CityKit.lattice(g, TOWER_AT, TOWER_HALF, TOWER_HALF, TOWER_H, 12, 0.14, TOWER_RED, TOWER_WHITE)
-	g.mat(BuildingDetail.K_METAL, Color(0.74, 0.76, 0.78))
-	for k: int in 6:
-		g.abox(TOWER_AT + Vector3(-TOWER_HALF - 0.6, 7.8 + float(k) * 11.0, -TOWER_HALF - 0.6), Vector3(TOWER_HALF * 2.0 + 1.2, 0.14, TOWER_HALF * 2.0 + 1.2))
+	CityKit.lattice(g, TOWER_AT, TOWER_HALF, TOWER_HALF, TOWER_H, TOWER_LEVELS, 0.2, TOWER_RED, TOWER_WHITE)
+	# Every other level is a clad work floor, red and white by turns, so the shaft reads from across the city.
+	var lh: float = TOWER_H / float(TOWER_LEVELS)
+	for k: int in TOWER_LEVELS:
+		g.mat(BuildingDetail.K_METAL, Color(0.74, 0.76, 0.78))
+		g.abox(TOWER_AT + Vector3(-TOWER_HALF - 0.5, float(k) * lh - 0.07, -TOWER_HALF - 0.5), Vector3(TOWER_HALF * 2.0 + 1.0, 0.14, TOWER_HALF * 2.0 + 1.0))
+		if k % 2 == 1:
+			g.mat(BuildingDetail.K_METAL, TOWER_RED if k % 4 == 1 else TOWER_WHITE, 0, BuildingDetail.F_RUST)
+			g.abox(TOWER_AT + Vector3(-TOWER_HALF + 0.15, float(k) * lh, -TOWER_HALF + 0.15), Vector3(TOWER_HALF * 2.0 - 0.3, lh, TOWER_HALF * 2.0 - 0.3), -2)
 	g.mat(BuildingDetail.K_METAL, YELLOW, 0, BuildingDetail.F_RUST)
 	g.abox(TOWER_AT + Vector3(-3.0, TOWER_H, -3.0), Vector3(6.0, 1.6, 6.0))
-	g.rod(TOWER_AT + Vector3(-7.0, TOWER_H + 2.2, -6.0), TOWER_AT + Vector3(12.0, TOWER_H + 2.2, 10.4), 0.5)
+	g.rod(TOWER_AT + Vector3(-7.0, TOWER_H + 2.4, -6.8), TOWER_AT + Vector3(13.0, TOWER_H + 2.4, 12.6), 0.8)
 	g.mat(BuildingDetail.K_METAL, BuildingDetail.METAL_DARK)
-	g.rod(TOWER_AT + Vector3(9.0, TOWER_H + 1.8, 7.8), TOWER_AT + Vector3(9.0, TOWER_H - 6.0, 7.8), 0.04)
+	g.rod(TOWER_AT + Vector3(7.2, TOWER_H + 1.8, 7.0), TOWER_AT + Vector3(7.2, TOWER_H - 14.0, 7.0), 0.06)
 	g.cyl(Transform3D(Basis.IDENTITY, TOWER_AT + Vector3(0, TOWER_H + 3.6, 0)), 0.08, 0.16, 4.0, 6)
 
 
@@ -151,18 +157,18 @@ func _tower(g: BuildingDetail.Geo) -> void:
 func _arms(running: bool) -> void:
 	var g := BuildingDetail.Geo.new()
 	var to_stage: Vector3 = (Vector3(0, 0, 0) - Vector3(TOWER_AT.x, 0, TOWER_AT.z)).normalized()
-	var reach: float = Vector2(TOWER_AT.x, TOWER_AT.z).length() - STAGE_R - TOWER_HALF * 0.6
+	var reach: float = maxf(2.2, Vector2(TOWER_AT.x, TOWER_AT.z).length() - STAGE_R - TOWER_HALF)
 	for i: int in ARMS.size():
 		var root: Vector3 = Vector3(TOWER_AT.x, TABLE_H + ARMS[i], TOWER_AT.z) + to_stage * TOWER_HALF
 		var tip: Vector3 = root + to_stage * reach
 		if running and i == ARMS.size() - 1:
 			tip = root + (to_stage * 0.45 + Vector3(0, -0.89, 0)) * reach
 		g.mat(BuildingDetail.K_METAL, TOWER_WHITE if i % 2 == 0 else TOWER_RED, 0, BuildingDetail.F_RUST)
-		for o: Vector3 in [Vector3(0, 0.5, 0), Vector3(0, -0.5, 0)]:
-			g.rod(root + o, tip + o * 0.6, 0.1)
-		g.rod(root + Vector3(0, 0.5, 0), tip + Vector3(0, -0.3, 0), 0.05)
+		for o: Vector3 in [Vector3(0, 0.9, 0), Vector3(0, -0.9, 0)]:
+			g.rod(root + o, tip + o * 0.6, 0.22)
+		g.rod(root + Vector3(0, 0.9, 0), tip + Vector3(0, -0.5, 0), 0.1)
 		g.mat(BuildingDetail.K_METAL, YELLOW)
-		g.box(Transform3D(Basis.looking_at(tip - root, Vector3(0.3, 1, 0.1)), tip), Vector3(1.4, 1.5, 0.5))
+		g.box(Transform3D(Basis.looking_at(tip - root, Vector3(0.3, 1, 0.1)), tip), Vector3(2.4, 2.4, 0.7))
 	place_mesh("ArmsRunning" if running else "ArmsLevel", g, STATE_BROKEN if running else STATE_SHUT_DOWN)
 
 

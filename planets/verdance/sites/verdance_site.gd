@@ -56,6 +56,7 @@ const LANDMARK_BY_KIND: Dictionary = {
 }
 const HUB_EXTENT: float = 36.0     # 3 x 3 blocks, 108 m
 const OLD_TOWN_BILLBOARD_X: float = -9.5
+const CITY_BILLBOARD_X: float = 30.0   # the next block east: a city's landmark is three blocks wide
 ## Which share of buildings are broken off on a ruined hub.
 const RUIN_SHARE: float = 0.7
 const START_RUIN_SHARE: float = 0.4
@@ -361,10 +362,12 @@ func _make() -> void:
 	dressing.skip_facades = not CITY_BUILDINGS  # [v1world] shopfronts, awnings, neon, murals, billboard, string lights
 	dressing.kit_yard = true
 	dressing.landmark_kind = str(LANDMARK_BY_KIND.get(kind, ""))
+	if town and not start and district_name == "":
+		district_name = town.display_name  # the yard's signs carry the city's name
 	if town and town.look.data.has("prop"):
 		dressing.landmark_kind = str(town.look.data["prop"])
 	if town and town.has_landmark() and town.block_key.x == 0 and town.block_key.y < 0:
-		dressing.billboard_x = OLD_TOWN_BILLBOARD_X  # off the main street's axis: the source landmark closes that view
+		dressing.billboard_x = OLD_TOWN_BILLBOARD_X if start else CITY_BILLBOARD_X  # off the main street's axis: the source landmark closes that view
 	add_child(dressing)
 	await dressing.build(layout, null, hub_index, district_name, "", level)
 	if not start and city and not city.lamp_bulbs.is_empty():

@@ -311,7 +311,7 @@ func _build_tile(tk: Vector2i, blds: Array, cleared: Dictionary) -> void:
 		dm.name = "Detail"
 		dm.mesh = det.mesh()
 		dm.material_override = town_material if town_material else material()
-		dm.visibility_range_end = DETAIL_RANGE
+		dm.visibility_range_end = float(_profile().get("detail_m", DETAIL_RANGE))  # balconies and fire escapes on towers add up
 		dm.visibility_range_end_margin = 20.0
 		dm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		dm.set_meta("no_collide", true)

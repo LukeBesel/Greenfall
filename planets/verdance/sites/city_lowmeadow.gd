@@ -33,11 +33,13 @@ const HOUSE := Rect2(-33.4, -8.4, 7.4, 7.0)
 const DOSING: Array[float] = [-44.0, -40.2, -36.4]
 const OUTFALL_X: float = 36.0
 const FLARE_H: float = 24.0
+const LIFT_AT := Vector2(-29.6, 5.6)   # the header tower: what shows over the roofs
+const LIFT_H: float = 30.0
 
 
 func _footprint() -> Array[Rect2]:
 	var out: Array[Rect2] = [HOUSE, Rect2(EGG_AT.x - EGG_R - 0.2, EGG_AT.y - EGG_R - 0.2, EGG_R * 2.0 + 0.4, EGG_R * 2.0 + 0.4),
-		Rect2(-45.8, 3.8, 11.2, 3.4), Rect2(-44.4, 9.9, 16.8, 0.6)]
+		Rect2(-45.8, 3.8, 11.2, 3.4), Rect2(-44.4, 9.9, 16.8, 0.6), Rect2(LIFT_AT.x - 2.0, LIFT_AT.y - 2.0, 4.0, 4.0)]
 	for t: Vector2 in TANKS:
 		out.append(Rect2(t.x - TANK_R - 0.5, t.y - TANK_R - 0.5, TANK_R * 2.0 + 1.0, TANK_R * 2.0 + 1.0))
 	return out
@@ -65,7 +67,7 @@ func _build_landmark() -> void:
 	place_mesh("TreatmentWorks", g)
 	for i: int in _footprint().size():
 		var r: Rect2 = _footprint()[i]
-		var h: float = [6.5, 16.0, 5.2, 4.2, TANK_WALL, TANK_WALL][i]
+		var h: float = [6.5, 16.0, 5.2, 4.2, 20.0, TANK_WALL, TANK_WALL][i]
 		add_landmark_solid(Vector3(r.get_center().x, h * 0.5, r.get_center().y), Vector3(r.size.x, h, r.size.y))
 	place_sign(Transform3D(Basis.IDENTITY, Vector3(-36.0, 3.4, 10.32)), 0.58)
 	place_beacon(Vector3(HOUSE.end.x - 0.5, 7.6, HOUSE.end.y - 0.5), 0.2)
@@ -82,7 +84,7 @@ func _build_landmark() -> void:
 	clean.position = Vector3(OUTFALL_X, 0.16, 13.6)
 	place(clean, STATE_SHUT_DOWN)
 	lamps.append_array([Vector3(HOUSE.get_center().x, 4.6, HOUSE.end.y + 0.3), Vector3(-43.0, 5.0, 10.3), Vector3(-36.0, 5.0, 10.3), Vector3(-29.0, 5.0, 10.3),
-		Vector3(EGG_AT.x, 16.4, EGG_AT.y)])
+		Vector3(EGG_AT.x, 16.4, EGG_AT.y), Vector3(LIFT_AT.x, LIFT_H + 8.8, LIFT_AT.y)])
 	place_lamps("WorksLamps", lamps, 0.3)
 
 
@@ -152,6 +154,16 @@ func _digester(g: BuildingDetail.Geo) -> void:
 	g.cyl(Transform3D(Basis.IDENTITY, flare + Vector3(0, FLARE_H * 0.5, 0)), 0.16, 0.24, FLARE_H, 8)
 	g.mat(BuildingDetail.K_METAL, BuildingDetail.METAL_DARK)
 	g.cyl(Transform3D(Basis.IDENTITY, flare + Vector3(0, FLARE_H, 0)), 0.34, 0.2, 0.7, 8)
+	# The header tower: a coral-and-white banded shaft with a mint ball tank and a red cap.
+	var lift := Vector3(LIFT_AT.x, 0.0, LIFT_AT.y)
+	CityKit.banded(g, lift, 1.7, 1.4, LIFT_H, 8, CORAL, WHITE, 14)
+	for i3: int in 6:
+		var b0: float = -1.2 + 2.6 * float(i3) / 6.0
+		var b1: float = -1.2 + 2.6 * float(i3 + 1) / 6.0
+		g.mat(BuildingDetail.K_METAL, SKY if i3 == 3 else MINT, 0, BuildingDetail.F_HOOPS)
+		g.cyl(Transform3D(Basis.IDENTITY, lift + Vector3(0, LIFT_H + 3.4 + (sin(b0) + sin(b1)) * 1.9, 0)), cos(b1) * 4.0, cos(b0) * 4.0, (sin(b1) - sin(b0)) * 3.8, 16, false)
+	g.mat(BuildingDetail.K_ROOF, ROOF_RED)
+	g.cyl(Transform3D(Basis.IDENTITY, lift + Vector3(0, LIFT_H + 7.6, 0)), 0.2, 1.3, 1.6, 16)
 	# The dosing tanks in a row along the front.
 	var paints: Array[Color] = [CORAL, SKY, LILAC]
 	for i2: int in DOSING.size():
