@@ -1146,6 +1146,14 @@ func _arc(p: Patch) -> bool:
 			HomewardDirector.on_drive_built(world)
 			_mark("drive_%d_s" % Homeward.drive())
 			print("[arc] %.1f min  built the Mk V drive  %s" % [_now() / 60.0, _planet_line()])
+	if str(d.get("key", "")) == "planets_landed" and Homeward.drive() >= 5 and SystemMap.launch_blocker(world, 1) != "" and not DevHooks.has("past-exit"):
+		# [v6pace] The drive is the planet's leave point. If the launch itself stays blocked (the next
+		# planet's reach, the rocket's state), say why and end the pacing run with its report.
+		if _now() - float(_report.get("drive_5_s", _now())) > 120.0:
+			print("[arc] %.1f min  launch blocked after the drive: %s" % [_now() / 60.0, SystemMap.launch_blocker(world, 1)])
+			_stopping = true
+			_stop_run("drive-built")
+			return true
 	if str(d.get("key", "")) == "planets_landed" and Homeward.drive() >= 5 and SystemMap.launch_blocker(world, 1) == "":
 		_exit_done = true
 		_mark("planet_exit_s")
