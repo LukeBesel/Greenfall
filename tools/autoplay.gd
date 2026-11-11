@@ -1038,6 +1038,14 @@ func _planet_line() -> String:
 var _hop_state: int = 0  # 0 home, 1 flying out, 2 at the far hub, 3 flying back
 var _hop_t: float = 0.0
 var _exit_done: bool = false
+var _hop_to: int = -1
+
+
+func _far_restored(os_: OrbitSites) -> int:
+	var n: int = 0
+	for i: int in range(1, os_.sm.built.size()):
+		n += 1 if os_.sm.built[i] != 0 else 0
+	return n
 
 
 ## [v6pace] The arc's steps past the base levels, as the card asks for them: the rocket hop to a
@@ -1057,12 +1065,19 @@ func _arc(p: Patch) -> bool:
 				return true
 			_hop_state = 2
 			_hop_t = _now()
-			_mark("second_hub_s")
-			print("[arc] %.1f min  landed at a second hub  %s" % [_now() / 60.0, _planet_line()])
+			# Stand-in for v6hubs' far-hub restore: pay Hub.far_cost and raise the hub on arrival.
+			var n0: int = _far_restored(os_)
+			if _hop_to > 0 and os_.sm.built[_hop_to] == 0 and Hub.pay(Hub.far_cost(n0)):
+				os_.sm.set_level(_hop_to, Hub.far_level())
+				os_.sm.set_built(_hop_to)
+				_progress()
+				_mark("hub_%d_s" % (n0 + 2))
+			print("[arc] %.1f min  hub %d restored (site %d)  %s  cubes=%.0f earned=%.0f" % [_now() / 60.0, _far_restored(os_) + 1, _hop_to, _planet_line(),
+				GameState.get_currency("cubes").to_float(), BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float()])
 			return true
 		2:
-			if _now() - _hop_t < 60.0:
-				return true  # a look round the new hub
+			if _now() - _hop_t < DevHooks.get_f("far-dwell", 180.0):
+				return true  # the new hub's local work (stand-in: v6hubs' chain is not in yet)
 			_hop_state = 3
 			_hop_t = _now()
 			os_.hop_to(0)
@@ -1073,13 +1088,32 @@ func _arc(p: Patch) -> bool:
 			_hop_state = 0
 			print("[arc] %.1f min  back at the start hub" % (_now() / 60.0))
 			return false
-	if str(d.get("type", "")) == "districts" and os_.rocket_unlocked() and p_ok(p) and _at_base(p):
-		var dest: Array = os_.destinations()
-		if not dest.is_empty():
+	# The next hub: once the rocket stands on the pad and the restore is paid for. The card's own
+	# price comes first unless the hub is the cheaper of the two (a player takes the near win).
+	var nf: int = _far_restored(os_)
+	var fc: Dictionary = Hub.far_cost(nf)
+	var cc: Dictionary = _card_cost()
+	var arc_turn: bool = _saving_arc or cc.is_empty()  # _card_cost falls back to the hub chain's price
+	var want_hub: bool = nf + 1 < Homeward.leave_hubs(Homeward.current_planet()).x
+	if want_hub and os_.rocket_unlocked() and nf + 2 > RocketTiers.hub_limit():
+		# The rocket's next tier reaches the next hub.
+		var tc: Dictionary = RocketTiers.next_def().get("cost", {})
+		if _at_base(p) and RocketTiers.blocker() == "" and (arc_turn or float(tc.get("cubes", 0.0)) <= float(cc.get("cubes", 0.0))) and RocketTiers.upgrade():
+			_progress()
+			_mark("rocket_tier_%d_s" % RocketTiers.tier())
+			print("[arc] %.1f min  rocket Mk %d  %s  cubes=%.0f earned=%.0f" % [_now() / 60.0, RocketTiers.tier(), _planet_line(),
+				GameState.get_currency("cubes").to_float(), BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float()])
+		return false
+	if want_hub and os_.rocket_unlocked() and p_ok(p) and _at_base(p) and Hub.can_pay(fc) \
+			and (arc_turn or float(fc.get("cubes", 0.0)) <= float(cc.get("cubes", 0.0))):
+		for e: Dictionary in os_.destinations():
+			if os_.sm.built[int(e["site"])] != 0:
+				continue
 			_hop_state = 1
 			_hop_t = _now()
-			_event("launch", {"to": int(dest[0]["site"])})
-			os_.hop_to(int(dest[0]["site"]))
+			_hop_to = int(e["site"])
+			_event("launch", {"to": _hop_to})
+			os_.hop_to(_hop_to)
 			return true
 	if str(d.get("key", "")) == "drive_tier" and Homeward.drive() < int(d.get("target", 5)) and Homeward.drive_blocker(false) == "":
 		if Homeward.buy_drive(false):
@@ -1474,9 +1508,28 @@ func _card_cost() -> Dictionary:
 			if Research.exists(key) and not Research.has(key) and not Research.is_active(key) and not Research.is_queued(key):
 				return {"cubes": Research.cost(key).to_float()}
 		"stat":
-			if key == "drive_tier" and Homeward.drive() < int(d.get("target", 5)):
+			if key == "drive_tier" and Homeward.drive() < int(d.get("target", 5)) and Homeward.progress_blocker(Homeward.next_drive()) == "":
 				return (Homeward.next_drive().get("cost", {}) as Dictionary).duplicate()
-	return {}
+	return _arc_cost()
+
+
+var _saving_arc: bool = false
+
+
+## The next step of the hub chain once the rocket stands on the pad: the rocket tier that reaches
+## the next hub, or that hub's restore. {} when there is none (no rocket yet, all hubs in).
+func _arc_cost() -> Dictionary:
+	_saving_arc = false
+	var os_: OrbitSites = OrbitSites.of(world)
+	if os_ == null or os_.sm == null or not os_.rocket_unlocked():
+		return {}
+	var nf: int = _far_restored(os_)
+	if nf + 1 >= Homeward.leave_hubs(Homeward.current_planet()).x:
+		return {}
+	_saving_arc = true
+	if nf + 2 > RocketTiers.hub_limit():
+		return (RocketTiers.next_def().get("cost", {}) as Dictionary).duplicate()
+	return Hub.far_cost(nf)
 
 
 ## True if an optional purchase leaves the card's price covered (always, when it has none).
@@ -1484,6 +1537,8 @@ func _card_spare(cubes_cost: float, parts_cost: float = 0.0) -> bool:
 	var c: Dictionary = _card_cost()
 	if c.is_empty():
 		return true
+	if _saving_arc and cubes_cost <= float(c.get("cubes", 0.0)) * 0.2:
+		return true  # the hub chain: a purchase that is cheap next to the hub's price doesn't wait
 	if GameState.get_currency("cubes").to_float() - cubes_cost < float(c.get("cubes", 0.0)):
 		return false
 	return parts_cost <= 0.0 or GameState.get_currency("parts").to_float() - parts_cost >= float(c.get("parts", 0.0))

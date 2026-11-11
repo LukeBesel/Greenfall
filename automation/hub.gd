@@ -52,11 +52,53 @@ func sell_mult() -> float:
 
 ## [v6pace] The base level that brings the rocket (data/hub.json "rocket_level"). It was level 5
 ## in code: on the globe that put the first hop to another hub past the planet's whole arc.
-static var _rocket_level: int = -1
+static var _cfg: Dictionary = {}
+static var _rocket_step: int = -2
+static func _hub_cfg() -> Dictionary:
+	if _cfg.is_empty():
+		_cfg = Economy.read_json("res://data/hub.json")
+	return _cfg
+
+
 static func rocket_level() -> int:
-	if _rocket_level < 0:
-		_rocket_level = int(Economy.read_json("res://data/hub.json").get("rocket_level", 5))
-	return _rocket_level
+	return int((_hub_cfg().get("rocket", {}) as Dictionary).get("level", 5))
+
+
+## Whether a base at `level` has its rocket: the level, and the story objective named in the data
+## done (flags.objective_step past it; a save from before the objectives counts as past it).
+static func rocket_open(level: int) -> bool:
+	if level < rocket_level():
+		return false
+	var after: String = str((_hub_cfg().get("rocket", {}) as Dictionary).get("after_objective", ""))
+	if after == "":
+		return true
+	if _rocket_step == -2:
+		_rocket_step = -1
+		var ch: Array = Economy.read_json("res://data/objectives.json").get("objectives", [])
+		for i: int in ch.size():
+			if str((ch[i] as Dictionary).get("id", "")) == after:
+				_rocket_step = i
+	return _rocket_step < 0 or int(GameState.flags.get("objective_step", 0)) > _rocket_step
+
+
+## Why there is no rocket yet (translated), "" when rocket_open(level).
+static func rocket_lock_text(level: int) -> String:
+	if rocket_open(level):
+		return ""
+	if level < rocket_level():
+		return TranslationServer.translate("Locked. Upgrade your base to level %d to build the launch pad.") % rocket_level()
+	return TranslationServer.translate("The rocket isn't ready yet. Keep following WREN's steps.")
+
+
+## The level a restored far hub stands at, and what restoring one costs when `n` far hubs are
+## already restored ({"cubes", "parts"}).
+static func far_level() -> int:
+	return int((_hub_cfg().get("far_hub", {}) as Dictionary).get("level", 2))
+
+
+static func far_cost(n: int) -> Dictionary:
+	var c: Array = (_hub_cfg().get("far_hub", {}) as Dictionary).get("cost", [])
+	return (c[clampi(n, 0, c.size() - 1)] as Dictionary).duplicate() if not c.is_empty() else {}
 
 
 static func can_pay(cost: Dictionary, mult: float = 1.0) -> bool:

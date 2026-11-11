@@ -145,7 +145,12 @@ static func progress_blocker(nd: Dictionary) -> String:
 		# drive's or_base_level is the fallback.
 		var ob: int = leave_base_level(k, int(nd.get("or_base_level", 0)))
 		var base_ok: bool = ob > 0 and current_planet() == k and (int(GameState.world.get("hub_level", 1)) >= ob or Frontiers.bases_at_level(ob) > 0)
+		var lh: Vector2i = leave_hubs(k)  # [v6pace] or that many hubs restored there (owner note 61)
+		if lh.x > 0:
+			base_ok = current_planet() == k and hubs_at_level(lh.y) >= lh.x
 		if stored_pct(k) < need - 0.0001 and not base_ok:
+			if lh.x > 0:
+				return TranslationServer.translate("Restore %d hubs on %s to level %d (%d so far)") % [lh.x, planet_name(k), lh.y, hubs_at_level(lh.y) if current_planet() == k else 0]
 			if ob > 0:
 				return TranslationServer.translate("Restore %s to %d%% (%d%%) or get a base to level %d") % [planet_name(k), int(round(need * 100.0)), int(floor(stored_pct(k) * 100.0)), ob]
 			return TranslationServer.translate("Restore %s to %d%% (%d%%)") % [planet_name(k), int(round(need * 100.0)), int(floor(stored_pct(k) * 100.0))]
@@ -164,6 +169,30 @@ static func progress_blocker(nd: Dictionary) -> String:
 static func leave_base_level(k: int, fallback: int = 0) -> int:
 	var lv: Variant = planet_def(k).get("leave", {})
 	return int((lv as Dictionary).get("base_level", fallback)) if lv is Dictionary else fallback
+
+
+## [v6pace] (hubs, level): planet k's leave gate by hubs restored (planets[k].leave.hubs hubs at
+## leave.hub_level or better), (0, 0) when it names none.
+static func leave_hubs(k: int) -> Vector2i:
+	var lv: Variant = planet_def(k).get("leave", {})
+	if not (lv is Dictionary) or int((lv as Dictionary).get("hubs", 0)) <= 0:
+		return Vector2i.ZERO
+	return Vector2i(int((lv as Dictionary)["hubs"]), int((lv as Dictionary).get("hub_level", 2)))
+
+
+## Hubs of the world Lumi is on at base level `l` or better: the round planet's sites
+## (SiteManager.levels, the start hub's from its Hub), else the flat districts.
+static func hubs_at_level(l: int) -> int:
+	var tree: SceneTree = Engine.get_main_loop() as SceneTree
+	var os_: OrbitSites = OrbitSites.of(tree.current_scene) if tree and tree.current_scene else null
+	if os_ == null or os_.sm == null:
+		return Frontiers.bases_at_level(l)
+	var n: int = 0
+	for i: int in os_.sm.levels.size():
+		var lv: int = int(GameState.world.get("hub_level", 1)) if i == 0 else os_.sm.levels[i]
+		if lv >= l and (i == 0 or os_.sm.built[i] != 0):
+			n += 1
+	return n
 
 
 static func done() -> bool:

@@ -1,0 +1,687 @@
+{
+  "baler_s": 0.0,
+  "campaign_min": [
+    [
+      "first_upgrade_s",
+      0.0
+    ],
+    [
+      "baler_s",
+      0.0
+    ],
+    [
+      "lift_1_s",
+      0.0
+    ],
+    [
+      "lift_2_s",
+      0.0
+    ],
+    [
+      "signal_finder_s",
+      0.0
+    ],
+    [
+      "glim_repair_s",
+      0.0
+    ],
+    [
+      "first_cube_s",
+      0.0
+    ],
+    [
+      "first_cashin_s",
+      0.2
+    ],
+    [
+      "hub_2_s",
+      1.2
+    ],
+    [
+      "first_hex_s",
+      2.5
+    ],
+    [
+      "first_hexlv_1_s",
+      2.5
+    ]
+  ],
+  "cubes": 1067.51278911583,
+  "cubes_fell": 0,
+  "cubes_made": 13.0,
+  "dead_gaps_min": [],
+  "district": "Verdance",
+  "earned_total": 31814.5696523242,
+  "fell_through": 0,
+  "first_cashin_s": 11.6,
+  "first_cube_s": 1.2,
+  "first_hex_s": 152.1,
+  "first_hexlv_1_s": 152.2,
+  "first_upgrade_s": 0.0,
+  "game_time_min": 3.4,
+  "game_time_s": 206.3,
+  "glim_repair_s": 0.0,
+  "goal_gaps_min": [
+    [
+      0.0,
+      3.4,
+      3.4
+    ]
+  ],
+  "goals_done": 0,
+  "goals_total": 172,
+  "hexes_cleaned": 1,
+  "hub_2_s": 71.3,
+  "hub_level": 1,
+  "ignored_pieces": 0,
+  "junk_hexes": 163438,
+  "lift_1_s": 0.0,
+  "lift_2_s": 0.0,
+  "log": [
+    {
+      "event": "upgrade",
+      "id": "baler",
+      "level": 1,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "compartment_size",
+      "level": 1,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_speed",
+      "level": 1,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "lift_strength",
+      "level": 1,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "compartment_size",
+      "level": 2,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_width",
+      "level": 1,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "multi_lock",
+      "level": 1,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "tread_speed",
+      "level": 1,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_speed",
+      "level": 2,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "compartment_size",
+      "level": 3,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_width",
+      "level": 2,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "tread_speed",
+      "level": 2,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_speed",
+      "level": 3,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "carry_stack",
+      "level": 1,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "compartment_size",
+      "level": 4,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "multi_lock",
+      "level": 2,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "tread_speed",
+      "level": 3,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_width",
+      "level": 3,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "compactor_pressure",
+      "level": 1,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "detector_range",
+      "level": 1,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "laser_reach",
+      "level": 1,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "lift_strength",
+      "level": 2,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_speed",
+      "level": 4,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "compartment_size",
+      "level": 5,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "tread_speed",
+      "level": 4,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_width",
+      "level": 4,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "carry_stack",
+      "level": 2,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "compactor_pressure",
+      "level": 2,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "detector_range",
+      "level": 2,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_speed",
+      "level": 5,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "tread_speed",
+      "level": 5,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "compartment_size",
+      "level": 6,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "laser_reach",
+      "level": 2,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "multi_lock",
+      "level": 3,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_width",
+      "level": 5,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "signal_finder",
+      "level": 1,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "compactor_pressure",
+      "level": 3,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "carry_stack",
+      "level": 3,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "tread_speed",
+      "level": 6,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "detector_range",
+      "level": 3,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_speed",
+      "level": 6,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "compartment_size",
+      "level": 7,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "laser_reach",
+      "level": 3,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_width",
+      "level": 6,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "compactor_pressure",
+      "level": 4,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "tread_speed",
+      "level": 7,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "compartment_size",
+      "level": 8,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_speed",
+      "level": 7,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "multi_lock",
+      "level": 4,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "detector_range",
+      "level": 4,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "carry_stack",
+      "level": 4,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_width",
+      "level": 7,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "laser_reach",
+      "level": 4,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "tread_speed",
+      "level": 8,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "compactor_pressure",
+      "level": 5,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "compartment_size",
+      "level": 9,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_speed",
+      "level": 8,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "detector_range",
+      "level": 5,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "scoop_width",
+      "level": 8,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "tread_speed",
+      "level": 9,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "carry_stack",
+      "level": 5,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "laser_reach",
+      "level": 5,
+      "t": 0.0
+    },
+    {
+      "event": "upgrade",
+      "id": "glim_light",
+      "level": 1,
+      "t": 1.4
+    },
+    {
+      "event": "upgrade",
+      "id": "glim_scan",
+      "level": 1,
+      "t": 1.4
+    },
+    {
+      "event": "upgrade",
+      "id": "glim_light",
+      "level": 2,
+      "t": 13.8
+    },
+    {
+      "bots": {},
+      "cubes": 52.0,
+      "earned": 30419.0,
+      "escapes": 0,
+      "goals": 0,
+      "hex_levels": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hexes": 0,
+      "hub": 1,
+      "parts": 23.0,
+      "parts_cur": 22.9,
+      "pct": 0.04,
+      "planet": "verdance",
+      "pos": [
+        1306.4,
+        -1260.6
+      ],
+      "rate": 0.0,
+      "remote_shops": 0,
+      "research": "",
+      "robots": {},
+      "seeds": 0.0,
+      "stats": {
+        "air_filtered": 0.0,
+        "bales_recycled": 0.0,
+        "garden_stipend": 0.0,
+        "plants_bloomed": 0.0,
+        "plants_planted": 0.0,
+        "research_done": 0.0,
+        "robot_bales": 0.0,
+        "robots_built": 0.0
+      },
+      "t": 120.5,
+      "task": "clean",
+      "upgrades": 65
+    },
+    {
+      "event": "upgrade",
+      "id": "glim_scan",
+      "level": 2,
+      "t": 148.3
+    },
+    {
+      "bots": {},
+      "cubes": 756.0,
+      "earned": 31503.0,
+      "escapes": 0,
+      "goals": 0,
+      "hex_levels": [
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hexes": 1,
+      "hub": 1,
+      "parts": 77.0,
+      "parts_cur": 76.5,
+      "pct": 0.041,
+      "planet": "verdance",
+      "pos": [
+        1306.6,
+        -1259.6
+      ],
+      "rate": 19.63,
+      "remote_shops": 0,
+      "research": "",
+      "robots": {},
+      "seeds": 0.0,
+      "stats": {
+        "air_filtered": 0.0,
+        "bales_recycled": 0.0,
+        "garden_stipend": 0.0,
+        "plants_bloomed": 0.0,
+        "plants_planted": 0.0,
+        "research_done": 0.0,
+        "robot_bales": 0.0,
+        "robots_built": 0.0
+      },
+      "t": 180.5,
+      "task": "deliver",
+      "upgrades": 66
+    }
+  ],
+  "next_goals": [
+    "scoop_15",
+    "dump_1",
+    "upgrade_1"
+  ],
+  "pace_affordable_at_2nd_bale": 0,
+  "pace_cubes_at_2nd_bale": 349.717916627644,
+  "pace_upgrades_at_2nd_bale": 65,
+  "parts_bought": 0,
+  "parts_found": 4.0,
+  "perfect_cubes": 13.0,
+  "remote_shops": 0,
+  "research_done": [],
+  "research_idle_max_s": 135.0,
+  "research_idle_s": 135.0,
+  "research_starved_s": 135.0,
+  "robots": {},
+  "signal_finder_s": 0.0,
+  "stuck_escapes": 0,
+  "stuck_robots": {},
+  "timeline": [
+    {
+      "kind": "part",
+      "parts": 10.0,
+      "rarity": 0,
+      "t": 0.0,
+      "type": 5
+    },
+    {
+      "id": "glim",
+      "kind": "build",
+      "t": 0.0
+    },
+    {
+      "kind": "glim_light",
+      "t": 1.4,
+      "tier": 1
+    },
+    {
+      "kind": "glim_scan",
+      "t": 1.4,
+      "tier": 1
+    },
+    {
+      "kind": "part",
+      "parts": 18.0,
+      "rarity": 0,
+      "t": 12.2,
+      "type": 1
+    },
+    {
+      "kind": "glim_light",
+      "t": 13.8,
+      "tier": 2
+    },
+    {
+      "kind": "part",
+      "parts": 28.0,
+      "rarity": 0,
+      "t": 27.4,
+      "type": 7
+    },
+    {
+      "kind": "part",
+      "parts": 53.0,
+      "rarity": 1,
+      "t": 31.4,
+      "type": 1
+    },
+    {
+      "kind": "launch",
+      "t": 33.4,
+      "to": 9
+    },
+    {
+      "kind": "part",
+      "parts": 51.0,
+      "rarity": 0,
+      "t": 141.9,
+      "type": 2
+    },
+    {
+      "kind": "glim_scan",
+      "t": 148.3,
+      "tier": 2
+    },
+    {
+      "hex": 99759,
+      "kind": "hex_clean",
+      "n": 1,
+      "t": 152.1
+    },
+    {
+      "hex": 99759,
+      "kind": "hex_level",
+      "level": 1,
+      "t": 152.2
+    },
+    {
+      "kind": "part",
+      "parts": 72.0,
+      "rarity": 0,
+      "t": 175.2,
+      "type": 5
+    },
+    {
+      "kind": "launch",
+      "t": 195.8,
+      "to": 7
+    }
+  ],
+  "upgrades": {
+    "baler": 1,
+    "carry_stack": 5,
+    "compactor_pressure": 5,
+    "compartment_size": 9,
+    "detector_range": 5,
+    "laser_reach": 5,
+    "lift_strength": 2,
+    "multi_lock": 4,
+    "scoop_speed": 8,
+    "scoop_width": 8,
+    "signal_finder": 1,
+    "tread_speed": 9
+  }
+}

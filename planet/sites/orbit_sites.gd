@@ -145,7 +145,7 @@ func _wire_survey() -> void:
 func rocket_unlocked() -> bool:
 	var hub: Variant = so.w.get("hub")
 	return DevHooks.has("rocket") or bool(GameState.orbit.get("rocket_owned", false)) \
-		or (hub is Hub and (hub as Hub).level >= Hub.rocket_level())
+		or (hub is Hub and Hub.rocket_open((hub as Hub).level))
 
 
 ## The hub whose pad the rocket stands on (the last landing, else the start site).
