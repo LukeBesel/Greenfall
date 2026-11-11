@@ -79,7 +79,7 @@ func build(p_type: String, p_look: String) -> void:
 	_blink_phase = randf() * 4.0
 	_body = Node3D.new()
 	add_child(_body)
-	var base_type: String = "scoopie" if type_id in ["seedling", "drip", "multibot"] else type_id
+	var base_type: String = "scoopie" if type_id in ["seedling", "drip", "multibot", "scrounger"] else type_id
 	var key: String = base_type + "/" + look
 	match key:
 		"haulbug/salvage": _haul_salvage()
@@ -110,6 +110,8 @@ func _job_kit(t: String) -> void:
 			_stencil(_body, "SEEDS", top + Vector3(0, 0.13, -0.125), Vector3(0, 180, 0), 28)
 		"drip":
 			_drip_kit(top)
+		"scrounger":
+			_scrounger_kit(top, shiny)
 		"multibot":
 			var rack: Material = _worn(Color(0.55, 0.55, 0.58), 0.4, 0.6)
 			_mi(_body, ProcMesh.box(Vector3(0.36, 0.04, 0.2)), rack, top + Vector3(0, 0.03, 0))
@@ -117,6 +119,29 @@ func _job_kit(t: String) -> void:
 			_mi(_body, ProcMesh.capsule(0.05, 0.18), _worn(Color(0.3, 0.5, 0.75), 0.7, 0.4), top + Vector3(0.0, 0.12, 0), Vector3(0, 0, 90))
 			_mi(_body, _rbox(Vector3(0.1, 0.03, 0.12), 0.01, 2), _worn(Color(0.95, 0.75, 0.2), 0.7, 0.4), top + Vector3(0.13, 0.1, 0))
 			_stencil(_body, "MULTI", top + Vector3(0, 0.03, -0.105), Vector3(0, 180, 0), 24)
+
+
+## Parts finder kit: a detector coil on a boom ahead of the body, its cable, and a wire crate of
+## dug-up parts on top. The coil glows amber, the colour of Parts.
+func _scrounger_kit(top: Vector3, shiny: bool) -> void:
+	@warning_ignore("incompatible_ternary")
+	var paint: Material = _gloss(Color(0.85, 0.5, 0.15), 0.3) if shiny else _worn(Color(0.8, 0.45, 0.14), 0.7, 0.5)
+	var steel: Material = Mats.metal("steel")
+	var boom_from: Vector3 = top + Vector3(0.16, -0.12, -0.2)
+	var coil_at := Vector3(0.16, 0.07, -0.62)
+	_rod(_body, boom_from, coil_at + Vector3(0, 0.04, 0.02), 0.014, steel)
+	_mi(_body, ProcMesh.torus(0.085, 0.11, 18, 6), paint, coil_at)
+	_mi(_body, ProcMesh.cyl(0.03, 0.03, 0.03, 10), _glow(Color(1.0, 0.72, 0.25), 1.4), coil_at + Vector3(0, 0.015, 0))
+	_cable(_body, boom_from, boom_from + Vector3(0.05, -0.1, -0.2), coil_at + Vector3(0, 0.05, 0.03), 0.006, Mats.rubber(Color(0.1, 0.1, 0.1)))
+	# Wire crate with a few parts showing.
+	_mi(_body, ProcMesh.box(Vector3(0.34, 0.02, 0.26)), steel, top + Vector3(0, 0.02, 0.04))
+	for x: float in [-0.17, 0.17]:
+		_mi(_body, ProcMesh.box(Vector3(0.012, 0.14, 0.26)), steel, top + Vector3(x, 0.09, 0.04))
+	for z: float in [-0.09, 0.17]:
+		_mi(_body, ProcMesh.box(Vector3(0.34, 0.14, 0.012)), paint, top + Vector3(0, 0.09, z))
+	_mi(_body, ProcMesh.cyl(0.05, 0.05, 0.03, 10), Mats.metal("chrome"), top + Vector3(-0.07, 0.11, 0.02), Vector3(70, 20, 0))
+	_mi(_body, ProcMesh.box(Vector3(0.09, 0.05, 0.07)), _worn(Color(0.3, 0.5, 0.75), 0.6, 0.5), top + Vector3(0.07, 0.1, 0.07), Vector3(0, 25, 8))
+	_stencil(_body, "PARTS", top + Vector3(0, 0.09, -0.097), Vector3(0, 180, 0), 26)
 
 
 ## Waterer kit per tier: a strapped plastic drum and garden hose (Mk I), a painted tank with a

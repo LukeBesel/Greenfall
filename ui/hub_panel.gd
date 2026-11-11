@@ -178,9 +178,9 @@ static func level_gains(h: Hub, lv: int) -> Array[String]:
 	var s_old: int = int(round(float(pd.get("bonus", {}).get("sell_mult", 0.0)) * 100.0))
 	if s_new > s_old:
 		out.append(TranslationServer.translate("Bales sell for +%d%% (now +%d%%)") % [s_new, s_old])
-	var per: int = int(Economy.robot_cfg.get("crew_cap", {}).get("per_level", 2))
+	var per: int = CrewRules.cap_gain_at_level(Economy.robot_cfg, lv - 1, Economy.tiers_open())
 	if per > 0:
-		out.append(TranslationServer.translate("+%d robot spots in every crew") % per)
+		out.append(TranslationServer.translate("+%d robot spots") % per)
 	var sd: Dictionary = h.scrubber_def()
 	if int(sd.get("requires_level", 2)) == lv:
 		out.append(TranslationServer.translate("Air Scrubbers: clear the dusty sky"))

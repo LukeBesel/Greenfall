@@ -97,15 +97,14 @@ func test_skimmer_defined_and_in_crews() -> void:
 func test_crew_cap_follows_base_level() -> void:
 	var f := Fleet.new()
 	add_child_autofree(f)
-	var cc: Dictionary = Economy.robot_cfg.get("crew_cap", {})
-	var base: int = int(cc.get("base", 3))
-	var per: int = int(cc.get("per_level", 3))
+	# Task M3-20: one cap for the whole crew, from the planet's robots table (core/crew_rules.gd).
 	GameState.world["hub_level"] = 1
-	assert_eq(f.crew_cap(), base + per)
-	GameState.world["hub_level"] = 3
-	assert_eq(f.crew_cap(), base + 3 * per)
+	var cap: int = CrewRules.cap(Economy.robot_cfg, 1, 1)
+	assert_eq(f.crew_cap(), cap)
+	GameState.world["hub_level"] = 2
+	assert_gt(f.crew_cap(), cap, "a base level raises the cap")
 	GameState.world["hub_level"] = 1
-	for i: int in base + per:
+	for i: int in cap:
 		var r := Robot.new()
 		r.type_id = "scoopie"
 		r.robot_name = "S%d" % i
@@ -117,9 +116,9 @@ func test_crew_cap_follows_base_level() -> void:
 	Research.unlock_story("haul_rig")  # [v4bots] the Skimmer's plans come after the Haul Bug's
 	Research.unlock_story("scoopie_rig")  # task M3-21: the Scoopie's plans follow the Haul Bug's
 	Research.unlock_story("skimmer_rig")
-	assert_false(f.can_build("scoopie"), "cleaner crew is full at level 1")
+	assert_false(f.can_build("scoopie"), "the crew is full at level 1")
 	assert_string_contains(f.build_block_reason("scoopie"), "Crew full")
-	assert_true(f.can_build("skimmer"), "other crews still have room")
+	assert_false(f.can_build("skimmer"), "whatever the robot's job: the cap counts every robot")
 	GameState.world["hub_level"] = 2
 	assert_true(f.can_build("scoopie"), "a hub level raises the cap")
 	if fl is Dictionary:

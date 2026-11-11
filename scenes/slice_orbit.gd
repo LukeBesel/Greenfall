@@ -40,6 +40,7 @@ var sites: OrbitSites  # [orbD]
 var districts: Districts  # the cities and their regrowth stages (systems/districts.gd)
 var restoration: Restoration  # launch progress, the launch point, the whole-planet share
 var city_payouts: CityPayouts  # cubes paid once when a city reaches a regrowth stage
+var chain: RobotChain  # parts finders, the Assembler and its build mix
 var ending: PlanetEnding  # the launch cinematic and the end screen
 var hub_states: Dictionary = {}  # site index (str) -> {level} (core/save_orbit.gd); the Hub port fills it
 
@@ -424,6 +425,13 @@ func _build_districts(levels: HexLevels) -> void:
 		ending.auto_keep_s = BOT_END_SCREEN_S
 	w.add_child(ending)
 	DistrictsDev.attach(w, districts, restoration, ending, crews, globe.cells, levels)
+	if crews.crew != null:  # Scroungers, the Assembler, where new robots go (systems/crew/robot_chain.gd)
+		chain = RobotChain.new()
+		w.add_child(chain)
+		chain.setup(w, crews.crew, w.get("fleet") as Fleet, districts, globe.cells, site_cells)
+		chain.base_site = globe.site_manager.prefab(0) if globe.site_manager else null
+		var older_save: bool = int(GameState.orbit.get("schema", 0)) >= 1 or str(GameState.orbit.get("migrated", "")) != ""
+		chain.load_state(GameState.orbit.get("chain", {}), older_save)
 
 
 ## The hex Lumi stands on (-1 before Lumi exists).
@@ -1134,6 +1142,7 @@ func persist_save() -> void:
 		"robots": crews.save_crew(),  # [orbC]
 		"districts": districts.save_state() if districts else {},
 		"city_payouts": city_payouts.save_state() if city_payouts else {},
+		"chain": chain.save_state() if chain else {},
 		"restoration": restoration.save_state() if restoration else {},
 		"site_state": sites.save_state() if sites else {},  # [orbD] built hubs, levels, growth (main: renamed from "sites", which orbB uses for site geometry)
 	}

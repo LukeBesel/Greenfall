@@ -11,6 +11,8 @@ extends RefCounted
 # l10n:begin
 const CATS: Array = [["build", "Build"], ["tiers", "Tiers"], ["fleet", "Fleet"]]
 # l10n:end
+## The row that holds the Assembler's panel (ui/assembler_panel.gd).
+const ASSEMBLER_ROW: String = "assembler_mix"
 const ROLE_ICON: Dictionary = {"clean": "scoop", "haul": "cube", "plant": "plant", "water": "water", "skim": "water", "any": "star"}
 
 
@@ -30,9 +32,8 @@ static func rows(fleet: Fleet, build_at: Callable) -> Array:
 		var icon: String = str(ROLE_ICON.get(str(def.get("role", "clean")), "star"))
 		var n: int = fleet.count(rid)
 		var t: int = fleet.tier_of(rid)
-		var crew: String = Fleet.crew_of_type(rid)
 		var cap: int = fleet.crew_cap()
-		var in_crew: int = fleet.crew_size(crew)
+		var in_crew: int = fleet.robot_total()  # one cap for the whole crew (the planet's robots table)
 		# Build.
 		if not Research.robot_unlocked(rid) and n == 0:
 			out.append({"id": "build_" + rid, "cat": "build", "state": "locked", "name": name_,
@@ -54,7 +55,7 @@ static func rows(fleet: Fleet, build_at: Callable) -> Array:
 		# Tiers (only for types you have).
 		if n > 0:
 			var req: Dictionary = fleet.tier_requirements(rid)
-			if not req.get("maxed", false):
+			if not req.get("maxed", false) and not req.get("locked", false):
 				var nt: Dictionary = req["next"]
 				var tc: Dictionary = {"cubes": (req["cost"] as BigNum).to_float(), "parts": (req["parts"] as BigNum).to_float()}
 				out.append({"id": "tier_" + rid, "cat": "tiers", "icon": icon, "name": "%s  ·  %s" % [name_, _tr(str(nt["name"]))],
@@ -65,6 +66,15 @@ static func rows(fleet: Fleet, build_at: Callable) -> Array:
 						[_tr("Robots"), str(n)], [_tr("Cost"), Currencies.cost_text(tc)]],
 					"requires": "", "action": _tr("Upgrade to %s") % _tr(str(nt["name"])),
 					"act": func() -> bool: return fleet.upgrade_tier(rid)})
+	# The Assembler: its build mix, once the building stands. First in the list: from here on it
+	# is where the crew is steered from.
+	var rc: RobotChain = RobotChain.of(world)
+	if rc != null and rc.is_built():
+		out.push_front({"id": ASSEMBLER_ROW, "cat": "build", "icon": "star", "name": _tr(rc.display_name()), "desc": "",
+			"state": "done", "table": [], "action": "", "custom": func(_w: Node) -> Control:
+				var ap := AssemblerPanel.new()
+				ap.rc = rc
+				return ap})
 	# Multibot jobs: a custom detail (the allocation board) once there are multibots.
 	if fleet.count("multibot") > 0:
 		out.append({"id": "multibot_jobs", "cat": "build", "icon": "star", "name": _tr("Multibot jobs"), "desc": "",

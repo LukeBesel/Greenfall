@@ -65,6 +65,15 @@ signal district_stage_changed(district_id: String, stage: int)
 ## The city stage payout (systems/city_payouts.gd): cubes paid once for the stage just reached.
 signal district_stage_paid(district_id: String, stage: int, cubes: float)
 signal district_entered(district_id: String)
+## The robot chain (systems/crew/robot_chain.gd). parts_scrounged: parts finders brought `parts`
+## Parts to a base. assembler_offered: the Assembler can now be built. assembler_built: it stands.
+## robot_assembled: the Assembler's line finished a robot of `type_id` (robot_built fires too).
+## salvage_found: Parts found on first arrival in a city.
+signal parts_scrounged(parts: float)
+signal assembler_offered
+signal assembler_built
+signal robot_assembled(type_id: String, robot_name: String)
+signal salvage_found(district_id: String, parts: float)
 signal planet_restoration_changed(value: float)
 signal planet_step_reached(planet_id: String, step_id: String)
 signal launch_ready(planet_id: String)

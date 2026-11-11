@@ -453,3 +453,12 @@ The owner asked for more attention on the world's goals and look (full cities ro
 - **Shared stage payouts for stages 4 and 5 were cut about 40%** for every city; cities 2 to 6 are refitted in M3-12.
 - Fixed at merge: the card's new `scoopie` step had no guidance and pointed at the bench before the plans arrived (regression test in `tests/test_v1guide_guidance.gd`).
 - Old Town polish (M3-18b) merged: still below the bar are clumpy crowns up close, faceted flowers, flat lawns, pale flood water and pale lots at stages 1 and 2. These go to the M5 polish pass.
+
+## Crew and the robot chain (M3-20, Nov 11, 2026)
+`docs/reviews/M3-20_CREW.md`. Crew after each city (simulator): 8, 50, 74, 98, 123, 159, against the accepted 8, 50, 72, 94, 119, 147. Scroungers find Parts in a painted Search area; the Assembler builds robots from them with a player-set build mix; 200 robots cost 5.4 ms a frame. Merged.
+- **The Assembler is offered on reaching city 3 and stands in the start yard** (the only base with a bench). When cities get bases of their own it can move to city 3.
+- **Scroungers must matter.** Today a player with no Scroungers still reaches 140 robots because hand-found Parts are plentiful from city 3. The balance pass (M3-12) cuts hand yield in cities 3 to 6 so the chain is the way to a large crew.
+- **Robots are shipped between cities, unseen**, for now. A visible transport goes to `docs/FUTURE.md`.
+- **Tier steps open with city 2** until a repair-bench research exists.
+- **Originality:** a factory that turns found parts into robots is a common genre mechanic; nothing here copies another game's layout, names or interface.
+- Not yet verified in a played run: cities 2 to 6 and the Assembler panel's layout (simulator and tests only). Covered by the end-of-milestone bot playthrough.

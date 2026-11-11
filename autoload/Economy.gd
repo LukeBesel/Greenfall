@@ -26,6 +26,8 @@ var robot_cfg: Dictionary = {}
 var track_tiers: Dictionary = {}
 ## The flag that holds how many districts are open (Districts writes it; one from a new game).
 const FLAG_TIERS_OPEN: String = "districts_open"
+## What an upgrade costs when its row names no "currency".
+const DEFAULT_UPGRADE_CURRENCY: String = "cubes"
 ## The flag that holds the part of a cube not paid out yet (see whole_cubes).
 const FLAG_CUBE_CARRY: String = "cube_carry"
 
@@ -114,6 +116,7 @@ func load_data() -> void:
 			d["name"] = "%s: %s" % [tr(str(r["name"])), tr(str(u["name"]))]
 			d["desc"] = tr("Every %s in the fleet.") % tr(str(r["name"]))
 			d["stat"] = "%s.%s" % [r["id"], u["stat"]]
+			d["currency"] = str(u.get("currency", robot_cfg.get("upgrade_currency", DEFAULT_UPGRADE_CURRENCY)))
 			d["icon"] = "speed"
 			upgrade_defs[uid] = d
 			upgrade_order.append(uid)
@@ -321,6 +324,12 @@ static func cost_at(base_cost: float, growth: float, level: int) -> BigNum:
 		else BigNum.from_float(base_cost).mul(BigNum.new(1.0, int(level * log(growth) / log(10.0))))
 
 
+## The currency an upgrade is paid in: cubes, unless its row says otherwise (the crew's per-type
+## upgrades cost what the planet's robots table names in "upgrade_currency").
+func upgrade_currency(id: String) -> String:
+	return str((upgrade_defs.get(id, {}) as Dictionary).get("currency", DEFAULT_UPGRADE_CURRENCY))
+
+
 func upgrade_cost(id: String, level: int = -1) -> BigNum:
 	var u: Dictionary = upgrade_defs[id]
 	var lv: int = level if level >= 0 else GameState.level_of(id)
@@ -340,7 +349,7 @@ func cost_for_n(id: String, n: int) -> BigNum:
 
 ## How many levels the player can buy right now, respecting the level cap.
 func max_affordable(id: String, budget: BigNum = null) -> int:
-	var money: BigNum = budget if budget != null else GameState.get_currency("cubes")
+	var money: BigNum = budget if budget != null else GameState.get_currency(upgrade_currency(id))
 	var m: int = upgrade_cap(id)
 	var room: int = 1000 if m < 0 else m - GameState.level_of(id)
 	var n: int = 0
@@ -364,7 +373,7 @@ func buy_upgrade(id: String, n: int = 1) -> int:
 	if count <= 0:
 		return 0
 	var cost: BigNum = cost_for_n(id, count)
-	if not GameState.spend("cubes", cost):
+	if not GameState.spend(upgrade_currency(id), cost):
 		return 0
 	GameState.upgrades[id] = GameState.level_of(id) + count
 	GameState.inc_stat("upgrades_bought", count)
@@ -481,7 +490,7 @@ func part_type(idx: int) -> Dictionary:
 
 
 ## A robot's effective stat: fleet upgrades x tier multiplier x part-rarity bonus.
-const _TIER_STATS: Array[String] = ["speed", "scoop_rate", "capacity", "efficiency"]  # [health] no per-call array
+const _TIER_STATS: Array[String] = ["speed", "scoop_rate", "capacity", "efficiency", "dig_rate"]  # [health] no per-call array
 
 
 func robot_stat(type_id: String, stat_id: String, tier: int = 0, rarity_bonus: float = 0.0) -> float:

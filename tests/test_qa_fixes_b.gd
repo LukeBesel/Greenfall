@@ -254,19 +254,22 @@ func test_multibots_respect_crew_caps() -> void:
 	r2.type_id = "seedling"
 	r2.robot_name = "Seed"
 	f.add_child(r2)
+	# Task M3-20: the cap counts the whole crew, so multibots change jobs freely inside it.
 	assert_eq(f.crew_size("clean"), cap)
 	for i: int in cap:
-		f.move_job("clean", "plant")
-	assert_eq(f.crew_size("plant"), cap, "plant crew stops at the cap")
-	assert_eq(f.crew_size("clean"), 1)
-	assert_false(f.move_job("clean", "plant"), "plant crew full")
-	f.apply_preset(0.0, 1.0)  # everything to planting
-	assert_lte(f.crew_size("plant"), cap)
+		assert_true(f.move_job("clean", "plant"))
+	assert_eq(f.crew_size("plant"), cap + 1, "every multibot moved to planting, beside the Seedling")
+	assert_eq(f.crew_size("clean"), 0)
+	assert_false(f.move_job("clean", "plant"), "nobody left to move")
+	f.apply_preset(1.0, 0.0)  # everything to cleaning
+	assert_eq(f.crew_size("clean"), cap)
 	assert_eq(f.crew_size("clean") + f.crew_size("plant") + f.crew_size("water"), cap + 1)
-	# Building: a multibot may join any crew with room, and starts there.
+	# Building: the crew is over its cap, so nothing more can be built.
 	Research.grant(Research.robot_requirement("multibot"))
-	assert_eq(f.join_crew("multibot"), "clean")
-	assert_ne(f.build_block_reason("multibot").substr(0, 10), "Crew full ")
+	assert_eq(f.join_crew("multibot"), "", "no room in the crew")
+	assert_string_contains(f.build_block_reason("multibot"), "Crew full")
+	GameState.world["hub_level"] = 2
+	assert_eq(f.join_crew("multibot"), "clean", "with room a multibot starts as a cleaner")
 
 
 # --- #20 Saved bale info --------------------------------------------------------------------

@@ -102,7 +102,16 @@ func test_bots_rows() -> void:
 	assert_true((hb["act"] as Callable).call())
 	assert_eq(f.count("haulbug"), 1)
 	rows = BenchBots.rows(f, Callable())
-	assert_false(rows.filter(func(r: Dictionary) -> bool: return str(r["id"]) == "tier_haulbug").is_empty(), "a Mk row once you have one")
+	# Task M3-20: tier steps open with the second city (the robots table, price.tier_cities_open).
+	assert_true(rows.filter(func(r: Dictionary) -> bool: return str(r["id"]) == "tier_haulbug").is_empty(), "no tier row in the first city")
+	var open_before: Variant = GameState.flags.get(Economy.FLAG_TIERS_OPEN)
+	GameState.flags[Economy.FLAG_TIERS_OPEN] = 2
+	rows = BenchBots.rows(f, Callable())
+	assert_false(rows.filter(func(r: Dictionary) -> bool: return str(r["id"]) == "tier_haulbug").is_empty(), "a tier row once you have one and the second city is open")
+	if open_before == null:
+		GameState.flags.erase(Economy.FLAG_TIERS_OPEN)
+	else:
+		GameState.flags[Economy.FLAG_TIERS_OPEN] = open_before
 
 
 ## [ui7] A robot type you own keeps its name on the Bots tab even before its research ("? ?" is

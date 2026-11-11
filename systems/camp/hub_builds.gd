@@ -21,7 +21,8 @@ extends RefCounted
 const TABLE: String = "builds"
 ## Builds owned by their own system (the match arms below). Every other id is a yard build
 ## (systems/camp/yard_builds.gd) and needs a definition in the yard table.
-const SYSTEM_BUILDS: Array[String] = ["trash_bin", "signal_tower", "air_scrubber", "signal_jammer", "conveyor", "auto_baler", "recycler"]
+const SYSTEM_BUILDS: Array[String] = ["trash_bin", "signal_tower", "air_scrubber", "signal_jammer", "conveyor", "auto_baler", "recycler",
+	RobotChain.BUILD_ID]
 
 static var _cfg: Dictionary = {}
 
@@ -106,6 +107,9 @@ static func is_built(world: Node, id: String) -> bool:
 			return lg != null and (LedgerArc.jammer_count() >= int(lg.call("jammer_def").get("max", 3)) or bool(lg.call("resolved")))
 		"conveyor", "auto_baler", "recycler":
 			return Stations.built_in_state(id)
+		RobotChain.BUILD_ID:
+			var rc: RobotChain = RobotChain.of(world)
+			return rc != null and rc.is_built()
 	return YardBuilds.built(id)
 
 
@@ -126,6 +130,9 @@ static func listed(world: Node, id: String) -> bool:
 			return lg != null and bool(lg.call("jammer_visible"))
 		"conveyor", "auto_baler", "recycler":
 			return Stations.of(world) != null and Research.exists(id) and Research.has(id) if world else false
+		RobotChain.BUILD_ID:  # the factory that builds robots: on offer from the city the planet names
+			var rc: RobotChain = RobotChain.of(world)
+			return rc != null and rc.listed()
 	return YardBuilds.listed(id, _hub_level(world))
 
 
@@ -176,6 +183,13 @@ static func entry(world: Node, id: String) -> Dictionary:
 				e["desc"] = str(st.def(id).get("desc", ""))
 				e["cost"] = st.def(id).get("cost", {})
 				e["reason"] = st.block_reason(id)
+		RobotChain.BUILD_ID:
+			var rc: RobotChain = RobotChain.of(world)
+			if rc:
+				e["name"] = rc.display_name()
+				e["desc"] = rc.description()
+				e["cost"] = rc.cost()
+				e["reason"] = rc.block_reason()
 		_:
 			var d: Dictionary = YardBuilds.def(id)
 			e["name"] = str(d.get("name", id))
@@ -247,6 +261,10 @@ static func build(world: Node, id: String) -> bool:
 		"conveyor", "auto_baler", "recycler":
 			var st: Stations = Stations.of(world)
 			if st == null or not st.build(id):
+				return false
+		RobotChain.BUILD_ID:
+			var rc: RobotChain = RobotChain.of(world)
+			if rc == null or not rc.build():
 				return false
 		_:
 			if not YardBuilds.build(id, _hub_level(world)):

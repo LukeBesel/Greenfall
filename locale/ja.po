@@ -17594,3 +17594,143 @@ msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いて
 
 #~ msgid "Sharper shredder teeth and a hotter smelter. More bolts and stock per bale."
 #~ msgstr "鋭い粉砕刃と高温の炉。ベール1個あたりのボルトと建材が増える。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Crew full (%d/%d): raise the base level"
+msgstr "クルー満員（%d/%d）：基地レベルを上げよう"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Crew full (%d/%d): open the next city"
+msgstr "クルー満員（%d/%d）：次の街を開こう"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Opens with the next city"
+msgstr "次の街で解放"
+
+#: M3-20 crew pacing and the robot chain
+msgid "+%d robot spots"
+msgstr "ロボット枠 +%d"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Need %s more"
+msgstr "あと %s 必要"
+
+#: M3-20 crew pacing and the robot chain
+msgid "%d built  ·  crew full"
+msgstr "%d 台製作  ·  クルー満員"
+
+#: M3-20 crew pacing and the robot chain
+msgid "The Assembler built its first robot. Set the build mix at the workbench."
+msgstr "Assembler が最初のロボットを作った。作業台で製作配分を決めよう。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Your Scrounger brought parts home. Newly cleaned ground holds more."
+msgstr "Scrounger がパーツを持ち帰った。きれいにしたばかりの地面にはまだ埋まっている。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Salvage: %s in an old factory shell."
+msgstr "回収：古い工場の骨組みから %s。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "The old factory line can run again. Build the Assembler at the workbench."
+msgstr "古い工場のラインがまた動かせる。作業台で Assembler を建てよう。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Build mix: how many of each type the line builds in turn. A type joins the line after you build the first one by hand. Paint where Scroungers search in Command view."
+msgstr "製作配分：ラインが順番に作る各タイプの台数。最初の1台を手で作るとそのタイプがラインに加わる。Scrounger の探す場所は指揮ビューで塗ろう。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Nothing to build: give a type a share."
+msgstr "作るものがない：タイプに配分を入れよう。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Crew full: the line waits for room."
+msgstr "クルー満員：ラインは空きを待っている。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Waiting for Parts."
+msgstr "パーツ待ち。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Paused."
+msgstr "一時停止中。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Starting up."
+msgstr "起動中。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "by hand first"
+msgstr "まず手作り"
+
+#: M3-20 crew pacing and the robot chain
+msgid "More %s"
+msgstr "%s を増やす"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Fewer %s"
+msgstr "%s を減らす"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Clean zone"
+msgstr "清掃ゾーン"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Search zone"
+msgstr "探索ゾーン"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Plant zone"
+msgstr "植え付けゾーン"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Water zone"
+msgstr "水やりゾーン"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Haul zone"
+msgstr "運搬ゾーン"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Parts finder. Digs buried parts out of cleaned ground in its search area and carries them to the base."
+msgstr "パーツ探しロボ。探索ゾーンのきれいになった地面から埋まったパーツを掘り出し、基地へ運ぶ。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Bigger Sack"
+msgstr "大きな袋"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Repaired"
+msgstr "修理済み"
+
+#: M3-20 crew pacing and the robot chain
+msgid "An old factory line, running again. Parts go in at the loading bay, robots roll out of the door, one at a time, in the mix you set."
+msgstr "ふたたび動き出した古い工場のライン。パーツは搬入口から入り、ロボットは決めた配分どおりに1台ずつ扉から出てくる。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Scrounger Plans"
+msgstr "Scrounger の設計図"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Comes with the second city: WREN will send plans for a parts finder."
+msgstr "2つ目の街で届く：WREN がパーツ探しロボの設計図を送ってくれる。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "There are parts buried all over the ground you clean, Lumi. I found plans for a Scrounger: it digs them up and brings them home. Bots tab!"
+msgstr "Lumi、きれいにした地面のあちこちにパーツが埋まっているよ。Scrounger の設計図を見つけた。掘り出して持ち帰ってくれる。ロボットタブへ！"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Its plans come with the second city."
+msgstr "設計図は2つ目の街で届く。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "A low digger with a detector coil out front. It noses over ground you have cleaned, digs up what the junk left behind and carries a crate of parts home."
+msgstr "前に探知コイルをつけた背の低い掘りロボ。きれいにした地面をかぎ回り、ガラクタが残したものを掘り出して、パーツの箱を持ち帰る。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Scrounger"
+msgstr "Scrounger"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Assembler"
+msgstr "Assembler"

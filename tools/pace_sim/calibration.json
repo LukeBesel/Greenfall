@@ -21,7 +21,7 @@
     "crew_travel_s_per_ring": {"value": 50.0, "how": "Seconds a cleaner robot spends driving per hex, per ring of distance between the frontier and the base. Bot run, cleaner output per robot in four windows (minutes 24-33, 33-44, 45-60, 60-70): 0.35, 0.28, 0.30 and 0.19 hexes a minute, which fits 32-55 s a ring."},
     "haul_overhead_s": {"value": 8.0, "how": "ESTIMATE. Seconds a hauler spends loading and unloading per trip. Not measured."},
     "recycle_every": {"value": 4.0, "how": "Copied from tools/autoplay.gd _shop: the bot sends every 4th bale to the recycler."},
-    "robot_cost_growth": {"value": 1.35, "how": "Copied from robots/fleet.gd build_cost, where it is a literal: each robot of a type costs 1.35x the one before. It belongs in the robots table."},
+    "robot_cost_growth": {"value": 1.0, "how": "Unused since M3-20: the growth of a robot's price is in the robots table (price.cubes_growth, price.parts_growth; core/crew_rules.gd)."},
     "garden_time_share": {"value": 0.2, "how": "The bot now gives the garden at most a quarter of Lumi's time once it is open (tools/autoplay.gd GARDEN_SHARE: cubes come only from Lumi's own hands, so watering without end earned nothing). Fitted to the Nov 11 run's tower, Bot Bay and base level 2 (12.6, 23.2 and 32.6 min from control). Was 0.37."},
     "seed_fetch_s": {"value": 90.0, "how": "Bot run: the seed tin is picked up about 2 min after the seed step appears (signal after 75 s, then the walk)."},
     "plant_seed_s": {"value": 6.0, "how": "ESTIMATE. Seconds of garden time to plant one seed. Not measured."},

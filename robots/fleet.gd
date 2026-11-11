@@ -95,10 +95,20 @@ func base_level() -> int:
 	return int(GameState.world.get("hub_level", 1))
 
 
-## Max robots per crew: base + per_level * hub level (data/robots.json "crew_cap").
+## How many of the planet's cities are open (each one raises the crew cap).
+func cities_open() -> int:
+	return Economy.tiers_open()
+
+
+## The most robots in all, whatever their job: the planet's robots table, "crew_cap"
+## (core/crew_rules.gd). Buildings that build robots are not robots.
 func crew_cap() -> int:
-	var c: Dictionary = Economy.robot_cfg.get("crew_cap", {})
-	return int(c.get("base", 3)) + int(c.get("per_level", 3)) * base_level()
+	return CrewRules.cap(Economy.robot_cfg, base_level(), cities_open())
+
+
+## Whether the crew has room for one more robot.
+func has_room() -> bool:
+	return robot_total() < crew_cap()
 
 
 ## The crew a newly built robot of this type joins (multibots start as cleaners).
@@ -124,16 +134,14 @@ static func types_for_role(role_id: String) -> Array[String]:
 const MULTI_JOBS: Array[String] = ["clean", "plant", "water"]
 
 
-## First crew a new robot of this type can join without breaking the cap ("" = all full).
-## Specialists have one crew; a multibot can take any job with room.
+## The crew a new robot of this type joins ("" = the crew is full). Specialists have one crew; a
+## multibot starts in the first of its jobs.
 func join_crew(type_id: String) -> String:
-	var jobs: Array[String] = [crew_of_type(type_id)]
+	if not has_room():
+		return ""
 	if str(Economy.robots.get(type_id, {}).get("role", "")) == "any":
-		jobs = MULTI_JOBS
-	for j: String in jobs:
-		if crew_size(j) < crew_cap():
-			return j
-	return ""
+		return MULTI_JOBS[0]
+	return crew_of_type(type_id)
 
 
 ## "" if the type can be built now, else why not (research, crew cap, parts, cubes).
@@ -143,7 +151,7 @@ func build_block_reason(type_id: String) -> String:
 			return Research.robot_lock_text(type_id)
 		return tr("Locked · research %s") % tr(str(Research.def(Research.robot_requirement(type_id)).get("name", "?")))
 	if join_crew(type_id) == "":
-		return tr("Crew full (%d/%d): upgrade the hub") % [crew_size(crew_of_type(type_id)), crew_cap()]
+		return crew_full_text()
 	if not GameState.can_afford("parts", build_parts(type_id)):  # [ui2] builds cost Parts + cubes
 		return tr("Not enough parts")
 	if not GameState.can_afford("cubes", build_cost(type_id)):
@@ -151,18 +159,20 @@ func build_block_reason(type_id: String) -> String:
 	return ""
 
 
+## What a full crew is told: the base level or the next city, whichever holds it back.
+func crew_full_text() -> String:
+	if CrewRules.cap_gain_at_level(Economy.robot_cfg, base_level(), cities_open()) > 0:
+		return tr("Crew full (%d/%d): raise the base level") % [robot_total(), crew_cap()]
+	return tr("Crew full (%d/%d): open the next city") % [robot_total(), crew_cap()]
+
+
 func build_cost(type_id: String) -> BigNum:
-	var base: float = float(Economy.robots[type_id].get("cost", 100))
-	return BigNum.from_float(base * pow(1.35, count(type_id)))
+	return BigNum.from_float(CrewRules.build_cubes(Economy.robot_cfg, Economy.robots[type_id], count(type_id)))
 
 
-## [ui2] Parts for the next robot of a type (data/robots.json "parts"; x1.2 per robot owned).
-const PARTS_GROWTH: float = 1.2
-
-
+## Parts for the next robot of a type (the planet's robots table: "parts", "price", "tiers").
 func build_parts(type_id: String) -> BigNum:
-	var base: float = float(Economy.robots[type_id].get("parts", 30))
-	return BigNum.from_float(ceilf(base * pow(PARTS_GROWTH, count(type_id))))
+	return BigNum.from_float(CrewRules.build_parts(Economy.robot_cfg, Economy.robots[type_id], count(type_id), tier_of(type_id)))
 
 
 func can_build(type_id: String) -> bool:
@@ -205,19 +215,17 @@ func spawn(type_id: String, tier: int, at: Vector3, bonus: float, rname: String)
 	return r
 
 
-## [ui2] Parts for each Mk step (Mk II, III, IV). The Restored+ Control Core used to be the gate
-## (a rare find); these keep Mk tiers about as far apart as they were.
-const TIER_PARTS: Array[float] = [200.0, 700.0, 2000.0]
-
-
 ## Next tier requirements for a type: {cost: BigNum (cubes), parts: BigNum, ok: bool, reason: String}
 func tier_requirements(type_id: String) -> Dictionary:
 	var t: int = tier_of(type_id)
 	if t + 1 >= Economy.robot_tiers.size():
 		return {"maxed": true}
 	var nt: Dictionary = Economy.robot_tiers[t + 1]
-	var cost := BigNum.from_float(float(Economy.robots[type_id].get("cost", 100)) * float(nt.get("cost_mult", 1)))
-	var parts := BigNum.from_float(TIER_PARTS[clampi(t, 0, 2)])  # [ui2] Parts only, no Control Core
+	if not CrewRules.tiers_open(Economy.robot_cfg, cities_open()):
+		return {"maxed": false, "locked": true, "cost": BigNum.zero(), "parts": BigNum.zero(), "core_rarity": 0, "ok": false,
+			"reason": tr("Opens with the next city"), "next": nt}
+	var cost := BigNum.from_float(CrewRules.tier_cubes(Economy.robot_cfg, Economy.robots[type_id], t))
+	var parts := BigNum.from_float(CrewRules.tier_parts(Economy.robot_cfg, Economy.robots[type_id], t, count(type_id)))
 	var ok: bool = GameState.can_afford("cubes", cost) and GameState.can_afford("parts", parts)
 	var reason: String = ""
 	if not GameState.can_afford("parts", parts):
@@ -256,8 +264,8 @@ func allocation() -> Dictionary:
 
 
 func move_job(from_job: String, to_job: String) -> bool:
-	if from_job == to_job or crew_size(to_job) >= crew_cap():
-		return false  # crew full
+	if from_job == to_job:
+		return false
 	for r: Robot in robots():
 		if r.type_id == "multibot" and r.job == from_job:
 			r.set_job(to_job)
@@ -274,21 +282,6 @@ func apply_preset(clean_pct: float, plant_pct: float) -> void:
 	var nc: int = int(round(n * clean_pct))
 	var np: int = int(round(n * plant_pct))
 	var want: Dictionary = {"clean": mini(nc, n), "plant": clampi(np, 0, maxi(n - nc, 0)), "water": maxi(n - nc - np, 0)}
-	# Room per job = cap minus the specialists already in that crew.
-	var cap: int = crew_cap()
-	var room: Dictionary = {}
-	for j: String in MULTI_JOBS:
-		var multi_in: int = 0
-		for r: Robot in mb:
-			if r.job == j:
-				multi_in += 1
-		room[j] = maxi(cap - (crew_size(j) - multi_in), 0)
-		want[j] = mini(int(want[j]), int(room[j]))
-	var left: int = n - int(want["clean"]) - int(want["plant"]) - int(want["water"])
-	for j: String in MULTI_JOBS:
-		var add: int = mini(left, int(room[j]) - int(want[j]))
-		want[j] = int(want[j]) + add
-		left -= add
 	# Bots already in a job with quota stay put; the rest move to jobs with quota left.
 	var quota: Dictionary = want.duplicate()
 	var movers: Array[Robot] = []
@@ -303,7 +296,6 @@ func apply_preset(clean_pct: float, plant_pct: float) -> void:
 				quota[j] = int(quota[j]) - 1
 				r.set_job(j)
 				break
-		# No job has room: the bot keeps its job (only possible in an already over-cap save).
 
 
 # --- Orders (Command View) -------------------------------------------------------------

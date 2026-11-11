@@ -21,7 +21,8 @@ static func _snap(s: Node) -> Dictionary:
 	var crew: SphereCrew = (s.orbit as SliceOrbit).crews.crew
 	if crew:
 		for u: Dictionary in crew.robots():
-			bots.append("%s %s t%d hopper %.0f carry %d junk %.0f" % [u["name"], u["type"], int(u["tier"]), float(u["hopper"]), (u["carry"] as Array).size(), float(u["log"]["junk"])])
+			bots.append("%s %s t%d hopper %.0f carry %d junk %.0f sack %.1f" % [u["name"], u["type"], int(u["tier"]), float(u["hopper"]), (u["carry"] as Array).size(),
+				float(u["log"]["junk"]), SphereScrounge.carried(u)])
 	return {
 		"robots": bots,  # [orbC]
 		"schema": int(GameState.orbit.get("schema", 0)),
@@ -40,6 +41,8 @@ static func _snap(s: Node) -> Dictionary:
 		"sites_built": str(OrbitSave.sites_to_array((s.orbit as SliceOrbit).globe.sites)),
 		"hexes_paid": (GameState.orbit.get("hexes_paid", {}) as Dictionary).size(),
 		"districts": JSON.stringify((s.orbit as SliceOrbit).districts.save_state()),  # stages, unlocked, visited
+		"chain": JSON.stringify((s.orbit as SliceOrbit).chain.save_state()),  # buried parts, the Assembler, its mix
+		"assembler_model": (s.orbit as SliceOrbit).chain.model != null,
 		"restoration": JSON.stringify((s.orbit as SliceOrbit).restoration.save_state()),
 		"hex_level_target": (s.get("hex_levels") as HexLevels).level_of(int(s.get_meta("rt_target", -1))),
 		"cells_level_target": g.cells.level[int(s.get_meta("rt_target", 0))],
@@ -600,6 +603,19 @@ static func run(rt: Node, check: Callable) -> void:
 	var fb: Dictionary = crew.spawn("haulbug", 0, far_hub, far_hub, "RT-far")
 	fb["carry"] = [3.0, 4.0]
 	crew.set_process(false)
+	# The robot chain: the Assembler stands with a mix of the player's and a robot half built, a
+	# hex holds buried parts, a Scrounger has brought a fraction of a Part home.
+	var rc: RobotChain = so.chain
+	rc.chain.offered = true
+	check.call("orbit_assembler_built", true, rc.build())
+	rc.set_weight("scoopie", 7)
+	rc.chain.current = "scoopie"
+	rc.chain.progress_s = rc.chain.assembly_s() * 0.5
+	rc.set_paused(true)
+	rc.chain.seed_cell(far_hub, "")
+	rc.chain.take(far_hub, 0.25)
+	rc.chain.deliver(0.25)
+	nb["parts"] = 3.0
 	var bot_dirs: Array[Vector3] = [crew.unit_dir(nb), crew.unit_dir(fb)]
 	var rad: float = g.grid.radius_m
 	check.call("orbit_robot_near_far", "near far", ("near " if crew.is_near(nb) else "far ") + ("near" if crew.is_near(fb) else "far"))
@@ -678,6 +694,9 @@ static func _old_save(tree: SceneTree, packed: PackedScene, check: Callable) -> 
 		if g.cells.state[c] == 1 and not g.cells.has_flag(c, SphereCells.F_HUB):
 			clean_cells += 1
 	check.call("orbit_old_cells_cleaned", true, clean_cells >= 9)
+	# A save from before the robot chain: its clean ground is spent, nothing is built or on offer.
+	check.call("orbit_old_chain_ground_spent", true, so.chain.chain.seeded.size() >= clean_cells and so.chain.chain.stock_total() == 0.0)
+	check.call("orbit_old_chain_no_assembler", false, so.chain.is_built() or so.chain.listed())
 	var p: Patch = s.get("patch")
 	check.call("orbit_old_lumi_on_start_site", 0, g.site_at(p.global_position))
 	check.call("orbit_old_chest", 2.5, snappedf(p.compartment.fill, 0.01))

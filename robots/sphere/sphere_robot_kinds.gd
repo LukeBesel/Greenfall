@@ -15,6 +15,7 @@ const PROFILES: Dictionary = {
 	"drip": {"turn": 3.4, "body": 0.35, "tilt": 0.5, "hover": 0.08},     # hover tank
 	"skimmer": {"turn": 2.0, "body": 0.45, "tilt": 0.2, "hover": 0.12},  # floats, drifts round corners
 	"multibot": {"turn": 3.0, "body": 0.45, "tilt": 0.7, "hover": 0.0},
+	"scrounger": {"turn": 3.8, "body": 0.35, "tilt": 0.8, "hover": 0.0},  # low tracked digger: quick on its feet
 }
 
 

@@ -17594,3 +17594,143 @@ msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了
 
 #~ msgid "Sharper shredder teeth and a hotter smelter. More bolts and stock per bale."
 #~ msgstr "更锋利的粉碎齿和更热的熔炉。每个捆包产出更多螺栓和建材。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Crew full (%d/%d): raise the base level"
+msgstr "小队已满（%d/%d）：提升基地等级"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Crew full (%d/%d): open the next city"
+msgstr "小队已满（%d/%d）：开启下一座城市"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Opens with the next city"
+msgstr "随下一座城市开放"
+
+#: M3-20 crew pacing and the robot chain
+msgid "+%d robot spots"
+msgstr "+%d 个机器人位"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Need %s more"
+msgstr "还差 %s"
+
+#: M3-20 crew pacing and the robot chain
+msgid "%d built  ·  crew full"
+msgstr "已造 %d  ·  小队已满"
+
+#: M3-20 crew pacing and the robot chain
+msgid "The Assembler built its first robot. Set the build mix at the workbench."
+msgstr "Assembler 造出了第一台机器人。到工作台设置建造配比。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Your Scrounger brought parts home. Newly cleaned ground holds more."
+msgstr "你的 Scrounger 带回了零件。新清理的地面里还有更多。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Salvage: %s in an old factory shell."
+msgstr "回收：在旧工厂的空壳里找到 %s。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "The old factory line can run again. Build the Assembler at the workbench."
+msgstr "旧工厂的流水线可以重新运转。到工作台建造 Assembler。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Build mix: how many of each type the line builds in turn. A type joins the line after you build the first one by hand. Paint where Scroungers search in Command view."
+msgstr "建造配比：流水线轮流建造每种机器人的数量。亲手造出第一台后，该类型才会上线。在指挥视图里涂出 Scrounger 的搜索区域。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Nothing to build: give a type a share."
+msgstr "没有可建造的：给某个类型分配份额。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Crew full: the line waits for room."
+msgstr "小队已满：流水线等待空位。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Waiting for Parts."
+msgstr "等待零件。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Paused."
+msgstr "已暂停。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Starting up."
+msgstr "正在启动。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "by hand first"
+msgstr "先手工造"
+
+#: M3-20 crew pacing and the robot chain
+msgid "More %s"
+msgstr "增加 %s"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Fewer %s"
+msgstr "减少 %s"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Clean zone"
+msgstr "清理区"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Search zone"
+msgstr "搜索区"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Plant zone"
+msgstr "种植区"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Water zone"
+msgstr "浇水区"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Haul zone"
+msgstr "搬运区"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Parts finder. Digs buried parts out of cleaned ground in its search area and carries them to the base."
+msgstr "零件搜寻机器人。在搜索区内从清理过的地面挖出埋藏的零件，并运回基地。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Bigger Sack"
+msgstr "更大的袋子"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Repaired"
+msgstr "修复"
+
+#: M3-20 crew pacing and the robot chain
+msgid "An old factory line, running again. Parts go in at the loading bay, robots roll out of the door, one at a time, in the mix you set."
+msgstr "一条重新运转的旧工厂流水线。零件从装卸口送入，机器人按你设定的配比一台一台从门口开出。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Scrounger Plans"
+msgstr "Scrounger 图纸"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Comes with the second city: WREN will send plans for a parts finder."
+msgstr "随第二座城市到来：WREN 会发来零件搜寻机器人的图纸。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "There are parts buried all over the ground you clean, Lumi. I found plans for a Scrounger: it digs them up and brings them home. Bots tab!"
+msgstr "Lumi，你清理过的地面下到处埋着零件。我找到了 Scrounger 的图纸：它会把零件挖出来带回家。去机器人页签看看！"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Its plans come with the second city."
+msgstr "它的图纸随第二座城市到来。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "A low digger with a detector coil out front. It noses over ground you have cleaned, digs up what the junk left behind and carries a crate of parts home."
+msgstr "一台低矮的挖掘机器人，前端装着探测线圈。它在你清理过的地面上嗅探，挖出废料留下的东西，再把一箱零件运回家。"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Scrounger"
+msgstr "Scrounger"
+
+#: M3-20 crew pacing and the robot chain
+msgid "Assembler"
+msgstr "Assembler"

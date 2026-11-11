@@ -1305,7 +1305,18 @@ func _shop(want: Dictionary) -> void:
 		if ok and robot != "" and fleet.can_build(robot):
 			var at: Vector3 = world.upgrades.build_at.call()
 			fleet.build(robot, at)
-	for t: String in (Economy.robot_order if fleet != null and BenchTiers.tab_open("bots") else []):  # [orbB] [v1guide]
+	# The Assembler as soon as it is on offer: from then on the line builds the crew.
+	if RobotChain.of(world) != null and RobotChain.of(world).listed() and HubBuilds.build(world, RobotChain.BUILD_ID):
+		_progress()
+		_event("assembler", {})
+	# A bigger crew before a better one: Parts go to tiers and crew upgrades only when the crew is
+	# full. While there is room they are kept for the next robot, whose plans may be on the way:
+	# in the first city Parts are scarce, and 8 of them on a faster Haul Bug put the first Scoopie
+	# back by six minutes.
+	var crew_full: bool = fleet != null and not fleet.has_room()
+	if crew_full and BenchTiers.tab_open("bots"):
+		_crew_upgrade(fleet)
+	for t: String in (Economy.robot_order if crew_full and BenchTiers.tab_open("bots") else []):  # [orbB] [v1guide]
 		var treq: Dictionary = fleet.tier_requirements(t)
 		var keep_cubes: float = float(want.get("hub_save", 0.0)) * 0.5  # [ui2] a tier keeps half the base's cubes
 		if fleet.count(t) > 0 and treq.get("ok", false) and _mats_spare({"parts": (treq["parts"] as BigNum).to_float()}, false) \
@@ -1537,6 +1548,27 @@ func _robot_goal(type_id: String) -> bool:
 	return false
 
 
+## The cheapest crew upgrade priced in Parts, for a type the crew has, bought when the Parts are
+## spare (the base's needs are kept).
+func _crew_upgrade(fleet: Fleet) -> void:
+	var best: String = ""
+	var best_c: float = INF
+	for id: String in Economy.upgrade_order:
+		var type_id: String = str(Economy.upgrade_defs[id].get("robot", ""))
+		if type_id == "" or fleet.count(type_id) == 0 or Economy.upgrade_currency(id) != "parts":
+			continue
+		if not Economy.is_unlocked(id) or Economy.is_maxed(id):
+			continue
+		var c: float = Economy.upgrade_cost(id).to_float()
+		if c < best_c:
+			best_c = c
+			best = id
+	if best != "" and GameState.get_currency("parts").to_float() >= best_c and _mats_spare({"parts": best_c}, false):
+		if Economy.buy_upgrade(best, 1) > 0:
+			_progress()
+			_event("crew_upgrade", {"id": best, "level": GameState.level_of(best)})
+
+
 ## Cheapest useful upgrade affordable while keeping `reserve` cubes (or, with leak, under 15% of the purse).
 const LEAK_OF_RESERVE: float = 0.2
 
@@ -1552,6 +1584,8 @@ func _best_upgrade(reserve: float, leak: bool = true) -> String:
 	for id: String in Economy.upgrade_order:
 		if not Economy.is_unlocked(id) or Economy.is_maxed(id) or not _useful_upgrade(id):
 			continue
+		if Economy.upgrade_currency(id) != "cubes":
+			continue  # the crew's upgrades cost Parts: _crew_upgrade buys those
 		var c: float = Economy.upgrade_cost(id).to_float()
 		if c < best_c:
 			best_c = c
@@ -1563,6 +1597,10 @@ func _best_upgrade(reserve: float, leak: bool = true) -> String:
 	if cubes - best_c >= reserve or (leak and best_c <= maxf(cubes * 0.15, reserve * LEAK_OF_RESERVE)):
 		return best
 	return ""
+
+
+## The bot keeps one parts finder for every this many robots.
+const FINDER_ONE_IN: int = 6
 
 
 ## The robot to work toward next (research done, crew room), or "".
@@ -1588,6 +1626,10 @@ func _next_robot() -> String:
 		order.append("scoopie")
 	if haul * 2 < scoop:
 		order.append("haulbug")
+	# A parts finder for every FINDER_ONE_IN robots, once its plans are in (the default build mix).
+	var finder: String = str((Economy.robot_cfg.get("chain", {}) as Dictionary).get("finder", ""))
+	if finder != "" and Research.robot_unlocked(finder) and fleet.count(finder) * FINDER_ONE_IN <= fleet.robot_total():
+		order.append(finder)
 	if seeds_on and fleet.count("seedling") == 0 and GameState.get_currency("seeds").to_float() > 8.0:
 		order.append("seedling")
 	order.append("scoopie")

@@ -43,6 +43,7 @@
   "robots": {
     "scoopie": {"hint": "Build one at the workbench.", "desc": "A small, earnest cleaner with one scoop arm and a lot of enthusiasm. It hums when it finds a good pile."},
     "haulbug": {"hint": "Build one at the workbench.", "desc": "A fork cart that never complains. It carries loose bales to the scale and parks itself neatly afterwards."},
+    "scrounger": {"hint": "Its plans come with the second city.", "desc": "A low digger with a detector coil out front. It noses over ground you have cleaned, digs up what the junk left behind and carries a crate of parts home."},
     "seedling": {"hint": "Research the Seedling Blueprint.", "desc": "A planter bot with a seed hopper on its back. It pats every seed into the soil, twice, just to be sure."},
     "drip": {"hint": "Research the Drip Blueprint.", "desc": "A watering bot with a sloshy tank. It makes a little happy gurgle when a plant drinks."},
     "multibot": {"hint": "Research the Multibot Blueprint.", "desc": "A helper that can clean, plant or water. Not the fastest at anything, but always where it is needed."},

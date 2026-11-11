@@ -14,3 +14,5 @@ Short notes only. Nothing here is designed or scheduled. Planet 1 is the only pl
 - Returning to an earlier planet with a later tool could open optional extra ground. It must never be required for a planet's own ending.
 - Touch controls and a mobile layout.
 - Higher robot tiers and larger crews; bigger currency numbers as planets get harder.
+
+- **Visible robot transport between cities** (M3-20): robots are shipped unseen today; a crawler or the rocket hold could carry them on screen.

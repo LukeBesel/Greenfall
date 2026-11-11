@@ -9,7 +9,11 @@ extends Control
 
 const ROLE_COL: Dictionary = {
 	"clean": Color(1.0, 0.72, 0.3), "haul": Color(0.45, 0.72, 1.0), "plant": Color(0.55, 0.9, 0.5),
-	"water": Color(0.4, 0.9, 0.95), "skim": Color(0.35, 0.85, 0.75),
+	"water": Color(0.4, 0.9, 0.95), "skim": Color(0.35, 0.85, 0.75), "find": Color(0.95, 0.55, 0.85),
+}
+## What each role's area is called in the label at the top.
+const ROLE_LABEL: Dictionary = {
+	"clean": "Clean zone", "find": "Search zone", "plant": "Plant zone", "water": "Water zone", "haul": "Haul zone",  # l10n
 }
 const CLUSTER_PX: float = 26.0
 const PIP_R: float = 5.0
@@ -38,7 +42,7 @@ func _process(_d: float) -> void:
 	if on:
 		var keys: String = tr("Y: role · Hold A: paint · Hold X: erase · Left stick: move") if cmd.using_pad \
 			else tr("Tab: role · Left: paint · Right: erase · Middle: send a robot · E: back to Lumi")  # [v3qa] pad
-		_label.text = "%s  ·  %s" % [(tr("%s zone") % tr(cmd.role.capitalize())).to_upper(), keys]
+		_label.text = "%s  ·  %s" % [tr(str(ROLE_LABEL.get(cmd.role, "Clean zone"))).to_upper(), keys]
 		queue_redraw()
 
 
