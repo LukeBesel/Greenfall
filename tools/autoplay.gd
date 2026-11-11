@@ -720,6 +720,8 @@ func _do_pickup(p: Patch) -> bool:
 
 ## Buried parts: dig the ones the detector finds close by (a person follows the beeping).
 func _do_dig(p: Patch) -> bool:
+	if _at_far():
+		return false  # [v6pace] the station's step first (digging there kept pulling it off half-cleaned cells)
 	if not p.carried.is_empty():
 		return false
 	var det: PartDetector = p.detector
@@ -943,6 +945,19 @@ func _do_clean(p: Patch) -> void:
 		_target_piece = _nearest_piece_in(p, h)
 		_stall_check_t = 0.0
 	if _target_piece < 0:
+		if DevHooks.has("bot-debug") and _at_far():  # [v6pace] what is left in a cell the bot gives up on
+			var alive: int = 0
+			var heavy: int = 0
+			var ign: int = 0
+			for pid: int in field.hex_pieces[h]:
+				if field.piece_alive[pid] == 0:
+					continue
+				alive += 1
+				if _ignore_piece.has(pid):
+					ign += 1
+				elif not Pace.can_lift(field, pid):
+					heavy += 1
+			print("[bot-skip] %.1f min  cell %d  removed %.2f  alive %d  too heavy %d  given up (out of reach) %d" % [_now() / 60.0, h, field.removed_fraction(h), alive, heavy, ign])
 		_skip_hex[h] = true
 		_focus_hex = -1
 		return
@@ -1666,11 +1681,16 @@ func _do_far_outpost(p: Patch) -> bool:
 			best = k
 	if best < 0:
 		return true
+	if best_d > 12.0:  # its hex only loads near Lumi: walk over first
+		_set_task("outpost")
+		_go(p, _outpost_at(ops, best), 2.5)
+		return true
 	var why: String = ops.repair_block(best)
 	if DevHooks.has("bot-debug") and int(_now()) % 30 == 0:
 		print("[bot-outpost] %.1f min  spot %d of %d  hub_index %d  at %.1f m  clean %.2f of %.2f  block '%s'  focus %d" % [_now() / 60.0, best, ops.spots.size(), ops.hub_index, best_d, ops.clean_fraction(best), ops.clean_needed(), why, _focus_hex])
 	if ops.clean_fraction(best) < ops.clean_needed():
 		_focus_hex = int(ops.spots[best]["hex"])
+		_skip_hex.erase(_focus_hex)
 		return false
 	if best_d > 4.0:
 		_set_task("outpost")
