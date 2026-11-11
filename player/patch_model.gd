@@ -468,9 +468,10 @@ func _update_accessories(delta: float) -> void:
 			var b: Basis = _float.global_transform.basis
 			var fwd: Vector3 = -b.z
 			var side: Vector3 = b.x
-			var p: Vector3 = claw_point() + fwd * 0.14 + side * 0.12 + Vector3.UP * (0.16 + sin(_t * 1.4) * 0.008)
+			var mu: Vector3 = global_basis.y.normalized()  # [v6feel] his own up (world +Y only on a flat world)
+			var p: Vector3 = claw_point() + fwd * 0.14 + side * 0.12 + mu * (0.16 + sin(_t * 1.4) * 0.008)
 			var face_dir: Vector3 = (fwd * 0.55 + side * 0.85).normalized()
-			_holo.global_transform = Transform3D(Basis.looking_at(-face_dir, Vector3.UP).scaled(Vector3(e, e, 1.0)), p)
+			_holo.global_transform = Transform3D(Basis.looking_at(-face_dir, mu).scaled(Vector3(e, e, 1.0)), p)
 			_holo_mat.set_shader_parameter("amt", e)
 			_holo_mat.set_shader_parameter("t_now", _t)
 	if _case:
@@ -497,7 +498,7 @@ func _update_accessories(delta: float) -> void:
 		var pos: Vector3 = c + basis_m * off
 		var vel := Vector3(-sin(a), 0.0, cos(a) * 0.75)
 		var heading: Vector3 = (basis_m * vel).normalized()
-		_bfly.global_transform = Transform3D(Basis.looking_at(heading, Vector3.UP).rotated(heading, sin(_t * 2.0) * 0.2).scaled(Vector3.ONE * 2.2), pos)
+		_bfly.global_transform = Transform3D(Basis.looking_at(heading, global_basis.y.normalized()).rotated(heading, sin(_t * 2.0) * 0.2).scaled(Vector3.ONE * 2.2), pos)  # [v6feel] his own up
 		var flap: float = sin(_t * 17.0) * 0.85 + 0.35
 		for h: Node3D in _bfly_wings:
 			h.rotation.z = flap * float(h.get_meta("side", 1.0))
@@ -711,7 +712,7 @@ func _update_beam(delta: float) -> void:
 
 ## World position just above the raised right claw (where the hologram sits).
 func hand_point() -> Vector3:
-	return claw_point() + Vector3(0, 0.05, 0)
+	return claw_point() + global_basis.y.normalized() * 0.05  # [v6feel]
 
 
 func set_scooping(active: bool) -> void:
