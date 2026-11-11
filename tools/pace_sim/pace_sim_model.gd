@@ -10,6 +10,9 @@ extends RefCounted
 
 const TICK_S: float = 1.0
 
+## Payouts that are Lumi's own loads: the side income (calibration side_income_share) rides on them.
+const HAND_WINS: Array[String] = ["dump", "bale_sold", "haul"]
+
 var data: PaceSimData
 var policy: PaceSimPolicy
 var work: PaceSimWork
@@ -78,6 +81,8 @@ func seal() -> void:
 func pay(amount: float, win: String = "") -> void:
 	if amount <= 0.0:
 		return
+	if win in HAND_WINS:
+		amount *= 1.0 + data.k("side_income_share")  # level rewards and weather, spread over the loads
 	cubes += amount
 	earned += amount
 	if win != "":
@@ -288,6 +293,9 @@ func glim_cost(track: String) -> Dictionary:
 
 func buy_glim(track: String, margin: float = 1.0) -> bool:
 	var cost: Dictionary = glim_cost(track)
+	var repaired: String = str((data.section("build_sets_flag") as Dictionary).get(GlimDirector.BUILD_ID, ""))
+	if repaired != "" and not flags.get(repaired, false):
+		return false  # Glim's tracks open once he is repaired, as Glim.block_reason has it
 	if cost.is_empty() or not can_pay(cost, margin):
 		return false
 	_spend(cost, "buddy", track)

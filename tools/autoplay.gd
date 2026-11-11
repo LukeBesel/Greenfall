@@ -326,6 +326,9 @@ func update(delta: float) -> void:
 	if p == null:
 		return
 	_dt = delta
+	if not _report.has("control_s") and world.get("depot") != null and world.get("orbit") is SliceOrbit:
+		for line: String in YardReport.lines((world.orbit as SliceOrbit).globe, (world.depot as Depot).bin_world(), (world.depot as Depot).global_position):
+			print(line)  # the walking the start layout costs, for the pacing fit
 	_mark("control_s")
 	if not _pacing_printed and _since_control(_now()) >= PACING_WINDOW_S:
 		_pacing_printed = true

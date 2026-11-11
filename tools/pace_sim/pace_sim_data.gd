@@ -66,6 +66,8 @@ var glim_tracks: Array[Dictionary] = []
 var _cal: Dictionary = {}
 var _strip_scaled: bool = false
 var _district_rings: int = 0
+var _to_bin := PackedFloat32Array()
+var _to_scale := PackedFloat32Array()
 
 
 func _init() -> void:
@@ -73,6 +75,7 @@ func _init() -> void:
 	_derive_junk()
 	_derive_parts()
 	_derive_space()
+	_derive_walk()
 	_load_chains()
 
 
@@ -97,9 +100,41 @@ func has_content() -> bool:
 	return not mix.is_empty() and not Economy.patch_base.is_empty()
 
 
-## Distance in metres from the bin to the n-th hex cleaned (0 = the first): hexes go ring by ring.
+## Metres from the bin to the middle of the n-th hex cleaned (0 = the first). The hexes round the
+## start yard are the measured ones (calibration.json "yard_hexes": their middles in the yard's own
+## frame, so the distance follows the yard's bin anchor); past them hexes go ring by ring.
 func hex_distance(n: int) -> float:
-	return k("yard_offset_m") + float(ring_of(n)) * cell_spacing
+	return _walk(_to_bin, n)
+
+
+## Metres from the scale to the middle of the n-th hex cleaned: the walk a bale makes.
+func scale_distance(n: int) -> float:
+	return _walk(_to_scale, n)
+
+
+func _walk(measured: PackedFloat32Array, n: int) -> float:
+	if n < measured.size():
+		return measured[n]
+	var far: float = k("yard_offset_m") + float(ring_of(n)) * cell_spacing
+	return far if measured.is_empty() else maxf(far, measured[-1])
+
+
+## The start yard's walks: every measured hex middle against the yard's bin and scale anchors
+## (SitePrefab.START_YARD_ANCHORS, the layout the game builds), nearest the bin first, which is
+## the order the bot works them in.
+func _derive_walk() -> void:
+	var anchors: Dictionary = SitePrefab.START_YARD_ANCHORS
+	var bin: Vector3 = (anchors["bin"] as Array)[0]
+	var scale: Vector3 = (anchors["depot"] as Array)[0]
+	var rows: Array[Vector2] = []
+	for raw: Variant in (section("yard_hexes") as Dictionary).get("middles", []):
+		var xz: Array = raw
+		var mid := Vector3(float(xz[0]), 0.0, float(xz[1]))
+		rows.append(Vector2(mid.distance_to(bin), mid.distance_to(scale)))
+	rows.sort_custom(func(a: Vector2, b: Vector2) -> bool: return a.x < b.x)
+	for row: Vector2 in rows:
+		_to_bin.append(row.x)
+		_to_scale.append(row.y)
 
 
 ## Units of waste in the n-th hex cleaned (0 = the first): hexes go ring by ring from the base,
