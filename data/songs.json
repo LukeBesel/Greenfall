@@ -45,7 +45,13 @@
  "planets": {
   "_doc": "One block per planet, all the same shape. songs: extra song ids for this planet's playlist (its own group's songs are on it already). Any rule from the top of this file can be repeated here to change it on this planet only, e.g. \"gap_s\": [120, 240].",
   "verdance": {
-   "songs": []
+   "_doc": "[main] Owner, playtest: only three songs on Verdance got boring. Until more songs arrive, Ochre's three play here too (owned from the start) and the main theme comes up less often. Remove them from this list (and set their unlock back to cd) once Verdance has its own.",
+   "songs": [
+    "sunbaked",
+    "strip_mine_shuffle",
+    "dune_caravan"
+   ],
+   "main_share": 0.3
   },
   "ochre": {
    "songs": []
@@ -313,7 +319,7 @@
    "group": "ochre",
    "kind": "playlist",
    "bpm": 118,
-   "unlock": "cd",
+   "unlock": "start",
    "found_on": "ochre"
   },
   {
@@ -323,7 +329,7 @@
    "group": "ochre",
    "kind": "playlist",
    "bpm": 112,
-   "unlock": "cd",
+   "unlock": "start",
    "found_on": "ochre"
   },
   {
@@ -333,7 +339,7 @@
    "group": "ochre",
    "kind": "playlist",
    "bpm": 105,
-   "unlock": "cd",
+   "unlock": "start",
    "found_on": "ochre"
   },
   {
