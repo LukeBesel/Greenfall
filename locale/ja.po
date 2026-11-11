@@ -132,7 +132,7 @@ msgstr "ポーズ"
 
 #: autoload/Settings.gd:21
 msgid "Follow the next goal"
-msgstr ""
+msgstr "次の目標を追う"
 
 #: autoload/Settings.gd:22
 msgid "Zoom in"
@@ -748,7 +748,7 @@ msgstr "ヘックス Lv %d  %s"
 
 #: plants/hex_levels.gd:259
 msgid "+%s field data"
-msgstr ""
+msgstr "+%s フィールドデータ"
 
 #: plants/hex_levels.gd:264
 msgid "Hex Lv %d  %s.   %s"
@@ -772,11 +772,11 @@ msgstr "埋もれたパーツ  ·  シグナル %d%%"
 
 #: player/detector.gd:113
 msgid "%s  ·  %.1f m"
-msgstr ""
+msgstr "%s  ·  %.1f m"
 
 #: player/detector.gd:113
 msgid "%s  ·  SIGNAL %d%%"
-msgstr ""
+msgstr "%s  ·  シグナル %d%%"
 
 #: player/patch.gd:213
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
@@ -2201,43 +2201,43 @@ msgstr "監査はドローンの勝ち、%d 対 %d。それでもチップを置
 
 #: systems/find_sites.gd:191
 msgid "LENS CHIP"
-msgstr ""
+msgstr "レンズチップ"
 
 #: systems/find_sites.gd:191
 msgid "BURIED TIN"
-msgstr ""
+msgstr "埋もれたペンキ缶"
 
 #: systems/find_sites.gd:380
 msgid "E   Look at the wreck"
-msgstr ""
+msgstr "E   残骸を見る"
 
 #: systems/find_sites.gd:381
 msgid "E   Pull the junk off the wreck"
-msgstr ""
+msgstr "E   残骸からガラクタをどける"
 
 #: systems/find_sites.gd:381
 msgid "E   Salvage the wreck"
-msgstr ""
+msgstr "E   残骸を回収する"
 
 #: systems/find_sites.gd:465
 msgid "E   Dig up the lens chip"
-msgstr ""
+msgstr "E   レンズチップを掘り出す"
 
 #: systems/find_sites.gd:465
 msgid "E   Dig up the paint tin"
-msgstr ""
+msgstr "E   ペンキ缶を掘り出す"
 
 #: systems/find_sites.gd:513
 msgid "Something is buried in the cleared soil. Follow the detector and dig."
-msgstr ""
+msgstr "片づけた土に何かが埋まっている。探知機をたどって掘ろう。"
 
 #: systems/find_sites.gd:516
 msgid "open ground"
-msgstr ""
+msgstr "開けた土地"
 
 #: systems/find_sites.gd:517
 msgid "Your crew uncovered something buried in %s. The detector will find it."
-msgstr ""
+msgstr "クルーが%sで埋まっている何かを見つけた。探知機で探せるよ。"
 
 #: systems/l10n_fmt.gd:21
 msgid "+%d cube"
@@ -2338,7 +2338,7 @@ msgstr "研究中"
 
 #: systems/research.gd:221
 msgid "Not enough Parts"
-msgstr ""
+msgstr "パーツが足りません"
 
 #: systems/research.gd:327 systems/research.gd:388
 msgid "Research: %s"
@@ -2370,7 +2370,7 @@ msgstr "スコップの速さ"
 
 #: systems/research.gd:339
 msgid "field data"
-msgstr ""
+msgstr "フィールドデータ"
 
 #: systems/research.gd:339
 msgid "research speed"
@@ -3830,7 +3830,7 @@ msgstr "完了"
 
 #: ui/goals_panel.gd:80
 msgid "Following  ·  %s"
-msgstr ""
+msgstr "追跡中  ·  %s"
 
 #: ui/goals_panel.gd:117
 msgid "Goal complete  ·  %s%s"
@@ -4082,7 +4082,7 @@ msgstr "◢ 埋もれたパーツ %d%%"
 
 #: ui/lens_overlay.gd:69
 msgid "◢ %s %d%%"
-msgstr ""
+msgstr "◢ %s %d%%"
 
 #: ui/list_detail.gd:100
 msgid "Nothing here yet. Keep playing."
@@ -4151,7 +4151,7 @@ msgstr "パーツ"
 
 #: ui/locker_editors.gd:13 data/cosmetics.json:targets.crew.slots[crew_paint].name
 msgid "Fleet mark"
-msgstr ""
+msgstr "艦隊マーク"
 
 #: ui/locker_editors.gd:13 data/cosmetics.json:slots[glow].name data/cosmetics.json:targets.crew.slots[crew_glow].name
 msgid "Light colour"
@@ -4264,7 +4264,7 @@ msgstr "%sセット  ·  %s"
 
 #: ui/lumi_builder.gd:294
 msgid "%s set"
-msgstr ""
+msgstr "%sセット"
 
 #: ui/lumi_builder.gd:297
 msgid "Mixed look  ·  no set bonus"
@@ -4693,7 +4693,7 @@ msgstr "ロッカーで全パーツを着けよう：%s。"
 
 #: ui/piece_reveal.gd:144
 msgid "Salvaged  ·  %s"
-msgstr ""
+msgstr "回収  ·  %s"
 
 #: ui/piece_reveal.gd:147
 msgid "Wear it at the Locker."
@@ -4713,7 +4713,7 @@ msgstr "研究済み"
 
 #: ui/research_node_card.gd:186
 msgid "Paused  ·  %s"
-msgstr ""
+msgstr "一時停止  ·  %s"
 
 #: ui/research_node_card.gd:189 ui/research_panel.gd:230
 msgid "%s  ·  %s"
@@ -4721,39 +4721,39 @@ msgstr "%s  ·  %s"
 
 #: ui/research_node_card.gd:189 ui/research_panel.gd:178 ui/research_panel.gd:230
 msgid "%d data"
-msgstr ""
+msgstr "%d データ"
 
 #: ui/research_node_card.gd:198
 msgid "%d / %d data"
-msgstr ""
+msgstr "%d / %d データ"
 
 #: ui/research_panel.gd:7
 msgid "clean hex"
-msgstr ""
+msgstr "片づけたヘックス"
 
 #: ui/research_panel.gd:7
 msgid "mastery level"
-msgstr ""
+msgstr "熟練度レベル"
 
 #: ui/research_panel.gd:7
 msgid "find"
-msgstr ""
+msgstr "発見"
 
 #: ui/research_panel.gd:8
 msgid "source step"
-msgstr ""
+msgstr "汚染源の段階"
 
 #: ui/research_panel.gd:8
 msgid "source shut down"
-msgstr ""
+msgstr "汚染源を停止"
 
 #: ui/research_panel.gd:8
 msgid "memory shard"
-msgstr ""
+msgstr "メモリーの破片"
 
 #: ui/research_panel.gd:39
 msgid "FIELD DATA BANKED"
-msgstr ""
+msgstr "保管中のフィールドデータ"
 
 #: ui/research_panel.gd:61
 msgid "RESEARCHING"
@@ -4761,11 +4761,11 @@ msgstr "研究中"
 
 #: ui/research_panel.gd:166
 msgid "hex stage +%s to +%s"
-msgstr ""
+msgstr "ヘックスの段階 +%s から +%s"
 
 #: ui/research_panel.gd:170
 msgid "Work earns it: %s. It fills the active research."
-msgstr ""
+msgstr "作業でたまる：%s。進行中の研究に使われる。"
 
 #: ui/research_panel.gd:189
 msgid "Nothing yet"
@@ -4777,23 +4777,23 @@ msgstr "下の光っているカードを選ぼう"
 
 #: ui/research_panel.gd:195
 msgid "%s  ·  %d%%"
-msgstr ""
+msgstr "%s  ·  %d%%"
 
 #: ui/research_panel.gd:202
 msgid "Paused, bars kept: %s"
-msgstr ""
+msgstr "一時停止中（進み具合は保持）：%s"
 
 #: ui/research_panel.gd:202
 msgid "Fills as you clean, tend and learn."
-msgstr ""
+msgstr "片づけ、世話、学びでたまっていく。"
 
 #: ui/research_panel.gd:225
 msgid "Filling as you work"
-msgstr ""
+msgstr "作業中にたまる"
 
 #: ui/research_panel.gd:228
 msgid "Press to switch back (paid)"
-msgstr ""
+msgstr "押して戻す（支払い済み）"
 
 #: ui/research_panel.gd:232
 msgid "Press to research"
@@ -4801,15 +4801,15 @@ msgstr "押して研究"
 
 #: ui/research_panel.gd:232
 msgid "Press to switch (bars are kept)"
-msgstr ""
+msgstr "押して切り替え（進み具合は保持）"
 
 #: ui/research_strip.gd:72
 msgid "RESEARCH  %s  %d/%d"
-msgstr ""
+msgstr "研究  %s  %d/%d"
 
 #: ui/research_strip.gd:78
 msgid "RESEARCH  PICK A NODE  ·  %d DATA BANKED"
-msgstr ""
+msgstr "研究  ノードを選ぼう  ·  データ %d 保管中"
 
 #: ui/rig_panel.gd:102 ui/upgrades_screen.gd:17
 msgid "Rig"
@@ -7620,51 +7620,51 @@ msgstr "ちびドローン"
 
 #: data/cosmetics.json:targets.glim.slots[glim_shell].name
 msgid "Shell"
-msgstr ""
+msgstr "シェル"
 
 #: data/cosmetics.json:targets.glim.slots[glim_top].name
 msgid "Top"
-msgstr ""
+msgstr "トップ"
 
 #: data/cosmetics.json:targets.glim.pieces[glim_shell_pearl].name
 msgid "Pearl shell"
-msgstr ""
+msgstr "パールのシェル"
 
 #: data/cosmetics.json:targets.glim.pieces[glim_shell_sunset].name
 msgid "Sunset shell"
-msgstr ""
+msgstr "サンセットのシェル"
 
 #: data/cosmetics.json:targets.glim.pieces[glim_shell_moss].name
 msgid "Moss shell"
-msgstr ""
+msgstr "コケのシェル"
 
 #: data/cosmetics.json:targets.glim.pieces[glim_shell_graphite].name
 msgid "Graphite shell"
-msgstr ""
+msgstr "グラファイトのシェル"
 
 #: data/cosmetics.json:targets.glim.pieces[glim_shell_blossom].name
 msgid "Blossom shell"
-msgstr ""
+msgstr "花のシェル"
 
 #: data/cosmetics.json:targets.glim.pieces[glim_glow_cyan].name
 msgid "Cyan glow"
-msgstr ""
+msgstr "シアンの光"
 
 #: data/cosmetics.json:targets.glim.pieces[glim_glow_ember].name
 msgid "Ember glow"
-msgstr ""
+msgstr "エンバーの光"
 
 #: data/cosmetics.json:targets.glim.pieces[glim_glow_leaf].name
 msgid "Leaf glow"
-msgstr ""
+msgstr "葉っぱの光"
 
 #: data/cosmetics.json:targets.glim.pieces[glim_glow_violet].name
 msgid "Violet glow"
-msgstr ""
+msgstr "バイオレットの光"
 
 #: data/cosmetics.json:targets.glim.pieces[glim_glow_rose].name
 msgid "Rose glow"
-msgstr ""
+msgstr "ローズの光"
 
 #: data/cosmetics.json:targets.glim.pieces[glim_top_none].name data/glim.json:tops[none].name
 msgid "Nothing"
@@ -7680,7 +7680,7 @@ msgstr "シャーシ"
 
 #: data/cosmetics.json:targets.crew.slots[crew_chassis].hint
 msgid "Old machines rust where heavy work was done."
-msgstr ""
+msgstr "重労働の現場には古い機械がさびついている。"
 
 #: data/cosmetics.json:targets.crew.slots[crew_head].name data/robot_parts.json:slots[head].name
 msgid "Head"
@@ -7688,7 +7688,7 @@ msgstr "頭部"
 
 #: data/cosmetics.json:targets.crew.slots[crew_head].hint
 msgid "Sensor heads outlast the robots that wore them."
-msgstr ""
+msgstr "センサーヘッドは持ち主のロボットより長持ちする。"
 
 #: data/cosmetics.json:targets.crew.slots[crew_mobility].name data/robot_parts.json:slots[mobility].name
 msgid "Mobility"
@@ -7696,11 +7696,11 @@ msgstr "移動"
 
 #: data/cosmetics.json:targets.crew.slots[crew_mobility].hint
 msgid "Wheels, legs and fans lie where a robot stopped."
-msgstr ""
+msgstr "車輪や脚やファンは、ロボットが止まった場所に落ちている。"
 
 #: data/cosmetics.json:targets.crew.slots[crew_tool].hint
 msgid "Tools lie near the work they did."
-msgstr ""
+msgstr "道具は自分がした仕事の近くに落ちている。"
 
 #: data/cosmetics.json:targets.crew.slots[crew_topper].name data/robot_parts.json:slots[topper].name
 msgid "Topper"
@@ -7708,7 +7708,7 @@ msgstr "頭飾り"
 
 #: data/cosmetics.json:targets.crew.slots[crew_paint].hint
 msgid "Old fleet marks turn up where crews once worked."
-msgstr ""
+msgstr "昔クルーが働いた場所から古い艦隊マークが見つかる。"
 
 #: data/cosmetics.json:targets.crew.pieces[crew_light_frame].name data/robot_parts.json:parts[light_frame].name
 msgid "Light Frame"
@@ -9858,15 +9858,15 @@ msgstr "最後の葉は Old Capital のロケットで待っている。"
 
 #: planets/verdance/data/finds.json:finds[scrapyard_crew_chip].hint
 msgid "A lens chip for a robot's lights lies under Ironside's scrap."
-msgstr ""
+msgstr "Ironsideのスクラップの下に、ロボットのライト用レンズチップが埋まっている。"
 
 #: planets/verdance/data/finds.json:finds[highreach_glim_tin].hint
 msgid "A small tin of lantern paint lies deep in Highreach."
-msgstr ""
+msgstr "Highreachの奥深くにランタン用の小さなペンキ缶が埋まっている。"
 
 #: planets/verdance/data/finds.json:finds[lowmeadow_glim_chip].hint
 msgid "A lantern's lens chip lies deep in Lowmeadow."
-msgstr ""
+msgstr "Lowmeadowの奥深くにランタンのレンズチップが埋まっている。"
 
 #: planets/verdance/data/finds.json:finds[open_ground_tin].hint
 msgid "A rare tin lies far out, on open ground."
@@ -9962,15 +9962,15 @@ msgstr "葉っぱ"
 
 #: planets/verdance/data/goals.json:tiers[short].name
 msgid "NOW"
-msgstr ""
+msgstr "今"
 
 #: planets/verdance/data/goals.json:tiers[medium].name
 msgid "CITY"
-msgstr ""
+msgstr "都市"
 
 #: planets/verdance/data/goals.json:tiers[long].name
 msgid "PLANET"
-msgstr ""
+msgstr "惑星"
 
 #: planets/verdance/data/goals.json:goals[scoop_15].text
 msgid "Pick up 15 pieces of trash"
@@ -9990,7 +9990,7 @@ msgstr "ロボットのパーツを2個掘り出す"
 
 #: planets/verdance/data/goals.json:goals[bale_1].text
 msgid "Press your first bale"
-msgstr ""
+msgstr "最初のベールを作る"
 
 #: planets/verdance/data/goals.json:goals[cash_1].text
 msgid "Sell a bale at the scale"
@@ -9998,7 +9998,7 @@ msgstr "はかりでベールを売る"
 
 #: planets/verdance/data/goals.json:goals[perfect_1].text
 msgid "Press a perfect bale"
-msgstr ""
+msgstr "パーフェクトベールを作る"
 
 #: planets/verdance/data/goals.json:goals[upgrades_5].text
 msgid "Buy 5 upgrades"
@@ -10014,11 +10014,11 @@ msgstr "ベールを10個売る"
 
 #: planets/verdance/data/goals.json:goals[lift_1].text
 msgid "Buy Lift Strength"
-msgstr ""
+msgstr "リフト力を買う"
 
 #: planets/verdance/data/goals.json:goals[compartment_3].text
 msgid "Raise Chest Size to 3"
-msgstr ""
+msgstr "胸の大きさを3にする"
 
 #: planets/verdance/data/goals.json:goals[earn_1k].text
 msgid "Earn 1,000 cubes"
@@ -10030,15 +10030,15 @@ msgstr "アップグレードを12個買う"
 
 #: planets/verdance/data/goals.json:goals[lift_2].text
 msgid "Raise Lift Strength to 2"
-msgstr ""
+msgstr "リフト力を2にする"
 
 #: planets/verdance/data/goals.json:goals[surge_1].text
 msgid "Release your first Surge"
-msgstr ""
+msgstr "初めてサージを発動する"
 
 #: planets/verdance/data/goals.json:goals[zone_6].text
 msgid "Zone 6 hexes for the crew"
-msgstr ""
+msgstr "クルー用にヘックスを6個指定する"
 
 #: planets/verdance/data/goals.json:goals[hexlv_2].text
 msgid "Get a hex to Planted"
@@ -10074,47 +10074,47 @@ msgstr "ヘックスを繁栄状態にする"
 
 #: planets/verdance/data/goals.json:goals[rig_plate_cutter].text
 msgid "Fit the Plate Cutter"
-msgstr ""
+msgstr "プレートカッターを装着する"
 
 #: planets/verdance/data/goals.json:goals[wrecks_1].text
 msgid "Learn wrecks by hand"
-msgstr ""
+msgstr "残骸を手作業で覚える"
 
 #: planets/verdance/data/goals.json:goals[scrounger_1].text
 msgid "Build a Scrounger"
-msgstr ""
+msgstr "Scrounger を作る"
 
 #: planets/verdance/data/goals.json:goals[scrounge_50].text
 msgid "Scroungers bring in 50 Parts"
-msgstr ""
+msgstr "Scrounger がパーツを50個集める"
 
 #: planets/verdance/data/goals.json:goals[rig_skim_skirt].text
 msgid "Fit the Skim Skirt"
-msgstr ""
+msgstr "スキムスカートを装着する"
 
 #: planets/verdance/data/goals.json:goals[slick_1].text
 msgid "Learn slick by hand"
-msgstr ""
+msgstr "油膜を手作業で覚える"
 
 #: planets/verdance/data/goals.json:goals[assembler].text
 msgid "Build the Assembler"
-msgstr ""
+msgstr "Assembler を作る"
 
 #: planets/verdance/data/goals.json:goals[assemble_5].text
 msgid "Assemble 5 robots"
-msgstr ""
+msgstr "ロボットを5台組み立てる"
 
 #: planets/verdance/data/goals.json:goals[skimmer_1].text
 msgid "Build a Skimmer"
-msgstr ""
+msgstr "Skimmer を作る"
 
 #: planets/verdance/data/goals.json:goals[rig_mist_scrubber].text
 msgid "Fit the Mist Scrubber"
-msgstr ""
+msgstr "ミストスクラバーを装着する"
 
 #: planets/verdance/data/goals.json:goals[smog_1].text
 msgid "Learn smog by hand"
-msgstr ""
+msgstr "スモッグを手作業で覚える"
 
 #: planets/verdance/data/goals.json:goals[drip_1].text
 msgid "Build a Drip watering robot"
@@ -10122,11 +10122,11 @@ msgstr "Drip 水やりロボを作る"
 
 #: planets/verdance/data/goals.json:goals[rig_soil_doser].text
 msgid "Fit the Soil Doser"
-msgstr ""
+msgstr "ソイルドーザーを装着する"
 
 #: planets/verdance/data/goals.json:goals[blight_1].text
 msgid "Learn blight by hand"
-msgstr ""
+msgstr "汚染土を手作業で覚える"
 
 #: planets/verdance/data/goals.json:goals[locker_build].text
 msgid "Build the Locker"
@@ -10134,35 +10134,35 @@ msgstr "ロッカーを建てる"
 
 #: planets/verdance/data/goals.json:goals[locker_wear].text
 msgid "Wear a look you found"
-msgstr ""
+msgstr "見つけたルックを着る"
 
 #: planets/verdance/data/goals.json:goals[more_hexes].text planets/verdance/data/goals.json:goals[more_ground].text
 msgid "Clean %d more hexes"
-msgstr ""
+msgstr "ヘックスをあと %d 個片づける"
 
 #: planets/verdance/data/goals.json:goals[more_bales].text
 msgid "Press %d more bales"
-msgstr ""
+msgstr "ベールをあと %d 個作る"
 
 #: planets/verdance/data/goals.json:goals[more_surges].text
 msgid "Release a Surge"
-msgstr ""
+msgstr "サージを発動する"
 
 #: planets/verdance/data/goals.json:goals[more_growth].text
 msgid "Raise %d hexes a stage"
-msgstr ""
+msgstr "ヘックスを %d 個、1段階上げる"
 
 #: planets/verdance/data/goals.json:goals[more_parts].text
 msgid "Dig up %d more Parts"
-msgstr ""
+msgstr "パーツをあと %d 個掘り出す"
 
 #: planets/verdance/data/goals.json:goals[more_perfect].text
 msgid "Press %d perfect bales"
-msgstr ""
+msgstr "パーフェクトベールを %d 個作る"
 
 #: planets/verdance/data/goals.json:goals[litter_2].text
 msgid "Reach Litter mastery 2"
-msgstr ""
+msgstr "ゴミの熟練度を2にする"
 
 #: planets/verdance/data/goals.json:goals[hex_5].text
 msgid "Clean 5 hexes"
@@ -10170,11 +10170,11 @@ msgstr "ヘックスを5個片づける"
 
 #: planets/verdance/data/goals.json:goals[litter_3].text
 msgid "Reach Litter mastery 3"
-msgstr ""
+msgstr "ゴミの熟練度を3にする"
 
 #: planets/verdance/data/goals.json:goals[litter_4].text
 msgid "Reach Litter mastery 4"
-msgstr ""
+msgstr "ゴミの熟練度を4にする"
 
 #: planets/verdance/data/goals.json:goals[hex_12].text
 msgid "Clean 12 hexes"
@@ -10182,11 +10182,11 @@ msgstr "ヘックスを12個片づける"
 
 #: planets/verdance/data/goals.json:goals[crew_2].text
 msgid "Run a crew of 2"
-msgstr ""
+msgstr "クルーを2台にする"
 
 #: planets/verdance/data/goals.json:goals[litter_5].text
 msgid "Reach Litter mastery 5"
-msgstr ""
+msgstr "ゴミの熟練度を5にする"
 
 #: planets/verdance/data/goals.json:goals[hex_25].text
 msgid "Clean 25 hexes"
@@ -10194,11 +10194,11 @@ msgstr "ヘックスを25個片づける"
 
 #: planets/verdance/data/goals.json:goals[crew_4].text
 msgid "Run a crew of 4"
-msgstr ""
+msgstr "クルーを4台にする"
 
 #: planets/verdance/data/goals.json:goals[litter_6].text
 msgid "Reach Litter mastery 6"
-msgstr ""
+msgstr "ゴミの熟練度を6にする"
 
 #: planets/verdance/data/goals.json:goals[hex_50].text
 msgid "Clean 50 hexes"
@@ -10206,259 +10206,259 @@ msgstr "ヘックスを50個片づける"
 
 #: planets/verdance/data/goals.json:goals[crew_6].text
 msgid "Run a crew of 6"
-msgstr ""
+msgstr "クルーを6台にする"
 
 #: planets/verdance/data/goals.json:goals[old_town_1].text
 msgid "Bring Old Town to Clean"
-msgstr ""
+msgstr "旧市街を「清掃済み」にする"
 
 #: planets/verdance/data/goals.json:goals[litter_7].text
 msgid "Reach Litter mastery 7"
-msgstr ""
+msgstr "ゴミの熟練度を7にする"
 
 #: planets/verdance/data/goals.json:goals[old_town_2].text
 msgid "Bring Old Town to Planted"
-msgstr ""
+msgstr "旧市街を「植え付け済み」にする"
 
 #: planets/verdance/data/goals.json:goals[crew_8].text
 msgid "Run a crew of 8"
-msgstr ""
+msgstr "クルーを8台にする"
 
 #: planets/verdance/data/goals.json:goals[old_town_3].text
 msgid "Bring Old Town to Growing"
-msgstr ""
+msgstr "旧市街を「栽培」にする"
 
 #: planets/verdance/data/goals.json:goals[old_town_source].text
 msgid "Shut down the burst main"
-msgstr ""
+msgstr "破裂した本管を止める"
 
 #: planets/verdance/data/goals.json:goals[old_town_4].text
 msgid "Bring Old Town to Sustained"
-msgstr ""
+msgstr "旧市街を「維持」にする"
 
 #: planets/verdance/data/goals.json:goals[wrecks_3].text
 msgid "Reach Wrecks mastery 3"
-msgstr ""
+msgstr "残骸の熟練度を3にする"
 
 #: planets/verdance/data/goals.json:goals[scrapyard_1].text
 msgid "Bring Ironside to Clean"
-msgstr ""
+msgstr "Ironside を「清掃済み」にする"
 
 #: planets/verdance/data/goals.json:goals[crew_15].text
 msgid "Run a crew of 15"
-msgstr ""
+msgstr "クルーを15台にする"
 
 #: planets/verdance/data/goals.json:goals[scrapyard_2].text
 msgid "Bring Ironside to Planted"
-msgstr ""
+msgstr "Ironside を「植え付け済み」にする"
 
 #: planets/verdance/data/goals.json:goals[scrapyard_3].text
 msgid "Bring Ironside to Growing"
-msgstr ""
+msgstr "Ironside を「栽培」にする"
 
 #: planets/verdance/data/goals.json:goals[crew_30].text
 msgid "Run a crew of 30"
-msgstr ""
+msgstr "クルーを30台にする"
 
 #: planets/verdance/data/goals.json:goals[scrapyard_source].text
 msgid "Shut down the crusher yard"
-msgstr ""
+msgstr "クラッシャーヤードを止める"
 
 #: planets/verdance/data/goals.json:goals[scrapyard_4].text
 msgid "Bring Ironside to Sustained"
-msgstr ""
+msgstr "Ironside を「維持」にする"
 
 #: planets/verdance/data/goals.json:goals[wrecks_5].text
 msgid "Reach Wrecks mastery 5"
-msgstr ""
+msgstr "残骸の熟練度を5にする"
 
 #: planets/verdance/data/goals.json:goals[slick_3].text
 msgid "Reach Slick mastery 3"
-msgstr ""
+msgstr "油膜の熟練度を3にする"
 
 #: planets/verdance/data/goals.json:goals[kettle_bay_1].text
 msgid "Bring Kettle Bay to Clean"
-msgstr ""
+msgstr "Kettle Bay を「清掃済み」にする"
 
 #: planets/verdance/data/goals.json:goals[crew_50].text
 msgid "Run a crew of 50"
-msgstr ""
+msgstr "クルーを50台にする"
 
 #: planets/verdance/data/goals.json:goals[kettle_bay_2].text
 msgid "Bring Kettle Bay to Planted"
-msgstr ""
+msgstr "Kettle Bay を「植え付け済み」にする"
 
 #: planets/verdance/data/goals.json:goals[kettle_bay_3].text
 msgid "Bring Kettle Bay to Growing"
-msgstr ""
+msgstr "Kettle Bay を「栽培」にする"
 
 #: planets/verdance/data/goals.json:goals[scrapyard_5].text
 msgid "Bring Ironside to Thriving"
-msgstr ""
+msgstr "Ironside を「繁栄」にする"
 
 #: planets/verdance/data/goals.json:goals[kettle_bay_source].text
 msgid "Stop the tanker's leak"
-msgstr ""
+msgstr "タンカーの油もれを止める"
 
 #: planets/verdance/data/goals.json:goals[kettle_bay_4].text
 msgid "Bring Kettle Bay to Sustained"
-msgstr ""
+msgstr "Kettle Bay を「維持」にする"
 
 #: planets/verdance/data/goals.json:goals[slick_5].text
 msgid "Reach Slick mastery 5"
-msgstr ""
+msgstr "油膜の熟練度を5にする"
 
 #: planets/verdance/data/goals.json:goals[smog_3].text
 msgid "Reach Smog mastery 3"
-msgstr ""
+msgstr "スモッグの熟練度を3にする"
 
 #: planets/verdance/data/goals.json:goals[highreach_1].text
 msgid "Bring Highreach to Clean"
-msgstr ""
+msgstr "Highreach を「清掃済み」にする"
 
 #: planets/verdance/data/goals.json:goals[crew_75].text
 msgid "Run a crew of 75"
-msgstr ""
+msgstr "クルーを75台にする"
 
 #: planets/verdance/data/goals.json:goals[highreach_2].text
 msgid "Bring Highreach to Planted"
-msgstr ""
+msgstr "Highreach を「植え付け済み」にする"
 
 #: planets/verdance/data/goals.json:goals[highreach_3].text
 msgid "Bring Highreach to Growing"
-msgstr ""
+msgstr "Highreach を「栽培」にする"
 
 #: planets/verdance/data/goals.json:goals[kettle_bay_5].text
 msgid "Bring Kettle Bay to Thriving"
-msgstr ""
+msgstr "Kettle Bay を「繁栄」にする"
 
 #: planets/verdance/data/goals.json:goals[highreach_source].text
 msgid "Shut down the incinerator"
-msgstr ""
+msgstr "焼却炉を止める"
 
 #: planets/verdance/data/goals.json:goals[highreach_4].text
 msgid "Bring Highreach to Sustained"
-msgstr ""
+msgstr "Highreach を「維持」にする"
 
 #: planets/verdance/data/goals.json:goals[smog_5].text
 msgid "Reach Smog mastery 5"
-msgstr ""
+msgstr "スモッグの熟練度を5にする"
 
 #: planets/verdance/data/goals.json:goals[blight_3].text
 msgid "Reach Blight mastery 3"
-msgstr ""
+msgstr "汚染土の熟練度を3にする"
 
 #: planets/verdance/data/goals.json:goals[lowmeadow_1].text
 msgid "Bring Lowmeadow to Clean"
-msgstr ""
+msgstr "Lowmeadow を「清掃済み」にする"
 
 #: planets/verdance/data/goals.json:goals[crew_100].text
 msgid "Run a crew of 100"
-msgstr ""
+msgstr "クルーを100台にする"
 
 #: planets/verdance/data/goals.json:goals[lowmeadow_2].text
 msgid "Bring Lowmeadow to Planted"
-msgstr ""
+msgstr "Lowmeadow を「植え付け済み」にする"
 
 #: planets/verdance/data/goals.json:goals[lowmeadow_3].text
 msgid "Bring Lowmeadow to Growing"
-msgstr ""
+msgstr "Lowmeadow を「栽培」にする"
 
 #: planets/verdance/data/goals.json:goals[highreach_5].text
 msgid "Bring Highreach to Thriving"
-msgstr ""
+msgstr "Highreach を「繁栄」にする"
 
 #: planets/verdance/data/goals.json:goals[lowmeadow_source].text
 msgid "Shut the treatment works"
-msgstr ""
+msgstr "浄水場を止める"
 
 #: planets/verdance/data/goals.json:goals[lowmeadow_4].text
 msgid "Bring Lowmeadow to Sustained"
-msgstr ""
+msgstr "Lowmeadow を「維持」にする"
 
 #: planets/verdance/data/goals.json:goals[blight_5].text
 msgid "Reach Blight mastery 5"
-msgstr ""
+msgstr "汚染土の熟練度を5にする"
 
 #: planets/verdance/data/goals.json:goals[old_capital_1].text
 msgid "Bring Old Capital to Clean"
-msgstr ""
+msgstr "Old Capital を「清掃済み」にする"
 
 #: planets/verdance/data/goals.json:goals[crew_125].text
 msgid "Run a crew of 125"
-msgstr ""
+msgstr "クルーを125台にする"
 
 #: planets/verdance/data/goals.json:goals[old_capital_2].text
 msgid "Bring Old Capital to Planted"
-msgstr ""
+msgstr "Old Capital を「植え付け済み」にする"
 
 #: planets/verdance/data/goals.json:goals[old_capital_3].text
 msgid "Bring Old Capital to Growing"
-msgstr ""
+msgstr "Old Capital を「栽培」にする"
 
 #: planets/verdance/data/goals.json:goals[lowmeadow_5].text
 msgid "Bring Lowmeadow to Thriving"
-msgstr ""
+msgstr "Lowmeadow を「繁栄」にする"
 
 #: planets/verdance/data/goals.json:goals[old_capital_source].text
 msgid "Build the rocket"
-msgstr ""
+msgstr "ロケットを作る"
 
 #: planets/verdance/data/goals.json:goals[old_capital_4].text
 msgid "Bring Old Capital to Sustained"
-msgstr ""
+msgstr "Old Capital を「維持」にする"
 
 #: planets/verdance/data/goals.json:goals[crew_150].text
 msgid "Run a crew of 150"
-msgstr ""
+msgstr "クルーを150台にする"
 
 #: planets/verdance/data/goals.json:goals[old_capital_5].text
 msgid "Bring Old Capital to Thriving"
-msgstr ""
+msgstr "Old Capital を「繁栄」にする"
 
 #: planets/verdance/data/goals.json:goals[litter_10].text
 msgid "Reach Litter mastery 10"
-msgstr ""
+msgstr "ゴミの熟練度を10にする"
 
 #: planets/verdance/data/goals.json:goals[more_crew].text
 msgid "Build %d more robots"
-msgstr ""
+msgstr "ロボットをあと %d 台作る"
 
 #: planets/verdance/data/goals.json:goals[old_town_5].text
 msgid "Restore Old Town"
-msgstr ""
+msgstr "旧市街を復興する"
 
 #: planets/verdance/data/goals.json:goals[cities_3].text
 msgid "Restore 3 of 6 cities"
-msgstr ""
+msgstr "6都市のうち3都市を復興する"
 
 #: planets/verdance/data/goals.json:goals[launch_point].text
 msgid "Reach the launch point"
-msgstr ""
+msgstr "発射地点にたどり着く"
 
 #: planets/verdance/data/goals.json:goals[sprout_set].text
 msgid "Find all 7 Sprout pieces"
-msgstr ""
+msgstr "Sprout のパーツを7個すべて見つける"
 
 #: planets/verdance/data/goals.json:goals[planet_1].text
 msgid "Restore 1% of the planet"
-msgstr ""
+msgstr "惑星の1%を再生する"
 
 #: planets/verdance/data/goals.json:goals[planet_5].text
 msgid "Restore 5% of the planet"
-msgstr ""
+msgstr "惑星の5%を再生する"
 
 #: planets/verdance/data/goals.json:goals[planet_25].text
 msgid "Restore 25% of the planet"
-msgstr ""
+msgstr "惑星の25%を再生する"
 
 #: planets/verdance/data/goals.json:goals[planet_50].text
 msgid "Restore 50% of the planet"
-msgstr ""
+msgstr "惑星の50%を再生する"
 
 #: planets/verdance/data/goals.json:goals[planet_100].text
 msgid "Restore the whole planet"
-msgstr ""
+msgstr "惑星全体を再生する"
 
 #: planets/verdance/data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
@@ -10470,7 +10470,7 @@ msgstr "ここに種を植える（ツール2）"
 
 #: planets/verdance/data/hex_levels.json:levels[2].hint
 msgid "Water it: every plant grows at once"
-msgstr ""
+msgstr "水やりしよう：全部の植物が一気に育つ"
 
 #: planets/verdance/data/hex_levels.json:levels[3].hint
 msgid "Keep it watered for 3 min (Drip robots)"
