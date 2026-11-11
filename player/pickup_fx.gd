@@ -212,8 +212,12 @@ func _process(delta: float) -> void:
 	_im.surface_begin(Mesh.PRIMITIVE_TRIANGLES)
 	if _aim_a > 0.01:
 		var close: float = lerpf(1.35, 1.0, 1.0 - pow(1.0 - clampf(_aim_t / 0.12, 0.0, 1.0), 3.0))
-		var sz: float = (minf(_aim_r, 0.45) * 1.3 + 0.14) * close
-		_flat(_aim_pos + up_dir * 0.05, sz, Color(_glow(), 0.3 * _aim_a), _aim_t * 0.5)
+		# [v7look] bolder: at 0.3 alpha the additive ring vanished on pale sand at Low 960x540 (a
+		# child on a slow laptop needs it most). A bright ring, plus a fainter outer ring turning back.
+		var sz: float = (minf(_aim_r, 0.45) * 1.3 + 0.2) * close
+		var pulse: float = 0.85 + 0.15 * sin(_aim_t * 5.0)
+		_flat(_aim_pos + up_dir * 0.06, sz, Color(_glow(), 0.85 * _aim_a * pulse), _aim_t * 0.5)
+		_flat(_aim_pos + up_dir * 0.05, sz * 1.35, Color(_glow(), 0.35 * _aim_a), -_aim_t * 0.35)
 	for s: Slot in _slots:
 		if s.active:
 			_draw_slot(s)

@@ -7,6 +7,7 @@ extends Node
 ##   --shot=PATH        save a viewport PNG (res:// or relative to project) after --shot-delay seconds
 ##   --shots=N          take N screenshots spaced by --shot-every seconds (suffix _0, _1, ...)
 ##   --quit-after=S     quit after S seconds (game time)
+##   --no-subs          [v7look] WREN's subtitles off (close-up shots)
 ##   [l10n] --locale=xx  force a locale (pseudo, de, es, en; not saved); --l10n-audit lists on-screen
 ##                      text that skipped tr() (screenshots/l10n_audit.txt, use with --locale=pseudo)
 ##   --autoplay         let tools/autoplay.gd drive Patch
@@ -102,6 +103,8 @@ func _ready() -> void:
 		Settings.apply_ui_scale()
 	if has("colorblind"):
 		Settings.colorblind = true
+	if has("no-subs"):  # [v7look] close-up shots: WREN's lines off (toasts still show)
+		Settings.subtitles_enabled = false
 	if has("time-scale"):
 		Engine.time_scale = float(args["time-scale"])
 		# [pace2] Keep each physics step as short as at 4x: at 16x a 120 Hz tick is 0.13 s of game
@@ -176,6 +179,13 @@ func _process(delta: float) -> void:
 		if has_node("L10nAudit"):  # [l10n]
 			(get_node("L10nAudit") as L10nAudit).report()
 		get_tree().quit()
+
+
+## [v7look] Waits until S seconds of wall clock since start (what --shot-delay counts): a game-time
+## timer runs slow on software rendering, so a dev hook timed for a shot never ran before it.
+func wait_wall(s: float) -> void:
+	while (Time.get_ticks_msec() - _start_ms) / 1000.0 < s:
+		await get_tree().process_frame
 
 
 func _take_shot(count: int) -> void:

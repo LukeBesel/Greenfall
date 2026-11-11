@@ -32,6 +32,7 @@ var lumi: LumiLevel
 var _root: Control
 var _currency: CurrencyCluster
 var _district: VBoxContainer
+var _district_card: PanelContainer  # [v7look] the glass card around the base / planet lines
 var _field_label: Label
 var _field_bar: Control
 var _field_frac: float = 0.0
@@ -51,6 +52,8 @@ var _signal_color: Color = Color.WHITE
 var _signal_strength: float = 0.0
 var _top_left: MarginContainer
 var _top_right: MarginContainer
+var _hints_mc: MarginContainer  # [v7look] lifted over the hotbar's readouts on narrow screens
+var _hold_corner_s: float = 0.0  # [v7look] seconds the top-right cards stay faded out (hold_corner)
 var _bottom: Control
 var _scrims: Control
 
@@ -154,35 +157,47 @@ func _build_top_left() -> void:
 func _build_top_right() -> void:
 	_top_right = _margin(Control.PRESET_TOP_RIGHT)
 	var vb := VBoxContainer.new()
-	vb.add_theme_constant_override("separation", 16)
+	vb.add_theme_constant_override("separation", 10)  # [v7look] card to card, like the goal stack
 	vb.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_top_right.add_child(vb)
+	# [v7look] The base / planet lines as one glass card in the goal cards' style (they were two faint
+	# floating lines that crowded the card under them): the base's name and %, a real bar, the bases.
+	_district_card = PanelContainer.new()
+	var dsb := UITheme.box(Color(0.03, 0.04, 0.05, 0.55), Color(0.9, 0.9, 0.85, 0.14), 1, 11, 0)
+	dsb.content_margin_left = 14
+	dsb.content_margin_right = 14
+	dsb.content_margin_top = 8
+	dsb.content_margin_bottom = 9
+	_district_card.add_theme_stylebox_override("panel", dsb)
+	_district_card.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_district_card.custom_minimum_size = Vector2(ChecklistCard.W, 0)
+	_district_card.size_flags_horizontal = Control.SIZE_SHRINK_END
 	_district = VBoxContainer.new()
-	_district.add_theme_constant_override("separation", 3)
+	_district.add_theme_constant_override("separation", 5)
 	_district.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	vb.add_child(_district)
-	_field_label = UITheme.label(tr("OLD TOWN   0%"), 13, UITheme.CREAM)
-	_field_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_district_card.add_child(_district)
+	_field_label = UITheme.label(tr("OLD TOWN   0%"), 15, UITheme.CREAM)
 	_district.add_child(_field_label)
 	_field_bar = Control.new()
-	_field_bar.custom_minimum_size = Vector2(GoalsPanel.W, 3)
+	_field_bar.custom_minimum_size = Vector2(0, 6)
 	_field_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_field_bar.draw.connect(func() -> void:
-		var w: float = 120.0
-		var x0: float = _field_bar.size.x - w
-		_field_bar.draw_rect(Rect2(x0, 0, w, 2), Color(1, 1, 1, 0.14))
-		_field_bar.draw_rect(Rect2(x0, 0, w * _field_frac, 2), UITheme.GREEN))
+		var w: float = _field_bar.size.x
+		_field_bar.draw_rect(Rect2(0, 0, w, 6), Color(1, 1, 1, 0.16))
+		if _field_frac > 0.0:
+			_field_bar.draw_rect(Rect2(0, 0, maxf(w * _field_frac, 6.0), 6), UITheme.GREEN))
 	_district.add_child(_field_bar)
-	_planet_label = UITheme.label("", 12, UITheme.MUTED)
-	_planet_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_planet_label = UITheme.label("", 13, Color(UITheme.CREAM, 0.82))
 	_district.add_child(_planet_label)
-	_relay_label = UITheme.label("", 12, Color(0.6, 0.85, 1.0))
-	_relay_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_relay_label = UITheme.label("", 13, Color(0.6, 0.85, 1.0))
 	_district.add_child(_relay_label)
 	goals = GoalsPanel.new()
 	goals.hud = self
 	vb.add_child(goals)
 	_goals_panel = goals
+	# [v7look] under the goal stack: what to do comes first, and when the card fades (minimal HUD)
+	# it leaves no hole above the goal card
+	vb.add_child(_district_card)
 
 
 func _build_bottom() -> void:
@@ -231,9 +246,37 @@ func _build_notify() -> void:
 
 func _build_hints() -> void:
 	var mc: MarginContainer = _margin(Control.PRESET_BOTTOM_RIGHT)
+	_hints_mc = mc
 	_hints = KeyHints.new()  # [onboard] readable pill; shows itself when it should (KeyHints.want_shown)
 	_hints.world = world
 	mc.add_child(_hints)
+
+
+## [v7look] Fades the top-right cards (base line, goal stack) out for `s` seconds and then back, so a
+## big centred moment (a base's arrival title) has the top of the screen to itself. 0 releases now.
+func hold_corner(s: float) -> void:
+	_hold_corner_s = s  # the cards fade in 0.25 s, about as fast as the title fades in
+
+
+## [v7look] Top of the key-hint pill while it is lifted over the hotbar (narrow screens) and showing,
+## else INF: the subtitle bar keeps above it (Subtitles._prompt_top).
+func hints_top() -> float:
+	if _hints_mc == null or _hints_mc.get_theme_constant("margin_bottom") <= 22 or _hints == null:
+		return INF
+	if not _hints.is_visible_in_tree() or _hints.modulate.a < 0.05 or _hints.size.y < 1.0:
+		return INF
+	return _hints.get_global_rect().position.y
+
+
+## [v7look] The top-right cards' rect while they show (alpha over 0.1), else an empty rect (tools/ui_audit_run.gd).
+func corner_rect() -> Rect2:
+	if not _top_right.is_visible_in_tree() or _top_right.modulate.a <= 0.1:
+		return Rect2()
+	var r := Rect2()
+	for c: Control in [_district_card, goals]:
+		if c and c.is_visible_in_tree() and c.modulate.a > 0.1:
+			r = c.get_global_rect() if r.size == Vector2.ZERO else r.merge(c.get_global_rect())
+	return r
 
 
 ## [onboard] Tab away from the workbench: the full key list for a few seconds (scenes/slice.gd).
@@ -320,7 +363,21 @@ func _process(delta: float) -> void:
 			_district_idle = 0.0
 	_district_idle += delta
 	var dwant: float = 1.0 if not minimal or _district_idle < FADE_AFTER_S else 0.0
-	_district.modulate.a = move_toward(_district.modulate.a, dwant, delta * (3.0 if dwant > 0.0 else 0.6))
+	_district_card.modulate.a = move_toward(_district_card.modulate.a, dwant, delta * (3.0 if dwant > 0.0 else 0.6))
+	# [v7look] a big moment (a base's arrival title) has the screen: the top-right cards step aside
+	_hold_corner_s = maxf(_hold_corner_s - delta, 0.0)
+	# [v7look] On a narrow screen (960 wide, or UI 1.5) the key-hint pill ran over the hotbar's right
+	# readouts (STREAK, the hex count): then it sits above the hotbar band instead.
+	if _hints_mc and _hints and hotbar:
+		var vw: float = _root.size.x
+		var hb_right: float = vw * 0.5 + Hotbar.LEVEL_W * 0.5 + 90.0
+		var lifted: bool = vw - 22.0 - _hints.size.x < hb_right
+		var mb: int = 22 + (108 if lifted else 0)  # just over the level bar and the slots
+		if _hints_mc.get_theme_constant("margin_bottom") != mb:
+			_hints_mc.add_theme_constant_override("margin_bottom", mb)
+	var orb: Variant = world.get("orbit") if world else null  # and the Command view, with its own card and hints
+	var in_cmd: bool = orb is SliceOrbit and (orb as SliceOrbit).cam != null and (orb as SliceOrbit).cam.view == "command"
+	_top_right.modulate.a = move_toward(_top_right.modulate.a, 0.0 if _hold_corner_s > 0.0 or in_cmd else 1.0, delta * 4.0)
 	if patch:
 		if patch.detector and not patch.detector.readout_changed.is_connected(_on_signal):
 			patch.detector.readout_changed.connect(_on_signal)

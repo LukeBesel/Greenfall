@@ -129,12 +129,19 @@ static func report(so: Node) -> String:
 	return "  ".join(out)
 
 
+## [v7look] Waits `s` seconds of wall clock.
+static func _wait_wall_for(tree: SceneTree, s: float) -> void:
+	var until: int = Time.get_ticks_msec() + int(s * 1000.0)
+	while Time.get_ticks_msec() < until:
+		await tree.process_frame
+
+
 static func tour(so: Node) -> void:
 	var globe: OrbitPlanet = so.get("globe")
 	var w: Node = so.get("w")
 	var tree: SceneTree = so.get_tree()
 	var prefix: String = DevHooks.get_s("life-tour", "screenshots/life")
-	await tree.create_timer(DevHooks.get_f("life-tour-start", 6.0)).timeout
+	await DevHooks.wait_wall(DevHooks.get_f("life-tour-start", 6.0))  # [v7look] wall clock: game time crawls on software renders
 	var k: int = 0
 	for stop: String in DevHooks.get_s("life-tour-stops", "0,0,0,0.5,4").split(";", false):
 		var a: PackedStringArray = stop.split(",")
@@ -154,7 +161,7 @@ static func tour(so: Node) -> void:
 			(sky as SkyDirector).time_of_day = float(a[3])
 			(sky as SkyDirector).spin = SkyDirector.spin_for_local_time(float(a[3]), patch.global_position)
 			(sky as SkyDirector).frozen = true
-		await tree.create_timer(float(a[4])).timeout
+		await _wait_wall_for(tree, float(a[4]))  # [v7look] wall clock (a 10 s game-time wait took minutes)
 		DevHooks.save_viewport("%s_%d.png" % [prefix, k])
 		print("[life] stop %d: %s  %s" % [k, stop, report(so)])
 		k += 1
