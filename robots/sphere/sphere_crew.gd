@@ -1320,9 +1320,9 @@ func print_report() -> void:
 					odd.append("%d(live=%d reload=%d junk=%.3f st=%d mat=%d worked=%s)" % [i, field.hex_clean[i], re.hex_clean[i], cells.junk[i], cells.state[i], field.materialized[i], str(_touched.has(i))])
 			print("[bots] mismatched hexes: %s" % ", ".join(odd.slice(0, 8)))
 	var c: Dictionary = cost.summary()
-	print("[bots] crew cost per frame, %d robots (%d near): %.2f ms on average (thinking %.2f, near robots %.2f), %.2f ms in the best second, worst frame %.1f ms, over %d frames" % [
+	print("[bots] crew cost per frame, %d robots (%d near): %.2f ms on average (thinking %.2f, near robots %.2f), %.2f ms in the best second, worst frame %.1f ms (frame %d of %d)" % [
 		units.size(), near_count(), float(c["total_ms"]), float(c["tick_ms"]), float(c["bodies_ms"]), float(c["best_second_ms"]),
-		float(c["worst_ms"]), int(c["frames"])])
+		float(c["worst_ms"]), int(c["worst_frame"]), int(c["frames"])])
 	var stuck: int = stuck_count()
 	print("[bots] stuck=%d %s" % [stuck, "PASS" if stuck == 0 else "FAIL"])
 

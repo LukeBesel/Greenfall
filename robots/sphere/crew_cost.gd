@@ -16,6 +16,9 @@ var frames: int = 0
 var tick_us: int = 0
 var bodies_us: int = 0
 var worst_us: int = 0
+## The frame (counted from the crew's first) on which the worst cost fell: a low number is the
+## crew starting up under the loading screen, not play.
+var worst_frame: int = 0
 var best_window_us: float = INF
 var _win_start_ms: int = -1
 var _win_us: int = 0
@@ -27,7 +30,9 @@ func add(p_tick_us: int, p_bodies_us: int) -> void:
 	frames += 1
 	tick_us += p_tick_us
 	bodies_us += p_bodies_us
-	worst_us = maxi(worst_us, p_tick_us + p_bodies_us)
+	if p_tick_us + p_bodies_us > worst_us:
+		worst_us = p_tick_us + p_bodies_us
+		worst_frame = frames
 	var now: int = Time.get_ticks_msec()
 	if _win_start_ms < 0:
 		_win_start_ms = now
@@ -41,9 +46,9 @@ func add(p_tick_us: int, p_bodies_us: int) -> void:
 		_win_frames = 0
 
 
-## {frames, tick_ms, bodies_ms, total_ms (means per frame), worst_ms, best_second_ms}.
+## {frames, tick_ms, bodies_ms, total_ms (means per frame), worst_ms, worst_frame, best_second_ms}.
 func summary() -> Dictionary:
 	var n: float = float(maxi(frames, 1))
 	return {"frames": frames, "tick_ms": float(tick_us) / 1000.0 / n, "bodies_ms": float(bodies_us) / 1000.0 / n,
-		"total_ms": float(tick_us + bodies_us) / 1000.0 / n, "worst_ms": float(worst_us) / 1000.0,
+		"total_ms": float(tick_us + bodies_us) / 1000.0 / n, "worst_ms": float(worst_us) / 1000.0, "worst_frame": worst_frame,
 		"best_second_ms": best_window_us / 1000.0 if best_window_us < INF else 0.0}
