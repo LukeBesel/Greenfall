@@ -270,6 +270,9 @@ static func cpu_us() -> int:
 	return int(f.get_line().get_slice(" ", 0)) / 1000
 
 
+static var _report_us: int = -1  # [v6qa] --budget-report-ms=N (default 80), read on first use
+
+
 func _note(at: String) -> void:
 	var d: int = Time.get_ticks_usec() - _since
 	if lap_on:
@@ -277,7 +280,9 @@ func _note(at: String) -> void:
 		if c > longest_cpu_us:
 			longest_cpu_us = c
 			longest_cpu_at = at
-		if d > 80000:
+		if _report_us < 0:
+			_report_us = int(DevHooks.get_f("budget-report-ms", 80.0) * 1000.0)
+		if d > _report_us:  # [v6qa] --budget-report-ms=N (default 80)
 			print("[budget] %.0f ms (cpu %.0f) of work before the yield at %s" % [d / 1000.0, c / 1000.0, at])
 	if d > longest_us:
 		longest_us = d

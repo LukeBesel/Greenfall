@@ -746,6 +746,9 @@ func _build_hub_frame() -> void:
 		eg.setup()
 		return eg)
 	await BuildBudget.idle()  # [v5load] the eggs plan and spawn across frames
+	var op0: Node = hub_frame.node("Outposts")
+	while BuildBudget.current != null and is_instance_valid(op0) and op0.get("building") == true:  # [v6qa] the outposts too
+		await BuildBudget.pause("hub frame:outposts")
 	await BuildBudget.check("hub frame:eggs")  # [v5load]
 	w.set("fauna", hub_frame.node("Fauna") as Fauna)
 	hub_frame.host("Ledger", func(f: HubFrame, hub: int) -> Node:  # the Ledger arc: drones, jammers and the relay at this hub
