@@ -59,6 +59,7 @@ var _saved_unlocked: Dictionary = {}  # cells of a locked biome a save says are 
 ## pod, building footprints; YardKeepOut). Pieces that land there are re-rolled, then dropped.
 var keep_out: Callable
 var pile_block: Callable  # [v5look] (cell) -> bool: no junk mounds on this cell (the hinterland's road hexes)
+var before_lay: Callable  # [v6qa] (cell) -> void: called before a land cell's pieces are laid (the hinterland decides its roads there)
 ## [v1yard] Cells with no big items (cell -> true): the start's cells, as the flat game's first hexes.
 var small_only: Dictionary = {}
 const KEEP_OUT_TRIES: int = 8
@@ -217,6 +218,8 @@ func _mz_begin(cell: int) -> bool:
 		locked[cell] = true
 	if hex_water[cell] == 1:
 		return _float_begin(cell)
+	if before_lay.is_valid():  # [v6qa]
+		before_lay.call(cell)
 	if hex_hub[cell] == 0:
 		_roll_parts(cell)
 		if not cells.has_flag(cell, SphereCells.F_SITE):  # [orbD] no wreck landmarks in a hub site's streets
@@ -326,6 +329,9 @@ func _mz_run(budget_us: int) -> PackedInt32Array:
 	_mz_cell = -1
 	_mz = {}
 	_mz_done = out
+	if _mz_recheck:  # [v6qa] (before the view draws them)
+		_mz_recheck = false
+		relocate_blocked(cell)
 	return out
 
 
@@ -439,6 +445,61 @@ func _seat(pid: int, d: Vector3) -> void:
 	var xf: Transform3D = piece_xf[pid]
 	xf.origin = pos
 	piece_xf[pid] = xf
+
+
+## [v6qa] Keep-out added after a cell was made (the hinterland decides its roads and buildings a
+## few hundred hexes a frame; a dev spawn or a save loaded right there makes the near cells first):
+## every live piece of the cell that now lies in the keep-out moves to a free spot in the cell, or,
+## with none, goes as if it was never laid (out of the ledger's total and left alike, so the cell's
+## junk fraction holds). Returns [moved pids, dropped pids]; the caller updates the view.
+## A cell still being laid (materialize_step) is checked when its last piece is down.
+func relocate_blocked(cell: int) -> Array:
+	var moved := PackedInt32Array()
+	var dropped := PackedInt32Array()
+	if cell == _mz_cell:
+		_mz_recheck = true
+		return [moved, dropped]
+	if not keep_out.is_valid() or materialized[cell] == 0 or hex_water[cell] == 1:
+		return [moved, dropped]
+	var ctr: Vector3 = grid.centers[cell]
+	var f: Basis = SphereGrid.frame(ctr)
+	for pid: int in pieces_in(cell):
+		if piece_alive[pid] == 0:
+			continue
+		var d0: Vector3 = piece_pos[pid].normalized()
+		if not bool(keep_out.call(d0)):
+			continue
+		var rng := RandomNumberGenerator.new()
+		rng.seed = hash([seed_value, pid, 6071])
+		var d: Vector3 = d0
+		for t: int in KEEP_OUT_TRIES * 2:
+			var r: float = sqrt(rng.randf()) * hex_size * 0.92
+			var a: float = rng.randf() * TAU
+			d = (ctr + (f.x * cos(a) * r + f.z * sin(a) * r) / grid.radius_m).normalized()
+			if not bool(keep_out.call(d)):
+				break
+		if bool(keep_out.call(d)):
+			piece_alive[pid] = 0
+			hex_left[cell] = maxf(0.0, hex_left[cell] - piece_vol[pid])
+			hex_total[cell] = maxf(0.001, hex_total[cell] - piece_vol[pid])
+			dropped.append(pid)
+			continue
+		var xf: Transform3D = piece_xf[pid]
+		xf.basis = Basis(Quaternion(d0, d)) * xf.basis
+		piece_xf[pid] = xf
+		piece_embed[pid] = 0.0  # off its heap: on the plain ground
+		_seat(pid, d)
+		moved.append(pid)
+	if not dropped.is_empty():  # out of the cell's list too (a Ledger drop revives dead pieces of a cell)
+		var keep := PackedInt32Array()
+		for pid: int in pieces_in(cell):
+			if not dropped.has(pid):
+				keep.append(pid)
+		hex_pieces[cell] = keep
+	return [moved, dropped]
+
+
+var _mz_recheck: bool = false  # [v6qa] keep-out grew while the cell in progress was being laid
 
 
 ## Re-seat a cell's remaining pieces on its (shrinking) piles. Returns the pieces that moved.
