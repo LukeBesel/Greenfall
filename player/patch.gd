@@ -8,6 +8,9 @@ const PICKUP_RANGE: float = 1.9
 const CUBE_TIME: float = 1.7
 ## Pieces at least this big get the heavy pickup animation.
 const BIG_PIECE_VOL: float = 1.5
+## Seconds between two actions of the planter and of the watering can while the button is held.
+const PLANT_GAP_S: float = 0.65
+const WATER_GAP_S: float = 0.25
 ## How fast a picked-up bale rises onto the stack (1/s): there in about a fifth of a second.
 const CARRY_RISE_RATE: float = 18.0
 
@@ -337,7 +340,9 @@ func _handle_tools(delta: float) -> void:
 	if not input.scoop_held():
 		return
 	if tool == Tool.PLANT and _plant_t <= 0.0:
-		_plant_t = 0.65
+		_plant_t = PLANT_GAP_S
+		if _work_held("plant", PLANT_GAP_S):  # poisoned soil first: cleansing plants, not a garden slot
+			return
 		var s: int = g.free_slot_near(global_position, forward())
 		if s < 0 and Time.get_ticks_msec() - _no_slot_ms > 6000:  # [v4grow] say why nothing went in
 			_no_slot_ms = Time.get_ticks_msec()
@@ -351,11 +356,13 @@ func _handle_tools(delta: float) -> void:
 				EventBus.toast.emit(tr("Out of seeds. Blooming plants drop more."), "info")
 				_plant_t = 2.0
 	elif tool == Tool.WATER and _water_t <= 0.0:
-		_water_t = 0.25
+		_water_t = WATER_GAP_S
 		if water <= 0.0:
 			Audio.play("buzz", 1.0, -12.0)
 			_water_t = 1.5
 			EventBus.toast.emit(tr("Watering can is empty. It fills in the base yard, by the bin."), "info")
+			return
+		if _work_held("water", WATER_GAP_S):  # foul air over the hex: a fine mist, not a pour
 			return
 		# The old can leaks: a bit is lost with every pour (an upgrade fixes it).
 		water = maxf(0.0, water - (1.0 if GameState.level_of("fix_can") > 0 else 1.3))
@@ -366,6 +373,40 @@ func _handle_tools(delta: float) -> void:
 			Audio.play("steam", 1.8, -16.0)
 		for slot: int in g.planted_near(global_position, forward()):
 			g.water(slot, 30.0)
+
+
+## Works the waste of the hex in front of Lumi that her tool in hand clears (a pollution kind
+## with no pieces: systems/pollution.gd), for `seconds` of work. What she takes streams into the
+## chest like scooped junk. True when the hex had such waste (taken, or refused with the reason).
+func _work_held(tool_id: String, seconds: float) -> bool:
+	var pol: Pollution = world.get("pollution") as Pollution
+	if pol == null:
+		return false
+	var spot: Vector3 = global_position + forward() * 1.3
+	var cap: float = capacity()
+	var room: float = cap - compartment.fill - compartment.pending if compartment.can_accept(cap) else 0.0
+	var take: Dictionary = pol.hand_work(tool_id, world.field.hex_at(spot), seconds, room)
+	if take.is_empty():
+		return false
+	if take.has("blocked"):
+		if _buzz_cooldown <= 0.0:
+			_buzz_cooldown = 2.5
+			Audio.play("buzz", 1.0, -10.0)
+			if str(take["blocked"]) != "":
+				EventBus.toast.emit(str(take["blocked"]), "info")
+			else:
+				EventBus.compartment_changed.emit(compartment.fill, cap)  # full chest: the HUD shakes the meter
+		return true
+	var vol: float = float(take["vol"])
+	var color: Color = take["color"]
+	water = maxf(0.0, water - float(take["tool_use"]))
+	compartment.reserve(vol)
+	model.set_scooping(true)
+	Vfx.burst("dust", spot + up() * 0.4, Color(color, 0.5), 0.5)
+	if randf() < 0.4:
+		Audio.play("steam", 1.5, -16.0)
+	_piece_arrived(str(take["type_id"]), vol, color, float(take["cubes"]), float(take["strip_scale"]))
+	return true
 
 
 # --- Scooping -----------------------------------------------------------------
@@ -422,7 +463,9 @@ func _handle_scoop(delta: float) -> void:
 			break
 		var pid: int = Pace.find_scoop_target(world.field, scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"), Pace.lift_class())  # [pace] Lift Strength
 		if pid < 0:
-			if took == 0 and not Pace.press_hint(self, world.field):  # [orbC] stuck with a part-full chest: say "press"
+			var gated: Pollution = world.get("pollution") as Pollution
+			if took == 0 and not Pace.press_hint(self, world.field) \
+					and not (gated != null and gated.scoop_hint(scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"))):
 				Pace.heavy_hint(self, world.field, scoop_origin(), forward(), stat("scoop_reach"), stat("scoop_width"))  # [pace]
 			break
 		var extra: PackedInt32Array = world.field.cluster_extra(pid)  # [world2] gen-2 junk is finer: grab the little cluster
@@ -451,6 +494,11 @@ func _take_piece(pid: int, max_vol: float) -> float:
 	var sf: SphereField = field as SphereField
 	var cubes: float = sf.worth.share(hid, vol, left_before, field.hex_total[hid], field.clean_threshold) if sf else -1.0
 	var strip_scale: float = RobotParts.strip_scale(vol, field.hex_total[hid])
+	var pol: Pollution = world.get("pollution") as Pollution
+	if pol != null and sf != null:  # the piece's pollution kind: its event, its share of the hex's value
+		cubes *= pol.piece_yield(pid)
+		strip_scale *= pol.piece_parts(pid)
+		pol.piece_taken(pid, vol)
 	var start_xf: Transform3D = world.view.piece_transform(pid)
 	var mesh: Mesh = world.view.piece_mesh(pid)
 	var color: Color = Color.html(str(Economy.junk_types[type_id].get("cube_color", "#888888")))

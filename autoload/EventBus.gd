@@ -65,6 +65,11 @@ signal district_stage_changed(district_id: String, stage: int)
 ## The city stage payout (systems/city_payouts.gd): cubes paid once for the stage just reached.
 signal district_stage_paid(district_id: String, stage: int, cubes: float)
 signal district_entered(district_id: String)
+## Pollution kinds (systems/pollution.gd). pollution_cleared: `amount` units of waste of `kind`
+## were cleared, by Lumi's own hands or by robots (robot work arrives batched). pollution_blocked:
+## Lumi tried waste of `kind` on hex `cell_id` without the tool it needs.
+signal pollution_cleared(kind: String, amount: float, by_player: bool)
+signal pollution_blocked(kind: String, cell_id: int)
 ## The robot chain (systems/crew/robot_chain.gd). parts_scrounged: parts finders brought `parts`
 ## Parts to a base. assembler_offered: the Assembler can now be built. assembler_built: it stands.
 ## robot_assembled: the Assembler's line finished a robot of `type_id` (robot_built fires too).

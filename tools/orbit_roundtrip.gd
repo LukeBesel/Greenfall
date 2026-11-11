@@ -44,6 +44,7 @@ static func _snap(s: Node) -> Dictionary:
 		"sites_built": str(OrbitSave.sites_to_array((s.orbit as SliceOrbit).globe.sites)),
 		"hexes_paid": (GameState.orbit.get("hexes_paid", {}) as Dictionary).size(),
 		"districts": JSON.stringify((s.orbit as SliceOrbit).districts.save_state()),  # stages, unlocked, visited
+		"pollution": JSON.stringify((s.orbit as SliceOrbit).pollution.save_state()),  # part-cleared kinds, cost owed
 		"chain": JSON.stringify((s.orbit as SliceOrbit).chain.save_state()),  # buried parts, the Assembler, its mix
 		"assembler_model": (s.orbit as SliceOrbit).chain.model != null,
 		"restoration": JSON.stringify((s.orbit as SliceOrbit).restoration.save_state()),

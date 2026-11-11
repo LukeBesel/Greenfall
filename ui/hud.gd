@@ -324,6 +324,11 @@ func _update_context(delta: float, minimal: bool) -> void:
 	if h >= 0 and world and world.field.hex_hub[h] == 0:
 		if not world.field.is_clean(h):
 			hex_text = tr("HEX  %d%% CLEAR") % int(floor(world.field.removed_fraction(h) * 100.0))
+			# A pollution kind beside plain junk: its name and the tool it wants, on the same line.
+			var kinds: Pollution = world.get("pollution") as Pollution
+			var note: String = kinds.hex_note(h) if kinds else ""
+			if note != "":
+				hex_text = "%s   %s" % [hex_text, note]
 		else:
 			hex_text = _short_level(h)
 	elif h >= 0 and world:  # [onboard] on the hub ground: say where you are
