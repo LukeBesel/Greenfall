@@ -66,8 +66,41 @@ func test_sounds_play_on_the_bus_the_data_names() -> void:
 	Audio.play("song")
 	assert_eq(str(_player_of("song").bus), "Ambience", "birdsong follows the Ambience slider")
 	(SoundCfg.cfg()["sound_db"] as Dictionary)["pop"] = -5.0
+	Audio._last_play.clear()  # the default min gap would drop a second pop in the same frame
 	Audio.play("pop", 1.0, -2.0)
 	assert_almost_eq(_player_of("pop").volume_db, -7.0, 0.01, "a sound's own trim is added")
+	(SoundCfg.cfg()["sound_db"] as Dictionary).erase("pop")
+
+
+func test_a_tag_trims_gaps_and_mutes_a_sound_in_one_place() -> void:
+	var trims: Dictionary = SoundCfg.cfg()["sound_db"]
+	var gaps: Dictionary = SoundCfg.cfg()["min_gap_s"]
+	trims["test:pop"] = -6.0
+	gaps["test:pop"] = 5.0
+	trims["hush:pop"] = SoundCfg.OFF_DB
+	Audio._last_play.clear()
+	Audio.play("pop", 1.0, 0.0, 0.0, "test")
+	assert_almost_eq(_player_of("pop").volume_db, -6.0, 0.01, "tag:sound trims only the tagged play")
+	var k: int = Audio._next_player
+	Audio.play("pop", 1.0, 0.0, 0.0, "test")
+	assert_eq(Audio._next_player, k, "the tagged sound keeps its own gap")
+	Audio.play("pop", 1.0, 0.0, 0.0, "hush")
+	assert_eq(Audio._next_player, k, "a trim at OFF_DB mutes it")
+	Audio.play("pop")
+	assert_ne(Audio._next_player, k, "the same sound untagged is not held back by the tag's gap")
+	assert_almost_eq(_player_of("pop").volume_db, 0.0, 0.01, "nor trimmed")
+	trims.erase("test:pop")
+	trims.erase("hush:pop")
+	gaps.erase("test:pop")
+
+
+func test_shipped_tag_rules_name_real_sounds() -> void:
+	for d: String in ["sound_db", "min_gap_s"]:
+		for key: String in (SoundCfg.cfg()[d] as Dictionary):
+			if key.begins_with("_"):
+				continue
+			var snd: String = key.get_slice(":", key.get_slice_count(":") - 1)
+			assert_true(Audio.has_sound(snd), "%s.%s names a sound that exists" % [d, key])
 
 
 func test_min_gap_drops_a_sound_that_comes_too_soon() -> void:

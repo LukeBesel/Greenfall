@@ -22,17 +22,18 @@ signal stage_changed(key: Vector2i, stage: int)
 ## The first evaluation is in (a load, a town that streamed in): lights take their state at once.
 signal settled
 
-const CLEAN_1: float = 0.55
-const CLEAN_2: float = 0.9
-const PLANTED: int = 1
+## The stage rules come from data/life.json "town" (core/life_cfg.gd); the values here are the fallbacks.
+static var CLEAN_1: float = LifeCfg.num("town", "swept_at", 0.55)
+static var CLEAN_2: float = LifeCfg.num("town", "awake_at", 0.9)
+static var PLANTED: int = LifeCfg.integer("town", "planted_cells", 1)
 ## Share of windows lit at dusk per stage.
-const LIT: Array[float] = [0.0, 0.07, 0.22, 0.5]
+static var LIT: Array[float] = LifeCfg.floats("town", "lit_windows", [0.0, 0.07, 0.22, 0.5], 4)
 const TEX_N: int = 16
 const HALF: int = 8
 ## Seconds for a block's windows / colour to follow a change.
-const EASE_S: float = 7.0
-const LAMP_STAGE: int = 2
-const SIGN_STAGE: int = 3
+static var EASE_S: float = LifeCfg.num("town", "ease_s", 7.0)
+static var LAMP_STAGE: int = LifeCfg.integer("town", "lamps_at_stage", 2)
+static var SIGN_STAGE: int = LifeCfg.integer("town", "signs_at_stage", 3)
 const BLOCKS_PER_FRAME: int = 3
 
 var site: VerdanceSite
@@ -60,12 +61,24 @@ var _moving: bool = false
 var _mean := Vector3.ZERO  # the town as a whole (its skyline past the pad follows this)
 
 
+## Re-reads the stage rules for the current planet (LifeCfg.use_planet).
+static func configure() -> void:
+	CLEAN_1 = LifeCfg.num("town", "swept_at", CLEAN_1)
+	CLEAN_2 = LifeCfg.num("town", "awake_at", CLEAN_2)
+	PLANTED = LifeCfg.integer("town", "planted_cells", PLANTED)
+	LIT = LifeCfg.floats("town", "lit_windows", LIT, 4)
+	EASE_S = maxf(0.1, LifeCfg.num("town", "ease_s", EASE_S))
+	LAMP_STAGE = LifeCfg.integer("town", "lamps_at_stage", LAMP_STAGE)
+	SIGN_STAGE = LifeCfg.integer("town", "signs_at_stage", SIGN_STAGE)
+
+
 static func attach(vs: VerdanceSite, p_grid: SphereGrid, p_cells: SphereCells, hub_i: int, sm: SiteManager = null) -> TownLife:
 	var old: Node = vs.get_node_or_null("TownLife")
 	if old:
 		old.free()
 	if vs.layout == null or vs.layout.wild or DevHooks.has("life-off"):
 		return null
+	configure()
 	var tl := TownLife.new()
 	tl.name = "TownLife"
 	tl.site = vs
