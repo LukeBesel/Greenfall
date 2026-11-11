@@ -1512,7 +1512,7 @@ msgstr "六角格清理完毕！  +%s"
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice_orbit.gd:505 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:581
+#: scenes/slice_orbit.gd:505 systems/camp/camp.gd:194 tools/orbit_roundtrip.gd:610
 msgid "E   Fix the workbench"
 msgstr "E   修理工作台"
 
@@ -3290,7 +3290,7 @@ msgstr "%s 对着幼苗哼歌。退休生活很适合它。"
 msgid "%s points proudly at a new bud."
 msgstr "%s 骄傲地指着一个新花苞。"
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:602
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:631
 msgid "E   CD player: %s"
 msgstr "E   CD 播放机：%s"
 
