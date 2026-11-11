@@ -1273,7 +1273,7 @@ msgstr "No se puede construir aquí"
 msgid "Not on the lake"
 msgstr "No sobre el lago"
 
-#: robots/water_net.gd:141 systems/decor.gd:195
+#: robots/water_net.gd:141 systems/decor.gd:197
 msgid "Clean this hex first"
 msgstr "Limpia antes este hexágono"
 
@@ -2118,7 +2118,7 @@ msgstr ""
 "\n"
 "El Ledger está de nuestro lado ahora. Los inhibidores solo tararean al ritmo de la música."
 
-#: story/ledger.gd:329 systems/decor.gd:122 systems/research.gd:202
+#: story/ledger.gd:329 systems/decor.gd:124 systems/research.gd:202
 #: systems/robot_builder.gd:348 systems/robot_builder.gd:404 ui/stations_panel.gd:100
 #: ui/telescope_panel.gd:43
 msgid "Needs %s"
@@ -2364,19 +2364,19 @@ msgstr "CRADLE"
 msgid "WE'LL BE BACK"
 msgstr "VOLVEREMOS"
 
-#: systems/achievements.gd:140
+#: systems/achievements.gd:160
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr "%d logros desbloqueados. Míralos en el Códice (K)."
 
-#: systems/achievements.gd:147 ui/notify_stack.gd:27 ui/subtitles.gd:453
+#: systems/achievements.gd:167 ui/notify_stack.gd:27 ui/subtitles.gd:453
 msgid "Achievement: %s. %s"
 msgstr "Logro: %s. %s"
 
-#: systems/achievements.gd:152
+#: systems/achievements.gd:172
 msgid "Codex: %d new entries."
 msgstr "Códice: %d entradas nuevas."
 
-#: systems/achievements.gd:155
+#: systems/achievements.gd:175
 msgid "Codex entry: %s"
 msgstr "Entrada del Códice: %s"
 
@@ -2560,35 +2560,35 @@ msgstr "Restaura un planeta para obtener una elección, o se desbloquea con los 
 msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
 msgstr "Herencia: %s, nivel %d. Viaja con Lumi a todos los mundos."
 
-#: systems/decor.gd:117
+#: systems/decor.gd:119
 msgid "Needs %d Collection finds (%d so far)"
 msgstr "Necesita %d hallazgos de la Colección (%d por ahora)"
 
-#: systems/decor.gd:120
+#: systems/decor.gd:122
 msgid "Needs %d Seed of the Week paint chips (%d so far)"
 msgstr "Necesita %d fichas de pintura de la Semilla de la semana (%d por ahora)"
 
-#: systems/decor.gd:184 systems/decor.gd:188
+#: systems/decor.gd:186 systems/decor.gd:190
 msgid "Too close to the base machines"
 msgstr "Demasiado cerca de las máquinas de la base"
 
-#: systems/decor.gd:186 systems/decor.gd:201
+#: systems/decor.gd:188 systems/decor.gd:203
 msgid "Something is already here"
 msgstr "Aquí ya hay algo"
 
-#: systems/decor.gd:191
+#: systems/decor.gd:193
 msgid "Outside the district"
 msgstr "Fuera del distrito"
 
-#: systems/decor.gd:193
+#: systems/decor.gd:195
 msgid "That's water"
 msgstr "Eso es agua"
 
-#: systems/decor.gd:197
+#: systems/decor.gd:199
 msgid "Frozen in"
 msgstr "Congelado"
 
-#: systems/decor.gd:199
+#: systems/decor.gd:201
 msgid "A building is in the way"
 msgstr "Hay un edificio en medio"
 
@@ -3321,11 +3321,11 @@ msgstr "música ambiental"
 msgid "New song on the radio: %s"
 msgstr "Nueva canción en la radio: %s"
 
-#: systems/extras/weekly.gd:113
+#: systems/extras/weekly.gd:125
 msgid "Not this week: %s"
 msgstr "Esta semana no: %s"
 
-#: systems/extras/weekly.gd:254 ui/extras_panel.gd:9 ui/extras_panel.gd:375
+#: systems/extras/weekly.gd:266 ui/extras_panel.gd:9 ui/extras_panel.gd:380
 #: data/achievements.json:achievements[extras_weekly_1].name
 msgid "Seed of the Week"
 msgstr "Semilla de la semana"
@@ -3350,7 +3350,7 @@ msgstr "Meta"
 msgid "Clean %d hexes"
 msgstr "Limpia %d hexágonos"
 
-#: systems/extras/weekly_run.gd:92 ui/extras_panel.gd:379
+#: systems/extras/weekly_run.gd:92 ui/extras_panel.gd:384
 msgid "Seed"
 msgstr "Semilla"
 
@@ -3386,7 +3386,7 @@ msgstr "Semana %d, %d"
 msgid "Start the clock"
 msgstr "Iniciar el reloj"
 
-#: systems/extras/weekly_run.gd:96 systems/extras/weekly_run.gd:123 ui/extras_panel.gd:383
+#: systems/extras/weekly_run.gd:96 systems/extras/weekly_run.gd:123 ui/extras_panel.gd:388
 msgid "Return home"
 msgstr "Volver a casa"
 
@@ -4446,135 +4446,135 @@ msgstr "Álbum"
 msgid "Nursery"
 msgstr "Vivero"
 
-#: ui/extras_panel.gd:79
+#: ui/extras_panel.gd:82
 msgid "KEEPSAKES"
 msgstr "RECUERDOS"
 
-#: ui/extras_panel.gd:91
+#: ui/extras_panel.gd:94
 msgid "%s / %s  switch tabs"
 msgstr "%s / %s  cambiar de pestaña"
 
-#: ui/extras_panel.gd:230
+#: ui/extras_panel.gd:235
 msgid "DISTRICTS"
 msgstr "DISTRITOS"
 
-#: ui/extras_panel.gd:232
+#: ui/extras_panel.gd:237
 msgid "Lumi takes a picture of each district on arrival, and \"after\" pictures as it is restored."
 msgstr "Lumi saca una foto de cada distrito al llegar, y fotos de «después» a medida que se restaura."
 
-#: ui/extras_panel.gd:236
+#: ui/extras_panel.gd:241
 msgid "Before only"
 msgstr "Solo antes"
 
-#: ui/extras_panel.gd:244
+#: ui/extras_panel.gd:249
 msgid "PHOTOS  ·  %d"
 msgstr "FOTOS  ·  %d"
 
-#: ui/extras_panel.gd:256
+#: ui/extras_panel.gd:261
 msgid "Photo"
 msgstr "Foto"
 
-#: ui/extras_panel.gd:265
+#: ui/extras_panel.gd:270
 msgid "Photos you take in photo mode show up here."
 msgstr "Las fotos que hagas en el modo foto aparecen aquí."
 
-#: ui/extras_panel.gd:269 ui/photo_panel.gd:58
+#: ui/extras_panel.gd:274 ui/photo_panel.gd:58
 msgid "PHOTO MODE"
 msgstr "MODO FOTO"
 
-#: ui/extras_panel.gd:279
+#: ui/extras_panel.gd:284
 msgid "No pictures yet."
 msgstr "Aún no hay fotos."
 
-#: ui/extras_panel.gd:290
+#: ui/extras_panel.gd:295
 msgid "BEFORE"
 msgstr "ANTES"
 
-#: ui/extras_panel.gd:309
+#: ui/extras_panel.gd:314
 msgid "not yet"
 msgstr "aún no"
 
-#: ui/extras_panel.gd:319
+#: ui/extras_panel.gd:324
 msgid "The \"after\" picture comes when the district is half clean."
 msgstr "La foto de «después» llega cuando el distrito está medio limpio."
 
-#: ui/extras_panel.gd:325
+#: ui/extras_panel.gd:330
 msgid "CARETAKERS  ·  %d"
 msgstr "CUIDADORES  ·  %d"
 
-#: ui/extras_panel.gd:326
+#: ui/extras_panel.gd:331
 msgid "Garden bonus: plants grow %d%% faster (up to %d%%)."
 msgstr "Bonus del jardín: las plantas crecen un %d%% más rápido (hasta un %d%%)."
 
-#: ui/extras_panel.gd:329
+#: ui/extras_panel.gd:334
 msgid "No one has retired yet. Old or Mk I-II robots can retire here; they'll look after the nursery garden at the base."
 msgstr "Nadie se ha jubilado todavía. Los robots viejos o Mk I-II pueden jubilarse aquí; cuidarán el jardín del vivero en la base."
 
-#: ui/extras_panel.gd:338
+#: ui/extras_panel.gd:343
 msgid "RETIRE A ROBOT"
 msgstr "JUBILAR UN ROBOT"
 
-#: ui/extras_panel.gd:340
+#: ui/extras_panel.gd:345
 msgid "Retiring gives a few parts back, and the robot keeps its name and personality in the nursery."
 msgstr "Jubilarlo devuelve unas piezas, y el robot conserva su nombre y su personalidad en el vivero."
 
-#: ui/extras_panel.gd:342
+#: ui/extras_panel.gd:347
 msgid "No robots in this district."
 msgstr "No hay robots en este distrito."
 
-#: ui/extras_panel.gd:349
+#: ui/extras_panel.gd:354
 msgid "Press again to retire (+%d parts)"
 msgstr "Pulsa otra vez para jubilar (+%d piezas)"
 
-#: ui/extras_panel.gd:349
+#: ui/extras_panel.gd:354
 msgid "Retire  (+%d parts)"
 msgstr "Jubilar  (+%d piezas)"
 
-#: ui/extras_panel.gd:374
+#: ui/extras_panel.gd:379
 msgid "WEEK %d, %d"
 msgstr "SEMANA %d, %d"
 
-#: ui/extras_panel.gd:376
+#: ui/extras_panel.gd:381
 msgid "The same seed and twist for everyone this week. Clean %d hexes as fast as you can. It has its own save, so your world is untouched."
 msgstr "La misma semilla y el mismo giro para todos esta semana. Limpia %d hexágonos lo más rápido que puedas. Tiene su propia partida guardada, así que tu mundo queda intacto."
 
-#: ui/extras_panel.gd:377
+#: ui/extras_panel.gd:382
 msgid "Twist: %s"
 msgstr "Giro: %s"
 
-#: ui/extras_panel.gd:380
+#: ui/extras_panel.gd:385
 msgid "Best time"
 msgstr "Mejor tiempo"
 
-#: ui/extras_panel.gd:381
+#: ui/extras_panel.gd:386
 msgid "Best score"
 msgstr "Mejor puntuación"
 
-#: ui/extras_panel.gd:387
+#: ui/extras_panel.gd:392
 msgid "Restart this week's run"
 msgstr "Reiniciar la partida de esta semana"
 
-#: ui/extras_panel.gd:391
+#: ui/extras_panel.gd:396
 msgid "Resume this week's run"
 msgstr "Continuar la partida de esta semana"
 
-#: ui/extras_panel.gd:391
+#: ui/extras_panel.gd:396
 msgid "Start the challenge"
 msgstr "Empezar el desafío"
 
-#: ui/extras_panel.gd:395
+#: ui/extras_panel.gd:400
 msgid "PAINT CHIPS  ·  %d"
 msgstr "FICHAS DE PINTURA  ·  %d"
 
-#: ui/extras_panel.gd:396
+#: ui/extras_panel.gd:401
 msgid "Finish a week's challenge for its paint chip. Chips unlock the weekly decorations in Garden Mode and paint them."
 msgstr "Termina el desafío de una semana para ganar su ficha de pintura. Las fichas desbloquean las decoraciones semanales del modo Jardín y las pintan."
 
-#: ui/extras_panel.gd:409
+#: ui/extras_panel.gd:414
 msgid "No chips yet."
 msgstr "Aún no hay fichas."
 
-#: ui/extras_panel.gd:442
+#: ui/extras_panel.gd:447
 msgid "No picture yet"
 msgstr "Aún no hay foto"
 
@@ -5246,11 +5246,11 @@ msgstr "Nueva partida"
 msgid "Profiles"
 msgstr "Perfiles"
 
-#: ui/main_menu.gd:356 ui/main_menu.gd:561 ui/pause_menu.gd:66
+#: ui/main_menu.gd:356 ui/main_menu.gd:561 ui/pause_menu.gd:68
 msgid "Settings"
 msgstr "Ajustes"
 
-#: ui/main_menu.gd:358 ui/pause_menu.gd:70
+#: ui/main_menu.gd:358 ui/pause_menu.gd:72
 msgid "Quit"
 msgstr "Salir"
 

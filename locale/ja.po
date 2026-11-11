@@ -1271,7 +1271,7 @@ msgstr "ここには建てられない"
 msgid "Not on the lake"
 msgstr "湖の上には置けない"
 
-#: robots/water_net.gd:141 systems/decor.gd:195
+#: robots/water_net.gd:141 systems/decor.gd:197
 msgid "Clean this hex first"
 msgstr "まずこのヘックスを片づけよう"
 
@@ -2112,7 +2112,7 @@ msgstr ""
 "\n"
 "Ledger はもう私たちの味方。ジャマーは音楽に合わせてハミングしているだけ。"
 
-#: story/ledger.gd:329 systems/decor.gd:122 systems/research.gd:202
+#: story/ledger.gd:329 systems/decor.gd:124 systems/research.gd:202
 #: systems/robot_builder.gd:348 systems/robot_builder.gd:404 ui/stations_panel.gd:100
 #: ui/telescope_panel.gd:43
 msgid "Needs %s"
@@ -2358,19 +2358,19 @@ msgstr "Cradle号"
 msgid "WE'LL BE BACK"
 msgstr "また帰ってくる"
 
-#: systems/achievements.gd:140
+#: systems/achievements.gd:160
 msgid "%d achievements unlocked. See them in the Codex (K)."
 msgstr "実績を %d 個解除。図鑑（K）で見られます。"
 
-#: systems/achievements.gd:147 ui/notify_stack.gd:27 ui/subtitles.gd:453
+#: systems/achievements.gd:167 ui/notify_stack.gd:27 ui/subtitles.gd:453
 msgid "Achievement: %s. %s"
 msgstr "実績：%s。%s"
 
-#: systems/achievements.gd:152
+#: systems/achievements.gd:172
 msgid "Codex: %d new entries."
 msgstr "図鑑：新しい項目 %d 件。"
 
-#: systems/achievements.gd:155
+#: systems/achievements.gd:175
 msgid "Codex entry: %s"
 msgstr "図鑑の項目：%s"
 
@@ -2554,35 +2554,35 @@ msgstr "惑星を再生すると選択がもらえる。またはアークの節
 msgid "Heirloom: %s, level %d. It travels with Lumi to every world."
 msgstr "家宝：%s、レベル %d。Lumi といっしょにどの世界へも旅をする。"
 
-#: systems/decor.gd:117
+#: systems/decor.gd:119
 msgid "Needs %d Collection finds (%d so far)"
 msgstr "コレクションの発見が %d 必要（いまは %d）"
 
-#: systems/decor.gd:120
+#: systems/decor.gd:122
 msgid "Needs %d Seed of the Week paint chips (%d so far)"
 msgstr "「今週のシード」のペイントチップが %d 枚必要（いま %d 枚）"
 
-#: systems/decor.gd:184 systems/decor.gd:188
+#: systems/decor.gd:186 systems/decor.gd:190
 msgid "Too close to the base machines"
 msgstr "基地の機械に近すぎる"
 
-#: systems/decor.gd:186 systems/decor.gd:201
+#: systems/decor.gd:188 systems/decor.gd:203
 msgid "Something is already here"
 msgstr "ここにはもう何か置いてある"
 
-#: systems/decor.gd:191
+#: systems/decor.gd:193
 msgid "Outside the district"
 msgstr "地区の外"
 
-#: systems/decor.gd:193
+#: systems/decor.gd:195
 msgid "That's water"
 msgstr "そこは水だよ"
 
-#: systems/decor.gd:197
+#: systems/decor.gd:199
 msgid "Frozen in"
 msgstr "凍っている"
 
-#: systems/decor.gd:199
+#: systems/decor.gd:201
 msgid "A building is in the way"
 msgstr "建物がじゃまをしている"
 
@@ -3309,11 +3309,11 @@ msgstr "ムード音楽"
 msgid "New song on the radio: %s"
 msgstr "ラジオに新しい曲：%s"
 
-#: systems/extras/weekly.gd:113
+#: systems/extras/weekly.gd:125
 msgid "Not this week: %s"
 msgstr "今週は使えない：%s"
 
-#: systems/extras/weekly.gd:254 ui/extras_panel.gd:9 ui/extras_panel.gd:375
+#: systems/extras/weekly.gd:266 ui/extras_panel.gd:9 ui/extras_panel.gd:380
 #: data/achievements.json:achievements[extras_weekly_1].name
 msgid "Seed of the Week"
 msgstr "今週のシード"
@@ -3338,7 +3338,7 @@ msgstr "目標"
 msgid "Clean %d hexes"
 msgstr "ヘックスを %d 個片づける"
 
-#: systems/extras/weekly_run.gd:92 ui/extras_panel.gd:379
+#: systems/extras/weekly_run.gd:92 ui/extras_panel.gd:384
 msgid "Seed"
 msgstr "シード"
 
@@ -3374,7 +3374,7 @@ msgstr "第 %d 週、%d 年"
 msgid "Start the clock"
 msgstr "計測スタート"
 
-#: systems/extras/weekly_run.gd:96 systems/extras/weekly_run.gd:123 ui/extras_panel.gd:383
+#: systems/extras/weekly_run.gd:96 systems/extras/weekly_run.gd:123 ui/extras_panel.gd:388
 msgid "Return home"
 msgstr "ホームに戻る"
 
@@ -4431,135 +4431,135 @@ msgstr "アルバム"
 msgid "Nursery"
 msgstr "苗床"
 
-#: ui/extras_panel.gd:79
+#: ui/extras_panel.gd:82
 msgid "KEEPSAKES"
 msgstr "思い出"
 
-#: ui/extras_panel.gd:91
+#: ui/extras_panel.gd:94
 msgid "%s / %s  switch tabs"
 msgstr "%s / %s  タブ切り替え"
 
-#: ui/extras_panel.gd:230
+#: ui/extras_panel.gd:235
 msgid "DISTRICTS"
 msgstr "地区"
 
-#: ui/extras_panel.gd:232
+#: ui/extras_panel.gd:237
 msgid "Lumi takes a picture of each district on arrival, and \"after\" pictures as it is restored."
 msgstr "Lumi は到着した地区を一枚撮り、復元が進むと「アフター」写真も撮る。"
 
-#: ui/extras_panel.gd:236
+#: ui/extras_panel.gd:241
 msgid "Before only"
 msgstr "ビフォーのみ"
 
-#: ui/extras_panel.gd:244
+#: ui/extras_panel.gd:249
 msgid "PHOTOS  ·  %d"
 msgstr "写真  ·  %d"
 
-#: ui/extras_panel.gd:256
+#: ui/extras_panel.gd:261
 msgid "Photo"
 msgstr "写真"
 
-#: ui/extras_panel.gd:265
+#: ui/extras_panel.gd:270
 msgid "Photos you take in photo mode show up here."
 msgstr "フォトモードで撮った写真がここに並ぶ。"
 
-#: ui/extras_panel.gd:269 ui/photo_panel.gd:58
+#: ui/extras_panel.gd:274 ui/photo_panel.gd:58
 msgid "PHOTO MODE"
 msgstr "フォトモード"
 
-#: ui/extras_panel.gd:279
+#: ui/extras_panel.gd:284
 msgid "No pictures yet."
 msgstr "まだ写真がない。"
 
-#: ui/extras_panel.gd:290
+#: ui/extras_panel.gd:295
 msgid "BEFORE"
 msgstr "ビフォー"
 
-#: ui/extras_panel.gd:309
+#: ui/extras_panel.gd:314
 msgid "not yet"
 msgstr "まだ"
 
-#: ui/extras_panel.gd:319
+#: ui/extras_panel.gd:324
 msgid "The \"after\" picture comes when the district is half clean."
 msgstr "地区が半分きれいになると「アフター」写真が撮れる。"
 
-#: ui/extras_panel.gd:325
+#: ui/extras_panel.gd:330
 msgid "CARETAKERS  ·  %d"
 msgstr "世話係  ·  %d"
 
-#: ui/extras_panel.gd:326
+#: ui/extras_panel.gd:331
 msgid "Garden bonus: plants grow %d%% faster (up to %d%%)."
 msgstr "ガーデンボーナス：植物の成長が %d%% 速い（最大 %d%%）。"
 
-#: ui/extras_panel.gd:329
+#: ui/extras_panel.gd:334
 msgid "No one has retired yet. Old or Mk I-II robots can retire here; they'll look after the nursery garden at the base."
 msgstr "まだ誰も引退していない。古いロボットや Mk I-II のロボットはここで引退でき、基地の苗床ガーデンの世話をしてくれる。"
 
-#: ui/extras_panel.gd:338
+#: ui/extras_panel.gd:343
 msgid "RETIRE A ROBOT"
 msgstr "ロボットを引退させる"
 
-#: ui/extras_panel.gd:340
+#: ui/extras_panel.gd:345
 msgid "Retiring gives a few parts back, and the robot keeps its name and personality in the nursery."
 msgstr "引退するとパーツが少し戻り、ロボットは苗床で名前と性格をそのまま保つ。"
 
-#: ui/extras_panel.gd:342
+#: ui/extras_panel.gd:347
 msgid "No robots in this district."
 msgstr "この地区にロボットはいない。"
 
-#: ui/extras_panel.gd:349
+#: ui/extras_panel.gd:354
 msgid "Press again to retire (+%d parts)"
 msgstr "もう一度押すと引退（+%d パーツ）"
 
-#: ui/extras_panel.gd:349
+#: ui/extras_panel.gd:354
 msgid "Retire  (+%d parts)"
 msgstr "引退  （+%d パーツ）"
 
-#: ui/extras_panel.gd:374
+#: ui/extras_panel.gd:379
 msgid "WEEK %d, %d"
 msgstr "第 %d 週、%d 年"
 
-#: ui/extras_panel.gd:376
+#: ui/extras_panel.gd:381
 msgid "The same seed and twist for everyone this week. Clean %d hexes as fast as you can. It has its own save, so your world is untouched."
 msgstr "今週はみんな同じシードとひねり。できるだけ早くヘックスを %d 個片づけよう。専用のセーブなので、あなたの世界はそのまま。"
 
-#: ui/extras_panel.gd:377
+#: ui/extras_panel.gd:382
 msgid "Twist: %s"
 msgstr "ひねり：%s"
 
-#: ui/extras_panel.gd:380
+#: ui/extras_panel.gd:385
 msgid "Best time"
 msgstr "ベストタイム"
 
-#: ui/extras_panel.gd:381
+#: ui/extras_panel.gd:386
 msgid "Best score"
 msgstr "ベストスコア"
 
-#: ui/extras_panel.gd:387
+#: ui/extras_panel.gd:392
 msgid "Restart this week's run"
 msgstr "今週のランをやり直す"
 
-#: ui/extras_panel.gd:391
+#: ui/extras_panel.gd:396
 msgid "Resume this week's run"
 msgstr "今週のランを再開"
 
-#: ui/extras_panel.gd:391
+#: ui/extras_panel.gd:396
 msgid "Start the challenge"
 msgstr "チャレンジを始める"
 
-#: ui/extras_panel.gd:395
+#: ui/extras_panel.gd:400
 msgid "PAINT CHIPS  ·  %d"
 msgstr "ペイントチップ  ·  %d"
 
-#: ui/extras_panel.gd:396
+#: ui/extras_panel.gd:401
 msgid "Finish a week's challenge for its paint chip. Chips unlock the weekly decorations in Garden Mode and paint them."
 msgstr "その週のチャレンジをクリアするとペイントチップがもらえる。チップはガーデンモードの週替わりデコを解放し、色を塗る。"
 
-#: ui/extras_panel.gd:409
+#: ui/extras_panel.gd:414
 msgid "No chips yet."
 msgstr "まだチップがない。"
 
-#: ui/extras_panel.gd:442
+#: ui/extras_panel.gd:447
 msgid "No picture yet"
 msgstr "まだ写真がない"
 
@@ -5231,11 +5231,11 @@ msgstr "はじめから"
 msgid "Profiles"
 msgstr "プロフィール"
 
-#: ui/main_menu.gd:356 ui/main_menu.gd:561 ui/pause_menu.gd:66
+#: ui/main_menu.gd:356 ui/main_menu.gd:561 ui/pause_menu.gd:68
 msgid "Settings"
 msgstr "設定"
 
-#: ui/main_menu.gd:358 ui/pause_menu.gd:70
+#: ui/main_menu.gd:358 ui/pause_menu.gd:72
 msgid "Quit"
 msgstr "終了"
 
