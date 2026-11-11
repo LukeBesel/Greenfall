@@ -212,6 +212,8 @@ func _reload_check() -> void:
 		GameState.orbit["rocket_site"] = 3  # [v5play] the rocket's keys ride through a save too
 		GameState.orbit["rocket_owned"] = true
 		GameState.orbit["hubs_flown"] = [3]
+		if so.sites and so.sites.purpose:  # [v6hubs] a woken hub rides through a save: its state, level 2, built
+			so.sites.purpose.wake(3, true)
 		await get_tree().create_timer(0.5).timeout
 		var ok: bool = SaveManager.save_game()
 		print("[reload] wrote lumi=%s cubes=%.0f saved=%s" % [str(g.to_dirh(lumi.global_position)), GameState.get_currency("cubes").to_float(), str(ok)])
@@ -224,6 +226,11 @@ func _reload_check() -> void:
 	var flown: Array = GameState.orbit.get("hubs_flown", [])
 	var rocket_ok: bool = int(GameState.orbit.get("rocket_site", -1)) == 3 and bool(GameState.orbit.get("rocket_owned", false)) and flown.size() == 1 and int(flown[0]) == 3  # [v5play]
 	ok2 = ok2 and rocket_ok
+	var sm: SiteManager = g.site_manager  # [v6hubs]
+	var hub_ok: bool = HubPlan.entry(sm.planet_id, 3).is_empty() or (HubPlan.woken(3) and sm.built[3] == 1 and sm.levels[3] >= 2)
+	if not hub_ok:
+		print("[reload] woken hub 3 LOST: woken %s built %d level %d" % [HubPlan.woken(3), sm.built[3], sm.levels[3]])
+	ok2 = ok2 and hub_ok
 	print("[reload] read lumi=%s saved=%s cubes=%.0f rocket=%s %s" % [str(got), str(want), GameState.get_currency("cubes").to_float(), "kept" if rocket_ok else "LOST", "PASS" if ok2 else "FAIL"])
 	get_tree().quit(0 if ok2 else 1)
 

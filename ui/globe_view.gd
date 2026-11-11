@@ -798,6 +798,8 @@ const GLYPH_PX: float = 0.0045
 ## [v2map] Directions (from the planet centre) of the hub sites and the crashed pod (set by
 ## planet/orbit_layers.gd); drawn as sprout and smoke-plume glyphs.
 var hub_dirs: Callable = Callable()
+## [v6hubs] Optional names for those hubs, same order ("" = no label): the hubs the rocket lists.
+var hub_names: Callable = Callable()
 var pod_dir: Callable = Callable()
 ## [v5text] The planet % the HUD shows (SiteManager.planet_fraction: the clean share of the ground
 ## around the built hubs). When set, the survey card shows this same number, live, instead of its
@@ -821,10 +823,25 @@ func _place_glyphs() -> void:
 	_pod_dir = Vector3.ZERO
 	if hub_dirs.is_valid():
 		_hub_dirs = hub_dirs.call()
-		for d: Vector3 in _hub_dirs:
+		var names: Array = hub_names.call() if hub_names.is_valid() else []
+		for hi: int in _hub_dirs.size():
+			var d: Vector3 = _hub_dirs[hi]
 			var g: Sprite3D = MapGlyphs.sprite("sprout", GLYPH_PX)
 			g.position = d.normalized() * 1.006
 			_glyphs.add_child(g)
+			if hi < names.size() and str(names[hi]) != "":  # [v6hubs] the hub's name under its sprout
+				var l := Label3D.new()
+				l.text = str(names[hi])
+				l.font_size = 30
+				l.outline_size = 10
+				l.modulate = Color(0.98, 0.93, 0.8)
+				l.outline_modulate = Color(0.03, 0.08, 0.07, 0.9)
+				l.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+				l.no_depth_test = true
+				l.pixel_size = GLYPH_PX * 0.55
+				l.offset = Vector2(0, -78)
+				l.render_priority = 2
+				g.add_child(l)
 	if pod_dir.is_valid():
 		var pd: Vector3 = pod_dir.call()
 		if pd != Vector3.ZERO:
