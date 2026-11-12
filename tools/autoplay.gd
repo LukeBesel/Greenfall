@@ -1007,6 +1007,7 @@ func _pick_plant_hex(g: Garden) -> int:
 	elif _now() < _plant_scan_at:
 		return -1  # nothing to plant at the last look: look again in a moment
 	_plant_scan_at = _now() + PLANT_SCAN_S
+	var hl: HexLevels = world.get("hex_levels") as HexLevels
 	var best: int = -1
 	var best_s: float = INF
 	for h: int in _hexes():
@@ -1016,6 +1017,8 @@ func _pick_plant_hex(g: Garden) -> int:
 		if pc.y == 0 or pc.x >= pc.y:
 			continue
 		var s: float = world.field.hex_center(h).distance_to(here) - (PLANT_QUARTER_PULL_M if pc.x * 4 < pc.y else 0.0)
+		if hl != null and hl.level_of(h) == 2:
+			s -= PLANT_GROW_PULL_M  # planted but not Growing yet: more plants raise its life
 		if s < best_s:
 			best_s = s
 			best = h
@@ -1026,6 +1029,9 @@ func _pick_plant_hex(g: Garden) -> int:
 ## Metres by which a hex short of its quarter (stage 2) is preferred for planting, and how often
 ## the whole city is looked over for the next hex (game seconds).
 const PLANT_QUARTER_PULL_M: float = 150.0
+## Metres by which a Planted hex that is not Growing yet is preferred (the city's next stage waits
+## on its last hexes).
+const PLANT_GROW_PULL_M: float = 100.0
 const PLANT_SCAN_S: float = 3.0
 var _plant_scan_at: float = 0.0
 ## Hexes whose open slots were all out of reach (hex -> true).
