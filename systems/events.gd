@@ -155,15 +155,10 @@ func _ready() -> void:
 		var wl: Dictionary = cfg().get("wren", {})
 		for k: String in wl:
 			world.wren.lines[k] = wl[k]
-	EventBus.cube_made.connect(_on_cube_made)
 	_dev_hooks.call_deferred()
 
 
 func _dev_hooks() -> void:
-	if DevHooks.has("requests-done"):  # [money] (was --tokens): N finished requests on the reward track
-		var c: Contracts = world.get("contracts") as Contracts if world else null
-		if c:
-			c.count_done(int(DevHooks.get_f("requests-done", 10.0)))
 	if DevHooks.has("streak"):
 		streak.add_scoop(DevHooks.get_f("streak", 90.0))
 		streak.grace_s = 1.0e9  # held for screenshots
@@ -431,13 +426,7 @@ func apply_bale_bonus(info: Dictionary) -> Dictionary:
 	return out
 
 
-func _on_cube_made(info: Dictionary) -> void:
-	if str(info.get("dominant", "")) == "metal":
-		GameState.inc_stat("ev_metal_bales")
-
-
 func _on_streak_up(tier: int) -> void:
-	Contracts.note_peak("streak", tier)
 	streak_tier_up.emit(tier)
 	var p: Patch = world.patch
 	var col: Color = Color(0.45, 0.9, 1.0).lerp(Color(1.0, 0.75, 0.25), float(tier) / maxf(streak.max_tier, 1))

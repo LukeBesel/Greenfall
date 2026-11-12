@@ -123,11 +123,15 @@ func test_parked_keys_are_ignored_not_migrated() -> void:
 	for id: String in ["telescope", "museum", "bot_fabricator"]:
 		assert_false(id in HubBuilds.ids(), "%s is not a build here" % id)
 	GameState.use_orbit_world(((GameState.orbit["hub_worlds"] as Dictionary)["0"] as Dictionary).duplicate(true))
-	assert_eq(((GameState.world["decor"] as Dictionary)["items"] as Array).size(), Fixture.PARKED_DECOR.size())
-	var decor := Decor.new()
-	add_child_autofree(decor)
-	decor.setup(null)
-	assert_eq(decor.items.size(), 0, "decorations of a parked feature are not placed")
+	assert_eq(((GameState.world["decor"] as Dictionary)["items"] as Array).size(), Fixture.PARKED_DECOR.size(), "the decorations stay in the save")
+	assert_false(ClassDB.class_exists("Decor") or _script_class_exists("Decor"), "Garden Mode is parked (task M3-13): nothing places them")
+
+
+func _script_class_exists(cls: String) -> bool:
+	for c: Dictionary in ProjectSettings.get_global_class_list():
+		if str(c["class"]) == cls:
+			return true
+	return false
 
 
 func test_saving_touches_only_the_played_slot() -> void:

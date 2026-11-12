@@ -1,14 +1,14 @@
 class_name BenchTiers
 extends RefCounted
-## [v1guide] Workbench tiers (owner, 2026-11-08 #24, #28): the later workbench tabs (Bots, Research,
-## Requests) open by upgrading the workbench itself, not on their own. Tier 1 is the repaired bench
+## [v1guide] Workbench tiers (owner, 2026-11-08 #24, #28): the later workbench tabs (Bots and Research)
+## open by upgrading the workbench itself, not on their own. Tier 1 is the repaired bench
 ## (Upgrades + Build). Each later tier is bought in the Upgrades tab (Base, first row) and opens
 ## its tabs for good. Tiers live in data/workbench.json "tiers"; the tier in
 ## GameState.flags["bench_tier"] (global: one bench design for every base).
 ##
 ## Saves from before the tiers keep what they could already use: the first time a save without the
 ## flag asks, the tier is worked out from what was opened or done (bench_tabs, robots built,
-## research done, contracts done) and stored.
+## research done) and stored.
 
 const PATH: String = "res://data/workbench.json"
 
@@ -49,7 +49,7 @@ static func legacy_tier() -> int:
 	var out: int = 1
 	for i: int in range(2, max_tier() + 1):
 		for tab: Variant in def(i).get("tabs", []):
-			var stat: String = {"bots": "robots_built", "research": "research_done", "contracts": "contracts_done"}.get(str(tab), "")
+			var stat: String = {"bots": "robots_built", "research": "research_done"}.get(str(tab), "")
 			if stat != "" and bool(used.call(str(tab), stat)):
 				out = i
 	return out

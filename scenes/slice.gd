@@ -32,7 +32,6 @@ var ledger: LedgerArc
 var outposts: Outposts  # [outposts] ruined frontier depots (automation/outposts.gd)
 var events: WorldEvents  # [events] world events, cleaning streak (systems/events.gd)
 var lumi_level: LumiLevel  # [hud] Lumi Level / XP (systems/lumi_level.gd), drawn by the hotbar
-var contracts: Contracts  # [events] contracts board + token shop (systems/contracts.gd)
 var photo: PhotoMode  # [photo] photo mode (ui/photo_mode.gd)
 var fauna: Fauna  # [wild] ambient animals (fauna/fauna.gd)
 var orbit: SliceOrbit  # [orbB] the globe build (scenes/slice_orbit.gd)

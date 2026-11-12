@@ -1,0 +1,14 @@
+{
+  "_doc": "WREN's pool for Garden Mode, cut from planets/verdance/data/wren_lines.json in task M3-13. Put it back in that table when Garden Mode returns.",
+  "garden_place": [
+    [
+      "...pretty..."
+    ],
+    [
+      "You're decorating. I approve. The cats are going to approve more."
+    ],
+    [
+      "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
+    ]
+  ]
+}

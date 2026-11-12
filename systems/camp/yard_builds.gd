@@ -1,11 +1,11 @@
 class_name YardBuilds
 extends RefCounted
 ## [camp] Things built into the yard from the Hub tab (ui/yard_builds_panel.gd): the lean-to,
-## generator, yard lamps, compost press, CD player and robot nursery. Nothing here exists on a fresh base. Data: data/camp.json "builds".
+## generator, yard lamps, compost press and CD player. Nothing here exists on a fresh base. Data: data/camp.json "builds".
 ## State (per district): GameState.world["camp"] = {"bench": bool (repaired), "built": {id: true}}.
 
 const TABLE: String = "yard"
-const IDS: Array[String] = ["shack", "generator", "lamps", "composter", "radio", "locker", "camera_bot", "nursery"]  # [camp2] [ui6] [camp3]
+const IDS: Array[String] = ["shack", "generator", "lamps", "composter", "radio", "locker", "camera_bot"]  # [camp2] [ui6] [camp3]
 
 static var _cfg: Dictionary = {}
 static var events: YardEvents = YardEvents.new()

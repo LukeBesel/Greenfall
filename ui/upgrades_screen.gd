@@ -1,9 +1,8 @@
 class_name UpgradesScreen
 extends CanvasLayer
-## One place for every upgrade. [ui2] Seven tabs: Lumi, Bots, Hub, Research, Rockets, Requests and
-## the Locker (Lumi's and the robots' looks; opens at hub level 3). Bigger text, one card style
+## One place for every upgrade. [ui2] Tabs: Upgrades, Build, Bots, Research and Rig. Bigger text, one card style
 ## (ui/bench_kit.gd), costs shown with the currency icons, controller tab switching.
-## Tabs can be gated by other systems: UpgradesScreen.set_tab_gate("contracts", func() -> bool)
+## Tabs can be gated by other systems: UpgradesScreen.set_tab_gate("rigs", func() -> bool)
 ## (a gated tab shows a lock and its hint until the gate opens).
 
 signal closed
@@ -15,11 +14,10 @@ const TABS: Array[Dictionary] = [
 	{"id": "bots", "name": "Bots"},
 	{"id": "research", "name": "Research"},
 	{"id": "rigs", "name": "Rig"},  # Lumi's fitted modules (ui/rig_panel.gd); shown once a plan has arrived
-	{"id": "contracts", "name": "Requests"},  # [money] contracts + world events (onboard gate)
 ]  # [ui6] the Locker is a yard build now (systems/camp/locker_cabinet.gd), not a tab
 # l10n:end
 ## [ui2] Old tab ids (dev hooks, other branches) and where they went.
-const TAB_ALIASES: Dictionary = {"upgrades": "patch", "cosmetics": "patch", "builder": "patch", "locker": "patch", "trade": "bots", "hub": "patch", "rockets": "patch"}  # [ui3] Hub and Rockets folded into Upgrades  # [qafix] "upgrades" is the Upgrades tab (id patch)
+const TAB_ALIASES: Dictionary = {"contracts": "patch", "upgrades": "patch", "cosmetics": "patch", "builder": "patch", "locker": "patch", "trade": "bots", "hub": "patch", "rockets": "patch"}  # [ui3] Hub and Rockets folded into Upgrades  # [qafix] "upgrades" is the Upgrades tab (id patch)
 const TAB_FONT: int = 19
 
 ## [ui2] id -> Callable() -> bool. A tab whose gate returns false is locked (see set_tab_gate).
@@ -89,9 +87,7 @@ static func tab_visible(id: String, w: Node = null) -> bool:
 		return true
 	if _gates.has(id):
 		return tab_open(id)
-	if not BenchTiers.tab_open(id):  # [v1guide] Bots, Research, Requests: a workbench tier opens them
-		return false
-	if id == "contracts" and not Contracts.unlocked():  # [onboard] the board opens later (base 3, 45 min)
+	if not BenchTiers.tab_open(id):  # [v1guide] Bots and Research: a workbench tier opens them
 		return false
 	var seen: Array = GameState.flags.get("bench_tabs", [])
 	if id in seen:
@@ -273,13 +269,6 @@ func _populate() -> void:
 		row.add_child(BenchKit.Glyph.new("lock", 52, UITheme.MUTED))
 		row.add_child(BenchKit.body(str(_gate_hints.get(_tab, "")) if str(_gate_hints.get(_tab, "")) != "" else tr("Not open yet. Keep playing."), UITheme.CREAM, 20))
 		return
-	if _tab == "contracts":  # [events] contracts board + token shop
-		_grid.columns = 1
-		var cnp := ContractsPanel.new()
-		cnp.world = w
-		_grid.add_child(cnp)
-		_panel = cnp
-		return
 	if _tab == "rigs":
 		_grid.columns = 1
 		var rp := RigPanel.new()
@@ -447,9 +436,6 @@ func objective_row() -> Array:
 
 func open_screen() -> void:
 	is_open = true
-	if _tab == "contracts" and not Contracts.unlocked():  # [onboard]
-		_tab = "patch"
-		_populate()
 	var orow: Array = objective_row()  # [v1guide] straight to what the objective card asks for
 	if not orow.is_empty():
 		if str(orow[0]) != _tab:
@@ -457,7 +443,7 @@ func open_screen() -> void:
 			_populate()
 		if _panel is ListDetail:
 			(_panel as ListDetail).select_id(str(orow[1]))
-	_style_tabs()  # [onboard] the Requests tab appears once the board is open
+	_style_tabs()
 	_root.visible = true
 	_refresh_all()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

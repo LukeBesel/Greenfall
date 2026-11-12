@@ -59,8 +59,7 @@ func _ready() -> void:
 		photo_requested.emit())
 	photo_btn.name = "PhotoBtn"  # [camp3] hidden until Blink, the camera bot, is built
 	buttons.append(photo_btn)
-	buttons.append_array(LateMenu.add_buttons(self, vb, _button))  # Garden Mode
-	var keepsakes: Button = _button(vb, tr("Keepsakes"), func() -> void:  # [extras] radio, album, nursery
+	var keepsakes: Button = _button(vb, tr("Keepsakes"), func() -> void:  # [extras] radio, album
 		close_menu()
 		ExtrasPanel.open_for(get_parent(), ""))
 	keepsakes.name = "KeepsakesBtn"  # hidden until there is a keepsake to show
@@ -142,9 +141,23 @@ func open_menu() -> void:
 	var kb: Button = _menu.find_child("KeepsakesBtn", true, false) as Button
 	if kb:
 		kb.visible = not ExtrasPanel.open_tabs().is_empty()
-	LateMenu.refresh(self)  # show Garden Mode once it is open
+	_chain_focus(pb.get_parent() if pb else null)
 	_fit_keys()
 	_first.call_deferred("grab_focus")
+
+
+## Links the visible buttons in a ring for the pad, so focus never lands on a hidden one.
+func _chain_focus(vb: Node) -> void:
+	if vb == null:
+		return
+	var list: Array[Button] = []
+	for c: Node in vb.get_children():
+		if c is Button and (c as Button).visible:
+			list.append(c)
+	for i: int in list.size():
+		var b: Button = list[i]
+		b.focus_neighbor_top = b.get_path_to(list[wrapi(i - 1, 0, list.size())])
+		b.focus_neighbor_bottom = b.get_path_to(list[wrapi(i + 1, 0, list.size())])
 
 
 ## [ui4] The key strip only shows where it can't overlap the menu (short screens / big UI scale).

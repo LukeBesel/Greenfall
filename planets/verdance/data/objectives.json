@@ -243,7 +243,7 @@
     {
       "id": "base3",
       "text": "Rebuild the base to level 3",
-      "desc": "Workbench, Upgrades tab. It opens the Request Board.",
+      "desc": "Workbench, Upgrades tab. More robots can work.",
       "type": "hub_level",
       "target": 3,
       "lines": [

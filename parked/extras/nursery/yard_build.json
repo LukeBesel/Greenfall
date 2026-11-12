@@ -1,0 +1,13 @@
+{
+  "_doc": "Cut in task M3-13 with the robot nursery: its yard build (planets/verdance/data/camp.json \"builds\") and its build-list entry (planets/verdance/data/builds.json, {\"id\": \"nursery\", \"kind\": \"one_time\"}). Put both back, and \"nursery\" in YardBuilds.IDS, when the nursery returns.",
+  "nursery": {
+    "name": "Robot Nursery",
+    "desc": "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand.",
+    "cost": {
+      "cubes": 1500
+    },
+    "requires_level": 1,
+    "requires_flag": "first_sprout",
+    "flag_text": "Grow your first seed first."
+  }
+}

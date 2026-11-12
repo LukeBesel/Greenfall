@@ -8,15 +8,15 @@ extends Node
 ## stand-in crews (OrbitCrews), the real Patch on a SphereMotor with SphereCam, the HUD, the
 ## Depot on the start pad, Lumi Level, the pause menu, hex levels (sparse), the Hub (logic; the
 ## site prefab shows its stage), the workbench + Upgrades, Research/Achievements/Codex, music,
-## WREN + subtitles, Goals, Tutorial, Requests, Interactables, WorldEvents, the Signal Tower,
-## Extras (CD player, nursery, album, welcome back, Seed of the Week), Camp (broken
+## WREN + subtitles, Goals, Tutorial, Interactables, WorldEvents, the Signal Tower,
+## Extras (CD player, album, welcome back), Camp (broken
 ## bench, trash bin, yard builds), Glim, the crashed pod, CoreCharge, Objectives (+ the cell
 ## outline), the garden (sparse, per cell). Yard systems stand on orbD's hub-0 anchors (yard_slot).
 ## GameState.world is the start site's own dict (GameState.use_orbit_world).
 ## Not here: CityLayout/CityView/StreetDressing/litter/far junk/water (orbD sites), Fleet/robot
 ## builder/Command view (orbC), SkyDirector/GlobeView/FutureLayer, the intro cinematic and photo
-## mode (orbE); frontier districts (retired on the globe). Fauna, eggs, outposts, the Ledger arc
-## and Garden Mode's decor run per hub (HubFrame).
+## mode (orbE); frontier districts (retired on the globe). Fauna, eggs, outposts and the Ledger
+## arc run per hub (HubFrame).
 ##
 ## Dev flags (phase A's, now on the slice): --orbit-walk[=boost] --orbit-lap-quit,
 ## --orbit-scoop, --orbit-cash --orbit-cash-quit, --orbit-view=follow|ground|command,
@@ -650,11 +650,6 @@ func _build_story() -> void:
 	w.set("tutorial", tut)
 	if DevHooks.has("clarity-log"):  # [v3clear] what the player is told, over time (tools/clarity_log.gd)
 		w.add_child(ClarityLog.new(w))
-	var ct := Contracts.new()
-	ct.name = "Contracts"
-	ct.world = w
-	w.add_child(ct)
-	w.set("contracts", ct)
 
 
 # --- Yard systems on the start site's anchors ---------------------------------------------
@@ -728,7 +723,6 @@ func _build_yard_systems() -> void:
 	bloom.name = "Bloom"
 	bloom.world = w
 	w.add_child(bloom)
-	GardenDirector.attach(w)  # Garden Mode (its decor per hub in the frame)
 
 
 ## A yard spot in world space (the anchor's origin, or the flat yard spot on the pad).
@@ -738,9 +732,8 @@ func yard_point(anchor: String) -> Vector3:
 	return (slot[0] as Node3D).global_transform * (slot[1] as Transform3D).origin
 
 
-## Extras as on the flat game (radio / CD player, robot nursery, album, welcome back, Seed of the
-## Week); the radio and the nursery stand on the start site's anchors (the nursery's caretakers
-## wander in its own frame, so they come along).
+## Extras as on the flat game (radio / CD player, album, welcome back); the radio stands on the
+## start site's anchor.
 func _attach_extras() -> void:
 	var ex: ExtrasDirector = ExtrasDirector.attach(w)
 	if ex == null:
@@ -751,10 +744,6 @@ func _attach_extras() -> void:
 		var reach: Node3D = ex.radio.get("_anchor") as Node3D
 		if reach:
 			reach.global_position = ex.radio.global_position + ex.radio.global_basis.x * 1.0
-	if ex.nursery:
-		var slot2: Array = yard_slot("nursery", ex.nursery.position)
-		ex.nursery.global_transform = (slot2[0] as Node3D).global_transform * (slot2[1] as Transform3D)
-		ex.nursery.set("center", ex.nursery.global_position)
 
 
 ## The Act 3 opener (story/first_seed.gd): the ruined greenhouse with the Maker seed tin, on a free
@@ -859,12 +848,6 @@ func _build_hub_frame() -> void:
 		f.add_child(lg)
 		lg.setup()
 		return lg)
-	hub_frame.host("Decor", func(f: HubFrame, hub: int) -> Node:  # Garden Mode's decorations at this hub
-		var dc := Decor.new()
-		dc.hub_index = hub
-		f.add_child(dc)
-		dc.setup(w)
-		return dc)
 	w.set("eggs", hub_frame.node("EasterEggs") as EasterEggs)
 	w.set("outposts", hub_frame.node("Outposts") as Outposts)
 	w.set("ledger", hub_frame.node("Ledger") as LedgerArc)
@@ -948,7 +931,7 @@ static func pod_body(pod: Node3D) -> StaticBody3D:
 
 
 ## Camp (systems/camp/camp.gd) as on the flat game: the broken bench is its "bench" bit, the
-## yard builds (lean-to, generator, lamps, press, radio, locker, nursery, Blink) keep their
+## yard builds (lean-to, generator, lamps, press, radio, locker, Blink) keep their
 ## built state in the hub's dict, and the bin's reach is the start site's "bin" anchor. The
 ## yard models on the anchors are orbD's / yard's; Camp shows and hides what exists.
 func _attach_camp() -> void:
@@ -1039,7 +1022,7 @@ func reseat_yard() -> void:
 	if cmp:
 		var cs: Array = yard_slot("composter", Composter.POS)
 		cmp.global_transform = (cs[0] as Node3D).global_transform * (cs[1] as Transform3D)
-	# [orbB] the CD player, the nursery and the crashed pod follow their anchors too
+	# [orbB] the CD player and the crashed pod follow their anchors too
 	var ex: ExtrasDirector = ExtrasDirector.of(w)
 	if ex and ex.radio:
 		var rs: Array = yard_slot("radio", Radio.POS)
@@ -1047,10 +1030,6 @@ func reseat_yard() -> void:
 		var rr: Node3D = ex.radio.get("_anchor") as Node3D
 		if rr:
 			rr.global_position = ex.radio.global_position + ex.radio.global_basis.x * 1.0
-	if ex and ex.nursery:
-		var ns: Array = yard_slot("nursery", ex.nursery.position)
-		ex.nursery.global_transform = (ns[0] as Node3D).global_transform * (ns[1] as Transform3D)
-		ex.nursery.set("center", ex.nursery.global_position)
 	var pod_site: Node3D = w.get_meta("orbit_pod", null) as Node3D
 	if pod_site:
 		var at: Vector3 = yard_point("pod")

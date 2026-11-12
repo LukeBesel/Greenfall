@@ -1,5 +1,5 @@
 extends GutTest
-## [camp] The landing yard: the upgradeable trash bin, yard builds (radio, nursery), the broken
+## [camp] The landing yard: the upgradeable trash bin, yard builds (radio), the broken
 ## workbench on fresh bases, old-save migration, and the 3 m spacing between yard interactables.
 
 var _cur: Dictionary
@@ -66,11 +66,8 @@ func test_yard_builds_need_level_flag_and_cubes() -> void:
 	assert_true(YardBuilds.build("radio", 2))
 	assert_true(YardBuilds.built("radio"))
 	assert_false(YardBuilds.build("radio", 2), "built once")
-	assert_false(YardBuilds.listed("nursery"), "no nursery listed before anything has grown")
-	assert_false(YardBuilds.build("nursery", 5))
 	GameState.flags["first_sprout"] = true
-	assert_true(YardBuilds.listed("nursery"))
-	assert_true(YardBuilds.build("nursery", 1))
+	assert_false("nursery" in YardBuilds.IDS, "the nursery is parked (task M3-13)")
 
 
 func test_fresh_bench_is_broken_old_saves_keep_theirs() -> void:
@@ -81,7 +78,6 @@ func test_fresh_bench_is_broken_old_saves_keep_theirs() -> void:
 	assert_true(Camp.bench_ok(), "an already-played district keeps a working bench")
 	Camp.migrate()
 	assert_true(YardBuilds.built("radio"), "a level 2 base from an old save keeps its radio")
-	assert_false(YardBuilds.built("nursery"), "no caretakers, no nursery")
 	GameState.world = {}
 	Camp.migrate()
 	assert_false(YardBuilds.built("radio"), "fresh districts start bare")
@@ -122,7 +118,6 @@ func test_yard_keeps_off_the_crash_site() -> void:
 		"workbench": [Vector3(-4.9, 0, 2.2), 2.0],
 		"trash_bin": [Vector3(0, 0, -3.2), 2.2],
 		"radio": [YardBuilds.pos("radio", Radio.POS), 1.0],
-		"nursery": [Nursery.SPOTS[0], 3.0],
 	}
 	for k: String in things:
 		var p: Vector3 = things[k][0]

@@ -9,12 +9,12 @@ extends Node
 ##   - Old Town's lean-to, generator and street lamp, and the yard's poles, crates and festoons
 ##     (planet/street_dressing.gd "Yard" layer) arrive with hub level 2.
 ##   - The composter stays hidden until something has grown (it only works then anyway).
-##   - The radio and the robot nursery are Hub-tab builds (systems/camp/yard_builds.gd).
+##   - The radio is a Hub-tab build (systems/camp/yard_builds.gd).
 ##   - The trash bin (automation/trash_bin.gd) upgrades with E at the bin.
 ##   - Every yard interactable sits at least data/camp.json min_gap metres from the next one, and
 ##     every prompt names the thing it opens. `--camp-report` prints the yard's interactables.
 ## Dev: --camp-broken (start with the bench broken even on a loaded save), --camp-fixed (repaired),
-##      --camp-repair (start the repair after 1 s), --camp-built=radio+nursery (build them free),
+##      --camp-repair (start the repair after 1 s), --camp-built=radio (build it free),
 ##      --camp-bin=N (trash bin level), --camp-report, --camp-buy=conveyor+auto_baler[+recycler]
 ##      (buy stations live after --camp-buy-at=S s, with their reveal).
 
@@ -63,8 +63,8 @@ static func set_bench_ok(on: bool) -> void:
 	YardBuilds.state()["bench"] = on
 
 
-## Old saves keep what they had: the radio and nursery count as built where the player could
-## already use them (the radio was always on the bench; a nursery with caretakers in it).
+## Old saves keep what they had: the radio counts as built where the player could already use it
+## (it was always on the bench).
 static func migrate() -> void:
 	var st: Dictionary = YardBuilds.state()
 	if st.has("migrated"):
@@ -74,8 +74,6 @@ static func migrate() -> void:
 		return  # a fresh district
 	if int(GameState.world.get("hub_level", 1)) >= 2 or str(Radio.st().get("song", "")) != "":
 		YardBuilds.mark_built("radio")
-	if not Nursery.list().is_empty():
-		YardBuilds.mark_built("nursery")
 
 
 ## [camp2] Second pass (everything became a Hub build): whatever already stood in a played
@@ -108,14 +106,12 @@ func _setup() -> void:
 	elif DevHooks.has("camp-fixed"):
 		set_bench_ok(true)
 	if DevHooks.has("camp-built"):
-		for id: String in DevHooks.get_s("camp-built", "radio+nursery").split("+", false):
+		for id: String in DevHooks.get_s("camp-built", "radio").split("+", false):
 			YardBuilds.mark_built(id)
 	# The extras set themselves up before Camp: show what migration / dev hooks just marked built.
 	var ex: ExtrasDirector = ExtrasDirector.of(world)
 	if ex and ex.radio:
 		ex.radio.set_built(YardBuilds.built("radio"), false)
-	if ex and ex.nursery:
-		ex.nursery.set_built(YardBuilds.built("nursery"), false)
 	if DevHooks.has("camp-bin"):
 		TrashBin.set_level(int(DevHooks.get_f("camp-bin", 1.0)))
 	_bind_bench()
@@ -318,9 +314,6 @@ func _on_built(id: String) -> void:
 		"radio":
 			if ex and ex.radio:
 				ex.radio.set_built(true, true)
-		"nursery":
-			if ex and ex.nursery:
-				ex.nursery.set_built(true, true)
 		"camera_bot":  # [camp3]
 			if camera_bot:
 				camera_bot.set_built(true)
@@ -418,7 +411,6 @@ func standing() -> Array[String]:
 	var ex: ExtrasDirector = ExtrasDirector.of(world)
 	if ex:
 		checks["cd_player"] = ex.radio
-		checks["nursery"] = ex.nursery
 	var st: Stations = Stations.of(world)
 	if st:
 		checks["conveyor"] = st.conveyor
@@ -447,7 +439,7 @@ func too_close() -> Array:
 
 
 func report() -> String:
-	var lines: Array[String] = ["[camp] bench_ok=%s bin=L%d radio=%s nursery=%s hub=%d" % [str(bench_ok()), TrashBin.level(), str(YardBuilds.built("radio")), str(YardBuilds.built("nursery")), hub_level()]]
+	var lines: Array[String] = ["[camp] bench_ok=%s bin=L%d radio=%s hub=%d" % [str(bench_ok()), TrashBin.level(), str(YardBuilds.built("radio")), hub_level()]]
 	for p: Array in points():
 		var v: Vector3 = p[1]
 		lines.append("[camp]   %-10s (%.1f, %.1f) shown=%s" % [p[0], v.x, v.z, str(p[2])])

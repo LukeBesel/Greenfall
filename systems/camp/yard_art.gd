@@ -1207,7 +1207,7 @@ static func radio_stand() -> Kit:
 	return k
 
 
-# --- Robot nursery (systems/extras/nursery.gd) -------------------------------------------------------
+# --- Robot nursery (parked: parked/extras/nursery/) ---------------------------------------------------
 
 ## The garden's hard parts: a soil bed (grass via nursery_grass), segmented concrete kerbs with a
 ## gap on the yard side (+z), a little charging shelter at the back and a plaque post. size = SIZE.

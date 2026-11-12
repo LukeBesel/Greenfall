@@ -1,7 +1,7 @@
 class_name PadAudit
 extends Node
 ## [deck] Controller-only audit (DevHooks `--pad-audit`, headless is fine). In the game scene it
-## opens every screen and tab (workbench tabs incl. contracts, Command view, globe, codex tabs,
+## opens every screen and tab (workbench tabs, Command view, globe, codex tabs,
 ## pause menu and every Settings tab); on the title screen (`--menu --pad-audit`) the main
 ## menu and its Settings. For each it checks, as a pad-only player would meet it:
 ##   - something has focus (or the screen is driven without focus, e.g. the Command map);

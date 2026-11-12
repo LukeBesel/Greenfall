@@ -73,16 +73,6 @@
       ],
       "flag_text": "Find a piece of a look first."
     },
-    "nursery": {
-      "name": "Robot Nursery",
-      "desc": "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand.",
-      "cost": {
-        "cubes": 1500
-      },
-      "requires_level": 1,
-      "requires_flag": "first_sprout",
-      "flag_text": "Grow your first seed first."
-    },
     "glim": {
       "name": "Repair Glim",
       "desc": "The little lantern bot who held on to your pod all the way down. Patch him up and he'll follow you and light the way.",

@@ -7,7 +7,7 @@ extends Node3D
 ##   `_ruin_bits`: the lean-to (frame, roof, back, side, work lamp, bulb, posts), the bench
 ##   (broken -> repaired), the yard street lamp and the generator.
 ##   This node follows the same saved state for the rest, the way their flat systems decide:
-##   extra yard lamps and compost press, radio and nursery (YardBuilds.built), stations
+##   extra yard lamps and compost press, radio (YardBuilds.built), stations
 ##   (Stations.built_in_state), and the escape pod in its crash site (always there).
 ## Already on the globe with their own models: the depot and its bin tiers, the signal tower
 ## tiers, the locker, Blink (camera_bot).
@@ -21,7 +21,6 @@ var bits: Dictionary = {}
 var _extra_lamps: Array[Node3D] = []
 var _composter: Node3D
 var _radio: Node3D
-var _nursery: Node3D
 var _stations: Dictionary = {}  # id -> Node3D
 var _pod: Node3D
 var _poll: float = 0.0
@@ -136,7 +135,7 @@ func _build(bench: Node3D) -> void:
 	YardArt.dress_board(bits)  # the yard helper's models into the flat node layout
 	gen.position = Vector3.ZERO  # dress_board moves it out from under the flat lean-to; here the anchor is the spot
 	_bin_bay()
-	# Compost press, CD-player stand, robot nursery (the models their systems build).
+	# Compost press and CD-player stand (the models their systems build).
 	_composter = _slot("composter")
 	var cp: Dictionary = YardArt.composter()
 	_composter.add_child((cp["body"] as YardArt.Kit).mi(0.2))
@@ -148,9 +147,6 @@ func _build(bench: Node3D) -> void:
 	_radio = _slot("radio")
 	_radio.add_child(YardArt.radio_stand().mi(0.15, "Stand"))
 	YardArt.solid(_radio, Vector3(1.2, 1.3, 0.8), Vector3(0, 0.65, 0), "RadioBody")
-	_nursery = _slot("nursery")
-	_nursery.add_child(YardArt.nursery(Vector2(5.0, 3.4)).mi(0.15, "Garden"))
-	_nursery.add_child(YardArt.nursery_grass(Vector2(5.0, 3.4)))
 	# Stations: the real machine nodes, idle (their logic is the flat game's Stations), in a row.
 	var st_root: Node3D = _slot("stations")
 	var row: Array = [["conveyor", Conveyor.new(), Vector3(0, 0, 0)], ["auto_baler", AutoBaler.new(), Vector3(0, 0, -3.2)], ["recycler", Recycler.new(), Vector3(0, 0, 3.2)]]
@@ -192,15 +188,12 @@ func _apply() -> void:
 	var radio: bool = YardBuilds.built("radio")
 	_show(_radio, radio)
 	YardArt.set_powered(_radio, radio)
-	var nursery: bool = YardBuilds.built("nursery")
-	_show(_nursery, nursery)
-	YardArt.set_powered(_nursery, nursery)
 	for id: String in _stations:
 		_show(_stations[id], Stations.built_in_state(id))
 
 
 ## When orbB attaches a yard system with its own model (the intro's pod and
-## crash site, the extras' radio and nursery), its model is the one that stands: this node's
+## crash site, the extras' radio), its model is the one that stands: this node's
 ## stand-in for it goes away, so nothing is drawn twice.
 func _yield_to_real_systems() -> void:
 	# The crashed pod: orbB's CrashSite on the slice (meta "orbit_pod", or a child named CrashSite).
@@ -218,15 +211,11 @@ func _yield_to_real_systems() -> void:
 		for id: String in _stations:
 			(_stations[id] as Node).queue_free()
 		_stations.clear()
-	# Radio and nursery: the extras' own models stand once they show (built).
+	# Radio: the extras' own model stands once it shows (built).
 	var ex: ExtrasDirector = ExtrasDirector.of(world)
-	if ex:
-		if _radio and ex.radio and ex.radio.visible:
-			_radio.queue_free()
-			_radio = null
-		if _nursery and ex.nursery and ex.nursery.visible:
-			_nursery.queue_free()
-			_nursery = null
+	if ex and _radio and ex.radio and ex.radio.visible:
+		_radio.queue_free()
+		_radio = null
 
 
 ## [v1yard] The trash bin's bay: a marked rectangle round the depot's plate and the bin's reach
@@ -287,7 +276,7 @@ func report() -> String:
 		if n:
 			parts.append("%s:%s" % [k, "on" if n.is_visible_in_tree() else "off"])
 	var mine: Dictionary = {"lamps+": _extra_lamps[0] if not _extra_lamps.is_empty() else null, "composter": _composter, "radio": _radio,
-		"nursery": _nursery, "pod": _pod}
+		"pod": _pod}
 	for id: String in _stations:
 		mine[id] = _stations[id]
 	for k: String in mine:

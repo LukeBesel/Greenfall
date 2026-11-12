@@ -240,6 +240,78 @@
     "target": 4
    },
    "parked_with": "extras/weekly"
+  },
+  {
+   "id": "late_decor_1",
+   "name": "Home Touches",
+   "desc": "Place a decoration in Garden Mode.",
+   "icon": "flower",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "decor_placed"
+   },
+   "parked_with": "side/garden (Garden Mode, task M3-13)"
+  },
+  {
+   "id": "late_decor_25",
+   "name": "Landscaper",
+   "desc": "Place 25 decorations.",
+   "icon": "tree",
+   "cond": {
+    "type": "stat",
+    "target": 25,
+    "key": "decor_placed"
+   },
+   "parked_with": "side/garden (Garden Mode, task M3-13)"
+  },
+  {
+   "id": "late_decor_all",
+   "name": "Full Catalogue",
+   "desc": "Place every kind of decoration at least once.",
+   "icon": "check",
+   "cond": {
+    "type": "stat",
+    "target": 10,
+    "key": "decor_kinds"
+   },
+   "parked_with": "side/garden (Garden Mode, task M3-13)"
+  },
+  {
+   "id": "late_charm_25",
+   "name": "Picture Perfect",
+   "desc": "Reach 25 charm in one district.",
+   "icon": "leaf",
+   "cond": {
+    "type": "stat",
+    "target": 25,
+    "key": "decor_charm_best"
+   },
+   "parked_with": "side/garden (Garden Mode, task M3-13)"
+  },
+  {
+   "id": "extras_retire_1",
+   "name": "Happy Retirement",
+   "desc": "Retire a robot to the nursery garden.",
+   "icon": "bot",
+   "cond": {
+    "type": "stat",
+    "key": "robots_retired",
+    "target": 1
+   },
+   "parked_with": "extras/nursery (task M3-13)"
+  },
+  {
+   "id": "extras_visits_5",
+   "name": "Garden Party",
+   "desc": "Say hi to the nursery caretakers 5 times.",
+   "icon": "flower",
+   "cond": {
+    "type": "stat",
+    "key": "nursery_visits",
+    "target": 5
+   },
+   "parked_with": "extras/nursery (task M3-13)"
   }
  ]
 }

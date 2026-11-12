@@ -1,0 +1,351 @@
+{
+  "_doc": "Cut from planets/verdance/data/events.json in task M3-13 with the Requests board (systems/contracts.gd): the board's offers, templates and reward track, and WREN's line for a finished request. Put \"contracts\" back at the top level of the planet's events table and \"contract_done\" into its \"wren\" block.",
+  "contracts": {
+    "slots": 3,
+    "unlock_hub_level": 3,
+    "unlock_play_s": 2700,
+    "_unlock": "[onboard] the Requests board opens at base level 3 or after 45 min of play, whichever is first (Contracts.unlocked)",
+    "offer_life_s": 1200,
+    "cooldown_s": [
+      60,
+      120
+    ],
+    "decline_cooldown_s": 90,
+    "fail_cooldown_s": 120,
+    "_tiers": "tier from lifetime hexes cleaned: below 12 = 0, below 40 = 1, below 100 = 2, else 3",
+    "tier_hexes": [
+      12,
+      40,
+      100
+    ],
+    "templates": [
+      {
+        "id": "metal_bales",
+        "text": "Press %d metal-heavy bales",
+        "stat": "ev_metal_bales",
+        "n": [
+          6,
+          10,
+          14,
+          20
+        ],
+        "time_s": [
+          600,
+          720,
+          840,
+          900
+        ],
+        "pay": "parts",
+        "parts": [
+          2,
+          2,
+          4,
+          5
+        ],
+        "requires": "has_baler"
+      },
+      {
+        "id": "perfect_bales",
+        "text": "Press %d Perfect bales",
+        "stat": "perfect_cubes",
+        "n": [
+          5,
+          8,
+          12,
+          18
+        ],
+        "time_s": [
+          600,
+          720,
+          840,
+          900
+        ],
+        "pay": "cubes",
+        "income_s": [
+          90,
+          120,
+          150,
+          180
+        ],
+        "requires": "has_baler"
+      },
+      {
+        "id": "pure_bales",
+        "text": "Press %d Pure bales (one junk type)",
+        "stat": "pure_cubes",
+        "n": [
+          3,
+          5,
+          8,
+          12
+        ],
+        "time_s": [
+          600,
+          720,
+          840,
+          900
+        ],
+        "pay": "cubes",
+        "income_s": [
+          90,
+          120,
+          150,
+          180
+        ],
+        "requires": "has_baler"
+      },
+      {
+        "id": "clean_hexes",
+        "text": "Clean %d hexes",
+        "stat": "hexes_cleaned",
+        "n": [
+          2,
+          3,
+          5,
+          7
+        ],
+        "time_s": [
+          600,
+          720,
+          900,
+          900
+        ],
+        "pay": "parts",
+        "parts": [
+          2,
+          2,
+          4,
+          5
+        ]
+      },
+      {
+        "id": "scoop",
+        "text": "Scoop %d pieces of junk",
+        "stat": "junk_scooped",
+        "n": [
+          120,
+          200,
+          320,
+          450
+        ],
+        "time_s": [
+          480,
+          600,
+          720,
+          720
+        ],
+        "pay": "cubes",
+        "income_s": [
+          90,
+          120,
+          150,
+          180
+        ]
+      },
+      {
+        "id": "dig_parts",
+        "text": "Dig up %d buried parts",
+        "stat": "parts_found",
+        "n": [
+          2,
+          3,
+          4,
+          5
+        ],
+        "time_s": [
+          600,
+          720,
+          840,
+          900
+        ],
+        "pay": "parts",
+        "parts": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "id": "streak",
+        "text": "Reach a tier %d cleaning streak",
+        "peak": "streak",
+        "n": [
+          3,
+          4,
+          5,
+          5
+        ],
+        "time_s": [
+          480,
+          480,
+          480,
+          360
+        ],
+        "pay": "cubes",
+        "income_s": [
+          90,
+          120,
+          150,
+          180
+        ]
+      },
+      {
+        "id": "plant",
+        "text": "Plant %d sprouts",
+        "stat": "plants_planted",
+        "n": [
+          12,
+          20,
+          30,
+          45
+        ],
+        "time_s": [
+          600,
+          720,
+          840,
+          900
+        ],
+        "pay": "cubes",
+        "income_s": [
+          90,
+          120,
+          150,
+          180
+        ],
+        "requires": "seeds_unlocked"
+      },
+      {
+        "id": "bloom",
+        "text": "Grow %d plants to bloom",
+        "stat": "plants_bloomed",
+        "n": [
+          8,
+          15,
+          25,
+          40
+        ],
+        "time_s": [
+          720,
+          840,
+          900,
+          900
+        ],
+        "pay": "cubes",
+        "income_s": [
+          90,
+          120,
+          150,
+          180
+        ],
+        "requires": "first_sprout"
+      },
+      {
+        "id": "sustain",
+        "text": "Get %d more hexes to Sustained",
+        "text_1": "Get one more hex to Sustained",
+        "hex_level": 4,
+        "n": [
+          1,
+          1,
+          2,
+          3
+        ],
+        "time_s": [
+          900,
+          900,
+          1200,
+          1200
+        ],
+        "pay": "cubes",
+        "income_s": [
+          90,
+          120,
+          150,
+          180
+        ],
+        "requires": "first_sprout"
+      }
+    ],
+    "_requests": "[money] Requests board: contracts and world events are one board (workbench Requests tab). A request pays Cubes (income_s seconds of current income, WorldEvents.progress_cubes) or Parts (parts[tier]); there are no tokens. Every finished request and every handled world event counts toward the reward track: Curio Capsules and robot parts (paid as Parts) at those counts (they used to be the token shop). No look is on the track: crew and Glim looks are found pieces (data/cosmetics.json targets). After the last step, every repeat_every requests prints a Vintage robot part.",
+    "track": [
+      {
+        "n": 2,
+        "kind": "capsule"
+      },
+      {
+        "n": 3,
+        "kind": "part",
+        "rarity": 1
+      },
+      {
+        "n": 4,
+        "kind": "capsule"
+      },
+      {
+        "n": 5,
+        "kind": "capsule"
+      },
+      {
+        "n": 6,
+        "kind": "part",
+        "rarity": 1
+      },
+      {
+        "n": 7,
+        "kind": "part",
+        "rarity": 3
+      },
+      {
+        "n": 8,
+        "kind": "capsule"
+      },
+      {
+        "n": 9,
+        "kind": "part",
+        "rarity": 1
+      },
+      {
+        "n": 10,
+        "kind": "capsule"
+      },
+      {
+        "n": 12,
+        "kind": "capsule"
+      },
+      {
+        "n": 14,
+        "kind": "part",
+        "rarity": 4
+      },
+      {
+        "n": 16,
+        "kind": "capsule"
+      },
+      {
+        "n": 18,
+        "kind": "part",
+        "rarity": 2
+      },
+      {
+        "n": 20,
+        "kind": "part",
+        "rarity": 4
+      }
+    ],
+    "repeat_every": 5
+  },
+  "wren": {
+    "contract_done": [
+      [
+        "Contract complete. Collect at the workbench."
+      ],
+      [
+        "Another contract done. Tokens are waiting."
+      ],
+      [
+        "Contract fulfilled. The board's lit up green."
+      ]
+    ]
+  }
+}
