@@ -1,9 +1,8 @@
 class_name Hotbar
 extends Control
-## Bottom-centre hotbar with the Lumi Level bar above it and the
+## Bottom-centre hotbar with the Bloom Core ring above it and the
 ## hopper gauge folded in underneath:
-##   level   level number centred over a thin XP bar; a tiny Bloom Core ring at its left end
-##           (set_core_charge); "+XP" ticks; a restrained flash + chime on level-up
+##   core    a tiny Bloom Core ring over the left side of the slots (set_core_charge)
 ##   surge   the Bloom Core ring's outer arc is the Surge gauge (systems/surge.gd): it fills with
 ##           Lumi's own work, shows the release key on a plate when full, and drains while the
 ##           Surge runs
@@ -18,11 +17,11 @@ extends Control
 const SLOT: float = 52.0
 const GAP: float = 10.0
 const RAISE: float = 5.0
-const LEVEL_W: float = 300.0
+## Width of the band over the slots; the Bloom Core ring sits just left of it.
+const ROW_W: float = 300.0
 const HOPPER_W: float = 260.0
 const HOLD_ZOOM_S: float = 0.3
 const CYAN := Color(0.55, 0.9, 1.0)
-const XP_COL := Color(0.5, 0.95, 0.75)
 const CORE_COL := Color(0.45, 1.0, 0.6)
 const SURGE_GOLD := Color(1.0, 0.85, 0.35)
 const SURGE_R: float = 11.0
@@ -37,20 +36,12 @@ const TOOLS: Array[Dictionary] = [
 
 var patch: Patch
 var world: Node
-var lumi: LumiLevel
 
 var _font: Font
 var _sb_slot: StyleBoxFlat
 var _sb_sel: StyleBoxFlat
 var _sb_locked: StyleBoxFlat
 var _sel_anim: Array[float] = [1.0, 0.0, 0.0]
-var _shown_xp: float = 0.0
-var _shown_level: int = 1
-var _xp_tick: int = 0
-var _xp_tick_t: float = 0.0
-var _lvl_t: float = 0.0  # level-up celebration time left
-var _lvl_text: String = ""
-var _lvl_num: int = 0
 var _core: float = -1.0
 var _core_t: float = 0.0
 var _surge: Surge
@@ -71,13 +62,7 @@ func _ready() -> void:
 	_sb_sel.shadow_color = Color(CYAN, 0.22)
 	_sb_sel.shadow_size = 7
 	_sb_locked = UITheme.box(Color(0.03, 0.04, 0.05, 0.28), Color(1, 1, 1, 0.08), 1, 11, 0)
-	custom_minimum_size = Vector2(LEVEL_W + 120.0, 150.0)
-	if lumi:
-		lumi.leveled.connect(_on_leveled)
-		lumi.xp_gained.connect(_on_xp)
-	var st: Dictionary = LumiLevel.state()
-	_shown_level = int(st.get("level", 1))
-	_shown_xp = LumiLevel.progress()
+	custom_minimum_size = Vector2(ROW_W + 120.0, 150.0)
 	EventBus.tool_changed.connect(func(_t2: int) -> void: _tool_name_t = 1.6)
 
 
@@ -110,11 +95,6 @@ func unlocked_count() -> int:
 		if unlocked(i):
 			n += 1
 	return n
-
-
-## True during the level-up moment (the HUD hides the context line over it).
-func celebrating() -> bool:
-	return _lvl_t > 0.0
 
 
 ## Selects the next/previous unlocked tool (wraps).
@@ -177,21 +157,6 @@ func _input(event: InputEvent) -> void:
 
 # --- Events ----------------------------------------------------------------------------------
 
-func _on_xp(amount: int, _source: String) -> void:
-	_xp_tick += amount
-	_xp_tick_t = 1.4
-
-
-func _on_leveled(lv: int, reward_text: String) -> void:
-	_lvl_num = lv
-	_lvl_text = reward_text
-	_lvl_t = 3.6
-	_shown_level = lv
-	_shown_xp = 0.0
-	Audio.play("chime", 1.32, -7.0, 0.0)
-	Audio.play("sparkle", 1.25, -14.0)
-
-
 # --- Frame -----------------------------------------------------------------------------------
 
 func _process(delta: float) -> void:
@@ -202,17 +167,6 @@ func _process(delta: float) -> void:
 	if patch:
 		for i: int in TOOLS.size():
 			_sel_anim[i] = move_toward(_sel_anim[i], 1.0 if patch.tool == i else 0.0, delta * 7.0)
-	if _lvl_t > 0.0 and not DevHooks.has("lumi-levelup"):
-		_lvl_t = maxf(0.0, _lvl_t - delta)
-	elif _lvl_t > 0.0:
-		_lvl_t = maxf(2.9, _lvl_t - delta)  # dev: hold the moment for the screenshot
-	var st: Dictionary = LumiLevel.state()
-	if _lvl_t <= 2.6:
-		_shown_level = int(st.get("level", 1))
-		_shown_xp = lerpf(_shown_xp, LumiLevel.progress(), clampf(delta * 6.0, 0.0, 1.0))
-	_xp_tick_t = maxf(0.0, _xp_tick_t - delta)
-	if _xp_tick_t <= 0.0:
-		_xp_tick = 0
 	_core_t = maxf(0.0, _core_t - delta)
 	_tool_name_t = maxf(0.0, _tool_name_t - delta)
 	_hopper_shake = maxf(0.0, _hopper_shake - delta)
@@ -259,65 +213,30 @@ func _draw() -> void:
 	var bottom: float = size.y
 	var hop_y: float = bottom - 10.0
 	var slot_y: float = hop_y - 10.0 - SLOT
-	var lvl_y: float = slot_y - RAISE - 24.0
-	_draw_level(cx, lvl_y)
+	var core_y: float = slot_y - RAISE - 24.0
+	_draw_core(cx, core_y)
 	_draw_slots(cx, slot_y)
 	_draw_hopper(cx, hop_y)
 
 
-func _draw_level(cx: float, y: float) -> void:
-	var x0: float = cx - LEVEL_W * 0.5
-	var flash: float = clampf((_lvl_t - 2.6) / 1.0, 0.0, 1.0)  # first second of a level-up
-	var glow: float = clampf(_lvl_t / 0.8, 0.0, 1.0) if _lvl_t > 0.0 else 0.0
-	# Track, fill and a soft head.
-	draw_rect(Rect2(x0 - 1.0, y - 1.0, LEVEL_W + 2.0, 5.0), Color(0, 0, 0, 0.35))
-	draw_rect(Rect2(x0, y, LEVEL_W, 3.0), Color(1, 1, 1, 0.16))
-	var f: float = 1.0 if flash > 0.0 else _shown_xp
-	var col: Color = XP_COL.lerp(Color.WHITE, flash * 0.7)
-	if f > 0.0:
-		draw_rect(Rect2(x0, y, LEVEL_W * f, 3.0), col)
-		draw_rect(Rect2(x0, y - 1.0, LEVEL_W * f, 5.0), Color(col, 0.18 + 0.3 * glow))
-		draw_circle(Vector2(x0 + LEVEL_W * f, y + 1.5), 2.2, Color(col, 0.9))
-	# Quarter ticks.
-	for k: int in range(1, 4):
-		draw_line(Vector2(x0 + LEVEL_W * k * 0.25, y - 1.0), Vector2(x0 + LEVEL_W * k * 0.25, y + 4.0), Color(0, 0, 0, 0.35), 1.0)
-	# Level number (pops on level-up).
-	var pop: float = 1.0 + 0.35 * flash
-	var num_sz: int = int(round(18.0 * pop))
-	_text(Vector2(cx, y - 6.0), str(_shown_level), num_sz, XP_COL.lerp(Color.WHITE, 0.25 + 0.5 * flash))
-	if Settings.hud_mode == Settings.HudMode.FULL:
-		_text(Vector2(cx - 18.0, y - 7.0), "LV", 12, Color(UITheme.MUTED, 0.9), HORIZONTAL_ALIGNMENT_RIGHT)
-	# XP tick at the right end.
-	if _xp_tick > 0 and _lvl_t <= 0.0:
-		var a: float = clampf(_xp_tick_t / 0.5, 0.0, 1.0)
-		_text(Vector2(x0 + LEVEL_W + 8.0, y + 5.0), tr("+%d XP") % _xp_tick, 12, Color(XP_COL, 0.85 * a), HORIZONTAL_ALIGNMENT_LEFT)
-	# Bloom Core ring at the left end.
-	if _core >= 0.0:
-		var c := Vector2(x0 - 14.0, y + 1.5)
-		draw_arc(c, 6.0, 0.0, TAU, 24, Color(1, 1, 1, 0.16), 1.5, true)
-		if _core > 0.001:
-			draw_arc(c, 6.0, -PI * 0.5, -PI * 0.5 + TAU * _core, 24, CORE_COL, 1.6, true)
-		draw_circle(c, 1.6, Color(CORE_COL, 0.4 + 0.5 * _core))
-		var gauged: bool = _surge != null and _surge.enabled()
-		var show_pct: float = 1.0 if Settings.hud_mode == Settings.HudMode.FULL else clampf(_core_t / 0.6, 0.0, 1.0)
-		if gauged and (_surge.can_release() or _surge.active()):
-			show_pct = 0.0  # the Surge plate takes the line
-		if show_pct > 0.01:
-			_text(Vector2(c.x - (SURGE_R + 6.0 if gauged else 10.0), y + 5.5), tr("CORE %d%%") % int(floor(_core * 100.0 + 0.001)), 12, Color(CORE_COL, 0.85 * show_pct),
-				HORIZONTAL_ALIGNMENT_RIGHT)
-		if gauged:
-			_draw_surge(c)
-	# Level-up banner: "LEVEL 7" and the reward line, rising slightly and fading.
-	if _lvl_t > 0.0:
-		var a2: float = clampf(_lvl_t / 0.6, 0.0, 1.0) * clampf((3.6 - _lvl_t) / 0.25, 0.0, 1.0)
-		var rise: float = (1.0 - clampf((3.6 - _lvl_t) / 0.4, 0.0, 1.0)) * 6.0
-		_text(Vector2(cx, y - 30.0 + rise), "L E V E L   %d" % _lvl_num, 18, Color(Color.WHITE.lerp(XP_COL, 0.35), a2))
-		if _lvl_text != "":
-			_text(Vector2(cx, y - 52.0 + rise), _lvl_text, 13, Color(UITheme.GOLD, 0.95 * a2))
-		# Thin light sweeping out along the bar.
-		var sweep: float = clampf((3.6 - _lvl_t) / 0.7, 0.0, 1.0)
-		var hw: float = LEVEL_W * 0.5 * sweep
-		draw_line(Vector2(cx - hw, y + 1.5), Vector2(cx + hw, y + 1.5), Color(1, 1, 1, 0.8 * (1.0 - sweep)), 2.0)
+## The Bloom Core ring left of the band over the slots, its "CORE %" readout and the Surge gauge.
+func _draw_core(cx: float, y: float) -> void:
+	if _core < 0.0:
+		return
+	var c := Vector2(cx - ROW_W * 0.5 - 14.0, y + 1.5)
+	draw_arc(c, 6.0, 0.0, TAU, 24, Color(1, 1, 1, 0.16), 1.5, true)
+	if _core > 0.001:
+		draw_arc(c, 6.0, -PI * 0.5, -PI * 0.5 + TAU * _core, 24, CORE_COL, 1.6, true)
+	draw_circle(c, 1.6, Color(CORE_COL, 0.4 + 0.5 * _core))
+	var gauged: bool = _surge != null and _surge.enabled()
+	var show_pct: float = 1.0 if Settings.hud_mode == Settings.HudMode.FULL else clampf(_core_t / 0.6, 0.0, 1.0)
+	if gauged and (_surge.can_release() or _surge.active()):
+		show_pct = 0.0  # the Surge plate takes the line
+	if show_pct > 0.01:
+		_text(Vector2(c.x - (SURGE_R + 6.0 if gauged else 10.0), y + 5.5), tr("CORE %d%%") % int(floor(_core * 100.0 + 0.001)), 12, Color(CORE_COL, 0.85 * show_pct),
+			HORIZONTAL_ALIGNMENT_RIGHT)
+	if gauged:
+		_draw_surge(c)
 
 
 ## The Surge gauge round the Bloom Core ring at `c`: an arc that fills with Lumi's own work (cyan),
@@ -411,8 +330,7 @@ func _draw_slots(cx: float, y: float) -> void:
 	if patch and (_tool_name_t > 0.0 or Settings.hud_mode == Settings.HudMode.FULL) and multi:
 		var a: float = 1.0 if Settings.hud_mode == Settings.HudMode.FULL else clampf(_tool_name_t / 0.5, 0.0, 1.0)
 		var sr := Rect2(x0 + patch.tool * (SLOT + GAP), y - RAISE, SLOT, SLOT)
-		if _lvl_t <= 0.0:
-			_text(Vector2(sr.get_center().x, y - RAISE - 7.0), tr(str(TOOLS[patch.tool]["name"])), 12, Color(CYAN, 0.9 * a))
+		_text(Vector2(sr.get_center().x, y - RAISE - 7.0), tr(str(TOOLS[patch.tool]["name"])), 12, Color(CYAN, 0.9 * a))
 	# Bumper glyphs on a pad.
 	if pad and multi:
 		_pill(Vector2(x0 - 22.0, y + SLOT * 0.5), "LB")

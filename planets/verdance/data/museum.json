@@ -13,7 +13,6 @@
     {"id": "gold_cube", "name": "The Golden Cube", "planet": "verdance", "kind": "egg", "ref": "gold_cube", "shape": "cube", "prop": "pedestal"},
     {"id": "curiosities", "name": "Cabinet of Curiosities", "planet": "all", "kind": "eggs", "shape": "star", "hint": "Every curiosity on every planet (Codex > Curiosities has the hints)."},
     {"id": "shards", "name": "Memory Shards", "planet": "verdance", "kind": "shards", "shape": "shard", "hint": "Letters, notes and drawings surface as the ground is cleaned."},
-    {"id": "trinkets", "name": "Trinkets and Curios", "planet": "all", "kind": "trinkets", "shape": "box", "hint": "World events, requests, streaks and Curio Capsules."},
     {"id": "ochre_glass", "name": "Ochre Sun-Glass", "planet": "ochre", "kind": "relic", "ref": "ochre_glass", "shape": "gem", "color": "#f0a040", "hint": "Restore Ochre."},
     {"id": "tidewell_pearl", "name": "Tidewell Pearl", "planet": "tidewell", "kind": "relic", "ref": "tidewell_pearl", "shape": "gem", "color": "#e8f0ff", "hint": "Restore Tidewell."},
     {"id": "rime_core", "name": "Rime Heart-Ice", "planet": "rime", "kind": "relic", "ref": "rime_core", "shape": "gem", "color": "#9fd8ff", "hint": "Restore Rime."},

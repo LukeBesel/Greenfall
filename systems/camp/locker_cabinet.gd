@@ -89,7 +89,7 @@ func _on_overlay_closed() -> void:
 		stage.end()
 
 
-## Dev: opens the Locker on a section (--open-locker=lumi|glim|bots|bots:TYPE|rocket; --open-locker-slot=ID picks
+## Dev: opens the Locker on a section (--open-locker=lumi|glim|bots|bots:TYPE; --open-locker-slot=ID picks
 ## the slot shown on Lumi's page); --locker-design paints
 ## the Scoopie design (treads, a top hat, mint glow, neon underglow) so the shot shows one applied.
 func _dev_open() -> void:

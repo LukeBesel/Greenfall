@@ -312,6 +312,54 @@
     "target": 5
    },
    "parked_with": "extras/nursery (task M3-13)"
+  },
+  {
+   "id": "builder_mix",
+   "name": "Mix and Match",
+   "desc": "Style a robot with all five custom parts in the Locker.",
+   "icon": "bot",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "builder_full_custom"
+   },
+   "parked_with": "hidden until a planet awards robot parts (Planet 1 places none; M3-14b, task M3-13)"
+  },
+  {
+   "id": "builder_maker",
+   "name": "As the Makers Made It",
+   "desc": "Fit the full Maker set (shell, optic and glider) on one robot.",
+   "icon": "star",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "builder_maker_set"
+   },
+   "parked_with": "hidden until a planet awards robot parts (Planet 1 places none; M3-14b, task M3-13)"
+  },
+  {
+   "id": "builder_hats",
+   "name": "Hat Rack",
+   "desc": "Collect 5 different robot toppers.",
+   "icon": "trophy",
+   "cond": {
+    "type": "stat",
+    "target": 5,
+    "key": "builder_toppers"
+   },
+   "parked_with": "hidden until a planet awards robot parts (Planet 1 places none; M3-14b, task M3-13)"
+  },
+  {
+   "id": "home_answered",
+   "name": "The Cradle Answers",
+   "desc": "Light the Cradle Returns beacon and hear from the ark.",
+   "icon": "rocket",
+   "cond": {
+    "type": "flag",
+    "target": 1,
+    "key": "cradle_answered"
+   },
+   "parked_with": "campaign (nothing on Planet 1 sets cradle_answered; task M3-13)"
   }
  ]
 }

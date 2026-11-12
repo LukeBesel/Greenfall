@@ -25,20 +25,6 @@ func after_each() -> void:
 	GameState.currencies = _cur
 
 
-# #20: "Lumi reached level 5 · +89 cubes +10 parts +5 parts" listed Parts twice.
-func test_level_reward_names_parts_once() -> void:
-	var plan: Dictionary = LumiLevel.reward_plan(5, 0.0, 0.0, false)
-	assert_eq(int(plan["parts"]) + int(plan["bonus_parts"]), 0, "a level pays no Parts on this planet")
-	var lv := LumiLevel.new()
-	add_child_autofree(lv)
-	var text: String = lv._grant(5)
-	var hits: int = 0
-	for w: String in text.split(" ", false):
-		if w.begins_with("part"):
-			hits += 1
-	assert_lte(hits, 1, "at most one Parts amount in '%s'" % text)
-
-
 # #14: the Glim discovery line used to end in "He'll…"; the message line splits it into chunks.
 func test_long_toast_is_never_cut() -> void:
 	var t: String = "Something in the junk blinks back at you: Glim, a little lantern bot! He'll light the way at night."

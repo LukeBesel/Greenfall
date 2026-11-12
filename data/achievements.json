@@ -752,39 +752,6 @@
    }
   },
   {
-   "id": "builder_mix",
-   "name": "Mix and Match",
-   "desc": "Style a robot with all five custom parts in the Locker.",
-   "icon": "bot",
-   "cond": {
-    "type": "stat",
-    "target": 1,
-    "key": "builder_full_custom"
-   }
-  },
-  {
-   "id": "builder_maker",
-   "name": "As the Makers Made It",
-   "desc": "Fit the full Maker set (shell, optic and glider) on one robot.",
-   "icon": "star",
-   "cond": {
-    "type": "stat",
-    "target": 1,
-    "key": "builder_maker_set"
-   }
-  },
-  {
-   "id": "builder_hats",
-   "name": "Hat Rack",
-   "desc": "Collect 5 different robot toppers.",
-   "icon": "trophy",
-   "cond": {
-    "type": "stat",
-    "target": 5,
-    "key": "builder_toppers"
-   }
-  },
-  {
    "id": "pet_cat",
    "name": "A Friend in Old Town",
    "desc": "Pet a stray cat.",
@@ -848,17 +815,6 @@
     "type": "list",
     "target": 6,
     "key": "fauna_photos"
-   }
-  },
-  {
-   "id": "home_answered",
-   "name": "The Cradle Answers",
-   "desc": "Light the Cradle Returns beacon and hear from the ark.",
-   "icon": "rocket",
-   "cond": {
-    "type": "flag",
-    "target": 1,
-    "key": "cradle_answered"
    }
   },
     {"id": "extras_radio_6", "name": "Pirate Radio", "desc": "Unlock 6 songs on the base radio.", "icon": "wave", "cond": {"type": "stat", "key": "radio_songs", "target": 6}},

@@ -85,7 +85,7 @@ func test_collection_lists_every_collectible_kind() -> void:
 		assert_true(Exhibits.hint(x) != "", "%s has a hint" % x["id"])
 		if str(x["kind"]) in ["egg", "egg_parts"]:
 			assert_true(_defs().has(str(x["ref"])), "%s refers to a real egg" % x["id"])
-	for k: String in ["egg_parts", "egg", "eggs", "shards", "trinkets"]:
+	for k: String in ["egg_parts", "egg", "eggs", "shards"]:
 		assert_has(kinds, k)
 	for id: String in ["gnomes", "biscuit", "time_capsule", "broadcast", "shards"]:
 		assert_has(ids, id)

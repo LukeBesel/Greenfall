@@ -6,7 +6,7 @@ extends Node
 ## Built here: the globe (OrbitPlanet: survey, terrain, cells, streamer, SphereField as the
 ## slice's `field`, SphereJunkView as its `view`, sites, gravity), sky and day/night (OrbitDay),
 ## stand-in crews (OrbitCrews), the real Patch on a SphereMotor with SphereCam, the HUD, the
-## Depot on the start pad, Lumi Level, the pause menu, hex levels (sparse), the Hub (logic; the
+## Depot on the start pad, mastery rewards, the pause menu, hex levels (sparse), the Hub (logic; the
 ## site prefab shows its stage), the workbench + Upgrades, Research/Achievements/Codex, music,
 ## WREN + subtitles, Goals, Tutorial, Interactables, WorldEvents, the Signal Tower,
 ## Extras (CD player, album, welcome back), Camp (broken
@@ -175,11 +175,10 @@ func build(p_world: Node3D) -> void:
 	hl.setup()
 	EventBus.hex_level_changed.connect(_on_hex_level)
 	_build_districts(hl)
-	var lumi_level := LumiLevel.new()
-	lumi_level.name = "LumiLevel"
-	lumi_level.world = w
-	w.add_child(lumi_level)
-	w.set("lumi_level", lumi_level)
+	var rewards := MasteryRewards.new()  # what Lumi's mastery levels pay
+	rewards.name = "MasteryRewards"
+	rewards.world = w
+	w.add_child(rewards)
 	if not (DevHooks.has("orbit-nohud") or DevHooks.has("no-hud")):
 		var hud := HUD.new()
 		hud.patch = w.get("patch")

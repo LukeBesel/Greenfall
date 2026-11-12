@@ -5,8 +5,8 @@ extends VBoxContainer
 ## the screen as a field-instrument plate, leaving the left free for Lumi on the turntable
 ## (systems/camp/locker_stage.gd). A bar on top picks who is being dressed: Lumi first, then the
 ## other cosmetic targets (Glim, ...) from CosmeticTargets, then one tab per robot type of the
-## crew (one look per robot type, every robot of the type wears it) and the rocket; under it, that
-## one's editor.
+## crew (one look per robot type, every robot of the type wears it); under it, that one's editor.
+## The rocket keeps its own colours: its looks are not for sale.
 ##
 ## Editors are pluggable:
 ##   LockerPanel.add_editor("lumi", func(world: Node) -> Control: ...)   # a factory (preferred)
@@ -34,7 +34,7 @@ var world: Node
 var fleet: Fleet
 ## The turntable beside the Locker (null when the panel is shown without one: tools, tests).
 var stage: LockerStage
-var _who: String = LUMI  # "target:<id>", "bots:<type>" or "rocket"
+var _who: String = LUMI  # "target:<id>" or "bots:<type>"
 var _list: HBoxContainer  # [ui3] the slim bot bar
 var _who_btns: Array[Button] = []
 var _host: VBoxContainer
@@ -43,7 +43,7 @@ var _editor_kind: String = ""
 var _bots_sig: String = ""
 var _t: float = 0.0
 ## Over the game (open_overlay): the section bar and the editor page each sit on their own plate;
-## list + detail editors (Bots, Rocket) bring their own.
+## list + detail editors (Bots) bring their own.
 var modules: bool = false
 ## Over the game: the bar starts with this title and ends with this control (the Close key).
 var bar_title: String = ""
@@ -104,7 +104,7 @@ static func open_overlay(w: Node, p_stage: LockerStage = null) -> CanvasLayer:
 	lp.modules = true
 	lp.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	dock.add_child(lp)
-	# Lumi's page leaves the turntable in view; the wider editors (crew, rocket) take the screen.
+	# Lumi's page leaves the turntable in view; the wider editors (crew) take the screen.
 	var fit := func() -> void:
 		var pad: int = int(minf(root.size.x, root.size.y) * SAFE_SHARE)
 		for side: String in ["margin_left", "margin_right", "margin_top", "margin_bottom"]:
@@ -281,21 +281,15 @@ func _rebuild_list() -> void:
 		var tid: String = str(t.get("id", ""))
 		if CosmeticTargets.is_unlocked(tid):
 			_add_who("target:" + tid, CosmeticTargets.display_name(tid), "", FieldPlate.CYAN)
-	# Lumi, Glim (CosmeticTargets), one tab per robot type (one design each), the rocket.
+	# Lumi, Glim (CosmeticTargets), one tab per robot type (one design each).
 	for rid: String in LockerEditors.bot_types(fleet):
 		_add_who(BOTS_PREFIX + rid, tr(str(Economy.robots[rid].get("name", rid))), "", FieldPlate.CYAN)
-	if _rocket_open():
-		_add_who("rocket", tr("Rocket"), "", FieldPlate.CYAN)
 	var ok: bool = false
 	for b: Button in _who_btns:
 		ok = ok or str(b.get_meta("who")) == _who
 	if not ok:
 		_who = LUMI
 	_style_list()
-
-
-func _rocket_open() -> bool:
-	return UpgradesScreen.tab_visible("rockets", world) or int(GameState.flags.get("rocket_tier", 1)) > 1
 
 
 func _add_who(id: String, title: String, sub: String, col: Color) -> void:
@@ -316,7 +310,7 @@ func _style_list() -> void:
 		FieldPlate.key(b, b.get_meta("col") as Color, str(b.get_meta("who")) == _who)
 
 
-## Switches the editor: LUMI, "target:<id>", "bots:<type>" (BOTS: the first type) or "rocket".
+## Switches the editor: LUMI, "target:<id>" or "bots:<type>" (BOTS: the first type).
 func set_editing(who: String) -> void:
 	if who == BOTS:
 		var types: Array[String] = LockerEditors.bot_types(fleet)
@@ -339,7 +333,7 @@ func _show_editor() -> void:
 		return
 	_editor = ed
 	if _page:  # list + detail editors bring their own modules; the rest sit on the page's plate
-		var own: bool = ed is LockerEditors.BotEditor or ed is LockerEditors.ShipEditor
+		var own: bool = ed is LockerEditors.BotEditor
 		(_page as FieldPlate).fill = Color(0, 0, 0, 0) if own else FieldPlate.SLATE
 		_page.queue_redraw()
 	ed.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -371,10 +365,6 @@ func _make_editor(kind: String) -> Control:
 		be.modules = modules
 		be.type_id = kind.substr(BOTS_PREFIX.length())
 		ed = be
-	elif kind == "rocket":  # [ui7] ship paint, trim, glow
-		var se := LockerEditors.ShipEditor.new()
-		se.modules = modules
-		ed = se
 	elif kind.begins_with("target:"):  # [ui6] CosmeticTargets editors (Lumi's builder, Glim's looks, ...)
 		ed = CosmeticTargets.make_editor(kind.substr(7), world)
 	if ed == null:

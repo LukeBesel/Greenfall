@@ -15,7 +15,7 @@ extends Node3D
 ## he stops nearby, and can be petted (E): a purr and a heart. Pet the same cat three times and
 ## it adopts you: it gets a name, lives at that base and follows you there (GameState.flags.fauna_cat).
 ## Sightings (in view and near Lumi) unlock Codex "Animals" entries (flags.fauna_seen); photos
-## in photo mode go into the Collection (flags.fauna_photos, trinkets pic_<species>).
+## in photo mode are counted per species (flags.fauna_photos).
 ##
 ## Dev: --fauna-look=SPECIES[,dist,pitch,yaw] puts Lumi beside one and frames it with a held camera
 ## (--fauna-gap, --fauna-coat, --fauna-lerp, --fauna-fov, --fauna-free; after --fauna-look-at=S,
@@ -1629,8 +1629,6 @@ func feed() -> void:
 	GameState.inc_stat("wildlife_fed")
 	GameState.inc_stat("wildlife_petted")  # befriending any animal counts for the Pixel design
 	mark_seen(t.sp)
-	if Collection.grant("crumb_bag", true):
-		EventBus.toast.emit(tr("The birds have decided you're all right. Crumb Bag added to your Collection."), "story")
 	var pm: Node = world.patch.get("model") if world.get("patch") else null
 	if pm:
 		if pm.has_method("look_toward"):
@@ -2031,7 +2029,7 @@ func _sightings() -> void:
 			mark_seen(a.sp)
 
 
-## Photo mode capture: the animals in frame (close enough to make out) go into the Collection.
+## Photo mode capture: the animals in frame (close enough to make out) count as photographed.
 func _on_photo(_path: String) -> void:
 	var ph: Node = world.get("photo")
 	var cam: Camera3D = ph.call("camera") if ph and ph.has_method("camera") else _cam
@@ -2076,14 +2074,13 @@ func record_photo(sid: String) -> bool:
 		return false
 	photo_list().append(sid)
 	GameState.inc_stat("animal_photos")
-	var first: bool = Collection.grant("pic_" + sid, true)
 	var ph: Node = world.get("photo")
-	var msg: String = tr("Snap! A %s for your Collection.") % tr(str(FaunaRules.def(sid).get("name", sid)))
+	var msg: String = tr("Snap! A first photo of a %s.") % tr(str(FaunaRules.def(sid).get("name", sid)))
 	if ph and ph.has_method("toast") and bool(ph.get("is_open")):
 		ph.call("toast", msg)
 	else:
 		EventBus.toast.emit(msg, "story")
-	return first
+	return true
 
 
 ## A one-shot animal sound, quieter with distance from the camera.

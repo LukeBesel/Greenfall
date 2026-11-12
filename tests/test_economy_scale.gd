@@ -329,22 +329,20 @@ func test_no_reward_exceeds_three_minutes_of_city_one_income() -> void:
 		var paid: float = CityPayouts.reward_for(rule, float(city["hex_cubes"]), stage)
 		largest = maxf(largest, paid)
 		assert_lte(paid, limit, "city stage %d" % stage)
-	var lumi: Dictionary = Economy.planet_table("robot_level").get("reward", {})
-	assert_lte(float(lumi["cube_secs"]), float(table["income_ref_s"]), "a Lumi level pays seconds of income, under the limit")
-	assert_eq(int(lumi["part_every"]), 0, "and no Parts: those come from salvage alone")
-	assert_eq(int(lumi["bonus_parts_every"]), 0)
-	# A level pays cube_secs of current income, between a floor and a cap that both grow with the
-	# level. At the first city's measured income (task M3-21: 5 cubes a second, not the proposal's
-	# 14) every level stays under the limit; the cap alone passes it only from level 24 (940), and
+	var lr: Dictionary = MasteryRewards.cfg()
+	assert_lte(float(lr["cube_secs"]), float(table["income_ref_s"]), "a mastery level pays seconds of income, under the limit")
+	assert_false(lr.has("parts"), "and no Parts: those come from salvage alone")
+	# A step pays cube_secs of current income, between a floor and a cap that both grow with the
+	# step. At the first city's measured income (task M3-21: 5 cubes a second, not the proposal's
+	# 14) every step stays under the limit; the cap alone passes it only from step 24 (940), and
 	# is paid only where 30 s of income is that large, which is 3 minutes of 5,600.
-	var income_now: float = float(lumi["cube_secs"]) * float(city["income_ref"])
-	for lv: int in [2, 5, 10, 20, 30]:
-		var plan: Dictionary = LumiLevel.reward_plan(lv, income_now, 20000.0, true)
-		assert_lte(float(plan["cubes"]), limit, "Lumi level %d at the city's income" % lv)
-		assert_eq(int(plan["parts"]) + int(plan["bonus_parts"]), 0)
-		var rich: Dictionary = LumiLevel.reward_plan(lv, 1.0e9, 20000.0, true)
-		if lv <= 20:
-			assert_lte(float(rich["cubes"]), limit, "Lumi level %d at its cap" % lv)
+	var income_now: float = float(lr["cube_secs"]) * float(city["income_ref"])
+	for step: int in [2, 5, 10, 20, 30]:
+		var plan: Dictionary = MasteryRewards.reward_plan(step, income_now, 20000.0, true, lr)
+		assert_lte(float(plan["cubes"]), limit, "mastery step %d at the city's income" % step)
+		var rich: Dictionary = MasteryRewards.reward_plan(step, 1.0e9, 20000.0, true, lr)
+		if step <= 20:
+			assert_lte(float(rich["cubes"]), limit, "mastery step %d at its cap" % step)
 	var cubes0: float = GameState.get_currency("cubes").to_float()
 	Research.award_data(100.0, "test")
 	assert_eq(GameState.get_currency("cubes").to_float(), cubes0, "field data pays no cubes")
