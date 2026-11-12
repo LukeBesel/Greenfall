@@ -59,7 +59,10 @@ func tick(now: float, doing: String) -> bool:
 func write(report: Dictionary, now: float) -> void:
 	if last_s >= 0.0:
 		_note_idle(now)
-	report["stall"] = null if stalled.is_empty() else stalled
+	if stalled.is_empty():
+		report["stall"] = null
+	else:
+		report["stall"] = stalled
 	report["longest_idle_s"] = snappedf(longest_s, 0.1)
 	report["longest_idle_from_s"] = snappedf(longest_from_s, 0.1)
 
