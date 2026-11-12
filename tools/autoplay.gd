@@ -1746,7 +1746,8 @@ func _hub_mats_short() -> bool:
 func _mats_spare(cost: Dictionary, force: bool) -> bool:
 	if force:
 		return true
-	var need: Dictionary = _hub_need()
+	var need: Dictionary = _hub_need().duplicate()
+	need["parts"] = float(need.get("parts", 0.0)) + _job_parts()
 	for k: String in cost:
 		if k == "cubes":
 			continue
@@ -1754,6 +1755,19 @@ func _mats_spare(cost: Dictionary, force: bool) -> bool:
 		if have - float(cost[k]) < float(need.get(k, 0.0)):
 			return false
 	return true
+
+
+## Parts the next step of an open source job still waits for (a player saves for the rocket's part
+## before a crew upgrade).
+func _job_parts() -> float:
+	var src: Sources = _sources()
+	if src == null:
+		return 0.0
+	var out: float = 0.0
+	for id: String in src.ids():
+		if src.is_open(id) and not src.is_shut(id) and not src.can_afford(id):
+			out += float((src.current_step(id).get("cost", {}) as Dictionary).get("parts", 0.0))
+	return out
 
 
 ## A base build a goal on show asks for (its guide names the Build row) is built once it is
