@@ -2626,12 +2626,17 @@ func _print_crew_here() -> void:
 	var here: Dictionary = {}
 	var n_here: int = 0
 	var n_all: int = 0
+	var planted: float = 0.0
+	var watered: float = 0.0
 	for u: Dictionary in (world.fleet as SphereFleet).crew.robots():
 		n_all += 1
+		planted += float(u["log"].get("planted", 0.0))
+		watered += float(u["log"].get("watered", 0.0))
 		if int(u["hub"]) == hub:
 			n_here += 1
 			here[str(u["type"])] = int(here.get(str(u["type"]), 0)) + 1
-	print("[crew] %5.1f min %d of %d robots work for the base Lumi is at: %s" % [_now() / 60.0, n_here, n_all, JSON.stringify(here)])
+	print("[crew] %5.1f min %d of %d robots work for the base Lumi is at: %s; robots planted %d slots, watered %d hexes" % [_now() / 60.0,
+		n_here, n_all, JSON.stringify(here), int(planted), int(watered)])
 
 
 ## The garden of the city in play, once a minute: clean land hexes, hexes with slots, planted
@@ -2662,9 +2667,9 @@ func _print_garden() -> void:
 
 ## Dev: --garden-audit (with --district-stage=<city>:1 so every land hex is clean, and
 ## --orbit-hop=<site> for a city other than the first). For the city Lumi stands in: how many land
-## hexes can hold a plant at all. Slots on paving take no seed, so a hex with none of the other
-## kind stays at stage 1 for good; a city whose share of plantable hexes is under its stage share
-## can never pass stage 1. Prints one line and quits.
+## hexes can hold a plant at all. Paving takes planters (B41), so only a hex wholly inside
+## buildings has none and stays at stage 1 for good; a city whose share of plantable hexes is under
+## its stage share can never pass stage 1. Prints one line and quits.
 func _garden_audit() -> void:
 	var g: Garden = world.garden
 	var d: Districts = _districts()
