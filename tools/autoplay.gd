@@ -1145,6 +1145,15 @@ func _garden_task(p: Patch, g: Garden) -> bool:
 	return plant_h >= 0 and _plant_task(p, g, plant_h)
 
 
+## Seconds before the bot lets go of a slot it cannot reach, and of one it stands at but cannot
+## plant; the open slots this close round it are let go with it.
+const PLANT_GIVEUP_S: float = 15.0
+const PLANT_CLOSE_GIVEUP_S: float = 3.0
+const PLANT_GIVEUP_R_M: float = 1.5
+var _plant_close_t: float = 0.0
+var _plant_best: int = -1
+
+
 ## Walks to the nearest open slot of hex `h` and sets a patch there. False when it has none left.
 func _plant_task(p: Patch, g: Garden, h: int) -> bool:
 	var best: int = -1
@@ -1163,16 +1172,26 @@ func _plant_task(p: Patch, g: Garden, h: int) -> bool:
 		return false
 	_set_task("plant")
 	p.set_tool(Patch.Tool.PLANT)
+	if best != _plant_best:
+		_plant_best = best
+		_plant_close_t = 0.0
 	var dd: float = _go(p, g.slot_pos[best], 0.9)
 	if dd < 1.6:
 		_scoop = true
 		_move = Vector3.ZERO
-	if _task_t > 15.0:
+		_plant_close_t += _dt
+	# A slot Lumi stands at but cannot plant (on the next hex behind her, against a wall) is let go
+	# sooner than one she cannot reach; open slots round it go with it (a patch from elsewhere
+	# takes them if they can be planted).
+	if _task_t > PLANT_GIVEUP_S or _plant_close_t > PLANT_CLOSE_GIVEUP_S:
 		if DevHooks.has("bot-debug"):
 			print("[bot-plant] t=%.1f slot=%d hex=%d dist=%.2f free_near=%d seeds=%.0f pos=%s" % [_now() / 60.0, best, h, dd,
 				g.free_slot_near(p.global_position, p.forward()), GameState.get_currency("seeds").to_float(), str(p.global_position.snappedf(0.1))])
-		_ignore_piece[-10 - best] = true
+		for s: int in g.hex_slots[h]:
+			if g.slot_species[s] < 0 and g.slot_pos[s].distance_to(g.slot_pos[best]) <= PLANT_GIVEUP_R_M:
+				_ignore_piece[-10 - s] = true
 		_task_t = 0.0
+		_plant_close_t = 0.0
 	return true
 
 
