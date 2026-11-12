@@ -6,7 +6,7 @@ extends RefCounted
 ## materialize round its pad (parts, wrecks), then tests every target with TargetReach (with the
 ## colliders loaded): memory shards (where each surfaces), CDs (where each would turn up, every
 ## 3rd hex), outposts, eggs and gnomes, the Ledger relay, the First Seed greenhouse, buried parts,
-## the hub's build anchors (SiteReach.audit), and the purple beacon's point for raw hex centres
+## the hub's build anchors (SiteReach.audit), no shut-in pocket round each outpost (TargetReach.pockets), and the purple beacon's point for raw hex centres
 ## (TargetReach.beacon_point, every 3rd hex). Prints a [targets] line per hub and kind, the
 ## failures, and "[targets] N unreachable" with PASS/FAIL; exits 1 on any failure.
 ## Run: godot --headless --path . -- --fresh --orbit --target-reach
@@ -24,6 +24,7 @@ static func run_dev(so: SliceOrbit) -> void:
 	var patch: Node3D = so.w.get("patch")
 	var t_all: int = Time.get_ticks_msec()
 	var bad: Array[String] = []
+	var notes: Array[String] = []  # [v8fix] pockets inside outpost ruins (info)
 	var total: int = 0
 	var hubs: int = sm.sites.size() if not DevHooks.has("target-reach-hubs") else mini(sm.sites.size(), int(DevHooks.get_f("target-reach-hubs", 1.0)))
 	for i: int in hubs:
@@ -41,6 +42,9 @@ static func run_dev(so: SliceOrbit) -> void:
 			hf._set_hub(i)
 			for k: int in 4:
 				await tree.process_frame
+		var t_wait: int = Time.get_ticks_msec()  # [v8fix] the frame's systems build over frames (a play budget): outposts were 0 past hub 0
+		while Time.get_ticks_msec() - t_wait < 60000 and (bool(hf.get("_switching")) or hf.node("Outposts") == null or bool(hf.node("Outposts").get("building"))):
+			await tree.process_frame
 		var counts: Dictionary = {}
 		var fails: Array[String] = []
 		var check := func(kind: String, at: Vector3, own: Node) -> void:
@@ -88,6 +92,25 @@ static func run_dev(so: SliceOrbit) -> void:
 			var fs: Variant = so.w.get("first_seed")
 			if fs is FirstSeed:
 				check.call("first_seed", (fs as FirstSeed).greenhouse_point(), fs as Node)
+		if outs is Outposts:  # last: it moves Lumi off the pad
+			# [v8fix] No junk heap or junk piece collider inside an outpost's ruin (Lumi stood by it, so
+			# its cells, heaps and junk colliders are made): the Gantry Works bot trap was a heap
+			# wedged in among the ruin's colliders (Outposts._clear_heaps).
+			for o: Outpost in (outs as Outposts).items:
+				var up: Vector3 = o.global_position.normalized()
+				patch.global_position = so.globe.terrain.ground((o.global_position + o.global_basis.z * 9.0).normalized()) + up * 0.3
+				for k: int in 20:
+					await tree.process_frame
+				for k: int in 3:
+					await tree.physics_frame
+				counts["outpost_ground"] = int(counts.get("outpost_ground", 0)) + 1
+				var junk: Array[String] = _junk_in_ruin(so, o)
+				if not junk.is_empty():
+					fails.append("outpost_ground@%s(%s)" % [_where(so, i, o.global_position), ", ".join(junk)])
+				# Pockets the ruin's own pieces close off (Lumi can't walk in; noted, not failed).
+				var shut: int = TargetReach.for_world(so.w, true, patch).pockets(o.global_position)
+				if shut > 0:
+					notes.append("hub %d %s: %d" % [i, _where(so, i, o.global_position), shut])
 		await SiteReach.fix_anchors(p, so.globe.terrain)
 		var ra: Dictionary = await SiteReach.audit(p, so.globe.terrain)
 		if not ra.is_empty():
@@ -107,8 +130,32 @@ static func run_dev(so: SliceOrbit) -> void:
 			sm.free_hub(i)
 			await tree.process_frame
 	print("[targets] %d targets on %d hubs, %d unreachable (%d ms)" % [total, hubs, bad.size(), Time.get_ticks_msec() - t_all])
+	if not notes.is_empty():
+		print("[targets] note: shut-in spots inside outpost ruins (0.5 m grid, can't be walked into): %s" % ", ".join(notes))
 	print("[targets] %s" % ("PASS" if bad.is_empty() else "FAIL"))
 	tree.quit(0 if bad.is_empty() else 1)
+
+
+## [v8fix] Junk colliders (heaps, big pieces) standing on an outpost's ruin footprint
+## (Outposts.RUIN_FOOT, in the outpost's frame): names of what is there, empty when clear.
+static func _junk_in_ruin(so: SliceOrbit, o: Outpost) -> Array[String]:
+	var out: Array[String] = []
+	var q := PhysicsShapeQueryParameters3D.new()
+	var sph := SphereShape3D.new()
+	sph.radius = 7.5
+	q.shape = sph
+	q.collision_mask = PhysLayers.SOLID
+	q.transform = Transform3D(Basis(), o.global_position)
+	var jv: Node = so.globe.junk_view
+	for hit: Dictionary in so.w.get_world_3d().direct_space_state.intersect_shape(q, 64):
+		var co: CollisionObject3D = hit.get("collider") as CollisionObject3D
+		if co == null or not jv.is_ancestor_of(co):
+			continue
+		var own: Object = co.shape_owner_get_owner(co.shape_find_owner(int(hit.get("shape", 0))))
+		var at: Vector3 = o.to_local((own as Node3D).global_position if own is Node3D else co.global_position)
+		if Outposts.RUIN_FOOT.has_point(Vector2(at.x, at.z)):
+			out.append("%s at (%.1f,%.1f)" % [co.name, at.x, at.z])
+	return out
 
 
 static func _where(so: SliceOrbit, i: int, at: Vector3) -> String:

@@ -71,6 +71,8 @@ func setup() -> void:
 			o.rotation.y = float(spots[i]["yaw"])
 		o.setup(i, int(lv[i]), world)
 		items.append(o)
+		if _globe:
+			_clear_heaps(o, i)
 		if world.get("interactables") != null:
 			world.interactables.register(o.anchor, 3.0, prompt.bind(i), use.bind(i))
 	building = false
@@ -90,6 +92,44 @@ func setup() -> void:
 	if DevHooks.has("outpost-repair"):
 		var r: int = int(DevHooks.get_f("outpost-repair", 0.0))
 		get_tree().create_timer(DevHooks.get_f("outpost-repair-at", 3.0)).timeout.connect(func() -> void: repair(r, true, true))
+
+
+## [v8fix] Nothing solid of the junk field wedged in among an outpost's ruin: a junk mound rolled
+## under it (or a big junk piece lying in it) left Lumi-sized gaps between its collider and the
+## ruin's, and the bot got boxed in there (by Gantry Works' outpost 0, v6pace run). The heaps
+## round it go (SphereField.clear_piles_near, RUIN_CLEAR_M from its centre plus a heap's own size)
+## and junk pieces keep off its footprint (RUIN_FOOT, a soft keep-out: pieces move off it, Lumi
+## still walks there). The ruin reaches from the sign (-x) to the kiosk's fallen side (+x, ~6.2 m).
+const RUIN_CLEAR_M: float = 6.5
+const RUIN_FOOT := Rect2(-4.3, -3.6, 10.6, 7.0)
+
+
+func _clear_heaps(o: Outpost, i: int) -> void:
+	var f: SphereField = world.field as SphereField
+	var p: Vector3 = o.global_position
+	var changed: PackedInt32Array = f.clear_piles_near(p, RUIN_CLEAR_M)
+	var v: Object = world.get("view")
+	if v != null and v.has_method("piles_changed"):
+		for c: int in changed:
+			v.call("piles_changed", c)
+	var ko: Object = f.keep_out.get_object() if f.keep_out.is_valid() else null
+	if not (ko is YardKeepOut):
+		return
+	(ko as YardKeepOut).add_world("outpost%d_%d" % [hub_index, i], [[o.global_transform, RUIN_FOOT]], true)
+	var g: Node = (v as Node).get_parent() if v is Node else null  # the globe (OrbitPlanet): its junk map follows the cell
+	for c: int in f.grid.cells_within(p.normalized(), 9.0):
+		if f.materialized[c] != 1:
+			continue  # cells made later keep off it as they are laid
+		var r: Array = f.relocate_blocked(c)
+		if (r[0] as PackedInt32Array).is_empty() and (r[1] as PackedInt32Array).is_empty():
+			continue
+		if v != null:
+			for pid: int in r[0]:
+				v.call("move_piece", pid, f.piece_pos[pid])
+			for pid: int in r[1]:
+				v.call("hide_piece", pid)
+		if g != null and g.has_method("write_cell"):
+			g.call("write_cell", c)
 
 
 func _process(_delta: float) -> void:

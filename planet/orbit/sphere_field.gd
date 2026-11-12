@@ -59,6 +59,9 @@ var _saved_unlocked: Dictionary = {}  # cells of a locked biome a save says are 
 ## pod, building footprints; YardKeepOut). Pieces that land there are re-rolled, then dropped.
 var keep_out: Callable
 var pile_block: Callable  # [v5look] (cell) -> bool: no junk mounds on this cell (the hinterland's road hexes)
+## [v8fix] Ground kept clear of junk mounds: [dir (unit), radius m] pairs (an outpost's ruin). A
+## heap there wedged its colliders in between the ruin's and boxed Lumi in (clear_piles_near).
+var pile_clear: Array = []
 var before_lay: Callable  # [v6qa] (cell) -> void: called before a land cell's pieces are laid (the hinterland decides its roads there)
 ## [v1yard] Cells with no big items (cell -> true): the start's cells, as the flat game's first hexes.
 var small_only: Dictionary = {}
@@ -232,7 +235,7 @@ func _mz_begin(cell: int) -> bool:
 	var count: int = int(round(DRAW_PIECES * left))  # [v1world]
 	var ctr: Vector3 = grid.centers[cell]
 	var f: Basis = SphereGrid.frame(ctr)
-	var piles: Array = [] if cells.has_flag(cell, SphereCells.F_SITE) or (pile_block.is_valid() and bool(pile_block.call(cell))) else _roll_piles(cell)  # [orbD] mounds wedged against kerbs and kit walls stalled Lumi; site cells keep loose junk only
+	var piles: Array = [] if cells.has_flag(cell, SphereCells.F_SITE) or (pile_block.is_valid() and bool(pile_block.call(cell))) else _clear_of(cell, _roll_piles(cell))  # [orbD] mounds wedged against kerbs and kit walls stalled Lumi; site cells keep loose junk only
 	hex_piles[cell] = piles
 	var lm: Dictionary = landmarks[_cell_landmark[cell]] if _cell_landmark.has(cell) else {}
 	var lm_at: Vector2 = cell_local(cell, lm["pos"]) if not lm.is_empty() else Vector2.ZERO
@@ -543,6 +546,63 @@ func pile_transform(cell: int, pile: Vector4) -> Transform3D:
 	return Transform3D(SphereGrid.frame(d), terrain.ground(d))
 
 
+## [v8fix] Keeps junk mounds and wreck landmarks off the ground around p (radius r metres, the
+## heap's or wreck's own size added): made cells lose them now (their pieces settle onto the
+## ground; a wreck's entry stays in `landmarks` marked "gone"), cells made later never roll them.
+## Returns the cells that changed (the view drops their mounds and wreck: piles_changed).
+func clear_piles_near(p: Vector3, r: float) -> PackedInt32Array:
+	var d: Vector3 = p.normalized()
+	for pc: Array in pile_clear:
+		if grid.great_circle_m(pc[0], d) < 0.05 and float(pc[1]) >= r:
+			return PackedInt32Array()  # this outpost's ground was cleared already (a hub switch builds it again)
+	pile_clear.append([d, r])
+	var out := PackedInt32Array()
+	for c: int in grid.cells_within(d, r + hex_size + 3.0):
+		if _cell_landmark.has(c):  # a wreck (covered car, barriers...) standing on that ground goes too
+			var lm: Dictionary = landmarks[_cell_landmark[c]]
+			if _clear_hit(lm["pos"], float(lm.get("clear", 2.2))):
+				_cell_landmark.erase(c)
+				lm["gone"] = true
+				out.append(c)
+		var piles: Array = hex_piles[c]
+		if piles.is_empty():
+			continue
+		var kept: Array = _clear_of(c, piles)
+		if kept.size() == piles.size():
+			continue
+		hex_piles[c] = kept
+		for pid: int in pieces_in(c):
+			if piece_alive[pid] == 1 and piece_embed[pid] > 0.0:
+				_seat(pid, piece_pos[pid].normalized())
+		out.append(c)
+	return out
+
+
+## Whether a disc (centre p, radius r m) reaches into a pile_clear disc.
+func _clear_hit(p: Vector3, r: float) -> bool:
+	for pc: Array in pile_clear:
+		if grid.great_circle_m(p, pc[0]) < float(pc[1]) + r:
+			return true
+	return false
+
+
+## The piles of a cell that keep clear of every pile_clear disc.
+func _clear_of(cell: int, piles: Array) -> Array:
+	if pile_clear.is_empty() or piles.is_empty():
+		return piles
+	var kept: Array = []
+	for pile: Vector4 in piles:
+		var pd: Vector3 = pile_transform(cell, pile).origin.normalized()
+		var ok: bool = true
+		for pc: Array in pile_clear:
+			if grid.great_circle_m(pd, pc[0]) < float(pc[1]) + pile.z * 1.1:
+				ok = false
+				break
+		if ok:
+			kept.append(pile)
+	return kept
+
+
 func _roll_piles(cell: int) -> Array:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash([seed_value, cell, 31])
@@ -653,6 +713,8 @@ func _roll_landmark(cell: int) -> void:
 		if AssetLib.has_model(model):
 			var bb: AABB = AssetLib.model_aabb(model)
 			clear = maxf(bb.size.x, bb.size.z) * 0.5 + 0.5
+		if _clear_hit(dir, clear):
+			return  # [v8fix] no wreck on an outpost's ground (clear_piles_near)
 		_cell_landmark[cell] = landmarks.size()
 		landmarks.append({"model": model, "pos": terrain.ground(dir), "yaw": yaw, "hex": cell, "clear": clear,
 			"basis": Basis(lf.y, yaw) * lf})

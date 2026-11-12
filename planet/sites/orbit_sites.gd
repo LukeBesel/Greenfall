@@ -58,6 +58,8 @@ func _setup() -> void:
 		_reach_audit.call_deferred()
 	if DevHooks.has("city-walk"):  # [v3city] dev: walk check of the start town (planet/sites/city_walk.gd)
 		CityWalk.run_dev(so)
+	if DevHooks.has("spot-probe"):  # [v8fix] dev: what encloses a spot (planet/sites/spot_probe.gd)
+		SpotProbe.run_dev.call_deferred(so)
 	if DevHooks.has("target-reach"):  # [v4world] dev: every collectible and objective target reachable (planet/sites/target_audit.gd)
 		TargetAudit.run_dev(so)
 	if DevHooks.has("planet-smoke"):  # [v7planet] dev: any planet boots, walks, hops, wakes, saves (planet/sites/planet_smoke.gd)

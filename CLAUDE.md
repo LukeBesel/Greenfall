@@ -29,7 +29,8 @@
 - Title screen shot: `xvfb-run -a -s "-screen 0 1280x720x24" godot --path . --rendering-driver opengl3 --resolution 1280x720 -- --menu --quality=1 --shot=screenshots/title_menu.png --shot-delay=40 --quit-after=43`
 - Round Verdance checks (the round world is the game; all headless unless noted, add `-- --fresh --orbit --no-intro`):
   - `--city-walk`: walks the start town: walk area, dead-end pockets, the 8 ways out, junk you can reach. Exit 1 on failure.
-  - `--target-reach`: every collectible and objective target (shards, CDs, parts, outposts, eggs, greenhouse) stands on reachable ground. Exit 1 if any is cut off. `--target-reach-hubs=N` limits the hubs.
+  - `--target-reach`: every collectible and objective target (shards, CDs, parts, outposts, eggs, greenhouse) stands on reachable ground, and no junk heap or wreck stands inside an outpost's ruin. Exit 1 if any is cut off. `--target-reach-hubs=N` limits the hubs.
+  - `--spot-probe=x,y,z` (or `=outpostK`) `[--orbit-hop=N --hop-skip --spot-probe-off=9]`: what boxes in a spot (e.g. a `[bot-trap]` position): TargetReach's verdict, a 0.5 m collider map with a legend, shut-in pockets (`*`).
   - `--site-reach`: narrow-gap audit of every hub site, a `[reach]` line per hub. Exit 1 if an anchor is cut off.
   - `--ground-probe=300 --ground-probe-quit [--orbit-spawn=x,z] [--ground-probe-r=120]`: lists floating and sunken props and junk around Lumi (`[ground]` lines). Wall signs show up as noise.
   - `--yard-probe --yard-probe-quit`: how close the junk starts to the pad and pod, and what stands in the start yard (`[yardprobe]` lines).

@@ -415,6 +415,21 @@ func refresh_hex(id: int, _flipped_now: bool = false) -> void:
 	_update_mounds(id)
 
 
+## [v8fix] A cell lost heaps or its wreck (SphereField.clear_piles_near): its pieces were
+## re-seated on the ground, its mounds and wreck go.
+func piles_changed(id: int) -> void:
+	if sfield == null:
+		return
+	for pid: int in sfield.pieces_in(id):
+		_set_xf(pid)
+	_update_mounds(id)
+	if _cell_props.has(id) and not sfield._cell_landmark.has(id):  # its wreck went too
+		var n: Node = _cell_props[id]
+		if is_instance_valid(n):
+			n.queue_free()
+		_cell_props.erase(id)
+
+
 # --- [orbB] Heaps and landmarks --------------------------------------------------------------
 
 func _ensure_extras(c: int) -> void:
@@ -445,9 +460,14 @@ func _update_mounds(id: int) -> void:
 	if list.is_empty():
 		return
 	var left: float = 0.0 if sfield.hex_clean[id] == 1 else (0.3 + 0.7 * (1.0 - sfield.removed_fraction(id)))
+	var piles: Array = sfield.hex_piles[id]
 	for e: Array in list:
 		var mi: MeshInstance3D = e[0]
 		var pile: Vector4 = e[2]
+		if not piles.has(pile):  # [v8fix] cleared off an outpost's ground (SphereField.clear_piles_near)
+			mi.visible = false
+			MoundColliders.update(e[1], Vector3.ZERO, false)
+			continue
 		mi.visible = left > 0.0
 		mi.scale = Vector3(pile.z * 1.1, maxf(pile.w * left * 0.9, 0.001), pile.z * 1.1)
 		MoundColliders.update(e[1], mi.scale, mi.visible, 1.0 - sfield.removed_fraction(id))

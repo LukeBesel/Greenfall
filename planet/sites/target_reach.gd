@@ -166,6 +166,48 @@ func reach(p: Vector3) -> String:
 	return w0 if w0 != "" else "shut"
 
 
+## [v8fix] Shut-in pockets round p: free ground points (colliders counted when `space` is set)
+## within r_in of p, on a step-m grid, that no free path joins to the edge of a box r_box out.
+## Lumi can't walk into such a pocket but could be dropped, pushed or hop in, and not get out
+## (the bot trap by Gantry Works' outpost: a junk mound wedged in among the ruin's colliders).
+## Returns the number of pocket points (0 = none).
+func pockets(p: Vector3, r_in: float = 6.0, r_box: float = 10.0, step: float = 0.5) -> int:
+	var d: Vector3 = p.normalized()
+	var f: Basis = SphereGrid.frame(d)
+	var R: float = terrain.R
+	var n: int = int(r_box / step)
+	var free: Dictionary = {}
+	for zi: int in range(-n, n + 1):
+		for xi: int in range(-n, n + 1):
+			var qd: Vector3 = (d * R + (f.x * xi + f.z * zi) * step).normalized()
+			if why(qd) == "":
+				free[Vector2i(xi, zi)] = true
+	var seen: Dictionary = {}
+	var stack: Array[Vector2i] = []
+	for q: Vector2i in free:
+		if absi(q.x) == n or absi(q.y) == n:
+			seen[q] = true
+			stack.append(q)
+	while not stack.is_empty():
+		var at: Vector2i = stack.pop_back()
+		for o: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			var q: Vector2i = at + o
+			if free.has(q) and not seen.has(q):
+				seen[q] = true
+				stack.append(q)
+	var lim2: float = (r_in / step) * (r_in / step)
+	var shut: int = 0
+	last_shut.clear()
+	for q: Vector2i in free:
+		if not seen.has(q) and float(q.x * q.x + q.y * q.y) <= lim2:
+			shut += 1
+			last_shut.append(q)
+	return shut
+
+
+var last_shut: Array[Vector2i] = []  # the last pockets() call's shut-in points (grid steps in p's frame)
+
+
 ## The nearest ground point to p that is free and leads out (p's own ground point when it does),
 ## searched on rings STEP_M apart out to SEARCH_M. p's ground point when nothing is found.
 ## avoid: optional Callable(world_point) -> bool for spots the caller rules out too.
