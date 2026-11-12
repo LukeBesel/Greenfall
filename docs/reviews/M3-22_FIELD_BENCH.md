@@ -28,7 +28,9 @@ hex at 2.0 (54 s after control, target under 90 s), longest purchase wait in the
 **First robot at 14.5 min played (13.4 after control): misses the minute-12 target.** Nothing in
 this task changes city 1 (no field bench there; the bot's bench and shopping code take the old
 path at home), and M3-21 measured 8.0 to 12.0 minutes on one build; this run's hexes were slow
-(4 hexes from minute 7.7 to 13). See the second run below.
+(4 hexes from minute 7.7 to 13). A second fresh run (`--save-dir=m322p --game-minutes=16`): first
+hex 52 s after control, **first robot at 12.3 min played (11.2 after control)**, longest purchase
+wait in the first 20 minutes 92 s. City 1 pacing is unchanged within the run-to-run spread.
 
 **B. Dev start in Ironside** (A's save, `--district-stage=old_town:5`, 60 game minutes): the bot
 flew at 56.5, landed at 57.1, set the field bench up at 57.2 and stayed in Ironside to the end
@@ -72,7 +74,9 @@ detail is lost.
   work in the rocket's city charges faster, a bale adds a lump; robots' work and another city do
   not; the bot flies home only for the Assembler where a bench stands; the bot's longest cell wait.
 - Round trip: new check `orbit_field_bench_kept`.
-- Suite: see the commit that adds this review.
+- `tools/run_tests.sh`: 1,343 tests, 1,343 passing (1,330 before plus the 13 new), save round
+  trip and two-process reload PASS. `tools/warnings_audit.sh`: no warning in the new or changed
+  code (147 older ones).
 
 ## Open calls
 
