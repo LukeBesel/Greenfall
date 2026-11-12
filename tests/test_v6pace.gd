@@ -249,6 +249,7 @@ func test_base_prices() -> void:
 	var lv: Array = Economy.read_json("res://data/hub.json")["levels"]
 	assert_eq(float(lv[1]["cost"]["cubes"]), 1500.0, "base 2: the owner's start stays")
 	assert_eq(float(lv[2]["cost"]["cubes"]), BASE3)
+	assert_eq(float(lv[4]["cost"]["cubes"]), BASE5, "base 5: under a 15-minute save at its point (docs/BALANCE.md)")
 
 
 func test_clock_stands_still_behind_the_loader() -> void:
@@ -274,3 +275,4 @@ const PACE: float = 1.45
 const MK3: float = 100000.0
 const DRIVE: float = 500000.0
 const BASE3: float = 9000.0
+const BASE5: float = 150000.0

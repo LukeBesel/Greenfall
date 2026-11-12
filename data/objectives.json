@@ -113,17 +113,6 @@
       ]
     },
     {
-      "id": "hex3",
-      "text": "Clean 3 hexes",
-      "desc": "Clear room around the base, so robots can start work.",
-      "type": "stat",
-      "key": "hexes_cleaned",
-      "target": 3,
-      "lines": [
-        "One more hex, Lumi. The planet notices, believe me."
-      ]
-    },
-    {
       "id": "bench2",
       "text": "Add a Bot Bay to the bench",
       "desc": "Upgrades tab. A planet is too big for one small robot.",
@@ -152,6 +141,17 @@
       "target": 1,
       "lines": [
         "Your robot already knows the job. Paint a hex, and it starts there."
+      ]
+    },
+    {
+      "id": "hex3",
+      "text": "Clean 3 hexes",
+      "desc": "Clear room around the base, so robots can start work.",
+      "type": "stat",
+      "key": "hexes_cleaned",
+      "target": 3,
+      "lines": [
+        "One more hex, Lumi. The planet notices, believe me."
       ]
     },
     {
