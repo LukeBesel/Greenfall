@@ -281,6 +281,7 @@ func test_title_plays_random_songs_with_main_first() -> void:
 	var d: Node = Director.new()
 	d.manual = true
 	add_child_autofree(d)
+	d.rng.seed = 20261112  # [main] a fixed shuffle: by chance 12 picks can alternate two songs (failed once in CI)
 	var pool: Array[String] = ["greenfall_main", "sunbaked", "clean_sweep", "dune_caravan"]
 	d.set_menu_pool(pool, "greenfall_main", 3.0)
 	d.set_context("menu")
