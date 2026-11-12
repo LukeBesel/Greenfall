@@ -91,14 +91,20 @@ migration step that touched parked data (the v1 to v2 Requests rewrite) moved to
 
 ## Code removed from the build
 
-GDScript outside `parked/` and `tests/` (`git diff --numstat e8c19d9`): **3,373 lines removed,
-354 added (net -3,019)**; of the added, 95 are the new fixture writer and 87 `mastery_rewards.gd`.
-Game code alone (no `tools/`): 3,306 removed, 259 added. Tests: 552 removed (moved to
-`parked/tests/`), 266 added. Planet and global data tables: 321 JSON lines removed.
+GDScript outside `parked/` and `tests/` (`git diff --numstat e8c19d9`): **3,374 lines removed,
+357 added (net -3,017)**; of the added, 94 are the new fixture writer and 89 `mastery_rewards.gd`.
+Game code alone (no `tools/`): **3,307 removed, 261 added (net -3,046)**. Tests: 560 removed
+(moved to `parked/tests/`), 277 added. Planet and global data tables: 321 JSON lines removed.
 
 ## Tests and checks
 
-TEST_RESULTS
+- `tools/run_tests.sh`: **1,327 tests, all passing**; the save round trip and the two-process
+  reload pass (`[check_exit] PASS roundtrip`, `PASS orbit_reload`).
+- `godot --headless --path . res://tools/save_roundtrip.tscn -- --fresh`: OK, 0 failures.
+- New: `tests/test_mastery_rewards.gd` (3), `tests/test_side_systems_saves.gd` (5), two event
+  rule tests in `tests/test_events.gd`.
+- Fresh 25-minute bot run: no script errors; Salvage Glint and Rain Shower ran and were handled.
+- `tools/warnings_audit.sh`: 146 warnings, none in a line this task wrote (all in older code).
 
 ## Notes and open questions
 
