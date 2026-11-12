@@ -12,8 +12,8 @@ on the globe (B44, open), so every later city's stages 2 to 4 are Lumi's hand pl
 watering. The honest run (no flag in city 1, one flag to pass B41, then none) played 459 game
 minutes and reached Kettle Bay stage 1; the rest was fast-forwarded one city at a time with
 `--district-stage` (the bot still did every job, tool, flight, kind and the rocket) and 2,000 Parts
-were given for the rocket to save about 2.5 real hours of Scrounger digging. Five game bugs were
-found (B39 to B44, three fixed with tests); the per-city cadence breaks are listed for M3-12.
+were given for the rocket to save about 2.5 real hours of Scrounger digging. Six game bugs were
+found (B39 to B44; B39, B40 and B42 fixed with tests); the per-city cadence breaks are listed for M3-12.
 
 ## What the bot was taught
 
@@ -115,6 +115,7 @@ finished city always has one, so the watch cannot see a city that is not moving 
 | B41 | P1 | Old Town cannot pass regrowth stage 1: 37 of its 74 land hexes have no slot off paving, so 50% of its land can be Planted against the 80% share. Blocks the game | Open, design call (see `docs/PLAN.md`) |
 | B42 | P1 | Every save dropped `rocket_site` and `rocket_owned`: after the next autosave in another city the rocket counted as back on the start pad | Fixed, round-trip check `orbit_save_keeps_the_rocket` |
 | B43 | P2 | After a trip away and back, `Camp._apply_builds` errors on freed yard models (built once on the start site's prefab, freed when it unloads, never rebuilt) | Open |
+| B44 | P1 | On the globe, planting and watering robots only move a cell's state; they never plant or water the garden's slots, which the hex stages read. No robot adds to stages 2 to 5 | Open, not small (see `docs/PLAN.md`) |
 
 Also seen, not logged: an engine error `Parameter "space" is null` (`body_test_motion`, `sphere_motor.gd:163`) once at a hop's take-off.
 
