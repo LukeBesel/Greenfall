@@ -1,17 +1,20 @@
 # Parked features
 
-Systems Planet 1 does not need, kept for later planets (task M1-08, `docs/PLAN.md` R10). The
+Systems Planet 1 does not need, kept for later planets (task M1-08, `docs/PLAN.md` R10; the side
+systems of task M3-13 in `side/` and `extras/nursery/`). The
 `.gdignore` file in this folder makes Godot skip everything here: nothing is imported, parsed,
 run or exported, and every export preset excludes `parked/*` as well. Nothing outside this folder
 refers to a class or data file in it.
 
 What "parked" means here:
 - The files were moved with `git mv`, so `git log --follow` shows their history.
-- They are as they were on the day they left the game (commit `b928ead` plus the M1-08 commits).
+- They are as they were on the day they left the game (commit `b928ead` plus the M1-08 commits;
+  for the M3-13 side systems, commit `e8c19d9` plus the M3-13 commits).
   They are not compiled, so they drift: expect to fix call sites when one comes back.
 - Code that other files called was removed from those files. Small pieces of shared files that
   only served a parked feature were cut out and saved here as snippets (named below). For every
-  other removed call site, read `git diff b928ead..HEAD -- . ':(exclude)parked'` of the M1-08 branch.
+  other removed call site, read `git diff b928ead..HEAD -- . ':(exclude)parked'` of the M1-08 branch
+  (M3-13: `git diff e8c19d9..<its last commit> -- . ':(exclude)parked'`).
 - Tests of parked features are in `parked/tests/`. They do not run.
 
 Bringing a feature back: move its files out of `parked/` to the paths in the tables, put the
@@ -100,16 +103,61 @@ Shared code that used it, and what it uses now:
 | `fabricator/` | `robots/fabricator/bot_fabricator.gd`, `ui/fabricator_panel.gd`, `systems/camp/fabricator_model.gd`, `data/fabricator.json` | The Bot Fabricator: a build from the third planet on that makes robots by itself on a mix the player sets. `yard_art_fabricator.gd` is its kit art | `Homeward` (unlock planet), `SphereCrew`, `HubBuilds`, `BenchBots` (it had a Fabricator category, removed), `YardArt` |
 | `profiles/` | `systems/profile_slots.gd`, `ui/profile_picker.gd` | The title screen's three save profiles: pick, rename, delete, then pick a world | `CradleMode` (profile file, worlds), `SaveManager` (its profile functions are still there), `WorldPicker` |
 
+## side/ and extras/nursery/ : side systems Planet 1 does not use (task M3-13)
+
+The lead's list is in `docs/DECISIONS.md` ("Side systems trimmed to what Planet 1 uses"); the
+report with line counts is `docs/reviews/M3-13_TRIM.md`. Saves keep everything these systems
+wrote (`tests/test_side_systems_saves.gd` loads an old save that used all of them).
+
+| Folder | Files and where they were | What it did | Depended on |
+|---|---|---|---|
+| `side/requests/` | `contracts.gd` (`systems/`), `contracts_panel.gd` (`ui/`); `contracts_table.json` (the `contracts` block and WREN's `contract_done` pool of the planet's events table); `workbench_tier.json` (the Mk IV bench tier and the tab gate, from `data/workbench.json`); snippet `save_migrate_v2_contracts.gd` (from `SaveManager.migrate_v2`) | The Requests board: three timed jobs for cubes or Parts, a reward track of Curio Capsules and robot parts, world events counted as requests. Opened by Workbench Mk IV | `WorldEvents` (progress_cubes, the event count, the streak peak), `Collection`, `RobotParts`, `UpgradesScreen` (the Requests tab and its gate), `EventHUD` ("request ready" nudge), `BenchTiers` (contracts_done for old saves) |
+| `side/trinkets/` | `collection.gd` (`systems/`); `trinkets_table.json` (the `trinkets` table of the events table and the Codex `trinkets` exhibit of `museum.json`); snippet `codex_screen_trinkets.gd` (the trinket list on the Codex Collection tab) | Trinkets and curios from events, requests, streaks, Lumi levels and photos, listed on the Codex Collection tab | `WorldEvents` (trinket_chance, the max-streak medal, Wildlife Visit photos), `Fauna` (crumb bag, pic_ photos), `Contracts`, `LumiLevel`, `Exhibits` (kind `trinkets`), `Decor` (needs_finds) |
+| `side/garden/` | `decor.gd`, `garden_director.gd` (`systems/`), `garden_placer.gd`, `late_menu.gd` (`ui/`), `decor.json` (`data/`); `wren_lines_garden.json` (WREN's `garden_place` pool); snippet `orbit_roundtrip_garden.gd` (the Garden Mode checks of `tools/orbit_roundtrip.gd`) | Garden Mode after the finale: place decorations per hub; their charm sped plants up through `Economy.stat` | `HubFrame` (a Decor node per hub), `SliceOrbit`, `SphereCam`, the pause menu's Garden Mode button, the `garden_mode` key (H), `Collection`, `DecorProps` (stays: shared art) |
+| `extras/nursery/` | `nursery.gd` (`systems/extras/`); `yard_build.json` (its yard build in `camp.json` and its entry in `builds.json`); snippet `extras_panel_nursery.gd` (the Keepsakes Nursery tab with Retire) | Old robots retire into a garden at the base as caretakers; a small plant-growth bonus through `Economy.stat` | `ExtrasDirector`, `ExtrasPanel`, `Camp` (migration, build reveal, report), `YardSite` (its model), `YardBuilds.IDS`, `RobotBuilder` (traits), `YardArt.nursery*` (stays: art) |
+| `side/lumi_level/` | `lumi_level.gd` (`systems/`), `lumi_level.json` (the planet's `robot_level` table, also dropped from `PlanetDefinition.OPTIONAL_TABLES`); snippet `hotbar_level_bar.gd` (the XP bar and level-up banner of `ui/hotbar.gd`) | A second experience bar from everything Lumi did, paying cubes and seeds per level | `HUD` (level-up line, hiding the context line), `Hotbar`, `Collection`, `WorldEvents.progress_cubes`, `Goals` and `WorldEvents` signals |
+| `side/ship_looks/` | `ship_style.gd` (`systems/`), `ship_style.json` (`data/`); snippet `locker_editors_rocket.gd` (the Locker's Rocket section) | Rocket paint, trim and glow, free, tier-unlocked or bought for Parts | `ShipModel` (its colours), `LockerPanel` (the Rocket tab), `RocketTiers` |
+| `side/events/` | snippets `events_cut.gd` (`systems/events.gd`), `event_props_cut.gd` (`systems/event_props.gd`), `events_check_cut.gd` (`tools/events_check.gd`); `events_cut.json` (the three events, the `animals` table and their WREN pools) | Supply Drop (already off), Robot Hiccup, Wildlife Visit: cut, not just parked (the report says why) | `WorldEvents`, `EventProps`, `Collection`, `Interactables`, `Fleet` |
+
+Shared code that used them, and what it does now:
+- **Lumi Level's rewards feed pacing, so they moved, not vanished.** `systems/mastery_rewards.gd` pays
+  each mastery level Lumi gains what the same-numbered Lumi level paid (same formula and numbers,
+  in the pollution table's `mastery.level_reward`). Bringing Lumi Level back means taking them off
+  mastery again.
+- `Economy.stat` no longer multiplies by `Decor.stat_mult` and `Nursery.stat_mult`.
+- `ShipModel` uses its own `PEARL`, `ACCENT` and `GLOW` colours.
+- The pause menu chains focus over its visible buttons itself (`LateMenu.refresh` did it before).
+- The Codex Collection tab lists `Exhibits` only; `Exhibits.KINDS` lost `trinkets`.
+- World event cubes are capped at `reward.max_income_s` of current income (`WorldEvents.capped_cubes`).
+- `YardBuilds.IDS` lost `nursery`; `Camp` and `YardSite` lost its migration, reveal and model.
+- `BenchTiers` lost tier 4 (the Request Board); a save on Mk IV reads as the top tier (its flag stays 4).
+- Dev hooks gone with them: `--requests-done`, `--trinkets`, `--tab=contracts`, `--contracts-sample`,
+  `--requests-unlocked`, `--lumi-level`, `--lumi-xp`, `--lumi-levelup`, `--open=garden`, `--garden*`,
+  `--decor-sample`, `--nursery-sample`, `--extras=nursery`, `--open-locker=rocket`, `--event-land`.
+
+Still in the game, on purpose: `Looks.migrate_save` reads old `lumi` levels and `trinkets_found` /
+`contracts_done` stats (it turns old unlocks into found pieces); `tools/orbit_roundtrip.gd` still
+compares the saved decor lists (the data must survive a round trip); the yard prefab keeps its
+`nursery` anchor and `YardArt` its nursery models.
+
 ## tests/
 
 One file per parked feature, plus parts cut out of tests that stayed:
 `test_museum.gd` (from `tests/test_eggs2.gd`), `test_weekly.gd` (from `tests/test_extras.gd`),
 `test_seed_ark.gd` (from `tests/test_bloom.gd`), `test_rocket_picker_system_map.gd` (the old
 `tests/test_rocket_picker.gd` with its solar-system map test).
+Task M3-13: `test_requests.gd` (from `tests/test_events.gd`, `test_onboard.gd`,
+`test_robot_builder.gd`), `test_trinkets.gd` (from `tests/test_events.gd`), `test_decor.gd` (moved
+whole), `test_nursery.gd` (from `tests/test_extras.gd`), `test_lumi_level.gd` (from
+`tests/test_hud.gd`, `test_qafix.gd`, `test_economy_scale.gd`), `test_ship_looks.gd` (from
+`tests/test_ui6.gd`).
 
 ## achievements_parked.json
 
-The 20 achievements that can no longer be earned, each with the feature it waits for.
+The 30 achievements that can no longer be earned on Planet 1, each with the feature it waits for:
+20 from task M1-08; from task M3-13 the four of Garden Mode, the two of the nursery, the three
+robot-part ones (Planet 1 places no robot parts, M3-14b) and `home_answered` (nothing on Planet 1
+sets `cradle_answered`).
 
 ## Still in the game because the planet tables are not cleaned yet
 

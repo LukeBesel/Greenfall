@@ -73,7 +73,8 @@ func test_old_save_loads_and_keeps_the_parked_data_untouched() -> void:
 	assert_eq(BenchTiers.tier(), BenchTiers.max_tier(), "and read as the top tier there is now")
 	assert_false(UpgradesScreen.TABS.any(func(t: Dictionary) -> bool: return str(t["id"]) == "contracts"), "no Requests tab")
 	GameState.use_orbit_world(((GameState.orbit["hub_worlds"] as Dictionary)["0"] as Dictionary).duplicate(true))
-	assert_eq(((GameState.world["decor"] as Dictionary)["items"] as Array).size(), Fixture.SIDE_DECOR.size(), "the decorations stay in the save")
+	var decor: Array = (GameState.world["decor"] as Dictionary)["items"]
+	assert_eq(decor.size(), Fixture.SIDE_DECOR.size(), "the decorations stay in the save")
 	assert_false("nursery" in YardBuilds.IDS, "the nursery build is not offered or shown")
 
 

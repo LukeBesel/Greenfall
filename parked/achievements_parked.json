@@ -1,5 +1,5 @@
 {
- "_doc": "Achievements removed from data/achievements.json in task M1-08 because the feature that earns them is parked. 'parked_with' names the feature folder. Put an entry back in data/achievements.json (and its Steam API name, the id upper-cased, in Steamworks) when its feature returns.",
+ "_doc": "Achievements removed from data/achievements.json because the feature that earns them is parked (task M1-08, then task M3-13) or because Planet 1 cannot award them (hidden until a planet can). 'parked_with' names the feature folder or the reason. Put an entry back in data/achievements.json (and its Steam API name, the id upper-cased, in Steamworks) when its feature returns or a planet can award it. Saves keep the unlocks: they are just not counted.",
  "achievements": [
   {
    "id": "museum_complete",

@@ -9,8 +9,9 @@ extends Node3D
 ##   rare_part_signal  a violet beam marks a buried part; dig it up for a bonus rare part
 ##   ledger_audit      (after the Ledger arc) a friendly drone races you to clear a ring of junk
 ## Nothing is ever lost: an event that times out just ends. Rewards scale with progress (see
-## progress_cubes) so they stay a spike, never a flood: never above reward.max_income_s of income. Also owns the cleaning streak (Streak)
-## and the per-bale bonus (streak tier + surge share), applied by Patch when a bale is pressed.
+## progress_cubes) so they stay a spike, never a flood, and never above reward.max_income_s of
+## income. Also owns the cleaning streak (Streak) and the per-bale bonus (streak tier + surge
+## share), applied by Patch when a bale is pressed.
 ## Persistent bits live in GameState.flags["events"]: {next_in, recent, done{id: n}}.
 
 signal event_started(id: String)

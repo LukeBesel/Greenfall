@@ -34,7 +34,8 @@ const SIDE_STATS: Dictionary = {
 }
 ## Achievements the save earned that Planet 1 now hides (parked/achievements_parked.json).
 const SIDE_ACHIEVEMENTS: Array[String] = ["late_decor_1", "extras_retire_1", "builder_mix", "home_answered"]
-const SIDE_DECOR: Array[Dictionary] = [{"t": "bench", "x": 3, "z": 12, "r": 0}, {"t": "lamp", "x": 5, "z": 12, "r": 0}, {"t": "fountain", "x": -1, "z": 13, "r": 0}]
+const SIDE_DECOR: Array[Dictionary] = [{"t": "bench", "x": 3, "z": 12, "r": 0}, {"t": "lamp", "x": 5, "z": 12, "r": 0},
+	{"t": "fountain", "x": -1, "z": 13, "r": 0}]
 const SIDE_CHARM: float = 6.0
 
 

@@ -53,7 +53,8 @@ func test_the_schedule_is_the_old_level_bars() -> void:
 	assert_false(c.is_empty(), "the first planet pays for mastery levels")
 	assert_gt(float(MasteryRewards.reward_plan(2, 0.0, 0.0, true, c)["cubes"]), 0.0, "every step pays cubes (floor)")
 	var se: int = int(c["seeds_every"])
-	assert_gt(int(MasteryRewards.reward_plan(se, 0.0, 0.0, true, c)["seeds"]), 0, "every seeds_every-th step pays seeds once the garden is open")
+	assert_gt(int(MasteryRewards.reward_plan(se, 0.0, 0.0, true, c)["seeds"]), 0,
+		"every seeds_every-th step pays seeds once the garden is open")
 	assert_eq(int(MasteryRewards.reward_plan(se, 0.0, 0.0, false, c)["seeds"]), 0, "no seeds before the garden")
 	assert_eq(int(MasteryRewards.reward_plan(se + 1, 0.0, 0.0, true, c)["seeds"]), 0)
 	# Early income spikes are capped; lifetime earnings lift the cap late.
@@ -61,7 +62,8 @@ func test_the_schedule_is_the_old_level_bars() -> void:
 	assert_almost_eq(float(MasteryRewards.reward_plan(3, 100000.0, 1.0e8, false, c)["cubes"]), 100000.0, 0.5)
 	# The numbers Lumi Level paid for its levels 2 to 4 (bot run before task M3-13: 23, 42, 64).
 	for pair: Array in [[2, 23.0], [3, 42.0], [4, 64.0]]:
-		assert_almost_eq(float(MasteryRewards.reward_plan(int(pair[0]), 1.0e6, 0.0, false, c)["cubes"]), float(pair[1]), 0.5, "step %d at its cap" % pair[0])
+		var plan: Dictionary = MasteryRewards.reward_plan(int(pair[0]), 1.0e6, 0.0, false, c)
+		assert_almost_eq(float(plan["cubes"]), float(pair[1]), 0.5, "step %d at its cap" % pair[0])
 	assert_eq(MasteryRewards.reward_plan(5, 1000.0, 0.0, true, {}), {"cubes": 0.0, "seeds": 0}, "no block, no pay")
 
 
