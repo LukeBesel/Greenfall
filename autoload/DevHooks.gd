@@ -35,22 +35,18 @@ extends Node
 ##   --ledger-resolve[=S]  play the relay "rewrite the contract" cinematic (needs act 3)
 ##   --demo-scoop       Patch scoops the nearest junk nonstop (pickup animation shots; --demo-yaw, --demo-speed)
 ##   [eggs2] --tv-frame=N holds the TV broadcast on frame N, --tv-step=S advances it every S wall-clock s
-##   --event=ID         [events] force a world event (supply_drop, salvage_surge, rain_shower, robot_hiccup,
-##                      wildlife_visit, rare_part_signal, ledger_audit) --event-at=S wall-clock seconds after start (default 3);
-##                      --event-land drops the supply crate from just above the junk, slowly (screenshots)
+##   --event=ID         [events] force a world event (salvage_surge, rain_shower, rare_part_signal, ledger_audit)
+##                      --event-at=S wall-clock seconds after start (default 3)
 ##   --event-look[=M]   with --event: put Patch M m from the event, facing it (screenshots)
 ##   --event-every=S    next random event in S seconds (ignores the min-hexes gate)
 ##   --streak=N         start with N cleaning-streak points (30 per tier)
-##   --requests-done=N  N finished requests on the Requests reward track [money]; --trinkets=N grants N collectibles; --livery=ID equips one
+##   --livery=ID        equip a crew livery
 ##   [skins] --design=ID wear a design (unlocks it); --designs-all; --design-unlock=ID plays its unlock card
 ##           after --design-unlock-at=S s (systems/designs.gd)
 ##   --pad-audit        [deck] open every screen pad-only and check focus reachability + B to close
 ##   --scene-stats[=S]  [deck] print a geometry census (tools/scene_stats.gd) after S s (headless ok)
-##   --objective=N --objective-clean=F --near-part --hints-full --requests-unlocked --detector-on --signal-tower=N  [onboard] story objectives (shots)
-##   --tab=contracts    with --open=upgrades: the Requests board and its reward track [money] (--contracts-sample fills it)
-##   [hud] --lumi-level=N start at Lumi Level N; --lumi-xp=N grant N XP; --lumi-levelup=S level up S s after start
-##         (holds the level-up moment for screenshots); --tool=plant|water; --hud-pad (pad glyphs);
-##         --hud-mode=full|minimal|hidden; --hud-goals=expanded
+##   --objective=N --objective-clean=F --near-part --hints-full --detector-on --signal-tower=N  [onboard] story objectives (shots)
+##   [hud] --tool=plant|water; --hud-pad (pad glyphs); --hud-mode=full|minimal|hidden; --hud-goals=expanded
 ##   --photo[=S]        [photo] open photo mode after S s; --photo-seq="pose=wave|filter=golden;..." captures each
 ##                      entry (--photo-first/--photo-every=S, --photo-open=lumi,look, --photo-copy=DIR); see ui/photo_mode.gd
 ##   --builder-sample   [drones] stocked builder parts bin; --builder-demo showcase builds on the robots;
@@ -68,7 +64,6 @@ extends Node
 ##   --demo             [steam] run as the Steam demo build (Demo.is_demo()); --no-steam skips Steam init
 ##   --no-hud           [steam] hide HUD, toasts, subtitles and event banners (store screenshots, trailer)
 ##   --demo-end[=S]     [steam] show the end-of-demo screen after S seconds
-##   [garden] --open=garden, --garden, --decor-sample, --garden-cam; full list in systems/garden_director.gd
 ##   --district-stage=ID:N[,ID:N]  set every land hex of a district (city) to regrowth stage N once the
 ##                      world is up (systems/districts_dev.gd); --launch-ready[=S] meets the planet's launch
 ##                      rule S wall-clock seconds after start (default 20): the ending plays fast, no credits;

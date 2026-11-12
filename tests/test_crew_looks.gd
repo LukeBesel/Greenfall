@@ -98,9 +98,6 @@ func test_nothing_buys_or_counts_open_a_crew_or_glim_look() -> void:
 	GameState.stats = {"hexes_cleaned": 99999.0, "contracts_done": 999.0, "builder_parts_got": 999.0}
 	for t: Variant in Glim.tracks():
 		(Glim.st()["tiers"] as Dictionary)[str((t as Dictionary)["id"])] = Glim.max_tier(str((t as Dictionary)["id"]))
-	var c := Contracts.new()
-	c.count_done(40)
-	c.free()
 	for t: String in [CrewLooks.GLIM, CrewLooks.CREW]:
 		for p: Dictionary in Looks.target_defs(t):
 			assert_eq(Looks.has(str(p["id"])), Looks.is_starter(str(p["id"])), "%s: not held without being found" % p["id"])
@@ -115,8 +112,6 @@ func test_nothing_buys_or_counts_open_a_crew_or_glim_look() -> void:
 			assert_false(text.contains(word), "%s holds no %s" % [path, word])
 	for gone: String in ["buy_look", "unlock_hint", "key_of"]:
 		assert_false(_has_static(load("res://systems/glim/glim.gd") as Script, gone), "Glim.%s is gone" % gone)
-	for gone: String in ["shop", "shop_item", "owned", "buy", "block_reason"]:
-		assert_false(_has_static(load("res://systems/contracts.gd") as Script, gone), "Contracts.%s is gone" % gone)
 
 
 func _has_static(script: Script, method: String) -> bool:

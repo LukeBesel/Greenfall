@@ -106,7 +106,7 @@ msgstr "工具：种植"
 msgid "Tool: water"
 msgstr "工具：浇水"
 
-#: autoload/Settings.gd:19 ui/upgrades_screen.gd:13
+#: autoload/Settings.gd:19 ui/upgrades_screen.gd:12
 msgid "Upgrades"
 msgstr "升级"
 
@@ -210,67 +210,67 @@ msgstr "触摸板"
 msgid "Paddle 1"
 msgstr "背键 1"
 
-#: autoload/Settings.gd:524
+#: autoload/Settings.gd:523
 msgid "LMB"
 msgstr "左键"
 
-#: autoload/Settings.gd:525
+#: autoload/Settings.gd:524
 msgid "RMB"
 msgstr "右键"
 
-#: autoload/Settings.gd:526
+#: autoload/Settings.gd:525
 msgid "MMB"
 msgstr "中键"
 
-#: autoload/Settings.gd:527
+#: autoload/Settings.gd:526
 msgid "Wheel up"
 msgstr "滚轮上"
 
-#: autoload/Settings.gd:528
+#: autoload/Settings.gd:527
 msgid "Wheel down"
 msgstr "滚轮下"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:528
 msgid "Mouse %d"
 msgstr "鼠标 %d"
 
-#: autoload/Settings.gd:531
+#: autoload/Settings.gd:530
 msgid "Button %d"
 msgstr "按键 %d"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:535
 msgid "LS left"
 msgstr "左摇杆左"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:535
 msgid "LS right"
 msgstr "左摇杆右"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:536
 msgid "LS up"
 msgstr "左摇杆上"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:536
 msgid "LS down"
 msgstr "左摇杆下"
 
-#: autoload/Settings.gd:538
+#: autoload/Settings.gd:537
 msgid "RS left"
 msgstr "右摇杆左"
 
-#: autoload/Settings.gd:538
+#: autoload/Settings.gd:537
 msgid "RS right"
 msgstr "右摇杆右"
 
-#: autoload/Settings.gd:539
+#: autoload/Settings.gd:538
 msgid "RS up"
 msgstr "右摇杆上"
 
-#: autoload/Settings.gd:539
+#: autoload/Settings.gd:538
 msgid "RS down"
 msgstr "右摇杆下"
 
-#: autoload/Settings.gd:550
+#: autoload/Settings.gd:549
 msgid "hold %s"
 msgstr "按住 %s"
 
@@ -482,7 +482,7 @@ msgstr "每 3 个捆包送 1 个去回收炉"
 msgid "Every %dth bale to the recycler"
 msgstr "每 %d 个捆包送 1 个去回收炉"
 
-#: automation/trash_bin.gd:93 systems/camp/camp.gd:385 systems/camp/field_benches.gd:77
+#: automation/trash_bin.gd:93 systems/camp/camp.gd:378 systems/camp/field_benches.gd:77
 #: systems/camp/hub_builds.gd:91 systems/camp/hub_builds.gd:156 systems/camp/hub_builds.gd:166
 #: systems/camp/hub_builds.gd:176 systems/camp/yard_builds.gd:97 systems/crew/robot_chain.gd:162
 msgid "Not enough materials."
@@ -517,7 +517,7 @@ msgstr "这里装不下了。按 [%s] 压一个捆包。"
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "还没有打包机。把胸舱里的垃圾送去垃圾桶。"
 
-#: core/pace.gd:315 systems/events.gd:486 ui/goals_panel.gd:125
+#: core/pace.gd:315 systems/events.gd:444 ui/goals_panel.gd:125
 msgid "+%s cubes"
 msgstr "+%s 方块"
 
@@ -533,21 +533,17 @@ msgstr "E   摸摸猫咪"
 msgid "E   scatter crumbs for the birds"
 msgstr "E   给鸟儿撒面包屑"
 
-#: fauna/fauna.gd:1633
-msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
-msgstr "鸟儿们觉得你还不错。面包屑袋已加入你的收藏。"
-
-#: fauna/fauna.gd:1689
+#: fauna/fauna.gd:1687
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "这只猫认定你是她的了。来认识一下%s吧。她现在住在这个基地。"
 
-#: fauna/fauna.gd:2010 ui/subtitles.gd:455
+#: fauna/fauna.gd:2008 ui/subtitles.gd:455
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "新发现：%s。已收入图鉴。"
 
-#: fauna/fauna.gd:2081
-msgid "Snap! A %s for your Collection."
-msgstr "咔嚓！一张%s的照片，收进你的收藏。"
+#: fauna/fauna.gd:2078
+msgid "Snap! A first photo of a %s."
+msgstr ""
 
 #: planet/cd_finds.gd:184
 msgid "A scratched CD turned up in the rubble."
@@ -1118,7 +1114,7 @@ msgstr "这里不能建造"
 msgid "Not on the lake"
 msgstr "不能建在湖上"
 
-#: robots/water_net.gd:141 systems/decor.gd:185
+#: robots/water_net.gd:141
 msgid "Clean this hex first"
 msgstr "先清理这个六角格"
 
@@ -1134,7 +1130,7 @@ msgstr "离另一个水箱太近"
 msgid "Water Tank placed. Waterers nearby will refill here."
 msgstr "水箱已放置。附近的浇水机器人会来这里补水。"
 
-#: robots/water_net.gd:308 ui/hotbar.gd:34
+#: robots/water_net.gd:308 ui/hotbar.gd:33
 msgid "WATER"
 msgstr "水"
 
@@ -1170,47 +1166,47 @@ msgstr "Tab：角色 · 左键：涂画 · 右键：擦除 · 中键：派出机
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s 组装完成。它四下看了看，就开始干活了。"
 
-#: scenes/slice.gd:116
+#: scenes/slice.gd:114
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "未解锁。将基地升到 5 级才能建造发射台。"
 
-#: scenes/slice.gd:119 ui/rockets_panel.gd:38
+#: scenes/slice.gd:117 ui/rockets_panel.gd:38
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
 
-#: scenes/slice.gd:271
+#: scenes/slice.gd:269
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨 %d · %d级"
 
-#: scenes/slice.gd:271
+#: scenes/slice.gd:269
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨 %d · 废墟"
 
-#: scenes/slice_orbit.gd:376
+#: scenes/slice_orbit.gd:375
 msgid "HEX CLEAN!"
 msgstr "六角格清理完成！"
 
-#: scenes/slice_orbit.gd:392
+#: scenes/slice_orbit.gd:391
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice_orbit.gd:609 systems/camp/field_bench_sites.gd:177
+#: scenes/slice_orbit.gd:608 systems/camp/field_bench_sites.gd:177
 msgid "E   Open the field bench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:614 systems/camp/camp.gd:189 tools/orbit_roundtrip.gd:621
+#: scenes/slice_orbit.gd:613 systems/camp/camp.gd:185 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   修理工作台"
 
-#: scenes/slice_orbit.gd:614 systems/camp/camp.gd:190
+#: scenes/slice_orbit.gd:613 systems/camp/camp.gd:186
 msgid "E   Open the workbench"
 msgstr "E   打开工作台"
 
-#: scenes/slice_orbit.gd:1139
+#: scenes/slice_orbit.gd:1117
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice_orbit.gd:1241
+#: scenes/slice_orbit.gd:1219
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "工作台修好了。在它旁边按 E，用方块购买升级。"
 
@@ -1238,7 +1234,7 @@ msgstr "你的基地已经成长到试玩版的极限。"
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "在完整版中，Lumi 会把基地建到 5 级，种满整片街区直到繁茂，让它们成长为明亮的未来城市，还会乘火箭飞往星球上的数十座基地。你的试玩进度会被保留。"
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:765 ui/end_screen.gd:99
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:700 ui/end_screen.gd:99
 msgid "Hexes cleaned"
 msgstr "已清理六角格"
 
@@ -1246,11 +1242,11 @@ msgstr "已清理六角格"
 msgid "Bales made"
 msgstr "已制作捆包"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:780 ui/end_screen.gd:101
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:715 ui/end_screen.gd:101
 msgid "Robots built"
 msgstr "已建造机器人"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:788 ui/end_screen.gd:98
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:723 ui/end_screen.gd:98
 msgid "Time played"
 msgstr "游戏时长"
 
@@ -1270,7 +1266,7 @@ msgstr "标题画面"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "继续游戏：第一个街区仍然开放，基地等级 %d。"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:857 ui/main_menu.gd:444
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:792 ui/main_menu.gd:444
 msgid "%dh %02dm"
 msgstr "%d时%02d分"
 
@@ -1694,8 +1690,7 @@ msgstr ""
 "\n"
 "Ledger 现在站在我们这边了。干扰器只是跟着音乐哼哼。"
 
-#: story/ledger.gd:305 systems/decor.gd:119 systems/research.gd:213
-#: ui/stations_panel.gd:100
+#: story/ledger.gd:305 systems/research.gd:213 ui/stations_panel.gd:100
 msgid "Needs %s"
 msgstr "需要 %s"
 
@@ -1723,7 +1718,7 @@ msgstr "无人机倒回了一点废料。把它铲起来，或者让你的帮手
 msgid "SEEDS · PAID IN FULL"
 msgstr "种子 · 已全额支付"
 
-#: story/ledger.gd:703 systems/events.gd:494 systems/lumi_level.gd:224
+#: story/ledger.gd:703 systems/events.gd:452
 msgid "+%d seeds"
 msgstr "+%d 种子"
 
@@ -1999,215 +1994,59 @@ msgstr " · %s"
 msgid "Any district"
 msgstr "任意街区"
 
-#: systems/collection.gd:59
-msgid "New for your Collection: %s. See it in the Codex (K)."
-msgstr "收藏新增：%s。在图鉴（K）里查看。"
-
-#: systems/collection.gd:84
-msgid "Supply Drops"
-msgstr "补给空投"
-
-#: systems/collection.gd:85
-msgid "Salvage Glints"
-msgstr "回收闪光"
-
-#: systems/collection.gd:86
-msgid "Rain Showers"
-msgstr "阵雨"
-
-#: systems/collection.gd:87
-msgid "Robot Hiccups"
-msgstr "机器人打嗝"
-
-#: systems/collection.gd:88
-msgid "Wildlife Photos"
-msgstr "野生动物照片"
-
-#: systems/collection.gd:89
-msgid "Animal Photos"
-msgstr "动物照片"
-
-#: systems/collection.gd:90
-msgid "Rare Part Signals"
-msgstr "稀有零件信号"
-
-#: systems/collection.gd:91
-msgid "Ledger Audits"
-msgstr "Ledger 审计"
-
-#: systems/collection.gd:92
-msgid "Cleaning Streaks"
-msgstr "清理连击"
-
-#: systems/collection.gd:93
-msgid "Lumi Levels"
-msgstr "Lumi 等级"
-
-#: systems/collection.gd:94 ui/contracts_panel.gd:25 ui/upgrades_screen.gd:18
-msgid "Requests"
-msgstr "委托"
-
-#: systems/collection.gd:95
-msgid "Curio Capsules"
-msgstr "奇物胶囊"
-
-#: systems/contracts.gd:227
-msgid "Curio Capsule"
-msgstr "奇物胶囊"
-
-#: systems/contracts.gd:294
-msgid "Request complete: %s. Claim it at the workbench."
-msgstr "委托完成：%s。到工作台领取。"
-
-#: systems/contracts.gd:300
-msgid "A request ran out of time. No harm done; a new one will be posted soon."
-msgstr "一个委托超时了。没关系，很快会有新的。"
-
-#: systems/contracts.gd:308
-msgid "New at the workbench: the Requests board. Small jobs, real rewards."
-msgstr "工作台新功能：委托板。小活儿，真奖励。"
-
-#: systems/contracts.gd:311
-msgid "The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."
-msgstr "中继信号终于强到能收到摇篮号的旧工作单了。它们在工作台的委托板上。"
-
-#: systems/contracts.gd:396
-msgid "Request done: %s."
-msgstr "委托已领取：%s。"
-
-#: systems/contracts.gd:442
-msgid "Requests reward: %s."
-msgstr "委托奖励：%s。"
-
-#: systems/decor.gd:117
-msgid "Needs %d Collection finds (%d so far)"
-msgstr "需要 %d 件收藏品（目前 %d 件）"
-
-#: systems/decor.gd:178
-msgid "Too close to the base machines"
-msgstr "离基地的机器太近了"
-
-#: systems/decor.gd:180 systems/decor.gd:189
-msgid "Something is already here"
-msgstr "这里已经有东西了"
-
-#: systems/decor.gd:183
-msgid "That's water"
-msgstr "那是水面"
-
-#: systems/decor.gd:187
-msgid "Frozen in"
-msgstr "被冻住了"
-
 #: systems/designs.gd:132
 msgid "Set: %s"
 msgstr "套装：%s"
 
-#: systems/event_props.gd:154
-msgid "CRADLE · SUPPLY"
-msgstr "CRADLE号 · 补给"
-
-#: systems/events.gd:446
+#: systems/events.gd:418
 msgid "STREAK x%d  +%d%%"
 msgstr "连击 x%d  +%d%%"
 
-#: systems/events.gd:632
-msgid "%d pieces of junk left around the crate"
-msgstr "箱子周围还剩 %d 块废料"
-
-#: systems/events.gd:657
-msgid "Supply crate opened: %s"
-msgstr "补给箱已打开：%s"
-
-#: systems/events.gd:659
-msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
-msgstr "补给箱的信标超时了，无人机把它拉回了天上。还会再来的。"
-
-#: systems/events.gd:708
+#: systems/events.gd:557
 msgid "%d pieces grabbed at 3x"
 msgstr "以 3 倍价值抓到 %d 块"
 
-#: systems/events.gd:713
+#: systems/events.gd:560
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "热潮退去了。你以三倍价值抓到了 %d 块；打包时就会兑现。"
 
-#: systems/events.gd:713
+#: systems/events.gd:560
 msgid "The surge faded. Next time!"
 msgstr "热潮退去了。下次加油！"
 
-#: systems/events.gd:762
+#: systems/events.gd:609
 msgid "Every plant is drinking"
 msgstr "所有植物都在喝水"
 
-#: systems/events.gd:772
+#: systems/events.gd:619
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "雨移走了。大地把雨水都吸收了：%s"
 
-#: systems/events.gd:793
-msgid "E   fix %s's hiccup"
-msgstr "E   治好 %s 的嗝"
-
-#: systems/events.gd:820
-msgid "%s is %d m away"
-msgstr "%s 在 %d 米外"
-
-#: systems/events.gd:822
-msgid "%s shook off its hiccups on its own. It looks embarrassed."
-msgstr "%s 自己止住了嗝。看起来有点不好意思。"
-
-#: systems/events.gd:836
-msgid "%s is fixed and back to work. %s"
-msgstr "%s 修好了，回去干活了。%s"
-
-#: systems/events.gd:890
-msgid "Wildlife Visit: %s"
-msgstr "野生动物来访：%s"
-
-#: systems/events.gd:891
-msgid "E   take a photo of the %s"
-msgstr "E   给%s拍张照"
-
-#: systems/events.gd:925
-msgid "%s, %d m away"
-msgstr "%s，%d 米外"
-
-#: systems/events.gd:928
-msgid "The %s wandered off. It'll be back somewhere green."
-msgstr "%s走开了。它会在某个绿色的地方再出现。"
-
-#: systems/events.gd:958
-msgid "Snap! The %s is in your Collection. %s"
-msgstr "咔嚓！%s已加入你的收藏。%s"
-
-#: systems/events.gd:958
-msgid "Snap! Another lovely shot of the %s. %s"
-msgstr "咔嚓！又一张漂亮的%s照片。%s"
-
-#: systems/events.gd:1009
+#: systems/events.gd:670
 msgid "Signal %d%%"
 msgstr "信号 %d%%"
 
-#: systems/events.gd:1013
+#: systems/events.gd:674
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "原来是这个信号：一个藏着稀有零件的储藏点。%s"
 
-#: systems/events.gd:1015
+#: systems/events.gd:676
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "信号消失了。零件还在下面；探测器会找到它的。"
 
-#: systems/events.gd:1082
+#: systems/events.gd:743
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr "审计   你 %d  :  %d 无人机"
 
-#: systems/events.gd:1083
+#: systems/events.gd:744
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr "你 %d  :  %d 无人机   ·   剩余 %d"
 
-#: systems/events.gd:1121
+#: systems/events.gd:782
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr "审计胜利，%d 比 %d！Ledger 盖上了“批准”章。%s"
 
-#: systems/events.gd:1125
+#: systems/events.gd:786
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "无人机赢得了审计，%d 比 %d。不过它还是留了小费：+%s 方块。"
 
@@ -2505,8 +2344,7 @@ msgid "Doesn't fit a %s"
 msgstr "不适用于%s"
 
 #: systems/robot_builder.gd:246 systems/robot_design.gd:68 ui/codex_screen.gd:340
-#: ui/codex_screen.gd:460 ui/codex_screen.gd:626 ui/codex_screen.gd:641
-#: ui/piece_row.gd:62
+#: ui/codex_screen.gd:460 ui/codex_screen.gd:582 ui/piece_row.gd:62
 msgid "Not found yet"
 msgstr "尚未发现"
 
@@ -2554,19 +2392,19 @@ msgstr "涌能"
 msgid "New CD: %s by %s, from %s"
 msgstr "新CD：%s，演奏：%s，来自%s"
 
-#: systems/camp/camp.gd:234
+#: systems/camp/camp.gd:230
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "工作台修好了！在它旁边按 %s 购买升级。"
 
-#: systems/camp/camp.gd:369
+#: systems/camp/camp.gd:362
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr "E   %s（%d 级）：已满级"
 
-#: systems/camp/camp.gd:375
+#: systems/camp/camp.gd:368
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr "E   %s（%d 级）：升级为 %s，需要 %s"
 
-#: systems/camp/camp.gd:381
+#: systems/camp/camp.gd:374
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "垃圾桶已升级：%s。捆包在这里按 %d%% 出售。"
 
@@ -2674,43 +2512,7 @@ msgstr "基地 5 级"
 msgid "Album: an \"after\" picture of %s (%s)."
 msgstr "相册：%s 的一张“之后”照片（%s）。"
 
-#: systems/extras/nursery.gd:90
-msgid "Build the Robot Nursery in the Build tab first."
-msgstr "先在建造页签建好机器人育儿所。"
-
-#: systems/extras/nursery.gd:94
-msgid "Only Mk I-II robots retire early. %s can retire in %d min."
-msgstr "只有 Mk I-II 机器人可以提前退休。%s 还要 %d 分钟才能退休。"
-
-#: systems/extras/nursery.gd:122
-msgid "%s retires to the nursery garden. +%d parts, and the flowers get a caretaker."
-msgstr "%s 退休去了苗圃花园。+%d 零件，花儿也有了园丁。"
-
-#: systems/extras/nursery.gd:214
-msgid "E   Say hi to %s"
-msgstr "E   和 %s 打招呼"
-
-#: systems/extras/nursery.gd:272
-msgid "CARETAKER · %s"
-msgstr "园丁 · %s"
-
-#: systems/extras/nursery.gd:319
-msgid "%s beeps hello and shows Lumi the marigolds."
-msgstr "%s 哔哔地打招呼，给 Lumi 看金盏花。"
-
-#: systems/extras/nursery.gd:320
-msgid "%s is busy with the watering can, but waves anyway."
-msgstr "%s 正忙着拿洒水壶，但还是挥了挥手。"
-
-#: systems/extras/nursery.gd:321
-msgid "%s hums to the seedlings. Retirement suits it."
-msgstr "%s 对着幼苗哼歌。退休生活很适合它。"
-
-#: systems/extras/nursery.gd:322
-msgid "%s points proudly at a new bud."
-msgstr "%s 骄傲地指着一个新花苞。"
-
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:662
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:622
 msgid "E   CD player: %s"
 msgstr "E   CD 播放机：%s"
 
@@ -2734,7 +2536,7 @@ msgstr "压了大约 %d 个捆包"
 msgid "kept the base tidy"
 msgstr "把基地收拾得整整齐齐"
 
-#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:772
+#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:707
 msgid "Cubes earned"
 msgstr "赚到的方块"
 
@@ -2900,7 +2702,7 @@ msgid "Fewer %s"
 msgstr "减少 %s"
 
 #: ui/bench_bots.gd:12 ui/build_panel.gd:102 ui/rig_panel.gd:193
-#: ui/robot_card.gd:114 ui/robot_card.gd:249 ui/upgrades_screen.gd:14
+#: ui/robot_card.gd:114 ui/robot_card.gd:249 ui/upgrades_screen.gd:13
 #: ui/yard_builds_panel.gd:17
 msgid "Build"
 msgstr "建造"
@@ -2926,8 +2728,7 @@ msgstr "Lumi"
 msgid "Machines"
 msgstr "机器"
 
-#: ui/bench_lists.gd:11 ui/globe_view.gd:176 ui/locker_panel.gd:288
-#: ui/upgrades_panel.gd:49
+#: ui/bench_lists.gd:11 ui/globe_view.gd:176 ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "火箭"
 
@@ -3011,7 +2812,7 @@ msgstr "在%s的瓦砾中找到他们的一张CD。"
 msgid "Your CDs (%d / %d): %s"
 msgstr "你的CD（%d / %d）：%s"
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:794
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:729
 msgid "Achievements"
 msgstr "成就"
 
@@ -3039,7 +2840,7 @@ msgstr "图鉴"
 msgid "Watch the story"
 msgstr "观看剧情"
 
-#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:173
+#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:169
 msgid "Close  [%s]"
 msgstr "关闭  [%s]"
 
@@ -3047,9 +2848,9 @@ msgstr "关闭  [%s]"
 msgid "%d / %d curiosities"
 msgstr "奇物 %d / %d"
 
-#: ui/codex_screen.gd:207
-msgid "%d / %d collectibles"
-msgstr "收藏品 %d / %d"
+#: ui/codex_screen.gd:207 ui/codex_screen.gd:491
+msgid "%d / %d complete"
+msgstr "%d / %d 已完成"
 
 #: ui/codex_screen.gd:209
 msgid "%d / %d achievements"
@@ -3073,7 +2874,7 @@ msgstr ""
 msgid "CURIOSITIES"
 msgstr "奇物"
 
-#: ui/codex_screen.gd:370 ui/codex_screen.gd:491
+#: ui/codex_screen.gd:370
 msgid "%d / %d found"
 msgstr "已找到 %d / %d"
 
@@ -3097,179 +2898,143 @@ msgstr "奖励：一个小惊喜"
 msgid "COLLECTION"
 msgstr "收藏"
 
-#: ui/codex_screen.gd:574
-msgid "LUMI'S COLLECTION"
-msgstr "Lumi 的收藏"
-
-#: ui/codex_screen.gd:575
-msgid "%d / %d complete"
-msgstr "%d / %d 已完成"
-
-#: ui/codex_screen.gd:613
-msgid "TRINKETS AND CURIOS"
-msgstr "小玩意与珍奇"
-
-#: ui/codex_screen.gd:625
+#: ui/codex_screen.gd:581
 msgid "EVERY PLANET"
 msgstr "所有星球"
 
-#: ui/codex_screen.gd:628 ui/codex_screen.gd:644
+#: ui/codex_screen.gd:584
 msgid "In your collection"
 msgstr "已收藏"
 
-#: ui/codex_screen.gd:630
+#: ui/codex_screen.gd:586
 msgid "Hint: %s"
 msgstr "提示：%s"
 
-#: ui/codex_screen.gd:649
-msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
-msgstr "提示：一位害羞的访客会来到稳定和繁茂的六角格。带上相机。"
-
-#: ui/codex_screen.gd:650
-msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
-msgstr "提示：大地恢复后，动物就会回来。用拍照模式（P）给它们拍照吧。"
-
-#: ui/codex_screen.gd:651
-msgid "Hint: finish %d requests (Requests tab at the workbench)."
-msgstr "提示：完成 %d 个委托（工作台的委托标签页）。"
-
-#: ui/codex_screen.gd:652
-msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
-msgstr "提示：奇物胶囊在工作台委托的奖励轨道上。"
-
-#: ui/codex_screen.gd:653
-msgid "Hint: keep scooping without stopping until the streak meter is full."
-msgstr "提示：不停地铲，直到连击条满。"
-
-#: ui/codex_screen.gd:654
-msgid "Hint: turns up during %s."
-msgstr "提示：在%s期间出现。"
-
-#: ui/codex_screen.gd:723
+#: ui/codex_screen.gd:658
 msgid "Unlocked  ·  %s"
 msgstr "已解锁  ·  %s"
 
-#: ui/codex_screen.gd:762
+#: ui/codex_screen.gd:697
 msgid "Total"
 msgstr "总计"
 
-#: ui/codex_screen.gd:763
+#: ui/codex_screen.gd:698
 msgid "Junk removed"
 msgstr "清除的废料"
 
-#: ui/codex_screen.gd:763
+#: ui/codex_screen.gd:698
 msgid "by type"
 msgstr "按种类"
 
-#: ui/codex_screen.gd:764 planets/verdance/data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:699 planets/verdance/data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "清理"
 
-#: ui/codex_screen.gd:766
+#: ui/codex_screen.gd:701
 msgid "Hexes restored"
 msgstr "恢复的六角格"
 
-#: ui/codex_screen.gd:767
+#: ui/codex_screen.gd:702
 msgid "Bales pressed"
 msgstr "压制的捆包"
 
-#: ui/codex_screen.gd:768
+#: ui/codex_screen.gd:703
 msgid "Pure bales"
 msgstr "纯净捆包"
 
-#: ui/codex_screen.gd:769
+#: ui/codex_screen.gd:704
 msgid "Perfect bales"
 msgstr "完美捆包"
 
-#: ui/codex_screen.gd:770
+#: ui/codex_screen.gd:705
 msgid "Lumpy bales"
 msgstr "不平整捆包"
 
-#: ui/codex_screen.gd:771
+#: ui/codex_screen.gd:706
 msgid "Bales cashed in"
 msgstr "兑现的捆包"
 
-#: ui/codex_screen.gd:774 ui/globe_view.gd:153 planets/verdance/data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:709 ui/globe_view.gd:153 planets/verdance/data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "种植"
 
-#: ui/codex_screen.gd:775
+#: ui/codex_screen.gd:710
 msgid "Seeds planted"
 msgstr "播下的种子"
 
-#: ui/codex_screen.gd:776
+#: ui/codex_screen.gd:711
 msgid "Plants bloomed"
 msgstr "开花的植物"
 
-#: ui/codex_screen.gd:777
+#: ui/codex_screen.gd:712
 msgid "Air filtered"
 msgstr "过滤的空气"
 
-#: ui/codex_screen.gd:779 planets/verdance/data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:714 planets/verdance/data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "机器人"
 
-#: ui/codex_screen.gd:781
+#: ui/codex_screen.gd:716
 msgid "Bales by robots"
 msgstr "机器人打的捆包"
 
-#: ui/codex_screen.gd:782
+#: ui/codex_screen.gd:717
 msgid "Parts dug up"
 msgstr "挖出的零件"
 
-#: ui/codex_screen.gd:784
+#: ui/codex_screen.gd:719
 msgid "Exploring"
 msgstr "探索"
 
-#: ui/codex_screen.gd:785
+#: ui/codex_screen.gd:720
 msgid "Distance rolled"
 msgstr "行驶距离"
 
-#: ui/codex_screen.gd:786
+#: ui/codex_screen.gd:721
 msgid "Memory shards read"
 msgstr "读过的记忆碎片"
 
-#: ui/codex_screen.gd:787
+#: ui/codex_screen.gd:722
 msgid "Codex entries"
 msgstr "图鉴条目"
 
-#: ui/codex_screen.gd:790
+#: ui/codex_screen.gd:725
 msgid "Progress"
 msgstr "进度"
 
-#: ui/codex_screen.gd:791
+#: ui/codex_screen.gd:726
 msgid "Upgrades bought"
 msgstr "购买的升级"
 
-#: ui/codex_screen.gd:792
+#: ui/codex_screen.gd:727
 msgid "Field notes logged"
 msgstr "已记录的野外笔记"
 
-#: ui/codex_screen.gd:793
+#: ui/codex_screen.gd:728
 msgid "Research done"
 msgstr "完成的研究"
 
-#: ui/codex_screen.gd:795
+#: ui/codex_screen.gd:730
 msgid "Best hub level"
 msgstr "最高基地等级"
 
-#: ui/codex_screen.gd:845
+#: ui/codex_screen.gd:780
 msgid "%s kg"
 msgstr "%s 千克"
 
-#: ui/codex_screen.gd:846
+#: ui/codex_screen.gd:781
 msgid "%.1f kg"
 msgstr "%.1f 千克"
 
-#: ui/codex_screen.gd:850
+#: ui/codex_screen.gd:785
 msgid "%.2f km"
 msgstr "%.2f 公里"
 
-#: ui/codex_screen.gd:860
+#: ui/codex_screen.gd:795
 msgid "%dm %02ds"
 msgstr "%d分%02d秒"
 
-#: ui/codex_screen.gd:861
+#: ui/codex_screen.gd:796
 msgid "%ds"
 msgstr "%d秒"
 
@@ -3442,32 +3207,6 @@ msgstr "%d 台机器人"
 msgid "%d / %d hexes clean"
 msgstr "%d / %d 个六角格已清理"
 
-#: ui/contracts_panel.gd:75
-msgid "%d done"
-msgid_plural "%d done"
-msgstr[0] "已完成%d个"
-
-#: ui/contracts_panel.gd:80
-msgid "Live now:  %s  ·  %s  ·  %s left"
-msgstr "进行中：  %s  ·  %s  ·  剩余%s"
-
-#: ui/contracts_panel.gd:83
-msgid "Every reward unlocked. Each %d more requests pay a Vintage part's worth of parts."
-msgstr "所有奖励已解锁。每再完成%d个委托，可获得一个古董零件价值的零件。"
-
-#: ui/contracts_panel.gd:86
-msgid "Next unlock in %d request:  %s"
-msgid_plural "Next unlock in %d requests:  %s"
-msgstr[0] "再完成%d个委托解锁：  %s"
-
-#: ui/contracts_panel.gd:117
-msgid "A new request is on its way"
-msgstr "新委托即将到来"
-
-#: ui/contracts_panel.gd:143
-msgid "Claim"
-msgstr "领取"
-
 #: ui/core_meter.gd:22
 msgid "BLOOM CORE"
 msgstr "绽放核心"
@@ -3544,17 +3283,9 @@ msgstr "已修复的城市"
 msgid "%d of %d"
 msgstr "%d / %d"
 
-#: ui/event_hud.gd:127
+#: ui/event_hud.gd:123
 msgid "STREAK"
 msgstr "连击"
-
-#: ui/event_hud.gd:192
-msgid "REQUEST READY  ·  claim it at the workbench"
-msgstr "委托已就绪  ·  到工作台领取"
-
-#: ui/event_hud.gd:192
-msgid "%d REQUESTS READY  ·  claim them at the workbench"
-msgstr "%d 个委托已就绪  ·  到工作台领取"
 
 #: ui/extras_cd_list.gd:64
 msgid "CDS  ·  %d / %d"
@@ -3644,121 +3375,61 @@ msgstr "CD播放器"
 msgid "Album"
 msgstr "相册"
 
-#: ui/extras_panel.gd:9
-msgid "Nursery"
-msgstr "苗圃"
-
-#: ui/extras_panel.gd:79
+#: ui/extras_panel.gd:76
 msgid "KEEPSAKES"
 msgstr "纪念"
 
-#: ui/extras_panel.gd:91
+#: ui/extras_panel.gd:88
 msgid "%s / %s  switch tabs"
 msgstr "%s / %s  切换标签"
 
-#: ui/extras_panel.gd:231
+#: ui/extras_panel.gd:226
 msgid "DISTRICTS"
 msgstr "街区"
 
-#: ui/extras_panel.gd:233
+#: ui/extras_panel.gd:228
 msgid "Lumi takes a picture of each district on arrival, and \"after\" pictures as it is restored."
 msgstr "Lumi 到达每个街区时会拍一张照片，修复过程中还会拍“之后”的照片。"
 
-#: ui/extras_panel.gd:237
+#: ui/extras_panel.gd:232
 msgid "Before only"
 msgstr "只有之前"
 
-#: ui/extras_panel.gd:245
+#: ui/extras_panel.gd:240
 msgid "PHOTOS  ·  %d"
 msgstr "照片  ·  %d"
 
-#: ui/extras_panel.gd:257
+#: ui/extras_panel.gd:252
 msgid "Photo"
 msgstr "照片"
 
-#: ui/extras_panel.gd:266
+#: ui/extras_panel.gd:261
 msgid "Photos you take in photo mode show up here."
 msgstr "在拍照模式中拍的照片会出现在这里。"
 
-#: ui/extras_panel.gd:270 ui/photo_panel.gd:58
+#: ui/extras_panel.gd:265 ui/photo_panel.gd:58
 msgid "PHOTO MODE"
 msgstr "拍照模式"
 
-#: ui/extras_panel.gd:280
+#: ui/extras_panel.gd:275
 msgid "No pictures yet."
 msgstr "还没有照片。"
 
-#: ui/extras_panel.gd:291
+#: ui/extras_panel.gd:286
 msgid "BEFORE"
 msgstr "之前"
 
-#: ui/extras_panel.gd:310
+#: ui/extras_panel.gd:305
 msgid "not yet"
 msgstr "尚未"
 
-#: ui/extras_panel.gd:320
+#: ui/extras_panel.gd:315
 msgid "The \"after\" picture comes when the district is half clean."
 msgstr "街区清理过半时会拍下“之后”的照片。"
 
-#: ui/extras_panel.gd:326
-msgid "CARETAKERS  ·  %d"
-msgstr "园丁  ·  %d"
-
-#: ui/extras_panel.gd:327
-msgid "Garden bonus: plants grow %d%% faster (up to %d%%)."
-msgstr "花园加成：植物生长快 %d%%（最多 %d%%）。"
-
-#: ui/extras_panel.gd:330
-msgid "No one has retired yet. Old or Mk I-II robots can retire here; they'll look after the nursery garden at the base."
-msgstr "还没有机器人退休。老机器人或 Mk I-II 机器人可以在这里退休；它们会照料基地的苗圃花园。"
-
-#: ui/extras_panel.gd:339
-msgid "RETIRE A ROBOT"
-msgstr "让机器人退休"
-
-#: ui/extras_panel.gd:341
-msgid "Retiring gives a few parts back, and the robot keeps its name and personality in the nursery."
-msgstr "退休会返还一些零件，机器人在苗圃里保留它的名字和个性。"
-
-#: ui/extras_panel.gd:343
-msgid "No robots in this district."
-msgstr "这个街区没有机器人。"
-
-#: ui/extras_panel.gd:350
-msgid "Press again to retire (+%d parts)"
-msgstr "再按一次确认退休（+%d 零件）"
-
-#: ui/extras_panel.gd:350
-msgid "Retire  (+%d parts)"
-msgstr "退休  （+%d 零件）"
-
-#: ui/extras_panel.gd:399
+#: ui/extras_panel.gd:348
 msgid "No picture yet"
 msgstr "还没有照片"
-
-#: ui/garden_placer.gd:118
-msgid "Garden Mode opens when this base reaches level 5, or once the Cradle comes home."
-msgstr "这个基地达到 5 级，或 Cradle号回家后，花园模式就会开放。"
-
-#: ui/garden_placer.gd:234
-msgid "charm +%.1f"
-msgstr "魅力 +%.1f"
-
-#: ui/garden_placer.gd:237
-msgid "%s here: %s to pick it up"
-msgstr "这里有%s：按 %s 拿起"
-
-#: ui/garden_placer.gd:240
-msgid "GARDEN MODE   ·   Charm %.1f   ·   +%.1f%% plant growth here"
-msgstr "花园模式   ·   魅力 %.1f   ·   此处植物生长 +%.1f%%"
-
-#: ui/garden_placer.gd:241
-msgid "[%s] place   [%s] rotate   [%s / %s] item   [%s] pick up   [%s] done"
-msgstr "[%s] 放置   [%s] 旋转   [%s / %s] 物品   [%s] 拿起   [%s] 完成"
-
-#: ui/garden_placer.gd:295
-msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
-msgstr "已拿起：%s。把它放到别处，或者先收进仓库。"
 
 #: ui/glim_bench.gd:58 ui/hub_panel.gd:66 ui/upgrades_panel.gd:144
 msgid "Upgrade"
@@ -3880,23 +3551,19 @@ msgstr "目标完成  ·  %s%s"
 msgid "+%s seeds"
 msgstr "+%s 种子"
 
-#: ui/hotbar.gd:32
+#: ui/hotbar.gd:31
 msgid "SCOOP"
 msgstr "铲子"
 
-#: ui/hotbar.gd:33
+#: ui/hotbar.gd:32
 msgid "PLANT"
 msgstr "种植"
 
-#: ui/hotbar.gd:293
-msgid "+%d XP"
-msgstr "+%d 经验"
-
-#: ui/hotbar.gd:306
+#: ui/hotbar.gd:236
 msgid "CORE %d%%"
 msgstr "核心 %d%%"
 
-#: ui/hotbar.gd:339
+#: ui/hotbar.gd:258
 msgid "SURGE"
 msgstr "涌能"
 
@@ -3992,97 +3659,93 @@ msgstr ""
 msgid "All built"
 msgstr "已全部建成"
 
-#: ui/hud.gd:79
-msgid "Lumi reached level %d%s"
-msgstr "Lumi 达到了 %d 级%s"
-
-#: ui/hud.gd:305
+#: ui/hud.gd:299
 msgid "WREN SIGNAL   %d%%"
 msgstr "WREN 信号   %d%%"
 
-#: ui/hud.gd:334
+#: ui/hud.gd:328
 msgid "HEX  %d%% CLEAR"
 msgstr "六角格  已清理 %d%%"
 
-#: ui/hud.gd:345
+#: ui/hud.gd:339
 msgid "%s  BASE"
 msgstr "%s  基地"
 
-#: ui/hud.gd:348
+#: ui/hud.gd:342
 msgid "CARRYING %d/%d"
 msgstr "携带 %d/%d"
 
-#: ui/hud.gd:374
+#: ui/hud.gd:366
 msgid "HEX  CLEAR"
 msgstr "六角格  已清理"
 
-#: ui/hud.gd:378
+#: ui/hud.gd:370
 msgid "HEX  %s"
 msgstr "六角格  %s"
 
-#: ui/hud.gd:384
+#: ui/hud.gd:376
 msgid "  SUSTAIN %d%%"
 msgstr "  稳定 %d%%"
 
-#: ui/hud.gd:386
+#: ui/hud.gd:378
 msgid "  THIRSTY"
 msgstr "  缺水"
 
-#: ui/hud.gd:411
+#: ui/hud.gd:403
 msgid "%s · %s"
 msgstr "%s · %s"
 
-#: ui/hud.gd:413
+#: ui/hud.gd:405
 msgid "%s · %s %d%%"
 msgstr "%s · %s %d%%"
 
-#: ui/hud.gd:416
+#: ui/hud.gd:408
 msgid "%d of %d city restored"
 msgid_plural "%d of %d cities restored"
 msgstr[0] "已复原 %d / %d 座城市"
 
-#: ui/hud.gd:430
+#: ui/hud.gd:422
 msgid "MASTERY  %s"
 msgstr "熟练度  %s"
 
-#: ui/hud.gd:441
+#: ui/hud.gd:433
 msgid "%s mastery %d. Robots can work it now."
 msgstr "%s熟练度 %d。机器人现在可以处理了。"
 
-#: ui/hud.gd:443
+#: ui/hud.gd:435
 msgid "%s mastery %d. You and your crew work it faster."
 msgstr "%s熟练度 %d。你和队伍处理得更快了。"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:452
+#: ui/hud.gd:444
 msgid "%s   pick up bale"
 msgstr "%s   拿起捆包"
 
-#: ui/hud.gd:453
+#: ui/hud.gd:445
 msgid "%s   dig up part"
 msgstr "%s   挖出零件"
 
-#: ui/hud.gd:454
+#: ui/hud.gd:446
 msgid "%s   read memory shard"
 msgstr "%s   阅读记忆碎片"
 
-#: ui/hud.gd:455
+#: ui/hud.gd:447
 msgid "%s   pick up the seed tin"
 msgstr "%s   拿起种子罐"
 
-#: ui/hud.gd:456
+#: ui/hud.gd:448
 msgid "%s   set bale down"
 msgstr "%s   放下捆包"
 
-#: ui/hud.gd:457
+#: ui/hud.gd:449
 msgid "%s   workbench"
 msgstr "%s   工作台"
 
-#: ui/hud.gd:458
+#: ui/hud.gd:450
 msgid "Filling the watering can"
 msgstr "正在给洒水壶加水"
 
-#: ui/hud.gd:459
+#: ui/hud.gd:451
 msgid "Can empty. It fills in the base yard, by the bin."
 msgstr "水壶空了。在基地院子的垃圾桶旁可以加水。"
 
@@ -4093,10 +3756,6 @@ msgstr "压制方块"
 #: ui/key_hints.gd:114
 msgid "tools"
 msgstr "工具"
-
-#: ui/late_menu.gd:9
-msgid "Garden Mode  [%s]"
-msgstr "花园模式  [%s]"
 
 #: ui/lens_overlay.gd:61
 msgid ""
@@ -4184,38 +3843,22 @@ msgstr "加载中"
 msgid "Warming up"
 msgstr "预热中"
 
-#: ui/locker_editors.gd:13 data/currencies.json:currencies[parts].name planets/verdance/data/hub.json:materials.metal.name
+#: ui/locker_editors.gd:12 data/currencies.json:currencies[parts].name planets/verdance/data/hub.json:materials.metal.name
 #: planets/verdance/data/hub.json:materials.plastic.name planets/verdance/data/hub.json:materials.glass.name
 msgid "Parts"
 msgstr "零件"
 
-#: ui/locker_editors.gd:13 data/cosmetics.json:targets.crew.slots[crew_paint].name
+#: ui/locker_editors.gd:12 data/cosmetics.json:targets.crew.slots[crew_paint].name
 msgid "Fleet mark"
 msgstr "车队标记"
 
-#: ui/locker_editors.gd:13 data/cosmetics.json:slots[glow].name data/cosmetics.json:targets.crew.slots[crew_glow].name
+#: ui/locker_editors.gd:12 data/cosmetics.json:slots[glow].name data/cosmetics.json:targets.crew.slots[crew_glow].name
 msgid "Light colour"
 msgstr "灯光颜色"
 
-#: ui/locker_editors.gd:14 data/cosmetics.json:slots[paint].name data/style_parts.json:slots[paint].name
-msgid "Paint"
-msgstr "漆面"
-
-#: ui/locker_editors.gd:14 data/style_parts.json:slots[trim].name
-msgid "Trim"
-msgstr "饰边"
-
-#: ui/locker_editors.gd:14 data/cosmetics.json:targets.glim.slots[glim_glow].name
-msgid "Glow"
-msgstr "光效"
-
-#: ui/locker_editors.gd:57
+#: ui/locker_editors.gd:55
 msgid "Every %s wears this"
 msgstr "每台%s都会换上"
-
-#: ui/locker_editors.gd:195
-msgid "Ship looks: the tiers keep their shape"
-msgstr "飞船外观：等级外形不变"
 
 #: ui/locker_panel.gd:95
 msgid "Close"
@@ -4334,11 +3977,11 @@ msgstr "继续"
 msgid "New Game"
 msgstr "新游戏"
 
-#: ui/main_menu.gd:342 ui/main_menu.gd:521 ui/pause_menu.gd:68
+#: ui/main_menu.gd:342 ui/main_menu.gd:521 ui/pause_menu.gd:67
 msgid "Settings"
 msgstr "设置"
 
-#: ui/main_menu.gd:344 ui/pause_menu.gd:72
+#: ui/main_menu.gd:344 ui/pause_menu.gd:71
 msgid "Quit"
 msgstr "退出"
 
@@ -4465,7 +4108,7 @@ msgstr "图鉴  [%s]"
 msgid "Photo mode  [%s]"
 msgstr "拍照模式  [%s]"
 
-#: ui/pause_menu.gd:63
+#: ui/pause_menu.gd:62
 msgid "Keepsakes"
 msgstr "纪念品"
 
@@ -4851,7 +4494,7 @@ msgstr "研究  %s  %d/%d"
 msgid "RESEARCH  PICK A NODE  ·  %d DATA BANKED"
 msgstr "研究  选择节点  ·  已存 %d 数据"
 
-#: ui/rig_panel.gd:102 ui/upgrades_screen.gd:17
+#: ui/rig_panel.gd:102 ui/upgrades_screen.gd:16
 msgid "Rig"
 msgstr "装备"
 
@@ -5463,19 +5106,19 @@ msgstr "还差%s · 约%s"
 msgid "Where it comes from:  %s"
 msgstr "来源：  %s"
 
-#: ui/upgrades_screen.gd:15
+#: ui/upgrades_screen.gd:14
 msgid "Bots"
 msgstr "机器人"
 
-#: ui/upgrades_screen.gd:16
+#: ui/upgrades_screen.gd:15
 msgid "Research"
 msgstr "研究"
 
-#: ui/upgrades_screen.gd:155
+#: ui/upgrades_screen.gd:151
 msgid "WORKBENCH"
 msgstr "工作台"
 
-#: ui/upgrades_screen.gd:274
+#: ui/upgrades_screen.gd:270
 msgid "Not open yet. Keep playing."
 msgstr "尚未开放。继续游戏吧。"
 
@@ -6039,30 +5682,6 @@ msgstr "进站加油"
 msgid "Build a recharge pad at an outpost."
 msgstr "在前哨站建造一座充能平台。"
 
-#: data/achievements.json:achievements[builder_mix].name
-msgid "Mix and Match"
-msgstr "混搭达人"
-
-#: data/achievements.json:achievements[builder_mix].desc
-msgid "Style a robot with all five custom parts in the Locker."
-msgstr "在储物柜里给一台机器人装满五个自定义部件。"
-
-#: data/achievements.json:achievements[builder_maker].name
-msgid "As the Makers Made It"
-msgstr "如造物者所造"
-
-#: data/achievements.json:achievements[builder_maker].desc
-msgid "Fit the full Maker set (shell, optic and glider) on one robot."
-msgstr "为一台机器人装上完整的造物者套装（外壳、光学镜和滑翔翼）。"
-
-#: data/achievements.json:achievements[builder_hats].name
-msgid "Hat Rack"
-msgstr "帽子架"
-
-#: data/achievements.json:achievements[builder_hats].desc
-msgid "Collect 5 different robot toppers."
-msgstr "收集 5 种不同的机器人头饰。"
-
 #: data/achievements.json:achievements[pet_cat].name
 msgid "A Friend in Old Town"
 msgstr "老城区的朋友"
@@ -6107,46 +5726,6 @@ msgstr "野生动物摄影师"
 msgid "Photograph 6 different animals in photo mode."
 msgstr "在拍照模式中拍下 6 种不同的动物。"
 
-#: data/achievements.json:achievements[late_decor_1].name
-msgid "Home Touches"
-msgstr "家的点缀"
-
-#: data/achievements.json:achievements[late_decor_1].desc
-msgid "Place a decoration in Garden Mode."
-msgstr "在花园模式中放置一件装饰。"
-
-#: data/achievements.json:achievements[late_decor_25].name
-msgid "Landscaper"
-msgstr "景观设计师"
-
-#: data/achievements.json:achievements[late_decor_25].desc
-msgid "Place 25 decorations."
-msgstr "放置 25 件装饰。"
-
-#: data/achievements.json:achievements[late_decor_all].name
-msgid "Full Catalogue"
-msgstr "全套目录"
-
-#: data/achievements.json:achievements[late_decor_all].desc
-msgid "Place every kind of decoration at least once."
-msgstr "每种装饰都至少放置一次。"
-
-#: data/achievements.json:achievements[late_charm_25].name
-msgid "Picture Perfect"
-msgstr "美如画"
-
-#: data/achievements.json:achievements[late_charm_25].desc
-msgid "Reach 25 charm in one district."
-msgstr "在一个城区达到 25 点魅力。"
-
-#: data/achievements.json:achievements[home_answered].name
-msgid "The Cradle Answers"
-msgstr "Cradle 号的回应"
-
-#: data/achievements.json:achievements[home_answered].desc
-msgid "Light the Cradle Returns beacon and hear from the ark."
-msgstr "点亮 Cradle号归来的信标，听到方舟的回应。"
-
 #: data/achievements.json:achievements[extras_radio_6].name
 msgid "Pirate Radio"
 msgstr "海盗电台"
@@ -6170,22 +5749,6 @@ msgstr "今昔对比"
 #: data/achievements.json:achievements[extras_album_4].desc
 msgid "Collect 4 pictures in the photo album."
 msgstr "在相册中收集 4 张照片。"
-
-#: data/achievements.json:achievements[extras_retire_1].name
-msgid "Happy Retirement"
-msgstr "退休快乐"
-
-#: data/achievements.json:achievements[extras_retire_1].desc
-msgid "Retire a robot to the nursery garden."
-msgstr "让一个机器人退休去苗圃花园。"
-
-#: data/achievements.json:achievements[extras_visits_5].name
-msgid "Garden Party"
-msgstr "花园派对"
-
-#: data/achievements.json:achievements[extras_visits_5].desc
-msgid "Say hi to the nursery caretakers 5 times."
-msgstr "和苗圃的园丁打招呼 5 次。"
 
 #: planets/verdance/data/bloom.json:milestones[first_meadow].desc
 msgid "25 Thriving hexes anywhere on Verdance."
@@ -6251,7 +5814,7 @@ msgstr "堆肥压榨机"
 msgid "Presses plant scraps into compost and seeds. Worth building once something grows."
 msgstr "把植物残渣压成堆肥和种子。有东西长出来后就值得建。"
 
-#: planets/verdance/data/camp.json:builds.composter.flag_text planets/verdance/data/camp.json:builds.nursery.flag_text
+#: planets/verdance/data/camp.json:builds.composter.flag_text
 msgid "Grow your first seed first."
 msgstr "先让你的第一颗种子长出来。"
 
@@ -6266,14 +5829,6 @@ msgstr "一个带小转台的高大钢制储物柜。走上前就能换上找到
 #: planets/verdance/data/camp.json:builds.locker.flag_text
 msgid "Find a piece of a look first."
 msgstr "先找到一件外观部件。"
-
-#: planets/verdance/data/camp.json:builds.nursery.name
-msgid "Robot Nursery"
-msgstr "机器人育儿所"
-
-#: planets/verdance/data/camp.json:builds.nursery.desc
-msgid "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand."
-msgstr "一片围着矮墙、种着花坛的草坪，退休的机器人在这里照料花园，还会给你的队伍搭把手。"
 
 #: planets/verdance/data/camp.json:builds.glim.name planets/verdance/data/objectives.json:objectives[glim].text
 msgid "Repair Glim"
@@ -7344,6 +6899,10 @@ msgstr "透过望远镜，在 Ledger 的无人机坠落过的世界上。"
 msgid "A dump drone that never made it home, nose-down in the junk of another world. Its red eye still blinks. Even from here it looks embarrassed."
 msgstr "一架再也没能回家的倾倒无人机，一头扎进另一个世界的垃圾堆里。它的红眼睛还在闪。哪怕隔着这么远，它看起来也很难为情。"
 
+#: data/cosmetics.json:slots[paint].name data/style_parts.json:slots[paint].name
+msgid "Paint"
+msgstr "漆面"
+
 #: data/cosmetics.json:slots[paint].hint data/cosmetics.json:targets.glim.slots[glim_shell].hint
 msgid "Paint tins lie buried under ordinary trash."
 msgstr "油漆罐埋在普通垃圾下面。"
@@ -7662,6 +7221,10 @@ msgstr "迷你无人机"
 msgid "Shell"
 msgstr "外壳"
 
+#: data/cosmetics.json:targets.glim.slots[glim_glow].name
+msgid "Glow"
+msgstr "光效"
+
 #: data/cosmetics.json:targets.glim.slots[glim_top].name
 msgid "Top"
 msgstr "顶盖"
@@ -7898,16 +7461,15 @@ msgstr "全息光环"
 msgid "A slowly turning hologram halo over each robot. Very smug."
 msgstr "每台机器人头顶都有一个缓缓旋转的全息光环。非常得意。"
 
-#: data/cosmetics.json:targets.crew.pieces[crew_glow_cyan].name data/glim.json:glows[cyan].name data/ship_style.json:glows[cyan].name
-#: data/style_parts.json:swatches[cyan].name
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_cyan].name data/glim.json:glows[cyan].name data/style_parts.json:swatches[cyan].name
 msgid "Cyan"
 msgstr "青色"
 
-#: data/cosmetics.json:targets.crew.pieces[crew_glow_mint].name data/ship_style.json:glows[mint].name data/style_parts.json:swatches[mint].name
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_mint].name data/style_parts.json:swatches[mint].name
 msgid "Mint"
 msgstr "薄荷"
 
-#: data/cosmetics.json:targets.crew.pieces[crew_glow_amber].name data/ship_style.json:glows[amber].name data/style_parts.json:swatches[amber].name
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_amber].name data/style_parts.json:swatches[amber].name
 msgid "Amber"
 msgstr "琥珀"
 
@@ -7915,8 +7477,7 @@ msgstr "琥珀"
 msgid "Rose"
 msgstr "玫瑰"
 
-#: data/cosmetics.json:targets.crew.pieces[crew_glow_violet].name data/glim.json:glows[violet].name data/ship_style.json:glows[violet].name
-#: data/style_parts.json:swatches[violet].name
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_violet].name data/glim.json:glows[violet].name data/style_parts.json:swatches[violet].name
 msgid "Violet"
 msgstr "紫罗兰"
 
@@ -7955,86 +7516,6 @@ msgstr "种子"
 #: data/currencies.json:currencies[seeds].desc
 msgid "For planting. The compost press turns paper, card and spent blooms into seeds."
 msgstr "用来种植。堆肥压机把纸、纸板和凋谢的花变成种子。"
-
-#: data/decor.json:types[path].name
-msgid "Stone Path"
-msgstr "石径"
-
-#: data/decor.json:types[path].desc
-msgid "Flat stepping stones. Paths join everything up."
-msgstr "平整的踏脚石。小路把一切连在一起。"
-
-#: data/decor.json:types[flower_bed].name
-msgid "Flower Bed"
-msgstr "花坛"
-
-#: data/decor.json:types[flower_bed].desc
-msgid "A low bed of mixed flowers. Bees and butterflies approve."
-msgstr "一片低矮的混合花坛。蜜蜂和蝴蝶都很满意。"
-
-#: data/decor.json:types[planter].name
-msgid "Planter"
-msgstr "花箱"
-
-#: data/decor.json:types[planter].desc
-msgid "A white hex planter with a small shrub, like the ones the future city grows."
-msgstr "一个种着小灌木的白色六角花箱，就像未来城市里种的那种。"
-
-#: data/decor.json:types[bench].name
-msgid "Bench"
-msgstr "长椅"
-
-#: data/decor.json:types[bench].desc
-msgid "Wood slats on cast feet. Cats like to sleep on it."
-msgstr "铸铁椅脚上搭着木条。猫咪很喜欢在上面睡觉。"
-
-#: data/decor.json:types[lamp].name
-msgid "Garden Lamp"
-msgstr "花园灯"
-
-#: data/decor.json:types[lamp].desc
-msgid "A slim lamp with a warm glow after dark."
-msgstr "一盏纤细的灯，天黑后亮起温暖的光。"
-
-#: data/decor.json:types[bird_bath].name
-msgid "Bird Bath"
-msgstr "鸟浴盆"
-
-#: data/decor.json:types[bird_bath].desc
-msgid "A stone basin of clean water."
-msgstr "一个盛着清水的石盆。"
-
-#: data/decor.json:types[fountain].name
-msgid "Fountain"
-msgstr "喷泉"
-
-#: data/decor.json:types[fountain].desc
-msgid "A tiered fountain, running again. Deer come to drink at dawn."
-msgstr "一座重新流淌的多层喷泉。黎明时分，鹿会来这里喝水。"
-
-#: data/decor.json:types[statue].name
-msgid "Maker Statue"
-msgstr "造物者雕像"
-
-#: data/decor.json:types[statue].desc
-msgid "A stone figure of one of the Makers, holding a watering can."
-msgstr "一尊造物者的石像，手里拿着一个洒水壶。"
-
-#: data/decor.json:types[lumi_sculpture].name
-msgid "Lumi Sculpture"
-msgstr "Lumi 雕塑"
-
-#: data/decor.json:types[lumi_sculpture].desc
-msgid "A topiary-and-brass sculpture of Lumi holding up a seedling. Very modest."
-msgstr "一座用修剪植物和黄铜做成的 Lumi 雕塑，高高举着一株幼苗。非常谦虚。"
-
-#: data/decor.json:types[wren_kite].name
-msgid "WREN Wind Kite"
-msgstr "WREN 风筝"
-
-#: data/decor.json:types[wren_kite].desc
-msgid "A kite shaped like WREN's bird, tethered to a post and always flying."
-msgstr "一只做成 WREN 小鸟形状的风筝，系在柱子上，一直在天上飞。"
 
 #: data/designs.json:designs[aurora].tagline
 msgid "Baseline / Explorer"
@@ -9112,18 +8593,6 @@ msgstr "一个来自 Verdance 的种子罐，和旧温室里的那个一样。Lu
 msgid "Lumi's tin of Verdance soil. A little bit of home, already spilled on new ground. Good."
 msgstr "Lumi 装着 Verdance 泥土的罐子。一小片家乡，已经撒在了新的土地上。很好。"
 
-#: planets/verdance/data/events.json:events[supply_drop].name
-msgid "Supply Drop"
-msgstr "补给空投"
-
-#: planets/verdance/data/events.json:events[supply_drop].toast
-msgid "Supply Drop! A crate parachuted onto the junk %s of you. Clear the junk around it to crack it open."
-msgstr "补给空投！一个箱子空降到了你%s的废料上。清掉周围的废料就能打开它。"
-
-#: planets/verdance/data/events.json:events[supply_drop].hud
-msgid "Clear the junk around the crate"
-msgstr "清理箱子周围的废料"
-
 #: planets/verdance/data/events.json:events[salvage_surge].name
 msgid "Salvage Glint"
 msgstr "回收闪光"
@@ -9147,30 +8616,6 @@ msgstr "阵雨。真正的雨，多年来的第一场。下雨期间，你的植
 #: planets/verdance/data/events.json:events[rain_shower].hud
 msgid "Plants stay watered while it rains"
 msgstr "下雨时植物保持湿润"
-
-#: planets/verdance/data/events.json:events[robot_hiccup].name
-msgid "Robot Hiccup"
-msgstr "机器人打嗝"
-
-#: planets/verdance/data/events.json:events[robot_hiccup].toast
-msgid "%s has the hiccups and stopped working. Walk over and press E for a quick fix."
-msgstr "%s 打嗝了，停止了工作。走过去按 E 快速修理。"
-
-#: planets/verdance/data/events.json:events[robot_hiccup].hud
-msgid "Walk to the stuck robot and press E"
-msgstr "走到卡住的机器人旁按 E"
-
-#: planets/verdance/data/events.json:events[wildlife_visit].name
-msgid "Wildlife Visit"
-msgstr "野生动物来访"
-
-#: planets/verdance/data/events.json:events[wildlife_visit].toast
-msgid "Something is visiting a thriving hex %s of you. Sneak up and press E to take a photo."
-msgstr "有东西正在你%s的一个繁茂六角格上做客。悄悄靠近，按 E 拍照。"
-
-#: planets/verdance/data/events.json:events[wildlife_visit].hud
-msgid "Find the visitor and press E for a photo"
-msgstr "找到访客并按 E 拍照"
 
 #: planets/verdance/data/events.json:events[rare_part_signal].name
 msgid "Rare Part Signal"
@@ -9196,542 +8641,6 @@ msgstr "Ledger 审计！一架友好的无人机打赌它能比你更快地清�
 msgid "Scoop more of the ringed junk than the drone"
 msgstr "比无人机铲走更多圈内废料"
 
-#: planets/verdance/data/events.json:animals[glowtail_fox].name
-msgid "Glowtail Fox"
-msgstr "光尾狐"
-
-#: planets/verdance/data/events.json:animals[glowtail_fox].body
-msgid "fox"
-msgstr "狐狸"
-
-#: planets/verdance/data/events.json:animals[moss_deer].name
-msgid "Moss Deer"
-msgstr "苔鹿"
-
-#: planets/verdance/data/events.json:animals[moss_deer].body
-msgid "deer"
-msgstr "鹿"
-
-#: planets/verdance/data/events.json:animals[lantern_hedgehog].name
-msgid "Lantern Hedgehog"
-msgstr "灯笼刺猬"
-
-#: planets/verdance/data/events.json:animals[lantern_hedgehog].body
-msgid "hedgehog"
-msgstr "刺猬"
-
-#: planets/verdance/data/events.json:animals[prism_heron].name
-msgid "Prism Heron"
-msgstr "棱镜鹭"
-
-#: planets/verdance/data/events.json:animals[prism_heron].body
-msgid "heron"
-msgstr "鹭"
-
-#: planets/verdance/data/events.json:animals[velvet_hare].name
-msgid "Velvet Hare"
-msgstr "天鹅绒野兔"
-
-#: planets/verdance/data/events.json:animals[velvet_hare].body
-msgid "hare"
-msgstr "野兔"
-
-#: planets/verdance/data/events.json:contracts.templates[metal_bales].text
-msgid "Press %d metal-heavy bales"
-msgstr "压制 %d 个富含金属的捆包"
-
-#: planets/verdance/data/events.json:contracts.templates[perfect_bales].text
-msgid "Press %d Perfect bales"
-msgstr "压制 %d 个完美捆包"
-
-#: planets/verdance/data/events.json:contracts.templates[pure_bales].text
-msgid "Press %d Pure bales (one junk type)"
-msgstr "压制 %d 个纯净捆包（单一废料）"
-
-#: planets/verdance/data/events.json:contracts.templates[clean_hexes].text
-msgid "Clean %d hexes"
-msgstr "清理 %d 个六角格"
-
-#: planets/verdance/data/events.json:contracts.templates[scoop].text
-msgid "Scoop %d pieces of junk"
-msgstr "铲起 %d 块废料"
-
-#: planets/verdance/data/events.json:contracts.templates[dig_parts].text
-msgid "Dig up %d buried parts"
-msgstr "挖出 %d 个埋藏的零件"
-
-#: planets/verdance/data/events.json:contracts.templates[streak].text
-msgid "Reach a tier %d cleaning streak"
-msgstr "达成 %d 级清理连击"
-
-#: planets/verdance/data/events.json:contracts.templates[plant].text
-msgid "Plant %d sprouts"
-msgstr "种下 %d 株嫩芽"
-
-#: planets/verdance/data/events.json:contracts.templates[bloom].text
-msgid "Grow %d plants to bloom"
-msgstr "让 %d 株植物开花"
-
-#: planets/verdance/data/events.json:contracts.templates[sustain].text
-msgid "Get %d more hexes to Sustained"
-msgstr "让另外 %d 个六角格达到稳定"
-
-#: planets/verdance/data/events.json:contracts.templates[sustain].text_1
-msgid "Get one more hex to Sustained"
-msgstr "让再一个六角格达到稳定"
-
-#: planets/verdance/data/events.json:trinkets[brass_compass].name
-msgid "Brass Compass"
-msgstr "黄铜罗盘"
-
-#: planets/verdance/data/events.json:trinkets[brass_compass].desc
-msgid "Points north, mostly. Came wrapped in a sock in a supply crate."
-msgstr "大体上指向北方。装在补给箱里，用一只袜子裹着。"
-
-#: planets/verdance/data/events.json:trinkets[tin_robot].name
-msgid "Wind-up Tin Robot"
-msgstr "发条铁皮机器人"
-
-#: planets/verdance/data/events.json:trinkets[tin_robot].desc
-msgid "Walks three steps and falls over. Lumi relates."
-msgstr "走三步就摔倒。Lumi 深有同感。"
-
-#: planets/verdance/data/events.json:trinkets[seed_locket].name
-msgid "Seed Locket"
-msgstr "种子吊坠"
-
-#: planets/verdance/data/events.json:trinkets[seed_locket].desc
-msgid "A locket with one seed inside instead of a photo. Someone loved gardens."
-msgstr "一个吊坠，里面放的不是照片，而是一颗种子。曾经有人很爱花园。"
-
-#: planets/verdance/data/events.json:trinkets[snow_globe].name data/songs.json:songs[snow_globe].title
-msgid "Snow Globe"
-msgstr "雪景球"
-
-#: planets/verdance/data/events.json:trinkets[snow_globe].desc
-msgid "A tiny city under glass, still clean. A promise, maybe."
-msgstr "玻璃下的一座小小城市，依然干净。也许是一个承诺。"
-
-#: planets/verdance/data/events.json:trinkets[crate_stencil].name
-msgid "Cradle Crate Stencil"
-msgstr "Cradle号货箱模板"
-
-#: planets/verdance/data/events.json:trinkets[crate_stencil].desc
-msgid "The stencil used to paint every supply crate. WREN asked for it back. You said no."
-msgstr "用来给每个补给箱喷字的模板。WREN 想要回去。你说了不。"
-
-#: planets/verdance/data/events.json:trinkets[golden_bolt].name
-msgid "Golden Bolt"
-msgstr "金色螺栓"
-
-#: planets/verdance/data/events.json:trinkets[golden_bolt].desc
-msgid "Fell out of a surge hex, still warm. Fits nothing. Worth everything."
-msgstr "从热潮六角格里掉出来的，还热乎着。哪儿都装不上。却价值连城。"
-
-#: planets/verdance/data/events.json:trinkets[glow_shard].name
-msgid "Surge Glass"
-msgstr "热潮玻璃"
-
-#: planets/verdance/data/events.json:trinkets[glow_shard].desc
-msgid "A sliver of glass that kept the surge's glow. It hums when you hold it."
-msgstr "一片留住了热潮光芒的玻璃碎片。握着它时会嗡嗡响。"
-
-#: planets/verdance/data/events.json:trinkets[rain_jar].name
-msgid "Jar of First Rain"
-msgstr "第一场雨之瓶"
-
-#: planets/verdance/data/events.json:trinkets[rain_jar].desc
-msgid "Collected during the first rain in years. Do not drink. Do not open. Just look."
-msgstr "多年来第一场雨时收集的。不要喝。不要打开。看看就好。"
-
-#: planets/verdance/data/events.json:trinkets[paper_boat].name
-msgid "Paper Boat"
-msgstr "纸船"
-
-#: planets/verdance/data/events.json:trinkets[paper_boat].desc
-msgid "Someone made it from a coupon. It sailed a whole puddle."
-msgstr "有人用一张优惠券折的。它航行过了整个水坑。"
-
-#: planets/verdance/data/events.json:trinkets[lucky_spanner].name
-msgid "Lucky Spanner"
-msgstr "幸运扳手"
-
-#: planets/verdance/data/events.json:trinkets[lucky_spanner].desc
-msgid "Fixes any hiccup, if you hit the right spot. Usually the left side."
-msgstr "只要敲对地方，什么嗝都能治好。通常是左边。"
-
-#: planets/verdance/data/events.json:trinkets[hiccup_tape].name
-msgid "Diagnostic Tape"
-msgstr "诊断纸带"
-
-#: planets/verdance/data/events.json:trinkets[hiccup_tape].desc
-msgid "A printout of a robot hiccuping. It looks a lot like a song."
-msgstr "一张机器人打嗝的打印记录。看起来很像一首歌。"
-
-#: planets/verdance/data/events.json:trinkets[photo_glowtail_fox].name
-msgid "Photo: Glowtail Fox"
-msgstr "照片：光尾狐"
-
-#: planets/verdance/data/events.json:trinkets[photo_glowtail_fox].desc
-msgid "Its tail glows when it's curious. It was very curious about Lumi."
-msgstr "它好奇时尾巴会发光。它对 Lumi 非常好奇。"
-
-#: planets/verdance/data/events.json:trinkets[photo_moss_deer].name
-msgid "Photo: Moss Deer"
-msgstr "照片：苔鹿"
-
-#: planets/verdance/data/events.json:trinkets[photo_moss_deer].desc
-msgid "Moss grows on its antlers. Butterflies rest there like it's a tree."
-msgstr "它的角上长着苔藓。蝴蝶像停在树上一样在那里休息。"
-
-#: planets/verdance/data/events.json:trinkets[photo_lantern_hedgehog].name
-msgid "Photo: Lantern Hedgehog"
-msgstr "照片：灯笼刺猬"
-
-#: planets/verdance/data/events.json:trinkets[photo_lantern_hedgehog].desc
-msgid "The tips of its spines glow amber at dusk. It ate a beetle on camera. Sorry."
-msgstr "黄昏时它的刺尖会发出琥珀色的光。它当着镜头吃了一只甲虫。抱歉。"
-
-#: planets/verdance/data/events.json:trinkets[photo_prism_heron].name
-msgid "Photo: Prism Heron"
-msgstr "照片：棱镜鹭"
-
-#: planets/verdance/data/events.json:trinkets[photo_prism_heron].desc
-msgid "Its feathers split light into rainbows. It stood on one leg the whole time."
-msgstr "它的羽毛能把光分成彩虹。它全程都单脚站着。"
-
-#: planets/verdance/data/events.json:trinkets[photo_velvet_hare].name
-msgid "Photo: Velvet Hare"
-msgstr "照片：天鹅绒野兔"
-
-#: planets/verdance/data/events.json:trinkets[photo_velvet_hare].desc
-msgid "Soft as a whisper, quick as a rumour. The photo is a little blurry. Worth it."
-msgstr "柔得像耳语，快得像谣言。照片有点糊。但值得。"
-
-#: planets/verdance/data/events.json:trinkets[crumb_bag].name
-msgid "Crumb Bag"
-msgstr "面包屑袋"
-
-#: planets/verdance/data/events.json:trinkets[crumb_bag].desc
-msgid "A paper bag of crumbs and seed husks. The pigeons know the sound of it now."
-msgstr "一个装满面包屑和种子壳的纸袋。鸽子们现在已经认得它的沙沙声了。"
-
-#: planets/verdance/data/events.json:trinkets[pic_cat].name
-msgid "Photo: Stray Cat"
-msgstr "照片：流浪猫"
-
-#: planets/verdance/data/events.json:trinkets[pic_cat].desc
-msgid "A photo from photo mode. Old Town's cats never left."
-msgstr "一张用拍照模式拍下的照片。老城区的猫从来没有离开过。"
-
-#: planets/verdance/data/events.json:trinkets[pic_pigeon].name
-msgid "Photo: Pigeon"
-msgstr "照片：鸽子"
-
-#: planets/verdance/data/events.json:trinkets[pic_pigeon].desc
-msgid "A photo from photo mode. Pigeons will live anywhere people once dropped crumbs."
-msgstr "一张用拍照模式拍下的照片。只要人们曾经掉过面包屑的地方，鸽子都能住下。"
-
-#: planets/verdance/data/events.json:trinkets[pic_sparrow].name
-msgid "Photo: Sparrow"
-msgstr "照片：麻雀"
-
-#: planets/verdance/data/events.json:trinkets[pic_sparrow].desc
-msgid "A photo from photo mode. Small, brown and bossy."
-msgstr "一张用拍照模式拍下的照片。又小又褐，还爱发号施令。"
-
-#: planets/verdance/data/events.json:trinkets[pic_rat].name
-msgid "Photo: Rat"
-msgstr "照片：老鼠"
-
-#: planets/verdance/data/events.json:trinkets[pic_rat].desc
-msgid "A photo from photo mode. Rats live in the gaps between the piles."
-msgstr "一张用拍照模式拍下的照片。老鼠住在废料堆之间的缝隙里。"
-
-#: planets/verdance/data/events.json:trinkets[pic_rabbit].name
-msgid "Photo: Rabbit"
-msgstr "照片：兔子"
-
-#: planets/verdance/data/events.json:trinkets[pic_rabbit].desc
-msgid "A photo from photo mode. Rabbits arrive as soon as there is something green to nibble."
-msgstr "一张用拍照模式拍下的照片。只要有绿色的东西可啃，兔子马上就来了。"
-
-#: planets/verdance/data/events.json:trinkets[pic_deer].name
-msgid "Photo: Roe Deer"
-msgstr "照片：狍子"
-
-#: planets/verdance/data/events.json:trinkets[pic_deer].desc
-msgid "A photo from photo mode. Shy grazers that keep to the edge of the green, where they can see what's coming."
-msgstr "一张用拍照模式拍下的照片。害羞的食草动物，总待在绿地边缘，好看清有什么靠近。"
-
-#: planets/verdance/data/events.json:trinkets[pic_fox].name
-msgid "Photo: Red Fox"
-msgstr "照片：赤狐"
-
-#: planets/verdance/data/events.json:trinkets[pic_fox].desc
-msgid "A photo from photo mode. A fox trots along the hedges, nose down, tail out."
-msgstr "一张用拍照模式拍下的照片。一只狐狸沿着树篱小跑，鼻子贴地，尾巴伸直。"
-
-#: planets/verdance/data/events.json:trinkets[pic_bee].name
-msgid "Photo: Honeybee"
-msgstr "照片：蜜蜂"
-
-#: planets/verdance/data/events.json:trinkets[pic_bee].desc
-msgid "A photo from photo mode. Bees came back with the blooms."
-msgstr "一张用拍照模式拍下的照片。蜜蜂随着花朵一起回来了。"
-
-#: planets/verdance/data/events.json:trinkets[pic_songbird].name
-msgid "Photo: Robin"
-msgstr "照片：知更鸟"
-
-#: planets/verdance/data/events.json:trinkets[pic_songbird].desc
-msgid "A photo from photo mode. When a hex thrives, robins move in and sing."
-msgstr "一张用拍照模式拍下的照片。六角格一旦繁茂起来，知更鸟就会搬来唱歌。"
-
-#: planets/verdance/data/events.json:trinkets[pic_firefly].name
-msgid "Photo: Firefly"
-msgstr "照片：萤火虫"
-
-#: planets/verdance/data/events.json:trinkets[pic_firefly].desc
-msgid "A photo from photo mode. Tiny green lanterns over the grass after dark."
-msgstr "一张用拍照模式拍下的照片。天黑后，草地上方亮起一盏盏绿色的小灯笼。"
-
-#: planets/verdance/data/events.json:trinkets[pic_fish].name
-msgid "Photo: Lake Fish"
-msgstr "照片：湖鱼"
-
-#: planets/verdance/data/events.json:trinkets[pic_fish].desc
-msgid "A photo from photo mode. Once the water clears you can see them: small silver schools turning together over the sand."
-msgstr "一张用拍照模式拍下的照片。湖水一清，你就能看见它们：一小群一小群银色的鱼在沙子上方一起转身。"
-
-#: planets/verdance/data/events.json:trinkets[pic_duck].name
-msgid "Photo: Mallard"
-msgstr "照片：绿头鸭"
-
-#: planets/verdance/data/events.json:trinkets[pic_duck].desc
-msgid "A photo from photo mode. Ducks paddle, dabble with their tails in the air and complain loudly about everything."
-msgstr "一张用拍照模式拍下的照片。鸭子划着水，屁股朝天地觅食，还大声抱怨着一切。"
-
-#: planets/verdance/data/events.json:trinkets[pic_frog].name
-msgid "Photo: Green Frog"
-msgstr "照片：青蛙"
-
-#: planets/verdance/data/events.json:trinkets[pic_frog].desc
-msgid "A photo from photo mode. Frogs sit at the water's edge and sing in the evening."
-msgstr "一张用拍照模式拍下的照片。青蛙坐在水边，傍晚时唱起歌来。"
-
-#: planets/verdance/data/events.json:trinkets[pic_lizard].name
-msgid "Photo: Sand Lizard"
-msgstr "照片：沙蜥"
-
-#: planets/verdance/data/events.json:trinkets[pic_lizard].desc
-msgid "A photo from photo mode. Lizards bask on swept ground between the solar arrays and vanish in a blink when a shadow falls on them."
-msgstr "一张用拍照模式拍下的照片。蜥蜴在太阳能板阵列之间打扫过的地面上晒太阳，一有影子落下，就眨眼间消失不见。"
-
-#: planets/verdance/data/events.json:trinkets[pic_fennec].name
-msgid "Photo: Fennec Fox"
-msgstr "照片：耳廓狐"
-
-#: planets/verdance/data/events.json:trinkets[pic_fennec].desc
-msgid "A photo from photo mode. A tiny desert fox with enormous ears."
-msgstr "一张用拍照模式拍下的照片。一只长着巨大耳朵的小小沙漠狐狸。"
-
-#: planets/verdance/data/events.json:trinkets[pic_seal].name
-msgid "Photo: Harbour Seal"
-msgstr "照片：港海豹"
-
-#: planets/verdance/data/events.json:trinkets[pic_seal].desc
-msgid "A photo from photo mode. Seals haul out on the quay once it's clean, lounge in heaps, and flop back to the water if you come too close."
-msgstr "一张用拍照模式拍下的照片。码头一打扫干净，海豹就会爬上来，挤成一堆懒洋洋地躺着；你一靠近，它们就扑通滑回水里。"
-
-#: planets/verdance/data/events.json:trinkets[pic_gull].name
-msgid "Photo: Herring Gull"
-msgstr "照片：银鸥"
-
-#: planets/verdance/data/events.json:trinkets[pic_gull].desc
-msgid "A photo from photo mode. Loud, white and opportunistic."
-msgstr "一张用拍照模式拍下的照片。吵闹、雪白、善于钻空子。"
-
-#: planets/verdance/data/events.json:trinkets[pic_arctic_fox].name
-msgid "Photo: Arctic Fox"
-msgstr "照片：北极狐"
-
-#: planets/verdance/data/events.json:trinkets[pic_arctic_fox].desc
-msgid "A photo from photo mode. White as the snow it hunts on."
-msgstr "一张用拍照模式拍下的照片。白得像它捕猎时踩着的雪。"
-
-#: planets/verdance/data/events.json:trinkets[pic_heron].name
-msgid "Photo: Grey Heron"
-msgstr "照片：苍鹭"
-
-#: planets/verdance/data/events.json:trinkets[pic_heron].desc
-msgid "A photo from photo mode. Herons stand perfectly still at the water's edge, then strike."
-msgstr "一张用拍照模式拍下的照片。苍鹭一动不动地站在水边，然后猛地出击。"
-
-#: planets/verdance/data/events.json:trinkets[pic_turtle].name
-msgid "Photo: Pond Turtle"
-msgstr "照片：池龟"
-
-#: planets/verdance/data/events.json:trinkets[pic_turtle].desc
-msgid "A photo from photo mode. Turtles cruise the drowned streets with their heads up, as if they've always lived here."
-msgstr "一张用拍照模式拍下的照片。乌龟昂着头在被淹没的街道上巡游，好像它们一直住在这里似的。"
-
-#: planets/verdance/data/events.json:trinkets[pic_crane].name
-msgid "Photo: Cradle Crane"
-msgstr "照片：Cradle 鹤"
-
-#: planets/verdance/data/events.json:trinkets[pic_crane].desc
-msgid "A photo from photo mode. White cranes circle high over the landing city on slow wingbeats."
-msgstr "一张用拍照模式拍下的照片。白鹤扇着缓慢的翅膀，在着陆之城的高空盘旋。"
-
-#: planets/verdance/data/events.json:trinkets[maker_badge].name
-msgid "Maker's Badge"
-msgstr "造物者徽章"
-
-#: planets/verdance/data/events.json:trinkets[maker_badge].desc
-msgid "Pinned inside a Legendary part: 'Built to be fixed.'"
-msgstr "别在一个传说零件里面：“造出来就是为了被修好。”"
-
-#: planets/verdance/data/events.json:trinkets[signal_crystal].name
-msgid "Signal Crystal"
-msgstr "信号水晶"
-
-#: planets/verdance/data/events.json:trinkets[signal_crystal].desc
-msgid "The thing that was pinging. It still pings, very quietly, when you're happy."
-msgstr "一直在发信号的那个东西。你开心的时候，它还会非常轻地发信号。"
-
-#: planets/verdance/data/events.json:trinkets[audit_stamp].name
-msgid "APPROVED Stamp"
-msgstr "“批准”印章"
-
-#: planets/verdance/data/events.json:trinkets[audit_stamp].desc
-msgid "The Ledger's rubber stamp. It now only says APPROVED. It's very proud of that."
-msgstr "Ledger 的橡皮图章。现在它只会盖“批准”。它为此非常自豪。"
-
-#: planets/verdance/data/events.json:trinkets[drone_propeller].name
-msgid "Race Propeller"
-msgstr "竞速螺旋桨"
-
-#: planets/verdance/data/events.json:trinkets[drone_propeller].desc
-msgid "A souvenir from the audit drone. It insists the race was close."
-msgstr "审计无人机送的纪念品。它坚持说那场比赛很接近。"
-
-#: planets/verdance/data/events.json:trinkets[streak_medal].name
-msgid "Streak Medal"
-msgstr "连击奖章"
-
-#: planets/verdance/data/events.json:trinkets[streak_medal].desc
-msgid "Earned for a max-tier cleaning streak. Scoop scoop scoop."
-msgstr "达成最高级清理连击时获得。铲铲铲。"
-
-#: planets/verdance/data/events.json:trinkets[lumi_lens_cap].name
-msgid "Lumi's First Lens Cap"
-msgstr "Lumi 的第一个镜头盖"
-
-#: planets/verdance/data/events.json:trinkets[lumi_lens_cap].desc
-msgid "Lumi Level 10. The cap Lumi wore on the ark, scuffed and kept anyway."
-msgstr "Lumi 等级 10。Lumi 在方舟上戴过的镜头盖，磨花了，还是留着。"
-
-#: planets/verdance/data/events.json:trinkets[lumi_seed_pin].name
-msgid "Seed-Keeper Pin"
-msgstr "守种者徽章"
-
-#: planets/verdance/data/events.json:trinkets[lumi_seed_pin].desc
-msgid "Lumi Level 20. A little enamel sprout. The ark gave these to its gardeners."
-msgstr "Lumi 等级 20。一个小小的珐琅嫩芽。方舟会把它送给园丁们。"
-
-#: planets/verdance/data/events.json:trinkets[lumi_tread_charm].name
-msgid "Tread Charm"
-msgstr "履带护身符"
-
-#: planets/verdance/data/events.json:trinkets[lumi_tread_charm].desc
-msgid "Lumi Level 30. A brass bell for the treads. It jingles on every bump."
-msgstr "Lumi 等级 30。挂在履带上的黄铜铃铛。每次颠簸都会叮当作响。"
-
-#: planets/verdance/data/events.json:trinkets[lumi_star_chart].name
-msgid "Pocket Star Chart"
-msgstr "袖珍星图"
-
-#: planets/verdance/data/events.json:trinkets[lumi_star_chart].desc
-msgid "Lumi Level 40. The ark's route home, folded small. One star is circled."
-msgstr "Lumi 等级 40。方舟的回家路线，折得小小的。有一颗星被圈了起来。"
-
-#: planets/verdance/data/events.json:trinkets[lumi_glow_ribbon].name
-msgid "Glow Ribbon"
-msgstr "发光丝带"
-
-#: planets/verdance/data/events.json:trinkets[lumi_glow_ribbon].desc
-msgid "Lumi Level 50. A ribbon that holds a little light. Lumi ties it to the antenna."
-msgstr "Lumi 等级 50。一条能存住一点光的丝带。Lumi 把它系在天线上。"
-
-#: planets/verdance/data/events.json:trinkets[contract_pen].name
-msgid "Contract Pen"
-msgstr "委托之笔"
-
-#: planets/verdance/data/events.json:trinkets[contract_pen].desc
-msgid "Your first contract signed. The pen has a tiny leaf on top."
-msgstr "你签下的第一份委托。笔顶有一片小小的叶子。"
-
-#: planets/verdance/data/events.json:trinkets[contract_clipboard].name
-msgid "Foreman's Clipboard"
-msgstr "工头的写字板"
-
-#: planets/verdance/data/events.json:trinkets[contract_clipboard].desc
-msgid "Ten contracts done. Every box ticked, every box green."
-msgstr "完成了十个委托。每个格子都打了勾，每个格子都是绿的。"
-
-#: planets/verdance/data/events.json:trinkets[contract_crown].name
-msgid "Contractor's Crown"
-msgstr "承包商之冠"
-
-#: planets/verdance/data/events.json:trinkets[contract_crown].desc
-msgid "Twenty-five contracts. The crown is a bent can. You wear it anyway."
-msgstr "二十五个委托。王冠是一个压弯的罐头。你还是戴上了。"
-
-#: planets/verdance/data/events.json:trinkets[capsule_rubber_frog].name
-msgid "Rubber Frog"
-msgstr "橡皮青蛙"
-
-#: planets/verdance/data/events.json:trinkets[capsule_rubber_frog].desc
-msgid "Squeaks in a minor key."
-msgstr "用小调吱吱叫。"
-
-#: planets/verdance/data/events.json:trinkets[capsule_tiny_cactus].name
-msgid "Tiny Cactus"
-msgstr "迷你仙人掌"
-
-#: planets/verdance/data/events.json:trinkets[capsule_tiny_cactus].desc
-msgid "Needs no water. Mocks the Drips."
-msgstr "不需要水。嘲笑 Drip。"
-
-#: planets/verdance/data/events.json:trinkets[capsule_holo_koi].name
-msgid "Holo Koi"
-msgstr "全息锦鲤"
-
-#: planets/verdance/data/events.json:trinkets[capsule_holo_koi].desc
-msgid "A hologram fish that swims round your hopper."
-msgstr "一条绕着你的料斗游动的全息鱼。"
-
-#: planets/verdance/data/events.json:trinkets[capsule_moon_rock].name
-msgid "Moon Rock"
-msgstr "月岩"
-
-#: planets/verdance/data/events.json:trinkets[capsule_moon_rock].desc
-msgid "Not from the moon. From a parking lot. Still beautiful."
-msgstr "不是来自月球。来自停车场。依然很美。"
-
-#: planets/verdance/data/events.json:wren
-msgid "Crate inbound. From... me? I don't remember sending that. Open it."
-msgstr "箱子来了。寄件人……是我？我不记得寄过。打开看看。"
-
-#: planets/verdance/data/events.json:wren
-msgid "Supply drop! I found an old Cradle pod still in orbit and nudged it down."
-msgstr "补给空投！我找到一个还在轨道上的 Cradle号旧舱，轻轻推了它一下。"
-
-#: planets/verdance/data/events.json:wren
-msgid "Another care package. I've been saving them for good days. This is one."
-msgstr "又一个爱心包裹。我一直留着它们给好日子。今天就是。"
-
 #: planets/verdance/data/events.json:wren
 msgid "That hex is glowing. Readings say... valuable. Hurry."
 msgstr "那个六角格在发光。读数显示……很值钱。快去。"
@@ -9755,30 +8664,6 @@ msgstr "下雨了。我都忘了这个声音。你的植物可没忘。"
 #: planets/verdance/data/events.json:wren
 msgid "Rain on clean ground. It smells like a memory."
 msgstr "雨落在干净的地面上。闻起来像一段回忆。"
-
-#: planets/verdance/data/events.json:wren
-msgid "One of your helpers is stuck. Hic."
-msgstr "你的一个帮手卡住了。嗝。"
-
-#: planets/verdance/data/events.json:wren
-msgid "{robot} has the hiccups. Try a firm pat on the chassis."
-msgstr "{robot} 打嗝了。试着在底盘上用力拍一下。"
-
-#: planets/verdance/data/events.json:wren
-msgid "{robot} needs you. Gently, they're sensitive."
-msgstr "{robot} 需要你。轻一点，它们很敏感。"
-
-#: planets/verdance/data/events.json:wren
-msgid "Something alive is moving out there. Not a robot."
-msgstr "外面有活的东西在动。不是机器人。"
-
-#: planets/verdance/data/events.json:wren
-msgid "A visitor! Go slowly. Take a picture, it lasts longer."
-msgstr "有访客！慢慢来。拍张照，留得更久。"
-
-#: planets/verdance/data/events.json:wren
-msgid "The thriving hexes are calling things home. Look."
-msgstr "繁茂的六角格在召唤生命回家。看。"
 
 #: planets/verdance/data/events.json:wren
 msgid "Strong signal. Something old and well made."
@@ -9827,18 +8712,6 @@ msgstr "最高连击。铲子在唱歌。"
 #: planets/verdance/data/events.json:wren
 msgid "Look at you go."
 msgstr "看看你多厉害。"
-
-#: planets/verdance/data/events.json:wren
-msgid "Contract complete. Collect at the workbench."
-msgstr "委托完成。去工作台领取。"
-
-#: planets/verdance/data/events.json:wren
-msgid "Another contract done. Tokens are waiting."
-msgstr "又完成一个委托。代币在等你。"
-
-#: planets/verdance/data/events.json:wren
-msgid "Contract fulfilled. The board's lit up green."
-msgstr "委托达成。面板亮绿灯了。"
 
 #: planets/verdance/data/finds.json:finds[old_town_tin].hint
 msgid "A paint tin lies under the litter of Old Town."
@@ -9972,19 +8845,19 @@ msgstr "音乐"
 msgid "Glim downloads the CDs you've found: play any found song, anywhere, anytime."
 msgstr "Glim 会下载你找到的 CD：随时随地播放任何找到的歌曲。"
 
-#: data/glim.json:shells[pearl].name data/ship_style.json:paints[pearl].name data/style_parts.json:swatches[pearl].name
+#: data/glim.json:shells[pearl].name data/style_parts.json:swatches[pearl].name
 msgid "Pearl"
 msgstr "珍珠白"
 
-#: data/glim.json:shells[sunset].name data/ship_style.json:paints[sunset].name data/style_parts.json:swatches[sunset].name
+#: data/glim.json:shells[sunset].name data/style_parts.json:swatches[sunset].name
 msgid "Sunset"
 msgstr "日落"
 
-#: data/glim.json:shells[moss].name data/ship_style.json:paints[moss].name
+#: data/glim.json:shells[moss].name
 msgid "Moss"
 msgstr "苔藓"
 
-#: data/glim.json:shells[graphite].name data/ship_style.json:trims[graphite].name data/style_parts.json:swatches[graphite].name
+#: data/glim.json:shells[graphite].name data/style_parts.json:swatches[graphite].name
 msgid "Graphite"
 msgstr "石墨"
 
@@ -10872,14 +9745,6 @@ msgstr "每个星球上的每一件珍奇（提示见图鉴 > 珍奇）。"
 msgid "Letters, notes and drawings surface as the ground is cleaned."
 msgstr "清理地面时，信件、便条和画会显露出来。"
 
-#: planets/verdance/data/museum.json:exhibits[trinkets].name
-msgid "Trinkets and Curios"
-msgstr "小玩意与珍奇"
-
-#: planets/verdance/data/museum.json:exhibits[trinkets].hint
-msgid "World events, requests, streaks and Curio Capsules."
-msgstr "世界事件、委托、连击和珍奇胶囊。"
-
 #: planets/verdance/data/museum.json:exhibits[ochre_glass].name
 msgid "Ochre Sun-Glass"
 msgstr "Ochre 日光玻璃"
@@ -11088,7 +9953,7 @@ msgstr "十个干净的六角格。你的机器人正在向你学习，Lumi。"
 msgid "Rebuild the base to level 2"
 msgstr "把基地重建到 2 级"
 
-#: planets/verdance/data/objectives.json:objectives[base2].desc
+#: planets/verdance/data/objectives.json:objectives[base2].desc planets/verdance/data/objectives.json:objectives[base3].desc
 msgid "Workbench, Upgrades tab. More robots can work."
 msgstr "工作台，升级页签。可以让更多机器人干活。"
 
@@ -11183,10 +10048,6 @@ msgstr "二十个六角格了。空气的味道已经不一样了。"
 #: planets/verdance/data/objectives.json:objectives[base3].text
 msgid "Rebuild the base to level 3"
 msgstr "把基地重建到 3 级"
-
-#: planets/verdance/data/objectives.json:objectives[base3].desc
-msgid "Workbench, Upgrades tab. It opens the Request Board."
-msgstr "工作台，升级页签。可开放委托板。"
 
 #: planets/verdance/data/objectives.json:objectives[base3].lines
 msgid "One more base level. The Cradle is watching, Lumi."
@@ -12538,26 +11399,6 @@ msgstr ""
 "\n"
 "（有人在下面刻着：“你们让它们做，它们就能”）"
 
-#: data/ship_style.json:paints[midnight].name data/style_parts.json:swatches[midnight].name
-msgid "Midnight"
-msgstr "午夜蓝"
-
-#: data/ship_style.json:paints[coral].name data/style_parts.json:swatches[coral].name
-msgid "Coral"
-msgstr "珊瑚"
-
-#: data/ship_style.json:paints[lunar].name
-msgid "Lunar Silver"
-msgstr "月银"
-
-#: data/ship_style.json:trims[tangerine].name
-msgid "Tangerine"
-msgstr "橘色"
-
-#: data/ship_style.json:trims[chrome].name
-msgid "Chrome"
-msgstr "镀铬"
-
 #: planets/verdance/data/signal_tower.json:tiers[0].name
 msgid "Signal Tower"
 msgstr "信号塔"
@@ -13142,6 +11983,10 @@ msgstr "企鹅机器人摇摆步"
 msgid "Ice Rink Lights"
 msgstr "冰场灯光"
 
+#: data/songs.json:songs[snow_globe].title
+msgid "Snow Globe"
+msgstr "雪景球"
+
 #: data/songs.json:songs[the_long_way_home].title
 msgid "The Long Way Home"
 msgstr "回家的远路"
@@ -13642,6 +12487,10 @@ msgstr "一台投放到清理前线的液压打包机。清洁机器人不再就
 msgid "Shredder drums and a little smelter. Bales go in and never come back: out come parts and clean building stock. Every bale burnt clean helps the sky."
 msgstr "粉碎滚筒和一座小熔炉。草捆进去就再也不会回来：出来的是零件和干净的建材。每烧干净一个草捆，天空就好一点。"
 
+#: data/style_parts.json:slots[trim].name
+msgid "Trim"
+msgstr "饰边"
+
 #: data/style_parts.json:slots[accent].name
 msgid "Accent"
 msgstr "点缀"
@@ -13774,6 +12623,10 @@ msgstr "象牙白"
 msgid "Sea glass"
 msgstr "海玻璃"
 
+#: data/style_parts.json:swatches[coral].name
+msgid "Coral"
+msgstr "珊瑚"
+
 #: data/style_parts.json:swatches[royal].name
 msgid "Royal blue"
 msgstr "宝蓝"
@@ -13789,6 +12642,10 @@ msgstr "金色"
 #: data/style_parts.json:swatches[bloom].name
 msgid "Bloom green"
 msgstr "绽放绿"
+
+#: data/style_parts.json:swatches[midnight].name
+msgid "Midnight"
+msgstr "午夜蓝"
 
 #: data/style_parts.json:swatches[copper].name
 msgid "Copper"
@@ -14009,14 +12866,6 @@ msgstr "工作台 Mk III：研究台"
 #: data/workbench.json:tiers[2].desc
 msgid "Adds a research desk. Study what you dig up to unlock machines and seeds."
 msgstr "加装研究台。研究你挖出的东西，解锁机器和种子。"
-
-#: data/workbench.json:tiers[3].name
-msgid "Workbench Mk IV: Request Board"
-msgstr "工作台 Mk IV：委托板"
-
-#: data/workbench.json:tiers[3].desc
-msgid "Adds a request board. Take on jobs for tokens and rare parts."
-msgstr "加装委托板。接下委托，换取代币和稀有零件。"
 
 #: planets/verdance/data/wren_lines.json:wake
 msgid "...Lumi? ...It's WREN. Your tower's carrying me. Barely. Keep it standing."
@@ -15410,18 +14259,6 @@ msgstr "新世界，新天空。还是老活儿。你比第一次干得更好了
 msgid "Look at that. Ruined, dusty, nobody's planted anything in centuries. You know what to do."
 msgstr "看看这里。满目疮痍，尘土飞扬，几百年都没人种过东西了。你知道该怎么做。"
 
-#: planets/verdance/data/wren_lines.json:garden_place
-msgid "...pretty..."
-msgstr "……真好看……"
-
-#: planets/verdance/data/wren_lines.json:garden_place
-msgid "You're decorating. I approve. The cats are going to approve more."
-msgstr "你在装饰呀。我赞成。猫咪们会更赞成。"
-
-#: planets/verdance/data/wren_lines.json:garden_place
-msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
-msgstr "一张长椅，一盏灯，一座喷泉。这里开始像一个人们会想回来的地方了。"
-
 #: planets/verdance/data/wren_lines.json:home_arrive
 msgid "...new sky... two suns..."
 msgstr "……新的天空……两个太阳……"
@@ -15613,6 +14450,876 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: planets/verdance/data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
+#~ msgstr "鸟儿们觉得你还不错。面包屑袋已加入你的收藏。"
+
+#~ msgid "Snap! A %s for your Collection."
+#~ msgstr "咔嚓！一张%s的照片，收进你的收藏。"
+
+#~ msgid "New for your Collection: %s. See it in the Codex (K)."
+#~ msgstr "收藏新增：%s。在图鉴（K）里查看。"
+
+#~ msgid "Supply Drops"
+#~ msgstr "补给空投"
+
+#~ msgid "Salvage Glints"
+#~ msgstr "回收闪光"
+
+#~ msgid "Rain Showers"
+#~ msgstr "阵雨"
+
+#~ msgid "Robot Hiccups"
+#~ msgstr "机器人打嗝"
+
+#~ msgid "Wildlife Photos"
+#~ msgstr "野生动物照片"
+
+#~ msgid "Animal Photos"
+#~ msgstr "动物照片"
+
+#~ msgid "Rare Part Signals"
+#~ msgstr "稀有零件信号"
+
+#~ msgid "Ledger Audits"
+#~ msgstr "Ledger 审计"
+
+#~ msgid "Cleaning Streaks"
+#~ msgstr "清理连击"
+
+#~ msgid "Lumi Levels"
+#~ msgstr "Lumi 等级"
+
+#~ msgid "Requests"
+#~ msgstr "委托"
+
+#~ msgid "Curio Capsules"
+#~ msgstr "奇物胶囊"
+
+#~ msgid "Curio Capsule"
+#~ msgstr "奇物胶囊"
+
+#~ msgid "Request complete: %s. Claim it at the workbench."
+#~ msgstr "委托完成：%s。到工作台领取。"
+
+#~ msgid "A request ran out of time. No harm done; a new one will be posted soon."
+#~ msgstr "一个委托超时了。没关系，很快会有新的。"
+
+#~ msgid "New at the workbench: the Requests board. Small jobs, real rewards."
+#~ msgstr "工作台新功能：委托板。小活儿，真奖励。"
+
+#~ msgid "The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."
+#~ msgstr "中继信号终于强到能收到摇篮号的旧工作单了。它们在工作台的委托板上。"
+
+#~ msgid "Request done: %s."
+#~ msgstr "委托已领取：%s。"
+
+#~ msgid "Requests reward: %s."
+#~ msgstr "委托奖励：%s。"
+
+#~ msgid "Needs %d Collection finds (%d so far)"
+#~ msgstr "需要 %d 件收藏品（目前 %d 件）"
+
+#~ msgid "Too close to the base machines"
+#~ msgstr "离基地的机器太近了"
+
+#~ msgid "Something is already here"
+#~ msgstr "这里已经有东西了"
+
+#~ msgid "That's water"
+#~ msgstr "那是水面"
+
+#~ msgid "Frozen in"
+#~ msgstr "被冻住了"
+
+#~ msgid "CRADLE · SUPPLY"
+#~ msgstr "CRADLE号 · 补给"
+
+#~ msgid "%d pieces of junk left around the crate"
+#~ msgstr "箱子周围还剩 %d 块废料"
+
+#~ msgid "Supply crate opened: %s"
+#~ msgstr "补给箱已打开：%s"
+
+#~ msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
+#~ msgstr "补给箱的信标超时了，无人机把它拉回了天上。还会再来的。"
+
+#~ msgid "E   fix %s's hiccup"
+#~ msgstr "E   治好 %s 的嗝"
+
+#~ msgid "%s is %d m away"
+#~ msgstr "%s 在 %d 米外"
+
+#~ msgid "%s shook off its hiccups on its own. It looks embarrassed."
+#~ msgstr "%s 自己止住了嗝。看起来有点不好意思。"
+
+#~ msgid "%s is fixed and back to work. %s"
+#~ msgstr "%s 修好了，回去干活了。%s"
+
+#~ msgid "Wildlife Visit: %s"
+#~ msgstr "野生动物来访：%s"
+
+#~ msgid "E   take a photo of the %s"
+#~ msgstr "E   给%s拍张照"
+
+#~ msgid "%s, %d m away"
+#~ msgstr "%s，%d 米外"
+
+#~ msgid "The %s wandered off. It'll be back somewhere green."
+#~ msgstr "%s走开了。它会在某个绿色的地方再出现。"
+
+#~ msgid "Snap! The %s is in your Collection. %s"
+#~ msgstr "咔嚓！%s已加入你的收藏。%s"
+
+#~ msgid "Snap! Another lovely shot of the %s. %s"
+#~ msgstr "咔嚓！又一张漂亮的%s照片。%s"
+
+#~ msgid "Build the Robot Nursery in the Build tab first."
+#~ msgstr "先在建造页签建好机器人育儿所。"
+
+#~ msgid "Only Mk I-II robots retire early. %s can retire in %d min."
+#~ msgstr "只有 Mk I-II 机器人可以提前退休。%s 还要 %d 分钟才能退休。"
+
+#~ msgid "%s retires to the nursery garden. +%d parts, and the flowers get a caretaker."
+#~ msgstr "%s 退休去了苗圃花园。+%d 零件，花儿也有了园丁。"
+
+#~ msgid "E   Say hi to %s"
+#~ msgstr "E   和 %s 打招呼"
+
+#~ msgid "CARETAKER · %s"
+#~ msgstr "园丁 · %s"
+
+#~ msgid "%s beeps hello and shows Lumi the marigolds."
+#~ msgstr "%s 哔哔地打招呼，给 Lumi 看金盏花。"
+
+#~ msgid "%s is busy with the watering can, but waves anyway."
+#~ msgstr "%s 正忙着拿洒水壶，但还是挥了挥手。"
+
+#~ msgid "%s hums to the seedlings. Retirement suits it."
+#~ msgstr "%s 对着幼苗哼歌。退休生活很适合它。"
+
+#~ msgid "%s points proudly at a new bud."
+#~ msgstr "%s 骄傲地指着一个新花苞。"
+
+#~ msgid "%d / %d collectibles"
+#~ msgstr "收藏品 %d / %d"
+
+#~ msgid "LUMI'S COLLECTION"
+#~ msgstr "Lumi 的收藏"
+
+#~ msgid "TRINKETS AND CURIOS"
+#~ msgstr "小玩意与珍奇"
+
+#~ msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
+#~ msgstr "提示：一位害羞的访客会来到稳定和繁茂的六角格。带上相机。"
+
+#~ msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
+#~ msgstr "提示：大地恢复后，动物就会回来。用拍照模式（P）给它们拍照吧。"
+
+#~ msgid "Hint: finish %d requests (Requests tab at the workbench)."
+#~ msgstr "提示：完成 %d 个委托（工作台的委托标签页）。"
+
+#~ msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
+#~ msgstr "提示：奇物胶囊在工作台委托的奖励轨道上。"
+
+#~ msgid "Hint: keep scooping without stopping until the streak meter is full."
+#~ msgstr "提示：不停地铲，直到连击条满。"
+
+#~ msgid "Hint: turns up during %s."
+#~ msgstr "提示：在%s期间出现。"
+
+#~ msgid "%d done"
+#~ msgstr[0] "已完成%d个"
+
+#~ msgid "Live now:  %s  ·  %s  ·  %s left"
+#~ msgstr "进行中：  %s  ·  %s  ·  剩余%s"
+
+#~ msgid "Every reward unlocked. Each %d more requests pay a Vintage part's worth of parts."
+#~ msgstr "所有奖励已解锁。每再完成%d个委托，可获得一个古董零件价值的零件。"
+
+#~ msgid "Next unlock in %d request:  %s"
+#~ msgstr[0] "再完成%d个委托解锁：  %s"
+
+#~ msgid "A new request is on its way"
+#~ msgstr "新委托即将到来"
+
+#~ msgid "Claim"
+#~ msgstr "领取"
+
+#~ msgid "REQUEST READY  ·  claim it at the workbench"
+#~ msgstr "委托已就绪  ·  到工作台领取"
+
+#~ msgid "%d REQUESTS READY  ·  claim them at the workbench"
+#~ msgstr "%d 个委托已就绪  ·  到工作台领取"
+
+#~ msgid "Nursery"
+#~ msgstr "苗圃"
+
+#~ msgid "CARETAKERS  ·  %d"
+#~ msgstr "园丁  ·  %d"
+
+#~ msgid "Garden bonus: plants grow %d%% faster (up to %d%%)."
+#~ msgstr "花园加成：植物生长快 %d%%（最多 %d%%）。"
+
+#~ msgid "No one has retired yet. Old or Mk I-II robots can retire here; they'll look after the nursery garden at the base."
+#~ msgstr "还没有机器人退休。老机器人或 Mk I-II 机器人可以在这里退休；它们会照料基地的苗圃花园。"
+
+#~ msgid "RETIRE A ROBOT"
+#~ msgstr "让机器人退休"
+
+#~ msgid "Retiring gives a few parts back, and the robot keeps its name and personality in the nursery."
+#~ msgstr "退休会返还一些零件，机器人在苗圃里保留它的名字和个性。"
+
+#~ msgid "No robots in this district."
+#~ msgstr "这个街区没有机器人。"
+
+#~ msgid "Press again to retire (+%d parts)"
+#~ msgstr "再按一次确认退休（+%d 零件）"
+
+#~ msgid "Retire  (+%d parts)"
+#~ msgstr "退休  （+%d 零件）"
+
+#~ msgid "Garden Mode opens when this base reaches level 5, or once the Cradle comes home."
+#~ msgstr "这个基地达到 5 级，或 Cradle号回家后，花园模式就会开放。"
+
+#~ msgid "charm +%.1f"
+#~ msgstr "魅力 +%.1f"
+
+#~ msgid "%s here: %s to pick it up"
+#~ msgstr "这里有%s：按 %s 拿起"
+
+#~ msgid "GARDEN MODE   ·   Charm %.1f   ·   +%.1f%% plant growth here"
+#~ msgstr "花园模式   ·   魅力 %.1f   ·   此处植物生长 +%.1f%%"
+
+#~ msgid "[%s] place   [%s] rotate   [%s / %s] item   [%s] pick up   [%s] done"
+#~ msgstr "[%s] 放置   [%s] 旋转   [%s / %s] 物品   [%s] 拿起   [%s] 完成"
+
+#~ msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
+#~ msgstr "已拿起：%s。把它放到别处，或者先收进仓库。"
+
+#~ msgid "+%d XP"
+#~ msgstr "+%d 经验"
+
+#~ msgid "Lumi reached level %d%s"
+#~ msgstr "Lumi 达到了 %d 级%s"
+
+#~ msgid "Garden Mode  [%s]"
+#~ msgstr "花园模式  [%s]"
+
+#~ msgid "Ship looks: the tiers keep their shape"
+#~ msgstr "飞船外观：等级外形不变"
+
+#~ msgid "Mix and Match"
+#~ msgstr "混搭达人"
+
+#~ msgid "Style a robot with all five custom parts in the Locker."
+#~ msgstr "在储物柜里给一台机器人装满五个自定义部件。"
+
+#~ msgid "As the Makers Made It"
+#~ msgstr "如造物者所造"
+
+#~ msgid "Fit the full Maker set (shell, optic and glider) on one robot."
+#~ msgstr "为一台机器人装上完整的造物者套装（外壳、光学镜和滑翔翼）。"
+
+#~ msgid "Hat Rack"
+#~ msgstr "帽子架"
+
+#~ msgid "Collect 5 different robot toppers."
+#~ msgstr "收集 5 种不同的机器人头饰。"
+
+#~ msgid "Home Touches"
+#~ msgstr "家的点缀"
+
+#~ msgid "Place a decoration in Garden Mode."
+#~ msgstr "在花园模式中放置一件装饰。"
+
+#~ msgid "Landscaper"
+#~ msgstr "景观设计师"
+
+#~ msgid "Place 25 decorations."
+#~ msgstr "放置 25 件装饰。"
+
+#~ msgid "Full Catalogue"
+#~ msgstr "全套目录"
+
+#~ msgid "Place every kind of decoration at least once."
+#~ msgstr "每种装饰都至少放置一次。"
+
+#~ msgid "Picture Perfect"
+#~ msgstr "美如画"
+
+#~ msgid "Reach 25 charm in one district."
+#~ msgstr "在一个城区达到 25 点魅力。"
+
+#~ msgid "The Cradle Answers"
+#~ msgstr "Cradle 号的回应"
+
+#~ msgid "Light the Cradle Returns beacon and hear from the ark."
+#~ msgstr "点亮 Cradle号归来的信标，听到方舟的回应。"
+
+#~ msgid "Happy Retirement"
+#~ msgstr "退休快乐"
+
+#~ msgid "Retire a robot to the nursery garden."
+#~ msgstr "让一个机器人退休去苗圃花园。"
+
+#~ msgid "Garden Party"
+#~ msgstr "花园派对"
+
+#~ msgid "Say hi to the nursery caretakers 5 times."
+#~ msgstr "和苗圃的园丁打招呼 5 次。"
+
+#~ msgid "Robot Nursery"
+#~ msgstr "机器人育儿所"
+
+#~ msgid "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand."
+#~ msgstr "一片围着矮墙、种着花坛的草坪，退休的机器人在这里照料花园，还会给你的队伍搭把手。"
+
+#~ msgid "Stone Path"
+#~ msgstr "石径"
+
+#~ msgid "Flat stepping stones. Paths join everything up."
+#~ msgstr "平整的踏脚石。小路把一切连在一起。"
+
+#~ msgid "Flower Bed"
+#~ msgstr "花坛"
+
+#~ msgid "A low bed of mixed flowers. Bees and butterflies approve."
+#~ msgstr "一片低矮的混合花坛。蜜蜂和蝴蝶都很满意。"
+
+#~ msgid "Planter"
+#~ msgstr "花箱"
+
+#~ msgid "A white hex planter with a small shrub, like the ones the future city grows."
+#~ msgstr "一个种着小灌木的白色六角花箱，就像未来城市里种的那种。"
+
+#~ msgid "Bench"
+#~ msgstr "长椅"
+
+#~ msgid "Wood slats on cast feet. Cats like to sleep on it."
+#~ msgstr "铸铁椅脚上搭着木条。猫咪很喜欢在上面睡觉。"
+
+#~ msgid "Garden Lamp"
+#~ msgstr "花园灯"
+
+#~ msgid "A slim lamp with a warm glow after dark."
+#~ msgstr "一盏纤细的灯，天黑后亮起温暖的光。"
+
+#~ msgid "Bird Bath"
+#~ msgstr "鸟浴盆"
+
+#~ msgid "A stone basin of clean water."
+#~ msgstr "一个盛着清水的石盆。"
+
+#~ msgid "Fountain"
+#~ msgstr "喷泉"
+
+#~ msgid "A tiered fountain, running again. Deer come to drink at dawn."
+#~ msgstr "一座重新流淌的多层喷泉。黎明时分，鹿会来这里喝水。"
+
+#~ msgid "Maker Statue"
+#~ msgstr "造物者雕像"
+
+#~ msgid "A stone figure of one of the Makers, holding a watering can."
+#~ msgstr "一尊造物者的石像，手里拿着一个洒水壶。"
+
+#~ msgid "Lumi Sculpture"
+#~ msgstr "Lumi 雕塑"
+
+#~ msgid "A topiary-and-brass sculpture of Lumi holding up a seedling. Very modest."
+#~ msgstr "一座用修剪植物和黄铜做成的 Lumi 雕塑，高高举着一株幼苗。非常谦虚。"
+
+#~ msgid "WREN Wind Kite"
+#~ msgstr "WREN 风筝"
+
+#~ msgid "A kite shaped like WREN's bird, tethered to a post and always flying."
+#~ msgstr "一只做成 WREN 小鸟形状的风筝，系在柱子上，一直在天上飞。"
+
+#~ msgid "Supply Drop"
+#~ msgstr "补给空投"
+
+#~ msgid "Supply Drop! A crate parachuted onto the junk %s of you. Clear the junk around it to crack it open."
+#~ msgstr "补给空投！一个箱子空降到了你%s的废料上。清掉周围的废料就能打开它。"
+
+#~ msgid "Clear the junk around the crate"
+#~ msgstr "清理箱子周围的废料"
+
+#~ msgid "Robot Hiccup"
+#~ msgstr "机器人打嗝"
+
+#~ msgid "%s has the hiccups and stopped working. Walk over and press E for a quick fix."
+#~ msgstr "%s 打嗝了，停止了工作。走过去按 E 快速修理。"
+
+#~ msgid "Walk to the stuck robot and press E"
+#~ msgstr "走到卡住的机器人旁按 E"
+
+#~ msgid "Wildlife Visit"
+#~ msgstr "野生动物来访"
+
+#~ msgid "Something is visiting a thriving hex %s of you. Sneak up and press E to take a photo."
+#~ msgstr "有东西正在你%s的一个繁茂六角格上做客。悄悄靠近，按 E 拍照。"
+
+#~ msgid "Find the visitor and press E for a photo"
+#~ msgstr "找到访客并按 E 拍照"
+
+#~ msgid "Glowtail Fox"
+#~ msgstr "光尾狐"
+
+#~ msgid "fox"
+#~ msgstr "狐狸"
+
+#~ msgid "Moss Deer"
+#~ msgstr "苔鹿"
+
+#~ msgid "deer"
+#~ msgstr "鹿"
+
+#~ msgid "Lantern Hedgehog"
+#~ msgstr "灯笼刺猬"
+
+#~ msgid "hedgehog"
+#~ msgstr "刺猬"
+
+#~ msgid "Prism Heron"
+#~ msgstr "棱镜鹭"
+
+#~ msgid "heron"
+#~ msgstr "鹭"
+
+#~ msgid "Velvet Hare"
+#~ msgstr "天鹅绒野兔"
+
+#~ msgid "hare"
+#~ msgstr "野兔"
+
+#~ msgid "Press %d metal-heavy bales"
+#~ msgstr "压制 %d 个富含金属的捆包"
+
+#~ msgid "Press %d Perfect bales"
+#~ msgstr "压制 %d 个完美捆包"
+
+#~ msgid "Press %d Pure bales (one junk type)"
+#~ msgstr "压制 %d 个纯净捆包（单一废料）"
+
+#~ msgid "Clean %d hexes"
+#~ msgstr "清理 %d 个六角格"
+
+#~ msgid "Scoop %d pieces of junk"
+#~ msgstr "铲起 %d 块废料"
+
+#~ msgid "Dig up %d buried parts"
+#~ msgstr "挖出 %d 个埋藏的零件"
+
+#~ msgid "Reach a tier %d cleaning streak"
+#~ msgstr "达成 %d 级清理连击"
+
+#~ msgid "Plant %d sprouts"
+#~ msgstr "种下 %d 株嫩芽"
+
+#~ msgid "Grow %d plants to bloom"
+#~ msgstr "让 %d 株植物开花"
+
+#~ msgid "Get %d more hexes to Sustained"
+#~ msgstr "让另外 %d 个六角格达到稳定"
+
+#~ msgid "Get one more hex to Sustained"
+#~ msgstr "让再一个六角格达到稳定"
+
+#~ msgid "Brass Compass"
+#~ msgstr "黄铜罗盘"
+
+#~ msgid "Points north, mostly. Came wrapped in a sock in a supply crate."
+#~ msgstr "大体上指向北方。装在补给箱里，用一只袜子裹着。"
+
+#~ msgid "Wind-up Tin Robot"
+#~ msgstr "发条铁皮机器人"
+
+#~ msgid "Walks three steps and falls over. Lumi relates."
+#~ msgstr "走三步就摔倒。Lumi 深有同感。"
+
+#~ msgid "Seed Locket"
+#~ msgstr "种子吊坠"
+
+#~ msgid "A locket with one seed inside instead of a photo. Someone loved gardens."
+#~ msgstr "一个吊坠，里面放的不是照片，而是一颗种子。曾经有人很爱花园。"
+
+#~ msgid "A tiny city under glass, still clean. A promise, maybe."
+#~ msgstr "玻璃下的一座小小城市，依然干净。也许是一个承诺。"
+
+#~ msgid "Cradle Crate Stencil"
+#~ msgstr "Cradle号货箱模板"
+
+#~ msgid "The stencil used to paint every supply crate. WREN asked for it back. You said no."
+#~ msgstr "用来给每个补给箱喷字的模板。WREN 想要回去。你说了不。"
+
+#~ msgid "Golden Bolt"
+#~ msgstr "金色螺栓"
+
+#~ msgid "Fell out of a surge hex, still warm. Fits nothing. Worth everything."
+#~ msgstr "从热潮六角格里掉出来的，还热乎着。哪儿都装不上。却价值连城。"
+
+#~ msgid "Surge Glass"
+#~ msgstr "热潮玻璃"
+
+#~ msgid "A sliver of glass that kept the surge's glow. It hums when you hold it."
+#~ msgstr "一片留住了热潮光芒的玻璃碎片。握着它时会嗡嗡响。"
+
+#~ msgid "Jar of First Rain"
+#~ msgstr "第一场雨之瓶"
+
+#~ msgid "Collected during the first rain in years. Do not drink. Do not open. Just look."
+#~ msgstr "多年来第一场雨时收集的。不要喝。不要打开。看看就好。"
+
+#~ msgid "Paper Boat"
+#~ msgstr "纸船"
+
+#~ msgid "Someone made it from a coupon. It sailed a whole puddle."
+#~ msgstr "有人用一张优惠券折的。它航行过了整个水坑。"
+
+#~ msgid "Lucky Spanner"
+#~ msgstr "幸运扳手"
+
+#~ msgid "Fixes any hiccup, if you hit the right spot. Usually the left side."
+#~ msgstr "只要敲对地方，什么嗝都能治好。通常是左边。"
+
+#~ msgid "Diagnostic Tape"
+#~ msgstr "诊断纸带"
+
+#~ msgid "A printout of a robot hiccuping. It looks a lot like a song."
+#~ msgstr "一张机器人打嗝的打印记录。看起来很像一首歌。"
+
+#~ msgid "Photo: Glowtail Fox"
+#~ msgstr "照片：光尾狐"
+
+#~ msgid "Its tail glows when it's curious. It was very curious about Lumi."
+#~ msgstr "它好奇时尾巴会发光。它对 Lumi 非常好奇。"
+
+#~ msgid "Photo: Moss Deer"
+#~ msgstr "照片：苔鹿"
+
+#~ msgid "Moss grows on its antlers. Butterflies rest there like it's a tree."
+#~ msgstr "它的角上长着苔藓。蝴蝶像停在树上一样在那里休息。"
+
+#~ msgid "Photo: Lantern Hedgehog"
+#~ msgstr "照片：灯笼刺猬"
+
+#~ msgid "The tips of its spines glow amber at dusk. It ate a beetle on camera. Sorry."
+#~ msgstr "黄昏时它的刺尖会发出琥珀色的光。它当着镜头吃了一只甲虫。抱歉。"
+
+#~ msgid "Photo: Prism Heron"
+#~ msgstr "照片：棱镜鹭"
+
+#~ msgid "Its feathers split light into rainbows. It stood on one leg the whole time."
+#~ msgstr "它的羽毛能把光分成彩虹。它全程都单脚站着。"
+
+#~ msgid "Photo: Velvet Hare"
+#~ msgstr "照片：天鹅绒野兔"
+
+#~ msgid "Soft as a whisper, quick as a rumour. The photo is a little blurry. Worth it."
+#~ msgstr "柔得像耳语，快得像谣言。照片有点糊。但值得。"
+
+#~ msgid "Crumb Bag"
+#~ msgstr "面包屑袋"
+
+#~ msgid "A paper bag of crumbs and seed husks. The pigeons know the sound of it now."
+#~ msgstr "一个装满面包屑和种子壳的纸袋。鸽子们现在已经认得它的沙沙声了。"
+
+#~ msgid "Photo: Stray Cat"
+#~ msgstr "照片：流浪猫"
+
+#~ msgid "A photo from photo mode. Old Town's cats never left."
+#~ msgstr "一张用拍照模式拍下的照片。老城区的猫从来没有离开过。"
+
+#~ msgid "Photo: Pigeon"
+#~ msgstr "照片：鸽子"
+
+#~ msgid "A photo from photo mode. Pigeons will live anywhere people once dropped crumbs."
+#~ msgstr "一张用拍照模式拍下的照片。只要人们曾经掉过面包屑的地方，鸽子都能住下。"
+
+#~ msgid "Photo: Sparrow"
+#~ msgstr "照片：麻雀"
+
+#~ msgid "A photo from photo mode. Small, brown and bossy."
+#~ msgstr "一张用拍照模式拍下的照片。又小又褐，还爱发号施令。"
+
+#~ msgid "Photo: Rat"
+#~ msgstr "照片：老鼠"
+
+#~ msgid "A photo from photo mode. Rats live in the gaps between the piles."
+#~ msgstr "一张用拍照模式拍下的照片。老鼠住在废料堆之间的缝隙里。"
+
+#~ msgid "Photo: Rabbit"
+#~ msgstr "照片：兔子"
+
+#~ msgid "A photo from photo mode. Rabbits arrive as soon as there is something green to nibble."
+#~ msgstr "一张用拍照模式拍下的照片。只要有绿色的东西可啃，兔子马上就来了。"
+
+#~ msgid "Photo: Roe Deer"
+#~ msgstr "照片：狍子"
+
+#~ msgid "A photo from photo mode. Shy grazers that keep to the edge of the green, where they can see what's coming."
+#~ msgstr "一张用拍照模式拍下的照片。害羞的食草动物，总待在绿地边缘，好看清有什么靠近。"
+
+#~ msgid "Photo: Red Fox"
+#~ msgstr "照片：赤狐"
+
+#~ msgid "A photo from photo mode. A fox trots along the hedges, nose down, tail out."
+#~ msgstr "一张用拍照模式拍下的照片。一只狐狸沿着树篱小跑，鼻子贴地，尾巴伸直。"
+
+#~ msgid "Photo: Honeybee"
+#~ msgstr "照片：蜜蜂"
+
+#~ msgid "A photo from photo mode. Bees came back with the blooms."
+#~ msgstr "一张用拍照模式拍下的照片。蜜蜂随着花朵一起回来了。"
+
+#~ msgid "Photo: Robin"
+#~ msgstr "照片：知更鸟"
+
+#~ msgid "A photo from photo mode. When a hex thrives, robins move in and sing."
+#~ msgstr "一张用拍照模式拍下的照片。六角格一旦繁茂起来，知更鸟就会搬来唱歌。"
+
+#~ msgid "Photo: Firefly"
+#~ msgstr "照片：萤火虫"
+
+#~ msgid "A photo from photo mode. Tiny green lanterns over the grass after dark."
+#~ msgstr "一张用拍照模式拍下的照片。天黑后，草地上方亮起一盏盏绿色的小灯笼。"
+
+#~ msgid "Photo: Lake Fish"
+#~ msgstr "照片：湖鱼"
+
+#~ msgid "A photo from photo mode. Once the water clears you can see them: small silver schools turning together over the sand."
+#~ msgstr "一张用拍照模式拍下的照片。湖水一清，你就能看见它们：一小群一小群银色的鱼在沙子上方一起转身。"
+
+#~ msgid "Photo: Mallard"
+#~ msgstr "照片：绿头鸭"
+
+#~ msgid "A photo from photo mode. Ducks paddle, dabble with their tails in the air and complain loudly about everything."
+#~ msgstr "一张用拍照模式拍下的照片。鸭子划着水，屁股朝天地觅食，还大声抱怨着一切。"
+
+#~ msgid "Photo: Green Frog"
+#~ msgstr "照片：青蛙"
+
+#~ msgid "A photo from photo mode. Frogs sit at the water's edge and sing in the evening."
+#~ msgstr "一张用拍照模式拍下的照片。青蛙坐在水边，傍晚时唱起歌来。"
+
+#~ msgid "Photo: Sand Lizard"
+#~ msgstr "照片：沙蜥"
+
+#~ msgid "A photo from photo mode. Lizards bask on swept ground between the solar arrays and vanish in a blink when a shadow falls on them."
+#~ msgstr "一张用拍照模式拍下的照片。蜥蜴在太阳能板阵列之间打扫过的地面上晒太阳，一有影子落下，就眨眼间消失不见。"
+
+#~ msgid "Photo: Fennec Fox"
+#~ msgstr "照片：耳廓狐"
+
+#~ msgid "A photo from photo mode. A tiny desert fox with enormous ears."
+#~ msgstr "一张用拍照模式拍下的照片。一只长着巨大耳朵的小小沙漠狐狸。"
+
+#~ msgid "Photo: Harbour Seal"
+#~ msgstr "照片：港海豹"
+
+#~ msgid "A photo from photo mode. Seals haul out on the quay once it's clean, lounge in heaps, and flop back to the water if you come too close."
+#~ msgstr "一张用拍照模式拍下的照片。码头一打扫干净，海豹就会爬上来，挤成一堆懒洋洋地躺着；你一靠近，它们就扑通滑回水里。"
+
+#~ msgid "Photo: Herring Gull"
+#~ msgstr "照片：银鸥"
+
+#~ msgid "A photo from photo mode. Loud, white and opportunistic."
+#~ msgstr "一张用拍照模式拍下的照片。吵闹、雪白、善于钻空子。"
+
+#~ msgid "Photo: Arctic Fox"
+#~ msgstr "照片：北极狐"
+
+#~ msgid "A photo from photo mode. White as the snow it hunts on."
+#~ msgstr "一张用拍照模式拍下的照片。白得像它捕猎时踩着的雪。"
+
+#~ msgid "Photo: Grey Heron"
+#~ msgstr "照片：苍鹭"
+
+#~ msgid "A photo from photo mode. Herons stand perfectly still at the water's edge, then strike."
+#~ msgstr "一张用拍照模式拍下的照片。苍鹭一动不动地站在水边，然后猛地出击。"
+
+#~ msgid "Photo: Pond Turtle"
+#~ msgstr "照片：池龟"
+
+#~ msgid "A photo from photo mode. Turtles cruise the drowned streets with their heads up, as if they've always lived here."
+#~ msgstr "一张用拍照模式拍下的照片。乌龟昂着头在被淹没的街道上巡游，好像它们一直住在这里似的。"
+
+#~ msgid "Photo: Cradle Crane"
+#~ msgstr "照片：Cradle 鹤"
+
+#~ msgid "A photo from photo mode. White cranes circle high over the landing city on slow wingbeats."
+#~ msgstr "一张用拍照模式拍下的照片。白鹤扇着缓慢的翅膀，在着陆之城的高空盘旋。"
+
+#~ msgid "Maker's Badge"
+#~ msgstr "造物者徽章"
+
+#~ msgid "Pinned inside a Legendary part: 'Built to be fixed.'"
+#~ msgstr "别在一个传说零件里面：“造出来就是为了被修好。”"
+
+#~ msgid "Signal Crystal"
+#~ msgstr "信号水晶"
+
+#~ msgid "The thing that was pinging. It still pings, very quietly, when you're happy."
+#~ msgstr "一直在发信号的那个东西。你开心的时候，它还会非常轻地发信号。"
+
+#~ msgid "APPROVED Stamp"
+#~ msgstr "“批准”印章"
+
+#~ msgid "The Ledger's rubber stamp. It now only says APPROVED. It's very proud of that."
+#~ msgstr "Ledger 的橡皮图章。现在它只会盖“批准”。它为此非常自豪。"
+
+#~ msgid "Race Propeller"
+#~ msgstr "竞速螺旋桨"
+
+#~ msgid "A souvenir from the audit drone. It insists the race was close."
+#~ msgstr "审计无人机送的纪念品。它坚持说那场比赛很接近。"
+
+#~ msgid "Streak Medal"
+#~ msgstr "连击奖章"
+
+#~ msgid "Earned for a max-tier cleaning streak. Scoop scoop scoop."
+#~ msgstr "达成最高级清理连击时获得。铲铲铲。"
+
+#~ msgid "Lumi's First Lens Cap"
+#~ msgstr "Lumi 的第一个镜头盖"
+
+#~ msgid "Lumi Level 10. The cap Lumi wore on the ark, scuffed and kept anyway."
+#~ msgstr "Lumi 等级 10。Lumi 在方舟上戴过的镜头盖，磨花了，还是留着。"
+
+#~ msgid "Seed-Keeper Pin"
+#~ msgstr "守种者徽章"
+
+#~ msgid "Lumi Level 20. A little enamel sprout. The ark gave these to its gardeners."
+#~ msgstr "Lumi 等级 20。一个小小的珐琅嫩芽。方舟会把它送给园丁们。"
+
+#~ msgid "Tread Charm"
+#~ msgstr "履带护身符"
+
+#~ msgid "Lumi Level 30. A brass bell for the treads. It jingles on every bump."
+#~ msgstr "Lumi 等级 30。挂在履带上的黄铜铃铛。每次颠簸都会叮当作响。"
+
+#~ msgid "Pocket Star Chart"
+#~ msgstr "袖珍星图"
+
+#~ msgid "Lumi Level 40. The ark's route home, folded small. One star is circled."
+#~ msgstr "Lumi 等级 40。方舟的回家路线，折得小小的。有一颗星被圈了起来。"
+
+#~ msgid "Glow Ribbon"
+#~ msgstr "发光丝带"
+
+#~ msgid "Lumi Level 50. A ribbon that holds a little light. Lumi ties it to the antenna."
+#~ msgstr "Lumi 等级 50。一条能存住一点光的丝带。Lumi 把它系在天线上。"
+
+#~ msgid "Contract Pen"
+#~ msgstr "委托之笔"
+
+#~ msgid "Your first contract signed. The pen has a tiny leaf on top."
+#~ msgstr "你签下的第一份委托。笔顶有一片小小的叶子。"
+
+#~ msgid "Foreman's Clipboard"
+#~ msgstr "工头的写字板"
+
+#~ msgid "Ten contracts done. Every box ticked, every box green."
+#~ msgstr "完成了十个委托。每个格子都打了勾，每个格子都是绿的。"
+
+#~ msgid "Contractor's Crown"
+#~ msgstr "承包商之冠"
+
+#~ msgid "Twenty-five contracts. The crown is a bent can. You wear it anyway."
+#~ msgstr "二十五个委托。王冠是一个压弯的罐头。你还是戴上了。"
+
+#~ msgid "Rubber Frog"
+#~ msgstr "橡皮青蛙"
+
+#~ msgid "Squeaks in a minor key."
+#~ msgstr "用小调吱吱叫。"
+
+#~ msgid "Tiny Cactus"
+#~ msgstr "迷你仙人掌"
+
+#~ msgid "Needs no water. Mocks the Drips."
+#~ msgstr "不需要水。嘲笑 Drip。"
+
+#~ msgid "Holo Koi"
+#~ msgstr "全息锦鲤"
+
+#~ msgid "A hologram fish that swims round your hopper."
+#~ msgstr "一条绕着你的料斗游动的全息鱼。"
+
+#~ msgid "Moon Rock"
+#~ msgstr "月岩"
+
+#~ msgid "Not from the moon. From a parking lot. Still beautiful."
+#~ msgstr "不是来自月球。来自停车场。依然很美。"
+
+#~ msgid "Crate inbound. From... me? I don't remember sending that. Open it."
+#~ msgstr "箱子来了。寄件人……是我？我不记得寄过。打开看看。"
+
+#~ msgid "Supply drop! I found an old Cradle pod still in orbit and nudged it down."
+#~ msgstr "补给空投！我找到一个还在轨道上的 Cradle号旧舱，轻轻推了它一下。"
+
+#~ msgid "Another care package. I've been saving them for good days. This is one."
+#~ msgstr "又一个爱心包裹。我一直留着它们给好日子。今天就是。"
+
+#~ msgid "One of your helpers is stuck. Hic."
+#~ msgstr "你的一个帮手卡住了。嗝。"
+
+#~ msgid "{robot} has the hiccups. Try a firm pat on the chassis."
+#~ msgstr "{robot} 打嗝了。试着在底盘上用力拍一下。"
+
+#~ msgid "{robot} needs you. Gently, they're sensitive."
+#~ msgstr "{robot} 需要你。轻一点，它们很敏感。"
+
+#~ msgid "Something alive is moving out there. Not a robot."
+#~ msgstr "外面有活的东西在动。不是机器人。"
+
+#~ msgid "A visitor! Go slowly. Take a picture, it lasts longer."
+#~ msgstr "有访客！慢慢来。拍张照，留得更久。"
+
+#~ msgid "The thriving hexes are calling things home. Look."
+#~ msgstr "繁茂的六角格在召唤生命回家。看。"
+
+#~ msgid "Contract complete. Collect at the workbench."
+#~ msgstr "委托完成。去工作台领取。"
+
+#~ msgid "Another contract done. Tokens are waiting."
+#~ msgstr "又完成一个委托。代币在等你。"
+
+#~ msgid "Contract fulfilled. The board's lit up green."
+#~ msgstr "委托达成。面板亮绿灯了。"
+
+#~ msgid "Trinkets and Curios"
+#~ msgstr "小玩意与珍奇"
+
+#~ msgid "World events, requests, streaks and Curio Capsules."
+#~ msgstr "世界事件、委托、连击和珍奇胶囊。"
+
+#~ msgid "Workbench, Upgrades tab. It opens the Request Board."
+#~ msgstr "工作台，升级页签。可开放委托板。"
+
+#~ msgid "Lunar Silver"
+#~ msgstr "月银"
+
+#~ msgid "Tangerine"
+#~ msgstr "橘色"
+
+#~ msgid "Chrome"
+#~ msgstr "镀铬"
+
+#~ msgid "Workbench Mk IV: Request Board"
+#~ msgstr "工作台 Mk IV：委托板"
+
+#~ msgid "Adds a request board. Take on jobs for tokens and rare parts."
+#~ msgstr "加装委托板。接下委托，换取代币和稀有零件。"
+
+#~ msgid "...pretty..."
+#~ msgstr "……真好看……"
+
+#~ msgid "You're decorating. I approve. The cats are going to approve more."
+#~ msgstr "你在装饰呀。我赞成。猫咪们会更赞成。"
+
+#~ msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
+#~ msgstr "一张长椅，一盏灯，一座喷泉。这里开始像一个人们会想回来的地方了。"
 
 #~ msgid "Bigger engines and a new canopy. Cells refill in a minute; cargo pods carry 2.5x, more often."
 #~ msgstr "更大的引擎和新的座舱盖。电池一分钟充满；货运舱载量 2.5 倍，频率更高。"

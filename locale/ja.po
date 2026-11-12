@@ -106,7 +106,7 @@ msgstr "ツール：植える"
 msgid "Tool: water"
 msgstr "ツール：水やり"
 
-#: autoload/Settings.gd:19 ui/upgrades_screen.gd:13
+#: autoload/Settings.gd:19 ui/upgrades_screen.gd:12
 msgid "Upgrades"
 msgstr "アップグレード"
 
@@ -210,67 +210,67 @@ msgstr "タッチパッド"
 msgid "Paddle 1"
 msgstr "パドル1"
 
-#: autoload/Settings.gd:524
+#: autoload/Settings.gd:523
 msgid "LMB"
 msgstr "左クリック"
 
-#: autoload/Settings.gd:525
+#: autoload/Settings.gd:524
 msgid "RMB"
 msgstr "右クリック"
 
-#: autoload/Settings.gd:526
+#: autoload/Settings.gd:525
 msgid "MMB"
 msgstr "中クリック"
 
-#: autoload/Settings.gd:527
+#: autoload/Settings.gd:526
 msgid "Wheel up"
 msgstr "ホイール上"
 
-#: autoload/Settings.gd:528
+#: autoload/Settings.gd:527
 msgid "Wheel down"
 msgstr "ホイール下"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:528
 msgid "Mouse %d"
 msgstr "マウス %d"
 
-#: autoload/Settings.gd:531
+#: autoload/Settings.gd:530
 msgid "Button %d"
 msgstr "ボタン %d"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:535
 msgid "LS left"
 msgstr "Lスティック左"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:535
 msgid "LS right"
 msgstr "Lスティック右"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:536
 msgid "LS up"
 msgstr "Lスティック上"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:536
 msgid "LS down"
 msgstr "Lスティック下"
 
-#: autoload/Settings.gd:538
+#: autoload/Settings.gd:537
 msgid "RS left"
 msgstr "Rスティック左"
 
-#: autoload/Settings.gd:538
+#: autoload/Settings.gd:537
 msgid "RS right"
 msgstr "Rスティック右"
 
-#: autoload/Settings.gd:539
+#: autoload/Settings.gd:538
 msgid "RS up"
 msgstr "Rスティック上"
 
-#: autoload/Settings.gd:539
+#: autoload/Settings.gd:538
 msgid "RS down"
 msgstr "Rスティック下"
 
-#: autoload/Settings.gd:550
+#: autoload/Settings.gd:549
 msgid "hold %s"
 msgstr "%s長押し"
 
@@ -482,7 +482,7 @@ msgstr "ベール3個に1個をリサイクラーへ"
 msgid "Every %dth bale to the recycler"
 msgstr "ベール%d個に1個をリサイクラーへ"
 
-#: automation/trash_bin.gd:93 systems/camp/camp.gd:385 systems/camp/field_benches.gd:77
+#: automation/trash_bin.gd:93 systems/camp/camp.gd:378 systems/camp/field_benches.gd:77
 #: systems/camp/hub_builds.gd:91 systems/camp/hub_builds.gd:156 systems/camp/hub_builds.gd:166
 #: systems/camp/hub_builds.gd:176 systems/camp/yard_builds.gd:97 systems/crew/robot_chain.gd:162
 msgid "Not enough materials."
@@ -517,7 +517,7 @@ msgstr "ここには入るものがない。[%s] でベールを作ろう。"
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "ベーラーはまだない。胸のゴミをゴミ箱へ運ぼう。"
 
-#: core/pace.gd:315 systems/events.gd:486 ui/goals_panel.gd:125
+#: core/pace.gd:315 systems/events.gd:444 ui/goals_panel.gd:125
 msgid "+%s cubes"
 msgstr "+%s キューブ"
 
@@ -533,21 +533,17 @@ msgstr "E   ネコをなでる"
 msgid "E   scatter crumbs for the birds"
 msgstr "E   鳥にパンくずをまく"
 
-#: fauna/fauna.gd:1633
-msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
-msgstr "鳥たちはきみを気に入ったみたい。パンくず袋をコレクションに追加した。"
-
-#: fauna/fauna.gd:1689
+#: fauna/fauna.gd:1687
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "このネコはきみを自分のものだと決めたらしい。%s だよ。これからはこの基地で暮らすって。"
 
-#: fauna/fauna.gd:2010 ui/subtitles.gd:455
+#: fauna/fauna.gd:2008 ui/subtitles.gd:455
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "新しく発見：%s。図鑑に追加されたよ。"
 
-#: fauna/fauna.gd:2081
-msgid "Snap! A %s for your Collection."
-msgstr "パシャ！%s の写真をコレクションに追加。"
+#: fauna/fauna.gd:2078
+msgid "Snap! A first photo of a %s."
+msgstr ""
 
 #: planet/cd_finds.gd:184
 msgid "A scratched CD turned up in the rubble."
@@ -1118,7 +1114,7 @@ msgstr "ここには建てられない"
 msgid "Not on the lake"
 msgstr "湖の上には置けない"
 
-#: robots/water_net.gd:141 systems/decor.gd:185
+#: robots/water_net.gd:141
 msgid "Clean this hex first"
 msgstr "まずこのヘックスを片づけよう"
 
@@ -1134,7 +1130,7 @@ msgstr "ほかのタンクに近すぎる"
 msgid "Water Tank placed. Waterers nearby will refill here."
 msgstr "給水タンクを設置。近くの水やりロボはここで補給する。"
 
-#: robots/water_net.gd:308 ui/hotbar.gd:34
+#: robots/water_net.gd:308 ui/hotbar.gd:33
 msgid "WATER"
 msgstr "水"
 
@@ -1170,47 +1166,47 @@ msgstr "Tab：役割 · 左：塗る · 右：消す · 中：ロボットを送
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s 組み立て完了。きょろきょろしてから、仕事に取りかかった。"
 
-#: scenes/slice.gd:116
+#: scenes/slice.gd:114
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "ロック中。発射台を建てるには基地をレベル5に上げよう。"
 
-#: scenes/slice.gd:119 ui/rockets_panel.gd:38
+#: scenes/slice.gd:117 ui/rockets_panel.gd:38
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "エネルギーセル充電中：%s。ロケットのアップグレードで充電が速くなる。"
 
-#: scenes/slice.gd:271
+#: scenes/slice.gd:269
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨基地 %d · Lv%d"
 
-#: scenes/slice.gd:271
+#: scenes/slice.gd:269
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨基地 %d · 廃墟"
 
-#: scenes/slice_orbit.gd:376
+#: scenes/slice_orbit.gd:375
 msgid "HEX CLEAN!"
 msgstr "ヘックスきれい！"
 
-#: scenes/slice_orbit.gd:392
+#: scenes/slice_orbit.gd:391
 msgid "Milestone: %d hexes clean!"
 msgstr "マイルストーン：きれいなヘックス %d 個！"
 
-#: scenes/slice_orbit.gd:609 systems/camp/field_bench_sites.gd:177
+#: scenes/slice_orbit.gd:608 systems/camp/field_bench_sites.gd:177
 msgid "E   Open the field bench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:614 systems/camp/camp.gd:189 tools/orbit_roundtrip.gd:621
+#: scenes/slice_orbit.gd:613 systems/camp/camp.gd:185 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   作業台を直す"
 
-#: scenes/slice_orbit.gd:614 systems/camp/camp.gd:190
+#: scenes/slice_orbit.gd:613 systems/camp/camp.gd:186
 msgid "E   Open the workbench"
 msgstr "E   作業台を開く"
 
-#: scenes/slice_orbit.gd:1139
+#: scenes/slice_orbit.gd:1117
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice_orbit.gd:1241
+#: scenes/slice_orbit.gd:1219
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "作業台を修理した。作業台で E を押すとキューブでアップグレードできる。"
 
@@ -1238,7 +1234,7 @@ msgstr "基地は体験版で行けるところまで育った。"
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "製品版では、Lumi は基地をレベル5まで育て、地区まるごと緑で満たし、明るい未来都市へと成長させ、ロケットで星じゅうの数十の基地へ飛んでいきます。体験版の進行状況は引き継がれます。"
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:765 ui/end_screen.gd:99
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:700 ui/end_screen.gd:99
 msgid "Hexes cleaned"
 msgstr "片づけたヘックス"
 
@@ -1246,11 +1242,11 @@ msgstr "片づけたヘックス"
 msgid "Bales made"
 msgstr "作ったベール"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:780 ui/end_screen.gd:101
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:715 ui/end_screen.gd:101
 msgid "Robots built"
 msgstr "作ったロボット"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:788 ui/end_screen.gd:98
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:723 ui/end_screen.gd:98
 msgid "Time played"
 msgstr "プレイ時間"
 
@@ -1270,7 +1266,7 @@ msgstr "タイトル画面"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "プレイを続ける：最初の地区は基地レベル %d のまま遊べます。"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:857 ui/main_menu.gd:444
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:792 ui/main_menu.gd:444
 msgid "%dh %02dm"
 msgstr "%d時間%02d分"
 
@@ -1694,8 +1690,7 @@ msgstr ""
 "\n"
 "Ledger はもう私たちの味方。ジャマーは音楽に合わせてハミングしているだけ。"
 
-#: story/ledger.gd:305 systems/decor.gd:119 systems/research.gd:213
-#: ui/stations_panel.gd:100
+#: story/ledger.gd:305 systems/research.gd:213 ui/stations_panel.gd:100
 msgid "Needs %s"
 msgstr "%s が必要"
 
@@ -1723,7 +1718,7 @@ msgstr "ドローンがガラクタを少し捨てていった。すくうか、
 msgid "SEEDS · PAID IN FULL"
 msgstr "種 · 全額支払済み"
 
-#: story/ledger.gd:703 systems/events.gd:494 systems/lumi_level.gd:224
+#: story/ledger.gd:703 systems/events.gd:452
 msgid "+%d seeds"
 msgstr "+%d 種"
 
@@ -1999,215 +1994,59 @@ msgstr " · %s"
 msgid "Any district"
 msgstr "どの地区でも"
 
-#: systems/collection.gd:59
-msgid "New for your Collection: %s. See it in the Codex (K)."
-msgstr "コレクションに追加：%s。図鑑（K）で見られます。"
-
-#: systems/collection.gd:84
-msgid "Supply Drops"
-msgstr "補給物資の投下"
-
-#: systems/collection.gd:85
-msgid "Salvage Glints"
-msgstr "サルベージの輝き"
-
-#: systems/collection.gd:86
-msgid "Rain Showers"
-msgstr "にわか雨"
-
-#: systems/collection.gd:87
-msgid "Robot Hiccups"
-msgstr "ロボットのしゃっくり"
-
-#: systems/collection.gd:88
-msgid "Wildlife Photos"
-msgstr "生き物の写真"
-
-#: systems/collection.gd:89
-msgid "Animal Photos"
-msgstr "動物の写真"
-
-#: systems/collection.gd:90
-msgid "Rare Part Signals"
-msgstr "レアパーツの信号"
-
-#: systems/collection.gd:91
-msgid "Ledger Audits"
-msgstr "Ledger の監査"
-
-#: systems/collection.gd:92
-msgid "Cleaning Streaks"
-msgstr "清掃コンボ"
-
-#: systems/collection.gd:93
-msgid "Lumi Levels"
-msgstr "Lumi のレベル"
-
-#: systems/collection.gd:94 ui/contracts_panel.gd:25 ui/upgrades_screen.gd:18
-msgid "Requests"
-msgstr "依頼"
-
-#: systems/collection.gd:95
-msgid "Curio Capsules"
-msgstr "珍品カプセル"
-
-#: systems/contracts.gd:227
-msgid "Curio Capsule"
-msgstr "珍品カプセル"
-
-#: systems/contracts.gd:294
-msgid "Request complete: %s. Claim it at the workbench."
-msgstr "依頼達成：%s。作業台で受け取ろう。"
-
-#: systems/contracts.gd:300
-msgid "A request ran out of time. No harm done; a new one will be posted soon."
-msgstr "依頼の時間切れ。問題なし。すぐに新しい依頼が来る。"
-
-#: systems/contracts.gd:308
-msgid "New at the workbench: the Requests board. Small jobs, real rewards."
-msgstr "作業台に新機能：依頼ボード。小さな仕事、ちゃんとした報酬。"
-
-#: systems/contracts.gd:311
-msgid "The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."
-msgstr "中継器がやっとクレイドルの古い作業指示を拾えるようになったわ。作業台の依頼ボードにあるよ。"
-
-#: systems/contracts.gd:396
-msgid "Request done: %s."
-msgstr "依頼完了：%s。"
-
-#: systems/contracts.gd:442
-msgid "Requests reward: %s."
-msgstr "依頼の報酬：%s。"
-
-#: systems/decor.gd:117
-msgid "Needs %d Collection finds (%d so far)"
-msgstr "コレクションの発見が %d 必要（いまは %d）"
-
-#: systems/decor.gd:178
-msgid "Too close to the base machines"
-msgstr "基地の機械に近すぎる"
-
-#: systems/decor.gd:180 systems/decor.gd:189
-msgid "Something is already here"
-msgstr "ここにはもう何か置いてある"
-
-#: systems/decor.gd:183
-msgid "That's water"
-msgstr "そこは水だよ"
-
-#: systems/decor.gd:187
-msgid "Frozen in"
-msgstr "凍っている"
-
 #: systems/designs.gd:132
 msgid "Set: %s"
 msgstr "セット：%s"
 
-#: systems/event_props.gd:154
-msgid "CRADLE · SUPPLY"
-msgstr "CRADLE号 · 補給"
-
-#: systems/events.gd:446
+#: systems/events.gd:418
 msgid "STREAK x%d  +%d%%"
 msgstr "コンボ x%d  +%d%%"
 
-#: systems/events.gd:632
-msgid "%d pieces of junk left around the crate"
-msgstr "箱のまわりにガラクタが残り %d 個"
-
-#: systems/events.gd:657
-msgid "Supply crate opened: %s"
-msgstr "補給箱を開けた：%s"
-
-#: systems/events.gd:659
-msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
-msgstr "補給箱のビーコンが時間切れになり、ドローンが引き上げていった。また来るよ。"
-
-#: systems/events.gd:708
+#: systems/events.gd:557
 msgid "%d pieces grabbed at 3x"
 msgstr "3倍で %d 個ゲット"
 
-#: systems/events.gd:713
+#: systems/events.gd:560
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "ラッシュが終わった。3倍の価値で %d 個ゲット。ベールにすると支払われる。"
 
-#: systems/events.gd:713
+#: systems/events.gd:560
 msgid "The surge faded. Next time!"
 msgstr "ラッシュが終わった。また次回！"
 
-#: systems/events.gd:762
+#: systems/events.gd:609
 msgid "Every plant is drinking"
 msgstr "すべての植物が水を飲んでいる"
 
-#: systems/events.gd:772
+#: systems/events.gd:619
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "雨が去っていく。大地が吸い込んだ：%s"
 
-#: systems/events.gd:793
-msgid "E   fix %s's hiccup"
-msgstr "E   %s のしゃっくりを治す"
-
-#: systems/events.gd:820
-msgid "%s is %d m away"
-msgstr "%s まで %d m"
-
-#: systems/events.gd:822
-msgid "%s shook off its hiccups on its own. It looks embarrassed."
-msgstr "%s はひとりでしゃっくりが止まった。ちょっと恥ずかしそう。"
-
-#: systems/events.gd:836
-msgid "%s is fixed and back to work. %s"
-msgstr "%s は修理されて仕事に戻った。%s"
-
-#: systems/events.gd:890
-msgid "Wildlife Visit: %s"
-msgstr "生き物がやってきた：%s"
-
-#: systems/events.gd:891
-msgid "E   take a photo of the %s"
-msgstr "E   %s の写真を撮る"
-
-#: systems/events.gd:925
-msgid "%s, %d m away"
-msgstr "%s、%d m 先"
-
-#: systems/events.gd:928
-msgid "The %s wandered off. It'll be back somewhere green."
-msgstr "%s はどこかへ行ってしまった。どこか緑のある場所にまた現れるよ。"
-
-#: systems/events.gd:958
-msgid "Snap! The %s is in your Collection. %s"
-msgstr "パシャ！%s がコレクションに入った。%s"
-
-#: systems/events.gd:958
-msgid "Snap! Another lovely shot of the %s. %s"
-msgstr "パシャ！%s のすてきな写真をもう一枚。%s"
-
-#: systems/events.gd:1009
+#: systems/events.gd:670
 msgid "Signal %d%%"
 msgstr "シグナル %d%%"
 
-#: systems/events.gd:1013
+#: systems/events.gd:674
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "あれがシグナルの正体：レアパーツが入った隠し場所。%s"
 
-#: systems/events.gd:1015
+#: systems/events.gd:676
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "シグナルが消えた。パーツはまだ下にある。探知機が見つけてくれる。"
 
-#: systems/events.gd:1082
+#: systems/events.gd:743
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr "監査   あなた %d  :  %d ドローン"
 
-#: systems/events.gd:1083
+#: systems/events.gd:744
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr "あなた %d  :  %d ドローン   ·   残り %d"
 
-#: systems/events.gd:1121
+#: systems/events.gd:782
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr "監査に勝利、%d 対 %d！Ledger が「承認」のスタンプを押した。%s"
 
-#: systems/events.gd:1125
+#: systems/events.gd:786
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "監査はドローンの勝ち、%d 対 %d。それでもチップを置いていった：+%s キューブ。"
 
@@ -2505,8 +2344,7 @@ msgid "Doesn't fit a %s"
 msgstr "%s には合わない"
 
 #: systems/robot_builder.gd:246 systems/robot_design.gd:68 ui/codex_screen.gd:340
-#: ui/codex_screen.gd:460 ui/codex_screen.gd:626 ui/codex_screen.gd:641
-#: ui/piece_row.gd:62
+#: ui/codex_screen.gd:460 ui/codex_screen.gd:582 ui/piece_row.gd:62
 msgid "Not found yet"
 msgstr "まだ見つかっていない"
 
@@ -2554,19 +2392,19 @@ msgstr "サージ"
 msgid "New CD: %s by %s, from %s"
 msgstr "新しいCD：%s（%s、%s出身）"
 
-#: systems/camp/camp.gd:234
+#: systems/camp/camp.gd:230
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "作業台が直った！そばで %s を押すとアップグレードを買える。"
 
-#: systems/camp/camp.gd:369
+#: systems/camp/camp.gd:362
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr "E   %s（Lv %d）：アップグレード完了"
 
-#: systems/camp/camp.gd:375
+#: systems/camp/camp.gd:368
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr "E   %s（Lv %d）：%s にアップグレード（%s）"
 
-#: systems/camp/camp.gd:381
+#: systems/camp/camp.gd:374
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "ゴミ箱をアップグレード：%s。ここではベールが %d%% で売れる。"
 
@@ -2674,43 +2512,7 @@ msgstr "基地レベル 5"
 msgid "Album: an \"after\" picture of %s (%s)."
 msgstr "アルバム：%s の「アフター」写真（%s）。"
 
-#: systems/extras/nursery.gd:90
-msgid "Build the Robot Nursery in the Build tab first."
-msgstr "先に建設タブでロボット保育所を建てよう。"
-
-#: systems/extras/nursery.gd:94
-msgid "Only Mk I-II robots retire early. %s can retire in %d min."
-msgstr "早めに引退できるのは Mk I-II のロボットだけ。%s はあと %d 分で引退できる。"
-
-#: systems/extras/nursery.gd:122
-msgid "%s retires to the nursery garden. +%d parts, and the flowers get a caretaker."
-msgstr "%s は苗床ガーデンで引退生活へ。+%d パーツ、花には世話係ができた。"
-
-#: systems/extras/nursery.gd:214
-msgid "E   Say hi to %s"
-msgstr "E   %s にあいさつ"
-
-#: systems/extras/nursery.gd:272
-msgid "CARETAKER · %s"
-msgstr "世話係 · %s"
-
-#: systems/extras/nursery.gd:319
-msgid "%s beeps hello and shows Lumi the marigolds."
-msgstr "%s はピッとあいさつして、Lumi にマリーゴールドを見せる。"
-
-#: systems/extras/nursery.gd:320
-msgid "%s is busy with the watering can, but waves anyway."
-msgstr "%s はじょうろで忙しいけど、それでも手を振る。"
-
-#: systems/extras/nursery.gd:321
-msgid "%s hums to the seedlings. Retirement suits it."
-msgstr "%s は苗に鼻歌を聞かせている。引退生活が似合う。"
-
-#: systems/extras/nursery.gd:322
-msgid "%s points proudly at a new bud."
-msgstr "%s は新しいつぼみを得意げに指さす。"
-
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:662
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:622
 msgid "E   CD player: %s"
 msgstr "E   CDプレーヤー：%s"
 
@@ -2734,7 +2536,7 @@ msgstr "ベールを約 %d 個プレスした"
 msgid "kept the base tidy"
 msgstr "基地をきれいに保った"
 
-#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:772
+#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:707
 msgid "Cubes earned"
 msgstr "稼いだキューブ"
 
@@ -2900,7 +2702,7 @@ msgid "Fewer %s"
 msgstr "%s を減らす"
 
 #: ui/bench_bots.gd:12 ui/build_panel.gd:102 ui/rig_panel.gd:193
-#: ui/robot_card.gd:114 ui/robot_card.gd:249 ui/upgrades_screen.gd:14
+#: ui/robot_card.gd:114 ui/robot_card.gd:249 ui/upgrades_screen.gd:13
 #: ui/yard_builds_panel.gd:17
 msgid "Build"
 msgstr "建造"
@@ -2926,8 +2728,7 @@ msgstr "Lumi"
 msgid "Machines"
 msgstr "機械"
 
-#: ui/bench_lists.gd:11 ui/globe_view.gd:176 ui/locker_panel.gd:288
-#: ui/upgrades_panel.gd:49
+#: ui/bench_lists.gd:11 ui/globe_view.gd:176 ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "ロケット"
 
@@ -3011,7 +2812,7 @@ msgstr "%sのがれきで彼らのCDを見つけよう。"
 msgid "Your CDs (%d / %d): %s"
 msgstr "持っているCD（%d / %d）：%s"
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:794
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:729
 msgid "Achievements"
 msgstr "実績"
 
@@ -3039,7 +2840,7 @@ msgstr "図鑑"
 msgid "Watch the story"
 msgstr "ストーリーを見る"
 
-#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:173
+#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:169
 msgid "Close  [%s]"
 msgstr "閉じる  [%s]"
 
@@ -3047,9 +2848,9 @@ msgstr "閉じる  [%s]"
 msgid "%d / %d curiosities"
 msgstr "珍品 %d / %d"
 
-#: ui/codex_screen.gd:207
-msgid "%d / %d collectibles"
-msgstr "コレクション %d / %d"
+#: ui/codex_screen.gd:207 ui/codex_screen.gd:491
+msgid "%d / %d complete"
+msgstr "%d / %d 完成"
 
 #: ui/codex_screen.gd:209
 msgid "%d / %d achievements"
@@ -3073,7 +2874,7 @@ msgstr ""
 msgid "CURIOSITIES"
 msgstr "珍品"
 
-#: ui/codex_screen.gd:370 ui/codex_screen.gd:491
+#: ui/codex_screen.gd:370
 msgid "%d / %d found"
 msgstr "%d / %d 発見"
 
@@ -3097,179 +2898,143 @@ msgstr "報酬：ちょっとしたサプライズ"
 msgid "COLLECTION"
 msgstr "コレクション"
 
-#: ui/codex_screen.gd:574
-msgid "LUMI'S COLLECTION"
-msgstr "Lumiのコレクション"
-
-#: ui/codex_screen.gd:575
-msgid "%d / %d complete"
-msgstr "%d / %d 完成"
-
-#: ui/codex_screen.gd:613
-msgid "TRINKETS AND CURIOS"
-msgstr "小物と珍品"
-
-#: ui/codex_screen.gd:625
+#: ui/codex_screen.gd:581
 msgid "EVERY PLANET"
 msgstr "すべての惑星"
 
-#: ui/codex_screen.gd:628 ui/codex_screen.gd:644
+#: ui/codex_screen.gd:584
 msgid "In your collection"
 msgstr "コレクション済み"
 
-#: ui/codex_screen.gd:630
+#: ui/codex_screen.gd:586
 msgid "Hint: %s"
 msgstr "ヒント：%s"
 
-#: ui/codex_screen.gd:649
-msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
-msgstr "ヒント：維持・繁栄したヘックスに、恥ずかしがりやの訪問者がやってくる。カメラを持っていこう。"
-
-#: ui/codex_screen.gd:650
-msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
-msgstr "ヒント：地面が癒えると動物が戻ってくる。フォトモード（P）で撮影しよう。"
-
-#: ui/codex_screen.gd:651
-msgid "Hint: finish %d requests (Requests tab at the workbench)."
-msgstr "ヒント：依頼を %d 件こなそう（作業台の依頼タブ）。"
-
-#: ui/codex_screen.gd:652
-msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
-msgstr "ヒント：珍品カプセルは、作業台の依頼の報酬トラックにある。"
-
-#: ui/codex_screen.gd:653
-msgid "Hint: keep scooping without stopping until the streak meter is full."
-msgstr "ヒント：コンボメーターがいっぱいになるまで休まずすくい続けよう。"
-
-#: ui/codex_screen.gd:654
-msgid "Hint: turns up during %s."
-msgstr "ヒント：%sのあいだに現れる。"
-
-#: ui/codex_screen.gd:723
+#: ui/codex_screen.gd:658
 msgid "Unlocked  ·  %s"
 msgstr "解除  ·  %s"
 
-#: ui/codex_screen.gd:762
+#: ui/codex_screen.gd:697
 msgid "Total"
 msgstr "合計"
 
-#: ui/codex_screen.gd:763
+#: ui/codex_screen.gd:698
 msgid "Junk removed"
 msgstr "取り除いたガラクタ"
 
-#: ui/codex_screen.gd:763
+#: ui/codex_screen.gd:698
 msgid "by type"
 msgstr "種類別"
 
-#: ui/codex_screen.gd:764 planets/verdance/data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:699 planets/verdance/data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "清掃"
 
-#: ui/codex_screen.gd:766
+#: ui/codex_screen.gd:701
 msgid "Hexes restored"
 msgstr "よみがえったヘックス"
 
-#: ui/codex_screen.gd:767
+#: ui/codex_screen.gd:702
 msgid "Bales pressed"
 msgstr "圧縮したベール"
 
-#: ui/codex_screen.gd:768
+#: ui/codex_screen.gd:703
 msgid "Pure bales"
 msgstr "ピュアベール"
 
-#: ui/codex_screen.gd:769
+#: ui/codex_screen.gd:704
 msgid "Perfect bales"
 msgstr "パーフェクトベール"
 
-#: ui/codex_screen.gd:770
+#: ui/codex_screen.gd:705
 msgid "Lumpy bales"
 msgstr "でこぼこベール"
 
-#: ui/codex_screen.gd:771
+#: ui/codex_screen.gd:706
 msgid "Bales cashed in"
 msgstr "換金したベール"
 
-#: ui/codex_screen.gd:774 ui/globe_view.gd:153 planets/verdance/data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:709 ui/globe_view.gd:153 planets/verdance/data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "栽培"
 
-#: ui/codex_screen.gd:775
+#: ui/codex_screen.gd:710
 msgid "Seeds planted"
 msgstr "植えた種"
 
-#: ui/codex_screen.gd:776
+#: ui/codex_screen.gd:711
 msgid "Plants bloomed"
 msgstr "咲いた植物"
 
-#: ui/codex_screen.gd:777
+#: ui/codex_screen.gd:712
 msgid "Air filtered"
 msgstr "ろ過した空気"
 
-#: ui/codex_screen.gd:779 planets/verdance/data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:714 planets/verdance/data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "ロボット"
 
-#: ui/codex_screen.gd:781
+#: ui/codex_screen.gd:716
 msgid "Bales by robots"
 msgstr "ロボットのベール"
 
-#: ui/codex_screen.gd:782
+#: ui/codex_screen.gd:717
 msgid "Parts dug up"
 msgstr "掘り出したパーツ"
 
-#: ui/codex_screen.gd:784
+#: ui/codex_screen.gd:719
 msgid "Exploring"
 msgstr "探索"
 
-#: ui/codex_screen.gd:785
+#: ui/codex_screen.gd:720
 msgid "Distance rolled"
 msgstr "走った距離"
 
-#: ui/codex_screen.gd:786
+#: ui/codex_screen.gd:721
 msgid "Memory shards read"
 msgstr "読んだメモリーの破片"
 
-#: ui/codex_screen.gd:787
+#: ui/codex_screen.gd:722
 msgid "Codex entries"
 msgstr "図鑑の項目"
 
-#: ui/codex_screen.gd:790
+#: ui/codex_screen.gd:725
 msgid "Progress"
 msgstr "進行状況"
 
-#: ui/codex_screen.gd:791
+#: ui/codex_screen.gd:726
 msgid "Upgrades bought"
 msgstr "購入したアップグレード"
 
-#: ui/codex_screen.gd:792
+#: ui/codex_screen.gd:727
 msgid "Field notes logged"
 msgstr "記録したフィールドノート"
 
-#: ui/codex_screen.gd:793
+#: ui/codex_screen.gd:728
 msgid "Research done"
 msgstr "完了した研究"
 
-#: ui/codex_screen.gd:795
+#: ui/codex_screen.gd:730
 msgid "Best hub level"
 msgstr "最高基地レベル"
 
-#: ui/codex_screen.gd:845
+#: ui/codex_screen.gd:780
 msgid "%s kg"
 msgstr "%s kg"
 
-#: ui/codex_screen.gd:846
+#: ui/codex_screen.gd:781
 msgid "%.1f kg"
 msgstr "%.1f kg"
 
-#: ui/codex_screen.gd:850
+#: ui/codex_screen.gd:785
 msgid "%.2f km"
 msgstr "%.2f km"
 
-#: ui/codex_screen.gd:860
+#: ui/codex_screen.gd:795
 msgid "%dm %02ds"
 msgstr "%d分%02d秒"
 
-#: ui/codex_screen.gd:861
+#: ui/codex_screen.gd:796
 msgid "%ds"
 msgstr "%d秒"
 
@@ -3442,32 +3207,6 @@ msgstr "ロボット %d 台"
 msgid "%d / %d hexes clean"
 msgstr "きれいなヘックス %d / %d"
 
-#: ui/contracts_panel.gd:75
-msgid "%d done"
-msgid_plural "%d done"
-msgstr[0] "%d件完了"
-
-#: ui/contracts_panel.gd:80
-msgid "Live now:  %s  ·  %s  ·  %s left"
-msgstr "開催中：  %s  ·  %s  ·  残り%s"
-
-#: ui/contracts_panel.gd:83
-msgid "Every reward unlocked. Each %d more requests pay a Vintage part's worth of parts."
-msgstr "報酬はすべて解放済み。依頼を%d件こなすごとにヴィンテージ部品1個分のパーツがもらえます。"
-
-#: ui/contracts_panel.gd:86
-msgid "Next unlock in %d request:  %s"
-msgid_plural "Next unlock in %d requests:  %s"
-msgstr[0] "次の解放まで依頼%d件：  %s"
-
-#: ui/contracts_panel.gd:117
-msgid "A new request is on its way"
-msgstr "新しい依頼が届きます"
-
-#: ui/contracts_panel.gd:143
-msgid "Claim"
-msgstr "受け取る"
-
 #: ui/core_meter.gd:22
 msgid "BLOOM CORE"
 msgstr "ブルームコア"
@@ -3544,17 +3283,9 @@ msgstr "復興した都市"
 msgid "%d of %d"
 msgstr "%d／%d"
 
-#: ui/event_hud.gd:127
+#: ui/event_hud.gd:123
 msgid "STREAK"
 msgstr "コンボ"
-
-#: ui/event_hud.gd:192
-msgid "REQUEST READY  ·  claim it at the workbench"
-msgstr "依頼完了  ·  作業台で受け取ろう"
-
-#: ui/event_hud.gd:192
-msgid "%d REQUESTS READY  ·  claim them at the workbench"
-msgstr "依頼 %d 件完了  ·  作業台で受け取ろう"
 
 #: ui/extras_cd_list.gd:64
 msgid "CDS  ·  %d / %d"
@@ -3644,121 +3375,61 @@ msgstr "CDプレーヤー"
 msgid "Album"
 msgstr "アルバム"
 
-#: ui/extras_panel.gd:9
-msgid "Nursery"
-msgstr "苗床"
-
-#: ui/extras_panel.gd:79
+#: ui/extras_panel.gd:76
 msgid "KEEPSAKES"
 msgstr "思い出"
 
-#: ui/extras_panel.gd:91
+#: ui/extras_panel.gd:88
 msgid "%s / %s  switch tabs"
 msgstr "%s / %s  タブ切り替え"
 
-#: ui/extras_panel.gd:231
+#: ui/extras_panel.gd:226
 msgid "DISTRICTS"
 msgstr "地区"
 
-#: ui/extras_panel.gd:233
+#: ui/extras_panel.gd:228
 msgid "Lumi takes a picture of each district on arrival, and \"after\" pictures as it is restored."
 msgstr "Lumi は到着した地区を一枚撮り、復元が進むと「アフター」写真も撮る。"
 
-#: ui/extras_panel.gd:237
+#: ui/extras_panel.gd:232
 msgid "Before only"
 msgstr "ビフォーのみ"
 
-#: ui/extras_panel.gd:245
+#: ui/extras_panel.gd:240
 msgid "PHOTOS  ·  %d"
 msgstr "写真  ·  %d"
 
-#: ui/extras_panel.gd:257
+#: ui/extras_panel.gd:252
 msgid "Photo"
 msgstr "写真"
 
-#: ui/extras_panel.gd:266
+#: ui/extras_panel.gd:261
 msgid "Photos you take in photo mode show up here."
 msgstr "フォトモードで撮った写真がここに並ぶ。"
 
-#: ui/extras_panel.gd:270 ui/photo_panel.gd:58
+#: ui/extras_panel.gd:265 ui/photo_panel.gd:58
 msgid "PHOTO MODE"
 msgstr "フォトモード"
 
-#: ui/extras_panel.gd:280
+#: ui/extras_panel.gd:275
 msgid "No pictures yet."
 msgstr "まだ写真がない。"
 
-#: ui/extras_panel.gd:291
+#: ui/extras_panel.gd:286
 msgid "BEFORE"
 msgstr "ビフォー"
 
-#: ui/extras_panel.gd:310
+#: ui/extras_panel.gd:305
 msgid "not yet"
 msgstr "まだ"
 
-#: ui/extras_panel.gd:320
+#: ui/extras_panel.gd:315
 msgid "The \"after\" picture comes when the district is half clean."
 msgstr "地区が半分きれいになると「アフター」写真が撮れる。"
 
-#: ui/extras_panel.gd:326
-msgid "CARETAKERS  ·  %d"
-msgstr "世話係  ·  %d"
-
-#: ui/extras_panel.gd:327
-msgid "Garden bonus: plants grow %d%% faster (up to %d%%)."
-msgstr "ガーデンボーナス：植物の成長が %d%% 速い（最大 %d%%）。"
-
-#: ui/extras_panel.gd:330
-msgid "No one has retired yet. Old or Mk I-II robots can retire here; they'll look after the nursery garden at the base."
-msgstr "まだ誰も引退していない。古いロボットや Mk I-II のロボットはここで引退でき、基地の苗床ガーデンの世話をしてくれる。"
-
-#: ui/extras_panel.gd:339
-msgid "RETIRE A ROBOT"
-msgstr "ロボットを引退させる"
-
-#: ui/extras_panel.gd:341
-msgid "Retiring gives a few parts back, and the robot keeps its name and personality in the nursery."
-msgstr "引退するとパーツが少し戻り、ロボットは苗床で名前と性格をそのまま保つ。"
-
-#: ui/extras_panel.gd:343
-msgid "No robots in this district."
-msgstr "この地区にロボットはいない。"
-
-#: ui/extras_panel.gd:350
-msgid "Press again to retire (+%d parts)"
-msgstr "もう一度押すと引退（+%d パーツ）"
-
-#: ui/extras_panel.gd:350
-msgid "Retire  (+%d parts)"
-msgstr "引退  （+%d パーツ）"
-
-#: ui/extras_panel.gd:399
+#: ui/extras_panel.gd:348
 msgid "No picture yet"
 msgstr "まだ写真がない"
-
-#: ui/garden_placer.gd:118
-msgid "Garden Mode opens when this base reaches level 5, or once the Cradle comes home."
-msgstr "ガーデンモードは、この基地がレベル5になるか、Cradle号が帰ってくると使えるようになる。"
-
-#: ui/garden_placer.gd:234
-msgid "charm +%.1f"
-msgstr "魅力 +%.1f"
-
-#: ui/garden_placer.gd:237
-msgid "%s here: %s to pick it up"
-msgstr "ここに%s：%s で拾う"
-
-#: ui/garden_placer.gd:240
-msgid "GARDEN MODE   ·   Charm %.1f   ·   +%.1f%% plant growth here"
-msgstr "ガーデンモード   ·   魅力 %.1f   ·   ここの植物の成長 +%.1f%%"
-
-#: ui/garden_placer.gd:241
-msgid "[%s] place   [%s] rotate   [%s / %s] item   [%s] pick up   [%s] done"
-msgstr "[%s] 置く   [%s] 回す   [%s / %s] アイテム   [%s] 拾う   [%s] 完了"
-
-#: ui/garden_placer.gd:295
-msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
-msgstr "拾った：%s。別の場所に置くか、しまっておこう。"
 
 #: ui/glim_bench.gd:58 ui/hub_panel.gd:66 ui/upgrades_panel.gd:144
 msgid "Upgrade"
@@ -3880,23 +3551,19 @@ msgstr "目標達成  ·  %s%s"
 msgid "+%s seeds"
 msgstr "+%s 種"
 
-#: ui/hotbar.gd:32
+#: ui/hotbar.gd:31
 msgid "SCOOP"
 msgstr "すくう"
 
-#: ui/hotbar.gd:33
+#: ui/hotbar.gd:32
 msgid "PLANT"
 msgstr "植える"
 
-#: ui/hotbar.gd:293
-msgid "+%d XP"
-msgstr "+%d XP"
-
-#: ui/hotbar.gd:306
+#: ui/hotbar.gd:236
 msgid "CORE %d%%"
 msgstr "コア %d%%"
 
-#: ui/hotbar.gd:339
+#: ui/hotbar.gd:258
 msgid "SURGE"
 msgstr "サージ"
 
@@ -3992,97 +3659,93 @@ msgstr ""
 msgid "All built"
 msgstr "すべて建設済み"
 
-#: ui/hud.gd:79
-msgid "Lumi reached level %d%s"
-msgstr "Lumi がレベル %d になった%s"
-
-#: ui/hud.gd:305
+#: ui/hud.gd:299
 msgid "WREN SIGNAL   %d%%"
 msgstr "WREN 信号   %d%%"
 
-#: ui/hud.gd:334
+#: ui/hud.gd:328
 msgid "HEX  %d%% CLEAR"
 msgstr "ヘックス  %d%% きれい"
 
-#: ui/hud.gd:345
+#: ui/hud.gd:339
 msgid "%s  BASE"
 msgstr "%s  基地"
 
-#: ui/hud.gd:348
+#: ui/hud.gd:342
 msgid "CARRYING %d/%d"
 msgstr "運搬中 %d/%d"
 
-#: ui/hud.gd:374
+#: ui/hud.gd:366
 msgid "HEX  CLEAR"
 msgstr "ヘックス  きれい"
 
-#: ui/hud.gd:378
+#: ui/hud.gd:370
 msgid "HEX  %s"
 msgstr "ヘックス  %s"
 
-#: ui/hud.gd:384
+#: ui/hud.gd:376
 msgid "  SUSTAIN %d%%"
 msgstr "  維持 %d%%"
 
-#: ui/hud.gd:386
+#: ui/hud.gd:378
 msgid "  THIRSTY"
 msgstr "  水不足"
 
-#: ui/hud.gd:411
+#: ui/hud.gd:403
 msgid "%s · %s"
 msgstr "%s · %s"
 
-#: ui/hud.gd:413
+#: ui/hud.gd:405
 msgid "%s · %s %d%%"
 msgstr "%s · %s %d%%"
 
-#: ui/hud.gd:416
+#: ui/hud.gd:408
 msgid "%d of %d city restored"
 msgid_plural "%d of %d cities restored"
 msgstr[0] "%d / %d 都市を再生"
 
-#: ui/hud.gd:430
+#: ui/hud.gd:422
 msgid "MASTERY  %s"
 msgstr "熟練度  %s"
 
-#: ui/hud.gd:441
+#: ui/hud.gd:433
 msgid "%s mastery %d. Robots can work it now."
 msgstr "%sの熟練度 %d。ロボットが作業できるようになりました。"
 
-#: ui/hud.gd:443
+#: ui/hud.gd:435
 msgid "%s mastery %d. You and your crew work it faster."
 msgstr "%sの熟練度 %d。あなたもクルーも作業が速くなりました。"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:452
+#: ui/hud.gd:444
 msgid "%s   pick up bale"
 msgstr "%s   ベールを持つ"
 
-#: ui/hud.gd:453
+#: ui/hud.gd:445
 msgid "%s   dig up part"
 msgstr "%s   パーツを掘り出す"
 
-#: ui/hud.gd:454
+#: ui/hud.gd:446
 msgid "%s   read memory shard"
 msgstr "%s   メモリーの破片を読む"
 
-#: ui/hud.gd:455
+#: ui/hud.gd:447
 msgid "%s   pick up the seed tin"
 msgstr "%s   種の缶を拾う"
 
-#: ui/hud.gd:456
+#: ui/hud.gd:448
 msgid "%s   set bale down"
 msgstr "%s   ベールを置く"
 
-#: ui/hud.gd:457
+#: ui/hud.gd:449
 msgid "%s   workbench"
 msgstr "%s   作業台"
 
-#: ui/hud.gd:458
+#: ui/hud.gd:450
 msgid "Filling the watering can"
 msgstr "じょうろに水を入れている"
 
-#: ui/hud.gd:459
+#: ui/hud.gd:451
 msgid "Can empty. It fills in the base yard, by the bin."
 msgstr "じょうろが空。基地の庭、ゴミ箱のそばで水が入る。"
 
@@ -4093,10 +3756,6 @@ msgstr "ベールを圧縮"
 #: ui/key_hints.gd:114
 msgid "tools"
 msgstr "ツール"
-
-#: ui/late_menu.gd:9
-msgid "Garden Mode  [%s]"
-msgstr "ガーデンモード  [%s]"
 
 #: ui/lens_overlay.gd:61
 msgid ""
@@ -4184,38 +3843,22 @@ msgstr "読み込み中"
 msgid "Warming up"
 msgstr "ウォームアップ中"
 
-#: ui/locker_editors.gd:13 data/currencies.json:currencies[parts].name planets/verdance/data/hub.json:materials.metal.name
+#: ui/locker_editors.gd:12 data/currencies.json:currencies[parts].name planets/verdance/data/hub.json:materials.metal.name
 #: planets/verdance/data/hub.json:materials.plastic.name planets/verdance/data/hub.json:materials.glass.name
 msgid "Parts"
 msgstr "パーツ"
 
-#: ui/locker_editors.gd:13 data/cosmetics.json:targets.crew.slots[crew_paint].name
+#: ui/locker_editors.gd:12 data/cosmetics.json:targets.crew.slots[crew_paint].name
 msgid "Fleet mark"
 msgstr "艦隊マーク"
 
-#: ui/locker_editors.gd:13 data/cosmetics.json:slots[glow].name data/cosmetics.json:targets.crew.slots[crew_glow].name
+#: ui/locker_editors.gd:12 data/cosmetics.json:slots[glow].name data/cosmetics.json:targets.crew.slots[crew_glow].name
 msgid "Light colour"
 msgstr "ライトの色"
 
-#: ui/locker_editors.gd:14 data/cosmetics.json:slots[paint].name data/style_parts.json:slots[paint].name
-msgid "Paint"
-msgstr "塗装"
-
-#: ui/locker_editors.gd:14 data/style_parts.json:slots[trim].name
-msgid "Trim"
-msgstr "トリム"
-
-#: ui/locker_editors.gd:14 data/cosmetics.json:targets.glim.slots[glim_glow].name
-msgid "Glow"
-msgstr "発光"
-
-#: ui/locker_editors.gd:57
+#: ui/locker_editors.gd:55
 msgid "Every %s wears this"
 msgstr "すべての%sがこれを着る"
-
-#: ui/locker_editors.gd:195
-msgid "Ship looks: the tiers keep their shape"
-msgstr "船の見た目：ティアの形はそのまま"
 
 #: ui/locker_panel.gd:95
 msgid "Close"
@@ -4334,11 +3977,11 @@ msgstr "つづきから"
 msgid "New Game"
 msgstr "はじめから"
 
-#: ui/main_menu.gd:342 ui/main_menu.gd:521 ui/pause_menu.gd:68
+#: ui/main_menu.gd:342 ui/main_menu.gd:521 ui/pause_menu.gd:67
 msgid "Settings"
 msgstr "設定"
 
-#: ui/main_menu.gd:344 ui/pause_menu.gd:72
+#: ui/main_menu.gd:344 ui/pause_menu.gd:71
 msgid "Quit"
 msgstr "終了"
 
@@ -4465,7 +4108,7 @@ msgstr "図鑑  [%s]"
 msgid "Photo mode  [%s]"
 msgstr "フォトモード  [%s]"
 
-#: ui/pause_menu.gd:63
+#: ui/pause_menu.gd:62
 msgid "Keepsakes"
 msgstr "思い出の品"
 
@@ -4851,7 +4494,7 @@ msgstr "研究  %s  %d/%d"
 msgid "RESEARCH  PICK A NODE  ·  %d DATA BANKED"
 msgstr "研究  ノードを選ぼう  ·  データ %d 保管中"
 
-#: ui/rig_panel.gd:102 ui/upgrades_screen.gd:17
+#: ui/rig_panel.gd:102 ui/upgrades_screen.gd:16
 msgid "Rig"
 msgstr "リグ"
 
@@ -5463,19 +5106,19 @@ msgstr "あと%s · 約%s"
 msgid "Where it comes from:  %s"
 msgstr "入手方法：  %s"
 
-#: ui/upgrades_screen.gd:15
+#: ui/upgrades_screen.gd:14
 msgid "Bots"
 msgstr "ボット"
 
-#: ui/upgrades_screen.gd:16
+#: ui/upgrades_screen.gd:15
 msgid "Research"
 msgstr "研究"
 
-#: ui/upgrades_screen.gd:155
+#: ui/upgrades_screen.gd:151
 msgid "WORKBENCH"
 msgstr "作業台"
 
-#: ui/upgrades_screen.gd:274
+#: ui/upgrades_screen.gd:270
 msgid "Not open yet. Keep playing."
 msgstr "まだ開いていません。プレイを続けよう。"
 
@@ -6039,30 +5682,6 @@ msgstr "ピットストップ"
 msgid "Build a recharge pad at an outpost."
 msgstr "前哨基地にリチャージパッドを建てる。"
 
-#: data/achievements.json:achievements[builder_mix].name
-msgid "Mix and Match"
-msgstr "組み合わせ自在"
-
-#: data/achievements.json:achievements[builder_mix].desc
-msgid "Style a robot with all five custom parts in the Locker."
-msgstr "ロッカーでロボットに5つのカスタムパーツをすべて付けよう。"
-
-#: data/achievements.json:achievements[builder_maker].name
-msgid "As the Makers Made It"
-msgstr "メイカーの作ったままに"
-
-#: data/achievements.json:achievements[builder_maker].desc
-msgid "Fit the full Maker set (shell, optic and glider) on one robot."
-msgstr "メイカーセット一式（シェル、オプティク、グライダー）を1台のロボットに装着する。"
-
-#: data/achievements.json:achievements[builder_hats].name
-msgid "Hat Rack"
-msgstr "帽子掛け"
-
-#: data/achievements.json:achievements[builder_hats].desc
-msgid "Collect 5 different robot toppers."
-msgstr "異なるロボットの頭飾りを5つ集める。"
-
 #: data/achievements.json:achievements[pet_cat].name
 msgid "A Friend in Old Town"
 msgstr "旧市街の友だち"
@@ -6107,46 +5726,6 @@ msgstr "動物カメラマン"
 msgid "Photograph 6 different animals in photo mode."
 msgstr "フォトモードで6種類の動物を撮影する。"
 
-#: data/achievements.json:achievements[late_decor_1].name
-msgid "Home Touches"
-msgstr "わが家らしく"
-
-#: data/achievements.json:achievements[late_decor_1].desc
-msgid "Place a decoration in Garden Mode."
-msgstr "ガーデンモードで飾りを置く。"
-
-#: data/achievements.json:achievements[late_decor_25].name
-msgid "Landscaper"
-msgstr "造園家"
-
-#: data/achievements.json:achievements[late_decor_25].desc
-msgid "Place 25 decorations."
-msgstr "飾りを25個置く。"
-
-#: data/achievements.json:achievements[late_decor_all].name
-msgid "Full Catalogue"
-msgstr "カタログ制覇"
-
-#: data/achievements.json:achievements[late_decor_all].desc
-msgid "Place every kind of decoration at least once."
-msgstr "すべての種類の飾りを1回以上置く。"
-
-#: data/achievements.json:achievements[late_charm_25].name
-msgid "Picture Perfect"
-msgstr "絵になる景色"
-
-#: data/achievements.json:achievements[late_charm_25].desc
-msgid "Reach 25 charm in one district."
-msgstr "1つの地区で魅力25に到達する。"
-
-#: data/achievements.json:achievements[home_answered].name
-msgid "The Cradle Answers"
-msgstr "Cradle の応答"
-
-#: data/achievements.json:achievements[home_answered].desc
-msgid "Light the Cradle Returns beacon and hear from the ark."
-msgstr "Cradle号の帰還のビーコンを灯して、方舟の声を聞く。"
-
 #: data/achievements.json:achievements[extras_radio_6].name
 msgid "Pirate Radio"
 msgstr "海賊ラジオ"
@@ -6170,22 +5749,6 @@ msgstr "あの頃と今"
 #: data/achievements.json:achievements[extras_album_4].desc
 msgid "Collect 4 pictures in the photo album."
 msgstr "アルバムに写真を 4 枚集める。"
-
-#: data/achievements.json:achievements[extras_retire_1].name
-msgid "Happy Retirement"
-msgstr "ハッピーリタイア"
-
-#: data/achievements.json:achievements[extras_retire_1].desc
-msgid "Retire a robot to the nursery garden."
-msgstr "ロボットを苗床ガーデンで引退させる。"
-
-#: data/achievements.json:achievements[extras_visits_5].name
-msgid "Garden Party"
-msgstr "ガーデンパーティー"
-
-#: data/achievements.json:achievements[extras_visits_5].desc
-msgid "Say hi to the nursery caretakers 5 times."
-msgstr "苗床の世話係に 5 回あいさつする。"
 
 #: planets/verdance/data/bloom.json:milestones[first_meadow].desc
 msgid "25 Thriving hexes anywhere on Verdance."
@@ -6251,7 +5814,7 @@ msgstr "堆肥プレス"
 msgid "Presses plant scraps into compost and seeds. Worth building once something grows."
 msgstr "植物くずを堆肥と種にプレスする。何かが育ったら建てる価値あり。"
 
-#: planets/verdance/data/camp.json:builds.composter.flag_text planets/verdance/data/camp.json:builds.nursery.flag_text
+#: planets/verdance/data/camp.json:builds.composter.flag_text
 msgid "Grow your first seed first."
 msgstr "まずは最初の種を育てよう。"
 
@@ -6266,14 +5829,6 @@ msgstr "小さなターンテーブル付きの背の高いスチールロッカ
 #: planets/verdance/data/camp.json:builds.locker.flag_text
 msgid "Find a piece of a look first."
 msgstr "まず外見のパーツを見つけよう。"
-
-#: planets/verdance/data/camp.json:builds.nursery.name
-msgid "Robot Nursery"
-msgstr "ロボット保育所"
-
-#: planets/verdance/data/camp.json:builds.nursery.desc
-msgid "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand."
-msgstr "花壇のある塀に囲まれた芝生。引退したロボットたちが庭の世話をして、チームを手伝ってくれる。"
 
 #: planets/verdance/data/camp.json:builds.glim.name planets/verdance/data/objectives.json:objectives[glim].text
 msgid "Repair Glim"
@@ -7344,6 +6899,10 @@ msgstr "望遠鏡で、Ledger のドローンが落ちた世界に。"
 msgid "A dump drone that never made it home, nose-down in the junk of another world. Its red eye still blinks. Even from here it looks embarrassed."
 msgstr "家に帰れなかった投棄ドローン。別の世界のガラクタに鼻先から突っ込んでいる。赤い目はまだ点滅している。ここから見ても、なんだか気まずそうだ。"
 
+#: data/cosmetics.json:slots[paint].name data/style_parts.json:slots[paint].name
+msgid "Paint"
+msgstr "塗装"
+
 #: data/cosmetics.json:slots[paint].hint data/cosmetics.json:targets.glim.slots[glim_shell].hint
 msgid "Paint tins lie buried under ordinary trash."
 msgstr "ペンキ缶はふつうのゴミの下に埋まっている。"
@@ -7662,6 +7221,10 @@ msgstr "ちびドローン"
 msgid "Shell"
 msgstr "シェル"
 
+#: data/cosmetics.json:targets.glim.slots[glim_glow].name
+msgid "Glow"
+msgstr "発光"
+
 #: data/cosmetics.json:targets.glim.slots[glim_top].name
 msgid "Top"
 msgstr "トップ"
@@ -7898,16 +7461,15 @@ msgstr "ホロ天使の輪"
 msgid "A slowly turning hologram halo over each robot. Very smug."
 msgstr "各ロボットの上でゆっくり回るホログラムの輪。とても得意げ。"
 
-#: data/cosmetics.json:targets.crew.pieces[crew_glow_cyan].name data/glim.json:glows[cyan].name data/ship_style.json:glows[cyan].name
-#: data/style_parts.json:swatches[cyan].name
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_cyan].name data/glim.json:glows[cyan].name data/style_parts.json:swatches[cyan].name
 msgid "Cyan"
 msgstr "シアン"
 
-#: data/cosmetics.json:targets.crew.pieces[crew_glow_mint].name data/ship_style.json:glows[mint].name data/style_parts.json:swatches[mint].name
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_mint].name data/style_parts.json:swatches[mint].name
 msgid "Mint"
 msgstr "ミント"
 
-#: data/cosmetics.json:targets.crew.pieces[crew_glow_amber].name data/ship_style.json:glows[amber].name data/style_parts.json:swatches[amber].name
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_amber].name data/style_parts.json:swatches[amber].name
 msgid "Amber"
 msgstr "アンバー"
 
@@ -7915,8 +7477,7 @@ msgstr "アンバー"
 msgid "Rose"
 msgstr "ローズ"
 
-#: data/cosmetics.json:targets.crew.pieces[crew_glow_violet].name data/glim.json:glows[violet].name data/ship_style.json:glows[violet].name
-#: data/style_parts.json:swatches[violet].name
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_violet].name data/glim.json:glows[violet].name data/style_parts.json:swatches[violet].name
 msgid "Violet"
 msgstr "バイオレット"
 
@@ -7955,86 +7516,6 @@ msgstr "種"
 #: data/currencies.json:currencies[seeds].desc
 msgid "For planting. The compost press turns paper, card and spent blooms into seeds."
 msgstr "植えるためのもの。コンポストプレスが紙、段ボール、咲き終わった花を種に変える。"
-
-#: data/decor.json:types[path].name
-msgid "Stone Path"
-msgstr "石の小道"
-
-#: data/decor.json:types[path].desc
-msgid "Flat stepping stones. Paths join everything up."
-msgstr "平らな飛び石。小道はすべてをつなぐ。"
-
-#: data/decor.json:types[flower_bed].name
-msgid "Flower Bed"
-msgstr "花壇"
-
-#: data/decor.json:types[flower_bed].desc
-msgid "A low bed of mixed flowers. Bees and butterflies approve."
-msgstr "いろんな花を植えた低い花壇。ミツバチもチョウもごきげん。"
-
-#: data/decor.json:types[planter].name
-msgid "Planter"
-msgstr "プランター"
-
-#: data/decor.json:types[planter].desc
-msgid "A white hex planter with a small shrub, like the ones the future city grows."
-msgstr "小さな低木を植えた白い六角形のプランター。未来の街で育てているのと同じもの。"
-
-#: data/decor.json:types[bench].name
-msgid "Bench"
-msgstr "ベンチ"
-
-#: data/decor.json:types[bench].desc
-msgid "Wood slats on cast feet. Cats like to sleep on it."
-msgstr "鋳物の脚に木の板をわたしたベンチ。ネコのお昼寝スポット。"
-
-#: data/decor.json:types[lamp].name
-msgid "Garden Lamp"
-msgstr "ガーデンランプ"
-
-#: data/decor.json:types[lamp].desc
-msgid "A slim lamp with a warm glow after dark."
-msgstr "暗くなるとあたたかく光る、すらりとしたランプ。"
-
-#: data/decor.json:types[bird_bath].name
-msgid "Bird Bath"
-msgstr "バードバス"
-
-#: data/decor.json:types[bird_bath].desc
-msgid "A stone basin of clean water."
-msgstr "きれいな水をたたえた石の水盤。"
-
-#: data/decor.json:types[fountain].name
-msgid "Fountain"
-msgstr "噴水"
-
-#: data/decor.json:types[fountain].desc
-msgid "A tiered fountain, running again. Deer come to drink at dawn."
-msgstr "ふたたび水が流れはじめた段々の噴水。夜明けにはシカが水を飲みにくる。"
-
-#: data/decor.json:types[statue].name
-msgid "Maker Statue"
-msgstr "メイカーの像"
-
-#: data/decor.json:types[statue].desc
-msgid "A stone figure of one of the Makers, holding a watering can."
-msgstr "じょうろを持ったメイカーの一人をかたどった石像。"
-
-#: data/decor.json:types[lumi_sculpture].name
-msgid "Lumi Sculpture"
-msgstr "Lumi の彫刻"
-
-#: data/decor.json:types[lumi_sculpture].desc
-msgid "A topiary-and-brass sculpture of Lumi holding up a seedling. Very modest."
-msgstr "苗を高くかかげる Lumi をかたどった、トピアリーと真ちゅうの彫刻。とってもひかえめ。"
-
-#: data/decor.json:types[wren_kite].name
-msgid "WREN Wind Kite"
-msgstr "WREN のたこ"
-
-#: data/decor.json:types[wren_kite].desc
-msgid "A kite shaped like WREN's bird, tethered to a post and always flying."
-msgstr "WREN の鳥の形をしたたこ。柱につながれて、いつも空を泳いでいる。"
 
 #: data/designs.json:designs[aurora].tagline
 msgid "Baseline / Explorer"
@@ -9112,18 +8593,6 @@ msgstr "古い温室にあったのと同じ、Verdance の種の缶。Lumi は�
 msgid "Lumi's tin of Verdance soil. A little bit of home, already spilled on new ground. Good."
 msgstr "Lumi の Verdance の土の缶。ふるさとのかけらが、もう新しい大地にこぼれている。それでいい。"
 
-#: planets/verdance/data/events.json:events[supply_drop].name
-msgid "Supply Drop"
-msgstr "補給物資の投下"
-
-#: planets/verdance/data/events.json:events[supply_drop].toast
-msgid "Supply Drop! A crate parachuted onto the junk %s of you. Clear the junk around it to crack it open."
-msgstr "補給物資の投下！君の%sのガラクタの上に木箱がパラシュートで落ちてきた。まわりのガラクタを片づけて開けよう。"
-
-#: planets/verdance/data/events.json:events[supply_drop].hud
-msgid "Clear the junk around the crate"
-msgstr "木箱のまわりのガラクタを片づけよう"
-
 #: planets/verdance/data/events.json:events[salvage_surge].name
 msgid "Salvage Glint"
 msgstr "サルベージの輝き"
@@ -9147,30 +8616,6 @@ msgstr "にわか雨。本物の雨、何年ぶりかの雨だ。降っている
 #: planets/verdance/data/events.json:events[rain_shower].hud
 msgid "Plants stay watered while it rains"
 msgstr "雨のあいだ植物は水やり不要"
-
-#: planets/verdance/data/events.json:events[robot_hiccup].name
-msgid "Robot Hiccup"
-msgstr "ロボットのしゃっくり"
-
-#: planets/verdance/data/events.json:events[robot_hiccup].toast
-msgid "%s has the hiccups and stopped working. Walk over and press E for a quick fix."
-msgstr "%s がしゃっくりで止まってしまった。近づいて E を押せばすぐ直る。"
-
-#: planets/verdance/data/events.json:events[robot_hiccup].hud
-msgid "Walk to the stuck robot and press E"
-msgstr "止まったロボットのところへ行って E を押そう"
-
-#: planets/verdance/data/events.json:events[wildlife_visit].name
-msgid "Wildlife Visit"
-msgstr "生き物がやってきた"
-
-#: planets/verdance/data/events.json:events[wildlife_visit].toast
-msgid "Something is visiting a thriving hex %s of you. Sneak up and press E to take a photo."
-msgstr "君の%sの繁栄ヘックスに何かが来ている。そっと近づいて E で写真を撮ろう。"
-
-#: planets/verdance/data/events.json:events[wildlife_visit].hud
-msgid "Find the visitor and press E for a photo"
-msgstr "訪問者を見つけて E で写真を撮ろう"
 
 #: planets/verdance/data/events.json:events[rare_part_signal].name
 msgid "Rare Part Signal"
@@ -9196,542 +8641,6 @@ msgstr "Ledger の監査！フレンドリーなドローンが、君の%sのガ
 msgid "Scoop more of the ringed junk than the drone"
 msgstr "囲まれたガラクタをドローンよりたくさんすくおう"
 
-#: planets/verdance/data/events.json:animals[glowtail_fox].name
-msgid "Glowtail Fox"
-msgstr "ヒカリオギツネ"
-
-#: planets/verdance/data/events.json:animals[glowtail_fox].body
-msgid "fox"
-msgstr "キツネ"
-
-#: planets/verdance/data/events.json:animals[moss_deer].name
-msgid "Moss Deer"
-msgstr "コケジカ"
-
-#: planets/verdance/data/events.json:animals[moss_deer].body
-msgid "deer"
-msgstr "シカ"
-
-#: planets/verdance/data/events.json:animals[lantern_hedgehog].name
-msgid "Lantern Hedgehog"
-msgstr "ランタンハリネズミ"
-
-#: planets/verdance/data/events.json:animals[lantern_hedgehog].body
-msgid "hedgehog"
-msgstr "ハリネズミ"
-
-#: planets/verdance/data/events.json:animals[prism_heron].name
-msgid "Prism Heron"
-msgstr "プリズムサギ"
-
-#: planets/verdance/data/events.json:animals[prism_heron].body
-msgid "heron"
-msgstr "サギ"
-
-#: planets/verdance/data/events.json:animals[velvet_hare].name
-msgid "Velvet Hare"
-msgstr "ビロードウサギ"
-
-#: planets/verdance/data/events.json:animals[velvet_hare].body
-msgid "hare"
-msgstr "ウサギ"
-
-#: planets/verdance/data/events.json:contracts.templates[metal_bales].text
-msgid "Press %d metal-heavy bales"
-msgstr "金属の多いベールを %d 個圧縮"
-
-#: planets/verdance/data/events.json:contracts.templates[perfect_bales].text
-msgid "Press %d Perfect bales"
-msgstr "パーフェクトベールを %d 個圧縮"
-
-#: planets/verdance/data/events.json:contracts.templates[pure_bales].text
-msgid "Press %d Pure bales (one junk type)"
-msgstr "ピュアベールを %d 個圧縮（ガラクタ1種類）"
-
-#: planets/verdance/data/events.json:contracts.templates[clean_hexes].text
-msgid "Clean %d hexes"
-msgstr "ヘックスを %d 個片づける"
-
-#: planets/verdance/data/events.json:contracts.templates[scoop].text
-msgid "Scoop %d pieces of junk"
-msgstr "ガラクタを %d 個すくう"
-
-#: planets/verdance/data/events.json:contracts.templates[dig_parts].text
-msgid "Dig up %d buried parts"
-msgstr "埋まったパーツを %d 個掘り出す"
-
-#: planets/verdance/data/events.json:contracts.templates[streak].text
-msgid "Reach a tier %d cleaning streak"
-msgstr "清掃コンボでティア %d に到達"
-
-#: planets/verdance/data/events.json:contracts.templates[plant].text
-msgid "Plant %d sprouts"
-msgstr "新芽を %d 本植える"
-
-#: planets/verdance/data/events.json:contracts.templates[bloom].text
-msgid "Grow %d plants to bloom"
-msgstr "植物を %d 株咲かせる"
-
-#: planets/verdance/data/events.json:contracts.templates[sustain].text
-msgid "Get %d more hexes to Sustained"
-msgstr "ヘックスをあと %d 個維持状態にする"
-
-#: planets/verdance/data/events.json:contracts.templates[sustain].text_1
-msgid "Get one more hex to Sustained"
-msgstr "ヘックスをあと1つ維持状態にする"
-
-#: planets/verdance/data/events.json:trinkets[brass_compass].name
-msgid "Brass Compass"
-msgstr "真ちゅうのコンパス"
-
-#: planets/verdance/data/events.json:trinkets[brass_compass].desc
-msgid "Points north, mostly. Came wrapped in a sock in a supply crate."
-msgstr "だいたい北を指す。補給箱の中で靴下にくるまれて届いた。"
-
-#: planets/verdance/data/events.json:trinkets[tin_robot].name
-msgid "Wind-up Tin Robot"
-msgstr "ぜんまい式ブリキロボット"
-
-#: planets/verdance/data/events.json:trinkets[tin_robot].desc
-msgid "Walks three steps and falls over. Lumi relates."
-msgstr "3歩歩いて転ぶ。Lumi にはよくわかる。"
-
-#: planets/verdance/data/events.json:trinkets[seed_locket].name
-msgid "Seed Locket"
-msgstr "種のロケット"
-
-#: planets/verdance/data/events.json:trinkets[seed_locket].desc
-msgid "A locket with one seed inside instead of a photo. Someone loved gardens."
-msgstr "写真のかわりに種がひと粒入ったロケットペンダント。誰かが庭を愛していた。"
-
-#: planets/verdance/data/events.json:trinkets[snow_globe].name data/songs.json:songs[snow_globe].title
-msgid "Snow Globe"
-msgstr "スノードーム"
-
-#: planets/verdance/data/events.json:trinkets[snow_globe].desc
-msgid "A tiny city under glass, still clean. A promise, maybe."
-msgstr "ガラスの下の小さな街。まだきれいなまま。たぶん、約束。"
-
-#: planets/verdance/data/events.json:trinkets[crate_stencil].name
-msgid "Cradle Crate Stencil"
-msgstr "Cradle号の木箱ステンシル"
-
-#: planets/verdance/data/events.json:trinkets[crate_stencil].desc
-msgid "The stencil used to paint every supply crate. WREN asked for it back. You said no."
-msgstr "補給箱すべてに文字を描いたステンシル。WREN は返してほしいと言った。君は断った。"
-
-#: planets/verdance/data/events.json:trinkets[golden_bolt].name
-msgid "Golden Bolt"
-msgstr "金のボルト"
-
-#: planets/verdance/data/events.json:trinkets[golden_bolt].desc
-msgid "Fell out of a surge hex, still warm. Fits nothing. Worth everything."
-msgstr "ラッシュのヘックスから落ちてきた。まだ温かい。何にも合わない。でも何より価値がある。"
-
-#: planets/verdance/data/events.json:trinkets[glow_shard].name
-msgid "Surge Glass"
-msgstr "ラッシュのガラス"
-
-#: planets/verdance/data/events.json:trinkets[glow_shard].desc
-msgid "A sliver of glass that kept the surge's glow. It hums when you hold it."
-msgstr "ラッシュの光をとどめたガラスのかけら。持つとハミングする。"
-
-#: planets/verdance/data/events.json:trinkets[rain_jar].name
-msgid "Jar of First Rain"
-msgstr "はじめての雨のびん"
-
-#: planets/verdance/data/events.json:trinkets[rain_jar].desc
-msgid "Collected during the first rain in years. Do not drink. Do not open. Just look."
-msgstr "何年ぶりかの雨のときに集めた。飲まないで。開けないで。ただ眺めて。"
-
-#: planets/verdance/data/events.json:trinkets[paper_boat].name
-msgid "Paper Boat"
-msgstr "紙の舟"
-
-#: planets/verdance/data/events.json:trinkets[paper_boat].desc
-msgid "Someone made it from a coupon. It sailed a whole puddle."
-msgstr "誰かがクーポン券で折った。水たまりをまるごと渡りきった。"
-
-#: planets/verdance/data/events.json:trinkets[lucky_spanner].name
-msgid "Lucky Spanner"
-msgstr "幸運のスパナ"
-
-#: planets/verdance/data/events.json:trinkets[lucky_spanner].desc
-msgid "Fixes any hiccup, if you hit the right spot. Usually the left side."
-msgstr "ちょうどいい場所をたたけば、どんなしゃっくりも直る。たいてい左側。"
-
-#: planets/verdance/data/events.json:trinkets[hiccup_tape].name
-msgid "Diagnostic Tape"
-msgstr "診断テープ"
-
-#: planets/verdance/data/events.json:trinkets[hiccup_tape].desc
-msgid "A printout of a robot hiccuping. It looks a lot like a song."
-msgstr "しゃっくりするロボットの記録の印刷。歌にとてもよく似ている。"
-
-#: planets/verdance/data/events.json:trinkets[photo_glowtail_fox].name
-msgid "Photo: Glowtail Fox"
-msgstr "写真：ヒカリオギツネ"
-
-#: planets/verdance/data/events.json:trinkets[photo_glowtail_fox].desc
-msgid "Its tail glows when it's curious. It was very curious about Lumi."
-msgstr "好奇心がわくと尻尾が光る。Lumi にとても興味しんしんだった。"
-
-#: planets/verdance/data/events.json:trinkets[photo_moss_deer].name
-msgid "Photo: Moss Deer"
-msgstr "写真：コケジカ"
-
-#: planets/verdance/data/events.json:trinkets[photo_moss_deer].desc
-msgid "Moss grows on its antlers. Butterflies rest there like it's a tree."
-msgstr "角にコケが生えている。チョウが木だと思ってそこで休む。"
-
-#: planets/verdance/data/events.json:trinkets[photo_lantern_hedgehog].name
-msgid "Photo: Lantern Hedgehog"
-msgstr "写真：ランタンハリネズミ"
-
-#: planets/verdance/data/events.json:trinkets[photo_lantern_hedgehog].desc
-msgid "The tips of its spines glow amber at dusk. It ate a beetle on camera. Sorry."
-msgstr "夕暮れどきに針の先が琥珀色に光る。カメラの前で甲虫を食べた。ごめん。"
-
-#: planets/verdance/data/events.json:trinkets[photo_prism_heron].name
-msgid "Photo: Prism Heron"
-msgstr "写真：プリズムサギ"
-
-#: planets/verdance/data/events.json:trinkets[photo_prism_heron].desc
-msgid "Its feathers split light into rainbows. It stood on one leg the whole time."
-msgstr "羽が光を虹に分ける。ずっと片足で立っていた。"
-
-#: planets/verdance/data/events.json:trinkets[photo_velvet_hare].name
-msgid "Photo: Velvet Hare"
-msgstr "写真：ビロードウサギ"
-
-#: planets/verdance/data/events.json:trinkets[photo_velvet_hare].desc
-msgid "Soft as a whisper, quick as a rumour. The photo is a little blurry. Worth it."
-msgstr "ささやきのようにやわらかく、うわさのように速い。写真は少しブレている。それでも撮る価値はあった。"
-
-#: planets/verdance/data/events.json:trinkets[crumb_bag].name
-msgid "Crumb Bag"
-msgstr "パンくず袋"
-
-#: planets/verdance/data/events.json:trinkets[crumb_bag].desc
-msgid "A paper bag of crumbs and seed husks. The pigeons know the sound of it now."
-msgstr "パンくずと種殻の入った紙袋。ハトたちはもうこの音を覚えている。"
-
-#: planets/verdance/data/events.json:trinkets[pic_cat].name
-msgid "Photo: Stray Cat"
-msgstr "写真：ノラネコ"
-
-#: planets/verdance/data/events.json:trinkets[pic_cat].desc
-msgid "A photo from photo mode. Old Town's cats never left."
-msgstr "フォトモードで撮った写真。旧市街のネコたちは、一度もいなくならなかった。"
-
-#: planets/verdance/data/events.json:trinkets[pic_pigeon].name
-msgid "Photo: Pigeon"
-msgstr "写真：ハト"
-
-#: planets/verdance/data/events.json:trinkets[pic_pigeon].desc
-msgid "A photo from photo mode. Pigeons will live anywhere people once dropped crumbs."
-msgstr "フォトモードで撮った写真。ハトは、かつて人がパンくずを落とした場所ならどこにでも住む。"
-
-#: planets/verdance/data/events.json:trinkets[pic_sparrow].name
-msgid "Photo: Sparrow"
-msgstr "写真：スズメ"
-
-#: planets/verdance/data/events.json:trinkets[pic_sparrow].desc
-msgid "A photo from photo mode. Small, brown and bossy."
-msgstr "フォトモードで撮った写真。小さくて茶色で、いばりんぼ。"
-
-#: planets/verdance/data/events.json:trinkets[pic_rat].name
-msgid "Photo: Rat"
-msgstr "写真：ネズミ"
-
-#: planets/verdance/data/events.json:trinkets[pic_rat].desc
-msgid "A photo from photo mode. Rats live in the gaps between the piles."
-msgstr "フォトモードで撮った写真。ネズミはガラクタの山のすき間に住んでいる。"
-
-#: planets/verdance/data/events.json:trinkets[pic_rabbit].name
-msgid "Photo: Rabbit"
-msgstr "写真：ウサギ"
-
-#: planets/verdance/data/events.json:trinkets[pic_rabbit].desc
-msgid "A photo from photo mode. Rabbits arrive as soon as there is something green to nibble."
-msgstr "フォトモードで撮った写真。かじれる緑があると、すぐにウサギがやってくる。"
-
-#: planets/verdance/data/events.json:trinkets[pic_deer].name
-msgid "Photo: Roe Deer"
-msgstr "写真：ノロジカ"
-
-#: planets/verdance/data/events.json:trinkets[pic_deer].desc
-msgid "A photo from photo mode. Shy grazers that keep to the edge of the green, where they can see what's coming."
-msgstr "フォトモードで撮った写真。何が来るか見わたせるように、緑のはずれにいる恥ずかしがりやの草食動物。"
-
-#: planets/verdance/data/events.json:trinkets[pic_fox].name
-msgid "Photo: Red Fox"
-msgstr "写真：アカギツネ"
-
-#: planets/verdance/data/events.json:trinkets[pic_fox].desc
-msgid "A photo from photo mode. A fox trots along the hedges, nose down, tail out."
-msgstr "フォトモードで撮った写真。キツネが鼻を地面に近づけ、しっぽをのばして生け垣ぞいを小走りしていく。"
-
-#: planets/verdance/data/events.json:trinkets[pic_bee].name
-msgid "Photo: Honeybee"
-msgstr "写真：ミツバチ"
-
-#: planets/verdance/data/events.json:trinkets[pic_bee].desc
-msgid "A photo from photo mode. Bees came back with the blooms."
-msgstr "フォトモードで撮った写真。ミツバチは花といっしょに戻ってきた。"
-
-#: planets/verdance/data/events.json:trinkets[pic_songbird].name
-msgid "Photo: Robin"
-msgstr "写真：コマドリ"
-
-#: planets/verdance/data/events.json:trinkets[pic_songbird].desc
-msgid "A photo from photo mode. When a hex thrives, robins move in and sing."
-msgstr "フォトモードで撮った写真。ヘックスが繁栄すると、コマドリがやってきて歌う。"
-
-#: planets/verdance/data/events.json:trinkets[pic_firefly].name
-msgid "Photo: Firefly"
-msgstr "写真：ホタル"
-
-#: planets/verdance/data/events.json:trinkets[pic_firefly].desc
-msgid "A photo from photo mode. Tiny green lanterns over the grass after dark."
-msgstr "フォトモードで撮った写真。暗くなると草の上にともる、小さな緑のランタン。"
-
-#: planets/verdance/data/events.json:trinkets[pic_fish].name
-msgid "Photo: Lake Fish"
-msgstr "写真：湖の魚"
-
-#: planets/verdance/data/events.json:trinkets[pic_fish].desc
-msgid "A photo from photo mode. Once the water clears you can see them: small silver schools turning together over the sand."
-msgstr "フォトモードで撮った写真。水が澄むと見えてくる。砂の上でいっせいに向きを変える、小さな銀色の群れ。"
-
-#: planets/verdance/data/events.json:trinkets[pic_duck].name
-msgid "Photo: Mallard"
-msgstr "写真：マガモ"
-
-#: planets/verdance/data/events.json:trinkets[pic_duck].desc
-msgid "A photo from photo mode. Ducks paddle, dabble with their tails in the air and complain loudly about everything."
-msgstr "フォトモードで撮った写真。カモはすいすい泳ぎ、おしりを上げて餌をあさり、なんにでも大声で文句を言う。"
-
-#: planets/verdance/data/events.json:trinkets[pic_frog].name
-msgid "Photo: Green Frog"
-msgstr "写真：アオガエル"
-
-#: planets/verdance/data/events.json:trinkets[pic_frog].desc
-msgid "A photo from photo mode. Frogs sit at the water's edge and sing in the evening."
-msgstr "フォトモードで撮った写真。カエルは水辺に座って、夕方になると歌う。"
-
-#: planets/verdance/data/events.json:trinkets[pic_lizard].name
-msgid "Photo: Sand Lizard"
-msgstr "写真：スナトカゲ"
-
-#: planets/verdance/data/events.json:trinkets[pic_lizard].desc
-msgid "A photo from photo mode. Lizards bask on swept ground between the solar arrays and vanish in a blink when a shadow falls on them."
-msgstr "フォトモードで撮った写真。トカゲはソーラーパネルの間の掃除された地面でひなたぼっこをして、影がかかると一瞬で消えてしまう。"
-
-#: planets/verdance/data/events.json:trinkets[pic_fennec].name
-msgid "Photo: Fennec Fox"
-msgstr "写真：フェネック"
-
-#: planets/verdance/data/events.json:trinkets[pic_fennec].desc
-msgid "A photo from photo mode. A tiny desert fox with enormous ears."
-msgstr "フォトモードで撮った写真。大きな耳をもつ、小さな砂漠のキツネ。"
-
-#: planets/verdance/data/events.json:trinkets[pic_seal].name
-msgid "Photo: Harbour Seal"
-msgstr "写真：ゼニガタアザラシ"
-
-#: planets/verdance/data/events.json:trinkets[pic_seal].desc
-msgid "A photo from photo mode. Seals haul out on the quay once it's clean, lounge in heaps, and flop back to the water if you come too close."
-msgstr "フォトモードで撮った写真。岸壁がきれいになるとアザラシが上がってきて、かたまってごろごろし、近づきすぎるとどぼんと水に戻る。"
-
-#: planets/verdance/data/events.json:trinkets[pic_gull].name
-msgid "Photo: Herring Gull"
-msgstr "写真：セグロカモメ"
-
-#: planets/verdance/data/events.json:trinkets[pic_gull].desc
-msgid "A photo from photo mode. Loud, white and opportunistic."
-msgstr "フォトモードで撮った写真。うるさくて、白くて、ちゃっかり者。"
-
-#: planets/verdance/data/events.json:trinkets[pic_arctic_fox].name
-msgid "Photo: Arctic Fox"
-msgstr "写真：ホッキョクギツネ"
-
-#: planets/verdance/data/events.json:trinkets[pic_arctic_fox].desc
-msgid "A photo from photo mode. White as the snow it hunts on."
-msgstr "フォトモードで撮った写真。狩りをする雪と同じくらい白い。"
-
-#: planets/verdance/data/events.json:trinkets[pic_heron].name
-msgid "Photo: Grey Heron"
-msgstr "写真：アオサギ"
-
-#: planets/verdance/data/events.json:trinkets[pic_heron].desc
-msgid "A photo from photo mode. Herons stand perfectly still at the water's edge, then strike."
-msgstr "フォトモードで撮った写真。サギは水辺でぴたりと動かず、それから一瞬で獲物をとらえる。"
-
-#: planets/verdance/data/events.json:trinkets[pic_turtle].name
-msgid "Photo: Pond Turtle"
-msgstr "写真：イシガメ"
-
-#: planets/verdance/data/events.json:trinkets[pic_turtle].desc
-msgid "A photo from photo mode. Turtles cruise the drowned streets with their heads up, as if they've always lived here."
-msgstr "フォトモードで撮った写真。カメは頭を上げて水没した通りを泳ぎまわる。まるでずっとここに住んでいたみたいに。"
-
-#: planets/verdance/data/events.json:trinkets[pic_crane].name
-msgid "Photo: Cradle Crane"
-msgstr "写真：Cradle ヅル"
-
-#: planets/verdance/data/events.json:trinkets[pic_crane].desc
-msgid "A photo from photo mode. White cranes circle high over the landing city on slow wingbeats."
-msgstr "フォトモードで撮った写真。白いツルがゆっくりと羽ばたきながら、着陸都市の上空高くを旋回している。"
-
-#: planets/verdance/data/events.json:trinkets[maker_badge].name
-msgid "Maker's Badge"
-msgstr "メイカーのバッジ"
-
-#: planets/verdance/data/events.json:trinkets[maker_badge].desc
-msgid "Pinned inside a Legendary part: 'Built to be fixed.'"
-msgstr "レジェンダリーパーツの内側に留めてあった：「直されるために作られた」"
-
-#: planets/verdance/data/events.json:trinkets[signal_crystal].name
-msgid "Signal Crystal"
-msgstr "シグナルクリスタル"
-
-#: planets/verdance/data/events.json:trinkets[signal_crystal].desc
-msgid "The thing that was pinging. It still pings, very quietly, when you're happy."
-msgstr "ピンピン鳴っていた正体。君が幸せなとき、いまもとても小さくピンと鳴る。"
-
-#: planets/verdance/data/events.json:trinkets[audit_stamp].name
-msgid "APPROVED Stamp"
-msgstr "「承認」スタンプ"
-
-#: planets/verdance/data/events.json:trinkets[audit_stamp].desc
-msgid "The Ledger's rubber stamp. It now only says APPROVED. It's very proud of that."
-msgstr "Ledger のゴム印。いまは「承認」としか押せない。それがとても誇らしい。"
-
-#: planets/verdance/data/events.json:trinkets[drone_propeller].name
-msgid "Race Propeller"
-msgstr "レース用プロペラ"
-
-#: planets/verdance/data/events.json:trinkets[drone_propeller].desc
-msgid "A souvenir from the audit drone. It insists the race was close."
-msgstr "監査ドローンからのおみやげ。レースは接戦だったと言いはっている。"
-
-#: planets/verdance/data/events.json:trinkets[streak_medal].name
-msgid "Streak Medal"
-msgstr "コンボメダル"
-
-#: planets/verdance/data/events.json:trinkets[streak_medal].desc
-msgid "Earned for a max-tier cleaning streak. Scoop scoop scoop."
-msgstr "最高ティアの清掃コンボでもらえる。すくう、すくう、すくう。"
-
-#: planets/verdance/data/events.json:trinkets[lumi_lens_cap].name
-msgid "Lumi's First Lens Cap"
-msgstr "Lumi のはじめてのレンズキャップ"
-
-#: planets/verdance/data/events.json:trinkets[lumi_lens_cap].desc
-msgid "Lumi Level 10. The cap Lumi wore on the ark, scuffed and kept anyway."
-msgstr "Lumi レベル10。Lumi がアークでつけていたキャップ。すり傷だらけでも取っておいた。"
-
-#: planets/verdance/data/events.json:trinkets[lumi_seed_pin].name
-msgid "Seed-Keeper Pin"
-msgstr "シードキーパーのピン"
-
-#: planets/verdance/data/events.json:trinkets[lumi_seed_pin].desc
-msgid "Lumi Level 20. A little enamel sprout. The ark gave these to its gardeners."
-msgstr "Lumi レベル20。小さなエナメルの新芽。アークは庭師たちにこれを贈った。"
-
-#: planets/verdance/data/events.json:trinkets[lumi_tread_charm].name
-msgid "Tread Charm"
-msgstr "キャタピラのお守り"
-
-#: planets/verdance/data/events.json:trinkets[lumi_tread_charm].desc
-msgid "Lumi Level 30. A brass bell for the treads. It jingles on every bump."
-msgstr "Lumi レベル30。キャタピラにつける真ちゅうの鈴。でこぼこのたびにチリンと鳴る。"
-
-#: planets/verdance/data/events.json:trinkets[lumi_star_chart].name
-msgid "Pocket Star Chart"
-msgstr "ポケット星図"
-
-#: planets/verdance/data/events.json:trinkets[lumi_star_chart].desc
-msgid "Lumi Level 40. The ark's route home, folded small. One star is circled."
-msgstr "Lumi レベル40。小さく折りたたんだアークの帰り道。星がひとつ丸で囲まれている。"
-
-#: planets/verdance/data/events.json:trinkets[lumi_glow_ribbon].name
-msgid "Glow Ribbon"
-msgstr "光るリボン"
-
-#: planets/verdance/data/events.json:trinkets[lumi_glow_ribbon].desc
-msgid "Lumi Level 50. A ribbon that holds a little light. Lumi ties it to the antenna."
-msgstr "Lumi レベル50。少しだけ光をたもつリボン。Lumi はアンテナに結んでいる。"
-
-#: planets/verdance/data/events.json:trinkets[contract_pen].name
-msgid "Contract Pen"
-msgstr "依頼のペン"
-
-#: planets/verdance/data/events.json:trinkets[contract_pen].desc
-msgid "Your first contract signed. The pen has a tiny leaf on top."
-msgstr "はじめてサインした依頼。ペンの先に小さな葉っぱがついている。"
-
-#: planets/verdance/data/events.json:trinkets[contract_clipboard].name
-msgid "Foreman's Clipboard"
-msgstr "現場監督のクリップボード"
-
-#: planets/verdance/data/events.json:trinkets[contract_clipboard].desc
-msgid "Ten contracts done. Every box ticked, every box green."
-msgstr "依頼を10件達成。どの項目もチェック済み、どの項目も緑。"
-
-#: planets/verdance/data/events.json:trinkets[contract_crown].name
-msgid "Contractor's Crown"
-msgstr "請負人の王冠"
-
-#: planets/verdance/data/events.json:trinkets[contract_crown].desc
-msgid "Twenty-five contracts. The crown is a bent can. You wear it anyway."
-msgstr "依頼25件。王冠は曲がった缶。それでもかぶる。"
-
-#: planets/verdance/data/events.json:trinkets[capsule_rubber_frog].name
-msgid "Rubber Frog"
-msgstr "ゴムのカエル"
-
-#: planets/verdance/data/events.json:trinkets[capsule_rubber_frog].desc
-msgid "Squeaks in a minor key."
-msgstr "短調でキュッと鳴く。"
-
-#: planets/verdance/data/events.json:trinkets[capsule_tiny_cactus].name
-msgid "Tiny Cactus"
-msgstr "ちびサボテン"
-
-#: planets/verdance/data/events.json:trinkets[capsule_tiny_cactus].desc
-msgid "Needs no water. Mocks the Drips."
-msgstr "水いらず。Drip をからかう。"
-
-#: planets/verdance/data/events.json:trinkets[capsule_holo_koi].name
-msgid "Holo Koi"
-msgstr "ホロ錦鯉"
-
-#: planets/verdance/data/events.json:trinkets[capsule_holo_koi].desc
-msgid "A hologram fish that swims round your hopper."
-msgstr "ホッパーのまわりを泳ぐホログラムの魚。"
-
-#: planets/verdance/data/events.json:trinkets[capsule_moon_rock].name
-msgid "Moon Rock"
-msgstr "月の石"
-
-#: planets/verdance/data/events.json:trinkets[capsule_moon_rock].desc
-msgid "Not from the moon. From a parking lot. Still beautiful."
-msgstr "月からではない。駐車場から。それでもきれい。"
-
-#: planets/verdance/data/events.json:wren
-msgid "Crate inbound. From... me? I don't remember sending that. Open it."
-msgstr "木箱が向かってくる。差出人は……私？送った覚えはないな。開けてみて。"
-
-#: planets/verdance/data/events.json:wren
-msgid "Supply drop! I found an old Cradle pod still in orbit and nudged it down."
-msgstr "補給物資！軌道上に残っていた古い Cradle号のポッドを見つけて、そっと押し出したんだ。"
-
-#: planets/verdance/data/events.json:wren
-msgid "Another care package. I've been saving them for good days. This is one."
-msgstr "また差し入れ。いい日のために取っておいたんだ。今日はそういう日。"
-
 #: planets/verdance/data/events.json:wren
 msgid "That hex is glowing. Readings say... valuable. Hurry."
 msgstr "あのヘックス、光ってる。測定値は……価値あり。急いで。"
@@ -9755,30 +8664,6 @@ msgstr "雨だ。この音を忘れていた。君の植物は忘れていなか
 #: planets/verdance/data/events.json:wren
 msgid "Rain on clean ground. It smells like a memory."
 msgstr "きれいな地面に降る雨。思い出のにおいがする。"
-
-#: planets/verdance/data/events.json:wren
-msgid "One of your helpers is stuck. Hic."
-msgstr "ヘルパーのひとりが止まっちゃった。ヒック。"
-
-#: planets/verdance/data/events.json:wren
-msgid "{robot} has the hiccups. Try a firm pat on the chassis."
-msgstr "{robot} がしゃっくりしてる。シャーシをしっかりポンとたたいてみて。"
-
-#: planets/verdance/data/events.json:wren
-msgid "{robot} needs you. Gently, they're sensitive."
-msgstr "{robot} が君を必要としてる。そっとね、繊細だから。"
-
-#: planets/verdance/data/events.json:wren
-msgid "Something alive is moving out there. Not a robot."
-msgstr "外で何か生き物が動いてる。ロボットじゃない。"
-
-#: planets/verdance/data/events.json:wren
-msgid "A visitor! Go slowly. Take a picture, it lasts longer."
-msgstr "お客さんだ！ゆっくりね。写真を撮ろう、そのほうが長く残る。"
-
-#: planets/verdance/data/events.json:wren
-msgid "The thriving hexes are calling things home. Look."
-msgstr "繁栄したヘックスが、命を呼び戻してる。見て。"
 
 #: planets/verdance/data/events.json:wren
 msgid "Strong signal. Something old and well made."
@@ -9827,18 +8712,6 @@ msgstr "最大コンボ。スコップが歌ってる。"
 #: planets/verdance/data/events.json:wren
 msgid "Look at you go."
 msgstr "いい調子だね。"
-
-#: planets/verdance/data/events.json:wren
-msgid "Contract complete. Collect at the workbench."
-msgstr "依頼達成。作業台で受け取ろう。"
-
-#: planets/verdance/data/events.json:wren
-msgid "Another contract done. Tokens are waiting."
-msgstr "また依頼達成。トークンが待ってるよ。"
-
-#: planets/verdance/data/events.json:wren
-msgid "Contract fulfilled. The board's lit up green."
-msgstr "依頼完了。ボードが緑に光った。"
 
 #: planets/verdance/data/finds.json:finds[old_town_tin].hint
 msgid "A paint tin lies under the litter of Old Town."
@@ -9972,19 +8845,19 @@ msgstr "ミュージック"
 msgid "Glim downloads the CDs you've found: play any found song, anywhere, anytime."
 msgstr "Glim が見つけたCDをダウンロード：見つけた曲をいつでもどこでも再生できる。"
 
-#: data/glim.json:shells[pearl].name data/ship_style.json:paints[pearl].name data/style_parts.json:swatches[pearl].name
+#: data/glim.json:shells[pearl].name data/style_parts.json:swatches[pearl].name
 msgid "Pearl"
 msgstr "パール"
 
-#: data/glim.json:shells[sunset].name data/ship_style.json:paints[sunset].name data/style_parts.json:swatches[sunset].name
+#: data/glim.json:shells[sunset].name data/style_parts.json:swatches[sunset].name
 msgid "Sunset"
 msgstr "サンセット"
 
-#: data/glim.json:shells[moss].name data/ship_style.json:paints[moss].name
+#: data/glim.json:shells[moss].name
 msgid "Moss"
 msgstr "コケ"
 
-#: data/glim.json:shells[graphite].name data/ship_style.json:trims[graphite].name data/style_parts.json:swatches[graphite].name
+#: data/glim.json:shells[graphite].name data/style_parts.json:swatches[graphite].name
 msgid "Graphite"
 msgstr "グラファイト"
 
@@ -10872,14 +9745,6 @@ msgstr "すべての惑星のすべての珍品（ヒントは図鑑の「珍品
 msgid "Letters, notes and drawings surface as the ground is cleaned."
 msgstr "地面がきれいになると、手紙やメモや絵が出てくる。"
 
-#: planets/verdance/data/museum.json:exhibits[trinkets].name
-msgid "Trinkets and Curios"
-msgstr "小物と珍品"
-
-#: planets/verdance/data/museum.json:exhibits[trinkets].hint
-msgid "World events, requests, streaks and Curio Capsules."
-msgstr "ワールドイベント、依頼、連続記録、珍品カプセル。"
-
 #: planets/verdance/data/museum.json:exhibits[ochre_glass].name
 msgid "Ochre Sun-Glass"
 msgstr "Ochre の陽光ガラス"
@@ -11088,7 +9953,7 @@ msgstr "きれいなヘックスが10個。ロボットたちはきみから学�
 msgid "Rebuild the base to level 2"
 msgstr "基地をレベル2に再建する"
 
-#: planets/verdance/data/objectives.json:objectives[base2].desc
+#: planets/verdance/data/objectives.json:objectives[base2].desc planets/verdance/data/objectives.json:objectives[base3].desc
 msgid "Workbench, Upgrades tab. More robots can work."
 msgstr "作業台のアップグレードタブ。もっと多くのロボットが働ける。"
 
@@ -11183,10 +10048,6 @@ msgstr "ヘックス20個。空気のにおいがもう変わってきた。"
 #: planets/verdance/data/objectives.json:objectives[base3].text
 msgid "Rebuild the base to level 3"
 msgstr "基地をレベル3に再建する"
-
-#: planets/verdance/data/objectives.json:objectives[base3].desc
-msgid "Workbench, Upgrades tab. It opens the Request Board."
-msgstr "作業台のアップグレードタブ。依頼ボードが開く。"
 
 #: planets/verdance/data/objectives.json:objectives[base3].lines
 msgid "One more base level. The Cradle is watching, Lumi."
@@ -12538,26 +11399,6 @@ msgstr ""
 "\n"
 "（誰かが下にひっかいて書いている：「任せてくれればできる」）"
 
-#: data/ship_style.json:paints[midnight].name data/style_parts.json:swatches[midnight].name
-msgid "Midnight"
-msgstr "ミッドナイト"
-
-#: data/ship_style.json:paints[coral].name data/style_parts.json:swatches[coral].name
-msgid "Coral"
-msgstr "コーラル"
-
-#: data/ship_style.json:paints[lunar].name
-msgid "Lunar Silver"
-msgstr "ルナシルバー"
-
-#: data/ship_style.json:trims[tangerine].name
-msgid "Tangerine"
-msgstr "タンジェリン"
-
-#: data/ship_style.json:trims[chrome].name
-msgid "Chrome"
-msgstr "クローム"
-
 #: planets/verdance/data/signal_tower.json:tiers[0].name
 msgid "Signal Tower"
 msgstr "信号塔"
@@ -13142,6 +11983,10 @@ msgstr "ペンギンボットのよちよち歩き"
 msgid "Ice Rink Lights"
 msgstr "アイスリンクの灯"
 
+#: data/songs.json:songs[snow_globe].title
+msgid "Snow Globe"
+msgstr "スノードーム"
+
 #: data/songs.json:songs[the_long_way_home].title
 msgid "The Long Way Home"
 msgstr "遠回りの帰り道"
@@ -13642,6 +12487,10 @@ msgstr "清掃の最前線に設置する油圧ベールプレス。清掃ロボ
 msgid "Shredder drums and a little smelter. Bales go in and never come back: out come parts and clean building stock. Every bale burnt clean helps the sky."
 msgstr "シュレッダードラムと小さな溶鉱炉。ベールは入ったら二度と戻らない。出てくるのはパーツときれいな建材。きれいに燃やしたベールは空のためになる。"
 
+#: data/style_parts.json:slots[trim].name
+msgid "Trim"
+msgstr "トリム"
+
 #: data/style_parts.json:slots[accent].name
 msgid "Accent"
 msgstr "アクセント"
@@ -13774,6 +12623,10 @@ msgstr "アイボリー"
 msgid "Sea glass"
 msgstr "シーグラス"
 
+#: data/style_parts.json:swatches[coral].name
+msgid "Coral"
+msgstr "コーラル"
+
 #: data/style_parts.json:swatches[royal].name
 msgid "Royal blue"
 msgstr "ロイヤルブルー"
@@ -13789,6 +12642,10 @@ msgstr "ゴールド"
 #: data/style_parts.json:swatches[bloom].name
 msgid "Bloom green"
 msgstr "ブルームグリーン"
+
+#: data/style_parts.json:swatches[midnight].name
+msgid "Midnight"
+msgstr "ミッドナイト"
 
 #: data/style_parts.json:swatches[copper].name
 msgid "Copper"
@@ -14009,14 +12866,6 @@ msgstr "作業台 Mk III：研究デスク"
 #: data/workbench.json:tiers[2].desc
 msgid "Adds a research desk. Study what you dig up to unlock machines and seeds."
 msgstr "研究デスクを追加。掘り出したものを調べて、機械や種を解放しよう。"
-
-#: data/workbench.json:tiers[3].name
-msgid "Workbench Mk IV: Request Board"
-msgstr "作業台 Mk IV：依頼ボード"
-
-#: data/workbench.json:tiers[3].desc
-msgid "Adds a request board. Take on jobs for tokens and rare parts."
-msgstr "依頼ボードを追加。依頼をこなしてトークンとレアパーツを手に入れよう。"
 
 #: planets/verdance/data/wren_lines.json:wake
 msgid "...Lumi? ...It's WREN. Your tower's carrying me. Barely. Keep it standing."
@@ -15410,18 +14259,6 @@ msgstr "新しい世界、新しい空。仕事はいつもどおり。最初の
 msgid "Look at that. Ruined, dusty, nobody's planted anything in centuries. You know what to do."
 msgstr "見て。荒れ果てて、ほこりだらけで、何百年もだれも何も植えていない。どうすればいいか、もうわかってるよね。"
 
-#: planets/verdance/data/wren_lines.json:garden_place
-msgid "...pretty..."
-msgstr "……きれい……"
-
-#: planets/verdance/data/wren_lines.json:garden_place
-msgid "You're decorating. I approve. The cats are going to approve more."
-msgstr "飾りつけしてるんだ。いいと思う。ネコたちはもっと気に入るよ。"
-
-#: planets/verdance/data/wren_lines.json:garden_place
-msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
-msgstr "ベンチに、ランプに、噴水。人が帰ってきたくなる場所に見えてきた。"
-
 #: planets/verdance/data/wren_lines.json:home_arrive
 msgid "...new sky... two suns..."
 msgstr "……新しい空……太陽が2つ……"
@@ -15613,6 +14450,876 @@ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を�
 #: planets/verdance/data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
+#~ msgstr "鳥たちはきみを気に入ったみたい。パンくず袋をコレクションに追加した。"
+
+#~ msgid "Snap! A %s for your Collection."
+#~ msgstr "パシャ！%s の写真をコレクションに追加。"
+
+#~ msgid "New for your Collection: %s. See it in the Codex (K)."
+#~ msgstr "コレクションに追加：%s。図鑑（K）で見られます。"
+
+#~ msgid "Supply Drops"
+#~ msgstr "補給物資の投下"
+
+#~ msgid "Salvage Glints"
+#~ msgstr "サルベージの輝き"
+
+#~ msgid "Rain Showers"
+#~ msgstr "にわか雨"
+
+#~ msgid "Robot Hiccups"
+#~ msgstr "ロボットのしゃっくり"
+
+#~ msgid "Wildlife Photos"
+#~ msgstr "生き物の写真"
+
+#~ msgid "Animal Photos"
+#~ msgstr "動物の写真"
+
+#~ msgid "Rare Part Signals"
+#~ msgstr "レアパーツの信号"
+
+#~ msgid "Ledger Audits"
+#~ msgstr "Ledger の監査"
+
+#~ msgid "Cleaning Streaks"
+#~ msgstr "清掃コンボ"
+
+#~ msgid "Lumi Levels"
+#~ msgstr "Lumi のレベル"
+
+#~ msgid "Requests"
+#~ msgstr "依頼"
+
+#~ msgid "Curio Capsules"
+#~ msgstr "珍品カプセル"
+
+#~ msgid "Curio Capsule"
+#~ msgstr "珍品カプセル"
+
+#~ msgid "Request complete: %s. Claim it at the workbench."
+#~ msgstr "依頼達成：%s。作業台で受け取ろう。"
+
+#~ msgid "A request ran out of time. No harm done; a new one will be posted soon."
+#~ msgstr "依頼の時間切れ。問題なし。すぐに新しい依頼が来る。"
+
+#~ msgid "New at the workbench: the Requests board. Small jobs, real rewards."
+#~ msgstr "作業台に新機能：依頼ボード。小さな仕事、ちゃんとした報酬。"
+
+#~ msgid "The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."
+#~ msgstr "中継器がやっとクレイドルの古い作業指示を拾えるようになったわ。作業台の依頼ボードにあるよ。"
+
+#~ msgid "Request done: %s."
+#~ msgstr "依頼完了：%s。"
+
+#~ msgid "Requests reward: %s."
+#~ msgstr "依頼の報酬：%s。"
+
+#~ msgid "Needs %d Collection finds (%d so far)"
+#~ msgstr "コレクションの発見が %d 必要（いまは %d）"
+
+#~ msgid "Too close to the base machines"
+#~ msgstr "基地の機械に近すぎる"
+
+#~ msgid "Something is already here"
+#~ msgstr "ここにはもう何か置いてある"
+
+#~ msgid "That's water"
+#~ msgstr "そこは水だよ"
+
+#~ msgid "Frozen in"
+#~ msgstr "凍っている"
+
+#~ msgid "CRADLE · SUPPLY"
+#~ msgstr "CRADLE号 · 補給"
+
+#~ msgid "%d pieces of junk left around the crate"
+#~ msgstr "箱のまわりにガラクタが残り %d 個"
+
+#~ msgid "Supply crate opened: %s"
+#~ msgstr "補給箱を開けた：%s"
+
+#~ msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
+#~ msgstr "補給箱のビーコンが時間切れになり、ドローンが引き上げていった。また来るよ。"
+
+#~ msgid "E   fix %s's hiccup"
+#~ msgstr "E   %s のしゃっくりを治す"
+
+#~ msgid "%s is %d m away"
+#~ msgstr "%s まで %d m"
+
+#~ msgid "%s shook off its hiccups on its own. It looks embarrassed."
+#~ msgstr "%s はひとりでしゃっくりが止まった。ちょっと恥ずかしそう。"
+
+#~ msgid "%s is fixed and back to work. %s"
+#~ msgstr "%s は修理されて仕事に戻った。%s"
+
+#~ msgid "Wildlife Visit: %s"
+#~ msgstr "生き物がやってきた：%s"
+
+#~ msgid "E   take a photo of the %s"
+#~ msgstr "E   %s の写真を撮る"
+
+#~ msgid "%s, %d m away"
+#~ msgstr "%s、%d m 先"
+
+#~ msgid "The %s wandered off. It'll be back somewhere green."
+#~ msgstr "%s はどこかへ行ってしまった。どこか緑のある場所にまた現れるよ。"
+
+#~ msgid "Snap! The %s is in your Collection. %s"
+#~ msgstr "パシャ！%s がコレクションに入った。%s"
+
+#~ msgid "Snap! Another lovely shot of the %s. %s"
+#~ msgstr "パシャ！%s のすてきな写真をもう一枚。%s"
+
+#~ msgid "Build the Robot Nursery in the Build tab first."
+#~ msgstr "先に建設タブでロボット保育所を建てよう。"
+
+#~ msgid "Only Mk I-II robots retire early. %s can retire in %d min."
+#~ msgstr "早めに引退できるのは Mk I-II のロボットだけ。%s はあと %d 分で引退できる。"
+
+#~ msgid "%s retires to the nursery garden. +%d parts, and the flowers get a caretaker."
+#~ msgstr "%s は苗床ガーデンで引退生活へ。+%d パーツ、花には世話係ができた。"
+
+#~ msgid "E   Say hi to %s"
+#~ msgstr "E   %s にあいさつ"
+
+#~ msgid "CARETAKER · %s"
+#~ msgstr "世話係 · %s"
+
+#~ msgid "%s beeps hello and shows Lumi the marigolds."
+#~ msgstr "%s はピッとあいさつして、Lumi にマリーゴールドを見せる。"
+
+#~ msgid "%s is busy with the watering can, but waves anyway."
+#~ msgstr "%s はじょうろで忙しいけど、それでも手を振る。"
+
+#~ msgid "%s hums to the seedlings. Retirement suits it."
+#~ msgstr "%s は苗に鼻歌を聞かせている。引退生活が似合う。"
+
+#~ msgid "%s points proudly at a new bud."
+#~ msgstr "%s は新しいつぼみを得意げに指さす。"
+
+#~ msgid "%d / %d collectibles"
+#~ msgstr "コレクション %d / %d"
+
+#~ msgid "LUMI'S COLLECTION"
+#~ msgstr "Lumiのコレクション"
+
+#~ msgid "TRINKETS AND CURIOS"
+#~ msgstr "小物と珍品"
+
+#~ msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
+#~ msgstr "ヒント：維持・繁栄したヘックスに、恥ずかしがりやの訪問者がやってくる。カメラを持っていこう。"
+
+#~ msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
+#~ msgstr "ヒント：地面が癒えると動物が戻ってくる。フォトモード（P）で撮影しよう。"
+
+#~ msgid "Hint: finish %d requests (Requests tab at the workbench)."
+#~ msgstr "ヒント：依頼を %d 件こなそう（作業台の依頼タブ）。"
+
+#~ msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
+#~ msgstr "ヒント：珍品カプセルは、作業台の依頼の報酬トラックにある。"
+
+#~ msgid "Hint: keep scooping without stopping until the streak meter is full."
+#~ msgstr "ヒント：コンボメーターがいっぱいになるまで休まずすくい続けよう。"
+
+#~ msgid "Hint: turns up during %s."
+#~ msgstr "ヒント：%sのあいだに現れる。"
+
+#~ msgid "%d done"
+#~ msgstr[0] "%d件完了"
+
+#~ msgid "Live now:  %s  ·  %s  ·  %s left"
+#~ msgstr "開催中：  %s  ·  %s  ·  残り%s"
+
+#~ msgid "Every reward unlocked. Each %d more requests pay a Vintage part's worth of parts."
+#~ msgstr "報酬はすべて解放済み。依頼を%d件こなすごとにヴィンテージ部品1個分のパーツがもらえます。"
+
+#~ msgid "Next unlock in %d request:  %s"
+#~ msgstr[0] "次の解放まで依頼%d件：  %s"
+
+#~ msgid "A new request is on its way"
+#~ msgstr "新しい依頼が届きます"
+
+#~ msgid "Claim"
+#~ msgstr "受け取る"
+
+#~ msgid "REQUEST READY  ·  claim it at the workbench"
+#~ msgstr "依頼完了  ·  作業台で受け取ろう"
+
+#~ msgid "%d REQUESTS READY  ·  claim them at the workbench"
+#~ msgstr "依頼 %d 件完了  ·  作業台で受け取ろう"
+
+#~ msgid "Nursery"
+#~ msgstr "苗床"
+
+#~ msgid "CARETAKERS  ·  %d"
+#~ msgstr "世話係  ·  %d"
+
+#~ msgid "Garden bonus: plants grow %d%% faster (up to %d%%)."
+#~ msgstr "ガーデンボーナス：植物の成長が %d%% 速い（最大 %d%%）。"
+
+#~ msgid "No one has retired yet. Old or Mk I-II robots can retire here; they'll look after the nursery garden at the base."
+#~ msgstr "まだ誰も引退していない。古いロボットや Mk I-II のロボットはここで引退でき、基地の苗床ガーデンの世話をしてくれる。"
+
+#~ msgid "RETIRE A ROBOT"
+#~ msgstr "ロボットを引退させる"
+
+#~ msgid "Retiring gives a few parts back, and the robot keeps its name and personality in the nursery."
+#~ msgstr "引退するとパーツが少し戻り、ロボットは苗床で名前と性格をそのまま保つ。"
+
+#~ msgid "No robots in this district."
+#~ msgstr "この地区にロボットはいない。"
+
+#~ msgid "Press again to retire (+%d parts)"
+#~ msgstr "もう一度押すと引退（+%d パーツ）"
+
+#~ msgid "Retire  (+%d parts)"
+#~ msgstr "引退  （+%d パーツ）"
+
+#~ msgid "Garden Mode opens when this base reaches level 5, or once the Cradle comes home."
+#~ msgstr "ガーデンモードは、この基地がレベル5になるか、Cradle号が帰ってくると使えるようになる。"
+
+#~ msgid "charm +%.1f"
+#~ msgstr "魅力 +%.1f"
+
+#~ msgid "%s here: %s to pick it up"
+#~ msgstr "ここに%s：%s で拾う"
+
+#~ msgid "GARDEN MODE   ·   Charm %.1f   ·   +%.1f%% plant growth here"
+#~ msgstr "ガーデンモード   ·   魅力 %.1f   ·   ここの植物の成長 +%.1f%%"
+
+#~ msgid "[%s] place   [%s] rotate   [%s / %s] item   [%s] pick up   [%s] done"
+#~ msgstr "[%s] 置く   [%s] 回す   [%s / %s] アイテム   [%s] 拾う   [%s] 完了"
+
+#~ msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
+#~ msgstr "拾った：%s。別の場所に置くか、しまっておこう。"
+
+#~ msgid "+%d XP"
+#~ msgstr "+%d XP"
+
+#~ msgid "Lumi reached level %d%s"
+#~ msgstr "Lumi がレベル %d になった%s"
+
+#~ msgid "Garden Mode  [%s]"
+#~ msgstr "ガーデンモード  [%s]"
+
+#~ msgid "Ship looks: the tiers keep their shape"
+#~ msgstr "船の見た目：ティアの形はそのまま"
+
+#~ msgid "Mix and Match"
+#~ msgstr "組み合わせ自在"
+
+#~ msgid "Style a robot with all five custom parts in the Locker."
+#~ msgstr "ロッカーでロボットに5つのカスタムパーツをすべて付けよう。"
+
+#~ msgid "As the Makers Made It"
+#~ msgstr "メイカーの作ったままに"
+
+#~ msgid "Fit the full Maker set (shell, optic and glider) on one robot."
+#~ msgstr "メイカーセット一式（シェル、オプティク、グライダー）を1台のロボットに装着する。"
+
+#~ msgid "Hat Rack"
+#~ msgstr "帽子掛け"
+
+#~ msgid "Collect 5 different robot toppers."
+#~ msgstr "異なるロボットの頭飾りを5つ集める。"
+
+#~ msgid "Home Touches"
+#~ msgstr "わが家らしく"
+
+#~ msgid "Place a decoration in Garden Mode."
+#~ msgstr "ガーデンモードで飾りを置く。"
+
+#~ msgid "Landscaper"
+#~ msgstr "造園家"
+
+#~ msgid "Place 25 decorations."
+#~ msgstr "飾りを25個置く。"
+
+#~ msgid "Full Catalogue"
+#~ msgstr "カタログ制覇"
+
+#~ msgid "Place every kind of decoration at least once."
+#~ msgstr "すべての種類の飾りを1回以上置く。"
+
+#~ msgid "Picture Perfect"
+#~ msgstr "絵になる景色"
+
+#~ msgid "Reach 25 charm in one district."
+#~ msgstr "1つの地区で魅力25に到達する。"
+
+#~ msgid "The Cradle Answers"
+#~ msgstr "Cradle の応答"
+
+#~ msgid "Light the Cradle Returns beacon and hear from the ark."
+#~ msgstr "Cradle号の帰還のビーコンを灯して、方舟の声を聞く。"
+
+#~ msgid "Happy Retirement"
+#~ msgstr "ハッピーリタイア"
+
+#~ msgid "Retire a robot to the nursery garden."
+#~ msgstr "ロボットを苗床ガーデンで引退させる。"
+
+#~ msgid "Garden Party"
+#~ msgstr "ガーデンパーティー"
+
+#~ msgid "Say hi to the nursery caretakers 5 times."
+#~ msgstr "苗床の世話係に 5 回あいさつする。"
+
+#~ msgid "Robot Nursery"
+#~ msgstr "ロボット保育所"
+
+#~ msgid "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand."
+#~ msgstr "花壇のある塀に囲まれた芝生。引退したロボットたちが庭の世話をして、チームを手伝ってくれる。"
+
+#~ msgid "Stone Path"
+#~ msgstr "石の小道"
+
+#~ msgid "Flat stepping stones. Paths join everything up."
+#~ msgstr "平らな飛び石。小道はすべてをつなぐ。"
+
+#~ msgid "Flower Bed"
+#~ msgstr "花壇"
+
+#~ msgid "A low bed of mixed flowers. Bees and butterflies approve."
+#~ msgstr "いろんな花を植えた低い花壇。ミツバチもチョウもごきげん。"
+
+#~ msgid "Planter"
+#~ msgstr "プランター"
+
+#~ msgid "A white hex planter with a small shrub, like the ones the future city grows."
+#~ msgstr "小さな低木を植えた白い六角形のプランター。未来の街で育てているのと同じもの。"
+
+#~ msgid "Bench"
+#~ msgstr "ベンチ"
+
+#~ msgid "Wood slats on cast feet. Cats like to sleep on it."
+#~ msgstr "鋳物の脚に木の板をわたしたベンチ。ネコのお昼寝スポット。"
+
+#~ msgid "Garden Lamp"
+#~ msgstr "ガーデンランプ"
+
+#~ msgid "A slim lamp with a warm glow after dark."
+#~ msgstr "暗くなるとあたたかく光る、すらりとしたランプ。"
+
+#~ msgid "Bird Bath"
+#~ msgstr "バードバス"
+
+#~ msgid "A stone basin of clean water."
+#~ msgstr "きれいな水をたたえた石の水盤。"
+
+#~ msgid "Fountain"
+#~ msgstr "噴水"
+
+#~ msgid "A tiered fountain, running again. Deer come to drink at dawn."
+#~ msgstr "ふたたび水が流れはじめた段々の噴水。夜明けにはシカが水を飲みにくる。"
+
+#~ msgid "Maker Statue"
+#~ msgstr "メイカーの像"
+
+#~ msgid "A stone figure of one of the Makers, holding a watering can."
+#~ msgstr "じょうろを持ったメイカーの一人をかたどった石像。"
+
+#~ msgid "Lumi Sculpture"
+#~ msgstr "Lumi の彫刻"
+
+#~ msgid "A topiary-and-brass sculpture of Lumi holding up a seedling. Very modest."
+#~ msgstr "苗を高くかかげる Lumi をかたどった、トピアリーと真ちゅうの彫刻。とってもひかえめ。"
+
+#~ msgid "WREN Wind Kite"
+#~ msgstr "WREN のたこ"
+
+#~ msgid "A kite shaped like WREN's bird, tethered to a post and always flying."
+#~ msgstr "WREN の鳥の形をしたたこ。柱につながれて、いつも空を泳いでいる。"
+
+#~ msgid "Supply Drop"
+#~ msgstr "補給物資の投下"
+
+#~ msgid "Supply Drop! A crate parachuted onto the junk %s of you. Clear the junk around it to crack it open."
+#~ msgstr "補給物資の投下！君の%sのガラクタの上に木箱がパラシュートで落ちてきた。まわりのガラクタを片づけて開けよう。"
+
+#~ msgid "Clear the junk around the crate"
+#~ msgstr "木箱のまわりのガラクタを片づけよう"
+
+#~ msgid "Robot Hiccup"
+#~ msgstr "ロボットのしゃっくり"
+
+#~ msgid "%s has the hiccups and stopped working. Walk over and press E for a quick fix."
+#~ msgstr "%s がしゃっくりで止まってしまった。近づいて E を押せばすぐ直る。"
+
+#~ msgid "Walk to the stuck robot and press E"
+#~ msgstr "止まったロボットのところへ行って E を押そう"
+
+#~ msgid "Wildlife Visit"
+#~ msgstr "生き物がやってきた"
+
+#~ msgid "Something is visiting a thriving hex %s of you. Sneak up and press E to take a photo."
+#~ msgstr "君の%sの繁栄ヘックスに何かが来ている。そっと近づいて E で写真を撮ろう。"
+
+#~ msgid "Find the visitor and press E for a photo"
+#~ msgstr "訪問者を見つけて E で写真を撮ろう"
+
+#~ msgid "Glowtail Fox"
+#~ msgstr "ヒカリオギツネ"
+
+#~ msgid "fox"
+#~ msgstr "キツネ"
+
+#~ msgid "Moss Deer"
+#~ msgstr "コケジカ"
+
+#~ msgid "deer"
+#~ msgstr "シカ"
+
+#~ msgid "Lantern Hedgehog"
+#~ msgstr "ランタンハリネズミ"
+
+#~ msgid "hedgehog"
+#~ msgstr "ハリネズミ"
+
+#~ msgid "Prism Heron"
+#~ msgstr "プリズムサギ"
+
+#~ msgid "heron"
+#~ msgstr "サギ"
+
+#~ msgid "Velvet Hare"
+#~ msgstr "ビロードウサギ"
+
+#~ msgid "hare"
+#~ msgstr "ウサギ"
+
+#~ msgid "Press %d metal-heavy bales"
+#~ msgstr "金属の多いベールを %d 個圧縮"
+
+#~ msgid "Press %d Perfect bales"
+#~ msgstr "パーフェクトベールを %d 個圧縮"
+
+#~ msgid "Press %d Pure bales (one junk type)"
+#~ msgstr "ピュアベールを %d 個圧縮（ガラクタ1種類）"
+
+#~ msgid "Clean %d hexes"
+#~ msgstr "ヘックスを %d 個片づける"
+
+#~ msgid "Scoop %d pieces of junk"
+#~ msgstr "ガラクタを %d 個すくう"
+
+#~ msgid "Dig up %d buried parts"
+#~ msgstr "埋まったパーツを %d 個掘り出す"
+
+#~ msgid "Reach a tier %d cleaning streak"
+#~ msgstr "清掃コンボでティア %d に到達"
+
+#~ msgid "Plant %d sprouts"
+#~ msgstr "新芽を %d 本植える"
+
+#~ msgid "Grow %d plants to bloom"
+#~ msgstr "植物を %d 株咲かせる"
+
+#~ msgid "Get %d more hexes to Sustained"
+#~ msgstr "ヘックスをあと %d 個維持状態にする"
+
+#~ msgid "Get one more hex to Sustained"
+#~ msgstr "ヘックスをあと1つ維持状態にする"
+
+#~ msgid "Brass Compass"
+#~ msgstr "真ちゅうのコンパス"
+
+#~ msgid "Points north, mostly. Came wrapped in a sock in a supply crate."
+#~ msgstr "だいたい北を指す。補給箱の中で靴下にくるまれて届いた。"
+
+#~ msgid "Wind-up Tin Robot"
+#~ msgstr "ぜんまい式ブリキロボット"
+
+#~ msgid "Walks three steps and falls over. Lumi relates."
+#~ msgstr "3歩歩いて転ぶ。Lumi にはよくわかる。"
+
+#~ msgid "Seed Locket"
+#~ msgstr "種のロケット"
+
+#~ msgid "A locket with one seed inside instead of a photo. Someone loved gardens."
+#~ msgstr "写真のかわりに種がひと粒入ったロケットペンダント。誰かが庭を愛していた。"
+
+#~ msgid "A tiny city under glass, still clean. A promise, maybe."
+#~ msgstr "ガラスの下の小さな街。まだきれいなまま。たぶん、約束。"
+
+#~ msgid "Cradle Crate Stencil"
+#~ msgstr "Cradle号の木箱ステンシル"
+
+#~ msgid "The stencil used to paint every supply crate. WREN asked for it back. You said no."
+#~ msgstr "補給箱すべてに文字を描いたステンシル。WREN は返してほしいと言った。君は断った。"
+
+#~ msgid "Golden Bolt"
+#~ msgstr "金のボルト"
+
+#~ msgid "Fell out of a surge hex, still warm. Fits nothing. Worth everything."
+#~ msgstr "ラッシュのヘックスから落ちてきた。まだ温かい。何にも合わない。でも何より価値がある。"
+
+#~ msgid "Surge Glass"
+#~ msgstr "ラッシュのガラス"
+
+#~ msgid "A sliver of glass that kept the surge's glow. It hums when you hold it."
+#~ msgstr "ラッシュの光をとどめたガラスのかけら。持つとハミングする。"
+
+#~ msgid "Jar of First Rain"
+#~ msgstr "はじめての雨のびん"
+
+#~ msgid "Collected during the first rain in years. Do not drink. Do not open. Just look."
+#~ msgstr "何年ぶりかの雨のときに集めた。飲まないで。開けないで。ただ眺めて。"
+
+#~ msgid "Paper Boat"
+#~ msgstr "紙の舟"
+
+#~ msgid "Someone made it from a coupon. It sailed a whole puddle."
+#~ msgstr "誰かがクーポン券で折った。水たまりをまるごと渡りきった。"
+
+#~ msgid "Lucky Spanner"
+#~ msgstr "幸運のスパナ"
+
+#~ msgid "Fixes any hiccup, if you hit the right spot. Usually the left side."
+#~ msgstr "ちょうどいい場所をたたけば、どんなしゃっくりも直る。たいてい左側。"
+
+#~ msgid "Diagnostic Tape"
+#~ msgstr "診断テープ"
+
+#~ msgid "A printout of a robot hiccuping. It looks a lot like a song."
+#~ msgstr "しゃっくりするロボットの記録の印刷。歌にとてもよく似ている。"
+
+#~ msgid "Photo: Glowtail Fox"
+#~ msgstr "写真：ヒカリオギツネ"
+
+#~ msgid "Its tail glows when it's curious. It was very curious about Lumi."
+#~ msgstr "好奇心がわくと尻尾が光る。Lumi にとても興味しんしんだった。"
+
+#~ msgid "Photo: Moss Deer"
+#~ msgstr "写真：コケジカ"
+
+#~ msgid "Moss grows on its antlers. Butterflies rest there like it's a tree."
+#~ msgstr "角にコケが生えている。チョウが木だと思ってそこで休む。"
+
+#~ msgid "Photo: Lantern Hedgehog"
+#~ msgstr "写真：ランタンハリネズミ"
+
+#~ msgid "The tips of its spines glow amber at dusk. It ate a beetle on camera. Sorry."
+#~ msgstr "夕暮れどきに針の先が琥珀色に光る。カメラの前で甲虫を食べた。ごめん。"
+
+#~ msgid "Photo: Prism Heron"
+#~ msgstr "写真：プリズムサギ"
+
+#~ msgid "Its feathers split light into rainbows. It stood on one leg the whole time."
+#~ msgstr "羽が光を虹に分ける。ずっと片足で立っていた。"
+
+#~ msgid "Photo: Velvet Hare"
+#~ msgstr "写真：ビロードウサギ"
+
+#~ msgid "Soft as a whisper, quick as a rumour. The photo is a little blurry. Worth it."
+#~ msgstr "ささやきのようにやわらかく、うわさのように速い。写真は少しブレている。それでも撮る価値はあった。"
+
+#~ msgid "Crumb Bag"
+#~ msgstr "パンくず袋"
+
+#~ msgid "A paper bag of crumbs and seed husks. The pigeons know the sound of it now."
+#~ msgstr "パンくずと種殻の入った紙袋。ハトたちはもうこの音を覚えている。"
+
+#~ msgid "Photo: Stray Cat"
+#~ msgstr "写真：ノラネコ"
+
+#~ msgid "A photo from photo mode. Old Town's cats never left."
+#~ msgstr "フォトモードで撮った写真。旧市街のネコたちは、一度もいなくならなかった。"
+
+#~ msgid "Photo: Pigeon"
+#~ msgstr "写真：ハト"
+
+#~ msgid "A photo from photo mode. Pigeons will live anywhere people once dropped crumbs."
+#~ msgstr "フォトモードで撮った写真。ハトは、かつて人がパンくずを落とした場所ならどこにでも住む。"
+
+#~ msgid "Photo: Sparrow"
+#~ msgstr "写真：スズメ"
+
+#~ msgid "A photo from photo mode. Small, brown and bossy."
+#~ msgstr "フォトモードで撮った写真。小さくて茶色で、いばりんぼ。"
+
+#~ msgid "Photo: Rat"
+#~ msgstr "写真：ネズミ"
+
+#~ msgid "A photo from photo mode. Rats live in the gaps between the piles."
+#~ msgstr "フォトモードで撮った写真。ネズミはガラクタの山のすき間に住んでいる。"
+
+#~ msgid "Photo: Rabbit"
+#~ msgstr "写真：ウサギ"
+
+#~ msgid "A photo from photo mode. Rabbits arrive as soon as there is something green to nibble."
+#~ msgstr "フォトモードで撮った写真。かじれる緑があると、すぐにウサギがやってくる。"
+
+#~ msgid "Photo: Roe Deer"
+#~ msgstr "写真：ノロジカ"
+
+#~ msgid "A photo from photo mode. Shy grazers that keep to the edge of the green, where they can see what's coming."
+#~ msgstr "フォトモードで撮った写真。何が来るか見わたせるように、緑のはずれにいる恥ずかしがりやの草食動物。"
+
+#~ msgid "Photo: Red Fox"
+#~ msgstr "写真：アカギツネ"
+
+#~ msgid "A photo from photo mode. A fox trots along the hedges, nose down, tail out."
+#~ msgstr "フォトモードで撮った写真。キツネが鼻を地面に近づけ、しっぽをのばして生け垣ぞいを小走りしていく。"
+
+#~ msgid "Photo: Honeybee"
+#~ msgstr "写真：ミツバチ"
+
+#~ msgid "A photo from photo mode. Bees came back with the blooms."
+#~ msgstr "フォトモードで撮った写真。ミツバチは花といっしょに戻ってきた。"
+
+#~ msgid "Photo: Robin"
+#~ msgstr "写真：コマドリ"
+
+#~ msgid "A photo from photo mode. When a hex thrives, robins move in and sing."
+#~ msgstr "フォトモードで撮った写真。ヘックスが繁栄すると、コマドリがやってきて歌う。"
+
+#~ msgid "Photo: Firefly"
+#~ msgstr "写真：ホタル"
+
+#~ msgid "A photo from photo mode. Tiny green lanterns over the grass after dark."
+#~ msgstr "フォトモードで撮った写真。暗くなると草の上にともる、小さな緑のランタン。"
+
+#~ msgid "Photo: Lake Fish"
+#~ msgstr "写真：湖の魚"
+
+#~ msgid "A photo from photo mode. Once the water clears you can see them: small silver schools turning together over the sand."
+#~ msgstr "フォトモードで撮った写真。水が澄むと見えてくる。砂の上でいっせいに向きを変える、小さな銀色の群れ。"
+
+#~ msgid "Photo: Mallard"
+#~ msgstr "写真：マガモ"
+
+#~ msgid "A photo from photo mode. Ducks paddle, dabble with their tails in the air and complain loudly about everything."
+#~ msgstr "フォトモードで撮った写真。カモはすいすい泳ぎ、おしりを上げて餌をあさり、なんにでも大声で文句を言う。"
+
+#~ msgid "Photo: Green Frog"
+#~ msgstr "写真：アオガエル"
+
+#~ msgid "A photo from photo mode. Frogs sit at the water's edge and sing in the evening."
+#~ msgstr "フォトモードで撮った写真。カエルは水辺に座って、夕方になると歌う。"
+
+#~ msgid "Photo: Sand Lizard"
+#~ msgstr "写真：スナトカゲ"
+
+#~ msgid "A photo from photo mode. Lizards bask on swept ground between the solar arrays and vanish in a blink when a shadow falls on them."
+#~ msgstr "フォトモードで撮った写真。トカゲはソーラーパネルの間の掃除された地面でひなたぼっこをして、影がかかると一瞬で消えてしまう。"
+
+#~ msgid "Photo: Fennec Fox"
+#~ msgstr "写真：フェネック"
+
+#~ msgid "A photo from photo mode. A tiny desert fox with enormous ears."
+#~ msgstr "フォトモードで撮った写真。大きな耳をもつ、小さな砂漠のキツネ。"
+
+#~ msgid "Photo: Harbour Seal"
+#~ msgstr "写真：ゼニガタアザラシ"
+
+#~ msgid "A photo from photo mode. Seals haul out on the quay once it's clean, lounge in heaps, and flop back to the water if you come too close."
+#~ msgstr "フォトモードで撮った写真。岸壁がきれいになるとアザラシが上がってきて、かたまってごろごろし、近づきすぎるとどぼんと水に戻る。"
+
+#~ msgid "Photo: Herring Gull"
+#~ msgstr "写真：セグロカモメ"
+
+#~ msgid "A photo from photo mode. Loud, white and opportunistic."
+#~ msgstr "フォトモードで撮った写真。うるさくて、白くて、ちゃっかり者。"
+
+#~ msgid "Photo: Arctic Fox"
+#~ msgstr "写真：ホッキョクギツネ"
+
+#~ msgid "A photo from photo mode. White as the snow it hunts on."
+#~ msgstr "フォトモードで撮った写真。狩りをする雪と同じくらい白い。"
+
+#~ msgid "Photo: Grey Heron"
+#~ msgstr "写真：アオサギ"
+
+#~ msgid "A photo from photo mode. Herons stand perfectly still at the water's edge, then strike."
+#~ msgstr "フォトモードで撮った写真。サギは水辺でぴたりと動かず、それから一瞬で獲物をとらえる。"
+
+#~ msgid "Photo: Pond Turtle"
+#~ msgstr "写真：イシガメ"
+
+#~ msgid "A photo from photo mode. Turtles cruise the drowned streets with their heads up, as if they've always lived here."
+#~ msgstr "フォトモードで撮った写真。カメは頭を上げて水没した通りを泳ぎまわる。まるでずっとここに住んでいたみたいに。"
+
+#~ msgid "Photo: Cradle Crane"
+#~ msgstr "写真：Cradle ヅル"
+
+#~ msgid "A photo from photo mode. White cranes circle high over the landing city on slow wingbeats."
+#~ msgstr "フォトモードで撮った写真。白いツルがゆっくりと羽ばたきながら、着陸都市の上空高くを旋回している。"
+
+#~ msgid "Maker's Badge"
+#~ msgstr "メイカーのバッジ"
+
+#~ msgid "Pinned inside a Legendary part: 'Built to be fixed.'"
+#~ msgstr "レジェンダリーパーツの内側に留めてあった：「直されるために作られた」"
+
+#~ msgid "Signal Crystal"
+#~ msgstr "シグナルクリスタル"
+
+#~ msgid "The thing that was pinging. It still pings, very quietly, when you're happy."
+#~ msgstr "ピンピン鳴っていた正体。君が幸せなとき、いまもとても小さくピンと鳴る。"
+
+#~ msgid "APPROVED Stamp"
+#~ msgstr "「承認」スタンプ"
+
+#~ msgid "The Ledger's rubber stamp. It now only says APPROVED. It's very proud of that."
+#~ msgstr "Ledger のゴム印。いまは「承認」としか押せない。それがとても誇らしい。"
+
+#~ msgid "Race Propeller"
+#~ msgstr "レース用プロペラ"
+
+#~ msgid "A souvenir from the audit drone. It insists the race was close."
+#~ msgstr "監査ドローンからのおみやげ。レースは接戦だったと言いはっている。"
+
+#~ msgid "Streak Medal"
+#~ msgstr "コンボメダル"
+
+#~ msgid "Earned for a max-tier cleaning streak. Scoop scoop scoop."
+#~ msgstr "最高ティアの清掃コンボでもらえる。すくう、すくう、すくう。"
+
+#~ msgid "Lumi's First Lens Cap"
+#~ msgstr "Lumi のはじめてのレンズキャップ"
+
+#~ msgid "Lumi Level 10. The cap Lumi wore on the ark, scuffed and kept anyway."
+#~ msgstr "Lumi レベル10。Lumi がアークでつけていたキャップ。すり傷だらけでも取っておいた。"
+
+#~ msgid "Seed-Keeper Pin"
+#~ msgstr "シードキーパーのピン"
+
+#~ msgid "Lumi Level 20. A little enamel sprout. The ark gave these to its gardeners."
+#~ msgstr "Lumi レベル20。小さなエナメルの新芽。アークは庭師たちにこれを贈った。"
+
+#~ msgid "Tread Charm"
+#~ msgstr "キャタピラのお守り"
+
+#~ msgid "Lumi Level 30. A brass bell for the treads. It jingles on every bump."
+#~ msgstr "Lumi レベル30。キャタピラにつける真ちゅうの鈴。でこぼこのたびにチリンと鳴る。"
+
+#~ msgid "Pocket Star Chart"
+#~ msgstr "ポケット星図"
+
+#~ msgid "Lumi Level 40. The ark's route home, folded small. One star is circled."
+#~ msgstr "Lumi レベル40。小さく折りたたんだアークの帰り道。星がひとつ丸で囲まれている。"
+
+#~ msgid "Glow Ribbon"
+#~ msgstr "光るリボン"
+
+#~ msgid "Lumi Level 50. A ribbon that holds a little light. Lumi ties it to the antenna."
+#~ msgstr "Lumi レベル50。少しだけ光をたもつリボン。Lumi はアンテナに結んでいる。"
+
+#~ msgid "Contract Pen"
+#~ msgstr "依頼のペン"
+
+#~ msgid "Your first contract signed. The pen has a tiny leaf on top."
+#~ msgstr "はじめてサインした依頼。ペンの先に小さな葉っぱがついている。"
+
+#~ msgid "Foreman's Clipboard"
+#~ msgstr "現場監督のクリップボード"
+
+#~ msgid "Ten contracts done. Every box ticked, every box green."
+#~ msgstr "依頼を10件達成。どの項目もチェック済み、どの項目も緑。"
+
+#~ msgid "Contractor's Crown"
+#~ msgstr "請負人の王冠"
+
+#~ msgid "Twenty-five contracts. The crown is a bent can. You wear it anyway."
+#~ msgstr "依頼25件。王冠は曲がった缶。それでもかぶる。"
+
+#~ msgid "Rubber Frog"
+#~ msgstr "ゴムのカエル"
+
+#~ msgid "Squeaks in a minor key."
+#~ msgstr "短調でキュッと鳴く。"
+
+#~ msgid "Tiny Cactus"
+#~ msgstr "ちびサボテン"
+
+#~ msgid "Needs no water. Mocks the Drips."
+#~ msgstr "水いらず。Drip をからかう。"
+
+#~ msgid "Holo Koi"
+#~ msgstr "ホロ錦鯉"
+
+#~ msgid "A hologram fish that swims round your hopper."
+#~ msgstr "ホッパーのまわりを泳ぐホログラムの魚。"
+
+#~ msgid "Moon Rock"
+#~ msgstr "月の石"
+
+#~ msgid "Not from the moon. From a parking lot. Still beautiful."
+#~ msgstr "月からではない。駐車場から。それでもきれい。"
+
+#~ msgid "Crate inbound. From... me? I don't remember sending that. Open it."
+#~ msgstr "木箱が向かってくる。差出人は……私？送った覚えはないな。開けてみて。"
+
+#~ msgid "Supply drop! I found an old Cradle pod still in orbit and nudged it down."
+#~ msgstr "補給物資！軌道上に残っていた古い Cradle号のポッドを見つけて、そっと押し出したんだ。"
+
+#~ msgid "Another care package. I've been saving them for good days. This is one."
+#~ msgstr "また差し入れ。いい日のために取っておいたんだ。今日はそういう日。"
+
+#~ msgid "One of your helpers is stuck. Hic."
+#~ msgstr "ヘルパーのひとりが止まっちゃった。ヒック。"
+
+#~ msgid "{robot} has the hiccups. Try a firm pat on the chassis."
+#~ msgstr "{robot} がしゃっくりしてる。シャーシをしっかりポンとたたいてみて。"
+
+#~ msgid "{robot} needs you. Gently, they're sensitive."
+#~ msgstr "{robot} が君を必要としてる。そっとね、繊細だから。"
+
+#~ msgid "Something alive is moving out there. Not a robot."
+#~ msgstr "外で何か生き物が動いてる。ロボットじゃない。"
+
+#~ msgid "A visitor! Go slowly. Take a picture, it lasts longer."
+#~ msgstr "お客さんだ！ゆっくりね。写真を撮ろう、そのほうが長く残る。"
+
+#~ msgid "The thriving hexes are calling things home. Look."
+#~ msgstr "繁栄したヘックスが、命を呼び戻してる。見て。"
+
+#~ msgid "Contract complete. Collect at the workbench."
+#~ msgstr "依頼達成。作業台で受け取ろう。"
+
+#~ msgid "Another contract done. Tokens are waiting."
+#~ msgstr "また依頼達成。トークンが待ってるよ。"
+
+#~ msgid "Contract fulfilled. The board's lit up green."
+#~ msgstr "依頼完了。ボードが緑に光った。"
+
+#~ msgid "Trinkets and Curios"
+#~ msgstr "小物と珍品"
+
+#~ msgid "World events, requests, streaks and Curio Capsules."
+#~ msgstr "ワールドイベント、依頼、連続記録、珍品カプセル。"
+
+#~ msgid "Workbench, Upgrades tab. It opens the Request Board."
+#~ msgstr "作業台のアップグレードタブ。依頼ボードが開く。"
+
+#~ msgid "Lunar Silver"
+#~ msgstr "ルナシルバー"
+
+#~ msgid "Tangerine"
+#~ msgstr "タンジェリン"
+
+#~ msgid "Chrome"
+#~ msgstr "クローム"
+
+#~ msgid "Workbench Mk IV: Request Board"
+#~ msgstr "作業台 Mk IV：依頼ボード"
+
+#~ msgid "Adds a request board. Take on jobs for tokens and rare parts."
+#~ msgstr "依頼ボードを追加。依頼をこなしてトークンとレアパーツを手に入れよう。"
+
+#~ msgid "...pretty..."
+#~ msgstr "……きれい……"
+
+#~ msgid "You're decorating. I approve. The cats are going to approve more."
+#~ msgstr "飾りつけしてるんだ。いいと思う。ネコたちはもっと気に入るよ。"
+
+#~ msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
+#~ msgstr "ベンチに、ランプに、噴水。人が帰ってきたくなる場所に見えてきた。"
 
 #~ msgid "Bigger engines and a new canopy. Cells refill in a minute; cargo pods carry 2.5x, more often."
 #~ msgstr "大きなエンジンと新しいキャノピー。セルは1分で充電、貨物ポッドは 2.5 倍をより頻繁に運ぶ。"

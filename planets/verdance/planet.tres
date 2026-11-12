@@ -29,7 +29,6 @@ tables = Dictionary[String, String]({
 "fauna": "res://planets/verdance/data/fauna.json",
 "events": "res://planets/verdance/data/events.json",
 "player": "res://planets/verdance/data/patch.json",
-"robot_level": "res://planets/verdance/data/lumi_level.json",
 "field": "res://planets/verdance/data/planet.json",
 "builds": "res://planets/verdance/data/builds.json",
 "yard": "res://planets/verdance/data/camp.json",

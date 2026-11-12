@@ -114,7 +114,7 @@ func _ready() -> void:
 		(b as Button).custom_minimum_size.x = 0.0  # fits beside the level card at 125% UI scale
 		(b as Button).clip_text = true
 		(b as Button).text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	# [camp] trash bin, radio, nursery (ui/yard_builds_panel.gd)
+	# [camp] trash bin, radio (ui/yard_builds_panel.gd)
 	var yc: Array = BenchKit.card()
 	side.add_child(yc[0])
 	_yard = YardBuildsPanel.new()

@@ -5,7 +5,7 @@ extends RefCounted
 ## the one list the Hub tab shows (ui/yard_builds_panel.gd). Each entry routes to the system that
 ## owns the thing:
 ##   once-builds (drop off the list when built): lean-to, generator, yard lamps, compost press,
-##     CD player, robot nursery (systems/camp/yard_builds.gd), the bale stations
+##     CD player (systems/camp/yard_builds.gd), the bale stations
 ##     (automation/stations.gd);
 ##   tiered (only the next tier is shown): the trash bin (automation/trash_bin.gd) and the signal
 ##     tower (story/signal_tower.gd, only at the start base).

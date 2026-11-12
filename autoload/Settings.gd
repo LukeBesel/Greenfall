@@ -208,7 +208,6 @@ func _register_default_actions() -> void:
 		"open_codex": [_key(KEY_K), _joy(JOY_BUTTON_MISC1)],
 		"toggle_goals": [_key(KEY_G), _joy(JOY_BUTTON_TOUCHPAD), _joy(JOY_BUTTON_PADDLE1)],  # [hud] expand the goal tracker; [orbD] pad: hold View (ui/pad_hold.gd), or touchpad / paddle 1
 		"photo_mode": [_key(KEY_P)],  # [photo] pad: via the pause menu
-		"garden_mode": [_key(KEY_H)],  # [late] Garden Mode (ui/garden_placer.gd); pad: via the pause menu
 		"glim_scan": [_key(KEY_F), _axis(JOY_AXIS_TRIGGER_LEFT, 1.0)],  # [buddy] tap: hex scan, hold: Glim panel
 		"boost": [_key(KEY_SHIFT), _joy(JOY_BUTTON_LEFT_STICK)],  # [orbD] hover-boost on the globe (x4), also the sled's boost
 		"surge": [_key(KEY_R)],  # release a full Bloom Core (systems/surge.gd); pad: both zoom buttons together

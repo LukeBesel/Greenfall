@@ -752,39 +752,6 @@
    }
   },
   {
-   "id": "builder_mix",
-   "name": "Mix and Match",
-   "desc": "Style a robot with all five custom parts in the Locker.",
-   "icon": "bot",
-   "cond": {
-    "type": "stat",
-    "target": 1,
-    "key": "builder_full_custom"
-   }
-  },
-  {
-   "id": "builder_maker",
-   "name": "As the Makers Made It",
-   "desc": "Fit the full Maker set (shell, optic and glider) on one robot.",
-   "icon": "star",
-   "cond": {
-    "type": "stat",
-    "target": 1,
-    "key": "builder_maker_set"
-   }
-  },
-  {
-   "id": "builder_hats",
-   "name": "Hat Rack",
-   "desc": "Collect 5 different robot toppers.",
-   "icon": "trophy",
-   "cond": {
-    "type": "stat",
-    "target": 5,
-    "key": "builder_toppers"
-   }
-  },
-  {
    "id": "pet_cat",
    "name": "A Friend in Old Town",
    "desc": "Pet a stray cat.",
@@ -850,65 +817,8 @@
     "key": "fauna_photos"
    }
   },
-  {
-   "id": "late_decor_1",
-   "name": "Home Touches",
-   "desc": "Place a decoration in Garden Mode.",
-   "icon": "flower",
-   "cond": {
-    "type": "stat",
-    "target": 1,
-    "key": "decor_placed"
-   }
-  },
-  {
-   "id": "late_decor_25",
-   "name": "Landscaper",
-   "desc": "Place 25 decorations.",
-   "icon": "tree",
-   "cond": {
-    "type": "stat",
-    "target": 25,
-    "key": "decor_placed"
-   }
-  },
-  {
-   "id": "late_decor_all",
-   "name": "Full Catalogue",
-   "desc": "Place every kind of decoration at least once.",
-   "icon": "check",
-   "cond": {
-    "type": "stat",
-    "target": 10,
-    "key": "decor_kinds"
-   }
-  },
-  {
-   "id": "late_charm_25",
-   "name": "Picture Perfect",
-   "desc": "Reach 25 charm in one district.",
-   "icon": "leaf",
-   "cond": {
-    "type": "stat",
-    "target": 25,
-    "key": "decor_charm_best"
-   }
-  },
-  {
-   "id": "home_answered",
-   "name": "The Cradle Answers",
-   "desc": "Light the Cradle Returns beacon and hear from the ark.",
-   "icon": "rocket",
-   "cond": {
-    "type": "flag",
-    "target": 1,
-    "key": "cradle_answered"
-   }
-  },
     {"id": "extras_radio_6", "name": "Pirate Radio", "desc": "Unlock 6 songs on the base radio.", "icon": "wave", "cond": {"type": "stat", "key": "radio_songs", "target": 6}},
     {"id": "extras_radio_all", "name": "Full Rotation", "desc": "Unlock every song on the base radio.", "icon": "star", "cond": {"type": "stat", "key": "radio_songs", "target": 14}},
-    {"id": "extras_album_4", "name": "Then and Now", "desc": "Collect 4 pictures in the photo album.", "icon": "map", "cond": {"type": "stat", "key": "album_shots", "target": 4}},
-    {"id": "extras_retire_1", "name": "Happy Retirement", "desc": "Retire a robot to the nursery garden.", "icon": "bot", "cond": {"type": "stat", "key": "robots_retired", "target": 1}},
-    {"id": "extras_visits_5", "name": "Garden Party", "desc": "Say hi to the nursery caretakers 5 times.", "icon": "flower", "cond": {"type": "stat", "key": "nursery_visits", "target": 5}}
+    {"id": "extras_album_4", "name": "Then and Now", "desc": "Collect 4 pictures in the photo album.", "icon": "map", "cond": {"type": "stat", "key": "album_shots", "target": 4}}
  ]
 }

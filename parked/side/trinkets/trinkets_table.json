@@ -1,0 +1,351 @@
+{
+  "_doc": "The Collection's trinkets (systems/collection.gd), cut from planets/verdance/data/events.json in task M3-13 when trinkets were parked. Put \"trinkets\" back at the top level of the planet's events table (and trinket_chance into event rewards) when the Collection returns. museum_exhibit is the Codex Collection entry cut from planets/verdance/data/museum.json \"exhibits\" (Exhibits counted kind trinkets).",
+  "trinkets": [
+    {
+      "id": "brass_compass",
+      "name": "Brass Compass",
+      "source": "supply_drop",
+      "desc": "Points north, mostly. Came wrapped in a sock in a supply crate."
+    },
+    {
+      "id": "tin_robot",
+      "name": "Wind-up Tin Robot",
+      "source": "supply_drop",
+      "desc": "Walks three steps and falls over. Lumi relates."
+    },
+    {
+      "id": "seed_locket",
+      "name": "Seed Locket",
+      "source": "supply_drop",
+      "desc": "A locket with one seed inside instead of a photo. Someone loved gardens."
+    },
+    {
+      "id": "snow_globe",
+      "name": "Snow Globe",
+      "source": "supply_drop",
+      "desc": "A tiny city under glass, still clean. A promise, maybe."
+    },
+    {
+      "id": "crate_stencil",
+      "name": "Cradle Crate Stencil",
+      "source": "supply_drop",
+      "desc": "The stencil used to paint every supply crate. WREN asked for it back. You said no."
+    },
+    {
+      "id": "golden_bolt",
+      "name": "Golden Bolt",
+      "source": "salvage_surge",
+      "desc": "Fell out of a surge hex, still warm. Fits nothing. Worth everything."
+    },
+    {
+      "id": "glow_shard",
+      "name": "Surge Glass",
+      "source": "salvage_surge",
+      "desc": "A sliver of glass that kept the surge's glow. It hums when you hold it."
+    },
+    {
+      "id": "rain_jar",
+      "name": "Jar of First Rain",
+      "source": "rain_shower",
+      "desc": "Collected during the first rain in years. Do not drink. Do not open. Just look."
+    },
+    {
+      "id": "paper_boat",
+      "name": "Paper Boat",
+      "source": "rain_shower",
+      "desc": "Someone made it from a coupon. It sailed a whole puddle."
+    },
+    {
+      "id": "lucky_spanner",
+      "name": "Lucky Spanner",
+      "source": "robot_hiccup",
+      "desc": "Fixes any hiccup, if you hit the right spot. Usually the left side."
+    },
+    {
+      "id": "hiccup_tape",
+      "name": "Diagnostic Tape",
+      "source": "robot_hiccup",
+      "desc": "A printout of a robot hiccuping. It looks a lot like a song."
+    },
+    {
+      "id": "photo_glowtail_fox",
+      "name": "Photo: Glowtail Fox",
+      "source": "wildlife_visit",
+      "animal": "glowtail_fox",
+      "desc": "Its tail glows when it's curious. It was very curious about Lumi."
+    },
+    {
+      "id": "photo_moss_deer",
+      "name": "Photo: Moss Deer",
+      "source": "wildlife_visit",
+      "animal": "moss_deer",
+      "desc": "Moss grows on its antlers. Butterflies rest there like it's a tree."
+    },
+    {
+      "id": "photo_lantern_hedgehog",
+      "name": "Photo: Lantern Hedgehog",
+      "source": "wildlife_visit",
+      "animal": "lantern_hedgehog",
+      "desc": "The tips of its spines glow amber at dusk. It ate a beetle on camera. Sorry."
+    },
+    {
+      "id": "photo_prism_heron",
+      "name": "Photo: Prism Heron",
+      "source": "wildlife_visit",
+      "animal": "prism_heron",
+      "desc": "Its feathers split light into rainbows. It stood on one leg the whole time."
+    },
+    {
+      "id": "photo_velvet_hare",
+      "name": "Photo: Velvet Hare",
+      "source": "wildlife_visit",
+      "animal": "velvet_hare",
+      "desc": "Soft as a whisper, quick as a rumour. The photo is a little blurry. Worth it."
+    },
+    {
+      "id": "crumb_bag",
+      "name": "Crumb Bag",
+      "source": "animal_photos",
+      "desc": "A paper bag of crumbs and seed husks. The pigeons know the sound of it now."
+    },
+    {
+      "id": "pic_cat",
+      "name": "Photo: Stray Cat",
+      "source": "animal_photos",
+      "desc": "A photo from photo mode. Old Town's cats never left."
+    },
+    {
+      "id": "pic_pigeon",
+      "name": "Photo: Pigeon",
+      "source": "animal_photos",
+      "desc": "A photo from photo mode. Pigeons will live anywhere people once dropped crumbs."
+    },
+    {
+      "id": "pic_sparrow",
+      "name": "Photo: Sparrow",
+      "source": "animal_photos",
+      "desc": "A photo from photo mode. Small, brown and bossy."
+    },
+    {
+      "id": "pic_rat",
+      "name": "Photo: Rat",
+      "source": "animal_photos",
+      "desc": "A photo from photo mode. Rats live in the gaps between the piles."
+    },
+    {
+      "id": "pic_rabbit",
+      "name": "Photo: Rabbit",
+      "source": "animal_photos",
+      "desc": "A photo from photo mode. Rabbits arrive as soon as there is something green to nibble."
+    },
+    {
+      "id": "pic_deer",
+      "name": "Photo: Roe Deer",
+      "source": "animal_photos",
+      "desc": "A photo from photo mode. Shy grazers that keep to the edge of the green, where they can see what's coming."
+    },
+    {
+      "id": "pic_fox",
+      "name": "Photo: Red Fox",
+      "source": "animal_photos",
+      "desc": "A photo from photo mode. A fox trots along the hedges, nose down, tail out."
+    },
+    {
+      "id": "pic_bee",
+      "name": "Photo: Honeybee",
+      "source": "animal_photos",
+      "desc": "A photo from photo mode. Bees came back with the blooms."
+    },
+    {
+      "id": "pic_songbird",
+      "name": "Photo: Robin",
+      "source": "animal_photos",
+      "desc": "A photo from photo mode. When a hex thrives, robins move in and sing."
+    },
+    {
+      "id": "pic_firefly",
+      "name": "Photo: Firefly",
+      "source": "animal_photos",
+      "desc": "A photo from photo mode. Tiny green lanterns over the grass after dark."
+    },
+    {
+      "id": "pic_fish",
+      "name": "Photo: Lake Fish",
+      "source": "animal_photos",
+      "desc": "A photo from photo mode. Once the water clears you can see them: small silver schools turning together over the sand."
+    },
+    {
+      "id": "pic_duck",
+      "name": "Photo: Mallard",
+      "source": "animal_photos",
+      "desc": "A photo from photo mode. Ducks paddle, dabble with their tails in the air and complain loudly about everything."
+    },
+    {
+      "id": "pic_frog",
+      "name": "Photo: Green Frog",
+      "source": "animal_photos",
+      "desc": "A photo from photo mode. Frogs sit at the water's edge and sing in the evening."
+    },
+    {
+      "id": "pic_lizard",
+      "name": "Photo: Sand Lizard",
+      "source": "animal_photos",
+      "desc": "A photo from photo mode. Lizards bask on swept ground between the solar arrays and vanish in a blink when a shadow falls on them."
+    },
+    {
+      "id": "pic_fennec",
+      "name": "Photo: Fennec Fox",
+      "source": "animal_photos",
+      "desc": "A photo from photo mode. A tiny desert fox with enormous ears."
+    },
+    {
+      "id": "pic_seal",
+      "name": "Photo: Harbour Seal",
+      "source": "animal_photos",
+      "desc": "A photo from photo mode. Seals haul out on the quay once it's clean, lounge in heaps, and flop back to the water if you come too close."
+    },
+    {
+      "id": "pic_gull",
+      "name": "Photo: Herring Gull",
+      "source": "animal_photos",
+      "desc": "A photo from photo mode. Loud, white and opportunistic."
+    },
+    {
+      "id": "pic_arctic_fox",
+      "name": "Photo: Arctic Fox",
+      "source": "animal_photos",
+      "desc": "A photo from photo mode. White as the snow it hunts on."
+    },
+    {
+      "id": "pic_heron",
+      "name": "Photo: Grey Heron",
+      "source": "animal_photos",
+      "desc": "A photo from photo mode. Herons stand perfectly still at the water's edge, then strike."
+    },
+    {
+      "id": "pic_turtle",
+      "name": "Photo: Pond Turtle",
+      "source": "animal_photos",
+      "desc": "A photo from photo mode. Turtles cruise the drowned streets with their heads up, as if they've always lived here."
+    },
+    {
+      "id": "pic_crane",
+      "name": "Photo: Cradle Crane",
+      "source": "animal_photos",
+      "desc": "A photo from photo mode. White cranes circle high over the landing city on slow wingbeats."
+    },
+    {
+      "id": "maker_badge",
+      "name": "Maker's Badge",
+      "source": "rare_part_signal",
+      "desc": "Pinned inside a Legendary part: 'Built to be fixed.'"
+    },
+    {
+      "id": "signal_crystal",
+      "name": "Signal Crystal",
+      "source": "rare_part_signal",
+      "desc": "The thing that was pinging. It still pings, very quietly, when you're happy."
+    },
+    {
+      "id": "audit_stamp",
+      "name": "APPROVED Stamp",
+      "source": "ledger_audit",
+      "desc": "The Ledger's rubber stamp. It now only says APPROVED. It's very proud of that."
+    },
+    {
+      "id": "drone_propeller",
+      "name": "Race Propeller",
+      "source": "ledger_audit",
+      "desc": "A souvenir from the audit drone. It insists the race was close."
+    },
+    {
+      "id": "streak_medal",
+      "name": "Streak Medal",
+      "source": "streak",
+      "desc": "Earned for a max-tier cleaning streak. Scoop scoop scoop."
+    },
+    {
+      "id": "lumi_lens_cap",
+      "name": "Lumi's First Lens Cap",
+      "source": "lumi_level",
+      "desc": "Lumi Level 10. The cap Lumi wore on the ark, scuffed and kept anyway."
+    },
+    {
+      "id": "lumi_seed_pin",
+      "name": "Seed-Keeper Pin",
+      "source": "lumi_level",
+      "desc": "Lumi Level 20. A little enamel sprout. The ark gave these to its gardeners."
+    },
+    {
+      "id": "lumi_tread_charm",
+      "name": "Tread Charm",
+      "source": "lumi_level",
+      "desc": "Lumi Level 30. A brass bell for the treads. It jingles on every bump."
+    },
+    {
+      "id": "lumi_star_chart",
+      "name": "Pocket Star Chart",
+      "source": "lumi_level",
+      "desc": "Lumi Level 40. The ark's route home, folded small. One star is circled."
+    },
+    {
+      "id": "lumi_glow_ribbon",
+      "name": "Glow Ribbon",
+      "source": "lumi_level",
+      "desc": "Lumi Level 50. A ribbon that holds a little light. Lumi ties it to the antenna."
+    },
+    {
+      "id": "contract_pen",
+      "name": "Contract Pen",
+      "source": "contracts",
+      "desc": "Your first contract signed. The pen has a tiny leaf on top.",
+      "milestone": 1
+    },
+    {
+      "id": "contract_clipboard",
+      "name": "Foreman's Clipboard",
+      "source": "contracts",
+      "desc": "Ten contracts done. Every box ticked, every box green.",
+      "milestone": 10
+    },
+    {
+      "id": "contract_crown",
+      "name": "Contractor's Crown",
+      "source": "contracts",
+      "desc": "Twenty-five contracts. The crown is a bent can. You wear it anyway.",
+      "milestone": 25
+    },
+    {
+      "id": "capsule_rubber_frog",
+      "name": "Rubber Frog",
+      "source": "capsule",
+      "desc": "Squeaks in a minor key."
+    },
+    {
+      "id": "capsule_tiny_cactus",
+      "name": "Tiny Cactus",
+      "source": "capsule",
+      "desc": "Needs no water. Mocks the Drips."
+    },
+    {
+      "id": "capsule_holo_koi",
+      "name": "Holo Koi",
+      "source": "capsule",
+      "desc": "A hologram fish that swims round your hopper."
+    },
+    {
+      "id": "capsule_moon_rock",
+      "name": "Moon Rock",
+      "source": "capsule",
+      "desc": "Not from the moon. From a parking lot. Still beautiful."
+    }
+  ],
+  "museum_exhibit": {
+    "id": "trinkets",
+    "name": "Trinkets and Curios",
+    "planet": "all",
+    "kind": "trinkets",
+    "shape": "box",
+    "hint": "World events, requests, streaks and Curio Capsules."
+  }
+}

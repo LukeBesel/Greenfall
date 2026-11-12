@@ -1,20 +1,18 @@
 class_name ExtrasDirector
 extends Node
 ## [extras] Wires the keepsake features into a district (one call from scenes/slice.gd): the base
-## radio (radio.gd), the robot nursery (nursery.gd), the photo album (album.gd), the welcome-back
-## card (welcome_back.gd) and the Keepsakes
-## panel (ui/extras_panel.gd, Pause > Keepsakes). Dev hooks:
-##   --extras=radio|album|nursery   open the Keepsakes panel on that tab (after --extras-at=S s)
+## radio (radio.gd), the photo album (album.gd), the welcome-back card (welcome_back.gd) and the
+## Keepsakes panel (ui/extras_panel.gd, Pause > Keepsakes). Dev hooks:
+##   --extras=radio|album   open the Keepsakes panel on that tab (after --extras-at=S s)
 ##   --extras-welcome[=H]   fake an H-hour break (default 3) and show the welcome-back card
 ##   --album-snap=before+m50+thriving+base5   take those album pictures now (after --album-at=S s)
 ##   --album-adopt          list album pictures already on disk for this slot (staged shots with --save-dir)
-##   --nursery-sample=N     N retired caretakers in the nursery;  --radio-all unlocks every song
+##   --radio-all            unlock every song
 ##   --radio-play=ID        play a song
 ##   --extras-cam=x,z,yaw,dist,pitch   fixed camera (shots); --extras-nohud hides the HUD
 
 var world: Node
 var radio: Radio
-var nursery: Nursery
 var album: PhotoAlbum
 var panel: ExtrasPanel
 var _wall_jobs: Array = []  # dev: [msec, Callable] run by the wall clock (slow software renders)
@@ -47,11 +45,6 @@ func _setup() -> void:
 	radio = Radio.new()
 	world.add_child(radio)
 	radio.setup(world)
-	nursery = Nursery.new()
-	world.add_child(nursery)
-	if DevHooks.has("nursery-sample"):
-		_sample_nursery(int(DevHooks.get_f("nursery-sample", 4.0)))
-	nursery.setup(world)
 	album = PhotoAlbum.new()
 	add_child(album)
 	album.setup(world)
@@ -97,17 +90,6 @@ func persist_save() -> void:
 		if not f.is_clean(h):
 			left += (1.0 - f.removed_fraction(h)) * f.worth.work(h)  # volume, materialized or not
 	GameState.world["junk_left"] = left
-
-
-## Dev / shots: a few retired caretakers with varied types, tiers and traits.
-func _sample_nursery(n: int) -> void:
-	var types: Array[String] = ["scoopie", "haulbug", "drip", "seedling", "scoopie", "skimmer"]
-	var names: Array[String] = ["Bobbin-07", "Tansy-21", "Pip-88", "Marlo-14", "Juniper-02", "Cog-55"]
-	var tl: Array = RobotBuilder.traits()
-	Nursery.list().clear()
-	for i: int in mini(n, types.size()):
-		Nursery.list().append({"name": names[i], "type": types[i] if types[i] != "skimmer" else "scoopie", "tier": i % 3,
-			"trait": str(tl[i % tl.size()]["id"]) if not tl.is_empty() else "", "build": {}, "unix": 0.0, "from": 0})
 
 
 func _cam() -> void:

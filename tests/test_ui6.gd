@@ -164,20 +164,6 @@ func test_type_design_reaches_new_bots_and_saves() -> void:
 	assert_eq(str(RobotDesign.of("scoopie").get("glow", "")), "mint")
 
 
-func test_ship_style_unlocks_and_wear() -> void:
-	var paints: Array = ShipStyle.items("paints")
-	assert_eq(paints.size(), 6)
-	assert_eq(ShipStyle.items("trims").size(), 3)
-	assert_true(ShipStyle.unlocked("paints", "pearl"))
-	assert_false(ShipStyle.listed("paints", "lunar"), "tier-locked looks stay hidden")
-	assert_true(ShipStyle.wear("paints", "sunset"))
-	assert_eq(ShipStyle.paint_color(), Color.html("#f2a46b"))
-	assert_false(ShipStyle.wear("paints", "coral"), "bought first")
-	GameState.currencies["parts"] = BigNum.from_float(1000.0)
-	assert_true(ShipStyle.buy("paints", "coral"))
-	assert_true(ShipStyle.wear("paints", "coral"))
-
-
 func test_locker_bot_rows_show_found_looks_and_hide_the_rest() -> void:
 	var f := Fleet.new()
 	add_child_autofree(f)

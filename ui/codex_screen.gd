@@ -204,7 +204,7 @@ func _build_tab() -> void:
 		"curiosities":
 			_summary.text = tr("%d / %d curiosities") % [Codex.curiosities_found(), Codex.egg_defs().size()]
 		"collection":
-			_summary.text = tr("%d / %d collectibles") % [Collection.count(), Collection.total()]
+			_summary.text = tr("%d / %d complete") % [Exhibits.filled(), Exhibits.exhibits().size()]
 		"achievements":
 			_summary.text = tr("%d / %d achievements") % [Achievements.unlocked_count(), Achievements.defs().size()]
 		"codex":
@@ -470,7 +470,7 @@ func _show_curio(c: Dictionary) -> void:
 
 
 # --- Collection tab ([events]) --------------------------------------------------------
-# Trinkets and photos from world events, contracts, streaks and Curio Capsules (systems/collection.gd).
+# Lumi's collection: every collectible on the planet (systems/exhibits.gd).
 
 func _build_collection() -> Control:
 	var hb := HBoxContainer.new()
@@ -488,48 +488,15 @@ func _build_collection() -> Control:
 	list.add_child(head)
 	head.add_child(ResearchIcons.IconView.new("star", 26, COLLECT_COLOR))
 	head.add_child(UITheme.label(tr("COLLECTION"), 15, COLLECT_COLOR))
-	head.add_child(UITheme.label(tr("%d / %d found") % [Collection.count(), Collection.total()], 13, UITheme.MUTED))
+	head.add_child(UITheme.label(tr("%d / %d complete") % [Exhibits.filled(), Exhibits.exhibits().size()], 13, UITheme.MUTED))
 	var bar := ProgressBar.new()
 	bar.show_percentage = false
-	bar.max_value = maxf(Collection.total(), 1)
-	bar.value = Collection.count()
+	bar.max_value = maxf(Exhibits.exhibits().size(), 1)
+	bar.value = Exhibits.filled()
 	bar.custom_minimum_size = Vector2(160, 6)
 	bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	head.add_child(bar)
 	var first: Control = _build_exhibit_list(list)  # [eggs2] Lumi's collection (every collectible)
-	var pick: Dictionary = {}
-	for src: String in Collection.sources():
-		var items: Array = Collection.defs().filter(func(t: Dictionary) -> bool: return str(t.get("source", "")) == src)
-		var n_found: int = items.filter(func(t: Dictionary) -> bool: return Collection.has(str(t["id"]))).size()
-		list.add_child(UITheme.label("%s   %d / %d" % [Collection.source_name(src).to_upper(), n_found, items.size()], 12, UITheme.MUTED))
-		var flow := HFlowContainer.new()
-		flow.add_theme_constant_override("h_separation", 8)
-		flow.add_theme_constant_override("v_separation", 8)
-		list.add_child(flow)
-		for t: Dictionary in items:
-			var got: bool = Collection.has(str(t["id"]))
-			var b := Button.new()
-			b.custom_minimum_size = Vector2(168, 40)
-			b.text = ("◆  " + tr(str(t["name"]))) if got else "?   ? ? ?"
-			b.clip_text = true
-			b.alignment = HORIZONTAL_ALIGNMENT_LEFT
-			b.add_theme_font_size_override("font_size", 14)
-			var col: Color = COLLECT_COLOR
-			b.add_theme_stylebox_override("normal", UITheme.box(Color(col.r * 0.15 + 0.05, col.g * 0.15 + 0.05, col.b * 0.15 + 0.05, 0.9) if got else Color(0.05, 0.055, 0.06, 0.85), Color(col, 0.45) if got else Color(1, 1, 1, 0.06), 1, 8, 8))
-			b.add_theme_stylebox_override("hover", UITheme.box(Color(0.12, 0.12, 0.12, 0.95), UITheme.GOLD, 1, 8, 8))
-			b.add_theme_stylebox_override("focus", UITheme.box(Color(0, 0, 0, 0), UITheme.GOLD, 2, 8, 8))
-			b.add_theme_color_override("font_color", UITheme.CREAM if got else Color(UITheme.MUTED, 0.8))
-			UITheme.juice(b, 1.04)
-			b.focus_entered.connect(_show_trinket.bind(t))
-			b.mouse_entered.connect(_show_trinket.bind(t))
-			b.pressed.connect(func() -> void:
-				_show_trinket(t)
-				Audio.play("click", 1.3, -10.0))
-			flow.add_child(b)
-			if first == null:
-				first = b
-			if pick.is_empty() and got:
-				pick = t
 	var det := PanelContainer.new()
 	det.add_theme_stylebox_override("panel", _glass(14, 20))
 	det.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -552,13 +519,8 @@ func _build_collection() -> Control:
 	_c_reward.autowrap_mode = TextServer.AUTOWRAP_WORD
 	_c_reward.custom_minimum_size = Vector2(280, 0)
 	dv.add_child(_c_reward)
-	if not Exhibits.exhibits().is_empty():  # [eggs2]
+	if not Exhibits.exhibits().is_empty():
 		_show_exhibit(Exhibits.exhibits()[0])
-	else:
-		if pick.is_empty() and not Collection.defs().is_empty():
-			pick = Collection.defs()[0]
-		if not pick.is_empty():
-			_show_trinket(pick)
 	return first
 
 
@@ -568,11 +530,6 @@ func _build_exhibit_list(list: VBoxContainer) -> Control:
 	var xs: Array = Exhibits.exhibits()
 	if xs.is_empty():
 		return null
-	var head := HBoxContainer.new()
-	head.add_theme_constant_override("separation", 8)
-	list.add_child(head)
-	head.add_child(UITheme.label(tr("LUMI'S COLLECTION"), 15, COLLECT_COLOR))
-	head.add_child(UITheme.label(tr("%d / %d complete") % [Exhibits.filled(), xs.size()], 13, UITheme.MUTED))
 	var flow := HFlowContainer.new()
 	flow.add_theme_constant_override("h_separation", 8)
 	flow.add_theme_constant_override("v_separation", 8)
@@ -610,7 +567,6 @@ func _build_exhibit_list(list: VBoxContainer) -> Control:
 		flow.add_child(b)
 		if first == null:
 			first = b
-	list.add_child(UITheme.label(tr("TRINKETS AND CURIOS"), 13, UITheme.MUTED))
 	return first
 
 
@@ -631,27 +587,6 @@ func _show_exhibit(x: Dictionary) -> void:  # [eggs2]
 	_c_text.add_theme_color_override("font_color", UITheme.CREAM if got else UITheme.MUTED)
 	_c_reward.text = ""
 
-
-func _show_trinket(t: Dictionary) -> void:
-	var got: bool = Collection.has(str(t["id"]))
-	var src: String = str(t.get("source", ""))
-	_c_icon.text = "◆" if got else "?"
-	_c_icon.add_theme_color_override("font_color", COLLECT_COLOR if got else Color(UITheme.MUTED, 0.6))
-	_c_where.text = Collection.source_name(src).to_upper()
-	_c_name.text = tr(str(t["name"])) if got else tr("Not found yet")
-	_c_text.text = tr(str(t.get("desc", ""))) if got else _trinket_hint(t)
-	_c_text.add_theme_color_override("font_color", UITheme.CREAM if got else UITheme.MUTED)
-	_c_reward.text = tr("In your collection") if got else ""
-
-
-static func _trinket_hint(t: Dictionary) -> String:
-	match str(t.get("source", "")):
-		"wildlife_visit": return TranslationServer.translate("Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera.")
-		"animal_photos": return TranslationServer.translate("Hint: animals come back as the ground heals. Photograph them in photo mode (P).")  # [wild]
-		"contracts": return TranslationServer.translate("Hint: finish %d requests (Requests tab at the workbench).") % int(t.get("milestone", 1))
-		"capsule": return TranslationServer.translate("Hint: Curio Capsules, on the Requests reward track at the workbench.")
-		"streak": return TranslationServer.translate("Hint: keep scooping without stopping until the streak meter is full.")
-	return TranslationServer.translate("Hint: turns up during %s.") % Collection.source_name(str(t.get("source", ""))).to_lower()
 
 
 # --- Achievements tab ----------------------------------------------------------------

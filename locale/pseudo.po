@@ -103,7 +103,7 @@ msgstr "[Ţôôļ: þļàñţ ~]"
 msgid "Tool: water"
 msgstr "[Ţôôļ: ŵàţéŕ ~]"
 
-#: autoload/Settings.gd:19 ui/upgrades_screen.gd:13
+#: autoload/Settings.gd:19 ui/upgrades_screen.gd:12
 msgid "Upgrades"
 msgstr "[Ûþĝŕàðéš ~]"
 
@@ -207,67 +207,67 @@ msgstr "[Ţôûçĥþàð ~]"
 msgid "Paddle 1"
 msgstr "[Þàððļé 1 ~]"
 
-#: autoload/Settings.gd:524
+#: autoload/Settings.gd:523
 msgid "LMB"
 msgstr "[ĻMB ~]"
 
-#: autoload/Settings.gd:525
+#: autoload/Settings.gd:524
 msgid "RMB"
 msgstr "[ŔMB ~]"
 
-#: autoload/Settings.gd:526
+#: autoload/Settings.gd:525
 msgid "MMB"
 msgstr "[MMB ~]"
 
-#: autoload/Settings.gd:527
+#: autoload/Settings.gd:526
 msgid "Wheel up"
 msgstr "[Ŵĥééļ ûþ ~]"
 
-#: autoload/Settings.gd:528
+#: autoload/Settings.gd:527
 msgid "Wheel down"
 msgstr "[Ŵĥééļ ðôŵñ ~]"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:528
 msgid "Mouse %d"
 msgstr "[Môûšé %d ~]"
 
-#: autoload/Settings.gd:531
+#: autoload/Settings.gd:530
 msgid "Button %d"
 msgstr "[Bûţţôñ %d ~]"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:535
 msgid "LS left"
 msgstr "[ĻŠ ļéƒţ ~]"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:535
 msgid "LS right"
 msgstr "[ĻŠ ŕîĝĥţ ~]"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:536
 msgid "LS up"
 msgstr "[ĻŠ ûþ ~]"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:536
 msgid "LS down"
 msgstr "[ĻŠ ðôŵñ ~]"
 
-#: autoload/Settings.gd:538
+#: autoload/Settings.gd:537
 msgid "RS left"
 msgstr "[ŔŠ ļéƒţ ~]"
 
-#: autoload/Settings.gd:538
+#: autoload/Settings.gd:537
 msgid "RS right"
 msgstr "[ŔŠ ŕîĝĥţ ~]"
 
-#: autoload/Settings.gd:539
+#: autoload/Settings.gd:538
 msgid "RS up"
 msgstr "[ŔŠ ûþ ~]"
 
-#: autoload/Settings.gd:539
+#: autoload/Settings.gd:538
 msgid "RS down"
 msgstr "[ŔŠ ðôŵñ ~]"
 
-#: autoload/Settings.gd:550
+#: autoload/Settings.gd:549
 msgid "hold %s"
 msgstr "[ĥôļð %s ~]"
 
@@ -479,7 +479,7 @@ msgstr "[Évéŕý 3ŕð bàļé ţô ţĥé ŕéçýçļéŕ ~~~~~~~]"
 msgid "Every %dth bale to the recycler"
 msgstr "[Évéŕý %dţĥ bàļé ţô ţĥé ŕéçýçļéŕ ~~~~~~~~]"
 
-#: automation/trash_bin.gd:93 systems/camp/camp.gd:385 systems/camp/field_benches.gd:77
+#: automation/trash_bin.gd:93 systems/camp/camp.gd:378 systems/camp/field_benches.gd:77
 #: systems/camp/hub_builds.gd:91 systems/camp/hub_builds.gd:156 systems/camp/hub_builds.gd:166
 #: systems/camp/hub_builds.gd:176 systems/camp/yard_builds.gd:97 systems/crew/robot_chain.gd:162
 msgid "Not enough materials."
@@ -514,7 +514,7 @@ msgstr "[Ñôţĥîñĝ ĥéŕé ƒîţš. Þŕéšš [%s] ţô màķé à bàļ
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "[Ñô Bàļéŕ ýéţ. Bŕîñĝ ýôûŕ çĥéšţ ţô ţĥé bîñ. ~~~~~~~~~~~~]"
 
-#: core/pace.gd:315 systems/events.gd:486 ui/goals_panel.gd:125
+#: core/pace.gd:315 systems/events.gd:444 ui/goals_panel.gd:125
 msgid "+%s cubes"
 msgstr "[+%s çûbéš ~]"
 
@@ -530,21 +530,17 @@ msgstr "E   [þéţ ţĥé çàţ ~]"
 msgid "E   scatter crumbs for the birds"
 msgstr "E   [šçàţţéŕ çŕûmbš ƒôŕ ţĥé bîŕðš ~~~~~~~]"
 
-#: fauna/fauna.gd:1633
-msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
-msgstr "[Ţĥé bîŕðš ĥàvé ðéçîðéð ýôû'ŕé àļļ ŕîĝĥţ. Çŕûmb Bàĝ àððéð ţô ýôûŕ Çôļļéçţîôñ. ~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: fauna/fauna.gd:1689
+#: fauna/fauna.gd:1687
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "[Ţĥé çàţ ĥàš ðéçîðéð ýôû'ŕé ĥéŕš. Mééţ %s. Šĥé ļîvéš àţ ţĥîš bàšé ñôŵ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: fauna/fauna.gd:2010 ui/subtitles.gd:455
+#: fauna/fauna.gd:2008 ui/subtitles.gd:455
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "[Ñéŵ šîĝĥţîñĝ: %s. Îţ'š îñ ţĥé Çôðéx ñôŵ. ~~~~~~~~~~~]"
 
-#: fauna/fauna.gd:2081
-msgid "Snap! A %s for your Collection."
-msgstr "[Šñàþ! À %s ƒôŕ ýôûŕ Çôļļéçţîôñ. ~~~~~~~~]"
+#: fauna/fauna.gd:2078
+msgid "Snap! A first photo of a %s."
+msgstr "[Šñàþ! À ƒîŕšţ þĥôţô ôƒ à %s. ~~~~~~~]"
 
 #: planet/cd_finds.gd:184
 msgid "A scratched CD turned up in the rubble."
@@ -1116,7 +1112,7 @@ msgstr "[Çàñ'ţ bûîļð ĥéŕé ~~~]"
 msgid "Not on the lake"
 msgstr "[Ñôţ ôñ ţĥé ļàķé ~~]"
 
-#: robots/water_net.gd:141 systems/decor.gd:185
+#: robots/water_net.gd:141
 msgid "Clean this hex first"
 msgstr "[Çļéàñ ţĥîš ĥéx ƒîŕšţ ~~~~]"
 
@@ -1132,7 +1128,7 @@ msgstr "[Ţôô çļôšé ţô àñôţĥéŕ ţàñķ ~~~~~~]"
 msgid "Water Tank placed. Waterers nearby will refill here."
 msgstr "[Ŵàţéŕ Ţàñķ þļàçéð. Ŵàţéŕéŕš ñéàŕbý ŵîļļ ŕéƒîļļ ĥéŕé. ~~~~~~~~~~~~~~~]"
 
-#: robots/water_net.gd:308 ui/hotbar.gd:34
+#: robots/water_net.gd:308 ui/hotbar.gd:33
 msgid "WATER"
 msgstr "[ŴÀŢÉŔ ~]"
 
@@ -1168,47 +1164,47 @@ msgstr "[Ţàb: ŕôļé · Ļéƒţ: þàîñţ · Ŕîĝĥţ: éŕàšé · M�
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "[%s %s àššémbļéð. Îţ ļôôķš àŕôûñð, ţĥéñ ĝéţš ţô ŵôŕķ. ~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:116
+#: scenes/slice.gd:114
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "[Ļôçķéð. Ûþĝŕàðé ýôûŕ bàšé ţô ļévéļ 5 ţô bûîļð ţĥé ļàûñçĥ þàð. ~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:119 ui/rockets_panel.gd:38
+#: scenes/slice.gd:117 ui/rockets_panel.gd:38
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "[Éñéŕĝý çéļļš ŕéçĥàŕĝîñĝ: %s. Ŕôçķéţ ûþĝŕàðéš ŕéƒîļļ ţĥém ƒàšţéŕ. ~~~~~~~~~~~~~~~~~~~]"
 
-#: scenes/slice.gd:271
+#: scenes/slice.gd:269
 msgid "OUTPOST %d · Lv%d"
 msgstr "[ÔÛŢÞÔŠŢ %d · Ļv%d ~~~]"
 
-#: scenes/slice.gd:271
+#: scenes/slice.gd:269
 msgid "OUTPOST %d · RUIN"
 msgstr "[ÔÛŢÞÔŠŢ %d · ŔÛÎÑ ~~~]"
 
-#: scenes/slice_orbit.gd:376
+#: scenes/slice_orbit.gd:375
 msgid "HEX CLEAN!"
 msgstr "[ĤÉX ÇĻÉÀÑ! ~]"
 
-#: scenes/slice_orbit.gd:392
+#: scenes/slice_orbit.gd:391
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
-#: scenes/slice_orbit.gd:609 systems/camp/field_bench_sites.gd:177
+#: scenes/slice_orbit.gd:608 systems/camp/field_bench_sites.gd:177
 msgid "E   Open the field bench"
 msgstr "E   [Ôþéñ ţĥé ƒîéļð béñçĥ ~~~~]"
 
-#: scenes/slice_orbit.gd:614 systems/camp/camp.gd:189 tools/orbit_roundtrip.gd:621
+#: scenes/slice_orbit.gd:613 systems/camp/camp.gd:185 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   [Fîx ţĥé ŵôŕķbéñçĥ ~~~]"
 
-#: scenes/slice_orbit.gd:614 systems/camp/camp.gd:190
+#: scenes/slice_orbit.gd:613 systems/camp/camp.gd:186
 msgid "E   Open the workbench"
 msgstr "E   [Ôþéñ ţĥé ŵôŕķbéñçĥ ~~~]"
 
-#: scenes/slice_orbit.gd:1139
+#: scenes/slice_orbit.gd:1117
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice_orbit.gd:1241
+#: scenes/slice_orbit.gd:1219
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "[Ŵôŕķbéñçĥ ƒîxéð. Þŕéšš É àţ îţ ţô šþéñð çûbéš ôñ ûþĝŕàðéš. ~~~~~~~~~~~~~~~~~]"
 
@@ -1236,7 +1232,7 @@ msgstr "[Ýôûŕ bàšé ĥàš ĝŕôŵñ àš ƒàŕ àš ţĥé ðémô ĝô
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "[Îñ ţĥé ƒûļļ ĝàmé Ļûmî bûîļðš ţĥé bàšé ûþ ţô ļévéļ 5, þļàñţš ŵĥôļé ðîšţŕîçţš ûñţîļ ţĥéý ţĥŕîvé, ĝŕôŵš ţĥém îñţô à bŕîĝĥţ ƒûţûŕé çîţý, àñð ƒļîéš ŕôçķéţš ţô ðôžéñš ôƒ bàšéš àçŕôšš ţĥé þļàñéţ. Ýôûŕ ðémô þŕôĝŕéšš çàŕŕîéš ôvéŕ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:765 ui/end_screen.gd:99
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:700 ui/end_screen.gd:99
 msgid "Hexes cleaned"
 msgstr "[Ĥéxéš çļéàñéð ~~]"
 
@@ -1244,11 +1240,11 @@ msgstr "[Ĥéxéš çļéàñéð ~~]"
 msgid "Bales made"
 msgstr "[Bàļéš màðé ~]"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:780 ui/end_screen.gd:101
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:715 ui/end_screen.gd:101
 msgid "Robots built"
 msgstr "[Ŕôbôţš bûîļţ ~]"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:788 ui/end_screen.gd:98
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:723 ui/end_screen.gd:98
 msgid "Time played"
 msgstr "[Ţîmé þļàýéð ~]"
 
@@ -1268,7 +1264,7 @@ msgstr "[Ţîţļé šçŕééñ ~]"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "[Ķééþ þļàýîñĝ: ţĥé ƒîŕšţ ðîšţŕîçţ šţàýš ôþéñ, àţ bàšé ļévéļ %d. ~~~~~~~~~~~~~~~~~~~]"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:857 ui/main_menu.gd:444
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:792 ui/main_menu.gd:444
 msgid "%dh %02dm"
 msgstr "[%dĥ %02dm ~]"
 
@@ -1692,8 +1688,7 @@ msgstr ""
 "\n"
 "[Ţĥé Ļéðĝéŕ îš ôñ ôûŕ šîðé ñôŵ. Ţĥé ĵàmméŕš ĵûšţ ĥûm àļôñĝ ţô ţĥé mûšîç. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/ledger.gd:305 systems/decor.gd:119 systems/research.gd:213
-#: ui/stations_panel.gd:100
+#: story/ledger.gd:305 systems/research.gd:213 ui/stations_panel.gd:100
 msgid "Needs %s"
 msgstr "[Ñééðš %s ~]"
 
@@ -1721,7 +1716,7 @@ msgstr "[Ţĥé ðŕôñé ðûmþéð à ļîţţļé ĵûñķ bàçķ. Šçô�
 msgid "SEEDS · PAID IN FULL"
 msgstr "[ŠÉÉÐŠ · ÞÀÎÐ ÎÑ FÛĻĻ ~~~~]"
 
-#: story/ledger.gd:703 systems/events.gd:494 systems/lumi_level.gd:224
+#: story/ledger.gd:703 systems/events.gd:452
 msgid "+%d seeds"
 msgstr "[+%d šééðš ~]"
 
@@ -1997,215 +1992,59 @@ msgstr " [· %s]"
 msgid "Any district"
 msgstr "[Àñý ðîšţŕîçţ ~]"
 
-#: systems/collection.gd:59
-msgid "New for your Collection: %s. See it in the Codex (K)."
-msgstr "[Ñéŵ ƒôŕ ýôûŕ Çôļļéçţîôñ: %s. Šéé îţ îñ ţĥé Çôðéx (Ķ). ~~~~~~~~~~~~~~~~]"
-
-#: systems/collection.gd:84
-msgid "Supply Drops"
-msgstr "[Šûþþļý Ðŕôþš ~]"
-
-#: systems/collection.gd:85
-msgid "Salvage Glints"
-msgstr "[Šàļvàĝé Ĝļîñţš ~~]"
-
-#: systems/collection.gd:86
-msgid "Rain Showers"
-msgstr "[Ŕàîñ Šĥôŵéŕš ~]"
-
-#: systems/collection.gd:87
-msgid "Robot Hiccups"
-msgstr "[Ŕôbôţ Ĥîççûþš ~~]"
-
-#: systems/collection.gd:88
-msgid "Wildlife Photos"
-msgstr "[Ŵîļðļîƒé Þĥôţôš ~~]"
-
-#: systems/collection.gd:89
-msgid "Animal Photos"
-msgstr "[Àñîmàļ Þĥôţôš ~~]"
-
-#: systems/collection.gd:90
-msgid "Rare Part Signals"
-msgstr "[Ŕàŕé Þàŕţ Šîĝñàļš ~~~]"
-
-#: systems/collection.gd:91
-msgid "Ledger Audits"
-msgstr "[Ļéðĝéŕ Àûðîţš ~~]"
-
-#: systems/collection.gd:92
-msgid "Cleaning Streaks"
-msgstr "[Çļéàñîñĝ Šţŕéàķš ~~~]"
-
-#: systems/collection.gd:93
-msgid "Lumi Levels"
-msgstr "[Ļûmî Ļévéļš ~]"
-
-#: systems/collection.gd:94 ui/contracts_panel.gd:25 ui/upgrades_screen.gd:18
-msgid "Requests"
-msgstr "[Ŕéqûéšţš ~]"
-
-#: systems/collection.gd:95
-msgid "Curio Capsules"
-msgstr "[Çûŕîô Çàþšûļéš ~~]"
-
-#: systems/contracts.gd:227
-msgid "Curio Capsule"
-msgstr "[Çûŕîô Çàþšûļé ~~]"
-
-#: systems/contracts.gd:294
-msgid "Request complete: %s. Claim it at the workbench."
-msgstr "[Ŕéqûéšţ çômþļéţé: %s. Çļàîm îţ àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~]"
-
-#: systems/contracts.gd:300
-msgid "A request ran out of time. No harm done; a new one will be posted soon."
-msgstr "[À ŕéqûéšţ ŕàñ ôûţ ôƒ ţîmé. Ñô ĥàŕm ðôñé; à ñéŵ ôñé ŵîļļ bé þôšţéð šôôñ. ~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: systems/contracts.gd:308
-msgid "New at the workbench: the Requests board. Small jobs, real rewards."
-msgstr "[Ñéŵ àţ ţĥé ŵôŕķbéñçĥ: ţĥé Ŕéqûéšţš bôàŕð. Šmàļļ ĵôbš, ŕéàļ ŕéŵàŕðš. ~~~~~~~~~~~~~~~~~~~~]"
-
-#: systems/contracts.gd:311
-msgid "The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."
-msgstr "[Ţĥé ŕéļàý'š šţŕôñĝ éñôûĝĥ ñôŵ ţô ĥéàŕ ţĥé Çŕàðļé'š ôļð ŵôŕķ ôŕðéŕš. Ţĥéý'ŕé ôñ ţĥé Ŕéqûéšţš bôàŕð àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: systems/contracts.gd:396
-msgid "Request done: %s."
-msgstr "[Ŕéqûéšţ ðôñé: %s. ~~~]"
-
-#: systems/contracts.gd:442
-msgid "Requests reward: %s."
-msgstr "[Ŕéqûéšţš ŕéŵàŕð: %s. ~~~~]"
-
-#: systems/decor.gd:117
-msgid "Needs %d Collection finds (%d so far)"
-msgstr "[Ñééðš %d Çôļļéçţîôñ ƒîñðš (%d šô ƒàŕ) ~~~~~~~~~~]"
-
-#: systems/decor.gd:178
-msgid "Too close to the base machines"
-msgstr "[Ţôô çļôšé ţô ţĥé bàšé màçĥîñéš ~~~~~~~]"
-
-#: systems/decor.gd:180 systems/decor.gd:189
-msgid "Something is already here"
-msgstr "[Šôméţĥîñĝ îš àļŕéàðý ĥéŕé ~~~~~~]"
-
-#: systems/decor.gd:183
-msgid "That's water"
-msgstr "[Ţĥàţ'š ŵàţéŕ ~]"
-
-#: systems/decor.gd:187
-msgid "Frozen in"
-msgstr "[Fŕôžéñ îñ ~]"
-
 #: systems/designs.gd:132
 msgid "Set: %s"
 msgstr "[Šéţ: %s ~]"
 
-#: systems/event_props.gd:154
-msgid "CRADLE · SUPPLY"
-msgstr "[ÇŔÀÐĻÉ · ŠÛÞÞĻÝ ~~]"
-
-#: systems/events.gd:446
+#: systems/events.gd:418
 msgid "STREAK x%d  +%d%%"
 msgstr "[ŠŢŔÉÀĶ x%d  +%d%% ~~~]"
 
-#: systems/events.gd:632
-msgid "%d pieces of junk left around the crate"
-msgstr "[%d þîéçéš ôƒ ĵûñķ ļéƒţ àŕôûñð ţĥé çŕàţé ~~~~~~~~~~~]"
-
-#: systems/events.gd:657
-msgid "Supply crate opened: %s"
-msgstr "[Šûþþļý çŕàţé ôþéñéð: %s ~~~~~]"
-
-#: systems/events.gd:659
-msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
-msgstr "[Ţĥé šûþþļý çŕàţé'š béàçôñ ţîméð ôûţ àñð à ðŕôñé ĥàûļéð îţ bàçķ ûþ. Àñôţĥéŕ ŵîļļ çômé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: systems/events.gd:708
+#: systems/events.gd:557
 msgid "%d pieces grabbed at 3x"
 msgstr "[%d þîéçéš ĝŕàbbéð àţ 3x ~~~~~]"
 
-#: systems/events.gd:713
+#: systems/events.gd:560
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "[Ţĥé šûŕĝé ƒàðéð. Ýôû ĝŕàbbéð %d þîéçéš àţ ţŕîþļé vàļûé; ţĥéý þàý ôûţ ŵĥéñ ýôû bàļé. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:713
+#: systems/events.gd:560
 msgid "The surge faded. Next time!"
 msgstr "[Ţĥé šûŕĝé ƒàðéð. Ñéxţ ţîmé! ~~~~~~]"
 
-#: systems/events.gd:762
+#: systems/events.gd:609
 msgid "Every plant is drinking"
 msgstr "[Évéŕý þļàñţ îš ðŕîñķîñĝ ~~~~~]"
 
-#: systems/events.gd:772
+#: systems/events.gd:619
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "[Ţĥé ŕàîñ môvéš ôñ. Ţĥé ĝŕôûñð šôàķéð îţ ûþ: %s ~~~~~~~~~~~~~]"
 
-#: systems/events.gd:793
-msgid "E   fix %s's hiccup"
-msgstr "E   [ƒîx %s'š ĥîççûþ ~~]"
-
-#: systems/events.gd:820
-msgid "%s is %d m away"
-msgstr "[%s îš %d m àŵàý ~~]"
-
-#: systems/events.gd:822
-msgid "%s shook off its hiccups on its own. It looks embarrassed."
-msgstr "[%s šĥôôķ ôƒƒ îţš ĥîççûþš ôñ îţš ôŵñ. Îţ ļôôķš émbàŕŕàššéð. ~~~~~~~~~~~~~~~~~]"
-
-#: systems/events.gd:836
-msgid "%s is fixed and back to work. %s"
-msgstr "[%s îš ƒîxéð àñð bàçķ ţô ŵôŕķ. %s ~~~~~~~~]"
-
-#: systems/events.gd:890
-msgid "Wildlife Visit: %s"
-msgstr "[Ŵîļðļîƒé Vîšîţ: %s ~~~]"
-
-#: systems/events.gd:891
-msgid "E   take a photo of the %s"
-msgstr "E   [ţàķé à þĥôţô ôƒ ţĥé %s ~~~~~]"
-
-#: systems/events.gd:925
-msgid "%s, %d m away"
-msgstr "[%s, %d m àŵàý ~~]"
-
-#: systems/events.gd:928
-msgid "The %s wandered off. It'll be back somewhere green."
-msgstr "[Ţĥé %s ŵàñðéŕéð ôƒƒ. Îţ'ļļ bé bàçķ šôméŵĥéŕé ĝŕééñ. ~~~~~~~~~~~~~~~]"
-
-#: systems/events.gd:958
-msgid "Snap! The %s is in your Collection. %s"
-msgstr "[Šñàþ! Ţĥé %s îš îñ ýôûŕ Çôļļéçţîôñ. %s ~~~~~~~~~~]"
-
-#: systems/events.gd:958
-msgid "Snap! Another lovely shot of the %s. %s"
-msgstr "[Šñàþ! Àñôţĥéŕ ļôvéļý šĥôţ ôƒ ţĥé %s. %s ~~~~~~~~~~~]"
-
-#: systems/events.gd:1009
+#: systems/events.gd:670
 msgid "Signal %d%%"
 msgstr "[Šîĝñàļ %d%% ~]"
 
-#: systems/events.gd:1013
+#: systems/events.gd:674
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "[Ţĥàţ ŵàš ţĥé šîĝñàļ: à šţàšĥ ŵîţĥ à ŕàŕé þàŕţ îñšîðé. %s ~~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:1015
+#: systems/events.gd:676
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "[Ţĥé šîĝñàļ ƒàðéð. Ţĥé þàŕţ îš šţîļļ ðôŵñ ţĥéŕé; ţĥé ðéţéçţôŕ ŵîļļ ƒîñð îţ. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:1082
+#: systems/events.gd:743
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr "[ÀÛÐÎŢ   ÝÔÛ %d  :  %d ÐŔÔÑÉ ~~~~~~]"
 
-#: systems/events.gd:1083
+#: systems/events.gd:744
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr "[Ýôû %d  :  %d Ðŕôñé   ·   %d ļéƒţ ~~~~~~~~~]"
 
-#: systems/events.gd:1121
+#: systems/events.gd:782
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr "[Àûðîţ ŵôñ, %d ţô %d! Ţĥé Ļéðĝéŕ šţàmþš îţ ÀÞÞŔÔVÉÐ. %s ~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:1125
+#: systems/events.gd:786
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "[Ţĥé ðŕôñé ŵôñ ţĥé àûðîţ, %d ţô %d. Îţ ļéƒţ à ţîþ àñýŵàý: +%s çûbéš. ~~~~~~~~~~~~~~~~~~~~]"
 
@@ -2509,8 +2348,7 @@ msgid "Doesn't fit a %s"
 msgstr "[Ðôéšñ'ţ ƒîţ à %s ~~~]"
 
 #: systems/robot_builder.gd:246 systems/robot_design.gd:68 ui/codex_screen.gd:340
-#: ui/codex_screen.gd:460 ui/codex_screen.gd:626 ui/codex_screen.gd:641
-#: ui/piece_row.gd:62
+#: ui/codex_screen.gd:460 ui/codex_screen.gd:582 ui/piece_row.gd:62
 msgid "Not found yet"
 msgstr "[Ñôţ ƒôûñð ýéţ ~~]"
 
@@ -2558,19 +2396,19 @@ msgstr "[Šûŕĝé ~]"
 msgid "New CD: %s by %s, from %s"
 msgstr "[Ñéŵ ÇÐ: %s bý %s, ƒŕôm %s ~~~~~~]"
 
-#: systems/camp/camp.gd:234
+#: systems/camp/camp.gd:230
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "[Ŵôŕķbéñçĥ ƒîxéð! Þŕéšš %s àţ îţ ţô bûý ûþĝŕàðéš. ~~~~~~~~~~~~~~]"
 
-#: systems/camp/camp.gd:369
+#: systems/camp/camp.gd:362
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr "E   [%s (Ļv %d): ƒûļļý ûþĝŕàðéð ~~~~~~]"
 
-#: systems/camp/camp.gd:375
+#: systems/camp/camp.gd:368
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr "E   [%s (Ļv %d): ûþĝŕàðé ţô %s ƒôŕ %s ~~~~~~~~]"
 
-#: systems/camp/camp.gd:381
+#: systems/camp/camp.gd:374
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "[Ţŕàšĥ bîñ ûþĝŕàðéð: %s. Bàļéš šéļļ ƒôŕ %d%% ĥéŕé. ~~~~~~~~~~~~~~]"
 
@@ -2678,43 +2516,7 @@ msgstr "[Bàšé ļévéļ 5 ~]"
 msgid "Album: an \"after\" picture of %s (%s)."
 msgstr "[Àļbûm: àñ \"àƒţéŕ\" þîçţûŕé ôƒ %s (%s). ~~~~~~~~~~]"
 
-#: systems/extras/nursery.gd:90
-msgid "Build the Robot Nursery in the Build tab first."
-msgstr "[Bûîļð ţĥé Ŕôbôţ Ñûŕšéŕý îñ ţĥé Bûîļð ţàb ƒîŕšţ. ~~~~~~~~~~~~~]"
-
-#: systems/extras/nursery.gd:94
-msgid "Only Mk I-II robots retire early. %s can retire in %d min."
-msgstr "[Ôñļý Mķ Î-ÎÎ ŕôbôţš ŕéţîŕé éàŕļý. %s çàñ ŕéţîŕé îñ %d mîñ. ~~~~~~~~~~~~~~~~~]"
-
-#: systems/extras/nursery.gd:122
-msgid "%s retires to the nursery garden. +%d parts, and the flowers get a caretaker."
-msgstr "[%s ŕéţîŕéš ţô ţĥé ñûŕšéŕý ĝàŕðéñ. +%d þàŕţš, àñð ţĥé ƒļôŵéŕš ĝéţ à çàŕéţàķéŕ. ~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: systems/extras/nursery.gd:214
-msgid "E   Say hi to %s"
-msgstr "E   [Šàý ĥî ţô %s ~]"
-
-#: systems/extras/nursery.gd:272
-msgid "CARETAKER · %s"
-msgstr "[ÇÀŔÉŢÀĶÉŔ · %s ~~]"
-
-#: systems/extras/nursery.gd:319
-msgid "%s beeps hello and shows Lumi the marigolds."
-msgstr "[%s bééþš ĥéļļô àñð šĥôŵš Ļûmî ţĥé màŕîĝôļðš. ~~~~~~~~~~~~]"
-
-#: systems/extras/nursery.gd:320
-msgid "%s is busy with the watering can, but waves anyway."
-msgstr "[%s îš bûšý ŵîţĥ ţĥé ŵàţéŕîñĝ çàñ, bûţ ŵàvéš àñýŵàý. ~~~~~~~~~~~~~~~]"
-
-#: systems/extras/nursery.gd:321
-msgid "%s hums to the seedlings. Retirement suits it."
-msgstr "[%s ĥûmš ţô ţĥé šééðļîñĝš. Ŕéţîŕéméñţ šûîţš îţ. ~~~~~~~~~~~~~]"
-
-#: systems/extras/nursery.gd:322
-msgid "%s points proudly at a new bud."
-msgstr "[%s þôîñţš þŕôûðļý àţ à ñéŵ bûð. ~~~~~~~~]"
-
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:662
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:622
 msgid "E   CD player: %s"
 msgstr "E   [ÇÐ þļàýéŕ: %s ~~]"
 
@@ -2738,7 +2540,7 @@ msgstr "[bàļéð àbôûţ %d bàļéš ~~~~]"
 msgid "kept the base tidy"
 msgstr "[ķéþţ ţĥé bàšé ţîðý ~~~]"
 
-#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:772
+#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:707
 msgid "Cubes earned"
 msgstr "[Çûbéš éàŕñéð ~]"
 
@@ -2904,7 +2706,7 @@ msgid "Fewer %s"
 msgstr "[Féŵéŕ %s ~]"
 
 #: ui/bench_bots.gd:12 ui/build_panel.gd:102 ui/rig_panel.gd:193
-#: ui/robot_card.gd:114 ui/robot_card.gd:249 ui/upgrades_screen.gd:14
+#: ui/robot_card.gd:114 ui/robot_card.gd:249 ui/upgrades_screen.gd:13
 #: ui/yard_builds_panel.gd:17
 msgid "Build"
 msgstr "[Bûîļð ~]"
@@ -2930,8 +2732,7 @@ msgstr "[Ļûmî ~]"
 msgid "Machines"
 msgstr "[Màçĥîñéš ~]"
 
-#: ui/bench_lists.gd:11 ui/globe_view.gd:176 ui/locker_panel.gd:288
-#: ui/upgrades_panel.gd:49
+#: ui/bench_lists.gd:11 ui/globe_view.gd:176 ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "[Ŕôçķéţ ~]"
 
@@ -3015,7 +2816,7 @@ msgstr "[Fîñð ôñé ôƒ ţĥéîŕ ÇÐš îñ ţĥé ŕûbbļé ôñ %s. ~
 msgid "Your CDs (%d / %d): %s"
 msgstr "[Ýôûŕ ÇÐš (%d / %d): %s ~~~~~]"
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:794
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:729
 msgid "Achievements"
 msgstr "[Àçĥîévéméñţš ~]"
 
@@ -3043,7 +2844,7 @@ msgstr "[ÇÔÐÉX ~]"
 msgid "Watch the story"
 msgstr "[Ŵàţçĥ ţĥé šţôŕý ~~]"
 
-#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:173
+#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:169
 msgid "Close  [%s]"
 msgstr "[Çļôšé  [%s] ~]"
 
@@ -3051,9 +2852,9 @@ msgstr "[Çļôšé  [%s] ~]"
 msgid "%d / %d curiosities"
 msgstr "[%d / %d çûŕîôšîţîéš ~~~~]"
 
-#: ui/codex_screen.gd:207
-msgid "%d / %d collectibles"
-msgstr "[%d / %d çôļļéçţîbļéš ~~~~]"
+#: ui/codex_screen.gd:207 ui/codex_screen.gd:491
+msgid "%d / %d complete"
+msgstr "[%d / %d çômþļéţé ~~~]"
 
 #: ui/codex_screen.gd:209
 msgid "%d / %d achievements"
@@ -3077,7 +2878,7 @@ msgstr ""
 msgid "CURIOSITIES"
 msgstr "[ÇÛŔÎÔŠÎŢÎÉŠ ~]"
 
-#: ui/codex_screen.gd:370 ui/codex_screen.gd:491
+#: ui/codex_screen.gd:370
 msgid "%d / %d found"
 msgstr "[%d / %d ƒôûñð ~~]"
 
@@ -3101,179 +2902,143 @@ msgstr "[Ŕéŵàŕð: à šmàļļ šûŕþŕîšé ~~~~~]"
 msgid "COLLECTION"
 msgstr "[ÇÔĻĻÉÇŢÎÔÑ ~]"
 
-#: ui/codex_screen.gd:574
-msgid "LUMI'S COLLECTION"
-msgstr "[ĻÛMÎ'Š ÇÔĻĻÉÇŢÎÔÑ ~~~]"
-
-#: ui/codex_screen.gd:575
-msgid "%d / %d complete"
-msgstr "[%d / %d çômþļéţé ~~~]"
-
-#: ui/codex_screen.gd:613
-msgid "TRINKETS AND CURIOS"
-msgstr "[ŢŔÎÑĶÉŢŠ ÀÑÐ ÇÛŔÎÔŠ ~~~~]"
-
-#: ui/codex_screen.gd:625
+#: ui/codex_screen.gd:581
 msgid "EVERY PLANET"
 msgstr "[ÉVÉŔÝ ÞĻÀÑÉŢ ~]"
 
-#: ui/codex_screen.gd:628 ui/codex_screen.gd:644
+#: ui/codex_screen.gd:584
 msgid "In your collection"
 msgstr "[Îñ ýôûŕ çôļļéçţîôñ ~~~]"
 
-#: ui/codex_screen.gd:630
+#: ui/codex_screen.gd:586
 msgid "Hint: %s"
 msgstr "[Ĥîñţ: %s ~]"
 
-#: ui/codex_screen.gd:649
-msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
-msgstr "[Ĥîñţ: à šĥý vîšîţôŕ çôméš ţô Šûšţàîñéð àñð Ţĥŕîvîñĝ ĥéxéš. Bŕîñĝ à çàméŕà. ~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: ui/codex_screen.gd:650
-msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
-msgstr "[Ĥîñţ: àñîmàļš çômé bàçķ àš ţĥé ĝŕôûñð ĥéàļš. Þĥôţôĝŕàþĥ ţĥém îñ þĥôţô môðé (Þ). ~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: ui/codex_screen.gd:651
-msgid "Hint: finish %d requests (Requests tab at the workbench)."
-msgstr "[Ĥîñţ: ƒîñîšĥ %d ŕéqûéšţš (Ŕéqûéšţš ţàb àţ ţĥé ŵôŕķbéñçĥ). ~~~~~~~~~~~~~~~~~]"
-
-#: ui/codex_screen.gd:652
-msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
-msgstr "[Ĥîñţ: Çûŕîô Çàþšûļéš, ôñ ţĥé Ŕéqûéšţš ŕéŵàŕð ţŕàçķ àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~~~~~~~~]"
-
-#: ui/codex_screen.gd:653
-msgid "Hint: keep scooping without stopping until the streak meter is full."
-msgstr "[Ĥîñţ: ķééþ šçôôþîñĝ ŵîţĥôûţ šţôþþîñĝ ûñţîļ ţĥé šţŕéàķ méţéŕ îš ƒûļļ. ~~~~~~~~~~~~~~~~~~~~~]"
-
-#: ui/codex_screen.gd:654
-msgid "Hint: turns up during %s."
-msgstr "[Ĥîñţ: ţûŕñš ûþ ðûŕîñĝ %s. ~~~~~~]"
-
-#: ui/codex_screen.gd:723
+#: ui/codex_screen.gd:658
 msgid "Unlocked  ·  %s"
 msgstr "[Ûñļôçķéð  ·  %s ~~]"
 
-#: ui/codex_screen.gd:762
+#: ui/codex_screen.gd:697
 msgid "Total"
 msgstr "[Ţôţàļ ~]"
 
-#: ui/codex_screen.gd:763
+#: ui/codex_screen.gd:698
 msgid "Junk removed"
 msgstr "[Ĵûñķ ŕémôvéð ~]"
 
-#: ui/codex_screen.gd:763
+#: ui/codex_screen.gd:698
 msgid "by type"
 msgstr "[bý ţýþé ~]"
 
-#: ui/codex_screen.gd:764 planets/verdance/data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:699 planets/verdance/data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "[Çļéàñîñĝ ~]"
 
-#: ui/codex_screen.gd:766
+#: ui/codex_screen.gd:701
 msgid "Hexes restored"
 msgstr "[Ĥéxéš ŕéšţôŕéð ~~]"
 
-#: ui/codex_screen.gd:767
+#: ui/codex_screen.gd:702
 msgid "Bales pressed"
 msgstr "[Bàļéš þŕéššéð ~~]"
 
-#: ui/codex_screen.gd:768
+#: ui/codex_screen.gd:703
 msgid "Pure bales"
 msgstr "[Þûŕé bàļéš ~]"
 
-#: ui/codex_screen.gd:769
+#: ui/codex_screen.gd:704
 msgid "Perfect bales"
 msgstr "[Þéŕƒéçţ bàļéš ~~]"
 
-#: ui/codex_screen.gd:770
+#: ui/codex_screen.gd:705
 msgid "Lumpy bales"
 msgstr "[Ļûmþý bàļéš ~]"
 
-#: ui/codex_screen.gd:771
+#: ui/codex_screen.gd:706
 msgid "Bales cashed in"
 msgstr "[Bàļéš çàšĥéð îñ ~~]"
 
-#: ui/codex_screen.gd:774 ui/globe_view.gd:153 planets/verdance/data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:709 ui/globe_view.gd:153 planets/verdance/data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "[Ĝŕôŵîñĝ ~]"
 
-#: ui/codex_screen.gd:775
+#: ui/codex_screen.gd:710
 msgid "Seeds planted"
 msgstr "[Šééðš þļàñţéð ~~]"
 
-#: ui/codex_screen.gd:776
+#: ui/codex_screen.gd:711
 msgid "Plants bloomed"
 msgstr "[Þļàñţš bļôôméð ~~]"
 
-#: ui/codex_screen.gd:777
+#: ui/codex_screen.gd:712
 msgid "Air filtered"
 msgstr "[Àîŕ ƒîļţéŕéð ~]"
 
-#: ui/codex_screen.gd:779 planets/verdance/data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:714 planets/verdance/data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "[Ŕôbôţš ~]"
 
-#: ui/codex_screen.gd:781
+#: ui/codex_screen.gd:716
 msgid "Bales by robots"
 msgstr "[Bàļéš bý ŕôbôţš ~~]"
 
-#: ui/codex_screen.gd:782
+#: ui/codex_screen.gd:717
 msgid "Parts dug up"
 msgstr "[Þàŕţš ðûĝ ûþ ~]"
 
-#: ui/codex_screen.gd:784
+#: ui/codex_screen.gd:719
 msgid "Exploring"
 msgstr "[Éxþļôŕîñĝ ~]"
 
-#: ui/codex_screen.gd:785
+#: ui/codex_screen.gd:720
 msgid "Distance rolled"
 msgstr "[Ðîšţàñçé ŕôļļéð ~~]"
 
-#: ui/codex_screen.gd:786
+#: ui/codex_screen.gd:721
 msgid "Memory shards read"
 msgstr "[Mémôŕý šĥàŕðš ŕéàð ~~~]"
 
-#: ui/codex_screen.gd:787
+#: ui/codex_screen.gd:722
 msgid "Codex entries"
 msgstr "[Çôðéx éñţŕîéš ~~]"
 
-#: ui/codex_screen.gd:790
+#: ui/codex_screen.gd:725
 msgid "Progress"
 msgstr "[Þŕôĝŕéšš ~]"
 
-#: ui/codex_screen.gd:791
+#: ui/codex_screen.gd:726
 msgid "Upgrades bought"
 msgstr "[Ûþĝŕàðéš bôûĝĥţ ~~]"
 
-#: ui/codex_screen.gd:792
+#: ui/codex_screen.gd:727
 msgid "Field notes logged"
 msgstr "[Fîéļð ñôţéš ļôĝĝéð ~~~]"
 
-#: ui/codex_screen.gd:793
+#: ui/codex_screen.gd:728
 msgid "Research done"
 msgstr "[Ŕéšéàŕçĥ ðôñé ~~]"
 
-#: ui/codex_screen.gd:795
+#: ui/codex_screen.gd:730
 msgid "Best hub level"
 msgstr "[Béšţ ĥûb ļévéļ ~~]"
 
-#: ui/codex_screen.gd:845
+#: ui/codex_screen.gd:780
 msgid "%s kg"
 msgstr "[%s ķĝ ~]"
 
-#: ui/codex_screen.gd:846
+#: ui/codex_screen.gd:781
 msgid "%.1f kg"
 msgstr "[%.1f ķĝ ~]"
 
-#: ui/codex_screen.gd:850
+#: ui/codex_screen.gd:785
 msgid "%.2f km"
 msgstr "[%.2f ķm ~]"
 
-#: ui/codex_screen.gd:860
+#: ui/codex_screen.gd:795
 msgid "%dm %02ds"
 msgstr "[%dm %02dš ~]"
 
-#: ui/codex_screen.gd:861
+#: ui/codex_screen.gd:796
 msgid "%ds"
 msgstr "[%dš ~]"
 
@@ -3447,34 +3212,6 @@ msgstr "[%d ŕôbôţš ~]"
 msgid "%d / %d hexes clean"
 msgstr "[%d / %d ĥéxéš çļéàñ ~~~~]"
 
-#: ui/contracts_panel.gd:75
-msgid "%d done"
-msgid_plural "%d done"
-msgstr[0] "[%d ðôñé ~]"
-msgstr[1] "[%d ðôñé ~]"
-
-#: ui/contracts_panel.gd:80
-msgid "Live now:  %s  ·  %s  ·  %s left"
-msgstr "[Ļîvé ñôŵ:  %s  ·  %s  ·  %s ļéƒţ ~~~~~~~~]"
-
-#: ui/contracts_panel.gd:83
-msgid "Every reward unlocked. Each %d more requests pay a Vintage part's worth of parts."
-msgstr "[Évéŕý ŕéŵàŕð ûñļôçķéð. Éàçĥ %d môŕé ŕéqûéšţš þàý à Vîñţàĝé þàŕţ'š ŵôŕţĥ ôƒ þàŕţš. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: ui/contracts_panel.gd:86
-msgid "Next unlock in %d request:  %s"
-msgid_plural "Next unlock in %d requests:  %s"
-msgstr[0] "[Ñéxţ ûñļôçķ îñ %d ŕéqûéšţ:  %s ~~~~~~~]"
-msgstr[1] "[Ñéxţ ûñļôçķ îñ %d ŕéqûéšţš:  %s ~~~~~~~~]"
-
-#: ui/contracts_panel.gd:117
-msgid "A new request is on its way"
-msgstr "[À ñéŵ ŕéqûéšţ îš ôñ îţš ŵàý ~~~~~~]"
-
-#: ui/contracts_panel.gd:143
-msgid "Claim"
-msgstr "[Çļàîm ~]"
-
 #: ui/core_meter.gd:22
 msgid "BLOOM CORE"
 msgstr "[BĻÔÔM ÇÔŔÉ ~]"
@@ -3551,17 +3288,9 @@ msgstr "[Çîţîéš ŕéšţôŕéð ~~]"
 msgid "%d of %d"
 msgstr "[%d ôƒ %d ~]"
 
-#: ui/event_hud.gd:127
+#: ui/event_hud.gd:123
 msgid "STREAK"
 msgstr "[ŠŢŔÉÀĶ ~]"
-
-#: ui/event_hud.gd:192
-msgid "REQUEST READY  ·  claim it at the workbench"
-msgstr "[ŔÉQÛÉŠŢ ŔÉÀÐÝ  ·  çļàîm îţ àţ ţĥé ŵôŕķbéñçĥ ~~~~~~~~~~~~]"
-
-#: ui/event_hud.gd:192
-msgid "%d REQUESTS READY  ·  claim them at the workbench"
-msgstr "[%d ŔÉQÛÉŠŢŠ ŔÉÀÐÝ  ·  çļàîm ţĥém àţ ţĥé ŵôŕķbéñçĥ ~~~~~~~~~~~~~~]"
 
 #: ui/extras_cd_list.gd:64
 msgid "CDS  ·  %d / %d"
@@ -3651,121 +3380,61 @@ msgstr "[ÇÐ Þļàýéŕ ~]"
 msgid "Album"
 msgstr "[Àļbûm ~]"
 
-#: ui/extras_panel.gd:9
-msgid "Nursery"
-msgstr "[Ñûŕšéŕý ~]"
-
-#: ui/extras_panel.gd:79
+#: ui/extras_panel.gd:76
 msgid "KEEPSAKES"
 msgstr "[ĶÉÉÞŠÀĶÉŠ ~]"
 
-#: ui/extras_panel.gd:91
+#: ui/extras_panel.gd:88
 msgid "%s / %s  switch tabs"
 msgstr "[%s / %s  šŵîţçĥ ţàbš ~~~~]"
 
-#: ui/extras_panel.gd:231
+#: ui/extras_panel.gd:226
 msgid "DISTRICTS"
 msgstr "[ÐÎŠŢŔÎÇŢŠ ~]"
 
-#: ui/extras_panel.gd:233
+#: ui/extras_panel.gd:228
 msgid "Lumi takes a picture of each district on arrival, and \"after\" pictures as it is restored."
 msgstr "[Ļûmî ţàķéš à þîçţûŕé ôƒ éàçĥ ðîšţŕîçţ ôñ àŕŕîvàļ, àñð \"àƒţéŕ\" þîçţûŕéš àš îţ îš ŕéšţôŕéð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/extras_panel.gd:237
+#: ui/extras_panel.gd:232
 msgid "Before only"
 msgstr "[Béƒôŕé ôñļý ~]"
 
-#: ui/extras_panel.gd:245
+#: ui/extras_panel.gd:240
 msgid "PHOTOS  ·  %d"
 msgstr "[ÞĤÔŢÔŠ  ·  %d ~~]"
 
-#: ui/extras_panel.gd:257
+#: ui/extras_panel.gd:252
 msgid "Photo"
 msgstr "[Þĥôţô ~]"
 
-#: ui/extras_panel.gd:266
+#: ui/extras_panel.gd:261
 msgid "Photos you take in photo mode show up here."
 msgstr "[Þĥôţôš ýôû ţàķé îñ þĥôţô môðé šĥôŵ ûþ ĥéŕé. ~~~~~~~~~~~~]"
 
-#: ui/extras_panel.gd:270 ui/photo_panel.gd:58
+#: ui/extras_panel.gd:265 ui/photo_panel.gd:58
 msgid "PHOTO MODE"
 msgstr "[ÞĤÔŢÔ MÔÐÉ ~]"
 
-#: ui/extras_panel.gd:280
+#: ui/extras_panel.gd:275
 msgid "No pictures yet."
 msgstr "[Ñô þîçţûŕéš ýéţ. ~~~]"
 
-#: ui/extras_panel.gd:291
+#: ui/extras_panel.gd:286
 msgid "BEFORE"
 msgstr "[BÉFÔŔÉ ~]"
 
-#: ui/extras_panel.gd:310
+#: ui/extras_panel.gd:305
 msgid "not yet"
 msgstr "[ñôţ ýéţ ~]"
 
-#: ui/extras_panel.gd:320
+#: ui/extras_panel.gd:315
 msgid "The \"after\" picture comes when the district is half clean."
 msgstr "[Ţĥé \"àƒţéŕ\" þîçţûŕé çôméš ŵĥéñ ţĥé ðîšţŕîçţ îš ĥàļƒ çļéàñ. ~~~~~~~~~~~~~~~~~]"
 
-#: ui/extras_panel.gd:326
-msgid "CARETAKERS  ·  %d"
-msgstr "[ÇÀŔÉŢÀĶÉŔŠ  ·  %d ~~~]"
-
-#: ui/extras_panel.gd:327
-msgid "Garden bonus: plants grow %d%% faster (up to %d%%)."
-msgstr "[Ĝàŕðéñ bôñûš: þļàñţš ĝŕôŵ %d%% ƒàšţéŕ (ûþ ţô %d%%). ~~~~~~~~~~~~~~~]"
-
-#: ui/extras_panel.gd:330
-msgid "No one has retired yet. Old or Mk I-II robots can retire here; they'll look after the nursery garden at the base."
-msgstr "[Ñô ôñé ĥàš ŕéţîŕéð ýéţ. Ôļð ôŕ Mķ Î-ÎÎ ŕôbôţš çàñ ŕéţîŕé ĥéŕé; ţĥéý'ļļ ļôôķ àƒţéŕ ţĥé ñûŕšéŕý ĝàŕðéñ àţ ţĥé bàšé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: ui/extras_panel.gd:339
-msgid "RETIRE A ROBOT"
-msgstr "[ŔÉŢÎŔÉ À ŔÔBÔŢ ~~]"
-
-#: ui/extras_panel.gd:341
-msgid "Retiring gives a few parts back, and the robot keeps its name and personality in the nursery."
-msgstr "[Ŕéţîŕîñĝ ĝîvéš à ƒéŵ þàŕţš bàçķ, àñð ţĥé ŕôbôţ ķééþš îţš ñàmé àñð þéŕšôñàļîţý îñ ţĥé ñûŕšéŕý. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: ui/extras_panel.gd:343
-msgid "No robots in this district."
-msgstr "[Ñô ŕôbôţš îñ ţĥîš ðîšţŕîçţ. ~~~~~~]"
-
-#: ui/extras_panel.gd:350
-msgid "Press again to retire (+%d parts)"
-msgstr "[Þŕéšš àĝàîñ ţô ŕéţîŕé (+%d þàŕţš) ~~~~~~~~~]"
-
-#: ui/extras_panel.gd:350
-msgid "Retire  (+%d parts)"
-msgstr "[Ŕéţîŕé  (+%d þàŕţš) ~~~~]"
-
-#: ui/extras_panel.gd:399
+#: ui/extras_panel.gd:348
 msgid "No picture yet"
 msgstr "[Ñô þîçţûŕé ýéţ ~~]"
-
-#: ui/garden_placer.gd:118
-msgid "Garden Mode opens when this base reaches level 5, or once the Cradle comes home."
-msgstr "[Ĝàŕðéñ Môðé ôþéñš ŵĥéñ ţĥîš bàšé ŕéàçĥéš ļévéļ 5, ôŕ ôñçé ţĥé Çŕàðļé çôméš ĥômé. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: ui/garden_placer.gd:234
-msgid "charm +%.1f"
-msgstr "[çĥàŕm +%.1f ~]"
-
-#: ui/garden_placer.gd:237
-msgid "%s here: %s to pick it up"
-msgstr "[%s ĥéŕé: %s ţô þîçķ îţ ûþ ~~~~~~]"
-
-#: ui/garden_placer.gd:240
-msgid "GARDEN MODE   ·   Charm %.1f   ·   +%.1f%% plant growth here"
-msgstr "[ĜÀŔÐÉÑ MÔÐÉ   ·   Çĥàŕm %.1f   ·   +%.1f%% þļàñţ ĝŕôŵţĥ ĥéŕé ~~~~~~~~~~~~~~~~~~]"
-
-#: ui/garden_placer.gd:241
-msgid "[%s] place   [%s] rotate   [%s / %s] item   [%s] pick up   [%s] done"
-msgstr "[[%s] þļàçé   [%s] ŕôţàţé   [%s / %s] îţém   [%s] þîçķ ûþ   [%s] ðôñé ~~~~~~~~~~~~~~~~~~~~~]"
-
-#: ui/garden_placer.gd:295
-msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
-msgstr "[Þîçķéð ûþ: %s. Þûţ îţ ðôŵñ šôméŵĥéŕé éļšé, ôŕ ļéàvé îţ îñ šţôŕàĝé. ~~~~~~~~~~~~~~~~~~~~]"
 
 #: ui/glim_bench.gd:58 ui/hub_panel.gd:66 ui/upgrades_panel.gd:144
 msgid "Upgrade"
@@ -3887,23 +3556,19 @@ msgstr "[Ĝôàļ çômþļéţé  ·  %s%s ~~~~~]"
 msgid "+%s seeds"
 msgstr "[+%s šééðš ~]"
 
-#: ui/hotbar.gd:32
+#: ui/hotbar.gd:31
 msgid "SCOOP"
 msgstr "[ŠÇÔÔÞ ~]"
 
-#: ui/hotbar.gd:33
+#: ui/hotbar.gd:32
 msgid "PLANT"
 msgstr "[ÞĻÀÑŢ ~]"
 
-#: ui/hotbar.gd:293
-msgid "+%d XP"
-msgstr "[+%d XÞ ~]"
-
-#: ui/hotbar.gd:306
+#: ui/hotbar.gd:236
 msgid "CORE %d%%"
 msgstr "[ÇÔŔÉ %d%% ~]"
 
-#: ui/hotbar.gd:339
+#: ui/hotbar.gd:258
 msgid "SURGE"
 msgstr "[ŠÛŔĜÉ ~]"
 
@@ -3999,98 +3664,94 @@ msgstr ""
 msgid "All built"
 msgstr "[Àļļ bûîļţ ~]"
 
-#: ui/hud.gd:79
-msgid "Lumi reached level %d%s"
-msgstr "[Ļûmî ŕéàçĥéð ļévéļ %d%s ~~~~~]"
-
-#: ui/hud.gd:305
+#: ui/hud.gd:299
 msgid "WREN SIGNAL   %d%%"
 msgstr "[ŴŔÉÑ ŠÎĜÑÀĻ   %d%% ~~~]"
 
-#: ui/hud.gd:334
+#: ui/hud.gd:328
 msgid "HEX  %d%% CLEAR"
 msgstr "[ĤÉX  %d%% ÇĻÉÀŔ ~~]"
 
-#: ui/hud.gd:345
+#: ui/hud.gd:339
 msgid "%s  BASE"
 msgstr "[%s  BÀŠÉ ~]"
 
-#: ui/hud.gd:348
+#: ui/hud.gd:342
 msgid "CARRYING %d/%d"
 msgstr "[ÇÀŔŔÝÎÑĜ %d/%d ~~]"
 
-#: ui/hud.gd:374
+#: ui/hud.gd:366
 msgid "HEX  CLEAR"
 msgstr "[ĤÉX  ÇĻÉÀŔ ~]"
 
-#: ui/hud.gd:378
+#: ui/hud.gd:370
 msgid "HEX  %s"
 msgstr "[ĤÉX  %s ~]"
 
-#: ui/hud.gd:384
+#: ui/hud.gd:376
 msgid "  SUSTAIN %d%%"
 msgstr "  [ŠÛŠŢÀÎÑ %d%% ~~]"
 
-#: ui/hud.gd:386
+#: ui/hud.gd:378
 msgid "  THIRSTY"
 msgstr "  [ŢĤÎŔŠŢÝ ~]"
 
-#: ui/hud.gd:411
+#: ui/hud.gd:403
 msgid "%s · %s"
 msgstr "[%s · %s]"
 
-#: ui/hud.gd:413
+#: ui/hud.gd:405
 msgid "%s · %s %d%%"
 msgstr "[%s · %s %d%%]"
 
-#: ui/hud.gd:416
+#: ui/hud.gd:408
 msgid "%d of %d city restored"
 msgid_plural "%d of %d cities restored"
 msgstr[0] "[%d ôƒ %d çîţý ŕéšţôŕéð ~~~~~]"
 msgstr[1] "[%d ôƒ %d çîţîéš ŕéšţôŕéð ~~~~~]"
 
-#: ui/hud.gd:430
+#: ui/hud.gd:422
 msgid "MASTERY  %s"
 msgstr "[MÀŠŢÉŔÝ  %s ~]"
 
-#: ui/hud.gd:441
+#: ui/hud.gd:433
 msgid "%s mastery %d. Robots can work it now."
 msgstr "[%s màšţéŕý %d. Ŕôbôţš çàñ ŵôŕķ îţ ñôŵ. ~~~~~~~~~~]"
 
-#: ui/hud.gd:443
+#: ui/hud.gd:435
 msgid "%s mastery %d. You and your crew work it faster."
 msgstr "[%s màšţéŕý %d. Ýôû àñð ýôûŕ çŕéŵ ŵôŕķ îţ ƒàšţéŕ. ~~~~~~~~~~~~~~]"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:452
+#: ui/hud.gd:444
 msgid "%s   pick up bale"
 msgstr "[%s   þîçķ ûþ bàļé ~~~]"
 
-#: ui/hud.gd:453
+#: ui/hud.gd:445
 msgid "%s   dig up part"
 msgstr "[%s   ðîĝ ûþ þàŕţ ~~~]"
 
-#: ui/hud.gd:454
+#: ui/hud.gd:446
 msgid "%s   read memory shard"
 msgstr "[%s   ŕéàð mémôŕý šĥàŕð ~~~~~]"
 
-#: ui/hud.gd:455
+#: ui/hud.gd:447
 msgid "%s   pick up the seed tin"
 msgstr "[%s   þîçķ ûþ ţĥé šééð ţîñ ~~~~~~]"
 
-#: ui/hud.gd:456
+#: ui/hud.gd:448
 msgid "%s   set bale down"
 msgstr "[%s   šéţ bàļé ðôŵñ ~~~]"
 
-#: ui/hud.gd:457
+#: ui/hud.gd:449
 msgid "%s   workbench"
 msgstr "[%s   ŵôŕķbéñçĥ ~~]"
 
-#: ui/hud.gd:458
+#: ui/hud.gd:450
 msgid "Filling the watering can"
 msgstr "[Fîļļîñĝ ţĥé ŵàţéŕîñĝ çàñ ~~~~~]"
 
-#: ui/hud.gd:459
+#: ui/hud.gd:451
 msgid "Can empty. It fills in the base yard, by the bin."
 msgstr "[Çàñ émþţý. Îţ ƒîļļš îñ ţĥé bàšé ýàŕð, bý ţĥé bîñ. ~~~~~~~~~~~~~~]"
 
@@ -4101,10 +3762,6 @@ msgstr "[þŕéšš bàļé ~]"
 #: ui/key_hints.gd:114
 msgid "tools"
 msgstr "[ţôôļš ~]"
-
-#: ui/late_menu.gd:9
-msgid "Garden Mode  [%s]"
-msgstr "[Ĝàŕðéñ Môðé  [%s] ~~~]"
 
 #: ui/lens_overlay.gd:61
 msgid ""
@@ -4192,38 +3849,22 @@ msgstr "[Ļôàðîñĝ ~]"
 msgid "Warming up"
 msgstr "[Ŵàŕmîñĝ ûþ ~]"
 
-#: ui/locker_editors.gd:13 data/currencies.json:currencies[parts].name planets/verdance/data/hub.json:materials.metal.name
+#: ui/locker_editors.gd:12 data/currencies.json:currencies[parts].name planets/verdance/data/hub.json:materials.metal.name
 #: planets/verdance/data/hub.json:materials.plastic.name planets/verdance/data/hub.json:materials.glass.name
 msgid "Parts"
 msgstr "[Þàŕţš ~]"
 
-#: ui/locker_editors.gd:13 data/cosmetics.json:targets.crew.slots[crew_paint].name
+#: ui/locker_editors.gd:12 data/cosmetics.json:targets.crew.slots[crew_paint].name
 msgid "Fleet mark"
 msgstr "[Fļééţ màŕķ ~]"
 
-#: ui/locker_editors.gd:13 data/cosmetics.json:slots[glow].name data/cosmetics.json:targets.crew.slots[crew_glow].name
+#: ui/locker_editors.gd:12 data/cosmetics.json:slots[glow].name data/cosmetics.json:targets.crew.slots[crew_glow].name
 msgid "Light colour"
 msgstr "[Ļîĝĥţ çôļôûŕ ~]"
 
-#: ui/locker_editors.gd:14 data/cosmetics.json:slots[paint].name data/style_parts.json:slots[paint].name
-msgid "Paint"
-msgstr "[Þàîñţ ~]"
-
-#: ui/locker_editors.gd:14 data/style_parts.json:slots[trim].name
-msgid "Trim"
-msgstr "[Ţŕîm ~]"
-
-#: ui/locker_editors.gd:14 data/cosmetics.json:targets.glim.slots[glim_glow].name
-msgid "Glow"
-msgstr "[Ĝļôŵ ~]"
-
-#: ui/locker_editors.gd:57
+#: ui/locker_editors.gd:55
 msgid "Every %s wears this"
 msgstr "[Évéŕý %s ŵéàŕš ţĥîš ~~~~]"
-
-#: ui/locker_editors.gd:195
-msgid "Ship looks: the tiers keep their shape"
-msgstr "[Šĥîþ ļôôķš: ţĥé ţîéŕš ķééþ ţĥéîŕ šĥàþé ~~~~~~~~~~]"
 
 #: ui/locker_panel.gd:95
 msgid "Close"
@@ -4342,11 +3983,11 @@ msgstr "[Çôñţîñûé ~]"
 msgid "New Game"
 msgstr "[Ñéŵ Ĝàmé ~]"
 
-#: ui/main_menu.gd:342 ui/main_menu.gd:521 ui/pause_menu.gd:68
+#: ui/main_menu.gd:342 ui/main_menu.gd:521 ui/pause_menu.gd:67
 msgid "Settings"
 msgstr "[Šéţţîñĝš ~]"
 
-#: ui/main_menu.gd:344 ui/pause_menu.gd:72
+#: ui/main_menu.gd:344 ui/pause_menu.gd:71
 msgid "Quit"
 msgstr "[Qûîţ ~]"
 
@@ -4473,7 +4114,7 @@ msgstr "[Çôðéx  [%s] ~]"
 msgid "Photo mode  [%s]"
 msgstr "[Þĥôţô môðé  [%s] ~~~]"
 
-#: ui/pause_menu.gd:63
+#: ui/pause_menu.gd:62
 msgid "Keepsakes"
 msgstr "[Ķééþšàķéš ~]"
 
@@ -4859,7 +4500,7 @@ msgstr "[ŔÉŠÉÀŔÇĤ  %s  %d/%d ~~~~]"
 msgid "RESEARCH  PICK A NODE  ·  %d DATA BANKED"
 msgstr "[ŔÉŠÉÀŔÇĤ  ÞÎÇĶ À ÑÔÐÉ  ·  %d ÐÀŢÀ BÀÑĶÉÐ ~~~~~~~~~~~]"
 
-#: ui/rig_panel.gd:102 ui/upgrades_screen.gd:17
+#: ui/rig_panel.gd:102 ui/upgrades_screen.gd:16
 msgid "Rig"
 msgstr "[Ŕîĝ ~]"
 
@@ -5471,19 +5112,19 @@ msgstr "[ñééð %s · ~%s ~~]"
 msgid "Where it comes from:  %s"
 msgstr "[Ŵĥéŕé îţ çôméš ƒŕôm:  %s ~~~~~]"
 
-#: ui/upgrades_screen.gd:15
+#: ui/upgrades_screen.gd:14
 msgid "Bots"
 msgstr "[Bôţš ~]"
 
-#: ui/upgrades_screen.gd:16
+#: ui/upgrades_screen.gd:15
 msgid "Research"
 msgstr "[Ŕéšéàŕçĥ ~]"
 
-#: ui/upgrades_screen.gd:155
+#: ui/upgrades_screen.gd:151
 msgid "WORKBENCH"
 msgstr "[ŴÔŔĶBÉÑÇĤ ~]"
 
-#: ui/upgrades_screen.gd:274
+#: ui/upgrades_screen.gd:270
 msgid "Not open yet. Keep playing."
 msgstr "[Ñôţ ôþéñ ýéţ. Ķééþ þļàýîñĝ. ~~~~~~]"
 
@@ -6047,30 +5688,6 @@ msgstr "[Þîţ Šţôþ ~]"
 msgid "Build a recharge pad at an outpost."
 msgstr "[Bûîļð à ŕéçĥàŕĝé þàð àţ àñ ôûţþôšţ. ~~~~~~~~~]"
 
-#: data/achievements.json:achievements[builder_mix].name
-msgid "Mix and Match"
-msgstr "[Mîx àñð Màţçĥ ~~]"
-
-#: data/achievements.json:achievements[builder_mix].desc
-msgid "Style a robot with all five custom parts in the Locker."
-msgstr "[Šţýļé à ŕôbôţ ŵîţĥ àļļ ƒîvé çûšţôm þàŕţš îñ ţĥé Ļôçķéŕ. ~~~~~~~~~~~~~~~~]"
-
-#: data/achievements.json:achievements[builder_maker].name
-msgid "As the Makers Made It"
-msgstr "[Àš ţĥé Màķéŕš Màðé Îţ ~~~~]"
-
-#: data/achievements.json:achievements[builder_maker].desc
-msgid "Fit the full Maker set (shell, optic and glider) on one robot."
-msgstr "[Fîţ ţĥé ƒûļļ Màķéŕ šéţ (šĥéļļ, ôþţîç àñð ĝļîðéŕ) ôñ ôñé ŕôbôţ. ~~~~~~~~~~~~~~~~~~~]"
-
-#: data/achievements.json:achievements[builder_hats].name
-msgid "Hat Rack"
-msgstr "[Ĥàţ Ŕàçķ ~]"
-
-#: data/achievements.json:achievements[builder_hats].desc
-msgid "Collect 5 different robot toppers."
-msgstr "[Çôļļéçţ 5 ðîƒƒéŕéñţ ŕôbôţ ţôþþéŕš. ~~~~~~~~~]"
-
 #: data/achievements.json:achievements[pet_cat].name
 msgid "A Friend in Old Town"
 msgstr "[À Fŕîéñð îñ Ôļð Ţôŵñ ~~~~]"
@@ -6115,46 +5732,6 @@ msgstr "[Ŵîļðļîƒé Þĥôţôĝŕàþĥéŕ ~~~~]"
 msgid "Photograph 6 different animals in photo mode."
 msgstr "[Þĥôţôĝŕàþĥ 6 ðîƒƒéŕéñţ àñîmàļš îñ þĥôţô môðé. ~~~~~~~~~~~~~]"
 
-#: data/achievements.json:achievements[late_decor_1].name
-msgid "Home Touches"
-msgstr "[Ĥômé Ţôûçĥéš ~]"
-
-#: data/achievements.json:achievements[late_decor_1].desc
-msgid "Place a decoration in Garden Mode."
-msgstr "[Þļàçé à ðéçôŕàţîôñ îñ Ĝàŕðéñ Môðé. ~~~~~~~~~]"
-
-#: data/achievements.json:achievements[late_decor_25].name
-msgid "Landscaper"
-msgstr "[Ļàñðšçàþéŕ ~]"
-
-#: data/achievements.json:achievements[late_decor_25].desc
-msgid "Place 25 decorations."
-msgstr "[Þļàçé 25 ðéçôŕàţîôñš. ~~~~]"
-
-#: data/achievements.json:achievements[late_decor_all].name
-msgid "Full Catalogue"
-msgstr "[Fûļļ Çàţàļôĝûé ~~]"
-
-#: data/achievements.json:achievements[late_decor_all].desc
-msgid "Place every kind of decoration at least once."
-msgstr "[Þļàçé évéŕý ķîñð ôƒ ðéçôŕàţîôñ àţ ļéàšţ ôñçé. ~~~~~~~~~~~~~]"
-
-#: data/achievements.json:achievements[late_charm_25].name
-msgid "Picture Perfect"
-msgstr "[Þîçţûŕé Þéŕƒéçţ ~~]"
-
-#: data/achievements.json:achievements[late_charm_25].desc
-msgid "Reach 25 charm in one district."
-msgstr "[Ŕéàçĥ 25 çĥàŕm îñ ôñé ðîšţŕîçţ. ~~~~~~~~]"
-
-#: data/achievements.json:achievements[home_answered].name
-msgid "The Cradle Answers"
-msgstr "[Ţĥé Çŕàðļé Àñšŵéŕš ~~~]"
-
-#: data/achievements.json:achievements[home_answered].desc
-msgid "Light the Cradle Returns beacon and hear from the ark."
-msgstr "[Ļîĝĥţ ţĥé Çŕàðļé Ŕéţûŕñš béàçôñ àñð ĥéàŕ ƒŕôm ţĥé àŕķ. ~~~~~~~~~~~~~~~~]"
-
 #: data/achievements.json:achievements[extras_radio_6].name
 msgid "Pirate Radio"
 msgstr "[Þîŕàţé Ŕàðîô ~]"
@@ -6178,22 +5755,6 @@ msgstr "[Ţĥéñ àñð Ñôŵ ~]"
 #: data/achievements.json:achievements[extras_album_4].desc
 msgid "Collect 4 pictures in the photo album."
 msgstr "[Çôļļéçţ 4 þîçţûŕéš îñ ţĥé þĥôţô àļbûm. ~~~~~~~~~~]"
-
-#: data/achievements.json:achievements[extras_retire_1].name
-msgid "Happy Retirement"
-msgstr "[Ĥàþþý Ŕéţîŕéméñţ ~~~]"
-
-#: data/achievements.json:achievements[extras_retire_1].desc
-msgid "Retire a robot to the nursery garden."
-msgstr "[Ŕéţîŕé à ŕôbôţ ţô ţĥé ñûŕšéŕý ĝàŕðéñ. ~~~~~~~~~~]"
-
-#: data/achievements.json:achievements[extras_visits_5].name
-msgid "Garden Party"
-msgstr "[Ĝàŕðéñ Þàŕţý ~]"
-
-#: data/achievements.json:achievements[extras_visits_5].desc
-msgid "Say hi to the nursery caretakers 5 times."
-msgstr "[Šàý ĥî ţô ţĥé ñûŕšéŕý çàŕéţàķéŕš 5 ţîméš. ~~~~~~~~~~~]"
 
 #: planets/verdance/data/bloom.json:milestones[first_meadow].desc
 msgid "25 Thriving hexes anywhere on Verdance."
@@ -6259,7 +5820,7 @@ msgstr "[Çômþôšţ Þŕéšš ~~]"
 msgid "Presses plant scraps into compost and seeds. Worth building once something grows."
 msgstr "[Þŕéššéš þļàñţ šçŕàþš îñţô çômþôšţ àñð šééðš. Ŵôŕţĥ bûîļðîñĝ ôñçé šôméţĥîñĝ ĝŕôŵš. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: planets/verdance/data/camp.json:builds.composter.flag_text planets/verdance/data/camp.json:builds.nursery.flag_text
+#: planets/verdance/data/camp.json:builds.composter.flag_text
 msgid "Grow your first seed first."
 msgstr "[Ĝŕôŵ ýôûŕ ƒîŕšţ šééð ƒîŕšţ. ~~~~~~]"
 
@@ -6274,14 +5835,6 @@ msgstr "[À ţàļļ šţééļ ļôçķéŕ ŵîţĥ à šmàļļ ţûŕñţàb
 #: planets/verdance/data/camp.json:builds.locker.flag_text
 msgid "Find a piece of a look first."
 msgstr "[Fîñð à þîéçé ôƒ à ļôôķ ƒîŕšţ. ~~~~~~~]"
-
-#: planets/verdance/data/camp.json:builds.nursery.name
-msgid "Robot Nursery"
-msgstr "[Ŕôbôţ Ñûŕšéŕý ~~]"
-
-#: planets/verdance/data/camp.json:builds.nursery.desc
-msgid "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand."
-msgstr "[À ŵàļļéð ļàŵñ ŵîţĥ ƒļôŵéŕ béðš ŵĥéŕé ŕéţîŕéð ŕôbôţš ţéñð ţĥé ĝàŕðéñ àñð ļéñð ýôûŕ çŕéŵ à ĥàñð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: planets/verdance/data/camp.json:builds.glim.name planets/verdance/data/objectives.json:objectives[glim].text
 msgid "Repair Glim"
@@ -7352,6 +6905,10 @@ msgstr "[Ţĥŕôûĝĥ ţĥé ţéļéšçôþé, ôñ à ŵôŕļð ŵĥéŕé
 msgid "A dump drone that never made it home, nose-down in the junk of another world. Its red eye still blinks. Even from here it looks embarrassed."
 msgstr "[À ðûmþ ðŕôñé ţĥàţ ñévéŕ màðé îţ ĥômé, ñôšé-ðôŵñ îñ ţĥé ĵûñķ ôƒ àñôţĥéŕ ŵôŕļð. Îţš ŕéð éýé šţîļļ bļîñķš. Évéñ ƒŕôm ĥéŕé îţ ļôôķš émbàŕŕàššéð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
+#: data/cosmetics.json:slots[paint].name data/style_parts.json:slots[paint].name
+msgid "Paint"
+msgstr "[Þàîñţ ~]"
+
 #: data/cosmetics.json:slots[paint].hint data/cosmetics.json:targets.glim.slots[glim_shell].hint
 msgid "Paint tins lie buried under ordinary trash."
 msgstr "[Þàîñţ ţîñš ļîé bûŕîéð ûñðéŕ ôŕðîñàŕý ţŕàšĥ. ~~~~~~~~~~~~]"
@@ -7670,6 +7227,10 @@ msgstr "[Ţîñý ðŕôñé ~]"
 msgid "Shell"
 msgstr "[Šĥéļļ ~]"
 
+#: data/cosmetics.json:targets.glim.slots[glim_glow].name
+msgid "Glow"
+msgstr "[Ĝļôŵ ~]"
+
 #: data/cosmetics.json:targets.glim.slots[glim_top].name
 msgid "Top"
 msgstr "[Ţôþ ~]"
@@ -7906,16 +7467,15 @@ msgstr "[Ĥôļô Ĥàļôš ~]"
 msgid "A slowly turning hologram halo over each robot. Very smug."
 msgstr "[À šļôŵļý ţûŕñîñĝ ĥôļôĝŕàm ĥàļô ôvéŕ éàçĥ ŕôbôţ. Véŕý šmûĝ. ~~~~~~~~~~~~~~~~~]"
 
-#: data/cosmetics.json:targets.crew.pieces[crew_glow_cyan].name data/glim.json:glows[cyan].name data/ship_style.json:glows[cyan].name
-#: data/style_parts.json:swatches[cyan].name
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_cyan].name data/glim.json:glows[cyan].name data/style_parts.json:swatches[cyan].name
 msgid "Cyan"
 msgstr "[Çýàñ ~]"
 
-#: data/cosmetics.json:targets.crew.pieces[crew_glow_mint].name data/ship_style.json:glows[mint].name data/style_parts.json:swatches[mint].name
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_mint].name data/style_parts.json:swatches[mint].name
 msgid "Mint"
 msgstr "[Mîñţ ~]"
 
-#: data/cosmetics.json:targets.crew.pieces[crew_glow_amber].name data/ship_style.json:glows[amber].name data/style_parts.json:swatches[amber].name
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_amber].name data/style_parts.json:swatches[amber].name
 msgid "Amber"
 msgstr "[Àmbéŕ ~]"
 
@@ -7923,8 +7483,7 @@ msgstr "[Àmbéŕ ~]"
 msgid "Rose"
 msgstr "[Ŕôšé ~]"
 
-#: data/cosmetics.json:targets.crew.pieces[crew_glow_violet].name data/glim.json:glows[violet].name data/ship_style.json:glows[violet].name
-#: data/style_parts.json:swatches[violet].name
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_violet].name data/glim.json:glows[violet].name data/style_parts.json:swatches[violet].name
 msgid "Violet"
 msgstr "[Vîôļéţ ~]"
 
@@ -7963,86 +7522,6 @@ msgstr "[ŠÉÉÐŠ ~]"
 #: data/currencies.json:currencies[seeds].desc
 msgid "For planting. The compost press turns paper, card and spent blooms into seeds."
 msgstr "[Fôŕ þļàñţîñĝ. Ţĥé çômþôšţ þŕéšš ţûŕñš þàþéŕ, çàŕð àñð šþéñţ bļôômš îñţô šééðš. ~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: data/decor.json:types[path].name
-msgid "Stone Path"
-msgstr "[Šţôñé Þàţĥ ~]"
-
-#: data/decor.json:types[path].desc
-msgid "Flat stepping stones. Paths join everything up."
-msgstr "[Fļàţ šţéþþîñĝ šţôñéš. Þàţĥš ĵôîñ évéŕýţĥîñĝ ûþ. ~~~~~~~~~~~~~]"
-
-#: data/decor.json:types[flower_bed].name
-msgid "Flower Bed"
-msgstr "[Fļôŵéŕ Béð ~]"
-
-#: data/decor.json:types[flower_bed].desc
-msgid "A low bed of mixed flowers. Bees and butterflies approve."
-msgstr "[À ļôŵ béð ôƒ mîxéð ƒļôŵéŕš. Bééš àñð bûţţéŕƒļîéš àþþŕôvé. ~~~~~~~~~~~~~~~~~]"
-
-#: data/decor.json:types[planter].name
-msgid "Planter"
-msgstr "[Þļàñţéŕ ~]"
-
-#: data/decor.json:types[planter].desc
-msgid "A white hex planter with a small shrub, like the ones the future city grows."
-msgstr "[À ŵĥîţé ĥéx þļàñţéŕ ŵîţĥ à šmàļļ šĥŕûb, ļîķé ţĥé ôñéš ţĥé ƒûţûŕé çîţý ĝŕôŵš. ~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: data/decor.json:types[bench].name
-msgid "Bench"
-msgstr "[Béñçĥ ~]"
-
-#: data/decor.json:types[bench].desc
-msgid "Wood slats on cast feet. Cats like to sleep on it."
-msgstr "[Ŵôôð šļàţš ôñ çàšţ ƒééţ. Çàţš ļîķé ţô šļééþ ôñ îţ. ~~~~~~~~~~~~~~~]"
-
-#: data/decor.json:types[lamp].name
-msgid "Garden Lamp"
-msgstr "[Ĝàŕðéñ Ļàmþ ~]"
-
-#: data/decor.json:types[lamp].desc
-msgid "A slim lamp with a warm glow after dark."
-msgstr "[À šļîm ļàmþ ŵîţĥ à ŵàŕm ĝļôŵ àƒţéŕ ðàŕķ. ~~~~~~~~~~~]"
-
-#: data/decor.json:types[bird_bath].name
-msgid "Bird Bath"
-msgstr "[Bîŕð Bàţĥ ~]"
-
-#: data/decor.json:types[bird_bath].desc
-msgid "A stone basin of clean water."
-msgstr "[À šţôñé bàšîñ ôƒ çļéàñ ŵàţéŕ. ~~~~~~~]"
-
-#: data/decor.json:types[fountain].name
-msgid "Fountain"
-msgstr "[Fôûñţàîñ ~]"
-
-#: data/decor.json:types[fountain].desc
-msgid "A tiered fountain, running again. Deer come to drink at dawn."
-msgstr "[À ţîéŕéð ƒôûñţàîñ, ŕûññîñĝ àĝàîñ. Ðééŕ çômé ţô ðŕîñķ àţ ðàŵñ. ~~~~~~~~~~~~~~~~~~]"
-
-#: data/decor.json:types[statue].name
-msgid "Maker Statue"
-msgstr "[Màķéŕ Šţàţûé ~]"
-
-#: data/decor.json:types[statue].desc
-msgid "A stone figure of one of the Makers, holding a watering can."
-msgstr "[À šţôñé ƒîĝûŕé ôƒ ôñé ôƒ ţĥé Màķéŕš, ĥôļðîñĝ à ŵàţéŕîñĝ çàñ. ~~~~~~~~~~~~~~~~~~]"
-
-#: data/decor.json:types[lumi_sculpture].name
-msgid "Lumi Sculpture"
-msgstr "[Ļûmî Šçûļþţûŕé ~~]"
-
-#: data/decor.json:types[lumi_sculpture].desc
-msgid "A topiary-and-brass sculpture of Lumi holding up a seedling. Very modest."
-msgstr "[À ţôþîàŕý-àñð-bŕàšš šçûļþţûŕé ôƒ Ļûmî ĥôļðîñĝ ûþ à šééðļîñĝ. Véŕý môðéšţ. ~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: data/decor.json:types[wren_kite].name
-msgid "WREN Wind Kite"
-msgstr "[ŴŔÉÑ Ŵîñð Ķîţé ~~]"
-
-#: data/decor.json:types[wren_kite].desc
-msgid "A kite shaped like WREN's bird, tethered to a post and always flying."
-msgstr "[À ķîţé šĥàþéð ļîķé ŴŔÉÑ'š bîŕð, ţéţĥéŕéð ţô à þôšţ àñð àļŵàýš ƒļýîñĝ. ~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/designs.json:designs[aurora].tagline
 msgid "Baseline / Explorer"
@@ -9120,18 +8599,6 @@ msgstr "[À šééð ţîñ ƒŕôm Véŕðàñçé, ţĥé šàmé ķîñð à�
 msgid "Lumi's tin of Verdance soil. A little bit of home, already spilled on new ground. Good."
 msgstr "[Ļûmî'š ţîñ ôƒ Véŕðàñçé šôîļ. À ļîţţļé bîţ ôƒ ĥômé, àļŕéàðý šþîļļéð ôñ ñéŵ ĝŕôûñð. Ĝôôð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: planets/verdance/data/events.json:events[supply_drop].name
-msgid "Supply Drop"
-msgstr "[Šûþþļý Ðŕôþ ~]"
-
-#: planets/verdance/data/events.json:events[supply_drop].toast
-msgid "Supply Drop! A crate parachuted onto the junk %s of you. Clear the junk around it to crack it open."
-msgstr "[Šûþþļý Ðŕôþ! À çŕàţé þàŕàçĥûţéð ôñţô ţĥé ĵûñķ %s ôƒ ýôû. Çļéàŕ ţĥé ĵûñķ àŕôûñð îţ ţô çŕàçķ îţ ôþéñ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:events[supply_drop].hud
-msgid "Clear the junk around the crate"
-msgstr "[Çļéàŕ ţĥé ĵûñķ àŕôûñð ţĥé çŕàţé ~~~~~~~~]"
-
 #: planets/verdance/data/events.json:events[salvage_surge].name
 msgid "Salvage Glint"
 msgstr "[Šàļvàĝé Ĝļîñţ ~~]"
@@ -9155,30 +8622,6 @@ msgstr "[Ŕàîñ Šĥôŵéŕ. Ŕéàļ ŕàîñ, ţĥé ƒîŕšţ îñ ýéà
 #: planets/verdance/data/events.json:events[rain_shower].hud
 msgid "Plants stay watered while it rains"
 msgstr "[Þļàñţš šţàý ŵàţéŕéð ŵĥîļé îţ ŕàîñš ~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:events[robot_hiccup].name
-msgid "Robot Hiccup"
-msgstr "[Ŕôbôţ Ĥîççûþ ~]"
-
-#: planets/verdance/data/events.json:events[robot_hiccup].toast
-msgid "%s has the hiccups and stopped working. Walk over and press E for a quick fix."
-msgstr "[%s ĥàš ţĥé ĥîççûþš àñð šţôþþéð ŵôŕķîñĝ. Ŵàļķ ôvéŕ àñð þŕéšš É ƒôŕ à qûîçķ ƒîx. ~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:events[robot_hiccup].hud
-msgid "Walk to the stuck robot and press E"
-msgstr "[Ŵàļķ ţô ţĥé šţûçķ ŕôbôţ àñð þŕéšš É ~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:events[wildlife_visit].name
-msgid "Wildlife Visit"
-msgstr "[Ŵîļðļîƒé Vîšîţ ~~]"
-
-#: planets/verdance/data/events.json:events[wildlife_visit].toast
-msgid "Something is visiting a thriving hex %s of you. Sneak up and press E to take a photo."
-msgstr "[Šôméţĥîñĝ îš vîšîţîñĝ à ţĥŕîvîñĝ ĥéx %s ôƒ ýôû. Šñéàķ ûþ àñð þŕéšš É ţô ţàķé à þĥôţô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:events[wildlife_visit].hud
-msgid "Find the visitor and press E for a photo"
-msgstr "[Fîñð ţĥé vîšîţôŕ àñð þŕéšš É ƒôŕ à þĥôţô ~~~~~~~~~~~]"
 
 #: planets/verdance/data/events.json:events[rare_part_signal].name
 msgid "Rare Part Signal"
@@ -9204,542 +8647,6 @@ msgstr "[Ļéðĝéŕ Àûðîţ! À ƒŕîéñðļý ðŕôñé béţš îţ ç
 msgid "Scoop more of the ringed junk than the drone"
 msgstr "[Šçôôþ môŕé ôƒ ţĥé ŕîñĝéð ĵûñķ ţĥàñ ţĥé ðŕôñé ~~~~~~~~~~~~]"
 
-#: planets/verdance/data/events.json:animals[glowtail_fox].name
-msgid "Glowtail Fox"
-msgstr "[Ĝļôŵţàîļ Fôx ~]"
-
-#: planets/verdance/data/events.json:animals[glowtail_fox].body
-msgid "fox"
-msgstr "[ƒôx ~]"
-
-#: planets/verdance/data/events.json:animals[moss_deer].name
-msgid "Moss Deer"
-msgstr "[Môšš Ðééŕ ~]"
-
-#: planets/verdance/data/events.json:animals[moss_deer].body
-msgid "deer"
-msgstr "[ðééŕ ~]"
-
-#: planets/verdance/data/events.json:animals[lantern_hedgehog].name
-msgid "Lantern Hedgehog"
-msgstr "[Ļàñţéŕñ Ĥéðĝéĥôĝ ~~~]"
-
-#: planets/verdance/data/events.json:animals[lantern_hedgehog].body
-msgid "hedgehog"
-msgstr "[ĥéðĝéĥôĝ ~]"
-
-#: planets/verdance/data/events.json:animals[prism_heron].name
-msgid "Prism Heron"
-msgstr "[Þŕîšm Ĥéŕôñ ~]"
-
-#: planets/verdance/data/events.json:animals[prism_heron].body
-msgid "heron"
-msgstr "[ĥéŕôñ ~]"
-
-#: planets/verdance/data/events.json:animals[velvet_hare].name
-msgid "Velvet Hare"
-msgstr "[Véļvéţ Ĥàŕé ~]"
-
-#: planets/verdance/data/events.json:animals[velvet_hare].body
-msgid "hare"
-msgstr "[ĥàŕé ~]"
-
-#: planets/verdance/data/events.json:contracts.templates[metal_bales].text
-msgid "Press %d metal-heavy bales"
-msgstr "[Þŕéšš %d méţàļ-ĥéàvý bàļéš ~~~~~~]"
-
-#: planets/verdance/data/events.json:contracts.templates[perfect_bales].text
-msgid "Press %d Perfect bales"
-msgstr "[Þŕéšš %d Þéŕƒéçţ bàļéš ~~~~~]"
-
-#: planets/verdance/data/events.json:contracts.templates[pure_bales].text
-msgid "Press %d Pure bales (one junk type)"
-msgstr "[Þŕéšš %d Þûŕé bàļéš (ôñé ĵûñķ ţýþé) ~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:contracts.templates[clean_hexes].text
-msgid "Clean %d hexes"
-msgstr "[Çļéàñ %d ĥéxéš ~~]"
-
-#: planets/verdance/data/events.json:contracts.templates[scoop].text
-msgid "Scoop %d pieces of junk"
-msgstr "[Šçôôþ %d þîéçéš ôƒ ĵûñķ ~~~~~]"
-
-#: planets/verdance/data/events.json:contracts.templates[dig_parts].text
-msgid "Dig up %d buried parts"
-msgstr "[Ðîĝ ûþ %d bûŕîéð þàŕţš ~~~~~]"
-
-#: planets/verdance/data/events.json:contracts.templates[streak].text
-msgid "Reach a tier %d cleaning streak"
-msgstr "[Ŕéàçĥ à ţîéŕ %d çļéàñîñĝ šţŕéàķ ~~~~~~~~]"
-
-#: planets/verdance/data/events.json:contracts.templates[plant].text
-msgid "Plant %d sprouts"
-msgstr "[Þļàñţ %d šþŕôûţš ~~~]"
-
-#: planets/verdance/data/events.json:contracts.templates[bloom].text
-msgid "Grow %d plants to bloom"
-msgstr "[Ĝŕôŵ %d þļàñţš ţô bļôôm ~~~~~]"
-
-#: planets/verdance/data/events.json:contracts.templates[sustain].text
-msgid "Get %d more hexes to Sustained"
-msgstr "[Ĝéţ %d môŕé ĥéxéš ţô Šûšţàîñéð ~~~~~~~]"
-
-#: planets/verdance/data/events.json:contracts.templates[sustain].text_1
-msgid "Get one more hex to Sustained"
-msgstr "[Ĝéţ ôñé môŕé ĥéx ţô Šûšţàîñéð ~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[brass_compass].name
-msgid "Brass Compass"
-msgstr "[Bŕàšš Çômþàšš ~~]"
-
-#: planets/verdance/data/events.json:trinkets[brass_compass].desc
-msgid "Points north, mostly. Came wrapped in a sock in a supply crate."
-msgstr "[Þôîñţš ñôŕţĥ, môšţļý. Çàmé ŵŕàþþéð îñ à šôçķ îñ à šûþþļý çŕàţé. ~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[tin_robot].name
-msgid "Wind-up Tin Robot"
-msgstr "[Ŵîñð-ûþ Ţîñ Ŕôbôţ ~~~]"
-
-#: planets/verdance/data/events.json:trinkets[tin_robot].desc
-msgid "Walks three steps and falls over. Lumi relates."
-msgstr "[Ŵàļķš ţĥŕéé šţéþš àñð ƒàļļš ôvéŕ. Ļûmî ŕéļàţéš. ~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[seed_locket].name
-msgid "Seed Locket"
-msgstr "[Šééð Ļôçķéţ ~]"
-
-#: planets/verdance/data/events.json:trinkets[seed_locket].desc
-msgid "A locket with one seed inside instead of a photo. Someone loved gardens."
-msgstr "[À ļôçķéţ ŵîţĥ ôñé šééð îñšîðé îñšţéàð ôƒ à þĥôţô. Šôméôñé ļôvéð ĝàŕðéñš. ~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[snow_globe].name data/songs.json:songs[snow_globe].title
-msgid "Snow Globe"
-msgstr "[Šñôŵ Ĝļôbé ~]"
-
-#: planets/verdance/data/events.json:trinkets[snow_globe].desc
-msgid "A tiny city under glass, still clean. A promise, maybe."
-msgstr "[À ţîñý çîţý ûñðéŕ ĝļàšš, šţîļļ çļéàñ. À þŕômîšé, màýbé. ~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[crate_stencil].name
-msgid "Cradle Crate Stencil"
-msgstr "[Çŕàðļé Çŕàţé Šţéñçîļ ~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[crate_stencil].desc
-msgid "The stencil used to paint every supply crate. WREN asked for it back. You said no."
-msgstr "[Ţĥé šţéñçîļ ûšéð ţô þàîñţ évéŕý šûþþļý çŕàţé. ŴŔÉÑ àšķéð ƒôŕ îţ bàçķ. Ýôû šàîð ñô. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[golden_bolt].name
-msgid "Golden Bolt"
-msgstr "[Ĝôļðéñ Bôļţ ~]"
-
-#: planets/verdance/data/events.json:trinkets[golden_bolt].desc
-msgid "Fell out of a surge hex, still warm. Fits nothing. Worth everything."
-msgstr "[Féļļ ôûţ ôƒ à šûŕĝé ĥéx, šţîļļ ŵàŕm. Fîţš ñôţĥîñĝ. Ŵôŕţĥ évéŕýţĥîñĝ. ~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[glow_shard].name
-msgid "Surge Glass"
-msgstr "[Šûŕĝé Ĝļàšš ~]"
-
-#: planets/verdance/data/events.json:trinkets[glow_shard].desc
-msgid "A sliver of glass that kept the surge's glow. It hums when you hold it."
-msgstr "[À šļîvéŕ ôƒ ĝļàšš ţĥàţ ķéþţ ţĥé šûŕĝé'š ĝļôŵ. Îţ ĥûmš ŵĥéñ ýôû ĥôļð îţ. ~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[rain_jar].name
-msgid "Jar of First Rain"
-msgstr "[Ĵàŕ ôƒ Fîŕšţ Ŕàîñ ~~~]"
-
-#: planets/verdance/data/events.json:trinkets[rain_jar].desc
-msgid "Collected during the first rain in years. Do not drink. Do not open. Just look."
-msgstr "[Çôļļéçţéð ðûŕîñĝ ţĥé ƒîŕšţ ŕàîñ îñ ýéàŕš. Ðô ñôţ ðŕîñķ. Ðô ñôţ ôþéñ. Ĵûšţ ļôôķ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[paper_boat].name
-msgid "Paper Boat"
-msgstr "[Þàþéŕ Bôàţ ~]"
-
-#: planets/verdance/data/events.json:trinkets[paper_boat].desc
-msgid "Someone made it from a coupon. It sailed a whole puddle."
-msgstr "[Šôméôñé màðé îţ ƒŕôm à çôûþôñ. Îţ šàîļéð à ŵĥôļé þûððļé. ~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[lucky_spanner].name
-msgid "Lucky Spanner"
-msgstr "[Ļûçķý Šþàññéŕ ~~]"
-
-#: planets/verdance/data/events.json:trinkets[lucky_spanner].desc
-msgid "Fixes any hiccup, if you hit the right spot. Usually the left side."
-msgstr "[Fîxéš àñý ĥîççûþ, îƒ ýôû ĥîţ ţĥé ŕîĝĥţ šþôţ. Ûšûàļļý ţĥé ļéƒţ šîðé. ~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[hiccup_tape].name
-msgid "Diagnostic Tape"
-msgstr "[Ðîàĝñôšţîç Ţàþé ~~]"
-
-#: planets/verdance/data/events.json:trinkets[hiccup_tape].desc
-msgid "A printout of a robot hiccuping. It looks a lot like a song."
-msgstr "[À þŕîñţôûţ ôƒ à ŕôbôţ ĥîççûþîñĝ. Îţ ļôôķš à ļôţ ļîķé à šôñĝ. ~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[photo_glowtail_fox].name
-msgid "Photo: Glowtail Fox"
-msgstr "[Þĥôţô: Ĝļôŵţàîļ Fôx ~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[photo_glowtail_fox].desc
-msgid "Its tail glows when it's curious. It was very curious about Lumi."
-msgstr "[Îţš ţàîļ ĝļôŵš ŵĥéñ îţ'š çûŕîôûš. Îţ ŵàš véŕý çûŕîôûš àbôûţ Ļûmî. ~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[photo_moss_deer].name
-msgid "Photo: Moss Deer"
-msgstr "[Þĥôţô: Môšš Ðééŕ ~~~]"
-
-#: planets/verdance/data/events.json:trinkets[photo_moss_deer].desc
-msgid "Moss grows on its antlers. Butterflies rest there like it's a tree."
-msgstr "[Môšš ĝŕôŵš ôñ îţš àñţļéŕš. Bûţţéŕƒļîéš ŕéšţ ţĥéŕé ļîķé îţ'š à ţŕéé. ~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[photo_lantern_hedgehog].name
-msgid "Photo: Lantern Hedgehog"
-msgstr "[Þĥôţô: Ļàñţéŕñ Ĥéðĝéĥôĝ ~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[photo_lantern_hedgehog].desc
-msgid "The tips of its spines glow amber at dusk. It ate a beetle on camera. Sorry."
-msgstr "[Ţĥé ţîþš ôƒ îţš šþîñéš ĝļôŵ àmbéŕ àţ ðûšķ. Îţ àţé à bééţļé ôñ çàméŕà. Šôŕŕý. ~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[photo_prism_heron].name
-msgid "Photo: Prism Heron"
-msgstr "[Þĥôţô: Þŕîšm Ĥéŕôñ ~~~]"
-
-#: planets/verdance/data/events.json:trinkets[photo_prism_heron].desc
-msgid "Its feathers split light into rainbows. It stood on one leg the whole time."
-msgstr "[Îţš ƒéàţĥéŕš šþļîţ ļîĝĥţ îñţô ŕàîñbôŵš. Îţ šţôôð ôñ ôñé ļéĝ ţĥé ŵĥôļé ţîmé. ~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[photo_velvet_hare].name
-msgid "Photo: Velvet Hare"
-msgstr "[Þĥôţô: Véļvéţ Ĥàŕé ~~~]"
-
-#: planets/verdance/data/events.json:trinkets[photo_velvet_hare].desc
-msgid "Soft as a whisper, quick as a rumour. The photo is a little blurry. Worth it."
-msgstr "[Šôƒţ àš à ŵĥîšþéŕ, qûîçķ àš à ŕûmôûŕ. Ţĥé þĥôţô îš à ļîţţļé bļûŕŕý. Ŵôŕţĥ îţ. ~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[crumb_bag].name
-msgid "Crumb Bag"
-msgstr "[Çŕûmb Bàĝ ~]"
-
-#: planets/verdance/data/events.json:trinkets[crumb_bag].desc
-msgid "A paper bag of crumbs and seed husks. The pigeons know the sound of it now."
-msgstr "[À þàþéŕ bàĝ ôƒ çŕûmbš àñð šééð ĥûšķš. Ţĥé þîĝéôñš ķñôŵ ţĥé šôûñð ôƒ îţ ñôŵ. ~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_cat].name
-msgid "Photo: Stray Cat"
-msgstr "[Þĥôţô: Šţŕàý Çàţ ~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_cat].desc
-msgid "A photo from photo mode. Old Town's cats never left."
-msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ôļð Ţôŵñ'š çàţš ñévéŕ ļéƒţ. ~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_pigeon].name
-msgid "Photo: Pigeon"
-msgstr "[Þĥôţô: Þîĝéôñ ~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_pigeon].desc
-msgid "A photo from photo mode. Pigeons will live anywhere people once dropped crumbs."
-msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Þîĝéôñš ŵîļļ ļîvé àñýŵĥéŕé þéôþļé ôñçé ðŕôþþéð çŕûmbš. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_sparrow].name
-msgid "Photo: Sparrow"
-msgstr "[Þĥôţô: Šþàŕŕôŵ ~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_sparrow].desc
-msgid "A photo from photo mode. Small, brown and bossy."
-msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Šmàļļ, bŕôŵñ àñð bôššý. ~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_rat].name
-msgid "Photo: Rat"
-msgstr "[Þĥôţô: Ŕàţ ~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_rat].desc
-msgid "A photo from photo mode. Rats live in the gaps between the piles."
-msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ŕàţš ļîvé îñ ţĥé ĝàþš béţŵééñ ţĥé þîļéš. ~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_rabbit].name
-msgid "Photo: Rabbit"
-msgstr "[Þĥôţô: Ŕàbbîţ ~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_rabbit].desc
-msgid "A photo from photo mode. Rabbits arrive as soon as there is something green to nibble."
-msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ŕàbbîţš àŕŕîvé àš šôôñ àš ţĥéŕé îš šôméţĥîñĝ ĝŕééñ ţô ñîbbļé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_deer].name
-msgid "Photo: Roe Deer"
-msgstr "[Þĥôţô: Ŕôé Ðééŕ ~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_deer].desc
-msgid "A photo from photo mode. Shy grazers that keep to the edge of the green, where they can see what's coming."
-msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Šĥý ĝŕàžéŕš ţĥàţ ķééþ ţô ţĥé éðĝé ôƒ ţĥé ĝŕééñ, ŵĥéŕé ţĥéý çàñ šéé ŵĥàţ'š çômîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_fox].name
-msgid "Photo: Red Fox"
-msgstr "[Þĥôţô: Ŕéð Fôx ~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_fox].desc
-msgid "A photo from photo mode. A fox trots along the hedges, nose down, tail out."
-msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. À ƒôx ţŕôţš àļôñĝ ţĥé ĥéðĝéš, ñôšé ðôŵñ, ţàîļ ôûţ. ~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_bee].name
-msgid "Photo: Honeybee"
-msgstr "[Þĥôţô: Ĥôñéýbéé ~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_bee].desc
-msgid "A photo from photo mode. Bees came back with the blooms."
-msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Bééš çàmé bàçķ ŵîţĥ ţĥé bļôômš. ~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_songbird].name
-msgid "Photo: Robin"
-msgstr "[Þĥôţô: Ŕôbîñ ~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_songbird].desc
-msgid "A photo from photo mode. When a hex thrives, robins move in and sing."
-msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ŵĥéñ à ĥéx ţĥŕîvéš, ŕôbîñš môvé îñ àñð šîñĝ. ~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_firefly].name
-msgid "Photo: Firefly"
-msgstr "[Þĥôţô: Fîŕéƒļý ~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_firefly].desc
-msgid "A photo from photo mode. Tiny green lanterns over the grass after dark."
-msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ţîñý ĝŕééñ ļàñţéŕñš ôvéŕ ţĥé ĝŕàšš àƒţéŕ ðàŕķ. ~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_fish].name
-msgid "Photo: Lake Fish"
-msgstr "[Þĥôţô: Ļàķé Fîšĥ ~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_fish].desc
-msgid "A photo from photo mode. Once the water clears you can see them: small silver schools turning together over the sand."
-msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ôñçé ţĥé ŵàţéŕ çļéàŕš ýôû çàñ šéé ţĥém: šmàļļ šîļvéŕ šçĥôôļš ţûŕñîñĝ ţôĝéţĥéŕ ôvéŕ ţĥé šàñð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_duck].name
-msgid "Photo: Mallard"
-msgstr "[Þĥôţô: Màļļàŕð ~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_duck].desc
-msgid "A photo from photo mode. Ducks paddle, dabble with their tails in the air and complain loudly about everything."
-msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ðûçķš þàððļé, ðàbbļé ŵîţĥ ţĥéîŕ ţàîļš îñ ţĥé àîŕ àñð çômþļàîñ ļôûðļý àbôûţ évéŕýţĥîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_frog].name
-msgid "Photo: Green Frog"
-msgstr "[Þĥôţô: Ĝŕééñ Fŕôĝ ~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_frog].desc
-msgid "A photo from photo mode. Frogs sit at the water's edge and sing in the evening."
-msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Fŕôĝš šîţ àţ ţĥé ŵàţéŕ'š éðĝé àñð šîñĝ îñ ţĥé évéñîñĝ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_lizard].name
-msgid "Photo: Sand Lizard"
-msgstr "[Þĥôţô: Šàñð Ļîžàŕð ~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_lizard].desc
-msgid "A photo from photo mode. Lizards bask on swept ground between the solar arrays and vanish in a blink when a shadow falls on them."
-msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ļîžàŕðš bàšķ ôñ šŵéþţ ĝŕôûñð béţŵééñ ţĥé šôļàŕ àŕŕàýš àñð vàñîšĥ îñ à bļîñķ ŵĥéñ à šĥàðôŵ ƒàļļš ôñ ţĥém. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_fennec].name
-msgid "Photo: Fennec Fox"
-msgstr "[Þĥôţô: Féññéç Fôx ~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_fennec].desc
-msgid "A photo from photo mode. A tiny desert fox with enormous ears."
-msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. À ţîñý ðéšéŕţ ƒôx ŵîţĥ éñôŕmôûš éàŕš. ~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_seal].name
-msgid "Photo: Harbour Seal"
-msgstr "[Þĥôţô: Ĥàŕbôûŕ Šéàļ ~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_seal].desc
-msgid "A photo from photo mode. Seals haul out on the quay once it's clean, lounge in heaps, and flop back to the water if you come too close."
-msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Šéàļš ĥàûļ ôûţ ôñ ţĥé qûàý ôñçé îţ'š çļéàñ, ļôûñĝé îñ ĥéàþš, àñð ƒļôþ bàçķ ţô ţĥé ŵàţéŕ îƒ ýôû çômé ţôô çļôšé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_gull].name
-msgid "Photo: Herring Gull"
-msgstr "[Þĥôţô: Ĥéŕŕîñĝ Ĝûļļ ~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_gull].desc
-msgid "A photo from photo mode. Loud, white and opportunistic."
-msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ļôûð, ŵĥîţé àñð ôþþôŕţûñîšţîç. ~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_arctic_fox].name
-msgid "Photo: Arctic Fox"
-msgstr "[Þĥôţô: Àŕçţîç Fôx ~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_arctic_fox].desc
-msgid "A photo from photo mode. White as the snow it hunts on."
-msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ŵĥîţé àš ţĥé šñôŵ îţ ĥûñţš ôñ. ~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_heron].name
-msgid "Photo: Grey Heron"
-msgstr "[Þĥôţô: Ĝŕéý Ĥéŕôñ ~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_heron].desc
-msgid "A photo from photo mode. Herons stand perfectly still at the water's edge, then strike."
-msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ĥéŕôñš šţàñð þéŕƒéçţļý šţîļļ àţ ţĥé ŵàţéŕ'š éðĝé, ţĥéñ šţŕîķé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_turtle].name
-msgid "Photo: Pond Turtle"
-msgstr "[Þĥôţô: Þôñð Ţûŕţļé ~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_turtle].desc
-msgid "A photo from photo mode. Turtles cruise the drowned streets with their heads up, as if they've always lived here."
-msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ţûŕţļéš çŕûîšé ţĥé ðŕôŵñéð šţŕééţš ŵîţĥ ţĥéîŕ ĥéàðš ûþ, àš îƒ ţĥéý'vé àļŵàýš ļîvéð ĥéŕé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_crane].name
-msgid "Photo: Cradle Crane"
-msgstr "[Þĥôţô: Çŕàðļé Çŕàñé ~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[pic_crane].desc
-msgid "A photo from photo mode. White cranes circle high over the landing city on slow wingbeats."
-msgstr "[À þĥôţô ƒŕôm þĥôţô môðé. Ŵĥîţé çŕàñéš çîŕçļé ĥîĝĥ ôvéŕ ţĥé ļàñðîñĝ çîţý ôñ šļôŵ ŵîñĝbéàţš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[maker_badge].name
-msgid "Maker's Badge"
-msgstr "[Màķéŕ'š Bàðĝé ~~]"
-
-#: planets/verdance/data/events.json:trinkets[maker_badge].desc
-msgid "Pinned inside a Legendary part: 'Built to be fixed.'"
-msgstr "[Þîññéð îñšîðé à Ļéĝéñðàŕý þàŕţ: 'Bûîļţ ţô bé ƒîxéð.' ~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[signal_crystal].name
-msgid "Signal Crystal"
-msgstr "[Šîĝñàļ Çŕýšţàļ ~~]"
-
-#: planets/verdance/data/events.json:trinkets[signal_crystal].desc
-msgid "The thing that was pinging. It still pings, very quietly, when you're happy."
-msgstr "[Ţĥé ţĥîñĝ ţĥàţ ŵàš þîñĝîñĝ. Îţ šţîļļ þîñĝš, véŕý qûîéţļý, ŵĥéñ ýôû'ŕé ĥàþþý. ~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[audit_stamp].name
-msgid "APPROVED Stamp"
-msgstr "[ÀÞÞŔÔVÉÐ Šţàmþ ~~]"
-
-#: planets/verdance/data/events.json:trinkets[audit_stamp].desc
-msgid "The Ledger's rubber stamp. It now only says APPROVED. It's very proud of that."
-msgstr "[Ţĥé Ļéðĝéŕ'š ŕûbbéŕ šţàmþ. Îţ ñôŵ ôñļý šàýš ÀÞÞŔÔVÉÐ. Îţ'š véŕý þŕôûð ôƒ ţĥàţ. ~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[drone_propeller].name
-msgid "Race Propeller"
-msgstr "[Ŕàçé Þŕôþéļļéŕ ~~]"
-
-#: planets/verdance/data/events.json:trinkets[drone_propeller].desc
-msgid "A souvenir from the audit drone. It insists the race was close."
-msgstr "[À šôûvéñîŕ ƒŕôm ţĥé àûðîţ ðŕôñé. Îţ îñšîšţš ţĥé ŕàçé ŵàš çļôšé. ~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[streak_medal].name
-msgid "Streak Medal"
-msgstr "[Šţŕéàķ Méðàļ ~]"
-
-#: planets/verdance/data/events.json:trinkets[streak_medal].desc
-msgid "Earned for a max-tier cleaning streak. Scoop scoop scoop."
-msgstr "[Éàŕñéð ƒôŕ à màx-ţîéŕ çļéàñîñĝ šţŕéàķ. Šçôôþ šçôôþ šçôôþ. ~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[lumi_lens_cap].name
-msgid "Lumi's First Lens Cap"
-msgstr "[Ļûmî'š Fîŕšţ Ļéñš Çàþ ~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[lumi_lens_cap].desc
-msgid "Lumi Level 10. The cap Lumi wore on the ark, scuffed and kept anyway."
-msgstr "[Ļûmî Ļévéļ 10. Ţĥé çàþ Ļûmî ŵôŕé ôñ ţĥé àŕķ, šçûƒƒéð àñð ķéþţ àñýŵàý. ~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[lumi_seed_pin].name
-msgid "Seed-Keeper Pin"
-msgstr "[Šééð-Ķééþéŕ Þîñ ~~]"
-
-#: planets/verdance/data/events.json:trinkets[lumi_seed_pin].desc
-msgid "Lumi Level 20. A little enamel sprout. The ark gave these to its gardeners."
-msgstr "[Ļûmî Ļévéļ 20. À ļîţţļé éñàméļ šþŕôûţ. Ţĥé àŕķ ĝàvé ţĥéšé ţô îţš ĝàŕðéñéŕš. ~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[lumi_tread_charm].name
-msgid "Tread Charm"
-msgstr "[Ţŕéàð Çĥàŕm ~]"
-
-#: planets/verdance/data/events.json:trinkets[lumi_tread_charm].desc
-msgid "Lumi Level 30. A brass bell for the treads. It jingles on every bump."
-msgstr "[Ļûmî Ļévéļ 30. À bŕàšš béļļ ƒôŕ ţĥé ţŕéàðš. Îţ ĵîñĝļéš ôñ évéŕý bûmþ. ~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[lumi_star_chart].name
-msgid "Pocket Star Chart"
-msgstr "[Þôçķéţ Šţàŕ Çĥàŕţ ~~~]"
-
-#: planets/verdance/data/events.json:trinkets[lumi_star_chart].desc
-msgid "Lumi Level 40. The ark's route home, folded small. One star is circled."
-msgstr "[Ļûmî Ļévéļ 40. Ţĥé àŕķ'š ŕôûţé ĥômé, ƒôļðéð šmàļļ. Ôñé šţàŕ îš çîŕçļéð. ~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[lumi_glow_ribbon].name
-msgid "Glow Ribbon"
-msgstr "[Ĝļôŵ Ŕîbbôñ ~]"
-
-#: planets/verdance/data/events.json:trinkets[lumi_glow_ribbon].desc
-msgid "Lumi Level 50. A ribbon that holds a little light. Lumi ties it to the antenna."
-msgstr "[Ļûmî Ļévéļ 50. À ŕîbbôñ ţĥàţ ĥôļðš à ļîţţļé ļîĝĥţ. Ļûmî ţîéš îţ ţô ţĥé àñţéññà. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[contract_pen].name
-msgid "Contract Pen"
-msgstr "[Çôñţŕàçţ Þéñ ~]"
-
-#: planets/verdance/data/events.json:trinkets[contract_pen].desc
-msgid "Your first contract signed. The pen has a tiny leaf on top."
-msgstr "[Ýôûŕ ƒîŕšţ çôñţŕàçţ šîĝñéð. Ţĥé þéñ ĥàš à ţîñý ļéàƒ ôñ ţôþ. ~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[contract_clipboard].name
-msgid "Foreman's Clipboard"
-msgstr "[Fôŕémàñ'š Çļîþbôàŕð ~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[contract_clipboard].desc
-msgid "Ten contracts done. Every box ticked, every box green."
-msgstr "[Ţéñ çôñţŕàçţš ðôñé. Évéŕý bôx ţîçķéð, évéŕý bôx ĝŕééñ. ~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[contract_crown].name
-msgid "Contractor's Crown"
-msgstr "[Çôñţŕàçţôŕ'š Çŕôŵñ ~~~]"
-
-#: planets/verdance/data/events.json:trinkets[contract_crown].desc
-msgid "Twenty-five contracts. The crown is a bent can. You wear it anyway."
-msgstr "[Ţŵéñţý-ƒîvé çôñţŕàçţš. Ţĥé çŕôŵñ îš à béñţ çàñ. Ýôû ŵéàŕ îţ àñýŵàý. ~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[capsule_rubber_frog].name
-msgid "Rubber Frog"
-msgstr "[Ŕûbbéŕ Fŕôĝ ~]"
-
-#: planets/verdance/data/events.json:trinkets[capsule_rubber_frog].desc
-msgid "Squeaks in a minor key."
-msgstr "[Šqûéàķš îñ à mîñôŕ ķéý. ~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[capsule_tiny_cactus].name
-msgid "Tiny Cactus"
-msgstr "[Ţîñý Çàçţûš ~]"
-
-#: planets/verdance/data/events.json:trinkets[capsule_tiny_cactus].desc
-msgid "Needs no water. Mocks the Drips."
-msgstr "[Ñééðš ñô ŵàţéŕ. Môçķš ţĥé Ðŕîþš. ~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[capsule_holo_koi].name
-msgid "Holo Koi"
-msgstr "[Ĥôļô Ķôî ~]"
-
-#: planets/verdance/data/events.json:trinkets[capsule_holo_koi].desc
-msgid "A hologram fish that swims round your hopper."
-msgstr "[À ĥôļôĝŕàm ƒîšĥ ţĥàţ šŵîmš ŕôûñð ýôûŕ ĥôþþéŕ. ~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:trinkets[capsule_moon_rock].name
-msgid "Moon Rock"
-msgstr "[Môôñ Ŕôçķ ~]"
-
-#: planets/verdance/data/events.json:trinkets[capsule_moon_rock].desc
-msgid "Not from the moon. From a parking lot. Still beautiful."
-msgstr "[Ñôţ ƒŕôm ţĥé môôñ. Fŕôm à þàŕķîñĝ ļôţ. Šţîļļ béàûţîƒûļ. ~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:wren
-msgid "Crate inbound. From... me? I don't remember sending that. Open it."
-msgstr "[Çŕàţé îñbôûñð. Fŕôm... mé? Î ðôñ'ţ ŕémémbéŕ šéñðîñĝ ţĥàţ. Ôþéñ îţ. ~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:wren
-msgid "Supply drop! I found an old Cradle pod still in orbit and nudged it down."
-msgstr "[Šûþþļý ðŕôþ! Î ƒôûñð àñ ôļð Çŕàðļé þôð šţîļļ îñ ôŕbîţ àñð ñûðĝéð îţ ðôŵñ. ~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:wren
-msgid "Another care package. I've been saving them for good days. This is one."
-msgstr "[Àñôţĥéŕ çàŕé þàçķàĝé. Î'vé bééñ šàvîñĝ ţĥém ƒôŕ ĝôôð ðàýš. Ţĥîš îš ôñé. ~~~~~~~~~~~~~~~~~~~~~~]"
-
 #: planets/verdance/data/events.json:wren
 msgid "That hex is glowing. Readings say... valuable. Hurry."
 msgstr "[Ţĥàţ ĥéx îš ĝļôŵîñĝ. Ŕéàðîñĝš šàý... vàļûàbļé. Ĥûŕŕý. ~~~~~~~~~~~~~~~~]"
@@ -9763,30 +8670,6 @@ msgstr "[Ŕàîñ. Î'ð ƒôŕĝôţţéñ ţĥé šôûñð. Ýôûŕ þļàñ
 #: planets/verdance/data/events.json:wren
 msgid "Rain on clean ground. It smells like a memory."
 msgstr "[Ŕàîñ ôñ çļéàñ ĝŕôûñð. Îţ šméļļš ļîķé à mémôŕý. ~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:wren
-msgid "One of your helpers is stuck. Hic."
-msgstr "[Ôñé ôƒ ýôûŕ ĥéļþéŕš îš šţûçķ. Ĥîç. ~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:wren
-msgid "{robot} has the hiccups. Try a firm pat on the chassis."
-msgstr "[{robot} ĥàš ţĥé ĥîççûþš. Ţŕý à ƒîŕm þàţ ôñ ţĥé çĥàššîš. ~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:wren
-msgid "{robot} needs you. Gently, they're sensitive."
-msgstr "[{robot} ñééðš ýôû. Ĝéñţļý, ţĥéý'ŕé šéñšîţîvé. ~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:wren
-msgid "Something alive is moving out there. Not a robot."
-msgstr "[Šôméţĥîñĝ àļîvé îš môvîñĝ ôûţ ţĥéŕé. Ñôţ à ŕôbôţ. ~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:wren
-msgid "A visitor! Go slowly. Take a picture, it lasts longer."
-msgstr "[À vîšîţôŕ! Ĝô šļôŵļý. Ţàķé à þîçţûŕé, îţ ļàšţš ļôñĝéŕ. ~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:wren
-msgid "The thriving hexes are calling things home. Look."
-msgstr "[Ţĥé ţĥŕîvîñĝ ĥéxéš àŕé çàļļîñĝ ţĥîñĝš ĥômé. Ļôôķ. ~~~~~~~~~~~~~~]"
 
 #: planets/verdance/data/events.json:wren
 msgid "Strong signal. Something old and well made."
@@ -9835,18 +8718,6 @@ msgstr "[Màx šţŕéàķ. Ţĥé šçôôþ îš šîñĝîñĝ. ~~~~~~~~~]"
 #: planets/verdance/data/events.json:wren
 msgid "Look at you go."
 msgstr "[Ļôôķ àţ ýôû ĝô. ~~]"
-
-#: planets/verdance/data/events.json:wren
-msgid "Contract complete. Collect at the workbench."
-msgstr "[Çôñţŕàçţ çômþļéţé. Çôļļéçţ àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:wren
-msgid "Another contract done. Tokens are waiting."
-msgstr "[Àñôţĥéŕ çôñţŕàçţ ðôñé. Ţôķéñš àŕé ŵàîţîñĝ. ~~~~~~~~~~~~]"
-
-#: planets/verdance/data/events.json:wren
-msgid "Contract fulfilled. The board's lit up green."
-msgstr "[Çôñţŕàçţ ƒûļƒîļļéð. Ţĥé bôàŕð'š ļîţ ûþ ĝŕééñ. ~~~~~~~~~~~~~]"
 
 #: planets/verdance/data/finds.json:finds[old_town_tin].hint
 msgid "A paint tin lies under the litter of Old Town."
@@ -9980,19 +8851,19 @@ msgstr "[Mûšîç ~]"
 msgid "Glim downloads the CDs you've found: play any found song, anywhere, anytime."
 msgstr "[Ĝļîm ðôŵñļôàðš ţĥé ÇÐš ýôû'vé ƒôûñð: þļàý àñý ƒôûñð šôñĝ, àñýŵĥéŕé, àñýţîmé. ~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: data/glim.json:shells[pearl].name data/ship_style.json:paints[pearl].name data/style_parts.json:swatches[pearl].name
+#: data/glim.json:shells[pearl].name data/style_parts.json:swatches[pearl].name
 msgid "Pearl"
 msgstr "[Þéàŕļ ~]"
 
-#: data/glim.json:shells[sunset].name data/ship_style.json:paints[sunset].name data/style_parts.json:swatches[sunset].name
+#: data/glim.json:shells[sunset].name data/style_parts.json:swatches[sunset].name
 msgid "Sunset"
 msgstr "[Šûñšéţ ~]"
 
-#: data/glim.json:shells[moss].name data/ship_style.json:paints[moss].name
+#: data/glim.json:shells[moss].name
 msgid "Moss"
 msgstr "[Môšš ~]"
 
-#: data/glim.json:shells[graphite].name data/ship_style.json:trims[graphite].name data/style_parts.json:swatches[graphite].name
+#: data/glim.json:shells[graphite].name data/style_parts.json:swatches[graphite].name
 msgid "Graphite"
 msgstr "[Ĝŕàþĥîţé ~]"
 
@@ -10880,14 +9751,6 @@ msgstr "[Évéŕý çûŕîôšîţý ôñ évéŕý þļàñéţ (Çôðéx > �
 msgid "Letters, notes and drawings surface as the ground is cleaned."
 msgstr "[Ļéţţéŕš, ñôţéš àñð ðŕàŵîñĝš šûŕƒàçé àš ţĥé ĝŕôûñð îš çļéàñéð. ~~~~~~~~~~~~~~~~~~]"
 
-#: planets/verdance/data/museum.json:exhibits[trinkets].name
-msgid "Trinkets and Curios"
-msgstr "[Ţŕîñķéţš àñð Çûŕîôš ~~~~]"
-
-#: planets/verdance/data/museum.json:exhibits[trinkets].hint
-msgid "World events, requests, streaks and Curio Capsules."
-msgstr "[Ŵôŕļð évéñţš, ŕéqûéšţš, šţŕéàķš àñð Çûŕîô Çàþšûļéš. ~~~~~~~~~~~~~~~]"
-
 #: planets/verdance/data/museum.json:exhibits[ochre_glass].name
 msgid "Ochre Sun-Glass"
 msgstr "[Ôçĥŕé Šûñ-Ĝļàšš ~~]"
@@ -11096,7 +9959,7 @@ msgstr "[Ţéñ çļéàñ ĥéxéš. Ýôûŕ ŕôbôţš àŕé ļéàŕñîñ
 msgid "Rebuild the base to level 2"
 msgstr "[Ŕébûîļð ţĥé bàšé ţô ļévéļ 2 ~~~~~~]"
 
-#: planets/verdance/data/objectives.json:objectives[base2].desc
+#: planets/verdance/data/objectives.json:objectives[base2].desc planets/verdance/data/objectives.json:objectives[base3].desc
 msgid "Workbench, Upgrades tab. More robots can work."
 msgstr "[Ŵôŕķbéñçĥ, Ûþĝŕàðéš ţàb. Môŕé ŕôbôţš çàñ ŵôŕķ. ~~~~~~~~~~~~~]"
 
@@ -11191,10 +10054,6 @@ msgstr "[Ţŵéñţý ĥéxéš. Ţĥé àîŕ àļŕéàðý šméļļš ðîƒ
 #: planets/verdance/data/objectives.json:objectives[base3].text
 msgid "Rebuild the base to level 3"
 msgstr "[Ŕébûîļð ţĥé bàšé ţô ļévéļ 3 ~~~~~~]"
-
-#: planets/verdance/data/objectives.json:objectives[base3].desc
-msgid "Workbench, Upgrades tab. It opens the Request Board."
-msgstr "[Ŵôŕķbéñçĥ, Ûþĝŕàðéš ţàb. Îţ ôþéñš ţĥé Ŕéqûéšţ Bôàŕð. ~~~~~~~~~~~~~~~]"
 
 #: planets/verdance/data/objectives.json:objectives[base3].lines
 msgid "One more base level. The Cradle is watching, Lumi."
@@ -12546,26 +11405,6 @@ msgstr ""
 "\n"
 "(Šôméôñé ĥàš šçŕàţçĥéð ûñðéŕñéàţĥ: \"ţĥéý çàñ îƒ ýôû ļéţ ţĥém\") ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: data/ship_style.json:paints[midnight].name data/style_parts.json:swatches[midnight].name
-msgid "Midnight"
-msgstr "[Mîðñîĝĥţ ~]"
-
-#: data/ship_style.json:paints[coral].name data/style_parts.json:swatches[coral].name
-msgid "Coral"
-msgstr "[Çôŕàļ ~]"
-
-#: data/ship_style.json:paints[lunar].name
-msgid "Lunar Silver"
-msgstr "[Ļûñàŕ Šîļvéŕ ~]"
-
-#: data/ship_style.json:trims[tangerine].name
-msgid "Tangerine"
-msgstr "[Ţàñĝéŕîñé ~]"
-
-#: data/ship_style.json:trims[chrome].name
-msgid "Chrome"
-msgstr "[Çĥŕômé ~]"
-
 #: planets/verdance/data/signal_tower.json:tiers[0].name
 msgid "Signal Tower"
 msgstr "[Šîĝñàļ Ţôŵéŕ ~]"
@@ -13150,6 +11989,10 @@ msgstr "[Þéñĝûîñ Bôţ Ŵàððļé ~~~]"
 msgid "Ice Rink Lights"
 msgstr "[Îçé Ŕîñķ Ļîĝĥţš ~~]"
 
+#: data/songs.json:songs[snow_globe].title
+msgid "Snow Globe"
+msgstr "[Šñôŵ Ĝļôbé ~]"
+
 #: data/songs.json:songs[the_long_way_home].title
 msgid "The Long Way Home"
 msgstr "[Ţĥé Ļôñĝ Ŵàý Ĥômé ~~~]"
@@ -13650,6 +12493,10 @@ msgstr "[À ĥýðŕàûļîç bàļîñĝ þŕéšš ðŕôþþéð àţ ţĥé
 msgid "Shredder drums and a little smelter. Bales go in and never come back: out come parts and clean building stock. Every bale burnt clean helps the sky."
 msgstr "[Šĥŕéððéŕ ðŕûmš àñð à ļîţţļé šméļţéŕ. Bàļéš ĝô îñ àñð ñévéŕ çômé bàçķ: ôûţ çômé þàŕţš àñð çļéàñ bûîļðîñĝ šţôçķ. Évéŕý bàļé bûŕñţ çļéàñ ĥéļþš ţĥé šķý. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
+#: data/style_parts.json:slots[trim].name
+msgid "Trim"
+msgstr "[Ţŕîm ~]"
+
 #: data/style_parts.json:slots[accent].name
 msgid "Accent"
 msgstr "[Àççéñţ ~]"
@@ -13782,6 +12629,10 @@ msgstr "[Îvôŕý ~]"
 msgid "Sea glass"
 msgstr "[Šéà ĝļàšš ~]"
 
+#: data/style_parts.json:swatches[coral].name
+msgid "Coral"
+msgstr "[Çôŕàļ ~]"
+
 #: data/style_parts.json:swatches[royal].name
 msgid "Royal blue"
 msgstr "[Ŕôýàļ bļûé ~]"
@@ -13797,6 +12648,10 @@ msgstr "[Ĝôļð ~]"
 #: data/style_parts.json:swatches[bloom].name
 msgid "Bloom green"
 msgstr "[Bļôôm ĝŕééñ ~]"
+
+#: data/style_parts.json:swatches[midnight].name
+msgid "Midnight"
+msgstr "[Mîðñîĝĥţ ~]"
 
 #: data/style_parts.json:swatches[copper].name
 msgid "Copper"
@@ -14017,14 +12872,6 @@ msgstr "[Ŵôŕķbéñçĥ Mķ ÎÎÎ: Ŕéšéàŕçĥ Ðéšķ ~~~~~~~~]"
 #: data/workbench.json:tiers[2].desc
 msgid "Adds a research desk. Study what you dig up to unlock machines and seeds."
 msgstr "[Àððš à ŕéšéàŕçĥ ðéšķ. Šţûðý ŵĥàţ ýôû ðîĝ ûþ ţô ûñļôçķ màçĥîñéš àñð šééðš. ~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: data/workbench.json:tiers[3].name
-msgid "Workbench Mk IV: Request Board"
-msgstr "[Ŵôŕķbéñçĥ Mķ ÎV: Ŕéqûéšţ Bôàŕð ~~~~~~~]"
-
-#: data/workbench.json:tiers[3].desc
-msgid "Adds a request board. Take on jobs for tokens and rare parts."
-msgstr "[Àððš à ŕéqûéšţ bôàŕð. Ţàķé ôñ ĵôbš ƒôŕ ţôķéñš àñð ŕàŕé þàŕţš. ~~~~~~~~~~~~~~~~~~]"
 
 #: planets/verdance/data/wren_lines.json:wake
 msgid "...Lumi? ...It's WREN. Your tower's carrying me. Barely. Keep it standing."
@@ -15417,18 +14264,6 @@ msgstr "[Ñéŵ ŵôŕļð, ñéŵ šķý. Šàmé ĵôb. Ýôû'ŕé béţţé�
 #: planets/verdance/data/wren_lines.json:new_world
 msgid "Look at that. Ruined, dusty, nobody's planted anything in centuries. You know what to do."
 msgstr "[Ļôôķ àţ ţĥàţ. Ŕûîñéð, ðûšţý, ñôbôðý'š þļàñţéð àñýţĥîñĝ îñ çéñţûŕîéš. Ýôû ķñôŵ ŵĥàţ ţô ðô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/wren_lines.json:garden_place
-msgid "...pretty..."
-msgstr "[...þŕéţţý... ~]"
-
-#: planets/verdance/data/wren_lines.json:garden_place
-msgid "You're decorating. I approve. The cats are going to approve more."
-msgstr "[Ýôû'ŕé ðéçôŕàţîñĝ. Î àþþŕôvé. Ţĥé çàţš àŕé ĝôîñĝ ţô àþþŕôvé môŕé. ~~~~~~~~~~~~~~~~~~~~]"
-
-#: planets/verdance/data/wren_lines.json:garden_place
-msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
-msgstr "[À béñçĥ, à ļàmþ, à ƒôûñţàîñ. Îţ'š šţàŕţîñĝ ţô ļôôķ ļîķé šôméŵĥéŕé þéôþļé ŵôûļð ŵàñţ ţô çômé bàçķ ţô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: planets/verdance/data/wren_lines.json:home_arrive
 msgid "...new sky... two suns..."

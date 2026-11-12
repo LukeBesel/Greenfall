@@ -1,0 +1,142 @@
+{
+  "_doc": "Cut from planets/verdance/data/events.json in task M3-13 (docs/reviews/M3-13_TRIM.md): Supply Drop (already off: no reward crates from the sky), Robot Hiccup (pointed at robots, not at cleaning, pressing or tending; paid cubes and Parts for robot upkeep) and Wildlife Visit (its reward was a photo for the parked Collection, plus cubes and seeds). animals is the Wildlife Visit's table; wren holds their WREN pools. Their code is parked/side/events/events_cut.gd.",
+  "events": [
+    {
+      "id": "supply_drop",
+      "name": "Supply Drop",
+      "enabled": false,
+      "weight": 3,
+      "duration_s": 600,
+      "color": "#5fe6ff",
+      "zone_radius": 4.0,
+      "toast": "Supply Drop! A crate parachuted onto the junk %s of you. Clear the junk around it to crack it open.",
+      "hud": "Clear the junk around the crate",
+      "reward": {
+        "income_s": 80,
+        "parts": [
+          1,
+          3
+        ],
+        "seeds": [
+          2,
+          5
+        ],
+        "part_items": 1,
+        "part_min_rarity": 1,
+        "trinket_chance": 0.4
+      }
+    },
+    {
+      "id": "robot_hiccup",
+      "name": "Robot Hiccup",
+      "weight": 2,
+      "duration_s": 300,
+      "color": "#ff9a3c",
+      "requires": {
+        "robots": 1
+      },
+      "toast": "%s has the hiccups and stopped working. Walk over and press E for a quick fix.",
+      "hud": "Walk to the stuck robot and press E",
+      "reward": {
+        "income_s": 50,
+        "parts": [
+          2,
+          4
+        ],
+        "trinket_chance": 0.3
+      }
+    },
+    {
+      "id": "wildlife_visit",
+      "name": "Wildlife Visit",
+      "weight": 2,
+      "duration_s": 180,
+      "color": "#9dff8a",
+      "requires": {
+        "hex_level": 4
+      },
+      "toast": "Something is visiting a thriving hex %s of you. Sneak up and press E to take a photo.",
+      "hud": "Find the visitor and press E for a photo",
+      "reward": {
+        "income_s": 60,
+        "seeds": [
+          2,
+          6
+        ],
+        "trinket_chance": 1.0
+      }
+    }
+  ],
+  "animals": [
+    {
+      "id": "glowtail_fox",
+      "name": "Glowtail Fox",
+      "body": "fox",
+      "color": "#d9773a",
+      "glow": "#5fe6ff"
+    },
+    {
+      "id": "moss_deer",
+      "name": "Moss Deer",
+      "body": "deer",
+      "color": "#8a7a58",
+      "glow": "#9dff8a"
+    },
+    {
+      "id": "lantern_hedgehog",
+      "name": "Lantern Hedgehog",
+      "body": "hedgehog",
+      "color": "#6b5442",
+      "glow": "#ffc94a"
+    },
+    {
+      "id": "prism_heron",
+      "name": "Prism Heron",
+      "body": "heron",
+      "color": "#d8dde6",
+      "glow": "#c08bff"
+    },
+    {
+      "id": "velvet_hare",
+      "name": "Velvet Hare",
+      "body": "hare",
+      "color": "#a08f80",
+      "glow": "#ff8fd0"
+    }
+  ],
+  "wren": {
+    "event_supply_drop": [
+      [
+        "Crate inbound. From... me? I don't remember sending that. Open it."
+      ],
+      [
+        "Supply drop! I found an old Cradle pod still in orbit and nudged it down."
+      ],
+      [
+        "Another care package. I've been saving them for good days. This is one."
+      ]
+    ],
+    "event_robot_hiccup": [
+      [
+        "One of your helpers is stuck. Hic."
+      ],
+      [
+        "{robot} has the hiccups. Try a firm pat on the chassis."
+      ],
+      [
+        "{robot} needs you. Gently, they're sensitive."
+      ]
+    ],
+    "event_wildlife_visit": [
+      [
+        "Something alive is moving out there. Not a robot."
+      ],
+      [
+        "A visitor! Go slowly. Take a picture, it lasts longer."
+      ],
+      [
+        "The thriving hexes are calling things home. Look."
+      ]
+    ]
+  }
+}

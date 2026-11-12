@@ -1,18 +1,17 @@
 class_name WorldEvents
 extends Node3D
-## World events director (data/events.json). Every few minutes of play (only while playing: no
-## menus, cinematics or rocket flights) one small event starts somewhere near Patch, announced by
-## a toast, a WREN line, the EventHUD banner + marker and a pin in Command view:
-##   supply_drop       a crate parachutes onto junk; clear the junk around it to open it
+## World events director (the planet's events table). Every few minutes of play (only while
+## playing: no menus, cinematics or rocket flights) one small event starts somewhere near Patch,
+## announced by a toast, a WREN line, the EventHUD banner + marker and a pin in Command view.
+## Each points at cleaning, pressing or tending:
 ##   salvage_surge     a hex glows: Patch's bales get 3x value for junk scooped there (2 min)
 ##   rain_shower       rain keeps every plant watered (2 min), puddles shimmer
-##   robot_hiccup      a helper robot freezes; walk over and press E to fix it
-##   wildlife_visit    a rare animal visits a Sustained/Thriving hex; press E for a photo
 ##   rare_part_signal  a violet beam marks a buried part; dig it up for a bonus rare part
 ##   ledger_audit      (after the Ledger arc) a friendly drone races you to clear a ring of junk
 ## Nothing is ever lost: an event that times out just ends. Rewards scale with progress (see
-## progress_cubes) so they stay a spike, never a flood. Also owns the cleaning streak (Streak)
-## and the per-bale bonus (streak tier + surge share), applied by Patch when a bale is pressed.
+## progress_cubes) so they stay a spike, never a flood, and never above reward.max_income_s of
+## income. Also owns the cleaning streak (Streak) and the per-bale bonus (streak tier + surge
+## share), applied by Patch when a bale is pressed.
 ## Persistent bits live in GameState.flags["events"]: {next_in, recent, done{id: n}}.
 
 signal event_started(id: String)
@@ -43,7 +42,6 @@ static func cfg() -> Dictionary:
 		_cfg = Economy.planet_table(TABLE)
 		Economy.drop_on_planet_change(_drop_planet_cache)
 	return _cfg
-
 
 
 static func _drop_planet_cache() -> void:
@@ -112,12 +110,12 @@ static func eligible_ids(ctx: Dictionary) -> Dictionary:
 			ok = false
 		if str(req.get("flag", "")) != "" and not bool((ctx.get("flags", GameState.flags) as Dictionary).get(str(req["flag"]), false)):
 			ok = false  # [pace] needs an unlock (has_baler, has_signal_finder, ...: Pace.sync_flags)
-		if id in ["supply_drop", "salvage_surge", "ledger_audit"] and int(ctx.get("junk_hexes", 0)) <= 0:
+		if id in ["salvage_surge", "ledger_audit"] and int(ctx.get("junk_hexes", 0)) <= 0:
 			ok = false
 		if id == "rare_part_signal" and int(ctx.get("parts_left", 0)) <= 0:
 			ok = false
 		if not bool(e.get("enabled", true)):
-			ok = false  # [pace] no spontaneous reward crates (owner playtest #2): supplies are found, never dropped
+			ok = false
 		out[id] = ok
 	return out
 
@@ -131,7 +129,18 @@ static func scaled_cubes(rate: float, earned: float, secs: float, frac: float, m
 static func progress_cubes(secs: float) -> float:
 	var rw: Dictionary = cfg().get("reward", {})
 	var earned: float = BigNum.from_serialized(GameState.stats.get("cubes_earned_total", [0.0, 0])).to_float()
-	return round(scaled_cubes(GameState.income_rate(), earned, secs, float(rw.get("earned_frac", 0.004)) * secs / 90.0, float(rw.get("min_cubes", 40))))
+	var rate: float = GameState.income_rate()
+	var min_c: float = float(rw.get("min_cubes", 40))
+	var c: float = scaled_cubes(rate, earned, secs, float(rw.get("earned_frac", 0.004)) * secs / 90.0, min_c)
+	return round(capped_cubes(c, rate, float(rw.get("max_income_s", 0.0)), min_c))
+
+
+## The rule's ceiling: no reward above max_income_s of current income (0 = no ceiling), and never
+## below the floor (an early or idle moment, when the rate is about nothing).
+static func capped_cubes(cubes: float, rate: float, max_income_s: float, min_cubes: float) -> float:
+	if max_income_s <= 0.0:
+		return cubes
+	return minf(cubes, maxf(min_cubes, rate * max_income_s))
 
 
 static func persist_state() -> Dictionary:
@@ -155,25 +164,13 @@ func _ready() -> void:
 		var wl: Dictionary = cfg().get("wren", {})
 		for k: String in wl:
 			world.wren.lines[k] = wl[k]
-	EventBus.cube_made.connect(_on_cube_made)
 	_dev_hooks.call_deferred()
 
 
 func _dev_hooks() -> void:
-	if DevHooks.has("requests-done"):  # [money] (was --tokens): N finished requests on the reward track
-		var c: Contracts = world.get("contracts") as Contracts if world else null
-		if c:
-			c.count_done(int(DevHooks.get_f("requests-done", 10.0)))
 	if DevHooks.has("streak"):
 		streak.add_scoop(DevHooks.get_f("streak", 90.0))
 		streak.grace_s = 1.0e9  # held for screenshots
-	if DevHooks.has("trinkets"):
-		var n: int = int(DevHooks.get_f("trinkets", 8.0))
-		var i: int = 0
-		for t: Dictionary in Collection.defs():
-			if i % 2 == 0 and Collection.count() < n:
-				Collection.grant(str(t["id"]), true)
-			i += 1
 	if DevHooks.has("livery"):
 		var lid: String = DevHooks.get_s("livery", "livery_neon")
 		Looks.grant(CrewLooks.piece(CrewLooks.CREW, CrewLooks.LIVERY, lid), "", true)
@@ -217,7 +214,7 @@ func _process(delta: float) -> void:
 	# Wall clock (DevHooks._elapsed): on software rendering game time crawls.
 	if _dev_event_t >= 0.0 and DevHooks._elapsed >= _dev_event_t:
 		_dev_event_t = -1.0
-		var id: String = DevHooks.get_s("event", "supply_drop")
+		var id: String = DevHooks.get_s("event", "salvage_surge")
 		print("[events] dev start %s -> %s" % [id, str(start(id, true))])
 		if DevHooks.has("event-look") and active.get("pos") is Vector3:
 			_dev_look(active["pos"], DevHooks.get_f("event-look", 9.0))
@@ -287,11 +284,8 @@ func start(id: String, force: bool = false) -> bool:
 	var ok: bool = false
 	var arg: String = ""
 	match id:
-		"supply_drop": ok = _start_supply(d, force)
 		"salvage_surge": ok = _start_surge(d, force)
 		"rain_shower": ok = _start_rain(d, force)
-		"robot_hiccup": ok = _start_hiccup(d, force)
-		"wildlife_visit": ok = _start_wildlife(d, force)
 		"rare_part_signal": ok = _start_signal(d, force)
 		"ledger_audit": ok = _start_audit(d, force)
 	if not ok:
@@ -300,14 +294,12 @@ func start(id: String, force: bool = false) -> bool:
 		return false
 	if active.get("pos") is Vector3:
 		arg = LedgerArc.compass_label((active["pos"] as Vector3) - world.patch.global_position)
-	if id == "robot_hiccup":
-		arg = str(active.get("robot_name", "A robot"))
 	var toast: String = tr(str(d.get("toast", d.get("name", id))))
 	EventBus.toast.emit(toast % arg if "%s" in toast else toast, "story")
 	Audio.play("blip", 1.25, -4.0)
 	Audio.play("chime", 1.5, -8.0)
 	if world.get("wren") != null:
-		world.wren.say("event_" + id, 1.0, true, {"robot": str(active.get("robot_name", "")), "animal": str(active.get("animal_name", ""))})
+		world.wren.say("event_" + id, 1.0, true)
 	GameState.inc_stat("ev_events_started")
 	print("[events] started %s" % id)
 	event_started.emit(id)
@@ -348,17 +340,6 @@ func _clear_props() -> void:
 		if is_instance_valid(n):
 			n.queue_free()
 	_props.clear()
-	if world and world.get("interactables") != null:
-		for k: String in ["animal", "robot"]:
-			var v: Variant = active.get(k)
-			if is_instance_valid(v) and v is Node3D:
-				world.interactables.unregister(v)
-	var r: Variant = active.get("robot")
-	if is_instance_valid(r) and r is Robot:
-		(r as Robot).set_physics_process(true)
-		var m: Node = (r as Robot).get_node_or_null("Hiccup")
-		if m:
-			m.queue_free()
 	if hud:
 		hud.set_rain(false)
 
@@ -383,11 +364,8 @@ func _upright(n: Node3D) -> void:
 func _update_active(delta: float) -> void:
 	_tick_t += delta
 	match str(active["id"]):
-		"supply_drop": _update_supply()
 		"salvage_surge": _update_surge(delta)
 		"rain_shower": _update_rain(delta)
-		"robot_hiccup": _update_hiccup(delta)
-		"wildlife_visit": _update_wildlife(delta)
 		"rare_part_signal": _update_signal()
 		"ledger_audit": _update_audit(delta)
 
@@ -431,13 +409,7 @@ func apply_bale_bonus(info: Dictionary) -> Dictionary:
 	return out
 
 
-func _on_cube_made(info: Dictionary) -> void:
-	if str(info.get("dominant", "")) == "metal":
-		GameState.inc_stat("ev_metal_bales")
-
-
 func _on_streak_up(tier: int) -> void:
-	Contracts.note_peak("streak", tier)
 	streak_tier_up.emit(tier)
 	var p: Patch = world.patch
 	var col: Color = Color(0.45, 0.9, 1.0).lerp(Color(1.0, 0.75, 0.25), float(tier) / maxf(streak.max_tier, 1))
@@ -450,7 +422,7 @@ func _on_streak_up(tier: int) -> void:
 	if tier >= streak.max_tier:
 		Vfx.burst("sparkle", p.global_position + OrbitUp.up(p.global_position) * 1.2, col, 1.0)
 		GameState.inc_stat("max_streaks")
-		if Collection.grant("streak_medal") or rng.randf() < 0.3:
+		if int(GameState.stats["max_streaks"]) == 1 or rng.randf() < 0.3:  # always the first time
 			if world.get("wren") != null:
 				world.wren.say("streak_max", 1.0)
 
@@ -463,22 +435,8 @@ func _range_i(v: Variant) -> int:
 	return int(v)
 
 
-func _roll_rarity(lo: int, hi: int) -> int:
-	var rar: Array = Economy.parts.get("rarities", [])
-	hi = mini(hi, rar.size() - 1)
-	var total: float = 0.0
-	for i: int in range(lo, hi + 1):
-		total += float(rar[i].get("weight", 1.0))
-	var x: float = rng.randf() * total
-	for i: int in range(lo, hi + 1):
-		x -= float(rar[i].get("weight", 1.0))
-		if x <= 0.0:
-			return i
-	return hi
-
-
 ## Grants an event reward and shows it at `at`. Returns a summary ("+120 cubes  +8 bolts ...").
-func _pay(rw: Dictionary, at: Vector3, source: String) -> String:
+func _pay(rw: Dictionary, at: Vector3) -> String:
 	var bits: Array[String] = []
 	if rw.has("income_s"):
 		var c: float = progress_cubes(float(rw["income_s"]))
@@ -492,21 +450,12 @@ func _pay(rw: Dictionary, at: Vector3, source: String) -> String:
 		var s: int = _range_i(rw["seeds"])
 		GameState.add_currency("seeds", BigNum.from_float(s))
 		bits.append(tr("+%d seeds") % s)
-	var n_parts: int = int(rw.get("part_items", 0))  # robot part items (the Builder / recipes)
-	if rw.has("part_rarity"):
-		n_parts = maxi(n_parts, 1)
-	for k: int in n_parts:
-		var r: int = _roll_rarity(int(rw.get("part_min_rarity", 0)), 4)
-		if rw.has("part_rarity"):
-			var pr: Array = rw["part_rarity"]
-			r = int(pr[0]) if rng.randf() < 0.75 else int(pr[1])
+	if rw.has("part_rarity"):  # one robot part of one of two rarities (3 in 4 the first)
+		var pr: Array = rw["part_rarity"]
+		var r: int = int(pr[0]) if rng.randf() < 0.75 else int(pr[1])
 		var t: int = rng.randi() % maxi(Economy.parts.get("types", [1]).size(), 1)
 		RobotParts.salvage(t, r)  # [ui2] a found robot part pays Parts
 		bits.append(RobotParts.gain_text(r))
-	if rng.randf() < float(rw.get("trinket_chance", 0.0)):
-		var tid: String = Collection.roll(source, rng.randf())
-		if tid != "" and Collection.grant(tid):
-			bits.append(tr(str(Collection.def(tid).get("name", tid))))
 	var text: String = "  ".join(bits)
 	if text != "":
 		Vfx.float_text(at + OrbitUp.up(at) * 1.6, text, Color(0.75, 1.0, 0.85), 0.55, 1.6)
@@ -559,106 +508,6 @@ func _junk_spot(radius: float, min_n: int, min_d: float, max_d: float, force: bo
 	return {}
 
 
-# --- Supply drop -------------------------------------------------------------------------------
-
-func _start_supply(d: Dictionary, force: bool) -> bool:
-	var r: float = float(d.get("zone_radius", 4.0))
-	var spot: Dictionary = _junk_spot(r, 10, 10.0, 45.0, force)
-	if spot.is_empty():
-		return false
-	var pos: Vector3 = spot["pos"]
-	active["pos"] = pos
-	active["zone"] = spot["zone"]
-	active["n0"] = (spot["zone"] as PackedInt32Array).size()
-	active["landed"] = false
-	var col: Color = active["color"]
-	var root := Node3D.new()
-	root.name = "SupplyDrop"
-	add_child(root)
-	_keep(root)
-	root.global_position = pos
-	_upright(root)  # [orbB]
-	var ring: MeshInstance3D = EventProps.zone_ring(r, col)
-	root.add_child(ring)
-	var beacon: Node3D = EventProps.beacon(col, 30.0, 0.3)
-	root.add_child(beacon)
-	var crate: Node3D = EventProps.crate()
-	crate.scale = Vector3.ONE * 1.4
-	root.add_child(crate)
-	var chute: Node3D = EventProps.parachute()
-	chute.position = Vector3(0, 0.62, 0)
-	crate.add_child(chute)
-	# --event-land (screenshots): start just above the junk and drift down slowly.
-	var low: bool = DevHooks.has("event-land")
-	crate.position = Vector3(0, 1.3 if low else 30.0, 0)
-	crate.rotation.y = rng.randf() * TAU
-	active["crate"] = crate
-	active["chute"] = chute
-	var tw := crate.create_tween()
-	tw.tween_property(crate, "position:y", 0.12, 90.0 if low else 8.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	tw.tween_callback(_supply_landed)
-	return true
-
-
-func _supply_landed() -> void:
-	if active.get("id", "") != "supply_drop":
-		return
-	active["landed"] = true
-	var pos: Vector3 = active["pos"]
-	Vfx.burst("dust", pos + OrbitUp.up(pos) * 0.2, Color(0.7, 0.66, 0.6, 0.7), 1.6)
-	Audio.play("thud", 0.8, -2.0)
-	EventBus.shake_requested.emit(0.08)
-	var chute: Node3D = active.get("chute")
-	if is_instance_valid(chute):
-		var tw := chute.create_tween()
-		tw.set_parallel(true)
-		tw.tween_property(chute, "scale", Vector3(1.3, 0.05, 1.3), 1.2).set_trans(Tween.TRANS_QUAD)
-		tw.tween_property(chute, "position", Vector3(1.4, 0.1, 0.4), 1.2)
-		tw.chain().tween_interval(3.0)
-		tw.chain().tween_property(chute, "scale", Vector3(0.01, 0.01, 0.01), 0.8)
-
-
-func _update_supply() -> void:
-	var crate: Node3D = active.get("crate")
-	var chute: Node3D = active.get("chute")
-	if is_instance_valid(chute) and not bool(active["landed"]):
-		chute.rotation.z = sin(_anim_t * 1.3) * 0.12
-		chute.rotation.x = cos(_anim_t * 1.1) * 0.08
-	var zone: PackedInt32Array = active["zone"]
-	var alive: int = 0
-	for pid: int in zone:
-		alive += world.field.piece_alive[pid]
-	var need: int = maxi(1, int(ceil(int(active["n0"]) * 0.08)))
-	active["progress"] = tr("%d pieces of junk left around the crate") % maxi(alive - need, 0)
-	if bool(active["landed"]) and alive <= need:
-		var pos: Vector3 = active["pos"]
-		if is_instance_valid(crate):
-			var lid: Node3D = crate.get_node_or_null("Lid")
-			if lid:
-				var tw := lid.create_tween()
-				tw.tween_property(lid, "rotation_degrees:x", -115.0, 0.35).set_trans(Tween.TRANS_BACK)
-			# The crate stays a moment after the event ends, then sinks away.
-			_props.erase(crate.get_parent())
-			var root: Node3D = crate.get_parent()
-			var tw2 := root.create_tween()
-			tw2.tween_interval(6.0)
-			tw2.tween_property(root, "scale", Vector3(0.01, 0.01, 0.01), 0.6)
-			tw2.tween_callback(root.queue_free)
-			var beacon: Node = root.get_node_or_null("Beacon")
-			if beacon:
-				beacon.queue_free()
-			var ring: Node = root.get_node_or_null("ZoneRing")
-			if ring:
-				ring.queue_free()
-		Vfx.burst("big_sparkle", pos + OrbitUp.up(pos) * 0.8, Color(0.5, 0.95, 1.0))
-		Vfx.burst("confetti", pos + OrbitUp.up(pos) * 1.0, Color.WHITE, 0.6)
-		Audio.play("fanfare", 1.15, -6.0)
-		var got: String = _pay(def("supply_drop").get("reward", {}), pos, "supply_drop")
-		_finish(true, tr("Supply crate opened: %s") % got)
-	elif float(active["left"]) <= 0.0:
-		_finish(false, tr("The supply crate's beacon timed out and a drone hauled it back up. Another will come."))
-
-
 # --- Salvage surge -----------------------------------------------------------------------------
 
 func _start_surge(_d: Dictionary, force: bool) -> bool:
@@ -708,8 +557,6 @@ func _update_surge(_delta: float) -> void:
 	active["progress"] = tr("%d pieces grabbed at 3x") % int(active.get("took", 0))
 	if float(active["left"]) <= 0.0 or world.field.is_clean(h):
 		var took: int = int(active.get("took", 0))
-		if took >= 20:
-			_pay({"trinket_chance": float(def("salvage_surge").get("reward", {}).get("trinket_chance", 0.15))}, world.patch.global_position, "salvage_surge")
 		_finish(took > 0, (tr("The surge faded. You grabbed %d pieces at triple value; they pay out when you bale.") % took) if took > 0 else tr("The surge faded. Next time!"))
 
 
@@ -768,194 +615,8 @@ func _update_rain(_delta: float) -> void:
 				tw.tween_interval(10.0)
 				tw.tween_property(pd, "scale", Vector3(0.01, 1, 0.01), 12.0)
 				tw.tween_callback((pd as Node).queue_free)
-		var got: String = _pay(def("rain_shower").get("reward", {}), world.patch.global_position, "rain_shower")
+		var got: String = _pay(def("rain_shower").get("reward", {}), world.patch.global_position)
 		_finish(true, tr("The rain moves on. The ground soaked it up: %s") % got)
-
-
-# --- Robot hiccup ------------------------------------------------------------------------------
-
-func _start_hiccup(_d: Dictionary, _force: bool) -> bool:
-	var fleet: Fleet = world.get("fleet") as Fleet
-	if fleet == null or fleet.robots().is_empty():
-		return false
-	var pp: Vector3 = world.patch.global_position
-	var bots: Array[Robot] = fleet.robots()
-	bots.sort_custom(func(a: Robot, b: Robot) -> bool: return a.global_position.distance_to(pp) < b.global_position.distance_to(pp))
-	var r: Robot = bots[rng.randi() % mini(3, bots.size())]
-	r.set_physics_process(false)
-	active["robot"] = r
-	active["robot_name"] = r.robot_name
-	active["pos"] = r.global_position
-	var marker: Node3D = EventProps.hiccup_marker(active["color"])
-	marker.position = Vector3(0, 2.2, 0)
-	r.add_child(marker)
-	active["marker"] = marker
-	world.interactables.register(r, 2.8, tr("E   fix %s's hiccup") % r.robot_name, _fix_hiccup)
-	return true
-
-
-func _update_hiccup(delta: float) -> void:
-	var r: Variant = active.get("robot")
-	if not is_instance_valid(r) or not (r is Robot):
-		_finish(false)
-		return
-	var bot: Robot = r
-	active["pos"] = bot.global_position
-	var m: Node3D = active.get("marker")
-	if is_instance_valid(m):
-		m.position.y = 2.2 + sin(_anim_t * 3.0) * 0.12
-		var ring: Node3D = m.get_node_or_null("Ring")
-		if ring:
-			ring.rotate_y(delta * 2.0)
-	# Hic! A little hop, a puff and a squeak every so often.
-	if _tick_t > 1.6:
-		_tick_t = 0.0
-		Vfx.burst("steam", bot.global_position + OrbitUp.up(bot.global_position) * 1.0, Color(0.9, 0.9, 0.9, 0.5), 0.5)
-		Audio.play("squeak", rng.randf_range(1.3, 1.6), -10.0)
-		if bot.visual:
-			var tw := bot.visual.create_tween()
-			tw.tween_property(bot.visual, "position:y", 0.18, 0.08)
-			tw.tween_property(bot.visual, "position:y", 0.0, 0.18).set_trans(Tween.TRANS_BOUNCE)
-	var d: float = bot.global_position.distance_to(world.patch.global_position)
-	active["progress"] = tr("%s is %d m away") % [bot.robot_name, int(d)]
-	if float(active["left"]) <= 0.0:
-		_finish(false, tr("%s shook off its hiccups on its own. It looks embarrassed.") % bot.robot_name)
-
-
-func _fix_hiccup() -> void:
-	var r: Variant = active.get("robot")
-	if active.get("id", "") != "robot_hiccup" or not is_instance_valid(r) or not (r is Robot):
-		return
-	var bot: Robot = r
-	world.interactables.unregister(bot)
-	bot.set_physics_process(true)
-	Vfx.burst("sparkle", bot.global_position + OrbitUp.up(bot.global_position) * 1.0, Color(1.0, 0.75, 0.35), 0.9)
-	Audio.play("servo", 1.0, -4.0)
-	Audio.play("ding", 1.2, -6.0)
-	var got: String = _pay(def("robot_hiccup").get("reward", {}), bot.global_position, "robot_hiccup")
-	_finish(true, tr("%s is fixed and back to work. %s") % [bot.robot_name, got])
-
-
-# --- Wildlife visit ----------------------------------------------------------------------------
-
-func _start_wildlife(d: Dictionary, force: bool) -> bool:
-	var hl: HexLevels = world.get("hex_levels") as HexLevels
-	var need: int = int(d.get("requires", {}).get("hex_level", 4))
-	var best: int = -1
-	var best_l: int = -1
-	var pp: Vector3 = world.patch.global_position
-	if hl:
-		for h: Variant in hl.levels:
-			var l: int = int(hl.levels[h])
-			if l >= need and (best < 0 or l > best_l or (l == best_l and world.field.hex_center(int(h)).distance_to(pp) < world.field.hex_center(best).distance_to(pp))):
-				best = int(h)
-				best_l = l
-	if best < 0 and force:
-		var f: HexField = world.field
-		var near: float = INF
-		for h: int in OrbitUp.hexes(f, world.patch.global_position):  # [orbB]
-			if f.is_water(h) or f.hex_hub[h] != 0:
-				continue
-			var dd: float = f.hex_center(h).distance_to(pp)
-			if dd > 8.0 and dd < near and (f.is_clean(h) or near == INF):
-				near = dd
-				best = h
-	if best < 0:
-		return false
-	var animals: Array = cfg().get("animals", [])
-	var pick: Dictionary = {}
-	for a: Dictionary in animals:
-		if not Collection.has("photo_" + str(a["id"])):
-			pick = a
-			break
-	if pick.is_empty():
-		pick = animals[rng.randi() % animals.size()]
-	var c: Vector3 = world.field.hex_center(best)
-	var at: Vector3 = _gp(c + Vector3(rng.randf_range(-1, 1), 0, rng.randf_range(-1, 1)) * world.field.hex_size * 0.35)
-	var an: Node3D = EventProps.animal(str(pick.get("body", "fox")), Color.html(str(pick["color"])), Color.html(str(pick["glow"])))
-	add_child(an)
-	_keep(an)
-	an.global_position = at
-	_upright(an)  # [orbB]
-	an.scale = Vector3.ONE * 0.01
-	an.create_tween().tween_property(an, "scale", Vector3.ONE, 0.6).set_trans(Tween.TRANS_BACK)
-	Vfx.burst("sparkle", at + OrbitUp.up(at) * 0.6, Color.html(str(pick["glow"])), 0.6)
-	active["animal"] = an
-	active["animal_id"] = str(pick["id"])
-	active["animal_name"] = tr(str(pick["name"]))
-	active["animal_body"] = str(pick.get("body", "fox"))
-	active["hex"] = best
-	active["pos"] = at
-	active["goal"] = at
-	active["name"] = tr("Wildlife Visit: %s") % tr(str(pick["name"]))
-	world.interactables.register(an, 3.4, tr("E   take a photo of the %s") % tr(str(pick["name"])), _photo)
-	return true
-
-
-func _update_wildlife(delta: float) -> void:
-	var an: Node3D = active.get("animal")
-	if not is_instance_valid(an):
-		_finish(false)
-		return
-	var goal: Vector3 = active["goal"]
-	var to: Vector3 = goal - an.global_position
-	var u: Vector3 = an.global_position.normalized()
-	to -= u * to.dot(u)  # along the ground
-	var body: Node3D = an.get_node("Body")
-	var hop: bool = str(active["animal_body"]) in ["hare", "hedgehog"]
-	if to.length() > 0.25:
-		var spd: float = 1.3 if hop else 0.8
-		an.global_position += to.normalized() * minf(spd * delta, to.length())
-		an.global_position = _gp(an.global_position)  # on the ground, facing where it walks
-		var sc: Vector3 = an.scale
-		an.global_basis = an.global_basis.orthonormalized().slerp(Basis.looking_at(-to.normalized(), an.global_position.normalized()), minf(delta * 4.0, 1.0)).orthonormalized()
-		an.scale = sc
-		body.position.y = absf(sin(_anim_t * (9.0 if hop else 6.0))) * (0.12 if hop else 0.03)
-	else:
-		body.position.y = lerpf(body.position.y, 0.0, minf(delta * 6.0, 1.0))
-		body.rotation.x = sin(_anim_t * 0.9) * 0.05  # grazing / sniffing
-	var tail: Node3D = body.get_node_or_null("Tail")
-	if tail:
-		tail.rotation.y = sin(_anim_t * 3.0) * 0.4
-	if _tick_t > rng.randf_range(3.0, 6.0):
-		_tick_t = 0.0
-		var c: Vector3 = world.field.hex_center(int(active["hex"]))
-		active["goal"] = _gp(c + Vector3(rng.randf_range(-1, 1), 0, rng.randf_range(-1, 1)) * world.field.hex_size * 0.45)
-	active["pos"] = an.global_position
-	active["progress"] = tr("%s, %d m away") % [str(active["animal_name"]), int(an.global_position.distance_to(world.patch.global_position))]
-	if float(active["left"]) <= 0.0:
-		_animal_leave(an)
-		_finish(false, tr("The %s wandered off. It'll be back somewhere green.") % str(active["animal_name"]))
-
-
-func _animal_leave(an: Node3D) -> void:
-	_props.erase(an)
-	if world.get("interactables") != null:
-		world.interactables.unregister(an)
-	var away: Vector3 = an.global_position + Vector3(rng.randf_range(-1, 1), 0, rng.randf_range(-1, 1)).normalized() * 6.0
-	var tw := an.create_tween()
-	tw.tween_property(an, "global_position", away, 2.5)
-	tw.parallel().tween_property(an, "scale", Vector3.ONE * 0.01, 2.5).set_ease(Tween.EASE_IN)
-	tw.tween_callback(an.queue_free)
-
-
-func _photo() -> void:
-	if active.get("id", "") != "wildlife_visit":
-		return
-	var an: Node3D = active.get("animal")
-	if not is_instance_valid(an):
-		return
-	hud.flash()
-	Audio.play("click", 0.7, 0.0)
-	Audio.play("ding", 1.5, -6.0)
-	var aid: String = str(active["animal_id"])
-	var first: bool = Collection.grant("photo_" + aid)
-	GameState.inc_stat("photos_taken")
-	var rw: Dictionary = (def("wildlife_visit").get("reward", {}) as Dictionary).duplicate()
-	rw.erase("trinket_chance")
-	var got: String = _pay(rw, an.global_position, "wildlife_visit")
-	_animal_leave(an)
-	_finish(true, (tr("Snap! The %s is in your Collection. %s") if first else tr("Snap! Another lovely shot of the %s. %s")) % [str(active.get("animal_name", "visitor")), got])
 
 
 # --- Rare part signal --------------------------------------------------------------------------
@@ -1008,7 +669,7 @@ func _update_signal() -> void:
 	var d: float = Vector2(world.field.part_pos[idx].x - world.patch.global_position.x, world.field.part_pos[idx].z - world.patch.global_position.z).length()
 	active["progress"] = tr("Signal %d%%") % int(clampf(1.0 - d / 40.0, 0.0, 1.0) * 100.0)
 	if world.field.part_found[idx] == 1:
-		var got: String = _pay(def("rare_part_signal").get("reward", {}), world.field.part_pos[idx], "rare_part_signal")
+		var got: String = _pay(def("rare_part_signal").get("reward", {}), world.field.part_pos[idx])
 		Audio.play("fanfare", 1.0, -6.0)
 		_finish(true, tr("That was the signal: a stash with a rare part inside. %s") % got)
 	elif float(active["left"]) <= 0.0:
@@ -1116,7 +777,7 @@ func _update_audit(_delta: float) -> void:
 			tw.tween_property(drone, "global_position", drone.global_position + dir * 60.0 + OrbitUp.up(drone.global_position) * 22.0, 6.0).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 			tw.tween_callback(drone.queue_free)
 		if won:
-			var got: String = _pay(def("ledger_audit").get("reward", {}), active["pos"], "ledger_audit")
+			var got: String = _pay(def("ledger_audit").get("reward", {}), active["pos"])
 			Audio.play("fanfare", 1.2, -6.0)
 			_finish(true, tr("Audit won, %d to %d! The Ledger stamps it APPROVED. %s") % [you, dn, got])
 		else:

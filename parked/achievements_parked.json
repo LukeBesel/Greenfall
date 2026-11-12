@@ -1,5 +1,5 @@
 {
- "_doc": "Achievements removed from data/achievements.json in task M1-08 because the feature that earns them is parked. 'parked_with' names the feature folder. Put an entry back in data/achievements.json (and its Steam API name, the id upper-cased, in Steamworks) when its feature returns.",
+ "_doc": "Achievements removed from data/achievements.json because the feature that earns them is parked (task M1-08, then task M3-13) or because Planet 1 cannot award them (hidden until a planet can). 'parked_with' names the feature folder or the reason. Put an entry back in data/achievements.json (and its Steam API name, the id upper-cased, in Steamworks) when its feature returns or a planet can award it. Saves keep the unlocks: they are just not counted.",
  "achievements": [
   {
    "id": "museum_complete",
@@ -240,6 +240,126 @@
     "target": 4
    },
    "parked_with": "extras/weekly"
+  },
+  {
+   "id": "late_decor_1",
+   "name": "Home Touches",
+   "desc": "Place a decoration in Garden Mode.",
+   "icon": "flower",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "decor_placed"
+   },
+   "parked_with": "side/garden (Garden Mode, task M3-13)"
+  },
+  {
+   "id": "late_decor_25",
+   "name": "Landscaper",
+   "desc": "Place 25 decorations.",
+   "icon": "tree",
+   "cond": {
+    "type": "stat",
+    "target": 25,
+    "key": "decor_placed"
+   },
+   "parked_with": "side/garden (Garden Mode, task M3-13)"
+  },
+  {
+   "id": "late_decor_all",
+   "name": "Full Catalogue",
+   "desc": "Place every kind of decoration at least once.",
+   "icon": "check",
+   "cond": {
+    "type": "stat",
+    "target": 10,
+    "key": "decor_kinds"
+   },
+   "parked_with": "side/garden (Garden Mode, task M3-13)"
+  },
+  {
+   "id": "late_charm_25",
+   "name": "Picture Perfect",
+   "desc": "Reach 25 charm in one district.",
+   "icon": "leaf",
+   "cond": {
+    "type": "stat",
+    "target": 25,
+    "key": "decor_charm_best"
+   },
+   "parked_with": "side/garden (Garden Mode, task M3-13)"
+  },
+  {
+   "id": "extras_retire_1",
+   "name": "Happy Retirement",
+   "desc": "Retire a robot to the nursery garden.",
+   "icon": "bot",
+   "cond": {
+    "type": "stat",
+    "key": "robots_retired",
+    "target": 1
+   },
+   "parked_with": "extras/nursery (task M3-13)"
+  },
+  {
+   "id": "extras_visits_5",
+   "name": "Garden Party",
+   "desc": "Say hi to the nursery caretakers 5 times.",
+   "icon": "flower",
+   "cond": {
+    "type": "stat",
+    "key": "nursery_visits",
+    "target": 5
+   },
+   "parked_with": "extras/nursery (task M3-13)"
+  },
+  {
+   "id": "builder_mix",
+   "name": "Mix and Match",
+   "desc": "Style a robot with all five custom parts in the Locker.",
+   "icon": "bot",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "builder_full_custom"
+   },
+   "parked_with": "hidden until a planet awards robot parts (Planet 1 places none; M3-14b, task M3-13)"
+  },
+  {
+   "id": "builder_maker",
+   "name": "As the Makers Made It",
+   "desc": "Fit the full Maker set (shell, optic and glider) on one robot.",
+   "icon": "star",
+   "cond": {
+    "type": "stat",
+    "target": 1,
+    "key": "builder_maker_set"
+   },
+   "parked_with": "hidden until a planet awards robot parts (Planet 1 places none; M3-14b, task M3-13)"
+  },
+  {
+   "id": "builder_hats",
+   "name": "Hat Rack",
+   "desc": "Collect 5 different robot toppers.",
+   "icon": "trophy",
+   "cond": {
+    "type": "stat",
+    "target": 5,
+    "key": "builder_toppers"
+   },
+   "parked_with": "hidden until a planet awards robot parts (Planet 1 places none; M3-14b, task M3-13)"
+  },
+  {
+   "id": "home_answered",
+   "name": "The Cradle Answers",
+   "desc": "Light the Cradle Returns beacon and hear from the ark.",
+   "icon": "rocket",
+   "cond": {
+    "type": "flag",
+    "target": 1,
+    "key": "cradle_answered"
+   },
+   "parked_with": "campaign (nothing on Planet 1 sets cradle_answered; task M3-13)"
   }
  ]
 }

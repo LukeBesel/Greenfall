@@ -1,0 +1,5 @@
+{
+  "_doc": "Cut from data/workbench.json in task M3-13: the Requests tab's gate and the workbench tier that opened it. Put both back when the Requests board returns (ui/bench_tiers.gd also counted contracts_done for saves from before the tiers).",
+  "tabs": {"contracts": [["bench_tier", 4]]},
+  "tier": {"name": "Workbench Mk IV: Request Board", "desc": "Adds a request board. Take on jobs for tokens and rare parts.", "tabs": ["contracts"], "cost": {"cubes": 1200}, "requires": [["hub_level", 3]]}
+}

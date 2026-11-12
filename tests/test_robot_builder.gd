@@ -67,8 +67,6 @@ func test_no_way_to_get_a_part_but_finding_it() -> void:
 		for m: Dictionary in (load("res://systems/robot_builder.gd") as Script).get_script_method_list():
 			found = found or str(m["name"]) == gone
 		assert_false(found, "RobotBuilder.%s is gone" % gone)
-	for t: Dictionary in Contracts.track():
-		assert_true(str(t.get("kind", "")) in ["capsule", "part"], "the Requests track hands out no looks (%s)" % t.get("kind", ""))
 	GameState.stats["builder_parts_got"] = 999.0
 	GameState.add_currency("parts", BigNum.from_float(99999))
 	for p: Dictionary in RobotBuilder.all_parts():

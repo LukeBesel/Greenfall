@@ -106,7 +106,7 @@ msgstr "Ferramenta: plantar"
 msgid "Tool: water"
 msgstr "Ferramenta: regar"
 
-#: autoload/Settings.gd:19 ui/upgrades_screen.gd:13
+#: autoload/Settings.gd:19 ui/upgrades_screen.gd:12
 msgid "Upgrades"
 msgstr "Melhorias"
 
@@ -210,67 +210,67 @@ msgstr "Touchpad"
 msgid "Paddle 1"
 msgstr "Paddle 1"
 
-#: autoload/Settings.gd:524
+#: autoload/Settings.gd:523
 msgid "LMB"
 msgstr "Botão esq."
 
-#: autoload/Settings.gd:525
+#: autoload/Settings.gd:524
 msgid "RMB"
 msgstr "Botão dir."
 
-#: autoload/Settings.gd:526
+#: autoload/Settings.gd:525
 msgid "MMB"
 msgstr "Botão do meio"
 
-#: autoload/Settings.gd:527
+#: autoload/Settings.gd:526
 msgid "Wheel up"
 msgstr "Roda p/ cima"
 
-#: autoload/Settings.gd:528
+#: autoload/Settings.gd:527
 msgid "Wheel down"
 msgstr "Roda p/ baixo"
 
-#: autoload/Settings.gd:529
+#: autoload/Settings.gd:528
 msgid "Mouse %d"
 msgstr "Mouse %d"
 
-#: autoload/Settings.gd:531
+#: autoload/Settings.gd:530
 msgid "Button %d"
 msgstr "Botão %d"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:535
 msgid "LS left"
 msgstr "AE esquerda"
 
-#: autoload/Settings.gd:536
+#: autoload/Settings.gd:535
 msgid "LS right"
 msgstr "AE direita"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:536
 msgid "LS up"
 msgstr "AE cima"
 
-#: autoload/Settings.gd:537
+#: autoload/Settings.gd:536
 msgid "LS down"
 msgstr "AE baixo"
 
-#: autoload/Settings.gd:538
+#: autoload/Settings.gd:537
 msgid "RS left"
 msgstr "AD esquerda"
 
-#: autoload/Settings.gd:538
+#: autoload/Settings.gd:537
 msgid "RS right"
 msgstr "AD direita"
 
-#: autoload/Settings.gd:539
+#: autoload/Settings.gd:538
 msgid "RS up"
 msgstr "AD cima"
 
-#: autoload/Settings.gd:539
+#: autoload/Settings.gd:538
 msgid "RS down"
 msgstr "AD baixo"
 
-#: autoload/Settings.gd:550
+#: autoload/Settings.gd:549
 msgid "hold %s"
 msgstr "segure %s"
 
@@ -482,7 +482,7 @@ msgstr "1 a cada 3 fardos para o reciclador"
 msgid "Every %dth bale to the recycler"
 msgstr "1 a cada %d fardos para o reciclador"
 
-#: automation/trash_bin.gd:93 systems/camp/camp.gd:385 systems/camp/field_benches.gd:77
+#: automation/trash_bin.gd:93 systems/camp/camp.gd:378 systems/camp/field_benches.gd:77
 #: systems/camp/hub_builds.gd:91 systems/camp/hub_builds.gd:156 systems/camp/hub_builds.gd:166
 #: systems/camp/hub_builds.gd:176 systems/camp/yard_builds.gd:97 systems/crew/robot_chain.gd:162
 msgid "Not enough materials."
@@ -517,7 +517,7 @@ msgstr "Nada cabe aqui. Aperte [%s] para fazer um fardo."
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "Ainda sem Enfardadeira. Leve seu compartimento até a lixeira."
 
-#: core/pace.gd:315 systems/events.gd:486 ui/goals_panel.gd:125
+#: core/pace.gd:315 systems/events.gd:444 ui/goals_panel.gd:125
 msgid "+%s cubes"
 msgstr "+%s cubos"
 
@@ -533,21 +533,17 @@ msgstr "E   fazer carinho no gato"
 msgid "E   scatter crumbs for the birds"
 msgstr "E   jogar migalhas para os pássaros"
 
-#: fauna/fauna.gd:1633
-msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
-msgstr "Os pássaros decidiram que você é gente boa. Saco de migalhas adicionado à sua Coleção."
-
-#: fauna/fauna.gd:1689
+#: fauna/fauna.gd:1687
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "A gata decidiu que você é dela. Conheça %s. Agora ela mora nesta base."
 
-#: fauna/fauna.gd:2010 ui/subtitles.gd:455
+#: fauna/fauna.gd:2008 ui/subtitles.gd:455
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "Novo avistamento: %s. Já está no Códice."
 
-#: fauna/fauna.gd:2081
-msgid "Snap! A %s for your Collection."
-msgstr "Clique! Uma foto (%s) para a sua Coleção."
+#: fauna/fauna.gd:2078
+msgid "Snap! A first photo of a %s."
+msgstr ""
 
 #: planet/cd_finds.gd:184
 msgid "A scratched CD turned up in the rubble."
@@ -1119,7 +1115,7 @@ msgstr "Não dá para construir aqui"
 msgid "Not on the lake"
 msgstr "Não no lago"
 
-#: robots/water_net.gd:141 systems/decor.gd:185
+#: robots/water_net.gd:141
 msgid "Clean this hex first"
 msgstr "Limpe este hexágono primeiro"
 
@@ -1135,7 +1131,7 @@ msgstr "Perto demais de outro tanque"
 msgid "Water Tank placed. Waterers nearby will refill here."
 msgstr "Tanque de água colocado. Regadores próximos vão reabastecer aqui."
 
-#: robots/water_net.gd:308 ui/hotbar.gd:34
+#: robots/water_net.gd:308 ui/hotbar.gd:33
 msgid "WATER"
 msgstr "ÁGUA"
 
@@ -1171,47 +1167,47 @@ msgstr "Tab: função · Esquerdo: pintar · Direito: apagar · Meio: enviar um 
 msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s montado. Ele olha em volta e começa a trabalhar."
 
-#: scenes/slice.gd:116
+#: scenes/slice.gd:114
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Bloqueado. Leve sua base ao nível 5 para construir a plataforma de lançamento."
 
-#: scenes/slice.gd:119 ui/rockets_panel.gd:38
+#: scenes/slice.gd:117 ui/rockets_panel.gd:38
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
 msgstr "Células de energia recarregando: %s. Melhorias do foguete recarregam mais rápido."
 
-#: scenes/slice.gd:271
+#: scenes/slice.gd:269
 msgid "OUTPOST %d · Lv%d"
 msgstr "POSTO %d · Nv%d"
 
-#: scenes/slice.gd:271
+#: scenes/slice.gd:269
 msgid "OUTPOST %d · RUIN"
 msgstr "POSTO %d · RUÍNA"
 
-#: scenes/slice_orbit.gd:376
+#: scenes/slice_orbit.gd:375
 msgid "HEX CLEAN!"
 msgstr "HEXÁGONO LIMPO!"
 
-#: scenes/slice_orbit.gd:392
+#: scenes/slice_orbit.gd:391
 msgid "Milestone: %d hexes clean!"
 msgstr "Marco: %d hexágonos limpos!"
 
-#: scenes/slice_orbit.gd:609 systems/camp/field_bench_sites.gd:177
+#: scenes/slice_orbit.gd:608 systems/camp/field_bench_sites.gd:177
 msgid "E   Open the field bench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:614 systems/camp/camp.gd:189 tools/orbit_roundtrip.gd:621
+#: scenes/slice_orbit.gd:613 systems/camp/camp.gd:185 tools/orbit_roundtrip.gd:581
 msgid "E   Fix the workbench"
 msgstr "E   Consertar a bancada"
 
-#: scenes/slice_orbit.gd:614 systems/camp/camp.gd:190
+#: scenes/slice_orbit.gd:613 systems/camp/camp.gd:186
 msgid "E   Open the workbench"
 msgstr "E   Abrir a bancada"
 
-#: scenes/slice_orbit.gd:1139
+#: scenes/slice_orbit.gd:1117
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Melhorias precisam de uma bancada. Volte para a base."
 
-#: scenes/slice_orbit.gd:1241
+#: scenes/slice_orbit.gd:1219
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Bancada consertada. Aperte E nela para gastar cubos em melhorias."
 
@@ -1239,7 +1235,7 @@ msgstr "Sua base cresceu até onde a demo vai."
 msgid "In the full game Lumi builds the base up to level 5, plants whole districts until they thrive, grows them into a bright future city, and flies rockets to dozens of bases across the planet. Your demo progress carries over."
 msgstr "No jogo completo, Lumi leva a base até o nível 5, planta distritos inteiros até prosperarem, transforma-os numa cidade futurista brilhante e voa de foguete para dezenas de bases pelo planeta. Seu progresso da demo é mantido."
 
-#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:765 ui/end_screen.gd:99
+#: steam/demo_end_screen.gd:60 ui/codex_screen.gd:700 ui/end_screen.gd:99
 msgid "Hexes cleaned"
 msgstr "Hexágonos limpos"
 
@@ -1247,11 +1243,11 @@ msgstr "Hexágonos limpos"
 msgid "Bales made"
 msgstr "Fardos feitos"
 
-#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:780 ui/end_screen.gd:101
+#: steam/demo_end_screen.gd:62 ui/codex_screen.gd:715 ui/end_screen.gd:101
 msgid "Robots built"
 msgstr "Robôs construídos"
 
-#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:788 ui/end_screen.gd:98
+#: steam/demo_end_screen.gd:63 ui/codex_screen.gd:723 ui/end_screen.gd:98
 msgid "Time played"
 msgstr "Tempo de jogo"
 
@@ -1271,7 +1267,7 @@ msgstr "Tela de título"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "Continuar jogando: o primeiro distrito continua aberto, com a base no nível %d."
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:857 ui/main_menu.gd:444
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:792 ui/main_menu.gd:444
 msgid "%dh %02dm"
 msgstr "%dh %02dm"
 
@@ -1695,8 +1691,7 @@ msgstr ""
 "\n"
 "O Ledger está do nosso lado agora. Os bloqueadores só cantarolam junto com a música."
 
-#: story/ledger.gd:305 systems/decor.gd:119 systems/research.gd:213
-#: ui/stations_panel.gd:100
+#: story/ledger.gd:305 systems/research.gd:213 ui/stations_panel.gd:100
 msgid "Needs %s"
 msgstr "Requer %s"
 
@@ -1724,7 +1719,7 @@ msgstr "O drone despejou um pouco de sucata. Recolha, ou deixe seus ajudantes ar
 msgid "SEEDS · PAID IN FULL"
 msgstr "SEMENTES · PAGO INTEGRALMENTE"
 
-#: story/ledger.gd:703 systems/events.gd:494 systems/lumi_level.gd:224
+#: story/ledger.gd:703 systems/events.gd:452
 msgid "+%d seeds"
 msgstr "+%d sementes"
 
@@ -2000,215 +1995,59 @@ msgstr " · %s"
 msgid "Any district"
 msgstr "Qualquer distrito"
 
-#: systems/collection.gd:59
-msgid "New for your Collection: %s. See it in the Codex (K)."
-msgstr "Novo na sua coleção: %s. Veja no Códice (K)."
-
-#: systems/collection.gd:84
-msgid "Supply Drops"
-msgstr "Entregas de suprimentos"
-
-#: systems/collection.gd:85
-msgid "Salvage Glints"
-msgstr "Brilhos de sucata"
-
-#: systems/collection.gd:86
-msgid "Rain Showers"
-msgstr "Pancadas de chuva"
-
-#: systems/collection.gd:87
-msgid "Robot Hiccups"
-msgstr "Soluços de robô"
-
-#: systems/collection.gd:88
-msgid "Wildlife Photos"
-msgstr "Fotos de animais"
-
-#: systems/collection.gd:89
-msgid "Animal Photos"
-msgstr "Fotos de animais"
-
-#: systems/collection.gd:90
-msgid "Rare Part Signals"
-msgstr "Sinais de peças raras"
-
-#: systems/collection.gd:91
-msgid "Ledger Audits"
-msgstr "Auditorias do Ledger"
-
-#: systems/collection.gd:92
-msgid "Cleaning Streaks"
-msgstr "Sequências de limpeza"
-
-#: systems/collection.gd:93
-msgid "Lumi Levels"
-msgstr "Níveis de Lumi"
-
-#: systems/collection.gd:94 ui/contracts_panel.gd:25 ui/upgrades_screen.gd:18
-msgid "Requests"
-msgstr "Pedidos"
-
-#: systems/collection.gd:95
-msgid "Curio Capsules"
-msgstr "Cápsulas de curiosidades"
-
-#: systems/contracts.gd:227
-msgid "Curio Capsule"
-msgstr "Cápsula de curiosidades"
-
-#: systems/contracts.gd:294
-msgid "Request complete: %s. Claim it at the workbench."
-msgstr "Pedido concluído: %s. Receba na bancada."
-
-#: systems/contracts.gd:300
-msgid "A request ran out of time. No harm done; a new one will be posted soon."
-msgstr "Um pedido ficou sem tempo. Sem problema; um novo vai aparecer logo."
-
-#: systems/contracts.gd:308
-msgid "New at the workbench: the Requests board. Small jobs, real rewards."
-msgstr "Novo na bancada: o quadro de pedidos. Trabalhos pequenos, recompensas de verdade."
-
-#: systems/contracts.gd:311
-msgid "The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."
-msgstr "O relé já capta as velhas ordens de serviço do Cradle. Elas estão no quadro de pedidos, na bancada."
-
-#: systems/contracts.gd:396
-msgid "Request done: %s."
-msgstr "Pedido pago: %s."
-
-#: systems/contracts.gd:442
-msgid "Requests reward: %s."
-msgstr "Recompensa de pedidos: %s."
-
-#: systems/decor.gd:117
-msgid "Needs %d Collection finds (%d so far)"
-msgstr "Precisa de %d achados da Coleção (%d até agora)"
-
-#: systems/decor.gd:178
-msgid "Too close to the base machines"
-msgstr "Perto demais das máquinas da base"
-
-#: systems/decor.gd:180 systems/decor.gd:189
-msgid "Something is already here"
-msgstr "Já tem algo aqui"
-
-#: systems/decor.gd:183
-msgid "That's water"
-msgstr "Isso é água"
-
-#: systems/decor.gd:187
-msgid "Frozen in"
-msgstr "Congelado"
-
 #: systems/designs.gd:132
 msgid "Set: %s"
 msgstr "Conjunto: %s"
 
-#: systems/event_props.gd:154
-msgid "CRADLE · SUPPLY"
-msgstr "CRADLE · SUPRIMENTOS"
-
-#: systems/events.gd:446
+#: systems/events.gd:418
 msgid "STREAK x%d  +%d%%"
 msgstr "SEQUÊNCIA x%d  +%d%%"
 
-#: systems/events.gd:632
-msgid "%d pieces of junk left around the crate"
-msgstr "Restam %d pedaços de sucata em volta da caixa"
-
-#: systems/events.gd:657
-msgid "Supply crate opened: %s"
-msgstr "Caixa de suprimentos aberta: %s"
-
-#: systems/events.gd:659
-msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
-msgstr "O farol da caixa expirou e um drone a levou de volta para cima. Outra vai chegar."
-
-#: systems/events.gd:708
+#: systems/events.gd:557
 msgid "%d pieces grabbed at 3x"
 msgstr "%d pedaços pegos a 3x"
 
-#: systems/events.gd:713
+#: systems/events.gd:560
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "O surto acabou. Você pegou %d pedaços com valor triplo; eles pagam quando você enfardar."
 
-#: systems/events.gd:713
+#: systems/events.gd:560
 msgid "The surge faded. Next time!"
 msgstr "O surto acabou. Na próxima!"
 
-#: systems/events.gd:762
+#: systems/events.gd:609
 msgid "Every plant is drinking"
 msgstr "Todas as plantas estão bebendo"
 
-#: systems/events.gd:772
+#: systems/events.gd:619
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "A chuva foi embora. O chão absorveu tudo: %s"
 
-#: systems/events.gd:793
-msgid "E   fix %s's hiccup"
-msgstr "E   curar o soluço de %s"
-
-#: systems/events.gd:820
-msgid "%s is %d m away"
-msgstr "%s está a %d m"
-
-#: systems/events.gd:822
-msgid "%s shook off its hiccups on its own. It looks embarrassed."
-msgstr "%s se livrou do soluço sozinho. Parece envergonhado."
-
-#: systems/events.gd:836
-msgid "%s is fixed and back to work. %s"
-msgstr "%s foi consertado e voltou ao trabalho. %s"
-
-#: systems/events.gd:890
-msgid "Wildlife Visit: %s"
-msgstr "Visita de animal: %s"
-
-#: systems/events.gd:891
-msgid "E   take a photo of the %s"
-msgstr "E   tirar uma foto: %s"
-
-#: systems/events.gd:925
-msgid "%s, %d m away"
-msgstr "%s, a %d m"
-
-#: systems/events.gd:928
-msgid "The %s wandered off. It'll be back somewhere green."
-msgstr "%s foi embora. Vai voltar em algum lugar verde."
-
-#: systems/events.gd:958
-msgid "Snap! The %s is in your Collection. %s"
-msgstr "Clique! %s está na sua coleção. %s"
-
-#: systems/events.gd:958
-msgid "Snap! Another lovely shot of the %s. %s"
-msgstr "Clique! Mais uma foto linda: %s. %s"
-
-#: systems/events.gd:1009
+#: systems/events.gd:670
 msgid "Signal %d%%"
 msgstr "Sinal %d%%"
 
-#: systems/events.gd:1013
+#: systems/events.gd:674
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "Era esse o sinal: um esconderijo com uma peça rara. %s"
 
-#: systems/events.gd:1015
+#: systems/events.gd:676
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "O sinal sumiu. A peça continua lá embaixo; o detector vai achar."
 
-#: systems/events.gd:1082
+#: systems/events.gd:743
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr "AUDITORIA   VOCÊ %d  :  %d DRONE"
 
-#: systems/events.gd:1083
+#: systems/events.gd:744
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr "Você %d  :  %d Drone   ·   faltam %d"
 
-#: systems/events.gd:1121
+#: systems/events.gd:782
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr "Auditoria vencida, %d a %d! O Ledger carimba APROVADO. %s"
 
-#: systems/events.gd:1125
+#: systems/events.gd:786
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "O drone venceu a auditoria, %d a %d. Mesmo assim deixou uma gorjeta: +%s cubos."
 
@@ -2512,8 +2351,7 @@ msgid "Doesn't fit a %s"
 msgstr "Não serve em: %s"
 
 #: systems/robot_builder.gd:246 systems/robot_design.gd:68 ui/codex_screen.gd:340
-#: ui/codex_screen.gd:460 ui/codex_screen.gd:626 ui/codex_screen.gd:641
-#: ui/piece_row.gd:62
+#: ui/codex_screen.gd:460 ui/codex_screen.gd:582 ui/piece_row.gd:62
 msgid "Not found yet"
 msgstr "Ainda não encontrado"
 
@@ -2561,19 +2399,19 @@ msgstr "Surge"
 msgid "New CD: %s by %s, from %s"
 msgstr "Novo CD: %s de %s, de %s"
 
-#: systems/camp/camp.gd:234
+#: systems/camp/camp.gd:230
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "Bancada consertada! Aperte %s perto dela para comprar melhorias."
 
-#: systems/camp/camp.gd:369
+#: systems/camp/camp.gd:362
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr "E   %s (Nv %d): totalmente melhorado"
 
-#: systems/camp/camp.gd:375
+#: systems/camp/camp.gd:368
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr "E   %s (Nv %d): melhorar para %s por %s"
 
-#: systems/camp/camp.gd:381
+#: systems/camp/camp.gd:374
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "Lixeira melhorada: %s. Fardos vendem por %d%% aqui."
 
@@ -2681,43 +2519,7 @@ msgstr "Base nível 5"
 msgid "Album: an \"after\" picture of %s (%s)."
 msgstr "Álbum: uma foto de \"depois\" de %s (%s)."
 
-#: systems/extras/nursery.gd:90
-msgid "Build the Robot Nursery in the Build tab first."
-msgstr "Construa primeiro o Berçário de robôs na aba Construir."
-
-#: systems/extras/nursery.gd:94
-msgid "Only Mk I-II robots retire early. %s can retire in %d min."
-msgstr "Só robôs Mk I-II se aposentam cedo. %s pode se aposentar em %d min."
-
-#: systems/extras/nursery.gd:122
-msgid "%s retires to the nursery garden. +%d parts, and the flowers get a caretaker."
-msgstr "%s se aposenta no jardim do viveiro. +%d peças, e as flores ganham um cuidador."
-
-#: systems/extras/nursery.gd:214
-msgid "E   Say hi to %s"
-msgstr "E   Dizer oi para %s"
-
-#: systems/extras/nursery.gd:272
-msgid "CARETAKER · %s"
-msgstr "CUIDADOR · %s"
-
-#: systems/extras/nursery.gd:319
-msgid "%s beeps hello and shows Lumi the marigolds."
-msgstr "%s apita um oi e mostra as calêndulas para Lumi."
-
-#: systems/extras/nursery.gd:320
-msgid "%s is busy with the watering can, but waves anyway."
-msgstr "%s está ocupado com o regador, mas acena mesmo assim."
-
-#: systems/extras/nursery.gd:321
-msgid "%s hums to the seedlings. Retirement suits it."
-msgstr "%s cantarola para as mudas. A aposentadoria combina com ele."
-
-#: systems/extras/nursery.gd:322
-msgid "%s points proudly at a new bud."
-msgstr "%s aponta orgulhoso para um botão novo."
-
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:662
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:622
 msgid "E   CD player: %s"
 msgstr "E   Toca-CD: %s"
 
@@ -2741,7 +2543,7 @@ msgstr "enfardou cerca de %d fardos"
 msgid "kept the base tidy"
 msgstr "manteve a base arrumada"
 
-#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:772
+#: systems/extras/welcome_back.gd:74 ui/codex_screen.gd:707
 msgid "Cubes earned"
 msgstr "Cubos ganhos"
 
@@ -2907,7 +2709,7 @@ msgid "Fewer %s"
 msgstr "Menos %s"
 
 #: ui/bench_bots.gd:12 ui/build_panel.gd:102 ui/rig_panel.gd:193
-#: ui/robot_card.gd:114 ui/robot_card.gd:249 ui/upgrades_screen.gd:14
+#: ui/robot_card.gd:114 ui/robot_card.gd:249 ui/upgrades_screen.gd:13
 #: ui/yard_builds_panel.gd:17
 msgid "Build"
 msgstr "Construir"
@@ -2933,8 +2735,7 @@ msgstr "Lumi"
 msgid "Machines"
 msgstr "Máquinas"
 
-#: ui/bench_lists.gd:11 ui/globe_view.gd:176 ui/locker_panel.gd:288
-#: ui/upgrades_panel.gd:49
+#: ui/bench_lists.gd:11 ui/globe_view.gd:176 ui/upgrades_panel.gd:49
 msgid "Rocket"
 msgstr "Foguete"
 
@@ -3018,7 +2819,7 @@ msgstr "Encontre um dos CDs deles no entulho de %s."
 msgid "Your CDs (%d / %d): %s"
 msgstr "Seus CDs (%d / %d): %s"
 
-#: ui/codex_screen.gd:15 ui/codex_screen.gd:794
+#: ui/codex_screen.gd:15 ui/codex_screen.gd:729
 msgid "Achievements"
 msgstr "Conquistas"
 
@@ -3046,7 +2847,7 @@ msgstr "CÓDICE"
 msgid "Watch the story"
 msgstr "Ver a história"
 
-#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:173
+#: ui/codex_screen.gd:100 ui/upgrades_screen.gd:169
 msgid "Close  [%s]"
 msgstr "Fechar  [%s]"
 
@@ -3054,9 +2855,9 @@ msgstr "Fechar  [%s]"
 msgid "%d / %d curiosities"
 msgstr "%d / %d curiosidades"
 
-#: ui/codex_screen.gd:207
-msgid "%d / %d collectibles"
-msgstr "%d / %d colecionáveis"
+#: ui/codex_screen.gd:207 ui/codex_screen.gd:491
+msgid "%d / %d complete"
+msgstr "%d / %d completos"
 
 #: ui/codex_screen.gd:209
 msgid "%d / %d achievements"
@@ -3080,7 +2881,7 @@ msgstr ""
 msgid "CURIOSITIES"
 msgstr "CURIOSIDADES"
 
-#: ui/codex_screen.gd:370 ui/codex_screen.gd:491
+#: ui/codex_screen.gd:370
 msgid "%d / %d found"
 msgstr "%d / %d encontradas"
 
@@ -3104,179 +2905,143 @@ msgstr "Recompensa: uma pequena surpresa"
 msgid "COLLECTION"
 msgstr "COLEÇÃO"
 
-#: ui/codex_screen.gd:574
-msgid "LUMI'S COLLECTION"
-msgstr "COLEÇÃO DA LUMI"
-
-#: ui/codex_screen.gd:575
-msgid "%d / %d complete"
-msgstr "%d / %d completos"
-
-#: ui/codex_screen.gd:613
-msgid "TRINKETS AND CURIOS"
-msgstr "BUGIGANGAS E CURIOSIDADES"
-
-#: ui/codex_screen.gd:625
+#: ui/codex_screen.gd:581
 msgid "EVERY PLANET"
 msgstr "TODOS OS PLANETAS"
 
-#: ui/codex_screen.gd:628 ui/codex_screen.gd:644
+#: ui/codex_screen.gd:584
 msgid "In your collection"
 msgstr "Na sua coleção"
 
-#: ui/codex_screen.gd:630
+#: ui/codex_screen.gd:586
 msgid "Hint: %s"
 msgstr "Dica: %s"
 
-#: ui/codex_screen.gd:649
-msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
-msgstr "Dica: um visitante tímido aparece em hexágonos sustentados e prósperos. Leve uma câmera."
-
-#: ui/codex_screen.gd:650
-msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
-msgstr "Dica: os animais voltam quando o chão se cura. Fotografe-os no modo foto (P)."
-
-#: ui/codex_screen.gd:651
-msgid "Hint: finish %d requests (Requests tab at the workbench)."
-msgstr "Dica: conclua %d pedidos (aba Pedidos na bancada)."
-
-#: ui/codex_screen.gd:652
-msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
-msgstr "Dica: Cápsulas de curiosidades, na trilha de recompensas dos pedidos na bancada."
-
-#: ui/codex_screen.gd:653
-msgid "Hint: keep scooping without stopping until the streak meter is full."
-msgstr "Dica: continue recolhendo sem parar até encher o medidor de sequência."
-
-#: ui/codex_screen.gd:654
-msgid "Hint: turns up during %s."
-msgstr "Dica: aparece durante: %s."
-
-#: ui/codex_screen.gd:723
+#: ui/codex_screen.gd:658
 msgid "Unlocked  ·  %s"
 msgstr "Desbloqueado  ·  %s"
 
-#: ui/codex_screen.gd:762
+#: ui/codex_screen.gd:697
 msgid "Total"
 msgstr "Total"
 
-#: ui/codex_screen.gd:763
+#: ui/codex_screen.gd:698
 msgid "Junk removed"
 msgstr "Sucata removida"
 
-#: ui/codex_screen.gd:763
+#: ui/codex_screen.gd:698
 msgid "by type"
 msgstr "por tipo"
 
-#: ui/codex_screen.gd:764 planets/verdance/data/research.json:branches[cleaning].name
+#: ui/codex_screen.gd:699 planets/verdance/data/research.json:branches[cleaning].name
 msgid "Cleaning"
 msgstr "Limpeza"
 
-#: ui/codex_screen.gd:766
+#: ui/codex_screen.gd:701
 msgid "Hexes restored"
 msgstr "Hexágonos restaurados"
 
-#: ui/codex_screen.gd:767
+#: ui/codex_screen.gd:702
 msgid "Bales pressed"
 msgstr "Fardos prensados"
 
-#: ui/codex_screen.gd:768
+#: ui/codex_screen.gd:703
 msgid "Pure bales"
 msgstr "Fardos puros"
 
-#: ui/codex_screen.gd:769
+#: ui/codex_screen.gd:704
 msgid "Perfect bales"
 msgstr "Fardos perfeitos"
 
-#: ui/codex_screen.gd:770
+#: ui/codex_screen.gd:705
 msgid "Lumpy bales"
 msgstr "Fardos irregulares"
 
-#: ui/codex_screen.gd:771
+#: ui/codex_screen.gd:706
 msgid "Bales cashed in"
 msgstr "Fardos trocados"
 
-#: ui/codex_screen.gd:774 ui/globe_view.gd:153 planets/verdance/data/hex_levels.json:levels[3].name
+#: ui/codex_screen.gd:709 ui/globe_view.gd:153 planets/verdance/data/hex_levels.json:levels[3].name
 msgid "Growing"
 msgstr "Cultivo"
 
-#: ui/codex_screen.gd:775
+#: ui/codex_screen.gd:710
 msgid "Seeds planted"
 msgstr "Sementes plantadas"
 
-#: ui/codex_screen.gd:776
+#: ui/codex_screen.gd:711
 msgid "Plants bloomed"
 msgstr "Plantas floridas"
 
-#: ui/codex_screen.gd:777
+#: ui/codex_screen.gd:712
 msgid "Air filtered"
 msgstr "Ar filtrado"
 
-#: ui/codex_screen.gd:779 planets/verdance/data/codex.json:categories[robots].name
+#: ui/codex_screen.gd:714 planets/verdance/data/codex.json:categories[robots].name
 msgid "Robots"
 msgstr "Robôs"
 
-#: ui/codex_screen.gd:781
+#: ui/codex_screen.gd:716
 msgid "Bales by robots"
 msgstr "Fardos por robôs"
 
-#: ui/codex_screen.gd:782
+#: ui/codex_screen.gd:717
 msgid "Parts dug up"
 msgstr "Peças desenterradas"
 
-#: ui/codex_screen.gd:784
+#: ui/codex_screen.gd:719
 msgid "Exploring"
 msgstr "Exploração"
 
-#: ui/codex_screen.gd:785
+#: ui/codex_screen.gd:720
 msgid "Distance rolled"
 msgstr "Distância percorrida"
 
-#: ui/codex_screen.gd:786
+#: ui/codex_screen.gd:721
 msgid "Memory shards read"
 msgstr "Fragmentos de memória lidos"
 
-#: ui/codex_screen.gd:787
+#: ui/codex_screen.gd:722
 msgid "Codex entries"
 msgstr "Entradas do Códice"
 
-#: ui/codex_screen.gd:790
+#: ui/codex_screen.gd:725
 msgid "Progress"
 msgstr "Progresso"
 
-#: ui/codex_screen.gd:791
+#: ui/codex_screen.gd:726
 msgid "Upgrades bought"
 msgstr "Melhorias compradas"
 
-#: ui/codex_screen.gd:792
+#: ui/codex_screen.gd:727
 msgid "Field notes logged"
 msgstr "Notas de campo registradas"
 
-#: ui/codex_screen.gd:793
+#: ui/codex_screen.gd:728
 msgid "Research done"
 msgstr "Pesquisas feitas"
 
-#: ui/codex_screen.gd:795
+#: ui/codex_screen.gd:730
 msgid "Best hub level"
 msgstr "Melhor nível de base"
 
-#: ui/codex_screen.gd:845
+#: ui/codex_screen.gd:780
 msgid "%s kg"
 msgstr "%s kg"
 
-#: ui/codex_screen.gd:846
+#: ui/codex_screen.gd:781
 msgid "%.1f kg"
 msgstr "%.1f kg"
 
-#: ui/codex_screen.gd:850
+#: ui/codex_screen.gd:785
 msgid "%.2f km"
 msgstr "%.2f km"
 
-#: ui/codex_screen.gd:860
+#: ui/codex_screen.gd:795
 msgid "%dm %02ds"
 msgstr "%dm %02ds"
 
-#: ui/codex_screen.gd:861
+#: ui/codex_screen.gd:796
 msgid "%ds"
 msgstr "%d s"
 
@@ -3450,34 +3215,6 @@ msgstr "%d robôs"
 msgid "%d / %d hexes clean"
 msgstr "%d / %d hexágonos limpos"
 
-#: ui/contracts_panel.gd:75
-msgid "%d done"
-msgid_plural "%d done"
-msgstr[0] "%d feito"
-msgstr[1] "%d feitos"
-
-#: ui/contracts_panel.gd:80
-msgid "Live now:  %s  ·  %s  ·  %s left"
-msgstr "Agora:  %s  ·  %s  ·  faltam %s"
-
-#: ui/contracts_panel.gd:83
-msgid "Every reward unlocked. Each %d more requests pay a Vintage part's worth of parts."
-msgstr "Todas as recompensas desbloqueadas. A cada %d pedidos, peças no valor de uma peça Vintage."
-
-#: ui/contracts_panel.gd:86
-msgid "Next unlock in %d request:  %s"
-msgid_plural "Next unlock in %d requests:  %s"
-msgstr[0] "Próximo desbloqueio em %d pedido:  %s"
-msgstr[1] "Próximo desbloqueio em %d pedidos:  %s"
-
-#: ui/contracts_panel.gd:117
-msgid "A new request is on its way"
-msgstr "Um novo pedido está a caminho"
-
-#: ui/contracts_panel.gd:143
-msgid "Claim"
-msgstr "Resgatar"
-
 #: ui/core_meter.gd:22
 msgid "BLOOM CORE"
 msgstr "NÚCLEO FLORAL"
@@ -3554,17 +3291,9 @@ msgstr "Cidades restauradas"
 msgid "%d of %d"
 msgstr "%d de %d"
 
-#: ui/event_hud.gd:127
+#: ui/event_hud.gd:123
 msgid "STREAK"
 msgstr "SEQUÊNCIA"
-
-#: ui/event_hud.gd:192
-msgid "REQUEST READY  ·  claim it at the workbench"
-msgstr "PEDIDO PRONTO  ·  receba na bancada"
-
-#: ui/event_hud.gd:192
-msgid "%d REQUESTS READY  ·  claim them at the workbench"
-msgstr "%d PEDIDOS PRONTOS  ·  receba na bancada"
 
 #: ui/extras_cd_list.gd:64
 msgid "CDS  ·  %d / %d"
@@ -3654,121 +3383,61 @@ msgstr "CD player"
 msgid "Album"
 msgstr "Álbum"
 
-#: ui/extras_panel.gd:9
-msgid "Nursery"
-msgstr "Viveiro"
-
-#: ui/extras_panel.gd:79
+#: ui/extras_panel.gd:76
 msgid "KEEPSAKES"
 msgstr "LEMBRANÇAS"
 
-#: ui/extras_panel.gd:91
+#: ui/extras_panel.gd:88
 msgid "%s / %s  switch tabs"
 msgstr "%s / %s  trocar de aba"
 
-#: ui/extras_panel.gd:231
+#: ui/extras_panel.gd:226
 msgid "DISTRICTS"
 msgstr "DISTRITOS"
 
-#: ui/extras_panel.gd:233
+#: ui/extras_panel.gd:228
 msgid "Lumi takes a picture of each district on arrival, and \"after\" pictures as it is restored."
 msgstr "Lumi tira uma foto de cada distrito ao chegar, e fotos de \"depois\" conforme ele é restaurado."
 
-#: ui/extras_panel.gd:237
+#: ui/extras_panel.gd:232
 msgid "Before only"
 msgstr "Só antes"
 
-#: ui/extras_panel.gd:245
+#: ui/extras_panel.gd:240
 msgid "PHOTOS  ·  %d"
 msgstr "FOTOS  ·  %d"
 
-#: ui/extras_panel.gd:257
+#: ui/extras_panel.gd:252
 msgid "Photo"
 msgstr "Foto"
 
-#: ui/extras_panel.gd:266
+#: ui/extras_panel.gd:261
 msgid "Photos you take in photo mode show up here."
 msgstr "As fotos que você tira no modo foto aparecem aqui."
 
-#: ui/extras_panel.gd:270 ui/photo_panel.gd:58
+#: ui/extras_panel.gd:265 ui/photo_panel.gd:58
 msgid "PHOTO MODE"
 msgstr "MODO FOTO"
 
-#: ui/extras_panel.gd:280
+#: ui/extras_panel.gd:275
 msgid "No pictures yet."
 msgstr "Ainda sem fotos."
 
-#: ui/extras_panel.gd:291
+#: ui/extras_panel.gd:286
 msgid "BEFORE"
 msgstr "ANTES"
 
-#: ui/extras_panel.gd:310
+#: ui/extras_panel.gd:305
 msgid "not yet"
 msgstr "ainda não"
 
-#: ui/extras_panel.gd:320
+#: ui/extras_panel.gd:315
 msgid "The \"after\" picture comes when the district is half clean."
 msgstr "A foto de \"depois\" vem quando o distrito está meio limpo."
 
-#: ui/extras_panel.gd:326
-msgid "CARETAKERS  ·  %d"
-msgstr "CUIDADORES  ·  %d"
-
-#: ui/extras_panel.gd:327
-msgid "Garden bonus: plants grow %d%% faster (up to %d%%)."
-msgstr "Bônus do jardim: as plantas crescem %d%% mais rápido (até %d%%)."
-
-#: ui/extras_panel.gd:330
-msgid "No one has retired yet. Old or Mk I-II robots can retire here; they'll look after the nursery garden at the base."
-msgstr "Ninguém se aposentou ainda. Robôs velhos ou Mk I-II podem se aposentar aqui; eles vão cuidar do jardim do viveiro na base."
-
-#: ui/extras_panel.gd:339
-msgid "RETIRE A ROBOT"
-msgstr "APOSENTAR UM ROBÔ"
-
-#: ui/extras_panel.gd:341
-msgid "Retiring gives a few parts back, and the robot keeps its name and personality in the nursery."
-msgstr "Aposentar devolve algumas peças, e o robô mantém o nome e a personalidade no viveiro."
-
-#: ui/extras_panel.gd:343
-msgid "No robots in this district."
-msgstr "Nenhum robô neste distrito."
-
-#: ui/extras_panel.gd:350
-msgid "Press again to retire (+%d parts)"
-msgstr "Aperte de novo para aposentar (+%d peças)"
-
-#: ui/extras_panel.gd:350
-msgid "Retire  (+%d parts)"
-msgstr "Aposentar  (+%d peças)"
-
-#: ui/extras_panel.gd:399
+#: ui/extras_panel.gd:348
 msgid "No picture yet"
 msgstr "Ainda sem foto"
-
-#: ui/garden_placer.gd:118
-msgid "Garden Mode opens when this base reaches level 5, or once the Cradle comes home."
-msgstr "O modo jardim abre quando esta base chegar ao nível 5, ou quando a Cradle voltar para casa."
-
-#: ui/garden_placer.gd:234
-msgid "charm +%.1f"
-msgstr "charme +%.1f"
-
-#: ui/garden_placer.gd:237
-msgid "%s here: %s to pick it up"
-msgstr "%s aqui: %s para pegar"
-
-#: ui/garden_placer.gd:240
-msgid "GARDEN MODE   ·   Charm %.1f   ·   +%.1f%% plant growth here"
-msgstr "MODO JARDIM   ·   Charme %.1f   ·   +%.1f%% de crescimento das plantas aqui"
-
-#: ui/garden_placer.gd:241
-msgid "[%s] place   [%s] rotate   [%s / %s] item   [%s] pick up   [%s] done"
-msgstr "[%s] colocar   [%s] girar   [%s / %s] item   [%s] pegar   [%s] pronto"
-
-#: ui/garden_placer.gd:295
-msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
-msgstr "Pegou: %s. Coloque em outro lugar ou deixe guardado."
 
 #: ui/glim_bench.gd:58 ui/hub_panel.gd:66 ui/upgrades_panel.gd:144
 msgid "Upgrade"
@@ -3890,23 +3559,19 @@ msgstr "Objetivo concluído  ·  %s%s"
 msgid "+%s seeds"
 msgstr "+%s sementes"
 
-#: ui/hotbar.gd:32
+#: ui/hotbar.gd:31
 msgid "SCOOP"
 msgstr "PÁ"
 
-#: ui/hotbar.gd:33
+#: ui/hotbar.gd:32
 msgid "PLANT"
 msgstr "PLANTAR"
 
-#: ui/hotbar.gd:293
-msgid "+%d XP"
-msgstr "+%d XP"
-
-#: ui/hotbar.gd:306
+#: ui/hotbar.gd:236
 msgid "CORE %d%%"
 msgstr "NÚCLEO %d%%"
 
-#: ui/hotbar.gd:339
+#: ui/hotbar.gd:258
 msgid "SURGE"
 msgstr "SURGE"
 
@@ -4002,98 +3667,94 @@ msgstr ""
 msgid "All built"
 msgstr "Todos construídos"
 
-#: ui/hud.gd:79
-msgid "Lumi reached level %d%s"
-msgstr "Lumi chegou ao nível %d%s"
-
-#: ui/hud.gd:305
+#: ui/hud.gd:299
 msgid "WREN SIGNAL   %d%%"
 msgstr "SINAL DA WREN   %d%%"
 
-#: ui/hud.gd:334
+#: ui/hud.gd:328
 msgid "HEX  %d%% CLEAR"
 msgstr "HEX  %d%% LIMPO"
 
-#: ui/hud.gd:345
+#: ui/hud.gd:339
 msgid "%s  BASE"
 msgstr "BASE %s"
 
-#: ui/hud.gd:348
+#: ui/hud.gd:342
 msgid "CARRYING %d/%d"
 msgstr "CARREGANDO %d/%d"
 
-#: ui/hud.gd:374
+#: ui/hud.gd:366
 msgid "HEX  CLEAR"
 msgstr "HEX  LIMPO"
 
-#: ui/hud.gd:378
+#: ui/hud.gd:370
 msgid "HEX  %s"
 msgstr "HEX  %s"
 
-#: ui/hud.gd:384
+#: ui/hud.gd:376
 msgid "  SUSTAIN %d%%"
 msgstr "  SUSTENTADO %d%%"
 
-#: ui/hud.gd:386
+#: ui/hud.gd:378
 msgid "  THIRSTY"
 msgstr "  COM SEDE"
 
-#: ui/hud.gd:411
+#: ui/hud.gd:403
 msgid "%s · %s"
 msgstr "%s · %s"
 
-#: ui/hud.gd:413
+#: ui/hud.gd:405
 msgid "%s · %s %d%%"
 msgstr "%s · %s %d%%"
 
-#: ui/hud.gd:416
+#: ui/hud.gd:408
 msgid "%d of %d city restored"
 msgid_plural "%d of %d cities restored"
 msgstr[0] "%d de %d cidade restaurada"
 msgstr[1] "%d de %d cidades restauradas"
 
-#: ui/hud.gd:430
+#: ui/hud.gd:422
 msgid "MASTERY  %s"
 msgstr "MAESTRIA  %s"
 
-#: ui/hud.gd:441
+#: ui/hud.gd:433
 msgid "%s mastery %d. Robots can work it now."
 msgstr "%s: maestria %d. Os robôs já podem trabalhar nisso."
 
-#: ui/hud.gd:443
+#: ui/hud.gd:435
 msgid "%s mastery %d. You and your crew work it faster."
 msgstr "%s: maestria %d. Você e sua equipe trabalham mais rápido."
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:452
+#: ui/hud.gd:444
 msgid "%s   pick up bale"
 msgstr "%s   pegar fardo"
 
-#: ui/hud.gd:453
+#: ui/hud.gd:445
 msgid "%s   dig up part"
 msgstr "%s   desenterrar peça"
 
-#: ui/hud.gd:454
+#: ui/hud.gd:446
 msgid "%s   read memory shard"
 msgstr "%s   ler fragmento de memória"
 
-#: ui/hud.gd:455
+#: ui/hud.gd:447
 msgid "%s   pick up the seed tin"
 msgstr "%s   pegar a lata de sementes"
 
-#: ui/hud.gd:456
+#: ui/hud.gd:448
 msgid "%s   set bale down"
 msgstr "%s   largar fardo"
 
-#: ui/hud.gd:457
+#: ui/hud.gd:449
 msgid "%s   workbench"
 msgstr "%s   bancada"
 
-#: ui/hud.gd:458
+#: ui/hud.gd:450
 msgid "Filling the watering can"
 msgstr "Enchendo o regador"
 
-#: ui/hud.gd:459
+#: ui/hud.gd:451
 msgid "Can empty. It fills in the base yard, by the bin."
 msgstr "Regador vazio. Ele enche no pátio da base, perto da lixeira."
 
@@ -4104,10 +3765,6 @@ msgstr "prensar fardo"
 #: ui/key_hints.gd:114
 msgid "tools"
 msgstr "ferramentas"
-
-#: ui/late_menu.gd:9
-msgid "Garden Mode  [%s]"
-msgstr "Modo jardim  [%s]"
 
 #: ui/lens_overlay.gd:61
 msgid ""
@@ -4195,38 +3852,22 @@ msgstr "Carregando"
 msgid "Warming up"
 msgstr "Aquecendo"
 
-#: ui/locker_editors.gd:13 data/currencies.json:currencies[parts].name planets/verdance/data/hub.json:materials.metal.name
+#: ui/locker_editors.gd:12 data/currencies.json:currencies[parts].name planets/verdance/data/hub.json:materials.metal.name
 #: planets/verdance/data/hub.json:materials.plastic.name planets/verdance/data/hub.json:materials.glass.name
 msgid "Parts"
 msgstr "Peças"
 
-#: ui/locker_editors.gd:13 data/cosmetics.json:targets.crew.slots[crew_paint].name
+#: ui/locker_editors.gd:12 data/cosmetics.json:targets.crew.slots[crew_paint].name
 msgid "Fleet mark"
 msgstr "Marca da frota"
 
-#: ui/locker_editors.gd:13 data/cosmetics.json:slots[glow].name data/cosmetics.json:targets.crew.slots[crew_glow].name
+#: ui/locker_editors.gd:12 data/cosmetics.json:slots[glow].name data/cosmetics.json:targets.crew.slots[crew_glow].name
 msgid "Light colour"
 msgstr "Cor da luz"
 
-#: ui/locker_editors.gd:14 data/cosmetics.json:slots[paint].name data/style_parts.json:slots[paint].name
-msgid "Paint"
-msgstr "Pintura"
-
-#: ui/locker_editors.gd:14 data/style_parts.json:slots[trim].name
-msgid "Trim"
-msgstr "Acabamento"
-
-#: ui/locker_editors.gd:14 data/cosmetics.json:targets.glim.slots[glim_glow].name
-msgid "Glow"
-msgstr "Brilho"
-
-#: ui/locker_editors.gd:57
+#: ui/locker_editors.gd:55
 msgid "Every %s wears this"
 msgstr "Todo %s usa isto"
-
-#: ui/locker_editors.gd:195
-msgid "Ship looks: the tiers keep their shape"
-msgstr "Visual da nave: os níveis mantêm a forma"
 
 #: ui/locker_panel.gd:95
 msgid "Close"
@@ -4345,11 +3986,11 @@ msgstr "Continuar"
 msgid "New Game"
 msgstr "Novo jogo"
 
-#: ui/main_menu.gd:342 ui/main_menu.gd:521 ui/pause_menu.gd:68
+#: ui/main_menu.gd:342 ui/main_menu.gd:521 ui/pause_menu.gd:67
 msgid "Settings"
 msgstr "Configurações"
 
-#: ui/main_menu.gd:344 ui/pause_menu.gd:72
+#: ui/main_menu.gd:344 ui/pause_menu.gd:71
 msgid "Quit"
 msgstr "Sair"
 
@@ -4476,7 +4117,7 @@ msgstr "Códice  [%s]"
 msgid "Photo mode  [%s]"
 msgstr "Modo foto  [%s]"
 
-#: ui/pause_menu.gd:63
+#: ui/pause_menu.gd:62
 msgid "Keepsakes"
 msgstr "Lembranças"
 
@@ -4862,7 +4503,7 @@ msgstr "PESQUISA  %s  %d/%d"
 msgid "RESEARCH  PICK A NODE  ·  %d DATA BANKED"
 msgstr "PESQUISA  ESCOLHA UM NÓ  ·  %d DADOS GUARDADOS"
 
-#: ui/rig_panel.gd:102 ui/upgrades_screen.gd:17
+#: ui/rig_panel.gd:102 ui/upgrades_screen.gd:16
 msgid "Rig"
 msgstr "Equipamento"
 
@@ -5474,19 +5115,19 @@ msgstr "faltam %s · ~%s"
 msgid "Where it comes from:  %s"
 msgstr "De onde vem:  %s"
 
-#: ui/upgrades_screen.gd:15
+#: ui/upgrades_screen.gd:14
 msgid "Bots"
 msgstr "Bots"
 
-#: ui/upgrades_screen.gd:16
+#: ui/upgrades_screen.gd:15
 msgid "Research"
 msgstr "Pesquisa"
 
-#: ui/upgrades_screen.gd:155
+#: ui/upgrades_screen.gd:151
 msgid "WORKBENCH"
 msgstr "BANCADA"
 
-#: ui/upgrades_screen.gd:274
+#: ui/upgrades_screen.gd:270
 msgid "Not open yet. Keep playing."
 msgstr "Ainda não abriu. Continue jogando."
 
@@ -6050,30 +5691,6 @@ msgstr "Pit stop"
 msgid "Build a recharge pad at an outpost."
 msgstr "Construa uma plataforma de recarga num posto avançado."
 
-#: data/achievements.json:achievements[builder_mix].name
-msgid "Mix and Match"
-msgstr "Misture e combine"
-
-#: data/achievements.json:achievements[builder_mix].desc
-msgid "Style a robot with all five custom parts in the Locker."
-msgstr "Personalize um robô com as cinco peças no Armário."
-
-#: data/achievements.json:achievements[builder_maker].name
-msgid "As the Makers Made It"
-msgstr "Como os Criadores fizeram"
-
-#: data/achievements.json:achievements[builder_maker].desc
-msgid "Fit the full Maker set (shell, optic and glider) on one robot."
-msgstr "Instale o conjunto completo dos Criadores (carcaça, óptica e planador) num robô."
-
-#: data/achievements.json:achievements[builder_hats].name
-msgid "Hat Rack"
-msgstr "Cabideiro"
-
-#: data/achievements.json:achievements[builder_hats].desc
-msgid "Collect 5 different robot toppers."
-msgstr "Colecione 5 chapéus de robô diferentes."
-
 #: data/achievements.json:achievements[pet_cat].name
 msgid "A Friend in Old Town"
 msgstr "Uma amiga na Cidade Velha"
@@ -6118,46 +5735,6 @@ msgstr "Fotógrafo da natureza"
 msgid "Photograph 6 different animals in photo mode."
 msgstr "Fotografe 6 animais diferentes no modo foto."
 
-#: data/achievements.json:achievements[late_decor_1].name
-msgid "Home Touches"
-msgstr "Toques de lar"
-
-#: data/achievements.json:achievements[late_decor_1].desc
-msgid "Place a decoration in Garden Mode."
-msgstr "Coloque uma decoração no modo jardim."
-
-#: data/achievements.json:achievements[late_decor_25].name
-msgid "Landscaper"
-msgstr "Paisagista"
-
-#: data/achievements.json:achievements[late_decor_25].desc
-msgid "Place 25 decorations."
-msgstr "Coloque 25 decorações."
-
-#: data/achievements.json:achievements[late_decor_all].name
-msgid "Full Catalogue"
-msgstr "Catálogo completo"
-
-#: data/achievements.json:achievements[late_decor_all].desc
-msgid "Place every kind of decoration at least once."
-msgstr "Coloque cada tipo de decoração pelo menos uma vez."
-
-#: data/achievements.json:achievements[late_charm_25].name
-msgid "Picture Perfect"
-msgstr "Cartão-postal"
-
-#: data/achievements.json:achievements[late_charm_25].desc
-msgid "Reach 25 charm in one district."
-msgstr "Alcance 25 de charme em um distrito."
-
-#: data/achievements.json:achievements[home_answered].name
-msgid "The Cradle Answers"
-msgstr "A Cradle responde"
-
-#: data/achievements.json:achievements[home_answered].desc
-msgid "Light the Cradle Returns beacon and hear from the ark."
-msgstr "Acenda o sinalizador do Retorno da Cradle e ouça a arca."
-
 #: data/achievements.json:achievements[extras_radio_6].name
 msgid "Pirate Radio"
 msgstr "Rádio pirata"
@@ -6181,22 +5758,6 @@ msgstr "Antes e agora"
 #: data/achievements.json:achievements[extras_album_4].desc
 msgid "Collect 4 pictures in the photo album."
 msgstr "Junte 4 fotos no álbum."
-
-#: data/achievements.json:achievements[extras_retire_1].name
-msgid "Happy Retirement"
-msgstr "Feliz aposentadoria"
-
-#: data/achievements.json:achievements[extras_retire_1].desc
-msgid "Retire a robot to the nursery garden."
-msgstr "Aposente um robô no jardim do viveiro."
-
-#: data/achievements.json:achievements[extras_visits_5].name
-msgid "Garden Party"
-msgstr "Festa no jardim"
-
-#: data/achievements.json:achievements[extras_visits_5].desc
-msgid "Say hi to the nursery caretakers 5 times."
-msgstr "Diga oi aos cuidadores do viveiro 5 vezes."
 
 #: planets/verdance/data/bloom.json:milestones[first_meadow].desc
 msgid "25 Thriving hexes anywhere on Verdance."
@@ -6262,7 +5823,7 @@ msgstr "Prensa de composto"
 msgid "Presses plant scraps into compost and seeds. Worth building once something grows."
 msgstr "Prensa restos de plantas em composto e sementes. Vale a pena quando algo crescer."
 
-#: planets/verdance/data/camp.json:builds.composter.flag_text planets/verdance/data/camp.json:builds.nursery.flag_text
+#: planets/verdance/data/camp.json:builds.composter.flag_text
 msgid "Grow your first seed first."
 msgstr "Primeiro faça sua primeira semente crescer."
 
@@ -6277,14 +5838,6 @@ msgstr "Um armário alto de aço com uma pequena plataforma giratória. Chegue p
 #: planets/verdance/data/camp.json:builds.locker.flag_text
 msgid "Find a piece of a look first."
 msgstr "Encontre primeiro uma peça de visual."
-
-#: planets/verdance/data/camp.json:builds.nursery.name
-msgid "Robot Nursery"
-msgstr "Berçário de robôs"
-
-#: planets/verdance/data/camp.json:builds.nursery.desc
-msgid "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand."
-msgstr "Um gramado murado com canteiros de flores onde robôs aposentados cuidam do jardim e dão uma mão à sua equipe."
 
 #: planets/verdance/data/camp.json:builds.glim.name planets/verdance/data/objectives.json:objectives[glim].text
 msgid "Repair Glim"
@@ -7355,6 +6908,10 @@ msgstr "Pelo telescópio, num mundo onde os drones do Ledger caíram."
 msgid "A dump drone that never made it home, nose-down in the junk of another world. Its red eye still blinks. Even from here it looks embarrassed."
 msgstr "Um drone-caçamba que nunca voltou para casa, de bico enfiado no lixo de outro mundo. O olho vermelho ainda pisca. Mesmo daqui, parece envergonhado."
 
+#: data/cosmetics.json:slots[paint].name data/style_parts.json:slots[paint].name
+msgid "Paint"
+msgstr "Pintura"
+
 #: data/cosmetics.json:slots[paint].hint data/cosmetics.json:targets.glim.slots[glim_shell].hint
 msgid "Paint tins lie buried under ordinary trash."
 msgstr "Latas de tinta ficam enterradas sob o lixo comum."
@@ -7673,6 +7230,10 @@ msgstr "Drone pequenino"
 msgid "Shell"
 msgstr "Carcaça"
 
+#: data/cosmetics.json:targets.glim.slots[glim_glow].name
+msgid "Glow"
+msgstr "Brilho"
+
 #: data/cosmetics.json:targets.glim.slots[glim_top].name
 msgid "Top"
 msgstr "Topo"
@@ -7909,16 +7470,15 @@ msgstr "Auréolas holo"
 msgid "A slowly turning hologram halo over each robot. Very smug."
 msgstr "Uma auréola holográfica girando devagar sobre cada robô. Muito convencida."
 
-#: data/cosmetics.json:targets.crew.pieces[crew_glow_cyan].name data/glim.json:glows[cyan].name data/ship_style.json:glows[cyan].name
-#: data/style_parts.json:swatches[cyan].name
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_cyan].name data/glim.json:glows[cyan].name data/style_parts.json:swatches[cyan].name
 msgid "Cyan"
 msgstr "Ciano"
 
-#: data/cosmetics.json:targets.crew.pieces[crew_glow_mint].name data/ship_style.json:glows[mint].name data/style_parts.json:swatches[mint].name
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_mint].name data/style_parts.json:swatches[mint].name
 msgid "Mint"
 msgstr "Menta"
 
-#: data/cosmetics.json:targets.crew.pieces[crew_glow_amber].name data/ship_style.json:glows[amber].name data/style_parts.json:swatches[amber].name
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_amber].name data/style_parts.json:swatches[amber].name
 msgid "Amber"
 msgstr "Âmbar"
 
@@ -7926,8 +7486,7 @@ msgstr "Âmbar"
 msgid "Rose"
 msgstr "Rosa"
 
-#: data/cosmetics.json:targets.crew.pieces[crew_glow_violet].name data/glim.json:glows[violet].name data/ship_style.json:glows[violet].name
-#: data/style_parts.json:swatches[violet].name
+#: data/cosmetics.json:targets.crew.pieces[crew_glow_violet].name data/glim.json:glows[violet].name data/style_parts.json:swatches[violet].name
 msgid "Violet"
 msgstr "Violeta"
 
@@ -7966,86 +7525,6 @@ msgstr "SEMENTES"
 #: data/currencies.json:currencies[seeds].desc
 msgid "For planting. The compost press turns paper, card and spent blooms into seeds."
 msgstr "Para plantar. A prensa de composto transforma papel, papelão e flores murchas em sementes."
-
-#: data/decor.json:types[path].name
-msgid "Stone Path"
-msgstr "Caminho de pedra"
-
-#: data/decor.json:types[path].desc
-msgid "Flat stepping stones. Paths join everything up."
-msgstr "Pedras planas de passagem. Caminhos ligam tudo."
-
-#: data/decor.json:types[flower_bed].name
-msgid "Flower Bed"
-msgstr "Canteiro de flores"
-
-#: data/decor.json:types[flower_bed].desc
-msgid "A low bed of mixed flowers. Bees and butterflies approve."
-msgstr "Um canteiro baixo de flores variadas. Abelhas e borboletas aprovam."
-
-#: data/decor.json:types[planter].name
-msgid "Planter"
-msgstr "Floreira"
-
-#: data/decor.json:types[planter].desc
-msgid "A white hex planter with a small shrub, like the ones the future city grows."
-msgstr "Uma floreira hexagonal branca com um arbusto pequeno, como as que a cidade do futuro cultiva."
-
-#: data/decor.json:types[bench].name
-msgid "Bench"
-msgstr "Banco"
-
-#: data/decor.json:types[bench].desc
-msgid "Wood slats on cast feet. Cats like to sleep on it."
-msgstr "Ripas de madeira sobre pés de ferro fundido. Os gatos adoram dormir nele."
-
-#: data/decor.json:types[lamp].name
-msgid "Garden Lamp"
-msgstr "Luminária de jardim"
-
-#: data/decor.json:types[lamp].desc
-msgid "A slim lamp with a warm glow after dark."
-msgstr "Uma luminária fina com um brilho quentinho depois que escurece."
-
-#: data/decor.json:types[bird_bath].name
-msgid "Bird Bath"
-msgstr "Bebedouro de pássaros"
-
-#: data/decor.json:types[bird_bath].desc
-msgid "A stone basin of clean water."
-msgstr "Uma bacia de pedra com água limpa."
-
-#: data/decor.json:types[fountain].name
-msgid "Fountain"
-msgstr "Fonte"
-
-#: data/decor.json:types[fountain].desc
-msgid "A tiered fountain, running again. Deer come to drink at dawn."
-msgstr "Uma fonte em camadas, correndo de novo. Os corços vêm beber ao amanhecer."
-
-#: data/decor.json:types[statue].name
-msgid "Maker Statue"
-msgstr "Estátua de Criador"
-
-#: data/decor.json:types[statue].desc
-msgid "A stone figure of one of the Makers, holding a watering can."
-msgstr "Uma figura de pedra de um dos Criadores, segurando um regador."
-
-#: data/decor.json:types[lumi_sculpture].name
-msgid "Lumi Sculpture"
-msgstr "Escultura de Lumi"
-
-#: data/decor.json:types[lumi_sculpture].desc
-msgid "A topiary-and-brass sculpture of Lumi holding up a seedling. Very modest."
-msgstr "Uma escultura de topiaria e latão de Lumi erguendo uma muda. Muito modesta."
-
-#: data/decor.json:types[wren_kite].name
-msgid "WREN Wind Kite"
-msgstr "Pipa do WREN"
-
-#: data/decor.json:types[wren_kite].desc
-msgid "A kite shaped like WREN's bird, tethered to a post and always flying."
-msgstr "Uma pipa no formato do pássaro do WREN, presa a um poste e sempre no ar."
 
 #: data/designs.json:designs[aurora].tagline
 msgid "Baseline / Explorer"
@@ -9123,18 +8602,6 @@ msgstr "Uma lata de sementes de Verdance, igual à da estufa velha. Lumi a enche
 msgid "Lumi's tin of Verdance soil. A little bit of home, already spilled on new ground. Good."
 msgstr "A lata de terra de Verdance de Lumi. Um pedacinho de casa, já espalhado em chão novo. Que bom."
 
-#: planets/verdance/data/events.json:events[supply_drop].name
-msgid "Supply Drop"
-msgstr "Entrega de suprimentos"
-
-#: planets/verdance/data/events.json:events[supply_drop].toast
-msgid "Supply Drop! A crate parachuted onto the junk %s of you. Clear the junk around it to crack it open."
-msgstr "Entrega de suprimentos! Uma caixa caiu de paraquedas na sucata, %s de você. Limpe a sucata em volta para abri-la."
-
-#: planets/verdance/data/events.json:events[supply_drop].hud
-msgid "Clear the junk around the crate"
-msgstr "Limpe a sucata em volta da caixa"
-
 #: planets/verdance/data/events.json:events[salvage_surge].name
 msgid "Salvage Glint"
 msgstr "Brilho de sucata"
@@ -9158,30 +8625,6 @@ msgstr "Pancada de chuva. Chuva de verdade, a primeira em anos. Suas plantas nã
 #: planets/verdance/data/events.json:events[rain_shower].hud
 msgid "Plants stay watered while it rains"
 msgstr "As plantas ficam regadas enquanto chove"
-
-#: planets/verdance/data/events.json:events[robot_hiccup].name
-msgid "Robot Hiccup"
-msgstr "Soluço de robô"
-
-#: planets/verdance/data/events.json:events[robot_hiccup].toast
-msgid "%s has the hiccups and stopped working. Walk over and press E for a quick fix."
-msgstr "%s está com soluço e parou de trabalhar. Vá até lá e aperte E para um conserto rápido."
-
-#: planets/verdance/data/events.json:events[robot_hiccup].hud
-msgid "Walk to the stuck robot and press E"
-msgstr "Vá até o robô travado e aperte E"
-
-#: planets/verdance/data/events.json:events[wildlife_visit].name
-msgid "Wildlife Visit"
-msgstr "Visita de animal"
-
-#: planets/verdance/data/events.json:events[wildlife_visit].toast
-msgid "Something is visiting a thriving hex %s of you. Sneak up and press E to take a photo."
-msgstr "Algo está visitando um hexágono próspero %s de você. Chegue de mansinho e aperte E para tirar uma foto."
-
-#: planets/verdance/data/events.json:events[wildlife_visit].hud
-msgid "Find the visitor and press E for a photo"
-msgstr "Ache o visitante e aperte E para uma foto"
 
 #: planets/verdance/data/events.json:events[rare_part_signal].name
 msgid "Rare Part Signal"
@@ -9207,542 +8650,6 @@ msgstr "Auditoria do Ledger! Um drone simpático aposta que limpa um pedaço de 
 msgid "Scoop more of the ringed junk than the drone"
 msgstr "Recolha mais sucata do círculo que o drone"
 
-#: planets/verdance/data/events.json:animals[glowtail_fox].name
-msgid "Glowtail Fox"
-msgstr "Raposa-cauda-luz"
-
-#: planets/verdance/data/events.json:animals[glowtail_fox].body
-msgid "fox"
-msgstr "raposa"
-
-#: planets/verdance/data/events.json:animals[moss_deer].name
-msgid "Moss Deer"
-msgstr "Cervo-musgo"
-
-#: planets/verdance/data/events.json:animals[moss_deer].body
-msgid "deer"
-msgstr "cervo"
-
-#: planets/verdance/data/events.json:animals[lantern_hedgehog].name
-msgid "Lantern Hedgehog"
-msgstr "Ouriço-lanterna"
-
-#: planets/verdance/data/events.json:animals[lantern_hedgehog].body
-msgid "hedgehog"
-msgstr "ouriço"
-
-#: planets/verdance/data/events.json:animals[prism_heron].name
-msgid "Prism Heron"
-msgstr "Garça-prisma"
-
-#: planets/verdance/data/events.json:animals[prism_heron].body
-msgid "heron"
-msgstr "garça"
-
-#: planets/verdance/data/events.json:animals[velvet_hare].name
-msgid "Velvet Hare"
-msgstr "Lebre-veludo"
-
-#: planets/verdance/data/events.json:animals[velvet_hare].body
-msgid "hare"
-msgstr "lebre"
-
-#: planets/verdance/data/events.json:contracts.templates[metal_bales].text
-msgid "Press %d metal-heavy bales"
-msgstr "Prense %d fardos ricos em metal"
-
-#: planets/verdance/data/events.json:contracts.templates[perfect_bales].text
-msgid "Press %d Perfect bales"
-msgstr "Prense %d fardos perfeitos"
-
-#: planets/verdance/data/events.json:contracts.templates[pure_bales].text
-msgid "Press %d Pure bales (one junk type)"
-msgstr "Prense %d fardos puros (um tipo de sucata)"
-
-#: planets/verdance/data/events.json:contracts.templates[clean_hexes].text
-msgid "Clean %d hexes"
-msgstr "Limpe %d hexágonos"
-
-#: planets/verdance/data/events.json:contracts.templates[scoop].text
-msgid "Scoop %d pieces of junk"
-msgstr "Recolha %d pedaços de sucata"
-
-#: planets/verdance/data/events.json:contracts.templates[dig_parts].text
-msgid "Dig up %d buried parts"
-msgstr "Desenterre %d peças enterradas"
-
-#: planets/verdance/data/events.json:contracts.templates[streak].text
-msgid "Reach a tier %d cleaning streak"
-msgstr "Alcance uma sequência de limpeza de nível %d"
-
-#: planets/verdance/data/events.json:contracts.templates[plant].text
-msgid "Plant %d sprouts"
-msgstr "Plante %d brotos"
-
-#: planets/verdance/data/events.json:contracts.templates[bloom].text
-msgid "Grow %d plants to bloom"
-msgstr "Faça %d plantas florirem"
-
-#: planets/verdance/data/events.json:contracts.templates[sustain].text
-msgid "Get %d more hexes to Sustained"
-msgstr "Deixe mais %d hexágonos Sustentados"
-
-#: planets/verdance/data/events.json:contracts.templates[sustain].text_1
-msgid "Get one more hex to Sustained"
-msgstr "Deixe mais um hexágono Sustentado"
-
-#: planets/verdance/data/events.json:trinkets[brass_compass].name
-msgid "Brass Compass"
-msgstr "Bússola de latão"
-
-#: planets/verdance/data/events.json:trinkets[brass_compass].desc
-msgid "Points north, mostly. Came wrapped in a sock in a supply crate."
-msgstr "Aponta para o norte, quase sempre. Veio embrulhada numa meia numa caixa de suprimentos."
-
-#: planets/verdance/data/events.json:trinkets[tin_robot].name
-msgid "Wind-up Tin Robot"
-msgstr "Robô de lata de corda"
-
-#: planets/verdance/data/events.json:trinkets[tin_robot].desc
-msgid "Walks three steps and falls over. Lumi relates."
-msgstr "Dá três passos e cai. Lumi se identifica."
-
-#: planets/verdance/data/events.json:trinkets[seed_locket].name
-msgid "Seed Locket"
-msgstr "Medalhão de semente"
-
-#: planets/verdance/data/events.json:trinkets[seed_locket].desc
-msgid "A locket with one seed inside instead of a photo. Someone loved gardens."
-msgstr "Um medalhão com uma semente dentro no lugar de uma foto. Alguém amava jardins."
-
-#: planets/verdance/data/events.json:trinkets[snow_globe].name data/songs.json:songs[snow_globe].title
-msgid "Snow Globe"
-msgstr "Globo de neve"
-
-#: planets/verdance/data/events.json:trinkets[snow_globe].desc
-msgid "A tiny city under glass, still clean. A promise, maybe."
-msgstr "Uma cidade minúscula debaixo do vidro, ainda limpa. Uma promessa, talvez."
-
-#: planets/verdance/data/events.json:trinkets[crate_stencil].name
-msgid "Cradle Crate Stencil"
-msgstr "Estêncil das caixas da Cradle"
-
-#: planets/verdance/data/events.json:trinkets[crate_stencil].desc
-msgid "The stencil used to paint every supply crate. WREN asked for it back. You said no."
-msgstr "O estêncil usado para pintar cada caixa de suprimentos. A WREN pediu de volta. Você disse não."
-
-#: planets/verdance/data/events.json:trinkets[golden_bolt].name
-msgid "Golden Bolt"
-msgstr "Parafuso dourado"
-
-#: planets/verdance/data/events.json:trinkets[golden_bolt].desc
-msgid "Fell out of a surge hex, still warm. Fits nothing. Worth everything."
-msgstr "Caiu de um hexágono em surto, ainda morno. Não serve em nada. Vale tudo."
-
-#: planets/verdance/data/events.json:trinkets[glow_shard].name
-msgid "Surge Glass"
-msgstr "Vidro de surto"
-
-#: planets/verdance/data/events.json:trinkets[glow_shard].desc
-msgid "A sliver of glass that kept the surge's glow. It hums when you hold it."
-msgstr "Uma lasca de vidro que guardou o brilho do surto. Zumbe quando você segura."
-
-#: planets/verdance/data/events.json:trinkets[rain_jar].name
-msgid "Jar of First Rain"
-msgstr "Pote da primeira chuva"
-
-#: planets/verdance/data/events.json:trinkets[rain_jar].desc
-msgid "Collected during the first rain in years. Do not drink. Do not open. Just look."
-msgstr "Recolhida na primeira chuva em anos. Não beba. Não abra. Só olhe."
-
-#: planets/verdance/data/events.json:trinkets[paper_boat].name
-msgid "Paper Boat"
-msgstr "Barquinho de papel"
-
-#: planets/verdance/data/events.json:trinkets[paper_boat].desc
-msgid "Someone made it from a coupon. It sailed a whole puddle."
-msgstr "Alguém fez de um cupom. Atravessou uma poça inteira."
-
-#: planets/verdance/data/events.json:trinkets[lucky_spanner].name
-msgid "Lucky Spanner"
-msgstr "Chave da sorte"
-
-#: planets/verdance/data/events.json:trinkets[lucky_spanner].desc
-msgid "Fixes any hiccup, if you hit the right spot. Usually the left side."
-msgstr "Conserta qualquer soluço, se você acertar o ponto certo. Normalmente o lado esquerdo."
-
-#: planets/verdance/data/events.json:trinkets[hiccup_tape].name
-msgid "Diagnostic Tape"
-msgstr "Fita de diagnóstico"
-
-#: planets/verdance/data/events.json:trinkets[hiccup_tape].desc
-msgid "A printout of a robot hiccuping. It looks a lot like a song."
-msgstr "Uma impressão de um robô com soluço. Parece muito uma música."
-
-#: planets/verdance/data/events.json:trinkets[photo_glowtail_fox].name
-msgid "Photo: Glowtail Fox"
-msgstr "Foto: raposa-cauda-luz"
-
-#: planets/verdance/data/events.json:trinkets[photo_glowtail_fox].desc
-msgid "Its tail glows when it's curious. It was very curious about Lumi."
-msgstr "A cauda brilha quando ela fica curiosa. Ela ficou muito curiosa com Lumi."
-
-#: planets/verdance/data/events.json:trinkets[photo_moss_deer].name
-msgid "Photo: Moss Deer"
-msgstr "Foto: cervo-musgo"
-
-#: planets/verdance/data/events.json:trinkets[photo_moss_deer].desc
-msgid "Moss grows on its antlers. Butterflies rest there like it's a tree."
-msgstr "Cresce musgo nos chifres dele. Borboletas descansam ali como se fosse uma árvore."
-
-#: planets/verdance/data/events.json:trinkets[photo_lantern_hedgehog].name
-msgid "Photo: Lantern Hedgehog"
-msgstr "Foto: ouriço-lanterna"
-
-#: planets/verdance/data/events.json:trinkets[photo_lantern_hedgehog].desc
-msgid "The tips of its spines glow amber at dusk. It ate a beetle on camera. Sorry."
-msgstr "As pontas dos espinhos brilham âmbar ao entardecer. Ele comeu um besouro na frente da câmera. Desculpa."
-
-#: planets/verdance/data/events.json:trinkets[photo_prism_heron].name
-msgid "Photo: Prism Heron"
-msgstr "Foto: garça-prisma"
-
-#: planets/verdance/data/events.json:trinkets[photo_prism_heron].desc
-msgid "Its feathers split light into rainbows. It stood on one leg the whole time."
-msgstr "As penas dela dividem a luz em arco-íris. Ficou num pé só o tempo todo."
-
-#: planets/verdance/data/events.json:trinkets[photo_velvet_hare].name
-msgid "Photo: Velvet Hare"
-msgstr "Foto: lebre-veludo"
-
-#: planets/verdance/data/events.json:trinkets[photo_velvet_hare].desc
-msgid "Soft as a whisper, quick as a rumour. The photo is a little blurry. Worth it."
-msgstr "Macia como um sussurro, rápida como um boato. A foto ficou um pouco tremida. Valeu a pena."
-
-#: planets/verdance/data/events.json:trinkets[crumb_bag].name
-msgid "Crumb Bag"
-msgstr "Saco de migalhas"
-
-#: planets/verdance/data/events.json:trinkets[crumb_bag].desc
-msgid "A paper bag of crumbs and seed husks. The pigeons know the sound of it now."
-msgstr "Um saco de papel com migalhas e cascas de sementes. Os pombos já conhecem o barulho dele."
-
-#: planets/verdance/data/events.json:trinkets[pic_cat].name
-msgid "Photo: Stray Cat"
-msgstr "Foto: Gato de rua"
-
-#: planets/verdance/data/events.json:trinkets[pic_cat].desc
-msgid "A photo from photo mode. Old Town's cats never left."
-msgstr "Uma foto do modo foto. Os gatos da Cidade Velha nunca foram embora."
-
-#: planets/verdance/data/events.json:trinkets[pic_pigeon].name
-msgid "Photo: Pigeon"
-msgstr "Foto: Pombo"
-
-#: planets/verdance/data/events.json:trinkets[pic_pigeon].desc
-msgid "A photo from photo mode. Pigeons will live anywhere people once dropped crumbs."
-msgstr "Uma foto do modo foto. Pombos vivem em qualquer lugar onde as pessoas um dia deixaram cair migalhas."
-
-#: planets/verdance/data/events.json:trinkets[pic_sparrow].name
-msgid "Photo: Sparrow"
-msgstr "Foto: Pardal"
-
-#: planets/verdance/data/events.json:trinkets[pic_sparrow].desc
-msgid "A photo from photo mode. Small, brown and bossy."
-msgstr "Uma foto do modo foto. Pequeno, marrom e mandão."
-
-#: planets/verdance/data/events.json:trinkets[pic_rat].name
-msgid "Photo: Rat"
-msgstr "Foto: Rato"
-
-#: planets/verdance/data/events.json:trinkets[pic_rat].desc
-msgid "A photo from photo mode. Rats live in the gaps between the piles."
-msgstr "Uma foto do modo foto. Os ratos vivem nos vãos entre as pilhas."
-
-#: planets/verdance/data/events.json:trinkets[pic_rabbit].name
-msgid "Photo: Rabbit"
-msgstr "Foto: Coelho"
-
-#: planets/verdance/data/events.json:trinkets[pic_rabbit].desc
-msgid "A photo from photo mode. Rabbits arrive as soon as there is something green to nibble."
-msgstr "Uma foto do modo foto. Os coelhos chegam assim que há algo verde para mordiscar."
-
-#: planets/verdance/data/events.json:trinkets[pic_deer].name
-msgid "Photo: Roe Deer"
-msgstr "Foto: Corço"
-
-#: planets/verdance/data/events.json:trinkets[pic_deer].desc
-msgid "A photo from photo mode. Shy grazers that keep to the edge of the green, where they can see what's coming."
-msgstr "Uma foto do modo foto. Herbívoros tímidos que ficam na beira do verde, de onde podem ver o que vem chegando."
-
-#: planets/verdance/data/events.json:trinkets[pic_fox].name
-msgid "Photo: Red Fox"
-msgstr "Foto: Raposa-vermelha"
-
-#: planets/verdance/data/events.json:trinkets[pic_fox].desc
-msgid "A photo from photo mode. A fox trots along the hedges, nose down, tail out."
-msgstr "Uma foto do modo foto. Uma raposa trota ao longo das cercas vivas, focinho no chão, cauda esticada."
-
-#: planets/verdance/data/events.json:trinkets[pic_bee].name
-msgid "Photo: Honeybee"
-msgstr "Foto: Abelha"
-
-#: planets/verdance/data/events.json:trinkets[pic_bee].desc
-msgid "A photo from photo mode. Bees came back with the blooms."
-msgstr "Uma foto do modo foto. As abelhas voltaram com as flores."
-
-#: planets/verdance/data/events.json:trinkets[pic_songbird].name
-msgid "Photo: Robin"
-msgstr "Foto: Pisco-de-peito-ruivo"
-
-#: planets/verdance/data/events.json:trinkets[pic_songbird].desc
-msgid "A photo from photo mode. When a hex thrives, robins move in and sing."
-msgstr "Uma foto do modo foto. Quando um hexágono prospera, os piscos se mudam para lá e cantam."
-
-#: planets/verdance/data/events.json:trinkets[pic_firefly].name
-msgid "Photo: Firefly"
-msgstr "Foto: Vaga-lume"
-
-#: planets/verdance/data/events.json:trinkets[pic_firefly].desc
-msgid "A photo from photo mode. Tiny green lanterns over the grass after dark."
-msgstr "Uma foto do modo foto. Pequenas lanternas verdes sobre a grama depois que escurece."
-
-#: planets/verdance/data/events.json:trinkets[pic_fish].name
-msgid "Photo: Lake Fish"
-msgstr "Foto: Peixe de lago"
-
-#: planets/verdance/data/events.json:trinkets[pic_fish].desc
-msgid "A photo from photo mode. Once the water clears you can see them: small silver schools turning together over the sand."
-msgstr "Uma foto do modo foto. Quando a água clareia, dá para vê-los: pequenos cardumes prateados girando juntos sobre a areia."
-
-#: planets/verdance/data/events.json:trinkets[pic_duck].name
-msgid "Photo: Mallard"
-msgstr "Foto: Pato-real"
-
-#: planets/verdance/data/events.json:trinkets[pic_duck].desc
-msgid "A photo from photo mode. Ducks paddle, dabble with their tails in the air and complain loudly about everything."
-msgstr "Uma foto do modo foto. Os patos remam, mergulham com o rabo para cima e reclamam alto de tudo."
-
-#: planets/verdance/data/events.json:trinkets[pic_frog].name
-msgid "Photo: Green Frog"
-msgstr "Foto: Rã-verde"
-
-#: planets/verdance/data/events.json:trinkets[pic_frog].desc
-msgid "A photo from photo mode. Frogs sit at the water's edge and sing in the evening."
-msgstr "Uma foto do modo foto. As rãs ficam na beira da água e cantam ao entardecer."
-
-#: planets/verdance/data/events.json:trinkets[pic_lizard].name
-msgid "Photo: Sand Lizard"
-msgstr "Foto: Lagarto-da-areia"
-
-#: planets/verdance/data/events.json:trinkets[pic_lizard].desc
-msgid "A photo from photo mode. Lizards bask on swept ground between the solar arrays and vanish in a blink when a shadow falls on them."
-msgstr "Uma foto do modo foto. Os lagartos tomam sol no chão varrido entre os painéis solares e somem num piscar de olhos quando uma sombra cai sobre eles."
-
-#: planets/verdance/data/events.json:trinkets[pic_fennec].name
-msgid "Photo: Fennec Fox"
-msgstr "Foto: Feneco"
-
-#: planets/verdance/data/events.json:trinkets[pic_fennec].desc
-msgid "A photo from photo mode. A tiny desert fox with enormous ears."
-msgstr "Uma foto do modo foto. Uma raposinha do deserto com orelhas enormes."
-
-#: planets/verdance/data/events.json:trinkets[pic_seal].name
-msgid "Photo: Harbour Seal"
-msgstr "Foto: Foca-comum"
-
-#: planets/verdance/data/events.json:trinkets[pic_seal].desc
-msgid "A photo from photo mode. Seals haul out on the quay once it's clean, lounge in heaps, and flop back to the water if you come too close."
-msgstr "Uma foto do modo foto. As focas sobem no cais assim que ele fica limpo, descansam amontoadas e voltam para a água se você chegar perto demais."
-
-#: planets/verdance/data/events.json:trinkets[pic_gull].name
-msgid "Photo: Herring Gull"
-msgstr "Foto: Gaivota-prateada"
-
-#: planets/verdance/data/events.json:trinkets[pic_gull].desc
-msgid "A photo from photo mode. Loud, white and opportunistic."
-msgstr "Uma foto do modo foto. Barulhenta, branca e oportunista."
-
-#: planets/verdance/data/events.json:trinkets[pic_arctic_fox].name
-msgid "Photo: Arctic Fox"
-msgstr "Foto: Raposa-do-ártico"
-
-#: planets/verdance/data/events.json:trinkets[pic_arctic_fox].desc
-msgid "A photo from photo mode. White as the snow it hunts on."
-msgstr "Uma foto do modo foto. Branca como a neve onde caça."
-
-#: planets/verdance/data/events.json:trinkets[pic_heron].name
-msgid "Photo: Grey Heron"
-msgstr "Foto: Garça-real"
-
-#: planets/verdance/data/events.json:trinkets[pic_heron].desc
-msgid "A photo from photo mode. Herons stand perfectly still at the water's edge, then strike."
-msgstr "Uma foto do modo foto. As garças ficam totalmente paradas na beira da água e de repente atacam."
-
-#: planets/verdance/data/events.json:trinkets[pic_turtle].name
-msgid "Photo: Pond Turtle"
-msgstr "Foto: Cágado"
-
-#: planets/verdance/data/events.json:trinkets[pic_turtle].desc
-msgid "A photo from photo mode. Turtles cruise the drowned streets with their heads up, as if they've always lived here."
-msgstr "Uma foto do modo foto. Os cágados passeiam pelas ruas alagadas de cabeça erguida, como se sempre tivessem morado aqui."
-
-#: planets/verdance/data/events.json:trinkets[pic_crane].name
-msgid "Photo: Cradle Crane"
-msgstr "Foto: Grou da Cradle"
-
-#: planets/verdance/data/events.json:trinkets[pic_crane].desc
-msgid "A photo from photo mode. White cranes circle high over the landing city on slow wingbeats."
-msgstr "Uma foto do modo foto. Grous brancos circulam bem alto sobre a cidade de pouso, com batidas de asa lentas."
-
-#: planets/verdance/data/events.json:trinkets[maker_badge].name
-msgid "Maker's Badge"
-msgstr "Distintivo dos Criadores"
-
-#: planets/verdance/data/events.json:trinkets[maker_badge].desc
-msgid "Pinned inside a Legendary part: 'Built to be fixed.'"
-msgstr "Preso dentro de uma peça lendária: \"Feito para ser consertado.\""
-
-#: planets/verdance/data/events.json:trinkets[signal_crystal].name
-msgid "Signal Crystal"
-msgstr "Cristal de sinal"
-
-#: planets/verdance/data/events.json:trinkets[signal_crystal].desc
-msgid "The thing that was pinging. It still pings, very quietly, when you're happy."
-msgstr "A coisa que fazia ping. Ainda faz ping, bem baixinho, quando você está feliz."
-
-#: planets/verdance/data/events.json:trinkets[audit_stamp].name
-msgid "APPROVED Stamp"
-msgstr "Carimbo APROVADO"
-
-#: planets/verdance/data/events.json:trinkets[audit_stamp].desc
-msgid "The Ledger's rubber stamp. It now only says APPROVED. It's very proud of that."
-msgstr "O carimbo de borracha do Ledger. Agora só diz APROVADO. Ele tem muito orgulho disso."
-
-#: planets/verdance/data/events.json:trinkets[drone_propeller].name
-msgid "Race Propeller"
-msgstr "Hélice de corrida"
-
-#: planets/verdance/data/events.json:trinkets[drone_propeller].desc
-msgid "A souvenir from the audit drone. It insists the race was close."
-msgstr "Uma lembrança do drone da auditoria. Ele insiste que a corrida foi apertada."
-
-#: planets/verdance/data/events.json:trinkets[streak_medal].name
-msgid "Streak Medal"
-msgstr "Medalha de sequência"
-
-#: planets/verdance/data/events.json:trinkets[streak_medal].desc
-msgid "Earned for a max-tier cleaning streak. Scoop scoop scoop."
-msgstr "Ganha por uma sequência de limpeza de nível máximo. Pá, pá, pá."
-
-#: planets/verdance/data/events.json:trinkets[lumi_lens_cap].name
-msgid "Lumi's First Lens Cap"
-msgstr "A primeira tampa de lente de Lumi"
-
-#: planets/verdance/data/events.json:trinkets[lumi_lens_cap].desc
-msgid "Lumi Level 10. The cap Lumi wore on the ark, scuffed and kept anyway."
-msgstr "Nível 10 de Lumi. A tampa que Lumi usava na arca, arranhada e guardada mesmo assim."
-
-#: planets/verdance/data/events.json:trinkets[lumi_seed_pin].name
-msgid "Seed-Keeper Pin"
-msgstr "Broche de guardião de sementes"
-
-#: planets/verdance/data/events.json:trinkets[lumi_seed_pin].desc
-msgid "Lumi Level 20. A little enamel sprout. The ark gave these to its gardeners."
-msgstr "Nível 20 de Lumi. Um brotinho de esmalte. A arca dava isso aos seus jardineiros."
-
-#: planets/verdance/data/events.json:trinkets[lumi_tread_charm].name
-msgid "Tread Charm"
-msgstr "Amuleto de esteira"
-
-#: planets/verdance/data/events.json:trinkets[lumi_tread_charm].desc
-msgid "Lumi Level 30. A brass bell for the treads. It jingles on every bump."
-msgstr "Nível 30 de Lumi. Um sininho de latão para as esteiras. Tilinta a cada solavanco."
-
-#: planets/verdance/data/events.json:trinkets[lumi_star_chart].name
-msgid "Pocket Star Chart"
-msgstr "Mapa estelar de bolso"
-
-#: planets/verdance/data/events.json:trinkets[lumi_star_chart].desc
-msgid "Lumi Level 40. The ark's route home, folded small. One star is circled."
-msgstr "Nível 40 de Lumi. A rota da arca para casa, dobrada pequenininha. Uma estrela está circulada."
-
-#: planets/verdance/data/events.json:trinkets[lumi_glow_ribbon].name
-msgid "Glow Ribbon"
-msgstr "Fita luminosa"
-
-#: planets/verdance/data/events.json:trinkets[lumi_glow_ribbon].desc
-msgid "Lumi Level 50. A ribbon that holds a little light. Lumi ties it to the antenna."
-msgstr "Nível 50 de Lumi. Uma fita que guarda um pouco de luz. Lumi amarra na antena."
-
-#: planets/verdance/data/events.json:trinkets[contract_pen].name
-msgid "Contract Pen"
-msgstr "Caneta de contrato"
-
-#: planets/verdance/data/events.json:trinkets[contract_pen].desc
-msgid "Your first contract signed. The pen has a tiny leaf on top."
-msgstr "Seu primeiro contrato assinado. A caneta tem uma folhinha na ponta."
-
-#: planets/verdance/data/events.json:trinkets[contract_clipboard].name
-msgid "Foreman's Clipboard"
-msgstr "Prancheta do capataz"
-
-#: planets/verdance/data/events.json:trinkets[contract_clipboard].desc
-msgid "Ten contracts done. Every box ticked, every box green."
-msgstr "Dez contratos feitos. Cada caixa marcada, cada caixa verde."
-
-#: planets/verdance/data/events.json:trinkets[contract_crown].name
-msgid "Contractor's Crown"
-msgstr "Coroa do empreiteiro"
-
-#: planets/verdance/data/events.json:trinkets[contract_crown].desc
-msgid "Twenty-five contracts. The crown is a bent can. You wear it anyway."
-msgstr "Vinte e cinco contratos. A coroa é uma lata torta. Você usa mesmo assim."
-
-#: planets/verdance/data/events.json:trinkets[capsule_rubber_frog].name
-msgid "Rubber Frog"
-msgstr "Sapo de borracha"
-
-#: planets/verdance/data/events.json:trinkets[capsule_rubber_frog].desc
-msgid "Squeaks in a minor key."
-msgstr "Range em tom menor."
-
-#: planets/verdance/data/events.json:trinkets[capsule_tiny_cactus].name
-msgid "Tiny Cactus"
-msgstr "Cactinho"
-
-#: planets/verdance/data/events.json:trinkets[capsule_tiny_cactus].desc
-msgid "Needs no water. Mocks the Drips."
-msgstr "Não precisa de água. Debocha dos Drips."
-
-#: planets/verdance/data/events.json:trinkets[capsule_holo_koi].name
-msgid "Holo Koi"
-msgstr "Carpa holo"
-
-#: planets/verdance/data/events.json:trinkets[capsule_holo_koi].desc
-msgid "A hologram fish that swims round your hopper."
-msgstr "Um peixe holográfico que nada em volta da sua caçamba."
-
-#: planets/verdance/data/events.json:trinkets[capsule_moon_rock].name
-msgid "Moon Rock"
-msgstr "Pedra lunar"
-
-#: planets/verdance/data/events.json:trinkets[capsule_moon_rock].desc
-msgid "Not from the moon. From a parking lot. Still beautiful."
-msgstr "Não é da lua. É de um estacionamento. Ainda assim, linda."
-
-#: planets/verdance/data/events.json:wren
-msgid "Crate inbound. From... me? I don't remember sending that. Open it."
-msgstr "Caixa chegando. De... mim? Não lembro de ter mandado isso. Abre."
-
-#: planets/verdance/data/events.json:wren
-msgid "Supply drop! I found an old Cradle pod still in orbit and nudged it down."
-msgstr "Suprimentos! Achei uma cápsula velha da Cradle ainda em órbita e dei um empurrãozinho."
-
-#: planets/verdance/data/events.json:wren
-msgid "Another care package. I've been saving them for good days. This is one."
-msgstr "Mais um pacote. Eu guardo para os dias bons. Hoje é um deles."
-
 #: planets/verdance/data/events.json:wren
 msgid "That hex is glowing. Readings say... valuable. Hurry."
 msgstr "Aquele hexágono está brilhando. As leituras dizem... valioso. Corre."
@@ -9766,30 +8673,6 @@ msgstr "Chuva. Eu tinha esquecido o som. Suas plantas não."
 #: planets/verdance/data/events.json:wren
 msgid "Rain on clean ground. It smells like a memory."
 msgstr "Chuva em chão limpo. Tem cheiro de lembrança."
-
-#: planets/verdance/data/events.json:wren
-msgid "One of your helpers is stuck. Hic."
-msgstr "Um dos seus ajudantes travou. Hic."
-
-#: planets/verdance/data/events.json:wren
-msgid "{robot} has the hiccups. Try a firm pat on the chassis."
-msgstr "{robot} está com soluço. Tente um tapinha firme no chassi."
-
-#: planets/verdance/data/events.json:wren
-msgid "{robot} needs you. Gently, they're sensitive."
-msgstr "{robot} precisa de você. Com jeito, eles são sensíveis."
-
-#: planets/verdance/data/events.json:wren
-msgid "Something alive is moving out there. Not a robot."
-msgstr "Algo vivo está se mexendo lá fora. Não é um robô."
-
-#: planets/verdance/data/events.json:wren
-msgid "A visitor! Go slowly. Take a picture, it lasts longer."
-msgstr "Um visitante! Devagar. Tire uma foto, dura mais."
-
-#: planets/verdance/data/events.json:wren
-msgid "The thriving hexes are calling things home. Look."
-msgstr "Os hexágonos prósperos estão chamando a vida de volta. Olha."
 
 #: planets/verdance/data/events.json:wren
 msgid "Strong signal. Something old and well made."
@@ -9838,18 +8721,6 @@ msgstr "Sequência máxima. A pá está cantando."
 #: planets/verdance/data/events.json:wren
 msgid "Look at you go."
 msgstr "Olha só você."
-
-#: planets/verdance/data/events.json:wren
-msgid "Contract complete. Collect at the workbench."
-msgstr "Contrato concluído. Resgate na bancada."
-
-#: planets/verdance/data/events.json:wren
-msgid "Another contract done. Tokens are waiting."
-msgstr "Mais um contrato feito. As fichas estão esperando."
-
-#: planets/verdance/data/events.json:wren
-msgid "Contract fulfilled. The board's lit up green."
-msgstr "Contrato cumprido. O quadro acendeu verde."
 
 #: planets/verdance/data/finds.json:finds[old_town_tin].hint
 msgid "A paint tin lies under the litter of Old Town."
@@ -9983,19 +8854,19 @@ msgstr "Música"
 msgid "Glim downloads the CDs you've found: play any found song, anywhere, anytime."
 msgstr "Glim baixa os CDs que você achou: toque qualquer música encontrada, em qualquer lugar, a qualquer hora."
 
-#: data/glim.json:shells[pearl].name data/ship_style.json:paints[pearl].name data/style_parts.json:swatches[pearl].name
+#: data/glim.json:shells[pearl].name data/style_parts.json:swatches[pearl].name
 msgid "Pearl"
 msgstr "Pérola"
 
-#: data/glim.json:shells[sunset].name data/ship_style.json:paints[sunset].name data/style_parts.json:swatches[sunset].name
+#: data/glim.json:shells[sunset].name data/style_parts.json:swatches[sunset].name
 msgid "Sunset"
 msgstr "Pôr do sol"
 
-#: data/glim.json:shells[moss].name data/ship_style.json:paints[moss].name
+#: data/glim.json:shells[moss].name
 msgid "Moss"
 msgstr "Musgo"
 
-#: data/glim.json:shells[graphite].name data/ship_style.json:trims[graphite].name data/style_parts.json:swatches[graphite].name
+#: data/glim.json:shells[graphite].name data/style_parts.json:swatches[graphite].name
 msgid "Graphite"
 msgstr "Grafite"
 
@@ -10883,14 +9754,6 @@ msgstr "Todas as curiosidades de todos os planetas (as dicas estão em Códice >
 msgid "Letters, notes and drawings surface as the ground is cleaned."
 msgstr "Cartas, bilhetes e desenhos aparecem conforme o chão é limpo."
 
-#: planets/verdance/data/museum.json:exhibits[trinkets].name
-msgid "Trinkets and Curios"
-msgstr "Bugigangas e curiosidades"
-
-#: planets/verdance/data/museum.json:exhibits[trinkets].hint
-msgid "World events, requests, streaks and Curio Capsules."
-msgstr "Eventos, pedidos, sequências e Cápsulas de curiosidades."
-
 #: planets/verdance/data/museum.json:exhibits[ochre_glass].name
 msgid "Ochre Sun-Glass"
 msgstr "Vidro-sol de Ochre"
@@ -11099,7 +9962,7 @@ msgstr "Dez hexágonos limpos. Seus robôs estão aprendendo com você, Lumi."
 msgid "Rebuild the base to level 2"
 msgstr "Reconstrua a base até o nível 2"
 
-#: planets/verdance/data/objectives.json:objectives[base2].desc
+#: planets/verdance/data/objectives.json:objectives[base2].desc planets/verdance/data/objectives.json:objectives[base3].desc
 msgid "Workbench, Upgrades tab. More robots can work."
 msgstr "Bancada, aba Melhorias. Mais robôs podem trabalhar."
 
@@ -11194,10 +10057,6 @@ msgstr "Vinte hexágonos. O ar já está com outro cheiro."
 #: planets/verdance/data/objectives.json:objectives[base3].text
 msgid "Rebuild the base to level 3"
 msgstr "Reconstrua a base até o nível 3"
-
-#: planets/verdance/data/objectives.json:objectives[base3].desc
-msgid "Workbench, Upgrades tab. It opens the Request Board."
-msgstr "Bancada, aba Melhorias. Isso abre o Quadro de pedidos."
 
 #: planets/verdance/data/objectives.json:objectives[base3].lines
 msgid "One more base level. The Cradle is watching, Lumi."
@@ -12549,26 +11408,6 @@ msgstr ""
 "\n"
 "(Alguém riscou embaixo: \"conseguem, se deixarem\")"
 
-#: data/ship_style.json:paints[midnight].name data/style_parts.json:swatches[midnight].name
-msgid "Midnight"
-msgstr "Meia-noite"
-
-#: data/ship_style.json:paints[coral].name data/style_parts.json:swatches[coral].name
-msgid "Coral"
-msgstr "Coral"
-
-#: data/ship_style.json:paints[lunar].name
-msgid "Lunar Silver"
-msgstr "Prata lunar"
-
-#: data/ship_style.json:trims[tangerine].name
-msgid "Tangerine"
-msgstr "Tangerina"
-
-#: data/ship_style.json:trims[chrome].name
-msgid "Chrome"
-msgstr "Cromo"
-
 #: planets/verdance/data/signal_tower.json:tiers[0].name
 msgid "Signal Tower"
 msgstr "Torre de sinal"
@@ -13153,6 +11992,10 @@ msgstr "Rebolado do pinguim-bô"
 msgid "Ice Rink Lights"
 msgstr "Luzes da pista de gelo"
 
+#: data/songs.json:songs[snow_globe].title
+msgid "Snow Globe"
+msgstr "Globo de neve"
+
 #: data/songs.json:songs[the_long_way_home].title
 msgid "The Long Way Home"
 msgstr "O longo caminho de casa"
@@ -13653,6 +12496,10 @@ msgstr "Uma prensa hidráulica de fardos colocada na frente de limpeza. Os robô
 msgid "Shredder drums and a little smelter. Bales go in and never come back: out come parts and clean building stock. Every bale burnt clean helps the sky."
 msgstr "Tambores trituradores e uma pequena fundição. Os fardos entram e nunca voltam: saem peças e material limpo. Cada fardo queimado limpo ajuda o céu."
 
+#: data/style_parts.json:slots[trim].name
+msgid "Trim"
+msgstr "Acabamento"
+
 #: data/style_parts.json:slots[accent].name
 msgid "Accent"
 msgstr "Detalhe"
@@ -13785,6 +12632,10 @@ msgstr "Marfim"
 msgid "Sea glass"
 msgstr "Vidro do mar"
 
+#: data/style_parts.json:swatches[coral].name
+msgid "Coral"
+msgstr "Coral"
+
 #: data/style_parts.json:swatches[royal].name
 msgid "Royal blue"
 msgstr "Azul royal"
@@ -13800,6 +12651,10 @@ msgstr "Ouro"
 #: data/style_parts.json:swatches[bloom].name
 msgid "Bloom green"
 msgstr "Verde-flor"
+
+#: data/style_parts.json:swatches[midnight].name
+msgid "Midnight"
+msgstr "Meia-noite"
 
 #: data/style_parts.json:swatches[copper].name
 msgid "Copper"
@@ -14020,14 +12875,6 @@ msgstr "Bancada Mk III: Mesa de pesquisa"
 #: data/workbench.json:tiers[2].desc
 msgid "Adds a research desk. Study what you dig up to unlock machines and seeds."
 msgstr "Adiciona uma mesa de pesquisa. Estude o que você desenterra para desbloquear máquinas e sementes."
-
-#: data/workbench.json:tiers[3].name
-msgid "Workbench Mk IV: Request Board"
-msgstr "Bancada Mk IV: Quadro de pedidos"
-
-#: data/workbench.json:tiers[3].desc
-msgid "Adds a request board. Take on jobs for tokens and rare parts."
-msgstr "Adiciona um quadro de pedidos. Aceite trabalhos em troca de fichas e peças raras."
 
 #: planets/verdance/data/wren_lines.json:wake
 msgid "...Lumi? ...It's WREN. Your tower's carrying me. Barely. Keep it standing."
@@ -15421,18 +14268,6 @@ msgstr "Mundo novo, céu novo. Mesmo trabalho. Você está melhor nisso do que d
 msgid "Look at that. Ruined, dusty, nobody's planted anything in centuries. You know what to do."
 msgstr "Olha só. Arruinado, empoeirado, ninguém planta nada aqui há séculos. Você sabe o que fazer."
 
-#: planets/verdance/data/wren_lines.json:garden_place
-msgid "...pretty..."
-msgstr "...bonito..."
-
-#: planets/verdance/data/wren_lines.json:garden_place
-msgid "You're decorating. I approve. The cats are going to approve more."
-msgstr "Você está decorando. Aprovo. Os gatos vão aprovar ainda mais."
-
-#: planets/verdance/data/wren_lines.json:garden_place
-msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
-msgstr "Um banco, uma luminária, uma fonte. Está começando a parecer um lugar para onde as pessoas iam querer voltar."
-
 #: planets/verdance/data/wren_lines.json:home_arrive
 msgid "...new sky... two suns..."
 msgstr "...céu novo... dois sóis..."
@@ -15624,6 +14459,878 @@ msgstr "Aquele pórtico desmanchou a frota do Ledger quando o dinheiro acabou. A
 #: planets/verdance/data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Um mundo de ferrugem, verde. Os velhos guindastes têm flores aos pés. As contas estão fechadas, {name}. Nós as equilibramos."
+
+#~ msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
+#~ msgstr "Os pássaros decidiram que você é gente boa. Saco de migalhas adicionado à sua Coleção."
+
+#~ msgid "Snap! A %s for your Collection."
+#~ msgstr "Clique! Uma foto (%s) para a sua Coleção."
+
+#~ msgid "New for your Collection: %s. See it in the Codex (K)."
+#~ msgstr "Novo na sua coleção: %s. Veja no Códice (K)."
+
+#~ msgid "Supply Drops"
+#~ msgstr "Entregas de suprimentos"
+
+#~ msgid "Salvage Glints"
+#~ msgstr "Brilhos de sucata"
+
+#~ msgid "Rain Showers"
+#~ msgstr "Pancadas de chuva"
+
+#~ msgid "Robot Hiccups"
+#~ msgstr "Soluços de robô"
+
+#~ msgid "Wildlife Photos"
+#~ msgstr "Fotos de animais"
+
+#~ msgid "Animal Photos"
+#~ msgstr "Fotos de animais"
+
+#~ msgid "Rare Part Signals"
+#~ msgstr "Sinais de peças raras"
+
+#~ msgid "Ledger Audits"
+#~ msgstr "Auditorias do Ledger"
+
+#~ msgid "Cleaning Streaks"
+#~ msgstr "Sequências de limpeza"
+
+#~ msgid "Lumi Levels"
+#~ msgstr "Níveis de Lumi"
+
+#~ msgid "Requests"
+#~ msgstr "Pedidos"
+
+#~ msgid "Curio Capsules"
+#~ msgstr "Cápsulas de curiosidades"
+
+#~ msgid "Curio Capsule"
+#~ msgstr "Cápsula de curiosidades"
+
+#~ msgid "Request complete: %s. Claim it at the workbench."
+#~ msgstr "Pedido concluído: %s. Receba na bancada."
+
+#~ msgid "A request ran out of time. No harm done; a new one will be posted soon."
+#~ msgstr "Um pedido ficou sem tempo. Sem problema; um novo vai aparecer logo."
+
+#~ msgid "New at the workbench: the Requests board. Small jobs, real rewards."
+#~ msgstr "Novo na bancada: o quadro de pedidos. Trabalhos pequenos, recompensas de verdade."
+
+#~ msgid "The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."
+#~ msgstr "O relé já capta as velhas ordens de serviço do Cradle. Elas estão no quadro de pedidos, na bancada."
+
+#~ msgid "Request done: %s."
+#~ msgstr "Pedido pago: %s."
+
+#~ msgid "Requests reward: %s."
+#~ msgstr "Recompensa de pedidos: %s."
+
+#~ msgid "Needs %d Collection finds (%d so far)"
+#~ msgstr "Precisa de %d achados da Coleção (%d até agora)"
+
+#~ msgid "Too close to the base machines"
+#~ msgstr "Perto demais das máquinas da base"
+
+#~ msgid "Something is already here"
+#~ msgstr "Já tem algo aqui"
+
+#~ msgid "That's water"
+#~ msgstr "Isso é água"
+
+#~ msgid "Frozen in"
+#~ msgstr "Congelado"
+
+#~ msgid "CRADLE · SUPPLY"
+#~ msgstr "CRADLE · SUPRIMENTOS"
+
+#~ msgid "%d pieces of junk left around the crate"
+#~ msgstr "Restam %d pedaços de sucata em volta da caixa"
+
+#~ msgid "Supply crate opened: %s"
+#~ msgstr "Caixa de suprimentos aberta: %s"
+
+#~ msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
+#~ msgstr "O farol da caixa expirou e um drone a levou de volta para cima. Outra vai chegar."
+
+#~ msgid "E   fix %s's hiccup"
+#~ msgstr "E   curar o soluço de %s"
+
+#~ msgid "%s is %d m away"
+#~ msgstr "%s está a %d m"
+
+#~ msgid "%s shook off its hiccups on its own. It looks embarrassed."
+#~ msgstr "%s se livrou do soluço sozinho. Parece envergonhado."
+
+#~ msgid "%s is fixed and back to work. %s"
+#~ msgstr "%s foi consertado e voltou ao trabalho. %s"
+
+#~ msgid "Wildlife Visit: %s"
+#~ msgstr "Visita de animal: %s"
+
+#~ msgid "E   take a photo of the %s"
+#~ msgstr "E   tirar uma foto: %s"
+
+#~ msgid "%s, %d m away"
+#~ msgstr "%s, a %d m"
+
+#~ msgid "The %s wandered off. It'll be back somewhere green."
+#~ msgstr "%s foi embora. Vai voltar em algum lugar verde."
+
+#~ msgid "Snap! The %s is in your Collection. %s"
+#~ msgstr "Clique! %s está na sua coleção. %s"
+
+#~ msgid "Snap! Another lovely shot of the %s. %s"
+#~ msgstr "Clique! Mais uma foto linda: %s. %s"
+
+#~ msgid "Build the Robot Nursery in the Build tab first."
+#~ msgstr "Construa primeiro o Berçário de robôs na aba Construir."
+
+#~ msgid "Only Mk I-II robots retire early. %s can retire in %d min."
+#~ msgstr "Só robôs Mk I-II se aposentam cedo. %s pode se aposentar em %d min."
+
+#~ msgid "%s retires to the nursery garden. +%d parts, and the flowers get a caretaker."
+#~ msgstr "%s se aposenta no jardim do viveiro. +%d peças, e as flores ganham um cuidador."
+
+#~ msgid "E   Say hi to %s"
+#~ msgstr "E   Dizer oi para %s"
+
+#~ msgid "CARETAKER · %s"
+#~ msgstr "CUIDADOR · %s"
+
+#~ msgid "%s beeps hello and shows Lumi the marigolds."
+#~ msgstr "%s apita um oi e mostra as calêndulas para Lumi."
+
+#~ msgid "%s is busy with the watering can, but waves anyway."
+#~ msgstr "%s está ocupado com o regador, mas acena mesmo assim."
+
+#~ msgid "%s hums to the seedlings. Retirement suits it."
+#~ msgstr "%s cantarola para as mudas. A aposentadoria combina com ele."
+
+#~ msgid "%s points proudly at a new bud."
+#~ msgstr "%s aponta orgulhoso para um botão novo."
+
+#~ msgid "%d / %d collectibles"
+#~ msgstr "%d / %d colecionáveis"
+
+#~ msgid "LUMI'S COLLECTION"
+#~ msgstr "COLEÇÃO DA LUMI"
+
+#~ msgid "TRINKETS AND CURIOS"
+#~ msgstr "BUGIGANGAS E CURIOSIDADES"
+
+#~ msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera."
+#~ msgstr "Dica: um visitante tímido aparece em hexágonos sustentados e prósperos. Leve uma câmera."
+
+#~ msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
+#~ msgstr "Dica: os animais voltam quando o chão se cura. Fotografe-os no modo foto (P)."
+
+#~ msgid "Hint: finish %d requests (Requests tab at the workbench)."
+#~ msgstr "Dica: conclua %d pedidos (aba Pedidos na bancada)."
+
+#~ msgid "Hint: Curio Capsules, on the Requests reward track at the workbench."
+#~ msgstr "Dica: Cápsulas de curiosidades, na trilha de recompensas dos pedidos na bancada."
+
+#~ msgid "Hint: keep scooping without stopping until the streak meter is full."
+#~ msgstr "Dica: continue recolhendo sem parar até encher o medidor de sequência."
+
+#~ msgid "Hint: turns up during %s."
+#~ msgstr "Dica: aparece durante: %s."
+
+#~ msgid "%d done"
+#~ msgstr[0] "%d feito"
+#~ msgstr[1] "%d feitos"
+
+#~ msgid "Live now:  %s  ·  %s  ·  %s left"
+#~ msgstr "Agora:  %s  ·  %s  ·  faltam %s"
+
+#~ msgid "Every reward unlocked. Each %d more requests pay a Vintage part's worth of parts."
+#~ msgstr "Todas as recompensas desbloqueadas. A cada %d pedidos, peças no valor de uma peça Vintage."
+
+#~ msgid "Next unlock in %d request:  %s"
+#~ msgstr[0] "Próximo desbloqueio em %d pedido:  %s"
+#~ msgstr[1] "Próximo desbloqueio em %d pedidos:  %s"
+
+#~ msgid "A new request is on its way"
+#~ msgstr "Um novo pedido está a caminho"
+
+#~ msgid "Claim"
+#~ msgstr "Resgatar"
+
+#~ msgid "REQUEST READY  ·  claim it at the workbench"
+#~ msgstr "PEDIDO PRONTO  ·  receba na bancada"
+
+#~ msgid "%d REQUESTS READY  ·  claim them at the workbench"
+#~ msgstr "%d PEDIDOS PRONTOS  ·  receba na bancada"
+
+#~ msgid "Nursery"
+#~ msgstr "Viveiro"
+
+#~ msgid "CARETAKERS  ·  %d"
+#~ msgstr "CUIDADORES  ·  %d"
+
+#~ msgid "Garden bonus: plants grow %d%% faster (up to %d%%)."
+#~ msgstr "Bônus do jardim: as plantas crescem %d%% mais rápido (até %d%%)."
+
+#~ msgid "No one has retired yet. Old or Mk I-II robots can retire here; they'll look after the nursery garden at the base."
+#~ msgstr "Ninguém se aposentou ainda. Robôs velhos ou Mk I-II podem se aposentar aqui; eles vão cuidar do jardim do viveiro na base."
+
+#~ msgid "RETIRE A ROBOT"
+#~ msgstr "APOSENTAR UM ROBÔ"
+
+#~ msgid "Retiring gives a few parts back, and the robot keeps its name and personality in the nursery."
+#~ msgstr "Aposentar devolve algumas peças, e o robô mantém o nome e a personalidade no viveiro."
+
+#~ msgid "No robots in this district."
+#~ msgstr "Nenhum robô neste distrito."
+
+#~ msgid "Press again to retire (+%d parts)"
+#~ msgstr "Aperte de novo para aposentar (+%d peças)"
+
+#~ msgid "Retire  (+%d parts)"
+#~ msgstr "Aposentar  (+%d peças)"
+
+#~ msgid "Garden Mode opens when this base reaches level 5, or once the Cradle comes home."
+#~ msgstr "O modo jardim abre quando esta base chegar ao nível 5, ou quando a Cradle voltar para casa."
+
+#~ msgid "charm +%.1f"
+#~ msgstr "charme +%.1f"
+
+#~ msgid "%s here: %s to pick it up"
+#~ msgstr "%s aqui: %s para pegar"
+
+#~ msgid "GARDEN MODE   ·   Charm %.1f   ·   +%.1f%% plant growth here"
+#~ msgstr "MODO JARDIM   ·   Charme %.1f   ·   +%.1f%% de crescimento das plantas aqui"
+
+#~ msgid "[%s] place   [%s] rotate   [%s / %s] item   [%s] pick up   [%s] done"
+#~ msgstr "[%s] colocar   [%s] girar   [%s / %s] item   [%s] pegar   [%s] pronto"
+
+#~ msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
+#~ msgstr "Pegou: %s. Coloque em outro lugar ou deixe guardado."
+
+#~ msgid "+%d XP"
+#~ msgstr "+%d XP"
+
+#~ msgid "Lumi reached level %d%s"
+#~ msgstr "Lumi chegou ao nível %d%s"
+
+#~ msgid "Garden Mode  [%s]"
+#~ msgstr "Modo jardim  [%s]"
+
+#~ msgid "Ship looks: the tiers keep their shape"
+#~ msgstr "Visual da nave: os níveis mantêm a forma"
+
+#~ msgid "Mix and Match"
+#~ msgstr "Misture e combine"
+
+#~ msgid "Style a robot with all five custom parts in the Locker."
+#~ msgstr "Personalize um robô com as cinco peças no Armário."
+
+#~ msgid "As the Makers Made It"
+#~ msgstr "Como os Criadores fizeram"
+
+#~ msgid "Fit the full Maker set (shell, optic and glider) on one robot."
+#~ msgstr "Instale o conjunto completo dos Criadores (carcaça, óptica e planador) num robô."
+
+#~ msgid "Hat Rack"
+#~ msgstr "Cabideiro"
+
+#~ msgid "Collect 5 different robot toppers."
+#~ msgstr "Colecione 5 chapéus de robô diferentes."
+
+#~ msgid "Home Touches"
+#~ msgstr "Toques de lar"
+
+#~ msgid "Place a decoration in Garden Mode."
+#~ msgstr "Coloque uma decoração no modo jardim."
+
+#~ msgid "Landscaper"
+#~ msgstr "Paisagista"
+
+#~ msgid "Place 25 decorations."
+#~ msgstr "Coloque 25 decorações."
+
+#~ msgid "Full Catalogue"
+#~ msgstr "Catálogo completo"
+
+#~ msgid "Place every kind of decoration at least once."
+#~ msgstr "Coloque cada tipo de decoração pelo menos uma vez."
+
+#~ msgid "Picture Perfect"
+#~ msgstr "Cartão-postal"
+
+#~ msgid "Reach 25 charm in one district."
+#~ msgstr "Alcance 25 de charme em um distrito."
+
+#~ msgid "The Cradle Answers"
+#~ msgstr "A Cradle responde"
+
+#~ msgid "Light the Cradle Returns beacon and hear from the ark."
+#~ msgstr "Acenda o sinalizador do Retorno da Cradle e ouça a arca."
+
+#~ msgid "Happy Retirement"
+#~ msgstr "Feliz aposentadoria"
+
+#~ msgid "Retire a robot to the nursery garden."
+#~ msgstr "Aposente um robô no jardim do viveiro."
+
+#~ msgid "Garden Party"
+#~ msgstr "Festa no jardim"
+
+#~ msgid "Say hi to the nursery caretakers 5 times."
+#~ msgstr "Diga oi aos cuidadores do viveiro 5 vezes."
+
+#~ msgid "Robot Nursery"
+#~ msgstr "Berçário de robôs"
+
+#~ msgid "A walled lawn with flower beds where retired robots tend the garden and lend your crew a hand."
+#~ msgstr "Um gramado murado com canteiros de flores onde robôs aposentados cuidam do jardim e dão uma mão à sua equipe."
+
+#~ msgid "Stone Path"
+#~ msgstr "Caminho de pedra"
+
+#~ msgid "Flat stepping stones. Paths join everything up."
+#~ msgstr "Pedras planas de passagem. Caminhos ligam tudo."
+
+#~ msgid "Flower Bed"
+#~ msgstr "Canteiro de flores"
+
+#~ msgid "A low bed of mixed flowers. Bees and butterflies approve."
+#~ msgstr "Um canteiro baixo de flores variadas. Abelhas e borboletas aprovam."
+
+#~ msgid "Planter"
+#~ msgstr "Floreira"
+
+#~ msgid "A white hex planter with a small shrub, like the ones the future city grows."
+#~ msgstr "Uma floreira hexagonal branca com um arbusto pequeno, como as que a cidade do futuro cultiva."
+
+#~ msgid "Bench"
+#~ msgstr "Banco"
+
+#~ msgid "Wood slats on cast feet. Cats like to sleep on it."
+#~ msgstr "Ripas de madeira sobre pés de ferro fundido. Os gatos adoram dormir nele."
+
+#~ msgid "Garden Lamp"
+#~ msgstr "Luminária de jardim"
+
+#~ msgid "A slim lamp with a warm glow after dark."
+#~ msgstr "Uma luminária fina com um brilho quentinho depois que escurece."
+
+#~ msgid "Bird Bath"
+#~ msgstr "Bebedouro de pássaros"
+
+#~ msgid "A stone basin of clean water."
+#~ msgstr "Uma bacia de pedra com água limpa."
+
+#~ msgid "Fountain"
+#~ msgstr "Fonte"
+
+#~ msgid "A tiered fountain, running again. Deer come to drink at dawn."
+#~ msgstr "Uma fonte em camadas, correndo de novo. Os corços vêm beber ao amanhecer."
+
+#~ msgid "Maker Statue"
+#~ msgstr "Estátua de Criador"
+
+#~ msgid "A stone figure of one of the Makers, holding a watering can."
+#~ msgstr "Uma figura de pedra de um dos Criadores, segurando um regador."
+
+#~ msgid "Lumi Sculpture"
+#~ msgstr "Escultura de Lumi"
+
+#~ msgid "A topiary-and-brass sculpture of Lumi holding up a seedling. Very modest."
+#~ msgstr "Uma escultura de topiaria e latão de Lumi erguendo uma muda. Muito modesta."
+
+#~ msgid "WREN Wind Kite"
+#~ msgstr "Pipa do WREN"
+
+#~ msgid "A kite shaped like WREN's bird, tethered to a post and always flying."
+#~ msgstr "Uma pipa no formato do pássaro do WREN, presa a um poste e sempre no ar."
+
+#~ msgid "Supply Drop"
+#~ msgstr "Entrega de suprimentos"
+
+#~ msgid "Supply Drop! A crate parachuted onto the junk %s of you. Clear the junk around it to crack it open."
+#~ msgstr "Entrega de suprimentos! Uma caixa caiu de paraquedas na sucata, %s de você. Limpe a sucata em volta para abri-la."
+
+#~ msgid "Clear the junk around the crate"
+#~ msgstr "Limpe a sucata em volta da caixa"
+
+#~ msgid "Robot Hiccup"
+#~ msgstr "Soluço de robô"
+
+#~ msgid "%s has the hiccups and stopped working. Walk over and press E for a quick fix."
+#~ msgstr "%s está com soluço e parou de trabalhar. Vá até lá e aperte E para um conserto rápido."
+
+#~ msgid "Walk to the stuck robot and press E"
+#~ msgstr "Vá até o robô travado e aperte E"
+
+#~ msgid "Wildlife Visit"
+#~ msgstr "Visita de animal"
+
+#~ msgid "Something is visiting a thriving hex %s of you. Sneak up and press E to take a photo."
+#~ msgstr "Algo está visitando um hexágono próspero %s de você. Chegue de mansinho e aperte E para tirar uma foto."
+
+#~ msgid "Find the visitor and press E for a photo"
+#~ msgstr "Ache o visitante e aperte E para uma foto"
+
+#~ msgid "Glowtail Fox"
+#~ msgstr "Raposa-cauda-luz"
+
+#~ msgid "fox"
+#~ msgstr "raposa"
+
+#~ msgid "Moss Deer"
+#~ msgstr "Cervo-musgo"
+
+#~ msgid "deer"
+#~ msgstr "cervo"
+
+#~ msgid "Lantern Hedgehog"
+#~ msgstr "Ouriço-lanterna"
+
+#~ msgid "hedgehog"
+#~ msgstr "ouriço"
+
+#~ msgid "Prism Heron"
+#~ msgstr "Garça-prisma"
+
+#~ msgid "heron"
+#~ msgstr "garça"
+
+#~ msgid "Velvet Hare"
+#~ msgstr "Lebre-veludo"
+
+#~ msgid "hare"
+#~ msgstr "lebre"
+
+#~ msgid "Press %d metal-heavy bales"
+#~ msgstr "Prense %d fardos ricos em metal"
+
+#~ msgid "Press %d Perfect bales"
+#~ msgstr "Prense %d fardos perfeitos"
+
+#~ msgid "Press %d Pure bales (one junk type)"
+#~ msgstr "Prense %d fardos puros (um tipo de sucata)"
+
+#~ msgid "Clean %d hexes"
+#~ msgstr "Limpe %d hexágonos"
+
+#~ msgid "Scoop %d pieces of junk"
+#~ msgstr "Recolha %d pedaços de sucata"
+
+#~ msgid "Dig up %d buried parts"
+#~ msgstr "Desenterre %d peças enterradas"
+
+#~ msgid "Reach a tier %d cleaning streak"
+#~ msgstr "Alcance uma sequência de limpeza de nível %d"
+
+#~ msgid "Plant %d sprouts"
+#~ msgstr "Plante %d brotos"
+
+#~ msgid "Grow %d plants to bloom"
+#~ msgstr "Faça %d plantas florirem"
+
+#~ msgid "Get %d more hexes to Sustained"
+#~ msgstr "Deixe mais %d hexágonos Sustentados"
+
+#~ msgid "Get one more hex to Sustained"
+#~ msgstr "Deixe mais um hexágono Sustentado"
+
+#~ msgid "Brass Compass"
+#~ msgstr "Bússola de latão"
+
+#~ msgid "Points north, mostly. Came wrapped in a sock in a supply crate."
+#~ msgstr "Aponta para o norte, quase sempre. Veio embrulhada numa meia numa caixa de suprimentos."
+
+#~ msgid "Wind-up Tin Robot"
+#~ msgstr "Robô de lata de corda"
+
+#~ msgid "Walks three steps and falls over. Lumi relates."
+#~ msgstr "Dá três passos e cai. Lumi se identifica."
+
+#~ msgid "Seed Locket"
+#~ msgstr "Medalhão de semente"
+
+#~ msgid "A locket with one seed inside instead of a photo. Someone loved gardens."
+#~ msgstr "Um medalhão com uma semente dentro no lugar de uma foto. Alguém amava jardins."
+
+#~ msgid "A tiny city under glass, still clean. A promise, maybe."
+#~ msgstr "Uma cidade minúscula debaixo do vidro, ainda limpa. Uma promessa, talvez."
+
+#~ msgid "Cradle Crate Stencil"
+#~ msgstr "Estêncil das caixas da Cradle"
+
+#~ msgid "The stencil used to paint every supply crate. WREN asked for it back. You said no."
+#~ msgstr "O estêncil usado para pintar cada caixa de suprimentos. A WREN pediu de volta. Você disse não."
+
+#~ msgid "Golden Bolt"
+#~ msgstr "Parafuso dourado"
+
+#~ msgid "Fell out of a surge hex, still warm. Fits nothing. Worth everything."
+#~ msgstr "Caiu de um hexágono em surto, ainda morno. Não serve em nada. Vale tudo."
+
+#~ msgid "Surge Glass"
+#~ msgstr "Vidro de surto"
+
+#~ msgid "A sliver of glass that kept the surge's glow. It hums when you hold it."
+#~ msgstr "Uma lasca de vidro que guardou o brilho do surto. Zumbe quando você segura."
+
+#~ msgid "Jar of First Rain"
+#~ msgstr "Pote da primeira chuva"
+
+#~ msgid "Collected during the first rain in years. Do not drink. Do not open. Just look."
+#~ msgstr "Recolhida na primeira chuva em anos. Não beba. Não abra. Só olhe."
+
+#~ msgid "Paper Boat"
+#~ msgstr "Barquinho de papel"
+
+#~ msgid "Someone made it from a coupon. It sailed a whole puddle."
+#~ msgstr "Alguém fez de um cupom. Atravessou uma poça inteira."
+
+#~ msgid "Lucky Spanner"
+#~ msgstr "Chave da sorte"
+
+#~ msgid "Fixes any hiccup, if you hit the right spot. Usually the left side."
+#~ msgstr "Conserta qualquer soluço, se você acertar o ponto certo. Normalmente o lado esquerdo."
+
+#~ msgid "Diagnostic Tape"
+#~ msgstr "Fita de diagnóstico"
+
+#~ msgid "A printout of a robot hiccuping. It looks a lot like a song."
+#~ msgstr "Uma impressão de um robô com soluço. Parece muito uma música."
+
+#~ msgid "Photo: Glowtail Fox"
+#~ msgstr "Foto: raposa-cauda-luz"
+
+#~ msgid "Its tail glows when it's curious. It was very curious about Lumi."
+#~ msgstr "A cauda brilha quando ela fica curiosa. Ela ficou muito curiosa com Lumi."
+
+#~ msgid "Photo: Moss Deer"
+#~ msgstr "Foto: cervo-musgo"
+
+#~ msgid "Moss grows on its antlers. Butterflies rest there like it's a tree."
+#~ msgstr "Cresce musgo nos chifres dele. Borboletas descansam ali como se fosse uma árvore."
+
+#~ msgid "Photo: Lantern Hedgehog"
+#~ msgstr "Foto: ouriço-lanterna"
+
+#~ msgid "The tips of its spines glow amber at dusk. It ate a beetle on camera. Sorry."
+#~ msgstr "As pontas dos espinhos brilham âmbar ao entardecer. Ele comeu um besouro na frente da câmera. Desculpa."
+
+#~ msgid "Photo: Prism Heron"
+#~ msgstr "Foto: garça-prisma"
+
+#~ msgid "Its feathers split light into rainbows. It stood on one leg the whole time."
+#~ msgstr "As penas dela dividem a luz em arco-íris. Ficou num pé só o tempo todo."
+
+#~ msgid "Photo: Velvet Hare"
+#~ msgstr "Foto: lebre-veludo"
+
+#~ msgid "Soft as a whisper, quick as a rumour. The photo is a little blurry. Worth it."
+#~ msgstr "Macia como um sussurro, rápida como um boato. A foto ficou um pouco tremida. Valeu a pena."
+
+#~ msgid "Crumb Bag"
+#~ msgstr "Saco de migalhas"
+
+#~ msgid "A paper bag of crumbs and seed husks. The pigeons know the sound of it now."
+#~ msgstr "Um saco de papel com migalhas e cascas de sementes. Os pombos já conhecem o barulho dele."
+
+#~ msgid "Photo: Stray Cat"
+#~ msgstr "Foto: Gato de rua"
+
+#~ msgid "A photo from photo mode. Old Town's cats never left."
+#~ msgstr "Uma foto do modo foto. Os gatos da Cidade Velha nunca foram embora."
+
+#~ msgid "Photo: Pigeon"
+#~ msgstr "Foto: Pombo"
+
+#~ msgid "A photo from photo mode. Pigeons will live anywhere people once dropped crumbs."
+#~ msgstr "Uma foto do modo foto. Pombos vivem em qualquer lugar onde as pessoas um dia deixaram cair migalhas."
+
+#~ msgid "Photo: Sparrow"
+#~ msgstr "Foto: Pardal"
+
+#~ msgid "A photo from photo mode. Small, brown and bossy."
+#~ msgstr "Uma foto do modo foto. Pequeno, marrom e mandão."
+
+#~ msgid "Photo: Rat"
+#~ msgstr "Foto: Rato"
+
+#~ msgid "A photo from photo mode. Rats live in the gaps between the piles."
+#~ msgstr "Uma foto do modo foto. Os ratos vivem nos vãos entre as pilhas."
+
+#~ msgid "Photo: Rabbit"
+#~ msgstr "Foto: Coelho"
+
+#~ msgid "A photo from photo mode. Rabbits arrive as soon as there is something green to nibble."
+#~ msgstr "Uma foto do modo foto. Os coelhos chegam assim que há algo verde para mordiscar."
+
+#~ msgid "Photo: Roe Deer"
+#~ msgstr "Foto: Corço"
+
+#~ msgid "A photo from photo mode. Shy grazers that keep to the edge of the green, where they can see what's coming."
+#~ msgstr "Uma foto do modo foto. Herbívoros tímidos que ficam na beira do verde, de onde podem ver o que vem chegando."
+
+#~ msgid "Photo: Red Fox"
+#~ msgstr "Foto: Raposa-vermelha"
+
+#~ msgid "A photo from photo mode. A fox trots along the hedges, nose down, tail out."
+#~ msgstr "Uma foto do modo foto. Uma raposa trota ao longo das cercas vivas, focinho no chão, cauda esticada."
+
+#~ msgid "Photo: Honeybee"
+#~ msgstr "Foto: Abelha"
+
+#~ msgid "A photo from photo mode. Bees came back with the blooms."
+#~ msgstr "Uma foto do modo foto. As abelhas voltaram com as flores."
+
+#~ msgid "Photo: Robin"
+#~ msgstr "Foto: Pisco-de-peito-ruivo"
+
+#~ msgid "A photo from photo mode. When a hex thrives, robins move in and sing."
+#~ msgstr "Uma foto do modo foto. Quando um hexágono prospera, os piscos se mudam para lá e cantam."
+
+#~ msgid "Photo: Firefly"
+#~ msgstr "Foto: Vaga-lume"
+
+#~ msgid "A photo from photo mode. Tiny green lanterns over the grass after dark."
+#~ msgstr "Uma foto do modo foto. Pequenas lanternas verdes sobre a grama depois que escurece."
+
+#~ msgid "Photo: Lake Fish"
+#~ msgstr "Foto: Peixe de lago"
+
+#~ msgid "A photo from photo mode. Once the water clears you can see them: small silver schools turning together over the sand."
+#~ msgstr "Uma foto do modo foto. Quando a água clareia, dá para vê-los: pequenos cardumes prateados girando juntos sobre a areia."
+
+#~ msgid "Photo: Mallard"
+#~ msgstr "Foto: Pato-real"
+
+#~ msgid "A photo from photo mode. Ducks paddle, dabble with their tails in the air and complain loudly about everything."
+#~ msgstr "Uma foto do modo foto. Os patos remam, mergulham com o rabo para cima e reclamam alto de tudo."
+
+#~ msgid "Photo: Green Frog"
+#~ msgstr "Foto: Rã-verde"
+
+#~ msgid "A photo from photo mode. Frogs sit at the water's edge and sing in the evening."
+#~ msgstr "Uma foto do modo foto. As rãs ficam na beira da água e cantam ao entardecer."
+
+#~ msgid "Photo: Sand Lizard"
+#~ msgstr "Foto: Lagarto-da-areia"
+
+#~ msgid "A photo from photo mode. Lizards bask on swept ground between the solar arrays and vanish in a blink when a shadow falls on them."
+#~ msgstr "Uma foto do modo foto. Os lagartos tomam sol no chão varrido entre os painéis solares e somem num piscar de olhos quando uma sombra cai sobre eles."
+
+#~ msgid "Photo: Fennec Fox"
+#~ msgstr "Foto: Feneco"
+
+#~ msgid "A photo from photo mode. A tiny desert fox with enormous ears."
+#~ msgstr "Uma foto do modo foto. Uma raposinha do deserto com orelhas enormes."
+
+#~ msgid "Photo: Harbour Seal"
+#~ msgstr "Foto: Foca-comum"
+
+#~ msgid "A photo from photo mode. Seals haul out on the quay once it's clean, lounge in heaps, and flop back to the water if you come too close."
+#~ msgstr "Uma foto do modo foto. As focas sobem no cais assim que ele fica limpo, descansam amontoadas e voltam para a água se você chegar perto demais."
+
+#~ msgid "Photo: Herring Gull"
+#~ msgstr "Foto: Gaivota-prateada"
+
+#~ msgid "A photo from photo mode. Loud, white and opportunistic."
+#~ msgstr "Uma foto do modo foto. Barulhenta, branca e oportunista."
+
+#~ msgid "Photo: Arctic Fox"
+#~ msgstr "Foto: Raposa-do-ártico"
+
+#~ msgid "A photo from photo mode. White as the snow it hunts on."
+#~ msgstr "Uma foto do modo foto. Branca como a neve onde caça."
+
+#~ msgid "Photo: Grey Heron"
+#~ msgstr "Foto: Garça-real"
+
+#~ msgid "A photo from photo mode. Herons stand perfectly still at the water's edge, then strike."
+#~ msgstr "Uma foto do modo foto. As garças ficam totalmente paradas na beira da água e de repente atacam."
+
+#~ msgid "Photo: Pond Turtle"
+#~ msgstr "Foto: Cágado"
+
+#~ msgid "A photo from photo mode. Turtles cruise the drowned streets with their heads up, as if they've always lived here."
+#~ msgstr "Uma foto do modo foto. Os cágados passeiam pelas ruas alagadas de cabeça erguida, como se sempre tivessem morado aqui."
+
+#~ msgid "Photo: Cradle Crane"
+#~ msgstr "Foto: Grou da Cradle"
+
+#~ msgid "A photo from photo mode. White cranes circle high over the landing city on slow wingbeats."
+#~ msgstr "Uma foto do modo foto. Grous brancos circulam bem alto sobre a cidade de pouso, com batidas de asa lentas."
+
+#~ msgid "Maker's Badge"
+#~ msgstr "Distintivo dos Criadores"
+
+#~ msgid "Pinned inside a Legendary part: 'Built to be fixed.'"
+#~ msgstr "Preso dentro de uma peça lendária: \"Feito para ser consertado.\""
+
+#~ msgid "Signal Crystal"
+#~ msgstr "Cristal de sinal"
+
+#~ msgid "The thing that was pinging. It still pings, very quietly, when you're happy."
+#~ msgstr "A coisa que fazia ping. Ainda faz ping, bem baixinho, quando você está feliz."
+
+#~ msgid "APPROVED Stamp"
+#~ msgstr "Carimbo APROVADO"
+
+#~ msgid "The Ledger's rubber stamp. It now only says APPROVED. It's very proud of that."
+#~ msgstr "O carimbo de borracha do Ledger. Agora só diz APROVADO. Ele tem muito orgulho disso."
+
+#~ msgid "Race Propeller"
+#~ msgstr "Hélice de corrida"
+
+#~ msgid "A souvenir from the audit drone. It insists the race was close."
+#~ msgstr "Uma lembrança do drone da auditoria. Ele insiste que a corrida foi apertada."
+
+#~ msgid "Streak Medal"
+#~ msgstr "Medalha de sequência"
+
+#~ msgid "Earned for a max-tier cleaning streak. Scoop scoop scoop."
+#~ msgstr "Ganha por uma sequência de limpeza de nível máximo. Pá, pá, pá."
+
+#~ msgid "Lumi's First Lens Cap"
+#~ msgstr "A primeira tampa de lente de Lumi"
+
+#~ msgid "Lumi Level 10. The cap Lumi wore on the ark, scuffed and kept anyway."
+#~ msgstr "Nível 10 de Lumi. A tampa que Lumi usava na arca, arranhada e guardada mesmo assim."
+
+#~ msgid "Seed-Keeper Pin"
+#~ msgstr "Broche de guardião de sementes"
+
+#~ msgid "Lumi Level 20. A little enamel sprout. The ark gave these to its gardeners."
+#~ msgstr "Nível 20 de Lumi. Um brotinho de esmalte. A arca dava isso aos seus jardineiros."
+
+#~ msgid "Tread Charm"
+#~ msgstr "Amuleto de esteira"
+
+#~ msgid "Lumi Level 30. A brass bell for the treads. It jingles on every bump."
+#~ msgstr "Nível 30 de Lumi. Um sininho de latão para as esteiras. Tilinta a cada solavanco."
+
+#~ msgid "Pocket Star Chart"
+#~ msgstr "Mapa estelar de bolso"
+
+#~ msgid "Lumi Level 40. The ark's route home, folded small. One star is circled."
+#~ msgstr "Nível 40 de Lumi. A rota da arca para casa, dobrada pequenininha. Uma estrela está circulada."
+
+#~ msgid "Glow Ribbon"
+#~ msgstr "Fita luminosa"
+
+#~ msgid "Lumi Level 50. A ribbon that holds a little light. Lumi ties it to the antenna."
+#~ msgstr "Nível 50 de Lumi. Uma fita que guarda um pouco de luz. Lumi amarra na antena."
+
+#~ msgid "Contract Pen"
+#~ msgstr "Caneta de contrato"
+
+#~ msgid "Your first contract signed. The pen has a tiny leaf on top."
+#~ msgstr "Seu primeiro contrato assinado. A caneta tem uma folhinha na ponta."
+
+#~ msgid "Foreman's Clipboard"
+#~ msgstr "Prancheta do capataz"
+
+#~ msgid "Ten contracts done. Every box ticked, every box green."
+#~ msgstr "Dez contratos feitos. Cada caixa marcada, cada caixa verde."
+
+#~ msgid "Contractor's Crown"
+#~ msgstr "Coroa do empreiteiro"
+
+#~ msgid "Twenty-five contracts. The crown is a bent can. You wear it anyway."
+#~ msgstr "Vinte e cinco contratos. A coroa é uma lata torta. Você usa mesmo assim."
+
+#~ msgid "Rubber Frog"
+#~ msgstr "Sapo de borracha"
+
+#~ msgid "Squeaks in a minor key."
+#~ msgstr "Range em tom menor."
+
+#~ msgid "Tiny Cactus"
+#~ msgstr "Cactinho"
+
+#~ msgid "Needs no water. Mocks the Drips."
+#~ msgstr "Não precisa de água. Debocha dos Drips."
+
+#~ msgid "Holo Koi"
+#~ msgstr "Carpa holo"
+
+#~ msgid "A hologram fish that swims round your hopper."
+#~ msgstr "Um peixe holográfico que nada em volta da sua caçamba."
+
+#~ msgid "Moon Rock"
+#~ msgstr "Pedra lunar"
+
+#~ msgid "Not from the moon. From a parking lot. Still beautiful."
+#~ msgstr "Não é da lua. É de um estacionamento. Ainda assim, linda."
+
+#~ msgid "Crate inbound. From... me? I don't remember sending that. Open it."
+#~ msgstr "Caixa chegando. De... mim? Não lembro de ter mandado isso. Abre."
+
+#~ msgid "Supply drop! I found an old Cradle pod still in orbit and nudged it down."
+#~ msgstr "Suprimentos! Achei uma cápsula velha da Cradle ainda em órbita e dei um empurrãozinho."
+
+#~ msgid "Another care package. I've been saving them for good days. This is one."
+#~ msgstr "Mais um pacote. Eu guardo para os dias bons. Hoje é um deles."
+
+#~ msgid "One of your helpers is stuck. Hic."
+#~ msgstr "Um dos seus ajudantes travou. Hic."
+
+#~ msgid "{robot} has the hiccups. Try a firm pat on the chassis."
+#~ msgstr "{robot} está com soluço. Tente um tapinha firme no chassi."
+
+#~ msgid "{robot} needs you. Gently, they're sensitive."
+#~ msgstr "{robot} precisa de você. Com jeito, eles são sensíveis."
+
+#~ msgid "Something alive is moving out there. Not a robot."
+#~ msgstr "Algo vivo está se mexendo lá fora. Não é um robô."
+
+#~ msgid "A visitor! Go slowly. Take a picture, it lasts longer."
+#~ msgstr "Um visitante! Devagar. Tire uma foto, dura mais."
+
+#~ msgid "The thriving hexes are calling things home. Look."
+#~ msgstr "Os hexágonos prósperos estão chamando a vida de volta. Olha."
+
+#~ msgid "Contract complete. Collect at the workbench."
+#~ msgstr "Contrato concluído. Resgate na bancada."
+
+#~ msgid "Another contract done. Tokens are waiting."
+#~ msgstr "Mais um contrato feito. As fichas estão esperando."
+
+#~ msgid "Contract fulfilled. The board's lit up green."
+#~ msgstr "Contrato cumprido. O quadro acendeu verde."
+
+#~ msgid "Trinkets and Curios"
+#~ msgstr "Bugigangas e curiosidades"
+
+#~ msgid "World events, requests, streaks and Curio Capsules."
+#~ msgstr "Eventos, pedidos, sequências e Cápsulas de curiosidades."
+
+#~ msgid "Workbench, Upgrades tab. It opens the Request Board."
+#~ msgstr "Bancada, aba Melhorias. Isso abre o Quadro de pedidos."
+
+#~ msgid "Lunar Silver"
+#~ msgstr "Prata lunar"
+
+#~ msgid "Tangerine"
+#~ msgstr "Tangerina"
+
+#~ msgid "Chrome"
+#~ msgstr "Cromo"
+
+#~ msgid "Workbench Mk IV: Request Board"
+#~ msgstr "Bancada Mk IV: Quadro de pedidos"
+
+#~ msgid "Adds a request board. Take on jobs for tokens and rare parts."
+#~ msgstr "Adiciona um quadro de pedidos. Aceite trabalhos em troca de fichas e peças raras."
+
+#~ msgid "...pretty..."
+#~ msgstr "...bonito..."
+
+#~ msgid "You're decorating. I approve. The cats are going to approve more."
+#~ msgstr "Você está decorando. Aprovo. Os gatos vão aprovar ainda mais."
+
+#~ msgid "A bench, a lamp, a fountain. It's starting to look like somewhere people would want to come back to."
+#~ msgstr "Um banco, uma luminária, uma fonte. Está começando a parecer um lugar para onde as pessoas iam querer voltar."
 
 #~ msgid "Bigger engines and a new canopy. Cells refill in a minute; cargo pods carry 2.5x, more often."
 #~ msgstr "Motores maiores e uma cabine nova. As células recarregam em um minuto; as cápsulas de carga levam 2,5x, com mais frequência."

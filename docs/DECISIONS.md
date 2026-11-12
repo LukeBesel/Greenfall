@@ -615,3 +615,8 @@ Task M3-13 (execution) runs after the full-planet bot (M3-11) merges, so the two
 ## Planting fixed: the game can be played past city 1 (B41, B43, B44, Nov 12, 2026)
 Streets and the landing pad take planter boxes and pavements take tree pits (every city 100% plantable); planting robots plant real slots from the seed store and watering robots water due plants; yard models are rebuilt when the start site reloads. A fresh bot run with no dev flags took Old Town through stages 1 to 5 at game minutes 46, 56, 67, 80 and 100 and opened Ironside at minute 79. Merged.
 - For M3-12: paved hexes now hold about 38 slots instead of 13; no watering robot was built in the honest run; two other fresh runs hit the stall watch (minutes 40.6 and 76.5; the second was a bot fault, now fixed; the first is unexplained and gets traced in M3-12).
+
+## Side systems parked (M3-13 execution, Nov 12, 2026)
+`docs/reviews/M3-13_TRIM.md`. In `parked/`: the Requests board (with its Mk IV bench tier), trinkets, Garden Mode, the robot nursery, Lumi Level and buying ship looks; ten achievements that Planet 1 cannot award are hidden; old saves keep the parked data. About 3,000 lines of code out of the build. Events cut: Supply Drop, Robot Hiccup, Wildlife Visit; event cubes are capped at 3 minutes of income. Merged.
+- **Lumi Level's rewards fed pacing**, so they moved to mastery level-ups with the same numbers (first robot 10.6 minutes against 9.5 in one run; M3-12 refits).
+- **The four kept events may pay flat cubes** (lead): they are short reward beats, capped at 3 minutes of income, which the reward rules allow.

@@ -2,14 +2,14 @@ class_name Exhibits
 extends RefCounted
 ## Lumi's collection: the catalogue of every collectible on the current planet (the planet's
 ## "museum" table): picked-up gnomes, Biscuit's shell, the time capsule, the last broadcast, the
-## memory shards, trinkets and curiosities. The Codex Collection page lists them with counts and a
+## memory shards and curiosities. The Codex Collection page lists them with counts and a
 ## silhouette while missing (ui/codex_screen.gd). Pure helpers, no nodes.
 ## An exhibit: {id, name, kind, ref, shape, color, hint}. Only kinds counted here are listed; a
 ## table may also hold exhibits whose source is not part of this game.
 
 const TABLE: String = "museum"
 ## Exhibit kinds this catalogue can count (see progress()).
-const KINDS: Array[String] = ["egg", "egg_parts", "eggs", "shards", "trinkets", "flag"]
+const KINDS: Array[String] = ["egg", "egg_parts", "eggs", "shards", "flag"]
 
 static var _list: Array = []
 
@@ -55,8 +55,6 @@ static func progress(x: Dictionary) -> Vector2i:
 		"shards":
 			var all: Array = Economy.planet_table("shards").get("shards", [])
 			return Vector2i(mini((GameState.flags.get("shards_found", []) as Array).size(), all.size()), all.size())
-		"trinkets":
-			return Vector2i(Collection.count(), Collection.total())
 		"flag":
 			return Vector2i(1 if GameState.flags.get(ref, false) else 0, 1)
 	return Vector2i(0, 1)

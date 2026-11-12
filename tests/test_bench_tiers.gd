@@ -38,7 +38,7 @@ func _ids(rows: Array) -> Array[String]:
 func test_fresh_game_is_tier_one_with_only_upgrades_and_build() -> void:
 	assert_eq(BenchTiers.tier(), 1)
 	assert_true(UpgradesScreen.tab_visible("patch"))
-	for tab: String in ["bots", "research", "contracts"]:
+	for tab: String in ["bots", "research"]:
 		assert_false(UpgradesScreen.tab_visible(tab), "%s is shut on a fresh bench" % tab)
 
 
@@ -56,7 +56,7 @@ func test_each_tier_opens_its_tab_in_order() -> void:
 	for i: int in range(2, BenchTiers.max_tier() + 1):
 		for tab: Variant in BenchTiers.def(i).get("tabs", []):
 			order.append(str(tab))
-	assert_eq(order, ["bots", "research", "contracts"] as Array[String], "Bots, then Research, then Requests")
+	assert_eq(order, ["bots", "research"] as Array[String], "Bots, then Research")
 	GameState.flags["bench_tier"] = 2
 	assert_true(UpgradesScreen.tab_visible("bots"))
 	assert_false(UpgradesScreen.tab_visible("research"))

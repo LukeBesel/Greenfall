@@ -51,10 +51,6 @@
       "kind": "one_time"
     },
     {
-      "id": "nursery",
-      "kind": "one_time"
-    },
-    {
       "id": "telescope",
       "kind": "one_time"
     },

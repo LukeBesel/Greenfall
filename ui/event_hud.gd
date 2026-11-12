@@ -1,7 +1,7 @@
 class_name EventHUD
 extends CanvasLayer
 ## World-event and streak overlay (owned by WorldEvents):
-##   top centre    event banner: name, what to do, live progress, time left; or a "contract ready" nudge
+##   top centre    event banner: name, what to do, live progress, time left
 ##   on screen     a diamond marker over the event (clamped to the screen edge with an arrow when off-screen)
 ##   bottom right  cleaning streak meter: tier pips, fill bar, bale bonus
 ##   full screen   camera flash (wildlife photos) and a soft cool tint while it rains
@@ -15,7 +15,6 @@ var _b_title: Label
 var _b_hint: Label
 var _b_prog: Label
 var _b_time: Label
-var _nudge: Label
 var _marker: Control
 var _streak: PanelContainer
 var _s_tier: Label
@@ -101,9 +100,6 @@ func _build_banner() -> void:
 	_b_prog.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	bottom.add_child(_b_prog)
 	_banner.visible = false
-	_nudge = UITheme.label("", 13, UITheme.GREEN)
-	_nudge.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	vb.add_child(_nudge)
 
 
 func _build_streak() -> void:
@@ -188,10 +184,7 @@ func _update_banner() -> void:
 			tw.tween_property(_banner, "modulate:a", 0.0, 0.4)
 			tw.tween_callback(func() -> void: _banner.visible = events.active.size() > 0)
 		_shown_id = ""
-		var ready_n: int = Contracts.count_state("done")
-		_nudge.text = (tr("REQUEST READY  ·  claim it at the workbench") if ready_n == 1 else tr("%d REQUESTS READY  ·  claim them at the workbench") % ready_n) if ready_n > 0 else ""
 		return
-	_nudge.text = ""
 	var col: Color = a.get("color", UITheme.GOLD)
 	if _shown_id != str(a["id"]):
 		_shown_id = str(a["id"])

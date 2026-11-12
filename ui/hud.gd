@@ -5,7 +5,7 @@ extends CanvasLayer
 ##                 (ui/currency_cluster.gd)
 ##   top-right     district line (fades when unchanged) and the compact goal tracker with the
 ##                 restart checklist (ui/goals_panel.gd; G / L3 expands)
-##   bottom-centre hotbar with the Lumi Level bar above and the hopper gauge below (ui/hotbar.gd);
+##   bottom-centre hotbar with the Bloom Core ring above and the hopper gauge below (ui/hotbar.gd);
 ##                 above it the interact prompt and a contextual readout (hex %, part signal,
 ##                 carried bales) that only shows while relevant
 ##   bottom-left   one notification stack for toasts, achievements and story lines (ui/notify_stack.gd)
@@ -14,7 +14,7 @@ extends CanvasLayer
 ## Settings.hud_mode: FULL (no auto-fade), MINIMAL (default: extras fade after a few seconds without
 ## change), HIDDEN (only prompts and notifications).
 ## Public API kept for callers: show_toast(text, kind), visible, patch, world. New: notify(),
-## set_core_charge(f) (Bloom Core ring by the level bar), hotbar, goals.
+## set_core_charge(f) (Bloom Core ring over the hotbar), hotbar, goals.
 
 const FADE_AFTER_S: float = 6.0
 const CONTEXT_HOLD_S: float = 3.0
@@ -26,7 +26,6 @@ var world: Node
 
 var hotbar: Hotbar
 var goals: GoalsPanel
-var lumi: LumiLevel
 
 var _root: Control
 var _currency: CurrencyCluster
@@ -63,7 +62,6 @@ func _ready() -> void:
 	_root.theme = HudReadable.theme()  # [onboard] heavier halo + font so HUD text reads over busy scenes
 	add_child(_root)
 	_build_scrims()
-	lumi = (world.get("lumi_level") as LumiLevel) if world else null
 	_build_top_left()
 	var coins := CoinFlight.new()  # [first] sale cubes fly into the counter
 	coins.cluster = _currency
@@ -74,9 +72,6 @@ func _ready() -> void:
 	_build_hints()
 	EventBus.compartment_changed.connect(_on_compartment)
 	EventBus.toast.connect(show_toast)
-	if lumi:
-		lumi.leveled.connect(func(lv: int, rw: String) -> void:
-			notify(tr("Lumi reached level %d%s") % [lv, ("  ·  " + rw) if rw != "" else ""], "level"))
 	Settings.changed.connect(_apply_mode)
 	_apply_mode()
 
@@ -199,17 +194,16 @@ func _build_bottom() -> void:
 	hotbar = Hotbar.new()
 	hotbar.patch = patch
 	hotbar.world = world
-	hotbar.lumi = lumi
 	hotbar.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
-	var sz := Vector2(Hotbar.LEVEL_W + 260.0, 150.0)
+	var sz := Vector2(Hotbar.ROW_W + 260.0, 150.0)
 	hotbar.offset_left = -sz.x * 0.5
 	hotbar.offset_right = sz.x * 0.5
 	hotbar.offset_top = -sz.y - 8.0
 	hotbar.offset_bottom = -8.0
 	_bottom.add_child(hotbar)
-	# Prompt and contextual readout, just above the level bar.
+	# Prompt and contextual readout, just above the Bloom Core ring's line.
 	var mc: MarginContainer = _margin(Control.PRESET_CENTER_BOTTOM, 0)
-	mc.add_theme_constant_override("margin_bottom", 168)  # [v3clear] above the level bar (the hex line sat on it)
+	mc.add_theme_constant_override("margin_bottom", 168)  # [v3clear] above the Bloom Core ring's line (the hex line sat on it)
 	var vb := VBoxContainer.new()
 	vb.alignment = BoxContainer.ALIGNMENT_END
 	vb.add_theme_constant_override("separation", 2)
@@ -229,7 +223,7 @@ func _build_bottom() -> void:
 
 func _build_notify() -> void:
 	var mc: MarginContainer = _margin(Control.PRESET_BOTTOM_LEFT)
-	# [vqa] Sits above the hotbar / level-bar band (bottom 150 px), never beside it.
+	# [vqa] Sits above the hotbar band (bottom 150 px), never beside it.
 	mc.add_theme_constant_override("margin_bottom", 250)  # [onboard] above WREN's subtitle band too: no overlap
 	_notify = NotifyStack.new()
 	mc.add_child(_notify)
@@ -275,7 +269,7 @@ func notify(text: String, kind: String = "info") -> void:
 	show_toast(text, kind)
 
 
-## Bloom Core charge 0..1, drawn as a tiny ring at the left end of the level bar.
+## Bloom Core charge 0..1, drawn as a tiny ring over the hotbar's left side.
 func set_core_charge(f: float) -> void:
 	hotbar.set_core_charge(f)
 
@@ -284,7 +278,7 @@ func set_core_charge(f: float) -> void:
 
 func _process(delta: float) -> void:
 	var minimal: bool = Settings.hud_mode == Settings.HudMode.MINIMAL
-	var cc: Variant = world.get("core_charge") if world else null  # [story2] Bloom Core ring by the level bar
+	var cc: Variant = world.get("core_charge") if world else null  # [story2] Bloom Core ring over the hotbar
 	if cc is CoreCharge:
 		set_core_charge((cc as CoreCharge).shown)
 	# The planet readout needs the globe's districts: until they exist it shows nothing.
@@ -360,8 +354,6 @@ func _update_context(delta: float, minimal: bool) -> void:
 	# [onboard] Always on (playtest 2: "always show the % of the hex I'm standing in"); it only
 	# brightens for a few seconds after a change.
 	var want: float = (1.0 if (_context_idle < CONTEXT_HOLD_S or strong or not patch.carried.is_empty()) else 0.8) if text != "" else 0.0
-	if hotbar.celebrating():
-		want = 0.0
 	if Subtitles.current and is_instance_valid(Subtitles.current) and Subtitles.current.current_text() != "":
 		want = 0.0  # [orbB] owner rule (onboard2): one message line on screen at a time
 	_context.modulate.a = move_toward(_context.modulate.a, want, delta * (4.0 if want > 0.0 else 1.2))

@@ -213,7 +213,6 @@ func test_sightings_photos_and_adoption_persist_in_flags() -> void:
 	assert_true(Codex.is_unlocked("animals:deer"))
 	fa.record_photo("fish")
 	assert_true("fish" in GameState.flags["fauna_photos"])
-	assert_true(Collection.has("pic_fish"))
 	assert_true(bool(GameState.flags.get("seen_fish", false)))
 	var cat := Fauna.Animal.new()
 	cat.sp = "cat"

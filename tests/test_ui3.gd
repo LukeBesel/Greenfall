@@ -17,8 +17,8 @@ func after_each() -> void:
 	GameState.world = _world
 
 
-func test_six_tabs_with_hub_and_rockets_folded_in() -> void:
-	assert_eq(UpgradesScreen.TABS.size(), 6)  # [ui6] no Locker tab; M3-08 adds the Rig tab
+func test_five_tabs_with_hub_and_rockets_folded_in() -> void:
+	assert_eq(UpgradesScreen.TABS.size(), 5)  # [ui6] no Locker tab; M3-08 adds the Rig tab; M3-13 parks Requests
 	assert_eq(str(UpgradesScreen.TABS[0]["name"]), "Upgrades")
 	assert_eq(UpgradesScreen.TAB_ALIASES["hub"], "patch")
 	assert_eq(UpgradesScreen.TAB_ALIASES["rockets"], "patch")

@@ -1,6 +1,6 @@
 extends GutTest
 ## [onboard] First minutes: WREN's brief and the story objectives, the hex outline contour, the
-## Requests board unlock, the key-hint strip and the part detector's gate.
+## key-hint strip and the part detector's gate.
 
 var _flags: Dictionary
 var _stats: Dictionary
@@ -70,16 +70,6 @@ func test_wait_flag_shows_hint() -> void:
 	assert_eq(Objectives.texts(d)[1], "Wait.")
 	GameState.flags["seed_signal"] = true
 	assert_eq(Objectives.texts(d)[1], "Why.")
-
-
-func test_requests_unlock_later() -> void:
-	var st: Dictionary = {"slots": [], "done_total": 0}
-	assert_false(Contracts.unlock_due(1, 600.0, st), "not in the first minutes")
-	assert_false(Contracts.unlock_due(2, 1800.0, st))
-	assert_true(Contracts.unlock_due(3, 60.0, st), "base level 3")
-	assert_true(Contracts.unlock_due(1, 2700.0, st), "or 45 minutes")
-	assert_true(Contracts.unlock_due(1, 10.0, {"slots": [{"state": "active"}], "done_total": 0}), "a save already using it")
-	assert_true(Contracts.unlock_due(1, 10.0, {"slots": [], "done_total": 2}))
 
 
 func test_key_hints_show_first_minutes_and_on_demand() -> void:
