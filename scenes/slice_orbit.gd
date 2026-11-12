@@ -947,8 +947,8 @@ static func pod_body(pod: Node3D) -> StaticBody3D:
 func _attach_camp() -> void:
 	var sp0: SitePrefab = globe.site_manager.prefab(0) if globe.site_manager else null  # [orbD] the yard's models on the anchors
 	if sp0:
-		var ys: YardSite = YardSite.build(w, sp0, bench)
-		w.set("_ruin_bits", ys.bits)
+		_attach_yard_models(sp0)
+		globe.site_manager.site_built.connect(_on_site_built_again)
 	else:
 		w.set("_ruin_bits", {"bench": bench})
 	var camp: Camp = Camp.attach(w)
@@ -966,8 +966,40 @@ func _attach_camp() -> void:
 		var home: Vector3 = yard_point("camera_bot")
 		camp.camera_bot.set("_home", home)
 		camp.camera_bot.global_position = home + home.normalized() * 1.5
-	if sp0:  # [orbD] anchors that settle later (moved out of another planet's geometry) carry their interactables
-		sp0.anchors_moved.connect(func(_names: PackedStringArray) -> void: reseat_yard())
+
+
+## B43: the bench and the yard's models (YardSite, Camp's `_ruin_bits`) stand on the start site's
+## prefab, which is freed when Lumi flies away and built anew when she comes back. While it is
+## gone Camp has no bits to drive; when it is built again the models are built on it again and
+## Camp shows what the saved state says.
+func _attach_yard_models(sp0: SitePrefab) -> void:
+	_yard_prefab = sp0
+	var ys: YardSite = YardSite.build(w, sp0, bench)
+	w.set("_ruin_bits", ys.bits)
+	sp0.tree_exiting.connect(_on_yard_freed, CONNECT_ONE_SHOT)
+	# [orbD] anchors that settle later (moved out of another planet's geometry) carry their interactables
+	sp0.anchors_moved.connect(func(_names: PackedStringArray) -> void: reseat_yard())
+
+
+func _on_yard_freed() -> void:
+	_yard_prefab = null
+	bench = null
+	_bench_parts.clear()
+	w.set("_ruin_bits", {})
+	var camp: Camp = w.get("camp")
+	if camp and camp.is_inside_tree():  # not when the whole slice is going
+		camp.rebind_yard()
+
+
+func _on_site_built_again(i: int, p: SitePrefab) -> void:
+	if i != 0 or p == _yard_prefab or not is_instance_valid(p):
+		return
+	_build_bench()
+	_attach_yard_models(p)
+	var camp: Camp = w.get("camp")
+	if camp:
+		camp.rebind_yard()
+	reseat_yard()
 
 
 ## [orbD] Re-reads the start site's anchors for everything attached to them at setup: the signal
@@ -1098,6 +1130,7 @@ func open_upgrades() -> void:
 
 var bench: Node3D
 var _bench_parts: Array = []  # [node, repaired transform, broken transform]
+var _yard_prefab: SitePrefab  # the start site's prefab the yard's models stand on (null while it is unloaded)
 var _repairing: bool = false
 
 

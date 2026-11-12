@@ -118,17 +118,7 @@ func _setup() -> void:
 		ex.nursery.set_built(YardBuilds.built("nursery"), false)
 	if DevHooks.has("camp-bin"):
 		TrashBin.set_level(int(DevHooks.get_f("camp-bin", 1.0)))
-	_bench = (world.get("_ruin_bits") as Dictionary).get("bench") as Node3D
-	if _bench:
-		_bench_xf = _bench.transform
-		for c: Node in _bench.get_children():
-			if c is MeshInstance3D and c.get_index() > 0:
-				var n: Node3D = c
-				var i: int = _tools.size()
-				var broken := Transform3D(Basis.from_euler(Vector3(randf_range(-1.2, 1.2), i * 1.7, randf_range(-1.4, 1.4))),
-					Vector3(-0.9 + i * 0.42, -0.62 + (0.06 if i % 2 == 0 else 0.0), 0.55 + (i % 3) * 0.12))
-				_tools.append([n, n.transform, broken])
-	_apply_bench(bench_ok(), false)
+	_bind_bench()
 	var hub: Hub = world.get("hub") as Hub
 	_apply_builds()  # [camp2] everything but the bench and the bin is a Hub build
 	var locker := LockerCabinet.new()  # [ui6] the Locker is a yard build: E opens the character builder
@@ -147,6 +137,29 @@ func _setup() -> void:
 		get_tree().create_timer(DevHooks.get_f("camp-buy-at", 2.0)).timeout.connect(_dev_buy)
 	if DevHooks.has("camp-report"):
 		get_tree().create_timer(DevHooks.get_f("camp-report", 2.0)).timeout.connect(func() -> void: print(report()))
+
+
+## Takes the bench from the slice's `_ruin_bits` and puts it (and its tools) in the saved state.
+func _bind_bench() -> void:
+	_tools.clear()
+	_bench = (world.get("_ruin_bits") as Dictionary).get("bench") as Node3D
+	if _bench:
+		_bench_xf = _bench.transform
+		for c: Node in _bench.get_children():
+			if c is MeshInstance3D and c.get_index() > 0:
+				var n: Node3D = c
+				var i: int = _tools.size()
+				var broken := Transform3D(Basis.from_euler(Vector3(randf_range(-1.2, 1.2), i * 1.7, randf_range(-1.4, 1.4))),
+					Vector3(-0.9 + i * 0.42, -0.62 + (0.06 if i % 2 == 0 else 0.0), 0.55 + (i % 3) * 0.12))
+				_tools.append([n, n.transform, broken])
+	_apply_bench(bench_ok(), false)
+
+
+## B43: the slice's yard models went away with the start site or were built again on it (a trip
+## away and back): drive the ones in `_ruin_bits` now.
+func rebind_yard() -> void:
+	_bind_bench()
+	_apply_builds()
 
 
 func _dev_buy() -> void:
