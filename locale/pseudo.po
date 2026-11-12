@@ -479,7 +479,7 @@ msgstr "[Évéŕý 3ŕð bàļé ţô ţĥé ŕéçýçļéŕ ~~~~~~~]"
 msgid "Every %dth bale to the recycler"
 msgstr "[Évéŕý %dţĥ bàļé ţô ţĥé ŕéçýçļéŕ ~~~~~~~~]"
 
-#: automation/trash_bin.gd:93 systems/camp/camp.gd:372 systems/camp/field_benches.gd:77
+#: automation/trash_bin.gd:93 systems/camp/camp.gd:385 systems/camp/field_benches.gd:77
 #: systems/camp/hub_builds.gd:91 systems/camp/hub_builds.gd:156 systems/camp/hub_builds.gd:166
 #: systems/camp/hub_builds.gd:176 systems/camp/yard_builds.gd:97 systems/crew/robot_chain.gd:162
 msgid "Not enough materials."
@@ -723,7 +723,7 @@ msgstr ""
 "[ÇÔMÞÔŠŢ ÞŔÉŠŠ  Ļv %d\n"
 "ĥôþþéŕ %d%%  →  šééðš ~~~~~~~~~~~~]"
 
-#: plants/garden.gd:321
+#: plants/garden.gd:386
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "[À ĥéx îš ƒûļļý ŕéšţôŕéð. Šôméţĥîñĝ šmàļļ îš àļŕéàðý ļîvîñĝ îñ îţ. ~~~~~~~~~~~~~~~~~~~~]"
 
@@ -1192,23 +1192,23 @@ msgstr "[ĤÉX ÇĻÉÀÑ! ~]"
 msgid "Milestone: %d hexes clean!"
 msgstr "[Mîļéšţôñé: %d ĥéxéš çļéàñ! ~~~~~~]"
 
-#: scenes/slice_orbit.gd:608 systems/camp/field_bench_sites.gd:177
+#: scenes/slice_orbit.gd:609 systems/camp/field_bench_sites.gd:177
 msgid "E   Open the field bench"
 msgstr "E   [Ôþéñ ţĥé ƒîéļð béñçĥ ~~~~]"
 
-#: scenes/slice_orbit.gd:613 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:589
+#: scenes/slice_orbit.gd:614 systems/camp/camp.gd:189 tools/orbit_roundtrip.gd:621
 msgid "E   Fix the workbench"
 msgstr "E   [Fîx ţĥé ŵôŕķbéñçĥ ~~~]"
 
-#: scenes/slice_orbit.gd:613 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:614 systems/camp/camp.gd:190
 msgid "E   Open the workbench"
 msgstr "E   [Ôþéñ ţĥé ŵôŕķbéñçĥ ~~~]"
 
-#: scenes/slice_orbit.gd:1106
+#: scenes/slice_orbit.gd:1139
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "[Ûþĝŕàðéš ñééð à ŵôŕķbéñçĥ. Ĥéàð bàçķ ţô ţĥé ĥûb. ~~~~~~~~~~~~~~]"
 
-#: scenes/slice_orbit.gd:1207
+#: scenes/slice_orbit.gd:1241
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "[Ŵôŕķbéñçĥ ƒîxéð. Þŕéšš É àţ îţ ţô šþéñð çûbéš ôñ ûþĝŕàðéš. ~~~~~~~~~~~~~~~~~]"
 
@@ -2558,19 +2558,19 @@ msgstr "[Šûŕĝé ~]"
 msgid "New CD: %s by %s, from %s"
 msgstr "[Ñéŵ ÇÐ: %s bý %s, ƒŕôm %s ~~~~~~]"
 
-#: systems/camp/camp.gd:221
+#: systems/camp/camp.gd:234
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "[Ŵôŕķbéñçĥ ƒîxéð! Þŕéšš %s àţ îţ ţô bûý ûþĝŕàðéš. ~~~~~~~~~~~~~~]"
 
-#: systems/camp/camp.gd:356
+#: systems/camp/camp.gd:369
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr "E   [%s (Ļv %d): ƒûļļý ûþĝŕàðéð ~~~~~~]"
 
-#: systems/camp/camp.gd:362
+#: systems/camp/camp.gd:375
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr "E   [%s (Ļv %d): ûþĝŕàðé ţô %s ƒôŕ %s ~~~~~~~~]"
 
-#: systems/camp/camp.gd:368
+#: systems/camp/camp.gd:381
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "[Ţŕàšĥ bîñ ûþĝŕàðéð: %s. Bàļéš šéļļ ƒôŕ %d%% ĥéŕé. ~~~~~~~~~~~~~~]"
 
@@ -2714,7 +2714,7 @@ msgstr "[%s ĥûmš ţô ţĥé šééðļîñĝš. Ŕéţîŕéméñţ šûîţ
 msgid "%s points proudly at a new bud."
 msgstr "[%s þôîñţš þŕôûðļý àţ à ñéŵ bûð. ~~~~~~~~]"
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:630
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:662
 msgid "E   CD player: %s"
 msgstr "E   [ÇÐ þļàýéŕ: %s ~~]"
 

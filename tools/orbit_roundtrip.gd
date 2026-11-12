@@ -322,7 +322,39 @@ static func _fauna_check(tree: SceneTree, s: Node, so: SliceOrbit, check: Callab
 		await tree.process_frame
 
 
-## First Seed: the greenhouse stands on open ground east of the start yard; with enough clean
+## B43: the start site's prefab is freed when Lumi flies away and built anew when she comes back.
+## The yard's models stood on it and were never built again: Camp drove freed nodes (a script
+## error at every base level-up or yard build after a trip) and the bench was gone. Now Camp has
+## no bits while the site is away, and the bench and the yard models stand on the new prefab.
+static func _yard_trip_check(tree: SceneTree, s: Node, so: SliceOrbit, check: Callable) -> void:
+	var sm: SiteManager = so.globe.site_manager
+	var camp: Camp = s.get("camp")
+	if sm == null or sm.prefab(0) == null or camp == null:
+		check.call("orbit_yard_survives_a_trip", "the start site and its camp", "none")
+		return
+	var shown_before: Array[String] = camp.standing()
+	sm.free_hub(0)
+	await tree.process_frame
+	await tree.process_frame
+	var bits_ok: bool = true
+	for k: Variant in (s.get("_ruin_bits") as Dictionary):
+		bits_ok = bits_ok and is_instance_valid((s.get("_ruin_bits") as Dictionary)[k])
+	check.call("orbit_yard_bits_valid_while_away", true, bits_ok)
+	camp.rebind_yard()  # what a base level-up does while the start site is away
+	var p: SitePrefab = sm.build_hub(0, true)
+	for i: int in 600:
+		if p.is_built:
+			break
+		await tree.process_frame
+	await tree.process_frame  # the rebuild of the yard on site_built
+	var bits: Dictionary = s.get("_ruin_bits")
+	var bench: Node3D = bits.get("bench") as Node3D
+	var on_new: bool = bench != null and is_instance_valid(bench) and p.is_ancestor_of(bench)
+	for k: Variant in bits:
+		on_new = on_new and is_instance_valid(bits[k]) and p.is_ancestor_of(bits[k] as Node)
+	check.call("orbit_yard_rebuilt_on_the_new_site", true, on_new)
+	camp.rebind_yard()
+	check.call("orbit_yard_shows_what_was_built", str(shown_before), str(camp.standing()))
 ## cells the tin gives the prompt, and the cinematic (sped up here) unlocks seeds and hands
 ## the controls back.
 static func _first_seed_check(tree: SceneTree, s: Node, so: SliceOrbit, check: Callable) -> void:
@@ -732,6 +764,7 @@ static func run(rt: Node, check: Callable) -> void:
 	check.call("orbit_hub_world_saved", 2, int((((disk.get("orbit", {}) as Dictionary).get("hub_worlds", {}) as Dictionary).get("0", {}) as Dictionary).get("hub_level", 0)))
 	var s1_target: int = int(s1.get_meta("rt_target", -1))
 	check.call("orbit_save_has_no_flat_xz", false, JSON.stringify(GameState.orbit.get("lumi", {})).contains("\"pos\""))
+	await _yard_trip_check(tree, s1, so, check)
 	s1.queue_free()
 	await tree.process_frame
 	await tree.process_frame

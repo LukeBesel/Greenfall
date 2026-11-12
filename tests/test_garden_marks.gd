@@ -85,15 +85,52 @@ func test_marks_show_soil_sprouts_and_thirst() -> void:
 	assert_false(bool(got[1][1]), "watering it again: not dry")
 
 
-func test_no_planting_on_streets_kerbs_or_the_pad() -> void:
+func test_paving_is_found_on_streets_kerbs_and_the_pad() -> void:
 	var lay := CityLayout.new(4471, 108.0)
 	var key: Vector2i = Vector2i(1, 1)
 	assert_true(lay.blocks.has(key), "a town block")
 	var c := Vector2(key) * CityLayout.PITCH
 	var road_x: float = c.x + CityLayout.PITCH * 0.5  # the street between two blocks
-	assert_true(Garden.paved(lay, road_x, c.y), "a street")
+	assert_true(GardenGround.paved(lay, road_x, c.y), "a street")
 	var walk_x: float = c.x + CityLayout.PITCH * 0.5 - CityLayout.ROAD_W * 0.5 - CityLayout.WALK_W * 0.5
-	assert_true(Garden.paved(lay, walk_x, c.y), "a sidewalk and its kerb")
-	assert_true(Garden.paved(lay, 0.0, 0.0), "the hub's yard pad")
+	assert_true(GardenGround.paved(lay, walk_x, c.y), "a sidewalk and its kerb")
+	assert_true(GardenGround.paved(lay, 0.0, 0.0), "the hub's yard pad")
 	var lot: bool = lay.surface_at(c.x, c.y) == CityLayout.Surface.LOT
-	assert_eq(Garden.paved(lay, c.x, c.y), not lot, "a lot's middle is open ground")
+	assert_eq(GardenGround.paved(lay, c.x, c.y), not lot, "a lot's middle is open ground")
+
+
+## B41: paving takes planters: a box on a street or the pad, a tree pit on a sidewalk or a kerb;
+## a slot inside a building takes nothing.
+func test_a_street_takes_planter_boxes_and_a_sidewalk_tree_pits() -> void:
+	var lay := CityLayout.new(4471, 108.0)
+	var key: Vector2i = Vector2i(1, 1)
+	var c := Vector2(key) * CityLayout.PITCH
+	var road_x: float = c.x + CityLayout.PITCH * 0.5
+	var walk_x: float = c.x + CityLayout.PITCH * 0.5 - CityLayout.ROAD_W * 0.5 - CityLayout.WALK_W * 0.5
+	assert_eq(GardenGround.planter_kind(GardenGround.paved_surface(lay, road_x, c.y)), GardenPlanters.Kind.BOX, "a street: a planter box")
+	assert_eq(GardenGround.planter_kind(GardenGround.paved_surface(lay, 0.0, 0.0)), GardenPlanters.Kind.BOX, "the pad: a planter box")
+	assert_eq(GardenGround.planter_kind(GardenGround.paved_surface(lay, walk_x, c.y)), GardenPlanters.Kind.PIT, "a sidewalk: a tree pit")
+	assert_gt(GardenPlanters.soil_top(GardenPlanters.Kind.BOX), GardenPlanters.soil_top(GardenPlanters.Kind.PIT), "a box stands taller than a pit")
+	assert_eq(GardenPlanters.soil_top(GardenPlanters.Kind.NONE), 0.0)
+	var made: Array = _make()
+	var g: Garden = made[1]
+	var slots: PackedInt32Array = _plant3(made[0], g)
+	var hid: int = g.slot_hex[slots[0]]
+	var free: Array[int] = []
+	for sl: int in g.hex_slots[hid]:
+		if g.slot_species[sl] < 0:
+			free.append(sl)
+	g.ground.set_known(free[0], true, false, GardenPlanters.Kind.PIT)
+	g.ground.set_known(free[1], true, true)
+	assert_true(g.plantable(free[0]), "a paved slot takes a plant")
+	assert_false(g.plantable(free[1]), "a slot inside a building does not")
+	GameState.currencies["seeds"] = BigNum.from_float(5)
+	g.plant(free[0])
+	assert_true(g.planters.has_slot(free[0]), "its plant stands in a tree pit")
+	assert_false(g.planters.has_slot(slots[0]), "a plant on open ground has none")
+	g.slot_stage[free[0]] = 2  # grown past the sprout (a seed's clump has no size)
+	var up: Vector3 = g.slot_pos[free[0]].normalized()
+	assert_almost_eq(g._slot_xf(free[0]).origin.dot(up) - g.slot_pos[free[0]].dot(up), GardenPlanters.soil_top(GardenPlanters.Kind.PIT), 0.001,
+		"the plant stands on the pit's soil")
+	assert_not_null(GardenPlanters.box_mesh())
+	assert_not_null(GardenPlanters.pit_mesh())

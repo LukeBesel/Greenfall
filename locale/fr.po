@@ -482,7 +482,7 @@ msgstr "1 balle sur 3 au recycleur"
 msgid "Every %dth bale to the recycler"
 msgstr "1 balle sur %d au recycleur"
 
-#: automation/trash_bin.gd:93 systems/camp/camp.gd:372 systems/camp/field_benches.gd:77
+#: automation/trash_bin.gd:93 systems/camp/camp.gd:385 systems/camp/field_benches.gd:77
 #: systems/camp/hub_builds.gd:91 systems/camp/hub_builds.gd:156 systems/camp/hub_builds.gd:166
 #: systems/camp/hub_builds.gd:176 systems/camp/yard_builds.gd:97 systems/crew/robot_chain.gd:162
 msgid "Not enough materials."
@@ -726,7 +726,7 @@ msgstr ""
 "PRESSE À COMPOST  Niv %d\n"
 "trémie %d%%  →  graines"
 
-#: plants/garden.gd:321
+#: plants/garden.gd:386
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "Un hexagone est entièrement restauré. Quelque chose de tout petit y vit déjà."
 
@@ -1195,23 +1195,23 @@ msgstr "HEXAGONE PROPRE !"
 msgid "Milestone: %d hexes clean!"
 msgstr "Étape : %d hexagones propres !"
 
-#: scenes/slice_orbit.gd:608 systems/camp/field_bench_sites.gd:177
+#: scenes/slice_orbit.gd:609 systems/camp/field_bench_sites.gd:177
 msgid "E   Open the field bench"
 msgstr ""
 
-#: scenes/slice_orbit.gd:613 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:589
+#: scenes/slice_orbit.gd:614 systems/camp/camp.gd:189 tools/orbit_roundtrip.gd:621
 msgid "E   Fix the workbench"
 msgstr "E   Réparer l'établi"
 
-#: scenes/slice_orbit.gd:613 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:614 systems/camp/camp.gd:190
 msgid "E   Open the workbench"
 msgstr "E   Ouvrir l'établi"
 
-#: scenes/slice_orbit.gd:1106
+#: scenes/slice_orbit.gd:1139
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Les améliorations demandent un établi. Retourne à la base."
 
-#: scenes/slice_orbit.gd:1207
+#: scenes/slice_orbit.gd:1241
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Établi réparé. Appuie sur E devant lui pour dépenser des cubes en améliorations."
 
@@ -2561,19 +2561,19 @@ msgstr "Surge"
 msgid "New CD: %s by %s, from %s"
 msgstr "Nouveau CD : %s par %s, de %s"
 
-#: systems/camp/camp.gd:221
+#: systems/camp/camp.gd:234
 msgid "Workbench fixed! Press %s at it to buy upgrades."
 msgstr "Établi réparé ! Appuie sur %s devant pour acheter des améliorations."
 
-#: systems/camp/camp.gd:356
+#: systems/camp/camp.gd:369
 msgid "E   %s (Lv %d): fully upgraded"
 msgstr "E   %s (Niv %d) : entièrement amélioré"
 
-#: systems/camp/camp.gd:362
+#: systems/camp/camp.gd:375
 msgid "E   %s (Lv %d): upgrade to %s for %s"
 msgstr "E   %s (Niv %d) : passer à %s pour %s"
 
-#: systems/camp/camp.gd:368
+#: systems/camp/camp.gd:381
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "Poubelle améliorée : %s. Les balles se vendent ici à %d%%."
 
@@ -2717,7 +2717,7 @@ msgstr "%s fredonne pour les semis. La retraite lui va bien."
 msgid "%s points proudly at a new bud."
 msgstr "%s montre fièrement un nouveau bourgeon."
 
-#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:630
+#: systems/extras/radio.gd:184 tools/orbit_roundtrip.gd:662
 msgid "E   CD player: %s"
 msgstr "E   Lecteur CD : %s"
 

@@ -611,3 +611,7 @@ Task M3-13 (execution) runs after the full-planet bot (M3-11) merges, so the two
 - Kept: base levels can be bought at field benches; the kit is free.
 - For M3-12: city 1's first robot came at 14.5 minutes in one run (target 12); purchase waits away from home are still over 4 minutes.
 - For M5: junk lies right up to the benches; clear a small apron round each.
+
+## Planting fixed: the game can be played past city 1 (B41, B43, B44, Nov 12, 2026)
+Streets and the landing pad take planter boxes and pavements take tree pits (every city 100% plantable); planting robots plant real slots from the seed store and watering robots water due plants; yard models are rebuilt when the start site reloads. A fresh bot run with no dev flags took Old Town through stages 1 to 5 at game minutes 46, 56, 67, 80 and 100 and opened Ironside at minute 79. Merged.
+- For M3-12: paved hexes now hold about 38 slots instead of 13; no watering robot was built in the honest run; two other fresh runs hit the stall watch (minutes 40.6 and 76.5; the second was a bot fault, now fixed; the first is unexplained and gets traced in M3-12).

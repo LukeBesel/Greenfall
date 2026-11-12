@@ -139,21 +139,103 @@ func test_order_sends_a_robot_to_a_cell() -> void:
 	assert_eq(str(u["mode"]), "work")
 
 
-func test_seedling_plants_and_drip_waters() -> void:
-	var w: Dictionary = _world(false)
-	var crew: SphereCrew = w["crew"]
-	var cells: SphereCells = w["cells"]
-	crew.spend_seeds = false
-	crew.spawn("seedling", 0, 100)
-	crew.spawn("drip", 0, _g5.cells_around(100, 1)[2])
-	_run(crew, 60.0, 0.2)
-	var planted: int = 0
-	var growing: int = 0
-	for c: int in _g5.cells_around(100, 3):
-		planted += 1 if cells.state[c] >= 2 else 0
-		growing += 1 if cells.state[c] == 3 else 0
-	assert_gt(planted, 0)
-	assert_gt(growing, 0)
+## A crew on a GlobeFixture planet with its Garden and HexLevels (quiet, ticked by hand), the
+## cells within `clean_rings` of the hub scooped clean. [world, crew].
+func _garden_world(clean_rings: int = 1) -> Array:
+	var w := GlobeWorld.new(5)
+	add_child_autofree(w)
+	w.add_garden().set_process(false)
+	w.add_hex_levels().set_process(false)
+	var fx: GlobeFixture = w.fixture
+	for c: int in fx.grid.cells_around(GlobeFixture.HUB_CELL, clean_rings):
+		if fx.field.hex_hub[c] == 0 and not fx.field.is_water(c):
+			fx.clean(c)
+			fx.cells.set_junk(c, 0.0)  # the globe's cells follow the field, as the slice writes them
+			fx.cells.set_state(c, 1)
+			w.hex_levels.track(c)
+	var surface := SphereSurface.new(fx.grid.radius_m)
+	surface.height_fn = fx.terrain.height
+	surface.cell_fn = func(p: Vector3, _h: int) -> int: return fx.grid.cell_at(p)
+	surface.center_fn = func(c: int) -> Vector3: return fx.grid.centers[c]
+	var crew := SphereCrew.new()
+	crew.visuals = false
+	w.add_child(crew)
+	crew.setup(fx.grid, fx.cells, fx.field, surface, SphereSwarm.new(surface))
+	crew.hub_cell = GlobeFixture.HUB_CELL
+	crew.depot_cell = GlobeFixture.HUB_CELL
+	crew.depot_points[GlobeFixture.HUB_CELL] = fx.grid.centers[GlobeFixture.HUB_CELL]
+	crew.garden = w.garden
+	return [w, crew]
+
+
+## Runs a garden crew for `seconds`: robots, the garden's growth and the hex stages.
+func _run_garden(w: GlobeWorld, crew: SphereCrew, seconds: float) -> void:
+	var t: float = 0.0
+	while t < seconds:
+		crew.tick(0.5)
+		w.garden.grow_step(0.5)
+		w.hex_levels.step(0.5)
+		t += 0.5
+
+
+## B44: on the globe a Seedling only moved its cell's state and a Drip the next one; neither
+## touched the garden's slots, which the hex stages read, so no robot added to stages 2 to 5.
+## Now a Seedling plants the slots (paying seeds from the store) and a Drip waters the plants,
+## and that alone takes clean hexes to Planted and Growing.
+func test_seedlings_plant_the_gardens_slots_and_drips_water_them() -> void:
+	var made: Array = _garden_world()
+	var w: GlobeWorld = made[0]
+	var crew: SphereCrew = made[1]
+	var g: Garden = w.garden
+	var cur: Dictionary = GameState.currencies.duplicate()
+	var world_state: Dictionary = GameState.world.duplicate(true)
+	GameState.currencies["seeds"] = BigNum.from_float(200)
+	var seedling: Dictionary = crew.spawn("seedling", 0, GlobeFixture.HUB_CELL)
+	var drip: Dictionary = crew.spawn("drip", 0, GlobeFixture.HUB_CELL)
+	_run_garden(w, crew, 240.0)
+	var planted: int = g.planted_slots().size()
+	var wet: int = 0
+	for s: int in g.planted_slots():
+		wet += 1 if g.slot_water[s] > 0.0 else 0
+	var seeds_left: float = GameState.get_currency("seeds").to_float()
+	var growing: int = w.hex_levels.count_at_least(3)
+	GameState.currencies = cur
+	GameState.world = world_state
+	assert_gt(planted, 20, "the Seedling planted the garden's slots")
+	assert_eq(float(seedling["log"]["planted"]), float(planted), "every plant it logged is a slot")
+	assert_lt(seeds_left, 200.0, "paid for with seeds from the store")
+	assert_gt(float(drip["log"]["watered"]), 0.0, "the Drip watered")
+	assert_gt(wet, planted / 2, "most plants hold water")
+	assert_gt(w.hex_levels.count_at_least(2), 0, "a hex is Planted by robots alone")
+	assert_gt(growing, 0, "and one Growing")
+
+
+## B44: robots leave a hex alone while it is shut to them (a kind Lumi has not learnt) and plant
+## only clean ground; a search for planting work makes no hex's slots but the one it picks (a
+## search covers a few thousand hexes with 200 robots).
+func test_planting_robots_keep_off_shut_and_dirty_hexes_and_search_cheaply() -> void:
+	var made: Array = _garden_world(2)
+	var w: GlobeWorld = made[0]
+	var crew: SphereCrew = made[1]
+	var g: Garden = w.garden
+	var fx: GlobeFixture = w.fixture
+	var shut_cell: int = w.land_cell(1)
+	fx.cells.shut.resize(fx.cells.n)
+	fx.cells.shut[shut_cell] = 1
+	var dirty: int = -1
+	for c: int in fx.grid.cells_around(GlobeFixture.HUB_CELL, 4):
+		if fx.cells.is_dirty(c):
+			dirty = c
+			break
+	assert_false(crew.wants("plant", shut_cell), "shut to robots")
+	assert_false(crew.wants("plant", dirty), "still junk")
+	var made_before: int = g.hex_slots.size()
+	var c: int = crew.claim_dirty(GlobeFixture.HUB_CELL, GlobeFixture.HUB_CELL, crew.rings, "plant", "s")
+	assert_true(c >= 0 and c != shut_cell, "an open clean hex")
+	assert_lte(g.hex_slots.size(), made_before + 1, "the search made no slots of the hexes it looked at")
+	assert_false(crew.wants("water", c), "nothing planted there: no watering")
+	crew.garden = null
+	assert_false(crew.wants("plant", c), "no garden: no planting work")
 
 
 # --- Far crews ------------------------------------------------------------------------------
@@ -542,15 +624,19 @@ func test_robot_cleaned_count_matches_a_reload() -> void:
 func test_drips_refill_their_tank_and_water_again() -> void:
 	# [orbC] Water net on the globe: watering spends the tank, an empty Drip refills (here at the
 	# Depot's barrel) and goes back to work.
-	var w: Dictionary = _world(false)
-	var crew: SphereCrew = w["crew"]
-	var cells: SphereCells = w["cells"]
-	crew.depot_points[100] = _g5.centers[_g5.cells_around(100, 1)[4]]
-	for c: int in _g5.cells_around(100, 3):
-		cells.set_state(c, 2)  # planted, waiting for water
-	var u: Dictionary = crew.spawn("drip", 0, _g5.cells_around(100, 1)[2])
+	var made: Array = _garden_world(3)
+	var w: GlobeWorld = made[0]
+	var crew: SphereCrew = made[1]
+	var g: Garden = w.garden
+	var grid: SphereGrid = w.fixture.grid
+	crew.depot_points[GlobeFixture.HUB_CELL] = grid.centers[grid.cells_around(GlobeFixture.HUB_CELL, 1)[4]]
+	for c: int in grid.cells_around(GlobeFixture.HUB_CELL, 3):
+		g.ensure_hex(c)
+		for s: int in g.hex_slots.get(c, PackedInt32Array()):
+			g.set_seed(s, true)  # planted, waiting for water
+	var u: Dictionary = crew.spawn("drip", 0, grid.cells_around(GlobeFixture.HUB_CELL, 1)[2])
 	u["water"] = 0.0
-	_run(crew, 240.0, 0.2)
+	_run_garden(w, crew, 240.0)
 	assert_gte(float(u["log"]["refills"]), 1.0, "it went to refill")
 	assert_gt(float(u["log"]["watered"]), 3.0, "and watered after")
 	assert_eq(crew.stuck_count(), 0)

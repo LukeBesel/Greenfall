@@ -22,8 +22,8 @@ static func plant_patch(g: Garden, pos: Vector3, fwd: Vector3) -> int:
 
 
 ## The empty plantable slots a patch round `first` takes: `first` and its nearest neighbours on
-## the same hex within patch_radius_m, at most patch_size.
-static func patch_slots(g: Garden, first: int) -> Array[int]:
+## the same hex within patch_radius_m, at most `size` (patch_size when 0: Lumi's patch).
+static func patch_slots(g: Garden, first: int, size: int = 0) -> Array[int]:
 	var r: float = float(g.tending.get("patch_radius_m", 3.0))
 	var cands: Array = []
 	for s: int in g.hex_slots.get(g.slot_hex[first], PackedInt32Array()):
@@ -33,7 +33,7 @@ static func patch_slots(g: Garden, first: int) -> Array[int]:
 	cands.sort_custom(_nearer)
 	var out: Array[int] = [first]
 	for c: Array in cands:
-		if out.size() >= maxi(1, int(g.tending.get("patch_size", 1))):
+		if out.size() >= (size if size > 0 else maxi(1, int(g.tending.get("patch_size", 1)))):
 			break
 		out.append(int(c[1]))
 	return out
