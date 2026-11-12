@@ -10,6 +10,10 @@ extends Node3D
 ## wet_s (3 minutes of full growth) with an immediate growth burst (once per rewater_s per hex).
 ## Blooms drop seeds. Hex life = mean stage / 4 drives the ground turning green and the planet
 ## cell state (Planted -> Growing -> Restored).
+## Slots on paving take planter boxes and street-tree pits (B41: plants/garden_planters.gd), so a
+## city's streets count toward its regrowth like soil; only a slot inside a building takes nothing.
+## The crew plants and waters through plants/garden_crew.gd, reading the per-hex caches here
+## (open_slots, needs_water) so a search over a few thousand hexes stays cheap.
 
 ## [v4grow] A seed went in / a plant got water (was_dry: it had none). plants/garden_marks.gd.
 signal planted(slot: int)
@@ -50,6 +54,11 @@ var _tick: float = 0.0
 const VARIANT_TRIS: int = 3000  # [green]
 const MAX_VARIANTS: int = 3  # [green] caps the batch count (chunk x species x variant)
 var _saved_cells: Dictionary = {}  # cell -> [species bytes, stage bytes, water floats] not made yet
+var planters: GardenPlanters
+## What lies under each slot (paving, a building, a lot's plates): plants/garden_ground.gd.
+var ground := GardenGround.new(self)
+var _open: Dictionary = {}  # hex id -> empty plantable slots (dropped when it may have changed)
+var _thirsty: Dictionary = {}  # hex id -> true: a plant there is due water (rebuilt each growth tick)
 
 
 func setup() -> void:
@@ -58,14 +67,20 @@ func setup() -> void:
 	species = cfg.get("species", [])
 	for s: Dictionary in species:
 		_sp_weight_sum += float(s.get("weight", 1.0))
+	planters = GardenPlanters.new()
+	planters.name = "Planters"
+	add_child(planters)
+	if site_manager != null:
+		site_manager.site_built.connect(_on_site_built)
 	_load()  # slots come per cell, on demand (ensure_hex)
 
 
-## [biomes] Can this empty slot take a seed here? (not under water, not on paving)
+## [biomes] Can this empty slot take a seed here? Not under water and not inside a building; on
+## paving it goes into a planter (B41).
 func plantable(s: int) -> bool:
 	if world == null or world.field.is_water(slot_hex[s]):
 		return false
-	return not on_paving(s)  # [v4grow] streets, sidewalks and kerbs, the pad, buildings
+	return not inside_building(s)
 
 
 ## Makes a land cell's slots (once) and restores what a save had planted there.
@@ -175,16 +190,19 @@ func plant(slot: int) -> bool:
 	return true
 
 
-## Puts a seed in an empty slot (already paid for).
-func set_seed(slot: int) -> void:
+## Puts a seed in an empty slot (already paid for). quiet: no dust or sound (the crew far away).
+func set_seed(slot: int, quiet: bool = false) -> void:
 	slot_species[slot] = _pick_species(slot)
 	slot_stage[slot] = 0
 	slot_progress[slot] = 0.0
 	slot_water[slot] = 0.0
 	_update_inst(slot)
-	var p: Vector3 = slot_pos[slot]
-	Vfx.burst("soil", p + OrbitUp.up(p) * 0.05, Color(0.36, 0.27, 0.2), 0.8)  # [orbB] local up
-	Audio.play("dig", 1.1, -8.0)
+	_open.erase(slot_hex[slot])
+	_thirsty[slot_hex[slot]] = true
+	if not quiet:
+		var p: Vector3 = slot_pos[slot]
+		Vfx.burst("soil", p + OrbitUp.up(p) * 0.05, Color(0.36, 0.27, 0.2), 0.8)  # [orbB] local up
+		Audio.play("dig", 1.1, -8.0)
 	GameState.inc_stat("plants_planted")
 	_recount(slot_hex[slot])
 	planted.emit(slot)  # [v4grow]
@@ -205,6 +223,19 @@ func water(slot: int, amount_s: float) -> void:
 		_perk[slot] = PERK_S  # [v4grow] it straightens up with a little bounce
 		_update_inst(slot)
 	watered.emit(slot, was_dry)
+
+
+## Fills a planted slot to its wet cap with no splash, sound or bounce (the crew far from Lumi).
+func soak_quietly(slot: int) -> void:
+	var was_dry: bool = slot_water[slot] <= 0.0
+	slot_water[slot] = wet_cap(slot)
+	if was_dry:
+		_update_inst(slot)
+
+
+## Hex `hid` was just watered through: no plant there is due water until the next growth tick says so.
+func mark_watered(hid: int) -> void:
+	_thirsty.erase(hid)
 
 
 ## Pushes a planted slot's growth on by `stages` of a stage (a Surge's wave: systems/surge.gd, a
@@ -262,6 +293,8 @@ func grow_step(dt: float) -> void:
 	# [beat] The garden ramp (~1 h in): research such as Pollinator Survey raises these.
 	grow_mult *= maxf(Economy.stat("plant_growth"), 0.1)
 	seed_mult *= maxf(Economy.stat("seed_yield"), 0.1)
+	var thirst_s: float = thirst_at()
+	var thirsty: Dictionary = {}
 	for s: int in slot_species.size():
 		if slot_species[s] < 0:
 			continue
@@ -272,6 +305,8 @@ func grow_step(dt: float) -> void:
 			slot_water[s] = maxf(0.0, slot_water[s] - drain)
 			if slot_water[s] <= 0.0:
 				_update_inst(s)  # droop
+		if slot_water[s] <= thirst_s:
+			thirsty[slot_hex[s]] = true
 		if slot_stage[s] < 4:
 			slot_progress[s] += rate * dt * (grow_mult + float(hex_grow_bonus.get(slot_hex[s], 0.0))) / float(sp.get("grow_s", 40))  # [biomes] greenhouses
 			if slot_progress[s] >= 1.0:
@@ -285,8 +320,38 @@ func grow_step(dt: float) -> void:
 					GameState.add_currency("seeds", BigNum.from_float(float(sp.get("seed_yield", 0.5)) * seed_mult))
 					GameState.inc_stat("plants_bloomed")
 					Vfx.burst("sparkle", slot_pos[s] + OrbitUp.up(slot_pos[s]) * 0.5, Color(1.0, 0.95, 0.6), 0.25)  # [orbB]
+	_thirsty = thirsty
 	for h: int in changed_hexes:
 		_recount(h)
+
+
+## Seconds of water left at which a plant is due water again (a watering robot comes back): the
+## tending table's crew_rewater_frac of wet_s, so a tended hex never runs dry.
+func thirst_at() -> float:
+	return float(tending.get("wet_s", 0.0)) * float(tending.get("crew_rewater_frac", 0.0))
+
+
+## True when a plant on hex `hid` is due water (as of the last growth tick, or planted since).
+func needs_water(hid: int) -> bool:
+	return _thirsty.has(hid)
+
+
+## Empty slots on hex `hid` that can take a seed: 0 for hub ground, water and a hex with none,
+## -1 for a land hex whose slots are not made yet (it has room until it is looked at).
+func open_slots(hid: int) -> int:
+	if _open.has(hid):
+		return int(_open[hid])
+	var field: SphereField = world.field
+	if hid < 0 or field.hex_hub[hid] != 0 or field.is_water(hid):
+		return 0
+	if not hex_slots.has(hid):
+		return -1
+	var n: int = 0
+	for s: int in hex_slots[hid]:
+		if slot_species[s] < 0 and plantable(s):
+			n += 1
+	_open[hid] = n
+	return n
 
 
 func _recount(hid: int) -> void:
@@ -295,7 +360,7 @@ func _recount(hid: int) -> void:
 		return
 	var sum: float = 0.0
 	var planted: int = 0
-	var room: int = 0  # slots that hold a plant or can take one (paving never does)
+	var room: int = 0  # slots that hold a plant or can take one (one inside a building never does)
 	for s: int in ids:
 		if slot_species[s] >= 0:
 			planted += 1
@@ -377,6 +442,7 @@ func _update_inst(s: int) -> void:
 			mmi2.multimesh.visible_instance_count = idx
 		mmi2.multimesh.visible_instance_count = idx + 1
 		_slot_inst[s] = [key, idx]
+		_place_planter(s)
 	var info: Array = _slot_inst[s]
 	(_mms[info[0]] as MultiMeshInstance3D).multimesh.set_instance_transform(int(info[1]), _slot_xf(s))
 
@@ -473,83 +539,54 @@ func planted_slots() -> PackedInt32Array:
 	return out
 
 
-# --- [v4grow] Planting stays off the paving ------------------------------------------------------
-# A cell's slots are kept as they were (their order is what the save holds), and a slot on a town's street,
-# sidewalk and kerb, the yard pad or a building can't take a seed (its soil mound would sit half
-# under the tiles). Checked at the slot and MOUND_R round it. The lots' kit ground patches (8 cm
-# concrete plates on sand) stay plantable, but the mound and the plant stand on
-# top of the plates (lift_of), and the patch's kerb band is kept clear. Cached once the town is in.
-
-const PAVED: Array[int] = [CityLayout.Surface.ROAD, CityLayout.Surface.SIDEWALK, CityLayout.Surface.BUILDING, CityLayout.Surface.YARD]
-const MOUND_R: float = 0.7
-const LOT_HALF: float = 9.0  # a town's lot ground patch (18 x 18 m)
-const LOT_KERB_M: float = 0.8
-const PLATE_TOP: float = 0.12
-var _paving: Dictionary = {}  # slot -> [on paving, lift (m)] (known)
-
+# --- [v4grow] Paving: planters, not mounds in the tiles (plants/garden_ground.gd) -----------------
 
 ## True when slot s lies on (or its mound would reach) a loaded town's paving.
 func on_paving(s: int) -> bool:
-	return bool(_ground_info(s)[0])
+	return bool(ground.info(s)[0])
 
 
-## How far above the terrain slot s's ground is (the top of a lot's plates, else 0).
+## How far above the terrain slot s's plant stands (a planter's soil, the top of a lot's plates, else 0).
 func lift_of(s: int) -> float:
-	return float(_ground_info(s)[1])
+	return float(ground.info(s)[1])
 
 
-func _ground_info(s: int) -> Array:
-	if _paving.has(s):
-		return _paving[s]
-	var towns: Array = _towns()
-	if towns.is_empty():
-		return [false, 0.0]  # no town loaded here yet: open ground (asked again later)
-	var p: Vector3 = slot_pos[s]
-	var out: Array = [false, 0.0]
-	for t: Array in towns:
-		var vs: TownSite = t[0]
-		var loc: Vector3 = (t[1] as Transform3D) * p
-		if Vector2(loc.x, loc.z).length() > vs.town_r + MOUND_R:
-			continue
-		for o: Vector2 in [Vector2.ZERO, Vector2(MOUND_R, 0), Vector2(-MOUND_R, 0), Vector2(0, MOUND_R), Vector2(0, -MOUND_R)]:
-			if paved(vs.layout, loc.x + o.x, loc.z + o.y):
-				out[0] = true
-		var lots: Variant = vs.get("_lots")
-		for lot: Dictionary in lots if lots is Array else []:
-			var d: Vector2 = (Vector2(loc.x, loc.z) - (lot["c"] as Vector2)).abs()
-			var m: float = maxf(d.x, d.y)
-			if m < LOT_HALF + MOUND_R:
-				if m > LOT_HALF - LOT_KERB_M - MOUND_R:
-					out[0] = true  # the patch's kerb band
-				else:
-					out[1] = PLATE_TOP
-	_paving[s] = out
-	return out
+## True when slot s's centre lies inside a building's footprint (it takes no plant).
+func inside_building(s: int) -> bool:
+	return bool(ground.info(s)[2])
 
 
-## Paving in a town layout at site-local (x, z): its streets (only round blocks the town kept),
-## sidewalks and kerbs, the yard pad and building footprints.
-static func paved(lay: CityLayout, x: float, z: float) -> bool:
-	if lay == null:
-		return false
-	var srf: int = lay.surface_at(x, z)
-	if not srf in PAVED:
-		return false
-	return srf == CityLayout.Surface.YARD or lay.wild or lay.blocks.has(lay.block_key_at(x, z))
+## The planter slot s's plant stands in (GardenPlanters.Kind; NONE on open ground).
+func planter_of(s: int) -> int:
+	return int(ground.info(s)[3])
 
 
-## [TownSite, inverse of its transform] for every loaded town on the globe.
-func _towns() -> Array:
-	var out: Array = []
-	if site_manager == null:
-		return out
-	for pf: Variant in site_manager.prefabs:
-		if not (pf is SitePrefab) or not is_instance_valid(pf) or (pf as SitePrefab).content == null:
-			continue
-		for c: Node in (pf as SitePrefab).content.get_children():
-			if c is TownSite and (c as TownSite).layout != null and (c as Node3D).is_inside_tree():
-				out.append([c, (c as Node3D).global_transform.affine_inverse()])
-	return out
+## A town came in: its slots' ground is asked again, and the plants already there step into
+## their planters (a save's plants come back before the towns are built).
+func _on_site_built(_i: int, _p: SitePrefab) -> void:
+	_refresh_ground.call_deferred()
+
+
+func _refresh_ground() -> void:
+	if not is_inside_tree():
+		return
+	ground.cache.clear()
+	_open.clear()
+	for s: int in _slot_inst:
+		_update_inst(s)
+		_place_planter(s)
+
+
+## Shows slot s's planter (if it has one) under its plant.
+func _place_planter(s: int) -> void:
+	var kind: int = planter_of(s)
+	if kind == GardenPlanters.Kind.NONE and not planters.has_slot(s):
+		return
+	var up: Vector3 = slot_pos[s].normalized()
+	var ax: Vector3 = ground.info(s)[4]
+	ax = (ax - up * ax.dot(up)).normalized() if ax != Vector3.ZERO else SphereGrid.frame(up).x
+	var b := Basis(ax, up, ax.cross(up).normalized())
+	planters.place(s, kind, _chunk_of(s), int(_chunk_cap.get(_chunk_of(s), 1)), Transform3D(b, slot_pos[s]))
 
 
 # --- [v4grow] Grown plants read pale: a richer copy of each clump's materials -------

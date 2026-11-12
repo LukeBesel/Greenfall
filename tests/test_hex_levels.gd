@@ -82,9 +82,8 @@ func test_clean_then_planted_then_growing() -> void:
 	assert_eq(int(GameState.stats.get("hex_lvl_3", 0)), 1)
 
 
-## B40: slots on paving (streets, kerbs, the pad) never take a seed, so the quarter a hex needs to
-## count as Planted is a quarter of the slots that can: a street-side hex with only a few open
-## slots was held at Clean for good, and a city with many of them could never pass stage 1.
+## B40: a slot inside a building never takes a seed, so the quarter a hex needs to count as
+## Planted is a quarter of the slots that can: a hex mostly under a building was held at Clean.
 func test_planted_counts_a_quarter_of_the_slots_that_can_take_a_seed() -> void:
 	var w: GlobeWorld = _make()
 	var hl: HexLevels = w.hex_levels
@@ -92,10 +91,10 @@ func test_planted_counts_a_quarter_of_the_slots_that_can_take_a_seed() -> void:
 	var hid: int = w.land_cell()
 	_clean(w, hid)
 	var slots: PackedInt32Array = g.hex_slots[hid]
-	assert_gte(slots.size(), 8, "a hex with room for a street")
+	assert_gte(slots.size(), 8, "a hex with room for a building")
 	var open_n: int = maxi(1, int(slots.size() * 0.2))
 	for i: int in slots.size():
-		g._paving[slots[i]] = [i >= open_n, 0.0]
+		g.ground.set_known(slots[i], i >= open_n, i >= open_n)
 	GameState.currencies["seeds"] = BigNum.from_float(1000)
 	for i: int in open_n:
 		assert_true(g.plantable(slots[i]))
@@ -106,7 +105,7 @@ func test_planted_counts_a_quarter_of_the_slots_that_can_take_a_seed() -> void:
 
 
 ## B40: a hex's life (Growing at 0.35, Thriving at 0.8) is measured over the slots that can hold a
-## plant, so a hex half under a street can still be fully restored.
+## plant, so a hex half under a building can still be fully restored.
 func test_life_is_measured_over_the_slots_that_can_hold_a_plant() -> void:
 	var w: GlobeWorld = _make()
 	var g: Garden = w.garden
@@ -115,13 +114,41 @@ func test_life_is_measured_over_the_slots_that_can_hold_a_plant() -> void:
 	var slots: PackedInt32Array = g.hex_slots[hid]
 	var half: int = slots.size() / 2
 	for i: int in slots.size():
-		g._paving[slots[i]] = [i >= half, 0.0]
+		g.ground.set_known(slots[i], i >= half, i >= half)
 	GameState.currencies["seeds"] = BigNum.from_float(1000)
 	for i: int in half:
 		g.plant(slots[i])
 		g.slot_stage[slots[i]] = 4
 	g._recount(hid)
 	assert_almost_eq(float(g.hex_life[hid]), 1.0, 0.001, "every plant in bloom on every open slot: full life")
+
+
+## B41: a hex wholly on paving (a street crossing, the kerbs round it) takes planter boxes and
+## tree pits: its slots can be planted, they count toward Planted and its life, and it can be
+## Thriving. Old Town had half its land like this and could never pass stage 1.
+func test_a_hex_wholly_on_paving_is_planted_in_planters_and_can_thrive() -> void:
+	var w: GlobeWorld = _make()
+	var hl: HexLevels = w.hex_levels
+	var g: Garden = w.garden
+	var hid: int = w.land_cell()
+	_clean(w, hid)
+	var slots: PackedInt32Array = g.hex_slots[hid]
+	for i: int in slots.size():
+		g.ground.set_known(slots[i], true, false, GardenPlanters.Kind.BOX if i % 2 == 0 else GardenPlanters.Kind.PIT)
+	for s: int in slots:
+		assert_true(g.plantable(s), "a paved slot takes a planter")
+	assert_eq(g.open_slots(hid), slots.size(), "every slot is room for a plant")
+	hl.step(1.0)
+	_plant_all(w, hid, 0, 50.0)
+	hl.step(1.0)
+	assert_eq(hl.level_of(hid), 2, "planted in its planters: Planted")
+	for s: int in slots:
+		assert_true(g.planters.has_slot(s), "each plant stands in a planter")
+		assert_gt(g.lift_of(s), 0.0, "on the planter's soil, not in the asphalt")
+	_plant_all(w, hid, 4, 1000.0)
+	for i: int in int(hl.cfg["sustain_window_s"]) + 2:
+		hl.step(1.0)
+	assert_eq(hl.level_of(hid), 5, "kept watered and in bloom: Thriving")
 
 
 func test_sustained_needs_continuous_water() -> void:

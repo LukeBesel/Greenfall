@@ -528,6 +528,7 @@ func _build_districts(levels: HexLevels) -> void:
 	w.add_child(surge_fx)
 	if crews.crew != null:
 		crews.crew.pollution = pollution
+		crews.crew.garden = w.get("garden") as Garden  # planting and watering robots work its slots
 	if crews.crew != null:  # Scroungers, the Assembler, where new robots go (systems/crew/robot_chain.gd)
 		chain = RobotChain.new()
 		w.add_child(chain)

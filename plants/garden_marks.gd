@@ -394,6 +394,6 @@ func _dev_garden(delay: float) -> void:
 	_t = 0.0
 	await get_tree().create_timer(0.5, true, false, true).timeout
 	var paved: int = 0
-	for sl: int in garden._paving:
-		paved += 1 if bool(garden._paving[sl][0]) else 0
-	print("[garden-marks] demo bed: %d plants (%d slots on paving skipped); shown %s" % [k, paved, str(shown)])
+	for sl: int in garden.ground.cache:
+		paved += 1 if bool(garden.ground.cache[sl][0]) else 0
+	print("[garden-marks] demo bed: %d plants (%d slots on paving); shown %s" % [k, paved, str(shown)])

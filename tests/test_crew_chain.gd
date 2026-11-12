@@ -800,7 +800,8 @@ func test_a_search_that_found_nothing_is_not_repeated_at_once() -> void:
 	assert_eq(crew.claim_dirty(HUB, HUB, crew.rings, "clean", "c"), cell, "then the new work is found")
 	crew.release(cell)
 	assert_eq(crew.claim_dirty(HUB, HUB, crew.rings, "water", "d"), -1)
-	assert_ne(crew.claim_dirty(HUB, HUB, crew.rings, "plant", "f"), -1, "each job's answer is its own: clean ground is a planter's work")
+	assert_eq(crew.claim_dirty(HUB, HUB, crew.rings, "clean", "f"), cell, "each job's answer is its own: no water work does not hide the cleaners'")
+	crew.release(cell)
 	crew.set_zone_cell("clean", cell, true)
 	assert_eq(crew.claim_dirty(HUB, HUB, crew.rings, "clean", "e"), cell, "painting an area looks again at once")
 

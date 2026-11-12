@@ -12,8 +12,10 @@ extends Node3D
 ## - Every working near robot registers a streamer centre with its own small near ring, so its
 ##   cell's junk is real (materialized pieces) while Lumi is near.
 ## Roles: clean (Scoopie, Multibot) works dirty cells and drops bales when its hopper is full;
-## haul (Haul Bug) carries bales to the depot cell and cashes them; plant (Seedling) plants clean
-## cells (1 seed each); water (Drip) waters planted cells; skim (Skimmer) waits for lake junk;
+## haul (Haul Bug) carries bales to the depot cell and cashes them; plant (Seedling) plants patches
+## of the garden's slots on clean hexes with seeds from the store, and water (Drip) soaks the plants
+## of a hex due water (plants/garden_crew.gd: the hex stages read those slots); skim (Skimmer)
+## waits for lake junk;
 ## find (Scrounger) digs buried parts out of cleaned ground and carries them to the base
 ## (robots/sphere/sphere_scrounge.gd, on the ledger in `chain`).
 
@@ -80,6 +82,9 @@ var chain: CrewChain
 ## The planet's pollution kinds (systems/pollution.gd): which hexes hold waste a role's own tool
 ## clears (misting, cleansing plants). Null on a planet without kinds: every hex is plain junk.
 var pollution: Pollution
+## The globe's garden: the slots planting and watering robots work. Null: they have only the
+## pollution kinds' held work.
+var garden: Garden
 ## The hub a newly built robot works for (-1 or unset: the crew's own hub). Set by the robot chain
 ## to the base of the city Lumi is in.
 var new_robot_hub_fn: Callable
@@ -540,14 +545,20 @@ func _reachable(hub: int) -> Dictionary:
 func wants(role: String, c: int) -> bool:
 	match role:
 		"plant":
-			return (cells.state[c] == 1 and not cells.has_flag(c, SphereCells.F_SITE)) or _held_work(role, c)
+			return _held_work(role, c) or (_garden_open(c) and GardenCrew.wants_plant(garden, c))
 		"water":
-			return cells.state[c] == 2 or _held_work(role, c)
+			return _held_work(role, c) or (_garden_open(c) and GardenCrew.wants_water(garden, c))
 		"skim":
 			return water_dirty(c) and not cells.is_shut(c)
 		SphereScrounge.ROLE:
 			return chain != null and chain.has_stock(c)
 	return cells.workable(c)
+
+
+## Whether the garden of hex `c` is open to robots: there is a garden, and the hex is clean and
+## not shut to them (Lumi has not learnt a kind there).
+func _garden_open(c: int) -> bool:
+	return garden != null and not cells.is_dirty(c) and not cells.is_shut(c)
 
 
 ## Whether hex `c` holds waste that `role` clears with its own tool (not by scooping).
@@ -1023,12 +1034,10 @@ func _work(u: Dictionary, dt: float) -> void:
 				cell_cleaned.emit(c)
 			if role == "water":
 				u["water"] = maxf(0.0, float(u.get("water", _tank(u))) - WATER_PER_CELL)
-		elif role == "plant" and cells.state[c] == 1:
-			if not spend_seeds or GameState.spend("seeds", BigNum.from_float(1.0)):
-				cells.set_state(c, 2)
-				u["log"]["planted"] = float(u["log"]["planted"]) + 1.0
-		elif role == "water" and cells.state[c] == 2:
-			cells.set_state(c, 3)
+		elif role == "plant" and _garden_open(c):
+			var n: int = GardenCrew.plant(garden, c, spend_seeds, u["bot"] != null)
+			u["log"]["planted"] = float(u["log"]["planted"]) + n
+		elif role == "water" and _garden_open(c) and GardenCrew.water(garden, c, u["bot"] != null) > 0:
 			u["water"] = maxf(0.0, float(u.get("water", _tank(u))) - WATER_PER_CELL)
 			u["log"]["watered"] = float(u["log"]["watered"]) + 1.0
 		cell_worked.emit(c)

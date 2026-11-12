@@ -165,7 +165,7 @@ func _target_level(hid: int, m: Vector3i) -> int:
 	var g: Garden = world.get("garden") as Garden
 	if g == null or not g.hex_slots.has(hid):
 		return 1
-	# Slots on paving never take a seed: the quarter is of the slots that can (planted or open).
+	# A slot inside a building never takes a seed (paving takes planters): the quarter is of the slots that can.
 	var total: int = 0
 	for s: int in g.hex_slots[hid]:
 		if g.slot_species[s] >= 0 or g.plantable(s):
