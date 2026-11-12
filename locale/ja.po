@@ -296,80 +296,80 @@ msgstr "前哨基地 %d  ·  稼働中"
 msgid "RECHARGE"
 msgstr "リチャージ"
 
-#: automation/outposts.gd:332 automation/outposts.gd:346
+#: automation/outposts.gd:372 automation/outposts.gd:386
 msgid "No outpost."
 msgstr "前哨基地がありません。"
 
-#: automation/outposts.gd:334
+#: automation/outposts.gd:374
 msgid "Already repaired."
 msgstr "修理済みです。"
 
-#: automation/outposts.gd:338
+#: automation/outposts.gd:378
 msgid "Clear the junk around it first (%d%% of %d%%)."
 msgstr "まず周りのガラクタを片づけよう（%d%% / %d%%）。"
 
-#: automation/outposts.gd:340 automation/outposts.gd:355 automation/stations.gd:131
+#: automation/outposts.gd:380 automation/outposts.gd:395 automation/stations.gd:131
 #: systems/camp/hub_builds.gd:79
 msgid "Not enough cubes or parts."
 msgstr "キューブかパーツが足りない。"
 
-#: automation/outposts.gd:349
+#: automation/outposts.gd:389
 msgid "Repair it first."
 msgstr "先に修理しよう。"
 
-#: automation/outposts.gd:351 automation/trash_bin.gd:82 ui/bench_tiers.gd:83
+#: automation/outposts.gd:391 automation/trash_bin.gd:82 ui/bench_tiers.gd:83
 msgid "Fully upgraded."
 msgstr "アップグレード完了済み。"
 
-#: automation/outposts.gd:372
+#: automation/outposts.gd:412
 msgid "Outpost %d repaired: a working scale on the frontier. Haul Bugs deliver to the nearest scale now."
 msgstr "前哨基地 %d を修理：辺境に使えるはかりができた。Haul Bug はいちばん近いはかりに運ぶようになる。"
 
-#: automation/outposts.gd:373
+#: automation/outposts.gd:413
 msgid "OUTPOST ONLINE"
 msgstr "前哨基地 稼働"
 
-#: automation/outposts.gd:395
+#: automation/outposts.gd:435
 msgid "Outpost %d upgraded: %s. %s"
 msgstr "前哨基地 %d をアップグレード：%s。%s"
 
-#: automation/outposts.gd:424
+#: automation/outposts.gd:464
 msgid "E   Ruined outpost · clear its hex first (%d%% / %d%%)"
 msgstr "E   廃墟の前哨基地 · 先にヘックスを片づけよう（%d%% / %d%%）"
 
-#: automation/outposts.gd:425
+#: automation/outposts.gd:465
 msgid "E   Repair outpost · %s%s"
 msgstr "E   前哨基地を修理 · %s%s"
 
-#: automation/outposts.gd:425 automation/outposts.gd:428
+#: automation/outposts.gd:465 automation/outposts.gd:468
 msgid "  (need more)"
 msgstr "  （まだ足りない）"
 
-#: automation/outposts.gd:427
+#: automation/outposts.gd:467
 msgid "E   Outpost %d · %s · bales +%d%%"
 msgstr "E   前哨基地 %d · %s · ベール +%d%%"
 
-#: automation/outposts.gd:428
+#: automation/outposts.gd:468
 msgid "E   Upgrade outpost: %s · %s%s"
 msgstr "E   前哨基地をアップグレード：%s · %s%s"
 
-#: automation/outposts.gd:438
+#: automation/outposts.gd:478
 msgid "Outpost %d: %s"
 msgstr "前哨基地 %d：%s"
 
-#: automation/outposts.gd:445
+#: automation/outposts.gd:485
 msgid "Outpost %d upgrade: %s"
 msgstr "前哨基地 %d のアップグレード：%s"
 
-#: automation/outposts.gd:448
+#: automation/outposts.gd:488
 msgid "Outpost %d: %s. Bales sell for +%d%% here; robots crossing the pad get a speed charge."
 msgstr "前哨基地 %d：%s。ここではベールが +%d%% で売れる。パッドを通るロボットはスピードがチャージされる。"
 
-#: automation/outposts.gd:551
+#: automation/outposts.gd:591
 msgid "OUTPOST %d  RUINED · repair at %d%% clear"
 msgstr "前哨基地 %d  廃墟 · きれいさ %d%% で修理可能"
 
-#: automation/outposts.gd:552
+#: automation/outposts.gd:592
 msgid "OUTPOST %d  %s"
 msgstr "前哨基地 %d  %s"
 
@@ -796,35 +796,35 @@ msgstr "%d つの基地がそろった。ホームに戻ってロケットの出
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:108
+#: planet/sites/orbit_sites.gd:110
 msgid "The rocket is in flight."
 msgstr "ロケットは飛行中。"
 
-#: planet/sites/orbit_sites.gd:132
+#: planet/sites/orbit_sites.gd:134
 msgid "Bases restored: %d of %d"
 msgstr "復旧した基地：%d / %d"
 
-#: planet/sites/orbit_sites.gd:170
+#: planet/sites/orbit_sites.gd:172
 msgid "E   Rocket: choose a destination"
 msgstr "E   ロケット：行き先を選ぶ"
 
-#: planet/sites/orbit_sites.gd:208
+#: planet/sites/orbit_sites.gd:210
 msgid "HOME"
 msgstr "ホーム"
 
-#: planet/sites/orbit_sites.gd:208
+#: planet/sites/orbit_sites.gd:210
 msgid "NEXT STOP"
 msgstr "次の目的地"
 
-#: planet/sites/orbit_sites.gd:210
+#: planet/sites/orbit_sites.gd:212
 msgid "Upgrade the rocket first"
 msgstr "先にロケットを強化"
 
-#: planet/sites/orbit_sites.gd:228
+#: planet/sites/orbit_sites.gd:230
 msgid "%s site"
 msgstr "%sの地点"
 
-#: planet/sites/orbit_sites.gd:229
+#: planet/sites/orbit_sites.gd:231
 msgid "Hub %d"
 msgstr "基地 %d"
 
@@ -12261,14 +12261,6 @@ msgstr "きれいな地面なら、植物がまた育つ。"
 msgid "One hex clean. Now one more, Lumi."
 msgstr "ヘックスがひとつきれいになった。もうひとつ、Lumi。"
 
-#: data/objectives.json:objectives[hex3].desc
-msgid "Clear room around the base, so robots can start work."
-msgstr "基地のまわりを片づけて、ロボットが働ける場所をあけよう。"
-
-#: data/objectives.json:objectives[hex3].lines
-msgid "One more hex, Lumi. The planet notices, believe me."
-msgstr "ヘックスをもうひとつ、Lumi。星はちゃんと気づいているよ。"
-
 #: data/objectives.json:objectives[bench2].text
 msgid "Add a Bot Bay to the bench"
 msgstr "作業台にボットベイを追加する"
@@ -12304,6 +12296,14 @@ msgstr "ひとりでも掃除する。{open_command}：最初の場所を教え�
 #: data/objectives.json:objectives[zone].lines
 msgid "Your robot already knows the job. Paint a hex, and it starts there."
 msgstr "ロボットはもう仕事がわかっているよ。ヘックスを塗れば、そこから始めてくれる。"
+
+#: data/objectives.json:objectives[hex3].desc
+msgid "Clear room around the base, so robots can start work."
+msgstr "基地のまわりを片づけて、ロボットが働ける場所をあけよう。"
+
+#: data/objectives.json:objectives[hex3].lines
+msgid "One more hex, Lumi. The planet notices, believe me."
+msgstr "ヘックスをもうひとつ、Lumi。星はちゃんと気づいているよ。"
 
 #: data/objectives.json:objectives[seed].text
 msgid "Plant the first seed"

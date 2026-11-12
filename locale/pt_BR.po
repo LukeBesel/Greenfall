@@ -296,80 +296,80 @@ msgstr "POSTO %d  ·  ONLINE"
 msgid "RECHARGE"
 msgstr "RECARGA"
 
-#: automation/outposts.gd:332 automation/outposts.gd:346
+#: automation/outposts.gd:372 automation/outposts.gd:386
 msgid "No outpost."
 msgstr "Nenhum posto avançado."
 
-#: automation/outposts.gd:334
+#: automation/outposts.gd:374
 msgid "Already repaired."
 msgstr "Já consertado."
 
-#: automation/outposts.gd:338
+#: automation/outposts.gd:378
 msgid "Clear the junk around it first (%d%% of %d%%)."
 msgstr "Limpe a sucata ao redor primeiro (%d%% de %d%%)."
 
-#: automation/outposts.gd:340 automation/outposts.gd:355 automation/stations.gd:131
+#: automation/outposts.gd:380 automation/outposts.gd:395 automation/stations.gd:131
 #: systems/camp/hub_builds.gd:79
 msgid "Not enough cubes or parts."
 msgstr "Cubos ou peças insuficientes."
 
-#: automation/outposts.gd:349
+#: automation/outposts.gd:389
 msgid "Repair it first."
 msgstr "Conserte primeiro."
 
-#: automation/outposts.gd:351 automation/trash_bin.gd:82 ui/bench_tiers.gd:83
+#: automation/outposts.gd:391 automation/trash_bin.gd:82 ui/bench_tiers.gd:83
 msgid "Fully upgraded."
 msgstr "Totalmente melhorado."
 
-#: automation/outposts.gd:372
+#: automation/outposts.gd:412
 msgid "Outpost %d repaired: a working scale on the frontier. Haul Bugs deliver to the nearest scale now."
 msgstr "Posto avançado %d consertado: uma balança funcionando na fronteira. Os Haul Bugs agora entregam na balança mais próxima."
 
-#: automation/outposts.gd:373
+#: automation/outposts.gd:413
 msgid "OUTPOST ONLINE"
 msgstr "POSTO ONLINE"
 
-#: automation/outposts.gd:395
+#: automation/outposts.gd:435
 msgid "Outpost %d upgraded: %s. %s"
 msgstr "Posto avançado %d melhorado: %s. %s"
 
-#: automation/outposts.gd:424
+#: automation/outposts.gd:464
 msgid "E   Ruined outpost · clear its hex first (%d%% / %d%%)"
 msgstr "E   Posto em ruínas · limpe o hexágono primeiro (%d%% / %d%%)"
 
-#: automation/outposts.gd:425
+#: automation/outposts.gd:465
 msgid "E   Repair outpost · %s%s"
 msgstr "E   Consertar posto · %s%s"
 
-#: automation/outposts.gd:425 automation/outposts.gd:428
+#: automation/outposts.gd:465 automation/outposts.gd:468
 msgid "  (need more)"
 msgstr "  (precisa de mais)"
 
-#: automation/outposts.gd:427
+#: automation/outposts.gd:467
 msgid "E   Outpost %d · %s · bales +%d%%"
 msgstr "E   Posto %d · %s · fardos +%d%%"
 
-#: automation/outposts.gd:428
+#: automation/outposts.gd:468
 msgid "E   Upgrade outpost: %s · %s%s"
 msgstr "E   Melhorar posto: %s · %s%s"
 
-#: automation/outposts.gd:438
+#: automation/outposts.gd:478
 msgid "Outpost %d: %s"
 msgstr "Posto avançado %d: %s"
 
-#: automation/outposts.gd:445
+#: automation/outposts.gd:485
 msgid "Outpost %d upgrade: %s"
 msgstr "Melhoria do posto %d: %s"
 
-#: automation/outposts.gd:448
+#: automation/outposts.gd:488
 msgid "Outpost %d: %s. Bales sell for +%d%% here; robots crossing the pad get a speed charge."
 msgstr "Posto avançado %d: %s. Fardos valem +%d%% aqui; robôs que passam pela plataforma ganham um impulso de velocidade."
 
-#: automation/outposts.gd:551
+#: automation/outposts.gd:591
 msgid "OUTPOST %d  RUINED · repair at %d%% clear"
 msgstr "POSTO %d  EM RUÍNAS · conserte com %d%% limpo"
 
-#: automation/outposts.gd:552
+#: automation/outposts.gd:592
 msgid "OUTPOST %d  %s"
 msgstr "POSTO %d  %s"
 
@@ -797,35 +797,35 @@ msgstr "As %d bases estão de pé. Voe para casa e prepare o foguete para partir
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:108
+#: planet/sites/orbit_sites.gd:110
 msgid "The rocket is in flight."
 msgstr "O foguete está voando."
 
-#: planet/sites/orbit_sites.gd:132
+#: planet/sites/orbit_sites.gd:134
 msgid "Bases restored: %d of %d"
 msgstr "Bases restauradas: %d de %d"
 
-#: planet/sites/orbit_sites.gd:170
+#: planet/sites/orbit_sites.gd:172
 msgid "E   Rocket: choose a destination"
 msgstr "E   Foguete: escolha um destino"
 
-#: planet/sites/orbit_sites.gd:208
+#: planet/sites/orbit_sites.gd:210
 msgid "HOME"
 msgstr "CASA"
 
-#: planet/sites/orbit_sites.gd:208
+#: planet/sites/orbit_sites.gd:210
 msgid "NEXT STOP"
 msgstr "PRÓXIMA PARADA"
 
-#: planet/sites/orbit_sites.gd:210
+#: planet/sites/orbit_sites.gd:212
 msgid "Upgrade the rocket first"
 msgstr "Primeiro melhore o foguete"
 
-#: planet/sites/orbit_sites.gd:228
+#: planet/sites/orbit_sites.gd:230
 msgid "%s site"
 msgstr "Local: %s"
 
-#: planet/sites/orbit_sites.gd:229
+#: planet/sites/orbit_sites.gd:231
 msgid "Hub %d"
 msgstr "Base %d"
 
@@ -12277,14 +12277,6 @@ msgstr "Em chão limpo as plantas crescem de novo."
 msgid "One hex clean. Now one more, Lumi."
 msgstr "Um hexágono limpo. Agora mais um, Lumi."
 
-#: data/objectives.json:objectives[hex3].desc
-msgid "Clear room around the base, so robots can start work."
-msgstr "Abra espaço em volta da base para os robôs começarem a trabalhar."
-
-#: data/objectives.json:objectives[hex3].lines
-msgid "One more hex, Lumi. The planet notices, believe me."
-msgstr "Mais um hexágono, Lumi. O planeta percebe, pode acreditar."
-
 #: data/objectives.json:objectives[bench2].text
 msgid "Add a Bot Bay to the bench"
 msgstr "Adicione uma Baia de robôs à bancada"
@@ -12320,6 +12312,14 @@ msgstr "Ele limpa sozinho. {open_command}: mostre por onde começar."
 #: data/objectives.json:objectives[zone].lines
 msgid "Your robot already knows the job. Paint a hex, and it starts there."
 msgstr "Seu robô já sabe o que fazer. Pinte um hexágono e ele começa por ali."
+
+#: data/objectives.json:objectives[hex3].desc
+msgid "Clear room around the base, so robots can start work."
+msgstr "Abra espaço em volta da base para os robôs começarem a trabalhar."
+
+#: data/objectives.json:objectives[hex3].lines
+msgid "One more hex, Lumi. The planet notices, believe me."
+msgstr "Mais um hexágono, Lumi. O planeta percebe, pode acreditar."
 
 #: data/objectives.json:objectives[seed].text
 msgid "Plant the first seed"
