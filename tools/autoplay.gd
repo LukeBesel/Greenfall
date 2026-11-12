@@ -2290,6 +2290,7 @@ var _mix: Dictionary = {}
 
 func _hook_whole_game() -> void:
 	_hook(EventBus.district_entered, func(id: String) -> void:
+		_setup_cadence()
 		_cadence.arrive(id, _now(), _crew())
 		_progress()
 		_event("arrive", {"city": id, "crew": _crew()}))
@@ -2297,6 +2298,7 @@ func _hook_whole_game() -> void:
 		_progress()
 		_event("city_open", {"city": id}))
 	_hook(EventBus.district_stage_changed, func(id: String, stage: int) -> void:
+		_setup_cadence()  # a stage can come while the world loads, before the bot's first tick
 		_cadence.stage_reached(id, stage, _now())
 		_mark("city_%s_stage%d_s" % [id, stage])
 		_progress()
