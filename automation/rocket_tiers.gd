@@ -2,7 +2,8 @@ class_name RocketTiers
 extends RefCounted
 ## Rocket upgrades (data/rockets.json): Mk I comes with a level 5 base; Mk II-IV are bought in the
 ## workbench Rockets tab. Each tier looks cooler (automation/rocket_model.gd) and travels better:
-## a shorter launch, a faster flight, energy cells that refill faster between launches, bigger and
+## a shorter launch, a faster flight, energy cells that refill faster between launches (Lumi's work
+## near the rocket speeds them up too: automation/rocket_charge.gd), bigger and
 ## more frequent cargo pods, and at Mk IV instant warp hops. Global (flies with you): stored in
 ## GameState.flags "rocket_tier" and "rocket_ready_unix" (when the cells are full again).
 
@@ -82,6 +83,25 @@ static func recharge_left() -> float:
 		at = _clock() + full
 		GameState.flags["rocket_ready_unix"] = at
 	return maxf(0.0, at - _clock())
+
+
+## Brings the cells' full time `seconds` closer (Lumi's work near the rocket, automation/rocket_charge.gd).
+## Returns the seconds actually taken off (0 when the cells are already full).
+static func charge_by(seconds: float) -> float:
+	var left: float = recharge_left()
+	if left <= 0.0 or seconds <= 0.0:
+		return 0.0
+	var took: float = minf(left, seconds)
+	if took >= left:
+		GameState.flags.erase("rocket_ready_unix")
+	else:
+		GameState.flags["rocket_ready_unix"] = float(GameState.flags["rocket_ready_unix"]) - took
+	return took
+
+
+## The work_charge table of data/rockets.json (how Lumi's work speeds the cells up).
+static func work_cfg() -> Dictionary:
+	return data().get("work_charge", {})
 
 
 static func mark_launched() -> void:

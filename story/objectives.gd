@@ -659,6 +659,8 @@ func waypoint_target() -> Variant:
 
 
 func _bench_pos() -> Variant:
+	if world.has_method("nearest_bench_pos"):  # the nearest workbench: the start yard's or a city's field bench (or its kit)
+		return world.call("nearest_bench_pos")
 	if world.has_method("bench_pos"):  # [orbB] the globe's bench anchor too
 		return world.call("bench_pos")
 	var sc: Script = world.get_script() as Script

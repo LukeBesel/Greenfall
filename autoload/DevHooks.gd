@@ -85,6 +85,8 @@ extends Node
 ##                      --mastery=litter:3,wrecks:1 kind by kind (systems/mastery.gd). With --robots and no
 ##                      --mastery every kind starts at the robots table's mastery_speed.dev_level, where
 ##                      robots work at their own rate, so robot reports keep their numbers
+##   [M3-22] --field-bench-shot[=M] with --orbit-hop=SITE: the city's field bench set up, Lumi M m in
+##                      front of it (systems/camp/field_bench_sites.gd)
 ##   [kit] --kit-lineup  art kit lineup (docs/ART_KIT.md); with --out=PREFIX it renders every piece and quits
 
 ## How long past --quit-after the run may go before the watchdog ends it (a normal quit takes a

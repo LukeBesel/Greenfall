@@ -196,6 +196,9 @@ static func entry(world: Node, id: String) -> Dictionary:
 			e["desc"] = str(d.get("desc", ""))
 			e["cost"] = d.get("cost", {})
 			e["reason"] = YardBuilds.block_reason(id, hl)
+	var fb: FieldBenchSites = FieldBenchSites.of(world)
+	if fb != null and fb.at_field_bench():  # every build stands in the start yard: it is built there
+		e["reason"] = TranslationServer.translate("Build it at the start yard's workbench.")
 	return e
 
 

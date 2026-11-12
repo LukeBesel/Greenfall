@@ -12,6 +12,7 @@ var so: SliceOrbit
 var sm: SiteManager
 var sled: HoverSled
 var hop: HubHop
+var charge: RocketCharge
 
 
 static func attach(p_so: SliceOrbit) -> OrbitSites:
@@ -45,6 +46,10 @@ func _setup() -> void:
 	hop = HubHop.new()
 	hop.name = "HubHop"
 	so.w.add_child(hop)
+	charge = RocketCharge.new()  # Lumi's work in the rocket's city charges its cells faster
+	charge.name = "RocketCharge"
+	charge.in_city_fn = lumi_in_rocket_city
+	add_child(charge)
 	if DevHooks.has("orbit-hop"):
 		_dev_hop.call_deferred()
 	_wire_survey.call_deferred()
@@ -137,6 +142,16 @@ func rocket_site() -> int:
 	return clampi(int(GameState.orbit.get("rocket_site", 0)), 0, maxi(sm.sites.size() - 1, 0)) if sm else 0
 
 
+## Whether Lumi stands in the city whose pad the rocket is on (her work there charges its cells).
+## A planet without cities: anywhere counts.
+func lumi_in_rocket_city() -> bool:
+	var d: Districts = so.districts
+	if d == null or d.count() == 0:
+		return true
+	var here: String = d.current_id()
+	return here != "" and here == d.district_of_site(rocket_site())
+
+
 ## "" when the rocket can fly now, else why not: it is in flight, or its energy cells are still
 ## recharging from the last hop (RocketTiers; rocket upgrades shorten it).
 func hop_blocker() -> String:
@@ -144,7 +159,7 @@ func hop_blocker() -> String:
 		return tr("The rocket is in flight.")
 	var left: float = RocketTiers.recharge_left()
 	if left > 0.0:
-		return tr("Energy cells recharging: %s. Rocket upgrades refill them faster.") % RocketTiers.fmt_time(left)
+		return tr("Energy cells recharging: %s. Work nearby to charge them faster.") % RocketTiers.fmt_time(left)
 	return ""
 
 

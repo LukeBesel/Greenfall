@@ -605,3 +605,9 @@ Task M3-13 (execution) runs after the full-planet bot (M3-11) merges, so the two
 - **The launch point must take about 4 hours of play, not 10** (M3-12). Ironside alone took 256 minutes, 177 of them hand planting before B44. Refit after B44 and the field bench land.
 - **The rocket's 2,600 Parts take about 85 minutes of digging** at the end: M3-12 refits it so the last city never waits on Parts with nothing to do.
 - **The stall watch must see a city that is not moving on** (progress = the current city's stage or job, not any hex anywhere): part of M3-12's bot work.
+
+## Field benches and fast cells (M3-22, Nov 12, 2026)
+`docs/reviews/M3-22_FIELD_BENCH.md`. Every city Lumi reaches gets a free packed bench kit by its landing pad, set up with E, then the full workbench (upgrades, rigs, research, robots, Assembler mix); robots built there join that city. Rocket cells recharge in 30 s, twice as fast while Lumi works in the rocket's city. Bot: Ironside longest purchase wait 395 s (was 1,254), Kettle Bay 510 s (was 3,460), no hop waits. Merged.
+- Kept: base levels can be bought at field benches; the kit is free.
+- For M3-12: city 1's first robot came at 14.5 minutes in one run (target 12); purchase waits away from home are still over 4 minutes.
+- For M5: junk lies right up to the benches; clear a small apron round each.

@@ -416,19 +416,23 @@ msgstr "TRITURAR  ·  FUNDIR  ·  ADIÓS PARA SIEMPRE"
 msgid "HAND FEED"
 msgstr "A MANO"
 
-#: automation/rocket_tiers.gd:51 ui/robot_card.gd:256
+#: automation/rocket_charge.gd:58
+msgid "Energy cells full. The rocket is ready to fly."
+msgstr ""
+
+#: automation/rocket_tiers.gd:52 ui/robot_card.gd:256
 msgid "Top tier"
 msgstr "Nivel máximo"
 
-#: automation/rocket_tiers.gd:54
+#: automation/rocket_tiers.gd:55
 msgid "Needs the Rocket Cargo research"
 msgstr "Requiere la investigación Carga de cohete"
 
-#: automation/rocket_tiers.gd:56
+#: automation/rocket_tiers.gd:57
 msgid "Not enough cubes or parts"
 msgstr "No hay suficientes cubos o piezas"
 
-#: automation/rocket_tiers.gd:69
+#: automation/rocket_tiers.gd:70
 msgid "Rocket upgraded: %s."
 msgstr "Cohete mejorado: %s."
 
@@ -478,9 +482,9 @@ msgstr "1 de cada 3 pacas a la recicladora"
 msgid "Every %dth bale to the recycler"
 msgstr "1 de cada %d pacas a la recicladora"
 
-#: automation/trash_bin.gd:93 systems/camp/camp.gd:372 systems/camp/hub_builds.gd:91
-#: systems/camp/hub_builds.gd:156 systems/camp/hub_builds.gd:166 systems/camp/hub_builds.gd:176
-#: systems/camp/yard_builds.gd:97 systems/crew/robot_chain.gd:162
+#: automation/trash_bin.gd:93 systems/camp/camp.gd:372 systems/camp/field_benches.gd:77
+#: systems/camp/hub_builds.gd:91 systems/camp/hub_builds.gd:156 systems/camp/hub_builds.gd:166
+#: systems/camp/hub_builds.gd:176 systems/camp/yard_builds.gd:97 systems/crew/robot_chain.gd:162
 msgid "Not enough materials."
 msgstr "Materiales insuficientes."
 
@@ -501,7 +505,7 @@ msgstr "El equipo siguió limpiando. La ciudad está un poco más despejada."
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Los depuradores filtraron el aire todo el rato. Está un poco más limpio."
 
-#: core/pace.gd:150 story/objectives.gd:873
+#: core/pace.gd:150 story/objectives.gd:875
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "Pesa demasiado. Mejora la Fuerza de elevación en el banco."
 
@@ -653,28 +657,28 @@ msgstr "LUZ  AGUA  VIDA"
 msgid "Rocket hop: %.1f km"
 msgstr "Salto en cohete: %.1f km"
 
-#: planet/sites/orbit_sites.gd:144
+#: planet/sites/orbit_sites.gd:159
 msgid "The rocket is in flight."
 msgstr "El cohete está en vuelo."
 
-#: planet/sites/orbit_sites.gd:147 scenes/slice.gd:119 ui/rockets_panel.gd:38
-msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
-msgstr "Celdas de energía recargando: %s. Las mejoras del cohete las recargan más rápido."
+#: planet/sites/orbit_sites.gd:162
+msgid "Energy cells recharging: %s. Work nearby to charge them faster."
+msgstr ""
 
-#: planet/sites/orbit_sites.gd:152
+#: planet/sites/orbit_sites.gd:167
 msgid "E   Rocket: choose a destination"
 msgstr "E   Cohete: elige un destino"
 
-#: planet/sites/orbit_sites.gd:199
+#: planet/sites/orbit_sites.gd:214
 msgid "Nowhere to fly yet. Get %s to %s to open %s."
 msgstr "Aún no hay adónde volar. Lleva %s a %s para abrir %s."
 
-#: planet/sites/orbit_sites.gd:213
+#: planet/sites/orbit_sites.gd:228
 msgid "%s site"
 msgstr "sitio de %s"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: planet/sites/orbit_sites.gd:214 ui/main_menu.gd:450
+#: planet/sites/orbit_sites.gd:229 ui/main_menu.gd:450
 msgid "Hub %d"
 msgstr "Base %d"
 
@@ -1171,35 +1175,43 @@ msgstr "%s %s montado. Mira a su alrededor y se pone a trabajar."
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "Bloqueado. Sube tu base a nivel 5 para construir la plataforma de lanzamiento."
 
-#: scenes/slice.gd:266
+#: scenes/slice.gd:119 ui/rockets_panel.gd:38
+msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
+msgstr "Celdas de energía recargando: %s. Las mejoras del cohete las recargan más rápido."
+
+#: scenes/slice.gd:271
 msgid "OUTPOST %d · Lv%d"
 msgstr "PUESTO %d · Nv%d"
 
-#: scenes/slice.gd:266
+#: scenes/slice.gd:271
 msgid "OUTPOST %d · RUIN"
 msgstr "PUESTO %d · RUINA"
 
-#: scenes/slice_orbit.gd:375
+#: scenes/slice_orbit.gd:376
 msgid "HEX CLEAN!"
 msgstr "¡HEXÁGONO LIMPIO!"
 
-#: scenes/slice_orbit.gd:391
+#: scenes/slice_orbit.gd:392
 msgid "Milestone: %d hexes clean!"
 msgstr "Hito: ¡%d hexágonos limpios!"
 
-#: scenes/slice_orbit.gd:610 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:589
+#: scenes/slice_orbit.gd:608 systems/camp/field_bench_sites.gd:177
+msgid "E   Open the field bench"
+msgstr ""
+
+#: scenes/slice_orbit.gd:613 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:589
 msgid "E   Fix the workbench"
 msgstr "E   Reparar el banco de trabajo"
 
-#: scenes/slice_orbit.gd:610 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:613 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr "E   Abrir el banco de trabajo"
 
-#: scenes/slice_orbit.gd:1083
+#: scenes/slice_orbit.gd:1106
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Las mejoras necesitan un banco de trabajo. Vuelve a la base."
 
-#: scenes/slice_orbit.gd:1183
+#: scenes/slice_orbit.gd:1207
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "Banco de trabajo reparado. Pulsa E en él para gastar cubos en mejoras."
 
@@ -1776,43 +1788,43 @@ msgstr "Objetivo cumplido  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "Objetivo cumplido  ·  %s"
 
-#: story/objectives.gd:718
+#: story/objectives.gd:720
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "¡Empacadora instalada! Llena tu compartimento, pulsa [%s] para prensar una paca y llévala a la báscula."
 
-#: story/objectives.gd:740 story/objectives.gd:861
+#: story/objectives.gd:742 story/objectives.gd:863
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Tu compartimento está lleno. Pulsa [%s] para hacer una paca."
 
-#: story/objectives.gd:756
+#: story/objectives.gd:758
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "Tu detector ha encontrado una pieza de robot enterrada cerca. Sigue la lectura PIEZA ENTERRADA; pita cuando estás justo encima."
 
-#: story/objectives.gd:758
+#: story/objectives.gd:760
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "PIEZA ENTERRADA: camina hacia ella hasta que la lectura llegue al máximo y desentiérrala."
 
-#: story/objectives.gd:862
+#: story/objectives.gd:864
 msgid "Your chest is full. Bring it to the bin."
 msgstr "Tu compartimento está lleno. Llévalo al contenedor."
 
-#: story/objectives.gd:869
+#: story/objectives.gd:871
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "Tu compartimento está lleno. Vuelve a casa: el contenedor está bajo el humo alto."
 
-#: story/objectives.gd:871
+#: story/objectives.gd:873
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "Lleva tu paca a casa: la báscula está bajo el humo alto."
 
-#: story/objectives.gd:871
+#: story/objectives.gd:873
 msgid "Carry your bale to the scale by the bin."
 msgstr "Lleva tu paca a la báscula junto al contenedor."
 
-#: story/objectives.gd:878
+#: story/objectives.gd:880
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "Vuelve a casa: sigue el rayo hasta el humo alto."
 
-#: story/objectives.gd:888
+#: story/objectives.gd:890
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Aquí no hay nada que recoger. Camina hasta más basura."
 
@@ -2565,6 +2577,30 @@ msgstr "E   %s (Nv %d): mejorar a %s por %s"
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "Cubo de basura mejorado: %s. Las pacas se venden aquí al %d%%."
 
+#: systems/camp/field_bench_sites.gd:179
+msgid "E   Set up the field bench"
+msgstr ""
+
+#: systems/camp/field_bench_sites.gd:180
+msgid "E   Set up the field bench for %s"
+msgstr ""
+
+#: systems/camp/field_bench_sites.gd:206
+msgid "Field bench set up. Upgrades, research and robots work here now."
+msgstr ""
+
+#: systems/camp/field_bench_sites.gd:212
+msgid "A field bench kit waits by the landing pad. Press %s at it to set it up."
+msgstr ""
+
+#: systems/camp/field_benches.gd:73
+msgid "The field bench is set up."
+msgstr ""
+
+#: systems/camp/field_benches.gd:75
+msgid "Reach this city first."
+msgstr ""
+
 #: systems/camp/hub_builds.gd:92 ui/glim_bench.gd:42
 msgid "Not enough cubes, parts or seeds"
 msgstr "No hay suficientes cubos, piezas o semillas"
@@ -2584,6 +2620,10 @@ msgstr "Nivel %d de %d"
 #: systems/camp/hub_builds.gd:167 systems/camp/hub_builds.gd:178
 msgid "%d of %d built"
 msgstr "%d de %d construidos"
+
+#: systems/camp/hub_builds.gd:201
+msgid "Build it at the start yard's workbench."
+msgstr ""
 
 #: systems/camp/locker_cabinet.gd:47
 msgid "E   open locker"
@@ -12274,8 +12314,8 @@ msgid "Mk III Halo"
 msgstr "Mk III Halo"
 
 #: data/rockets.json:tiers[2].desc
-msgid "Bigger engines and a new canopy. Cells refill in a minute; cargo pods carry 2.5x, more often."
-msgstr "Motores más grandes y una cabina nueva. Las celdas recargan en un minuto; las cápsulas de carga llevan 2,5x, más a menudo."
+msgid "Bigger engines and a new canopy. Cells refill in seconds; cargo pods carry 2.5x, more often."
+msgstr ""
 
 #: data/rockets.json:tiers[3].name
 msgid "Mk IV Aurora Warp"
@@ -15584,6 +15624,9 @@ msgstr "Ese pórtico desguazó la flota del Ledger cuando se acabó el dinero. E
 #: planets/verdance/data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un mundo de óxido, verde. Las viejas grúas tienen flores a sus pies. Las cuentas están cerradas, {name}. Las hemos cuadrado."
+
+#~ msgid "Bigger engines and a new canopy. Cells refill in a minute; cargo pods carry 2.5x, more often."
+#~ msgstr "Motores más grandes y una cabina nueva. Las celdas recargan en un minuto; las cápsulas de carga llevan 2,5x, más a menudo."
 
 #~ msgid "%s (robot style)"
 #~ msgstr "%s (estilo de robot)"

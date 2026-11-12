@@ -416,19 +416,23 @@ msgstr "粉碎  ·  熔炼  ·  永久清除"
 msgid "HAND FEED"
 msgstr "手动投料"
 
-#: automation/rocket_tiers.gd:51 ui/robot_card.gd:256
+#: automation/rocket_charge.gd:58
+msgid "Energy cells full. The rocket is ready to fly."
+msgstr ""
+
+#: automation/rocket_tiers.gd:52 ui/robot_card.gd:256
 msgid "Top tier"
 msgstr "最高等级"
 
-#: automation/rocket_tiers.gd:54
+#: automation/rocket_tiers.gd:55
 msgid "Needs the Rocket Cargo research"
 msgstr "需要研究“火箭货运”"
 
-#: automation/rocket_tiers.gd:56
+#: automation/rocket_tiers.gd:57
 msgid "Not enough cubes or parts"
 msgstr "方块或零件不足"
 
-#: automation/rocket_tiers.gd:69
+#: automation/rocket_tiers.gd:70
 msgid "Rocket upgraded: %s."
 msgstr "火箭已升级：%s。"
 
@@ -478,9 +482,9 @@ msgstr "每 3 个捆包送 1 个去回收炉"
 msgid "Every %dth bale to the recycler"
 msgstr "每 %d 个捆包送 1 个去回收炉"
 
-#: automation/trash_bin.gd:93 systems/camp/camp.gd:372 systems/camp/hub_builds.gd:91
-#: systems/camp/hub_builds.gd:156 systems/camp/hub_builds.gd:166 systems/camp/hub_builds.gd:176
-#: systems/camp/yard_builds.gd:97 systems/crew/robot_chain.gd:162
+#: automation/trash_bin.gd:93 systems/camp/camp.gd:372 systems/camp/field_benches.gd:77
+#: systems/camp/hub_builds.gd:91 systems/camp/hub_builds.gd:156 systems/camp/hub_builds.gd:166
+#: systems/camp/hub_builds.gd:176 systems/camp/yard_builds.gd:97 systems/crew/robot_chain.gd:162
 msgid "Not enough materials."
 msgstr "材料不足。"
 
@@ -501,7 +505,7 @@ msgstr "小队一直在清理。城市又干净了一点。"
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
-#: core/pace.gd:150 story/objectives.gd:873
+#: core/pace.gd:150 story/objectives.gd:875
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "太重了。去工作台升级举升力。"
 
@@ -653,28 +657,28 @@ msgstr "光  水  生命"
 msgid "Rocket hop: %.1f km"
 msgstr "火箭跳跃：%.1f 公里"
 
-#: planet/sites/orbit_sites.gd:144
+#: planet/sites/orbit_sites.gd:159
 msgid "The rocket is in flight."
 msgstr "火箭正在飞行。"
 
-#: planet/sites/orbit_sites.gd:147 scenes/slice.gd:119 ui/rockets_panel.gd:38
-msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
-msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
+#: planet/sites/orbit_sites.gd:162
+msgid "Energy cells recharging: %s. Work nearby to charge them faster."
+msgstr ""
 
-#: planet/sites/orbit_sites.gd:152
+#: planet/sites/orbit_sites.gd:167
 msgid "E   Rocket: choose a destination"
 msgstr "E   火箭：选择目的地"
 
-#: planet/sites/orbit_sites.gd:199
+#: planet/sites/orbit_sites.gd:214
 msgid "Nowhere to fly yet. Get %s to %s to open %s."
 msgstr "还没有可飞往的地方。把 %s 提升到 %s 即可开放 %s。"
 
-#: planet/sites/orbit_sites.gd:213
+#: planet/sites/orbit_sites.gd:228
 msgid "%s site"
 msgstr "%s 地点"
 
 #. Continue button subtitle: base number, play time, cube count (e.g. "Hub 2 · 1h 05m · 3.4K cubes").
-#: planet/sites/orbit_sites.gd:214 ui/main_menu.gd:450
+#: planet/sites/orbit_sites.gd:229 ui/main_menu.gd:450
 msgid "Hub %d"
 msgstr "基地 %d"
 
@@ -1170,35 +1174,43 @@ msgstr "%s %s 组装完成。它四下看了看，就开始干活了。"
 msgid "Locked. Upgrade your base to level 5 to build the launch pad."
 msgstr "未解锁。将基地升到 5 级才能建造发射台。"
 
-#: scenes/slice.gd:266
+#: scenes/slice.gd:119 ui/rockets_panel.gd:38
+msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
+msgstr "能量电池充能中：%s。火箭升级能让它们充得更快。"
+
+#: scenes/slice.gd:271
 msgid "OUTPOST %d · Lv%d"
 msgstr "前哨 %d · %d级"
 
-#: scenes/slice.gd:266
+#: scenes/slice.gd:271
 msgid "OUTPOST %d · RUIN"
 msgstr "前哨 %d · 废墟"
 
-#: scenes/slice_orbit.gd:375
+#: scenes/slice_orbit.gd:376
 msgid "HEX CLEAN!"
 msgstr "六角格清理完成！"
 
-#: scenes/slice_orbit.gd:391
+#: scenes/slice_orbit.gd:392
 msgid "Milestone: %d hexes clean!"
 msgstr "里程碑：%d 个六角格已清理！"
 
-#: scenes/slice_orbit.gd:610 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:589
+#: scenes/slice_orbit.gd:608 systems/camp/field_bench_sites.gd:177
+msgid "E   Open the field bench"
+msgstr ""
+
+#: scenes/slice_orbit.gd:613 systems/camp/camp.gd:176 tools/orbit_roundtrip.gd:589
 msgid "E   Fix the workbench"
 msgstr "E   修理工作台"
 
-#: scenes/slice_orbit.gd:610 systems/camp/camp.gd:177
+#: scenes/slice_orbit.gd:613 systems/camp/camp.gd:177
 msgid "E   Open the workbench"
 msgstr "E   打开工作台"
 
-#: scenes/slice_orbit.gd:1083
+#: scenes/slice_orbit.gd:1106
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "升级需要工作台。回基地去吧。"
 
-#: scenes/slice_orbit.gd:1183
+#: scenes/slice_orbit.gd:1207
 msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 msgstr "工作台修好了。在它旁边按 E，用方块购买升级。"
 
@@ -1775,43 +1787,43 @@ msgstr "目标完成  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:718
+#: story/objectives.gd:720
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "打包机已安装！装满胸舱，按 [%s] 压出捆包，再搬到磅秤上。"
 
-#: story/objectives.gd:740 story/objectives.gd:861
+#: story/objectives.gd:742 story/objectives.gd:863
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "胸舱满了。按 [%s] 压一个捆包。"
 
-#: story/objectives.gd:756
+#: story/objectives.gd:758
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "探测器发现附近埋着一个机器人零件。跟着“埋藏零件”读数走；到正上方时它会哔哔响。"
 
-#: story/objectives.gd:758
+#: story/objectives.gd:760
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
 
-#: story/objectives.gd:862
+#: story/objectives.gd:864
 msgid "Your chest is full. Bring it to the bin."
 msgstr "胸舱满了。送去垃圾桶吧。"
 
-#: story/objectives.gd:869
+#: story/objectives.gd:871
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "胸舱满了。回家吧：垃圾桶就在那道高高的烟柱下面。"
 
-#: story/objectives.gd:871
+#: story/objectives.gd:873
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "把捆包搬回家：磅秤就在那道高高的烟柱下面。"
 
-#: story/objectives.gd:871
+#: story/objectives.gd:873
 msgid "Carry your bale to the scale by the bin."
 msgstr "把捆包搬到垃圾桶旁的磅秤上。"
 
-#: story/objectives.gd:878
+#: story/objectives.gd:880
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "回家吧：跟着光束走到那道高高的烟柱。"
 
-#: story/objectives.gd:888
+#: story/objectives.gd:890
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "这里没有可捡的。走去有更多垃圾的地方。"
 
@@ -2558,6 +2570,30 @@ msgstr "E   %s（%d 级）：升级为 %s，需要 %s"
 msgid "Trash bin upgraded: %s. Bales sell for %d%% here."
 msgstr "垃圾桶已升级：%s。捆包在这里按 %d%% 出售。"
 
+#: systems/camp/field_bench_sites.gd:179
+msgid "E   Set up the field bench"
+msgstr ""
+
+#: systems/camp/field_bench_sites.gd:180
+msgid "E   Set up the field bench for %s"
+msgstr ""
+
+#: systems/camp/field_bench_sites.gd:206
+msgid "Field bench set up. Upgrades, research and robots work here now."
+msgstr ""
+
+#: systems/camp/field_bench_sites.gd:212
+msgid "A field bench kit waits by the landing pad. Press %s at it to set it up."
+msgstr ""
+
+#: systems/camp/field_benches.gd:73
+msgid "The field bench is set up."
+msgstr ""
+
+#: systems/camp/field_benches.gd:75
+msgid "Reach this city first."
+msgstr ""
+
 #: systems/camp/hub_builds.gd:92 ui/glim_bench.gd:42
 msgid "Not enough cubes, parts or seeds"
 msgstr "方块、零件或种子不足"
@@ -2577,6 +2613,10 @@ msgstr "等级 %d / %d"
 #: systems/camp/hub_builds.gd:167 systems/camp/hub_builds.gd:178
 msgid "%d of %d built"
 msgstr "已建 %d / %d"
+
+#: systems/camp/hub_builds.gd:201
+msgid "Build it at the start yard's workbench."
+msgstr ""
 
 #: systems/camp/locker_cabinet.gd:47
 msgid "E   open locker"
@@ -12263,8 +12303,8 @@ msgid "Mk III Halo"
 msgstr "Mk III Halo"
 
 #: data/rockets.json:tiers[2].desc
-msgid "Bigger engines and a new canopy. Cells refill in a minute; cargo pods carry 2.5x, more often."
-msgstr "更大的引擎和新的座舱盖。电池一分钟充满；货运舱载量 2.5 倍，频率更高。"
+msgid "Bigger engines and a new canopy. Cells refill in seconds; cargo pods carry 2.5x, more often."
+msgstr ""
 
 #: data/rockets.json:tiers[3].name
 msgid "Mk IV Aurora Warp"
@@ -15573,6 +15613,9 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: planets/verdance/data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Bigger engines and a new canopy. Cells refill in a minute; cargo pods carry 2.5x, more often."
+#~ msgstr "更大的引擎和新的座舱盖。电池一分钟充满；货运舱载量 2.5 倍，频率更高。"
 
 #~ msgid "%s (robot style)"
 #~ msgstr "%s（机器人外观）"
