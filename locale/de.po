@@ -722,7 +722,7 @@ msgstr ""
 "KOMPOSTPRESSE  Stufe %d\n"
 "Trichter %d%%  →  Samen"
 
-#: plants/garden.gd:317
+#: plants/garden.gd:321
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "Ein Hexfeld ist vollständig wiederhergestellt. Schon lebt etwas Kleines darin."
 
@@ -742,15 +742,15 @@ msgstr "      DURSTIG"
 msgid "      next: %s"
 msgstr "      nächste: %s"
 
-#: plants/hex_levels.gd:256
+#: plants/hex_levels.gd:260
 msgid "HEX LV %d  %s"
 msgstr "HEX ST %d  %s"
 
-#: plants/hex_levels.gd:259
+#: plants/hex_levels.gd:263
 msgid "+%s field data"
 msgstr "+%s Felddaten"
 
-#: plants/hex_levels.gd:264
+#: plants/hex_levels.gd:268
 msgid "Hex Lv %d  %s.   %s"
 msgstr "Hex Stufe %d  %s.   %s"
 

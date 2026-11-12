@@ -165,7 +165,11 @@ func _target_level(hid: int, m: Vector3i) -> int:
 	var g: Garden = world.get("garden") as Garden
 	if g == null or not g.hex_slots.has(hid):
 		return 1
-	var total: int = (g.hex_slots[hid] as PackedInt32Array).size()
+	# Slots on paving never take a seed: the quarter is of the slots that can (planted or open).
+	var total: int = 0
+	for s: int in g.hex_slots[hid]:
+		if g.slot_species[s] >= 0 or g.plantable(s):
+			total += 1
 	if total == 0 or m.x < maxi(1, ceili(float(cfg.get("planted_min_frac", 0.25)) * total)):
 		return 1
 	var life: float = float(g.hex_life.get(hid, 0.0))

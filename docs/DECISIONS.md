@@ -571,7 +571,7 @@ Merged. Crew at the launch point 155 (cap 200); city 1 first hex 55 s, first rob
 ## Crew and Glim looks found-only (M3-14b, Nov 11, 2026)
 `docs/reviews/M3-14b_LOOKS.md`. Glim's 15 looks and the crew's 39 (parts, fleet marks, light colours) are found pieces edited only at the Locker (a tab for Glim and one per robot type); crafting, the parts stall, Request-track looks and free starter parts removed; old saves keep what they had (save v6). Planet 1 places 3 of them. Aurora's starting set gives no bonus. Wrecks grow a young plant until salvaged, the Bolt tease sits up as a robot shape, and the found moment adds a light column visible in sun. Merged.
 - To do in M3-13: rocket looks are still bought (move to found or drop); three robot-part achievements cannot be earned on Planet 1 (hide them until a planet can award them).
-- A one-off script error in `art/asset_lib.gd` during one round-trip run; not reproduced. Logged as B39.
+- A one-off script error in `art/asset_lib.gd` during one round-trip run; not reproduced. Logged as B45.
 
 ## Side systems trimmed to what Planet 1 uses (M3-13, lead, Nov 11, 2026)
 Each kept system has one job in the loop; the rest move to `parked/` (code kept, not loaded, saves keep their data).
@@ -594,3 +594,14 @@ Each kept system has one job in the loop; the rest move to `parked/` (code kept,
 - Lumi Level, unless it carries rewards the economy depends on: a second experience bar beside mastery is confusing. If removing it breaks pacing, its rewards move to mastery levels.
 - Buying ship and rocket looks (`ship_style` purchases): looks are found, not bought; the default look stays.
 Task M3-13 (execution) runs after the full-planet bot (M3-11) merges, so the two do not collide in the world wiring.
+
+## After the full-planet bot (M3-11, Nov 12, 2026)
+`docs/reviews/M3-11_BOT.md`. The bot reaches the ending (launch at game minute 613, 200 robots) but only with dev flags: two P1 bugs stop honest play after city 1. Merged with B39, B40 and B42 fixed. Lead decisions:
+- **B41 (Old Town only half plantable): paving takes planters.** Slots on paving accept planter boxes and street-tree pits (Lumi and planting robots fill them like soil). Every city's land counts fully, and restored streets get greenery, which also suits the bright look.
+- **B44 (robots never plant or water the garden's slots):** robots must plant and water real slots, so regrowth stages 2 to 5 are crew work as the design says. Bug-fix pass now.
+- **B43 (yard models freed after a trip):** bug-fix pass now.
+- **A field bench at every city's base** (M3-22): upgrades, rigs, research and robot building can be used in any city Lumi has reached. The start yard keeps the Locker and the Assembler. Without this, purchases stop for 20 to 60 minutes away from home.
+- **Rocket cells recharge in 30 s, not 300 s**, and the cells charge while Lumi works nearby (M3-22). Five minutes of dead time per hop breaks "grind never boring".
+- **The launch point must take about 4 hours of play, not 10** (M3-12). Ironside alone took 256 minutes, 177 of them hand planting before B44. Refit after B44 and the field bench land.
+- **The rocket's 2,600 Parts take about 85 minutes of digging** at the end: M3-12 refits it so the last city never waits on Parts with nothing to do.
+- **The stall watch must see a city that is not moving on** (progress = the current city's stage or job, not any hex anywhere): part of M3-12's bot work.

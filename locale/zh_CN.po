@@ -722,7 +722,7 @@ msgstr ""
 "堆肥压机  等级 %d\n"
 "料斗 %d%%  →  种子"
 
-#: plants/garden.gd:317
+#: plants/garden.gd:321
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "一个六角格完全恢复了。已经有小东西住在里面了。"
 
@@ -742,15 +742,15 @@ msgstr "      缺水"
 msgid "      next: %s"
 msgstr "      下一级：%s"
 
-#: plants/hex_levels.gd:256
+#: plants/hex_levels.gd:260
 msgid "HEX LV %d  %s"
 msgstr "六角格 %d 级  %s"
 
-#: plants/hex_levels.gd:259
+#: plants/hex_levels.gd:263
 msgid "+%s field data"
 msgstr "+%s 现场数据"
 
-#: plants/hex_levels.gd:264
+#: plants/hex_levels.gd:268
 msgid "Hex Lv %d  %s.   %s"
 msgstr "六角格 %d 级  %s。   %s"
 

@@ -722,7 +722,7 @@ msgstr ""
 "PRENSA DE COMPOST  Nv %d\n"
 "tolva %d%%  →  semillas"
 
-#: plants/garden.gd:317
+#: plants/garden.gd:321
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "Un hexágono está totalmente restaurado. Algo pequeñito ya vive en él."
 
@@ -742,15 +742,15 @@ msgstr "      SEDIENTO"
 msgid "      next: %s"
 msgstr "      siguiente: %s"
 
-#: plants/hex_levels.gd:256
+#: plants/hex_levels.gd:260
 msgid "HEX LV %d  %s"
 msgstr "HEX NV %d  %s"
 
-#: plants/hex_levels.gd:259
+#: plants/hex_levels.gd:263
 msgid "+%s field data"
 msgstr "+%s datos de campo"
 
-#: plants/hex_levels.gd:264
+#: plants/hex_levels.gd:268
 msgid "Hex Lv %d  %s.   %s"
 msgstr "Hex Nv %d  %s.   %s"
 

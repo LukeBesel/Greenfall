@@ -102,9 +102,14 @@ func _init(p_world: Node) -> void:
 	_hook(EventBus.hex_cleaned, func(h: int, _p: Vector3, _b: BigNum) -> void:
 		_mark("first_hex_s")
 		_hex_times.append(_now())
+		_progress()
+		var dd: Districts = _districts()
+		if dd != null:
+			_cadence.hex_cleaned(dd.district_of_cell(h), _now())
 		_event("hex_clean", {"hex": h, "n": world.field.cleaned_count}))
 	_hook(EventBus.hex_level_changed, func(h: int, lv: int) -> void:
 		_mark("first_hexlv_%d_s" % lv)
+		_stall.progress(_now())
 		_event("hex_level", {"hex": h, "level": lv}))
 	_hook(EventBus.robot_built, func(n: String) -> void:
 		_mark("first_robot_s")
@@ -124,6 +129,7 @@ func _init(p_world: Node) -> void:
 	_hook(EventBus.pollution_cleared, _mastery.on_cleared)
 	_hook(EventBus.mastery_gained, func(kind: String, level: int) -> void:
 		_mastery.on_gained(kind, level, _now())
+		_cadence.mastery_gained(kind, level, _now())
 		_event("mastery", {"kind": kind, "level": level}))
 	_hook(EventBus.surge_charged, func() -> void:
 		_surge.on_charged(_now())
@@ -133,7 +139,10 @@ func _init(p_world: Node) -> void:
 		_event("source_step", {"district": district, "step": i}))
 	_hook(EventBus.source_shut_down, func(district: String) -> void:
 		_mark("source_%s_s" % district)
+		_cadence.source_shut(district, _now())
+		_progress()
 		_event("source_shut", {"district": district}))
+	_hook_whole_game()
 	world.tree_exiting.connect(write_report)
 	world.tree_exiting.connect(_unhook)  # [beat] rocket travel reloads the scene: drop the old bot's hooks
 
@@ -170,6 +179,8 @@ func _on_currency(id: String, amount: BigNum) -> void:
 		_max_cubes = maxf(_max_cubes, now)
 	if now < was - 0.5 and id in ["cubes", "parts"]:
 		_spend_times.append(_now())
+		_cadence.spent(_now())
+		_stall.progress(_now())
 
 
 ## Seconds since the bot took control (the load and landing before it are not play).
@@ -271,6 +282,7 @@ func _event(kind: String, data: Dictionary = {}) -> void:
 
 func _progress() -> void:
 	_progress_times.append(_now())
+	_stall.progress(_now())
 
 
 func get_world_move(_cam_yaw: float) -> Vector3:
@@ -304,15 +316,32 @@ var _progress_t: float = 0.0
 ## [orbB] On the globe moves are world vectors along the ground (Patch projects them on local up).
 var world_space: bool = false
 var _play_area := PackedInt32Array()
+var _play_set: Dictionary = {}
 
 
 ## The hexes the bot plays: the ground round the start hub (of the globe's 164k+ cells): the first
 ## district and the land just past it (HubFrame.AREA_RINGS rings), so it never runs out of work.
+## With cities (districts) the bot plays the city whose pad the rocket stands on; the wider ring
+## is kept for when that city has nothing left to clean (_pick_focus).
 func _hexes() -> PackedInt32Array:
-	if _play_area.is_empty():
+	var d: Districts = _districts()
+	var city: String = d.district_of_site(_here_site()) if d != null else ""
+	if city != _area_city or _play_area.is_empty():
+		_area_city = city
 		var sf: SphereField = world.field
-		_play_area = sf.grid.cells_around((world.orbit as SliceOrbit).globe.start_cell(), HubFrame.AREA_RINGS)
+		var centre: int = int(_orbit().globe.sites[_here_site()]["cell"]) if _orbit().globe.sites.size() > _here_site() else _orbit().globe.start_cell()
+		_wide_area = sf.grid.cells_around(centre, HubFrame.AREA_RINGS)
+		_play_area = d.cells_of(city) if city != "" else _wide_area
+		_play_set.clear()
+		for c: int in _play_area:
+			_play_set[c] = true
 	return _play_area
+
+
+## The city in play as a set of hexes (see _hexes).
+func _area_set() -> Dictionary:
+	_hexes()
+	return _play_set
 
 
 func _go(p: Patch, target: Vector3, stop_dist: float = 0.3) -> float:
@@ -422,6 +451,8 @@ func update(delta: float) -> void:
 		_stop_run("game-minutes")
 		return
 	_hook_goals()
+	if DevHooks.has("garden-audit") and _since_control(_now()) > 40.0 and not _report.has("garden_audit"):
+		_garden_audit()
 	if DevHooks.has("probe") and not _report.has("probed"):
 		_report["probed"] = true
 		for h: int in _hexes():
@@ -446,6 +477,7 @@ func update(delta: float) -> void:
 		_mastery.sample(_now())
 		if world.get("goals"):
 			_goal_log.sample(world.goals, _now())
+		_watch_whole_game(_not_play())
 	if world.first_seed and world.first_seed.get("_active"):
 		return  # the seed-tin cinematic
 	if p._cubing > 0.0 or p.detector.digging > 0.0:
@@ -454,7 +486,7 @@ func update(delta: float) -> void:
 		_escape_t -= delta
 		_move = _escape_dir
 		return
-	if not (_do_source(p) or _do_bench(p) or _do_tin(p) or _do_find(p) or _do_shard(p) or _do_dump(p) or _do_deliver(p) or _do_pickup(p) or _do_dig(p) or _do_pet(p) or _do_learn(p) or _do_garden(p)):
+	if not (_do_source(p) or _do_travel(p) or _do_bench(p) or _do_tin(p) or _do_find(p) or _do_shard(p) or _do_dump(p) or _do_deliver(p) or _do_pickup(p) or _do_dig(p) or _do_pet(p) or _do_learn(p) or _do_garden(p)):
 		_do_clean(p)
 	if _surge.tick(Surge.of(world), _scoop and (_task == "clean" or _task == "learn"), p.compartment.ratio(p.capacity()), _now()):
 		_mark("first_surge_s")
@@ -495,7 +527,7 @@ func _watch_stuck(p: Patch, delta: float) -> void:
 				_traps += 1
 				_report["bot_traps"] = _report.get("bot_traps", []) + [[snappedf(_now() / 60.0, 0.1), str(p.global_position.snapped(Vector3.ONE * 0.1)), _task]]
 				print("[bot-trap] t=%.1f task=%s pos=%s: back to the yard" % [_now() / 60.0, _task, str(p.global_position)])
-				p.place_on_sphere(_bench_at() + _bench_at().normalized() * 0.3, p.forward())
+				p.place_on_sphere(_base_at() + _base_at().normalized() * 0.3, p.forward())
 				p.velocity = Vector3.ZERO
 				_target_piece = -1
 				_set_task("")
@@ -560,6 +592,7 @@ func _hook_goals() -> void:
 		var g: Dictionary = world.goals.chain[i]
 		_goal_times.append(_now())
 		_goal_log.on_completed(world.goals, i, _now())
+		_cadence.goal_done(_now())
 		_progress()
 		_event("goal", {"id": str(g["id"]), "tier": world.goals.tier_of(i), "n": world.goals.done_count()}))
 	(world.goals as Goals).tier_changed.connect(func(tier: String, i: int) -> void:
@@ -584,6 +617,8 @@ func _bench_at() -> Vector3:
 ## stays empty and the bot pushed at the bench until its stuck-escape fired (B7: 85 of 89 escapes).
 func _water_at() -> Vector3:
 	var d: Variant = world.get("depot")
+	if _away():
+		return _base_at()
 	return (d as Node3D).global_position if d is Node3D else _bench_at()
 
 
@@ -639,7 +674,7 @@ func _do_source(p: Patch) -> bool:
 
 func _do_tin(p: Patch) -> bool:
 	var fs: FirstSeed = world.first_seed
-	if fs == null or not fs.ready_to_find() or fs._tin == null or not fs._tin.visible:
+	if fs == null or _away() or not fs.ready_to_find() or fs._tin == null or not fs._tin.visible:
 		return false
 	if not p.carried.is_empty():
 		return false  # deliver first (interact would drop the bale)
@@ -764,6 +799,8 @@ const CARRY_HOLD_MAX_S: float = 40.0
 ## The garden's share of Lumi's time once it is open: a person tends between loads. Cubes come only
 ## from Lumi's own hands, so a bot that waters without end earns nothing.
 const GARDEN_SHARE: float = 0.25
+## Seeds held past which the bot plants even when its garden share is used up.
+const SEEDS_PILE: float = 5.0
 var _garden_s: float = 0.0
 var _garden_open_s: float = -1.0
 
@@ -772,7 +809,8 @@ func _do_deliver(p: Patch) -> bool:
 	if p.carried.is_empty():
 		return false
 	var full: bool = p.carried.size() >= p.carry_cap()
-	if _haulers() > 0:
+	if _haulers() > 0 or _away():
+		# Away from the start yard there is no scale to walk to: the crew's Haul Bugs fetch them.
 		# Haul Bugs take bales; set the stack down and get back to work.
 		_drop_all(p)
 		return false
@@ -888,7 +926,7 @@ func _drop_all(p: Patch) -> void:
 
 
 func _do_pickup(p: Patch) -> bool:
-	if _haulers() > 0 or p.carried.size() >= p.carry_cap():
+	if _haulers() > 0 or _away() or p.carried.size() >= p.carry_cap():
 		return false
 	var loose: JunkCube = _nearest_loose(p)
 	if loose == null:
@@ -957,26 +995,47 @@ func _hex_planted(g: Garden, h: int) -> Vector2i:
 	return Vector2i(planted, total)
 
 
-## The hex to plant: keep filling the one already started, else the clean hex nearest the base.
+## The hex to plant: a quarter of a hex's open slots makes it Planted (stage 2), so hexes under
+## that come first, nearest Lumi; the hex being planted is kept until it has its quarter; then the
+## rest of each hex is filled (its life, and so stages 3 to 5, counts every open slot).
 func _pick_plant_hex(g: Garden) -> int:
-	if _plant_hex >= 0:
+	var here: Vector3 = world.patch.global_position
+	if _plant_hex >= 0 and _area_set().has(_plant_hex) and not _plant_skip.has(_plant_hex):
 		var pc0: Vector2i = _hex_planted(g, _plant_hex)
-		if pc0.x < pc0.y:
+		if pc0.x < pc0.y and (pc0.x * 4 < pc0.y or _now() < _plant_scan_at):
 			return _plant_hex
+	elif _now() < _plant_scan_at:
+		return -1  # nothing to plant at the last look: look again in a moment
+	_plant_scan_at = _now() + PLANT_SCAN_S
+	var hl: HexLevels = world.get("hex_levels") as HexLevels
 	var best: int = -1
 	var best_s: float = INF
 	for h: int in _hexes():
-		if not _land(h) or not world.field.is_clean(h):
+		if not _land(h) or not world.field.is_clean(h) or _plant_skip.has(h):
 			continue
 		var pc: Vector2i = _hex_planted(g, h)
 		if pc.y == 0 or pc.x >= pc.y:
 			continue
-		var s: float = world.field.hex_center(h).length() - (100.0 if pc.x > 0 else 0.0)
+		var s: float = world.field.hex_center(h).distance_to(here) - (PLANT_QUARTER_PULL_M if pc.x * 4 < pc.y else 0.0)
+		if hl != null and hl.level_of(h) == 2:
+			s -= PLANT_GROW_PULL_M  # planted but not Growing yet: more plants raise its life
 		if s < best_s:
 			best_s = s
 			best = h
 	_plant_hex = best
 	return best
+
+
+## Metres by which a hex short of its quarter (stage 2) is preferred for planting, and how often
+## the whole city is looked over for the next hex (game seconds).
+const PLANT_QUARTER_PULL_M: float = 150.0
+## Metres by which a Planted hex that is not Growing yet is preferred (the city's next stage waits
+## on its last hexes).
+const PLANT_GROW_PULL_M: float = 100.0
+const PLANT_SCAN_S: float = 3.0
+var _plant_scan_at: float = 0.0
+## Hexes whose open slots were all out of reach (hex -> true).
+var _plant_skip: Dictionary = {}
 
 
 func _drips() -> int:
@@ -1004,9 +1063,10 @@ func _thirsty_slot(g: Garden, p: Patch) -> int:
 	var planted: int = 0
 	var limit: float = 25.0 if drips == 0 else 0.0
 	var hl: HexLevels = world.get("hex_levels") as HexLevels
+	var here: Dictionary = _area_set()
 	for s: int in g.slot_species.size():
-		if g.slot_species[s] < 0:
-			continue
+		if g.slot_species[s] < 0 or not here.has(g.slot_hex[s]):
+			continue  # unplanted, or in another city (a flight away)
 		planted += 1
 		var w: float = g.slot_water[s]
 		if w <= 0.0:
@@ -1031,10 +1091,21 @@ func _do_garden(p: Patch) -> bool:
 		return false
 	if _garden_open_s < 0.0:
 		_garden_open_s = _now()
-	if _garden_s > GARDEN_SHARE * (_now() - _garden_open_s) and _pick_focus(p) >= 0:
+	# The share holds while the city still has junk; a clean city is all garden (the wider land
+	# round it is cleaned only when there is nothing to tend).
+	if _garden_s > GARDEN_SHARE * (_now() - _garden_open_s) and _pick_focus(p) >= 0 and _city_has_work(_hexes(), false):
+		# Tended enough for now: back to the junk. Once the city is mostly clean (its first stage),
+		# seeds piling up are planted anyway: a patch is one quick action and nothing else turns
+		# seeds into regrowth. Before that the cleaning is what moves the city on.
+		var d: Districts = _districts()
+		var stage1: bool = d == null or _area_city == "" or d.stage_of(_area_city) >= 1
+		var h: int = _pick_plant_hex(g) if stage1 and GameState.get_currency("seeds").to_float() >= SEEDS_PILE else -1
+		if h >= 0 and _plant_task(p, g, h):
+			_garden_s += _dt
+			return true
 		if p.tool != Patch.Tool.SCOOP:
 			p.set_tool(Patch.Tool.SCOOP)
-		return false  # tended enough for now: back to the junk
+		return false
 	if _garden_task(p, g):
 		_garden_s += _dt
 		return true
@@ -1055,7 +1126,9 @@ func _garden_task(p: Patch, g: Garden) -> bool:
 		_water_target = -1
 	if _water_target < 0:
 		_water_target = _thirsty_slot(g, p)
-	if _water_target >= 0:
+	var plant_h: int = _pick_plant_hex(g) if GameState.get_currency("seeds").to_float() >= 1.0 else -1
+	# Seeds first (each patch moves a hex toward its next stage); water first only for a burst.
+	if _water_target >= 0 and (plant_h < 0 or _burst_wanted(g, g.slot_hex[_water_target])):
 		if p.water < 1.5:
 			_refilling = true
 			return true
@@ -1069,30 +1142,38 @@ func _garden_task(p: Patch, g: Garden) -> bool:
 			_water_target = -1
 			_task_t = 0.0
 		return true
-	if GameState.get_currency("seeds").to_float() >= 1.0:
-		var h: int = _pick_plant_hex(g)
-		if h >= 0:
-			var best: int = -1
-			var best_d: float = INF
-			for s: int in g.hex_slots[h]:
-				if g.slot_species[s] >= 0 or _ignore_piece.has(-10 - s) or not g.plantable(s):
-					continue
-				var d2: float = g.slot_pos[s].distance_to(p.global_position)
-				if d2 < best_d:
-					best_d = d2
-					best = s
-			if best >= 0:
-				_set_task("plant")
-				p.set_tool(Patch.Tool.PLANT)
-				var dd: float = _go(p, g.slot_pos[best], 0.9)
-				if dd < 1.6:
-					_scoop = true
-					_move = Vector3.ZERO
-				if _task_t > 15.0:
-					_ignore_piece[-10 - best] = true
-					_task_t = 0.0
-				return true
-	return false
+	return plant_h >= 0 and _plant_task(p, g, plant_h)
+
+
+## Walks to the nearest open slot of hex `h` and sets a patch there. False when it has none left.
+func _plant_task(p: Patch, g: Garden, h: int) -> bool:
+	var best: int = -1
+	var best_d: float = INF
+	for s: int in g.hex_slots[h]:
+		if g.slot_species[s] >= 0 or _ignore_piece.has(-10 - s) or not g.plantable(s):
+			continue
+		var d2: float = g.slot_pos[s].distance_to(p.global_position)
+		if d2 < best_d:
+			best_d = d2
+			best = s
+	if best < 0:
+		_plant_skip[h] = true  # every open slot left here was out of reach: plant elsewhere
+		_plant_hex = -1
+		_plant_scan_at = 0.0
+		return false
+	_set_task("plant")
+	p.set_tool(Patch.Tool.PLANT)
+	var dd: float = _go(p, g.slot_pos[best], 0.9)
+	if dd < 1.6:
+		_scoop = true
+		_move = Vector3.ZERO
+	if _task_t > 15.0:
+		if DevHooks.has("bot-debug"):
+			print("[bot-plant] t=%.1f slot=%d hex=%d dist=%.2f free_near=%d seeds=%.0f pos=%s" % [_now() / 60.0, best, h, dd,
+				g.free_slot_near(p.global_position, p.forward()), GameState.get_currency("seeds").to_float(), str(p.global_position.snappedf(0.1))])
+		_ignore_piece[-10 - best] = true
+		_task_t = 0.0
+	return true
 
 
 # --- Mastery: some hand work on each new kind ---------------------------------------------
@@ -1155,12 +1236,18 @@ func _pick_focus(p: Patch) -> int:
 		return _focus_hex
 	var best: int = -1
 	var best_s: float = INF
-	var base: Vector3 = (world.depot as Depot).bin_world() if world.depot else p.global_position
+	var base: Vector3 = (world.depot as Depot).bin_world() if world.depot and not _away() else _base_at()
 	# A scooped kind robots are shut out of until Lumi learns it: its hexes come first.
 	var so: SliceOrbit = world.get("orbit") as SliceOrbit
 	var learn: String = AutoplayMastery.kind_to_learn(so.mastery, so.pollution, false) if so != null else ""
-	for h: int in _hexes():
-		if not _land(h) or f.is_clean(h) or _skip_hex.has(h) or f.locked.has(h):
+	# With the hover skirt on, lakes are ground too (their floating waste is a city's kind).
+	var wet_ok: bool = p.has_method("can_hover_water") and p.can_hover_water()
+	var area: PackedInt32Array = _hexes()
+	if not _city_has_work(area, wet_ok):
+		area = _wide_area
+	for h: int in area:
+		var ground: bool = _land(h) or (wet_ok and world.field.hex_hub[h] == 0 and f.is_water(h))
+		if not ground or f.is_clean(h) or _skip_hex.has(h) or f.locked.has(h):
 			continue
 		var c: Vector3 = f.hex_center(h)
 		# Near the bin first (short tips), then near Lumi, and finish what is started. The first term
@@ -1177,6 +1264,15 @@ func _pick_focus(p: Patch) -> int:
 				_skip_hex.erase(k)
 	_focus_hex = best
 	return best
+
+
+## Whether the city in play still has a hex to clean (else the bot works the land round it).
+func _city_has_work(area: PackedInt32Array, wet_ok: bool) -> bool:
+	var f: HexField = world.field
+	for h: int in area:
+		if (_land(h) or (wet_ok and f.hex_hub[h] == 0 and f.is_water(h))) and not f.is_clean(h) and not _skip_hex.has(h) and not f.locked.has(h):
+			return true
+	return false
 
 
 func _do_clean(p: Patch) -> void:
@@ -1298,13 +1394,22 @@ func _manage(p: Patch) -> void:
 		_mark("base_%d_s" % _hub_level_seen)
 		_progress()
 		_event("base", {"level": _hub_level_seen})
+	_set_mix()
+	_paint_search()
+	if _away():
+		_bench_trip = false  # the only workbench is in the start yard: a home trip (_do_travel) goes there
+		_want_home()
+		return
 	var want: Dictionary = _shopping_list()
 	if not _at_base(p):
-		# Head back when something worth the walk is affordable.
-		if want.get("trip", false) and _now() - _last_bench_t > 20.0:
+		# Head back when something worth the walk is affordable (or the trip home was for the bench).
+		if (want.get("trip", false) or _travel.home_trip) and _now() - _last_bench_t > 20.0:
 			_bench_trip = true
 		return
 	_last_bench_t = _now()
+	if _travel.home_trip:
+		_travel.shopped(_now())
+		_event("shopped", {})
 	var cp: Camp = Camp.of(world)  # [v3clear] at the bench a person repairs it first (the checklist's step 1)
 	if cp and not Camp.bench_ok():
 		cp.repair_now()
@@ -1325,8 +1430,8 @@ func _campaign(_p: Patch) -> void:
 		_mark("cradle_complete_s")
 	if GameState.flags.get("bloom_finale_seen", false):
 		_mark("finale_done_s")
-	if _now() < 30.0 or DevHooks.has("no-travel"):
-		return  # settle in after landing
+	if _now() < 30.0 or DevHooks.has("no-travel") or _districts() != null:
+		return  # settle in after landing; a planet with cities travels by _do_travel
 	var to: int = AutoplayCampaign.next_hub(world)
 	if to >= 0 and world.rocket_status() == "" and p_ok(_p) and OrbitSites.of(world).can_hop_to_hub(to):
 		_event("launch", {"from": int(world.hub_index), "to": to, "kind": world.planet.frontier_kind(to)})
@@ -1406,8 +1511,8 @@ func _card_purchase() -> Dictionary:
 
 
 ## The tools at the bench that Lumi needs and has not fitted (systems/rigs.gd): the tools for the
-## kinds of every open city, the newest city and its newest kind first, so where two tools share
-## a slot the one for the city just opened wins.
+## kinds of every open city, the city the bot is heading for first, then the newest city and its
+## newest kind first, so where two tools share a slot the one for the city in play wins.
 func _rig_tools() -> Array[String]:
 	var rigs: Rigs = Rigs.of(world)
 	var r: Restoration = Restoration.active()
@@ -1416,6 +1521,11 @@ func _rig_tools() -> Array[String]:
 	var kinds: Array = []
 	var open_ids: Array[String] = r.districts.ids().filter(func(id: String) -> bool: return r.districts.is_unlocked(id))
 	open_ids.reverse()
+	# The city the bot is heading for comes first: where two tools share a slot, its kind wins.
+	var target: String = AutoplayTravel.target_city(r.districts, _sources())
+	if target != "":
+		open_ids.erase(target)
+		open_ids.push_front(target)
 	for id: String in open_ids:
 		var listed: Array = (r.districts.spec_of(id).get("pollution", []) as Array).duplicate()
 		listed.reverse()
@@ -1440,7 +1550,7 @@ func _shop(want: Dictionary) -> void:
 	var obj_now: Objectives = world.get("objectives") as Objectives
 	var tower_asked: bool = obj_now != null and str(obj_now.current().get("type", "")) == "tower"
 	if tower and SignalTower.tier() < mini(SignalTower.max_tier(), maxi(1, int(GameState.world.get("hub_level", 1)))) \
-			and GameState.can_afford_all(SignalTower.next_cost(), 1.0 if tower_asked else 1.5):
+			and GameState.can_afford_all(SignalTower.next_cost(), 1.0 if tower_asked else 1.5) and (tower_asked or _keeps_robot_parts(SignalTower.next_cost(), want)):
 		GameState.spend_all(SignalTower.next_cost())
 		tower.raise()
 		_mark("tower_s")
@@ -1486,22 +1596,26 @@ func _shop(want: Dictionary) -> void:
 		_mark("glim_repair_s")
 	# 2c) [buddy] Glim's Lantern and Hex Scanner when affordable (1.5x margin: never starves the core loop).
 	for gid: String in ["light", "scan"]:
-		if Glim.block_reason(gid) == "" and GameState.can_afford_all(Glim.next_cost(gid), 1.5) and Glim.buy(gid):
+		if Glim.block_reason(gid) == "" and GameState.can_afford_all(Glim.next_cost(gid), 1.5) and _keeps_robot_parts(Glim.next_cost(gid), want) and Glim.buy(gid):
 			var gd: GlimDirector = GlimDirector.of(world)
 			if gd:
 				gd.refresh()
 			_event("glim_" + gid, {"tier": Glim.tier(gid)})
 	# 3) Robots ([ui2] Parts + cubes; keep the next base level's Parts unless the robot can't wait).
 	var robot: String = str(want.get("robot", "")) if fleet != null and BenchTiers.tab_open("bots") else ""  # [orbB] no Fleet on the globe yet (orbC)  # [v1guide] the Bots tab is open
-	if robot != "":
-		var hub_save: float = float(want.get("hub_save", 0.0))
-		var spare: float = GameState.get_currency("cubes").to_float() - float(want.get("robot_cost", 0.0))
+	var built_n: int = 0
+	while robot != "" and built_n < ROBOTS_PER_VISIT:  # a player at the Bots tab builds what is paid for
+		var hub_save: float = 0.0 if _crew_first() else float(want.get("hub_save", 0.0))
+		var spare: float = GameState.get_currency("cubes").to_float() - fleet.build_cost(robot).to_float()
 		var must: bool = _robot_goal(robot) or _essential(robot)
 		var ok: bool = hub_save <= 0.0 or spare >= hub_save or must
 		ok = ok and (must or hub_save <= 0.0 or _mats_spare({"parts": fleet.build_parts(robot).to_float()}, false))
-		if ok and robot != "" and fleet.can_build(robot):
-			var at: Vector3 = world.upgrades.build_at.call()
-			fleet.build(robot, at)
+		if not ok or not fleet.can_build(robot):
+			break
+		var at: Vector3 = world.upgrades.build_at.call()
+		fleet.build(robot, at)
+		built_n += 1
+		robot = _next_robot()
 	# The Assembler as soon as it is on offer: from then on the line builds the crew.
 	if RobotChain.of(world) != null and RobotChain.of(world).listed() and HubBuilds.build(world, RobotChain.BUILD_ID):
 		_progress()
@@ -1592,6 +1706,28 @@ func _shop(want: Dictionary) -> void:
 			_event("composter", {"level": cp.level})
 
 
+## Past the first city the crew is the engine and robots are paid in Parts: the cubes saved for the
+## next base level no longer hold a robot back (the base matters again when its level caps the crew).
+func _crew_first() -> bool:
+	var d: Districts = _districts()
+	var fleet: Fleet = world.fleet
+	if d == null or fleet == null or d.unlocked_count() < 2:
+		return false
+	var cap: Dictionary = Economy.robot_cfg.get("crew_cap", {})
+	var by_base: Array = cap.get("by_base_level", [])
+	var lv: int = int(world.hub.level)
+	return by_base.is_empty() or lv > by_base.size() or fleet.robot_total() + 1 < int(by_base[lv - 1])
+
+
+## Whether paying `cost` leaves the Parts for the robot the bot is working toward: from the second
+## city on Parts are the crew, so side purchases (the tower, Glim) wait for them.
+func _keeps_robot_parts(cost: Dictionary, want: Dictionary) -> bool:
+	var robot: String = str(want.get("robot", ""))
+	if robot == "" or world.fleet == null or not cost.has("parts"):
+		return true
+	return GameState.get_currency("parts").to_float() - float(cost["parts"]) >= world.fleet.build_parts(robot).to_float()
+
+
 ## Materials the next base level still needs (cubes ignored).
 func _hub_need() -> Dictionary:
 	var nxt: Dictionary = world.hub.level_def(world.hub.level + 1)
@@ -1610,7 +1746,8 @@ func _hub_mats_short() -> bool:
 func _mats_spare(cost: Dictionary, force: bool) -> bool:
 	if force:
 		return true
-	var need: Dictionary = _hub_need()
+	var need: Dictionary = _hub_need().duplicate()
+	need["parts"] = float(need.get("parts", 0.0)) + _job_parts()
 	for k: String in cost:
 		if k == "cubes":
 			continue
@@ -1618,6 +1755,19 @@ func _mats_spare(cost: Dictionary, force: bool) -> bool:
 		if have - float(cost[k]) < float(need.get(k, 0.0)):
 			return false
 	return true
+
+
+## Parts the next step of an open source job still waits for (a player saves for the rocket's part
+## before a crew upgrade).
+func _job_parts() -> float:
+	var src: Sources = _sources()
+	if src == null:
+		return 0.0
+	var out: float = 0.0
+	for id: String in src.ids():
+		if src.is_open(id) and not src.is_shut(id) and not src.can_afford(id):
+			out += float((src.current_step(id).get("cost", {}) as Dictionary).get("parts", 0.0))
+	return out
 
 
 ## A base build a goal on show asks for (its guide names the Build row) is built once it is
@@ -1724,7 +1874,7 @@ func _essential(type_id: String) -> bool:
 		return type_id != "skimmer" or int(GameState.world.get("hub_level", 1)) >= 2
 	match type_id:
 		"drip":
-			return _drips() < (world.hex_levels.count_at_least(2) if world.get("hex_levels") else 0)
+			return _target_stage() >= 1 and _drips() * HEXES_PER_DRIP < _city_gardens()
 		"skimmer":
 			return _lake_dirty()
 		"scoopie":  # [beat] a small cleaning crew is worth more than saving a few minutes for the base
@@ -1813,6 +1963,13 @@ func _best_upgrade(reserve: float, leak: bool = true) -> String:
 
 ## The bot keeps one parts finder for every this many robots.
 const FINDER_ONE_IN: int = 6
+## Planted hexes one watering robot is bought for (it walks between them).
+const HEXES_PER_DRIP: int = 8
+## Cleaners per planting robot once seeds pile up, and planted hexes per planting robot.
+const SCOOPIES_PER_SEEDLING: int = 4
+const HEXES_PER_SEEDLING: int = 16
+## Robots the bot builds in one visit to the Bots tab, at most.
+const ROBOTS_PER_VISIT: int = 6
 
 
 ## The robot to work toward next (research done, crew room), or "".
@@ -1823,14 +1980,20 @@ func _next_robot() -> String:
 	var seeds_on: bool = world.garden != null and world.garden.unlocked()
 	var scoop: int = fleet.count("scoopie")
 	var haul: int = fleet.count("haulbug")
-	var gardens: int = world.hex_levels.count_at_least(2) if world.get("hex_levels") else 0
+	var gardens: int = _city_gardens()
 	var order: Array[String] = []
 	# Nearly all land junk gone: no more cleaners or haulers (the lake still wants a Skimmer).
 	var late: bool = _land_left_frac() < 0.12
-	var saving: bool = not _hub_need().is_empty() and not _hub_mats_short()
+	var saving: bool = not _hub_need().is_empty() and not _hub_mats_short() and not _crew_first()
 	if AutoplayCampaign.frontier_kid(world) == "sunken_city" and _lake_dirty() and fleet.count("skimmer") < 14:
 		order.append("skimmer")  # [beat] the flooded city is skimmed, not scooped
-	if seeds_on and _drips() < maxi(1, gardens):
+	# Planters and waterers once the city has its first stage: before that its stage waits on
+	# cleaning, and their Parts buy cleaners. A planter for every two planted-hex waterers' worth
+	# of garden comes first: a hex's life counts every open slot, more than Lumi's patches fill.
+	var planting: bool = seeds_on and _target_stage() >= 1
+	if planting and fleet.count("seedling") * HEXES_PER_SEEDLING < maxi(1, gardens) and GameState.get_currency("seeds").to_float() > 50.0:
+		order.append("seedling")
+	if seeds_on and gardens > 0 and _drips() * HEXES_PER_DRIP < gardens and _target_stage() >= 1:
 		order.append("drip")
 	if haul == 0:
 		order.append("haulbug")  # the first helper carries the bales, so Lumi stays at the work
@@ -1842,16 +2005,21 @@ func _next_robot() -> String:
 	var finder: String = str((Economy.robot_cfg.get("chain", {}) as Dictionary).get("finder", ""))
 	if finder != "" and Research.robot_unlocked(finder) and fleet.count(finder) * FINDER_ONE_IN <= fleet.robot_total():
 		order.append(finder)
-	if seeds_on and fleet.count("seedling") == 0 and GameState.get_currency("seeds").to_float() > 8.0:
+	if planting and fleet.count("seedling") == 0 and GameState.get_currency("seeds").to_float() > 8.0:
 		order.append("seedling")
+	if planting and fleet.count("seedling") * SCOOPIES_PER_SEEDLING < scoop and GameState.get_currency("seeds").to_float() > 50.0:
+		order.append("seedling")  # seeds piling up: a planter for every few cleaners
 	order.append("scoopie")
 	if scoop >= 2 and fleet.count("skimmer") == 0 and _lake_dirty():
 		order.append("skimmer")
 	if seeds_on:
-		order.append("drip")
+		if _target_stage() >= 1:
+			order.append("drip")
 	order.append("multibot")
 	if haul < scoop:
 		order.append("haulbug")
+	if finder != "" and fleet.count(finder) == 0:
+		order.push_front(finder)  # the first parts finder starts the chain: the crew grows from what it digs up
 	for t: String in order:
 		if not Research.robot_unlocked(t) or fleet.join_crew(t) == "":
 			continue
@@ -1863,12 +2031,49 @@ func _next_robot() -> String:
 	return ""
 
 
+## Planted hexes (stage 2 and up) of the city in play: what its watering robots have to keep wet.
+## A finished city's garden keeps its own waterers; the next city's needs are its own.
+func _city_gardens() -> int:
+	var hl: HexLevels = world.get("hex_levels") as HexLevels
+	if hl == null:
+		return 0
+	if _now() - _gardens_t < 5.0:
+		return _gardens_n
+	_gardens_t = _now()
+	_gardens_n = 0
+	for h: int in _target_cells():
+		if hl.level_of(h) >= 2:
+			_gardens_n += 1
+	return _gardens_n
+
+
+## The regrowth stage of the city the bot is heading for (5 when there are no cities).
+func _target_stage() -> int:
+	var d: Districts = _districts()
+	var target: String = AutoplayTravel.target_city(d, _sources()) if d != null else ""
+	return d.stage_of(target) if target != "" else Districts.MAX_STAGE
+
+
+## The hexes of the city the bot is heading for (the one it stands in, unless it is only home for
+## the bench): robots bought at the bench are for that city.
+func _target_cells() -> PackedInt32Array:
+	var d: Districts = _districts()
+	var target: String = AutoplayTravel.target_city(d, _sources()) if d != null else ""
+	if target == "" or target == _area_city:
+		return _hexes()
+	return d.cells_of(target)
+
+
+var _gardens_t: float = -100.0
+var _gardens_n: int = 0
+
+
 ## Share of the land junk volume still on the ground.
 func _land_left_frac() -> float:
 	var f: HexField = world.field
 	var left: float = 0.0
 	var total: float = 0.0
-	for h: int in _hexes():
+	for h: int in _target_cells():
 		if _land(h):
 			total += f.hex_total[h]
 			if not f.is_clean(h):
@@ -1878,7 +2083,7 @@ func _land_left_frac() -> float:
 
 func _lake_dirty() -> bool:
 	var f: HexField = world.field
-	for h: int in _hexes():
+	for h: int in _target_cells():
 		if f.is_water(h) and not f.is_clean(h):
 			return true
 	return false
@@ -1953,6 +2158,11 @@ func _track_research(dt: float) -> void:
 		_research_idle_run = 0.0
 
 
+## The most hexes in the cleaners' zone: a hex or so per cleaner, so a big crew is not crowded
+## onto a few hexes.
+const ZONE_MAX_HEXES: int = 60
+
+
 ## Command zones: cleaners to the frontier, planters and waterers to the garden.
 func _paint_zones() -> void:
 	var fleet: Fleet = world.fleet
@@ -1965,7 +2175,7 @@ func _paint_zones() -> void:
 			_event("allocate", {"from": "clean", "to": "water"})
 	var f: HexField = world.field
 	var cleaners: int = fleet.crew_size("clean") if fleet is SphereFleet else fleet.robots_with_role("clean").size()  # [v3qa] globe crew
-	var want_n: int = clampi(2 + cleaners, 3, 6)
+	var want_n: int = clampi(2 + cleaners, 3, ZONE_MAX_HEXES)
 	var zone_goal: int = _zone_goal_target()
 	want_n = maxi(want_n, zone_goal)
 	if cleaners == 0 and zone_goal == 0:
@@ -1974,7 +2184,7 @@ func _paint_zones() -> void:
 	for h: int in _hexes():
 		if _land(h) and not f.is_clean(h) and h != _focus_hex:
 			cand.append(h)
-	var o: Vector3 = world.depot.global_position  # [v3qa] nearest the base first
+	var o: Vector3 = _base_at()  # [v3qa] nearest the base first
 	cand.sort_custom(func(a: int, b: int) -> bool: return f.hex_center(a).distance_to(o) - 8.0 * f.removed_fraction(a) < f.hex_center(b).distance_to(o) - 8.0 * f.removed_fraction(b))
 	_set_zone("clean", cand.slice(0, want_n))
 	var g: Garden = world.garden
@@ -2065,6 +2275,265 @@ func _place_tanks() -> void:
 				return
 
 
+# --- The whole planet: cities, travel, the cadence table, stalls --------------------------------
+
+## Where to be and when to fly (tools/autoplay_travel.gd), the per-city cadence table
+## (tools/autoplay_cadence.gd) and the stall watch (tools/autoplay_stall.gd).
+var _travel := AutoplayTravel.new()
+var _stall := AutoplayStall.new()
+var _cadence := AutoplayCadence.new()
+var _area_city: String = "?"
+var _wide_area := PackedInt32Array()
+var _ended: bool = false
+var _mix: Dictionary = {}
+
+
+func _hook_whole_game() -> void:
+	_hook(EventBus.district_entered, func(id: String) -> void:
+		_setup_cadence()
+		_cadence.arrive(id, _now(), _crew())
+		_progress()
+		_event("arrive", {"city": id, "crew": _crew()}))
+	_hook(EventBus.district_unlocked, func(id: String) -> void:
+		_progress()
+		_event("city_open", {"city": id}))
+	_hook(EventBus.district_stage_changed, func(id: String, stage: int) -> void:
+		_setup_cadence()  # a stage can come while the world loads, before the bot's first tick
+		_cadence.stage_reached(id, stage, _now())
+		_mark("city_%s_stage%d_s" % [id, stage])
+		_progress()
+		_event("city_stage", {"city": id, "stage": stage}))
+	_hook(EventBus.launch_ready, func(_pid: String) -> void:
+		_mark("launch_ready_s")
+		_cadence.launched(_now())
+		_progress())
+	_hook(EventBus.ending_shown, func(_pid: String) -> void:
+		_mark("ending_s")
+		_end_run("the ending was shown", 0))
+
+
+func _orbit() -> SliceOrbit:
+	return world.get("orbit") as SliceOrbit
+
+
+func _districts() -> Districts:
+	var so: SliceOrbit = _orbit()
+	return so.districts if so != null else null
+
+
+func _sources() -> Sources:
+	var so: SliceOrbit = _orbit()
+	return so.sources if so != null else null
+
+
+func _crew() -> int:
+	return world.fleet.robot_total() if world.fleet else 0
+
+
+## The site whose pad the rocket stands on: where Lumi landed last (0 = the start yard).
+func _here_site() -> int:
+	var os: OrbitSites = OrbitSites.of(world)
+	return os.rocket_site() if os != null else 0
+
+
+func _away() -> bool:
+	return _here_site() != 0
+
+
+## The middle of the base Lumi works from: the start yard's scale, or the pad of the city she flew
+## to (its middle cell is base ground, where the watering can refills).
+func _base_at() -> Vector3:
+	if not _away() and world.get("depot") is Node3D:
+		return (world.depot as Node3D).global_position
+	return _orbit().globe.site_point(_here_site(), Vector3.ZERO)
+
+
+## The city table for the cadence rows, once the districts exist; the first city counts as reached
+## when the bot takes control.
+func _setup_cadence() -> void:
+	var d: Districts = _districts()
+	if d == null or not _cadence.rows.is_empty():
+		return
+	var cities: Array[Dictionary] = []
+	for id: String in d.ids():
+		cities.append({"id": id, "name": d.name_of(id), "pollution": d.spec_of(id).get("pollution", [])})
+	_cadence.setup(cities)
+	var saved: String = _cadence_path()
+	if saved != "" and not DevHooks.has("fresh") and FileAccess.file_exists(saved):
+		var v: Variant = JSON.parse_string(FileAccess.get_file_as_string(saved))
+		if v is Dictionary:
+			_cadence.from_dict(v)  # a staged run goes on with the table so far
+	var first: String = d.district_of_site(_here_site())
+	if first != "":
+		_cadence.arrive(first, _now(), _crew())
+
+
+## A staged run keeps its table on disk every minute, so a stage cut short loses at most a minute.
+func _save_cadence() -> void:
+	if _cadence_path() == "" or _cadence.rows.is_empty():
+		return
+	var cf := FileAccess.open(_cadence_path(), FileAccess.WRITE)
+	if cf:
+		cf.store_string(JSON.stringify(_cadence.to_dict()))
+
+
+## Where a staged run (--save-dir) keeps its cadence table between stages ("" for a single run).
+func _cadence_path() -> String:
+	var dir: String = DevHooks.get_s("save-dir", "")
+	return "" if dir == "" else ProjectSettings.globalize_path("res://screenshots/autoplay_cadence_%s.json" % dir.validate_filename())
+
+
+## Travel, as a player: when the planner points at another site and the rocket's cells are full,
+## set any bales down, walk to the parked rocket and fly. True while boarding.
+func _do_travel(p: Patch) -> bool:
+	var os: OrbitSites = OrbitSites.of(world)
+	var d: Districts = _districts()
+	if os == null or d == null or DevHooks.has("no-travel") or not os.rocket_unlocked() or os.rocket_spot == null:
+		return false
+	if os.hop.flying:
+		return true
+	var here: int = os.rocket_site()
+	var want: int = _travel.want_site(d, _sources())
+	if want < 0 or want == here or not os.site_offered(want) or os.hop_blocker() != "" or p._cubing > 0.0 or _now() < _hop_retry_at:
+		return false
+	if here == 0 and _now() - _last_bench_t > 60.0 and (not _rig_tools().is_empty() or bool(_shopping_list().get("trip", false))):
+		_bench_trip = true  # leaving the start yard: the bench first (a city's tool may be waiting there)
+		return false
+	if not p.carried.is_empty():
+		_drop_all(p)
+	if p.tool != Patch.Tool.SCOOP:
+		p.set_tool(Patch.Tool.SCOOP)
+	_set_task("board")
+	var to_rocket: float = _go(p, os.rocket_spot.global_position, 1.5)
+	if DevHooks.has("bot-debug") and int(_task_t * 10.0) % 100 == 0:
+		print("[bot-board] t=%.1f walk %.0f s, %.1f m to the rocket at %s, Lumi at %s" % [_now() / 60.0, _task_t, to_rocket,
+			str(os.rocket_spot.global_position.snappedf(0.1)), str(p.global_position.snappedf(0.1))])
+	if to_rocket > AutoplayTravel.BOARD_M and _task_t < AutoplayTravel.WALK_GIVE_UP_S:
+		return true
+	if to_rocket > AutoplayTravel.BOARD_M:
+		# Boxed in on the way (a person would call the rocket over): logged, as the bot's traps are.
+		_travel.board_stuck += 1
+		_event("board_stuck", {"rocket_m": snappedf(to_rocket, 0.1), "at": str(p.global_position.snappedf(0.1))})
+	_travel.hops += 1
+	if here == 0:
+		_travel.last_home_s = _now()  # the bench was just visited on the way out
+	_event("hop", {"from": here, "to": want, "city": d.district_of_site(want), "home_trip": _travel.home_trip, "why": _travel.why,
+		"walk_s": snappedf(_task_t, 0.1), "rocket_m": snappedf(to_rocket, 0.1)})
+	_area_city = "?"
+	_focus_hex = -1
+	_plant_hex = -1
+	_learn_hex = -1
+	_water_target = -1
+	_target_piece = -1
+	os.hop_to(want)
+	if not os.hop.flying:  # refused (the flight starts at once when it goes): try again later
+		_hop_retry_at = _now() + HOP_RETRY_S
+		_event("hop_refused", {"from": here, "to": want})
+	return true
+
+
+## A refused hop is tried again after this many game seconds.
+const HOP_RETRY_S: float = 30.0
+var _hop_retry_at: float = 0.0
+
+
+## Away from the start yard: whether to fly home for the bench (checked once a second).
+func _want_home() -> void:
+	if _travel.home_trip:
+		return
+	var asm: RobotChain = RobotChain.of(world)
+	var asm_ready: bool = asm != null and asm.listed() and asm.block_reason() == ""
+	if _travel.home_wanted(not _rig_tools().is_empty(), asm_ready, bool(_shopping_list().get("trip", false)), _now()):
+		_travel.home_trip = true
+		_event("home_trip", {"why": _travel.why})
+
+
+## What the bot is trying to do, for the stall line and the report.
+func _doing() -> String:
+	var d: Districts = _districts()
+	var target: String = AutoplayTravel.target_city(d, _sources()) if d != null else ""
+	var here: String = d.district_of_site(_here_site()) if d != null else ""
+	return "task=%s city=%s stage=%d target=%s home_trip=%s hex=%d cubes=%.0f parts=%.0f crew=%d research=%s rocket=%s" % [_task, here,
+		d.stage_of(here) if d != null and here != "" else -1, target, str(_travel.home_trip), _focus_hex,
+		GameState.get_currency("cubes").to_float(), GameState.get_currency("parts").to_float(), _crew(), Research.active_id(),
+		OrbitSites.of(world).hop_blocker() if OrbitSites.of(world) != null else "-"]
+
+
+## Once a second: the cadence samples, and the stall watch. A stall ends the run with exit code 1.
+func _watch_whole_game(paused: bool) -> void:
+	_setup_cadence()
+	_cadence.sample(_now(), GameState.get_currency("cubes").to_float(), GameState.get_currency("parts").to_float())
+	if paused:
+		_stall.pause(_now())
+		return
+	if _stall.tick(_now(), _doing()) and not DevHooks.has("no-stall-exit"):
+		print("[Autoplay] STALL: nothing progressed for %.1f game minutes (no purchase, goal, hex or stage). Doing: %s" % [
+			_stall.idle_s(_now()) / 60.0, str(_stall.stalled["doing"])])
+		_end_run("stall", 1)
+
+
+## Game time that is not play: the seed tin's cinematic, a rocket flight, the launch.
+func _not_play() -> bool:
+	var os: OrbitSites = OrbitSites.of(world)
+	return (world.first_seed != null and bool(world.first_seed.get("_active"))) or (os != null and os.hop.flying) or bool(world.get("launching"))
+
+
+func _end_run(why: String, code: int) -> void:
+	if _ended:
+		return
+	_ended = true
+	print("[Autoplay] run over: %s at %.1f game min (exit %d)" % [why, _now() / 60.0, code])
+	write_report()
+	world.get_tree().quit(code)
+
+
+## The Assembler's build mix, set as a player would for the city in play: cleaners and haulers
+## always, a parts finder, a skimmer while the city's lakes are dirty, planters and waterers once
+## the garden is open. Paused while the rocket's job waits for Parts the line would spend.
+func _set_mix() -> void:
+	var rc: RobotChain = RobotChain.of(world)
+	if rc == null or not rc.is_built():
+		return
+	var g: Garden = world.garden
+	var garden: bool = g != null and g.unlocked()
+	var want: Dictionary = {"scoopie": 3, "haulbug": 2, "scrounger": 2, "skimmer": 2 if _lake_dirty() else 0,
+		"seedling": 2 if garden else 0, "drip": 2 if garden else 0, "multibot": 1}
+	for t: String in want:
+		if int(_mix.get(t, -1)) != int(want[t]):
+			rc.set_weight(t, int(want[t]))
+			_mix[t] = int(want[t])
+	var src: Sources = _sources()
+	var hold: bool = false
+	if src != null:
+		for id: String in src.ids():
+			if src.is_open(id) and not src.is_shut(id) and not src.can_afford(id) and not src.is_building(id):
+				hold = true
+	if hold != bool(_mix.get("_paused", false)):
+		rc.set_paused(hold)
+		_mix["_paused"] = hold
+		_event("assembler_pause" if hold else "assembler_run", {})
+
+
+## Scroungers' search area: the clean ground of the city in play that still holds buried parts,
+## nearest the base first.
+func _paint_search() -> void:
+	var fleet: Fleet = world.fleet
+	if not fleet is SphereFleet or (fleet as SphereFleet).crew.chain == null:
+		return
+	var finder: String = str((Economy.robot_cfg.get("chain", {}) as Dictionary).get("finder", ""))
+	if finder == "" or fleet.count(finder) == 0:
+		return
+	var stock: Dictionary = (fleet as SphereFleet).crew.chain.stock
+	var f: HexField = world.field
+	var o: Vector3 = _base_at()
+	var cand: Array = []
+	for h: int in _hexes():
+		if _land(h) and f.is_clean(h) and float(stock.get(h, 0.0)) > 0.0:
+			cand.append(h)
+	cand.sort_custom(func(a: int, b: int) -> bool: return f.hex_center(a).distance_to(o) < f.hex_center(b).distance_to(o))
+	_set_zone(SphereScrounge.ROLE, cand.slice(0, 24))
+
+
 # --- Report ---------------------------------------------------------------------------
 
 ## [beat] Robots that report busy work but haven't moved for three snapshots (3 game-min).
@@ -2138,11 +2607,86 @@ func _snapshot() -> void:
 		write_report()
 		SaveManager.save_game()
 		world.get_tree().quit()
+	_print_garden()
+	_print_crew_here()
+	_save_cadence()
 	print("[Autoplay] %5.1f min city=%s stage=%d share=%d%% launch=%.1f%% cubes=%d rate=%.2f/s partscur=%.0f seeds=%.0f parts=%d hexes=%d lv=%s robots=%s hub=%d task=%s goals=%d research=%s pos=%s esc=%d" % [_now() / 60.0,  # [money]
 		_city_id(), int(Restoration.measure(Restoration.MEASURE_CITY_STAGE)), int(floor(_city_share() * 100.0)), pct * 100.0,
 		int(GameState.get_currency("cubes").to_float()), GameState.income_rate(), GameState.get_currency("parts").to_float(),
 		GameState.get_currency("seeds").to_float(), GameState.parts.size(),
 		world.field.cleaned_count, str(lv), str(types), int(world.hub.level), _task, ngoals, Research.active_id(), str(world.patch.global_position.snappedf(0.1)), _escapes])
+
+
+## Where the crew works, once a minute: robots of the base Lumi works from, and by job.
+func _print_crew_here() -> void:
+	var rc: RobotChain = RobotChain.of(world)
+	if rc == null or not world.fleet is SphereFleet:
+		return
+	var hub: int = rc.work_hub()
+	var here: Dictionary = {}
+	var n_here: int = 0
+	var n_all: int = 0
+	for u: Dictionary in (world.fleet as SphereFleet).crew.robots():
+		n_all += 1
+		if int(u["hub"]) == hub:
+			n_here += 1
+			here[str(u["type"])] = int(here.get(str(u["type"]), 0)) + 1
+	print("[crew] %5.1f min %d of %d robots work for the base Lumi is at: %s" % [_now() / 60.0, n_here, n_all, JSON.stringify(here)])
+
+
+## The garden of the city in play, once a minute: clean land hexes, hexes with slots, planted
+## slots and plantable ones, hexes past a quarter planted, and the hex being planted.
+func _print_garden() -> void:
+	var g: Garden = world.garden
+	if g == null or not g.unlocked():
+		return
+	var land: int = 0
+	var with_slots: int = 0
+	var planted: int = 0
+	var room: int = 0
+	var quarter: int = 0
+	for h: int in _hexes():
+		if not _land(h) or not world.field.is_clean(h):
+			continue
+		land += 1
+		var pc: Vector2i = _hex_planted(g, h)
+		if pc.y > 0:
+			with_slots += 1
+		planted += pc.x
+		room += pc.y
+		if pc.y > 0 and pc.x * 4 >= pc.y:
+			quarter += 1
+	print("[garden] %5.1f min clean land %d, with plantable slots %d, planted %d of %d plantable, a quarter planted %d, planting hex %d, seeds %.0f, garden time %.0f s" % [
+		_now() / 60.0, land, with_slots, planted, room, quarter, _plant_hex, GameState.get_currency("seeds").to_float(), _garden_s])
+
+
+## Dev: --garden-audit (with --district-stage=<city>:1 so every land hex is clean, and
+## --orbit-hop=<site> for a city other than the first). For the city Lumi stands in: how many land
+## hexes can hold a plant at all. Slots on paving take no seed, so a hex with none of the other
+## kind stays at stage 1 for good; a city whose share of plantable hexes is under its stage share
+## can never pass stage 1. Prints one line and quits.
+func _garden_audit() -> void:
+	var g: Garden = world.garden
+	var d: Districts = _districts()
+	var city: String = d.district_of_site(_here_site()) if d != null else ""
+	var land: int = 0
+	var bare: int = 0
+	for h: int in _hexes():
+		if not _land(h):
+			continue
+		land += 1
+		g.ensure_hex(h)
+		var room: int = 0
+		for sl: int in g.hex_slots.get(h, PackedInt32Array()):
+			if g.plantable(sl):
+				room += 1
+		if room == 0:
+			bare += 1
+	var share: float = float(land - bare) / maxf(1.0, float(land))
+	_report["garden_audit"] = {"city": city, "land": land, "no_plantable_slot": bare, "plantable_share": snappedf(share, 0.001)}
+	print("[garden-audit] %s: land %d, no plantable slot %d, plantable %.0f%% (stage share %.0f%%): %s" % [city, land, bare, share * 100.0,
+		100.0 * d.stage_share, "PASS" if share >= d.stage_share else "FAIL"])
+	world.get_tree().quit(0 if share >= d.stage_share else 1)
 
 
 ## The city (district) the readout shows, and its share toward its next regrowth stage.
@@ -2227,6 +2771,11 @@ func write_report() -> void:
 	_report["district"] = str(world.get("district_name"))
 	_mastery.write(_report, Mastery.of(world))
 	_surge.write(_report)
+	_report["hops"] = _travel.hops
+	_report["board_stuck"] = _travel.board_stuck
+	_stall.write(_report, end_t)
+	_cadence.write(_report, end_t, _crew())
+	_save_cadence()
 	var path: String = ProjectSettings.globalize_path("res://screenshots/autoplay_report.json")
 	if DevHooks.get_s("save-dir", "") != "":  # [orbC] parallel staged runs keep their own report
 		path = path.replace(".json", "_%s.json" % DevHooks.get_s("save-dir", "").validate_filename())

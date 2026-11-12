@@ -719,7 +719,7 @@ msgstr ""
 "[ÇÔMÞÔŠŢ ÞŔÉŠŠ  Ļv %d\n"
 "ĥôþþéŕ %d%%  →  šééðš ~~~~~~~~~~~~]"
 
-#: plants/garden.gd:317
+#: plants/garden.gd:321
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "[À ĥéx îš ƒûļļý ŕéšţôŕéð. Šôméţĥîñĝ šmàļļ îš àļŕéàðý ļîvîñĝ îñ îţ. ~~~~~~~~~~~~~~~~~~~~]"
 
@@ -739,15 +739,15 @@ msgstr "      [ŢĤÎŔŠŢÝ ~~]"
 msgid "      next: %s"
 msgstr "      [ñéxţ: %s ~~]"
 
-#: plants/hex_levels.gd:256
+#: plants/hex_levels.gd:260
 msgid "HEX LV %d  %s"
 msgstr "[ĤÉX ĻV %d  %s ~~]"
 
-#: plants/hex_levels.gd:259
+#: plants/hex_levels.gd:263
 msgid "+%s field data"
 msgstr "[+%s ƒîéļð ðàţà ~~]"
 
-#: plants/hex_levels.gd:264
+#: plants/hex_levels.gd:268
 msgid "Hex Lv %d  %s.   %s"
 msgstr "[Ĥéx Ļv %d  %s.   %s ~~~~]"
 

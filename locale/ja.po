@@ -722,7 +722,7 @@ msgstr ""
 "コンポストプレス  Lv %d\n"
 "ホッパー %d%%  →  種"
 
-#: plants/garden.gd:317
+#: plants/garden.gd:321
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "ヘックスが完全によみがえった。もう小さな何かが住みついている。"
 
@@ -742,15 +742,15 @@ msgstr "      水不足"
 msgid "      next: %s"
 msgstr "      次：%s"
 
-#: plants/hex_levels.gd:256
+#: plants/hex_levels.gd:260
 msgid "HEX LV %d  %s"
 msgstr "ヘックス Lv %d  %s"
 
-#: plants/hex_levels.gd:259
+#: plants/hex_levels.gd:263
 msgid "+%s field data"
 msgstr "+%s フィールドデータ"
 
-#: plants/hex_levels.gd:264
+#: plants/hex_levels.gd:268
 msgid "Hex Lv %d  %s.   %s"
 msgstr "ヘックス Lv %d  %s。   %s"
 
