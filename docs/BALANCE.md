@@ -4,7 +4,7 @@
 > `--time-scale=8`. A person is assumed to take **about twice as long** (reading, looking around,
 > getting lost, choosing). That factor is a guess, **not measured** with a real player. If the first
 > planet plays too fast or too slow, change **one number**, `data/hub.json` `far_hub.pace`
-> (1.45 now): every sale pays 1/pace, so 1.25 makes every cube step about 25% longer and 0.8 about
+> (1.9 now): every sale pays 1/pace, so 1.25 makes every cube step about 25% longer and 0.8 about
 > 20% shorter. Verdance can also get its own value in `data/homeward.json` `planets[0].far_hub.pace`.
 
 ## Verdance, the round planet (v6pace)
@@ -28,7 +28,7 @@ through it; every hub, wake and rocket step shows its price and the cubes saved 
    station first asks for 4 of its hexes cleaned (Gantry Works also an outpost), then the wake.
 4. Rocket Mk II (8K) reaches 5 hubs; base level 3 (9K) sits in the gap before hub 4 Signal Heights (9.6K).
 5. Goals from `data/goals.json`: a Seedling, base level 4 (60K), hub 5 Fairground (38K), 25 plants,
-   rocket Mk III (100K), a Drip, base level 5 (250K), hub 6 Stack Works (200K, `cost_override` "4"),
+   rocket Mk III (100K), a Drip, base level 5 (150K), hub 6 Stack Works (200K, `cost_override` "4"),
    the Mk V drive (500K), fly on. Base 4 and 5 sit inside the two longest saves so each is split by
    a real income buy.
 
@@ -48,49 +48,59 @@ ever goes up; the whole-globe share (open land between towns, the far hinterland
 `SphereCells.clean_fraction()` for a later "100%" extra. `--keep-report` prints a `[keep]` line a
 game minute.
 
-### Measured (2026-11-12, release-check pass, seed 4471, `--time-scale=8`, pace 1.45)
+### Measured (2026-11-12, v8fix pass, seed 4471, `--time-scale=8`, pace 1.9)
 
-The bot now does each far station's own chain the way a player does (clean the station's hexes,
-repair its outpost, walk to the landmark and wake it), so station time is in the numbers below.
+Changes since the release-check pass: base level 5 costs 150K (was 250K, the only card save over
+15 minutes); item 75 (first robot too late): the Bot Bay costs 250 cubes (was 900) and opens after
+2 clean hexes (was 3), the first Scoopie costs 150 cubes (was 600), "Clean 3 hexes" comes after
+the first robot; no junk heaps or wrecks inside outpost ruins (the Gantry Works bot trap). With
+those at pace 1.45 the leave point fell to **96 bot min** (14.6% clean: base 5's 20-minute save
+was gone and the garden took off earlier), so `far_hub.pace` went 1.45 -> 1.9. Numbers below are
+the pace 1.9 run; the bot logged no trap in either run.
 
 | Bot min | ~Person (x2) | What | Sales x | Base | Planet % |
 |---|---|---|---|---|---|
-| 12.5 | 0:25 | Bot Bay (900 cubes, brings the first robot's 40 Parts) | 0.7 | 1 | 0 |
-| 22.6 | 0:45 | first robot (Scoopie) | 0.7 | 1 | 0.1 |
-| 25.6 | 0:51 | first hop (the first seed is planted before it) | 0.7 | 1 | 0.1 |
-| 31.4 | 1:03 | **base 2** Garden Row woken (chain: 4 hexes, 5.8 min) | 2.4 | 1 | 0.2 |
-| 45.3 | 1:31 | **base 3** Gantry Works woken (4 hexes + an outpost, 9.5 min) | 8.4 | 2 | 1.2 |
-| 45.9 | 1:32 | Haul Bug (the step comes once its plans are in) | 8.4 | 2 | 1.2 |
-| 47.2 | 1:34 | rocket Mk II (8K) | 8.4 | 2 | 1.4 |
-| 62.5 | 2:05 | **base 4** Signal Heights woken (9.2 min) | 30 | 3 | 3.6 |
-| 82.9 | 2:46 | **base 5** Fairground woken (5.6 min) | 104 | 4 | 8.1 |
-| 95.6 | 3:11 | rocket Mk III (100K) | 104 | 4 | 11.8 |
-| 116.0 | 3:52 | base level 5 (250K) | 104 | 5 | 18.5 |
-| 129.9 | 4:20 | **base 6** Stack Works woken (4.0 min) | 362 | 5 | 24.1 |
-| 130.9 | 4:22 | Mk V drive (500K), **leave point** (opens on the six stations only) | 362 | 5 | **24.6** |
+| 14.9 | 0:30 | Bot Bay (250 cubes; the card waits on the 2nd clean hex, 8.6 min) | 0.5 | 1 | 0 |
+| 15.1 | 0:30 | first robot (Scoopie, 150) | 0.5 | 1 | 0 |
+| 20.9 | 0:42 | first hop (the first seed is planted before it) | 0.5 | 1 | 0.1 |
+| 29.5 | 0:59 | **base 2** Garden Row woken (chain: 4 hexes, 8.0 min) | 1.8 | 1 | 0.2 |
+| 43.0 | 1:26 | **base 3** Gantry Works woken (4 hexes + an outpost, 11.5 min) | 6.4 | 2 | 1.4 |
+| 43.8 | 1:28 | Haul Bug, base level 3 | 6.4 | 3 | 1.4 |
+| 46.2 | 1:32 | rocket Mk II (8K) | 6.4 | 3 | 1.8 |
+| 65.8 | 2:12 | **base 4** Signal Heights woken (8.0 min) | 23 | 3 | 4.8 |
+| 73.9 | 2:28 | base level 4 (60K) | 23 | 4 | 6.5 |
+| 85.4 | 2:51 | **base 5** Fairground woken (3.5 min) | 79 | 4 | 9.3 |
+| 89.9 | 3:00 | rocket Mk III (100K) | 79 | 4 | 10.6 |
+| 101.7 | 3:23 | base level 5 (150K, an 11.8 min save) | 79 | 5 | 14.3 |
+| 116.5 | 3:53 | **base 6** Stack Works woken (2.1 min) | 276 | 5 | 20.5 |
+| 117.5 | 3:55 | Mk V drive (500K), **leave point** (opens on the six stations only) | 276 | 5 | **21.0** |
 
 (Sales x: every sale's multiplier, `sell_growth`^woken / `pace`. Planet %: the HUD's number,
-every hub region's land; the keepers cleared 1,771 cells by the end, woken towns 40-70% clean.)
+every hub region's land; the keepers cleared 1,417 cells by the end, woken towns 30-70% clean.)
 
-**Cubes per minute** between wakes: 210, 1.5K (x7.4), 3.9K (x2.5), 6.3K (x1.6), 43K (x6.8).
+**Cubes per minute** between wakes: 273, 1.7K (x6.1), 4.0K (x2.4), 6.6K (x1.6), 44K (x6.6).
 
-**Reward cadence** (`tools/cadence.py`): 79 new moments in 133 minutes (an upgrade level, a robot,
-research, a machine, a base level, a hub, a rocket tier or a card step), mean gap 1.7 min. Longest
-gaps: 9.5 min in the first hour (working Gantry Works' chain), 13.0 min at 103-116 (saving for base
-level 5). The card was never empty.
+**Reward cadence** (`tools/cadence.py`): 88 new moments in 120 minutes, mean gap 1.4 min. Over
+target: 11.5 min at 31.5-43.0 (Gantry Works' chain), 8.6 min at 6.3-14.9 (the 2nd clean hex),
+8.0 min at 21.5-29.5 (Garden Row's chain). Nothing over 12 minutes.
 
-**Card waits:** one over 15 minutes, "Upgrade the base to level 5" (250K cubes, 20.3 min). Lever:
-`data/hub.json` `levels[4].cost` to about 150K. Everything else is 12 minutes or less: Mk III 11.9,
-Gantry Works 10.1 (its chain), hub 6's save 9.9.
+**Card waits:** none over 15 minutes. Longest: hub 6's flight 12.7 (200K), Gantry Works' wake 12.2
+(its chain), base level 5 11.8, hub 4's flight 11.6.
 
-**Station chains** (O6): 4.0-9.5 bot minutes each. Making the bot do them found three things a
-player would also have met: a Ledger drone dumped junk back onto the station's freshly cleaned
-hexes every few minutes (no drops now while Lumi is at a station she hasn't woken); "clean 8 hexes"
-took 25 bot minutes with the first tools (Verdance asks for 4 now: `hub_defaults.clean_hexes`);
-and one boxed-in spot by Gantry Works' outpost (bot trap at -239.6, 1108.5, -1459.9; reported to QA).
+**First robot (item 75):** 15.1 bot min here, 15.4 and 13.6 in the pace 1.45 runs (was 22.6). The
+prices are no longer the wait: the Bot Bay and the Scoopie are bought within a minute of their
+card. What varies is the second clean hex (3.5-8.6 bot min with the first tools). Lever if it
+should come sooner: the Bot Bay after 1 clean hex (`data/workbench.json` `tiers[1].requires`, and
+"Clean 2 hexes" moved after the robot in `data/objectives.json`), which would put it at about
+8-10 bot min. Not measured.
 
-**Run to run:** the leave point measured 118 min at pace 1.3 and 131 min at 1.45 with the same data
-otherwise. Earlier passes (before the station chains were played) are in git history.
+**Station chains** (O6): 2.1-11.5 bot minutes each. The outpost trap (bot boxed in at
+-239.6, 1108.5, -1459.9 by Gantry Works' outpost 0) was a junk mound rolled under the ruin; 33 of
+37 outposts on Verdance had a heap or a wreck inside the ruin. Outposts now clear both
+(`automation/outposts.gd` `_clear_heaps`), and `--target-reach` checks it.
+
+**Run to run:** the leave point measured 118 min at pace 1.3 and 131 at 1.45 with the earlier
+data, 96 at 1.45 and 117.5 at 1.9 with this pass's. Earlier passes are in git history.
 
 ### Measuring a planet's arc
 
@@ -113,7 +123,7 @@ in `data/planets.json` (v6hubs), the leave gate in `data/homeward.json` `planets
 
 | Knob | Verdance | What it does |
 |---|---|---|
-| `far_hub.pace` | 1.45 | Whole-planet speed: every sale pays 1/pace. Start here after a playtest. |
+| `far_hub.pace` | 1.9 | Whole-planet speed: every sale pays 1/pace. Start here after a playtest. |
 | `far_hub.cost_base`, `cost_growth` | 600 x 4.0 | The hub price ladder (600, 2.4K, 9.6K, 38K; hub 6 200K by override). A bigger planet: raise `cost_base` so its numbers start where the last planet ended. |
 | `far_hub.cost_override` | hub 6: 200K | One rung of the ladder, by step number. |
 | `far_hub.sell_growth` | 3.5 | Income multiplier per woken hub. Keep it below `cost_growth`, or later hubs come faster and faster. |

@@ -10,7 +10,7 @@
   },
   "tiers": [
     {"name": "Workbench", "desc": "The repaired bench: upgrades for Lumi and things to build.", "tabs": ["patch", "build"]},
-    {"name": "Workbench Mk II: Bot Bay", "desc": "Adds a bot bay. Build helpers that keep cleaning while you work.", "tabs": ["bots"], "cost": {"cubes": 350, "parts": 20}, "requires": [["tower", 1], ["stat", "hexes_cleaned", 2]], "grants_research": ["salvage_logic"], "grants": {"parts": 40}},
+    {"name": "Workbench Mk II: Bot Bay", "desc": "Adds a bot bay. Build helpers that keep cleaning while you work.", "tabs": ["bots"], "cost": {"cubes": 250, "parts": 20}, "requires": [["tower", 1], ["stat", "hexes_cleaned", 2]], "grants_research": ["salvage_logic"], "grants": {"parts": 40}},
     {"name": "Workbench Mk III: Research Desk", "desc": "Adds a research desk. Study what you dig up to unlock machines and seeds.", "tabs": ["research"], "cost": {"cubes": 2500, "parts": 60}, "requires": [["hub_level", 2]]},
     {"name": "Workbench Mk IV: Request Board", "desc": "Adds a request board. Take on jobs for tokens and rare parts.", "tabs": ["contracts"], "cost": {"cubes": 8000, "parts": 150}, "requires": [["hub_level", 3]]}
   ],
