@@ -712,6 +712,14 @@ static func run(rt: Node, check: Callable) -> void:
 	# both, so the rocket went back to the start pad while Lumi worked in another city).
 	GameState.orbit["rocket_site"] = 0
 	GameState.orbit["rocket_owned"] = true
+	# M3-22: a city's field bench, once set up, stays set up.
+	var bench_city: String = ""
+	if so.field_benches != null:
+		for id: String in so.districts.ids():
+			if so.field_benches.rules.has_site(id):
+				bench_city = id
+				break
+		so.field_benches.rules.load_state({"set_up": [bench_city]}, true)
 	var ok: bool = SaveManager.save_game()
 	check.call("orbit_saved", true, ok)
 	check.call("orbit_save_keeps_the_rocket", "site 0 owned true", "site %s owned %s" % [str(GameState.orbit.get("rocket_site", "none")),
@@ -743,6 +751,8 @@ static func run(rt: Node, check: Callable) -> void:
 			check.call("orbit_sky_spin_within_0.05", true, absf(angle_difference(float(a[k]), float(b[k]))) <= 0.05)
 			continue
 		check.call("orbit_" + k, a[k], b[k])
+	var fb2: FieldBenchSites = (s2.orbit as SliceOrbit).field_benches
+	check.call("orbit_field_bench_kept", true, bench_city != "" and fb2 != null and fb2.rules.is_set_up(bench_city))
 	var finds2: Finds = (s2.orbit as SliceOrbit).look_finds
 	var sites2: FindSites = (s2.orbit as SliceOrbit).find_sites
 	check.call("orbit_wreck_stays_salvaged", true, finds2.is_taken(wreck_ids[0]) and sites2.junk_left(wreck_ids[0]) == 0)

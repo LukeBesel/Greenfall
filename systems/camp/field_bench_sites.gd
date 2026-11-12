@@ -9,24 +9,31 @@ extends Node3D
 ## guidance beam points), at_field_bench() (Lumi stands at a field bench, not the start one).
 ## Use: FieldBenchSites.attach(world, site_manager, districts, interactables, patch, open_fn), then
 ## rules.load_state(saved, has_key).
+## Dev: --field-bench-shot[=M] (with --orbit-hop=SITE): once Lumi is in a city whose kit stands, the
+## bench is set up and Lumi stands M m (default SHOT_M) in front of it, the camera behind her.
 
 const NODE_NAME: String = "FieldBenches"
 ## How often the models follow the sites being built and freed (s).
 const SYNC_S: float = 0.5
 ## The reach point stands this far in front of the bench (m): Lumi works at its front edge.
 const FRONT_M: float = 0.6
+const FLAG_SHOT: String = "field-bench-shot"
+const SHOT_M: float = 5.0
 
 var rules := FieldBenches.new()
 var site_manager: SiteManager
 var patch: Node3D
 ## Opens the workbench screen (scenes/slice_orbit.gd open_upgrades).
 var open_fn: Callable
+## The follow camera (dev shots only).
+var cam: SphereCam
 
 var _ia: Interactables
 var _reach: Dictionary[String, Node3D] = {}  # district id -> reach point (child of this node)
 var _models: Dictionary = {}  # district id -> model on its site prefab (freed with the site: untyped, checked with is_instance_valid)
 var _shown_ready: Dictionary[String, bool] = {}  # district id -> the model's state now
 var _sync_t: float = 0.0
+var _shot_done: bool = false
 
 
 static func attach(world: Node, p_sm: SiteManager, p_districts: Districts, p_ia: Interactables, p_patch: Node3D, p_open: Callable) -> FieldBenchSites:
@@ -60,6 +67,8 @@ func _process(delta: float) -> void:
 	if _sync_t <= 0.0:
 		_sync_t = SYNC_S
 		sync()
+		if DevHooks.has(FLAG_SHOT) and not _shot_done:
+			_dev_shot()
 
 
 # --- Queries ------------------------------------------------------------------------------------
@@ -195,3 +204,24 @@ func set_up(id: String, animate: bool) -> bool:
 func _on_district_entered(id: String) -> void:
 	if rules.offered(id):
 		EventBus.toast.emit(tr("A field bench kit waits by the landing pad. Press %s at it to set it up.") % Settings.glyph("interact"), "info")
+
+
+## Dev (--field-bench-shot): the bench of the city Lumi is in, set up, with Lumi in front of it.
+func _dev_shot() -> void:
+	var id: String = rules.districts.current_id() if rules.districts else ""
+	var r: Node3D = _reach.get(id) as Node3D
+	if id == "" or r == null or not r.visible or not (rules.offered(id) or rules.is_set_up(id)):
+		return
+	if not rules.is_set_up(id):
+		set_up(id, false)
+	_shot_done = true
+	var m: FieldBenchModel = _models.get(id) as FieldBenchModel
+	var up: Vector3 = m.global_position.normalized()
+	var out: Vector3 = m.global_basis.z.normalized()
+	out = (out - up * out.dot(up)).normalized()
+	var stand: Vector3 = m.global_position + out * DevHooks.get_f(FLAG_SHOT, SHOT_M)
+	(patch as Patch).place_on_sphere(stand + up * 0.3, -out)
+	if cam:
+		cam.reset_frame(-out)
+		cam.snap()
+	print("[field-bench] %s bench set up, Lumi %.1f m in front" % [id, DevHooks.get_f(FLAG_SHOT, SHOT_M)])

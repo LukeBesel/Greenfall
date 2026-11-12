@@ -675,6 +675,7 @@ func _build_yard_systems() -> void:
 	w.set("interactables", ia)
 	if districts:
 		field_benches = FieldBenchSites.attach(w, globe.site_manager, districts, ia, _patch_node(), open_upgrades)
+		field_benches.cam = cam
 		field_benches.rules.load_state(GameState.orbit.get(FieldBenches.SAVE_KEY, {}), GameState.orbit.has(FieldBenches.SAVE_KEY))
 	if look_finds:
 		look_finds.set_interactables(ia)
