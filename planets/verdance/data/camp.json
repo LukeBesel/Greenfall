@@ -111,5 +111,48 @@
         4.4
       ]
     }
+  },
+  "field_bench": {
+    "_doc": "[M3-22] The field bench at every city's base (systems/camp/field_benches.gd, field_bench_sites.gd, field_bench_model.gd). Once Lumi reaches a city other than the start one, a packed bench kit waits on the site's bench anchor by the landing pad; E there sets it up (cost, may be empty = free), and from then on it gives the whole workbench (upgrades, rigs, research, robot building, the Assembler's mix). Robots built there join that city's base. The start yard keeps the Locker, the yard builds and the Assembler building itself (the Build tab says so at a field bench). reach_m: how close Lumi stands to use it. looks: per district id, the bench's colours [r, g, b]: frame (legs and rails), panel (cabinet and pegboard), canopy (the tarp over it), trim (crates, bins, the stencil band); default: a city not listed.",
+    "cost": {},
+    "reach_m": 3.2,
+    "looks": {
+      "scrapyard": {
+        "frame": [0.96, 0.7, 0.08],
+        "panel": [0.16, 0.38, 0.7],
+        "canopy": [0.9, 0.4, 0.06],
+        "trim": [0.8, 0.16, 0.1]
+      },
+      "kettle_bay": {
+        "frame": [0.14, 0.28, 0.6],
+        "panel": [0.95, 0.94, 0.88],
+        "canopy": [0.86, 0.16, 0.1],
+        "trim": [0.98, 0.82, 0.1]
+      },
+      "highreach": {
+        "frame": [0.0, 0.62, 0.82],
+        "panel": [0.44, 0.22, 0.74],
+        "canopy": [0.92, 0.12, 0.56],
+        "trim": [0.98, 0.82, 0.06]
+      },
+      "lowmeadow": {
+        "frame": [0.22, 0.58, 0.34],
+        "panel": [0.98, 0.86, 0.5],
+        "canopy": [0.9, 0.22, 0.16],
+        "trim": [0.3, 0.56, 0.9]
+      },
+      "old_capital": {
+        "frame": [0.12, 0.4, 0.34],
+        "panel": [0.98, 0.88, 0.66],
+        "canopy": [0.8, 0.12, 0.12],
+        "trim": [0.86, 0.66, 0.14]
+      }
+    },
+    "default": {
+      "frame": [0.18, 0.56, 0.6],
+      "panel": [0.93, 0.89, 0.8],
+      "canopy": [0.96, 0.5, 0.14],
+      "trim": [0.98, 0.74, 0.16]
+    }
   }
 }

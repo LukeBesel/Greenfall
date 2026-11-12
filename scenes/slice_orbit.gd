@@ -48,6 +48,7 @@ var look_finds: Finds  # where the planet hides the pieces of Lumi's looks (syst
 var find_sites: FindSites  # the wrecks and buried finds standing in the world (systems/find_sites.gd)
 var sources: Sources  # each city's source job, which gates its last stage (systems/sources.gd)
 var surge: Surge  # the Bloom Core's charge from Lumi's own work and its release (systems/surge.gd)
+var field_benches: FieldBenchSites  # a workbench at every city's base Lumi reached (systems/camp/field_bench_sites.gd)
 var source_sites: SourceSites  # where the job's steps stand in the world (systems/source_sites.gd)
 var source_spread: SourceSpread  # what a running source does to the ground round it (systems/source_spread.gd)
 var ending: PlanetEnding  # the launch cinematic and the end screen
@@ -603,6 +604,8 @@ func interact_prompt(p: Patch) -> String:
 		return "shard"
 	if near_bench():
 		var camp: Camp = w.get("camp")
+		if field_benches and field_benches.at_field_bench():
+			return tr("E   Open the field bench")
 		if camp:
 			return camp.bench_prompt()
 		if _repairing:
@@ -670,6 +673,9 @@ func _build_yard_systems() -> void:
 	ia.name = "Interactables"
 	w.add_child(ia)
 	w.set("interactables", ia)
+	if districts:
+		field_benches = FieldBenchSites.attach(w, globe.site_manager, districts, ia, _patch_node(), open_upgrades)
+		field_benches.rules.load_state(GameState.orbit.get(FieldBenches.SAVE_KEY, {}), GameState.orbit.has(FieldBenches.SAVE_KEY))
 	if look_finds:
 		look_finds.set_interactables(ia)
 		find_sites = FindSites.new()  # wrecks to clear and salvage by hand, buried finds the detector pings
@@ -1054,16 +1060,32 @@ func bench_position() -> Vector3:
 	return globe.site_point(0, Vector3(-3.6, 0, 2.2))
 
 
+## Whether Lumi stands at a workbench she can use: the start yard's, or a field bench that is set up.
 func near_bench() -> bool:
 	var patch: Patch = w.get("patch")
-	return patch != null and patch.global_position.distance_to(bench_position()) < BENCH_RANGE
+	if patch == null:
+		return false
+	return patch.global_position.distance_to(bench_position()) < BENCH_RANGE or (field_benches != null and field_benches.at_field_bench())
+
+
+## The workbench nearest Lumi (field kits too: E there sets the bench up), where guidance points
+## and where robots built at the bench are set down.
+func nearest_bench_position(kits: bool = true) -> Vector3:
+	var home: Vector3 = bench_position()
+	var patch: Patch = w.get("patch")
+	if field_benches == null or patch == null:
+		return home
+	var at: Variant = field_benches.nearest(patch.global_position, kits)
+	if at is Vector3 and patch.global_position.distance_to(at) < patch.global_position.distance_to(home):
+		return at
+	return home
 
 
 func _build_upgrades() -> void:
 	var up := UpgradesScreen.new()
 	up.fleet = w.get("fleet")
 	up.hub = w.get("hub")
-	up.build_at = func() -> Vector3: return bench_position() + bench_position().normalized() * 0.2
+	up.build_at = func() -> Vector3: return nearest_bench_position(false) + nearest_bench_position(false).normalized() * 0.2
 	w.add_child(up)
 	up.closed.connect(on_modal_closed)
 	w.set("upgrades", up)
@@ -1082,7 +1104,8 @@ func open_upgrades() -> void:
 			GameState.flags["bench_hint_seen"] = true
 			EventBus.toast.emit(tr("Upgrades need a workbench. Head back to the hub."), "info")
 		return
-	if not Camp.bench_ok() and not DevHooks.has("open"):  # the first E repairs the broken bench
+	var field: bool = field_benches != null and field_benches.at_field_bench()
+	if not field and not Camp.bench_ok() and not DevHooks.has("open"):  # the first E repairs the broken bench
 		var camp: Camp = w.get("camp")
 		if camp:
 			camp.repair_bench()
@@ -1284,6 +1307,7 @@ func persist_save() -> void:
 		"finds": look_finds.save_state() if look_finds else {},
 		"sources": sources.save_state() if sources else {},
 		Surge.SAVE_KEY: surge.save_state() if surge else {},
+		FieldBenches.SAVE_KEY: field_benches.rules.save_state() if field_benches else GameState.orbit.get(FieldBenches.SAVE_KEY, {}),
 		"site_state": sites.save_state() if sites else {},  # [orbD] built hubs, levels, growth (main: renamed from "sites", which orbB uses for site geometry)
 	}
 

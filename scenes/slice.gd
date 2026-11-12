@@ -151,6 +151,11 @@ func bench_pos() -> Vector3:
 	return orbit.bench_position()
 
 
+## The workbench nearest Lumi: the start yard's or a city's field bench (kits too, unless `kits` is false).
+func nearest_bench_pos(kits: bool = true) -> Vector3:
+	return orbit.nearest_bench_position(kits)
+
+
 func near_bench() -> bool:
 	return orbit.near_bench()
 

@@ -129,3 +129,9 @@ signal surge_charged()
 signal surge_released(district_id: String, output: float, wave_rings: int)
 signal surge_ended()
 @warning_ignore_restore("unused_signal")
+
+# Field benches (systems/camp/field_benches.gd): Lumi set up the field bench at the base of city
+# `district_id` (its upgrades, rigs, research and robot building work there from now on).
+@warning_ignore_start("unused_signal")
+signal field_bench_set_up(district_id: String)
+@warning_ignore_restore("unused_signal")
