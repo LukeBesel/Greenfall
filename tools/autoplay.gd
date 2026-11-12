@@ -1945,8 +1945,9 @@ func _best_upgrade(reserve: float, leak: bool = true) -> String:
 const FINDER_ONE_IN: int = 6
 ## Planted hexes one watering robot is bought for (it walks between them).
 const HEXES_PER_DRIP: int = 8
-## Cleaners per planting robot once seeds pile up.
+## Cleaners per planting robot once seeds pile up, and planted hexes per planting robot.
 const SCOOPIES_PER_SEEDLING: int = 4
+const HEXES_PER_SEEDLING: int = 16
 ## Robots the bot builds in one visit to the Bots tab, at most.
 const ROBOTS_PER_VISIT: int = 6
 
@@ -1966,8 +1967,12 @@ func _next_robot() -> String:
 	var saving: bool = not _hub_need().is_empty() and not _hub_mats_short() and not _crew_first()
 	if AutoplayCampaign.frontier_kid(world) == "sunken_city" and _lake_dirty() and fleet.count("skimmer") < 14:
 		order.append("skimmer")  # [beat] the flooded city is skimmed, not scooped
-	# Waterers once the city has its first stage: before that its stage waits on cleaning, and a
-	# waterer's Parts buy two cleaners.
+	# Planters and waterers once the city has its first stage: before that its stage waits on
+	# cleaning, and their Parts buy cleaners. A planter for every two planted-hex waterers' worth
+	# of garden comes first: a hex's life counts every open slot, more than Lumi's patches fill.
+	var planting: bool = seeds_on and _target_stage() >= 1
+	if planting and fleet.count("seedling") * HEXES_PER_SEEDLING < maxi(1, gardens) and GameState.get_currency("seeds").to_float() > 50.0:
+		order.append("seedling")
 	if seeds_on and gardens > 0 and _drips() * HEXES_PER_DRIP < gardens and _target_stage() >= 1:
 		order.append("drip")
 	if haul == 0:
@@ -1980,7 +1985,6 @@ func _next_robot() -> String:
 	var finder: String = str((Economy.robot_cfg.get("chain", {}) as Dictionary).get("finder", ""))
 	if finder != "" and Research.robot_unlocked(finder) and fleet.count(finder) * FINDER_ONE_IN <= fleet.robot_total():
 		order.append(finder)
-	var planting: bool = seeds_on and _target_stage() >= 1  # planters too wait for the first stage
 	if planting and fleet.count("seedling") == 0 and GameState.get_currency("seeds").to_float() > 8.0:
 		order.append("seedling")
 	if planting and fleet.count("seedling") * SCOOPIES_PER_SEEDLING < scoop and GameState.get_currency("seeds").to_float() > 50.0:
