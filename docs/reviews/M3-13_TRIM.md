@@ -37,7 +37,21 @@ mastery 1 to 5 at minutes 3.0, 4.8, 8.0, 11.9 and 19.9 against six Lumi levels; 
 point mastery reaches about 25 to 30 levels against an estimated Lumi Level 20 to 25.
 The reward shows as a floating line over Lumi with a coin sound; the mastery toast is unchanged.
 
-AFTER_RUN
+Fresh bot runs, 25 game minutes, time-scale 4, no dev flags (before: base commit; after: this
+task):
+
+| | Before (Lumi Level) | After (mastery rewards) |
+|---|---|---|
+| Rewards paid | 412 cubes, 2 seeds (6 levels) | 318 cubes, 2 seeds (5 mastery levels: 23, 42, 64, 89, 100 + 2 seeds) |
+| First hex / first robot | 87 s / 9.5 min | 93 s / 10.6 min |
+| Purchases / longest wait in the first 20 min | 38 / 151 s | 35 / 140 s |
+| Cubes earned | 5,072 | 4,609 |
+| Script errors | 0 | 0 |
+
+Per step the pay is the same; in 25 minutes mastery reaches one step fewer than Lumi Level did
+(the sixth Lumi level, 140 cubes at minute 22, has no counterpart yet). The first-robot difference
+is inside the run-to-run spread M3-09 measured (7.6 to 13.8 minutes on one build), so one pair of
+runs cannot show a pacing change; the balance pass (M3-12) should look at it with its own runs.
 
 ## World events: what was cut
 

@@ -107,8 +107,8 @@ func test_migrate_v1_save_to_three_currencies() -> void:
 	assert_almost_eq(seeds, 7.0, 0.01, "compost is not turned into seeds")
 	assert_almost_eq(float(m["flags"]["press_hopper"]), 12.0, 0.01, "compost goes into the press hopper")
 	assert_eq(int(m["flags"]["builder"]["fragments"]), 0)
-	assert_eq(str(m["flags"]["contracts"]["slots"][0]["state"]), "wait", "the retired events contract is cleared")
-	assert_eq(int(m["flags"]["contracts"]["done_total"]), 3, "finished contracts count toward the Requests track")
+	assert_eq(str(m["flags"]["contracts"]["slots"][0]["state"]), "active", "the parked Requests board's state is kept as it was (task M3-13)")
+	assert_eq(int(m["flags"]["contracts"]["done_total"]), 3)
 	GameState.from_dict(m)
 	assert_almost_eq(_f("parts"), parts, 0.01)
 	assert_almost_eq(Composter.hopper(), 12.0, 0.01)
@@ -124,9 +124,9 @@ func test_migrate_is_idempotent_for_v2() -> void:
 func test_data_files_use_only_the_three() -> void:
 	var legacy: Dictionary = Currencies.cfg()["legacy"]
 	var bad: Array[String] = []
-	for f: String in ["rockets", "decor", "designs", "robot_parts", "parts"]:
+	for f: String in ["rockets", "designs", "robot_parts", "parts"]:
 		_scan(Economy.read_json("res://data/%s.json" % f), f, legacy, bad)
-	for t: String in ["hub", "stations", "outposts", "ledger", "goals", "eggs", "postgame", "regrowth", "events", "upgrades", "research", "robot_level"]:
+	for t: String in ["hub", "stations", "outposts", "ledger", "goals", "eggs", "postgame", "regrowth", "events", "upgrades", "research", "pollution_kinds"]:
 		assert_true(Planets.current().has_table(t), "the planet has a '%s' table" % t)
 		_scan(Economy.planet_table(t), t, legacy, bad)
 	assert_eq(bad, [] as Array[String], "legacy currency keys in data: %s" % ", ".join(bad))
