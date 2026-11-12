@@ -10,7 +10,8 @@ extends Node3D
 ## Use: FieldBenchSites.attach(world, site_manager, districts, interactables, patch, open_fn), then
 ## rules.load_state(saved, has_key).
 ## Dev: --field-bench-shot[=M] (with --orbit-hop=SITE): once Lumi is in a city whose kit stands, the
-## bench is set up and Lumi stands M m (default SHOT_M) in front of it, the camera behind her.
+## bench is set up and Lumi stands M m (default SHOT_M) in front of it and a little to the side,
+## the camera behind her.
 
 const NODE_NAME: String = "FieldBenches"
 ## How often the models follow the sites being built and freed (s).
@@ -18,7 +19,9 @@ const SYNC_S: float = 0.5
 ## The reach point stands this far in front of the bench (m): Lumi works at its front edge.
 const FRONT_M: float = 0.6
 const FLAG_SHOT: String = "field-bench-shot"
-const SHOT_M: float = 5.0
+const SHOT_M: float = 2.4
+## Lumi stands this far to the side in a dev shot, so she does not hide the bench.
+const SHOT_SIDE_M: float = 1.6
 
 var rules := FieldBenches.new()
 var site_manager: SiteManager
@@ -34,6 +37,8 @@ var _models: Dictionary = {}  # district id -> model on its site prefab (freed w
 var _shown_ready: Dictionary[String, bool] = {}  # district id -> the model's state now
 var _sync_t: float = 0.0
 var _shot_done: bool = false
+var _shot_settle: int = 0
+var _world: Node
 
 
 static func attach(world: Node, p_sm: SiteManager, p_districts: Districts, p_ia: Interactables, p_patch: Node3D, p_open: Callable) -> FieldBenchSites:
@@ -43,6 +48,7 @@ static func attach(world: Node, p_sm: SiteManager, p_districts: Districts, p_ia:
 	fb.patch = p_patch
 	fb.open_fn = p_open
 	fb._ia = p_ia
+	fb._world = world
 	fb.rules.setup(p_districts)
 	world.add_child(fb)
 	return fb
@@ -210,7 +216,12 @@ func _on_district_entered(id: String) -> void:
 func _dev_shot() -> void:
 	var id: String = rules.districts.current_id() if rules.districts else ""
 	var r: Node3D = _reach.get(id) as Node3D
-	if id == "" or r == null or not r.visible or not (rules.offered(id) or rules.is_set_up(id)):
+	var os: OrbitSites = OrbitSites.of(_world)
+	if id == "" or r == null or not r.visible or not (rules.offered(id) or rules.is_set_up(id)) or (os != null and os.hop.flying):
+		_shot_settle = 0
+		return
+	_shot_settle += 1
+	if _shot_settle < 4:  # two seconds on the ground after the landing
 		return
 	if not rules.is_set_up(id):
 		set_up(id, false)
@@ -219,9 +230,12 @@ func _dev_shot() -> void:
 	var up: Vector3 = m.global_position.normalized()
 	var out: Vector3 = m.global_basis.z.normalized()
 	out = (out - up * out.dot(up)).normalized()
-	var stand: Vector3 = m.global_position + out * DevHooks.get_f(FLAG_SHOT, SHOT_M)
-	(patch as Patch).place_on_sphere(stand + up * 0.3, -out)
+	var side: Vector3 = up.cross(out).normalized()
+	var stand: Vector3 = m.global_position + out * DevHooks.get_f(FLAG_SHOT, SHOT_M) + side * SHOT_SIDE_M
+	var face: Vector3 = m.global_position - stand
+	face = (face - up * face.dot(up)).normalized()
+	(patch as Patch).place_on_sphere(stand + up * 0.3, face)
 	if cam:
-		cam.reset_frame(-out)
+		cam.reset_frame(face)
 		cam.snap()
 	print("[field-bench] %s bench set up, Lumi %.1f m in front" % [id, DevHooks.get_f(FLAG_SHOT, SHOT_M)])

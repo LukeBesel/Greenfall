@@ -11,6 +11,8 @@ const SIZE := Vector3(1.7, 0.95, 0.72)
 ## The bench's solid box (Lumi and robots stop at it).
 const SOLID := Vector3(1.8, 1.0, 0.8)
 const KIT_SOLID := Vector3(1.2, 0.8, 0.8)
+## The tarp slopes down toward the working side (degrees about X; positive lowers +Z).
+const TARP_TILT_DEG: float = 13.0
 
 var look: Dictionary[String, Color] = {}
 var _bench: Node3D
@@ -132,11 +134,13 @@ func _canopy(k: YardArt.Kit, frame: Color, canopy: Color, hx: float, hz: float) 
 		k.cyl(0.035, 2.45, Vector3(x, 1.225, back_z), frame, Vector3.ZERO, 0.008, 10)
 		k.cyl(0.07, 0.05, Vector3(x, 0.025, back_z), YardArt.GUNMETAL, Vector3.ZERO, 0.01, 10)
 		k.pipe(Vector3(x, 2.38, back_z), Vector3(x, 2.05, hz + 0.45), 0.022, frame, false)
-	k.box(Vector3(SIZE.x + 0.4, 0.025, 1.45), Vector3(0, 2.24, (back_z + hz + 0.45) * 0.5), canopy, Vector3(-13, 0, 0), 0.008)
-	k.box(Vector3(SIZE.x + 0.42, 0.06, 0.035), Vector3(0, 2.06, hz + 0.47), canopy.darkened(0.2), Vector3(-13, 0, 0), 0.01)
-	for i: int in 5:
-		var x2: float = lerpf(-hx - 0.1, hx + 0.1, float(i) / 4.0)
-		k.box(Vector3(0.05, 0.028, 1.44), Vector3(x2, 2.25, (back_z + hz + 0.45) * 0.5), canopy.lightened(0.18), Vector3(-13, 0, 0), 0.006)
+	var mid_z: float = (back_z + hz + 0.45) * 0.5
+	k.push(ProcMesh.xf(Vector3(0, 2.25, mid_z), Vector3(TARP_TILT_DEG, 0, 0)))
+	k.box(Vector3(SIZE.x + 0.4, 0.04, 1.6), Vector3.ZERO, canopy, Vector3.ZERO, 0.01)
+	for i: int in 4:  # sewn seams, a shade lighter
+		k.box(Vector3(0.06, 0.044, 1.58), Vector3(lerpf(-hx, hx, float(i) / 3.0), 0.0, 0.0), canopy.lightened(0.2), Vector3.ZERO, 0.006)
+	k.box(Vector3(SIZE.x + 0.42, 0.14, 0.04), Vector3(0, -0.06, 0.8), canopy.darkened(0.15), Vector3.ZERO, 0.01)  # the hanging front flap
+	k.pop()
 	k.cable([Vector3(-hx - 0.05, 2.1, hz + 0.45), Vector3(-hx - 0.3, 1.0, hz + 0.7), Vector3(-hx - 0.45, 0.02, hz + 0.95)], 0.008, YardArt.CREAM)
 	k.cable([Vector3(hx + 0.05, 2.1, hz + 0.45), Vector3(hx + 0.3, 1.0, hz + 0.7), Vector3(hx + 0.45, 0.02, hz + 0.95)], 0.008, YardArt.CREAM)
 
