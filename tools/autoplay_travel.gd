@@ -10,8 +10,10 @@ extends RefCounted
 ##      last stage, and only Lumi can do it);
 ##   2. else the newest open city until it reaches the stage that opens the next one;
 ##   3. else (every city open) the earliest city still below the last stage.
-## The workbench stands only in the start yard, so the bot also flies home (site 0) for a tool, the
-## Assembler or a round of shopping (see home_wanted), then back.
+## Every city Lumi has reached has a field bench at its base (systems/camp/field_benches.gd), so the
+## bot shops, researches and builds robots where it works; it flies home (site 0) only for what
+## stays in the start yard: building the Assembler (see home_wanted). Without a field bench in the
+## city (a planet that has none) it still flies home for a tool or a round of shopping.
 
 ## The city stage that opens the next city (planets/verdance/data/districts.json: unlock stage).
 const OPEN_STAGE_FALLBACK: int = 4
@@ -30,6 +32,10 @@ var hops: int = 0
 ## Walks to the rocket given up on (WALK_GIVE_UP_S): the bot boarded from where it stood.
 var board_stuck: int = 0
 var why: String = ""
+## When the planner first wanted to fly while the rocket's cells were still charging (-1: not waiting).
+var cells_wait_from: float = -1.0
+## The longest such wait (game seconds): the time a player stands by a rocket that is not ready.
+var cells_wait_max_s: float = 0.0
 
 
 ## The city (district id) Lumi should be in now, or "" when the planet has no districts.
@@ -74,11 +80,14 @@ static func open_stage(d: Districts, id: String) -> int:
 	return Districts.MAX_STAGE
 
 
-## Whether Lumi, away from the start yard, should fly home now: a tool for an open city waits at
-## the bench, the Assembler is on offer and paid for, or there is shopping worth the trip and the
-## last trip home was long enough ago. Sets `why`.
-func home_wanted(tool_waiting: bool, assembler_ready: bool, shop_wanted: bool, now: float) -> bool:
-	if tool_waiting:
+## Whether Lumi, away from the start yard, should fly home now: the Assembler is on offer and paid
+## for (it is built only in the start yard), or, with no field bench in this city, a tool for an
+## open city waits at the bench or there is shopping worth the trip and the last trip home was long
+## enough ago. Sets `why`.
+func home_wanted(tool_waiting: bool, assembler_ready: bool, shop_wanted: bool, now: float, field_bench: bool = false) -> bool:
+	if field_bench:
+		why = "the Assembler is on offer" if assembler_ready else ""
+	elif tool_waiting:
 		why = "a tool waits at the bench"
 	elif assembler_ready:
 		why = "the Assembler is on offer"
@@ -87,6 +96,16 @@ func home_wanted(tool_waiting: bool, assembler_ready: bool, shop_wanted: bool, n
 	else:
 		why = ""
 	return why != ""
+
+
+## Tracks waits on the rocket's cells: `waiting` while the planner points elsewhere and the cells
+## are not full yet.
+func note_cells(waiting: bool, now: float) -> void:
+	if waiting and cells_wait_from < 0.0:
+		cells_wait_from = now
+	elif not waiting and cells_wait_from >= 0.0:
+		cells_wait_max_s = maxf(cells_wait_max_s, now - cells_wait_from)
+		cells_wait_from = -1.0
 
 
 ## The site Lumi should stand at now: home (0) during a home trip, else the target city's site.

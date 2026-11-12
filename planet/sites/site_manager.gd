@@ -411,9 +411,9 @@ func set_level(i: int, l: int) -> void:
 	if prefabs[i] != null:
 		(prefabs[i] as SitePrefab).set_stage(levels[i])
 		_reprobe(i, prefabs[i])
-	var sp: StreetPower = power.get(i) as StreetPower
-	if sp and is_instance_valid(sp):
-		sp.set_hub_level(levels[i], true)
+	var v: Variant = power.get(i)
+	if is_instance_valid(v):  # freed with its site while Lumi is away (a base level bought at a field bench)
+		(v as StreetPower).set_hub_level(levels[i], true)
 
 
 ## Street power per built site (planet/sites/site_power.gd): hub index -> StreetPower.
@@ -638,6 +638,6 @@ static func _seg_hits_rect(a: Vector2, b: Vector2, r: Rect2) -> bool:
 
 
 func _on_hub0_level(l: int) -> void:
-	var sp: StreetPower = power.get(0) as StreetPower
-	if sp and is_instance_valid(sp):
-		sp.set_hub_level(l, true)
+	var v: Variant = power.get(0)
+	if is_instance_valid(v):  # freed with the start site while Lumi is away
+		(v as StreetPower).set_hub_level(l, true)

@@ -217,3 +217,22 @@ func test_idle_robots_or_another_city_do_not_charge_the_cells() -> void:
 	here[0] = true
 	rc.step(1.0)
 	assert_lt(RocketTiers.recharge_left(), 30.0, "back in the rocket's city, the window still counts")
+
+
+# --- The bot ----------------------------------------------------------------------------------
+
+func test_the_bot_flies_home_only_for_the_assembler_where_a_field_bench_stands() -> void:
+	var t := AutoplayTravel.new()
+	assert_false(t.home_wanted(true, false, true, 1.0e6, true), "a tool and shopping are at the field bench")
+	assert_true(t.home_wanted(false, true, false, 0.0, true), "the Assembler is built in the start yard")
+	assert_true(t.home_wanted(true, false, false, 0.0, false), "no field bench: the tool still means a trip home")
+
+
+func test_the_bot_counts_its_longest_wait_on_the_cells() -> void:
+	var t := AutoplayTravel.new()
+	t.note_cells(true, 10.0)
+	t.note_cells(true, 20.0)
+	t.note_cells(false, 34.0)
+	t.note_cells(true, 50.0)
+	t.note_cells(false, 55.0)
+	assert_almost_eq(t.cells_wait_max_s, 24.0, 0.001)

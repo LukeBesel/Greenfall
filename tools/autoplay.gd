@@ -604,12 +604,36 @@ func _haulers() -> int:
 
 
 func _at_base(p: Patch) -> bool:
+	if _away():  # a field bench is used from its front, as a player stands at it
+		return OrbitUp.ground_dist(p.global_position, _bench_at()) < FieldBenches.reach_m()
 	return p.global_position.distance_to(_bench_at()) < AT_BASE_R
 
 
-## The workbench: the start site's bench anchor.
+## The workbench: the nearest one (the start yard's, or the field bench or its kit in this city).
 func _bench_at() -> Vector3:
-	return world.bench_pos()
+	return world.nearest_bench_pos() if world.has_method("nearest_bench_pos") else world.bench_pos()
+
+
+## The city Lumi works in has a field bench or a kit waiting (its district id, else "").
+func _field_bench_here() -> String:
+	var fb: FieldBenchSites = FieldBenchSites.of(world)
+	var d: Districts = _districts()
+	if fb == null or d == null or not _away():
+		return ""
+	var id: String = d.district_of_site(_here_site())
+	return id if id != "" and (fb.rules.is_set_up(id) or fb.rules.offered(id)) else ""
+
+
+## At the city's kit: set the bench up, as a player presses E there.
+func _set_up_field_bench() -> void:
+	var fb: FieldBenchSites = FieldBenchSites.of(world)
+	var id: String = _field_bench_here()
+	if fb == null or id == "" or fb.rules.is_set_up(id):
+		return
+	if fb.set_up(id, true):
+		_progress()
+		_mark("field_bench_%s_s" % id)
+		_event("field_bench", {"city": id})
 
 
 ## [v4bots] Where the can refills: on hub ground only (Patch._handle_tools reads hex_hub). On the
@@ -1397,13 +1421,17 @@ func _manage(p: Patch) -> void:
 	_set_mix()
 	_paint_search()
 	if _away():
-		_bench_trip = false  # the only workbench is in the start yard: a home trip (_do_travel) goes there
 		_want_home()
-		return
+		if _field_bench_here() == "" or _travel.home_trip:
+			_bench_trip = false  # no bench here (or the Assembler waits at home): a home trip (_do_travel) goes there
+			return
 	var want: Dictionary = _shopping_list()
+	var fb: FieldBenchSites = FieldBenchSites.of(world)
+	var kit: bool = fb != null and _away() and fb.rules.offered(_field_bench_here())
 	if not _at_base(p):
-		# Head back when something worth the walk is affordable (or the trip home was for the bench).
-		if (want.get("trip", false) or _travel.home_trip) and _now() - _last_bench_t > 20.0:
+		# Head back when something worth the walk is affordable (or the trip home was for the bench,
+		# or a field bench kit waits to be set up).
+		if (want.get("trip", false) or _travel.home_trip or kit) and _now() - _last_bench_t > 20.0:
 			_bench_trip = true
 		return
 	_last_bench_t = _now()
@@ -1411,8 +1439,9 @@ func _manage(p: Patch) -> void:
 		_travel.shopped(_now())
 		_event("shopped", {})
 	var cp: Camp = Camp.of(world)  # [v3clear] at the bench a person repairs it first (the checklist's step 1)
-	if cp and not Camp.bench_ok():
+	if cp and not Camp.bench_ok() and not _away():
 		cp.repair_now()
+	_set_up_field_bench()
 	_shop(want)
 
 
@@ -1483,7 +1512,7 @@ func _shopping_list() -> Dictionary:
 		out["trip"] = true  # a city's tool is waiting at the bench: without it that city's waste stays shut
 	if _research_pick() != "":
 		out["trip"] = true
-	var st: Stations = Stations.of(world)
+	var st: Stations = Stations.of(world) if not _away() else null  # bought at the start bench only
 	if st:
 		for id: String in ["conveyor", "auto_baler", "recycler"]:
 			if st.block_reason(id) == "":
@@ -1543,13 +1572,15 @@ func _shop(want: Dictionary) -> void:
 		if rigs.fit(tool_id):
 			_event("rig_fit", {"module": tool_id, "slot": rigs.slot_of(tool_id)})
 	# A build a goal on show asks for, before the cubes go to upgrades.
-	_build_for_goals()
+	if not _away():
+		_build_for_goals()
 	# 0) [onboard] The Signal Tower: the first tier right away (WREN), later tiers with the base level.
 	# When the card asks for it, it is bought the moment it is paid for; otherwise with cubes to spare.
 	var tower: SignalTower = world.get_node_or_null("SignalTower") as SignalTower
 	var obj_now: Objectives = world.get("objectives") as Objectives
 	var tower_asked: bool = obj_now != null and str(obj_now.current().get("type", "")) == "tower"
-	if tower and SignalTower.tier() < mini(SignalTower.max_tier(), maxi(1, int(GameState.world.get("hub_level", 1)))) \
+	var yard: bool = not _away()  # the yard's builds (tower, stations, scrubbers, press) are bought at the start bench
+	if yard and tower and SignalTower.tier() < mini(SignalTower.max_tier(), maxi(1, int(GameState.world.get("hub_level", 1)))) \
 			and GameState.can_afford_all(SignalTower.next_cost(), 1.0 if tower_asked else 1.5) and (tower_asked or _keeps_robot_parts(SignalTower.next_cost(), want)):
 		GameState.spend_all(SignalTower.next_cost())
 		tower.raise()
@@ -1590,7 +1621,7 @@ func _shop(want: Dictionary) -> void:
 	if pu != "":
 		Economy.buy_upgrade(pu, 1)
 	# 2b2) [v4calm] Repair Glim (the workbench Build entry) as soon as it's listed and paid for.
-	if HubBuilds.listed(world, GlimDirector.BUILD_ID) and str(HubBuilds.entry(world, GlimDirector.BUILD_ID)["reason"]) == "" \
+	if yard and HubBuilds.listed(world, GlimDirector.BUILD_ID) and str(HubBuilds.entry(world, GlimDirector.BUILD_ID)["reason"]) == "" \
 			and HubBuilds.build(world, GlimDirector.BUILD_ID):
 		_event("build", {"id": "glim"})
 		_mark("glim_repair_s")
@@ -1617,7 +1648,7 @@ func _shop(want: Dictionary) -> void:
 		built_n += 1
 		robot = _next_robot()
 	# The Assembler as soon as it is on offer: from then on the line builds the crew.
-	if RobotChain.of(world) != null and RobotChain.of(world).listed() and HubBuilds.build(world, RobotChain.BUILD_ID):
+	if yard and RobotChain.of(world) != null and RobotChain.of(world).listed() and HubBuilds.build(world, RobotChain.BUILD_ID):
 		_progress()
 		_event("assembler", {})
 	# A bigger crew before a better one: Parts go to tiers and crew upgrades only when the crew is
@@ -1646,7 +1677,7 @@ func _shop(want: Dictionary) -> void:
 	if not (obj and str(obj.current().get("type", "")) == "bench" and BenchTiers.block_reason(world) == ""):
 		world.hub.upgrade()
 	# 5) Stations once researched.
-	var st: Stations = Stations.of(world)
+	var st: Stations = Stations.of(world) if yard else null
 	if st:
 		for id: String in ["conveyor", "recycler", "auto_baler"]:
 			var force: bool = id == "recycler" or (id == "conveyor" and (Research.has("recycler") or Research.is_active("recycler")))
@@ -1690,16 +1721,16 @@ func _shop(want: Dictionary) -> void:
 	var sd: Dictionary = world.hub.scrubber_def()
 	var sc: float = float(sd.get("cost", {}).get("cubes", 1e9)) * world.hub.scrubber_cost_mult()
 	var air_goal: bool = _stat_goal("air_filtered") and world.hub.scrubbers == 0
-	if world.hub.level >= int(sd.get("requires_level", 2)) and (air_goal or GameState.get_currency("cubes").to_float() > sc * 3.0 + reserve):
+	if yard and world.hub.level >= int(sd.get("requires_level", 2)) and (air_goal or GameState.get_currency("cubes").to_float() > sc * 3.0 + reserve):
 		if world.hub.build_scrubber():
 			_progress()
 			_event("scrubber", {"n": world.hub.scrubbers})
 	# 9) Compost press when seeds run short. [camp2] It is a Hub build now: build it once offered.
-	if HubBuilds.listed(world, "composter") and str(HubBuilds.entry(world, "composter")["reason"]) == "":
+	if yard and HubBuilds.listed(world, "composter") and str(HubBuilds.entry(world, "composter")["reason"]) == "":
 		if HubBuilds.build(world, "composter"):
 			_event("build", {"id": "composter"})
 	var cp: Composter = world.get("composter")
-	if cp and cp.active() and cp.level < cp.max_level() and GameState.get_currency("seeds").to_float() < 10.0:
+	if yard and cp and cp.active() and cp.level < cp.max_level() and GameState.get_currency("seeds").to_float() < 10.0:
 		if cp.upgrade_cost().to_float() <= GameState.get_currency("cubes").to_float() * 0.25:
 			cp.interact()
 			_progress()
@@ -2394,6 +2425,7 @@ func _do_travel(p: Patch) -> bool:
 		return true
 	var here: int = os.rocket_site()
 	var want: int = _travel.want_site(d, _sources())
+	_travel.note_cells(want >= 0 and want != here and os.site_offered(want) and RocketTiers.recharge_left() > 0.0, _now())
 	if want < 0 or want == here or not os.site_offered(want) or os.hop_blocker() != "" or p._cubing > 0.0 or _now() < _hop_retry_at:
 		return false
 	if here == 0 and _now() - _last_bench_t > 60.0 and (not _rig_tools().is_empty() or bool(_shopping_list().get("trip", false))):
@@ -2443,7 +2475,7 @@ func _want_home() -> void:
 		return
 	var asm: RobotChain = RobotChain.of(world)
 	var asm_ready: bool = asm != null and asm.listed() and asm.block_reason() == ""
-	if _travel.home_wanted(not _rig_tools().is_empty(), asm_ready, bool(_shopping_list().get("trip", false)), _now()):
+	if _travel.home_wanted(not _rig_tools().is_empty(), asm_ready, bool(_shopping_list().get("trip", false)), _now(), _field_bench_here() != ""):
 		_travel.home_trip = true
 		_event("home_trip", {"why": _travel.why})
 
@@ -2773,6 +2805,9 @@ func write_report() -> void:
 	_surge.write(_report)
 	_report["hops"] = _travel.hops
 	_report["board_stuck"] = _travel.board_stuck
+	_report["hop_cells_wait_max_s"] = snappedf(_travel.cells_wait_max_s, 0.1)
+	var fbs: FieldBenchSites = FieldBenchSites.of(world)
+	_report["field_benches"] = fbs.rules.set_up_ids() if fbs != null else []
 	_stall.write(_report, end_t)
 	_cadence.write(_report, end_t, _crew())
 	_save_cadence()
