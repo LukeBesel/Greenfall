@@ -72,6 +72,7 @@ func set_paused(on: bool) -> void:
 	else:
 		Engine.time_scale = _prev_scale if _prev_scale > 0.0 else 1.0
 	_card.visible = on
+	Audio.hold_world("story_pause", on)  # [v8pause] owner item 78: the cinematic's sounds hold too
 
 
 func _exit_tree() -> void:

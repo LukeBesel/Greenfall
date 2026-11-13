@@ -231,8 +231,14 @@ func play(sound: String, pitch: float = 1.0, volume_db: float = 0.0, jitter: flo
 				sound_log.call("dropped", key)
 			return
 		_last_play[key] = game_t
+	# [v8pause] Don't steal a sound held by the pause (it resumes on unpause) unless all are held.
+	for i: int in _players.size():
+		if not _players[_next_player].stream_paused:
+			break
+		_next_player = (_next_player + 1) % _players.size()
 	var p: AudioStreamPlayer = _players[_next_player]
 	_next_player = (_next_player + 1) % _players.size()
+	p.stream_paused = false
 	p.stream = list[_rng.randi() % list.size()]
 	p.pitch_scale = maxf(0.05, pitch * (1.0 + _rng.randf_range(-jitter, jitter)))
 	p.volume_db = volume_db + trim
@@ -285,7 +291,7 @@ func loop(sound: String, level: float, pitch: float = 1.0) -> void:
 		_loop_players[sound] = p
 	AudioVol.set_db(p, linear_to_db(level) - 22.0)  # [qafix] crash fix: loops are re-levelled every frame
 	p.pitch_scale = pitch
-	if not p.playing:
+	if not p.playing and not holds(p):  # [v8pause] a paused loop stays paused
 		p.play()
 
 
@@ -493,6 +499,7 @@ func music_sting(sting_name: String) -> void:
 
 
 func _process(delta: float) -> void:
+	_sync_world_pause()  # [v8pause]
 	game_t += delta
 	if not _music:
 		return
@@ -510,6 +517,71 @@ func _process(delta: float) -> void:
 	if want != _duck:
 		_duck = move_toward(_duck, want, dt / maxf(0.01, SoundCfg.duck("attack_s", DUCK_ATTACK_S) if want > _duck else SoundCfg.duck("release_s", DUCK_RELEASE_S)))
 		apply_volumes()
+
+
+# --- [v8pause] Pause: the world goes quiet ------------------------------------------
+## Owner item 78: "when i pause there is still sound coming out of game for the animation". This
+## autoload (and the ambience beds, the rocket...) runs with PROCESS_MODE_ALWAYS, so Godot's own
+## pause never paused its players: one-shots rang out, the beam hum and the ambience beds and
+## their birds kept going, and a story cinematic's pause (StoryPause: Engine.time_scale = 0, the
+## tree is not paused) paused no sound at all. Now, while the tree is paused or a hold is set
+## (hold_world), every playing player on a world bus (anything but PAUSE_KEEP_BUSES) anywhere in
+## the tree is stream-paused, and resumes where it was on unpause. Players that start while paused
+## (menu feedback) play. Music and songs keep their own design (they play on in the pause menu;
+## a paused cinematic holds its song, TunesDirector.set_paused).
+const PAUSE_KEEP_BUSES: Array[String] = ["UI", "Music", "Songs"]
+var _world_holds: Dictionary = {}  # owner id -> true
+var _world_paused: bool = false
+var _held: Array[WeakRef] = []
+
+
+## Holds the world's sound paused for `owner_id` (StoryPause) until released.
+func hold_world(owner_id: String, on: bool) -> void:
+	if on:
+		_world_holds[owner_id] = true
+	else:
+		_world_holds.erase(owner_id)
+	_sync_world_pause()
+
+
+func is_world_paused() -> bool:
+	return _world_paused
+
+
+## True when `p` is a world player kept quiet by the pause: callers must not play() it then.
+func holds(p: Node) -> bool:
+	return _world_paused and not str(p.get("bus")) in PAUSE_KEEP_BUSES
+
+
+func _sync_world_pause() -> void:
+	var want: bool = (is_inside_tree() and get_tree().paused) or not _world_holds.is_empty()
+	if want == _world_paused:
+		return
+	_world_paused = want
+	if want:
+		_held.clear()
+		for p: Node in world_players(get_tree().root):
+			if bool(p.get("playing")):
+				p.set("stream_paused", true)
+				_held.append(weakref(p))
+	else:
+		for w: WeakRef in _held:
+			var p: Node = w.get_ref() as Node
+			if p != null and is_instance_valid(p):
+				p.set("stream_paused", false)
+		_held.clear()
+
+
+## Every AudioStreamPlayer / 2D / 3D under `root` on a world bus (not UI, music or songs).
+static func world_players(root: Node) -> Array[Node]:
+	var out: Array[Node] = []
+	var stack: Array[Node] = [root]
+	while not stack.is_empty():
+		var n: Node = stack.pop_back()
+		if (n is AudioStreamPlayer or n is AudioStreamPlayer3D or n is AudioStreamPlayer2D) and not str(n.get("bus")) in PAUSE_KEEP_BUSES:
+			out.append(n)
+		stack.append_array(n.get_children())
+	return out
 
 
 # --- Synthesis ----------------------------------------------------------------

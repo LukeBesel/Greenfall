@@ -2362,7 +2362,7 @@ func _ambience(delta: float) -> void:
 	var want: float = _night * clampf(_green_share * 2.5, 0.0, 1.0)
 	_cricket_vol = move_toward(_cricket_vol, want, delta * 0.2)
 	if _cricket_vol > 0.01:
-		if not _crickets.playing:
+		if not _crickets.playing and not Audio.holds(_crickets):  # [v8pause]
 			_crickets.play()
 		AudioVol.set_db(_crickets, linear_to_db(_cricket_vol) - 8.0)  # [qafix] crash fix
 	elif _crickets.playing:

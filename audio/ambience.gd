@@ -145,6 +145,8 @@ func _ensure_shot(snd: String) -> void:
 
 
 func _process(delta: float) -> void:
+	if Audio.is_world_paused():  # [v8pause] runs while paused (PROCESS_MODE_ALWAYS): no fades, no birds
+		return
 	var dt: float = minf(delta, 0.25)
 	var gone: Array[String] = []
 	for lid: String in _loops:
