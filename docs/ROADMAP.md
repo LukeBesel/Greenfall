@@ -14,6 +14,7 @@ The round world is the game, and the work is on its first planet, Verdance. The 
 - **Hexes:** a hex counts as clean at 95% and the rest is swept away. The first hexes hold no large items.
 - **Workbench:** tiers unlock the tabs (Bot Bay, Research Desk, Request Board). Rows keep a fixed order, a click shows details, and locked rows say what unlocks them.
 - **Robots:** the Scoopie comes first. Haul Bug and Skimmer plans arrive later by themselves. Haulers take Lumi's bales. The Command view works on a controller.
+- **Story order (v8bot, item 76):** clean the glowing hex, Bot Bay, first robot, "Clean 2 hexes" (WREN: "Your robot cleans on its own."), "Clean 3 hexes", the first seed. There is no "show your robot where to clean" step and no zone goal: every robot type works on its own around its hub (nearest work first, robots spread over different hexes). The Command view (B) and zone painting stay as an optional feature the game never asks for; the first-minutes key strip leaves B out (the full list keeps it). The autoplay paints zones only with `--autoplay-zones`. Old saves on the zone step move on to "Clean 2 hexes" (`Objectives._drop_zone_step`, flag `objectives_v3`).
 - **Growing and water:** plants are visible (sizes, soil, thirst). The first seed has a beacon. Hover Jets are needed to cross lakes.
 - **Glim:** a story build, the lantern bot who held on to the pod.
 - **Reach:** every collectible and objective target stands on reachable ground (`--target-reach`).
@@ -1072,7 +1073,7 @@ Details and numbers in docs/PERFORMANCE.md (perf passes 6-8).
 
 ## 2026-11-11: v6crew (robots as the heart of the mid-game on Verdance)
 - **A robot belongs to one hub** (`u["hub"]`, the hub it is built at: `SphereCrew.nearest_hub`). It cleans that hub's region nearest dirty first, its Haul Bugs fetch only that region's bales and unload at that hub's drop point (`SphereCrew.depot_points[hub_cell]`, default 5 m off the pad; v6hubs can set the exact spot). Painted zones belong to the hub they lie in. `SphereCrew.transfer(u, hub)` / `transfer_some(from, to, n)` move robots (for the rocket).
-- **The first robot is a moment.** `SphereCrew.greet()`: a built robot rolls 3 m out, looks left and right, then starts on the nearest dirty hex with no zone painted. The first build closes the workbench so the player sees it.
+- **The first robot is a moment.** `SphereCrew.greet()`: a built robot rolls 3 m out, looks left and right, then starts on the nearest dirty hex with no zone painted (nothing ever asks the player to paint one: v8bot). The first build closes the workbench so the player sees it.
 - **Zones are "here first"** for cleaners and skimmers (then they carry on around the hub, so nobody idles while work is in reach); planters and waterers keep to their zone.
 - **Readable robots.** `BotBadge`: a lamp in the job's colour (pulsing at work, grey "z" resting, amber "!" needs you). `CrewTalk.line()` is the one short line per state or reason; it shows as the prompt when Lumi stands by a robot and on hover in Command. Drips spray while watering.
 - **Command view.** Filled zone hexes per job, hover hex, bales as squares, a card with the hub's crew and "About N hexes an hour", a legend row per job, paint hints for mouse or pad, only the jobs you have robots for.

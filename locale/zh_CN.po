@@ -491,7 +491,7 @@ msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
-#: core/pace.gd:147 story/objectives.gd:964
+#: core/pace.gd:147 story/objectives.gd:984
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "太重了。去工作台升级举升力。"
 
@@ -703,7 +703,7 @@ msgstr "新的 Lumi 外观：%s"
 msgid "Home. The workbench is by the pod."
 msgstr "到家了。工作台就在逃生舱旁边。"
 
-#: planet/sites/hub_purpose.gd:174 story/objectives.gd:971
+#: planet/sites/hub_purpose.gd:174 story/objectives.gd:991
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "火箭停在发射台上。目的地列表的第一项就是家。"
 
@@ -2174,55 +2174,55 @@ msgstr "<< LEDGER // 非正式记录 >>"
 msgid "LEDGER  WMS-07"
 msgstr "LEDGER  WMS-07"
 
-#: story/objectives.gd:204
+#: story/objectives.gd:224
 msgid "Reward: %s"
 msgstr "奖励：%s"
 
-#: story/objectives.gd:416
+#: story/objectives.gd:436
 msgid "Objective complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:443
+#: story/objectives.gd:463
 msgid "Goal complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:740
+#: story/objectives.gd:760
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "打包机装好了！装满胸舱，按 [%s] 压一个捆包，再把它搬到秤上。"
 
-#: story/objectives.gd:762 story/objectives.gd:952
+#: story/objectives.gd:782 story/objectives.gd:972
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "你的胸舱满了。按 [%s] 压一个捆包。"
 
-#: story/objectives.gd:778
+#: story/objectives.gd:798
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "你的探测器发现附近埋着一个机器人零件。跟着“埋藏零件”的读数走；走到正上方时它会哔哔响。"
 
-#: story/objectives.gd:780
+#: story/objectives.gd:800
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
 
-#: story/objectives.gd:953
+#: story/objectives.gd:973
 msgid "Your chest is full. Bring it to the bin."
 msgstr "你的胸舱满了。带到垃圾桶去。"
 
-#: story/objectives.gd:960
+#: story/objectives.gd:980
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "你的胸舱满了。回家吧：垃圾桶就在高高的烟柱下面。"
 
-#: story/objectives.gd:962
+#: story/objectives.gd:982
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "把捆包搬回家：秤就在高高的烟柱下面。"
 
-#: story/objectives.gd:962
+#: story/objectives.gd:982
 msgid "Carry your bale to the scale by the bin."
 msgstr "把捆包搬到垃圾桶旁边的秤上。"
 
-#: story/objectives.gd:972
+#: story/objectives.gd:992
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "回家吧：跟着光柱走到高高的烟柱那里。"
 
-#: story/objectives.gd:982
+#: story/objectives.gd:1002
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "这里没有东西可捡。走到垃圾更多的地方去。"
 
@@ -4901,47 +4901,47 @@ msgstr "%s   放下捆包"
 msgid "%s   workbench"
 msgstr "%s   工作台"
 
-#: ui/key_hints.gd:20
+#: ui/key_hints.gd:22
 msgid "press bale"
 msgstr "压制方块"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "map"
 msgstr "地图"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "command"
 msgstr "指挥"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "lens"
 msgstr "透镜"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "goals"
 msgstr "目标"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "scoop"
 msgstr "捡"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "use"
 msgstr "使用"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "drop"
 msgstr "放下"
 
-#: ui/key_hints.gd:31
+#: ui/key_hints.gd:33
 msgid "workbench"
 msgstr "工作台"
 
-#: ui/key_hints.gd:31
+#: ui/key_hints.gd:33
 msgid "photo"
 msgstr "拍照"
 
-#: ui/key_hints.gd:133 ui/key_hints.gd:153
+#: ui/key_hints.gd:135 ui/key_hints.gd:155
 msgid "tools"
 msgstr "工具"
 
@@ -10864,10 +10864,6 @@ msgstr "赚到 1,000 方块"
 msgid "Build a Scoopie"
 msgstr "建造一台 Scoopie"
 
-#: data/goals.json:goals[zone_1].text
-msgid "Give a robot a work zone"
-msgstr "给一台机器人划一块工作区域"
-
 #: data/goals.json:goals[earn_3k].text
 msgid "Earn 3,000 cubes"
 msgstr "赚到 3,000 方块"
@@ -11040,10 +11036,6 @@ msgstr "让 5 朵花开放"
 #: data/goals.json:goals[shards_2].text
 msgid "Read 2 memory shards"
 msgstr "阅读 2 块记忆碎片"
-
-#: data/goals.json:goals[zone_6].text
-msgid "Zone 6 hexes for your crews"
-msgstr "为队伍划定 6 个六角格"
 
 #: data/goals.json:goals[research_8].text
 msgid "Finish 8 research projects"
@@ -12274,29 +12266,17 @@ msgstr "工作台，机器人页签。机器人会替你清理。"
 msgid "The Bot Bay hums! It can build you a helper. Try the Bots tab at the workbench."
 msgstr "机器人舱嗡嗡响了！它能给你造一个帮手。去工作台的机器人页签看看吧。"
 
-#: data/objectives.json:objectives[zone].text
-msgid "Show your robot where to clean first"
-msgstr "告诉机器人先清理哪里"
-
-#: data/objectives.json:objectives[zone].desc
-msgid "It cleans by itself. {open_command}: show it where first."
-msgstr "它会自己清理。{open_command}：告诉它先去哪里。"
-
-#: data/objectives.json:objectives[zone].lines
-msgid "Your robot already knows the job. Paint a hex, and it starts there."
-msgstr "你的机器人已经知道该干什么了。涂一个六角格，它就从那里开始。"
-
 #: data/objectives.json:objectives[hex2].text
 msgid "Clean 2 hexes"
 msgstr "清理 2 个六角格"
 
 #: data/objectives.json:objectives[hex2].desc
-msgid "Clean ground lets plants grow again."
-msgstr "干净的土地能让植物重新生长。"
+msgid "Your robot cleans on its own. Clean one more hex."
+msgstr "你的机器人会自己打扫。再清理一个六角格。"
 
 #: data/objectives.json:objectives[hex2].lines
-msgid "One hex clean. Now one more, Lumi."
-msgstr "一个六角格干净了。再来一个，Lumi。"
+msgid "Your robot cleans on its own. Now one more hex, Lumi."
+msgstr "你的机器人会自己打扫。再来一个六角格，Lumi。"
 
 #: data/objectives.json:objectives[hex3].desc
 msgid "Your robot helps now. Clean ground lets the garden spread."
@@ -17020,6 +17000,27 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Give a robot a work zone"
+#~ msgstr "给一台机器人划一块工作区域"
+
+#~ msgid "Zone 6 hexes for your crews"
+#~ msgstr "为队伍划定 6 个六角格"
+
+#~ msgid "Show your robot where to clean first"
+#~ msgstr "告诉机器人先清理哪里"
+
+#~ msgid "It cleans by itself. {open_command}: show it where first."
+#~ msgstr "它会自己清理。{open_command}：告诉它先去哪里。"
+
+#~ msgid "Your robot already knows the job. Paint a hex, and it starts there."
+#~ msgstr "你的机器人已经知道该干什么了。涂一个六角格，它就从那里开始。"
+
+#~ msgid "Clean ground lets plants grow again."
+#~ msgstr "干净的土地能让植物重新生长。"
+
+#~ msgid "One hex clean. Now one more, Lumi."
+#~ msgstr "一个六角格干净了。再来一个，Lumi。"
 
 #~ msgid "Clean %d hexes first."
 #~ msgstr "先清理 %d 个六角格。"

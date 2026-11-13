@@ -55,6 +55,7 @@ func _ready() -> void:
 			step += EARLY_ADDED
 			GameState.flags["objective_step"] = step
 		GameState.flags["objectives_v2"] = true
+	_drop_zone_step()  # [v8bot]
 	if DevHooks.has("objective"):  # dev: jump to objective N (shots)
 		step = clampi(int(DevHooks.get_f("objective", 0.0)), 0, chain.size())
 		GameState.flags["objective_step"] = step
@@ -89,6 +90,25 @@ func _ready() -> void:
 					_brief_after(1.2))
 		else:
 			_brief_after(2.0)
+
+
+## [v8bot] Owner: a Scoopie just goes and cleans on its own, so the story no longer asks the
+## player to paint it a zone. The "zone" step stood right before "hex2"; a save from before that
+## sits on it (now "hex2": the step is skipped) or past it (one step fewer in front: step - 1).
+func _drop_zone_step() -> void:
+	if GameState.flags.has("objectives_v3"):
+		return
+	GameState.flags["objectives_v3"] = true
+	if not GameState.flags.has("objective_step"):
+		return
+	var at: int = -1
+	for i: int in chain.size():
+		if str((chain[i] as Dictionary).get("id", "")) == "hex2":
+			at = i
+			break
+	if at >= 0 and step > at:
+		step -= 1
+		GameState.flags["objective_step"] = step
 
 
 ## A save from before the objectives existed (or well past them).
@@ -553,7 +573,7 @@ func step_target(def: Dictionary) -> Dictionary:
 			"glim":  # [v4calm] item 43: the Repair Glim build once it's affordable; else earn
 				var aff3: bool = GameState.can_afford_all(YardBuilds.def("glim").get("cost", {}))
 				out = {"to": "bench" if aff3 else ("depot" if p and not p.carried.is_empty() else "hex"), "row": ["build", "glim"]}
-			"hex", "hex2", "hex3", "hex10", "hex20", "zone":  # [v3clear] hex2, hex10, hex20
+			"hex", "hex2", "hex3", "hex10", "hex20":  # [v3clear] hex2, hex10, hex20 [v8bot] no "zone" step
 				out["to"] = "hex"
 			"bench2":
 				out = {"to": "bench" if BenchTiers.block_reason(world) == "" else "hex", "row": ["patch", "bench_tier"]}

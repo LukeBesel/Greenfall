@@ -490,7 +490,7 @@ msgstr ""
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr ""
 
-#: core/pace.gd:147 story/objectives.gd:964
+#: core/pace.gd:147 story/objectives.gd:984
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr ""
 
@@ -702,7 +702,7 @@ msgstr ""
 msgid "Home. The workbench is by the pod."
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:174 story/objectives.gd:971
+#: planet/sites/hub_purpose.gd:174 story/objectives.gd:991
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr ""
 
@@ -2154,55 +2154,55 @@ msgstr ""
 msgid "LEDGER  WMS-07"
 msgstr ""
 
-#: story/objectives.gd:204
+#: story/objectives.gd:224
 msgid "Reward: %s"
 msgstr ""
 
-#: story/objectives.gd:416
+#: story/objectives.gd:436
 msgid "Objective complete  ·  %s"
 msgstr ""
 
-#: story/objectives.gd:443
+#: story/objectives.gd:463
 msgid "Goal complete  ·  %s"
 msgstr ""
 
-#: story/objectives.gd:740
+#: story/objectives.gd:760
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr ""
 
-#: story/objectives.gd:762 story/objectives.gd:952
+#: story/objectives.gd:782 story/objectives.gd:972
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr ""
 
-#: story/objectives.gd:778
+#: story/objectives.gd:798
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr ""
 
-#: story/objectives.gd:780
+#: story/objectives.gd:800
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr ""
 
-#: story/objectives.gd:953
+#: story/objectives.gd:973
 msgid "Your chest is full. Bring it to the bin."
 msgstr ""
 
-#: story/objectives.gd:960
+#: story/objectives.gd:980
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:962
+#: story/objectives.gd:982
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:962
+#: story/objectives.gd:982
 msgid "Carry your bale to the scale by the bin."
 msgstr ""
 
-#: story/objectives.gd:972
+#: story/objectives.gd:992
 msgid "Head home: follow the beam to the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:982
+#: story/objectives.gd:1002
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr ""
 
@@ -4884,47 +4884,47 @@ msgstr ""
 msgid "%s   workbench"
 msgstr ""
 
-#: ui/key_hints.gd:20
+#: ui/key_hints.gd:22
 msgid "press bale"
 msgstr ""
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "map"
 msgstr ""
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "command"
 msgstr ""
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "lens"
 msgstr ""
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "goals"
 msgstr ""
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "scoop"
 msgstr ""
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "use"
 msgstr ""
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "drop"
 msgstr ""
 
-#: ui/key_hints.gd:31
+#: ui/key_hints.gd:33
 msgid "workbench"
 msgstr ""
 
-#: ui/key_hints.gd:31
+#: ui/key_hints.gd:33
 msgid "photo"
 msgstr ""
 
-#: ui/key_hints.gd:133 ui/key_hints.gd:153
+#: ui/key_hints.gd:135 ui/key_hints.gd:155
 msgid "tools"
 msgstr ""
 
@@ -10761,10 +10761,6 @@ msgstr ""
 msgid "Build a Scoopie"
 msgstr ""
 
-#: data/goals.json:goals[zone_1].text
-msgid "Give a robot a work zone"
-msgstr ""
-
 #: data/goals.json:goals[earn_3k].text
 msgid "Earn 3,000 cubes"
 msgstr ""
@@ -10936,10 +10932,6 @@ msgstr ""
 
 #: data/goals.json:goals[shards_2].text
 msgid "Read 2 memory shards"
-msgstr ""
-
-#: data/goals.json:goals[zone_6].text
-msgid "Zone 6 hexes for your crews"
 msgstr ""
 
 #: data/goals.json:goals[research_8].text
@@ -12089,28 +12081,16 @@ msgstr ""
 msgid "The Bot Bay hums! It can build you a helper. Try the Bots tab at the workbench."
 msgstr ""
 
-#: data/objectives.json:objectives[zone].text
-msgid "Show your robot where to clean first"
-msgstr ""
-
-#: data/objectives.json:objectives[zone].desc
-msgid "It cleans by itself. {open_command}: show it where first."
-msgstr ""
-
-#: data/objectives.json:objectives[zone].lines
-msgid "Your robot already knows the job. Paint a hex, and it starts there."
-msgstr ""
-
 #: data/objectives.json:objectives[hex2].text
 msgid "Clean 2 hexes"
 msgstr ""
 
 #: data/objectives.json:objectives[hex2].desc
-msgid "Clean ground lets plants grow again."
+msgid "Your robot cleans on its own. Clean one more hex."
 msgstr ""
 
 #: data/objectives.json:objectives[hex2].lines
-msgid "One hex clean. Now one more, Lumi."
+msgid "Your robot cleans on its own. Now one more hex, Lumi."
 msgstr ""
 
 #: data/objectives.json:objectives[hex3].desc

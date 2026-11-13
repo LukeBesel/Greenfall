@@ -491,7 +491,7 @@ msgstr "Pacas por valor de %s se amontonaron en la base sin nadie que las llevar
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Los depuradores filtraron el aire todo el rato. Está un poco más limpio."
 
-#: core/pace.gd:147 story/objectives.gd:964
+#: core/pace.gd:147 story/objectives.gd:984
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "Pesa demasiado. Mejora la Fuerza de elevación en el banco."
 
@@ -703,7 +703,7 @@ msgstr "Nuevo diseño de Lumi: %s"
 msgid "Home. The workbench is by the pod."
 msgstr "En casa. El banco de trabajo está junto a la cápsula."
 
-#: planet/sites/hub_purpose.gd:174 story/objectives.gd:971
+#: planet/sites/hub_purpose.gd:174 story/objectives.gd:991
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "El cohete espera en la plataforma. Casa es lo primero de su lista."
 
@@ -2180,55 +2180,55 @@ msgstr "<< LEDGER // EXTRAOFICIAL >>"
 msgid "LEDGER  WMS-07"
 msgstr "LEDGER  WMS-07"
 
-#: story/objectives.gd:204
+#: story/objectives.gd:224
 msgid "Reward: %s"
 msgstr "Recompensa: %s"
 
-#: story/objectives.gd:416
+#: story/objectives.gd:436
 msgid "Objective complete  ·  %s"
 msgstr "Objetivo cumplido  ·  %s"
 
-#: story/objectives.gd:443
+#: story/objectives.gd:463
 msgid "Goal complete  ·  %s"
 msgstr "Objetivo cumplido  ·  %s"
 
-#: story/objectives.gd:740
+#: story/objectives.gd:760
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "¡Empacadora instalada! Llena tu pecho, pulsa [%s] para prensar un fardo y llévalo a la báscula."
 
-#: story/objectives.gd:762 story/objectives.gd:952
+#: story/objectives.gd:782 story/objectives.gd:972
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Tu pecho está lleno. Pulsa [%s] para hacer un fardo."
 
-#: story/objectives.gd:778
+#: story/objectives.gd:798
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "Tu detector ha encontrado una pieza de robot enterrada cerca. Sigue la lectura PIEZA ENTERRADA; pita cuando estás justo encima."
 
-#: story/objectives.gd:780
+#: story/objectives.gd:800
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "PIEZA ENTERRADA: camina hacia ella hasta que la lectura llegue al máximo y desentiérrala."
 
-#: story/objectives.gd:953
+#: story/objectives.gd:973
 msgid "Your chest is full. Bring it to the bin."
 msgstr "Tu pecho está lleno. Llévalo al cubo."
 
-#: story/objectives.gd:960
+#: story/objectives.gd:980
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "Tu pecho está lleno. Vuelve a casa: el cubo está bajo el humo alto."
 
-#: story/objectives.gd:962
+#: story/objectives.gd:982
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "Lleva tu fardo a casa: la báscula está bajo el humo alto."
 
-#: story/objectives.gd:962
+#: story/objectives.gd:982
 msgid "Carry your bale to the scale by the bin."
 msgstr "Lleva tu fardo a la báscula, junto al cubo."
 
-#: story/objectives.gd:972
+#: story/objectives.gd:992
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "Vuelve a casa: sigue el rayo hasta el humo alto."
 
-#: story/objectives.gd:982
+#: story/objectives.gd:1002
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Aquí no hay nada que recoger. Camina hasta donde haya más basura."
 
@@ -4917,47 +4917,47 @@ msgstr "%s   dejar paca"
 msgid "%s   workbench"
 msgstr "%s   banco de trabajo"
 
-#: ui/key_hints.gd:20
+#: ui/key_hints.gd:22
 msgid "press bale"
 msgstr "prensar fardo"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "map"
 msgstr "mapa"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "command"
 msgstr "órdenes"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "lens"
 msgstr "lente"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "goals"
 msgstr "objetivos"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "scoop"
 msgstr "recoger"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "use"
 msgstr "usar"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "drop"
 msgstr "soltar"
 
-#: ui/key_hints.gd:31
+#: ui/key_hints.gd:33
 msgid "workbench"
 msgstr "banco"
 
-#: ui/key_hints.gd:31
+#: ui/key_hints.gd:33
 msgid "photo"
 msgstr "foto"
 
-#: ui/key_hints.gd:133 ui/key_hints.gd:153
+#: ui/key_hints.gd:135 ui/key_hints.gd:155
 msgid "tools"
 msgstr "herramientas"
 
@@ -10881,10 +10881,6 @@ msgstr "Gana 1.000 cubos"
 msgid "Build a Scoopie"
 msgstr "Construye un Scoopie"
 
-#: data/goals.json:goals[zone_1].text
-msgid "Give a robot a work zone"
-msgstr "Dale una zona de trabajo a un robot"
-
 #: data/goals.json:goals[earn_3k].text
 msgid "Earn 3,000 cubes"
 msgstr "Gana 3.000 cubos"
@@ -11057,10 +11053,6 @@ msgstr "Haz florecer 5 flores"
 #: data/goals.json:goals[shards_2].text
 msgid "Read 2 memory shards"
 msgstr "Lee 2 fragmentos de memoria"
-
-#: data/goals.json:goals[zone_6].text
-msgid "Zone 6 hexes for your crews"
-msgstr "Asigna 6 hexágonos a tus equipos"
 
 #: data/goals.json:goals[research_8].text
 msgid "Finish 8 research projects"
@@ -12291,29 +12283,17 @@ msgstr "Banco de trabajo, pestaña Bots. Los robots limpian por ti."
 msgid "The Bot Bay hums! It can build you a helper. Try the Bots tab at the workbench."
 msgstr "¡La Bahía de robots zumba! Puede construirte un ayudante. Prueba la pestaña Bots del banco de trabajo."
 
-#: data/objectives.json:objectives[zone].text
-msgid "Show your robot where to clean first"
-msgstr "Enséñale a tu robot dónde limpiar primero"
-
-#: data/objectives.json:objectives[zone].desc
-msgid "It cleans by itself. {open_command}: show it where first."
-msgstr "Limpia él solo. {open_command}: enséñale por dónde empezar."
-
-#: data/objectives.json:objectives[zone].lines
-msgid "Your robot already knows the job. Paint a hex, and it starts there."
-msgstr "Tu robot ya sabe lo que tiene que hacer. Pinta un hexágono y empezará por ahí."
-
 #: data/objectives.json:objectives[hex2].text
 msgid "Clean 2 hexes"
 msgstr "Limpia 2 hexágonos"
 
 #: data/objectives.json:objectives[hex2].desc
-msgid "Clean ground lets plants grow again."
-msgstr "En suelo limpio las plantas vuelven a crecer."
+msgid "Your robot cleans on its own. Clean one more hex."
+msgstr "Tu robot limpia solo. Limpia un hexágono más."
 
 #: data/objectives.json:objectives[hex2].lines
-msgid "One hex clean. Now one more, Lumi."
-msgstr "Un hexágono limpio. Ahora uno más, Lumi."
+msgid "Your robot cleans on its own. Now one more hex, Lumi."
+msgstr "Tu robot limpia solo. Ahora un hexágono más, Lumi."
 
 #: data/objectives.json:objectives[hex3].desc
 msgid "Your robot helps now. Clean ground lets the garden spread."
@@ -17037,6 +17017,27 @@ msgstr "Ese pórtico desguazó la flota del Ledger cuando se acabó el dinero. E
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un mundo de óxido, verde. Las viejas grúas tienen flores a sus pies. Las cuentas están cerradas, {name}. Las hemos cuadrado."
+
+#~ msgid "Give a robot a work zone"
+#~ msgstr "Dale una zona de trabajo a un robot"
+
+#~ msgid "Zone 6 hexes for your crews"
+#~ msgstr "Asigna 6 hexágonos a tus equipos"
+
+#~ msgid "Show your robot where to clean first"
+#~ msgstr "Enséñale a tu robot dónde limpiar primero"
+
+#~ msgid "It cleans by itself. {open_command}: show it where first."
+#~ msgstr "Limpia él solo. {open_command}: enséñale por dónde empezar."
+
+#~ msgid "Your robot already knows the job. Paint a hex, and it starts there."
+#~ msgstr "Tu robot ya sabe lo que tiene que hacer. Pinta un hexágono y empezará por ahí."
+
+#~ msgid "Clean ground lets plants grow again."
+#~ msgstr "En suelo limpio las plantas vuelven a crecer."
+
+#~ msgid "One hex clean. Now one more, Lumi."
+#~ msgstr "Un hexágono limpio. Ahora uno más, Lumi."
 
 #~ msgid "Clean %d hexes first."
 #~ msgstr "Limpia primero %d hexágonos."

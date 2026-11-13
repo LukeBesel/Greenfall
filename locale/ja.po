@@ -491,7 +491,7 @@ msgstr "%s 相当のベールが、運ぶ者もなく基地に積まれていた
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "清浄機がずっと空気をろ過していた。少しだけ澄んだ。"
 
-#: core/pace.gd:147 story/objectives.gd:964
+#: core/pace.gd:147 story/objectives.gd:984
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "重すぎる。作業台でリフト力をアップグレードしよう。"
 
@@ -703,7 +703,7 @@ msgstr "Lumi の新デザイン：%s"
 msgid "Home. The workbench is by the pod."
 msgstr "ホームだ。作業台はポッドのそばにある。"
 
-#: planet/sites/hub_purpose.gd:174 story/objectives.gd:971
+#: planet/sites/hub_purpose.gd:174 story/objectives.gd:991
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "ロケットは発着場で待っている。リストの一番上がホームだ。"
 
@@ -2174,55 +2174,55 @@ msgstr "<< LEDGER // オフレコ >>"
 msgid "LEDGER  WMS-07"
 msgstr "LEDGER  WMS-07"
 
-#: story/objectives.gd:204
+#: story/objectives.gd:224
 msgid "Reward: %s"
 msgstr "報酬：%s"
 
-#: story/objectives.gd:416
+#: story/objectives.gd:436
 msgid "Objective complete  ·  %s"
 msgstr "目標達成  ·  %s"
 
-#: story/objectives.gd:443
+#: story/objectives.gd:463
 msgid "Goal complete  ·  %s"
 msgstr "目標達成  ·  %s"
 
-#: story/objectives.gd:740
+#: story/objectives.gd:760
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "ベーラーを取り付けた！胸をいっぱいにして、[%s] でベールを作り、はかりまで運ぼう。"
 
-#: story/objectives.gd:762 story/objectives.gd:952
+#: story/objectives.gd:782 story/objectives.gd:972
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "胸がいっぱい。[%s] を押してベールを作ろう。"
 
-#: story/objectives.gd:778
+#: story/objectives.gd:798
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "探知機が近くに埋まったロボットのパーツを見つけたよ。「埋もれたパーツ」の表示を追って。真上に来るとピッと鳴るよ。"
 
-#: story/objectives.gd:780
+#: story/objectives.gd:800
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋もれたパーツ：反応が一番強くなるまで近づいて、掘り出そう。"
 
-#: story/objectives.gd:953
+#: story/objectives.gd:973
 msgid "Your chest is full. Bring it to the bin."
 msgstr "胸がいっぱい。ゴミ箱へ運ぼう。"
 
-#: story/objectives.gd:960
+#: story/objectives.gd:980
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "胸がいっぱい。おうちへ帰ろう。ゴミ箱は高い煙の下だよ。"
 
-#: story/objectives.gd:962
+#: story/objectives.gd:982
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "ベールをおうちへ運ぼう。はかりは高い煙の下だよ。"
 
-#: story/objectives.gd:962
+#: story/objectives.gd:982
 msgid "Carry your bale to the scale by the bin."
 msgstr "ベールをゴミ箱のそばのはかりへ運ぼう。"
 
-#: story/objectives.gd:972
+#: story/objectives.gd:992
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "おうちへ帰ろう。光の柱を追って高い煙のところへ。"
 
-#: story/objectives.gd:982
+#: story/objectives.gd:1002
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "ここには拾うものがない。もっとゴミのあるところへ歩こう。"
 
@@ -4901,47 +4901,47 @@ msgstr "%s   ベールを置く"
 msgid "%s   workbench"
 msgstr "%s   作業台"
 
-#: ui/key_hints.gd:20
+#: ui/key_hints.gd:22
 msgid "press bale"
 msgstr "ベールを圧縮"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "map"
 msgstr "マップ"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "command"
 msgstr "指示"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "lens"
 msgstr "レンズ"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "goals"
 msgstr "目標"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "scoop"
 msgstr "拾う"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "use"
 msgstr "使う"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "drop"
 msgstr "置く"
 
-#: ui/key_hints.gd:31
+#: ui/key_hints.gd:33
 msgid "workbench"
 msgstr "作業台"
 
-#: ui/key_hints.gd:31
+#: ui/key_hints.gd:33
 msgid "photo"
 msgstr "フォト"
 
-#: ui/key_hints.gd:133 ui/key_hints.gd:153
+#: ui/key_hints.gd:135 ui/key_hints.gd:155
 msgid "tools"
 msgstr "ツール"
 
@@ -10864,10 +10864,6 @@ msgstr "1,000キューブ稼ぐ"
 msgid "Build a Scoopie"
 msgstr "Scoopie を作る"
 
-#: data/goals.json:goals[zone_1].text
-msgid "Give a robot a work zone"
-msgstr "ロボットに作業ゾーンをあげる"
-
 #: data/goals.json:goals[earn_3k].text
 msgid "Earn 3,000 cubes"
 msgstr "3,000キューブ稼ぐ"
@@ -11040,10 +11036,6 @@ msgstr "花を5輪咲かせる"
 #: data/goals.json:goals[shards_2].text
 msgid "Read 2 memory shards"
 msgstr "メモリーの破片を2つ読む"
-
-#: data/goals.json:goals[zone_6].text
-msgid "Zone 6 hexes for your crews"
-msgstr "クルー用にヘックスを6個ゾーン指定する"
 
 #: data/goals.json:goals[research_8].text
 msgid "Finish 8 research projects"
@@ -12274,29 +12266,17 @@ msgstr "作業台のボットタブ。ロボットが代わりに掃除してく
 msgid "The Bot Bay hums! It can build you a helper. Try the Bots tab at the workbench."
 msgstr "ボットベイがうなってる！お手伝いを作れるよ。作業台のボットタブを見てみて。"
 
-#: data/objectives.json:objectives[zone].text
-msgid "Show your robot where to clean first"
-msgstr "ロボットに最初に掃除する場所を教える"
-
-#: data/objectives.json:objectives[zone].desc
-msgid "It cleans by itself. {open_command}: show it where first."
-msgstr "ひとりでも掃除する。{open_command}：最初の場所を教えよう。"
-
-#: data/objectives.json:objectives[zone].lines
-msgid "Your robot already knows the job. Paint a hex, and it starts there."
-msgstr "ロボットはもう仕事がわかっているよ。ヘックスを塗れば、そこから始めてくれる。"
-
 #: data/objectives.json:objectives[hex2].text
 msgid "Clean 2 hexes"
 msgstr "ヘックスを2個片づける"
 
 #: data/objectives.json:objectives[hex2].desc
-msgid "Clean ground lets plants grow again."
-msgstr "きれいな地面なら、植物がまた育つ。"
+msgid "Your robot cleans on its own. Clean one more hex."
+msgstr "ロボットは自分でそうじするよ。ヘックスをもう1個片づけよう。"
 
 #: data/objectives.json:objectives[hex2].lines
-msgid "One hex clean. Now one more, Lumi."
-msgstr "ヘックスがひとつきれいになった。もうひとつ、Lumi。"
+msgid "Your robot cleans on its own. Now one more hex, Lumi."
+msgstr "ロボットは自分でそうじするよ。あとヘックス1個だよ、Lumi。"
 
 #: data/objectives.json:objectives[hex3].desc
 msgid "Your robot helps now. Clean ground lets the garden spread."
@@ -17020,6 +17000,27 @@ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "Give a robot a work zone"
+#~ msgstr "ロボットに作業ゾーンをあげる"
+
+#~ msgid "Zone 6 hexes for your crews"
+#~ msgstr "クルー用にヘックスを6個ゾーン指定する"
+
+#~ msgid "Show your robot where to clean first"
+#~ msgstr "ロボットに最初に掃除する場所を教える"
+
+#~ msgid "It cleans by itself. {open_command}: show it where first."
+#~ msgstr "ひとりでも掃除する。{open_command}：最初の場所を教えよう。"
+
+#~ msgid "Your robot already knows the job. Paint a hex, and it starts there."
+#~ msgstr "ロボットはもう仕事がわかっているよ。ヘックスを塗れば、そこから始めてくれる。"
+
+#~ msgid "Clean ground lets plants grow again."
+#~ msgstr "きれいな地面なら、植物がまた育つ。"
+
+#~ msgid "One hex clean. Now one more, Lumi."
+#~ msgstr "ヘックスがひとつきれいになった。もうひとつ、Lumi。"
 
 #~ msgid "Clean %d hexes first."
 #~ msgstr "まずヘックスを %d 個片づけよう。"

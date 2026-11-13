@@ -97,7 +97,8 @@ func test_haul_objective_waits_after_base_two() -> void:
 		ids.append(str(o["id"]))
 		if str(o["id"]) == "haul":
 			haul = o
-	assert_lt(ids.find("robot"), ids.find("zone"))
+	assert_eq(ids.find("zone"), -1, "[v8bot] no zone step: the robot cleans on its own")
+	assert_eq(ids.find("hex2"), ids.find("robot") + 1, "the story goes straight on after the first robot")
 	assert_gt(ids.find("haul"), ids.find("base2"), "the Haul Bug comes well after the first robot")
 	assert_eq(str(haul.get("wait_flag", "")), "haul_rig")
 	assert_true(haul.has("hint"))

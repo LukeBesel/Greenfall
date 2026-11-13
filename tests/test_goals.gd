@@ -107,7 +107,8 @@ func test_value_types() -> void:
 	GameState.world["hub_level"] = 2
 	assert_eq(g.value_of(by_id["base_2"]), 2.0)
 	GameState.world["orders"] = {"groups": {"clean": {"zone": [3, 4], "mode": "stay"}}, "bots": {"Bolt-01": {"zone": [4, 5]}}}
-	assert_eq(g.value_of(by_id["zone_1"]), 3.0)
+	assert_eq(Goals.zone_hex_count(), 3, "painted zones still count (the zone goal type stays for data that wants it)")  # [v8bot] no zone goal in the chain
+	assert_false(by_id.has("zone_1"), "the game does not ask for a work zone")
 	GameState.flags["seeds_unlocked"] = true
 	assert_eq(g.value_of(by_id["seeds"]), 1.0)
 	GameState.flags["tier_drip"] = 2
