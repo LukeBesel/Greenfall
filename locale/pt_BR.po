@@ -11150,10 +11150,6 @@ msgstr "Pesquise o Censo de Polinizadores"
 msgid "Grow 25 flowers to bloom"
 msgstr "Faça 25 flores florirem"
 
-#: data/goals.json:goals[tank_1].text
-msgid "Place a Water Tank"
-msgstr "Coloque um Tanque de Água"
-
 #: data/goals.json:goals[plant_60].text
 msgid "Plant 60 seeds"
 msgstr "Plante 60 sementes"
@@ -11413,10 +11409,6 @@ msgstr "Suba as relíquias para 10 níveis"
 #: data/goals.json:goals[late_world_2].text
 msgid "Seed a second new world"
 msgstr "Semeie um segundo mundo novo"
-
-#: data/goals.json:goals[late_eggs_38].text
-msgid "Find 38 curiosities"
-msgstr "Encontre 38 curiosidades"
 
 #: data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
@@ -17053,6 +17045,12 @@ msgstr "Aquele pórtico desmanchou a frota do Ledger quando o dinheiro acabou. A
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Um mundo de ferrugem, verde. Os velhos guindastes têm flores aos pés. As contas estão fechadas, {name}. Nós as equilibramos."
+
+#~ msgid "Place a Water Tank"
+#~ msgstr "Coloque um Tanque de Água"
+
+#~ msgid "Find 38 curiosities"
+#~ msgstr "Encontre 38 curiosidades"
 
 #~ msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 #~ msgstr "Sementes precisam de chão limpo e aberto: nada de ruas, calçadas ou da plataforma."

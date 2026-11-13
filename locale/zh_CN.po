@@ -11133,10 +11133,6 @@ msgstr "研究“传粉者调查”"
 msgid "Grow 25 flowers to bloom"
 msgstr "让 25 朵花开放"
 
-#: data/goals.json:goals[tank_1].text
-msgid "Place a Water Tank"
-msgstr "放置一个水箱"
-
 #: data/goals.json:goals[plant_60].text
 msgid "Plant 60 seeds"
 msgstr "种下 60 颗种子"
@@ -11396,10 +11392,6 @@ msgstr "传家宝总等级达到 10"
 #: data/goals.json:goals[late_world_2].text
 msgid "Seed a second new world"
 msgstr "播种第二个新世界"
-
-#: data/goals.json:goals[late_eggs_38].text
-msgid "Find 38 curiosities"
-msgstr "找到 38 件奇物"
 
 #: data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
@@ -17036,6 +17028,12 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Place a Water Tank"
+#~ msgstr "放置一个水箱"
+
+#~ msgid "Find 38 curiosities"
+#~ msgstr "找到 38 件奇物"
 
 #~ msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 #~ msgstr "种子需要干净、空旷的土地：不能是街道、路沿或起降台。"

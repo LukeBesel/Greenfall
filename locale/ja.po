@@ -11133,10 +11133,6 @@ msgstr "「花粉媒介者の調査」を研究する"
 msgid "Grow 25 flowers to bloom"
 msgstr "花を25輪咲かせる"
 
-#: data/goals.json:goals[tank_1].text
-msgid "Place a Water Tank"
-msgstr "給水タンクを置く"
-
 #: data/goals.json:goals[plant_60].text
 msgid "Plant 60 seeds"
 msgstr "種を60個植える"
@@ -11396,10 +11392,6 @@ msgstr "家宝のレベルを合計10にする"
 #: data/goals.json:goals[late_world_2].text
 msgid "Seed a second new world"
 msgstr "2つ目の新しい世界に種をまく"
-
-#: data/goals.json:goals[late_eggs_38].text
-msgid "Find 38 curiosities"
-msgstr "珍品を38個見つける"
 
 #: data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
@@ -17036,6 +17028,12 @@ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "Place a Water Tank"
+#~ msgstr "給水タンクを置く"
+
+#~ msgid "Find 38 curiosities"
+#~ msgstr "珍品を38個見つける"
 
 #~ msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 #~ msgstr "種にはきれいで開けた地面が必要。道路、縁石、発着場には植えられない。"
