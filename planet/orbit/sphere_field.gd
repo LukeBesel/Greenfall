@@ -971,6 +971,11 @@ func find_scoop_target_sized(origin: Vector3, forward: Vector3, reach: float, wi
 	var near: Dictionary = {}
 	for o: Vector3 in [Vector3.ZERO, fwd * reach, fwd * reach * 0.5 + right * width, fwd * reach * 0.5 - right * width]:
 		near[hex_at(origin + o)] = true
+	# [v9b] A piece can lie a little over its hex's border (piles, the tidy pass, the magnet arm):
+	# then none of the probe points fell in its hex and the scoop never saw it, so a hex stuck at
+	# 58% with the piece right in front of Lumi. The ring round the scoop's hex covers it.
+	for hid: int in hexes_near(origin, 1):
+		near[hid] = true
 	for hid: int in near:
 		if locked.has(hid):
 			continue
