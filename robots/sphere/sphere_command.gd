@@ -39,6 +39,36 @@ var painted_now: int = 0
 var hover_unit: Dictionary = {}
 
 
+## [v8bot] Owner: "you should be able to select how many robots come and it should choose the
+## closest ones". With a zone painted for the job, the card shows "Robots here: − N +": click the
+## buttons, press - / +, or D-pad left / right. N closest robots of the job come (SphereCrew
+## zone_count / _assign_zones); "all" is the default.
+func zone_here() -> bool:
+	return crew != null and not crew.zone_for(role, view_hub()).is_empty()
+
+
+## [v8bot] [count shown, robots of the job here]: count 0 = all.
+func count_now() -> Array[int]:
+	var total: int = int(crew.zone_crew(role, view_hub())["total"]) if crew != null else 0
+	var n: int = crew.zone_count(role) if crew != null else 0
+	return [0 if n <= 0 or n >= total else n, total]
+
+
+## [v8bot] One more (+1) or one fewer (-1) robot for the painted zone; never below 1 (erase the
+## paint to call none), and as many as the crew has is "all".
+func change_count(step: int) -> void:
+	if crew == null or not zone_here():
+		return
+	var ct: Array[int] = count_now()
+	var total: int = ct[1]
+	if total <= 0:
+		return
+	var cur: int = total if ct[0] == 0 else ct[0]
+	var nxt: int = clampi(cur + step, 1, total)
+	crew.set_zone_count(role, 0 if nxt >= total else nxt)
+	Audio.play("blip", 1.3 if step > 0 else 1.1, -12.0)
+
+
 ## [v6crew] The jobs the player can paint right now: those he has a robot for (always "clean").
 func roles() -> Array[String]:
 	var out: Array[String] = ["clean"]
@@ -114,6 +144,18 @@ static func pick_cell(camera: Camera3D, screen_pos: Vector2, p_surface: SphereSu
 	return p_grid.cell_at(d) if d != Vector3.ZERO else -1
 
 
+## [v8bot] Whether `world` (the slice) shows the Command view now: the event banner and the play
+## HUD step aside for it.
+static func open_in(world: Object) -> bool:
+	if world == null or not is_instance_valid(world):
+		return false
+	var orb: Variant = world.get("orbit")
+	if not orb is SliceOrbit:
+		return false
+	var c: SphereCam = (orb as SliceOrbit).cam
+	return c != null and c.view == "command"
+
+
 func is_active() -> bool:
 	return cam != null and cam.view == "command"
 
@@ -162,6 +204,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventJoypadButton:  # [v3qa] A paint, X erase, Y next role
 		var jb: InputEventJoypadButton = event
 		match jb.button_index:
+			JOY_BUTTON_DPAD_LEFT:  # [v8bot] how many robots come
+				if jb.pressed:
+					change_count(-1)
+			JOY_BUTTON_DPAD_RIGHT:
+				if jb.pressed:
+					change_count(1)
 			JOY_BUTTON_A:
 				_pad_paint = 1 if jb.pressed else (0 if _pad_paint == 1 else _pad_paint)
 			JOY_BUTTON_X:
@@ -170,6 +218,23 @@ func _unhandled_input(event: InputEvent) -> void:
 				if jb.pressed:
 					next_role()
 		return
+	if event is InputEventMouseButton and overlay != null and zone_here():  # [v8bot] the card's - / + buttons
+		var bm: InputEventMouseButton = event
+		if bm.button_index == MOUSE_BUTTON_LEFT:
+			for k: String in overlay.buttons:
+				if (overlay.buttons[k] as Rect2).grow(4.0).has_point(bm.position):
+					if bm.pressed:
+						change_count(-1 if k == "minus" else 1)
+					get_viewport().set_input_as_handled()
+					return
+	if event is InputEventKey and (event as InputEventKey).pressed and not (event as InputEventKey).echo:  # [v8bot]
+		var kc: Key = (event as InputEventKey).keycode
+		if kc in [KEY_MINUS, KEY_KP_SUBTRACT]:
+			change_count(-1)
+			return
+		if kc in [KEY_EQUAL, KEY_PLUS, KEY_KP_ADD]:
+			change_count(1)
+			return
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event
 		var c: int = pick_cell(cam.camera, mb.position, surface, grid)

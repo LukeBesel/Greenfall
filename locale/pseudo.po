@@ -724,7 +724,7 @@ msgstr "[Ûþĝŕàðé ţĥé ŕôçķéţ, ţĥéñ ŵàķé ţĥé %s ~~~~~~~
 msgid "Wake the %s (%s)"
 msgstr "[Ŵàķé ţĥé %s (%s) ~~~]"
 
-#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:584
+#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:602
 msgid "E   Wake the %s  (%s)"
 msgstr "E   [Ŵàķé ţĥé %s  (%s) ~~~]"
 
@@ -1309,69 +1309,89 @@ msgstr "[Þàîñţ ŵĥéŕé ţô ŵàţéŕ. ~~~~]"
 msgid "Paint the water to skim first."
 msgstr "[Þàîñţ ţĥé ŵàţéŕ ţô šķîm ƒîŕšţ. ~~~~~~~]"
 
-#: robots/sphere/command_overlay.gd:102
+#: robots/sphere/command_overlay.gd:117
 msgid "ROBOT COMMAND"
 msgstr "[ŔÔBÔŢ ÇÔMMÀÑÐ ~~]"
 
-#: robots/sphere/command_overlay.gd:105
+#: robots/sphere/command_overlay.gd:120
 msgid "No robots here yet."
 msgstr "[Ñô ŕôbôţš ĥéŕé ýéţ. ~~~~]"
 
-#: robots/sphere/command_overlay.gd:106 data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
+#: robots/sphere/command_overlay.gd:121 data/codex.json:robots.scoopie.hint data/codex.json:robots.haulbug.hint
 msgid "Build one at the workbench."
 msgstr "[Bûîļð ôñé àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~]"
 
-#: robots/sphere/command_overlay.gd:109 robots/sphere/command_overlay.gd:161
+#: robots/sphere/command_overlay.gd:124 robots/sphere/command_overlay.gd:196
 msgid "%d robot"
 msgid_plural "%d robots"
 msgstr[0] "[%d ŕôbôţ ~]"
 msgstr[1] "[%d ŕôbôţš ~]"
 
-#: robots/sphere/command_overlay.gd:111
+#: robots/sphere/command_overlay.gd:126
 msgid "About %d hexes an hour"
 msgstr "[Àbôûţ %d ĥéxéš àñ ĥôûŕ ~~~~~]"
 
-#: robots/sphere/command_overlay.gd:125 robots/sphere/command_overlay.gd:162
+#: robots/sphere/command_overlay.gd:139 robots/sphere/command_overlay.gd:197
 msgid "%d working"
 msgstr "[%d ŵôŕķîñĝ ~]"
 
-#: robots/sphere/command_overlay.gd:127
+#: robots/sphere/command_overlay.gd:141
 msgid "%d working, %d waiting"
 msgstr "[%d ŵôŕķîñĝ, %d ŵàîţîñĝ ~~~~~]"
 
-#: robots/sphere/command_overlay.gd:129
+#: robots/sphere/command_overlay.gd:143
 msgid "%d waiting"
 msgstr "[%d ŵàîţîñĝ ~]"
 
-#: robots/sphere/command_overlay.gd:133 robots/sphere/crew_talk.gd:71 robots/sphere/crew_talk.gd:75
+#: robots/sphere/command_overlay.gd:148 robots/sphere/crew_talk.gd:81 robots/sphere/crew_talk.gd:85
 msgid "Bales are piling up. Build a Haul Bug."
 msgstr "[Bàļéš àŕé þîļîñĝ ûþ. Bûîļð à Ĥàûļ Bûĝ. ~~~~~~~~~~]"
 
-#: robots/sphere/command_overlay.gd:155
+#: robots/sphere/command_overlay.gd:161
+msgid "Robots here: all %d"
+msgstr "[Ŕôbôţš ĥéŕé: àļļ %d ~~~~]"
+
+#: robots/sphere/command_overlay.gd:162
+msgid "Robots here: %d of %d"
+msgstr "[Ŕôbôţš ĥéŕé: %d ôƒ %d ~~~~]"
+
+#: robots/sphere/command_overlay.gd:165
+msgid "%d on the way, %d working here"
+msgstr "[%d ôñ ţĥé ŵàý, %d ŵôŕķîñĝ ĥéŕé ~~~~~~~]"
+
+#: robots/sphere/command_overlay.gd:168
+msgid "D-pad left / right: how many come"
+msgstr "[Ð-þàð ļéƒţ / ŕîĝĥţ: ĥôŵ màñý çômé ~~~~~~~~~]"
+
+#: robots/sphere/command_overlay.gd:169
+msgid "Click - or + (or keys - +): how many come"
+msgstr "[Çļîçķ - ôŕ + (ôŕ ķéýš - +): ĥôŵ màñý çômé ~~~~~~~~~~~]"
+
+#: robots/sphere/command_overlay.gd:190
 msgid "OTHER BASES"
 msgstr "[ÔŢĤÉŔ BÀŠÉŠ ~]"
 
-#: robots/sphere/command_overlay.gd:159
+#: robots/sphere/command_overlay.gd:194
 msgid "Base %d"
 msgstr "[Bàšé %d ~]"
 
-#: robots/sphere/command_overlay.gd:171
+#: robots/sphere/command_overlay.gd:206
 msgid "Good! Your robots will work here first."
 msgstr "[Ĝôôð! Ýôûŕ ŕôbôţš ŵîļļ ŵôŕķ ĥéŕé ƒîŕšţ. ~~~~~~~~~~~]"
 
-#: robots/sphere/command_overlay.gd:172
+#: robots/sphere/command_overlay.gd:207
 msgid "Hold A: paint   Hold X: erase   %s: back"
 msgstr "[Ĥôļð À: þàîñţ   Ĥôļð X: éŕàšé   %s: bàçķ ~~~~~~~~~~~]"
 
-#: robots/sphere/command_overlay.gd:173
+#: robots/sphere/command_overlay.gd:208
 msgid "Left mouse: paint   Right mouse: erase   %s: back"
 msgstr "[Ļéƒţ môûšé: þàîñţ   Ŕîĝĥţ môûšé: éŕàšé   %s: bàçķ ~~~~~~~~~~~~~~]"
 
-#: robots/sphere/command_overlay.gd:175
+#: robots/sphere/command_overlay.gd:210
 msgid "Y: next job"
 msgstr "[Ý: ñéxţ ĵôb ~]"
 
-#: robots/sphere/command_overlay.gd:175
+#: robots/sphere/command_overlay.gd:210
 msgid "Tab: next job"
 msgstr "[Ţàb: ñéxţ ĵôb ~~]"
 
@@ -1427,68 +1447,68 @@ msgstr "[Ñô ĵûñķ ôñ ţĥé ļàķéš ĥéŕé. ~~~~~~]"
 msgid "I can't find a way there. Trying another spot."
 msgstr "[Î çàñ'ţ ƒîñð à ŵàý ţĥéŕé. Ţŕýîñĝ àñôţĥéŕ šþôţ. ~~~~~~~~~~~~~]"
 
-#: robots/sphere/crew_talk.gd:68
+#: robots/sphere/crew_talk.gd:78
 msgid "Hello! Looking around."
 msgstr "[Ĥéļļô! Ļôôķîñĝ àŕôûñð. ~~~~~]"
 
-#: robots/sphere/crew_talk.gd:72
+#: robots/sphere/crew_talk.gd:82
 msgid "On my way to work."
 msgstr "[Ôñ mý ŵàý ţô ŵôŕķ. ~~~]"
 
-#: robots/sphere/crew_talk.gd:78
+#: robots/sphere/crew_talk.gd:88
 msgid "Fetching a bale."
 msgstr "[Féţçĥîñĝ à bàļé. ~~~]"
 
-#: robots/sphere/crew_talk.gd:80
+#: robots/sphere/crew_talk.gd:90
 msgid "Carrying bales home."
 msgstr "[Çàŕŕýîñĝ bàļéš ĥômé. ~~~~]"
 
-#: robots/sphere/crew_talk.gd:82
+#: robots/sphere/crew_talk.gd:92
 msgid "Tipping junk into the baler."
 msgstr "[Ţîþþîñĝ ĵûñķ îñţô ţĥé bàļéŕ. ~~~~~~~]"
 
-#: robots/sphere/crew_talk.gd:84
+#: robots/sphere/crew_talk.gd:94
 msgid "Filling my water tank."
 msgstr "[Fîļļîñĝ mý ŵàţéŕ ţàñķ. ~~~~~]"
 
-#: robots/sphere/crew_talk.gd:88
+#: robots/sphere/crew_talk.gd:98
 msgid "Looking for work."
 msgstr "[Ļôôķîñĝ ƒôŕ ŵôŕķ. ~~~]"
 
 #. a robot kind and its Mk tier, e.g. "Scoopie (Mk II)".
-#: robots/sphere/crew_talk.gd:96
+#: robots/sphere/crew_talk.gd:106
 msgid "%s (%s)"
 msgstr "[%s (%s)]"
 
-#: robots/sphere/crew_talk.gd:97
+#: robots/sphere/crew_talk.gd:107
 msgid "%s the %s: %s"
 msgstr "[%s ţĥé %s: %s ~~]"
 
-#: robots/sphere/crew_talk.gd:123
+#: robots/sphere/crew_talk.gd:132
 msgid "No robots here yet"
 msgstr "[Ñô ŕôbôţš ĥéŕé ýéţ ~~~]"
 
-#: robots/sphere/crew_talk.gd:125
+#: robots/sphere/crew_talk.gd:134
 msgid "%d robot working here"
 msgid_plural "%d robots working here"
 msgstr[0] "[%d ŕôbôţ ŵôŕķîñĝ ĥéŕé ~~~~]"
 msgstr[1] "[%d ŕôbôţš ŵôŕķîñĝ ĥéŕé ~~~~~]"
 
-#: robots/sphere/crew_talk.gd:127
+#: robots/sphere/crew_talk.gd:136
 msgid "%s, about %d hexes an hour"
 msgstr "[%s, àbôûţ %d ĥéxéš àñ ĥôûŕ ~~~~~~]"
 
-#: robots/sphere/crew_talk.gd:138
+#: robots/sphere/crew_talk.gd:147
 msgid "While you were away, your robots here cleaned %d hex."
 msgid_plural "While you were away, your robots here cleaned %d hexes."
 msgstr[0] "[Ŵĥîļé ýôû ŵéŕé àŵàý, ýôûŕ ŕôbôţš ĥéŕé çļéàñéð %d ĥéx. ~~~~~~~~~~~~~~~~]"
 msgstr[1] "[Ŵĥîļé ýôû ŵéŕé àŵàý, ýôûŕ ŕôbôţš ĥéŕé çļéàñéð %d ĥéxéš. ~~~~~~~~~~~~~~~~]"
 
-#: robots/sphere/crew_talk.gd:140
+#: robots/sphere/crew_talk.gd:149
 msgid "While you were away, your robots here earned %s cubes."
 msgstr "[Ŵĥîļé ýôû ŵéŕé àŵàý, ýôûŕ ŕôbôţš ĥéŕé éàŕñéð %s çûbéš. ~~~~~~~~~~~~~~~~]"
 
-#: robots/sphere/crew_talk.gd:141
+#: robots/sphere/crew_talk.gd:150
 msgid "While you were away, your robots here cleaned %d hex and earned %s cubes."
 msgid_plural "While you were away, your robots here cleaned %d hexes and earned %s cubes."
 msgstr[0] "[Ŵĥîļé ýôû ŵéŕé àŵàý, ýôûŕ ŕôbôţš ĥéŕé çļéàñéð %d ĥéx àñð éàŕñéð %s çûbéš. ~~~~~~~~~~~~~~~~~~~~~~~]"
@@ -4849,68 +4869,68 @@ msgstr ""
 msgid "All built"
 msgstr "[Àļļ bûîļţ ~]"
 
-#: ui/hud.gd:84
+#: ui/hud.gd:85
 msgid "Lumi reached level %d%s"
 msgstr "[Ļûmî ŕéàçĥéð ļévéļ %d%s ~~~~~]"
 
-#: ui/hud.gd:181
+#: ui/hud.gd:182
 msgid "OLD TOWN   0%"
 msgstr "[ÔĻÐ ŢÔŴÑ   0% ~~]"
 
-#: ui/hud.gd:362
+#: ui/hud.gd:364
 msgid "WREN SIGNAL   %d%%"
 msgstr "[ŴŔÉÑ ŠÎĜÑÀĻ   %d%% ~~~]"
 
-#: ui/hud.gd:417
+#: ui/hud.gd:424
 msgid "HEX  %d%% CLEAR"
 msgstr "[ĤÉX  %d%% ÇĻÉÀŔ ~~]"
 
-#: ui/hud.gd:421
+#: ui/hud.gd:428
 msgid "%s  BASE"
 msgstr "[%s  BÀŠÉ ~]"
 
-#: ui/hud.gd:424
+#: ui/hud.gd:431
 msgid "CARRYING %d/%d"
 msgstr "[ÇÀŔŔÝÎÑĜ %d/%d ~~]"
 
-#: ui/hud.gd:456
+#: ui/hud.gd:463
 msgid "HEX  CLEAR"
 msgstr "[ĤÉX  ÇĻÉÀŔ ~]"
 
-#: ui/hud.gd:460
+#: ui/hud.gd:467
 msgid "HEX  %s"
 msgstr "[ĤÉX  %s ~]"
 
-#: ui/hud.gd:463
+#: ui/hud.gd:470
 msgid "  SUSTAIN %d%%"
 msgstr "  [ŠÛŠŢÀÎÑ %d%% ~~]"
 
-#: ui/hud.gd:465
+#: ui/hud.gd:472
 msgid "  THIRSTY"
 msgstr "  [ŢĤÎŔŠŢÝ ~]"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:495
+#: ui/hud.gd:502
 msgid "%s   pick up bale"
 msgstr "[%s   þîçķ ûþ bàļé ~~~]"
 
-#: ui/hud.gd:496
+#: ui/hud.gd:503
 msgid "%s   dig up part"
 msgstr "[%s   ðîĝ ûþ þàŕţ ~~~]"
 
-#: ui/hud.gd:497
+#: ui/hud.gd:504
 msgid "%s   read memory shard"
 msgstr "[%s   ŕéàð mémôŕý šĥàŕð ~~~~~]"
 
-#: ui/hud.gd:498
+#: ui/hud.gd:505
 msgid "%s   pick up the seed tin"
 msgstr "[%s   þîçķ ûþ ţĥé šééð ţîñ ~~~~~~]"
 
-#: ui/hud.gd:499
+#: ui/hud.gd:506
 msgid "%s   set bale down"
 msgstr "[%s   šéţ bàļé ðôŵñ ~~~]"
 
-#: ui/hud.gd:500
+#: ui/hud.gd:507
 msgid "%s   workbench"
 msgstr "[%s   ŵôŕķbéñçĥ ~~]"
 
@@ -12289,16 +12309,16 @@ msgid "Your robot cleans on its own. Clean one more hex."
 msgstr "[Ýôûŕ ŕôbôţ çļéàñš ôñ îţš ôŵñ. Çļéàñ ôñé môŕé ĥéx. ~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[hex2].lines
-msgid "Your robot cleans on its own. Now one more hex, Lumi."
-msgstr "[Ýôûŕ ŕôbôţ çļéàñš ôñ îţš ôŵñ. Ñôŵ ôñé môŕé ĥéx, Ļûmî. ~~~~~~~~~~~~~~~~]"
+msgid "One hex clean. Now one more, Lumi."
+msgstr "[Ôñé ĥéx çļéàñ. Ñôŵ ôñé môŕé, Ļûmî. ~~~~~~~~~]"
 
 #: data/objectives.json:objectives[hex3].desc
 msgid "Your robot helps now. Clean ground lets the garden spread."
 msgstr "[Ýôûŕ ŕôbôţ ĥéļþš ñôŵ. Çļéàñ ĝŕôûñð ļéţš ţĥé ĝàŕðéñ šþŕéàð. ~~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[hex3].lines
-msgid "One more hex, Lumi. The planet notices, believe me."
-msgstr "[Ôñé môŕé ĥéx, Ļûmî. Ţĥé þļàñéţ ñôţîçéš, béļîévé mé. ~~~~~~~~~~~~~~~]"
+msgid "Your robot cleans on its own. One more hex, Lumi."
+msgstr "[Ýôûŕ ŕôbôţ çļéàñš ôñ îţš ôŵñ. Ôñé môŕé ĥéx, Ļûmî. ~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[seed].text
 msgid "Plant the first seed"

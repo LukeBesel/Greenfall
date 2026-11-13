@@ -172,7 +172,7 @@ func _process(delta: float) -> void:
 	if events == null:
 		return
 	_t += delta
-	_root.visible = not _modal()
+	_root.visible = not _modal() and not SphereCommand.open_in(events.world)  # [v8bot] the Command view's hint sits where the banner does
 	_banner.get_parent().get_parent().visible = Settings.hud_mode != Settings.HudMode.HIDDEN  # [hud]
 	_streak.visible = Settings.hud_mode != Settings.HudMode.HIDDEN
 	_update_banner()

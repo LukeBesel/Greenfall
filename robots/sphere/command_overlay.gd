@@ -20,6 +20,9 @@ const PAINT_WHAT: Dictionary = {"clean": "Paint the ground you want cleaned firs
 # l10n:end
 const LEGEND_ORDER: Array[String] = ["clean", "haul", "plant", "water", "skim"]
 const CLUSTER_PX: float = 26.0
+## [v8bot] The - / + buttons beside "Robots here" (width with its gap, height).
+const BTN_W: float = 36.0
+const BTN_H: float = 26.0
 const PIP_R: float = 8.0  # [v7look] was 6: robots read as specks on the pale ground
 
 var cmd: SphereCommand
@@ -29,6 +32,8 @@ var stats: Dictionary = {}  # pips / clusters drawn last frame (tests, dev)
 ## [v6screens] The boxes drawn last frame, {name, rect, text_w}, so the layout audit
 ## (tools/ui_audit_run.gd) can check them like Controls: on screen, clear of the HUD and each other.
 var panels: Array[Dictionary] = []
+## [v8bot] The card's "how many robots" buttons drawn last frame: {"minus": Rect2, "plus": Rect2}.
+var buttons: Dictionary = {}
 
 
 func _ready() -> void:
@@ -40,6 +45,16 @@ func _ready() -> void:
 	_box.set_corner_radius_all(10)
 	_box.border_color = Color(1, 1, 1, 0.14)
 	_box.set_border_width_all(1)
+
+
+## [v8bot] The - / + buttons' box.
+func _btn_box() -> StyleBoxFlat:
+	var b := StyleBoxFlat.new()
+	b.bg_color = Color(1, 1, 1, 0.12)
+	b.border_color = Color(1, 1, 1, 0.45)
+	b.set_border_width_all(1)
+	b.set_corner_radius_all(6)
+	return b
 
 
 ## Screen position of a world point if the camera sees it (in front, above the horizon), else null.
@@ -115,8 +130,7 @@ static func card_lines(p_cmd: SphereCommand) -> Array:
 		var r: String = str(u["role"])
 		if not by.has(r):
 			by[r] = [0, 0]
-		var st: int = CrewTalk.state(crew, u)
-		by[r][0 if st != CrewTalk.IDLE and st != CrewTalk.HELP else 1] += 1
+		by[r][0 if CrewTalk.busy(u) else 1] += 1  # [v8bot] busy, not the badge state: working while bales pile up is working
 	for r: String in LEGEND_ORDER:
 		if not by.has(r):
 			continue
@@ -129,9 +143,30 @@ static func card_lines(p_cmd: SphereCommand) -> Array:
 			what = TranslationServer.translate("%d waiting") % idle
 		out.append({"text": "%s: %s" % [TranslationServer.translate(str(ROLE_NAME[r])), what], "col": UITheme.CREAM, "size": 16,
 			"dot": ROLE_COL[r], "sel": r == p_cmd.role and p_cmd.roles().size() > 1})
+	out.append_array(count_lines(p_cmd))  # [v8bot]
 	if bool(sum["needs_hauler"]):
 		out.append({"text": TranslationServer.translate("Bales are piling up. Build a Haul Bug."), "col": BotBadge.AMBER, "size": 16})
 	out.append_array(other_bases(crew, hub))
+	return out
+
+
+## [v8bot] With a zone painted for the job in view: "Robots here: 2 of 3" (drawn with - and +
+## buttons), what the called robots are doing, and how to change the count.
+static func count_lines(p_cmd: SphereCommand) -> Array:
+	if not p_cmd.zone_here():
+		return []
+	var ct: Array[int] = p_cmd.count_now()
+	if ct[1] <= 0:
+		return []
+	var txt: String = TranslationServer.translate("Robots here: all %d") % ct[1] if ct[0] == 0 \
+		else TranslationServer.translate("Robots here: %d of %d") % [ct[0], ct[1]]
+	var zc: Dictionary = p_cmd.crew.zone_crew(p_cmd.role, p_cmd.view_hub())
+	var out: Array = [{"text": txt, "col": UITheme.CREAM, "size": 18, "count": true}]
+	out.append({"text": TranslationServer.translate("%d on the way, %d working here") % [int(zc["coming"]), int(zc["working"])],
+		"col": UITheme.GREEN, "size": 15})
+	if ct[1] > 1:
+		out.append({"text": TranslationServer.translate("D-pad left / right: how many come") if p_cmd.using_pad
+			else TranslationServer.translate("Click - or + (or keys - +): how many come"), "col": UITheme.MUTED, "size": 14})
 	return out
 
 
@@ -314,16 +349,30 @@ func _draw() -> void:
 	var cw: float = 0.0
 	var ch: float = 14.0
 	for l: Dictionary in lines:
-		cw = maxf(cw, _font.get_string_size(str(l["text"]), HORIZONTAL_ALIGNMENT_LEFT, -1, int(l["size"])).x + (22.0 if l.has("dot") else 0.0))
-		ch += float(l["size"]) + 9.0
+		cw = maxf(cw, _font.get_string_size(str(l["text"]), HORIZONTAL_ALIGNMENT_LEFT, -1, int(l["size"])).x + (22.0 if l.has("dot") else 0.0) + (2.0 * BTN_W + 8.0 if l.has("count") else 0.0))
+		ch += float(l["size"]) + 9.0 + (maxf(0.0, BTN_H - float(l["size"]) - 4.0) if l.has("count") else 0.0)
 	var origin := Vector2(22, 96)
 	draw_style_box(_box, Rect2(origin, Vector2(cw + 32.0, ch)))
 	panels.append({"name": "card", "rect": Rect2(origin, Vector2(cw + 32.0, ch)), "text_w": cw})  # [v6screens]
 	var y: float = origin.y + 10.0
+	buttons.clear()  # [v8bot]
 	for l: Dictionary in lines:
 		var fs2: int = int(l["size"])
 		y += fs2 + 2.0
 		var x: float = origin.x + 16.0
+		if l.has("count"):  # [v8bot] [-] Robots here: 2 of 3 [+]
+			var tw2: float = _font.get_string_size(str(l["text"]), HORIZONTAL_ALIGNMENT_LEFT, -1, fs2).x
+			var by: float = y - fs2 * 0.33 - BTN_H * 0.5
+			buttons["minus"] = Rect2(Vector2(x, by), Vector2(BTN_W - 8.0, BTN_H))
+			buttons["plus"] = Rect2(Vector2(x + BTN_W + tw2 + 8.0, by), Vector2(BTN_W - 8.0, BTN_H))
+			for k: String in buttons:
+				var br: Rect2 = buttons[k]
+				draw_style_box(_btn_box(), br)
+				var sym: String = "-" if k == "minus" else "+"
+				_text(br.get_center() + Vector2(0, 7), sym, 20, UITheme.CREAM, true)
+			draw_string(_font, Vector2(x + BTN_W, y), str(l["text"]), HORIZONTAL_ALIGNMENT_LEFT, -1, fs2, l["col"])
+			y += 7.0 + maxf(0.0, BTN_H - fs2 - 4.0)
+			continue
 		if l.has("dot"):
 			if bool(l.get("sel", false)):
 				draw_circle(Vector2(x + 6.0, y - fs2 * 0.33), 9.0, Color(1, 1, 1, 0.9))

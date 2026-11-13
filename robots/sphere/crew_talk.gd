@@ -37,7 +37,11 @@ const HELP_REASONS: Array[String] = ["zone done", "out of seeds", "no water", "n
 
 
 ## Haul Bugs missing at a robot's hub: bales are piling up there with too few haulers.
+## [v8bot] Never before the Haul Bug's plans have arrived (owner: the panel told a player with
+## three Scoopies and no way to build one to "Build a Haul Bug"; bales just wait for it till then).
 static func needs_hauler(crew: SphereCrew, hub: int) -> bool:
+	if not Research.robot_unlocked("haulbug"):
+		return false
 	var haulers: int = 0
 	for u: Dictionary in crew.units:
 		if int(u["hub"]) == hub and str(u["role"]) == "haul":
@@ -58,6 +62,12 @@ static func state(crew: SphereCrew, u: Dictionary) -> int:
 	if str(u["idle"]) in HELP_REASONS:
 		return HELP
 	return IDLE
+
+
+## [v8bot] Whether a robot is doing something (working, moving, carrying, greeting): the card's
+## "working" count. state() can be HELP while it works (bales piling up): that is not "waiting".
+static func busy(u: Dictionary) -> bool:
+	return str(u["mode"]) != "idle"
 
 
 ## One short line: what this robot is doing, or why it can't work.
@@ -116,8 +126,7 @@ static func hub_summary(crew: SphereCrew, hub: int) -> Dictionary:
 		if int(u["hub"]) != hub:
 			continue
 		n += 1
-		var st: int = state(crew, u)
-		if st != IDLE and st != HELP:
+		if busy(u):  # [v8bot] a robot cleaning while bales pile up is working, not waiting
 			working += 1
 		rate += hexes_per_hour(u)
 	var text: String = TranslationServer.translate("No robots here yet")

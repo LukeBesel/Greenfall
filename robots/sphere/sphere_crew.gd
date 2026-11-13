@@ -82,6 +82,16 @@ const HAUL_REACH_M: float = 600.0
 var short_haul: Dictionary = {}
 var _talk_t: float = 0.0
 var _zone_hub: Dictionary = {}  # [v6crew] "role|hub" -> {cell: true}: the painted cells in that hub's region
+## [v8bot] How many robots of a job a painted zone calls: role -> n (absent = all of them). The n
+## robots of that job nearest the zone by travel ("called", u["called"]) go there first; the rest
+## keep working on their own and leave the zone to them. Saved with the zones.
+var zone_n: Dictionary = {}
+var _assign_dirty: bool = true
+var _assign_t: float = 0.0
+const ASSIGN_EVERY_S: float = 0.4
+## [v8bot] Robots ranked by travel distance to a zone: only this many past n are routed (the rest by
+## straight distance), so a Fabricator fleet stays cheap.
+const ASSIGN_ROUTE_EXTRA: int = 4
 
 var _claimed: Dictionary = {}  # cell -> unit name
 var _left: Dictionary = {}  # cell -> work target (junk left 0..1) while robots work it
@@ -154,6 +164,7 @@ func spawn(type_id: String, tier: int, cell: int, hub: int = -1, p_name: String 
 	for k: String in LOG_KEYS:
 		u["log"][k] = 0.0
 	units.append(u)
+	_assign_dirty = true  # [v8bot] a new robot may be one of a zone's nearest
 	if _focus_dist(d) < PROMOTE_M and near_count() < max_near:
 		_promote(u)
 	return u
@@ -582,6 +593,7 @@ func transfer(u: Dictionary, hub: int) -> void:
 	var dd: Vector3 = drop_dir(hub)
 	var at: Vector3 = _free_spot(SphereMath.advance(dd, SphereMath.any_perpendicular(dd).rotated(dd, slot), 4.0 / surface.radius)[0])
 	u["hub"] = hub
+	_assign_dirty = true  # [v8bot]
 	var rec: Dictionary = u["rec"]
 	rec["dir"] = at
 	rec["cell"] = grid.cell_at(at)
@@ -608,9 +620,14 @@ func transfer_some(from_hub: int, to_hub: int, n: int, type_id: String = "") -> 
 
 ## Next dirty cell for a robot at `from` working for `hub` (BFS outward, so nearest first),
 ## inside the hub region (or the role's painted zone). -1 if none.
-func claim_dirty(from: int, hub: int, p_rings: int = -1, role: String = "clean", who: String = "") -> int:
+## [v8bot] `use_zone` false (a robot the zone did not call): its painted cells are left to the
+## called robots while there is other work; with nothing else in reach they are taken too.
+func claim_dirty(from: int, hub: int, p_rings: int = -1, role: String = "clean", who: String = "", use_zone: bool = true) -> int:
 	var zone: Dictionary = zone_for(role, hub)  # [v6crew] the zone cells of this robot's own hub
 	var lim: float = ((p_rings if p_rings >= 0 else rings) + 0.5) * 17.35
+	if not use_zone and not zone.is_empty():
+		var oc: int = _claim_in(from, hub, lim, role, who, {}, zone)
+		return oc if oc >= 0 else _claim_in(from, hub, lim, role, who, {})
 	if not zone.is_empty() and not zone_strict(role):  # [v6crew] "here first": zone, then the region
 		var zc: int = _claim_in(from, hub, lim, role, who, zone)
 		if zc >= 0:
@@ -619,7 +636,7 @@ func claim_dirty(from: int, hub: int, p_rings: int = -1, role: String = "clean",
 	return _claim_in(from, hub, lim, role, who, zone)
 
 
-func _claim_in(from: int, hub: int, lim: float, role: String, who: String, zone: Dictionary) -> int:
+func _claim_in(from: int, hub: int, lim: float, role: String, who: String, zone: Dictionary, avoid: Dictionary = {}) -> int:
 	if zone.is_empty() and grid.distance_m(from, hub) >= lim:
 		from = hub  # outside its region (just built, or ordered away): search from the hub
 	var seen: Dictionary = {from: true}
@@ -629,7 +646,7 @@ func _claim_in(from: int, hub: int, lim: float, role: String, who: String, zone:
 		var nxt := PackedInt32Array()
 		for c: int in front:
 			steps += 1
-			if (zone.is_empty() or zone.has(c)) and not _claimed.has(c) and float(_skip.get(c, -1.0)) < _t and wants(role, c):
+			if (zone.is_empty() or zone.has(c)) and not avoid.has(c) and not _claimed.has(c) and float(_skip.get(c, -1.0)) < _t and wants(role, c):
 				_claimed[c] = who
 				return c
 			for k: int in grid.nbr_count[c]:
@@ -791,6 +808,7 @@ func _refresh_swarm_obstacles(delta: float) -> void:
 
 func set_zone_cell(role: String, cell: int, on: bool) -> void:
 	_zone_hub.clear()  # [v6crew]
+	_assign_dirty = true  # [v8bot]
 	if not zones.has(role):
 		zones[role] = {}
 	if on:
@@ -801,7 +819,125 @@ func set_zone_cell(role: String, cell: int, on: bool) -> void:
 
 func clear_zone(role: String) -> void:
 	_zone_hub.clear()  # [v6crew]
+	_assign_dirty = true  # [v8bot]
 	zones.erase(role)
+
+
+## [v8bot] How many robots of `role` a painted zone calls (0 = all of them).
+func zone_count(role: String) -> int:
+	return int(zone_n.get(role, 0))
+
+
+## [v8bot] Sets how many robots of `role` a zone calls; n <= 0 = all.
+func set_zone_count(role: String, n: int) -> void:
+	if n <= 0:
+		zone_n.erase(role)
+	else:
+		zone_n[role] = n
+	_assign_dirty = true
+
+
+## [v8bot] Whether the painted zone of its job (at its hub) called this robot.
+func is_called(u: Dictionary) -> bool:
+	return bool(u.get("called", false))
+
+
+## [v8bot] The robots of `role` at `hub` and what the zone's called ones are doing:
+## {total, called, coming, working} (coming: on the way to a zone cell; working: on one).
+func zone_crew(role: String, hub: int) -> Dictionary:
+	var z: Dictionary = zone_for(role, hub)
+	var out: Dictionary = {"total": 0, "called": 0, "coming": 0, "working": 0}
+	for u: Dictionary in units:
+		if int(u["hub"]) != hub or str(u["role"]) != role:
+			continue
+		out["total"] = int(out["total"]) + 1
+		if not is_called(u):
+			continue
+		out["called"] = int(out["called"]) + 1
+		if z.has(int(u["job"])):
+			if str(u["mode"]) == "work":
+				out["working"] = int(out["working"]) + 1
+			else:
+				out["coming"] = int(out["coming"]) + 1
+	return out
+
+
+## [v8bot] Travel distance (m) from a robot to the nearest cell of zone `z`: the hex route's length
+## when `routed`, else the straight distance.
+func zone_dist_m(u: Dictionary, z: Dictionary, routed: bool = true) -> float:
+	var here: int = unit_cell(u)
+	var best: int = -1
+	var bd: float = INF
+	for c: Variant in z:
+		var d: float = grid.distance_m(here, int(c))
+		if d < bd:
+			bd = d
+			best = int(c)
+	if best < 0 or not routed or here == best:
+		return bd
+	var p: PackedInt32Array = route(here, best, str(u["role"]))
+	if p.is_empty():
+		return bd + 100000.0  # no way there: last
+	var m: float = 0.0
+	for i: int in range(1, p.size()):
+		m += grid.distance_m(p[i - 1], p[i])
+	return m
+
+
+## [v8bot] Picks the robots each painted zone calls: per job and hub, the zone_count nearest by
+## travel (all of them when the count is 0 or as large as the crew). A robot newly called leaves a
+## job outside the zone at once ("work here first" means now, not after its current hex).
+func _assign_zones() -> void:
+	_assign_dirty = false
+	var was: Dictionary = {}
+	var groups: Dictionary = {}  # "role|hub" -> [units]
+	for u: Dictionary in units:
+		was[u["name"]] = is_called(u)
+		u["called"] = false
+		var r: String = str(u["role"])
+		if not zones.has(r) or (zones[r] as Dictionary).is_empty():
+			continue
+		var k: String = "%s|%d" % [r, int(u["hub"])]
+		if not groups.has(k):
+			groups[k] = []
+		(groups[k] as Array).append(u)
+	for k: String in groups:
+		var r2: String = k.get_slice("|", 0)
+		var z: Dictionary = zone_for(r2, int(k.get_slice("|", 1)))
+		if z.is_empty():
+			continue
+		var cand: Array = groups[k]
+		var n: int = zone_count(r2)
+		if n > 0 and n < cand.size():
+			var scored: Array = []
+			for u2: Dictionary in cand:
+				scored.append([zone_dist_m(u2, z, false), u2])
+			scored.sort_custom(func(a: Array, b: Array) -> bool: return float(a[0]) < float(b[0]))
+			var top: int = mini(scored.size(), n + ASSIGN_ROUTE_EXTRA)
+			for i: int in top:
+				scored[i][0] = zone_dist_m(scored[i][1], z, true)
+			var head: Array = scored.slice(0, top)
+			head.sort_custom(func(a: Array, b: Array) -> bool: return float(a[0]) < float(b[0]))
+			cand = []
+			for i: int in n:
+				cand.append(head[i][1])
+		for u3: Dictionary in cand:
+			u3["called"] = true
+			if not bool(was.get(u3["name"], false)):
+				_answer_call(u3, z)
+
+
+## [v8bot] A robot just called to zone `z`: a job outside it is dropped (its hopper is kept), so it
+## heads for the zone on its next think.
+func _answer_call(u: Dictionary, z: Dictionary) -> void:
+	if not str(u["mode"]) in ["go", "work", "idle"]:
+		return  # hello, carrying, refilling: it comes when that is done
+	if int(u["job"]) >= 0 and z.has(int(u["job"])):
+		return
+	if int(u["job"]) >= 0:
+		_drop_job(u)
+	u["pid"] = -1
+	u["rescan"] = 0.0
 
 
 # --- Loop -------------------------------------------------------------------------------------
@@ -822,6 +958,9 @@ func tick(delta: float) -> void:
 		for u: Dictionary in units:
 			if not short_haul.has(int(u["hub"])):
 				short_haul[int(u["hub"])] = CrewTalk.needs_hauler(self, int(u["hub"]))
+	if _assign_dirty and _t >= _assign_t:  # [v8bot]
+		_assign_t = _t + ASSIGN_EVERY_S
+		_assign_zones()
 	_refresh_swarm_obstacles(delta)
 	_far_acc += delta
 	var far_step: bool = _far_acc >= far_every
@@ -1020,12 +1159,12 @@ func _find_job(u: Dictionary) -> bool:
 	if role == "plant" and spend_seeds and not GameState.can_afford("seeds", BigNum.from_float(1.0)):
 		u["idle"] = "out of seeds"
 		return false
-	var c: int = claim_dirty(here, int(u["hub"]), rings, role, str(u["name"]))
+	var c: int = claim_dirty(here, int(u["hub"]), rings, role, str(u["name"]), is_called(u))  # [v8bot] only called robots take the zone first
 	if c < 0:
 		if role == "clean" and float(u["hopper"]) > 0.0:
 			_drop_bale(u)  # nothing left: bale what it has so the haulers can take it
 		u["idle"] = {"clean": "zone clean", "plant": "nothing to plant", "water": "nothing to water", "skim": "no lake junk"}.get(role, "idle")
-		if zone_strict(role) and not zone_for(role, int(u["hub"])).is_empty():
+		if zone_strict(role) and is_called(u) and not zone_for(role, int(u["hub"])).is_empty():
 			u["idle"] = "zone done"  # [v6crew] its painted zone is finished (work may wait outside it)
 		return false
 	u["job"] = c
@@ -1540,7 +1679,7 @@ func to_dict() -> Dictionary:
 	var hl: Dictionary = {}  # [v6crew] what each hub's crew did since Lumi last stood there
 	for h: Variant in hub_log:
 		hl[str(h)] = (hub_log[h] as Dictionary).duplicate()
-	return {"v": 1, "robots": list, "bales": bl, "cashed": cashed, "zones": zd, "hub_log": hl}
+	return {"v": 1, "robots": list, "bales": bl, "cashed": cashed, "zones": zd, "zone_n": zone_n.duplicate(), "hub_log": hl}  # [v8bot] zone_n
 
 
 func from_dict(d: Dictionary) -> void:
@@ -1581,6 +1720,12 @@ func from_dict(d: Dictionary) -> void:
 			e[str(k)] = float(hld[h][k])
 	zones.clear()  # [v3qa]
 	_zone_hub.clear()  # [v6crew]
+	zone_n.clear()  # [v8bot]
+	var zn: Dictionary = d.get("zone_n", {})
+	for r: Variant in zn:
+		if int(zn[r]) > 0:
+			zone_n[str(r)] = int(zn[r])
+	_assign_dirty = true
 	var zd: Dictionary = d.get("zones", {})
 	for r: Variant in zd:
 		var z: Dictionary = {}

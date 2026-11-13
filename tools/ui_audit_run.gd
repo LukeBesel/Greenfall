@@ -449,6 +449,18 @@ func _command_pass() -> void:
 	var cam: SphereCam = so.get("cam")
 	var w: Node = so.get("w")
 	var hud: Node = w.get("hud")
+	# [v8bot] Owner: a Salvage Surge banner sat right on the Command view's hint. Raise an event so
+	# its banner is up (it must step aside), and paint a zone so the card's "Robots here" row shows
+	# (with --robots=scoopie:3 the crew has robots to count).
+	var ev: WorldEvents = w.get("events") as WorldEvents
+	if ev != null and ev.active.is_empty():
+		if not ev.start("salvage_surge", true):
+			ev.start_random()
+	var crew_: SphereCrew = SphereCrew.active
+	if crew_ != null and crew_.hub_cell >= 0:
+		var around: PackedInt32Array = crew_.grid.cells_around(crew_.hub_cell, 2)
+		for k: int in mini(2, around.size() - 8):
+			crew_.set_zone_cell("clean", around[8 + k], true)
 	cam.view = "command"
 	so.get("crews").call("on_view", so)
 	await _wait_s(2.5)
@@ -474,6 +486,12 @@ func _check_command(cfg: String, ov: CommandOverlay, hud: Node) -> void:
 		_counted["command"] = true
 		print("[ui-audit] screen command: %d drawn boxes (%s)" % [ps.size(), ", ".join(PackedStringArray(ps.map(func(p: Dictionary) -> String: return str(p["name"]))))])
 	var huds: Array[Control] = UIAudit.content_of([hud]) if hud else []
+	var ev: WorldEvents = so.get("w").get("events") as WorldEvents  # [v8bot] the event banner too
+	if ev != null and ev.hud != null:
+		huds.append_array(UIAudit.content_of([ev.hud]))
+		if not _counted.has("command_event"):
+			_counted["command_event"] = true
+			print("[ui-audit] command: event %s up" % str(ev.active.get("id", "none")))
 	for i: int in ps.size():
 		var r: Rect2 = ps[i]["rect"]
 		var nm: String = str(ps[i]["name"])

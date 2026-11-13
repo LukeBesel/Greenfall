@@ -130,7 +130,7 @@
       "key": "hexes_cleaned",
       "target": 2,
       "lines": [
-        "Your robot cleans on its own. Now one more hex, Lumi."
+        "One hex clean. Now one more, Lumi."
       ]
     },
     {
@@ -141,7 +141,7 @@
       "key": "hexes_cleaned",
       "target": 3,
       "lines": [
-        "One more hex, Lumi. The planet notices, believe me."
+        "Your robot cleans on its own. One more hex, Lumi."
       ]
     },
     {
