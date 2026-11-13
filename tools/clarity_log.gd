@@ -131,17 +131,15 @@ static func card_text(w: Node, with_count: bool = true) -> String:
 	var parts: PackedStringArray = []
 	var oc: ObjectiveCard = gp.objective
 	if oc and oc.visible:
-		var tl: Label = oc.get("_title")
+		var rd: Array[String] = oc.read()  # [v9d] title, why, hint or cost chips, count
 		var wl: Label = oc.get("_why")
-		var cl: Label = oc.get("_count")
-		parts.append(tl.text if tl else "")
+		parts.append(rd[0])
 		if wl and wl.visible and wl.text != "":
 			parts.append(wl.text)
-		var hl: Variant = oc.get("_hint")  # [v6story] the situation line under the reason
-		if hl is Label and (hl as Label).visible and (hl as Label).text != "":
-			parts.append("> " + (hl as Label).text)
-		if with_count and cl and cl.text != "":
-			parts.append("[" + cl.text + "]")
+		if rd[2] != "":
+			parts.append("> " + rd[2])
+		if with_count and rd[3] != "":
+			parts.append("[" + rd[3] + "]")
 	var ck: ChecklistCard = gp.checklist
 	if ck and ck.visible:
 		var tx: Variant = ck.get("_text")

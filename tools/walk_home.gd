@@ -110,7 +110,7 @@ static func _card() -> Array[String]:
 	var oc: ObjectiveCard = gp.objective if gp else null
 	if oc == null:
 		return ["", "", "", ""]
-	return [str(oc.get("_title").text), str(oc.get("_why").text), str(oc.get("_hint").text) if oc.get("_hint").visible else "", str(oc.get("_count").text)]
+	return oc.read()  # [v9d] the card as text: title, why (also when folded), hint or cost chips, count
 
 
 static func _wait_step_not(id: String, secs: float) -> bool:
@@ -297,7 +297,7 @@ static func _part_base2() -> void:
 	_set_money(1500.0, 100.0)
 	await tree.create_timer(0.6).timeout
 	var c: Array[String] = _card()
-	_check(c[0] == "Rebuild the base to level 2" and "50" in c[2], "base2: the card says how many Parts are missing (%s)" % str(c))
+	_check(c[0] == "Base to level 2" and "50" in c[2], "base2: the card says how many Parts are missing (%s)" % str(c))
 	var ld: ListDetail = await _open_bench()
 	if ld == null:
 		return

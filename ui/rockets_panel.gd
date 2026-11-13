@@ -57,7 +57,7 @@ func refresh() -> void:
 	if world.get("orbit") != null:
 		# [v5play] On the round planet the rocket itself is the way to fly (press E at the pad, pick
 		# a hub). The list below launched the flat game's rocket: script errors, no flight.
-		var how := UITheme.label(tr("Walk to the rocket on the launch pad and press E to choose where to fly.") if ready_ else Hub.rocket_lock_text(world.hub.level if world.hub else 1), 15, UITheme.CREAM)
+		var how := UITheme.label(Objectives.glyphs(tr("Walk to the rocket on the launch pad and press {interact} to choose where to fly.")) if ready_ else Hub.rocket_lock_text(world.hub.level if world.hub else 1), 15, UITheme.CREAM)
 		how.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		add_child(how)
 		return
@@ -134,6 +134,7 @@ func _tier_box() -> void:
 				world.refresh_rocket()
 		else:
 			Audio.play("buzz", 1.2, -8.0)
+			Refuse.say(RocketTiers.blocker())  # [v9d] say why
 		refresh())
 	v.add_child(b)
 

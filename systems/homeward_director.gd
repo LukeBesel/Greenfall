@@ -563,7 +563,7 @@ func _use_bed() -> void:
 		Vfx.burst("big_sparkle", _bed.global_position + Vector3(0, 0.6, 0), Color(0.6, 1.0, 0.6), 0.8)
 		Audio.play("chime", 1.0, -4.0)
 		GameState.inc_stat("last_seed")
-		EventBus.toast.emit(tr("The last seed is in the ground. Everything is ready. Press E again here to launch home."), "story")
+		EventBus.toast.emit(tr("The last seed is in the ground. Everything is ready. Press {interact} again here to launch home."), "story")
 		if world.get("wren") != null:
 			world.wren.say("home_last_seed", 1.0, true)
 		return

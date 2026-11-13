@@ -310,6 +310,8 @@ func _on_compartment(fill: float, cap: float) -> void:
 func show_toast(text: String, kind: String = "info") -> void:
 	if Subtitles.cut(text, kind):  # [v4calm] item 49: reward chatter never shows
 		return
+	if "{" in text:  # [v9d] key names follow the player's binding ({interact} -> [E] / [A])
+		text = Objectives.glyphs(tr(text))
 	if not Subtitles.post(text, kind):
 		_notify.push(text, kind)
 
@@ -369,6 +371,8 @@ func _process(delta: float) -> void:
 			_district_idle = 0.0
 	_district_idle += delta
 	var dwant: float = 1.0 if not minimal or _district_idle < FADE_AFTER_S else 0.0
+	if get_viewport().get_visible_rect().size.y < 420.0 and goals and goals.objective and goals.objective.visible:
+		dwant = 0.0  # [v9d] a short screen (large UI scale): the objective card has the corner to itself
 	_district_card.modulate.a = move_toward(_district_card.modulate.a, dwant, delta * (3.0 if dwant > 0.0 else 0.6))
 	# [v7look] a big moment (a base's arrival title) has the screen: the top-right cards step aside
 	_hold_corner_s = maxf(_hold_corner_s - delta, 0.0)

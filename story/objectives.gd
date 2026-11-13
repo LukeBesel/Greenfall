@@ -835,7 +835,7 @@ func _narrate() -> void:
 
 ## Owner 2026-11-08 #21: after the Baler there was no word on how to make a bale.
 static func bale_howto() -> String:
-	return TranslationServer.translate("Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale.") % Settings.glyph("cube")
+	return TranslationServer.translate("Baler in! Fill your chest, then press [%s] for a bale.") % Settings.glyph("cube")
 
 
 func _on_upgrade_bought(id: String, lv: int) -> void:
@@ -923,6 +923,8 @@ const EMPTY_S: float = 6.0
 const HEAVY_MS: int = 6000
 
 var situation: String = ""
+## [v9d] The situation line is only the step's price ("Need N more cubes..."): the card shows chips instead.
+var situation_price: bool = false
 var _empty_t: float = 0.0
 var _was_full: bool = false
 
@@ -951,6 +953,11 @@ func is_lost() -> bool:
 	var p: Patch = _patch()
 	var h: Variant = home_pos()
 	return p != null and h is Vector3 and OrbitUp.ground_dist(p.global_position, h) > LOST_M
+
+
+## [v9d] The current step's price ({} when it has none): the objective card shows it as chips.
+func step_price() -> Dictionary:
+	return _step_price()
 
 
 ## The bench item the current step wants, when its price can't be paid yet: {cubes: n, ...}.
@@ -1042,6 +1049,7 @@ static func arc_price(w: Node, key: String) -> Dictionary:
 
 
 func situation_hint(dt: float = 0.0) -> String:
+	situation_price = false
 	var p: Patch = _patch()
 	if p == null or p.compartment == null:
 		return ""
@@ -1064,6 +1072,7 @@ func situation_hint(dt: float = 0.0) -> String:
 		return tr("Too heavy. Upgrade Lift at the bench.")
 	var price: Dictionary = _step_price()
 	if not price.is_empty() and not GameState.can_afford_all(price):
+		situation_price = true
 		return ListDetail.short_text(price)
 	var bench_here: bool = field_bench() is Vector3 and str(step_target(current()).get("to", "")) == "bench"  # [v6pace]
 	if far and needs_home() and not bench_here:

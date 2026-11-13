@@ -141,7 +141,7 @@ func _process(delta: float) -> void:
 		GameState.flags["late_bridge_hint"] = true
 		CradleMode.bank()
 		get_tree().create_timer(8.0, false).timeout.connect(func() -> void:
-			EventBus.toast.emit(tr("Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode (H) is open too."), "story")
+			EventBus.toast.emit(tr("Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode ({garden_mode}) is open too."), "story")
 			if world.get("wren") != null:
 				world.wren.say("cradle_mode", 1.0, true))
 

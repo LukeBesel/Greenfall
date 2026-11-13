@@ -27,7 +27,7 @@ msgstr ""
 msgid "Base"
 msgstr ""
 
-#: autoload/Economy.gd:136 autoload/Economy.gd:138 ui/upgrade_card.gd:190
+#: autoload/Economy.gd:136 autoload/Economy.gd:138 ui/upgrade_card.gd:191
 msgid "%s Lv %d"
 msgstr ""
 
@@ -308,7 +308,7 @@ msgid "Clear the junk around it first (%d%% of %d%%)."
 msgstr ""
 
 #: automation/outposts.gd:380 automation/outposts.gd:395 automation/stations.gd:131
-#: systems/camp/hub_builds.gd:79
+#: systems/camp/hub_builds.gd:79 ui/refuse.gd:12
 msgid "Not enough cubes or parts."
 msgstr ""
 
@@ -321,7 +321,7 @@ msgid "Fully upgraded."
 msgstr ""
 
 #: automation/outposts.gd:412
-msgid "Outpost %d repaired: a working scale on the frontier. Haul Bugs deliver to the nearest scale now."
+msgid "Outpost %d repaired: a new scale for your Haul Bugs."
 msgstr ""
 
 #: automation/outposts.gd:413
@@ -384,7 +384,7 @@ msgstr ""
 msgid "Space / Esc  skip"
 msgstr ""
 
-#: automation/rocket_tiers.gd:56 ui/robot_card.gd:251
+#: automation/rocket_tiers.gd:56 ui/robot_card.gd:252
 msgid "Top tier"
 msgstr ""
 
@@ -401,16 +401,16 @@ msgid "Rocket upgraded: %s."
 msgstr ""
 
 #: automation/stations.gd:122 automation/telescope.gd:98 robots/fabricator/bot_fabricator.gd:92
-#: systems/camp/yard_builds.gd:81 ui/stations_panel.gd:96
+#: systems/camp/yard_builds.gd:81 ui/stations_panel.gd:97
 msgid "Built."
 msgstr ""
 
-#: automation/stations.gd:126 ui/stations_panel.gd:97
+#: automation/stations.gd:126 ui/stations_panel.gd:98
 msgid "Requires research: %s."
 msgstr ""
 
 #: automation/stations.gd:129 automation/trash_bin.gd:85 systems/camp/yard_builds.gd:86
-#: ui/stations_panel.gd:97
+#: ui/stations_panel.gd:98
 msgid "Requires hub level %d."
 msgstr ""
 
@@ -453,12 +453,12 @@ msgstr ""
 #: automation/telescope.gd:104 automation/trash_bin.gd:87 robots/fabricator/bot_fabricator.gd:96
 #: systems/camp/camp.gd:430 systems/camp/hub_builds.gd:79 systems/camp/hub_builds.gd:157
 #: systems/camp/hub_builds.gd:167 systems/camp/hub_builds.gd:177 systems/camp/yard_builds.gd:91
-#: ui/telescope_panel.gd:40
+#: ui/telescope_panel.gd:41
 msgid "Not enough materials."
 msgstr ""
 
 #: automation/telescope.gd:115
-msgid "Telescope built. Walk up to it and press E to look across the system."
+msgid "Telescope built. Walk up to it and press {interact} to look across the system."
 msgstr ""
 
 #: automation/telescope.gd:260 ui/telescope_panel.gd:11
@@ -470,7 +470,7 @@ msgid "E   Telescope: look across the system"
 msgstr ""
 
 #: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:559 ui/upgrade_card.gd:258
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:559 ui/upgrade_card.gd:259
 msgid "%d min"
 msgstr ""
 
@@ -490,7 +490,7 @@ msgstr ""
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr ""
 
-#: core/pace.gd:147 story/objectives.gd:1064
+#: core/pace.gd:147 story/objectives.gd:1069
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr ""
 
@@ -679,7 +679,7 @@ msgid "landmark"
 msgstr ""
 
 #: planet/sites/hub_plan.gd:294
-msgid "The recycling network grew: everything sells for x%s now."
+msgid "Everything sells for x%s now."
 msgstr ""
 
 #: planet/sites/hub_plan.gd:313
@@ -710,7 +710,7 @@ msgstr ""
 msgid "Home. The workbench is by the pod."
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:174 story/objectives.gd:1071
+#: planet/sites/hub_purpose.gd:174 story/objectives.gd:1076
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr ""
 
@@ -1550,7 +1550,7 @@ msgid "%s %s assembled. It looks around, then gets to work."
 msgstr ""
 
 #: scenes/slice.gd:130 ui/rockets_panel.gd:60
-msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
+msgid "Walk to the rocket on the launch pad and press {interact} to choose where to fly."
 msgstr ""
 
 #: scenes/slice.gd:140 ui/rockets_panel.gd:39
@@ -1578,7 +1578,7 @@ msgid "Upgrades need a workbench. Head back to the hub."
 msgstr ""
 
 #: scenes/slice_orbit.gd:1133
-msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
+msgid "Workbench fixed. Press {interact} at it to spend cubes on upgrades."
 msgstr ""
 
 #: scenes/story_preview.gd:156 ui/loading_screen.gd:166
@@ -1674,7 +1674,7 @@ msgid "Nothing is waiting to end, {name}. Nobody is keeping score. We're home. W
 msgstr ""
 
 #: story/bloom_finale.gd:227
-msgid "The Cradle is home. The Seed Ark is open: every bloom on Verdance counts toward the next wave. Progress shows on the hologram (M)."
+msgid "The Cradle is home. The Seed Ark is open: every bloom on Verdance counts toward the next wave. Progress shows on the hologram ({open_globe})."
 msgstr ""
 
 #: story/core_charge.gd:206
@@ -1766,7 +1766,7 @@ msgid "Cradle Returns  ·  the ark answers"
 msgstr ""
 
 #: story/cradle_answers.gd:81
-msgid "The Cradle is holding orbit. Restore the whole system: the solar map is on the hologram (M). Build the Mk V Orbital drive to reach Ochre and Tidewell."
+msgid "The Cradle is holding orbit. Restore the whole system: the solar map is on the hologram ({open_globe}). Build the Mk V Orbital drive to reach Ochre and Tidewell."
 msgstr ""
 
 #: story/egg_props.gd:187
@@ -2064,7 +2064,7 @@ msgid "GREEN LIGHT  ·  NONE DETECTED"
 msgstr ""
 
 #: story/ledger.gd:162
-msgid "New at the workbench, Build tab: Signal Jammer. It scrambles the Ledger's drones near the base."
+msgid "New build: Signal Jammer. It keeps Ledger drones away."
 msgstr ""
 
 #: story/ledger.gd:171
@@ -2132,8 +2132,8 @@ msgid ""
 msgstr ""
 
 #: story/ledger.gd:329 systems/decor.gd:124 systems/research.gd:202
-#: systems/robot_builder.gd:348 systems/robot_builder.gd:404 ui/stations_panel.gd:100
-#: ui/telescope_panel.gd:43
+#: systems/robot_builder.gd:348 systems/robot_builder.gd:404 ui/stations_panel.gd:101
+#: ui/telescope_panel.gd:44
 msgid "Needs %s"
 msgstr ""
 
@@ -2142,7 +2142,7 @@ msgid "Ledger drone inbound, %s! It's heading for a clean hex."
 msgstr ""
 
 #: story/ledger.gd:511
-msgid "A Ledger drone is coming to dump junk on a clean hex (%s of you). It can't touch planted ground."
+msgid "A Ledger drone is coming (%s). It dumps junk on clean ground."
 msgstr ""
 
 #: story/ledger.gd:548
@@ -2154,7 +2154,7 @@ msgid "Target re-classified as ASSET. Aborting. ...Interesting."
 msgstr ""
 
 #: story/ledger.gd:649
-msgid "The drone dumped a little junk back. Scoop it up, or let your helpers tidy it. A Signal Jammer at the base keeps drones away."
+msgid "The drone dumped junk back. Scoop it up."
 msgstr ""
 
 #: story/ledger.gd:705
@@ -2216,10 +2216,10 @@ msgid "Goal complete  ·  %s"
 msgstr ""
 
 #: story/objectives.gd:838
-msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
+msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr ""
 
-#: story/objectives.gd:860 story/objectives.gd:1052
+#: story/objectives.gd:860 story/objectives.gd:1057
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr ""
 
@@ -2231,27 +2231,27 @@ msgstr ""
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr ""
 
-#: story/objectives.gd:1053
+#: story/objectives.gd:1058
 msgid "Your chest is full. Bring it to the bin."
 msgstr ""
 
-#: story/objectives.gd:1060
+#: story/objectives.gd:1065
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:1062
+#: story/objectives.gd:1067
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:1062
+#: story/objectives.gd:1067
 msgid "Carry your bale to the scale by the bin."
 msgstr ""
 
-#: story/objectives.gd:1072
+#: story/objectives.gd:1077
 msgid "Head home: follow the beam to the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:1082
+#: story/objectives.gd:1087
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr ""
 
@@ -2376,10 +2376,10 @@ msgid "WE'LL BE BACK"
 msgstr ""
 
 #: systems/achievements.gd:167
-msgid "%d achievements unlocked. See them in the Codex (K)."
+msgid "%d achievements unlocked. See them in the Codex ({open_codex})."
 msgstr ""
 
-#: systems/achievements.gd:174 ui/notify_stack.gd:27 ui/subtitles.gd:451
+#: systems/achievements.gd:174 ui/notify_stack.gd:38 ui/subtitles.gd:451
 msgid "Achievement: %s. %s"
 msgstr ""
 
@@ -2448,7 +2448,7 @@ msgid "Any district"
 msgstr ""
 
 #: systems/collection.gd:53
-msgid "New for your Collection: %s. See it in the Codex (K)."
+msgid "New for your Collection: %s. See it in the Codex ({open_codex})."
 msgstr ""
 
 #: systems/collection.gd:78
@@ -2820,7 +2820,7 @@ msgid "E   plant the last seed"
 msgstr ""
 
 #: systems/homeward_director.gd:566
-msgid "The last seed is in the ground. Everything is ready. Press E again here to launch home."
+msgid "The last seed is in the ground. Everything is ready. Press {interact} again here to launch home."
 msgstr ""
 
 #: systems/l10n_fmt.gd:21
@@ -2890,7 +2890,7 @@ msgid "The Ark Bridge opens once the Cradle has come home."
 msgstr ""
 
 #: systems/late_director.gd:144
-msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode (H) is open too."
+msgid "Cradle Mode: the ark's seed vault holds seeds for other worlds. Pause > Ark Bridge to see them and the Heirlooms your restoration has unlocked, or seed a new world. Garden Mode ({garden_mode}) is open too."
 msgstr ""
 
 #: systems/lumi_style.gd:400
@@ -2909,7 +2909,7 @@ msgstr ""
 msgid "Buy for %s"
 msgstr ""
 
-#: systems/museum.gd:119 systems/camp/hub_builds.gd:80 ui/glim_bench.gd:42
+#: systems/museum.gd:119 systems/camp/hub_builds.gd:80 ui/glim_bench.gd:43
 msgid "Not enough cubes, parts or seeds"
 msgstr ""
 
@@ -3489,11 +3489,11 @@ msgstr ""
 msgid "Find Glim first"
 msgstr ""
 
-#: systems/glim/glim.gd:14 ui/glim_bench.gd:58 ui/glim_panel.gd:173
+#: systems/glim/glim.gd:14 ui/glim_bench.gd:59 ui/glim_panel.gd:173
 msgid "Maxed"
 msgstr ""
 
-#: systems/glim/glim.gd:14 ui/glim_bench.gd:38 ui/glim_panel.gd:180
+#: systems/glim/glim.gd:14 ui/glim_bench.gd:39 ui/glim_panel.gd:180
 msgid "Needs %s %d"
 msgstr ""
 
@@ -3535,6 +3535,10 @@ msgstr ""
 
 #: systems/glim/glim_director.gd:349
 msgid "Only big pieces left"
+msgstr ""
+
+#: systems/glim/glim_director.gd:407
+msgid "Glim is still scanning. Try again in a moment."
 msgstr ""
 
 #: tools/ui_audit_run.gd:333 ui/locker_panel.gd:84 ui/telescope_view.gd:379
@@ -3679,7 +3683,7 @@ msgid "Milestone"
 msgstr ""
 
 #: ui/bench_bots.gd:15 ui/build_panel.gd:105 ui/robot_card.gd:110
-#: ui/robot_card.gd:244 ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
+#: ui/robot_card.gd:245 ui/upgrades_screen.gd:14 ui/yard_builds_panel.gd:17
 msgid "Build"
 msgstr ""
 
@@ -3695,7 +3699,7 @@ msgstr ""
 msgid "Fabricator"
 msgstr ""
 
-#: ui/bench_kit.gd:164 ui/upgrade_card.gd:221
+#: ui/bench_kit.gd:164 ui/upgrade_card.gd:222
 msgid "need %s"
 msgstr ""
 
@@ -4086,7 +4090,7 @@ msgid "Hint: a shy visitor comes to Sustained and Thriving hexes. Bring a camera
 msgstr ""
 
 #: ui/codex_screen.gd:654
-msgid "Hint: animals come back as the ground heals. Photograph them in photo mode (P)."
+msgid "Hint: animals come back as the ground heals. Photograph them in photo mode ({photo_mode})."
 msgstr ""
 
 #: ui/codex_screen.gd:655
@@ -4646,7 +4650,7 @@ msgstr ""
 msgid "Picked up: %s. Put it down somewhere else, or leave it in storage."
 msgstr ""
 
-#: ui/glim_bench.gd:58 ui/hub_panel.gd:67 ui/upgrades_panel.gd:144
+#: ui/glim_bench.gd:59 ui/hub_panel.gd:67 ui/upgrades_panel.gd:144
 msgid "Upgrade"
 msgstr ""
 
@@ -4754,7 +4758,7 @@ msgstr ""
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr ""
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:495 ui/objective_card.gd:181
+#: ui/goals_panel.gd:231 ui/list_detail.gd:495 ui/objective_card.gd:308
 msgid "DONE"
 msgstr ""
 
@@ -4786,89 +4790,89 @@ msgstr ""
 msgid "What you get"
 msgstr ""
 
-#: ui/hub_panel.gd:97 ui/hub_panel.gd:250
+#: ui/hub_panel.gd:97 ui/hub_panel.gd:253
 msgid "Build Air Scrubber"
 msgstr ""
 
-#: ui/hub_panel.gd:134
+#: ui/hub_panel.gd:135
 msgid "Build Signal Jammer"
 msgstr ""
 
-#: ui/hub_panel.gd:173
+#: ui/hub_panel.gd:176
 msgid " (have %s)"
 msgstr ""
 
-#: ui/hub_panel.gd:186
+#: ui/hub_panel.gd:189
 msgid "Bales sell for +%d%% (now +%d%%)"
 msgstr ""
 
-#: ui/hub_panel.gd:189
+#: ui/hub_panel.gd:192
 msgid "+%d robot spots in every crew"
 msgstr ""
 
-#: ui/hub_panel.gd:192
+#: ui/hub_panel.gd:195
 msgid "Air Scrubbers: clear the dusty sky"
 msgstr ""
 
-#: ui/hub_panel.gd:197
+#: ui/hub_panel.gd:200
 msgid "Unlocks the %s"
 msgstr ""
 
-#: ui/hub_panel.gd:199
+#: ui/hub_panel.gd:202
 msgid "Opens the Locker: style Lumi and your robots"
 msgstr ""
 
-#: ui/hub_panel.gd:201
+#: ui/hub_panel.gd:204
 msgid "A launch pad: rockets to the next district"
 msgstr ""
 
-#: ui/hub_panel.gd:212
+#: ui/hub_panel.gd:215
 msgid "Now: level %d, %s. Bales sell for +%d%%."
 msgstr ""
 
-#: ui/hub_panel.gd:214
+#: ui/hub_panel.gd:217
 msgid "Hub level %d  ·  fully built"
 msgstr ""
 
-#: ui/hub_panel.gd:217
+#: ui/hub_panel.gd:220
 msgid "Every hub level is built."
 msgstr ""
 
-#: ui/hub_panel.gd:219
+#: ui/hub_panel.gd:222
 msgid "Fully built"
 msgstr ""
 
-#: ui/hub_panel.gd:222
+#: ui/hub_panel.gd:225
 msgid "Next: hub level %d"
 msgstr ""
 
-#: ui/hub_panel.gd:229
+#: ui/hub_panel.gd:232
 msgid "Upgrade to level %d"
 msgstr ""
 
-#: ui/hub_panel.gd:229
+#: ui/hub_panel.gd:232
 msgid "Not enough yet"
 msgstr ""
 
-#: ui/hub_panel.gd:233
+#: ui/hub_panel.gd:236
 msgid "Continue in the full game"
 msgstr ""
 
-#: ui/hub_panel.gd:244
+#: ui/hub_panel.gd:247
 msgid "Opens at hub level %d."
 msgstr ""
 
-#: ui/hub_panel.gd:246
+#: ui/hub_panel.gd:249
 msgid "All built."
 msgstr ""
 
-#: ui/hub_panel.gd:249
+#: ui/hub_panel.gd:252
 msgid ""
 "%s   %d / %d\n"
 "%s"
 msgstr ""
 
-#: ui/hub_panel.gd:250
+#: ui/hub_panel.gd:253
 msgid "All built"
 msgstr ""
 
@@ -4880,60 +4884,60 @@ msgstr ""
 msgid "OLD TOWN   0%"
 msgstr ""
 
-#: ui/hud.gd:364
+#: ui/hud.gd:366
 msgid "WREN SIGNAL   %d%%"
 msgstr ""
 
-#: ui/hud.gd:424
+#: ui/hud.gd:426
 msgid "HEX  %d%% CLEAR"
 msgstr ""
 
-#: ui/hud.gd:428
+#: ui/hud.gd:430
 msgid "%s  BASE"
 msgstr ""
 
-#: ui/hud.gd:431
+#: ui/hud.gd:433
 msgid "CARRYING %d/%d"
 msgstr ""
 
-#: ui/hud.gd:463
+#: ui/hud.gd:465
 msgid "HEX  CLEAR"
 msgstr ""
 
-#: ui/hud.gd:467
+#: ui/hud.gd:469
 msgid "HEX  %s"
 msgstr ""
 
-#: ui/hud.gd:470
+#: ui/hud.gd:472
 msgid "  SUSTAIN %d%%"
 msgstr ""
 
-#: ui/hud.gd:472
+#: ui/hud.gd:474
 msgid "  THIRSTY"
 msgstr ""
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:502
+#: ui/hud.gd:504
 msgid "%s   pick up bale"
 msgstr ""
 
-#: ui/hud.gd:503
+#: ui/hud.gd:505
 msgid "%s   dig up part"
 msgstr ""
 
-#: ui/hud.gd:504
+#: ui/hud.gd:506
 msgid "%s   read memory shard"
 msgstr ""
 
-#: ui/hud.gd:505
+#: ui/hud.gd:507
 msgid "%s   pick up the seed tin"
 msgstr ""
 
-#: ui/hud.gd:506
+#: ui/hud.gd:508
 msgid "%s   set bale down"
 msgstr ""
 
-#: ui/hud.gd:507
+#: ui/hud.gd:509
 msgid "%s   workbench"
 msgstr ""
 
@@ -5028,35 +5032,35 @@ msgstr ""
 msgid "FREE"
 msgstr ""
 
-#: ui/list_detail.gd:659
+#: ui/list_detail.gd:662
 msgid "LOCKED.  To unlock: %s"
 msgstr ""
 
-#: ui/list_detail.gd:659
+#: ui/list_detail.gd:662
 msgid "Locked. Keep playing to unlock it."
 msgstr ""
 
-#: ui/list_detail.gd:662
+#: ui/list_detail.gd:665
 msgid "REQUIRES   %s"
 msgstr ""
 
-#: ui/list_detail.gd:665
+#: ui/list_detail.gd:668
 msgid "You can buy this now!"
 msgstr ""
 
-#: ui/list_detail.gd:685
+#: ui/list_detail.gd:688
 msgid "%s more %s"
 msgstr ""
 
-#: ui/list_detail.gd:687
+#: ui/list_detail.gd:690
 msgid "Pick up trash to earn them."
 msgstr ""
 
-#: ui/list_detail.gd:687
+#: ui/list_detail.gd:690
 msgid "Dig up parts and salvage junk to get them."
 msgstr ""
 
-#: ui/list_detail.gd:690
+#: ui/list_detail.gd:693
 msgid "Need %s. %s"
 msgstr ""
 
@@ -5374,10 +5378,6 @@ msgstr ""
 
 #: ui/main_menu.gd:819 ui/profile_picker.gd:213
 msgid "Erase and start"
-msgstr ""
-
-#: ui/objective_card.gd:56
-msgid "OBJECTIVE"
 msgstr ""
 
 #: ui/pause_menu.gd:43
@@ -5781,51 +5781,51 @@ msgstr ""
 msgid "Open Research"
 msgstr ""
 
-#: ui/robot_card.gd:187
+#: ui/robot_card.gd:188
 msgid "Lv %d  ·  %s%s (max)"
 msgstr ""
 
-#: ui/robot_card.gd:188 ui/upgrade_card.gd:87 ui/upgrade_card.gd:215
+#: ui/robot_card.gd:189 ui/upgrade_card.gd:87 ui/upgrade_card.gd:216
 msgid "Max"
 msgstr ""
 
-#: ui/robot_card.gd:194
+#: ui/robot_card.gd:195
 msgid "+  %s cubes"
 msgstr ""
 
-#: ui/robot_card.gd:196
+#: ui/robot_card.gd:197
 msgid "Need %s more cubes"
 msgstr ""
 
-#: ui/robot_card.gd:222
+#: ui/robot_card.gd:223
 msgid "Unlock with research: %s"
 msgstr ""
 
-#: ui/robot_card.gd:232
+#: ui/robot_card.gd:233
 msgid "%d built  ·  full: more spots with hub levels"
 msgstr ""
 
-#: ui/robot_card.gd:232
+#: ui/robot_card.gd:233
 msgid "%d built  ·  %d free"
 msgstr ""
 
-#: ui/robot_card.gd:236
+#: ui/robot_card.gd:237
 msgid "Water Tanks %d / %d  ·  place them from the Command view"
 msgstr ""
 
-#: ui/robot_card.gd:244
+#: ui/robot_card.gd:245
 msgid "Build first"
 msgstr ""
 
-#: ui/robot_card.gd:250
+#: ui/robot_card.gd:251
 msgid "top tier"
 msgstr ""
 
-#: ui/robot_card.gd:256
+#: ui/robot_card.gd:257
 msgid "next: x%s work speed"
 msgstr ""
 
-#: ui/robot_card.gd:257 ui/rockets_panel.gd:126 ui/yard_builds_panel.gd:125
+#: ui/robot_card.gd:258 ui/rockets_panel.gd:126 ui/yard_builds_panel.gd:126
 msgid "Upgrade to %s"
 msgstr ""
 
@@ -5889,11 +5889,11 @@ msgstr ""
 msgid "Top tier: warp hops, no recharge."
 msgstr ""
 
-#: ui/rockets_panel.gd:143
+#: ui/rockets_panel.gd:144
 msgid "Countdown %ds  ·  Flight %.1fs  ·  Recharge %s  ·  Cargo pods x%.1f every %ds"
 msgstr ""
 
-#: ui/rockets_panel.gd:147
+#: ui/rockets_panel.gd:148
 msgid "  ·  WARP"
 msgstr ""
 
@@ -6249,19 +6249,19 @@ msgstr ""
 msgid "Move to frontier"
 msgstr ""
 
-#: ui/stations_panel.gd:102 ui/telescope_panel.gd:45
+#: ui/stations_panel.gd:103 ui/telescope_panel.gd:46
 msgid "%s built"
 msgstr ""
 
-#: ui/stations_panel.gd:102 ui/telescope_panel.gd:45 ui/yard_builds_panel.gd:125
+#: ui/stations_panel.gd:103 ui/telescope_panel.gd:46 ui/yard_builds_panel.gd:126
 msgid "Build %s"
 msgstr ""
 
-#: ui/stations_panel.gd:107
+#: ui/stations_panel.gd:108
 msgid "Auto-route: %s"
 msgstr ""
 
-#: ui/stations_panel.gd:108
+#: ui/stations_panel.gd:109
 msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Parts %s"
 msgstr ""
 
@@ -6317,8 +6317,8 @@ msgstr ""
 msgid "Rocket not ready"
 msgstr ""
 
-#: ui/telescope_panel.gd:39
-msgid "Built. Walk up to it and press E."
+#: ui/telescope_panel.gd:40
+msgid "Built. Walk up to it and press {interact}."
 msgstr ""
 
 #: ui/telescope_view.gd:82
@@ -6492,39 +6492,39 @@ msgstr ""
 msgid "BEST VALUE"
 msgstr ""
 
-#: ui/upgrade_card.gd:179
+#: ui/upgrade_card.gd:180
 msgid "Lv %d%s"
 msgstr ""
 
-#: ui/upgrade_card.gd:184
+#: ui/upgrade_card.gd:185
 msgid "Build the %s first (Build tab)"
 msgstr ""
 
-#: ui/upgrade_card.gd:191
+#: ui/upgrade_card.gd:192
 msgid "Requires %s"
 msgstr ""
 
-#: ui/upgrade_card.gd:195
+#: ui/upgrade_card.gd:196
 msgid "%s%s  (max)"
 msgstr ""
 
-#: ui/upgrade_card.gd:198
+#: ui/upgrade_card.gd:199
 msgid "Off  →  On"
 msgstr ""
 
-#: ui/upgrade_card.gd:205
+#: ui/upgrade_card.gd:206
 msgid "MAX"
 msgstr ""
 
-#: ui/upgrade_card.gd:215
+#: ui/upgrade_card.gd:216
 msgid "Max (%d)"
 msgstr ""
 
-#: ui/upgrade_card.gd:221
+#: ui/upgrade_card.gd:222
 msgid "need %s · ~%s"
 msgstr ""
 
-#: ui/upgrade_card.gd:226
+#: ui/upgrade_card.gd:227
 msgid "Where it comes from:  %s"
 msgstr ""
 
@@ -6576,7 +6576,7 @@ msgstr ""
 msgid "Nothing new to build yet. More opens as the base grows."
 msgstr ""
 
-#: ui/yard_builds_panel.gd:127
+#: ui/yard_builds_panel.gd:128
 msgid "Free"
 msgstr ""
 
@@ -9911,7 +9911,7 @@ msgid "Supply Drop"
 msgstr ""
 
 #: data/events.json:events[supply_drop].toast
-msgid "Supply Drop! A crate parachuted onto the junk %s of you. Clear the junk around it to crack it open."
+msgid "Supply Drop! A crate landed %s of you. Clear the junk around it."
 msgstr ""
 
 #: data/events.json:events[supply_drop].hud
@@ -9923,7 +9923,7 @@ msgid "Salvage Surge"
 msgstr ""
 
 #: data/events.json:events[salvage_surge].toast
-msgid "Salvage Surge! A hex %s of you is glowing: its junk is worth 3x for two minutes."
+msgid "Salvage Surge! A glowing hex %s of you: 3x cubes."
 msgstr ""
 
 #: data/events.json:events[salvage_surge].hud
@@ -9935,7 +9935,7 @@ msgid "Rain Shower"
 msgstr ""
 
 #: data/events.json:events[rain_shower].toast
-msgid "Rain Shower. Real rain, the first in years. Your plants won't dry out while it lasts."
+msgid "Rain! Your plants stay watered while it lasts."
 msgstr ""
 
 #: data/events.json:events[rain_shower].hud
@@ -9947,7 +9947,7 @@ msgid "Robot Hiccup"
 msgstr ""
 
 #: data/events.json:events[robot_hiccup].toast
-msgid "%s has the hiccups and stopped working. Walk over and press {interact} for a quick fix."
+msgid "%s has the hiccups. Walk over and press {interact}."
 msgstr ""
 
 #: data/events.json:events[robot_hiccup].hud
@@ -9959,7 +9959,7 @@ msgid "Wildlife Visit"
 msgstr ""
 
 #: data/events.json:events[wildlife_visit].toast
-msgid "Something is visiting a thriving hex %s of you. Sneak up and press {interact} to take a photo."
+msgid "A visitor %s of you! Sneak up, press {interact} for a photo."
 msgstr ""
 
 #: data/events.json:events[wildlife_visit].hud
@@ -9971,7 +9971,7 @@ msgid "Rare Part Signal"
 msgstr ""
 
 #: data/events.json:events[rare_part_signal].toast
-msgid "Rare Part Signal! The detector caught a strong ping %s of you. Follow the violet beam."
+msgid "Rare Part Signal %s of you! Follow the violet beam."
 msgstr ""
 
 #: data/events.json:events[rare_part_signal].hud
@@ -9983,7 +9983,7 @@ msgid "Ledger Audit"
 msgstr ""
 
 #: data/events.json:events[ledger_audit].toast
-msgid "Ledger Audit! A friendly drone bets it can clear a patch of junk %s of you faster than you. Race it!"
+msgid "Ledger Audit! Out-scoop the drone %s of you!"
 msgstr ""
 
 #: data/events.json:events[ledger_audit].hud
@@ -10766,12 +10766,24 @@ msgstr ""
 msgid "Pick up 15 pieces of trash"
 msgstr ""
 
+#: data/goals.json:goals[scoop_15].short
+msgid "Pick up trash"
+msgstr ""
+
 #: data/goals.json:goals[dump_1].text
 msgid "Empty your chest in the bin"
 msgstr ""
 
+#: data/goals.json:goals[dump_1].short
+msgid "Empty chest in bin"
+msgstr ""
+
 #: data/goals.json:goals[upgrade_1].text
 msgid "Buy an upgrade at the bench"
+msgstr ""
+
+#: data/goals.json:goals[upgrade_1].short
+msgid "Buy an upgrade"
 msgstr ""
 
 #: data/goals.json:goals[baler_1].text
@@ -10784,6 +10796,10 @@ msgstr ""
 
 #: data/goals.json:goals[cash_1].text
 msgid "Sell a bale at the scale"
+msgstr ""
+
+#: data/goals.json:goals[cash_1].short
+msgid "Sell a bale"
 msgstr ""
 
 #: data/goals.json:goals[lift_1].text
@@ -10842,6 +10858,10 @@ msgstr ""
 msgid "Upgrade the base to level 2"
 msgstr ""
 
+#: data/goals.json:goals[base_2].short data/objectives.json:objectives[base2].short
+msgid "Base to level 2"
+msgstr ""
+
 #: data/goals.json:goals[haulbug_1].text data/objectives.json:objectives[haul].text
 msgid "Build a Haul Bug"
 msgstr ""
@@ -10878,12 +10898,20 @@ msgstr ""
 msgid "Upgrade the base to level 3"
 msgstr ""
 
+#: data/goals.json:goals[base_3].short data/objectives.json:objectives[base3].short
+msgid "Base to level 3"
+msgstr ""
+
 #: data/goals.json:goals[seedling_1].text
 msgid "Build a Seedling planter"
 msgstr ""
 
 #: data/goals.json:goals[base_4].text
 msgid "Upgrade the base to level 4"
+msgstr ""
+
+#: data/goals.json:goals[base_4].short
+msgid "Base to level 4"
 msgstr ""
 
 #: data/goals.json:goals[hub_fly_5].text data/goals.json:goals[hub_fly_6].text data/objectives.json:objectives[hub_fly_2].text
@@ -10903,6 +10931,10 @@ msgstr ""
 msgid "Upgrade the rocket to Mk III"
 msgstr ""
 
+#: data/goals.json:goals[rocket_tier_3].short
+msgid "Rocket to Mk III"
+msgstr ""
+
 #: data/goals.json:goals[drip_1].text
 msgid "Build a Drip watering robot"
 msgstr ""
@@ -10911,12 +10943,20 @@ msgstr ""
 msgid "Upgrade the base to level 5"
 msgstr ""
 
+#: data/goals.json:goals[base_5].short
+msgid "Base to level 5"
+msgstr ""
+
 #: data/goals.json:goals[hub_wake_6].text
 msgid "Wake station 6 of 6"
 msgstr ""
 
 #: data/goals.json:goals[home_drive_5].text
 msgid "Build the Mk V Orbital drive"
+msgstr ""
+
+#: data/goals.json:goals[home_drive_5].short
+msgid "Build the Mk V drive"
 msgstr ""
 
 #: data/goals.json:goals[home_land_1].text
@@ -11007,6 +11047,10 @@ msgstr ""
 msgid "Build a Skimmer for the lake"
 msgstr ""
 
+#: data/goals.json:goals[skimmer_1].short
+msgid "Build a Skimmer"
+msgstr ""
+
 #: data/goals.json:goals[research_12].text
 msgid "Finish 12 research projects"
 msgstr ""
@@ -11035,8 +11079,16 @@ msgstr ""
 msgid "Pick a song on the base radio"
 msgstr ""
 
+#: data/goals.json:goals[extras_radio].short
+msgid "Pick a radio song"
+msgstr ""
+
 #: data/goals.json:goals[builder_1].text
 msgid "Style a robot in the Locker"
+msgstr ""
+
+#: data/goals.json:goals[builder_1].short
+msgid "Style a robot"
 msgstr ""
 
 #: data/goals.json:goals[pollinator].text
@@ -11163,6 +11215,10 @@ msgstr ""
 msgid "Retire a robot to the nursery"
 msgstr ""
 
+#: data/goals.json:goals[extras_retire].short
+msgid "Retire a robot"
+msgstr ""
+
 #: data/goals.json:goals[rocket].text
 msgid "Launch the rocket onward"
 msgstr ""
@@ -11183,6 +11239,10 @@ msgstr ""
 msgid "Upgrade a robot type to Mk II"
 msgstr ""
 
+#: data/goals.json:goals[tier_1].short
+msgid "A robot type to Mk II"
+msgstr ""
+
 #: data/goals.json:goals[stipend_20k].text
 msgid "Garden stipend: 20,000 cubes"
 msgstr ""
@@ -11193,6 +11253,10 @@ msgstr ""
 
 #: data/goals.json:goals[base2_3].text
 msgid "Fix up the new base to level 3"
+msgstr ""
+
+#: data/goals.json:goals[base2_3].short
+msgid "New base to level 3"
 msgstr ""
 
 #: data/goals.json:goals[hex_50].text
@@ -11268,7 +11332,7 @@ msgid "Open the Ark Bridge"
 msgstr ""
 
 #: data/goals.json:goals[late_garden_1].text
-msgid "Place a decoration (H)"
+msgid "Place a decoration ({garden_mode})"
 msgstr ""
 
 #: data/goals.json:goals[late_heirloom_1].text
@@ -11293,6 +11357,10 @@ msgstr ""
 
 #: data/goals.json:goals[late_charm_20].text
 msgid "Reach 20 charm in one district"
+msgstr ""
+
+#: data/goals.json:goals[late_charm_20].short
+msgid "Reach 20 charm"
 msgstr ""
 
 #: data/goals.json:goals[late_heirloom_10].text
@@ -12014,6 +12082,10 @@ msgstr ""
 msgid "Fill the trash bin 3 times"
 msgstr ""
 
+#: data/objectives.json:objectives[dump3].short
+msgid "Fill the bin"
+msgstr ""
+
 #: data/objectives.json:objectives[dump3].desc
 msgid "The bin turns trash into cubes. The bench builds with them."
 msgstr ""
@@ -12104,6 +12176,10 @@ msgstr ""
 
 #: data/objectives.json:objectives[bench2].text
 msgid "Add a Bot Bay to the bench"
+msgstr ""
+
+#: data/objectives.json:objectives[bench2].short
+msgid "Add a Bot Bay"
 msgstr ""
 
 #: data/objectives.json:objectives[bench2].desc
@@ -12236,6 +12312,10 @@ msgstr ""
 
 #: data/objectives.json:objectives[rocket_tier_2].text
 msgid "Upgrade the rocket to Mk II"
+msgstr ""
+
+#: data/objectives.json:objectives[rocket_tier_2].short
+msgid "Rocket to Mk II"
 msgstr ""
 
 #: data/objectives.json:objectives[base3].text
@@ -14429,15 +14509,15 @@ msgid "The rocket's tanks are empty. Stack Works still has fuel."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
-msgid "Wake the Gantry Crane. Its hull plates keep the rocket safe in space."
+msgid "Wake the Gantry Crane: its hull plates shield the rocket."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
-msgid "Wake the Signal Mast. It still holds the star chart, the map of where to fly."
+msgid "Wake the Signal Mast: it holds the star chart."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons
-msgid "Wake the Big Wheel. Its power cell keeps the rocket going on a long flight."
+msgid "Wake the Big Wheel: its power cell lasts the long flight."
 msgstr ""
 
 #: data/story_reasons.json:goal_reasons

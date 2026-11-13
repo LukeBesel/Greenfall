@@ -24,7 +24,7 @@ extends Node
 const SIZES: Array[Vector2i] = [Vector2i(1280, 720), Vector2i(1920, 1080), Vector2i(2560, 1080), Vector2i(1280, 800), Vector2i(1500, 1000)]
 const SCALES: Array[float] = [0.8, 1.0, 1.25, 1.5]
 const LOCALES: Array[String] = ["en", "de", "fr", "es", "pt_BR", "zh_CN", "ja", "pseudo"]
-const SCREENS: Array[String] = ["play", "hud", "prompts", "arrival", "pause", "settings", "workbench", "locker", "survey", "loading", "codex", "rockets", "system", "document", "photo", "glim", "garden", "command", "tbc", "pad"]
+const SCREENS: Array[String] = ["play", "hud", "card", "prompts", "arrival", "pause", "settings", "workbench", "locker", "survey", "loading", "codex", "rockets", "system", "document", "photo", "glim", "garden", "command", "tbc", "pad"]
 const TITLE_SCREENS: Array[String] = ["title", "title_settings", "pad"]
 ## A long line, about the longest chunk the bar shows (Subtitles.MAX_CHARS).
 const LONG_LINE: String = "Bring every cube you scoop to the bench by the pod, and we can fix the old beacon"
@@ -280,6 +280,25 @@ func _screens_pass() -> void:
 	var hud: Node = w.get("hud")
 	if _want("hud") and hud:
 		await _each_size("hud", func(cfg: String) -> void: _audit(cfg, "hud", [hud], false))
+	if _want("card") and hud:  # [v9d] the objective card on steps with a count, a price in two currencies, a long reason
+		var ob: Objectives = w.get("objectives") as Objectives
+		var tut: Variant = w.get("tutorial")
+		if ob:
+			var keep: int = ob.step
+			if tut is Tutorial:
+				(tut as Tutorial).step = Tutorial.STEPS.size()
+				EventBus.tutorial_changed.emit("")
+			ob.revealed = true
+			for sid: String in ["dump3", "bench2", "base2", "hub_wake_4", "robot"]:
+				var k: int = ob.chain.map(func(d: Dictionary) -> String: return str(d.get("id", ""))).find(sid)
+				if k < 0:
+					continue
+				ob.step = k
+				ob.changed.emit(k)
+				await _frames(4)
+				await _each_size("card/" + sid, func(cfg: String) -> void: _audit(cfg, "card", [hud], false))
+			ob.step = keep
+			ob.changed.emit(keep)
 	if _want("prompts") and hud:
 		await _each_size("prompts", func(cfg: String) -> void: _check_prompts(cfg, hud))
 	if _want("pause"):

@@ -343,8 +343,8 @@ func wake(i: int, free: bool = false) -> bool:
 	HubPlan.opt_static("res://systems/tunes.gd", "play_moment", ["base_restored"])  # v6sound: a song for the moment, once one is marked
 	EventBus.shake_requested.emit(0.25)
 	EventBus.toast.emit(tr("%s is awake. %s keeps cleaning when you fly on.") % [HubPlan.landmark_name(planet, i), HubPlan.hub_name(planet, i)], "story")
-	if not lines.is_empty():
-		EventBus.toast.emit(" · ".join(lines), "story")
+	for ln: String in lines:  # [v9d] one short line each (the toast queue shows them in turn)
+		EventBus.toast.emit(ln, "story")
 	print("[hubs] woke site %d (%s): level %d, bases %d/%d, gave %s" % [i, str(HubPlan.entry(planet, i).get("id", "")), sm.levels[i], HubPlan.restored_main(planet), HubPlan.main_total(planet), str(lines)])
 	woke.emit(i)
 	_lm_site = -1

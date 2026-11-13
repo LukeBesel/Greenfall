@@ -222,25 +222,25 @@ func test_notify_stack_never_shows_ghost_rows() -> void:
 	var ns := NotifyStack.new()
 	add_child_autofree(ns)
 	for i: int in 6:
-		ns.push("Toast number %d with enough words to wrap onto a second line here" % i, "info")
-	assert_lte(ns.count(), NotifyStack.MAX, "at most three rows")
-	assert_lte(ns.live_count(), 2, "two-line rows: the line budget retires older ones at once")
-	ns._process(0.3)
-	assert_lte(ns.count(), 2, "rows on their way out are gone within a quarter second")
-	for i: int in ns.count():
-		ns._process(0.0)
+		ns.push("Toast number %d with enough words to wrap onto a second line here" % i, "story")
+	for k: int in 30:
+		ns._process(0.25)
+		assert_lte(ns.count(), NotifyStack.MAX, "at most three rows")
+		assert_lte(ns.live_count(), NotifyStack.LIVE_MAX, "never more readable rows than the stack allows")
 	ns._process(0.31)
 	for r: Dictionary in ns._rows:
-		assert_true((r["node"] as Control).modulate.a > 0.99, "every row left is fully visible, never half-faded")
+		if float(r["left"]) > NotifyStack.FADE_OUT_S + 0.31 and float(r["age"]) >= 0.3:
+			assert_true((r["node"] as Control).modulate.a > 0.99, "a row that is staying is fully visible, never half-faded")
 
 
-func test_notify_short_rows_stack_three() -> void:
+func test_notify_rows_come_in_turn() -> void:  # [v9d] the toast queue
 	var ns := NotifyStack.new()
 	add_child_autofree(ns)
-	for t: String in ["One", "Two", "Three", "Four"]:
-		ns.push(t, "info")
-	assert_eq(ns.count(), 3)
-	assert_eq(ns.live_count(), 3)
+	for t: String in ["One", "Two", "Three"]:
+		ns.push(t, "hint")
+	assert_eq(ns.count(), 1)
+	ns._process(NotifyStack.GAP_S + 0.05)
+	assert_eq(ns.count(), 2, "the next line once the first was up a moment")
 
 
 func test_waypoint_edge_point_stays_on_the_border() -> void:
