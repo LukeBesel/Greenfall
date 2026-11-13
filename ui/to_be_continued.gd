@@ -9,6 +9,7 @@ extends CanvasLayer
 ## Shown by HomewardDirector (systems/homeward_director.gd, maybe_show_tbc); dev: --open=tbc.
 
 signal closed
+signal opened  # [v9c]
 
 var is_open: bool = false
 var _root: Control
@@ -96,6 +97,7 @@ func open_card() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	EventBus.ui_modal_changed.emit(true)
 	Audio.music_sting("first_sprout")
+	opened.emit()
 	print("[home] to be continued card")
 
 

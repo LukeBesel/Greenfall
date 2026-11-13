@@ -226,7 +226,13 @@ func steps(i: int) -> Array:
 		match str(s["do"]):
 			"clean":
 				d["need"] = int(s.get("hexes", 8))
-				d["have"] = mini(cleaned_here(i), int(d["need"]))
+				# [v9c] Kept at its best: a Ledger drone's dump on a cleaned hex here (story/ledger.gd
+				# drops on the region Lumi is in) took the count back down, even after the wake was ready.
+				var best: int = int(HubPlan.peek(i).get("clean_best", 0))
+				var now_c: int = mini(cleaned_here(i), int(d["need"]))
+				if now_c > best and HubPlan.seen(i):
+					HubPlan.state(i)["clean_best"] = now_c
+				d["have"] = maxi(now_c, best)
 			"outposts":
 				d["need"] = int(s.get("count", 1))
 				d["have"] = mini(_outposts_here(i), int(d["need"]))
@@ -444,6 +450,27 @@ func hud_lines() -> Dictionary:
 	}
 
 
+## [v9c] The ruined outpost of the station Lumi is at that the chain still asks for (its pad),
+## else null: the beam stands on it during the "Repair an outpost here" step.
+func outpost_target() -> Variant:
+	var op: Variant = so.w.get("outposts")
+	if site <= 0 or not (op is Outposts) or (op as Outposts).hub_index != site:
+		return null
+	var o: Outposts = op as Outposts
+	var p: Patch = so.w.get("patch") as Patch
+	var best: Variant = null
+	var bd: float = INF
+	for k: int in o.items.size():
+		if o.level_of(k) >= 1 or not is_instance_valid(o.items[k]):
+			continue
+		var at: Vector3 = (o.items[k] as Node3D).global_position
+		var dd: float = at.distance_to(p.global_position) if p else 0.0
+		if dd < bd:
+			bd = dd
+			best = at
+	return best
+
+
 ## For goal steps (story/objectives.gd step targets): where the beam should stand for
 ## "rocket" (the parked rocket: fly to the next hub, or upgrade it) and "landmark" (the landmark of
 ## the far hub Lumi is at). Null when there is nothing to point at.
@@ -489,7 +516,9 @@ func _refresh() -> void:
 			if nx >= 0 and HubPlan.is_main(planet, nx):
 				body = tr("Restored. Next: take the rocket to %s.") % HubPlan.hub_name(planet, nx)
 			elif HubPlan.is_main(planet, site) and HubPlan.restored_main(planet) >= HubPlan.main_total(planet):
-				body = tr("All %d bases stand. Fly home and make the rocket ready to leave.") % HubPlan.main_total(planet)
+				# [v9c] The drive is built from this rocket's list (E, Other planets); "fly home" sent
+				# the player away from the rocket the card's beam stands on.
+				body = tr("All %d bases stand. Build the drive at the rocket.") % HubPlan.main_total(planet) if Homeward.drive() < 5 else status_text(site)
 	card_text = (title + ": " + body) if body != "" else ""
 	_card.visible = body != "" and not bool(so.w.get("launching")) and not (_title != null and is_instance_valid(_title))  # the name first, then the step
 	if _card.visible:

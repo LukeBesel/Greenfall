@@ -502,6 +502,15 @@ func _pick_hex() -> int:
 				if score > best:
 					best = score
 					h = hid
+			if h < 0:  # [v9c] a far station's pad stands in its town: its junk starts 4+ hexes out, so look wider (nearest first)
+				var bd: float = INF
+				for hid: int in f.hexes_near(at, 6):
+					if not _hex_ok(hid):
+						continue
+					var dd: float = OrbitUp.ground_dist(at, f.hex_center(hid))
+					if dd < bd:
+						bd = dd
+						h = hid
 	return h
 
 
@@ -585,6 +594,8 @@ func step_target(def: Dictionary) -> Dictionary:
 				out = {"to": "bench", "row": ["research", ""]}
 			"base2", "base3":
 				out = {"to": "bench", "row": ["patch", "hub_level"]}
+			"rocket_tier_2", "rocket_tier_3":  # [v9c] the bench opens on the rocket's row (it opened on nothing)
+				out = {"to": "bench", "row": ["patch", "rocket_tier"]}
 			"seed":
 				if GameState.flags.get("seed_signal", false) and not GameState.flags.get("seeds_unlocked", false):
 					out = {"to": "place", "pos": (world.first_seed as FirstSeed).tin_point() if world.get("first_seed") != null else FirstSeed.GREENHOUSE_POS, "row": []}  # [orbB] [v4grow] on the tin
@@ -623,7 +634,9 @@ func step_target(def: Dictionary) -> Dictionary:
 			else:
 				out["to"] = "hex"
 		"stat":
-			if key == "junk_dumps":  # [v2guide] the chest goes into the bin's body, not onto the scale
+			if key == "rocket_tier":  # [v9c] "Upgrade the rocket to Mk III": to the bench, on the rocket's row (no beam before)
+				out = {"to": "bench", "row": ["patch", "rocket_tier"]}
+			elif key == "junk_dumps":  # [v2guide] the chest goes into the bin's body, not onto the scale
 				out["to"] = "bin" if p and not p.compartment.is_empty() else "hex"
 			elif key in DEPOT_STATS:
 				out["to"] = "depot" if key != "cubes_cashed" or (p and not p.carried.is_empty()) else "hex"
@@ -933,6 +946,15 @@ func _arc_beam(def: Dictionary, key: String) -> Variant:
 	if os_ == null or os_.purpose == null:
 		return null
 	if kind == "landmark":
+		# [v9c] At the far station, the beam follows its own chain: while it asks for clean hexes
+		# the hex to clean is outlined (the beam stood on the landmark, which the hexes don't need);
+		# while it asks for an outpost the beam stands on the ruined outpost; then on the landmark.
+		var st: String = str(os_.purpose.current_step(os_.purpose.site).get("do", "")) if os_.purpose.site > 0 else ""
+		if st == "clean":
+			return "hex"
+		if st == "outposts":
+			var op: Variant = os_.purpose.outpost_target()
+			return op if op is Vector3 else "hex"
 		var lm: Variant = os_.purpose.goal_target("landmark")
 		if lm is Vector3:
 			return lm
