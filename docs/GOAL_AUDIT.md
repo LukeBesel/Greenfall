@@ -30,3 +30,7 @@ each step (the new state lives in GameState flags and stats, which save, but no 
 selling bales late in the game (scaling, tedium); the compost press and seed loop beyond "out of
 seeds"; the plant and water rings on slopes and at a 3:2 window; walking to the bench (Lumi is placed
 by it); controller input.
+
+Walk note: in one full run (before the main merge) the research project's price-tag click did not
+start it; it passed in the three runs since (alone and full). The walk prints the row state and
+Research.reason when that check fails, if it comes back.
