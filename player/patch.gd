@@ -37,6 +37,9 @@ var _was_in_band: bool = false
 var _prev_vel := Vector3.ZERO
 var _moving: bool = false
 var _idle_time: float = 0.0
+## [v9intro] A cinematic is acting with Lumi (story/intro.gd): no idle fidgets, no dozing off, and
+## the model's eyes and gaze are left to the film (they were overridden every frame).
+var cine_hold: bool = false
 var _stack_root: Node3D
 var _stack_sway := Vector2.ZERO
 var _stack_sway_v := Vector2.ZERO
@@ -969,6 +972,10 @@ func _update_stack(delta: float) -> void:
 # --- Hints / idle ---------------------------------------------------------------
 
 func _update_hints(delta: float) -> void:
+	if cine_hold:  # [v9intro]
+		prompt = ""
+		_idle_time = 0.0
+		return
 	prompt = ""
 	var look: Variant = null
 	var near_cube: JunkCube = nearest_loose_cube()

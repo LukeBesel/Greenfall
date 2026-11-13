@@ -48,6 +48,13 @@ run hex_audit -- --fresh --orbit --no-intro --hex-audit --hex-audit-quit
 # [v8seed] "Plant the first seed" played with real key and mouse events (tools/seed_walk.gd): the
 # bot's own path hid that a player could not plant (owner, 2026-11-13).
 run seed_walk -- --fresh --orbit --no-intro --seed-walk --save-dir=check_exit_seed_$$
+# [v9intro] The opening film leaves the same world watched or skipped (just before the crash).
+if tools/check_intro.sh --quick >screenshots/check_exit_intro.log 2>&1; then
+	echo "[check_exit] PASS intro (watched = skipped)"
+else
+	echo "[check_exit] FAIL intro: see screenshots/check_exit_intro.log"
+	fail=1
+fi
 if [ "$1" = "--quick" ]; then
 	run quit15 -- --fresh --quit-after=15
 fi
