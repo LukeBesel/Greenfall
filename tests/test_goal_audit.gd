@@ -15,3 +15,12 @@ func test_audit_catches_a_dead_goal() -> void:
 	assert_ne(GoalAudit.goal_problem({"id": "x", "type": "stat", "key": "no_such_stat", "target": 1}, null, closed), "")
 	assert_ne(GoalAudit.goal_problem({"id": "x", "type": "stat", "key": "research_done", "target": 99}, null, closed), "")
 	assert_eq(GoalAudit.goal_problem({"id": "x", "type": "stat", "key": "hexes_cleaned", "target": 3}, null, closed), "")
+
+
+func test_every_card_step_has_a_picture() -> void:
+	var kinds: Dictionary = {}
+	for o: Dictionary in Economy.read_json("res://data/objectives.json").get("objectives", []):
+		kinds[ObjectiveCard.icon_of(o)] = true
+	for g: Variant in GoalAudit.verdance_goals():
+		assert_ne(ObjectiveCard.icon_of(g as Dictionary), "", "goal %s has a picture" % str((g as Dictionary).get("id", "")))
+	assert_gt(kinds.size(), 4, "the story steps use several pictures, not one for all: %s" % str(kinds.keys()))

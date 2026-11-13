@@ -123,6 +123,12 @@ func open_map(from_planet: bool = false, p_travel: bool = false) -> void:
 	is_open = true
 	travel = p_travel  # [v2map]
 	selected = clampi(Homeward.current_planet(), 0, Homeward.planets().size() - 1)
+	# [v9c] From the rocket, the card's "Build the drive" step: the next planet comes up selected,
+	# so its drive row (the Build button) shows at once. On Verdance itself the panel had no drive
+	# row and nothing said to pick another planet.
+	var nk: int = selected + 1
+	if travel and nk < Homeward.planets().size() and Homeward.discovered(nk) and int(Homeward.planet_def(nk).get("nav", 0)) > Homeward.drive():
+		selected = nk
 	get_viewport().disable_3d = true  # the district behind is fully covered: don't render it
 	_build()
 	_root.visible = true
@@ -795,6 +801,13 @@ func _drive_row(b: VBoxContainer, k: int) -> void:
 		return
 	var needs: bool = int(Homeward.planet_def(k).get("nav", 0)) > Homeward.drive() and Homeward.discovered(k)
 	var home: bool = bool(nd.get("home_only", false)) and k == 0
+	# [v9c] From the rocket, on the planet Lumi is on: the drive the next planet needs, even before
+	# that planet is charted (the exit beat charts it a little later; until then the map showed
+	# Verdance alone with no Build button while the card said "Build the drive").
+	var nk: int = Homeward.current_planet() + 1
+	if travel and k == Homeward.current_planet() and nk < Homeward.planets().size() and int(Homeward.planet_def(nk).get("nav", 0)) > Homeward.drive() \
+			and not bool(nd.get("home_only", false)):
+		needs = true
 	if not needs and not home:
 		return
 	b.add_child(_wrap("%s  ·  %s" % [tr(str(nd["name"])), Homeward.cost_text(nd.get("cost", {}))], 12, GOLD))

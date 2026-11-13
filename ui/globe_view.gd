@@ -492,6 +492,7 @@ func _set_handheld(on: bool) -> void:
 func _on_resurvey() -> void:
 	if not GameState.spend("cubes", survey_cost()):
 		Audio.play("buzz", 1.2, -8.0)
+		EventBus.toast.emit(tr("Not enough cubes"), "info")  # [v9d] a refused survey said nothing
 		return
 	survey()
 	Audio.play("sparkle", 0.8, -6.0)
