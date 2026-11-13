@@ -64,6 +64,22 @@ static func _normalize(b: PackedFloat32Array, peak: float = 0.9) -> PackedFloat3
 	return b
 
 
+## [v8snd] In-place high-pass (`poles` one-pole stages at `hz`): takes the sub-bass rumble out of
+## noise beds, which small speakers can't play and rattle on.
+static func highpass(b: PackedFloat32Array, hz: float, poles: int = 2, rate: int = RATE) -> PackedFloat32Array:
+	var rc: float = 1.0 / (TAU * hz)
+	var a: float = rc / (rc + 1.0 / rate)
+	for _p: int in poles:
+		var y: float = 0.0
+		var prev: float = b[0] if b.size() > 0 else 0.0
+		for i: int in b.size():
+			var x: float = b[i]
+			y = a * (y + x - prev)
+			prev = x
+			b[i] = y
+	return b
+
+
 ## Raised-cosine fade in/out so one-shots never start or stop with a step.
 static func _declick(b: PackedFloat32Array, attack_s: float, release_s: float) -> PackedFloat32Array:
 	@warning_ignore("integer_division")
@@ -203,6 +219,7 @@ static func _air(rng: RandomNumberGenerator) -> PackedFloat32Array:
 		lp += (rng.randf_range(-1.0, 1.0) - lp) * 0.02
 		lp2 += (lp - lp2) * 0.05
 		b[i] = lp2 * (0.6 + 0.4 * sin(TAU * t / seconds) * sin(TAU * 2.0 * t / seconds))
+	highpass(b, 90.0)  # [v8snd] was 64% under 80 Hz
 	var fade: int = int(0.5 * RATE)
 	var n: int = b.size() - fade
 	for i: int in fade:

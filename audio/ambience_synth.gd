@@ -66,23 +66,39 @@ static func _seam(b: PackedFloat32Array, fade_s: float = 0.5) -> PackedFloat32Ar
 
 
 ## Wind: two-stage low-passed noise with slow gusts. `bright` 0..1 opens the filter, `whistle_hz`
-## > 0 adds a resonant, slowly bending whistle (eerie), `grit` adds sand / dust crackle.
+## > 0 adds a resonant, slowly bending whistle (eerie), `grit` adds sand / dust ticking.
+## [v8snd] The body is high-passed (two poles at ~110 Hz): it used to be 35-57% energy under 80 Hz,
+## a rumble small speakers rattle on. The grit used to be raw single-sample spikes, ~45 a second at
+## up to 10x the wind's level (after normalising, the loop was mostly spikes): a constant crackle
+## like a blown speaker. Now a few soft, short sand ticks a second, filtered and under the wind.
 static func wind(rng: RandomNumberGenerator, seconds: float, bright: float, whistle_hz: float, grit: float) -> PackedFloat32Array:
 	var b := _buf(seconds + 0.5)
 	var lp: float = 0.0
 	var lp2: float = 0.0
-	var a1: float = 0.012 + 0.05 * bright
-	var a2: float = 0.04 + 0.12 * bright
+	var a1: float = 0.03 + 0.06 * bright
+	var a2: float = 0.08 + 0.14 * bright
+	var hp: float = 0.0
+	var hp_prev: float = 0.0
+	var hp2: float = 0.0
+	var hp2_prev: float = 0.0
 	# Resonator state for the whistle.
 	var y1: float = 0.0
 	var y2: float = 0.0
+	# Grit: short decaying ticks of high, band-passed noise.
+	var tick_env: float = 0.0
+	var tick_lp: float = 0.0
+	var tick_lp2: float = 0.0
 	for i: int in b.size():
 		var t: float = float(i) / RATE
 		var n: float = rng.randf_range(-1.0, 1.0)
 		lp += (n - lp) * a1
 		lp2 += (lp - lp2) * a2
+		hp = 0.969 * (hp + lp2 - hp_prev)
+		hp_prev = lp2
+		hp2 = 0.969 * (hp2 + hp - hp2_prev)
+		hp2_prev = hp
 		var gust: float = 0.55 + 0.3 * sin(TAU * t / seconds + 0.7) + 0.15 * sin(TAU * 3.0 * t / seconds)
-		var s: float = lp2 * gust
+		var s: float = hp2 * gust
 		if whistle_hz > 0.0:
 			var f: float = whistle_hz * (1.0 + 0.12 * sin(TAU * 2.0 * t / seconds) + 0.04 * sin(TAU * 5.0 * t / seconds))
 			var r: float = 0.997
@@ -91,8 +107,13 @@ static func wind(rng: RandomNumberGenerator, seconds: float, bright: float, whis
 			y2 = y1
 			y1 = y
 			s += y * gust * gust * 0.6
-		if grit > 0.0 and rng.randf() < 0.004 * grit * gust:
-			s += rng.randf_range(-0.5, 0.5) * grit
+		if grit > 0.0:
+			if rng.randf() < 0.00025 * grit * gust:  # ~3 a second in a gust
+				tick_env = rng.randf_range(0.4, 1.0)
+			tick_lp += (n - tick_lp) * 0.5
+			tick_lp2 += (tick_lp - tick_lp2) * 0.5
+			s += (tick_lp - tick_lp2) * tick_env * 0.05 * grit
+			tick_env *= 0.993  # ~6 ms
 		b[i] = s
 	return MusicSynth._normalize(_seam(b), 0.8)
 
@@ -147,6 +168,7 @@ static func spray(rng: RandomNumberGenerator) -> PackedFloat32Array:
 	var b := _buf(seconds + 0.3)
 	var lp: float = 0.0
 	var prev: float = 0.0
+	var drop_env: float = 0.0
 	for i: int in b.size():
 		var t: float = float(i) / RATE
 		var n: float = rng.randf_range(-1.0, 1.0)
@@ -154,7 +176,11 @@ static func spray(rng: RandomNumberGenerator) -> PackedFloat32Array:
 		var hp: float = lp - prev
 		prev = lp
 		var flutter: float = 0.7 + 0.3 * sin(TAU * 23.0 * t) + 0.15 * sin(TAU * 7.5 * t)
-		var drops: float = rng.randf_range(-1.0, 1.0) * 0.8 if rng.randf() < 0.01 else 0.0
+		# [v8snd] droplets as soft 3 ms splashes, not raw single-sample spikes (220 a second)
+		if rng.randf() < 0.0012:
+			drop_env = rng.randf_range(0.5, 1.0)
+		var drops: float = hp * drop_env * 1.2
+		drop_env *= 0.985
 		b[i] = (hp * 0.9 + lp * 0.25) * flutter + drops
 	return MusicSynth._normalize(_seam(b, 0.3), 0.7)
 

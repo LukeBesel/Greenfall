@@ -134,16 +134,10 @@ static func _glitch(rng: RandomNumberGenerator, seconds: float) -> PackedFloat32
 	return b
 
 
+## [v8snd] The same soft purr as the wildlife's cats (fauna/fauna_sounds.gd); this one was a
+## 24 Hz chop of sub-200 Hz noise plus a 48 Hz tone (a helicopter on laptop speakers).
 static func _purr(rng: RandomNumberGenerator) -> PackedFloat32Array:
-	var b := _buf(1.6)
-	var lp: float = 0.0
-	for i: int in b.size():
-		var t: float = float(i) / RATE
-		lp += (rng.randf_range(-1.0, 1.0) - lp) * 0.08
-		var am: float = 0.5 + 0.5 * sin(TAU * 24.0 * t)
-		var breath: float = 0.6 + 0.4 * sin(TAU * 1.2 * t)
-		b[i] = (lp * 2.2 + sin(TAU * 48.0 * t) * 0.3) * am * breath * sin(PI * t / 1.6) * 0.35
-	return b
+	return FaunaSounds.purr(rng, 0.0)
 
 
 static func _ring() -> PackedFloat32Array:
