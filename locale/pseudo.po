@@ -488,7 +488,7 @@ msgstr "[Bàļéš ŵôŕţĥ %s ŵéŕé šţàçķéð àţ ţĥé ĥûb ŵî�
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "[Ţĥé šçŕûbbéŕš ƒîļţéŕéð ţĥé àîŕ ţĥé ŵĥôļé ţîmé. Îţ'š à ļîţţļé çļéàŕéŕ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: core/pace.gd:147 story/objectives.gd:984
+#: core/pace.gd:147 story/objectives.gd:986
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "[Ţôô ĥéàvý. Ûþĝŕàðé Ļîƒţ àţ ţĥé béñçĥ. ~~~~~~~~~~]"
 
@@ -500,7 +500,7 @@ msgstr "[Ñôţĥîñĝ ĥéŕé ƒîţš. Þŕéšš [%s] ţô màķé à bàļ
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "[Ñô Bàļéŕ ýéţ. Bŕîñĝ ýôûŕ çĥéšţ ţô ţĥé bîñ. ~~~~~~~~~~~~]"
 
-#: core/pace.gd:260 systems/events.gd:492 ui/goals_panel.gd:284
+#: core/pace.gd:260 systems/events.gd:501 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr "[+%s çûbéš ~]"
 
@@ -700,7 +700,7 @@ msgstr "[Ñéŵ Ļûmî ðéšîĝñ: %s ~~~~]"
 msgid "Home. The workbench is by the pod."
 msgstr "[Ĥômé. Ţĥé ŵôŕķbéñçĥ îš bý ţĥé þôð. ~~~~~~~~~]"
 
-#: planet/sites/hub_purpose.gd:174 story/objectives.gd:991
+#: planet/sites/hub_purpose.gd:174 story/objectives.gd:993
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "[Ţĥé ŕôçķéţ ŵàîţš ôñ ţĥé þàð. Ĥômé îš ƒîŕšţ ôñ îţš ļîšţ. ~~~~~~~~~~~~~~~~]"
 
@@ -794,35 +794,35 @@ msgstr "[Àļļ %d bàšéš šţàñð. Fļý ĥômé àñð màķé ţĥé ŕ�
 msgid "%s  ·  the %s"
 msgstr "[%s  ·  ţĥé %s ~~]"
 
-#: planet/sites/orbit_sites.gd:110
+#: planet/sites/orbit_sites.gd:112
 msgid "The rocket is in flight."
 msgstr "[Ţĥé ŕôçķéţ îš îñ ƒļîĝĥţ. ~~~~~]"
 
-#: planet/sites/orbit_sites.gd:134
+#: planet/sites/orbit_sites.gd:136
 msgid "Bases restored: %d of %d"
 msgstr "[Bàšéš ŕéšţôŕéð: %d ôƒ %d ~~~~~]"
 
-#: planet/sites/orbit_sites.gd:172
+#: planet/sites/orbit_sites.gd:174
 msgid "E   Rocket: choose a destination"
 msgstr "E   [Ŕôçķéţ: çĥôôšé à ðéšţîñàţîôñ ~~~~~~~]"
 
-#: planet/sites/orbit_sites.gd:210
+#: planet/sites/orbit_sites.gd:212
 msgid "HOME"
 msgstr "[ĤÔMÉ ~]"
 
-#: planet/sites/orbit_sites.gd:210
+#: planet/sites/orbit_sites.gd:212
 msgid "NEXT STOP"
 msgstr "[ÑÉXŢ ŠŢÔÞ ~]"
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:214
 msgid "Upgrade the rocket first"
 msgstr "[Ûþĝŕàðé ţĥé ŕôçķéţ ƒîŕšţ ~~~~~]"
 
-#: planet/sites/orbit_sites.gd:230
+#: planet/sites/orbit_sites.gd:232
 msgid "%s site"
 msgstr "[%s šîţé ~]"
 
-#: planet/sites/orbit_sites.gd:231
+#: planet/sites/orbit_sites.gd:233
 msgid "Hub %d"
 msgstr "[Ĥûb %d ~]"
 
@@ -870,7 +870,7 @@ msgstr ""
 "[ÇÔMÞÔŠŢ ÞŔÉŠŠ  Ļv %d\n"
 "ĥôþþéŕ %d%%  →  šééðš ~~~~~~~~~~~~]"
 
-#: plants/garden.gd:361
+#: plants/garden.gd:373
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "[À ĥéx îš ƒûļļý ŕéšţôŕéð. Šôméţĥîñĝ šmàļļ îš àļŕéàðý ļîvîñĝ îñ îţ. ~~~~~~~~~~~~~~~~~~~~]"
 
@@ -922,47 +922,67 @@ msgstr "[Ļûmî ŕàţţļéš bàçķ ûþ îñţô ţĥé ýàŕð. Ţĥàţ 
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "[Ļûmî çàñ'ţ šŵîm. Ĥôvéŕ Ĵéţš àţ ţĥé ŵôŕķbéñçĥ ļéţ ĥîm ƒļôàţ ôvéŕ ļàķéš. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: player/patch.gd:353
+#: player/patch.gd:354
+msgid "Get the seed tin first: follow the beam to the greenhouse."
+msgstr "[Ĝéţ ţĥé šééð ţîñ ƒîŕšţ: ƒôļļôŵ ţĥé béàm ţô ţĥé ĝŕééñĥôûšé. ~~~~~~~~~~~~~~~~~]"
+
+#: player/patch.gd:355
 msgid "No seeds yet. Keep cleaning."
 msgstr "[Ñô šééðš ýéţ. Ķééþ çļéàñîñĝ. ~~~~~~~]"
 
-#: player/patch.gd:388
-msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
-msgstr "[Šééðš ñééð çļéàñ, ôþéñ ĝŕôûñð: ñôţ šţŕééţš, ķéŕbš ôŕ ţĥé þàð. ~~~~~~~~~~~~~~~~~~]"
-
-#: player/patch.gd:395
+#: player/patch.gd:398 player/patch.gd:426
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "[Ôûţ ôƒ šééðš. Bļôômîñĝ þļàñţš ðŕôþ môŕé. ~~~~~~~~~~~]"
 
-#: player/patch.gd:402
+#: player/patch.gd:405
+msgid "Plant first: press  {tool_plant}  for the seed"
+msgstr "[Þļàñţ ƒîŕšţ: þŕéšš  {tool_plant}  ƒôŕ ţĥé šééð ~~~~~~~~~~~~~]"
+
+#: player/patch.gd:409
 msgid "Watering can is empty. Refill at the hub."
 msgstr "[Ŵàţéŕîñĝ çàñ îš émþţý. Ŕéƒîļļ àţ ţĥé ĥûb. ~~~~~~~~~~~]"
 
-#: player/patch.gd:607
+#: player/patch.gd:428
+msgid "Clean this hex first. Seeds need clean ground."
+msgstr "[Çļéàñ ţĥîš ĥéx ƒîŕšţ. Šééðš ñééð çļéàñ ĝŕôûñð. ~~~~~~~~~~~~~]"
+
+#: player/patch.gd:430
+msgid "Something is growing here already. Try a free spot."
+msgstr "[Šôméţĥîñĝ îš ĝŕôŵîñĝ ĥéŕé àļŕéàðý. Ţŕý à ƒŕéé šþôţ. ~~~~~~~~~~~~~~~]"
+
+#: player/patch.gd:431
+msgid "Seeds need soil, not road or the pad. Try the greenhouse beds."
+msgstr "[Šééðš ñééð šôîļ, ñôţ ŕôàð ôŕ ţĥé þàð. Ţŕý ţĥé ĝŕééñĥôûšé béðš. ~~~~~~~~~~~~~~~~~~~]"
+
+#: player/patch.gd:432
+msgid "Seeds need soil, not road or the pad."
+msgstr "[Šééðš ñééð šôîļ, ñôţ ŕôàð ôŕ ţĥé þàð. ~~~~~~~~~~]"
+
+#: player/patch.gd:627
 msgid "PERFECT BALE  %s"
 msgstr "[ÞÉŔFÉÇŢ BÀĻÉ  %s ~~~]"
 
-#: player/patch.gd:613
+#: player/patch.gd:633
 msgid "OVERSTUFFED  %s"
 msgstr "[ÔVÉŔŠŢÛFFÉÐ  %s ~~]"
 
-#: player/patch.gd:617
+#: player/patch.gd:637
 msgid "PURE  %s"
 msgstr "[ÞÛŔÉ  %s ~]"
 
-#: player/patch.gd:619
+#: player/patch.gd:639
 msgid "SURGE  %s"
 msgstr "[ŠÛŔĜÉ  %s ~]"
 
-#: player/patch.gd:622
+#: player/patch.gd:642
 msgid "  (streak +%d%%)"
 msgstr "  [(šţŕéàķ +%d%%) ~~~]"
 
-#: player/patch.gd:665
+#: player/patch.gd:685
 msgid "Salvaged: %s"
 msgstr "[Šàļvàĝéð: %s ~]"
 
-#: player/patch.gd:696
+#: player/patch.gd:716
 msgid "Recovered: %s"
 msgstr "[Ŕéçôvéŕéð: %s ~~]"
 
@@ -1888,61 +1908,57 @@ msgstr "[Çûŕîôšîţý ƒôûñð: %s  (%d / %d)   %s ~~~~~~~~~]"
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "[Évéŕý çûŕîôšîţý ôñ ţĥé ļîšţ, ƒôûñð. Ļûmî'š çôļļéçţîôñ çômþàŕţméñţ îš véŕý ƒûļļ ôƒ mémôŕîéš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/first_seed.gd:9
+#: story/first_seed.gd:15
 msgid "Wait. Hold it up to the light."
 msgstr "[Ŵàîţ. Ĥôļð îţ ûþ ţô ţĥé ļîĝĥţ. ~~~~~~~]"
 
-#: story/first_seed.gd:10
+#: story/first_seed.gd:16
 msgid "That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
 msgstr "[Ţĥàţ'š à Šéţţļéŕ šééð ţîñ. Çŕàðļé šţàmþ ôñ ţĥé ļîð. Ôñé ôƒ ôûŕš, ļéƒţ béĥîñð îñ ţĥé ŕûšĥ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/first_seed.gd:11
+#: story/first_seed.gd:17
 msgid "When they left, the Settlers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi."
 msgstr "[Ŵĥéñ ţĥéý ļéƒţ, ţĥé Šéţţļéŕš šéàļéð évéŕý šééð ţĥéý çôûļð çàŕŕý îñţô ţĥé Çŕàðļé'š vàûļţ. Ýôûŕ vàûļţ, Ļûmî. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/first_seed.gd:12
+#: story/first_seed.gd:18
 msgid "The plan was simple. Wait for the dust to settle. Come home. Plant. They called that day the Greenfall."
 msgstr "[Ţĥé þļàñ ŵàš šîmþļé. Ŵàîţ ƒôŕ ţĥé ðûšţ ţô šéţţļé. Çômé ĥômé. Þļàñţ. Ţĥéý çàļļéð ţĥàţ ðàý ţĥé Ĝŕééñƒàļļ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/first_seed.gd:13
+#: story/first_seed.gd:19
 msgid "Then three hundred years went by, and the dust never settled. Until a seed-keeper fell out of the sky."
 msgstr "[Ţĥéñ ţĥŕéé ĥûñðŕéð ýéàŕš ŵéñţ bý, àñð ţĥé ðûšţ ñévéŕ šéţţļéð. Ûñţîļ à šééð-ķééþéŕ ƒéļļ ôûţ ôƒ ţĥé šķý. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/first_seed.gd:14
+#: story/first_seed.gd:20
 msgid "Nothing grows on its own anymore. The soil forgot how. Somebody has to put it in the ground."
 msgstr "[Ñôţĥîñĝ ĝŕôŵš ôñ îţš ôŵñ àñýmôŕé. Ţĥé šôîļ ƒôŕĝôţ ĥôŵ. Šômébôðý ĥàš ţô þûţ îţ îñ ţĥé ĝŕôûñð. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/first_seed.gd:15
+#: story/first_seed.gd:21
 msgid "That somebody is you. Small. Stubborn. Running on four percent. Perfect."
 msgstr "[Ţĥàţ šômébôðý îš ýôû. Šmàļļ. Šţûbbôŕñ. Ŕûññîñĝ ôñ ƒôûŕ þéŕçéñţ. Þéŕƒéçţ. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/first_seed.gd:16
+#: story/first_seed.gd:22
 msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
 msgstr "[Fîñð çļéàñ ĝŕôûñð. Ðîĝ. Ðŕôþ îţ îñ. Þàţ îţ ðôŵñ. Àñð ţĥéñ — ţĥîš þàŕţ màţţéŕš — ŵàţéŕ îţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/first_seed.gd:147
+#: story/first_seed.gd:157
 msgid "{tool_water}  then hold  {scoop}  to water it"
 msgstr "[{tool_water}  ţĥéñ ĥôļð  {scoop}  ţô ŵàţéŕ îţ ~~~~~~~~~~~~~]"
 
-#: story/first_seed.gd:176
-msgid "Hold  {scoop}  on clean ground to plant the seed"
-msgstr "[Ĥôļð  {scoop}  ôñ çļéàñ ĝŕôûñð ţô þļàñţ ţĥé šééð ~~~~~~~~~~~~~~]"
-
-#: story/first_seed.gd:267
+#: story/first_seed.gd:277
 msgid "...It's green. Lumi, it's actually green."
 msgstr "[...Îţ'š ĝŕééñ. Ļûmî, îţ'š àçţûàļļý ĝŕééñ. ~~~~~~~~~~~]"
 
-#: story/first_seed.gd:269
+#: story/first_seed.gd:279
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "[Ķééþ îţ ŵàţéŕéð. Šééðš àŕé ŕàŕé ôûţ ĥéŕé, bûţ évéŕý bļôôm ĝîvéš ôñé bàçķ, àñð à ļîţţļé ĝŕééñ ļîĝĥţ ƒôŕ ýôûŕ çôŕé. Ţĥîš îš ĥôŵ îţ šţàŕţš. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/first_seed.gd:383
-msgid "Lumi, that green signal is back, stronger now. Follow the beam: the old greenhouse."
-msgstr "[Ļûmî, ţĥàţ ĝŕééñ šîĝñàļ îš bàçķ, šţŕôñĝéŕ ñôŵ. Fôļļôŵ ţĥé béàm: ţĥé ôļð ĝŕééñĥôûšé. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
-
-#: story/first_seed.gd:392
+#: story/first_seed.gd:430
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr "[Ļûmî. Î'm ĝéţţîñĝ à šîĝñàļ. Ĝŕééñ, ƒàîñţ, éàšţ ôƒ ţĥé ĥûb. Àñ ôļð ĝŕééñĥôûšé. Ĝô ļôôķ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+
+#: story/first_seed.gd:542
+msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"
+msgstr "[Þŕéšš  {tool_plant}  ƒôŕ ţĥé šééð. Ţĥéñ ĥôļð  {scoop}  ôñ à ĝŕééñĥôûšé béð ~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: story/homecoming.gd:18 story/homecoming.gd:27
 msgid "Clear of the air. Look back, {name}. Look at it."
@@ -2129,7 +2145,7 @@ msgstr "[Ţĥé ðŕôñé ðûmþéð à ļîţţļé ĵûñķ bàçķ. Šçô�
 msgid "SEEDS · PAID IN FULL"
 msgstr "[ŠÉÉÐŠ · ÞÀÎÐ ÎÑ FÛĻĻ ~~~~]"
 
-#: story/ledger.gd:722 systems/events.gd:500 systems/lumi_level.gd:218
+#: story/ledger.gd:722 systems/events.gd:509 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "[+%d šééðš ~]"
 
@@ -2189,43 +2205,43 @@ msgstr "[Ôbĵéçţîvé çômþļéţé  ·  %s ~~~~~~]"
 msgid "Goal complete  ·  %s"
 msgstr "[Ĝôàļ çômþļéţé  ·  %s ~~~~]"
 
-#: story/objectives.gd:760
+#: story/objectives.gd:762
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "[Bàļéŕ îñšţàļļéð! Fîļļ ýôûŕ çĥéšţ, þŕéšš [%s] ţô þŕéšš à bàļé, ţĥéñ çàŕŕý îţ ţô ţĥé šçàļé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:782 story/objectives.gd:972
+#: story/objectives.gd:784 story/objectives.gd:974
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "[Ýôûŕ çĥéšţ îš ƒûļļ. Þŕéšš [%s] ţô màķé à bàļé. ~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:798
+#: story/objectives.gd:800
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "[Ýôûŕ ðéţéçţôŕ'š ƒôûñð à ŕôbôţ þàŕţ bûŕîéð ñéàŕbý. Fôļļôŵ ţĥé BÛŔÎÉÐ ÞÀŔŢ ŕéàðîñĝ; îţ bééþš ôñçé ýôû'ŕé ŕîĝĥţ ôñ ţôþ ôƒ îţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:800
+#: story/objectives.gd:802
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "[BÛŔÎÉÐ ÞÀŔŢ: ŵàļķ ţôŵàŕð îţ ûñţîļ ţĥé ŕéàðîñĝ þéàķš, ţĥéñ ðîĝ îţ ûþ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:973
+#: story/objectives.gd:975
 msgid "Your chest is full. Bring it to the bin."
 msgstr "[Ýôûŕ çĥéšţ îš ƒûļļ. Bŕîñĝ îţ ţô ţĥé bîñ. ~~~~~~~~~~~]"
 
-#: story/objectives.gd:980
+#: story/objectives.gd:982
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "[Ýôûŕ çĥéšţ îš ƒûļļ. Ĥéàð ĥômé: ţĥé bîñ îš ûñðéŕ ţĥé ţàļļ šmôķé. ~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:982
+#: story/objectives.gd:984
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "[Çàŕŕý ýôûŕ bàļé ĥômé: ţĥé šçàļé îš ûñðéŕ ţĥé ţàļļ šmôķé. ~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:982
+#: story/objectives.gd:984
 msgid "Carry your bale to the scale by the bin."
 msgstr "[Çàŕŕý ýôûŕ bàļé ţô ţĥé šçàļé bý ţĥé bîñ. ~~~~~~~~~~~]"
 
-#: story/objectives.gd:992
+#: story/objectives.gd:994
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "[Ĥéàð ĥômé: ƒôļļôŵ ţĥé béàm ţô ţĥé ţàļļ šmôķé. ~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:1002
+#: story/objectives.gd:1004
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "[Ñôţĥîñĝ ţô þîçķ ûþ ĥéŕé. Ŵàļķ ţô môŕé ţŕàšĥ. ~~~~~~~~~~~~]"
 
@@ -2597,107 +2613,107 @@ msgstr "[Ðéšîĝñ: %s ~]"
 msgid "CRADLE · SUPPLY"
 msgstr "[ÇŔÀÐĻÉ · ŠÛÞÞĻÝ ~~]"
 
-#: systems/events.gd:452
+#: systems/events.gd:461
 msgid "STREAK x%d  +%d%%"
 msgstr "[ŠŢŔÉÀĶ x%d  +%d%% ~~~]"
 
-#: systems/events.gd:638
+#: systems/events.gd:647
 msgid "%d pieces of junk left around the crate"
 msgstr "[%d þîéçéš ôƒ ĵûñķ ļéƒţ àŕôûñð ţĥé çŕàţé ~~~~~~~~~~~]"
 
-#: systems/events.gd:663
+#: systems/events.gd:672
 msgid "Supply crate opened: %s"
 msgstr "[Šûþþļý çŕàţé ôþéñéð: %s ~~~~~]"
 
-#: systems/events.gd:665
+#: systems/events.gd:674
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr "[Ţĥé šûþþļý çŕàţé'š béàçôñ ţîméð ôûţ àñð à ðŕôñé ĥàûļéð îţ bàçķ ûþ. Àñôţĥéŕ ŵîļļ çômé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:714
+#: systems/events.gd:723
 msgid "%d pieces grabbed at 3x"
 msgstr "[%d þîéçéš ĝŕàbbéð àţ 3x ~~~~~]"
 
-#: systems/events.gd:719
+#: systems/events.gd:728
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "[Ţĥé šûŕĝé ƒàðéð. Ýôû ĝŕàbbéð %d þîéçéš àţ ţŕîþļé vàļûé; ţĥéý þàý ôûţ ŵĥéñ ýôû bàļé. ~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:719
+#: systems/events.gd:728
 msgid "The surge faded. Next time!"
 msgstr "[Ţĥé šûŕĝé ƒàðéð. Ñéxţ ţîmé! ~~~~~~]"
 
-#: systems/events.gd:768
+#: systems/events.gd:777
 msgid "Every plant is drinking"
 msgstr "[Évéŕý þļàñţ îš ðŕîñķîñĝ ~~~~~]"
 
-#: systems/events.gd:778
+#: systems/events.gd:787
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "[Ţĥé ŕàîñ môvéš ôñ. Ţĥé ĝŕôûñð šôàķéð îţ ûþ: %s ~~~~~~~~~~~~~]"
 
-#: systems/events.gd:799
+#: systems/events.gd:808
 msgid "E   fix %s's hiccup"
 msgstr "E   [ƒîx %s'š ĥîççûþ ~~]"
 
-#: systems/events.gd:826
+#: systems/events.gd:835
 msgid "%s is %d m away"
 msgstr "[%s îš %d m àŵàý ~~]"
 
-#: systems/events.gd:828
+#: systems/events.gd:837
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr "[%s šĥôôķ ôƒƒ îţš ĥîççûþš ôñ îţš ôŵñ. Îţ ļôôķš émbàŕŕàššéð. ~~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:842
+#: systems/events.gd:851
 msgid "%s is fixed and back to work. %s"
 msgstr "[%s îš ƒîxéð àñð bàçķ ţô ŵôŕķ. %s ~~~~~~~~]"
 
-#: systems/events.gd:896
+#: systems/events.gd:905
 msgid "Wildlife Visit: %s"
 msgstr "[Ŵîļðļîƒé Vîšîţ: %s ~~~]"
 
-#: systems/events.gd:897
+#: systems/events.gd:906
 msgid "E   take a photo of the %s"
 msgstr "E   [ţàķé à þĥôţô ôƒ ţĥé %s ~~~~~]"
 
-#: systems/events.gd:938
+#: systems/events.gd:947
 msgid "%s, %d m away"
 msgstr "[%s, %d m àŵàý ~~]"
 
-#: systems/events.gd:941
+#: systems/events.gd:950
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr "[Ţĥé %s ŵàñðéŕéð ôƒƒ. Îţ'ļļ bé bàçķ šôméŵĥéŕé ĝŕééñ. ~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:971
+#: systems/events.gd:980
 msgid "Snap! The %s is in your Collection. %s"
 msgstr "[Šñàþ! Ţĥé %s îš îñ ýôûŕ Çôļļéçţîôñ. %s ~~~~~~~~~~]"
 
-#: systems/events.gd:971
+#: systems/events.gd:980
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr "[Šñàþ! Àñôţĥéŕ ļôvéļý šĥôţ ôƒ ţĥé %s. %s ~~~~~~~~~~~]"
 
-#: systems/events.gd:1022
+#: systems/events.gd:1031
 msgid "Signal %d%%"
 msgstr "[Šîĝñàļ %d%% ~]"
 
-#: systems/events.gd:1026
+#: systems/events.gd:1035
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "[Ţĥàţ ŵàš ţĥé šîĝñàļ: à šţàšĥ ŵîţĥ à ŕàŕé þàŕţ îñšîðé. %s ~~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:1028
+#: systems/events.gd:1037
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "[Ţĥé šîĝñàļ ƒàðéð. Ţĥé þàŕţ îš šţîļļ ðôŵñ ţĥéŕé; ţĥé ðéţéçţôŕ ŵîļļ ƒîñð îţ. ~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:1097
+#: systems/events.gd:1106
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr "[ÀÛÐÎŢ   ÝÔÛ %d  :  %d ÐŔÔÑÉ ~~~~~~]"
 
-#: systems/events.gd:1098
+#: systems/events.gd:1107
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr "[Ýôû %d  :  %d Ðŕôñé   ·   %d ļéƒţ ~~~~~~~~~]"
 
-#: systems/events.gd:1137
+#: systems/events.gd:1146
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr "[Àûðîţ ŵôñ, %d ţô %d! Ţĥé Ļéðĝéŕ šţàmþš îţ ÀÞÞŔÔVÉÐ. %s ~~~~~~~~~~~~~~~~]"
 
-#: systems/events.gd:1141
+#: systems/events.gd:1150
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "[Ţĥé ðŕôñé ŵôñ ţĥé àûðîţ, %d ţô %d. Îţ ļéƒţ à ţîþ àñýŵàý: +%s çûbéš. ~~~~~~~~~~~~~~~~~~~~]"
 

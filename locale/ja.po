@@ -491,7 +491,7 @@ msgstr "%s 相当のベールが、運ぶ者もなく基地に積まれていた
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "清浄機がずっと空気をろ過していた。少しだけ澄んだ。"
 
-#: core/pace.gd:147 story/objectives.gd:984
+#: core/pace.gd:147 story/objectives.gd:986
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "重すぎる。作業台でリフト力をアップグレードしよう。"
 
@@ -503,7 +503,7 @@ msgstr "もう入らない。[%s] を押してベールを作ろう。"
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "ベーラーがまだない。胸のゴミをゴミ箱へ運ぼう。"
 
-#: core/pace.gd:260 systems/events.gd:492 ui/goals_panel.gd:284
+#: core/pace.gd:260 systems/events.gd:501 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr "+%s キューブ"
 
@@ -703,7 +703,7 @@ msgstr "Lumi の新デザイン：%s"
 msgid "Home. The workbench is by the pod."
 msgstr "ホームだ。作業台はポッドのそばにある。"
 
-#: planet/sites/hub_purpose.gd:174 story/objectives.gd:991
+#: planet/sites/hub_purpose.gd:174 story/objectives.gd:993
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "ロケットは発着場で待っている。リストの一番上がホームだ。"
 
@@ -796,35 +796,35 @@ msgstr "%d つの基地がそろった。ホームに戻ってロケットの出
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:110
+#: planet/sites/orbit_sites.gd:112
 msgid "The rocket is in flight."
 msgstr "ロケットは飛行中。"
 
-#: planet/sites/orbit_sites.gd:134
+#: planet/sites/orbit_sites.gd:136
 msgid "Bases restored: %d of %d"
 msgstr "復旧した基地：%d / %d"
 
-#: planet/sites/orbit_sites.gd:172
+#: planet/sites/orbit_sites.gd:174
 msgid "E   Rocket: choose a destination"
 msgstr "E   ロケット：行き先を選ぶ"
 
-#: planet/sites/orbit_sites.gd:210
+#: planet/sites/orbit_sites.gd:212
 msgid "HOME"
 msgstr "ホーム"
 
-#: planet/sites/orbit_sites.gd:210
+#: planet/sites/orbit_sites.gd:212
 msgid "NEXT STOP"
 msgstr "次の目的地"
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:214
 msgid "Upgrade the rocket first"
 msgstr "先にロケットを強化"
 
-#: planet/sites/orbit_sites.gd:230
+#: planet/sites/orbit_sites.gd:232
 msgid "%s site"
 msgstr "%sの地点"
 
-#: planet/sites/orbit_sites.gd:231
+#: planet/sites/orbit_sites.gd:233
 msgid "Hub %d"
 msgstr "基地 %d"
 
@@ -872,7 +872,7 @@ msgstr ""
 "コンポストプレス  Lv %d\n"
 "ホッパー %d%%  →  種"
 
-#: plants/garden.gd:361
+#: plants/garden.gd:373
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "ヘックスが完全によみがえった。もう小さな何かが住みついている。"
 
@@ -924,47 +924,67 @@ msgstr "Lumi はガタガタと庭に戻ってきた。いまのは何だった�
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi は泳げない。作業台のホバージェットがあれば湖の上を浮いて進める。"
 
-#: player/patch.gd:353
+#: player/patch.gd:354
+msgid "Get the seed tin first: follow the beam to the greenhouse."
+msgstr "まずは種の缶を取ろう：光の柱をたどって温室へ。"
+
+#: player/patch.gd:355
 msgid "No seeds yet. Keep cleaning."
 msgstr "まだ種がない。片づけを続けよう。"
 
-#: player/patch.gd:388
-msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
-msgstr "種にはきれいで開けた地面が必要。道路、縁石、発着場には植えられない。"
-
-#: player/patch.gd:395
+#: player/patch.gd:398 player/patch.gd:426
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "種がなくなった。咲いた植物がまた落としてくれる。"
 
-#: player/patch.gd:402
+#: player/patch.gd:405
+msgid "Plant first: press  {tool_plant}  for the seed"
+msgstr "まず植えよう：{tool_plant}  で種を持つ"
+
+#: player/patch.gd:409
 msgid "Watering can is empty. Refill at the hub."
 msgstr "じょうろが空っぽ。基地で補給しよう。"
 
-#: player/patch.gd:607
+#: player/patch.gd:428
+msgid "Clean this hex first. Seeds need clean ground."
+msgstr "まずこのヘックスをきれいにしよう。種にはきれいな地面が必要だよ。"
+
+#: player/patch.gd:430
+msgid "Something is growing here already. Try a free spot."
+msgstr "ここにはもう何か育っているよ。空いている場所を探そう。"
+
+#: player/patch.gd:431
+msgid "Seeds need soil, not road or the pad. Try the greenhouse beds."
+msgstr "種は土に植えよう。道路や台の上はだめ。温室の苗床で試してみて。"
+
+#: player/patch.gd:432
+msgid "Seeds need soil, not road or the pad."
+msgstr "種は土に植えよう。道路や台の上はだめ。"
+
+#: player/patch.gd:627
 msgid "PERFECT BALE  %s"
 msgstr "パーフェクトベール  %s"
 
-#: player/patch.gd:613
+#: player/patch.gd:633
 msgid "OVERSTUFFED  %s"
 msgstr "詰め込みすぎ  %s"
 
-#: player/patch.gd:617
+#: player/patch.gd:637
 msgid "PURE  %s"
 msgstr "ピュア  %s"
 
-#: player/patch.gd:619
+#: player/patch.gd:639
 msgid "SURGE  %s"
 msgstr "サージ  %s"
 
-#: player/patch.gd:622
+#: player/patch.gd:642
 msgid "  (streak +%d%%)"
 msgstr "  （連続 +%d%%）"
 
-#: player/patch.gd:665
+#: player/patch.gd:685
 msgid "Salvaged: %s"
 msgstr "回収：%s"
 
-#: player/patch.gd:696
+#: player/patch.gd:716
 msgid "Recovered: %s"
 msgstr "発見：%s"
 
@@ -1885,61 +1905,57 @@ msgstr "珍品発見：%s（%d / %d）   %s"
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "リストの珍品をぜんぶ見つけた。Lumi のコレクション室は思い出でいっぱい。"
 
-#: story/first_seed.gd:9
+#: story/first_seed.gd:15
 msgid "Wait. Hold it up to the light."
 msgstr "待って。光にかざしてみて。"
 
-#: story/first_seed.gd:10
+#: story/first_seed.gd:16
 msgid "That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
 msgstr "それ、入植者の種の缶だ。ふたに Cradle号のスタンプ。私たちのものだよ。急いでいて置いていかれたんだ。"
 
-#: story/first_seed.gd:11
+#: story/first_seed.gd:17
 msgid "When they left, the Settlers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi."
 msgstr "去るとき、入植者たちは運べるかぎりの種を Cradle号の保管庫に封じた。君の保管庫だよ、Lumi。"
 
-#: story/first_seed.gd:12
+#: story/first_seed.gd:18
 msgid "The plan was simple. Wait for the dust to settle. Come home. Plant. They called that day the Greenfall."
 msgstr "計画は簡単だった。ちりが落ち着くのを待つ。帰る。植える。その日を彼らは Greenfall と呼んだ。"
 
-#: story/first_seed.gd:13
+#: story/first_seed.gd:19
 msgid "Then three hundred years went by, and the dust never settled. Until a seed-keeper fell out of the sky."
 msgstr "そして三百年が過ぎ、ちりは落ち着かなかった。シードキーパーが空から落ちてくるまでは。"
 
-#: story/first_seed.gd:14
+#: story/first_seed.gd:20
 msgid "Nothing grows on its own anymore. The soil forgot how. Somebody has to put it in the ground."
 msgstr "もう何もひとりでは育たない。土が育て方を忘れたんだ。誰かが土に植えてあげないと。"
 
-#: story/first_seed.gd:15
+#: story/first_seed.gd:21
 msgid "That somebody is you. Small. Stubborn. Running on four percent. Perfect."
 msgstr "その誰かが君。小さくて。がんこで。残り4パーセントで動いてる。完璧だ。"
 
-#: story/first_seed.gd:16
+#: story/first_seed.gd:22
 msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
 msgstr "きれいな地面を探して。掘って。入れて。土をぽんぽん。それから——ここが大事——水をあげて。"
 
-#: story/first_seed.gd:147
+#: story/first_seed.gd:157
 msgid "{tool_water}  then hold  {scoop}  to water it"
 msgstr "{tool_water}  のあと  {scoop}  長押しで水やり"
 
-#: story/first_seed.gd:176
-msgid "Hold  {scoop}  on clean ground to plant the seed"
-msgstr "きれいな地面で  {scoop}  長押しで種を植える"
-
-#: story/first_seed.gd:267
+#: story/first_seed.gd:277
 msgid "...It's green. Lumi, it's actually green."
 msgstr "……緑だ。Lumi、ほんとうに緑だよ。"
 
-#: story/first_seed.gd:269
+#: story/first_seed.gd:279
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "水を切らさないでね。ここでは種は貴重だけど、花が咲くたびにひとつ返ってくるし、きみのコアにも小さな緑の光が届く。こうやって始まるんだ。"
 
-#: story/first_seed.gd:383
-msgid "Lumi, that green signal is back, stronger now. Follow the beam: the old greenhouse."
-msgstr "Lumi、あの緑のシグナルがまた来た。前より強い。光の柱を追って。古い温室だよ。"
-
-#: story/first_seed.gd:392
+#: story/first_seed.gd:430
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr "Lumi。シグナルを受信。緑で、かすかで、基地の東。古い温室だ。見てきて。"
+
+#: story/first_seed.gd:542
+msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"
+msgstr "{tool_plant}  で種を持って、温室の苗床の上で  {scoop}  を長押し"
 
 #: story/homecoming.gd:18 story/homecoming.gd:27
 msgid "Clear of the air. Look back, {name}. Look at it."
@@ -2126,7 +2142,7 @@ msgstr "ドローンがガラクタを少し捨てていった。すくうか、
 msgid "SEEDS · PAID IN FULL"
 msgstr "種 · 全額支払済み"
 
-#: story/ledger.gd:722 systems/events.gd:500 systems/lumi_level.gd:218
+#: story/ledger.gd:722 systems/events.gd:509 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "+%d 種"
 
@@ -2186,43 +2202,43 @@ msgstr "目標達成  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "目標達成  ·  %s"
 
-#: story/objectives.gd:760
+#: story/objectives.gd:762
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "ベーラーを取り付けた！胸をいっぱいにして、[%s] でベールを作り、はかりまで運ぼう。"
 
-#: story/objectives.gd:782 story/objectives.gd:972
+#: story/objectives.gd:784 story/objectives.gd:974
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "胸がいっぱい。[%s] を押してベールを作ろう。"
 
-#: story/objectives.gd:798
+#: story/objectives.gd:800
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "探知機が近くに埋まったロボットのパーツを見つけたよ。「埋もれたパーツ」の表示を追って。真上に来るとピッと鳴るよ。"
 
-#: story/objectives.gd:800
+#: story/objectives.gd:802
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋もれたパーツ：反応が一番強くなるまで近づいて、掘り出そう。"
 
-#: story/objectives.gd:973
+#: story/objectives.gd:975
 msgid "Your chest is full. Bring it to the bin."
 msgstr "胸がいっぱい。ゴミ箱へ運ぼう。"
 
-#: story/objectives.gd:980
+#: story/objectives.gd:982
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "胸がいっぱい。おうちへ帰ろう。ゴミ箱は高い煙の下だよ。"
 
-#: story/objectives.gd:982
+#: story/objectives.gd:984
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "ベールをおうちへ運ぼう。はかりは高い煙の下だよ。"
 
-#: story/objectives.gd:982
+#: story/objectives.gd:984
 msgid "Carry your bale to the scale by the bin."
 msgstr "ベールをゴミ箱のそばのはかりへ運ぼう。"
 
-#: story/objectives.gd:992
+#: story/objectives.gd:994
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "おうちへ帰ろう。光の柱を追って高い煙のところへ。"
 
-#: story/objectives.gd:1002
+#: story/objectives.gd:1004
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "ここには拾うものがない。もっとゴミのあるところへ歩こう。"
 
@@ -2594,107 +2610,107 @@ msgstr "デザイン：%s"
 msgid "CRADLE · SUPPLY"
 msgstr "CRADLE号 · 補給"
 
-#: systems/events.gd:452
+#: systems/events.gd:461
 msgid "STREAK x%d  +%d%%"
 msgstr "コンボ x%d  +%d%%"
 
-#: systems/events.gd:638
+#: systems/events.gd:647
 msgid "%d pieces of junk left around the crate"
 msgstr "箱のまわりにガラクタが残り %d 個"
 
-#: systems/events.gd:663
+#: systems/events.gd:672
 msgid "Supply crate opened: %s"
 msgstr "補給箱を開けた：%s"
 
-#: systems/events.gd:665
+#: systems/events.gd:674
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr "補給箱のビーコンが時間切れになり、ドローンが引き上げていった。また来るよ。"
 
-#: systems/events.gd:714
+#: systems/events.gd:723
 msgid "%d pieces grabbed at 3x"
 msgstr "3倍で %d 個ゲット"
 
-#: systems/events.gd:719
+#: systems/events.gd:728
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "ラッシュが終わった。3倍の価値で %d 個ゲット。ベールにすると支払われる。"
 
-#: systems/events.gd:719
+#: systems/events.gd:728
 msgid "The surge faded. Next time!"
 msgstr "ラッシュが終わった。また次回！"
 
-#: systems/events.gd:768
+#: systems/events.gd:777
 msgid "Every plant is drinking"
 msgstr "すべての植物が水を飲んでいる"
 
-#: systems/events.gd:778
+#: systems/events.gd:787
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "雨が去っていく。大地が吸い込んだ：%s"
 
-#: systems/events.gd:799
+#: systems/events.gd:808
 msgid "E   fix %s's hiccup"
 msgstr "E   %s のしゃっくりを治す"
 
-#: systems/events.gd:826
+#: systems/events.gd:835
 msgid "%s is %d m away"
 msgstr "%s まで %d m"
 
-#: systems/events.gd:828
+#: systems/events.gd:837
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr "%s はひとりでしゃっくりが止まった。ちょっと恥ずかしそう。"
 
-#: systems/events.gd:842
+#: systems/events.gd:851
 msgid "%s is fixed and back to work. %s"
 msgstr "%s は修理されて仕事に戻った。%s"
 
-#: systems/events.gd:896
+#: systems/events.gd:905
 msgid "Wildlife Visit: %s"
 msgstr "生き物がやってきた：%s"
 
-#: systems/events.gd:897
+#: systems/events.gd:906
 msgid "E   take a photo of the %s"
 msgstr "E   %s の写真を撮る"
 
-#: systems/events.gd:938
+#: systems/events.gd:947
 msgid "%s, %d m away"
 msgstr "%s、%d m 先"
 
-#: systems/events.gd:941
+#: systems/events.gd:950
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr "%s はどこかへ行ってしまった。どこか緑のある場所にまた現れるよ。"
 
-#: systems/events.gd:971
+#: systems/events.gd:980
 msgid "Snap! The %s is in your Collection. %s"
 msgstr "パシャ！%s がコレクションに入った。%s"
 
-#: systems/events.gd:971
+#: systems/events.gd:980
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr "パシャ！%s のすてきな写真をもう一枚。%s"
 
-#: systems/events.gd:1022
+#: systems/events.gd:1031
 msgid "Signal %d%%"
 msgstr "シグナル %d%%"
 
-#: systems/events.gd:1026
+#: systems/events.gd:1035
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "あれがシグナルの正体：レアパーツが入った隠し場所。%s"
 
-#: systems/events.gd:1028
+#: systems/events.gd:1037
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "シグナルが消えた。パーツはまだ下にある。探知機が見つけてくれる。"
 
-#: systems/events.gd:1097
+#: systems/events.gd:1106
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr "監査   あなた %d  :  %d ドローン"
 
-#: systems/events.gd:1098
+#: systems/events.gd:1107
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr "あなた %d  :  %d ドローン   ·   残り %d"
 
-#: systems/events.gd:1137
+#: systems/events.gd:1146
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr "監査に勝利、%d 対 %d！Ledger が「承認」のスタンプを押した。%s"
 
-#: systems/events.gd:1141
+#: systems/events.gd:1150
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "監査はドローンの勝ち、%d 対 %d。それでもチップを置いていった：+%s キューブ。"
 
@@ -17000,6 +17016,15 @@ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
+#~ msgstr "種にはきれいで開けた地面が必要。道路、縁石、発着場には植えられない。"
+
+#~ msgid "Hold  {scoop}  on clean ground to plant the seed"
+#~ msgstr "きれいな地面で  {scoop}  長押しで種を植える"
+
+#~ msgid "Lumi, that green signal is back, stronger now. Follow the beam: the old greenhouse."
+#~ msgstr "Lumi、あの緑のシグナルがまた来た。前より強い。光の柱を追って。古い温室だよ。"
 
 #~ msgid "Give a robot a work zone"
 #~ msgstr "ロボットに作業ゾーンをあげる"

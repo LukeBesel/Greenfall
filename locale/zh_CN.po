@@ -491,7 +491,7 @@ msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
-#: core/pace.gd:147 story/objectives.gd:984
+#: core/pace.gd:147 story/objectives.gd:986
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "太重了。去工作台升级举升力。"
 
@@ -503,7 +503,7 @@ msgstr "这里装不下了。按 [%s] 压一个捆包。"
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "还没有打包机。把胸舱带到垃圾桶去。"
 
-#: core/pace.gd:260 systems/events.gd:492 ui/goals_panel.gd:284
+#: core/pace.gd:260 systems/events.gd:501 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr "+%s 方块"
 
@@ -703,7 +703,7 @@ msgstr "新的 Lumi 外观：%s"
 msgid "Home. The workbench is by the pod."
 msgstr "到家了。工作台就在逃生舱旁边。"
 
-#: planet/sites/hub_purpose.gd:174 story/objectives.gd:991
+#: planet/sites/hub_purpose.gd:174 story/objectives.gd:993
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "火箭停在发射台上。目的地列表的第一项就是家。"
 
@@ -796,35 +796,35 @@ msgstr "%d 个基地都修好了。飞回家，让火箭做好离开的准备。
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:110
+#: planet/sites/orbit_sites.gd:112
 msgid "The rocket is in flight."
 msgstr "火箭正在飞行。"
 
-#: planet/sites/orbit_sites.gd:134
+#: planet/sites/orbit_sites.gd:136
 msgid "Bases restored: %d of %d"
 msgstr "已修复基地：%d / %d"
 
-#: planet/sites/orbit_sites.gd:172
+#: planet/sites/orbit_sites.gd:174
 msgid "E   Rocket: choose a destination"
 msgstr "E   火箭：选择目的地"
 
-#: planet/sites/orbit_sites.gd:210
+#: planet/sites/orbit_sites.gd:212
 msgid "HOME"
 msgstr "家"
 
-#: planet/sites/orbit_sites.gd:210
+#: planet/sites/orbit_sites.gd:212
 msgid "NEXT STOP"
 msgstr "下一站"
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:214
 msgid "Upgrade the rocket first"
 msgstr "先升级火箭"
 
-#: planet/sites/orbit_sites.gd:230
+#: planet/sites/orbit_sites.gd:232
 msgid "%s site"
 msgstr "%s地点"
 
-#: planet/sites/orbit_sites.gd:231
+#: planet/sites/orbit_sites.gd:233
 msgid "Hub %d"
 msgstr "基地 %d"
 
@@ -872,7 +872,7 @@ msgstr ""
 "堆肥压机  等级 %d\n"
 "料斗 %d%%  →  种子"
 
-#: plants/garden.gd:361
+#: plants/garden.gd:373
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "一个六角格完全恢复了。已经有小东西住在里面了。"
 
@@ -924,47 +924,67 @@ msgstr "Lumi 哐啷哐啷地回到了院子里。真奇怪。"
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi 不会游泳。在工作台装上悬浮喷口，他就能飘过湖面。"
 
-#: player/patch.gd:353
+#: player/patch.gd:354
+msgid "Get the seed tin first: follow the beam to the greenhouse."
+msgstr "先去拿种子罐：跟着光束走到温室。"
+
+#: player/patch.gd:355
 msgid "No seeds yet. Keep cleaning."
 msgstr "还没有种子。继续清理吧。"
 
-#: player/patch.gd:388
-msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
-msgstr "种子需要干净、空旷的土地：不能是街道、路沿或起降台。"
-
-#: player/patch.gd:395
+#: player/patch.gd:398 player/patch.gd:426
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "种子用完了。开花的植物会掉落更多。"
 
-#: player/patch.gd:402
+#: player/patch.gd:405
+msgid "Plant first: press  {tool_plant}  for the seed"
+msgstr "先种下：按  {tool_plant}  拿出种子"
+
+#: player/patch.gd:409
 msgid "Watering can is empty. Refill at the hub."
 msgstr "水壶空了。回基地补水。"
 
-#: player/patch.gd:607
+#: player/patch.gd:428
+msgid "Clean this hex first. Seeds need clean ground."
+msgstr "先把这个六边形清理干净。种子需要干净的土地。"
+
+#: player/patch.gd:430
+msgid "Something is growing here already. Try a free spot."
+msgstr "这里已经长着东西了。换个空位试试。"
+
+#: player/patch.gd:431
+msgid "Seeds need soil, not road or the pad. Try the greenhouse beds."
+msgstr "种子要种在泥土里，不能种在路上或平台上。试试温室的苗床。"
+
+#: player/patch.gd:432
+msgid "Seeds need soil, not road or the pad."
+msgstr "种子要种在泥土里，不能种在路上或平台上。"
+
+#: player/patch.gd:627
 msgid "PERFECT BALE  %s"
 msgstr "完美捆包  %s"
 
-#: player/patch.gd:613
+#: player/patch.gd:633
 msgid "OVERSTUFFED  %s"
 msgstr "塞爆了  %s"
 
-#: player/patch.gd:617
+#: player/patch.gd:637
 msgid "PURE  %s"
 msgstr "纯净  %s"
 
-#: player/patch.gd:619
+#: player/patch.gd:639
 msgid "SURGE  %s"
 msgstr "冲劲  %s"
 
-#: player/patch.gd:622
+#: player/patch.gd:642
 msgid "  (streak +%d%%)"
 msgstr "  （连击 +%d%%）"
 
-#: player/patch.gd:665
+#: player/patch.gd:685
 msgid "Salvaged: %s"
 msgstr "回收：%s"
 
-#: player/patch.gd:696
+#: player/patch.gd:716
 msgid "Recovered: %s"
 msgstr "找回：%s"
 
@@ -1885,61 +1905,57 @@ msgstr "发现奇物：%s（%d / %d）   %s"
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "清单上的奇物全部找到了。Lumi 的收藏舱装满了回忆。"
 
-#: story/first_seed.gd:9
+#: story/first_seed.gd:15
 msgid "Wait. Hold it up to the light."
 msgstr "等等。对着光举起来看看。"
 
-#: story/first_seed.gd:10
+#: story/first_seed.gd:16
 msgid "That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
 msgstr "那是定居者的种子罐。盖子上有 Cradle号的印章。是我们的，匆忙中落下的。"
 
-#: story/first_seed.gd:11
+#: story/first_seed.gd:17
 msgid "When they left, the Settlers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi."
 msgstr "离开时，定居者把能带走的每一颗种子都封进了 Cradle号的种子库。你的种子库，Lumi。"
 
-#: story/first_seed.gd:12
+#: story/first_seed.gd:18
 msgid "The plan was simple. Wait for the dust to settle. Come home. Plant. They called that day the Greenfall."
 msgstr "计划很简单。等尘埃落定。回家。播种。他们把那一天称为 Greenfall。"
 
-#: story/first_seed.gd:13
+#: story/first_seed.gd:19
 msgid "Then three hundred years went by, and the dust never settled. Until a seed-keeper fell out of the sky."
 msgstr "然后三百年过去了，尘埃从未落定。直到一个守种者从天上掉了下来。"
 
-#: story/first_seed.gd:14
+#: story/first_seed.gd:20
 msgid "Nothing grows on its own anymore. The soil forgot how. Somebody has to put it in the ground."
 msgstr "现在什么都不会自己长了。土地忘了怎么长。得有人把种子种进土里。"
 
-#: story/first_seed.gd:15
+#: story/first_seed.gd:21
 msgid "That somebody is you. Small. Stubborn. Running on four percent. Perfect."
 msgstr "那个人就是你。小小的。倔强的。只剩百分之四的电。完美。"
 
-#: story/first_seed.gd:16
+#: story/first_seed.gd:22
 msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
 msgstr "找到干净的地面。挖坑。放进去。拍拍土。然后——这步很重要——浇水。"
 
-#: story/first_seed.gd:147
+#: story/first_seed.gd:157
 msgid "{tool_water}  then hold  {scoop}  to water it"
 msgstr "{tool_water}  然后按住  {scoop}  浇水"
 
-#: story/first_seed.gd:176
-msgid "Hold  {scoop}  on clean ground to plant the seed"
-msgstr "在干净的地面上按住  {scoop}  种下种子"
-
-#: story/first_seed.gd:267
+#: story/first_seed.gd:277
 msgid "...It's green. Lumi, it's actually green."
 msgstr "……是绿色的。Lumi，真的是绿色的。"
 
-#: story/first_seed.gd:269
+#: story/first_seed.gd:279
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "记得浇水。外面种子很稀少，但每次开花都会还你一颗，还会给你的核心一点绿光。一切就是这样开始的。"
 
-#: story/first_seed.gd:383
-msgid "Lumi, that green signal is back, stronger now. Follow the beam: the old greenhouse."
-msgstr "Lumi，那个绿色信号又出现了，而且更强了。跟着光柱走：去旧温室。"
-
-#: story/first_seed.gd:392
+#: story/first_seed.gd:430
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr "Lumi。我收到一个信号。绿色的，很微弱，在基地东边。一座旧温室。去看看。"
+
+#: story/first_seed.gd:542
+msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"
+msgstr "按  {tool_plant}  拿出种子。然后在温室苗床上按住  {scoop}"
 
 #: story/homecoming.gd:18 story/homecoming.gd:27
 msgid "Clear of the air. Look back, {name}. Look at it."
@@ -2126,7 +2142,7 @@ msgstr "无人机倒回了一点废料。把它铲起来，或者让你的帮手
 msgid "SEEDS · PAID IN FULL"
 msgstr "种子 · 已全额支付"
 
-#: story/ledger.gd:722 systems/events.gd:500 systems/lumi_level.gd:218
+#: story/ledger.gd:722 systems/events.gd:509 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "+%d 种子"
 
@@ -2186,43 +2202,43 @@ msgstr "目标完成  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:760
+#: story/objectives.gd:762
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "打包机装好了！装满胸舱，按 [%s] 压一个捆包，再把它搬到秤上。"
 
-#: story/objectives.gd:782 story/objectives.gd:972
+#: story/objectives.gd:784 story/objectives.gd:974
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "你的胸舱满了。按 [%s] 压一个捆包。"
 
-#: story/objectives.gd:798
+#: story/objectives.gd:800
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "你的探测器发现附近埋着一个机器人零件。跟着“埋藏零件”的读数走；走到正上方时它会哔哔响。"
 
-#: story/objectives.gd:800
+#: story/objectives.gd:802
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
 
-#: story/objectives.gd:973
+#: story/objectives.gd:975
 msgid "Your chest is full. Bring it to the bin."
 msgstr "你的胸舱满了。带到垃圾桶去。"
 
-#: story/objectives.gd:980
+#: story/objectives.gd:982
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "你的胸舱满了。回家吧：垃圾桶就在高高的烟柱下面。"
 
-#: story/objectives.gd:982
+#: story/objectives.gd:984
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "把捆包搬回家：秤就在高高的烟柱下面。"
 
-#: story/objectives.gd:982
+#: story/objectives.gd:984
 msgid "Carry your bale to the scale by the bin."
 msgstr "把捆包搬到垃圾桶旁边的秤上。"
 
-#: story/objectives.gd:992
+#: story/objectives.gd:994
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "回家吧：跟着光柱走到高高的烟柱那里。"
 
-#: story/objectives.gd:1002
+#: story/objectives.gd:1004
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "这里没有东西可捡。走到垃圾更多的地方去。"
 
@@ -2594,107 +2610,107 @@ msgstr "外观：%s"
 msgid "CRADLE · SUPPLY"
 msgstr "CRADLE号 · 补给"
 
-#: systems/events.gd:452
+#: systems/events.gd:461
 msgid "STREAK x%d  +%d%%"
 msgstr "连击 x%d  +%d%%"
 
-#: systems/events.gd:638
+#: systems/events.gd:647
 msgid "%d pieces of junk left around the crate"
 msgstr "箱子周围还剩 %d 块废料"
 
-#: systems/events.gd:663
+#: systems/events.gd:672
 msgid "Supply crate opened: %s"
 msgstr "补给箱已打开：%s"
 
-#: systems/events.gd:665
+#: systems/events.gd:674
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr "补给箱的信标超时了，无人机把它拉回了天上。还会再来的。"
 
-#: systems/events.gd:714
+#: systems/events.gd:723
 msgid "%d pieces grabbed at 3x"
 msgstr "以 3 倍价值抓到 %d 块"
 
-#: systems/events.gd:719
+#: systems/events.gd:728
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "热潮退去了。你以三倍价值抓到了 %d 块；打包时就会兑现。"
 
-#: systems/events.gd:719
+#: systems/events.gd:728
 msgid "The surge faded. Next time!"
 msgstr "热潮退去了。下次加油！"
 
-#: systems/events.gd:768
+#: systems/events.gd:777
 msgid "Every plant is drinking"
 msgstr "所有植物都在喝水"
 
-#: systems/events.gd:778
+#: systems/events.gd:787
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "雨移走了。大地把雨水都吸收了：%s"
 
-#: systems/events.gd:799
+#: systems/events.gd:808
 msgid "E   fix %s's hiccup"
 msgstr "E   治好 %s 的嗝"
 
-#: systems/events.gd:826
+#: systems/events.gd:835
 msgid "%s is %d m away"
 msgstr "%s 在 %d 米外"
 
-#: systems/events.gd:828
+#: systems/events.gd:837
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr "%s 自己止住了嗝。看起来有点不好意思。"
 
-#: systems/events.gd:842
+#: systems/events.gd:851
 msgid "%s is fixed and back to work. %s"
 msgstr "%s 修好了，回去干活了。%s"
 
-#: systems/events.gd:896
+#: systems/events.gd:905
 msgid "Wildlife Visit: %s"
 msgstr "野生动物来访：%s"
 
-#: systems/events.gd:897
+#: systems/events.gd:906
 msgid "E   take a photo of the %s"
 msgstr "E   给%s拍张照"
 
-#: systems/events.gd:938
+#: systems/events.gd:947
 msgid "%s, %d m away"
 msgstr "%s，%d 米外"
 
-#: systems/events.gd:941
+#: systems/events.gd:950
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr "%s走开了。它会在某个绿色的地方再出现。"
 
-#: systems/events.gd:971
+#: systems/events.gd:980
 msgid "Snap! The %s is in your Collection. %s"
 msgstr "咔嚓！%s已加入你的收藏。%s"
 
-#: systems/events.gd:971
+#: systems/events.gd:980
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr "咔嚓！又一张漂亮的%s照片。%s"
 
-#: systems/events.gd:1022
+#: systems/events.gd:1031
 msgid "Signal %d%%"
 msgstr "信号 %d%%"
 
-#: systems/events.gd:1026
+#: systems/events.gd:1035
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "原来是这个信号：一个藏着稀有零件的储藏点。%s"
 
-#: systems/events.gd:1028
+#: systems/events.gd:1037
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "信号消失了。零件还在下面；探测器会找到它的。"
 
-#: systems/events.gd:1097
+#: systems/events.gd:1106
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr "审计   你 %d  :  %d 无人机"
 
-#: systems/events.gd:1098
+#: systems/events.gd:1107
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr "你 %d  :  %d 无人机   ·   剩余 %d"
 
-#: systems/events.gd:1137
+#: systems/events.gd:1146
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr "审计胜利，%d 比 %d！Ledger 盖上了“批准”章。%s"
 
-#: systems/events.gd:1141
+#: systems/events.gd:1150
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "无人机赢得了审计，%d 比 %d。不过它还是留了小费：+%s 方块。"
 
@@ -17000,6 +17016,15 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
+#~ msgstr "种子需要干净、空旷的土地：不能是街道、路沿或起降台。"
+
+#~ msgid "Hold  {scoop}  on clean ground to plant the seed"
+#~ msgstr "在干净的地面上按住  {scoop}  种下种子"
+
+#~ msgid "Lumi, that green signal is back, stronger now. Follow the beam: the old greenhouse."
+#~ msgstr "Lumi，那个绿色信号又出现了，而且更强了。跟着光柱走：去旧温室。"
 
 #~ msgid "Give a robot a work zone"
 #~ msgstr "给一台机器人划一块工作区域"

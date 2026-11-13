@@ -491,7 +491,7 @@ msgstr "Pacas por valor de %s se amontonaron en la base sin nadie que las llevar
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Los depuradores filtraron el aire todo el rato. Está un poco más limpio."
 
-#: core/pace.gd:147 story/objectives.gd:984
+#: core/pace.gd:147 story/objectives.gd:986
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "Pesa demasiado. Mejora la Fuerza de elevación en el banco."
 
@@ -503,7 +503,7 @@ msgstr "Aquí ya no cabe nada. Pulsa [%s] para hacer un fardo."
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "Aún no hay empacadora. Lleva tu pecho al cubo."
 
-#: core/pace.gd:260 systems/events.gd:492 ui/goals_panel.gd:284
+#: core/pace.gd:260 systems/events.gd:501 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr "+%s cubos"
 
@@ -703,7 +703,7 @@ msgstr "Nuevo diseño de Lumi: %s"
 msgid "Home. The workbench is by the pod."
 msgstr "En casa. El banco de trabajo está junto a la cápsula."
 
-#: planet/sites/hub_purpose.gd:174 story/objectives.gd:991
+#: planet/sites/hub_purpose.gd:174 story/objectives.gd:993
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "El cohete espera en la plataforma. Casa es lo primero de su lista."
 
@@ -797,35 +797,35 @@ msgstr "Las %d bases están en pie. Vuela a casa y prepara el cohete para partir
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:110
+#: planet/sites/orbit_sites.gd:112
 msgid "The rocket is in flight."
 msgstr "El cohete está en vuelo."
 
-#: planet/sites/orbit_sites.gd:134
+#: planet/sites/orbit_sites.gd:136
 msgid "Bases restored: %d of %d"
 msgstr "Bases restauradas: %d de %d"
 
-#: planet/sites/orbit_sites.gd:172
+#: planet/sites/orbit_sites.gd:174
 msgid "E   Rocket: choose a destination"
 msgstr "E   Cohete: elige un destino"
 
-#: planet/sites/orbit_sites.gd:210
+#: planet/sites/orbit_sites.gd:212
 msgid "HOME"
 msgstr "CASA"
 
-#: planet/sites/orbit_sites.gd:210
+#: planet/sites/orbit_sites.gd:212
 msgid "NEXT STOP"
 msgstr "PRÓXIMA PARADA"
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:214
 msgid "Upgrade the rocket first"
 msgstr "Primero mejora el cohete"
 
-#: planet/sites/orbit_sites.gd:230
+#: planet/sites/orbit_sites.gd:232
 msgid "%s site"
 msgstr "Lugar: %s"
 
-#: planet/sites/orbit_sites.gd:231
+#: planet/sites/orbit_sites.gd:233
 msgid "Hub %d"
 msgstr "Base %d"
 
@@ -873,7 +873,7 @@ msgstr ""
 "PRENSA DE COMPOST  Nv %d\n"
 "tolva %d%%  →  semillas"
 
-#: plants/garden.gd:361
+#: plants/garden.gd:373
 msgid "A hex is fully restored. Something small is already living in it."
 msgstr "Un hexágono está totalmente restaurado. Algo pequeñito ya vive en él."
 
@@ -925,47 +925,67 @@ msgstr "Lumi vuelve traqueteando al patio. Qué raro."
 msgid "Lumi can't swim. Hover Jets at the workbench let him float over lakes."
 msgstr "Lumi no sabe nadar. Con los Chorros flotantes del banco de trabajo flota sobre los lagos."
 
-#: player/patch.gd:353
+#: player/patch.gd:354
+msgid "Get the seed tin first: follow the beam to the greenhouse."
+msgstr "Primero coge la lata de semillas: sigue el rayo hasta el invernadero."
+
+#: player/patch.gd:355
 msgid "No seeds yet. Keep cleaning."
 msgstr "Aún no hay semillas. Sigue limpiando."
 
-#: player/patch.gd:388
-msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
-msgstr "Las semillas necesitan suelo limpio y despejado: ni calles, ni bordillos, ni la plataforma."
-
-#: player/patch.gd:395
+#: player/patch.gd:398 player/patch.gd:426
 msgid "Out of seeds. Blooming plants drop more."
 msgstr "Sin semillas. Las plantas en flor dan más."
 
-#: player/patch.gd:402
+#: player/patch.gd:405
+msgid "Plant first: press  {tool_plant}  for the seed"
+msgstr "Primero planta: pulsa  {tool_plant}  para la semilla"
+
+#: player/patch.gd:409
 msgid "Watering can is empty. Refill at the hub."
 msgstr "Regadera vacía. Rellénala en la base."
 
-#: player/patch.gd:607
+#: player/patch.gd:428
+msgid "Clean this hex first. Seeds need clean ground."
+msgstr "Limpia primero este hexágono. Las semillas necesitan suelo limpio."
+
+#: player/patch.gd:430
+msgid "Something is growing here already. Try a free spot."
+msgstr "Aquí ya está creciendo algo. Prueba en un sitio libre."
+
+#: player/patch.gd:431
+msgid "Seeds need soil, not road or the pad. Try the greenhouse beds."
+msgstr "Las semillas necesitan tierra, no carretera ni plataforma. Prueba en los bancales del invernadero."
+
+#: player/patch.gd:432
+msgid "Seeds need soil, not road or the pad."
+msgstr "Las semillas necesitan tierra, no carretera ni plataforma."
+
+#: player/patch.gd:627
 msgid "PERFECT BALE  %s"
 msgstr "PACA PERFECTA  %s"
 
-#: player/patch.gd:613
+#: player/patch.gd:633
 msgid "OVERSTUFFED  %s"
 msgstr "REPLETA  %s"
 
-#: player/patch.gd:617
+#: player/patch.gd:637
 msgid "PURE  %s"
 msgstr "PURA  %s"
 
-#: player/patch.gd:619
+#: player/patch.gd:639
 msgid "SURGE  %s"
 msgstr "IMPULSO  %s"
 
-#: player/patch.gd:622
+#: player/patch.gd:642
 msgid "  (streak +%d%%)"
 msgstr "  (racha +%d%%)"
 
-#: player/patch.gd:665
+#: player/patch.gd:685
 msgid "Salvaged: %s"
 msgstr "Rescatado: %s"
 
-#: player/patch.gd:696
+#: player/patch.gd:716
 msgid "Recovered: %s"
 msgstr "Recuperado: %s"
 
@@ -1891,61 +1911,57 @@ msgstr "Curiosidad encontrada: %s  (%d / %d)   %s"
 msgid "Every curiosity on the list, found. Lumi's collection compartment is very full of memories."
 msgstr "Todas las curiosidades de la lista, encontradas. El compartimento de colección de Lumi está llenísimo de recuerdos."
 
-#: story/first_seed.gd:9
+#: story/first_seed.gd:15
 msgid "Wait. Hold it up to the light."
 msgstr "Espera. Ponlo a contraluz."
 
-#: story/first_seed.gd:10
+#: story/first_seed.gd:16
 msgid "That's a Settler seed tin. Cradle stamp on the lid. One of ours, left behind in the rush."
 msgstr "Es una lata de semillas de los Colonos. Sello del Cradle en la tapa. Una de las nuestras, olvidada con las prisas."
 
-#: story/first_seed.gd:11
+#: story/first_seed.gd:17
 msgid "When they left, the Settlers sealed every seed they could carry into the Cradle's vault. Your vault, Lumi."
 msgstr "Al marcharse, los Colonos sellaron todas las semillas que pudieron llevar en la cámara del Cradle. Tu cámara, Lumi."
 
-#: story/first_seed.gd:12
+#: story/first_seed.gd:18
 msgid "The plan was simple. Wait for the dust to settle. Come home. Plant. They called that day the Greenfall."
 msgstr "El plan era sencillo. Esperar a que se asentara el polvo. Volver a casa. Plantar. A ese día lo llamaron el Greenfall."
 
-#: story/first_seed.gd:13
+#: story/first_seed.gd:19
 msgid "Then three hundred years went by, and the dust never settled. Until a seed-keeper fell out of the sky."
 msgstr "Luego pasaron trescientos años, y el polvo nunca se asentó. Hasta que un guardasemillas cayó del cielo."
 
-#: story/first_seed.gd:14
+#: story/first_seed.gd:20
 msgid "Nothing grows on its own anymore. The soil forgot how. Somebody has to put it in the ground."
 msgstr "Ya nada crece solo. El suelo ha olvidado cómo. Alguien tiene que meterlo en la tierra."
 
-#: story/first_seed.gd:15
+#: story/first_seed.gd:21
 msgid "That somebody is you. Small. Stubborn. Running on four percent. Perfect."
 msgstr "Ese alguien eres tú. Pequeño. Testarudo. Funcionando al cuatro por ciento. Perfecto."
 
-#: story/first_seed.gd:16
+#: story/first_seed.gd:22
 msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
 msgstr "Busca suelo limpio. Cava. Déjala dentro. Aprieta la tierra. Y luego —esto importa— riégala."
 
-#: story/first_seed.gd:147
+#: story/first_seed.gd:157
 msgid "{tool_water}  then hold  {scoop}  to water it"
 msgstr "{tool_water}  y luego mantén  {scoop}  para regar"
 
-#: story/first_seed.gd:176
-msgid "Hold  {scoop}  on clean ground to plant the seed"
-msgstr "Mantén  {scoop}  en suelo limpio para plantar la semilla"
-
-#: story/first_seed.gd:267
+#: story/first_seed.gd:277
 msgid "...It's green. Lumi, it's actually green."
 msgstr "...Es verde. Lumi, es verde de verdad."
 
-#: story/first_seed.gd:269
+#: story/first_seed.gd:279
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "Mantenla regada. Aquí fuera las semillas escasean, pero cada flor devuelve una, y un poco de luz verde para tu núcleo. Así es como empieza."
 
-#: story/first_seed.gd:383
-msgid "Lumi, that green signal is back, stronger now. Follow the beam: the old greenhouse."
-msgstr "Lumi, la señal verde ha vuelto, y más fuerte. Sigue el rayo: el viejo invernadero."
-
-#: story/first_seed.gd:392
+#: story/first_seed.gd:430
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr "Lumi. Capto una señal. Verde, débil, al este de la base. Un viejo invernadero. Ve a mirar."
+
+#: story/first_seed.gd:542
+msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"
+msgstr "Pulsa  {tool_plant}  para la semilla. Luego mantén  {scoop}  sobre un bancal del invernadero"
 
 #: story/homecoming.gd:18 story/homecoming.gd:27
 msgid "Clear of the air. Look back, {name}. Look at it."
@@ -2132,7 +2148,7 @@ msgstr "El dron ha devuelto un poco de chatarra. Recógela o deja que tus ayudan
 msgid "SEEDS · PAID IN FULL"
 msgstr "SEMILLAS · PAGADO ÍNTEGRAMENTE"
 
-#: story/ledger.gd:722 systems/events.gd:500 systems/lumi_level.gd:218
+#: story/ledger.gd:722 systems/events.gd:509 systems/lumi_level.gd:218
 msgid "+%d seeds"
 msgstr "+%d semillas"
 
@@ -2192,43 +2208,43 @@ msgstr "Objetivo cumplido  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "Objetivo cumplido  ·  %s"
 
-#: story/objectives.gd:760
+#: story/objectives.gd:762
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "¡Empacadora instalada! Llena tu pecho, pulsa [%s] para prensar un fardo y llévalo a la báscula."
 
-#: story/objectives.gd:782 story/objectives.gd:972
+#: story/objectives.gd:784 story/objectives.gd:974
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Tu pecho está lleno. Pulsa [%s] para hacer un fardo."
 
-#: story/objectives.gd:798
+#: story/objectives.gd:800
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "Tu detector ha encontrado una pieza de robot enterrada cerca. Sigue la lectura PIEZA ENTERRADA; pita cuando estás justo encima."
 
-#: story/objectives.gd:800
+#: story/objectives.gd:802
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "PIEZA ENTERRADA: camina hacia ella hasta que la lectura llegue al máximo y desentiérrala."
 
-#: story/objectives.gd:973
+#: story/objectives.gd:975
 msgid "Your chest is full. Bring it to the bin."
 msgstr "Tu pecho está lleno. Llévalo al cubo."
 
-#: story/objectives.gd:980
+#: story/objectives.gd:982
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "Tu pecho está lleno. Vuelve a casa: el cubo está bajo el humo alto."
 
-#: story/objectives.gd:982
+#: story/objectives.gd:984
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "Lleva tu fardo a casa: la báscula está bajo el humo alto."
 
-#: story/objectives.gd:982
+#: story/objectives.gd:984
 msgid "Carry your bale to the scale by the bin."
 msgstr "Lleva tu fardo a la báscula, junto al cubo."
 
-#: story/objectives.gd:992
+#: story/objectives.gd:994
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "Vuelve a casa: sigue el rayo hasta el humo alto."
 
-#: story/objectives.gd:1002
+#: story/objectives.gd:1004
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Aquí no hay nada que recoger. Camina hasta donde haya más basura."
 
@@ -2600,107 +2616,107 @@ msgstr "Diseño: %s"
 msgid "CRADLE · SUPPLY"
 msgstr "CRADLE · SUMINISTROS"
 
-#: systems/events.gd:452
+#: systems/events.gd:461
 msgid "STREAK x%d  +%d%%"
 msgstr "RACHA x%d  +%d%%"
 
-#: systems/events.gd:638
+#: systems/events.gd:647
 msgid "%d pieces of junk left around the crate"
 msgstr "Quedan %d trozos de chatarra alrededor de la caja"
 
-#: systems/events.gd:663
+#: systems/events.gd:672
 msgid "Supply crate opened: %s"
 msgstr "Caja de suministros abierta: %s"
 
-#: systems/events.gd:665
+#: systems/events.gd:674
 msgid "The supply crate's beacon timed out and a drone hauled it back up. Another will come."
 msgstr "La baliza de la caja se agotó y un dron se la llevó de vuelta arriba. Vendrá otra."
 
-#: systems/events.gd:714
+#: systems/events.gd:723
 msgid "%d pieces grabbed at 3x"
 msgstr "%d trozos cogidos a x3"
 
-#: systems/events.gd:719
+#: systems/events.gd:728
 msgid "The surge faded. You grabbed %d pieces at triple value; they pay out when you bale."
 msgstr "La oleada pasó. Cogiste %d trozos a triple valor; se pagan al empacar."
 
-#: systems/events.gd:719
+#: systems/events.gd:728
 msgid "The surge faded. Next time!"
 msgstr "La oleada pasó. ¡La próxima vez!"
 
-#: systems/events.gd:768
+#: systems/events.gd:777
 msgid "Every plant is drinking"
 msgstr "Todas las plantas están bebiendo"
 
-#: systems/events.gd:778
+#: systems/events.gd:787
 msgid "The rain moves on. The ground soaked it up: %s"
 msgstr "La lluvia se aleja. El suelo la ha absorbido: %s"
 
-#: systems/events.gd:799
+#: systems/events.gd:808
 msgid "E   fix %s's hiccup"
 msgstr "E   curar el hipo de %s"
 
-#: systems/events.gd:826
+#: systems/events.gd:835
 msgid "%s is %d m away"
 msgstr "%s está a %d m"
 
-#: systems/events.gd:828
+#: systems/events.gd:837
 msgid "%s shook off its hiccups on its own. It looks embarrassed."
 msgstr "A %s se le pasó el hipo solo. Parece avergonzado."
 
-#: systems/events.gd:842
+#: systems/events.gd:851
 msgid "%s is fixed and back to work. %s"
 msgstr "%s está reparado y vuelve al trabajo. %s"
 
-#: systems/events.gd:896
+#: systems/events.gd:905
 msgid "Wildlife Visit: %s"
 msgstr "Visita de fauna: %s"
 
-#: systems/events.gd:897
+#: systems/events.gd:906
 msgid "E   take a photo of the %s"
 msgstr "E   hacer una foto: %s"
 
-#: systems/events.gd:938
+#: systems/events.gd:947
 msgid "%s, %d m away"
 msgstr "%s, a %d m"
 
-#: systems/events.gd:941
+#: systems/events.gd:950
 msgid "The %s wandered off. It'll be back somewhere green."
 msgstr "%s se ha marchado. Volverá a algún sitio verde."
 
-#: systems/events.gd:971
+#: systems/events.gd:980
 msgid "Snap! The %s is in your Collection. %s"
 msgstr "¡Clic! %s ya está en tu colección. %s"
 
-#: systems/events.gd:971
+#: systems/events.gd:980
 msgid "Snap! Another lovely shot of the %s. %s"
 msgstr "¡Clic! Otra foto preciosa: %s. %s"
 
-#: systems/events.gd:1022
+#: systems/events.gd:1031
 msgid "Signal %d%%"
 msgstr "Señal %d%%"
 
-#: systems/events.gd:1026
+#: systems/events.gd:1035
 msgid "That was the signal: a stash with a rare part inside. %s"
 msgstr "Esa era la señal: un escondite con una pieza rara dentro. %s"
 
-#: systems/events.gd:1028
+#: systems/events.gd:1037
 msgid "The signal faded. The part is still down there; the detector will find it."
 msgstr "La señal se apagó. La pieza sigue ahí abajo; el detector la encontrará."
 
-#: systems/events.gd:1097
+#: systems/events.gd:1106
 msgid "AUDIT   YOU %d  :  %d DRONE"
 msgstr "AUDITORÍA   TÚ %d  :  %d DRON"
 
-#: systems/events.gd:1098
+#: systems/events.gd:1107
 msgid "You %d  :  %d Drone   ·   %d left"
 msgstr "Tú %d  :  %d Dron   ·   quedan %d"
 
-#: systems/events.gd:1137
+#: systems/events.gd:1146
 msgid "Audit won, %d to %d! The Ledger stamps it APPROVED. %s"
 msgstr "¡Auditoría ganada, %d a %d! El Ledger la sella como APROBADA. %s"
 
-#: systems/events.gd:1141
+#: systems/events.gd:1150
 msgid "The drone won the audit, %d to %d. It left a tip anyway: +%s cubes."
 msgstr "El dron ganó la auditoría, %d a %d. Aun así dejó propina: +%s cubos."
 
@@ -17017,6 +17033,15 @@ msgstr "Ese pórtico desguazó la flota del Ledger cuando se acabó el dinero. E
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un mundo de óxido, verde. Las viejas grúas tienen flores a sus pies. Las cuentas están cerradas, {name}. Las hemos cuadrado."
+
+#~ msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
+#~ msgstr "Las semillas necesitan suelo limpio y despejado: ni calles, ni bordillos, ni la plataforma."
+
+#~ msgid "Hold  {scoop}  on clean ground to plant the seed"
+#~ msgstr "Mantén  {scoop}  en suelo limpio para plantar la semilla"
+
+#~ msgid "Lumi, that green signal is back, stronger now. Follow the beam: the old greenhouse."
+#~ msgstr "Lumi, la señal verde ha vuelto, y más fuerte. Sigue el rayo: el viejo invernadero."
 
 #~ msgid "Give a robot a work zone"
 #~ msgstr "Dale una zona de trabajo a un robot"
