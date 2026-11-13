@@ -32,6 +32,8 @@ Save and reload: 12 reloads in `--walk-home` through the real path (odd: pause k
 
 Frames: screenshots/home_540 (960x540) and screenshots/home_1500 (1500x1000), Low preset. Seen: bench rows, cards, water card, thirsty drop, rings on flat ground, the heavy mark. Not my area but seen: a 40-60 m start-town city block 25-30 m from the bench (`.../VerdanceSite_start_yard/City/@MeshInstance3D@...`) renders as a flat black box at Low (frames 04, 05, 15).
 
+OPEN: at a hex step's start by the bench, once the Scoopies have cleaned everything within two rings of Lumi, no hex is outlined (Objectives._pick_hex looks two rings out), and waypoint_target() is null for hex steps near home, so nothing in the world points at dirty ground until Lumi walks off (seen once in the walk at hex20; not fixed).
+
 Not verified: the outlined hex in a frame; plant/water rings on a real slope; selling bales late in the game; the compost press; walking to the bench (Lumi is placed by it); controller input.
 
 ## Side goals and clarity

@@ -165,7 +165,12 @@ static func _reload(tag: String, extra: Callable = Callable()) -> bool:
 	var pb: Array = b["pr"]
 	if absf(float(pa[0]) - float(pb[0])) > 0.06 or (float(pa[0]) < 0.0 and str(pa[1]) != str(pb[1])):
 		diff.append("count %s -> %s" % [str(pa), str(pb)])
-	if int(a["hex"]) >= 0 and (int(b["hex"]) < 0 or absf(float(a["frac"]) - float(b["frac"])) > 0.05):
+	# The outline is picked afresh on load (the most-cleared hex near Lumi): another hex is fine if
+	# the old one kept its progress and the new one is at least as far along.
+	var kept: float = (so.globe.field as HexField).removed_fraction(int(a["hex"])) if int(a["hex"]) >= 0 else 0.0
+	if int(a["hex"]) >= 0 and int(b["hex"]) != int(a["hex"]) and int(b["hex"]) >= 0 and absf(kept - float(a["frac"])) <= 0.05 and float(b["frac"]) >= float(a["frac"]) - 0.01:
+		print("[walk-home] note: %s: the outline moved to hex %d (%.0f%%); hex %d kept %.0f%%" % [tag, int(b["hex"]), float(b["frac"]) * 100.0, int(a["hex"]), kept * 100.0])
+	elif int(a["hex"]) >= 0 and (int(b["hex"]) < 0 or absf(float(a["frac"]) - float(b["frac"])) > 0.05):
 		diff.append("outlined hex %d %.0f%% -> %d %.0f%%" % [int(a["hex"]), float(a["frac"]) * 100.0, int(b["hex"]), float(b["frac"]) * 100.0])
 	if (a["way"] is Vector3) != (b["way"] is Vector3) or (a["way"] is Vector3 and (a["way"] as Vector3).distance_to(b["way"]) > 4.0):
 		diff.append("beam %s -> %s" % [str(a["way"]), str(b["way"])])
@@ -548,7 +553,8 @@ static func _hex_goal(id: String, goal: int) -> void:
 		return
 	var c: Array[String] = _card()
 	_check(c[0] == "Clean %d hexes" % goal and c[3] == "%d / %d" % [goal - 2, goal], "%s: the card says Clean %d hexes, %d / %d (%s)" % [id, goal, goal - 2, goal, str(c)])
-	_check(ob.target_hex >= 0, "%s: a hex is outlined (%d)" % [id, ob.target_hex])
+	var way: Variant = ob.waypoint_target()
+	_check(ob.target_hex >= 0 or way is Vector3, "%s: a hex is outlined (%d) or the beam points to dirty ground (%s)" % [id, ob.target_hex, str(way)])
 	await _face_target()
 	await _shot(id + "_start")
 	if _quick():
