@@ -86,6 +86,8 @@ func add_hex(hid: int) -> void:
 
 ## [biomes] Can this empty slot take a seed here? (not under water; frontier rules: cold, greenhouses)
 func plantable(s: int) -> bool:
+	if bed_slots.has(s):  # [v8seed] a raised bed's own soil
+		return true
 	if world == null or world.field.is_water(slot_hex[s]):
 		return false
 	if sparse and on_paving(s):  # [v4grow] streets, sidewalks and kerbs, the pad, buildings
@@ -189,6 +191,9 @@ func free_slot_near(pos: Vector3, fwd: Vector3, reach: float = 2.2) -> int:
 
 func planted_near(pos: Vector3, fwd: Vector3, reach: float = 2.8) -> Array[int]:
 	var out: Array[int] = []
+	for s: int in bed_slots:  # [v8seed]
+		if slot_species[s] >= 0 and slot_pos[s].distance_to(pos + fwd * 1.2) <= reach:
+			out.append(s)
 	for h: int in _hexes_near(pos, fwd, reach):
 		ensure_hex(h)  # [orbB]
 		if not hex_slots.has(h):
@@ -221,6 +226,13 @@ func _hexes_near(pos: Vector3, fwd: Vector3, reach: float) -> Array[int]:
 func _slot_near(pos: Vector3, fwd: Vector3, reach: float, empty: bool) -> int:
 	var best: int = -1
 	var best_d: float = INF
+	for s: int in bed_slots:  # [v8seed] the greenhouse beds: soil whatever the cell under them is
+		if empty != (slot_species[s] < 0):
+			continue
+		var bd: float = slot_pos[s].distance_to(pos + fwd * 1.0)
+		if bd < reach and bd < best_d:
+			best_d = bd
+			best = s
 	for h: int in _hexes_near(pos, fwd, reach):
 		if world.field.is_clean(h):
 			ensure_hex(h)  # [orbB]
@@ -446,7 +458,11 @@ func persist_sparse() -> Dictionary:
 	for h: int in _saved_cells:  # planted cells this run never came near: keep them
 		var e: Array = _saved_cells[h]
 		out[str(h)] = [Marshalls.raw_to_base64(e[0]), Marshalls.raw_to_base64(e[1]), Marshalls.raw_to_base64((e[2] as PackedFloat32Array).to_byte_array())]
-	return {"cells": out}
+	var r: Dictionary = {"cells": out}
+	var beds: Array = persist_beds()  # [v8seed]
+	if not beds.is_empty():
+		r["beds"] = beds
+	return r
 
 
 func _load_sparse() -> void:
@@ -459,6 +475,7 @@ func _load_sparse() -> void:
 		_saved_cells[int(str(k))] = [Marshalls.base64_to_raw(str(e[0])), Marshalls.base64_to_raw(str(e[1])), Marshalls.base64_to_raw(str(e[2])).to_float32_array()]
 	for h: int in _saved_cells.keys():  # planted cells come back with their plants
 		ensure_hex(h)
+	_saved_beds = d.get("beds", [])  # [v8seed] restored as the beds come (add_bed)
 
 
 func persist() -> Dictionary:
@@ -557,6 +574,9 @@ func planted_slots() -> PackedInt32Array:
 		for sl: int in hex_slots[h]:
 			if slot_species[sl] >= 0:
 				out.append(sl)
+	for sl: int in bed_slots:  # [v8seed]
+		if slot_species[sl] >= 0:
+			out.append(sl)
 	return out
 
 
@@ -664,3 +684,90 @@ static func _vivid(m: Mesh) -> Mesh:
 			out.surface_set_material(i, v)
 	_vivid_cache[m.get_rid()] = out
 	return out
+
+
+# --- [v8seed] Raised beds: the first-seed greenhouse's soil ------------------------------------------
+# Owner, 2026-11-13: "It wont let me plant in the dirt... i cant plant the first seed". The player
+# takes the seed tin from a greenhouse bed and tries to plant in that bed, the one patch of dirt in
+# sight. The beds were props: the garden's slots lay on the (paved, maybe dirty) ground under them,
+# so holding the button there did nothing. Now each bed carries slots of its own on its top: soil
+# whatever the cell under it is, planted and watered like any slot, saved apart from the cells
+# (GameState.world.garden.beds, in add order), and outside the cells' life count (_recount).
+
+var bed_slots := PackedInt32Array()
+var _saved_beds: Array = []  # [species+1, stage, water] per bed slot, from the save
+
+
+## Adds a slot on each point (world space, on a bed's top) and returns their ids. Deterministic in
+## order: a save restores bed plants by that order.
+func add_bed(points: PackedVector3Array) -> PackedInt32Array:
+	var ids := PackedInt32Array()
+	var f: HexField = world.field if world else null
+	for p: Vector3 in points:
+		var s: int = slot_pos.size()
+		var h: int = f.hex_at(p) if f else -1
+		slot_pos.append(p)
+		slot_hex.append(maxi(h, 0))
+		slot_species.append(-1)
+		slot_stage.append(0)
+		slot_progress.append(0.0)
+		slot_water.append(0.0)
+		slot_yaw.append(float(bed_slots.size()) * 2.4)
+		_paving[s] = [false, 0.0]  # on the bed's top already: no plate lift, never paving
+		var ck: Vector2i = _chunk_of(s)
+		_chunk_cap[ck] = int(_chunk_cap.get(ck, 0)) + 1
+		var k: int = bed_slots.size()
+		bed_slots.append(s)
+		ids.append(s)
+		if k < _saved_beds.size() and _saved_beds[k] is Array and (_saved_beds[k] as Array).size() == 3:
+			var e: Array = _saved_beds[k]
+			slot_species[s] = int(e[0]) - 1
+			slot_stage[s] = int(e[1])
+			slot_water[s] = float(e[2])
+			if slot_species[s] >= species.size():
+				slot_species[s] = -1
+			if slot_species[s] >= 0:
+				_update_inst(s)
+	return ids
+
+
+func persist_beds() -> Array:
+	var out: Array = []
+	var any: bool = false
+	for s: int in bed_slots:
+		out.append([slot_species[s] + 1, int(slot_stage[s]), snappedf(slot_water[s], 0.1)])
+		any = any or slot_species[s] >= 0
+	if not any and not _saved_beds.is_empty() and bed_slots.is_empty():
+		return _saved_beds  # the beds weren't built this run: keep what the save had
+	return out if any else []
+
+
+## Why a seed can't go in near pos (empty when one can): for the player's refusal line.
+func plant_refusal(pos: Vector3, fwd: Vector3) -> String:
+	if not GameState.can_afford("seeds", BigNum.from_float(1.0)):
+		return "seeds"
+	if free_slot_near(pos, fwd) >= 0:
+		return ""
+	var f: HexField = world.field
+	var paved: bool = false
+	var dirty: bool = false
+	var full: bool = false
+	for h: int in _hexes_near(pos, fwd, 1.6):
+		if f.is_water(h):
+			continue
+		if not f.is_clean(h):
+			dirty = true
+			continue
+		ensure_hex(h)
+		for s: int in hex_slots.get(h, PackedInt32Array()):
+			if slot_pos[s].distance_to(pos + fwd * 1.0) > 2.2:
+				continue
+			if slot_species[s] >= 0:
+				full = true
+			elif not plantable(s):
+				paved = true
+	if dirty and not paved and not full:
+		return "dirty"
+	if full and not paved:
+		return "full"
+	return "paved"

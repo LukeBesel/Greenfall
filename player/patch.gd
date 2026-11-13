@@ -330,6 +330,7 @@ func water_cap() -> float:
 
 var _water_cap: float = -1.0
 var _no_slot_ms: int = -100000  # [v4grow]
+var _plant_first_ms: int = -100000  # [v8seed]
 
 
 ## Where the can fills: a hub hex, and [v5play] on the globe anywhere on the yard (within
@@ -350,7 +351,8 @@ func at_water_refill() -> bool:
 
 func set_tool(t: int) -> void:
 	if t != Tool.SCOOP and (world == null or world.get("garden") == null or not world.garden.unlocked()):
-		EventBus.toast.emit(tr("No seeds yet. Keep cleaning."), "info")
+		EventBus.toast.emit(tr("Get the seed tin first: follow the beam to the greenhouse.") if GameState.flags.get("seed_signal", false)
+			else tr("No seeds yet. Keep cleaning."), "info")  # [v8seed]
 		return
 	if t == tool:
 		return
@@ -383,9 +385,10 @@ func _handle_tools(delta: float) -> void:
 	if tool == Tool.PLANT and _plant_t <= 0.0:
 		_plant_t = 0.65
 		var s: int = g.free_slot_near(global_position, forward())
-		if s < 0 and g.sparse and Time.get_ticks_msec() - _no_slot_ms > 6000:  # [v4grow] say why nothing went in
+		if s < 0 and Time.get_ticks_msec() - _no_slot_ms > 2500:  # [v4grow] [v8seed] always say why nothing went in
 			_no_slot_ms = Time.get_ticks_msec()
-			EventBus.toast.emit(tr("Seeds need clean, open ground: not streets, kerbs or the pad."), "info")
+			Audio.play("buzz", 1.2, -12.0)
+			EventBus.toast.emit(plant_refusal_text(g.plant_refusal(global_position, forward())), "info")
 		if s >= 0:
 			if g.plant(s):
 				model.set_scooping(true)
@@ -396,6 +399,10 @@ func _handle_tools(delta: float) -> void:
 				_plant_t = 2.0
 	elif tool == Tool.WATER and _water_t <= 0.0:
 		_water_t = 0.25
+		if int(GameState.stats.get("plants_planted", 0)) == 0 and GameState.can_afford("seeds", BigNum.from_float(1.0)) \
+				and Time.get_ticks_msec() - _plant_first_ms > 2500:  # [v8seed] watering before the first seed is in
+			_plant_first_ms = Time.get_ticks_msec()
+			EventBus.toast.emit(Tutorial.glyphs(tr("Plant first: press  {tool_plant}  for the seed")), "info")
 		if water <= 0.0:
 			Audio.play("buzz", 1.0, -12.0)
 			_water_t = 1.5
@@ -410,6 +417,19 @@ func _handle_tools(delta: float) -> void:
 			Audio.play("steam", 1.8, -16.0)
 		for slot: int in g.planted_near(global_position, forward()):
 			g.water(slot, 60.0)  # [v5play] planted_near lists a plant once now (it came twice: 2 x 30)
+
+
+## [v8seed] The line for a refused seed (Garden.plant_refusal's reason).
+func plant_refusal_text(why: String) -> String:
+	match why:
+		"seeds":
+			return tr("Out of seeds. Blooming plants drop more.")
+		"dirty":
+			return tr("Clean this hex first. Seeds need clean ground.")
+		"full":
+			return tr("Something is growing here already. Try a free spot.")
+	return tr("Seeds need soil, not road or the pad. Try the greenhouse beds.") if int(GameState.stats.get("plants_planted", 0)) == 0 \
+		else tr("Seeds need soil, not road or the pad.")
 
 
 # --- Scooping -----------------------------------------------------------------
