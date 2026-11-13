@@ -206,6 +206,23 @@ func _away_tick(dt: float) -> void:
 				log[k] = 0.0
 
 
+## [v9b] "Clean N hexes" counts the robots' hexes too: while such a step is on the card, a robot's
+## hex says so (at most every NOTE_S), so the count moving by itself makes sense.
+const NOTE_S: float = 20.0
+var _note_ms: int = -100000
+
+
+func _robot_hex_note(w: Node) -> void:
+	var ob: Objectives = w.get("objectives") as Objectives if w else null
+	if ob == null or Time.get_ticks_msec() - _note_ms < int(NOTE_S * 1000.0):
+		return
+	var def: Dictionary = ob.current()
+	if def.is_empty() or str(def.get("key", "")) != "hexes_cleaned" or def.has("_goal"):
+		return
+	_note_ms = Time.get_ticks_msec()
+	EventBus.toast.emit(tr("Your robot cleaned a hex! It counts: %d / %d") % [int(ob.value_of(def)), int(ob.target_of(def))], "info")
+
+
 ## Builds the crew into the slice (`so` = SliceOrbit, after Patch and the camera exist).
 func build_crew(so: Node) -> SphereCrew:
 	var g: Object = so.get("globe")
@@ -218,6 +235,7 @@ func build_crew(so: Node) -> SphereCrew:
 		var near: bool = lumi != null and lumi.global_position.distance_to((g.get("field") as SphereField).hex_center(c)) < 60.0
 		if so.has_method("on_hex_clean"):
 			so.call("on_hex_clean", c, not near)
+			_robot_hex_note(so.get("w") as Node)  # [v9b]
 		else:
 			var f: SphereField = g.get("field")
 			EventBus.field_progress_changed.emit(f.cleaned_count, f.junk_hex_count))

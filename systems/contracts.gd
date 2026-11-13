@@ -277,7 +277,7 @@ static func unlock_due(hub_level: int, played_s: float, st: Dictionary) -> bool:
 
 func _ready() -> void:
 	rng.randomize()
-	if unlocked():  # [onboard]
+	if unlocked() and (BenchTiers.tab_open("contracts") or GameState.flags.get("requests_unlocked", false)):  # [onboard] [v9b] once the bench has the board
 		GameState.flags["requests_unlocked"] = true
 		step(state(), 0.0, live_value, new_offer)  # a fresh board is filled right away
 	if DevHooks.has("contracts-sample"):
@@ -307,6 +307,9 @@ func _process(delta: float) -> void:
 	if not GameState.flags.get("requests_unlocked", false):  # [onboard] closed until a later milestone
 		if not unlocked():
 			return
+		if not BenchTiers.tab_open("contracts"):  # [v9b] the board needs the bench's Request Board first
+			_bench_hint()
+			return
 		_announce_unlock()
 	_count_events()
 	for e: Dictionary in step(state(), dt, live_value, new_offer):
@@ -320,6 +323,19 @@ func _process(delta: float) -> void:
 					world.wren.say("contract_done", 0.6)
 			"failed":
 				EventBus.toast.emit(tr("A request ran out of time. No harm done; a new one will be posted soon."), "info")
+
+
+## [v9b] The board is due but the bench has no Request Board yet (its tab stays hidden): the toast
+## said "New at the workbench" and there was nothing there. Once the Request Board can be bought,
+## one line says where it is; the board itself opens when it's installed.
+func _bench_hint() -> void:
+	if GameState.flags.get("requests_bench_hint", false):
+		return
+	if BenchTiers.tier() + 1 != BenchTiers.tier_for_tab("contracts") or BenchTiers.block_reason(world) != "":
+		return
+	GameState.flags["requests_bench_hint"] = true
+	EventBus.toast.emit(tr("The Requests board is ready to build: workbench, Upgrades tab, Request Board."), "story")
+	Audio.play("chime", 1.1, -6.0)
 
 
 ## [onboard] The board opens: one WREN line and a toast, then the first offers.
