@@ -127,7 +127,7 @@ func piece_bitten(pid: int) -> void:
 func _launch(_to_hub: int) -> void:
 	if launching or Demo.block("rocket"):  # [steam] demo: first district only
 		return
-	EventBus.toast.emit(tr("Walk to the rocket on the launch pad and press {interact} to choose where to fly."), "info")
+	EventBus.toast.emit((tr("Walk to the rocket on the launch pad and press [%s] to choose where to fly.") % Settings.glyph("interact")), "info")
 
 
 ## "" when the rocket can launch, else why not (no pad yet, or the energy cells are recharging).

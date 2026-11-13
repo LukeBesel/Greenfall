@@ -491,7 +491,7 @@ msgstr "Pacas por valor de %s se amontonaron en la base sin nadie que las llevar
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Los depuradores filtraron el aire todo el rato. Está un poco más limpio."
 
-#: core/pace.gd:147 story/objectives.gd:1069
+#: core/pace.gd:147 story/objectives.gd:1094
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "Pesa demasiado. Mejora la Fuerza de elevación en el banco."
 
@@ -707,133 +707,125 @@ msgstr "Nuevo: %s"
 msgid "New Lumi design: %s"
 msgstr "Nuevo diseño de Lumi: %s"
 
-#: planet/sites/hub_purpose.gd:168
-msgid "Home. The workbench is by the pod."
-msgstr "En casa. El banco de trabajo está junto a la cápsula."
-
-#: planet/sites/hub_purpose.gd:174 story/objectives.gd:1076
-msgid "The rocket waits on the pad. Home is first on its list."
-msgstr "El cohete espera en la plataforma. Casa es lo primero de su lista."
-
-#: planet/sites/hub_purpose.gd:180
+#: planet/sites/hub_purpose.gd:178
 msgid "%s: %d%% clean, up %d%% while you were away."
 msgstr "%s: %d%% limpio, +%d%% mientras no estabas."
 
-#: planet/sites/hub_purpose.gd:258
+#: planet/sites/hub_purpose.gd:262
 msgid "Dig the landmark out. Clean hexes here: %d / %d"
 msgstr "Desentierra el monumento. Limpia casillas aquí: %d / %d"
 
-#: planet/sites/hub_purpose.gd:260
+#: planet/sites/hub_purpose.gd:264
 msgid "Repair an outpost here: %d / %d"
 msgstr "Repara un puesto aquí: %d / %d"
 
-#: planet/sites/hub_purpose.gd:263
+#: planet/sites/hub_purpose.gd:267
 msgid "Upgrade the rocket, then wake the %s"
 msgstr "Mejora el cohete y luego despierta: %s"
 
-#: planet/sites/hub_purpose.gd:264
+#: planet/sites/hub_purpose.gd:268
 msgid "Wake the %s (%s)"
 msgstr "Despierta: %s (%s)"
 
-#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:602
+#: planet/sites/hub_purpose.gd:302 tools/ui_audit_run.gd:626
 msgid "E   Wake the %s  (%s)"
 msgstr "E   Despertar: %s  (%s)"
 
-#: planet/sites/hub_purpose.gd:299
+#: planet/sites/hub_purpose.gd:303
 msgid "%s: asleep. %s"
 msgstr "%s: dormido. %s"
 
-#: planet/sites/hub_purpose.gd:304
+#: planet/sites/hub_purpose.gd:308
 msgid "The rocket can carry supplies to %d bases. Upgrade it at the workbench."
 msgstr "El cohete puede llevar suministros a %d bases. Mejóralo en el banco de trabajo."
 
-#: planet/sites/hub_purpose.gd:320
+#: planet/sites/hub_purpose.gd:324
 msgid "Waking the %s needs %s."
 msgstr "Para despertar (%s) hacen falta %s."
 
-#: planet/sites/hub_purpose.gd:345
+#: planet/sites/hub_purpose.gd:349
 msgid "%s is awake. %s keeps cleaning when you fly on."
 msgstr "%s ha despertado. %s seguirá limpiando cuando te vayas."
 
-#: planet/sites/hub_purpose.gd:372
+#: planet/sites/hub_purpose.gd:376
 msgid "%s grows: level %d."
 msgstr "%s crece: nivel %d."
 
-#: planet/sites/hub_purpose.gd:400
+#: planet/sites/hub_purpose.gd:404
 msgid "%d robot working"
 msgid_plural "%d robots working"
 msgstr[0] "%d robot trabajando"
 msgstr[1] "%d robots trabajando"
 
-#: planet/sites/hub_purpose.gd:422
+#: planet/sites/hub_purpose.gd:426
 msgid "Home: %d%% clean"
 msgstr "Casa: %d%% limpio"
 
-#: planet/sites/hub_purpose.gd:424
+#: planet/sites/hub_purpose.gd:428
 msgid "Restored: %d%% clean"
 msgstr "Restaurado: %d%% limpio"
 
-#: planet/sites/hub_purpose.gd:426 ui/profile_picker.gd:111
+#: planet/sites/hub_purpose.gd:430 ui/profile_picker.gd:111
 msgid "New"
 msgstr "Nuevo"
 
-#: planet/sites/hub_purpose.gd:429
+#: planet/sites/hub_purpose.gd:433
 msgid "Ready to wake"
 msgstr "Listo para despertar"
 
-#: planet/sites/hub_purpose.gd:430
+#: planet/sites/hub_purpose.gd:434
 msgid "Asleep: %d / %d"
 msgstr "Dormido: %d / %d"
 
-#: planet/sites/hub_purpose.gd:441
+#: planet/sites/hub_purpose.gd:445
 msgid "%s   %d%% CLEAN"
 msgstr "%s   %d%% LIMPIO"
 
-#: planet/sites/hub_purpose.gd:443
+#: planet/sites/hub_purpose.gd:447
 msgid "%s   BASES %d/%d"
 msgstr "%s   BASES %d/%d"
 
-#: planet/sites/hub_purpose.gd:490
+#: planet/sites/hub_purpose.gd:516
 msgid "Restored. Next: take the rocket to %s."
 msgstr "Restaurado. Siguiente: toma el cohete a %s."
 
-#: planet/sites/hub_purpose.gd:492
-msgid "All %d bases stand. Fly home and make the rocket ready to leave."
-msgstr "Las %d bases están en pie. Vuela a casa y prepara el cohete para partir."
+#: planet/sites/hub_purpose.gd:520
+msgid "All %d bases stand. Build the drive at the rocket."
+msgstr "Las %d bases están en pie. Construye el propulsor en el cohete."
 
-#: planet/sites/hub_purpose.gd:671
+#: planet/sites/hub_purpose.gd:699
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:118
+#: planet/sites/orbit_sites.gd:120
 msgid "The rocket is in flight."
 msgstr "El cohete está en vuelo."
 
-#: planet/sites/orbit_sites.gd:140
+#: planet/sites/orbit_sites.gd:142
 msgid "Bases restored: %d of %d"
 msgstr "Bases restauradas: %d de %d"
 
-#: planet/sites/orbit_sites.gd:178
+#: planet/sites/orbit_sites.gd:180
 msgid "E   Rocket: choose a destination"
 msgstr "E   Cohete: elige un destino"
 
-#: planet/sites/orbit_sites.gd:216
+#: planet/sites/orbit_sites.gd:218
 msgid "HOME"
 msgstr "CASA"
 
-#: planet/sites/orbit_sites.gd:216
+#: planet/sites/orbit_sites.gd:218
 msgid "NEXT STOP"
 msgstr "PRÓXIMA PARADA"
 
-#: planet/sites/orbit_sites.gd:218
+#: planet/sites/orbit_sites.gd:220
 msgid "Upgrade the rocket first"
 msgstr "Primero mejora el cohete"
 
-#: planet/sites/orbit_sites.gd:236
+#: planet/sites/orbit_sites.gd:238
 msgid "%s site"
 msgstr "Lugar: %s"
 
-#: planet/sites/orbit_sites.gd:237
+#: planet/sites/orbit_sites.gd:239
 msgid "Hub %d"
 msgstr "Base %d"
 
@@ -1555,8 +1547,8 @@ msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s montado. Mira a su alrededor y se pone a trabajar."
 
 #: scenes/slice.gd:130 ui/rockets_panel.gd:60
-msgid "Walk to the rocket on the launch pad and press {interact} to choose where to fly."
-msgstr "Camina hasta el cohete en la plataforma de lanzamiento y pulsa {interact} para elegir adónde volar."
+msgid "Walk to the rocket on the launch pad and press [%s] to choose where to fly."
+msgstr "Camina hasta el cohete en la plataforma de lanzamiento y pulsa [%s] para elegir adónde volar."
 
 #: scenes/slice.gd:140 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
@@ -2241,43 +2233,47 @@ msgstr "Objetivo cumplido  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "Objetivo cumplido  ·  %s"
 
-#: story/objectives.gd:838
+#: story/objectives.gd:851
 msgid "Baler in! Fill your chest, then press [%s] for a bale."
 msgstr "¡Empacadora lista! Llena tu cofre y pulsa [%s] para una bala."
 
-#: story/objectives.gd:860 story/objectives.gd:1057
+#: story/objectives.gd:873 story/objectives.gd:1082
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Tu pecho está lleno. Pulsa [%s] para hacer un fardo."
 
-#: story/objectives.gd:876
+#: story/objectives.gd:889
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "Tu detector ha encontrado una pieza de robot enterrada cerca. Sigue la lectura PIEZA ENTERRADA; pita cuando estás justo encima."
 
-#: story/objectives.gd:878
+#: story/objectives.gd:891
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "PIEZA ENTERRADA: camina hacia ella hasta que la lectura llegue al máximo y desentiérrala."
 
-#: story/objectives.gd:1058
+#: story/objectives.gd:1083
 msgid "Your chest is full. Bring it to the bin."
 msgstr "Tu pecho está lleno. Llévalo al cubo."
 
-#: story/objectives.gd:1065
+#: story/objectives.gd:1090
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "Tu pecho está lleno. Vuelve a casa: el cubo está bajo el humo alto."
 
-#: story/objectives.gd:1067
+#: story/objectives.gd:1092
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "Lleva tu fardo a casa: la báscula está bajo el humo alto."
 
-#: story/objectives.gd:1067
+#: story/objectives.gd:1092
 msgid "Carry your bale to the scale by the bin."
 msgstr "Lleva tu fardo a la báscula, junto al cubo."
 
-#: story/objectives.gd:1077
+#: story/objectives.gd:1102
+msgid "The rocket waits on the pad. Home is first on its list."
+msgstr "El cohete espera en la plataforma. Casa es lo primero de su lista."
+
+#: story/objectives.gd:1103
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "Vuelve a casa: sigue el rayo hasta el humo alto."
 
-#: story/objectives.gd:1087
+#: story/objectives.gd:1113
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Aquí no hay nada que recoger. Camina hasta donde haya más basura."
 
@@ -2817,35 +2813,35 @@ msgstr "Constrúyelo en el Regreso del Cradle de Verdance"
 msgid "Rocket drive built: %s."
 msgstr "Motor construido: %s."
 
-#: systems/homeward_director.gd:323
+#: systems/homeward_director.gd:333
 msgid "Intercepted: %s"
 msgstr "Interceptado: %s"
 
-#: systems/homeward_director.gd:338
+#: systems/homeward_director.gd:348
 msgid "%s: %s"
 msgstr "%s: %s"
 
-#: systems/homeward_director.gd:348
+#: systems/homeward_director.gd:358
 msgid "%s is restored. System: %d%%."
 msgstr "%s está restaurado. Sistema: %d%%."
 
-#: systems/homeward_director.gd:351
+#: systems/homeward_director.gd:361
 msgid "Relic: %s. Heirloom pick +1 (Ark Bridge)."
 msgstr "Reliquia: %s. Elección de herencia +1 (Puente del Arca)."
 
-#: systems/homeward_director.gd:359
+#: systems/homeward_director.gd:369
 msgid "Every planet in the system is alive. The Settlers will wake to five green worlds."
 msgstr "Todos los planetas del sistema están vivos. Los Colonos despertarán ante cinco mundos verdes."
 
-#: systems/homeward_director.gd:555
+#: systems/homeward_director.gd:565
 msgid "E   launch home"
 msgstr "E   despegar hacia casa"
 
-#: systems/homeward_director.gd:555
+#: systems/homeward_director.gd:565
 msgid "E   plant the last seed"
 msgstr "E   plantar la última semilla"
 
-#: systems/homeward_director.gd:566
+#: systems/homeward_director.gd:576
 msgid "The last seed is in the ground. Everything is ready. Press {interact} again here to launch home."
 msgstr "La última semilla está en la tierra. Todo está listo. Pulsa {interact} otra vez aquí para despegar hacia casa."
 
@@ -3279,10 +3275,6 @@ msgid "E   open locker"
 msgstr "E   abrir taquilla"
 
 #: systems/camp/machine_reveal.gd:46
-msgid "%s built. Follow the light to it."
-msgstr "%s construido. Sigue la luz hasta él."
-
-#: systems/camp/machine_reveal.gd:46
 msgid "%s built."
 msgstr "%s construido."
 
@@ -3567,7 +3559,11 @@ msgstr "Solo quedan piezas grandes"
 msgid "Glim is still scanning. Try again in a moment."
 msgstr "Glim sigue escaneando. Inténtalo en un momento."
 
-#: tools/ui_audit_run.gd:333 ui/locker_panel.gd:84 ui/telescope_view.gd:379
+#: tools/ui_audit_run.gd:223
+msgid "Wake the Signal Mast"
+msgstr ""
+
+#: tools/ui_audit_run.gd:357 ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"
 msgstr "Cerrar"
 
@@ -3651,7 +3647,7 @@ msgstr "%s  ·  %d hexágonos  ·  %d oleadas del arca  ·  %d curiosidades"
 msgid "restored"
 msgstr "restaurado"
 
-#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:818
+#: ui/ark_bridge.gd:199 ui/frontier_rockets.gd:40 ui/system_map.gd:831
 msgid "You are here"
 msgstr "Estás aquí"
 
@@ -3672,7 +3668,7 @@ msgid "The Cradle has to come home first."
 msgstr "Primero tiene que volver el Cradle."
 
 #: ui/ark_bridge.gd:248 ui/frontier_rockets.gd:42 ui/globe_view.gd:393
-#: ui/rockets_panel.gd:88 ui/system_map.gd:739
+#: ui/rockets_panel.gd:88 ui/system_map.gd:745
 msgid "Launch"
 msgstr "Despegar"
 
@@ -4733,7 +4729,7 @@ msgstr "Limpiado"
 msgid "Planted"
 msgstr "Plantado"
 
-#: ui/globe_view.gd:157 ui/system_map.gd:697 data/parts.json:rarities[restored].name
+#: ui/globe_view.gd:157 ui/system_map.gd:703 data/parts.json:rarities[restored].name
 msgid "Restored"
 msgstr "Restaurado"
 
@@ -4789,7 +4785,7 @@ msgstr "del suelo alrededor de tus bases está limpio"
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "del planeta recuperado  ·  %s de %s hexágonos de tierra"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:495 ui/objective_card.gd:308
+#: ui/goals_panel.gd:231 ui/list_detail.gd:498 ui/objective_card.gd:308
 msgid "DONE"
 msgstr "HECHO"
 
@@ -4909,68 +4905,68 @@ msgstr ""
 msgid "All built"
 msgstr "Todos construidos"
 
-#: ui/hud.gd:85
+#: ui/hud.gd:88
 msgid "Lumi reached level %d%s"
 msgstr "Lumi ha llegado al nivel %d%s"
 
-#: ui/hud.gd:182
+#: ui/hud.gd:185
 msgid "OLD TOWN   0%"
 msgstr "CASCO ANTIGUO   0%"
 
-#: ui/hud.gd:366
+#: ui/hud.gd:369
 msgid "WREN SIGNAL   %d%%"
 msgstr "SEÑAL DE WREN   %d%%"
 
-#: ui/hud.gd:426
+#: ui/hud.gd:431
 msgid "HEX  %d%% CLEAR"
 msgstr "HEX  %d%% LIMPIO"
 
-#: ui/hud.gd:430
+#: ui/hud.gd:435
 msgid "%s  BASE"
 msgstr "BASE %s"
 
-#: ui/hud.gd:433
+#: ui/hud.gd:438
 msgid "CARRYING %d/%d"
 msgstr "CARGA %d/%d"
 
-#: ui/hud.gd:465
+#: ui/hud.gd:480
 msgid "HEX  CLEAR"
 msgstr "HEX  LIMPIO"
 
-#: ui/hud.gd:469
+#: ui/hud.gd:484
 msgid "HEX  %s"
 msgstr "HEX  %s"
 
-#: ui/hud.gd:472
+#: ui/hud.gd:487
 msgid "  SUSTAIN %d%%"
 msgstr "  SOSTENIDO %d%%"
 
-#: ui/hud.gd:474
+#: ui/hud.gd:489
 msgid "  THIRSTY"
 msgstr "  SEDIENTO"
 
 #. %s is the interact key or pad button glyph (E / A).
-#: ui/hud.gd:504
+#: ui/hud.gd:519
 msgid "%s   pick up bale"
 msgstr "%s   coger paca"
 
-#: ui/hud.gd:505
+#: ui/hud.gd:520
 msgid "%s   dig up part"
 msgstr "%s   desenterrar pieza"
 
-#: ui/hud.gd:506
+#: ui/hud.gd:521
 msgid "%s   read memory shard"
 msgstr "%s   leer fragmento de memoria"
 
-#: ui/hud.gd:507
+#: ui/hud.gd:522
 msgid "%s   pick up the seed tin"
 msgstr "%s   coger la lata de semillas"
 
-#: ui/hud.gd:508
+#: ui/hud.gd:523
 msgid "%s   set bale down"
 msgstr "%s   dejar paca"
 
-#: ui/hud.gd:509
+#: ui/hud.gd:524
 msgid "%s   workbench"
 msgstr "%s   banco de trabajo"
 
@@ -5052,51 +5048,51 @@ msgstr "◢ PIEZA ENTERRADA %d%%"
 msgid "Nothing here yet. Keep playing."
 msgstr "Aquí aún no hay nada. Sigue jugando."
 
-#: ui/list_detail.gd:372 ui/upgrade_card.gd:85
+#: ui/list_detail.gd:375 ui/upgrade_card.gd:85
 msgid "Buy"
 msgstr "Comprar"
 
-#: ui/list_detail.gd:491
+#: ui/list_detail.gd:494
 msgid "LOCKED"
 msgstr "BLOQUEADO"
 
-#: ui/list_detail.gd:499 ui/profile_picker.gd:97
+#: ui/list_detail.gd:502 ui/profile_picker.gd:97
 msgid "ACTIVE"
 msgstr "ACTIVO"
 
-#: ui/list_detail.gd:520
+#: ui/list_detail.gd:523
 msgid "FREE"
 msgstr "GRATIS"
 
-#: ui/list_detail.gd:662
+#: ui/list_detail.gd:665
 msgid "LOCKED.  To unlock: %s"
 msgstr "BLOQUEADO.  Para desbloquear: %s"
 
-#: ui/list_detail.gd:662
+#: ui/list_detail.gd:665
 msgid "Locked. Keep playing to unlock it."
 msgstr "Bloqueado. Sigue jugando para desbloquearlo."
 
-#: ui/list_detail.gd:665
+#: ui/list_detail.gd:668
 msgid "REQUIRES   %s"
 msgstr "REQUIERE   %s"
 
-#: ui/list_detail.gd:668
+#: ui/list_detail.gd:671
 msgid "You can buy this now!"
 msgstr "¡Ya puedes comprarlo!"
 
-#: ui/list_detail.gd:688
+#: ui/list_detail.gd:691
 msgid "%s more %s"
 msgstr "%s %s"
 
-#: ui/list_detail.gd:690
+#: ui/list_detail.gd:693
 msgid "Pick up trash to earn them."
 msgstr "Recoge basura para ganarlos."
 
-#: ui/list_detail.gd:690
+#: ui/list_detail.gd:693
 msgid "Dig up parts and salvage junk to get them."
 msgstr "Desentierra piezas y desmonta chatarra para conseguirlas."
 
-#: ui/list_detail.gd:693
+#: ui/list_detail.gd:696
 msgid "Need %s. %s"
 msgstr "Te faltan %s. %s"
 
@@ -5868,35 +5864,35 @@ msgstr "siguiente: x%s velocidad de trabajo"
 msgid "Upgrade to %s"
 msgstr "Mejorar a %s"
 
-#: ui/rocket_picker.gd:60 ui/rockets_panel.gd:108
+#: ui/rocket_picker.gd:63 ui/rockets_panel.gd:108
 msgid "ROCKET"
 msgstr "COHETE"
 
-#: ui/rocket_picker.gd:61
+#: ui/rocket_picker.gd:64
 msgid "Where to?"
 msgstr "¿A dónde?"
 
-#: ui/rocket_picker.gd:77
+#: ui/rocket_picker.gd:83
 msgid "{ui_cancel}  close"
 msgstr "{ui_cancel}  cerrar"
 
-#: ui/rocket_picker.gd:128
+#: ui/rocket_picker.gd:136
 msgid "No other hubs found yet."
 msgstr "Aún no has encontrado otras bases."
 
-#: ui/rocket_picker.gd:145
+#: ui/rocket_picker.gd:153
 msgid "%.1f km"
 msgstr "%.1f km"
 
-#: ui/rocket_picker.gd:162
+#: ui/rocket_picker.gd:170
 msgid "Fly"
 msgstr "Volar"
 
-#: ui/rocket_picker.gd:173 ui/system_map.gd:730 data/goals.json:goals[home_launch].text
+#: ui/rocket_picker.gd:181 ui/system_map.gd:736 data/goals.json:goals[home_launch].text
 msgid "Launch home"
 msgstr "Despegar hacia casa"
 
-#: ui/rocket_picker.gd:182
+#: ui/rocket_picker.gd:190
 msgid "Other planets"
 msgstr "Otros planetas"
 
@@ -5928,11 +5924,11 @@ msgstr "a %d sectores  ·  %s"
 msgid "Top tier: warp hops, no recharge."
 msgstr "Nivel máximo: saltos, sin recarga."
 
-#: ui/rockets_panel.gd:144
+#: ui/rockets_panel.gd:143
 msgid "Countdown %ds  ·  Flight %.1fs  ·  Recharge %s  ·  Cargo pods x%.1f every %ds"
 msgstr "Cuenta atrás %ds  ·  Vuelo %.1fs  ·  Recarga %s  ·  Cápsulas de carga x%.1f cada %ds"
 
-#: ui/rockets_panel.gd:148
+#: ui/rockets_panel.gd:147
 msgid "  ·  WARP"
 msgstr "  ·  SALTO"
 
@@ -6304,55 +6300,55 @@ msgstr "Ruta automática: %s"
 msgid "Bales recycled %d   ·   Junk destroyed %s kg   ·   Parts %s"
 msgstr "Fardos reciclados %d   ·   Chatarra destruida %s kg   ·   Piezas %s"
 
-#: ui/system_map.gd:684
+#: ui/system_map.gd:690
 msgid "%s  ·  %.2f AU"
 msgstr "%s  ·  %.2f UA"
 
-#: ui/system_map.gd:691
+#: ui/system_map.gd:697
 msgid "In flight"
 msgstr "En vuelo"
 
-#: ui/system_map.gd:694
+#: ui/system_map.gd:700
 msgid "Lumi is here"
 msgstr "Lumi está aquí"
 
-#: ui/system_map.gd:700
+#: ui/system_map.gd:706
 msgid "Ready to launch"
 msgstr "Listo para despegar"
 
-#: ui/system_map.gd:720 ui/system_map.gd:735
+#: ui/system_map.gd:726 ui/system_map.gd:741
 msgid "Choose a district"
 msgstr "Elegir un distrito"
 
-#: ui/system_map.gd:720
+#: ui/system_map.gd:726
 msgid "Launch from the rocket pad"
 msgstr "Despega desde la plataforma del cohete"
 
-#: ui/system_map.gd:725
+#: ui/system_map.gd:731
 msgid "Hubs on this planet"
 msgstr "Bases en este planeta"
 
-#: ui/system_map.gd:754
+#: ui/system_map.gd:760
 msgid "System %d%% restored  ·  relics %d/%d"
 msgstr "Sistema restaurado al %d%%  ·  reliquias %d/%d"
 
-#: ui/system_map.gd:756
+#: ui/system_map.gd:762
 msgid "%d Heirloom picks"
 msgstr "%d elecciones de Herencia"
 
-#: ui/system_map.gd:758
+#: ui/system_map.gd:764
 msgid "Left/Right planet  ·  A zoom  ·  B back"
 msgstr "Izq./Der. planeta  ·  A zoom  ·  B volver"
 
-#: ui/system_map.gd:804
+#: ui/system_map.gd:817
 msgid "Build the drive"
 msgstr "Construye el propulsor"
 
-#: ui/system_map.gd:820
+#: ui/system_map.gd:833
 msgid "Not discovered yet"
 msgstr "Aún sin descubrir"
 
-#: ui/system_map.gd:828
+#: ui/system_map.gd:841
 msgid "Rocket not ready"
 msgstr "Cohete no listo"
 
@@ -17156,9 +17152,6 @@ msgstr "Un mundo de óxido, verde. Las viejas grúas tienen flores a sus pies. L
 #~ msgid "The recycling network grew: everything sells for x%s now."
 #~ msgstr "La red de reciclaje ha crecido: ahora todo se vende por x%s."
 
-#~ msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
-#~ msgstr "Camina hasta el cohete en la plataforma de lanzamiento y pulsa E para elegir adónde volar."
-
 #~ msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
 #~ msgstr "Banco de trabajo reparado. Pulsa E en él para gastar cubos en mejoras."
 
@@ -17233,6 +17226,18 @@ msgstr "Un mundo de óxido, verde. Las viejas grúas tienen flores a sus pies. L
 
 #~ msgid "Wake the Big Wheel. Its power cell keeps the rocket going on a long flight."
 #~ msgstr "Despierta la Noria. Su celda de energía mantiene el cohete en marcha en un vuelo largo."
+
+#~ msgid "Home. The workbench is by the pod."
+#~ msgstr "En casa. El banco de trabajo está junto a la cápsula."
+
+#~ msgid "All %d bases stand. Fly home and make the rocket ready to leave."
+#~ msgstr "Las %d bases están en pie. Vuela a casa y prepara el cohete para partir."
+
+#~ msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
+#~ msgstr "Camina hasta el cohete en la plataforma de lanzamiento y pulsa E para elegir adónde volar."
+
+#~ msgid "%s built. Follow the light to it."
+#~ msgstr "%s construido. Sigue la luz hasta él."
 
 #~ msgid "%s has the hiccups and stopped working. Walk over and press E for a quick fix."
 #~ msgstr "%s tiene hipo y ha dejado de trabajar. Acércate y pulsa E para un arreglo rápido."

@@ -292,6 +292,9 @@ func select_id(id: String) -> bool:
 	if _items.is_empty():
 		_items = provider.call() if provider.is_valid() else []
 	var it: Dictionary = _find(id)
+	if it.is_empty() and provider.is_valid():  # [v9c] a row that came since the last fill (the rocket's, after the first station)
+		_items = provider.call()
+		it = _find(id)
 	if it.is_empty():
 		return false
 	_cat = str(it.get("cat", ""))

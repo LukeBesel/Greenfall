@@ -25,6 +25,9 @@ var home_ready: Callable = func() -> bool: return false
 var planet_line_fn: Callable = func() -> String: return ""
 var _planet_line: Label
 var _scroll: ScrollContainer
+## [v9c] Below the scrolling hub list: with every station and the extras listed, the list runs past
+## the screen and "Other planets" (the way to the drive) sat at its very bottom, out of sight.
+var _foot: VBoxContainer
 
 var _root: Control
 var _list: VBoxContainer
@@ -74,6 +77,9 @@ func _ready() -> void:
 	_list.add_theme_constant_override("separation", 6)
 	_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_scroll.add_child(_list)
+	_foot = VBoxContainer.new()  # [v9c] Launch home and Other planets stay in view under the list
+	_foot.add_theme_constant_override("separation", 6)
+	vb.add_child(_foot)
 	var hint := PromptLabel.new(tr("{ui_cancel}  close"), 12)
 	hint.align_center = true
 	vb.add_child(hint)
@@ -113,6 +119,8 @@ func offered_sites() -> Array:
 
 func _rebuild() -> void:
 	for c: Node in _list.get_children():
+		c.queue_free()
+	for c: Node in _foot.get_children():
 		c.queue_free()
 	_first = null
 	var pl_t: String = str(planet_line_fn.call())
@@ -175,7 +183,7 @@ func _rebuild() -> void:
 		hb2.pressed.connect(func() -> void:
 			close()
 			launch_home.call())
-		_list.add_child(hb2)
+		_foot.add_child(hb2)
 		if _first == null and not hb2.disabled:
 			_first = hb2
 	if open_planets.is_valid() and bool(planets_open.call()):
@@ -183,7 +191,7 @@ func _rebuild() -> void:
 		pb.pressed.connect(func() -> void:
 			close()
 			open_planets.call())
-		_list.add_child(pb)
+		_foot.add_child(pb)
 		if _first == null:
 			_first = pb
 	_fit.call_deferred()
@@ -191,7 +199,7 @@ func _rebuild() -> void:
 
 ## [v6hubs] The list takes the height it needs, up to what the screen leaves.
 func _fit() -> void:
-	var room: float = maxf(160.0, get_viewport().get_visible_rect().size.y - 190.0)
+	var room: float = maxf(160.0, get_viewport().get_visible_rect().size.y - 190.0 - _foot.get_combined_minimum_size().y)
 	_scroll.custom_minimum_size.y = minf(_list.get_combined_minimum_size().y, room)
 
 
