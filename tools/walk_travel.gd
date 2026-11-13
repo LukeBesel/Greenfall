@@ -108,16 +108,7 @@ static func _station_two(so: SliceOrbit) -> void:
 	tgt = ob.step_target(ob.current())
 	_check(str(tgt.get("to", "")) == "hex" and ob.target_hex >= 0 and _in_region(os_, site, ob.target_hex),
 		"the hex to clean is outlined, in the station's ground (hex %d)" % ob.target_hex)
-	if ob.target_hex < 0:
-		var f: SphereField = so.globe.field
-		for ring: int in [2, 3, 4, 6, 8]:
-			var n_ok: int = 0
-			var n_d: int = 0
-			for hid: int in f.hexes_near(p.global_position, ring):
-				if not f.is_clean(hid) and f.hex_hub[hid] == 0 and not f.is_water(hid):
-					n_d += 1
-					n_ok += 1 if ob._hex_ok(hid) else 0
-			print("%s   ring %d: %d dirty land hexes, %d the card would outline" % [TAG, ring, n_d, n_ok])
+	_count_hexes(so, ob, p, site)
 	await _wait(tree, 4.0)
 	await _shot(tree, "2_station_card")
 	# Real scooping at the station.
@@ -280,6 +271,7 @@ static func _late(so: SliceOrbit) -> void:
 	await _wait(tree, 1.6)
 	await _fly_by_click(so, 7, true)
 	_check(str(ob.current().get("id", "")) == "hub_wake_3", "landed: the card says '%s'" % ob.texts(ob.current())[0])
+	_count_hexes(so, ob, p, 7)
 	await _finish_station(so, 7, false)
 	await _fly_by_click(so, 0, false)
 	for s: int in [8, 2]:  # flown to and woken, as the card had them
@@ -348,6 +340,7 @@ static func _late(so: SliceOrbit) -> void:
 	_check(tgt.get("pos", null) is Vector3 and (tgt["pos"] as Vector3).distance_to(os_.rocket_spot.global_position) < 1.0, "the beam stands on the rocket")
 	await _fly_by_click(so, site, true)
 	_check(str(ob.current().get("id", "")) == "hub_wake_6", "landed: the card says '%s'" % ob.texts(ob.current())[0])
+	_count_hexes(so, ob, p, site)
 	for k: int in 12:
 		await _wait(tree, 0.5)
 		if ob.target_hex >= 0:
@@ -517,6 +510,20 @@ static func _scoop_real(so: SliceOrbit, p: Patch) -> void:
 		await _hold(tree, "scoop", 1.2)
 	var n1: float = float(GameState.stats.get("junk_scooped", 0))
 	_check(n1 > n0 or f.removed_fraction(h) > r0, "real scoops at the station take its junk (%d pieces, hex %.0f%% -> %.0f%%)" % [int(n1 - n0), r0 * 100.0, f.removed_fraction(h) * 100.0])
+
+
+## Hexes near the pad the card would outline now (clearable with this Lift Strength): the station's
+## clean step must have its count of them within 6 rings of where Lumi steps off.
+static func _count_hexes(so: SliceOrbit, ob: Objectives, p: Patch, site: int) -> void:
+	var f: SphereField = so.globe.field
+	var n_ok: int = 0
+	var n_d: int = 0
+	for hid: int in f.hexes_near(p.global_position, 6):
+		if not f.is_clean(hid) and f.hex_hub[hid] == 0 and not f.is_water(hid) and so.sites.sm.regions[site].has(hid):
+			n_d += 1
+			n_ok += 1 if ob._hex_ok(hid) else 0
+	var need: int = int(so.sites.purpose.current_step(site).get("need", 4))
+	_check(n_ok >= need, "%d hexes the card can outline within 6 rings of the pad (of %d dirty, Lift %d; the step needs %d)" % [n_ok, n_d, GameState.level_of("lift_strength"), need])
 
 
 static func _alive_in(f: SphereField, h: int) -> int:
