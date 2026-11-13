@@ -43,7 +43,7 @@ static func reveal(world: Node, name_: String, at: Vector3, toast: bool = true) 
 	world.add_child(r)
 	if not toast:
 		return
-	EventBus.toast.emit(TranslationServer.translate("%s built. Follow the light to it.") % name_ if r.from.distance_to(at) > 6.0 else TranslationServer.translate("%s built.") % name_, "info")
+	EventBus.toast.emit(TranslationServer.translate("%s built.") % name_, "info")  # [v9c] no "follow the light": the light may be gone by the time a modal closes
 
 
 func _ready() -> void:

@@ -163,15 +163,13 @@ func _enter(i: int, by_rocket: bool) -> void:
 	var clean: float = sm.region_clean(i)
 	if by_rocket or first:
 		show_title(i, first)
-	if HubPlan.is_home(planet, i):
-		if by_rocket:
-			EventBus.toast.emit(tr("Home. The workbench is by the pod."), "info")
-	elif first:
-		if str(e.get("hint", "")) != "":
-			EventBus.toast.emit(tr(str(e["hint"])), "story")
-		if not GameState.flags.get("hub_home_hint", false):
-			GameState.flags["hub_home_hint"] = true
-			EventBus.toast.emit(tr("The rocket waits on the pad. Home is first on its list."), "info")
+	# [v9c] An arrival says one thing: the title (name, town, landmark, why we came), then the
+	# station's card with its marker. The hub's `hint` toast repeated the title's reason, and "Home.
+	# The workbench is by the pod." / "The rocket waits on the pad..." landed in the same seconds
+	# as WREN's line and the title, so lines scrolled off before they could be read (clarity read,
+	# 13 Nov). The rocket's list shows HOME first; the card's beam shows the bench when a step needs it.
+	if HubPlan.is_home(planet, i) or first:
+		pass
 	elif by_rocket:
 		var was: float = float(st.get("last_clean", clean))
 		var gain: int = int(round((clean - was) * 100.0))

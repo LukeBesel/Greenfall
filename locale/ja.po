@@ -707,100 +707,92 @@ msgstr "新しい：%s"
 msgid "New Lumi design: %s"
 msgstr "Lumi の新デザイン：%s"
 
-#: planet/sites/hub_purpose.gd:168
-msgid "Home. The workbench is by the pod."
-msgstr "ホームだ。作業台はポッドのそばにある。"
-
-#: planet/sites/hub_purpose.gd:174 story/objectives.gd:1051
-msgid "The rocket waits on the pad. Home is first on its list."
-msgstr "ロケットは発着場で待っている。リストの一番上がホームだ。"
-
-#: planet/sites/hub_purpose.gd:180
+#: planet/sites/hub_purpose.gd:178
 msgid "%s: %d%% clean, up %d%% while you were away."
 msgstr "%s：%d%% きれい。留守のあいだに +%d%%。"
 
-#: planet/sites/hub_purpose.gd:264
+#: planet/sites/hub_purpose.gd:262
 msgid "Dig the landmark out. Clean hexes here: %d / %d"
 msgstr "目印を掘り出そう。ここのマスをきれいに：%d / %d"
 
-#: planet/sites/hub_purpose.gd:266
+#: planet/sites/hub_purpose.gd:264
 msgid "Repair an outpost here: %d / %d"
 msgstr "ここの前哨基地を修理：%d / %d"
 
-#: planet/sites/hub_purpose.gd:269
+#: planet/sites/hub_purpose.gd:267
 msgid "Upgrade the rocket, then wake the %s"
 msgstr "ロケットを強化してから起こそう：%s"
 
-#: planet/sites/hub_purpose.gd:270
+#: planet/sites/hub_purpose.gd:268
 msgid "Wake the %s (%s)"
 msgstr "起こそう：%s（%s）"
 
-#: planet/sites/hub_purpose.gd:304 tools/ui_audit_run.gd:602
+#: planet/sites/hub_purpose.gd:302 tools/ui_audit_run.gd:602
 msgid "E   Wake the %s  (%s)"
 msgstr "E   起こす：%s  （%s）"
 
-#: planet/sites/hub_purpose.gd:305
+#: planet/sites/hub_purpose.gd:303
 msgid "%s: asleep. %s"
 msgstr "%s：眠っている。%s"
 
-#: planet/sites/hub_purpose.gd:310
+#: planet/sites/hub_purpose.gd:308
 msgid "The rocket can carry supplies to %d bases. Upgrade it at the workbench."
 msgstr "ロケットが物資を届けられる基地は %d つまで。作業台でロケットを強化しよう。"
 
-#: planet/sites/hub_purpose.gd:326
+#: planet/sites/hub_purpose.gd:324
 msgid "Waking the %s needs %s."
 msgstr "起こすには（%s）%s が必要。"
 
-#: planet/sites/hub_purpose.gd:351
+#: planet/sites/hub_purpose.gd:349
 msgid "%s is awake. %s keeps cleaning when you fly on."
 msgstr "%s が目を覚ました。旅立ったあとも、%s は掃除を続ける。"
 
-#: planet/sites/hub_purpose.gd:378
+#: planet/sites/hub_purpose.gd:376
 msgid "%s grows: level %d."
 msgstr "%s が成長：レベル %d。"
 
-#: planet/sites/hub_purpose.gd:406
+#: planet/sites/hub_purpose.gd:404
 msgid "%d robot working"
 msgid_plural "%d robots working"
 msgstr[0] "ロボット %d 台が作業中"
 
-#: planet/sites/hub_purpose.gd:428
+#: planet/sites/hub_purpose.gd:426
 msgid "Home: %d%% clean"
 msgstr "ホーム：%d%% きれい"
 
-#: planet/sites/hub_purpose.gd:430
+#: planet/sites/hub_purpose.gd:428
 msgid "Restored: %d%% clean"
 msgstr "復旧済み：%d%% きれい"
 
-#: planet/sites/hub_purpose.gd:432 ui/profile_picker.gd:111
+#: planet/sites/hub_purpose.gd:430 ui/profile_picker.gd:111
 msgid "New"
 msgstr "新規"
 
-#: planet/sites/hub_purpose.gd:435
+#: planet/sites/hub_purpose.gd:433
 msgid "Ready to wake"
 msgstr "起こせる"
 
-#: planet/sites/hub_purpose.gd:436
+#: planet/sites/hub_purpose.gd:434
 msgid "Asleep: %d / %d"
 msgstr "眠っている：%d / %d"
 
-#: planet/sites/hub_purpose.gd:447
+#: planet/sites/hub_purpose.gd:445
 msgid "%s   %d%% CLEAN"
 msgstr "%s   %d%% きれい"
 
-#: planet/sites/hub_purpose.gd:449
+#: planet/sites/hub_purpose.gd:447
 msgid "%s   BASES %d/%d"
 msgstr "%s   基地 %d/%d"
 
-#: planet/sites/hub_purpose.gd:517
+#: planet/sites/hub_purpose.gd:515
 msgid "Restored. Next: take the rocket to %s."
 msgstr "復旧完了。次はロケットで %s へ。"
 
-#: planet/sites/hub_purpose.gd:521
+#: planet/sites/hub_purpose.gd:519
 msgid "All %d bases stand. Build the drive at the rocket."
 msgstr "%d つの基地がそろった。ロケットでドライブを建造しよう。"
 
-#: planet/sites/hub_purpose.gd:700
+#: planet/sites/hub_purpose.gd:698
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
@@ -1544,8 +1536,8 @@ msgid "%s %s assembled. It looks around, then gets to work."
 msgstr "%s %s 組み立て完了。きょろきょろしてから、仕事に取りかかった。"
 
 #: scenes/slice.gd:130 ui/rockets_panel.gd:60
-msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
-msgstr "発射台のロケットまで歩いて、Eを押して行き先を選ぼう。"
+msgid "Walk to the rocket on the launch pad and press [%s] to choose where to fly."
+msgstr "発射台のロケットまで歩いて、[%s]を押して行き先を選ぼう。"
 
 #: scenes/slice.gd:140 ui/rockets_panel.gd:39
 msgid "Energy cells recharging: %s. Rocket upgrades refill them faster."
@@ -2261,6 +2253,10 @@ msgstr "ベールをおうちへ運ぼう。はかりは高い煙の下だよ。
 #: story/objectives.gd:1042
 msgid "Carry your bale to the scale by the bin."
 msgstr "ベールをゴミ箱のそばのはかりへ運ぼう。"
+
+#: story/objectives.gd:1051
+msgid "The rocket waits on the pad. Home is first on its list."
+msgstr "ロケットは発着場で待っている。リストの一番上がホームだ。"
 
 #: story/objectives.gd:1052
 msgid "Head home: follow the beam to the tall smoke."
@@ -3260,10 +3256,6 @@ msgstr "ルミが見つけたすべてを台座に飾るホール。次に来る
 #: systems/camp/locker_cabinet.gd:33
 msgid "E   open locker"
 msgstr "E   ロッカーを開く"
-
-#: systems/camp/machine_reveal.gd:46
-msgid "%s built. Follow the light to it."
-msgstr "%s を建てた。光をたどって行ってみよう。"
 
 #: systems/camp/machine_reveal.gd:46
 msgid "%s built."
@@ -17044,6 +17036,15 @@ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "Home. The workbench is by the pod."
+#~ msgstr "ホームだ。作業台はポッドのそばにある。"
+
+#~ msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
+#~ msgstr "発射台のロケットまで歩いて、Eを押して行き先を選ぼう。"
+
+#~ msgid "%s built. Follow the light to it."
+#~ msgstr "%s を建てた。光をたどって行ってみよう。"
 
 #~ msgid "All %d bases stand. Fly home and make the rocket ready to leave."
 #~ msgstr "%d つの基地がそろった。ホームに戻ってロケットの出発準備をしよう。"

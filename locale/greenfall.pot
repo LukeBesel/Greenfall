@@ -706,101 +706,93 @@ msgstr ""
 msgid "New Lumi design: %s"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:168
-msgid "Home. The workbench is by the pod."
-msgstr ""
-
-#: planet/sites/hub_purpose.gd:174 story/objectives.gd:1051
-msgid "The rocket waits on the pad. Home is first on its list."
-msgstr ""
-
-#: planet/sites/hub_purpose.gd:180
+#: planet/sites/hub_purpose.gd:178
 msgid "%s: %d%% clean, up %d%% while you were away."
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:264
+#: planet/sites/hub_purpose.gd:262
 msgid "Dig the landmark out. Clean hexes here: %d / %d"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:266
+#: planet/sites/hub_purpose.gd:264
 msgid "Repair an outpost here: %d / %d"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:269
+#: planet/sites/hub_purpose.gd:267
 msgid "Upgrade the rocket, then wake the %s"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:270
+#: planet/sites/hub_purpose.gd:268
 msgid "Wake the %s (%s)"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:304 tools/ui_audit_run.gd:602
+#: planet/sites/hub_purpose.gd:302 tools/ui_audit_run.gd:602
 msgid "E   Wake the %s  (%s)"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:305
+#: planet/sites/hub_purpose.gd:303
 msgid "%s: asleep. %s"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:310
+#: planet/sites/hub_purpose.gd:308
 msgid "The rocket can carry supplies to %d bases. Upgrade it at the workbench."
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:326
+#: planet/sites/hub_purpose.gd:324
 msgid "Waking the %s needs %s."
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:351
+#: planet/sites/hub_purpose.gd:349
 msgid "%s is awake. %s keeps cleaning when you fly on."
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:378
+#: planet/sites/hub_purpose.gd:376
 msgid "%s grows: level %d."
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:406
+#: planet/sites/hub_purpose.gd:404
 msgid "%d robot working"
 msgid_plural "%d robots working"
 msgstr[0] ""
 msgstr[1] ""
 
-#: planet/sites/hub_purpose.gd:428
+#: planet/sites/hub_purpose.gd:426
 msgid "Home: %d%% clean"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:430
+#: planet/sites/hub_purpose.gd:428
 msgid "Restored: %d%% clean"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:432 ui/profile_picker.gd:111
+#: planet/sites/hub_purpose.gd:430 ui/profile_picker.gd:111
 msgid "New"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:435
+#: planet/sites/hub_purpose.gd:433
 msgid "Ready to wake"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:436
+#: planet/sites/hub_purpose.gd:434
 msgid "Asleep: %d / %d"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:447
+#: planet/sites/hub_purpose.gd:445
 msgid "%s   %d%% CLEAN"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:449
+#: planet/sites/hub_purpose.gd:447
 msgid "%s   BASES %d/%d"
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:517
+#: planet/sites/hub_purpose.gd:515
 msgid "Restored. Next: take the rocket to %s."
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:521
+#: planet/sites/hub_purpose.gd:519
 msgid "All %d bases stand. Build the drive at the rocket."
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:700
+#: planet/sites/hub_purpose.gd:698
 msgid "%s  ·  the %s"
 msgstr ""
 
@@ -1545,7 +1537,7 @@ msgid "%s %s assembled. It looks around, then gets to work."
 msgstr ""
 
 #: scenes/slice.gd:130 ui/rockets_panel.gd:60
-msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
+msgid "Walk to the rocket on the launch pad and press [%s] to choose where to fly."
 msgstr ""
 
 #: scenes/slice.gd:140 ui/rockets_panel.gd:39
@@ -2240,6 +2232,10 @@ msgstr ""
 
 #: story/objectives.gd:1042
 msgid "Carry your bale to the scale by the bin."
+msgstr ""
+
+#: story/objectives.gd:1051
+msgid "The rocket waits on the pad. Home is first on its list."
 msgstr ""
 
 #: story/objectives.gd:1052
@@ -3245,10 +3241,6 @@ msgstr ""
 
 #: systems/camp/locker_cabinet.gd:33
 msgid "E   open locker"
-msgstr ""
-
-#: systems/camp/machine_reveal.gd:46
-msgid "%s built. Follow the light to it."
 msgstr ""
 
 #: systems/camp/machine_reveal.gd:46
