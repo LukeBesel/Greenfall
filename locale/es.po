@@ -805,31 +805,31 @@ msgstr "%s  ·  %s"
 msgid "The rocket is in flight."
 msgstr "El cohete está en vuelo."
 
-#: planet/sites/orbit_sites.gd:138
+#: planet/sites/orbit_sites.gd:136
 msgid "Bases restored: %d of %d"
 msgstr "Bases restauradas: %d de %d"
 
-#: planet/sites/orbit_sites.gd:176
+#: planet/sites/orbit_sites.gd:174
 msgid "E   Rocket: choose a destination"
 msgstr "E   Cohete: elige un destino"
 
-#: planet/sites/orbit_sites.gd:214
+#: planet/sites/orbit_sites.gd:212
 msgid "HOME"
 msgstr "CASA"
 
-#: planet/sites/orbit_sites.gd:214
+#: planet/sites/orbit_sites.gd:212
 msgid "NEXT STOP"
 msgstr "PRÓXIMA PARADA"
 
-#: planet/sites/orbit_sites.gd:216
+#: planet/sites/orbit_sites.gd:214
 msgid "Upgrade the rocket first"
 msgstr "Primero mejora el cohete"
 
-#: planet/sites/orbit_sites.gd:234
+#: planet/sites/orbit_sites.gd:232
 msgid "%s site"
 msgstr "Lugar: %s"
 
-#: planet/sites/orbit_sites.gd:235
+#: planet/sites/orbit_sites.gd:233
 msgid "Hub %d"
 msgstr "Base %d"
 
@@ -11158,10 +11158,6 @@ msgstr "Investiga el Censo de polinizadores"
 msgid "Grow 25 flowers to bloom"
 msgstr "Haz florecer 25 flores"
 
-#: data/goals.json:goals[tank_1].text
-msgid "Place a Water Tank"
-msgstr "Coloca un tanque de agua"
-
 #: data/goals.json:goals[plant_60].text
 msgid "Plant 60 seeds"
 msgstr "Planta 60 semillas"
@@ -11421,10 +11417,6 @@ msgstr "Sube las herencias a 10 niveles"
 #: data/goals.json:goals[late_world_2].text
 msgid "Seed a second new world"
 msgstr "Siembra un segundo mundo nuevo"
-
-#: data/goals.json:goals[late_eggs_38].text
-msgid "Find 38 curiosities"
-msgstr "Encuentra 38 curiosidades"
 
 #: data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
@@ -17065,6 +17057,12 @@ msgstr "Ese pórtico desguazó la flota del Ledger cuando se acabó el dinero. E
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un mundo de óxido, verde. Las viejas grúas tienen flores a sus pies. Las cuentas están cerradas, {name}. Las hemos cuadrado."
+
+#~ msgid "Place a Water Tank"
+#~ msgstr "Coloca un tanque de agua"
+
+#~ msgid "Find 38 curiosities"
+#~ msgstr "Encuentra 38 curiosidades"
 
 #~ msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 #~ msgstr "Las semillas necesitan suelo limpio y despejado: ni calles, ni bordillos, ni la plataforma."
