@@ -387,7 +387,7 @@ func progress() -> Array:
 			return [have / need, "%s / %s" % [Settings.fmt(BigNum.from_float(have)), Settings.fmt(BigNum.from_float(need))]]
 	var tgt: float = target_of(def)
 	var v: float = minf(value_of(def), tgt)
-	if v < tgt and str(def.get("type", "")) in ["stat", "robot", "hub_level", "upgrade", "tower"]:
+	if v < tgt and str(def.get("type", "")) in ["stat", "robot", "hub_level", "upgrade", "tower", "flag"]:
 		# [v6pace] Saving up for the step's price: cubes toward it, a number that goes up (owner: a
 		# visible goal with a number at all times). Once it's covered, the step's own count again.
 		var pc: Dictionary = _step_price()
@@ -420,6 +420,13 @@ func _process(delta: float) -> void:
 	if gl and not gl.driven:
 		gl.driven = true  # [v1guide] the card drives the goals: one step at a time
 	if not revealed:
+		# [v9a] Goal audit: before the card shows (WREN's brief), the restart checklist runs and its
+		# beam must follow it; the waypoint was only refreshed after the reveal, so it stayed on the
+		# bench while the checklist said "Bring your chest to the trash bin".
+		_t -= delta
+		if _t <= 0.0:
+			_t = REFRESH_S
+			waypoint.set_target(waypoint_target())
 		return
 	_explain_signal()
 	_narrate()  # [v2guide]
@@ -988,6 +995,10 @@ func _step_price() -> Dictionary:
 		return BenchTiers.next_cost()
 	if typ == "tower" and SignalTower.tier() < int(def.get("target", 1)):
 		return SignalTower.next_cost()
+	# [v9a] "Repair Glim" (80 cubes, 10 Parts) is a flag step: it showed no price, no count and no
+	# "Need N more parts" while the player saved up, only "Build tab" and the hex outline.
+	if typ == "flag" and key == "glim_repaired" and not GameState.flags.get(key, false):
+		return (YardBuilds.def("glim").get("cost", {}) as Dictionary).duplicate()
 	# [v5play] Base levels and robots cost cubes and parts: say what is still missing for them too
 	# (the "Rebuild the base" steps gave no hint while the parts were short).
 	if typ == "hub_level" and world != null and world.get("hub") is Hub:
@@ -1086,16 +1097,20 @@ func situation_hint(dt: float = 0.0) -> String:
 		Audio.play("ding", 0.8, -8.0)
 	_was_full = full
 	var far: bool = is_lost()
+	# [v9a] Goal audit (clarity read-through): on a step with a price (Glim, the Bot Bay, the first
+	# robot, a base level) the line flipped every few seconds between "Need N more cubes" and the
+	# chest / bale line as Lumi worked. The price is what blocks the step: it wins. (Lumi still
+	# hears "Your chest is full" over his head the moment it fills.)
+	var price: Dictionary = _step_price()
+	if not price.is_empty() and not GameState.can_afford_all(price):
+		situation_price = true  # [v9d] the card shows it as cost chips
+		return ListDetail.short_text(price)
 	if full:
 		return tr("Your chest is full. Head home: the bin is under the tall smoke.") if far and not press else full_line
 	if not p.carried.is_empty():
 		return tr("Carry your bale home: the scale is under the tall smoke.") if far else tr("Carry your bale to the scale by the bin.")
 	if Time.get_ticks_msec() - Pace.heavy_at < HEAVY_MS and Pace.heavy_at > 0:
 		return tr("Too heavy. Upgrade Lift at the bench.")
-	var price: Dictionary = _step_price()
-	if not price.is_empty() and not GameState.can_afford_all(price):
-		situation_price = true
-		return ListDetail.short_text(price)
 	var bench_here: bool = field_bench() is Vector3 and str(step_target(current()).get("to", "")) == "bench"  # [v6pace]
 	if far and needs_home() and not bench_here:
 		if away_rocket() is Vector3:

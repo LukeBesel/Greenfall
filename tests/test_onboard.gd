@@ -64,6 +64,24 @@ func test_objective_values_and_progress() -> void:
 	o.free()
 
 
+## [v9a] "Repair Glim" shows its price while the player saves up (it showed only "Build tab").
+func test_glim_step_shows_its_price() -> void:
+	var o := Objectives.new()
+	o.chain = _cfg()["objectives"]
+	o.revealed = true
+	o.step = o.chain.map(func(d: Dictionary) -> String: return str(d["id"])).find("glim")
+	GameState.flags["glim_repaired"] = false
+	var cubes: BigNum = GameState.get_currency("cubes")
+	GameState.currencies["cubes"] = BigNum.from_float(20.0)
+	var price: Dictionary = o._step_price()
+	assert_eq(price, YardBuilds.def("glim").get("cost", {}), "the Glim build's cost")
+	assert_true(str(o.progress()[1]).begins_with("20 /"), "cubes toward it: %s" % str(o.progress()[1]))
+	GameState.flags["glim_repaired"] = true
+	assert_true(o._step_price().is_empty(), "no price once he is repaired")
+	GameState.currencies["cubes"] = cubes
+	o.free()
+
+
 func test_wait_flag_shows_hint() -> void:
 	var d: Dictionary = {"text": "Plant the first seed", "desc": "Why.", "hint": "Wait.", "wait_flag": "seed_signal"}
 	GameState.flags["seed_signal"] = false
