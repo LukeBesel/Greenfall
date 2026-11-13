@@ -9,7 +9,7 @@
       "id": "verdance", "set": "space", "dur": 6.5, "fade_in": 2.6,
       "cam": {"from": [10, 20, 150], "to": [4, 16, 132], "look_from": [-6, -17, 0], "look_to": [-2, -15, 0], "fov": [36, 36], "ease": "out", "hand": 0.0},
       "cues": [[1.6, "title_in"], [5.4, "title_out"]],
-      "p": {"ark_from": [-58, 2, 0], "ark_speed": 3.2}
+      "p": {"ark_from": [-70, 1, 0], "ark_speed": 2.2}
     },
     {
       "id": "cradle", "set": "space", "dur": 8.1, "fade_out": 0.4,
