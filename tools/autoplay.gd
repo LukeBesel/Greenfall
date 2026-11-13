@@ -875,6 +875,20 @@ func _do_garden(p: Patch) -> bool:
 			_task_t = 0.0
 		return true
 	if GameState.get_currency("seeds").to_float() >= 1.0:
+		var fs8: FirstSeed = world.get("first_seed") as FirstSeed  # [v8seed] the first seed goes where the card says: a greenhouse bed
+		if fs8 and int(GameState.stats.get("plants_planted", 0)) == 0 and not fs8.bed_slots.is_empty():
+			var bs: int = fs8.bed_slots[0]
+			if g.slot_species[bs] < 0 and not _ignore_piece.has(-10 - bs):
+				_set_task("plant")
+				p.set_tool(Patch.Tool.PLANT)
+				var db: float = _go(p, g.slot_pos[bs], 0.9)
+				if db < 1.6:
+					_scoop = true
+					_move = Vector3.ZERO
+				if _task_t > 25.0:  # can't get there: plant on a clean hex as before
+					_ignore_piece[-10 - bs] = true
+					_task_t = 0.0
+				return true
 		var h: int = _pick_plant_hex(g)
 		if h >= 0:
 			var best: int = -1

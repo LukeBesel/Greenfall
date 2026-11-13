@@ -229,11 +229,20 @@ func _process(delta: float) -> void:
 		return
 	if float(GameState.stats.get("hexes_cleaned", 0)) < float(sched().get("min_hexes", 2)) and not DevHooks.has("event-every"):
 		return
+	if _quiet_step() and not DevHooks.has("event-every"):  # [v8seed] no event over a teaching step (the first seed)
+		return
 	var st: Dictionary = persist_state()
 	st["next_in"] = float(st.get("next_in", 0.0)) - delta
 	if float(st["next_in"]) <= 0.0:
 		if not start_random():
 			st["next_in"] = float(sched().get("retry_s", 40))
+
+
+## [v8seed] True on a story step listed in schedule.quiet_steps (data/events.json): a Salvage Surge
+## banner over "plant the first seed" is noise while the player learns a new tool.
+func _quiet_step() -> bool:
+	var ob: Objectives = world.get("objectives") as Objectives if world else null
+	return ob != null and str(ob.current().get("id", "")) in (sched().get("quiet_steps", ["seed"]) as Array)
 
 
 func context() -> Dictionary:

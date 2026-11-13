@@ -588,6 +588,8 @@ func step_target(def: Dictionary) -> Dictionary:
 			"seed":
 				if GameState.flags.get("seed_signal", false) and not GameState.flags.get("seeds_unlocked", false):
 					out = {"to": "place", "pos": (world.first_seed as FirstSeed).tin_point() if world.get("first_seed") != null else FirstSeed.GREENHOUSE_POS, "row": []}  # [orbB] [v4grow] on the tin
+				elif GameState.flags.get("seeds_unlocked", false) and int(GameState.stats.get("plants_planted", 0)) == 0 and world.get("first_seed") != null:
+					out = {"to": "place", "pos": (world.first_seed as FirstSeed).bed_point(), "row": []}  # [v8seed] the beacon on the greenhouse beds
 				elif GameState.flags.get("seeds_unlocked", false):
 					out["to"] = ""  # [v4grow] planting goes on clean ground: no dirty-hex outline, no beam
 				else:

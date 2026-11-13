@@ -79,7 +79,7 @@ uniform float band = 0.85;
 uniform float pulse = 1.0;
 void fragment() {
 	float r = length(UV - vec2(0.5)) * 2.0;
-	float a = exp(-pow((r - band) / 0.09, 2.0)) * 1.2 + smoothstep(band, 0.0, r) * 0.22;
+	float a = exp(-pow((r - band) / 0.045, 2.0)) * 1.1 + smoothstep(band, 0.0, r) * 0.1;  // [v8seed] a thin line, a faint fill
 	a *= 0.75 + 0.25 * sin(TIME * 4.0) * pulse;
 	ALBEDO = tint.rgb;
 	ALPHA = clamp(a, 0.0, 1.0) * step(r, 1.0) * tint.a;
@@ -287,18 +287,43 @@ func _preview() -> void:
 	_plant_ring.visible = false
 	if water_on:
 		var c: Vector3 = p.global_position + p.forward() * 1.2  # Garden.planted_near's centre and reach
-		_place_ring(_water_ring, c, 2.8)
+		_place_ring(_water_ring, _floor_at(c, p), WATER_REACH_M)
 	elif plant_on:
 		var s: int = garden.free_slot_near(p.global_position, p.forward())
 		if s >= 0:
 			_plant_ring.visible = true
-			_place_ring(_plant_ring, garden.slot_pos[s], 0.7)
+			var sp: Vector3 = garden.slot_pos[s]
+			_place_ring(_plant_ring, sp + OrbitUp.up(sp) * garden.lift_of(s), SEED_RING_M)  # [v8seed] on the slot's own soil (a bed's top, a lot's plates)
 
 
-func _place_ring(mi: MeshInstance3D, c: Vector3, r: float) -> void:
-	var g: Vector3 = _ground(c)
+## [v8seed] Owner, 2026-11-13: "planting and watering circle thing looks way wrong". The rings were
+## scaled with Basis.scaled(), which scales along the WORLD axes: on the globe, where the local
+## frame is turned, that sheared the flat ring into a huge tilted band rising through the air. They
+## also sat on the bare terrain, under a bed's top or a lot's plates. Now: scaled in the ground's own
+## frame, at the given point (the slot, or the floor under the water's landing spot), radius r.
+const WATER_REACH_M: float = 2.8  # Garden.planted_near's reach
+const SEED_RING_M: float = 0.55
+const RING_LIFT_M: float = 0.05
+
+
+func _place_ring(mi: MeshInstance3D, g: Vector3, r: float) -> void:
 	var fr: Basis = SphereGrid.frame(g.normalized()) if OrbitUp.on_globe() else Basis()
-	mi.global_transform = Transform3D(fr.scaled(Vector3(r / 0.85, 1.0, r / 0.85)), g + fr.y * 0.16)
+	var k: float = r / 0.85  # the shader's band sits at 0.85 of the 2 m plane's half-width
+	mi.global_transform = Transform3D(fr * Basis.from_scale(Vector3(k, 1.0, k)), g + fr.y * RING_LIFT_M)
+
+
+## The walkable floor under c (a bed, plates, the terrain): a short ray down the local up through
+## the solid world, else the terrain's ground.
+func _floor_at(c: Vector3, p: Patch) -> Vector3:
+	var g: Vector3 = _ground(c)
+	if not is_inside_tree():
+		return g
+	var up: Vector3 = OrbitUp.up(c)
+	var top: Vector3 = g + up * 1.2
+	var q := PhysicsRayQueryParameters3D.create(top, g - up * 0.3, PhysLayers.WORLD)
+	q.exclude = [p.get_rid()] if p else []
+	var hit: Dictionary = get_world_3d().direct_space_state.intersect_ray(q)
+	return hit["position"] if not hit.is_empty() else g
 
 
 func _ground(p: Vector3) -> Vector3:
