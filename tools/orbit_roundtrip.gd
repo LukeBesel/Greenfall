@@ -537,7 +537,10 @@ static func run(rt: Node, check: Callable) -> void:
 			gdn.water(sl, 120.0)
 			planted_n += 1
 	check.call("orbit_garden_planted", 3, planted_n)
-	check.call("orbit_garden_slots_on_ground", true, gdn.slot_pos.size() > 0 and absf(gdn.slot_pos[0].length() - (g.grid.radius_m + g.terrain.height(gdn.slot_pos[0].normalized()))) < 0.05)
+	var s0: int = 0  # [v8seed] the first ground slot (the greenhouse beds' slots stand on the beds)
+	while s0 < gdn.slot_pos.size() and gdn.bed_slots.has(s0):
+		s0 += 1
+	check.call("orbit_garden_slots_on_ground", true, s0 < gdn.slot_pos.size() and absf(gdn.slot_pos[s0].length() - (g.grid.radius_m + g.terrain.height(gdn.slot_pos[s0].normalized()))) < 0.05)
 	# [v4grow] #51: the planted cell reads from Lumi's camera (mounds, a ring on the cell, real-size
 	# plants once grown).
 	var gm: GardenMarks = s1.get_node_or_null("GardenMarks") as GardenMarks
