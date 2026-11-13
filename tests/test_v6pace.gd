@@ -271,7 +271,7 @@ func test_clock_stands_still_behind_the_loader() -> void:
 # The pinned numbers (cubes).
 const FAR: Array[float] = [600.0, 2400.0, 9600.0, 38000.0, 200000.0]  # hub 6: cost_override "4" (a push before the drive)
 const MK2: float = 8000.0
-const PACE: float = 1.9
+const PACE: float = 2.0
 const MK3: float = 100000.0
 const DRIVE: float = 500000.0
 const BASE3: float = 9000.0

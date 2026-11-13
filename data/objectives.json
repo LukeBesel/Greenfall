@@ -102,17 +102,6 @@
       ]
     },
     {
-      "id": "hex2",
-      "text": "Clean 2 hexes",
-      "desc": "Clean ground lets plants grow again.",
-      "type": "stat",
-      "key": "hexes_cleaned",
-      "target": 2,
-      "lines": [
-        "One hex clean. Now one more, Lumi."
-      ]
-    },
-    {
       "id": "bench2",
       "text": "Add a Bot Bay to the bench",
       "desc": "Upgrades tab. A planet is too big for one small robot.",
@@ -144,9 +133,20 @@
       ]
     },
     {
+      "id": "hex2",
+      "text": "Clean 2 hexes",
+      "desc": "Clean ground lets plants grow again.",
+      "type": "stat",
+      "key": "hexes_cleaned",
+      "target": 2,
+      "lines": [
+        "One hex clean. Now one more, Lumi."
+      ]
+    },
+    {
       "id": "hex3",
       "text": "Clean 3 hexes",
-      "desc": "Clear room around the base, so robots can start work.",
+      "desc": "Your robot helps now. Clean ground lets the garden spread.",
       "type": "stat",
       "key": "hexes_cleaned",
       "target": 3,

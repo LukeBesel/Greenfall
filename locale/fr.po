@@ -296,80 +296,80 @@ msgstr "AVANT-POSTE %d  ·  EN LIGNE"
 msgid "RECHARGE"
 msgstr "RECHARGE"
 
-#: automation/outposts.gd:332 automation/outposts.gd:346
+#: automation/outposts.gd:372 automation/outposts.gd:386
 msgid "No outpost."
 msgstr "Aucun avant-poste."
 
-#: automation/outposts.gd:334
+#: automation/outposts.gd:374
 msgid "Already repaired."
 msgstr "Déjà réparé."
 
-#: automation/outposts.gd:338
+#: automation/outposts.gd:378
 msgid "Clear the junk around it first (%d%% of %d%%)."
 msgstr "Dégage d'abord la ferraille autour (%d%% sur %d%%)."
 
-#: automation/outposts.gd:340 automation/outposts.gd:355 automation/stations.gd:131
+#: automation/outposts.gd:380 automation/outposts.gd:395 automation/stations.gd:131
 #: systems/camp/hub_builds.gd:79
 msgid "Not enough cubes or parts."
 msgstr "Pas assez de cubes ou de pièces."
 
-#: automation/outposts.gd:349
+#: automation/outposts.gd:389
 msgid "Repair it first."
 msgstr "Répare-le d'abord."
 
-#: automation/outposts.gd:351 automation/trash_bin.gd:82 ui/bench_tiers.gd:83
+#: automation/outposts.gd:391 automation/trash_bin.gd:82 ui/bench_tiers.gd:83
 msgid "Fully upgraded."
 msgstr "Amélioré au max."
 
-#: automation/outposts.gd:372
+#: automation/outposts.gd:412
 msgid "Outpost %d repaired: a working scale on the frontier. Haul Bugs deliver to the nearest scale now."
 msgstr "Avant-poste %d réparé : une balance qui marche sur la frontière. Les Haul Bugs livrent maintenant à la balance la plus proche."
 
-#: automation/outposts.gd:373
+#: automation/outposts.gd:413
 msgid "OUTPOST ONLINE"
 msgstr "AVANT-POSTE EN LIGNE"
 
-#: automation/outposts.gd:395
+#: automation/outposts.gd:435
 msgid "Outpost %d upgraded: %s. %s"
 msgstr "Avant-poste %d amélioré : %s. %s"
 
-#: automation/outposts.gd:424
+#: automation/outposts.gd:464
 msgid "E   Ruined outpost · clear its hex first (%d%% / %d%%)"
 msgstr "E   Avant-poste en ruine · nettoie d'abord son hexagone (%d%% / %d%%)"
 
-#: automation/outposts.gd:425
+#: automation/outposts.gd:465
 msgid "E   Repair outpost · %s%s"
 msgstr "E   Réparer l'avant-poste · %s%s"
 
-#: automation/outposts.gd:425 automation/outposts.gd:428
+#: automation/outposts.gd:465 automation/outposts.gd:468
 msgid "  (need more)"
 msgstr "  (il en faut plus)"
 
-#: automation/outposts.gd:427
+#: automation/outposts.gd:467
 msgid "E   Outpost %d · %s · bales +%d%%"
 msgstr "E   Avant-poste %d · %s · balles +%d%%"
 
-#: automation/outposts.gd:428
+#: automation/outposts.gd:468
 msgid "E   Upgrade outpost: %s · %s%s"
 msgstr "E   Améliorer l'avant-poste : %s · %s%s"
 
-#: automation/outposts.gd:438
+#: automation/outposts.gd:478
 msgid "Outpost %d: %s"
 msgstr "Avant-poste %d : %s"
 
-#: automation/outposts.gd:445
+#: automation/outposts.gd:485
 msgid "Outpost %d upgrade: %s"
 msgstr "Amélioration avant-poste %d : %s"
 
-#: automation/outposts.gd:448
+#: automation/outposts.gd:488
 msgid "Outpost %d: %s. Bales sell for +%d%% here; robots crossing the pad get a speed charge."
 msgstr "Avant-poste %d : %s. Les balles se vendent +%d%% ici ; les robots qui passent sur le plot gagnent un boost de vitesse."
 
-#: automation/outposts.gd:551
+#: automation/outposts.gd:591
 msgid "OUTPOST %d  RUINED · repair at %d%% clear"
 msgstr "AVANT-POSTE %d  EN RUINE · réparable à %d%% propre"
 
-#: automation/outposts.gd:552
+#: automation/outposts.gd:592
 msgid "OUTPOST %d  %s"
 msgstr "AVANT-POSTE %d  %s"
 
@@ -797,35 +797,35 @@ msgstr "Les %d bases sont debout. Rentre à la maison et prépare la fusée au d
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:108
+#: planet/sites/orbit_sites.gd:110
 msgid "The rocket is in flight."
 msgstr "La fusée est en vol."
 
-#: planet/sites/orbit_sites.gd:132
+#: planet/sites/orbit_sites.gd:134
 msgid "Bases restored: %d of %d"
 msgstr "Bases restaurées : %d sur %d"
 
-#: planet/sites/orbit_sites.gd:170
+#: planet/sites/orbit_sites.gd:172
 msgid "E   Rocket: choose a destination"
 msgstr "E   Fusée : choisir une destination"
 
-#: planet/sites/orbit_sites.gd:208
+#: planet/sites/orbit_sites.gd:210
 msgid "HOME"
 msgstr "MAISON"
 
-#: planet/sites/orbit_sites.gd:208
+#: planet/sites/orbit_sites.gd:210
 msgid "NEXT STOP"
 msgstr "PROCHAIN ARRÊT"
 
-#: planet/sites/orbit_sites.gd:210
+#: planet/sites/orbit_sites.gd:212
 msgid "Upgrade the rocket first"
 msgstr "Améliore d'abord la fusée"
 
-#: planet/sites/orbit_sites.gd:228
+#: planet/sites/orbit_sites.gd:230
 msgid "%s site"
 msgstr "Site : %s"
 
-#: planet/sites/orbit_sites.gd:229
+#: planet/sites/orbit_sites.gd:231
 msgid "Hub %d"
 msgstr "Base %d"
 
@@ -3703,8 +3703,10 @@ msgid "Rebuild the base to level %d first."
 msgstr "Reconstruis d'abord la base au niveau %d."
 
 #: ui/bench_tiers.gd:98
-msgid "Clean %d hexes first."
-msgstr "Nettoie d'abord %d hexagones."
+msgid "Clean %d hex first."
+msgid_plural "Clean %d hexes first."
+msgstr[0] "Nettoie d'abord %d hexagone."
+msgstr[1] "Nettoie d'abord %d hexagones."
 
 #: ui/bench_tiers.gd:99
 msgid "Not yet. Keep playing."
@@ -12265,26 +12267,6 @@ msgstr "Les plantes ne poussent que sur un sol propre. Vide le contour."
 msgid "First, one clean hex. Clear the outlined one. Green starts on clean ground."
 msgstr "D'abord, un hexagone propre. Dégage celui qui est entouré. Le vert commence sur un sol propre."
 
-#: data/objectives.json:objectives[hex2].text
-msgid "Clean 2 hexes"
-msgstr "Nettoie 2 hexagones"
-
-#: data/objectives.json:objectives[hex2].desc
-msgid "Clean ground lets plants grow again."
-msgstr "Sur un sol propre, les plantes peuvent repousser."
-
-#: data/objectives.json:objectives[hex2].lines
-msgid "One hex clean. Now one more, Lumi."
-msgstr "Un hexagone propre. Encore un, Lumi."
-
-#: data/objectives.json:objectives[hex3].desc
-msgid "Clear room around the base, so robots can start work."
-msgstr "Fais de la place autour de la base, pour que les robots puissent s'y mettre."
-
-#: data/objectives.json:objectives[hex3].lines
-msgid "One more hex, Lumi. The planet notices, believe me."
-msgstr "Encore un hexagone, Lumi. La planète le remarque, crois-moi."
-
 #: data/objectives.json:objectives[bench2].text
 msgid "Add a Bot Bay to the bench"
 msgstr "Ajoute une Baie à robots à l'établi"
@@ -12320,6 +12302,26 @@ msgstr "Il nettoie tout seul. {open_command} : montre-lui par où commencer."
 #: data/objectives.json:objectives[zone].lines
 msgid "Your robot already knows the job. Paint a hex, and it starts there."
 msgstr "Ton robot connaît déjà son travail. Peins un hexagone, et il commencera par là."
+
+#: data/objectives.json:objectives[hex2].text
+msgid "Clean 2 hexes"
+msgstr "Nettoie 2 hexagones"
+
+#: data/objectives.json:objectives[hex2].desc
+msgid "Clean ground lets plants grow again."
+msgstr "Sur un sol propre, les plantes peuvent repousser."
+
+#: data/objectives.json:objectives[hex2].lines
+msgid "One hex clean. Now one more, Lumi."
+msgstr "Un hexagone propre. Encore un, Lumi."
+
+#: data/objectives.json:objectives[hex3].desc
+msgid "Your robot helps now. Clean ground lets the garden spread."
+msgstr "Ton robot t'aide maintenant. Sur un sol propre, le jardin s'étend."
+
+#: data/objectives.json:objectives[hex3].lines
+msgid "One more hex, Lumi. The planet notices, believe me."
+msgstr "Encore un hexagone, Lumi. La planète le remarque, crois-moi."
 
 #: data/objectives.json:objectives[seed].text
 msgid "Plant the first seed"
@@ -17035,6 +17037,12 @@ msgstr "Ce portique a mis la flotte du Ledger à la casse quand l'argent a manqu
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Un monde de rouille, vert. Les vieilles grues ont des fleurs à leurs pieds. Les comptes sont clos, {name}. Nous les avons équilibrés."
+
+#~ msgid "Clean %d hexes first."
+#~ msgstr "Nettoie d'abord %d hexagones."
+
+#~ msgid "Clear room around the base, so robots can start work."
+#~ msgstr "Fais de la place autour de la base, pour que les robots puissent s'y mettre."
 
 #~ msgid "No other world visited yet. Seed or visit another world from the Ark Bridge, then come back."
 #~ msgstr "Aucun autre monde visité. Ensemence ou visite un monde depuis le Pont de l'Arche, puis reviens."

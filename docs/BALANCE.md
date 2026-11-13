@@ -4,7 +4,7 @@
 > `--time-scale=8`. A person is assumed to take **about twice as long** (reading, looking around,
 > getting lost, choosing). That factor is a guess, **not measured** with a real player. If the first
 > planet plays too fast or too slow, change **one number**, `data/hub.json` `far_hub.pace`
-> (1.9 now): every sale pays 1/pace, so 1.25 makes every cube step about 25% longer and 0.8 about
+> (2.0 now): every sale pays 1/pace, so 1.25 makes every cube step about 25% longer and 0.8 about
 > 20% shorter. Verdance can also get its own value in `data/homeward.json` `planets[0].far_hub.pace`.
 
 ## Verdance, the round planet (v6pace)
@@ -87,12 +87,18 @@ target: 11.5 min at 31.5-43.0 (Gantry Works' chain), 8.6 min at 6.3-14.9 (the 2n
 **Card waits:** none over 15 minutes. Longest: hub 6's flight 12.7 (200K), Gantry Works' wake 12.2
 (its chain), base level 5 11.8, hub 4's flight 11.6.
 
-**First robot (item 75):** 15.1 bot min here, 15.4 and 13.6 in the pace 1.45 runs (was 22.6). The
-prices are no longer the wait: the Bot Bay and the Scoopie are bought within a minute of their
-card. What varies is the second clean hex (3.5-8.6 bot min with the first tools). Lever if it
-should come sooner: the Bot Bay after 1 clean hex (`data/workbench.json` `tiers[1].requires`, and
-"Clean 2 hexes" moved after the robot in `data/objectives.json`), which would put it at about
-8-10 bot min. Not measured.
+**First robot (item 75), follow-up (short runs to the first robot only, pace 2.0):** the Bot Bay
+now opens after the first clean hex (450 cubes), the first Scoopie costs 250, and "Clean 2 hexes"
+and "Clean 3 hexes" come after the robot (the robot helps). First Scoopie at **15.3, 8.7 and 15.4**
+bot min on seeds 4471, 1234 and 9001 (mean 13.1). The spread comes from cash, not from the
+prices' size: cleaning the first hex pays a burst of bales (300-700 cubes, depending on the seed),
+and once the bot holds about 250 cubes it buys cheaper upgrades on the way, so a price just
+above what the burst covers waits much longer. Tried on the same seeds: Bot Bay 350 + Scoopie
+150: 7.1, 8.3, 13.8; 350 + 250: 6.4, 10.3, 15.0; 350 + 300: 18.7, 19.8, 16.8; 550 + 200: 19.0,
+22.2, 10.5. The earlier gate (2 clean hexes, pace 1.45) gave 13.6-15.4 with a 3.5-8.6 min second
+hex. The table above is the pace 1.9 run with that earlier gate; **pace 2.0 (set with this change)
+and the new first-robot step are not measured over the whole arc** (a few minutes later leave
+point expected).
 
 **Station chains** (O6): 2.1-11.5 bot minutes each. The outpost trap (bot boxed in at
 -239.6, 1108.5, -1459.9 by Gantry Works' outpost 0) was a junk mound rolled under the ruin; 33 of
@@ -123,7 +129,7 @@ in `data/planets.json` (v6hubs), the leave gate in `data/homeward.json` `planets
 
 | Knob | Verdance | What it does |
 |---|---|---|
-| `far_hub.pace` | 1.9 | Whole-planet speed: every sale pays 1/pace. Start here after a playtest. |
+| `far_hub.pace` | 2.0 | Whole-planet speed: every sale pays 1/pace. Start here after a playtest. |
 | `far_hub.cost_base`, `cost_growth` | 600 x 4.0 | The hub price ladder (600, 2.4K, 9.6K, 38K; hub 6 200K by override). A bigger planet: raise `cost_base` so its numbers start where the last planet ended. |
 | `far_hub.cost_override` | hub 6: 200K | One rung of the ladder, by step number. |
 | `far_hub.sell_growth` | 3.5 | Income multiplier per woken hub. Keep it below `cost_growth`, or later hubs come faster and faster. |

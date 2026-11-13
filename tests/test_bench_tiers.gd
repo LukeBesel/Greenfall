@@ -64,12 +64,12 @@ func test_each_tier_opens_its_tab_in_order() -> void:
 	assert_true(UpgradesScreen.tab_visible("research"))
 
 
-func test_tier_two_waits_for_the_tower_and_two_hexes_then_costs() -> void:
+func test_tier_two_waits_for_the_tower_and_a_clean_hex_then_costs() -> void:
 	assert_ne(BenchTiers.block_reason(), "", "not before the signal tower")
 	GameState.flags["signal_tower"] = 1
-	GameState.stats["hexes_cleaned"] = 1.0
-	assert_ne(BenchTiers.block_reason(), "", "not before two clean hexes")
-	GameState.stats["hexes_cleaned"] = 2.0  # [v8fix] item 75: was three (the first robot came too late)
+	GameState.stats["hexes_cleaned"] = 0.0
+	assert_eq(BenchTiers.block_reason(), "Clean 1 hex first.", "not before the first clean hex (singular)")
+	GameState.stats["hexes_cleaned"] = 1.0  # [v8fix] item 75: was three (the first robot came too late)
 	assert_eq(BenchTiers.block_reason(), "")
 	assert_false(BenchTiers.buy(), "can't pay yet")
 	var cost: Dictionary = BenchTiers.next_cost()

@@ -95,7 +95,7 @@ static func requirement_text(c: Array) -> String:
 			return TranslationServer.translate("Rebuild the base to level %d first.") % int(c[1])
 		"stat":
 			if str(c[1]) == "hexes_cleaned":
-				return TranslationServer.translate("Clean %d hexes first.") % int(c[2])
+				return TranslationServer.translate_plural("Clean %d hex first.", "Clean %d hexes first.", int(c[2])) % int(c[2])  # [v8fix] the Bot Bay asks for 1
 	return TranslationServer.translate("Not yet. Keep playing.")
 
 
