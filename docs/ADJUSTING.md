@@ -113,6 +113,14 @@ whoosh 17 -> 5, all sounds together 333 -> 152. Birds stayed under one call a mi
 repeated, and the main theme played first with quiet gaps between songs. Robots (`robot:`) and
 street lights (`lights:`) got gaps too; they only show up later in a run.
 
+**Listen by numbers (v8snd).** Nobody can hear the game in the cloud box, so check sounds by measurement:
+- `godot --headless --path . res://tools/dump_audio.tscn` writes every built-in sound (SFX, loops, score instruments, ambience beds, animal calls, the eggs' sounds) to `screenshots/audio_dump/`, then `python3 tools/check_audio.py` checks each one: clipping, DC, energy under 80 Hz and at 80-200 Hz (laptop speakers rattle on it), raw spikes per second (crackle), loop seams, and a steady 15-80 Hz chop on a bass-heavy sound (reads as a helicopter). Exit 1 on a failure; limits are at the top of the script.
+- `--audio-capture[=dir]` on any run (headless works) records the real mix: `master.wav` plus one WAV per bus in `screenshots/audio_capture/`. Check it with `python3 tools/check_audio.py --wav screenshots/audio_capture/master.wav`. Add `--life-sound` to a headless run, or the life bed (the dirty-ground wind) stays off.
+- `python3 tools/check_audio.py --sound-log screenshots/sound_log_summary.json` after a `--sound-log` run fails any sound played over 90 times a minute or stacked over 4 deep.
+- `master_highpass_hz` in `data/sound.json` is a high-pass under the whole mix (60 Hz; 0 turns it off). The purr's shortest gap is `min_gap_s.purr`.
+
+**The 2026-11-13 pass** (owner: "rattling noise constantly, like my speakers blew out"; "cat sounds like a helicopter"). Measured in the start yard (`--life-sound --audio-capture`, standing still), before -> after: the dust wind bed 42.7 -> 0.1 raw spikes a second, 57% -> 3% of the bed under 80 Hz. The purr: peak -0.4 -> -9 dBFS and played 9 dB softer, under 200 Hz 62% -> 4%, 24 Hz chop depth 1.3-1.5 -> about 0.4, at most once per 6 s. Every wind bed and the leaves 31-57% -> 1-4% under 80 Hz; the score's bass moved up an octave (E2-D#3) and its air bed was high-passed.
+
 ## The world coming back to life (v6life)
 
 What reacts where Lumi cleans: grass on clean ground, town blocks that wake up, butterflies, and

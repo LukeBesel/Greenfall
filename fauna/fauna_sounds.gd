@@ -6,6 +6,7 @@ extends RefCounted
 ## off) and a seamless cricket bed (crickets_loop(), played by Fauna on its own player).
 
 const RATE: int = 22050
+const MusicSynth := preload("res://audio/music_synth.gd")
 
 static var _done: bool = false
 static var _crickets: AudioStreamWAV
@@ -85,21 +86,40 @@ static func _buf(seconds: float) -> PackedFloat32Array:
 	return b
 
 
-## A cat's purr: ~25 Hz pulses of low, breathy noise, in and out breaths.
+## A cat's purr: soft breathy noise in the 180 Hz - 1.1 kHz band, gently pulsing at ~25 Hz, in
+## and out breaths with a short pause between them.
+## [v8snd] Was low-passed noise (most of it under 200 Hz) chopped fully on and off 24 times a
+## second at full scale: on laptop speakers that read as a helicopter / blown speaker
+## (tools/check_audio.py: sub-80 Hz 32%, 80-200 Hz 30%, tremolo depth 1.3-1.5, peak -0.4 dBFS).
+## Now: sub-80 Hz ~0%, gentle pulse, peak -9 dBFS.
 static func purr(rng: RandomNumberGenerator, v: float) -> PackedFloat32Array:
 	var b := _buf(2.4)
 	var lp: float = 0.0
 	var lp2: float = 0.0
-	var rate: float = 24.0 * (1.0 + v * 0.3)
+	var prev: float = 0.0
+	var hp: float = 0.0
+	var hp2: float = 0.0
+	var prev2: float = 0.0
+	var rate: float = 25.0 * (1.0 + v * 0.3)
 	for i: int in b.size():
 		var t: float = float(i) / RATE
 		var n: float = rng.randf_range(-1.0, 1.0)
-		lp += (n - lp) * 0.06
-		lp2 += (lp - lp2) * 0.15
-		var pulse: float = pow(0.5 + 0.5 * sin(TAU * rate * t), 3.0)
-		var breath: float = 0.55 + 0.45 * sin(TAU * t / 1.2 - 1.2)
-		var tone: float = sin(TAU * rate * 2.0 * t) * 0.25
-		b[i] = (lp2 * 7.0 + tone * lp2 * 4.0) * pulse * breath * 0.5 * smoothstep(0.0, 0.2, t) * (1.0 - smoothstep(2.1, 2.4, t))
+		lp += (n - lp) * 0.27  # two poles at ~1.1 kHz
+		lp2 += (lp - lp2) * 0.27
+		hp = 0.95 * (hp + lp2 - prev)  # two poles at ~180 Hz
+		prev = lp2
+		hp2 = 0.95 * (hp2 + hp - prev2)
+		prev2 = hp
+		var pulse: float = 0.7 + 0.3 * sin(TAU * rate * t)
+		var ph: float = fmod(t, 1.2) / 1.2
+		var breath: float = pow(sin(PI * clampf(ph / 0.85, 0.0, 1.0)), 0.8) * (1.0 if ph < 0.45 else 0.75)
+		b[i] = hp2 * pulse * breath * smoothstep(0.0, 0.2, t) * (1.0 - smoothstep(2.1, 2.4, t))
+	var m: float = 0.0
+	for i: int in b.size():
+		m = maxf(m, absf(b[i]))
+	if m > 0.0:
+		for i: int in b.size():
+			b[i] *= 0.35 / m
 	return b
 
 
@@ -209,7 +229,7 @@ static func frog(rng: RandomNumberGenerator, v: float) -> PackedFloat32Array:
 		var x: float = t / 0.42
 		ph += TAU * (150.0 + 40.0 * sin(PI * x)) * (1.0 + v) / RATE
 		var pulses: float = pow(0.5 + 0.5 * sin(TAU * 32.0 * t), 2.0)
-		var s: float = sin(ph) + 0.5 * sin(ph * 2.0) + 0.3 * sin(ph * 3.1) + rng.randf_range(-0.1, 0.1)
+		var s: float = 0.45 * sin(ph) + 0.7 * sin(ph * 2.0) + 0.45 * sin(ph * 3.1) + rng.randf_range(-0.1, 0.1)  # [v8snd] weight up the overtones
 		b[i] = s * pulses * sin(PI * x) * 0.13
 	return b
 
@@ -323,6 +343,7 @@ static func wind(rng: RandomNumberGenerator) -> PackedFloat32Array:
 		bv += (n - bp) * w * 0.08 - bv * 0.02
 		bp += bv * w
 		b[i] = lp2 * 0.9 * gust + bp * 0.01 * maxf(gust - 0.7, 0.0)
+	MusicSynth.highpass(b, 100.0)  # [v8snd] was 49% under 80 Hz
 	return loopify(b, 1.5)
 
 

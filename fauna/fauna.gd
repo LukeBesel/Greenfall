@@ -1757,7 +1757,7 @@ func pet(a: Animal) -> void:
 	a.pets += 1
 	var to: Vector3 = _lumi_pos - a.pos
 	_face(a, to, 1.0, 1.0)
-	Audio.play("purr", 1.0, -3.0, 0.05)
+	Audio.play("purr", 1.0, -12.0, 0.05)  # [v8snd] was -3 dB: louder than every other animal
 	_heart(a.pos + Vector3(0, 0.55, 0))
 	var pm: Node = world.patch.get("model") if world.get("patch") else null
 	if pm:
@@ -2362,7 +2362,7 @@ func _ambience(delta: float) -> void:
 	var want: float = _night * clampf(_green_share * 2.5, 0.0, 1.0)
 	_cricket_vol = move_toward(_cricket_vol, want, delta * 0.2)
 	if _cricket_vol > 0.01:
-		if not _crickets.playing:
+		if not _crickets.playing and not Audio.holds(_crickets):  # [v8pause]
 			_crickets.play()
 		AudioVol.set_db(_crickets, linear_to_db(_cricket_vol) - 8.0)  # [qafix] crash fix
 	elif _crickets.playing:

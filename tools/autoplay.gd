@@ -6,7 +6,8 @@ extends InputSource
 ##   - shops at the workbench: goal-unblocking upgrades first, then robots ([ui2] Parts + cubes;
 ##     Parts for the next base level are kept unless the robot can't wait), base levels, stations,
 ##     research, cheap upgrades;
-##   - paints Command zones (cleaners to the frontier, planters/waterers to the garden hexes);
+##   - [v8bot] paints no Command zones (robots work on their own, as a player's do); with
+##     --autoplay-zones it paints them (cleaners to the frontier, planters/waterers to the garden);
 ##   - picks up the seed tin, plants one hex at a time, waters by hand until Drips take over,
 ##     places Water Tanks, reads memory shards.
 ## Writes a timeline to screenshots/autoplay_report.json on exit (goal completions, hex level-ups,
@@ -2063,6 +2064,8 @@ func _track_research(dt: float) -> void:
 
 
 ## Command zones: cleaners to the frontier, planters and waterers to the garden.
+## [v8bot] Only with --autoplay-zones: the game no longer asks for zones (owner: a Scoopie just
+## goes and cleans), so the pacing run plays like a player who never opens the Command view.
 func _paint_zones() -> void:
 	var fleet: Fleet = world.fleet
 	if fleet == null:
@@ -2072,12 +2075,12 @@ func _paint_zones() -> void:
 		var a: Dictionary = fleet.allocation()
 		if int(a.get("clean", 0)) > 0 and fleet.move_job("clean", "water"):
 			_event("allocate", {"from": "clean", "to": "water"})
+	if not DevHooks.has("autoplay-zones"):
+		return
 	var f: HexField = world.field
 	var cleaners: int = fleet.crew_size("clean") if fleet is SphereFleet else fleet.robots_with_role("clean").size()  # [v3qa] globe crew
 	var want_n: int = clampi(2 + cleaners, 3, 6)
-	var zone_goal: int = _zone_goal_target()
-	want_n = maxi(want_n, zone_goal)
-	if cleaners == 0 and zone_goal == 0:
+	if cleaners == 0:
 		return
 	var cand: Array = []
 	for h: int in _hexes():
@@ -2101,19 +2104,6 @@ func _paint_zones() -> void:
 		if ph >= 0 and not pz.has(ph):
 			pz.append(ph)
 		_set_zone("plant", pz)
-
-
-func _zone_goal_target() -> int:
-	var ob: Objectives = world.get("objectives") as Objectives  # [v3qa] the story step "Send your robot to work"
-	if ob and str(ob.current().get("type", "")) == "zone":
-		return int(ob.current().get("target", 1))
-	var gl: Goals = world.get("goals")
-	if gl == null:
-		return 0
-	for i: int in gl.current():
-		if str(gl.chain[i].get("type", "")) == "zone":
-			return int(gl.chain[i].get("target", 1))
-	return 0
 
 
 func _set_zone(key: String, hexes: Array) -> void:

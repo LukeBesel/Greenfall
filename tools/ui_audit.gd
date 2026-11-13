@@ -230,6 +230,13 @@ static func layout(roots: Array, view: Rect2, ignore_overlap: Callable = Callabl
 		if why != "":
 			out.append(_issue("clipped", c, r, why))
 		var par: Control = c.get_parent() as Control
+		# [v8ui] Text placed by anchors inside a button or panel (not a Container), like the title
+		# menu's second lines: nothing sizes the parent to it, so it can run out of the frame.
+		if c is Label and par != null and (par is BaseButton or par is Panel) and sp == null:
+			# Own rects, not screen rects: the button's focus grow (UITheme.juice) scales both.
+			var own: Rect2 = Rect2(c.position, c.size)
+			if own.position.x < -TOL or own.end.x > par.size.x + TOL or own.position.y < -TOL or own.end.y > par.size.y + TOL:
+				out.append(_issue("overflow", c, r, "runs out of its %s (%s in %dx%d)" % [par.get_class(), _rs(own), roundi(par.size.x), roundi(par.size.y)]))
 		if par is Container and not par is ScrollContainer and sp == null:
 			# Own sizes, not screen rects: a button that grows a little on focus (UITheme.juice) is fine.
 			if c.size.x > par.size.x + TOL or c.size.y > par.size.y + TOL:
@@ -349,3 +356,7 @@ static func draws_focus(c: Control) -> bool:
 static func line(scn: String, cfg: String, d: Dictionary) -> String:
 	var r: Rect2 = d["rect"]
 	return "[ui-audit] %s %s %s %s \"%s\" at %d,%d %dx%d  %s" % [str(d["kind"]).to_upper(), scn, cfg, d["node"], d["text"], roundi(r.position.x), roundi(r.position.y), roundi(r.size.x), roundi(r.size.y), d["note"]]
+
+
+static func _rs(r: Rect2) -> String:
+	return "%d,%d %dx%d" % [roundi(r.position.x), roundi(r.position.y), roundi(r.size.x), roundi(r.size.y)]

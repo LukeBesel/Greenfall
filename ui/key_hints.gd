@@ -15,7 +15,9 @@ const NAME_PX: int = 14
 const KEY_PX: int = 13
 
 # l10n:begin
-const SHORT: Array = [["open_globe", "map"], ["open_command", "command"], ["lens_view", "lens"], ["toggle_goals", "goals"]]
+# [v8bot] The first-minutes strip leaves out B (command): robots work on their own and the game
+# does not push the Command view (owner); it stays in the full list (Tab, pause menu).
+const SHORT: Array = [["open_globe", "map"], ["lens_view", "lens"], ["toggle_goals", "goals"]]
 const FULL: Array = [
 	["scoop", "scoop"], ["cube", "press bale"], ["interact", "use"], ["drop", "drop"],
 	["tool_scoop", "tools"], ["open_upgrades", "workbench"], ["open_globe", "map"],

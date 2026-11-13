@@ -123,24 +123,14 @@
       ]
     },
     {
-      "id": "zone",
-      "text": "Show your robot where to clean first",
-      "desc": "It cleans by itself. {open_command}: show it where first.",
-      "type": "zone",
-      "target": 1,
-      "lines": [
-        "Your robot already knows the job. Paint a hex, and it starts there."
-      ]
-    },
-    {
       "id": "hex2",
       "text": "Clean 2 hexes",
-      "desc": "Clean ground lets plants grow again.",
+      "desc": "Your robot cleans on its own. Clean one more hex.",
       "type": "stat",
       "key": "hexes_cleaned",
       "target": 2,
       "lines": [
-        "One hex clean. Now one more, Lumi."
+        "Your robot cleans on its own. Now one more hex, Lumi."
       ]
     },
     {
