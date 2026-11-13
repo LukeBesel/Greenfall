@@ -72,8 +72,8 @@ func test_tree_pause_silences_world_sounds_and_resumes_them() -> void:
 	assert_true(Audio.holds(Audio._loop_players["beam_hum"]))
 	assert_eq(_audible(), [] as Array[String])
 	# Menu sounds still play.
-	Audio.play("click", 1.0, 0.0, 0.0)
-	await _frames(1)
+	# (Checked at once: a click is a few ms long, and a unique tag keeps the min-gap gate out of it.)
+	Audio.play("click", 1.0, 0.0, 0.0, "pausetest%d" % Time.get_ticks_usec())
 	var ui_on: bool = false
 	for p: AudioStreamPlayer in Audio._players:
 		if p.bus == "UI" and p.playing:
