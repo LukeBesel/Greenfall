@@ -103,8 +103,19 @@ home = hex2..base3, travel = stations / rocket, me = shared UI, goals, events).
 | world event toasts (Salvage Surge 18 words, drone 21 and 26, wildlife 19, rain 17) | over ~12 words | text too long | me (events) | OPEN | proposal: "Salvage Surge! A glowing hex north of you: 3x cubes." etc. (needs 6 translations each) |
 | WREN station reasons (hub_wake_3/4/5: 13-16 words) | over 12 words on the card | text too long | travel | OPEN | |
 | story card titles and why lines | all 12 words or fewer | - | all | OK | data/objectives.json checked |
+| objective card (every step) | words and a count only: no picture on the card | VISUAL | me (card widget) | FIXED | ui/objective_card.gd `icon_of`: a glyph per kind of work (scoop, cube, part, data, seed, plant, star) left of OBJECTIVE; tests/test_goal_audit.gd checks every step and goal gets one and the story uses several |
+| objective card + base banner, 960x540, first frame | the base banner ("LANDING YARD 0% CLEAN / BASES 1/6") showed through the card's bottom edge as the card first appeared | overlap (transient) | me (HUD column) | OPEN | not seen in later frames nor at 1500x1000; `--ui-audit` at 1500x1000 and 960x540 (en, de): 0 issues |
+| world signs (shop names, OLD TOWN, slogans), WREN / LEDGER name tags, robot tags | not translated (`--locale=pseudo --l10n-audit`: 24 texts) | text skipped tr() | world art | OPEN | names and tags are fine as they are; the shop and slogan signs go against "picture signs with no words" (ART_KIT) or need tr() |
 
-Frames: see the Renders note below.
+
+Renders (opengl3, Low, one at a time): `tools/shot.sh v9/steps_last --orbit --no-intro
+--step-shots=6 --step-shots-at=80` writes screenshots/v9/step_NN_<id>.png (960x540; steps 4-12 and
+goals 0-1 were re-shot at 1500x1000 with the card picture: `RES=1500x1000 ... --step-shots-from=4
+--step-shots-to=12`) and contact sheets screenshots/v9/sheet_N.png. The frames are taken from the
+start position with the card jumped to each step (world state not advanced), so they judge the
+card and the HUD, not each step's world marker: the beam, hex outline and target markers of each
+story step are the story helpers' walks to check. What they show: every card has a title, a why
+line and (where the step counts) a count and bar; before this audit no card had a picture.
 
 ### Part 3: softlock sweep by resource
 
