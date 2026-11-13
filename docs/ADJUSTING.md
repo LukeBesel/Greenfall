@@ -186,6 +186,10 @@ reward gaps and card waits; targets and the last measured run are in `docs/BALAN
 ## How Lumi moves (v6feel)
 `data/patch.json` `move` controls how Lumi meets things on a round planet: `max_step` (0.45 m) is the tallest kerb, step or low planter he hovers over instead of stopping, and `round_keep` (0.6) is how much of his speed he keeps while rounding a post, bin or heap he clipped nearly head-on (0 = a plain slide, which nearly stops him). Check a change with `--feel=walk` (tools/feel_probe.gd).
 
+## The start area round base 1 (v8hex)
+`data/start_area.json` controls the start area round Verdance's Landing Yard. `radius_m` (50) is how far from the yard centre hexes hold only junk Lumi lifts with the starter scoop and no big thing stands (no wreck, drum, barrel, crate stack or landfill debris); `junk_look` is the list of words in prop names the audit treats as junk-looking. `leftover_from` (0.8) is how cleaned a hex must be before leftover pieces that are hidden (under or inside something) or out of reach stop counting and the hex clears; `heal_from` (0.9) is how cleaned a saved start-area hex must be to heal once on load; `greenhouse_half` is the First Seed greenhouse's junk-free ground (half x, z in metres).
+Check a change with `godot --headless --path . -- --fresh --orbit --no-intro --hex-audit --hex-audit-quit` (exit 1 lists stuck hexes and big things; add `--seed=N` for other seeds, `--hex-audit-hubs` for the other hubs, `--hex-audit-all` for every hex). Test: `tests/test_hex_leftovers.gd`.
+
 ## Seed of the Week on or off (v6screens)
 
 `data/weekly.json` `"enabled"` is the one switch. It is `false`: the mode does not work on the round world yet (the week's seed is ignored and a resumed run has no robots), so its Keepsakes tab, its two Garden Mode decorations and its two achievements in the Codex are hidden, and Pause shows no Keepsakes button until a radio, an album or a nursery exists.

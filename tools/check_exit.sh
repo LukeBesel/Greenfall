@@ -42,6 +42,9 @@ fi
 run quit_mid_build -- --fresh --orbit --no-intro --orbit-walk-in=1,380 --quit-mid-build=30
 run free_mid_build -- --fresh --orbit --no-intro --orbit-walk-in=1,380 --quit-mid-build=30 --quit-mode=free
 run quit_on_hop -- --fresh --orbit --no-intro --orbit-hop=4 --quit-on-hop=4
+# [v8hex] Owner (Nov 13): every start-area hex clears with the starter tools, and no big item
+# stands round base 1 (exit 1 lists the stuck hexes and the big things).
+run hex_audit -- --fresh --orbit --no-intro --hex-audit --hex-audit-quit
 if [ "$1" = "--quick" ]; then
 	run quit15 -- --fresh --quit-after=15
 fi
