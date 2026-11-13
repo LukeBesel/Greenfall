@@ -471,7 +471,7 @@ msgid "E   Telescope: look across the system"
 msgstr "E   望远镜：眺望整个星系"
 
 #: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:558 ui/upgrade_card.gd:258
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:559 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "%d 分钟"
 
@@ -491,7 +491,7 @@ msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
-#: core/pace.gd:147 story/objectives.gd:1044
+#: core/pace.gd:147 story/objectives.gd:1086
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "太重了。去工作台升级举升力。"
 
@@ -511,31 +511,31 @@ msgstr "+%s 方块"
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "现在不收散装垃圾了。按 [%s] 压一个垃圾块，再把它放到秤上。"
 
-#: fauna/fauna.gd:1738
+#: fauna/fauna.gd:1739
 msgid "E   pet %s"
 msgstr "E   摸摸%s"
 
-#: fauna/fauna.gd:1739
+#: fauna/fauna.gd:1740
 msgid "E   pet the cat"
 msgstr "E   摸摸猫咪"
 
-#: fauna/fauna.gd:1797
+#: fauna/fauna.gd:1798
 msgid "E   scatter crumbs for the birds"
 msgstr "E   给鸟儿撒面包屑"
 
-#: fauna/fauna.gd:1845
+#: fauna/fauna.gd:1846
 msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
 msgstr "鸟儿们觉得你还不错。面包屑袋已加入你的收藏。"
 
-#: fauna/fauna.gd:1901
+#: fauna/fauna.gd:1902
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "这只猫认定你是她的了。来认识一下%s吧。她现在住在这个基地。"
 
-#: fauna/fauna.gd:2222 ui/subtitles.gd:453
+#: fauna/fauna.gd:2223 ui/subtitles.gd:453
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "新发现：%s。已收入图鉴。"
 
-#: fauna/fauna.gd:2293
+#: fauna/fauna.gd:2294
 msgid "Snap! A %s for your Collection."
 msgstr "咔嚓！一张%s的照片，收进你的收藏。"
 
@@ -784,47 +784,47 @@ msgstr "%s   已清理 %d%%"
 msgid "%s   BASES %d/%d"
 msgstr "%s   基地 %d/%d"
 
-#: planet/sites/hub_purpose.gd:515
+#: planet/sites/hub_purpose.gd:516
 msgid "Restored. Next: take the rocket to %s."
 msgstr "已修复。下一步：乘火箭前往 %s。"
 
-#: planet/sites/hub_purpose.gd:519
+#: planet/sites/hub_purpose.gd:520
 msgid "All %d bases stand. Build the drive at the rocket."
 msgstr "%d 个基地都立起来了。到火箭那里造推进器吧。"
 
-#: planet/sites/hub_purpose.gd:698
+#: planet/sites/hub_purpose.gd:699
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:116
+#: planet/sites/orbit_sites.gd:120
 msgid "The rocket is in flight."
 msgstr "火箭正在飞行。"
 
-#: planet/sites/orbit_sites.gd:138
+#: planet/sites/orbit_sites.gd:142
 msgid "Bases restored: %d of %d"
 msgstr "已修复基地：%d / %d"
 
-#: planet/sites/orbit_sites.gd:176
+#: planet/sites/orbit_sites.gd:180
 msgid "E   Rocket: choose a destination"
 msgstr "E   火箭：选择目的地"
 
-#: planet/sites/orbit_sites.gd:214
+#: planet/sites/orbit_sites.gd:218
 msgid "HOME"
 msgstr "家"
 
-#: planet/sites/orbit_sites.gd:214
+#: planet/sites/orbit_sites.gd:218
 msgid "NEXT STOP"
 msgstr "下一站"
 
-#: planet/sites/orbit_sites.gd:216
+#: planet/sites/orbit_sites.gd:220
 msgid "Upgrade the rocket first"
 msgstr "先升级火箭"
 
-#: planet/sites/orbit_sites.gd:234
+#: planet/sites/orbit_sites.gd:238
 msgid "%s site"
 msgstr "%s地点"
 
-#: planet/sites/orbit_sites.gd:235
+#: planet/sites/orbit_sites.gd:239
 msgid "Hub %d"
 msgstr "基地 %d"
 
@@ -960,31 +960,35 @@ msgstr "种子要种在泥土里，不能种在路上或平台上。试试温室
 msgid "Seeds need soil, not road or the pad."
 msgstr "种子要种在泥土里，不能种在路上或平台上。"
 
-#: player/patch.gd:627
+#: player/patch.gd:593
+msgid "Your chest is empty. Scoop some trash first."
+msgstr "你的箱子是空的。先去捡些垃圾。"
+
+#: player/patch.gd:633
 msgid "PERFECT BALE  %s"
 msgstr "完美捆包  %s"
 
-#: player/patch.gd:633
+#: player/patch.gd:639
 msgid "OVERSTUFFED  %s"
 msgstr "塞爆了  %s"
 
-#: player/patch.gd:637
+#: player/patch.gd:643
 msgid "PURE  %s"
 msgstr "纯净  %s"
 
-#: player/patch.gd:639
+#: player/patch.gd:645
 msgid "SURGE  %s"
 msgstr "冲劲  %s"
 
-#: player/patch.gd:642
+#: player/patch.gd:648
 msgid "  (streak +%d%%)"
 msgstr "  （连击 +%d%%）"
 
-#: player/patch.gd:685
+#: player/patch.gd:691
 msgid "Salvaged: %s"
 msgstr "回收：%s"
 
-#: player/patch.gd:716
+#: player/patch.gd:722
 msgid "Recovered: %s"
 msgstr "找回：%s"
 
@@ -1118,6 +1122,7 @@ msgstr "零件不足"
 
 #: robots/fleet.gd:153 robots/fleet.gd:229 robots/water_net.gd:149
 #: systems/research.gd:210 systems/robot_builder.gd:350 systems/robot_builder.gd:402
+#: ui/globe_view.gd:495
 msgid "Not enough cubes"
 msgstr "方块不足"
 
@@ -2222,47 +2227,47 @@ msgstr "目标完成  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "目标完成  ·  %s"
 
-#: story/objectives.gd:809
+#: story/objectives.gd:851
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "打包机装好了！装满胸舱，按 [%s] 压一个捆包，再把它搬到秤上。"
 
-#: story/objectives.gd:831 story/objectives.gd:1032
+#: story/objectives.gd:873 story/objectives.gd:1074
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "你的胸舱满了。按 [%s] 压一个捆包。"
 
-#: story/objectives.gd:847
+#: story/objectives.gd:889
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "你的探测器发现附近埋着一个机器人零件。跟着“埋藏零件”的读数走；走到正上方时它会哔哔响。"
 
-#: story/objectives.gd:849
+#: story/objectives.gd:891
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋藏零件：朝它走，直到读数最高，然后把它挖出来。"
 
-#: story/objectives.gd:1033
+#: story/objectives.gd:1075
 msgid "Your chest is full. Bring it to the bin."
 msgstr "你的胸舱满了。带到垃圾桶去。"
 
-#: story/objectives.gd:1040
+#: story/objectives.gd:1082
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "你的胸舱满了。回家吧：垃圾桶就在高高的烟柱下面。"
 
-#: story/objectives.gd:1042
+#: story/objectives.gd:1084
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "把捆包搬回家：秤就在高高的烟柱下面。"
 
-#: story/objectives.gd:1042
+#: story/objectives.gd:1084
 msgid "Carry your bale to the scale by the bin."
 msgstr "把捆包搬到垃圾桶旁边的秤上。"
 
-#: story/objectives.gd:1051
+#: story/objectives.gd:1093
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "火箭停在发射台上。目的地列表的第一项就是家。"
 
-#: story/objectives.gd:1052
+#: story/objectives.gd:1094
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "回家吧：跟着光柱走到高高的烟柱那里。"
 
-#: story/objectives.gd:1062
+#: story/objectives.gd:1104
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "这里没有东西可捡。走到垃圾更多的地方去。"
 
@@ -4732,31 +4737,31 @@ msgstr "[k]拖动旋转   ·   滚轮缩放   ·   [/k][p]{@look}  旋转     {z
 msgid "%d sectors away"
 msgstr "相隔 %d 个扇区"
 
-#: ui/globe_view.gd:525
+#: ui/globe_view.gd:526
 msgid "%s HEXES CLEAN"
 msgstr "%s 个六角格已清理"
 
-#: ui/globe_view.gd:527
+#: ui/globe_view.gd:528
 msgid "Surveyed %s ago%s"
 msgstr "%s前勘测%s"
 
-#: ui/globe_view.gd:527
+#: ui/globe_view.gd:528
 msgid "   ·   OUTDATED"
 msgstr "   ·   已过时"
 
-#: ui/globe_view.gd:528
+#: ui/globe_view.gd:529
 msgid "Re-survey      %s cubes"
 msgstr "重新勘测      %s 方块"
 
-#: ui/globe_view.gd:540
+#: ui/globe_view.gd:541
 msgid "of the ground around your hubs is clean"
 msgstr "基地周围的土地已清理干净"
 
-#: ui/globe_view.gd:542
+#: ui/globe_view.gd:543
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "的星球已收复  ·  %s / %s 个陆地六角格"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:498 ui/objective_card.gd:149
+#: ui/goals_panel.gd:231 ui/list_detail.gd:498 ui/objective_card.gd:181
 msgid "DONE"
 msgstr "完成"
 
@@ -5385,7 +5390,7 @@ msgstr "保留存档"
 msgid "Erase and start"
 msgstr "删除并开始"
 
-#: ui/objective_card.gd:52
+#: ui/objective_card.gd:56
 msgid "OBJECTIVE"
 msgstr "目标"
 
@@ -10037,24 +10042,24 @@ msgid "Robot Hiccup"
 msgstr "机器人打嗝"
 
 #: data/events.json:events[robot_hiccup].toast
-msgid "%s has the hiccups and stopped working. Walk over and press E for a quick fix."
-msgstr "%s 打嗝了，停止了工作。走过去按 E 快速修理。"
+msgid "%s has the hiccups and stopped working. Walk over and press {interact} for a quick fix."
+msgstr "%s 打嗝了，停止了工作。走过去按 {interact} 快速修理。"
 
 #: data/events.json:events[robot_hiccup].hud
-msgid "Walk to the stuck robot and press E"
-msgstr "走到卡住的机器人旁按 E"
+msgid "Walk to the stuck robot and press {interact}"
+msgstr "走到卡住的机器人旁按 {interact}"
 
 #: data/events.json:events[wildlife_visit].name
 msgid "Wildlife Visit"
 msgstr "野生动物来访"
 
 #: data/events.json:events[wildlife_visit].toast
-msgid "Something is visiting a thriving hex %s of you. Sneak up and press E to take a photo."
-msgstr "有东西正在你%s的一个繁茂六角格上做客。悄悄靠近，按 E 拍照。"
+msgid "Something is visiting a thriving hex %s of you. Sneak up and press {interact} to take a photo."
+msgstr "有东西正在你%s的一个繁茂六角格上做客。悄悄靠近，按 {interact} 拍照。"
 
 #: data/events.json:events[wildlife_visit].hud
-msgid "Find the visitor and press E for a photo"
-msgstr "找到访客并按 E 拍照"
+msgid "Find the visitor and press {interact} for a photo"
+msgstr "找到访客并按 {interact} 拍照"
 
 #: data/events.json:events[rare_part_signal].name
 msgid "Rare Part Signal"
@@ -11377,10 +11382,6 @@ msgstr "放置 5 种装饰"
 msgid "Plant five Seed Ark waves"
 msgstr "完成五次种子方舟波次"
 
-#: data/goals.json:goals[late_eggs_30].text
-msgid "Find 30 curiosities"
-msgstr "找到 30 件奇物"
-
 #: data/goals.json:goals[late_world_1].text
 msgid "Seed a new world"
 msgstr "播种一个新世界"
@@ -11396,6 +11397,10 @@ msgstr "传家宝总等级达到 10"
 #: data/goals.json:goals[late_world_2].text
 msgid "Seed a second new world"
 msgstr "播种第二个新世界"
+
+#: data/goals.json:goals[late_eggs_30].text
+msgid "Find 30 curiosities"
+msgstr "找到 30 件奇物"
 
 #: data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
@@ -17040,14 +17045,26 @@ msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了
 #~ msgid "Home. The workbench is by the pod."
 #~ msgstr "到家了。工作台就在逃生舱旁边。"
 
+#~ msgid "All %d bases stand. Fly home and make the rocket ready to leave."
+#~ msgstr "%d 个基地都修好了。飞回家，让火箭做好离开的准备。"
+
 #~ msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
 #~ msgstr "走到发射台上的火箭旁，按 E 选择要飞去的地方。"
 
 #~ msgid "%s built. Follow the light to it."
 #~ msgstr "%s 建好了。跟着光走过去。"
 
-#~ msgid "All %d bases stand. Fly home and make the rocket ready to leave."
-#~ msgstr "%d 个基地都修好了。飞回家，让火箭做好离开的准备。"
+#~ msgid "%s has the hiccups and stopped working. Walk over and press E for a quick fix."
+#~ msgstr "%s 打嗝了，停止了工作。走过去按 E 快速修理。"
+
+#~ msgid "Walk to the stuck robot and press E"
+#~ msgstr "走到卡住的机器人旁按 E"
+
+#~ msgid "Something is visiting a thriving hex %s of you. Sneak up and press E to take a photo."
+#~ msgstr "有东西正在你%s的一个繁茂六角格上做客。悄悄靠近，按 E 拍照。"
+
+#~ msgid "Find the visitor and press E for a photo"
+#~ msgstr "找到访客并按 E 拍照"
 
 #~ msgid "Place a Water Tank"
 #~ msgstr "放置一个水箱"

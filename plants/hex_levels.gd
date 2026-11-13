@@ -273,9 +273,9 @@ func _celebrate(hid: int, to: int, reward: Dictionary) -> void:
 	Vfx.burst("big_sparkle" if to >= 4 else "sparkle", c + up * 0.5, col, 1.0 if to >= 4 else 2.0)
 	Vfx.ring(c, world.field.hex_size * 1.05, Color(col.r, col.g, col.b, 0.85), 0.9)
 	Vfx.float_text(c + up * 2.0, tr("HEX LV %d  %s") % [to, nm.to_upper()], col, 1.3 if to < 4 else 1.7, 2.2)
-	Audio.play("sparkle" if to < 4 else "chime", 0.9 + 0.08 * to, -6.0 if to < 4 else -3.0)
+	Audio.play_at("sparkle" if to < 4 else "chime", c, 0.9 + 0.08 * to, -6.0 if to < 4 else -3.0, 0.02, "", 16.0)  # [v9s] softer far off
 	if to == MAX_LEVEL:
-		Audio.play("bird", 1.1, -10.0, 0.0)
+		Audio.play_at("bird", c, 1.1, -10.0, 0.06, "", 16.0)  # [v9s] was jitter 0: the same trill every time
 	EventBus.toast.emit(tr("Hex Lv %d  %s.   %s") % [to, nm, reward_text(reward)], "reward")  # [v4calm] item 49: hex level-ups are reward chatter (the hex's own FX shows it)
 
 

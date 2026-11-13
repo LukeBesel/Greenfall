@@ -118,6 +118,20 @@ street lights (`lights:`) got gaps too; they only show up later in a run.
 - `--audio-capture[=dir]` on any run (headless works) records the real mix: `master.wav` plus one WAV per bus in `screenshots/audio_capture/`. Check it with `python3 tools/check_audio.py --wav screenshots/audio_capture/master.wav`. Add `--life-sound` to a headless run, or the life bed (the dirty-ground wind) stays off.
 - `python3 tools/check_audio.py --sound-log screenshots/sound_log_summary.json` after a `--sound-log` run fails any sound played over 90 times a minute or stacked over 4 deep.
 - `master_highpass_hz` in `data/sound.json` is a high-pass under the whole mix (60 Hz; 0 turns it off). The purr's shortest gap is `min_gap_s.purr`.
+- **Repetition (v9s).** `python3 tools/check_audio.py --repeat screenshots/sound_log.txt [--skip 30] [--json out.json]` reads a `--sound-log` run's log (one row per play, with the take and pitch) and prints, per sound: plays a minute, shortest and median gap, how regular the gaps are (cv: 0 is a metronome), how many takes it has and its pitch spread, the longest run of the same take, its level and an annoyance score (frequent x loud x alike x regular), worst first. It fails on: more plays a minute than the sound's category allows (bird 3, animal 4, ambience 2, robot 30, others 90; all birds together 4), the same take twice running for a bird or animal, metronome spacing (cv under 0.25) for birds and animals, a sound over 10 a minute with fewer than 3 takes and under 6% pitch spread, or the same take at the same pitch over 4 times in a row. Rules are at the top of the `--repeat` section of the script. `tools/check_exit.sh` runs it on 2.5 minutes of green ground (`sound_repeat`). Use time-scale 1 for these runs: the bird clock counts real seconds, the rest game seconds.
+
+| To change | Edit (`data/sound.json`) |
+|---|---|
+| A sound's fast repeats come softer (scooping is a patter, not a hammer) | `variety.soften`: `"scoop:clink": [window s, dB per repeat, max dB]` |
+| At most N of one sound at once | `variety.max_voices` (chime 2, sparkle 3, fanfare 1, ding 2; `_default` for every other sound, none now) |
+| The least random pitch spread of a sound | `variety.pitch_spread` (0.05 = +-5%) |
+| Roots the scoop's rising combo ladder starts on (one per combo) | `variety.ladder_roots` (semitones) |
+| How often birds call: the shared gap, per species, per minute | `wildlife.gap_s.call`, `wildlife.species_gap_s`, `wildlife.calls_per_min` |
+| Birds thin out while Lumi stands still | `wildlife.still_after_s`, `still_full_s`, `still_mult` |
+| A bird answering itself once (a short phrase, then silence) | `wildlife.phrase`: `sound: [chance, shortest s, longest s]` |
+| Frogs (one shared clock, a little more at night) | `wildlife.gap_s.frog`, `wildlife.frog_night_mult` |
+
+Every sound with more than one take never plays the same take twice running (`Audio.pick_take`). World events that also happen far away (a hex coming clean, a hex levelling up) use `Audio.play_at`: full level within 16 m of the camera, 6 dB softer per doubling past it.
 
 **The 2026-11-13 pass** (owner: "rattling noise constantly, like my speakers blew out"; "cat sounds like a helicopter"). Measured in the start yard (`--life-sound --audio-capture`, standing still), before -> after: the dust wind bed 42.7 -> 0.1 raw spikes a second, 57% -> 3% of the bed under 80 Hz. The purr: peak -0.4 -> -9 dBFS and played 9 dB softer, under 200 Hz 62% -> 4%, 24 Hz chop depth 1.3-1.5 -> about 0.4, at most once per 6 s. Every wind bed and the leaves 31-57% -> 1-4% under 80 Hz; the score's bass moved up an octave (E2-D#3) and its air bed was high-passed.
 

@@ -471,7 +471,7 @@ msgid "E   Telescope: look across the system"
 msgstr "E   望遠鏡：星系を見わたす"
 
 #: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:558 ui/upgrade_card.gd:258
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:559 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "%d 分"
 
@@ -491,7 +491,7 @@ msgstr "%s 相当のベールが、運ぶ者もなく基地に積まれていた
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "清浄機がずっと空気をろ過していた。少しだけ澄んだ。"
 
-#: core/pace.gd:147 story/objectives.gd:1044
+#: core/pace.gd:147 story/objectives.gd:1086
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "重すぎる。作業台でリフト力をアップグレードしよう。"
 
@@ -511,31 +511,31 @@ msgstr "+%s キューブ"
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "もうバラのゴミは入れられないよ。[%s] でベールを作って、はかりにのせよう。"
 
-#: fauna/fauna.gd:1738
+#: fauna/fauna.gd:1739
 msgid "E   pet %s"
 msgstr "E   %s をなでる"
 
-#: fauna/fauna.gd:1739
+#: fauna/fauna.gd:1740
 msgid "E   pet the cat"
 msgstr "E   ネコをなでる"
 
-#: fauna/fauna.gd:1797
+#: fauna/fauna.gd:1798
 msgid "E   scatter crumbs for the birds"
 msgstr "E   鳥にパンくずをまく"
 
-#: fauna/fauna.gd:1845
+#: fauna/fauna.gd:1846
 msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
 msgstr "鳥たちはきみを気に入ったみたい。パンくず袋をコレクションに追加した。"
 
-#: fauna/fauna.gd:1901
+#: fauna/fauna.gd:1902
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "このネコはきみを自分のものだと決めたらしい。%s だよ。これからはこの基地で暮らすって。"
 
-#: fauna/fauna.gd:2222 ui/subtitles.gd:453
+#: fauna/fauna.gd:2223 ui/subtitles.gd:453
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "新しく発見：%s。図鑑に追加されたよ。"
 
-#: fauna/fauna.gd:2293
+#: fauna/fauna.gd:2294
 msgid "Snap! A %s for your Collection."
 msgstr "パシャ！%s の写真をコレクションに追加。"
 
@@ -784,47 +784,47 @@ msgstr "%s   %d%% きれい"
 msgid "%s   BASES %d/%d"
 msgstr "%s   基地 %d/%d"
 
-#: planet/sites/hub_purpose.gd:515
+#: planet/sites/hub_purpose.gd:516
 msgid "Restored. Next: take the rocket to %s."
 msgstr "復旧完了。次はロケットで %s へ。"
 
-#: planet/sites/hub_purpose.gd:519
+#: planet/sites/hub_purpose.gd:520
 msgid "All %d bases stand. Build the drive at the rocket."
 msgstr "%d つの基地がそろった。ロケットでドライブを建造しよう。"
 
-#: planet/sites/hub_purpose.gd:698
+#: planet/sites/hub_purpose.gd:699
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:116
+#: planet/sites/orbit_sites.gd:120
 msgid "The rocket is in flight."
 msgstr "ロケットは飛行中。"
 
-#: planet/sites/orbit_sites.gd:138
+#: planet/sites/orbit_sites.gd:142
 msgid "Bases restored: %d of %d"
 msgstr "復旧した基地：%d / %d"
 
-#: planet/sites/orbit_sites.gd:176
+#: planet/sites/orbit_sites.gd:180
 msgid "E   Rocket: choose a destination"
 msgstr "E   ロケット：行き先を選ぶ"
 
-#: planet/sites/orbit_sites.gd:214
+#: planet/sites/orbit_sites.gd:218
 msgid "HOME"
 msgstr "ホーム"
 
-#: planet/sites/orbit_sites.gd:214
+#: planet/sites/orbit_sites.gd:218
 msgid "NEXT STOP"
 msgstr "次の目的地"
 
-#: planet/sites/orbit_sites.gd:216
+#: planet/sites/orbit_sites.gd:220
 msgid "Upgrade the rocket first"
 msgstr "先にロケットを強化"
 
-#: planet/sites/orbit_sites.gd:234
+#: planet/sites/orbit_sites.gd:238
 msgid "%s site"
 msgstr "%sの地点"
 
-#: planet/sites/orbit_sites.gd:235
+#: planet/sites/orbit_sites.gd:239
 msgid "Hub %d"
 msgstr "基地 %d"
 
@@ -960,31 +960,35 @@ msgstr "種は土に植えよう。道路や台の上はだめ。温室の苗床
 msgid "Seeds need soil, not road or the pad."
 msgstr "種は土に植えよう。道路や台の上はだめ。"
 
-#: player/patch.gd:627
+#: player/patch.gd:593
+msgid "Your chest is empty. Scoop some trash first."
+msgstr "チェストが空っぽ。まずゴミを集めよう。"
+
+#: player/patch.gd:633
 msgid "PERFECT BALE  %s"
 msgstr "パーフェクトベール  %s"
 
-#: player/patch.gd:633
+#: player/patch.gd:639
 msgid "OVERSTUFFED  %s"
 msgstr "詰め込みすぎ  %s"
 
-#: player/patch.gd:637
+#: player/patch.gd:643
 msgid "PURE  %s"
 msgstr "ピュア  %s"
 
-#: player/patch.gd:639
+#: player/patch.gd:645
 msgid "SURGE  %s"
 msgstr "サージ  %s"
 
-#: player/patch.gd:642
+#: player/patch.gd:648
 msgid "  (streak +%d%%)"
 msgstr "  （連続 +%d%%）"
 
-#: player/patch.gd:685
+#: player/patch.gd:691
 msgid "Salvaged: %s"
 msgstr "回収：%s"
 
-#: player/patch.gd:716
+#: player/patch.gd:722
 msgid "Recovered: %s"
 msgstr "発見：%s"
 
@@ -1118,6 +1122,7 @@ msgstr "パーツが足りません"
 
 #: robots/fleet.gd:153 robots/fleet.gd:229 robots/water_net.gd:149
 #: systems/research.gd:210 systems/robot_builder.gd:350 systems/robot_builder.gd:402
+#: ui/globe_view.gd:495
 msgid "Not enough cubes"
 msgstr "キューブが足りない"
 
@@ -2222,47 +2227,47 @@ msgstr "目標達成  ·  %s"
 msgid "Goal complete  ·  %s"
 msgstr "目標達成  ·  %s"
 
-#: story/objectives.gd:809
+#: story/objectives.gd:851
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "ベーラーを取り付けた！胸をいっぱいにして、[%s] でベールを作り、はかりまで運ぼう。"
 
-#: story/objectives.gd:831 story/objectives.gd:1032
+#: story/objectives.gd:873 story/objectives.gd:1074
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "胸がいっぱい。[%s] を押してベールを作ろう。"
 
-#: story/objectives.gd:847
+#: story/objectives.gd:889
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "探知機が近くに埋まったロボットのパーツを見つけたよ。「埋もれたパーツ」の表示を追って。真上に来るとピッと鳴るよ。"
 
-#: story/objectives.gd:849
+#: story/objectives.gd:891
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋もれたパーツ：反応が一番強くなるまで近づいて、掘り出そう。"
 
-#: story/objectives.gd:1033
+#: story/objectives.gd:1075
 msgid "Your chest is full. Bring it to the bin."
 msgstr "胸がいっぱい。ゴミ箱へ運ぼう。"
 
-#: story/objectives.gd:1040
+#: story/objectives.gd:1082
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "胸がいっぱい。おうちへ帰ろう。ゴミ箱は高い煙の下だよ。"
 
-#: story/objectives.gd:1042
+#: story/objectives.gd:1084
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "ベールをおうちへ運ぼう。はかりは高い煙の下だよ。"
 
-#: story/objectives.gd:1042
+#: story/objectives.gd:1084
 msgid "Carry your bale to the scale by the bin."
 msgstr "ベールをゴミ箱のそばのはかりへ運ぼう。"
 
-#: story/objectives.gd:1051
+#: story/objectives.gd:1093
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "ロケットは発着場で待っている。リストの一番上がホームだ。"
 
-#: story/objectives.gd:1052
+#: story/objectives.gd:1094
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "おうちへ帰ろう。光の柱を追って高い煙のところへ。"
 
-#: story/objectives.gd:1062
+#: story/objectives.gd:1104
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "ここには拾うものがない。もっとゴミのあるところへ歩こう。"
 
@@ -4732,31 +4737,31 @@ msgstr "[k]ドラッグで回転   ·   ホイールでズーム   ·   [/k][p]{
 msgid "%d sectors away"
 msgstr "%d セクター先"
 
-#: ui/globe_view.gd:525
+#: ui/globe_view.gd:526
 msgid "%s HEXES CLEAN"
 msgstr "きれいなヘックス %s"
 
-#: ui/globe_view.gd:527
+#: ui/globe_view.gd:528
 msgid "Surveyed %s ago%s"
 msgstr "%s前に調査%s"
 
-#: ui/globe_view.gd:527
+#: ui/globe_view.gd:528
 msgid "   ·   OUTDATED"
 msgstr "   ·   古い情報"
 
-#: ui/globe_view.gd:528
+#: ui/globe_view.gd:529
 msgid "Re-survey      %s cubes"
 msgstr "再調査      %s キューブ"
 
-#: ui/globe_view.gd:540
+#: ui/globe_view.gd:541
 msgid "of the ground around your hubs is clean"
 msgstr "基地のまわりの地面がきれいになった"
 
-#: ui/globe_view.gd:542
+#: ui/globe_view.gd:543
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "の土地を取り戻した  ·  陸のヘックス %s / %s"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:498 ui/objective_card.gd:149
+#: ui/goals_panel.gd:231 ui/list_detail.gd:498 ui/objective_card.gd:181
 msgid "DONE"
 msgstr "完了"
 
@@ -5385,7 +5390,7 @@ msgstr "セーブを残す"
 msgid "Erase and start"
 msgstr "消去して始める"
 
-#: ui/objective_card.gd:52
+#: ui/objective_card.gd:56
 msgid "OBJECTIVE"
 msgstr "目標"
 
@@ -10037,24 +10042,24 @@ msgid "Robot Hiccup"
 msgstr "ロボットのしゃっくり"
 
 #: data/events.json:events[robot_hiccup].toast
-msgid "%s has the hiccups and stopped working. Walk over and press E for a quick fix."
-msgstr "%s がしゃっくりで止まってしまった。近づいて E を押せばすぐ直る。"
+msgid "%s has the hiccups and stopped working. Walk over and press {interact} for a quick fix."
+msgstr "%s がしゃっくりで止まってしまった。近づいて {interact} を押せばすぐ直る。"
 
 #: data/events.json:events[robot_hiccup].hud
-msgid "Walk to the stuck robot and press E"
-msgstr "止まったロボットのところへ行って E を押そう"
+msgid "Walk to the stuck robot and press {interact}"
+msgstr "止まったロボットのところへ行って {interact} を押そう"
 
 #: data/events.json:events[wildlife_visit].name
 msgid "Wildlife Visit"
 msgstr "生き物がやってきた"
 
 #: data/events.json:events[wildlife_visit].toast
-msgid "Something is visiting a thriving hex %s of you. Sneak up and press E to take a photo."
-msgstr "君の%sの繁栄ヘックスに何かが来ている。そっと近づいて E で写真を撮ろう。"
+msgid "Something is visiting a thriving hex %s of you. Sneak up and press {interact} to take a photo."
+msgstr "君の%sの繁栄ヘックスに何かが来ている。そっと近づいて {interact} で写真を撮ろう。"
 
 #: data/events.json:events[wildlife_visit].hud
-msgid "Find the visitor and press E for a photo"
-msgstr "訪問者を見つけて E で写真を撮ろう"
+msgid "Find the visitor and press {interact} for a photo"
+msgstr "訪問者を見つけて {interact} で写真を撮ろう"
 
 #: data/events.json:events[rare_part_signal].name
 msgid "Rare Part Signal"
@@ -11377,10 +11382,6 @@ msgstr "5種類の飾りを置く"
 msgid "Plant five Seed Ark waves"
 msgstr "シードアークのウェーブを5回植える"
 
-#: data/goals.json:goals[late_eggs_30].text
-msgid "Find 30 curiosities"
-msgstr "珍品を30個見つける"
-
 #: data/goals.json:goals[late_world_1].text
 msgid "Seed a new world"
 msgstr "新しい世界に種をまく"
@@ -11396,6 +11397,10 @@ msgstr "家宝のレベルを合計10にする"
 #: data/goals.json:goals[late_world_2].text
 msgid "Seed a second new world"
 msgstr "2つ目の新しい世界に種をまく"
+
+#: data/goals.json:goals[late_eggs_30].text
+msgid "Find 30 curiosities"
+msgstr "珍品を30個見つける"
 
 #: data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
@@ -17040,14 +17045,26 @@ msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いて
 #~ msgid "Home. The workbench is by the pod."
 #~ msgstr "ホームだ。作業台はポッドのそばにある。"
 
+#~ msgid "All %d bases stand. Fly home and make the rocket ready to leave."
+#~ msgstr "%d つの基地がそろった。ホームに戻ってロケットの出発準備をしよう。"
+
 #~ msgid "Walk to the rocket on the launch pad and press E to choose where to fly."
 #~ msgstr "発射台のロケットまで歩いて、Eを押して行き先を選ぼう。"
 
 #~ msgid "%s built. Follow the light to it."
 #~ msgstr "%s を建てた。光をたどって行ってみよう。"
 
-#~ msgid "All %d bases stand. Fly home and make the rocket ready to leave."
-#~ msgstr "%d つの基地がそろった。ホームに戻ってロケットの出発準備をしよう。"
+#~ msgid "%s has the hiccups and stopped working. Walk over and press E for a quick fix."
+#~ msgstr "%s がしゃっくりで止まってしまった。近づいて E を押せばすぐ直る。"
+
+#~ msgid "Walk to the stuck robot and press E"
+#~ msgstr "止まったロボットのところへ行って E を押そう"
+
+#~ msgid "Something is visiting a thriving hex %s of you. Sneak up and press E to take a photo."
+#~ msgstr "君の%sの繁栄ヘックスに何かが来ている。そっと近づいて E で写真を撮ろう。"
+
+#~ msgid "Find the visitor and press E for a photo"
+#~ msgstr "訪問者を見つけて E で写真を撮ろう"
 
 #~ msgid "Place a Water Tank"
 #~ msgstr "給水タンクを置く"
