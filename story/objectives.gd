@@ -56,6 +56,7 @@ func _ready() -> void:
 			GameState.flags["objective_step"] = step
 		GameState.flags["objectives_v2"] = true
 	_drop_zone_step()  # [v8bot]
+	_uncount_grant()  # [v9b]
 	if DevHooks.has("objective"):  # dev: jump to objective N (shots)
 		step = clampi(int(DevHooks.get_f("objective", 0.0)), 0, chain.size())
 		GameState.flags["objective_step"] = step
@@ -109,6 +110,22 @@ func _drop_zone_step() -> void:
 	if at >= 0 and step > at:
 		step -= 1
 		GameState.flags["objective_step"] = step
+
+
+## [v9b] The Bot Bay's Salvage Logic used to count as a finished research project, so "Finish a
+## research project" completed itself. A save still before that step gets the count back down by one
+## (once), so the step waits for a real project.
+func _uncount_grant() -> void:
+	if GameState.flags.has("research_grant_v9"):
+		return
+	GameState.flags["research_grant_v9"] = true
+	var at: int = -1
+	for i: int in chain.size():
+		if str((chain[i] as Dictionary).get("id", "")) == "research1":
+			at = i
+	var n: float = float(GameState.stats.get("research_done", 0.0))
+	if at >= 0 and step <= at and n >= 1.0 and Research.has("salvage_logic") and BenchTiers.tier() >= 2:
+		GameState.stats["research_done"] = n - 1.0
 
 
 ## A save from before the objectives existed (or well past them).
@@ -312,6 +329,8 @@ static func texts(def: Dictionary) -> Array[String]:
 	var wf: String = str(def.get("wait_flag", ""))
 	if wf != "" and not GameState.flags.get(wf, false) and def.has("hint"):
 		why = str(def["hint"])
+	if bench_short(def) and def.has("hint"):  # [v9b] the tab it needs isn't on the bench yet
+		why = str(def["hint"])
 	return [TranslationServer.translate(str(def.get("text", ""))), glyphs(TranslationServer.translate(why))]
 
 
@@ -332,6 +351,11 @@ static func glyphs(text: String) -> String:
 	return text
 
 
+## [v9b] The step needs a workbench tier (data: needs_bench) the bench doesn't have yet.
+static func bench_short(def: Dictionary) -> bool:
+	return int(def.get("needs_bench", 0)) > BenchTiers.tier()
+
+
 ## Progress of the current objective: [0..1 or -1 for none, label]. Hex objectives show the target
 ## hex's % clean; counts show "1 / 3".
 ## [v7play] Stat keys whose target is an ordinal (the Nth station, tier N), not a count to fill.
@@ -347,7 +371,15 @@ func progress() -> Array:
 		return [f, "%d%%" % int(floor(f * 100.0))] if target_hex >= 0 else [0.0, ""]
 	var wf: String = str(def.get("wait_flag", ""))
 	if wf != "" and not GameState.flags.get(wf, false):
-		return [-1.0, ""]
+		# [v9b] Waiting for plans that arrive by themselves (the Haul Bug's): a bar that fills while
+		# they come, so the card shows something moving (it had no number at all).
+		var sp: float = Research.story_progress(wf, world) if Research.exists(wf) else -1.0
+		return [sp, "%d%%" % int(floor(sp * 100.0))] if sp >= 0.0 else [-1.0, ""]
+	if bench_short(def):  # [v9b] saving up for the bench tier the step needs (the Research Desk)
+		var bn: float = float(BenchTiers.next_cost().get("cubes", 0.0))
+		if bn > 0.0 and BenchTiers.block_reason(world) == "":
+			var bh: float = minf(GameState.get_currency("cubes").to_float(), bn)
+			return [bh / bn, "%s / %s" % [Settings.fmt(BigNum.from_float(bh)), Settings.fmt(BigNum.from_float(bn))]]
 	if str(def.get("type", "")) == "bench" and BenchTiers.tier() < int(def.get("target", 2)):  # [v1guide] saving up: cubes toward the tier
 		var need: float = float(BenchTiers.next_cost().get("cubes", 0.0))
 		if need > 0.0:
@@ -580,9 +612,11 @@ func step_target(def: Dictionary) -> Dictionary:
 			"robot":
 				out = {"to": "bench", "row": ["bots", ""]}
 			"haul":  # [v4bots] waits for the Haul Bug plans (Research.check_story): clean meanwhile
-				out = {"to": "bench", "row": ["bots", ""]} if Research.robot_unlocked("haulbug") else {"to": "hex", "row": []}
+				out = {"to": "bench", "row": ["bots", "build_haulbug"]} if Research.robot_unlocked("haulbug") else {"to": "hex", "row": []}
 			"research1":  # [v3clear]
 				out = {"to": "bench", "row": ["research", ""]}
+				if bench_short(def):  # [v9b] the Research Desk first (the tab isn't there yet): its row; earn while short
+					out = {"to": "bench" if GameState.can_afford_all(BenchTiers.next_cost()) else "hex", "row": ["patch", "bench_tier"]}
 			"base2", "base3":
 				out = {"to": "bench", "row": ["patch", "hub_level"]}
 			"seed":
@@ -887,6 +921,8 @@ func _step_price() -> Dictionary:
 	if typ == "upgrade" and Economy.upgrade_defs.has(key) and GameState.level_of(key) < int(def.get("target", 1)):
 		return {"cubes": Economy.upgrade_cost(key).to_float()}
 	if typ == "bench" and BenchTiers.tier() < int(def.get("target", 2)) and BenchTiers.block_reason(world) == "":
+		return BenchTiers.next_cost()
+	if bench_short(def) and BenchTiers.block_reason(world) == "":  # [v9b] the tier the step needs
 		return BenchTiers.next_cost()
 	if typ == "tower" and SignalTower.tier() < int(def.get("target", 1)):
 		return SignalTower.next_cost()

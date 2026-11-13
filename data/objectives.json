@@ -1,5 +1,5 @@
 {
-  "_doc": "[onboard] The first-minutes story objectives (story/objectives.gd, ui/objective_card.gd). One at a time, in order, each with a one-line why (desc). brief.lines: WREN's one last message in the crash (two subtitle lines), then she is silent until the Signal Tower (story/signal_tower.gd). Objective fields: text (title), desc (the why), hint (shown instead of desc until wait_flag is set), [v6pace] the hub steps (hub_fly_2, hub_wake_N, rocket_tier_2: stats hubs_seen, hubs_woken, rocket_tier) sit between the base steps so a new station comes about every 20 bot minutes; their why lines are v6story's (data/story_reasons.json), so they carry no desc here. type stat|robot|zone|hub_level|flag|core|tower|upgrade|bench ([v1guide] the workbench tier, ui/bench_tiers.gd), key, target (absolute: lifetime stats), desc/hint may hold {action} key glyphs, e.g. {cube} ([v1guide]); hex (true: outline the target hex on the ground with its % cleaned), lines (WREN, when the objective starts). Data stays English; tr() at display.",
+  "_doc": "[onboard] The first-minutes story objectives (story/objectives.gd, ui/objective_card.gd). One at a time, in order, each with a one-line why (desc). brief.lines: WREN's one last message in the crash (two subtitle lines), then she is silent until the Signal Tower (story/signal_tower.gd). Objective fields: text (title), desc (the why), hint (shown instead of desc until wait_flag is set), [v6pace] the hub steps (hub_fly_2, hub_wake_N, rocket_tier_2: stats hubs_seen, hubs_woken, rocket_tier) sit between the base steps so a new station comes about every 20 bot minutes; their why lines are v6story's (data/story_reasons.json), so they carry no desc here. type stat|robot|zone|hub_level|flag|core|tower|upgrade|bench ([v1guide] the workbench tier, ui/bench_tiers.gd), key, target (absolute: lifetime stats), desc/hint may hold {action} key glyphs, e.g. {cube} ([v1guide]); hex (true: outline the target hex on the ground with its % cleaned), lines (WREN, when the objective starts); [v9b] needs_bench N: the step also needs workbench tier N (its tab), so until then the card shows hint, its price and the bench's tier row. Data stays English; tr() at display.",
   "wren_brief": {
     "_doc": "[v2guide] WREN once the signal tower carries her (story/objectives.gd _narrate): who she is and the plan home. Then each new story step speaks its lines[0], once.",
     "lines": [
@@ -233,6 +233,8 @@
       "id": "research1",
       "text": "Finish a research project",
       "desc": "Workbench, Research tab. Research unlocks new robots.",
+      "hint": "First add the Research Desk: workbench, Upgrades tab.",
+      "needs_bench": 3,
       "type": "stat",
       "key": "research_done",
       "target": 1,

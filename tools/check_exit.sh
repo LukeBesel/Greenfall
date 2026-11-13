@@ -51,6 +51,9 @@ run seed_walk -- --fresh --orbit --no-intro --seed-walk --save-dir=check_exit_se
 # [v9a] Goal audit: New Game to the first robot with real keys, mouse aim and bench clicks
 # (tools/walk_opening.gd): intro skip, checklist, bin, bench buys, bales, tower, Glim, hex, Bot Bay.
 run walk_opening -- --fresh --orbit --intro --walk-opening --save-dir=check_exit_open_$$
+# [v9b] The home steps after the first robot (hex2 .. base3, the garden, the Requests board) played
+# with real keys and mouse clicks on the workbench (tools/walk_home.gd).
+run walk_home -- --fresh --orbit --no-intro --walk-home --save-dir=check_exit_home_$$
 if [ "$1" = "--quick" ]; then
 	run quit15 -- --fresh --quit-after=15
 fi

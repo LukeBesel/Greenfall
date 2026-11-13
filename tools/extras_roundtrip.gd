@@ -36,7 +36,12 @@ static func _radio_track() -> String:
 	var pick: String = Radio.playing()
 	if pick == "" or pick == Tunes.SHUFFLE or not Tunes.song(pick).is_empty():
 		return pick
-	return "%s live %s" % [pick, str(Audio.get_music_track() == pick)]
+	# [main] "live" = the director holds the pick as its radio track. Whether it is audibly on it this
+	# very frame (get_music_track is "" in a gap or before the director's next tick) is timing, not
+	# saved state: it read false before the save and true after once, on a loaded box.
+	var md: Variant = Audio.get("_music")
+	var forced: String = str((md as Object).get("forced_track")) if md is Object else ""
+	return "%s live %s" % [pick, str(forced == pick)]
 
 
 static func snap(s: Node) -> Dictionary:

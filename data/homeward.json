@@ -37,10 +37,10 @@
       "So we stay a while. Every town we clean makes Verdance greener for the Settlers."
     ],
     "toast": "To be continued: the trip to Ochre comes in a future update. Keep restoring Verdance!",
-    "hide_goals": ["home_land_1", "home_restore_2", "home_drive_6", "home_restore_4", "home_restore_5", "home_drive_7", "home_last_seed", "home_launch"],
+    "hide_goals": ["home_land_1", "home_restore_2", "home_drive_6", "home_restore_4", "home_restore_5", "home_drive_7", "home_last_seed", "home_launch", "ark_1", "ark_3", "late_ark_5", "late_bridge", "late_heirloom_1", "late_heirloom_10", "late_world_1", "late_world_2"],
     "card": {"title": "To be continued", "line": "Your robots keep cleaning while you wait. Stay as long as you like and keep making Verdance green.", "hint": "{interact}  continue"},
     "hide_builds": ["telescope"],
-    "hide_achievements": ["home_answered", "home_landed", "home_planets_2", "home_planets_4", "home_planets_5", "home_relics", "home_drive_6", "home_homecoming", "late_bridge", "late_world_1", "late_world_3", "late_heirloom_1", "late_heirloom_20", "late_starseeds_100", "late_older_pod", "ark_1", "ark_10"]
+    "hide_achievements": ["home_answered", "home_landed", "home_planets_2", "home_planets_4", "home_planets_5", "home_relics", "home_drive_6", "home_homecoming", "late_bridge", "late_world_1", "late_world_3", "late_heirloom_1", "late_heirloom_20", "late_starseeds_100", "late_older_pod", "ark_1", "ark_10", "late_eggs_40"]
   },
   "tech": [
     {"id": "deep_drill", "name": "Deep Drill", "planet": "ochre", "at": 0.25, "desc": "Ochre's miners bored through bedrock. On Verdance it breaks open the buried landfill of the Dust Flats."},
