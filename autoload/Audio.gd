@@ -97,6 +97,11 @@ func _ready() -> void:
 			sound_log.name = "SoundLog"
 			sound_log.set("out_path", a.substr(12) if a.begins_with("--sound-log=") else "")
 			add_child(sound_log)
+		if a == "--audio-capture" or a.begins_with("--audio-capture="):  # [v8snd] dev: record the mix
+			var cap: Node = (load("res://audio/audio_capture.gd") as GDScript).new()
+			cap.name = "AudioCapture"
+			cap.set("out_dir", a.substr(16) if a.begins_with("--audio-capture=") else "")
+			add_child.call_deferred(cap)  # deferred: the Songs bus is added by the TunesDirector
 
 
 func _exit_tree() -> void:
@@ -118,6 +123,14 @@ func _setup_buses() -> void:
 			AudioServer.set_bus_send(idx, "Master")
 	# [sound] A safety limiter on Master: many SFX at once must never clip.
 	if AudioServer.get_bus_effect_count(0) == 0:
+		# [v8snd] Small-speaker guard first: a high-pass under the whole mix (data/sound.json
+		# "master_highpass_hz", 0 = off). Laptop speakers can't play sub-bass and rattle on it.
+		var hp_hz: float = float(SoundCfg.cfg().get("master_highpass_hz", 60.0))
+		if hp_hz > 0.0:
+			var mhp := AudioEffectHighPassFilter.new()
+			mhp.cutoff_hz = hp_hz
+			mhp.resonance = 0.5
+			AudioServer.add_bus_effect(0, mhp)
 		var mlim := AudioEffectHardLimiter.new()
 		mlim.ceiling_db = -0.5
 		AudioServer.add_bus_effect(0, mlim)
@@ -560,7 +573,7 @@ func _generate_all() -> void:
 	for i: int in hum.size():
 		var t: float = float(i) / RATE
 		var trem: float = 0.8 + 0.2 * sin(TAU * 6.0 * t)
-		hum[i] = (sin(TAU * 110.0 * t) * 0.5 + sin(TAU * 220.0 * t + 0.3 * sin(TAU * 3.0 * t)) * 0.3 \
+		hum[i] = (sin(TAU * 110.0 * t) * 0.3 + sin(TAU * 220.0 * t + 0.3 * sin(TAU * 3.0 * t)) * 0.4 \
 			+ sin(TAU * 331.0 * t) * 0.12 + sin(TAU * 662.0 * t) * 0.06) * trem * 0.35
 	_loops["beam_hum"] = _wav(hum, true)
 	# Clink: small metallic bits flying into the compartment.
@@ -739,7 +752,9 @@ func _generate_all() -> void:
 		for i: int in b.size():
 			var t: float = float(i) / RATE
 			var f: float = 70.0 + v * 12.0
-			b[i] = (sin(TAU * f * t) * 0.9 + _rng.randf_range(-0.4, 0.4) * exp(-t * 40.0)) * exp(-t * 11.0)
+			# [v8snd] less sub body, a knock small speakers can play (was 100% under 80 Hz)
+			b[i] = (sin(TAU * f * t) * 0.5 + sin(TAU * f * 3.1 * t) * 0.3 * exp(-t * 18.0) \
+				+ _rng.randf_range(-0.4, 0.4) * exp(-t * 40.0)) * exp(-t * 11.0)
 		_add("clunk", b)
 	# Servo: small arm motor whir.
 	for v: int in 3:
@@ -806,7 +821,8 @@ func _generate_feel() -> void:
 			var t: float = float(i) / RATE
 			lp = lerpf(lp, _rng.randf_range(-1.0, 1.0), 0.08)
 			var body: float = sin(TAU * (f + 50.0 * exp(-t * 30.0)) * t) * exp(-t * 11.0)
-			b[i] = (body * 0.8 + lp * 0.5 * exp(-t * 22.0)) * 0.55
+			var knock: float = sin(TAU * (f * 2.9 + 80.0 * exp(-t * 30.0)) * t) * exp(-t * 20.0)  # [v8snd] was 100% under 80 Hz
+			b[i] = (body * 0.45 + knock * 0.35 + lp * 0.5 * exp(-t * 22.0)) * 0.55
 		_add("thunk", _declick(b))
 	for f: float in [2400.0, 2550.0, 2300.0]:
 		var b := _buf(0.035)

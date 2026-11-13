@@ -1757,7 +1757,7 @@ func pet(a: Animal) -> void:
 	a.pets += 1
 	var to: Vector3 = _lumi_pos - a.pos
 	_face(a, to, 1.0, 1.0)
-	Audio.play("purr", 1.0, -3.0, 0.05)
+	Audio.play("purr", 1.0, -12.0, 0.05)  # [v8snd] was -3 dB: louder than every other animal
 	_heart(a.pos + Vector3(0, 0.55, 0))
 	var pm: Node = world.patch.get("model") if world.get("patch") else null
 	if pm:

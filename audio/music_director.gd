@@ -146,7 +146,7 @@ var _chord_i: int = -1
 var _chord_pcs: Array[int] = []
 var _chord_root_pc: int = 0
 var _scale_pcs: Array[int] = []
-var _bass_midi: int = 38
+var _bass_midi: int = 50
 var _pads: Array[Dictionary] = []
 var _air_id: int = -1
 var _mel_line: Array = []
@@ -358,7 +358,7 @@ func sting(name: String) -> void:
 				_sched(t + int(e[0]) * 0.17, "piano", int(e[1]), 0.75)
 			_sched(t, "bell", 81, 0.45)
 			_sched(t + 14 * 0.17, "bell", 78, 0.5)
-			_sched(t + 14 * 0.17, "bass", 38, 0.5)
+			_sched(t + 14 * 0.17, "bass", 50, 0.5)  # [v8snd] an octave up (was 38)
 		"upgrade":
 			var seq: Array[int] = _pick_from(tones, 66, 4)
 			for k: int in seq.size():
@@ -674,7 +674,8 @@ func _on_chord() -> void:
 			_scale_pcs.erase((pc + 1) % 12)
 			_scale_pcs.erase((pc + 11) % 12)
 			_scale_pcs.append(pc)
-	_bass_midi = 33 + posmod(key + root - 33, 12)
+	# [v8snd] E2..D#3 (82-156 Hz); was A1..G#2 (55-104 Hz), mostly under what laptop speakers play
+	_bass_midi = 40 + posmod(key + root - 40, 12)
 	# Pads: release the old chord, start the new one.
 	for p: Dictionary in _pads:
 		p["release"] = true
@@ -714,7 +715,7 @@ func _play_step() -> void:
 		var c: String = line[_step] if _step < line.length() else "."
 		var n: int = _bass_midi
 		match c:
-			"f": n = _bass_midi + (7 if _bass_midi + 7 <= 45 else -5)
+			"f": n = _bass_midi + (7 if _bass_midi + 7 <= 52 else -5)
 			"o": n = _bass_midi + 12
 			"a": n = _bass_midi + 2
 		if c != ".":
@@ -722,7 +723,7 @@ func _play_step() -> void:
 	elif _step == 0:
 		_note(bass_s, _bass_midi, bass_g)
 	elif _step == 8 and _eff > 0.5 and rng.randf() < 0.6:
-		_note(bass_s, _bass_midi + (7 if _bass_midi + 7 <= 45 else -5), bass_g * 0.7)
+		_note(bass_s, _bass_midi + (7 if _bass_midi + 7 <= 52 else -5), bass_g * 0.7)
 	elif _step == 14 and _eff > 0.7 and rng.randf() < 0.35:
 		_note(bass_s, _bass_midi + (2 if rng.randf() < 0.5 else -1), bass_g * 0.5)
 	# Melody.
