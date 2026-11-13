@@ -1897,7 +1897,7 @@ func _build_overlay() -> void:
 	_title.add_theme_constant_override("outline_size", 0)
 	_title.modulate.a = 0.0
 	box.add_child(_title)
-	_title_sub = UITheme.label("·  ·  ·", 16, Color(0.55, 1.0, 0.72))
+	_title_sub = UITheme.label("", 16, Color(0.55, 1.0, 0.72))  # room for a tagline under the title; empty for now
 	_title_sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_title_sub.modulate.a = 0.0
 	box.add_child(_title_sub)
