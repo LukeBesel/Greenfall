@@ -45,6 +45,8 @@ func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	if SaveManager.has_save() and not DevHooks.has("menu-nosave"):  # [v7look] dev: the title as on a first launch
 		_save = SaveManager.read_dict(SaveManager.slot_path())
+	if DevHooks.has("menu-long-save"):  # [v8ui] the longest Continue line (ui audit, title shots)
+		_save = long_save()
 	Tunes.setup_title(_save)  # [tunes] a random song (the synth score if there are no files)
 	_build_stage()
 	_build_ui()
@@ -342,7 +344,7 @@ func _build_ui() -> void:
 	col.add_child(_menu_box)
 	var buttons: Array[Button] = []
 	if not _save.is_empty():
-		_continue = _menu_button(tr("Continue"), _on_continue, _save_summary())
+		_continue = _menu_button(tr("Continue"), _on_continue, _save_summary_variants())
 		buttons.append(_continue)
 	if DevHooks.has("sample-worlds"):  # [worlds2] shots: a profile with some history
 		WorldPicker.dev_sample(int(DevHooks.get_f("sample-worlds", 4.0)))
@@ -353,7 +355,8 @@ func _build_ui() -> void:
 	if _save.is_empty():
 		_new_game = _menu_button(tr("New Game"), _on_new_game)
 		buttons.append(_new_game)
-	_profiles_btn = _menu_button(tr("Profiles"), _open_profiles, "%s  ·  %s" % [pname, tr_n("%d planet", "%d planets", CradleMode.worlds().size()) % CradleMode.worlds().size()])
+	var n_worlds: int = CradleMode.worlds().size()
+	_profiles_btn = _menu_button(tr("Profiles"), _open_profiles, ["%s  ·  %s" % [pname, tr_n("%d planet", "%d planets", n_worlds) % n_worlds], pname])
 	buttons.append(_profiles_btn)
 	if not _save.is_empty():
 		_new_game = _menu_button(tr("New Game"), _on_new_game)
@@ -370,6 +373,7 @@ func _build_ui() -> void:
 	_fit_refs["spacer2"] = spacer2  # [v6screens]
 	var ver: String = str(ProjectSettings.get_setting("application/config/version", ""))
 	var ver_l: Label = UITheme.label(("v" + ver + "   ·   " if ver != "" else "") + tr("Made with Godot"), 12, Color(1, 1, 1, 0.4))
+	ver_l.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN  # [v8ui] its rect is its text, not the column (the song tag sits beside it)
 	col.add_child(ver_l)
 	_fit_refs["version"] = ver_l  # [v6screens]
 
@@ -449,7 +453,59 @@ func _fit_title() -> void:
 		if c is Button:
 			var tall: bool = bool((c as Button).get_meta("tall", false))
 			(c as Button).custom_minimum_size.y = (76.0 if tall else 56.0) if not compact else (62.0 if tall else 44.0)
+	_fit_subs()
 	_fit_song()
+
+
+## [v8ui] Owner item 76: the Continue line ("Verdance · 51m · 1.75K cubes · 8 Nov 19:30") ran out of
+## the fixed 340 px button: the line is a free child Label of the Button, so nothing sized the
+## button to it. Now every menu button gets as wide as its widest second line needs, up to
+## SUB_MAX_FRAC of the screen (at most SUB_MAX_W); a line that still doesn't fit drops its tail
+## parts (the clock, then the date) and only as the last resort is cut with an ellipsis.
+const BTN_W: float = 340.0
+const SUB_MAX_W: float = 560.0
+const SUB_MAX_FRAC: float = 0.5
+const SUB_PAD_L: float = 22.0
+const SUB_PAD_R: float = 20.0
+
+
+func _fit_subs() -> void:
+	var max_w: float = clampf(_ui.size.x * SUB_MAX_FRAC, BTN_W, SUB_MAX_W)
+	var picks: Array = []
+	var need_w: float = BTN_W
+	for c: Node in _menu_box.get_children():
+		var l: Label = c.get_meta("sub_label") as Label if c.has_meta("sub_label") else null
+		if l == null:
+			continue
+		var widths: Array[float] = []
+		var font: Font = l.get_theme_font("font")
+		var fs: int = l.get_theme_font_size("font_size")
+		for v: String in c.get_meta("sub_variants", []):
+			widths.append(font.get_string_size(v, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x + SUB_PAD_L + SUB_PAD_R)
+		var k: int = pick_fit(widths, max_w)
+		picks.append([l, (c.get_meta("sub_variants") as Array)[k], widths[k] > max_w + 0.5])
+		need_w = maxf(need_w, minf(widths[k], max_w))
+	_menu_box.custom_minimum_size.x = ceilf(need_w)
+	for p: Array in picks:
+		var l: Label = p[0]
+		l.text = p[1]
+		l.clip_text = p[2]
+		l.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS if p[2] else TextServer.OVERRUN_NO_TRIMMING
+
+
+## The first variant (longest first) whose width fits `max_w`, else the last (shortest) one.
+static func pick_fit(widths: Array[float], max_w: float) -> int:
+	for i: int in widths.size():
+		if widths[i] <= max_w + 0.5:
+			return i
+	return maxi(0, widths.size() - 1)
+
+
+## A save whose Continue line is about as long as one gets (12h 51m, 999.99K cubes, a two-digit day).
+static func long_save() -> Dictionary:
+	var t: int = Time.get_unix_time_from_datetime_dict({"year": 2026, "month": 11, "day": 28, "hour": 19, "minute": 30, "second": 0})
+	t -= int(Time.get_time_zone_from_system().get("bias", 0)) * 60
+	return {"stats": {"time_played": 12.0 * 3600.0 + 51.0 * 60.0}, "currencies": {"cubes": BigNum.from_float(999990.0).serialize()}, "saved_unix": float(t)}
 
 
 func _fit_song() -> void:
@@ -457,13 +513,17 @@ func _fit_song() -> void:
 	if song == null or _ui == null or song.get_child_count() == 0:
 		return
 	var hb: Control = song.get_child(0) as Control
-	var menu_right: float = 84.0 + _menu_box.get_combined_minimum_size().x + 24.0
+	var ver: Control = _fit_refs.get("version") as Control
+	var menu_right: float = 84.0 + maxf(_menu_box.get_combined_minimum_size().x, ver.get_combined_minimum_size().x if ver != null and ver.visible else 0.0) + 24.0
 	var fits: bool = _ui.size.x - 36.0 - hb.get_combined_minimum_size().x > menu_right
 	if song.visible != fits:
 		song.visible = fits
 
 
-func _menu_button(text: String, cb: Callable, sub: String = "") -> Button:
+## `sub` is the second line, or a list of versions of it from longest to shortest (_fit_subs).
+func _menu_button(text: String, cb: Callable, sub: Variant = "") -> Button:
+	var subs: Array = sub if sub is Array else ([sub] if str(sub) != "" else [])
+	sub = str(subs[0]) if not subs.is_empty() else ""
 	var b := Button.new()
 	b.text = text.to_upper()
 	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -492,8 +552,11 @@ func _menu_button(text: String, cb: Callable, sub: String = "") -> Button:
 		l.offset_left = pad_l
 		l.offset_top = -32
 		l.offset_bottom = -12
+		l.offset_right = -SUB_PAD_R  # [v8ui] never past the button's right edge
 		l.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		b.add_child(l)
+		b.set_meta("sub_label", l)
+		b.set_meta("sub_variants", subs)
 	b.pressed.connect(func() -> void:
 		Audio.play("click", 1.0, -4.0)
 		cb.call())
@@ -530,6 +593,23 @@ func _save_summary() -> String:
 		var months: Array[String] = [tr("Jan"), tr("Feb"), tr("Mar"), tr("Apr"), tr("May"), tr("Jun"), tr("Jul"), tr("Aug"), tr("Sep"), tr("Oct"), tr("Nov"), tr("Dec")]
 		parts.append("%d %s %02d:%02d" % [dt["day"], months[int(dt["month"]) - 1], dt["hour"], dt["minute"]])
 	return "  ·  ".join(parts)
+
+
+## [v8ui] The Continue line from longest to shortest: in full, without the clock time, without
+## the date (_fit_subs takes the first that fits the button).
+func _save_summary_variants() -> Array[String]:
+	var full: String = _save_summary()
+	var out: Array[String] = [full]
+	var parts: PackedStringArray = full.split("  ·  ")
+	if parts.size() > 3:
+		var date: String = parts[3]
+		var sp: int = date.rfind(" ")
+		if sp > 0:
+			parts[3] = date.left(sp)
+			out.append("  ·  ".join(parts))
+		parts.resize(3)
+		out.append("  ·  ".join(parts))
+	return out
 
 
 # --- Actions --------------------------------------------------------------------------

@@ -61,7 +61,7 @@ func tick(delta: float, night: float, sound_at: Callable, lumi: Vector3) -> void
 		_vol[id] = move_toward(float(_vol[id]), float(want.get(id, 0.0)), delta * 0.25)
 		var v: float = float(_vol[id])
 		if v > 0.01:
-			if not p.playing:
+			if not p.playing and not Audio.holds(p):  # [v8pause] a paused bed stays paused
 				p.play(_rng.randf() * 4.0)
 			AudioVol.set_db(p, linear_to_db(v) - 12.0)  # [qafix] crash fix
 		elif p.playing:
