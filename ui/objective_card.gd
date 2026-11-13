@@ -16,6 +16,7 @@ const HINT := Color(1.0, 0.82, 0.45)  # [v3clear] a situation hint (amber)
 
 var objectives: Objectives
 var _cap: Label
+var _icon: BenchKit.Glyph  # [v9d] a picture for the step (owner: "it all needs to be visual")
 var _count: Label
 var _title: Label
 var _why: Label
@@ -48,7 +49,10 @@ func _ready() -> void:
 	add_child(vb)
 	var head := HBoxContainer.new()
 	head.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	head.add_theme_constant_override("separation", 6)
 	vb.add_child(head)
+	_icon = BenchKit.Glyph.new("star", 26.0, ACCENT)
+	head.add_child(_icon)
 	_cap = UITheme.label(tr("OBJECTIVE"), 12, ACCENT)
 	_cap.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	head.add_child(_cap)
@@ -123,6 +127,10 @@ func _set_texts(def: Dictionary) -> void:
 		return
 	var t: Array[String] = Objectives.texts(def)
 	_title.text = t[0]
+	var ik: String = icon_of(def)
+	if _icon and _icon.kind != ik:
+		_icon.kind = ik
+		_icon.queue_redraw()
 	# [v6story] Owner item 60: the reason stays on the card; the situation line goes under it (it
 	# used to replace the reason, so a save-up step only showed its why once it was done).
 	_why.add_theme_color_override("font_color", WHY)
@@ -130,6 +138,30 @@ func _set_texts(def: Dictionary) -> void:
 	_hint.text = hint
 	_hint.visible = hint != ""
 	_why.visible = _why.text != ""
+
+
+## [v9d] The card's picture for a step (ui/hud_icons.gd kinds), from its kind of work: the scoop
+## for cleaning, a cube for the bin and the scale, a part for the bench, a seed / plant / drop for
+## the garden, a star for stations, the rocket and anything else.
+static func icon_of(def: Dictionary) -> String:
+	var typ: String = str(def.get("type", "stat"))
+	var key: String = str(def.get("key", ""))
+	var id: String = str(def.get("id", ""))
+	if id == "seed" or key in ["seeds_unlocked", "plants_planted"]:
+		return "seed"
+	if typ == "hex_level" or key in ["plants_bloomed", "garden_stipend", "hexes_restored", "seen_deer", "cats_petted"]:
+		return "plant"
+	if key in ["water_tanks"]:
+		return "water"
+	if key in ["hexes_cleaned", "junk_scooped", "eggs_found", "shards_found"]:
+		return "scoop"
+	if typ == "earned" or key in ["junk_dumps", "cubes_cashed", "cubes_made", "perfect_cubes", "robot_bales", "bales_recycled"]:
+		return "cube"
+	if typ == "research" or key == "research_done":
+		return "data"
+	if typ in ["upgrade", "robot", "tier", "hub_level", "bench", "tower"] or key in ["upgrades_bought", "robots_built", "parts_found", "builder_parts_fitted", "builder_full_custom", "robots_retired"]:
+		return "part"
+	return "star"
 
 
 ## [v2guide] Sets (or clears, with "") the sub-step shown in place of the objective; plain text.
