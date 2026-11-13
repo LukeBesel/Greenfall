@@ -318,18 +318,22 @@ static func update(t: float = -1.0) -> Array[String]:
 	return out
 
 
-static func _complete(id: String) -> void:
+static func _complete(id: String, counted: bool = true) -> void:
 	if not has(id):
 		done_list().append(id)
 	_mods_size = -1
-	GameState.inc_stat("research_done")
+	if counted:
+		GameState.inc_stat("research_done")
 	EventBus.research_completed.emit(id)
 
 
 ## Test/dev helper: mark researched immediately (no cost).
+## [v9b] A grant (the Bot Bay's Salvage Logic, rewards) is not a research project the player
+## finished: it no longer counts in research_done, so "Finish a research project" can't complete
+## itself the moment the Bot Bay is bought (it did, before the Research tab even existed).
 static func grant(id: String) -> void:
 	if exists(id) and not has(id):
-		_complete(id)
+		_complete(id, false)
 
 
 static func time_text(s: float) -> String:
@@ -504,6 +508,35 @@ static func check_story(w: Node = null) -> Array[String]:
 			unlock_story(id)
 			out.append(id)
 	return out
+
+
+## [v9b] How far a story unlock's timed conditions are (0..1), for the card's bar while it waits:
+## the slowest of its `when` conditions (time since the first robot, a stat), or 1 when any `any`
+## condition already holds. -1 when it has no `when` list.
+static func story_progress(id: String, w: Node = null) -> float:
+	if has(id):
+		return 1.0
+	var d: Dictionary = def(id)
+	for c: Variant in d.get("any", []):
+		if c is Array and story_cond(c, w):
+			return 1.0
+	var when: Array = d.get("when", [])
+	if when.is_empty():
+		return -1.0
+	var f: float = 1.0
+	for c: Variant in when:
+		if not c is Array:
+			continue
+		var ca: Array = c
+		match str(ca[0]):
+			"since_first_robot":
+				var t0: float = float(GameState.flags.get("first_robot_t", 0.0))
+				f = minf(f, 0.0 if not GameState.flags.has("first_robot_t") else clampf((float(GameState.stats.get("time_played", 0.0)) - t0) / maxf(float(ca[1]), 1.0), 0.0, 1.0))
+			"stat":
+				f = minf(f, clampf(float(GameState.stats.get(str(ca[1]), 0.0)) / maxf(float(ca[2]), 1.0), 0.0, 1.0))
+			_:
+				f = minf(f, 1.0 if story_cond(ca, w) else 0.0)
+	return f
 
 
 static func unlock_story(id: String) -> void:
