@@ -129,7 +129,8 @@ static func _checklist() -> void:
 		print("%s note: checklist already done" % TAG)
 		return
 	_check(tut.step_id() == "repair" and "E" in tut.current_text(), "checklist 1: the card says fix the bench with E (%s)" % tut.current_text())
-	_check(_ob.waypoint_target() is Vector3, "checklist 1: the beam stands on the bench")
+	await _secs(0.6)
+	_check(_beam_at(_w.call("bench_pos")), "checklist 1: the beam stands on the bench")
 	await _walk_to(func() -> Vector3: return _w.call("bench_pos"), func() -> bool: return bool(_w.call("near_bench")), "the bench")
 	var pr: String = str(_w.call("interact_prompt", _p))
 	_check("E" in pr, "checklist 1: at the bench the prompt names E (%s)" % pr)
@@ -137,10 +138,13 @@ static func _checklist() -> void:
 	await _wait(func() -> bool: return tut.step_id() != "repair", 30.0)
 	_check(Camp.bench_ok() and tut.step_id() == "scoop", "checklist 1: E fixed the bench")
 	_check("LMB" in tut.current_text() or "Space" in tut.current_text(), "checklist 2: the card says hold LMB (%s)" % tut.current_text())
+	await _secs(0.6)
+	_check(not _beam_at(_w.call("bench_pos")), "checklist 2: the beam left the bench (the card is about the junk now)")
 	await _scoop_load(1.0, 60.0)
 	await _wait(func() -> bool: return tut.step_id() != "scoop", 5.0)
 	_check(tut.step_id() == "dump", "checklist 2: picking up 8 pieces with LMB held done")
-	_check(_ob.waypoint_target() is Vector3, "checklist 3: the beam stands on the bin")
+	await _secs(0.6)
+	_check(_beam_at(Objectives.bin_point(_w)), "checklist 3: the beam stands on the bin (beam %s, card '%s')" % [_yard(_beam()) if _beam() is Vector3 else "none", tut.current_text()])
 	var d0: int = int(GameState.stats.get("junk_dumps", 0))
 	await _to_bin()
 	_check(int(GameState.stats.get("junk_dumps", 0)) > d0 and tut.step_id() == "upgrade", "checklist 3: walking into the bin emptied the chest")
@@ -385,6 +389,18 @@ static func _index(id: String) -> int:
 	return -1
 
 
+## Where the purple beam really stands now (the Waypoint's own target, not a fresh computation).
+static func _beam() -> Variant:
+	var wp: Waypoint = _ob.waypoint
+	var r: Variant = wp.get("_raw")
+	return r if r is Vector3 else wp.get("_target")
+
+
+static func _beam_at(at: Variant, m: float = 2.5) -> bool:
+	var b: Variant = _beam()
+	return b is Vector3 and at is Vector3 and (b as Vector3).distance_to(at) < m
+
+
 static func _card(why: bool = false) -> String:
 	var def: Dictionary = _ob.current()
 	return "" if def.is_empty() else Objectives.texts(def)[1 if why else 0]
@@ -453,7 +469,14 @@ static func _make_and_sell_bale() -> void:
 			bale = n as JunkCube
 	if bale and _p.nearest_loose_cube() != bale:  # pressed out behind him: turn round to it
 		await _walk_to(func() -> Vector3: return bale.global_position, func() -> bool: return _p.nearest_loose_cube() == bale, "the bale", 0.9)
+	var price: Dictionary = _ob._step_price()
+	if not price.is_empty() and not GameState.can_afford_all(price):
+		await _secs(0.6)
+		_check(_ob.situation.begins_with("Need"), "%s: saving up with a bale on the ground, the card still says what is missing (%s)" % [str(_ob.current().get("id", "")), _ob.situation])
 	await _tap("interact")
+	if not price.is_empty() and not GameState.can_afford_all(price):
+		await _secs(0.6)
+		_check(_ob.situation.begins_with("Need"), "%s: carrying a bale while saving up, the card keeps the price line (%s)" % [str(_ob.current().get("id", "")), _ob.situation])
 	_check(not _p.carried.is_empty(), "bale: E picks it up (bale %s m away)" % ("%.1f" % _flat(bale.global_position - _p.global_position).length() if bale else "none"))
 	if str(_ob.current().get("id", "")) == "power":
 		_check(str(_ob.step_target(_ob.current()).get("to", "")) == "depot" and _ob.waypoint_target() is Vector3, "bale: carrying it, the beam goes to the scale (%s)" % str(_ob.step_target(_ob.current()).get("to", "")))
@@ -721,8 +744,8 @@ static func _steer(dir: Vector3, ahead: float, prefer: int) -> Vector3:
 	var u: Vector3 = _p.global_position.normalized()
 	for k: int in [0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5]:
 		var dd: Vector3 = dir.rotated(u, deg_to_rad(25.0) * k * prefer)
-		var free: bool = true
-		for h: float in [0.35, 0.9]:
+		var free: bool = not bool(_p.call("_water_at", _p.global_position + dd * maxf(ahead, 0.9)))  # he stops at the shore
+		for h: float in ([0.35, 0.9] if free else []):
 			var from: Vector3 = _p.global_position + u * h
 			var q := PhysicsRayQueryParameters3D.create(from, from + dd * maxf(ahead, 0.6), _p.collision_mask)
 			q.exclude = [_p.get_rid()]
