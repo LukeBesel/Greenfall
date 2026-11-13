@@ -55,6 +55,9 @@ else
 	echo "[check_exit] FAIL intro: see screenshots/check_exit_intro.log"
 	fail=1
 fi
+# [v9d] Every goal and achievement left on Verdance can complete (tools/goal_audit.gd on the globe),
+# and one goal of each kind a player does by hand moves when played with real input (tools/walk_goals.gd).
+run walk_goals -- --fresh --orbit --no-intro --walk-goals --save-dir=check_exit_goals_$$
 # [v9b] The home steps after the first robot (hex2 .. base3, the garden, the Requests board) played
 # with real keys and mouse clicks on the workbench (tools/walk_home.gd).
 run walk_home -- --fresh --orbit --no-intro --walk-home --save-dir=check_exit_home_$$

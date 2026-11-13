@@ -290,7 +290,7 @@ func start(id: String, force: bool = false) -> bool:
 	if d.is_empty():
 		return false
 	active = {"id": id, "name": tr(str(d.get("name", id))), "color": Color.html(str(d.get("color", "#ffffff"))),
-		"left": float(d.get("duration_s", 120)), "dur": float(d.get("duration_s", 120)), "hint": tr(str(d.get("hud", ""))),
+		"left": float(d.get("duration_s", 120)), "dur": float(d.get("duration_s", 120)), "hint": Tutorial.glyphs(tr(str(d.get("hud", "")))),  # [v9d] the player's interact key, not a fixed E
 		"progress": "", "pos": null}
 	var ok: bool = false
 	var arg: String = ""
@@ -310,7 +310,7 @@ func start(id: String, force: bool = false) -> bool:
 		arg = LedgerArc.compass_label((active["pos"] as Vector3) - world.patch.global_position)
 	if id == "robot_hiccup":
 		arg = str(active.get("robot_name", "A robot"))
-	var toast: String = tr(str(d.get("toast", d.get("name", id))))
+	var toast: String = Tutorial.glyphs(tr(str(d.get("toast", d.get("name", id)))))  # [v9d]
 	EventBus.toast.emit(toast % arg if "%s" in toast else toast, "story")
 	Audio.play("blip", 1.25, -4.0)
 	Audio.play("chime", 1.5, -8.0)

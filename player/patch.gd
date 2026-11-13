@@ -562,6 +562,9 @@ func _piece_arrived(type_id: String, vol: float, color: Color) -> void:
 
 # --- Cubing -------------------------------------------------------------------
 
+var _empty_bale_ms: int = -100000
+
+
 func _handle_cubing(delta: float) -> void:
 	if _cubing > 0.0:
 		_cubing -= delta
@@ -588,6 +591,9 @@ func _handle_cubing(delta: float) -> void:
 		if compartment.is_empty() or compartment.pending > 0.0:
 			if compartment.is_empty():
 				Audio.play("buzz", 1.2, -10.0)
+				if Time.get_ticks_msec() - _empty_bale_ms > 2500:  # [v9d] the bale key on an empty chest said nothing
+					_empty_bale_ms = Time.get_ticks_msec()
+					EventBus.toast.emit(tr("Your chest is empty. Scoop some trash first."), "info")
 			return
 		start_cube()
 
