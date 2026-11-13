@@ -14,3 +14,5 @@ __pycache__/
 /screenshots/**/*.mp3
 /screenshots/autoplay_milestones_*.json
 godot-dl/
+/screenshots/sound_log_summary.json
+/screenshots/sound_log*.txt
