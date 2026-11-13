@@ -48,6 +48,9 @@ run hex_audit -- --fresh --orbit --no-intro --hex-audit --hex-audit-quit
 # [v8seed] "Plant the first seed" played with real key and mouse events (tools/seed_walk.gd): the
 # bot's own path hid that a player could not plant (owner, 2026-11-13).
 run seed_walk -- --fresh --orbit --no-intro --seed-walk --save-dir=check_exit_seed_$$
+# [v9a] Goal audit: New Game to the first robot with real keys, mouse aim and bench clicks
+# (tools/walk_opening.gd): intro skip, checklist, bin, bench buys, bales, tower, Glim, hex, Bot Bay.
+run walk_opening -- --fresh --orbit --intro --walk-opening --save-dir=check_exit_open_$$
 if [ "$1" = "--quick" ]; then
 	run quit15 -- --fresh --quit-after=15
 fi

@@ -355,7 +355,7 @@ func progress() -> Array:
 			return [have / need, "%s / %s" % [Settings.fmt(BigNum.from_float(have)), Settings.fmt(BigNum.from_float(need))]]
 	var tgt: float = target_of(def)
 	var v: float = minf(value_of(def), tgt)
-	if v < tgt and str(def.get("type", "")) in ["stat", "robot", "hub_level", "upgrade", "tower"]:
+	if v < tgt and str(def.get("type", "")) in ["stat", "robot", "hub_level", "upgrade", "tower", "flag"]:
 		# [v6pace] Saving up for the step's price: cubes toward it, a number that goes up (owner: a
 		# visible goal with a number at all times). Once it's covered, the step's own count again.
 		var pc: Dictionary = _step_price()
@@ -890,6 +890,10 @@ func _step_price() -> Dictionary:
 		return BenchTiers.next_cost()
 	if typ == "tower" and SignalTower.tier() < int(def.get("target", 1)):
 		return SignalTower.next_cost()
+	# [v9a] "Repair Glim" (80 cubes, 10 Parts) is a flag step: it showed no price, no count and no
+	# "Need N more parts" while the player saved up, only "Build tab" and the hex outline.
+	if typ == "flag" and key == "glim_repaired" and not GameState.flags.get(key, false):
+		return (YardBuilds.def("glim").get("cost", {}) as Dictionary).duplicate()
 	# [v5play] Base levels and robots cost cubes and parts: say what is still missing for them too
 	# (the "Rebuild the base" steps gave no hint while the parts were short).
 	if typ == "hub_level" and world != null and world.get("hub") is Hub:
