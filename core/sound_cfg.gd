@@ -60,6 +60,41 @@ static func min_gap(sound: String, tag: String = "") -> float:
 	return maxf(0.0, float(g.get(sound, g.get("_default", 0.0))))
 
 
+## [v9s] data/sound.json "variety": per sound ("tag:sound" wins over "sound", then "_default").
+static func _variety(block: String, sound: String, tag: String) -> Variant:
+	var v: Variant = _d("variety").get(block)
+	if not (v is Dictionary):
+		return null
+	var d: Dictionary = v
+	if tag != "" and d.has(tag + ":" + sound):
+		return d[tag + ":" + sound]
+	return d.get(sound, d.get("_default"))
+
+
+## At most this many of one sound at once (0 = no cap).
+static func max_voices(sound: String, tag: String = "") -> int:
+	var v: Variant = _variety("max_voices", sound, tag)
+	return int(v) if v != null else 0
+
+
+## [window_s, dB per repeat, max dB]: the 2nd..nth play within window_s of the last comes softer.
+static func soften(sound: String, tag: String = "") -> Array:
+	var v: Variant = _variety("soften", sound, tag)
+	return v if v is Array and (v as Array).size() >= 3 else []
+
+
+## The least random pitch spread (+-, as a share) a play of the sound gets.
+static func pitch_spread(sound: String, tag: String = "") -> float:
+	var v: Variant = _variety("pitch_spread", sound, tag)
+	return clampf(float(v), 0.0, 0.5) if v != null else 0.0
+
+
+## Roots (semitones) a new scoop combo's ladder starts on, one picked per combo.
+static func ladder_roots() -> Array:
+	var v: Variant = _d("variety").get("ladder_roots")
+	return v if v is Array else []
+
+
 static func duck(key: String, fallback: float) -> float:
 	return float(_d("duck").get(key, fallback))
 

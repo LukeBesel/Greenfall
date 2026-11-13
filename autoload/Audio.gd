@@ -61,6 +61,9 @@ var _tunes_hush: bool = false  # [tunes] a song (or the quiet between songs) own
 ## [v6sound] Game seconds (follows the time scale): the per-sound gap gate and the sound log.
 var game_t: float = 0.0
 var _last_play: Dictionary = {}  # sound -> game_t of its last play
+var _last_take: Dictionary = {}  # [v9s] sound -> index of the take it played last
+var _rep: Dictionary = {}  # [v9s] key -> [game_t of its last play, repeats in the run]
+var _ladder_root: int = 0  # [v9s] semitones the current scoop ladder starts on
 var _planet_id: String = "verdance"  # the planet itself (its theme may be another planet's)
 var sound_log: Node  # audio/sound_log.gd, only with --sound-log
 
@@ -244,6 +247,17 @@ func play(sound: String, pitch: float = 1.0, volume_db: float = 0.0, jitter: flo
 				sound_log.call("dropped", key)
 			return
 		_last_play[key] = game_t
+	# [v9s] Owner, 2026-11-13: "super annoying to hear the same bird chirp so many times over and
+	# over". data/sound.json "variety": at most max_voices of one sound at once, the 2nd..nth play
+	# within a short window comes softer (fast scooping is a patter, not a hammer), a pitch spread
+	# floor, and never the same take twice running.
+	var vcap: int = SoundCfg.max_voices(sound, tag)
+	if vcap > 0 and _voices_of(list) >= vcap:
+		if sound_log:
+			sound_log.call("dropped", key)
+		return
+	volume_db -= _soften_db(key, SoundCfg.soften(sound, tag))
+	jitter = maxf(jitter, SoundCfg.pitch_spread(sound, tag))
 	# [v8pause] Don't steal a sound held by the pause (it resumes on unpause) unless all are held.
 	for i: int in _players.size():
 		if not _players[_next_player].stream_paused:
@@ -252,13 +266,64 @@ func play(sound: String, pitch: float = 1.0, volume_db: float = 0.0, jitter: flo
 	var p: AudioStreamPlayer = _players[_next_player]
 	_next_player = (_next_player + 1) % _players.size()
 	p.stream_paused = false
-	p.stream = list[_rng.randi() % list.size()]
+	p.stream = list[pick_take(sound, list.size())]
 	p.pitch_scale = maxf(0.05, pitch * (1.0 + _rng.randf_range(-jitter, jitter)))
 	p.volume_db = volume_db + trim
 	p.bus = SoundCfg.bus_of(sound)  # UI sounds and animal calls have their own sliders
 	p.play()
 	if sound_log:
-		sound_log.call("played", key, p.bus, p.volume_db, p.stream.get_length() / p.pitch_scale)
+		sound_log.call("played", key, p.bus, p.volume_db, p.stream.get_length() / p.pitch_scale, str(p.stream.get_instance_id()), p.pitch_scale)
+
+
+## [v9s] Which take of a sound plays: random, never the same as last time (when it has more than one).
+func pick_take(sound: String, n: int) -> int:
+	if n <= 1:
+		return 0
+	var last: int = int(_last_take.get(sound, -1))
+	var k: int = _rng.randi() % (n - 1 if last >= 0 and last < n else n)
+	if last >= 0 and last < n and k >= last:
+		k += 1
+	_last_take[sound] = k
+	return k
+
+
+## [v9s] How many of these streams are sounding now in the one-shot pool.
+func _voices_of(list: Array) -> int:
+	var n: int = 0
+	for p: AudioStreamPlayer in _players:
+		if p.playing and not p.stream_paused and p.stream in list:
+			n += 1
+	return n
+
+
+## [v9s] dB taken off a play that follows the last one of the same key within soft[0] seconds:
+## soft[1] per repeat in the run, at most soft[2]. A pause longer than the window resets the run.
+func _soften_db(key: String, soft: Array) -> float:
+	if soft.size() < 3:
+		return 0.0
+	var r: Array = _rep.get(key, [-1000.0, 0])
+	var n: int = int(r[1]) + 1 if game_t - float(r[0]) < float(soft[0]) else 0
+	_rep[key] = [game_t, n]
+	return minf(float(n) * float(soft[1]), float(soft[2]))
+
+
+## [v9s] A one-shot at a place in the world: full level within near_m of the listener (the camera,
+## else Lumi's spot is the caller's job), 6 dB softer per doubling of distance past it, and not
+## played at all past far_m (0: no limit). For world events that also happen far away (a robot's
+## hex coming clean, a hex levelling up): the player hears the near ones, not every one on the map.
+func play_at(sound: String, at: Vector3, pitch: float = 1.0, volume_db: float = 0.0, jitter: float = 0.04,
+		tag: String = "", near_m: float = 14.0, far_m: float = 0.0) -> void:
+	var d: float = listener_distance(at)
+	if far_m > 0.0 and d > far_m:
+		return
+	play(sound, pitch, volume_db - 20.0 * log(maxf(d, near_m) / near_m) / log(10.0), jitter, tag)
+
+
+## Distance from the listener (the current 3D camera) to a world point; 0 with no camera.
+func listener_distance(at: Vector3) -> float:
+	var vp: Viewport = get_viewport()
+	var cam: Camera3D = vp.get_camera_3d() if vp else null
+	return cam.global_position.distance_to(at) if cam else 0.0
 
 
 ## Plays a sound pitched up a pentatonic scale; step grows with combos.
@@ -270,7 +335,13 @@ func play_scale(sound: String, step: int, volume_db: float = 0.0) -> void:
 ## [first] A gentle combo ladder: steps climb one octave of the pentatonic scale, then hold there
 ## with a soft alternation so a long combo never gets shrill; high notes sit a little quieter.
 func play_ladder(sound: String, step: int, volume_db: float = 0.0, tag: String = "") -> void:
-	var s: int = ladder_semitones(step)
+	# [v9s] Each new combo starts the ladder on another root (data/sound.json variety.ladder_roots),
+	# so a long scooping session is not the same arpeggio over and over.
+	if step <= 0:
+		var roots: Array = SoundCfg.ladder_roots()
+		if roots.size() > 0:
+			_ladder_root = int(roots[pick_take("ladder_root:" + sound, roots.size())])
+	var s: int = ladder_semitones(step) + _ladder_root
 	play(sound, pow(2.0, s / 12.0), volume_db - 0.25 * float(s) / 2.0, 0.0, tag)
 
 
