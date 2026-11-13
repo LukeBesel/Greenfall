@@ -3270,7 +3270,7 @@ msgstr "Musée"
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr "Une salle avec un socle pour chaque trouvaille de Lumi, pour ceux qui viendront après."
 
-#: systems/camp/locker_cabinet.gd:33
+#: systems/camp/locker_cabinet.gd:33 tools/ui_audit_run.gd:223
 msgid "E   open locker"
 msgstr "E   ouvrir le casier"
 
@@ -3558,10 +3558,6 @@ msgstr "Il ne reste que les grosses pièces"
 #: systems/glim/glim_director.gd:407
 msgid "Glim is still scanning. Try again in a moment."
 msgstr "Glim scanne encore. Réessaie dans un instant."
-
-#: tools/ui_audit_run.gd:223
-msgid "Wake the Signal Mast"
-msgstr ""
 
 #: tools/ui_audit_run.gd:357 ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"

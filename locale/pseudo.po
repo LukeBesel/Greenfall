@@ -3267,7 +3267,7 @@ msgstr "[Mûšéûm ~]"
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr "[À ĥàļļ ŵîţĥ à þļîñţĥ ƒôŕ évéŕýţĥîñĝ Ļûmî ƒôûñð, ƒôŕ ŵĥôévéŕ çôméš ñéxţ. ~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: systems/camp/locker_cabinet.gd:33
+#: systems/camp/locker_cabinet.gd:33 tools/ui_audit_run.gd:223
 msgid "E   open locker"
 msgstr "E   [ôþéñ ļôçķéŕ ~]"
 
@@ -3555,10 +3555,6 @@ msgstr "[Ôñļý bîĝ þîéçéš ļéƒţ ~~~~]"
 #: systems/glim/glim_director.gd:407
 msgid "Glim is still scanning. Try again in a moment."
 msgstr "[Ĝļîm îš šţîļļ šçàññîñĝ. Ţŕý àĝàîñ îñ à môméñţ. ~~~~~~~~~~~~~]"
-
-#: tools/ui_audit_run.gd:223
-msgid "Wake the Signal Mast"
-msgstr "[Ŵàķé ţĥé Šîĝñàļ Màšţ ~~~~]"
 
 #: tools/ui_audit_run.gd:357 ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"

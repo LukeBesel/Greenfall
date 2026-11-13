@@ -3244,7 +3244,7 @@ msgstr ""
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr ""
 
-#: systems/camp/locker_cabinet.gd:33
+#: systems/camp/locker_cabinet.gd:33 tools/ui_audit_run.gd:223
 msgid "E   open locker"
 msgstr ""
 
@@ -3531,10 +3531,6 @@ msgstr ""
 
 #: systems/glim/glim_director.gd:407
 msgid "Glim is still scanning. Try again in a moment."
-msgstr ""
-
-#: tools/ui_audit_run.gd:223
-msgid "Wake the Signal Mast"
 msgstr ""
 
 #: tools/ui_audit_run.gd:357 ui/locker_panel.gd:84 ui/telescope_view.gd:379

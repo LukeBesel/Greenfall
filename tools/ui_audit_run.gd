@@ -220,7 +220,7 @@ func _play_pass(cfg: String) -> void:
 		if goals:
 			goals.expanded = expand
 		var c2: String = cfg + (" goals+" if expand else "")
-		hud.set("prompt_override", "E   " + tr("Wake the Signal Mast"))  # [v9d] a prompt and a line at once
+		hud.set("prompt_override", "E   " + TranslationServer.translate("E   open locker").substr(4))  # [v9d] a prompt and a line at once
 		subs.show_now(tr(LONG_LINE), "wren")
 		await _frames(40)
 		_check_play(c2, hud, cam, patch, subs, goals)

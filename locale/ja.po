@@ -3258,7 +3258,7 @@ msgstr "博物館"
 msgid "A hall with a plinth for everything Lumi found, for whoever comes next."
 msgstr "ルミが見つけたすべてを台座に飾るホール。次に来る誰かのために。"
 
-#: systems/camp/locker_cabinet.gd:33
+#: systems/camp/locker_cabinet.gd:33 tools/ui_audit_run.gd:223
 msgid "E   open locker"
 msgstr "E   ロッカーを開く"
 
@@ -3546,10 +3546,6 @@ msgstr "大きいものだけ残っている"
 #: systems/glim/glim_director.gd:407
 msgid "Glim is still scanning. Try again in a moment."
 msgstr "Glim はまだスキャン中。少し待ってからもう一度。"
-
-#: tools/ui_audit_run.gd:223
-msgid "Wake the Signal Mast"
-msgstr ""
 
 #: tools/ui_audit_run.gd:357 ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"
