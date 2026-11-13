@@ -62,6 +62,8 @@ func _setup() -> void:
 		SpotProbe.run_dev.call_deferred(so)
 	if DevHooks.has("seed-walk"):  # [v8seed] dev: the first seed played with real input (tools/seed_walk.gd)
 		SeedWalk.run_dev(so)
+	if DevHooks.has("walk-home"):  # [v9b] dev: the home steps after the first robot, real input (tools/walk_home.gd)
+		WalkHome.run_dev(so)
 	if DevHooks.has("target-reach"):  # [v4world] dev: every collectible and objective target reachable (planet/sites/target_audit.gd)
 		TargetAudit.run_dev(so)
 	if DevHooks.has("planet-smoke"):  # [v7planet] dev: any planet boots, walks, hops, wakes, saves (planet/sites/planet_smoke.gd)
@@ -121,9 +123,7 @@ func _wire_survey() -> void:
 	rocket_spot = Node3D.new()
 	rocket_spot.name = "RocketSpot"
 	add_child(rocket_spot)
-	var ia: Variant = so.w.get("interactables")
-	if ia is Interactables:
-		(ia as Interactables).register(rocket_spot, 6.5, rocket_prompt, open_rocket, func() -> bool: return rocket_spot.visible and not hop.flying)
+	_register_rocket()
 	hop.hopped.connect(func(to_i: int) -> void:
 		GameState.orbit["rocket_site"] = to_i
 		GameState.orbit["rocket_owned"] = true
@@ -270,6 +270,20 @@ func _sync_rocket() -> void:
 
 
 var _rocket_t: float = 0.0
+var _rocket_registered: bool = false
+
+
+## [v9c] The rocket's E entry. This runs (deferred) before the yard's Interactables exist, so the
+## entry never took and E at the rocket did nothing: no way to fly at all with real input (the bot
+## and the hub walkthrough call hop_to). Retried from _process until it takes, as HubPurpose does.
+func _register_rocket() -> bool:
+	if _rocket_registered or rocket_spot == null:
+		return _rocket_registered
+	var ia: Variant = so.w.get("interactables")
+	if ia is Interactables:
+		(ia as Interactables).register(rocket_spot, 6.5, rocket_prompt, open_rocket, func() -> bool: return rocket_spot.visible and not hop.flying)
+		_rocket_registered = true
+	return _rocket_registered
 
 
 func _process(delta: float) -> void:
@@ -278,6 +292,7 @@ func _process(delta: float) -> void:
 	_rocket_t += delta
 	if _rocket_t >= 0.5:
 		_rocket_t = 0.0
+		_register_rocket()
 		_sync_rocket()
 
 

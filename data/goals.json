@@ -74,7 +74,6 @@
     {"id": "builder_1", "text": "Style a robot in the Locker", "type": "stat", "key": "builder_parts_fitted", "target": 1, "reward": {"cubes": 300, "parts": 60}},
     {"id": "pollinator", "text": "Research Pollinator Survey", "type": "research", "key": "pollinator_survey", "target": 1, "reward": {"cubes": 800, "seeds": 20}},
     {"id": "bloom_25", "text": "Grow 25 flowers to bloom", "type": "stat", "key": "plants_bloomed", "target": 25, "reward": {"cubes": 600, "seeds": 10}},
-    {"id": "tank_1", "text": "Place a Water Tank", "type": "stat", "key": "water_tanks", "target": 1, "reward": {"cubes": 300}},
     {"id": "plant_60", "text": "Plant 60 seeds", "type": "stat", "key": "plants_planted", "target": 60, "reward": {"cubes": 600, "seeds": 10}},
     {"id": "drip_2", "text": "Run 2 Drip robots", "type": "robot", "key": "drip", "target": 2, "reward": {"cubes": 800}},
     {"id": "hexlv_4", "text": "Get a hex to Sustained", "type": "hex_level", "key": 4, "target": 1, "reward": {"cubes": 600, "seeds": 10}},
@@ -140,7 +139,6 @@
     {"id": "late_world_1", "text": "Seed a new world", "type": "stat", "key": "worlds_seeded", "target": 1, "reward": {"cubes": 50000, "seeds": 100}},
     {"id": "late_charm_20", "text": "Reach 20 charm in one district", "type": "stat", "key": "decor_charm_best", "target": 20, "reward": {"cubes": 150000}},
     {"id": "late_heirloom_10", "text": "Grow Heirlooms to 10 levels", "type": "stat", "key": "heirloom_levels", "target": 10, "reward": {"cubes": 200000}},
-    {"id": "late_world_2", "text": "Seed a second new world", "type": "stat", "key": "worlds_seeded", "target": 2, "reward": {"cubes": 250000, "seeds": 200}},
-    {"id": "late_eggs_38", "text": "Find 38 curiosities", "type": "stat", "key": "eggs_found", "target": 38, "reward": {"cubes": 300000, "seeds": 300}}
+    {"id": "late_world_2", "text": "Seed a second new world", "type": "stat", "key": "worlds_seeded", "target": 2, "reward": {"cubes": 250000, "seeds": 200}}
   ]
 }
