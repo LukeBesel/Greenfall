@@ -12,6 +12,7 @@ const ROAD_W: float = 9.0       # carriageway width
 const WALK_W: float = 2.6       # sidewalk width
 const CURB_H: float = 0.12      # sidewalk height above road
 const BUILDING_DEPTH: float = 11.0
+const ROW_GAP: float = 0.1  # [v8bld] between back-to-back building rows (see _make_buildings)
 const YARD_HALF: float = 8.5   # half-size of the hub yard
 
 var seed_value: int
@@ -52,25 +53,52 @@ func _generate() -> void:
 			var rect := Rect2(c - Vector2(half, half), Vector2(half, half) * 2.0)
 			var b: Dictionary = {"type": t, "rect": rect, "buildings": []}
 			if t == Block.BUILDINGS:
-				b["buildings"] = _make_buildings(rect, rng, key)
+				b["buildings"] = drop_overlaps(_make_buildings(rect, rng, key))
 			blocks[key] = b
 
 
 ## Perimeter buildings: each side split into 2-3 buildings of different heights and styles.
+## [v8bld] The buildings that don't stand inside an earlier one of the list. _make_buildings'
+## east and west sides of a standard block (21.8 m: the north and south rows take the corners) are
+## -0.2 m long, yet still got a 6-9 m building each: inside the corner buildings, two facades on
+## one plane z-fought (owner: "building was glitching a bit then stopped"), and a taller one stuck
+## out of the roof. Callers drop them after they have drawn their numbers for every building, so
+## every other building keeps its height, style and seed.
+static func drop_overlaps(list: Array) -> Array:
+	var kept: Array = []
+	for bd: Dictionary in list:
+		var r: Rect2 = bd["rect"]
+		var inside: bool = false
+		for k: Dictionary in kept:
+			var o: Rect2 = r.intersection(k["rect"])
+			if o.size.x > 0.05 and o.size.y > 0.05:
+				inside = true
+				break
+		if not inside:
+			kept.append(bd)
+	return kept
+
+
 func _make_buildings(r: Rect2, rng: RandomNumberGenerator, key: Vector2i) -> Array:
 	var out: Array = []
 	var d: float = BUILDING_DEPTH
 	var dist: float = Vector2(key).length()
 	var max_floors: int = 4 + int(dist * 1.2)
 	# Four sides: north (-z), south (+z), west (-x), east (+x). Corners belong to north/south.
+	# [v8bld] Back to back, two rows keep ROW_GAP m apart: a 21.8 m block is shorter than two 11 m
+	# rows, and the overlapping rows' end walls shared a plane (a z-fighting strip up each corner).
+	var dz: float = minf(d, r.size.y * 0.5 - ROW_GAP * 0.5)
+	var dx: float = minf(d, r.size.x * 0.5 - ROW_GAP * 0.5)
 	var sides: Array = [
-		{"face": Vector2(0, -1), "rect": Rect2(r.position, Vector2(r.size.x, d))},
-		{"face": Vector2(0, 1), "rect": Rect2(Vector2(r.position.x, r.end.y - d), Vector2(r.size.x, d))},
-		{"face": Vector2(-1, 0), "rect": Rect2(Vector2(r.position.x, r.position.y + d), Vector2(d, r.size.y - 2.0 * d))},
-		{"face": Vector2(1, 0), "rect": Rect2(Vector2(r.end.x - d, r.position.y + d), Vector2(d, r.size.y - 2.0 * d))},
+		{"face": Vector2(0, -1), "rect": Rect2(r.position, Vector2(r.size.x, dz))},
+		{"face": Vector2(0, 1), "rect": Rect2(Vector2(r.position.x, r.end.y - dz), Vector2(r.size.x, dz))},
+		{"face": Vector2(-1, 0), "rect": Rect2(Vector2(r.position.x, r.position.y + d), Vector2(dx, r.size.y - 2.0 * d))},
+		{"face": Vector2(1, 0), "rect": Rect2(Vector2(r.end.x - dx, r.position.y + d), Vector2(dx, r.size.y - 2.0 * d))},
 	]
-	for s: Dictionary in sides:
+	for si: int in sides.size():
+		var s: Dictionary = sides[si]
 		var sr: Rect2 = s["rect"]
+		var seg: int = 0
 		var along_x: bool = absf((s["face"] as Vector2).y) > 0.5
 		var length: float = sr.size.x if along_x else sr.size.y
 		var bays: int = int(floor(length / 3.0))
@@ -88,12 +116,17 @@ func _make_buildings(r: Rect2, rng: RandomNumberGenerator, key: Vector2i) -> Arr
 			var len_m: float = (e - start) * 3.0
 			var br: Rect2 = Rect2(sr.position + Vector2(a, 0), Vector2(len_m, sr.size.y)) if along_x \
 				else Rect2(sr.position + Vector2(0, a), Vector2(sr.size.x, len_m))
-			out.append({
+			var bdict: Dictionary = {
 				"rect": br, "face": s["face"], "bays": e - start,
 				"floors": rng.randi_range(2, max_floors),
 				"style": "factory" if rng.randf() < 0.35 else "apartments",
 				"seed": rng.randi(), "ruined": rng.randf() < 0.15,
-			})
+			}
+			# [v8bld] Trim level (BuildingDetail.TRIM_STEP): neighbours in a row alternate and every side
+			# has its own pair, so the cornices and belt courses of two buildings never share a plane.
+			bdict["trim"] = seg % 2 + 2 * si
+			seg += 1
+			out.append(bdict)
 			start = e
 	return out
 

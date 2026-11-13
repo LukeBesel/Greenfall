@@ -69,6 +69,7 @@ func add_bulbs(list: Array) -> void:
 		mmi.material_override = m
 		mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		mmi.visibility_range_end = 200.0
+		mmi.visibility_range_end_margin = StreetDressing.VIS_MARGIN  # [v8bld]
 		mmi.set_meta("street_power", true)
 		add_child(mmi)
 		add_groups([{"at": c / float(items.size()), "hex": h, "mats": [m], "lights": []}])

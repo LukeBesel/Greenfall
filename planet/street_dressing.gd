@@ -12,6 +12,11 @@ extends Node3D
 ## one body per level layer, switched off while the layer is hidden. The yard has no fence any
 ## more (the owner's playtest: it boxed Lumi in at the start and had no hitbox).
 
+## [v8bld] Visibility-range margins: with the fade off a margin is hysteresis (shown again only
+## MARGIN m inside the end, hidden MARGIN m past it), so a prop at its range edge doesn't flicker on
+## and off as the camera swings round Lumi on its arm (up to 26 m).
+const VIS_MARGIN: float = 20.0
+const VIS_MARGIN_NEAR: float = 8.0
 const NEAR_R: float = 52.0           # facades farther than this from the hub get nothing
 const FLOOR_H: float = 3.0
 const BAY: float = 3.0
@@ -732,6 +737,7 @@ func _painted_sign(text: String, center: Vector3, _al: Vector3, out: Vector3, wi
 	l.alpha_cut = Label3D.ALPHA_CUT_OPAQUE_PREPASS
 	l.transform = xf.translated_local(Vector3(0, 0, 0.035))
 	l.visibility_range_end = 70.0
+	l.visibility_range_end_margin = VIS_MARGIN_NEAR  # [v8bld] hysteresis: no flicker at the edge
 	_cur.add_child(l)
 
 
@@ -907,6 +913,7 @@ func _build_murals() -> void:
 		mi.transform = Transform3D(Basis(Vector3.UP.cross(n3), Vector3.UP, n3), _xz((a3 + b3) * 0.5, h2 * 0.5 + 0.02))
 		mi.material_override = _mural_material(0.0, Vector2(w, h2), float(i) * 2.3 + float(layout.seed_value % 7))
 		mi.visibility_range_end = 220.0
+		mi.visibility_range_end_margin = VIS_MARGIN  # [v8bld] a mural popped on and off its wall as the camera swung round
 		_cur.add_child(mi)
 
 
@@ -957,6 +964,7 @@ func _build_billboard() -> void:
 	mi.position = c + Vector3(0, 0, 0.0)
 	mi.material_override = _mural_material(1.0, Vector2(w, h), 5.1 + float(layout.seed_value % 5))
 	mi.visibility_range_end = 260.0
+	mi.visibility_range_end_margin = VIS_MARGIN  # [v8bld]
 	_cur.add_child(mi)
 	# Pasted-up slogan along the bottom, half peeled.
 	var l := Label3D.new()
@@ -971,6 +979,7 @@ func _build_billboard() -> void:
 	l.alpha_cut = Label3D.ALPHA_CUT_OPAQUE_PREPASS
 	l.position = Vector3(x - w * 0.12, y0 + h * 0.86, z + 0.03)
 	l.visibility_range_end = 260.0
+	l.visibility_range_end_margin = VIS_MARGIN  # [v8bld]
 	_cur.add_child(l)
 
 
@@ -1610,6 +1619,7 @@ func _flush() -> void:
 			var mi2: MultiMeshInstance3D = _mm("Weeds_" + id + ("" if c0 == 0 else "_%d" % (c0 / WEED_CHUNK)), wm, items2, null, false, false)
 			mi2.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			mi2.visibility_range_end = 70.0
+			mi2.visibility_range_end_margin = VIS_MARGIN_NEAR  # [v8bld]
 			await BuildBudget.check("dress:flush weeds")
 
 
@@ -1634,6 +1644,7 @@ func _mm(nm: String, mesh: Mesh, items: Array, mat: Material, shadows: bool, col
 		mmi.material_override = mat
 	mmi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON if shadows else GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	mmi.visibility_range_end = 160.0
+	mmi.visibility_range_end_margin = VIS_MARGIN  # [v8bld]
 	_cur.add_child(mmi)
 	return mmi
 
@@ -1870,6 +1881,7 @@ func _label(text: String, xf: Transform3D, font: int, pixel: float, col: Color, 
 	l.alpha_cut = Label3D.ALPHA_CUT_DISABLED if unshaded else Label3D.ALPHA_CUT_OPAQUE_PREPASS
 	l.transform = xf
 	l.visibility_range_end = 120.0
+	l.visibility_range_end_margin = VIS_MARGIN  # [v8bld]
 	_cur.add_child(l)
 	return l
 

@@ -30,6 +30,10 @@ func _ready() -> void:
 		_lap_start = _lumi().global_position
 	if DevHooks.has("orbit-cash"):
 		_cash_test.call_deferred()
+	if DevHooks.has("bld-watch"):  # [v8bld] building swaps / rebuilds while Lumi walks to the lake (planet/sites/bld_watch.gd)
+		var bw := BldWatch.new()
+		bw.setup(so)
+		add_child(bw)
 	if DevHooks.has("orbit-reload"):
 		_reload_check.call_deferred()
 	if DevHooks.has("orbit-fauna-perf"):

@@ -374,6 +374,7 @@ func _town_layout() -> void:
 				bd["floors"] = maxi(1 if pr.get("houses", false) else 2, f - (rng.randi_range(1, 3) if bd["ruined"] and f > 3 else 0))
 				if bd["style"] == "factory" and f > 8:
 					bd["style"] = "apartments"  # towers are offices and flats, not sheds
+			b["buildings"] = CityLayout.drop_overlaps(b["buildings"])  # [v8bld] after the numbers are drawn
 			if b["buildings"].is_empty():
 				b["type"] = CityLayout.Block.LANDFILL
 		layout.blocks[key] = b
@@ -587,6 +588,7 @@ func _ruin_layout(reshuffle: bool) -> void:
 			bd["ruined"] = rng.randf() < share
 			# Ruins are broken off low; even standing ones stay mid-rise on a hub site.
 			bd["floors"] = rng.randi_range(2, 4) if bd["ruined"] else mini(int(bd["floors"]), 6)
+		b["buildings"] = CityLayout.drop_overlaps(b["buildings"])  # [v8bld]
 		layout.blocks[key] = b
 
 

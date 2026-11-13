@@ -37,6 +37,13 @@ const T_CONCRETE: int = 2
 
 const FLOOR_H: float = 3.0
 const BAY: float = 3.0
+## [v8bld] Gaps that keep faces off each other's planes (CoplanarAudit, tests/test_v8bld_zfight.gd).
+const SETBACK_IN: float = 0.06
+const ROOF_IN: float = 0.02
+## [v8bld] Neighbouring buildings' cornices and belt courses reach past their walls into each other;
+## each building's trim level (CityLayout "trim", 0..7) moves them TRIM_STEP m a level so the
+## overlapping parts never lie on one plane.
+const TRIM_STEP: float = 0.012
 
 ## Facade palettes: [texture, tint]. Grounded, sun-faded city colours (no green paint).
 const APT_PALETTE: Array = [
@@ -268,6 +275,7 @@ func proxy_building(bd: Dictionary, body: Geo, det: Geo) -> void:
 	body.uv = uvo
 	det.uv = uvo
 	var ruined: bool = bd.get("ruined", false)
+	var trim: float = TRIM_STEP * float(int(bd.get("trim", 0)))  # [v8bld]
 	# Tiers: one or two (a setback upper block on taller buildings).
 	var tiers: Array = []
 	var lower: int = floors
@@ -277,7 +285,10 @@ func proxy_building(bd: Dictionary, body: Geo, det: Geo) -> void:
 	tiers.append([r, 0, lower])
 	if lower < floors:
 		var lat: float = rng.randf_range(0.0, 1.5) if r.size.x > 8.0 and r.size.y > 8.0 else 0.0
-		var r2: Rect2 = _inset_front(r, face, rng.randf_range(2.0, 3.2), lat)
+		# [v8bld] The upper tier stands SETBACK_IN m inside the lower tier on every side: flush, its
+		# back and side walls lay on the lower parapet's outer faces and z-fought there (a flickering
+		# strip round the setback of every stepped tower as the camera moved).
+		var r2: Rect2 = _inset_front(r.grow(-SETBACK_IN), face, rng.randf_range(2.0, 3.2), lat)
 		tiers.append([r2, lower, floors])
 	var frame: Array = facade_frame(r, face)
 	var origin: Vector2 = frame[0]
@@ -289,16 +300,23 @@ func proxy_building(bd: Dictionary, body: Geo, det: Geo) -> void:
 		var y1: float = float(tiers[ti][2]) * FLOOR_H
 		body.mat(K_FACADE, tint, tex, flags)
 		body.abox(_v3(tr_.position, y0), Vector3(tr_.size.x, y1 - y0, tr_.size.y), -2, f3, F_SHOP if (shop and ti == 0) else 0)
-		# Roof surface (own material, slightly above the walls' top).
+		# Roof surface (own material, slightly above the walls' top). [v8bld] ROOF_IN m inside the
+		# walls: flush, its 5 cm sides lay on the facade's top strip all round and z-fought.
 		body.mat(K_ROOF, roof_tint, 0, roof_flags)
-		body.abox(_v3(tr_.position, y1 - 0.05), Vector3(tr_.size.x, 0.06, tr_.size.y))
-		# Cornice at the top of each tier.
+		var rr: Rect2 = tr_.grow(-ROOF_IN)
+		body.abox(_v3(rr.position, y1 - 0.05), Vector3(rr.size.x, 0.06, rr.size.y))
+		# Cornice at the top of each tier ([v8bld] lowered by its trim level: see TRIM_STEP).
 		if not factory or rng.randf() < 0.4:
 			var g: float = rng.randf_range(0.18, 0.32)
+			if bd.has("trim"):  # [v8bld] neighbours' cornice ends overlap: never the same projection
+				g = 0.18 + 0.018 * float(int(bd["trim"]))
 			body.mat(K_COPING, COPING.darkened(rng.randf_range(0.0, 0.15)))
-			body.abox(_v3(tr_.position - Vector2(g, g), y1 - 0.42), Vector3(tr_.size.x + g * 2.0, 0.42, tr_.size.y + g * 2.0))
+			body.abox(_v3(tr_.position - Vector2(g, g), y1 - 0.42 - trim), Vector3(tr_.size.x + g * 2.0, 0.42, tr_.size.y + g * 2.0))
 		# Parapet with coping.
-		_parapet(body, tr_, y1, rng.randf_range(0.8, 1.2), tex, tint)
+		var ph: float = rng.randf_range(0.8, 1.2)
+		if bd.has("trim"):  # [v8bld] neighbours' copings overlap at the ends: never at one height
+			ph = 0.82 + 0.05 * float(int(bd["trim"]))
+		_parapet(body, tr_, y1, ph, tex, tint)
 		# Ruined buildings: a broken notch in the roofline instead of props.
 		if ruined and ti == tiers.size() - 1:
 			body.mat(K_DARK, Color(0.05, 0.05, 0.05))
@@ -315,7 +333,8 @@ func proxy_building(bd: Dictionary, body: Geo, det: Geo) -> void:
 	if not factory:
 		body.mat(K_COPING, COPING.darkened(0.08))
 		var lr: Rect2 = tiers[0][0]
-		body.abox(_v3(lr.position - Vector2(0.1, 0.1), 2.95), Vector3(lr.size.x + 0.2, 0.22, lr.size.y + 0.2))
+		var bo: float = 0.1 + trim  # [v8bld] and its faces stand out a trim step further
+		body.abox(_v3(lr.position - Vector2(bo, bo), 2.95 + trim), Vector3(lr.size.x + bo * 2.0, 0.22, lr.size.y + bo * 2.0))
 	# Facade dressing on the street side (detail mesh).
 	var top0: int = int(tiers[0][2])
 	var fe_bay: int = -1
@@ -374,7 +393,10 @@ func _parapet(g: Geo, r: Rect2, y: float, h: float, tex: int, tint: Color, skip_
 		g.mat(K_PLAIN, tint, tex)
 		g.abox(_v3(w.position, y), Vector3(w.size.x, h, w.size.y))
 		g.mat(K_COPING, COPING)
-		g.abox(_v3(w.position - Vector2(0.05, 0.05), y + h), Vector3(w.size.x + 0.1, 0.09, w.size.y + 0.1))
+		# [v8bld] The side walls' coping stops where the front and back copings end: overlapping at
+		# the corners, their faces shared planes and z-fought.
+		var cw: Rect2 = w.grow(0.05) if w.size.x >= w.size.y else Rect2(w.position + Vector2(-0.05, 0.05), w.size + Vector2(0.1, -0.1))
+		g.abox(_v3(cw.position, y + h), Vector3(cw.size.x, 0.09, cw.size.y))
 
 
 func _balcony(g: Geo, c: Vector2, along: Vector2, face: Vector2, y: float, deep: bool, tint: Color) -> void:

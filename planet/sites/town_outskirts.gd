@@ -131,6 +131,7 @@ func build() -> void:
 					bd["floors"] = rng.randi_range(int(fr[0]), int(fr[1]))
 					bd["ruined"] = rng.randf() < 0.2
 					bd["style"] = "factory" if rng.randf() < float(pf["factory"][ni]) else "apartments"
+			blds = CityLayout.drop_overlaps(blds)  # [v8bld] after the numbers are drawn
 			var tk := Vector2i(floori((c.x + TILE_M * 0.5) / TILE_M), floori((c.y + TILE_M * 0.5) / TILE_M))
 			if not tiles.has(tk):
 				tiles[tk] = []
@@ -245,7 +246,12 @@ func _build_tile(tk: Vector2i, blds: Array, cleared: Dictionary) -> void:
 			det.v[i2].y += base
 		# The plinth: weathered concrete from below the low side up to the base.
 		body.mat(BuildingDetail.K_PLAIN, Color(0.56, 0.54, 0.5), BuildingDetail.T_CONCRETE)
-		body.abox(Vector3(lr.position.x - 0.3, lo - 1.2, lr.position.y - 0.3), Vector3(lr.size.x + 0.6, base - lo + 1.25, lr.size.y + 0.6))
+		# [v8bld] Neighbours' plinths overlap by 0.6 m: each one's top sits a trim step higher than
+		# the last one's, so the overlapping tops never share a plane (they z-fought).
+		# Its sides stand out a step further too.
+		var ptop: float = base + 0.05 + BuildingDetail.TRIM_STEP * float(placed % 8)
+		var pout: float = 0.3 + BuildingDetail.TRIM_STEP * float(placed % 8)
+		body.abox(Vector3(lr.position.x - pout, lo - 1.2, lr.position.y - pout), Vector3(lr.size.x + pout * 2.0, ptop - lo + 1.2, lr.size.y + pout * 2.0))
 		var top: float = base + float(bd["floors"]) * BuildingDetail.FLOOR_H
 		var cs := CollisionShape3D.new()
 		var box := BoxShape3D.new()

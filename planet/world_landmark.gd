@@ -175,6 +175,7 @@ func _flush() -> void:
 				mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			mi.gi_mode = GeometryInstance3D.GI_MODE_DISABLED
 			mi.visibility_range_end = 700.0
+			mi.visibility_range_end_margin = StreetDressing.VIS_MARGIN  # [v8bld]
 			node.add_child(mi)
 	_parts.clear()
 

@@ -782,6 +782,7 @@ func _ship(shore: Array) -> void:
 		mi.mesh = mesh
 		mi.transform = xf
 		mi.visibility_range_end = 700.0
+		mi.visibility_range_end_margin = StreetDressing.VIS_MARGIN  # [v8bld]
 		add_child(mi)
 		var hx: Vector2 = Vector2(bb.size.x, bb.size.z) * sc
 		_collide(_at(c, yaw) * Transform3D(Basis(), Vector3(0, WATER_Y - 1.0, 0)), Vector3(hx.x * 0.8, bb.size.y * sc * 0.5, hx.y * 0.8))
@@ -824,6 +825,7 @@ func _flush() -> void:
 		pm.material_override = m
 		pm.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		pm.visibility_range_end = 260.0
+		pm.visibility_range_end_margin = StreetDressing.VIS_MARGIN  # [v8bld]
 		pm.set_meta("no_collide", true)
 		add_child(pm)
 	_b.clear()

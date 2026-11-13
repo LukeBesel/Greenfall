@@ -69,6 +69,7 @@ func build(p_layout: CityLayout, p_ground_material: Material) -> void:
 	_static.cell = CityLayout.PITCH * 2.0
 	_props.cell = CityLayout.PITCH * 2.0
 	_props.visibility_end = 260.0
+	_props.visibility_margin = StreetDressing.VIS_MARGIN  # [v8bld] hysteresis
 	await _load_kit(APT)
 	await _load_kit(FAC)
 	if buildings:  # [v5load] the fire escape's file and its light mesh (130 ms inside the first apartment block)
@@ -151,6 +152,7 @@ func _flush_batches() -> void:
 		mmi.multimesh = mm
 		mmi.set_meta("inst_xf", xfs)  # [world2] for the collider audit
 		mmi.visibility_range_end = 420.0
+		mmi.visibility_range_end_margin = StreetDressing.VIS_MARGIN  # [v8bld]
 		# [v5load] Facade pieces that lie flat on the wall (windows, doors, panels, trims: under
 		# FLAT_PIECE_M deep) don't cast: the building's body behind them does, and at the sun's
 		# shadow resolution a few centimetres of relief never showed. Balconies, awnings and the
