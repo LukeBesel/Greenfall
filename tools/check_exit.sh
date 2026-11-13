@@ -54,6 +54,19 @@ run walk_opening -- --fresh --orbit --intro --walk-opening --save-dir=check_exit
 # [v9b] The home steps after the first robot (hex2 .. base3, the garden, the Requests board) played
 # with real keys and mouse clicks on the workbench (tools/walk_home.gd).
 run walk_home -- --fresh --orbit --no-intro --walk-home --save-dir=check_exit_home_$$
+# [v9s] Owner (Nov 13): "super annoying to hear the same bird chirp so many times over and over".
+# Two and a half minutes standing on green ground by the start (birds, frogs, the life bed), every
+# sound logged; tools/check_audio.py --repeat fails on a sound that repeats more than its category
+# allows (plays a minute, the same take back to back, metronome spacing; docs/ADJUSTING.md).
+run sound_repeat -- --fresh --orbit --no-intro --life-sound --life-clean=6,5 --life-grown --sound-log=res://screenshots/check_exit_sound.txt --quit-after=150
+if python3 tools/check_audio.py --repeat screenshots/check_exit_sound.txt --skip 30 >screenshots/check_exit_sound_repeat.log 2>&1; then
+	echo "[check_exit] PASS sound_repeat ($(grep -c . screenshots/check_exit_sound.txt) plays)"
+else
+	echo "[check_exit] FAIL sound_repeat: see screenshots/check_exit_sound_repeat.log"
+	grep FAIL screenshots/check_exit_sound_repeat.log | head -8
+	fail=1
+fi
+rm -f screenshots/check_exit_sound.txt
 if [ "$1" = "--quick" ]; then
 	run quit15 -- --fresh --quit-after=15
 fi
