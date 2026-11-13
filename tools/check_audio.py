@@ -225,6 +225,147 @@ def check_log(path):
     return fails
 
 
+# [v9s] Repetition rules for a --sound-log log file (screenshots/sound_log.txt, one row per play with
+# its variant and pitch). Owner, 2026-11-13: "its super annoying to hear the same bird chirp so many
+# times over and over ... lively but just peaceful". Per sound: plays a minute, gaps, how many takes
+# it has, the longest run of the same take, how regular its spacing is, and an annoyance score.
+# Category of a sound (first regex that matches its name; tags like "scoop:clink" included).
+CATS = [
+    ("bird", r"^(song|chirp|coo|gull|quack|bird|heron)$"),
+    ("animal", r"^(frog|meow|seal|purr|flutter|ice_creak)$"),
+    ("ambience", r"^(amb_|life_|LifeAmbience)"),
+    ("robot", r"^(robot:|bot:)"),
+]
+# Caps per category: max plays a minute of one sound; max same take back to back (any pitch) for
+# sounds with more than one take; min gap regularity (coefficient of variation of the gaps under
+# 60 s; a metronome is 0) once a sound has 8 such gaps, or None to skip; category total a minute.
+REPEAT_RULES = {
+    "bird":     {"per_min": 3.0, "streak": 1, "cv": 0.25, "total": 4.0},
+    "animal":   {"per_min": 4.0, "streak": 1, "cv": 0.25, "total": 8.0},
+    "ambience": {"per_min": 2.0, "streak": 2, "cv": 0.2, "total": 4.0},
+    "robot":    {"per_min": 30.0, "streak": 3, "cv": 0.15, "total": 60.0},
+    "ui":       {"per_min": 90.0, "streak": None, "cv": None, "total": None},
+    "action":   {"per_min": 90.0, "streak": None, "cv": None, "total": None},
+}
+# A sound played more often than this a minute must have this many takes, or this pitch spread
+# (p90 / p10 of its pitch scale - 1): the same exact sound over and over is what a player notices.
+BUSY_PER_MIN = 10.0
+MIN_TAKES = 3
+MIN_PITCH_SPREAD = 0.06
+# Same take at the same pitch (within 1%) back to back, within 10 s: at most this many in a row.
+MAX_SAME_RUN = 4
+# Loops and beds (a restart is not a repeat a player hears as one).
+LOOPS = r"(/Loop_|/Life_|^song:|^sting:)"
+# Sounds the player starts one by one with a key (story, menus) are not judged for spacing.
+
+
+def category(name, bus):
+    for cat, rx in CATS:
+        if re.search(rx, name):
+            return cat
+    if bus == "UI":
+        return "ui"
+    return "action"
+
+
+def load_log(path):
+    rows = []
+    with open(path) as f:
+        head = f.readline().rstrip("\n").split("\t")
+        for line in f:
+            c = line.rstrip("\n").split("\t")
+            if len(c) < 5:
+                continue
+            r = dict(zip(head, c))
+            try:
+                rows.append((float(r["game_s"]), r["sound"], r.get("bus", ""), float(r.get("db", -99)),
+                             r.get("variant", ""), float(r.get("pitch", 1.0) or 1.0), r.get("from", "")))
+            except ValueError:
+                continue
+    return rows
+
+
+def repeat_stats(rows, skip_s=0.0):
+    rows = [r for r in rows if r[0] >= skip_s]
+    if not rows:
+        return 0.0, {}
+    t0 = rows[0][0]
+    minutes = max((rows[-1][0] - t0) / 60.0, 0.5)
+    by = {}
+    for r in rows:
+        by.setdefault(r[1], []).append(r)
+    out = {}
+    for nm, rs in by.items():
+        ts = [r[0] for r in rs]
+        gaps = [b - a for a, b in zip(ts, ts[1:])]
+        short = [g for g in gaps if g < 60.0]
+        cv = None
+        if len(short) >= 8:
+            m = float(np.mean(short))
+            cv = float(np.std(short) / m) if m > 0 else 0.0
+        vars_ = [r[4] for r in rs]
+        pitches = np.array([r[5] for r in rs])
+        takes = len(set(v for v in vars_ if v)) or 1
+        spread = float(np.percentile(pitches, 90) / max(np.percentile(pitches, 10), 1e-3) - 1.0) if len(rs) > 2 else 0.0
+        streak = run = 1
+        same = srun = 1
+        for a, b in zip(rs, rs[1:]):
+            run = run + 1 if (a[4] == b[4] and a[4] != "") else 1
+            streak = max(streak, run)
+            srun = srun + 1 if (a[4] == b[4] and abs(b[5] / max(a[5], 1e-3) - 1.0) < 0.01 and b[0] - a[0] < 10.0) else 1
+            same = max(same, srun)
+        bus = rs[0][2]
+        db = float(np.mean([r[3] for r in rs]))
+        per_min = len(rs) / minutes
+        cat = category(nm, bus)
+        # Annoyance: how often x how loud x how alike x how regular x how long the same take runs.
+        level = 10 ** (max(min(db, 0.0), -40.0) / 20.0) * (0.5 if bus == "UI" else 1.0)
+        alike = 1.0 / np.sqrt(takes * (1.0 + spread / 0.03))
+        regular = 1.0 + (max(0.0, 0.4 - cv) * 2.5 if cv is not None else 0.0)
+        score = per_min * level * alike * regular * (1.0 + (streak - 1) / 4.0) * 10.0
+        out[nm] = {"cat": cat, "bus": bus, "n": len(rs), "per_min": per_min, "min_gap": min(gaps) if gaps else -1.0,
+                   "med_gap": float(np.median(gaps)) if gaps else -1.0, "cv": cv, "takes": takes, "spread": spread,
+                   "streak": streak, "same_run": same, "db": db, "score": score}
+    return minutes, out
+
+
+def check_repeat(path, skip_s, out_json=""):
+    minutes, st = repeat_stats(load_log(path), skip_s)
+    fails = 0
+    totals = {}
+    print("== %s: %.1f game minutes" % (path, minutes))
+    print("%-24s %-8s %5s %6s %7s %7s %5s %6s %6s %4s %6s %7s  %s" % ("sound", "cat", "plays", "/min", "mingap", "medgap", "cv",
+          "takes", "pitch%", "run", "avg dB", "annoy", "verdict"))
+    for nm, r in sorted(st.items(), key=lambda kv: -kv[1]["score"]):
+        rule = REPEAT_RULES[r["cat"]]
+        totals[r["cat"]] = totals.get(r["cat"], 0.0) + r["per_min"]
+        bad = []
+        if r["per_min"] > rule["per_min"] and r["n"] >= 4:
+            bad.append("%.1f/min > %.0f" % (r["per_min"], rule["per_min"]))
+        if rule["streak"] is not None and r["takes"] > 1 and r["streak"] > rule["streak"]:
+            bad.append("same take %dx running" % r["streak"])
+        if rule["cv"] is not None and r["cv"] is not None and r["cv"] < rule["cv"]:
+            bad.append("metronome (cv %.2f)" % r["cv"])
+        if r["per_min"] > BUSY_PER_MIN and r["takes"] < MIN_TAKES and r["spread"] < MIN_PITCH_SPREAD:
+            bad.append("busy with %d take(s), pitch spread %.0f%%" % (r["takes"], r["spread"] * 100))
+        if r["same_run"] > MAX_SAME_RUN and not re.search(LOOPS, nm):
+            bad.append("identical %dx in a row" % r["same_run"])
+        fails += bool(bad)
+        print("%-24s %-8s %5d %6.2f %7.2f %7.2f %5s %6d %6.0f %4d %6.1f %7.2f  %s" % (nm[:24], r["cat"], r["n"], r["per_min"], r["min_gap"],
+              r["med_gap"], ("%.2f" % r["cv"]) if r["cv"] is not None else "-", r["takes"], r["spread"] * 100, r["streak"], r["db"], r["score"],
+              ("FAIL " + "; ".join(bad)) if bad else "ok"))
+    for cat, tot in sorted(totals.items()):
+        cap = REPEAT_RULES[cat]["total"]
+        bad = cap is not None and tot > cap
+        fails += bad
+        print("[check_audio] %-8s all sounds %.2f a minute%s" % (cat, tot, ("  FAIL > %.0f" % cap) if bad else ""))
+    if out_json:
+        with open(out_json, "w") as f:
+            json.dump({"minutes": minutes, "sounds": st, "totals": totals}, f, indent=1)
+    print("[check_audio] repetition %s: %d failing" % (path, fails))
+    return fails
+
+
 VERBOSE = False
 
 if __name__ == "__main__":
@@ -233,11 +374,16 @@ if __name__ == "__main__":
     ap.add_argument("--wav", action="append", default=[])
     ap.add_argument("--sound-log", default="", help="a --sound-log summary json: retrigger caps")
     ap.add_argument("--seg", type=float, default=10.0)
+    ap.add_argument("--repeat", default="", help="[v9s] a --sound-log log file (sound_log.txt): repetition rules")
+    ap.add_argument("--skip", type=float, default=20.0, help="--repeat: ignore the first S game seconds (loading, intro)")
+    ap.add_argument("--json", default="", help="--repeat: also write the table as json")
     ap.add_argument("-v", action="store_true")
     a = ap.parse_args()
     VERBOSE = a.v
     bad = 0
-    if a.sound_log:
+    if a.repeat:
+        bad += check_repeat(a.repeat, a.skip, a.json)
+    elif a.sound_log:
         bad += check_log(a.sound_log)
     elif a.wav:
         for p in a.wav:

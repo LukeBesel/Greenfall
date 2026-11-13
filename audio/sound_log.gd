@@ -31,7 +31,7 @@ func _ready() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(path).get_base_dir())
 	_file = FileAccess.open(path, FileAccess.WRITE)
 	if _file:
-		_file.store_line("game_s\treal_s\tbus\tdb\tsound\tfrom")
+		_file.store_line("game_s\treal_s\tbus\tdb\tsound\tfrom\tvariant\tpitch")  # [v9s] variant, pitch: repetition checks
 	get_tree().node_added.connect(_on_node)
 	_scan(get_tree().root)
 	print("[snd] sound log on (%s)" % path)
@@ -98,18 +98,21 @@ func _process(_delta: float) -> void:
 			else:
 				var st: AudioStream = node.get("stream")
 				var length: float = st.get_length() if st else 0.0
-				played(_name_of(node), str(node.get("bus")), float(node.get("volume_db")), 0.0 if _is_loop(node) else length)
+				played(_name_of(node), str(node.get("bus")), float(node.get("volume_db")), 0.0 if _is_loop(node) else length,
+					str(st.get_instance_id()) if st else "", float(node.get("pitch_scale")))
 		w[1] = playing
 		w[2] = pos
 		i += 1
 
 
 ## A sound started. `length` (seconds) is used for the stack count; 0 for a loop.
-func played(sound: String, bus: String, db: float, length: float) -> void:
+## [v9s] `variant`: which of the sound's streams played (its id), `pitch`: its pitch scale; the
+## repetition check (tools/check_audio.py --repeat) reads both from the log file.
+func played(sound: String, bus: String, db: float, length: float, variant: String = "", pitch: float = 1.0) -> void:
 	var t: float = Audio.game_t
 	var who: String = _caller()
 	if _file:
-		_file.store_line("%.2f\t%.2f\t%s\t%.1f\t%s\t%s" % [t, (Time.get_ticks_msec() - _real0) / 1000.0, bus, db, sound, who])
+		_file.store_line("%.2f\t%.2f\t%s\t%.1f\t%s\t%s\t%s\t%.3f" % [t, (Time.get_ticks_msec() - _real0) / 1000.0, bus, db, sound, who, variant, pitch])
 	var s: Dictionary = _stat(sound)
 	var by: Dictionary = s["by"]
 	by[who] = int(by.get(who, 0)) + 1

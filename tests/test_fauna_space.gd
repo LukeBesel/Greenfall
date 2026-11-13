@@ -204,6 +204,8 @@ func test_bird_sounds_are_occasional() -> void:
 	assert_gte(Fauna.sound_gap("flutter", 0.0, 0.0), 1.5, "wings never stack up")
 	assert_eq(Fauna.sound_gap("meow", 0.0, 0.5), 0.0, "other sounds aren't gated")
 	Fauna._call_next_s = -1.0
+	Fauna._recent.clear()  # [v9s] the per-minute cap remembers calls from other tests
+	Fauna._species_next.clear()
 	assert_true(Fauna.bird_call_ok(), "a call when it's been quiet")
 	for k: int in 50:
 		assert_false(Fauna.bird_call_ok(), "then silence, however many birds ask")

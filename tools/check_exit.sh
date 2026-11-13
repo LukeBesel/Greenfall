@@ -48,6 +48,19 @@ run hex_audit -- --fresh --orbit --no-intro --hex-audit --hex-audit-quit
 # [v8seed] "Plant the first seed" played with real key and mouse events (tools/seed_walk.gd): the
 # bot's own path hid that a player could not plant (owner, 2026-11-13).
 run seed_walk -- --fresh --orbit --no-intro --seed-walk --save-dir=check_exit_seed_$$
+# [v9s] Owner (Nov 13): "super annoying to hear the same bird chirp so many times over and over".
+# Two and a half minutes standing on green ground by the start (birds, frogs, the life bed), every
+# sound logged; tools/check_audio.py --repeat fails on a sound that repeats more than its category
+# allows (plays a minute, the same take back to back, metronome spacing; docs/ADJUSTING.md).
+run sound_repeat -- --fresh --orbit --no-intro --life-sound --life-clean=6,5 --life-grown --sound-log=res://screenshots/check_exit_sound.txt --quit-after=150
+if python3 tools/check_audio.py --repeat screenshots/check_exit_sound.txt --skip 30 >screenshots/check_exit_sound_repeat.log 2>&1; then
+	echo "[check_exit] PASS sound_repeat ($(grep -c . screenshots/check_exit_sound.txt) plays)"
+else
+	echo "[check_exit] FAIL sound_repeat: see screenshots/check_exit_sound_repeat.log"
+	grep FAIL screenshots/check_exit_sound_repeat.log | head -8
+	fail=1
+fi
+rm -f screenshots/check_exit_sound.txt
 if [ "$1" = "--quick" ]; then
 	run quit15 -- --fresh --quit-after=15
 fi
