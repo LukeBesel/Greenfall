@@ -491,7 +491,7 @@ msgstr "Ballen im Wert von %s stapelten sich an der Basis, ohne dass jemand sie 
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Die Luftwäscher haben die ganze Zeit gefiltert. Die Luft ist ein bisschen klarer."
 
-#: core/pace.gd:147 story/objectives.gd:1022
+#: core/pace.gd:147 story/objectives.gd:1026
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "Zu schwer. Verbessere die Hebekraft an der Werkbank."
 
@@ -711,7 +711,7 @@ msgstr "Neues Lumi-Design: %s"
 msgid "Home. The workbench is by the pod."
 msgstr "Zuhause. Die Werkbank steht bei der Kapsel."
 
-#: planet/sites/hub_purpose.gd:174 story/objectives.gd:1029
+#: planet/sites/hub_purpose.gd:174 story/objectives.gd:1033
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "Die Rakete wartet auf dem Startplatz. Zuhause steht ganz oben auf ihrer Liste."
 
@@ -805,35 +805,35 @@ msgstr "Alle %d Basen stehen. Flieg nach Hause und mach die Rakete startklar."
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:114
+#: planet/sites/orbit_sites.gd:116
 msgid "The rocket is in flight."
 msgstr "Die Rakete ist unterwegs."
 
-#: planet/sites/orbit_sites.gd:136
+#: planet/sites/orbit_sites.gd:138
 msgid "Bases restored: %d of %d"
 msgstr "Basen wiederhergestellt: %d von %d"
 
-#: planet/sites/orbit_sites.gd:174
+#: planet/sites/orbit_sites.gd:176
 msgid "E   Rocket: choose a destination"
 msgstr "E   Rakete: Ziel wählen"
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:214
 msgid "HOME"
 msgstr "ZUHAUSE"
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:214
 msgid "NEXT STOP"
 msgstr "NÄCHSTER HALT"
 
-#: planet/sites/orbit_sites.gd:214
+#: planet/sites/orbit_sites.gd:216
 msgid "Upgrade the rocket first"
 msgstr "Erst die Rakete aufrüsten"
 
-#: planet/sites/orbit_sites.gd:232
+#: planet/sites/orbit_sites.gd:234
 msgid "%s site"
 msgstr "Ort: %s"
 
-#: planet/sites/orbit_sites.gd:233
+#: planet/sites/orbit_sites.gd:235
 msgid "Hub %d"
 msgstr "Basis %d"
 
@@ -2240,7 +2240,7 @@ msgstr "Ziel erreicht  ·  %s"
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "Ballenpresse eingebaut! Füll dein Brustfach, drück [%s] für einen Ballen und trag ihn zur Waage."
 
-#: story/objectives.gd:818 story/objectives.gd:1010
+#: story/objectives.gd:818 story/objectives.gd:1014
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Dein Brustfach ist voll. Drück [%s] für einen Ballen."
 
@@ -2252,27 +2252,27 @@ msgstr "Dein Detektor hat in der Nähe ein vergrabenes Roboterteil gefunden. Fol
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "VERGRABENES TEIL: Geh darauf zu, bis der Wert am höchsten ist, dann grab es aus."
 
-#: story/objectives.gd:1011
+#: story/objectives.gd:1015
 msgid "Your chest is full. Bring it to the bin."
 msgstr "Dein Brustfach ist voll. Bring es zur Tonne."
 
-#: story/objectives.gd:1018
+#: story/objectives.gd:1022
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "Dein Brustfach ist voll. Ab nach Hause: Die Tonne steht unter der hohen Rauchsäule."
 
-#: story/objectives.gd:1020
+#: story/objectives.gd:1024
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "Trag deinen Ballen nach Hause: Die Waage steht unter der hohen Rauchsäule."
 
-#: story/objectives.gd:1020
+#: story/objectives.gd:1024
 msgid "Carry your bale to the scale by the bin."
 msgstr "Trag deinen Ballen zur Waage neben der Tonne."
 
-#: story/objectives.gd:1030
+#: story/objectives.gd:1034
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "Ab nach Hause: Folge dem Lichtstrahl zur hohen Rauchsäule."
 
-#: story/objectives.gd:1040
+#: story/objectives.gd:1044
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Hier gibt es nichts aufzuheben. Lauf dorthin, wo mehr Müll liegt."
 

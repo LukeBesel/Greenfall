@@ -490,7 +490,7 @@ msgstr ""
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr ""
 
-#: core/pace.gd:147 story/objectives.gd:1022
+#: core/pace.gd:147 story/objectives.gd:1026
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr ""
 
@@ -710,7 +710,7 @@ msgstr ""
 msgid "Home. The workbench is by the pod."
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:174 story/objectives.gd:1029
+#: planet/sites/hub_purpose.gd:174 story/objectives.gd:1033
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr ""
 
@@ -804,35 +804,35 @@ msgstr ""
 msgid "%s  ·  the %s"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:114
+#: planet/sites/orbit_sites.gd:116
 msgid "The rocket is in flight."
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:136
+#: planet/sites/orbit_sites.gd:138
 msgid "Bases restored: %d of %d"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:174
+#: planet/sites/orbit_sites.gd:176
 msgid "E   Rocket: choose a destination"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:214
 msgid "HOME"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:214
 msgid "NEXT STOP"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:214
+#: planet/sites/orbit_sites.gd:216
 msgid "Upgrade the rocket first"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:232
+#: planet/sites/orbit_sites.gd:234
 msgid "%s site"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:233
+#: planet/sites/orbit_sites.gd:235
 msgid "Hub %d"
 msgstr ""
 
@@ -2214,7 +2214,7 @@ msgstr ""
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr ""
 
-#: story/objectives.gd:818 story/objectives.gd:1010
+#: story/objectives.gd:818 story/objectives.gd:1014
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr ""
 
@@ -2226,27 +2226,27 @@ msgstr ""
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr ""
 
-#: story/objectives.gd:1011
+#: story/objectives.gd:1015
 msgid "Your chest is full. Bring it to the bin."
 msgstr ""
 
-#: story/objectives.gd:1018
+#: story/objectives.gd:1022
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:1020
+#: story/objectives.gd:1024
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:1020
+#: story/objectives.gd:1024
 msgid "Carry your bale to the scale by the bin."
 msgstr ""
 
-#: story/objectives.gd:1030
+#: story/objectives.gd:1034
 msgid "Head home: follow the beam to the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:1040
+#: story/objectives.gd:1044
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr ""
 
