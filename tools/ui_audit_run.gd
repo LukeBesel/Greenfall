@@ -220,10 +220,12 @@ func _play_pass(cfg: String) -> void:
 		if goals:
 			goals.expanded = expand
 		var c2: String = cfg + (" goals+" if expand else "")
+		hud.set("prompt_override", "E   " + tr("Wake the Signal Mast"))  # [v9d] a prompt and a line at once
 		subs.show_now(tr(LONG_LINE), "wren")
 		await _frames(40)
 		_check_play(c2, hud, cam, patch, subs, goals)
 		subs.clear()
+		hud.set("prompt_override", "")
 		await _frames(2)
 	if goals:
 		goals.expanded = false
@@ -249,6 +251,9 @@ func _check_play(cfg: String, hud: Node, cam: SphereCam, patch: Node3D, subs: Su
 		_report(cfg, "covers", "subtitle over Lumi", "pill %s lumi %s" % [_r(pill), _r(lr)])
 	if gr.size.y > 0.0 and pill.intersects(gr):
 		_report(cfg, "covers", "subtitle over the goal card", "goals %s" % _r(gr))
+	var pl: Label = hud.get("_prompt") as Label  # [v9d] the key to press is never under the line
+	if pl and pl.is_visible_in_tree() and pl.text.strip_edges() != "" and pill.intersects(pl.get_global_rect()):
+		_report(cfg, "covers", "subtitle over the interact prompt", "prompt %s pill %s" % [_r(pl.get_global_rect()), _r(pill)])
 	var kh: Control = hud.get("_hints") as Control  # [v7look] the key-hint pill: off the hotbar, never mid-screen
 	if kh and kh.is_visible_in_tree() and kh.modulate.a > 0.05 and hb and hb.is_visible_in_tree():
 		var kr: Rect2 = UIAudit.rect_of(kh)
