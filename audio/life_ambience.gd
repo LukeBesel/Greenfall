@@ -259,7 +259,7 @@ func _fade(l: Dictionary, want: float, dt: float) -> void:
 		return
 	var v: float = l["vol"]
 	if v > 0.01:
-		if not p.playing:
+		if not p.playing and not Audio.holds(p):  # [v8pause] a paused bed stays paused
 			p.play(_rng.randf() * maxf(0.0, p.stream.get_length() - 0.2))
 		AudioVol.set_db(p, linear_to_db(v) + float(l["db"]))
 	elif p.playing:

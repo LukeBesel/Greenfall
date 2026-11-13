@@ -381,7 +381,7 @@ msgstr "永久清除  -%d 千克"
 msgid "LIFT OFF"
 msgstr "升空"
 
-#: automation/rocket.gd:862
+#: automation/rocket.gd:867
 msgid "Space / Esc  skip"
 msgstr "空格 / Esc  跳过"
 
@@ -727,7 +727,7 @@ msgstr "先升级火箭，再唤醒：%s"
 msgid "Wake the %s (%s)"
 msgstr "唤醒：%s（%s）"
 
-#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:583
+#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:584
 msgid "E   Wake the %s  (%s)"
 msgstr "E   唤醒：%s  （%s）"
 
@@ -1567,7 +1567,7 @@ msgstr "已建造机器人"
 msgid "Time played"
 msgstr "游戏时长"
 
-#: steam/demo_end_screen.gd:78 ui/main_menu.gd:362
+#: steam/demo_end_screen.gd:78 ui/main_menu.gd:365
 msgid "Wishlist on Steam"
 msgstr "在 Steam 上加入愿望单"
 
@@ -1583,7 +1583,7 @@ msgstr "标题画面"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "继续游戏：第一个街区仍然开放，基地等级 %d。"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:519
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:582
 msgid "%dh %02dm"
 msgstr "%d时%02d分"
 
@@ -3498,7 +3498,7 @@ msgstr "这里全清干净了！"
 msgid "Only big pieces left"
 msgstr "只剩大件了"
 
-#: tools/ui_audit_run.gd:332 ui/locker_panel.gd:84 ui/telescope_view.gd:379
+#: tools/ui_audit_run.gd:333 ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"
 msgstr "关闭"
 
@@ -4288,7 +4288,7 @@ msgstr "用爱与废料制作"
 msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
 msgstr "代码、程序化网格、合成音乐和音效以及文字均为 Greenfall 原创。"
 
-#: ui/credits_roll.gd:148 ui/main_menu.gd:669
+#: ui/credits_roll.gd:148 ui/main_menu.gd:749
 msgid "Music by Lucas"
 msgstr "音乐：Lucas"
 
@@ -5204,109 +5204,114 @@ msgstr "有未保存的修改"
 msgid "Part of this look is still locked."
 msgstr "此外观的部分内容尚未解锁。"
 
-#: ui/main_menu.gd:329
+#: ui/main_menu.gd:331
 msgid "One small robot. One very big cleanup."
 msgstr "一个小机器人。一场超大的清扫。"
 
-#: ui/main_menu.gd:333
+#: ui/main_menu.gd:335
 msgid "DEMO  ·  the first district"
 msgstr "试玩版  ·  第一个街区"
 
-#: ui/main_menu.gd:345 ui/profile_picker.gd:110
+#: ui/main_menu.gd:347 ui/profile_picker.gd:110
 msgid "Continue"
 msgstr "继续"
 
-#: ui/main_menu.gd:354 ui/main_menu.gd:359
+#: ui/main_menu.gd:356 ui/main_menu.gd:362
 msgid "New Game"
 msgstr "新游戏"
 
-#: ui/main_menu.gd:356
+#: ui/main_menu.gd:359 ui/profile_picker.gd:126
+msgid "%d planet"
+msgid_plural "%d planets"
+msgstr[0] "%d 颗星球"
+
+#: ui/main_menu.gd:359
 msgid "Profiles"
 msgstr "存档"
 
-#: ui/main_menu.gd:363 ui/main_menu.gd:611 ui/pause_menu.gd:68
+#: ui/main_menu.gd:366 ui/main_menu.gd:691 ui/pause_menu.gd:68
 msgid "Settings"
 msgstr "设置"
 
-#: ui/main_menu.gd:365 ui/pause_menu.gd:72
+#: ui/main_menu.gd:368 ui/pause_menu.gd:72
 msgid "Quit"
 msgstr "退出"
 
-#: ui/main_menu.gd:372
+#: ui/main_menu.gd:375
 msgid "Made with Godot"
 msgstr "使用 Godot 制作"
 
-#: ui/main_menu.gd:519
+#: ui/main_menu.gd:582
 msgid "%dm"
 msgstr "%d分钟"
 
 #. Continue button subtitle: the planet, play time, cube count (e.g. "Verdance · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:526 ui/profile_picker.gd:133
+#: ui/main_menu.gd:589 ui/profile_picker.gd:133
 msgid "%s cubes"
 msgstr "%s 方块"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Jan"
 msgstr "1月"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Feb"
 msgstr "2月"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Mar"
 msgstr "3月"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Apr"
 msgstr "4月"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "May"
 msgstr "5月"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Jun"
 msgstr "6月"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Jul"
 msgstr "7月"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Aug"
 msgstr "8月"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Sep"
 msgstr "9月"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Oct"
 msgstr "10月"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Nov"
 msgstr "11月"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Dec"
 msgstr "12月"
 
-#: ui/main_menu.gd:611
+#: ui/main_menu.gd:691
 msgid "Credits"
 msgstr "制作人员"
 
-#: ui/main_menu.gd:640
+#: ui/main_menu.gd:720
 msgid "CREDITS"
 msgstr "制作人员"
 
-#: ui/main_menu.gd:655 ui/profile_picker.gd:49 ui/settings_panel.gd:123
+#: ui/main_menu.gd:735 ui/profile_picker.gd:49 ui/settings_panel.gd:123
 #: ui/settings_panel.gd:148 ui/world_picker.gd:53
 msgid "Back"
 msgstr "返回"
 
-#: ui/main_menu.gd:668
+#: ui/main_menu.gd:748
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -5316,27 +5321,27 @@ msgstr ""
 "代码、程序化网格、合成音频和文字均为 Greenfall 原创。\n"
 "\n"
 
-#: ui/main_menu.gd:672
+#: ui/main_menu.gd:752
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "第三方资源：CC0，Poly Haven（polyhaven.com）。"
 
-#: ui/main_menu.gd:690
+#: ui/main_menu.gd:770
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]作者：%s[/color]"
 
-#: ui/main_menu.gd:724
+#: ui/main_menu.gd:804
 msgid "START A NEW GAME?"
 msgstr "开始新游戏？"
 
-#: ui/main_menu.gd:725
+#: ui/main_menu.gd:805
 msgid "Your current save will be erased. This can't be undone."
 msgstr "你当前的存档将被删除。此操作无法撤销。"
 
-#: ui/main_menu.gd:733
+#: ui/main_menu.gd:813
 msgid "Keep my save"
 msgstr "保留存档"
 
-#: ui/main_menu.gd:739 ui/profile_picker.gd:213
+#: ui/main_menu.gd:819 ui/profile_picker.gd:213
 msgid "Erase and start"
 msgstr "删除并开始"
 
@@ -5631,11 +5636,6 @@ msgstr "空存档位"
 #: ui/profile_picker.gd:125
 msgid "%s  ·  %s  ·  on %s"
 msgstr "%s  ·  %s  ·  位于 %s"
-
-#: ui/profile_picker.gd:126
-msgid "%d planet"
-msgid_plural "%d planets"
-msgstr[0] "%d 颗星球"
 
 #. Save profile summary: how far the Bloom (restoration milestones) has come.
 #: ui/profile_picker.gd:131

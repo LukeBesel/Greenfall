@@ -20,7 +20,8 @@ extends Node
 ## it is and expanded. The bar must not touch Lumi's body (LumiScreen) or the goal stack, and where
 ## it covers the hotbar the hotbar must be dimmed.
 
-const SIZES: Array[Vector2i] = [Vector2i(1280, 720), Vector2i(1920, 1080), Vector2i(2560, 1080), Vector2i(1280, 800)]
+## [v8ui] 1500x1000: a 3:2 laptop window (the owner's MacBook, item 76).
+const SIZES: Array[Vector2i] = [Vector2i(1280, 720), Vector2i(1920, 1080), Vector2i(2560, 1080), Vector2i(1280, 800), Vector2i(1500, 1000)]
 const SCALES: Array[float] = [0.8, 1.0, 1.25, 1.5]
 const LOCALES: Array[String] = ["en", "de", "fr", "es", "pt_BR", "zh_CN", "ja", "pseudo"]
 const SCREENS: Array[String] = ["play", "hud", "prompts", "arrival", "pause", "settings", "workbench", "locker", "survey", "loading", "codex", "rockets", "system", "document", "photo", "glim", "garden", "command", "tbc", "pad"]
@@ -771,6 +772,11 @@ func _pad_title(mm: Node) -> void:
 # --- Title screen ------------------------------------------------------------------------
 
 func _run_title() -> void:
+	# [v8ui] Owner item 76: the audit used whatever save was on disk (or none, so no Continue button
+	# at all), and a short line fit. Audit the title with the longest Continue line instead
+	# ("Verdance · 12h 51m · 999.99K cubes · 28 Nov 19:30"); --ui-audit-real-save keeps the real one.
+	if not DevHooks.has("ui-audit-real-save"):
+		DevHooks.args["menu-long-save"] = "1"
 	for loc: Variant in _list("ui-audit-locales", LOCALES):
 		_set_locale(str(loc))
 		get_tree().reload_current_scene()

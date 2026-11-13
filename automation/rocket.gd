@@ -681,6 +681,11 @@ func _end_cinematic() -> void:
 func _process(delta: float) -> void:
 	if _mode == "":
 		return
+	# [v8pause] Owner item 78: the rocket runs with PROCESS_MODE_ALWAYS, so the pause menu froze the
+	# world but not its launch or landing (nor their sounds). _begin unpauses the tree, so a pause
+	# during a flight is the player's: hold the sequence until it ends.
+	if get_tree().paused:
+		return
 	var dt: float = delta * _speed
 	if DevHooks.has("rocket-shots"):
 		dt = _shot_hold(dt)
