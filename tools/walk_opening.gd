@@ -161,6 +161,8 @@ static func _dump3() -> void:
 		if _ob.current().get("id", "") != "dump3":
 			break
 		await _scoop_load(1.0, 60.0)
+		if _ob.current().get("id", "") != "dump3":  # emptied on the way (junk by the bin): done already
+			break
 		var tgt: String = str(_ob.step_target(_ob.current()).get("to", ""))
 		_check(tgt == "bin" and _ob.waypoint_target() is Vector3, "dump3: with a full chest the beam goes to the bin (%s)" % tgt)
 		await _to_bin()
