@@ -627,7 +627,10 @@ func _build_shopfronts() -> void:
 		if _rng.randf() < 0.35:
 			var off2: float = (_rng.randf_range(0.35, 0.48) * (1.0 if _rng.randf() < 0.5 else -1.0)) * width
 			var cp: Vector3 = base + al3 * off2 + out3 * 0.42
-			if _rng.randf() < 0.5:
+			var crate: bool = _rng.randf() < 0.5
+			if start_base and StartArea.inside_local(cp.x, cp.z, 2.0):  # [v8hex] no junk-looking crates or barrels round base 1
+				pass
+			elif crate:
 				_crate(Transform3D(Basis.looking_at(-al3).rotated(Vector3.UP, _rng.randf_range(-0.2, 0.2)), cp + Vector3.UP * 0.16), _plastic[_rng.randi() % _plastic.size()])
 				_solid_box(Transform3D(Basis.looking_at(-al3), cp + Vector3.UP * 0.32), Vector3(0.62, 0.64, 0.44))  # [world2]
 				if _rng.randf() < 0.5:
@@ -1304,6 +1307,8 @@ func _build_puddles() -> void:
 ## Stacks of bright plastic crates and a barrel or two, tucked into the yard's fence corners
 ## (hub ground: no junk, no plant slots, nothing parks there).
 func _build_crates() -> void:
+	if start_base:  # [v8hex] owner (Nov 13): no drums, barrels or crate heaps round base 1
+		return
 	var y: float = CityLayout.YARD_HALF - 0.95
 	var corners: Array[Vector2] = [Vector2(-y, -y), Vector2(y, -y), Vector2(-y, y), Vector2(y, y)]
 	# Which salvage kit sits in which corner: the starter yard keeps its classic set; elsewhere a

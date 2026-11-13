@@ -83,7 +83,27 @@ func blocks_local(q: Vector2) -> bool:
 	for d: Vector3 in discs:
 		if q.distance_squared_to(Vector2(d.x, d.y)) < d.z * d.z:
 			return true
+	for bx: Array in boxes:  # [v8hex]
+		var dq: Vector2 = q - (bx[0] as Vector2)
+		var hb: Vector2 = bx[3]
+		if absf(dq.dot(bx[1])) < hb.x and absf(dq.dot(bx[2])) < hb.y:
+			return true
 	return false
+
+
+## [v8hex] Ground kept clear of junk that is NOT a building (Lumi walks in): a box standing in
+## world frame xf, half extents (x, z) m. The First Seed greenhouse: its planting beds hid
+## pieces under them and its posts walled others in, so the hex it stands on never cleared.
+## Site-local [centre, x axis, z axis, half].
+var boxes: Array = []
+
+
+func add_clear_box(xf: Transform3D, half: Vector2) -> void:
+	var o: Vector3 = xf_inv * xf.origin
+	var ax: Vector3 = xf_inv.basis * xf.basis.x
+	var az: Vector3 = xf_inv.basis * xf.basis.z
+	boxes.append([Vector2(o.x, o.z), Vector2(ax.x, ax.z).normalized(), Vector2(az.x, az.z).normalized(), half])
+	version += 1
 
 
 func blocks(dir: Vector3) -> bool:

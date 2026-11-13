@@ -281,6 +281,8 @@ func build(p_world: Node3D) -> void:
 		YardProbe.attach(self)
 	if DevHooks.has("ground-probe"):  # [v3qa] floating / sunken props and junk around Lumi
 		GroundProbe.attach(self)
+	if DevHooks.has("hex-audit"):  # [v8hex] start-area hexes that can't be cleared with the starter tools
+		HexAudit.attach(self)
 	LifeDev.attach(self)  # [v6life] --life-clean / --life-report
 	if DevHooks.has("feel"):  # [v6feel] scripted feel checks (tools/feel_probe.gd)
 		FeelProbe.attach(self)
@@ -390,8 +392,11 @@ func collect_piece(pid: int) -> void:
 ## A bite off a heavy piece (Patch._take_piece): the cell's numbers and its heap follow.
 func piece_bitten(pid: int) -> void:
 	var hid: int = globe.field.piece_hex[pid]
+	var became_clean: bool = globe.field.check_clean(hid)  # [v8hex] a bite can carry a hex over 95%
 	globe.write_cell(hid)
-	globe.junk_view.refresh_hex(hid)
+	globe.junk_view.refresh_hex(hid, became_clean)
+	if became_clean:
+		on_hex_clean(hid)
 
 
 ## slice.gd's _on_hex_clean by cell id: first-clean bonus (a re-dirtied cell pays only the flat
@@ -686,6 +691,9 @@ func _attach_first_seed() -> void:
 	fs.place_on_globe(self)
 	fs.setup()
 	w.set("first_seed", fs)
+	await get_tree().physics_frame  # [v8hex] the greenhouse's colliders in the space
+	if is_instance_valid(w):
+		StartJunkTidy.attach(self).start(fs)  # [v8hex] no hidden junk in the start area, the leftover rule
 
 
 ## The seed economy at the base: the compost press on the start yard's "composter" anchor (its own

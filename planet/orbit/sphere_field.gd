@@ -62,6 +62,7 @@ var pile_block: Callable  # [v5look] (cell) -> bool: no junk mounds on this cell
 ## [v8fix] Ground kept clear of junk mounds: [dir (unit), radius m] pairs (an outpost's ruin). A
 ## heap there wedged its colliders in between the ruin's and boxed Lumi in (clear_piles_near).
 var pile_clear: Array = []
+var after_lay: Callable  # [v8hex] (cell) -> void: a land cell's pieces are all laid (the start area's collider tidy queues it)
 var before_lay: Callable  # [v6qa] (cell) -> void: called before a land cell's pieces are laid (the hinterland decides its roads there)
 ## [v1yard] Cells with no big items (cell -> true): the start's cells, as the flat game's first hexes.
 var small_only: Dictionary = {}
@@ -335,6 +336,8 @@ func _mz_run(budget_us: int) -> PackedInt32Array:
 	if _mz_recheck:  # [v6qa] (before the view draws them)
 		_mz_recheck = false
 		relocate_blocked(cell)
+	if after_lay.is_valid():  # [v8hex]
+		after_lay.call(cell)
 	return out
 
 
@@ -359,9 +362,66 @@ signal hex_swept(cell: int, pids: PackedInt32Array)
 
 func remove_piece(pid: int) -> bool:
 	var flipped: bool = super(pid)
+	if not flipped and pid >= 0 and pid < piece_hex.size():
+		flipped = _leftover_flip(piece_hex[pid])  # [v8hex]
 	if flipped:
 		sweep_cell(piece_hex[pid])
 	return flipped
+
+
+## [v8hex] Owner item (Nov 13): "This starter hex i cleared but it says 94% and i dont get
+## anything". The leftover rule: a land hex at least leftover_from cleared whose live pieces are
+## all ones Lumi can't find or take where they lie (leftover_check: hidden under or inside a
+## collider, walled in, out in the water; HexLeftovers.findable) counts as clean, as at 95%.
+## leftover_check is set by the globe slice (it needs the colliders); without it only a hex with
+## no live piece left at all flips. data/start_area.json "leftover_from".
+var leftover_check: Callable
+var leftover_from: float = 0.8
+
+
+## Flips a dirty, made land cell clean when the leftover rule says so (true when it did).
+func _leftover_flip(cell: int) -> bool:
+	if cell < 0 or hex_clean[cell] == 1 or hex_hub[cell] == 1 or hex_water[cell] == 1 or materialized[cell] == 0:
+		return false
+	if removed_fraction(cell) < leftover_from:
+		return false
+	for p: int in pieces_in(cell):
+		if piece_alive[p] == 1 and (not leftover_check.is_valid() or bool(leftover_check.call(p))):
+			return false
+	return _flip_clean(cell)
+
+
+func _flip_clean(cell: int) -> bool:
+	hex_clean[cell] = 1
+	cleaned_count += 1  # as HexField.remove_piece (callers that skip hub ground and lakes take it off)
+	hex_became_clean.emit(cell)
+	return true
+
+
+## [v8hex] Whether a cell flips clean now: the 95% rule (a bite can carry it over without a piece
+## going) or the leftover rule. Sweeps what is left when it does. For bites and loaded saves.
+func check_clean(cell: int) -> bool:
+	if cell < 0 or hex_clean[cell] == 1 or hex_hub[cell] == 1 or materialized[cell] == 0:
+		return false
+	var flipped: bool = removed_fraction(cell) >= clean_threshold and _flip_clean(cell)
+	if not flipped:
+		flipped = _leftover_flip(cell)
+	if flipped:
+		sweep_cell(cell)
+	return flipped
+
+
+## [v8hex] Clears a dirty cell outright (a save's start-area hex left stuck by the old rules).
+func force_clean(cell: int) -> bool:
+	if cell < 0 or hex_clean[cell] == 1 or hex_hub[cell] == 1:
+		return false
+	if materialized[cell] == 0:
+		materialize(cell)
+	if hex_clean[cell] == 1:
+		return false
+	_flip_clean(cell)
+	sweep_cell(cell)
+	return true
 
 
 ## Removes what is left of a clean cell's pieces. Returns their ids.
@@ -456,22 +516,27 @@ func _seat(pid: int, d: Vector3) -> void:
 ## with none, goes as if it was never laid (out of the ledger's total and left alike, so the cell's
 ## junk fraction holds). Returns [moved pids, dropped pids]; the caller updates the view.
 ## A cell still being laid (materialize_step) is checked when its last piece is down.
-func relocate_blocked(cell: int) -> Array:
+## [v8hex] hidden: optional Callable(world point) -> bool, more spots no piece may lie on (the start
+## area's colliders: HexLeftovers.covered); a piece there moves too, and its new spot must pass it.
+func relocate_blocked(cell: int, hidden: Callable = Callable()) -> Array:
 	var moved := PackedInt32Array()
 	var dropped := PackedInt32Array()
 	if cell == _mz_cell:
 		_mz_recheck = true
 		return [moved, dropped]
-	if not keep_out.is_valid() or materialized[cell] == 0 or hex_water[cell] == 1:
+	if not (keep_out.is_valid() or hidden.is_valid()) or materialized[cell] == 0 or hex_water[cell] == 1:
 		return [moved, dropped]
+	var bad := func(d: Vector3, lift: float) -> bool:
+		return (keep_out.is_valid() and bool(keep_out.call(d))) or (hidden.is_valid() and bool(hidden.call(terrain.ground(d) + d * lift)))
 	var ctr: Vector3 = grid.centers[cell]
 	var f: Basis = SphereGrid.frame(ctr)
 	for pid: int in pieces_in(cell):
 		if piece_alive[pid] == 0:
 			continue
 		var d0: Vector3 = piece_pos[pid].normalized()
-		if not bool(keep_out.call(d0)):
+		if not ((keep_out.is_valid() and bool(keep_out.call(d0))) or (hidden.is_valid() and bool(hidden.call(piece_pos[pid])))):
 			continue
+		var lift: float = maxf(piece_lift[pid], 0.05)
 		var rng := RandomNumberGenerator.new()
 		rng.seed = hash([seed_value, pid, 6071])
 		var d: Vector3 = d0
@@ -479,9 +544,9 @@ func relocate_blocked(cell: int) -> Array:
 			var r: float = sqrt(rng.randf()) * hex_size * 0.92
 			var a: float = rng.randf() * TAU
 			d = (ctr + (f.x * cos(a) * r + f.z * sin(a) * r) / grid.radius_m).normalized()
-			if not bool(keep_out.call(d)):
+			if not bool(bad.call(d, lift)):
 				break
-		if bool(keep_out.call(d)):
+		if bool(bad.call(d, lift)):
 			piece_alive[pid] = 0
 			hex_left[cell] = maxf(0.0, hex_left[cell] - piece_vol[pid])
 			hex_total[cell] = maxf(0.001, hex_total[cell] - piece_vol[pid])
@@ -691,7 +756,7 @@ func parts_in(cell: int) -> PackedInt32Array:
 # --- [orbB] Landmarks --------------------------------------------------------------------------
 
 func _roll_landmark(cell: int) -> void:
-	if landmark_defs.is_empty() or not cells.is_dirty(cell):
+	if landmark_defs.is_empty() or not cells.is_dirty(cell) or small_only.has(cell):  # [v8hex] no wrecks in the start area
 		return
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash([seed_value, cell, 7])
