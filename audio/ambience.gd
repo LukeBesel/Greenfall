@@ -190,7 +190,7 @@ func _fire(snd: String, db: float, pitch: float) -> void:
 	p.volume_db = db + _level_db + _rng.randf_range(-3.0, 1.0)
 	p.play()
 	if Audio.sound_log:
-		Audio.sound_log.call("played", snd, BUS, p.volume_db, p.stream.get_length() / maxf(pitch, 0.05))
+		Audio.sound_log.call("played", snd, BUS, p.volume_db, p.stream.get_length() / maxf(pitch, 0.05), str(p.stream.get_instance_id()), pitch)
 
 
 func _exit_tree() -> void:
