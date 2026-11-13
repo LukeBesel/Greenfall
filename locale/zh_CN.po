@@ -800,31 +800,31 @@ msgstr "%s  ·  %s"
 msgid "The rocket is in flight."
 msgstr "火箭正在飞行。"
 
-#: planet/sites/orbit_sites.gd:136
+#: planet/sites/orbit_sites.gd:134
 msgid "Bases restored: %d of %d"
 msgstr "已修复基地：%d / %d"
 
-#: planet/sites/orbit_sites.gd:174
+#: planet/sites/orbit_sites.gd:172
 msgid "E   Rocket: choose a destination"
 msgstr "E   火箭：选择目的地"
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:210
 msgid "HOME"
 msgstr "家"
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:210
 msgid "NEXT STOP"
 msgstr "下一站"
 
-#: planet/sites/orbit_sites.gd:214
+#: planet/sites/orbit_sites.gd:212
 msgid "Upgrade the rocket first"
 msgstr "先升级火箭"
 
-#: planet/sites/orbit_sites.gd:232
+#: planet/sites/orbit_sites.gd:230
 msgid "%s site"
 msgstr "%s地点"
 
-#: planet/sites/orbit_sites.gd:233
+#: planet/sites/orbit_sites.gd:231
 msgid "Hub %d"
 msgstr "基地 %d"
 

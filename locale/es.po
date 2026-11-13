@@ -801,31 +801,31 @@ msgstr "%s  ·  %s"
 msgid "The rocket is in flight."
 msgstr "El cohete está en vuelo."
 
-#: planet/sites/orbit_sites.gd:136
+#: planet/sites/orbit_sites.gd:134
 msgid "Bases restored: %d of %d"
 msgstr "Bases restauradas: %d de %d"
 
-#: planet/sites/orbit_sites.gd:174
+#: planet/sites/orbit_sites.gd:172
 msgid "E   Rocket: choose a destination"
 msgstr "E   Cohete: elige un destino"
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:210
 msgid "HOME"
 msgstr "CASA"
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:210
 msgid "NEXT STOP"
 msgstr "PRÓXIMA PARADA"
 
-#: planet/sites/orbit_sites.gd:214
+#: planet/sites/orbit_sites.gd:212
 msgid "Upgrade the rocket first"
 msgstr "Primero mejora el cohete"
 
-#: planet/sites/orbit_sites.gd:232
+#: planet/sites/orbit_sites.gd:230
 msgid "%s site"
 msgstr "Lugar: %s"
 
-#: planet/sites/orbit_sites.gd:233
+#: planet/sites/orbit_sites.gd:231
 msgid "Hub %d"
 msgstr "Base %d"
 

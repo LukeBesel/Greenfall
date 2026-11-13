@@ -798,31 +798,31 @@ msgstr "[%s  ·  ţĥé %s ~~]"
 msgid "The rocket is in flight."
 msgstr "[Ţĥé ŕôçķéţ îš îñ ƒļîĝĥţ. ~~~~~]"
 
-#: planet/sites/orbit_sites.gd:136
+#: planet/sites/orbit_sites.gd:134
 msgid "Bases restored: %d of %d"
 msgstr "[Bàšéš ŕéšţôŕéð: %d ôƒ %d ~~~~~]"
 
-#: planet/sites/orbit_sites.gd:174
+#: planet/sites/orbit_sites.gd:172
 msgid "E   Rocket: choose a destination"
 msgstr "E   [Ŕôçķéţ: çĥôôšé à ðéšţîñàţîôñ ~~~~~~~]"
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:210
 msgid "HOME"
 msgstr "[ĤÔMÉ ~]"
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:210
 msgid "NEXT STOP"
 msgstr "[ÑÉXŢ ŠŢÔÞ ~]"
 
-#: planet/sites/orbit_sites.gd:214
+#: planet/sites/orbit_sites.gd:212
 msgid "Upgrade the rocket first"
 msgstr "[Ûþĝŕàðé ţĥé ŕôçķéţ ƒîŕšţ ~~~~~]"
 
-#: planet/sites/orbit_sites.gd:232
+#: planet/sites/orbit_sites.gd:230
 msgid "%s site"
 msgstr "[%s šîţé ~]"
 
-#: planet/sites/orbit_sites.gd:233
+#: planet/sites/orbit_sites.gd:231
 msgid "Hub %d"
 msgstr "[Ĥûb %d ~]"
 
