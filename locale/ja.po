@@ -491,7 +491,7 @@ msgstr "%s 相当のベールが、運ぶ者もなく基地に積まれていた
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "清浄機がずっと空気をろ過していた。少しだけ澄んだ。"
 
-#: core/pace.gd:147 story/objectives.gd:1026
+#: core/pace.gd:147 story/objectives.gd:1040
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "重すぎる。作業台でリフト力をアップグレードしよう。"
 
@@ -711,7 +711,7 @@ msgstr "Lumi の新デザイン：%s"
 msgid "Home. The workbench is by the pod."
 msgstr "ホームだ。作業台はポッドのそばにある。"
 
-#: planet/sites/hub_purpose.gd:174 story/objectives.gd:1033
+#: planet/sites/hub_purpose.gd:174 story/objectives.gd:1044
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "ロケットは発着場で待っている。リストの一番上がホームだ。"
 
@@ -1571,9 +1571,9 @@ msgstr "E   作業台を開く"
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "アップグレードには作業台が必要。基地に戻ろう。"
 
-#: scenes/slice_orbit.gd:1133
-msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
-msgstr "作業台を修理した。作業台で E を押すとキューブでアップグレードできる。"
+#: scenes/slice_orbit.gd:1133 systems/camp/camp.gd:242
+msgid "Workbench fixed! Press %s at it to buy upgrades."
+msgstr "作業台が直った！そばで %s を押してアップグレードを買おう。"
 
 #: scenes/story_preview.gd:156 ui/loading_screen.gd:166
 msgid "Setting the scene"
@@ -2222,51 +2222,51 @@ msgstr "LEDGER  WMS-07"
 msgid "Reward: %s"
 msgstr "報酬：%s"
 
-#: story/objectives.gd:468
+#: story/objectives.gd:475
 msgid "Objective complete  ·  %s"
 msgstr "目標達成  ·  %s"
 
-#: story/objectives.gd:495
+#: story/objectives.gd:502
 msgid "Goal complete  ·  %s"
 msgstr "目標達成  ·  %s"
 
-#: story/objectives.gd:796
+#: story/objectives.gd:803
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "ベーラーを取り付けた！胸をいっぱいにして、[%s] でベールを作り、はかりまで運ぼう。"
 
-#: story/objectives.gd:818 story/objectives.gd:1014
+#: story/objectives.gd:825 story/objectives.gd:1021
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "胸がいっぱい。[%s] を押してベールを作ろう。"
 
-#: story/objectives.gd:834
+#: story/objectives.gd:841
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "探知機が近くに埋まったロボットのパーツを見つけたよ。「埋もれたパーツ」の表示を追って。真上に来るとピッと鳴るよ。"
 
-#: story/objectives.gd:836
+#: story/objectives.gd:843
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "埋もれたパーツ：反応が一番強くなるまで近づいて、掘り出そう。"
 
-#: story/objectives.gd:1015
+#: story/objectives.gd:1022
 msgid "Your chest is full. Bring it to the bin."
 msgstr "胸がいっぱい。ゴミ箱へ運ぼう。"
 
-#: story/objectives.gd:1022
+#: story/objectives.gd:1036
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "胸がいっぱい。おうちへ帰ろう。ゴミ箱は高い煙の下だよ。"
 
-#: story/objectives.gd:1024
+#: story/objectives.gd:1038
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "ベールをおうちへ運ぼう。はかりは高い煙の下だよ。"
 
-#: story/objectives.gd:1024
+#: story/objectives.gd:1038
 msgid "Carry your bale to the scale by the bin."
 msgstr "ベールをゴミ箱のそばのはかりへ運ぼう。"
 
-#: story/objectives.gd:1034
+#: story/objectives.gd:1045
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "おうちへ帰ろう。光の柱を追って高い煙のところへ。"
 
-#: story/objectives.gd:1044
+#: story/objectives.gd:1055
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "ここには拾うものがない。もっとゴミのあるところへ歩こう。"
 
@@ -3216,10 +3216,6 @@ msgstr "月光"
 #: systems/tunes.gd:390
 msgid "New CD: %s by %s, from %s"
 msgstr "新しいCD：%s（%s、%s出身）"
-
-#: systems/camp/camp.gd:242
-msgid "Workbench fixed! Press %s at it to buy upgrades."
-msgstr "作業台が直った！そばで %s を押してアップグレードを買おう。"
 
 #: systems/camp/camp.gd:414
 msgid "E   %s (Lv %d): fully upgraded"
@@ -17044,6 +17040,9 @@ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
+#~ msgstr "作業台を修理した。作業台で E を押すとキューブでアップグレードできる。"
 
 #~ msgid "Place a Water Tank"
 #~ msgstr "給水タンクを置く"

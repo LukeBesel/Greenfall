@@ -491,7 +491,7 @@ msgstr "Fardos valendo %s se acumularam na base sem ninguém para levá-los. Lum
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Os purificadores filtraram o ar o tempo todo. Está um pouco mais limpo."
 
-#: core/pace.gd:147 story/objectives.gd:1026
+#: core/pace.gd:147 story/objectives.gd:1040
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "Pesado demais. Melhore a Força de levantamento na bancada."
 
@@ -711,7 +711,7 @@ msgstr "Novo visual do Lumi: %s"
 msgid "Home. The workbench is by the pod."
 msgstr "Em casa. A bancada fica ao lado da cápsula."
 
-#: planet/sites/hub_purpose.gd:174 story/objectives.gd:1033
+#: planet/sites/hub_purpose.gd:174 story/objectives.gd:1044
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "O foguete espera na plataforma. Casa é o primeiro da lista."
 
@@ -1577,9 +1577,9 @@ msgstr "E   Abrir a bancada"
 msgid "Upgrades need a workbench. Head back to the hub."
 msgstr "Melhorias precisam de uma bancada. Volte para a base."
 
-#: scenes/slice_orbit.gd:1133
-msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
-msgstr "Bancada consertada. Aperte E nela para gastar cubos em melhorias."
+#: scenes/slice_orbit.gd:1133 systems/camp/camp.gd:242
+msgid "Workbench fixed! Press %s at it to buy upgrades."
+msgstr "Bancada consertada! Aperte %s nela para comprar melhorias."
 
 #: scenes/story_preview.gd:156 ui/loading_screen.gd:166
 msgid "Setting the scene"
@@ -2228,51 +2228,51 @@ msgstr "LEDGER  WMS-07"
 msgid "Reward: %s"
 msgstr "Recompensa: %s"
 
-#: story/objectives.gd:468
+#: story/objectives.gd:475
 msgid "Objective complete  ·  %s"
 msgstr "Objetivo concluído  ·  %s"
 
-#: story/objectives.gd:495
+#: story/objectives.gd:502
 msgid "Goal complete  ·  %s"
 msgstr "Objetivo concluído  ·  %s"
 
-#: story/objectives.gd:796
+#: story/objectives.gd:803
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "Enfardadeira instalada! Encha seu peito, aperte [%s] para prensar um fardo e leve-o até a balança."
 
-#: story/objectives.gd:818 story/objectives.gd:1014
+#: story/objectives.gd:825 story/objectives.gd:1021
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Seu peito está cheio. Aperte [%s] para fazer um fardo."
 
-#: story/objectives.gd:834
+#: story/objectives.gd:841
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "Seu detector achou uma peça de robô enterrada aqui perto. Siga a leitura PEÇA ENTERRADA; ele apita quando você está bem em cima."
 
-#: story/objectives.gd:836
+#: story/objectives.gd:843
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "PEÇA ENTERRADA: ande na direção dela até a leitura chegar ao máximo e desenterre."
 
-#: story/objectives.gd:1015
+#: story/objectives.gd:1022
 msgid "Your chest is full. Bring it to the bin."
 msgstr "Seu peito está cheio. Leve até a lixeira."
 
-#: story/objectives.gd:1022
+#: story/objectives.gd:1036
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "Seu peito está cheio. Volte para casa: a lixeira fica embaixo da fumaça alta."
 
-#: story/objectives.gd:1024
+#: story/objectives.gd:1038
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "Leve seu fardo para casa: a balança fica embaixo da fumaça alta."
 
-#: story/objectives.gd:1024
+#: story/objectives.gd:1038
 msgid "Carry your bale to the scale by the bin."
 msgstr "Leve seu fardo até a balança, ao lado da lixeira."
 
-#: story/objectives.gd:1034
+#: story/objectives.gd:1045
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "Volte para casa: siga o feixe até a fumaça alta."
 
-#: story/objectives.gd:1044
+#: story/objectives.gd:1055
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Nada para pegar aqui. Ande até onde tem mais lixo."
 
@@ -3228,10 +3228,6 @@ msgstr "Luar"
 #: systems/tunes.gd:390
 msgid "New CD: %s by %s, from %s"
 msgstr "Novo CD: %s de %s, de %s"
-
-#: systems/camp/camp.gd:242
-msgid "Workbench fixed! Press %s at it to buy upgrades."
-msgstr "Bancada consertada! Aperte %s nela para comprar melhorias."
 
 #: systems/camp/camp.gd:414
 msgid "E   %s (Lv %d): fully upgraded"
@@ -17061,6 +17057,9 @@ msgstr "Aquele pórtico desmanchou a frota do Ledger quando o dinheiro acabou. A
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Um mundo de ferrugem, verde. Os velhos guindastes têm flores aos pés. As contas estão fechadas, {name}. Nós as equilibramos."
+
+#~ msgid "Workbench fixed. Press E at it to spend cubes on upgrades."
+#~ msgstr "Bancada consertada. Aperte E nela para gastar cubos em melhorias."
 
 #~ msgid "Place a Water Tank"
 #~ msgstr "Coloque um Tanque de Água"
