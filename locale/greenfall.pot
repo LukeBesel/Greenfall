@@ -490,7 +490,7 @@ msgstr ""
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr ""
 
-#: core/pace.gd:147 story/objectives.gd:999
+#: core/pace.gd:147 story/objectives.gd:1064
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr ""
 
@@ -504,6 +504,10 @@ msgstr ""
 
 #: core/pace.gd:260 systems/events.gd:501 ui/goals_panel.gd:284
 msgid "+%s cubes"
+msgstr ""
+
+#: core/pace.gd:278
+msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr ""
 
 #: fauna/fauna.gd:1738
@@ -642,6 +646,10 @@ msgstr ""
 msgid "LIGHT  WATER  LIFE"
 msgstr ""
 
+#: planet/orbit/orbit_crews.gd:223
+msgid "Your robot cleaned a hex! It counts: %d / %d"
+msgstr ""
+
 #: planet/sites/hub_hop.gd:49
 msgid "{interact}  skip"
 msgstr ""
@@ -702,7 +710,7 @@ msgstr ""
 msgid "Home. The workbench is by the pod."
 msgstr ""
 
-#: planet/sites/hub_purpose.gd:174 story/objectives.gd:1006
+#: planet/sites/hub_purpose.gd:174 story/objectives.gd:1071
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr ""
 
@@ -796,35 +804,35 @@ msgstr ""
 msgid "%s  ·  the %s"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:116
+#: planet/sites/orbit_sites.gd:118
 msgid "The rocket is in flight."
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:138
+#: planet/sites/orbit_sites.gd:140
 msgid "Bases restored: %d of %d"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:176
+#: planet/sites/orbit_sites.gd:178
 msgid "E   Rocket: choose a destination"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:214
+#: planet/sites/orbit_sites.gd:216
 msgid "HOME"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:214
+#: planet/sites/orbit_sites.gd:216
 msgid "NEXT STOP"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:216
+#: planet/sites/orbit_sites.gd:218
 msgid "Upgrade the rocket first"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:234
+#: planet/sites/orbit_sites.gd:236
 msgid "%s site"
 msgstr ""
 
-#: planet/sites/orbit_sites.gd:235
+#: planet/sites/orbit_sites.gd:237
 msgid "Hub %d"
 msgstr ""
 
@@ -1184,7 +1192,7 @@ msgstr ""
 msgid "base barrel"
 msgstr ""
 
-#: robots/robot.gd:263 systems/research.gd:400
+#: robots/robot.gd:263 systems/research.gd:404
 msgid "tank"
 msgstr ""
 
@@ -2195,55 +2203,55 @@ msgstr ""
 msgid "LEDGER  WMS-07"
 msgstr ""
 
-#: story/objectives.gd:224
+#: story/objectives.gd:241
 msgid "Reward: %s"
 msgstr ""
 
-#: story/objectives.gd:436
+#: story/objectives.gd:468
 msgid "Objective complete  ·  %s"
 msgstr ""
 
-#: story/objectives.gd:463
+#: story/objectives.gd:495
 msgid "Goal complete  ·  %s"
 msgstr ""
 
-#: story/objectives.gd:775
+#: story/objectives.gd:838
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr ""
 
-#: story/objectives.gd:797 story/objectives.gd:987
+#: story/objectives.gd:860 story/objectives.gd:1052
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr ""
 
-#: story/objectives.gd:813
+#: story/objectives.gd:876
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr ""
 
-#: story/objectives.gd:815
+#: story/objectives.gd:878
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr ""
 
-#: story/objectives.gd:988
+#: story/objectives.gd:1053
 msgid "Your chest is full. Bring it to the bin."
 msgstr ""
 
-#: story/objectives.gd:995
+#: story/objectives.gd:1060
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:997
+#: story/objectives.gd:1062
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:997
+#: story/objectives.gd:1062
 msgid "Carry your bale to the scale by the bin."
 msgstr ""
 
-#: story/objectives.gd:1007
+#: story/objectives.gd:1072
 msgid "Head home: follow the beam to the tall smoke."
 msgstr ""
 
-#: story/objectives.gd:1017
+#: story/objectives.gd:1082
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr ""
 
@@ -2503,47 +2511,51 @@ msgstr ""
 msgid "Curio Capsule"
 msgstr ""
 
-#: systems/contracts.gd:316
+#: systems/contracts.gd:319
 msgid "Request complete: %s. Claim it at the workbench."
 msgstr ""
 
-#: systems/contracts.gd:322
+#: systems/contracts.gd:325
 msgid "A request ran out of time. No harm done; a new one will be posted soon."
 msgstr ""
 
-#: systems/contracts.gd:330
+#: systems/contracts.gd:337
+msgid "The Requests board is ready to build: workbench, Upgrades tab, Request Board."
+msgstr ""
+
+#: systems/contracts.gd:346
 msgid "New at the workbench: the Requests board. Small jobs, real rewards."
 msgstr ""
 
-#: systems/contracts.gd:333
+#: systems/contracts.gd:349
 msgid "The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."
 msgstr ""
 
-#: systems/contracts.gd:418
+#: systems/contracts.gd:434
 msgid "Request done: %s."
 msgstr ""
 
-#: systems/contracts.gd:460
+#: systems/contracts.gd:476
 msgid "Requests reward: %s. Paint your fleet with it in the Locker."
 msgstr ""
 
-#: systems/contracts.gd:463
+#: systems/contracts.gd:479
 msgid "Requests reward: %s. Fit it in the Locker."
 msgstr ""
 
-#: systems/contracts.gd:467 systems/contracts.gd:476
+#: systems/contracts.gd:483 systems/contracts.gd:492
 msgid "Requests reward: %s."
 msgstr ""
 
-#: systems/contracts.gd:484
+#: systems/contracts.gd:500
 msgid "Unknown item"
 msgstr ""
 
-#: systems/contracts.gd:497
+#: systems/contracts.gd:513
 msgid "Unlocks after %d requests"
 msgstr ""
 
-#: systems/contracts.gd:498
+#: systems/contracts.gd:514
 msgid "Locked"
 msgstr ""
 
@@ -3006,99 +3018,99 @@ msgstr ""
 msgid "Queue is full"
 msgstr ""
 
-#: systems/research.gd:340 ui/codex_screen.gd:886
+#: systems/research.gd:344 ui/codex_screen.gd:886
 msgid "%ds"
 msgstr ""
 
-#: systems/research.gd:387 systems/research.gd:448
+#: systems/research.gd:391 systems/research.gd:452
 msgid "Research: %s"
 msgstr ""
 
-#: systems/research.gd:397
+#: systems/research.gd:401
 msgid "scoop reach"
 msgstr ""
 
-#: systems/research.gd:397
+#: systems/research.gd:401
 msgid "scoop width"
 msgstr ""
 
-#: systems/research.gd:397
+#: systems/research.gd:401
 msgid "compartment size"
 msgstr ""
 
-#: systems/research.gd:398
+#: systems/research.gd:402
 msgid "bale value"
 msgstr ""
 
-#: systems/research.gd:398
+#: systems/research.gd:402
 msgid "magnet radius"
 msgstr ""
 
-#: systems/research.gd:398
+#: systems/research.gd:402
 msgid "scoop speed"
 msgstr ""
 
-#: systems/research.gd:399
+#: systems/research.gd:403
 msgid "field-note cubes"
 msgstr ""
 
-#: systems/research.gd:399
+#: systems/research.gd:403
 msgid "research speed"
 msgstr ""
 
-#: systems/research.gd:399
+#: systems/research.gd:403
 msgid "lake clarity"
 msgstr ""
 
-#: systems/research.gd:400
+#: systems/research.gd:404
 msgid "speed"
 msgstr ""
 
-#: systems/research.gd:400
+#: systems/research.gd:404
 msgid "work rate"
 msgstr ""
 
-#: systems/research.gd:400
+#: systems/research.gd:404
 msgid "range"
 msgstr ""
 
-#: systems/research.gd:401
+#: systems/research.gd:405
 msgid "bale quality"
 msgstr ""
 
-#: systems/research.gd:401
+#: systems/research.gd:405
 msgid "carry"
 msgstr ""
 
-#: systems/research.gd:402
+#: systems/research.gd:406
 msgid "plant growth"
 msgstr ""
 
-#: systems/research.gd:402
+#: systems/research.gd:406
 msgid "seeds per bloom"
 msgstr ""
 
-#: systems/research.gd:423
+#: systems/research.gd:427
 msgid "Unlocks the %s robot"
 msgstr ""
 
-#: systems/research.gd:425
+#: systems/research.gd:429
 msgid "Unlocks %s seeds"
 msgstr ""
 
-#: systems/research.gd:427
+#: systems/research.gd:431
 msgid "Unlocks: %s"
 msgstr ""
 
-#: systems/research.gd:571
+#: systems/research.gd:604
 msgid "While you were away, research finished: %s."
 msgstr ""
 
-#: systems/research.gd:602
+#: systems/research.gd:635
 msgid "New robot plans: %s. %s"
 msgstr ""
 
-#: systems/research.gd:607
+#: systems/research.gd:640
 msgid "Research complete: %s."
 msgstr ""
 
@@ -4742,7 +4754,7 @@ msgstr ""
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr ""
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:495 ui/objective_card.gd:149
+#: ui/goals_panel.gd:231 ui/list_detail.gd:495 ui/objective_card.gd:181
 msgid "DONE"
 msgstr ""
 
@@ -5364,7 +5376,7 @@ msgstr ""
 msgid "Erase and start"
 msgstr ""
 
-#: ui/objective_card.gd:52
+#: ui/objective_card.gd:56
 msgid "OBJECTIVE"
 msgstr ""
 
@@ -12204,6 +12216,10 @@ msgstr ""
 
 #: data/objectives.json:objectives[research1].desc
 msgid "Workbench, Research tab. Research unlocks new robots."
+msgstr ""
+
+#: data/objectives.json:objectives[research1].hint
+msgid "First add the Research Desk: workbench, Upgrades tab."
 msgstr ""
 
 #: data/objectives.json:objectives[research1].lines

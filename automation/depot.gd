@@ -130,6 +130,12 @@ func _physics_process(delta: float) -> void:
 			Pace.try_dump(patch, bin.global_position, Pace.BIN_RADIUS, bin)
 		else:
 			Pace.try_dump(patch, global_position, pad_radius)
+			# [v9a] Goal audit: the beam for "empty your chest" stands on the bin's body, 3.3 m off the
+			# scale's centre; standing at the bin did nothing (the reach was only the scale plate).
+			if _chute:
+				Pace.try_dump(patch, bin_world(), Pace.BIN_RADIUS)
+				if not Pace.dump_allowed():
+					Pace.bin_refused_hint(patch, bin_world())
 	# Loose cubes on the pad get sucked in.
 	for n: Node in get_tree().get_nodes_in_group("junk_cube"):
 		var c: JunkCube = n

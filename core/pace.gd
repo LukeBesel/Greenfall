@@ -262,6 +262,22 @@ static func dump_compartment(patch: Node3D, at: Vector3, into: Object = null) ->
 	return paid
 
 
+## [v9a] After the Baler the bin takes no loose trash. A chest walked up to it got no word at all
+## (goal audit): say what to do instead, at most every few seconds.
+static func bin_refused_hint(patch: Node3D, bin_pos: Vector3) -> void:
+	var comp: Compartment = patch.get("compartment") if patch else null
+	if comp == null or comp.is_empty() or dump_allowed():
+		return
+	var d: Vector3 = patch.global_position - bin_pos
+	d -= bin_pos.normalized() * d.dot(bin_pos.normalized())
+	var now: int = Time.get_ticks_msec()
+	if d.length() > BIN_RADIUS or now - _hint_t < 5000:
+		return
+	_hint_t = now
+	Audio.play("buzz", 1.2, -12.0)
+	Vfx.float_text(patch.global_position + OrbitUp.up(patch.global_position) * 1.9, TranslationServer.translate("No loose trash now. Press [%s] for a bale, then put it on the scale.") % Settings.glyph("cube"), Color(1.0, 0.85, 0.5), 0.45, 0.8)
+
+
 ## Per-frame check from the depot (and anything else Lumi can empty into): dumps when Lumi is
 ## within `radius` of `pos` with junk in his chest and dumping is allowed.
 static func try_dump(patch: Node3D, pos: Vector3, radius: float, into: Object = null) -> float:
