@@ -49,7 +49,7 @@ func test_goal_titles_fit_goals_card() -> void:
 	var list: Array = goals.get("goals", [])
 	assert_gt(list.size(), 0)
 	for g: Dictionary in list:
-		var w: float = font.get_string_size(str(g["text"]), HORIZONTAL_ALIGNMENT_LEFT, -1, 15).x
+		var w: float = font.get_string_size(Objectives.glyphs(str(g["text"])), HORIZONTAL_ALIGNMENT_LEFT, -1, 15).x  # [v9d] as shown: {key} becomes [H]
 		assert_lt(w, max_w, "goal '%s' fits the goals card (%.0f px)" % [g["text"], w])
 
 

@@ -182,3 +182,24 @@ line and (where the step counts) a count and bar; before this audit no card had 
 | bales | pressed from any chest of junk (after the Baler) | sold at the scale; always more junk | OK |
 | robots | built at the bench from Parts | retiring one at the nursery removes it, but steps count robots of the type now (robot, haul): rebuilding is always possible | OK |
 | chest space | the bin (before the Baler), the bale key (after) | full chest: buzz, meter shakes, line says what to do | OK; the bale key on an EMPTY chest said nothing: FIXED ("Your chest is empty. Scoop some trash first.") |
+
+### Follow-up: visual card, toast queue, keys, refusals, markers (13 Nov)
+
+| item | before | now | verdict |
+|---|---|---|---|
+| objective card | title + 3-4 lines of small text + an orange sentence ("Need 600 more cubes. 30 more parts...") | a drawn picture of the thing (ui/step_icons.gd: bin, chest, scoop, press, bale, tower, Glim lantern, hex, gear = Bot Bay, robot, seed, rocket, station flag, base house, Haul Bug, research flask...), a big title (story steps and goals over ~5 words have a `short` title), ONE progress element (pips for counts up to 8, else a bar), the price as icon chips "0 / 600" that fill and turn green, one held hint (no flipping), the reason folded after 8 s (G unfolds it with the full title) | FIXED |
+| toasts | a burst landed at once, the stack dropped the first lines | queue (ui/notify_stack.gd): a new line every 1.8 s, two readable at once, story/hint/goal never dropped, extra info lines in a burst skipped; each row has a picture | FIXED |
+| long toasts | Salvage Surge 17, drone 21/26, wildlife 18, rain 16, supply drop 20, rare part 16, ledger audit 21, outpost 18, rocket piece + trade 22 (one joined line), Baler 18, Signal Jammer 17, hub_wake_3/4/5 reasons 13-16 words | each 12 words or fewer; the station wake's lines are separate toasts in the queue | FIXED (travel's hub_purpose.gd join, hub_plan.gd trade line and story_reasons hub_wake_3/4/5 texts changed) |
+| hard-coded keys | "press E" (telescope, rocket, last seed, workbench), (M), (K), (P), (H) | `{interact}`, `{open_globe}`, `{open_codex}`, `{photo_mode}`, `{garden_mode}`; toasts, goal rows and the card run Objectives.glyphs; tests/test_keys_in_text.gd fails on a key name in a player string (code tr() strings and data text) | FIXED |
+| silent refusals | Glim on cooldown, bench rows, upgrade cards, robot build/tier, research, base/scrubber/jammer, telescope, rockets, yard builds, stations: buzz only | ui/refuse.gd: a short reason, at most once every 3 s; --walk-goals checks a refused bench click says why | FIXED |
+| world markers (step frames, Lumi 12 m from each target) | the objective hex outline (0.22 m line) could not be seen from 12 m on any "clean" step | the outline is wider and stands up as a 1.1 m glowing curtain (story/objective_hex.gd); bench / rocket targets: the beam and its ground ring read clearly | FIXED (shared) |
+| interact prompt under WREN's line | prompt dimmed under the bar | the prompt rises above the bar while they would overlap; `--ui-audit` play pass checks a prompt and a line together | FIXED |
+| "New design unlocked" card | centred at the top, could cover the objective card | docks left of the card's corner (DesignToast.dock_x, tested) | FIXED |
+| name tags a child acts on | - | NURSERY, SCALE, COMPOST PRESS go through tr(); bin, workbench and greenhouse have no word tags (shapes); shop signs and slogans are decor | OK |
+| "Pet a stray cat" | not played | --walk-goals: dev puts a cat at the base, real E pets it | FIXED (played) |
+| "Place a decoration (H)" | fixed key | `{garden_mode}`; the walk checks the card shows the binding | FIXED |
+
+Step-marker limits: the frames are from the start world (targets are the start's: the outlined hex
+near the pod, the bench beam); the rocket and station markers of later steps need a later world.
+Renders: before screenshots/v9/before/card_*.png, after screenshots/v9/after/card_*.png
+(960x540 and 1500x1000), all steps at 960x540 in screenshots/v9/after960/ and after_sheet_N.png.
