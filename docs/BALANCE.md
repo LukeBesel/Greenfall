@@ -22,7 +22,7 @@ The card (story steps from `data/objectives.json`, then `data/goals.json` in fil
 through it; every hub, wake and rocket step shows its price and the cubes saved so far.
 
 1. Start yard: trash bin, chest and scoop upgrades, the Baler, the signal tower, Glim, the first
-   hexes, the Bot Bay, the first robot, its zone, the first seed.
+   hexes, the Bot Bay, the first robot (it cleans on its own: no zone step since v8bot), the first seed.
 2. The rocket stands on the pad after the first seed (`data/hub.json` `rocket.after_objective`).
 3. Hub 2 Garden Row (600), base level 2, hub 3 Gantry Works (2.4K), then a Haul Bug. Each far
    station first asks for 4 of its hexes cleaned (Gantry Works also an outpost), then the wake.
@@ -170,7 +170,7 @@ measured, and what was tuned. All numbers are game time (the sim clock, `GameSta
   stop being useful once the land is clean), Air Scrubbers when rich or when a goal asks, the compost press
   when seeds run short. When the next base level's materials are in, it saves cubes for it and only buys
   robots that can't wait (Drips the garden needs, the lake's Skimmer, the first of each type, goal robots).
-- **Command**: paints the clean crew's zone on the nearest unfinished hexes (frontier), the water and plant
+- **Command** (only with `--autoplay-zones` since v8bot; the game no longer asks for zones): paints the clean crew's zone on the nearest unfinished hexes (frontier), the water and plant
   crews' zones on the garden hexes; moves Multibots from clean to water once the land is clean.
 - **Garden**: picks up the seed tin, plants one hex at a time, waters by hand until a Drip exists (and
   again when there is nothing left to clean), refills at the base barrel. Reads memory shards (closes the

@@ -378,7 +378,7 @@ msgstr "[ĜÔÑÉ FÔŔ ĜÔÔÐ  -%d ķĝ ~~~~]"
 msgid "LIFT OFF"
 msgstr "[ĻÎFŢ ÔFF ~]"
 
-#: automation/rocket.gd:862
+#: automation/rocket.gd:867
 msgid "Space / Esc  skip"
 msgstr "[Šþàçé / Éšç  šķîþ ~~~]"
 
@@ -488,7 +488,7 @@ msgstr "[Bàļéš ŵôŕţĥ %s ŵéŕé šţàçķéð àţ ţĥé ĥûb ŵî�
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "[Ţĥé šçŕûbbéŕš ƒîļţéŕéð ţĥé àîŕ ţĥé ŵĥôļé ţîmé. Îţ'š à ļîţţļé çļéàŕéŕ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: core/pace.gd:147 story/objectives.gd:964
+#: core/pace.gd:147 story/objectives.gd:984
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "[Ţôô ĥéàvý. Ûþĝŕàðé Ļîƒţ àţ ţĥé béñçĥ. ~~~~~~~~~~]"
 
@@ -700,7 +700,7 @@ msgstr "[Ñéŵ Ļûmî ðéšîĝñ: %s ~~~~]"
 msgid "Home. The workbench is by the pod."
 msgstr "[Ĥômé. Ţĥé ŵôŕķbéñçĥ îš bý ţĥé þôð. ~~~~~~~~~]"
 
-#: planet/sites/hub_purpose.gd:174 story/objectives.gd:971
+#: planet/sites/hub_purpose.gd:174 story/objectives.gd:991
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "[Ţĥé ŕôçķéţ ŵàîţš ôñ ţĥé þàð. Ĥômé îš ƒîŕšţ ôñ îţš ļîšţ. ~~~~~~~~~~~~~~~~]"
 
@@ -724,7 +724,7 @@ msgstr "[Ûþĝŕàðé ţĥé ŕôçķéţ, ţĥéñ ŵàķé ţĥé %s ~~~~~~~
 msgid "Wake the %s (%s)"
 msgstr "[Ŵàķé ţĥé %s (%s) ~~~]"
 
-#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:583
+#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:584
 msgid "E   Wake the %s  (%s)"
 msgstr "E   [Ŵàķé ţĥé %s  (%s) ~~~]"
 
@@ -1570,7 +1570,7 @@ msgstr "[Ŕôbôţš bûîļţ ~]"
 msgid "Time played"
 msgstr "[Ţîmé þļàýéð ~]"
 
-#: steam/demo_end_screen.gd:78 ui/main_menu.gd:362
+#: steam/demo_end_screen.gd:78 ui/main_menu.gd:365
 msgid "Wishlist on Steam"
 msgstr "[Ŵîšĥļîšţ ôñ Šţéàm ~~~]"
 
@@ -1586,7 +1586,7 @@ msgstr "[Ţîţļé šçŕééñ ~]"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "[Ķééþ þļàýîñĝ: ţĥé ƒîŕšţ ðîšţŕîçţ šţàýš ôþéñ, àţ bàšé ļévéļ %d. ~~~~~~~~~~~~~~~~~~~]"
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:519
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:582
 msgid "%dh %02dm"
 msgstr "[%dĥ %02dm ~]"
 
@@ -2177,55 +2177,55 @@ msgstr "[<< ĻÉÐĜÉŔ // ÔFF ŢĤÉ ŔÉÇÔŔÐ >> ~~~~~~~]"
 msgid "LEDGER  WMS-07"
 msgstr "[ĻÉÐĜÉŔ  ŴMŠ-07 ~~]"
 
-#: story/objectives.gd:204
+#: story/objectives.gd:224
 msgid "Reward: %s"
 msgstr "[Ŕéŵàŕð: %s ~]"
 
-#: story/objectives.gd:416
+#: story/objectives.gd:436
 msgid "Objective complete  ·  %s"
 msgstr "[Ôbĵéçţîvé çômþļéţé  ·  %s ~~~~~~]"
 
-#: story/objectives.gd:443
+#: story/objectives.gd:463
 msgid "Goal complete  ·  %s"
 msgstr "[Ĝôàļ çômþļéţé  ·  %s ~~~~]"
 
-#: story/objectives.gd:740
+#: story/objectives.gd:760
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "[Bàļéŕ îñšţàļļéð! Fîļļ ýôûŕ çĥéšţ, þŕéšš [%s] ţô þŕéšš à bàļé, ţĥéñ çàŕŕý îţ ţô ţĥé šçàļé. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:762 story/objectives.gd:952
+#: story/objectives.gd:782 story/objectives.gd:972
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "[Ýôûŕ çĥéšţ îš ƒûļļ. Þŕéšš [%s] ţô màķé à bàļé. ~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:778
+#: story/objectives.gd:798
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "[Ýôûŕ ðéţéçţôŕ'š ƒôûñð à ŕôbôţ þàŕţ bûŕîéð ñéàŕbý. Fôļļôŵ ţĥé BÛŔÎÉÐ ÞÀŔŢ ŕéàðîñĝ; îţ bééþš ôñçé ýôû'ŕé ŕîĝĥţ ôñ ţôþ ôƒ îţ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:780
+#: story/objectives.gd:800
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "[BÛŔÎÉÐ ÞÀŔŢ: ŵàļķ ţôŵàŕð îţ ûñţîļ ţĥé ŕéàðîñĝ þéàķš, ţĥéñ ðîĝ îţ ûþ. ~~~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:953
+#: story/objectives.gd:973
 msgid "Your chest is full. Bring it to the bin."
 msgstr "[Ýôûŕ çĥéšţ îš ƒûļļ. Bŕîñĝ îţ ţô ţĥé bîñ. ~~~~~~~~~~~]"
 
-#: story/objectives.gd:960
+#: story/objectives.gd:980
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "[Ýôûŕ çĥéšţ îš ƒûļļ. Ĥéàð ĥômé: ţĥé bîñ îš ûñðéŕ ţĥé ţàļļ šmôķé. ~~~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:962
+#: story/objectives.gd:982
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "[Çàŕŕý ýôûŕ bàļé ĥômé: ţĥé šçàļé îš ûñðéŕ ţĥé ţàļļ šmôķé. ~~~~~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:962
+#: story/objectives.gd:982
 msgid "Carry your bale to the scale by the bin."
 msgstr "[Çàŕŕý ýôûŕ bàļé ţô ţĥé šçàļé bý ţĥé bîñ. ~~~~~~~~~~~]"
 
-#: story/objectives.gd:972
+#: story/objectives.gd:992
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "[Ĥéàð ĥômé: ƒôļļôŵ ţĥé béàm ţô ţĥé ţàļļ šmôķé. ~~~~~~~~~~~~~]"
 
-#: story/objectives.gd:982
+#: story/objectives.gd:1002
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "[Ñôţĥîñĝ ţô þîçķ ûþ ĥéŕé. Ŵàļķ ţô môŕé ţŕàšĥ. ~~~~~~~~~~~~]"
 
@@ -3507,7 +3507,7 @@ msgstr "[Àļļ çļéàŕ ĥéŕé! ~~]"
 msgid "Only big pieces left"
 msgstr "[Ôñļý bîĝ þîéçéš ļéƒţ ~~~~]"
 
-#: tools/ui_audit_run.gd:332 ui/locker_panel.gd:84 ui/telescope_view.gd:379
+#: tools/ui_audit_run.gd:333 ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"
 msgstr "[Çļôšé ~]"
 
@@ -4301,7 +4301,7 @@ msgstr "[MÀÐÉ ŴÎŢĤ ĻÔVÉ ÀÑÐ ĴÛÑĶ ~~~~~]"
 msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
 msgstr "[Çôðé, þŕôçéðûŕàļ méšĥéš, šýñţĥéšîžéð mûšîç àñð šôûñð, àñð ŵŕîţîñĝ àŕé ôŕîĝîñàļ ţô Ĝŕééñƒàļļ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: ui/credits_roll.gd:148 ui/main_menu.gd:669
+#: ui/credits_roll.gd:148 ui/main_menu.gd:749
 msgid "Music by Lucas"
 msgstr "[Mûšîç bý Ļûçàš ~~]"
 
@@ -4914,47 +4914,47 @@ msgstr "[%s   šéţ bàļé ðôŵñ ~~~]"
 msgid "%s   workbench"
 msgstr "[%s   ŵôŕķbéñçĥ ~~]"
 
-#: ui/key_hints.gd:20
+#: ui/key_hints.gd:22
 msgid "press bale"
 msgstr "[þŕéšš bàļé ~]"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "map"
 msgstr "[màþ ~]"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "command"
 msgstr "[çômmàñð ~]"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "lens"
 msgstr "[ļéñš ~]"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "goals"
 msgstr "[ĝôàļš ~]"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "scoop"
 msgstr "[šçôôþ ~]"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "use"
 msgstr "[ûšé ~]"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "drop"
 msgstr "[ðŕôþ ~]"
 
-#: ui/key_hints.gd:31
+#: ui/key_hints.gd:33
 msgid "workbench"
 msgstr "[ŵôŕķbéñçĥ ~]"
 
-#: ui/key_hints.gd:31
+#: ui/key_hints.gd:33
 msgid "photo"
 msgstr "[þĥôţô ~]"
 
-#: ui/key_hints.gd:133 ui/key_hints.gd:153
+#: ui/key_hints.gd:135 ui/key_hints.gd:155
 msgid "tools"
 msgstr "[ţôôļš ~]"
 
@@ -5217,109 +5217,115 @@ msgstr "[Ûñšàvéð çĥàñĝéš ~~]"
 msgid "Part of this look is still locked."
 msgstr "[Þàŕţ ôƒ ţĥîš ļôôķ îš šţîļļ ļôçķéð. ~~~~~~~~~]"
 
-#: ui/main_menu.gd:329
+#: ui/main_menu.gd:331
 msgid "One small robot. One very big cleanup."
 msgstr "[Ôñé šmàļļ ŕôbôţ. Ôñé véŕý bîĝ çļéàñûþ. ~~~~~~~~~~]"
 
-#: ui/main_menu.gd:333
+#: ui/main_menu.gd:335
 msgid "DEMO  ·  the first district"
 msgstr "[ÐÉMÔ  ·  ţĥé ƒîŕšţ ðîšţŕîçţ ~~~~~~]"
 
-#: ui/main_menu.gd:345 ui/profile_picker.gd:110
+#: ui/main_menu.gd:347 ui/profile_picker.gd:110
 msgid "Continue"
 msgstr "[Çôñţîñûé ~]"
 
-#: ui/main_menu.gd:354 ui/main_menu.gd:359
+#: ui/main_menu.gd:356 ui/main_menu.gd:362
 msgid "New Game"
 msgstr "[Ñéŵ Ĝàmé ~]"
 
-#: ui/main_menu.gd:356
+#: ui/main_menu.gd:359 ui/profile_picker.gd:126
+msgid "%d planet"
+msgid_plural "%d planets"
+msgstr[0] "[%d þļàñéţ ~]"
+msgstr[1] "[%d þļàñéţš ~]"
+
+#: ui/main_menu.gd:359
 msgid "Profiles"
 msgstr "[Þŕôƒîļéš ~]"
 
-#: ui/main_menu.gd:363 ui/main_menu.gd:611 ui/pause_menu.gd:68
+#: ui/main_menu.gd:366 ui/main_menu.gd:691 ui/pause_menu.gd:68
 msgid "Settings"
 msgstr "[Šéţţîñĝš ~]"
 
-#: ui/main_menu.gd:365 ui/pause_menu.gd:72
+#: ui/main_menu.gd:368 ui/pause_menu.gd:72
 msgid "Quit"
 msgstr "[Qûîţ ~]"
 
-#: ui/main_menu.gd:372
+#: ui/main_menu.gd:375
 msgid "Made with Godot"
 msgstr "[Màðé ŵîţĥ Ĝôðôţ ~~]"
 
-#: ui/main_menu.gd:519
+#: ui/main_menu.gd:582
 msgid "%dm"
 msgstr "[%dm ~]"
 
 #. Continue button subtitle: the planet, play time, cube count (e.g. "Verdance · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:526 ui/profile_picker.gd:133
+#: ui/main_menu.gd:589 ui/profile_picker.gd:133
 msgid "%s cubes"
 msgstr "[%s çûbéš ~]"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Jan"
 msgstr "[Ĵàñ ~]"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Feb"
 msgstr "[Féb ~]"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Mar"
 msgstr "[Màŕ ~]"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Apr"
 msgstr "[Àþŕ ~]"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "May"
 msgstr "[Màý ~]"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Jun"
 msgstr "[Ĵûñ ~]"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Jul"
 msgstr "[Ĵûļ ~]"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Aug"
 msgstr "[Àûĝ ~]"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Sep"
 msgstr "[Šéþ ~]"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Oct"
 msgstr "[Ôçţ ~]"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Nov"
 msgstr "[Ñôv ~]"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Dec"
 msgstr "[Ðéç ~]"
 
-#: ui/main_menu.gd:611
+#: ui/main_menu.gd:691
 msgid "Credits"
 msgstr "[Çŕéðîţš ~]"
 
-#: ui/main_menu.gd:640
+#: ui/main_menu.gd:720
 msgid "CREDITS"
 msgstr "[ÇŔÉÐÎŢŠ ~]"
 
-#: ui/main_menu.gd:655 ui/profile_picker.gd:49 ui/settings_panel.gd:123
+#: ui/main_menu.gd:735 ui/profile_picker.gd:49 ui/settings_panel.gd:123
 #: ui/settings_panel.gd:148 ui/world_picker.gd:53
 msgid "Back"
 msgstr "[Bàçķ ~]"
 
-#: ui/main_menu.gd:668
+#: ui/main_menu.gd:748
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -5329,27 +5335,27 @@ msgstr ""
 "Çôðé, þŕôçéðûŕàļ méšĥéš, šýñţĥéšîžéð àûðîô àñð ŵŕîţîñĝ àŕé ôŕîĝîñàļ ţô Ĝŕééñƒàļļ. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]\n"
 "\n"
 
-#: ui/main_menu.gd:672
+#: ui/main_menu.gd:752
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "[Ţĥîŕð-þàŕţý àššéţš: ÇÇ0, Þôļý Ĥàvéñ (þôļýĥàvéñ.çôm). ~~~~~~~~~~~~~~~]"
 
-#: ui/main_menu.gd:690
+#: ui/main_menu.gd:770
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "[%s [color=#%s]bý %s[/color] ~~~~~~]"
 
-#: ui/main_menu.gd:724
+#: ui/main_menu.gd:804
 msgid "START A NEW GAME?"
 msgstr "[ŠŢÀŔŢ À ÑÉŴ ĜÀMÉ? ~~~]"
 
-#: ui/main_menu.gd:725
+#: ui/main_menu.gd:805
 msgid "Your current save will be erased. This can't be undone."
 msgstr "[Ýôûŕ çûŕŕéñţ šàvé ŵîļļ bé éŕàšéð. Ţĥîš çàñ'ţ bé ûñðôñé. ~~~~~~~~~~~~~~~~]"
 
-#: ui/main_menu.gd:733
+#: ui/main_menu.gd:813
 msgid "Keep my save"
 msgstr "[Ķééþ mý šàvé ~]"
 
-#: ui/main_menu.gd:739 ui/profile_picker.gd:213
+#: ui/main_menu.gd:819 ui/profile_picker.gd:213
 msgid "Erase and start"
 msgstr "[Éŕàšé àñð šţàŕţ ~~]"
 
@@ -5644,12 +5650,6 @@ msgstr "[Émþţý šļôţ ~]"
 #: ui/profile_picker.gd:125
 msgid "%s  ·  %s  ·  on %s"
 msgstr "[%s  ·  %s  ·  ôñ %s ~~~~]"
-
-#: ui/profile_picker.gd:126
-msgid "%d planet"
-msgid_plural "%d planets"
-msgstr[0] "[%d þļàñéţ ~]"
-msgstr[1] "[%d þļàñéţš ~]"
 
 #. Save profile summary: how far the Bloom (restoration milestones) has come.
 #: ui/profile_picker.gd:131
@@ -10878,10 +10878,6 @@ msgstr "[Éàŕñ 1,000 çûbéš ~~~]"
 msgid "Build a Scoopie"
 msgstr "[Bûîļð à Šçôôþîé ~~]"
 
-#: data/goals.json:goals[zone_1].text
-msgid "Give a robot a work zone"
-msgstr "[Ĝîvé à ŕôbôţ à ŵôŕķ žôñé ~~~~~]"
-
 #: data/goals.json:goals[earn_3k].text
 msgid "Earn 3,000 cubes"
 msgstr "[Éàŕñ 3,000 çûbéš ~~~]"
@@ -11054,10 +11050,6 @@ msgstr "[Ĝŕôŵ 5 ƒļôŵéŕš ţô bļôôm ~~~~~]"
 #: data/goals.json:goals[shards_2].text
 msgid "Read 2 memory shards"
 msgstr "[Ŕéàð 2 mémôŕý šĥàŕðš ~~~~]"
-
-#: data/goals.json:goals[zone_6].text
-msgid "Zone 6 hexes for your crews"
-msgstr "[Žôñé 6 ĥéxéš ƒôŕ ýôûŕ çŕéŵš ~~~~~~]"
 
 #: data/goals.json:goals[research_8].text
 msgid "Finish 8 research projects"
@@ -12288,29 +12280,17 @@ msgstr "[Ŵôŕķbéñçĥ, Bôţš ţàb. Ŕôbôţš çļéàñ ƒôŕ ýôû.
 msgid "The Bot Bay hums! It can build you a helper. Try the Bots tab at the workbench."
 msgstr "[Ţĥé Bôţ Bàý ĥûmš! Îţ çàñ bûîļð ýôû à ĥéļþéŕ. Ţŕý ţĥé Bôţš ţàb àţ ţĥé ŵôŕķbéñçĥ. ~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
-#: data/objectives.json:objectives[zone].text
-msgid "Show your robot where to clean first"
-msgstr "[Šĥôŵ ýôûŕ ŕôbôţ ŵĥéŕé ţô çļéàñ ƒîŕšţ ~~~~~~~~~~]"
-
-#: data/objectives.json:objectives[zone].desc
-msgid "It cleans by itself. {open_command}: show it where first."
-msgstr "[Îţ çļéàñš bý îţšéļƒ. {open_command}: šĥôŵ îţ ŵĥéŕé ƒîŕšţ. ~~~~~~~~~~~~~~~~~]"
-
-#: data/objectives.json:objectives[zone].lines
-msgid "Your robot already knows the job. Paint a hex, and it starts there."
-msgstr "[Ýôûŕ ŕôbôţ àļŕéàðý ķñôŵš ţĥé ĵôb. Þàîñţ à ĥéx, àñð îţ šţàŕţš ţĥéŕé. ~~~~~~~~~~~~~~~~~~~~]"
-
 #: data/objectives.json:objectives[hex2].text
 msgid "Clean 2 hexes"
 msgstr "[Çļéàñ 2 ĥéxéš ~~]"
 
 #: data/objectives.json:objectives[hex2].desc
-msgid "Clean ground lets plants grow again."
-msgstr "[Çļéàñ ĝŕôûñð ļéţš þļàñţš ĝŕôŵ àĝàîñ. ~~~~~~~~~~]"
+msgid "Your robot cleans on its own. Clean one more hex."
+msgstr "[Ýôûŕ ŕôbôţ çļéàñš ôñ îţš ôŵñ. Çļéàñ ôñé môŕé ĥéx. ~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[hex2].lines
-msgid "One hex clean. Now one more, Lumi."
-msgstr "[Ôñé ĥéx çļéàñ. Ñôŵ ôñé môŕé, Ļûmî. ~~~~~~~~~]"
+msgid "Your robot cleans on its own. Now one more hex, Lumi."
+msgstr "[Ýôûŕ ŕôbôţ çļéàñš ôñ îţš ôŵñ. Ñôŵ ôñé môŕé ĥéx, Ļûmî. ~~~~~~~~~~~~~~~~]"
 
 #: data/objectives.json:objectives[hex3].desc
 msgid "Your robot helps now. Clean ground lets the garden spread."

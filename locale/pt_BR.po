@@ -381,7 +381,7 @@ msgstr "SUMIU DE VEZ  -%d kg"
 msgid "LIFT OFF"
 msgstr "DECOLAGEM"
 
-#: automation/rocket.gd:862
+#: automation/rocket.gd:867
 msgid "Space / Esc  skip"
 msgstr "Espaço / Esc  pular"
 
@@ -491,7 +491,7 @@ msgstr "Fardos valendo %s se acumularam na base sem ninguém para levá-los. Lum
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Os purificadores filtraram o ar o tempo todo. Está um pouco mais limpo."
 
-#: core/pace.gd:147 story/objectives.gd:964
+#: core/pace.gd:147 story/objectives.gd:984
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "Pesado demais. Melhore a Força de levantamento na bancada."
 
@@ -703,7 +703,7 @@ msgstr "Novo visual do Lumi: %s"
 msgid "Home. The workbench is by the pod."
 msgstr "Em casa. A bancada fica ao lado da cápsula."
 
-#: planet/sites/hub_purpose.gd:174 story/objectives.gd:971
+#: planet/sites/hub_purpose.gd:174 story/objectives.gd:991
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "O foguete espera na plataforma. Casa é o primeiro da lista."
 
@@ -727,7 +727,7 @@ msgstr "Melhore o foguete e depois desperte: %s"
 msgid "Wake the %s (%s)"
 msgstr "Desperte: %s (%s)"
 
-#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:583
+#: planet/sites/hub_purpose.gd:298 tools/ui_audit_run.gd:584
 msgid "E   Wake the %s  (%s)"
 msgstr "E   Despertar: %s  (%s)"
 
@@ -1573,7 +1573,7 @@ msgstr "Robôs construídos"
 msgid "Time played"
 msgstr "Tempo de jogo"
 
-#: steam/demo_end_screen.gd:78 ui/main_menu.gd:362
+#: steam/demo_end_screen.gd:78 ui/main_menu.gd:365
 msgid "Wishlist on Steam"
 msgstr "Adicionar à lista de desejos na Steam"
 
@@ -1589,7 +1589,7 @@ msgstr "Tela de título"
 msgid "Keep playing: the first district stays open, at base level %d."
 msgstr "Continuar jogando: o primeiro distrito continua aberto, com a base no nível %d."
 
-#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:519
+#: steam/demo_end_screen.gd:124 ui/codex_screen.gd:882 ui/main_menu.gd:582
 msgid "%dh %02dm"
 msgstr "%dh %02dm"
 
@@ -2180,55 +2180,55 @@ msgstr "<< LEDGER // EXTRAOFICIAL >>"
 msgid "LEDGER  WMS-07"
 msgstr "LEDGER  WMS-07"
 
-#: story/objectives.gd:204
+#: story/objectives.gd:224
 msgid "Reward: %s"
 msgstr "Recompensa: %s"
 
-#: story/objectives.gd:416
+#: story/objectives.gd:436
 msgid "Objective complete  ·  %s"
 msgstr "Objetivo concluído  ·  %s"
 
-#: story/objectives.gd:443
+#: story/objectives.gd:463
 msgid "Goal complete  ·  %s"
 msgstr "Objetivo concluído  ·  %s"
 
-#: story/objectives.gd:740
+#: story/objectives.gd:760
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "Enfardadeira instalada! Encha seu peito, aperte [%s] para prensar um fardo e leve-o até a balança."
 
-#: story/objectives.gd:762 story/objectives.gd:952
+#: story/objectives.gd:782 story/objectives.gd:972
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Seu peito está cheio. Aperte [%s] para fazer um fardo."
 
-#: story/objectives.gd:778
+#: story/objectives.gd:798
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "Seu detector achou uma peça de robô enterrada aqui perto. Siga a leitura PEÇA ENTERRADA; ele apita quando você está bem em cima."
 
-#: story/objectives.gd:780
+#: story/objectives.gd:800
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "PEÇA ENTERRADA: ande na direção dela até a leitura chegar ao máximo e desenterre."
 
-#: story/objectives.gd:953
+#: story/objectives.gd:973
 msgid "Your chest is full. Bring it to the bin."
 msgstr "Seu peito está cheio. Leve até a lixeira."
 
-#: story/objectives.gd:960
+#: story/objectives.gd:980
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "Seu peito está cheio. Volte para casa: a lixeira fica embaixo da fumaça alta."
 
-#: story/objectives.gd:962
+#: story/objectives.gd:982
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "Leve seu fardo para casa: a balança fica embaixo da fumaça alta."
 
-#: story/objectives.gd:962
+#: story/objectives.gd:982
 msgid "Carry your bale to the scale by the bin."
 msgstr "Leve seu fardo até a balança, ao lado da lixeira."
 
-#: story/objectives.gd:972
+#: story/objectives.gd:992
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "Volte para casa: siga o feixe até a fumaça alta."
 
-#: story/objectives.gd:982
+#: story/objectives.gd:1002
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Nada para pegar aqui. Ande até onde tem mais lixo."
 
@@ -3510,7 +3510,7 @@ msgstr "Tudo limpo aqui!"
 msgid "Only big pieces left"
 msgstr "Só sobraram peças grandes"
 
-#: tools/ui_audit_run.gd:332 ui/locker_panel.gd:84 ui/telescope_view.gd:379
+#: tools/ui_audit_run.gd:333 ui/locker_panel.gd:84 ui/telescope_view.gd:379
 msgid "Close"
 msgstr "Fechar"
 
@@ -4304,7 +4304,7 @@ msgstr "FEITO COM AMOR E SUCATA"
 msgid "Code, procedural meshes, synthesized music and sound, and writing are original to Greenfall."
 msgstr "Código, malhas procedurais, música e sons sintetizados e os textos são originais de Greenfall."
 
-#: ui/credits_roll.gd:148 ui/main_menu.gd:669
+#: ui/credits_roll.gd:148 ui/main_menu.gd:749
 msgid "Music by Lucas"
 msgstr "Música de Lucas"
 
@@ -4917,47 +4917,47 @@ msgstr "%s   largar fardo"
 msgid "%s   workbench"
 msgstr "%s   bancada"
 
-#: ui/key_hints.gd:20
+#: ui/key_hints.gd:22
 msgid "press bale"
 msgstr "prensar fardo"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "map"
 msgstr "mapa"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "command"
 msgstr "ordens"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "lens"
 msgstr "lente"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "goals"
 msgstr "objetivos"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "scoop"
 msgstr "pegar"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "use"
 msgstr "usar"
 
-#: ui/key_hints.gd:30
+#: ui/key_hints.gd:32
 msgid "drop"
 msgstr "soltar"
 
-#: ui/key_hints.gd:31
+#: ui/key_hints.gd:33
 msgid "workbench"
 msgstr "bancada"
 
-#: ui/key_hints.gd:31
+#: ui/key_hints.gd:33
 msgid "photo"
 msgstr "foto"
 
-#: ui/key_hints.gd:133 ui/key_hints.gd:153
+#: ui/key_hints.gd:135 ui/key_hints.gd:155
 msgid "tools"
 msgstr "ferramentas"
 
@@ -5220,109 +5220,115 @@ msgstr "Alterações não salvas"
 msgid "Part of this look is still locked."
 msgstr "Parte deste visual ainda está bloqueada."
 
-#: ui/main_menu.gd:329
+#: ui/main_menu.gd:331
 msgid "One small robot. One very big cleanup."
 msgstr "Um robozinho. Uma faxina enorme."
 
-#: ui/main_menu.gd:333
+#: ui/main_menu.gd:335
 msgid "DEMO  ·  the first district"
 msgstr "DEMO  ·  o primeiro distrito"
 
-#: ui/main_menu.gd:345 ui/profile_picker.gd:110
+#: ui/main_menu.gd:347 ui/profile_picker.gd:110
 msgid "Continue"
 msgstr "Continuar"
 
-#: ui/main_menu.gd:354 ui/main_menu.gd:359
+#: ui/main_menu.gd:356 ui/main_menu.gd:362
 msgid "New Game"
 msgstr "Novo jogo"
 
-#: ui/main_menu.gd:356
+#: ui/main_menu.gd:359 ui/profile_picker.gd:126
+msgid "%d planet"
+msgid_plural "%d planets"
+msgstr[0] "%d planeta"
+msgstr[1] "%d planetas"
+
+#: ui/main_menu.gd:359
 msgid "Profiles"
 msgstr "Perfis"
 
-#: ui/main_menu.gd:363 ui/main_menu.gd:611 ui/pause_menu.gd:68
+#: ui/main_menu.gd:366 ui/main_menu.gd:691 ui/pause_menu.gd:68
 msgid "Settings"
 msgstr "Configurações"
 
-#: ui/main_menu.gd:365 ui/pause_menu.gd:72
+#: ui/main_menu.gd:368 ui/pause_menu.gd:72
 msgid "Quit"
 msgstr "Sair"
 
-#: ui/main_menu.gd:372
+#: ui/main_menu.gd:375
 msgid "Made with Godot"
 msgstr "Feito com Godot"
 
-#: ui/main_menu.gd:519
+#: ui/main_menu.gd:582
 msgid "%dm"
 msgstr "%d min"
 
 #. Continue button subtitle: the planet, play time, cube count (e.g. "Verdance · 1h 05m · 3.4K cubes").
-#: ui/main_menu.gd:526 ui/profile_picker.gd:133
+#: ui/main_menu.gd:589 ui/profile_picker.gd:133
 msgid "%s cubes"
 msgstr "%s cubos"
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Jan"
 msgstr "jan."
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Feb"
 msgstr "fev."
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Mar"
 msgstr "mar."
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Apr"
 msgstr "abr."
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "May"
 msgstr "mai."
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Jun"
 msgstr "jun."
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Jul"
 msgstr "jul."
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Aug"
 msgstr "ago."
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Sep"
 msgstr "set."
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Oct"
 msgstr "out."
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Nov"
 msgstr "nov."
 
-#: ui/main_menu.gd:530
+#: ui/main_menu.gd:593
 msgid "Dec"
 msgstr "dez."
 
-#: ui/main_menu.gd:611
+#: ui/main_menu.gd:691
 msgid "Credits"
 msgstr "Créditos"
 
-#: ui/main_menu.gd:640
+#: ui/main_menu.gd:720
 msgid "CREDITS"
 msgstr "CRÉDITOS"
 
-#: ui/main_menu.gd:655 ui/profile_picker.gd:49 ui/settings_panel.gd:123
+#: ui/main_menu.gd:735 ui/profile_picker.gd:49 ui/settings_panel.gd:123
 #: ui/settings_panel.gd:148 ui/world_picker.gd:53
 msgid "Back"
 msgstr "Voltar"
 
-#: ui/main_menu.gd:668
+#: ui/main_menu.gd:748
 msgid ""
 "[b][color=#%s]GREENFALL[/color][/b]\n"
 "Code, procedural meshes, synthesized audio and writing are original to Greenfall.\n"
@@ -5332,27 +5338,27 @@ msgstr ""
 "Código, malhas procedurais, áudio sintetizado e textos são originais de Greenfall.\n"
 "\n"
 
-#: ui/main_menu.gd:672
+#: ui/main_menu.gd:752
 msgid "Third-party assets: CC0, Poly Haven (polyhaven.com)."
 msgstr "Recursos de terceiros: CC0, Poly Haven (polyhaven.com)."
 
-#: ui/main_menu.gd:690
+#: ui/main_menu.gd:770
 msgid "%s [color=#%s]by %s[/color]"
 msgstr "%s [color=#%s]por %s[/color]"
 
-#: ui/main_menu.gd:724
+#: ui/main_menu.gd:804
 msgid "START A NEW GAME?"
 msgstr "COMEÇAR UM NOVO JOGO?"
 
-#: ui/main_menu.gd:725
+#: ui/main_menu.gd:805
 msgid "Your current save will be erased. This can't be undone."
 msgstr "Seu jogo salvo atual será apagado. Isso não pode ser desfeito."
 
-#: ui/main_menu.gd:733
+#: ui/main_menu.gd:813
 msgid "Keep my save"
 msgstr "Manter meu jogo salvo"
 
-#: ui/main_menu.gd:739 ui/profile_picker.gd:213
+#: ui/main_menu.gd:819 ui/profile_picker.gd:213
 msgid "Erase and start"
 msgstr "Apagar e começar"
 
@@ -5647,12 +5653,6 @@ msgstr "Espaço vazio"
 #: ui/profile_picker.gd:125
 msgid "%s  ·  %s  ·  on %s"
 msgstr "%s  ·  %s  ·  em %s"
-
-#: ui/profile_picker.gd:126
-msgid "%d planet"
-msgid_plural "%d planets"
-msgstr[0] "%d planeta"
-msgstr[1] "%d planetas"
 
 #. Save profile summary: how far the Bloom (restoration milestones) has come.
 #: ui/profile_picker.gd:131
@@ -10881,10 +10881,6 @@ msgstr "Ganhe 1.000 cubos"
 msgid "Build a Scoopie"
 msgstr "Construa um Scoopie"
 
-#: data/goals.json:goals[zone_1].text
-msgid "Give a robot a work zone"
-msgstr "Dê uma zona de trabalho a um robô"
-
 #: data/goals.json:goals[earn_3k].text
 msgid "Earn 3,000 cubes"
 msgstr "Ganhe 3.000 cubos"
@@ -11057,10 +11053,6 @@ msgstr "Faça 5 flores florirem"
 #: data/goals.json:goals[shards_2].text
 msgid "Read 2 memory shards"
 msgstr "Leia 2 fragmentos de memória"
-
-#: data/goals.json:goals[zone_6].text
-msgid "Zone 6 hexes for your crews"
-msgstr "Defina 6 hexágonos para suas equipes"
 
 #: data/goals.json:goals[research_8].text
 msgid "Finish 8 research projects"
@@ -12291,29 +12283,17 @@ msgstr "Bancada, aba Bots. Os robôs limpam para você."
 msgid "The Bot Bay hums! It can build you a helper. Try the Bots tab at the workbench."
 msgstr "A Baia de robôs está zumbindo! Ela pode construir um ajudante para você. Veja a aba Bots na bancada."
 
-#: data/objectives.json:objectives[zone].text
-msgid "Show your robot where to clean first"
-msgstr "Mostre ao seu robô onde limpar primeiro"
-
-#: data/objectives.json:objectives[zone].desc
-msgid "It cleans by itself. {open_command}: show it where first."
-msgstr "Ele limpa sozinho. {open_command}: mostre por onde começar."
-
-#: data/objectives.json:objectives[zone].lines
-msgid "Your robot already knows the job. Paint a hex, and it starts there."
-msgstr "Seu robô já sabe o que fazer. Pinte um hexágono e ele começa por ali."
-
 #: data/objectives.json:objectives[hex2].text
 msgid "Clean 2 hexes"
 msgstr "Limpe 2 hexágonos"
 
 #: data/objectives.json:objectives[hex2].desc
-msgid "Clean ground lets plants grow again."
-msgstr "Em chão limpo as plantas crescem de novo."
+msgid "Your robot cleans on its own. Clean one more hex."
+msgstr "Seu robô limpa sozinho. Limpe mais um hexágono."
 
 #: data/objectives.json:objectives[hex2].lines
-msgid "One hex clean. Now one more, Lumi."
-msgstr "Um hexágono limpo. Agora mais um, Lumi."
+msgid "Your robot cleans on its own. Now one more hex, Lumi."
+msgstr "Seu robô limpa sozinho. Agora mais um hexágono, Lumi."
 
 #: data/objectives.json:objectives[hex3].desc
 msgid "Your robot helps now. Clean ground lets the garden spread."
@@ -17037,6 +17017,27 @@ msgstr "Aquele pórtico desmanchou a frota do Ledger quando o dinheiro acabou. A
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Um mundo de ferrugem, verde. Os velhos guindastes têm flores aos pés. As contas estão fechadas, {name}. Nós as equilibramos."
+
+#~ msgid "Give a robot a work zone"
+#~ msgstr "Dê uma zona de trabalho a um robô"
+
+#~ msgid "Zone 6 hexes for your crews"
+#~ msgstr "Defina 6 hexágonos para suas equipes"
+
+#~ msgid "Show your robot where to clean first"
+#~ msgstr "Mostre ao seu robô onde limpar primeiro"
+
+#~ msgid "It cleans by itself. {open_command}: show it where first."
+#~ msgstr "Ele limpa sozinho. {open_command}: mostre por onde começar."
+
+#~ msgid "Your robot already knows the job. Paint a hex, and it starts there."
+#~ msgstr "Seu robô já sabe o que fazer. Pinte um hexágono e ele começa por ali."
+
+#~ msgid "Clean ground lets plants grow again."
+#~ msgstr "Em chão limpo as plantas crescem de novo."
+
+#~ msgid "One hex clean. Now one more, Lumi."
+#~ msgstr "Um hexágono limpo. Agora mais um, Lumi."
 
 #~ msgid "Clean %d hexes first."
 #~ msgstr "Limpe %d hexágonos primeiro."

@@ -810,7 +810,7 @@ func _effect(e: Dictionary) -> void:
 				Audio.play("arcade", 0.6, -6.0)
 				Vfx.float_text(top + OrbitUp.up(top) * 0.6, tr("GAME OVER  ·  SCORE 12"), Color(1.0, 0.6, 0.4), 1.1, 1.0))
 		"cat_shell":
-			Audio.play("purr", 1.0, -3.0)
+			Audio.play("purr", 1.0, -12.0)  # [v8snd] was -3 dB
 			var eye: OmniLight3D = n.get_node_or_null("Light")
 			if eye:
 				var tw2 := eye.create_tween()
