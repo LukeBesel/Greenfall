@@ -9935,11 +9935,11 @@ msgid "Robot Hiccup"
 msgstr ""
 
 #: data/events.json:events[robot_hiccup].toast
-msgid "%s has the hiccups and stopped working. Walk over and press E for a quick fix."
+msgid "%s has the hiccups and stopped working. Walk over and press {interact} for a quick fix."
 msgstr ""
 
 #: data/events.json:events[robot_hiccup].hud
-msgid "Walk to the stuck robot and press E"
+msgid "Walk to the stuck robot and press {interact}"
 msgstr ""
 
 #: data/events.json:events[wildlife_visit].name
@@ -9947,11 +9947,11 @@ msgid "Wildlife Visit"
 msgstr ""
 
 #: data/events.json:events[wildlife_visit].toast
-msgid "Something is visiting a thriving hex %s of you. Sneak up and press E to take a photo."
+msgid "Something is visiting a thriving hex %s of you. Sneak up and press {interact} to take a photo."
 msgstr ""
 
 #: data/events.json:events[wildlife_visit].hud
-msgid "Find the visitor and press E for a photo"
+msgid "Find the visitor and press {interact} for a photo"
 msgstr ""
 
 #: data/events.json:events[rare_part_signal].name

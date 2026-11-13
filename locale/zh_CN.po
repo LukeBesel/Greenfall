@@ -10038,24 +10038,24 @@ msgid "Robot Hiccup"
 msgstr "机器人打嗝"
 
 #: data/events.json:events[robot_hiccup].toast
-msgid "%s has the hiccups and stopped working. Walk over and press E for a quick fix."
-msgstr "%s 打嗝了，停止了工作。走过去按 E 快速修理。"
+msgid "%s has the hiccups and stopped working. Walk over and press {interact} for a quick fix."
+msgstr "%s 打嗝了，停止了工作。走过去按 {interact} 快速修理。"
 
 #: data/events.json:events[robot_hiccup].hud
-msgid "Walk to the stuck robot and press E"
-msgstr "走到卡住的机器人旁按 E"
+msgid "Walk to the stuck robot and press {interact}"
+msgstr "走到卡住的机器人旁按 {interact}"
 
 #: data/events.json:events[wildlife_visit].name
 msgid "Wildlife Visit"
 msgstr "野生动物来访"
 
 #: data/events.json:events[wildlife_visit].toast
-msgid "Something is visiting a thriving hex %s of you. Sneak up and press E to take a photo."
-msgstr "有东西正在你%s的一个繁茂六角格上做客。悄悄靠近，按 E 拍照。"
+msgid "Something is visiting a thriving hex %s of you. Sneak up and press {interact} to take a photo."
+msgstr "有东西正在你%s的一个繁茂六角格上做客。悄悄靠近，按 {interact} 拍照。"
 
 #: data/events.json:events[wildlife_visit].hud
-msgid "Find the visitor and press E for a photo"
-msgstr "找到访客并按 E 拍照"
+msgid "Find the visitor and press {interact} for a photo"
+msgstr "找到访客并按 {interact} 拍照"
 
 #: data/events.json:events[rare_part_signal].name
 msgid "Rare Part Signal"

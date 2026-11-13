@@ -10052,24 +10052,24 @@ msgid "Robot Hiccup"
 msgstr "[Ŕôbôţ Ĥîççûþ ~]"
 
 #: data/events.json:events[robot_hiccup].toast
-msgid "%s has the hiccups and stopped working. Walk over and press E for a quick fix."
-msgstr "[%s ĥàš ţĥé ĥîççûþš àñð šţôþþéð ŵôŕķîñĝ. Ŵàļķ ôvéŕ àñð þŕéšš É ƒôŕ à qûîçķ ƒîx. ~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "%s has the hiccups and stopped working. Walk over and press {interact} for a quick fix."
+msgstr "[%s ĥàš ţĥé ĥîççûþš àñð šţôþþéð ŵôŕķîñĝ. Ŵàļķ ôvéŕ àñð þŕéšš {interact} ƒôŕ à qûîçķ ƒîx. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/events.json:events[robot_hiccup].hud
-msgid "Walk to the stuck robot and press E"
-msgstr "[Ŵàļķ ţô ţĥé šţûçķ ŕôbôţ àñð þŕéšš É ~~~~~~~~~]"
+msgid "Walk to the stuck robot and press {interact}"
+msgstr "[Ŵàļķ ţô ţĥé šţûçķ ŕôbôţ àñð þŕéšš {interact} ~~~~~~~~~~~~]"
 
 #: data/events.json:events[wildlife_visit].name
 msgid "Wildlife Visit"
 msgstr "[Ŵîļðļîƒé Vîšîţ ~~]"
 
 #: data/events.json:events[wildlife_visit].toast
-msgid "Something is visiting a thriving hex %s of you. Sneak up and press E to take a photo."
-msgstr "[Šôméţĥîñĝ îš vîšîţîñĝ à ţĥŕîvîñĝ ĥéx %s ôƒ ýôû. Šñéàķ ûþ àñð þŕéšš É ţô ţàķé à þĥôţô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
+msgid "Something is visiting a thriving hex %s of you. Sneak up and press {interact} to take a photo."
+msgstr "[Šôméţĥîñĝ îš vîšîţîñĝ à ţĥŕîvîñĝ ĥéx %s ôƒ ýôû. Šñéàķ ûþ àñð þŕéšš {interact} ţô ţàķé à þĥôţô. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~]"
 
 #: data/events.json:events[wildlife_visit].hud
-msgid "Find the visitor and press E for a photo"
-msgstr "[Fîñð ţĥé vîšîţôŕ àñð þŕéšš É ƒôŕ à þĥôţô ~~~~~~~~~~~]"
+msgid "Find the visitor and press {interact} for a photo"
+msgstr "[Fîñð ţĥé vîšîţôŕ àñð þŕéšš {interact} ƒôŕ à þĥôţô ~~~~~~~~~~~~~~]"
 
 #: data/events.json:events[rare_part_signal].name
 msgid "Rare Part Signal"

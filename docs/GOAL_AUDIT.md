@@ -40,14 +40,42 @@ release (any key a hidden achievement reads, at that target or more).
 | stat radio_plays, robots_retired, builder_* | Pick a song on the base radio / Retire a robot / Style a robot in the Locker | not played | - | beam pointed at the workbench, not the radio / nursery / locker | - | FIXED | story/objectives.gd YARD_STATS: the beam stands on the build once it is built (the bench before, to build it) |
 | stat bales_recycled, air_filtered | Recycle 5 bales / Filter 1,000 m3 of air | not played | written by the Recycler (Stations on the globe) and the Air Scrubber, both bench builds | depot / hex | - | OK (static) | the audit checks the builds are offered |
 | robot, tier, hub_level, research, districts, hubs_* | Build a Scoopie ... Launch the rocket onward | not played here | - | beam on the bench / rocket / landmark | bench rows | OK (static) | the story walks (opening, home, travel) play the same conditions |
-| hex_level, plants_*, garden_stipend | Get a hex to Planted ... | not played | - | the "hex" target outlines a DIRTY hex: planting needs clean ground | - | OPEN | proposal: no outline for planting goals (as the seed step after the tin), or outline the clean hex with the most free slots |
+| hex_level, plants_*, garden_stipend, hexes_restored | Get a hex to Planted, Plant 25 seeds ... | not played | - | was: the "hex" target outlined a DIRTY hex (and the autoplay log showed "Get a hex to Planted" with no beam and "Nothing to pick up here. Walk to more trash.") | - | FIXED | story/objectives.gd `_grow_target`: the beam stands on the nearest clean hex still under the goal's level; "hex" only while nothing is clean |
 | decor_* | Place a decoration (H) ... | not played | Garden Mode opens at base level 5 | none | - | OPEN | the "(H)" in the goal text is fixed, not the player's binding; proposal: `{garden_mode}` glyph in goal text |
 
-Verdicts: 1 blocker FIXED (tank_1), 4 more FIXED, 1 FIXED (risk), OPEN 3 (cat walk, planting-goal outline, decor key text).
+Verdicts: 1 blocker FIXED (tank_1); FIXED 5 more rows; FIXED (risk) 1; OK 6 (3 played by real input in --walk-goals: stat, earned, upgrade; 3 static); OPEN 2 (the cat walk, the decor key text).
 
 ### Part 2: clarity sweep (first two hours)
 
-(see below)
+Source: `--autoplay --time-scale=8 --clarity-log` to 93 game minutes (station 5 woken; 421 card
+changes, 69 toasts shown, 47 WREN lines, longest empty card 0 s), screenshots/v9d_clarity.log;
+the frames of tools/step_shots.gd (screenshots/v9/step_NN_<id>.png); a code search of player
+actions for refusals with no line. Owner column: whose step it is (opening = intro..first robot,
+home = hex2..base3, travel = stations / rocket, me = shared UI, goals, events).
+
+| where | finding | kind | owner | verdict | note / proposal |
+|---|---|---|---|---|---|
+| bale key (C / RMB) on an empty chest | buzz only, no words | silent refusal | me (player action) | FIXED | toast "Your chest is empty. Scoop some trash first." (6 languages) |
+| survey map: resurvey with too few cubes | buzz only | silent refusal | me (shared UI) | FIXED | toast "Not enough cubes" |
+| bench: a click on a row the player can't afford | buzz; the row's price tag is red ("short") | refusal shown, no words | me (shared UI) | OK | the detail panel names the cost; --walk-goals checks nothing is bought |
+| Glim scan (F) while it cools down | buzz only | silent refusal | me | OPEN | proposal: a short "Glim is still scanning" float text |
+| bale key while pieces are still flying in | nothing | silent (lasts < 1 s) | me | OPEN (minor) | |
+| world events: robot hiccup, wildlife photo | toast and HUD hint said "press E" whatever the binding | wrong key | me (events) | FIXED | data/events.json uses `{interact}`, systems/events.gd runs Tutorial.glyphs (translations moved over) |
+| goal "Place a decoration (H)" | key fixed in the text | wrong key on rebind / pad | me (goals) | OPEN | proposal: `{garden_mode}` in the goal text, and Tutorial.glyphs on the goal card |
+| goal steps at the radio, nursery, locker | the beam stood on the workbench | wrong marker | me (goals) | FIXED | beam on the build |
+| planting goals | dirty-hex outline + "walk to more trash" | wrong marker | me (goals) | FIXED | beam on a clean hex |
+| "Workbench fixed. Press E at it..." (scenes/slice_orbit.gd), "Walk to the rocket ... press E" | fixed key in toasts | wrong key on rebind / pad | opening / travel | OPEN | same `{interact}` + Tutorial.glyphs fix |
+| 0.1 min: card "Bring your chest to the trash bin" while the beam stands on the bench | card and beam disagree | two instructions | opening | OPEN | |
+| Repair Glim, Bot Bay, first robot steps | the card's situation line swaps every few seconds between "Need N more cubes" and "Carry your bale to the scale" | two messages | opening | OPEN | proposal: keep the line for at least 6 s, or show only the bale line while a bale is carried |
+| seed step after planting | card "3 then hold LMB to water it" (the word "Press" is missing before the key) with "Need 292 more cubes" under it | unclear text, two messages | home | OPEN | |
+| "Fly to the next station" | the why line names the NEXT station's reason ("The seed tin is nearly empty...") with a cube count | ok, but 2 lines + count | travel | OK | |
+| station arrival / return home (22.1, 29.8, 30.2 min) | 3-4 toasts and a WREN line inside 6 s ("Home...", "Hub upgraded", "Compost Press built. Follow the light to it." while the beam shows nothing) | two messages at once; words-only marker | travel | OPEN | proposal (toast system): queue toasts so a new one waits until the last has shown 2 s; the notify stack keeps 3 rows and fades the oldest when over 3 lines, so a burst hides the first lines at once |
+| "Rocket piece: Seed Stock · +30 Seeds · New: Wild Mint · The recycling network grew: everything sells for x3.5 now." | 22 words, cut at 2 lines | text too long | travel | OPEN | split into the piece line and the trade line |
+| world event toasts (Salvage Surge 18 words, drone 21 and 26, wildlife 19, rain 17) | over ~12 words | text too long | me (events) | OPEN | proposal: "Salvage Surge! A glowing hex north of you: 3x cubes." etc. (needs 6 translations each) |
+| WREN station reasons (hub_wake_3/4/5: 13-16 words) | over 12 words on the card | text too long | travel | OPEN | |
+| story card titles and why lines | all 12 words or fewer | - | all | OK | data/objectives.json checked |
+
+Frames: see the Renders note below.
 
 ### Part 3: softlock sweep by resource
 
