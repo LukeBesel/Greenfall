@@ -461,7 +461,8 @@ func outpost_target() -> Variant:
 	for k: int in o.items.size():
 		if o.level_of(k) >= 1 or not is_instance_valid(o.items[k]):
 			continue
-		var at: Vector3 = (o.items[k] as Node3D).global_position
+		var it: Outpost = o.items[k]
+		var at: Vector3 = it.anchor.global_position if it.anchor and it.anchor.is_inside_tree() else it.global_position  # where E reaches it
 		var dd: float = at.distance_to(p.global_position) if p else 0.0
 		if dd < bd:
 			bd = dd

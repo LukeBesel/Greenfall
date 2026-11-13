@@ -151,14 +151,15 @@ static func _finish_station(so: SliceOrbit, site: int, ledger: bool) -> void:
 			# Its hex cleared (the crews' cell clean), then E by it with the price: repaired.
 			var k: int = -1
 			for i: int in ops.items.size():
-				if (ops.items[i] as Node3D).global_position.distance_to(op) < 0.5:
+				var oa: Node3D = ops.items[i].anchor if ops.items[i].anchor else ops.items[i]
+				if oa.global_position.distance_to(op) < 0.5:
 					k = i
 			var oc: Variant = os_.so.get("crews")
 			(oc as Object).call("work_cell", int(ops.spots[k]["hex"]), 0.0)
 			var rc: Dictionary = ops.repair_cost(k)
 			_set_money(float(rc.get("cubes", 0)) + 10.0, float(rc.get("parts", 0)) + 2.0)
 			var o3: Vector3 = op
-			_stand(so, p, o3 + SphereGrid.frame(o3.normalized()).x * 2.5, o3)
+			_stand(so, p, o3 + SphereGrid.frame(o3.normalized()).x * 1.2, o3)
 			await _frames(tree, 6)
 			print("%s   by the outpost: '%s'" % [TAG, so.interact_prompt(p)])
 			await _tap(tree, "interact")
