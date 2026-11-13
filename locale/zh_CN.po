@@ -16,6 +16,10 @@ msgstr ""
 msgid "NEW CREWMATE  ·  %s"
 msgstr "新船员  ·  %s"
 
+#: art/vfx.gd:447
+msgid "Needs Lift %d"
+msgstr "需要举升力 %d"
+
 #: autoload/Economy.gd:72
 msgid "Every %s in the fleet."
 msgstr "机队中的每台%s。"
@@ -491,23 +495,27 @@ msgstr "价值 %s 的捆包堆在基地里，没人来运。Lumi 把它们兑现
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "净化器一直在过滤空气。现在清新了一点。"
 
-#: core/pace.gd:147 story/objectives.gd:1022
-msgid "Too heavy. Upgrade Lift at the bench."
-msgstr "太重了。去工作台升级举升力。"
+#: core/pace.gd:205
+msgid "This hex needs Lift %d to finish. Upgrade at the workbench."
+msgstr "这个六边形需要举升力 %d 才能清完。去工作台升级吧。"
 
-#: core/pace.gd:192
+#: core/pace.gd:206
+msgid "Too heavy: this needs Lift %d. Upgrade at the workbench."
+msgstr "太重了：需要举升力 %d。去工作台升级吧。"
+
+#: core/pace.gd:251
 msgid "Nothing here fits. Press [%s] to make a bale."
 msgstr "这里装不下了。按 [%s] 压一个捆包。"
 
-#: core/pace.gd:204
+#: core/pace.gd:263
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr "还没有打包机。把胸舱带到垃圾桶去。"
 
-#: core/pace.gd:260 systems/events.gd:501 ui/goals_panel.gd:284
+#: core/pace.gd:319 systems/events.gd:501 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr "+%s 方块"
 
-#: core/pace.gd:278
+#: core/pace.gd:337
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "现在不收散装垃圾了。按 [%s] 压一个垃圾块，再把它放到秤上。"
 
@@ -1965,23 +1973,23 @@ msgstr "那个人就是你。小小的。倔强的。只剩百分之四的电。
 msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
 msgstr "找到干净的地面。挖坑。放进去。拍拍土。然后——这步很重要——浇水。"
 
-#: story/first_seed.gd:157
-msgid "{tool_water}  then hold  {scoop}  to water it"
-msgstr "{tool_water}  然后按住  {scoop}  浇水"
+#: story/first_seed.gd:158
+msgid "Press  {tool_water}  for the watering can, then hold  {scoop}  to water the seed"
+msgstr "按  {tool_water}  拿起洒水壶，然后按住  {scoop}  给种子浇水"
 
-#: story/first_seed.gd:277
+#: story/first_seed.gd:278
 msgid "...It's green. Lumi, it's actually green."
 msgstr "……是绿色的。Lumi，真的是绿色的。"
 
-#: story/first_seed.gd:279
+#: story/first_seed.gd:280
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr "记得浇水。外面种子很稀少，但每次开花都会还你一颗，还会给你的核心一点绿光。一切就是这样开始的。"
 
-#: story/first_seed.gd:430
+#: story/first_seed.gd:431
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr "Lumi。我收到一个信号。绿色的，很微弱，在基地东边。一座旧温室。去看看。"
 
-#: story/first_seed.gd:542
+#: story/first_seed.gd:543
 msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"
 msgstr "按  {tool_plant}  拿出种子。然后在温室苗床上按住  {scoop}"
 
@@ -2261,6 +2269,10 @@ msgstr "把捆包搬回家：秤就在高高的烟柱下面。"
 #: story/objectives.gd:1020
 msgid "Carry your bale to the scale by the bin."
 msgstr "把捆包搬到垃圾桶旁边的秤上。"
+
+#: story/objectives.gd:1022
+msgid "Too heavy. Upgrade Lift at the bench."
+msgstr "太重了。去工作台升级举升力。"
 
 #: story/objectives.gd:1030
 msgid "Head home: follow the beam to the tall smoke."
@@ -3730,6 +3742,10 @@ msgstr "故事"
 msgid "Yard"
 msgstr "院子"
 
+#: ui/bench_lists.gd:128 ui/frontier_rockets.gd:40
+msgid "Base level %d"
+msgstr "基地等级 %d"
+
 #: ui/bench_tiers.gd:93
 msgid "Build the signal tower first."
 msgstr "先建造信号塔。"
@@ -4625,10 +4641,6 @@ msgid "FRONTIERS"
 msgstr "边境"
 
 #: ui/frontier_rockets.gd:40
-msgid "Base level %d"
-msgstr "基地等级 %d"
-
-#: ui/frontier_rockets.gd:40
 msgid "Unexplored  ·  bales sell x%d here"
 msgstr "未探索  ·  这里捆包售价 x%d"
 
@@ -4764,7 +4776,7 @@ msgstr "基地周围的土地已清理干净"
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "的星球已收复  ·  %s / %s 个陆地六角格"
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:495 ui/objective_card.gd:149
+#: ui/goals_panel.gd:231 ui/list_detail.gd:496 ui/objective_card.gd:153
 msgid "DONE"
 msgstr "完成"
 
@@ -5027,51 +5039,51 @@ msgstr "◢ 埋藏零件 %d%%"
 msgid "Nothing here yet. Keep playing."
 msgstr "这里还什么都没有。继续游戏吧。"
 
-#: ui/list_detail.gd:372 ui/upgrade_card.gd:85
+#: ui/list_detail.gd:373 ui/upgrade_card.gd:85
 msgid "Buy"
 msgstr "购买"
 
-#: ui/list_detail.gd:491
+#: ui/list_detail.gd:492
 msgid "LOCKED"
 msgstr "未解锁"
 
-#: ui/list_detail.gd:499 ui/profile_picker.gd:97
+#: ui/list_detail.gd:500 ui/profile_picker.gd:97
 msgid "ACTIVE"
 msgstr "进行中"
 
-#: ui/list_detail.gd:520
+#: ui/list_detail.gd:521
 msgid "FREE"
 msgstr "免费"
 
-#: ui/list_detail.gd:659
+#: ui/list_detail.gd:672
 msgid "LOCKED.  To unlock: %s"
 msgstr "未解锁。  解锁方法：%s"
 
-#: ui/list_detail.gd:659
+#: ui/list_detail.gd:672
 msgid "Locked. Keep playing to unlock it."
 msgstr "未解锁。继续玩就能解锁。"
 
-#: ui/list_detail.gd:662
+#: ui/list_detail.gd:675
 msgid "REQUIRES   %s"
 msgstr "需要   %s"
 
-#: ui/list_detail.gd:665
+#: ui/list_detail.gd:678
 msgid "You can buy this now!"
 msgstr "现在可以买了！"
 
-#: ui/list_detail.gd:685
+#: ui/list_detail.gd:698
 msgid "%s more %s"
 msgstr "%s %s"
 
-#: ui/list_detail.gd:687
+#: ui/list_detail.gd:700
 msgid "Pick up trash to earn them."
 msgstr "捡垃圾就能赚到。"
 
-#: ui/list_detail.gd:687
+#: ui/list_detail.gd:700
 msgid "Dig up parts and salvage junk to get them."
 msgstr "挖出零件、拆解废料就能得到。"
 
-#: ui/list_detail.gd:690
+#: ui/list_detail.gd:703
 msgid "Need %s. %s"
 msgstr "还差 %s。%s"
 
@@ -17044,6 +17056,9 @@ msgstr "钱用光后，那座龙门吊拆掉了 Ledger 的舰队。方舟也在�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "一个锈蚀世界，绿了。老吊车脚下开着花。账本合上了，{name}。我们把它平了。"
+
+#~ msgid "{tool_water}  then hold  {scoop}  to water it"
+#~ msgstr "{tool_water}  然后按住  {scoop}  浇水"
 
 #~ msgid "Place a Water Tank"
 #~ msgstr "放置一个水箱"

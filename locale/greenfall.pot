@@ -15,6 +15,10 @@ msgstr ""
 msgid "NEW CREWMATE  ·  %s"
 msgstr ""
 
+#: art/vfx.gd:447
+msgid "Needs Lift %d"
+msgstr ""
+
 #: autoload/Economy.gd:72
 msgid "Every %s in the fleet."
 msgstr ""
@@ -490,23 +494,27 @@ msgstr ""
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr ""
 
-#: core/pace.gd:147 story/objectives.gd:1022
-msgid "Too heavy. Upgrade Lift at the bench."
+#: core/pace.gd:205
+msgid "This hex needs Lift %d to finish. Upgrade at the workbench."
 msgstr ""
 
-#: core/pace.gd:192
+#: core/pace.gd:206
+msgid "Too heavy: this needs Lift %d. Upgrade at the workbench."
+msgstr ""
+
+#: core/pace.gd:251
 msgid "Nothing here fits. Press [%s] to make a bale."
 msgstr ""
 
-#: core/pace.gd:204
+#: core/pace.gd:263
 msgid "No Baler yet. Bring your chest to the bin."
 msgstr ""
 
-#: core/pace.gd:260 systems/events.gd:501 ui/goals_panel.gd:284
+#: core/pace.gd:319 systems/events.gd:501 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr ""
 
-#: core/pace.gd:278
+#: core/pace.gd:337
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr ""
 
@@ -1957,23 +1965,23 @@ msgstr ""
 msgid "Find clean ground. Dig. Drop it in. Pat it down. And then — this part matters — water it."
 msgstr ""
 
-#: story/first_seed.gd:157
-msgid "{tool_water}  then hold  {scoop}  to water it"
+#: story/first_seed.gd:158
+msgid "Press  {tool_water}  for the watering can, then hold  {scoop}  to water the seed"
 msgstr ""
 
-#: story/first_seed.gd:277
+#: story/first_seed.gd:278
 msgid "...It's green. Lumi, it's actually green."
 msgstr ""
 
-#: story/first_seed.gd:279
+#: story/first_seed.gd:280
 msgid "Keep it watered. Seeds are rare out here, but every bloom gives one back, and a little green light for your core. This is how it starts."
 msgstr ""
 
-#: story/first_seed.gd:430
+#: story/first_seed.gd:431
 msgid "Lumi. I'm getting a signal. Green, faint, east of the hub. An old greenhouse. Go look."
 msgstr ""
 
-#: story/first_seed.gd:542
+#: story/first_seed.gd:543
 msgid "Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"
 msgstr ""
 
@@ -2240,6 +2248,10 @@ msgstr ""
 
 #: story/objectives.gd:1020
 msgid "Carry your bale to the scale by the bin."
+msgstr ""
+
+#: story/objectives.gd:1022
+msgid "Too heavy. Upgrade Lift at the bench."
 msgstr ""
 
 #: story/objectives.gd:1030
@@ -3716,6 +3728,10 @@ msgstr ""
 msgid "Yard"
 msgstr ""
 
+#: ui/bench_lists.gd:128 ui/frontier_rockets.gd:40
+msgid "Base level %d"
+msgstr ""
+
 #: ui/bench_tiers.gd:93
 msgid "Build the signal tower first."
 msgstr ""
@@ -4610,10 +4626,6 @@ msgid "FRONTIERS"
 msgstr ""
 
 #: ui/frontier_rockets.gd:40
-msgid "Base level %d"
-msgstr ""
-
-#: ui/frontier_rockets.gd:40
 msgid "Unexplored  ·  bales sell x%d here"
 msgstr ""
 
@@ -4749,7 +4761,7 @@ msgstr ""
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr ""
 
-#: ui/goals_panel.gd:231 ui/list_detail.gd:495 ui/objective_card.gd:149
+#: ui/goals_panel.gd:231 ui/list_detail.gd:496 ui/objective_card.gd:153
 msgid "DONE"
 msgstr ""
 
@@ -5007,51 +5019,51 @@ msgstr ""
 msgid "Nothing here yet. Keep playing."
 msgstr ""
 
-#: ui/list_detail.gd:372 ui/upgrade_card.gd:85
+#: ui/list_detail.gd:373 ui/upgrade_card.gd:85
 msgid "Buy"
 msgstr ""
 
-#: ui/list_detail.gd:491
+#: ui/list_detail.gd:492
 msgid "LOCKED"
 msgstr ""
 
-#: ui/list_detail.gd:499 ui/profile_picker.gd:97
+#: ui/list_detail.gd:500 ui/profile_picker.gd:97
 msgid "ACTIVE"
 msgstr ""
 
-#: ui/list_detail.gd:520
+#: ui/list_detail.gd:521
 msgid "FREE"
 msgstr ""
 
-#: ui/list_detail.gd:659
+#: ui/list_detail.gd:672
 msgid "LOCKED.  To unlock: %s"
 msgstr ""
 
-#: ui/list_detail.gd:659
+#: ui/list_detail.gd:672
 msgid "Locked. Keep playing to unlock it."
 msgstr ""
 
-#: ui/list_detail.gd:662
+#: ui/list_detail.gd:675
 msgid "REQUIRES   %s"
 msgstr ""
 
-#: ui/list_detail.gd:665
+#: ui/list_detail.gd:678
 msgid "You can buy this now!"
 msgstr ""
 
-#: ui/list_detail.gd:685
+#: ui/list_detail.gd:698
 msgid "%s more %s"
 msgstr ""
 
-#: ui/list_detail.gd:687
+#: ui/list_detail.gd:700
 msgid "Pick up trash to earn them."
 msgstr ""
 
-#: ui/list_detail.gd:687
+#: ui/list_detail.gd:700
 msgid "Dig up parts and salvage junk to get them."
 msgstr ""
 
-#: ui/list_detail.gd:690
+#: ui/list_detail.gd:703
 msgid "Need %s. %s"
 msgstr ""
 

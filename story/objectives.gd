@@ -1019,7 +1019,7 @@ func situation_hint(dt: float = 0.0) -> String:
 	if not p.carried.is_empty():
 		return tr("Carry your bale home: the scale is under the tall smoke.") if far else tr("Carry your bale to the scale by the bin.")
 	if Time.get_ticks_msec() - Pace.heavy_at < HEAVY_MS and Pace.heavy_at > 0:
-		return tr("Too heavy. Upgrade Lift at the bench.")
+		return Pace.heavy_line() if Pace.heavy_need > 0 else tr("Too heavy. Upgrade Lift at the bench.")  # [v9b] which Lift
 	var price: Dictionary = _step_price()
 	if not price.is_empty() and not GameState.can_afford_all(price):
 		return ListDetail.short_text(price)

@@ -134,18 +134,77 @@ static func find_scoop_target(field: HexField, origin: Vector3, forward: Vector3
 
 ## Called when a scoop pulse found nothing liftable: if something too heavy is in the beam, say so
 ## (at most every few seconds).
+## [v9b] The piece in the beam is marked every pulse (Vfx.heavy_mark: a ring and "Needs Lift N"), so
+## a child sees which one won't come and why; the line under it says what to do. When the beam
+## finds nothing at all but the hex Lumi works is unfinished and only too-heavy pieces are left in
+## it, the same mark goes on the nearest of them with "This hex needs Lift N to finish".
+static var heavy_need: int = 0  ## the Lift level the last too-heavy piece needs (the card's line)
+static var heavy_hex: bool = false  ## that line was about a whole hex
+
+
 static func heavy_hint(patch: Node3D, field: HexField, origin: Vector3, forward: Vector3, reach: float, width: float) -> void:
+	var pid: int = field.find_scoop_target(origin, forward, reach, width)
+	if pid >= 0 and can_lift(field, pid):
+		return
+	var h: int = field.hex_at(origin)
+	var stuck: bool = hex_stuck(field, h)
+	if pid < 0 and stuck:
+		pid = _nearest_alive(field, h, origin)
+	if pid < 0:
+		return
+	var need: int = piece_size(field, pid)
+	if stuck:
+		need = hex_need(field, h)
+	var at: Vector3 = field.piece_pos[pid]
+	Vfx.heavy_mark(at, clampf(pow(maxf(field.piece_vol[pid], 0.05), 1.0 / 3.0) * 0.9, 0.6, 2.2), need)
+	heavy_need = need
+	heavy_hex = stuck
+	heavy_at = Time.get_ticks_msec()  # [v3clear]
 	var now: int = Time.get_ticks_msec()
 	if now - _hint_t < 4000:
 		return
-	var pid: int = field.find_scoop_target(origin, forward, reach, width)
-	if pid < 0 or can_lift(field, pid):
-		return
 	_hint_t = now
-	heavy_at = now  # [v3clear]
-	var at: Vector3 = field.piece_pos[pid]
-	Vfx.float_text(at + OrbitUp.up(at) * 1.0, TranslationServer.translate("Too heavy. Upgrade Lift at the bench."), Color(1.0, 0.75, 0.45), 0.4, 0.6)  # [v3clear] plain words, local up
+	Vfx.float_text(at + OrbitUp.up(at) * 1.0, heavy_line(), Color(1.0, 0.75, 0.45), 0.4, 0.6)  # [v3clear] plain words, local up
 	Audio.play("buzz", 0.8, -12.0)
+
+
+## [v9b] Hex `h` is unfinished, nothing left in it fits the scoop now, and what is left keeps it
+## under the clean line: it can't finish until a Lift upgrade.
+static func hex_stuck(field: HexField, h: int) -> bool:
+	if h < 0 or h >= field.hex_pieces.size() or field.is_clean(h) or field.locked.has(h) or field.is_water(h):
+		return false
+	for pid: int in field.hex_pieces[h]:
+		if field.piece_alive[pid] == 1 and can_lift(field, pid):
+			return false
+	return not hex_clearable(field, h)
+
+
+## [v9b] The Lift level that lets hex `h` reach the clean line.
+static func hex_need(field: HexField, h: int) -> int:
+	for lv: int in range(lift_class() + 1, SIZE_LARGE + 1):
+		if hex_clearable(field, h, lv):
+			return lv
+	return SIZE_LARGE
+
+
+static func _nearest_alive(field: HexField, h: int, at: Vector3) -> int:
+	var best: int = -1
+	var bd: float = INF
+	for pid: int in field.hex_pieces[h]:
+		if field.piece_alive[pid] == 1:
+			var d: float = field.piece_pos[pid].distance_squared_to(at)
+			if d < bd:
+				bd = d
+				best = pid
+	return best
+
+
+## The line for the last too-heavy find.
+static func heavy_line() -> String:
+	if heavy_hex:
+		return TranslationServer.translate("This hex needs Lift %d to finish. Upgrade at the workbench.") % heavy_need
+	return TranslationServer.translate("Too heavy: this needs Lift %d. Upgrade at the workbench.") % heavy_need
+
 
 
 ## [orbC] When pressing a bale is the move. The player may press at any fill once the Baler is
