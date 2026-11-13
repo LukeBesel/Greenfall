@@ -54,6 +54,9 @@ run walk_travel -- --fresh --orbit --no-intro --walk-travel --quit-after=900 --s
 run walk_travel_end -- --orbit --no-intro --walk-travel --walk-travel-end --quit-after=600 --save-dir=check_exit_travel_$$
 run walk_travel_save -- --fresh --orbit --no-intro --walk-travel --walk-travel-save --quit-after=600 --save-dir=check_exit_travelr_$$
 run walk_travel_resume -- --orbit --no-intro --walk-travel --walk-travel-resume --quit-after=600 --save-dir=check_exit_travelr_$$
+# [v9b] The home steps after the first robot (hex2 .. base3, the garden, the Requests board) played
+# with real keys and mouse clicks on the workbench (tools/walk_home.gd).
+run walk_home -- --fresh --orbit --no-intro --walk-home --save-dir=check_exit_home_$$
 if [ "$1" = "--quick" ]; then
 	run quit15 -- --fresh --quit-after=15
 fi

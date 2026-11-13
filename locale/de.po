@@ -491,7 +491,7 @@ msgstr "Ballen im Wert von %s stapelten sich an der Basis, ohne dass jemand sie 
 msgid "The scrubbers filtered the air the whole time. It's a little clearer."
 msgstr "Die Luftwäscher haben die ganze Zeit gefiltert. Die Luft ist ein bisschen klarer."
 
-#: core/pace.gd:147 story/objectives.gd:1008
+#: core/pace.gd:147 story/objectives.gd:1044
 msgid "Too heavy. Upgrade Lift at the bench."
 msgstr "Zu schwer. Verbessere die Hebekraft an der Werkbank."
 
@@ -506,6 +506,10 @@ msgstr "Noch keine Ballenpresse. Bring dein Brustfach zur Tonne."
 #: core/pace.gd:260 systems/events.gd:501 ui/goals_panel.gd:284
 msgid "+%s cubes"
 msgstr "+%s Würfel"
+
+#: core/pace.gd:278
+msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
+msgstr "Jetzt kein loser Müll. Drück [%s] für einen Ballen und stell ihn auf die Waage."
 
 #: fauna/fauna.gd:1738
 msgid "E   pet %s"
@@ -643,6 +647,10 @@ msgstr "GEMEINSAM ERBLÜHEN"
 msgid "LIGHT  WATER  LIFE"
 msgstr "LICHT  WASSER  LEBEN"
 
+#: planet/orbit/orbit_crews.gd:223
+msgid "Your robot cleaned a hex! It counts: %d / %d"
+msgstr "Dein Roboter hat ein Hex gereinigt! Es zählt: %d / %d"
+
 #: planet/sites/hub_hop.gd:49
 msgid "{interact}  skip"
 msgstr "{interact}  überspringen"
@@ -703,7 +711,7 @@ msgstr "Neues Lumi-Design: %s"
 msgid "Home. The workbench is by the pod."
 msgstr "Zuhause. Die Werkbank steht bei der Kapsel."
 
-#: planet/sites/hub_purpose.gd:174 story/objectives.gd:1015
+#: planet/sites/hub_purpose.gd:174 story/objectives.gd:1051
 msgid "The rocket waits on the pad. Home is first on its list."
 msgstr "Die Rakete wartet auf dem Startplatz. Zuhause steht ganz oben auf ihrer Liste."
 
@@ -797,35 +805,35 @@ msgstr "Alle %d Basen stehen. Bau den Antrieb an der Rakete."
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:114
+#: planet/sites/orbit_sites.gd:116
 msgid "The rocket is in flight."
 msgstr "Die Rakete ist unterwegs."
 
-#: planet/sites/orbit_sites.gd:136
+#: planet/sites/orbit_sites.gd:138
 msgid "Bases restored: %d of %d"
 msgstr "Basen wiederhergestellt: %d von %d"
 
-#: planet/sites/orbit_sites.gd:174
+#: planet/sites/orbit_sites.gd:176
 msgid "E   Rocket: choose a destination"
 msgstr "E   Rakete: Ziel wählen"
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:214
 msgid "HOME"
 msgstr "ZUHAUSE"
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:214
 msgid "NEXT STOP"
 msgstr "NÄCHSTER HALT"
 
-#: planet/sites/orbit_sites.gd:214
+#: planet/sites/orbit_sites.gd:216
 msgid "Upgrade the rocket first"
 msgstr "Erst die Rakete aufrüsten"
 
-#: planet/sites/orbit_sites.gd:232
+#: planet/sites/orbit_sites.gd:234
 msgid "%s site"
 msgstr "Ort: %s"
 
-#: planet/sites/orbit_sites.gd:233
+#: planet/sites/orbit_sites.gd:235
 msgid "Hub %d"
 msgstr "Basis %d"
 
@@ -1184,7 +1192,7 @@ msgstr "tankt an %s (%d%%)"
 msgid "base barrel"
 msgstr "Basisfass"
 
-#: robots/robot.gd:263 systems/research.gd:400
+#: robots/robot.gd:263 systems/research.gd:404
 msgid "tank"
 msgstr "Tank"
 
@@ -2216,55 +2224,55 @@ msgstr "<< LEDGER // INOFFIZIELL >>"
 msgid "LEDGER  WMS-07"
 msgstr "LEDGER  WMS-07"
 
-#: story/objectives.gd:224
+#: story/objectives.gd:241
 msgid "Reward: %s"
 msgstr "Belohnung: %s"
 
-#: story/objectives.gd:436
+#: story/objectives.gd:468
 msgid "Objective complete  ·  %s"
 msgstr "Ziel erreicht  ·  %s"
 
-#: story/objectives.gd:463
+#: story/objectives.gd:495
 msgid "Goal complete  ·  %s"
 msgstr "Ziel erreicht  ·  %s"
 
-#: story/objectives.gd:775
+#: story/objectives.gd:809
 msgid "Baler installed! Fill your chest, press [%s] to press a bale, then carry it to the scale."
 msgstr "Ballenpresse eingebaut! Füll dein Brustfach, drück [%s] für einen Ballen und trag ihn zur Waage."
 
-#: story/objectives.gd:797 story/objectives.gd:996
+#: story/objectives.gd:831 story/objectives.gd:1032
 msgid "Your chest is full. Press [%s] to make a bale."
 msgstr "Dein Brustfach ist voll. Drück [%s] für einen Ballen."
 
-#: story/objectives.gd:813
+#: story/objectives.gd:847
 msgid "Your detector's found a robot part buried nearby. Follow the BURIED PART reading; it beeps once you're right on top of it."
 msgstr "Dein Detektor hat in der Nähe ein vergrabenes Roboterteil gefunden. Folge der Anzeige VERGRABENES TEIL; er piept, wenn du genau darüber stehst."
 
-#: story/objectives.gd:815
+#: story/objectives.gd:849
 msgid "BURIED PART: walk toward it until the reading peaks, then dig it up."
 msgstr "VERGRABENES TEIL: Geh darauf zu, bis der Wert am höchsten ist, dann grab es aus."
 
-#: story/objectives.gd:997
+#: story/objectives.gd:1033
 msgid "Your chest is full. Bring it to the bin."
 msgstr "Dein Brustfach ist voll. Bring es zur Tonne."
 
-#: story/objectives.gd:1004
+#: story/objectives.gd:1040
 msgid "Your chest is full. Head home: the bin is under the tall smoke."
 msgstr "Dein Brustfach ist voll. Ab nach Hause: Die Tonne steht unter der hohen Rauchsäule."
 
-#: story/objectives.gd:1006
+#: story/objectives.gd:1042
 msgid "Carry your bale home: the scale is under the tall smoke."
 msgstr "Trag deinen Ballen nach Hause: Die Waage steht unter der hohen Rauchsäule."
 
-#: story/objectives.gd:1006
+#: story/objectives.gd:1042
 msgid "Carry your bale to the scale by the bin."
 msgstr "Trag deinen Ballen zur Waage neben der Tonne."
 
-#: story/objectives.gd:1016
+#: story/objectives.gd:1052
 msgid "Head home: follow the beam to the tall smoke."
 msgstr "Ab nach Hause: Folge dem Lichtstrahl zur hohen Rauchsäule."
 
-#: story/objectives.gd:1026
+#: story/objectives.gd:1062
 msgid "Nothing to pick up here. Walk to more trash."
 msgstr "Hier gibt es nichts aufzuheben. Lauf dorthin, wo mehr Müll liegt."
 
@@ -2524,47 +2532,51 @@ msgstr "Baukasten-Kiste"
 msgid "Curio Capsule"
 msgstr "Kuriositätenkapsel"
 
-#: systems/contracts.gd:316
+#: systems/contracts.gd:319
 msgid "Request complete: %s. Claim it at the workbench."
 msgstr "Auftrag erledigt: %s. Hol dir den Lohn an der Werkbank."
 
-#: systems/contracts.gd:322
+#: systems/contracts.gd:325
 msgid "A request ran out of time. No harm done; a new one will be posted soon."
 msgstr "Ein Auftrag ist abgelaufen. Kein Schaden; bald kommt ein neuer."
 
-#: systems/contracts.gd:330
+#: systems/contracts.gd:337
+msgid "The Requests board is ready to build: workbench, Upgrades tab, Request Board."
+msgstr "Das Auftragsbrett kann gebaut werden: Werkbank, Tab Upgrades, Auftragsbrett."
+
+#: systems/contracts.gd:346
 msgid "New at the workbench: the Requests board. Small jobs, real rewards."
 msgstr "Neu an der Werkbank: das Auftragsbrett. Kleine Jobs, echte Belohnungen."
 
-#: systems/contracts.gd:333
+#: systems/contracts.gd:349
 msgid "The relay's strong enough now to hear the Cradle's old work orders. They're on the Requests board at the workbench."
 msgstr "Das Relais ist jetzt stark genug für die alten Arbeitsaufträge der Cradle. Sie hängen am Auftragsbrett an der Werkbank."
 
-#: systems/contracts.gd:418
+#: systems/contracts.gd:434
 msgid "Request done: %s."
 msgstr "Auftrag erledigt: %s."
 
-#: systems/contracts.gd:460
+#: systems/contracts.gd:476
 msgid "Requests reward: %s. Paint your fleet with it in the Locker."
 msgstr "Auftragsbelohnung: %s. Lackiere damit deine Flotte im Spind."
 
-#: systems/contracts.gd:463
+#: systems/contracts.gd:479
 msgid "Requests reward: %s. Fit it in the Locker."
 msgstr "Auftragsbelohnung: %s. Bau es im Spind an."
 
-#: systems/contracts.gd:467 systems/contracts.gd:476
+#: systems/contracts.gd:483 systems/contracts.gd:492
 msgid "Requests reward: %s."
 msgstr "Auftragsbelohnung: %s."
 
-#: systems/contracts.gd:484
+#: systems/contracts.gd:500
 msgid "Unknown item"
 msgstr "Unbekannter Gegenstand"
 
-#: systems/contracts.gd:497
+#: systems/contracts.gd:513
 msgid "Unlocks after %d requests"
 msgstr "Frei nach %d Aufträgen"
 
-#: systems/contracts.gd:498
+#: systems/contracts.gd:514
 msgid "Locked"
 msgstr "Gesperrt"
 
@@ -3027,99 +3039,99 @@ msgstr "Schon in der Warteschlange"
 msgid "Queue is full"
 msgstr "Warteschlange voll"
 
-#: systems/research.gd:340 ui/codex_screen.gd:886
+#: systems/research.gd:344 ui/codex_screen.gd:886
 msgid "%ds"
 msgstr "%ds"
 
-#: systems/research.gd:387 systems/research.gd:448
+#: systems/research.gd:391 systems/research.gd:452
 msgid "Research: %s"
 msgstr "Forschung: %s"
 
-#: systems/research.gd:397
+#: systems/research.gd:401
 msgid "scoop reach"
 msgstr "Schaufelreichweite"
 
-#: systems/research.gd:397
+#: systems/research.gd:401
 msgid "scoop width"
 msgstr "Schaufelbreite"
 
-#: systems/research.gd:397
+#: systems/research.gd:401
 msgid "compartment size"
 msgstr "Fachgröße"
 
-#: systems/research.gd:398
+#: systems/research.gd:402
 msgid "bale value"
 msgstr "Ballenwert"
 
-#: systems/research.gd:398
+#: systems/research.gd:402
 msgid "magnet radius"
 msgstr "Magnetradius"
 
-#: systems/research.gd:398
+#: systems/research.gd:402
 msgid "scoop speed"
 msgstr "Schaufeltempo"
 
-#: systems/research.gd:399
+#: systems/research.gd:403
 msgid "field-note cubes"
 msgstr "Würfel aus Feldnotizen"
 
-#: systems/research.gd:399
+#: systems/research.gd:403
 msgid "research speed"
 msgstr "Forschungstempo"
 
-#: systems/research.gd:399
+#: systems/research.gd:403
 msgid "lake clarity"
 msgstr "Seeklarheit"
 
-#: systems/research.gd:400
+#: systems/research.gd:404
 msgid "speed"
 msgstr "Tempo"
 
-#: systems/research.gd:400
+#: systems/research.gd:404
 msgid "work rate"
 msgstr "Arbeitsrate"
 
-#: systems/research.gd:400
+#: systems/research.gd:404
 msgid "range"
 msgstr "Reichweite"
 
-#: systems/research.gd:401
+#: systems/research.gd:405
 msgid "bale quality"
 msgstr "Ballenqualität"
 
-#: systems/research.gd:401
+#: systems/research.gd:405
 msgid "carry"
 msgstr "Tragkraft"
 
-#: systems/research.gd:402
+#: systems/research.gd:406
 msgid "plant growth"
 msgstr "Pflanzenwachstum"
 
-#: systems/research.gd:402
+#: systems/research.gd:406
 msgid "seeds per bloom"
 msgstr "Samen pro Blüte"
 
-#: systems/research.gd:423
+#: systems/research.gd:427
 msgid "Unlocks the %s robot"
 msgstr "Schaltet den Roboter %s frei"
 
-#: systems/research.gd:425
+#: systems/research.gd:429
 msgid "Unlocks %s seeds"
 msgstr "Schaltet %s-Samen frei"
 
-#: systems/research.gd:427
+#: systems/research.gd:431
 msgid "Unlocks: %s"
 msgstr "Schaltet frei: %s"
 
-#: systems/research.gd:571
+#: systems/research.gd:604
 msgid "While you were away, research finished: %s."
 msgstr "Während du weg warst, wurde Forschung abgeschlossen: %s."
 
-#: systems/research.gd:602
+#: systems/research.gd:635
 msgid "New robot plans: %s. %s"
 msgstr "Neue Roboterpläne: %s. %s"
 
-#: systems/research.gd:607
+#: systems/research.gd:640
 msgid "Research complete: %s."
 msgstr "Forschung abgeschlossen: %s."
 
@@ -11150,10 +11162,6 @@ msgstr "Erforsche Bestäuberzählung"
 msgid "Grow 25 flowers to bloom"
 msgstr "Lass 25 Blumen erblühen"
 
-#: data/goals.json:goals[tank_1].text
-msgid "Place a Water Tank"
-msgstr "Stell einen Wassertank auf"
-
 #: data/goals.json:goals[plant_60].text
 msgid "Plant 60 seeds"
 msgstr "Pflanz 60 Samen"
@@ -11413,10 +11421,6 @@ msgstr "Bringe Erbstücke auf 10 Stufen"
 #: data/goals.json:goals[late_world_2].text
 msgid "Seed a second new world"
 msgstr "Besäe eine zweite neue Welt"
-
-#: data/goals.json:goals[late_eggs_38].text
-msgid "Find 38 curiosities"
-msgstr "Finde 38 Kuriositäten"
 
 #: data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
@@ -12410,6 +12414,10 @@ msgstr "Verstärk den Turm. Mit einem stärkeren Signal kann ich für dich weite
 #: data/objectives.json:objectives[research1].desc
 msgid "Workbench, Research tab. Research unlocks new robots."
 msgstr "Werkbank, Tab „Forschung“. Forschung schaltet neue Roboter frei."
+
+#: data/objectives.json:objectives[research1].hint
+msgid "First add the Research Desk: workbench, Upgrades tab."
+msgstr "Bau zuerst den Forschungstisch: Werkbank, Tab Upgrades."
 
 #: data/objectives.json:objectives[research1].lines
 msgid "Your bench can study now. Research unlocks new machines and seeds."
@@ -17056,6 +17064,12 @@ msgstr "Eine Rostwelt, grün. Die alten Kräne haben Blumen zu ihren Füßen. Di
 
 #~ msgid "All %d bases stand. Fly home and make the rocket ready to leave."
 #~ msgstr "Alle %d Basen stehen. Flieg nach Hause und mach die Rakete startklar."
+
+#~ msgid "Place a Water Tank"
+#~ msgstr "Stell einen Wassertank auf"
+
+#~ msgid "Find 38 curiosities"
+#~ msgstr "Finde 38 Kuriositäten"
 
 #~ msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 #~ msgstr "Samen brauchen sauberen, freien Boden: keine Straßen, Bordsteine oder den Landeplatz."
