@@ -33,6 +33,7 @@
   - `--spot-probe=x,y,z` (or `=outpostK`) `[--orbit-hop=N --hop-skip --spot-probe-off=9]`: what boxes in a spot (e.g. a `[bot-trap]` position): TargetReach's verdict, a 0.5 m collider map with a legend, shut-in pockets (`*`).
   - `--site-reach`: narrow-gap audit of every hub site, a `[reach]` line per hub. Exit 1 if an anchor is cut off.
   - `--ground-probe=300 --ground-probe-quit [--orbit-spawn=x,z] [--ground-probe-r=120]`: lists floating and sunken props and junk around Lumi (`[ground]` lines). Wall signs show up as noise.
+  - `--hex-audit --hex-audit-quit [--seed=N] [--hex-audit-hubs] [--hex-audit-all] [--hex-audit-raw]`: every land hex in the start area (data/start_area.json `radius_m`) as if Lumi took all the starter scoop can take where it lies; lists hexes that can't reach the 95% clear (what is left and why: big, under, inside, shut, building, ghost) and big things round base 1 (`[hexaudit]` lines). Exit 1 if any. Also in tools/check_exit.sh.
   - `--yard-probe --yard-probe-quit`: how close the junk starts to the pad and pod, and what stands in the start yard (`[yardprobe]` lines).
   - `--autoplay --time-scale=8 --clarity-log --quit-after=N`: logs what the player is told over time (card, prompt, beam target, toasts, WREN) as `[clarity]` lines, and flags stretches with nothing to do.
   - `--lake-view[=back_m]` or `--lake-view-high[=m]` (rendered): puts Lumi on a lake shore to check the water look.
