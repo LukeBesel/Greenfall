@@ -161,13 +161,21 @@ func test_scoopies_ask_for_a_haul_bug_when_bales_pile_up() -> void:
 	var sc: Dictionary = crew.spawn("scoopie", 0, 100)
 	for i: int in CrewTalk.PILE_NO_HAULER:
 		crew.bales.append({"id": 100 + i, "cell": 100, "dir": _g.centers[100], "value": 5.0, "units": 10.0, "claimed": ""})
+	var fl: Dictionary = GameState.flags.duplicate(true)
+	GameState.flags["research"] = {"done": []}  # [v8bot] no Haul Bug plans yet: no nag, the Scoopie just works
 	_run(crew, 12.0)
+	assert_false(CrewTalk.needs_hauler(crew, 100), "no Haul Bug plans yet: nothing to ask for")
+	assert_ne(CrewTalk.line(crew, sc), tr("Bales are piling up. Build a Haul Bug."))
+	var req: String = Research.robot_requirement("haulbug")
+	GameState.flags["research"] = {"done": [req] if req != "" else []}
+	_run(crew, 1.5)
 	assert_true(CrewTalk.needs_hauler(crew, 100))
 	assert_eq(CrewTalk.line(crew, sc), tr("Bales are piling up. Build a Haul Bug."))
 	assert_true(bool(CrewTalk.hub_summary(crew, 100)["needs_hauler"]))
 	crew.spawn("haulbug", 0, 100)
 	_run(crew, 2.0)
 	assert_false(CrewTalk.needs_hauler(crew, 100), "one Haul Bug is enough for a small pile")
+	GameState.flags = fl
 
 
 func test_more_robots_clean_faster_and_the_readout_says_so() -> void:

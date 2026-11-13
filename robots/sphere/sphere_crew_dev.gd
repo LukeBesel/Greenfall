@@ -10,6 +10,7 @@ extends RefCounted
 ##   --bot-motion                     with --quit-after: [motion] jitter / building-overlap report,
 ##                                    [v6crew] plus metres, deg/100m, trip detour and hauler bunching;
 ##                                    --motion-debug adds a [flip] line per hauler reversal (what was near)
+##   --crew-zone-n=K / --crew-zone-log  [v8bot] with --crew-zone: K robots called (0 all); [zone] lines
 ##   --crew-build=type[,seconds]     [v6crew] builds a robot at the bench after a while and logs its hello
 ##   --crew-cam=i[,dist,height]      [v6crew] a dev camera on robot i (rendered audits of the crew)
 ##   --crew-command=S                 [v6crew] opens the Command view after S seconds (as pressing B)
@@ -88,6 +89,19 @@ static func install(src: Object, parent: Node, lumi: Node3D, cam: SphereCam, wri
 		var zr: PackedInt32Array = (src.grid as SphereGrid).cells_around(start, 4)
 		for k: int in mini(int(DevHooks.get_f("crew-zone", 8.0)), zr.size() - 20):
 			crew.set_zone_cell("clean", zr[20 + k], true)
+		if DevHooks.has("crew-zone-n"):  # [v8bot] --crew-zone-n=K: K robots called to it (0 = all)
+			crew.set_zone_count("clean", int(DevHooks.get_f("crew-zone-n", 0.0)))
+		if DevHooks.has("crew-zone-log"):  # [v8bot] who the zone called, and where they are, every 2 s
+			var zlog: Callable = func() -> void:
+				for k2: int in 30:
+					await parent.get_tree().create_timer(2.0, false).timeout
+					var z: Dictionary = crew.zone_for("clean", start)
+					var parts: PackedStringArray = []
+					for u: Dictionary in crew.units:
+						parts.append("%s %s %s job=%d%s %.0fm" % [u["name"], "CALLED" if crew.is_called(u) else "free", u["mode"], int(u["job"]),
+							"(zone)" if z.has(int(u["job"])) else "", crew.zone_dist_m(u, z, false)])
+					print("[zone] t=%d %s | %s" % [(k2 + 1) * 2, str(crew.zone_crew("clean", start)), "; ".join(parts)])
+			zlog.call_deferred()
 	if DevHooks.has("crew-build"):  # [v6crew] --crew-build=type[,seconds]: a robot built at the bench after a while
 		var cb: PackedStringArray = DevHooks.get_s("crew-build", "scoopie").split(",")
 		var wait: Callable = func() -> void:

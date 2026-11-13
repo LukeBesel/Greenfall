@@ -77,6 +77,26 @@ func test_beacon_on_the_seed_step() -> void:
 	assert_eq(str(t.get("to")), "place", "with the signal: the beacon leads to the tin")
 	assert_true(t.get("pos") is Vector3)
 	GameState.flags["seeds_unlocked"] = true
+	var planted0: Variant = GameState.stats.get("plants_planted", 0)
+	GameState.stats["plants_planted"] = 1.0  # [v8seed] the beds' beacon only waits for the first seed
 	t = _ob.step_target(def)
+	GameState.stats["plants_planted"] = planted0
 	assert_eq(str(t.get("to")), "", "planting: no dirty-hex outline, no beam")
 	assert_eq(t.get("pos", null), null)
+
+
+## [v8seed] The owner's save sat on "plant the first seed" with the tin taken: on load the card, the
+## seed tool and a seed come back (a save at no seeds gets one), so planting works.
+func test_old_save_on_the_plant_step_resumes() -> void:
+	GameState.flags["seeds_unlocked"] = true
+	var planted0: Variant = GameState.stats.get("plants_planted", 0)
+	GameState.stats["plants_planted"] = 0.0
+	var seeds0: BigNum = GameState.get_currency("seeds")
+	GameState.spend("seeds", seeds0)
+	_fs._resume_planting()
+	assert_true(GameState.can_afford("seeds", BigNum.from_float(1.0)), "a seed to plant")
+	assert_true(_fs._hint_water and _fs._waiting_sprout, "the water hint and the sprout moment follow")
+	assert_true("2" in _fs.plant_card_text() or "{" not in _fs.plant_card_text(), "the card names the seed key")
+	GameState.stats["plants_planted"] = planted0
+	GameState.spend("seeds", GameState.get_currency("seeds"))
+	GameState.add_currency("seeds", seeds0)

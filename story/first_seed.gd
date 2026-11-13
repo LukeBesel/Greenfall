@@ -4,6 +4,12 @@ extends Node3D
 ## the first planting and the first sprout. Runs once.
 
 const GREENHOUSE_POS := Vector3(15.0, 0.0, -9.0)
+## [v8seed] The beds' soil top over the greenhouse floor, and how far they reach under it.
+const BED_TOP: float = 0.35
+const BED_SKIRT: float = 0.8
+## [v8seed] Where the bed slots sit (greenhouse-local, on the beds' tops): the first seed goes here.
+const BED_SPOTS: Array[Vector3] = [Vector3(1.4, BED_TOP, 0.3), Vector3(1.4, BED_TOP, -2.4), Vector3(1.4, BED_TOP, 2.6),
+	Vector3(-1.4, BED_TOP, 0.3), Vector3(-1.4, BED_TOP, 2.6)]
 # l10n:begin
 const LINES: Array[Array] = [
 	["Wait. Hold it up to the light.", 3.5],
@@ -49,6 +55,9 @@ func setup() -> void:
 		_letterbox.add_child(r)
 		_bars.append(r)
 	_check.call_deferred()
+	_add_beds()
+	if GameState.flags.get("seeds_unlocked", false) and int(GameState.stats.get("plants_planted", 0)) == 0:
+		_resume_planting()  # [v8seed] a save sitting on "plant the first seed" (the owner's)
 	if _globe and DevHooks.has("seed-probe"):  # [v4grow]
 		_probe()
 
@@ -79,11 +88,12 @@ func _build_greenhouse() -> void:
 		g.rotation_degrees = spec[1]
 		gh.add_child(g)
 	# Dry planting beds.
+	# [v8seed] Each bed reaches BED_SKIRT below the ground: on uneven ground it never shows a gap.
 	for x: float in [-1.4, 1.4]:
 		var bed := MeshInstance3D.new()
-		bed.mesh = ProcMesh.box(Vector3(1.4, 0.35, 7.0))
-		bed.material_override = AssetLib.pbr_material("dry_ground_rocks", 0.6, Color(0.8, 0.75, 0.7), true)
-		bed.position = Vector3(x, 0.17, 0)
+		bed.mesh = ProcMesh.box(Vector3(1.4, BED_TOP + BED_SKIRT, 7.0))
+		bed.material_override = AssetLib.pbr_material("dry_ground_rocks", 0.6, Color(0.52, 0.38, 0.27), true)  # [v8seed] read as soil (it was pale as sand)
+		bed.position = Vector3(x, (BED_TOP - BED_SKIRT) * 0.5, 0)
 		gh.add_child(bed)
 	var tray := MeshInstance3D.new()
 	tray.mesh = AssetLib.model_mesh_lite("seeding_tray_01", 3000)
@@ -107,9 +117,9 @@ func _build_greenhouse() -> void:
 	for x: float in [-1.4, 1.4]:
 		var cs := CollisionShape3D.new()
 		var bs := BoxShape3D.new()
-		bs.size = Vector3(1.4, 0.4, 7.0)
+		bs.size = Vector3(1.4, BED_TOP + BED_SKIRT, 7.0)  # [v8seed]
 		cs.shape = bs
-		cs.position = Vector3(x, 0.2, 0)
+		cs.position = Vector3(x, (BED_TOP - BED_SKIRT) * 0.5, 0)
 		sb.add_child(cs)
 	gh.add_child(sb)
 	# [world2] The frame posts and the standing glass side are solid too (the roof is overhead).
@@ -173,7 +183,7 @@ func take_tin() -> void:
 	world.patch.water = world.patch.water_cap()
 	world.patch.set_tool(Patch.Tool.PLANT)
 	# [first] One instruction at a time on the checklist card: plant, then water.
-	_show_card(Tutorial.glyphs_bb(tr("Hold  {scoop}  on clean ground to plant the seed")))
+	_show_card(plant_card_text())  # [v8seed]
 	_hint_water = true
 	_waiting_sprout = true
 	_active = false
@@ -307,7 +317,33 @@ static func find_spot(so: SliceOrbit, site: Transform3D) -> Transform3D:
 	var box := BoxShape3D.new()
 	box.size = Vector3(6.6, 2.2, 9.6)
 	var best := Transform3D(site.basis, site * Vector3(GREENHOUSE_POS.x, 0.0, GREENHOUSE_POS.z))
-	for r: float in range(16, 72, 3):
+	# [v8seed] Off the town's paving first (owner 2026-11-13: it stood on the road and crosswalk by the
+	# pad, its beds hanging over the kerb); a second pass takes the old rules if no such spot is free.
+	var g: Garden = so.w.get("garden") as Garden
+	var towns: Array = g._towns() if g else []
+	for strict: bool in [true, false]:
+		var t: Variant = _find_spot_pass(so, site, f, space, anchors, box, towns if strict else [])
+		if t is Transform3D:
+			return t
+	return best
+
+
+## [v8seed] True when any point of the greenhouse's footprint (site-local centre c, turned by lb)
+## lies on a loaded town's paving (streets, sidewalks, kerbs, the pad, building footprints).
+static func _on_paving(site: Transform3D, c: Vector3, lb: Basis, towns: Array) -> bool:
+	for t: Array in towns:
+		var vs: VerdanceSite = t[0]
+		for ox: float in [-3.3, 0.0, 3.3]:
+			for oz: float in [-4.8, -2.4, 0.0, 2.4, 4.8]:
+				var loc: Vector3 = (t[1] as Transform3D) * (site * (c + lb * Vector3(ox, 0, oz)))
+				if Garden.paved(vs.layout, loc.x, loc.z):
+					return true
+	return false
+
+
+static func _find_spot_pass(so: SliceOrbit, site: Transform3D, f: SphereField, space: PhysicsDirectSpaceState3D,
+		anchors: Array[Vector3], box: BoxShape3D, towns: Array) -> Variant:
+	for r: float in range(16, 100 if not towns.is_empty() else 72, 3):
 		for k: int in 15:
 			var a: float = deg_to_rad(-65.0 + k * (130.0 / 14.0))  # 0 = east (+x), -: north (-z)
 			var c := Vector3(cos(a) * r, 0.0, sin(a) * r)
@@ -322,6 +358,8 @@ static func find_spot(so: SliceOrbit, site: Transform3D) -> Transform3D:
 				continue
 			var yaw: float = atan2(c.x, c.z)  # local +z toward the hub
 			var lb := Basis(Vector3.UP, yaw)
+			if not towns.is_empty() and _on_paving(site, c, lb, towns):
+				continue
 			var lo: float = INF
 			var hi: float = -INF
 			var wet: bool = false
@@ -350,7 +388,7 @@ static func find_spot(so: SliceOrbit, site: Transform3D) -> Transform3D:
 				continue
 			var bas: Basis = Basis(Quaternion(site.basis.y.normalized(), up)) * site.basis.orthonormalized() * lb
 			return Transform3D(bas, wc)
-	return best
+	return null
 
 
 # --- [v4grow] Owner playtest 3 #48: the first seed is hard to find ------------------------------
@@ -359,7 +397,7 @@ static func find_spot(so: SliceOrbit, site: Transform3D) -> Transform3D:
 # marker at all, only "Keep cleaning". After HINT_AFTER_S on the step without the signal, WREN
 # picks it up anyway and the beacon leads to the greenhouse.
 
-const HINT_AFTER_S: float = 75.0
+const HINT_AFTER_S: float = 3.0  # [v8seed] was 75 s: the step must be doable the moment it appears
 var _seed_step_t: float = 0.0
 
 
@@ -380,7 +418,7 @@ func _hint_tick(delta: float) -> void:
 		return
 	_seed_step_t += delta
 	if _seed_step_t >= HINT_AFTER_S:
-		give_signal(tr("Lumi, that green signal is back, stronger now. Follow the beam: the old greenhouse."))
+		give_signal()  # [v8seed] right as the step starts: WREN's first line about the greenhouse
 
 
 ## Turns the tin's signal on (the glow, the beacon on the seed step), with WREN's line.
@@ -474,3 +512,44 @@ func blockers() -> Array[String]:
 	if not over.is_empty():
 		out.append("overhead: %s" % (str((over["collider"] as Node).get_path()) if over["collider"] is Node else "?"))
 	return out
+
+
+# --- [v8seed] The first seed goes in the greenhouse beds ---------------------------------------------
+# Owner, 2026-11-13: "It wont let me plant in the dirt... i cant plant the first seed". The beds were
+# props: holding the button on them did nothing. Now they are soil (Garden.add_bed), the card says
+# which key picks the seed and where to hold the button, and the beacon stands on the beds.
+
+var bed_slots := PackedInt32Array()
+
+
+func _add_beds() -> void:
+	var g: Garden = world.get("garden") as Garden if world else null
+	if g == null or not _globe or not bed_slots.is_empty():
+		return
+	var pts := PackedVector3Array()
+	for p: Vector3 in BED_SPOTS:
+		pts.append(to_global(GREENHOUSE_POS + p))
+	bed_slots = g.add_bed(pts)
+
+
+## A bed spot (world space) for the beacon while the first seed waits.
+func bed_point() -> Vector3:
+	return to_global(GREENHOUSE_POS + BED_SPOTS[0])
+
+
+## The card's planting line: the key for the seed tool, where, what to hold.
+func plant_card_text() -> String:
+	return Tutorial.glyphs_bb(tr("Press  {tool_plant}  for the seed. Then hold  {scoop}  on a greenhouse bed"))
+
+
+## An old save on "plant the first seed" with the tin already taken: the card, the seed tool and a
+## seed (a save could sit at none), so planting works on load.
+func _resume_planting() -> void:
+	if not GameState.can_afford("seeds", BigNum.from_float(1.0)):
+		GameState.add_currency("seeds", BigNum.from_float(1.0))
+	_hint_water = true
+	_waiting_sprout = true
+	(func() -> void:
+		if world and world.get("patch") is Patch:
+			(world.patch as Patch).set_tool(Patch.Tool.PLANT)
+		_show_card(plant_card_text())).call_deferred()

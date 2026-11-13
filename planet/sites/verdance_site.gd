@@ -266,7 +266,7 @@ func _make() -> void:
 		furniture.name = "Furniture"
 		furniture.water_fn = water
 		furniture.town_r = town_r
-		furniture.goal_r = GOAL_R if start else 18.0
+		furniture.goal_r = maxf(GOAL_R, StartArea.radius_m() + 4.0) if start else 18.0  # [v8hex] no wrecks in the start area
 		furniture.state = kit_state(level)
 		furniture.buildings = _foot.duplicate()
 		furniture.big_ship = start
@@ -824,11 +824,17 @@ static func _matte_pad(mi: MeshInstance3D) -> void:
 ## bushes and flowers when restored. Rebuilt on a state change (meshes are kit-cached).
 ## sliced [v5load]: behind the loader, hand frames back between lots (set_level's rebuild in play
 ## stays one call).
+## [v8hex] Where _build_lots put junk-looking kit props (barrels, crate stacks, debris) this build:
+## [site-local Vector2, what]. The hex audit's start-area check (StartArea.big_things) reads it.
+var lot_junk: Array = []
+
+
 func _build_lots(sliced: bool = false) -> void:
 	if _lot_root:
 		_lot_root.free()
 	_lot_root = Node3D.new()
 	_lot_root.name = "Lots"
+	lot_junk.clear()
 	add_child(_lot_root)
 	var st: String = _kit_state
 	var b := KitMesh.Builder.new(seed_value + 7, {"main": "cream", "accent": "teal"}, st)
@@ -852,16 +858,26 @@ func _build_lots(sliced: bool = false) -> void:
 		if yard:
 			# Lived-in clutter on the yard's edges, clear of the anchors and the way out north.
 			# Clear of every start-yard anchor (the lamps are the "Yard Lamps" Hub build).
+			# [v8hex] Owner (Nov 13): "get rid of large items around base 1 like that large barrel": the
+			# start yard keeps no crate stacks or tipped barrel on its edge (they look like junk Lumi
+			# can't take). Other hubs' yards keep them.
 			for p: Vector3 in [Vector3(-10.2, 0, -8.2), Vector3(10.2, 0, -3.6)]:
-				KitProps.crate_stack(b, t * KitMesh.xf(p, Vector3(0, rng.randf() * 90.0, 0)), 3, st)
-			KitProps.barrel(b, t * KitMesh.xf(Vector3(-10.4, 0, 5.7)), "paint:barrel", st == "broken")
+				var cyaw: float = rng.randf() * 90.0
+				if site_id != "start_yard":
+					KitProps.crate_stack(b, t * KitMesh.xf(p, Vector3(0, cyaw, 0)), 3, st)
+			if site_id != "start_yard":
+				KitProps.barrel(b, t * KitMesh.xf(Vector3(-10.4, 0, 5.7)), "paint:barrel", st == "broken")
+				lot_junk.append([Vector2(c.x - 10.4, c.y + 5.7), "barrel"])
 			if st == "restored":
 				for x: float in [-4.5, 4.5]:
 					KitProps.planter(b, t * KitMesh.xf(Vector3(x, 0, 10.2)), 2.4, st)
 			continue
+		if site_id == "start_yard" and StartArea.inside_local(c.x, c.y, 9.0):  # [v8hex] no junk-looking props in the start area
+			continue
 		match st:
 			"broken":
 				if lot["kind"] == "landfill":
+					lot_junk.append([c, "landfill debris, crates, barrels"])  # [v8hex]
 					KitProps.debris(b, t, 9.0, 26)
 					KitProps.crate_stack(b, t * KitMesh.xf(Vector3(rng.randf_range(-6, 6), 0, rng.randf_range(-6, 6)), Vector3(0, rng.randf() * 90.0, 0)), 3 + rng.randi() % 3, st)
 					for k: int in 3:
@@ -871,6 +887,7 @@ func _build_lots(sliced: bool = false) -> void:
 			"repaired":
 				KitProps.crate_stack(b, t * KitMesh.xf(Vector3(-5, 0, -5)), 4, st)
 				KitProps.barrel(b, t * KitMesh.xf(Vector3(5, 0, -5)))
+				lot_junk.append([c, "crate stack, barrel"])  # [v8hex]
 				KitProps.lamp_post(b, t * KitMesh.xf(Vector3(6, 0, 6)), 4.5, st)
 			_:
 				for k: int in 4:

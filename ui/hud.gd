@@ -53,6 +53,7 @@ var _signal_strength: float = 0.0
 var _top_left: MarginContainer
 var _top_right: MarginContainer
 var _hints_give: float = 1.0  # [v7look] 0 while WREN's bar overlaps the key-hint pill
+var _prompt_mc: MarginContainer  # [v8bot] the interact prompt and hex readout (hidden in the Command view)
 var _hints_mc: MarginContainer  # [v7look] lifted over the hotbar's readouts on narrow screens
 var _hold_corner_s: float = 0.0
 var _hold_all: bool = false  # [v7look] hold_corner(s, true): the bottom band steps aside too  # [v7look] seconds the top-right cards stay faded out (hold_corner)
@@ -220,6 +221,7 @@ func _build_bottom() -> void:
 	_bottom.add_child(hotbar)
 	# Prompt and contextual readout, just above the level bar.
 	var mc: MarginContainer = _margin(Control.PRESET_CENTER_BOTTOM, 0)
+	_prompt_mc = mc  # [v8bot]
 	mc.add_theme_constant_override("margin_bottom", 168)  # [v3clear] above the level bar (the hex line sat on it)
 	var vb := VBoxContainer.new()
 	vb.alignment = BoxContainer.ALIGNMENT_END
@@ -385,7 +387,11 @@ func _process(delta: float) -> void:
 	var orb: Variant = world.get("orbit") if world else null  # and the Command view, with its own card and hints
 	var in_cmd: bool = orb is SliceOrbit and (orb as SliceOrbit).cam != null and (orb as SliceOrbit).cam.view == "command"
 	_top_right.modulate.a = move_toward(_top_right.modulate.a, 0.0 if _hold_corner_s > 0.0 or in_cmd else 1.0, delta * 4.0)
-	var bottom_out: bool = _hold_all and _hold_corner_s > 0.0
+	# [v8bot] Owner: the Command view showed the hotbar, the level bar, "HEX CLEAN" and "E pet
+	# Pepper" over its own card. Lumi stands still there: her play HUD steps aside.
+	var bottom_out: bool = (_hold_all and _hold_corner_s > 0.0) or in_cmd
+	if _prompt_mc:
+		_prompt_mc.visible = not in_cmd
 	_bottom.modulate.a = move_toward(_bottom.modulate.a, 0.0 if bottom_out else 1.0, delta * 4.0)
 	if _hints_mc:  # [v7look] and the key-hint pill gives way while a WREN line is up
 		var sub_on: bool = false
@@ -394,6 +400,7 @@ func _process(delta: float) -> void:
 			sub_on = true  # [v7look] owner rule: no key hints while WREN talks (they come back after)
 		_hints_give = move_toward(_hints_give, 0.0 if sub_on else 1.0, delta * 4.0)
 		_hints_mc.modulate.a = minf(_bottom.modulate.a, _hints_give)
+		_hints_mc.visible = not in_cmd  # [v8bot]
 	if patch:
 		if patch.detector and not patch.detector.readout_changed.is_connected(_on_signal):
 			patch.detector.readout_changed.connect(_on_signal)

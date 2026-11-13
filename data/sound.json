@@ -7,6 +7,8 @@
   "sfx": 0.9,
   "ui": 0.8
  },
+ "_doc_master_highpass": "[v8snd] master_highpass_hz: a high-pass on the Master bus, under the whole mix (Hz, 0 = off). Laptop and phone speakers can't play sub-bass and rattle on it; 60 keeps the kick and bass notes, takes out the rumble.",
+ "master_highpass_hz": 60.0,
  "bus_trim_db": {
   "Music": 0.0,
   "Songs": 0.0,
@@ -43,6 +45,7 @@
   "scoop:sparkle": 0.7,
   "scoop:whoosh": 0.7,
   "scoop:pop": 0.35,
+  "purr": 6.0,
   "lumi:squeak": 2.5,
   "sweep:whoosh": 1.5,
   "lights:clunk": 1.2,
