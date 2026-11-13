@@ -419,7 +419,7 @@ func on_hex_clean(hid: int, quiet: bool = false) -> void:
 	var u: Vector3 = center.normalized()
 	var patch: Patch = w.get("patch")
 	if not quiet:  # [orbC]
-		Audio.play("chime", 1.0, -3.0)
+		Audio.play_at("chime", center, 1.0, -3.0, 0.02, "", 16.0)  # [v9s] a robot's hex far off chimes softly, not at full level
 		Vfx.burst("big_sparkle", center + u * 0.3, Color(1.0, 0.92, 0.55))
 		Vfx.ring(center, field.hex_size * 1.1, Color(1.0, 0.9, 0.5, 0.9), 0.8)
 		Vfx.float_text(center + u * 1.4, tr("HEX CLEAN!  +%s") % Settings.fmt(bonus), Color(1.0, 0.92, 0.45), 1.5, 2.0)

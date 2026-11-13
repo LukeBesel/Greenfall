@@ -511,31 +511,31 @@ msgstr "+%s cubos"
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "Ya no se tira basura suelta. Pulsa [%s] para hacer una bala y ponla en la báscula."
 
-#: fauna/fauna.gd:1738
+#: fauna/fauna.gd:1739
 msgid "E   pet %s"
 msgstr "E   acariciar a %s"
 
-#: fauna/fauna.gd:1739
+#: fauna/fauna.gd:1740
 msgid "E   pet the cat"
 msgstr "E   acariciar al gato"
 
-#: fauna/fauna.gd:1797
+#: fauna/fauna.gd:1798
 msgid "E   scatter crumbs for the birds"
 msgstr "E   echar migas a los pájaros"
 
-#: fauna/fauna.gd:1845
+#: fauna/fauna.gd:1846
 msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
 msgstr "Los pájaros han decidido que eres de fiar. Bolsa de migas añadida a tu Colección."
 
-#: fauna/fauna.gd:1901
+#: fauna/fauna.gd:1902
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "La gata ha decidido que eres suyo. Te presento a %s. Ahora vive en esta base."
 
-#: fauna/fauna.gd:2222 ui/subtitles.gd:453
+#: fauna/fauna.gd:2223 ui/subtitles.gd:453
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "Nuevo avistamiento: %s. Ya está en el Códice."
 
-#: fauna/fauna.gd:2293
+#: fauna/fauna.gd:2294
 msgid "Snap! A %s for your Collection."
 msgstr "¡Clic! Una foto (%s) para tu Colección."
 

@@ -38,12 +38,21 @@ static func _synth_all(out: Dictionary) -> void:
 	rng.seed = 9091
 	out["purr"] = [purr(rng, 0.0), purr(rng, 0.15), purr(rng, -0.1)]
 	out["meow"] = [meow(0.0), meow(0.12), meow(-0.08)]
-	out["coo"] = [coo(0.0), coo(0.1), coo(-0.06)]
-	out["chirp"] = [chirp(rng, 0), chirp(rng, 1), chirp(rng, 2), chirp(rng, 3)]
-	out["song"] = [song(rng, 0), song(rng, 1), song(rng, 2), song(rng, 3)]
-	out["quack"] = [quack(rng, 0.0), quack(rng, 0.08), quack(rng, -0.06)]
-	out["gull"] = [gull(0.0), gull(0.1), gull(-0.08)]
-	out["frog"] = [frog(rng, 0.0), frog(rng, 0.12), frog(rng, -0.1)]
+	# [v9s] Owner: "the same bird chirp so many times over and over". More takes per call, each
+	# its own phrase (length, notes, shape), not one call at a few pitches. Audio.play never plays
+	# the same take twice running.
+	out["coo"] = [coo(0.0), coo(0.1), coo(-0.06), coo3(rng, 0.04), coo3(rng, -0.1)]
+	out["chirp"] = []
+	for v: int in 8:
+		out["chirp"].append(chirp(rng, v))
+	out["song"] = []
+	for v: int in 8:
+		out["song"].append(song(rng, v))
+	out["quack"] = [quack(rng, 0.0), quack(rng, 0.08), quack(rng, -0.06), quack(rng, 0.14)]
+	out["gull"] = [gull(0.0), gull(0.1), gull(-0.08), gull(0.05, 2), gull(-0.04, 4)]
+	out["frog"] = []
+	for v: int in 6:
+		out["frog"].append(frog(rng, [0.0, 0.12, -0.1, 0.06, -0.05, 0.18][v], v))
 	out["seal"] = [seal(0.0), seal(0.1), seal(-0.1)]
 	out["flutter"] = [flutter(rng, 0.8), flutter(rng, 1.0), flutter(rng, 1.3)]
 	for name: String in out:
@@ -137,6 +146,31 @@ static func meow(v: float) -> PackedFloat32Array:
 	return b
 
 
+## [v9s] A three-part coo (the pigeon's longer call), its own rhythm per take.
+static func coo3(rng: RandomNumberGenerator, v: float) -> PackedFloat32Array:
+	var parts: Array[Vector2] = []  # start, length
+	var t0: float = 0.0
+	for k: int in 3:
+		var ln: float = rng.randf_range(0.18, 0.32) * (1.5 if k == 2 else 1.0)
+		parts.append(Vector2(t0, ln))
+		t0 += ln + rng.randf_range(0.06, 0.14)
+	var b := _buf(t0)
+	var ph: float = 0.0
+	for i: int in b.size():
+		var t: float = float(i) / RATE
+		var seg: float = 0.0
+		var f: float = 380.0
+		for k: int in 3:
+			var p: Vector2 = parts[k]
+			if t >= p.x and t < p.x + p.y:
+				var u: float = (t - p.x) / p.y
+				seg = sin(PI * u) * (0.8 + 0.2 * sin(TAU * 9.0 * t))
+				f = (370.0 + 50.0 * k) - 70.0 * u * (1.0 if k == 2 else 0.4)
+		ph += TAU * f * (1.0 + v) / RATE
+		b[i] = (sin(ph) + 0.25 * sin(ph * 2.0)) * seg * 0.14
+	return b
+
+
 static func coo(v: float) -> PackedFloat32Array:
 	var b := _buf(1.0)
 	var ph: float = 0.0
@@ -156,39 +190,72 @@ static func coo(v: float) -> PackedFloat32Array:
 	return b
 
 
+## A sparrow's call. [v9s] Eight takes that differ in shape, not only pitch: 1-4 notes, falling,
+## rising or a chevron, short or drawn out, some with a trill.
 static func chirp(rng: RandomNumberGenerator, v: int) -> PackedFloat32Array:
-	var b := _buf(0.32)
+	var n: int = [2, 3, 1, 4, 2, 3, 1, 2][v % 8]
+	var shape: int = v % 3  # 0 falling, 1 rising, 2 chevron
+	var note_s: float = rng.randf_range(0.06, 0.12) * (1.6 if n == 1 else 1.0)
+	var rest_s: float = rng.randf_range(0.03, 0.08)
+	var dur: float = n * (note_s + rest_s) + 0.03
+	var b := _buf(dur)
 	var ph: float = 0.0
-	var n: int = 2 + v % 3
-	var base: float = rng.randf_range(3800.0, 5200.0)
+	var base: float = rng.randf_range(3400.0, 5400.0)
+	var sweep: float = rng.randf_range(900.0, 1800.0)
+	var trill: float = 0.0 if v < 5 else rng.randf_range(35.0, 60.0)
+	var steps: Array[float] = []
+	for k: int in n:
+		steps.append(rng.randf_range(-250.0, 250.0) - (120.0 * k if v % 2 == 0 else -80.0 * k))
 	for i: int in b.size():
 		var t: float = float(i) / RATE
-		var k: float = fmod(t * n / 0.32, 1.0)
-		var on: float = sin(PI * clampf(k / 0.6, 0.0, 1.0)) if k < 0.6 else 0.0
-		ph += TAU * (base + 1400.0 * (1.0 - k)) / RATE
-		b[i] = sin(ph) * on * 0.1
+		var k: int = int(t / (note_s + rest_s))
+		var lt: float = (t - k * (note_s + rest_s)) / note_s
+		if k >= n or lt > 1.0:
+			b[i] = 0.0
+			continue
+		var f: float = base + steps[k]
+		match shape:
+			0: f += sweep * (1.0 - lt)
+			1: f += sweep * lt
+			_: f += sweep * sin(PI * lt)
+		f += 200.0 * sin(TAU * trill * t) if trill > 0.0 else 0.0
+		ph += TAU * f / RATE
+		b[i] = sin(ph) * sin(PI * lt) * 0.1
 	return b
 
 
 ## A robin-like phrase: a few clear whistled notes and warbles, different every variant.
+## [v9s] Eight takes: a motif of 2-3 whistled notes, repeated or answered (like a real songbird's
+## "tee-tee-too"), 0.7-1.8 s, each take on its own pitches, tempo and slides.
 static func song(rng: RandomNumberGenerator, v: int) -> PackedFloat32Array:
-	var b := _buf(1.6)
-	var ph: float = 0.0
-	var notes: Array[Vector3] = []  # start, length, pitch
+	var motif: Array[Vector3] = []  # length, pitch, slide
+	for k: int in rng.randi_range(2, 3):
+		motif.append(Vector3(rng.randf_range(0.06, 0.18), rng.randf_range(2100.0, 4300.0), rng.randf_range(-600.0, 600.0)))
+	var reps: int = [2, 3, 1, 2, 3, 2, 1, 2][v % 8]
+	var notes: Array = []  # [start, length, pitch, slide]
 	var t0: float = 0.02
-	while t0 < 1.45:
-		var ln: float = rng.randf_range(0.07, 0.2)
-		notes.append(Vector3(t0, ln, rng.randf_range(2200.0, 4200.0) + 300.0 * v))
-		t0 += ln + rng.randf_range(0.02, 0.09)
+	var gap: float = rng.randf_range(0.025, 0.08)
+	for r: int in reps:
+		var up: float = 1.0 + (0.06 * r if v % 2 == 0 else -0.04 * r)  # each repeat a little higher (or lower)
+		for m: Vector3 in motif:
+			notes.append([t0, m.x, m.y * up, m.z])
+			t0 += m.x + gap
+		t0 += rng.randf_range(0.05, 0.16)
+	if v % 3 == 0:  # an ending flourish
+		notes.append([t0, 0.22, rng.randf_range(2600.0, 3600.0), rng.randf_range(-900.0, -400.0)])
+		t0 += 0.24
+	var b := _buf(minf(t0 + 0.05, 2.0))
+	var ph: float = 0.0
+	var vib: float = rng.randf_range(4.0, 9.0)
 	for i: int in b.size():
 		var t: float = float(i) / RATE
 		var amp: float = 0.0
 		var f: float = 3000.0
-		for nt: Vector3 in notes:
-			if t >= nt.x and t < nt.x + nt.y:
-				var u: float = (t - nt.x) / nt.y
+		for nt: Array in notes:
+			if t >= float(nt[0]) and t < float(nt[0]) + float(nt[1]):
+				var u: float = (t - float(nt[0])) / float(nt[1])
 				amp = sin(PI * u)
-				f = nt.z * (1.0 + 0.12 * sin(TAU * u * (2.0 + float(v)))) + 500.0 * (u - 0.5) * (1 if int(nt.z) % 2 == 0 else -1)
+				f = float(nt[2]) * (1.0 + 0.04 * sin(TAU * vib * u)) + float(nt[3]) * (u - 0.5)
 				break
 		ph += TAU * f / RATE
 		b[i] = (sin(ph) + 0.15 * sin(ph * 2.0)) * amp * 0.09
@@ -208,8 +275,8 @@ static func quack(rng: RandomNumberGenerator, v: float) -> PackedFloat32Array:
 	return b
 
 
-static func gull(v: float) -> PackedFloat32Array:
-	var b := _buf(0.9)
+static func gull(v: float, calls: int = 3) -> PackedFloat32Array:
+	var b := _buf(0.3 * calls)  # [v9s] 2, 3 or 4 cries
 	var ph: float = 0.0
 	for i: int in b.size():
 		var t: float = float(i) / RATE
@@ -217,18 +284,24 @@ static func gull(v: float) -> PackedFloat32Array:
 		var f: float = (1500.0 - 700.0 * k + 200.0 * sin(PI * k)) * (1.0 + v)
 		ph += TAU * f / RATE
 		var s: float = sin(ph) * 0.6 + sin(ph * 2.0) * 0.25 + sin(ph * 3.0) * 0.1
-		b[i] = s * sin(PI * minf(k / 0.85, 1.0)) * 0.08 * (1.0 - t / 1.1)
+		b[i] = s * sin(PI * minf(k / 0.85, 1.0)) * 0.08 * (1.0 - t / (0.3 * calls + 0.2))
 	return b
 
 
-static func frog(rng: RandomNumberGenerator, v: float) -> PackedFloat32Array:
-	var b := _buf(0.42)
+## [v9s] Six takes: pulse rate, length and pitch differ; two of them croak twice.
+static func frog(rng: RandomNumberGenerator, v: float, take: int = 0) -> PackedFloat32Array:
+	var one: float = [0.42, 0.3, 0.5, 0.26, 0.36, 0.45][take % 6]
+	var two: bool = take == 3 or take == 5
+	var len_s: float = one * (2.0 + 0.25) if two else one
+	var rate: float = [32.0, 26.0, 38.0, 30.0, 23.0, 35.0][take % 6]
+	var b := _buf(len_s)
 	var ph: float = 0.0
 	for i: int in b.size():
 		var t: float = float(i) / RATE
-		var x: float = t / 0.42
+		var tt: float = t if t < one else t - one * 1.25
+		var x: float = clampf(tt / one, 0.0, 1.0) if tt >= 0.0 else 1.0
 		ph += TAU * (150.0 + 40.0 * sin(PI * x)) * (1.0 + v) / RATE
-		var pulses: float = pow(0.5 + 0.5 * sin(TAU * 32.0 * t), 2.0)
+		var pulses: float = pow(0.5 + 0.5 * sin(TAU * rate * t), 2.0)
 		var s: float = 0.45 * sin(ph) + 0.7 * sin(ph * 2.0) + 0.45 * sin(ph * 3.1) + rng.randf_range(-0.1, 0.1)  # [v8snd] weight up the overtones
 		b[i] = s * pulses * sin(PI * x) * 0.13
 	return b
@@ -249,13 +322,17 @@ static func seal(v: float) -> PackedFloat32Array:
 static func flutter(rng: RandomNumberGenerator, rate: float) -> PackedFloat32Array:
 	var b := _buf(0.9)
 	var lp: float = 0.0
+	var hp: float = 0.0
+	var prev: float = 0.0
 	for i: int in b.size():
 		var t: float = float(i) / RATE
 		var n: float = rng.randf_range(-1.0, 1.0)
 		# [fauna2] Softer: darker noise, fewer and rounder wingbeats that slow and fade.
 		lp += (n - lp) * 0.12
+		hp = 0.96 * (hp + lp - prev)  # [v9s] ~140 Hz high-pass: no rumble whatever the noise draws
+		prev = lp
 		var beat: float = pow(0.5 + 0.5 * sin(TAU * 9.0 * rate * t * (1.0 - 0.3 * t)), 2.0)
-		b[i] = lp * beat * 0.3 * (1.0 - smoothstep(0.25, 0.9, t)) * smoothstep(0.0, 0.05, t)
+		b[i] = hp * 1.3 * beat * 0.3 * (1.0 - smoothstep(0.25, 0.9, t)) * smoothstep(0.0, 0.05, t)
 	return b
 
 

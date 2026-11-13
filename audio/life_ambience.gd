@@ -245,7 +245,7 @@ func _process(delta: float) -> void:
 		elif snd.begins_with("amb_") or snd.begins_with("res://"):
 			continue  # not synthesized / loaded (yet, or headless)
 		else:
-			if snd in BIRDS and not Fauna.bird_call_ok(night):
+			if snd in BIRDS and not Fauna.bird_call_ok(night, snd):  # [v9s] per-species gap too
 				continue
 			FaunaSounds.ensure()
 			Audio.play(snd, pitch, float(e["db"]), 0.03)

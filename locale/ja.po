@@ -511,31 +511,31 @@ msgstr "+%s キューブ"
 msgid "No loose trash now. Press [%s] for a bale, then put it on the scale."
 msgstr "もうバラのゴミは入れられないよ。[%s] でベールを作って、はかりにのせよう。"
 
-#: fauna/fauna.gd:1738
+#: fauna/fauna.gd:1739
 msgid "E   pet %s"
 msgstr "E   %s をなでる"
 
-#: fauna/fauna.gd:1739
+#: fauna/fauna.gd:1740
 msgid "E   pet the cat"
 msgstr "E   ネコをなでる"
 
-#: fauna/fauna.gd:1797
+#: fauna/fauna.gd:1798
 msgid "E   scatter crumbs for the birds"
 msgstr "E   鳥にパンくずをまく"
 
-#: fauna/fauna.gd:1845
+#: fauna/fauna.gd:1846
 msgid "The birds have decided you're all right. Crumb Bag added to your Collection."
 msgstr "鳥たちはきみを気に入ったみたい。パンくず袋をコレクションに追加した。"
 
-#: fauna/fauna.gd:1901
+#: fauna/fauna.gd:1902
 msgid "The cat has decided you're hers. Meet %s. She lives at this base now."
 msgstr "このネコはきみを自分のものだと決めたらしい。%s だよ。これからはこの基地で暮らすって。"
 
-#: fauna/fauna.gd:2222 ui/subtitles.gd:453
+#: fauna/fauna.gd:2223 ui/subtitles.gd:453
 msgid "New sighting: %s. It's in the Codex now."
 msgstr "新しく発見：%s。図鑑に追加されたよ。"
 
-#: fauna/fauna.gd:2293
+#: fauna/fauna.gd:2294
 msgid "Snap! A %s for your Collection."
 msgstr "パシャ！%s の写真をコレクションに追加。"
 

@@ -52,6 +52,39 @@
   "robot:clink": 1.5,
   "robot:servo": 2.0
  },
+ "_doc_variety": "[v9s] Repetition (owner 2026-11-13: \"super annoying to hear the same bird chirp so many times over and over ... lively but just peaceful\"). Every sound with more than one take never plays the same take twice running. Keys are \"sound\" or \"tag:sound\" (the tag wins), else \"_default\". max_voices: at most this many of the sound sounding at once (a new play is dropped). soften: [window s, dB, max dB]: a play within window s of the last one of the same key is dB softer per play in the run, at most max dB, so fast repeats are a patter, not a hammer; a pause longer than the window resets it. pitch_spread: the least random pitch spread (+- share, 0.05 = 5%). ladder_roots: semitones a new scoop combo's rising ladder starts on (one picked per combo, never the same twice running). Check: tools/check_audio.py --repeat (docs/ADJUSTING.md, Listen by numbers).",
+ "variety": {
+  "max_voices": {"chime": 2, "sparkle": 3, "fanfare": 1, "ding": 2},
+  "soften": {
+   "scoop:clink": [0.9, 1.0, 5.0],
+   "scoop:pop": [1.2, 1.5, 6.0],
+   "scoop:servo": [1.5, 1.5, 6.0],
+   "scoop:whoosh": [1.5, 1.5, 6.0],
+   "scoop:sparkle": [1.5, 1.5, 6.0],
+   "tick": [0.5, 0.7, 5.0],
+   "lumi:squeak": [12.0, 2.0, 6.0],
+   "sweep:whoosh": [8.0, 1.5, 4.5],
+   "thunk": [30.0, 1.0, 3.0],
+   "crunch": [30.0, 1.0, 3.0],
+   "coin": [30.0, 1.0, 3.0],
+   "chime": [20.0, 2.0, 6.0],
+   "sparkle": [10.0, 1.5, 4.5],
+   "ding": [8.0, 1.5, 4.5]
+  },
+  "pitch_spread": {"coin": 0.03, "thunk": 0.05, "crunch": 0.06, "hydraulic": 0.04, "groan": 0.05, "clunk": 0.05, "pop": 0.05},
+  "ladder_roots": [0, 2, -3, -5]
+ },
+ "_doc_wildlife": "[v9s] The wildlife's calls (fauna/fauna.gd), every planet. gap_s: [shortest, longest] seconds between two calls of a category: call (every bird call in the game shares one clock, also the life bed's birds; twice as long at night), flutter (a flock's wings), frog (all frogs share one clock, mostly near the short end with now and then a long hush; frog_night_mult at night). species_gap_s: one kind of call never twice within about this many seconds. calls_per_min: at most this many bird calls in any minute. While Lumi stands still the bird gap grows from 1x at still_after_s to still_mult at still_full_s. phrase: sound -> [chance, shortest s, longest s]: after a call the same bird calls once more that much later (another take), then silence.",
+ "wildlife": {
+  "gap_s": {"call": [22.0, 50.0], "flutter": [5.0, 14.0], "frog": [8.0, 40.0]},
+  "frog_night_mult": 0.85,
+  "species_gap_s": {"song": 50.0, "chirp": 45.0, "coo": 60.0, "gull": 60.0, "quack": 45.0, "heron": 60.0},
+  "calls_per_min": 3,
+  "still_after_s": 45.0,
+  "still_full_s": 240.0,
+  "still_mult": 2.5,
+  "phrase": {"chirp": [0.45, 0.6, 1.8], "coo": [0.25, 1.2, 2.5], "song": [0.2, 1.8, 3.5]}
+ },
  "duck": {
   "music_db": -7.0,
   "ambience_db": -4.5,
