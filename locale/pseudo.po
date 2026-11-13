@@ -468,7 +468,7 @@ msgid "E   Telescope: look across the system"
 msgstr "E   [Ţéļéšçôþé: ļôôķ àçŕôšš ţĥé šýšţém ~~~~~~~~~]"
 
 #: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:558 ui/upgrade_card.gd:258
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:559 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "[%d mîñ ~]"
 
@@ -794,35 +794,35 @@ msgstr "[Àļļ %d bàšéš šţàñð. Fļý ĥômé àñð màķé ţĥé ŕ�
 msgid "%s  ·  the %s"
 msgstr "[%s  ·  ţĥé %s ~~]"
 
-#: planet/sites/orbit_sites.gd:112
+#: planet/sites/orbit_sites.gd:114
 msgid "The rocket is in flight."
 msgstr "[Ţĥé ŕôçķéţ îš îñ ƒļîĝĥţ. ~~~~~]"
 
-#: planet/sites/orbit_sites.gd:136
+#: planet/sites/orbit_sites.gd:138
 msgid "Bases restored: %d of %d"
 msgstr "[Bàšéš ŕéšţôŕéð: %d ôƒ %d ~~~~~]"
 
-#: planet/sites/orbit_sites.gd:174
+#: planet/sites/orbit_sites.gd:176
 msgid "E   Rocket: choose a destination"
 msgstr "E   [Ŕôçķéţ: çĥôôšé à ðéšţîñàţîôñ ~~~~~~~]"
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:214
 msgid "HOME"
 msgstr "[ĤÔMÉ ~]"
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:214
 msgid "NEXT STOP"
 msgstr "[ÑÉXŢ ŠŢÔÞ ~]"
 
-#: planet/sites/orbit_sites.gd:214
+#: planet/sites/orbit_sites.gd:216
 msgid "Upgrade the rocket first"
 msgstr "[Ûþĝŕàðé ţĥé ŕôçķéţ ƒîŕšţ ~~~~~]"
 
-#: planet/sites/orbit_sites.gd:232
+#: planet/sites/orbit_sites.gd:234
 msgid "%s site"
 msgstr "[%s šîţé ~]"
 
-#: planet/sites/orbit_sites.gd:233
+#: planet/sites/orbit_sites.gd:235
 msgid "Hub %d"
 msgstr "[Ĥûb %d ~]"
 
@@ -958,31 +958,35 @@ msgstr "[Šééðš ñééð šôîļ, ñôţ ŕôàð ôŕ ţĥé þàð. Ţŕ�
 msgid "Seeds need soil, not road or the pad."
 msgstr "[Šééðš ñééð šôîļ, ñôţ ŕôàð ôŕ ţĥé þàð. ~~~~~~~~~~]"
 
-#: player/patch.gd:627
+#: player/patch.gd:593
+msgid "Your chest is empty. Scoop some trash first."
+msgstr "[Ýôûŕ çĥéšţ îš émþţý. Šçôôþ šômé ţŕàšĥ ƒîŕšţ. ~~~~~~~~~~~~]"
+
+#: player/patch.gd:633
 msgid "PERFECT BALE  %s"
 msgstr "[ÞÉŔFÉÇŢ BÀĻÉ  %s ~~~]"
 
-#: player/patch.gd:633
+#: player/patch.gd:639
 msgid "OVERSTUFFED  %s"
 msgstr "[ÔVÉŔŠŢÛFFÉÐ  %s ~~]"
 
-#: player/patch.gd:637
+#: player/patch.gd:643
 msgid "PURE  %s"
 msgstr "[ÞÛŔÉ  %s ~]"
 
-#: player/patch.gd:639
+#: player/patch.gd:645
 msgid "SURGE  %s"
 msgstr "[ŠÛŔĜÉ  %s ~]"
 
-#: player/patch.gd:642
+#: player/patch.gd:648
 msgid "  (streak +%d%%)"
 msgstr "  [(šţŕéàķ +%d%%) ~~~]"
 
-#: player/patch.gd:685
+#: player/patch.gd:691
 msgid "Salvaged: %s"
 msgstr "[Šàļvàĝéð: %s ~]"
 
-#: player/patch.gd:716
+#: player/patch.gd:722
 msgid "Recovered: %s"
 msgstr "[Ŕéçôvéŕéð: %s ~~]"
 
@@ -1116,6 +1120,7 @@ msgstr "[Ñôţ éñôûĝĥ þàŕţš ~~~]"
 
 #: robots/fleet.gd:153 robots/fleet.gd:229 robots/water_net.gd:149
 #: systems/research.gd:210 systems/robot_builder.gd:350 systems/robot_builder.gd:402
+#: ui/globe_view.gd:495
 msgid "Not enough cubes"
 msgstr "[Ñôţ éñôûĝĥ çûbéš ~~~]"
 
@@ -4741,27 +4746,27 @@ msgstr "[[k]Ðŕàĝ ţô šþîñ   ·   Ŵĥééļ ţô žôôm   ·   [/k][p]
 msgid "%d sectors away"
 msgstr "[%d šéçţôŕš àŵàý ~~]"
 
-#: ui/globe_view.gd:525
+#: ui/globe_view.gd:526
 msgid "%s HEXES CLEAN"
 msgstr "[%s ĤÉXÉŠ ÇĻÉÀÑ ~~]"
 
-#: ui/globe_view.gd:527
+#: ui/globe_view.gd:528
 msgid "Surveyed %s ago%s"
 msgstr "[Šûŕvéýéð %s àĝô%s ~~~]"
 
-#: ui/globe_view.gd:527
+#: ui/globe_view.gd:528
 msgid "   ·   OUTDATED"
 msgstr "   [·   ÔÛŢÐÀŢÉÐ ~~]"
 
-#: ui/globe_view.gd:528
+#: ui/globe_view.gd:529
 msgid "Re-survey      %s cubes"
 msgstr "[Ŕé-šûŕvéý      %s çûbéš ~~~~~]"
 
-#: ui/globe_view.gd:540
+#: ui/globe_view.gd:541
 msgid "of the ground around your hubs is clean"
 msgstr "[ôƒ ţĥé ĝŕôûñð àŕôûñð ýôûŕ ĥûbš îš çļéàñ ~~~~~~~~~~~]"
 
-#: ui/globe_view.gd:542
+#: ui/globe_view.gd:543
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "[ôƒ ţĥé þļàñéţ ŕéçļàîméð  ·  %s ôƒ %s ļàñð ĥéxéš ~~~~~~~~~~~~~]"
 
@@ -11147,10 +11152,6 @@ msgstr "[Ŕéšéàŕçĥ Þôļļîñàţôŕ Šûŕvéý ~~~~~~]"
 msgid "Grow 25 flowers to bloom"
 msgstr "[Ĝŕôŵ 25 ƒļôŵéŕš ţô bļôôm ~~~~~]"
 
-#: data/goals.json:goals[tank_1].text
-msgid "Place a Water Tank"
-msgstr "[Þļàçé à Ŵàţéŕ Ţàñķ ~~~]"
-
 #: data/goals.json:goals[plant_60].text
 msgid "Plant 60 seeds"
 msgstr "[Þļàñţ 60 šééðš ~~]"
@@ -11410,10 +11411,6 @@ msgstr "[Ĝŕôŵ Ĥéîŕļôômš ţô 10 ļévéļš ~~~~~~]"
 #: data/goals.json:goals[late_world_2].text
 msgid "Seed a second new world"
 msgstr "[Šééð à šéçôñð ñéŵ ŵôŕļð ~~~~~]"
-
-#: data/goals.json:goals[late_eggs_38].text
-msgid "Find 38 curiosities"
-msgstr "[Fîñð 38 çûŕîôšîţîéš ~~~~]"
 
 #: data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"

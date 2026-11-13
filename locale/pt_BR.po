@@ -471,7 +471,7 @@ msgid "E   Telescope: look across the system"
 msgstr "E   Telescópio: observar o sistema"
 
 #: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:558 ui/upgrade_card.gd:258
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:559 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "%d min"
 
@@ -797,35 +797,35 @@ msgstr "As %d bases estão de pé. Voe para casa e prepare o foguete para partir
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:112
+#: planet/sites/orbit_sites.gd:114
 msgid "The rocket is in flight."
 msgstr "O foguete está voando."
 
-#: planet/sites/orbit_sites.gd:136
+#: planet/sites/orbit_sites.gd:138
 msgid "Bases restored: %d of %d"
 msgstr "Bases restauradas: %d de %d"
 
-#: planet/sites/orbit_sites.gd:174
+#: planet/sites/orbit_sites.gd:176
 msgid "E   Rocket: choose a destination"
 msgstr "E   Foguete: escolha um destino"
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:214
 msgid "HOME"
 msgstr "CASA"
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:214
 msgid "NEXT STOP"
 msgstr "PRÓXIMA PARADA"
 
-#: planet/sites/orbit_sites.gd:214
+#: planet/sites/orbit_sites.gd:216
 msgid "Upgrade the rocket first"
 msgstr "Primeiro melhore o foguete"
 
-#: planet/sites/orbit_sites.gd:232
+#: planet/sites/orbit_sites.gd:234
 msgid "%s site"
 msgstr "Local: %s"
 
-#: planet/sites/orbit_sites.gd:233
+#: planet/sites/orbit_sites.gd:235
 msgid "Hub %d"
 msgstr "Base %d"
 
@@ -961,31 +961,35 @@ msgstr "Sementes precisam de terra, não de rua nem da plataforma. Tente os cant
 msgid "Seeds need soil, not road or the pad."
 msgstr "Sementes precisam de terra, não de rua nem da plataforma."
 
-#: player/patch.gd:627
+#: player/patch.gd:593
+msgid "Your chest is empty. Scoop some trash first."
+msgstr "Seu baú está vazio. Recolha um pouco de lixo primeiro."
+
+#: player/patch.gd:633
 msgid "PERFECT BALE  %s"
 msgstr "FARDO PERFEITO  %s"
 
-#: player/patch.gd:633
+#: player/patch.gd:639
 msgid "OVERSTUFFED  %s"
 msgstr "ABARROTADO  %s"
 
-#: player/patch.gd:637
+#: player/patch.gd:643
 msgid "PURE  %s"
 msgstr "PURO  %s"
 
-#: player/patch.gd:639
+#: player/patch.gd:645
 msgid "SURGE  %s"
 msgstr "IMPULSO  %s"
 
-#: player/patch.gd:642
+#: player/patch.gd:648
 msgid "  (streak +%d%%)"
 msgstr "  (sequência +%d%%)"
 
-#: player/patch.gd:685
+#: player/patch.gd:691
 msgid "Salvaged: %s"
 msgstr "Resgatado: %s"
 
-#: player/patch.gd:716
+#: player/patch.gd:722
 msgid "Recovered: %s"
 msgstr "Recuperado: %s"
 
@@ -1119,6 +1123,7 @@ msgstr "Peças insuficientes"
 
 #: robots/fleet.gd:153 robots/fleet.gd:229 robots/water_net.gd:149
 #: systems/research.gd:210 systems/robot_builder.gd:350 systems/robot_builder.gd:402
+#: ui/globe_view.gd:495
 msgid "Not enough cubes"
 msgstr "Cubos insuficientes"
 
@@ -4744,27 +4749,27 @@ msgstr "[k]Arraste para girar   ·   Roda para zoom   ·   [/k][p]{@look}  girar
 msgid "%d sectors away"
 msgstr "a %d setores"
 
-#: ui/globe_view.gd:525
+#: ui/globe_view.gd:526
 msgid "%s HEXES CLEAN"
 msgstr "%s HEXÁGONOS LIMPOS"
 
-#: ui/globe_view.gd:527
+#: ui/globe_view.gd:528
 msgid "Surveyed %s ago%s"
 msgstr "Mapeado há %s%s"
 
-#: ui/globe_view.gd:527
+#: ui/globe_view.gd:528
 msgid "   ·   OUTDATED"
 msgstr "   ·   DESATUALIZADO"
 
-#: ui/globe_view.gd:528
+#: ui/globe_view.gd:529
 msgid "Re-survey      %s cubes"
 msgstr "Mapear de novo      %s cubos"
 
-#: ui/globe_view.gd:540
+#: ui/globe_view.gd:541
 msgid "of the ground around your hubs is clean"
 msgstr "do chão em volta das suas bases está limpo"
 
-#: ui/globe_view.gd:542
+#: ui/globe_view.gd:543
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "do planeta recuperado  ·  %s de %s hexágonos de terra"
 
@@ -11150,10 +11155,6 @@ msgstr "Pesquise o Censo de Polinizadores"
 msgid "Grow 25 flowers to bloom"
 msgstr "Faça 25 flores florirem"
 
-#: data/goals.json:goals[tank_1].text
-msgid "Place a Water Tank"
-msgstr "Coloque um Tanque de Água"
-
 #: data/goals.json:goals[plant_60].text
 msgid "Plant 60 seeds"
 msgstr "Plante 60 sementes"
@@ -11413,10 +11414,6 @@ msgstr "Suba as relíquias para 10 níveis"
 #: data/goals.json:goals[late_world_2].text
 msgid "Seed a second new world"
 msgstr "Semeie um segundo mundo novo"
-
-#: data/goals.json:goals[late_eggs_38].text
-msgid "Find 38 curiosities"
-msgstr "Encontre 38 curiosidades"
 
 #: data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
@@ -17053,6 +17050,12 @@ msgstr "Aquele pórtico desmanchou a frota do Ledger quando o dinheiro acabou. A
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "Um mundo de ferrugem, verde. Os velhos guindastes têm flores aos pés. As contas estão fechadas, {name}. Nós as equilibramos."
+
+#~ msgid "Place a Water Tank"
+#~ msgstr "Coloque um Tanque de Água"
+
+#~ msgid "Find 38 curiosities"
+#~ msgstr "Encontre 38 curiosidades"
 
 #~ msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 #~ msgstr "Sementes precisam de chão limpo e aberto: nada de ruas, calçadas ou da plataforma."

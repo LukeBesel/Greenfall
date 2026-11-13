@@ -540,6 +540,8 @@ func _update_focus() -> void:
 ## null, "row": [tab, row id] or []}. "hex" = the nearest dirty hex (outlined too).
 const BENCH_STATS: Array[String] = ["upgrades_bought", "robots_built", "research_done", "builder_full_custom", "builder_parts_fitted",
 	"decor_placed", "decor_kinds", "decor_charm_best", "greenhouses_built", "water_tanks", "heaters_placed", "drive_tier", "robots_retired", "radio_plays"]
+## [v9d] Goal stats done at a yard build: the beam stands on it (they pointed at the bench before).
+const YARD_STATS: Dictionary = {"radio_plays": "radio", "robots_retired": "nursery", "builder_parts_fitted": "locker", "builder_full_custom": "locker"}
 const DEPOT_STATS: Array[String] = ["cubes_cashed", "junk_dumps", "robot_bales", "bales_recycled"]
 const HEX_STATS: Array[String] = ["hexes_cleaned", "junk_scooped", "cubes_made", "perfect_cubes", "hexes_restored", "hexes_thawed",
 	"plants_planted", "plants_bloomed", "garden_stipend", "eggs_found", "cats_petted"]
@@ -625,6 +627,8 @@ func step_target(def: Dictionary) -> Dictionary:
 		"stat":
 			if key == "junk_dumps":  # [v2guide] the chest goes into the bin's body, not onto the scale
 				out["to"] = "bin" if p and not p.compartment.is_empty() else "hex"
+			elif key in YARD_STATS and _yard_point(str(YARD_STATS[key])) is Vector3:  # [v9d] the radio, nursery and locker stand in the yard, not at the bench
+				out = {"to": "place", "pos": _yard_point(str(YARD_STATS[key])), "row": []}
 			elif key in DEPOT_STATS:
 				out["to"] = "depot" if key != "cubes_cashed" or (p and not p.carried.is_empty()) else "hex"
 			elif key in BENCH_STATS:
@@ -639,6 +643,15 @@ func step_target(def: Dictionary) -> Dictionary:
 		_:
 			out["to"] = "hex"
 	return _resolve(out)
+
+
+## [v9d] A yard anchor's spot on the globe (SliceOrbit.yard_point), or null off the globe / not built.
+func _yard_point(anchor: String) -> Variant:
+	var so: Variant = world.get("orbit") if world else null
+	if not (so is SliceOrbit) or not YardBuilds.built(anchor):
+		return null
+	var at: Vector3 = (so as SliceOrbit).yard_point(anchor)
+	return at if at != Vector3.ZERO else null
 
 
 func _resolve(t: Dictionary) -> Dictionary:

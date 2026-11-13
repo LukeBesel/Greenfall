@@ -48,6 +48,9 @@ run hex_audit -- --fresh --orbit --no-intro --hex-audit --hex-audit-quit
 # [v8seed] "Plant the first seed" played with real key and mouse events (tools/seed_walk.gd): the
 # bot's own path hid that a player could not plant (owner, 2026-11-13).
 run seed_walk -- --fresh --orbit --no-intro --seed-walk --save-dir=check_exit_seed_$$
+# [v9d] Every goal and achievement left on Verdance can complete (tools/goal_audit.gd on the globe),
+# and one goal of each kind a player does by hand moves when played with real input (tools/walk_goals.gd).
+run walk_goals -- --fresh --orbit --no-intro --walk-goals --save-dir=check_exit_goals_$$
 if [ "$1" = "--quick" ]; then
 	run quit15 -- --fresh --quit-after=15
 fi

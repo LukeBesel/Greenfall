@@ -471,7 +471,7 @@ msgid "E   Telescope: look across the system"
 msgstr "E   望遠鏡：星系を見わたす"
 
 #: core/offline.gd:141 steam/demo_end_screen.gd:124 systems/remote_progress.gd:289
-#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:558 ui/upgrade_card.gd:258
+#: systems/extras/welcome_back.gd:56 ui/globe_view.gd:559 ui/upgrade_card.gd:258
 msgid "%d min"
 msgstr "%d 分"
 
@@ -796,35 +796,35 @@ msgstr "%d つの基地がそろった。ホームに戻ってロケットの出
 msgid "%s  ·  the %s"
 msgstr "%s  ·  %s"
 
-#: planet/sites/orbit_sites.gd:112
+#: planet/sites/orbit_sites.gd:114
 msgid "The rocket is in flight."
 msgstr "ロケットは飛行中。"
 
-#: planet/sites/orbit_sites.gd:136
+#: planet/sites/orbit_sites.gd:138
 msgid "Bases restored: %d of %d"
 msgstr "復旧した基地：%d / %d"
 
-#: planet/sites/orbit_sites.gd:174
+#: planet/sites/orbit_sites.gd:176
 msgid "E   Rocket: choose a destination"
 msgstr "E   ロケット：行き先を選ぶ"
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:214
 msgid "HOME"
 msgstr "ホーム"
 
-#: planet/sites/orbit_sites.gd:212
+#: planet/sites/orbit_sites.gd:214
 msgid "NEXT STOP"
 msgstr "次の目的地"
 
-#: planet/sites/orbit_sites.gd:214
+#: planet/sites/orbit_sites.gd:216
 msgid "Upgrade the rocket first"
 msgstr "先にロケットを強化"
 
-#: planet/sites/orbit_sites.gd:232
+#: planet/sites/orbit_sites.gd:234
 msgid "%s site"
 msgstr "%sの地点"
 
-#: planet/sites/orbit_sites.gd:233
+#: planet/sites/orbit_sites.gd:235
 msgid "Hub %d"
 msgstr "基地 %d"
 
@@ -960,31 +960,35 @@ msgstr "種は土に植えよう。道路や台の上はだめ。温室の苗床
 msgid "Seeds need soil, not road or the pad."
 msgstr "種は土に植えよう。道路や台の上はだめ。"
 
-#: player/patch.gd:627
+#: player/patch.gd:593
+msgid "Your chest is empty. Scoop some trash first."
+msgstr "チェストが空っぽ。まずゴミを集めよう。"
+
+#: player/patch.gd:633
 msgid "PERFECT BALE  %s"
 msgstr "パーフェクトベール  %s"
 
-#: player/patch.gd:633
+#: player/patch.gd:639
 msgid "OVERSTUFFED  %s"
 msgstr "詰め込みすぎ  %s"
 
-#: player/patch.gd:637
+#: player/patch.gd:643
 msgid "PURE  %s"
 msgstr "ピュア  %s"
 
-#: player/patch.gd:639
+#: player/patch.gd:645
 msgid "SURGE  %s"
 msgstr "サージ  %s"
 
-#: player/patch.gd:642
+#: player/patch.gd:648
 msgid "  (streak +%d%%)"
 msgstr "  （連続 +%d%%）"
 
-#: player/patch.gd:685
+#: player/patch.gd:691
 msgid "Salvaged: %s"
 msgstr "回収：%s"
 
-#: player/patch.gd:716
+#: player/patch.gd:722
 msgid "Recovered: %s"
 msgstr "発見：%s"
 
@@ -1118,6 +1122,7 @@ msgstr "パーツが足りません"
 
 #: robots/fleet.gd:153 robots/fleet.gd:229 robots/water_net.gd:149
 #: systems/research.gd:210 systems/robot_builder.gd:350 systems/robot_builder.gd:402
+#: ui/globe_view.gd:495
 msgid "Not enough cubes"
 msgstr "キューブが足りない"
 
@@ -4728,27 +4733,27 @@ msgstr "[k]ドラッグで回転   ·   ホイールでズーム   ·   [/k][p]{
 msgid "%d sectors away"
 msgstr "%d セクター先"
 
-#: ui/globe_view.gd:525
+#: ui/globe_view.gd:526
 msgid "%s HEXES CLEAN"
 msgstr "きれいなヘックス %s"
 
-#: ui/globe_view.gd:527
+#: ui/globe_view.gd:528
 msgid "Surveyed %s ago%s"
 msgstr "%s前に調査%s"
 
-#: ui/globe_view.gd:527
+#: ui/globe_view.gd:528
 msgid "   ·   OUTDATED"
 msgstr "   ·   古い情報"
 
-#: ui/globe_view.gd:528
+#: ui/globe_view.gd:529
 msgid "Re-survey      %s cubes"
 msgstr "再調査      %s キューブ"
 
-#: ui/globe_view.gd:540
+#: ui/globe_view.gd:541
 msgid "of the ground around your hubs is clean"
 msgstr "基地のまわりの地面がきれいになった"
 
-#: ui/globe_view.gd:542
+#: ui/globe_view.gd:543
 msgid "of the planet reclaimed  ·  %s of %s land hexes"
 msgstr "の土地を取り戻した  ·  陸のヘックス %s / %s"
 
@@ -11133,10 +11138,6 @@ msgstr "「花粉媒介者の調査」を研究する"
 msgid "Grow 25 flowers to bloom"
 msgstr "花を25輪咲かせる"
 
-#: data/goals.json:goals[tank_1].text
-msgid "Place a Water Tank"
-msgstr "給水タンクを置く"
-
 #: data/goals.json:goals[plant_60].text
 msgid "Plant 60 seeds"
 msgstr "種を60個植える"
@@ -11396,10 +11397,6 @@ msgstr "家宝のレベルを合計10にする"
 #: data/goals.json:goals[late_world_2].text
 msgid "Seed a second new world"
 msgstr "2つ目の新しい世界に種をまく"
-
-#: data/goals.json:goals[late_eggs_38].text
-msgid "Find 38 curiosities"
-msgstr "珍品を38個見つける"
 
 #: data/hex_levels.json:levels[0].hint
 msgid "Clear every piece of junk"
@@ -17036,6 +17033,12 @@ msgstr "お金が尽きたとき、あのガントリーが Ledger の艦隊を�
 #: data/wren_lines.json:world_rust_world_restored
 msgid "A rust world, green. The old cranes have flowers at their feet. The books are closed, {name}. We balanced them."
 msgstr "錆の世界が、緑に。古いクレーンの足元に花が咲いている。帳簿は閉じたわ、{name}。私たちで収支を合わせた。"
+
+#~ msgid "Place a Water Tank"
+#~ msgstr "給水タンクを置く"
+
+#~ msgid "Find 38 curiosities"
+#~ msgstr "珍品を38個見つける"
 
 #~ msgid "Seeds need clean, open ground: not streets, kerbs or the pad."
 #~ msgstr "種にはきれいで開けた地面が必要。道路、縁石、発着場には植えられない。"
