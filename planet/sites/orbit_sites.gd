@@ -62,6 +62,8 @@ func _setup() -> void:
 		SpotProbe.run_dev.call_deferred(so)
 	if DevHooks.has("seed-walk"):  # [v8seed] dev: the first seed played with real input (tools/seed_walk.gd)
 		SeedWalk.run_dev(so)
+	if DevHooks.has("walk-home"):  # [v9b] dev: the home steps after the first robot, real input (tools/walk_home.gd)
+		WalkHome.run_dev(so)
 	if DevHooks.has("target-reach"):  # [v4world] dev: every collectible and objective target reachable (planet/sites/target_audit.gd)
 		TargetAudit.run_dev(so)
 	if DevHooks.has("planet-smoke"):  # [v7planet] dev: any planet boots, walks, hops, wakes, saves (planet/sites/planet_smoke.gd)

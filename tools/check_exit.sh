@@ -48,6 +48,9 @@ run hex_audit -- --fresh --orbit --no-intro --hex-audit --hex-audit-quit
 # [v8seed] "Plant the first seed" played with real key and mouse events (tools/seed_walk.gd): the
 # bot's own path hid that a player could not plant (owner, 2026-11-13).
 run seed_walk -- --fresh --orbit --no-intro --seed-walk --save-dir=check_exit_seed_$$
+# [v9b] The home steps after the first robot (hex2 .. base3, the garden, the Requests board) played
+# with real keys and mouse clicks on the workbench (tools/walk_home.gd).
+run walk_home -- --fresh --orbit --no-intro --walk-home --save-dir=check_exit_home_$$
 if [ "$1" = "--quick" ]; then
 	run quit15 -- --fresh --quit-after=15
 fi
