@@ -62,7 +62,10 @@ func setup() -> void:
 	elif int(GameState.stats.get("plants_planted", 0)) > 0 and not GameState.flags.get("first_sprout", false):
 		# [v9b] Saved after planting, before the first sprout: the water card and the sprout moment
 		# were lost on load (only in memory), so the player had no word on what to do with the seed.
-		_hint_water = true
+		# [main] ...but only while the seed has never had water. Once it has been watered the player
+		# knows; a later load (the water long dried, the seed not up yet) put the water card over the
+		# current step's card (seen at base level 2).
+		_hint_water = not GameState.flags.get("first_seed_watered", false)
 		_waiting_sprout = true
 	if _globe and DevHooks.has("seed-probe"):  # [v4grow]
 		_probe()
@@ -164,6 +167,8 @@ func _process(delta: float) -> void:
 		_water_card = Tutorial.glyphs_bb(tr("Press  {tool_water}  for the watering can, then hold  {scoop}  to water the seed"))
 		if not _seed_watered():
 			_show_card(_water_card)
+	if not GameState.flags.get("first_seed_watered", false) and int(GameState.stats.get("plants_planted", 0)) > 0 and _seed_watered():
+		GameState.flags["first_seed_watered"] = true  # [main] saved: see the load branch in _ready
 	if _card != "" and _card == _water_card and _seed_watered():  # [v9b] done what it said: off the card
 		_card = ""
 		_water_card = ""
