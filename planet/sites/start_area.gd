@@ -24,6 +24,11 @@ static func radius_m() -> float:
 	return float(cfg().get("radius_m", 40.0))
 
 
+## [v9c] The small-junk rule's radius round the other hubs' pads (0 = off).
+static func station_radius_m() -> float:
+	return float(cfg().get("station_radius_m", 0.0))
+
+
 static func leftover_from() -> float:
 	return float(cfg().get("leftover_from", 0.8))
 
