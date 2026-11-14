@@ -7,6 +7,8 @@ extends RefCounted
 ##   tools/shot.sh v9/steps --orbit --no-intro --step-shots[=wait_s] [--step-shots-from=K --step-shots-to=K]
 ##   (rendered; the first frame after --step-shots-at=S wall-clock s, default 100; wait_s is wall-clock too). Frames: screenshots/v9/step_NN_<id>.png
 ## After the story steps, the first goals of the goal chain (--step-shots-goals=N, default 3).
+## [v9a] --step-shots-checklist: the restart checklist's four cards first (step_cl_N_<id>.png);
+## --step-shots-tag=S: frame names end in S (two resolutions in one folder).
 
 
 static func run_dev(so: SliceOrbit) -> void:
@@ -22,6 +24,17 @@ static func run_dev(so: SliceOrbit) -> void:
 	var from: int = int(DevHooks.get_f("step-shots-from", 0.0))
 	var to: int = mini(int(DevHooks.get_f("step-shots-to", float(ob.chain.size() - 1))), ob.chain.size() - 1)
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://screenshots/v9"))
+	var tag: String = DevHooks.get_s("step-shots-tag", "")
+	var tut0: Variant = w.get("tutorial")
+	if DevHooks.has("step-shots-checklist") and tut0 is Tutorial:  # [v9a] the checklist's own cards first
+		for c: int in Tutorial.STEPS.size():
+			(tut0 as Tutorial).step = c
+			GameState.flags["tutorial_step"] = c
+			EventBus.tutorial_changed.emit((tut0 as Tutorial).current_text())  # the card text, as the game sends it
+			await _wall(tree, 1.5)
+			var mk0: String = _face_target(so, ob)
+			await _wall(tree, wait)
+			await _save(tree, "step_cl_%d_%s%s" % [c, (tut0 as Tutorial).step_id(), tag], ob, mk0)
 	GameState.flags["onboard_brief"] = true
 	GameState.flags["tutorial_step"] = Tutorial.STEPS.size()
 	var tut: Variant = w.get("tutorial")
@@ -38,7 +51,7 @@ static func run_dev(so: SliceOrbit) -> void:
 		await _wall(tree, 1.5)
 		var mk: String = _face_target(so, ob)
 		await _wall(tree, wait)
-		await _save(tree, "step_%02d_%s" % [k, str(ob.chain[k].get("id", ""))], ob, mk)
+		await _save(tree, "step_%02d_%s%s" % [k, str(ob.chain[k].get("id", "")), tag], ob, mk)
 	var gl: Goals = w.get("goals") as Goals
 	var n: int = int(DevHooks.get_f("step-shots-goals", 3.0))
 	if gl != null and n > 0:

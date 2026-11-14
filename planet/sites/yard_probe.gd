@@ -27,8 +27,50 @@ func _run() -> void:
 	for i: int in int(DevHooks.get_f("yard-probe", 90.0)):
 		await get_tree().process_frame
 	print(report())
+	var clr: Array[String] = e_clearance(so)
+	print("\n".join(clr))
 	if DevHooks.has("yard-probe-quit"):
-		get_tree().quit(0)
+		get_tree().quit(1 if clr.any(func(l: String) -> bool: return l.contains("FAIL")) else 0)
+
+
+## [v9a] Goal audit: a new player's first E at the bench dug up a part that lay by it. Every
+## buried part near the start yard keeps YardKeepOut.PART_CLEAR_M from each yard E spot (bench,
+## bin, scale, pod, rocket, the build anchors), and the yard's own E spots keep Camp's min gap.
+## Lines "[yardprobe] FAIL ..." for each one too close; one summary line.
+static func e_clearance(p_so: Node) -> Array[String]:
+	var out: Array[String] = []
+	var g: OrbitPlanet = p_so.get("globe")
+	var ko: YardKeepOut = g.yard_keep_out() if g else null
+	if ko == null:
+		return out
+	var f: SphereField = g.field
+	var c0: int = g.start_cell()
+	for c: int in g.grid.cells_within(g.grid.centers[c0], 40.0, c0):
+		f.materialize(c)  # its parts roll as it is laid
+	var n: int = 0
+	var worst: float = INF
+	for i: int in f.part_pos.size():
+		var q: Vector2 = ko.local(f.part_pos[i].normalized())
+		if q.length() > 30.0:
+			continue
+		n += 1
+		for e: Vector2 in ko.e_points:
+			var d: float = q.distance_to(e)
+			worst = minf(worst, d)
+			if d < YardKeepOut.PART_CLEAR_M - 0.05:
+				out.append("[yardprobe] FAIL buried part %d at yard (%.1f, %.1f) is %.1f m from the E spot at (%.1f, %.1f) (keep %.1f m)" % [i, q.x, q.y, d, e.x, e.y, YardKeepOut.PART_CLEAR_M])
+	var w: Node = p_so.get("w")
+	var camp: Camp = w.get("camp") as Camp if w else null
+	if camp:  # (Camp.too_close compares world x/z: a flat-world measure, wrong on the globe)
+		var gap: float = float(Camp.cfg().get("min_gap", 3.0))
+		var pts: Array = camp.points()
+		for i: int in pts.size():
+			for j: int in range(i + 1, pts.size()):
+				var d2: float = OrbitUp.ground_dist(pts[i][1], pts[j][1])
+				if d2 < gap:
+					out.append("[yardprobe] FAIL yard E spots too close: %s-%s %.1f m (keep %.1f m)" % [pts[i][0], pts[j][0], d2, gap])
+	out.append("[yardprobe] E clearance: %d buried parts within 30 m of the yard, nearest %.1f m from an E spot (keep %.1f m)" % [n, worst, YardKeepOut.PART_CLEAR_M])
+	return out
 
 
 func report() -> String:

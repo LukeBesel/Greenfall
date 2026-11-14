@@ -656,6 +656,12 @@ func _spawn_cube() -> void:
 
 # --- Carrying -----------------------------------------------------------------
 
+## [v9a] Goal audit: with a bale lying by the bench, E picked it up, the next E put it down, and
+## the bench never opened. At the bench with empty hands E (and its prompt) is the bench's.
+func _bench_first() -> bool:
+	return carried.is_empty() and world != null and world.has_method("near_bench") and bool(world.call("near_bench"))
+
+
 func _handle_interact() -> void:
 	if _cubing > 0.0:
 		return
@@ -664,7 +670,7 @@ func _handle_interact() -> void:
 			detector.dig(_on_part_found)
 			return
 		var c: JunkCube = nearest_loose_cube()
-		if c and carried.size() < carry_cap():
+		if c and carried.size() < carry_cap() and not _bench_first():
 			pick_up(c)
 		elif not carried.is_empty():
 			place_top_cube()
@@ -985,7 +991,7 @@ func _update_hints(delta: float) -> void:
 	prompt = ""
 	var look: Variant = null
 	var near_cube: JunkCube = nearest_loose_cube()
-	if near_cube and carried.size() < carry_cap():
+	if near_cube and carried.size() < carry_cap() and not _bench_first():
 		prompt = "pick_up"
 		look = near_cube.global_position
 	elif not carried.is_empty():

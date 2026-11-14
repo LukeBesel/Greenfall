@@ -184,7 +184,7 @@ const START_YARD_ANCHORS: Dictionary = {
 	"bin": [Vector3(-8.0, 0, -1.3), PI * 0.5],
 	"stations": [Vector3(16.5, 0, 1.5), 0.0],  # out on the street east of the yard (flat: "keep the base yard free")
 	"radio": [Vector3(5.0, 0, -1.5), -PI * 0.5],
-	"signal_tower": [Vector3(8.0, 0, -7.5), -PI * 0.5],
+	"signal_tower": [Vector3(9.4, 0, -7.5), -PI * 0.5],  # [v9a] 1.4 m east: its E spot stood 2.1 m from the telescope's door
 	"telescope": [Vector3(4.8, 0, -9.0), 0.0],
 	"shack": [Vector3(-7.35, 0, 7.5), PI * 0.5],  # over the bench: the flat lean-to has it 0.65 m in from its centre
 	"fabricator": [Vector3(-6.0, 0, -9.6), 0.0],

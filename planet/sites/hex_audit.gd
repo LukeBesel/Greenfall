@@ -48,8 +48,11 @@ func _run() -> void:
 	var res: Array = report()
 	for l: String in res[0]:
 		print(l)
+	var clr: Array[String] = YardProbe.e_clearance(so)  # [v9a] no E spot crowds another in the start yard
+	for l: String in clr:
+		print(l)
 	if DevHooks.has("hex-audit-quit"):
-		get_tree().quit(1 if int(res[1]) > 0 else 0)
+		get_tree().quit(1 if int(res[1]) > 0 or clr.any(func(l: String) -> bool: return l.contains("FAIL")) else 0)
 
 
 ## [lines, failures]

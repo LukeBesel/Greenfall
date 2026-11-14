@@ -16,6 +16,13 @@ const PAD_MARGIN_M: float = 0.3
 const POD_CLEAR_M: float = 2.6
 ## Building footprints grow by this (their walls and steps stick out of the 0.8 x footprint).
 const FOOT_GROW_M: float = 1.0
+## [v9a] Goal audit: a buried part lay by the bench, so a new player's first E at the bench dug
+## instead of opening it. Buried parts (an E prompt of their own: "dig") keep this far from every
+## yard spot with an E prompt or a job (bench, bin, scale, pod and the build anchors).
+const PART_CLEAR_M: float = 3.5
+## The yard anchors that carry an E prompt, or a job a player walks to (the scale).
+const E_ANCHORS: Array[String] = ["pod", "depot", "bin", "shack", "radio", "signal_tower", "telescope", "fabricator",
+	"generator", "composter", "locker", "nursery", "camera_bot"]
 ## Cells whose centre is within this of the start get no big items (tyres, TVs, stoves), as the
 ## flat game's starting hexes: Lumi isn't strong enough for them yet.
 const SMALL_ONLY_M: float = 40.0
@@ -37,7 +44,30 @@ static func for_site(site: Dictionary, terrain: SphereTerrain) -> YardKeepOut:
 	var pod: Array = VerdanceSite.START_YARD_ANCHORS["pod"]
 	var pp: Vector3 = pod[0]
 	k.discs.append(Vector3(pp.x, pp.z, POD_CLEAR_M))
+	for nm: String in E_ANCHORS:
+		var a: Vector3 = (VerdanceSite.START_YARD_ANCHORS[nm] as Array)[0]
+		k.e_points.append(Vector2(a.x, a.z))
+	k.e_points.append(BENCH_LOCAL)
+	k.e_points.append(ROCKET_LOCAL)
 	return k
+
+
+## [v9a] The bench (the shack stands over it, 0.65 m in).
+const BENCH_LOCAL: Vector2 = Vector2(-8.0, 7.5)
+## [v9a] The rocket on its pad (E at the rocket).
+const ROCKET_LOCAL: Vector2 = Vector2(0.0, -6.5)
+var e_points: Array[Vector2] = []  # site-local (x, z) of the yard's E spots
+
+
+## [v9a] Whether a buried part at this direction would lie within PART_CLEAR_M of a yard E spot.
+func near_e_point(dir: Vector3) -> bool:
+	var q: Vector2 = local(dir)
+	if q.length() > PAD_HALF_M + PART_CLEAR_M + 6.0:
+		return false
+	for e: Vector2 in e_points:
+		if q.distance_to(e) < PART_CLEAR_M:
+			return true
+	return false
 
 
 ## Building footprints (site-local rects, VerdanceSite.footprints()).

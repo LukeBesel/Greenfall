@@ -58,6 +58,8 @@ var _saved_unlocked: Dictionary = {}  # cells of a locked biome a save says are 
 ## [v1yard] func(dir: Vector3) -> bool: ground where no piece may lie (the start yard's pad, the
 ## pod, building footprints; YardKeepOut). Pieces that land there are re-rolled, then dropped.
 var keep_out: Callable
+## [v9a] func(dir) -> bool: ground where no part may be buried (near the start yard's E spots).
+var part_avoid: Callable
 var pile_block: Callable  # [v5look] (cell) -> bool: no junk mounds on this cell (the hinterland's road hexes)
 ## [v8fix] Ground kept clear of junk mounds: [dir (unit), radius m] pairs (an outpost's ruin). A
 ## heap there wedged its colliders in between the ruin's and boxed Lumi in (clear_piles_near).
@@ -724,7 +726,12 @@ func _roll_parts(cell: int) -> void:
 ## so the rolls stay as they were).
 func _part_ground(d: Vector3) -> Vector3:
 	var t: TargetReach = TargetReach.for_field(self)
-	return t.open_spot(d) if t else terrain.ground(d)
+	if t == null:
+		return terrain.ground(d)
+	if part_avoid.is_valid():  # [v9a] clear of the yard's E spots
+		var av: Callable = part_avoid
+		return t.open_spot(d, func(g: Vector3) -> bool: return bool(av.call(g.normalized())))
+	return t.open_spot(d)
 
 
 ## Nearest unfound part within range (or -1): only the cells around pos are searched.

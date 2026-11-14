@@ -103,6 +103,7 @@ func build(p_seed: int, p_spec: Dictionary = GlobeSpec.DEFAULT, n_hubs: int = -1
 	var ko: YardKeepOut = yard_keep_out()  # [v1yard] junk right up to the pad's edge, small pieces near the start
 	if ko:
 		field.keep_out = ko.blocks
+		field.part_avoid = ko.near_e_point  # [v9a] no buried part by the bench, bin, scale or pod
 		var c0: int = start_cell()
 		for c: int in grid.cells_within(grid.centers[c0], StartArea.radius_m(), c0):  # [v8hex] data/start_area.json
 			field.small_only[c] = true

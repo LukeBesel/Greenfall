@@ -16,6 +16,20 @@ extends RefCounted
 ## --walk-opening[=S] (start after S s, default 6). Without --no-intro the intro is played first
 ## (Space pauses, Space resumes, Esc skips). Prints [walk-opening] lines, exit 1 on any failure.
 ## tools/check_exit.sh runs it with the tests.
+##
+## Save and reload: at a point in every step (and during the intro and WREN's first brief) the walk
+## quits and comes back the way a player does: Esc, the pause menu's Quit (it saves) to the title,
+## then Continue, which loads the save through the real path. In the intro (no pause menu: Esc
+## skips it) it is a window close (the game saves on the close request), then a start again. Then the
+## card, its count, the beam, the chest, what Lumi carries, the money and the step's state must be
+## what they were, and the walk goes on from there (so the step can still be finished). Dev: the
+## --fresh / --objective arguments are dropped before the first Continue (a restart has none), and
+## --intro stays only while a windowed start would replay it. --walk-opening-no-reload skips this.
+## Not yet run to the end (drafts, not in check_exit):
+## --walk-opening-full: no top-ups and no reloads: every price is earned by scooping, baling,
+##   selling and digging; prints the game minutes each step took.
+## --walk-opening-pad: the same walk on a controller (joypad events through the input map, buys by
+##   A on the bench's focused row, Y closes).
 
 const TAG: String = "[walk-opening]"
 
@@ -27,25 +41,36 @@ static var _p: Patch
 static var _ob: Objectives
 static var _tree: SceneTree
 static var _keys: Dictionary = {}  # action -> held
+static var _active: bool = false
+static var _quit_skipped: bool = false  # the last _quit_and_continue could not quit (no pause menu there)
+static var _next_so: SliceOrbit  # set by run_dev when the world is rebuilt after a Continue
+static var _full: bool = false
+static var _pad: bool = false
+static var _reloads: bool = true
+static var _ts: float = 1.0
+static var _step_f: int = 0  # physics frame the current step started on
+static var _times: Array[String] = []
 
 
 static func run_dev(so: SliceOrbit) -> void:
-	_so = so
-	_w = so.w
+	if _active:  # the world rebuilt after Continue: the running walk picks it up
+		_next_so = so
+		return
+	_active = true
+	_full = DevHooks.has("walk-opening-full")
+	_pad = DevHooks.has("walk-opening-pad")
+	_reloads = not (_full or _pad or DevHooks.has("walk-opening-no-reload"))
+	_ts = maxf(Engine.time_scale, 1.0)
 	_tree = so.w.get_tree()
-	await _tree.create_timer(DevHooks.get_f("walk-opening", 6.0)).timeout
-	for k: int in 300:
-		if not bool(_w.get("building")) and _w.get("objectives") != null and _w.get("patch") != null:
-			break
-		await _tree.create_timer(0.5, true, false, true).timeout
-	_p = _w.get("patch") as Patch
-	_ob = _w.get("objectives") as Objectives
-	if _p == null or _ob == null:
+	await _tree.create_timer(DevHooks.get_f("walk-opening", 6.0), true, false, true).timeout
+	if not await _bind(so):
 		print("%s FAIL: no Lumi / objectives" % TAG)
 		_tree.quit(1)
 		return
+	print("%s mode: %s" % [TAG, "full grind" if _full else ("controller" if _pad else ("reloads" if _reloads else "plain"))])
 	EventBus.toast.connect(func(t: String, _k: String) -> void: _toasts.append(t))
 	await _intro()
+	await _brief_reload()
 	# WREN's brief plays first after a skip (its lines run on the subtitle clock): wait on the
 	# condition, long, not a tight time.
 	await _wait(func() -> bool: return _ob.revealed and _input_on(), 300.0)
@@ -63,6 +88,8 @@ static func run_dev(so: SliceOrbit) -> void:
 	await _bench2()
 	await _robot()
 	_release_all()
+	if _full:
+		print("%s game minutes per step: %s" % [TAG, ", ".join(_times)])
 	print("%s %s" % [TAG, "PASS" if _fails.is_empty() else "FAIL: " + "; ".join(_fails)])
 	_tree.quit(0 if _fails.is_empty() else 1)
 
@@ -78,6 +105,17 @@ static func _intro() -> void:
 		print("%s note: no intro this run (--no-intro or a save)" % TAG)
 		return
 	await _secs(4.0)
+	if _reloads:  # the intro has no pause menu (Esc skips it): the window is closed mid-film
+		var saved: String = "intro_done=%s brief=%s" % [str(GameState.flags.get("intro_done", false)), str(GameState.flags.get("onboard_brief", false))]
+		await _quit_and_continue("during the intro", "close")
+		intro = _w.get("intro") as Intro
+		var again: bool = intro != null and intro.running
+		_check(true, "quit during the intro (saved %s): after Continue the intro %s, Lumi at %s" % [saved, "plays again from the start" if again else "does not play", _yard(_p.global_position)])
+		if not again:
+			await _wait(func() -> bool: return _ob.revealed, 60.0)
+			_check(_input_on(), "quit during the intro: after Continue Lumi takes input")
+			return
+		await _secs(4.0)
 	var pauser: StoryPause = intro.get("_pauser") as StoryPause
 	await _key_tap(KEY_SPACE)
 	_check(pauser != null and pauser.paused, "intro: Space pauses the cinematic")
@@ -103,6 +141,10 @@ static func _key_strip() -> void:
 	if cam and "lens_view" in cam:
 		var was: bool = bool(cam.get("lens_view"))
 		await _tap("lens_view")
+		if bool(cam.get("lens_view")) == was:  # who swallowed the key?
+			var vp: Viewport = _p.get_viewport()
+			print("%s debug V: focus %s, paused %s, modal %s, ts %.2f, view %s, input %s, scene %s" % [TAG, str(vp.gui_get_focus_owner()), str(_tree.paused),
+				str(_w.call("any_modal_open")), Engine.time_scale, str(cam.get("view")), str(Input.is_action_pressed("lens_view")), str(_tree.current_scene)])
 		_check(bool(cam.get("lens_view")) != was, "key strip: V switches the lens view")
 		await _tap("lens_view")
 	var hud: Node = _w.get("hud")
@@ -131,21 +173,23 @@ static func _checklist() -> void:
 	if tut == null or tut.done():
 		print("%s note: checklist already done" % TAG)
 		return
-	_check(tut.step_id() == "repair" and "E" in tut.current_text(), "checklist 1: the card says fix the bench with E (%s)" % tut.current_text())
+	_check(tut.step_id() == "repair" and Settings.glyph("interact") in tut.current_text(), "checklist 1: the card says fix the bench with %s (%s)" % [Settings.glyph("interact"), tut.current_text()])
 	await _secs(0.6)
 	_check(_beam_at(_w.call("bench_pos")), "checklist 1: the beam stands on the bench")
 	await _walk_to(func() -> Vector3: return _w.call("bench_pos"), func() -> bool: return bool(_w.call("near_bench")), "the bench")
 	var pr: String = str(_w.call("interact_prompt", _p))
-	_check("E" in pr, "checklist 1: at the bench the prompt names E (%s)" % pr)
+	_check(Settings.glyph("interact") in pr, "checklist 1: at the bench the prompt names %s (%s)" % [Settings.glyph("interact"), pr])
 	await _tap("interact")
 	await _wait(func() -> bool: return tut.step_id() != "repair", 30.0)
 	_check(Camp.bench_ok() and tut.step_id() == "scoop", "checklist 1: E fixed the bench")
-	_check("LMB" in tut.current_text() or "Space" in tut.current_text(), "checklist 2: the card says hold LMB (%s)" % tut.current_text())
+	_check(Settings.glyph("scoop") in tut.current_text(), "checklist 2: the card says hold %s (%s)" % [Settings.glyph("scoop"), tut.current_text()])
 	await _secs(0.6)
 	_check(not _beam_at(_w.call("bench_pos")), "checklist 2: the beam left the bench (the card is about the junk now)")
 	await _scoop_load(1.0, 60.0)
 	await _wait(func() -> bool: return tut.step_id() != "scoop", 5.0)
 	_check(tut.step_id() == "dump", "checklist 2: picking up 8 pieces with LMB held done")
+	await _reload("checklist 3, a full chest")
+	tut = _w.get("tutorial") as Tutorial
 	await _secs(0.6)
 	_check(_beam_at(Objectives.bin_point(_w)), "checklist 3: the beam stands on the bin (beam %s, card '%s')" % [_yard(_beam()) if _beam() is Vector3 else "none", tut.current_text()])
 	var d0: int = int(GameState.stats.get("junk_dumps", 0))
@@ -169,6 +213,8 @@ static func _dump3() -> void:
 		var tgt: String = str(_ob.step_target(_ob.current()).get("to", ""))
 		_check(tgt == "bin" and _ob.waypoint_target() is Vector3, "dump3: with a full chest the beam goes to the bin (%s)" % tgt)
 		await _to_bin()
+		if k < 2 and _ob.current().get("id", "") == "dump3":
+			await _reload("dump3 after %d load%s" % [int(_ob.value_of(_ob.current())), "" if int(_ob.value_of(_ob.current())) == 1 else "s"])
 	await _done("dump3")
 
 
@@ -207,10 +253,12 @@ static func _compartment() -> void:
 		_check(GameState.get_currency("cubes").to_float() > c0, "stuck test: the bin still pays, so the price can be earned again")
 	await _earn(cost, false)
 	_check(str(_ob.step_target(_ob.current()).get("to", "")) == "bench", "compartment: with the cubes, the beam goes to the bench")
+	await _reload("compartment, price in hand")
 	await _open_bench()
 	await _click_tag("compartment_size")
 	_check(GameState.level_of("compartment_size") >= 1, "compartment: a click on the price square buys Chest Size")
 	await _close_bench()
+	await _reload("compartment, just bought")
 	await _done("compartment")
 
 
@@ -218,18 +266,25 @@ static func _scoop_size() -> void:
 	if not await _on_step("scoop_size"):
 		return
 	await _earn(Economy.upgrade_cost("multi_lock").to_float(), false)
+	await _reload("scoop_size, price in hand")
 	await _open_bench()
 	var ld: ListDetail = _ld()
 	_check(ld != null and _sel(ld) == "multi_lock", "scoop_size: the bench opens on Scoop Size")
-	await _click(ld.get("_d_btn") as Control)  # this time the big button in the detail panel
-	_check(GameState.level_of("multi_lock") >= 1, "scoop_size: the detail panel's Install button buys it")
+	if _pad:
+		await _click_tag("multi_lock")
+	else:
+		await _click(ld.get("_d_btn") as Control)  # this time the big button in the detail panel
+	_check(GameState.level_of("multi_lock") >= 1, "scoop_size: the detail panel's Install button buys it" if not _pad else "scoop_size: A on its row buys it")
 	await _close_bench()
+	await _reload("scoop_size, just bought")
 	await _done("scoop_size")
 
 
 static func _baler() -> void:
 	if not await _on_step("baler"):
 		return
+	if GameState.get_currency("cubes").to_float() < Economy.upgrade_cost("baler").to_float():
+		await _reload("baler, saving up")
 	await _earn(Economy.upgrade_cost("baler").to_float(), false)
 	await _open_bench()
 	_check(_sel(_ld()) == "baler", "baler: the bench opens on the Baler")
@@ -244,7 +299,7 @@ static func _baler() -> void:
 static func _power() -> void:
 	if not await _on_step("power"):
 		return
-	_check(_card(true).contains("[RMB]") or _card(true).contains("[C]"), "power: the card names the bale key (%s)" % _card(true))
+	_check(_card(true).contains("[%s]" % Settings.glyph("cube")), "power: the card names the bale key %s (%s)" % [Settings.glyph("cube"), _card(true)])
 	_check(KeyHints.items_for(true, true).any(func(it: Array) -> bool: return str(it[0]) == "cube"), "power: the full key list has 'press bale'")
 	# The old habit: a chest to the bin. After the Baler the bin takes no loose junk; say why.
 	if _p.compartment.fill >= _p.capacity() * 0.45:  # a chest left full from saving up: bale it first
@@ -262,10 +317,10 @@ static func _power() -> void:
 	_check(_p.compartment.fill >= f0 - 0.01, "power: the bin takes no loose junk after the Baler")
 	var said: String = ", ".join(_floats_since(fl0)) + " | " + ", ".join(_toasts)
 	_check(said.contains(TranslationServer.translate("No loose trash now. Press [%s] for a bale, then put it on the scale.") % Settings.glyph("cube")), "power: at the bin with loose junk, a line says to press a bale (%s)" % said)
-	for k: int in 3:
+	for k: int in 4:
 		if int(GameState.stats.get("cubes_cashed", 0)) >= 3:
 			break
-		await _make_and_sell_bale()
+		await _make_and_sell_bale("power, %d bale%s sold, one carried" % [int(GameState.stats.get("cubes_cashed", 0)), "" if int(GameState.stats.get("cubes_cashed", 0)) == 1 else "s"] if k == 1 else "")
 	await _done("power")
 
 
@@ -273,6 +328,7 @@ static func _tower() -> void:
 	if not await _on_step("tower"):
 		return
 	await _earn_parts(SignalTower.next_cost())
+	await _reload("tower, price in hand")
 	await _open_bench()
 	var scr: UpgradesScreen = _w.get("upgrades") as UpgradesScreen
 	_check(str(scr.get("_tab")) == "build" and _sel(_ld()) == "signal_tower", "tower: the bench opens on Build, Signal Tower (%s %s)" % [str(scr.get("_tab")), _sel(_ld())])
@@ -290,14 +346,21 @@ static func _glim() -> void:
 	if not GameState.can_afford_all(cost):
 		_check(_ob.situation != "" and (_ob.situation.contains("cubes") or _ob.situation.contains("parts")),
 			"glim: short of the price, the card says what is missing (%s)" % _ob.situation)
+		await _reload("glim, saving up")
 	await _earn_parts(cost)
 	await _open_bench()
 	_check(_sel(_ld()) == "glim", "glim: the bench opens on Repair Glim (%s)" % _sel(_ld()))
 	await _click_tag("glim")
 	await _close_bench()
-	Engine.time_scale = 4.0
+	if _reloads:
+		await _secs(1.0)
+		if not bool(GameState.flags.get("glim_repaired", false)):
+			await _reload("glim, mid-repair")
+		else:
+			print("%s note: the Glim repair is instant (no mid-repair state to save)" % TAG)
+	Engine.time_scale = maxf(4.0, _ts)
 	await _wait(func() -> bool: return bool(GameState.flags.get("glim_repaired", false)) and _input_on(), 60.0)
-	Engine.time_scale = 1.0
+	Engine.time_scale = _ts
 	_check(bool(GameState.flags.get("glim_repaired", false)), "glim: built by a click; the repair plays and he is up")
 	await _done("glim")
 
@@ -318,7 +381,13 @@ static func _hex() -> void:
 	var f: HexField = _w.get("field") as HexField
 	var t0: float = _gt()
 	var resets: int = 0
+	var mid: bool = false
 	while int(GameState.stats.get("hexes_cleaned", 0)) < 1 and _gt() - t0 < 300.0:
+		if not mid and f.removed_fraction(h) > 0.4:
+			mid = true
+			await _reload("hex, %d%% clean" % int(f.removed_fraction(h) * 100.0))
+			f = _w.get("field") as HexField
+			_check(_ob.target_hex == h, "hex: after the reload the same hex is outlined (%d, was %d)" % [_ob.target_hex, h])
 		if _p.compartment.fill >= _p.capacity() * 0.9:
 			await _tap("cube")  # a bale, left behind
 			await _secs(2.0)
@@ -342,6 +411,7 @@ static func _bench2() -> void:
 	if not await _on_step("bench2"):
 		return
 	await _earn_parts(BenchTiers.next_cost())
+	await _reload("bench2, price in hand")
 	await _open_bench()
 	_check(_sel(_ld()) == "bench_tier", "bench2: the bench opens on the Bot Bay (%s)" % _sel(_ld()))
 	var parts0: float = GameState.get_currency("parts").to_float()
@@ -365,8 +435,155 @@ static func _robot() -> void:
 	await _click_tag("build_scoopie")
 	_check(fl.robot_total() >= 1, "robot: a click builds the Scoopie")
 	await _close_bench()
+	await _reload("robot, just built")
 	await _done("robot")
 	_check(str(_ob.current().get("id", "")) == "hex2", "robot: the next step comes (%s)" % str(_ob.current().get("id", "")))
+
+
+# --- Save, quit and Continue ------------------------------------------------------------------
+
+## Binds the walk to a (re)built world once it is up.
+static func _bind(so: SliceOrbit) -> bool:
+	_so = so
+	_w = so.w
+	for k: int in 400:
+		if is_instance_valid(_w) and not bool(_w.get("building")) and _w.get("objectives") != null and _w.get("patch") != null:
+			break
+		await _tree.create_timer(0.5, true, false, true).timeout
+	_p = _w.get("patch") as Patch
+	_ob = _w.get("objectives") as Objectives
+	_reach = null  # a new world: a new field
+	return _p != null and _ob != null
+
+
+## Quits and comes back as a player does. how "menu": Esc, the pause menu's Quit (saves, then the
+## title); "close": the window closed (the game saves on the close request) and started again.
+## Then Continue on the title screen, a real click.
+static func _quit_and_continue(label: String, how: String) -> void:
+	_release_all()
+	await _frames(3)
+	var pm: PauseMenu = _w.get("pause_menu") as PauseMenu
+	if how == "menu":
+		await _tap("pause")
+		await _secs(0.6)
+		if pm == null or not pm.is_open:
+			how = "close"
+	if how == "close":
+		print("%s note: %s: no pause menu here (Esc skips); the window is closed and the game started again" % [TAG, label])
+	_quit_skipped = false
+	# A restart has no --fresh / dev jump; the intro plays again only where a windowed start would.
+	for a: String in ["fresh", "objective", "orbit"]:
+		DevHooks.args.erase(a)
+	DevHooks.args["menu"] = "title"  # any dev flag makes the title skip itself: show it, as a restart does
+	if bool(GameState.flags.get("intro_done", false)):
+		DevHooks.args.erase("intro")
+	if how == "menu":
+		var quit: Button = null
+		for b: Node in pm.find_children("*", "Button", true, false):
+			if (b as Button).text == TranslationServer.translate("Quit") and (b as Button).is_visible_in_tree():
+				quit = b
+		_check(quit != null, "%s: the pause menu has Quit" % label)
+		if quit == null:
+			return
+		await _click(quit)
+	else:
+		SaveManager.notification(Node.NOTIFICATION_WM_CLOSE_REQUEST)  # what the OS close does
+		Loader.goto(PauseMenu.TITLE_SCENE)  # (the game starts again on its title screen)
+	var menu: Node = null
+	for k: int in 120:
+		var sc: Node = _tree.current_scene
+		if sc and sc.get("_continue") is Button and (sc.get("_continue") as Button).is_visible_in_tree():
+			menu = sc
+			break
+		await _secs(0.5)
+	_check(menu != null, "%s: back on the title, Continue is offered" % label)
+	if menu == null:
+		return
+	await _secs(1.0)
+	_next_so = null
+	await _click(menu.get("_continue") as Control)
+	DevHooks.args.erase("menu")
+	for k: int in 600:
+		if _next_so != null:
+			break
+		await _secs(0.5)
+	_check(_next_so != null, "%s: Continue loads the game" % label)
+	if _next_so == null:
+		return
+	await _bind(_next_so)
+	_next_so = null
+	await _secs(2.5)  # the card refreshes, the beam settles
+
+
+## Everything a player would notice if a save lost it.
+static func _snap() -> Dictionary:
+	var tut: Tutorial = _w.get("tutorial") as Tutorial
+	var fl: Fleet = _w.get("fleet") as Fleet
+	var f: HexField = _w.get("field") as HexField
+	var cur: Dictionary = _ob.current()
+	return {"card": str(cur.get("id", "")), "checklist": tut.step_id() if tut and not tut.done() else "",
+		"count": _progress_label(), "to": str(_ob.step_target(cur).get("to", "")) if not cur.is_empty() else "",
+		"beam": _beam(), "chest": snappedf(_p.compartment.fill, 0.1), "carried": _p.carried.size(),
+		"cubes": GameState.get_currency("cubes").to_float(), "parts": GameState.get_currency("parts").to_float(),
+		"hex": _ob.target_hex, "clean": snappedf(f.removed_fraction(_ob.target_hex), 0.01) if _ob.target_hex >= 0 else 0.0,
+		"bench_ok": Camp.bench_ok(), "tower": SignalTower.tier(), "glim": bool(GameState.flags.get("glim_repaired", false)),
+		"bench_tier": BenchTiers.tier(), "robots": fl.robot_total() if fl else 0,
+		"upgrades": [GameState.level_of("scoop_speed"), GameState.level_of("compartment_size"), GameState.level_of("multi_lock"), GameState.level_of("baler")],
+		"sold": int(GameState.stats.get("cubes_cashed", 0)), "dumps": int(GameState.stats.get("junk_dumps", 0)), "pos": _p.global_position}
+
+
+## Saves, quits to the title and continues at `label`; the step must be as it was.
+static func _reload(label: String) -> void:
+	if not _reloads:
+		return
+	await _secs(2.5)  # a step that just started picks its hex on the card's next refresh
+	var a: Dictionary = _snap()
+	await _quit_and_continue(label, "menu")
+	if _quit_skipped:
+		_check(false, "reload at %s: Esc opens no pause menu, so there is no way to quit and save here" % label)
+		return
+	var b: Dictionary = _snap()
+	var diff: Array[String] = []
+	for k: String in a:
+		var x: Variant = a[k]
+		var y: Variant = b[k]
+		var same: bool = x == y
+		if k in ["cubes", "parts"]:
+			same = absf(float(x) - float(y)) < 1.0
+		elif k == "chest":
+			same = absf(float(x) - float(y)) < 0.35
+		elif k == "beam":
+			same = (x == null and y == null) or (x is Vector3 and y is Vector3 and (x as Vector3).distance_to(y) < 2.5)
+		elif k == "pos":
+			continue
+		if not same:
+			diff.append("%s %s -> %s" % [k, _short(x), _short(y)])
+	var moved: float = _flat(b["pos"] - a["pos"]).length() if b["pos"] is Vector3 else -1.0
+	_check(diff.is_empty() and _input_on(), "reload at %s: card '%s' %s, beam on %s, chest %.1f, carrying %d: the same after Continue%s (Lumi %.1f m from where he was)" % [
+		label, str(b["card"] if b["card"] != "" else b["checklist"]), str(b["count"]), str(b["to"]), float(b["chest"]), int(b["carried"]),
+		"" if diff.is_empty() else "; CHANGED: " + ", ".join(diff), moved])
+
+
+static func _short(v: Variant) -> String:
+	return _yard(v) if v is Vector3 else str(v)
+
+
+## Quitting while WREN gives her first brief (before the card shows), then Continue.
+static func _brief_reload() -> void:
+	if not _reloads or _ob.revealed:
+		return
+	await _wait(func() -> bool: return bool(GameState.flags.get("onboard_brief", false)) or _ob.revealed, 20.0)
+	if _ob.revealed:
+		print("%s note: the card came before a brief could be interrupted" % TAG)
+		return
+	await _secs(1.0)
+	await _quit_and_continue("during WREN's first brief", "menu")
+	if _quit_skipped:
+		return
+	await _wait(func() -> bool: return _ob.revealed, 20.0)
+	var tut: Tutorial = _w.get("tutorial") as Tutorial
+	_check(_ob.revealed or (tut != null and not tut.done()), "quit during the brief: after Continue the card (or the checklist) is up (%s / %s)" % [_card(), tut.current_text() if tut else ""])
+	_check(_input_on(), "quit during the brief: Lumi takes input after Continue")
 
 
 # --- Steps' shared checks ----------------------------------------------------------------------
@@ -383,6 +600,7 @@ static func _on_step(id: String) -> bool:
 		else:
 			print("%s note: %s was done before its turn (skipped)" % [TAG, id])
 		return false
+	_step_f = Engine.get_physics_frames()
 	await _secs(0.5)
 	var tgt: Dictionary = _ob.step_target(_ob.current())
 	var marked: bool = _ob.waypoint_target() is Vector3 or _ob.target_hex >= 0
@@ -393,6 +611,10 @@ static func _on_step(id: String) -> bool:
 static func _done(id: String) -> void:
 	await _wait(func() -> bool: return _ob.step > _index(id), 10.0)
 	_check(_ob.step > _index(id), "%s: complete, the card moves on" % id)
+	var mins: float = float(Engine.get_physics_frames() - _step_f) / float(Engine.physics_ticks_per_second) / 60.0
+	_times.append("%s %.1f" % [id, mins])
+	if _full:
+		print("%s time: %s took %.1f game min (%.1f min in all)" % [TAG, id, mins, float(Engine.get_physics_frames()) / float(Engine.physics_ticks_per_second) / 60.0])
 	await _secs(1.8)
 
 
@@ -429,7 +651,7 @@ static func _progress_label() -> String:
 ## Real loads (or bales) until `cubes`; past two real rounds it's a dev top-up (said in the log).
 static func _earn(cubes: float, _bales: bool) -> void:
 	var rounds: int = 0
-	while GameState.get_currency("cubes").to_float() < cubes and rounds < 2:
+	while GameState.get_currency("cubes").to_float() < cubes and (rounds < 2 or (_full and rounds < 60)):
 		rounds += 1
 		if Pace.baler_unlocked():
 			await _make_and_sell_bale()
@@ -437,6 +659,8 @@ static func _earn(cubes: float, _bales: bool) -> void:
 			await _scoop_load(1.0, 60.0)
 			await _to_bin()
 	var have: float = GameState.get_currency("cubes").to_float()
+	if have < cubes and _full:
+		_check(false, "full grind: %.0f cubes not earned in %d rounds" % [cubes, rounds])
 	if have < cubes:
 		print("%s note: top-up %.0f cubes (saving up)" % [TAG, cubes - have])
 		GameState.add_currency("cubes", BigNum.from_float(ceilf(cubes - have)))
@@ -444,6 +668,14 @@ static func _earn(cubes: float, _bales: bool) -> void:
 
 static func _earn_parts(cost: Dictionary) -> void:
 	var need: float = float(Currencies.fold(cost).get("parts", 0.0)) - GameState.get_currency("parts").to_float()
+	var tries: int = 0
+	while _full and need > 0.0 and tries < 40:  # dig what the detector finds, else bales (Lumi levels pay Parts too)
+		tries += 1
+		if not await _dig_part(150.0):
+			await _make_and_sell_bale()
+		need = float(Currencies.fold(cost).get("parts", 0.0)) - GameState.get_currency("parts").to_float()
+	if need > 0.0 and _full:
+		_check(false, "full grind: %.0f Parts still missing" % need)
 	if need > 0.0:
 		print("%s note: top-up %.0f parts (salvage and digging)" % [TAG, need])
 		GameState.add_currency("parts", BigNum.from_float(ceilf(need)))
@@ -451,24 +683,25 @@ static func _earn_parts(cost: Dictionary) -> void:
 
 
 ## The nearest buried part the detector finds: walk onto it, E digs it up.
-static func _dig_part() -> void:
+static func _dig_part(range_m: float = 60.0) -> bool:
 	var f: HexField = _w.get("field") as HexField
 	var det: PartDetector = _p.get("detector") as PartDetector
 	if f == null or det == null:
-		return
-	var i: int = f.nearest_part(_p.global_position, 60.0)
+		return false
+	var i: int = f.nearest_part(_p.global_position, range_m)
 	if i < 0 or f.part_found[i] != 0:
-		print("%s note: no buried part within 60 m to dig" % TAG)
-		return
+		print("%s note: no buried part within %.0f m to dig" % [TAG, range_m])
+		return false
 	var at: Vector3 = f.part_pos[i]
 	await _walk_to(func() -> Vector3: return at, func() -> bool: return det.can_dig(), "a buried part", 0.8)
 	var parts0: float = GameState.get_currency("parts").to_float()
 	await _tap("interact")
 	await _wait(func() -> bool: return GameState.get_currency("parts").to_float() > parts0, 10.0)
 	_check(GameState.get_currency("parts").to_float() > parts0, "parts: E on the detector's spot digs a part up (+%.0f)" % (GameState.get_currency("parts").to_float() - parts0))
+	return true
 
 
-static func _make_and_sell_bale() -> void:
+static func _make_and_sell_bale(reload_label: String = "") -> void:
 	await _scoop_load(0.95, 60.0)
 	await _wait(func() -> bool: return _p.compartment.pending <= 0.0, 3.0)  # the last pieces fly in
 	var made0: int = int(GameState.stats.get("cubes_made", 0))
@@ -509,6 +742,12 @@ static func _make_and_sell_bale() -> void:
 		await _secs(0.6)
 		_check(_ob.situation.begins_with("Need"), "%s: carrying a bale while saving up, the card keeps the price line (%s)" % [str(_ob.current().get("id", "")), _ob.situation])
 	_check(not _p.carried.is_empty(), "bale: E picks it up (bale %s m away)" % ("%.1f" % _flat(bale.global_position - _p.global_position).length() if bale else "none"))
+	if reload_label != "" and not _p.carried.is_empty():
+		await _reload(reload_label)
+		if _p.carried.is_empty():  # (a FAIL in _reload already) pick the bale up again if it lies about
+			var c: JunkCube = _p.nearest_loose_cube()
+			if c:
+				await _tap("interact")
 	if str(_ob.current().get("id", "")) == "power":
 		_check(str(_ob.step_target(_ob.current()).get("to", "")) == "depot" and _ob.waypoint_target() is Vector3, "bale: carrying it, the beam goes to the scale (%s)" % str(_ob.step_target(_ob.current()).get("to", "")))
 	var dp: Node3D = _w.get("depot") as Node3D
@@ -647,9 +886,9 @@ static func _close_bench() -> void:
 	var scr: UpgradesScreen = _w.get("upgrades") as UpgradesScreen
 	if not scr.is_open:
 		return
-	await _key_tap(KEY_TAB)
+	await _tap("open_upgrades")  # Tab on the keyboard, Y on a pad
 	await _secs(0.6)
-	_check(not scr.is_open and _input_on(), "bench: Tab closes it and Lumi moves again")
+	_check(not scr.is_open and _input_on(), "bench: %s closes it and Lumi moves again" % Settings.glyph("open_upgrades"))
 
 
 static func _ld() -> ListDetail:
@@ -672,7 +911,38 @@ static func _click_tag(id: String) -> void:
 	if row == null:
 		_check(false, "bench: no row %s on the open tab" % id)
 		return
+	if _pad:
+		await _pad_accept(row)
+		return
 	await _click((row.get_meta("parts") as Array)[3] as Control)
+
+
+## On a pad: the D-pad moves the bench's focus to `row` (as a player does), then A acts on it.
+static func _pad_accept(row: Button) -> void:
+	var vp: Viewport = row.get_viewport()
+	for dir: String in ["ui_down", "ui_up"]:
+		for k: int in 14:
+			if vp.gui_get_focus_owner() == row:
+				break
+			await _tap_ui(dir)
+	_check(vp.gui_get_focus_owner() == row, "pad: the D-pad reaches the row (focus on %s)" % str(vp.gui_get_focus_owner()))
+	await _tap_ui("ui_accept")
+	await _secs(0.3)
+
+
+static func _tap_ui(action: String) -> void:
+	for ev: InputEvent in InputMap.action_get_events(action):
+		if ev is InputEventJoypadButton:
+			for down: bool in [true, false]:
+				var e: InputEventJoypadButton = ev.duplicate()
+				e.device = 0
+				e.pressed = down
+				Input.parse_input_event(e)
+				Input.flush_buffered_events()
+				await _frames(2)
+			await _frames(2)
+			return
+	_check(false, "pad: no joypad button on %s" % action)
 
 
 ## A real left click (motion, press, release) at the middle of `c` on screen.
@@ -853,8 +1123,12 @@ static func _input_on() -> bool:
 
 static func _event(action: String) -> InputEvent:
 	for ev: InputEvent in InputMap.action_get_events(action):
-		if ev is InputEventMouseButton or ev is InputEventKey:
-			return ev.duplicate()
+		var pad: bool = ev is InputEventJoypadButton or ev is InputEventJoypadMotion
+		if pad == _pad:
+			var e: InputEvent = ev.duplicate()
+			if pad:
+				e.device = 0  # (keyboard and mouse events keep the map's own device)
+			return e
 	return null
 
 
@@ -867,6 +1141,10 @@ static func _send(action: String, down: bool) -> void:
 		(ev as InputEventMouseButton).pressed = down
 	elif ev is InputEventKey:
 		(ev as InputEventKey).pressed = down
+	elif ev is InputEventJoypadButton:
+		(ev as InputEventJoypadButton).pressed = down
+	elif ev is InputEventJoypadMotion:  # a stick or trigger: full tilt, or back to rest
+		(ev as InputEventJoypadMotion).axis_value = (ev as InputEventJoypadMotion).axis_value if down else 0.0
 	Input.parse_input_event(ev)
 	Input.flush_buffered_events()
 
@@ -875,6 +1153,17 @@ static func _hold_action(action: String, down: bool) -> void:
 	if bool(_keys.get(action, false)) == down:
 		return
 	_keys[action] = down
+	if _pad and action.begins_with("move_"):  # one stick: both directions of an axis share it
+		var x: float = (1.0 if bool(_keys.get("move_right", false)) else 0.0) - (1.0 if bool(_keys.get("move_left", false)) else 0.0)
+		var y: float = (1.0 if bool(_keys.get("move_back", false)) else 0.0) - (1.0 if bool(_keys.get("move_forward", false)) else 0.0)
+		for ax: Array in [[JOY_AXIS_LEFT_X, x], [JOY_AXIS_LEFT_Y, y]]:
+			var m := InputEventJoypadMotion.new()
+			m.device = 0
+			m.axis = ax[0]
+			m.axis_value = ax[1]
+			Input.parse_input_event(m)
+		Input.flush_buffered_events()
+		return
 	_send(action, down)
 
 
