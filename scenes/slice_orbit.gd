@@ -1136,7 +1136,7 @@ func repair_bench() -> void:
 		set_input(true)
 		GameState.inc_stat("bench_repaired")
 		Audio.play("chime", 1.0, -4.0)
-		EventBus.toast.emit(tr("Workbench fixed. Press {interact} at it to spend cubes on upgrades."), "info"))
+		EventBus.toast.emit(tr("Workbench fixed! Press %s at it to buy upgrades.") % Settings.glyph("interact"), "info"))  # [v9a] the key glyph, not a fixed E
 
 
 func open_codex(tab: String = "") -> void:

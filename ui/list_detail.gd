@@ -49,6 +49,8 @@ var _d_desc: Label
 var _d_icon_box: CenterContainer
 var _d_icon_key: String = ""
 var _d_table: GridContainer
+var _d_line: HBoxContainer  # [v9d] now -> next
+var _d_line_sig: String = ""
 var _d_custom: Control
 var _d_custom_id: String = ""
 var _d_req: Label
@@ -162,7 +164,18 @@ func _ready() -> void:
 		_detail.add_theme_constant_override("separation", 5)
 		_d_table.add_theme_constant_override("v_separation", 2)
 	_d_btn.pressed.connect(func() -> void: _do(_sel))
-	_detail.add_child(_d_btn)
+	_d_btn.set_meta("primary_action", true)  # [v9d] tools/ui_audit.gd: never cut, scrolling or not
+	# [v9d] The price and the button sit under the scrolling info, always fully on screen.
+	var foot := VBoxContainer.new()
+	foot.add_theme_constant_override("separation", 4)
+	(dp[1] as VBoxContainer).add_child(foot)
+	_detail.remove_child(_d_cost)
+	foot.add_child(_d_cost)
+	foot.add_child(_d_btn)
+	_d_line = HBoxContainer.new()  # [v9d] ONE "now -> next" line with a picture
+	_d_line.add_theme_constant_override("separation", 8)
+	_detail.add_child(_d_line)
+	_detail.move_child(_d_line, _d_table.get_index())
 	refresh(true)
 
 
@@ -650,6 +663,14 @@ func _show_detail(it: Dictionary) -> void:
 			if _d_custom:
 				_detail.add_child(_d_custom)
 				_detail.move_child(_d_custom, _d_table.get_index() + 1)
+	var rows_in: Array = it.get("table", [])
+	var squeezed: Array = squeeze_table(rows_in)  # [v9d] level to the eyebrow, cost to the chips, now/next to one line
+	if str(squeezed[0]) != "":
+		_d_eyebrow.text = "%s   %s" % [cat_name.to_upper(), str(squeezed[0])]
+	_set_line(str(squeezed[1]), str(squeezed[2]), "lock" if locked else str(it.get("icon", "cube")), str(it.get("icon_set", "hud")))
+	_d_line.visible = not locked and (str(squeezed[1]) != "" or str(squeezed[2]) != "")
+	it = it.duplicate()
+	it["table"] = squeezed[3]
 	var tsig: String = JSON.stringify(it.get("table", []))
 	if str(_d_table.get_meta("sig", "")) != tsig:
 		_d_table.set_meta("sig", tsig)
@@ -678,7 +699,7 @@ func _show_detail(it: Dictionary) -> void:
 		_d_req.text = tr("REQUIRES   %s") % req
 		_d_req.add_theme_color_override("font_color", Color(1.0, 0.6, 0.45) if st == "short" else UITheme.MUTED)
 	else:
-		_d_req.text = tr("You can buy this now!") if st == "ready" else (short_text(it.get("price", {})) if st == "short" else "")  # [v3clear]
+		_d_req.text = tr("You can buy this now!") if st == "ready" else (need_text(it.get("price", {})) if st == "short" else "")  # [v3clear] [v9d] the one blocking need
 		_d_req.add_theme_color_override("font_color", BenchKit.OK if st == "ready" else Color(1.0, 0.6, 0.45))
 	_d_req.visible = _d_req.text != ""
 	var action: String = str(it.get("action", ""))
@@ -688,6 +709,71 @@ func _show_detail(it: Dictionary) -> void:
 	_d_cost.visible = _d_btn.visible and st in ["ready", "short"]
 	if _d_cost.visible:
 		_d_cost.set_cost(it.get("price", {}), " ")
+
+
+## [v9d] Table rows, sorted for a quick read: [level text, now, next, the other rows]. "Level" goes
+## up by the name, "Cost" is dropped (the chips show it), "Now" and "Next" become one line.
+static func squeeze_table(rows: Array) -> Array:
+	var level: String = ""
+	var now: String = ""
+	var next: String = ""
+	var rest: Array = []
+	var k_level: String = TranslationServer.translate("Level").to_lower()
+	var k_now: String = TranslationServer.translate("Now").to_lower()
+	var k_next: String = TranslationServer.translate("Next").to_lower()
+	var k_cost: String = TranslationServer.translate("Cost").to_lower()
+	for r: Variant in rows:
+		if not (r is Array) or (r as Array).size() < 2:
+			continue
+		var k: String = str(r[0]).strip_edges().to_lower()
+		var v: String = str(r[1])
+		if k == k_level:
+			level = v
+		elif k == k_now:
+			now = v
+		elif k == k_next:
+			next = v
+		elif k == k_cost:
+			continue
+		else:
+			rest.append(r)
+	var p: int = next.find(" (")
+	if p > 0 and now != "":  # "(now +0%)" repeats the now side
+		next = next.left(p)
+	return [level, now, next, rest]
+
+
+func _set_line(now: String, next: String, icon: String, icon_set: String) -> void:
+	var sig: String = "%s|%s|%s" % [now, next, icon]
+	if sig == _d_line_sig:
+		return
+	_d_line_sig = sig
+	for c: Node in _d_line.get_children():
+		_d_line.remove_child(c)
+		c.queue_free()
+	_d_line.add_child(_icon(icon, icon_set, 28.0, BenchKit.HOLO))
+	if now != "":
+		var a: Label = UITheme.label(now, 16, UITheme.MUTED)
+		a.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		a.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		_d_line.add_child(a)
+	if now != "" and next != "":
+		_d_line.add_child(UITheme.label("→", 18, BenchKit.HOLO))
+	if next != "":
+		var b: Label = UITheme.label(next, 17, BenchKit.OK)
+		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		_d_line.add_child(b)
+
+
+## [v9d] The one thing missing, short: "Need 50 more parts." (the chips show the rest).
+static func need_text(price: Dictionary) -> String:
+	for cid: String in Currencies.IDS:
+		var need: float = float(Currencies.fold(price).get(cid, 0.0))
+		var have: float = GameState.get_currency(cid).to_float()
+		if need > have + 0.001:
+			return TranslationServer.translate("Need %s.") % (TranslationServer.translate("%s more %s") % [Settings.fmt(BigNum.from_float(ceilf(need - have))), Currencies.display_name(cid).to_lower()])
+	return ""
 
 
 ## [v3clear] "Need 40 more cubes. Pick up trash to earn them." for a price you can't pay yet.

@@ -693,7 +693,10 @@ func _prompt_top() -> float:
 	for k: String in ["_prompt"]:  # the context line fades out under a line by itself (hud.gd)
 		var l: Label = hud.get(k) as Label
 		if l and l.is_visible_in_tree() and l.text.strip_edges() != "" and l.modulate.a > 0.05:
-			top = minf(top, l.get_global_rect().position.y)
+			var t0: float = l.get_global_rect().position.y
+			if hud.has_method("prompt_lift_px"):  # [v9d] where the prompt sits unlifted (it rises over this bar)
+				t0 += float(hud.call("prompt_lift_px"))
+			top = minf(top, t0)
 	if hud.has_method("hints_top"):  # [v7look] the key-hint pill, lifted over the hotbar on narrow screens
 		top = minf(top, float(hud.call("hints_top")))
 	return top

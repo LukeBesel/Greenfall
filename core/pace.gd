@@ -164,7 +164,8 @@ static func heavy_hint(patch: Node3D, field: HexField, origin: Vector3, forward:
 	if now - _hint_t < 4000:
 		return
 	_hint_t = now
-	Vfx.float_text(at + OrbitUp.up(at) * 1.0, heavy_line(), Color(1.0, 0.75, 0.45), 0.4, 0.6)  # [v3clear] plain words, local up
+	heavy_at = now  # [v3clear]
+	# [v9d] No floating sentence: the piece's own label ("Needs Lift 2") and the card's hint say it once.
 	Audio.play("buzz", 0.8, -12.0)
 
 
