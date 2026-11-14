@@ -78,7 +78,7 @@ func play() -> void:
 	Homeward.save()
 	await c.end()
 	playing = false
-	EventBus.toast.emit(tr("The Cradle is holding orbit. Restore the whole system: the solar map is on the hologram (M). Build the Mk V Orbital drive to reach Ochre and Tidewell."), "story")
+	EventBus.toast.emit(tr("The Cradle is holding orbit. Restore the whole system: the solar map is on the hologram ({open_globe}). Build the Mk V Orbital drive to reach Ochre and Tidewell."), "story")
 	Codex.unlock("homeward:charter")
 	Codex.unlock("homeward:ledger_system")
 	queue_free()

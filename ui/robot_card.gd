@@ -170,6 +170,7 @@ func _add_up_row(uid: String) -> void:
 			Audio.play("buy", 1.1, -4.0)
 		else:
 			Audio.play("buzz", 1.2, -8.0)
+			Refuse.say("")  # [v9d] say why
 		refresh())
 	row.add_child(b)
 	_up_rows.append({"id": uid, "val": val, "btn": b})
@@ -274,6 +275,7 @@ func _on_build() -> void:
 		Audio.play("confirm", 1.0, -6.0)
 	else:
 		Audio.play("buzz", 1.2, -8.0)
+		Refuse.say("")  # [v9d] say why
 	refresh()
 
 
@@ -282,4 +284,5 @@ func _on_tier() -> void:
 		Audio.play("buy", 0.9, -2.0)
 	else:
 		Audio.play("buzz", 1.2, -8.0)
+		Refuse.say("")  # [v9d] say why
 	refresh()

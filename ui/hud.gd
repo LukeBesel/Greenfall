@@ -39,6 +39,9 @@ var _field_frac: float = 0.0
 var _planet_label: Label
 var _relay_label: Label  # [onboard] the Signal Tower's relay signal: how well WREN can reach Lumi
 var _prompt: Label
+var _prompt_lift: float = 0.0  # [v9d] px the prompt rises to clear the subtitle bar
+## [v9d] dev / audit: shown as the interact prompt while non-empty.
+var prompt_override: String = ""
 var _context: Label
 var _notify: NotifyStack
 var _hints: KeyHints  # [onboard] was a 12 px muted label
@@ -310,6 +313,8 @@ func _on_compartment(fill: float, cap: float) -> void:
 func show_toast(text: String, kind: String = "info") -> void:
 	if Subtitles.cut(text, kind):  # [v4calm] item 49: reward chatter never shows
 		return
+	if "{" in text:  # [v9d] key names follow the player's binding ({interact} -> [E] / [A])
+		text = Objectives.glyphs(tr(text))
 	if not Subtitles.post(text, kind):
 		_notify.push(text, kind)
 
@@ -369,6 +374,9 @@ func _process(delta: float) -> void:
 			_district_idle = 0.0
 	_district_idle += delta
 	var dwant: float = 1.0 if not minimal or _district_idle < FADE_AFTER_S else 0.0
+	if get_viewport().get_visible_rect().size.y < 500.0 and goals and goals.objective and goals.objective.visible:
+		dwant = 0.0  # [v9d] a short screen (large UI scale): the objective card has the corner to itself
+		_district_card.modulate.a = 0.0
 	_district_card.modulate.a = move_toward(_district_card.modulate.a, dwant, delta * (3.0 if dwant > 0.0 else 0.6))
 	# [v7look] a big moment (a base's arrival title) has the screen: the top-right cards step aside
 	_hold_corner_s = maxf(_hold_corner_s - delta, 0.0)
@@ -405,7 +413,7 @@ func _process(delta: float) -> void:
 		if patch.detector and not patch.detector.readout_changed.is_connected(_on_signal):
 			patch.detector.readout_changed.connect(_on_signal)
 		hotbar.set_hopper(patch.compartment.fill, patch.capacity())
-		_prompt.text = _prompt_text(patch.prompt)
+		_prompt.text = _prompt_text(prompt_override if prompt_override != "" else patch.prompt)
 		_update_context(delta, minimal)
 
 
@@ -451,9 +459,19 @@ func _update_context(delta: float, minimal: bool) -> void:
 	# [v6screens] With little room under Lumi (big interface scale) the subtitle line sits over the
 	# hotbar and the prompt: they dim under it instead of showing through the text.
 	var cov: Rect2 = Subtitles.current.cover_rect() if Subtitles.current and is_instance_valid(Subtitles.current) else Rect2()
-	for c: Control in [hotbar, _prompt]:
-		var dim: bool = cov.size.y > 0.0 and cov.intersects(c.get_global_rect())
-		c.self_modulate.a = move_toward(c.self_modulate.a, 0.2 if dim else 1.0, delta * 5.0)
+	var hdim: bool = cov.size.y > 0.0 and cov.intersects(hotbar.get_global_rect())
+	hotbar.self_modulate.a = move_toward(hotbar.self_modulate.a, 0.2 if hdim else 1.0, delta * 5.0)
+	# [v9d] The interact prompt is the one thing to press: it never hides under the subtitle bar.
+	# It rises above the bar while they would overlap (measured where it would sit unlifted).
+	var sc: float = maxf(_prompt_mc.get_global_transform().get_scale().y, 0.01)
+	var base: Rect2 = _prompt.get_global_rect()
+	base.position.y += _prompt_lift * sc
+	var want_lift: float = 0.0
+	if cov.size.y > 0.0 and _prompt.text.strip_edges() != "" and cov.intersects(base):
+		want_lift = (base.end.y - cov.position.y + 6.0) / sc
+	_prompt_lift = want_lift if want_lift > _prompt_lift else move_toward(_prompt_lift, want_lift, delta * 400.0)
+	_prompt_mc.add_theme_constant_override("margin_bottom", 168 + int(round(_prompt_lift)))
+	_prompt.self_modulate.a = 1.0
 
 
 ## [vqa] "GROWING", "PLANTED  THIRSTY", "GROWING  SUSTAIN 60%": the hex level in a few words.

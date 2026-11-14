@@ -124,7 +124,8 @@ static func _base(world: Node) -> Array:
 			if not gains.is_empty():
 				table.append([_tr("Next"), gains[0]])
 			table.append([_tr("Cost"), _price_text(cost)])
-			out.append({"id": "hub_level", "cat": "base", "icon": "hex", "icon_set": "ui", "name": _tr(str(nxt.get("name", ""))),
+			# [v9b] The card says "Rebuild the base to level 2"; the row said only "Workshop". Both now.
+			out.append({"id": "hub_level", "cat": "base", "icon": "hex", "icon_set": "ui", "name": "%s  ·  %s" % [TranslationServer.translate("Base level %d") % (hub.level + 1), _tr(str(nxt.get("name", "")))],
 				"desc": _tr(str(nxt.get("desc", ""))), "lv": hub.level, "max": (hub.data.get("levels", []) as Array).size(),
 				"price": cost, "state": _state(cost), "table": table, "requires": "",
 				"action": _tr("Build hub level %d") % (hub.level + 1), "act": func() -> bool: return hub.upgrade()})

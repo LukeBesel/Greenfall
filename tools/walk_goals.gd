@@ -50,6 +50,7 @@ static func run_dev(so: SliceOrbit) -> void:
 	await _dump(so, w, p, gl)
 	await _upgrade(so, w, p, gl)
 	await _pet(so, w, p)
+	_decor_text(w)
 	print("[walk-goals] %s" % ("PASS" if _fails.is_empty() else "FAIL: " + "; ".join(_fails)))
 	tree.quit(0 if _fails.is_empty() else 1)
 
@@ -189,11 +190,13 @@ static func _upgrade(so: SliceOrbit, w: Node, p: Patch, gl: Goals) -> void:
 	GameState.spend("cubes", BigNum.from_float(cubes))
 	await tree.create_timer(0.6).timeout  # the list refreshes
 	var lv1: int = GameState.level_of(id)
+	var t0: int = _toasts.size()
 	if row:
 		await _click(tree, row)
 		await _frames(tree, 6)
 	var it2: Dictionary = ld.call("_find", id)
 	_check(GameState.level_of(id) == lv1 and str(it2.get("state", "")) != "ready", "upgrade: with no cubes a click buys nothing (state %s, reason '%s')" % [str(it2.get("state", "")), str(it2.get("reason", ""))])
+	_check(_toasts.size() > t0, "upgrade: the refused click says why (%s)" % (_toasts[-1] if _toasts.size() > t0 else "nothing"))
 	GameState.add_currency("cubes", BigNum.from_float(cubes))
 	var gi: int = _goal(gl, "compartment_3")
 	_check(gi < 0 or gl.value_of(gi) == float(GameState.level_of(id)), "upgrade: \"Chest Size level 3\" reads the level")
@@ -210,35 +213,58 @@ static func _open(up: UpgradesScreen) -> bool:
 
 
 ## stat via E: pet a cat if one is about the start hub (cats come and go; a miss is a note).
+## stat via E: "Pet a stray cat". Cats come with clean city ground, so a fresh game has none near
+## the yard: dev puts one there (the adopted-cat path, Fauna's "named_cat": it lives at the base),
+## then the walk stands Lumi by it and presses the interact key for real.
 static func _pet(so: SliceOrbit, w: Node, p: Patch) -> void:
 	var tree: SceneTree = w.get_tree()
 	var fa: Fauna = w.get("fauna") as Fauna
+	if fa == null:
+		_check(false, "stat: Fauna in the world (cats)")
+		return
+	if fa.adopted_cat().is_empty():
+		GameState.flags["fauna_cat"] = {"name": "Biscuit", "coat": 0, "hub": 0}  # dev: a cat that lives at the base
+		print("[walk-goals] note: dev put a cat at the base (fresh games have none near the yard)")
 	var cat: Fauna.Animal = null
 	for k: int in 60:
-		if fa == null:
-			fa = w.get("fauna") as Fauna
-		if fa:
-			for a: Fauna.Animal in fa.animals:
-				if a.kind == "cat" and a.state != Fauna.St.LEAVE:
-					cat = a
-					break
+		for a: Fauna.Animal in fa.animals:
+			if a.kind == "cat" and a.state != Fauna.St.LEAVE and a.anchor != null:
+				cat = a
+				break
 		if cat:
 			break
 		await tree.create_timer(1.0).timeout
+	_check(cat != null, "stat: a cat comes to the base")
 	if cat == null:
-		print("[walk-goals] note: no cat about the start hub in 60 s (cats_petted not played)")
 		return
 	var c0: float = float(GameState.stats.get("cats_petted", 0.0))
-	for k: int in 6:
-		var back: Vector3 = p.global_position - cat.pos
-		back = (back - cat.pos.normalized() * back.dot(cat.pos.normalized())).normalized()
-		_stand(so, p, cat.pos + back * 1.1, cat.pos)
+	var bench: Vector3 = so.bench_position()
+	for k: int in 8:
+		var cp: Vector3 = cat.anchor.global_position
+		var off: Vector3 = cp - bench  # stand on the cat's far side from the bench (E there opens the bench)
+		off = (off - cp.normalized() * off.dot(cp.normalized()))
+		off = off.normalized() if off.length() > 0.01 else Vector3.RIGHT
+		_stand(so, p, cp + off * 1.2, cp)
 		await _frames(tree, 4)
+		var pr: String = str(so.interact_prompt(p)) if so.has_method("interact_prompt") else ""
 		await _tap(tree, "interact")
 		await tree.create_timer(0.8).timeout
 		if float(GameState.stats.get("cats_petted", 0.0)) > c0:
 			break
+		print("[walk-goals] pet try %d: prompt '%s', %.1f m from the cat" % [k, pr, p.global_position.distance_to(cp)])
 	_check(float(GameState.stats.get("cats_petted", 0.0)) > c0, "stat: E by a cat counts cats_petted (\"Pet a stray cat\")")
+
+
+## The goal "Place a decoration ({garden_mode})": its card and goal row show the player's key, not "(H)".
+static func _decor_text(w: Node) -> void:
+	var g: Dictionary = {}
+	for d: Variant in Economy.read_json("res://data/goals.json").get("goals", []):
+		if str((d as Dictionary).get("key", "")) == "decor_placed":
+			g = d
+			break
+	var shown: String = ObjectiveCard.title_of(g)
+	var key: String = Settings.glyph("garden_mode")
+	_check(not g.is_empty() and key in shown and not "{" in shown, "decor goal: the card says the Garden Mode key (%s)" % shown)
 
 
 static func _check(ok: bool, what: String) -> void:

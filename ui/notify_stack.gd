@@ -11,9 +11,20 @@ const WIDTH: float = 300.0
 ## [onboard2] A row on its way out fades over this long, then is gone: no half-faded "ghost"
 ## rows lingering behind newer ones.
 const FADE_OUT_S: float = 0.25
-const LIFE: Dictionary = {"info": 3.0, "hint": 4.2, "story": 4.8, "goal": 3.4, "level": 3.4}  # [vqa] shorter
+const LIFE: Dictionary = {"info": 3.5, "hint": 5.0, "story": 5.0, "goal": 3.8, "level": 3.5}  # [v9d] long enough to read
+## [v9d] The toast queue (owner: "easy to understand"): a burst of toasts used to land at once and
+## the stack threw the first lines away. Now lines wait their turn: a new row shows only once the
+## newest one has been up GAP_S, at most LIVE_MAX rows are readable together, and a burst keeps
+## story, hint and goal lines (never dropped) while extra "info" / "level" lines beyond QUEUE_MAX
+## are skipped (counted in skipped).
+const GAP_S: float = 1.8
+const LIVE_MAX: int = 2
+const QUEUE_MAX: int = 4
+const PRIO: Dictionary = {"story": 3, "hint": 2, "goal": 2, "level": 1, "info": 1}
 
 var _rows: Array[Dictionary] = []
+var _queue: Array[Dictionary] = []
+var skipped: int = 0
 
 
 func _ready() -> void:
@@ -34,17 +45,81 @@ static func accent(kind: String, text: String) -> Color:
 	return Color(UITheme.CREAM, 0.5)
 
 
+## [v9d] A small picture for a toast (ui/step_icons.gd), from the line's English source when it
+## has one, else from its kind.
+const ICON_WORDS: Array = [["drone", "junk"], ["Ledger", "junk"], ["cube", "cube"], ["Cube", "cube"], ["bale", "bale"],
+	["seed", "seed"], ["Seed", "seed"], ["Rain", "drop"], ["plant", "sprout"], ["Part", "part"], ["part", "part"],
+	["robot", "bot"], ["Robot", "bot"], ["hiccup", "bot"], ["Rocket", "rocket"], ["rocket", "rocket"], ["awake", "flag"],
+	["station", "flag"], ["Outpost", "house"], ["base", "house"], ["Hub", "house"], ["research", "flask"],
+	["Research", "flask"], ["visitor", "heart"], ["cat", "heart"], ["Glim", "lantern"], ["workbench", "gear"],
+	["build", "gear"], ["Achievement", "trophy"], ["Surge", "star"], ["hex", "hex"], ["sells", "cube"], ["CD", "star"]]
+
+
+static func icon_for(src: String, kind: String) -> String:
+	for wv: Array in ICON_WORDS:
+		if str(wv[0]) in src:
+			return str(wv[1])
+	match kind:
+		"story": return "star"
+		"hint": return "data"
+		"goal": return "check"
+		"level": return "trophy"
+	return "star"
+
+
 func push(text: String, kind: String = "info") -> void:
 	if text.strip_edges() == "":
 		return
-	text = tr(text)  # [l10n] plain data toasts (formatted ones arrive translated)
+	var src: String = text
+	text = Objectives.glyphs(tr(text))  # [l10n] plain data toasts (formatted ones arrive translated); [v9d] key names follow the binding
 	for r: Dictionary in _rows:
 		if str(r["text"]) == text and is_instance_valid(r["node"]):
 			r["count"] = int(r["count"]) + 1
 			(r["label"] as Label).text = "%s   x%d" % [text, int(r["count"])]
-			r["left"] = float(LIFE.get(kind, 4.0))
+			r["left"] = maxf(float(r["left"]), float(LIFE.get(kind, 4.0)))
 			(r["node"] as Control).modulate.a = 1.0
 			return
+	for q: Dictionary in _queue:
+		if str(q["text"]) == text:
+			q["count"] = int(q["count"]) + 1
+			return
+	_queue.append({"text": text, "kind": kind, "src": src, "count": 1, "prio": int(PRIO.get(kind, 1))})
+	while _queue.size() > QUEUE_MAX:  # a burst: skip the oldest low-priority line, if any
+		var k: int = -1
+		for i: int in _queue.size():
+			if int(_queue[i]["prio"]) <= 1:
+				k = i
+				break
+		if k < 0:
+			break
+		_queue.remove_at(k)
+		skipped += 1
+	_pump()
+
+
+## Lines waiting their turn.
+func pending() -> int:
+	return _queue.size()
+
+
+## Shows the next queued line when the stack has room and the newest row has been read a moment.
+func _pump() -> void:
+	while not _queue.is_empty():
+		var live: int = live_count()
+		if live >= LIVE_MAX:
+			return
+		if not _rows.is_empty() and live > 0 and float(_rows[-1]["age"]) < GAP_S:
+			return
+		var best: int = 0
+		for i: int in _queue.size():  # story first, then oldest
+			if int(_queue[i]["prio"]) > int(_queue[best]["prio"]):
+				best = i
+		var q: Dictionary = _queue[best]
+		_queue.remove_at(best)
+		_show(str(q["text"]), str(q["kind"]), str(q["src"]), int(q["count"]))
+
+
+func _show(text: String, kind: String, src: String, count: int) -> void:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 9)
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -53,9 +128,12 @@ func push(text: String, kind: String = "info") -> void:
 	bar.color = accent(kind, text)
 	bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	row.add_child(bar)
-	var l := UITheme.label(text, 14, UITheme.CREAM)
-	l.autowrap_mode = TextServer.AUTOWRAP_WORD
-	l.custom_minimum_size = Vector2(WIDTH - 12.0, 0)
+	var pic := StepIcons.Picture.new(icon_for(src, kind), 24.0, accent(kind, text).lightened(0.2))
+	pic.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(pic)
+	var l := UITheme.label(text if count <= 1 else "%s   x%d" % [text, count], 14, UITheme.CREAM)
+	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	l.custom_minimum_size = Vector2(WIDTH - 45.0, 0)
 	l.max_lines_visible = 2  # [vqa]
 	l.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	row.add_child(l)
@@ -67,15 +145,13 @@ func push(text: String, kind: String = "info") -> void:
 	back.add_child(row)
 	back.modulate.a = 0.0
 	add_child(back)
-	_rows.append({"node": back, "label": l, "text": text, "count": 1, "left": float(LIFE.get(kind, 4.0)), "age": 0.0})
+	_rows.append({"node": back, "label": l, "text": text, "count": count, "left": float(LIFE.get(kind, 4.0)), "age": 0.0})
 	while _rows.size() > MAX:
 		var old: Dictionary = _rows.pop_front()
 		var n: Control = old["node"]
 		if is_instance_valid(n):
 			n.queue_free()
-	# [onboard2] Make room now: rows other than the newest that would break the line budget leave
-	# at once (a quick fade), instead of fading slowly at half opacity behind the new one.
-	_retire_over_budget(1 if text.length() <= 36 else 2)  # ~36 characters fit one line at 14 px
+	_retire_over_budget(1 if text.length() <= 32 else 2)  # ~32 characters fit one line beside the icon
 
 
 func _process(delta: float) -> void:
@@ -94,6 +170,7 @@ func _process(delta: float) -> void:
 		if float(r["left"]) <= 0.0:
 			n.queue_free()
 			_rows.remove_at(i)
+	_pump()  # [v9d] the next queued line, once the newest has been up a moment
 
 
 ## Oldest rows leave (FADE_OUT_S) while the stack is over MAX_LINES text lines. new_lines: the

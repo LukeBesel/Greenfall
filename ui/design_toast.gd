@@ -68,6 +68,24 @@ func _ready() -> void:
 	_play_next()
 
 
+## [v9d] Never over the objective / station card (top right): centred when there is room, else
+## moved left of the card's corner (it had covered the card after a wake that gave a design).
+static func dock_x(view_w: float, w: float, corner: Rect2) -> float:
+	var x: float = (view_w - w) * 0.5
+	if corner.size.x > 0.0 and x + w > corner.position.x - 16.0:
+		x = maxf(16.0, corner.position.x - 16.0 - w)
+	return x
+
+
+func _corner() -> Rect2:
+	var hud: Node = get_tree().current_scene.get("hud") if get_tree().current_scene else null
+	if hud and hud.has_method("corner_rect"):
+		var r: Rect2 = hud.call("corner_rect")
+		# the HUD may be on a scaled canvas: this layer is not, so compare in viewport pixels
+		return r
+	return Rect2()
+
+
 func _play_next() -> void:
 	if _busy or Designs.pending_toasts.is_empty() or not is_inside_tree():
 		return
@@ -85,7 +103,7 @@ func _play_next() -> void:
 	Audio.play("chime", 1.15, -2.0)
 	await get_tree().process_frame
 	var w: float = _panel.get_combined_minimum_size().x
-	_panel.position = Vector2((get_viewport().get_visible_rect().size.x - w) * 0.5, -40.0)
+	_panel.position = Vector2(dock_x(get_viewport().get_visible_rect().size.x, w, _corner()), -40.0)
 	if DevHooks.has("design-unlock"):  # screenshots: software rendering runs at a few frames, so no slide-in
 		_panel.position.y = 86.0
 		_panel.modulate.a = 1.0

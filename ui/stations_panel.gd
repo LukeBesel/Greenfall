@@ -73,6 +73,7 @@ func _on_build(id: String) -> void:
 		EventBus.ui_modal_changed.emit(false)
 	else:
 		Audio.play("buzz", 1.2, -8.0)
+		Refuse.say("")  # [v9d] say why
 	refresh()
 
 

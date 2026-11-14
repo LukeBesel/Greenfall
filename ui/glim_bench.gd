@@ -24,6 +24,7 @@ func _ready() -> void:
 					d.refresh()
 			else:
 				Audio.play("buzz", 1.2, -8.0)
+				Refuse.say("")  # [v9d] say why
 			refresh())
 	refresh()
 

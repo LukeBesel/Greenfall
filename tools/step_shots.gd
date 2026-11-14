@@ -35,8 +35,10 @@ static func run_dev(so: SliceOrbit) -> void:
 		ob.step = k
 		GameState.flags["objective_step"] = k
 		ob.changed.emit(k)
+		await _wall(tree, 1.5)
+		var mk: String = _face_target(so, ob)
 		await _wall(tree, wait)
-		await _save(tree, "step_%02d_%s" % [k, str(ob.chain[k].get("id", ""))], ob)
+		await _save(tree, "step_%02d_%s" % [k, str(ob.chain[k].get("id", ""))], ob, mk)
 	var gl: Goals = w.get("goals") as Goals
 	var n: int = int(DevHooks.get_f("step-shots-goals", 3.0))
 	if gl != null and n > 0:
@@ -44,11 +46,13 @@ static func run_dev(so: SliceOrbit) -> void:
 		GameState.flags["objective_step"] = ob.step
 		for i: int in n:
 			ob.changed.emit(ob.step)
+			await _wall(tree, 1.5)
+			var mk2: String = _face_target(so, ob)
 			await _wall(tree, wait)
 			var gi: Array[int] = gl.current()
 			if gi.is_empty():
 				break
-			await _save(tree, "goal_%02d_%s" % [i, str(gl.chain[gi[0]].get("id", ""))], ob)
+			await _save(tree, "goal_%02d_%s" % [i, str(gl.chain[gi[0]].get("id", ""))], ob, mk2)
 			gl.complete(gi[0])
 	print("[stepshots] done")
 	tree.quit(0)
@@ -64,7 +68,42 @@ static func _wall(tree: SceneTree, secs: float) -> void:
 		n += 1
 
 
-static func _save(tree: SceneTree, name: String, ob: Objectives) -> void:
+## [v9d] Lumi about TARGET_M from the step's target, facing it, so the frame shows its marker: the
+## beam's place (Objectives.waypoint_target), else the outlined hex (target_hex). Returns what
+## marks it ("beam", "outline", "none") and how far Lumi stands.
+const TARGET_M: float = 12.0
+
+
+static func _face_target(so: SliceOrbit, ob: Objectives) -> String:
+	var p: Patch = so.w.get("patch") as Patch
+	var f: HexField = so.w.get("field") as HexField
+	var tgt: Variant = ob.waypoint_target()
+	var kind: String = "beam"
+	if not (tgt is Vector3) and ob.target_hex >= 0 and f:
+		tgt = f.hex_center(ob.target_hex)
+		kind = "outline"
+	if not (tgt is Vector3) or p == null:
+		return "none"
+	var t: Vector3 = tgt
+	var up: Vector3 = t.normalized()
+	var away: Vector3 = p.global_position - t
+	away = away - up * away.dot(up)
+	if away.length() < 0.5:
+		away = up.cross(Vector3.UP).normalized() if absf(up.dot(Vector3.UP)) < 0.9 else Vector3.RIGHT
+	away = away.normalized()
+	var tr_: TargetReach = TargetReach.for_field(f) if f else null
+	var best: Vector3 = t + away * TARGET_M
+	for k: int in 12:  # the first open spot round the target, starting from Lumi's side
+		var d: Vector3 = away.rotated(up, TAU * float(k) / 12.0)
+		var at: Vector3 = so.globe.terrain.ground((t + d * TARGET_M).normalized())
+		if tr_ == null or tr_.reach(at) == "":
+			best = at
+			break
+	WalkGoals._stand(so, p, best, t)
+	return "%s %.0fm" % [kind, OrbitUp.ground_dist(p.global_position, t)]
+
+
+static func _save(tree: SceneTree, name: String, ob: Objectives, marker: String = "") -> void:
 	await tree.process_frame
 	await tree.process_frame
 	var img: Image = tree.root.get_texture().get_image()
@@ -73,4 +112,4 @@ static func _save(tree: SceneTree, name: String, ob: Objectives) -> void:
 		img.save_png(ProjectSettings.globalize_path(path))
 	var d: Dictionary = ob.current()
 	var tgt: Dictionary = ob.step_target(d) if not d.is_empty() else {}
-	print("[stepshots] %s  card='%s'  target=%s  progress=%s" % [path, str(d.get("text", "")), str(tgt.get("to", "")), str(ob.progress()[1]) if not d.is_empty() else ""])
+	print("[stepshots] %s  card='%s'  target=%s  marker=%s  progress=%s" % [path, str(d.get("text", "")), str(tgt.get("to", "")), marker, str(ob.progress()[1]) if not d.is_empty() else ""])
